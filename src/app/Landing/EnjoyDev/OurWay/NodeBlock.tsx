@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TArticleCat } from '@/spec'
 import { ARTICLE_CAT } from '@/const/gtd'
@@ -84,4 +83,4 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
   )
 }
 
-export default observer(NodeBlock)
+export default NodeBlock

@@ -10,9 +10,7 @@ type TRet = {
   toggle: () => void
   themeMap: TThemeMap
 }
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
+
 const useTheme = (): TRet => {
   const { theme, change, toggle } = useSubStore('theme')
   const styledTheme = useStyledTheme() as TThemeMap

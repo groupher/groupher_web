@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TActive, TThread } from '@/spec'
 import { THREAD } from '@/const/thread'
@@ -63,4 +62,4 @@ const ThreadIcon: FC<TProps> = ({ thread, $active }) => {
   }
 }
 
-export default observer(ThreadIcon)
+export default ThreadIcon

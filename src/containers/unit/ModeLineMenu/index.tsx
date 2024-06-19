@@ -5,7 +5,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TModelineType } from '@/spec'
 import TYPE from '@/const/type'
@@ -81,4 +80,4 @@ const ModeLineMenu: FC<TProps> = ({
   return <Wrapper $testid={testid}>{renderMenus(type, curActive, subscribedCommunities)}</Wrapper>
 }
 
-export default observer(ModeLineMenu)
+export default ModeLineMenu

@@ -5,7 +5,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import { ANCHOR } from '@/const/dom'
 
@@ -73,4 +72,4 @@ const Comments: FC<TProps> = ({ locked = false, apiMode = API_MODE.ARTICLE }) =>
   )
 }
 
-export default observer(Comments)
+export default Comments

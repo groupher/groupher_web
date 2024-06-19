@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import THEME from '@/const/theme'
 import useTheme from '@/hooks/useTheme'
@@ -51,4 +50,4 @@ const Panel: FC<TProps> = ({ hovering }) => {
   )
 }
 
-export default observer(Panel)
+export default Panel

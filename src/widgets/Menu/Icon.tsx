@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TActive, TColorName, TMenu } from '@/spec'
 import { COLOR_NAME } from '@/const/colors'
@@ -46,4 +45,4 @@ const Icon: FC<TProps> = ({ type, $active }) => {
   )
 }
 
-export default observer(Icon)
+export default Icon

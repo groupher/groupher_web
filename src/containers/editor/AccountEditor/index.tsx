@@ -5,7 +5,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import { closeDrawer } from '@/signal'
 
@@ -112,4 +111,4 @@ const AccountEditor: FC = () => {
   )
 }
 
-export default observer(AccountEditor)
+export default AccountEditor

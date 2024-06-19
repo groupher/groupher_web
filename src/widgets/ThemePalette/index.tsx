@@ -2,8 +2,6 @@
 
 /*
  * make children compoent cound reach the props.theme object
- * because mobx's observer mechanism, we should manually watch the theme
- * otherwhise the render will not be triggled
  */
 import type { FC, ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'

@@ -5,7 +5,6 @@
  */
 
 import type { FC, ReactNode } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TColorName, TSpace } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
@@ -48,4 +47,4 @@ const ArrowLinker: FC<TProps> = ({
   )
 }
 
-export default observer(ArrowLinker)
+export default ArrowLinker

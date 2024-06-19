@@ -1,4 +1,4 @@
-import { Fragment, FC, ReactNode } from 'react'
+import { Fragment, type FC, type ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 import { includes } from 'ramda'
 

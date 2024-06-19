@@ -1,5 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { isEmpty } from 'ramda'
 
 import useAboutInfo from '@/hooks/useAboutInfo'
@@ -43,12 +41,10 @@ const Content = () => {
   )
 }
 
-const ExtraInfo: FC = () => {
+export default () => {
   return (
     <Wrapper>
       <Content />
     </Wrapper>
   )
 }
-
-export default observer(ExtraInfo)

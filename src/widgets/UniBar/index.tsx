@@ -3,8 +3,7 @@
 /*
  */
 
-import { type FC, useState, useRef, useCallback } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useState, useRef, useCallback } from 'react'
 
 import useOutsideClick from '@/hooks/useOutsideClick'
 import useTrans from '@/hooks/useTrans'
@@ -22,7 +21,7 @@ import NotifyPanel from './NotifyPanel'
 import { MENU, TIP_OPTIONS } from './constant'
 import { Wrapper, ButtonBar, Icon, IconBox, TipText, PeopleBox, TopBox } from './styles'
 
-const AccountBar: FC = () => {
+export default () => {
   const ref = useRef(null)
   const { inView: badgeInView } = useCommunityDigestViewport()
   const { t } = useTrans()
@@ -106,5 +105,3 @@ const AccountBar: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(AccountBar)

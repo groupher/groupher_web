@@ -5,7 +5,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TArticle } from '@/spec'
 
@@ -41,4 +40,4 @@ const KanbanItem: FC<TProps> = ({ article }) => {
   )
 }
 
-export default observer(KanbanItem)
+export default KanbanItem

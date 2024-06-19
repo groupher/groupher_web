@@ -5,14 +5,12 @@
  */
 
 import { type FC, useEffect, useRef, useState, useCallback } from 'react'
-import { observer } from 'mobx-react-lite'
 import { isEmpty, findIndex, pluck, includes } from 'ramda'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TSizeSM, TTabItem } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import SIZE from '@/const/size'
-
 import { isString } from '@/validator'
 
 import TabItem from './TabItem'
@@ -145,4 +143,4 @@ const Tabs: FC<TProps> = ({
   )
 }
 
-export default observer(Tabs)
+export default Tabs

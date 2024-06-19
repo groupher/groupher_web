@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import type { TCommunityThread } from '@/spec'
@@ -60,4 +59,4 @@ const MobileThreadNav: FC<TProps> = ({ mode = 'mobile' }) => {
   )
 }
 
-export default observer(MobileThreadNav)
+export default MobileThreadNav

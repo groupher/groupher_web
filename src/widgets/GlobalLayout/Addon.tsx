@@ -1,7 +1,6 @@
 'use client'
 
 import { type FC, Fragment } from 'react'
-import { observer } from 'mobx-react-lite'
 // eslint-disable-next-line import/no-unresolved
 import { Toaster } from 'sonner'
 
@@ -32,4 +31,4 @@ const Addon: FC = () => {
   )
 }
 
-export default observer(Addon)
+export default Addon

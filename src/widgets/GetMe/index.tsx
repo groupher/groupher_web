@@ -4,7 +4,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import Tooltip from '@/widgets/Tooltip'
 
@@ -21,4 +20,4 @@ const GetMe: FC = () => {
   )
 }
 
-export default observer(GetMe)
+export default GetMe

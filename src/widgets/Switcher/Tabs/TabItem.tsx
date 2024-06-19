@@ -5,7 +5,6 @@
  */
 
 import { type FC, useEffect, useCallback, useRef } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TSizeSM, TTabItem } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
@@ -115,4 +114,4 @@ const TabItem: FC<TProps> = ({
   )
 }
 
-export default observer(TabItem)
+export default TabItem

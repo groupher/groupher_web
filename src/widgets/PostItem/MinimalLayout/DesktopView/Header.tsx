@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TPost } from '@/spec'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
@@ -37,4 +36,4 @@ const Header: FC<TProps> = ({ article }) => {
   )
 }
 
-export default observer(Header)
+export default Header

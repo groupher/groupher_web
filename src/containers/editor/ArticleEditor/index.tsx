@@ -3,7 +3,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TEditMode, TMetric } from '@/spec'
 import METRIC from '@/const/metric'
@@ -89,4 +88,4 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
   )
 }
 
-export default observer(ArticleEditor)
+export default ArticleEditor

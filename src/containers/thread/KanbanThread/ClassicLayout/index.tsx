@@ -1,10 +1,6 @@
 /* *
  * KanbanThread
- *
  */
-
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import useIsSidebarLayout from '@/hooks/useIsSidebarLayout'
 import CustomScroller from '@/widgets/CustomScroller'
@@ -19,7 +15,7 @@ import {
   MobileColumnsInner,
 } from '../styles/classic_layout'
 
-const ClassicLayout: FC = () => {
+export default () => {
   const isSidebarLayout = useIsSidebarLayout()
 
   return (
@@ -44,5 +40,3 @@ const ClassicLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(ClassicLayout)

@@ -1,5 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { isEmpty } from 'ramda'
 
 import useAboutInfo from '@/hooks/useAboutInfo'
@@ -52,7 +50,7 @@ const Content = () => {
   )
 }
 
-const Sidebar: FC = () => {
+export default () => {
   return (
     <>
       <MobileWrapper>
@@ -65,5 +63,3 @@ const Sidebar: FC = () => {
     </>
   )
 }
-
-export default observer(Sidebar)

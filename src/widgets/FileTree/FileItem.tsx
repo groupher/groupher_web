@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TTag } from '@/spec'
 import { cutRest } from '@/fmt'
@@ -34,4 +33,4 @@ const FileItem: FC<TProps> = ({ tag, active, onSelect }) => {
   )
 }
 
-export default observer(FileItem)
+export default FileItem

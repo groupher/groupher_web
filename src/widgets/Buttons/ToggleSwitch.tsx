@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TSizeSM } from '@/spec'
 import SIZE from '@/const/size'
@@ -31,4 +30,4 @@ const ToggleSwitch: FC<TProps> = ({
   )
 }
 
-export default observer(ToggleSwitch)
+export default ToggleSwitch

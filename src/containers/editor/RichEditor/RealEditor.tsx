@@ -13,7 +13,6 @@ import { useInit } from './logic'
 
 import OverwriteStyle from './styles/overwrite'
 import { Wrapper, InnerWrapper, EditorWrapper } from './styles'
-import { observer } from 'mobx-react-lite'
 
 type TProps = {
   placeholder?: string
@@ -53,4 +52,4 @@ const RichEditor: FC<TProps> = ({
   )
 }
 
-export default observer(RichEditor)
+export default RichEditor

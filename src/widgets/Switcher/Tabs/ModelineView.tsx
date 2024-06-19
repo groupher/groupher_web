@@ -5,7 +5,6 @@
  */
 
 import { type FC, useEffect, useRef, useState, useCallback } from 'react'
-import { observer } from 'mobx-react-lite'
 import { isEmpty, findIndex } from 'ramda'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
@@ -137,4 +136,4 @@ const ModelineView: FC<TProps> = ({
   )
 }
 
-export default observer(ModelineView)
+export default ModelineView

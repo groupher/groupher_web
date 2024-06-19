@@ -1,5 +1,4 @@
 import { type FC, useState } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import useTheme from '@/hooks/useTheme'
 import THEME from '@/const/theme'
@@ -69,4 +68,4 @@ const ScaleSelector: FC<TProps> = ({ communityType }) => {
   )
 }
 
-export default observer(ScaleSelector)
+export default ScaleSelector

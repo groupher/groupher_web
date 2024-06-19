@@ -4,7 +4,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import Cover from './Cover'
 import Toolbox from './Toolbox'
@@ -42,4 +41,4 @@ const CoverEditor: FC<TProps> = ({
   )
 }
 
-export default observer(CoverEditor)
+export default CoverEditor

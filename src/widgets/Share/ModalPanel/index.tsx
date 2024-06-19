@@ -3,7 +3,6 @@
  */
 
 import { type FC, Fragment } from 'react'
-import { observer } from 'mobx-react-lite'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TArticle } from '@/spec'
@@ -62,4 +61,4 @@ const SharePanel: FC<TProps> = ({
   )
 }
 
-export default observer(SharePanel)
+export default SharePanel

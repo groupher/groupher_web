@@ -6,9 +6,7 @@ type TRet = {
   changeLocale: (locale: TLocale) => void
   locale: TLocale
 }
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
+
 const useChangeI18n = (): TRet => {
   const { locale, setLocale, setLocaleData } = useSubStore('locale')
 

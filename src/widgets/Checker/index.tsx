@@ -5,7 +5,6 @@
  */
 
 import type { FC, ReactNode } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TSizeSM, TSpace } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
@@ -54,4 +53,4 @@ const Checker: FC<TProps> = ({
   )
 }
 
-export default observer(Checker)
+export default Checker

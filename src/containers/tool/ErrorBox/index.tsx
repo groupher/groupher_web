@@ -5,7 +5,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import useShortcut from '@/hooks/useShortcut'
 import { SpaceGrow } from '@/widgets/Common'
@@ -67,4 +66,4 @@ const ErrorBox: FC = () => {
   )
 }
 
-export default observer(ErrorBox)
+export default ErrorBox

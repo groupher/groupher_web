@@ -1,5 +1,4 @@
 import { type FC, Fragment } from 'react'
-import { observer } from 'mobx-react-lite'
 import { keys, startsWith } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
@@ -76,4 +75,4 @@ const CustomHeaderLinks: FC<TProps> = ({ links }) => {
   )
 }
 
-export default observer(CustomHeaderLinks)
+export default CustomHeaderLinks

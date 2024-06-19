@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TPost } from '@/spec'
 import { THREAD } from '@/const/thread'
@@ -30,4 +29,4 @@ const Header: FC<TProps> = ({ article }) => {
   )
 }
 
-export default observer(Header)
+export default Header

@@ -1,5 +1,4 @@
 import { type FC, Fragment } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TChangelog } from '@/spec'
 import { CHANGELOG_LAYOUT } from '@/const/layout'
@@ -25,4 +24,4 @@ const ChangelogItem: FC<TProps> = ({ article }) => {
   )
 }
 
-export default observer(ChangelogItem)
+export default ChangelogItem

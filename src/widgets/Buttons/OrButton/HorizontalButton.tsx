@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import SIZE from '@/const/size'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
@@ -49,4 +48,4 @@ const HorizontalButton: FC<TProps> = ({
   )
 }
 
-export default observer(HorizontalButton)
+export default HorizontalButton

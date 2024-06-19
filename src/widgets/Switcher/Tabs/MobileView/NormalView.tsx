@@ -5,7 +5,6 @@
  */
 
 import { type FC, useEffect, useRef, useState, useCallback } from 'react'
-import { observer } from 'mobx-react-lite'
 import { isEmpty, findIndex } from 'ramda'
 
 import type { TSizeSM, TTabItem } from '@/spec'
@@ -161,4 +160,4 @@ const MobileView: FC<TProps> = ({
   )
 }
 
-export default observer(MobileView)
+export default MobileView

@@ -7,7 +7,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { Space } from '@/widgets/Common'
@@ -54,4 +53,4 @@ const CommunityBrief: FC<TProps> = ({ show }) => {
   )
 }
 
-export default observer(CommunityBrief)
+export default CommunityBrief

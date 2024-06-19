@@ -1,5 +1,4 @@
 import { type FC, useState } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TArticle } from '@/spec'
 
@@ -61,4 +60,4 @@ const CommunityLayout: FC<TProps> = ({
   )
 }
 
-export default observer(CommunityLayout)
+export default CommunityLayout

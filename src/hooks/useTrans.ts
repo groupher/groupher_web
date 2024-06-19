@@ -12,9 +12,6 @@ type TRet = {
   locale: TLocale
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useTrans = (): TRet => {
   const { locale, localeData } = useSubStore('locale')
 

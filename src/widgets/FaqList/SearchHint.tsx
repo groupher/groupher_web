@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import { mockHelpCats } from '@/mock'
 import { THREAD } from '@/const/thread'
@@ -60,4 +59,4 @@ const SearchHint: FC<TProps> = ({ sections }) => {
   )
 }
 
-export default observer(SearchHint)
+export default SearchHint

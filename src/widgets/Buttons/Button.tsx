@@ -1,5 +1,4 @@
 import type { FC, ReactNode } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TSizeTSM, TSpace } from '@/spec'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
@@ -78,4 +77,4 @@ const Button: FC<TProps> = ({
   }
 }
 
-export default observer(Button)
+export default Button

@@ -3,7 +3,6 @@
  */
 
 import type { FC } from 'react'
-// import { observer } from 'mobx-react-lite'
 import dynamic from 'next/dynamic'
 
 import type { TSpace } from '@/spec'
@@ -26,5 +25,4 @@ const ArticleReadLabel: FC<TProps> = (props) => {
   return <RealLabel isLogin={isLogin} {...props} />
 }
 
-// export default observer(ArticleReadLabel)
 export default ArticleReadLabel

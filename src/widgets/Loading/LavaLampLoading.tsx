@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { range, mergeRight } from 'ramda'
 
 import type { TSpace, TSizeTSM } from '@/spec'
@@ -27,4 +26,4 @@ const LavaLampLoading: FC<TProps> = (props) => {
   )
 }
 
-export default observer(LavaLampLoading)
+export default LavaLampLoading

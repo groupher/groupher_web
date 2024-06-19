@@ -1,5 +1,4 @@
 import type { FC, ReactNode } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TActive, TSizeTS, TSpace } from '@/spec'
 import SIZE from '@/const/size'
@@ -73,4 +72,4 @@ const DropdownButton: FC<TProps> = ({
   )
 }
 
-export default observer(DropdownButton)
+export default DropdownButton

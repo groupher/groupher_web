@@ -4,7 +4,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import { SexyDivider } from '@/widgets/Common'
 import Button from '@/widgets/Buttons/Button'
@@ -75,4 +74,4 @@ const PassportEditor: FC = () => {
   )
 }
 
-export default observer(PassportEditor)
+export default PassportEditor

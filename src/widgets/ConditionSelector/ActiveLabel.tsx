@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TActive } from '@/spec'
 
@@ -31,4 +30,4 @@ const ActiveLabel: FC<TProps> = ({ title, condition, activeItem }) => {
   )
 }
 
-export default observer(ActiveLabel)
+export default ActiveLabel
