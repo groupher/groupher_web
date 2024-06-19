@@ -1,20 +1,11 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
 import { pick } from 'ramda'
 
+import useSubStore from '@/hooks/useSubStore'
 import type { TBroadcastConfig } from '@/spec'
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useBroadcast = (): TBroadcastConfig => {
-  const { store } = useContext(MobXProviderContext)
+export default (): TBroadcastConfig => {
+  const store = useSubStore('dashboard')
 
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
-
-  // @ts-ignore
   return pick(
     [
       'broadcastLayout',
@@ -24,8 +15,6 @@ const useBroadcast = (): TBroadcastConfig => {
       'broadcastArticleBg',
       'broadcastArticleEnable',
     ],
-    store.dashboardThread,
+    store,
   )
 }
-
-export default useBroadcast

@@ -1,13 +1,6 @@
 'use client'
 
-/*
- *
- * Broadcast
- *
- */
-
 import { type FC, Fragment } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import { ANCHOR } from '@/const/dom'
 import { BROADCAST_LAYOUT } from '@/const/layout'
@@ -35,9 +28,9 @@ const DETAIL_TEXT =
 
 const Broadcast: FC<TProps> = ({ testid = 'banner-notify' }) => {
   const metric = useMetric()
-  const settings = useBroadcast()
 
-  const { broadcastBg: bg, broadcastLayout: layout, broadcastEnable: enabled } = settings
+  const { broadcastBg: bg, broadcastLayout: layout, broadcastEnable: enabled } = useBroadcast()
+
   if (!enabled) return null
 
   return (
@@ -68,4 +61,4 @@ const Broadcast: FC<TProps> = ({ testid = 'banner-notify' }) => {
   )
 }
 
-export default observer(Broadcast)
+export default Broadcast
