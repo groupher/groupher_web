@@ -1,5 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { find } from 'ramda'
 
 import type { TSelectOption } from '@/spec'
@@ -16,7 +14,7 @@ import useBaseInfo from '../logic/useBaseInfo'
 
 import { Wrapper, Label, Inputer, Hint } from '../styles/basic_info/base_info'
 
-const BasicInfo: FC = () => {
+export default () => {
   const { saving, locale, desc, title, slug, homepage, introduction, isTouched, edit } =
     useBaseInfo()
 
@@ -80,5 +78,3 @@ const BasicInfo: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(BasicInfo)

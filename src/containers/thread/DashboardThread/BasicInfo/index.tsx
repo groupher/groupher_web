@@ -1,5 +1,3 @@
-import { type FC, useEffect } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
 import { DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
@@ -20,7 +18,7 @@ import OtherInfo from './OtherInfo'
 import useBaseInfo from '../logic/useBaseInfo'
 import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
 
-const BasicInfo: FC = () => {
+export default () => {
   const router = useRouter()
   const curCommunity = useViewingCommunity()
   const { baseInfoTab, edit } = useBaseInfo()
@@ -61,5 +59,3 @@ const BasicInfo: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(BasicInfo)

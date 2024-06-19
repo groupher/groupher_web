@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import { prettyNum } from '@/fmt'
 
 import NoteTip from '@/widgets/NoteTip'
@@ -8,7 +5,7 @@ import NoteTip from '@/widgets/NoteTip'
 import useOverview from '../logic/useOverview'
 import { Wrapper, Left, Right, Section, Hint, Num } from '../styles/overview/basic_numbers'
 
-const BasicNumbers: FC = () => {
+export default () => {
   const { views, subscribersCount, postsCount, changelogsCount, docsCount } = useOverview()
 
   return (
@@ -48,5 +45,3 @@ const BasicNumbers: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(BasicNumbers)

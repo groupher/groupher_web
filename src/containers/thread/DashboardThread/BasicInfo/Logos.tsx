@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import { Br } from '@/widgets/Common'
 import OSSUploader from '@/widgets/OSSUploader'
 
@@ -18,7 +15,7 @@ import {
   Desc,
 } from '../styles/basic_info/logos'
 
-const Logos: FC = () => {
+export default () => {
   const { edit, saving, logo, isLogosTouched } = useBaseInfo()
 
   return (
@@ -55,5 +52,3 @@ const Logos: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(Logos)

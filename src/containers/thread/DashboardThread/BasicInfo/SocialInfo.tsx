@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import SocialEditor from '@/widgets/SocialEditor'
 
 import { SETTING_FIELD } from '../constant'
@@ -9,7 +6,7 @@ import SavingBar from '../SavingBar'
 import useBaseInfo from '../logic/useBaseInfo'
 import { Wrapper } from '../styles/basic_info/base_info'
 
-const SocialInfo: FC = () => {
+export default () => {
   const { socialLinks, saving, isSocialLinksTouched, edit } = useBaseInfo()
 
   return (
@@ -32,5 +29,3 @@ const SocialInfo: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(SocialInfo)

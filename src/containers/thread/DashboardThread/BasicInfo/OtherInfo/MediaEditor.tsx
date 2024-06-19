@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import { sortByIndex } from '@/helper'
 
 import type { TMediaReport } from '@/spec'
@@ -12,7 +9,7 @@ import InputBox from './InputBox'
 import { Wrapper, Label } from '../../styles/basic_info/other_info/media_editor'
 import useBaseInfo from '../../logic/useBaseInfo'
 
-const MediaEditor: FC = () => {
+export default () => {
   const { addMediaReport, mediaReports, queringMediaReportIndex } = useBaseInfo()
 
   return (
@@ -31,5 +28,3 @@ const MediaEditor: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(MediaEditor)

@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import { TAG_LAYOUT } from '@/const/layout'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
@@ -25,7 +22,7 @@ import {
   Bar,
 } from '../styles/layout/tag_layout'
 
-const TagLayout: FC = () => {
+export default () => {
   const { edit, tagLayout, getTagLayoutTouched, saving } = useTags()
   const primaryColor = usePrimaryColor()
   const isTouched = getTagLayoutTouched()
@@ -84,5 +81,3 @@ const TagLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(TagLayout)

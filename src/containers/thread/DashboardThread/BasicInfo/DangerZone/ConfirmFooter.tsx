@@ -1,5 +1,4 @@
 import { type FC, useState } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TSpace } from '@/spec'
 
@@ -41,4 +40,4 @@ const ConfirmFooter: FC<TProps> = ({ testid = '', ...restprops }) => {
   )
 }
 
-export default observer(ConfirmFooter)
+export default ConfirmFooter

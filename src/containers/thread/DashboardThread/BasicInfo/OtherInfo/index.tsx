@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import CitySelector from '@/widgets/CitySelector'
 import { Br, SexyDivider } from '@/widgets/Common'
@@ -7,10 +6,11 @@ import { Br, SexyDivider } from '@/widgets/Common'
 import { SETTING_FIELD } from '../../constant'
 
 import SavingBar from '../../SavingBar'
-import MediaEditor from './MediaEditor'
 
 import useBaseInfo from '../../logic/useBaseInfo'
 import { Wrapper, Label, Inputer, Desc } from '../../styles/basic_info/other_info'
+
+import MediaEditor from './MediaEditor'
 
 const OtherInfo: FC = () => {
   const { city, techstack, isTouched, isMediaReportsTouched, edit } = useBaseInfo()
@@ -50,4 +50,4 @@ const OtherInfo: FC = () => {
   )
 }
 
-export default observer(OtherInfo)
+export default OtherInfo
