@@ -2,7 +2,6 @@ import styled, { css, theme } from '@/css'
 
 import QuestionSVG from '@/icons/Question'
 import DemoSVG from '@/icons/DemoTV'
-import Img from '@/Img'
 
 export const Wrapper = styled.div`
   ${css.row('justify-between')};
