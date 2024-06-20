@@ -6,18 +6,14 @@
  *
  */
 
-import { type FC, memo, useState } from 'react'
+import { useState } from 'react'
 
 import HomeHeader from '@/widgets/HomeHeader'
 import Button from '@/widgets/Buttons/Button'
 
 import { Wrapper, Content, Thanks, Title, Bold, P } from './styles'
 
-type TProps = {
-  testid?: string
-}
-
-const BookDemo: FC<TProps> = ({ testid = 'book-demo' }) => {
+export default () => {
   const [showV, setShowV] = useState(false)
 
   return (
@@ -44,5 +40,3 @@ const BookDemo: FC<TProps> = ({ testid = 'book-demo' }) => {
     </Wrapper>
   )
 }
-
-export default memo(BookDemo)

@@ -2,6 +2,7 @@
 
 import { type FC, type ReactNode, memo } from 'react'
 import { Provider } from 'mobx-react'
+import { Suspense } from 'react'
 
 import { useStore } from '@/stores/init'
 
@@ -63,7 +64,11 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
     dashboardThread: dashboard,
   })
 
-  return <Provider store={store}>{children}</Provider>
+  return (
+    <Provider store={store}>
+      <Suspense fallback={null}>{children}</Suspense>
+    </Provider>
+  )
 }
 
 export default memo(RootStoreWrapper)
