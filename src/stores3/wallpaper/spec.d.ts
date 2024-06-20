@@ -1,4 +1,4 @@
-import type { TCustomWallpaper, TWallpaper, TWallpaperType } from '@/spec'
+import type { TCustomWallpaper, TWallpaper, TWallpaperType, TWallpaperGradientDir } from '@/spec'
 
 // customWallpaper, wallpaper, wallpapers, hasShadow, gradientWallpapers, changeWallpaper
 export type TStore = {
@@ -16,12 +16,12 @@ export type TStore = {
   // TODO: move out
   // gradientWallpapers: Record<string, TWallpaper>
 
-  direction: string
+  direction: TWallpaperGradientDir
   bgSize: string
   uploadBgImage: string
 
-  // actions, should be in wallpaper editor
-  // changeWallpaper: (wallpaper: string) => void
+  // actions
+  commit: (patch: Partial<TStore>) => void
 }
 
 export type TInitState = Partial<TStore>

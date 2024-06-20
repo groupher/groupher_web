@@ -1,7 +1,9 @@
-import { type FC, memo, useState } from 'react'
+import { useState } from 'react'
 
 import { SpaceGrow, Row } from '@/widgets/Common'
 import Button from '@/widgets/Buttons/Button'
+
+import useLogic from '../useLogic'
 import {
   Wrapper,
   Label,
@@ -10,13 +12,10 @@ import {
   NoteText,
 } from '../styles/build_in/custom_gradient_editor'
 
-import { confirmCustomColor } from '../logic'
+export default () => {
+  const { getWallpaper, confirmCustomColor } = useLogic()
+  const { customColor } = getWallpaper()
 
-type TProps = {
-  customColor: string
-}
-
-const CustomGradientEditor: FC<TProps> = ({ customColor }) => {
   const [colorVal, setColorVal] = useState(customColor)
   const changed = colorVal !== customColor
 
@@ -54,5 +53,3 @@ const CustomGradientEditor: FC<TProps> = ({ customColor }) => {
     </Wrapper>
   )
 }
-
-export default memo(CustomGradientEditor)

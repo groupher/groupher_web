@@ -3,28 +3,22 @@
  *
  */
 
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import VIEW from '@/const/view'
 
 import { DesktopOnly, MobileOnly } from '@/widgets/Common'
 import Tabs from '@/widgets/Switcher/Tabs'
 
-import { useStore } from './store'
 import { TAB, TAB_OPTIONS } from './constant'
 
 import BuildIn from './BuildIn'
 import UploadPic from './UploadPic'
 import Footer from './Footer'
 
+import useLogic from './useLogic'
 import { Wrapper, Banner, Title, Content } from './styles'
-import { useInit, changeTab } from './logic'
 
-const WallpaperEditor: FC = () => {
-  const store = useStore()
-  useInit(store)
-  const { tab, wallpaperData, isTouched, loading } = store
+export default () => {
+  const { tab, changeTab } = useLogic()
 
   return (
     <Wrapper $testid="wallpaper-editor">
@@ -35,20 +29,18 @@ const WallpaperEditor: FC = () => {
 
       <MobileOnly>
         <Content>
-          {tab === TAB.BUILDIN && <BuildIn wallpaperData={wallpaperData} />}
+          {tab === TAB.BUILDIN && <BuildIn />}
           {tab === TAB.UPLOAD && <UploadPic />}
         </Content>
       </MobileOnly>
       <DesktopOnly>
         <Content>
-          {tab === TAB.BUILDIN && <BuildIn wallpaperData={wallpaperData} />}
+          {tab === TAB.BUILDIN && <BuildIn />}
           {tab === TAB.UPLOAD && <UploadPic />}
         </Content>
       </DesktopOnly>
 
-      <Footer wallpaperType={wallpaperData.wallpaperType} isTouched={isTouched} loading={loading} />
+      <Footer />
     </Wrapper>
   )
 }
-
-export default observer(WallpaperEditor)

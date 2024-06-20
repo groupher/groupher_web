@@ -1,10 +1,7 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
-import type { TWallpaperGradientDir } from '@/spec'
 import { GRADIENT_DIRECTION } from '@/const/wallpaper'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   Top,
@@ -19,13 +16,11 @@ import {
   Needle,
   ArrowIcon,
 } from '../styles/build_in/angle_panel'
-import { changeDirection } from '../logic'
 
-type TProps = {
-  direction: TWallpaperGradientDir
-}
+export default () => {
+  const { getWallpaper, changeDirection } = useLogic()
+  const { direction } = getWallpaper()
 
-const AnglePanel: FC<TProps> = ({ direction }) => {
   const primaryColor = usePrimaryColor()
 
   const { TOP, TOP_LEFT, TOP_RIGHT, LEFT, RIGHT, BOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT } =
@@ -93,5 +88,3 @@ const AnglePanel: FC<TProps> = ({ direction }) => {
     </Wrapper>
   )
 }
-
-export default observer(AnglePanel)

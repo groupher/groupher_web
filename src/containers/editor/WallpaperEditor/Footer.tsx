@@ -1,21 +1,17 @@
-import { type FC, memo } from 'react'
-
-import type { TWallpaperType } from '@/spec'
 import { WALLPAPER_TYPE } from '@/const/wallpaper'
 
 import { SpaceGrow } from '@/widgets/Common'
 import YesOrNoButtons from '@/widgets/Buttons/YesOrNoButtons'
 import Button from '@/widgets/Buttons/Button'
 
+import useLogic from './useLogic'
 import { Wrapper, InnrWrapper, ForbidImgIcon } from './styles/footer'
-import { removeWallpaper, close, onSave } from './logic'
 
-type TProps = {
-  wallpaperType: TWallpaperType
-  isTouched: boolean
-  loading: boolean
-}
-const Footer: FC<TProps> = ({ wallpaperType, isTouched, loading }) => {
+export default () => {
+  const { getWallpaper, loading, getIsTouched, removeWallpaper, close, onSave } = useLogic()
+  const { wallpaperType } = getWallpaper()
+  const isTouched = getIsTouched()
+
   return (
     <Wrapper>
       <InnrWrapper>
@@ -45,5 +41,3 @@ const Footer: FC<TProps> = ({ wallpaperType, isTouched, loading }) => {
     </Wrapper>
   )
 }
-
-export default memo(Footer)

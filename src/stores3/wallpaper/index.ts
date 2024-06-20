@@ -1,6 +1,7 @@
 import { proxy } from 'valtio'
-import { mergeLeft } from 'ramda'
+import { mergeLeft, mergeDeepRight } from 'ramda'
 
+import type { TWallpaperGradientDir } from '@/spec'
 import { WALLPAPER_TYPE } from '@/const/wallpaper'
 
 import type { TStore, TInitState } from './spec'
@@ -20,10 +21,14 @@ export default (initState: TInitState = {}): TStore => {
       // TODO: move out
       // gradientWallpapers: Record<string, TWallpaper>,
 
-      direction: 'bottom',
+      direction: 'bottom' as TWallpaperGradientDir,
       bgSize: 'cover',
 
       uploadBgImage: '',
+
+      commit: (patch: Partial<TStore>): void => {
+        Object.assign(store, mergeDeepRight(store, patch))
+      },
     }),
   )
 
