@@ -32,8 +32,8 @@ type TRet = {
   getWallpaper: () => TWallpaperData
   getIsTouched: () => boolean
   // actions
-  initResetWallpaper: () => void
-  resetWallpaper: () => void
+  initRollback: () => void
+  rollbackWallpaper: () => void
   onSave: () => void
   close: () => void
 
@@ -98,31 +98,25 @@ export default (): TRet => {
     }
   }, [store])
 
-  const getIsTouched = (): boolean => {
-    return true
-    // const slf = self as TStore
-    // const init = slf.initWallpaper
-
-    // return (
-    //   self.wallpaper !== init.wallpaper ||
-    //   self.hasPattern !== init.hasPattern ||
-    //   self.hasBlur !== init.hasBlur ||
-    //   self.direction !== init.direction
-    // )
-  }
+  const getIsTouched = useCallback((): boolean => {
+    return (
+      store.wallpaper !== initialWallpaper.wallpaper ||
+      store.hasPattern !== initialWallpaper.hasPattern ||
+      store.hasBlur !== initialWallpaper.hasBlur ||
+      store.direction !== initialWallpaper.direction
+    )
+  }, [store, initialWallpaper])
 
   const close = (): void => {
     // store.rollbackEdit()
     // closeDrawer()
   }
 
-  const initResetWallpaper = (): void => {
+  const initRollback = (): void => {
     setInitialWallpaper(pick(WALLPAPER_STATE_KEYS, store))
   }
 
-  const resetWallpaper = (): void => {
-    store.commit(initialWallpaper)
-  }
+  const rollbackWallpaper = (): void => store.commit(initialWallpaper)
 
   const onSave = (): void => {
     console.log('## TODO: ')
@@ -161,8 +155,8 @@ export default (): TRet => {
     getWallpaper,
     getIsTouched,
     //actions
-    initResetWallpaper,
-    resetWallpaper,
+    initRollback,
+    rollbackWallpaper,
     onSave,
     close,
     changeTab,

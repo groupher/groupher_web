@@ -8,7 +8,7 @@ import useLogic from './useLogic'
 import { Wrapper, InnrWrapper, ForbidImgIcon } from './styles/footer'
 
 export default () => {
-  const { getWallpaper, loading, getIsTouched, removeWallpaper, close, onSave, resetWallpaper } =
+  const { getWallpaper, loading, getIsTouched, removeWallpaper, close, onSave, rollbackWallpaper } =
     useLogic()
   const { wallpaperType } = getWallpaper()
   const isTouched = getIsTouched()
@@ -31,7 +31,7 @@ export default () => {
             confirmText="确定"
             space={4}
             onCancel={() => {
-              resetWallpaper()
+              rollbackWallpaper()
               close()
             }}
             onConfirm={() => onSave()}

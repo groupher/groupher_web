@@ -19,10 +19,10 @@ import useLogic from './useLogic'
 import { Wrapper, Banner, Title, Content } from './styles'
 
 export default () => {
-  const { tab, changeTab, initResetWallpaper } = useLogic()
+  const { tab, changeTab, initRollback } = useLogic()
 
   useEffect(() => {
-    initResetWallpaper()
+    initRollback()
   }, [])
 
   return (
