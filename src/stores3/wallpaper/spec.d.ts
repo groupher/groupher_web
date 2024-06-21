@@ -16,6 +16,7 @@ export type TWallpaperState = {
 }
 
 export type TStore = TWallpaperState & {
+  original: TWallpaperState
   // actions
   commit: (patch: Partial<TStore>) => void
 }

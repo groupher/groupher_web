@@ -24,6 +24,8 @@ export default (initState: TInitState = {}): TStore => {
   const store = proxy(
     mergeLeft(initState, {
       ...INITIAL_WALLPAPER_STATE,
+      original: INITIAL_WALLPAPER_STATE,
+
       commit: (patch: Partial<TStore>): void => {
         Object.assign(store, mergeDeepRight(store, patch))
       },

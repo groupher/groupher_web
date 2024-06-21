@@ -1,28 +1,14 @@
 import { useState, useCallback } from 'react'
-import { pick, clone, keys, forEach } from 'ramda'
+import { pick, clone, equals } from 'ramda'
 
-import type {
-  TWallpaper,
-  TWallpaperGradient,
-  TWallpaperPic,
-  TWallpaperGradientDir,
-  TWallpaperType,
-  TWallpaperData,
-} from '@/spec'
-import {
-  GRADIENT_WALLPAPER,
-  PATTERN_WALLPAPER,
-  WALLPAPER_TYPE,
-  WALLPAPER_STATE_KEYS,
-} from '@/const/wallpaper'
+import type { TWallpaperGradientDir, TWallpaperType, TWallpaperData } from '@/spec'
+import { WALLPAPER_TYPE, WALLPAPER_STATE_KEYS } from '@/const/wallpaper'
 
 import useSubStore from '@/hooks/useSubStore'
+import useFullWallpaper from '@/hooks/useFullWallpaper'
 import useViewingCommunity from '@/hooks/useViewingCommunity'
 import { closeDrawer, toast } from '@/signal'
 import { mutate } from '@/utils/api'
-
-import type { TWallpaperState } from '@/stores3/wallpaper/spec'
-import { INITIAL_WALLPAPER_STATE } from '@/stores3/wallpaper'
 
 import type { TTab } from './spec'
 import { TAB } from './constant'
@@ -56,82 +42,25 @@ type TRet = {
 export default (): TRet => {
   const store = useSubStore('wallpaper')
   const curCommunity = useViewingCommunity()
+  const { getWallpaper } = useFullWallpaper()
 
   const [tab, setTab] = useState<TTab>(TAB.BUILDIN)
   const [loading, setLoading] = useState(false)
-  const [initialWallpaper, setInitialWallpaper] = useState<TWallpaperState>(INITIAL_WALLPAPER_STATE)
-
-  // TODO: move to drived
-  const getGradientWallpapers = (): Record<string, TWallpaper> => {
-    const wallpapers = clone(GRADIENT_WALLPAPER)
-    const paperKeys = keys(GRADIENT_WALLPAPER)
-
-    forEach((key) => {
-      const wallpaperObj = wallpapers[key] as TWallpaperGradient
-      const { hasPattern, hasBlur, direction } = store
-
-      wallpaperObj.hasPattern = hasPattern
-      wallpaperObj.hasBlur = hasBlur
-      wallpaperObj.direction = direction as TWallpaperGradientDir
-    }, paperKeys)
-
-    return wallpapers
-  }
-
-  const getPatternWallpapers = (): Record<string, TWallpaper> => {
-    const wallpapers = clone(PATTERN_WALLPAPER)
-    const paperKeys = keys(PATTERN_WALLPAPER)
-
-    forEach((key) => {
-      const wallpaperObj = wallpapers[key] as TWallpaperPic
-      wallpaperObj.hasBlur = store.hasBlur
-    }, paperKeys)
-
-    return wallpapers
-  }
-
-  const getWallpaper = useCallback((): TWallpaperData => {
-    const { customColorValue, direction } = store
-
-    return {
-      ...pick(['wallpaper', 'wallpaperType', 'hasPattern', 'hasBlur', 'hasShadow'], store),
-      gradientWallpapers: getGradientWallpapers(),
-      patternWallpapers: getPatternWallpapers(),
-      customColor: customColorValue,
-      direction,
-    }
-  }, [store])
-
-  console.log('## initialWallpaper realtime: ', initialWallpaper)
 
   const getIsTouched = useCallback((): boolean => {
-    console.log('## getIsTouched: ', initialWallpaper)
+    const original = pick(WALLPAPER_STATE_KEYS, store.original)
+    const current = pick(WALLPAPER_STATE_KEYS, store)
 
-    return (
-      store.wallpaper !== initialWallpaper.wallpaper ||
-      store.hasPattern !== initialWallpaper.hasPattern ||
-      store.customWallpaper !== initialWallpaper.customWallpaper ||
-      store.hasBlur !== initialWallpaper.hasBlur ||
-      store.direction !== initialWallpaper.direction
-    )
-  }, [initialWallpaper])
+    return !equals(clone(original), clone(current))
+  }, [store])
 
   const close = (): void => {
     // store.rollbackEdit()
     closeDrawer()
   }
 
-  const initRollback = (): void => {
-    console.log('## init rollback: ', pick(WALLPAPER_STATE_KEYS, store))
-
-    setInitialWallpaper(pick(WALLPAPER_STATE_KEYS, store))
-    setTimeout(() => {
-      console.log('## init rollback 尼玛: ', pick(WALLPAPER_STATE_KEYS, store))
-      setInitialWallpaper(pick(WALLPAPER_STATE_KEYS, store))
-    }, 3000)
-  }
-
-  const rollbackWallpaper = (): void => store.commit(initialWallpaper)
+  const initRollback = (): void => store.commit({ original: pick(WALLPAPER_STATE_KEYS, store) })
+  const rollbackWallpaper = (): void => store.commit({ ...store.original })
 
   const onSave = (): void => {
     setLoading(true)
@@ -150,8 +79,6 @@ export default (): TRet => {
         setLoading(false)
         alert(err)
       })
-
-    console.log('## params: ', params)
   }
 
   const changeTab = (tab: TTab): void => setTab(tab)
