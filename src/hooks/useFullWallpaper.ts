@@ -13,6 +13,8 @@ import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER } from '@/const/wallpaper'
 import useSubStore from '@/hooks/useSubStore'
 
 type TRet = {
+  wallpaper: string
+  changeWallpaper: (wallpaper: string) => void
   getWallpaper: () => TWallpaperData
   getGradientWallpapers: () => Record<string, TWallpaper>
   getPatternWallpapers: () => Record<string, TWallpaper>
@@ -61,7 +63,11 @@ export default (): TRet => {
     }
   }, [store])
 
+  const changeWallpaper = (wallpaper: string): void => store.commit({ wallpaper })
+
   return {
+    wallpaper: store.wallpaper,
+    changeWallpaper,
     getGradientWallpapers,
     getPatternWallpapers,
     getWallpaper,
