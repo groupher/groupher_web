@@ -13,7 +13,7 @@ export const WALLPAPER_STATE_KEYS = [
   'hasShadow',
   'direction',
   'bgSize',
-  'uploadBgImage',
+  // 'uploadBgImage',
 ]
 
 export const WALLPAPER_TYPE = {

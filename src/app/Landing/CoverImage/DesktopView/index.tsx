@@ -1,6 +1,4 @@
-import type { FC } from 'react'
-
-import useWallpaper from '@/hooks/useWallpaper'
+import useWallpaperValtio from '@/hooks/useWallpaperValtio'
 
 import DesktopDevice from './DesktopDevice'
 import DashboardDevice from './DashboardDevice'
@@ -8,8 +6,8 @@ import MobileDevice from './MobileDevice'
 
 import { Wrapper, ParallaxWrapper, FreeLabel } from '../../styles/cover_image/desktop_view'
 
-const CoverImage: FC = () => {
-  const { wallpaper } = useWallpaper()
+export default () => {
+  const { wallpaper } = useWallpaperValtio()
 
   return (
     <Wrapper>
@@ -22,5 +20,3 @@ const CoverImage: FC = () => {
     </Wrapper>
   )
 }
-
-export default CoverImage

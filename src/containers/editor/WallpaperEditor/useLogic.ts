@@ -17,13 +17,16 @@ import {
 } from '@/const/wallpaper'
 
 import useSubStore from '@/hooks/useSubStore'
-// import { closeDrawer } from '@/signal'
+import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { closeDrawer, toast } from '@/signal'
+import { mutate } from '@/utils/api'
 
 import type { TWallpaperState } from '@/stores3/wallpaper/spec'
 import { INITIAL_WALLPAPER_STATE } from '@/stores3/wallpaper'
 
 import type { TTab } from './spec'
 import { TAB } from './constant'
+import S from './schema'
 
 type TRet = {
   tab: TTab
@@ -52,6 +55,7 @@ type TRet = {
 
 export default (): TRet => {
   const store = useSubStore('wallpaper')
+  const curCommunity = useViewingCommunity()
 
   const [tab, setTab] = useState<TTab>(TAB.BUILDIN)
   const [loading, setLoading] = useState(false)
@@ -98,29 +102,56 @@ export default (): TRet => {
     }
   }, [store])
 
+  console.log('## initialWallpaper realtime: ', initialWallpaper)
+
   const getIsTouched = useCallback((): boolean => {
+    console.log('## getIsTouched: ', initialWallpaper)
+
     return (
       store.wallpaper !== initialWallpaper.wallpaper ||
       store.hasPattern !== initialWallpaper.hasPattern ||
+      store.customWallpaper !== initialWallpaper.customWallpaper ||
       store.hasBlur !== initialWallpaper.hasBlur ||
       store.direction !== initialWallpaper.direction
     )
-  }, [store, initialWallpaper])
+  }, [initialWallpaper])
 
   const close = (): void => {
     // store.rollbackEdit()
-    // closeDrawer()
+    closeDrawer()
   }
 
   const initRollback = (): void => {
+    console.log('## init rollback: ', pick(WALLPAPER_STATE_KEYS, store))
+
     setInitialWallpaper(pick(WALLPAPER_STATE_KEYS, store))
+    setTimeout(() => {
+      console.log('## init rollback 尼玛: ', pick(WALLPAPER_STATE_KEYS, store))
+      setInitialWallpaper(pick(WALLPAPER_STATE_KEYS, store))
+    }, 3000)
   }
 
   const rollbackWallpaper = (): void => store.commit(initialWallpaper)
 
   const onSave = (): void => {
-    console.log('## TODO: ')
     setLoading(true)
+    const community = curCommunity.slug
+    const params = { community, ...pick(WALLPAPER_STATE_KEYS, store) }
+
+    mutate(S.updateDashboardWallpaper, params)
+      .then(() => {
+        toast('设置已保存')
+        setLoading(false)
+        initRollback()
+        closeDrawer()
+      })
+      .catch((err) => {
+        console.error('## handle request error: ', err)
+        setLoading(false)
+        alert(err)
+      })
+
+    console.log('## params: ', params)
   }
 
   const changeTab = (tab: TTab): void => setTab(tab)

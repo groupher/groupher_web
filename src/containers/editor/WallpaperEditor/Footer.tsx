@@ -8,7 +8,7 @@ import useLogic from './useLogic'
 import { Wrapper, InnrWrapper, ForbidImgIcon } from './styles/footer'
 
 export default () => {
-  const { getWallpaper, loading, getIsTouched, removeWallpaper, close, onSave, rollbackWallpaper } =
+  const { getWallpaper, loading, getIsTouched, removeWallpaper, onSave, rollbackWallpaper } =
     useLogic()
   const { wallpaperType } = getWallpaper()
   const isTouched = getIsTouched()
@@ -27,12 +27,11 @@ export default () => {
 
         {isTouched ? (
           <YesOrNoButtons
-            cancelText="放弃变更"
+            cancelText="恢复默认"
             confirmText="确定"
             space={4}
             onCancel={() => {
               rollbackWallpaper()
-              close()
             }}
             onConfirm={() => onSave()}
           />

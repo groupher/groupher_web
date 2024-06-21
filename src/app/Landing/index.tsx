@@ -9,7 +9,7 @@ import { type FC, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { DOC_FAQ_LAYOUT } from '@/const/layout'
-import useWallpaper from '@/hooks/useWallpaper'
+import useWallpaperValtio from '@/hooks/useWallpaperValtio'
 import useMetric from '@/hooks/useMetric'
 
 import { ROUTE } from '@/const/route'
@@ -86,7 +86,7 @@ const faqs = [
 ]
 
 const LandingPage: FC = () => {
-  const { wallpaper } = useWallpaper()
+  const { wallpaper } = useWallpaperValtio()
   const metric = useMetric()
 
   return (

@@ -14,7 +14,7 @@ import useMetric from '@/hooks/useMetric'
 import useTrans from '@/hooks/useTrans'
 import useTopbar from '@/hooks/useTopbar'
 import useThemeData from '@/hooks/useThemeData'
-import useWallpaper from '@/hooks/useWallpaper'
+import useWallpaperValtio from '@/hooks/useWallpaperValtio'
 import useGossBlur from '@/hooks/useGossBlur'
 
 // import Broadcast from '@/widgets/Broadcast'
@@ -36,7 +36,7 @@ type TProps = {
 const Main: FC<TProps> = ({ children }) => {
   const { topbar, topbarBg } = useTopbar()
   const metric = useMetric()
-  const { hasShadow } = useWallpaper()
+  const { hasShadow } = useWallpaperValtio()
   const gossBlur = useGossBlur()
   /**
    * this is tricy, when clientside changed locale, we force render hte entire app here

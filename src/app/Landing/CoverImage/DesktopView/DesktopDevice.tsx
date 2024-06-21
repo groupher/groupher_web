@@ -1,10 +1,7 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import Typewriter from 'typewriter-effect'
 
-import useWallpaper from '@/hooks/useWallpaper'
+import useWallpaperValtio from '@/hooks/useWallpaperValtio'
 import { Space, SpaceGrow } from '@/widgets/Common'
-import { parseWallpaper } from '@/wallpaper'
 
 import {
   Wrapper,
@@ -20,9 +17,8 @@ import {
   Image,
 } from '../../styles/cover_image/desktop_view/desktop_device'
 
-const DesktopDevice: FC = () => {
-  const { wallpapers, wallpaper, hasShadow } = useWallpaper()
-  const { background, effect } = parseWallpaper(wallpapers, wallpaper)
+export default () => {
+  const { wallpaper, background, effect, hasShadow } = useWallpaperValtio()
 
   const imageSrc = '/landing/intro/home.png'
 
@@ -58,5 +54,3 @@ const DesktopDevice: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(DesktopDevice)

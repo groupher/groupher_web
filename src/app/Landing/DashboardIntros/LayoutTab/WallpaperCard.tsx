@@ -1,7 +1,4 @@
-import type { FC } from 'react'
-
-import { parseWallpaper } from '@/wallpaper'
-import useWallpaper from '@/hooks/useWallpaper'
+import useWallpaperValtio from '@/hooks/useWallpaperValtio'
 import WallpaperBar from './WallpaperBar'
 
 import {
@@ -10,9 +7,8 @@ import {
   EditToolbox,
 } from '../../styles/dashboard_intros/layout_tab/wallpaper_card'
 
-const WallpaperCard: FC = () => {
-  const { wallpapers, wallpaper } = useWallpaper()
-  const { background, effect } = parseWallpaper(wallpapers, wallpaper)
+export default () => {
+  const { background, effect } = useWallpaperValtio()
 
   return (
     <Wrapper>
@@ -23,5 +19,3 @@ const WallpaperCard: FC = () => {
     </Wrapper>
   )
 }
-
-export default WallpaperCard

@@ -42,7 +42,6 @@ export { default as PassportEditorStore } from '@/containers/editor/PassportEdit
 export { default as CoverEditorStore } from '@/containers/editor/CoverEditor/store'
 export { default as TagSettingEditorStore } from '@/containers/editor/TagSettingEditor/store'
 export { default as DashboardThreadStore } from '@/containers/thread/DashboardThread/store'
-export { default as WallpaperEditorStore } from '@/containers/editor/WallpaperEditor/store'
 export { default as DocThreadStore } from '@/containers/thread/DocThread/store'
 export { default as AboutThreadStore } from '@/containers/thread/AboutThread/store'
 // export { default as BlogEditorStore } from '@/containers/editor/BlogEditor/store'

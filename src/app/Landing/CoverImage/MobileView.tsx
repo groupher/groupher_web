@@ -1,8 +1,6 @@
-import type { FC } from 'react'
 import Typewriter from 'typewriter-effect'
 
-import useWallpaper from '@/hooks/useWallpaper'
-import { parseWallpaper } from '@/wallpaper'
+import useWallpaperValtio from '@/hooks/useWallpaperValtio'
 
 import { Space, SpaceGrow } from '@/widgets/Common'
 
@@ -20,9 +18,8 @@ import {
   Image,
 } from '../styles/cover_image/mobile_view'
 
-const CoverImage: FC = () => {
-  const { wallpapers, wallpaper, hasShadow } = useWallpaper()
-  const { background, effect } = parseWallpaper(wallpapers, wallpaper)
+export default () => {
+  const { wallpaper, background, effect, hasShadow } = useWallpaperValtio()
 
   const imageSrc = '/landing/intro/home.png'
 
@@ -58,5 +55,3 @@ const CoverImage: FC = () => {
     </Wrapper>
   )
 }
-
-export default CoverImage
