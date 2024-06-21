@@ -9,10 +9,18 @@ import type {
   TWallpaperType,
   TWallpaperData,
 } from '@/spec'
-import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER, WALLPAPER_TYPE } from '@/const/wallpaper'
+import {
+  GRADIENT_WALLPAPER,
+  PATTERN_WALLPAPER,
+  WALLPAPER_TYPE,
+  WALLPAPER_STATE_KEYS,
+} from '@/const/wallpaper'
 
 import useSubStore from '@/hooks/useSubStore'
-import { closeDrawer } from '@/signal'
+// import { closeDrawer } from '@/signal'
+
+import type { TWallpaperState } from '@/stores3/wallpaper/spec'
+import { INITIAL_WALLPAPER_STATE } from '@/stores3/wallpaper'
 
 import type { TTab } from './spec'
 import { TAB } from './constant'
@@ -24,6 +32,8 @@ type TRet = {
   getWallpaper: () => TWallpaperData
   getIsTouched: () => boolean
   // actions
+  initResetWallpaper: () => void
+  resetWallpaper: () => void
   onSave: () => void
   close: () => void
 
@@ -42,10 +52,12 @@ type TRet = {
 
 export default (): TRet => {
   const store = useSubStore('wallpaper')
+
   const [tab, setTab] = useState<TTab>(TAB.BUILDIN)
   const [loading, setLoading] = useState(false)
+  const [initialWallpaper, setInitialWallpaper] = useState<TWallpaperState>(INITIAL_WALLPAPER_STATE)
 
-  // drived
+  // TODO: move to drived
   const getGradientWallpapers = (): Record<string, TWallpaper> => {
     const wallpapers = clone(GRADIENT_WALLPAPER)
     const paperKeys = keys(GRADIENT_WALLPAPER)
@@ -87,7 +99,7 @@ export default (): TRet => {
   }, [store])
 
   const getIsTouched = (): boolean => {
-    return false
+    return true
     // const slf = self as TStore
     // const init = slf.initWallpaper
 
@@ -101,7 +113,15 @@ export default (): TRet => {
 
   const close = (): void => {
     // store.rollbackEdit()
-    closeDrawer()
+    // closeDrawer()
+  }
+
+  const initResetWallpaper = (): void => {
+    setInitialWallpaper(pick(WALLPAPER_STATE_KEYS, store))
+  }
+
+  const resetWallpaper = (): void => {
+    store.commit(initialWallpaper)
   }
 
   const onSave = (): void => {
@@ -140,9 +160,11 @@ export default (): TRet => {
     // drived
     getWallpaper,
     getIsTouched,
+    //actions
+    initResetWallpaper,
+    resetWallpaper,
     onSave,
     close,
-    //actions
     changeTab,
     changeDirection,
     removeWallpaper,

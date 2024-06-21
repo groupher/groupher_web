@@ -3,6 +3,7 @@
  *
  */
 
+import { useEffect } from 'react'
 import VIEW from '@/const/view'
 
 import { DesktopOnly, MobileOnly } from '@/widgets/Common'
@@ -18,7 +19,11 @@ import useLogic from './useLogic'
 import { Wrapper, Banner, Title, Content } from './styles'
 
 export default () => {
-  const { tab, changeTab } = useLogic()
+  const { tab, changeTab, initResetWallpaper } = useLogic()
+
+  useEffect(() => {
+    initResetWallpaper()
+  }, [])
 
   return (
     <Wrapper $testid="wallpaper-editor">

@@ -1,4 +1,4 @@
-import { type FC, Suspense } from 'react'
+import { type FC, Suspense, memo } from 'react'
 
 import TYPE from '@/const/type'
 import { LoadWatcher } from '@/widgets/Common'
@@ -116,4 +116,4 @@ const Content: FC<TProps> = ({ type, onLoad }) => {
   }
 }
 
-export default Content
+export default memo(Content)

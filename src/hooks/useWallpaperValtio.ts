@@ -69,7 +69,9 @@ export default (): TRet => {
     return { ...gradientWallpapers, ...patternWallpapers }
   }, [gradientWallpapers, patternWallpapers])
 
-  const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
+  const { background, effect } = useMemo(() => {
+    return parseWallpaper(wallpapers, wallpaper, customWallpaper)
+  }, [wallpapers, wallpaper, customWallpaper])
 
   return {
     wallpaper,
