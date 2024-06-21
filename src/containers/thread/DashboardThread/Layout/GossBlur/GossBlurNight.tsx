@@ -3,17 +3,16 @@ import useThemeData from '@/hooks/useThemeData'
 import useTheme from '@/hooks/useTheme'
 import THEME from '@/const/theme'
 
-import { parseWallpaper } from '@/wallpaper'
-
 import { Brick } from '@/widgets/Common'
 import RangeSlider from '@/widgets/RangeSlider'
+
+import useWallpaperValtio from '@/hooks/useWallpaperValtio'
 
 import { SETTING_FIELD } from '../../constant'
 import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
 import useGossBlur from '../../logic/useGossBlur'
-import useWallpaperInfo from '../../logic/useWallpaper'
 
 import {
   Wrapper,
@@ -29,10 +28,8 @@ import {
 } from '../../styles/layout/goss_blur'
 
 export default () => {
-  const { wallpapers, wallpaper, customWallpaper } = useWallpaperInfo()
   const { gossBlurDark: gossBlur, saving, getIsDarkTouched, edit } = useGossBlur()
-
-  const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
+  const { wallpaper, background, effect } = useWallpaperValtio()
 
   const { theme } = useTheme()
   const themeData = useThemeData()
