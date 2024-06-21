@@ -6,7 +6,7 @@ import THEME from '@/const/theme'
 import { Brick } from '@/widgets/Common'
 import RangeSlider from '@/widgets/RangeSlider'
 
-import useWallpaperValtio from '@/hooks/useWallpaperValtio'
+import useWallpaper from '@/hooks/useWallpaper'
 
 import { SETTING_FIELD } from '../../constant'
 import SectionLabel from '../../SectionLabel'
@@ -29,7 +29,7 @@ import {
 
 export default () => {
   const { gossBlurDark: gossBlur, saving, getIsDarkTouched, edit } = useGossBlur()
-  const { wallpaper, background, effect } = useWallpaperValtio()
+  const { wallpaper, background, effect } = useWallpaper()
 
   const { theme } = useTheme()
   const themeData = useThemeData()

@@ -1,4 +1,4 @@
-import useWallpaperValtio from '@/hooks/useWallpaperValtio'
+import useWallpaper from '@/hooks/useWallpaper'
 
 import DesktopDevice from './DesktopDevice'
 import DashboardDevice from './DashboardDevice'
@@ -7,7 +7,7 @@ import MobileDevice from './MobileDevice'
 import { Wrapper, ParallaxWrapper, FreeLabel } from '../../styles/cover_image/desktop_view'
 
 export default () => {
-  const { wallpaper } = useWallpaperValtio()
+  const { wallpaper } = useWallpaper()
 
   return (
     <Wrapper>

@@ -1,4 +1,4 @@
-import useWallpaperValtio from '@/hooks/useWallpaperValtio'
+import useWallpaper from '@/hooks/useWallpaper'
 
 import TechItem from './TechItem'
 
@@ -16,7 +16,7 @@ import {
 } from '../styles/tech_stacks/stack_card'
 
 export default () => {
-  const { wallpaper } = useWallpaperValtio()
+  const { wallpaper } = useWallpaper()
 
   return (
     <Wrapper>

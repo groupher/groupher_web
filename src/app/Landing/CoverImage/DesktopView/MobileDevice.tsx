@@ -1,4 +1,4 @@
-import useWallpaperValtio from '@/hooks/useWallpaperValtio'
+import useWallpaper from '@/hooks/useWallpaper'
 
 import {
   Wrapper,
@@ -9,7 +9,7 @@ import {
 } from '../../styles/cover_image/desktop_view/mobile_device'
 
 export default () => {
-  const { background, effect } = useWallpaperValtio()
+  const { background, effect } = useWallpaper()
 
   const imageSrc = '/landing/intro/mobile.png'
 

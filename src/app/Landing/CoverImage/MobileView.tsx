@@ -1,6 +1,6 @@
 import Typewriter from 'typewriter-effect'
 
-import useWallpaperValtio from '@/hooks/useWallpaperValtio'
+import useWallpaper from '@/hooks/useWallpaper'
 
 import { Space, SpaceGrow } from '@/widgets/Common'
 
@@ -19,7 +19,7 @@ import {
 } from '../styles/cover_image/mobile_view'
 
 export default () => {
-  const { wallpaper, background, effect, hasShadow } = useWallpaperValtio()
+  const { wallpaper, background, effect, hasShadow } = useWallpaper()
 
   const imageSrc = '/landing/intro/home.png'
 

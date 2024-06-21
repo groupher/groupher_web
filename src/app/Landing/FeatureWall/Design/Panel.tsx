@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import useWallpaperValtio from '@/hooks/useWallpaperValtio'
+import useWallpaper from '@/hooks/useWallpaper'
 
 import {
   Wrapper,
@@ -25,7 +25,7 @@ type TProps = {
 }
 
 const Panel: FC<TProps> = ({ hovering }) => {
-  const { wallpaper } = useWallpaperValtio()
+  const { wallpaper } = useWallpaper()
 
   const stickOpacity = hovering ? 1 : 0.4
   const textOpacity = hovering ? 1 : 0.8

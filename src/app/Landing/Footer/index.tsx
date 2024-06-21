@@ -1,4 +1,4 @@
-import useWallpaperValtio from '@/hooks/useWallpaperValtio'
+import useWallpaper from '@/hooks/useWallpaper'
 import { ROUTE } from '@/const/route'
 
 import { LinkAble } from '@/widgets/Common'
@@ -7,7 +7,7 @@ import Button from '@/widgets/Buttons/Button'
 import { Wrapper, Logo, Title, Desc, Highlight, Buttons, CreateButton } from '../styles/footer'
 
 export default () => {
-  const { wallpaper } = useWallpaperValtio()
+  const { wallpaper } = useWallpaper()
 
   return (
     <Wrapper>

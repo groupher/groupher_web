@@ -1,4 +1,4 @@
-import useWallpaperValtio from '@/hooks/useWallpaperValtio'
+import useWallpaper from '@/hooks/useWallpaper'
 import WallpaperBar from './WallpaperBar'
 
 import {
@@ -8,7 +8,7 @@ import {
 } from '../../styles/dashboard_intros/layout_tab/wallpaper_card'
 
 export default () => {
-  const { background, effect } = useWallpaperValtio()
+  const { background, effect } = useWallpaper()
 
   return (
     <Wrapper>

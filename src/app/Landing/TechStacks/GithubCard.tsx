@@ -1,5 +1,5 @@
 // import { GITHUB } from '@/config'
-import useWallpaperValtio from '@/hooks/useWallpaperValtio'
+import useWallpaper from '@/hooks/useWallpaper'
 
 import RepoPreview from './RepoPreview'
 
@@ -19,7 +19,7 @@ import {
 } from '../styles/tech_stacks/github_card'
 
 export default () => {
-  const { wallpaper } = useWallpaperValtio()
+  const { wallpaper } = useWallpaper()
 
   return (
     <Wrapper wallpaper={wallpaper}>

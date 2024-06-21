@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import useWallpaperValtio from '@/hooks/useWallpaperValtio'
+import useWallpaper from '@/hooks/useWallpaper'
 
 import HighWay from './HighWay'
 import OurWay from './OurWay'
@@ -26,7 +26,7 @@ import {
 export default () => {
   const ref = useRef(null)
   const { isMobile } = useMobileDetect()
-  const { wallpaper } = useWallpaperValtio()
+  const { wallpaper } = useWallpaper()
 
   useEffect(() => {
     if (isMobile && ref) {

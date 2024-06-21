@@ -3,7 +3,7 @@ import THEME from '@/const/theme'
 
 import useThemeData from '@/hooks/useThemeData'
 import useTheme from '@/hooks/useTheme'
-import useWallpaperValtio from '@/hooks/useWallpaperValtio'
+import useWallpaper from '@/hooks/useWallpaper'
 
 import { Brick } from '@/widgets/Common'
 import RangeSlider from '@/widgets/RangeSlider'
@@ -28,7 +28,7 @@ import {
 } from '../../styles/layout/goss_blur'
 
 export default () => {
-  const { wallpaper, background, effect } = useWallpaperValtio()
+  const { wallpaper, background, effect } = useWallpaper()
   const { gossBlur, saving, getIsTouched, edit } = useGossBlur()
 
   const { theme } = useTheme()

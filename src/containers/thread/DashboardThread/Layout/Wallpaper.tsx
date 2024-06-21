@@ -8,7 +8,7 @@ import THEME from '@/const/theme'
 import useThemeData from '@/hooks/useThemeData'
 import useGossBlur from '@/hooks/useGossBlur'
 import useTheme from '@/hooks/useTheme'
-import useWallpaperValtio from '@/hooks/useWallpaperValtio'
+import useWallpaper from '@/hooks/useWallpaper'
 
 import { Brick } from '@/widgets/Common'
 import CheckLabel from '@/widgets/CheckLabel'
@@ -29,7 +29,7 @@ import {
 
 export default () => {
   const gossBlur = useGossBlur()
-  const { background, effect, hasShadow } = useWallpaperValtio()
+  const { background, effect, hasShadow } = useWallpaper()
 
   const { theme } = useTheme()
   const themeData = useThemeData()
