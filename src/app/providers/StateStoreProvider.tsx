@@ -13,6 +13,8 @@ import {
   useDashboard,
   useWallpaper,
   useMetric,
+  usePost,
+  useChangelog,
 } from '../queries'
 
 export default ({ children }: { children: ReactNode }) => {
@@ -20,6 +22,8 @@ export default ({ children }: { children: ReactNode }) => {
   const { locale, localeData } = useI18n()
 
   const theme = useThemeFromURL()
+  const { post } = usePost()
+  const { changelog } = useChangelog()
   const { community } = useCommunity()
   const activeThread = useThreadParam()
   const dashboard = useDashboard(community)
@@ -34,6 +38,8 @@ export default ({ children }: { children: ReactNode }) => {
     theme,
     viewing: {
       metric,
+      post,
+      changelog,
       community: community || HOME_COMMUNITY,
       activeThread,
     },

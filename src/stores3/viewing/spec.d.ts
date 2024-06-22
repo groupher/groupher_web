@@ -13,7 +13,6 @@ export type TInit = {
 
 export type TStore = TInit & {
   // views
-  viewingArticle: TArticle
   communityDigestInView: boolean
 
   // actions

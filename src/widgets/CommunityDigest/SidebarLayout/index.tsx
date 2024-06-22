@@ -1,5 +1,4 @@
-import { type FC, useEffect, useState } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useEffect, useState } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { THREAD } from '@/const/thread'
@@ -34,7 +33,7 @@ import {
 // 没有各种外链接，打赏信息等的官方社区
 // const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
 
-const SidebarLayout: FC = () => {
+export default () => {
   const [viewHeight, setViewHeight] = useState(800)
   const { height: windowViewHeight } = useWindowResize()
 
@@ -85,5 +84,3 @@ const SidebarLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(SidebarLayout)

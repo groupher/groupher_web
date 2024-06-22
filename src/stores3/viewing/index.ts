@@ -1,9 +1,9 @@
 import { proxy } from 'valtio'
 import { mergeDeepRight } from 'ramda'
 
-import { includes, values, mergeRight } from 'ramda'
+import { mergeRight } from 'ramda'
 
-import type { TCommunity, TArticle } from '@/spec'
+import type { TCommunity } from '@/spec'
 import METRIC from '@/const/metric'
 import { ARTICLE_THREAD } from '@/const/thread'
 
@@ -21,14 +21,6 @@ export default (init: TInit = {}): TStore => {
     viewingThread: null,
     communityDigestInView: true,
 
-    get viewingArticle(): TArticle {
-      const curThread = store.viewingThread || store.activeThread
-
-      if (includes(curThread, values(ARTICLE_THREAD))) {
-        return store[curThread]
-      }
-      return {}
-    },
     // actions
     updateViewingCommunity(args: TCommunity): void {
       store.community = mergeRight(store.community, args)

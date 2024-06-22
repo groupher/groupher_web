@@ -3,10 +3,6 @@
  * ArticleViewer
  *
  */
-
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import Comments from '@/containers/unit/Comments'
 
 import DrawerHeader from './DrawerHeader'
@@ -23,7 +19,7 @@ import { useInit } from './logic'
 //   },
 // )
 
-const ArticleViewer: FC = () => {
+export default () => {
   const store = useStore()
   useInit(store)
   const { viewingArticle, documentData, loading } = store
@@ -41,5 +37,3 @@ const ArticleViewer: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(ArticleViewer)

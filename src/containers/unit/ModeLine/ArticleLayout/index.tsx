@@ -1,11 +1,9 @@
 import { type FC, useState } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
 import type { TArticle } from '@/spec'
 
 import useViewingThread from '@/hooks/useViewingThread'
-// import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { scrollToHeader } from '@/dom'
 import { mockUsers } from '@/mock'
@@ -81,4 +79,4 @@ const ArticleLayout: FC<TProps> = ({
   )
 }
 
-export default observer(ArticleLayout)
+export default ArticleLayout

@@ -1,6 +1,7 @@
 import type { TArticle, TCommunity } from '@/spec'
 
 import useSubStore from '@/hooks/useSubStore'
+import useViewingArticle from '@/hooks/useViewingArticle'
 
 type TRet = {
   article: TArticle
@@ -8,14 +9,13 @@ type TRet = {
   updateViewingCommunity: (args: TCommunity) => void
 }
 
-const useViewing = (): TRet | null => {
-  const { viewingArticle, community, updateViewingCommunity } = useSubStore('viewing')
+export default (): TRet | null => {
+  const { community, updateViewingCommunity } = useSubStore('viewing')
+  const { article } = useViewingArticle()
 
   return {
-    article: viewingArticle,
+    article,
     community,
     updateViewingCommunity,
   }
 }
-
-export default useViewing

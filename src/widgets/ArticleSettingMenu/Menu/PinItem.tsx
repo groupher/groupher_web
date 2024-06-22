@@ -1,5 +1,4 @@
-import { type FC, useCallback, useEffect, useState } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useCallback, useEffect, useState } from 'react'
 import { useMutation } from 'urql'
 
 import { toast, updateViewingArticle } from '@/signal'
@@ -10,7 +9,7 @@ import S from '../schema'
 import { Icon } from '../styles/icon'
 import { MenuItem } from '../styles/menu'
 
-const PinItem: FC = () => {
+export default () => {
   const { article } = useViewingArticle()
   const [result, pinPost] = useMutation(S.pinPost)
   const [_result2, undoPinPost] = useMutation(S.undoPinPost)
@@ -46,5 +45,3 @@ const PinItem: FC = () => {
     </MenuItem>
   )
 }
-
-export default observer(PinItem)

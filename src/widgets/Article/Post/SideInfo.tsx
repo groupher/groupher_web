@@ -1,6 +1,3 @@
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import { upvoteArticle } from '@/signal'
 import useViewingArticle from '@/hooks/useViewingArticle'
 import { toJS } from '@/mobx'
@@ -25,7 +22,7 @@ import {
   TagsSection,
 } from '../styles/post/side_info'
 
-const SideInfo: FC = () => {
+export default () => {
   const { article } = useViewingArticle()
 
   const { insertedAt, articleTags, upvotesCount, meta, viewerHasUpvoted, cat, state } = article
@@ -75,5 +72,3 @@ const SideInfo: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(SideInfo)

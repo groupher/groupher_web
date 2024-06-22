@@ -1,5 +1,4 @@
 import { type FC, useState, useEffect } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useMutation } from 'urql'
 
 import { Trans } from '@/i18n'
@@ -101,4 +100,4 @@ const StateSetting: FC<TProps> = ({ onBack }) => {
   )
 }
 
-export default observer(StateSetting)
+export default StateSetting

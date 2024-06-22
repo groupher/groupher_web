@@ -6,15 +6,11 @@
 
 import { type FC, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { observer } from 'mobx-react-lite'
 import copy from 'copy-to-clipboard'
 import QRCode from 'qrcode.react'
 
 import type { TSpace } from '@/spec'
-// import useViewingCommunity from '@/hooks/useViewingCommunity'
 import useViewingArticle from '@/hooks/useViewingArticle'
-
-// import ShareOld from '@/containers/tool/Share'
 
 import Tooltip from '@/widgets/Tooltip'
 import { toast } from '@/signal'
@@ -100,4 +96,4 @@ const Share: FC<TProps> = ({ modalOffset = '', ...restProps }) => {
   )
 }
 
-export default observer(Share)
+export default Share

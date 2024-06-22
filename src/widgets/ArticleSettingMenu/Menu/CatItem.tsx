@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import { SpaceGrow } from '@/widgets/Common'
 import useViewingArticle from '@/hooks/useViewingArticle'
@@ -37,4 +36,4 @@ const CatItem: FC<TProps> = ({ onClick }) => {
   )
 }
 
-export default observer(CatItem)
+export default CatItem

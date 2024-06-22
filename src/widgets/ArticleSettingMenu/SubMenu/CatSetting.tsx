@@ -1,5 +1,4 @@
 import { type FC, useState, useEffect } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useMutation } from 'urql'
 
 import usePrimaryColor from '@/hooks/usePrimaryColor'
@@ -79,4 +78,4 @@ const CatSetting: FC<TProps> = ({ onBack }) => {
   )
 }
 
-export default observer(CatSetting)
+export default CatSetting

@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TArticle } from '@/spec'
 import { THREAD } from '@/const/thread'
@@ -75,4 +74,4 @@ const ArticleCard: FC<TProps> = ({ data }) => {
   )
 }
 
-export default observer(ArticleCard)
+export default ArticleCard

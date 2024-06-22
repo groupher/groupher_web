@@ -13,7 +13,6 @@ import { Wrapper, InnerWrapper, HeaderWrapper, BannerContent, Main } from '../st
 
 const Changelog: FC = () => {
   const { article } = useViewingArticle()
-
   const metric = useMetric()
 
   const [_inViewport, setInViewport] = useState(false)

@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { isEmpty } from 'ramda'
 
 import type { TTag } from '@/spec'
@@ -52,4 +51,4 @@ const TagsItem: FC<TProps> = ({ onClick }) => {
   )
 }
 
-export default observer(TagsItem)
+export default TagsItem

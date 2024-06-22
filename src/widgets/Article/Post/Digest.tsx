@@ -2,8 +2,6 @@
  * PostLayout
  */
 
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
 import useMetric from '@/hooks/useMetric'
@@ -35,7 +33,7 @@ import {
   BottomInfo,
 } from '../styles/post/digest'
 
-const PostLayout: FC = () => {
+export default () => {
   const router = useRouter()
   const metric = useMetric()
   const { article } = useViewingArticle()
@@ -74,5 +72,3 @@ const PostLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(PostLayout)

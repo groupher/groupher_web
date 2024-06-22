@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import { SpaceGrow } from '@/widgets/Common'
 import useViewingArticle from '@/hooks/useViewingArticle'
@@ -53,4 +52,4 @@ const StateItem: FC<TProps> = ({ onClick }) => {
   )
 }
 
-export default observer(StateItem)
+export default StateItem
