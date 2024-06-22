@@ -24,6 +24,7 @@ export default (initState: TInitState = {}): TStore => {
   const store = proxy(
     mergeLeft(initState, {
       ...INITIAL_WALLPAPER_STATE,
+      // for edit/rollback in dashboard
       original: INITIAL_WALLPAPER_STATE,
 
       commit: (patch: Partial<TStore>): void => {

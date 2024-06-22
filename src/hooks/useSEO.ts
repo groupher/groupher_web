@@ -1,22 +1,12 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
 import { pick } from 'ramda'
 
 import type { TDashboardSEOConfig } from '@/spec'
 import { SEO_KEYS } from '@/const/seo'
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useSEO = (): TDashboardSEOConfig => {
-  const { store } = useContext(MobXProviderContext)
+import useSubStore from '@/hooks/useSubStore'
 
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
+export default (): TDashboardSEOConfig => {
+  const store = useSubStore('dashboard')
 
-  // @ts-ignore
-  return pick(SEO_KEYS, store.dashboardThread)
+  return pick(SEO_KEYS, store)
 }
-
-export default useSEO

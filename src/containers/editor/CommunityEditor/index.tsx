@@ -5,7 +5,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import useMetric from '@/hooks/useMetric'
 
@@ -60,4 +59,4 @@ const CommunityEditor: FC = () => {
   )
 }
 
-export default observer(CommunityEditor)
+export default CommunityEditor

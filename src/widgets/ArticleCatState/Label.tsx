@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import { ARTICLE_CAT } from '@/const/gtd'
 import useNameAlias from '@/hooks/useNameAlias'
@@ -52,4 +51,4 @@ const Label: FC<TProps> = ({ cat, smaller }) => {
   }
 }
 
-export default observer(Label)
+export default Label

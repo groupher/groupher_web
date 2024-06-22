@@ -147,6 +147,7 @@ export default (initState: TInitState = {}): TStore => {
     mergeLeft(initState, {
       ...settingsFields,
       initFilled: false,
+      // for edit/rollback in dashboard
       original: settingsFields,
 
       savingField: null,

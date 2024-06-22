@@ -321,7 +321,6 @@ const _handleDone = () => {
   const field = store.savingField
   toast('设置已保存')
 
-  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
   // let original
 
   // if (field === SETTING_FIELD.TAG_INDEX) {

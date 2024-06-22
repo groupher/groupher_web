@@ -4,12 +4,15 @@ import { mergeDeepRight } from 'ramda'
 import { includes, values, mergeRight } from 'ramda'
 
 import type { TCommunity, TArticle } from '@/spec'
+import METRIC from '@/const/metric'
 import { ARTICLE_THREAD } from '@/const/thread'
 
 import type { TStore, TInit } from './spec'
 
 export default (init: TInit = {}): TStore => {
   const store = proxy({
+    metric: METRIC.COMMUNITY,
+
     user: init.user || null,
     community: init.community || null,
     post: init.post || null,

@@ -6,8 +6,6 @@
  *
  */
 
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import Head from 'next/head'
 
 import METRIC from '@/const/metric'
@@ -16,7 +14,7 @@ import { SITE_URL, SITE_SLOGAN, SITE_NAME } from '@/config'
 import useSEO from '@/hooks/useSEO'
 import useMetric from '@/hooks/useMetric'
 
-const SEO: FC = () => {
+export default () => {
   const metric = useMetric()
 
   const {
@@ -86,5 +84,3 @@ const SEO: FC = () => {
       )
   }
 }
-
-export default observer(SEO)

@@ -2,11 +2,9 @@
 
 /* *
  * LandingPage
- *
  */
 
-import { type FC, Suspense } from 'react'
-import { observer } from 'mobx-react-lite'
+import { Suspense } from 'react'
 
 import { DOC_FAQ_LAYOUT } from '@/const/layout'
 import useWallpaper from '@/hooks/useWallpaper'
@@ -85,7 +83,7 @@ const faqs = [
   },
 ]
 
-const LandingPage: FC = () => {
+export default () => {
   const { wallpaper } = useWallpaper()
   const metric = useMetric()
 
@@ -166,5 +164,3 @@ const LandingPage: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(LandingPage)

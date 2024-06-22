@@ -4,9 +4,6 @@
  *
  */
 
-import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
 import useWindowResize from '@/hooks/useWindowResize'
 import useShortcut from '@/hooks/useShortcut'
 import useMetric from '@/hooks/useMetric'
@@ -18,7 +15,7 @@ import Content from './Content'
 
 import { useInit, closeDrawer } from './logic'
 
-const Drawer: FC = () => {
+export default () => {
   const store = useStore()
   const metric = useMetric()
 
@@ -59,5 +56,3 @@ const Drawer: FC = () => {
     </Viewer>
   )
 }
-
-export default observer(Drawer)
