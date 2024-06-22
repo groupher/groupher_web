@@ -270,51 +270,7 @@ export const parseDashboard = (community: TCommunity, pathname: string): TParseD
 
   return {
     ...fieldsObj,
-    initSettings: {
-      ...fieldsObj,
-    },
-    ...parseDashboardThread(pathname),
-  }
-}
-
-export const parseDashboardbackup = (community: TCommunity, pathname: string): TParseDashboard => {
-  // NOTE: if the backend is not ready, return default config
-  // @ts-ignore
-  if (!community) return {}
-
-  const { dashboard, moderators } = community
-  const {
-    enable,
-    nameAlias,
-    socialLinks,
-    faqs,
-    seo,
-    layout,
-    rss,
-    baseInfo,
-    headerLinks,
-    footerLinks,
-    mediaReports,
-  } = dashboard
-
-  const fieldsObj = removeEmptyValuesFromObject({
-    enable,
-    nameAlias: parseDashboardAlias(nameAlias),
-    socialLinks,
-    faqSections: faqs,
-    ...baseInfo,
-    ...seo,
-    ...layout,
-    ...rss,
-    headerLinks,
-    footerLinks,
-    moderators,
-    mediaReports,
-  })
-
-  return {
-    ...fieldsObj,
-    initSettings: {
+    original: {
       ...fieldsObj,
     },
     ...parseDashboardThread(pathname),

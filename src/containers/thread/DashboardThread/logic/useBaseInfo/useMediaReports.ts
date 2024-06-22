@@ -24,11 +24,11 @@ export type TRet = {
 export default (): TRet => {
   const store = useSubStore('dashboard')
 
-  const { mediaReports, initSettings, queringMediaReportIndex } = store
+  const { mediaReports, original, queringMediaReportIndex } = store
 
   const mediaReportsTouched = () => {
     const curValues = reject((item: TMediaReport) => !item.editUrl, mediaReports)
-    const initValues = reject((item: TMediaReport) => !item.editUrl, initSettings.mediaReports)
+    const initValues = reject((item: TMediaReport) => !item.editUrl, original.mediaReports)
 
     const curValueTitles = filter((item: TMediaReport) => !isEmpty(item?.title), curValues)
     const isCurAllvalid = curValueTitles.length !== 0 && curValueTitles.length === curValues.length

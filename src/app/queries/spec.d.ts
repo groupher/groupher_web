@@ -76,7 +76,7 @@ export type TDashboardTab = {
 }
 
 export type TParseDashboard = TDashboard & {
-  initSettings: TDashboard
+  original: TDashboard
 }
 
 export type TFilterSearchParams = {

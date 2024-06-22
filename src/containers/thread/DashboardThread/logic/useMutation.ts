@@ -63,14 +63,14 @@ export default (): TRet => {
   const _handleDone = () => {
     const field = storeRef.current.savingField
     console.log('## done field: ', field)
-    let initSettings = { ...store.initSettings, [field]: store[field] }
+    let original = { ...store.original, [field]: store[field] }
 
     if (field === SETTING_FIELD.TAG_INDEX) {
-      initSettings = { ...store.initSettings, tags: store.tags }
+      original = { ...store.original, tags: store.tags }
     }
 
     if (includes(field, [SETTING_FIELD.FAQ_SECTION_ADD, SETTING_FIELD.FAQ_SECTION_DELETE])) {
-      initSettings = { ...store.initSettings, faqSections: store.faqSections }
+      original = { ...store.original, faqSections: store.faqSections }
     }
 
     if (field === SETTING_FIELD.BASE_INFO) {
@@ -79,12 +79,12 @@ export default (): TRet => {
       for (const key of BASEINFO_KEYS) {
         current[key] = store[key]
       }
-      initSettings = { ...store.initSettings, ...current }
+      original = { ...store.original, ...current }
     }
 
     if (field === SETTING_FIELD.TAG) {
       const updatedTags = mergeBackEditingTag()
-      initSettings = { ...store.initSettings, tags: updatedTags }
+      original = { ...store.original, tags: updatedTags }
     }
 
     if (field === SETTING_FIELD.SEO) {
@@ -93,11 +93,11 @@ export default (): TRet => {
       for (const key of SEO_KEYS) {
         current[key] = store[key]
       }
-      initSettings = { ...store.initSettings, ...current }
+      original = { ...store.original, ...current }
     }
 
     console.log('## handle done')
-    store.commit({ initSettings })
+    store.commit({ original })
 
     // avoid page component jump caused by saving state
     setTimeout(() => store.commit({ saving: false, savingField: null }), 800)
@@ -123,7 +123,7 @@ export default (): TRet => {
   const mutation = (field: TSettingField, e: TEditValue): Promise<void> => {
     if (field === SETTING_FIELD.ENABLE) {
       const curEnable = storeRef.current.enable
-      const initEnable = storeRef.current.initSettings.enable
+      const initEnable = storeRef.current.original.enable
 
       const valueDiff = (key) => !equals(curEnable[key], initEnable[key])
 

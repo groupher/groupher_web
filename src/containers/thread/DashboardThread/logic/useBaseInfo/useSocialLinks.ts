@@ -11,10 +11,10 @@ export type TRet = {
 export default (): TRet => {
   const store = useSubStore('dashboard')
 
-  const { socialLinks, initSettings } = store
+  const { socialLinks, original } = store
 
   const socialLinksTouched = () => {
-    return !equals(socialLinks, initSettings.socialLinks)
+    return !equals(socialLinks, original.socialLinks)
   }
 
   return {

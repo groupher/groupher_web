@@ -109,7 +109,7 @@ export default (): TRet => {
   }
 
   const cancelLinkEditing = (): void => {
-    const { editingLink, editingLinkMode, initSettings } = store
+    const { editingLink, editingLinkMode, original } = store
     const links = getLinks()
 
     if (editingLinkMode === CHANGE_MODE.UPDATE) {
@@ -127,7 +127,7 @@ export default (): TRet => {
     store.commit({
       [linksKey]: linksAfter,
       editingLink: null,
-      initSettings: { ...initSettings, [linksKey]: linksAfter },
+      original: { ...original, [linksKey]: linksAfter },
     })
   }
 

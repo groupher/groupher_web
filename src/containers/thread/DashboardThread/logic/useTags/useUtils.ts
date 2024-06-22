@@ -20,7 +20,7 @@ export default (): TRet => {
   const store = useSubState('dashboard')
   const curCommunity = useViewingCommunity()
 
-  const { initSettings } = store
+  const { original } = store
 
   const loadTags = (activeThread = THREAD.POST): void => {
     const community = curCommunity.slug
@@ -33,7 +33,7 @@ export default (): TRet => {
     store.commit({ loading: true })
     query(S.pagedArticleTags, params).then((data) => {
       const tags = data.pagedArticleTags.entries
-      store.commit({ tags, initSettings: { ...initSettings, tags }, loading: false })
+      store.commit({ tags, original: { ...original, tags }, loading: false })
     })
   }
 

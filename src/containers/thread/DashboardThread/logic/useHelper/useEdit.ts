@@ -40,7 +40,7 @@ export default (): TRet => {
   const _rollbackByKeys = (keys: string[]): void => {
     for (let i = 0; i < keys.length; i += 1) {
       const key = keys[i]
-      const initValue = store.initSettings[key]
+      const initValue = store.original[key]
       if (store[key] !== initValue) {
         store.commit({ [key]: initValue })
       }
@@ -71,12 +71,12 @@ export default (): TRet => {
     }
 
     if (field === SETTING_FIELD.TAG_INDEX) {
-      store.commit({ tags: store.initSettings.tags })
+      store.commit({ tags: store.original.tags })
       return
     }
 
     if (field === SETTING_FIELD.FAQ_SECTIONS) {
-      store.commit({ faqSections: store.initSettings.faqSections })
+      store.commit({ faqSections: store.original.faqSections })
       return
     }
 
@@ -86,14 +86,14 @@ export default (): TRet => {
 
       const updatedNameAlias = update(
         targetIdx,
-        store.initSettings.nameAlias[targetIdx],
+        store.original.nameAlias[targetIdx],
         store.nameAlias,
       )
       store.commit({ editingAlias: null, nameAlias: updatedNameAlias })
       return
     }
 
-    store.commit({ [field]: store.initSettings[field] })
+    store.commit({ [field]: store.original[field] })
   }
 
   // save to local settings should omit subTabs,

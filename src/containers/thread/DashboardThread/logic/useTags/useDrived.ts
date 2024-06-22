@@ -20,7 +20,7 @@ export default (): TRet => {
   const store = useSubState('dashboard')
   const curCommunity = useViewingCommunity()
 
-  const { tags, initSettings, activeTagThread, activeTagGroup, nameAlias, tagLayout } = store
+  const { tags, original, activeTagThread, activeTagGroup, nameAlias, tagLayout } = store
 
   const getTags = useCallback(() => {
     const selectedThread = (activeTagThread || '').toUpperCase()
@@ -51,12 +51,12 @@ export default (): TRet => {
   }, [curCommunity, nameAlias])
 
   const getTagLayoutTouched = useCallback((): boolean => {
-    return !equals(tagLayout, initSettings.tagLayout)
-  }, [tagLayout, initSettings.tagLayout])
+    return !equals(tagLayout, original.tagLayout)
+  }, [tagLayout, original.tagLayout])
 
   const getTagsIndexTouched = useCallback((): boolean => {
-    return !equals(sortByIndex(tags, 'id'), sortByIndex(initSettings.tags || [], 'id'))
-  }, [tags, initSettings.tags])
+    return !equals(sortByIndex(tags, 'id'), sortByIndex(original.tags || [], 'id'))
+  }, [tags, original.tags])
 
   return {
     getTags,

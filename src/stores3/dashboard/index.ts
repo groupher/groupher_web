@@ -147,8 +147,7 @@ export default (initState: TInitState = {}): TStore => {
     mergeLeft(initState, {
       ...settingsFields,
       initFilled: false,
-      initSettings: settingsFields,
-      defaultSettings: settingsFields,
+      original: settingsFields,
 
       savingField: null,
       saving: false,

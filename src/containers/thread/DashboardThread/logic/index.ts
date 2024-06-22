@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { includes, uniq, reject, forEach } from 'ramda'
+import { uniq, reject } from 'ramda'
 
 import type { TEditValue, TFAQSection, TID, TSocialItem, TUser } from '@/spec'
 import { COLOR_NAME } from '@/const/colors'
@@ -13,7 +13,7 @@ import { toast, errRescue } from '@/signal'
 import type { TStore } from '../store'
 import type { TSettingField } from '../spec'
 
-import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS } from '../constant'
+import { SETTING_FIELD } from '../constant'
 import { init as faqInit } from './faq'
 
 import S from '../schema'
@@ -51,17 +51,17 @@ export const rssOnSave = (): void => {
   store.onSave(RSS_FEED_TYPE)
   store.onSave(RSS_FEED_COUNT)
 
-  setTimeout(() => {
-    store.mark({ saving: false })
+  // setTimeout(() => {
+  //   store.mark({ saving: false })
 
-    const initSettings = {
-      ...store.initSettings,
-      [RSS_FEED_TYPE]: toJS(store[RSS_FEED_TYPE]),
-      [RSS_FEED_COUNT]: toJS(store[RSS_FEED_COUNT]),
-    }
+  //   const original = {
+  //     ...store.original,
+  //     [RSS_FEED_TYPE]: toJS(store[RSS_FEED_TYPE]),
+  //     [RSS_FEED_COUNT]: toJS(store[RSS_FEED_COUNT]),
+  //   }
 
-    store.mark({ initSettings })
-  }, 1200)
+  //   store.mark({ original })
+  // }, 1200)
 }
 
 export const rssOnCancel = (): void => {
@@ -73,24 +73,24 @@ export const rssOnCancel = (): void => {
 
 export const broadcastOnSave = (isArticle = false): void => {
   store.mark({ saving: true })
-  const layoutKey = !isArticle
-    ? SETTING_FIELD.BROADCAST_LAYOUT
-    : SETTING_FIELD.BROADCAST_ARTICLE_LAYOUT
-  const bgKey = !isArticle ? SETTING_FIELD.BROADCAST_BG : SETTING_FIELD.BROADCAST_ARTICLE_BG
+  // const layoutKey = !isArticle
+  //   ? SETTING_FIELD.BROADCAST_LAYOUT
+  //   : SETTING_FIELD.BROADCAST_ARTICLE_LAYOUT
+  // const bgKey = !isArticle ? SETTING_FIELD.BROADCAST_BG : SETTING_FIELD.BROADCAST_ARTICLE_BG
 
-  store.onSave(layoutKey)
-  store.onSave(bgKey)
+  // store.onSave(layoutKey)
+  // store.onSave(bgKey)
 
-  setTimeout(() => {
-    store.mark({ saving: false })
+  // setTimeout(() => {
+  //   store.mark({ saving: false })
 
-    const initSettings = {
-      ...store.initSettings,
-      [layoutKey]: toJS(store[layoutKey]),
-      [bgKey]: toJS(store[bgKey]),
-    }
-    store.mark({ initSettings })
-  }, 1200)
+  //   const original = {
+  //     ...store.original,
+  //     [layoutKey]: toJS(store[layoutKey]),
+  //     [bgKey]: toJS(store[bgKey]),
+  //   }
+  //   store.mark({ original })
+  // }, 1200)
 }
 
 export const broadcastOnCancel = (isArticle = false): void => {
@@ -322,36 +322,36 @@ const _handleDone = () => {
   toast('设置已保存')
 
   // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
-  let initSettings
+  // let original
 
-  if (field === SETTING_FIELD.TAG_INDEX) {
-    initSettings = { ...store.initSettings, tags: toJS(store.tags) }
-  } else if (includes(field, [SETTING_FIELD.FAQ_SECTION_ADD, SETTING_FIELD.FAQ_SECTION_DELETE])) {
-    initSettings = { ...store.initSettings, faqSections: toJS(store.faqSections) }
-  } else if (field === SETTING_FIELD.TAG) {
-    store.updateEditingTag()
-    initSettings = { ...store.initSettings }
-  } else if (field === SETTING_FIELD.BASE_INFO) {
-    const current = {}
+  // if (field === SETTING_FIELD.TAG_INDEX) {
+  //   original = { ...store.original, tags: toJS(store.tags) }
+  // } else if (includes(field, [SETTING_FIELD.FAQ_SECTION_ADD, SETTING_FIELD.FAQ_SECTION_DELETE])) {
+  //   original = { ...store.original, faqSections: toJS(store.faqSections) }
+  // } else if (field === SETTING_FIELD.TAG) {
+  //   store.updateEditingTag()
+  //   original = { ...store.original }
+  // } else if (field === SETTING_FIELD.BASE_INFO) {
+  //   const current = {}
 
-    forEach((key) => {
-      current[key] = store[key]
-    }, BASEINFO_KEYS)
+  //   forEach((key) => {
+  //     current[key] = store[key]
+  //   }, BASEINFO_KEYS)
 
-    initSettings = { ...store.initSettings, ...current }
-  } else if (field === SETTING_FIELD.SEO) {
-    const current = {}
+  //   original = { ...store.original, ...current }
+  // } else if (field === SETTING_FIELD.SEO) {
+  //   const current = {}
 
-    forEach((key) => {
-      current[key] = store[key]
-    }, SEO_KEYS)
+  //   forEach((key) => {
+  //     current[key] = store[key]
+  //   }, SEO_KEYS)
 
-    initSettings = { ...store.initSettings, ...current }
-  } else {
-    initSettings = { ...store.initSettings, [field]: toJS(store[field]) }
-  }
+  //   original = { ...store.original, ...current }
+  // } else {
+  //   original = { ...store.original, [field]: toJS(store[field]) }
+  // }
 
-  store.mark({ initSettings })
+  // store.mark({ original })
 
   // manually update in here not in store is because if this action fails,
   // store will rollback to previous value
@@ -385,13 +385,13 @@ const DataSolver = [
   {
     match: asyncRes('updateDashboardSeo'),
     action: ({ updateDashboardSeo }) => {
-      const {
-        dashboard: {
-          seo: { seoEnable },
-        },
-      } = updateDashboardSeo
-      const { initSettings } = store
-      store.mark({ seoEnable, initSettings: { ...toJS(initSettings), seoEnable } })
+      // const {
+      //   dashboard: {
+      //     seo: { seoEnable },
+      //   },
+      // } = updateDashboardSeo
+      // const { original } = store
+      // store.mark({ seoEnable, original: { ...toJS(original), seoEnable } })
 
       _handleDone()
     },
@@ -425,10 +425,9 @@ const DataSolver = [
   {
     match: asyncRes('pagedArticleTags'),
     action: ({ pagedArticleTags }) => {
-      const { initSettings } = store
-      const tags = pagedArticleTags.entries
-
-      store.mark({ tags, initSettings: { ...initSettings, tags } })
+      // const { original } = store
+      // const tags = pagedArticleTags.entries
+      // store.mark({ tags, original: { ...original, tags } })
     },
   },
   {

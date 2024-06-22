@@ -26,7 +26,7 @@ export default (): TRet => {
   const store = useSubStore('dashboard')
   const { isChanged, edit } = useHelper()
 
-  const { widgetsThreads, initSettings } = store
+  const { widgetsThreads, original } = store
 
   const threadOnChange = (checked: boolean, thread: TThread): void => {
     const newThreads = checked
@@ -38,7 +38,7 @@ export default (): TRet => {
 
   const getIsThreadTouched = useCallback(() => {
     // @ts-ignore
-    return !equals(widgetsThreads, initSettings.widgetsThreads)
+    return !equals(widgetsThreads, original.widgetsThreads)
   }, [store])
 
   const getIsPrimaryColorTouched = useCallback(() => isChanged('widgetsPrimaryColor'), [store])

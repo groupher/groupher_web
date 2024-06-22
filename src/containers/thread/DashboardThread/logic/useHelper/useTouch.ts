@@ -13,11 +13,11 @@ export type TRet = {
 export default (): TRet => {
   const store = useSubStore('dashboard')
 
-  const { initSettings } = store
+  const { original } = store
 
-  const isChanged = (field: TSettingField): boolean => !equals(store[field], initSettings[field])
+  const isChanged = (field: TSettingField): boolean => !equals(store[field], original[field])
   const anyChanged = (fields: TSettingField[]): boolean => any(isChanged)(fields)
-  const mapArrayChanged = (key: string): boolean => !equals(store[key], initSettings[key])
+  const mapArrayChanged = (key: string): boolean => !equals(store[key], original[key])
 
   return {
     isChanged,

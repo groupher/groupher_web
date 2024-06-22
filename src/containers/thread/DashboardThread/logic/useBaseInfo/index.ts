@@ -73,8 +73,8 @@ export default (): TRet => {
       }))
     }
 
-    const initSettings = { ...store.initSettings, ...updates, mediaReports: initMediaReports }
-    store.commit({ ...updates, mediaReports: initMediaReports, initSettings })
+    const original = { ...store.original, ...updates, mediaReports: initMediaReports }
+    store.commit({ ...updates, mediaReports: initMediaReports, original })
   }
 
   return {

@@ -175,8 +175,7 @@ export type TInitState = Partial<TSettingsFields>
 
 export type TStore = TSettingsFields & {
   initFilled: boolean
-  initSettings: TSettingsFields
-  defaultSettings: TSettingsFields
+  original: TSettingsFields
 
   savingField: string | null
   saving: boolean
