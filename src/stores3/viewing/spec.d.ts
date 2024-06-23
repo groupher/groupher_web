@@ -11,6 +11,7 @@ export type TInit = {
   activeThread?: TThread
 
   tags?: TTag[]
+  activeTag?: TTag | null
 }
 
 export type TStore = TInit & {

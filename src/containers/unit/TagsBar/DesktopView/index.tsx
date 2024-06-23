@@ -1,40 +1,41 @@
 /*
- *
  * TagsBar
- *
  */
-import { type FC, useMemo } from 'react'
-import { keys, reverse } from 'ramda'
-import { observer } from 'mobx-react-lite'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { type FC, useEffect } from 'react'
+import { keys, reverse } from 'ramda'
+
 import type { TProps as TTagProps } from '..'
 
-import { useStore } from '../store'
 import GobackTag from './GobackTag'
 import Folder from './Folder'
 
+import useLogic from '../useLogic'
 import { Wrapper } from '../styles/desktop_view'
-import { useInit, onTagSelect } from '../logic'
 
 type TProps = Omit<TTagProps, 'view'>
 
 const TagsBar: FC<TProps> = ({ onSelect }) => {
-  const store = useStore()
-  useInit(store)
-  const community = useViewingCommunity()
+  const {
+    tags,
+    activeTag,
+    maxDisplayCount,
+    totalCountThrold,
+    getGroupedTags,
+    onTagSelect,
+    syncActiveTagFromURL,
+  } = useLogic()
 
-  const { activeTagData, maxDisplayCount, totalCountThrold } = store
+  useEffect(() => {
+    syncActiveTagFromURL()
+  }, [])
 
-  // TODO: thread is also need for deps
-  const tagsData = useMemo(() => store.tagsData, [community.slug])
-  const groupedTags = useMemo(() => store.groupedTags, [community.slug])
-
+  const groupedTags = getGroupedTags()
   const groupsKeys = reverse(keys(groupedTags)) as string[]
 
   return (
     <Wrapper>
-      {activeTagData.title && (
+      {activeTag?.title && (
         <GobackTag
           onSelect={(tag) => {
             onTagSelect(tag)
@@ -47,8 +48,8 @@ const TagsBar: FC<TProps> = ({ onSelect }) => {
           key={groupKey}
           title={groupKey}
           groupTags={groupedTags[groupKey]}
-          allTags={tagsData}
-          activeTag={activeTagData}
+          allTags={tags}
+          activeTag={activeTag}
           maxDisplayCount={maxDisplayCount}
           totalCountThrold={totalCountThrold}
           onSelect={(tag) => {
@@ -61,4 +62,4 @@ const TagsBar: FC<TProps> = ({ onSelect }) => {
   )
 }
 
-export default observer(TagsBar)
+export default TagsBar

@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TColorName, TTag } from '@/spec'
 import { cutRest } from '@/fmt'
@@ -42,4 +41,4 @@ const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
   )
 }
 
-export default observer(TagItem)
+export default TagItem

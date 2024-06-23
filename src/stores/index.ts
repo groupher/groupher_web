@@ -24,8 +24,6 @@ export { default as DrawerStore } from '@/containers/tool/Drawer/store'
 // threads store
 // export { default as ReposThreadStore } from '@/containers/thread/ReposThread/store'
 
-export { default as TagsBarStore } from '@/containers/unit/TagsBar/store'
-
 // toolbox
 // export { default as RepoEditorStore } from '@/containers/editor/RepoEditor/store'
 export { default as CommentsStore } from '@/containers/unit/Comments/store'

@@ -41,7 +41,6 @@ import {
   // RepoEditorStore,
   AccountEditorStore,
   // MailBoxStore,
-  TagsBarStore,
   // GEN: IMPORT SUBSTORE
   PassportEditorStore,
   CoverEditorStore,
@@ -107,8 +106,6 @@ const rootStore = T.model({
   // footer
   // footer: T.opt(FooterStore, {}),
   // threads
-
-  tagsBar: T.opt(TagsBarStore, {}),
 
   // viewers (for drawer usage)
   // mailsViewer: T.opt(MailsViewerStore, {}),

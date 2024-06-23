@@ -1,4 +1,4 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 import { getRandomInt } from '@/helper'
 import { Wrapper, Count, ChartBar } from '../styles/desktop_view/tag_count'
 
@@ -15,6 +15,4 @@ const TagCount: FC<TProps> = ({ num }) => {
     </Wrapper>
   )
 }
-// <div>只看/不看</div>
-
-export default memo(TagCount)
+export default TagCount

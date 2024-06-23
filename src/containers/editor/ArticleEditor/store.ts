@@ -78,8 +78,9 @@ const ArticleEditor = T.model('ArticleEditor', {
     },
 
     get groupedTags(): TGroupedTags {
-      const root = getParent(self) as TRootStore
-      return root.tagsBar.groupedTags
+      return []
+      // const root = getParent(self) as TRootStore
+      // return root.tagsBar.groupedTags
     },
     get texts(): TTexts {
       return {

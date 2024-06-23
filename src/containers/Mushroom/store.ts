@@ -17,7 +17,7 @@ import type {
   TArticleState,
   TArticleOrder,
 } from '@/spec'
-import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
 
 const MushroomStore = T.model('MushroomStore', {
   online: T.opt(T.bool, true),
@@ -60,9 +60,9 @@ const MushroomStore = T.model('MushroomStore', {
       return root.viewing.activeThread
     },
     get activeTag(): TTag {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.tagsBar.activeTag)
+      return null
+      // const root = getParent(self) as TRootStore
+      // return toJS(root.tagsBar.activeTag)
     },
   }))
   .actions((self) => ({
