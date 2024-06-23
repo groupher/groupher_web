@@ -18,6 +18,9 @@ export default (init: TInit = {}): TStore => {
     post: init.post || null,
     changelog: init.changelog || null,
     activeThread: init.activeThread || ARTICLE_THREAD.POST,
+
+    tags: [],
+    // TOOD: remove?
     viewingThread: null,
     communityDigestInView: true,
 

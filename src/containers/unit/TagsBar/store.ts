@@ -7,7 +7,7 @@ import { findIndex, propEq } from 'ramda'
 
 import type { TRootStore, TCommunity, TTag, TGroupedTags, TThread } from '@/spec'
 
-import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
 // import { mockTags } from '@/mock'
 import { groupByKey } from '@/helper'
 

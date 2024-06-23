@@ -12,6 +12,7 @@ import {
   useThreadParam,
   useDashboard,
   useWallpaper,
+  useTags,
   useMetric,
   usePost,
   useChangelog,
@@ -26,6 +27,8 @@ export default ({ children }: { children: ReactNode }) => {
   const { changelog } = useChangelog()
   const { community } = useCommunity()
   const activeThread = useThreadParam()
+  const { tags } = useTags()
+
   const dashboard = useDashboard(community)
   const wallpaper = useWallpaper(community)
 
@@ -42,6 +45,7 @@ export default ({ children }: { children: ReactNode }) => {
       changelog,
       community: community || HOME_COMMUNITY,
       activeThread,
+      tags,
     },
     wallpaper,
     dashboard,

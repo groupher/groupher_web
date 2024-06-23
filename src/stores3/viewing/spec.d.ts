@@ -1,4 +1,4 @@
-import type { TCommunity, TUser, TPost, TChangelog, TThread, TArticle, TMetric } from '@/spec'
+import type { TCommunity, TUser, TPost, TChangelog, TThread, TArticle, TMetric, TTag } from '@/spec'
 
 export type TInit = {
   metric?: TMetric
@@ -9,6 +9,8 @@ export type TInit = {
   thread?: TThread
   viewingThread?: TThread
   activeThread?: TThread
+
+  tags?: TTag[]
 }
 
 export type TStore = TInit & {
