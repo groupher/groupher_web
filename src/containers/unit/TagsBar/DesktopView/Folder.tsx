@@ -49,7 +49,7 @@ const Folder: FC<TProps> = ({
   const [curDisplayCount, setCurDisplayCount] = useState(initDisplayCount)
 
   const sortedTags = reverse(sortByColor(groupTags))
-  const isActiveTagInFolder = findIndex((item: TTag) => item.id === activeTag.id, groupTags) >= 0
+  const isActiveTagInFolder = findIndex((item: TTag) => item.id === activeTag?.id, groupTags) >= 0
 
   const subToggleRef = useRef(null)
   // 当选中的 Tag 被折叠在展示更多里面时，将其展开
@@ -89,7 +89,7 @@ const Folder: FC<TProps> = ({
           <TagItem
             key={tag.slug}
             tag={tag}
-            active={activeTag.title === tag.title}
+            active={activeTag?.title === tag.title}
             onSelect={onSelect}
           />
         ))}
