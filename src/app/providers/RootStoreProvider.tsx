@@ -7,16 +7,12 @@ import { Suspense } from 'react'
 import { useStore } from '@/stores/init'
 
 import {
-  useMetric,
   useCommunity,
-  useTags,
   usePost,
   useChangelog,
   usePagedPosts,
   useGroupedKanbanPosts,
   usePagedChangelogs,
-  useWallpaper,
-  useDashboard,
   //
   useFilterSearchParams,
   useThreadParam,
@@ -27,7 +23,6 @@ type TProps = {
 }
 
 const RootStoreWrapper: FC<TProps> = ({ children }) => {
-  const metric = useMetric()
   const activeThread = useThreadParam()
 
   const { community } = useCommunity()
@@ -36,14 +31,10 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
   const { post } = usePost()
   const { changelog } = useChangelog()
   const { groupedKanbanPosts } = useGroupedKanbanPosts()
-  const { tags } = useTags()
 
-  const dashboard = useDashboard(community)
-  const wallpaper = useWallpaper(community)
   const filterSearchParams = useFilterSearchParams()
 
   const store = useStore({
-    metric,
     articles: {
       pagedPosts,
       pagedChangelogs,
@@ -51,17 +42,12 @@ const RootStoreWrapper: FC<TProps> = ({ children }) => {
       ...filterSearchParams,
     },
     kanbanThread: groupedKanbanPosts,
-    tagsBar: {
-      tags,
-    },
     viewing: {
       community: community || {},
       post,
       changelog,
       activeThread,
     },
-    wallpaperEditor: wallpaper,
-    dashboardThread: dashboard,
   })
 
   return (
