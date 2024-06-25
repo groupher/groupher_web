@@ -67,9 +67,10 @@ const MushroomStore = T.model('MushroomStore', {
   }))
   .actions((self) => ({
     loadDemoSetting(): void {
-      const root = getParent(self) as TRootStore
+      // const root = getParent(self) as TRootStore
 
-      root.dashboardThread.afterCreate()
+      console.log('## loadDemoSetting')
+      // root.dashboardThread.afterCreate()
     },
     updateResState(state: TResState): void {
       const root = getParent(self) as TRootStore
@@ -111,8 +112,9 @@ const MushroomStore = T.model('MushroomStore', {
       root.articles.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
     },
     clearLocalSettings(): void {
-      const root = getParent(self) as TRootStore
-      root.dashboardThread.clearLocalSettings()
+      // const root = getParent(self) as TRootStore
+      // root.dashboardThread.clearLocalSettings()
+      console.log('## clearLocalSettings')
     },
     closeUserListModal(): void {
       self.showUserListModal = false

@@ -93,14 +93,14 @@ const DrawerStore = T.model('DrawerStore', {
       return root.viewing.viewingArticle
     },
     get extraInfo(): TExtraInfo {
-      const root = getParent(self) as TRootStore
+      // const root = getParent(self) as TRootStore
       const slf = self as TStore
 
       return {
         mmType: slf.mmType,
         userListerType: slf.userListerType,
         dashboardDescLayout: slf.dashboardDescLayout,
-        postLayout: root.dashboardThread.postLayout,
+        postLayout: 'quora',
       }
     },
   }))

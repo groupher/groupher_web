@@ -3,16 +3,13 @@
 
  * NOTE: this file is generate automatically, DO NOT modify
  * unless you're sure what you're doing
- *
  */
 
-import { mergeRight, values } from 'ramda'
+import { mergeRight } from 'ramda'
 
-import type { TRoute, TThread, TArticle, TLocale } from '@/spec'
+import type { TRoute, TThread, TArticle } from '@/spec'
 
 import EVENT from '@/const/event'
-import METRIC from '@/const/metric'
-import { LOCALE } from '@/const/i18n'
 
 import { T, markStates, type Instance } from '@/mobx'
 import { toast, send } from '@/signal'
@@ -46,7 +43,6 @@ import {
   CoverEditorStore,
   TagSettingEditorStore,
   // SubscriberStore,
-  DashboardThreadStore,
   DocThreadStore,
   AboutThreadStore,
   // CollectionFolderStore,
@@ -71,9 +67,7 @@ const rootStore = T.model({
   viewing: T.opt(ViewingStore, {}),
   articles: T.opt(ArticlesStore, {}),
   comments: T.opt(CommentsStore, {}),
-  metric: T.opt(T.str, METRIC.COMMUNITY),
   // @ts-ignore TODO:
-  locale: T.opt(T.enum('locale', values(LOCALE)), LOCALE.EN),
   localeData: T.opt(T.str, '{}'),
   errorCode: T.maybeNull(T.number),
 
@@ -115,7 +109,6 @@ const rootStore = T.model({
   coverEditor: T.opt(CoverEditorStore, {}),
   tagSettingEditor: T.opt(TagSettingEditorStore, {}),
   // subscriber: T.opt(SubscriberStore, {}),
-  dashboardThread: T.opt(DashboardThreadStore, {}),
   docThread: T.opt(DocThreadStore, {}),
   aboutThread: T.opt(AboutThreadStore, {}),
   // collectionFolder: T.opt(CollectionFolderStore, {}),
@@ -198,12 +191,6 @@ const rootStore = T.model({
       // if (isMemberOf('seniorMember') || isMemberOf('sponsorMember')) {
       //   return void
       // }
-    },
-    setLocale(locale: TLocale): void {
-      self.locale = locale
-    },
-    setLocaleData(localeStr: string): void {
-      self.localeData = localeStr
     },
     mark(sobj): void {
       markStates(sobj, self)

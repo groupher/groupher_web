@@ -16,19 +16,20 @@ const DocThread = T.model('DocThread', {
       return toJS(root.viewing.community)
     },
     get faqSections(): TFAQSection[] {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.dashboardThread.faqSections)
+      // const root = getParent(self) as TRootStore
+      // return toJS(root.dashboardThread.faqSections)
+      return []
     },
     get layout(): TDocLayout {
-      const root = getParent(self) as TRootStore
+      // const root = getParent(self) as TRootStore
 
-      return toJS(root.dashboardThread.docLayout)
+      // return toJS(root.dashboardThread.docLayout)
+      return 'blocks'
     },
     get faqLayout(): TDocFAQLayout {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.dashboardThread.docFaqLayout)
+      // const root = getParent(self) as TRootStore
+      // return toJS(root.dashboardThread.docFaqLayout)
+      return 'flat'
     },
   }))
   .actions((self) => ({

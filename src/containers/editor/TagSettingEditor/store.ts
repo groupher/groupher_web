@@ -1,12 +1,12 @@
 /*
  * TagSettingEditor store
  */
-import { uniq, reject, values } from 'ramda'
+import { values } from 'ramda'
 
 import type { TCommunity, TRootStore, TTag, TSelectOption, TThread } from '@/spec'
-import { nilOrEmpty } from '@/validator'
 import { markStates, toJS, T, getParent, type Instance, useMobxContext } from '@/mobx'
 import { CHANGE_MODE } from '@/const/mode'
+import { THREAD } from '@/const/thread'
 
 import { Tag } from '@/model'
 
@@ -22,14 +22,16 @@ const TagSettingEditor = T.model('TagSettingEditor', {
       return toJS(root.viewing.community)
     },
     get curThread(): TThread {
-      const root = getParent(self) as TRootStore
+      // const root = getParent(self) as TRootStore
+      // root.dashboardThread.activeTagThread.toUpperCase() as TThread
 
-      return root.dashboardThread.activeTagThread.toUpperCase() as TThread
+      return THREAD.POST
     },
     get settingTag(): TTag {
-      const root = getParent(self) as TRootStore
+      // const root = getParent(self) as TRootStore
+      // toJS(root.dashboardThread.settingTag || {})
 
-      return toJS(root.dashboardThread.settingTag || {})
+      return { slug: 'todo' }
     },
 
     get editingTagData(): TTag {
@@ -37,32 +39,33 @@ const TagSettingEditor = T.model('TagSettingEditor', {
     },
 
     get categoryOptions(): TSelectOption[] {
-      const root = getParent(self) as TRootStore
-      const slf = self as TStore
+      return []
+      // const root = getParent(self) as TRootStore
+      // const slf = self as TStore
 
-      const tagGroups = toJS(root.dashboardThread.tagGroups)
+      // const tagGroups = toJS(root.dashboardThread.tagGroups)
 
-      const { editingTagData } = slf
+      // const { editingTagData } = slf
 
-      const existOptions = tagGroups.map((cat) => ({
-        label: cat,
-        value: cat,
-      }))
+      // const existOptions = tagGroups.map((cat) => ({
+      //   label: cat,
+      //   value: cat,
+      // }))
 
-      let retOptions = existOptions
+      // let retOptions = existOptions
 
-      const { group } = editingTagData
-      if (group) {
-        retOptions = uniq([
-          {
-            label: group,
-            value: group,
-          },
-          ...existOptions,
-        ])
-      }
+      // const { group } = editingTagData
+      // if (group) {
+      //   retOptions = uniq([
+      //     {
+      //       label: group,
+      //       value: group,
+      //     },
+      //     ...existOptions,
+      //   ])
+      // }
 
-      return reject((opt: TSelectOption) => nilOrEmpty(opt.value), uniq(retOptions))
+      // return reject((opt: TSelectOption) => nilOrEmpty(opt.value), uniq(retOptions))
     },
 
     get curCategory(): TSelectOption {

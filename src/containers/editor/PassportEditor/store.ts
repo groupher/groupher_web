@@ -5,7 +5,7 @@
 import { find } from 'ramda'
 
 import type { TCommunity, TRootStore, TUser } from '@/spec'
-import { markStates, toJS, T, getParent, Instance, useMobxContext } from '@/mobx'
+import { markStates, toJS, T, getParent, type Instance, useMobxContext } from '@/mobx'
 
 const PassportEditor = T.model('PassportEditor', {
   selectedRules: T.opt(T.array(T.str), []),
@@ -17,9 +17,9 @@ const PassportEditor = T.model('PassportEditor', {
       return toJS(root.viewing.community)
     },
     get activeModerator(): TUser {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.dashboardThread?.activeModerator)
+      //const root = getParent(self) as TRootStore
+      // toJS(root.dashboardThread?.activeModerator)
+      return {}
     },
     get isCurUserModeratorRoot(): boolean {
       return true
@@ -40,30 +40,35 @@ const PassportEditor = T.model('PassportEditor', {
       return curRoot.user.login === activeModerator?.login
     },
     get allRootRules(): string {
-      const root = getParent(self) as TRootStore
+      // const root = getParent(self) as TRootStore
 
-      return toJS(root.dashboardThread.allRootRules)
+      // return toJS(root.dashboardThread.allRootRules)
+      return ''
     },
     get allModeratorRules(): string {
-      const root = getParent(self) as TRootStore
+      // const root = getParent(self) as TRootStore
 
-      return toJS(root.dashboardThread.allModeratorRules)
+      // toJS(root.dashboardThread.allModeratorRules)
+
+      return ''
     },
     get selectedRulesData(): string[] {
       return toJS(self.selectedRules)
     },
 
     get allPassportLoaded(): boolean {
-      const root = getParent(self) as TRootStore
+      // const root = getParent(self) as TRootStore
 
-      return toJS(root.dashboardThread.allModeratorRules) !== '{}'
+      // toJS(root.dashboardThread.allModeratorRules) !== '{}'
+      return true
     },
   }))
   .actions((self) => ({
     setAllPassportRules(rootRules: string, moderatorRules): void {
-      const root = getParent(self) as TRootStore
+      // const root = getParent(self) as TRootStore
+      // root.dashboardThread.setAllPassportRules(rootRules, moderatorRules)
 
-      root.dashboardThread.setAllPassportRules(rootRules, moderatorRules)
+      return
     },
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)
