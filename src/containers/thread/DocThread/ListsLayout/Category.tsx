@@ -1,7 +1,5 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
-// import { config, library } from '@fortawesome/fontawesome-svg-core'
-// config.autoAddCss = false
 import type { TColorName } from '@/spec'
 import { mockUsers } from '@/mock'
 
@@ -9,6 +7,7 @@ import { SpaceGrow } from '@/widgets/Common'
 import Facepile from '@/widgets/Facepile'
 import FaIcons from '@/widgets/FaIcons'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   Cover,
@@ -20,7 +19,6 @@ import {
   AuthorHint,
   MoreLink,
 } from '../styles/lists_layout/category'
-import { gotoDetailLayout } from '../logic'
 
 type TProps = {
   color: TColorName
@@ -29,6 +27,8 @@ type TProps = {
 }
 
 const Category: FC<TProps> = ({ color, title, desc }) => {
+  const { gotoDetailLayout } = useLogic()
+
   return (
     <Wrapper color={color}>
       <Cover>
@@ -50,4 +50,4 @@ const Category: FC<TProps> = ({ color, title, desc }) => {
   )
 }
 
-export default memo(Category)
+export default Category

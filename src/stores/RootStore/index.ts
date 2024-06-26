@@ -43,7 +43,6 @@ import {
   CoverEditorStore,
   TagSettingEditorStore,
   // SubscriberStore,
-  DocThreadStore,
   AboutThreadStore,
   // CollectionFolderStore,
   ArticleViewerStore,
@@ -67,12 +66,7 @@ const rootStore = T.model({
   viewing: T.opt(ViewingStore, {}),
   articles: T.opt(ArticlesStore, {}),
   comments: T.opt(CommentsStore, {}),
-  // @ts-ignore TODO:
-  localeData: T.opt(T.str, '{}'),
   errorCode: T.maybeNull(T.number),
-
-  communityDigestInView: T.opt(T.bool, true),
-  // domain end
 
   // toolbox
   drawer: T.opt(DrawerStore, { visible: false }),
@@ -109,7 +103,6 @@ const rootStore = T.model({
   coverEditor: T.opt(CoverEditorStore, {}),
   tagSettingEditor: T.opt(TagSettingEditorStore, {}),
   // subscriber: T.opt(SubscriberStore, {}),
-  docThread: T.opt(DocThreadStore, {}),
   aboutThread: T.opt(AboutThreadStore, {}),
   // collectionFolder: T.opt(CollectionFolderStore, {}),
   articleViewer: T.opt(ArticleViewerStore, {}),

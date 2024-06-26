@@ -10,6 +10,9 @@ export type TInit = {
   viewingThread?: TThread
   activeThread?: TThread
 
+  isArticleLayout?: boolean
+  isFAQArticleLayout?: boolean
+
   tags?: TTag[]
   activeTag?: TTag | null
 }

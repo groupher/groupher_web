@@ -1,4 +1,4 @@
-import { type FC, useState } from 'react'
+import { useState } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { BANNER_LAYOUT } from '@/const/layout'
@@ -18,6 +18,7 @@ import ArticleCover from './ArticleCover'
 
 import ToggleBtn from './ToggleBtn'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   Header,
@@ -27,13 +28,10 @@ import {
   Sidebar,
   TreeWrapper,
 } from '../styles/article_layout'
-import { gotoDetailLayout } from '../logic'
 
-type TProps = {
-  isFAQArticleLayout: boolean
-}
+export default () => {
+  const { gotoDetailLayout, isFAQArticleLayout } = useLogic()
 
-const ArticleLayout: FC<TProps> = ({ isFAQArticleLayout }) => {
   const [filetreeOpen, setFileTreeOpen] = useState(true)
 
   const { isMobile } = useMobileDetect()
@@ -107,5 +105,3 @@ const ArticleLayout: FC<TProps> = ({ isFAQArticleLayout }) => {
     </Wrapper>
   )
 }
-
-export default ArticleLayout

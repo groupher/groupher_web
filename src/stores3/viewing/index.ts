@@ -27,6 +27,10 @@ export default (init: TInit = {}): TStore => {
       viewingThread: null,
       communityDigestInView: true,
 
+      // docs
+      isArticleLayout: false,
+      isFAQArticleLayout: true,
+
       // actions
       updateViewingCommunity(args: TCommunity): void {
         store.community = mergeRight(store.community, args)

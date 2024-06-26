@@ -1,12 +1,11 @@
 import { type FC, memo, useState } from 'react'
 
-// import { config, library } from '@fortawesome/fontawesome-svg-core'
-// config.autoAddCss = false
+import type { TArticle, TColorName } from '@/spec'
 
 import FaIcons from '@/widgets/FaIcons'
 import ArrowButton from '@/widgets/Buttons/ArrowButton'
 
-import type { TArticle, TColorName } from '@/spec'
+import useLogic from '../useLogic'
 import {
   Wrapper,
   Header,
@@ -15,7 +14,6 @@ import {
   ItemsWrapper,
   Item,
 } from '../styles/blocks_layout/category'
-import { gotoDetailLayout } from '../logic'
 
 const FOLD_LIMIT = 5
 
@@ -26,6 +24,7 @@ type TProps = {
 }
 
 const Category: FC<TProps> = ({ color, title, articles }) => {
+  const { gotoDetailLayout } = useLogic()
   const [sliceCount, setSliceCount] = useState(FOLD_LIMIT)
 
   return (

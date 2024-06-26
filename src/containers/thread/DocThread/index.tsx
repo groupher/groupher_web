@@ -2,7 +2,6 @@
  * DocThread
  */
 
-import type { FC } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import { DOC_LAYOUT } from '@/const/layout'
@@ -17,24 +16,16 @@ import ListsLayout from './ListsLayout'
 import CardsLayout from './CardsLayout'
 import ArticleLayout from './ArticleLayout'
 
-import { useStore } from './store'
+import useLogic from './useLogic'
 import { Wrapper, FAQWrapper } from './styles'
-import { useInit } from './logic'
 
-type TProps = {
-  title?: string
-}
-
-const DocThread: FC<TProps> = ({ title = 'title' }) => {
-  const store = useStore()
-  useInit(store)
-
-  const { isArticleLayout, layout, faqLayout, isFAQArticleLayout, faqSections } = store
+export default () => {
+  const { isArticleLayout, layout, faqLayout, faqSections } = useLogic()
   const { isMobile } = useMobileDetect()
   const { bannerLayout } = useLayout()
 
   if (isArticleLayout) {
-    return <ArticleLayout isFAQArticleLayout={isFAQArticleLayout} />
+    return <ArticleLayout />
   }
 
   return (
@@ -51,5 +42,3 @@ const DocThread: FC<TProps> = ({ title = 'title' }) => {
     </Wrapper>
   )
 }
-
-export default DocThread
