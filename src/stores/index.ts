@@ -36,7 +36,6 @@ export { default as CommunityEditorStore } from '@/containers/editor/CommunityEd
 
 // GEN: EXPORT CONTAINERS STORE HERE
 export { default as CoverEditorStore } from '@/containers/editor/CoverEditor/store'
-export { default as TagSettingEditorStore } from '@/containers/editor/TagSettingEditor/store'
 // export { default as BlogEditorStore } from '@/containers/editor/BlogEditor/store'
 export { default as ArticleViewerStore } from '@/containers/viewer/ArticleViewer/store'
 export { default as ArticleEditorStore } from '@/containers/editor/ArticleEditor/store'

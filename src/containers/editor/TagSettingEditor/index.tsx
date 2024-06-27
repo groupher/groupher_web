@@ -3,7 +3,7 @@
  *
  */
 
-import type { FC } from 'react'
+import { type FC, useEffect } from 'react'
 
 import type { TChangeMode, TColorName, TSelectOption } from '@/spec'
 import { ROUTE } from '@/const/route'
@@ -21,7 +21,7 @@ import CustomScroller from '@/widgets/CustomScroller'
 import PostLayout from './PostLayout'
 import Footer from './Footer'
 
-import { useStore } from './store'
+import useLogic from './useLogic'
 
 import {
   Wrapper,
@@ -36,18 +36,18 @@ import {
   Inputer,
 } from './styles'
 
-import { useInit, edit } from './logic'
-import { observer } from 'mobx-react-lite'
-
 type TProps = {
   mode?: TChangeMode
 }
 
 const TagSettingEditor: FC<TProps> = ({ mode = CHANGE_MODE.UPDATE }) => {
-  const store = useStore()
-  useInit(store, mode)
+  const { initEditingTag, edit, editingTag, getCategory, getCategoryOptions } = useLogic()
+  const curCategory = getCategory()
+  const categoryOptions = getCategoryOptions()
 
-  const { editingTagData: editingTag, curCategory, categoryOptions, processing } = store
+  useEffect(() => {
+    initEditingTag(mode)
+  }, [])
 
   return (
     <Wrapper $testid="tag-setting-editor">
@@ -76,7 +76,7 @@ const TagSettingEditor: FC<TProps> = ({ mode = CHANGE_MODE.UPDATE }) => {
               </ColorSelector>
 
               <TitleInputer
-                value={editingTag.title}
+                value={editingTag?.title}
                 onChange={(e) => edit(e.target.value, 'title')}
               />
             </BasicInfo>
@@ -100,7 +100,7 @@ const TagSettingEditor: FC<TProps> = ({ mode = CHANGE_MODE.UPDATE }) => {
         <Title>标签说明</Title>
         <Br bottom={5} />
         <Inputer
-          value={editingTag.desc}
+          value={editingTag?.desc}
           placeholder="标签说明 (支持 Markdown 语法)"
           behavior="textarea"
           onChange={(e) => edit(e.target.value, 'desc')}
@@ -114,13 +114,13 @@ const TagSettingEditor: FC<TProps> = ({ mode = CHANGE_MODE.UPDATE }) => {
         </Desc>
         <Br bottom={20} />
         <PostLayout
-          layout={editingTag.layout || POST_LAYOUT.QUORA}
+          layout={editingTag?.layout || POST_LAYOUT.QUORA}
           onChange={(v) => edit(v, 'layout')}
         />
       </CustomScroller>
-      <Footer tag={editingTag} mode={mode} processing={processing} />
+      <Footer />
     </Wrapper>
   )
 }
 
-export default observer(TagSettingEditor)
+export default TagSettingEditor

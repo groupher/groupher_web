@@ -36,7 +36,6 @@ import {
   DrawerStore,
   // GEN: IMPORT SUBSTORE
   CoverEditorStore,
-  TagSettingEditorStore,
   // SubscriberStore,
   // CollectionFolderStore,
   ArticleViewerStore,
@@ -84,7 +83,6 @@ const rootStore = T.model({
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
   coverEditor: T.opt(CoverEditorStore, {}),
-  tagSettingEditor: T.opt(TagSettingEditorStore, {}),
   // collectionFolder: T.opt(CollectionFolderStore, {}),
   articleViewer: T.opt(ArticleViewerStore, {}),
   // abuseReport: T.opt(AbuseReportStore, {}),
