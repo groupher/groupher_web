@@ -97,6 +97,7 @@ const ModeLine = T.model('ModeLine', {
   }))
 
 export type TStore = Instance<typeof ModeLine>
+// @ts-ignore
 export const useStore = (): TStore => useMobxContext().store.modeLine
 
 export default ModeLine

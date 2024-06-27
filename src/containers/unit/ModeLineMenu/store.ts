@@ -4,7 +4,7 @@
  */
 
 import type { TRootStore, TArticle, TCommunity } from '@/spec'
-import { T, getParent, markStates, Instance, toJS, useMobxContext } from '@/mobx'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
 
 import type { TCurActive } from './spec'
 
@@ -37,6 +37,7 @@ const ModeLineMenu = T.model('ModeLineMenu', {
   }))
 
 export type TStore = Instance<typeof ModeLineMenu>
+// @ts-ignore
 export const useStore = (): TStore => useMobxContext().store.modeLineMenu
 
 export default ModeLineMenu

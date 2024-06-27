@@ -44,8 +44,8 @@ import {
   ArticleEditorStore,
   // UserProfileStore,
   // MembershipContentStore,
-  ModeLineMenuStore,
-  ModeLineStore,
+  // ModeLineMenuStore,
+  // ModeLineStore,
   // SubscribeContentStore,
   // RecipesContentStore,
   // C11NSettingPanelStore,
@@ -90,8 +90,8 @@ const rootStore = T.model({
   // abuseReport: T.opt(AbuseReportStore, {}),
   articleEditor: T.opt(ArticleEditorStore, {}),
   // userProfile: T.opt(UserProfileStore, {}),
-  modeLineMenu: T.opt(ModeLineMenuStore, {}),
-  modeLine: T.opt(ModeLineStore, {}),
+  // modeLineMenu: T.opt(ModeLineMenuStore, {}),
+  // modeLine: T.opt(ModeLineStore, {}),
   // recipesContent: T.opt(RecipesContentStore, {}),
   // c11NSettingPanel: T.opt(C11NSettingPanelStore, {}),
 })
@@ -111,7 +111,7 @@ const rootStore = T.model({
       self.route.markRoute(query, opt)
     },
     showTopModeline(bool: boolean): void {
-      self.modeLine.showTopBar(bool)
+      // self.modeLine.showTopBar(bool)
     },
     closeDrawer(): void {
       self.drawer.close()
