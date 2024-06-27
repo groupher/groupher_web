@@ -1,6 +1,6 @@
-import styled, { theme } from '@/css'
+import styled, { theme } from '~/css'
 
-import Input from '@/widgets/Input'
+import Input from '~/widgets/Input'
 
 export { Desc } from '../base_info'
 

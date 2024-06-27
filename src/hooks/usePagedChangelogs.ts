@@ -1,9 +1,9 @@
 import { useContext, useMemo } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
-import type { TPagedChangelogs, TResState } from '@/spec'
+import type { TPagedChangelogs, TResState } from '~/spec'
 
-import { toJS } from '@/mobx'
+import { toJS } from '~/mobx'
 
 type TRes = {
   resState: TResState

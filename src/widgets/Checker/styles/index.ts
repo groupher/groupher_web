@@ -1,8 +1,8 @@
-import type { TActive, TColor } from '@/spec'
-import styled, { css, rainbow, theme } from '@/css'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, rainbow, theme } from '~/css'
 
-import CheckedSVG from '@/icons/CheckBold'
-import { WithMargin } from '@/widgets/Common'
+import CheckedSVG from '~/icons/CheckBold'
+import { WithMargin } from '~/widgets/Common'
 
 import { getIconSize, getFontSize, getBorderRadius } from './metric'
 

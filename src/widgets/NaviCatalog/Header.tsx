@@ -1,10 +1,10 @@
 import { type FC, memo } from 'react'
 
-import type { TNaviTag } from '@/spec'
-import { ICON } from '@/config'
-import { nilOrEmpty } from '@/validator'
+import type { TNaviTag } from '~/spec'
+import { ICON } from '~/config'
+import { nilOrEmpty } from '~/validator'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import {
   Wrapper,

@@ -1,4 +1,4 @@
-import type { TArticle } from '@/spec'
+import type { TArticle } from '~/spec'
 
 /**
  * NOTE: should use observer to wrap the component who use this hook

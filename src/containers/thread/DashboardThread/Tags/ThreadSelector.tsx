@@ -1,4 +1,4 @@
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 
 import useTags from '../logic/useTags'
 import { Wrapper, Hint, CatsWrapper } from '../styles/tags/thread_selector'

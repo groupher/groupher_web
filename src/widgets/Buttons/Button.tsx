@@ -1,10 +1,10 @@
 import type { FC, ReactNode } from 'react'
 
-import type { TSizeTSM, TSpace } from '@/spec'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import SIZE from '@/const/size'
+import type { TSizeTSM, TSpace } from '~/spec'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import SIZE from '~/const/size'
 
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 import { Wrapper, RedWrapper, ChildrenWrapper } from './styles/button'
 
 type TProps = {

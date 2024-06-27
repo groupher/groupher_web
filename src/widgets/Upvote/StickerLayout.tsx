@@ -6,11 +6,11 @@
 
 import { type FC, memo } from 'react'
 
-import type { TUser } from '@/spec'
+import type { TUser } from '~/spec'
 
-import { UPVOTE_LAYOUT } from '@/const/layout'
-import AnimatedCount from '@/widgets/AnimatedCount'
-import Facepile from '@/widgets/Facepile'
+import { UPVOTE_LAYOUT } from '~/const/layout'
+import AnimatedCount from '~/widgets/AnimatedCount'
+import Facepile from '~/widgets/Facepile'
 
 import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'

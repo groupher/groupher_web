@@ -1,4 +1,4 @@
-import type { TTag } from '@/spec'
+import type { TTag } from '~/spec'
 
 export type TMenu = {
   id: string

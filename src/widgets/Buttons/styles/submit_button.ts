@@ -1,5 +1,5 @@
-import styled, { css, theme, animate } from '@/css'
-import CheckedSVG from '@/icons/Checked'
+import styled, { css, theme, animate } from '~/css'
+import CheckedSVG from '~/icons/Checked'
 
 export const Wrapper = styled.div``
 

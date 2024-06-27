@@ -1,6 +1,6 @@
-import { Bar as BarBase } from '@/widgets/Common'
+import { Bar as BarBase } from '~/widgets/Common'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 import StarSVG from '../../Star'
 

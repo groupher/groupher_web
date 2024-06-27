@@ -6,7 +6,7 @@
 
 import { type FC, memo, useState } from 'react'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
 import type { TDocFeedback } from './spec'
 import { HELP_FEEDBACK } from './constant'

@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import GithubSVG from '@/icons/Github8'
-import BookSVG from '@/icons/Book'
+import GithubSVG from '~/icons/Github8'
+import BookSVG from '~/icons/Book'
 
 export const Wrapper = styled.div`
   background: ${theme('htmlBg')};

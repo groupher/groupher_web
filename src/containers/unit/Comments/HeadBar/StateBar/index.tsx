@@ -1,7 +1,7 @@
 import { type FC, memo } from 'react'
 
-import Button from '@/widgets/Buttons/Button'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import Button from '~/widgets/Buttons/Button'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
 import SortMenu from './SortMenu'
 import type { TProps as TBase } from '..'

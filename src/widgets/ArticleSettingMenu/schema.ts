@@ -1,6 +1,6 @@
 import { gql } from 'urql'
 
-import { F } from '@/schemas'
+import { F } from '~/schemas'
 
 const updatePost = gql`
   mutation ($id: ID!, $title: String, $body: String, $articleTags: [ID]) {

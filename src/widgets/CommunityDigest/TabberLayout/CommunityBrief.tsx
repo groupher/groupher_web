@@ -1,14 +1,14 @@
-import { assetSrc } from '@/helper'
-import { DEME_SOCIALS } from '@/const/social'
-import { BRAND_LAYOUT } from '@/const/layout'
+import { assetSrc } from '~/helper'
+import { DEME_SOCIALS } from '~/const/social'
+import { BRAND_LAYOUT } from '~/const/layout'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useLayout from '@/hooks/useLayout'
-import useMetric from '@/hooks/useMetric'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useLayout from '~/hooks/useLayout'
+import useMetric from '~/hooks/useMetric'
 
-import ImgFallback from '@/widgets/ImgFallback'
-import SocialList from '@/widgets/SocialList'
-import AccountUnit from '@/widgets/AccountUnit'
+import ImgFallback from '~/widgets/ImgFallback'
+import SocialList from '~/widgets/SocialList'
+import AccountUnit from '~/widgets/AccountUnit'
 
 import {
   Wrapper,

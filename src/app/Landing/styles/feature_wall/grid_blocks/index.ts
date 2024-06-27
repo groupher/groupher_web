@@ -1,21 +1,21 @@
-import styled, { css, theme } from '@/css'
-import type { TActive, TSpace } from '@/spec'
+import styled, { css, theme } from '~/css'
+import type { TActive, TSpace } from '~/spec'
 
-import EmojiSVG from '@/icons/HeartDuo'
-import UserSVG from '@/icons/UserDuo'
-import LaptopSVG from '@/icons/LaptopDuo'
-import CloudSVG from '@/icons/CloudDuo'
-import FingerPrintSVG from '@/icons/FingerPrintDuo'
-import SearchSVG from '@/icons/SearchDuo'
+import EmojiSVG from '~/icons/HeartDuo'
+import UserSVG from '~/icons/UserDuo'
+import LaptopSVG from '~/icons/LaptopDuo'
+import CloudSVG from '~/icons/CloudDuo'
+import FingerPrintSVG from '~/icons/FingerPrintDuo'
+import SearchSVG from '~/icons/SearchDuo'
 //
-import TriangleSVG from '@/icons/TriangleDuo'
-import SquareSVG from '@/icons/SquareDuo'
-import CircleSVG from '@/icons/CircleDuo'
-import StarSVG from '@/icons/StarDuo'
-import DiamandSVG from '@/icons/DiamandDuo'
-import SqaureSrewSVG from '@/icons/SqaureSrewDuo'
+import TriangleSVG from '~/icons/TriangleDuo'
+import SquareSVG from '~/icons/SquareDuo'
+import CircleSVG from '~/icons/CircleDuo'
+import StarSVG from '~/icons/StarDuo'
+import DiamandSVG from '~/icons/DiamandDuo'
+import SqaureSrewSVG from '~/icons/SqaureSrewDuo'
 
-import { WithPosition } from '@/widgets/Common'
+import { WithPosition } from '~/widgets/Common'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};

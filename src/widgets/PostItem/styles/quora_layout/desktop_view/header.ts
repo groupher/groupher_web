@@ -1,6 +1,6 @@
-import type { TArticleTitle } from '@/spec'
-import styled, { css, rainbow, rainbowLight, theme } from '@/css'
-import DotDivider from '@/widgets/DotDivider'
+import type { TArticleTitle } from '~/spec'
+import styled, { css, rainbow, rainbowLight, theme } from '~/css'
+import DotDivider from '~/widgets/DotDivider'
 
 import { Wrapper as ItemWrapper } from '.'
 

@@ -4,11 +4,11 @@ import { type FC, Fragment } from 'react'
 // eslint-disable-next-line import/no-unresolved
 import { Toaster } from 'sonner'
 
-import useShortcut from '@/hooks/useShortcut'
+import useShortcut from '~/hooks/useShortcut'
 
-import Drawer from '@/containers/tool/Drawer'
-import ErrorBox from '@/containers/tool/ErrorBox'
-import UserListModal from '@/widgets/UserListModal'
+import Drawer from '~/containers/tool/Drawer'
+import ErrorBox from '~/containers/tool/ErrorBox'
+import UserListModal from '~/widgets/UserListModal'
 
 // import { Drawer } from './dynamic'
 

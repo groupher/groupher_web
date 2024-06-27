@@ -4,11 +4,11 @@
 
 import { type FC, memo, useState, useCallback } from 'react'
 
-import type { TID, TSizeTSM } from '@/spec'
-import SIZE from '@/const/size'
-import useAccount from '@/hooks/useAccount'
+import type { TID, TSizeTSM } from '~/spec'
+import SIZE from '~/const/size'
+import useAccount from '~/hooks/useAccount'
 
-import { authWarn } from '@/signal'
+import { authWarn } from '~/signal'
 
 import FollowingBtn from './FollowingBtn'
 import FollowedBtn from './FollowedBtn'

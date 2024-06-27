@@ -8,24 +8,24 @@
 
 import { Fragment, lazy, Suspense } from 'react'
 
-import useTrans from '@/hooks/useTrans'
-import useLayout from '@/hooks/useLayout'
-import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useActiveTag from '@/hooks/useActiveTag'
+import useTrans from '~/hooks/useTrans'
+import useLayout from '~/hooks/useLayout'
+import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useActiveTag from '~/hooks/useActiveTag'
 
-import { Link, SpaceGrow, Br, SexyDivider } from '@/widgets/Common'
-import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '@/signal'
-import { toJS } from '@/mobx'
-import { mockUsers } from '@/mock'
-import { BANNER_LAYOUT } from '@/const/layout'
+import { Link, SpaceGrow, Br, SexyDivider } from '~/widgets/Common'
+import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '~/signal'
+import { toJS } from '~/mobx'
+import { mockUsers } from '~/mock'
+import { BANNER_LAYOUT } from '~/const/layout'
 
-import ImgFallback from '@/widgets/ImgFallback'
-import Sticky from '@/widgets/Sticky'
-import GetMe from '@/widgets/GetMe'
+import ImgFallback from '~/widgets/ImgFallback'
+import Sticky from '~/widgets/Sticky'
+import GetMe from '~/widgets/GetMe'
 
-import PublishButton from '@/widgets/Buttons/PublishButton'
-import TagsBar from '@/containers/unit/TagsBar'
+import PublishButton from '~/widgets/Buttons/PublishButton'
+import TagsBar from '~/containers/unit/TagsBar'
 
 import CommunityBrief from './CommunityBrief'
 
@@ -44,7 +44,7 @@ import {
   PublishWrapper,
 } from '../styles/thread_sidebar'
 
-const UniBar = lazy(() => import('@/widgets/UniBar'))
+const UniBar = lazy(() => import('~/widgets/UniBar'))
 
 export default () => {
   const { t } = useTrans()

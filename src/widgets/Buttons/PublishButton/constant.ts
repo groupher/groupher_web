@@ -1,5 +1,5 @@
-import SVG from '@/const/svg'
-import { PUBLISH_MODE } from '@/const/publish'
+import SVG from '~/const/svg'
+import { PUBLISH_MODE } from '~/const/publish'
 
 const POST_MENU_OPTIONS = [
   {

@@ -2,9 +2,9 @@ import { type FC, useEffect, useRef, memo, useState } from 'react'
 
 import { useOverlayScrollbars } from 'overlayscrollbars-react'
 
-import { DRAWER_SCROLLER } from '@/const/dom'
-import { scrollDrawerToTop } from '@/dom'
-// import CustomScroller from '@/widgets/CustomScroller'
+import { DRAWER_SCROLLER } from '~/const/dom'
+import { scrollDrawerToTop } from '~/dom'
+// import CustomScroller from '~/widgets/CustomScroller'
 
 import Content from './Content'
 import { Wrapper } from '../styles/content'

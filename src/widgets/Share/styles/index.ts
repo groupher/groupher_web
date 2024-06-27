@@ -1,12 +1,12 @@
-import LinkSVG from '@/icons/Link'
-import QRCodeSVG from '@/icons/QRCodeSolid'
-import MoreSVG from '@/icons/ShareArrow'
-import WeiboRawSVG from '@/icons/social/WeiboRaw'
-import WeChatRawSVG from '@/icons/social/WeChatRaw'
+import LinkSVG from '~/icons/Link'
+import QRCodeSVG from '~/icons/QRCodeSolid'
+import MoreSVG from '~/icons/ShareArrow'
+import WeiboRawSVG from '~/icons/social/WeiboRaw'
+import WeChatRawSVG from '~/icons/social/WeChatRaw'
 
-import { WithMargin } from '@/widgets/Common'
+import { WithMargin } from '~/widgets/Common'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled(WithMargin)`
   ${css.row('align-center')};

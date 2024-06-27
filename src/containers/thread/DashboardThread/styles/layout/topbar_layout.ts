@@ -1,7 +1,7 @@
-import type { TActive, TColor, TColorName } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
+import type { TActive, TColor, TColorName } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
 
-import { Divider } from '@/widgets/Common'
+import { Divider } from '~/widgets/Common'
 
 import { BaseSection, BlockBase } from '.'
 

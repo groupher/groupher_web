@@ -1,14 +1,14 @@
 import { type FC, memo, useCallback } from 'react'
 
-import type { TComment } from '@/spec'
-import { ICON } from '@/config'
-import useAccount from '@/hooks/useAccount'
+import type { TComment } from '~/spec'
+import { ICON } from '~/config'
+import useAccount from '~/hooks/useAccount'
 
-import { authWarn } from '@/signal'
+import { authWarn } from '~/signal'
 
-import IconButton from '@/widgets/Buttons/IconButton'
-import MenuButton from '@/widgets/Buttons/MenuButton'
-import { SpaceGrow } from '@/widgets/Common'
+import IconButton from '~/widgets/Buttons/IconButton'
+import MenuButton from '~/widgets/Buttons/MenuButton'
+import { SpaceGrow } from '~/widgets/Common'
 
 import { Wrapper, ReplyAction, MoreWrapper } from '../styles/comment/actions'
 import { openUpdateEditor, openReplyEditor } from '../logic'

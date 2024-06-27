@@ -1,4 +1,4 @@
-import styled, { css, theme, animate } from '@/css'
+import styled, { css, theme, animate } from '~/css'
 
 export const NumbersWrapper = styled.div`
   ${css.row('align-center')};

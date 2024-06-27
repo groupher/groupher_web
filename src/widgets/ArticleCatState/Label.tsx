@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import { ARTICLE_CAT } from '@/const/gtd'
-import useNameAlias from '@/hooks/useNameAlias'
+import { ARTICLE_CAT } from '~/const/gtd'
+import useNameAlias from '~/hooks/useNameAlias'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
 

@@ -1,5 +1,5 @@
-import { Bar as BarBase } from '@/widgets/Common'
-import styled, { css, theme } from '@/css'
+import { Bar as BarBase } from '~/widgets/Common'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div`
   ${css.column('align-center')};

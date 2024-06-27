@@ -1,8 +1,8 @@
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
-import StarSVG from '@/icons/github/Star'
-import ForkSVG from '@/icons/github/Fork'
-import ContributeSVG from '@/icons/github/Contribute'
+import StarSVG from '~/icons/github/Star'
+import ForkSVG from '~/icons/github/Fork'
+import ContributeSVG from '~/icons/github/Contribute'
 
 export const Wrapper = styled.div`
   margin-top: 22px;

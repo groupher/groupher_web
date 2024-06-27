@@ -1,5 +1,5 @@
-import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
-import { Divider, Br } from '@/widgets/Common'
+import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
+import { Divider, Br } from '~/widgets/Common'
 
 import DocThread from './DocThread'
 import AboutThread from './AboutThread'

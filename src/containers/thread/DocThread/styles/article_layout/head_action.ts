@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ShareSVG from '@/icons/Share'
-import ReportSVG from '@/icons/WarningLight'
+import ShareSVG from '~/icons/Share'
+import ReportSVG from '~/icons/WarningLight'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

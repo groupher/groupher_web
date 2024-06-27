@@ -10,10 +10,10 @@ import type {
   TWallpaper,
   TWallpaperGradient,
   TWallpaperGradientDir,
-} from '@/spec'
-import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/const/wallpaper'
+} from '~/spec'
+import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '~/const/wallpaper'
 
-import { markStates, toJS, getParent, type Instance, T, useMobxContext } from '@/mobx'
+import { markStates, toJS, getParent, type Instance, T, useMobxContext } from '~/mobx'
 
 import type {
   TToolboxSetting,

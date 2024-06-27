@@ -7,8 +7,8 @@
 import { type FC, memo } from 'react'
 import { map, prop, includes } from 'ramda'
 
-import type { TNaviTag } from '@/spec'
-import { SpaceGrow, Space } from '@/widgets/Common'
+import type { TNaviTag } from '~/spec'
+import { SpaceGrow, Space } from '~/widgets/Common'
 
 import { ROOT_MENU } from '../constant'
 

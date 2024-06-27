@@ -1,18 +1,18 @@
 import { useRouter } from 'next/navigation'
 
-import { BANNER_LAYOUT, BRAND_LAYOUT } from '@/const/layout'
-import { THREAD } from '@/const/thread'
-import { assetSrc } from '@/helper'
-import { prettyURL } from '@/fmt'
+import { BANNER_LAYOUT, BRAND_LAYOUT } from '~/const/layout'
+import { THREAD } from '~/const/thread'
+import { assetSrc } from '~/helper'
+import { prettyURL } from '~/fmt'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useViewingThread from '@/hooks/useViewingThread'
-import useLayout from '@/hooks/useLayout'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useViewingThread from '~/hooks/useViewingThread'
+import useLayout from '~/hooks/useLayout'
 
-import ImgFallback from '@/widgets/ImgFallback'
-import ArrowLinker from '@/widgets/ArrowLinker'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import { Row } from '@/widgets/Common'
+import ImgFallback from '~/widgets/ImgFallback'
+import ArrowLinker from '~/widgets/ArrowLinker'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import { Row } from '~/widgets/Common'
 
 import {
   Wrapper,

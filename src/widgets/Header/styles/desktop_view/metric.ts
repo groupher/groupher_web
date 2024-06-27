@@ -1,4 +1,4 @@
-import type { TMetric } from '@/spec'
+import type { TMetric } from '~/spec'
 
 export const getStickerJustify = (metric: TMetric): string => {
   switch (metric) {

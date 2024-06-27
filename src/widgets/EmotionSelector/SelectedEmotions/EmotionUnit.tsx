@@ -4,11 +4,11 @@
 
 import { type FC, memo } from 'react'
 
-import type { TEmotion, TSimpleUser, TEmotionType } from '@/spec'
+import type { TEmotion, TSimpleUser, TEmotionType } from '~/spec'
 
-import { titleCase } from '@/fmt'
-import Tooltip from '@/widgets/Tooltip'
-import AnimatedCount from '@/widgets/AnimatedCount'
+import { titleCase } from '~/fmt'
+import Tooltip from '~/widgets/Tooltip'
+import AnimatedCount from '~/widgets/AnimatedCount'
 
 import EmotionIcon from './EmotionIcon'
 import UsersPanel from './UsersPanel'

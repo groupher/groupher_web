@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import RootCheckSVG from '@/icons/CheckCircle'
-import CheckSVG from '@/icons/Check'
+import RootCheckSVG from '~/icons/CheckCircle'
+import CheckSVG from '~/icons/Check'
 
 export const Wrapper = styled.div`
   width: 100%;

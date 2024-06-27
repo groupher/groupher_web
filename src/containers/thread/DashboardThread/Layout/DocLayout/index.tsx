@@ -1,10 +1,10 @@
-import { DOC_LAYOUT, DOC_FAQ_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/const/layout'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { callDashboardDesc } from '@/signal'
+import { DOC_LAYOUT, DOC_FAQ_LAYOUT, DASHBOARD_DESC_LAYOUT } from '~/const/layout'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import { callDashboardDesc } from '~/signal'
 
-import { Br, Divider } from '@/widgets/Common'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import CheckLabel from '@/widgets/CheckLabel'
+import { Br, Divider } from '~/widgets/Common'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../../constant'
 import SectionLabel from '../../SectionLabel'

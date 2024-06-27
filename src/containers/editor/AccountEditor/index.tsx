@@ -6,12 +6,12 @@
 
 import type { FC } from 'react'
 
-import { closeDrawer } from '@/signal'
+import { closeDrawer } from '~/signal'
 
-import SubmitButton from '@/widgets/Buttons/SubmitButton'
-import Tooltip from '@/widgets/Tooltip'
-import { Divider, SpaceGrow, Br } from '@/widgets/Common'
-import OSSUploader from '@/widgets/OSSUploader'
+import SubmitButton from '~/widgets/Buttons/SubmitButton'
+import Tooltip from '~/widgets/Tooltip'
+import { Divider, SpaceGrow, Br } from '~/widgets/Common'
+import OSSUploader from '~/widgets/OSSUploader'
 
 import SexInputer from './SexInputer'
 import SocialInputer from './SocialInputer'

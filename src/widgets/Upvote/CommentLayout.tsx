@@ -6,9 +6,9 @@
 
 import { type FC, memo } from 'react'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { UPVOTE_LAYOUT } from '@/const/layout'
-import AnimatedCount from '@/widgets/AnimatedCount'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import { UPVOTE_LAYOUT } from '~/const/layout'
+import AnimatedCount from '~/widgets/AnimatedCount'
 
 import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'

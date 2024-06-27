@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { keys } from 'ramda'
 
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 
 import useLogic from '../useLogic'
 import {

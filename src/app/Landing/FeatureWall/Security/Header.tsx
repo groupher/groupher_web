@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { COLOR_NAME } from '@/const/colors'
+import { COLOR_NAME } from '~/const/colors'
 
 import { Wrapper, Dot, Domain, MoreIcon } from '../../styles/feature_wall/security/header'
 

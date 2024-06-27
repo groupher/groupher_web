@@ -1,4 +1,4 @@
-import useWallpaper from '@/hooks/useWallpaper'
+import useWallpaper from '~/hooks/useWallpaper'
 
 import DesktopDevice from './DesktopDevice'
 import DashboardDevice from './DashboardDevice'

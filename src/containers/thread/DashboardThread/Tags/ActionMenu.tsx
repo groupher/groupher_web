@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import MenuItem from '@/widgets/MenuItem'
-import MENU from '@/const/menu'
+import MenuItem from '~/widgets/MenuItem'
+import MENU from '~/const/menu'
 
 import { Wrapper } from '../styles/tags/action_menu'
 

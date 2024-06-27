@@ -4,16 +4,16 @@
 
 import type { FC } from 'react'
 
-import type { TEditMode, TMetric } from '@/spec'
-import METRIC from '@/const/metric'
-import { CONDITION_MODE } from '@/const/mode'
+import type { TEditMode, TMetric } from '~/spec'
+import METRIC from '~/const/metric'
+import { CONDITION_MODE } from '~/const/mode'
 
-import RichEditor from '@/containers/editor/RichEditor'
-import { Space } from '@/widgets/Common'
-import ConditionSelector from '@/widgets/ConditionSelector'
-import ArchiveAlert from '@/widgets/ArchiveAlert'
-import NoticeBar from '@/widgets/NoticeBar'
-import TagSelector from '@/widgets/TagSelector'
+import RichEditor from '~/containers/editor/RichEditor'
+import { Space } from '~/widgets/Common'
+import ConditionSelector from '~/widgets/ConditionSelector'
+import ArchiveAlert from '~/widgets/ArchiveAlert'
+import NoticeBar from '~/widgets/NoticeBar'
+import TagSelector from '~/widgets/TagSelector'
 
 import ArticleCover from './ArticleCover'
 

@@ -1,10 +1,10 @@
 import { type FC, memo, type ReactNode } from 'react'
 
-import type { TSpace } from '@/spec'
-import { ICON } from '@/config'
-import SVG from '@/const/svg'
+import type { TSpace } from '~/spec'
+import { ICON } from '~/config'
+import SVG from '~/const/svg'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 import { Wrapper, Content, Icon, Hint, getLocalIcon, HoverBg } from './styles/icon_button'
 
 export type TProps = {

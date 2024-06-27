@@ -6,10 +6,10 @@
 
 import { type FC, memo } from 'react'
 
-import { ICON_CMD } from '@/config'
+import { ICON_CMD } from '~/config'
 
-import ExpandIcon from '@/widgets/ExpandIcon'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import ExpandIcon from '~/widgets/ExpandIcon'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 import {
   PopContentWrapper,

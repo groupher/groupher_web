@@ -1,13 +1,13 @@
 import type { FC } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { DASHBOARD_ALIAS_ROUTE } from '@/const/route'
-import VIEW from '@/const/view'
+import { DASHBOARD_ALIAS_ROUTE } from '~/const/route'
+import VIEW from '~/const/view'
 
-import { groupByKey } from '@/helper'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { groupByKey } from '~/helper'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import Tabs from '@/widgets/Switcher/Tabs'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import { ALIAS_TABS, ALIAS_GROUP } from '../constant'
 

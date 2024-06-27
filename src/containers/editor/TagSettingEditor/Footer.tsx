@@ -1,5 +1,5 @@
-import { CHANGE_MODE } from '@/const/mode'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import { CHANGE_MODE } from '~/const/mode'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
 import useLogic from './useLogic'
 import { Wrapper, UpdateWrapper, ActionButton } from './styles/footer'

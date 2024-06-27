@@ -1,4 +1,4 @@
-import styled from '@/css'
+import styled from '~/css'
 
 export const MasonryCardsWrapper = styled.div`
   width: calc(100% + 30px);

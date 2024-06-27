@@ -1,7 +1,7 @@
-import { ICON_BASE } from '@/config'
-import { HCN } from '@/const/name'
+import { ICON_BASE } from '~/config'
+import { HCN } from '~/const/name'
 
-import { ROUTE } from '@/const/route'
+import { ROUTE } from '~/const/route'
 
 const COMMUNITY_INTRO = {
   WEB: {

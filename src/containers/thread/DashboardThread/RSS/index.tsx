@@ -1,5 +1,5 @@
-import Radio from '@/widgets/Switcher/Radio'
-import RangeSlider from '@/widgets/RangeSlider'
+import Radio from '~/widgets/Switcher/Radio'
+import RangeSlider from '~/widgets/RangeSlider'
 
 import Portal from '../Portal'
 import SavingBar from '../SavingBar'

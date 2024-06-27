@@ -1,10 +1,10 @@
 import type { FC } from 'react'
 import { startsWith } from 'ramda'
 
-import { ONE_LINK_GROUP, MORE_GROUP } from '@/const/dashboard'
+import { ONE_LINK_GROUP, MORE_GROUP } from '~/const/dashboard'
 
-import Tooltip from '@/widgets/Tooltip'
-import { SpaceGrow } from '@/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
+import { SpaceGrow } from '~/widgets/Common'
 
 import GroupMenu from './GroupMenu'
 import GroupInputer from './GroupInputer'

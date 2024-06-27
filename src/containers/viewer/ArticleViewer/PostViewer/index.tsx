@@ -5,18 +5,18 @@
 import { type FC, Fragment, useCallback, useState, useEffect } from 'react'
 import Balancer from 'react-wrap-balancer'
 
-import type { TPost } from '@/spec'
-import { scrollDrawerToTop } from '@/dom'
-import { BROADCAST_ARTICLE_LAYOUT } from '@/const/layout'
+import type { TPost } from '~/spec'
+import { scrollDrawerToTop } from '~/dom'
+import { BROADCAST_ARTICLE_LAYOUT } from '~/const/layout'
 
-import useBroadcast from '@/hooks/useBroadcast'
+import useBroadcast from '~/hooks/useBroadcast'
 
-import ArticleFooter from '@/widgets/ArticleFooter'
-import GotoTop from '@/widgets/GotoTop'
-import ViewportTracker from '@/widgets/ViewportTracker'
-import { ArticleContentLoading } from '@/widgets/Loading'
-import ArticeBody from '@/widgets/ArtimentBody'
-import ArticleBroadcast from '@/widgets/ArticleBroadcast'
+import ArticleFooter from '~/widgets/ArticleFooter'
+import GotoTop from '~/widgets/GotoTop'
+import ViewportTracker from '~/widgets/ViewportTracker'
+import { ArticleContentLoading } from '~/widgets/Loading'
+import ArticeBody from '~/widgets/ArtimentBody'
+import ArticleBroadcast from '~/widgets/ArticleBroadcast'
 
 import FixedHeader from './FixedHeader'
 import Header from './Header'

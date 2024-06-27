@@ -8,9 +8,9 @@ import React from 'react'
 import T from 'prop-types'
 import { isEmpty } from 'ramda'
 
-import { hasValue } from '@/validator'
-import SIZE from '@/const/size'
-import Maybe from '@/widgets/Maybe'
+import { hasValue } from '~/validator'
+import SIZE from '~/const/size'
+import Maybe from '~/widgets/Maybe'
 
 import {
   FormItemWrapper,

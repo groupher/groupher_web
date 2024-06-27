@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
-import type { TPagedPosts, TResState } from '@/spec'
+import type { TPagedPosts, TResState } from '~/spec'
 
 type TRes = {
   todo: TPagedPosts

@@ -1,7 +1,7 @@
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
-import UploadSVG from '@/icons/Upload'
+import UploadSVG from '~/icons/Upload'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};

@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
 import { pick } from 'ramda'
 
-import type { TKanbanLayout, TKanbanCardLayout, TColorName, TEditFunc } from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
+import type { TKanbanLayout, TKanbanCardLayout, TColorName, TEditFunc } from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
 
 import useHelper from './useHelper'
 

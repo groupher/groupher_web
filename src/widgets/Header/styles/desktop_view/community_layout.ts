@@ -1,5 +1,5 @@
-import type { TTestable, TMetric } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TTestable, TMetric } from '~/spec'
+import styled, { css, theme } from '~/css'
 
 type TPos = {
   noBorder: boolean

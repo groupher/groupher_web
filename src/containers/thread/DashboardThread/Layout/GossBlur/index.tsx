@@ -1,5 +1,5 @@
-import useTheme from '@/hooks/useTheme'
-import THEME from '@/const/theme'
+import useTheme from '~/hooks/useTheme'
+import THEME from '~/const/theme'
 
 import GossBlurDay from './GossBlurDay'
 import GossBlurNight from './GossBlurNight'

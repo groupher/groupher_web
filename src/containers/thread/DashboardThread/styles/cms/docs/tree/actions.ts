@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import AdderSVG from '@/icons/Plus'
-import EditPenSVG from '@/icons/EditPen'
+import AdderSVG from '~/icons/Plus'
+import EditPenSVG from '~/icons/EditPen'
 
 export const Wrapper = styled.div`
   ${css.column()};

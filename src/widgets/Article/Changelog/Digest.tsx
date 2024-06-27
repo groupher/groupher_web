@@ -5,19 +5,19 @@
 import { type FC, memo } from 'react'
 import { useRouter } from 'next/navigation'
 
-import type { TChangelog } from '@/spec'
+import type { TChangelog } from '~/spec'
 
-import useMetric from '@/hooks/useMetric'
-import { ARTICLE_THREAD } from '@/const/thread'
+import useMetric from '~/hooks/useMetric'
+import { ARTICLE_THREAD } from '~/const/thread'
 
-// import ArchivedSign from '@/widgets/ArchivedSign'
-import { SpaceGrow } from '@/widgets/Common'
-import ArticleBaseStats from '@/widgets/ArticleBaseStats'
-import Share from '@/widgets/Share'
-import ArticleSettingMenu from '@/widgets/ArticleSettingMenu'
+// import ArchivedSign from '~/widgets/ArchivedSign'
+import { SpaceGrow } from '~/widgets/Common'
+import ArticleBaseStats from '~/widgets/ArticleBaseStats'
+import Share from '~/widgets/Share'
+import ArticleSettingMenu from '~/widgets/ArticleSettingMenu'
 
-// import ArticleBelongCommunity from '@/widgets/ArticleBelongCommunity'
-// import ArticleMenu from '@/widgets/ArticleMenu'
+// import ArticleBelongCommunity from '~/widgets/ArticleBelongCommunity'
+// import ArticleMenu from '~/widgets/ArticleMenu'
 // import BackTo from './BackTo'
 
 import {

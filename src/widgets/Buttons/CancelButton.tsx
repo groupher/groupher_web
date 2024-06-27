@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
 import { Wrapper, BackIcon } from './styles/cancel_button'
 

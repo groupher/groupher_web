@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import { cutRest } from '@/fmt'
+import { cutRest } from '~/fmt'
 
 import Cover from './Cover'
 

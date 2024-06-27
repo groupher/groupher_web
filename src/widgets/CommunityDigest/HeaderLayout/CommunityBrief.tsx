@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 
-import { assetSrc } from '@/helper'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useLayout from '@/hooks/useLayout'
-import useHover from '@/hooks/useHover'
+import { assetSrc } from '~/helper'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useLayout from '~/hooks/useLayout'
+import useHover from '~/hooks/useHover'
 
-import { BRAND_LAYOUT } from '@/const/layout'
+import { BRAND_LAYOUT } from '~/const/layout'
 
-import Tooltip from '@/widgets/Tooltip'
-import { SpaceGrow, SexyDivider } from '@/widgets/Common'
-import ImgFallback from '@/widgets/ImgFallback'
+import Tooltip from '~/widgets/Tooltip'
+import { SpaceGrow, SexyDivider } from '~/widgets/Common'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import {
   Wrapper,

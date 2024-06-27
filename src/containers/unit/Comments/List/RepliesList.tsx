@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import type { TComment, TID } from '@/spec'
+import type { TComment, TID } from '~/spec'
 
 import type { TRepliesState, TAPIMode } from '../spec'
 import TogglerButton from './TogglerButton'

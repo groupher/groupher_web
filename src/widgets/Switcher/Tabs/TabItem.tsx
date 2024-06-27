@@ -6,11 +6,11 @@
 
 import { type FC, useEffect, useCallback, useRef } from 'react'
 
-import type { TSizeSM, TTabItem } from '@/spec'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { Trans } from '@/i18n'
-import { isString } from '@/validator'
-import { isElementInViewport } from '@/dom'
+import type { TSizeSM, TTabItem } from '~/spec'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import { Trans } from '~/i18n'
+import { isString } from '~/validator'
+import { isElementInViewport } from '~/dom'
 
 import TabIcon from './TabIcon'
 import { Wrapper, Label, ActiveLineWrapper, ActiveLine } from '../styles/tabs/tab_item'

@@ -2,13 +2,13 @@
 
 import { keys, findIndex, clone, remove, filter, reject, forEach, find } from 'ramda'
 
-import type { TLinkItem, TGroupedLinks } from '@/spec'
-import { sortByIndex, groupByKey } from '@/helper'
-import { ROUTE, DASHBOARD_ROUTE } from '@/const/route'
-import { MORE_GROUP } from '@/const/dashboard'
+import type { TLinkItem, TGroupedLinks } from '~/spec'
+import { sortByIndex, groupByKey } from '~/helper'
+import { ROUTE, DASHBOARD_ROUTE } from '~/const/route'
+import { MORE_GROUP } from '~/const/dashboard'
 
-import useSubStore from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useSubStore from '~/hooks/useSubStore'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
 import { EMPTY_LINK_ITEM } from '../../constant'
 

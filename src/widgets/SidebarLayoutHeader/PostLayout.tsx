@@ -4,9 +4,9 @@
 
 import type { FC } from 'react'
 
-import { SpaceGrow, SexyDivider } from '@/widgets/Common'
-import AccountUnit from '@/widgets/AccountUnit'
-import SearchBox from '@/widgets/SearchBox'
+import { SpaceGrow, SexyDivider } from '~/widgets/Common'
+import AccountUnit from '~/widgets/AccountUnit'
+import SearchBox from '~/widgets/SearchBox'
 
 import { Wrapper, InnerWrapper, MainArea } from './styles/post_layout'
 

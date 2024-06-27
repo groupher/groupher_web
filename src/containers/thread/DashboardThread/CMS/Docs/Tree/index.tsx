@@ -1,7 +1,7 @@
 import { type FC, useEffect, useRef } from 'react'
 import { type CursorProps, type NodeApi, type NodeRendererProps, Tree } from 'react-arborist'
 
-import type { TPagedArticles } from '@/spec'
+import type { TPagedArticles } from '~/spec'
 
 import { treeData, type TTreeItem } from '../treeData'
 

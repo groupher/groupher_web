@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import { COLOR_NAME } from '@/const/colors'
+import { COLOR_NAME } from '~/const/colors'
 
-import TagNode from '@/widgets/TagNode'
+import TagNode from '~/widgets/TagNode'
 
 import CoverPreview from '../CoverPreview'
 import Footer from './Footer'

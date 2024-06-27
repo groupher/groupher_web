@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import Tooltip from '@/widgets/Tooltip'
-import { SpaceGrow } from '@/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
+import { SpaceGrow } from '~/widgets/Common'
 
 import GroupMenu from '../GroupMenu'
 import GroupInputer from '../GroupInputer'

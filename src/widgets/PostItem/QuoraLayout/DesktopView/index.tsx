@@ -1,10 +1,10 @@
 import { type FC, memo } from 'react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
-import { previewArticle } from '@/signal'
+import { previewArticle } from '~/signal'
 
-import ArticlePinLabel from '@/widgets/ArticlePinLabel'
+import ArticlePinLabel from '~/widgets/ArticlePinLabel'
 
 import ViewingSign from '../../ViewingSign'
 

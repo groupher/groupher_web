@@ -6,9 +6,9 @@
 
 import { type FC, memo } from 'react'
 
-import TYPE from '@/const/type'
+import TYPE from '~/const/type'
 
-import { Space } from '@/widgets/Common'
+import { Space } from '~/widgets/Common'
 
 // import SelectedFilters from './SelectedFilters'
 // import FilterResult from './FilterResult'

@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-import type { TEditFunc } from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
+import type { TEditFunc } from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
 
 import useHelper from './useHelper'
 

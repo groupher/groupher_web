@@ -1,10 +1,10 @@
 import { type FC, memo, useEffect } from 'react'
 
-import VIEW from '@/const/view'
+import VIEW from '~/const/view'
 
-import TagsBar from '@/containers/unit/TagsBar'
-import Tabs from '@/widgets/Switcher/Tabs'
-import Sticky from '@/widgets/Sticky'
+import TagsBar from '~/containers/unit/TagsBar'
+import Tabs from '~/widgets/Switcher/Tabs'
+import Sticky from '~/widgets/Sticky'
 
 import type { TTagsMode } from '../spec'
 import { TABS_MODE_OPTIONS } from '../constant'

@@ -1,6 +1,6 @@
 import Tippy from '@tippyjs/react'
 
-import styled, { css, theme, zIndex } from '@/css'
+import styled, { css, theme, zIndex } from '~/css'
 
 export const StyledTippy = styled(Tippy)<{ wechatEnv?: boolean }>`
   position: relative;

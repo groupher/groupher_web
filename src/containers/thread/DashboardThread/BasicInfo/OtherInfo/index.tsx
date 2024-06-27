@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import CitySelector from '@/widgets/CitySelector'
-import { Br, SexyDivider } from '@/widgets/Common'
+import CitySelector from '~/widgets/CitySelector'
+import { Br, SexyDivider } from '~/widgets/Common'
 
 import { SETTING_FIELD } from '../../constant'
 

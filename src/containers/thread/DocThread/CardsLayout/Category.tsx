@@ -1,9 +1,9 @@
 import { type FC, useState } from 'react'
 
-import type { TArticle, TColorName } from '@/spec'
-import { mockUsers } from '@/mock'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import Facepile from '@/widgets/Facepile'
+import type { TArticle, TColorName } from '~/spec'
+import { mockUsers } from '~/mock'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import Facepile from '~/widgets/Facepile'
 
 import useLogic from '../useLogic'
 import {

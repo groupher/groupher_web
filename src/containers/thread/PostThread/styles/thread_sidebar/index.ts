@@ -1,9 +1,9 @@
-import type { TActive, TAvatarLayout, TTestable } from '@/spec'
-import { AVATAR_LAYOUT } from '@/const/layout'
+import type { TActive, TAvatarLayout, TTestable } from '~/spec'
+import { AVATAR_LAYOUT } from '~/const/layout'
 
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
-import LinkSVG from '@/icons/Link'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
+import LinkSVG from '~/icons/Link'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

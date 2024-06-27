@@ -6,7 +6,7 @@
 
 import { type FC, memo, type ReactNode } from 'react'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
 import { WarningWrapper, DangerWrapper, IconBox, InfoIcon, DangerIcon } from './styles'
 

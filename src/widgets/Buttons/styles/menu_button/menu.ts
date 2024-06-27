@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
-import { getLocalSVG } from '@/icons'
+import { getLocalSVG } from '~/icons'
 
 export const Wrapper = styled.div<{ $panelMinWidth: string }>`
   ${css.column('align-center')};

@@ -1,10 +1,10 @@
 import type { FC } from 'react'
 
-import type { TPost } from '@/spec'
-import { THREAD } from '@/const/thread'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import type { TPost } from '~/spec'
+import { THREAD } from '~/const/thread'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import ArticleReadLabel from '@/widgets/ArticleReadLabel'
+import ArticleReadLabel from '~/widgets/ArticleReadLabel'
 
 import { Wrapper, Main, Title } from '../../styles/cover_layout/desktop_view/header'
 

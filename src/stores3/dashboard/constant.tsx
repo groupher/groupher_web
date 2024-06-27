@@ -1,4 +1,4 @@
-import type { TSnakeUpperCase, TWidgetType } from '@/spec'
+import type { TSnakeUpperCase, TWidgetType } from '~/spec'
 
 import {
   DASHBOARD_ROUTE,
@@ -8,14 +8,14 @@ import {
   DASHBOARD_BASEINFO_ROUTE,
   DASHBOARD_SEO_ROUTE,
   DASHBOARD_DOC_ROUTE,
-} from '@/const/route'
-import { COLOR_NAME } from '@/const/colors'
+} from '~/const/route'
+import { COLOR_NAME } from '~/const/colors'
 
 import type { TSettingField, THeaderEditType, TFooterEditType } from './spec'
 
 // import { Icon } from './styles/side_menu'
 
-export { SEO_KEYS, SEO_OG_KEYS, SEO_TW_KEYS } from '@/const/seo'
+export { SEO_KEYS, SEO_OG_KEYS, SEO_TW_KEYS } from '~/const/seo'
 
 export const ALIGN_HEADER_OFFSET = '100px'
 

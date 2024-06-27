@@ -1,5 +1,5 @@
-import C11N from '@/const/c11n'
-import { WIDTH } from '@/css'
+import C11N from '~/const/c11n'
+import { WIDTH } from '~/css'
 
 export const getMaxWidth = (type) => {
   switch (type) {

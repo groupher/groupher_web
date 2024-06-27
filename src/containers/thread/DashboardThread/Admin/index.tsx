@@ -1,5 +1,5 @@
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import { Inline } from '@/widgets/Common'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import { Inline } from '~/widgets/Common'
 
 import Portal from '../Portal'
 import Adder from './Adder'

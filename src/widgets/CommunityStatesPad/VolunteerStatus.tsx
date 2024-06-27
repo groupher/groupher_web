@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import { prettyNum } from '@/fmt'
+import { prettyNum } from '~/fmt'
 
 import {
   Wrapper,

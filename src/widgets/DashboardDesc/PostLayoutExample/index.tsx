@@ -6,15 +6,15 @@
 
 import { type FC, memo, useState } from 'react'
 
-import type { TPostLayout } from '@/spec'
+import type { TPostLayout } from '~/spec'
 
-import { POST_LAYOUT } from '@/const/layout'
-import SVG from '@/const/svg'
-import VIEW from '@/const/view'
+import { POST_LAYOUT } from '~/const/layout'
+import SVG from '~/const/svg'
+import VIEW from '~/const/view'
 
-import Tabs from '@/widgets/Switcher/Tabs'
-import IconSwitcher from '@/widgets/Switcher/IconSwitcher'
-import NoticeBar from '@/widgets/NoticeBar'
+import Tabs from '~/widgets/Switcher/Tabs'
+import IconSwitcher from '~/widgets/Switcher/IconSwitcher'
+import NoticeBar from '~/widgets/NoticeBar'
 
 import type { TPreviewDevice } from '../spec'
 import { DEMO_POSTS, PREVIEW_MODE } from '../constant'

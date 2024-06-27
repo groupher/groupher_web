@@ -1,8 +1,8 @@
 import { type FC, memo } from 'react'
 import Link from 'next/link'
 
-import type { TCommunity } from '@/spec'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import type { TCommunity } from '~/spec'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 import {
   Wrapper,

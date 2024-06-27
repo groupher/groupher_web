@@ -1,10 +1,10 @@
 import type { FC } from 'react'
 
-import { mockHelpCats } from '@/mock'
-import { THREAD } from '@/const/thread'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { mockHelpCats } from '~/mock'
+import { THREAD } from '~/const/thread'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import ArrowLinker from '@/widgets/ArrowLinker'
+import ArrowLinker from '~/widgets/ArrowLinker'
 
 import {
   Wrapper,

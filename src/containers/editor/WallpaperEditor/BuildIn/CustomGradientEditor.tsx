@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import { SpaceGrow, Row } from '@/widgets/Common'
-import Button from '@/widgets/Buttons/Button'
+import { SpaceGrow, Row } from '~/widgets/Common'
+import Button from '~/widgets/Buttons/Button'
 
 import useLogic from '../useLogic'
 import {

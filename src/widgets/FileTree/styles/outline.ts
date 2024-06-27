@@ -1,7 +1,7 @@
-import type { TActive, TColor } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
 
-// import Img from '@/Img'
+// import Img from '~/Img'
 
 export const Wrapper = styled.div`
   ${css.column()};

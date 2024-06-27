@@ -1,6 +1,6 @@
 import { type FC, memo, useEffect } from 'react'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 import { countWords } from './helper'
 import { Wrapper, Hint, Main, CurNum, Slash, TotalNum } from './styles'
 

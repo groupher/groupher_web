@@ -1,7 +1,7 @@
 import { type FC, memo, useState } from 'react'
 
-import CustomScroller from '@/widgets/CustomScroller'
-import { SpaceGrow } from '@/widgets/Common'
+import CustomScroller from '~/widgets/CustomScroller'
+import { SpaceGrow } from '~/widgets/Common'
 
 import ToggleIcon from './ToggleIcon'
 import Options from './Options'

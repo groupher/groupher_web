@@ -1,8 +1,8 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Button from '@/widgets/Buttons/Button'
-import BookSVG from '@/icons/Book'
-import PeopleSVG from '@/icons/People'
+import Button from '~/widgets/Buttons/Button'
+import BookSVG from '~/icons/Book'
+import PeopleSVG from '~/icons/People'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};

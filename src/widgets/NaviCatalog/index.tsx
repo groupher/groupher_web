@@ -7,12 +7,12 @@
 import { type FC, useState, useCallback, useEffect, memo } from 'react'
 import { find, findIndex, propEq, last } from 'ramda'
 
-import URL_QUERY from '@/const/url_query'
-import type { TNaviTag } from '@/spec'
+import URL_QUERY from '~/const/url_query'
+import type { TNaviTag } from '~/spec'
 
-import { findDeepMatch } from '@/helper'
-import { nilOrEmpty } from '@/validator'
-import { getQueryFromUrl, markRoute } from '@/utils/route'
+import { findDeepMatch } from '~/helper'
+import { nilOrEmpty } from '~/validator'
+import { getQueryFromUrl, markRoute } from '~/utils/route'
 
 import type { TMenuMode } from './spec'
 import { ROOT_MENU, CHILD_MENU } from './constant'

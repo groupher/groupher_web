@@ -1,4 +1,4 @@
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 
 export const MENU = {
   FOLD_ALL: {

@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import ArticleCatState from '@/widgets/ArticleCatState'
+import ArticleCatState from '~/widgets/ArticleCatState'
 
-import type { TArticleCat } from '@/spec'
+import type { TArticleCat } from '~/spec'
 
 import {
   Wrapper,

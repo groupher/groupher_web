@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 import { range, mergeRight } from 'ramda'
 
-import type { TSpace, TSizeTSM } from '@/spec'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import SIZE from '@/const/size'
+import type { TSpace, TSizeTSM } from '~/spec'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import SIZE from '~/const/size'
 
 import { Wrapper, Container, Circle } from './styles/lava_lamp_loading'
 

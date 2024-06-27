@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import ArrowLinker from '@/widgets/ArrowLinker'
+import ArrowLinker from '~/widgets/ArrowLinker'
 
 import type { TStep } from '../../spec'
 import { STEP } from '../../constant'

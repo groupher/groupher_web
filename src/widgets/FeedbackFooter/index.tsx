@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
 import TopInfo from './TopInfo'
 import BottomInfo from './BottomInfo'

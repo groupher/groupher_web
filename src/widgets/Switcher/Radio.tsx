@@ -6,9 +6,9 @@
 
 import { type FC, memo } from 'react'
 
-import type { TSizeSM, TSpace } from '@/spec'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import SIZE from '@/const/size'
+import type { TSizeSM, TSpace } from '~/spec'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import SIZE from '~/const/size'
 
 import { Wrapper, Label } from './styles/radio'
 

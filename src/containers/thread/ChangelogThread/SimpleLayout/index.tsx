@@ -5,12 +5,12 @@
 
 import { useState } from 'react'
 
-import useLayout from '@/hooks/useLayout'
-import usePagedChangelogs from '@/hooks/usePagedChangelogs'
-import { BANNER_LAYOUT, CHANGELOG_LAYOUT } from '@/const/layout'
+import useLayout from '~/hooks/useLayout'
+import usePagedChangelogs from '~/hooks/usePagedChangelogs'
+import { BANNER_LAYOUT, CHANGELOG_LAYOUT } from '~/const/layout'
 
-import ChangelogItem from '@/widgets/ChangelogItem'
-import Tabs from '@/widgets/Switcher/Tabs'
+import ChangelogItem from '~/widgets/ChangelogItem'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import { TABS_MODE_OPTIONS } from '../constant'
 import FilterBar from './FilterBar'

@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
-import { css, theme, rainbow, rainbowLight } from '@/css'
-import type { TColor } from '@/spec'
+import { css, theme, rainbow, rainbowLight } from '~/css'
+import type { TColor } from '~/spec'
 
 import normalize from './normalize'
 

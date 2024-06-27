@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Input from '@/widgets/Input'
+import Input from '~/widgets/Input'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')}

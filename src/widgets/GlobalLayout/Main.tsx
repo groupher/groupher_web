@@ -6,22 +6,22 @@
 
 import type { FC, ReactNode } from 'react'
 
-import { blurRGB } from '@/fmt'
-import METRIC from '@/const/metric'
-import { TOPBAR_LAYOUT } from '@/const/layout'
+import { blurRGB } from '~/fmt'
+import METRIC from '~/const/metric'
+import { TOPBAR_LAYOUT } from '~/const/layout'
 
-import useMetric from '@/hooks/useMetric'
-import useTrans from '@/hooks/useTrans'
-import useTopbar from '@/hooks/useTopbar'
-import useThemeData from '@/hooks/useThemeData'
-import useWallpaper from '@/hooks/useWallpaper'
-import useGossBlur from '@/hooks/useGossBlur'
+import useMetric from '~/hooks/useMetric'
+import useTrans from '~/hooks/useTrans'
+import useTopbar from '~/hooks/useTopbar'
+import useThemeData from '~/hooks/useThemeData'
+import useWallpaper from '~/hooks/useWallpaper'
+import useGossBlur from '~/hooks/useGossBlur'
 
-// import Broadcast from '@/widgets/Broadcast'
-import Footer from '@/widgets/Footer'
+// import Broadcast from '~/widgets/Broadcast'
+import Footer from '~/widgets/Footer'
 
 // import DashboardAlert from './DashboardAlert'
-// import CustomScroller from '@/widgets/CustomScroller'
+// import CustomScroller from '~/widgets/CustomScroller'
 
 import GlowBackground from './GlowBackground'
 

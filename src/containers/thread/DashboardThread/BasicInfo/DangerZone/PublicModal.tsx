@@ -1,15 +1,15 @@
 import { type FC, useState } from 'react'
 
-import VIEW from '@/const/view'
+import VIEW from '~/const/view'
 
-import Modal from '@/widgets/Modal'
-import { Br } from '@/widgets/Common'
-import Tabs from '@/widgets/Switcher/Tabs'
-import Button from '@/widgets/Buttons/Button'
-// import NoteTip from '@/widgets/NoteTip'
-import HeadsUp from '@/widgets/HeadsUp'
+import Modal from '~/widgets/Modal'
+import { Br } from '~/widgets/Common'
+import Tabs from '~/widgets/Switcher/Tabs'
+import Button from '~/widgets/Buttons/Button'
+// import NoteTip from '~/widgets/NoteTip'
+import HeadsUp from '~/widgets/HeadsUp'
 
-// import from '@/widgets/Alert'
+// import from '~/widgets/Alert'
 import List from './List'
 
 import useBaseInfo from '../../logic/useBaseInfo'

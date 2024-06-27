@@ -1,9 +1,9 @@
-import type { TTestable, TColorName } from '@/spec'
+import type { TTestable, TColorName } from '~/spec'
 
-import styled, { css, theme, rainbow, rainbowLight } from '@/css'
-import BroadcastSVG from '@/icons/Broadcast'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import { WithMargin } from '@/widgets/Common'
+import styled, { css, theme, rainbow, rainbowLight } from '~/css'
+import BroadcastSVG from '~/icons/Broadcast'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import { WithMargin } from '~/widgets/Common'
 
 type TWrapper = { color: TColorName } & TTestable
 export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({

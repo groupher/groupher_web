@@ -1,10 +1,10 @@
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import usePublicThreads from '@/hooks/usePublicThreads'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import useViewingThread from '@/hooks/useViewingThread'
-import useHeaderLinks from '@/hooks/useHeaderLinks'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import usePublicThreads from '~/hooks/usePublicThreads'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useViewingThread from '~/hooks/useViewingThread'
+import useHeaderLinks from '~/hooks/useHeaderLinks'
 
-import CustomHeaderLinks from '@/widgets/CustomHeaderLinks'
+import CustomHeaderLinks from '~/widgets/CustomHeaderLinks'
 
 import ThreadIcon from './ThreadIcon'
 

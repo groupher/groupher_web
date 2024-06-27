@@ -1,6 +1,6 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme, animate } from '@/css'
-import Img from '@/Img'
+import type { TActive } from '~/spec'
+import styled, { css, theme, animate } from '~/css'
+import Img from '~/Img'
 
 export const SelectBox = styled.div`
   ${css.row('align-center')};

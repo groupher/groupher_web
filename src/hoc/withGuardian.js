@@ -9,8 +9,8 @@ import React from 'react'
 import T from 'prop-types'
 import { startsWith, isEmpty, path, split } from 'ramda'
 
-import BStore from '@/utils/bstore'
-import { nilOrEmpty } from '@/validator'
+import BStore from '~/utils/bstore'
+import { nilOrEmpty } from '~/validator'
 
 const getDisplayName = (WrappedComp) => WrappedComp.displayName || WrappedComp.name || 'Component'
 

@@ -1,6 +1,6 @@
 import { keys } from 'ramda'
 
-import Sticky from '@/widgets/Sticky'
+import Sticky from '~/widgets/Sticky'
 
 import type { TMenuGroup } from '../spec'
 import { MENU } from '../constant'

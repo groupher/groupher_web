@@ -9,7 +9,7 @@ import T from 'prop-types'
 import { pluck, isNil, isEmpty, includes } from 'ramda'
 import TimeAgo from 'timeago-react'
 
-import DotDivider from '@/widgets/DotDivider'
+import DotDivider from '~/widgets/DotDivider'
 
 import { BannerContainer, BannerContentWrapper, PostBrief, Title, Desc, MarkTag } from './styles'
 

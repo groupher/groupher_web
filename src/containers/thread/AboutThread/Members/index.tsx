@@ -1,12 +1,12 @@
 import type { FC } from 'react'
 
-import type { TModerator } from '@/spec'
-import useLayout from '@/hooks/useLayout'
-import { mockUsers } from '@/mock'
+import type { TModerator } from '~/spec'
+import useLayout from '~/hooks/useLayout'
+import { mockUsers } from '~/mock'
 
-import ImgFallback from '@/widgets/ImgFallback'
-import NoteTip from '@/widgets/NoteTip'
-import { SexyDivider as Divider } from '@/widgets/Common'
+import ImgFallback from '~/widgets/ImgFallback'
+import NoteTip from '~/widgets/NoteTip'
+import { SexyDivider as Divider } from '~/widgets/Common'
 
 import AdminMember from './AdminMember'
 

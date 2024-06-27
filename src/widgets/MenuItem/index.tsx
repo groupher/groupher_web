@@ -6,9 +6,9 @@
 
 import { type FC, memo } from 'react'
 
-import MENU from '@/const/menu'
+import MENU from '~/const/menu'
 
-import type { TMenu } from '@/spec'
+import type { TMenu } from '~/spec'
 import { Wrapper, Title, MenuIcon, DeleteTitle } from './styles'
 
 type TProps = {

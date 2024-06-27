@@ -6,11 +6,11 @@
 
 import { type FC, memo, Fragment } from 'react'
 
-import type { TPost, TPostLayout } from '@/spec'
-import { POST_LAYOUT } from '@/const/layout'
+import type { TPost, TPostLayout } from '~/spec'
+import { POST_LAYOUT } from '~/const/layout'
 
-import MasonryCards from '@/widgets/MasonryCards'
-import PostItem from '@/widgets/PostItem'
+import MasonryCards from '~/widgets/MasonryCards'
+import PostItem from '~/widgets/PostItem'
 
 type TProps = {
   articles: TPost[]

@@ -4,10 +4,10 @@
  */
 
 import { useEffect } from 'react'
-import VIEW from '@/const/view'
+import VIEW from '~/const/view'
 
-import { DesktopOnly, MobileOnly } from '@/widgets/Common'
-import Tabs from '@/widgets/Switcher/Tabs'
+import { DesktopOnly, MobileOnly } from '~/widgets/Common'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import { TAB, TAB_OPTIONS } from './constant'
 

@@ -2,15 +2,15 @@ import { useState } from 'react'
 
 import { isEmpty } from 'ramda'
 
-import { COLOR_NAME } from '@/const/colors'
-import { KANBAN_LAYOUT } from '@/const/layout'
-import { randomBgNames } from '@/helper'
-import useHover from '@/hooks/useHover'
+import { COLOR_NAME } from '~/const/colors'
+import { KANBAN_LAYOUT } from '~/const/layout'
+import { randomBgNames } from '~/helper'
+import useHover from '~/hooks/useHover'
 
-import { INIT_KANBAN_COLORS } from '@/const/dashboard'
+import { INIT_KANBAN_COLORS } from '~/const/dashboard'
 
-import { SpaceGrow, Space } from '@/widgets/Common'
-import ColorSelector from '@/widgets/ColorSelector'
+import { SpaceGrow, Space } from '~/widgets/Common'
+import ColorSelector from '~/widgets/ColorSelector'
 
 import { SETTING_FIELD } from '../../../constant'
 import SectionLabel from '../../../SectionLabel'

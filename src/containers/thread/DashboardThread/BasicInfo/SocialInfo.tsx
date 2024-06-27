@@ -1,4 +1,4 @@
-import SocialEditor from '@/widgets/SocialEditor'
+import SocialEditor from '~/widgets/SocialEditor'
 
 import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'

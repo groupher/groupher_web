@@ -1,4 +1,4 @@
-import type { TArticleState, TArticleCat, TMenu, TArticleSort } from '@/spec'
+import type { TArticleState, TArticleCat, TMenu, TArticleSort } from '~/spec'
 
 export type TActiveCondition = TArticleState | TArticleCat | TArticleSort | null
 

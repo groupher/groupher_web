@@ -1,6 +1,6 @@
 import { type FC, useEffect, useRef, useState, memo } from 'react'
 
-import CustomScroller from '@/widgets/CustomScroller'
+import CustomScroller from '~/widgets/CustomScroller'
 
 import type { TSwipeOption } from '../spec'
 import Content from './Content'

@@ -1,12 +1,12 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import QuoteSVG from '@/icons/editor/Quote'
-import ImageSVG from '@/icons/editor/Image'
-import TableSVG from '@/icons/editor/Table'
-import TitleSVG from '@/icons/editor/Title'
-import CodeSVG from '@/icons/editor/Code'
-import VideoVG from '@/icons/social/BiliBili'
+import QuoteSVG from '~/icons/editor/Quote'
+import ImageSVG from '~/icons/editor/Image'
+import TableSVG from '~/icons/editor/Table'
+import TitleSVG from '~/icons/editor/Title'
+import CodeSVG from '~/icons/editor/Code'
+import VideoVG from '~/icons/social/BiliBili'
 
 export const Wrapper = styled.div<{ $hovering: boolean }>`
   position: absolute;

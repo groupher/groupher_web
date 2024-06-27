@@ -1,13 +1,13 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import FormInput from '@/widgets/Input'
+import FormInput from '~/widgets/Input'
 
-import MailSVG from '@/icons/Mail'
-import TwitterSVG from '@/icons/Twitter'
-import BlogSVG from '@/icons/Blog'
-import GithubSVG from '@/icons/Github8'
-import CitySVG from '@/icons/City'
-import CompanySVG from '@/icons/Company'
+import MailSVG from '~/icons/Mail'
+import TwitterSVG from '~/icons/Twitter'
+import BlogSVG from '~/icons/Blog'
+import GithubSVG from '~/icons/Github8'
+import CitySVG from '~/icons/City'
+import CompanySVG from '~/icons/Company'
 
 export const Input = styled(FormInput)`
   text-align: left;

@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import KanbanSVG from '@/icons/Kanban'
+import styled, { css, theme } from '~/css'
+import KanbanSVG from '~/icons/Kanban'
 
 export const Wrapper = styled.div`
   ${css.row('justify-between', 'align-center')};

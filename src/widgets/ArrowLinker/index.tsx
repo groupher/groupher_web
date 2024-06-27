@@ -6,10 +6,10 @@
 
 import type { FC, ReactNode } from 'react'
 
-import type { TColorName, TSpace } from '@/spec'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import type { TColorName, TSpace } from '~/spec'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import { Link } from '@/widgets/Common'
+import { Link } from '~/widgets/Common'
 
 import { Wrapper, Title, ArrowIcon } from './styles'
 

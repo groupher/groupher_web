@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { mockUsers } from '@/mock'
+import { mockUsers } from '~/mock'
 
 import UserItem from './UserItem'
 import { Wrapper } from './styles'

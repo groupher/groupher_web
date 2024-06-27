@@ -1,9 +1,9 @@
 import { type FC, memo } from 'react'
 
-import type { TSizeTSM } from '@/spec'
+import type { TSizeTSM } from '~/spec'
 
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import Tooltip from '@/widgets/Tooltip'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
+import Tooltip from '~/widgets/Tooltip'
 
 import {
   FollowingBtnWrapper,

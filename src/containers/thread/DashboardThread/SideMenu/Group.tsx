@@ -1,10 +1,10 @@
 import { type FC, useState } from 'react'
 
-import { DASHBOARD_ROUTE } from '@/const/route'
+import { DASHBOARD_ROUTE } from '~/const/route'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import useDashboardTab from '@/hooks/useDashboardTab'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useDashboardTab from '~/hooks/useDashboardTab'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
 import type { TMenuGroup } from '../spec'
 

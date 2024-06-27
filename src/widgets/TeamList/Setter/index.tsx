@@ -6,8 +6,8 @@
 
 import { type FC, memo, useEffect, useState } from 'react'
 
-import type { TUser } from '@/spec'
-import Modal from '@/widgets/Modal'
+import type { TUser } from '~/spec'
+import Modal from '~/widgets/Modal'
 
 import Header from './Header'
 import SearchBox from './SearchBox'

@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import useAccount from '@/hooks/useAccount'
+import useAccount from '~/hooks/useAccount'
 
 import SelectType from './SelectType'
 import SetupDomain from './SetupDomain'

@@ -1,7 +1,7 @@
-import styled, { css, rainbow, theme } from '@/css'
+import styled, { css, rainbow, theme } from '~/css'
 
-import type { TColor } from '@/spec'
-import UpvoteSVG from '@/icons/Upvote'
+import type { TColor } from '~/spec'
+import UpvoteSVG from '~/icons/Upvote'
 
 export const Wrapper = styled.div`
   margin-top: 15px;

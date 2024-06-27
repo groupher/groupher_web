@@ -1,9 +1,9 @@
-import type { TTestable } from '@/spec'
-import styled, { css, animate, theme, zIndex } from '@/css'
+import type { TTestable } from '~/spec'
+import styled, { css, animate, theme, zIndex } from '~/css'
 
-import Img from '@/Img'
-import GotoTopSVG from '@/icons/Arrow2Top'
-import MoreSVG from '@/icons/menu/MoreL'
+import Img from '~/Img'
+import GotoTopSVG from '~/icons/Arrow2Top'
+import MoreSVG from '~/icons/menu/MoreL'
 
 type TWrapper = TTestable & { isMenuActive: boolean; show: boolean }
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

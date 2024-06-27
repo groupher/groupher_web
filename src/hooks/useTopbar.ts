@@ -1,6 +1,6 @@
-import type { TTopbarLayout, TColorName } from '@/spec'
+import type { TTopbarLayout, TColorName } from '~/spec'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   topbar: TTopbarLayout

@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { SpaceGrow, SexyDivider } from '@/widgets/Common'
+import { SpaceGrow, SexyDivider } from '~/widgets/Common'
 
 import { Wrapper, AppStoreBar, MenuBar, Icon, Info, Platform, Title } from './styles/panel'
 

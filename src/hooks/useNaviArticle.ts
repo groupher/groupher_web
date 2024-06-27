@@ -2,11 +2,11 @@ import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 import { includes, values, findIndex } from 'ramda'
 
-import type { TArticle } from '@/spec'
-import { plural } from '@/fmt'
-import { ARTICLE_THREAD } from '@/const/thread'
-import useViewingThread from '@/hooks/useViewingThread'
-import useViewingArticle from '@/hooks/useViewingArticle'
+import type { TArticle } from '~/spec'
+import { plural } from '~/fmt'
+import { ARTICLE_THREAD } from '~/const/thread'
+import useViewingThread from '~/hooks/useViewingThread'
+import useViewingArticle from '~/hooks/useViewingArticle'
 
 type TRes = {
   previous: TArticle | null

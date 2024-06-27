@@ -5,10 +5,10 @@
  */
 import { type FC, Fragment } from 'react'
 
-import type { TUser } from '@/spec'
+import type { TUser } from '~/spec'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import Facepile from '@/widgets/Facepile'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import Facepile from '~/widgets/Facepile'
 
 import useUpvote from './useUpvote'
 import AnimatedCount from '../AnimatedCount'

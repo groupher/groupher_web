@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
-import ArrowLinker from '@/widgets/ArrowLinker'
+import styled, { css, theme } from '~/css'
+import ArrowLinker from '~/widgets/ArrowLinker'
 
-import Input from '@/widgets/Input'
+import Input from '~/widgets/Input'
 
 export const Wrapper = styled.div`
   padding-bottom: 30px;

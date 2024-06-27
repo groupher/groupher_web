@@ -1,7 +1,7 @@
 import { type FC, memo } from 'react'
 
-import type { TSizeTSM } from '@/spec'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import type { TSizeTSM } from '~/spec'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
 import { BtnWrapper, FollowedButton } from '../styles/follow_button'
 

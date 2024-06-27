@@ -1,5 +1,5 @@
-import { mockHelpCats } from '@/mock'
-import useLayout from '@/hooks/useLayout'
+import { mockHelpCats } from '~/mock'
+import useLayout from '~/hooks/useLayout'
 
 import Category from './Category'
 import { Wrapper, CatsWrapper } from '../styles/cards_layout'

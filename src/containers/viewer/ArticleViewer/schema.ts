@@ -1,5 +1,5 @@
 import { gql } from 'urql'
-import { F, P } from '@/schemas'
+import { F, P } from '~/schemas'
 
 const getArticleSchema = (thread) => {
   return gql`

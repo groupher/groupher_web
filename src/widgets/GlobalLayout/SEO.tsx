@@ -8,11 +8,11 @@
 
 import Head from 'next/head'
 
-import METRIC from '@/const/metric'
-import { SITE_URL, SITE_SLOGAN, SITE_NAME } from '@/config'
+import METRIC from '~/const/metric'
+import { SITE_URL, SITE_SLOGAN, SITE_NAME } from '~/config'
 
-import useSEO from '@/hooks/useSEO'
-import useMetric from '@/hooks/useMetric'
+import useSEO from '~/hooks/useSEO'
+import useMetric from '~/hooks/useMetric'
 
 export default () => {
   const metric = useMetric()

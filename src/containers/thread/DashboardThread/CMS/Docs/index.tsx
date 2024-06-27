@@ -2,11 +2,11 @@ import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
-import { DASHBOARD_DOC_ROUTE } from '@/const/route'
-import VIEW from '@/const/view'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { DASHBOARD_DOC_ROUTE } from '~/const/route'
+import VIEW from '~/const/view'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import Tabs from '@/widgets/Switcher/Tabs'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import TableView from './Table'
 import TreeView from './Tree'

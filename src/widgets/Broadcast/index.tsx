@@ -2,10 +2,10 @@
 
 import { type FC, Fragment } from 'react'
 
-import { ANCHOR } from '@/const/dom'
-import { BROADCAST_LAYOUT } from '@/const/layout'
-import useMetric from '@/hooks/useMetric'
-import useBroadcast from '@/hooks/useBroadcast'
+import { ANCHOR } from '~/const/dom'
+import { BROADCAST_LAYOUT } from '~/const/layout'
+import useMetric from '~/hooks/useMetric'
+import useBroadcast from '~/hooks/useBroadcast'
 
 import {
   Wrapper,

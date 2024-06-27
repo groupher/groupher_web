@@ -6,9 +6,9 @@
 
 import type { FC } from 'react'
 
-import { ANCHOR } from '@/const/dom'
+import { ANCHOR } from '~/const/dom'
 
-// import NoticeBar from '@/widgets/NoticeBar'
+// import NoticeBar from '~/widgets/NoticeBar'
 
 import Editor from './Editor'
 import List from './List'

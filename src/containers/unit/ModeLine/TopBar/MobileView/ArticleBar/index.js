@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ImgFallback from '@/widgets/ImgFallback'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import {
   Wrapper,

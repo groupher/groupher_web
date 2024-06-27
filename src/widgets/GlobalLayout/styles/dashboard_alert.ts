@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
-import styled, { css, theme, animate } from '@/css'
-import WarningSVG from '@/icons/Warning'
+import styled, { css, theme, animate } from '~/css'
+import WarningSVG from '~/icons/Warning'
 
 export const Wrapper = styled.div`
   position: fixed;

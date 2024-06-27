@@ -1,8 +1,8 @@
 import { type FC, memo } from 'react'
 
-import VIEW from '@/const/view'
-import { sortByIndex } from '@/helper'
-import Tabs from '@/widgets/Switcher/Tabs'
+import VIEW from '~/const/view'
+import { sortByIndex } from '~/helper'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import type { TProps } from '.'
 

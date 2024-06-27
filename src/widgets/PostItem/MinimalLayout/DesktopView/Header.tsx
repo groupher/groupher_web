@@ -1,14 +1,14 @@
 import type { FC } from 'react'
 
-import type { TPost } from '@/spec'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import SIZE from '@/const/size'
-import { THREAD } from '@/const/thread'
+import type { TPost } from '~/spec'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import SIZE from '~/const/size'
+import { THREAD } from '~/const/thread'
 
-import ArticleReadLabel from '@/widgets/ArticleReadLabel'
-import { SpaceGrow } from '@/widgets/Common'
-import TagsList from '@/widgets/TagsList'
-import CommentsCount from '@/widgets/CommentsCount'
+import ArticleReadLabel from '~/widgets/ArticleReadLabel'
+import { SpaceGrow } from '~/widgets/Common'
+import TagsList from '~/widgets/TagsList'
+import CommentsCount from '~/widgets/CommentsCount'
 
 import { Wrapper, Main, Title } from '../../styles/minimal_layout/desktop_view/header'
 

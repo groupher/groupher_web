@@ -1,4 +1,4 @@
-import type { TMetric } from '@/spec'
+import type { TMetric } from '~/spec'
 // NOTE:  the value is mapping to @/utils/media's key
 // so do not change to lowercase etc...
 const METRIC = {

@@ -1,9 +1,9 @@
 import { type FC, memo } from 'react'
 
-import type { TGQError } from '@/spec'
+import type { TGQError } from '~/spec'
 // import { Wrapper } from './styles'
-import uid from '@/utils/uid'
-import { nilOrEmpty } from '@/validator'
+import uid from '~/utils/uid'
+import { nilOrEmpty } from '~/validator'
 
 import { Wrapper, TitleWrapper, Title, Desc } from './styles/details'
 

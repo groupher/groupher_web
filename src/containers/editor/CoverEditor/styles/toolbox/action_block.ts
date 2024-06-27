@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
-import SettingSVG from '@/icons/Setting'
-import DeleteSVG from '@/icons/Delete'
+import styled, { css, theme } from '~/css'
+import SettingSVG from '~/icons/Setting'
+import DeleteSVG from '~/icons/Delete'
 
 import { SettingBlock, SettingTitle } from '.'
 

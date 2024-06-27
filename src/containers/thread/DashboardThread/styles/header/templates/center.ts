@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import AccountSVG from '@/icons/Acount'
+import AccountSVG from '~/icons/Acount'
 
 import { TemplateBlock } from '.'
 

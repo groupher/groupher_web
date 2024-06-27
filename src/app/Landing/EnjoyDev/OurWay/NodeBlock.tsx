@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 
-import type { TArticleCat } from '@/spec'
-import { ARTICLE_CAT } from '@/const/gtd'
+import type { TArticleCat } from '~/spec'
+import { ARTICLE_CAT } from '~/const/gtd'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import { METRIC } from '../constant'
 import UpdateCounter from './UpdateCounter'

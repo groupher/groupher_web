@@ -1,4 +1,4 @@
-import type { TID } from '@/spec'
+import type { TID } from '~/spec'
 
 export type TTexts = {
   holder: {

@@ -1,8 +1,8 @@
 import { type FC, memo } from 'react'
 
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import { Br, Space } from '@/widgets/Common'
-import CitySelector from '@/widgets/CitySelector'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import { Br, Space } from '~/widgets/Common'
+import CitySelector from '~/widgets/CitySelector'
 
 import { SOURCE_OPTIONS } from '../constant'
 

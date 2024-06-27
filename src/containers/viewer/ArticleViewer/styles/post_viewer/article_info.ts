@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import CollectionSVG from '@/icons/CollectionBookmark'
+import styled, { css, theme } from '~/css'
+import CollectionSVG from '~/icons/CollectionBookmark'
 
 export const Wrapper = styled.div`
   ${css.row('align-center', 'justify-between')};

@@ -2,7 +2,7 @@ import { type FC, useEffect, useRef } from 'react'
 
 import { isEmpty } from 'ramda'
 
-import { INIT_KANBAN_COLORS } from '@/const/dashboard'
+import { INIT_KANBAN_COLORS } from '~/const/dashboard'
 
 import KanbanList from './KanbanList'
 

@@ -1,9 +1,9 @@
 import { type FC, memo, type ReactNode } from 'react'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
-import { SpaceGrow } from '@/widgets/Common'
-import YesOrNoButtons from '@/widgets/Buttons/YesOrNoButtons'
+import { SpaceGrow } from '~/widgets/Common'
+import YesOrNoButtons from '~/widgets/Buttons/YesOrNoButtons'
 
 import type { TSettingField } from './spec.d'
 import {

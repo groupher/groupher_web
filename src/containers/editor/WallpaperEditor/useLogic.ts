@@ -1,14 +1,14 @@
 import { useState, useCallback } from 'react'
 import { pick, clone, equals } from 'ramda'
 
-import type { TWallpaperGradientDir, TWallpaperType, TWallpaperData } from '@/spec'
-import { WALLPAPER_TYPE, WALLPAPER_STATE_KEYS } from '@/const/wallpaper'
+import type { TWallpaperGradientDir, TWallpaperType, TWallpaperData } from '~/spec'
+import { WALLPAPER_TYPE, WALLPAPER_STATE_KEYS } from '~/const/wallpaper'
 
-import useSubStore from '@/hooks/useSubStore'
-import useFullWallpaper from '@/hooks/useFullWallpaper'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import { closeDrawer, toast } from '@/signal'
-import { mutate } from '@/utils/api'
+import useSubStore from '~/hooks/useSubStore'
+import useFullWallpaper from '~/hooks/useFullWallpaper'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import { closeDrawer, toast } from '~/signal'
+import { mutate } from '~/utils/api'
 
 import type { TTab } from './spec'
 import { TAB } from './constant'

@@ -1,9 +1,9 @@
 import { type FC, memo } from 'react'
 import TimeAgo from 'timeago-react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
-import DotDivider from '@/widgets/DotDivider'
+import DotDivider from '~/widgets/DotDivider'
 
 import { Wrapper } from '../../styles/quora_layout/mobile_view/header'
 

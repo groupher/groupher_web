@@ -6,10 +6,10 @@
 
 import { type FC, memo } from 'react'
 
-import type { TUser } from '@/spec'
-import { ICON } from '@/config'
+import type { TUser } from '~/spec'
+import { ICON } from '~/config'
 
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 import UserItem from '../UserItem'
 
 import { Wrapper, SettingWrapper, SettingIcon } from '../styles/list/works_layout'

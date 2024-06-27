@@ -1,10 +1,10 @@
-import type { TActive, TColor, TSizeTS, TSpace } from '@/spec'
-import SIZE from '@/const/size'
-import styled, { css, theme, rainbow } from '@/css'
+import type { TActive, TColor, TSizeTS, TSpace } from '~/spec'
+import SIZE from '~/const/size'
+import styled, { css, theme, rainbow } from '~/css'
 
-import Button from '@/widgets/Buttons/Button'
-import ArrowSVG from '@/icons/ArrowSimple'
-import CloseSVG from '@/icons/CloseLight'
+import Button from '~/widgets/Buttons/Button'
+import ArrowSVG from '~/icons/ArrowSimple'
+import CloseSVG from '~/icons/CloseLight'
 
 type TWrapper = { $withBorder: boolean; size: TSizeTS; selected: boolean } & TSpace &
   TActive &

@@ -5,7 +5,7 @@
 import { useMemo } from 'react'
 import { applySnapshot } from 'mobx-state-tree'
 
-import type { TRootStore } from '@/spec'
+import type { TRootStore } from '~/spec'
 
 import RootStore from './RootStore'
 

@@ -1,7 +1,7 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-// import UploadSVG from '@/icons/Upload'
+// import UploadSVG from '~/icons/Upload'
 
 export const Wrapper = styled.div`
   ${css.size(60)};

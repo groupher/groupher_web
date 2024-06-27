@@ -7,9 +7,9 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { Trans } from '@/i18n'
-import Tooltip from '@/widgets/Tooltip'
-import Maybe from '@/widgets/Maybe'
+import { Trans } from '~/i18n'
+import Tooltip from '~/widgets/Tooltip'
+import Maybe from '~/widgets/Maybe'
 
 import { Wrapper, PopoverInfo, CommunityWrapper, CommunityLogo, MoreText, Linker } from './styles'
 

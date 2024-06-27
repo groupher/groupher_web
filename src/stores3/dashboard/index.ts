@@ -1,14 +1,14 @@
 import { proxy } from 'valtio'
 import { mergeDeepRight, mergeLeft } from 'ramda'
 
-import { LOCALE } from '@/const/i18n'
-import { THREAD } from '@/const/thread'
-import SIZE from '@/const/size'
-import { COLOR_NAME } from '@/const/colors'
-import { BUILDIN_ALIAS } from '@/const/name'
-import { GLOW_OPACITY } from '@/const/glow_effect'
-import { CHANGE_MODE } from '@/const/mode'
-import { TW_CARD, WIDGET_TYPE, INIT_KANBAN_COLORS, DEFAULT_ENABLE } from '@/const/dashboard'
+import { LOCALE } from '~/const/i18n'
+import { THREAD } from '~/const/thread'
+import SIZE from '~/const/size'
+import { COLOR_NAME } from '~/const/colors'
+import { BUILDIN_ALIAS } from '~/const/name'
+import { GLOW_OPACITY } from '~/const/glow_effect'
+import { CHANGE_MODE } from '~/const/mode'
+import { TW_CARD, WIDGET_TYPE, INIT_KANBAN_COLORS, DEFAULT_ENABLE } from '~/const/dashboard'
 import {
   HEADER_LAYOUT,
   FOOTER_LAYOUT,
@@ -26,7 +26,7 @@ import {
   BROADCAST_LAYOUT,
   BROADCAST_ARTICLE_LAYOUT,
   RSS_TYPE,
-} from '@/const/layout'
+} from '~/const/layout'
 import {
   DASHBOARD_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
@@ -35,7 +35,7 @@ import {
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
   DASHBOARD_DOC_ROUTE,
-} from '@/const/route'
+} from '~/const/route'
 
 import type { TStore, TInitState, TSettingsFields } from './spec'
 import { EMPTY_MEDIA_REPORT, DEFAULT_FAQ_ITEMS, DEFAULT_OVERVIEW } from './constant'

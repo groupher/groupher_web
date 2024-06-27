@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 import { Wrapper as WrapperDesktop, Brief as BriefDesktop } from '../desktop_view/header'
 

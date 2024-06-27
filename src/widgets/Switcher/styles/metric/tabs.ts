@@ -1,4 +1,4 @@
-import SIZE from '@/const/size'
+import SIZE from '~/const/size'
 
 export const getSlipMargin = (size: string, mobileView: boolean): number => {
   if (mobileView) return 5

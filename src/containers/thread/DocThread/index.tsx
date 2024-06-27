@@ -4,12 +4,12 @@
 
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import { DOC_LAYOUT } from '@/const/layout'
+import { DOC_LAYOUT } from '~/const/layout'
 
-import { Divider } from '@/widgets/Common'
-import FaqList from '@/widgets/FaqList'
+import { Divider } from '~/widgets/Common'
+import FaqList from '~/widgets/FaqList'
 
-import useLayout from '@/hooks/useLayout'
+import useLayout from '~/hooks/useLayout'
 
 import BlocksLayout from './BlocksLayout'
 import ListsLayout from './ListsLayout'

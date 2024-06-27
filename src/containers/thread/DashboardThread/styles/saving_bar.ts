@@ -1,8 +1,8 @@
-import type { TSpace } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TSpace } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import InfoSVG from '@/icons/Save'
-import { WithMargin } from '@/widgets/Common'
+import InfoSVG from '~/icons/Save'
+import { WithMargin } from '~/widgets/Common'
 
 type TWrapper = { direction: 'left' | 'right'; width: string } & TSpace
 export const NormalWrapper = styled(WithMargin)<TWrapper>`

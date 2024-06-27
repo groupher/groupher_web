@@ -9,10 +9,10 @@ import { keys, includes, reject, findIndex, update } from 'ramda'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-import type { TSocialType, TSocialItem, TSpace } from '@/spec'
-import { SOCIAL_LIST } from '@/const/social'
+import type { TSocialType, TSocialItem, TSpace } from '~/spec'
+import { SOCIAL_LIST } from '~/const/social'
 
-import { Br } from '@/widgets/Common'
+import { Br } from '~/widgets/Common'
 
 import InputBar from './InputBar'
 

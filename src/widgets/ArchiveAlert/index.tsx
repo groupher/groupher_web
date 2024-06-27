@@ -6,9 +6,9 @@
 
 import { type FC, memo } from 'react'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
-import NoticeBar from '@/widgets/NoticeBar'
+import NoticeBar from '~/widgets/NoticeBar'
 
 type TProps = {
   date?: string

@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import useNaviArticle from '@/hooks/useNaviArticle'
+import useNaviArticle from '~/hooks/useNaviArticle'
 
 import {
   Wrapper,

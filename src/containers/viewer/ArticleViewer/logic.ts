@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 import { mergeRight } from 'ramda'
 
-import type { TArticle } from '@/spec'
+import type { TArticle } from '~/spec'
 
-import EVENT from '@/const/event'
-import ERR from '@/const/err'
-import { errRescue } from '@/signal'
-import asyncSuit from '@/async'
-import { scrollDrawerToTop } from '@/dom'
-import { matchArticles } from '@/utils/macros'
+import EVENT from '~/const/event'
+import ERR from '~/const/err'
+import { errRescue } from '~/signal'
+import asyncSuit from '~/async'
+import { scrollDrawerToTop } from '~/dom'
+import { matchArticles } from '~/utils/macros'
 
 import S from './schema'
 import type { TStore } from './store'

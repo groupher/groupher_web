@@ -1,4 +1,4 @@
-import type { TThread } from '@/spec'
+import type { TThread } from '~/spec'
 
 export const getTargetPage = (community: string, thread: TThread): string => {
   return `/publish/${thread}?community=${community}`

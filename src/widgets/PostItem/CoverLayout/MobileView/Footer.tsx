@@ -1,13 +1,13 @@
 import type { FC } from 'react'
 
-import type { TPost } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/const/layout'
+import type { TPost } from '~/spec'
+import { UPVOTE_LAYOUT } from '~/const/layout'
 
-import { cutRest } from '@/fmt'
+import { cutRest } from '~/fmt'
 
-import ArticleCatState from '@/widgets/ArticleCatState'
-import Upvote from '@/widgets/Upvote'
-import { Space } from '@/widgets/Common'
+import ArticleCatState from '~/widgets/ArticleCatState'
+import Upvote from '~/widgets/Upvote'
+import { Space } from '~/widgets/Common'
 
 import {
   Wrapper,

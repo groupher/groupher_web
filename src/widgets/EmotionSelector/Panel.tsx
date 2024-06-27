@@ -1,10 +1,10 @@
 import { type FC, memo } from 'react'
 import { values } from 'ramda'
 
-import type { TEmotion, TEmotionType } from '@/spec'
+import type { TEmotion, TEmotionType } from '~/spec'
 
-import EMOTION from '@/const/emotion'
-import { ICON } from '@/config'
+import EMOTION from '~/const/emotion'
+import { ICON } from '~/config'
 
 import { isViewerEmotioned } from './helper'
 import { Wrapper, Item, EIcon, Name } from './styles/panel'

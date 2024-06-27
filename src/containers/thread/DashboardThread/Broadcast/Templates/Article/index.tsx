@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { BROADCAST_ARTICLE_LAYOUT } from '@/const/layout'
+import { BROADCAST_ARTICLE_LAYOUT } from '~/const/layout'
 
 import Simple from './Simple'
 import Default from './Default'

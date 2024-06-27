@@ -1,8 +1,8 @@
 import { pick } from 'ramda'
 
-import type { TDashboardLayoutRoute, TDashboardPath, TEditFunc } from '@/spec'
+import type { TDashboardLayoutRoute, TDashboardPath, TEditFunc } from '~/spec'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 import useHelper from './useHelper'
 

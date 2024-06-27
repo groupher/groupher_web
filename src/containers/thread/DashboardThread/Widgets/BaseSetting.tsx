@@ -1,10 +1,10 @@
 import { includes } from 'ramda'
 
-import { THREAD } from '@/const/thread'
+import { THREAD } from '~/const/thread'
 
-import ColorSelector from '@/widgets/ColorSelector'
-import { SpaceGrow, Br } from '@/widgets/Common'
-import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
+import ColorSelector from '~/widgets/ColorSelector'
+import { SpaceGrow, Br } from '~/widgets/Common'
+import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
 
 import { SETTING_FIELD } from '../constant'
 

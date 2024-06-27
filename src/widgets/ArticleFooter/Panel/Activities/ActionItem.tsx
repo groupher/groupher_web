@@ -1,9 +1,9 @@
 import { type FC, memo } from 'react'
 
-import type { TAccount, TArticle, TCommunity } from '@/spec'
-import { ICON } from '@/config'
+import type { TAccount, TArticle, TCommunity } from '~/spec'
+import { ICON } from '~/config'
 
-import ImgFallback from '@/widgets/ImgFallback'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import {
   Wrapper,

@@ -1,7 +1,7 @@
-import type { TArticleCat } from '@/spec'
+import type { TArticleCat } from '~/spec'
 
-import { ARTICLE_CAT } from '@/const/gtd'
-import { COLOR_NAME } from '@/const/colors'
+import { ARTICLE_CAT } from '~/const/gtd'
+import { COLOR_NAME } from '~/const/colors'
 
 export const getNodeBlockColors = (cat: TArticleCat | 'DEFAULT' = ARTICLE_CAT.FEATURE) => {
   switch (cat) {

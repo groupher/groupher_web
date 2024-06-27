@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import { BANNER_LAYOUT } from '@/const/layout'
+import { BANNER_LAYOUT } from '~/const/layout'
 
-import FileTree from '@/widgets/FileTree'
-import { Space } from '@/widgets/Common'
-import FeedbackFooter from '@/widgets/FeedbackFooter'
-import Sticky from '@/widgets/Sticky'
-import CustomScroller from '@/widgets/CustomScroller'
+import FileTree from '~/widgets/FileTree'
+import { Space } from '~/widgets/Common'
+import FeedbackFooter from '~/widgets/FeedbackFooter'
+import Sticky from '~/widgets/Sticky'
+import CustomScroller from '~/widgets/CustomScroller'
 
-import useLayout from '@/hooks/useLayout'
+import useLayout from '~/hooks/useLayout'
 
 import PinedTree from './PinedTree'
 import FaqLayout from '../FaqLayout'

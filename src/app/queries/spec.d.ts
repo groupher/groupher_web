@@ -13,7 +13,7 @@ import type {
   TArticle,
   TDashboard,
   TLocale,
-} from '@/spec'
+} from '~/spec'
 
 export type TSessionRes = TGQSSRResult & {
   sesstion: {

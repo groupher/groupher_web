@@ -15,11 +15,11 @@ import type {
   TEditMode,
   TGroupedTags,
   TTag,
-} from '@/spec'
+} from '~/spec'
 
-import { T, getParent, markStates, toJS, type Instance, useMobxContext } from '@/mobx'
-import { Community, Tag, User } from '@/model'
-import { ARTICLE_CAT } from '@/const/gtd'
+import { T, getParent, markStates, toJS, type Instance, useMobxContext } from '~/mobx'
+import { Community, Tag, User } from '~/model'
+import { ARTICLE_CAT } from '~/const/gtd'
 
 import type { TTexts, TEditData } from './spec'
 

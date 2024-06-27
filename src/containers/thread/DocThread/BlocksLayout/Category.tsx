@@ -1,9 +1,9 @@
 import { type FC, memo, useState } from 'react'
 
-import type { TArticle, TColorName } from '@/spec'
+import type { TArticle, TColorName } from '~/spec'
 
-import FaIcons from '@/widgets/FaIcons'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import FaIcons from '~/widgets/FaIcons'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 import useLogic from '../useLogic'
 import {

@@ -2,12 +2,12 @@ import type { FC } from 'react'
 import TimeAgo from 'timeago-react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TComment } from '@/spec'
-import useLayout from '@/hooks/useLayout'
+import type { TComment } from '~/spec'
+import useLayout from '~/hooks/useLayout'
 
-import ImgFallback from '@/widgets/ImgFallback'
-import { Space } from '@/widgets/Common'
-import DotDivider from '@/widgets/DotDivider'
+import ImgFallback from '~/widgets/ImgFallback'
+import { Space } from '~/widgets/Common'
+import DotDivider from '~/widgets/DotDivider'
 
 import {
   Wrapper,

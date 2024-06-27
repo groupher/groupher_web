@@ -1,7 +1,7 @@
 import { type FC, memo } from 'react'
 
-import type { TSpace } from '@/spec'
-import { HOME_COMMUNITY } from '@/const/name'
+import type { TSpace } from '~/spec'
+import { HOME_COMMUNITY } from '~/const/name'
 
 import { GroupherLogo } from './styles'
 

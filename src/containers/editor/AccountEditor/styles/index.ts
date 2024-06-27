@@ -1,8 +1,8 @@
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
-import GithubSVG from '@/icons/Github8'
-import FormInput from '@/widgets/Input'
+import GithubSVG from '~/icons/Github8'
+import FormInput from '~/widgets/Input'
 
 export const Wrapper = styled.div`
   ${css.column('align-center')};

@@ -10,10 +10,10 @@ import { type FC, memo } from 'react'
 import ReactSelect, { components } from 'react-select'
 import CreatableReactSelect from 'react-select/creatable'
 
-import type { TSelectOption, TSpace } from '@/spec'
-import useTheme from '@/hooks/useTheme'
+import type { TSelectOption, TSpace } from '~/spec'
+import useTheme from '~/hooks/useTheme'
 
-import { Row, Space } from '@/widgets/Common'
+import { Row, Space } from '~/widgets/Common'
 
 import { IndicatorsContainer } from './components'
 

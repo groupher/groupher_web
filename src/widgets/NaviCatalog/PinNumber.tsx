@@ -1,7 +1,7 @@
 import { type FC, memo } from 'react'
 
-import { ICON_CMD } from '@/config'
-import Tooltip from '@/widgets/Tooltip'
+import { ICON_CMD } from '~/config'
+import Tooltip from '~/widgets/Tooltip'
 
 import { Wrapper, Num, PinIcon, TooltipPopContent } from './styles/pin_number'
 

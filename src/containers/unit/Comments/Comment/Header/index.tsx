@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import type { TComment } from '@/spec'
+import type { TComment } from '~/spec'
 
 import ArticleHeader from './Article'
 import UserPublishedHeader from './UserPublished'

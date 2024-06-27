@@ -6,10 +6,10 @@
 
 import type { FC } from 'react'
 
-import type { TUser, TSpace } from '@/spec'
-import useLayout from '@/hooks/useLayout'
+import type { TUser, TSpace } from '~/spec'
+import useLayout from '~/hooks/useLayout'
 
-import ImgFallback from '@/widgets/ImgFallback'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import { Wrapper, Avatar, BadgeWrapper, BadgeIcon } from './styles'
 

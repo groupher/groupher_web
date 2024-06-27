@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { equals, any } from 'ramda'
 import { MobXProviderContext } from 'mobx-react'
 
-import { toJS } from '@/mobx'
+import { toJS } from '~/mobx'
 
 import type { TSettingField } from '../spec'
 

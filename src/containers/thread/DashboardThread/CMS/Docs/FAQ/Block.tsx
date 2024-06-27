@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
 import Markdown from 'markdown-to-jsx'
-import type { TFAQSection } from '@/spec'
+import type { TFAQSection } from '~/spec'
 
 import Editor from './Editor'
 

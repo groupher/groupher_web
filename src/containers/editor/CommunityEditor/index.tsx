@@ -6,7 +6,7 @@
 
 import type { FC } from 'react'
 
-import useMetric from '@/hooks/useMetric'
+import useMetric from '~/hooks/useMetric'
 
 import Header from './Header'
 import Banner from './Banner'

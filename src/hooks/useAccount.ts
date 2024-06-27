@@ -1,6 +1,6 @@
-import type { TAccount } from '@/spec'
+import type { TAccount } from '~/spec'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 const useAccount = (): TAccount => {
   const store = useSubStore('account')

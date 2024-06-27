@@ -1,8 +1,8 @@
-import type { TColorName } from '@/spec'
+import type { TColorName } from '~/spec'
 
-import styled, { css, theme, rainbow, rainbowLight } from '@/css'
+import styled, { css, theme, rainbow, rainbowLight } from '~/css'
 
-import ToolSVG from '@/icons/Heart'
+import ToolSVG from '~/icons/Heart'
 
 export { Bar, Circle } from '..'
 

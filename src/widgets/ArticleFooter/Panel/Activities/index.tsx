@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 
-import useLayout from '@/hooks/useLayout'
-import { mockUsers } from '@/mock'
+import useLayout from '~/hooks/useLayout'
+import { mockUsers } from '~/mock'
 
-import ImgFallback from '@/widgets/ImgFallback'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import TagItem from './TagItem'
 import GtdItem from './GtdItem'

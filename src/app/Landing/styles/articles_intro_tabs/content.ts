@@ -1,7 +1,7 @@
-import type { TThread, TMetric } from '@/spec'
-import { THREAD } from '@/const/thread'
+import type { TThread, TMetric } from '~/spec'
+import { THREAD } from '~/const/thread'
 
-import styled, { css, theme, WIDTH } from '@/css'
+import styled, { css, theme, WIDTH } from '~/css'
 
 type TWrapper = { tab?: TThread } & { metric: TMetric }
 export const Wrapper = styled.div<TWrapper>`

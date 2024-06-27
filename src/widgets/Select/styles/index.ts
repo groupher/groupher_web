@@ -1,5 +1,5 @@
-import type { TTestable, TActive, TSpace } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TTestable, TActive, TSpace } from '~/spec'
+import styled, { css, theme } from '~/css'
 
 export { getSelectStyles } from './metric'
 

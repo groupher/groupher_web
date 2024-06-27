@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 
-import type { TAccount, TSimpleUser } from '@/spec'
-import OAUTH from '@/const/oauth'
-import useSubStore from '@/hooks/useSubStore'
-import { debounce } from '@/helper'
-import BStore from '@/utils/bstore'
+import type { TAccount, TSimpleUser } from '~/spec'
+import OAUTH from '~/const/oauth'
+import useSubStore from '~/hooks/useSubStore'
+import { debounce } from '~/helper'
+import BStore from '~/utils/bstore'
 
 const useSyncAccount = (): TAccount => {
   const { isLogin, setSession, accountInfo } = useSubStore('account')

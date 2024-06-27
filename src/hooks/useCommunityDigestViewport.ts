@@ -1,4 +1,4 @@
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   enterView: () => void

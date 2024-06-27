@@ -1,4 +1,4 @@
-import DayTheme from '@/utils/themes/skins/day'
+import type DayTheme from '~/utils/themes/skins/day'
 
 export type TThemeName = 'day' | 'night'
 

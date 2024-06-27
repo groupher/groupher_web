@@ -1,7 +1,7 @@
 import { type FC, useState } from 'react'
 
-import useTheme from '@/hooks/useTheme'
-import THEME from '@/const/theme'
+import useTheme from '~/hooks/useTheme'
+import THEME from '~/const/theme'
 
 import type { TCommunityType } from '../spec'
 import { COMMUNITY_CATS_TEXT_COLORS } from '../constant'

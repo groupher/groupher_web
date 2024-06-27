@@ -1,8 +1,8 @@
-import type { TTestable } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TTestable } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import MagicStickSVG from '@/icons/MagicStick'
-import HeaderSearchSVG from '@/icons/HeaderSearch'
+import MagicStickSVG from '~/icons/MagicStick'
+import HeaderSearchSVG from '~/icons/HeaderSearch'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

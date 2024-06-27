@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import DomainSVG from '@/icons/Domain'
+import DomainSVG from '~/icons/Domain'
 
 export const Wrapper = styled.div`
   position: relative;

@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import { ROUTE } from '@/const/route'
+import { ROUTE } from '~/const/route'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import { Wrapper, ListIcon, Title, Item } from './styles/mobile_menu'
 

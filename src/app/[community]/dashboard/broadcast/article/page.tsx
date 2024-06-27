@@ -1,6 +1,6 @@
 'use client'
 
-import Broadcast from '@/containers//thread/DashboardThread/Broadcast'
+import Broadcast from '~/containers//thread/DashboardThread/Broadcast'
 
 const DashboardBroadcastPage = () => {
   return <Broadcast />

@@ -7,10 +7,10 @@ import type {
   TWallpaperPic,
   TWallpaperGradientDir,
   TWallpaperData,
-} from '@/spec'
-import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER } from '@/const/wallpaper'
+} from '~/spec'
+import { GRADIENT_WALLPAPER, PATTERN_WALLPAPER } from '~/const/wallpaper'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   wallpaper: string

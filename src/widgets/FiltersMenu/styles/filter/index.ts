@@ -1,5 +1,5 @@
-// import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+// import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div<{ revert: boolean }>`
   ${css.column()};

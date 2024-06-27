@@ -1,5 +1,5 @@
-import type { TSizeSM, TActive, TColor } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
+import type { TSizeSM, TActive, TColor } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
 
 import { getMarginRight, getPadding, getMarginBottom } from '../metric/tabs'
 

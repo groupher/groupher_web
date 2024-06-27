@@ -1,4 +1,4 @@
-import { DASHBOARD_BROADCAST_ROUTE } from '@/const/route'
+import { DASHBOARD_BROADCAST_ROUTE } from '~/const/route'
 
 import GlobalEditor from './Global'
 import ArticleEditor from './Article'

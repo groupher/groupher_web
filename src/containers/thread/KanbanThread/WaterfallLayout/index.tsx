@@ -2,7 +2,7 @@
  * KanbanThread
  */
 
-import useIsSidebarLayout from '@/hooks/useIsSidebarLayout'
+import useIsSidebarLayout from '~/hooks/useIsSidebarLayout'
 
 import Actions from './Actions'
 import Sections from './Sections'

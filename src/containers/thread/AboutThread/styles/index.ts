@@ -1,6 +1,6 @@
-import type { TBannerLayout, TTestable } from '@/spec'
-import styled, { css, theme } from '@/css'
-import { BANNER_LAYOUT } from '@/const'
+import type { TBannerLayout, TTestable } from '~/spec'
+import styled, { css, theme } from '~/css'
+import { BANNER_LAYOUT } from '~/const'
 
 type TWrapper = TTestable & { $bannerLayout: TBannerLayout }
 export const Wrapper = styled.div.attrs<TWrapper>(({ $testid }) => ({

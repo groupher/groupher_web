@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import ArticleMirrorSVG from '@/icons/ArticleMirror'
+import styled, { css, theme } from '~/css'
+import ArticleMirrorSVG from '~/icons/ArticleMirror'
 
 export const MirrorIcon = styled(ArticleMirrorSVG)`
   ${css.size(20)};

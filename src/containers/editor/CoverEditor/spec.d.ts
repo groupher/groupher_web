@@ -1,4 +1,4 @@
-import type { TWallpaper, TWallpaperGradientDir } from '@/spec'
+import type { TWallpaper, TWallpaperGradientDir } from '~/spec'
 
 export type TImagePos =
   | 'top_left'

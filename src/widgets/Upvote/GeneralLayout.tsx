@@ -6,11 +6,11 @@
 
 import { type FC, memo } from 'react'
 
-import type { TUser } from '@/spec'
+import type { TUser } from '~/spec'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import Facepile from '@/widgets/Facepile'
-import { DesktopOnly, LineDivider } from '@/widgets/Common'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import Facepile from '~/widgets/Facepile'
+import { DesktopOnly, LineDivider } from '~/widgets/Common'
 
 import useUpvote from './useUpvote'
 import AnimatedCount from '../AnimatedCount'

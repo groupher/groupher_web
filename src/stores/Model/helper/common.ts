@@ -1,5 +1,5 @@
-import { PAGE_SIZE } from '@/config'
-import { T } from '@/mobx'
+import { PAGE_SIZE } from '~/config'
+import { T } from '~/mobx'
 
 export const timestampFields = () => {
   return {

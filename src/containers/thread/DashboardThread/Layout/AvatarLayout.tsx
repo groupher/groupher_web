@@ -1,8 +1,8 @@
-import { AVATAR_LAYOUT } from '@/const/layout'
-import { COLOR_NAME } from '@/const/colors'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import { AVATAR_LAYOUT } from '~/const/layout'
+import { COLOR_NAME } from '~/const/colors'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import CheckLabel from '@/widgets/CheckLabel'
+import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'

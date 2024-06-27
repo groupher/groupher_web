@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import type { TUser } from '@/spec'
-import useLayout from '@/hooks/useLayout'
-import ImgFallback from '@/widgets/ImgFallback'
+import type { TUser } from '~/spec'
+import useLayout from '~/hooks/useLayout'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import { Wrapper, Avatar } from '../../styles/panel/user_list'
 

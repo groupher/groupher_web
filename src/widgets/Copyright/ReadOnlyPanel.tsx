@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import ArrowLink from '@/widgets/Buttons/ArrowLink'
+import ArrowLink from '~/widgets/Buttons/ArrowLink'
 
 import { Wrapper, Header, Title, Desc, Items, DescItem, Footer } from './styles/readonly_panel'
 

@@ -6,8 +6,8 @@
 
 import { type FC, memo } from 'react'
 
-import type { TID } from '@/spec'
-import Linker from '@/widgets/Linker'
+import type { TID } from '~/spec'
+import Linker from '~/widgets/Linker'
 
 import {
   Wrapper,

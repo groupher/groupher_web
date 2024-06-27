@@ -6,7 +6,7 @@
 
 import { memo, type FC } from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 // import Button from './Button'
 import { Wrapper, Title, EditIcon } from '../styles/publish_button/post_layout'

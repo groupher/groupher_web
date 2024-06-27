@@ -1,8 +1,8 @@
-import Input from '@/widgets/Input'
-import styled, { css, theme } from '@/css'
+import Input from '~/widgets/Input'
+import styled, { css, theme } from '~/css'
 
-import LaptopSVG from '@/icons/Laptop'
-import LinkSVG from '@/icons/Link'
+import LaptopSVG from '~/icons/Laptop'
+import LinkSVG from '~/icons/Link'
 
 export { LinkInput } from '.'
 

@@ -7,7 +7,7 @@
 import { type FC, memo, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 import { Wrapper, Title, OptionWrapper } from './styles'
 

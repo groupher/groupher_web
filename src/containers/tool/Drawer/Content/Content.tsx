@@ -1,11 +1,11 @@
 import { type FC, Suspense, memo } from 'react'
 
-import TYPE from '@/const/type'
-import { LoadWatcher } from '@/widgets/Common'
-// import ModeLineMenu from '@/containers/unit/ModeLineMenu'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import TYPE from '~/const/type'
+import { LoadWatcher } from '~/widgets/Common'
+// import ModeLineMenu from '~/containers/unit/ModeLineMenu'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
-// import ArticleViewer from '@/containers/viewer/ArticleViewer'
+// import ArticleViewer from '~/containers/viewer/ArticleViewer'
 
 import {
   ArticleViewer,
@@ -16,8 +16,8 @@ import {
   // MailsViewer,
 } from './dynamic'
 
-import UserList from '@/widgets/UserList'
-import SearchPanel from '@/widgets/SearchPanel'
+import UserList from '~/widgets/UserList'
+import SearchPanel from '~/widgets/SearchPanel'
 
 type TProps = {
   type: string

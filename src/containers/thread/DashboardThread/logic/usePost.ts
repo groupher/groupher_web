@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
 
-import type { TPostLayout, TEditFunc } from '@/spec'
+import type { TPostLayout, TEditFunc } from '~/spec'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 import useHelper from './useHelper'
 

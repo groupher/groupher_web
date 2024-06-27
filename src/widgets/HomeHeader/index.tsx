@@ -1,9 +1,9 @@
 import { type FC, useState, memo } from 'react'
 
-import { ROUTE } from '@/const/route'
-import useSession from '@/hooks/useSession'
+import { ROUTE } from '~/const/route'
+import useSession from '~/hooks/useSession'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import MobileMenu from './MobileMenu'
 

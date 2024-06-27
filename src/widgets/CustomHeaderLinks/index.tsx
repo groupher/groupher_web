@@ -1,10 +1,10 @@
 import type { FC } from 'react'
 
-import useLayout from '@/hooks/useLayout'
-import useViewingThread from '@/hooks/useViewingThread'
+import useLayout from '~/hooks/useLayout'
+import useViewingThread from '~/hooks/useViewingThread'
 
-import { BANNER_LAYOUT } from '@/const/layout'
-import { THREAD } from '@/const/thread'
+import { BANNER_LAYOUT } from '~/const/layout'
+import { THREAD } from '~/const/thread'
 
 import type { TProps } from './spec'
 

@@ -6,12 +6,12 @@
 
 import { type FC, memo, useState, type ReactNode } from 'react'
 
-import type { TSizeSM } from '@/spec'
+import type { TSizeSM } from '~/spec'
 
-import { isString } from '@/validator'
-import SIZE from '@/const/size'
+import { isString } from '~/validator'
+import SIZE from '~/const/size'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import { Wrapper, Icon, Text } from './styles'
 

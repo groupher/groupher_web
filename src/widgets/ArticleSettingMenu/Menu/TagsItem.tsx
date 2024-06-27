@@ -1,12 +1,12 @@
 import type { FC } from 'react'
 import { isEmpty } from 'ramda'
 
-import type { TTag } from '@/spec'
-import { toJS } from '@/mobx'
-import useViewingArticle from '@/hooks/useViewingArticle'
+import type { TTag } from '~/spec'
+import { toJS } from '~/mobx'
+import useViewingArticle from '~/hooks/useViewingArticle'
 
-import { SpaceGrow } from '@/widgets/Common'
-import TagNode from '@/widgets/TagNode'
+import { SpaceGrow } from '~/widgets/Common'
+import TagNode from '~/widgets/TagNode'
 
 import { Icon } from '../styles/icon'
 import { MenuItem, TagTitle, TagCount } from '../styles/menu/tags_item'

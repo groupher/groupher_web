@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { sortByIndex } from '@/helper'
+import { sortByIndex } from '~/helper'
 
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 import TagBar from './TagBar'
 import useTags from '../logic/useTags'
 

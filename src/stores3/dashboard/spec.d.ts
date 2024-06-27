@@ -36,7 +36,7 @@ import type {
   TCommunity,
   TFAQSection,
   TOverview,
-} from '@/spec'
+} from '~/spec'
 
 import type {
   DASHBOARD_ROUTE,
@@ -46,7 +46,7 @@ import type {
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
   DASHBOARD_DOC_ROUTE,
-} from '@/const/route'
+} from '~/const/route'
 
 export type { TRootStore } from '../spec'
 

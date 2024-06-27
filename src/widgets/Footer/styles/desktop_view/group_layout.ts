@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Img from '@/Img'
-import HeartSVG from '@/icons/Heart'
+import Img from '~/Img'
+import HeartSVG from '~/icons/Heart'
 
 export const Wrapper = styled.footer`
   ${css.column('align-center')};

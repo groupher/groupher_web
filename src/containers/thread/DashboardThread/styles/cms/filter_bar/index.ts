@@ -1,10 +1,10 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Input from '@/widgets/Input'
+import Input from '~/widgets/Input'
 
-import SearchSVG from '@/icons/HeaderSearch'
-import ResetSVG from '@/icons/Reset'
-import DubbleCheckSVG from '@/icons/DubbleCheck'
+import SearchSVG from '~/icons/HeaderSearch'
+import ResetSVG from '~/icons/Reset'
+import DubbleCheckSVG from '~/icons/DubbleCheck'
 
 export const Wrapper = styled.div`
   width: 100%;

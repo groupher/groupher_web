@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import SettingSVG from '@/icons/Setting'
+import styled, { css, theme } from '~/css'
+import SettingSVG from '~/icons/Setting'
 import { BaseSection } from '.'
 
 export const Wrapper = styled.div`

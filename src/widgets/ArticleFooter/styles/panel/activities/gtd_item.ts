@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import TagSVG from '@/icons/Tag'
-import GtdWipSVG from '@/icons/GtdWip'
+import TagSVG from '~/icons/Tag'
+import GtdWipSVG from '~/icons/GtdWip'
 
 export { Item, Content, Highlight } from '.'
 

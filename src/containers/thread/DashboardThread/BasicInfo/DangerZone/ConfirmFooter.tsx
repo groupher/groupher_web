@@ -1,11 +1,11 @@
 import { type FC, useState } from 'react'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import { SexyDivider } from '@/widgets/Common'
-import Button from '@/widgets/Buttons/Button'
+import { SexyDivider } from '~/widgets/Common'
+import Button from '~/widgets/Buttons/Button'
 
 import useBaseInfo from '../../logic/useBaseInfo'
 import { Wrapper, Note, Bold, Inputer } from '../../styles/basic_info/danger_zone/confirm_footer'

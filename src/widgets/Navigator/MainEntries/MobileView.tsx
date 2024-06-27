@@ -1,9 +1,9 @@
 import { type FC, memo } from 'react'
 
-import EVENT from '@/const/event'
-import TYPE from '@/const/type'
+import EVENT from '~/const/event'
+import TYPE from '~/const/type'
 
-import { send } from '@/signal'
+import { send } from '~/signal'
 import { Wrapper, SiteLink } from '../styles/main_entries'
 import { MobileIcon } from '../styles/more_links'
 

@@ -1,13 +1,13 @@
-import type { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
-import styled, { css, theme } from '@/css'
-import ArrowSVG from '@/icons/ArrowSolid'
+import styled, { css, theme } from '~/css'
+import ArrowSVG from '~/icons/ArrowSolid'
 
-import ReplyModeSVG from '@/icons/CommentReplyMode'
-import TimelineModeSVG from '@/icons/CommentTimelineMode'
+import ReplyModeSVG from '~/icons/CommentReplyMode'
+import TimelineModeSVG from '~/icons/CommentTimelineMode'
 
-import ExpandSVG from '@/icons/Expand'
-import FoldSVG from '@/icons/Fold'
+import ExpandSVG from '~/icons/Expand'
+import FoldSVG from '~/icons/Fold'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

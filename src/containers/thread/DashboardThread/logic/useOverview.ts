@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 
-import type { TOverview, TCommunity } from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import type { TOverview, TCommunity } from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import useQuery from '@/hooks/useQuery'
+import useQuery from '~/hooks/useQuery'
 
 import S from '../schema'
 

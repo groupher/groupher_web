@@ -1,12 +1,12 @@
-import type { TActive, TColor } from '@/spec'
+import type { TActive, TColor } from '~/spec'
 
-import styled, { css, rainbow, theme } from '@/css'
+import styled, { css, rainbow, theme } from '~/css'
 
-import LockSVG from '@/icons/Lock'
-import ArrowSVG from '@/icons/Arrow'
-import RefreshSVG from '@/icons/Refresh'
-import MoreSVG from '@/icons/menu/MoreL'
-import StarSVG from '@/icons/Star5'
+import LockSVG from '~/icons/Lock'
+import ArrowSVG from '~/icons/Arrow'
+import RefreshSVG from '~/icons/Refresh'
+import MoreSVG from '~/icons/menu/MoreL'
+import StarSVG from '~/icons/Star5'
 
 export const Header = styled.div`
   ${css.row()};

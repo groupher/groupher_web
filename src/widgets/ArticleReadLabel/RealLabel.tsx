@@ -4,7 +4,7 @@
 
 import type { FC } from 'react'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
 import { ReadedLabel } from './styles'
 

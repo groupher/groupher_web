@@ -5,12 +5,12 @@
 
 import { values } from 'ramda'
 
-import type { TRootStore, TViewing, TArticle } from '@/spec'
+import type { TRootStore, TViewing, TArticle } from '~/spec'
 
-import TYPE from '@/const/type'
-// import METRIC from '@/const/metric'
+import TYPE from '~/const/type'
+// import METRIC from '~/const/metric'
 
-import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
 
 const ModeLine = T.model('ModeLine', {
   topBarVisiable: T.opt(T.bool, false),

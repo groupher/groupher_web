@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
-import ArticleCard from '@/widgets/ArticleCard'
+import ArticleCard from '~/widgets/ArticleCard'
 
 type TProps = {
   article: TPost

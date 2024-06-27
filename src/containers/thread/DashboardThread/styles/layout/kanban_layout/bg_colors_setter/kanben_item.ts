@@ -1,7 +1,7 @@
-import { Bar as BarBase } from '@/widgets/Common'
-import UpvoteSVG from '@/icons/Upvote'
+import { Bar as BarBase } from '~/widgets/Common'
+import UpvoteSVG from '~/icons/Upvote'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div<{ opacity: number }>`
   ${css.column()};

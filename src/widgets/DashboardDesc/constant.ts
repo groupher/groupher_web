@@ -1,6 +1,6 @@
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/const/gtd'
-import { mockUsers } from '@/mock'
-import { getRandomInt } from '@/helper'
+import { ARTICLE_CAT, ARTICLE_STATE } from '~/const/gtd'
+import { mockUsers } from '~/mock'
+import { getRandomInt } from '~/helper'
 
 import type { TPreviewDevice } from './spec'
 

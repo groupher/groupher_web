@@ -2,8 +2,8 @@
  * KanbanThread
  */
 
-import useIsSidebarLayout from '@/hooks/useIsSidebarLayout'
-import CustomScroller from '@/widgets/CustomScroller'
+import useIsSidebarLayout from '~/hooks/useIsSidebarLayout'
+import CustomScroller from '~/widgets/CustomScroller'
 
 import Actions from './Actions'
 import Columns from './Columns'

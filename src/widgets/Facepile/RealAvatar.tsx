@@ -1,10 +1,10 @@
 import type { FC } from 'react'
 
-import type { TUser } from '@/spec'
+import type { TUser } from '~/spec'
 
-import useLayout from '@/hooks/useLayout'
-import Tooltip from '@/widgets/Tooltip'
-import UserCard from '@/widgets/Cards/UserCard'
+import useLayout from '~/hooks/useLayout'
+import Tooltip from '~/widgets/Tooltip'
+import UserCard from '~/widgets/Cards/UserCard'
 
 import { getAvatarSize } from './styles/metric'
 import type { TAvatarSize } from './spec'

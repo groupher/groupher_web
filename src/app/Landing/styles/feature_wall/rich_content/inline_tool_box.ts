@@ -1,10 +1,10 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import BoldSVG from '@/icons/editor/Bold'
-import StrikeSVG from '@/icons/editor/Strike'
-import LinkSVG from '@/icons/editor/Link'
-import HighlightSVG from '@/icons/editor/Highlight'
+import BoldSVG from '~/icons/editor/Bold'
+import StrikeSVG from '~/icons/editor/Strike'
+import LinkSVG from '~/icons/editor/Link'
+import HighlightSVG from '~/icons/editor/Highlight'
 
 export const Wrapper = styled.div<{ $hovering: boolean }>`
   ${css.row('align-center')};

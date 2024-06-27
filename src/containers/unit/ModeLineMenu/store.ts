@@ -3,8 +3,8 @@
  *
  */
 
-import type { TRootStore, TArticle, TCommunity } from '@/spec'
-import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
+import type { TRootStore, TArticle, TCommunity } from '~/spec'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
 
 import type { TCurActive } from './spec'
 

@@ -6,8 +6,8 @@
 
 import type { FC } from 'react'
 
-import type { TModelineType } from '@/spec'
-import TYPE from '@/const/type'
+import type { TModelineType } from '~/spec'
+import TYPE from '~/const/type'
 
 // TODO: 全部动态加载
 import GlobalMenu from './GlobalMenu/index'

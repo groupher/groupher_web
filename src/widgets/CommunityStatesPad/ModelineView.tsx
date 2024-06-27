@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import type { TCommunity } from '@/spec'
+import type { TCommunity } from '~/spec'
 
 import SubscribeStatus from './SubscribeStatus'
 import ContentStatus from './ContentStatus'

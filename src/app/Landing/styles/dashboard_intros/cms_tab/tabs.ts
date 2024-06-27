@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import TimeSVG from '@/icons/TimelineMode'
-import FilterSVG from '@/icons/FilterSolid'
+import TimeSVG from '~/icons/TimelineMode'
+import FilterSVG from '~/icons/FilterSolid'
 
 import { Icon } from './menu_card'
 

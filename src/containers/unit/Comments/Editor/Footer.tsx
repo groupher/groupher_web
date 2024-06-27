@@ -1,9 +1,9 @@
 import { type FC, memo } from 'react'
 
-import type { TSubmitState } from '@/spec'
+import type { TSubmitState } from '~/spec'
 
-import WordsCounter from '@/widgets/WordsCounter'
-import SubmitButton from '@/widgets/Buttons/SubmitButton'
+import WordsCounter from '~/widgets/WordsCounter'
+import SubmitButton from '~/widgets/Buttons/SubmitButton'
 
 import { Wrapper } from '../styles/editor/footer'
 import { setWordsCountState } from '../logic'

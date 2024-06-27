@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
-import type { TTestable } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TTestable } from '~/spec'
+import styled, { css, theme } from '~/css'
 
 import { L_MENU_HEIGHT } from '../metrics/index'
 

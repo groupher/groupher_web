@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import { WithMargin } from '@/widgets/Common'
+import styled, { css, theme } from '~/css'
+import { WithMargin } from '~/widgets/Common'
 
 export const Wrapper = styled(WithMargin)`
   ${css.rowWrap('align-center')};

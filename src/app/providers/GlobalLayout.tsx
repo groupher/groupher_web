@@ -1,6 +1,6 @@
 'use client'
 
-import GlobalLayoutWrapper from '@/widgets/GlobalLayout'
+import GlobalLayoutWrapper from '~/widgets/GlobalLayout'
 
 const GlobalLayout = ({ children }) => {
   return <GlobalLayoutWrapper>{children}</GlobalLayoutWrapper>

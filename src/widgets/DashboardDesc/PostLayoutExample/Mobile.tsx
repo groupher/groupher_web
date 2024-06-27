@@ -1,10 +1,10 @@
 import { type FC, memo } from 'react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
-import { Divider, Br } from '@/widgets/Common'
-import MobileMockup from '@/widgets/MobileMockup'
-import PostItem from '@/widgets/PostItem'
+import { Divider, Br } from '~/widgets/Common'
+import MobileMockup from '~/widgets/MobileMockup'
+import PostItem from '~/widgets/PostItem'
 
 import { MobileWrapper, Title, SubTitle, Desc } from '../styles/post_layout_example'
 

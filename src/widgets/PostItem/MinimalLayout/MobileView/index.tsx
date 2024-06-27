@@ -1,12 +1,12 @@
 import { type FC, memo } from 'react'
 
-import type { TPost } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/const/layout'
-import EVENT from '@/const/event'
+import type { TPost } from '~/spec'
+import { UPVOTE_LAYOUT } from '~/const/layout'
+import EVENT from '~/const/event'
 
-import { send } from '@/signal'
+import { send } from '~/signal'
 
-import Upvote from '@/widgets/Upvote'
+import Upvote from '~/widgets/Upvote'
 
 import Header from './Header'
 import Footer from './Footer'

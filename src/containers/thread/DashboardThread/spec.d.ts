@@ -41,9 +41,9 @@ import type {
   TMediaReport,
   TDashboardSEOConfig,
   TTagLayout,
-} from '@/spec'
+} from '~/spec'
 
-export { TNameAlias } from '@/spec'
+export { TNameAlias } from '~/spec'
 
 type TMenuGroupName = 'BASIC' | 'ANALYSIS' | 'CMS' | 'INTEGRATE'
 

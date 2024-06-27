@@ -3,9 +3,9 @@ import { pluck } from 'ramda'
 
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table'
 
-import type { TID, TPagedArticles } from '@/spec'
+import type { TID, TPagedArticles } from '~/spec'
 
-import Checker from '@/widgets/Checker'
+import Checker from '~/widgets/Checker'
 
 import { CheckCell, ArticleCell, StateCell, AuthorDateCell, DateCell } from '../Cell'
 import FilterBar from '../FilterBar'

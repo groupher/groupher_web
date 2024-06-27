@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
-import type { TArticleFilter, TArticleCat, TArticleState, TArticleOrder } from '@/spec'
+import type { TArticleFilter, TArticleCat, TArticleState, TArticleOrder } from '~/spec'
 
 type TRes = {
   cat: TArticleCat

@@ -1,6 +1,6 @@
-import type { TTestable } from '@/spec'
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import type { TTestable } from '~/spec'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
 import {
   getNormalColor,

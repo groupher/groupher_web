@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import HashTagSVG from '@/icons/HashTagBold'
+import HashTagSVG from '~/icons/HashTagBold'
 
 export const Wrapper = styled.div`
   margin-top: 30px;

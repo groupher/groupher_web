@@ -1,14 +1,14 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-// import type { TActive } from '@/spec'
+// import type { TActive } from '~/spec'
 
-import FirefoxSVG from '@/icons/Firefox'
-import ChromeWebStoreSVG from '@/icons/ChromeWebStore'
-import GooglePlaySVG from '@/icons/GooglePlay'
-import AppStoreSVG from '@/icons/AppStore'
-import GithubSVG from '@/icons/social/Github'
+import FirefoxSVG from '~/icons/Firefox'
+import ChromeWebStoreSVG from '~/icons/ChromeWebStore'
+import GooglePlaySVG from '~/icons/GooglePlay'
+import AppStoreSVG from '~/icons/AppStore'
+import GithubSVG from '~/icons/social/Github'
 
-import LinkSVG from '@/icons/ArrowUpRight'
+import LinkSVG from '~/icons/ArrowUpRight'
 
 export const Wrapper = styled.div`
   padding: 10px 8px;

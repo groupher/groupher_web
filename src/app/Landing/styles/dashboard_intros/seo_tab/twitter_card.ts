@@ -1,11 +1,11 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import CommentSVG from '@/icons/Comment'
-import HeartSVG from '@/icons/Heart'
-import RetweetSVG from '@/icons/Retweet'
-import ViewSVG from '@/icons/TwView'
-import TwMarkSVG from '@/icons/BookMark'
-import XSVG from '@/icons/X'
+import CommentSVG from '~/icons/Comment'
+import HeartSVG from '~/icons/Heart'
+import RetweetSVG from '~/icons/Retweet'
+import ViewSVG from '~/icons/TwView'
+import TwMarkSVG from '~/icons/BookMark'
+import XSVG from '~/icons/X'
 
 export const Wrapper = styled.div`
   ${css.column()};

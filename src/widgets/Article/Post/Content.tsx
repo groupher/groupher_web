@@ -6,14 +6,14 @@
 
 import { type FC, useRef, lazy, Suspense } from 'react'
 
-import useViewingArticle from '@/hooks/useViewingArticle'
-import ArtimentBody from '@/widgets/ArtimentBody'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-// import ViewportTracker from '@/widgets/ViewportTracker'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import ArtimentBody from '~/widgets/ArtimentBody'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
+// import ViewportTracker from '~/widgets/ViewportTracker'
 
 import { Wrapper, InnerWrapper, ArticleWrapper, CommentsWrapper } from '../styles/post/content'
 
-const Comments = lazy(() => import('@/containers/unit/Comments'))
+const Comments = lazy(() => import('~/containers/unit/Comments'))
 
 const Content: FC = () => {
   const ref = useRef()

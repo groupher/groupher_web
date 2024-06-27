@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 import type { TSubMenu } from '../../spec'
 import { getSubMenuWidth } from '../metric'

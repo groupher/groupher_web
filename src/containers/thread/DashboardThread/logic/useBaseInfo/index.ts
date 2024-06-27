@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { pick, isEmpty } from 'ramda'
 
-import type { TCommunity, TDashboardBaseInfoRoute, TEditFunc } from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useQuery from '@/hooks/useQuery'
+import type { TCommunity, TDashboardBaseInfoRoute, TEditFunc } from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useQuery from '~/hooks/useQuery'
 
 import useHelper from '../useHelper'
 import { BASEINFO_KEYS } from '../../constant'

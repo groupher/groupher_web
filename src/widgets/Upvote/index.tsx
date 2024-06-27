@@ -6,8 +6,8 @@
 
 import { type FC, memo } from 'react'
 
-import type { TUser, TUpvoteLayout, TSpace } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/const/layout'
+import type { TUser, TUpvoteLayout, TSpace } from '~/spec'
+import { UPVOTE_LAYOUT } from '~/const/layout'
 
 import DefaultLayout from './DefaultLayout'
 import GeneralLayout from './GeneralLayout'

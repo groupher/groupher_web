@@ -1,8 +1,8 @@
-import type { TSpace } from '@/spec'
-import styled, { css, theme } from '@/css'
-import Input from '@/widgets/Input'
+import type { TSpace } from '~/spec'
+import styled, { css, theme } from '~/css'
+import Input from '~/widgets/Input'
 
-// import Img from '@/Img'
+// import Img from '~/Img'
 
 export const Inputer = styled(Input)<{ error: string }>`
   border-left: ${({ error }) => (error === 'true' ? '3px solid !important' : '')};

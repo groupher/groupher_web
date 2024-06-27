@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import type { TSpace } from '@/spec'
-import { Trans } from '@/i18n'
+import type { TSpace } from '~/spec'
+import { Trans } from '~/i18n'
 
 import { Wrapper, Label } from './styles/label_list'
 

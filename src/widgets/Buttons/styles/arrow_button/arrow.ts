@@ -1,6 +1,6 @@
-// import Img from '@/Img'
-import type { TColor } from '@/spec'
-import styled, { css, rainbowLink } from '@/css'
+// import Img from '~/Img'
+import type { TColor } from '~/spec'
+import styled, { css, rainbowLink } from '~/css'
 
 import { Wrapper as ButtonWrapper } from '.'
 

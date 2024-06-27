@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import type { TTag } from '@/spec'
-import { emptyTag } from '@/model'
+import type { TTag } from '~/spec'
+import { emptyTag } from '~/model'
 import { Wrapper, BackIcon, TagTitle } from '../styles/desktop_view/goback_tag'
 
 type TProps = {

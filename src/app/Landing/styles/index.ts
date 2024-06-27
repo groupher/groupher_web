@@ -1,13 +1,13 @@
 import Link from 'next/link'
 
-import styled, { css, theme } from '@/css'
-import type { TMetric, TSpace, TTestable } from '@/spec'
+import styled, { css, theme } from '~/css'
+import type { TMetric, TSpace, TTestable } from '~/spec'
 
-import Button from '@/widgets/Buttons/Button'
-import LinkSVG from '@/icons/LinkOutside'
+import Button from '~/widgets/Buttons/Button'
+import LinkSVG from '~/icons/LinkOutside'
 
-import InfoSVG from '@/icons/Info'
-import ArrowSVG from '@/icons/ArrowSimple'
+import InfoSVG from '~/icons/Info'
+import ArrowSVG from '~/icons/ArrowSimple'
 
 import { getGlowOpacity, getGlowBackground, getPathGradient } from './metric'
 

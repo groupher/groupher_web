@@ -1,6 +1,6 @@
-import type { TTestable, TActive } from '@/spec'
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import type { TTestable, TActive } from '~/spec'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
 type IInput = {
   $hasPrefix: boolean

@@ -7,10 +7,10 @@
 import { type FC, memo } from 'react'
 import { includes } from 'ramda'
 
-import type { TMetric } from '@/spec'
-import METRIC from '@/const/metric'
+import type { TMetric } from '~/spec'
+import METRIC from '~/const/metric'
 
-import Navigator from '@/widgets/Navigator'
+import Navigator from '~/widgets/Navigator'
 
 import type { TProps } from '..'
 import { Wrapper, InnerWrapper, RouterWrapper } from '../styles/desktop_view/general_layout'

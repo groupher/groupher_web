@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import type { TColor } from '@/spec'
+import type { TColor } from '~/spec'
 
 import { Wrapper, Text, CheckIcon } from '../styles/articles_intro_tabs/feat_item'
 

@@ -1,21 +1,21 @@
 import Link from 'next/link'
 
-import type { TActive, TTestable, TSpace, TSizeTSM } from '@/spec'
-import { SOCIAL_LIST } from '@/const/social'
-import SIZE from '@/const/size'
+import type { TActive, TTestable, TSpace, TSizeTSM } from '~/spec'
+import { SOCIAL_LIST } from '~/const/social'
+import SIZE from '~/const/size'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import TikTokSVG from '@/widgets/Icons/social/TikTok'
-import EmailSVG from '@/icons/social/Email'
-import WeChatSVG from '@/icons/social/WeChat'
-import TwitterSVG from '@/icons/social/Twitter'
-import WeiboSVG from '@/icons/social/Weibo'
-import ZhihuSVG from '@/icons/social/Zhihu'
-import GithubSVG from '@/icons/social/Github'
-import BiliBiliSVG from '@/icons/social/BiliBili'
-import BossSVG from '@/icons/social/Boss'
-// import LagouSVG from '@/icons/social/Lagou'
+import TikTokSVG from '~/widgets/Icons/social/TikTok'
+import EmailSVG from '~/icons/social/Email'
+import WeChatSVG from '~/icons/social/WeChat'
+import TwitterSVG from '~/icons/social/Twitter'
+import WeiboSVG from '~/icons/social/Weibo'
+import ZhihuSVG from '~/icons/social/Zhihu'
+import GithubSVG from '~/icons/social/Github'
+import BiliBiliSVG from '~/icons/social/BiliBili'
+import BossSVG from '~/icons/social/Boss'
+// import LagouSVG from '~/icons/social/Lagou'
 
 type TWrapper = TTestable & TSpace & { size: TSizeTSM }
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

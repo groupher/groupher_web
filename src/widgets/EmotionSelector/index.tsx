@@ -4,9 +4,9 @@
 
 import { type FC, memo } from 'react'
 
-import type { TEmotion, TEmotionType } from '@/spec'
-import IconButton from '@/widgets/Buttons/IconButton'
-import Tooltip from '@/widgets/Tooltip'
+import type { TEmotion, TEmotionType } from '~/spec'
+import IconButton from '~/widgets/Buttons/IconButton'
+import Tooltip from '~/widgets/Tooltip'
 
 import { emotionsCoverter } from './helper'
 import SelectedEmotions from './SelectedEmotions/index'

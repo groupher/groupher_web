@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
-import useViewingArticle from '@/hooks/useViewingArticle'
-import { Trans } from '@/i18n'
+import { SpaceGrow } from '~/widgets/Common'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import { Trans } from '~/i18n'
 
 import { Icon } from '../styles/icon'
 import { MenuItem } from '../styles/menu'

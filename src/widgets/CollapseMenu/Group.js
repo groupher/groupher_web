@@ -3,7 +3,7 @@ import T from 'prop-types'
 
 import { findIndex } from 'ramda'
 
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 
 import Item from './Item'
 

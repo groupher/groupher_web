@@ -11,7 +11,7 @@ import React from 'react'
 import T from 'prop-types'
 import ResizeObserver from 'resize-observer-polyfill'
 
-import { Global } from '@/helper'
+import { Global } from '~/helper'
 
 const getScrollParent = (node) => {
   let parent = node

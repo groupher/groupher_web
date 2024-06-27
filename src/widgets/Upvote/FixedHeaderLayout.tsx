@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import { Space } from '@/widgets/Common'
+import { Space } from '~/widgets/Common'
 
 import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'

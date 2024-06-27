@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import { Wrapper, Title, Desc, BrandText } from './styles'
 

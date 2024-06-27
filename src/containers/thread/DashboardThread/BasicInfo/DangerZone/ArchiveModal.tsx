@@ -1,13 +1,13 @@
 import type { FC } from 'react'
 
-import Modal from '@/widgets/Modal'
+import Modal from '~/widgets/Modal'
 
-import { SpaceGrow } from '@/widgets/Common'
-// import NoteTip from '@/widgets/NoteTip'
-import HeadsUp from '@/widgets/HeadsUp'
-import Button from '@/widgets/Buttons/Button'
+import { SpaceGrow } from '~/widgets/Common'
+// import NoteTip from '~/widgets/NoteTip'
+import HeadsUp from '~/widgets/HeadsUp'
+import Button from '~/widgets/Buttons/Button'
 
-// import from '@/widgets/Alert'
+// import from '~/widgets/Alert'
 import List from './List'
 
 import useBaseInfo from '../../logic/useBaseInfo'

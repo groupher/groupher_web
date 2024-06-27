@@ -1,12 +1,12 @@
 import type { FC } from 'react'
 import { reject } from 'ramda'
 
-import type { TActive, TCommunityThread, TLinkItem } from '@/spec'
+import type { TActive, TCommunityThread, TLinkItem } from '~/spec'
 
-import { THREAD } from '@/const/thread'
-import { HEADER_LAYOUT } from '@/const/layout'
+import { THREAD } from '~/const/thread'
+import { HEADER_LAYOUT } from '~/const/layout'
 
-import CustomHeaderLinks from '@/widgets/CustomHeaderLinks/HeaderTemplate'
+import CustomHeaderLinks from '~/widgets/CustomHeaderLinks/HeaderTemplate'
 
 import useHeader from '../../logic/useHeader'
 import {

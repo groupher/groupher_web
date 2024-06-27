@@ -1,9 +1,9 @@
 import { proxy } from 'valtio'
 
-import type { TUser, TAccount } from '@/spec'
+import type { TUser, TAccount } from '~/spec'
 
-import BStore from '@/utils/bstore'
-import OAUTH from '@/const/oauth'
+import BStore from '~/utils/bstore'
+import OAUTH from '~/const/oauth'
 
 import type { TStore } from './spec'
 

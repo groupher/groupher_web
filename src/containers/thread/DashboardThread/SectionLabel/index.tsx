@@ -1,6 +1,6 @@
 import { type FC, memo, type ReactNode } from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import ThemeSelect from './ThemeSelect'
 import { Wrapper, Header, Title, Desc } from '../styles/section_label'

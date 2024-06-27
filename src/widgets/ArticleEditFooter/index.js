@@ -7,8 +7,8 @@
 import React from 'react'
 import T from 'prop-types'
 
-import Button from '@/widgets/Buttons/Button'
-import { Space } from '@/widgets/Common'
+import Button from '~/widgets/Buttons/Button'
+import { Space } from '~/widgets/Common'
 
 import { Wrapper, RespectText, PublishButtons, Divider } from './styles'
 

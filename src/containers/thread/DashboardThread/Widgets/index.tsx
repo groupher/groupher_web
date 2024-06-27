@@ -1,8 +1,8 @@
-import { Br } from '@/widgets/Common'
+import { Br } from '~/widgets/Common'
 
-import Button from '@/widgets/Buttons/Button'
-import Tabs from '@/widgets/Switcher/Tabs'
-import Radio from '@/widgets/Switcher/Radio'
+import Button from '~/widgets/Buttons/Button'
+import Tabs from '~/widgets/Switcher/Tabs'
+import Radio from '~/widgets/Switcher/Radio'
 
 import { WIDGET_TYPES } from '../constant'
 

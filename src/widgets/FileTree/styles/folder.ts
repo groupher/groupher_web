@@ -1,7 +1,7 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import ArrowSVG from '@/icons/ArrowSimple'
+import ArrowSVG from '~/icons/ArrowSimple'
 
 export const Wrapper = styled.div``
 export const Header = styled.div<TActive>`

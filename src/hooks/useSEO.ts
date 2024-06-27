@@ -1,9 +1,9 @@
 import { pick } from 'ramda'
 
-import type { TDashboardSEOConfig } from '@/spec'
-import { SEO_KEYS } from '@/const/seo'
+import type { TDashboardSEOConfig } from '~/spec'
+import { SEO_KEYS } from '~/const/seo'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 export default (): TDashboardSEOConfig => {
   const store = useSubStore('dashboard')

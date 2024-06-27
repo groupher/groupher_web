@@ -1,9 +1,9 @@
 import { type FC, Fragment, memo } from 'react'
 
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 
 import { Wrapper, SearchWrapper, PlusIcon } from '../styles/setter/header'
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 
 import type { TView } from '../spec'
 

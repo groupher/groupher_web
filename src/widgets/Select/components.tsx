@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { components, type IndicatorSeparatorProps } from 'react-select'
 
-import type { TSelectOption } from '@/spec'
+import type { TSelectOption } from '~/spec'
 
 import type { TSelectProps } from './spec'
 import { OptionRow, OptionTitle, OptionDesc } from './styles'

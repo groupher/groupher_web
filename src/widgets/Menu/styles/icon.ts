@@ -1,29 +1,29 @@
 import type { FC } from 'react'
 
-import type { TActive, TColor } from '@/spec'
+import type { TActive, TColor } from '~/spec'
 
-import MENU from '@/const/menu'
+import MENU from '~/const/menu'
 
-// import AllSVG from '@/icons/menu/Dots'
-import GtdTodoSVG from '@/icons/GtdTodo'
-import GtdWipSVG from '@/icons/GtdWip'
-import GtdDoneSVG from '@/icons/CheckBold'
+// import AllSVG from '~/icons/menu/Dots'
+import GtdTodoSVG from '~/icons/GtdTodo'
+import GtdWipSVG from '~/icons/GtdWip'
+import GtdDoneSVG from '~/icons/CheckBold'
 
 // sort
-import UpvoteSVG from '@/icons/Upvote'
-import CommentSVG from '@/icons/Comment'
-import PublishSVG from '@/icons/Publish'
-import ViewSVG from '@/icons/article/Viewed'
+import UpvoteSVG from '~/icons/Upvote'
+import CommentSVG from '~/icons/Comment'
+import PublishSVG from '~/icons/Publish'
+import ViewSVG from '~/icons/article/Viewed'
 
-import LightSVG from '@/icons/ColorLight'
-import BugSVG from '@/icons/ColorBug'
-import QuestionSVG from '@/icons/Question'
-import RejectSVG from '@/icons/Reject'
+import LightSVG from '~/icons/ColorLight'
+import BugSVG from '~/icons/ColorBug'
+import QuestionSVG from '~/icons/Question'
+import RejectSVG from '~/icons/Reject'
 
-import OtherSVG from '@/icons/menu/MoreL'
+import OtherSVG from '~/icons/menu/MoreL'
 
-// import Img from '@/Img'
-import styled, { css, theme, rainbow } from '@/css'
+// import Img from '~/Img'
+import styled, { css, theme, rainbow } from '~/css'
 import { Item } from './list'
 
 type TWrapper = { $noSaturate: boolean } & TActive

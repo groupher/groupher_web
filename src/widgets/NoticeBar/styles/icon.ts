@@ -1,9 +1,9 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ArchivedSVG from '@/icons/Archived'
-import LockSVG from '@/icons/Lock'
-import NoticeSVG from '@/icons/Notice'
-import InfoSVG from '@/icons/Info'
+import ArchivedSVG from '~/icons/Archived'
+import LockSVG from '~/icons/Lock'
+import NoticeSVG from '~/icons/Notice'
+import InfoSVG from '~/icons/Info'
 
 const baseIcon = `
   ${css.size(15)};

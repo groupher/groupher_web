@@ -1,14 +1,14 @@
 import { type FC, Fragment, useState } from 'react'
 import { keys, startsWith, filter } from 'ramda'
 
-import type { TLinkItem } from '@/spec'
-import { MORE_GROUP, ONE_LINK_GROUP } from '@/const/dashboard'
-import { sortByIndex, groupByKey } from '@/helper'
-import useAccount from '@/hooks/useAccount'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import type { TLinkItem } from '~/spec'
+import { MORE_GROUP, ONE_LINK_GROUP } from '~/const/dashboard'
+import { sortByIndex, groupByKey } from '~/helper'
+import useAccount from '~/hooks/useAccount'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import type { TProps, TLinkGroup } from './spec'
 

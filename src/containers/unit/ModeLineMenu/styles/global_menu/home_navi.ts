@@ -1,7 +1,7 @@
-import type { TTestable } from '@/spec'
-import styled, { css, theme } from '@/css'
-import SiteLogo from '@/icons/CPLogo'
-import ArrowSVG from '@/icons/ArrowSimple'
+import type { TTestable } from '~/spec'
+import styled, { css, theme } from '~/css'
+import SiteLogo from '~/icons/CPLogo'
+import ArrowSVG from '~/icons/ArrowSimple'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

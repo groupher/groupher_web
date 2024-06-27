@@ -1,5 +1,5 @@
-import styled, { css, theme, animate } from '@/css'
-import { WithPosition } from '@/widgets/Common'
+import styled, { css, theme, animate } from '~/css'
+import { WithPosition } from '~/widgets/Common'
 
 import CurveLineSVG from './CurveLine'
 import LineSVG from './Line'

@@ -5,10 +5,10 @@
 
 import { type FC, useEffect } from 'react'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import { SexyDivider } from '@/widgets/Common'
-import Button from '@/widgets/Buttons/Button'
+import { SexyDivider } from '~/widgets/Common'
+import Button from '~/widgets/Buttons/Button'
 
 import Selects from './Selects'
 

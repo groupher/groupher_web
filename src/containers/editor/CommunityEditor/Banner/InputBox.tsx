@@ -1,6 +1,6 @@
 import { type FC, memo, useRef } from 'react'
 
-import type { TInput } from '@/spec'
+import type { TInput } from '~/spec'
 
 import { Wrapper, InputWrapper, InputMask, MaskNumer, InputBar } from '../styles/banner/input_box'
 

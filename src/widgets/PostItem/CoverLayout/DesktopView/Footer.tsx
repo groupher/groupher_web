@@ -1,11 +1,11 @@
-import { memo, FC } from 'react'
+import { memo, type FC } from 'react'
 import TimeAgo from 'timeago-react'
 
-import type { TPost } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/const/layout'
+import type { TPost } from '~/spec'
+import { UPVOTE_LAYOUT } from '~/const/layout'
 
-import { SpaceGrow } from '@/widgets/Common'
-import Upvote from '@/widgets/Upvote'
+import { SpaceGrow } from '~/widgets/Common'
+import Upvote from '~/widgets/Upvote'
 
 import { Wrapper, CreateTime } from '../../styles/cover_layout/desktop_view/footer'
 

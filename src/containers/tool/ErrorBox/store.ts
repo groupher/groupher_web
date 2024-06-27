@@ -3,9 +3,9 @@
  *
  */
 
-import type { TGQError } from '@/spec'
-import ERR from '@/const/err'
-import { T, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
+import type { TGQError } from '~/spec'
+import ERR from '~/const/err'
+import { T, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
 
 const Message = T.model('Message', {
   message: T.string,

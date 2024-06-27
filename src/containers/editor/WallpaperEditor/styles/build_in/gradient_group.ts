@@ -1,7 +1,7 @@
-import type { TActive } from '@/spec'
-import styled, { css, animate, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, animate, theme } from '~/css'
 
-import PenSVG from '@/icons/EditPen'
+import PenSVG from '~/icons/EditPen'
 
 export const Wrapper = styled.div`
   ${css.rowWrap('align-center')};

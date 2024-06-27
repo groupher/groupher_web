@@ -6,10 +6,10 @@
 
 import { type FC, type ReactNode, memo } from 'react'
 
-import type { TSize } from '@/spec'
-import { ICON } from '@/config'
-import { nilOrEmpty } from '@/validator'
-import SIZE from '@/const/size'
+import type { TSize } from '~/spec'
+import { ICON } from '~/config'
+import { nilOrEmpty } from '~/validator'
+import SIZE from '~/const/size'
 
 import { Wrapper, Icon, Text } from './styles'
 

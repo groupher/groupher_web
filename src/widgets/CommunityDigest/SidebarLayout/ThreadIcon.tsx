@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 
-import type { TActive, TThread } from '@/spec'
-import { THREAD } from '@/const/thread'
+import type { TActive, TThread } from '~/spec'
+import { THREAD } from '~/const/thread'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import { Wrapper, Icon } from '../styles/sidebar_layout/thread_icon'
 

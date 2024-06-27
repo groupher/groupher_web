@@ -1,7 +1,7 @@
 import { type FC, type ReactNode, useEffect, useState, memo, useRef } from 'react'
 
-import useSwipe from '@/hooks/useSwipe'
-import useTheme from '@/hooks/useTheme'
+import useSwipe from '~/hooks/useSwipe'
+import useTheme from '~/hooks/useTheme'
 
 import type { TSwipeOption } from '../spec'
 import Header from '../Header'

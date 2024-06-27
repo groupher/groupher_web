@@ -7,8 +7,8 @@
 import React, { useState, useEffect } from 'react'
 import T from 'prop-types'
 
-import { ICON } from '@/config'
-import LinksCard from '@/widgets/LinksCard'
+import { ICON } from '~/config'
+import LinksCard from '~/widgets/LinksCard'
 
 import { Wrapper, ArrowIcon, ContentWrapper } from './styles'
 

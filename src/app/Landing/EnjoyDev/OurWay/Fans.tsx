@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import Facepile from '@/widgets/Facepile/LandingPage'
-import { mockUsers } from '@/mock'
+import Facepile from '~/widgets/Facepile/LandingPage'
+import { mockUsers } from '~/mock'
 
 import {
   Wrapper,

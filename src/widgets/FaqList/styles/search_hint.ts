@@ -1,10 +1,10 @@
 import Link from 'next/link'
 
-import type { TColorName, TTestable } from '@/spec'
+import type { TColorName, TTestable } from '~/spec'
 
-import styled, { css, theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '~/css'
 
-import FAQSVG from '@/icons/FAQ'
+import FAQSVG from '~/icons/FAQ'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

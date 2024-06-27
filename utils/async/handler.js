@@ -1,6 +1,6 @@
 import { join, isEmpty } from 'ramda'
 
-import ERR from '@/const/err'
+import ERR from '~/const/err'
 
 // import { TIMEOUT_THRESHOLD } from './config'
 

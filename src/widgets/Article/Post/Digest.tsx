@@ -4,20 +4,20 @@
 
 import { useRouter } from 'next/navigation'
 
-import useMetric from '@/hooks/useMetric'
-import useViewingArticle from '@/hooks/useViewingArticle'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { ARTICLE_THREAD } from '@/const/thread'
+import useMetric from '~/hooks/useMetric'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import { ARTICLE_THREAD } from '~/const/thread'
 
-// import ArchivedSign from '@/widgets/ArchivedSign'
-import { SpaceGrow } from '@/widgets/Common'
-import ArticleBaseStats from '@/widgets/ArticleBaseStats'
-import Share from '@/widgets/Share'
-import ArticleSettingMenu from '@/widgets/ArticleSettingMenu'
-import ArticlePinLabel from '@/widgets/ArticlePinLabel'
+// import ArchivedSign from '~/widgets/ArchivedSign'
+import { SpaceGrow } from '~/widgets/Common'
+import ArticleBaseStats from '~/widgets/ArticleBaseStats'
+import Share from '~/widgets/Share'
+import ArticleSettingMenu from '~/widgets/ArticleSettingMenu'
+import ArticlePinLabel from '~/widgets/ArticlePinLabel'
 
-// import ArticleBelongCommunity from '@/widgets/ArticleBelongCommunity'
-// import ArticleMenu from '@/widgets/ArticleMenu'
+// import ArticleBelongCommunity from '~/widgets/ArticleBelongCommunity'
+// import ArticleMenu from '~/widgets/ArticleMenu'
 // import BackTo from './BackTo'
 
 import {

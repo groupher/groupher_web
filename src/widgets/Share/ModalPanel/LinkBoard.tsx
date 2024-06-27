@@ -1,6 +1,6 @@
 import { type FC, memo, Fragment, useState } from 'react'
 
-import CopyButton from '@/widgets/Buttons/CopyButton'
+import CopyButton from '~/widgets/Buttons/CopyButton'
 import type { TLinksData } from '../spec'
 
 import { Header, TabWrapper, TabName, BoxWrapper, Inputer } from '../styles/modal_panel/link_board'

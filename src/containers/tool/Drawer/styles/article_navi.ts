@@ -1,6 +1,6 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
-import ArrowSVG from '@/icons/ArrowSimple'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
+import ArrowSVG from '~/icons/ArrowSimple'
 
 import { NaviArea } from '.'
 

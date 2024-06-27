@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
 
 export const Wrapper = styled.div``
 export const Title = styled.div``

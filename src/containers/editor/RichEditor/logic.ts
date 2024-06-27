@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-// import ERR from '@/const/err'
+// import ERR from '~/const/err'
 import type { TStore } from './store'
 
 let store: TStore | undefined

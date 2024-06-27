@@ -1,4 +1,4 @@
-import type { TCommunity } from '@/spec'
+import type { TCommunity } from '~/spec'
 
 // use articlesCount instead
 export const getContentCount = (community: TCommunity): number => {

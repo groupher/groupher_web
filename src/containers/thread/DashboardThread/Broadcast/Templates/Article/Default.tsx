@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import { BROADCAST_ARTICLE_LAYOUT } from '@/const/layout'
-import ArticleBroadcast from '@/widgets/ArticleBroadcast'
+import { BROADCAST_ARTICLE_LAYOUT } from '~/const/layout'
+import ArticleBroadcast from '~/widgets/ArticleBroadcast'
 
 import useBroadcast from '../../../logic/useBroadcast'
 import { Wrapper, Shrink } from '../../../styles/broadcast/templates/article/default'

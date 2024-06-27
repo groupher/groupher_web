@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import Share from '@/widgets/Share'
+import Share from '~/widgets/Share'
 
 import { Wrapper } from './styles/share_menu'
 

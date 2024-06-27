@@ -1,4 +1,4 @@
-import type { TGAEvent } from '@/spec'
+import type { TGAEvent } from '~/spec'
 
 import { Global } from '../helper'
 

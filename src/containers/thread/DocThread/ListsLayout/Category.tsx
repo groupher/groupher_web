@@ -1,11 +1,11 @@
 import type { FC } from 'react'
 
-import type { TColorName } from '@/spec'
-import { mockUsers } from '@/mock'
+import type { TColorName } from '~/spec'
+import { mockUsers } from '~/mock'
 
-import { SpaceGrow } from '@/widgets/Common'
-import Facepile from '@/widgets/Facepile'
-import FaIcons from '@/widgets/FaIcons'
+import { SpaceGrow } from '~/widgets/Common'
+import Facepile from '~/widgets/Facepile'
+import FaIcons from '~/widgets/FaIcons'
 
 import useLogic from '../useLogic'
 import {

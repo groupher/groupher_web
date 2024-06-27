@@ -6,7 +6,7 @@
 
 import type { FC } from 'react'
 
-import VIEW from '@/const/view'
+import VIEW from '~/const/view'
 
 import DesktopView from './DesktopView/index'
 

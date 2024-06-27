@@ -7,10 +7,10 @@
 import { type FC, Suspense, lazy } from 'react'
 import { compose, not, isNil, filter, reverse as reverseFn, slice } from 'ramda'
 
-import type { TUser, TSpace } from '@/spec'
-import { AVATARS_LIST_LENGTH } from '@/config'
+import type { TUser, TSpace } from '~/spec'
+import { AVATARS_LIST_LENGTH } from '~/config'
 
-import SIZE from '@/const/size'
+import SIZE from '~/const/size'
 
 import type { TAvatarSize } from './spec'
 import MoreItem from './MoreItem'

@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
-import Button from '@/widgets/Buttons/Button'
-import { CONDITION_MODE } from '@/const/mode'
-import ConditionSelector from '@/widgets/ConditionSelector'
+import { SpaceGrow } from '~/widgets/Common'
+import Button from '~/widgets/Buttons/Button'
+import { CONDITION_MODE } from '~/const/mode'
+import ConditionSelector from '~/widgets/ConditionSelector'
 
 import ActionBar from './ActionBar'
 

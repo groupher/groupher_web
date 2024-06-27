@@ -1,5 +1,5 @@
-import type { TActive, TColor } from '@/spec'
-import styled, { css, rainbow, theme } from '@/css'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, rainbow, theme } from '~/css'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};

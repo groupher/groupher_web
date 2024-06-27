@@ -2,8 +2,8 @@
 
 import { type FC, useEffect, useCallback } from 'react'
 
-import useViewingThread from '@/hooks/useViewingThread'
-import { THREAD } from '@/const/thread'
+import useViewingThread from '~/hooks/useViewingThread'
+import { THREAD } from '~/const/thread'
 
 import { useStore } from './store'
 import { useInit } from './logic'

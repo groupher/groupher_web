@@ -1,7 +1,7 @@
-import type { TColor, TSpace } from '@/spec'
-// import Img from '@/Img'
-import styled, { css, theme, rainbow } from '@/css'
-import { WithMargin } from '@/widgets/Common'
+import type { TColor, TSpace } from '~/spec'
+// import Img from '~/Img'
+import styled, { css, theme, rainbow } from '~/css'
+import { WithMargin } from '~/widgets/Common'
 
 import Button from '../../Button'
 // see example: https://codepen.io/mydearxym2/pen/qBEvvpo

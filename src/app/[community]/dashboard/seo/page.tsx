@@ -1,6 +1,6 @@
 'use client'
 
-import SEO from '@/containers//thread/DashboardThread/SEO'
+import SEO from '~/containers//thread/DashboardThread/SEO'
 
 const DashboardSeoPage = () => {
   return <SEO />

@@ -1,8 +1,8 @@
-import type { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
-import { Divider } from '@/widgets/Common'
+import { Divider } from '~/widgets/Common'
 import { BaseSection, BlockBase } from '..'
 
 export { Bar, Circle } from '..'

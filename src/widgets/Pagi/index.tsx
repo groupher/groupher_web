@@ -7,9 +7,9 @@
 import type { FC, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import type { TSpace, TPagi } from '@/spec'
+import type { TSpace, TPagi } from '~/spec'
 
-import usePagedPosts from '@/hooks/usePagedPosts'
+import usePagedPosts from '~/hooks/usePagedPosts'
 
 import { EmptyWrapper, BottomMsg } from './styles'
 import RealPagi from './RealPagi'

@@ -1,9 +1,9 @@
-import type { TActive, TColor } from '@/spec'
+import type { TActive, TColor } from '~/spec'
 
-import SettingSVG from '@/icons/Setting'
-import ArrowSVG from '@/icons/ArrowSimple'
-import styled, { css, theme, rainbow } from '@/css'
-import { COLOR_NAME } from '@/const/colors'
+import SettingSVG from '~/icons/Setting'
+import ArrowSVG from '~/icons/ArrowSimple'
+import styled, { css, theme, rainbow } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
 export const Wrapper = styled.div`
   ${css.column()};

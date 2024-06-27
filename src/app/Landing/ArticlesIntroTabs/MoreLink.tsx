@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import type { TColor } from '@/spec'
-import ArrowLinker from '@/widgets/ArrowLinker'
+import type { TColor } from '~/spec'
+import ArrowLinker from '~/widgets/ArrowLinker'
 
 type TProps = {
   title?: string

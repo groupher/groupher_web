@@ -6,9 +6,9 @@ import type {
   TBroadcastConfig,
   TDashboardBroadcastRoute,
   TEditFunc,
-} from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
-import { SETTING_FIELD } from '@/stores3/dashboard/constant'
+} from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
+import { SETTING_FIELD } from '~/stores3/dashboard/constant'
 
 import useHelper from './useHelper'
 

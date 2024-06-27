@@ -3,8 +3,8 @@
  *
  */
 
-import { BANNER_LAYOUT } from '@/const/layout'
-import useLayout from '@/hooks/useLayout'
+import { BANNER_LAYOUT } from '~/const/layout'
+import useLayout from '~/hooks/useLayout'
 
 import ClassicLayout from './ClassicLayout'
 import SimpleLayout from './SimpleLayout'

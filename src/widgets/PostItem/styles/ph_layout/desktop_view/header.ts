@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import LinkSVG from '@/icons/Link'
+import styled, { css, theme } from '~/css'
+import LinkSVG from '~/icons/Link'
 
 import { Wrapper as ItemWrapper } from '.'
 

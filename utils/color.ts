@@ -1,5 +1,5 @@
-import type { TColorName } from '@/spec'
-import { COLOR_NAME } from '@/const/colors'
+import type { TColorName } from '~/spec'
+import { COLOR_NAME } from '~/const/colors'
 
 /* eslint-disable radix */
 /**
@@ -7,16 +7,16 @@ import { COLOR_NAME } from '@/const/colors'
  * see https://stackoverflow.com/a/13532993/4050784
  */
 const shadeColor = (color: string, percent: number): string => {
-  let R = parseInt(color.substring(1, 3), 16)
-  let G = parseInt(color.substring(3, 5), 16)
-  let B = parseInt(color.substring(5, 7), 16)
+  let R = Number.parseInt(color.substring(1, 3), 16)
+  let G = Number.parseInt(color.substring(3, 5), 16)
+  let B = Number.parseInt(color.substring(5, 7), 16)
 
   // @ts-ignore
-  R = parseInt((R * (100 + percent)) / 100)
+  R = Number.parseInt((R * (100 + percent)) / 100)
   // @ts-ignore
-  G = parseInt((G * (100 + percent)) / 100)
+  G = Number.parseInt((G * (100 + percent)) / 100)
   // @ts-ignore
-  B = parseInt((B * (100 + percent)) / 100)
+  B = Number.parseInt((B * (100 + percent)) / 100)
 
   R = R < 255 ? R : 255
   G = G < 255 ? G : 255

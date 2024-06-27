@@ -4,7 +4,7 @@ import { type FC, type ReactNode, memo } from 'react'
 import { Provider } from 'mobx-react'
 import { Suspense } from 'react'
 
-import { useStore } from '@/stores/init'
+import { useStore } from '~/stores/init'
 
 import {
   useCommunity,

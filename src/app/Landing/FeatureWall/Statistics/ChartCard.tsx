@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import AnimatedCount from '@/widgets/AnimatedCount'
+import AnimatedCount from '~/widgets/AnimatedCount'
 
 import {
   Wrapper,

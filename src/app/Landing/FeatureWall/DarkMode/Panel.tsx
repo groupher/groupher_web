@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import THEME from '@/const/theme'
-import useTheme from '@/hooks/useTheme'
+import THEME from '~/const/theme'
+import useTheme from '~/hooks/useTheme'
 
 import type { TCardMetric } from './spec'
 import { CARDS_METRICS } from './constant'

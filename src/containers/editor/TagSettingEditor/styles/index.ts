@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
-import type { TColorName, TTestable } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
+import type { TColorName, TTestable } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
 
-import Input from '@/widgets/Input'
+import Input from '~/widgets/Input'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

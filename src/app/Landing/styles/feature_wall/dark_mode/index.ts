@@ -1,6 +1,6 @@
-import styled, { css, theme, animate } from '@/css'
+import styled, { css, theme, animate } from '~/css'
 
-import StarSVG from '@/icons/Star'
+import StarSVG from '~/icons/Star'
 
 import { BaseCard } from '..'
 

@@ -9,8 +9,8 @@ import type {
   TPagedCommunities,
   TFAQSection,
   TArticleEntries,
-} from '@/spec'
-import { toJS } from '@/mobx'
+} from '~/spec'
+import { toJS } from '~/mobx'
 
 import useHelper from './useHelper'
 

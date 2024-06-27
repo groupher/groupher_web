@@ -1,9 +1,9 @@
-import { callPassportEditor } from '@/signal'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import { callPassportEditor } from '~/signal'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import { SpaceGrow } from '@/widgets/Common'
-import Button from '@/widgets/Buttons/Button'
-import AdminAvatar from '@/widgets/AdminAvatar'
+import { SpaceGrow } from '~/widgets/Common'
+import Button from '~/widgets/Buttons/Button'
+import AdminAvatar from '~/widgets/AdminAvatar'
 
 import useAdmins from '../logic/useAdmins'
 

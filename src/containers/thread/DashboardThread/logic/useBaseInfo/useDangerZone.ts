@@ -1,4 +1,4 @@
-// import useDashboard from '@/hooks/useDashboard'
+// import useDashboard from '~/hooks/useDashboard'
 // import useHelper from '../useHelper'
 
 export type TRet = {

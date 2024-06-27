@@ -8,8 +8,8 @@
 
 import { useState } from 'react'
 
-import HomeHeader from '@/widgets/HomeHeader'
-import Button from '@/widgets/Buttons/Button'
+import HomeHeader from '~/widgets/HomeHeader'
+import Button from '~/widgets/Buttons/Button'
 
 import { Wrapper, Content, Thanks, Title, Bold, P } from './styles'
 

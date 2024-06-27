@@ -1,8 +1,8 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import ShadowSVG from '@/icons/Shadow'
-import EmptySVG from '@/icons/Empty'
+import ShadowSVG from '~/icons/Shadow'
+import EmptySVG from '~/icons/Empty'
 
 import { SettingBlock, SettingTitle } from '.'
 

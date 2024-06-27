@@ -1,6 +1,6 @@
 import { type FC, memo, Fragment } from 'react'
 
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 
 import { OpenedIcon, ClosedIcon } from '../../styles/filter_menu/sort_column'
 

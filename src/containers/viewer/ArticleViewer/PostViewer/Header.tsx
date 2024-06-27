@@ -1,10 +1,10 @@
 import { type FC, memo, Fragment } from 'react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
-import DotDivider from '@/widgets/DotDivider'
-import ArticleCatState from '@/widgets/ArticleCatState'
-import TagsList from '@/widgets/TagsList'
+import DotDivider from '~/widgets/DotDivider'
+import ArticleCatState from '~/widgets/ArticleCatState'
+import TagsList from '~/widgets/TagsList'
 
 import { Wrapper, PublishWrapper, EditedHint } from '../styles/post_viewer/header'
 

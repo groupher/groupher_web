@@ -1,5 +1,5 @@
-import type { TLinkItem, TFooterLayout } from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
+import type { TLinkItem, TFooterLayout } from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
 
 type TFooterLinks = {
   layout: TFooterLayout

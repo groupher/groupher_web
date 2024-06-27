@@ -27,7 +27,7 @@ import type {
   TSocialItem,
   TLinkItem,
   TOverview,
-} from '@/spec'
+} from '~/spec'
 
 import {
   DASHBOARD_LAYOUT_ROUTE,
@@ -36,12 +36,12 @@ import {
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_SEO_ROUTE,
   DASHBOARD_DOC_ROUTE,
-} from '@/const/route'
-import { CHANGE_MODE } from '@/const/mode'
+} from '~/const/route'
+import { CHANGE_MODE } from '~/const/mode'
 
-import BStore from '@/utils/bstore'
-import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
-import { publicThreads } from '@/helper'
+import BStore from '~/utils/bstore'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
+import { publicThreads } from '~/helper'
 
 import {
   PagedCommunities,
@@ -52,7 +52,7 @@ import {
   emptyPagi,
   FAQSection,
   User,
-} from '@/model'
+} from '~/model'
 
 import type {
   TBaseInfoSettings,
@@ -490,6 +490,7 @@ const DashboardThread = T.model('DashboardThread', {
   }))
 
 export type TStore = Instance<typeof DashboardThread>
+// @ts-ignore
 export const useStore = (): TStore => useMobxContext().store.dashboardThread
 
 export default DashboardThread

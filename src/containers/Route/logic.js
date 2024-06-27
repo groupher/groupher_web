@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
-import { parseURL } from '@/utils/route'
-import { Global } from '@/helper'
+import { parseURL } from '~/utils/route'
+import { Global } from '~/helper'
 
 let store = null
 

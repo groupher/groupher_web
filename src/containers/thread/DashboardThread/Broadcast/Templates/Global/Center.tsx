@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import { BROADCAST_LAYOUT } from '@/const/layout'
-import { Space, SpaceGrow } from '@/widgets/Common'
+import { BROADCAST_LAYOUT } from '~/const/layout'
+import { Space, SpaceGrow } from '~/widgets/Common'
 
 import useBroadcast from '../../../logic/useBroadcast'
 import {

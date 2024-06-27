@@ -1,9 +1,9 @@
-import type { TLocale } from '@/spec'
-import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
-import useChangeI18n from '@/hooks/useChangeI18n'
+import type { TLocale } from '~/spec'
+import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
+import useChangeI18n from '~/hooks/useChangeI18n'
 
-import { LANGS_OPTIONS } from '@/const/i18n'
-import { SpaceGrow } from '@/widgets/Common'
+import { LANGS_OPTIONS } from '~/const/i18n'
+import { SpaceGrow } from '~/widgets/Common'
 
 import { Wrapper, MenuBar, LangIconBox, CheckIcon } from './styles/i18n_panel'
 

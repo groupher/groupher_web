@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react'
 
-import { titleCase } from '@/fmt'
+import { titleCase } from '~/fmt'
 
-import useSubStore from '@/hooks/useSubStore'
-import type { TLocale, TTransKey } from '@/spec'
+import useSubStore from '~/hooks/useSubStore'
+import type { TLocale, TTransKey } from '~/spec'
 
 type TFmt = 'titleCase' | null
 

@@ -1,12 +1,12 @@
 import type { FC } from 'react'
 
-import type { TTag } from '@/spec'
-import { cutRest } from '@/fmt'
-import { Trans } from '@/i18n'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import type { TTag } from '~/spec'
+import { cutRest } from '~/fmt'
+import { Trans } from '~/i18n'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import Outline from './Outline'
-// import DotDivider from '@/widgets/DotDivider'
+// import DotDivider from '~/widgets/DotDivider'
 // import TagCount from './TagCount'
 
 import { Wrapper, File, Title, IndexDot } from './styles/file_item'

@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-import type { TAvatarLayout, TEditFunc } from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
+import type { TAvatarLayout, TEditFunc } from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
 
 import useHelper from './useHelper'
 

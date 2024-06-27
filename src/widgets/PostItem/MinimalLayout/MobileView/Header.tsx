@@ -1,12 +1,12 @@
 import type { FC } from 'react'
 
-import type { TPost } from '@/spec'
-import EVENT from '@/const/event'
-import SIZE from '@/const/size'
-import { send } from '@/signal'
+import type { TPost } from '~/spec'
+import EVENT from '~/const/event'
+import SIZE from '~/const/size'
+import { send } from '~/signal'
 
-import { SpaceGrow } from '@/widgets/Common'
-import CommentsCount from '@/widgets/CommentsCount'
+import { SpaceGrow } from '~/widgets/Common'
+import CommentsCount from '~/widgets/CommentsCount'
 
 import { Wrapper, Main, Title } from '../../styles/minimal_layout/mobile_view/header'
 

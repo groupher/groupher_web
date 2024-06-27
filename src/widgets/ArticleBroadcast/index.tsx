@@ -6,10 +6,10 @@
 
 import { type FC, memo } from 'react'
 
-import type { TColorName, TSpace } from '@/spec'
-import { COLOR_NAME } from '@/const'
+import type { TColorName, TSpace } from '~/spec'
+import { COLOR_NAME } from '~/const'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import {
   Wrapper,

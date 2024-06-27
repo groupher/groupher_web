@@ -1,6 +1,6 @@
-import { Row } from '@/widgets/Common'
-import ColorSelector from '@/widgets/ColorSelector'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import { Row } from '~/widgets/Common'
+import ColorSelector from '~/widgets/ColorSelector'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'

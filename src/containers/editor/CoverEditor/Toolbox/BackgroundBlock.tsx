@@ -1,11 +1,11 @@
-import { useState, FC } from 'react'
+import { useState, type FC } from 'react'
 import { keys, values } from 'ramda'
 
-import type { TWallpaper, TWallpaperGradientDir } from '@/spec'
-import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/const/wallpaper'
-import { parseWallpaper } from '@/wallpaper'
+import type { TWallpaper, TWallpaperGradientDir } from '~/spec'
+import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '~/const/wallpaper'
+import { parseWallpaper } from '~/wallpaper'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import {
   Wrapper,

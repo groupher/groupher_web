@@ -8,7 +8,7 @@ import React from 'react'
 import T from 'prop-types'
 import { keys } from 'ramda'
 
-import { groupByKey } from '@/helper'
+import { groupByKey } from '~/helper'
 
 import Group from './Group'
 

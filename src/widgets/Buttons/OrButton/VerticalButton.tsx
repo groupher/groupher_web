@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import SIZE from '@/const/size'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import SIZE from '~/const/size'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import type { TProps as TButtonProps } from '.'
 import { Wrapper, UpButton, OrSign, BottomButton } from '../styles/or_button/vertical_button'

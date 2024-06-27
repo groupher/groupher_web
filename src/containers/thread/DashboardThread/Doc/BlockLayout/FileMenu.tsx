@@ -1,5 +1,5 @@
-import MenuItem from '@/widgets/MenuItem'
-import MENU from '@/const/menu'
+import MenuItem from '~/widgets/MenuItem'
+import MENU from '~/const/menu'
 
 import { Wrapper, Item, Title, Icon } from '../../styles/doc/block_layout/file_menu'
 

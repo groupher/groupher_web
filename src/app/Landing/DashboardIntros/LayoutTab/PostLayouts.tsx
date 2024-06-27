@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import type { TColorName } from '@/spec'
+import type { TColorName } from '~/spec'
 
-import { Brick } from '@/widgets/Common'
+import { Brick } from '~/widgets/Common'
 
 import {
   Wrapper,

@@ -1,4 +1,4 @@
-import type { TLocale } from '@/spec'
+import type { TLocale } from '~/spec'
 
 export type TStore = {
   locale: TLocale

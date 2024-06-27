@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { type FC, memo } from 'react'
 
-import type { TArticle } from '@/spec'
-import { ICON } from '@/config'
-import TYPE from '@/const/type'
+import type { TArticle } from '~/spec'
+import { ICON } from '~/config'
+import TYPE from '~/const/type'
 
 import NaviButton from '../NaviButton'
 import { Wrapper, Title } from '../styles/more_menu'

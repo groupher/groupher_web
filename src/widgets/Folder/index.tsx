@@ -7,9 +7,9 @@
 
 import { type FC, memo } from 'react'
 
-import type { TSizeSM } from '@/spec'
+import type { TSizeSM } from '~/spec'
 
-import SIZE from '@/const/size'
+import SIZE from '~/const/size'
 
 import Content from './Content'
 import Footer from './Footer'

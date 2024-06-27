@@ -1,9 +1,9 @@
 import { type FC, memo } from 'react'
 
-import type { TSubmitState, TComment } from '@/spec'
+import type { TSubmitState, TComment } from '~/spec'
 
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import CustomScroller from '@/widgets/CustomScroller'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
+import CustomScroller from '~/widgets/CustomScroller'
 
 import BodyEditor from './BodyEditor'
 import Footer from './Footer'

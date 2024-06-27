@@ -5,8 +5,8 @@
 
 import { pick, values, isEmpty } from 'ramda'
 
-import type { TRootStore, TRoute } from '@/spec'
-import { T, getParent, markStates, Instance, useMobxContext } from '@/mobx'
+import type { TRootStore, TRoute } from '~/spec'
+import { T, getParent, markStates, type Instance, useMobxContext } from '~/mobx'
 
 import type {
   THeaderStatus,

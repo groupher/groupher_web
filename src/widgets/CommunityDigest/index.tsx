@@ -6,9 +6,9 @@
 import { Fragment } from 'react'
 import { usePathname } from 'next/navigation'
 
-import { BANNER_LAYOUT } from '@/const/layout'
-// import { ROUTE } from '@/const/route'
-import useLayout from '@/hooks/useLayout'
+import { BANNER_LAYOUT } from '~/const/layout'
+// import { ROUTE } from '~/const/route'
+import useLayout from '~/hooks/useLayout'
 
 import DashboardLayout from './DashboardLayout'
 import SidebarLayout from './SidebarLayout'

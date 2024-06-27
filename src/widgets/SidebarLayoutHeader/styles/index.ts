@@ -1,11 +1,11 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import KanbanSVG from '@/icons/Kanban'
-import HomeSVG from '@/icons/Home'
-import DiscussSVG from '@/icons/Discuss'
-import TadaSVG from '@/icons/Tada'
-import InfoSVG from '@/icons/Info'
-import GuideSVG from '@/icons/Guide'
+import KanbanSVG from '~/icons/Kanban'
+import HomeSVG from '~/icons/Home'
+import DiscussSVG from '~/icons/Discuss'
+import TadaSVG from '~/icons/Tada'
+import InfoSVG from '~/icons/Info'
+import GuideSVG from '~/icons/Guide'
 
 export const Menu = styled.div`
   ${css.row('align-center')};

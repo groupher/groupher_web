@@ -1,8 +1,8 @@
 import { type FC, useState } from 'react'
 import { keys, includes } from 'ramda'
 
-import useInterval from '@/hooks/useInterval'
-import { SexyDivider } from '@/widgets/Common'
+import useInterval from '~/hooks/useInterval'
+import { SexyDivider } from '~/widgets/Common'
 
 import { BLOCKS, SHINE_DOTS } from './constant'
 import Slogan from './Slogan'

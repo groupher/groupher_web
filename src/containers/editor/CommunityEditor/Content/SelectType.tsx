@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import ArrowLinker from '@/widgets/ArrowLinker'
+import ArrowLinker from '~/widgets/ArrowLinker'
 
 import DemoCommunity from './DemoCommunity'
 import COMMUNITY_INTRO from './communityIntros'

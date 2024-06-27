@@ -1,11 +1,11 @@
-import type { TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT } from '@/const/layout'
+import type { TAvatarLayout } from '~/spec'
+import { AVATAR_LAYOUT } from '~/const/layout'
 
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
-import ExpandSVG from '@/icons/Expand'
-import PinSVG from '@/icons/Pin'
+import ExpandSVG from '~/icons/Expand'
+import PinSVG from '~/icons/Pin'
 
 import { CreateDate as HeaderCreateDate } from '../header'
 

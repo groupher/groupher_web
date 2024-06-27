@@ -1,7 +1,7 @@
 import { type FC, Fragment } from 'react'
 import { keys } from 'ramda'
 
-import { Br } from '@/widgets/Common'
+import { Br } from '~/widgets/Common'
 
 import { MENU } from '../constant'
 import type { TMenuGroup } from '../spec'

@@ -1,6 +1,6 @@
-import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '@/const/gtd'
+import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '~/const/gtd'
 
-import type { TMenu } from '@/spec'
+import type { TMenu } from '~/spec'
 
 const MENU = {
   ARROW_LEFT: 'ARROW_LEFT',

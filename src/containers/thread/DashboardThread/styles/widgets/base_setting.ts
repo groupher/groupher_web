@@ -1,5 +1,5 @@
-import type { TColorName } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
+import type { TColorName } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
 
 export const Wrapper = styled.div`
   ${css.column()};

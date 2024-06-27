@@ -1,12 +1,12 @@
 import { type FC, memo } from 'react'
 
-import type { TPost } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/const/layout'
+import type { TPost } from '~/spec'
+import { UPVOTE_LAYOUT } from '~/const/layout'
 
-import { previewArticle, upvoteArticle } from '@/signal'
+import { previewArticle, upvoteArticle } from '~/signal'
 
-import ArticlePinLabel from '@/widgets/ArticlePinLabel'
-import Upvote from '@/widgets/Upvote'
+import ArticlePinLabel from '~/widgets/ArticlePinLabel'
+import Upvote from '~/widgets/Upvote'
 
 import ViewingSign from '../../ViewingSign'
 

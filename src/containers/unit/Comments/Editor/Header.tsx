@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 
-import type { TAccount } from '@/spec'
-import useLayout from '@/hooks/useLayout'
+import type { TAccount } from '~/spec'
+import useLayout from '~/hooks/useLayout'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import {
   Wrapper,

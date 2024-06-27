@@ -1,9 +1,9 @@
 import { type FC, memo, Fragment } from 'react'
 
-import type { TComment } from '@/spec'
+import type { TComment } from '~/spec'
 
-// import Tooltip from '@/widgets/Tooltip'
-import ArtimentBody from '@/widgets/ArtimentBody'
+// import Tooltip from '~/widgets/Tooltip'
+import ArtimentBody from '~/widgets/ArtimentBody'
 
 import Header from '../Header'
 import ReplyBar from '../ReplyBar'

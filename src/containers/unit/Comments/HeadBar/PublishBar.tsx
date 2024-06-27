@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 
-import useLayout from '@/hooks/useLayout'
-import { mockUsers } from '@/mock'
+import useLayout from '~/hooks/useLayout'
+import { mockUsers } from '~/mock'
 
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 
 import {
   Wrapper,

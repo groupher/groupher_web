@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
 import { Wrapper, Item } from '../../styles/basic_info/danger_zone/list'
 

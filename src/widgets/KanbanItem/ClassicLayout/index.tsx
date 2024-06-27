@@ -6,11 +6,11 @@
 
 import type { FC } from 'react'
 
-import type { TArticle } from '@/spec'
-import useLayout from '@/hooks/useLayout'
-import { KANBAN_CARD_LAYOUT } from '@/const/layout'
+import type { TArticle } from '~/spec'
+import useLayout from '~/hooks/useLayout'
+import { KANBAN_CARD_LAYOUT } from '~/const/layout'
 
-// import IconButton from '@/widgets/Buttons/IconButton'
+// import IconButton from '~/widgets/Buttons/IconButton'
 
 import Full from './Full'
 import Simple from './Simple'

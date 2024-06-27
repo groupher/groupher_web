@@ -1,7 +1,7 @@
-import useTheme from '@/hooks/useTheme'
-import THEME from '@/const/theme'
+import useTheme from '~/hooks/useTheme'
+import THEME from '~/const/theme'
 
-import useSubstore from '@/hooks/useSubStore'
+import useSubstore from '~/hooks/useSubStore'
 
 export default (): number => {
   const store = useSubstore('dashboard')

@@ -1,7 +1,7 @@
-import type { TSpace } from '@/spec'
-import styled, { css } from '@/css'
+import type { TSpace } from '~/spec'
+import styled, { css } from '~/css'
 
-// import Img from '@/Img'
+// import Img from '~/Img'
 
 export const Wrapper = styled.div<TSpace>`
   position: relative;

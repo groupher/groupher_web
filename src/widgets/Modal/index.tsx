@@ -1,7 +1,7 @@
 import { type FC, type ReactNode, useCallback, memo } from 'react'
 import dynamic from 'next/dynamic'
 
-import useShortcut from '@/hooks/useShortcut'
+import useShortcut from '~/hooks/useShortcut'
 
 // import RealModal from './RealModal'
 

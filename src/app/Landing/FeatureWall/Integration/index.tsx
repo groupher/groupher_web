@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import { COLOR_NAME } from '@/const/colors'
-import useHover from '@/hooks/useHover'
+import { COLOR_NAME } from '~/const/colors'
+import useHover from '~/hooks/useHover'
 
 import Panel from './Panel'
 

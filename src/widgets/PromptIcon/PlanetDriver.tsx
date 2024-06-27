@@ -1,8 +1,8 @@
 import { type FC, memo } from 'react'
 
-import { ICON_BASE } from '@/config'
-import useTheme from '@/hooks/useTheme'
-import { getRandomInt } from '@/helper'
+import { ICON_BASE } from '~/config'
+import useTheme from '~/hooks/useTheme'
+import { getRandomInt } from '~/helper'
 
 import { PlanetDriverIcon } from './styles'
 

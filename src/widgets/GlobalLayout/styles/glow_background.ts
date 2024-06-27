@@ -1,8 +1,8 @@
-import styled from '@/css'
+import styled from '~/css'
 
-import type { TGlowEffect } from '@/spec'
-import { GLOW_EFFECTS_DAY, GLOW_EFFECTS_NIGHT } from '@/const/glow_effect'
-import THEME from '@/const/theme'
+import type { TGlowEffect } from '~/spec'
+import { GLOW_EFFECTS_DAY, GLOW_EFFECTS_NIGHT } from '~/const/glow_effect'
+import THEME from '~/const/theme'
 
 export const Wrapper = styled('div')<TGlowEffect>`
   background: ${({ glowType, $theme }) => {
@@ -22,7 +22,7 @@ export const Wrapper = styled('div')<TGlowEffect>`
   // width & height must be 100%, without it the wechat will not work
   height: ${({ glowPosition }) => (glowPosition === 'absolute' ? '600px' : '100%')};
   width: 100%;
-  opacity: ${({ glowOpacity }) => `${parseFloat(glowOpacity)}` || 1};
+  opacity: ${({ glowOpacity }) => `${Number.parseFloat(glowOpacity)}` || 1};
 
   z-index: -1;
 `

@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import Input from '@/widgets/Input'
+import styled, { css, theme } from '~/css'
+import Input from '~/widgets/Input'
 
 import { ALIGN_HEADER_OFFSET } from '../../constant'
 

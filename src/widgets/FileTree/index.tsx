@@ -7,9 +7,9 @@
 import { type FC, memo } from 'react'
 import { reverse, keys } from 'ramda'
 
-import type { TSpace } from '@/spec'
-import { groupByKey } from '@/helper'
-import { mockTags } from '@/mock'
+import type { TSpace } from '~/spec'
+import { groupByKey } from '~/helper'
+import { mockTags } from '~/mock'
 
 import Folder from './Folder'
 

@@ -1,11 +1,11 @@
 import { type FC, useEffect, useState } from 'react'
 
-import type { TChangeMode, TLinkItem } from '@/spec'
+import type { TChangeMode, TLinkItem } from '~/spec'
 
-import { Space, SpaceGrow } from '@/widgets/Common'
-import Tooltip from '@/widgets/Tooltip'
-import Linker from '@/widgets/Linker'
-import CancelButton from '@/widgets/Buttons/CancelButton'
+import { Space, SpaceGrow } from '~/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
+import Linker from '~/widgets/Linker'
+import CancelButton from '~/widgets/Buttons/CancelButton'
 import SavingBar from '../../SavingBar'
 
 import { EMPTY_LINK_ITEM } from '../../constant'
@@ -30,7 +30,7 @@ import {
   NotifyLabel,
 } from '../../styles/footer/editors/link_editor'
 
-import { CHANGE_MODE } from '@/const/mode'
+import { CHANGE_MODE } from '~/const/mode'
 
 type TProps = {
   notifyText?: string

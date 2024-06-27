@@ -6,7 +6,7 @@
 
 import { type FC, memo, type ReactNode } from 'react'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
 import { Wrapper, PlusIcon, EditIcon, Text } from './styles/add_button'
 

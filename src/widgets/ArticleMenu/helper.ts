@@ -1,7 +1,7 @@
-import type { TArticle } from '@/spec'
-import EVENT from '@/const/event'
+import type { TArticle } from '~/spec'
+import EVENT from '~/const/event'
 
-import { moveToCommunity, mirrorToCommunity, setTag } from '@/signal'
+import { moveToCommunity, mirrorToCommunity, setTag } from '~/signal'
 
 export const hendleMenu = (key: string, article: TArticle): void => {
   switch (key) {

@@ -1,7 +1,7 @@
 import { type FC, memo } from 'react'
 
-import MorePanel from '@/widgets/Navigator/MorePanel'
-import { SpaceGrow } from '@/widgets/Common'
+import MorePanel from '~/widgets/Navigator/MorePanel'
+import { SpaceGrow } from '~/widgets/Common'
 
 import HomeNavi from './HomeNavi'
 import {

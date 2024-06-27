@@ -1,9 +1,9 @@
 import { isEmpty, find, reject, filter, equals, mergeRight, startsWith } from 'ramda'
 
-import type { TMediaReport } from '@/spec'
-import { query } from '@/utils/api'
+import type { TMediaReport } from '~/spec'
+import { query } from '~/utils/api'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 import { EMPTY_MEDIA_REPORT } from '../../constant'
 

@@ -8,8 +8,8 @@ import { type FC, memo } from 'react'
 import Link from 'next/link'
 import TimeAgo from 'timeago-react'
 
-import type { TSpace } from '@/spec'
-import { ICON } from '@/config'
+import type { TSpace } from '~/spec'
+import { ICON } from '~/config'
 
 import Icon from './Icon'
 

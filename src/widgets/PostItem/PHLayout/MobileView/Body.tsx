@@ -1,12 +1,12 @@
 import type { FC } from 'react'
 
-import type { TPost } from '@/spec'
-import EVENT from '@/const/event'
-import { send } from '@/signal'
+import type { TPost } from '~/spec'
+import EVENT from '~/const/event'
+import { send } from '~/signal'
 
-import ArticleCatState from '@/widgets/ArticleCatState'
-import ViewsCount from '@/widgets/ViewsCount'
-import TagsList from '@/widgets/TagsList'
+import ArticleCatState from '~/widgets/ArticleCatState'
+import ViewsCount from '~/widgets/ViewsCount'
+import TagsList from '~/widgets/TagsList'
 
 import { Wrapper, Digest, Footer } from '../../styles/ph_layout/mobile_view/body'
 

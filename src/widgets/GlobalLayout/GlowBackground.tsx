@@ -1,10 +1,10 @@
-import type { TMetric, TGlowPosition } from '@/spec'
+import type { TMetric, TGlowPosition } from '~/spec'
 
-import useGlowLight from '@/hooks/useGlowLight'
-import useMetric from '@/hooks/useMetric'
-import useTheme from '@/hooks/useTheme'
+import useGlowLight from '~/hooks/useGlowLight'
+import useMetric from '~/hooks/useMetric'
+import useTheme from '~/hooks/useTheme'
 
-import METRIC from '@/const/metric'
+import METRIC from '~/const/metric'
 
 import { Wrapper } from './styles/glow_background'
 

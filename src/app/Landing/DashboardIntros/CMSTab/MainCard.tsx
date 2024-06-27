@@ -1,11 +1,11 @@
 import type { FC } from 'react'
 
-import { mockUsers } from '@/mock'
+import { mockUsers } from '~/mock'
 
-import { Brick, Br } from '@/widgets/Common'
-import Checker from '@/widgets/Checker'
-import ArticleCatState from '@/widgets/ArticleCatState'
-import CommentsCount from '@/widgets/CommentsCount'
+import { Brick, Br } from '~/widgets/Common'
+import Checker from '~/widgets/Checker'
+import ArticleCatState from '~/widgets/ArticleCatState'
+import CommentsCount from '~/widgets/CommentsCount'
 
 import {
   Wrapper,

@@ -18,7 +18,7 @@ import type {
   TFooterLayout,
   THeaderLayout,
   TRSSType,
-} from '@/spec'
+} from '~/spec'
 
 export const UPVOTE_LAYOUT = {
   DEFAULT: 'default',

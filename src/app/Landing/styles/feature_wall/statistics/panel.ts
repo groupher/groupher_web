@@ -1,6 +1,6 @@
-import { WithPosition } from '@/widgets/Common'
+import { WithPosition } from '~/widgets/Common'
 
-import styled, { theme } from '@/css'
+import styled, { theme } from '~/css'
 
 export const Wrapper = styled.div`
   padding: 15px;

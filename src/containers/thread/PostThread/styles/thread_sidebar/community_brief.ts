@@ -1,6 +1,6 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
 
 export const Wrapper = styled.div<TActive>`
   ${css.row('align-center')};

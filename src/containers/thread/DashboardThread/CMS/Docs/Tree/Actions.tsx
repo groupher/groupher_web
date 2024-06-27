@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import type { FC } from 'react'
 
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 
 import {
   Wrapper,

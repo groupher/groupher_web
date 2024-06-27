@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import type { TAccount, TUser } from '@/spec'
+import type { TAccount, TUser } from '~/spec'
 
 import PostItemAvatar from './PostItemAvatar'
 import ArticleAuthorAvatar from './ArticleAuthorAvatar'

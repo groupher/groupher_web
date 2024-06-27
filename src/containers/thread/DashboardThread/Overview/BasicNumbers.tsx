@@ -1,6 +1,6 @@
-import { prettyNum } from '@/fmt'
+import { prettyNum } from '~/fmt'
 
-import NoteTip from '@/widgets/NoteTip'
+import NoteTip from '~/widgets/NoteTip'
 
 import useOverview from '../logic/useOverview'
 import { Wrapper, Left, Right, Section, Hint, Num } from '../styles/overview/basic_numbers'

@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 // import { } from 'ramda'
 
-import EVENT from '@/const/event'
-import TYPE from '@/const/type'
+import EVENT from '~/const/event'
+import TYPE from '~/const/type'
 
-import { send, report } from '@/signal'
+import { send, report } from '~/signal'
 // import S from './service'
 
 import type { TStore } from './store'

@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 
-import type { TMediaReport } from '@/spec'
-import { sortByIndex } from '@/helper'
+import type { TMediaReport } from '~/spec'
+import { sortByIndex } from '~/helper'
 
-import useLayout from '@/hooks/useLayout'
+import useLayout from '~/hooks/useLayout'
 
 import {
   Wrapper,

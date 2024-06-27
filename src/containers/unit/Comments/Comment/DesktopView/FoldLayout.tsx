@@ -1,11 +1,11 @@
 import type { FC } from 'react'
 import TimeAgo from 'timeago-react'
 
-import type { TComment } from '@/spec'
-import useLayout from '@/hooks/useLayout'
-import { ICON } from '@/config'
+import type { TComment } from '~/spec'
+import useLayout from '~/hooks/useLayout'
+import { ICON } from '~/config'
 
-import ImgFallback from '@/widgets/ImgFallback'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import IllegalBar from './IllegalBar'
 

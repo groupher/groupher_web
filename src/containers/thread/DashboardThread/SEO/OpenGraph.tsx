@@ -1,4 +1,4 @@
-import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
+import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
 
 import SectionLabel from '../SectionLabel'
 import SearchEnginePreview from './SearchEnginePreview'

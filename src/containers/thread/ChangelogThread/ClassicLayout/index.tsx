@@ -5,8 +5,8 @@
 
 import type { FC } from 'react'
 
-import usePagedChangelogs from '@/hooks/usePagedChangelogs'
-import ChangelogItem from '@/widgets/ChangelogItem'
+import usePagedChangelogs from '~/hooks/usePagedChangelogs'
+import ChangelogItem from '~/widgets/ChangelogItem'
 
 // import type { TTagsMode } from '../spec'
 import Sidebar from './Sidebar'

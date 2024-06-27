@@ -1,5 +1,5 @@
-import UpvoteSVG from '@/icons/Upvote'
-import styled, { css, theme } from '@/css'
+import UpvoteSVG from '~/icons/Upvote'
+import styled, { css, theme } from '~/css'
 
 type TWrapper = { opacity: number; $draging: boolean }
 

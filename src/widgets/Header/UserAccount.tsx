@@ -1,10 +1,10 @@
-import { Fragment, FC, memo } from 'react'
+import { Fragment, type FC, memo } from 'react'
 
-import type { TAccount } from '@/spec'
+import type { TAccount } from '~/spec'
 
-import { authWarn, logout } from '@/signal'
+import { authWarn, logout } from '~/signal'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import {
   Wrapper,

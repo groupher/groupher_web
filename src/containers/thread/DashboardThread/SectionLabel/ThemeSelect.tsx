@@ -1,7 +1,7 @@
-import { LineDivider } from '@/widgets/Common'
+import { LineDivider } from '~/widgets/Common'
 
-import useTheme from '@/hooks/useTheme'
-import THEME from '@/const/theme'
+import useTheme from '~/hooks/useTheme'
+import THEME from '~/const/theme'
 
 import { Wrapper, Section, Title, SunIcon, MoonIcon } from '../styles/section_label/theme_select'
 

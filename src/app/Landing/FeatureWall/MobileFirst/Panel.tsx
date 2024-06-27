@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import { mockUsers } from '@/mock'
-import { ARTICLE_CAT } from '@/const/gtd'
-import ArticleCatState from '@/widgets/ArticleCatState'
+import { mockUsers } from '~/mock'
+import { ARTICLE_CAT } from '~/const/gtd'
+import ArticleCatState from '~/widgets/ArticleCatState'
 
 import ActionsMask from './ActionsMask'
 

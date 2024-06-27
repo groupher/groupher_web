@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import type { TUser } from '@/spec'
-import useLayout from '@/hooks/useLayout'
+import type { TUser } from '~/spec'
+import useLayout from '~/hooks/useLayout'
 
 import { Wrapper, Avatar, Name } from '../styles/classic_layout/author'
 

@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 import { values, includes } from 'ramda'
 
-import { SITE_URL } from '@/config'
-import type { TArticle } from '@/spec'
-import { ARTICLE_THREAD } from '@/const/thread'
+import { SITE_URL } from '~/config'
+import type { TArticle } from '~/spec'
+import { ARTICLE_THREAD } from '~/const/thread'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   article: TArticle

@@ -1,10 +1,10 @@
 import { type FC, memo } from 'react'
 
-import type { TCommunity } from '@/spec'
-import { ICON_CMD } from '@/config'
-import { assetSrc } from '@/helper'
+import type { TCommunity } from '~/spec'
+import { ICON_CMD } from '~/config'
+import { assetSrc } from '~/helper'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import {
   Wrapper,

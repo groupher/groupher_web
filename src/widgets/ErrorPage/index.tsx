@@ -6,8 +6,8 @@
 
 import { type FC, memo } from 'react'
 
-import type { TMetric } from '@/spec'
-import METRIC from '@/const/metric'
+import type { TMetric } from '~/spec'
+import METRIC from '~/const/metric'
 
 import SpinPlanet from './SpinPlanet'
 // import CodeSnippets from './CodeSnippets'

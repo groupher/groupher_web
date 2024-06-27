@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-import THEME from '@/const/theme'
+import THEME from '~/const/theme'
 
 // 使用正则表达式来匹配需要排除的路径
 // 使用正则表达式来匹配需要排除的路径，包括所有.js文件和图片文件类型

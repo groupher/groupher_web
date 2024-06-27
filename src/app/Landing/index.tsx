@@ -6,17 +6,17 @@
 
 import { Suspense } from 'react'
 
-import { DOC_FAQ_LAYOUT } from '@/const/layout'
-import useWallpaper from '@/hooks/useWallpaper'
-import useMetric from '@/hooks/useMetric'
+import { DOC_FAQ_LAYOUT } from '~/const/layout'
+import useWallpaper from '~/hooks/useWallpaper'
+import useMetric from '~/hooks/useMetric'
 
-import { ROUTE } from '@/const/route'
+import { ROUTE } from '~/const/route'
 
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import { DesktopOnly, LinkAble } from '@/widgets/Common'
-import Tooltip from '@/widgets/Tooltip'
-import FaqList from '@/widgets/FaqList'
-import HomeHeader from '@/widgets/HomeHeader'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
+import { DesktopOnly, LinkAble } from '~/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
+import FaqList from '~/widgets/FaqList'
+import HomeHeader from '~/widgets/HomeHeader'
 
 import CoverImage from './CoverImage'
 // import WallpaperBar from './WallpaperBar'

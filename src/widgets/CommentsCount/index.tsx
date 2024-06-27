@@ -1,9 +1,9 @@
 import { type FC, memo, Fragment } from 'react'
 
-import type { TSizeSM, TSpace } from '@/spec'
-import SIZE from '@/const/size'
+import type { TSizeSM, TSpace } from '~/spec'
+import SIZE from '~/const/size'
 
-import { Space } from '@/widgets/Common'
+import { Space } from '~/widgets/Common'
 
 import { Wrapper, Count, CommentsIcon, HighlightWrapper } from './styles'
 

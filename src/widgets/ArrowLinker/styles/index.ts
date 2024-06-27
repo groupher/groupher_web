@@ -1,7 +1,7 @@
-import type { TTestable, TSpace, TColor } from '@/spec'
+import type { TTestable, TSpace, TColor } from '~/spec'
 
-import styled, { css, rainbow, rainbowLink } from '@/css'
-import ArrowSVG from '@/icons/ArrowUpRight'
+import styled, { css, rainbow, rainbowLink } from '~/css'
+import ArrowSVG from '~/icons/ArrowUpRight'
 
 type TWrapper = TTestable & TSpace & TColor
 

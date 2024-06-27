@@ -1,8 +1,8 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import GithubSVG from '@/icons/GithubCat'
-import EmailSVG from '@/icons/social/Email'
-import WeChatSVG from '@/widgets/Icons/social/WeChat'
+import GithubSVG from '~/icons/GithubCat'
+import EmailSVG from '~/icons/social/Email'
+import WeChatSVG from '~/widgets/Icons/social/WeChat'
 
 export const Wrapper = styled.div`
   ${css.row()};

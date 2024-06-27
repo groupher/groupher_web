@@ -7,11 +7,11 @@ import type {
   TCommunityThread,
   TNameAlias,
   TDashboardThreadConfig,
-} from '@/spec'
+} from '~/spec'
 
-import { ASSETS_ENDPOINT, TAG_COLOR_ORDER } from '@/config'
-import { ARTICLE_STATE } from '@/const/gtd'
-import { COLOR_NAME } from '@/const/colors'
+import { ASSETS_ENDPOINT, TAG_COLOR_ORDER } from '~/config'
+import { ARTICLE_STATE } from '~/const/gtd'
+import { COLOR_NAME } from '~/const/colors'
 
 type TSORTABLE_ITEMS = {
   color?: string

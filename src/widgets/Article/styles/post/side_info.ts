@@ -1,9 +1,9 @@
-import type { TAvatarLayout } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TAvatarLayout } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import { AVATAR_LAYOUT } from '@/const/layout'
+import { AVATAR_LAYOUT } from '~/const/layout'
 
-import Img from '@/Img'
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   min-height: 300px;

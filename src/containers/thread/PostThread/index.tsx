@@ -4,15 +4,15 @@
  *
  */
 
-import { BANNER_LAYOUT } from '@/const/layout'
+import { BANNER_LAYOUT } from '~/const/layout'
 
-import useLayout from '@/hooks/useLayout'
-import { THREAD } from '@/const/thread'
+import useLayout from '~/hooks/useLayout'
+import { THREAD } from '~/const/thread'
 
-// import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import PagedPosts from '@/widgets/PagedPosts'
-import TagNote from '@/widgets/TagNote'
-import ArticlesFilter from '@/widgets/ArticlesFilter'
+// import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
+import PagedPosts from '~/widgets/PagedPosts'
+import TagNote from '~/widgets/TagNote'
+import ArticlesFilter from '~/widgets/ArticlesFilter'
 
 import ThreadSidebar from './ThreadSidebar'
 

@@ -1,10 +1,10 @@
 import { type FC, memo } from 'react'
 
-import { nilOrEmpty } from '@/validator'
+import { nilOrEmpty } from '~/validator'
 
-import OSSUploader from '@/widgets/OSSUploader'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import { Br, Space } from '@/widgets/Common'
+import OSSUploader from '~/widgets/OSSUploader'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import { Br, Space } from '~/widgets/Common'
 
 import NextStepButton from './NextStepButton'
 

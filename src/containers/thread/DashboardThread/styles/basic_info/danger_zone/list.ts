@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import type { TSpace } from '@/spec'
-// import InfoSVG from '@/icons/Info'
+import type { TSpace } from '~/spec'
+// import InfoSVG from '~/icons/Info'
 
 export const Wrapper = styled.ul<TSpace>`
   ${css.column()};

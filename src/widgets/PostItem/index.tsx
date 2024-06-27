@@ -6,8 +6,8 @@
 
 import { type FC, memo } from 'react'
 
-import type { TPost, TPostLayout } from '@/spec'
-import { POST_LAYOUT } from '@/const/layout'
+import type { TPost, TPostLayout } from '~/spec'
+import { POST_LAYOUT } from '~/const/layout'
 
 import PHLayout from './PHLayout'
 import QuoraLayout from './QuoraLayout'

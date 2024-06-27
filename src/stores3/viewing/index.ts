@@ -3,9 +3,9 @@ import { mergeLeft, mergeDeepRight } from 'ramda'
 
 import { mergeRight } from 'ramda'
 
-import type { TCommunity } from '@/spec'
-import METRIC from '@/const/metric'
-import { ARTICLE_THREAD } from '@/const/thread'
+import type { TCommunity } from '~/spec'
+import METRIC from '~/const/metric'
+import { ARTICLE_THREAD } from '~/const/thread'
 
 import type { TStore, TInit } from './spec'
 

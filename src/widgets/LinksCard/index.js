@@ -7,7 +7,7 @@
 import React from 'react'
 import T from 'prop-types'
 
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 import Item from './Item'
 import { Wrapper, Header, Title, ListWrapper, MoreWrapper } from './styles'

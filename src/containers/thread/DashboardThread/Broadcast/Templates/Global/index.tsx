@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { BROADCAST_LAYOUT } from '@/const/layout'
+import { BROADCAST_LAYOUT } from '~/const/layout'
 
 import Center from './Center'
 import Default from './Default'

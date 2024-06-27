@@ -1,7 +1,7 @@
 import React from 'react'
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 
-// import Button from '@/widgets/Buttons/Button'
+// import Button from '~/widgets/Buttons/Button'
 
 import { Wrapper, InnerWrapper, SubscribeInput, MailBoxIcon } from './styles/simple_layout'
 

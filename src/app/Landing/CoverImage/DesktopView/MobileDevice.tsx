@@ -1,4 +1,4 @@
-import useWallpaper from '@/hooks/useWallpaper'
+import useWallpaper from '~/hooks/useWallpaper'
 
 import {
   Wrapper,

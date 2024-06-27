@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { Brick } from '@/widgets/Common'
+import { Brick } from '~/widgets/Common'
 import {
   Wrapper,
   Repo,

@@ -1,8 +1,8 @@
 import { values, reduce, mergeRight } from 'ramda'
 
-import EMOTION from '@/const/emotion'
-import { titleCase } from '@/fmt'
-import { T } from '@/mobx'
+import EMOTION from '~/const/emotion'
+import { titleCase } from '~/fmt'
+import { T } from '~/mobx'
 
 import { SimpleUser } from './Common'
 

@@ -5,7 +5,7 @@
 
 import type { FC } from 'react'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import Panel from './Panel'
 import { Wrapper, DownloadIcon } from './styles'

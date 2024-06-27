@@ -1,13 +1,13 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ShareSVG from '@/icons/Share'
-import GoodSVG from '@/icons/EmojiGood'
-import SosoSVG from '@/icons/EmojiSoSo'
-import BadSVG from '@/icons/EmojiBad'
+import ShareSVG from '~/icons/Share'
+import GoodSVG from '~/icons/EmojiGood'
+import SosoSVG from '~/icons/EmojiSoSo'
+import BadSVG from '~/icons/EmojiBad'
 
-import { Bar as BarBase } from '@/widgets/Common'
+import { Bar as BarBase } from '~/widgets/Common'
 
-import ArrowSimple from '@/icons/ArrowSimple'
+import ArrowSimple from '~/icons/ArrowSimple'
 
 export const Wrapper = styled.div`
   ${css.column('align-center')};

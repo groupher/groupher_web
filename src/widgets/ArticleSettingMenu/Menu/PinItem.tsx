@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useMutation } from 'urql'
 
-import { toast, updateViewingArticle } from '@/signal'
-import { SpaceGrow } from '@/widgets/Common'
-import useViewingArticle from '@/hooks/useViewingArticle'
+import { toast, updateViewingArticle } from '~/signal'
+import { SpaceGrow } from '~/widgets/Common'
+import useViewingArticle from '~/hooks/useViewingArticle'
 
 import S from '../schema'
 import { Icon } from '../styles/icon'

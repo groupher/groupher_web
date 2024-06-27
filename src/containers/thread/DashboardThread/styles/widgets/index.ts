@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ViewSVG from '@/icons/article/Viewed'
-import Input from '@/widgets/Input'
+import ViewSVG from '~/icons/article/Viewed'
+import Input from '~/widgets/Input'
 
 export const Wrapper = styled.div`
   ${css.column()};

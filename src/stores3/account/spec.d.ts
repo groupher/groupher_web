@@ -1,4 +1,4 @@
-import type { TAccount, TCommunity, TUser } from '@/spec'
+import type { TAccount, TCommunity, TUser } from '~/spec'
 
 export type TStore = {
   user: TUser | null

@@ -1,4 +1,4 @@
-import { COLOR_NAME } from '@/const/colors'
+import { COLOR_NAME } from '~/const/colors'
 
 export const demoTags = [
   {

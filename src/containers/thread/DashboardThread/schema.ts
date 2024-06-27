@@ -1,5 +1,5 @@
 import { gql } from 'urql'
-import { P, F } from '@/schemas'
+import { P, F } from '~/schemas'
 
 const { pagedPosts, pagedChangelogs } = P
 

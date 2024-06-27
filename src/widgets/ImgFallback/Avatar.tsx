@@ -6,8 +6,8 @@
 
 import type { FC } from 'react'
 
-import { getLetterColor } from '@/utils/color'
-import useLayout from '@/hooks/useLayout'
+import { getLetterColor } from '~/utils/color'
+import useLayout from '~/hooks/useLayout'
 
 import type { TAvatarProps as TProps } from '.'
 import { Wrapper, Name } from './styles/avatar'

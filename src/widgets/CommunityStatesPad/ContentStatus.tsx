@@ -1,8 +1,8 @@
 import { type FC, memo } from 'react'
 
-import { prettyNum } from '@/fmt'
-import { nilOrEmpty } from '@/validator'
-import TrendLine from '@/widgets/TrendLine'
+import { prettyNum } from '~/fmt'
+import { nilOrEmpty } from '~/validator'
+import TrendLine from '~/widgets/TrendLine'
 
 import { Wrapper, NumberItem, ActivitySpark } from './styles/content_status'
 

@@ -1,10 +1,10 @@
 // those are not REAL macros, but some shared GraphQL response hanlder snippets
 // NOTE: for consistency, function name shoud start with "match"
 
-import type { TThread } from '@/spec'
+import type { TThread } from '~/spec'
 import { map, values, flatten } from 'ramda'
 
-import { ARTICLE_THREAD } from '@/const/thread'
+import { ARTICLE_THREAD } from '~/const/thread'
 import { titleCase, plural } from './fmt'
 import asyncSuite from './async'
 

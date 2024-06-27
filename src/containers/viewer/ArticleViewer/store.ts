@@ -2,10 +2,10 @@
  * ArticleViewer store
  */
 
-import type { TCommunity, TRootStore, TArticle, TThread, TDocument } from '@/spec'
+import type { TCommunity, TRootStore, TArticle, TThread, TDocument } from '~/spec'
 
-import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
-import { Document } from '@/model'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
+import { Document } from '~/model'
 
 const ArticleViewer = T.model('ArticleViewer', {
   loading: T.opt(T.bool, false),

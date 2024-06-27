@@ -7,9 +7,9 @@
 import { type FC, useState, useCallback, memo, useEffect } from 'react'
 import { mergeRight, isEmpty } from 'ramda'
 
-import type { TTag } from '@/spec'
+import type { TTag } from '~/spec'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import Header from './Header'
 import Filter from './Filter'

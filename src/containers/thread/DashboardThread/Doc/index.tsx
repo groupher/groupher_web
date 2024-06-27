@@ -1,4 +1,4 @@
-// import FileTree from '@/widgets/FileTree'
+// import FileTree from '~/widgets/FileTree'
 import type { FC } from 'react'
 
 import type { TDocSettings } from '../spec'

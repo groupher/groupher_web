@@ -5,12 +5,12 @@
 
 import { mergeRight, pickBy, omit, isEmpty } from 'ramda'
 
-import type { TRootStore, TRoute } from '@/spec'
-import { PAGE_SIZE } from '@/config'
+import type { TRootStore, TRoute } from '~/spec'
+import { PAGE_SIZE } from '~/config'
 
-import { T, getParent, type Instance, markStates, useMobxContext } from '@/mobx'
-import { Global } from '@/helper'
-import { serializeQuery } from '@/utils/route'
+import { T, getParent, type Instance, markStates, useMobxContext } from '~/mobx'
+import { Global } from '~/helper'
+import { serializeQuery } from '~/utils/route'
 
 const Query = T.model('Query', {
   page: T.opt(T.string, '1'),

@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import type { TResState, TArticleFilterMode } from '@/spec'
+import type { TResState, TArticleFilterMode } from '~/spec'
 
 import DesktopView from './DesktopView'
 // import MobileView from './MobileView'

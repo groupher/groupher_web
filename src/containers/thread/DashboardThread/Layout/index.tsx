@@ -1,11 +1,11 @@
 import { useRouter } from 'next/navigation'
 
-import { DASHBOARD_LAYOUT_ROUTE } from '@/const/route'
-import VIEW from '@/const/view'
+import { DASHBOARD_LAYOUT_ROUTE } from '~/const/route'
+import VIEW from '~/const/view'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import { SexyDivider as Divider } from '@/widgets/Common'
-import Tabs from '@/widgets/Switcher/Tabs'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import { SexyDivider as Divider } from '~/widgets/Common'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import { LAYOUT_TABS } from '../constant'
 import Portal from '../Portal'

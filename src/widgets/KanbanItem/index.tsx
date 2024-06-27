@@ -6,11 +6,11 @@
 
 import type { FC } from 'react'
 
-import type { TArticle } from '@/spec'
-import useLayout from '@/hooks/useLayout'
-import { KANBAN_LAYOUT } from '@/const/layout'
+import type { TArticle } from '~/spec'
+import useLayout from '~/hooks/useLayout'
+import { KANBAN_LAYOUT } from '~/const/layout'
 
-// import IconButton from '@/widgets/Buttons/IconButton'
+// import IconButton from '~/widgets/Buttons/IconButton'
 
 import WaterfallLayout from './WaterfallLayout'
 import ClassicLayout from './ClassicLayout'

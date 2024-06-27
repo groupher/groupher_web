@@ -1,13 +1,13 @@
-import { upvoteArticle } from '@/signal'
-import useViewingArticle from '@/hooks/useViewingArticle'
-import { toJS } from '@/mobx'
-import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/const/layout'
+import { upvoteArticle } from '~/signal'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import { toJS } from '~/mobx'
+import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '~/const/layout'
 
-import { Br } from '@/widgets/Common'
-import Upvote from '@/widgets/Upvote'
-import ArticleCatState from '@/widgets/ArticleCatState'
-import TagsList from '@/widgets/TagsList'
-import ReadableDate from '@/widgets/ReadableDate'
+import { Br } from '~/widgets/Common'
+import Upvote from '~/widgets/Upvote'
+import ArticleCatState from '~/widgets/ArticleCatState'
+import TagsList from '~/widgets/TagsList'
+import ReadableDate from '~/widgets/ReadableDate'
 
 import {
   Wrapper,

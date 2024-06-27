@@ -1,13 +1,13 @@
 import { usePathname } from 'next/navigation'
 import { includes } from 'ramda'
 
-import type { TMetric } from '@/spec'
+import type { TMetric } from '~/spec'
 
-import METRIC from '@/const/metric'
-import { BANNER_LAYOUT } from '@/const/layout'
-import { STATIC_ROUTES } from '@/const/route'
+import METRIC from '~/const/metric'
+import { BANNER_LAYOUT } from '~/const/layout'
+import { STATIC_ROUTES } from '~/const/route'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 export default (): TMetric => {
   const store = useSubStore('viewing')

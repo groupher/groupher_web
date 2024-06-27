@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { filter } from 'ramda'
 
-import type { TNameAlias } from '@/spec'
+import type { TNameAlias } from '~/spec'
 
-import useSubStore from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useSubStore from '~/hooks/useSubStore'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
 const useNameAlias = (group = 'kanban'): Record<string, TNameAlias> => {
   const store = useSubStore('dashboard')

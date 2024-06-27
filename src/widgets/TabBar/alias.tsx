@@ -1,6 +1,6 @@
 import { mergeRight, clone, keys, findIndex, forEach } from 'ramda'
 
-import type { TTabItem } from '@/spec'
+import type { TTabItem } from '~/spec'
 
 const alias = {
   home: {

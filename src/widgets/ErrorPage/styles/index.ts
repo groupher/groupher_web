@@ -1,12 +1,12 @@
 import Link from 'next/link'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import type { TTestable } from '@/spec'
+import type { TTestable } from '~/spec'
 
-import SiteLogoSVG from '@/icons/CPLogo'
+import SiteLogoSVG from '~/icons/CPLogo'
 
-// import PromptIcon from '@/widgets/PromptIcon'
+// import PromptIcon from '~/widgets/PromptIcon'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

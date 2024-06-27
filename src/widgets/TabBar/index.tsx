@@ -5,8 +5,8 @@
 import { type FC, memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TSizeSM, TThread } from '@/spec'
-import VIEW from '@/const/view'
+import type { TSizeSM, TThread } from '~/spec'
+import VIEW from '~/const/view'
 
 import type { TTabItem } from './spec'
 

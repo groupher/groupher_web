@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import type { TSubmitState } from '@/spec'
+import type { TSubmitState } from '~/spec'
 
 // import Header from './Header'
 import BodyEditor from './BodyEditor'

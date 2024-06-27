@@ -9,11 +9,11 @@ import dynamic from 'next/dynamic'
 import copy from 'copy-to-clipboard'
 import QRCode from 'qrcode.react'
 
-import type { TSpace } from '@/spec'
-import useViewingArticle from '@/hooks/useViewingArticle'
+import type { TSpace } from '~/spec'
+import useViewingArticle from '~/hooks/useViewingArticle'
 
-import Tooltip from '@/widgets/Tooltip'
-import { toast } from '@/signal'
+import Tooltip from '~/widgets/Tooltip'
+import { toast } from '~/signal'
 
 import { SITE_SHARE_TYPE, SHARE_TYPE } from './constant'
 import { parseLinksData, toPlatform } from './helper'

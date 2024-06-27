@@ -1,4 +1,4 @@
-import type { TFlexRule } from '@/spec'
+import type { TFlexRule } from '~/spec'
 
 const flexExpand = (rule: TFlexRule): string => {
   switch (rule) {

@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 // import { CountAreaMask } from '.'
 import { Wrapper as TagItem } from './tag_item'

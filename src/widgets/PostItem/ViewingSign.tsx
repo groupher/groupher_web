@@ -1,7 +1,7 @@
 import { type FC, memo } from 'react'
 
-import type { TPost } from '@/spec'
-import useIsArticleViewing from '@/hooks/useIsArticleViewing'
+import type { TPost } from '~/spec'
+import useIsArticleViewing from '~/hooks/useIsArticleViewing'
 
 import { Wrapper, ViewIcon } from './styles/viewing_sign'
 

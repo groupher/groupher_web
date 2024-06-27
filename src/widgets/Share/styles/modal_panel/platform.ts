@@ -1,16 +1,16 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 import { SHARE_TYPE } from '../../constant'
 
-import LinkSVG from '@/icons/Link'
-import EmailSVG from '@/icons/Mail'
-import TwitterSVG from '@/icons/social/Twitter'
-import WeChatSVG from '@/icons/social/WeChat'
-import WeiboSVG from '@/icons/social/Weibo'
-import TelegramSVG from '@/icons/social/Telegram'
-import DoubanSVG from '@/icons/social/Douban'
-import FacebookSVG from '@/icons/social/Facebook'
-import CodeSVG from '@/icons/Code'
+import LinkSVG from '~/icons/Link'
+import EmailSVG from '~/icons/Mail'
+import TwitterSVG from '~/icons/social/Twitter'
+import WeChatSVG from '~/icons/social/WeChat'
+import WeiboSVG from '~/icons/social/Weibo'
+import TelegramSVG from '~/icons/social/Telegram'
+import DoubanSVG from '~/icons/social/Douban'
+import FacebookSVG from '~/icons/social/Facebook'
+import CodeSVG from '~/icons/Code'
 
 export const Wrapper = styled.div`
   padding-left: 20px;

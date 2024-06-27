@@ -1,11 +1,11 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import AllSVG from '@/icons/menu/Dots'
-import TimeSVG from '@/icons/TimelineMode'
-import UpvoteSVG from '@/icons/Upvote'
-import CommentSVG from '@/icons/Comment'
-import ViewSVG from '@/icons/article/Viewed'
+import AllSVG from '~/icons/menu/Dots'
+import TimeSVG from '~/icons/TimelineMode'
+import UpvoteSVG from '~/icons/Upvote'
+import CommentSVG from '~/icons/Comment'
+import ViewSVG from '~/icons/article/Viewed'
 
 export const Wrapper = styled.div`
   ${css.column()};

@@ -1,5 +1,5 @@
-import useLayout from '@/hooks/useLayout'
-import { mockUsers } from '@/mock'
+import useLayout from '~/hooks/useLayout'
+import { mockUsers } from '~/mock'
 
 import { Wrapper, Avatar, Name } from '../styles/simple_layout/author'
 

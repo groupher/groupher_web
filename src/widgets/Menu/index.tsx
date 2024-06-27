@@ -6,8 +6,8 @@
 
 import { type ReactNode, type FC, memo } from 'react'
 
-import type { TTooltipPlacement } from '@/spec'
-import Tooltip from '@/widgets/Tooltip'
+import type { TTooltipPlacement } from '~/spec'
+import Tooltip from '~/widgets/Tooltip'
 
 import type { TMenuItem } from './spec'
 import List from './List'

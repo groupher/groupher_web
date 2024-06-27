@@ -13,17 +13,17 @@ import type {
   TThread,
   TResState,
   TArticleFilter,
-} from '@/spec'
+} from '~/spec'
 
-import { T, markStates, getParent, Instance, toJS } from '@/mobx'
-import TYPE from '@/const/type'
-import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '@/const/gtd'
-import URL_PARAM from '@/const/url_param'
-import { ARTICLE_THREAD } from '@/const/thread'
+import { T, markStates, getParent, type Instance, toJS } from '~/mobx'
+import TYPE from '~/const/type'
+import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '~/const/gtd'
+import URL_PARAM from '~/const/url_param'
+import { ARTICLE_THREAD } from '~/const/thread'
 
-import { plural } from '@/fmt'
+import { plural } from '~/fmt'
 
-import { PagedPosts, PagedChangelogs, emptyPagi } from '@/model'
+import { PagedPosts, PagedChangelogs, emptyPagi } from '~/model'
 
 const ArticlesStore = T.model('Articles', {
   pagedPosts: T.opt(PagedPosts, emptyPagi),

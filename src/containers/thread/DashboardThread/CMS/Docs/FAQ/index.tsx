@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import type { TFAQSection } from '@/spec'
+import type { TFAQSection } from '~/spec'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import { SETTING_FIELD } from '../../../constant'

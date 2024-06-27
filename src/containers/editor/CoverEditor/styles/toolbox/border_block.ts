@@ -1,7 +1,7 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
-import ArchSVG from '@/icons/Arch'
-import EmptySVG from '@/icons/Empty'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
+import ArchSVG from '~/icons/Arch'
+import EmptySVG from '~/icons/Empty'
 
 import type { TLinearBorderPos, TSettingLevel } from '../../spec'
 import { LINEAR_BORDER, IMAGE_SHADOW } from '../../constant'

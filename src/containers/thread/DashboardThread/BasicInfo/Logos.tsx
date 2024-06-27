@@ -1,5 +1,5 @@
-import { Br } from '@/widgets/Common'
-import OSSUploader from '@/widgets/OSSUploader'
+import { Br } from '~/widgets/Common'
+import OSSUploader from '~/widgets/OSSUploader'
 
 import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'

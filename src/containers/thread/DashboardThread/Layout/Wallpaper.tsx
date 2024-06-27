@@ -1,17 +1,17 @@
 import { useCallback } from 'react'
 
-import { WIDTH } from '@/css'
-import { callWallpaperEditor } from '@/signal'
-import { blurRGB } from '@/fmt'
+import { WIDTH } from '~/css'
+import { callWallpaperEditor } from '~/signal'
+import { blurRGB } from '~/fmt'
 
-import THEME from '@/const/theme'
-import useThemeData from '@/hooks/useThemeData'
-import useGossBlur from '@/hooks/useGossBlur'
-import useTheme from '@/hooks/useTheme'
-import useWallpaper from '@/hooks/useWallpaper'
+import THEME from '~/const/theme'
+import useThemeData from '~/hooks/useThemeData'
+import useGossBlur from '~/hooks/useGossBlur'
+import useTheme from '~/hooks/useTheme'
+import useWallpaper from '~/hooks/useWallpaper'
 
-import { Brick } from '@/widgets/Common'
-import CheckLabel from '@/widgets/CheckLabel'
+import { Brick } from '~/widgets/Common'
+import CheckLabel from '~/widgets/CheckLabel'
 
 import SectionLabel from '../SectionLabel'
 

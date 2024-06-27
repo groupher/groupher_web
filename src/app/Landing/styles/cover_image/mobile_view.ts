@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Img from '@/Img'
-import LockSVG from '@/icons/Lock'
+import Img from '~/Img'
+import LockSVG from '~/icons/Lock'
 
 export { GradientText } from '..'
 

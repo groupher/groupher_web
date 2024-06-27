@@ -6,8 +6,8 @@ import Script from 'next/script'
 
 import { type FC, memo, type ReactNode, useState, useEffect, useRef, useCallback } from 'react'
 
-import uid from '@/utils/uid'
-import { assetPath } from '@/helper'
+import uid from '~/utils/uid'
+import { assetPath } from '~/helper'
 
 import {
   Wrapper,

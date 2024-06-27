@@ -1,4 +1,4 @@
-import type { TEmotionType } from '@/spec'
+import type { TEmotionType } from '~/spec'
 
 const EMOTION = {
   DOWNVOTE: 'downvote',

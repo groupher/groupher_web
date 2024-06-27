@@ -1,4 +1,4 @@
-import styled from '@/css'
+import styled from '~/css'
 
 export { Wrapper } from './classic_layout/simple'
 

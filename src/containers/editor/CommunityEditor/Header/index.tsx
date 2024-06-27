@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
-import AccountUnit from '@/widgets/AccountUnit'
-import HomeLogo from '@/widgets/HomeLogo'
+import { SpaceGrow } from '~/widgets/Common'
+import AccountUnit from '~/widgets/AccountUnit'
+import HomeLogo from '~/widgets/HomeLogo'
 
 import StepMap from './StepMap'
 

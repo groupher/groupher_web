@@ -1,10 +1,10 @@
 import { type FC, useState, lazy, Suspense } from 'react'
 
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
 import { Wrapper, Adder, AddIcon, AddTitle, ImageIcon } from './styles/article_cover'
 
-const CoverEditor = lazy(() => import('@/containers/editor/CoverEditor'))
+const CoverEditor = lazy(() => import('~/containers/editor/CoverEditor'))
 
 const ArticleCover: FC = () => {
   const [hasCover, setHasCover] = useState(true)

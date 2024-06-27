@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import PromptIcon from '@/widgets/PromptIcon'
+import styled, { css, theme } from '~/css'
+import PromptIcon from '~/widgets/PromptIcon'
 
 export const Wrapper = styled.div<{ noShiftRight: boolean }>`
   ${css.column('align-center')};

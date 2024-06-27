@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
 
-import type { TModerator, TUser } from '@/spec'
+import type { TModerator, TUser } from '~/spec'
 
-import { sortByIndex } from '@/helper'
-import useSubStore from '@/hooks/useSubStore'
+import { sortByIndex } from '~/helper'
+import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   getModerators: () => TModerator[]

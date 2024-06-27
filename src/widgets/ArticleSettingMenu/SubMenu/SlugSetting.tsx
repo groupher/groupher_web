@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import useViewingArticle from '@/hooks/useViewingArticle'
+import useViewingArticle from '~/hooks/useViewingArticle'
 
 import Footer from './Footer'
 import { Wrapper, Inputer, Note, Preview, Slug } from '../styles/sub_menu/slug_setting'

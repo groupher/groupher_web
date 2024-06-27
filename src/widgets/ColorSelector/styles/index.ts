@@ -1,8 +1,8 @@
-import type { TTestable, TActive, TColorName } from '@/spec'
-import { COLOR_NAME } from '@/const/colors'
+import type { TTestable, TActive, TColorName } from '~/spec'
+import { COLOR_NAME } from '~/const/colors'
 
-import HookSVG from '@/icons/Hook'
-import styled, { css, theme, rainbow, rainbowLight } from '@/css'
+import HookSVG from '~/icons/Hook'
+import styled, { css, theme, rainbow, rainbowLight } from '~/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

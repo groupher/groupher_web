@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import ArrowSVG from '@/icons/ArrowSolid'
+import styled, { css, theme } from '~/css'
+import ArrowSVG from '~/icons/ArrowSolid'
 
 export { SiteLink } from './main_entries'
 

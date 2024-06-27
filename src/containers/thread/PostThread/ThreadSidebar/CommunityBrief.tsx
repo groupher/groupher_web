@@ -8,9 +8,9 @@
 
 import type { FC } from 'react'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import { Space } from '@/widgets/Common'
-import ImgFallback from '@/widgets/ImgFallback'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import { Space } from '~/widgets/Common'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import {
   Wrapper,
@@ -21,7 +21,7 @@ import {
   Label,
   Count,
 } from '../styles/thread_sidebar/community_brief'
-import { assetSrc } from '@/utils/helper'
+import { assetSrc } from '~/utils/helper'
 
 type TProps = {
   show: boolean

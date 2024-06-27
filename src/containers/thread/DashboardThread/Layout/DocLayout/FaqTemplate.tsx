@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 
-import type { TDocFAQLayout } from '@/spec'
-import { DOC_FAQ_LAYOUT } from '@/const/layout'
+import type { TDocFAQLayout } from '~/spec'
+import { DOC_FAQ_LAYOUT } from '~/const/layout'
 
-import { Br, Row } from '@/widgets/Common'
+import { Br, Row } from '~/widgets/Common'
 
 import {
   Bar,

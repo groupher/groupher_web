@@ -6,11 +6,11 @@
 
 import { type FC, useState, memo } from 'react'
 
-import { ICON_CMD, GITHUB } from '@/config'
-import useAccount from '@/hooks/useAccount'
+import { ICON_CMD, GITHUB } from '~/config'
+import useAccount from '~/hooks/useAccount'
 
-import Modal from '@/widgets/Modal'
-import UserCell from '@/widgets/UserCell'
+import Modal from '~/widgets/Modal'
+import UserCell from '~/widgets/UserCell'
 
 import UnLoginNote from './UnLoginNote'
 import ChuanSelector from './ChuanSelector'

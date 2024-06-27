@@ -1,7 +1,7 @@
-import type { TActive } from '@/spec'
-import styled, { css, animate, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, animate, theme } from '~/css'
 
-import UploadSVG from '@/icons/Upload'
+import UploadSVG from '~/icons/Upload'
 
 import { Wrapper as Container } from '..'
 

@@ -1,6 +1,6 @@
-import type { TUser, TTag, TCommunity } from '@/spec'
-import { SITE_LOGO, ICON, ICON_BASE } from '@/config'
-import { COLOR_NAME } from '@/const/colors'
+import type { TUser, TTag, TCommunity } from '~/spec'
+import { SITE_LOGO, ICON, ICON_BASE } from '~/config'
+import { COLOR_NAME } from '~/const/colors'
 
 import { getRandomInt } from './helper'
 

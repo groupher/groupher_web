@@ -12,14 +12,14 @@ import { usePathname, useSearchParams } from 'next/navigation'
 
 // import LangParser from 'accept-language-parser'
 
-import type { TCommunity, TMetric, TThemeName } from '@/spec'
-import { P } from '@/schemas'
-import { THREAD, ARTICLE_THREAD } from '@/const/thread'
-import THEME from '@/const/theme'
-import METRIC from '@/const/metric'
-import URL_PARAM from '@/const/url_param'
-import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '@/const/gtd'
-import { i18nQuery, useParseLang } from '@/i18n'
+import type { TCommunity, TMetric, TThemeName } from '~/spec'
+import { P } from '~/schemas'
+import { THREAD, ARTICLE_THREAD } from '~/const/thread'
+import THEME from '~/const/theme'
+import METRIC from '~/const/metric'
+import URL_PARAM from '~/const/url_param'
+import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '~/const/gtd'
+import { i18nQuery, useParseLang } from '~/i18n'
 
 import type {
   TCommunityRes,

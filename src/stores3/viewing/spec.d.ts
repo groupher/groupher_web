@@ -1,4 +1,4 @@
-import type { TCommunity, TUser, TPost, TChangelog, TThread, TArticle, TMetric, TTag } from '@/spec'
+import type { TCommunity, TUser, TPost, TChangelog, TThread, TArticle, TMetric, TTag } from '~/spec'
 
 export type TInit = {
   metric?: TMetric

@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 
-import type { TUser } from '@/spec'
+import type { TUser } from '~/spec'
 
-import { assetSrc } from '@/helper'
-import useLayout from '@/hooks/useLayout'
+import { assetSrc } from '~/helper'
+import useLayout from '~/hooks/useLayout'
 import { Wrapper, Avatar, Main, Header, Title, Login, Bio } from './styles/user_item'
 
 type TProps = {

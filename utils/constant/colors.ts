@@ -1,4 +1,4 @@
-import type { TColorName } from '@/spec'
+import type { TColorName } from '~/spec'
 
 export const COLOR_NAME = {
   BLACK: 'BLACK',

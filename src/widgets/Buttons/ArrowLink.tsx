@@ -6,8 +6,8 @@
 
 import { type FC, type ReactNode, memo } from 'react'
 
-import type { TSize } from '@/spec'
-import SIZE from '@/const/size'
+import type { TSize } from '~/spec'
+import SIZE from '~/const/size'
 
 import { Wrapper, Text, RightIcon } from './styles/arrow_link'
 

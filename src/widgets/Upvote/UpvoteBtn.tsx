@@ -6,9 +6,9 @@
 
 import { type FC, memo } from 'react'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import type { TUpvoteLayout } from '@/spec'
+import type { TUpvoteLayout } from '~/spec'
 
 import { Wrapper, IconWrapper, UpIcon } from './styles/upvote_btn'
 

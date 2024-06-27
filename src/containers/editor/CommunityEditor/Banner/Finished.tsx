@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import { type FC, memo } from 'react'
 
-import { ROUTE } from '@/const/route'
+import { ROUTE } from '~/const/route'
 
-import { SexyDivider } from '@/widgets/Common'
+import { SexyDivider } from '~/widgets/Common'
 
 import type { TFinishedStatus } from '../spec'
 

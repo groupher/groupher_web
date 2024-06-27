@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { Space, SpaceGrow } from '@/widgets/Common'
+import { Space, SpaceGrow } from '~/widgets/Common'
 import {
   Wrapper,
   PostItem,

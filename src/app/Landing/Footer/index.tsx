@@ -1,8 +1,8 @@
-import useWallpaper from '@/hooks/useWallpaper'
-import { ROUTE } from '@/const/route'
+import useWallpaper from '~/hooks/useWallpaper'
+import { ROUTE } from '~/const/route'
 
-import { LinkAble } from '@/widgets/Common'
-import Button from '@/widgets/Buttons/Button'
+import { LinkAble } from '~/widgets/Common'
+import Button from '~/widgets/Buttons/Button'
 
 import { Wrapper, Logo, Title, Desc, Highlight, Buttons, CreateButton } from '../styles/footer'
 

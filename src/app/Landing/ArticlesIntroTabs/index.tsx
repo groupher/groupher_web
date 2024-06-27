@@ -1,7 +1,7 @@
 import { type FC, useState } from 'react'
 
-import type { TThread } from '@/spec'
-import { THREAD } from '@/const/thread'
+import type { TThread } from '~/spec'
+import { THREAD } from '~/const/thread'
 
 import Tabs from './Tabs'
 import Content from './Content'

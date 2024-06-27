@@ -1,5 +1,5 @@
-import type { TGlowEffect } from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
+import type { TGlowEffect } from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
 
 export default (): TGlowEffect => {
   const store = useSubStore('dashboard')

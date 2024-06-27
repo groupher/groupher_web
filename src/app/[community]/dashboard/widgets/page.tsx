@@ -1,6 +1,6 @@
 'use client'
 
-import Widgets from '@/containers//thread/DashboardThread/Widgets'
+import Widgets from '~/containers//thread/DashboardThread/Widgets'
 
 const DashboardWidgetsPage = () => {
   return <Widgets />

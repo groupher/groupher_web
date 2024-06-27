@@ -1,4 +1,4 @@
-import type { TTestable, TActive, TDashboardLayout, TPostLayout } from '@/spec'
+import type { TTestable, TActive, TDashboardLayout, TPostLayout } from '~/spec'
 
 export type TSwipeOption = {
   direction: 'bottom' | 'top'

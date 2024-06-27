@@ -6,21 +6,21 @@
 
 import { type FC, memo, useState, useEffect } from 'react'
 
-import type { TArticle } from '@/spec'
+import type { TArticle } from '~/spec'
 
-import { UPVOTE_LAYOUT } from '@/const/layout'
+import { UPVOTE_LAYOUT } from '~/const/layout'
 
-import { mockTags, mockUsers } from '@/mock'
-import { previewArticle } from '@/signal'
-import { getRandomInt } from '@/helper'
+import { mockTags, mockUsers } from '~/mock'
+import { previewArticle } from '~/signal'
+import { getRandomInt } from '~/helper'
 
-import CommentsCount from '@/widgets/CommentsCount'
-import { Row, Space } from '@/widgets/Common'
+import CommentsCount from '~/widgets/CommentsCount'
+import { Row, Space } from '~/widgets/Common'
 
-// import IconButton from '@/widgets/Buttons/IconButton'
-import ArticleCatState from '@/widgets/ArticleCatState'
-import Upvote from '@/widgets/Upvote'
-import TagsList from '@/widgets/TagsList'
+// import IconButton from '~/widgets/Buttons/IconButton'
+import ArticleCatState from '~/widgets/ArticleCatState'
+import Upvote from '~/widgets/Upvote'
+import TagsList from '~/widgets/TagsList'
 
 import { Wrapper, Header, Footer, Title } from '../styles/classic_layout/simple'
 

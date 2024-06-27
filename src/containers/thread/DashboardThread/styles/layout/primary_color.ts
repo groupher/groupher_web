@@ -1,5 +1,5 @@
-import type { TColor } from '@/spec'
-import styled, { css, rainbow } from '@/css'
+import type { TColor } from '~/spec'
+import styled, { css, rainbow } from '~/css'
 
 import { BaseSection } from '.'
 

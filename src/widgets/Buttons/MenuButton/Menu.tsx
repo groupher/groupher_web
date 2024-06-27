@@ -2,11 +2,11 @@ import { type FC, Fragment, memo } from 'react'
 import { isEmpty } from 'ramda'
 import QRCode from 'qrcode.react'
 
-import type { TMenuOption } from '@/spec'
+import type { TMenuOption } from '~/spec'
 
-import { ICON } from '@/config'
-import SVG from '@/const/svg'
-import { cutRest } from '@/fmt'
+import { ICON } from '~/config'
+import SVG from '~/const/svg'
+import { cutRest } from '~/fmt'
 
 import {
   Wrapper,

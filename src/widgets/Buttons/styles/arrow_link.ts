@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import ArrowSVG from '@/icons/Arrow'
+import styled, { css, theme } from '~/css'
+import ArrowSVG from '~/icons/Arrow'
 
 import { getTextSize, getIconSize } from './metircs/arrow_link'
 

@@ -1,5 +1,5 @@
-import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
-import styled, { css, theme } from '@/css'
+import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div`
   ${css.row('align-end')};

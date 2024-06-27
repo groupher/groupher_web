@@ -1,6 +1,6 @@
 'use client'
 
-import ArticlePost from '@/widgets/Article/Post'
+import ArticlePost from '~/widgets/Article/Post'
 
 const CommunityPostPage = () => {
   return <ArticlePost />

@@ -7,9 +7,9 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 
-import IconText from '@/widgets/IconText'
+import IconText from '~/widgets/IconText'
 
 import {
   Wrapper,

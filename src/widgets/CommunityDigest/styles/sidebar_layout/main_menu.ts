@@ -1,17 +1,17 @@
 import Link from 'next/link'
 
-import type { TActive, TColor } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
-// import Img from '@/Img'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
+// import Img from '~/Img'
 
-import LinkOutSVG from '@/icons/LinkOut'
+import LinkOutSVG from '~/icons/LinkOut'
 
-import KanbanSVG from '@/icons/Kanban'
-import HomeSVG from '@/icons/Home'
-import DiscussSVG from '@/icons/Discuss'
-import TadaSVG from '@/icons/Tada'
-import InfoSVG from '@/icons/Info'
-import GuideSVG from '@/icons/Guide'
+import KanbanSVG from '~/icons/Kanban'
+import HomeSVG from '~/icons/Home'
+import DiscussSVG from '~/icons/Discuss'
+import TadaSVG from '~/icons/Tada'
+import InfoSVG from '~/icons/Info'
+import GuideSVG from '~/icons/Guide'
 
 export const Wrapper = styled.div`
   ${css.column()};

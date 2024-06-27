@@ -1,9 +1,9 @@
 import { values } from 'ramda'
 
-import { T } from '@/mobx'
+import { T } from '~/mobx'
 
-import { TAG_COLORS } from '@/config'
-import { THREAD } from '@/const/thread'
+import { TAG_COLORS } from '~/config'
+import { THREAD } from '~/const/thread'
 
 import { pagiFields } from './helper/common'
 import { Community } from './Community'

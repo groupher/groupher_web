@@ -7,14 +7,14 @@
 import { type FC, useState } from 'react'
 import { includes } from 'ramda'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
-import useSyncAccount from '@/hooks/useSyncAccount'
-import useAccount from '@/hooks/useAccount'
-import useLayout from '@/hooks/useLayout'
-import { BANNER_LAYOUT } from '@/const/layout'
+import useSyncAccount from '~/hooks/useSyncAccount'
+import useAccount from '~/hooks/useAccount'
+import useLayout from '~/hooks/useLayout'
+import { BANNER_LAYOUT } from '~/const/layout'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import LoggedInAccount from './LoggedInAccount'
 import Panel from './Panel'

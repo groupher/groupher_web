@@ -1,4 +1,4 @@
-import { T } from '@/mobx'
+import { T } from '~/mobx'
 
 export const SimpleUser = T.model('SimpleUser', {
   login: T.maybeNull(T.string),

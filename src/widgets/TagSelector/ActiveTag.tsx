@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import type { TTag } from '@/spec'
-import TagNode from '@/widgets/TagNode'
+import type { TTag } from '~/spec'
+import TagNode from '~/widgets/TagNode'
 
 import { Wrapper, TagItem, TagTitle } from './styles/active_tag'
 

@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
-import TagNode from '@/widgets/TagNode'
+import { SpaceGrow } from '~/widgets/Common'
+import TagNode from '~/widgets/TagNode'
 
 import type { TSubMenu } from '../spec'
 import { SUB_MENU_TYPE } from '../constant'

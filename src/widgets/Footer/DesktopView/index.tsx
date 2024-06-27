@@ -4,10 +4,10 @@
  *
  */
 
-import { FOOTER_LAYOUT } from '@/const/layout'
-import useFooterLinks from '@/hooks/useFooterLinks'
-import useMetric from '@/hooks/useMetric'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { FOOTER_LAYOUT } from '~/const/layout'
+import useFooterLinks from '~/hooks/useFooterLinks'
+import useMetric from '~/hooks/useMetric'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
 import SimpleLayout from './SimpleLayout'
 import GroupLayout from './GroupLayout'

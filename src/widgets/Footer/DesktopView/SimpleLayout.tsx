@@ -1,12 +1,12 @@
 import { keys } from 'ramda'
 
-import type { TLinkItem } from '@/spec'
-import useFooterLinks from '@/hooks/useFooterLinks'
-import { DEME_SOCIALS } from '@/const/social'
+import type { TLinkItem } from '~/spec'
+import useFooterLinks from '~/hooks/useFooterLinks'
+import { DEME_SOCIALS } from '~/const/social'
 
-import { sortByIndex, groupByKey } from '@/helper'
+import { sortByIndex, groupByKey } from '~/helper'
 
-import SocialList from '@/widgets/SocialList'
+import SocialList from '~/widgets/SocialList'
 
 import {
   Wrapper,

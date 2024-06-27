@@ -1,9 +1,9 @@
 import { type FC, memo } from 'react'
 
-import type { TCommunity } from '@/spec'
-import CommunityStatesPad from '@/widgets/CommunityStatesPad'
+import type { TCommunity } from '~/spec'
+import CommunityStatesPad from '~/widgets/CommunityStatesPad'
 
-import { assetSrc } from '@/helper'
+import { assetSrc } from '~/helper'
 
 import {
   Wrapper,

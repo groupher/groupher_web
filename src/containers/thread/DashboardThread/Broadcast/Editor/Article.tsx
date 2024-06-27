@@ -1,6 +1,6 @@
-import { Br } from '@/widgets/Common'
-import ColorSelector from '@/widgets/ColorSelector'
-import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
+import { Br } from '~/widgets/Common'
+import ColorSelector from '~/widgets/ColorSelector'
+import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
 
 import SectionLabel from '../../SectionLabel'
 import ArticleTemplate from '../Templates/Article'

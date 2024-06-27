@@ -1,7 +1,7 @@
 import { type FC, useState } from 'react'
 
-// import Header from '@/widgets/CommunityDigest/HeaderLayout'
-import ViewportTracker from '@/widgets/ViewportTracker'
+// import Header from '~/widgets/CommunityDigest/HeaderLayout'
+import ViewportTracker from '~/widgets/ViewportTracker'
 
 import Digest from './Digest'
 import Content from './Content'

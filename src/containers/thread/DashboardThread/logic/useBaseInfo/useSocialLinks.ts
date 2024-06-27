@@ -1,7 +1,7 @@
 import { isEmpty, reject, equals } from 'ramda'
 
-import type { TSocialItem } from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
+import type { TSocialItem } from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
 
 export type TRet = {
   socialLinks: TSocialItem[]

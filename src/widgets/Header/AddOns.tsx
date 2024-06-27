@@ -1,9 +1,9 @@
 import { type FC, memo } from 'react'
 
-import type { TAccount } from '@/spec'
-import EVENT from '@/const/event'
+import type { TAccount } from '~/spec'
+import EVENT from '~/const/event'
 
-import { send, c11nSettings } from '@/signal'
+import { send, c11nSettings } from '~/signal'
 
 import UserAccount from './UserAccount'
 
@@ -23,7 +23,7 @@ const AddOns: FC<TProps> = ({ accountInfo }) => {
   // TODO: move the login logic to MailBox itself
   // useEffect(() => {
   //   if (isLogin) {
-  //     MailBox = dynamic(() => import('@/containers/tool/MailBox'), {
+  //     MailBox = dynamic(() => import('~/containers/tool/MailBox'), {
   //       /* eslint-disable react/display-name */
   //       loading: () => <div />,
   //       ssr: false,

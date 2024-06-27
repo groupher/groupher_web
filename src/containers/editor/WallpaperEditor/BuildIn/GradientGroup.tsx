@@ -1,7 +1,7 @@
 import { keys } from 'ramda'
 
-import { parseWallpaper } from '@/wallpaper'
-import { WALLPAPER_TYPE } from '@/const/wallpaper'
+import { parseWallpaper } from '~/wallpaper'
+import { WALLPAPER_TYPE } from '~/const/wallpaper'
 
 import useLogic from '../useLogic'
 import {

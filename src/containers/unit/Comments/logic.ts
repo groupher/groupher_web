@@ -1,19 +1,19 @@
 import { useEffect } from 'react'
 import { isEmpty, reject, equals } from 'ramda'
 
-import type { TComment, TID, TEmotionType, TEditValue } from '@/spec'
-import { ANCHOR } from '@/const/dom'
-import EVENT from '@/const/event'
-import ERR from '@/const/err'
+import type { TComment, TID, TEmotionType, TEditValue } from '~/spec'
+import { ANCHOR } from '~/const/dom'
+import EVENT from '~/const/event'
+import ERR from '~/const/err'
 
-import asyncSuit from '@/async'
-import BStore from '@/utils/bstore'
-import { titleCase } from '@/fmt'
-import { errRescue } from '@/signal'
-import { scrollIntoEle } from '@/dom'
-import { updateEditing } from '@/mobx'
+import asyncSuit from '~/async'
+import BStore from '~/utils/bstore'
+import { titleCase } from '~/fmt'
+import { errRescue } from '~/signal'
+import { scrollIntoEle } from '~/dom'
+import { updateEditing } from '~/mobx'
 
-import uid from '@/utils/uid'
+import uid from '~/utils/uid'
 
 import { API_MODE, EDIT_MODE, MODE } from './constant'
 

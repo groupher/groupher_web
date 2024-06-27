@@ -1,6 +1,6 @@
-import type { TActive } from '@/spec'
-// import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import type { TActive } from '~/spec'
+// import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
 const activeColor = '#009C9E'
 

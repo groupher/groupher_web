@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
 
-import HammerSVG from '@/icons/HammerSolid'
+import HammerSVG from '~/icons/HammerSolid'
 import { GradientText } from '..'
 import { getCursorGradient } from '../metric'
 

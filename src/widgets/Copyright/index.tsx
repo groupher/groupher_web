@@ -6,11 +6,11 @@
 
 import { type FC, memo } from 'react'
 
-import type { TCopyright } from '@/spec'
-import Tooltip from '@/widgets/Tooltip'
+import type { TCopyright } from '~/spec'
+import Tooltip from '~/widgets/Tooltip'
 
 import Label from './Label'
-import SettingMenu from '@/widgets/SettingMenu'
+import SettingMenu from '~/widgets/SettingMenu'
 import ReadOnlyPanel from './ReadOnlyPanel'
 import { Wrapper } from './styles'
 

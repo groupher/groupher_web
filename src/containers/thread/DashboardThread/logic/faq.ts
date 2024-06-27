@@ -1,7 +1,7 @@
 import { find, findIndex } from 'ramda'
 
-import type { TFAQSection } from '@/spec'
-import { toJS } from '@/mobx'
+import type { TFAQSection } from '~/spec'
+import { toJS } from '~/mobx'
 
 import type { TStore } from '../store'
 import { DEFAULT_NEW_FAQ } from '../constant'

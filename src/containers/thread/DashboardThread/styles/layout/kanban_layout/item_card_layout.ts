@@ -1,10 +1,10 @@
-import type { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import { WithPosition } from '@/widgets/Common'
-import UpvoteSVG from '@/icons/Upvote'
-import CommentSVG from '@/icons/Comment'
+import { WithPosition } from '~/widgets/Common'
+import UpvoteSVG from '~/icons/Upvote'
+import CommentSVG from '~/icons/Comment'
 
 import { BlockBase } from '..'
 

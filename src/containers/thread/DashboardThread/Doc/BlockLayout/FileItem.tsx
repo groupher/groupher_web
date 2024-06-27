@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import FileMenu from './FileMenu'
 

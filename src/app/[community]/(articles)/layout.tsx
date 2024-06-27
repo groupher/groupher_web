@@ -1,11 +1,11 @@
 'use client'
 
-import { BANNER_LAYOUT } from '@/const/layout'
+import { BANNER_LAYOUT } from '~/const/layout'
 
-import useMetric from '@/hooks/useMetric'
-import useLayout from '@/hooks/useLayout'
+import useMetric from '~/hooks/useMetric'
+import useLayout from '~/hooks/useLayout'
 
-import CommunityDigest from '@/widgets/CommunityDigest'
+import CommunityDigest from '~/widgets/CommunityDigest'
 
 import { Wrapper, SidebarWrapper, InnerWrapper, ContentWrapper } from './styles'
 

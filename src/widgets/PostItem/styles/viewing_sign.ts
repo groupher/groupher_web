@@ -1,5 +1,5 @@
-import styled, { css, animate, theme } from '@/css'
-import ViewSVG from '@/icons/article/Viewed'
+import styled, { css, animate, theme } from '~/css'
+import ViewSVG from '~/icons/article/Viewed'
 
 type TWrapper = { top: number; left: number }
 export const Wrapper = styled.div<TWrapper>`

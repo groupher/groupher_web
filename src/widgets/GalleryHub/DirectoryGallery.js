@@ -8,9 +8,9 @@ import React from 'react'
 import T from 'prop-types'
 import { pluck } from 'ramda'
 
-import { ICON_CMD } from '@/config'
+import { ICON_CMD } from '~/config'
 
-import IconText from '@/widgets/IconText'
+import IconText from '~/widgets/IconText'
 import InlineTags from './InlineTags'
 
 import {

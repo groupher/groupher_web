@@ -1,8 +1,8 @@
 import { type FC, memo } from 'react'
 
-import type { TUser, TAccount } from '@/spec'
-// import { ICON } from '@/config'
-import ImgFallback from '@/widgets/ImgFallback'
+import type { TUser, TAccount } from '~/spec'
+// import { ICON } from '~/config'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import { Wrapper, Avatar } from './styles/article_author_avatar'
 

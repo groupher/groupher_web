@@ -1,12 +1,12 @@
 import { type FC, memo } from 'react'
 
-import type { TArticle } from '@/spec'
+import type { TArticle } from '~/spec'
 
-import { UPVOTE_LAYOUT } from '@/const/layout'
+import { UPVOTE_LAYOUT } from '~/const/layout'
 
-import Upvote from '@/widgets/Upvote'
-import ArticleCatState from '@/widgets/ArticleCatState'
-// import ArticleBaseStats from '@/widgets/ArticleBaseStats'
+import Upvote from '~/widgets/Upvote'
+import ArticleCatState from '~/widgets/ArticleCatState'
+// import ArticleBaseStats from '~/widgets/ArticleBaseStats'
 
 import { Wrapper, LeftPart, ArticleTitle } from '../styles/post_viewer/fixed_header'
 

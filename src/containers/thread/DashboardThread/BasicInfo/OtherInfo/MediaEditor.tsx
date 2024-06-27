@@ -1,8 +1,8 @@
-import { sortByIndex } from '@/helper'
+import { sortByIndex } from '~/helper'
 
-import type { TMediaReport } from '@/spec'
-import AddButton from '@/widgets/Buttons/AddButton'
-import { SpaceGrow } from '@/widgets/Common'
+import type { TMediaReport } from '~/spec'
+import AddButton from '~/widgets/Buttons/AddButton'
+import { SpaceGrow } from '~/widgets/Common'
 
 import InputBox from './InputBox'
 

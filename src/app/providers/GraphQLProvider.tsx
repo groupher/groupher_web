@@ -10,8 +10,8 @@ import { UrqlProvider, ssrExchange, cacheExchange, fetchExchange, createClient }
 import { makeResult } from '@urql/core'
 import { filter, pipe, merge, mergeMap, share, fromPromise } from 'wonka'
 
-import { loadLocaleFile } from '@/i18n'
-import { GRAPHQL_ENDPOINT } from '@/config'
+import { loadLocaleFile } from '~/i18n'
+import { GRAPHQL_ENDPOINT } from '~/config'
 
 type TProps = {
   children: ReactNode

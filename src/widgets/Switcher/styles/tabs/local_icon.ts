@@ -1,20 +1,20 @@
-import type { TColor } from '@/spec'
+import type { TColor } from '~/spec'
 
-import styled, { css, theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '~/css'
 
 // user page
-import DiscussSVG from '@/icons/Discuss'
-import KanbanSVG from '@/icons/Kanban'
-import GuideSVG from '@/icons/Book'
-import TadaSVG from '@/icons/TadaRaw'
-import InfoSVG from '@/icons/Info'
-import ArrowSVG from '@/icons/ArrowUpRight'
+import DiscussSVG from '~/icons/Discuss'
+import KanbanSVG from '~/icons/Kanban'
+import GuideSVG from '~/icons/Book'
+import TadaSVG from '~/icons/TadaRaw'
+import InfoSVG from '~/icons/Info'
+import ArrowSVG from '~/icons/ArrowUpRight'
 
-import PublishSVG from '@/icons/Publish'
-import BillingSVG from '@/icons/Billing'
-import TabCommentsSVG from '@/SvgIcons/TabCommentsSVG'
-import SettingSVG from '@/icons/Setting'
-import TabFavoritesSVG from '@/widgets/SvgIcons/TabFavoritesSVG'
+import PublishSVG from '~/icons/Publish'
+import BillingSVG from '~/icons/Billing'
+import TabCommentsSVG from '~/SvgIcons/TabCommentsSVG'
+import SettingSVG from '~/icons/Setting'
+import TabFavoritesSVG from '~/widgets/SvgIcons/TabFavoritesSVG'
 
 import { Label } from './tab_item'
 

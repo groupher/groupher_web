@@ -1,8 +1,8 @@
 import type { FC, ReactNode } from 'react'
 
-import type { TActive, TSizeTS, TSpace } from '@/spec'
-import SIZE from '@/const/size'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import type { TActive, TSizeTS, TSpace } from '~/spec'
+import SIZE from '~/const/size'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import {
   Wrapper,

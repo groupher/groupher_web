@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import type { TActive, TSpace } from '@/spec'
+import type { TActive, TSpace } from '~/spec'
 
 import { Wrapper, CheckIcon, Title } from './styles'
 

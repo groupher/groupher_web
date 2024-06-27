@@ -1,6 +1,6 @@
 import React from 'react'
 
-import METRIC from '@/const/metric'
+import METRIC from '~/const/metric'
 
 import ArticleBar from './ArticleBar'
 import CommunityBar from './CommunityBar'

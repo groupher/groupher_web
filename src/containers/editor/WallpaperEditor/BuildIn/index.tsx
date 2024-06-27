@@ -5,10 +5,10 @@
 
 import { Fragment } from 'react'
 
-import { WALLPAPER_TYPE } from '@/const/wallpaper'
+import { WALLPAPER_TYPE } from '~/const/wallpaper'
 
-import { Br, SexyDivider } from '@/widgets/Common'
-import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
+import { Br, SexyDivider } from '~/widgets/Common'
+import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
 
 import PictureGroup from './PictureGroup'
 import GradientGroup from './GradientGroup'

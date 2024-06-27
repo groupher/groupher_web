@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { type FC, memo } from 'react'
 
-import { ICON, GITHUB } from '@/config'
+import { ICON, GITHUB } from '~/config'
 
 import NaviButton from '../NaviButton'
 import { Wrapper, A } from '../styles/more_menu'

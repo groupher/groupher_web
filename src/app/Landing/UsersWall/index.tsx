@@ -1,12 +1,12 @@
 import type { FC, ReactNode } from 'react'
 
-import type { TColorName } from '@/spec'
+import type { TColorName } from '~/spec'
 
-import { COLOR_NAME } from '@/const/colors'
-import { mockUsers } from '@/mock'
+import { COLOR_NAME } from '~/const/colors'
+import { mockUsers } from '~/mock'
 
-import { DesktopOnly } from '@/widgets/Common'
-import MasonryCards from '@/widgets/MasonryCards'
+import { DesktopOnly } from '~/widgets/Common'
+import MasonryCards from '~/widgets/MasonryCards'
 
 import Card from './Card'
 import {

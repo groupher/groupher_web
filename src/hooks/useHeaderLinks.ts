@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
 import { find } from 'ramda'
 
-import type { TLinkItem, THeaderLayout } from '@/spec'
-import { MORE_GROUP } from '@/const/dashboard'
+import type { TLinkItem, THeaderLayout } from '~/spec'
+import { MORE_GROUP } from '~/const/dashboard'
 
-import useSubStore from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useSubStore from '~/hooks/useSubStore'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
 type THeaderLinks = {
   layout: THeaderLayout

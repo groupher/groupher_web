@@ -7,7 +7,7 @@
 import { type FC, Fragment, memo, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 
-import type { TUser } from '@/spec'
+import type { TUser } from '~/spec'
 
 import type { TLayout } from './spec'
 import type { TProps as TSetter } from './Setter'

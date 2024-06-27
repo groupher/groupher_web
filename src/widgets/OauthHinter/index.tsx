@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import Linker from '@/widgets/Linker'
+import Linker from '~/widgets/Linker'
 
 import {
   Wrapper,

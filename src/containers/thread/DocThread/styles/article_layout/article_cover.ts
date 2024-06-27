@@ -1,5 +1,5 @@
-import styled from '@/css'
-import Img from '@/Img'
+import styled from '~/css'
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   margin-top: 15px;

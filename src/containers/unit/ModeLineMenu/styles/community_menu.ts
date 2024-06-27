@@ -1,7 +1,7 @@
-import type { TTestable } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TTestable } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
+import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

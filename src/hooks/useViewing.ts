@@ -1,7 +1,7 @@
-import type { TArticle, TCommunity } from '@/spec'
+import type { TArticle, TCommunity } from '~/spec'
 
-import useSubStore from '@/hooks/useSubStore'
-import useViewingArticle from '@/hooks/useViewingArticle'
+import useSubStore from '~/hooks/useSubStore'
+import useViewingArticle from '~/hooks/useViewingArticle'
 
 type TRet = {
   article: TArticle

@@ -7,7 +7,7 @@
 import { type FC, memo, Fragment } from 'react'
 import { reduce, mergeRight } from 'ramda'
 
-import type { TTechCommunities, TCommunity } from '@/spec'
+import type { TTechCommunities, TCommunity } from '~/spec'
 
 import { TECHSTACK_CATEGORYS, CATEGORYS_RAWS } from './constant'
 import Category from './Category'

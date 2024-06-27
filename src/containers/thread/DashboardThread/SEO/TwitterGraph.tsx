@@ -1,6 +1,6 @@
-import type { TSelectOption } from '@/spec'
-import { Br } from '@/widgets/Common'
-import Select from '@/widgets/Select'
+import type { TSelectOption } from '~/spec'
+import { Br } from '~/widgets/Common'
+import Select from '~/widgets/Select'
 
 import { TW_CARD_OPTIONS } from '../constant'
 

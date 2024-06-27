@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import type { TMediaReport } from '@/spec'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import { Br } from '@/widgets/Common'
+import type { TMediaReport } from '~/spec'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
+import { Br } from '~/widgets/Common'
 
 import MediaPreview from './MediaPreview'
 

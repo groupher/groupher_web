@@ -6,8 +6,8 @@
 
 import { type FC, memo } from 'react'
 
-import type { TSpace } from '@/spec'
-import { openSearch } from '@/signal'
+import type { TSpace } from '~/spec'
+import { openSearch } from '~/signal'
 
 import { Wrapper, SearchIcon, Text } from './styles'
 

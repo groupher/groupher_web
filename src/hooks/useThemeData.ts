@@ -1,6 +1,6 @@
-import type { TThemeMap } from '@/spec'
+import type { TThemeMap } from '~/spec'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 /**
  * NOTE: should use observer to wrap the component who use this hook

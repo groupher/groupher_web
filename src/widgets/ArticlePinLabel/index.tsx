@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import { PinIcon } from './styles'
 

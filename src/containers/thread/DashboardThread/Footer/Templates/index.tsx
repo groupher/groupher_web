@@ -1,6 +1,6 @@
 import { type FC, useState } from 'react'
 
-import { FOOTER_LAYOUT } from '@/const/layout'
+import { FOOTER_LAYOUT } from '~/const/layout'
 
 import { SETTING_FIELD } from '../../constant'
 import SavingBar from '../../SavingBar'

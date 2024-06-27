@@ -4,14 +4,14 @@
 
 import { type FC, memo } from 'react'
 
-import type { TTag, TSizeTSM, TSpace } from '@/spec'
-import SIZE from '@/const/size'
+import type { TTag, TSizeTSM, TSpace } from '~/spec'
+import SIZE from '~/const/size'
 
-import { sortByColor } from '@/helper'
-import { Trans } from '@/i18n'
+import { sortByColor } from '~/helper'
+import { Trans } from '~/i18n'
 
-import Tooltip from '@/widgets/Tooltip'
-import TagNode from '@/widgets/TagNode'
+import Tooltip from '~/widgets/Tooltip'
+import TagNode from '~/widgets/TagNode'
 
 import FullList from './FullList'
 

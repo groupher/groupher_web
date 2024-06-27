@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div`
   ${css.row('align-center', 'justify-between')};

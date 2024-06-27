@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import type { TSizeSM } from '@/spec'
-import SIZE from '@/const/size'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import type { TSizeSM } from '~/spec'
+import SIZE from '~/const/size'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import { Wrapper, Track, Indicator, CheckIcon } from './styles/toggle_switch'
 

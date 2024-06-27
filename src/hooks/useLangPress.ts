@@ -7,7 +7,7 @@ import { useState, useEffect, useCallback } from 'react'
  *
  * usage:
  *
- * import { useLangPress } from '@/hooks'
+ * import { useLangPress } from '~/hooks'
  *
  * const longPress = useLangPress(() => {
  *   alert("langPress works")

@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import METRIC from '@/const/metric'
+import METRIC from '~/const/metric'
 
 import type { TProps } from '..'
 // import CommunityLayout from './CommunityLayout'

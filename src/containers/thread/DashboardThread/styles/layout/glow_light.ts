@@ -1,11 +1,11 @@
-import styled, { css, theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '~/css'
 
-import type { TActive, TColor, TGlowEffect } from '@/spec'
-import { GLOW_EFFECTS_DAY, GLOW_EFFECTS_NIGHT } from '@/const/glow_effect'
-import THEME from '@/const/theme'
+import type { TActive, TColor, TGlowEffect } from '~/spec'
+import { GLOW_EFFECTS_DAY, GLOW_EFFECTS_NIGHT } from '~/const/glow_effect'
+import THEME from '~/const/theme'
 
-import DLightSVG from '@/icons/DLight'
-import ClossSVG from '@/icons/CloseLight'
+import DLightSVG from '~/icons/DLight'
+import ClossSVG from '~/icons/CloseLight'
 
 import { BaseSection } from '.'
 

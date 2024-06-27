@@ -1,5 +1,5 @@
-import { KANBAN_LAYOUT } from '@/const/layout'
-import { Br } from '@/widgets/Common'
+import { KANBAN_LAYOUT } from '~/const/layout'
+import { Br } from '~/widgets/Common'
 
 import GlobalLayout from './GlobalLayout'
 import ItemCardLayout from './ItemCardLayout'

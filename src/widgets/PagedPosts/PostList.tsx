@@ -3,19 +3,19 @@
 import dynamic from 'next/dynamic'
 // import { trackWindowScroll } from 'react-lazy-load-image-component'
 
-import usePagedPosts from '@/hooks/usePagedPosts'
-import { POST_LAYOUT } from '@/const/layout'
-import TYPE from '@/const/type'
-import { THREAD } from '@/const/thread'
-import useLayout from '@/hooks/useLayout'
+import usePagedPosts from '~/hooks/usePagedPosts'
+import { POST_LAYOUT } from '~/const/layout'
+import TYPE from '~/const/type'
+import { THREAD } from '~/const/thread'
+import useLayout from '~/hooks/useLayout'
 
-import PostItem from '@/widgets/PostItem'
-import MasonryCards from '@/widgets/MasonryCards'
-// import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import PostItem from '~/widgets/PostItem'
+import MasonryCards from '~/widgets/MasonryCards'
+// import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
 import { MasonryCardsWrapper } from './styles/article_list'
 
-export const EmptyThread = dynamic(() => import('@/widgets/EmptyThread'), {
+export const EmptyThread = dynamic(() => import('~/widgets/EmptyThread'), {
   ssr: false,
 })
 

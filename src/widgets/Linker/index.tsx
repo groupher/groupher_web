@@ -6,10 +6,10 @@
 
 import { type FC, memo } from 'react'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
-import { prettyURL } from '@/fmt'
-import Tooltip from '@/widgets/Tooltip'
+import { prettyURL } from '~/fmt'
+import Tooltip from '~/widgets/Tooltip'
 
 import { Wrapper, LinkIcon, Source, PopHint } from './styles'
 

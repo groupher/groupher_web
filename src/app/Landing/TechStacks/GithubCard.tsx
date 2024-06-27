@@ -1,5 +1,5 @@
-// import { GITHUB } from '@/config'
-import useWallpaper from '@/hooks/useWallpaper'
+// import { GITHUB } from '~/config'
+import useWallpaper from '~/hooks/useWallpaper'
 
 import RepoPreview from './RepoPreview'
 

@@ -1,10 +1,10 @@
 import { useRouter } from 'next/navigation'
 
-import { DASHBOARD_BROADCAST_ROUTE } from '@/const/route'
-import VIEW from '@/const/view'
+import { DASHBOARD_BROADCAST_ROUTE } from '~/const/route'
+import VIEW from '~/const/view'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import Tabs from '@/widgets/Switcher/Tabs'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import { BROADCAST_TABS } from '../constant'
 import Portal from '../Portal'

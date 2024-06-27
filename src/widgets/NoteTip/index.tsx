@@ -6,9 +6,9 @@
 
 import { type FC, memo, type ReactNode } from 'react'
 
-import type { TSpace, TTooltipPlacement } from '@/spec'
+import type { TSpace, TTooltipPlacement } from '~/spec'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import { Wrapper, InfoIcon, Note } from './styles'
 

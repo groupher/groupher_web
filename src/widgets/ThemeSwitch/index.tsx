@@ -4,10 +4,10 @@
 
 import type { FC } from 'react'
 
-import type { TSpace } from '@/spec'
-import useTheme from '@/hooks/useTheme'
+import type { TSpace } from '~/spec'
+import useTheme from '~/hooks/useTheme'
 
-import THEME from '@/const/theme'
+import THEME from '~/const/theme'
 
 import { Wrapper, Button, SunIcon, MoonIcon } from './styles'
 

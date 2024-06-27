@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 // import { } from 'ramda'
 
-import type { TWallpaperGradientDir } from '@/spec'
+import type { TWallpaperGradientDir } from '~/spec'
 
 import type { TImagePos, TImageRadio, TImageSize, TLinearBorderPos, TSettingLevel } from './spec'
 import { IMAGE_POS } from './constant'

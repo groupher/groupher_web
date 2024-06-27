@@ -1,8 +1,8 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import PlusSVG from '@/icons/Plus'
-import EditSVG from '@/icons/EditPen'
-import { WithMargin } from '@/widgets/Common'
+import PlusSVG from '~/icons/Plus'
+import EditSVG from '~/icons/EditPen'
+import { WithMargin } from '~/widgets/Common'
 
 type TWrapper = {
   disabled: boolean

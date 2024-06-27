@@ -1,9 +1,9 @@
 import { proxy } from 'valtio'
 
-import type { TThemeMap, TThemeName } from '@/spec'
+import type { TThemeMap, TThemeName } from '~/spec'
 
-import THEME from '@/const/theme'
-import { themeSkins } from '@/utils/themes'
+import THEME from '~/const/theme'
+import { themeSkins } from '~/utils/themes'
 
 import type { TStore } from './spec'
 

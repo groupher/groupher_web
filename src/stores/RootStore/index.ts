@@ -7,12 +7,12 @@
 
 import { mergeRight } from 'ramda'
 
-import type { TRoute, TThread, TArticle } from '@/spec'
+import type { TRoute, TThread, TArticle } from '~/spec'
 
-import EVENT from '@/const/event'
+import EVENT from '~/const/event'
 
-import { T, markStates, type Instance } from '@/mobx'
-import { toast, send } from '@/signal'
+import { T, markStates, type Instance } from '~/mobx'
+import { toast, send } from '~/signal'
 
 import {
   // domain

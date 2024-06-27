@@ -1,7 +1,7 @@
-import type { TActive, TColor } from '@/spec'
-import styled, { css, theme, rainbow, rainbowLight } from '@/css'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, theme, rainbow, rainbowLight } from '~/css'
 
-import HashTagSVG from '@/icons/HashTag'
+import HashTagSVG from '~/icons/HashTag'
 
 import { BaseSection, BlockBase } from '.'
 

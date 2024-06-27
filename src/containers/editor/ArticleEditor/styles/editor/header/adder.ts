@@ -1,6 +1,6 @@
-import type { TTestable } from '@/spec'
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
+import type { TTestable } from '~/spec'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
 
 import { Wrapper as HeaderWrapper } from '.'
 

@@ -1,16 +1,16 @@
 import type { FC } from 'react'
 
-import useAccount from '@/hooks/useAccount'
+import useAccount from '~/hooks/useAccount'
 
-import type { TComment } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/const/layout'
+import type { TComment } from '~/spec'
+import { UPVOTE_LAYOUT } from '~/const/layout'
 
-import { authWarn } from '@/signal'
+import { authWarn } from '~/signal'
 
-import DotDivider from '@/widgets/DotDivider'
-import { DesktopOnly, Space, SpaceGrow } from '@/widgets/Common'
-import EmotionSelector from '@/widgets/EmotionSelector'
-import Upvote from '@/widgets/Upvote'
+import DotDivider from '~/widgets/DotDivider'
+import { DesktopOnly, Space, SpaceGrow } from '~/widgets/Common'
+import EmotionSelector from '~/widgets/EmotionSelector'
+import Upvote from '~/widgets/Upvote'
 
 import Actions from './Actions'
 

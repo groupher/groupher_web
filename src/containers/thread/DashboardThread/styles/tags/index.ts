@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Button from '@/widgets/Buttons/Button'
-import AdderSVG from '@/icons/Plus'
+import Button from '~/widgets/Buttons/Button'
+import AdderSVG from '~/icons/Plus'
 
 export const Wrapper = styled.div`
   padding: 0 100px;

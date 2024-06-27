@@ -1,12 +1,12 @@
 import Link from 'next/link'
 
-import type { TMetric } from '@/spec'
-import METRIC from '@/const/metric'
-import styled, { css, theme } from '@/css'
+import type { TMetric } from '~/spec'
+import METRIC from '~/const/metric'
+import styled, { css, theme } from '~/css'
 
-import Img from '@/Img'
-import ArrowSVG from '@/icons/Arrow'
-import DotDivider from '@/widgets/DotDivider'
+import Img from '~/Img'
+import ArrowSVG from '~/icons/Arrow'
+import DotDivider from '~/widgets/DotDivider'
 
 export const Wrapper = styled.div<{ metric: TMetric }>`
   ${css.row('align-start', 'justify-between')};

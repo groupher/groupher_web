@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ManSVG from '@/icons/Man'
-import WomanSVG from '@/icons/Woman'
+import ManSVG from '~/icons/Man'
+import WomanSVG from '~/icons/Woman'
 
 import { SEX } from '../constant'
 

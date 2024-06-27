@@ -1,7 +1,7 @@
 'use client'
 
-import useTheme from '@/hooks/useTheme'
-import useWallpaper from '@/hooks/useWallpaper'
+import useTheme from '~/hooks/useTheme'
+import useWallpaper from '~/hooks/useWallpaper'
 
 import { Wrapper } from './styles/wallpaper'
 

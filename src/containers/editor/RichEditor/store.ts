@@ -3,7 +3,7 @@
  *
  */
 
-import { T, Instance, markStates, useMobxContext } from '@/mobx'
+import { T, type Instance, markStates, useMobxContext } from '~/mobx'
 
 const RichEditor = T.model('RichEditor', {})
   .views(() => ({}))

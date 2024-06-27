@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import ToolBox from './ToolBox'
 import InlineToolBox from './InlineToolBox'

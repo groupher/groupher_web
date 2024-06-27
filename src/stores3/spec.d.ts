@@ -1,4 +1,4 @@
-import type { TLocale } from '@/spec'
+import type { TLocale } from '~/spec'
 
 import type { TStore as TLocaleStore } from './locale/spec'
 import type { TStore as TViewingStore } from './viewing/spec'

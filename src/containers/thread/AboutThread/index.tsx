@@ -6,11 +6,11 @@
 import type { FC } from 'react'
 import Markdown from 'markdown-to-jsx'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useLayout from '@/hooks/useLayout'
-import { BANNER_LAYOUT } from '@/const/layout'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useLayout from '~/hooks/useLayout'
+import { BANNER_LAYOUT } from '~/const/layout'
 
-import { SexyDivider as Divider } from '@/widgets/Common'
+import { SexyDivider as Divider } from '~/widgets/Common'
 
 import Members from './Members'
 import BasicStates from './BasicStates'

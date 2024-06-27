@@ -1,6 +1,6 @@
 import { concat, keys, reduce, includes } from 'ramda'
-import TYPE from '@/const/type'
-import { ARTICLE_THREAD } from '@/const/thread'
+import TYPE from '~/const/type'
+import { ARTICLE_THREAD } from '~/const/thread'
 
 type Options = {
   position?: 'H' | 'M' | 'L'

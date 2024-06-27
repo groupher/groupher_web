@@ -1,9 +1,9 @@
 import { type FC, memo } from 'react'
 import { isEmpty } from 'ramda'
 
-import { cutRest } from '@/fmt'
+import { cutRest } from '~/fmt'
 
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 import NextStepButton from './NextStepButton'
 import InputBox from './InputBox'

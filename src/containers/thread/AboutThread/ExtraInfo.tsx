@@ -1,8 +1,8 @@
 import { isEmpty } from 'ramda'
 
-import useAboutInfo from '@/hooks/useAboutInfo'
-import { SexyDivider as Divider } from '@/widgets/Common'
-import SocialList from '@/widgets/SocialList'
+import useAboutInfo from '~/hooks/useAboutInfo'
+import { SexyDivider as Divider } from '~/widgets/Common'
+import SocialList from '~/widgets/SocialList'
 
 import LabelList from './LabelList'
 import MediaReports from './MediaReports'

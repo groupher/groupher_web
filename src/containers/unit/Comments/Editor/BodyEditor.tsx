@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import RichEditor from '@/containers/editor/RichEditor'
+import RichEditor from '~/containers/editor/RichEditor'
 
 type TProps = {
   body?: string

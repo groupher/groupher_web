@@ -1,4 +1,4 @@
-import styled, { theme } from '@/css'
+import styled, { theme } from '~/css'
 
 export const Wrapper = styled.div`
   width: 100%;

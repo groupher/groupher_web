@@ -1,8 +1,8 @@
-import type { TTestable } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TTestable } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import SearchSVG from '@/icons/HeaderSearch'
-import { WithMargin } from '@/widgets/Common'
+import SearchSVG from '~/icons/HeaderSearch'
+import { WithMargin } from '~/widgets/Common'
 
 type TWrapper = TTestable
 

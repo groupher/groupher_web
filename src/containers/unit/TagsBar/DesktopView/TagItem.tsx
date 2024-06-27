@@ -1,10 +1,10 @@
 import type { FC } from 'react'
 
-import type { TColorName, TTag } from '@/spec'
-import { cutRest } from '@/fmt'
-import { Trans } from '@/i18n'
-import { emptyTag } from '@/model'
-import TagNode from '@/widgets/TagNode'
+import type { TColorName, TTag } from '~/spec'
+import { cutRest } from '~/fmt'
+import { Trans } from '~/i18n'
+import { emptyTag } from '~/model'
+import TagNode from '~/widgets/TagNode'
 
 import { Wrapper, Tag, Grow, Title, CloseWrapper, CloseIcon } from '../styles/desktop_view/tag_item'
 

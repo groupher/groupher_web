@@ -1,6 +1,6 @@
-import type { TLocale } from '@/spec'
-import { loadLocaleFile } from '@/i18n'
-import useSubStore from '@/hooks/useSubStore'
+import type { TLocale } from '~/spec'
+import { loadLocaleFile } from '~/i18n'
+import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   changeLocale: (locale: TLocale) => void

@@ -1,7 +1,7 @@
 import { type FC, memo, useState } from 'react'
 
-import { isURL } from '@/validator'
-import Checker from '@/widgets/Checker'
+import { isURL } from '~/validator'
+import Checker from '~/widgets/Checker'
 
 import type { TEditData } from '../spec'
 import { Wrapper, LinkWrapper, LinkInput, LinkIcon } from '../styles/addon/post_addon'

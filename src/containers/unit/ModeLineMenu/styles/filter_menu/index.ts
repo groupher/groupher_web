@@ -1,6 +1,6 @@
-// import Img from '@/Img'
-import type { TTestable } from '@/spec'
-import styled, { css } from '@/css'
+// import Img from '~/Img'
+import type { TTestable } from '~/spec'
+import styled, { css } from '~/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

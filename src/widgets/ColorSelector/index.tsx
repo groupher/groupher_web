@@ -7,10 +7,10 @@
 import { type FC, memo, type ReactNode } from 'react'
 import { keys, includes, isEmpty } from 'ramda'
 
-import type { TColorName, TTooltipPlacement } from '@/spec'
-import { COLOR_NAME } from '@/const/colors'
+import type { TColorName, TTooltipPlacement } from '~/spec'
+import { COLOR_NAME } from '~/const/colors'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 import { Wrapper, DotWrapper, Dot, HookIcon } from './styles'
 
 type TProps = {

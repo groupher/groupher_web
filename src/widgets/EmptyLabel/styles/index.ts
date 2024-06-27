@@ -1,8 +1,8 @@
-import type { TSizeSML } from '@/spec'
+import type { TSizeSML } from '~/spec'
 
-import SIZE from '@/const/size'
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
+import SIZE from '~/const/size'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};

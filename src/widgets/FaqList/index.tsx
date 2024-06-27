@@ -6,9 +6,9 @@
 
 import { type FC, memo } from 'react'
 
-import type { TArticle, TSpace, TDocFAQLayout, TFAQSection } from '@/spec'
-import { DOC_FAQ_LAYOUT } from '@/const/layout'
-// import { FAQ as DefaultFAQ } from '@/const/landingPage'
+import type { TArticle, TSpace, TDocFAQLayout, TFAQSection } from '~/spec'
+import { DOC_FAQ_LAYOUT } from '~/const/layout'
+// import { FAQ as DefaultFAQ } from '~/const/landingPage'
 
 import Flat from './Flat'
 import SearchHint from './SearchHint'

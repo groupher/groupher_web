@@ -1,4 +1,4 @@
-import type langJson from '@/i18n/en'
+import type langJson from '~/i18n/en'
 
 export type TLocale = 'en' | 'zh' | 'zh-hant' | 'ru' | 'es'
 

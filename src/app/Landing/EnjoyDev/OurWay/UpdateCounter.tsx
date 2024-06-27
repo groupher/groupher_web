@@ -1,7 +1,7 @@
 import { type FC, useState } from 'react'
 
-import useInterval from '@/hooks/useInterval'
-import AnimatedCount from '@/widgets/AnimatedCount'
+import useInterval from '~/hooks/useInterval'
+import AnimatedCount from '~/widgets/AnimatedCount'
 
 import { Wrapper, UpvoteIcon, Text, Counter } from '../../styles/enjoy_dev/our_way/upvote_counter'
 

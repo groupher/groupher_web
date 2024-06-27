@@ -1,15 +1,15 @@
 import type { FC } from 'react'
 
-import type { TTooltipPlacement } from '@/spec'
-import { ARTICLE_STATE } from '@/const/gtd'
-import { COLOR_NAME } from '@/const/colors'
-import useKanbanBgColors from '@/hooks/useKanbanBgColors'
-import useNameAlias from '@/hooks/useNameAlias'
+import type { TTooltipPlacement } from '~/spec'
+import { ARTICLE_STATE } from '~/const/gtd'
+import { COLOR_NAME } from '~/const/colors'
+import useKanbanBgColors from '~/hooks/useKanbanBgColors'
+import useNameAlias from '~/hooks/useNameAlias'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
-import { Trans } from '@/i18n'
-import { aliasGTDDoneState } from '@/fmt'
+import { Trans } from '~/i18n'
+import { aliasGTDDoneState } from '~/fmt'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
 import { Wrapper, TipNote, WipIcon, Text, TODOIcon, DoneIcon, RejectIcon } from './styles/state'

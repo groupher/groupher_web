@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import useHover from '@/hooks/useHover'
-import { COLOR_NAME } from '@/const/colors'
+import useHover from '~/hooks/useHover'
+import { COLOR_NAME } from '~/const/colors'
 
 import Panel from './Panel'
 import { Wrapper, Header, Title, Desc } from '../../styles/feature_wall/mobile_first'

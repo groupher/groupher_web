@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import { ICON_CMD, ISSUE_ADDR } from '@/config'
+import { ICON_CMD, ISSUE_ADDR } from '~/config'
 
 import { Wrapper, Selector, Issue, GithubIcon, Divider, IssueLinker } from './styles/footer'
 

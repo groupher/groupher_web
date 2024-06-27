@@ -18,10 +18,10 @@ import type {
   TEmotion,
   TSubmitState,
   TCommentsState,
-} from '@/spec'
-// import TYPE from '@/const/type'
-import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
-import { Comment, PagedComments, emptyPagi, SimpleUser } from '@/model'
+} from '~/spec'
+// import TYPE from '~/const/type'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
+import { Comment, PagedComments, emptyPagi, SimpleUser } from '~/model'
 
 import type { TFoldState, TEditMode, TEditState, TRepliesState } from './spec'
 import { MODE, EDIT_MODE, API_MODE } from './constant'

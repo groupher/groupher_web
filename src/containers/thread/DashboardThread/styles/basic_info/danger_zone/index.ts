@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import InfoSVG from '@/icons/Info'
+import InfoSVG from '~/icons/Info'
 
 export const Wrapper = styled.div`
   ${css.column()};

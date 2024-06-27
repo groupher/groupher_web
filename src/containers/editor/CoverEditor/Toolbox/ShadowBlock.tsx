@@ -1,7 +1,7 @@
 import { type FC, useState } from 'react'
 import { values } from 'ramda'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import type { TSettingLevel } from '../spec'
 import { IMAGE_SHADOW, SETTING_LEVEL } from '../constant'

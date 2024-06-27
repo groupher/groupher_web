@@ -1,6 +1,6 @@
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
-import { Fragment, FC, memo } from 'react'
+import { Fragment, type FC, memo } from 'react'
 import { range } from 'ramda'
 import { useTheme } from 'styled-components'
 import ContentLoader from 'react-content-loader'

@@ -5,9 +5,9 @@
 import { Fragment, type FC } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import METRIC from '@/const/metric'
+import METRIC from '~/const/metric'
 
-import useMetric from '@/hooks/useMetric'
+import useMetric from '~/hooks/useMetric'
 
 import { useStore } from './store'
 import CommunityLayout from './CommunityLayout'

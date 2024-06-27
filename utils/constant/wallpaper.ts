@@ -1,4 +1,4 @@
-import type { TSnakeUpperCase, TWallpaper, TWallpaperType, TWallpaperGradientDir } from '@/spec'
+import type { TSnakeUpperCase, TWallpaper, TWallpaperType, TWallpaperGradientDir } from '~/spec'
 
 const DIR = '/wallpaper'
 

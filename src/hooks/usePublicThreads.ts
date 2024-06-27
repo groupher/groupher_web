@@ -1,12 +1,12 @@
 import { find, propEq, reject } from 'ramda'
 
-import type { TCommunityThread, TLinkItem, TNameAlias } from '@/spec'
-import { THREAD } from '@/const/thread'
+import type { TCommunityThread, TLinkItem, TNameAlias } from '~/spec'
+import { THREAD } from '~/const/thread'
 
-import useSubStore from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useSubStore from '~/hooks/useSubStore'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import { sortByIndex } from '@/helper'
+import { sortByIndex } from '~/helper'
 
 export default (): TCommunityThread[] => {
   const dashboard = useSubStore('dashboard')

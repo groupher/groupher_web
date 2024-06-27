@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
 import { pick } from 'ramda'
 
-import type { TDocLayout, TDocFAQLayout, TEditFunc } from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
+import type { TDocLayout, TDocFAQLayout, TEditFunc } from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
 
 import useHelper from './useHelper'
 

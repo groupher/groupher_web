@@ -5,9 +5,9 @@
  */
 import { observer } from 'mobx-react-lite'
 
-import useWindowResize from '@/hooks/useWindowResize'
-import useShortcut from '@/hooks/useShortcut'
-import useMetric from '@/hooks/useMetric'
+import useWindowResize from '~/hooks/useWindowResize'
+import useShortcut from '~/hooks/useShortcut'
+import useMetric from '~/hooks/useMetric'
 
 import { useStore } from './store'
 

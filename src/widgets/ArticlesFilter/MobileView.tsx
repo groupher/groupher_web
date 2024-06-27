@@ -6,17 +6,17 @@
 
 import { type FC, Fragment, memo } from 'react'
 
-import type { TArticleCat, TArticleState } from '@/spec'
+import type { TArticleCat, TArticleState } from '~/spec'
 
-import { refreshArticles } from '@/signal'
-import { CONDITION_MODE } from '@/const/mode'
-import TYPE from '@/const/type'
+import { refreshArticles } from '~/signal'
+import { CONDITION_MODE } from '~/const/mode'
+import TYPE from '~/const/type'
 
-import useArticlesFilter from '@/hooks/useArticlesFilter'
+import useArticlesFilter from '~/hooks/useArticlesFilter'
 
-import { SpaceGrow } from '@/widgets/Common'
-import ConditionSelector from '@/widgets/ConditionSelector'
-import SearchBox from '@/widgets/SearchBox'
+import { SpaceGrow } from '~/widgets/Common'
+import ConditionSelector from '~/widgets/ConditionSelector'
+import SearchBox from '~/widgets/SearchBox'
 
 import type { TProps } from '.'
 import { Wrapper } from './styles/mobile_view'

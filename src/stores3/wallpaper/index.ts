@@ -1,8 +1,8 @@
 import { proxy } from 'valtio'
 import { mergeLeft, mergeDeepRight } from 'ramda'
 
-import type { TWallpaperGradientDir } from '@/spec'
-import { WALLPAPER_TYPE } from '@/const/wallpaper'
+import type { TWallpaperGradientDir } from '~/spec'
+import { WALLPAPER_TYPE } from '~/const/wallpaper'
 
 import type { TStore, TInitState } from './spec'
 

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { pluck } from 'ramda'
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table'
 
-import Checker from '@/widgets/Checker'
+import Checker from '~/widgets/Checker'
 
 import { CheckCell, CommunityCell, PendingCell, TimestampCell } from '../Cell'
 import FilterBar from '../FilterBar'

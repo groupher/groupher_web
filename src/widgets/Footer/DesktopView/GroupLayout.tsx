@@ -1,14 +1,14 @@
 import { keys } from 'ramda'
 
-import { DEME_SOCIALS } from '@/const/social'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useFooterLinks from '@/hooks/useFooterLinks'
+import { DEME_SOCIALS } from '~/const/social'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useFooterLinks from '~/hooks/useFooterLinks'
 
-import { assetSrc, sortByIndex, groupByKey } from '@/helper'
+import { assetSrc, sortByIndex, groupByKey } from '~/helper'
 
-import { SpaceGrow } from '@/widgets/Common'
-import SocialList from '@/widgets/SocialList'
-import ImgFallback from '@/widgets/ImgFallback'
+import { SpaceGrow } from '~/widgets/Common'
+import SocialList from '~/widgets/SocialList'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import {
   Wrapper,

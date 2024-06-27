@@ -6,8 +6,8 @@
 
 import { type FC, memo, useState } from 'react'
 
-// import useAccount from '@/hooks/useAccount'
-import Tabs from '@/widgets/Switcher/Tabs'
+// import useAccount from '~/hooks/useAccount'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import Activities from './Activities'
 import Members from './Members'

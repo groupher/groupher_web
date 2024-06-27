@@ -8,7 +8,7 @@ import React from 'react'
 import T from 'prop-types'
 import { isEmpty } from 'ramda'
 
-import { ICON_BASE, ISSUE_ADDR } from '@/config'
+import { ICON_BASE, ISSUE_ADDR } from '~/config'
 
 import { Icon404, Wrapper, Icon, Text, Title, DescWrapper, IssueLink, Desc } from './styles'
 

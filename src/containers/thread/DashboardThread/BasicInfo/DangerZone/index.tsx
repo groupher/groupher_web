@@ -1,6 +1,6 @@
 import { type FC, useState } from 'react'
 
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 
 import PublicModal from './PublicModal'
 import ArchiveModal from './ArchiveModal'

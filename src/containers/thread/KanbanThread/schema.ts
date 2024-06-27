@@ -1,6 +1,6 @@
 import { gql } from 'urql'
 
-import { F } from '@/schemas'
+import { F } from '~/schemas'
 
 const groupedKanbanPosts = gql`
   query groupedKanbanPosts($community: String!) {

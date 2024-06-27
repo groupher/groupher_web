@@ -14,9 +14,9 @@ import {
   includes,
 } from 'ramda'
 
-import { HCN } from '@/const/name'
-import { THREAD } from '@/const/thread'
-import { ROUTE } from '@/const/route'
+import { HCN } from '~/const/name'
+import { THREAD } from '~/const/thread'
+import { ROUTE } from '~/const/route'
 
 import { nilOrEmpty } from './validator'
 import { Global } from './helper'
@@ -214,7 +214,7 @@ const mergePagiQuery = (query = {}, opt = { pagi: 'string' }) => {
   }
 
   if (routeQuery.page && opt.pagi === 'number') {
-    routeQuery.page = parseInt(routeQuery.page, 10)
+    routeQuery.page = Number.parseInt(routeQuery.page, 10)
   }
 
   return mergeRight(defaultQuery, routeQuery)

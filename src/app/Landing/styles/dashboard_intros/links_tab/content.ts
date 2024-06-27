@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import EditSVG from '@/icons/EditPen'
-import { WithPosition } from '@/widgets/Common'
+import EditSVG from '~/icons/EditPen'
+import { WithPosition } from '~/widgets/Common'
 
 export { Icon } from './footer_card'
 

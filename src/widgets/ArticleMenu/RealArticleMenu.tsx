@@ -6,11 +6,11 @@
 
 import { type FC, memo } from 'react'
 
-import { ICON } from '@/config'
-import EVENT from '@/const/event'
+import { ICON } from '~/config'
+import EVENT from '~/const/event'
 
-import type { TArticle } from '@/spec'
-import MenuButton from '@/widgets/Buttons/MenuButton'
+import type { TArticle } from '~/spec'
+import MenuButton from '~/widgets/Buttons/MenuButton'
 
 import { Wrapper, MoreIcon } from './styles'
 import { hendleMenu } from './helper'

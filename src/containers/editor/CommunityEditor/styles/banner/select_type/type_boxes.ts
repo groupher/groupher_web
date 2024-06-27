@@ -1,12 +1,12 @@
-import type { TActive, TColor } from '@/spec'
-import styled, { css, theme, rainbow, animate, gradientBg } from '@/css'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, theme, rainbow, animate, gradientBg } from '~/css'
 
-import CheckSVG from '@/icons/CheckBold'
+import CheckSVG from '~/icons/CheckBold'
 
-import BrowserSVG from '@/icons/Browser'
-import GameSVG from '@/icons/Game'
-import RobotSVG from '@/icons/Robot'
-import HammerSVG from '@/icons/Hammer'
+import BrowserSVG from '~/icons/Browser'
+import GameSVG from '~/icons/Game'
+import RobotSVG from '~/icons/Robot'
+import HammerSVG from '~/icons/Hammer'
 
 export const Wrapper = styled.div`
   ${css.row('align-center', 'justify-between')};

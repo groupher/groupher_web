@@ -2,9 +2,9 @@
 import { type FC, memo, Fragment } from 'react'
 import TimeAgo from 'timeago-react'
 
-import type { TComment } from '@/spec'
+import type { TComment } from '~/spec'
 
-import { Space } from '@/widgets/Common'
+import { Space } from '~/widgets/Common'
 
 import {
   FloorNum,

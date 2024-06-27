@@ -1,15 +1,15 @@
 import { type FC, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import type { TArticle } from '@/spec'
+import type { TArticle } from '~/spec'
 
-import useViewingThread from '@/hooks/useViewingThread'
+import useViewingThread from '~/hooks/useViewingThread'
 
-import { scrollToHeader } from '@/dom'
-import { mockUsers } from '@/mock'
+import { scrollToHeader } from '~/dom'
+import { mockUsers } from '~/mock'
 
-import CommentsCount from '@/widgets/CommentsCount'
-import Upvote from '@/widgets/Upvote'
+import CommentsCount from '~/widgets/CommentsCount'
+import Upvote from '~/widgets/Upvote'
 
 // import { MenuBlock, CommunityBlock, MainBlock, ExploreBlock, AccountBlock } from './ArrowBlock'
 import {
@@ -21,7 +21,7 @@ import {
   GotoTopIcon,
 } from '../styles/article_layout'
 
-// import { changeCommunity } from '@/containers/editor/ArticleEditor/logic'
+// import { changeCommunity } from '~/containers/editor/ArticleEditor/logic'
 
 // import { openMenu } from '../logic'
 // import { communityPageMenus, getArticlePageMenus } from './menus'

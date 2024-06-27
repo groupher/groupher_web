@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import { scrollToHeader, scrollDrawerToTop } from '@/dom'
+import { scrollToHeader, scrollDrawerToTop } from '~/dom'
 
 import { Wrapper, AirBalloonIcon } from './styles'
 

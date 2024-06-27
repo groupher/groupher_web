@@ -1,21 +1,21 @@
 import { type FC, lazy, Suspense } from 'react'
 import TimeAgo from 'timeago-react'
 
-import type { TPost } from '@/spec'
-import { previewArticle } from '@/signal'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useLayout from '@/hooks/useLayout'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { THREAD } from '@/const/thread'
-import { BANNER_LAYOUT } from '@/const/layout'
-import SIZE from '@/const/size'
+import type { TPost } from '~/spec'
+import { previewArticle } from '~/signal'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useLayout from '~/hooks/useLayout'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import { THREAD } from '~/const/thread'
+import { BANNER_LAYOUT } from '~/const/layout'
+import SIZE from '~/const/size'
 
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import ArticleReadLabel from '@/widgets/ArticleReadLabel'
-import Tooltip from '@/widgets/Tooltip'
-import { SpaceGrow, Space } from '@/widgets/Common'
-import TagsList from '@/widgets/TagsList'
-import CommentsCount from '@/widgets/CommentsCount'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
+import ArticleReadLabel from '~/widgets/ArticleReadLabel'
+import Tooltip from '~/widgets/Tooltip'
+import { SpaceGrow, Space } from '~/widgets/Common'
+import TagsList from '~/widgets/TagsList'
+import CommentsCount from '~/widgets/CommentsCount'
 
 import {
   Wrapper,
@@ -27,7 +27,7 @@ import {
   AuthorName,
 } from '../../styles/quora_layout/desktop_view/header'
 
-const UserCard = lazy(() => import('@/widgets/Cards/UserCard'))
+const UserCard = lazy(() => import('~/widgets/Cards/UserCard'))
 
 type TProps = {
   article: TPost

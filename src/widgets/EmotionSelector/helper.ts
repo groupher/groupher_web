@@ -1,8 +1,8 @@
 import { includes, reject, keys, values, forEach } from 'ramda'
 
-import EMOTION from '@/const/emotion'
-import type { TEmotion, TEmotionType } from '@/spec'
-import { titleCase } from '@/fmt'
+import EMOTION from '~/const/emotion'
+import type { TEmotion, TEmotionType } from '~/spec'
+import { titleCase } from '~/fmt'
 
 export const getEmotionName = (item: TEmotion): TEmotionType => {
   const eCountKey = keys(item)[0] as string

@@ -1,6 +1,6 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
-import RatioSVG from '@/icons/Ratio'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
+import RatioSVG from '~/icons/Ratio'
 
 import { SettingBlock, SettingTitle } from '.'
 

@@ -3,7 +3,7 @@
  * ArticleViewer
  *
  */
-import Comments from '@/containers/unit/Comments'
+import Comments from '~/containers/unit/Comments'
 
 import DrawerHeader from './DrawerHeader'
 import Viewer from './Viewer'
@@ -13,7 +13,7 @@ import { Wrapper, CommentsWrapper } from './styles'
 import { useInit } from './logic'
 
 // const CollectionFolder = dynamic(
-//   () => import('@/containers/tool/CollectionFolder'),
+//   () => import('~/containers/tool/CollectionFolder'),
 //   {
 //     ssr: false,
 //   },

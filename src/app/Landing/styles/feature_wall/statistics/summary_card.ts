@@ -1,8 +1,8 @@
-import styled, { css, theme, animate } from '@/css'
+import styled, { css, theme, animate } from '~/css'
 
-import UpSVG from '@/icons/Goup'
-import DownSVG from '@/icons/Godown'
-import { WithPosition } from '@/widgets/Common'
+import UpSVG from '~/icons/Goup'
+import DownSVG from '~/icons/Godown'
+import { WithPosition } from '~/widgets/Common'
 
 export const Wrapper = styled(WithPosition)`
   ${css.row('align-center')};

@@ -1,7 +1,7 @@
 import Typewriter from 'typewriter-effect'
 
-import useWallpaper from '@/hooks/useWallpaper'
-import { Space, SpaceGrow } from '@/widgets/Common'
+import useWallpaper from '~/hooks/useWallpaper'
+import { Space, SpaceGrow } from '~/widgets/Common'
 
 import {
   Wrapper,

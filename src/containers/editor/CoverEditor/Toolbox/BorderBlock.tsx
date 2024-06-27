@@ -1,8 +1,8 @@
 import { type FC, useState } from 'react'
 import { keys } from 'ramda'
 
-import Tooltip from '@/widgets/Tooltip'
-import Radio from '@/widgets/Switcher/Radio'
+import Tooltip from '~/widgets/Tooltip'
+import Radio from '~/widgets/Switcher/Radio'
 
 import type { TLinearBorderPos, TSettingLevel } from '../spec'
 import { IMAGE_BORDER_RADIUS, SETTING_LEVEL, LINEAR_BORDER } from '../constant'

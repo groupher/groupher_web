@@ -1,9 +1,9 @@
 import React from 'react'
 
-import SIZE from '@/const/size'
-import VIEW from '@/const/view'
+import SIZE from '~/const/size'
+import VIEW from '~/const/view'
 
-import TabBar from '@/widgets/TabBar'
+import TabBar from '~/widgets/TabBar'
 
 import { Wrapper, InnerWrapper, TabsWrapper } from '../styles/top_bar/desktop_view'
 

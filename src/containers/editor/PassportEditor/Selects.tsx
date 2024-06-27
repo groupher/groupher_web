@@ -1,7 +1,7 @@
 import { keys, includes } from 'ramda'
 
-import { Trans } from '@/i18n/dashboard'
-import Checker from '@/widgets/Checker'
+import { Trans } from '~/i18n/dashboard'
+import Checker from '~/widgets/Checker'
 
 import useLogic from './useLogic'
 import { Wrapper, Item, ReadonlyItem, CheckIcon, RootCheckIcon, ItemTitle } from './styles/selects'

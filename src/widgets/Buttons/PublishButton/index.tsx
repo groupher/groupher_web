@@ -3,15 +3,15 @@
  */
 import { memo, type FC } from 'react'
 
-import type { TPublishMode, TArticleCat, TSpace, TTooltipPlacement } from '@/spec'
-import { PUBLISH_MODE } from '@/const/publish'
+import type { TPublishMode, TArticleCat, TSpace, TTooltipPlacement } from '~/spec'
+import { PUBLISH_MODE } from '~/const/publish'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import useViewingThread from '@/hooks/useViewingThread'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useViewingThread from '~/hooks/useViewingThread'
 
-import { POST_CAT_MENU_ITEMS } from '@/const/menu'
+import { POST_CAT_MENU_ITEMS } from '~/const/menu'
 
-import Menu from '@/widgets/Menu'
+import Menu from '~/widgets/Menu'
 
 // import { MORE_MENU } from './constant'
 import PostLayout from './PostLayout'

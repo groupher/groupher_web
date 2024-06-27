@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div<{ visible: boolean }>`
   ${css.row('align-center', 'justify-between')};

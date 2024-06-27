@@ -1,7 +1,7 @@
 import { type FC, memo, type ReactNode } from 'react'
 
-import { Divider } from '@/widgets/Common'
-import Tooltip from '@/widgets/Tooltip'
+import { Divider } from '~/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
 
 import SideMenu from './SideMenu/Mobile'
 

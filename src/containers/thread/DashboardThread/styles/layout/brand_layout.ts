@@ -1,7 +1,7 @@
-import type { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
-import styled, { css, theme } from '@/css'
-import BrandSVG from '@/icons/Brand'
+import styled, { css, theme } from '~/css'
+import BrandSVG from '~/icons/Brand'
 
 import { BaseSection, BlockBase } from '.'
 

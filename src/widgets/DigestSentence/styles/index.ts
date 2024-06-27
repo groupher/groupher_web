@@ -1,8 +1,8 @@
-import type { TTestable, TSpace, TSizeSM } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TTestable, TSpace, TSizeSM } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import Img from '@/Img'
-import ThunderSVG from '@/icons/Thunder'
+import Img from '~/Img'
+import ThunderSVG from '~/icons/Thunder'
 
 import { getFontSize } from './metric'
 

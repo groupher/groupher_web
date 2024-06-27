@@ -1,13 +1,13 @@
 import Link from 'next/link'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Img from '@/Img'
+import Img from '~/Img'
 
-import PulseSVG from '@/icons/Pulse'
-import PublishSVG from '@/icons/EditPen'
+import PulseSVG from '~/icons/Pulse'
+import PublishSVG from '~/icons/EditPen'
 
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 
 export const ArticleWrapper = styled.div``
 

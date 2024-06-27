@@ -6,8 +6,8 @@
 import type { FC, ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import useThemeData from '@/hooks/useThemeData'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useThemeData from '~/hooks/useThemeData'
 
 import ThirdPartyOverWrite from './ThirdPartyOverWrite'
 import ScrollBarStyle from './ScrollBarStyle'

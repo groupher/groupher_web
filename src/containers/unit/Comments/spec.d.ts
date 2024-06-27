@@ -1,4 +1,4 @@
-import type { TAccount, TComment, TID, TSubmitState } from '@/spec'
+import type { TAccount, TComment, TID, TSubmitState } from '~/spec'
 
 export type TMode = 'REPLIES' | 'TIMELINE'
 export type TAPIMode = 'article' | 'user_published'

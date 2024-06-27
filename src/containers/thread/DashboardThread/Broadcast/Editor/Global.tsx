@@ -1,5 +1,5 @@
-import ColorSelector from '@/widgets/ColorSelector'
-import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
+import ColorSelector from '~/widgets/ColorSelector'
+import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
 
 import SectionLabel from '../../SectionLabel'
 import GlobalTemplate from '../Templates/Global'

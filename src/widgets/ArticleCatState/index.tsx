@@ -6,8 +6,8 @@
 
 import { type FC, memo } from 'react'
 
-import type { TSpace, TArticleCat, TArticleState } from '@/spec'
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/const/gtd'
+import type { TSpace, TArticleCat, TArticleState } from '~/spec'
+import { ARTICLE_CAT, ARTICLE_STATE } from '~/const/gtd'
 
 import State from './State'
 import Label from './Label'

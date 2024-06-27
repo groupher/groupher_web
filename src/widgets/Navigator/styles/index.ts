@@ -1,8 +1,8 @@
-import type { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
-import styled, { css, theme, animate } from '@/css'
-import SiteLogo from '@/icons/CPLogo' // TODO:
-// import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
+import styled, { css, theme, animate } from '~/css'
+import SiteLogo from '~/icons/CPLogo' // TODO:
+// import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
 
 export const Breadcrumbs = styled.div`
   ${css.row('align-center')};

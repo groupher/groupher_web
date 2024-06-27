@@ -1,8 +1,8 @@
 import { memo } from 'react'
 import { reject } from 'ramda'
 
-import { nilOrEmpty } from '@/validator'
-import Button from '@/widgets/Buttons/Button'
+import { nilOrEmpty } from '~/validator'
+import Button from '~/widgets/Buttons/Button'
 
 import useTags from '../logic/useTags'
 import { Wrapper, CatsWrapper, Hint } from '../styles/tags/group_selector'

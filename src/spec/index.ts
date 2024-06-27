@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
-import type { TRootStore as RootStoreType } from '@/stores/RootStore'
+import type { TRootStore as RootStoreType } from '~/stores/RootStore'
 
 import type { TThemeName } from './theme'
 import type { TArticle } from './article'

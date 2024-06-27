@@ -1,12 +1,12 @@
 'use client'
 
-import useMetric from '@/hooks/useMetric'
+import useMetric from '~/hooks/useMetric'
 
-import CommunityDigest from '@/widgets/CommunityDigest'
+import CommunityDigest from '~/widgets/CommunityDigest'
 
 import { Wrapper, InnerWrapper, ContentWrapper, FrameWrapper, MainWrapper } from './styles'
 
-import SideMenu from '@/containers/thread/DashboardThread/SideMenu'
+import SideMenu from '~/containers/thread/DashboardThread/SideMenu'
 
 const Layout = ({ children }) => {
   const metric = useMetric()

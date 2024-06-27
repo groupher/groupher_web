@@ -1,6 +1,6 @@
 import { type FC, memo, useState, Fragment } from 'react'
 
-import type { TCommentsState } from '@/spec'
+import type { TCommentsState } from '~/spec'
 
 import StateBar from './StateBar'
 import PublishBar from './PublishBar'

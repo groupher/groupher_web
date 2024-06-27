@@ -1,5 +1,5 @@
 import { gql } from 'urql'
-import { P } from '@/schemas'
+import { P } from '~/schemas'
 
 const onlineStatus = gql`
   query ($freshkey: String) {

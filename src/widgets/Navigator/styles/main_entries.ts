@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
-import type { TTestable, TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
-import DotDividerBase from '@/widgets/DotDivider'
+import type { TTestable, TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
+import DotDividerBase from '~/widgets/DotDivider'
 
 export const Wrapper = styled.div`
   ${css.row('align-both')};

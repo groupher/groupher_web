@@ -1,14 +1,14 @@
 import Link from 'next/link'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ListSVG from '@/icons/List'
+import ListSVG from '~/icons/List'
 
-// import Img from '@/Img'
-// import { LineDivider } from '@/widgets/Common'
-// import DemoSVG from '@/icons/DemoTV'
-// import ArrowSVG from '@/icons/ArrowSimple'
-// import GithubSVT from '@/icons/social/Github'
+// import Img from '~/Img'
+// import { LineDivider } from '~/widgets/Common'
+// import DemoSVG from '~/icons/DemoTV'
+// import ArrowSVG from '~/icons/ArrowSimple'
+// import GithubSVT from '~/icons/social/Github'
 
 export const ListIcon = styled(ListSVG)`
   fill: ${theme('article.digest')};

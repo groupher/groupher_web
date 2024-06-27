@@ -1,4 +1,4 @@
-import { callTagCreateEditor } from '@/signal'
+import { callTagCreateEditor } from '~/signal'
 
 import Portal from '../Portal'
 

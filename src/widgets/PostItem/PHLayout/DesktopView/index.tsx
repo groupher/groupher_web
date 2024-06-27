@@ -1,13 +1,13 @@
 import type { FC } from 'react'
 
-import type { TPost } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/const/layout'
-import useLayout from '@/hooks/useLayout'
+import type { TPost } from '~/spec'
+import { UPVOTE_LAYOUT } from '~/const/layout'
+import useLayout from '~/hooks/useLayout'
 
-import { upvoteArticle, previewArticle } from '@/signal'
-import ArticlePinLabel from '@/widgets/ArticlePinLabel'
-import Upvote from '@/widgets/Upvote'
-import ImgFallback from '@/widgets/ImgFallback'
+import { upvoteArticle, previewArticle } from '~/signal'
+import ArticlePinLabel from '~/widgets/ArticlePinLabel'
+import Upvote from '~/widgets/Upvote'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import ViewingSign from '../../ViewingSign'
 

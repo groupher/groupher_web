@@ -1,8 +1,8 @@
-import type { TTestable, TColorName, TActive } from '@/spec'
+import type { TTestable, TColorName, TActive } from '~/spec'
 
-import ArrowSVG from '@/icons/ArrowSolid'
-import styled, { css, theme, rainbow, rainbowLight } from '@/css'
-import { WithMargin } from '@/widgets/Common'
+import ArrowSVG from '~/icons/ArrowSolid'
+import styled, { css, theme, rainbow, rainbowLight } from '~/css'
+import { WithMargin } from '~/widgets/Common'
 
 type TWrapper = TTestable
 

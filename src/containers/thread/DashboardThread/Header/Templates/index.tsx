@@ -1,6 +1,6 @@
 import { type FC, useState } from 'react'
 
-import { HEADER_LAYOUT } from '@/const/layout'
+import { HEADER_LAYOUT } from '~/const/layout'
 
 import { SETTING_FIELD } from '../../constant'
 import SavingBar from '../../SavingBar'

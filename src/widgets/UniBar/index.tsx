@@ -5,14 +5,14 @@
 
 import { useState, useRef, useCallback } from 'react'
 
-import useOutsideClick from '@/hooks/useOutsideClick'
-import useTrans from '@/hooks/useTrans'
-import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
+import useOutsideClick from '~/hooks/useOutsideClick'
+import useTrans from '~/hooks/useTrans'
+import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
 
-import { scrollToHeader } from '@/dom'
+import { scrollToHeader } from '~/dom'
 
-import ThemeSwitch from '@/widgets/ThemeSwitch'
-import Tooltip from '@/widgets/Tooltip'
+import ThemeSwitch from '~/widgets/ThemeSwitch'
+import Tooltip from '~/widgets/Tooltip'
 
 import I18nPanel from './I18nPanel'
 import MorePanel from './MorePanel'

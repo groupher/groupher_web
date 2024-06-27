@@ -1,5 +1,5 @@
-import type { TTestable, TMetric } from '@/spec'
-import styled, { css } from '@/css'
+import type { TTestable, TMetric } from '~/spec'
+import styled, { css } from '~/css'
 
 type TWrapper = { metric: TMetric } & TTestable
 export const Wrapper = styled.nav.attrs<TWrapper>(({ $testid }) => ({

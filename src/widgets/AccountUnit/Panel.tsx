@@ -1,11 +1,11 @@
 import { type FC, useState } from 'react'
 
-import { signIn } from '@/oauth'
-import { titleCase } from '@/fmt'
+import { signIn } from '~/oauth'
+import { titleCase } from '~/fmt'
 
-import useTrans from '@/hooks/useTrans'
-import Modal from '@/widgets/Modal'
-import { SlientLink } from '@/widgets/Common'
+import useTrans from '~/hooks/useTrans'
+import Modal from '~/widgets/Modal'
+import { SlientLink } from '~/widgets/Common'
 
 import { OAUTH_PROVIDERS } from './constant'
 import Loading, { LoadingMask } from './Loading'

@@ -1,6 +1,6 @@
-import type { TTestable } from '@/spec'
-import { themeSkins } from '@/utils/themes'
-import styled, { css } from '@/css'
+import type { TTestable } from '~/spec'
+import { themeSkins } from '~/utils/themes'
+import styled, { css } from '~/css'
 
 type TThemeName = {
   t: string

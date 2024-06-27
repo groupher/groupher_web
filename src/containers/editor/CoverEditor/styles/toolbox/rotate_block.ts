@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import RotateSVG from '@/icons/Rotate'
+import styled, { css, theme } from '~/css'
+import RotateSVG from '~/icons/Rotate'
 
 import { SettingBlock, SettingTitle } from '.'
 

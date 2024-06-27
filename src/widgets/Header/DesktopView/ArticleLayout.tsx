@@ -6,14 +6,14 @@
 
 import type { FC } from 'react'
 
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 
-import type { TUser } from '@/spec'
-import { authWarn } from '@/signal'
+import type { TUser } from '~/spec'
+import { authWarn } from '~/signal'
 
-import Tooltip from '@/widgets/Tooltip'
-import UserCard from '@/widgets/Cards/UserCard'
-import Navigator from '@/widgets/Navigator'
+import Tooltip from '~/widgets/Tooltip'
+import UserCard from '~/widgets/Cards/UserCard'
+import Navigator from '~/widgets/Navigator'
 
 import type { TProps } from '..'
 import {

@@ -1,9 +1,9 @@
-import type { TSizeSM } from '@/spec'
-import SIZE from '@/const/size'
+import type { TSizeSM } from '~/spec'
+import SIZE from '~/const/size'
 
-import styled, { css, theme } from '@/css'
-import CommentSVG from '@/icons/Comment'
-import { WithMargin } from '@/widgets/Common'
+import styled, { css, theme } from '~/css'
+import CommentSVG from '~/icons/Comment'
+import { WithMargin } from '~/widgets/Common'
 
 type TWrapper = { size: TSizeSM }
 export const Wrapper = styled(WithMargin)<TWrapper>`

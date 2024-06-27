@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 import { Wrapper as WrapperDesktop, Main as MainDesktop } from '../desktop_view'
 

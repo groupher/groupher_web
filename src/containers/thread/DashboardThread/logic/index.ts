@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 import { uniq, reject } from 'ramda'
 
-import type { TEditValue, TFAQSection, TID, TSocialItem, TUser } from '@/spec'
-import { COLOR_NAME } from '@/const/colors'
-import EVENT from '@/const/event'
-import ERR from '@/const/err'
+import type { TEditValue, TFAQSection, TID, TSocialItem, TUser } from '~/spec'
+import { COLOR_NAME } from '~/const/colors'
+import EVENT from '~/const/event'
+import ERR from '~/const/err'
 
-import { updateEditing, toJS } from '@/mobx'
-import asyncSuit from '@/async'
-import { toast, errRescue } from '@/signal'
+import { updateEditing, toJS } from '~/mobx'
+import asyncSuit from '~/async'
+import { toast, errRescue } from '~/signal'
 
 import type { TStore } from '../store'
 import type { TSettingField } from '../spec'

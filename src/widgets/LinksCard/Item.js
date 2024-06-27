@@ -7,7 +7,7 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 
 import { Wrapper, Title, Reaction, Icon, Count } from './styles/item'
 

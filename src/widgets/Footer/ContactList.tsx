@@ -1,7 +1,7 @@
 import { type FC, memo } from 'react'
 
-import { GITHUB, EMAIL_SUPPORT } from '@/config'
-import { joinUS } from '@/signal'
+import { GITHUB, EMAIL_SUPPORT } from '~/config'
+import { joinUS } from '~/signal'
 
 import { Wrapper, Item, Icon } from './styles/contact_list'
 

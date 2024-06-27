@@ -1,8 +1,8 @@
-import type { TAvatarLayout, TTestable } from '@/spec'
-import { AVATAR_LAYOUT } from '@/const/layout'
+import type { TAvatarLayout, TTestable } from '~/spec'
+import { AVATAR_LAYOUT } from '~/const/layout'
 
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

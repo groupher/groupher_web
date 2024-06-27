@@ -1,12 +1,12 @@
-import { ANCHOR } from '@/const/dom'
-import useHeaderLinks from '@/hooks/useHeaderLinks'
-import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
-import useMetric from '@/hooks/useMetric'
+import { ANCHOR } from '~/const/dom'
+import useHeaderLinks from '~/hooks/useHeaderLinks'
+import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
+import useMetric from '~/hooks/useMetric'
 
-import ViewportTracker from '@/widgets/ViewportTracker'
-// import MobileThreadNavi from '@/widgets/MobileThreadNavi'
-import { SpaceGrow } from '@/widgets/Common'
-import AccountUnit from '@/widgets/AccountUnit'
+import ViewportTracker from '~/widgets/ViewportTracker'
+// import MobileThreadNavi from '~/widgets/MobileThreadNavi'
+import { SpaceGrow } from '~/widgets/Common'
+import AccountUnit from '~/widgets/AccountUnit'
 
 import CommunityBrief from './CommunityBrief'
 

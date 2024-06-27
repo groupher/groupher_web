@@ -6,15 +6,15 @@
 
 import type { FC } from 'react'
 
-import type { TSpace } from '@/spec'
-import useAccount from '@/hooks/useAccount'
-import useLayout from '@/hooks/useLayout'
+import type { TSpace } from '~/spec'
+import useAccount from '~/hooks/useAccount'
+import useLayout from '~/hooks/useLayout'
 
-import { ROUTE } from '@/const/route'
-import { signOut } from '@/oauth'
-import { SexyDivider, SpaceGrow, LinkAble } from '@/widgets/Common'
-import Tooltip from '@/widgets/Tooltip'
-import ImgFallback from '@/widgets/ImgFallback'
+import { ROUTE } from '~/const/route'
+import { signOut } from '~/oauth'
+import { SexyDivider, SpaceGrow, LinkAble } from '~/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import {
   Avatar,

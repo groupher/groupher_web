@@ -6,11 +6,11 @@
 
 import { type FC, type ReactNode, memo, useRef, useEffect, useState } from 'react'
 
-import type { TSizeSM, TSpace } from '@/spec'
-import SIZE from '@/const/size'
+import type { TSizeSM, TSpace } from '~/spec'
+import SIZE from '~/const/size'
 
-// import { ICON } from '@/config'
-import { Space } from '@/widgets/Common'
+// import { ICON } from '~/config'
+import { Space } from '~/widgets/Common'
 
 import {
   Wrapper,

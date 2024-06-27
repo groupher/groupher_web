@@ -1,6 +1,6 @@
 import { type FC, type ReactNode, memo } from 'react'
 
-import type { TSizeSML } from '@/spec'
+import type { TSizeSML } from '~/spec'
 import type { TDirection, TScrollDirection } from './spec'
 
 // import HorizontalScroller from './HorizontalScroller'

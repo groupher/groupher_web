@@ -1,14 +1,14 @@
 import { type FC, memo } from 'react'
 import TimeAgo from 'timeago-react'
 
-import { UPVOTE_LAYOUT } from '@/const/layout'
-import SIZE from '@/const/size'
+import { UPVOTE_LAYOUT } from '~/const/layout'
+import SIZE from '~/const/size'
 
-import type { TArticle } from '@/spec'
-import { upvoteArticle } from '@/signal'
-import Upvote from '@/widgets/Upvote'
-import DotDivider from '@/widgets/DotDivider'
-import CommentsCount from '@/widgets/CommentsCount'
+import type { TArticle } from '~/spec'
+import { upvoteArticle } from '~/signal'
+import Upvote from '~/widgets/Upvote'
+import DotDivider from '~/widgets/DotDivider'
+import CommentsCount from '~/widgets/CommentsCount'
 
 import { Wrapper, PublishWrapper, Bottom } from './styles/footer'
 

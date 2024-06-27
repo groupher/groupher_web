@@ -1,6 +1,6 @@
 'use client'
 
-import OauthHinter from '@/widgets/OauthHinter'
+import OauthHinter from '~/widgets/OauthHinter'
 
 const BookDemoPage = () => {
   return (

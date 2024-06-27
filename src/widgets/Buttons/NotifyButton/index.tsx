@@ -6,9 +6,9 @@
 
 import { type FC, memo } from 'react'
 
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import {
   Wrapper,

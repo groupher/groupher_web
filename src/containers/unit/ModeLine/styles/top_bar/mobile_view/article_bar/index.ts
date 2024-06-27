@@ -1,6 +1,6 @@
-import type { TActive } from '@/spec'
-import Img from '@/Img'
-import styled, { css, theme, zIndex } from '@/css'
+import type { TActive } from '~/spec'
+import Img from '~/Img'
+import styled, { css, theme, zIndex } from '~/css'
 
 export const Wrapper = styled.div<TActive>`
   ${css.row('justify-start')};

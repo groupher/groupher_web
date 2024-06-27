@@ -1,9 +1,9 @@
-import { GLOW_OPACITY, GLOW_EFFECTS_KEYS } from '@/const/glow_effect'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import useTheme from '@/hooks/useTheme'
+import { GLOW_OPACITY, GLOW_EFFECTS_KEYS } from '~/const/glow_effect'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useTheme from '~/hooks/useTheme'
 
-import { Br } from '@/widgets/Common'
-import Radio from '@/widgets/Switcher/Radio'
+import { Br } from '~/widgets/Common'
+import Radio from '~/widgets/Switcher/Radio'
 
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'

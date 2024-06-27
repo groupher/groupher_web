@@ -1,12 +1,12 @@
 import type { FC } from 'react'
 
-import { mockUsers } from '@/mock'
-import { ARTICLE_CAT } from '@/const/gtd'
-import { COLOR_NAME } from '@/const/colors'
+import { mockUsers } from '~/mock'
+import { ARTICLE_CAT } from '~/const/gtd'
+import { COLOR_NAME } from '~/const/colors'
 
-import { SpaceGrow } from '@/widgets/Common'
-import ArticleCatState from '@/widgets/ArticleCatState'
-import TagNode from '@/widgets/TagNode'
+import { SpaceGrow } from '~/widgets/Common'
+import ArticleCatState from '~/widgets/ArticleCatState'
+import TagNode from '~/widgets/TagNode'
 
 import PostItem from './PostItem'
 import CommentItem from './CommentItem'

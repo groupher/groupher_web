@@ -6,10 +6,10 @@
 
 import type { FC } from 'react'
 
-import useAccount from '@/hooks/useAccount'
-import { Br } from '@/widgets/Common'
-import ArrowLinker from '@/widgets/ArrowLinker'
-import Checker from '@/widgets/Checker'
+import useAccount from '~/hooks/useAccount'
+import { Br } from '~/widgets/Common'
+import ArrowLinker from '~/widgets/ArrowLinker'
+import Checker from '~/widgets/Checker'
 
 import type { TCommunityType, TValidState } from '../../spec'
 

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { keys, clone, forEach } from 'ramda'
 
-import { WALLPAPER_TYPE, GRADIENT_WALLPAPER, PATTERN_WALLPAPER } from '@/const/wallpaper'
+import { WALLPAPER_TYPE, GRADIENT_WALLPAPER, PATTERN_WALLPAPER } from '~/const/wallpaper'
 
 import type {
   TWallpaperFmt,
@@ -9,10 +9,10 @@ import type {
   TCustomWallpaper,
   TWallpaperPic,
   TWallpaperGradient,
-} from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
+} from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
 
-import { parseWallpaper } from '@/wallpaper'
+import { parseWallpaper } from '~/wallpaper'
 
 type TRet = { wallpaper: string; hasShadow: boolean } & TWallpaperFmt
 

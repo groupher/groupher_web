@@ -1,11 +1,11 @@
 import { type FC, memo } from 'react'
 
-import type { TPostLayout } from '@/spec'
+import type { TPostLayout } from '~/spec'
 
-import { POST_LAYOUT } from '@/const/layout'
+import { POST_LAYOUT } from '~/const/layout'
 
-import { Row, Br, Space, SpaceGrow } from '@/widgets/Common'
-import CheckLabel from '@/widgets/CheckLabel'
+import { Row, Br, Space, SpaceGrow } from '~/widgets/Common'
+import CheckLabel from '~/widgets/CheckLabel'
 
 import {
   Wrapper,

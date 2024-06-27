@@ -7,11 +7,11 @@
 import { type FC, useState, useRef, useEffect } from 'react'
 import { hideAll } from 'tippy.js'
 
-import { zIndex } from '@/css'
-import { isString } from '@/validator'
-import { isDescendant, isWechatBrower } from '@/dom'
+import { zIndex } from '~/css'
+import { isString } from '~/validator'
+import { isDescendant, isWechatBrower } from '~/dom'
 
-import useOutsideClick from '@/hooks/useOutsideClick'
+import useOutsideClick from '~/hooks/useOutsideClick'
 
 import type { TProps } from '.'
 import { FOOTER_BEHAVIOR } from './constant'

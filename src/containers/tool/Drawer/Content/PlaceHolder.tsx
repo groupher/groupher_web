@@ -1,5 +1,5 @@
 import { type FC, memo } from 'react'
-import { ICON_CMD } from '@/config'
+import { ICON_CMD } from '~/config'
 
 // import { ICON_CMD } from '../../config'
 import { Wrapper, SiteLogo, Desc } from '../styles/content/place_holder'

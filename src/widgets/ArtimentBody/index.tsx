@@ -4,10 +4,10 @@
  */
 import { type FC, memo, useRef, useState, useEffect } from 'react'
 
-import type { TDocument } from '@/spec'
+import type { TDocument } from '~/spec'
 
 import FoldBox from './FoldBox'
-import { Br } from '@/widgets/Common'
+import { Br } from '~/widgets/Common'
 
 import { Wrapper, Body, HTML } from './styles'
 

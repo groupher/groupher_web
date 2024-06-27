@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import type { TThread } from '@/spec'
-import { THREAD } from '@/const/thread'
-import useMetric from '@/hooks/useMetric'
+import type { TThread } from '~/spec'
+import { THREAD } from '~/const/thread'
+import useMetric from '~/hooks/useMetric'
 
 import DiscussTab from './DiscussTab'
 import ChangelogTab from './ChangelogTab'

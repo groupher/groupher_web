@@ -1,12 +1,12 @@
 // logics for header & footer links
 import { find, findIndex, filter, reject } from 'ramda'
 
-import { ONE_LINK_GROUP, MORE_GROUP } from '@/const/dashboard'
-import { DASHBOARD_ROUTE } from '@/const/route'
-import { CHANGE_MODE } from '@/const/mode'
+import { ONE_LINK_GROUP, MORE_GROUP } from '~/const/dashboard'
+import { DASHBOARD_ROUTE } from '~/const/route'
+import { CHANGE_MODE } from '~/const/mode'
 
-import type { TLinkItem } from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
+import type { TLinkItem } from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
 
 import type { TMoveLinkDir } from '../../spec'
 import { EMPTY_LINK_ITEM } from '../../constant'

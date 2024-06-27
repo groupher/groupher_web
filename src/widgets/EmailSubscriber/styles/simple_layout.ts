@@ -1,8 +1,8 @@
-import type { TTestable } from '@/spec'
-import styled, { css } from '@/css'
+import type { TTestable } from '~/spec'
+import styled, { css } from '~/css'
 
-import Img from '@/Img'
-import Input from '@/widgets/Input'
+import Img from '~/Img'
+import Input from '~/widgets/Input'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

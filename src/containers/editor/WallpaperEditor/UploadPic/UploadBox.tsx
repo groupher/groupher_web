@@ -1,7 +1,7 @@
 import { type FC, memo } from 'react'
 
-import SVG from '@/const/svg'
-import MenuButton from '@/widgets/Buttons/MenuButton'
+import SVG from '~/const/svg'
+import MenuButton from '~/widgets/Buttons/MenuButton'
 
 import { Wrapper, Menu, MoreIcon, UploadIcon, Title } from '../styles/upload_pic/upload_box'
 

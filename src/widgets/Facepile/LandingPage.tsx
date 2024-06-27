@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import type { TSpace, TUser } from '@/spec'
+import type { TSpace, TUser } from '~/spec'
 
 import { Wrapper, AvatarsImg } from './styles/landing_page'
 

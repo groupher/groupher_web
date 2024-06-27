@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import type { TCommunity } from '@/spec'
+import type { TCommunity } from '~/spec'
 
 import { Wrapper, Community, Logo, Title } from '../styles/content/demo_community'
 

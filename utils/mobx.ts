@@ -6,8 +6,8 @@ import { has, forEachObjIndexed, keys, isEmpty, includes } from 'ramda'
 import { MobXProviderContext } from 'mobx-react'
 import { toJS as toJSON, runInAction } from 'mobx'
 
-import type { TEditValue } from '@/spec'
-import type { TRootStore } from '@/stores/RootStore'
+import type { TEditValue } from '~/spec'
+import type { TRootStore } from '~/stores/RootStore'
 import { isObject } from './validator'
 
 export type { Instance } from 'mobx-state-tree'

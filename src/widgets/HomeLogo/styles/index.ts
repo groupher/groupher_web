@@ -1,8 +1,8 @@
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
-import Img from '@/Img'
+import Img from '~/Img'
 
 type TProps = {
   $size: number

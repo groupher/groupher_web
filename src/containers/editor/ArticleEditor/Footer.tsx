@@ -1,10 +1,10 @@
 import { type FC, memo } from 'react'
 
-import type { TEditMode, TSubmitState } from '@/spec'
+import type { TEditMode, TSubmitState } from '~/spec'
 
-import SubmitButton from '@/widgets/Buttons/SubmitButton'
-import { SpaceGrow } from '@/widgets/Common'
-import WordsCounter from '@/widgets/WordsCounter'
+import SubmitButton from '~/widgets/Buttons/SubmitButton'
+import { SpaceGrow } from '~/widgets/Common'
+import WordsCounter from '~/widgets/WordsCounter'
 
 import type { TEditData } from './spec'
 import { Wrapper, PublishFooter } from './styles/footer'

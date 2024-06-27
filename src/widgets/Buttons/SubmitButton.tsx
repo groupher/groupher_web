@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import type { TSubmitState } from '@/spec'
+import type { TSubmitState } from '~/spec'
 
 import YesOrNoButtons from './YesOrNoButtons'
 import Button from './Button'

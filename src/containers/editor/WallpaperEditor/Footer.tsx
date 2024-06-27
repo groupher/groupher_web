@@ -1,8 +1,8 @@
-import { WALLPAPER_TYPE } from '@/const/wallpaper'
+import { WALLPAPER_TYPE } from '~/const/wallpaper'
 
-import { SpaceGrow } from '@/widgets/Common'
-import YesOrNoButtons from '@/widgets/Buttons/YesOrNoButtons'
-import Button from '@/widgets/Buttons/Button'
+import { SpaceGrow } from '~/widgets/Common'
+import YesOrNoButtons from '~/widgets/Buttons/YesOrNoButtons'
+import Button from '~/widgets/Buttons/Button'
 
 import useLogic from './useLogic'
 import { Wrapper, InnrWrapper, ForbidImgIcon } from './styles/footer'

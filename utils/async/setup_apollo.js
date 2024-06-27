@@ -7,8 +7,8 @@
 
 // /* import { onError } from 'apollo-link-error' */
 
-// import { GRAPHQL_ENDPOINT } from '@/config'
-// import ERR from '@/const/err'
+// import { GRAPHQL_ENDPOINT } from '~/config'
+// import ERR from '~/const/err'
 
 // import { errRescue } from '../helper'
 // import BStore from '../bstore'

@@ -1,4 +1,4 @@
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
 export const UserCellWrapper = styled.div`
   ${css.row('justify-start', 'align-center')};

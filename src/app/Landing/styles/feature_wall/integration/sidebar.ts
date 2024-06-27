@@ -1,11 +1,11 @@
-import styled, { css, rainbowLight, theme } from '@/css'
+import styled, { css, rainbowLight, theme } from '~/css'
 
-import type { TColor, TSpace } from '@/spec'
-import { WithPosition } from '@/widgets/Common'
+import type { TColor, TSpace } from '~/spec'
+import { WithPosition } from '~/widgets/Common'
 
-import Img from '@/widgets/Img'
-import UpvoteSVG from '@/icons/Upvote'
-import CommentSVG from '@/icons/Comment'
+import Img from '~/widgets/Img'
+import UpvoteSVG from '~/icons/Upvote'
+import CommentSVG from '~/icons/Comment'
 
 export const Wrapper = styled(WithPosition)`
   width: 86px;

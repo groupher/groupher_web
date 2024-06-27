@@ -1,9 +1,9 @@
-import type { TBannerLayout } from '@/spec'
-import { BANNER_LAYOUT } from '@/const/layout'
-import styled, { css, theme } from '@/css'
+import type { TBannerLayout } from '~/spec'
+import { BANNER_LAYOUT } from '~/const/layout'
+import styled, { css, theme } from '~/css'
 
-import ArrowSVG from '@/icons/ArrowSimple'
-import ListSVG from '@/icons/List'
+import ArrowSVG from '~/icons/ArrowSimple'
+import ListSVG from '~/icons/List'
 
 import { MainWrapper } from '..'
 

@@ -1,12 +1,12 @@
 import { reject, filter, findIndex, remove, clone } from 'ramda'
 
-import type { TTag, TThread } from '@/spec'
-import { THREAD } from '@/const/thread'
-import { sortByIndex } from '@/helper'
+import type { TTag, TThread } from '~/spec'
+import { THREAD } from '~/const/thread'
+import { sortByIndex } from '~/helper'
 
-import useSubState from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import { query } from '@/utils/api'
+import useSubState from '~/hooks/useSubStore'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import { query } from '~/utils/api'
 
 import S from '../../schema'
 

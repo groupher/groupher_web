@@ -1,10 +1,10 @@
 import { isEmpty } from 'ramda'
 
-import useAboutInfo from '@/hooks/useAboutInfo'
+import useAboutInfo from '~/hooks/useAboutInfo'
 
-import { Divider } from '@/widgets/Common'
-import Linker from '@/widgets/Linker'
-import SocialList from '@/widgets/SocialList'
+import { Divider } from '~/widgets/Common'
+import Linker from '~/widgets/Linker'
+import SocialList from '~/widgets/SocialList'
 
 import LabelList from './LabelList'
 import MediaReports from './MediaReports'

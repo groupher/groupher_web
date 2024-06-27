@@ -1,5 +1,5 @@
-import type { TCommunity } from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
+import type { TCommunity } from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
 
 const useViewingCommunity = (): TCommunity => {
   const store = useSubStore('viewing')

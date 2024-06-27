@@ -1,12 +1,12 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import type { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
-import Img from '@/Img'
-import MarkdownSVG from '@/icons/Markdown'
-import EmailSVG from '@/icons/social/Email'
-import WeChatSVG from '@/icons/social/WeChat'
-import GithubSVG from '@/icons/social/Github'
+import Img from '~/Img'
+import MarkdownSVG from '~/icons/Markdown'
+import EmailSVG from '~/icons/social/Email'
+import WeChatSVG from '~/icons/social/WeChat'
+import GithubSVG from '~/icons/social/Github'
 
 export const Wrapper = styled.div`
   ${css.row('align-center', 'justify-between')};

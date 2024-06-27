@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import { LineDivider } from '@/widgets/Common'
+import { LineDivider } from '~/widgets/Common'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

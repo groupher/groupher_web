@@ -10,10 +10,10 @@ import { type FC, useState, Fragment, useCallback, memo } from 'react'
 import { Waypoint } from 'react-waypoint'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react'
 
-import SIZE from '@/const/size'
-// import useTheme from '@/hooks/useTheme'
+import SIZE from '~/const/size'
+// import useTheme from '~/hooks/useTheme'
 
-// import ViewportTracker from '@/widgets/ViewportTracker'
+// import ViewportTracker from '~/widgets/ViewportTracker'
 
 import type { TProps as TScrollProps } from '.'
 

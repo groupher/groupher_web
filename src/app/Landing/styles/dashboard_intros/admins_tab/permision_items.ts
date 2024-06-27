@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import type { TActive } from '@/spec'
-import CheckSVG from '@/icons/CheckBold'
+import type { TActive } from '~/spec'
+import CheckSVG from '~/icons/CheckBold'
 
 export const Wrapper = styled.div`
   ${css.rowWrap()};

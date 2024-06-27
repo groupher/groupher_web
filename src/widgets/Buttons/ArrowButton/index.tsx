@@ -6,9 +6,9 @@
 
 import { type FC, type ReactNode, useRef, useEffect, useState } from 'react'
 
-import type { TColorName, TSpace } from '@/spec'
+import type { TColorName, TSpace } from '~/spec'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import Arrow from './Arrow'
 import { Wrapper, Text } from '../styles/arrow_button'

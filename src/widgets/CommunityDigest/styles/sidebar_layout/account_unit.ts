@@ -1,10 +1,10 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Button from '@/widgets/Buttons/Button'
-import Img from '@/Img'
-import NotifySVG from '@/icons/Notify'
-import DashboardSVG from '@/icons/Dashboard'
-import SearchSVG from '@/icons/HeaderSearch'
+import Button from '~/widgets/Buttons/Button'
+import Img from '~/Img'
+import NotifySVG from '~/icons/Notify'
+import DashboardSVG from '~/icons/Dashboard'
+import SearchSVG from '~/icons/HeaderSearch'
 
 export const Wrapper = styled.div`
   ${css.row('align-both')};

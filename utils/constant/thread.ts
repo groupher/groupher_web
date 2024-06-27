@@ -1,4 +1,4 @@
-import type { TArticleThread, TThread } from '@/spec'
+import type { TArticleThread, TThread } from '~/spec'
 
 export const CARD_THREAD = {}
 

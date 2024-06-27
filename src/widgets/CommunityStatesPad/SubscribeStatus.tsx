@@ -1,9 +1,9 @@
 import { type FC, memo } from 'react'
 
-import { prettyNum } from '@/fmt'
+import { prettyNum } from '~/fmt'
 
-import AnimatedCount from '@/widgets/AnimatedCount'
-import Tooltip from '@/widgets/Tooltip'
+import AnimatedCount from '~/widgets/AnimatedCount'
+import Tooltip from '~/widgets/Tooltip'
 
 import {
   Wrapper,

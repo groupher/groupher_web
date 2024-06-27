@@ -2,15 +2,15 @@ import { useState, useCallback } from 'react'
 
 import { find, reject, uniq, keys, forEach } from 'ramda'
 
-import type { TUser } from '@/spec'
-import { query, mutate } from '@/utils/api'
+import type { TUser } from '~/spec'
+import { query, mutate } from '~/utils/api'
 
-import EVENT from '@/const/event'
-import { send, closeDrawer } from '@/signal'
+import EVENT from '~/const/event'
+import { send, closeDrawer } from '~/signal'
 
-import useSubStore from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useAccount from '@/hooks/useAccount'
+import useSubStore from '~/hooks/useSubStore'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useAccount from '~/hooks/useAccount'
 
 import S from './schema'
 

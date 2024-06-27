@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'

@@ -6,9 +6,9 @@
 
 import { type FC, memo } from 'react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
-import { DesktopOnly, MobileOnly } from '@/widgets/Common'
+import { DesktopOnly, MobileOnly } from '~/widgets/Common'
 
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'

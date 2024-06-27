@@ -7,8 +7,8 @@
 import { type FC, memo, useCallback, useEffect, useState } from 'react'
 import { find, includes, without, reject, isEmpty, forEach } from 'ramda'
 
-import type { TCityOption, TSpace } from '@/spec'
-import { CITY_OPTIONS, HOME_CITY_OPTIONS, CITY_OPTION_VALUES } from '@/const/city'
+import type { TCityOption, TSpace } from '~/spec'
+import { CITY_OPTIONS, HOME_CITY_OPTIONS, CITY_OPTION_VALUES } from '~/const/city'
 
 import { Wrapper, Box, MoreBtn, Flag, InputLabel, Inputer } from './styles'
 

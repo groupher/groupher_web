@@ -1,10 +1,10 @@
 import type { FC } from 'react'
 
-import { closeDrawer } from '@/signal'
+import { closeDrawer } from '~/signal'
 
-import Share from '@/widgets/Share'
-import { SpaceGrow } from '@/widgets/Common'
-import ArticleSettingMenu from '@/widgets/ArticleSettingMenu'
+import Share from '~/widgets/Share'
+import { SpaceGrow } from '~/widgets/Common'
+import ArticleSettingMenu from '~/widgets/ArticleSettingMenu'
 
 import { Wrapper, BackButton, ArrowIcon, BackText, ReportIcon } from '../styles/drawer_header'
 

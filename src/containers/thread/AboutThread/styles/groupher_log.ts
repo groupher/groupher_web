@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import UpvoteSVG from '@/icons/Upvote'
+import styled, { css, theme } from '~/css'
+import UpvoteSVG from '~/icons/Upvote'
 
 export const Wrapper = styled.div`
   ${css.size(60)};

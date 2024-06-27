@@ -7,15 +7,15 @@
 import { type FC, memo } from 'react'
 import dynamic from 'next/dynamic'
 
-// import Pagi from '@/widgets/Pagi'
+// import Pagi from '~/widgets/Pagi'
 
-import EVENT from '@/const/event'
+import EVENT from '~/const/event'
 
-import { send } from '@/signal'
+import { send } from '~/signal'
 
 import PostList from './PostList'
 
-export const Pagi = dynamic(() => import('@/widgets/Pagi'), {
+export const Pagi = dynamic(() => import('~/widgets/Pagi'), {
   ssr: false,
 })
 

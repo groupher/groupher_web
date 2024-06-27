@@ -6,8 +6,8 @@
 
 import { type FC, useCallback, memo } from 'react'
 
-import type { TTabItem } from '@/spec'
-import { isString } from '@/validator'
+import type { TTabItem } from '~/spec'
+import { isString } from '~/validator'
 
 import { Wrapper, TabItem } from '../styles/tabs/drawer_view'
 

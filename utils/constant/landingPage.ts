@@ -1,4 +1,4 @@
-import type { TArticle } from '@/spec'
+import type { TArticle } from '~/spec'
 
 export const FAQ = [
   {

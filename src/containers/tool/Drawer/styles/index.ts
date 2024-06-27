@@ -1,6 +1,6 @@
-import styled, { css, theme, zIndex } from '@/css'
-import type { TActive } from '@/spec'
-import { pixelAdd } from '@/dom'
+import styled, { css, theme, zIndex } from '~/css'
+import type { TActive } from '~/spec'
+import { pixelAdd } from '~/dom'
 
 import type { TDrawer, TSwipe } from '../spec'
 import { NARROW_HEIGHT_OFFSET } from '../constant'

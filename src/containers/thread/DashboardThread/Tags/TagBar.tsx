@@ -1,10 +1,10 @@
 import type { FC } from 'react'
 
-import type { TColorName, TTag } from '@/spec'
+import type { TColorName, TTag } from '~/spec'
 
-import TagNode from '@/widgets/TagNode'
-import { SpaceGrow } from '@/widgets/Common'
-import ColorSelector from '@/widgets/ColorSelector'
+import TagNode from '~/widgets/TagNode'
+import { SpaceGrow } from '~/widgets/Common'
+import ColorSelector from '~/widgets/ColorSelector'
 
 import { SETTING_FIELD } from '../constant'
 

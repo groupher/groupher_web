@@ -6,8 +6,8 @@
 
 import type { FC } from 'react'
 
-import { ICON } from '@/config'
-import Navigator from '@/widgets/Navigator'
+import { ICON } from '~/config'
+import Navigator from '~/widgets/Navigator'
 
 import type { TProps } from '..'
 import {

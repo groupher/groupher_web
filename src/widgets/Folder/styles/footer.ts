@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 import { Wrapper as FolderWrapper } from '.'
 
 export const Wrapper = styled.div`

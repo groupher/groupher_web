@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
-import { theme } from '@/css'
+import { theme } from '~/css'
 
 const GlobalTableStyle = createGlobalStyle`
   .rs-table-bordered {

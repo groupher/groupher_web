@@ -2,10 +2,10 @@ import type { FC } from 'react'
 import { keys } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-import type { TLinkItem } from '@/spec'
-import { sortByIndex, groupByKey } from '@/helper'
+import type { TLinkItem } from '~/spec'
+import { sortByIndex, groupByKey } from '~/helper'
 
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 
 import LinkEditor from '../LinkEditor'
 

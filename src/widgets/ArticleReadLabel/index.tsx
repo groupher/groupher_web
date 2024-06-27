@@ -5,8 +5,8 @@
 import type { FC } from 'react'
 import dynamic from 'next/dynamic'
 
-import type { TSpace } from '@/spec'
-import useAccount from '@/hooks/useAccount'
+import type { TSpace } from '~/spec'
+import useAccount from '~/hooks/useAccount'
 
 export const RealLabel = dynamic(() => import('./RealLabel'), {
   ssr: false,

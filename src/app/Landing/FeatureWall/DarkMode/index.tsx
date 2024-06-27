@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import { COLOR_NAME } from '@/const/colors'
-import useHover from '@/hooks/useHover'
-import useTheme from '@/hooks/useTheme'
+import { COLOR_NAME } from '~/const/colors'
+import useHover from '~/hooks/useHover'
+import useTheme from '~/hooks/useTheme'
 
 import Panel from './Panel'
 

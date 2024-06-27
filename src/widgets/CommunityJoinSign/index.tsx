@@ -4,7 +4,7 @@
 
 import { type FC, memo } from 'react'
 
-import FollowButton from '@/widgets/Buttons/FollowButton'
+import FollowButton from '~/widgets/Buttons/FollowButton'
 
 import { Wrapper } from './styles'
 

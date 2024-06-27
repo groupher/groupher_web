@@ -1,6 +1,6 @@
 'use client'
 
-import CommunityEditor from '@/containers/editor/CommunityEditor'
+import CommunityEditor from '~/containers/editor/CommunityEditor'
 
 const ApplyCommunity = () => {
   return (

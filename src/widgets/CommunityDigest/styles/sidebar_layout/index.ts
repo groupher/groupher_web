@@ -1,7 +1,7 @@
-import type { TMetric } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TMetric } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import { SexyDivider } from '@/widgets/Common'
+import { SexyDivider } from '~/widgets/Common'
 
 import { BaseBanner } from '..'
 

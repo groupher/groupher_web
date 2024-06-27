@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import { COLOR_NAME } from '@/const/colors'
-import { SpaceGrow, DesktopOnly } from '@/widgets/Common'
+import { COLOR_NAME } from '~/const/colors'
+import { SpaceGrow, DesktopOnly } from '~/widgets/Common'
 
 import FeatItem from '../FeatItem'
 import MoreLink from '../MoreLink'

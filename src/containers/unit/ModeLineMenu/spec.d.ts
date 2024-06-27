@@ -1,4 +1,4 @@
-import type { TCommunity, TThread, TArticle } from '@/spec'
+import type { TCommunity, TThread, TArticle } from '~/spec'
 
 export type TCurActive = {
   community: TCommunity

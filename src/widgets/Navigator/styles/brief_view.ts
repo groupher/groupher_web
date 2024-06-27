@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
-import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
+import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
   ${css.row()};

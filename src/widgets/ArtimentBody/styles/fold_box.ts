@@ -1,5 +1,5 @@
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
 type TWrapper = { fold: boolean; mode: 'article' | 'comment' }
 export const Wrapper = styled.div<TWrapper>`

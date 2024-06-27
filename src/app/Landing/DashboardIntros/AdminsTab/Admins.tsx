@@ -1,8 +1,8 @@
 import { type FC, useEffect } from 'react'
 
-import { mockUsers } from '@/mock'
+import { mockUsers } from '~/mock'
 
-import useHover from '@/hooks/useHover'
+import useHover from '~/hooks/useHover'
 
 import { ACTIVE_ITMES } from './constant'
 

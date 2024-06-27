@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import { DesktopOnly, MobileOnly } from '@/widgets/Common'
+import { DesktopOnly, MobileOnly } from '~/widgets/Common'
 import { Wrapper, Block, MobileBlock } from './styles'
 
 type TProps = {

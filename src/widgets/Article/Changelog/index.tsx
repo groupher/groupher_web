@@ -1,10 +1,10 @@
 import { type FC, useState } from 'react'
 
-import useViewingArticle from '@/hooks/useViewingArticle'
-import useMetric from '@/hooks/useMetric'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import useMetric from '~/hooks/useMetric'
 
-import Header from '@/widgets/CommunityDigest/HeaderLayout'
-import ViewportTracker from '@/widgets/ViewportTracker'
+import Header from '~/widgets/CommunityDigest/HeaderLayout'
+import ViewportTracker from '~/widgets/ViewportTracker'
 
 import Digest from './Digest'
 import Content from './Content'

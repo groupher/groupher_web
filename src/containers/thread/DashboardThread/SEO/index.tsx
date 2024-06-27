@@ -1,10 +1,10 @@
 import { useRouter } from 'next/navigation'
 
-import { DASHBOARD_SEO_ROUTE } from '@/const/route'
-import VIEW from '@/const/view'
+import { DASHBOARD_SEO_ROUTE } from '~/const/route'
+import VIEW from '~/const/view'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import Tabs from '@/widgets/Switcher/Tabs'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import { SEO_TABS, SETTING_FIELD } from '../constant'
 

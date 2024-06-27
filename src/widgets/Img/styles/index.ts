@@ -1,4 +1,4 @@
-import styled from '@/css'
+import styled from '~/css'
 
 export const Image = styled.img<{ $loaded: boolean }>`
   position: ${({ $loaded }) => ($loaded ? 'relative' : 'absolute')};

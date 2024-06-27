@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 import {
   Wrapper,
   Title,

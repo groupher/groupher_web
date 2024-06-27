@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 // import { } from 'ramda'
 
-import type { TThread } from '@/spec'
+import type { TThread } from '~/spec'
 
-import EVENT from '@/const/event'
-import TYPE from '@/const/type'
+import EVENT from '~/const/event'
+import TYPE from '~/const/type'
 
-import asyncSuit from '@/async'
-import { plural } from '@/fmt'
-import { send } from '@/signal'
+import asyncSuit from '~/async'
+import { plural } from '~/fmt'
+import { send } from '~/signal'
 
 import type { TStore } from './store'
 // import S from './service'

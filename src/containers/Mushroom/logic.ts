@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect, Children, isValidElement, cloneElement } from 'react'
 
-import { APP_VERSION } from '@/config'
+import { APP_VERSION } from '~/config'
 import type {
   TMetric,
   TScrollDirection,
@@ -8,18 +8,18 @@ import type {
   TArticle,
   TResState,
   TPagedArticlesParams,
-} from '@/spec'
-import METRIC from '@/const/metric'
-import EVENT from '@/const/event'
-import TYPE from '@/const/type'
-import ERR from '@/const/err'
+} from '~/spec'
+import METRIC from '~/const/metric'
+import EVENT from '~/const/event'
+import TYPE from '~/const/type'
+import ERR from '~/const/err'
 
-import { errRescue } from '@/signal'
-import { Global } from '@/helper'
+import { errRescue } from '~/signal'
+import { Global } from '~/helper'
 
-import { matchArticleUpvotes } from '@/utils/macros'
-import { scrollToTop } from '@/dom'
-import asyncSuit from '@/async'
+import { matchArticleUpvotes } from '~/utils/macros'
+import { scrollToTop } from '~/dom'
+import asyncSuit from '~/async'
 
 import S from './schema'
 import type { TStore } from './store'

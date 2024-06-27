@@ -1,4 +1,4 @@
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import { Wrapper, Item } from './styles/outline'
 

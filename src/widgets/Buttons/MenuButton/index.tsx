@@ -1,8 +1,8 @@
 import { type FC, type ReactNode, memo } from 'react'
 
-import type { TTooltipPlacement, TMenuOption } from '@/spec'
+import type { TTooltipPlacement, TMenuOption } from '~/spec'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import Menu from './Menu'
 

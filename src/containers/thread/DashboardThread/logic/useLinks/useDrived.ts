@@ -1,10 +1,10 @@
 import { useCallback } from 'react'
 
-import type { TCommunityThread } from '@/spec'
-import { publicThreads } from '@/helper'
+import type { TCommunityThread } from '~/spec'
+import { publicThreads } from '~/helper'
 
-import useSubStore from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useSubStore from '~/hooks/useSubStore'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
 import useHelper from '../useHelper'
 

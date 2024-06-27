@@ -16,8 +16,8 @@ import type {
   TArticleCat,
   TArticleState,
   TArticleOrder,
-} from '@/spec'
-import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
+} from '~/spec'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
 
 const MushroomStore = T.model('MushroomStore', {
   online: T.opt(T.bool, true),

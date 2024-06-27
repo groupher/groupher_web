@@ -1,6 +1,6 @@
-import type { TTag } from '@/spec'
+import type { TTag } from '~/spec'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 export default (): TTag => {
   const store = useSubStore('viewing')

@@ -9,8 +9,8 @@ import type {
   TPostLayout,
   TTagLayout,
   TKanbanCardLayout,
-} from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
+} from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   avatarLayout: TAvatarLayout

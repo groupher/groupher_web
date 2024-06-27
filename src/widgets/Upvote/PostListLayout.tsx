@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import AnimatedCount from '@/widgets/AnimatedCount'
+import AnimatedCount from '~/widgets/AnimatedCount'
 
 import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'

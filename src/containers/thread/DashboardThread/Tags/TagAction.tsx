@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import { callTagEditEditor } from '@/signal'
-import { Space } from '@/widgets/Common'
-import Tooltip from '@/widgets/Tooltip'
+import { callTagEditEditor } from '~/signal'
+import { Space } from '~/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
 
 import ActionMenu from './ActionMenu'
 import useTags from '../logic/useTags'

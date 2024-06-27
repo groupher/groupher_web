@@ -12,9 +12,9 @@ import emojiPlugin from 'remarkable-emoji'
 import mentionsPlugin from 'remarkable-mentions'
 import Prism from 'mastani-codehighlight'
 
-import { MENTION_USER_ADDR } from '@/config'
+import { MENTION_USER_ADDR } from '~/config'
 
-import MarkDownStyle from '@/widgets/ThemePalette/MarkDownStyle'
+import MarkDownStyle from '~/widgets/ThemePalette/MarkDownStyle'
 import { PreviewerContainer } from './styles'
 
 // const md = new Remarkable()

@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 
-import { mockUsers } from '@/mock'
+import { mockUsers } from '~/mock'
 
-import { SpaceGrow } from '@/widgets/Common'
-import Facepile from '@/widgets/Facepile/LandingPage'
+import { SpaceGrow } from '~/widgets/Common'
+import Facepile from '~/widgets/Facepile/LandingPage'
 
 import {
   Wrapper,

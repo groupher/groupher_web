@@ -6,10 +6,10 @@
 
 import { type FC, memo } from 'react'
 
-import type { TSizeSML } from '@/spec'
+import type { TSizeSML } from '~/spec'
 
-import { ICON_CMD } from '@/config'
-import SIZE from '@/const/size'
+import { ICON_CMD } from '~/config'
+import SIZE from '~/const/size'
 
 import { Wrapper, Icon, Title } from './styles'
 

@@ -1,12 +1,12 @@
 import { type FC, memo } from 'react'
 
-import type { TUser } from '@/spec'
-import { ICON } from '@/config'
+import type { TUser } from '~/spec'
+import { ICON } from '~/config'
 
-import CustomScroller from '@/widgets/CustomScroller'
-import { SpaceGrow } from '@/widgets/Common'
-import Tooltip from '@/widgets/Tooltip'
-import Checker from '@/widgets/Checker'
+import CustomScroller from '~/widgets/CustomScroller'
+import { SpaceGrow } from '~/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
+import Checker from '~/widgets/Checker'
 
 import {
   Wrapper,

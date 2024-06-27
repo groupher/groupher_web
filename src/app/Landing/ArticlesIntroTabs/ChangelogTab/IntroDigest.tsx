@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { DesktopOnly } from '@/widgets/Common'
+import { DesktopOnly } from '~/widgets/Common'
 
 import IntroItems from './IntroItems'
 import {

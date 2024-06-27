@@ -1,8 +1,8 @@
 import { type FC, useState, useEffect } from 'react'
 import { useMutation } from 'urql'
 
-import useViewingArticle from '@/hooks/useViewingArticle'
-import { toast, updateViewingArticle } from '@/signal'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import { toast, updateViewingArticle } from '~/signal'
 
 import S from '../schema'
 import useTouched from '../useTouched'

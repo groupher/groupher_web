@@ -4,11 +4,11 @@
 
 import { type FC, memo } from 'react'
 
-import SIZE from '@/const/size'
-import { THREAD } from '@/const/thread'
-import { ANCHOR } from '@/const/dom'
+import SIZE from '~/const/size'
+import { THREAD } from '~/const/thread'
+import { ANCHOR } from '~/const/dom'
 
-import { sortByIndex } from '@/helper'
+import { sortByIndex } from '~/helper'
 
 import type { TProps } from '..'
 import NormalView from './NormalView'

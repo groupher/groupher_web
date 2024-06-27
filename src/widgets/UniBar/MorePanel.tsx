@@ -1,11 +1,11 @@
-import useTrans from '@/hooks/useTrans'
-import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useTrans from '~/hooks/useTrans'
+import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import { DASHBOARD_ROUTE } from '@/const/route'
+import { DASHBOARD_ROUTE } from '~/const/route'
 
-import HomeLogo from '@/widgets/HomeLogo'
-import { SpaceGrow, SexyDivider, LinkAble } from '@/widgets/Common'
+import HomeLogo from '~/widgets/HomeLogo'
+import { SpaceGrow, SexyDivider, LinkAble } from '~/widgets/Common'
 
 import { Wrapper, MenuBar, Icon } from './styles/more_panel'
 

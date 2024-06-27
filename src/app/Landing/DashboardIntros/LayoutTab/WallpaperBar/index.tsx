@@ -1,13 +1,13 @@
 import { useCallback } from 'react'
 import { keys, includes } from 'ramda'
 
-import useFullWallpaper from '@/hooks/useFullWallpaper'
-import useGlowLight from '@/hooks/useGlowLight'
+import useFullWallpaper from '~/hooks/useFullWallpaper'
+import useGlowLight from '~/hooks/useGlowLight'
 
-import { parseWallpaper } from '@/wallpaper'
-import { callWallpaperEditor } from '@/signal'
-import { GRADIENT_WALLPAPER_NAME } from '@/const/wallpaper'
-import { GLOW_EFFECT_NAME } from '@/const/glow_effect'
+import { parseWallpaper } from '~/wallpaper'
+import { callWallpaperEditor } from '~/signal'
+import { GRADIENT_WALLPAPER_NAME } from '~/const/wallpaper'
+import { GLOW_EFFECT_NAME } from '~/const/glow_effect'
 
 import {
   Wrapper,

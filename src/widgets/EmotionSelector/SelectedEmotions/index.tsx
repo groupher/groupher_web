@@ -4,7 +4,7 @@
 
 import { type FC, memo, Fragment } from 'react'
 
-import type { TEmotion, TEmotionType } from '@/spec'
+import type { TEmotion, TEmotionType } from '~/spec'
 
 import { getEmotionName } from '../helper'
 import EmotionUnit from './EmotionUnit'

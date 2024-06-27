@@ -1,9 +1,9 @@
-import { memo, FC } from 'react'
+import { memo, type FC } from 'react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
-import TagsList from '@/widgets/TagsList'
-import ArticleCatState from '@/widgets/ArticleCatState'
+import TagsList from '~/widgets/TagsList'
+import ArticleCatState from '~/widgets/ArticleCatState'
 
 import { Wrapper } from '../../styles/minimal_layout/mobile_view/footer'
 

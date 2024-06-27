@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import { THREAD } from '@/const/thread'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import { THREAD } from '~/const/thread'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import {
   DiscussIcon,

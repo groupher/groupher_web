@@ -3,8 +3,8 @@ import { proxy } from 'valtio'
 
 import type { TRootStore } from './spec'
 
-import THEME from '@/const/theme'
-import { LOCALE } from '@/const/i18n'
+import THEME from '~/const/theme'
+import { LOCALE } from '~/const/i18n'
 
 import setupLocale from './locale'
 import setupTheme from './theme'

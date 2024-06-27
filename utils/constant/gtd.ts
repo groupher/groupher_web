@@ -1,4 +1,4 @@
-import type { TArticleCat, TArticleState, TArticleOrder, TArticleCatMode } from '@/spec'
+import type { TArticleCat, TArticleState, TArticleOrder, TArticleCatMode } from '~/spec'
 
 export const ARTICLE_CAT_REJECT = {
   REJECT: 'REJECT', // 关闭

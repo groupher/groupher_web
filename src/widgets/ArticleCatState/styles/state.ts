@@ -1,13 +1,13 @@
-import styled, { css, rainbowLight, rainbow, theme } from '@/css'
+import styled, { css, rainbowLight, rainbow, theme } from '~/css'
 
-import type { TColorName } from '@/spec'
+import type { TColorName } from '~/spec'
 
-import GtdTodoSVG from '@/icons/GtdTodo'
-import GtdWipSVG from '@/icons/GtdWip'
-// import GtdDoneSVG from '@/icons/GtdDone'
-import GtdDoneSVG from '@/icons/CheckBold'
-import ResolveSVG from '@/icons/Hook'
-import RejectSVG from '@/icons/Reject'
+import GtdTodoSVG from '~/icons/GtdTodo'
+import GtdWipSVG from '~/icons/GtdWip'
+// import GtdDoneSVG from '~/icons/GtdDone'
+import GtdDoneSVG from '~/icons/CheckBold'
+import ResolveSVG from '~/icons/Hook'
+import RejectSVG from '~/icons/Reject'
 
 type TType = { $smaller?: boolean; color: TColorName }
 

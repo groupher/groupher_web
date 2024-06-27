@@ -1,7 +1,7 @@
 import React from 'react'
 
-import VIEW from '@/const/view'
-import TabBar from '@/widgets/TabBar'
+import VIEW from '~/const/view'
+import TabBar from '~/widgets/TabBar'
 
 import TagBlock from './TagBlock'
 

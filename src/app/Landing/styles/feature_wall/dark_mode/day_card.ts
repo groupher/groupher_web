@@ -1,8 +1,8 @@
-import UpvoteSVG from '@/icons/Upvote'
-import DAY_THEMES from '@/utils/themes/skins/day'
-import NIGHT_THEMES from '@/utils/themes/skins/night'
+import UpvoteSVG from '~/icons/Upvote'
+import DAY_THEMES from '~/utils/themes/skins/day'
+import NIGHT_THEMES from '~/utils/themes/skins/night'
 
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 import { BaseCard, BaseBar, BaseCount, BaseCodeBox } from './panel'
 
 export { Footer, CodeItem } from './panel'

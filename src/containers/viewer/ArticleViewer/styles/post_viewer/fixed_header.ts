@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import { FadeToggle } from '@/widgets/Common'
+import styled, { css, theme } from '~/css'
+import { FadeToggle } from '~/widgets/Common'
 
 export const Wrapper = styled.div<{ $visible: boolean }>`
   ${css.row('align-center', 'justify-between')};

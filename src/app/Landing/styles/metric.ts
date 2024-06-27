@@ -1,6 +1,6 @@
 import { keys, includes } from 'ramda'
 
-import { GRADIENT_WALLPAPER, GRADIENT_WALLPAPER_NAME } from '@/const/wallpaper'
+import { GRADIENT_WALLPAPER, GRADIENT_WALLPAPER_NAME } from '~/const/wallpaper'
 
 export const getGlowBackground = (wallpaper: string): string => {
   if (!includes(wallpaper, keys(GRADIENT_WALLPAPER))) {

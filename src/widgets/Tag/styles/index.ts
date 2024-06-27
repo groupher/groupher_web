@@ -1,7 +1,7 @@
-import type { TTestable } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TTestable } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import CloseSVG from '@/widgets/Icons/CloseCross'
+import CloseSVG from '~/widgets/Icons/CloseCross'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

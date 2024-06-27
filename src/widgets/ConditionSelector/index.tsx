@@ -1,12 +1,12 @@
 import { type FC, useState, useRef } from 'react'
 
-import type { TSpace, TTooltipPlacement, TConditionMode } from '@/spec'
+import type { TSpace, TTooltipPlacement, TConditionMode } from '~/spec'
 
-import useTrans from '@/hooks/useTrans'
+import useTrans from '~/hooks/useTrans'
 
-import DropdownButton from '@/widgets/Buttons/DropdownButton'
-import Menu from '@/widgets/Menu'
-import { Space } from '@/widgets/Common'
+import DropdownButton from '~/widgets/Buttons/DropdownButton'
+import Menu from '~/widgets/Menu'
+import { Space } from '~/widgets/Common'
 
 import ActiveLabel from './ActiveLabel'
 

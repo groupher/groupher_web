@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
-import type { TTag, TGroupedTags } from '@/spec'
+import type { TTag, TGroupedTags } from '~/spec'
 
 import { findIndex } from 'ramda'
-import { getParameterByName } from '@/utils/route'
-import { groupByKey } from '@/helper'
+import { getParameterByName } from '~/utils/route'
+import { groupByKey } from '~/helper'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   tags: TTag[]

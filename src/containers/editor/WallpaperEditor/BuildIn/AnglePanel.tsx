@@ -1,5 +1,5 @@
-import { GRADIENT_DIRECTION } from '@/const/wallpaper'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import { GRADIENT_DIRECTION } from '~/const/wallpaper'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import useLogic from '../useLogic'
 import {

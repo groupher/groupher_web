@@ -1,8 +1,8 @@
 import { type FC, memo } from 'react'
 
-import type { TUser } from '@/spec'
+import type { TUser } from '~/spec'
 
-import AdminAvatar from '@/widgets/AdminAvatar'
+import AdminAvatar from '~/widgets/AdminAvatar'
 
 import { Wrapper, Info, Name, Bio } from '../styles/members/admin_member'
 

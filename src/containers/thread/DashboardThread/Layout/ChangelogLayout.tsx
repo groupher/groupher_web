@@ -1,10 +1,10 @@
-import { CHANGELOG_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/const/layout'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { callDashboardDesc } from '@/signal'
+import { CHANGELOG_LAYOUT, DASHBOARD_DESC_LAYOUT } from '~/const/layout'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import { callDashboardDesc } from '~/signal'
 
-import { Row, Br, Space, SpaceGrow, Divider, Inline } from '@/widgets/Common'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import CheckLabel from '@/widgets/CheckLabel'
+import { Row, Br, Space, SpaceGrow, Divider, Inline } from '~/widgets/Common'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'

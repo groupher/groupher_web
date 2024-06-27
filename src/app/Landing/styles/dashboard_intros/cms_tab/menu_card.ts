@@ -1,9 +1,9 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import HashTagBoldSVG from '@/icons/HashTag'
+import HashTagBoldSVG from '~/icons/HashTag'
 
-export { Icon } from '@/widgets/ArticleSettingMenu/styles/icon'
-export { MenuItem, MenuTitle, DangerMenuItem } from '@/widgets/ArticleSettingMenu/styles/menu'
+export { Icon } from '~/widgets/ArticleSettingMenu/styles/icon'
+export { MenuItem, MenuTitle, DangerMenuItem } from '~/widgets/ArticleSettingMenu/styles/menu'
 
 export const Wrapper = styled.div`
   ${css.column()};

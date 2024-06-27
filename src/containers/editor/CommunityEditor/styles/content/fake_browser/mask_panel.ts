@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import CheckSVG from '@/icons/Check'
+import CheckSVG from '~/icons/Check'
 
 export const Wrapper = styled.div`
   height: 320px;

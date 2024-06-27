@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
-import type { TMenu } from '@/spec'
-import { Trans } from '@/i18n'
+import type { TMenu } from '~/spec'
+import { Trans } from '~/i18n'
 
 import type { TMenuItem } from './spec'
 import Icon from './Icon'

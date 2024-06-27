@@ -1,9 +1,9 @@
 import { type FC, memo, useCallback } from 'react'
 
-import { ICON } from '@/config'
-import { Trans } from '@/i18n'
+import { ICON } from '~/config'
+import { Trans } from '~/i18n'
 
-import CustomScroller from '@/widgets/CustomScroller'
+import CustomScroller from '~/widgets/CustomScroller'
 
 import SortColumn from './SortColumn/index'
 import type { TCurActive } from '../spec'

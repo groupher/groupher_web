@@ -1,4 +1,4 @@
-import styled from '@/css'
+import styled from '~/css'
 
 import { Wrapper as WrapperDesktop } from '../desktop_view/footer'
 

@@ -1,13 +1,13 @@
 import { type FC, useState } from 'react'
 
-import type { TArticle } from '@/spec'
+import type { TArticle } from '~/spec'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import { scrollToHeader } from '@/dom'
-import { assetSrc } from '@/helper'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import { scrollToHeader } from '~/dom'
+import { assetSrc } from '~/helper'
 
-import MobileThreadNavi from '@/widgets/MobileThreadNavi'
-import ArticlesFilter from '@/widgets/ArticlesFilter'
+import MobileThreadNavi from '~/widgets/MobileThreadNavi'
+import ArticlesFilter from '~/widgets/ArticlesFilter'
 
 import {
   Wrapper,

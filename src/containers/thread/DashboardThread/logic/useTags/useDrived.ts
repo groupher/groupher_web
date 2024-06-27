@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
 import { reject, find, propEq, filter, includes, pluck, uniq, equals } from 'ramda'
 
-import type { TTag, TCommunityThread, TNameAlias } from '@/spec'
-import { sortByIndex } from '@/helper'
-import { THREAD } from '@/const/thread'
+import type { TTag, TCommunityThread, TNameAlias } from '~/spec'
+import { sortByIndex } from '~/helper'
+import { THREAD } from '~/const/thread'
 
-import useSubState from '@/hooks/useSubStore'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useSubState from '~/hooks/useSubStore'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
 export type TRet = {
   getTags: () => TTag[]

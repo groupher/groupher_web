@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { isEmpty } from 'ramda'
 
-import { parseWallpaper } from '@/wallpaper'
+import { parseWallpaper } from '~/wallpaper'
 
 import type { TToolboxSetting } from '../spec'
 import { IMAGE_POS } from '../constant'

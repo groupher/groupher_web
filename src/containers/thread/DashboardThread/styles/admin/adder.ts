@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
-import Input from '@/widgets/Input'
-import Button from '@/widgets/Buttons/Button'
-import PlusSVG from '@/icons/Plus'
+import styled, { css, theme } from '~/css'
+import Input from '~/widgets/Input'
+import Button from '~/widgets/Buttons/Button'
+import PlusSVG from '~/icons/Plus'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

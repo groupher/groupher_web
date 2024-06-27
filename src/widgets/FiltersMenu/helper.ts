@@ -1,8 +1,8 @@
 import { keys, isEmpty, filter, forEach } from 'ramda'
 
-import type { TTag } from '@/spec'
-import { ICON_CMD } from '@/config'
-import { groupByKey } from '@/helper'
+import type { TTag } from '~/spec'
+import { ICON_CMD } from '~/config'
+import { groupByKey } from '~/helper'
 
 import type { TMenu } from './spec'
 

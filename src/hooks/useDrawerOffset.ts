@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import { MobXProviderContext } from 'mobx-react'
 
-import useWindowResize from '@/hooks/useWindowResize'
-import { WIDTH } from '@/css/metric'
+import useWindowResize from '~/hooks/useWindowResize'
+import { WIDTH } from '~/css/metric'
 
 import useMetric from './useMetric'
 

@@ -7,7 +7,7 @@
 import { memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import VIEW from '@/const/view'
+import VIEW from '~/const/view'
 
 import DesktopView from './DesktopView'
 import MobileView from './MobileView/index'

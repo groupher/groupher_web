@@ -1,6 +1,6 @@
 import { type FC, memo, useState } from 'react'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import { MODE } from '../../constant'
 

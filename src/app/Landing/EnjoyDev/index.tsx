@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import useWallpaper from '@/hooks/useWallpaper'
+import useWallpaper from '~/hooks/useWallpaper'
 
 import HighWay from './HighWay'
 import OurWay from './OurWay'

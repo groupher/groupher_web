@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import usePublicThreads from '@/hooks/usePublicThreads'
-import useLayout from '@/hooks/useLayout'
-import useHover from '@/hooks/useHover'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import usePublicThreads from '~/hooks/usePublicThreads'
+import useLayout from '~/hooks/useLayout'
+import useHover from '~/hooks/useHover'
 
-import { BRAND_LAYOUT } from '@/const/layout'
+import { BRAND_LAYOUT } from '~/const/layout'
 
-import { assetSrc } from '@/helper'
-import { titleCase } from '@/fmt'
+import { assetSrc } from '~/helper'
+import { titleCase } from '~/fmt'
 
-import { Space, SpaceGrow, SexyDivider } from '@/widgets/Common'
-import Tooltip from '@/widgets/Tooltip'
-import ImgFallback from '@/widgets/ImgFallback'
+import { Space, SpaceGrow, SexyDivider } from '~/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import {
   Wrapper,

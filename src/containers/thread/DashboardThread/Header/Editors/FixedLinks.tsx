@@ -1,10 +1,10 @@
 import type { FC } from 'react'
 import { reject } from 'ramda'
 
-import type { TCommunityThread } from '@/spec'
-import { ROUTE } from '@/const/route'
+import type { TCommunityThread } from '~/spec'
+import { ROUTE } from '~/const/route'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
 import {
   Wrapper,

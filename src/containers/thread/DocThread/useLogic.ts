@@ -1,6 +1,6 @@
-import type { TDocFAQLayout, TDocLayout, TFAQSection } from '@/spec'
+import type { TDocFAQLayout, TDocLayout, TFAQSection } from '~/spec'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   isArticleLayout: boolean

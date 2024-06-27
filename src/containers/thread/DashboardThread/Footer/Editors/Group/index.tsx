@@ -3,11 +3,11 @@ import { keys } from 'ramda'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-import type { TLinkItem } from '@/spec'
+import type { TLinkItem } from '~/spec'
 
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 
-import { sortByIndex, groupByKey } from '@/helper'
+import { sortByIndex, groupByKey } from '~/helper'
 
 import LinkEditor from '../LinkEditor'
 import GroupInputer from '../GroupInputer'

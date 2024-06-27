@@ -1,11 +1,11 @@
 import { values } from 'ramda'
 
-import { FAQSection, Tag, Moderator } from '@/model'
+import { FAQSection, Tag, Moderator } from '~/model'
 
-import SIZE from '@/const/size'
-import { COLOR_NAME } from '@/const/colors'
-import { THREAD } from '@/const/thread'
-import { GLOW_OPACITY } from '@/const/glow_effect'
+import SIZE from '~/const/size'
+import { COLOR_NAME } from '~/const/colors'
+import { THREAD } from '~/const/thread'
+import { GLOW_OPACITY } from '~/const/glow_effect'
 import {
   TAG_LAYOUT,
   AVATAR_LAYOUT,
@@ -23,11 +23,11 @@ import {
   HEADER_LAYOUT,
   FOOTER_LAYOUT,
   RSS_TYPE,
-} from '@/const/layout'
-import { BUILDIN_ALIAS } from '@/const/name'
-import { LOCALE } from '@/const/i18n'
+} from '~/const/layout'
+import { BUILDIN_ALIAS } from '~/const/name'
+import { LOCALE } from '~/const/i18n'
 
-import { T } from '@/mobx'
+import { T } from '~/mobx'
 
 import {
   WIDGET_TYPE,

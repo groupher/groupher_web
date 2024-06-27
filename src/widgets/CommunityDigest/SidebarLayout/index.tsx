@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import { THREAD } from '@/const/thread'
-import { DEME_SOCIALS } from '@/const/social'
+import { THREAD } from '~/const/thread'
+import { DEME_SOCIALS } from '~/const/social'
 
-import useViewingThread from '@/hooks/useViewingThread'
-import useWindowResize from '@/hooks/useWindowResize'
-import useEnable from '@/hooks/useEnable'
+import useViewingThread from '~/hooks/useViewingThread'
+import useWindowResize from '~/hooks/useWindowResize'
+import useEnable from '~/hooks/useEnable'
 
-import { refreshArticles } from '@/signal'
+import { refreshArticles } from '~/signal'
 
-import PinedTree from '@/containers/thread/DocThread/ArticleLayout/PinedTree'
-import TagsBar from '@/containers/unit/TagsBar'
+import PinedTree from '~/containers/thread/DocThread/ArticleLayout/PinedTree'
+import TagsBar from '~/containers/unit/TagsBar'
 
-import Sticky from '@/widgets/Sticky'
-import { SpaceGrow } from '@/widgets/Common'
-import AccountUnit from '@/widgets/AccountUnit'
-import FileTree from '@/widgets/FileTree'
-import SocialList from '@/widgets/SocialList'
+import Sticky from '~/widgets/Sticky'
+import { SpaceGrow } from '~/widgets/Common'
+import AccountUnit from '~/widgets/AccountUnit'
+import FileTree from '~/widgets/FileTree'
+import SocialList from '~/widgets/SocialList'
 
 import CommunityBrief from './CommunityBrief'
 import MainMenu from './MainMenu'

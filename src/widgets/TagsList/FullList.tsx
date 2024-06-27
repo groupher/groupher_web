@@ -1,9 +1,9 @@
 import { type FC, memo } from 'react'
 
-import { sortByColor } from '@/helper'
-import { Trans } from '@/i18n'
+import { sortByColor } from '~/helper'
+import { Trans } from '~/i18n'
 
-import TagNode from '@/widgets/TagNode'
+import TagNode from '~/widgets/TagNode'
 
 import type { TProps as TTagProps } from '.'
 

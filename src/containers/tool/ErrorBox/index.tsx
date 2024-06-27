@@ -6,8 +6,8 @@
 
 import type { FC } from 'react'
 
-import useShortcut from '@/hooks/useShortcut'
-import { SpaceGrow } from '@/widgets/Common'
+import useShortcut from '~/hooks/useShortcut'
+import { SpaceGrow } from '~/widgets/Common'
 
 import { useStore } from './store'
 import Details from './Details'

@@ -1,5 +1,5 @@
-import { THREAD } from '@/const/thread'
-import { T } from '@/mobx'
+import { THREAD } from '~/const/thread'
+import { T } from '~/mobx'
 
 import { User, PagedUsers } from '../User'
 import { SimpleUser } from '../Common'

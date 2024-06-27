@@ -1,19 +1,19 @@
 import { useCallback } from 'react'
 import { has, omit, findIndex, update } from 'ramda'
 
-import type { TEditValue, TNameAlias, TEditFunc } from '@/spec'
-import { isObject } from '@/validator'
-import useSubStore from '@/hooks/useSubStore'
-import BStore from '@/utils/bstore'
+import type { TEditValue, TNameAlias, TEditFunc } from '~/spec'
+import { isObject } from '~/validator'
+import useSubStore from '~/hooks/useSubStore'
+import BStore from '~/utils/bstore'
 
 import {
   DASHBOARD_DEMO_KEY,
   SETTING_FIELD,
   BASEINFO_KEYS,
   SEO_KEYS,
-} from '@/stores3/dashboard/constant'
+} from '~/stores3/dashboard/constant'
 
-import type { TSettingField } from '@/stores3/dashboard/spec'
+import type { TSettingField } from '~/stores3/dashboard/spec'
 import useMutation from '../useMutation'
 
 export type TRet = {

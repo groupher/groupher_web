@@ -1,15 +1,15 @@
 import type { FC } from 'react'
 
-import type { TSpace } from '@/spec'
-import { HEADER_LAYOUT } from '@/const/layout'
+import type { TSpace } from '~/spec'
+import { HEADER_LAYOUT } from '~/const/layout'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import usePublicThreads from '@/hooks/usePublicThreads'
-import useHeaderLinks from '@/hooks/useHeaderLinks'
-import useViewingThread from '@/hooks/useViewingThread'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import usePublicThreads from '~/hooks/usePublicThreads'
+import useHeaderLinks from '~/hooks/useHeaderLinks'
+import useViewingThread from '~/hooks/useViewingThread'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import CustomHeaderLinks from '@/widgets/CustomHeaderLinks'
+import CustomHeaderLinks from '~/widgets/CustomHeaderLinks'
 
 import { NormalWrapper, FloatWrapper, Title } from '../styles/header_layout/thread_tab'
 

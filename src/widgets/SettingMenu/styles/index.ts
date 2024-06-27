@@ -1,7 +1,7 @@
-import type { TTestable, TActive } from '@/spec'
+import type { TTestable, TActive } from '~/spec'
 
-// import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+// import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
 type TWrapper = TTestable & { width: number }
 

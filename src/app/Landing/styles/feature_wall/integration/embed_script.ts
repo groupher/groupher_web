@@ -1,8 +1,8 @@
-import styled, { css, theme, animate, rainbow } from '@/css'
-import { TColor } from '@/spec'
+import styled, { css, theme, animate, rainbow } from '~/css'
+import type { TColor } from '~/spec'
 
-import { WithPosition } from '@/widgets/Common'
-import TerminalSVG from '@/icons/Terminal'
+import { WithPosition } from '~/widgets/Common'
+import TerminalSVG from '~/icons/Terminal'
 
 export const Codes = styled(WithPosition)`
   font-size: 10px;

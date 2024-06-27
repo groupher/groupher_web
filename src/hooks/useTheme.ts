@@ -1,8 +1,8 @@
 import { useTheme as useStyledTheme } from 'styled-components'
 
-import type { TThemeName, TThemeMap } from '@/spec'
+import type { TThemeName, TThemeMap } from '~/spec'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   theme: TThemeName

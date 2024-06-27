@@ -1,11 +1,11 @@
-import { TOPBAR_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/const/layout'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { callDashboardDesc } from '@/signal'
+import { TOPBAR_LAYOUT, DASHBOARD_DESC_LAYOUT } from '~/const/layout'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import { callDashboardDesc } from '~/signal'
 
-import { Br, Inline } from '@/widgets/Common'
-import ColorSelector from '@/widgets/ColorSelector'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import CheckLabel from '@/widgets/CheckLabel'
+import { Br, Inline } from '~/widgets/Common'
+import ColorSelector from '~/widgets/ColorSelector'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'

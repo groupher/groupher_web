@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import useLayout from '@/hooks/useLayout'
+import useLayout from '~/hooks/useLayout'
 
 import type { TProps as TAvatarsProps } from '.'
 

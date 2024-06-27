@@ -1,6 +1,6 @@
-import { PAGE_SIZE } from '@/config'
+import { PAGE_SIZE } from '~/config'
 
-import { T } from '@/mobx'
+import { T } from '~/mobx'
 
 export const FavoriteCategory = T.model('FavoriteCategory', {
   id: T.maybeNull(T.string),

@@ -1,5 +1,5 @@
-import type { TMetric } from '@/spec'
-import styled, { css, WIDTH, theme } from '@/css'
+import type { TMetric } from '~/spec'
+import styled, { css, WIDTH, theme } from '~/css'
 
 import { BaseBanner } from '..'
 

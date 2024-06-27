@@ -6,13 +6,13 @@
 
 import type { FC } from 'react'
 
-import type { TColorName } from '@/spec'
-import useLayout from '@/hooks/useLayout'
-import useTheme from '@/hooks/useTheme'
+import type { TColorName } from '~/spec'
+import useLayout from '~/hooks/useLayout'
+import useTheme from '~/hooks/useTheme'
 
-import { TAG_LAYOUT } from '@/const/layout'
-import { COLOR_NAME } from '@/const/colors'
-import THEME from '@/const/theme'
+import { TAG_LAYOUT } from '~/const/layout'
+import { COLOR_NAME } from '~/const/colors'
+import THEME from '~/const/theme'
 
 import { Dot, HashBoldIcon, HashNormalIcon } from './styles'
 

@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
 import { pick, reject } from 'ramda'
 
-import type { TEditFunc } from '@/spec'
-import type { TColorName, TWidgetType, TThread, TSizeSML } from '@/spec'
-import useSubStore from '@/hooks/useSubStore'
+import type { TEditFunc } from '~/spec'
+import type { TColorName, TWidgetType, TThread, TSizeSML } from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
 
 import useHelper from './useHelper'
 

@@ -1,6 +1,6 @@
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 
 export const Wrapper = styled.div`
   ${css.row('align-both')};

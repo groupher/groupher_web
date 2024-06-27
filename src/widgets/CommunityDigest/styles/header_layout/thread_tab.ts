@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
-import type { TActive, TColor } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
-import { WithMargin } from '@/widgets/Common'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
+import { WithMargin } from '~/widgets/Common'
 
 export const NormalWrapper = styled(WithMargin)`
   ${css.row('align-center')};

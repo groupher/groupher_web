@@ -1,6 +1,6 @@
-import type { TColorName } from '@/spec'
+import type { TColorName } from '~/spec'
 
-import useSubStore from '@/hooks/useSubStore'
+import useSubStore from '~/hooks/useSubStore'
 
 export default (): TColorName[] => {
   const store = useSubStore('dashboard')

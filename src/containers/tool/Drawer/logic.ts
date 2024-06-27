@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 import { includes, values } from 'ramda'
 
-import type { TArticle, TDirection, TMetric } from '@/spec'
-import EVENT from '@/const/event'
-import TYPE from '@/const/type'
+import type { TArticle, TDirection, TMetric } from '~/spec'
+import EVENT from '~/const/event'
+import TYPE from '~/const/type'
 
-import { toggleGlobalBlur, clearGlobalBlur } from '@/dom'
-import { Global, debounce } from '@/helper'
-import { send, previewArticle } from '@/signal'
-import asyncSuit from '@/async'
+import { toggleGlobalBlur, clearGlobalBlur } from '~/dom'
+import { Global, debounce } from '~/helper'
+import { send, previewArticle } from '~/signal'
+import asyncSuit from '~/async'
 
 import type { TStore } from './store'
 

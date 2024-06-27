@@ -1,5 +1,5 @@
-import { COLOR_NAME } from '@/const/colors'
-import { THREAD } from '@/const/thread'
+import { COLOR_NAME } from '~/const/colors'
+import { THREAD } from '~/const/thread'
 
 export const DEFAULT_CREATE_TAG = {
   id: '',

@@ -7,7 +7,7 @@ import type {
   TGallery3Column,
   TGalleryTextOnly,
   TGalleryTextWithImage,
-} from '@/spec'
+} from '~/spec'
 
 const GALLERY = {
   DEFAULT: 'default' as TGalleryDefault,

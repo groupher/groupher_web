@@ -1,4 +1,4 @@
-import type { TChangeMode, TConditionMode } from '@/spec'
+import type { TChangeMode, TConditionMode } from '~/spec'
 
 export const CHANGE_MODE = {
   CREATE: 'create',

@@ -1,8 +1,8 @@
-import type { TActive } from '@/spec'
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
-import CheckedSVG from '@/icons/CheckBold'
-import CircleArrowSVG from '@/icons/CircleArrow'
+import type { TActive } from '~/spec'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
+import CheckedSVG from '~/icons/CheckBold'
+import CircleArrowSVG from '~/icons/CircleArrow'
 
 export const Wrapper = styled.div<{ showMore: boolean }>`
   ${css.rowWrap()};

@@ -1,12 +1,12 @@
-import { blurRGB } from '@/fmt'
-import THEME from '@/const/theme'
+import { blurRGB } from '~/fmt'
+import THEME from '~/const/theme'
 
-import useThemeData from '@/hooks/useThemeData'
-import useTheme from '@/hooks/useTheme'
-import useWallpaper from '@/hooks/useWallpaper'
+import useThemeData from '~/hooks/useThemeData'
+import useTheme from '~/hooks/useTheme'
+import useWallpaper from '~/hooks/useWallpaper'
 
-import { Brick } from '@/widgets/Common'
-import RangeSlider from '@/widgets/RangeSlider'
+import { Brick } from '~/widgets/Common'
+import RangeSlider from '~/widgets/RangeSlider'
 
 import { SETTING_FIELD } from '../../constant'
 import SectionLabel from '../../SectionLabel'

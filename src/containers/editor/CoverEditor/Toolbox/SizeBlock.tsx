@@ -1,6 +1,6 @@
 import { type FC, useState } from 'react'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import type { TImageSize } from '../spec'
 import { IMAGE_SIZE } from '../constant'

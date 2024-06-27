@@ -6,7 +6,7 @@
 
 import { type FC, type ReactNode, memo, createContext } from 'react'
 
-import type { TTooltipPlacement } from '@/spec'
+import type { TTooltipPlacement } from '~/spec'
 import RealTooltip from './RealTooltip'
 
 // @ts-ignore

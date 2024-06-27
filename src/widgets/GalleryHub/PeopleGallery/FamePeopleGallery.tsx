@@ -6,13 +6,13 @@
 
 import { type FC, memo } from 'react'
 
-import type { TGallery } from '@/spec'
-import { ICON } from '@/config'
-import { getRandomInt } from '@/helper'
+import type { TGallery } from '~/spec'
+import { ICON } from '~/config'
+import { getRandomInt } from '~/helper'
 
-import Upvote from '@/widgets/Upvote'
-import IconText from '@/widgets/IconText'
-import { SpaceGrow } from '@/widgets/Common'
+import Upvote from '~/widgets/Upvote'
+import IconText from '~/widgets/IconText'
+import { SpaceGrow } from '~/widgets/Common'
 
 import { mockFameous } from '../mock'
 import CardHeader from './CardHeader'

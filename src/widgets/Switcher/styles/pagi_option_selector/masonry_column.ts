@@ -1,4 +1,4 @@
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
 import { SwitchBarBase } from './gallery_base'
 

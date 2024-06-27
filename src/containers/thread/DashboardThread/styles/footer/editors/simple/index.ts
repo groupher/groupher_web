@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import PlusSVG from '@/icons/Plus'
+import PlusSVG from '~/icons/Plus'
 
 export const Wrapper = styled.div`
   ${css.row('justify-between')};

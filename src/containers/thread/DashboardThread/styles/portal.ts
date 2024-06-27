@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ArrowSVG from '@/icons/ArrowSimple'
+import ArrowSVG from '~/icons/ArrowSimple'
 
 export const Wrapper = styled.div``
 export const Title = styled.div`

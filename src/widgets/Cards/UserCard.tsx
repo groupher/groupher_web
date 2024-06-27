@@ -4,10 +4,10 @@
 
 import type { FC } from 'react'
 
-import type { TAccount, TUser } from '@/spec'
-import useLayout from '@/hooks/useLayout'
+import type { TAccount, TUser } from '~/spec'
+import useLayout from '~/hooks/useLayout'
 
-import { cutRest } from '@/fmt'
+import { cutRest } from '~/fmt'
 
 import {
   Wrapper,

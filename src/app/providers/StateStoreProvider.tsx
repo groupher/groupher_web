@@ -2,8 +2,8 @@
 
 import type { ReactNode } from 'react'
 
-import { StoreContext, useStore } from '@/stores3'
-import { HOME_COMMUNITY } from '@/const/name'
+import { StoreContext, useStore } from '~/stores3'
+import { HOME_COMMUNITY } from '~/const/name'
 
 import {
   useI18n,

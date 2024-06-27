@@ -4,8 +4,8 @@
 
 import { type FC, memo } from 'react'
 
-import type { TSimpleUser, TEmotionType } from '@/spec'
-import { cutRest } from '@/fmt'
+import type { TSimpleUser, TEmotionType } from '~/spec'
+import { cutRest } from '~/fmt'
 
 import EmotionIcon from './EmotionIcon'
 

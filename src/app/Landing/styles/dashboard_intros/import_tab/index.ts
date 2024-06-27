@@ -1,4 +1,4 @@
-import styled, { css, animate } from '@/css'
+import styled, { css, animate } from '~/css'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};

@@ -1,9 +1,9 @@
-import { BRAND_LAYOUT } from '@/const/layout'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { BRAND_LAYOUT } from '~/const/layout'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import { Space, SexyDivider as Divider } from '@/widgets/Common'
-import CheckLabel from '@/widgets/CheckLabel'
+import { Space, SexyDivider as Divider } from '~/widgets/Common'
+import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'

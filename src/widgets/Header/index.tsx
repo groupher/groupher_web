@@ -7,8 +7,8 @@
 import type { FC } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TMetric, TCommunity, TAccount } from '@/spec'
-import { ANCHOR } from '@/const/dom'
+import type { TMetric, TCommunity, TAccount } from '~/spec'
+import { ANCHOR } from '~/const/dom'
 
 import DesktopView from './DesktopView'
 

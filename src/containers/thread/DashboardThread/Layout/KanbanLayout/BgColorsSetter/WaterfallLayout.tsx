@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 import { isEmpty } from 'ramda'
 
-import { INIT_KANBAN_COLORS } from '@/const/dashboard'
-import { Brick } from '@/widgets/Common'
+import { INIT_KANBAN_COLORS } from '~/const/dashboard'
+import { Brick } from '~/widgets/Common'
 
 import useKanban from '../../../logic/useKanban'
 import {

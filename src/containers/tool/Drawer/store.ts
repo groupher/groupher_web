@@ -5,19 +5,19 @@
 
 import { values, mergeRight, includes } from 'ramda'
 
-import type { TRootStore, TThread, TArticle } from '@/spec'
+import type { TRootStore, TThread, TArticle } from '~/spec'
 
-import { DASHBOARD_DESC_LAYOUT } from '@/const/layout'
-import { ARTICLE_THREAD } from '@/const/thread'
-import METRIC from '@/const/metric'
+import { DASHBOARD_DESC_LAYOUT } from '~/const/layout'
+import { ARTICLE_THREAD } from '~/const/thread'
+import METRIC from '~/const/metric'
 
-import TYPE from '@/const/type'
+import TYPE from '~/const/type'
 
-import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '@/mobx'
-import { lockPage, unlockPage } from '@/dom'
-import { Global } from '@/helper'
-import { mediaBreakPoints } from '@/css/metric'
-import { User } from '@/model'
+import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
+import { lockPage, unlockPage } from '~/dom'
+import { Global } from '~/helper'
+import { mediaBreakPoints } from '~/css/metric'
+import { User } from '~/model'
 
 import type { TSwipeOption, TExtraInfo } from './spec'
 import { ARTICLE_VIEWER_TYPES, ARTICLE_THREAD_CURD_TYPES } from './constant'

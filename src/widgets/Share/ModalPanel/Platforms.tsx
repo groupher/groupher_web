@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import type { TArticle } from '@/spec'
+import type { TArticle } from '~/spec'
 
 import { PLATFORMS } from '../constant'
 import {

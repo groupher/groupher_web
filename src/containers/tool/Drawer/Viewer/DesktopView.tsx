@@ -2,8 +2,8 @@ import { Fragment, type FC, type ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 import { includes } from 'ramda'
 
-import { ANCHOR } from '@/const/dom'
-import useDrawerOffset from '@/hooks/useDrawerOffset'
+import { ANCHOR } from '~/const/dom'
+import useDrawerOffset from '~/hooks/useDrawerOffset'
 
 import type { TSwipeOption } from '../spec'
 import { ARTICLE_VIEWER_TYPES } from '../constant'

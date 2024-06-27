@@ -1,5 +1,5 @@
-import styled, { css, rainbow, theme } from '@/css'
-import type { TTestable, TActive, TColorName } from '@/spec'
+import styled, { css, rainbow, theme } from '~/css'
+import type { TTestable, TActive, TColorName } from '~/spec'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

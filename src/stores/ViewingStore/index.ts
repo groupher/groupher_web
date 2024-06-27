@@ -5,13 +5,13 @@
 
 import { values, mergeRight, includes } from 'ramda'
 
-import type { TRootStore, TUser, TArticle, TArticleMeta, TThread, TCommunity } from '@/spec'
+import type { TRootStore, TUser, TArticle, TArticleMeta, TThread, TCommunity } from '~/spec'
 
-import { ARTICLE_THREAD, THREAD } from '@/const/thread'
+import { ARTICLE_THREAD, THREAD } from '~/const/thread'
 
-import { T, getParent, type Instance, markStates, toJS } from '@/mobx'
-import { viewingChanged } from '@/signal'
-import { User, Community, Post, Changelog } from '@/model'
+import { T, getParent, type Instance, markStates, toJS } from '~/mobx'
+import { viewingChanged } from '~/signal'
+import { User, Community, Post, Changelog } from '~/model'
 
 const ViewingStore = T.model('ViewingStore', {
   user: T.opt(User, {}),

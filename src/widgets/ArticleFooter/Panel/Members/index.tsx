@@ -1,7 +1,7 @@
 import { type FC, memo } from 'react'
 
-import useViewingArticle from '@/hooks/useViewingArticle'
-import { Br } from '@/widgets/Common'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import { Br } from '~/widgets/Common'
 
 import UserList from './UserList'
 

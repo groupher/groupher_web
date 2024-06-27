@@ -5,15 +5,15 @@
  */
 import { type FC, memo } from 'react'
 
-import type { TGallery } from '@/spec'
-import { ICON } from '@/config'
-import { getRandomInt } from '@/helper'
-import { cutRest } from '@/fmt'
+import type { TGallery } from '~/spec'
+import { ICON } from '~/config'
+import { getRandomInt } from '~/helper'
+import { cutRest } from '~/fmt'
 
-import Linker from '@/widgets/Linker'
-import Upvote from '@/widgets/Upvote'
-import IconText from '@/widgets/IconText'
-import { SpaceGrow } from '@/widgets/Common'
+import Linker from '~/widgets/Linker'
+import Upvote from '~/widgets/Upvote'
+import IconText from '~/widgets/IconText'
+import { SpaceGrow } from '~/widgets/Common'
 
 import InlineTags from './InlineTags'
 

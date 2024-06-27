@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import useTheme from '@/hooks/useTheme'
+import useTheme from '~/hooks/useTheme'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 import {
   Wrapper,
   InnerWrapper,

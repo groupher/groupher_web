@@ -1,4 +1,4 @@
-import { T } from '@/mobx'
+import { T } from '~/mobx'
 
 import { pagiFields } from './helper/common'
 

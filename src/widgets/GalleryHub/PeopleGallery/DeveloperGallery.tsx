@@ -6,11 +6,11 @@
 
 import { type FC, memo } from 'react'
 
-import type { TGallery } from '@/spec'
-import { ICON, ASSETS_ENDPOINT } from '@/config'
-import { cutRest } from '@/fmt'
+import type { TGallery } from '~/spec'
+import { ICON, ASSETS_ENDPOINT } from '~/config'
+import { cutRest } from '~/fmt'
 
-import IconText from '@/widgets/IconText'
+import IconText from '~/widgets/IconText'
 
 import { mockDevelopers } from '../mock'
 import CardHeader from './CardHeader'

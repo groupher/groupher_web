@@ -1,15 +1,15 @@
 import { useEffect, useRef } from 'react'
 import { includes, omit, values, update, findIndex, equals, keys, filter } from 'ramda'
 
-import type { TEditValue, TTag } from '@/spec'
-import { DASHBOARD_BASEINFO_ROUTE } from '@/const/route'
-import { toast } from '@/signal'
+import type { TEditValue, TTag } from '~/spec'
+import { DASHBOARD_BASEINFO_ROUTE } from '~/const/route'
+import { toast } from '~/signal'
 
-import { mutate } from '@/utils/api'
-import useSubStore from '@/hooks/useSubStore'
-import useViewing from '@/hooks/useViewing'
+import { mutate } from '~/utils/api'
+import useSubStore from '~/hooks/useSubStore'
+import useViewing from '~/hooks/useViewing'
 
-import type { TSettingField } from '@/stores3/dashboard/spec'
+import type { TSettingField } from '~/stores3/dashboard/spec'
 
 import {
   SETTING_FIELD,
@@ -18,7 +18,7 @@ import {
   SETTING_LAYOUT_FIELD,
   SEO_KEYS,
   BASEINFO_KEYS,
-} from '@/stores3/dashboard/constant'
+} from '~/stores3/dashboard/constant'
 import S from '../schema'
 
 type TRet = {

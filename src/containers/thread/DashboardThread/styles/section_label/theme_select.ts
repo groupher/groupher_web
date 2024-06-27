@@ -1,8 +1,8 @@
-import styled, { css, theme } from '@/css'
-import type { TActive } from '@/spec'
+import styled, { css, theme } from '~/css'
+import type { TActive } from '~/spec'
 
-import SunSVG from '@/icons/Sun'
-import MoonSVG from '@/icons/Moon'
+import SunSVG from '~/icons/Sun'
+import MoonSVG from '~/icons/Moon'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

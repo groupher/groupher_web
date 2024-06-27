@@ -9,9 +9,9 @@ import { type FC, memo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
-import type { TSpace, TColorName } from '@/spec'
-import useThemeData from '@/hooks/useThemeData'
-import { camelize } from '@/fmt'
+import type { TSpace, TColorName } from '~/spec'
+import useThemeData from '~/hooks/useThemeData'
+import { camelize } from '~/fmt'
 
 import FaIcon from './icons'
 import type { TIcon } from './spec'

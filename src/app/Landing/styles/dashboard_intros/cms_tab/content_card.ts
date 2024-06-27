@@ -1,11 +1,11 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Img from '@/Img'
-import { WithPosition } from '@/widgets/Common'
-import PostSVG from '@/icons/Post'
-import WebhookSVG from '@/icons/Webhook'
-import AuthSVG from '@/icons/Acount'
-import UpvoteSVG from '@/icons/Upvote'
+import Img from '~/Img'
+import { WithPosition } from '~/widgets/Common'
+import PostSVG from '~/icons/Post'
+import WebhookSVG from '~/icons/Webhook'
+import AuthSVG from '~/icons/Acount'
+import UpvoteSVG from '~/icons/Upvote'
 
 export const Wrapper = styled.div`
   ${css.column()};
