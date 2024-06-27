@@ -1,8 +1,8 @@
 import gqClient from './gq_client'
 
-export const query = (query, variables) => {
+export const query = (schema, variables = {}) => {
   return gqClient
-    .query(query, clearfy(variables))
+    .query(schema, clearfy(variables))
     .toPromise()
     .then((res) => {
       if (res.error) throw res.error
@@ -13,9 +13,9 @@ export const query = (query, variables) => {
     })
 }
 
-export const mutate = (mutation, variables) => {
+export const mutate = (schema, variables) => {
   return gqClient
-    .mutation(mutation, clearfy(variables))
+    .mutation(schema, clearfy(variables))
     .toPromise()
     .then((res) => {
       console.log('## got res: ', res)

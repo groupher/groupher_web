@@ -3,33 +3,38 @@
  *
  */
 
-import type { FC } from 'react'
+import { type FC, useEffect } from 'react'
+
+import useViewingCommunity from '@/hooks/useViewingCommunity'
 
 import { SexyDivider } from '@/widgets/Common'
 import Button from '@/widgets/Buttons/Button'
 
-import { useStore } from './store'
 import Selects from './Selects'
 
+import useLogic from './useLogic'
 import { Wrapper, Desc, Footer, RootSign } from './styles'
-import { useInit, updatePassport } from './logic' /* eslint-disable-next-line */
 
 const PassportEditor: FC = () => {
-  const store = useStore()
-  useInit(store)
+  const curCommunity = useViewingCommunity()
+
+  useEffect(() => {
+    loadAllPassportRules()
+  }, [])
 
   const {
-    curCommunity,
-    allModeratorRules,
-    allRootRules,
-    selectedRulesData,
     activeModerator,
-    isActiveModeratorRoot,
-    isCurUserModeratorRoot,
-  } = store
+    loadAllPassportRules,
+    updatePassport,
+    getIsActiveModeratorRoot,
+    getIsCurUserModeratorRoot,
+    getIsReadonly,
+  } = useLogic()
 
-  const rules = isActiveModeratorRoot ? allRootRules : allModeratorRules
-  const readonly = isActiveModeratorRoot || !isCurUserModeratorRoot
+  const isActiveModeratorRoot = getIsActiveModeratorRoot()
+  const isCurUserModeratorRoot = getIsCurUserModeratorRoot()
+
+  const readonly = getIsReadonly()
 
   if (!activeModerator) return null
 
@@ -46,12 +51,7 @@ const PassportEditor: FC = () => {
         </Desc>
       )}
       <SexyDivider bottom={30} />
-      <Selects
-        rules={rules}
-        moderatorRules={allModeratorRules}
-        selectedRules={selectedRulesData}
-        readonly={readonly}
-      />
+      <Selects />
       <SexyDivider bottom={30} />
 
       {!readonly && (

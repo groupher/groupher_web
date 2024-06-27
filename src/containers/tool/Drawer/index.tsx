@@ -3,6 +3,7 @@
  * Preview
  *
  */
+import { observer } from 'mobx-react-lite'
 
 import useWindowResize from '@/hooks/useWindowResize'
 import useShortcut from '@/hooks/useShortcut'
@@ -15,7 +16,7 @@ import Content from './Content'
 
 import { useInit, closeDrawer } from './logic'
 
-export default () => {
+const Drwawer = () => {
   const store = useStore()
   const metric = useMetric()
 
@@ -56,3 +57,5 @@ export default () => {
     </Viewer>
   )
 }
+
+export default observer(Drwawer)

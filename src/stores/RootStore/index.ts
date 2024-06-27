@@ -39,7 +39,6 @@ import {
   AccountEditorStore,
   // MailBoxStore,
   // GEN: IMPORT SUBSTORE
-  PassportEditorStore,
   CoverEditorStore,
   TagSettingEditorStore,
   // SubscriberStore,
@@ -98,7 +97,6 @@ const rootStore = T.model({
   // mailsViewer: T.opt(MailsViewerStore, {}),
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
-  passportEditor: T.opt(PassportEditorStore, {}),
   coverEditor: T.opt(CoverEditorStore, {}),
   tagSettingEditor: T.opt(TagSettingEditorStore, {}),
   // collectionFolder: T.opt(CollectionFolderStore, {}),
