@@ -34,10 +34,6 @@ import {
   // MailsViewerStore,
   // toolbox
   DrawerStore,
-  // SidebarStore,
-  // RepoEditorStore,
-  AccountEditorStore,
-  // MailBoxStore,
   // GEN: IMPORT SUBSTORE
   CoverEditorStore,
   TagSettingEditorStore,
@@ -69,9 +65,6 @@ const rootStore = T.model({
   // toolbox
   drawer: T.opt(DrawerStore, { visible: false }),
   // repoEditor: T.opt(RepoEditorStore, {}),
-  accountEditor: T.opt(AccountEditorStore, {}),
-  // mailBox: T.opt(MailBoxStore, {}),
-  // toolbox end
 
   // layouts > xxx > papers
   richEditor: T.opt(RichEditorStore, {}),
@@ -88,13 +81,6 @@ const rootStore = T.model({
   communityEditor: T.opt(CommunityEditorStore, {}),
   // userContent: T.opt(UserContentStore, {}),
   // content end
-
-  // footer
-  // footer: T.opt(FooterStore, {}),
-  // threads
-
-  // viewers (for drawer usage)
-  // mailsViewer: T.opt(MailsViewerStore, {}),
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
   coverEditor: T.opt(CoverEditorStore, {}),

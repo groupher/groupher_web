@@ -13,7 +13,6 @@ import {
   PassportEditor,
   ArticleEditor,
   WallpaperEditor,
-  AccountEditor,
   // MailsViewer,
 } from './dynamic'
 
@@ -42,12 +41,12 @@ const Content: FC<TProps> = ({ type, onLoad }) => {
         </Suspense>
       )
 
-    case DRAWER.ACCOUNT_EDIT:
-      return (
-        <Suspense fallback={<Loading />}>
-          <AccountEditor />
-        </Suspense>
-      )
+    // case DRAWER.ACCOUNT_EDIT:
+    //   return (
+    //     <Suspense fallback={<Loading />}>
+    //       <AccountEditor />
+    //     </Suspense>
+    //   )
 
     case DRAWER.PASSPORT_EDITOR:
       return (

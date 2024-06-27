@@ -14,11 +14,7 @@ export const WallpaperEditor = lazy(() => import('@/containers/editor/WallpaperE
 //   ssr: false,
 // })
 
-export const AccountEditor = lazy(() => import('@/containers/editor/AccountEditor'))
-// export const AccountEditor = dynamic(() => import('@/containers/editor/AccountEditor'), {
-//   loading: () => <LavaLampLoading />,
-//   ssr: false,
-// })
+// export const AccountEditor = lazy(() => import('@/containers/editor/AccountEditor'))
 
 export const UserList = lazy(() => import('@/widgets/UserList'))
 // export const UserList = dynamic(() => import('@/widgets/UserList'), {

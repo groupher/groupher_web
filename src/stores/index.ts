@@ -27,7 +27,6 @@ export { default as DrawerStore } from '@/containers/tool/Drawer/store'
 // toolbox
 // export { default as RepoEditorStore } from '@/containers/editor/RepoEditor/store'
 export { default as CommentsStore } from '@/containers/unit/Comments/store'
-export { default as AccountEditorStore } from '@/containers/editor/AccountEditor/store'
 
 // user page
 
