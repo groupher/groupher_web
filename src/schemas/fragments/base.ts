@@ -285,7 +285,7 @@ export const pagi = `
   pageNumber
 `
 
-export const getUpvoteSchema = (thread, withLatestUser = false) => {
+export const getUpvote = (thread, withLatestUser = false) => {
   if (withLatestUser) {
     return gql`
     mutation ($id: ID!) {
@@ -311,7 +311,7 @@ export const getUpvoteSchema = (thread, withLatestUser = false) => {
   `
 }
 
-export const getUndoUpvoteSchema = (thread, withLatestUser = false) => {
+export const getUndoUpvote = (thread, withLatestUser = false) => {
   if (withLatestUser) {
     return gql`
     mutation ($id: ID!) {

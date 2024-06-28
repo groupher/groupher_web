@@ -15,37 +15,17 @@ import { T, markStates, type Instance } from '~/mobx'
 import { toast, send } from '~/signal'
 
 import {
-  // AccountStore,
   RichEditorStore,
-  // HeaderStore,
   ViewingStore,
   ArticlesStore,
   ErrorBoxStore,
   MushroomStore,
-  // content
-  // ExploreContentStore,
   CommunityEditorStore,
-  // UserContentStore,
-  // viewers
-  // RepoViewerStore,
   CommentsStore,
-  // MailsViewerStore,
-  // toolbox
   DrawerStore,
-  // GEN: IMPORT SUBSTORE
   CoverEditorStore,
-  // SubscriberStore,
-  // CollectionFolderStore,
   ArticleViewerStore,
-  // AbuseReportStore,
   ArticleEditorStore,
-  // UserProfileStore,
-  // MembershipContentStore,
-  // ModeLineMenuStore,
-  // ModeLineStore,
-  // SubscribeContentStore,
-  // RecipesContentStore,
-  // C11NSettingPanelStore,
 } from '..'
 
 const rootStore = T.model({
@@ -54,6 +34,7 @@ const rootStore = T.model({
   activeDemo: T.opt(T.str, ''),
   // account: T.opt(AccountStore, {}),
   viewing: T.opt(ViewingStore, {}),
+  articleViewer: T.opt(ArticleViewerStore, {}),
   articles: T.opt(ArticlesStore, {}),
   comments: T.opt(CommentsStore, {}),
 
@@ -61,33 +42,16 @@ const rootStore = T.model({
   drawer: T.opt(DrawerStore, { visible: false }),
   // repoEditor: T.opt(RepoEditorStore, {}),
 
-  // layouts > xxx > papers
   richEditor: T.opt(RichEditorStore, {}),
-  // header: T.opt(HeaderStore, {}),
-  // layouts end
 
   errorBox: T.opt(ErrorBoxStore, {}),
   mushroom: T.opt(MushroomStore, {}),
 
-  // content
-  // communityContent: T.opt(CommunityContentStore, {}),
-
-  // exploreContent: T.opt(ExploreContentStore, {}),
   communityEditor: T.opt(CommunityEditorStore, {}),
-  // userContent: T.opt(UserContentStore, {}),
-  // content end
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
   coverEditor: T.opt(CoverEditorStore, {}),
-  // collectionFolder: T.opt(CollectionFolderStore, {}),
-  articleViewer: T.opt(ArticleViewerStore, {}),
-  // abuseReport: T.opt(AbuseReportStore, {}),
   articleEditor: T.opt(ArticleEditorStore, {}),
-  // userProfile: T.opt(UserProfileStore, {}),
-  // modeLineMenu: T.opt(ModeLineMenuStore, {}),
-  // modeLine: T.opt(ModeLineStore, {}),
-  // recipesContent: T.opt(RecipesContentStore, {}),
-  // c11NSettingPanel: T.opt(C11NSettingPanelStore, {}),
 })
   .views((self) => ({
     get isOnline(): boolean {
