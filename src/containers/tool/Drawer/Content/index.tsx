@@ -1,4 +1,4 @@
-import { Fragment, memo } from 'react'
+import { memo } from 'react'
 
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
@@ -16,7 +16,7 @@ const Content = (props) => {
     return null
   }
 
-  return <Fragment>{!isMobile ? <DesktopView {...props} /> : <MobileView {...props} />}</Fragment>
+  return <>{!isMobile ? <DesktopView {...props} /> : <MobileView {...props} />}</>
 }
 
 export default memo(Content)

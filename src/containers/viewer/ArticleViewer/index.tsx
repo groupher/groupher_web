@@ -3,34 +3,32 @@
  * ArticleViewer
  *
  */
+import { useEffect } from 'react'
+
 import Comments from '~/containers/unit/Comments'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
 import DrawerHeader from './DrawerHeader'
 import Viewer from './Viewer'
 
-import { useStore } from './store'
+import useLogic from './useLogic'
 import { Wrapper, CommentsWrapper } from './styles'
-import { useInit } from './logic'
-
-// const CollectionFolder = dynamic(
-//   () => import('~/containers/tool/CollectionFolder'),
-//   {
-//     ssr: false,
-//   },
-// )
 
 export default () => {
-  const store = useStore()
-  useInit(store)
-  const { viewingArticle, documentData, loading } = store
-  const article = Object.assign(viewingArticle, { document: documentData })
+  const { article, loadArticle } = useLogic()
+
+  useEffect(() => {
+    loadArticle()
+  }, [])
+
+  if (!article) return <LavaLampLoading top={20} left={20} />
 
   return (
     <Wrapper $testid="article-viewer">
       <DrawerHeader />
       {/* @ts-ignore */}
       {/* <CollectionFolder /> */}
-      <Viewer article={article} loading={loading} />
+      <Viewer article={article} />
       <CommentsWrapper>
         <Comments />
       </CommentsWrapper>

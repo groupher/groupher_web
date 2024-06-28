@@ -26,8 +26,6 @@ const TagsBar: FC<TProps> = ({ onSelect }) => {
     syncActiveTagFromURL,
   } = useLogic()
 
-  console.log('## tags: ', tags)
-
   useEffect(() => {
     syncActiveTagFromURL()
   }, [])

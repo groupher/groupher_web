@@ -14,6 +14,8 @@ type TProps = {
 const CatItem: FC<TProps> = ({ onClick }) => {
   const { article } = useViewingArticle()
 
+  if (!article) return null
+
   if (article.cat) {
     const TheIcon = Icon[article.cat]
     return (

@@ -121,7 +121,7 @@ export const useInit = (_store: TStore): void => {
   useEffect(() => {
     store = _store
     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
-    loadArticle()
+    // loadArticle()
 
     return () => {
       store.reset()

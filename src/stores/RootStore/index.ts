@@ -24,7 +24,6 @@ import {
   CommentsStore,
   DrawerStore,
   CoverEditorStore,
-  ArticleViewerStore,
   ArticleEditorStore,
 } from '..'
 
@@ -34,7 +33,6 @@ const rootStore = T.model({
   activeDemo: T.opt(T.str, ''),
   // account: T.opt(AccountStore, {}),
   viewing: T.opt(ViewingStore, {}),
-  articleViewer: T.opt(ArticleViewerStore, {}),
   articles: T.opt(ArticlesStore, {}),
   comments: T.opt(CommentsStore, {}),
 

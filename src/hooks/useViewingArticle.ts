@@ -32,7 +32,7 @@ export default (): TRet => {
       return store[curThread]
     }
     return {}
-  }, [])
+  }, [store])
 
   return {
     article,

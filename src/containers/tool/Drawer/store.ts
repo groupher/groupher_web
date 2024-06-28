@@ -10,7 +10,6 @@ import type { TRootStore, TThread, TArticle } from '~/spec'
 import { DASHBOARD_DESC_LAYOUT } from '~/const/layout'
 import { ARTICLE_THREAD } from '~/const/thread'
 import METRIC from '~/const/metric'
-
 import TYPE from '~/const/type'
 
 import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'

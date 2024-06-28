@@ -15,7 +15,7 @@ const useNameAlias = (group = 'kanban'): Record<string, TNameAlias> => {
 
   const curAlias = useMemo(() => store.nameAlias, [community])
 
-  console.log('## cacle name alias, FIXME')
+  // console.log('## cacle name alias, FIXME')
 
   if (!group) {
     aliasList = curAlias

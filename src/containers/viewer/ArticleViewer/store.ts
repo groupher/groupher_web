@@ -51,6 +51,7 @@ const ArticleViewer = T.model('ArticleViewer', {
   }))
 
 export type TStore = Instance<typeof ArticleViewer>
+// @ts-ignore
 export const useStore = (): TStore => useMobxContext().store.articleViewer
 
 export default ArticleViewer

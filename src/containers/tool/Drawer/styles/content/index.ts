@@ -9,6 +9,7 @@ export const Wrapper = styled.div<{ type: string }>`
   height: ${({ type }) =>
     isWideMode(type) ? '100vh' : `calc(100vh - ${NARROW_HEIGHT_OFFSET * 2}px)`};
   overflow-y: scroll;
+  border: 2px solid blue;
 `
 
 export const InnerWrapper = styled.div``

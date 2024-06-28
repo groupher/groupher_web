@@ -58,7 +58,6 @@ const RealModal: FC<TProps> = ({
     }
     if (visibleOnPage && !show) {
       toggleGlobalBlur(false)
-      unlockPage()
     }
   }, [show, visibleOnPage])
 

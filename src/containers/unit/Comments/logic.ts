@@ -74,7 +74,7 @@ export const loadComments = (page = 1): void => {
     mode,
     filter: { page, size: PAGI_SIZE },
   }
-  console.log('## loadComments args: ', args)
+  // console.log('## loadComments args: ', args)
   sr71$.query(S.pagedComments, args)
 }
 
