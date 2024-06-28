@@ -56,7 +56,6 @@ const rootStore = T.model({
   viewing: T.opt(ViewingStore, {}),
   articles: T.opt(ArticlesStore, {}),
   comments: T.opt(CommentsStore, {}),
-  errorCode: T.maybeNull(T.number),
 
   // toolbox
   drawer: T.opt(DrawerStore, { visible: false }),
