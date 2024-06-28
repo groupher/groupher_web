@@ -6,8 +6,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
   padding: 15px 66px;
-  min-height: 1800px;
-  border: 2px solid tomato;
+  min-height: 1000px;
 `
 export const CommentsWrapper = styled.div`
   min-height: 400px;

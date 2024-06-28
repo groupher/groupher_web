@@ -30,7 +30,6 @@ export default (): TRet => {
     // const { document, ...restArticle } = article
     // store.mark({ document })
     // store.setViewing({ [thread]: mergeRight(store.viewingArticle, restArticle) })
-    console.log('## thread: ', thread)
     viewing.commit({ [thread]: article })
 
     setTimeout(() => {
