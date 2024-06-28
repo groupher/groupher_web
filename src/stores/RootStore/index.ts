@@ -7,7 +7,7 @@
 
 import { mergeRight } from 'ramda'
 
-import type { TRoute, TThread, TArticle } from '~/spec'
+import type { TThread, TArticle } from '~/spec'
 
 import EVENT from '~/const/event'
 
@@ -15,8 +15,6 @@ import { T, markStates, type Instance } from '~/mobx'
 import { toast, send } from '~/signal'
 
 import {
-  // domain
-  RouteStore,
   // AccountStore,
   RichEditorStore,
   // HeaderStore,
@@ -55,7 +53,6 @@ const rootStore = T.model({
   isMobile: T.opt(T.bool, false),
   activeDemo: T.opt(T.str, ''),
   // account: T.opt(AccountStore, {}),
-  route: T.opt(RouteStore, {}),
   viewing: T.opt(ViewingStore, {}),
   articles: T.opt(ArticlesStore, {}),
   comments: T.opt(CommentsStore, {}),
@@ -100,13 +97,11 @@ const rootStore = T.model({
     get viewingArticle(): TArticle {
       return self.viewing.viewingArticle
     },
-    get curRoute(): TRoute {
-      return self.route.curRoute
-    },
   }))
   .actions((self) => ({
     markRoute(query, opt = {}): void {
-      self.route.markRoute(query, opt)
+      console.log('## TODO mark route')
+      // self.route.markRoute(query, opt)
     },
     showTopModeline(bool: boolean): void {
       // self.modeLine.showTopBar(bool)

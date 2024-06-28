@@ -11,7 +11,6 @@ import type {
   TUser,
   TArticle,
   TThread,
-  TRoute,
   TID,
   TPagedComments,
   TComment,
@@ -91,10 +90,6 @@ const CommentsStore = T.model('CommentsStore', {
         totalCount,
         participants: toJS(self.participants),
       }
-    },
-    get curRoute(): TRoute {
-      const root = getParent(self) as TRootStore
-      return root.curRoute
     },
     get isAllFolded(): boolean {
       const slf = self as TStore

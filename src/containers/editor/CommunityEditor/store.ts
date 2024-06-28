@@ -5,7 +5,7 @@
 
 import { pick, values, isEmpty } from 'ramda'
 
-import type { TRootStore, TRoute } from '~/spec'
+import type { TRootStore } from '~/spec'
 import { T, getParent, markStates, type Instance, useMobxContext } from '~/mobx'
 
 import type {
@@ -43,10 +43,6 @@ const CommunityEditor = T.model('CommunityEditorStore', {
   desc: T.opt(T.string, ''),
 })
   .views((self) => ({
-    get curRoute(): TRoute {
-      const root = getParent(self) as TRootStore
-      return root.curRoute
-    },
     get applyMsg(): string {
       const { homepage, extraInfo } = self
 
