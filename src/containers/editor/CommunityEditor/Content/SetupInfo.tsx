@@ -1,17 +1,11 @@
-import { type FC, memo } from 'react'
-
 import FakeBrowser from './FakeBrowser'
 
-import type { TSetupInfoStatus } from '../spec'
 import { STEP } from '../constant'
+import useLogic from '../useLogic'
 import { Wrapper } from '../styles/content/setup_domain'
 
-type TProps = {
-  status: TSetupInfoStatus
-}
-
-const SetupInfo: FC<TProps> = ({ status }) => {
-  const { slug, title, desc, logo, communityType } = status
+export default () => {
+  const { slug, title, desc, logo, communityType } = useLogic()
 
   return (
     <Wrapper>
@@ -26,5 +20,3 @@ const SetupInfo: FC<TProps> = ({ status }) => {
     </Wrapper>
   )
 }
-
-export default memo(SetupInfo)

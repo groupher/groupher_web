@@ -4,14 +4,12 @@
  *
  */
 
-import { type FC, memo } from 'react'
-
 import ArrowLinker from '~/widgets/ArrowLinker'
 
 import DemoCommunity from './DemoCommunity'
 import COMMUNITY_INTRO from './communityIntros'
-import type { TSelectTypeStatus } from '../spec'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   LeftBlock,
@@ -24,11 +22,9 @@ import {
   CommunityDemoWrapper,
 } from '../styles/content/select_type'
 
-type TProps = {
-  status: TSelectTypeStatus
-}
+export default () => {
+  const { communityType } = useLogic()
 
-const SelectType: FC<TProps> = ({ status: { communityType } }) => {
   if (!communityType) return null
   const intro = COMMUNITY_INTRO[communityType]
 
@@ -59,5 +55,3 @@ const SelectType: FC<TProps> = ({ status: { communityType } }) => {
     </Wrapper>
   )
 }
-
-export default memo(SelectType)

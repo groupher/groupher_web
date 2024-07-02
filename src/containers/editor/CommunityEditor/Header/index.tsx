@@ -1,20 +1,15 @@
-import type { FC } from 'react'
-
 import { SpaceGrow } from '~/widgets/Common'
 import AccountUnit from '~/widgets/AccountUnit'
 import HomeLogo from '~/widgets/HomeLogo'
 
 import StepMap from './StepMap'
 
-import type { THeaderStatus } from '../spec'
+import useLogic from '../useLogic'
 import { Wrapper, Title, Divider, SubTitle } from '../styles/header'
 
-type TProps = {
-  status: THeaderStatus
-}
-
-const Header: FC<TProps> = ({ status }) => {
-  const { step, showStep, communityType } = status
+export default () => {
+  const { headerStatus } = useLogic()
+  const { step, showStep, communityType } = headerStatus
 
   return (
     <Wrapper>
@@ -30,5 +25,3 @@ const Header: FC<TProps> = ({ status }) => {
     </Wrapper>
   )
 }
-
-export default Header

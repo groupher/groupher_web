@@ -4,41 +4,21 @@
  *
  */
 
-import { type FC, memo } from 'react'
-
 import useAccount from '~/hooks/useAccount'
 
 import SelectType from './SelectType'
 import SetupDomain from './SetupDomain'
 import SetupInfo from './SetupInfo'
 
-import type {
-  TStep,
-  TValidState,
-  TSelectTypeStatus,
-  TSetupDomainStatus,
-  TSetupInfoStatus,
-} from '../spec'
 import { STEP } from '../constant'
 
+import useLogic from '../useLogic'
 import { Wrapper } from '../styles/content'
 
-type TProps = {
-  step: TStep
-  validState: TValidState
-  selectTypeStatus: TSelectTypeStatus
-  setupDomainStatus: TSetupDomainStatus
-  setupInfoStatus: TSetupInfoStatus
-}
-
-const Content: FC<TProps> = ({
-  step,
-  validState,
-  selectTypeStatus,
-  setupDomainStatus,
-  setupInfoStatus,
-}) => {
+export default () => {
   const { isLogin } = useAccount()
+  const { step, validState } = useLogic()
+
   if (step === STEP.FINISHED) return null
 
   if (!validState.hasPendingApply && !isLogin) {
@@ -49,15 +29,15 @@ const Content: FC<TProps> = ({
     return null
   }
 
-  let stepComp
+  let stepComp = null
 
   switch (step) {
     case STEP.SELECT_TYPE: {
-      stepComp = <SelectType status={selectTypeStatus} />
+      stepComp = <SelectType />
       break
     }
     case STEP.SETUP_DOMAIN: {
-      stepComp = <SetupDomain status={setupDomainStatus} />
+      stepComp = <SetupDomain />
       break
     }
     case STEP.SETUP_EXTRA: {
@@ -65,12 +45,10 @@ const Content: FC<TProps> = ({
       break
     }
     default: {
-      stepComp = <SetupInfo status={setupInfoStatus} />
+      stepComp = <SetupInfo />
       break
     }
   }
 
   return <Wrapper>{stepComp}</Wrapper>
 }
-
-export default memo(Content)
