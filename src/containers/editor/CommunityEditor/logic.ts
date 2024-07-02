@@ -1,15 +1,12 @@
 import { useEffect } from 'react'
 import { pick } from 'ramda'
 
-import type { TEditValue } from '~/spec'
 import EVENT from '~/const/event'
 import ERR from '~/const/err'
 import { errRescue } from '~/signal'
 import asyncSuit from '~/async'
-import { updateEditing } from '~/mobx'
 
 import type { TStore } from './store'
-import type { TCommunityType } from './spec'
 import { STEP } from './constant'
 
 import S from './schema'
@@ -27,19 +24,6 @@ const checkPendingApply = () => {
   // sr71$.query(S.hasPendingCommunityApply, {})
 }
 
-/**
- * change the type of the creating community
- * 改变创建社区类型
- * @public
- */
-export const communityTypeOnChange = (communityType: TCommunityType): void => {
-  store.mark({ communityType })
-}
-
-export const isOfficalOnChange = (isOfficalValid: boolean): void => {
-  store.mark({ isOfficalValid })
-}
-
 export const applyCommunity = (): void => {
   const args = pick(['title', 'logo', 'desc', 'slug', 'applyMsg'], store)
 
@@ -51,19 +35,6 @@ export const applyCommunity = (): void => {
     // tmp
     logo: 'https://assets.groupher.com/communities/groupher-alpha.png',
   })
-}
-
-/**
- * handle input field change
- * @param {part} string field name
- * @param {e} htmlEvent
- * @public
- */
-export const inputOnChange = (e: TEditValue, part: string): void => {
-  if (part === 'slug') {
-    store.mark({ communityExist: false })
-  }
-  updateEditing(store, part, e)
 }
 
 /* when error occured cancel all the loading state */
