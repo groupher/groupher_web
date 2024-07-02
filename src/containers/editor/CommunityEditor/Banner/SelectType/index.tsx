@@ -38,7 +38,7 @@ export default () => {
       <InnerWrapper>
         <IntroTitle>你创建的反馈社区将服务于?</IntroTitle>
 
-        <TypeBoxes communityType={communityType} />
+        <TypeBoxes />
 
         {!communityType && <Br bottom={200} />}
         {communityType && (

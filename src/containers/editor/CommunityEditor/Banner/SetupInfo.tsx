@@ -22,11 +22,8 @@ import {
   InputBox,
 } from '../styles/banner/setup_info'
 
-import { pervStep, nextStep, inputOnChange } from '../logic'
-
-// const SetupInfo: FC<TProps> = ({ status, validState }) => {
 export default () => {
-  const { title, desc, logo, validState } = useLogic()
+  const { title, desc, logo, validState, pervStep, nextStep, inputOnChange } = useLogic()
 
   const { isTitleValid, isDescValid, isLogoValid } = validState
   const isValid = isTitleValid && isDescValid && isLogoValid

@@ -16,7 +16,7 @@ import useLogic from '../useLogic'
 import { Wrapper } from '../styles/banner'
 
 export default () => {
-  const { count, step } = useLogic()
+  const { step } = useLogic()
 
   let stepComp = null
 
@@ -44,10 +44,5 @@ export default () => {
     }
   }
 
-  return (
-    <Wrapper $testid="create-community-digest">
-      {stepComp}
-      <h2>{count}</h2>
-    </Wrapper>
-  )
+  return <Wrapper $testid="create-community-digest">{stepComp}</Wrapper>
 }

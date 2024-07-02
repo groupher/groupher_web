@@ -1,9 +1,9 @@
-import { type FC, memo } from 'react'
-
 import useTheme from '~/hooks/useTheme'
 import THEME from '~/const/theme'
 import { SpaceGrow } from '~/widgets/Common'
 
+import { COMMUNITY_CATS } from '../../constant'
+import useLogic from '../../useLogic'
 import {
   Wrapper,
   Box,
@@ -15,16 +15,9 @@ import {
   Icon,
 } from '../../styles/banner/select_type/type_boxes'
 
-import type { TCommunityType } from '../../spec'
-import { COMMUNITY_CATS } from '../../constant'
-import { communityTypeOnChange } from '../../logic'
-
-type TProps = {
-  communityType: TCommunityType
-}
-
-const TypeBoxes: FC<TProps> = ({ communityType }) => {
+export default () => {
   const { theme } = useTheme()
+  const { communityType, communityTypeOnChange } = useLogic()
 
   return (
     <Wrapper key={theme}>
@@ -57,5 +50,3 @@ const TypeBoxes: FC<TProps> = ({ communityType }) => {
     </Wrapper>
   )
 }
-
-export default memo(TypeBoxes)

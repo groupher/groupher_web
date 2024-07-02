@@ -10,8 +10,6 @@ import type { TCommunity } from '~/spec'
 
 import { Wrapper, Community, Logo, Title } from '../styles/content/demo_community'
 
-// import { searchOnChange } from './logic'
-
 type TProps = {
   item: TCommunity
 }

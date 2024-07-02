@@ -9,7 +9,7 @@ import { Wrapper, Title, Divider, SubTitle } from '../styles/header'
 
 export default () => {
   const { headerStatus } = useLogic()
-  const { step, showStep, communityType } = headerStatus
+  const { showStep } = headerStatus
 
   return (
     <Wrapper>
@@ -18,7 +18,7 @@ export default () => {
       <Divider />
       <SubTitle>创建社区</SubTitle>
       <SpaceGrow />
-      {showStep && <StepMap step={step} communityType={communityType} />}
+      {showStep && <StepMap />}
       <SpaceGrow />
 
       <AccountUnit top={-3} />
