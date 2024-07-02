@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { pick } from 'ramda'
-import { confetti } from 'tsparticles-confetti'
 
 import type { TEditValue } from '~/spec'
 import EVENT from '~/const/event'
@@ -23,46 +22,6 @@ const sr71$ = new SR71({
 
 let store: TStore | undefined
 let sub$ = null
-
-/**
- * pervious step based on current step
- * 当前流程的上一步流程
- * @public
- */
-export const pervStep = (): void => {
-  const { step } = store
-
-  if (step === STEP.SETUP_DOMAIN) store.mark({ step: STEP.SELECT_TYPE })
-  if (step === STEP.SETUP_INFO) store.mark({ step: STEP.SETUP_DOMAIN })
-  if (step === STEP.SETUP_EXTRA) store.mark({ step: STEP.SETUP_INFO })
-}
-
-/**
- * next step based on current step
- * 当前流程的下一步流程
- * @public
- */
-export const nextStep = (): void => {
-  const { step } = store
-
-  if (step === STEP.SELECT_TYPE) store.mark({ step: STEP.SETUP_DOMAIN })
-  if (step === STEP.SETUP_DOMAIN) {
-    checkIfCommunityExist()
-  }
-  if (step === STEP.SETUP_INFO) {
-    store.mark({ step: STEP.SETUP_EXTRA })
-  }
-  if (step === STEP.SETUP_EXTRA) {
-    applyCommunity()
-  }
-}
-
-const checkIfCommunityExist = () => {
-  const { slug } = store
-
-  store.mark({ checking: true, communityExist: false })
-  sr71$.query(S.isCommunityExist, { slug })
-}
 
 const checkPendingApply = () => {
   // sr71$.query(S.hasPendingCommunityApply, {})
@@ -105,44 +64,6 @@ export const inputOnChange = (e: TEditValue, part: string): void => {
     store.mark({ communityExist: false })
   }
   updateEditing(store, part, e)
-}
-
-/**
- * finish tada effect
- */
-export const tada = () => {
-  const defaults = {
-    spread: 360,
-    ticks: 100,
-    gravity: 0,
-    decay: 0.94,
-    startVelocity: 30,
-  }
-
-  function shoot() {
-    confetti({
-      ...defaults,
-      particleCount: 20,
-      scalar: 1.2,
-      shapes: ['circle', 'square', 'heart'],
-      colors: ['#F8D678', '#F5C5C8', '#BDA3F0', '#C9D8FD', '#DCF8FD'],
-    })
-
-    confetti({
-      ...defaults,
-      particleCount: 20,
-      scalar: 1.8,
-      shapes: ['text'],
-      shapeOptions: {
-        text: {
-          value: ['🦄', '🌈'],
-        },
-      },
-    })
-  }
-
-  setTimeout(shoot, 0)
-  setTimeout(shoot, 100)
 }
 
 /* when error occured cancel all the loading state */
