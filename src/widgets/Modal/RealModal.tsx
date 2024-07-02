@@ -52,7 +52,7 @@ const RealModal: FC<TProps> = ({
   useShortcut('Escape', handleClose)
 
   useEffect(() => {
-    if (visibleOnPage) {
+    if (show && visibleOnPage) {
       toggleGlobalBlur(true)
       lockPage()
     }

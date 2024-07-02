@@ -72,6 +72,8 @@ export const scrollToComments = (view: TContainer = 'body'): void => {
 export const lockPage = (): void => {
   const safeDocument = getDocument()
 
+  console.log('## lockPage')
+
   if (safeDocument) {
     const el = safeDocument.getElementsByTagName('body')[0]
 

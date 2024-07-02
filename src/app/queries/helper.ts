@@ -19,9 +19,11 @@ import type {
 } from '~/spec'
 import { BUILDIN_ALIAS } from '~/const/name'
 import { THREAD } from '~/const/thread'
+import { HCN } from '~/const/name'
 import URL_PARAM from '~/const/url_param'
 import { nilOrEmpty } from '~/validator'
 import {
+  ROUTE,
   STATIC_ROUTES,
   DASHBOARD_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
@@ -118,6 +120,9 @@ export const useArticleParams = (): TArticleParams => {
 }
 
 export const parseCommunity = (communityPath: string): string => {
+  const pathname = usePathname()
+  if (pathname === ROUTE.APPLY_COMMUNITY) return HCN
+
   if (!communityPath) return null // HCN
   if (communityPath === '_next') return null
 

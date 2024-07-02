@@ -13,6 +13,7 @@ import SetupExtra from './SetupExtra'
 import Finished from './Finished'
 
 import { Wrapper } from '../styles/banner'
+import useLogic from '../useLogic'
 import type {
   TStep,
   TSelectTypeStatus,
@@ -43,6 +44,8 @@ const Banner: FC<TProps> = ({
   finishedStatus,
   validState,
 }) => {
+  const { count } = useLogic()
+
   let stepComp
 
   switch (step) {
@@ -68,7 +71,12 @@ const Banner: FC<TProps> = ({
     }
   }
 
-  return <Wrapper $testid="create-community-digest">{stepComp}</Wrapper>
+  return (
+    <Wrapper $testid="create-community-digest">
+      {stepComp}
+      <h2>{count}</h2>
+    </Wrapper>
+  )
 }
 
 export default memo(Banner)

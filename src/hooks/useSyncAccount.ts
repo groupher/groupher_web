@@ -6,7 +6,7 @@ import useSubStore from '~/hooks/useSubStore'
 import { debounce } from '~/helper'
 import BStore from '~/utils/bstore'
 
-const useSyncAccount = (): TAccount => {
+export default (): TAccount => {
   const { isLogin, setSession, accountInfo } = useSubStore('account')
 
   const [isLinkClickListenerAdded, setIsLinkClickListenerAdded] = useState(false)
@@ -58,5 +58,3 @@ const useSyncAccount = (): TAccount => {
 
   return accountInfo
 }
-
-export default useSyncAccount

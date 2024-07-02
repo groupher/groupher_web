@@ -4,22 +4,22 @@
  *
  */
 
-import type { FC } from 'react'
-
 import useMetric from '~/hooks/useMetric'
 
 import Header from './Header'
 import Banner from './Banner'
 import Content from './Content'
 
+import useLogic from './useLogic'
+import { useInit } from './logic'
 import { useStore } from './store'
 import { Wrapper, InnerWrapper, ContentWrapper } from './styles'
-import { useInit } from './logic'
 
-const CommunityEditor: FC = () => {
+export default () => {
   const store = useStore()
   useInit(store)
   const metric = useMetric()
+  const { count, add } = useLogic()
 
   const {
     step,
@@ -35,6 +35,8 @@ const CommunityEditor: FC = () => {
   return (
     <Wrapper metric={metric}>
       <Header status={headerStatus} />
+      <h2>{count}</h2>
+      <button onClick={add}>+</button>
       <Banner
         step={step}
         selectTypeStatus={selectTypeStatus}
@@ -58,5 +60,3 @@ const CommunityEditor: FC = () => {
     </Wrapper>
   )
 }
-
-export default CommunityEditor

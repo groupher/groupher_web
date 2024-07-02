@@ -3,11 +3,7 @@
 import CommunityEditor from '~/containers/editor/CommunityEditor'
 
 const ApplyCommunity = () => {
-  return (
-    <>
-      <CommunityEditor />
-    </>
-  )
+  return <CommunityEditor />
 }
 
 export default ApplyCommunity
