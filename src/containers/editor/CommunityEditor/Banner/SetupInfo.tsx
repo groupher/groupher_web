@@ -1,5 +1,3 @@
-import { type FC, memo } from 'react'
-
 import { nilOrEmpty } from '~/validator'
 
 import OSSUploader from '~/widgets/OSSUploader'
@@ -8,6 +6,7 @@ import { Br, Space } from '~/widgets/Common'
 
 import NextStepButton from './NextStepButton'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   IntroTitle,
@@ -23,16 +22,11 @@ import {
   InputBox,
 } from '../styles/banner/setup_info'
 
-import type { TSetupInfoStatus, TValidState } from '../spec'
 import { pervStep, nextStep, inputOnChange } from '../logic'
 
-type TProps = {
-  status: TSetupInfoStatus
-  validState: TValidState
-}
-
-const SetupInfo: FC<TProps> = ({ status, validState }) => {
-  const { title, desc, logo } = status
+// const SetupInfo: FC<TProps> = ({ status, validState }) => {
+export default () => {
+  const { title, desc, logo, validState } = useLogic()
 
   const { isTitleValid, isDescValid, isLogoValid } = validState
   const isValid = isTitleValid && isDescValid && isLogoValid
@@ -81,5 +75,3 @@ const SetupInfo: FC<TProps> = ({ status, validState }) => {
     </Wrapper>
   )
 }
-
-export default memo(SetupInfo)

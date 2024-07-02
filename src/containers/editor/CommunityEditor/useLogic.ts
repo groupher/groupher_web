@@ -1,5 +1,7 @@
 import { proxy, useSnapshot } from 'valtio'
-import { pick, isEmpty } from 'ramda'
+import { pick, isEmpty, keys, mergeDeepRight } from 'ramda'
+
+import type { TEditValue } from '~/spec'
 
 import type {
   TStore,
@@ -10,13 +12,20 @@ import type {
   TSetupExtraStatus,
   TFinishedStatus,
   TValidState,
+  TCommunityType,
 } from './spec'
 import { STEP } from './constant'
 
 type TRet = {
   count: number
   add: () => void
-}
+  communityTypeOnChange: (communityType: TCommunityType) => void
+  isOfficalOnChange: (isOfficalValid: boolean) => void
+  applyCommunity: () => void
+  pervStep: () => void
+  nextStep: () => void
+  inputOnChange: (e: TEditValue, part: string) => void
+} & TStore
 
 export const store = proxy<TStore>({
   count: 10,
@@ -111,6 +120,10 @@ export const store = proxy<TStore>({
       store,
     )
   },
+
+  commit: (patch: Partial<TStore>): void => {
+    Object.assign(store, mergeDeepRight(store, patch))
+  },
 })
 
 export default (): TRet => {
@@ -120,10 +133,80 @@ export default (): TRet => {
     store.count++
   }
 
-  // drived
+  const checkIfCommunityExist = () => {
+    const { slug } = store
+
+    store.commit({ checking: true, communityExist: false })
+    console.log('## check isCommunityExist: ', slug)
+    // sr71$.query(S.isCommunityExist, { slug })
+  }
+
+  const pervStep = (): void => {
+    const { step } = store
+
+    if (step === STEP.SETUP_DOMAIN) store.commit({ step: STEP.SELECT_TYPE })
+    if (step === STEP.SETUP_INFO) store.commit({ step: STEP.SETUP_DOMAIN })
+    if (step === STEP.SETUP_EXTRA) store.commit({ step: STEP.SETUP_INFO })
+  }
+
+  const nextStep = (): void => {
+    const { step } = store
+
+    if (step === STEP.SELECT_TYPE) store.commit({ step: STEP.SETUP_DOMAIN })
+    if (step === STEP.SETUP_DOMAIN) {
+      checkIfCommunityExist()
+    }
+    if (step === STEP.SETUP_INFO) {
+      store.commit({ step: STEP.SETUP_EXTRA })
+    }
+    if (step === STEP.SETUP_EXTRA) {
+      applyCommunity()
+    }
+  }
+
+  /**
+   * change the type of the creating community
+   * 改变创建社区类型
+   * @public
+   */
+  const communityTypeOnChange = (communityType: TCommunityType): void => {
+    store.commit({ communityType })
+  }
+
+  const isOfficalOnChange = (isOfficalValid: boolean): void => store.commit({ isOfficalValid })
+
+  const applyCommunity = (): void => {
+    const args = pick(['title', 'logo', 'desc', 'slug', 'applyMsg'], store)
+
+    store.commit({ submitting: true })
+
+    console.log('## applyCommunity: ', args)
+
+    // sr71$.mutate(S.applyCommunity, {
+    //   ...args,
+    //   applyCategory: store.communityType,
+    //   // tmp
+    //   logo: 'https://assets.groupher.com/communities/groupher-alpha.png',
+    // })
+  }
+
+  const inputOnChange = (e: TEditValue, part: string): void => {
+    if (part === 'slug') {
+      store.commit({ communityExist: false })
+    }
+    // @ts-ignore
+    store.commit({ [part]: e?.target.value || e })
+  }
 
   return {
-    add,
+    ...pick(keys(snap), snap),
     count: snap.count,
+    add,
+    pervStep,
+    nextStep,
+    communityTypeOnChange,
+    isOfficalOnChange,
+    applyCommunity,
+    inputOnChange,
   }
 }

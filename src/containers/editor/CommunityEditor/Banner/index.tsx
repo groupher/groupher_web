@@ -4,69 +4,42 @@
  *
  */
 
-import { type FC, memo } from 'react'
-
 import SelectType from './SelectType'
 import SetupDomain from './SetupDomain'
 import SetupInfo from './SetupInfo'
 import SetupExtra from './SetupExtra'
 import Finished from './Finished'
 
-import { Wrapper } from '../styles/banner'
-import useLogic from '../useLogic'
-import type {
-  TStep,
-  TSelectTypeStatus,
-  TSetupDomainStatus,
-  TSetupInfoStatus,
-  TValidState,
-  TSetupExtraStatus,
-  TFinishedStatus,
-} from '../spec'
 import { STEP } from '../constant'
 
-type TProps = {
-  step: TStep
-  selectTypeStatus: TSelectTypeStatus
-  setupDomainStatus: TSetupDomainStatus
-  setupInfoStatus: TSetupInfoStatus
-  setupExtraStatus: TSetupExtraStatus
-  finishedStatus: TFinishedStatus
-  validState: TValidState
-}
+import useLogic from '../useLogic'
+import { Wrapper } from '../styles/banner'
 
-const Banner: FC<TProps> = ({
-  step,
-  selectTypeStatus,
-  setupDomainStatus,
-  setupInfoStatus,
-  setupExtraStatus,
-  finishedStatus,
-  validState,
-}) => {
-  const { count } = useLogic()
+export default () => {
+  const { count, step } = useLogic()
 
-  let stepComp
+  let stepComp = null
 
   switch (step) {
     case STEP.SELECT_TYPE: {
-      stepComp = <SelectType status={selectTypeStatus} validState={validState} />
+      stepComp = <SelectType />
       break
     }
     case STEP.SETUP_INFO: {
-      stepComp = <SetupInfo status={setupInfoStatus} validState={validState} />
+      stepComp = <SetupInfo />
       break
     }
+
     case STEP.SETUP_EXTRA: {
-      stepComp = <SetupExtra status={setupExtraStatus} validState={validState} />
+      stepComp = <SetupExtra />
       break
     }
     case STEP.FINISHED: {
-      stepComp = <Finished status={finishedStatus} />
+      stepComp = <Finished />
       break
     }
     default: {
-      stepComp = <SetupDomain status={setupDomainStatus} validState={validState} />
+      stepComp = <SetupDomain />
       break
     }
   }
@@ -78,5 +51,3 @@ const Banner: FC<TProps> = ({
     </Wrapper>
   )
 }
-
-export default memo(Banner)

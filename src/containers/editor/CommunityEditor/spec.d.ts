@@ -43,6 +43,9 @@ export type TStore = {
   isDescValid: boolean
   isLogoValid: boolean
   validState: TValidState
+
+  // actions
+  commit: (patch: Partial<TStore>) => void
 }
 
 export type THeaderStatus = {

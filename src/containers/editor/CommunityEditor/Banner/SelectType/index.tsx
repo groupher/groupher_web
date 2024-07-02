@@ -4,31 +4,21 @@
  *
  */
 
-import type { FC } from 'react'
-
 import useAccount from '~/hooks/useAccount'
 import { Br } from '~/widgets/Common'
 import ArrowLinker from '~/widgets/ArrowLinker'
 import Checker from '~/widgets/Checker'
 
-import type { TCommunityType, TValidState } from '../../spec'
-
 import NextStepButton from '../NextStepButton'
 import TypeBoxes from './TypeBoxes'
 import WarnBox from './WarnBox'
 
+import useLogic from '../../useLogic'
 import { Wrapper, InnerWrapper, IntroTitle, Note, NextBtn } from '../../styles/banner/select_type'
-import { nextStep, isOfficalOnChange } from '../../logic'
 
-type TProps = {
-  status: {
-    communityType: TCommunityType
-  }
-  validState: TValidState
-}
-
-const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
+export default () => {
   const { isLogin } = useAccount()
+  const { communityType, validState, nextStep, isOfficalOnChange } = useLogic()
 
   if (!validState.hasPendingApply && !isLogin) {
     return <WarnBox title="未登录" desc="创建社区需要先登录，谢谢~" />
@@ -75,5 +65,3 @@ const SelectType: FC<TProps> = ({ status: { communityType }, validState }) => {
     </Wrapper>
   )
 }
-
-export default SelectType
