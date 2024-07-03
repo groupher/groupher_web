@@ -133,7 +133,6 @@ export default (): TRet => {
 
   const checkPendingApply = () => {
     query(S.hasPendingCommunityApply, {}).then(({ hasPendingCommunityApply }) => {
-      console.log('## hasPendingCommunityApply: ', hasPendingCommunityApply)
       snap.commit({ hasPendingApply: hasPendingCommunityApply.exist })
     })
   }
@@ -142,7 +141,6 @@ export default (): TRet => {
     const { slug } = snap
 
     snap.commit({ checking: true, communityExist: false })
-    console.log('## check isCommunityExist: ', slug)
     query(S.isCommunityExist, { slug }).then(({ isCommunityExist }) => {
       snap.commit({ checking: false, communityExist: isCommunityExist.exist })
 
@@ -187,20 +185,15 @@ export default (): TRet => {
   const isOfficalOnChange = (isOfficalValid: boolean): void => snap.commit({ isOfficalValid })
 
   const applyCommunity = (): void => {
-    const args = pick(['title', 'logo', 'desc', 'slug', 'applyMsg'], snap)
+    const params = {
+      ...pick(['title', 'logo', 'desc', 'slug', 'applyMsg'], snap),
+      applyCategory: snap.communityType,
+      logo: 'https://assets.groupher.com/communities/groupher-alpha.png',
+    }
 
     snap.commit({ submitting: true })
-
-    console.log('## applyCommunity: ', args)
-
-    mutate(S.applyCommunity, {
-      ...args,
-      applyCategory: snap.communityType,
-      // tmp
-      logo: 'https://assets.groupher.com/communities/groupher-alpha.png',
-    }).then(({ applyCommunity }) => {
+    mutate(S.applyCommunity, params).then(({ applyCommunity }) => {
       const { slug, title, desc, logo } = applyCommunity
-
       snap.commit({ step: STEP.FINISHED, submitting: false, slug, title, desc, logo })
     })
   }
