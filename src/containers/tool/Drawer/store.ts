@@ -63,10 +63,6 @@ const DrawerStore = T.model('DrawerStore', {
   // body:
 })
   .views((self) => ({
-    get isMobile(): boolean {
-      const root = getParent(self) as TRootStore
-      return root.isMobile
-    },
     get optionsData() {
       return toJS(self.options)
     },
@@ -124,7 +120,8 @@ const DrawerStore = T.model('DrawerStore', {
       slf.options = mergeRight(defaultOptions, options)
       lockPage()
 
-      if (slf.isMobile) {
+      const isMobile = false
+      if (isMobile) {
         slf.canBeClose = false
       }
 

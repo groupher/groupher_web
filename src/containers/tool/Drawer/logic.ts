@@ -144,7 +144,9 @@ const DataResolver = [
     match: asyncRes(EVENT.DRAWER.OPEN),
     action: (res) => {
       const payload = res[EVENT.DRAWER.OPEN]
-      if (!includes(payload.type, FUNCTION_TYPES) && store.isMobile) {
+      const isMobile = false
+
+      if (!includes(payload.type, FUNCTION_TYPES) && isMobile) {
         const { data: article } = payload
         const targetUrl = `/${article.meta.thread.toLowerCase()}/${article.id}`
 

@@ -25,8 +25,6 @@ import {
 } from '..'
 
 const rootStore = T.model({
-  // domain stores
-  isMobile: T.opt(T.bool, false),
   activeDemo: T.opt(T.str, ''),
   // account: T.opt(AccountStore, {}),
   viewing: T.opt(ViewingStore, {}),
@@ -74,12 +72,6 @@ const rootStore = T.model({
     updateViewingIfNeed(type, sobj): void {
       self.viewing.updateViewingIfNeed(type, sobj)
     },
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    sponsorHepler(): void {},
-    cashierHelper(opt): void {
-      // self.footer.closeSponsor()
-      // self.cashier.callCashier(opt)
-    },
     authWarning(options = {}): void {
       const defaultOpt = {
         position: 'topCenter',
@@ -100,17 +92,6 @@ const rootStore = T.model({
     changesetErr(options): void {
       // @ts-ignore TODO:
       // toast('error', options)
-    },
-    isMemberOf(type): boolean {
-      // return self.account.isMemberOf(type)
-      return false
-    },
-    // get general args when query paged articles from server
-    onAdsClose(): void {
-      // const { isMemberOf } = self.account
-      // if (isMemberOf('seniorMember') || isMemberOf('sponsorMember')) {
-      //   return void
-      // }
     },
     mark(sobj): void {
       markStates(sobj, self)
