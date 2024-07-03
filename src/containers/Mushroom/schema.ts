@@ -1,8 +1,8 @@
 import { P, F } from '~/schemas'
 
 const schema = {
-  getUpvoteSchema: F.getUpvoteSchema,
-  getUndoUpvoteSchema: F.getUndoUpvoteSchema,
+  getUpvote: F.getUpvote,
+  getUndoUpvote: F.getUndoUpvote,
   pagedPosts: P.pagedPosts,
 }
 

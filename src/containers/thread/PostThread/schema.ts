@@ -33,8 +33,8 @@ const schema = {
   pagedArticleTags,
   getPagedArticlesSchema,
   getArticleFreshSchema,
-  getUpvoteSchema: F.getUpvoteSchema,
-  getUndoUpvoteSchema: F.getUndoUpvoteSchema,
+  getUpvote: F.getUpvote,
+  getUndoUpvote: F.getUndoUpvote,
 }
 
 export default schema

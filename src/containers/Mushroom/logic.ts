@@ -137,8 +137,8 @@ export const handleUpvote = (article: TArticle, viewerHasUpvoted: boolean): void
   const queryLatestUsers = true
 
   viewerHasUpvoted
-    ? sr71$.mutate(S.getUpvoteSchema(meta.thread, queryLatestUsers), { id })
-    : sr71$.mutate(S.getUndoUpvoteSchema(meta.thread, queryLatestUsers), { id })
+    ? sr71$.mutate(S.getUpvote(meta.thread, queryLatestUsers), { id })
+    : sr71$.mutate(S.getUndoUpvote(meta.thread, queryLatestUsers), { id })
 }
 
 const handleUovoteRes = ({ upvotesCount, meta }) => {
