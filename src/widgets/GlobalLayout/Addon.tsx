@@ -7,7 +7,6 @@ import { Toaster } from 'sonner'
 import useShortcut from '~/hooks/useShortcut'
 
 import Drawer from '~/containers/tool/Drawer'
-import ErrorBox from '~/containers/tool/ErrorBox'
 import UserListModal from '~/widgets/UserListModal'
 
 // import { Drawer } from './dynamic'
@@ -26,7 +25,6 @@ const Addon: FC = () => {
       <UserListModal />
       <Toaster position="top-center" />
       {/* @ts-ignore */}
-      <ErrorBox />
     </Fragment>
   )
 }

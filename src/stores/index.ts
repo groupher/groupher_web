@@ -14,7 +14,6 @@ export { default as ViewingStore } from './ViewingStore'
 export { default as ArticlesStore } from './ArticlesStore'
 
 // utils store
-export { default as ErrorBoxStore } from '~/containers/tool/ErrorBox/store'
 // export { default as SidebarStore } from '~/containers/unit/Sidebar/store'
 export { default as DrawerStore } from '~/containers/tool/Drawer/store'
 // export { default as HeaderStore } from '~/containers/unit/Header/store'

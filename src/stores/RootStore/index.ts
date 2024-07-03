@@ -17,7 +17,6 @@ import { toast, send } from '~/signal'
 import {
   ViewingStore,
   ArticlesStore,
-  ErrorBoxStore,
   MushroomStore,
   CommentsStore,
   DrawerStore,
@@ -33,9 +32,6 @@ const rootStore = T.model({
 
   // toolbox
   drawer: T.opt(DrawerStore, { visible: false }),
-  // repoEditor: T.opt(RepoEditorStore, {}),
-
-  errorBox: T.opt(ErrorBoxStore, {}),
   mushroom: T.opt(MushroomStore, {}),
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
