@@ -15,7 +15,6 @@ import { T, markStates, type Instance } from '~/mobx'
 import { toast, send } from '~/signal'
 
 import {
-  RichEditorStore,
   ViewingStore,
   ArticlesStore,
   ErrorBoxStore,
@@ -37,8 +36,6 @@ const rootStore = T.model({
   // toolbox
   drawer: T.opt(DrawerStore, { visible: false }),
   // repoEditor: T.opt(RepoEditorStore, {}),
-
-  richEditor: T.opt(RichEditorStore, {}),
 
   errorBox: T.opt(ErrorBoxStore, {}),
   mushroom: T.opt(MushroomStore, {}),
