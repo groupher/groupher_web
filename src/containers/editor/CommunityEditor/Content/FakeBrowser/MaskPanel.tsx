@@ -50,7 +50,7 @@ const MaskPanel: FC<TProps> = ({ step }) => {
   return (
     <Wrapper>
       <Header>
-        <ArrowLinker href="/" left={-20}>
+        <ArrowLinker href="/" left={0}>
           自带丰富功能，查看完整特性
         </ArrowLinker>
         <Divider />

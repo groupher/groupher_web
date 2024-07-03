@@ -30,8 +30,6 @@ export { default as CommentsStore } from '~/containers/unit/Comments/store'
 // user page
 
 // editor
-export { default as CommunityEditorStore } from '~/containers/editor/CommunityEditor/store'
-// export { default as WorksEditorStore } from '~/containers/editor/WorksEditor/store'
 
 // GEN: EXPORT CONTAINERS STORE HERE
 export { default as CoverEditorStore } from '~/containers/editor/CoverEditor/store'

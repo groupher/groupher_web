@@ -20,7 +20,6 @@ import {
   ArticlesStore,
   ErrorBoxStore,
   MushroomStore,
-  CommunityEditorStore,
   CommentsStore,
   DrawerStore,
   CoverEditorStore,
@@ -44,8 +43,6 @@ const rootStore = T.model({
 
   errorBox: T.opt(ErrorBoxStore, {}),
   mushroom: T.opt(MushroomStore, {}),
-
-  communityEditor: T.opt(CommunityEditorStore, {}),
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
   coverEditor: T.opt(CoverEditorStore, {}),

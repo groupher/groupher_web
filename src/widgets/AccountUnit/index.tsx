@@ -36,8 +36,6 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
   useSyncAccount()
   const user = useAccount()
 
-  console.log('## user: ', user)
-
   const { isLogin, nickname } = user
   const { bannerLayout } = useLayout()
 

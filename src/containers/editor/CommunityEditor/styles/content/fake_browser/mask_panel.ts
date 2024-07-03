@@ -45,7 +45,6 @@ export const Header = styled.div`
   ${css.column('align-both')};
   width: 100%;
   margin-bottom: 30px;
-  margin-left: 25px;
 `
 export const Divider = styled.div`
   width: 160px;

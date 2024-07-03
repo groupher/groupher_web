@@ -2,6 +2,7 @@ import { proxy, useSnapshot } from 'valtio'
 import { pick, isEmpty, keys, mergeDeepRight } from 'ramda'
 
 import type { TEditValue } from '~/spec'
+import { query, mutate } from '~/utils/api'
 
 import type {
   TStore,
@@ -16,7 +17,10 @@ import type {
 } from './spec'
 import { STEP } from './constant'
 
+import S from './schema'
+
 type TRet = {
+  checkPendingApply: () => void
   communityTypeOnChange: (communityType: TCommunityType) => void
   isOfficalOnChange: (isOfficalValid: boolean) => void
   applyCommunity: () => void
@@ -127,12 +131,25 @@ export const store = proxy<TStore>({
 export default (): TRet => {
   const snap = useSnapshot(store)
 
+  const checkPendingApply = () => {
+    query(S.hasPendingCommunityApply, {}).then(({ hasPendingCommunityApply }) => {
+      console.log('## hasPendingCommunityApply: ', hasPendingCommunityApply)
+      snap.commit({ hasPendingApply: hasPendingCommunityApply.exist })
+    })
+  }
+
   const checkIfCommunityExist = () => {
-    const { slug } = store
+    const { slug } = snap
 
     snap.commit({ checking: true, communityExist: false })
     console.log('## check isCommunityExist: ', slug)
-    // sr71$.query(S.isCommunityExist, { slug })
+    query(S.isCommunityExist, { slug }).then(({ isCommunityExist }) => {
+      snap.commit({ checking: false, communityExist: isCommunityExist.exist })
+
+      if (!isCommunityExist.exist) {
+        snap.commit({ step: STEP.SETUP_INFO })
+      }
+    })
   }
 
   const pervStep = (): void => {
@@ -176,12 +193,16 @@ export default (): TRet => {
 
     console.log('## applyCommunity: ', args)
 
-    // sr71$.mutate(S.applyCommunity, {
-    //   ...args,
-    //   applyCategory: snap.communityType,
-    //   // tmp
-    //   logo: 'https://assets.groupher.com/communities/groupher-alpha.png',
-    // })
+    mutate(S.applyCommunity, {
+      ...args,
+      applyCategory: snap.communityType,
+      // tmp
+      logo: 'https://assets.groupher.com/communities/groupher-alpha.png',
+    }).then(({ applyCommunity }) => {
+      const { slug, title, desc, logo } = applyCommunity
+
+      snap.commit({ step: STEP.FINISHED, submitting: false, slug, title, desc, logo })
+    })
   }
 
   const inputOnChange = (e: TEditValue, part: string): void => {
@@ -194,6 +215,7 @@ export default (): TRet => {
 
   return {
     ...pick(keys(snap), snap),
+    checkPendingApply,
     pervStep,
     nextStep,
     communityTypeOnChange,
