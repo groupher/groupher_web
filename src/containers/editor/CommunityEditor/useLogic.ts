@@ -29,7 +29,7 @@ type TRet = {
   inputOnChange: (e: TEditValue, part: string) => void
 } & TStore
 
-export const store = proxy<TStore>({
+const store = proxy<TStore>({
   count: 10,
   step: STEP.SELECT_TYPE,
   communityType: null,

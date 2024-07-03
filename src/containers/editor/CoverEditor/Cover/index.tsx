@@ -3,18 +3,19 @@ import { isEmpty } from 'ramda'
 
 import { parseWallpaper } from '~/wallpaper'
 
-import type { TToolboxSetting } from '../spec'
 import { IMAGE_POS } from '../constant'
-
-import { Wrapper, GlassBorder, Image, Light } from '../styles/cover'
 import Placeholder from './Placeholder'
 
+import useLogic from '../useLogic'
+import { Wrapper, GlassBorder, Image, Light } from '../styles/cover'
+
 type TProps = {
-  setting: TToolboxSetting
   imageUrl: string
 }
 
-const Cover: FC<TProps> = ({ setting, imageUrl }) => {
+const Cover: FC<TProps> = ({ imageUrl }) => {
+  const { toolboxSetting: setting } = useLogic()
+
   const hasImage = !isEmpty(imageUrl)
 
   if (!hasImage) {

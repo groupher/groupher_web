@@ -7,6 +7,7 @@ import { parseWallpaper } from '~/wallpaper'
 
 import Tooltip from '~/widgets/Tooltip'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   Block,
@@ -22,7 +23,6 @@ import {
   DirWrapper,
   DirArrowIcon,
 } from '../styles/toolbox/background_block'
-import { wallpaperOnChange, gradientDirOnChange } from '../logic'
 
 type TProps = {
   wallpapers: Record<string, TWallpaper>
@@ -31,6 +31,8 @@ type TProps = {
 }
 
 const BackgroundBlock: FC<TProps> = ({ wallpapers, wallpaper, direction }) => {
+  const { wallpaperOnChange, gradientDirOnChange } = useLogic()
+
   const [panelOpen, setPanelOpen] = useState(false)
 
   return (

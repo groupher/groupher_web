@@ -31,11 +31,7 @@ export { default as CommentsStore } from '~/containers/unit/Comments/store'
 
 // editor
 
-// GEN: EXPORT CONTAINERS STORE HERE
-export { default as CoverEditorStore } from '~/containers/editor/CoverEditor/store'
-// export { default as BlogEditorStore } from '~/containers/editor/BlogEditor/store'
-// export { default as ArticleViewerStore } from '~/containers/viewer/ArticleViewer/store'
 export { default as ArticleEditorStore } from '~/containers/editor/ArticleEditor/store'
-export { default as ModeLineMenuStore } from '~/containers/unit/ModeLineMenu/store'
-export { default as ModeLineStore } from '~/containers/unit/ModeLine/store'
+// export { default as ModeLineMenuStore } from '~/containers/unit/ModeLineMenu/store'
+// export { default as ModeLineStore } from '~/containers/unit/ModeLine/store'
 export { default as MushroomStore } from '~/containers/Mushroom/store'

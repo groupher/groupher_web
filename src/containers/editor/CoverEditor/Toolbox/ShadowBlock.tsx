@@ -6,6 +6,7 @@ import Tooltip from '~/widgets/Tooltip'
 import type { TSettingLevel } from '../spec'
 import { IMAGE_SHADOW, SETTING_LEVEL } from '../constant'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   Block,
@@ -16,13 +17,13 @@ import {
   SelectBox,
   ForbidIcon,
 } from '../styles/toolbox/shadow_block'
-import { shadowOnChange } from '../logic'
 
 type TProps = {
   shadowLevel: TSettingLevel
 }
 
 const ShadowBlock: FC<TProps> = ({ shadowLevel }) => {
+  const { shadowOnChange } = useLogic()
   const [panelOpen, setPanelOpen] = useState(false)
 
   return (

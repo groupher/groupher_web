@@ -22,7 +22,6 @@ import {
   MushroomStore,
   CommentsStore,
   DrawerStore,
-  CoverEditorStore,
   ArticleEditorStore,
 } from '..'
 
@@ -45,7 +44,6 @@ const rootStore = T.model({
   mushroom: T.opt(MushroomStore, {}),
 
   // GEN: PLUG SUBSTORE TO ROOTSTORE
-  coverEditor: T.opt(CoverEditorStore, {}),
   articleEditor: T.opt(ArticleEditorStore, {}),
 })
   .views((self) => ({
