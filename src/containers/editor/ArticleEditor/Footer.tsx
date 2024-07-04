@@ -1,4 +1,4 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TEditMode, TSubmitState } from '~/spec'
 
@@ -34,4 +34,4 @@ const Footer: FC<TProps> = ({ mode, editData, submitState }) => {
   )
 }
 
-export default memo(Footer)
+export default Footer

@@ -173,7 +173,7 @@ const updateRadar = gql`
 
 // viewer_has_subscribed
 const community = gql`
-  query ($slug: String) {
+  query ($slug: String!) {
     community(slug: $slug) {
       id
       logo

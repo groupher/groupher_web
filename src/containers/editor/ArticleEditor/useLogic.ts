@@ -1,13 +1,27 @@
+import { useCallback } from 'react'
 import { pick, keys, mergeDeepRight } from 'ramda'
 import { proxy, useSnapshot } from 'valtio'
 
-import type { TSubmitState, TEditMode } from '~/spec'
+import type { TSubmitState, TEditMode, TTag, TCommunity, TGroupedTags, TArticleCat } from '~/spec'
 import { ARTICLE_CAT } from '~/const/gtd'
 
-import type { TStore } from './spec'
+import { query } from '~/utils/api'
+
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+
+import type { TEditData, TStore } from './spec'
+
+import S from './schema'
 
 type TRet = {
+  getEditData: () => TEditData
+  getGroupedTags: () => TGroupedTags
+  loadCommunity: () => void
+  loadArticle: () => void
   reset: () => void
+  onTagSelect: (tag: TTag) => void
+  catOnChange: (activeCat: TArticleCat) => void
+  changeCommunity: (community: TCommunity) => void
 } & TStore
 
 const store = proxy<TStore>({
@@ -22,7 +36,7 @@ const store = proxy<TStore>({
   copyRight: 'cc',
   isQuestion: false,
 
-  // job spec
+  articleTags: [],
   company: '',
   companyLink: '',
 
@@ -71,6 +85,50 @@ const store = proxy<TStore>({
 
 export default (): TRet => {
   const snap = useSnapshot(store)
+  const curCommunity = useViewingCommunity()
+
+  const getGroupedTags = useCallback((): TGroupedTags => {
+    // const root = getParent(self) as TRootStore
+    // return root.tagsBar.groupedTags
+    return []
+  }, [])
+
+  const getEditData = useCallback((): TEditData => {
+    const tagsIds = snap.articleTags.map((t) => t.id)
+    const baseFields = ['title', 'body', 'copyRight', 'isQuestion', 'linkAddr']
+
+    // @ts-ignore
+    return { ...pick(baseFields, snap), articleTags: tagsIds }
+  }, [])
+
+  const catOnChange = (activeCat: TArticleCat): void => store.commit({ activeCat })
+  const onTagSelect = (activeTag: TTag): void => snap.commit({ activeTag })
+
+  const changeCommunity = (community: TCommunity): void => {
+    console.log('## changeCommunity: ', community)
+  }
+
+  // why need this?
+  const loadCommunity = (): void => {
+    const { mode } = snap
+    if (mode !== 'publish') return
+
+    const slug = curCommunity.slug
+    const params = { slug }
+    console.log('## loadCommunity: ', params)
+
+    query(S.community, params).then((res) => {
+      console.log('## loadCommunity: ', res)
+    })
+  }
+
+  const loadArticle = (): void => {
+    console.log('## loadArticle')
+    // const { thread, viewingArticle } = store
+    // const { id } = viewingArticle
+
+    // sr71$.query(S[thread], { id })
+  }
 
   const reset = (): void => {
     snap.commit({
@@ -85,10 +143,18 @@ export default (): TRet => {
     })
   }
 
+  // @ts-ignore
   return {
     ...pick(keys(snap), snap),
+    getEditData,
+    getGroupedTags,
 
     // actions
+    loadCommunity,
+    loadArticle,
+    changeCommunity,
+    catOnChange,
+    onTagSelect,
     reset,
   }
 }

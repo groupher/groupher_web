@@ -2,7 +2,7 @@
  * ArticleEditor
  */
 
-import type { FC } from 'react'
+import { type FC, useEffect } from 'react'
 
 import type { TEditMode, TMetric } from '~/spec'
 import METRIC from '~/const/metric'
@@ -20,33 +20,49 @@ import TagSelector from '~/widgets/TagSelector'
 import TitleInput from './TitleInput'
 import Footer from './Footer'
 
-import { useStore } from './store'
 // import Settings from './Settings'
+import useLogic from './useLogic'
 import { Wrapper, InnerWrapper, ContentWrapper, FuncRow } from './styles'
-
-import {
-  useInit,
-  // editOnChange,
-  // changeCommunity,
-  onTagSelect,
-  catOnChange,
-} from './logic'
 
 type TProps = {
   metric?: TMetric
 }
 
 const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
-  const store = useStore()
-  useInit(store)
-  const { activeCat, activeTagData } = store
+  const {
+    isArchived,
+    archivedAt,
+    mode,
+    submitState,
+    getGroupedTags,
+    getEditData,
+    allowEdit,
+    activeCat,
+    activeTag,
+    onTagSelect,
+    catOnChange,
+    loadArticle,
+  } = useLogic()
 
-  const { isArchived, archivedAt, mode, submitState, groupedTags, texts, editData, allowEdit } =
-    store
+  // useEffect(() => {
+  //   loadCommunity()
+  // }, [])
 
+  useEffect(() => {
+    if (mode === 'update') loadArticle()
+  }, [mode])
+
+  const groupedTags = getGroupedTags()
+  const editData = getEditData()
   // const { title, body } = editData
   const { title } = editData
 
+  const texts = {
+    holder: {
+      title: '// 帖子标题',
+      body: "// 帖子内容（'Tab' 键插入富文本）",
+    },
+  }
   // const initEditor = mode === 'publish' || body !== '{}'
 
   return (
@@ -68,11 +84,7 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
               right={20}
             />
             <Space left={14} />
-            <TagSelector
-              groupedTags={groupedTags}
-              activeTag={activeTagData}
-              onSelect={onTagSelect}
-            />
+            <TagSelector groupedTags={groupedTags} activeTag={activeTag} onSelect={onTagSelect} />
           </FuncRow>
 
           {/* {initEditor && (

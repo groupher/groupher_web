@@ -1,4 +1,4 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import { Wrapper, Inputer } from '../styles/title_input'
 import { editOnChange } from '../logic'
@@ -23,4 +23,4 @@ const TitleInput: FC<TProps> = ({ title, placeholder }) => {
   )
 }
 
-export default memo(TitleInput)
+export default TitleInput

@@ -1,4 +1,4 @@
-import type { TID, TEditMode, TUser, TArticleCat, TSubmitState } from '~/spec'
+import type { TID, TTag, TEditMode, TUser, TArticleCat, TSubmitState, TGroupedTags } from '~/spec'
 
 export type TStore = {
   mode: TEditMode
@@ -12,6 +12,7 @@ export type TStore = {
   copyRight: string
   isQuestion: boolean
 
+  articleTags: TTag[]
   // job spec
   company: string
   companyLink: string
