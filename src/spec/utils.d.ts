@@ -129,7 +129,6 @@ export type TSubmitState = {
   publishDone?: boolean
   isReady?: boolean
   isArchived?: boolean
-  stepReady?: boolean[]
   isArticleAuthor?: boolean
   mode?: TEditMode
 }

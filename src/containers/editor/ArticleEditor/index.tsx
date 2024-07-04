@@ -8,14 +8,14 @@ import type { TEditMode, TMetric } from '~/spec'
 import METRIC from '~/const/metric'
 import { CONDITION_MODE } from '~/const/mode'
 
-import RichEditor from '~/containers/editor/RichEditor'
+// import RichEditor from '~/containers/editor/RichEditor'
 import { Space } from '~/widgets/Common'
 import ConditionSelector from '~/widgets/ConditionSelector'
 import ArchiveAlert from '~/widgets/ArchiveAlert'
 import NoticeBar from '~/widgets/NoticeBar'
 import TagSelector from '~/widgets/TagSelector'
 
-import ArticleCover from './ArticleCover'
+// import ArticleCover from './ArticleCover'
 
 import TitleInput from './TitleInput'
 import Footer from './Footer'
@@ -26,7 +26,7 @@ import { Wrapper, InnerWrapper, ContentWrapper, FuncRow } from './styles'
 
 import {
   useInit,
-  editOnChange,
+  // editOnChange,
   // changeCommunity,
   onTagSelect,
   catOnChange,
@@ -44,9 +44,10 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
   const { isArchived, archivedAt, mode, submitState, groupedTags, texts, editData, allowEdit } =
     store
 
-  const { title, body } = editData
+  // const { title, body } = editData
+  const { title } = editData
 
-  const initEditor = mode === 'publish' || body !== '{}'
+  // const initEditor = mode === 'publish' || body !== '{}'
 
   return (
     <Wrapper>
@@ -55,7 +56,7 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
           {!allowEdit && <NoticeBar type="notice" content="只有作者可以编辑本内容。" left={25} />}
           {isArchived && <ArchiveAlert date={archivedAt} top={12} bottom={20} left={25} />}
 
-          <ArticleCover />
+          {/* <ArticleCover /> */}
           <TitleInput title={title} placeholder={texts.holder.title} />
           <FuncRow>
             <ConditionSelector
@@ -74,13 +75,13 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
             />
           </FuncRow>
 
-          {initEditor && (
+          {/* {initEditor && (
             <RichEditor
               data={body}
               onChange={(v) => editOnChange(JSON.stringify(v), 'body')}
               placeholder={texts.holder.body}
             />
-          )}
+          )} */}
           <Footer mode={mode as TEditMode} editData={editData} submitState={submitState} />
         </ContentWrapper>
       </InnerWrapper>

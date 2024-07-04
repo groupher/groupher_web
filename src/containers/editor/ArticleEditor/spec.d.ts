@@ -1,4 +1,39 @@
-import type { TID } from '~/spec'
+import type { TID, TEditMode, TUser, TArticleCat, TSubmitState } from '~/spec'
+
+export type TStore = {
+  mode: TEditMode
+  isArchived: boolean
+  archivedAt: string | null
+
+  title: string
+  author: TUser | null
+  body: string
+  linkAddr: string
+  copyRight: string
+  isQuestion: boolean
+
+  // job spec
+  company: string
+  companyLink: string
+
+  // showSubTitle: T.opt(T.bool, false),
+  publishing: boolean
+  publishDone: boolean
+  //
+  wordsCountReady: boolean
+
+  // selectors
+  activeCat: TArticleCat
+  activeTag: TTag
+
+  // drived
+  allowEdit: boolean
+  isArticleAuthor: boolean
+  isReady: boolean
+  submitState: TSubmitState
+
+  commit: (patch: Partial<TStore>) => void
+}
 
 export type TTexts = {
   holder: {
