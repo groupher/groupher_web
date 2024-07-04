@@ -14,14 +14,7 @@ import EVENT from '~/const/event'
 import { T, markStates, type Instance } from '~/mobx'
 import { toast, send } from '~/signal'
 
-import {
-  ViewingStore,
-  ArticlesStore,
-  MushroomStore,
-  CommentsStore,
-  DrawerStore,
-  ArticleEditorStore,
-} from '..'
+import { ViewingStore, ArticlesStore, MushroomStore, CommentsStore, DrawerStore } from '..'
 
 const rootStore = T.model({
   activeDemo: T.opt(T.str, ''),
@@ -33,9 +26,6 @@ const rootStore = T.model({
   // toolbox
   drawer: T.opt(DrawerStore, { visible: false }),
   mushroom: T.opt(MushroomStore, {}),
-
-  // GEN: PLUG SUBSTORE TO ROOTSTORE
-  articleEditor: T.opt(ArticleEditorStore, {}),
 })
   .views((self) => ({
     get isOnline(): boolean {

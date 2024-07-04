@@ -127,10 +127,11 @@ const ArticleEditor = T.model('ArticleEditor', {
   }))
   .actions((self) => ({
     setViewing(article: TArticle): void {
-      const root = getParent(self) as TRootStore
-      const thread = article.meta.thread.toLowerCase()
+      // const root = getParent(self) as TRootStore
+      // const thread = article.meta.thread.toLowerCase()
 
-      root.viewing.setViewing({ viewingThread: thread, [thread]: article })
+      // root.viewing.setViewing({ viewingThread: thread, [thread]: article })
+      console.log('## setViewing: ', article)
     },
     updateEditing(sobj): void {
       const slf = self as TStore
@@ -190,6 +191,7 @@ const ArticleEditor = T.model('ArticleEditor', {
   }))
 
 export type TStore = Instance<typeof ArticleEditor>
+// @ts-ignore
 export const useStore = (): TStore => useMobxContext().store.articleEditor
 
 export default ArticleEditor
