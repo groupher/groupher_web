@@ -42,11 +42,15 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
     onTagSelect,
     catOnChange,
     loadArticle,
+    loadCommunity,
+    articleTags,
   } = useLogic()
 
-  // useEffect(() => {
-  //   loadCommunity()
-  // }, [])
+  useEffect(() => {
+    loadCommunity()
+  }, [])
+
+  console.log('## articleTags: ', articleTags)
 
   useEffect(() => {
     if (mode === 'update') loadArticle()

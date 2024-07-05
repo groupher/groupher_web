@@ -115,7 +115,7 @@ export default (): TRet => {
 
     const slug = curCommunity.slug
     const params = { slug }
-    console.log('## loadCommunity: ', params)
+    // console.log('## loadCommunity: ', params)
 
     query(S.community, params).then((res) => {
       console.log('## loadCommunity: ', res)
