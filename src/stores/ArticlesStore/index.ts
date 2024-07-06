@@ -6,11 +6,10 @@ import { findIndex, propEq, values, mergeRight, has } from 'ramda'
 
 import type {
   TRootStore,
+  TThread,
   TID,
   TArticle,
   TPagedArticles,
-  TCommunity,
-  TThread,
   TResState,
   TArticleFilter,
 } from '~/spec'
@@ -41,19 +40,14 @@ const ArticlesStore = T.model('Articles', {
   resState: T.opt(T.enum('resState', values(TYPE.RES_STATE)), TYPE.RES_STATE.EMPTY),
 })
   .views((self) => ({
-    get curCommunity(): TCommunity {
-      const root = getParent(self) as TRootStore
-      return toJS(root.viewing.community)
-    },
-    get curThread(): TThread {
-      const root = getParent(self) as TRootStore
-      return root.viewing.activeThread
-    },
-    get isEmpty(): boolean {
-      const slf = self as TStore
-      const thread = slf.curThread
+    // get isEmpty(): boolean {
+    //   const slf = self as TStore
+    //   const thread = slf.curThread
 
-      return slf[`paged${plural(thread, 'titleCase')}`].totalCount === 0
+    //   return slf[`paged${plural(thread, 'titleCase')}`].totalCount === 0
+    // },
+    get curThread(): TThread {
+      return 'post'
     },
     get pagedArticleKey(): string {
       const slf = self as TStore
