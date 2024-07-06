@@ -5,19 +5,9 @@
 
 import { pick, values } from 'ramda'
 
-import type {
-  TRootStore,
-  TID,
-  TCommunity,
-  TArticle,
-  TArticleThread,
-  TSubmitState,
-  TEditMode,
-  TGroupedTags,
-  TTag,
-} from '~/spec'
+import type { TID, TArticle, TSubmitState, TEditMode, TGroupedTags, TTag } from '~/spec'
 
-import { T, getParent, markStates, toJS, type Instance, useMobxContext } from '~/mobx'
+import { T, markStates, toJS, type Instance, useMobxContext } from '~/mobx'
 import { Community, Tag, User } from '~/model'
 import { ARTICLE_CAT } from '~/const/gtd'
 
@@ -53,10 +43,6 @@ const ArticleEditor = T.model('ArticleEditor', {
   activeTag: T.maybeNull(Tag),
 })
   .views((self) => ({
-    get viewingArticle(): TArticle {
-      const root = getParent(self) as TRootStore
-      return toJS(root.viewing.viewingArticle)
-    },
     get allowEdit(): boolean {
       const slf = self as TStore
       const { mode } = slf
@@ -64,14 +50,6 @@ const ArticleEditor = T.model('ArticleEditor', {
       if (mode === 'publish') return true
 
       return false
-    },
-    get thread(): TArticleThread {
-      const root = getParent(self) as TRootStore
-      return toJS(root.viewing.viewingThread)
-    },
-    get communityData(): TCommunity {
-      const root = getParent(self) as TRootStore
-      return toJS(root.viewing.community)
     },
     get communityId(): TID {
       return self.community.id

@@ -7,7 +7,6 @@ import ERR from '~/const/err'
 
 import asyncSuit from '~/async'
 import { getParameterByName } from '~/utils/route'
-import { titleCase } from '~/fmt'
 import { errRescue } from '~/signal'
 import { updateEditing } from '~/mobx'
 import { matchArticles } from '~/utils/macros'
@@ -42,10 +41,9 @@ export const loadCommunity = (): void => {
 }
 
 export const loadArticle = (): void => {
-  const { thread, viewingArticle } = store
-  const { id } = viewingArticle
-
-  sr71$.query(S[thread], { id })
+  // const { thread, viewingArticle } = store
+  // const { id } = viewingArticle
+  // sr71$.query(S[thread], { id })
 }
 
 export const editOnChange = (e: TEditValue, key: string): void => {
@@ -78,20 +76,20 @@ export const onPublish = (): void => {
 }
 
 const doCreate = () => {
-  const { thread, editData, communityId } = store
-  const variables = { communityId, ...editData }
-
-  const schema = S[`create${titleCase(thread)}`]
-  sr71$.mutate(schema, variables)
+  console.log('## TODO doCreate')
+  // const { thread, editData, communityId } = store
+  // const variables = { communityId, ...editData }
+  // const schema = S[`create${titleCase(thread)}`]
+  // sr71$.mutate(schema, variables)
 }
 
 const doUpdate = () => {
-  const { thread, editData, viewingArticle } = store
-  const { id } = viewingArticle
-  const variables = { id, ...editData }
-
-  const schema = S[`update${titleCase(thread)}`]
-  sr71$.mutate(schema, variables)
+  console.log('## TODO doUpdate')
+  // const { thread, editData, viewingArticle } = store
+  // const { id } = viewingArticle
+  // const variables = { id, ...editData }
+  // const schema = S[`update${titleCase(thread)}`]
+  // sr71$.mutate(schema, variables)
 }
 
 export const setWordsCountState = (wordsCountReady: boolean): void => {
