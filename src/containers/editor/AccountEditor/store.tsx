@@ -5,8 +5,8 @@
 
 import { reduce, keys, mergeRight, pick, startsWith } from 'ramda'
 
-import type { TRootStore, TSubmitState, TUser } from '~/spec'
-import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
+import type { TSubmitState, TUser } from '~/spec'
+import { T, markStates, type Instance, useMobxContext } from '~/mobx'
 
 import type { TEditData } from './spec'
 import { SEX } from './constant'
@@ -62,8 +62,8 @@ const AccountEditorStore = T.model('AccountEditorStore', {
       }
     },
     get viewingUser(): TUser {
-      const root = getParent(self) as TRootStore
-      return toJS(root.viewing.user)
+      // const root = getParent(self) as TRootStore
+      return {}
     },
     get isReady(): boolean {
       return true
