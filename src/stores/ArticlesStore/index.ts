@@ -2,7 +2,7 @@
  * ArticlesThread store
  */
 
-import { isEmpty, findIndex, propEq, values, includes, mergeRight, has } from 'ramda'
+import { findIndex, propEq, values, mergeRight, has } from 'ramda'
 
 import type {
   TRootStore,
@@ -54,17 +54,6 @@ const ArticlesStore = T.model('Articles', {
       const thread = slf.curThread
 
       return slf[`paged${plural(thread, 'titleCase')}`].totalCount === 0
-    },
-    get pagedPostsData(): TPagedArticles {
-      return toJS(self.pagedPosts)
-    },
-    get showFilters(): boolean {
-      const slf = self as TStore
-      if (!includes(slf.curThread, values(ARTICLE_THREAD))) return false
-
-      const pagedPosts = toJS(slf.pagedPosts)
-
-      return !isEmpty(pagedPosts.entries)
     },
     get pagedArticleKey(): string {
       const slf = self as TStore

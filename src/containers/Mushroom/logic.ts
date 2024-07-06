@@ -1,14 +1,7 @@
 import { type ReactNode, useEffect, Children, isValidElement, cloneElement } from 'react'
 
 import { APP_VERSION } from '~/config'
-import type {
-  TMetric,
-  TScrollDirection,
-  TGlowPosition,
-  TArticle,
-  TResState,
-  TPagedArticlesParams,
-} from '~/spec'
+import type { TMetric, TScrollDirection, TGlowPosition, TArticle, TResState } from '~/spec'
 import METRIC from '~/const/metric'
 import EVENT from '~/const/event'
 import TYPE from '~/const/type'
@@ -18,7 +11,7 @@ import { errRescue } from '~/signal'
 import { Global } from '~/helper'
 
 import { matchArticleUpvotes } from '~/utils/macros'
-import { scrollToTop } from '~/dom'
+//import { scrollToTop } from '~/dom'
 import asyncSuit from '~/async'
 
 import S from './schema'
@@ -76,45 +69,47 @@ const initAppVersion = (): void => {
 }
 
 const loadArticles = (page = 1): void => {
-  const { curCommunity, userHasLogin, activeTag, activeCat, activeState, activeOrder } = store
-  store.updateResState(TYPE.RES_STATE.LOADING as TResState)
-  scrollToTop()
+  console.log('## TODO: load loadArticles: ', page)
+  // const { curCommunity, userHasLogin, activeTag, activeCat, activeState, activeOrder } = store
+  // store.updateResState(TYPE.RES_STATE.LOADING as TResState)
+  // scrollToTop()
 
-  const filter = { page, size: 20, community: curCommunity.slug } as TPagedArticlesParams
+  // const filter = { page, size: 20, community: curCommunity.slug } as TPagedArticlesParams
 
-  if (activeTag?.slug) filter.articleTag = activeTag?.slug
+  // if (activeTag?.slug) filter.articleTag = activeTag?.slug
 
-  if (activeCat) filter.cat = activeCat
-  if (activeState) filter.state = activeState
-  if (activeOrder) filter.order = activeOrder
+  // if (activeCat) filter.cat = activeCat
+  // if (activeState) filter.state = activeState
+  // if (activeOrder) filter.order = activeOrder
 
-  sr71$.query(S.pagedPosts, { filter, userHasLogin })
+  // sr71$.query(S.pagedPosts, { filter, userHasLogin })
 }
 
 // TODO: use sanitor to filter whitelist oueries if nend
 const syncURL = (page: number): void => {
-  const { activeTag, activeCat, activeState, activeOrder } = store
-  const curSearchParams = getCurSearchParams()
+  console.log('## TODO: syncURL: ', page)
+  // const { activeTag, activeCat, activeState, activeOrder } = store
+  // const curSearchParams = getCurSearchParams()
 
-  // handle tag spec logic
-  activeTag?.slug ? (curSearchParams.tag = activeTag?.slug) : delete curSearchParams.tag
-  activeCat ? (curSearchParams.cat = activeCat.toLowerCase()) : delete curSearchParams.cat
-  activeState ? (curSearchParams.state = activeState.toLowerCase()) : delete curSearchParams.state
-  activeOrder ? (curSearchParams.order = activeOrder.toLowerCase()) : delete curSearchParams.order
+  // // handle tag spec logic
+  // activeTag?.slug ? (curSearchParams.tag = activeTag?.slug) : delete curSearchParams.tag
+  // activeCat ? (curSearchParams.cat = activeCat.toLowerCase()) : delete curSearchParams.cat
+  // activeState ? (curSearchParams.state = activeState.toLowerCase()) : delete curSearchParams.state
+  // activeOrder ? (curSearchParams.order = activeOrder.toLowerCase()) : delete curSearchParams.order
 
-  // handle page number spec logic
-  page !== 1 ? (curSearchParams.page = page) : delete curSearchParams.page
+  // // handle page number spec logic
+  // page !== 1 ? (curSearchParams.page = page) : delete curSearchParams.page
 
-  doSyncRoute(searchParams2String(curSearchParams))
+  // doSyncRoute(searchParams2String(curSearchParams))
 }
 
-const searchParams2String = (obj): string => new URLSearchParams(obj).toString()
+export const searchParams2String = (obj): string => new URLSearchParams(obj).toString()
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const getCurSearchParams = (): Record<any, any> =>
+export const getCurSearchParams = (): Record<any, any> =>
   Object.fromEntries(new URLSearchParams(window.location.search))
 
-const doSyncRoute = (queryString: string): void => {
+export const doSyncRoute = (queryString: string): void => {
   const { curCommunity, curThread } = store
   const mainPath = `/${curCommunity.slug}/${curThread}`
 

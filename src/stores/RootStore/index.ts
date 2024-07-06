@@ -14,13 +14,13 @@ import EVENT from '~/const/event'
 import { T, markStates, type Instance } from '~/mobx'
 import { toast, send } from '~/signal'
 
-import { ViewingStore, ArticlesStore, MushroomStore, CommentsStore, DrawerStore } from '..'
+import { ViewingStore, MushroomStore, CommentsStore, DrawerStore } from '..'
 
 const rootStore = T.model({
   activeDemo: T.opt(T.str, ''),
   // account: T.opt(AccountStore, {}),
   viewing: T.opt(ViewingStore, {}),
-  articles: T.opt(ArticlesStore, {}),
+  // articles: T.opt(ArticlesStore, {}),
   comments: T.opt(CommentsStore, {}),
 
   // toolbox

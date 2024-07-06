@@ -2,8 +2,6 @@
  * GlobalLayout store
  *
  */
-import { mergeRight } from 'ramda'
-
 import type {
   TRootStore,
   TCommunity,
@@ -13,9 +11,6 @@ import type {
   TPagedArticles,
   TResState,
   TTag,
-  TArticleCat,
-  TArticleState,
-  TArticleOrder,
 } from '~/spec'
 import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
 
@@ -35,21 +30,6 @@ const MushroomStore = T.model('MushroomStore', {
       // return root.accountInfo.isLogin
 
       return false
-    },
-    get activeOrder(): TArticleOrder | null {
-      const root = getParent(self) as TRootStore
-
-      return root.articles.activeOrder
-    },
-    get activeCat(): TArticleCat | null {
-      const root = getParent(self) as TRootStore
-
-      return root.articles.activeCat
-    },
-    get activeState(): TArticleState | null {
-      const root = getParent(self) as TRootStore
-
-      return root.articles.activeState
     },
     get curCommunity(): TCommunity {
       const root = getParent(self) as TRootStore
@@ -73,22 +53,25 @@ const MushroomStore = T.model('MushroomStore', {
       // root.dashboardThread.afterCreate()
     },
     updateResState(state: TResState): void {
-      const root = getParent(self) as TRootStore
-      root.articles.updateResState(state)
+      console.log('## updateResState: ', state)
+      // const root = getParent(self) as TRootStore
+      // root.articles.updateResState(state)
     },
     updatePagedArticles(pagedArticles: TPagedArticles): void {
-      const root = getParent(self) as TRootStore
-      root.articles.updatePagedArticles(pagedArticles)
+      // const root = getParent(self) as TRootStore
+      // root.articles.updatePagedArticles(pagedArticles)
+      console.log('## TODO: updatePagedArticles')
     },
     syncArticle(article: TArticle): void {
-      const root = getParent(self) as TRootStore
-      const viewingArticle = toJS(root.viewingArticle)
-      const updatedArticle = mergeRight(viewingArticle, article)
+      console.log('## TODO: syncArticle')
+      // const root = getParent(self) as TRootStore
+      // const viewingArticle = toJS(root.viewingArticle)
+      // const updatedArticle = mergeRight(viewingArticle, article)
 
-      root.viewing.updateViewing(updatedArticle)
+      // root.viewing.updateViewing(updatedArticle)
       // root.articlesThread.updateArticle(updatedArticle)
       // root.postThread.updateArticle(updatedArticle)
-      root.articles.updateArticle(updatedArticle)
+      // root.articles.updateArticle(updatedArticle)
     },
     setViewingAlways(article: TArticle): void {
       const root = getParent(self) as TRootStore
@@ -99,17 +82,18 @@ const MushroomStore = T.model('MushroomStore', {
       root.viewing.updateViewerUpvoted(viewerHasUpvoted)
     },
     syncUploadInfo(upvotesCount: number, meta: TArticleMeta): void {
-      const root = getParent(self) as TRootStore
+      console.log('## TODO syncUploadInfo')
+      // const root = getParent(self) as TRootStore
 
       // for viewing article
-      root.viewing.updateUpvoteCount(upvotesCount, meta)
-      const { id, viewerHasUpvoted, meta: viewingArticleMeta } = toJS(root.viewingArticle)
-      const syncMeta = mergeRight(viewingArticleMeta, meta)
+      // root.viewing.updateUpvoteCount(upvotesCount, meta)
+      // const { id, viewerHasUpvoted, meta: viewingArticleMeta } = toJS(root.viewingArticle)
+      // const syncMeta = mergeRight(viewingArticleMeta, meta)
       // for viewing article end
 
       // root.articlesThread.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
       // root.postThread.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
-      root.articles.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
+      //root.articles.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
     },
     clearLocalSettings(): void {
       // const root = getParent(self) as TRootStore

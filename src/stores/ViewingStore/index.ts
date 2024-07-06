@@ -5,11 +5,11 @@
 
 import { values, mergeRight, includes } from 'ramda'
 
-import type { TRootStore, TUser, TArticle, TArticleMeta, TThread, TCommunity } from '~/spec'
+import type { TUser, TArticle, TArticleMeta, TThread, TCommunity } from '~/spec'
 
 import { ARTICLE_THREAD, THREAD } from '~/const/thread'
 
-import { T, getParent, type Instance, markStates, toJS } from '~/mobx'
+import { T, type Instance, markStates, toJS } from '~/mobx'
 import { viewingChanged } from '~/signal'
 import { User, Community, Post, Changelog } from '~/model'
 
@@ -112,8 +112,9 @@ const ViewingStore = T.model('ViewingStore', {
       mark({ user })
     },
     syncArticle(item: TArticle): void {
-      const root = getParent(self) as TRootStore
-      root.articles.updateArticle(item)
+      // const root = getParent(self) as TRootStore
+      // root.articles.updateArticle(item)
+      console.log('## syncArticle item: ', item)
     },
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)

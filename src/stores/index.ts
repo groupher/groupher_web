@@ -11,7 +11,6 @@
 // domain store
 /* export { default as RouteStore } from './RouteStore' */
 export { default as ViewingStore } from './ViewingStore'
-export { default as ArticlesStore } from './ArticlesStore'
 
 // utils store
 // export { default as SidebarStore } from '~/containers/unit/Sidebar/store'
