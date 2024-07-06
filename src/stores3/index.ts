@@ -9,6 +9,7 @@ import { LOCALE } from '~/const/i18n'
 import setupLocale from './locale'
 import setupTheme from './theme'
 import setupAccount from './account'
+import setupArticles from './articles'
 import setupViewing from './viewing'
 import setupDashboard from './dashboard'
 import setupWallpaper from './wallpaper'
@@ -20,6 +21,7 @@ const INITIAL_STATE = {
   viewing: {},
   dashboard: {},
   wallpaper: {},
+  articles: {},
 }
 
 const setupRootStore = (init = INITIAL_STATE): TRootStore => {
@@ -28,6 +30,7 @@ const setupRootStore = (init = INITIAL_STATE): TRootStore => {
     account: setupAccount(),
     theme: setupTheme(init.theme),
     viewing: setupViewing(init.viewing),
+    setupArticles: setupArticles(init.articles),
     dashboard: setupDashboard(init.dashboard),
     wallpaper: setupWallpaper(init.wallpaper),
   })

@@ -9,20 +9,19 @@ import type {
   TResState,
 } from '~/spec'
 
-export type TStore = {
-  pagedPosts: TPagedArticles
-  pagedChangelogs: TPagedArticles
+export type TInit = {
+  pagedPosts?: TPagedArticles
+  pagedChangelogs?: TPagedArticles
 
   // kanban's
-  todo: TPagedArticles
-  wip: TPagedArticles
-  done: TPagedArticles
-
+  todo?: TPagedArticles
+  wip?: TPagedArticles
+  done?: TPagedArticles
+}
+export type TStore = TInit & {
   activeOrder: TArticleOrder | null
   activeCat: TArticleCat | null
   activeState: TArticleState | null
 
   resState: TResState
 }
-
-export const holder = 1

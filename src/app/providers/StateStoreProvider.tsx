@@ -16,6 +16,10 @@ import {
   useMetric,
   usePost,
   useChangelog,
+  usePagedPosts,
+  usePagedChangelogs,
+  useGroupedKanbanPosts,
+  useFilterSearchParams,
 } from '../queries'
 
 export default ({ children }: { children: ReactNode }) => {
@@ -23,6 +27,11 @@ export default ({ children }: { children: ReactNode }) => {
   const { locale, localeData } = useI18n()
 
   const theme = useThemeFromURL()
+  const { pagedPosts } = usePagedPosts()
+  const { pagedChangelogs } = usePagedChangelogs()
+  const { groupedKanbanPosts } = useGroupedKanbanPosts()
+  const filterSearchParams = useFilterSearchParams()
+
   const { post } = usePost()
   const { changelog } = useChangelog()
   const { community } = useCommunity()
@@ -39,6 +48,12 @@ export default ({ children }: { children: ReactNode }) => {
     locale,
     localeData,
     theme,
+    articles: {
+      pagedPosts,
+      pagedChangelogs,
+      ...groupedKanbanPosts,
+      ...filterSearchParams,
+    },
     viewing: {
       metric,
       post,
