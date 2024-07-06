@@ -5,8 +5,7 @@
 
 import { values, mergeRight, includes } from 'ramda'
 
-import type { TRootStore, TThread, TArticle } from '~/spec'
-
+import type { TRootStore, TArticle } from '~/spec'
 import { DASHBOARD_DESC_LAYOUT } from '~/const/layout'
 import { ARTICLE_THREAD } from '~/const/thread'
 import METRIC from '~/const/metric'
@@ -70,10 +69,6 @@ const DrawerStore = T.model('DrawerStore', {
       const { direction, position } = self.options
       return SWIPE_THRESHOLD[direction][position]
     },
-    get curThread(): TThread {
-      const root = getParent(self) as TRootStore
-      return root.viewing.activeThread
-    },
     get attUserData() {
       return toJS(self.attUser)
     },
@@ -82,10 +77,6 @@ const DrawerStore = T.model('DrawerStore', {
     },
     get slideVisible() {
       return self.visible && Global.innerWidth <= mediaBreakPoints.desktopL
-    },
-    get viewingArticle(): TArticle {
-      const root = getParent(self) as TRootStore
-      return root.viewing.viewingArticle
     },
     get extraInfo(): TExtraInfo {
       // const root = getParent(self) as TRootStore
