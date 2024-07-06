@@ -18,8 +18,7 @@ const ModeLine = T.model('ModeLine', {
 })
   .views((self) => ({
     get isMobile(): boolean {
-      const root = getParent(self) as TRootStore
-      return root.isMobile
+      return false
     },
 
     get viewing(): TViewing {
@@ -88,8 +87,9 @@ const ModeLine = T.model('ModeLine', {
       root.setViewing(sobj)
     },
     markRoute(query): void {
-      const root = getParent(self) as TRootStore
-      root.markRoute(query, {})
+      console.log('## TODO: markRoute', query)
+      // const root = getParent(self) as TRootStore
+      // root.markRoute(query, {})
     },
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)

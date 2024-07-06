@@ -103,10 +103,6 @@ const MushroomStore = T.model('MushroomStore', {
     closeUserListModal(): void {
       self.showUserListModal = false
     },
-    authWarning(options): void {
-      const root = getParent(self) as TRootStore
-      root.authWarning(options)
-    },
     mark(sobj: Record<string, unknown>): void {
       markStates(sobj, self)
     },

@@ -86,14 +86,15 @@ const AccountEditorStore = T.model('AccountEditorStore', {
     },
     updateAccount(): void {
       const slf = self as TStore
-      const root = getParent(self) as TRootStore
+      // const root = getParent(self) as TRootStore
 
       const user = {
         ...slf.editData.profile,
         social: slf.editData.social,
       }
 
-      root.updateViewingIfNeed('user', user)
+      console.log('## TODO updateAccount: ', user)
+      // root.updateViewingIfNeed('user', user)
     },
 
     updateEditing(sobj): void {

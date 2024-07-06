@@ -157,8 +157,7 @@ const DrawerStore = T.model('DrawerStore', {
     },
 
     resetViewing(): void {
-      const root = getParent(self) as TRootStore
-      root.resetViewing()
+      console.log('## TODO: resetViewing')
     },
 
     // if the user has navi article inside the drawer, let's say /post/2 -> /post/3
