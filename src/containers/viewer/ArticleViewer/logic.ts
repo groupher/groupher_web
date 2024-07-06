@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { mergeRight } from 'ramda'
+// import { mergeRight } from 'ramda'
 
 import type { TArticle } from '~/spec'
 
@@ -10,7 +10,7 @@ import asyncSuit from '~/async'
 import { scrollDrawerToTop } from '~/dom'
 import { matchArticles } from '~/utils/macros'
 
-import S from './schema'
+// import S from './schema'
 import type { TStore } from './store'
 
 const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
@@ -25,12 +25,12 @@ let sub$ = null
 const loadArticle = (): void => {
   markLoading()
 
-  const userHasLogin = false
-  const { originalCommunitySlug, innerId, meta } = store.viewingArticle
+  // const userHasLogin = false
+  // const { originalCommunitySlug, innerId, meta } = store.viewingArticle
 
-  const variables = { community: originalCommunitySlug, id: innerId, userHasLogin }
+  // const variables = { community: originalCommunitySlug, id: innerId, userHasLogin }
 
-  sr71$.query(S.getArticle(meta.thread), variables)
+  // sr71$.query(S.getArticle(meta.thread), variables)
 }
 
 const markLoading = (maybe = true) => store.mark({ loading: maybe })
@@ -39,10 +39,10 @@ const handleArticleRes = (article: TArticle): void => {
   console.log('## # handleArticleRes: ', article)
   markLoading(false)
 
-  const thread = article.meta.thread.toLowerCase()
-  const { document, ...restArticle } = article
-  store.mark({ document })
-  store.setViewing({ [thread]: mergeRight(store.viewingArticle, restArticle) })
+  // const thread = article.meta.thread.toLowerCase()
+  // const { document, ...restArticle } = article
+  // store.mark({ document })
+  // store.setViewing({ [thread]: mergeRight(store.viewingArticle, restArticle) })
 
   setTimeout(() => {
     const { id, viewerHasUpvoted, views, upvotesCount } = article
