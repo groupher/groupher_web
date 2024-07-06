@@ -2,7 +2,7 @@
  * ArticleViewer store
  */
 
-import type { TCommunity, TRootStore, TArticle, TThread, TDocument } from '~/spec'
+import type { TRootStore, TArticle, TDocument } from '~/spec'
 
 import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
 import { Document } from '~/model'
@@ -17,16 +17,6 @@ const ArticleViewer = T.model('ArticleViewer', {
     get documentData(): TDocument {
       return toJS(self.document)
     },
-    get curCommunity(): TCommunity {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.viewing.community)
-    },
-    get activeThread(): TThread {
-      const root = getParent(self) as TRootStore
-
-      return root.viewing.activeThread
-    },
     get viewingArticle(): TArticle {
       const root = getParent(self) as TRootStore
       return toJS(root.viewing.viewingArticle)
@@ -38,9 +28,9 @@ const ArticleViewer = T.model('ArticleViewer', {
       root.setViewing(sobj)
     },
     syncArticle(item): void {
-      const root = getParent(self) as TRootStore
-
-      root.articles.updateArticle(item)
+      console.log('## TODO: syncArticle')
+      // const root = getParent(self) as TRootStore
+      // root.articles.updateArticle(item)
     },
     reset(): void {
       self.tab = ''
