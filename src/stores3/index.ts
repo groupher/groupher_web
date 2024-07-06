@@ -30,7 +30,7 @@ const setupRootStore = (init = INITIAL_STATE): TRootStore => {
     account: setupAccount(),
     theme: setupTheme(init.theme),
     viewing: setupViewing(init.viewing),
-    setupArticles: setupArticles(init.articles),
+    articles: setupArticles(init.articles),
     dashboard: setupDashboard(init.dashboard),
     wallpaper: setupWallpaper(init.wallpaper),
   })

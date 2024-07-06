@@ -5,7 +5,6 @@
  */
 
 import type { FC, ReactNode } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import type { TSpace, TPagi } from '~/spec'
 
@@ -73,4 +72,4 @@ const Pagi: FC<TProps> = ({
   )
 }
 
-export default observer(Pagi)
+export default Pagi
