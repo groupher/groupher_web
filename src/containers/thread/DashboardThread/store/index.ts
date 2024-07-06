@@ -19,11 +19,9 @@ import {
 
 import type {
   TCommunity,
-  TRootStore,
   TTag,
   TEnableConfig,
   TNameAlias,
-  TChangeMode,
   TSocialItem,
   TLinkItem,
   TOverview,
@@ -40,8 +38,7 @@ import {
 import { CHANGE_MODE } from '~/const/mode'
 
 import BStore from '~/utils/bstore'
-import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
-import { publicThreads } from '~/helper'
+import { T, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
 
 import {
   PagedCommunities,
@@ -54,13 +51,7 @@ import {
   User,
 } from '~/model'
 
-import type {
-  TBaseInfoSettings,
-  THeaderSettings,
-  TFooterSettings,
-  TDocSettings,
-  TSettingField,
-} from '../spec'
+import type { TBaseInfoSettings, TDocSettings, TSettingField } from '../spec'
 
 import { SETTING_FIELD, BASEINFO_KEYS, SEO_KEYS } from '../constant'
 
@@ -119,12 +110,6 @@ const DashboardThread = T.model('DashboardThread', {
   allRootRules: T.opt(T.str, '{}'),
 })
   .views((self) => ({
-    get curCommunity(): TCommunity {
-      const root = getParent(self) as TRootStore
-
-      return toJS(root.viewing.community)
-    },
-
     get nameAliasData(): TNameAlias[] {
       return toJS(self.nameAlias)
     },
@@ -152,65 +137,6 @@ const DashboardThread = T.model('DashboardThread', {
 
       // @ts-ignore
       return uniq(pluck('group', tags))
-    },
-
-    get headerSettings(): THeaderSettings {
-      const slf = self as TStore
-      const {
-        headerLayout,
-        headerLinks,
-        editingLink,
-        editingLinkMode,
-        editingGroup,
-        editingGroupIndex,
-        enableSettings,
-        curCommunity,
-        nameAlias,
-      } = slf
-
-      return {
-        saving: slf.saving,
-        headerLayout: toJS(headerLayout),
-        headerLinks: toJS(headerLinks),
-        editingLink: toJS(editingLink),
-        editingLinkMode: editingLinkMode as TChangeMode,
-        editingGroup,
-        editingGroupIndex,
-        threads: publicThreads(curCommunity.threads, {
-          enable: enableSettings,
-          nameAlias,
-        }),
-      }
-    },
-
-    get footerSettings(): TFooterSettings {
-      const slf = self as TStore
-      const {
-        footerLayout,
-        footerLinks,
-        editingLink,
-        editingLinkMode,
-        editingGroup,
-        editingGroupIndex,
-        enableSettings,
-        curCommunity,
-        nameAlias,
-      } = slf
-
-      return {
-        saving: slf.saving,
-        footerLayout: toJS(footerLayout),
-        // footerLinks: reject((item) => isEmpty(item.title), toJS(footerLinks)),
-        footerLinks: toJS(footerLinks),
-        editingLink: toJS(editingLink),
-        editingLinkMode: editingLinkMode as TChangeMode,
-        editingGroup,
-        editingGroupIndex,
-        threads: publicThreads(curCommunity.threads, {
-          enable: enableSettings,
-          nameAlias,
-        }),
-      }
     },
 
     get docSettings(): TDocSettings {
@@ -438,11 +364,6 @@ const DashboardThread = T.model('DashboardThread', {
 
       slf._saveToLocal()
       // slf.mark({ demoAlertEnable: true })
-    },
-
-    updateViewingCommunity(args: TCommunity): void {
-      const root = getParent(self) as TRootStore
-      root.viewing.updateViewingCommunity(args)
     },
 
     _findTagIdx(): number {
