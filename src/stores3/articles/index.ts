@@ -24,7 +24,6 @@ export default (init: TInit = {}): TStore => {
 
       resState: TYPE.RES_STATE.EMPTY as TResState,
 
-      // actions
       commit: (patch: Partial<TStore>): void => {
         Object.assign(store, mergeDeepRight(store, patch))
       },

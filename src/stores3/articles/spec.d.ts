@@ -24,4 +24,6 @@ export type TStore = TInit & {
   activeState: TArticleState | null
 
   resState: TResState
+
+  commit: (patch: Partial<TStore>) => void
 }
