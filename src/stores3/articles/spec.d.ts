@@ -25,5 +25,6 @@ export type TStore = TInit & {
 
   resState: TResState
 
+  updateActiveFilter: (filter: TArticleFilter) => void
   commit: (patch: Partial<TStore>) => void
 }
