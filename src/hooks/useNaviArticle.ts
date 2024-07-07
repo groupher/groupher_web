@@ -1,29 +1,23 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
 import { includes, values, findIndex } from 'ramda'
 
 import type { TArticle } from '~/spec'
 import { plural } from '~/fmt'
 import { ARTICLE_THREAD } from '~/const/thread'
+import { EMPTY_PAGI } from '~/const/utils'
+
 import useViewingThread from '~/hooks/useViewingThread'
 import useViewingArticle from '~/hooks/useViewingArticle'
+import useSubStore from '~/hooks/useSubStore'
 
 type TRes = {
   previous: TArticle | null
   next: TArticle | null
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useNaviArticle = (): TRes => {
-  const { store } = useContext(MobXProviderContext)
+export default (): TRes => {
+  const articles = useSubStore('articles')
   const curThread = useViewingThread()
   const { article: viewingArticle } = useViewingArticle()
-
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
 
   if (!includes(curThread, values(ARTICLE_THREAD)) || !viewingArticle?.id) {
     return {
@@ -34,11 +28,11 @@ const useNaviArticle = (): TRes => {
 
   const viewingArticleId = viewingArticle.id
 
-  let pagedArticles
+  let pagedArticles = EMPTY_PAGI
 
   switch (curThread) {
     default: {
-      pagedArticles = store.articles[`paged${plural(curThread, 'titleCase')}`]
+      pagedArticles = articles[`paged${plural(curThread, 'titleCase')}`]
       break
     }
   }
@@ -50,5 +44,3 @@ const useNaviArticle = (): TRes => {
     next: pagedArticles.entries[curIndex + 1] || null,
   }
 }
-
-export default useNaviArticle

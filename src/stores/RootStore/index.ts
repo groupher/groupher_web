@@ -13,6 +13,7 @@ import { ViewingStore, MushroomStore, CommentsStore, DrawerStore } from '..'
 
 const rootStore = T.model({
   viewing: T.opt(ViewingStore, {}),
+  // TODO: next
   comments: T.opt(CommentsStore, {}),
 
   // toolbox
