@@ -282,6 +282,7 @@ const saveDraftIfNeed = (content): void => {
 const clearDraft = (): void => BStore.remove('recentDraft')
 
 export const foldComment = (id: TID): void => {
+  console.log('## foldComment id: ', id)
   store.mark({ foldedCommentIds: [id, ...store.foldedCommentIds] })
 }
 

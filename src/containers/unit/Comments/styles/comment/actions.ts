@@ -1,4 +1,6 @@
 import styled, { css, theme } from '~/css'
+import MoreSVG from '~/icons/menu/More'
+
 import { Wrapper as CommentWrapper } from './desktop_view'
 
 export const Wrapper = styled.div`
@@ -32,4 +34,9 @@ export const MoreWrapper = styled.div`
   }
 
   transition: all 0.2s;
+`
+
+export const MoreIcon = styled(MoreSVG)`
+  ${css.size(16)};
+  fill: ${theme('article.digest')};
 `

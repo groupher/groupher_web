@@ -2,7 +2,7 @@ import { proxy } from 'valtio'
 import { mergeLeft, mergeDeepRight, has } from 'ramda'
 
 import type { TResState, TArticleFilter } from '~/spec'
-import { EMPTY_PAGI } from '~/const/utils'
+import { EMPTY_PAGED_ARTICLES } from '~/const/utils'
 import TYPE from '~/const/type'
 import URL_PARAM from '~/const/url_param'
 
@@ -11,13 +11,13 @@ import type { TStore, TInit } from './spec'
 export default (init: TInit = {}): TStore => {
   const store = proxy(
     mergeLeft(init, {
-      pagedPosts: EMPTY_PAGI,
-      pagedChangelogs: EMPTY_PAGI,
+      pagedPosts: EMPTY_PAGED_ARTICLES,
+      pagedChangelogs: EMPTY_PAGED_ARTICLES,
 
       // kanban's
-      todo: EMPTY_PAGI,
-      wip: EMPTY_PAGI,
-      done: EMPTY_PAGI,
+      todo: EMPTY_PAGED_ARTICLES,
+      wip: EMPTY_PAGED_ARTICLES,
+      done: EMPTY_PAGED_ARTICLES,
 
       activeOrder: null,
       activeCat: null,

@@ -6,11 +6,10 @@ import useAccount from '~/hooks/useAccount'
 
 import { authWarn } from '~/signal'
 
-import IconButton from '~/widgets/Buttons/IconButton'
 import MenuButton from '~/widgets/Buttons/MenuButton'
 import { SpaceGrow } from '~/widgets/Common'
 
-import { Wrapper, ReplyAction, MoreWrapper } from '../styles/comment/actions'
+import { Wrapper, ReplyAction, MoreWrapper, MoreIcon } from '../styles/comment/actions'
 import { openUpdateEditor, openReplyEditor } from '../logic'
 
 const menuOptions = [
@@ -101,7 +100,7 @@ const Actions: FC<TProps> = ({ data }) => {
       <SpaceGrow />
       <MenuButton options={menuOptions} extraOptions={extraOptions} onClick={handleAction}>
         <MoreWrapper>
-          <IconButton path="shape/more.svg" size={16} />
+          <MoreIcon />
         </MoreWrapper>
       </MenuButton>
     </Wrapper>

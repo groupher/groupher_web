@@ -3,7 +3,7 @@ import { includes, values, findIndex } from 'ramda'
 import type { TArticle } from '~/spec'
 import { plural } from '~/fmt'
 import { ARTICLE_THREAD } from '~/const/thread'
-import { EMPTY_PAGI } from '~/const/utils'
+import { EMPTY_PAGED_ARTICLES } from '~/const/utils'
 
 import useViewingThread from '~/hooks/useViewingThread'
 import useViewingArticle from '~/hooks/useViewingArticle'
@@ -28,7 +28,7 @@ export default (): TRes => {
 
   const viewingArticleId = viewingArticle.id
 
-  let pagedArticles = EMPTY_PAGI
+  let pagedArticles = EMPTY_PAGED_ARTICLES
 
   switch (curThread) {
     default: {
