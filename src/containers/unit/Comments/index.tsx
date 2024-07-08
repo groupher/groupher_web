@@ -4,7 +4,7 @@
  *
  */
 
-import type { FC } from 'react'
+import { type FC, useEffect } from 'react'
 
 import { ANCHOR } from '~/const/dom'
 
@@ -27,10 +27,13 @@ type TProps = {
 }
 
 const Comments: FC<TProps> = ({ locked = false, apiMode = API_MODE.ARTICLE }) => {
-  const { pagedComments, getEditState } = useLogic()
+  const { pagedComments, getEditState, loadComments } = useLogic()
+
+  useEffect(() => {
+    loadComments()
+  }, [])
 
   const editState = getEditState()
-
   const { totalCount } = pagedComments
 
   return (

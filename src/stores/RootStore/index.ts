@@ -9,12 +9,10 @@ import type { TArticle } from '~/spec'
 
 import { T, type Instance } from '~/mobx'
 
-import { ViewingStore, MushroomStore, CommentsStore, DrawerStore } from '..'
+import { ViewingStore, MushroomStore, DrawerStore } from '..'
 
 const rootStore = T.model({
   viewing: T.opt(ViewingStore, {}),
-  // TODO: next
-  comments: T.opt(CommentsStore, {}),
 
   // toolbox
   drawer: T.opt(DrawerStore, { visible: false }),

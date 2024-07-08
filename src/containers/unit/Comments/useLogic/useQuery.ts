@@ -59,12 +59,13 @@ export default (): TRet => {
     snap.commit({ loading: true })
 
     const params = {
-      id: article.id,
+      id: article.innerId,
       thread: article.meta.thread,
       mode: snap.mode,
       filter: { page, size: PAGI_SIZE },
     }
-    // console.log('## loadComments args: ', args)
+    console.log('## loadComments args: ', params)
+
     query(S.pagedComments, params).then(({ pagedComments }) => {
       repliesPagiNo = {}
       snap.commit({ pagedComments, loading: false })
