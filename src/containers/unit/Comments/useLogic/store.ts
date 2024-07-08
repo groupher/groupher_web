@@ -1,11 +1,10 @@
-//
-
-import { mergeDeepRight, pick, keys } from 'ramda'
-import { proxy, useSnapshot } from 'valtio'
+import { proxy } from 'valtio'
+import { mergeDeepRight } from 'ramda'
 
 import type { TStore } from './spec'
-import { MODE, EDIT_MODE, API_MODE } from './constant'
 import { EMPTY_PAGED_COMMENTS } from '~/const/utils'
+
+import { MODE, EDIT_MODE, API_MODE } from '../constant'
 
 const store = proxy<TStore>({
   mode: MODE.REPLIES,
@@ -44,7 +43,7 @@ const store = proxy<TStore>({
   // toggle loading for comments list
   loading: false,
 
-  foldedCommentIds: [''],
+  foldedCommentIds: [],
 
   // basic states
   needRefreshState: true,
@@ -58,16 +57,4 @@ const store = proxy<TStore>({
   },
 })
 
-type TRet = {
-  tmp: string
-} & TStore
-
-export default (): TRet => {
-  const snap = useSnapshot(store)
-
-  // @ts-ignore
-  return {
-    tmp: '',
-    ...pick(keys(snap), snap),
-  }
-}
+export default store
