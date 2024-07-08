@@ -1,18 +1,19 @@
 import { useSnapshot } from 'valtio'
-import { update, propEq, findIndex, uniqBy, prop } from 'ramda'
 
-import type { TID, TComment } from '~/spec'
+import type { TID, TComment, TEmotionType } from '~/spec'
 import { ANCHOR } from '~/const/dom'
 import useViewingArticle from '~/hooks/useViewingArticle'
-import { query } from '~/utils/api'
+import { query, mutate } from '~/utils/api'
+import { titleCase } from '~/fmt'
 import uid from '~/utils/uid'
 import { scrollIntoEle } from '~/dom'
 
-import { MODE, API_MODE } from '../constant'
+import { API_MODE } from '../constant'
+import S from '../schema'
 
+import useHelper from './useHelper'
 import store from './store'
 
-import S from '../schema'
 //
 export type TRet = {
   loadComments: (page?: number) => void
@@ -22,6 +23,8 @@ export type TRet = {
   onPageChange: (page: number) => void
   onMentionSearch: (name: string) => void
   deleteComment: () => void
+  handleEmotion: (comment: TComment, name: TEmotionType, viewerHasEmotioned: boolean) => void
+  handleUpvote: (comment: TComment, viewerHasUpvoted: boolean) => void
 }
 
 let repliesPagiNo = {}
@@ -30,6 +33,7 @@ const PAGI_SIZE = 30
 export default (): TRet => {
   const snap = useSnapshot(store)
   const { article } = useViewingArticle()
+  const { addToReplies, upvoteEmotion, updateOneComment } = useHelper()
 
   const loadCommentsState = (): void => {
     const params = {
@@ -49,7 +53,7 @@ export default (): TRet => {
   }
 
   const loadComments = (page = 1): void => {
-    store.commit({ loading: true })
+    snap.commit({ loading: true })
 
     const params = {
       id: article.id,
@@ -62,7 +66,7 @@ export default (): TRet => {
       repliesPagiNo = {}
       snap.commit({ pagedComments, loading: false })
 
-      if (store.needRefreshState) {
+      if (snap.needRefreshState) {
         loadCommentsState()
       }
     })
@@ -74,36 +78,16 @@ export default (): TRet => {
     return curNo ? curNo + 1 : 1
   }
 
-  const _addToReplies = (replies: TComment[]): void => {
-    const { repliesParentId } = snap
-    const { entries } = snap.pagedComments
-
-    if (snap.mode === MODE.REPLIES && repliesParentId) {
-      const parentIndex = findIndex(propEq(repliesParentId, 'id'), entries)
-
-      if (parentIndex < 0) return
-      const curReplies = entries[parentIndex].replies
-      const uniqReplies = uniqBy(prop('id'), curReplies.concat(replies))
-
-      // @ts-ignore
-      const pagedComments = update(parentIndex, uniqReplies, snap.pagedComments.entries)
-      // @ts-ignore
-      snap.commit({ pagedComments })
-
-      // self.pagedComments.entries[parentIndex].replies = uniqReplies
-    }
-  }
-
   const loadCommentReplies = (id: TID): void => {
     const filter = { page: _getRepliesPagiNo(id), size: 30 }
     const params = { id, filter }
 
-    store.commit({ repliesParentId: id, repliesLoading: true })
+    snap.commit({ repliesParentId: id, repliesLoading: true })
     console.log('## loadCommentReplies args: ', params)
     query(S.pagedCommentReplies, params).then(({ pagedCommentReplies }) => {
-      _addToReplies(pagedCommentReplies.entries)
+      addToReplies(pagedCommentReplies.entries)
 
-      repliesPagiNo[store.repliesParentId] = pagedCommentReplies.pageNumber
+      repliesPagiNo[snap.repliesParentId] = pagedCommentReplies.pageNumber
       snap.commit({ repliesParentId: null, repliesLoading: false })
     })
   }
@@ -128,15 +112,80 @@ export default (): TRet => {
     // if (name?.length >= 1) {
     //   query(S.searchUsers, { name })
     // } else {
-    //   store.updateMentionList([])
+    //   snap.updateMentionList([])
     // }
   }
 
   const deleteComment = (): void => {
     console.log('## TODO: deleteComment')
     // mutate(S.deleteComment, {
-    //   thread: store.activeThread,
+    //   thread: snap.activeThread,
     // })
+  }
+
+  const handleEmotion = (
+    comment: TComment,
+    name: TEmotionType,
+    viewerHasEmotioned: boolean,
+  ): void => {
+    const { id } = comment
+    const emotion = name.toUpperCase()
+
+    // comment.emotions
+    if (viewerHasEmotioned) {
+      // instantFresh
+      const emotionInfo = {
+        // @ts-ignore
+        [`${name}Count`]: comment.emotions[`${name}Count`] - 1,
+        [`viewerHas${titleCase(name)}ed`]: false,
+      }
+      upvoteEmotion(comment, emotionInfo)
+      mutate(S.undoEmotionToComment, { id, emotion }).then(({ undoEmotionToComment }) => {
+        upvoteEmotion(undoEmotionToComment, undoEmotionToComment.emotions)
+      })
+    } else {
+      const emotionInfo = {
+        // @ts-ignore
+        [`${name}Count`]: comment.emotions[`${name}Count`] + 1,
+        [`viewerHas${titleCase(name)}ed`]: true,
+      }
+      upvoteEmotion(comment, emotionInfo)
+      // instantFresh
+      mutate(S.emotionToComment, { id, emotion }).then(({ emotionToComment }) => {
+        upvoteEmotion(emotionToComment, emotionToComment.emotions)
+      })
+    }
+  }
+
+  const handleUpvote = (comment: TComment, viewerHasUpvoted: boolean): void => {
+    const { id, upvotesCount } = comment
+
+    const updateBack = (upvoteComment: TComment) => {
+      const { upvotesCount, viewerHasUpvoted, meta } = upvoteComment
+
+      updateOneComment(upvoteComment, {
+        upvotesCount,
+        viewerHasUpvoted,
+        meta,
+      })
+    }
+
+    if (viewerHasUpvoted) {
+      updateOneComment(comment, {
+        upvotesCount: upvotesCount + 1,
+        viewerHasUpvoted: !viewerHasUpvoted,
+      })
+      mutate(S.upvoteComment, { id }).then(({ upvoteComment }) => updateBack(upvoteComment))
+    } else {
+      updateOneComment(comment, {
+        upvotesCount: upvotesCount - 1,
+        viewerHasUpvoted: !viewerHasUpvoted,
+      })
+
+      mutate(S.undoUpvoteComment, { id }).then(({ undoUpvoteComment }) => {
+        updateBack(undoUpvoteComment)
+      })
+    }
   }
 
   return {
@@ -147,5 +196,7 @@ export default (): TRet => {
     onPageChange,
     onMentionSearch,
     deleteComment,
+    handleEmotion,
+    handleUpvote,
   }
 }
