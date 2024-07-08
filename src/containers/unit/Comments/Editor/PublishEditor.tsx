@@ -5,9 +5,8 @@ import type { TSubmitState } from '~/spec'
 // import Header from './Header'
 import BodyEditor from './BodyEditor'
 
+import useLogic from '../useLogic'
 import { Wrapper } from '../styles/editor/publish_editor'
-// import { commentOnChange, createComment, closeEditor } from '../logic'
-import { commentOnChange } from '../logic'
 
 type TProps = {
   body: string
@@ -15,10 +14,12 @@ type TProps = {
 }
 
 const PublishEditor: FC<TProps> = ({ submitState, body }) => {
+  const { commentOnChange } = useLogic()
+
   return (
     <Wrapper>
       {/* <Header accountInfo={accountInfo} showEditor={showEditor} /> */}
-      <BodyEditor body={body} onChange={(v) => commentOnChange(v, 'commentBody')} />
+      <BodyEditor body={body} onChange={(v) => commentOnChange(v)} />
 
       {/* <Footer
         submitState={submitState}

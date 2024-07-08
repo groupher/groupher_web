@@ -9,6 +9,7 @@ import ImgFallback from '~/widgets/ImgFallback'
 
 import IllegalBar from './IllegalBar'
 
+import useLogic from '../../useLogic'
 import {
   Wrapper,
   CurveLine,
@@ -19,7 +20,6 @@ import {
   CreateDate,
   ExpandIcon,
 } from '../../styles/comment/desktop_view/fold_layout'
-import { expandComment } from '../../logic'
 
 type TProps = {
   data: TComment
@@ -28,6 +28,7 @@ type TProps = {
 
 const FoldLayout: FC<TProps> = ({ data, isReply = false }) => {
   const { avatarLayout } = useLayout()
+  const { expandComment } = useLogic()
 
   const isSolution = false //
   const { meta } = data

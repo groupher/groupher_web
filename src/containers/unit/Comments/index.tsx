@@ -15,10 +15,9 @@ import List from './List'
 // import LockedMessage from './LockedMessage'
 
 import type { TAPIMode } from './spec'
-import { useStore } from './store'
 import { API_MODE } from './constant'
+import useLogic from './useLogic'
 import { Wrapper } from './styles'
-import { useInit } from './logic'
 
 import HeadBar from './HeadBar'
 
@@ -28,13 +27,11 @@ type TProps = {
 }
 
 const Comments: FC<TProps> = ({ locked = false, apiMode = API_MODE.ARTICLE }) => {
-  const store = useStore()
-  useInit(store, locked, apiMode)
+  const { pagedComments, getEditState } = useLogic()
 
-  const { mode, pagedCommentsData, foldState, editState, repliesState, loading, basicState } = store
+  const editState = getEditState()
 
-  const { isAllFolded } = foldState
-  const { totalCount } = pagedCommentsData
+  const { totalCount } = pagedComments
 
   return (
     <Wrapper id={ANCHOR.COMMENTS_ID}>
@@ -48,26 +45,8 @@ const Comments: FC<TProps> = ({ locked = false, apiMode = API_MODE.ARTICLE }) =>
         user={{ nickname: 'Bot' }}
         isArticleAuthor={false}
       /> */}
-
-      {totalCount > 0 && (
-        <HeadBar
-          apiMode={apiMode}
-          isAllFolded={isAllFolded}
-          basicState={basicState}
-          mode={mode}
-          loading={loading}
-          editState={editState}
-        />
-      )}
-
-      <List
-        mode={mode}
-        apiMode={apiMode}
-        foldState={foldState}
-        pagedComments={pagedCommentsData}
-        repliesState={repliesState}
-        loading={loading}
-      />
+      {totalCount > 0 && <HeadBar />}
+      <List />
     </Wrapper>
   )
 }

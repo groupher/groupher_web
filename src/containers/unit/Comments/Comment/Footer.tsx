@@ -16,6 +16,8 @@ import Actions from './Actions'
 
 import type { TAPIMode } from '../spec'
 import { API_MODE } from '../constant'
+
+import useLogic from '../useLogic'
 import {
   Wrapper,
   MainWrapper,
@@ -25,7 +27,6 @@ import {
   UpvotedIcon,
   ExtraWrapper,
 } from '../styles/comment/footer'
-import { handleUpvote, handleEmotion } from '../logic'
 
 type TProps = {
   data: TComment
@@ -34,6 +35,8 @@ type TProps = {
 
 const Footer: FC<TProps> = ({ data, apiMode }) => {
   const accountInfo = useAccount()
+  const { handleUpvote, handleEmotion } = useLogic()
+
   // const { isLegal } = data.meta
   const { meta, upvotesCount, viewerHasUpvoted } = data
   const { isArticleAuthorUpvoted, isLegal } = meta

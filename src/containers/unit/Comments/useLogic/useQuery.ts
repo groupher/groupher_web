@@ -8,7 +8,7 @@ import { titleCase } from '~/fmt'
 import uid from '~/utils/uid'
 import { scrollIntoEle } from '~/dom'
 
-import { API_MODE } from '../constant'
+import { API_MODE, EDIT_MODE } from '../constant'
 import S from '../schema'
 
 import useHelper from './useHelper'
@@ -20,11 +20,14 @@ export type TRet = {
   loadCommentReplies: (id: TID) => void
   loadCommentsState: () => void
   loadPublishedComemnts: () => void
+  openUpdateEditor: (comment: TComment) => void
   onPageChange: (page: number) => void
   onMentionSearch: (name: string) => void
   deleteComment: () => void
   handleEmotion: (comment: TComment, name: TEmotionType, viewerHasEmotioned: boolean) => void
   handleUpvote: (comment: TComment, viewerHasUpvoted: boolean) => void
+  replyComment: () => void
+  updateComment: () => void
 }
 
 let repliesPagiNo = {}
@@ -33,7 +36,7 @@ const PAGI_SIZE = 30
 export default (): TRet => {
   const snap = useSnapshot(store)
   const { article } = useViewingArticle()
-  const { addToReplies, upvoteEmotion, updateOneComment } = useHelper()
+  const { addToReplies, upvoteEmotion, updateOneComment, published, resetPublish } = useHelper()
 
   const loadCommentsState = (): void => {
     const params = {
@@ -69,6 +72,13 @@ export default (): TRet => {
       if (snap.needRefreshState) {
         loadCommentsState()
       }
+    })
+  }
+
+  const openUpdateEditor = (comment: TComment): void => {
+    snap.commit({ showUpdateEditor: true })
+    query(S.oneComment, { id: comment.id }).then(({ oneComment }) => {
+      snap.commit({ updateId: oneComment.id, updateBody: oneComment.body })
     })
   }
 
@@ -188,15 +198,51 @@ export default (): TRet => {
     }
   }
 
+  const replyComment = (): void => {
+    const { replyToComment, replyBody } = snap
+    const params = { id: replyToComment.id, body: replyBody }
+    snap.commit({ publishing: true })
+    mutate(S.replyComment, params).then(() => {
+      snap.commit({ needRefreshState: true })
+      loadComments()
+      published()
+      setTimeout(() => resetPublish(EDIT_MODE.REPLY), 500)
+      // stopDraftTimmer()
+      // clearDraft()
+    })
+  }
+
+  const updateComment = (): void => {
+    if (!snap.wordsCountReady) return
+
+    const params = {
+      id: store.updateId,
+      body: store.updateBody,
+    }
+
+    console.log('## updateComment params: ', params)
+    snap.commit({ publishing: true })
+    mutate(S.updateComment, params).then(({ updateComment }) => {
+      published()
+      const { bodyHtml } = updateComment
+      updateOneComment(updateComment, { bodyHtml })
+
+      setTimeout(() => resetPublish(EDIT_MODE.UPDATE), 500)
+    })
+  }
+
   return {
     loadComments,
     loadCommentReplies,
     loadCommentsState,
     loadPublishedComemnts,
+    openUpdateEditor,
     onPageChange,
     onMentionSearch,
     deleteComment,
     handleEmotion,
     handleUpvote,
+    replyComment,
+    updateComment,
   }
 }

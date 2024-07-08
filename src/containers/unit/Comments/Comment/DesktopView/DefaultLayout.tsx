@@ -1,4 +1,4 @@
-import { type FC, memo, Fragment } from 'react'
+import { type FC, Fragment } from 'react'
 
 import type { TComment } from '~/spec'
 
@@ -12,6 +12,7 @@ import IllegalBar from './IllegalBar'
 
 import type { TAPIMode } from '../../spec'
 
+import useLogic from '../../useLogic'
 import {
   Wrapper,
   CommentWrapper,
@@ -26,7 +27,6 @@ import {
   // BadgePopContent,
   IndentLine,
 } from '../../styles/comment/desktop_view'
-import { foldComment } from '../../logic'
 
 type TProps = {
   data: TComment
@@ -36,6 +36,8 @@ type TProps = {
 }
 
 const DefaultLayout: FC<TProps> = ({ data, isReply = false, showInnerRef = false, apiMode }) => {
+  const { foldComment } = useLogic()
+
   const { isPinned, meta } = data
   const { isLegal, illegalReason, illegalWords } = meta
 
@@ -77,4 +79,4 @@ const DefaultLayout: FC<TProps> = ({ data, isReply = false, showInnerRef = false
   )
 }
 
-export default memo(DefaultLayout)
+export default DefaultLayout

@@ -6,9 +6,8 @@ import type { TRepliesState, TAPIMode } from '../spec'
 import TogglerButton from './TogglerButton'
 import Comment from '../Comment'
 
+import useLogic from '../useLogic'
 import { Wrapper, CountHint, SlashSign, CountNum, ListWrapper } from '../styles/list/replies_list'
-
-import { loadCommentReplies } from '../logic'
 
 type TProps = {
   parentId: TID
@@ -27,6 +26,7 @@ const RepliesList: FC<TProps> = ({
   repliesState,
   foldedIds,
 }) => {
+  const { loadCommentReplies } = useLogic()
   const loading = parentId === repliesState.repliesParentId && repliesState.repliesLoading
 
   return (

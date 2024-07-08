@@ -9,8 +9,8 @@ import { authWarn } from '~/signal'
 import MenuButton from '~/widgets/Buttons/MenuButton'
 import { SpaceGrow } from '~/widgets/Common'
 
+import useLogic from '../useLogic'
 import { Wrapper, ReplyAction, MoreWrapper, MoreIcon } from '../styles/comment/actions'
-import { openUpdateEditor, openReplyEditor } from '../logic'
 
 const menuOptions = [
   // {
@@ -36,6 +36,7 @@ type TProps = {
 
 const Actions: FC<TProps> = ({ data }) => {
   const accountInfo = useAccount()
+  const { openUpdateEditor, openReplyEditor } = useLogic()
 
   let extraOptions = []
 

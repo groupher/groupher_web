@@ -5,6 +5,7 @@ import useLayout from '~/hooks/useLayout'
 
 import { SpaceGrow } from '~/widgets/Common'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   ExpandWrapper,
@@ -16,8 +17,6 @@ import {
   PenIcon,
 } from '../styles/editor/header'
 
-import { openEditor } from '../logic'
-
 type TProps = {
   accountInfo: TAccount
   showEditor: boolean
@@ -25,6 +24,7 @@ type TProps = {
 
 const EditorHeader: FC<TProps> = ({ accountInfo, showEditor }) => {
   const { avatarLayout } = useLayout()
+  const { openEditor } = useLogic()
 
   if (showEditor) {
     return (

@@ -1,34 +1,20 @@
-import { type FC, Fragment, memo } from 'react'
+import { Fragment } from 'react'
 
-import type { TPagedComments } from '~/spec'
 import Pagi from '~/widgets/Pagi'
 import { Br } from '~/widgets/Common'
 
 import List from './List'
 
-import type { TMode, TFoldState, TRepliesState, TAPIMode } from '../spec'
-import { onPageChange } from '../logic'
-
+import useLogic from '../useLogic'
 import { ListsWrapper } from '../styles/list'
 
-type TProps = {
-  pagedComments: TPagedComments
-  foldState: TFoldState
-  mode: TMode
-  apiMode: TAPIMode
-  repliesState: TRepliesState
-  // basicState: TCommentsState
-  loading: boolean
-}
+export default () => {
+  const { mode, apiMode, loading, getFoldState, getRepliesState, pagedComments, onPageChange } =
+    useLogic()
 
-const CommentsList: FC<TProps> = ({
-  pagedComments,
-  foldState,
-  mode,
-  apiMode,
-  repliesState,
-  loading,
-}) => {
+  const foldState = getFoldState()
+  const repliesState = getRepliesState()
+
   const { entries, totalCount, pageSize, pageNumber } = pagedComments
   const { foldedIds } = foldState
 
@@ -58,5 +44,3 @@ const CommentsList: FC<TProps> = ({
     </Fragment>
   )
 }
-
-export default memo(CommentsList)
