@@ -1,11 +1,11 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
-import EVENT from '@/constant/event'
-import { send } from '@/signal'
+import EVENT from '~/const/event'
+import { send } from '~/signal'
 
-import CommentsCount from '@/widgets/CommentsCount'
+import CommentsCount from '~/widgets/CommentsCount'
 
 import { Wrapper, Brief, Title } from '../../styles/ph_layout/mobile_view/header'
 

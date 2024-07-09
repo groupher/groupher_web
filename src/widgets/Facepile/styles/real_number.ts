@@ -1,5 +1,5 @@
-import styled, { theme } from '@/css'
-import { pixelAdd } from '@/dom'
+import styled, { theme } from '~/css'
+import { pixelAdd } from '~/dom'
 
 import { getAvatarSize, getMoreTextWidth } from './metric'
 

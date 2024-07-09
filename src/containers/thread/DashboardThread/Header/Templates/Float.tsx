@@ -1,13 +1,14 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { reject } from 'ramda'
 
-import type { TActive, TCommunityThread, TLinkItem } from '@/spec'
+import type { TActive, TCommunityThread, TLinkItem } from '~/spec'
 
-import { THREAD } from '@/constant/thread'
-import { HEADER_LAYOUT } from '@/constant/layout'
+import { THREAD } from '~/const/thread'
+import { HEADER_LAYOUT } from '~/const/layout'
 
-import CustomHeaderLinks from '@/widgets/CustomHeaderLinks/HeaderTemplate'
+import CustomHeaderLinks from '~/widgets/CustomHeaderLinks/HeaderTemplate'
 
+import useHeader from '../../logic/useHeader'
 import {
   Wrapper,
   LeftWrapper,
@@ -18,7 +19,6 @@ import {
   RightWrapper,
   AccountIcon,
 } from '../../styles/header/templates/float'
-import { edit } from '../../logic'
 
 type TProps = {
   threads: TCommunityThread[]
@@ -26,6 +26,7 @@ type TProps = {
 } & TActive
 
 const Float: FC<TProps> = ({ $active, threads, links }) => {
+  const { edit } = useHeader()
   const isAboutFold = links.length >= 2 && links[0].title !== ''
   const _threads = isAboutFold
     ? reject((t: TCommunityThread) => t.slug === THREAD.ABOUT, threads)

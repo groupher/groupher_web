@@ -2,13 +2,12 @@
  * cards for user
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TAccount, TUser } from '@/spec'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import type { TAccount, TUser } from '~/spec'
+import useLayout from '~/hooks/useLayout'
 
-import { cutRest } from '@/fmt'
+import { cutRest } from '~/fmt'
 
 import {
   Wrapper,
@@ -29,7 +28,7 @@ type TProps = {
 const UserCard: FC<TProps> = ({ user }) => {
   const { avatar, nickname, login, bio } = user
 
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   return (
     <Wrapper>
@@ -48,4 +47,4 @@ const UserCard: FC<TProps> = ({ user }) => {
   )
 }
 
-export default observer(UserCard)
+export default UserCard

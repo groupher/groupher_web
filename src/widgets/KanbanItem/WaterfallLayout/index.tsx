@@ -4,25 +4,21 @@
  *
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TArticle } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TArticle } from '~/spec'
 
-import { UPVOTE_LAYOUT } from '@/constant/layout'
-import ArticleCatState from '@/widgets/ArticleCatState'
-import TagsList from '@/widgets/TagsList'
+import { UPVOTE_LAYOUT } from '~/const/layout'
+import ArticleCatState from '~/widgets/ArticleCatState'
+import TagsList from '~/widgets/TagsList'
 
-import { mockUsers } from '@/mock'
-import { previewArticle } from '@/signal'
+import { mockUsers } from '~/mock'
+import { previewArticle } from '~/signal'
 
-import { SpaceGrow } from '@/widgets/Common'
-import Upvote from '@/widgets/Upvote'
+import { SpaceGrow } from '~/widgets/Common'
+import Upvote from '~/widgets/Upvote'
 
 import { Wrapper, Title, UpvotesWrapper } from '../styles/waterfall_layout'
-
-const _log = buildLog('w:KanbanItem:index')
 
 type TProps = {
   article: TArticle
@@ -44,4 +40,4 @@ const KanbanItem: FC<TProps> = ({ article }) => {
   )
 }
 
-export default observer(KanbanItem)
+export default KanbanItem

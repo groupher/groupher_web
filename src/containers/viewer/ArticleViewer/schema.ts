@@ -1,7 +1,7 @@
 import { gql } from 'urql'
-import { F, P } from '@/schemas'
+import { F, P } from '~/schemas'
 
-const getArticleSchema = (thread) => {
+const getArticle = (thread) => {
   return gql`
     ${P[thread.toLowerCase()]}
   `
@@ -17,9 +17,9 @@ const unsetTag = gql`
 const schema = {
   setTag,
   unsetTag,
-  getArticleSchema,
-  getUpvoteSchema: F.getUpvoteSchema,
-  getUndoUpvoteSchema: F.getUndoUpvoteSchema,
+  getArticle,
+  getUpvote: F.getUpvote,
+  getUndoUpvote: F.getUndoUpvote,
 }
 
 export default schema

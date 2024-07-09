@@ -1,7 +1,7 @@
-import styled, { css, theme, animate } from '@/css'
+import styled, { css, theme, animate } from '~/css'
 
-import PlugSVG from '@/icons/Plug'
-import PointSVG from '@/icons/PointDuo'
+import PlugSVG from '~/icons/Plug'
+import PointSVG from '~/icons/PointDuo'
 
 export const Main = styled.div`
   width: 325px;

@@ -8,10 +8,9 @@ import React from 'react'
 import T from 'prop-types'
 import { pluck } from 'ramda'
 
-import { ICON_CMD } from '@/config'
-import { buildLog } from '@/logger'
+import { ICON_CMD } from '~/config'
 
-import IconText from '@/widgets/IconText'
+import IconText from '~/widgets/IconText'
 import InlineTags from './InlineTags'
 
 import {
@@ -24,8 +23,6 @@ import {
   Footer,
   UpdatedAt,
 } from './styles/directory_gallery'
-
-const _log = buildLog('w:DirectoryGallery:index')
 
 const DirectoryGallery = ({ items, onSelect }) => {
   return (

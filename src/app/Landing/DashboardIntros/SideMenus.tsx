@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import ArrowLinker from '@/widgets/ArrowLinker'
+import ArrowLinker from '~/widgets/ArrowLinker'
 
 import type { TIntroTab } from './spec'
 import { TABS_ITEMS } from './constant'

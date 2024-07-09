@@ -2,26 +2,22 @@
  * PostLayout
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
-import useMetric from '@/hooks/useMetric'
-import useViewingArticle from '@/hooks/useViewingArticle'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { ARTICLE_THREAD } from '@/constant/thread'
+import useMetric from '~/hooks/useMetric'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import { ARTICLE_THREAD } from '~/const/thread'
 
-import { buildLog } from '@/logger'
+// import ArchivedSign from '~/widgets/ArchivedSign'
+import { SpaceGrow } from '~/widgets/Common'
+import ArticleBaseStats from '~/widgets/ArticleBaseStats'
+import Share from '~/widgets/Share'
+import ArticleSettingMenu from '~/widgets/ArticleSettingMenu'
+import ArticlePinLabel from '~/widgets/ArticlePinLabel'
 
-// import ArchivedSign from '@/widgets/ArchivedSign'
-import { SpaceGrow } from '@/widgets/Common'
-import ArticleBaseStats from '@/widgets/ArticleBaseStats'
-import Share from '@/widgets/Share'
-import ArticleSettingMenu from '@/widgets/ArticleSettingMenu'
-import ArticlePinLabel from '@/widgets/ArticlePinLabel'
-
-// import ArticleBelongCommunity from '@/widgets/ArticleBelongCommunity'
-// import ArticleMenu from '@/widgets/ArticleMenu'
+// import ArticleBelongCommunity from '~/widgets/ArticleBelongCommunity'
+// import ArticleMenu from '~/widgets/ArticleMenu'
 // import BackTo from './BackTo'
 
 import {
@@ -37,9 +33,7 @@ import {
   BottomInfo,
 } from '../styles/post/digest'
 
-const _log = buildLog('C:ArticleDigest')
-
-const PostLayout: FC = () => {
+export default () => {
   const router = useRouter()
   const metric = useMetric()
   const { article } = useViewingArticle()
@@ -78,5 +72,3 @@ const PostLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(PostLayout)

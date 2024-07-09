@@ -1,5 +1,5 @@
-import styled from '@/css'
-import type { TSpace } from '@/spec'
+import styled from '~/css'
+import type { TSpace } from '~/spec'
 
 export const Wrapper = styled.div<TSpace>`
   margin-left: ${({ left }) => `${left}px` || 0};

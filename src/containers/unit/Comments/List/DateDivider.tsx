@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { Wrapper, SlashSign, DateText } from '../styles/list/date_divider'
 

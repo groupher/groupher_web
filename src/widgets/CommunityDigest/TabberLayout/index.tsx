@@ -1,23 +1,21 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import { BRAND_LAYOUT } from '@/constant/layout'
+import { BRAND_LAYOUT } from '~/const/layout'
 
-import useMetric from '@/hooks/useMetric'
-import usePublicThreads from '@/hooks/usePublicThreads'
-import useViewingThread from '@/hooks/useViewingThread'
-import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useHeaderLinks from '@/hooks/useHeaderLinks'
-import useBrandLayout from '@/hooks/useBrandLayout'
+import useMetric from '~/hooks/useMetric'
+import usePublicThreads from '~/hooks/usePublicThreads'
+import useViewingThread from '~/hooks/useViewingThread'
+import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useHeaderLinks from '~/hooks/useHeaderLinks'
+import useLayout from '~/hooks/useLayout'
 
-import { SpaceGrow } from '@/widgets/Common'
-import TabBar from '@/widgets/TabBar'
-import ViewportTracker from '@/widgets/ViewportTracker'
-import SearchBox from '@/widgets/SearchBox'
-import CustomHeaderLinks from '@/widgets/CustomHeaderLinks'
+import { SpaceGrow } from '~/widgets/Common'
+import TabBar from '~/widgets/TabBar'
+import ViewportTracker from '~/widgets/ViewportTracker'
+import SearchBox from '~/widgets/SearchBox'
+import CustomHeaderLinks from '~/widgets/CustomHeaderLinks'
 
 import CommunityBrief from './CommunityBrief'
 
@@ -32,7 +30,7 @@ import {
 // 没有各种外链接，打赏信息等的官方社区
 // const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
 
-const TabberLayout: FC = () => {
+export default () => {
   const router = useRouter()
   const metric = useMetric()
   const { isMobile } = useMobileDetect()
@@ -40,9 +38,10 @@ const TabberLayout: FC = () => {
   const publicThreads = usePublicThreads()
   const activeThread = useViewingThread()
   const community = useViewingCommunity()
-  const brandLayout = useBrandLayout()
+  const { brandLayout } = useLayout()
+  const { getCustomLinks } = useHeaderLinks()
 
-  const { customLinks } = useHeaderLinks()
+  const customLinks = getCustomLinks()
 
   return (
     <Wrapper
@@ -77,5 +76,3 @@ const TabberLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(TabberLayout)

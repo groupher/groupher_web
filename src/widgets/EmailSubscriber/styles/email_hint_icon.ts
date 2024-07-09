@@ -1,6 +1,6 @@
-import type { TTestable } from '@/spec'
-import Img from '@/Img'
-import styled, { css, theme, animate } from '@/css'
+import type { TTestable } from '~/spec'
+import Img from '~/Img'
+import styled, { css, theme, animate } from '~/css'
 
 import { Wrapper as ParentWrapper } from '.'
 

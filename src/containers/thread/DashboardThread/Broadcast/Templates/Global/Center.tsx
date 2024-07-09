@@ -1,10 +1,9 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import { BROADCAST_LAYOUT } from '@/constant/layout'
-import { Space, SpaceGrow } from '@/widgets/Common'
+import { BROADCAST_LAYOUT } from '~/const/layout'
+import { Space, SpaceGrow } from '~/widgets/Common'
 
-import useBroadcastInfo from '../../../hooks/useBroadcastInfo'
+import useBroadcast from '../../../logic/useBroadcast'
 import {
   Wrapper,
   Row,
@@ -15,14 +14,13 @@ import {
   CrossIcon,
   ArrowIcon,
 } from '../../../styles/broadcast/templates/global/default'
-import { edit } from '../../../logic'
 
 type TProps = {
   onSelect?: () => void
 }
 
 const Center: FC<TProps> = ({ onSelect = null }) => {
-  const { broadcastLayout, broadcastBg } = useBroadcastInfo()
+  const { broadcastLayout, broadcastBg, edit } = useBroadcast()
   const $active = broadcastLayout === BROADCAST_LAYOUT.CENTER
 
   return (
@@ -52,4 +50,4 @@ const Center: FC<TProps> = ({ onSelect = null }) => {
   )
 }
 
-export default observer(Center)
+export default Center

@@ -1,13 +1,10 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TSubmitState } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TSubmitState } from '~/spec'
 
 import YesOrNoButtons from './YesOrNoButtons'
 import Button from './Button'
 import { DonwWrapper, DoneIcon, DoneHint } from './styles/submit_button'
-
-const log = buildLog('w:Buttons:SubmitButton')
 
 const space = 22
 
@@ -57,8 +54,8 @@ const SubmitButton: FC<TProps> = ({
   okText = '发 布',
   cancelText = '取 消',
   withCancel = false,
-  onCancel = log,
-  onPublish = log,
+  onCancel = console.log,
+  onPublish = console.log,
   submitState = {
     publishing: false,
     publishDone: false,

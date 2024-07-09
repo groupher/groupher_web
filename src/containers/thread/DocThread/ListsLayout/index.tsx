@@ -1,6 +1,6 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { mockHelpCats } from '@/mock'
+import { mockHelpCats } from '~/mock'
 
 import Category from './Category'
 import { Wrapper, CatsWrapper } from '../styles/lists_layout'

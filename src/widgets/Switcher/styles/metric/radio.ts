@@ -1,7 +1,7 @@
-import { theme, rainbow } from '@/css'
-import SIZE from '@/constant/size'
+import { theme, rainbow } from '~/css'
+import SIZE from '~/const/size'
 
-import type { TColorName, TTheme } from '@/spec'
+import type { TColorName, TTheme } from '~/spec'
 
 export const getActiveBackground = (dimOnActive: boolean, primaryColor: TColorName): TTheme => {
   return dimOnActive ? theme('divider') : rainbow(primaryColor, 'button.primary')

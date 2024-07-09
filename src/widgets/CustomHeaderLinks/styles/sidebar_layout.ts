@@ -1,9 +1,9 @@
-import type { TActive, TColor } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
 
-import LinkSVG from '@/icons/Link'
-import ArrowUpRightSVG from '@/icons/ArrowUpRight'
-import MoreSVG from '@/icons/menu/MoreL'
+import LinkSVG from '~/icons/Link'
+import ArrowUpRightSVG from '~/icons/ArrowUpRight'
+import MoreSVG from '~/icons/menu/MoreL'
 
 import { LinkItem as LinkItemBase, ArrowIcon as ArrowIconBase, MenuPanel as MenuPanelBase } from '.'
 

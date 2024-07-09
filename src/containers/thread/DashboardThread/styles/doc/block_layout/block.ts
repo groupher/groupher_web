@@ -1,10 +1,10 @@
-import type { TColorName, TTestable } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
+import type { TColorName, TTestable } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
 
-import Button from '@/widgets/Buttons/Button'
-import LaptopSVG from '@/icons/Works'
-import PlusSVG from '@/icons/Plus'
-import MoreSVG from '@/icons/menu/More'
+import Button from '~/widgets/Buttons/Button'
+import LaptopSVG from '~/icons/Works'
+import PlusSVG from '~/icons/Plus'
+import MoreSVG from '~/icons/menu/More'
 
 type TWrapper = TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

@@ -1,10 +1,10 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TComment } from '@/spec'
-import { ICON } from '@/config'
-import { cutRest } from '@/fmt'
+import type { TComment } from '~/spec'
+import { ICON } from '~/config'
+import { cutRest } from '~/fmt'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 import { Wrapper, ReplyIcon, Avatar, ReplyToBody, ReplyToFloor } from '../styles/comment/reply_bar'
 
 type TProps = {

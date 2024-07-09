@@ -1,9 +1,9 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import OptionArrowSVG from '@/icons/OptionArrow'
-import HashTagSVG from '@/icons/HashTagBold'
-import ClipSVG from '@/icons/Clip'
-import { WithPosition } from '@/widgets/Common'
+import OptionArrowSVG from '~/icons/OptionArrow'
+import HashTagSVG from '~/icons/HashTagBold'
+import ClipSVG from '~/icons/Clip'
+import { WithPosition } from '~/widgets/Common'
 
 export const Wrapper = styled.div`
   ${css.row()};

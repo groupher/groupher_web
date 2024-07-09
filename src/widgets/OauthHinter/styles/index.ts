@@ -1,7 +1,7 @@
-import styled, { css, theme, animate } from '@/css'
-import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
-import LinkSVG from '@/icons/Link'
-import GithubSVG from '@/icons/GithubCat'
+import styled, { css, theme, animate } from '~/css'
+import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
+import LinkSVG from '~/icons/Link'
+import GithubSVG from '~/icons/GithubCat'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};

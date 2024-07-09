@@ -1,7 +1,7 @@
-import type { TSizeTSM, TSpace } from '@/spec'
+import type { TSizeTSM, TSpace } from '~/spec'
 
-import styled, { css, theme } from '@/css'
-// import HashSVG from '@/icons/HashTagLight'
+import styled, { css, theme } from '~/css'
+// import HashSVG from '~/icons/HashTagLight'
 
 import { getTitleSize } from './metric'
 

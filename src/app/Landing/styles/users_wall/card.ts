@@ -1,7 +1,7 @@
-import type { TColorName } from '@/spec'
+import type { TColorName } from '~/spec'
 
-import styled, { css, theme, rainbowLight } from '@/css'
-import Img from '@/Img'
+import styled, { css, theme, rainbowLight } from '~/css'
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   color: ${theme('article.digest')};

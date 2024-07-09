@@ -1,7 +1,7 @@
-import type { TColor } from '@/spec'
-import styled, { css, rainbow } from '@/css'
-import PinSVG from '@/icons/Pin'
-import { pixelAdd } from '@/dom'
+import type { TColor } from '~/spec'
+import styled, { css, rainbow } from '~/css'
+import PinSVG from '~/icons/Pin'
+import { pixelAdd } from '~/dom'
 
 type TPos = { top: number; left: number } & TColor
 

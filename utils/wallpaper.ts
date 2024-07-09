@@ -6,7 +6,7 @@ import type {
   TWallpaperPic,
   TWallpaper,
   TCustomWallpaper,
-} from '@/spec'
+} from '~/spec'
 
 /**
  * parse wallpaper both for gradient and picture background

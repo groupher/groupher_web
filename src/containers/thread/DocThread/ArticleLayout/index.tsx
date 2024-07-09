@@ -1,15 +1,15 @@
-import { FC, memo, useState } from 'react'
+import { useState } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import { BANNER_LAYOUT } from '@/constant/layout'
+import { BANNER_LAYOUT } from '~/const/layout'
 
-import FileTree from '@/widgets/FileTree'
-import { Space } from '@/widgets/Common'
-import FeedbackFooter from '@/widgets/FeedbackFooter'
-import Sticky from '@/widgets/Sticky'
-import CustomScroller from '@/widgets/CustomScroller'
+import FileTree from '~/widgets/FileTree'
+import { Space } from '~/widgets/Common'
+import FeedbackFooter from '~/widgets/FeedbackFooter'
+import Sticky from '~/widgets/Sticky'
+import CustomScroller from '~/widgets/CustomScroller'
 
-import useBannerLayout from '@/hooks/useBannerLayout'
+import useLayout from '~/hooks/useLayout'
 
 import PinedTree from './PinedTree'
 import FaqLayout from '../FaqLayout'
@@ -18,6 +18,7 @@ import ArticleCover from './ArticleCover'
 
 import ToggleBtn from './ToggleBtn'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   Header,
@@ -27,17 +28,14 @@ import {
   Sidebar,
   TreeWrapper,
 } from '../styles/article_layout'
-import { gotoDetailLayout } from '../logic'
 
-type TProps = {
-  isFAQArticleLayout: boolean
-}
+export default () => {
+  const { gotoDetailLayout, isFAQArticleLayout } = useLogic()
 
-const ArticleLayout: FC<TProps> = ({ isFAQArticleLayout }) => {
   const [filetreeOpen, setFileTreeOpen] = useState(true)
 
   const { isMobile } = useMobileDetect()
-  const bannerLayout = useBannerLayout()
+  const { bannerLayout } = useLayout()
 
   return (
     <Wrapper>
@@ -107,5 +105,3 @@ const ArticleLayout: FC<TProps> = ({ isFAQArticleLayout }) => {
     </Wrapper>
   )
 }
-
-export default memo(ArticleLayout)

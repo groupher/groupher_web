@@ -7,11 +7,7 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { buildLog } from '@/logger'
-
 import { Wrapper, Logo, Digest, Title, Desc } from './styles'
-
-const _log = buildLog('w:NaviIntro:index')
 
 const NaviIntro = ({ title, desc, iconSrc, testid }) => {
   return (

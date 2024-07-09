@@ -1,11 +1,12 @@
-import { FC, memo, useState } from 'react'
+import { type FC, useState } from 'react'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import { MODE } from '../../constant'
 
 import type { TProps as TBase } from '..'
 
+import useLogic from '../../useLogic'
 import {
   Wrapper,
   Title,
@@ -18,11 +19,12 @@ import {
   ExpandIcon,
   FoldIcon,
 } from '../../styles/head_bar/state_bar/sort_menu'
-import { foldAllComments, expandAllComments, onModeChange } from '../../logic'
 
 type TProps = Pick<TBase, 'mode' | 'apiMode' | 'isAllFolded'>
 
 const Actions: FC<TProps> = ({ mode, isAllFolded, apiMode }) => {
+  const { foldAllComments, expandAllComments, onModeChange } = useLogic()
+
   const [moreActive, setMenuActive] = useState(false)
 
   return (
@@ -84,4 +86,4 @@ const Actions: FC<TProps> = ({ mode, isAllFolded, apiMode }) => {
   )
 }
 
-export default memo(Actions)
+export default Actions

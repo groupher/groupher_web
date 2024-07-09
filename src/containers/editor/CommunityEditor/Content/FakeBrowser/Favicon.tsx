@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { HolderIcon, RealIcon } from '../../styles/content/fake_browser/favicon'
 

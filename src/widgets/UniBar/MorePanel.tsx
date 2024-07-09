@@ -1,18 +1,15 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import useTrans from '~/hooks/useTrans'
+import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import useTrans from '@/hooks/useTrans'
-import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { DASHBOARD_ROUTE } from '~/const/route'
 
-import { DASHBOARD_ROUTE } from '@/constant/route'
-
-import HomeLogo from '@/widgets/HomeLogo'
-import { SpaceGrow, SexyDivider, LinkAble } from '@/widgets/Common'
+import HomeLogo from '~/widgets/HomeLogo'
+import { SpaceGrow, SexyDivider, LinkAble } from '~/widgets/Common'
 
 import { Wrapper, MenuBar, Icon } from './styles/more_panel'
 
-const MorePanel: FC = () => {
+export default () => {
   const { inView: badgeInView } = useCommunityDigestViewport()
   const { slug } = useViewingCommunity()
   const { t } = useTrans()
@@ -40,5 +37,3 @@ const MorePanel: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(MorePanel)

@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import QRCode from 'qrcode.react'
 
 import { Wrapper, QRCodeWrapper, DescTitle, DescWrapper } from '../styles/modal_panel/wechat_board'

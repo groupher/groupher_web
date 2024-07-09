@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 export const BaseBanner = styled.nav`
   ${css.column('justify-center')};

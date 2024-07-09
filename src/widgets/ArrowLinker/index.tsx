@@ -4,18 +4,14 @@
  *
  */
 
-import { FC, ReactNode } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC, ReactNode } from 'react'
 
-import type { TColorName, TSpace } from '@/spec'
-import { buildLog } from '@/logger'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import type { TColorName, TSpace } from '~/spec'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import { Link } from '@/widgets/Common'
+import { Link } from '~/widgets/Common'
 
 import { Wrapper, Title, ArrowIcon } from './styles'
-
-const _log = buildLog('c:ArrowLinker:index')
 
 type TProps = {
   testid?: string
@@ -51,4 +47,4 @@ const ArrowLinker: FC<TProps> = ({
   )
 }
 
-export default observer(ArrowLinker)
+export default ArrowLinker

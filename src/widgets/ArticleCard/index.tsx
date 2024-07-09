@@ -1,19 +1,18 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TArticle } from '@/spec'
-import { THREAD } from '@/constant/thread'
-import SIZE from '@/constant/size'
-import { cutRest } from '@/fmt'
-import { previewArticle } from '@/signal'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useIsArticleViewing from '@/hooks/useIsArticleViewing'
+import type { TArticle } from '~/spec'
+import { THREAD } from '~/const/thread'
+import SIZE from '~/const/size'
+import { cutRest } from '~/fmt'
+import { previewArticle } from '~/signal'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useIsArticleViewing from '~/hooks/useIsArticleViewing'
 
-import ArticleReadLabel from '@/widgets/ArticleReadLabel'
-import ArticlePinLabel from '@/widgets/ArticlePinLabel'
-import DigestSentence from '@/widgets/DigestSentence'
-import { Br, SpaceGrow, DesktopOnly, MobileOnly } from '@/widgets/Common'
-import ArticleImgWindow from '@/widgets/ArticleImgWindow'
+import ArticleReadLabel from '~/widgets/ArticleReadLabel'
+import ArticlePinLabel from '~/widgets/ArticlePinLabel'
+import DigestSentence from '~/widgets/DigestSentence'
+import { Br, SpaceGrow, DesktopOnly, MobileOnly } from '~/widgets/Common'
+import ArticleImgWindow from '~/widgets/ArticleImgWindow'
 
 import Footer from './Footer'
 
@@ -75,4 +74,4 @@ const ArticleCard: FC<TProps> = ({ data }) => {
   )
 }
 
-export default observer(ArticleCard)
+export default ArticleCard

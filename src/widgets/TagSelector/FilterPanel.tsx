@@ -1,8 +1,8 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { keys } from 'ramda'
 
-import type { TTag, TGroupedTags } from '@/spec'
-import TagNode from '@/widgets/TagNode'
+import type { TTag, TGroupedTags } from '~/spec'
+import TagNode from '~/widgets/TagNode'
 
 import { Wrapper, GroupWrapper, GroupTitle, SelectItem, Title } from './styles/filter_panel'
 

@@ -1,7 +1,4 @@
-import { FC } from 'react'
-
-import useWallpaper from '@/hooks/useWallpaper'
-import { parseWallpaper } from '@/wallpaper'
+import useWallpaper from '~/hooks/useWallpaper'
 
 import {
   Wrapper,
@@ -11,9 +8,8 @@ import {
   Bar,
 } from '../../styles/cover_image/desktop_view/mobile_device'
 
-const MobileDevice: FC = () => {
-  const { wallpapers, wallpaper } = useWallpaper()
-  const { background, effect } = parseWallpaper(wallpapers, wallpaper)
+export default () => {
+  const { background, effect } = useWallpaper()
 
   const imageSrc = '/landing/intro/mobile.png'
 
@@ -27,5 +23,3 @@ const MobileDevice: FC = () => {
     </Wrapper>
   )
 }
-
-export default MobileDevice

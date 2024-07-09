@@ -2,10 +2,10 @@
 
 import { useRouter } from 'next/navigation'
 
-import { ROUTE } from '@/constant/route'
+import { ROUTE } from '~/const/route'
 
-import Button from '@/widgets/Buttons/Button'
-import { LinkAble } from '@/widgets/Common'
+import Button from '~/widgets/Buttons/Button'
+import { LinkAble } from '~/widgets/Common'
 
 import { Wrapper, InnerWrapper, Footer } from './styles'
 // import ErrorPage from 'next/error'

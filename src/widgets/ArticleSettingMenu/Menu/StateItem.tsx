@@ -1,13 +1,12 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
-import useViewingArticle from '@/hooks/useViewingArticle'
-import useKanbanBgColors from '@/hooks/useKanbanBgColors'
-import useNameAlias from '@/hooks/useNameAlias'
-import { Trans } from '@/i18n'
-import { ARTICLE_STATE } from '@/constant/gtd'
-import { aliasGTDDoneState } from '@/fmt'
+import { SpaceGrow } from '~/widgets/Common'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import useKanbanBgColors from '~/hooks/useKanbanBgColors'
+import useNameAlias from '~/hooks/useNameAlias'
+import { Trans } from '~/i18n'
+import { ARTICLE_STATE } from '~/const/gtd'
+import { aliasGTDDoneState } from '~/fmt'
 
 import { Icon } from '../styles/icon'
 import { MenuItem } from '../styles/menu'
@@ -53,4 +52,4 @@ const StateItem: FC<TProps> = ({ onClick }) => {
   )
 }
 
-export default observer(StateItem)
+export default StateItem

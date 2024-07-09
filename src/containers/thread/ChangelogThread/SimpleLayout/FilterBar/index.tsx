@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import type { TTagsMode } from '../../spec'
 import { TAGS_MODE } from '../../constant'

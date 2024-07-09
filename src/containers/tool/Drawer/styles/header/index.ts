@@ -1,7 +1,7 @@
 // see example: https://codepen.io/mattbraun/pen/EywBJR
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import CloseButtonSVG from '@/icons/CloseLight'
+import CloseButtonSVG from '~/icons/CloseLight'
 
 const BaseWrapper = styled.div`
   z-index: 1;

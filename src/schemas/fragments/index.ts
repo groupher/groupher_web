@@ -26,8 +26,8 @@ import {
   emotionQuery,
   commentParent,
   pagi,
-  getUpvoteSchema,
-  getUndoUpvoteSchema,
+  getUpvote,
+  getUndoUpvote,
   customLink,
   wallpaper,
   seo,
@@ -58,8 +58,8 @@ const F = {
   emotionQuery,
   commentParent,
   pagi,
-  getUpvoteSchema,
-  getUndoUpvoteSchema,
+  getUpvote,
+  getUndoUpvote,
 }
 
 export default F

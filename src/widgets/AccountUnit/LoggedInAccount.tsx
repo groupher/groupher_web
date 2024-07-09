@@ -4,19 +4,17 @@
  *
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
-import useAccount from '@/hooks/useAccount'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import type { TSpace } from '~/spec'
+import useAccount from '~/hooks/useAccount'
+import useLayout from '~/hooks/useLayout'
 
-import { ROUTE } from '@/constant/route'
-import { signOut } from '@/oauth'
-import { SexyDivider, SpaceGrow, LinkAble } from '@/widgets/Common'
-import Tooltip from '@/widgets/Tooltip'
-import ImgFallback from '@/widgets/ImgFallback'
+import { ROUTE } from '~/const/route'
+import { signOut } from '~/oauth'
+import { SexyDivider, SpaceGrow, LinkAble } from '~/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import {
   Avatar,
@@ -28,8 +26,6 @@ import {
   Icon,
 } from './styles/logged_in_account'
 
-const _log = buildLog('c:AccountUnit:index')
-
 type TProps = {
   withName?: boolean
 } & TSpace
@@ -37,7 +33,7 @@ type TProps = {
 const LoggedInAccount: FC<TProps> = () => {
   const user = useAccount()
   const { avatar } = user
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   return (
     <Tooltip
@@ -89,4 +85,4 @@ const LoggedInAccount: FC<TProps> = () => {
   )
 }
 
-export default observer(LoggedInAccount)
+export default LoggedInAccount

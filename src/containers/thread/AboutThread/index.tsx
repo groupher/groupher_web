@@ -3,15 +3,14 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 import Markdown from 'markdown-to-jsx'
 
-// import { buildLog } from '@/logger'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useBannerLayout from '@/hooks/useBannerLayout'
-import { BANNER_LAYOUT } from '@/constant/layout'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useLayout from '~/hooks/useLayout'
+import { BANNER_LAYOUT } from '~/const/layout'
 
-import { SexyDivider as Divider } from '@/widgets/Common'
+import { SexyDivider as Divider } from '~/widgets/Common'
 
 import Members from './Members'
 import BasicStates from './BasicStates'
@@ -20,9 +19,6 @@ import ExtraInfo from './ExtraInfo'
 import Sidebar from './Sidebar'
 
 import { Wrapper, MainWrapper, StateBlock, IntroBlock, MemberBlock, Title, Desc } from './styles'
-
-/* eslint-disable-next-line */
-// const log = buildLog('C:AboutThread')
 
 type TProps = {
   testid?: string
@@ -35,7 +31,7 @@ const INTRO = `我注意到里面他说了一句话，是这个老兄说一会�
 找一个懂媒体懂政治的学者在前面替自己怼人，自己默默坐在后面为学者的话背书。`
 
 const AboutThreadContainer: FC<TProps> = ({ testid = 'about-thread', isSidebarLayout = false }) => {
-  const bannerLayout = useBannerLayout()
+  const { bannerLayout } = useLayout()
   const community = useViewingCommunity()
 
   return (

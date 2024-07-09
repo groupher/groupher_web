@@ -1,23 +1,18 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { blurRGB } from '~/fmt'
+import useThemeData from '~/hooks/useThemeData'
+import useTheme from '~/hooks/useTheme'
+import THEME from '~/const/theme'
 
-import type { TWallpaperInfo } from '@/spec'
-import { blurRGB } from '@/fmt'
-import useThemeData from '@/hooks/useThemeData'
-import useTheme from '@/hooks/useTheme'
-import THEME from '@/constant/theme'
+import { Brick } from '~/widgets/Common'
+import RangeSlider from '~/widgets/RangeSlider'
 
-import { parseWallpaper } from '@/wallpaper'
-
-import { Brick } from '@/widgets/Common'
-import RangeSlider from '@/widgets/RangeSlider'
+import useWallpaper from '~/hooks/useWallpaper'
 
 import { SETTING_FIELD } from '../../constant'
 import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
-import useGossBlur from '../../hooks/useGossBlurInfo'
-import useWallpaperInfo from '../../hooks/useWallpaperInfo'
+import useGossBlur from '../../logic/useGossBlur'
 
 import {
   Wrapper,
@@ -31,18 +26,16 @@ import {
   Highlight,
   ContentBlock,
 } from '../../styles/layout/goss_blur'
-import { edit } from '../../logic'
 
-const GossBlurNight: FC = () => {
-  const { wallpapers, wallpaper, customWallpaper } = useWallpaperInfo()
-  const { gossBlurDark: gossBlur, saving, isDarkTouched: isTouched } = useGossBlur()
-
-  const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
+export default () => {
+  const { gossBlurDark: gossBlur, saving, getIsDarkTouched, edit } = useGossBlur()
+  const { wallpaper, background, effect } = useWallpaper()
 
   const { theme } = useTheme()
   const themeData = useThemeData()
 
   const bgColor = `${blurRGB(themeData.htmlBg, gossBlur)}`
+  const isTouched = getIsDarkTouched()
 
   return (
     <Wrapper key={wallpaper}>
@@ -108,5 +101,3 @@ const GossBlurNight: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(GossBlurNight)

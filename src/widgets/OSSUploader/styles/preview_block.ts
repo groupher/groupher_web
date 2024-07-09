@@ -1,6 +1,6 @@
-import styled from '@/css'
+import styled from '~/css'
 
-import type { TUploadPreview } from '@/spec'
+import type { TUploadPreview } from '~/spec'
 
 export const Wrapper = styled.div``
 export const PreviewImg = styled.img<TUploadPreview>`

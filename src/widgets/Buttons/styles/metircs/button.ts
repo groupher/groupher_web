@@ -1,7 +1,7 @@
-import SIZE from '@/constant/size'
-import { theme, rainbow } from '@/css'
+import SIZE from '~/const/size'
+import { theme, rainbow } from '~/css'
 
-import type { TColorName, TTheme } from '@/spec'
+import type { TColorName, TTheme } from '~/spec'
 
 export const getColor = (ghost: boolean, disabled: boolean): TTheme => {
   if (ghost) {

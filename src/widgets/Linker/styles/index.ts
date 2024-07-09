@@ -1,9 +1,9 @@
-import type { TTestable, TSpace } from '@/spec'
+import type { TTestable, TSpace } from '~/spec'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import LinkSVG from '@/icons/Link'
-import LinkOutSVG from '@/icons/LinkOut'
+import LinkSVG from '~/icons/Link'
+import LinkOutSVG from '~/icons/LinkOut'
 
 type TWrapper = { inline: boolean } & TSpace & TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

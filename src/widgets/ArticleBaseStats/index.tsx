@@ -4,10 +4,10 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TArticle, TContainer, TSpace } from '@/spec'
-import { scrollToComments } from '@/dom'
+import type { TArticle, TContainer, TSpace } from '~/spec'
+import { scrollToComments } from '~/dom'
 
 import {
   Wrapper,

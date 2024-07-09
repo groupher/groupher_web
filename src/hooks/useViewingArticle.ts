@@ -1,8 +1,11 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
+import { useMemo } from 'react'
+import { values, includes } from 'ramda'
 
-import { SITE_URL } from '@/config'
-import type { TArticle } from '@/spec'
+import { SITE_URL } from '~/config'
+import type { TArticle } from '~/spec'
+import { ARTICLE_THREAD } from '~/const/thread'
+
+import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   article: TArticle
@@ -19,22 +22,20 @@ export const parseArticleLink = (article: TArticle): string => {
   return `${SITE_URL}/${community}/${thread}/${innerId}`
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useViewingArticle = (): TRet => {
-  const { store } = useContext(MobXProviderContext)
+export default (): TRet => {
+  const store = useSubStore('viewing')
 
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
+  const article = useMemo((): TArticle => {
+    const curThread = store.activeThread
 
-  const { viewingArticle: article } = store.viewing
+    if (includes(curThread, values(ARTICLE_THREAD))) {
+      return store[curThread]
+    }
+    return {}
+  }, [store])
 
   return {
     article,
     articleLink: parseArticleLink(article),
   }
 }
-
-export default useViewingArticle

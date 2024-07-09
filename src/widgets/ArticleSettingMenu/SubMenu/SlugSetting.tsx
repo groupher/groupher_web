@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import useViewingArticle from '@/hooks/useViewingArticle'
+import useViewingArticle from '~/hooks/useViewingArticle'
 
 import Footer from './Footer'
 import { Wrapper, Inputer, Note, Preview, Slug } from '../styles/sub_menu/slug_setting'
@@ -23,7 +23,7 @@ const SlugSetting: FC<TProps> = ({ onBack }) => {
 
       <Footer
         onBack={onBack}
-        onConfirm={() => console.log('## title confirm')}
+        onConfirm={() => console.log('## ## title confirm')}
         top={20}
         bottom={5}
       />

@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
-import { theme } from '@/css'
+import { theme } from '~/css'
 /*!
  * OverlayScrollbars
  * https://github.com/KingSora/OverlayScrollbars

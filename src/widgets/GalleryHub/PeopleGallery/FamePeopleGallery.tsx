@@ -4,16 +4,15 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TGallery } from '@/spec'
-import { ICON } from '@/config'
-import { getRandomInt } from '@/helper'
-import { buildLog } from '@/logger'
+import type { TGallery } from '~/spec'
+import { ICON } from '~/config'
+import { getRandomInt } from '~/helper'
 
-import Upvote from '@/widgets/Upvote'
-import IconText from '@/widgets/IconText'
-import { SpaceGrow } from '@/widgets/Common'
+import Upvote from '~/widgets/Upvote'
+import IconText from '~/widgets/IconText'
+import { SpaceGrow } from '~/widgets/Common'
 
 import { mockFameous } from '../mock'
 import CardHeader from './CardHeader'
@@ -31,8 +30,6 @@ import {
   Footer,
   CommentWrapper,
 } from '../styles/people_gallery/fame_people_gallery'
-
-const _log = buildLog('w:ProductGallery:index')
 
 type TProps = {
   items?: TGallery[]

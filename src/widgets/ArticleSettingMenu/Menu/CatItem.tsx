@@ -1,9 +1,8 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
-import useViewingArticle from '@/hooks/useViewingArticle'
-import { Trans } from '@/i18n'
+import { SpaceGrow } from '~/widgets/Common'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import { Trans } from '~/i18n'
 
 import { Icon } from '../styles/icon'
 import { MenuItem } from '../styles/menu'
@@ -14,6 +13,8 @@ type TProps = {
 
 const CatItem: FC<TProps> = ({ onClick }) => {
   const { article } = useViewingArticle()
+
+  if (!article) return null
 
   if (article.cat) {
     const TheIcon = Icon[article.cat]
@@ -37,4 +38,4 @@ const CatItem: FC<TProps> = ({ onClick }) => {
   )
 }
 
-export default observer(CatItem)
+export default CatItem

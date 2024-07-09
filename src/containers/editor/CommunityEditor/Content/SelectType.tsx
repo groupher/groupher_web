@@ -4,16 +4,12 @@
  *
  */
 
-import { FC, memo } from 'react'
-
-import { buildLog } from '@/logger'
-
-import ArrowLinker from '@/widgets/ArrowLinker'
+import ArrowLinker from '~/widgets/ArrowLinker'
 
 import DemoCommunity from './DemoCommunity'
 import COMMUNITY_INTRO from './communityIntros'
-import type { TSelectTypeStatus } from '../spec'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   LeftBlock,
@@ -26,13 +22,9 @@ import {
   CommunityDemoWrapper,
 } from '../styles/content/select_type'
 
-const _log = buildLog('C:NewExploreContent')
+export default () => {
+  const { communityType } = useLogic()
 
-type TProps = {
-  status: TSelectTypeStatus
-}
-
-const SelectType: FC<TProps> = ({ status: { communityType } }) => {
   if (!communityType) return null
   const intro = COMMUNITY_INTRO[communityType]
 
@@ -63,5 +55,3 @@ const SelectType: FC<TProps> = ({ status: { communityType } }) => {
     </Wrapper>
   )
 }
-
-export default memo(SelectType)

@@ -4,21 +4,21 @@
  *
  */
 
-import { FC, ReactNode, lazy, Suspense, useEffect } from 'react'
+import { type FC, type ReactNode, lazy, Suspense } from 'react'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
-import METRIC from '@/constant/metric'
+import METRIC from '~/const/metric'
 
-import useMetric from '@/hooks/useMetric'
+import useMetric from '~/hooks/useMetric'
 
-import Mushroom from '@/containers/Mushroom'
-import ThemePalette from '@/widgets/ThemePalette'
+import Mushroom from '~/containers/Mushroom'
+import ThemePalette from '~/widgets/ThemePalette'
 
-// import Broadcast from '@/widgets/Broadcast'
-// import ModeLine from '@/containers/unit/ModeLine'
+// import Broadcast from '~/widgets/Broadcast'
+// import ModeLine from '~/containers/unit/ModeLine'
 
 // import DashboardAlert from './DashboardAlert'
-// import CustomScroller from '@/widgets/CustomScroller'
+// import CustomScroller from '~/widgets/CustomScroller'
 
 import SEO from './SEO'
 import Wallpaper from './Wallpaper'

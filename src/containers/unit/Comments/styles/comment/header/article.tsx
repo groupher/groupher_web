@@ -1,9 +1,9 @@
-import type { TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
+import type { TAvatarLayout } from '~/spec'
+import { AVATAR_LAYOUT } from '~/const/layout'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Img from '@/Img'
+import Img from '~/Img'
 
 export { HeaderBaseInfo, BaseInfo, FloorNum } from '.'
 

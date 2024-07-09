@@ -12,13 +12,10 @@ import emojiPlugin from 'remarkable-emoji'
 import mentionsPlugin from 'remarkable-mentions'
 import Prism from 'mastani-codehighlight'
 
-import { MENTION_USER_ADDR } from '@/config'
-import { buildLog } from '@/logger'
+import { MENTION_USER_ADDR } from '~/config'
 
-import MarkDownStyle from '@/widgets/ThemePalette/MarkDownStyle'
+import MarkDownStyle from '~/widgets/ThemePalette/MarkDownStyle'
 import { PreviewerContainer } from './styles'
-
-const _log = buildLog('w:MarkDownRender:index')
 
 // const md = new Remarkable()
 const md = new Remarkable('full', {

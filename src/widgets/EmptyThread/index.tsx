@@ -4,18 +4,15 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { includes } from 'ramda'
 
-import type { TThread } from '@/spec'
-import { THREAD } from '@/constant/thread'
+import type { TThread } from '~/spec'
+import { THREAD } from '~/const/thread'
 
-import { buildLog } from '@/logger'
-import { Trans } from '@/i18n'
+import { Trans } from '~/i18n'
 
 import { Icon404, Wrapper, Icon, Text, Title, DescWrapper, Desc, IssueLink } from './styles'
-
-const _log = buildLog('w:EmptyThread:index')
 
 type TProps = {
   thread: TThread

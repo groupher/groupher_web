@@ -1,18 +1,20 @@
-import { FC, Fragment, memo } from 'react'
+import { type FC, Fragment } from 'react'
 
-import Modal from '@/widgets/Modal'
+import Modal from '~/widgets/Modal'
 
 import ReplyEditor from './ReplyEditor'
 import UpdateEditor from './UpdateEditor'
 
+import useLogic from '../useLogic'
 import type { TEditState } from '../spec'
-import { closeUpdateEditor, onReplyEditorClose } from '../logic'
 
 type TProps = {
   editState: TEditState
 }
 
 const CommentEditor: FC<TProps> = ({ editState }) => {
+  const { closeUpdateEditor, onReplyEditorClose } = useLogic()
+
   const {
     // update
     showUpdateEditor,
@@ -42,4 +44,4 @@ const CommentEditor: FC<TProps> = ({ editState }) => {
   )
 }
 
-export default memo(CommentEditor)
+export default CommentEditor

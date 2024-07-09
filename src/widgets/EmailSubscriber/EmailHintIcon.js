@@ -1,5 +1,5 @@
 import React from 'react'
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 
 import { Wrapper, MailIcon, CurveLineIcon, MailBoxIcon } from './styles/email_hint_icon'
 

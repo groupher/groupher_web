@@ -4,17 +4,13 @@
  *
  */
 
-import { FC, memo, Fragment } from 'react'
+import { type FC, memo, Fragment } from 'react'
 
-import type { TPost, TPostLayout } from '@/spec'
-import { POST_LAYOUT } from '@/constant/layout'
+import type { TPost, TPostLayout } from '~/spec'
+import { POST_LAYOUT } from '~/const/layout'
 
-import { buildLog } from '@/logger'
-
-import MasonryCards from '@/widgets/MasonryCards'
-import PostItem from '@/widgets/PostItem'
-
-const _log = buildLog('w:DashboardDesc:index')
+import MasonryCards from '~/widgets/MasonryCards'
+import PostItem from '~/widgets/PostItem'
 
 type TProps = {
   articles: TPost[]

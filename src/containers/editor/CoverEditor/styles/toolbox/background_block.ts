@@ -1,8 +1,8 @@
-import type { TActive, TWallpaperGradientDir } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive, TWallpaperGradientDir } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import ArchSVG from '@/icons/Arch'
-import ArrowSVG from '@/icons/Arrow'
+import ArchSVG from '~/icons/Arch'
+import ArrowSVG from '~/icons/Arrow'
 
 import { SettingBlock, SettingTitle } from '.'
 import { getBgGradientDirAngle } from '../metric'

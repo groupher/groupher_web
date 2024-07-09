@@ -1,20 +1,18 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
-import { BANNER_LAYOUT, BRAND_LAYOUT } from '@/constant/layout'
-import { THREAD } from '@/constant/thread'
-import { assetSrc } from '@/helper'
-import { prettyURL } from '@/fmt'
+import { BANNER_LAYOUT, BRAND_LAYOUT } from '~/const/layout'
+import { THREAD } from '~/const/thread'
+import { assetSrc } from '~/helper'
+import { prettyURL } from '~/fmt'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useViewingThread from '@/hooks/useViewingThread'
-import useBannerLayout from '@/hooks/useBannerLayout'
-import useBrandLayout from '@/hooks/useBrandLayout'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useViewingThread from '~/hooks/useViewingThread'
+import useLayout from '~/hooks/useLayout'
 
-import ArrowLinker from '@/widgets/ArrowLinker'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import { Row } from '@/widgets/Common'
+import ImgFallback from '~/widgets/ImgFallback'
+import ArrowLinker from '~/widgets/ArrowLinker'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import { Row } from '~/widgets/Common'
 
 import {
   Wrapper,
@@ -29,12 +27,11 @@ import {
 } from '../styles/sidebar_layout/community_brief'
 // import { subscribeCommunity, unsubscribeCommunity } from '../logic'
 
-const CommunityBrief: FC = () => {
+export default () => {
   const router = useRouter()
   const { logo, slug, title, desc, dashboard } = useViewingCommunity()
   const activeThread = useViewingThread()
-  const bannerLayout = useBannerLayout()
-  const brandLayout = useBrandLayout()
+  const { bannerLayout, brandLayout } = useLayout()
 
   const { baseInfo } = dashboard
 
@@ -43,7 +40,7 @@ const CommunityBrief: FC = () => {
       <MainWrapper>
         {brandLayout !== BRAND_LAYOUT.TEXT && (
           <LogoWrapper>
-            <Logo src={assetSrc(logo)} />
+            <Logo src={assetSrc(logo)} fallback={<ImgFallback size={30} title={title} />} />
           </LogoWrapper>
         )}
 
@@ -75,5 +72,3 @@ const CommunityBrief: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(CommunityBrief)

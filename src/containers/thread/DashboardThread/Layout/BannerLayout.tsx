@@ -1,20 +1,17 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { BANNER_LAYOUT, DASHBOARD_DESC_LAYOUT } from '~/const/layout'
+import { callDashboardDesc } from '~/signal'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import { BANNER_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
-import { callDashboardDesc } from '@/signal'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-
-import { Row, Br, Space, SpaceGrow } from '@/widgets/Common'
-import CheckLabel from '@/widgets/CheckLabel'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import { Row, Br, Space, SpaceGrow } from '~/widgets/Common'
+import CheckLabel from '~/widgets/CheckLabel'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
-import useBannerInfo from '../hooks/useBannerInfo'
+import useBanner from '../logic/useBanner'
 import {
   Wrapper,
   CommunityTitle,
@@ -30,12 +27,13 @@ import {
   TagsWrapper,
   SidebarWrapper,
 } from '../styles/layout/banner_layout'
-import { edit } from '../logic'
 
-const BannerLayout: FC = () => {
-  const { layout, isTouched, saving } = useBannerInfo()
+export default () => {
+  const { edit, layout, getIsTouched, saving } = useBanner()
   const primaryColor = usePrimaryColor()
   const { title } = useViewingCommunity()
+
+  const isTouched = getIsTouched()
 
   return (
     <Wrapper>
@@ -238,5 +236,3 @@ const BannerLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(BannerLayout)

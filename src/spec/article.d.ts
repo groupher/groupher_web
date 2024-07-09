@@ -76,6 +76,10 @@ export type TChangelog = TBaseArticle & {
   digest?: string
 }
 
+export type TDoc = TBaseArticle & {
+  digest?: string
+}
+
 export type TTechStack = {
   title?: string
   logo: string
@@ -116,7 +120,11 @@ export type TPagedChangelogs = {
   entries: TChangelog[]
 } & TPagi
 
-export type TArticleEntries = TPost[] | TChangelog[]
+export type TPagedDocs = {
+  entries: TChangelog[]
+} & TPagi
+
+export type TArticleEntries = TPost[] | TChangelog[] | TDoc[]
 export type TPagedArticles = {
   entries: TArticleEntries
 } & TPagi

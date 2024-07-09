@@ -1,5 +1,5 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
 
 export const EditorWrapper = styled.div<{ $menuOpen?: boolean }>`
   ${css.row('align-center')};

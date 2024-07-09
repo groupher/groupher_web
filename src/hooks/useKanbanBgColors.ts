@@ -1,19 +1,9 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
+import type { TColorName } from '~/spec'
 
-import type { TColorName } from '@/spec'
+import useSubStore from '~/hooks/useSubStore'
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useKanbanBgColors = (): TColorName[] => {
-  const { store } = useContext(MobXProviderContext)
+export default (): TColorName[] => {
+  const store = useSubStore('dashboard')
 
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
-
-  return store.dashboardThread.kanbanBgColors
+  return store.kanbanBgColors
 }
-
-export default useKanbanBgColors

@@ -1,4 +1,4 @@
-import type { TView } from '@/spec'
+import type { TView } from '~/spec'
 
 const VIEW = {
   DESKTOP: 'desktop' as TView,

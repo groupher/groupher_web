@@ -1,4 +1,4 @@
-import type { TAccount, TComment, TID, TSubmitState } from '@/spec'
+import type { TAccount, TComment, TID, TSubmitState, TPagedComments, TUser } from '~/spec'
 
 export type TMode = 'REPLIES' | 'TIMELINE'
 export type TAPIMode = 'article' | 'user_published'
@@ -13,7 +13,6 @@ export type TEditState = {
   commentBody: string
   updateBody: string
   replyBody: string
-  accountInfo: TAccount
   showEditor: boolean
   showReplyEditor: boolean
   showUpdateEditor: boolean

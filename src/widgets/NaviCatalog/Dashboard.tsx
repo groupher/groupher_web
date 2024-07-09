@@ -4,14 +4,13 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { last } from 'ramda'
 
-import type { TNaviTag } from '@/spec'
-import { ICON } from '@/config'
-import { buildLog } from '@/logger'
+import type { TNaviTag } from '~/spec'
+import { ICON } from '~/config'
 
-// import { SpaceGrow } from '@/widgets/Common'
+// import { SpaceGrow } from '~/widgets/Common'
 import {
   Wrapper,
   Title,
@@ -22,8 +21,6 @@ import {
   Operator,
   BackIcon,
 } from './styles/dashboard'
-
-const _log = buildLog('w:NaviCatalog:Dashboard')
 
 /**
  * 解析成层叠结构的数据形式

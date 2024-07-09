@@ -1,6 +1,6 @@
 'use client'
 
-import ChangelogThread from '@/containers/thread/ChangelogThread'
+import ChangelogThread from '~/containers/thread/ChangelogThread'
 
 const CommunityChangelogPage = () => {
   return <ChangelogThread />

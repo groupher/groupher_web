@@ -1,6 +1,6 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
-import ImageSizeSVG from '@/icons/ImageSize'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
+import ImageSizeSVG from '~/icons/ImageSize'
 
 import { SettingBlock, SettingTitle } from '.'
 

@@ -1,5 +1,5 @@
 import { gql } from 'urql'
-import { F } from '@/schemas'
+import { F } from '~/schemas'
 
 const pagedArticleTags = gql`
   query($filter: ArticleTagsFilter) {

@@ -2,22 +2,19 @@
  * EmojiSelector
  */
 
-import { FC, memo } from 'react'
-import { buildLog } from '@/logger'
+import { type FC, memo } from 'react'
 
-import type { TEmotion, TSimpleUser, TEmotionType } from '@/spec'
+import type { TEmotion, TSimpleUser, TEmotionType } from '~/spec'
 
-import { titleCase } from '@/fmt'
-import Tooltip from '@/widgets/Tooltip'
-import AnimatedCount from '@/widgets/AnimatedCount'
+import { titleCase } from '~/fmt'
+import Tooltip from '~/widgets/Tooltip'
+import AnimatedCount from '~/widgets/AnimatedCount'
 
 import EmotionIcon from './EmotionIcon'
 import UsersPanel from './UsersPanel'
 import { getEmotionName } from '../helper'
 
 import { Wrapper, Count } from '../styles/selected_emotions/emotion_unit'
-
-const _log = buildLog('w:EmotionUnit:index')
 
 type TProps = {
   item: TEmotion

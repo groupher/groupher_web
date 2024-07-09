@@ -1,7 +1,7 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TComment } from '@/spec'
-import ImgFallback from '@/widgets/ImgFallback'
+import type { TComment } from '~/spec'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import type { TAPIMode } from '../../spec'
 import {

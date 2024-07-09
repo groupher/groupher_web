@@ -1,11 +1,11 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import MoreSVG from '@/icons/menu/MoreL'
-import EditSVG from '@/icons/EditPen'
-import ArrowSVG from '@/icons/Arrow'
-import SettingSVG from '@/icons/Setting'
+import MoreSVG from '~/icons/menu/MoreL'
+import EditSVG from '~/icons/EditPen'
+import ArrowSVG from '~/icons/Arrow'
+import SettingSVG from '~/icons/Setting'
 
-import Input from '@/widgets/Input'
+import Input from '~/widgets/Input'
 
 import { Wrapper as BarWrapper } from './tag_bar'
 

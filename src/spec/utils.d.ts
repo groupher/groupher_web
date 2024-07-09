@@ -1,4 +1,4 @@
-import { ReactNode, ChangeEvent } from 'react'
+import type { ReactNode, ChangeEvent } from 'react'
 // c# like
 export type Nullable<T> = T | null
 
@@ -129,7 +129,6 @@ export type TSubmitState = {
   publishDone?: boolean
   isReady?: boolean
   isArchived?: boolean
-  stepReady?: boolean[]
   isArticleAuthor?: boolean
   mode?: TEditMode
 }

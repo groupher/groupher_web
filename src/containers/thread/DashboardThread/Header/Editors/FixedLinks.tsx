@@ -1,11 +1,10 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 import { reject } from 'ramda'
 
-import type { TCommunityThread } from '@/spec'
-import { ROUTE } from '@/constant/route'
+import type { TCommunityThread } from '~/spec'
+import { ROUTE } from '~/const/route'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
 import {
   Wrapper,
@@ -61,4 +60,4 @@ const FixedLinks: FC<TProps> = ({ isAboutLinkFold }) => {
   )
 }
 
-export default observer(FixedLinks)
+export default FixedLinks

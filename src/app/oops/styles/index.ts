@@ -1,6 +1,4 @@
-import Link from 'next/link'
-
-import styled, { css, theme } from '@/css'
+import styled, { css } from '~/css'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};

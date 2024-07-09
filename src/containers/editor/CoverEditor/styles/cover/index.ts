@@ -1,8 +1,8 @@
-import Img from '@/Img'
+import Img from '~/Img'
 
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
-import { pixelAdd } from '@/dom'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
+import { pixelAdd } from '~/dom'
 
 import type { TCoverImage, TImagePos } from '../../spec'
 import {

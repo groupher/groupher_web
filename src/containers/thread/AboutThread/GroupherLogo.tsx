@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Wrapper, Cover, Box, UpvoteIcon } from './styles/groupher_log'
 

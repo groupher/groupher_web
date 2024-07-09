@@ -3,14 +3,14 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import useKanbanPosts from '@/hooks/useKanbanPosts'
-import useKanbanBgColors from '@/hooks/useKanbanBgColors'
+import useKanbanPosts from '~/hooks/useKanbanPosts'
+import useKanbanBgColors from '~/hooks/useKanbanBgColors'
 
-import { SpaceGrow } from '@/widgets/Common'
-import KanbanItem from '@/widgets/KanbanItem'
-import EmptyItem from '@/widgets/KanbanItem/EmptyItem'
+import { SpaceGrow } from '~/widgets/Common'
+import KanbanItem from '~/widgets/KanbanItem'
+import EmptyItem from '~/widgets/KanbanItem/EmptyItem'
 
 import {
   Column,

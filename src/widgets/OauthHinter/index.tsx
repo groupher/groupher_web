@@ -4,10 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
-import Linker from '@/widgets/Linker'
+import Linker from '~/widgets/Linker'
 
 import {
   Wrapper,
@@ -21,8 +20,6 @@ import {
   GithubLogoIcon,
   FooterWrapper,
 } from './styles'
-
-const _log = buildLog('w:OauthHinter:index')
 
 const OauthHinter: FC = () => {
   return (

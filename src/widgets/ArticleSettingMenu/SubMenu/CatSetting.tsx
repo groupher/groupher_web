@@ -1,12 +1,11 @@
-import { FC, useState, useEffect } from 'react'
-import { observer } from 'mobx-react-lite'
+import { type FC, useState, useEffect } from 'react'
 import { useMutation } from 'urql'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import useViewingArticle from '@/hooks/useViewingArticle'
-import { POST_CAT_MENU_ITEMS } from '@/constant/menu'
-import { Trans } from '@/i18n'
-import { toast, updateViewingArticle } from '@/signal'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import { POST_CAT_MENU_ITEMS } from '~/const/menu'
+import { Trans } from '~/i18n'
+import { toast, updateViewingArticle } from '~/signal'
 
 import S from '../schema'
 import useTouched from '../useTouched'
@@ -79,4 +78,4 @@ const CatSetting: FC<TProps> = ({ onBack }) => {
   )
 }
 
-export default observer(CatSetting)
+export default CatSetting

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
-import type { TTestable } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TTestable } from '~/spec'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.article.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

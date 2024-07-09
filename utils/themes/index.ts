@@ -13,10 +13,10 @@
 
 import { map, path, split } from 'ramda'
 
-import type { TColorName, TTheme } from '@/spec'
-import { COLOR_NAME } from '@/constant/colors'
+import type { TColorName, TTheme } from '~/spec'
+import { COLOR_NAME } from '~/const/colors'
 
-import { camelize } from '@/fmt'
+import { camelize } from '~/fmt'
 
 import type { TFlatThemeKey } from './skins'
 import skinsData from './skins'

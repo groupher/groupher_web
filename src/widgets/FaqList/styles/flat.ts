@@ -1,11 +1,11 @@
-import type { TTestable } from '@/spec'
+import type { TTestable } from '~/spec'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import FAQSVG from '@/icons/FAQ'
-import CheckSVG from '@/icons/Check'
+import FAQSVG from '~/icons/FAQ'
+import CheckSVG from '~/icons/Check'
 
-import { MarkdownStyles } from '@/widgets/Common'
+import { MarkdownStyles } from '~/widgets/Common'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

@@ -1,10 +1,9 @@
-import { FC, memo } from 'react'
 import { keys } from 'ramda'
 
-import type { TWallpaperGradient } from '@/spec'
-import { parseWallpaper } from '@/wallpaper'
-import { WALLPAPER_TYPE } from '@/constant/wallpaper'
+import { parseWallpaper } from '~/wallpaper'
+import { WALLPAPER_TYPE } from '~/const/wallpaper'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   BallWrapper,
@@ -14,14 +13,11 @@ import {
   PenIcon,
 } from '../styles/build_in/gradient_group'
 
-import { changeGradientWallpaper, changeCustomGradientWallpaper } from '../logic'
+export default () => {
+  const { getWallpaper, changeGradientWallpaper, changeCustomGradientWallpaper } = useLogic()
 
-type TProps = {
-  wallpaper: string
-  gradientWallpapers: Record<string, TWallpaperGradient>
-}
+  const { wallpaper, gradientWallpapers } = getWallpaper()
 
-const GradientGroup: FC<TProps> = ({ wallpaper, gradientWallpapers }) => {
   const gradientKeys = keys(gradientWallpapers)
 
   return (
@@ -51,5 +47,3 @@ const GradientGroup: FC<TProps> = ({ wallpaper, gradientWallpapers }) => {
     </Wrapper>
   )
 }
-
-export default memo(GradientGroup)

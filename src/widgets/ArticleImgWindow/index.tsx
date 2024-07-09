@@ -4,14 +4,10 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
-
-import { DesktopOnly, MobileOnly } from '@/widgets/Common'
+import { DesktopOnly, MobileOnly } from '~/widgets/Common'
 import { Wrapper, Block, MobileBlock } from './styles'
-
-const _log = buildLog('w:ArticleImgWindow:index')
 
 type TProps = {
   testid?: string

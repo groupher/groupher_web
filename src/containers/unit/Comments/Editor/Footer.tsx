@@ -1,12 +1,12 @@
-import { FC, memo } from 'react'
+import type { FC } from 'react'
 
-import type { TSubmitState } from '@/spec'
+import type { TSubmitState } from '~/spec'
 
-import WordsCounter from '@/widgets/WordsCounter'
-import SubmitButton from '@/widgets/Buttons/SubmitButton'
+import WordsCounter from '~/widgets/WordsCounter'
+import SubmitButton from '~/widgets/Buttons/SubmitButton'
 
+import useLogic from '../useLogic'
 import { Wrapper } from '../styles/editor/footer'
-import { setWordsCountState } from '../logic'
 
 type TProps = {
   body: string
@@ -16,16 +16,20 @@ type TProps = {
   onCancel: () => void
 }
 
-const EditorFooter: FC<TProps> = ({ body, label = '发 布', submitState, onPublish, onCancel }) => (
-  <Wrapper>
-    <WordsCounter body={body} bottom={3} min={10} max={1000} onChange={setWordsCountState} />
-    <SubmitButton
-      okText={label}
-      submitState={submitState}
-      onPublish={onPublish}
-      onCancel={onCancel}
-    />
-  </Wrapper>
-)
+const EditorFooter: FC<TProps> = ({ body, label = '发 布', submitState, onPublish, onCancel }) => {
+  const { setWordsCountState } = useLogic()
 
-export default memo(EditorFooter)
+  return (
+    <Wrapper>
+      <WordsCounter body={body} bottom={3} min={10} max={1000} onChange={setWordsCountState} />
+      <SubmitButton
+        okText={label}
+        submitState={submitState}
+        onPublish={onPublish}
+        onCancel={onCancel}
+      />
+    </Wrapper>
+  )
+}
+
+export default EditorFooter

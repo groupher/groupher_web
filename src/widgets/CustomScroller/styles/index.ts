@@ -1,5 +1,5 @@
-import styled from '@/css'
-import type { TActive } from '@/spec'
+import styled from '~/css'
+import type { TActive } from '~/spec'
 // import { getShadowWidth } from './helpers'
 
 type TBox = { width: string; height: string }

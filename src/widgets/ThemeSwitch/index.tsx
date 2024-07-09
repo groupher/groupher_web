@@ -2,18 +2,14 @@
  * ThemeSwitch
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TSpace } from '@/spec'
-import useTheme from '@/hooks/useTheme'
+import type { TSpace } from '~/spec'
+import useTheme from '~/hooks/useTheme'
 
-import { buildLog } from '@/logger'
-import THEME from '@/constant/theme'
+import THEME from '~/const/theme'
 
 import { Wrapper, Button, SunIcon, MoonIcon } from './styles'
-
-const _log = buildLog('c:ThemeSwitch:index')
 
 type TProps = {
   testid?: string
@@ -30,7 +26,7 @@ const ThemeSwitch: FC<TProps> = ({ testid = 'theme-switch', ...restProps }) => {
         title="Toggles light & dark"
         aria-label="auto"
         aria-live="polite"
-        onClick={() => toggle()}
+        onClick={toggle}
       >
         {theme === THEME.DAY ? <SunIcon /> : <MoonIcon />}
       </Button>
@@ -38,4 +34,4 @@ const ThemeSwitch: FC<TProps> = ({ testid = 'theme-switch', ...restProps }) => {
   )
 }
 
-export default observer(ThemeSwitch)
+export default ThemeSwitch

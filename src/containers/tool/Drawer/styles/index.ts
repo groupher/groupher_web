@@ -1,6 +1,6 @@
-import styled, { css, theme, zIndex } from '@/css'
-import type { TActive } from '@/spec'
-import { pixelAdd } from '@/dom'
+import styled, { css, theme, zIndex } from '~/css'
+import type { TActive } from '~/spec'
+import { pixelAdd } from '~/dom'
 
 import type { TDrawer, TSwipe } from '../spec'
 import { NARROW_HEIGHT_OFFSET } from '../constant'
@@ -75,6 +75,8 @@ export const DrawerWrapper = styled.div.attrs<TDrawer>(
       ? 'transition: transform 850ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;'
       : 'transition-property: transform, max-width, opacity;transition-duration: 0.4s, 0.3s, 0.3s;transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1) 0ms, ease-out,ease-in'};
 
+  border: 1px solid;
+  border-color: ${theme('divider')};
   will-change: transform, max-width, opacity;
   // 在宽屏时滑出来时，是从内容页而不是实际的 window 页滑出, 加 delay 可以在视觉上抵消从外部滑入的跳动感
   transition-delay: 0s, 0s, 0.14s;

@@ -13,7 +13,7 @@ import type {
   TArticle,
   TDashboard,
   TLocale,
-} from '@/spec'
+} from '~/spec'
 
 export type TSessionRes = TGQSSRResult & {
   sesstion: {
@@ -76,7 +76,7 @@ export type TDashboardTab = {
 }
 
 export type TParseDashboard = TDashboard & {
-  initSettings: TDashboard
+  original: TDashboard
 }
 
 export type TFilterSearchParams = {

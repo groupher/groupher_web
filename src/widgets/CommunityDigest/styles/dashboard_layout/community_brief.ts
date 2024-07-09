@@ -1,21 +1,21 @@
 import { createGlobalStyle } from 'styled-components'
 import Link from 'next/link'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import OptionArrowSVG from '@/icons/OptionArrow'
-import ArrowSVG from '@/icons/ArrowUpRight'
-import DiscussSVG from '@/icons/Discuss'
-import KanbanSVG from '@/icons/Kanban'
-import AboutSVG from '@/icons/Info'
-import GuideSVG from '@/icons/Guide'
-import ChangelogSVG from '@/icons/TadaRaw'
+import OptionArrowSVG from '~/icons/OptionArrow'
+import ArrowSVG from '~/icons/ArrowUpRight'
+import DiscussSVG from '~/icons/Discuss'
+import KanbanSVG from '~/icons/Kanban'
+import AboutSVG from '~/icons/Info'
+import GuideSVG from '~/icons/Guide'
+import ChangelogSVG from '~/icons/TadaRaw'
 
-import GithubSVG from '@/icons/Github8'
-import GlobalSVG from '@/icons/social/Global'
-import PlusSVG from '@/icons/PlusCircle'
+import GithubSVG from '~/icons/Github8'
+import GlobalSVG from '~/icons/social/Global'
+import PlusSVG from '~/icons/PlusCircle'
 
-import Img from '@/Img'
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

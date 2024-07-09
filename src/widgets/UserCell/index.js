@@ -7,10 +7,7 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { buildLog } from '@/logger'
 import { UserCellWrapper, Avatar, UserInfo, NickName, Bio } from './styles'
-
-const _log = buildLog('w:UserCell:index')
 
 const UserCell = ({ user }) => {
   return (

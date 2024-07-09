@@ -1,4 +1,4 @@
-import type { TPaymentUsage, TPaymentMethod } from '@/spec'
+import type { TPaymentUsage, TPaymentMethod } from '~/spec'
 
 export const PAYMENT_USAGE = {
   SENIOR: 'SENIOR',

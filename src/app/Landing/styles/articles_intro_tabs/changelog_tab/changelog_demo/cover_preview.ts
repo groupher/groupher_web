@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import BlocksSolidSVG from '@/icons/BlocksSolid'
+import BlocksSolidSVG from '~/icons/BlocksSolid'
 
 export const Wrapper = styled.div`
   ${css.column()};

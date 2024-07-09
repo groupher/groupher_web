@@ -1,35 +1,24 @@
-import { useContext, useMemo } from 'react'
-import { MobXProviderContext } from 'mobx-react'
 import { find, propEq, reject } from 'ramda'
 
-import type { TCommunityThread, TLinkItem, TNameAlias } from '@/spec'
-import { THREAD } from '@/constant/thread'
+import type { TCommunityThread, TLinkItem, TNameAlias } from '~/spec'
+import { THREAD } from '~/const/thread'
 
-import { toJS } from '@/mobx'
-import { sortByIndex } from '@/helper'
+import useSubStore from '~/hooks/useSubStore'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const usePublicThreads = (): TCommunityThread[] => {
-  const { store } = useContext(MobXProviderContext)
+import { sortByIndex } from '~/helper'
 
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
-
-  const viewingCommunity = store.viewing.community.slug
-  const community = useMemo(() => toJS(store.viewing.community), [viewingCommunity])
-  const nameAliasData = useMemo(() => store.dashboardThread.nameAliasData, [viewingCommunity])
-  const enable = useMemo(() => store.dashboardThread.enableSettings, [viewingCommunity])
+export default (): TCommunityThread[] => {
+  const dashboard = useSubStore('dashboard')
+  const curCommunity = useViewingCommunity()
 
   // const { enable, nameAliasData } = store.dashboardThread
 
-  const { threads } = community
-  const enabledThreads = sortByIndex(threads.filter((thread) => enable[thread.slug]))
+  const { threads } = curCommunity
+  const enabledThreads = sortByIndex(threads.filter((thread) => dashboard.enable[thread.slug]))
 
   const mappedThreads = enabledThreads.map((pThread) => {
-    const aliasItem = find(propEq(pThread.slug, 'slug'))(nameAliasData) as TNameAlias
+    const aliasItem = find(propEq(pThread.slug, 'slug'))(dashboard.nameAlias) as TNameAlias
 
     return {
       ...pThread,
@@ -37,9 +26,7 @@ const usePublicThreads = (): TCommunityThread[] => {
     }
   })
 
-  const headerLinks = useMemo(() => store.dashboardThread.headerLinksData, [viewingCommunity])
-
-  const hasExtraAbout = find((link: TLinkItem) => link.title === '关于', headerLinks)
+  const hasExtraAbout = find((link: TLinkItem) => link.title === '关于', dashboard.headerLinks)
 
   if (hasExtraAbout) {
     return reject(
@@ -50,5 +37,3 @@ const usePublicThreads = (): TCommunityThread[] => {
 
   return mappedThreads as TCommunityThread[]
 }
-
-export default usePublicThreads

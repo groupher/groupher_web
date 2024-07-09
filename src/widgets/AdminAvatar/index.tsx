@@ -4,18 +4,14 @@
  *
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TUser, TSpace } from '@/spec'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
-import { buildLog } from '@/logger'
+import type { TUser, TSpace } from '~/spec'
+import useLayout from '~/hooks/useLayout'
 
-import ImgFallback from '@/widgets/ImgFallback'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import { Wrapper, Avatar, BadgeWrapper, BadgeIcon } from './styles'
-
-const _log = buildLog('w:AdminAvatar:index')
 
 type TProps = {
   testid?: string
@@ -23,7 +19,7 @@ type TProps = {
 } & TSpace
 
 const AdminAvatar: FC<TProps> = ({ testid = 'admin-avatar', user, ...restProps }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   return (
     <Wrapper $testid={testid} {...restProps}>
@@ -39,4 +35,4 @@ const AdminAvatar: FC<TProps> = ({ testid = 'admin-avatar', user, ...restProps }
   )
 }
 
-export default observer(AdminAvatar)
+export default AdminAvatar

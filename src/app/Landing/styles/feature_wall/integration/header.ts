@@ -1,7 +1,7 @@
-import { WithPosition } from '@/widgets/Common'
-import { TColor } from '@/spec'
+import { WithPosition } from '~/widgets/Common'
+import type { TColor } from '~/spec'
 
-import styled, { css, theme, rainbow } from '@/css'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled(WithPosition)`
   ${css.row('align-center')};

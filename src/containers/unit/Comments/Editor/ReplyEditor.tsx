@@ -1,13 +1,14 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TSubmitState, TComment } from '@/spec'
+import type { TSubmitState, TComment } from '~/spec'
 
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import CustomScroller from '@/widgets/CustomScroller'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
+import CustomScroller from '~/widgets/CustomScroller'
 
 import BodyEditor from './BodyEditor'
 import Footer from './Footer'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   Header,
@@ -17,7 +18,6 @@ import {
   EditorWrapper,
   FooterWrapper,
 } from '../styles/editor/reply_editor'
-import { commentOnChange, replyComment, closeReplyEditor } from '../logic'
 
 type TProps = {
   body: string
@@ -26,6 +26,8 @@ type TProps = {
 }
 
 const ReplyEditor: FC<TProps> = ({ body, submitState, replyTo }) => {
+  const { commentOnChange, replyComment, closeReplyEditor } = useLogic()
+
   return (
     <Wrapper>
       <Header>
@@ -44,7 +46,7 @@ const ReplyEditor: FC<TProps> = ({ body, submitState, replyTo }) => {
             <BodyEditor
               body={body}
               placeholder="// 回复内容（'Tab' 键快速插入）"
-              onChange={(v) => commentOnChange(v, 'replyBody')}
+              onChange={(v) => commentOnChange(v)}
             />
           ) : (
             <LavaLampLoading top={10} left={30} />

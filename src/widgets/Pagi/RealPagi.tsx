@@ -1,7 +1,7 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { roundUpNumber } from '@/fmt'
-import type { TSpace, TPagi } from '@/spec'
+import { roundUpNumber } from '~/fmt'
+import type { TSpace, TPagi } from '~/spec'
 
 import {
   Wrapper,

@@ -1,11 +1,11 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 // import { config, library } from '@fortawesome/fontawesome-svg-core'
 // config.autoAddCss = false
 
-import type { TColorName } from '@/spec'
-import FaIconSelector from '@/widgets/FaIcons/Selector'
-import Tooltip from '@/widgets/Tooltip'
+import type { TColorName } from '~/spec'
+import FaIconSelector from '~/widgets/FaIcons/Selector'
+import Tooltip from '~/widgets/Tooltip'
 
 import BlockMenu from './BlockMenu'
 // import FileItem from './FileItem'

@@ -1,14 +1,13 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import { FOOTER_LAYOUT } from '@/constant/layout'
+import { FOOTER_LAYOUT } from '~/const/layout'
 
-import useFooterSettingsInfo from '../../hooks/useFooterSettingsInfo'
+import useFooter from '../../logic/useFooter'
 import SimpleEditor from './Simple'
 import GroupEditor from './Group'
 
 const Editor: FC = () => {
-  const { footerLayout } = useFooterSettingsInfo()
+  const { footerLayout } = useFooter()
 
   return (
     <>
@@ -18,4 +17,4 @@ const Editor: FC = () => {
   )
 }
 
-export default observer(Editor)
+export default Editor

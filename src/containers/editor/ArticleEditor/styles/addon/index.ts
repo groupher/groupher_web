@@ -1,7 +1,7 @@
-import Input from '@/widgets/Input'
-import styled, { css, theme } from '@/css'
+import Input from '~/widgets/Input'
+import styled, { css, theme } from '~/css'
 
-import LinkSVG from '@/icons/Link'
+import LinkSVG from '~/icons/Link'
 
 export const LinkIcon = styled(LinkSVG)`
   ${css.size(16)};

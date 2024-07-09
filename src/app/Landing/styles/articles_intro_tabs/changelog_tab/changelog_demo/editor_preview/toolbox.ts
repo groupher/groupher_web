@@ -1,12 +1,12 @@
-import ArchSVG from '@/icons/Arch'
-import RotateSVG from '@/icons/Rotate'
-import ShadowSVG from '@/icons/Shadow'
-import BlocksSVG from '@/icons/Blocks'
-import LightSVG from '@/icons/FlashLight'
-import RatioSVG from '@/icons/Ratio'
-import SizeSVG from '@/icons/ImageSize'
+import ArchSVG from '~/icons/Arch'
+import RotateSVG from '~/icons/Rotate'
+import ShadowSVG from '~/icons/Shadow'
+import BlocksSVG from '~/icons/Blocks'
+import LightSVG from '~/icons/FlashLight'
+import RatioSVG from '~/icons/Ratio'
+import SizeSVG from '~/icons/ImageSize'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div`
   ${css.row('align-both')};

@@ -1,6 +1,6 @@
-import type { TColorName } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
-import Input from '@/widgets/Input'
+import type { TColorName } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
+import Input from '~/widgets/Input'
 
 type TWrapper = { isEditMode: boolean; isSetting: boolean; hasSettingTag: boolean }
 export const Wrapper = styled.div<TWrapper>`

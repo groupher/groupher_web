@@ -4,22 +4,18 @@
  *
  */
 
-import { FC, useEffect, useRef, useState, useCallback } from 'react'
-import { observer } from 'mobx-react-lite'
+import { type FC, useEffect, useRef, useState, useCallback } from 'react'
 import { isEmpty, findIndex } from 'ramda'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TSizeSM, TTabItem } from '@/spec'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import SIZE from '@/constant/size'
-import { isString } from '@/validator'
-import { buildLog } from '@/logger'
+import type { TSizeSM, TTabItem } from '~/spec'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import SIZE from '~/const/size'
+import { isString } from '~/validator'
 
 import TabItem from './TabItem'
 import { Wrapper, Nav, SlipBar, RealBar } from '../styles/tabs/mobile_view/normal_view'
 import { getSlipMargin } from '../styles/metric/tabs'
-
-const log = buildLog('w:Tabs:index')
 
 const temItems = [
   {
@@ -57,7 +53,7 @@ type TProps = {
 
 const ModelineView: FC<TProps> = ({
   size = SIZE.MEDIUM,
-  onChange = log,
+  onChange = console.log,
   items = temItems,
   activeKey = '',
   slipHeight = '2px',
@@ -140,4 +136,4 @@ const ModelineView: FC<TProps> = ({
   )
 }
 
-export default observer(ModelineView)
+export default ModelineView

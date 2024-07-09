@@ -1,9 +1,9 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TComment } from '@/spec'
-import { Br } from '@/widgets/Common'
-import Upvote from '@/widgets/Upvote'
-import ArtimentBody from '@/widgets/ArtimentBody'
+import type { TComment } from '~/spec'
+import { Br } from '~/widgets/Common'
+import Upvote from '~/widgets/Upvote'
+import ArtimentBody from '~/widgets/ArtimentBody'
 
 import type { TAPIMode } from '../../spec'
 import ReplyBar from '../ReplyBar'

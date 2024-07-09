@@ -1,14 +1,13 @@
-import { FC, ReactNode, useEffect, useState, memo, useRef } from 'react'
+import { type FC, type ReactNode, useEffect, useState, memo, useRef } from 'react'
 
-import useSwipe from '@/hooks/useSwipe'
-import useTheme from '@/hooks/useTheme'
+import useSwipe from '~/hooks/useSwipe'
+import useTheme from '~/hooks/useTheme'
 
 import type { TSwipeOption } from '../spec'
 import Header from '../Header'
 
+import useLogic from '../useLogic'
 import { DrawerOverlay, DrawerWrapper, DrawerMobileContent, MobileInnerContent } from '../styles'
-
-import { closeDrawer, onSwipedYHandler, onSwipingYHandler, resetSwipeAviliable } from '../logic'
 
 type TProps = {
   testid?: string
@@ -34,6 +33,7 @@ const Viewer: FC<TProps> = ({
   children,
 }) => {
   const { themeMap } = useTheme()
+  const { closeDrawer, onSwipedYHandler, onSwipingYHandler, resetSwipeAviliable } = useLogic()
   // swipe action state for top && bottom
   // null means restore and close
   const [swipeDownY, setSwipeDownY] = useState(null)

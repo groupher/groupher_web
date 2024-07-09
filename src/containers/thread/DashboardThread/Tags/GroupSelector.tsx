@@ -1,18 +1,18 @@
-import { FC, memo } from 'react'
+import { memo } from 'react'
 import { reject } from 'ramda'
 
-import { nilOrEmpty } from '@/validator'
-import Button from '@/widgets/Buttons/Button'
+import { nilOrEmpty } from '~/validator'
+import Button from '~/widgets/Buttons/Button'
 
+import useTags from '../logic/useTags'
 import { Wrapper, CatsWrapper, Hint } from '../styles/tags/group_selector'
-import { edit } from '../logic'
 
-type TProps = {
-  groups: string[]
-  active: null | string
-}
+export default memo(() => {
+  const { activeTagGroup, edit, getGroups } = useTags()
 
-const GroupSelector: FC<TProps> = ({ groups, active }) => {
+  const active = activeTagGroup
+  const groups = getGroups()
+
   return (
     <Wrapper>
       <Hint>标签分组:</Hint>
@@ -40,6 +40,4 @@ const GroupSelector: FC<TProps> = ({ groups, active }) => {
       </CatsWrapper>
     </Wrapper>
   )
-}
-
-export default memo(GroupSelector)
+})

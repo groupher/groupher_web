@@ -1,4 +1,4 @@
-import styled from '@/css'
+import styled from '~/css'
 
 export const Wrapper = styled.div`
   margin-top: 10%;

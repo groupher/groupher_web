@@ -1,5 +1,5 @@
-import styled from '@/css'
-import Img from '@/Img'
+import styled from '~/css'
+import Img from '~/Img'
 
 import { IntroBase, IntroHeadBase, TitleBase, FooterBase, FlagIconBase } from '.'
 

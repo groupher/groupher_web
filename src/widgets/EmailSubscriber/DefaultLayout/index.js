@@ -1,13 +1,9 @@
 import React, { useState } from 'react'
 
-import { buildLog } from '@/logger'
-
 import InActiveView from './InActiveView'
 import ActiveView from './ActiveView'
 
 import { Wrapper, InnerWrapper } from '../styles/default_layout/index'
-
-const _log = buildLog('w:DefaultLayout:index')
 
 const DefaultLayout = ({ testid, activeByDefault, title, desc }) => {
   const [active, setActive] = useState(activeByDefault)

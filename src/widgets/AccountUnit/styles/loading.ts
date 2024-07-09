@@ -1,4 +1,4 @@
-import styled, { css, animate, theme, zIndex } from '@/css'
+import styled, { css, animate, theme, zIndex } from '~/css'
 
 export { SocialIcon } from './panel'
 

@@ -1,14 +1,11 @@
-import { FC, memo, useState } from 'react'
+import { type FC, useState } from 'react'
 
-// import { config, library } from '@fortawesome/fontawesome-svg-core'
-// config.autoAddCss = false
+import type { TArticle, TColorName } from '~/spec'
+import { mockUsers } from '~/mock'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import Facepile from '~/widgets/Facepile'
 
-import { mockUsers } from '@/mock'
-
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import Facepile from '@/widgets/Facepile'
-
-import type { TArticle, TColorName } from '@/spec'
+import useLogic from '../useLogic'
 import {
   Wrapper,
   InnerWrapper,
@@ -21,7 +18,6 @@ import {
   ItemsWrapper,
   Item,
 } from '../styles/cards_layout/category'
-import { gotoDetailLayout } from '../logic'
 
 const FOLD_LIMIT = 5
 
@@ -33,6 +29,7 @@ type TProps = {
 }
 
 const Category: FC<TProps> = ({ color, title, desc, articles }) => {
+  const { gotoDetailLayout } = useLogic()
   const [sliceCount, setSliceCount] = useState(FOLD_LIMIT)
 
   return (
@@ -76,4 +73,4 @@ const Category: FC<TProps> = ({ color, title, desc, articles }) => {
   )
 }
 
-export default memo(Category)
+export default Category

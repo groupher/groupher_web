@@ -4,21 +4,18 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import Link from 'next/link'
 import TimeAgo from 'timeago-react'
 
-import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
-import { ICON } from '@/config'
+import type { TSpace } from '~/spec'
+import { ICON } from '~/config'
 
 import Icon from './Icon'
 
 import type { TType } from './spec'
 import { TYPE } from './constant'
 import { Wrapper, Main, UserName, AuthorTag, Timestamp, Why } from './styles'
-
-const _log = buildLog('w:NoticeBar:index')
 
 type TProps = {
   testid?: string

@@ -1,6 +1,6 @@
-import { useMemo, useEffect } from 'react'
+import { useEffect } from 'react'
 
-import type { TAccount } from '@/spec'
+import type { TAccount } from '~/spec'
 
 const useSession = (): TAccount | null => {
   useEffect(() => {

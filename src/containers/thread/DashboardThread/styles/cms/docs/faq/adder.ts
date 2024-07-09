@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
-import AdderSVG from '@/icons/Plus'
+import styled, { css, theme } from '~/css'
+import AdderSVG from '~/icons/Plus'
 
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 
 export const Wrapper = styled.div`
   ${css.column('justify-center')};

@@ -1,13 +1,10 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { DOC_LAYOUT, DOC_FAQ_LAYOUT, DASHBOARD_DESC_LAYOUT } from '~/const/layout'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import { callDashboardDesc } from '~/signal'
 
-import { DOC_LAYOUT, DOC_FAQ_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { callDashboardDesc } from '@/signal'
-
-import { Br, Divider } from '@/widgets/Common'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import CheckLabel from '@/widgets/CheckLabel'
+import { Br, Divider } from '~/widgets/Common'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../../constant'
 import SectionLabel from '../../SectionLabel'
@@ -16,7 +13,7 @@ import SavingBar from '../../SavingBar'
 import MainTemplate from './MainTemplate'
 import FaqTemplate from './FaqTemplate'
 
-import useDocInfo from '../../hooks/useDocInfo'
+import useDoc from '../../logic/useDoc'
 import {
   Wrapper,
   SelectWrapper,
@@ -25,11 +22,12 @@ import {
   Block,
   Main,
 } from '../../styles/layout/doc_layout'
-import { edit } from '../../logic'
 
-const DocLayout: FC = () => {
-  const { layout, faqLayout, isTouched, isFaqTouched, saving } = useDocInfo()
+export default () => {
+  const { docLayout, docFaqLayout, getIsTouched, getIsFaqTouched, saving, edit } = useDoc()
   const primaryColor = usePrimaryColor()
+  const isTouched = getIsTouched()
+  const isFaqTouched = getIsFaqTouched()
 
   return (
     <Wrapper>
@@ -49,16 +47,16 @@ const DocLayout: FC = () => {
       />
       <SelectWrapper>
         <Layout onClick={() => edit(DOC_LAYOUT.BLOCKS, 'docLayout')}>
-          <Block $active={layout === DOC_LAYOUT.BLOCKS} $color={primaryColor}>
+          <Block $active={docLayout === DOC_LAYOUT.BLOCKS} $color={primaryColor}>
             <Br bottom={14} />
             <Main>
               <MainTemplate layout={DOC_LAYOUT.BLOCKS} />
             </Main>
           </Block>
-          <LayoutTitle $active={layout === DOC_LAYOUT.BLOCKS}>
+          <LayoutTitle $active={docLayout === DOC_LAYOUT.BLOCKS}>
             <CheckLabel
               title="块状排列"
-              $active={layout === DOC_LAYOUT.BLOCKS}
+              $active={docLayout === DOC_LAYOUT.BLOCKS}
               top={15}
               left={-15}
             />
@@ -66,16 +64,16 @@ const DocLayout: FC = () => {
         </Layout>
 
         <Layout onClick={() => edit(DOC_LAYOUT.LISTS, 'docLayout')}>
-          <Block $active={layout === DOC_LAYOUT.LISTS} $color={primaryColor}>
+          <Block $active={docLayout === DOC_LAYOUT.LISTS} $color={primaryColor}>
             <Br bottom={14} />
             <Main>
               <MainTemplate layout={DOC_LAYOUT.LISTS} />
             </Main>
           </Block>
-          <LayoutTitle $active={layout === DOC_LAYOUT.LISTS}>
+          <LayoutTitle $active={docLayout === DOC_LAYOUT.LISTS}>
             <CheckLabel
               title="列表排列"
-              $active={layout === DOC_LAYOUT.LISTS}
+              $active={docLayout === DOC_LAYOUT.LISTS}
               top={15}
               left={-15}
             />
@@ -83,16 +81,16 @@ const DocLayout: FC = () => {
         </Layout>
 
         <Layout onClick={() => edit(DOC_LAYOUT.CARDS, 'docLayout')}>
-          <Block $active={layout === DOC_LAYOUT.CARDS} $color={primaryColor}>
+          <Block $active={docLayout === DOC_LAYOUT.CARDS} $color={primaryColor}>
             <Br bottom={14} />
             <Main>
               <MainTemplate layout={DOC_LAYOUT.CARDS} />
             </Main>
           </Block>
-          <LayoutTitle $active={layout === DOC_LAYOUT.CARDS}>
+          <LayoutTitle $active={docLayout === DOC_LAYOUT.CARDS}>
             <CheckLabel
               title="卡片排列"
-              $active={layout === DOC_LAYOUT.CARDS}
+              $active={docLayout === DOC_LAYOUT.CARDS}
               top={15}
               left={-15}
             />
@@ -126,32 +124,32 @@ const DocLayout: FC = () => {
       />
       <SelectWrapper>
         <Layout onClick={() => edit(DOC_FAQ_LAYOUT.COLLAPSE, 'docFaqLayout')}>
-          <Block $active={faqLayout === DOC_FAQ_LAYOUT.COLLAPSE} $color={primaryColor}>
+          <Block $active={docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE} $color={primaryColor}>
             <Br bottom={14} />
             <Main>
               <FaqTemplate layout={DOC_FAQ_LAYOUT.COLLAPSE} />
             </Main>
           </Block>
-          <LayoutTitle $active={faqLayout === DOC_FAQ_LAYOUT.COLLAPSE}>
+          <LayoutTitle $active={docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE}>
             <CheckLabel
               title="可折叠"
-              $active={faqLayout === DOC_FAQ_LAYOUT.COLLAPSE}
+              $active={docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE}
               top={15}
               left={-15}
             />
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(DOC_FAQ_LAYOUT.FLAT, 'docFaqLayout')}>
-          <Block $active={faqLayout === DOC_FAQ_LAYOUT.FLAT} $color={primaryColor}>
+          <Block $active={docFaqLayout === DOC_FAQ_LAYOUT.FLAT} $color={primaryColor}>
             <Br bottom={14} />
             <Main>
               <FaqTemplate layout={DOC_FAQ_LAYOUT.FLAT} />
             </Main>
           </Block>
-          <LayoutTitle $active={faqLayout === DOC_FAQ_LAYOUT.FLAT}>
+          <LayoutTitle $active={docFaqLayout === DOC_FAQ_LAYOUT.FLAT}>
             <CheckLabel
               title="铺开式"
-              $active={faqLayout === DOC_FAQ_LAYOUT.FLAT}
+              $active={docFaqLayout === DOC_FAQ_LAYOUT.FLAT}
               top={15}
               left={-15}
             />
@@ -169,5 +167,3 @@ const DocLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(DocLayout)

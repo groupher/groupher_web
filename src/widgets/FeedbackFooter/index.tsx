@@ -4,17 +4,14 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TSpace } from '~/spec'
 
 import TopInfo from './TopInfo'
 import BottomInfo from './BottomInfo'
 
 import { Wrapper } from './styles'
-
-const _log = buildLog('c:FeedbackFooter:index')
 
 type TProps = {
   offsetRight?: number

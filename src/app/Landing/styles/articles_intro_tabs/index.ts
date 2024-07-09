@@ -1,5 +1,5 @@
-import styled, { css } from '@/css'
-import { TActive } from '@/spec'
+import styled, { css } from '~/css'
+import type { TActive } from '~/spec'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};

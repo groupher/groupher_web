@@ -1,7 +1,7 @@
-import type { TThemeMap, TColorName, TSize } from '@/spec'
+import type { TThemeMap, TColorName, TSize } from '~/spec'
 
-import SIZE from '@/constant/size'
-import { COLOR_NAME } from '@/constant/colors'
+import SIZE from '~/const/size'
+import { COLOR_NAME } from '~/const/colors'
 
 export const getFontSize = (size: TSize): number => {
   switch (size) {

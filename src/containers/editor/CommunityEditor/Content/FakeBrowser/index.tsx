@@ -1,4 +1,4 @@
-import { FC, memo, useState } from 'react'
+import { type FC, memo, useState } from 'react'
 
 import BrowserHead from './BrowerHead'
 import Content from './Content'

@@ -1,13 +1,13 @@
-import MENU from '@/constant/menu'
+import MENU from '~/const/menu'
 
-// import type { TTestable } from '@/spec'
+// import type { TTestable } from '~/spec'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ArrowSVG from '@/icons/Arrow'
-import Arrow2TopSVG from '@/icons/Arrow2Top'
-import SettingSVG from '@/icons/Setting'
-import DeleteSVG from '@/icons/Trash'
+import ArrowSVG from '~/icons/Arrow'
+import Arrow2TopSVG from '~/icons/Arrow2Top'
+import SettingSVG from '~/icons/Setting'
+import DeleteSVG from '~/icons/Trash'
 
 export const Wrapper = styled.div`
   ${css.row('justify-between', 'align-center')};

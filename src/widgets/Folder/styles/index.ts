@@ -1,5 +1,5 @@
-import type { TTestable } from '@/spec'
-import styled, { css } from '@/css'
+import type { TTestable } from '~/spec'
+import styled, { css } from '~/css'
 
 import { getWidth, getHeight } from './metric'
 

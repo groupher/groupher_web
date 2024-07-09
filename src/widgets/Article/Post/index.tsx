@@ -1,16 +1,16 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 
-// import Header from '@/widgets/CommunityDigest/HeaderLayout'
-import ViewportTracker from '@/widgets/ViewportTracker'
+// import Header from '~/widgets/CommunityDigest/HeaderLayout'
+import ViewportTracker from '~/widgets/ViewportTracker'
 
 import Digest from './Digest'
 import Content from './Content'
 import SideInfo from './SideInfo'
 
-import { Wrapper, InnerWrapper, HeaderWrapper, BannerContent, Main } from '../styles/post'
+import { BannerContent, Main } from '../styles/post'
 
 const Post: FC = () => {
-  const [inViewport, setInViewport] = useState(false)
+  const [_inViewport, setInViewport] = useState(false)
 
   return (
     <>

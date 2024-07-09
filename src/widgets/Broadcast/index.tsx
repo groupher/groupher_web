@@ -1,19 +1,11 @@
 'use client'
 
-/*
- *
- * Broadcast
- *
- */
+import { type FC, Fragment } from 'react'
 
-import { FC, Fragment } from 'react'
-import { observer } from 'mobx-react-lite'
-
-import { ANCHOR } from '@/constant/dom'
-import { BROADCAST_LAYOUT } from '@/constant/layout'
-import { buildLog } from '@/logger'
-import useMetric from '@/hooks/useMetric'
-import useBroadcast from '@/hooks/useBroadcast'
+import { ANCHOR } from '~/const/dom'
+import { BROADCAST_LAYOUT } from '~/const/layout'
+import useMetric from '~/hooks/useMetric'
+import useBroadcast from '~/hooks/useBroadcast'
 
 import {
   Wrapper,
@@ -27,8 +19,6 @@ import {
   ArrowIcon,
 } from './styles'
 
-const _log = buildLog('w:Broadcast:index')
-
 type TProps = {
   testid?: string
 }
@@ -38,9 +28,9 @@ const DETAIL_TEXT =
 
 const Broadcast: FC<TProps> = ({ testid = 'banner-notify' }) => {
   const metric = useMetric()
-  const settings = useBroadcast()
 
-  const { broadcastBg: bg, broadcastLayout: layout, broadcastEnable: enabled } = settings
+  const { broadcastBg: bg, broadcastLayout: layout, broadcastEnable: enabled } = useBroadcast()
+
   if (!enabled) return null
 
   return (
@@ -71,4 +61,4 @@ const Broadcast: FC<TProps> = ({ testid = 'banner-notify' }) => {
   )
 }
 
-export default observer(Broadcast)
+export default Broadcast

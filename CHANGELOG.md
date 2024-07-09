@@ -62,4 +62,3 @@
 - [x] boilerplate code generator (for container/component/stores...)
 - [x] drop typescript support
 - [x] basic app structure ( Presention-layer / stores-layer / logic-layer )
-- [x] confirm Technical selection: next.js / mobx & MST / styled-components / Rx.js / ramda.js ...

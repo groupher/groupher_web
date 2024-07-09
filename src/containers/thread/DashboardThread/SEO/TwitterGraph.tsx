@@ -1,18 +1,15 @@
-import { FC, memo } from 'react'
-
-import type { TSelectOption } from '@/spec'
-import { Br } from '@/widgets/Common'
-import Select from '@/widgets/Select'
+import type { TSelectOption } from '~/spec'
+import { Br } from '~/widgets/Common'
+import Select from '~/widgets/Select'
 
 import { TW_CARD_OPTIONS } from '../constant'
 
 import TwitterPreview from './TwitterPreview'
-import useSEOInfo from '../hooks/useSEOInfo'
+import useSEO from '../logic/useSEO'
 import { Wrapper, SelectWrapper, Label, Inputer } from '../styles/seo/twitter_graph'
-import { edit } from '../logic'
 
-const TwitterGraph: FC = () => {
-  const { twTitle, twDescription, twUrl, twSite, twCard } = useSEOInfo()
+export default () => {
+  const { twTitle, twDescription, twUrl, twSite, twCard, edit } = useSEO()
 
   return (
     <Wrapper>
@@ -42,5 +39,3 @@ const TwitterGraph: FC = () => {
     </Wrapper>
   )
 }
-
-export default memo(TwitterGraph)

@@ -1,19 +1,19 @@
-import { useContext, useEffect, useState } from 'react'
-import { MobXProviderContext } from 'mobx-react'
+import { useEffect, useState } from 'react'
 
-import useAccount from '@/hooks/useAccount'
-import OAUTH from '@/constant/oauth'
-import type { TAccount, TSimpleUser } from '@/spec'
-import { debounce } from '@/helper'
+import type { TAccount, TSimpleUser } from '~/spec'
+import OAUTH from '~/const/oauth'
+import useSubStore from '~/hooks/useSubStore'
+import { debounce } from '~/helper'
+import BStore from '~/utils/bstore'
 
-import BStore from '@/utils/bstore'
-
-const useSyncAccount = (): TAccount => {
-  const { store } = useContext(MobXProviderContext)
-  const { isLogin } = useAccount()
+export default (): TAccount => {
+  const { isLogin, setSession, accountInfo } = useSubStore('account')
 
   const [isLinkClickListenerAdded, setIsLinkClickListenerAdded] = useState(false)
 
+  /**
+   * TODO: handle token expired situation
+   */
   const syncAccountInfo = debounce(() => {
     const user = BStore.cookie.get(OAUTH.USER_KEY)
     const token = BStore.cookie.get(OAUTH.TOKEN_KEY)
@@ -22,7 +22,7 @@ const useSyncAccount = (): TAccount => {
       const parsedUser = JSON.parse(user) as TSimpleUser
 
       if (!isLogin && parsedUser.login) {
-        store.account.setSession(parsedUser, token)
+        setSession(parsedUser, token)
       }
     }
   }, 200)
@@ -56,7 +56,5 @@ const useSyncAccount = (): TAccount => {
     }
   }, [])
 
-  return store.account.accountInfo
+  return accountInfo
 }
-
-export default useSyncAccount

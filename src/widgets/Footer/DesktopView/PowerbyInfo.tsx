@@ -1,16 +1,14 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { isEmpty } from 'ramda'
 
-import METRIC from '@/constant/metric'
-import useMetric from '@/hooks/useMetric'
-import { LineDivider, DesktopOnly, MobileOnly, Row, Br } from '@/widgets/Common'
+import METRIC from '~/const/metric'
+import useMetric from '~/hooks/useMetric'
+import { LineDivider, DesktopOnly, MobileOnly, Row, Br } from '~/widgets/Common'
 
-import { BEIAN_ADDR, BEIAN_TEXT } from '@/config'
+import { BEIAN_ADDR, BEIAN_TEXT } from '~/config'
 
 import { Wrapper, Note, Addr, BottomWrapper } from '../styles/desktop_view/powerby_info'
 
-const PowerbyInfo: FC = () => {
+export default () => {
   const metric = useMetric()
 
   return (
@@ -58,5 +56,3 @@ const PowerbyInfo: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(PowerbyInfo)

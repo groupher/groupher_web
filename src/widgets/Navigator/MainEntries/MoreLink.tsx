@@ -1,6 +1,6 @@
-import { FC, memo, lazy, Suspense } from 'react'
+import { type FC, memo, lazy, Suspense } from 'react'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import { SiteLink, ArrowIcon } from '../styles/more_links'
 

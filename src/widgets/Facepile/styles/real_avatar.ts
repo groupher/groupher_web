@@ -1,10 +1,10 @@
-import type { TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
+import type { TAvatarLayout } from '~/spec'
+import { AVATAR_LAYOUT } from '~/const/layout'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Img from '@/Img'
-import ImgFallback from '@/widgets/ImgFallback'
+import Img from '~/Img'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import type { TAvatarSize } from '../spec'
 import { getLiSize, getAvatarSize } from './metric'

@@ -1,9 +1,9 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TMetric } from '@/spec'
-import { changeToCommunity } from '@/signal'
+import type { TMetric } from '~/spec'
+import { changeToCommunity } from '~/signal'
 
-import METRIC from '@/constant/metric'
+import METRIC from '~/const/metric'
 
 import {
   Breadcrumbs,
@@ -16,7 +16,7 @@ import {
 
 import MainEntries from './MainEntries'
 
-// export const BlinkCursor = dynamic(() => import('@/widgets/BlinkCursor'), {
+// export const BlinkCursor = dynamic(() => import('~/widgets/BlinkCursor'), {
 //   ssr: false,
 // })
 

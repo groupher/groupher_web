@@ -1,8 +1,8 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { COLOR_NAME } from '@/constant/colors'
-import { mockUsers } from '@/mock'
-import { Brick } from '@/widgets/Common'
+import { COLOR_NAME } from '~/const/colors'
+import { mockUsers } from '~/mock'
+import { Brick } from '~/widgets/Common'
 
 import {
   Wrapper,

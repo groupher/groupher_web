@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import DownloadSVG from '@/icons/DownloadCircle'
+import DownloadSVG from '~/icons/DownloadCircle'
 
 export const Wrapper = styled.div`
   ${css.size(22)};

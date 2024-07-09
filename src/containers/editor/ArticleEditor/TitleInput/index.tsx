@@ -1,7 +1,6 @@
-import { FC, memo } from 'react'
+import type { FC } from 'react'
 
 import { Wrapper, Inputer } from '../styles/title_input'
-import { editOnChange } from '../logic'
 
 type TProps = {
   title: string
@@ -15,7 +14,7 @@ const TitleInput: FC<TProps> = ({ title, placeholder }) => {
         value={title}
         placeholder={placeholder}
         behavior="textarea"
-        onChange={(e) => editOnChange(e, 'title')}
+        onChange={(e) => console.log('## TODO')}
         disableEnter
         autoFocus
       />
@@ -23,4 +22,4 @@ const TitleInput: FC<TProps> = ({ title, placeholder }) => {
   )
 }
 
-export default memo(TitleInput)
+export default TitleInput

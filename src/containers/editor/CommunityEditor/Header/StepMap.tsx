@@ -1,19 +1,17 @@
-import { FC, useEffect } from 'react'
+import { useEffect } from 'react'
 
 import StatusBall from './StatusBall'
 
-import type { TCommunityType, TStep } from '../spec'
 import { STEP } from '../constant'
 
+import { tada } from '../helper'
+import useLogic from '../useLogic'
 import { Wrapper, Line, TadaIcon } from '../styles/header/step_map'
-import { tada } from '../logic'
 
-type TProps = {
-  step: TStep
-  communityType: TCommunityType
-}
+export default () => {
+  const { headerStatus } = useLogic()
+  const { step, communityType } = headerStatus
 
-const StepMap: FC<TProps> = ({ step, communityType }) => {
   useEffect(() => {
     if (step === STEP.FINISHED) {
       tada()
@@ -98,5 +96,3 @@ const StepMap: FC<TProps> = ({ step, communityType }) => {
     }
   }
 }
-
-export default StepMap

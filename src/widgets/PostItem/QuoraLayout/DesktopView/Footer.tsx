@@ -1,15 +1,15 @@
-import { memo, FC } from 'react'
+import { memo, type FC } from 'react'
 
-import type { TPost } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import type { TPost } from '~/spec'
+import { UPVOTE_LAYOUT } from '~/const/layout'
 
-import { upvoteArticle } from '@/signal'
-// import { mockUsers } from '@/mock'
+import { upvoteArticle } from '~/signal'
+// import { mockUsers } from '~/mock'
 
-import Upvote from '@/widgets/Upvote'
-import { Space } from '@/widgets/Common'
-import ViewsCount from '@/widgets/ViewsCount'
-import ArticleCatState from '@/widgets/ArticleCatState'
+import Upvote from '~/widgets/Upvote'
+import { Space } from '~/widgets/Common'
+import ViewsCount from '~/widgets/ViewsCount'
+import ArticleCatState from '~/widgets/ArticleCatState'
 
 import { Wrapper } from '../../styles/quora_layout/desktop_view/footer'
 

@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import TadaSVG from '@/icons/Tada'
+import TadaSVG from '~/icons/Tada'
 
 export const Wrapper = styled.div`
   ${css.row('align-center', 'justify-between')};

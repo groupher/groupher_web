@@ -4,21 +4,18 @@
  *
  */
 
-import { FC, useState, useCallback, memo, useEffect } from 'react'
+import { type FC, useState, useCallback, memo, useEffect } from 'react'
 import { mergeRight, isEmpty } from 'ramda'
 
-import type { TTag } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TTag } from '~/spec'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import Header from './Header'
 import Filter from './Filter'
 import { Wrapper, ItemWrapper, Item, Icon } from './styles'
 
 import { tags2Options, initActiveMap, getSelectedTags } from './helper'
-
-const log = buildLog('w:FiltersMenu:index')
 
 type TProps = {
   tags?: TTag[]
@@ -34,7 +31,7 @@ const FiltersMenu: FC<TProps> = ({
   tags,
   activeid = null,
   noFilter = false,
-  onSelect = log,
+  onSelect = console.log,
   itemBgHighlight = true,
   revert = false,
   withDivider = true,

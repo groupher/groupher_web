@@ -1,10 +1,10 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TTestable, TActive } from '@/spec'
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import type { TTestable, TActive } from '~/spec'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
-import { getLocalSVG } from '@/icons'
+import { getLocalSVG } from '~/icons'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

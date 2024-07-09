@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { Br } from '@/widgets/Common'
+import { Br } from '~/widgets/Common'
 
 import {
   Wrapper,

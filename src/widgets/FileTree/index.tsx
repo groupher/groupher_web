@@ -4,19 +4,16 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { reverse, keys } from 'ramda'
 
-import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
-import { groupByKey } from '@/helper'
-import { mockTags } from '@/mock'
+import type { TSpace } from '~/spec'
+import { groupByKey } from '~/helper'
+import { mockTags } from '~/mock'
 
 import Folder from './Folder'
 
 import { Wrapper } from './styles'
-
-const _log = buildLog('c:FileTree:index')
 
 type TProps = {
   onSelect?: () => void
@@ -24,7 +21,7 @@ type TProps = {
 
 const FileTree: FC<TProps> = ({ onSelect, ...restProps }) => {
   const tagsData = mockTags(15)
-  // console.log('## tagsData: ', tagsData)
+  // console.log('## ## tagsData: ', tagsData)
 
   const activeTagData = tagsData[6]
   const groupedTags = groupByKey(tagsData, 'group')

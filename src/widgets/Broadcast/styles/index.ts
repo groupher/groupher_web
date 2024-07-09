@@ -1,9 +1,9 @@
-import type { TMetric, TTestable, TColorName } from '@/spec'
+import type { TMetric, TTestable, TColorName } from '~/spec'
 
-import styled, { css, rainbow } from '@/css'
-import CrossSVG from '@/icons/CloseCross'
-import ArrowSVG from '@/icons/Arrow'
-import NotifySVG from '@/icons/Trumpet'
+import styled, { css, rainbow } from '~/css'
+import CrossSVG from '~/icons/CloseCross'
+import ArrowSVG from '~/icons/Arrow'
+import NotifySVG from '~/icons/Trumpet'
 
 type TWrapper = TTestable & { bg: TColorName }
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

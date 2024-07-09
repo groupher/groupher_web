@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { Item, TagIcon, Highlight, Content } from '../../styles/panel/activities/tab_item'
 

@@ -1,6 +1,4 @@
-import { useContext } from 'react'
-import { includes } from 'ramda'
-import { MobXProviderContext } from 'mobx-react'
+import { includes, uniq, reject } from 'ramda'
 
 import type {
   TID,
@@ -9,10 +7,15 @@ import type {
   TPagedCommunities,
   TFAQSection,
   TArticleEntries,
-} from '@/spec'
-import { toJS } from '@/mobx'
+} from '~/spec'
+
+import useSubStore from '~/hooks/useSubStore'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import { query } from '~/utils/api'
 
 import useHelper from './useHelper'
+
+import S from '../schema'
 
 type TRet = {
   loading: boolean
@@ -28,6 +31,10 @@ type TRet = {
   faqSections: TFAQSection[]
   editingFAQIndex: number | null
 
+  batchSelect: (id: TID, selected?: boolean) => void
+  batchSelectAll: (selected: boolean, ids?: TID[]) => void
+  loadPosts: () => void
+  loadChangelogs: () => void
   isFaqSectionsTouched: boolean
 }
 
@@ -38,16 +45,10 @@ const assignChecked = (entries: TArticleEntries, batchSelectedIDs: TID[]): TArti
   }))
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useCMSInfo = (): TRet => {
-  const { store } = useContext(MobXProviderContext)
+export default (): TRet => {
+  const dashboard = useSubStore('dashboard')
+  const curCommunity = useViewingCommunity()
   const { mapArrayChanged } = useHelper()
-
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
 
   const {
     loading,
@@ -60,39 +61,83 @@ const useCMSInfo = (): TRet => {
     pagedChangelogs,
     faqSections,
     editingFAQ,
-  } = store.dashboardThread
-  const _batchSelectedIds = toJS(batchSelectedIDs)
-  const _pagedCommunities = toJS(pagedCommunities)
-  const _pagedPosts = toJS(pagedPosts)
-  const _pagedDocs = toJS(pagedDocs)
-  const _pagedChangelogs = toJS(pagedChangelogs)
+  } = dashboard
+
+  const loadPosts = () => {
+    dashboard.commit({ loading: true })
+    const params = {
+      filter: { page: 1, size: 20, community: curCommunity.slug },
+      userHasLogin: false,
+    }
+
+    query(S.pagedPosts, params).then((data) => {
+      dashboard.commit({ loading: false })
+      console.log('## TODO handle pagedChangelogs: ', data)
+    })
+    dashboard.commit({ loading: false })
+  }
+
+  const loadChangelogs = (): void => {
+    dashboard.commit({ loading: true })
+    const params = {
+      filter: { page: 1, size: 20, community: curCommunity.slug },
+      userHasLogin: false,
+    }
+    query(S.pagedChangelogs, params).then((data) => {
+      dashboard.commit({ loading: false })
+      console.log('## TODO handle pagedChangelogs: ', data)
+    })
+  }
+
+  const batchSelect = (id: TID, selected = true): void => {
+    const { batchSelectedIDs } = dashboard
+
+    const _batchSelectedIds = selected
+      ? [...batchSelectedIDs, id]
+      : reject((_id) => id === _id, batchSelectedIDs)
+
+    dashboard.commit({ batchSelectedIDs: uniq(_batchSelectedIds) })
+  }
+
+  const batchSelectAll = (selected: boolean, ids = []): void => {
+    if (!selected) {
+      dashboard.commit({ batchSelectedIDs: [] })
+      return
+    }
+
+    dashboard.commit({ batchSelectedIDs: ids })
+  }
 
   return {
     loading,
     docTab,
     editingFAQIndex,
-    batchSelectedIDs: _batchSelectedIds,
+    batchSelectedIDs,
     pagedCommunities: {
-      ..._pagedCommunities,
-      entries: assignChecked(_pagedCommunities.entries, _batchSelectedIds),
+      ...pagedCommunities,
+      // @ts-ignore
+      entries: assignChecked(pagedCommunities.entries, batchSelectedIDs),
     },
     pagedPosts: {
-      ..._pagedPosts,
-      entries: assignChecked(_pagedPosts.entries, _batchSelectedIds),
+      ...pagedPosts,
+      entries: assignChecked(pagedPosts.entries, batchSelectedIDs),
     },
     pagedDocs: {
-      ..._pagedDocs,
-      entries: assignChecked(_pagedDocs.entries, _batchSelectedIds),
+      ...pagedDocs,
+      entries: assignChecked(pagedDocs.entries, batchSelectedIDs),
     },
     pagedChangelogs: {
-      ..._pagedChangelogs,
-      entries: assignChecked(_pagedChangelogs.entries, _batchSelectedIds),
+      ...pagedChangelogs,
+      entries: assignChecked(pagedChangelogs.entries, batchSelectedIDs),
     },
 
-    faqSections: toJS(faqSections),
-    editingFAQ: toJS(editingFAQ),
+    faqSections,
+    editingFAQ,
     isFaqSectionsTouched: mapArrayChanged('faqSections'),
+
+    loadPosts,
+    loadChangelogs,
+    batchSelect,
+    batchSelectAll,
   }
 }
-
-export default useCMSInfo

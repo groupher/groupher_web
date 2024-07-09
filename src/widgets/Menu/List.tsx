@@ -1,8 +1,7 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TMenu } from '@/spec'
-import { Trans } from '@/i18n'
+import type { TMenu } from '~/spec'
+import { Trans } from '~/i18n'
 
 import type { TMenuItem } from './spec'
 import Icon from './Icon'
@@ -51,4 +50,4 @@ const List: FC<TProps> = ({ items, activeKey, onSelect, popWidth, withDesc }) =>
   )
 }
 
-export default observer(List)
+export default List

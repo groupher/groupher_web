@@ -1,18 +1,20 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TEnableConfig } from '@/spec'
+import type { TEnableConfig } from '~/spec'
 
-import { SpaceGrow } from '@/widgets/Common'
-import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
+import { SpaceGrow } from '~/widgets/Common'
+import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
 
+import useEnable from '../logic/useEnable'
 import { Wrapper, Section, Header, Title, Desc } from '../styles/threads/doc_thread'
-import { enableThread } from '../logic'
 
 type TProps = {
   settings: TEnableConfig
 }
 
 const DocThread: FC<TProps> = ({ settings }) => {
+  const { enableThread } = useEnable()
+
   return (
     <Wrapper>
       <Section>

@@ -1,8 +1,8 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import type { TSpace } from '@/spec'
-// import InfoSVG from '@/icons/Info'
-import Input from '@/widgets/Input'
+import type { TSpace } from '~/spec'
+// import InfoSVG from '~/icons/Info'
+import Input from '~/widgets/Input'
 
 export const Wrapper = styled.ul<TSpace>`
   ${css.column()};

@@ -6,29 +6,25 @@
  *
  */
 
-import { FC, Fragment, lazy, Suspense } from 'react'
-import { observer } from 'mobx-react-lite'
+import { Fragment, lazy, Suspense } from 'react'
 
-import useTrans from '@/hooks/useTrans'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
-import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useActiveTag from '@/hooks/useActiveTag'
-import useBannerLayout from '@/hooks/useBannerLayout'
+import useTrans from '~/hooks/useTrans'
+import useLayout from '~/hooks/useLayout'
+import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useActiveTag from '~/hooks/useActiveTag'
 
-import { Link, SpaceGrow, Br, SexyDivider } from '@/widgets/Common'
-import { buildLog } from '@/logger'
-import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '@/signal'
-import { toJS } from '@/mobx'
-import { mockUsers } from '@/mock'
-import { BANNER_LAYOUT } from '@/constant/layout'
+import { Link, SpaceGrow, Br, SexyDivider } from '~/widgets/Common'
+import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '~/signal'
+import { mockUsers } from '~/mock'
+import { BANNER_LAYOUT } from '~/const/layout'
 
-import ImgFallback from '@/widgets/ImgFallback'
-import Sticky from '@/widgets/Sticky'
-import GetMe from '@/widgets/GetMe'
+import ImgFallback from '~/widgets/ImgFallback'
+import Sticky from '~/widgets/Sticky'
+import GetMe from '~/widgets/GetMe'
 
-import PublishButton from '@/widgets/Buttons/PublishButton'
-import TagsBar from '@/containers/unit/TagsBar'
+import PublishButton from '~/widgets/Buttons/PublishButton'
+import TagsBar from '~/containers/unit/TagsBar'
 
 import CommunityBrief from './CommunityBrief'
 
@@ -47,18 +43,15 @@ import {
   PublishWrapper,
 } from '../styles/thread_sidebar'
 
-const _log = buildLog('w:ClassicSidebar')
+const UniBar = lazy(() => import('~/widgets/UniBar'))
 
-const UniBar = lazy(() => import('@/widgets/UniBar'))
-
-const ThreadSidebar: FC = () => {
+export default () => {
   const { t } = useTrans()
   const curCommunity = useViewingCommunity()
 
   const { inView: showCommunityBadge } = useCommunityDigestViewport()
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout, bannerLayout } = useLayout()
   const activeTag = useActiveTag()
-  const bannerLayout = useBannerLayout()
 
   return (
     <Wrapper $testid="thread-sidebar">
@@ -109,7 +102,7 @@ const ThreadSidebar: FC = () => {
               text="参与讨论"
               onMenuSelect={(cat) => {
                 callGEditor()
-                setTimeout(() => callSyncSelector({ cat, tag: toJS(activeTag) }), 500)
+                setTimeout(() => callSyncSelector({ cat, tag: activeTag }), 500)
               }}
               left={-2}
               offset={[0, 5]}
@@ -132,5 +125,3 @@ const ThreadSidebar: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(ThreadSidebar)

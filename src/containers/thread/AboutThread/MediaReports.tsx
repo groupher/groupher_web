@@ -1,10 +1,9 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TMediaReport } from '@/spec'
-import { sortByIndex } from '@/helper'
+import type { TMediaReport } from '~/spec'
+import { sortByIndex } from '~/helper'
 
-import useBannerLayout from '@/hooks/useBannerLayout'
+import useLayout from '~/hooks/useLayout'
 
 import {
   Wrapper,
@@ -22,7 +21,7 @@ type TProps = {
 }
 
 const MediaReports: FC<TProps> = ({ items }) => {
-  const bannerLayout = useBannerLayout()
+  const { bannerLayout } = useLayout()
 
   return (
     <Wrapper>
@@ -51,4 +50,4 @@ const MediaReports: FC<TProps> = ({ items }) => {
   )
 }
 
-export default observer(MediaReports)
+export default MediaReports

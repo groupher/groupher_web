@@ -1,10 +1,9 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TArticleCat } from '@/spec'
-import { ARTICLE_CAT } from '@/constant/gtd'
+import type { TArticleCat } from '~/spec'
+import { ARTICLE_CAT } from '~/const/gtd'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import { METRIC } from '../constant'
 import UpdateCounter from './UpdateCounter'
@@ -84,4 +83,4 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
   )
 }
 
-export default observer(NodeBlock)
+export default NodeBlock

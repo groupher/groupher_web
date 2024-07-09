@@ -4,10 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TAccount, TUser } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TAccount, TUser } from '~/spec'
 
 import PostItemAvatar from './PostItemAvatar'
 import ArticleAuthorAvatar from './ArticleAuthorAvatar'
@@ -15,8 +14,6 @@ import { TYPE } from './constant'
 import type { TMetric } from './spec'
 
 import { Wrapper } from './styles'
-
-const log = buildLog('w:TheAvatar:index')
 
 type TProps = {
   testid?: string
@@ -29,7 +26,7 @@ const TheAvatar: FC<TProps> = ({
   testid = 'the-avatar',
   user,
   metric = TYPE.POST_ITEM,
-  onSelect = log,
+  onSelect = console.log,
 }) => {
   switch (metric) {
     case TYPE.POST_ITEM: {

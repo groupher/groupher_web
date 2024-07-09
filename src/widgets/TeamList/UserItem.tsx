@@ -1,6 +1,6 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TUser } from '@/spec'
+import type { TUser } from '~/spec'
 
 import { Wrapper, Avatar, Intro, Name, Bio } from './styles/user_item'
 

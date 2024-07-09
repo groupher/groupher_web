@@ -1,8 +1,8 @@
 import { map, find, propEq, last, filter, findIndex, equals, clone, forEach } from 'ramda'
 
-import type { TNaviTag } from '@/spec'
-import URL_QUERY from '@/constant/url_query'
-import { nilOrEmpty } from '@/validator'
+import type { TNaviTag } from '~/spec'
+import URL_QUERY from '~/const/url_query'
+import { nilOrEmpty } from '~/validator'
 
 // 根据 path 路径得到当前目录项
 export const getCurrentMenuItem = (path: TNaviTag[], items: TNaviTag[]): TNaviTag => {

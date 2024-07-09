@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TMediaReport } from '@/spec'
+import type { TMediaReport } from '~/spec'
 
 import {
   Wrapper,

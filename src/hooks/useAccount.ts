@@ -1,15 +1,9 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
+import type { TAccount } from '~/spec'
 
-import type { TAccount } from '@/spec'
+import useSubStore from '~/hooks/useSubStore'
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useAccount = (): TAccount => {
-  const { store } = useContext(MobXProviderContext)
+export default (): TAccount => {
+  const store = useSubStore('account')
 
-  return store.account.accountInfo
+  return store.accountInfo
 }
-
-export default useAccount

@@ -1,5 +1,5 @@
-import Img from '@/Img'
-import styled, { theme } from '@/css'
+import Img from '~/Img'
+import styled, { theme } from '~/css'
 
 export const Wrapper = styled.div`
   position: relative;

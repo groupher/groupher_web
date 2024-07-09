@@ -4,16 +4,13 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TResState, TArticleFilterMode } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TResState, TArticleFilterMode } from '~/spec'
 
 import DesktopView from './DesktopView'
 // import MobileView from './MobileView'
 // import ModelineView from './ModelineView'
-
-const _log = buildLog('w:ArticlesFilter:index')
 
 export type TProps = {
   isMobile?: boolean

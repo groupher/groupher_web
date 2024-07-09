@@ -1,6 +1,6 @@
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
-import Input from '@/widgets/Input'
+import Input from '~/widgets/Input'
 
 export const Wrapper = styled.div`
   ${css.column()};

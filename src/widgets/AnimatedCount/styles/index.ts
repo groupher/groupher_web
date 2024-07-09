@@ -1,7 +1,7 @@
-import styled from '@/css'
-import type { TActive } from '@/spec'
+import styled from '~/css'
+import type { TActive } from '~/spec'
 
-import { WithMargin } from '@/widgets/Common'
+import { WithMargin } from '~/widgets/Common'
 
 type TWrapper = { $count: number } & TActive
 

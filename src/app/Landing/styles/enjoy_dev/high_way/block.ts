@@ -1,8 +1,8 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ToolSVG from '@/icons/Tool'
-import SadSVG from '@/icons/CloseCross'
-import PlaneSVG from '@/icons/Plane'
+import ToolSVG from '~/icons/Tool'
+import SadSVG from '~/icons/CloseCross'
+import PlaneSVG from '~/icons/Plane'
 
 export const Wrapper = styled.div<{ $giveup: boolean }>`
   ${css.row('align-center')};

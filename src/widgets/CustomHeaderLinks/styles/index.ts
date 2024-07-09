@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
-import type { TActive, TColor } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
-import ArrowSVG from '@/icons/ArrowSimple'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
+import ArrowSVG from '~/icons/ArrowSimple'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

@@ -4,23 +4,19 @@
  *
  */
 
-import { FC, Suspense, lazy } from 'react'
+import { type FC, Suspense, lazy } from 'react'
 import { compose, not, isNil, filter, reverse as reverseFn, slice } from 'ramda'
 
-import type { TUser, TSpace } from '@/spec'
-import { AVATARS_LIST_LENGTH } from '@/config'
+import type { TUser, TSpace } from '~/spec'
+import { AVATARS_LIST_LENGTH } from '~/config'
 
-import SIZE from '@/constant/size'
-
-import { buildLog } from '@/logger'
+import SIZE from '~/const/size'
 
 import type { TAvatarSize } from './spec'
 import MoreItem from './MoreItem'
 
 import { getAvatarSize } from './styles/metric'
 import { Wrapper, AvatarsWrapper, TotalOneOffset, AvatarFallback } from './styles'
-
-const log = buildLog('w:Facepile:index')
 
 const RealAvatar = lazy(() => import('./RealAvatar'))
 
@@ -74,8 +70,8 @@ const Facepile: FC<TProps> = ({
   users = [],
   limit = AVATARS_LIST_LENGTH.POSTS,
   noLazyLoad = false,
-  onUserSelect = log,
-  onTotalSelect = log,
+  onUserSelect = console.log,
+  onTotalSelect = console.log,
   showMore = true,
   reverse = false,
   popCardPlacement = 'bottom',
@@ -117,6 +113,7 @@ const Facepile: FC<TProps> = ({
         <AvatarsWrapper>
           {slice(0, limit, sortedUsers).map((user) => (
             <Suspense
+              key={user.login}
               fallback={
                 <AvatarFallback size={getAvatarSize(size, 'number') as number} user={user} />
               }

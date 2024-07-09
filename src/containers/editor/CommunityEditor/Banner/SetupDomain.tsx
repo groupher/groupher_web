@@ -1,24 +1,18 @@
-import { FC, memo } from 'react'
 import { isEmpty } from 'ramda'
 
-import { cutRest } from '@/fmt'
+import { cutRest } from '~/fmt'
 
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 import NextStepButton from './NextStepButton'
 import InputBox from './InputBox'
 
 import { Wrapper, IntroTitle, DomainIcon, NextBtn, ErrorMsg } from '../styles/banner/setup_domain'
 
-import type { TSetupDomainStatus, TValidState } from '../spec'
-import { pervStep, nextStep, inputOnChange } from '../logic'
+import useLogic from '../useLogic'
 
-type TProps = {
-  status: TSetupDomainStatus
-  validState: TValidState
-}
-const SetupDomain: FC<TProps> = ({ status, validState }) => {
-  const { slug } = status
+export default () => {
+  const { slug, validState, pervStep, nextStep, inputOnChange } = useLogic()
   const { isRawValid, checking, communityExist } = validState
 
   const fmtError = !isEmpty(slug) && !communityExist && !isRawValid
@@ -50,5 +44,3 @@ const SetupDomain: FC<TProps> = ({ status, validState }) => {
     </Wrapper>
   )
 }
-
-export default memo(SetupDomain)

@@ -1,6 +1,6 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import CopyButton from '@/widgets/Buttons/CopyButton'
+import CopyButton from '~/widgets/Buttons/CopyButton'
 
 import { Wrapper, CopyBtnWrapper } from '../styles/widgets/code_area'
 

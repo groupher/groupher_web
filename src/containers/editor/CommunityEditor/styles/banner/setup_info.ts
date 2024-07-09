@@ -1,10 +1,10 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 import { InputBar } from './input_box'
 
-import Img from '@/Img'
-import ApplySVG from '@/icons/Apply'
-import UploadSVG from '@/icons/Upload'
+import Img from '~/Img'
+import ApplySVG from '~/icons/Apply'
+import UploadSVG from '~/icons/Upload'
 
 export const Wrapper = styled.div`
   position: relative;

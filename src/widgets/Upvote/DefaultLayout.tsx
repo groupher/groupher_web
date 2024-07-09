@@ -3,13 +3,12 @@
  * Upvote
  *
  */
-import { FC, Fragment } from 'react'
+import { type FC, Fragment } from 'react'
 
-import type { TUser } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TUser } from '~/spec'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import Facepile from '@/widgets/Facepile'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import Facepile from '~/widgets/Facepile'
 
 import useUpvote from './useUpvote'
 import AnimatedCount from '../AnimatedCount'
@@ -25,8 +24,6 @@ import {
   Name,
 } from './styles/default_layout'
 
-const log = buildLog('w:Upvote:index')
-
 type TProps = {
   testid?: string
   count?: number
@@ -41,7 +38,7 @@ const Upvote: FC<TProps> = ({
   count = 4,
   alias = '参与了投票',
   viewerHasUpvoted = false,
-  onAction = log,
+  onAction = console.log,
   avatarList,
 }) => {
   const primaryColor = usePrimaryColor()

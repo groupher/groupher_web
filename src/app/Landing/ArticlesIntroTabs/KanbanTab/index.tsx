@@ -1,6 +1,7 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { TActive } from '@/spec'
+import type { TActive } from '~/spec'
+
 import IntroDigest from './IntroDigest'
 import IntroImage from './IntroImage'
 

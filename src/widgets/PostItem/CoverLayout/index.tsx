@@ -4,10 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TPost } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TPost } from '~/spec'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import DesktopView from './DesktopView'
@@ -15,8 +14,6 @@ import MobileView from './MobileView'
 // import ListView from './ListView'
 
 import { Wrapper } from '../styles/minimal_layout'
-
-const _log = buildLog('w:PostItem:index')
 
 type TProps = {
   article: TPost

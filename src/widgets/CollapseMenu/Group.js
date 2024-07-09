@@ -3,8 +3,7 @@ import T from 'prop-types'
 
 import { findIndex } from 'ramda'
 
-import { ICON } from '@/config'
-import { buildLog } from '@/logger'
+import { ICON } from '~/config'
 
 import Item from './Item'
 
@@ -19,8 +18,6 @@ import {
   SubToggleTitle,
   SubTogglePrefixIcon,
 } from './styles/group'
-
-const _log = buildLog('w:CollapseMenu:Group')
 
 const Group = ({
   title,

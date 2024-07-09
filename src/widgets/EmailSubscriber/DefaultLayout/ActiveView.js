@@ -1,5 +1,5 @@
 import React from 'react'
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 
 import {
   Wrapper,

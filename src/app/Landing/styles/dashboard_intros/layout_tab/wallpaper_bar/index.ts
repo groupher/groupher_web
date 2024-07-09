@@ -1,7 +1,7 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import ThemeSVG from '@/icons/Theme'
+import ThemeSVG from '~/icons/Theme'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')}

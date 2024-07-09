@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Main, Topping, PlugIcon, PoinstIcon } from '../../styles/feature_wall/grid_blocks/slogan'
 

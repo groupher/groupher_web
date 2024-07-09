@@ -1,11 +1,10 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { isEmpty } from 'ramda'
-import { observer } from 'mobx-react-lite'
 
-import { Brick } from '@/widgets/Common'
-import { INIT_KANBAN_COLORS } from '../../../constant'
+import { INIT_KANBAN_COLORS } from '~/const/dashboard'
+import { Brick } from '~/widgets/Common'
 
-import useKanbanInfo from '../../../hooks/useKanbanInfo'
+import useKanban from '../../../logic/useKanban'
 import {
   Wrapper,
   Header,
@@ -19,7 +18,7 @@ type TProps = {
 }
 
 const WaterfallLayout: FC<TProps> = ({ isBoard1Hovered, isBoard2Hovered, isBoard3Hovered }) => {
-  const { kanbanBgColors } = useKanbanInfo()
+  const { kanbanBgColors } = useKanban()
   const [BG1, BG2, BG3] = isEmpty(kanbanBgColors) ? INIT_KANBAN_COLORS : kanbanBgColors
 
   return (
@@ -62,4 +61,4 @@ const WaterfallLayout: FC<TProps> = ({ isBoard1Hovered, isBoard2Hovered, isBoard
   )
 }
 
-export default observer(WaterfallLayout)
+export default WaterfallLayout

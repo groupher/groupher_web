@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Wrapper, ShareIcon, ReportIcon } from '../styles/article_layout/head_action'
 

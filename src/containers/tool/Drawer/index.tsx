@@ -1,68 +1,54 @@
 /*
- *
  * Preview
- *
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useEffect } from 'react'
 
-import { buildLog } from '@/logger'
-
-import useWindowResize from '@/hooks/useWindowResize'
-import useShortcut from '@/hooks/useShortcut'
-import useMetric from '@/hooks/useMetric'
-
-import { useStore } from './store'
+import useShortcut from '~/hooks/useShortcut'
 
 import Viewer from './Viewer'
 import Content from './Content'
 
-import { useInit, closeDrawer } from './logic'
+import useLogic from './useLogic'
 
-const _log = buildLog('C:Preview')
-
-const Drawer: FC = () => {
-  const store = useStore()
-  const metric = useMetric()
-
-  const { width: windowWidth } = useWindowResize()
-
-  useInit(store, windowWidth, metric)
-  useShortcut('Escape', closeDrawer)
-
+const Drwawer = () => {
   const {
-    slideVisible,
+    initPubSub,
     visible,
     type,
-    mmType,
-    extraInfo,
-    optionsData,
-    canBeClose,
+    options,
     headerText,
+    canBeClose,
     showHeaderText,
     disableContentDrag,
-  } = store
+    closeDrawer,
+  } = useLogic()
+
+  useEffect(() => {
+    initPubSub()
+  }, [])
+
+  // const store = useStore()
+  // const metric = useMetric()
+
+  // const { width: windowWidth } = useWindowResize()
+
+  // useInit(store, windowWidth, metric)
+  useShortcut('Escape', closeDrawer)
 
   return (
     <Viewer
       headerText={headerText}
-      options={optionsData}
-      visible={slideVisible}
+      options={options}
+      visible={visible}
       type={type}
       canBeClose={canBeClose}
       showHeaderText={showHeaderText}
       disableContentDrag={disableContentDrag}
     >
-      <Content
-        type={type}
-        visible={slideVisible}
-        options={optionsData}
-        mmType={mmType}
-        extraInfo={extraInfo}
-      />
+      <Content type={type} visible={visible} options={options} />
     </Viewer>
   )
 }
 
-export default observer(Drawer)
+export default Drwawer

@@ -1,7 +1,7 @@
-import type { TTestable } from '@/spec'
+import type { TTestable } from '~/spec'
 
-import styled, { css } from '@/css'
-import { WithMargin } from '@/widgets/Common'
+import styled, { css } from '~/css'
+import { WithMargin } from '~/widgets/Common'
 
 type TWrapper = TTestable
 

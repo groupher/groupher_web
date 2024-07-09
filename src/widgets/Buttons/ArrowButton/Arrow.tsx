@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TColorName } from '@/spec'
+import type { TColorName } from '~/spec'
 
 import { RightArrow, LeftArrow, UpArrow, DownArrow } from '../styles/arrow_button/arrow'
 

@@ -1,17 +1,16 @@
-import { FC, useState, useEffect } from 'react'
-import { observer } from 'mobx-react-lite'
+import { type FC, useState, useEffect } from 'react'
 import { useMutation } from 'urql'
 
-import { Trans } from '@/i18n'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import useViewingArticle from '@/hooks/useViewingArticle'
-import useKanbanBgColors from '@/hooks/useKanbanBgColors'
-import useNameAlias from '@/hooks/useNameAlias'
+import { Trans } from '~/i18n'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import useKanbanBgColors from '~/hooks/useKanbanBgColors'
+import useNameAlias from '~/hooks/useNameAlias'
 
-import { POST_STATE_MENU_ITEMS } from '@/constant/menu'
-import { ARTICLE_STATE } from '@/constant/gtd'
-import { toast, updateViewingArticle } from '@/signal'
-import { aliasGTDDoneState } from '@/fmt'
+import { POST_STATE_MENU_ITEMS } from '~/const/menu'
+import { ARTICLE_STATE } from '~/const/gtd'
+import { toast, updateViewingArticle } from '~/signal'
+import { aliasGTDDoneState } from '~/fmt'
 
 import S from '../schema'
 import useTouched from '../useTouched'
@@ -101,4 +100,4 @@ const StateSetting: FC<TProps> = ({ onBack }) => {
   )
 }
 
-export default observer(StateSetting)
+export default StateSetting

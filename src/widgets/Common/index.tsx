@@ -1,9 +1,9 @@
-import { FC, useEffect } from 'react'
+import { type FC, useEffect } from 'react'
 import * as NextLink from 'next/link'
 
-import type { TActive, TSpace, TColor } from '@/spec'
-import { COLOR_NAME } from '@/constant/colors'
-import styled, { css, theme, rainbow } from '@/css'
+import type { TActive, TSpace, TColor } from '~/spec'
+import { COLOR_NAME } from '~/const/colors'
+import styled, { css, theme, rainbow } from '~/css'
 
 // @ts-ignore
 export const LinkAble = styled(NextLink)`

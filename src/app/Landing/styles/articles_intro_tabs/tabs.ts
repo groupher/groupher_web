@@ -1,12 +1,12 @@
-import type { TActive, TColor } from '@/spec'
-import { THREAD } from '@/constant/thread'
+import type { TActive, TColor } from '~/spec'
+import { THREAD } from '~/const/thread'
 
-import DiscussSVG from '@/icons/DiscussSolid'
-import TadaSVG from '@/icons/Tada'
-import GuideSVG from '@/icons/Book'
-import KanbanSVG from '@/icons/Kanban'
+import DiscussSVG from '~/icons/DiscussSolid'
+import TadaSVG from '~/icons/Tada'
+import GuideSVG from '~/icons/Book'
+import KanbanSVG from '~/icons/Kanban'
 
-import styled, { css, rainbow, rainbowLight, theme } from '@/css'
+import styled, { css, rainbow, rainbowLight, theme } from '~/css'
 
 export const Wrapper = styled.div`
   ${css.row('align-both')};

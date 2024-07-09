@@ -4,14 +4,13 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TGallery } from '@/spec'
-import { ICON, ASSETS_ENDPOINT } from '@/config'
-import { cutRest } from '@/fmt'
-import { buildLog } from '@/logger'
+import type { TGallery } from '~/spec'
+import { ICON, ASSETS_ENDPOINT } from '~/config'
+import { cutRest } from '~/fmt'
 
-import IconText from '@/widgets/IconText'
+import IconText from '~/widgets/IconText'
 
 import { mockDevelopers } from '../mock'
 import CardHeader from './CardHeader'
@@ -29,8 +28,6 @@ import {
   WorkIcon,
   Footer,
 } from '../styles/people_gallery/developer_gallery'
-
-const _log = buildLog('w:ProductGallery:index')
 
 type TProps = {
   items?: TGallery[]

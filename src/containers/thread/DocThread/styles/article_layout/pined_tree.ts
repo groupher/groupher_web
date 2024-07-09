@@ -1,10 +1,10 @@
-import type { TColorName } from '@/spec'
+import type { TColorName } from '~/spec'
 
-import styled, { css, theme, rainbow } from '@/css'
+import styled, { css, theme, rainbow } from '~/css'
 
-import GithubSVG from '@/icons/social/Github'
-import QuestionSVG from '@/icons/Question'
-import BookSVG from '@/icons/Book'
+import GithubSVG from '~/icons/social/Github'
+import QuestionSVG from '~/icons/Question'
+import BookSVG from '~/icons/Book'
 
 export const Wrapper = styled.div`
   ${css.column('justify-center')};

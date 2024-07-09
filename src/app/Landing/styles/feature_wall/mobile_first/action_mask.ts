@@ -1,10 +1,10 @@
-import UpvoteSVG from '@/icons/Upvote'
-import CommentSVG from '@/icons/Comment'
-import EmojiSVG from '@/icons/EmojiGood'
-import DeleteSVG from '@/icons/Trash'
-import ShareSVG from '@/icons/Share'
+import UpvoteSVG from '~/icons/Upvote'
+import CommentSVG from '~/icons/Comment'
+import EmojiSVG from '~/icons/EmojiGood'
+import DeleteSVG from '~/icons/Trash'
+import ShareSVG from '~/icons/Share'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div<{ $hovering: boolean }>`
   ${css.column()};

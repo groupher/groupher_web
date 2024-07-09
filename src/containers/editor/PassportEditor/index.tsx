@@ -3,36 +3,38 @@
  *
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { type FC, useEffect } from 'react'
 
-import { SexyDivider } from '@/widgets/Common'
-import Button from '@/widgets/Buttons/Button'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import { useStore } from './store'
+import { SexyDivider } from '~/widgets/Common'
+import Button from '~/widgets/Buttons/Button'
+
 import Selects from './Selects'
 
+import useLogic from './useLogic'
 import { Wrapper, Desc, Footer, RootSign } from './styles'
-import { useInit, updatePassport } from './logic' /* eslint-disable-next-line */
-
-// const log = buildLog('C:PassportEditor')
 
 const PassportEditor: FC = () => {
-  const store = useStore()
-  useInit(store)
+  const curCommunity = useViewingCommunity()
+
+  useEffect(() => {
+    loadAllPassportRules()
+  }, [])
 
   const {
-    curCommunity,
-    allModeratorRules,
-    allRootRules,
-    selectedRulesData,
     activeModerator,
-    isActiveModeratorRoot,
-    isCurUserModeratorRoot,
-  } = store
+    loadAllPassportRules,
+    updatePassport,
+    getIsActiveModeratorRoot,
+    getIsCurUserModeratorRoot,
+    getIsReadonly,
+  } = useLogic()
 
-  const rules = isActiveModeratorRoot ? allRootRules : allModeratorRules
-  const readonly = isActiveModeratorRoot || !isCurUserModeratorRoot
+  const isActiveModeratorRoot = getIsActiveModeratorRoot()
+  const isCurUserModeratorRoot = getIsCurUserModeratorRoot()
+
+  const readonly = getIsReadonly()
 
   if (!activeModerator) return null
 
@@ -49,12 +51,7 @@ const PassportEditor: FC = () => {
         </Desc>
       )}
       <SexyDivider bottom={30} />
-      <Selects
-        rules={rules}
-        moderatorRules={allModeratorRules}
-        selectedRules={selectedRulesData}
-        readonly={readonly}
-      />
+      <Selects />
       <SexyDivider bottom={30} />
 
       {!readonly && (
@@ -77,4 +74,4 @@ const PassportEditor: FC = () => {
   )
 }
 
-export default observer(PassportEditor)
+export default PassportEditor

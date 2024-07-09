@@ -1,8 +1,8 @@
-import { FC, useState, useRef, useEffect } from 'react'
+import { type FC, useState, useRef, useEffect } from 'react'
 import { findIndex, reverse } from 'ramda'
 
-import type { TTag } from '@/spec'
-import { sortByColor } from '@/helper'
+import type { TTag } from '~/spec'
+import { sortByColor } from '~/helper'
 
 import FileItem from './FileItem'
 

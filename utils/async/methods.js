@@ -1,11 +1,8 @@
 import { from } from 'rxjs'
 
-import { buildLog } from '../logger'
 import gqClient from './gq_client'
 
 import { getThenHandler, getCatchHandler, formatGraphErrors } from './handler'
-
-const _log = buildLog('Async')
 
 const doQuery = (query, variables) => {
   return gqClient
@@ -20,7 +17,7 @@ const doQuery = (query, variables) => {
     })
 }
 
-const doMutate = (mutation, variables) => {
+export const doMutate = (mutation, variables) => {
   return gqClient
     .mutation(mutation, variables)
     .toPromise()

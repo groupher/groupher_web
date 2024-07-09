@@ -1,8 +1,8 @@
 'use client'
 
-import useMetric from '@/hooks/useMetric'
+import useMetric from '~/hooks/useMetric'
 
-import { Wrapper, InnerWrapper } from '@/widgets/Article/styles/post'
+import { Wrapper, InnerWrapper } from '~/widgets/Article/styles/post'
 
 const Layout = ({ children }) => {
   const metric = useMetric()

@@ -1,5 +1,5 @@
-import type { TSpace } from '@/spec'
-import styled, { css } from '@/css'
+import type { TSpace } from '~/spec'
+import styled, { css } from '~/css'
 
 import { getUlMarginRight } from './metric'
 

@@ -1,8 +1,8 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import styled, { useTheme } from 'styled-components'
 import ContentLoader from 'react-content-loader'
 
-import type { TThemeMap } from '@/spec'
+import type { TThemeMap } from '~/spec'
 
 // Config-page: http://danilowoz.com/create-react-content-loader/
 const LoadingWrapper = styled.div`

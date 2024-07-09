@@ -1,6 +1,6 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TCommunity } from '@/spec'
+import type { TCommunity } from '~/spec'
 import { Wrapper, Block, Logo, Title, AddBlock, AddButton, DeleteHint } from './styles/row'
 
 type TProps = {

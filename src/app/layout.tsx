@@ -6,8 +6,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import {
   StyledComponentsRegistry,
   GraphQLProvider,
-  RootStoreProvider,
-  MobxStoreProvider,
+  StateStoreProvider,
   GlobalLayout,
 } from './providers'
 
@@ -32,11 +31,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <StyledComponentsRegistry>
           <GraphQLProvider>
-            <MobxStoreProvider>
-              <RootStoreProvider>
-                <GlobalLayout>{children}</GlobalLayout>
-              </RootStoreProvider>
-            </MobxStoreProvider>
+            <StateStoreProvider>
+              <GlobalLayout>{children}</GlobalLayout>
+            </StateStoreProvider>
           </GraphQLProvider>
         </StyledComponentsRegistry>
         <Analytics />

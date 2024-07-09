@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import TransforSVG from '@/icons/Transfor'
+import styled, { css, theme } from '~/css'
+import TransforSVG from '~/icons/Transfor'
 
 export const Wrapper = styled.div`
   ${css.column()};

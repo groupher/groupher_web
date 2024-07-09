@@ -1,7 +1,7 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import HomeLogo from '@/widgets/HomeLogo'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
+import HomeLogo from '~/widgets/HomeLogo'
 
 import {
   Wrapper,

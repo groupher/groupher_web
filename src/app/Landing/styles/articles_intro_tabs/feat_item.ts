@@ -1,7 +1,7 @@
-import type { TColor } from '@/spec'
+import type { TColor } from '~/spec'
 
-import styled, { css, theme, rainbow } from '@/css'
-import CheckSVG from '@/icons/CheckBold'
+import styled, { css, theme, rainbow } from '~/css'
+import CheckSVG from '~/icons/CheckBold'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

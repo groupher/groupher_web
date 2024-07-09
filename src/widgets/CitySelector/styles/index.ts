@@ -1,19 +1,19 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import { WithMargin } from '@/widgets/Common'
-import USSVG from '@/icons/nation/US'
-import AUSVG from '@/icons/nation/AU'
-import DESVG from '@/icons/nation/DE'
-import JPSVG from '@/icons/nation/JP'
-import ENSVG from '@/icons/nation/EN'
-import CASVG from '@/icons/nation/CA'
-import THSVG from '@/icons/nation/TH'
-import SGSVG from '@/icons/nation/SG'
+import { WithMargin } from '~/widgets/Common'
+import USSVG from '~/icons/nation/US'
+import AUSVG from '~/icons/nation/AU'
+import DESVG from '~/icons/nation/DE'
+import JPSVG from '~/icons/nation/JP'
+import ENSVG from '~/icons/nation/EN'
+import CASVG from '~/icons/nation/CA'
+import THSVG from '~/icons/nation/TH'
+import SGSVG from '~/icons/nation/SG'
 
-import Input from '@/widgets/Input'
+import Input from '~/widgets/Input'
 
 export const Inputer = styled(Input)`
   margin-top: -2px;

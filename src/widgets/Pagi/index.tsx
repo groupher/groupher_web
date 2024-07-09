@@ -4,18 +4,14 @@
  *
  */
 
-import { FC, ReactNode } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC, ReactNode } from 'react'
 
-import type { TSpace, TPagi } from '@/spec'
+import type { TSpace, TPagi } from '~/spec'
 
-import { buildLog } from '@/logger'
-import usePagedPosts from '@/hooks/usePagedPosts'
+import usePagedPosts from '~/hooks/usePagedPosts'
 
 import { EmptyWrapper, BottomMsg } from './styles'
 import RealPagi from './RealPagi'
-
-const log = buildLog('w:Pagi:index')
 
 export type TProps = {
   children?: ReactNode
@@ -35,7 +31,7 @@ const BottomFooter = ({ show, msg }) => {
 }
 
 const Pagi: FC<TProps> = ({
-  onChange = log,
+  onChange = console.log,
   showBottomMsg = false,
   emptyMsg = '还没有讨论',
   noMoreMsg = '没有更多讨论了',
@@ -76,4 +72,4 @@ const Pagi: FC<TProps> = ({
   )
 }
 
-export default observer(Pagi)
+export default Pagi

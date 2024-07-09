@@ -4,33 +4,29 @@
  *
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TArticle } from '@/spec'
-import useKanbanLayout from '@/hooks/useKanbanLayout'
-import { KANBAN_LAYOUT } from '@/constant/layout'
-import { buildLog } from '@/logger'
+import type { TArticle } from '~/spec'
+import useLayout from '~/hooks/useLayout'
+import { KANBAN_LAYOUT } from '~/const/layout'
 
-// import IconButton from '@/widgets/Buttons/IconButton'
+// import IconButton from '~/widgets/Buttons/IconButton'
 
 import WaterfallLayout from './WaterfallLayout'
 import ClassicLayout from './ClassicLayout'
-
-const _log = buildLog('w:KanbanItem:index')
 
 type TProps = {
   article: TArticle
 }
 
 const KanbanItem: FC<TProps> = ({ article }) => {
-  const layout = useKanbanLayout()
+  const { kanbanLayout } = useLayout()
 
-  return layout === KANBAN_LAYOUT.WATERFALL ? (
+  return kanbanLayout === KANBAN_LAYOUT.WATERFALL ? (
     <WaterfallLayout article={article} />
   ) : (
     <ClassicLayout article={article} />
   )
 }
 
-export default observer(KanbanItem)
+export default KanbanItem

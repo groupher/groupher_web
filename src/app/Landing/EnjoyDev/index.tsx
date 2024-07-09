@@ -1,7 +1,7 @@
-import { FC, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import useWallpaper from '@/hooks/useWallpaper'
+import useWallpaper from '~/hooks/useWallpaper'
 
 import HighWay from './HighWay'
 import OurWay from './OurWay'
@@ -23,7 +23,7 @@ import {
   GradientText,
 } from '../styles/enjoy_dev'
 
-const EnjoyDev: FC = () => {
+export default () => {
   const ref = useRef(null)
   const { isMobile } = useMobileDetect()
   const { wallpaper } = useWallpaper()
@@ -62,5 +62,3 @@ const EnjoyDev: FC = () => {
     </Wrapper>
   )
 }
-
-export default EnjoyDev

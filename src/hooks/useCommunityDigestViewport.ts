@@ -1,7 +1,4 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
-
-// import type { TAvatarLayout } from '@/spec'
+import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   enterView: () => void
@@ -9,21 +6,13 @@ type TRet = {
   inView: boolean
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useCommunityDigestViewport = (): TRet => {
-  const { store } = useContext(MobXProviderContext)
-
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
+export default (): TRet => {
+  const store = useSubStore('viewing')
 
   return {
-    enterView: (): void => store.mark({ communityDigestInView: true }),
-    leaveView: (): void => store.mark({ communityDigestInView: false }),
+    enterView: (): void => store.commit({ communityDigestInView: true }),
+    leaveView: (): void => store.commit({ communityDigestInView: false }),
+
     inView: store.communityDigestInView,
   }
 }
-
-export default useCommunityDigestViewport

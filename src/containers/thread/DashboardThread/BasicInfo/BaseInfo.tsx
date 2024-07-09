@@ -1,24 +1,22 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { find } from 'ramda'
 
-import type { TSelectOption } from '@/spec'
-import { LANGS_OPTIONS } from '@/constant/i18n'
+import type { TSelectOption } from '~/spec'
+import { LANGS_OPTIONS } from '~/const/i18n'
 
-import { Br } from '@/widgets/Common'
-import Select from '@/widgets/Select'
-
-import { SETTING_FIELD } from '../constant'
-import SavingBar from '../SavingBar'
-import useBaseInfo from '../hooks/useBaseInfo'
+import { Br } from '~/widgets/Common'
+import Select from '~/widgets/Select'
 
 import DangerZone from './DangerZone'
 
-import { Wrapper, Label, Inputer, Hint } from '../styles/basic_info/base_info'
-import { edit } from '../logic'
+import { SETTING_FIELD } from '../constant'
+import SavingBar from '../SavingBar'
+import useBaseInfo from '../logic/useBaseInfo'
 
-const BasicInfo: FC = () => {
-  const { saving, locale, desc, title, slug, homepage, introduction, isTouched } = useBaseInfo()
+import { Wrapper, Label, Inputer, Hint } from '../styles/basic_info/base_info'
+
+export default () => {
+  const { saving, locale, desc, title, slug, homepage, introduction, isTouched, edit } =
+    useBaseInfo()
 
   const curLangOption = find((o) => o.value === locale, LANGS_OPTIONS)
 
@@ -28,11 +26,8 @@ const BasicInfo: FC = () => {
       <Select
         value={curLangOption}
         options={LANGS_OPTIONS}
-        placeholder="请选择标签所在分组"
-        onChange={(option: TSelectOption) => {
-          console.log('## change locale: ', option.value)
-          edit(option.value, 'locale')
-        }}
+        placeholder="社区默认语言"
+        onChange={(option: TSelectOption) => edit(option.value, 'locale')}
         top={10}
         bottom={10}
         right={8}
@@ -68,12 +63,18 @@ const BasicInfo: FC = () => {
         onChange={(v) => edit(v, 'introduction')}
       />
 
-      <SavingBar field={SETTING_FIELD.BASE_INFO} isTouched={isTouched} loading={saving} top={30} />
+      {/* avoid show savingbar when loading community info */}
+      {title && (
+        <SavingBar
+          field={SETTING_FIELD.BASE_INFO}
+          isTouched={isTouched}
+          loading={saving}
+          top={30}
+        />
+      )}
 
       <Br bottom={45} />
       <DangerZone />
     </Wrapper>
   )
 }
-
-export default observer(BasicInfo)

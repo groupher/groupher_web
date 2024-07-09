@@ -3,19 +3,16 @@
 /*
  */
 
-import { FC, useState, useRef, useCallback } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useState, useRef, useCallback } from 'react'
 
-import { buildLog } from '@/logger'
+import useOutsideClick from '~/hooks/useOutsideClick'
+import useTrans from '~/hooks/useTrans'
+import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
 
-import useOutsideClick from '@/hooks/useOutsideClick'
-import useTrans from '@/hooks/useTrans'
-import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
+import { scrollToHeader } from '~/dom'
 
-import { scrollToHeader } from '@/dom'
-
-import ThemeSwitch from '@/widgets/ThemeSwitch'
-import Tooltip from '@/widgets/Tooltip'
+import ThemeSwitch from '~/widgets/ThemeSwitch'
+import Tooltip from '~/widgets/Tooltip'
 
 import I18nPanel from './I18nPanel'
 import MorePanel from './MorePanel'
@@ -24,9 +21,7 @@ import NotifyPanel from './NotifyPanel'
 import { MENU, TIP_OPTIONS } from './constant'
 import { Wrapper, ButtonBar, Icon, IconBox, TipText, PeopleBox, TopBox } from './styles'
 
-const _log = buildLog('c:AccountBar:index')
-
-const AccountBar: FC = () => {
+export default () => {
   const ref = useRef(null)
   const { inView: badgeInView } = useCommunityDigestViewport()
   const { t } = useTrans()
@@ -110,5 +105,3 @@ const AccountBar: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(AccountBar)

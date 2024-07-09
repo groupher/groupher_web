@@ -2,28 +2,26 @@
  * ArticleViewer
  */
 
-import { FC, Fragment, useCallback, useState, useEffect } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useCallback, useState, useEffect } from 'react'
 import Balancer from 'react-wrap-balancer'
 
-import type { TPost } from '@/spec'
-import { buildLog } from '@/logger'
-import { scrollDrawerToTop } from '@/dom'
-import { BROADCAST_ARTICLE_LAYOUT } from '@/constant/layout'
+import { scrollDrawerToTop } from '~/dom'
+import { BROADCAST_ARTICLE_LAYOUT } from '~/const/layout'
 
-import useBroadcast from '@/hooks/useBroadcast'
+import useBroadcast from '~/hooks/useBroadcast'
 
-import ArticleFooter from '@/widgets/ArticleFooter'
-import GotoTop from '@/widgets/GotoTop'
-import ViewportTracker from '@/widgets/ViewportTracker'
-import { ArticleContentLoading } from '@/widgets/Loading'
-import ArticeBody from '@/widgets/ArtimentBody'
-import ArticleBroadcast from '@/widgets/ArticleBroadcast'
+import ArticleFooter from '~/widgets/ArticleFooter'
+import GotoTop from '~/widgets/GotoTop'
+import ViewportTracker from '~/widgets/ViewportTracker'
+import { ArticleContentLoading } from '~/widgets/Loading'
+import ArticeBody from '~/widgets/ArtimentBody'
+import ArticleBroadcast from '~/widgets/ArticleBroadcast'
 
 import FixedHeader from './FixedHeader'
 import Header from './Header'
 import ArticleInfo from './ArticleInfo'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   BodyWrapper,
@@ -33,14 +31,8 @@ import {
   GoTopWrapper,
 } from '../styles/post_viewer'
 
-const _log = buildLog('C:ArticleViewer')
-
-type TProps = {
-  article: TPost
-  loading: boolean
-}
-
-const PostViewer: FC<TProps> = ({ article, loading }) => {
+export default () => {
+  const { loading, article } = useLogic()
   const broadcastConfig = useBroadcast()
 
   const [fixedHeaderVisible, setFixedHeaderVisible] = useState(false)
@@ -57,7 +49,7 @@ const PostViewer: FC<TProps> = ({ article, loading }) => {
   const showFooter = useCallback(() => setFooterVisible(true), [])
 
   return (
-    <Fragment>
+    <>
       <FixedHeader article={article} visible={fixedHeaderVisible} footerVisible={footerVisible} />
       <Wrapper>
         <Header article={article} />
@@ -90,8 +82,6 @@ const PostViewer: FC<TProps> = ({ article, loading }) => {
           <GotoTop type="drawer" />
         </GoTopWrapper>
       </Wrapper>
-    </Fragment>
+    </>
   )
 }
-
-export default observer(PostViewer)

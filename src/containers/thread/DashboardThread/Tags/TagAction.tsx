@@ -1,13 +1,13 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import { callTagEditEditor } from '@/signal'
-import { Space } from '@/widgets/Common'
-import Tooltip from '@/widgets/Tooltip'
+import { callTagEditEditor } from '~/signal'
+import { Space } from '~/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
 
 import ActionMenu from './ActionMenu'
+import useTags from '../logic/useTags'
+import type { TProps as TTagBarProps } from './TagBar'
 
-import useTagListInfo from '../hooks/useTagListInfo'
 import {
   Wrapper,
   EditIcon,
@@ -16,13 +16,19 @@ import {
   ArrowDownIcon,
   SettingIcon,
 } from '../styles/tags/tag_action'
-import { editTag, moveTagUp, moveTagDown, moveTag2Top, moveTag2Bottom } from '../logic/tags'
-import type { TProps as TTagBarProps } from './TagBar'
 
 type TProps = Omit<TTagBarProps, 'settingTag'>
 
 const TagAction: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
-  const { editingTag, activeTagGroup } = useTagListInfo()
+  const {
+    editingTag,
+    activeTagGroup,
+    editTag,
+    moveTagUp,
+    moveTagDown,
+    moveTag2Top,
+    moveTag2Bottom,
+  } = useTags()
   const isEditMode = editingTag?.id === tag.id
 
   if (isEditMode) return null
@@ -69,4 +75,4 @@ const TagAction: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
   )
 }
 
-export default observer(TagAction)
+export default TagAction

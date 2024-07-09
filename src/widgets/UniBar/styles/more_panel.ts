@@ -1,10 +1,10 @@
-import styled, { css, theme, animate } from '@/css'
+import styled, { css, theme, animate } from '~/css'
 
-import type { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
-import ReportSVG from '@/icons/Report'
-import SettingSVG from '@/icons/Setting'
-import LinkSVG from '@/icons/ArrowUpRight'
+import ReportSVG from '~/icons/Report'
+import SettingSVG from '~/icons/Setting'
+import LinkSVG from '~/icons/ArrowUpRight'
 
 export const Wrapper = styled.div`
   padding: 10px 8px;

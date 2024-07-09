@@ -1,18 +1,17 @@
-import { FC, useEffect, useState } from 'react'
+import { type FC, useEffect, useState } from 'react'
 
-import type { TChangeMode, TLinkItem } from '@/spec'
+import type { TChangeMode, TLinkItem } from '~/spec'
 
-import { buildLog } from '@/logger'
-
-import { Space, SpaceGrow } from '@/widgets/Common'
-import Tooltip from '@/widgets/Tooltip'
-import Linker from '@/widgets/Linker'
-import CancelButton from '@/widgets/Buttons/CancelButton'
+import { Space, SpaceGrow } from '~/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
+import Linker from '~/widgets/Linker'
+import CancelButton from '~/widgets/Buttons/CancelButton'
 import SavingBar from '../../SavingBar'
 
 import { EMPTY_LINK_ITEM } from '../../constant'
 import LinkMenu from './LinkMenu'
 
+import useFooter from '../../logic/useFooter'
 import {
   Wrapper,
   ReadonlyWrapper,
@@ -30,17 +29,8 @@ import {
   Label,
   NotifyLabel,
 } from '../../styles/footer/editors/link_editor'
-import {
-  cancelLinkEditing,
-  deleteLink,
-  updateEditingLink,
-  confirmLinkEditing,
-  updateInGroup,
-  moveLink,
-} from '../../logic/links'
-import { CHANGE_MODE } from '@/constant/mode'
 
-const _log = buildLog('C:Dashboard:LinkEditor')
+import { CHANGE_MODE } from '~/const/mode'
 
 type TProps = {
   notifyText?: string
@@ -63,8 +53,16 @@ const LinkEditor: FC<TProps> = ({
   disableSetting = false,
   disableEdit = false,
 }) => {
-  const [snapshot, setSnapshot] = useState<TLinkItem | null>(null)
+  const {
+    cancelLinkEditing,
+    deleteLink,
+    updateEditingLink,
+    confirmLinkEditing,
+    updateInGroup,
+    moveLink,
+  } = useFooter()
 
+  const [snapshot, setSnapshot] = useState<TLinkItem | null>(null)
   const editing = linkItem.group === editingLink?.group && linkItem.index === editingLink?.index
 
   useEffect(() => {

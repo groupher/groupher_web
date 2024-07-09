@@ -4,9 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TID, TTag } from '@/spec'
+import type { TID, TTag } from '~/spec'
 
 import ExpandTag from './ExpandTag'
 import SelectedTag from './SelectedTag'

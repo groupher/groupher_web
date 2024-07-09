@@ -7,12 +7,9 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { ICON } from '@/config'
-import { buildLog } from '@/logger'
+import { ICON } from '~/config'
 
 import { Wrapper, Title, Reaction, Icon, Count } from './styles/item'
-
-const _log = buildLog('w:LinksCard:Item')
 
 const Item = ({ item, onSelect }) => {
   return (

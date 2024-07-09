@@ -4,17 +4,14 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TSizeSML } from '@/spec'
+import type { TSizeSML } from '~/spec'
 
-import { ICON_CMD } from '@/config'
-import SIZE from '@/constant/size'
-import { buildLog } from '@/logger'
+import { ICON_CMD } from '~/config'
+import SIZE from '~/const/size'
 
 import { Wrapper, Icon, Title } from './styles'
-
-const _log = buildLog('w:EmptyLabel:index')
 
 type TProps = {
   iconSrc?: string

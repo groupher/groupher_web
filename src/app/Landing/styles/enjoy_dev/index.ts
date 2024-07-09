@@ -1,7 +1,7 @@
-import type { TTestable } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TTestable } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import UPvoteSVG from '@/icons/Upvote'
+import UPvoteSVG from '~/icons/Upvote'
 
 export { GradientText } from '..'
 

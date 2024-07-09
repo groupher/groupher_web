@@ -1,6 +1,6 @@
-// import Img from '@/Img'
-import styled, { css } from '@/css'
-import EditPenSVG from '@/icons/EditPen'
+// import Img from '~/Img'
+import styled, { css } from '~/css'
+import EditPenSVG from '~/icons/EditPen'
 
 export const Wrapper = styled.div`
   ${css.row('justify-between', 'align-center')};

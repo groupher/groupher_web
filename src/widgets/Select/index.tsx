@@ -6,21 +6,18 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import ReactSelect, { components } from 'react-select'
 import CreatableReactSelect from 'react-select/creatable'
 
-import type { TSelectOption, TSpace } from '@/spec'
-import { buildLog } from '@/logger'
-import useTheme from '@/hooks/useTheme'
+import type { TSelectOption, TSpace } from '~/spec'
+import useTheme from '~/hooks/useTheme'
 
-import { Row, Space } from '@/widgets/Common'
+import { Row, Space } from '~/widgets/Common'
 
 import { IndicatorsContainer } from './components'
 
 import { Wrapper, getSelectStyles } from './styles'
-
-const log = buildLog('w:Select:index')
 
 type TProps = {
   testid?: string
@@ -73,11 +70,11 @@ const Select: FC<TProps> = ({
   isMulti = false,
   isClearable = false,
   closeMenuOnSelect = true,
-  onChange = log,
+  onChange = console.log,
   value = null,
   creatable = false,
   className = '',
-  onCreateOption = log,
+  onCreateOption = console.log,
   ...restProps
 }) => {
   // @ts-ignore

@@ -1,14 +1,14 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import GithubSVG from '@/icons/social/Github'
-import GoogleSVG from '@/icons/social/Google'
-import FacebookSVG from '@/icons/social/Facebook'
-import TwitterSVG from '@/icons/social/Twitter'
-import DiscordSVG from '@/icons/social/Discord'
-import NotionSVG from '@/icons/social/Notion'
-import LinkedInSVG from '@/icons/social/LinkedIn'
-import TwitchSVG from '@/icons/social/Twitch'
-import LineSVG from '@/icons/social/Line'
+import GithubSVG from '~/icons/social/Github'
+import GoogleSVG from '~/icons/social/Google'
+import FacebookSVG from '~/icons/social/Facebook'
+import TwitterSVG from '~/icons/social/Twitter'
+import DiscordSVG from '~/icons/social/Discord'
+import NotionSVG from '~/icons/social/Notion'
+import LinkedInSVG from '~/icons/social/LinkedIn'
+import TwitchSVG from '~/icons/social/Twitch'
+import LineSVG from '~/icons/social/Line'
 
 export const Wrapper = styled.div`
   ${css.column()};

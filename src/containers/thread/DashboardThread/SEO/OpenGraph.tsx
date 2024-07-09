@@ -1,20 +1,18 @@
-import { FC, memo } from 'react'
-
-import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
+import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
 
 import SectionLabel from '../SectionLabel'
 import SearchEnginePreview from './SearchEnginePreview'
 
-import useSEOInfo from '../hooks/useSEOInfo'
+import useSEO from '../logic/useSEO'
 import { Wrapper, Label, EnableDesc, DetailLink, Inputer } from '../styles/seo/open_graph'
-import { edit, toggleSEO } from '../logic'
 
 /*
  see: https://mintlify.com/docs/settings/seo for details
 */
 
-const OpenGraph: FC = () => {
-  const { seoEnable, ogSiteName, ogTitle, ogDescription, ogImage, ogUrl } = useSEOInfo()
+export default () => {
+  const { seoEnable, ogSiteName, ogTitle, ogDescription, ogImage, ogUrl, edit, toggleSEO } =
+    useSEO()
 
   return (
     <Wrapper>
@@ -49,5 +47,3 @@ const OpenGraph: FC = () => {
     </Wrapper>
   )
 }
-
-export default memo(OpenGraph)

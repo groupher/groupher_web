@@ -2,19 +2,16 @@
  * FollowButton
  */
 
-import { FC, memo, useState, useCallback } from 'react'
+import { type FC, memo, useState, useCallback } from 'react'
 
-import type { TID, TSizeTSM } from '@/spec'
-import SIZE from '@/constant/size'
-import useAccount from '@/hooks/useAccount'
+import type { TID, TSizeTSM } from '~/spec'
+import SIZE from '~/const/size'
+import useAccount from '~/hooks/useAccount'
 
-import { buildLog } from '@/logger'
-import { authWarn } from '@/signal'
+import { authWarn } from '~/signal'
 
 import FollowingBtn from './FollowingBtn'
 import FollowedBtn from './FollowedBtn'
-
-const log = buildLog('w:FollowButton:index')
 
 type TProps = {
   hasFollowed?: boolean
@@ -38,8 +35,8 @@ const FollowButton: FC<TProps> = ({
   followText = '关 注',
   followingText = '已关注',
   followingOffset = 0,
-  onFollow = log,
-  onUndoFollow = log,
+  onFollow = console.log,
+  onUndoFollow = console.log,
 }) => {
   const [fakeLoading, setFakeLoading] = useState(false)
   const isLoading = simuLoading ? fakeLoading : loading

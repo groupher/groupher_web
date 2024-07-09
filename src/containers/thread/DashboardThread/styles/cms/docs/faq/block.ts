@@ -1,10 +1,10 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import { MarkdownStyles } from '@/widgets/Common'
-import EditSVG from '@/icons/EditPen'
-import DeleteSVG from '@/icons/Delete'
-import ArrowSVG from '@/icons/Arrow'
+import { MarkdownStyles } from '~/widgets/Common'
+import EditSVG from '~/icons/EditPen'
+import DeleteSVG from '~/icons/Delete'
+import ArrowSVG from '~/icons/Arrow'
 
 export const Wrapper = styled.div`
   position: relative;

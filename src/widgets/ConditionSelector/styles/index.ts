@@ -1,6 +1,6 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
-import { WithMargin } from '@/widgets/Common'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
+import { WithMargin } from '~/widgets/Common'
 
 type TWrapper = { $menuOpen?: boolean; $selected?: boolean }
 export const Wrapper = styled(WithMargin)<TWrapper>`

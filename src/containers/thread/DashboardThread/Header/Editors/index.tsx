@@ -1,14 +1,13 @@
 /* eslint-disable react/no-unescaped-entities */
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 import { keys, startsWith, filter, length } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-import type { TLinkItem } from '@/spec'
-import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
-import { sortByIndex, groupByKey } from '@/helper'
+import type { TLinkItem } from '~/spec'
+import { MORE_GROUP, ONE_LINK_GROUP } from '~/const/dashboard'
+import { sortByIndex, groupByKey } from '~/helper'
 
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 
 import LinkEditor from '../../Footer/Editors/LinkEditor'
 import GroupInputer from '../../Footer/Editors/GroupInputer'
@@ -16,7 +15,8 @@ import GroupInputer from '../../Footer/Editors/GroupInputer'
 import FixedLinks from './FixedLinks'
 import GroupHead from './GroupHead'
 
-import useHeaderSettingsInfo from '../../hooks/useHeaderSettingsInfo'
+import useHeader from '../../logic/useHeader'
+
 import {
   Wrapper,
   TopWrapper,
@@ -34,20 +34,6 @@ import {
   ItemsWrapper,
 } from '../../styles/header/editors'
 
-import {
-  deleteGroup,
-  moveGroup2Left,
-  moveGroup2Right,
-  moveGroup2EdgeLeft,
-  moveGroup2EdgeRight,
-  add2Group,
-  addHeaderLinkGroup,
-  triggerGroupAdd,
-  updateEditingGroup,
-  confirmGroupAdd,
-  cancelGroupChange,
-} from '../../logic/links'
-
 const Editor: FC = () => {
   const [animateRef] = useAutoAnimate()
   const [groupAnimateRef] = useAutoAnimate()
@@ -58,7 +44,18 @@ const Editor: FC = () => {
     editingLinkMode,
     editingGroup,
     editingGroupIndex,
-  } = useHeaderSettingsInfo()
+    deleteGroup,
+    moveGroup2Left,
+    moveGroup2Right,
+    moveGroup2EdgeLeft,
+    moveGroup2EdgeRight,
+    add2Group,
+    addHeaderLinkGroup,
+    triggerGroupAdd,
+    updateEditingGroup,
+    confirmGroupAdd,
+    cancelGroupChange,
+  } = useHeader()
 
   const isAboutLinkFold =
     length(filter((item) => item.title !== '' && item.group !== MORE_GROUP, links)) >= 1
@@ -123,8 +120,6 @@ const Editor: FC = () => {
                 <ItemsWrapper ref={animateRef}>
                   <GroupHead
                     title={groupKey as string}
-                    editingGroup={editingGroup}
-                    editingGroupIndex={editingGroupIndex}
                     curGroupIndex={index}
                     moveLeft={() => moveGroup2Left(groupKey)}
                     moveRight={() => moveGroup2Right(groupKey)}
@@ -176,4 +171,4 @@ const Editor: FC = () => {
   )
 }
 
-export default observer(Editor)
+export default Editor

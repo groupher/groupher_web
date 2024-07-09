@@ -4,12 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
 import PlanetDriver from './PlanetDriver'
-
-const _log = buildLog('w:PromptIcon:index')
 
 type TProps = {
   type?: 'planet-driver' | 'others'

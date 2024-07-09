@@ -1,5 +1,5 @@
-import type { TContainer } from '@/spec'
-import { ANCHOR, BODY_SCROLLER, DRAWER_SCROLLER } from '@/constant/dom'
+import type { TContainer } from '~/spec'
+import { ANCHOR, BODY_SCROLLER, DRAWER_SCROLLER } from '~/const/dom'
 
 // side effects, need refactor
 const hasDocument = typeof document === 'object' && document !== null
@@ -50,9 +50,11 @@ export const scrollToHeader = (): void => scrollIntoEle(ANCHOR.GLOBAL_HEADER_ID)
 export const scrollToTabber = (): void => scrollIntoEle(ANCHOR.GLOBAL_TABBER_ID)
 
 export const scrollDrawerToTop = (): void => {
-  if (typeof window === 'object') {
-    window[DRAWER_SCROLLER]?.scroll({ top: 0, behavior: 'auto' })
-  }
+  scrollIntoEle(ANCHOR.DRAWER_HEAD)
+
+  // if (typeof window === 'object') {
+  //   window[DRAWER_SCROLLER]?.scroll({ top: 0, behavior: 'auto' })
+  // }
 }
 
 export const scrollToComments = (view: TContainer = 'body'): void => {
@@ -70,8 +72,11 @@ export const scrollToComments = (view: TContainer = 'body'): void => {
 export const lockPage = (): void => {
   const safeDocument = getDocument()
 
+  console.log('## lockPage')
+
   if (safeDocument) {
     const el = safeDocument.getElementsByTagName('body')[0]
+
     el.style.overflowY = 'hidden'
     el.style.position = 'fixed !important'
   }

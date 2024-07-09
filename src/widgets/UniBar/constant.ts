@@ -1,4 +1,4 @@
-import type { TTooltipPlacement } from '@/spec'
+import type { TTooltipPlacement } from '~/spec'
 
 export const MENU = {
   DEFAULT: {

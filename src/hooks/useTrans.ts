@@ -1,11 +1,9 @@
-import { useContext, useCallback, useMemo } from 'react'
-import { MobXProviderContext } from 'mobx-react'
-// import { toUpper, toLower } from 'ramda'
+import { useCallback, useMemo } from 'react'
 
-import { titleCase } from '@/fmt'
+import { titleCase } from '~/fmt'
 
-import type { TLocale, TTransKey } from '@/spec'
-// import { MobXProviderContext } from 'mobx-react'
+import useSubStore from '~/hooks/useSubStore'
+import type { TLocale, TTransKey } from '~/spec'
 
 type TFmt = 'titleCase' | null
 
@@ -14,13 +12,10 @@ type TRet = {
   locale: TLocale
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useTrans = (): TRet => {
-  const { store } = useContext(MobXProviderContext)
+  const { locale, localeData } = useSubStore('locale')
 
-  const localeJson = useMemo(() => JSON.parse(store.localeData), [store.localeData])
+  const localeJson = useMemo(() => JSON.parse(localeData), [localeData])
 
   const t = useCallback(
     (key: TTransKey, fmt: TFmt = null): string => {
@@ -32,10 +27,10 @@ const useTrans = (): TRet => {
 
       return ret
     },
-    [store.localeData],
+    [localeData],
   )
 
-  return { t, locale: store.locale }
+  return { t, locale }
 }
 
 export default useTrans

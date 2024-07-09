@@ -1,8 +1,8 @@
-import type { TActive } from '@/spec'
-import styled, { css, animate, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, animate, theme } from '~/css'
 
-import Img from '@/Img'
-import LoadingGapSVG from '@/icons/LoadingGap'
+import Img from '~/Img'
+import LoadingGapSVG from '~/icons/LoadingGap'
 
 import { Wrapper as ParentWrapper } from '.'
 

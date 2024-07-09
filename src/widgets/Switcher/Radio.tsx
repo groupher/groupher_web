@@ -4,16 +4,13 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TSizeSM, TSpace } from '@/spec'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { buildLog } from '@/logger'
-import SIZE from '@/constant/size'
+import type { TSizeSM, TSpace } from '~/spec'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import SIZE from '~/const/size'
 
 import { Wrapper, Label } from './styles/radio'
-
-const log = buildLog('w:Radio:index')
 
 type TItem = {
   value: string
@@ -32,7 +29,7 @@ const Radio: FC<TProps> = ({
   items,
   activeKey,
   size = SIZE.MEDIUM,
-  onChange = log,
+  onChange = console.log,
   ...restProps
 }) => {
   const primaryColor = usePrimaryColor()

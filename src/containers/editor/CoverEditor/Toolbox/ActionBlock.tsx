@@ -1,6 +1,6 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import {
   Wrapper,

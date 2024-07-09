@@ -4,14 +4,11 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TSpace } from '~/spec'
 
 import { Wrapper, EnterIcon, Text } from './styles'
-
-const _log = buildLog('w:EnterHint:index')
 
 type TProps = {
   testid?: string

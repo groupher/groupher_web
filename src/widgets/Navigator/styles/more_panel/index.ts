@@ -1,13 +1,13 @@
 import Link from 'next/link'
 
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
 
-import MakersSVG from '@/icons/menu/Makers'
-import HotSVG from '@/icons/menu/Hot'
-import PieceSVG from '@/icons/menu/Piece'
-import ChartSVG from '@/icons/menu/Chart'
-import SubscribeSVG from '@/icons/menu/Subscribe'
+import MakersSVG from '~/icons/menu/Makers'
+import HotSVG from '~/icons/menu/Hot'
+import PieceSVG from '~/icons/menu/Piece'
+import ChartSVG from '~/icons/menu/Chart'
+import SubscribeSVG from '~/icons/menu/Subscribe'
 
 export const Wrapper = styled.div<{ mobile?: boolean }>`
   ${css.column('align-center')};

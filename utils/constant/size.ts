@@ -1,4 +1,4 @@
-import type { TSizeT, TSizeS, TSizeM, TSizeL, TSizeH } from '@/spec'
+import type { TSizeT, TSizeS, TSizeM, TSizeL, TSizeH } from '~/spec'
 
 const SIZE = {
   TINY: 'tiny' as TSizeT,

@@ -1,5 +1,5 @@
 // avold SSR to save first load build size
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Waypoint } from 'react-waypoint'
 

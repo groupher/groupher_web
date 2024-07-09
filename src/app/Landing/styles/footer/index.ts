@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
-import Button from '@/widgets/Buttons/Button'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
+import Button from '~/widgets/Buttons/Button'
 
 import { getPathGradient } from '../metric'
 

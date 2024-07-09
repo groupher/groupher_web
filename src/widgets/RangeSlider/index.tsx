@@ -4,14 +4,10 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
-
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 import { Wrapper, Value, Unit, RangeInput } from './styles'
-
-const _log = buildLog('c:RangeSlider:index')
 
 type TProps = {
   testid?: string
@@ -45,7 +41,7 @@ const RangeSlider: FC<TProps> = ({
         type="range"
         min={min}
         max={max}
-        onChange={(v) => onChange(parseInt(v.target.value, 10))}
+        onChange={(v) => onChange(Number.parseInt(v.target.value, 10))}
       />
     </Wrapper>
   )

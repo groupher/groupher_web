@@ -1,33 +1,26 @@
-import { FC, memo } from 'react'
+import Button from '~/widgets/Buttons/Button'
 
-import type { TCommunityThread } from '@/spec'
-
-import Button from '@/widgets/Buttons/Button'
-
+import useTags from '../logic/useTags'
 import { Wrapper, Hint, CatsWrapper } from '../styles/tags/thread_selector'
-import { edit, reloadArticleTags } from '../logic'
 
-type TProps = {
-  threads: TCommunityThread[]
-  active: string
-}
+export default () => {
+  const { activeTagThread, changeThread, getThreads } = useTags()
+  const active = activeTagThread
 
-const ThreadSelector: FC<TProps> = ({ threads, active }) => {
   return (
     <Wrapper>
       <Hint>社区板块:</Hint>
       <CatsWrapper>
-        {threads.map((thread) => (
+        {getThreads().map((thread) => (
           <Button
             key={thread.slug}
-            ghost={thread.slug !== active}
             size="small"
             noBorder={thread.slug !== active}
             onClick={() => {
-              edit(thread.slug, 'activeTagThread')
-              reloadArticleTags()
+              changeThread(thread.slug)
             }}
             space={10}
+            ghost
           >
             {thread.title}
           </Button>
@@ -36,5 +29,3 @@ const ThreadSelector: FC<TProps> = ({ threads, active }) => {
     </Wrapper>
   )
 }
-
-export default memo(ThreadSelector)

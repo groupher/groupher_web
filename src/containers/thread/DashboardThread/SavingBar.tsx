@@ -1,10 +1,9 @@
-import { FC, memo, Fragment, ReactNode } from 'react'
+import { type FC, memo, type ReactNode } from 'react'
 
-import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TSpace } from '~/spec'
 
-import { SpaceGrow } from '@/widgets/Common'
-import YesOrNoButtons from '@/widgets/Buttons/YesOrNoButtons'
+import { SpaceGrow } from '~/widgets/Common'
+import YesOrNoButtons from '~/widgets/Buttons/YesOrNoButtons'
 
 import type { TSettingField } from './spec.d'
 import {
@@ -17,9 +16,7 @@ import {
   ActionWrapper,
 } from './styles/saving_bar'
 
-import { rollbackEdit, onSave } from './logic'
-
-const log = buildLog('C:Dashboard/SavingBar')
+import useHelper from './logic/useHelper'
 
 type TProps = {
   field?: TSettingField | null
@@ -44,11 +41,13 @@ const SavingBar: FC<TProps> = ({
   loading = false,
   minimal = false,
   disabled = false,
-  onCancel = log,
-  onConfirm = log,
+  onCancel = console.log,
+  onConfirm = console.log,
   width = '100%',
   ...restProps
 }) => {
+  const { rollbackEdit, onSave } = useHelper()
+
   // cannot pass minimal to Wrapper, cuz the wired issue on styled-components@6
   const Wrapper = !minimal ? NormalWrapper : MinimalWrapper
 
@@ -56,7 +55,7 @@ const SavingBar: FC<TProps> = ({
     if (isTouched) {
       return (
         <Wrapper direction="left" width={width} {...restProps}>
-          <Fragment>{children}</Fragment>
+          {children}
           <SpaceGrow />
           <ActionWrapper $minimal={minimal}>
             <YesOrNoButtons
@@ -72,7 +71,7 @@ const SavingBar: FC<TProps> = ({
               onConfirm={() => {
                 if (field) {
                   onSave(field)
-                  setTimeout(() => onConfirm?.(), 1000)
+                  setTimeout(() => onConfirm?.(), 500)
                 } else {
                   onConfirm?.()
                 }
@@ -82,7 +81,7 @@ const SavingBar: FC<TProps> = ({
         </Wrapper>
       )
     }
-    return <Fragment>{children}</Fragment>
+    return <>{children}</>
   }
 
   if (!isTouched) return null
@@ -107,7 +106,7 @@ const SavingBar: FC<TProps> = ({
           onConfirm={() => {
             if (field) {
               onSave(field)
-              setTimeout(() => onConfirm?.(), 1000)
+              setTimeout(() => onConfirm?.(), 500)
             } else {
               onConfirm?.()
             }

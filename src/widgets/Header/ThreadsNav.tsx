@@ -1,9 +1,9 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TCommunity, TThread } from '@/spec'
-import { Trans } from '@/i18n'
+import type { TCommunity, TThread } from '~/spec'
+import { Trans } from '~/i18n'
 
-import DotDivider from '@/widgets/DotDivider'
+import DotDivider from '~/widgets/DotDivider'
 
 import { Wrapper, CommunityLogo, MobileHint, MiniTab } from './styles/threads_nav'
 

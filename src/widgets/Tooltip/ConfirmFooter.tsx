@@ -1,7 +1,7 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import Button from '@/widgets/Buttons/Button'
-import { Space } from '@/widgets/Common'
+import Button from '~/widgets/Buttons/Button'
+import { Space } from '~/widgets/Common'
 
 import { FOOTER_BEHAVIOR } from './constant'
 

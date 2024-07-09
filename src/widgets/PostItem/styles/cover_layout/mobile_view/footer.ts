@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ViewSVG from '@/icons/article/Viewed'
-import CommentSVG from '@/icons/Comment'
+import ViewSVG from '~/icons/article/Viewed'
+import CommentSVG from '~/icons/Comment'
 
 export const Wrapper = styled.div``
 export const CommunityLabel = styled.div`

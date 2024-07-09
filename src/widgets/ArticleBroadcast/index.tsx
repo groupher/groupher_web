@@ -4,13 +4,12 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TColorName, TSpace } from '@/spec'
-import { COLOR_NAME } from '@/constant'
+import type { TColorName, TSpace } from '~/spec'
+import { COLOR_NAME } from '~/const'
 
-import { buildLog } from '@/logger'
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import {
   Wrapper,
@@ -22,8 +21,6 @@ import {
   LinkButton,
   NotifyIcon,
 } from './styles'
-
-const _log = buildLog('c:ArticleBroadcast:index')
 
 type TProps = {
   testid?: string

@@ -1,7 +1,7 @@
-import type { TActive, TColor } from '@/spec'
-import styled, { css, rainbow, theme } from '@/css'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, rainbow, theme } from '~/css'
 
-import ArrowUpRight from '@/icons/ArrowUpRight'
+import ArrowUpRight from '~/icons/ArrowUpRight'
 
 import { Wrapper as WrapperBase, LinkItem as LinkItemBase, ArrowIcon as ArrowIconBase } from '.'
 

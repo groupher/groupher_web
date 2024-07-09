@@ -1,12 +1,10 @@
-import { FC, useEffect } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
-import { DASHBOARD_BASEINFO_ROUTE } from '@/constant/route'
-import VIEW from '@/constant/view'
+import { DASHBOARD_BASEINFO_ROUTE } from '~/const/route'
+import VIEW from '~/const/view'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import Tabs from '@/widgets/Switcher/Tabs'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import { BASEINFO_TABS } from '../constant'
 
@@ -17,18 +15,13 @@ import Logos from './Logos'
 import SocialInfo from './SocialInfo'
 import OtherInfo from './OtherInfo'
 
-import useBaseInfo from '../hooks/useBaseInfo'
+import useBaseInfo from '../logic/useBaseInfo'
 import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
-import { edit, loadBaseInfo } from '../logic'
 
-const BasicInfo: FC = () => {
+export default () => {
   const router = useRouter()
   const curCommunity = useViewingCommunity()
-  const { baseInfoTab } = useBaseInfo()
-
-  useEffect(() => {
-    setTimeout(() => loadBaseInfo())
-  }, [])
+  const { baseInfoTab, edit } = useBaseInfo()
 
   return (
     <Wrapper>
@@ -44,6 +37,7 @@ const BasicInfo: FC = () => {
             items={BASEINFO_TABS}
             activeKey={baseInfoTab}
             onChange={(tab) => {
+              // @ts-ignore
               edit(tab, 'baseInfoTab')
               const targetPath =
                 tab === DASHBOARD_BASEINFO_ROUTE.BASIC
@@ -65,5 +59,3 @@ const BasicInfo: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(BasicInfo)

@@ -4,14 +4,11 @@
  *
  */
 
-import { FC, memo, ReactNode } from 'react'
+import { type FC, memo, type ReactNode } from 'react'
 
-import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TSpace } from '~/spec'
 
 import { WarningWrapper, DangerWrapper, IconBox, InfoIcon, DangerIcon } from './styles'
-
-const _log = buildLog('c:HeadsUp:index')
 
 type TProps = {
   type?: 'warning' | 'danger'

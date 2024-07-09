@@ -1,4 +1,4 @@
-import styled, { css, animate, theme } from '@/css'
+import styled, { css, animate, theme } from '~/css'
 
 import CurveLine1SVG from './CurveLine1'
 import CurveLine2SVG from './CurveLine2'

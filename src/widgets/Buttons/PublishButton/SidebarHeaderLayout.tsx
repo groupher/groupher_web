@@ -4,14 +4,10 @@
  *
  */
 
-import { memo, FC, Fragment } from 'react'
-
-import { buildLog } from '@/logger'
+import { memo, type FC, Fragment } from 'react'
 
 // import Button from './Button'
 import { Wrapper, Title, EditIcon } from '../styles/publish_button/sidebar_header_layout'
-
-const _log = buildLog('w:PublishButton:index')
 
 type TProps = {
   text: string

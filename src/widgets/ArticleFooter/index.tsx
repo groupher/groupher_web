@@ -4,14 +4,10 @@
  *
  */
 
-import { FC, memo } from 'react'
-
-import { buildLog } from '@/logger'
+import { type FC, memo } from 'react'
 
 import Panel from './Panel'
 import { Wrapper } from './styles'
-
-const _log = buildLog('c:ArticleFooter:index')
 
 type TProps = {
   testid?: string

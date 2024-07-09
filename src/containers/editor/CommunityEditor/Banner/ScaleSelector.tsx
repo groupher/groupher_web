@@ -1,8 +1,7 @@
-import { FC, useState } from 'react'
-import { observer } from 'mobx-react-lite'
+import { type FC, useState } from 'react'
 
-import useTheme from '@/hooks/useTheme'
-import THEME from '@/constant/theme'
+import useTheme from '~/hooks/useTheme'
+import THEME from '~/const/theme'
 
 import type { TCommunityType } from '../spec'
 import { COMMUNITY_CATS_TEXT_COLORS } from '../constant'
@@ -69,4 +68,4 @@ const ScaleSelector: FC<TProps> = ({ communityType }) => {
   )
 }
 
-export default observer(ScaleSelector)
+export default ScaleSelector

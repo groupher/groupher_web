@@ -1,6 +1,6 @@
-import styled, { css, theme, animate } from '@/css'
+import styled, { css, theme, animate } from '~/css'
 
-import EditSVG from '@/icons/Spider'
+import EditSVG from '~/icons/Spider'
 
 export const Wrapper = styled.div`
   ${css.row()};

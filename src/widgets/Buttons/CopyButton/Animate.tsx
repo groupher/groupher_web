@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useState } from 'react'
+import { type FC, memo, useEffect, useState } from 'react'
 
 import { CopyedHint, CopyIcon, CopyedText } from '../styles/copy_button'
 

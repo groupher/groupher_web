@@ -1,16 +1,15 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TTooltipPlacement } from '@/spec'
-import { ARTICLE_STATE } from '@/constant/gtd'
-import { COLOR_NAME } from '@/constant/colors'
-import useKanbanBgColors from '@/hooks/useKanbanBgColors'
-import useNameAlias from '@/hooks/useNameAlias'
+import type { TTooltipPlacement } from '~/spec'
+import { ARTICLE_STATE } from '~/const/gtd'
+import { COLOR_NAME } from '~/const/colors'
+import useKanbanBgColors from '~/hooks/useKanbanBgColors'
+import useNameAlias from '~/hooks/useNameAlias'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
-import { Trans } from '@/i18n'
-import { aliasGTDDoneState } from '@/fmt'
+import { Trans } from '~/i18n'
+import { aliasGTDDoneState } from '~/fmt'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
 import { Wrapper, TipNote, WipIcon, Text, TODOIcon, DoneIcon, RejectIcon } from './styles/state'
@@ -21,6 +20,7 @@ const State: FC<TProps> = ({ cat, state, smaller }) => {
   const [todoColor, wipColor, doneColor] = useKanbanBgColors()
 
   const kanbanAlias = useNameAlias('kanban')
+
   const tipConfig = {
     placement: 'right' as TTooltipPlacement,
     offset: [0, 0] as [number, number],
@@ -143,4 +143,4 @@ const State: FC<TProps> = ({ cat, state, smaller }) => {
   }
 }
 
-export default observer(State)
+export default State

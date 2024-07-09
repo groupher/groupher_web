@@ -1,6 +1,4 @@
-import { FC } from 'react'
-
-import useWallpaper from '@/hooks/useWallpaper'
+import useWallpaper from '~/hooks/useWallpaper'
 
 import TechItem from './TechItem'
 
@@ -17,7 +15,7 @@ import {
   HammerIcon,
 } from '../styles/tech_stacks/stack_card'
 
-const StackCard: FC = () => {
+export default () => {
   const { wallpaper } = useWallpaper()
 
   return (
@@ -57,5 +55,3 @@ const StackCard: FC = () => {
     </Wrapper>
   )
 }
-
-export default StackCard

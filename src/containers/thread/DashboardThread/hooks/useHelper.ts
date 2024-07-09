@@ -1,8 +1,6 @@
-import { useContext } from 'react'
 import { equals, any } from 'ramda'
-import { MobXProviderContext } from 'mobx-react'
 
-import { toJS } from '@/mobx'
+import useSubStore from '~/hooks/useSubStore'
 
 import type { TSettingField } from '../spec'
 
@@ -12,26 +10,16 @@ type TRet = {
   mapArrayChanged: (key: string) => boolean
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useHelper = (): TRet => {
-  const { store } = useContext(MobXProviderContext)
+export default (): TRet => {
+  const dashboard = useSubStore('dashboard')
 
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
+  const { original } = dashboard
 
-  const _store = store.dashboardThread
-  const { initSettings } = _store
-
-  const isChanged = (field: TSettingField): boolean =>
-    !equals(toJS(_store[field]), toJS(initSettings[field]))
-
+  const isChanged = (field: TSettingField): boolean => !equals(dashboard[field], original[field])
   const anyChanged = (fields: TSettingField[]): boolean => any(isChanged)(fields)
 
   const mapArrayChanged = (key: string): boolean =>
-    JSON.stringify(toJS(_store[key])) !== JSON.stringify(toJS(initSettings[key]))
+    JSON.stringify(dashboard[key]) !== JSON.stringify(original[key])
 
   return {
     isChanged,
@@ -39,5 +27,3 @@ const useHelper = (): TRet => {
     mapArrayChanged,
   }
 }
-
-export default useHelper

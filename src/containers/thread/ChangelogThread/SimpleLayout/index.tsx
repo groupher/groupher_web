@@ -3,28 +3,23 @@
  *
  */
 
-import { FC, useState } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
 
-import useChangelogLayout from '@/hooks/useChangelogLayout'
-import usePagedChangelogs from '@/hooks/usePagedChangelogs'
-import useBannerLayout from '@/hooks/useBannerLayout'
-import { BANNER_LAYOUT, CHANGELOG_LAYOUT } from '@/constant/layout'
+import useLayout from '~/hooks/useLayout'
+import usePagedChangelogs from '~/hooks/usePagedChangelogs'
+import { BANNER_LAYOUT, CHANGELOG_LAYOUT } from '~/const/layout'
 
-import ChangelogItem from '@/widgets/ChangelogItem'
-import Tabs from '@/widgets/Switcher/Tabs'
+import ChangelogItem from '~/widgets/ChangelogItem'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import { TABS_MODE_OPTIONS } from '../constant'
 import FilterBar from './FilterBar'
 
 import { Wrapper, Banner, TabsWrapper, Title, Desc, MainWrapper } from '../styles/simple_layout'
 
-// const log = buildLog('C:ChangelogThread')
-
-const SimpleLayout: FC = () => {
+export default () => {
   const { pagedChangelogs } = usePagedChangelogs()
-  const changelogLayout = useChangelogLayout()
-  const bannerLayout = useBannerLayout()
+  const { bannerLayout, changelogLayout } = useLayout()
 
   const [filterExpand, setFilterExpand] = useState(false)
   const [tab, setTab] = useState(TABS_MODE_OPTIONS[0].slug)
@@ -63,5 +58,3 @@ const SimpleLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(SimpleLayout)

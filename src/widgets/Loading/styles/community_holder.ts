@@ -1,5 +1,5 @@
-// import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+// import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
 export const BannerWrapper = styled.div`
   ${css.row('align-both')};

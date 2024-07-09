@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import SVG from '@/constant/svg'
+import SVG from '~/const/svg'
 
 import UpvoteIcon from './Upvote'
 import EditPenIcon from './EditPen'

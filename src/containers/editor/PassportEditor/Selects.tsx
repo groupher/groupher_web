@@ -1,26 +1,22 @@
-import { FC } from 'react'
-
 import { keys, includes } from 'ramda'
 
-import { Trans } from '@/i18n/dashboard'
-import Checker from '@/widgets/Checker'
+import { Trans } from '~/i18n/dashboard'
+import Checker from '~/widgets/Checker'
 
+import useLogic from './useLogic'
 import { Wrapper, Item, ReadonlyItem, CheckIcon, RootCheckIcon, ItemTitle } from './styles/selects'
-import { toggleCheck } from './logic'
 
-type TProps = {
-  rules: string
-  moderatorRules: string
-  selectedRules: string[]
-  readonly?: boolean
-}
+export default () => {
+  const { getRules, allModeratorRules, selectedRules, getIsReadonly, toggleCheck } = useLogic()
+  const rules = getRules()
 
-const Selects: FC<TProps> = ({ rules, moderatorRules, selectedRules, readonly = false }) => {
   const optionsJson = JSON.parse(rules)
   const optionKeys = keys(optionsJson)
 
+  const readonly = getIsReadonly()
+
   if (readonly) {
-    const moderatorKeys = keys(JSON.parse(moderatorRules))
+    const moderatorKeys = keys(JSON.parse(allModeratorRules))
 
     return (
       <Wrapper>
@@ -57,5 +53,3 @@ const Selects: FC<TProps> = ({ rules, moderatorRules, selectedRules, readonly = 
     </Wrapper>
   )
 }
-
-export default Selects

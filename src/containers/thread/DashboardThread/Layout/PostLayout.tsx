@@ -1,19 +1,16 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { POST_LAYOUT, DASHBOARD_DESC_LAYOUT } from '~/const/layout'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import { callDashboardDesc } from '~/signal'
 
-import { POST_LAYOUT, DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { callDashboardDesc } from '@/signal'
-
-import { Row, Br, Space, SpaceGrow, Inline } from '@/widgets/Common'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import CheckLabel from '@/widgets/CheckLabel'
+import { Row, Br, Space, SpaceGrow, Inline } from '~/widgets/Common'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
-import usePostInfo from '../hooks/usePostInfo'
+import usePost from '../logic/usePost'
 import {
   Wrapper,
   SelectWrapper,
@@ -29,11 +26,12 @@ import {
   UpvoteIcon,
   CommentIcon,
 } from '../styles/layout/post_layout'
-import { edit } from '../logic'
 
-const PostListLayout: FC = () => {
-  const { layout, isTouched, saving } = usePostInfo()
+export default () => {
+  const { layout, getIsTouched, saving, edit } = usePost()
   const primaryColor = usePrimaryColor()
+
+  const isTouched = getIsTouched()
 
   return (
     <Wrapper>
@@ -212,5 +210,3 @@ const PostListLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(PostListLayout)

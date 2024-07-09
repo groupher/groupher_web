@@ -1,14 +1,13 @@
-import { FC, useCallback } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useCallback } from 'react'
 import { keys, includes } from 'ramda'
 
-import useWallpaper from '@/hooks/useWallpaper'
-import useGlowLight from '@/hooks/useGlowLight'
+import useFullWallpaper from '~/hooks/useFullWallpaper'
+import useGlowLight from '~/hooks/useGlowLight'
 
-import { parseWallpaper } from '@/wallpaper'
-import { callWallpaperEditor } from '@/signal'
-import { GRADIENT_WALLPAPER_NAME } from '@/constant/wallpaper'
-import { GLOW_EFFECT_NAME } from '@/constant/glow_effect'
+import { parseWallpaper } from '~/wallpaper'
+import { callWallpaperEditor } from '~/signal'
+import { GRADIENT_WALLPAPER_NAME } from '~/const/wallpaper'
+import { GLOW_EFFECT_NAME } from '~/const/glow_effect'
 
 import {
   Wrapper,
@@ -19,8 +18,10 @@ import {
   ThemeIcon,
 } from '../../../styles/dashboard_intros/layout_tab/wallpaper_bar'
 
-const WallpaperBar: FC = () => {
-  const { wallpaper, gradientWallpapers, changeWallpaper } = useWallpaper()
+export default () => {
+  const { wallpaper, getGradientWallpapers, changeWallpaper } = useFullWallpaper()
+  const gradientWallpapers = getGradientWallpapers()
+
   const { changeGlowEffect } = useGlowLight()
 
   const gradientKeys = keys(gradientWallpapers)
@@ -86,5 +87,3 @@ const WallpaperBar: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(WallpaperBar)

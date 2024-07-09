@@ -1,12 +1,12 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { ICON } from '@/config'
-import IconButton from '@/widgets/Buttons/IconButton'
-import MenuButton from '@/widgets/Buttons/MenuButton'
-import Tooltip from '@/widgets/Tooltip'
+import { ICON } from '~/config'
+import IconButton from '~/widgets/Buttons/IconButton'
+import MenuButton from '~/widgets/Buttons/MenuButton'
+import Tooltip from '~/widgets/Tooltip'
 
 import DetailInfo from './DetailInfo'
-// import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+// import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 import {
   Wrapper,
   Title,

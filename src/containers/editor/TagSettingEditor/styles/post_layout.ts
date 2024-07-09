@@ -1,9 +1,9 @@
-import type { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import UpvoteSVG from '@/icons/Upvote'
-import CommentSVG from '@/icons/Comment'
+import UpvoteSVG from '~/icons/Upvote'
+import CommentSVG from '~/icons/Comment'
 
 export const Wrapper = styled.div`
   ${css.rowWrap('align-center')};

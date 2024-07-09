@@ -1,14 +1,13 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 import TimeAgo from 'timeago-react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TComment } from '@/spec'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import type { TComment } from '~/spec'
+import useLayout from '~/hooks/useLayout'
 
-import ImgFallback from '@/widgets/ImgFallback'
-import { Space } from '@/widgets/Common'
-import DotDivider from '@/widgets/DotDivider'
+import ImgFallback from '~/widgets/ImgFallback'
+import { Space } from '~/widgets/Common'
+import DotDivider from '~/widgets/DotDivider'
 
 import {
   Wrapper,
@@ -35,7 +34,7 @@ type TProps = {
 
 const CommentHeader: FC<TProps> = ({ data, showInnerRef, isReply }) => {
   const { isMobile } = useMobileDetect()
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   const { author, meta } = data
   const avatarSize = author.bio ? 26 : 24
@@ -78,4 +77,4 @@ const CommentHeader: FC<TProps> = ({ data, showInnerRef, isReply }) => {
   )
 }
 
-export default observer(CommentHeader)
+export default CommentHeader

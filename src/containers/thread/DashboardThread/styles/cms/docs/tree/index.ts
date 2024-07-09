@@ -1,11 +1,11 @@
-import type { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import DragSVG from '@/icons/Dragble'
-import ArrowSVG from '@/icons/ArrowSimple'
-import DeleteSVG from '@/icons/Trash'
-import EditSVG from '@/icons/EditPen'
+import DragSVG from '~/icons/Dragble'
+import ArrowSVG from '~/icons/ArrowSimple'
+import DeleteSVG from '~/icons/Trash'
+import EditSVG from '~/icons/EditPen'
 
 export const Wrapper = styled.div`
   ${css.row('align-start')};

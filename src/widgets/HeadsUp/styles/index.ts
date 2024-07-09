@@ -1,10 +1,10 @@
-import type { TSpace, TTestable } from '@/spec'
+import type { TSpace, TTestable } from '~/spec'
 
-import InfoSVG from '@/icons/Info'
-import DangerSVG from '@/icons/Warning'
+import InfoSVG from '~/icons/Info'
+import DangerSVG from '~/icons/Warning'
 
-// import Img from '@/Img'
-import styled, { css, animate, theme } from '@/css'
+// import Img from '~/Img'
+import styled, { css, animate, theme } from '~/css'
 
 type TWrapper = TTestable & TSpace
 

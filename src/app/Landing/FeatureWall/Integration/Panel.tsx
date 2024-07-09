@@ -1,7 +1,7 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { COLOR_NAME } from '@/constant/colors'
-import { Brick } from '@/widgets/Common'
+import { COLOR_NAME } from '~/const/colors'
+import { Brick } from '~/widgets/Common'
 
 import Header from './Header'
 import Sidebar from './Sidebar'

@@ -1,6 +1,6 @@
-import type { TMetric } from '@/spec'
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
+import type { TMetric } from '~/spec'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   ${css.columnGrow('align-center')};

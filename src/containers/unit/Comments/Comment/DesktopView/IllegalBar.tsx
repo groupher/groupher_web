@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import { FC, memo, Fragment } from 'react'
+import { type FC, memo, Fragment } from 'react'
 
 import { Wrapper, BotIcon, Content, Reason } from '../../styles/comment/desktop_view/illegal_bar'
 

@@ -1,9 +1,9 @@
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
-import GithubSVG from '@/icons/social/Github'
-import PuzzleSVG from '@/icons/Puzzle'
-import PuzzleFrame from '@/icons/PuzzleFrame'
-import Puzzle2SVG from '@/icons/Puzzle2'
+import GithubSVG from '~/icons/social/Github'
+import PuzzleSVG from '~/icons/Puzzle'
+import PuzzleFrame from '~/icons/PuzzleFrame'
+import Puzzle2SVG from '~/icons/Puzzle2'
 
 import { GradientText } from '..'
 import { getCursorGradient, getGithubGradient } from '../metric'

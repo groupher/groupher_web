@@ -1,6 +1,6 @@
-import type { TMetric } from '@/spec'
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
+import type { TMetric } from '~/spec'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
 import { Wrapper as CommunityWrapper } from './community_layout'
 
 import { getStickerJustify } from './metric'

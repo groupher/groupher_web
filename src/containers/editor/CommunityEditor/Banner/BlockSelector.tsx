@@ -1,8 +1,8 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { find } from 'ramda'
 
-import type { TSelectOption } from '@/spec'
+import type { TSelectOption } from '~/spec'
 
 import { Wrapper, Box } from '../styles/banner/block_selector'
 

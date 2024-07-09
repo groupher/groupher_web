@@ -1,16 +1,12 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { upvoteArticle } from '~/signal'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '~/const/layout'
 
-import { upvoteArticle } from '@/signal'
-import useViewingArticle from '@/hooks/useViewingArticle'
-import { toJS } from '@/mobx'
-import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '@/constant/layout'
-
-import { Br } from '@/widgets/Common'
-import Upvote from '@/widgets/Upvote'
-import ArticleCatState from '@/widgets/ArticleCatState'
-import TagsList from '@/widgets/TagsList'
-import ReadableDate from '@/widgets/ReadableDate'
+import { Br } from '~/widgets/Common'
+import Upvote from '~/widgets/Upvote'
+import ArticleCatState from '~/widgets/ArticleCatState'
+import TagsList from '~/widgets/TagsList'
+import ReadableDate from '~/widgets/ReadableDate'
 
 import {
   Wrapper,
@@ -25,7 +21,7 @@ import {
   TagsSection,
 } from '../styles/post/side_info'
 
-const SideInfo: FC = () => {
+export default () => {
   const { article } = useViewingArticle()
 
   const { insertedAt, articleTags, upvotesCount, meta, viewerHasUpvoted, cat, state } = article
@@ -58,7 +54,7 @@ const SideInfo: FC = () => {
         <Br bottom={25} />
         <Label>标签</Label>
         <TagsSection>
-          <TagsList items={toJS(articleTags)} size="medium" left={2} max={20} />
+          <TagsList items={articleTags} size="medium" left={2} max={20} />
         </TagsSection>
 
         <Br bottom={25} />
@@ -75,5 +71,3 @@ const SideInfo: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(SideInfo)

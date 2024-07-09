@@ -1,11 +1,11 @@
-import type { TTestable, TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
+import type { TTestable, TAvatarLayout } from '~/spec'
+import { AVATAR_LAYOUT } from '~/const/layout'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Img from '@/Img'
-import AdminStarSVG from '@/icons/AdminStar'
-import { WithMargin } from '@/widgets/Common'
+import Img from '~/Img'
+import AdminStarSVG from '~/icons/AdminStar'
+import { WithMargin } from '~/widgets/Common'
 
 type TWrapper = TTestable
 export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({

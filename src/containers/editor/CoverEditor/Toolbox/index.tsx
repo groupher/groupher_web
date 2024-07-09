@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import LightBlock from './LightBlock'
 import PositionBlock from './PositionBlock'
@@ -10,17 +10,17 @@ import RotateBlock from './RotateBlock'
 import ActionBlock from './ActionBlock'
 import BackgroundBlock from './BackgroundBlock'
 
-import type { TToolboxSetting } from '../spec'
+import useLogic from '../useLogic'
 import { Wrapper } from '../styles/toolbox'
 
 type TProps = {
-  setting: TToolboxSetting
-
   onDelete: () => void
   onReplace: () => void
 }
 
-const Toolbox: FC<TProps> = ({ setting, onDelete, onReplace }) => {
+const Toolbox: FC<TProps> = ({ onDelete, onReplace }) => {
+  const { toolboxSetting: setting } = useLogic()
+
   return (
     <Wrapper>
       <PositionBlock pos={setting.pos} />

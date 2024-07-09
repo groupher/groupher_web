@@ -1,12 +1,11 @@
-import { FC, useState } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
 
-import { BROADCAST_ARTICLE_LAYOUT } from '@/constant/layout'
+import { BROADCAST_ARTICLE_LAYOUT } from '~/const/layout'
 
 import Simple from './Simple'
 import Default from './Default'
 
-import useBroadcastInfo from '../../../hooks/useBroadcastInfo'
+import useBroadcast from '../../../logic/useBroadcast'
 import {
   Wrapper,
   ArrowIcon,
@@ -14,9 +13,9 @@ import {
   ToggleText,
 } from '../../../styles/broadcast/templates/article'
 
-const Templates: FC = () => {
+export default () => {
   const [showAll, setShowAll] = useState<boolean>(false)
-  const { broadcastArticleLayout } = useBroadcastInfo()
+  const { broadcastArticleLayout } = useBroadcast()
 
   return (
     <Wrapper>
@@ -41,5 +40,3 @@ const Templates: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(Templates)

@@ -1,12 +1,12 @@
-import { FC, useEffect, useState, useCallback } from 'react'
+import { type FC, useEffect, useState, useCallback } from 'react'
 import { Portal } from 'react-portal'
 
-import useShortcut from '@/hooks/useShortcut'
-import useTheme from '@/hooks/useTheme'
-import useGlowLight from '@/hooks/useGlowLight'
+import useShortcut from '~/hooks/useShortcut'
+import useTheme from '~/hooks/useTheme'
+import useGlowLight from '~/hooks/useGlowLight'
 
-import { toggleGlobalBlur, lockPage, unlockPage } from '@/dom'
-import ViewportTracker from '@/widgets/ViewportTracker'
+import { toggleGlobalBlur, lockPage, unlockPage } from '~/dom'
+import ViewportTracker from '~/widgets/ViewportTracker'
 
 import type { TProps as BaseTProps } from '.'
 import { Mask, Wrapper, CloseBtn, CloseBox, ChildrenWrapper, GlowLight } from './styles'
@@ -52,13 +52,12 @@ const RealModal: FC<TProps> = ({
   useShortcut('Escape', handleClose)
 
   useEffect(() => {
-    if (visibleOnPage) {
+    if (show && visibleOnPage) {
       toggleGlobalBlur(true)
       lockPage()
     }
     if (visibleOnPage && !show) {
       toggleGlobalBlur(false)
-      unlockPage()
     }
   }, [show, visibleOnPage])
 

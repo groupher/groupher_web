@@ -2,22 +2,18 @@
  * Share
  */
 
-import { FC, Fragment } from 'react'
-import { observer } from 'mobx-react-lite'
+import { type FC, Fragment } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TArticle } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TArticle } from '~/spec'
 
-import Modal from '@/widgets/Modal'
+import Modal from '~/widgets/Modal'
 
 import type { TLinksData } from '../spec'
 import Platforms from './Platforms'
 import InfoPanel from './InfoPanel'
 
 import { Wrapper } from '../styles/modal_panel'
-
-const _log = buildLog('C:Share')
 
 type TProps = {
   show: boolean
@@ -65,4 +61,4 @@ const SharePanel: FC<TProps> = ({
   )
 }
 
-export default observer(SharePanel)
+export default SharePanel

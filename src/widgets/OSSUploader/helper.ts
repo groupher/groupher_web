@@ -1,11 +1,11 @@
 import { startsWith } from 'ramda'
 
-import { toast } from '@/signal'
-import { buildGQClient } from '@/utils/graphql'
-import uid from '@/utils/uid'
-import BStore from '@/utils/bstore'
+import { toast } from '~/signal'
+import { buildGQClient } from '~/utils/graphql'
+import uid from '~/utils/uid'
+import BStore from '~/utils/bstore'
 
-import { ASSETS_ENDPOINT } from '@/config'
+import { ASSETS_ENDPOINT } from '~/config'
 
 import type { TTokens } from './spec'
 import { STS, OSS_CONFIG } from './constant'

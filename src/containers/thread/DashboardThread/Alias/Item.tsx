@@ -1,13 +1,15 @@
-import { FC, memo, Fragment } from 'react'
+import { type FC, Fragment } from 'react'
 
-import AddButton from '@/widgets/Buttons/AddButton'
-import { SpaceGrow } from '@/widgets/Common'
+import AddButton from '~/widgets/Buttons/AddButton'
+import { SpaceGrow } from '~/widgets/Common'
 
 import { SETTING_FIELD, BUILDIN_ALIAS_SUGGESTIONS } from '../constant'
 import Suggestion from './Suggestion'
 import SavingBar from '../SavingBar'
 
 import type { TNameAlias } from '../spec'
+
+import useAlias from '../logic/useAlias'
 
 import {
   Wrapper,
@@ -22,14 +24,13 @@ import {
   ArrowIcon,
 } from '../styles/alias/item'
 
-import { updateEditingAlias, resetEdit } from '../logic'
-
 type TProps = {
   alias: TNameAlias
-  editingAlias: TNameAlias
 }
 
-const Item: FC<TProps> = ({ alias, editingAlias }) => {
+const Item: FC<TProps> = ({ alias }) => {
+  const { updateEditingAlias, editingAlias, resetEdit } = useAlias()
+
   const isEditMode: boolean = alias.slug === editingAlias?.slug
   const isChanged: boolean = alias.original !== alias.name
 
@@ -84,7 +85,7 @@ const Item: FC<TProps> = ({ alias, editingAlias }) => {
                 dimWhenIdle
                 onClick={() => {
                   updateEditingAlias({ ...alias, name: alias.original })
-                  resetEdit(SETTING_FIELD.NAME_ALIAS)
+                  resetEdit()
                 }}
               >
                 恢复默认
@@ -98,4 +99,4 @@ const Item: FC<TProps> = ({ alias, editingAlias }) => {
   )
 }
 
-export default memo(Item)
+export default Item

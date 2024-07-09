@@ -1,9 +1,6 @@
-import { useContext } from 'react'
-// import { MobXProviderContext } from 'mobx-react'
+import type { TThemeMap } from '~/spec'
 
-import type { TThemeMap } from '@/spec'
-
-import { StoreContext } from '@/stores2'
+import useSubStore from '~/hooks/useSubStore'
 
 /**
  * NOTE: should use observer to wrap the component who use this hook
@@ -11,10 +8,9 @@ import { StoreContext } from '@/stores2'
  * styled-component can only be used before it init
  */
 const useThemeData = (): TThemeMap => {
-  // const { store } = useContext(MobXProviderContext)
-  const { theme } = useContext(StoreContext)
+  const { themeData } = useSubStore('theme')
 
-  return theme.themeData
+  return themeData
 }
 
 export default useThemeData

@@ -1,13 +1,12 @@
-import { FC, memo } from 'react'
+import { nilOrEmpty } from '~/validator'
 
-import { nilOrEmpty } from '@/validator'
-
-import OSSUploader from '@/widgets/OSSUploader'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import { Br, Space } from '@/widgets/Common'
+import OSSUploader from '~/widgets/OSSUploader'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import { Br, Space } from '~/widgets/Common'
 
 import NextStepButton from './NextStepButton'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   IntroTitle,
@@ -23,16 +22,8 @@ import {
   InputBox,
 } from '../styles/banner/setup_info'
 
-import type { TSetupInfoStatus, TValidState } from '../spec'
-import { pervStep, nextStep, inputOnChange } from '../logic'
-
-type TProps = {
-  status: TSetupInfoStatus
-  validState: TValidState
-}
-
-const SetupInfo: FC<TProps> = ({ status, validState }) => {
-  const { title, desc, logo } = status
+export default () => {
+  const { title, desc, logo, validState, pervStep, nextStep, inputOnChange } = useLogic()
 
   const { isTitleValid, isDescValid, isLogoValid } = validState
   const isValid = isTitleValid && isDescValid && isLogoValid
@@ -81,5 +72,3 @@ const SetupInfo: FC<TProps> = ({ status, validState }) => {
     </Wrapper>
   )
 }
-
-export default memo(SetupInfo)

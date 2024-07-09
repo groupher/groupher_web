@@ -4,15 +4,12 @@
  *
  */
 
-import { FC, useCallback, memo } from 'react'
+import { type FC, useCallback, memo } from 'react'
 
-import type { TTabItem } from '@/spec'
-import { isString } from '@/validator'
-import { buildLog } from '@/logger'
+import type { TTabItem } from '~/spec'
+import { isString } from '~/validator'
 
 import { Wrapper, TabItem } from '../styles/tabs/drawer_view'
-
-const log = buildLog('w:Tabs:index')
 
 const temItems = [
   {
@@ -29,7 +26,7 @@ type TProps = {
   // slipHeight: '1px' | '2px'
 }
 
-const Tabs: FC<TProps> = ({ onChange = log, items = temItems, activeKey = '' }) => {
+const Tabs: FC<TProps> = ({ onChange = console.log, items = temItems, activeKey = '' }) => {
   const handleItemClick = useCallback(
     (item) => {
       onChange(isString(item) ? item : item.slug || item.title)

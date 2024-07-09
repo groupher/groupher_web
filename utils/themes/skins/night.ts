@@ -1,7 +1,7 @@
 /*
  * dark mode
  */
-import { lighten, darken } from '@/utils/color'
+import { lighten, darken } from '~/utils/color'
 
 const primaryColor = '#333333' // '#000000'
 const bannerBg = '#222222' //  '#161616'

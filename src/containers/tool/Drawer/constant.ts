@@ -1,7 +1,7 @@
 import { concat, keys, reduce } from 'ramda'
 
-import TYPE from '@/constant/type'
-import { ARTICLE_THREAD } from '@/constant/thread'
+import TYPE from '~/const/type'
+import { ARTICLE_THREAD } from '~/const/thread'
 
 export const NARROW_HEIGHT_OFFSET = 25
 

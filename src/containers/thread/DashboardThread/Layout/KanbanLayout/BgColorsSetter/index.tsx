@@ -1,24 +1,25 @@
-import { FC, useState } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
 
 import { isEmpty } from 'ramda'
 
-import { COLOR_NAME } from '@/constant/colors'
-import { KANBAN_LAYOUT } from '@/constant/layout'
-import { randomBgNames } from '@/helper'
-import useHover from '@/hooks/useHover'
+import { COLOR_NAME } from '~/const/colors'
+import { KANBAN_LAYOUT } from '~/const/layout'
+import { randomBgNames } from '~/helper'
+import useHover from '~/hooks/useHover'
 
-import { SpaceGrow, Space } from '@/widgets/Common'
-import ColorSelector from '@/widgets/ColorSelector'
+import { INIT_KANBAN_COLORS } from '~/const/dashboard'
 
-import { SETTING_FIELD, INIT_KANBAN_COLORS } from '../../../constant'
+import { SpaceGrow, Space } from '~/widgets/Common'
+import ColorSelector from '~/widgets/ColorSelector'
+
+import { SETTING_FIELD } from '../../../constant'
 import SectionLabel from '../../../SectionLabel'
 import SavingBar from '../../../SavingBar'
 
 import ClassicLayout from './ClassicLayout'
 import WaterfallLayout from './WaterfallLayout'
 
-import useKanbanInfo from '../../../hooks/useKanbanInfo'
+import useKanban from '../../../logic/useKanban'
 
 import {
   ColorsWrapper,
@@ -28,16 +29,16 @@ import {
   DiceIcon,
   ResetIcon,
 } from '../../../styles/layout/kanban_layout/bg_colors_setter'
-import { edit } from '../../../logic'
 
-const BoardLayout: FC = () => {
-  const { layout, kanbanBgColors, isBgColorsTouched, saving } = useKanbanInfo()
+export default () => {
+  const { kanbanLayout: layout, kanbanBgColors, getKanbanColorsTouched, saving, edit } = useKanban()
   const [diceRotate, setDiceRotate] = useState(0)
 
   const [board1Ref, isBoard1Hovered] = useHover<HTMLDivElement>()
   const [board2Ref, isBoard2Hovered] = useHover<HTMLDivElement>()
   const [board3Ref, isBoard3Hovered] = useHover<HTMLDivElement>()
 
+  const isBgColorsTouched = getKanbanColorsTouched()
   const [BG1, BG2, BG3] = isEmpty(kanbanBgColors) ? INIT_KANBAN_COLORS : kanbanBgColors
 
   return (
@@ -91,7 +92,7 @@ const BoardLayout: FC = () => {
             edit(randomBgNames(3), 'kanbanBgColors')
           }}
         >
-          <DiceIcon rotate={diceRotate} /> 灵感
+          <DiceIcon rotate={diceRotate} /> 随缘
         </Action>
         <Space right={0} />
       </ColorsWrapper>
@@ -120,5 +121,3 @@ const BoardLayout: FC = () => {
     </>
   )
 }
-
-export default observer(BoardLayout)

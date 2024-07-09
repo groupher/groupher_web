@@ -1,36 +1,21 @@
-import { useState, useEffect } from 'react'
-// import { mergeRight } from 'ramda'
+import type { TArticle, TCommunity } from '~/spec'
 
-import EVENT from '@/constant/event'
-import type { TViewingInfo } from '@/spec'
+import useSubStore from '~/hooks/useSubStore'
+import useViewingArticle from '~/hooks/useViewingArticle'
 
-import BStore from '@/utils/bstore'
-import { Global } from '@/helper'
-
-const initState = {
-  community: 'home',
-  id: '-1',
+type TRet = {
+  article: TArticle
+  community: TCommunity
+  updateViewingCommunity: (args: TCommunity) => void
 }
 
-const useViewing = (): TViewingInfo | null => {
-  const [viewing, setViewing] = useState(initState)
+export default (): TRet | null => {
+  const { community, updateViewingCommunity } = useSubStore('viewing')
+  const { article } = useViewingArticle()
 
-  /* eslint-disable */
-  useEffect(() => {
-    const checkViewing = () => {
-      const item = BStore.get('viewingArticle')
-      // @ts-ignore
-      setViewing(item)
-    }
-
-    Global.addEventListener(EVENT.VIEWING_CHANGED, checkViewing)
-
-    return () => {
-      Global.removeEventListener(EVENT.VIEWING_CHANGED, checkViewing)
-    }
-  }, [])
-
-  return viewing
+  return {
+    article,
+    community,
+    updateViewingCommunity,
+  }
 }
-
-export default useViewing

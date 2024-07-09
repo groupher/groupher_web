@@ -1,9 +1,9 @@
-import type { TActive, TColor } from '@/spec'
+import type { TActive, TColor } from '~/spec'
 
-import styled, { css, theme, rainbowLight } from '@/css'
+import styled, { css, theme, rainbowLight } from '~/css'
 
-import Img from '@/Img'
-import CloseSVG from '@/icons/CloseLight'
+import Img from '~/Img'
+import CloseSVG from '~/icons/CloseLight'
 
 type TTag = TActive & TColor
 

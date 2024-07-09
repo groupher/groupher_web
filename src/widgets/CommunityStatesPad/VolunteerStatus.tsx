@@ -1,7 +1,6 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { prettyNum } from '@/fmt'
-import { buildLog } from '@/logger'
+import { prettyNum } from '~/fmt'
 
 import {
   Wrapper,
@@ -9,8 +8,6 @@ import {
   // SubNumberWrapper,
   // SubNum,
 } from './styles/volunteer_status'
-
-const _log = buildLog('w:CommunityStatesPad:VolunteerStatus')
 
 type TProps = {
   count?: number

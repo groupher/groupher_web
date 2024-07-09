@@ -3,16 +3,12 @@
 /*
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import { buildLog } from '@/logger'
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import Panel from './Panel'
 import { Wrapper, DownloadIcon } from './styles'
-
-const _log = buildLog('c:GetMe:index')
 
 const GetMe: FC = () => {
   return (
@@ -24,4 +20,4 @@ const GetMe: FC = () => {
   )
 }
 
-export default observer(GetMe)
+export default GetMe

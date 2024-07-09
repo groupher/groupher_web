@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { css as styledCss } from 'styled-components'
 
-import type { TMetric } from '@/spec'
+import type { TMetric } from '~/spec'
 import { METRIC } from '../constant'
 import { WIDTH, mediaBreakPoints } from './metric'
 

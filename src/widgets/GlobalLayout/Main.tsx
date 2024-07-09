@@ -4,29 +4,28 @@
  *
  */
 
-import { FC, ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-import { blurRGB } from '@/fmt'
-import METRIC from '@/constant/metric'
-import { TOPBAR_LAYOUT } from '@/constant/layout'
+import { blurRGB } from '~/fmt'
+import METRIC from '~/const/metric'
+import { TOPBAR_LAYOUT } from '~/const/layout'
 
-import useMetric from '@/hooks/useMetric'
-import useTrans from '@/hooks/useTrans'
-import useGlobalLayout from '@/hooks/useGlobalLayout'
-import useThemeData from '@/hooks/useThemeData'
-import useWallpaper from '@/hooks/useWallpaper'
-import useGossBlur from '@/hooks/useGossBlur'
+import useMetric from '~/hooks/useMetric'
+import useTrans from '~/hooks/useTrans'
+import useTopbar from '~/hooks/useTopbar'
+import useThemeData from '~/hooks/useThemeData'
+import useWallpaper from '~/hooks/useWallpaper'
+import useGossBlur from '~/hooks/useGossBlur'
 
-// import Broadcast from '@/widgets/Broadcast'
-import Footer from '@/widgets/Footer'
+// import Broadcast from '~/widgets/Broadcast'
+import Footer from '~/widgets/Footer'
 
 // import DashboardAlert from './DashboardAlert'
-// import CustomScroller from '@/widgets/CustomScroller'
+// import CustomScroller from '~/widgets/CustomScroller'
 
 import GlowBackground from './GlowBackground'
 
-import { Wrapper, ScrollWrapper, BodyWrapper, ContentWrapper } from './styles/main'
+import { Wrapper, BodyWrapper, ContentWrapper } from './styles/main'
 
 // let DashboardAlert = null
 
@@ -35,7 +34,7 @@ type TProps = {
 }
 
 const Main: FC<TProps> = ({ children }) => {
-  const globalLayout = useGlobalLayout()
+  const { topbar, topbarBg } = useTopbar()
   const metric = useMetric()
   const { hasShadow } = useWallpaper()
   const gossBlur = useGossBlur()
@@ -56,8 +55,8 @@ const Main: FC<TProps> = ({ children }) => {
       metric={metric}
       $bgColor={bgColor}
       $hasShadow={hasShadow}
-      $hasTopbar={metric !== METRIC.HOME && globalLayout.topbar === TOPBAR_LAYOUT.YES}
-      $topbarBg={globalLayout.topbarBg}
+      $hasTopbar={metric !== METRIC.HOME && topbar === TOPBAR_LAYOUT.YES}
+      $topbarBg={topbarBg}
     >
       {/* <Broadcast /> */}
       <ContentWrapper>
@@ -69,4 +68,4 @@ const Main: FC<TProps> = ({ children }) => {
   )
 }
 
-export default observer(Main)
+export default Main

@@ -1,7 +1,7 @@
-import type { TActive, TColorName } from '@/spec'
-import styled, { css, theme, rainbow, rainbowLight } from '@/css'
+import type { TActive, TColorName } from '~/spec'
+import styled, { css, theme, rainbow, rainbowLight } from '~/css'
 
-import FormInput from '@/widgets/Input'
+import FormInput from '~/widgets/Input'
 
 export const Wrapper = styled.div`
   padding: 2px 0;

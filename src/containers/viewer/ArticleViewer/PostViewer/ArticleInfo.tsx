@@ -1,15 +1,15 @@
-import { memo, FC } from 'react'
+import { memo, type FC } from 'react'
 
-import type { TArticle } from '@/spec'
+import type { TArticle } from '~/spec'
 
-import { upvoteArticle } from '@/signal'
-// import { mockUsers } from '@/mock'
-// import { addCollection } from '@/helper'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
+import { upvoteArticle } from '~/signal'
+// import { mockUsers } from '~/mock'
+// import { addCollection } from '~/helper'
+import { UPVOTE_LAYOUT } from '~/const/layout'
 
-import { SpaceGrow } from '@/widgets/Common'
-import Upvote from '@/widgets/Upvote'
-import ArticleBaseStats from '@/widgets/ArticleBaseStats'
+import { SpaceGrow } from '~/widgets/Common'
+import Upvote from '~/widgets/Upvote'
+import ArticleBaseStats from '~/widgets/ArticleBaseStats'
 
 import {
   Wrapper,

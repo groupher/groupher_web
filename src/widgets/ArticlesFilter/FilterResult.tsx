@@ -1,6 +1,6 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import DotDivider from '@/widgets/DotDivider'
+import DotDivider from '~/widgets/DotDivider'
 
 import { Wrapper, ResultText } from './styles/filter_result'
 

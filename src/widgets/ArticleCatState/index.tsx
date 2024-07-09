@@ -4,18 +4,15 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TSpace, TArticleCat, TArticleState } from '@/spec'
-import { ARTICLE_CAT, ARTICLE_STATE } from '@/constant/gtd'
-import { buildLog } from '@/logger'
+import type { TSpace, TArticleCat, TArticleState } from '~/spec'
+import { ARTICLE_CAT, ARTICLE_STATE } from '~/const/gtd'
 
 import State from './State'
 import Label from './Label'
 
 import { Wrapper } from './styles'
-
-const _log = buildLog('w:ArticleCatState:index')
 
 export type TProps = {
   testid?: string

@@ -1,5 +1,5 @@
-import type { TSize } from '@/spec'
-import SIZE from '@/constant/size'
+import type { TSize } from '~/spec'
+import SIZE from '~/const/size'
 
 export const getIconSize = (size: TSize): string => {
   switch (size) {

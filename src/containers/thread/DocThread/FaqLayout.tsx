@@ -1,9 +1,9 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TSpace } from '@/spec'
-import { DOC_FAQ_LAYOUT } from '@/constant/layout'
+import type { TSpace } from '~/spec'
+import { DOC_FAQ_LAYOUT } from '~/const/layout'
 
-import FaqList from '@/widgets/FaqList'
+import FaqList from '~/widgets/FaqList'
 
 import { Wrapper } from './styles/faq_layout'
 

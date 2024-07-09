@@ -1,8 +1,8 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import SIZE from '@/constant/size'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import useTheme from '@/hooks/useTheme'
+import SIZE from '~/const/size'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useTheme from '~/hooks/useTheme'
 
 import FlipNumbers from 'react-flip-numbers'
 

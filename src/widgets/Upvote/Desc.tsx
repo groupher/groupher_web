@@ -2,13 +2,9 @@
  * Desc
  */
 
-import { FC, memo } from 'react'
-
-import { buildLog } from '@/logger'
+import { type FC, memo } from 'react'
 
 import { DescWrapper } from './styles/default_layout'
-
-const _log = buildLog('w:Upvote:Desc')
 
 type TProps = {
   count?: number

@@ -1,5 +1,5 @@
-import type { TActive } from '@/spec'
-import styled, { css } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css } from '~/css'
 
 export const SwitchWrapper = styled.div`
   ${css.column('justify-between')};

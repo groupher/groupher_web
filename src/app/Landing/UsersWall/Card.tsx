@@ -1,6 +1,6 @@
-import { FC, ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 
-import type { TColorName, TUser } from '@/spec'
+import type { TColorName, TUser } from '~/spec'
 
 import { Wrapper, Header, Avatar, User, Nickname, Content } from '../styles/users_wall/card'
 

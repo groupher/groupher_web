@@ -1,4 +1,4 @@
-import type { TComment } from '@/spec'
+import type { TComment } from '~/spec'
 
 // see: https://stackoverflow.com/a/66446126/4050784
 const DateDiff = {
@@ -7,7 +7,7 @@ const DateDiff = {
     const t1 = d1.getTime()
 
     // @ts-ignore
-    return parseInt((t2 - t1) / (24 * 3600 * 1000), 10)
+    return Number.parseInt((t2 - t1) / (24 * 3600 * 1000), 10)
   },
 
   inWeeks: (d1, d2): number => {
@@ -15,7 +15,7 @@ const DateDiff = {
     const t1 = d1.getTime()
 
     // @ts-ignore
-    return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7), 10)
+    return Number.parseInt((t2 - t1) / (24 * 3600 * 1000 * 7), 10)
   },
 
   inMonths: (d1, d2): number => {

@@ -1,7 +1,7 @@
-import type { TColorName } from '@/spec'
+import type { TColorName } from '~/spec'
 
-import Input from '@/widgets/Input'
-import styled, { css, rainbow } from '@/css'
+import Input from '~/widgets/Input'
+import styled, { css, rainbow } from '~/css'
 
 export const Wrapper = styled.div`
   width: 100%;

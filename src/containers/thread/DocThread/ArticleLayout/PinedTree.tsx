@@ -1,7 +1,6 @@
-import { FC } from 'react'
+import { COLOR_NAME } from '~/const/colors'
 
-import { COLOR_NAME } from '@/constant/colors'
-
+import useLogic from '../useLogic'
 import {
   Wrapper,
   Item,
@@ -13,9 +12,9 @@ import {
   GithubIcon,
   Title,
 } from '../styles/article_layout/pined_tree'
-import { back2Layout, gotoFAQDetailLayout } from '../logic'
 
-const PinedTree: FC = () => {
+export default () => {
+  const { back2Layout, gotoFAQDetailLayout } = useLogic()
   return (
     <Wrapper>
       <Item onClick={() => back2Layout()}>
@@ -42,5 +41,3 @@ const PinedTree: FC = () => {
     </Wrapper>
   )
 }
-
-export default PinedTree

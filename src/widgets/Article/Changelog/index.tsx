@@ -1,10 +1,10 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 
-import useViewingArticle from '@/hooks/useViewingArticle'
-import useMetric from '@/hooks/useMetric'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import useMetric from '~/hooks/useMetric'
 
-import Header from '@/widgets/CommunityDigest/HeaderLayout'
-import ViewportTracker from '@/widgets/ViewportTracker'
+import Header from '~/widgets/CommunityDigest/HeaderLayout'
+import ViewportTracker from '~/widgets/ViewportTracker'
 
 import Digest from './Digest'
 import Content from './Content'
@@ -13,10 +13,9 @@ import { Wrapper, InnerWrapper, HeaderWrapper, BannerContent, Main } from '../st
 
 const Changelog: FC = () => {
   const { article } = useViewingArticle()
-
   const metric = useMetric()
 
-  const [inViewport, setInViewport] = useState(false)
+  const [_inViewport, setInViewport] = useState(false)
 
   return (
     <Wrapper metric={metric}>

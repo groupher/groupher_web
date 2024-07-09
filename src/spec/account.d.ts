@@ -31,7 +31,7 @@ export type TUser = TSimpleUser & {
   id?: string
   // TODO: figure it out
   extraId?: string
-  editableCommunities?: TPagedCommunities
+  // editableCommunities?: TPagedCommunities
   sex?: string
   location?: string
   geoCity?: string

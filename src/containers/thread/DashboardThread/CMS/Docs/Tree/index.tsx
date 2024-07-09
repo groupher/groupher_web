@@ -1,9 +1,9 @@
-import { FC, useEffect, useRef } from 'react'
-import { CursorProps, NodeApi, NodeRendererProps, Tree } from 'react-arborist'
+import { type FC, useEffect, useRef } from 'react'
+import { type CursorProps, type NodeApi, type NodeRendererProps, Tree } from 'react-arborist'
 
-import type { TPagedArticles } from '@/spec'
+import type { TPagedArticles } from '~/spec'
 
-import { treeData, TTreeItem } from '../treeData'
+import { treeData, type TTreeItem } from '../treeData'
 
 import Actions from './Actions'
 import Note from './Note'
@@ -30,9 +30,10 @@ type TProps = {
 
 const TreeView: FC<TProps> = ({ pagedDocs }) => {
   const treeRef = useRef()
+  console.log('## pagedDocs: ', pagedDocs)
 
   useEffect(() => {
-    const tree = treeRef.current
+    // const tree = treeRef.current
     /* See the Tree API reference for all you can do with it. */
   }, [])
 
@@ -41,8 +42,8 @@ const TreeView: FC<TProps> = ({ pagedDocs }) => {
       onClick={() => {
         // treeRef.current.createLeaf()
         // treeRef.current.createInternal()
-        // console.log('## tree: ', treeRef.current)
-        // console.log('## get Data: ', treeRef.current)
+        // console.log('## ## tree: ', treeRef.current)
+        // console.log('## ## get Data: ', treeRef.current)
         // treeRef.current.unselectAll()
       }}
     >

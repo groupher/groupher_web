@@ -1,7 +1,4 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
-import useWallpaper from '@/hooks/useWallpaper'
+import useWallpaper from '~/hooks/useWallpaper'
 
 import DesktopDevice from './DesktopDevice'
 import DashboardDevice from './DashboardDevice'
@@ -9,7 +6,7 @@ import MobileDevice from './MobileDevice'
 
 import { Wrapper, ParallaxWrapper, FreeLabel } from '../../styles/cover_image/desktop_view'
 
-const CoverImage: FC = () => {
+export default () => {
   const { wallpaper } = useWallpaper()
 
   return (
@@ -23,5 +20,3 @@ const CoverImage: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(CoverImage)

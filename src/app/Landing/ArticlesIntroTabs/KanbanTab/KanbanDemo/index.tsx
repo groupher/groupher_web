@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { ARTICLE_CAT } from '@/constant/gtd'
+import { ARTICLE_CAT } from '~/const/gtd'
 
 import Banner from './Banner'
 import KanbanItem from './KanbanItem'

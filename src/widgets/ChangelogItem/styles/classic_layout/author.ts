@@ -1,8 +1,8 @@
-import type { TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
+import type { TAvatarLayout } from '~/spec'
+import { AVATAR_LAYOUT } from '~/const/layout'
 
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

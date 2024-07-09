@@ -1,11 +1,11 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TAccount } from '@/spec'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import type { TAccount } from '~/spec'
+import useLayout from '~/hooks/useLayout'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   ExpandWrapper,
@@ -17,15 +17,14 @@ import {
   PenIcon,
 } from '../styles/editor/header'
 
-import { openEditor } from '../logic'
-
 type TProps = {
   accountInfo: TAccount
   showEditor: boolean
 }
 
 const EditorHeader: FC<TProps> = ({ accountInfo, showEditor }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
+  const { openEditor } = useLogic()
 
   if (showEditor) {
     return (
@@ -50,4 +49,4 @@ const EditorHeader: FC<TProps> = ({ accountInfo, showEditor }) => {
   )
 }
 
-export default observer(EditorHeader)
+export default EditorHeader

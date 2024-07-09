@@ -1,9 +1,9 @@
-import styled, { css, gradientBg, theme, rainbow } from '@/css'
-import type { TColor } from '@/spec'
+import styled, { css, gradientBg, theme, rainbow } from '~/css'
+import type { TColor } from '~/spec'
 
-import CoffeeSVG from '@/icons/CoffeeDuo'
-import Button from '@/widgets/Buttons/Button'
-import Img from '@/Img'
+import CoffeeSVG from '~/icons/CoffeeDuo'
+import Button from '~/widgets/Buttons/Button'
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};

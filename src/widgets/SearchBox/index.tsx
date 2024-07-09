@@ -4,15 +4,12 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
-import { openSearch } from '@/signal'
+import type { TSpace } from '~/spec'
+import { openSearch } from '~/signal'
 
 import { Wrapper, SearchIcon, Text } from './styles'
-
-const _log = buildLog('c:SearchBox:index')
 
 type TProps = {
   testid?: string

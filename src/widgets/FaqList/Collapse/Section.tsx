@@ -1,9 +1,9 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { includes } from 'ramda'
 import Markdown from 'markdown-to-jsx'
 
-import type { TFAQSection } from '@/spec'
+import type { TFAQSection } from '~/spec'
 import { Wrapper, Header, Title, ArrowIcon, Body } from '../styles/collapse/section'
 
 type TProps = {

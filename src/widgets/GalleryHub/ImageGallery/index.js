@@ -7,11 +7,10 @@
 import React, { useState } from 'react'
 import T from 'prop-types'
 
-import GALLERY from '@/constant/gallery'
-import { buildLog } from '@/logger'
+import GALLERY from '~/const/gallery'
 
-// import Pagi from '@/widgets/Pagi'
-// import PagiOptionSwitcher from '@/widgets/Switcher/PagiOptionSwitcher'
+// import Pagi from '~/widgets/Pagi'
+// import PagiOptionSwitcher from '~/widgets/Switcher/PagiOptionSwitcher'
 
 import MainColumnGallery from './MainColumnGallery'
 import TwoColumnGallery from './TwoColumnGallery'
@@ -19,8 +18,6 @@ import ThreeColumnGallery from './ThreeColumnGallery'
 import MasonryGallery from './MasonryGallery'
 
 import { Wrapper } from '../styles/image_gallery'
-
-const _log = buildLog('w:ImageGallery:index')
 
 const tmpItems = [
   {

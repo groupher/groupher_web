@@ -4,16 +4,13 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import type { TUpvoteLayout } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TUpvoteLayout } from '~/spec'
 
 import { Wrapper, IconWrapper, UpIcon } from './styles/upvote_btn'
-
-const _log = buildLog('w:Upvote:index')
 
 type TProps = {
   type?: TUpvoteLayout

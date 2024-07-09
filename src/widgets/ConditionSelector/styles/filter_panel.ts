@@ -1,5 +1,5 @@
-import styled, { css, theme, rainbow } from '@/css'
-import type { TActive, TColor } from '@/spec'
+import styled, { css, theme, rainbow } from '~/css'
+import type { TActive, TColor } from '~/spec'
 
 import { SelectItem as SelectItemBase } from '.'
 

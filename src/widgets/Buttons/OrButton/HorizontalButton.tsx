@@ -1,19 +1,15 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import SIZE from '@/constant/size'
-import { buildLog } from '@/logger'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import SIZE from '~/const/size'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import type { TProps as TButtonProps } from '.'
 import { Wrapper, LeftButton, OrSign, RightButton } from '../styles/or_button/horizontal_button'
 
-const log = buildLog('w:HorizontalButton')
-
 type TProps = Omit<TButtonProps, 'direction'>
 
 const HorizontalButton: FC<TProps> = ({
-  onClick = log,
+  onClick = console.log,
   size = SIZE.SMALL,
   activeKey,
   group = [
@@ -52,4 +48,4 @@ const HorizontalButton: FC<TProps> = ({
   )
 }
 
-export default observer(HorizontalButton)
+export default HorizontalButton

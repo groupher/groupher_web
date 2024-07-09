@@ -1,8 +1,8 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { mockUsers } from '@/mock'
+import { mockUsers } from '~/mock'
 
-import Facepile from '@/widgets/Facepile'
+import Facepile from '~/widgets/Facepile'
 
 import {
   Wrapper,

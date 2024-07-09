@@ -4,10 +4,9 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
-import { cutRest } from '@/fmt'
+import { cutRest } from '~/fmt'
 
 import Cover from './Cover'
 
@@ -22,8 +21,6 @@ import {
   TagsWrapper,
   TagDot,
 } from '../styles/outline_layout'
-
-const _log = buildLog('w:ChangelogItem:index')
 
 type TProps = {
   testid?: string

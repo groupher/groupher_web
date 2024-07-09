@@ -3,21 +3,14 @@
  *
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
-import { BANNER_LAYOUT } from '@/constant/layout'
-import useBannerLayout from '@/hooks/useBannerLayout'
+import { BANNER_LAYOUT } from '~/const/layout'
+import useLayout from '~/hooks/useLayout'
 
 import ClassicLayout from './ClassicLayout'
 import SimpleLayout from './SimpleLayout'
 
-// const log = buildLog('C:ChangelogThread')
-
-const ChangelogThread: FC = () => {
-  const bannerLayout = useBannerLayout()
+export default () => {
+  const { bannerLayout } = useLayout()
 
   return bannerLayout === BANNER_LAYOUT.TABBER ? <ClassicLayout /> : <SimpleLayout />
 }
-
-export default observer(ChangelogThread)

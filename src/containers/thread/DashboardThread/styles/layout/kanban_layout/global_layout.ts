@@ -1,6 +1,6 @@
-import type { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
 import { BlockBase } from '..'
 

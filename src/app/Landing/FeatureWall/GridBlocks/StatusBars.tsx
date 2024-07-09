@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Wrapper, Bar } from '../../styles/feature_wall/grid_blocks/status_bars'
 

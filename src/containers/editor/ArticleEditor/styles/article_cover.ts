@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import AdderSVG from '@/icons/Plus'
-import ImageSVG from '@/icons/Image'
+import AdderSVG from '~/icons/Plus'
+import ImageSVG from '~/icons/Image'
 
 export const Wrapper = styled.div`
   /* width: 100%; */

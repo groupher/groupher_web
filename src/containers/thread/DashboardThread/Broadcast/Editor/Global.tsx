@@ -1,14 +1,11 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
-import ColorSelector from '@/widgets/ColorSelector'
-import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
+import ColorSelector from '~/widgets/ColorSelector'
+import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
 
 import SectionLabel from '../../SectionLabel'
 import GlobalTemplate from '../Templates/Global'
 import SavingBar from '../../SavingBar'
 
-import useBroadcastInfo from '../../hooks/useBroadcastInfo'
+import useBroadcast from '../../logic/useBroadcast'
 import {
   Wrapper,
   Item,
@@ -18,19 +15,26 @@ import {
   Inputer,
   EnableDesc,
 } from '../../styles/broadcast/editor/global'
-import { edit, broadcastOnSave, broadcastOnCancel } from '../../logic'
 
-const GlobalEditor: FC = () => {
-  const { saving, broadcastBg, broadcastEnable, isTouched } = useBroadcastInfo()
+export default () => {
+  const {
+    saving,
+    broadcastBg,
+    broadcastEnable,
+    broadcastOnSave,
+    broadcastOnCancel,
+    getIsTouched,
+    edit,
+    changeEnable,
+  } = useBroadcast()
+  const isTouched = getIsTouched()
 
   return (
     <Wrapper>
       <SectionLabel
         title="开启横幅广播"
         desc={<EnableDesc>开启后，本社区内的所有页面顶部将展示广播信息</EnableDesc>}
-        addon={
-          <ToggleSwitch checked={broadcastEnable} onChange={(v) => edit(v, 'broadcastEnable')} />
-        }
+        addon={<ToggleSwitch checked={broadcastEnable} onChange={(v) => changeEnable(v)} />}
       />
       <br />
 
@@ -71,5 +75,3 @@ const GlobalEditor: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(GlobalEditor)

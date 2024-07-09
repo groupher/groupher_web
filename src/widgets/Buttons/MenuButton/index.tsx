@@ -1,15 +1,12 @@
-import { FC, ReactNode, memo } from 'react'
+import { type FC, type ReactNode, memo } from 'react'
 
-import type { TTooltipPlacement, TMenuOption } from '@/spec'
+import type { TTooltipPlacement, TMenuOption } from '~/spec'
 
-import { buildLog } from '@/logger'
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import Menu from './Menu'
 
 // import { Wrapper } from '../styles/menu_button'
-
-const log = buildLog('C:MenuButton')
 
 type TProps = {
   children: ReactNode
@@ -26,7 +23,7 @@ const MenuButton: FC<TProps> = ({
   options,
   extraOptions = [],
   offset = [5, 5],
-  onClick = log,
+  onClick = console.log,
   placement = 'top-end',
   panelMinWidth = '110px',
 }) => {

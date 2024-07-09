@@ -1,6 +1,6 @@
-import type { TTestable, TColor } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
-import { WithMargin } from '@/widgets/Common'
+import type { TTestable, TColor } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
+import { WithMargin } from '~/widgets/Common'
 
 import {
   getActiveBackground,

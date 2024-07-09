@@ -1,6 +1,6 @@
-import type { TColor, TTestable } from '@/spec'
+import type { TColor, TTestable } from '~/spec'
 
-import styled, { css, theme, rainbowLight } from '@/css'
+import styled, { css, theme, rainbowLight } from '~/css'
 
 import { getUserwallGradient, getUserwallGradientOpacity } from '../metric'
 

@@ -1,14 +1,12 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { callPassportEditor } from '~/signal'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import { callPassportEditor } from '@/signal'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import { SpaceGrow } from '~/widgets/Common'
+import Button from '~/widgets/Buttons/Button'
+import AdminAvatar from '~/widgets/AdminAvatar'
 
-import { SpaceGrow } from '@/widgets/Common'
-import Button from '@/widgets/Buttons/Button'
-import AdminAvatar from '@/widgets/AdminAvatar'
+import useAdmins from '../logic/useAdmins'
 
-import useAdminsInfo from '../hooks/useAdminsInfo'
 import {
   Wrapper,
   User,
@@ -22,11 +20,12 @@ import {
   AllPassportText,
   ArrowIcon,
 } from '../styles/admin/list'
-import { setActiveSettingAdmin } from '../logic'
 
-const List: FC = () => {
-  const { moderators, activeModerator } = useAdminsInfo()
+export default () => {
+  const { getModerators, activeModerator, setActiveSettingAdmin } = useAdmins()
   const primaryColor = usePrimaryColor()
+
+  const moderators = getModerators()
 
   return (
     <Wrapper>
@@ -71,5 +70,3 @@ const List: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(List)

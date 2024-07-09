@@ -1,4 +1,4 @@
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
 import { getShadowBackground, getShadowSize, getScrollbarThin } from './metrics'
 import { WrapperBase, ScrollWrapperBase, ShadowBarBase } from '.'

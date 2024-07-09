@@ -1,7 +1,7 @@
-import styled, { css, WIDTH, theme } from '@/css'
-import ArrowSVG from '@/icons/Arrow'
-import HomeSVG from '@/icons/Home'
-import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
+import styled, { css, WIDTH, theme } from '~/css'
+import ArrowSVG from '~/icons/Arrow'
+import HomeSVG from '~/icons/Home'
+import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
   ${css.column('align-center')};

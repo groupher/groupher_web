@@ -1,9 +1,9 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TComment } from '@/spec'
-// import { ICON_CMD } from '@/config'
+import type { TComment } from '~/spec'
+// import { ICON_CMD } from '~/config'
 // import { Wrapper } from './styles'
-import { cutRest } from '@/fmt'
+import { cutRest } from '~/fmt'
 import { ReplyBar, ReplyToBody, ReplyToFloor } from './styles/reply_to_bar'
 
 type TProps = {

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import ArticleCard from './ArticleCard'
 import WebCard from './WebCard'

@@ -1,6 +1,6 @@
 import TimeAgo from 'timeago-react'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div<{ hasComments: boolean }>`
   ${css.row('align-center')};

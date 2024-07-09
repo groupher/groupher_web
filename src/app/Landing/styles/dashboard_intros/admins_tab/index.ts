@@ -1,6 +1,6 @@
-import styled, { css, theme, animate } from '@/css'
+import styled, { css, theme, animate } from '~/css'
 
-import { WithPosition } from '@/widgets/Common'
+import { WithPosition } from '~/widgets/Common'
 
 export const Wrapper = styled.div`
   ${css.row()};

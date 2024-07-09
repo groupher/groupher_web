@@ -1,7 +1,7 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme, rainbow, rainbowLight } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, theme, rainbow, rainbowLight } from '~/css'
 
-import { LineDivider } from '@/widgets/Common'
+import { LineDivider } from '~/widgets/Common'
 
 import { BaseSection, BlockBase } from '.'
 

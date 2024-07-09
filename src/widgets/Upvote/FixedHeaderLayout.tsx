@@ -4,18 +4,14 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
-
-import { Space } from '@/widgets/Common'
+import { Space } from '~/widgets/Common'
 
 import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
 
 import { Wrapper, UpvoteBtnWrapper, Count } from './styles/fixed_header_layout'
-
-const log = buildLog('w:Upvote:index')
 
 type TProps = {
   testid?: string
@@ -28,7 +24,7 @@ const Upvote: FC<TProps> = ({
   testid = 'upvote',
   count = 4,
   viewerHasUpvoted = false,
-  onAction = log,
+  onAction = console.log,
 }) => {
   const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
 

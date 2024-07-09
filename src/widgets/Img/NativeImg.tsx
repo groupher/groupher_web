@@ -1,4 +1,4 @@
-import { FC, memo, useState, useEffect, useRef, useCallback, ReactNode } from 'react'
+import { type FC, memo, useState, useEffect, useRef, useCallback, type ReactNode } from 'react'
 
 import { Image } from './styles'
 

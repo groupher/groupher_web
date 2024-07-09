@@ -1,9 +1,9 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TArticle } from '@/spec'
-import SVG from '@/constant/svg'
-import IconButton from '@/widgets/Buttons/IconButton'
-import ReadableDate from '@/widgets/ReadableDate'
+import type { TArticle } from '~/spec'
+import SVG from '~/const/svg'
+import IconButton from '~/widgets/Buttons/IconButton'
+import ReadableDate from '~/widgets/ReadableDate'
 
 import { Wrapper, Hint, TimeStamp, TimeStr } from '../../styles/ph_layout/desktop_view/active_badge'
 

@@ -1,16 +1,14 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { assetSrc } from '~/helper'
+import { DEME_SOCIALS } from '~/const/social'
+import { BRAND_LAYOUT } from '~/const/layout'
 
-import { assetSrc } from '@/helper'
-import { DEME_SOCIALS } from '@/constant/social'
-import { BRAND_LAYOUT } from '@/constant/layout'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useLayout from '~/hooks/useLayout'
+import useMetric from '~/hooks/useMetric'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useBrandLayout from '@/hooks/useBrandLayout'
-import useMetric from '@/hooks/useMetric'
-
-import SocialList from '@/widgets/SocialList'
-import AccountUnit from '@/widgets/AccountUnit'
+import ImgFallback from '~/widgets/ImgFallback'
+import SocialList from '~/widgets/SocialList'
+import AccountUnit from '~/widgets/AccountUnit'
 
 import {
   Wrapper,
@@ -27,10 +25,10 @@ import {
   Digest,
 } from '../styles/tabber_layout/community_brief'
 
-const CommunityBrief: FC = () => {
-  const { logo, title, desc } = useViewingCommunity()
-  const brandLayout = useBrandLayout()
+export default () => {
   const metric = useMetric()
+  const { logo, title, desc } = useViewingCommunity()
+  const { brandLayout } = useLayout()
 
   const COVER_IMAGE = '' // '/banner-cover.webp'
 
@@ -44,7 +42,7 @@ const CommunityBrief: FC = () => {
         <InnerWrapper>
           {brandLayout !== BRAND_LAYOUT.TEXT && (
             <LogoWrapper>
-              <Logo src={assetSrc(logo)} />
+              <Logo src={assetSrc(logo)} fallback={<ImgFallback size={60} title={title} />} />
             </LogoWrapper>
           )}
 
@@ -60,5 +58,3 @@ const CommunityBrief: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(CommunityBrief)

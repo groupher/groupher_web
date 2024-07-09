@@ -1,4 +1,4 @@
-import type { TLinkItem } from '@/spec'
+import type { TLinkItem } from '~/spec'
 
 export type TProps = {
   links: TLinkItem[]

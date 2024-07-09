@@ -1,12 +1,13 @@
-import { useState, FC } from 'react'
+import { useState, type FC } from 'react'
 import { keys, values } from 'ramda'
 
-import type { TWallpaper, TWallpaperGradientDir } from '@/spec'
-import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '@/constant/wallpaper'
-import { parseWallpaper } from '@/wallpaper'
+import type { TWallpaper, TWallpaperGradientDir } from '~/spec'
+import { COVER_GRADIENT_WALLPAPER, GRADIENT_DIRECTION } from '~/const/wallpaper'
+import { parseWallpaper } from '~/wallpaper'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   Block,
@@ -22,7 +23,6 @@ import {
   DirWrapper,
   DirArrowIcon,
 } from '../styles/toolbox/background_block'
-import { wallpaperOnChange, gradientDirOnChange } from '../logic'
 
 type TProps = {
   wallpapers: Record<string, TWallpaper>
@@ -31,6 +31,8 @@ type TProps = {
 }
 
 const BackgroundBlock: FC<TProps> = ({ wallpapers, wallpaper, direction }) => {
+  const { wallpaperOnChange, gradientDirOnChange } = useLogic()
+
   const [panelOpen, setPanelOpen] = useState(false)
 
   return (

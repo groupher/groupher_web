@@ -3,26 +3,21 @@
  * CommunityDigest
  *
  */
-import { FC, Fragment } from 'react'
-// import { useRouter } from 'next/navigation'
+import { Fragment } from 'react'
 import { usePathname } from 'next/navigation'
 
-import { BANNER_LAYOUT } from '@/constant/layout'
-// import { ROUTE } from '@/constant/route'
-import useBannerLayout from '@/hooks/useBannerLayout'
-
-import { buildLog } from '@/logger'
+import { BANNER_LAYOUT } from '~/const/layout'
+// import { ROUTE } from '~/const/route'
+import useLayout from '~/hooks/useLayout'
 
 import DashboardLayout from './DashboardLayout'
 import SidebarLayout from './SidebarLayout'
 import TabberLayout from './TabberLayout'
 import HeaderLayout from './HeaderLayout'
 
-const _log = buildLog('C:CommunityDigest')
-
-const CommunityDigest: FC = () => {
+export default () => {
   // const router = useRouter()
-  const bannerLayout = useBannerLayout()
+  const { bannerLayout } = useLayout()
   const pathname = usePathname()
 
   // return <HeaderLayout />
@@ -47,5 +42,3 @@ const CommunityDigest: FC = () => {
     </Fragment>
   )
 }
-
-export default CommunityDigest

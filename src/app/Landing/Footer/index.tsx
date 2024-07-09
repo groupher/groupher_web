@@ -1,14 +1,12 @@
-import { FC } from 'react'
+import useWallpaper from '~/hooks/useWallpaper'
+import { ROUTE } from '~/const/route'
 
-import useWallpaper from '@/hooks/useWallpaper'
-import { ROUTE } from '@/constant/route'
-
-import { LinkAble } from '@/widgets/Common'
-import Button from '@/widgets/Buttons/Button'
+import { LinkAble } from '~/widgets/Common'
+import Button from '~/widgets/Buttons/Button'
 
 import { Wrapper, Logo, Title, Desc, Highlight, Buttons, CreateButton } from '../styles/footer'
 
-const Footer: FC = () => {
+export default () => {
   const { wallpaper } = useWallpaper()
 
   return (
@@ -34,5 +32,3 @@ const Footer: FC = () => {
     </Wrapper>
   )
 }
-
-export default Footer

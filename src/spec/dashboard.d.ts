@@ -1,8 +1,10 @@
 import type { TColorName } from './color'
 import type { TWallpaperData } from './wallpaper'
-import type { TLinkItem, TSocialItem } from './utils'
+import type { TLinkItem, TSocialItem, TEditValue } from './utils'
 import type { TFAQSection } from './article'
 import type { TUser } from './account'
+
+import type { TSettingField } from '~/stores3/dashboard/spec'
 
 export type TTagLayout = 'hash' | 'dot'
 export type TAvatarLayout = 'circle' | 'square'
@@ -138,31 +140,12 @@ export type TDashboardSEOConfig = {
   twImageHeight: string
 }
 
-export type TGlobalLayout = {
-  primaryColor: TColorName
-  brand: TBrandLayout
-  post: TPostLayout
-  kanban: TKanbanCardLayout
-  kanbanBgColors: TColorName[]
-  doc: TDocLayout
-  docFaq: TDocFAQLayout
-  banner: TBannerLayout
-  tag: TTagLayout
-  avatar: TAvatarLayout
-  changelog: TChangelogLayout
-  header: THeaderLayout
-  footer: TFooterLayout
-
-  broadcast: TBroadcastLayout
-  broadcastBg: TColorName
-  broadcastEnable: boolean
-
-  broadcastArticle: TBroadcastArticleLayout
-  broadcastArticleBg: TColorName
-  broadcastArticleEnable: boolean
-
-  topbar: TTopbarLayout
-  topbarBg: TColorName
-
-  enable: TEnableConfig
+export type TOverview = {
+  views: number
+  subscribersCount: number
+  postsCount: number
+  changelogsCount: number
+  docsCount: number
 }
+
+export type TEditFunc = (value: TEditValue, field: TSettingField) => void

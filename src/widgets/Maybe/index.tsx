@@ -2,12 +2,8 @@
  * Maybe
  */
 
-import { FC, memo, ReactNode } from 'react'
+import { type FC, memo, type ReactNode } from 'react'
 import { isEmpty } from 'ramda'
-
-import { buildLog } from '@/logger'
-
-const _log = buildLog('w:Maybe:index')
 
 const MaybeLoading = ({ loading }) => {
   if (isEmpty(loading)) return <div />

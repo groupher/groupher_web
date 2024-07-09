@@ -1,12 +1,12 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import useSwipe from '@/hooks/useSwipe'
-import { nilOrEmpty } from '@/validator'
+import useSwipe from '~/hooks/useSwipe'
+import { nilOrEmpty } from '~/validator'
 
 import type { TSwipeOption } from '../spec'
 // import CloseLine from './CloseLine'
+import useLogic from '../useLogic'
 import { TopWrapper, BottomWrapper, TextWrapper, CloseButton } from '../styles/header'
-import { onSwipedYHandler, onSwipingYHandler, closeDrawer } from '../logic'
 
 /* <TextWrapper>讨论共 167 条</TextWrapper> */
 
@@ -27,6 +27,7 @@ const Header: FC<TProps> = ({
   canBeClose,
   showHeaderText,
 }) => {
+  const { closeDrawer, onSwipedYHandler, onSwipingYHandler } = useLogic()
   const ignoreSwipeAviliable = true
   const swipeHandlers = useSwipe({
     onSwiped: (ev) => onSwipedYHandler(ev, setSwipeUpY, setSwipeDownY, ignoreSwipeAviliable),

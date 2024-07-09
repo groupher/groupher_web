@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import BotSVG from '@/icons/Bot'
+import BotSVG from '~/icons/Bot'
 
 export const Wrapper = styled.div<{ isFold: boolean }>`
   ${css.row('align-center')};

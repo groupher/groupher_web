@@ -1,4 +1,4 @@
-import type { TSnakeUpperCase, TWidgetType } from '@/spec'
+import type { TSnakeUpperCase, TWidgetType } from '~/spec'
 
 import {
   DASHBOARD_ROUTE,
@@ -8,14 +8,14 @@ import {
   DASHBOARD_BASEINFO_ROUTE,
   DASHBOARD_SEO_ROUTE,
   DASHBOARD_DOC_ROUTE,
-} from '@/constant/route'
-import { COLOR_NAME } from '@/constant/colors'
+} from '~/const/route'
+import { COLOR_NAME } from '~/const/colors'
 
 import type { TSettingField, THeaderEditType, TFooterEditType } from './spec'
 
 import { Icon } from './styles/side_menu'
 
-export { SEO_KEYS, SEO_OG_KEYS, SEO_TW_KEYS } from '@/constant/seo'
+export { SEO_KEYS, SEO_OG_KEYS, SEO_TW_KEYS } from '~/const/seo'
 
 export const ALIGN_HEADER_OFFSET = '100px'
 
@@ -519,20 +519,15 @@ export const DEFAULT_LINK_ITEMS = [
   },
 ]
 
-export const BASEINFO_BASIC_KEYS = [
-  'favicon',
-  'locale',
-  'logo',
-  'title',
-  'desc',
-  'introduction',
-  'homepage',
-  'slug',
-]
-
+export const BASEINFO_BASIC_KEYS = ['locale', 'title', 'desc', 'introduction', 'homepage', 'slug']
+export const BASEINFO_LOGOS_KEYS = ['logo', 'favicon']
 export const BASEINFO_OTHER_KEYS = ['city', 'techstack']
 
-export const BASEINFO_KEYS = [...BASEINFO_BASIC_KEYS, ...BASEINFO_OTHER_KEYS]
+export const BASEINFO_KEYS = [
+  ...BASEINFO_BASIC_KEYS,
+  ...BASEINFO_LOGOS_KEYS,
+  ...BASEINFO_OTHER_KEYS,
+]
 
 // export const UI_KEYS = [
 //   'layoutTab',

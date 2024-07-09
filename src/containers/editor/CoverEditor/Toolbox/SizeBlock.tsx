@@ -1,18 +1,19 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import type { TImageSize } from '../spec'
 import { IMAGE_SIZE } from '../constant'
 
+import useLogic from '../useLogic'
 import { Wrapper, Panel, Block, Item, Icon, Desc } from '../styles/toolbox/size_block'
-import { sizeOnChange } from '../logic'
 
 type TProps = {
   size: TImageSize
 }
 
 const SizeBlock: FC<TProps> = ({ size }) => {
+  const { sizeOnChange } = useLogic()
   const [panelOpen, setPanelOpen] = useState(false)
 
   return (

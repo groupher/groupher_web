@@ -4,9 +4,9 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TSize } from '@/spec'
+import type { TSize } from '~/spec'
 
 type TProps = {
   // children?: any

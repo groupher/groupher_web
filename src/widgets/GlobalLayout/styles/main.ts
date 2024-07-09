@@ -1,5 +1,5 @@
-import type { TColorName, TMetric } from '@/spec'
-import styled, { css, rainbow, theme } from '@/css'
+import type { TColorName, TMetric } from '~/spec'
+import styled, { css, rainbow, theme } from '~/css'
 
 export const ScrollWrapper = styled.div<{ $noMobilePadding: boolean }>`
   position: absolute;

@@ -1,8 +1,8 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { ICON } from '@/config'
-import Tooltip from '@/widgets/Tooltip'
-import { SpaceGrow } from '@/widgets/Common'
+import { ICON } from '~/config'
+import Tooltip from '~/widgets/Tooltip'
+import { SpaceGrow } from '~/widgets/Common'
 
 import { Wrapper, OperatorsWrapper, Operator, ResetIcon, HelpHint } from './styles/header'
 

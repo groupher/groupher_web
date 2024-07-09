@@ -4,11 +4,10 @@
  */
 import Script from 'next/script'
 
-import { FC, memo, ReactNode, useState, useEffect, useRef, useCallback } from 'react'
+import { type FC, memo, type ReactNode, useState, useEffect, useRef, useCallback } from 'react'
 
-import { buildLog } from '@/logger'
-import uid from '@/utils/uid'
-import { assetPath } from '@/helper'
+import uid from '~/utils/uid'
+import { assetPath } from '~/helper'
 
 import {
   Wrapper,
@@ -22,8 +21,6 @@ import {
 } from './styles'
 import PreviewBlock from './PreviewBlock'
 import { initOSSClient, handleUploadFile, applyUploadTokensIfNeed } from './helper'
-
-const log = buildLog('w:OSSUploader:index')
 
 type TProps = {
   children: ReactNode
@@ -41,8 +38,8 @@ const OSSUploader: FC<TProps> = ({
   children,
   fileType = 'image/*',
   filePrefix = null,
-  onUploadDone = log,
-  onDelete = log,
+  onUploadDone = console.log,
+  onDelete = console.log,
   previewUrl = '', // 'https://static.groupher.com/ugc/_tmp/2023-10-13/Linth.png',
   previewHeight = 50,
   previewWidth = 50,
@@ -78,8 +75,8 @@ const OSSUploader: FC<TProps> = ({
   const onDone = useCallback(
     (url) => {
       setLoading(false)
-      // console.log('## url: ', url)
-      // console.log('## asset url: ', assetPath(url))
+      // console.log('## ## url: ', url)
+      // console.log('## ## asset url: ', assetPath(url))
       onUploadDone(assetPath(url))
     },
     [onUploadDone],

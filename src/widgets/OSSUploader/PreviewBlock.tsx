@@ -1,8 +1,8 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { assetSrc } from '@/helper'
+import { assetSrc } from '~/helper'
 
-import type { TUploadPreview } from '@/spec'
+import type { TUploadPreview } from '~/spec'
 import { Wrapper, PreviewImg } from './styles/preview_block'
 
 type TProps = {

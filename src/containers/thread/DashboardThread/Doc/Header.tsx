@@ -1,4 +1,4 @@
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 import { Wrapper, Title, ViewWrapper } from '../styles/doc/Header'
 
 const Header = () => {

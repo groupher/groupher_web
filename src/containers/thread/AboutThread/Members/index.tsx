@@ -1,13 +1,12 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TModerator } from '@/spec'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
-import { mockUsers } from '@/mock'
+import type { TModerator } from '~/spec'
+import useLayout from '~/hooks/useLayout'
+import { mockUsers } from '~/mock'
 
-import ImgFallback from '@/widgets/ImgFallback'
-import NoteTip from '@/widgets/NoteTip'
-import { SexyDivider as Divider } from '@/widgets/Common'
+import ImgFallback from '~/widgets/ImgFallback'
+import NoteTip from '~/widgets/NoteTip'
+import { SexyDivider as Divider } from '~/widgets/Common'
 
 import AdminMember from './AdminMember'
 
@@ -27,7 +26,7 @@ type TProps = {
 }
 
 const Members: FC<TProps> = ({ moderators }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   return (
     <Wrapper>
@@ -78,4 +77,4 @@ const Members: FC<TProps> = ({ moderators }) => {
   )
 }
 
-export default observer(Members)
+export default Members

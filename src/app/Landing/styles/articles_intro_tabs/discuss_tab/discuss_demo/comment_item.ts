@@ -1,6 +1,6 @@
-import { Bar as BarBase } from '@/widgets/Common'
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import { Bar as BarBase } from '~/widgets/Common'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div<{ opacity: number }>`
   ${css.row()};

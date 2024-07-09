@@ -1,6 +1,6 @@
-// import Img from '@/Img'
-import styled, { css, theme } from '@/css'
-import LinkSVG from '@/icons/Link'
+// import Img from '~/Img'
+import styled, { css, theme } from '~/css'
+import LinkSVG from '~/icons/Link'
 
 export const Wrapper = styled.div``
 

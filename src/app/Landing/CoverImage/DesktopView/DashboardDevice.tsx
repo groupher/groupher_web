@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Wrapper, Content, Image } from '../../styles/cover_image/desktop_view/dashboard_device'
 

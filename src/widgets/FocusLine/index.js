@@ -8,10 +8,7 @@ import React from 'react'
 import { isEmpty } from 'ramda'
 import T from 'prop-types'
 
-import { buildLog } from '@/logger'
 import { Wrapper, Icon, TextWrapper, Text, Focus } from './styles'
-
-const _log = buildLog('w:FocusLine:index')
 
 const FocusLine = ({ iconSrc, before, focus, after }) => (
   <Wrapper>

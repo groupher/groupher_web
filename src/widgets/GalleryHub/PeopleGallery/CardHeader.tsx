@@ -1,9 +1,9 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TGallery } from '@/spec'
+import type { TGallery } from '~/spec'
 
-import { ICON, ASSETS_ENDPOINT } from '@/config'
-import Tooltip from '@/widgets/Tooltip'
+import { ICON, ASSETS_ENDPOINT } from '~/config'
+import Tooltip from '~/widgets/Tooltip'
 
 import {
   Wrapper,

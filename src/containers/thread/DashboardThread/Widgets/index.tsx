@@ -1,11 +1,8 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { Br } from '~/widgets/Common'
 
-import { Br } from '@/widgets/Common'
-
-import Button from '@/widgets/Buttons/Button'
-import Tabs from '@/widgets/Switcher/Tabs'
-import Radio from '@/widgets/Switcher/Radio'
+import Button from '~/widgets/Buttons/Button'
+import Tabs from '~/widgets/Switcher/Tabs'
+import Radio from '~/widgets/Switcher/Radio'
 
 import { WIDGET_TYPES } from '../constant'
 
@@ -13,7 +10,7 @@ import Portal from '../Portal'
 import BaseSetting from './BaseSetting'
 import CodeArea from './CodeArea'
 
-import useWidgetsInfo from '../hooks/useWidgetsInfo'
+import useWidgets from '../logic/useWidgets'
 import {
   Wrapper,
   TypeSelect,
@@ -26,10 +23,9 @@ import {
   InputLabel,
   Inputer,
 } from '../styles/widgets'
-import { edit, onSave } from '../logic'
 
-const Widgets: FC = () => {
-  const { widgetsType } = useWidgetsInfo()
+export default () => {
+  const { widgetsType, edit } = useWidgets()
 
   return (
     <Wrapper>
@@ -47,7 +43,8 @@ const Widgets: FC = () => {
             activeKey={widgetsType}
             onChange={(slug) => {
               edit(slug, 'widgetsType')
-              onSave('widgetsType')
+              // onSave('widgetsType')
+              console.log('## onSave widgetsType')
             }}
           />
         </TabWrapper>
@@ -95,5 +92,3 @@ const Widgets: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(Widgets)

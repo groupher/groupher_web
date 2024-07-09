@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TColorName, TTag } from '@/spec'
+import type { TColorName, TTag } from '~/spec'
 
 import { Wrapper, TagWrapper, Name } from './styles/solid_tag_list'
 

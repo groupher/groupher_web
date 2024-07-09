@@ -1,7 +1,7 @@
-import type { TColorName, TTestable } from '@/spec'
-import styled, { css, theme, rainbowLight } from '@/css'
+import type { TColorName, TTestable } from '~/spec'
+import styled, { css, theme, rainbowLight } from '~/css'
 
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 type TWrapper = TTestable & { color?: string }
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

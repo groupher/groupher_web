@@ -1,17 +1,13 @@
-/*
- *
- * Modal
- *
- */
+import { type FC, type ReactNode, useCallback, memo } from 'react'
+import dynamic from 'next/dynamic'
 
-import { FC, ReactNode, useCallback, memo } from 'react'
+import useShortcut from '~/hooks/useShortcut'
 
-import { buildLog } from '@/logger'
-import useShortcut from '@/hooks/useShortcut'
+// import RealModal from './RealModal'
 
-import RealModal from './RealModal'
-
-const log = buildLog('w:Modal:index')
+export const RealModal = dynamic(() => import('./RealModal'), {
+  ssr: false,
+})
 
 export type TProps = {
   children: ReactNode
@@ -25,14 +21,14 @@ export type TProps = {
   onClose?: () => void
 }
 
-const Modal: FC<TProps> = ({ show = false, onClose = log, ...restProps }) => {
+const Modal: FC<TProps> = ({ show = false, onClose = console.log, ...restProps }) => {
   const handleClose = useCallback(() => {
     onClose()
   }, [onClose])
 
   useShortcut('Escape', handleClose)
 
-  return <>{show && <RealModal {...restProps} handleCloseModal={handleClose} show={show} />}</>
+  return <RealModal {...restProps} handleCloseModal={handleClose} show={show} />
 }
 
 export default memo(Modal)

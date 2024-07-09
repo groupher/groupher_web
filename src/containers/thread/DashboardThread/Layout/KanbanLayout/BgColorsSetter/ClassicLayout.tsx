@@ -1,11 +1,12 @@
-import { FC, useEffect, useRef } from 'react'
-import { observer } from 'mobx-react-lite'
+import { type FC, useEffect, useRef } from 'react'
+
 import { isEmpty } from 'ramda'
 
-import { INIT_KANBAN_COLORS } from '../../../constant'
+import { INIT_KANBAN_COLORS } from '~/const/dashboard'
+
 import KanbanList from './KanbanList'
 
-import useKanbanInfo from '../../../hooks/useKanbanInfo'
+import useKanban from '../../../logic/useKanban'
 import {
   BoardsWrapper,
   MobileBoardsWrapper,
@@ -20,7 +21,7 @@ type TProps = {
 }
 
 const ClassicLayout: FC<TProps> = ({ isBoard1Hovered, isBoard2Hovered, isBoard3Hovered }) => {
-  const { kanbanBgColors } = useKanbanInfo()
+  const { kanbanBgColors } = useKanban()
   const ref = useRef(null)
 
   /*
@@ -65,4 +66,4 @@ const ClassicLayout: FC<TProps> = ({ isBoard1Hovered, isBoard2Hovered, isBoard3H
   )
 }
 
-export default observer(ClassicLayout)
+export default ClassicLayout

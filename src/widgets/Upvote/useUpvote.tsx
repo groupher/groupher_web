@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 
-import { authWarn } from '@/signal'
-import useAccount from '@/hooks/useAccount'
+import { authWarn } from '~/signal'
+import useAccount from '~/hooks/useAccount'
 
 type TProps = {
   viewerHasUpvoted: boolean

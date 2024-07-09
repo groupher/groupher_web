@@ -1,12 +1,12 @@
-import type { TActive, TColor } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import SunSVG from '@/icons/Sun'
-import SunSolidSVG from '@/icons/SunSolid'
-import MoonSVG from '@/icons/Moon'
-import MoonSolidSVG from '@/icons/MoonSolid'
+import SunSVG from '~/icons/Sun'
+import SunSolidSVG from '~/icons/SunSolid'
+import MoonSVG from '~/icons/Moon'
+import MoonSolidSVG from '~/icons/MoonSolid'
 
-import { WithMargin } from '@/widgets/Common'
+import { WithMargin } from '~/widgets/Common'
 
 export const Wrapper = styled.div`
   ${css.row('align-both')};

@@ -1,4 +1,4 @@
-import { Global } from '@/helper'
+import { Global } from '~/helper'
 
 export const getAnalyticsTag = () => {
   return {

@@ -1,16 +1,13 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { TLocale } from '~/spec'
+import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
+import useChangeI18n from '~/hooks/useChangeI18n'
 
-import type { TLocale } from '@/spec'
-import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
-import useChangeI18n from '@/hooks/useChangeI18n'
-
-import { LANGS_OPTIONS } from '@/constant/i18n'
-import { SpaceGrow } from '@/widgets/Common'
+import { LANGS_OPTIONS } from '~/const/i18n'
+import { SpaceGrow } from '~/widgets/Common'
 
 import { Wrapper, MenuBar, LangIconBox, CheckIcon } from './styles/i18n_panel'
 
-const I18nPanel: FC = () => {
+export default () => {
   const { inView: badgeInView } = useCommunityDigestViewport()
   const { locale, changeLocale } = useChangeI18n()
 
@@ -21,6 +18,7 @@ const I18nPanel: FC = () => {
 
         return (
           <MenuBar
+            key={LANG.value}
             $withTop={!badgeInView}
             $active={locale === LANG.value}
             onClick={() => changeLocale(LANG.value as TLocale)}
@@ -38,5 +36,3 @@ const I18nPanel: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(I18nPanel)

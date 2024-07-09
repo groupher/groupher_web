@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { TCommunityType } from '../spec'
+import type { TCommunityType } from '../spec'
 import { COMMUNITY_CATS_TEXT_COLORS } from '../constant'
 
 import {

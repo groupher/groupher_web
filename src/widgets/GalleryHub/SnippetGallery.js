@@ -7,10 +7,9 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { ICON } from '@/config'
-import { buildLog } from '@/logger'
+import { ICON } from '~/config'
 
-import IconText from '@/widgets/IconText'
+import IconText from '~/widgets/IconText'
 
 import {
   Wrapper,
@@ -21,8 +20,6 @@ import {
   Title,
   Footer,
 } from './styles/snippet_gallery'
-
-const _log = buildLog('w:SnippetGallery:index')
 
 const tmpItems = [
   {

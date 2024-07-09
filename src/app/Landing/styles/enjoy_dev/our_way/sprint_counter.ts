@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import SprintSVG from '@/icons/Sprint'
+import SprintSVG from '~/icons/Sprint'
 
 export const Wrapper = styled.div<{ color: string }>`
   ${css.row('align-center')};

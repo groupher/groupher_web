@@ -1,24 +1,23 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
-import SocialEditor from '@/widgets/SocialEditor'
+import SocialEditor from '~/widgets/SocialEditor'
 
 import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 
-import useBaseInfo from '../hooks/useBaseInfo'
+import useBaseInfo from '../logic/useBaseInfo'
 import { Wrapper } from '../styles/basic_info/base_info'
-import { updateSocialLinks } from '../logic'
 
-const SocialInfo: FC = () => {
-  const { socialLinks, saving, isSocialLinksTouched } = useBaseInfo()
+export default () => {
+  const { socialLinks, saving, isSocialLinksTouched, edit } = useBaseInfo()
 
   return (
     <Wrapper>
       <SocialEditor
         width="100%"
         value={socialLinks}
-        onChange={(socials) => updateSocialLinks(socials)}
+        onChange={(links) => {
+          // @ts-ignore
+          edit(links, 'socialLinks')
+        }}
       />
 
       <SavingBar
@@ -30,5 +29,3 @@ const SocialInfo: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(SocialInfo)

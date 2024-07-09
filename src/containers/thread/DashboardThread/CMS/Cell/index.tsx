@@ -1,18 +1,19 @@
-// import { FC } from 'react'
+// import type { FC } from 'react'
 
 import { Cell } from 'rsuite-table'
 import TimeAgo from 'timeago-react'
 
-import { previewArticle } from '@/signal'
-import { COMMUNITY_STATUS } from '@/constant/mode'
+import { previewArticle } from '~/signal'
+import { COMMUNITY_STATUS } from '~/const/mode'
 
-import Checker from '@/widgets/Checker'
-import ArticleCatState from '@/widgets/ArticleCatState'
-import { Row } from '@/widgets/Common'
-import TagsList from '@/widgets/TagsList'
+import Checker from '~/widgets/Checker'
+import ArticleCatState from '~/widgets/ArticleCatState'
+import { Row } from '~/widgets/Common'
+import TagsList from '~/widgets/TagsList'
 
-// import { mockTags } from '@/mock'
+// import { mockTags } from '~/mock'
 
+import useCMSInfo from '../../hooks/useCMSInfo'
 import {
   ArticleWrapper,
   ArticleTitle,
@@ -31,9 +32,9 @@ import {
   // PublishIcon,
   PulseIcon,
 } from '../../styles/cms/cell'
-import { batchSelect } from '../../logic'
 
 export const CheckCell = ({ rowData, ...props }) => {
+  const { batchSelect } = useCMSInfo()
   // const { cat, state } = rowData
   const { id, _checked } = rowData
 

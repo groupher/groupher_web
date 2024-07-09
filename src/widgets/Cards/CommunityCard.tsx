@@ -2,12 +2,12 @@
  * cards for job MasonryCards view
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TCommunity } from '@/spec'
-import { cutRest } from '@/fmt'
+import type { TCommunity } from '~/spec'
+import { cutRest } from '~/fmt'
 
-import DotDivider from '@/widgets/DotDivider'
+import DotDivider from '~/widgets/DotDivider'
 import {
   Wrapper,
   CommunityLogo,

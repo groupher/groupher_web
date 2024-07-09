@@ -4,19 +4,16 @@
  *
  */
 
-import { FC, memo, useState, ReactNode } from 'react'
+import { type FC, memo, useState, type ReactNode } from 'react'
 
-import type { TSizeSM } from '@/spec'
+import type { TSizeSM } from '~/spec'
 
-import { isString } from '@/validator'
-import { buildLog } from '@/logger'
-import SIZE from '@/constant/size'
+import { isString } from '~/validator'
+import SIZE from '~/const/size'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import { Wrapper, Icon, Text } from './styles'
-
-const _log = buildLog('w:ExpandIcon:index')
 
 type TProps = {
   content: ReactNode

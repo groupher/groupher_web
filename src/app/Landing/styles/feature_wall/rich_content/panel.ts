@@ -1,7 +1,7 @@
-import type { TActive, TColor } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
-import MarkdownSVG from '@/icons/Markdown'
-import Img from '@/Img'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
+import MarkdownSVG from '~/icons/Markdown'
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   padding: 15px;

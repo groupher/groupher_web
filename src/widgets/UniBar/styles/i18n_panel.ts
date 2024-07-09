@@ -1,8 +1,8 @@
-import styled, { css, theme, animate } from '@/css'
+import styled, { css, theme, animate } from '~/css'
 
-import type { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
-import CheckSVG from '@/icons/Check'
+import CheckSVG from '~/icons/Check'
 
 export const Wrapper = styled.div`
   padding: 10px 8px;

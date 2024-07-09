@@ -1,9 +1,8 @@
-import { useContext } from 'react'
 import { useTheme as useStyledTheme } from 'styled-components'
 
-import type { TThemeName, TThemeMap } from '@/spec'
+import type { TThemeName, TThemeMap } from '~/spec'
 
-import { StoreContext } from '@/stores2'
+import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   theme: TThemeName
@@ -11,17 +10,15 @@ type TRet = {
   toggle: () => void
   themeMap: TThemeMap
 }
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
+
 const useTheme = (): TRet => {
-  const { theme } = useContext(StoreContext)
+  const { theme, change, toggle } = useSubStore('theme')
   const styledTheme = useStyledTheme() as TThemeMap
 
   return {
-    theme: theme.theme,
-    change: (name: TThemeName) => theme.change(name),
-    toggle: () => theme.toggle(),
+    theme,
+    change,
+    toggle,
     themeMap: styledTheme,
   }
 }

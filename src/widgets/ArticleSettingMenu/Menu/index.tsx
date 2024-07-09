@@ -1,8 +1,8 @@
-import { FC, memo, useState, useRef } from 'react'
+import { type FC, memo, useState, useRef } from 'react'
 
-import useOutsideClick from '@/hooks/useOutsideClick'
+import useOutsideClick from '~/hooks/useOutsideClick'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import type { TSubMenu } from '../spec'
 import { SUB_MENU_TYPE } from '../constant'

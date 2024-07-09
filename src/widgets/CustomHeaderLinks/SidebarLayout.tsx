@@ -1,16 +1,15 @@
-import { FC, Fragment, useState } from 'react'
-import { observer } from 'mobx-react-lite'
+import { type FC, Fragment, useState } from 'react'
 import { keys, startsWith, filter } from 'ramda'
 
-import type { TLinkItem } from '@/spec'
-import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
-import { sortByIndex, groupByKey } from '@/helper'
-import useAccount from '@/hooks/useAccount'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import type { TLinkItem } from '~/spec'
+import { MORE_GROUP, ONE_LINK_GROUP } from '~/const/dashboard'
+import { sortByIndex, groupByKey } from '~/helper'
+import useAccount from '~/hooks/useAccount'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import Tooltip from '@/widgets/Tooltip'
-import { SpaceGrow } from '@/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
+import { SpaceGrow } from '~/widgets/Common'
 
 import type { TProps, TLinkGroup } from './spec'
 
@@ -105,4 +104,4 @@ const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
   )
 }
 
-export default observer(CustomHeaderLinks)
+export default CustomHeaderLinks

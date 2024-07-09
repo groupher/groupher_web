@@ -2,56 +2,72 @@
  * ArticleEditor
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { type FC, useEffect } from 'react'
 
-import type { TEditMode, TMetric } from '@/spec'
-import METRIC from '@/constant/metric'
-import { CONDITION_MODE } from '@/constant/mode'
+import type { TEditMode, TMetric } from '~/spec'
+import METRIC from '~/const/metric'
+import { CONDITION_MODE } from '~/const/mode'
 
-import { buildLog } from '@/logger'
+// import RichEditor from '~/containers/editor/RichEditor'
+import { Space } from '~/widgets/Common'
+import ConditionSelector from '~/widgets/ConditionSelector'
+import ArchiveAlert from '~/widgets/ArchiveAlert'
+import NoticeBar from '~/widgets/NoticeBar'
+import TagSelector from '~/widgets/TagSelector'
 
-import RichEditor from '@/containers/editor/RichEditor'
-import { Space } from '@/widgets/Common'
-import ConditionSelector from '@/widgets/ConditionSelector'
-import ArchiveAlert from '@/widgets/ArchiveAlert'
-import NoticeBar from '@/widgets/NoticeBar'
-import TagSelector from '@/widgets/TagSelector'
-
-import ArticleCover from './ArticleCover'
+// import ArticleCover from './ArticleCover'
 
 import TitleInput from './TitleInput'
 import Footer from './Footer'
 
-import { useStore } from './store'
 // import Settings from './Settings'
+import useLogic from './useLogic'
 import { Wrapper, InnerWrapper, ContentWrapper, FuncRow } from './styles'
-
-import {
-  useInit,
-  editOnChange,
-  // changeCommunity,
-  onTagSelect,
-  catOnChange,
-} from './logic'
-
-const _log = buildLog('C:ArticleEditor')
 
 type TProps = {
   metric?: TMetric
 }
 
 const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
-  const store = useStore()
-  useInit(store)
-  const { activeCat, activeTagData } = store
+  const {
+    isArchived,
+    archivedAt,
+    mode,
+    submitState,
+    getGroupedTags,
+    getEditData,
+    allowEdit,
+    activeCat,
+    activeTag,
+    onTagSelect,
+    catOnChange,
+    loadArticle,
+    loadCommunity,
+    articleTags,
+  } = useLogic()
 
-  const { isArchived, archivedAt, mode, submitState, groupedTags, texts, editData, allowEdit } =
-    store
+  useEffect(() => {
+    loadCommunity()
+  }, [])
 
-  const { title, body } = editData
+  console.log('## articleTags: ', articleTags)
 
-  const initEditor = mode === 'publish' || body !== '{}'
+  useEffect(() => {
+    if (mode === 'update') loadArticle()
+  }, [mode])
+
+  const groupedTags = getGroupedTags()
+  const editData = getEditData()
+  // const { title, body } = editData
+  const { title } = editData
+
+  const texts = {
+    holder: {
+      title: '// 帖子标题',
+      body: "// 帖子内容（'Tab' 键插入富文本）",
+    },
+  }
+  // const initEditor = mode === 'publish' || body !== '{}'
 
   return (
     <Wrapper>
@@ -60,7 +76,7 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
           {!allowEdit && <NoticeBar type="notice" content="只有作者可以编辑本内容。" left={25} />}
           {isArchived && <ArchiveAlert date={archivedAt} top={12} bottom={20} left={25} />}
 
-          <ArticleCover />
+          {/* <ArticleCover /> */}
           <TitleInput title={title} placeholder={texts.holder.title} />
           <FuncRow>
             <ConditionSelector
@@ -72,20 +88,16 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
               right={20}
             />
             <Space left={14} />
-            <TagSelector
-              groupedTags={groupedTags}
-              activeTag={activeTagData}
-              onSelect={onTagSelect}
-            />
+            <TagSelector groupedTags={groupedTags} activeTag={activeTag} onSelect={onTagSelect} />
           </FuncRow>
 
-          {initEditor && (
+          {/* {initEditor && (
             <RichEditor
               data={body}
               onChange={(v) => editOnChange(JSON.stringify(v), 'body')}
               placeholder={texts.holder.body}
             />
-          )}
+          )} */}
           <Footer mode={mode as TEditMode} editData={editData} submitState={submitState} />
         </ContentWrapper>
       </InnerWrapper>
@@ -93,4 +105,4 @@ const ArticleEditor: FC<TProps> = ({ metric = METRIC.ARTICLE_EDITOR }) => {
   )
 }
 
-export default observer(ArticleEditor)
+export default ArticleEditor

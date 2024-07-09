@@ -1,11 +1,11 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
-import { Space } from '@/widgets/Common'
-import ArticleCatState from '@/widgets/ArticleCatState'
-import CommentsCount from '@/widgets/CommentsCount'
-import ViewsCount from '@/widgets/ViewsCount'
+import { Space } from '~/widgets/Common'
+import ArticleCatState from '~/widgets/ArticleCatState'
+import CommentsCount from '~/widgets/CommentsCount'
+import ViewsCount from '~/widgets/ViewsCount'
 
 import ActiveBadge from './ActiveBadge'
 

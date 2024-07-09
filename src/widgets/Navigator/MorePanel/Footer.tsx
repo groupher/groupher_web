@@ -1,8 +1,8 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { GITHUB } from '@/config'
+import { GITHUB } from '~/config'
 
-// import DiscussLinker from '@/widgets/DiscussLinker'
+// import DiscussLinker from '~/widgets/DiscussLinker'
 
 import { Wrapper, Entry, Icon, Main, Title, Desc } from '../styles/more_panel/footer'
 

@@ -1,19 +1,16 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import usePublicThreads from '~/hooks/usePublicThreads'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useViewingThread from '~/hooks/useViewingThread'
+import useHeaderLinks from '~/hooks/useHeaderLinks'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import usePublicThreads from '@/hooks/usePublicThreads'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import useViewingThread from '@/hooks/useViewingThread'
-import useHeaderLinks from '@/hooks/useHeaderLinks'
-
-import CustomHeaderLinks from '@/widgets/CustomHeaderLinks'
+import CustomHeaderLinks from '~/widgets/CustomHeaderLinks'
 
 import ThreadIcon from './ThreadIcon'
 
 import { Wrapper, MenuItem, MenuTitle } from '../styles/sidebar_layout/main_menu'
 
-const MainMenu: FC = () => {
+export default () => {
   const community = useViewingCommunity()
   const primaryColor = usePrimaryColor()
   const communityPath = community?.slug
@@ -21,7 +18,8 @@ const MainMenu: FC = () => {
   const publicThreads = usePublicThreads()
   const activeThread = useViewingThread()
 
-  const { customLinks } = useHeaderLinks()
+  const { getCustomLinks } = useHeaderLinks()
+  const customLinks = getCustomLinks()
 
   return (
     <Wrapper>
@@ -42,5 +40,3 @@ const MainMenu: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(MainMenu)

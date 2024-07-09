@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
 import DiscussDemo from './DiscussDemo'
 import IntroDigest from './IntroDigest'

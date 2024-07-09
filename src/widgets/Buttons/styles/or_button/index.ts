@@ -1,4 +1,4 @@
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
 export const OrSignBase = styled.div`
   ${css.row('align-both')};

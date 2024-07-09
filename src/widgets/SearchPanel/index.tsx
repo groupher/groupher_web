@@ -4,20 +4,16 @@
  *
  */
 
-import { FC, memo, lazy, Suspense } from 'react'
+import { type FC, memo, lazy, Suspense } from 'react'
 
-import { buildLog } from '@/logger'
+import { DOC_FAQ_LAYOUT } from '~/const/layout'
+import { closeDrawer } from '~/signal'
 
-import { DOC_FAQ_LAYOUT } from '@/constant/layout'
-import { closeDrawer } from '@/signal'
-
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
 import { Wrapper, Title, SearchInput, CloseIcon } from './styles'
 
-const FaqList = lazy(() => import('@/widgets/FaqList'))
-
-const _log = buildLog('c:SearchPanel:index')
+const FaqList = lazy(() => import('~/widgets/FaqList'))
 
 type TProps = {
   testid?: string

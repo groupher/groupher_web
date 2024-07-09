@@ -1,19 +1,15 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import SIZE from '@/constant/size'
-import { buildLog } from '@/logger'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import SIZE from '~/const/size'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import type { TProps as TButtonProps } from '.'
 import { Wrapper, UpButton, OrSign, BottomButton } from '../styles/or_button/vertical_button'
 
-const log = buildLog('w:VericalButton')
-
 type TProps = Omit<TButtonProps, 'direction'>
 
 const VerticalButton: FC<TProps> = ({
-  onClick = log,
+  onClick = console.log,
   size = SIZE.SMALL,
   activeKey,
   group = [
@@ -52,4 +48,4 @@ const VerticalButton: FC<TProps> = ({
   )
 }
 
-export default observer(VerticalButton)
+export default VerticalButton

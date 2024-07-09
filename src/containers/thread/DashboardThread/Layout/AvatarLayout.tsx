@@ -1,19 +1,14 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { AVATAR_LAYOUT } from '~/const/layout'
+import { COLOR_NAME } from '~/const/colors'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import type { TAvatarLayout } from '@/spec'
-
-import { AVATAR_LAYOUT } from '@/constant/layout'
-import { COLOR_NAME } from '@/constant/colors'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-
-import CheckLabel from '@/widgets/CheckLabel'
+import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
-import useAvatarInfo from '../hooks/useAvatarInfo'
+import useAvatar from '../logic/useAvatar'
 import {
   Wrapper,
   SelectWrapper,
@@ -24,11 +19,12 @@ import {
   Avatar,
   AvatarList,
 } from '../styles/layout/avatar_layout'
-import { edit } from '../logic'
 
-const AvatarLayout: FC = () => {
-  const { layout, isTouched, saving } = useAvatarInfo()
+export default () => {
+  const { edit, layout, getIsTouched, saving } = useAvatar()
   const primaryColor = usePrimaryColor()
+
+  const isTouched = getIsTouched()
 
   return (
     <Wrapper>
@@ -104,5 +100,3 @@ const AvatarLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(AvatarLayout)

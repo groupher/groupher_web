@@ -1,4 +1,4 @@
-import type { TThemeMap } from '@/spec'
+import type { TThemeMap } from '~/spec'
 
 export const getSelectStyles = (theme: TThemeMap) => {
   return {

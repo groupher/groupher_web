@@ -1,5 +1,5 @@
-import { ASSETS_ENDPOINT } from '@/config'
-import type { TGallery } from '@/spec'
+import { ASSETS_ENDPOINT } from '~/config'
+import type { TGallery } from '~/spec'
 
 export const mockProducts = (): TGallery[] => {
   return [

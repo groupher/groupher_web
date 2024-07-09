@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 export const BoardsWrapper = styled.div`
   ${css.row('justify-center', 'align-end')};

@@ -1,17 +1,19 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { values } from 'ramda'
 
 import type { TImagePos } from '../spec'
 import { IMAGE_POS } from '../constant'
 
+import useLogic from '../useLogic'
 import { Wrapper, Block, Pice, Desc } from '../styles/toolbox/position_block'
-import { posOnChange } from '../logic'
 
 type TProps = {
   pos: TImagePos
 }
 
 const PositionBlock: FC<TProps> = ({ pos }) => {
+  const { posOnChange } = useLogic()
+
   return (
     <Wrapper>
       <Block>

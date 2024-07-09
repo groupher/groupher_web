@@ -1,20 +1,16 @@
-import { FC, memo, useCallback } from 'react'
+import { type FC, memo, useCallback } from 'react'
 
-import type { TComment } from '@/spec'
-import { ICON } from '@/config'
-import useAccount from '@/hooks/useAccount'
-import { buildLog } from '@/logger'
+import type { TComment } from '~/spec'
+import { ICON } from '~/config'
+import useAccount from '~/hooks/useAccount'
 
-import { authWarn } from '@/signal'
+import { authWarn } from '~/signal'
 
-import IconButton from '@/widgets/Buttons/IconButton'
-import MenuButton from '@/widgets/Buttons/MenuButton'
-import { SpaceGrow } from '@/widgets/Common'
+import MenuButton from '~/widgets/Buttons/MenuButton'
+import { SpaceGrow } from '~/widgets/Common'
 
-import { Wrapper, ReplyAction, MoreWrapper } from '../styles/comment/actions'
-import { openUpdateEditor, openReplyEditor } from '../logic'
-
-const log = buildLog('C:CommentAction')
+import useLogic from '../useLogic'
+import { Wrapper, ReplyAction, MoreWrapper, MoreIcon } from '../styles/comment/actions'
 
 const menuOptions = [
   // {
@@ -40,6 +36,7 @@ type TProps = {
 
 const Actions: FC<TProps> = ({ data }) => {
   const accountInfo = useAccount()
+  const { openUpdateEditor, openReplyEditor } = useLogic()
 
   let extraOptions = []
 
@@ -64,19 +61,19 @@ const Actions: FC<TProps> = ({ data }) => {
 
       switch (key) {
         case 'share': {
-          return log('todo: share')
+          return console.log('## todo: share')
         }
         case 'quote': {
-          return log('todo: quote')
+          return console.log('## todo: quote')
         }
         case 'report': {
-          return log('todo: report')
+          return console.log('## todo: report')
         }
         case 'edit': {
           return openUpdateEditor(data)
         }
         case 'delete': {
-          return log('todo: delete')
+          return console.log('## todo: delete')
         }
         default: {
           // eslint-disable-next-line no-useless-return
@@ -104,7 +101,7 @@ const Actions: FC<TProps> = ({ data }) => {
       <SpaceGrow />
       <MenuButton options={menuOptions} extraOptions={extraOptions} onClick={handleAction}>
         <MoreWrapper>
-          <IconButton path="shape/more.svg" size={16} />
+          <MoreIcon />
         </MoreWrapper>
       </MenuButton>
     </Wrapper>

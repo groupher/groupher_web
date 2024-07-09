@@ -1,18 +1,19 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import type { TImageRadio } from '../spec'
 import { IMAGE_RATIO } from '../constant'
 
+import useLogic from '../useLogic'
 import { Wrapper, Block, Panel, Item, Icon, Desc } from '../styles/toolbox/ratio_block'
-import { ratioOnChange } from '../logic'
 
 type TProps = {
   ratio: TImageRadio
 }
 
 const RatioBlock: FC<TProps> = ({ ratio }) => {
+  const { ratioOnChange } = useLogic()
   const [panelOpen, setPanelOpen] = useState(false)
 
   return (

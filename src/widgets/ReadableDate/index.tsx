@@ -4,14 +4,10 @@
  *
  */
 
-import { FC, memo } from 'react'
-
-import { buildLog } from '@/logger'
+import { type FC, memo } from 'react'
 
 import AbsoluteFmt from './AbsoluteFmt'
 import { Wrapper } from './styles'
-
-const _log = buildLog('w:ReadableDate:index')
 
 type TProps = {
   testid?: string

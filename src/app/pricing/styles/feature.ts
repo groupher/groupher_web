@@ -1,7 +1,7 @@
-import styled, { css, theme, rainbow } from '@/css'
-import type { TColor } from '@/spec'
+import styled, { css, theme, rainbow } from '~/css'
+import type { TColor } from '~/spec'
 
-import CheckSVG from '@/icons/Check'
+import CheckSVG from '~/icons/Check'
 
 export const Wrapper = styled.div`
   ${css.row('align-start')};

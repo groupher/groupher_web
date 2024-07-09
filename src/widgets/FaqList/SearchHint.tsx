@@ -1,11 +1,10 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import { mockHelpCats } from '@/mock'
-import { THREAD } from '@/constant/thread'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { mockHelpCats } from '~/mock'
+import { THREAD } from '~/const/thread'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import ArrowLinker from '@/widgets/ArrowLinker'
+import ArrowLinker from '~/widgets/ArrowLinker'
 
 import {
   Wrapper,
@@ -60,4 +59,4 @@ const SearchHint: FC<TProps> = ({ sections }) => {
   )
 }
 
-export default observer(SearchHint)
+export default SearchHint

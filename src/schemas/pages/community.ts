@@ -82,23 +82,26 @@ export const community = `
           primaryColor
           postLayout
           docLayout
+          docFaqLayout
           tagLayout
           avatarLayout
           brandLayout
+          bannerLayout
           topbarLayout
           topbarBg
           broadcastLayout
           kanbanLayout
           kanbanCardLayout
           kanbanBgColors
-          docFaqLayout
           changelogLayout
+          headerLayout
           footerLayout
           glowType
           glowFixed
           glowOpacity
           gossBlur
           gossBlurDark
+          broadcastEnable
         } 
 
         rss {

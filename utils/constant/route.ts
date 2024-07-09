@@ -6,7 +6,7 @@ import type {
   TDashboardBaseInfoRoute,
   TDashboardSEORoute,
   TDashboardDocRoute,
-} from '@/spec'
+} from '~/spec'
 
 export const NON_COMMUNITY_ROUTE = {
   APPLY_COMMUNITY: '/apply/community',

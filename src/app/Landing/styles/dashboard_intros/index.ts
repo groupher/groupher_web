@@ -1,5 +1,5 @@
-import styled, { css, theme, WIDTH } from '@/css'
-import type { TMetric } from '@/spec'
+import styled, { css, theme, WIDTH } from '~/css'
+import type { TMetric } from '~/spec'
 
 import type { TIntroTab } from '../../DashboardIntros/spec'
 import { gradientColor } from './metric'

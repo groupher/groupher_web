@@ -1,7 +1,5 @@
-import { FC } from 'react'
-
-// import { GITHUB } from '@/config'
-import useWallpaper from '@/hooks/useWallpaper'
+// import { GITHUB } from '~/config'
+import useWallpaper from '~/hooks/useWallpaper'
 
 import RepoPreview from './RepoPreview'
 
@@ -20,7 +18,7 @@ import {
   GithubIcon,
 } from '../styles/tech_stacks/github_card'
 
-const GithubCard: FC = () => {
+export default () => {
   const { wallpaper } = useWallpaper()
 
   return (
@@ -51,5 +49,3 @@ const GithubCard: FC = () => {
     </Wrapper>
   )
 }
-
-export default GithubCard

@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ArrowSVG from '@/icons/Arrow'
+import ArrowSVG from '~/icons/Arrow'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

@@ -1,7 +1,6 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
+import type { TSocialItem, TMediaReport } from '~/spec'
 
-import type { TSocialItem, TMediaReport } from '@/spec'
+import useSubStore from '~/hooks/useSubStore'
 
 type TABoutInfo = {
   homepage: string | null
@@ -11,16 +10,10 @@ type TABoutInfo = {
   mediaReports: TMediaReport[]
 }
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useAboutInfo = (): TABoutInfo => {
-  const { store } = useContext(MobXProviderContext)
+export default (): TABoutInfo => {
+  const store = useSubStore('dashboard')
 
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
-  const { homepage, city, techstack, socialLinks, mediaReports } = store.dashboardThread
+  const { homepage, city, techstack, socialLinks, mediaReports } = store
 
   return {
     homepage,
@@ -30,5 +23,3 @@ const useAboutInfo = (): TABoutInfo => {
     mediaReports,
   }
 }
-
-export default useAboutInfo

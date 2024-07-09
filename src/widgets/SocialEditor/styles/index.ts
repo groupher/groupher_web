@@ -1,17 +1,17 @@
-import type { TTestable, TActive, TSpace } from '@/spec'
-import { SOCIAL_LIST } from '@/constant/social'
+import type { TTestable, TActive, TSpace } from '~/spec'
+import { SOCIAL_LIST } from '~/const/social'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import TikTokSVG from '@/widgets/Icons/social/TikTok'
-import EmailSVG from '@/icons/social/Email'
-import WeChatSVG from '@/icons/social/WeChat'
-import TwitterSVG from '@/icons/social/Twitter'
-import WeiboSVG from '@/icons/social/Weibo'
-import ZhihuSVG from '@/icons/social/Zhihu'
-import GithubSVG from '@/icons/social/Github'
-import BiliBiliSVG from '@/icons/social/BiliBili'
-import BossSVG from '@/icons/social/Boss'
+import TikTokSVG from '~/widgets/Icons/social/TikTok'
+import EmailSVG from '~/icons/social/Email'
+import WeChatSVG from '~/icons/social/WeChat'
+import TwitterSVG from '~/icons/social/Twitter'
+import WeiboSVG from '~/icons/social/Weibo'
+import ZhihuSVG from '~/icons/social/Zhihu'
+import GithubSVG from '~/icons/social/Github'
+import BiliBiliSVG from '~/icons/social/BiliBili'
+import BossSVG from '~/icons/social/Boss'
 
 type TWrapper = TTestable & { width: string } & TSpace
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

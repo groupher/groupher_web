@@ -1,16 +1,15 @@
-import { Fragment, FC, ReactNode } from 'react'
-import { observer } from 'mobx-react-lite'
+import { Fragment, type FC, type ReactNode } from 'react'
 import { includes } from 'ramda'
 
-import { ANCHOR } from '@/constant/dom'
-import useDrawerOffset from '@/hooks/useDrawerOffset'
+import { ANCHOR } from '~/const/dom'
+import useDrawerOffset from '~/hooks/useDrawerOffset'
 
 import type { TSwipeOption } from '../spec'
 import { ARTICLE_VIEWER_TYPES } from '../constant'
 
 import ArticleNavi from './ArticleNavi'
+import useLogic from '../useLogic'
 import { DrawerOverlay, DrawerWrapper, DrawerContent, NaviArea } from '../styles'
-import { closeDrawer } from '../logic'
 
 type TProps = {
   testid?: string
@@ -28,6 +27,7 @@ const DesktopView: FC<TProps> = ({
   children,
 }) => {
   const { rightOffset, fromContentEdge } = useDrawerOffset()
+  const { closeDrawer } = useLogic()
 
   const isArticleViewer = includes(type, ARTICLE_VIEWER_TYPES)
 
@@ -60,4 +60,4 @@ const DesktopView: FC<TProps> = ({
   )
 }
 
-export default observer(DesktopView)
+export default DesktopView

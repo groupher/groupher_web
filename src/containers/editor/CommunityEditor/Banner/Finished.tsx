@@ -1,12 +1,9 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import { FC, memo } from 'react'
+import { ROUTE } from '~/const/route'
 
-import { ROUTE } from '@/constant/route'
+import { SexyDivider } from '~/widgets/Common'
 
-import { SexyDivider } from '@/widgets/Common'
-
-import type { TFinishedStatus } from '../spec'
-
+import useLogic from '../useLogic'
 import {
   Wrapper,
   Title,
@@ -26,12 +23,9 @@ import {
   DashDesc,
 } from '../styles/banner/finished'
 
-type TProps = {
-  status: TFinishedStatus
-}
+export default () => {
+  const { logo, title, slug, desc } = useLogic()
 
-const Finished: FC<TProps> = ({ status }) => {
-  const { logo, title, slug, desc } = status
   return (
     <Wrapper>
       <Title>👏🏻 &nbsp;&nbsp;社区已创建成功</Title>
@@ -96,5 +90,3 @@ const Finished: FC<TProps> = ({ status }) => {
     </Wrapper>
   )
 }
-
-export default memo(Finished)

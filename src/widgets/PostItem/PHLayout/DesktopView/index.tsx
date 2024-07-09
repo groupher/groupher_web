@@ -1,14 +1,13 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TPost } from '@/spec'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import type { TPost } from '~/spec'
+import { UPVOTE_LAYOUT } from '~/const/layout'
+import useLayout from '~/hooks/useLayout'
 
-import { upvoteArticle, previewArticle } from '@/signal'
-import ArticlePinLabel from '@/widgets/ArticlePinLabel'
-import Upvote from '@/widgets/Upvote'
-import ImgFallback from '@/widgets/ImgFallback'
+import { upvoteArticle, previewArticle } from '~/signal'
+import ArticlePinLabel from '~/widgets/ArticlePinLabel'
+import Upvote from '~/widgets/Upvote'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import ViewingSign from '../../ViewingSign'
 
@@ -28,7 +27,7 @@ type TProps = {
 }
 
 const DigestView: FC<TProps> = ({ article }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
   const { author } = article
 
   return (
@@ -60,4 +59,4 @@ const DigestView: FC<TProps> = ({ article }) => {
   )
 }
 
-export default observer(DigestView)
+export default DigestView

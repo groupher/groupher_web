@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Img from '@/Img'
-import { WithMargin } from '@/widgets/Common'
+import Img from '~/Img'
+import { WithMargin } from '~/widgets/Common'
 
 export const Wrapper = styled(WithMargin)`
   ${css.row('align-center')};

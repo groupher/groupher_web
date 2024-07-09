@@ -1,7 +1,7 @@
-import type { TActive, TSpace } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive, TSpace } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import { WithMargin } from '@/widgets/Common'
+import { WithMargin } from '~/widgets/Common'
 
 export const Wrapper = styled.div`
   ${css.column('align-center')};

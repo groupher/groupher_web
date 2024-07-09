@@ -4,21 +4,17 @@
  *
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TColorName } from '@/spec'
-import { buildLog } from '@/logger'
-import useTagLayout from '@/hooks/useTagLayout'
-import useTheme from '@/hooks/useTheme'
+import type { TColorName } from '~/spec'
+import useLayout from '~/hooks/useLayout'
+import useTheme from '~/hooks/useTheme'
 
-import { TAG_LAYOUT } from '@/constant/layout'
-import { COLOR_NAME } from '@/constant/colors'
-import THEME from '@/constant/theme'
+import { TAG_LAYOUT } from '~/const/layout'
+import { COLOR_NAME } from '~/const/colors'
+import THEME from '~/const/theme'
 
 import { Dot, HashBoldIcon, HashNormalIcon } from './styles'
-
-const _log = buildLog('c:TagNode:index')
 
 type TProps = {
   color?: string
@@ -47,7 +43,7 @@ const TagNode: FC<TProps> = ({
   opacity = 1,
   boldHash = false,
 }) => {
-  const tagLayout = useTagLayout()
+  const { tagLayout } = useLayout()
   const { theme } = useTheme()
   const darkTheme = theme === THEME.NIGHT
 
@@ -79,4 +75,4 @@ const TagNode: FC<TProps> = ({
   )
 }
 
-export default observer(TagNode)
+export default TagNode

@@ -1,12 +1,13 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
-import Button from '@/widgets/Buttons/Button'
-import { CONDITION_MODE } from '@/constant/mode'
-import ConditionSelector from '@/widgets/ConditionSelector'
+import { SpaceGrow } from '~/widgets/Common'
+import Button from '~/widgets/Buttons/Button'
+import { CONDITION_MODE } from '~/const/mode'
+import ConditionSelector from '~/widgets/ConditionSelector'
 
 import ActionBar from './ActionBar'
 
+import useCMSInfo from '../../hooks/useCMSInfo'
 import {
   Wrapper,
   MainWrapper,
@@ -17,7 +18,6 @@ import {
   DateRangeWrapper,
   DubbleCheckIcon,
 } from '../../styles/cms/filter_bar'
-import { batchSelectAll } from '../../logic'
 
 type TProps = {
   triggerCheckbox: (show: boolean) => void
@@ -26,6 +26,8 @@ type TProps = {
 }
 
 const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox, selectedCount }) => {
+  const { batchSelectAll } = useCMSInfo()
+
   return (
     <Wrapper>
       <MainWrapper>

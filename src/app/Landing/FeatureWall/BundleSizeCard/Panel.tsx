@@ -1,7 +1,7 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { num2Percent } from '@/helper'
-import { SpaceGrow } from '@/widgets/Common'
+import { num2Percent } from '~/helper'
+import { SpaceGrow } from '~/widgets/Common'
 
 import { PRODUCTS, MAX_SIZE } from './constant'
 

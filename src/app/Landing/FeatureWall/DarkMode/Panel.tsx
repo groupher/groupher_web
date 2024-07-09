@@ -1,8 +1,7 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import THEME from '@/constant/theme'
-import useTheme from '@/hooks/useTheme'
+import THEME from '~/const/theme'
+import useTheme from '~/hooks/useTheme'
 
 import type { TCardMetric } from './spec'
 import { CARDS_METRICS } from './constant'
@@ -51,4 +50,4 @@ const Panel: FC<TProps> = ({ hovering }) => {
   )
 }
 
-export default observer(Panel)
+export default Panel

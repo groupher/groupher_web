@@ -1,8 +1,8 @@
-import styled, { css, theme, animate } from '@/css'
-import Button from '@/widgets/Buttons/Button'
-import Img from '@/Img'
+import styled, { css, theme, animate } from '~/css'
+import Button from '~/widgets/Buttons/Button'
+import Img from '~/Img'
 
-import JoinEyeSVG from '@/icons/JoinEye'
+import JoinEyeSVG from '~/icons/JoinEye'
 
 export const BtnWrapper = styled.div`
   ${css.row('align-center')};

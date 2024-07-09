@@ -1,5 +1,4 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
 import { SETTING_FIELD } from '../constant'
 
@@ -8,11 +7,12 @@ import SavingBar from '../SavingBar'
 import Templates from './Templates'
 import Editor from './Editors'
 
-import useFooterSettingsInfo from '../hooks/useFooterSettingsInfo'
+import useFooter from '../logic/useFooter'
 import { Wrapper } from '../styles/footer'
 
 const Footer: FC = () => {
-  const { saving, isTouched } = useFooterSettingsInfo()
+  const { saving, getIsTouched } = useFooter()
+  const isTouched = getIsTouched('footerLinks')
 
   return (
     <Wrapper>
@@ -32,4 +32,4 @@ const Footer: FC = () => {
   )
 }
 
-export default observer(Footer)
+export default Footer

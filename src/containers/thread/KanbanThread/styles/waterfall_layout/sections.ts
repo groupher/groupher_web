@@ -1,10 +1,10 @@
-import styled, { css, theme, rainbow, rainbowSoft } from '@/css'
-import type { TColor } from '@/spec'
+import styled, { css, theme, rainbow, rainbowSoft } from '~/css'
+import type { TColor } from '~/spec'
 
-import GtdWipSVG from '@/icons/GtdWip'
-import GtdDoneSVG from '@/icons/GtdDone'
-import GtdTodoSVG from '@/icons/GtdTodo'
-import AddSVG from '@/icons/Add'
+import GtdWipSVG from '~/icons/GtdWip'
+import GtdDoneSVG from '~/icons/GtdDone'
+import GtdTodoSVG from '~/icons/GtdTodo'
+import AddSVG from '~/icons/Add'
 
 export const Wrapper = styled.div`
   ${css.column('align-start')};

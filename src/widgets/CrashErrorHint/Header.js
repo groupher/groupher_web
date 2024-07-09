@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import EXECUTES from './executes'
 

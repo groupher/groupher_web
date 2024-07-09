@@ -1,10 +1,12 @@
-import { FC, ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 
-import { COLOR_NAME } from '@/constant/colors'
-import { mockUsers } from '@/mock'
+import type { TColorName } from '~/spec'
 
-import { DesktopOnly } from '@/widgets/Common'
-import MasonryCards from '@/widgets/MasonryCards'
+import { COLOR_NAME } from '~/const/colors'
+import { mockUsers } from '~/mock'
+
+import { DesktopOnly } from '~/widgets/Common'
+import MasonryCards from '~/widgets/MasonryCards'
 
 import Card from './Card'
 import {
@@ -18,7 +20,6 @@ import {
   DempP,
   Highlight,
 } from '../styles/users_wall'
-import { TColorName } from '@/spec'
 
 const P1 = (markColor: TColorName): ReactNode => (
   <DempP>

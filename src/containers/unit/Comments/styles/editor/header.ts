@@ -1,10 +1,10 @@
-import type { TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
+import type { TAvatarLayout } from '~/spec'
+import { AVATAR_LAYOUT } from '~/const/layout'
 
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
-import CommentSVG from '@/icons/Comment'
-import UserSVG from '@/icons/User'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
+import CommentSVG from '~/icons/Comment'
+import UserSVG from '~/icons/User'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

@@ -1,8 +1,8 @@
-import { memo, FC } from 'react'
+import { memo, type FC } from 'react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
-import ArticleCatState from '@/widgets/ArticleCatState'
+import ArticleCatState from '~/widgets/ArticleCatState'
 
 import { Wrapper } from '../../styles/minimal_layout/desktop_view/footer'
 

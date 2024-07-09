@@ -1,10 +1,9 @@
-import { FC, memo, useState } from 'react'
+import { useState } from 'react'
 import { keys } from 'ramda'
 
-import type { TWallpaperPic } from '@/spec'
+import Button from '~/widgets/Buttons/Button'
 
-import Button from '@/widgets/Buttons/Button'
-
+import useLogic from '../useLogic'
 import {
   Wrapper,
   ShowMoreMask,
@@ -15,14 +14,10 @@ import {
   CircleArrow,
 } from '../styles/build_in/pictrue_group'
 
-import { changePatternWallpaper } from '../logic'
+export default () => {
+  const { getWallpaper, changePatternWallpaper } = useLogic()
+  const { wallpaper, patternWallpapers } = getWallpaper()
 
-type TProps = {
-  wallpaper: string
-  patternWallpapers: Record<string, TWallpaperPic>
-}
-
-const PictureGroup: FC<TProps> = ({ wallpaper, patternWallpapers }) => {
   const [showMore, setShowMore] = useState(false)
 
   const _patternKeys = keys(patternWallpapers)
@@ -31,6 +26,7 @@ const PictureGroup: FC<TProps> = ({ wallpaper, patternWallpapers }) => {
   return (
     <Wrapper showMore={showMore}>
       {patternKeys.map((name) => {
+        // @ts-ignore
         const { bgImage } = patternWallpapers[name]
         const bgSrc = bgImage === '/wallpaper/ms.svg' ? '/wallpaper/ms.png' : bgImage
 
@@ -59,5 +55,3 @@ const PictureGroup: FC<TProps> = ({ wallpaper, patternWallpapers }) => {
     </Wrapper>
   )
 }
-
-export default memo(PictureGroup)

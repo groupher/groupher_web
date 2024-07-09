@@ -1,4 +1,31 @@
-import type { TTestable, TActive, TDashboardLayout, TPostLayout } from '@/spec'
+import type { TTestable, TActive, TDashboardLayout, TPostLayout, TMetric, TUser } from '~/spec'
+
+export type TStore = {
+  visible: boolean
+  metric: TMetric
+
+  previousURL: string | null
+  previousHomeURL: string | null
+
+  options: TSwipeOption
+
+  swipeDownAviliable: boolean
+  swipeUpAviliable: boolean
+  canBeClose: boolean
+  headerText: string
+  showHeaderText: boolean
+  disableContentDrag: boolean
+
+  windowWidth: number
+  type: string | null
+  attUser: TUser | null
+  userListerType: string
+
+  mmType: string
+  dashboardDescLayout: TDashboardLayout
+
+  commit: (patch: Partial<TStore>) => void
+}
 
 export type TSwipeOption = {
   direction: 'bottom' | 'top'

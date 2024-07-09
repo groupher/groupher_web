@@ -1,9 +1,9 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import { range } from 'ramda'
 import ContentLoader from 'react-content-loader'
 
-import type { TSpace } from '@/spec'
-import useTheme from '@/hooks/useTheme'
+import type { TSpace } from '~/spec'
+import useTheme from '~/hooks/useTheme'
 
 import { Wrapper, LoadingWrapper } from './styles/article_content_loading'
 

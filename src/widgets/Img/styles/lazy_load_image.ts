@@ -1,6 +1,6 @@
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
-import styled, { css, zIndex } from '@/css'
+import styled, { css, zIndex } from '~/css'
 
 type TWrapper = {
   size?: number

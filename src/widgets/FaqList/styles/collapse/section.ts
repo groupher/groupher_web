@@ -1,8 +1,8 @@
-import type { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
-import styled, { css, theme } from '@/css'
-import ArrowSVG from '@/icons/ArrowSimple'
-import { MarkdownStyles } from '@/widgets/Common'
+import styled, { css, theme } from '~/css'
+import ArrowSVG from '~/icons/ArrowSimple'
+import { MarkdownStyles } from '~/widgets/Common'
 
 export const Wrapper = styled.div`
   padding: 18px 0;

@@ -1,9 +1,9 @@
-import { FC, memo } from 'react'
+import type { FC } from 'react'
 
-import type { TDocFAQLayout } from '@/spec'
-import { DOC_FAQ_LAYOUT } from '@/constant/layout'
+import type { TDocFAQLayout } from '~/spec'
+import { DOC_FAQ_LAYOUT } from '~/const/layout'
 
-import { Br, Row } from '@/widgets/Common'
+import { Br, Row } from '~/widgets/Common'
 
 import {
   Bar,
@@ -110,4 +110,4 @@ const FaqTemplate: FC<TProps> = ({ layout }) => {
   )
 }
 
-export default memo(FaqTemplate)
+export default FaqTemplate

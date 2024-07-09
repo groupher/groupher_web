@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { ICON_CMD, ASSETS_ENDPOINT } from '@/config'
+import { ICON_CMD, ASSETS_ENDPOINT } from '~/config'
 
-import IconText from '@/widgets/IconText'
+import IconText from '~/widgets/IconText'
 
 import {
   Wrapper,

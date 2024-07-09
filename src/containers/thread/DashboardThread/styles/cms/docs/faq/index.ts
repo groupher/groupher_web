@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import { MarkdownStyles } from '@/widgets/Common'
+import styled, { css, theme } from '~/css'
+import { MarkdownStyles } from '~/widgets/Common'
 
 export const Wrapper = styled(MarkdownStyles)`
   ${css.row('justify-center')};

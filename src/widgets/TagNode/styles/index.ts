@@ -1,9 +1,9 @@
-import type { TColor } from '@/spec'
+import type { TColor } from '~/spec'
 
-import HashSVG from '@/icons/HashTag'
-import HashSVGBold from '@/icons/HashTagBold'
+import HashSVG from '~/icons/HashTag'
+import HashSVGBold from '~/icons/HashTagBold'
 
-import styled, { css, rainbow } from '@/css'
+import styled, { css, rainbow } from '~/css'
 
 type TProps = {
   size: number

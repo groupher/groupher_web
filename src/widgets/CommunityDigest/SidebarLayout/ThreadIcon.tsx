@@ -1,10 +1,9 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import { TActive, TThread } from '@/spec'
-import { THREAD } from '@/constant/thread'
+import type { TActive, TThread } from '~/spec'
+import { THREAD } from '~/const/thread'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import { Wrapper, Icon } from '../styles/sidebar_layout/thread_icon'
 
@@ -63,4 +62,4 @@ const ThreadIcon: FC<TProps> = ({ thread, $active }) => {
   }
 }
 
-export default observer(ThreadIcon)
+export default ThreadIcon

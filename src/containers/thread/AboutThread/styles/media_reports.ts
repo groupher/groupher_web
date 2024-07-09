@@ -1,11 +1,11 @@
 import Link from 'next/link'
 
-import type { TBannerLayout } from '@/spec'
-import { BANNER_LAYOUT } from '@/constant/layout'
+import type { TBannerLayout } from '~/spec'
+import { BANNER_LAYOUT } from '~/const/layout'
 
-import styled, { css, theme } from '@/css'
-import ArrowSVG from '@/icons/ArrowUpRight'
-import Img from '@/Img'
+import styled, { css, theme } from '~/css'
+import ArrowSVG from '~/icons/ArrowUpRight'
+import Img from '~/Img'
 
 export const Wrapper = styled.div``
 

@@ -1,8 +1,8 @@
-import type { TTestable } from '@/spec'
+import type { TTestable } from '~/spec'
 
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
-import { WithMargin } from '@/widgets/Common'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
+import { WithMargin } from '~/widgets/Common'
 
 type TWrapper = {
   noBg: boolean

@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import useWallpaper from '@/hooks/useWallpaper'
+import useWallpaper from '~/hooks/useWallpaper'
 
 import {
   Wrapper,

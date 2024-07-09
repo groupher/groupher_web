@@ -11,10 +11,7 @@ import React from 'react'
 import T from 'prop-types'
 import ResizeObserver from 'resize-observer-polyfill'
 
-import { buildLog } from '@/logger'
-import { Global } from '@/helper'
-
-const log = buildLog('w:Sticky')
+import { Global } from '~/helper'
 
 const getScrollParent = (node) => {
   let parent = node
@@ -66,7 +63,7 @@ try {
     Global.removeEventListener('testPassive', null, opts)
   }
 } catch (e) {
-  log(e)
+  console.log(e)
 }
 
 class StickyBox extends React.Component {
@@ -195,7 +192,7 @@ class StickyBox extends React.Component {
   handleScrollPaneResize = () => {
     this.viewPortHeight = this.scrollPane.offsetHeight
     if (process.env.CUR_ENV !== 'production' && this.viewPortHeight === 0) {
-      log(
+      console.log(
         'react-sticky-box scroll pane has a height of 0. This seems odd. Please check this node:',
         this.scrollPane,
       )
@@ -212,8 +209,14 @@ class StickyBox extends React.Component {
   handleParentNodeResize = () => {
     const { parentNode } = this.node
     const computedParentStyle = getComputedStyle(parentNode, null)
-    const parentPaddingTop = parseInt(computedParentStyle.getPropertyValue('padding-top'), 10)
-    const parentPaddingBottom = parseInt(computedParentStyle.getPropertyValue('padding-bottom'), 10)
+    const parentPaddingTop = Number.parseInt(
+      computedParentStyle.getPropertyValue('padding-top'),
+      10,
+    )
+    const parentPaddingBottom = Number.parseInt(
+      computedParentStyle.getPropertyValue('padding-bottom'),
+      10,
+    )
     const verticalParentPadding = parentPaddingTop + parentPaddingBottom
     this.naturalTop =
       offsetTill(parentNode, this.scrollPane) + parentPaddingTop + this.scrollPaneOffset

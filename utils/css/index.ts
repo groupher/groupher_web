@@ -5,7 +5,7 @@
  */
 
 import styled from 'styled-components'
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
 import { mediaBreakPoints } from './metric'
 import { media, fitContentWidth, fitStickerWidth, fitPageWidth } from './media'

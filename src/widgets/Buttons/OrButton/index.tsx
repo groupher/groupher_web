@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TSizeSM } from '@/spec'
+import type { TSizeSM } from '~/spec'
 
 import HorizontalButton from './HorizontalButton'
 import VerticalButton from './VerticalButton'

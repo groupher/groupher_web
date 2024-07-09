@@ -1,5 +1,5 @@
-import Input from '@/widgets/Input'
-import styled, { css, theme } from '@/css'
+import Input from '~/widgets/Input'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div`
   height: 100%;

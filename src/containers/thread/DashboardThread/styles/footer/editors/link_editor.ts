@@ -1,9 +1,9 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Input from '@/widgets/Input'
-import MoreSVG from '@/icons/menu/MoreL'
-import EditPenSVG from '@/icons/EditPen'
-import ArrowSVG from '@/icons/Arrow'
+import Input from '~/widgets/Input'
+import MoreSVG from '~/icons/menu/MoreL'
+import EditPenSVG from '~/icons/EditPen'
+import ArrowSVG from '~/icons/Arrow'
 
 export const Wrapper = styled.div`
   width: 100%;

@@ -1,4 +1,26 @@
-import type { TWallpaper, TWallpaperGradientDir } from '@/spec'
+import type { TWallpaper, TWallpaperGradientDir } from '~/spec'
+
+export type TStore = {
+  imagePos: TImagePos
+  lightPos: TImagePos
+  shadowLevel: TSettingLevel
+  borderRadiusLevel: TSettingLevel
+  linearBorderPos: TLinearBorderPos
+  size: TImageSize
+  ratio: TImageRadio
+  rotate: number
+  hasGlassBorder: boolean
+  wallpaper: string
+  hasPattern: boolean
+  hasBlur: boolean
+  direction: TWallpaperGradientDir
+
+  // drived
+  gradientWallpapers: Record<string, TWallpaper>
+  toolboxSetting: TToolboxSetting
+
+  commit: (patch: Partial<TStore>) => void
+}
 
 export type TImagePos =
   | 'top_left'

@@ -1,9 +1,9 @@
-import type { TActive, TColorName } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
+import type { TActive, TColorName } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
 
-import CrossSVG from '@/icons/CloseCross'
-import ArrowSVG from '@/icons/Arrow'
-import NotifySVG from '@/icons/Trumpet'
+import CrossSVG from '~/icons/CloseCross'
+import ArrowSVG from '~/icons/Arrow'
+import NotifySVG from '~/icons/Trumpet'
 
 import { TemplateBlock } from '.'
 

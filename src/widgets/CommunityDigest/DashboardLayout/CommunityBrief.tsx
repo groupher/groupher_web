@@ -1,18 +1,18 @@
-import { FC, useEffect, useState } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useEffect, useState } from 'react'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import usePublicThreads from '@/hooks/usePublicThreads'
-import useBrandLayout from '@/hooks/useBrandLayout'
-import useHover from '@/hooks/useHover'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import usePublicThreads from '~/hooks/usePublicThreads'
+import useLayout from '~/hooks/useLayout'
+import useHover from '~/hooks/useHover'
 
-import { BRAND_LAYOUT } from '@/constant/layout'
+import { BRAND_LAYOUT } from '~/const/layout'
 
-import { assetSrc } from '@/helper'
-import { titleCase } from '@/fmt'
+import { assetSrc } from '~/helper'
+import { titleCase } from '~/fmt'
 
-import Tooltip from '@/widgets/Tooltip'
-import { Space, SpaceGrow, SexyDivider } from '@/widgets/Common'
+import { Space, SpaceGrow, SexyDivider } from '~/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import {
   Wrapper,
@@ -28,10 +28,10 @@ import {
   DisableTippyJump,
 } from '../styles/dashboard_layout/community_brief'
 
-const CommunityBrief: FC = () => {
+export default () => {
   const threads = usePublicThreads()
   const { title, logo, slug, dashboard } = useViewingCommunity()
-  const brandLayout = useBrandLayout()
+  const { brandLayout } = useLayout()
 
   const [disableTippyJump, setDisableTippyJump] = useState(false)
   const [ref, isHovering] = useHover<HTMLDivElement>()
@@ -44,7 +44,9 @@ const CommunityBrief: FC = () => {
 
   return (
     <Wrapper ref={ref}>
-      {brandLayout !== BRAND_LAYOUT.TEXT && <Logo src={assetSrc(logo)} noLazy />}
+      {brandLayout !== BRAND_LAYOUT.TEXT && (
+        <Logo src={assetSrc(logo)} fallback={<ImgFallback size={25} title={title} />} />
+      )}
       {brandLayout !== BRAND_LAYOUT.LOGO && <Title>{title}</Title>}
       <Slash>/</Slash>
 
@@ -108,5 +110,3 @@ const CommunityBrief: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(CommunityBrief)

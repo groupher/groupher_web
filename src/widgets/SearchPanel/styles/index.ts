@@ -1,9 +1,9 @@
-import type { TTestable } from '@/spec'
+import type { TTestable } from '~/spec'
 
-import CloseSVG from '@/icons/CloseLight'
-import Input from '@/widgets/Input'
+import CloseSVG from '~/icons/CloseLight'
+import Input from '~/widgets/Input'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.article.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

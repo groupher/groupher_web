@@ -1,17 +1,18 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
-import RangeSlider from '@/widgets/RangeSlider'
+import RangeSlider from '~/widgets/RangeSlider'
 
+import useLogic from '../useLogic'
 import { Wrapper, Block, Panel, Reset, Icon, Desc } from '../styles/toolbox/rotate_block'
-import { rotateOnChange } from '../logic'
 
 type TProps = {
   rotate: number
 }
 
 const RotateBlock: FC<TProps> = ({ rotate }) => {
+  const { rotateOnChange } = useLogic()
   const [panelOpen, setPanelOpen] = useState(false)
 
   return (

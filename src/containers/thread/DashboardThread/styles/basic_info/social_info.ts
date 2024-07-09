@@ -1,4 +1,4 @@
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
 export const Wrapper = styled.div`
   padding-bottom: 30px;

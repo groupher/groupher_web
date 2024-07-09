@@ -1,5 +1,5 @@
-import type { TTestable } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TTestable } from '~/spec'
+import styled, { css, theme } from '~/css'
 
 type TWrapper = TTestable & { color?: string }
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

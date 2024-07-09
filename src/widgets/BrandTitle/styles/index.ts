@@ -1,7 +1,7 @@
-import type { TTestable } from '@/spec'
+import type { TTestable } from '~/spec'
 
-// import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+// import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
 type TWrapper = TTestable & { mBottom: number }
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

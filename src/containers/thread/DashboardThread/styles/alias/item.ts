@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Input from '@/widgets/Input'
-import ArrowSVG from '@/icons/ArrowSolid'
+import Input from '~/widgets/Input'
+import ArrowSVG from '~/icons/ArrowSolid'
 
 export const Wrapper = styled.div`
   ${css.column()};

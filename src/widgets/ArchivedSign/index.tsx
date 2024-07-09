@@ -2,9 +2,9 @@
  * ArchivedSign
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import DetailPanel from './DetailPanel'
 import { Wrapper, SignIcon, Text } from './styles'

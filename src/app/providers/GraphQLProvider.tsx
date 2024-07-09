@@ -4,14 +4,14 @@
  * this is for Graphql feching data on page load
  */
 
-import { FC, ReactNode, useMemo } from 'react'
+import { type FC, type ReactNode, useMemo } from 'react'
 import { UrqlProvider, ssrExchange, cacheExchange, fetchExchange, createClient } from '@urql/next'
 
 import { makeResult } from '@urql/core'
 import { filter, pipe, merge, mergeMap, share, fromPromise } from 'wonka'
 
-import { loadLocaleFile } from '@/i18n'
-import { GRAPHQL_ENDPOINT } from '@/config'
+import { loadLocaleFile } from '~/i18n'
+import { GRAPHQL_ENDPOINT } from '~/config'
 
 type TProps = {
   children: ReactNode
@@ -29,7 +29,7 @@ const localServeExchange = ({ forward }) => {
     const interceptedOps$ = pipe(
       sharedOps$,
       // @ts-ignore
-      filter((operation) => operation.variables?.locale),
+      filter(({ variables }) => Object.keys(variables).length === 1 && variables?.locale),
       mergeMap((operation) =>
         fromPromise(
           // @ts-ignore

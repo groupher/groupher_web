@@ -1,10 +1,10 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import TimeAgo from 'timeago-react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
-import TagsList from '@/widgets/TagsList'
-import DotDivider from '@/widgets/DotDivider'
+import TagsList from '~/widgets/TagsList'
+import DotDivider from '~/widgets/DotDivider'
 
 import {
   Wrapper,

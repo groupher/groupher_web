@@ -4,22 +4,19 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
-import type { TSpace, TColorName } from '@/spec'
-import useThemeData from '@/hooks/useThemeData'
-import { buildLog } from '@/logger'
-import { camelize } from '@/fmt'
+import type { TSpace, TColorName } from '~/spec'
+import useThemeData from '~/hooks/useThemeData'
+import { camelize } from '~/fmt'
 
 import FaIcon from './icons'
 import type { TIcon } from './spec'
 
 import { Wrapper } from './styles'
-
-const _log = buildLog('c:FaIcons:index')
 
 export type TProps = {
   testid?: string

@@ -1,18 +1,17 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-import { includes, reject, clone } from 'ramda'
+import { includes } from 'ramda'
 
-import { THREAD } from '@/constant/thread'
-import ColorSelector from '@/widgets/ColorSelector'
-import { SpaceGrow, Br } from '@/widgets/Common'
-import ToggleSwitch from '@/widgets/Buttons/ToggleSwitch'
+import { THREAD } from '~/const/thread'
+
+import ColorSelector from '~/widgets/ColorSelector'
+import { SpaceGrow, Br } from '~/widgets/Common'
+import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
 
 import { SETTING_FIELD } from '../constant'
 
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
-import useWidgetsInfo from '../hooks/useWidgetsInfo'
+import useWidgets from '../logic/useWidgets'
 import {
   Wrapper,
   Label,
@@ -24,25 +23,19 @@ import {
   Desc,
 } from '../styles/widgets/base_setting'
 
-import { edit } from '../logic'
-import { TThread } from '@/spec'
-
-const BaseSetting: FC = () => {
+export default () => {
   const {
-    widgetsPrimaryColor: primaryColor,
+    widgetsPrimaryColor,
     widgetsThreads,
     saving,
-    isThreadTouched,
-    isPrimaryColorTouched,
-  } = useWidgetsInfo()
+    getIsThreadTouched,
+    getIsPrimaryColorTouched,
+    edit,
+    threadOnChange,
+  } = useWidgets()
 
-  const threadOnChange = (checked: boolean, thread: TThread): void => {
-    const newThreads = checked
-      ? [...widgetsThreads, thread]
-      : reject((t) => t === thread, clone(widgetsThreads))
-
-    edit(newThreads, 'widgetsThreads')
-  }
+  const isThreadTouched = getIsThreadTouched()
+  const isPrimaryColorTouched = getIsPrimaryColorTouched()
 
   return (
     <Wrapper>
@@ -52,14 +45,14 @@ const BaseSetting: FC = () => {
         field={SETTING_FIELD.WIDGETS_PRIMARY_COLOR}
         loading={saving}
       >
-        <Label color={primaryColor}>
+        <Label color={widgetsPrimaryColor}>
           <ColorSelector
-            activeColor={primaryColor}
+            activeColor={widgetsPrimaryColor}
             onChange={(color) => edit(color, 'widgetsPrimaryColor')}
             placement="right"
             offset={[-1, 15]}
           >
-            <TheColor color={primaryColor} />
+            <TheColor color={widgetsPrimaryColor} />
           </ColorSelector>
         </Label>
       </SavingBar>
@@ -128,5 +121,3 @@ const BaseSetting: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(BaseSetting)

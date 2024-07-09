@@ -4,12 +4,11 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { ICON } from '@/config'
-import { buildLog } from '@/logger'
+import { ICON } from '~/config'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import {
   Wrapper,
@@ -20,8 +19,6 @@ import {
   Desc,
   Focus,
 } from '../styles/notify_button'
-
-const _log = buildLog('w:NotifyButton:index')
 
 type TProps = {
   testid?: string

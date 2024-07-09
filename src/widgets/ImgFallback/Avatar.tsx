@@ -4,16 +4,13 @@
  *
  */
 
-import { FC, memo } from 'react'
+import type { FC } from 'react'
 
-import { buildLog } from '@/logger'
-import { getLetterColor } from '@/utils/color'
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import { getLetterColor } from '~/utils/color'
+import useLayout from '~/hooks/useLayout'
 
 import type { TAvatarProps as TProps } from '.'
 import { Wrapper, Name } from './styles/avatar'
-
-const _log = buildLog('w:ImgFallback:Avatar')
 
 const Avatar: FC<TProps> = ({
   testid = 'avatar-fallback',
@@ -27,7 +24,7 @@ const Avatar: FC<TProps> = ({
   bottom = 0,
   quote = false,
 }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   const name = user?.login || title || '?'
   const sliceCount = size >= 30 ? 2 : 1
@@ -53,4 +50,4 @@ const Avatar: FC<TProps> = ({
   )
 }
 
-export default memo(Avatar)
+export default Avatar

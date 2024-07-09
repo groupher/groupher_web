@@ -4,15 +4,12 @@
  *
  */
 
-import { FC, memo, ReactNode } from 'react'
+import { type FC, memo, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { buildLog } from '@/logger'
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 import { Wrapper, Title, OptionWrapper } from './styles'
-
-const _log = buildLog('w:SubTitle:index')
 
 type TProps = {
   testid?: string

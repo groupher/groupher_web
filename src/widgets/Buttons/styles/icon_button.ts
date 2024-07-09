@@ -1,14 +1,14 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TActive, TSpace } from '@/spec'
+import type { TActive, TSpace } from '~/spec'
 
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
-import { getLocalSVG } from '@/icons'
+import { getLocalSVG } from '~/icons'
 
-// import CloseCross from '@/icons/CloseCross'
-// import AirBalloon from '@/icons/AirBalloon'
+// import CloseCross from '~/icons/CloseCross'
+// import AirBalloon from '~/icons/AirBalloon'
 
 import type { TProps as TIconButtonProps } from '../IconButton'
 

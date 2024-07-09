@@ -1,7 +1,7 @@
-import type { TColor } from '@/spec'
+import type { TColor } from '~/spec'
 
-import { WithMargin } from '@/widgets/Common'
-import styled, { css, rainbow } from '@/css'
+import { WithMargin } from '~/widgets/Common'
+import styled, { css, rainbow } from '~/css'
 
 export const Row = styled.div`
   ${css.row('align-both')};

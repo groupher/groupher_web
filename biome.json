@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+	"$schema": "https://biomejs.dev/schemas/1.8.0/schema.json",
 	"organizeImports": {
 		"enabled": false
 	},
@@ -9,6 +9,7 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
+			"recommended": true,
 			"complexity": {
 				"noForEach": "warn"	,
 				"noUselessFragments": "warn"
@@ -34,7 +35,6 @@
 				"useExhaustiveDependencies": "warn",
 				"noUnusedVariables": "warn"
 			},
-			"recommended": true,
 			"a11y": {
 				"noSvgWithoutTitle": "off",
 				"useButtonType": "off",

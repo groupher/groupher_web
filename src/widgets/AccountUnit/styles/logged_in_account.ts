@@ -1,13 +1,13 @@
-import type { TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
-import styled, { css, theme } from '@/css'
+import type { TAvatarLayout } from '~/spec'
+import { AVATAR_LAYOUT } from '~/const/layout'
+import styled, { css, theme } from '~/css'
 
-import SettingSVG from '@/icons/Setting'
-import AddSVG from '@/icons/Add'
-import LogoutSVG from '@/icons/Logout'
-import CmdSVG from '@/icons/Cmd'
+import SettingSVG from '~/icons/Setting'
+import AddSVG from '~/icons/Add'
+import LogoutSVG from '~/icons/Logout'
+import CmdSVG from '~/icons/Cmd'
 
-import Img from '@/Img'
+import Img from '~/Img'
 
 export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(17)};

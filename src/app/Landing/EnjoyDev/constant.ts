@@ -1,4 +1,4 @@
-import { ARTICLE_CAT } from '@/constant/gtd'
+import { ARTICLE_CAT } from '~/const/gtd'
 
 export const METRIC = {
   DEFAULT: {

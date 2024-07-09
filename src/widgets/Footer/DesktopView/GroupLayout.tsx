@@ -1,16 +1,14 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { keys } from 'ramda'
 
-import { DEME_SOCIALS } from '@/constant/social'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import useFooterLinks from '@/hooks/useFooterLinks'
+import { DEME_SOCIALS } from '~/const/social'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import useFooterLinks from '~/hooks/useFooterLinks'
 
-import { assetSrc, sortByIndex, groupByKey } from '@/helper'
+import { assetSrc, sortByIndex, groupByKey } from '~/helper'
 
-import { SpaceGrow } from '@/widgets/Common'
-import SocialList from '@/widgets/SocialList'
-import ImgFallback from '@/widgets/ImgFallback'
+import { SpaceGrow } from '~/widgets/Common'
+import SocialList from '~/widgets/SocialList'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import {
   Wrapper,
@@ -24,7 +22,7 @@ import {
   LinkItem,
 } from '../styles/desktop_view/group_layout'
 
-const GroupLayout: FC = () => {
+export default () => {
   const { logo, desc, title } = useViewingCommunity()
   const { links } = useFooterLinks()
 
@@ -67,5 +65,3 @@ const GroupLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(GroupLayout)

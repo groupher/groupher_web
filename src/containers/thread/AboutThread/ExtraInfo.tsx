@@ -1,10 +1,8 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { isEmpty } from 'ramda'
 
-import useAboutInfo from '@/hooks/useAboutInfo'
-import { SexyDivider as Divider } from '@/widgets/Common'
-import SocialList from '@/widgets/SocialList'
+import useAboutInfo from '~/hooks/useAboutInfo'
+import { SexyDivider as Divider } from '~/widgets/Common'
+import SocialList from '~/widgets/SocialList'
 
 import LabelList from './LabelList'
 import MediaReports from './MediaReports'
@@ -43,12 +41,10 @@ const Content = () => {
   )
 }
 
-const ExtraInfo: FC = () => {
+export default () => {
   return (
     <Wrapper>
       <Content />
     </Wrapper>
   )
 }
-
-export default observer(ExtraInfo)

@@ -2,19 +2,16 @@
  * TabBar
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TSizeSM, TThread } from '@/spec'
-import VIEW from '@/constant/view'
-import { buildLog } from '@/logger'
+import type { TSizeSM, TThread } from '~/spec'
+import VIEW from '~/const/view'
 
 import type { TTabItem } from './spec'
 
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'
-
-const _log = buildLog('w:TabBar:index')
 
 export type TProps = {
   source: TTabItem[]

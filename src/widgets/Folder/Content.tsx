@@ -1,7 +1,7 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import TimeAgo from 'timeago-react'
 
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 
 import { Wrapper, Info, Total, Unit, Text, LockIcon } from './styles/content'
 

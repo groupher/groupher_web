@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { Brick } from '@/widgets/Common'
+import { Brick } from '~/widgets/Common'
 
 import { Wrapper, Header, Logo, Title } from '../../styles/dashboard_intros/import_tab/content'
 

@@ -1,4 +1,4 @@
-import type { TSocialType } from '@/spec'
+import type { TSocialType } from '~/spec'
 
 // dribbble
 export const SOCIAL_LIST = {

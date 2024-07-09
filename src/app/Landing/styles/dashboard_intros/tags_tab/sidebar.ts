@@ -1,7 +1,7 @@
-import styled, { css, rainbow, theme } from '@/css'
+import styled, { css, rainbow, theme } from '~/css'
 
-import type { TActive, TColor } from '@/spec'
-import HashTagSVG from '@/icons/HashTagBold'
+import type { TActive, TColor } from '~/spec'
+import HashTagSVG from '~/icons/HashTagBold'
 
 export const Wrapper = styled.div`
   position: absolute;

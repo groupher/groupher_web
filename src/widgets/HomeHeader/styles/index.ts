@@ -1,14 +1,14 @@
 import Link from 'next/link'
 
-import type { TTestable, TActive } from '@/spec'
+import type { TTestable, TActive } from '~/spec'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Img from '@/Img'
-import { LineDivider } from '@/widgets/Common'
-import DemoSVG from '@/icons/DemoTV'
-import ArrowSVG from '@/icons/ArrowSimple'
-import GithubSVT from '@/icons/social/Github'
+import Img from '~/Img'
+import { LineDivider } from '~/widgets/Common'
+import DemoSVG from '~/icons/DemoTV'
+import ArrowSVG from '~/icons/ArrowSimple'
+import GithubSVT from '~/icons/social/Github'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

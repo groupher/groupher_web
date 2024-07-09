@@ -1,6 +1,6 @@
-import type { TArticle } from '@/spec'
+import type { TArticle } from '~/spec'
 
-import { openShareWindow } from '@/helper'
+import { openShareWindow } from '~/helper'
 
 import type { TLinksData } from './spec'
 import { SHARE_TYPE } from './constant'

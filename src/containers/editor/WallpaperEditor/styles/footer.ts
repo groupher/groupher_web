@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ForbidSVG from '@/icons/ForbidImg'
+import ForbidSVG from '~/icons/ForbidImg'
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};

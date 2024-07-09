@@ -1,7 +1,7 @@
-import type { TTestable, TSpace } from '@/spec'
+import type { TTestable, TSpace } from '~/spec'
 
-import EnterSVG from '@/icons/Enter'
-import styled, { css, theme } from '@/css'
+import EnterSVG from '~/icons/Enter'
+import styled, { css, theme } from '~/css'
 
 type TWrapper = TSpace & TTestable
 

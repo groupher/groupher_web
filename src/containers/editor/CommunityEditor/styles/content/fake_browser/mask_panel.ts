@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import CheckSVG from '@/icons/Check'
+import CheckSVG from '~/icons/Check'
 
 export const Wrapper = styled.div`
   height: 320px;
@@ -45,7 +45,6 @@ export const Header = styled.div`
   ${css.column('align-both')};
   width: 100%;
   margin-bottom: 30px;
-  margin-left: 25px;
 `
 export const Divider = styled.div`
   width: 160px;

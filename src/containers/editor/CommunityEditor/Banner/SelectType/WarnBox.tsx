@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Wrapper, Title, Desc } from '../../styles/banner/select_type/warn_box'
 

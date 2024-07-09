@@ -1,6 +1,6 @@
-import styled from '@/css'
-import type { TTestable } from '@/spec'
-import { WithMargin } from '@/widgets/Common'
+import styled from '~/css'
+import type { TTestable } from '~/spec'
+import { WithMargin } from '~/widgets/Common'
 
 type TWrapper = { opacity?: number } & TTestable
 

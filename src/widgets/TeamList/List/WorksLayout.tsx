@@ -4,18 +4,15 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TUser } from '@/spec'
-import { ICON } from '@/config'
-import { buildLog } from '@/logger'
+import type { TUser } from '~/spec'
+import { ICON } from '~/config'
 
-import Button from '@/widgets/Buttons/Button'
+import Button from '~/widgets/Buttons/Button'
 import UserItem from '../UserItem'
 
 import { Wrapper, SettingWrapper, SettingIcon } from '../styles/list/works_layout'
-
-const _log = buildLog('w:TeamList:index')
 
 type TProps = {
   users: TUser[]

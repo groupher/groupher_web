@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import Button from '@/widgets/Buttons/Button'
+import styled, { css, theme } from '~/css'
+import Button from '~/widgets/Buttons/Button'
 
 export const Wrapper = styled(Button)<{ $noPaddingRight: boolean }>`
   padding-right: ${({ $noPaddingRight }) => ($noPaddingRight ? '0px' : '6px')};

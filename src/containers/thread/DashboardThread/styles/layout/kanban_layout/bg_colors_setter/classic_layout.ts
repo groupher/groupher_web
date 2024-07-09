@@ -1,6 +1,6 @@
-import type { TActive, TColor } from '@/spec'
+import type { TActive, TColor } from '~/spec'
 
-import styled, { css, theme, rainbowLight } from '@/css'
+import styled, { css, theme, rainbowLight } from '~/css'
 
 export { Bar, Circle } from '..'
 

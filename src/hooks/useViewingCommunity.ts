@@ -1,19 +1,10 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
+import type { TCommunity } from '~/spec'
+import useSubStore from '~/hooks/useSubStore'
 
-import type { TCommunity } from '@/spec'
-
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
 const useViewingCommunity = (): TCommunity => {
-  const { store } = useContext(MobXProviderContext)
+  const store = useSubStore('viewing')
 
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
-
-  return store.viewing.community
+  return store.community
 }
 
 export default useViewingCommunity

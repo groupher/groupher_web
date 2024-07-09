@@ -1,12 +1,12 @@
-import { FC, useState, lazy, Suspense } from 'react'
+import { useState, lazy, Suspense } from 'react'
 
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
 import { Wrapper, Adder, AddIcon, AddTitle, ImageIcon } from './styles/article_cover'
 
-const CoverEditor = lazy(() => import('@/containers/editor/CoverEditor'))
+const CoverEditor = lazy(() => import('~/containers/editor/CoverEditor'))
 
-const ArticleCover: FC = () => {
+export default () => {
   const [hasCover, setHasCover] = useState(true)
 
   return (
@@ -26,5 +26,3 @@ const ArticleCover: FC = () => {
     </Wrapper>
   )
 }
-
-export default ArticleCover

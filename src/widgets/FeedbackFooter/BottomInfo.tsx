@@ -4,10 +4,9 @@
  *
  */
 
-import { FC, memo, useState } from 'react'
+import { type FC, memo, useState } from 'react'
 
-import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TSpace } from '~/spec'
 
 import type { TDocFeedback } from './spec'
 import { HELP_FEEDBACK } from './constant'
@@ -22,8 +21,6 @@ import {
   SoSoIcon,
   BadIcon,
 } from './styles/bottom_info'
-
-const _log = buildLog('c:FeedbackFooter:index')
 
 type TProps = {
   offsetRight?: number

@@ -1,29 +1,27 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { DASHBOARD_ALIAS_ROUTE } from '@/constant/route'
-import VIEW from '@/constant/view'
+import { DASHBOARD_ALIAS_ROUTE } from '~/const/route'
+import VIEW from '~/const/view'
 
-import { groupByKey } from '@/helper'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { groupByKey } from '~/helper'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import Tabs from '@/widgets/Switcher/Tabs'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import { ALIAS_TABS, ALIAS_GROUP } from '../constant'
 
 import Portal from '../Portal'
 import Item from './Item'
 
-import useAliasInfo from '../hooks/useAliasInfo'
+import useAlias from '../logic/useAlias'
 import { Wrapper, Banner, TabsWrapper } from '../styles/alias'
-import { edit } from '../logic'
 
 const Alias: FC = () => {
   const router = useRouter()
   const curCommunity = useViewingCommunity()
+  const { nameAlias, aliasTab, changeTab } = useAlias()
 
-  const { nameAlias, editingAlias, aliasTab } = useAliasInfo()
   const groupedAlias = groupByKey(nameAlias, 'group')
 
   const generalAlias = groupedAlias[ALIAS_GROUP.THREAD] || []
@@ -43,7 +41,7 @@ const Alias: FC = () => {
             items={ALIAS_TABS}
             activeKey={aliasTab}
             onChange={(tab) => {
-              edit(tab, 'aliasTab')
+              changeTab(tab)
               const targetPath =
                 tab === DASHBOARD_ALIAS_ROUTE.THREAD
                   ? `/${curCommunity.slug}/dashboard/alias`
@@ -57,19 +55,13 @@ const Alias: FC = () => {
         </TabsWrapper>
       </Banner>
       {aliasTab === ALIAS_GROUP.THREAD &&
-        generalAlias.map((item) => (
-          <Item key={item.slug} alias={item} editingAlias={editingAlias} />
-        ))}
+        generalAlias.map((item) => <Item key={item.slug} alias={item} />)}
       {aliasTab === ALIAS_GROUP.KANBAN &&
-        kanbanAlias.map((item) => (
-          <Item key={item.slug} alias={item} editingAlias={editingAlias} />
-        ))}
+        kanbanAlias.map((item) => <Item key={item.slug} alias={item} />)}
       {aliasTab === ALIAS_GROUP.OTHERS &&
-        othersAlias.map((item) => (
-          <Item key={item.slug} alias={item} editingAlias={editingAlias} />
-        ))}
+        othersAlias.map((item) => <Item key={item.slug} alias={item} />)}
     </Wrapper>
   )
 }
 
-export default observer(Alias)
+export default Alias

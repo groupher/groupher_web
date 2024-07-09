@@ -1,6 +1,6 @@
-import IconText from '@/widgets/IconText'
+import IconText from '~/widgets/IconText'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 export { Icon } from './label'
 

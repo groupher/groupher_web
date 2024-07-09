@@ -14,12 +14,11 @@ import type {
   TCommunitySetterStyle,
   TReportType,
   TArticlePubSelector,
-} from '@/spec'
-import { THREAD } from '@/constant/thread'
-import TYPE from '@/constant/type'
-import EVENT from '@/constant/event'
+} from '~/spec'
+import { THREAD } from '~/const/thread'
+import TYPE from '~/const/type'
+import EVENT from '~/const/event'
 
-import { toJS } from './mobx'
 import PubSub from './pubsub'
 import BStore from './bstore'
 import { scrollToHeader } from './dom'
@@ -217,7 +216,7 @@ export const viewingChanged = (article: TArticle | null): void => {
  * - 如果在其他页面，那么需要重新请求页面
  */
 export const changeToCommunity = (slug = ''): void => {
-  console.log('## changeToCommunity')
+  console.log('## ## changeToCommunity')
 }
 
 /**
@@ -225,7 +224,7 @@ export const changeToCommunity = (slug = ''): void => {
  */
 export const previewArticle = (article: TArticle): void => {
   const type = TYPE.DRAWER[`${article.meta.thread}_VIEW`]
-  const data = toJS(article)
+  const data = article
 
   send(EVENT.DRAWER.OPEN, { type, data })
 }

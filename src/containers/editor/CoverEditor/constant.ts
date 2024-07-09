@@ -1,4 +1,4 @@
-import type { TSnakeUpperCase } from '@/spec'
+import type { TSnakeUpperCase } from '~/spec'
 
 import type { TImagePos, TSettingLevel, TLinearBorderPos, TImageSize, TImageRadio } from './spec'
 

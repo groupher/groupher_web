@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import DeleteSVG from '@/icons/DeleteSolid'
+import styled, { css, theme } from '~/css'
+import DeleteSVG from '~/icons/DeleteSolid'
 
 export { Desc, Inputer } from '.'
 

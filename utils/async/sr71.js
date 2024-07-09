@@ -4,7 +4,7 @@ import { Subject } from 'rxjs'
 // debounceTime,
 import { switchMap, takeUntil, merge } from 'rxjs/operators'
 
-import PubSub from '@/utils/pubsub'
+import PubSub from '~/utils/pubsub'
 
 import { queryPromise, mutatePromise, restGetPromise } from './methods'
 

@@ -4,9 +4,9 @@
  *
  */
 
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import VIEW from '@/constant/view'
+import VIEW from '~/const/view'
 
 import DesktopView from './DesktopView/index'
 

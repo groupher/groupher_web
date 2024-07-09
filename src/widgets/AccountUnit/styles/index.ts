@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import AccountSVG from '@/icons/Acount'
-import { WithMargin } from '@/widgets/Common'
+import AccountSVG from '~/icons/Acount'
+import { WithMargin } from '~/widgets/Common'
 
 export const NormalWrapper = styled(WithMargin)`
   ${css.row('align-center')};

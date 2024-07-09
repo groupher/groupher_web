@@ -1,9 +1,9 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TCommunity } from '@/spec'
+import type { TCommunity } from '~/spec'
 
-import Tooltip from '@/widgets/Tooltip'
-import CommunityCard from '@/widgets/Cards/CommunityCard'
+import Tooltip from '~/widgets/Tooltip'
+import CommunityCard from '~/widgets/Cards/CommunityCard'
 
 import { MirrorIcon, PopHint, SlashSign, MirrorCard } from './styles/mirror_hint'
 

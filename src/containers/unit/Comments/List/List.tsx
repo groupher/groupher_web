@@ -1,7 +1,7 @@
-import { FC, Fragment, memo } from 'react'
+import type { FC } from 'react'
 import { includes } from 'ramda'
 
-import type { TComment, TID } from '@/spec'
+import type { TComment, TID } from '~/spec'
 
 import type { TMode, TRepliesState, TAPIMode } from '../spec'
 
@@ -11,8 +11,9 @@ import DateDivider from './DateDivider'
 
 import { MODE } from '../constant'
 import { passedDate } from '../helper'
+
+import useLogic from '../useLogic'
 import { Wrapper, IndentLine } from '../styles/list/list'
-import { foldComment } from '../logic'
 
 type TProps = {
   mode: TMode
@@ -23,8 +24,10 @@ type TProps = {
 }
 
 const List: FC<TProps> = ({ mode, repliesState, apiMode, entries, foldedIds }) => {
+  const { foldComment } = useLogic()
+
   return (
-    <Fragment>
+    <>
       {entries.map((comment, index) => (
         <Wrapper key={comment.id}>
           <Comment
@@ -55,8 +58,8 @@ const List: FC<TProps> = ({ mode, repliesState, apiMode, entries, foldedIds }) =
           />
         </Wrapper>
       ))}
-    </Fragment>
+    </>
   )
 }
 
-export default memo(List)
+export default List

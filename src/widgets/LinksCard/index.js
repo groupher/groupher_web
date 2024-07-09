@@ -7,14 +7,10 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { buildLog } from '@/logger'
-
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 import Item from './Item'
 import { Wrapper, Header, Title, ListWrapper, MoreWrapper } from './styles'
-
-const _log = buildLog('w:LinksCard:index')
 
 const LinksCard = ({ testid, title, items, onSelect, left, right, bottom }) => {
   return (

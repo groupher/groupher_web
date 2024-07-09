@@ -1,19 +1,12 @@
-import { FC } from 'react'
+import { CHANGE_MODE } from '~/const/mode'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
-import type { TChangeMode, TTag } from '@/spec'
-import { CHANGE_MODE } from '@/constant/mode'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-
+import useLogic from './useLogic'
 import { Wrapper, UpdateWrapper, ActionButton } from './styles/footer'
-import { onCreate, onUpdate, onDelete } from './logic'
 
-type TProps = {
-  tag: TTag
-  mode: TChangeMode
-  processing: boolean
-}
+export default () => {
+  const { mode, editingTag, onCreate, onUpdate, onDelete, processing } = useLogic()
 
-const Footer: FC<TProps> = ({ tag, mode, processing }) => {
   if (processing) {
     return (
       <Wrapper>
@@ -34,7 +27,7 @@ const Footer: FC<TProps> = ({ tag, mode, processing }) => {
             更新链接
           </ActionButton>
 
-          <ActionButton type="red" onClick={() => onDelete(tag)} ghost noBorder>
+          <ActionButton type="red" onClick={() => onDelete(editingTag)} ghost noBorder>
             删除标签
           </ActionButton>
         </UpdateWrapper>
@@ -42,5 +35,3 @@ const Footer: FC<TProps> = ({ tag, mode, processing }) => {
     </Wrapper>
   )
 }
-
-export default Footer

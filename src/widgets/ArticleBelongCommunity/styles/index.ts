@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
-import type { TTestable } from '@/spec'
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
-import SiteLogo from '@/icons/CPLogo'
+import type { TTestable } from '~/spec'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
+import SiteLogo from '~/icons/CPLogo'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

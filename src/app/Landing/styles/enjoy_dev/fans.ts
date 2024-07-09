@@ -1,10 +1,10 @@
-import type { TColor } from '@/spec'
-import styled, { css, rainbow, theme, animate } from '@/css'
+import type { TColor } from '~/spec'
+import styled, { css, rainbow, theme, animate } from '~/css'
 
-import Img from '@/Img'
+import Img from '~/Img'
 
-import { WithPosition } from '@/widgets/Common'
-import DiscussSVG from '@/icons/Comment'
+import { WithPosition } from '~/widgets/Common'
+import DiscussSVG from '~/icons/Comment'
 
 export const Wrapper = styled.div`
   position: absolute;

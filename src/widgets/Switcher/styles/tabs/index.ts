@@ -1,5 +1,5 @@
-import type { TTestable, TColor } from '@/spec'
-import styled, { css, rainbow } from '@/css'
+import type { TTestable, TColor } from '~/spec'
+import styled, { css, rainbow } from '~/css'
 
 type TSlipBar = {
   $slipHeight: string

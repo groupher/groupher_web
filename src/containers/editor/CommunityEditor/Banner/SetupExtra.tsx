@@ -1,8 +1,6 @@
-import { FC, memo } from 'react'
-
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
-import { Br, Space } from '@/widgets/Common'
-import CitySelector from '@/widgets/CitySelector'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
+import { Br, Space } from '~/widgets/Common'
+import CitySelector from '~/widgets/CitySelector'
 
 import { SOURCE_OPTIONS } from '../constant'
 
@@ -10,6 +8,7 @@ import ScaleSelector from './ScaleSelector'
 import BlockSelector from './BlockSelector'
 import NextStepButton from './NextStepButton'
 
+import useLogic from '../useLogic'
 import {
   Wrapper,
   IntroTitle,
@@ -22,16 +21,9 @@ import {
   Label,
 } from '../styles/banner/setup_extra'
 
-import type { TSetupExtraStatus, TValidState } from '../spec'
-import { pervStep, nextStep, inputOnChange } from '../logic'
-
-type TProps = {
-  status: TSetupExtraStatus
-  validState: TValidState
-}
-
-const SetupExtra: FC<TProps> = ({ status, validState }) => {
-  const { homepage, city, source, communityType } = status
+export default () => {
+  const { homepage, city, source, communityType, validState, pervStep, nextStep, inputOnChange } =
+    useLogic()
 
   const { isTitleValid, isDescValid, isLogoValid, submitting } = validState
   const isValid = isTitleValid && isDescValid && isLogoValid
@@ -90,5 +82,3 @@ const SetupExtra: FC<TProps> = ({ status, validState }) => {
     </Wrapper>
   )
 }
-
-export default memo(SetupExtra)

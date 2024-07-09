@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 const SvgComponent: FC = (props) => (
   <svg className="prefix__icon" viewBox="0 0 1367 1024" width={266.992} height={200} {...props}>

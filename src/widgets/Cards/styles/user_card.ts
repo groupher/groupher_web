@@ -1,12 +1,12 @@
 import Link from 'next/link'
 
-import type { TAvatarLayout } from '@/spec'
-import { AVATAR_LAYOUT } from '@/constant/layout'
+import type { TAvatarLayout } from '~/spec'
+import { AVATAR_LAYOUT } from '~/const/layout'
 
-// import type { TTestable } from '@/spec'
+// import type { TTestable } from '~/spec'
 
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div`
   ${css.column()};

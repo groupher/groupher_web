@@ -1,7 +1,6 @@
-import { FC, useState } from 'react'
-import { observer } from 'mobx-react-lite'
+import { type FC, useState } from 'react'
 
-import { FOOTER_LAYOUT } from '@/constant/layout'
+import { FOOTER_LAYOUT } from '~/const/layout'
 
 import { SETTING_FIELD } from '../../constant'
 import SavingBar from '../../SavingBar'
@@ -9,13 +8,14 @@ import SavingBar from '../../SavingBar'
 import Simple from './Simple'
 import Group from './Group'
 
-import useFooterSettingsInfo from '../../hooks/useFooterSettingsInfo'
+import useFooter from '../../logic/useFooter'
 import { Wrapper, ArrowIcon, ToggleButton, ToggleText } from '../../styles/footer/templates'
-import { resetEditingLink } from '../../logic/links'
 
 const Templates: FC = () => {
-  const { footerLayout, saving, footerLinks, isLayoutTouched } = useFooterSettingsInfo()
+  const { getIsLayoutTouched, footerLayout, saving, footerLinks, resetEditingLink } = useFooter()
   const [showAll, setShowAll] = useState<boolean>(false)
+
+  const isLayoutTouched = getIsLayoutTouched('footerLayout')
 
   return (
     <Wrapper>
@@ -61,4 +61,4 @@ const Templates: FC = () => {
   )
 }
 
-export default observer(Templates)
+export default Templates

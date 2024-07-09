@@ -4,16 +4,13 @@
  * use custom animation Globally at GlobalStyle.ts
  */
 
-import { FC, ReactNode, memo, createContext } from 'react'
+import { type FC, type ReactNode, memo, createContext } from 'react'
 
-import type { TTooltipPlacement } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TTooltipPlacement } from '~/spec'
 import RealTooltip from './RealTooltip'
 
 // @ts-ignore
 const TooltipContext = createContext()
-
-const _log = buildLog('w:Tooltip:index')
 
 export type TProps = {
   children: ReactNode

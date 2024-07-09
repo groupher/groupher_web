@@ -2,9 +2,9 @@ import type { NextAuthConfig } from 'next-auth'
 import { cookies /* headers */ } from 'next/headers'
 import NextAuth from 'next-auth'
 
-import OAUTH from '@/constant/oauth'
+import OAUTH from '~/const/oauth'
 
-import { GRAPHQL_ENDPOINT } from '@/config'
+import { GRAPHQL_ENDPOINT } from '~/config'
 import { cacheExchange, createClient, fetchExchange, gql } from '@urql/core'
 import { registerUrql } from '@urql/next/rsc'
 
@@ -48,15 +48,15 @@ export const config = {
       // const cookiesRes = cookies()
       // const headersRes = headers()
 
-      // console.log('## cookiesRes: ', cookiesRes)
-      // console.log('## headersRes: ', headersRes)
+      // console.log('## ## cookiesRes: ', cookiesRes)
+      // console.log('## ## headersRes: ', headersRes)
 
-      // console.log('## ### ### ## ## ## ##')
-      // console.log('## signIn callback user: ', user)
-      // console.log('## signIn account: ', account)
-      // console.log('## signIn profile: ', profile)
+      // console.log('## ## ### ### ## ## ## ##')
+      // console.log('## ## signIn callback user: ', user)
+      // console.log('## ## signIn account: ', account)
+      // console.log('## ## signIn profile: ', profile)
 
-      console.log('## ### ### ## ## ## ##')
+      console.log('## ## ### ### ## ## ## ##')
 
       // const [result, signinOauth] =  useMutation(signinOauthQuery)
 
@@ -72,7 +72,7 @@ export const config = {
         company: profile.company,
       }
 
-      console.log('## standProvider: ', standProvider)
+      console.log('## ## standProvider: ', standProvider)
 
       const params = {
         provider: standProvider,
@@ -83,7 +83,7 @@ export const config = {
       const { data, error } = await oauthSignin(params)
 
       if (error) return false
-      console.log('## got server response: ', data)
+      console.log('## ## got server response: ', data)
 
       cookies().set({
         name: OAUTH.USER_KEY,

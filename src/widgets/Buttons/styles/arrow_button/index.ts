@@ -1,6 +1,6 @@
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 
-import styled, { css, rainbowLink } from '@/css'
+import styled, { css, rainbowLink } from '~/css'
 
 import type { TProps } from '../../ArrowButton'
 

@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import FormInput from '@/widgets/Input'
-import ApplySVG from '@/icons/Apply'
+import FormInput from '~/widgets/Input'
+import ApplySVG from '~/icons/Apply'
 
 import { InputBar } from './input_box'
 

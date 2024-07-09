@@ -1,7 +1,7 @@
-import type { TSpace } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TSpace } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import BackSVG from '@/icons/Back'
+import BackSVG from '~/icons/Back'
 
 export const Wrapper = styled.button<TSpace>`
   ${css.row('align-both')};

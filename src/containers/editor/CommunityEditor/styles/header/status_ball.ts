@@ -1,6 +1,6 @@
-import styled, { css, theme, animate } from '@/css'
+import styled, { css, theme, animate } from '~/css'
 
-import CheckSVG from '@/icons/CheckBold'
+import CheckSVG from '~/icons/CheckBold'
 
 type TWrapper = { $colors: string[]; $noBorder?: boolean }
 

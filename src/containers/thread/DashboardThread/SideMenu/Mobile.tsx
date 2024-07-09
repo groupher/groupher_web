@@ -1,9 +1,7 @@
-import { FC, Fragment } from 'react'
-import { observer } from 'mobx-react-lite'
+import { type FC, Fragment } from 'react'
 import { keys } from 'ramda'
 
-import type { TDashboardPath } from '@/spec'
-import { Br } from '@/widgets/Common'
+import { Br } from '~/widgets/Common'
 
 import { MENU } from '../constant'
 import type { TMenuGroup } from '../spec'
@@ -12,18 +10,14 @@ import Group from './Group'
 
 import { MobileWrapper } from '../styles/side_menu'
 
-type TProps = {
-  curTab?: TDashboardPath
-}
-
-const SideMenu: FC<TProps> = ({ curTab = '' }) => {
+const SideMenu: FC = () => {
   const groupKeys = keys(MENU)
 
   return (
     <MobileWrapper>
       {groupKeys.map((key) => (
         <Fragment key={key}>
-          <Group group={MENU[key] as TMenuGroup} curTab={curTab} />
+          <Group group={MENU[key] as TMenuGroup} />
           <Br top={30} />
         </Fragment>
       ))}
@@ -31,4 +25,4 @@ const SideMenu: FC<TProps> = ({ curTab = '' }) => {
   )
 }
 
-export default observer(SideMenu)
+export default SideMenu

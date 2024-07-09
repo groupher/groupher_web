@@ -3,19 +3,12 @@
  *
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
-import { buildLog } from '@/logger'
+import type { FC } from 'react'
 
 import Cover from './Cover'
 import Toolbox from './Toolbox'
 
-import { useStore } from './store'
 import { Wrapper } from './styles'
-import { useInit } from './logic' /* eslint-disable-next-line */
-
-const log = buildLog('C:CoverEditor')
 
 type TProps = {
   testid?: string
@@ -24,11 +17,11 @@ type TProps = {
   onReplace?: () => void
 }
 
-const CoverEditor: FC<TProps> = ({ testid = 'cover-editor', onDelete = log, onReplace = log }) => {
-  const store = useStore()
-  useInit(store)
-  const { toolboxSetting } = store
-
+const CoverEditor: FC<TProps> = ({
+  testid = 'cover-editor',
+  onDelete = console.log,
+  onReplace = console.log,
+}) => {
   // const imageUrl = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/385126/600.jpg'
   // const imageUrl = '/changelog-demo-light.jpg'
   const imageUrl = '/changelog-demo-dark.jpg'
@@ -36,10 +29,10 @@ const CoverEditor: FC<TProps> = ({ testid = 'cover-editor', onDelete = log, onRe
 
   return (
     <Wrapper $testid={testid}>
-      <Cover setting={toolboxSetting} imageUrl={imageUrl} />
-      <Toolbox setting={toolboxSetting} onDelete={onDelete} onReplace={onReplace} />
+      <Cover imageUrl={imageUrl} />
+      <Toolbox onDelete={onDelete} onReplace={onReplace} />
     </Wrapper>
   )
 }
 
-export default observer(CoverEditor)
+export default CoverEditor

@@ -11,7 +11,7 @@
  * Earthsung https://atom.io/themes/earthsung-by-jackson-syntax
  */
 
-import type { TFlattenObjectKeys } from '@/spec'
+import type { TFlattenObjectKeys } from '~/spec'
 
 import day from './day'
 import night from './night'

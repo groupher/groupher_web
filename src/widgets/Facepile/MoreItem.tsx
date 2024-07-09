@@ -1,7 +1,6 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import useAvatarLayout from '@/hooks/useAvatarLayout'
+import useLayout from '~/hooks/useLayout'
 
 import type { TProps as TAvatarsProps } from '.'
 
@@ -12,7 +11,7 @@ import { Wrapper, TextMore, DotText } from './styles/more_item'
 type TProps = Pick<TAvatarsProps, 'size' | 'onTotalSelect'>
 
 const MoreItem: FC<TProps> = ({ size, onTotalSelect }) => {
-  const avatarLayout = useAvatarLayout()
+  const { avatarLayout } = useLayout()
 
   return (
     <Wrapper size={size} onClick={() => onTotalSelect()}>
@@ -23,4 +22,4 @@ const MoreItem: FC<TProps> = ({ size, onTotalSelect }) => {
   )
 }
 
-export default observer(MoreItem)
+export default MoreItem

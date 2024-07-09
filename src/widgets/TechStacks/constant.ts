@@ -1,4 +1,4 @@
-import type { TTechStackCategory } from '@/spec'
+import type { TTechStackCategory } from '~/spec'
 
 export const CATEGORYS_RAWS = ['lang', 'framework', 'database', 'devOps', 'design']
 

@@ -4,17 +4,14 @@
  *
  */
 
-import { FC, memo, ReactNode } from 'react'
+import { type FC, memo, type ReactNode } from 'react'
 import { keys, includes, isEmpty } from 'ramda'
 
-import type { TColorName, TTooltipPlacement } from '@/spec'
-import { buildLog } from '@/logger'
-import { COLOR_NAME } from '@/constant/colors'
+import type { TColorName, TTooltipPlacement } from '~/spec'
+import { COLOR_NAME } from '~/const/colors'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 import { Wrapper, DotWrapper, Dot, HookIcon } from './styles'
-
-const log = buildLog('w:ColorSelector:index')
 
 type TProps = {
   activeColor?: TColorName | string
@@ -31,7 +28,7 @@ const ColorSelector: FC<TProps> = ({
   testid = 'color-selector',
   activeColor,
   children,
-  onChange = log,
+  onChange = console.log,
   placement = 'bottom',
   offset = [5, 5],
   bgMode = false,

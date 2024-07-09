@@ -1,18 +1,15 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TSpace } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TSpace } from '~/spec'
 
 import { Wrapper, BackIcon } from './styles/cancel_button'
-
-const log = buildLog('w:Buttons:CancelButton')
 
 type TProps = {
   text?: string
   onClick?: () => void
 } & TSpace
 
-const CancelButton: FC<TProps> = ({ text = '取消', onClick = log, ...restProps }) => {
+const CancelButton: FC<TProps> = ({ text = '取消', onClick = console.log, ...restProps }) => {
   return (
     <Wrapper onClick={onClick} {...restProps}>
       <BackIcon />

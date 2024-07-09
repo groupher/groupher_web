@@ -1,26 +1,22 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
-import { DASHBOARD_BROADCAST_ROUTE } from '@/constant/route'
-import VIEW from '@/constant/view'
+import { DASHBOARD_BROADCAST_ROUTE } from '~/const/route'
+import VIEW from '~/const/view'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import Tabs from '@/widgets/Switcher/Tabs'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import { BROADCAST_TABS } from '../constant'
-
 import Portal from '../Portal'
 import Editor from './Editor'
 
-import useBroadcastInfo from '../hooks/useBroadcastInfo'
+import useBroadcast from '../logic/useBroadcast'
 import { Wrapper, Banner, TabsWrapper, InnerWrapper } from '../styles/broadcast'
-import { edit } from '../logic'
 
-const Broadcast: FC = () => {
+export default () => {
   const router = useRouter()
   const curCommunity = useViewingCommunity()
-  const { broadcastTab } = useBroadcastInfo()
+  const { broadcastTab, edit } = useBroadcast()
 
   return (
     <Wrapper>
@@ -52,5 +48,3 @@ const Broadcast: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(Broadcast)

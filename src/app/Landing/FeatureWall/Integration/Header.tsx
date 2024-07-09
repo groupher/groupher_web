@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { Brick } from '@/widgets/Common'
+import { Brick } from '~/widgets/Common'
 import { Wrapper, Dot } from '../../styles/feature_wall/integration/header'
 
 const Header: FC = () => {

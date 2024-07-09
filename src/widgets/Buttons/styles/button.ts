@@ -1,6 +1,5 @@
-import styled, { css, theme } from '@/css'
-import { lighten } from '@/utils/color'
-import type { TSize, TButtonStyle, TSpace, TColor } from '@/spec'
+import styled, { css, theme } from '~/css'
+import type { TSize, TButtonStyle, TSpace, TColor } from '~/spec'
 
 import {
   getColor,

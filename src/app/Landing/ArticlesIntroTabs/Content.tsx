@@ -1,8 +1,8 @@
-import { FC, memo } from 'react'
+import type { FC } from 'react'
 
-import type { TThread } from '@/spec'
-import { THREAD } from '@/constant/thread'
-import useMetric from '@/hooks/useMetric'
+import type { TThread } from '~/spec'
+import { THREAD } from '~/const/thread'
+import useMetric from '~/hooks/useMetric'
 
 import DiscussTab from './DiscussTab'
 import ChangelogTab from './ChangelogTab'
@@ -31,4 +31,4 @@ const Content: FC<TProps> = ({ tab }) => {
   )
 }
 
-export default memo(Content)
+export default Content

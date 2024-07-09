@@ -4,36 +4,31 @@
  *
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TArticleCat, TArticleOrder, TArticleState } from '@/spec'
-import { refreshArticles, callGEditor, callSyncSelector } from '@/signal'
-import { PUBLISH_MODE } from '@/constant/publish'
-import { CONDITION_MODE } from '@/constant/mode'
-import TYPE from '@/constant/type'
-import { BANNER_LAYOUT } from '@/constant/layout'
+import type { TArticleCat, TArticleOrder, TArticleState } from '~/spec'
+import { refreshArticles, callGEditor, callSyncSelector } from '~/signal'
+import { PUBLISH_MODE } from '~/const/publish'
+import { CONDITION_MODE } from '~/const/mode'
+import TYPE from '~/const/type'
+import { BANNER_LAYOUT } from '~/const/layout'
 
-import usePagedPosts from '@/hooks/usePagedPosts'
-import useBannerLayout from '@/hooks/useBannerLayout'
-import useArticlesFilter from '@/hooks/useArticlesFilter'
+import usePagedPosts from '~/hooks/usePagedPosts'
+import useLayout from '~/hooks/useLayout'
+import useArticlesFilter from '~/hooks/useArticlesFilter'
 
-import { buildLog } from '@/logger'
-
-import { Space, SpaceGrow, DesktopOnly } from '@/widgets/Common'
-import PublishButton from '@/widgets/Buttons/PublishButton'
-import ConditionSelector from '@/widgets/ConditionSelector'
-import SearchBox from '@/widgets/SearchBox'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import { Space, SpaceGrow, DesktopOnly } from '~/widgets/Common'
+import PublishButton from '~/widgets/Buttons/PublishButton'
+import ConditionSelector from '~/widgets/ConditionSelector'
+import SearchBox from '~/widgets/SearchBox'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
 import type { TProps } from '.'
 import { Wrapper } from './styles'
 
-const _log = buildLog('w:ArticlesFilter:index')
-
 const ArticlesFilter: FC<TProps> = ({ mode = 'default' }) => {
   const { resState } = usePagedPosts()
-  const bannerLayout = useBannerLayout()
+  const { bannerLayout } = useLayout()
 
   const {
     cat: activeCat,
@@ -96,5 +91,4 @@ const ArticlesFilter: FC<TProps> = ({ mode = 'default' }) => {
   )
 }
 
-// export default ArticlesFilter
-export default observer(ArticlesFilter)
+export default ArticlesFilter

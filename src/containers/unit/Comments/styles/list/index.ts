@@ -1,4 +1,4 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 // min-height: 300px;
 export const ListsWrapper = styled.div`

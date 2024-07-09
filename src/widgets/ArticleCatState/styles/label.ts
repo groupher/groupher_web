@@ -1,10 +1,10 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import LightSVG from '@/icons/ColorLight'
-import QuestionSVG from '@/icons/Question'
-import BugSVG from '@/icons/ColorBug'
-import RejectSVG from '@/icons/Reject'
-import OtherSVG from '@/icons/menu/Feedback'
+import LightSVG from '~/icons/ColorLight'
+import QuestionSVG from '~/icons/Question'
+import BugSVG from '~/icons/ColorBug'
+import RejectSVG from '~/icons/Reject'
+import OtherSVG from '~/icons/menu/Feedback'
 
 type TWrapper = {
   $smaller: boolean

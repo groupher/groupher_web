@@ -7,11 +7,11 @@ import type {
   TCommunityThread,
   TNameAlias,
   TDashboardThreadConfig,
-} from '@/spec'
+} from '~/spec'
 
-import { ASSETS_ENDPOINT, TAG_COLOR_ORDER } from '@/config'
-import { ARTICLE_STATE } from '@/constant/gtd'
-import { COLOR_NAME } from '@/constant/colors'
+import { ASSETS_ENDPOINT, TAG_COLOR_ORDER } from '~/config'
+import { ARTICLE_STATE } from '~/const/gtd'
+import { COLOR_NAME } from '~/const/colors'
 
 type TSORTABLE_ITEMS = {
   color?: string
@@ -80,7 +80,7 @@ export const debounce = (fn, ms = 0) => {
  * extract mention format from markdown str into list
  */
 export const extractMentions = (str: string): string[] => {
-  const mentionsRegex = new RegExp('@([a-zA-Z0-9_.-]+)', 'gim')
+  const mentionsRegex = /@([a-zA-Z0-9_.-]+)/gim
 
   let matches = str.match(mentionsRegex)
   if (matches?.length) {
@@ -182,7 +182,7 @@ export const findDeepMatch = (data, key, value) => {
   let result = null
   if (Array.isArray(data)) {
     for (let i = 0; i < data.length; i += 1) {
-      // console.log('> the data[i]', data[i])
+      // console.log('## > the data[i]', data[i])
       result = findDeepMatch(data[i], key, value)
       // end the recursive function
       if (result) return result

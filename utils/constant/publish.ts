@@ -1,4 +1,4 @@
-import type { TPublishMode } from '@/spec'
+import type { TPublishMode } from '~/spec'
 
 export const PUBLISH_MODE = {
   DEFAULT: 'default',

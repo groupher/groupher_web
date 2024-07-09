@@ -1,5 +1,5 @@
 import { gql } from 'urql'
-import { P, F } from '@/schemas'
+import { P, F } from '~/schemas'
 
 const { pagedPosts, pagedChangelogs } = P
 
@@ -9,6 +9,7 @@ const communityBaseInfo = gql`
       dashboard {
         baseInfo {
           title
+          locale
           favicon
           logo
           slug
@@ -80,7 +81,7 @@ const updateDashboardBaseInfo = gql`
   }
 `
 const updateDashboardMediaReports = gql`
-  mutation ($community: String!, $mediaReports: [dashboardMediaReportMap]) {
+  mutation ($community: String!, $mediaReports: [DashboardMediaReportMap]) {
     updateDashboardMediaReports(community: $community, mediaReports: $mediaReports) {
       title
       dashboard {
@@ -177,6 +178,10 @@ const updateDashboardLayout = gql`
     $gossBlur: Int
     $gossBlurDark: Int
     $brandLayout: String
+    $bannerLayout: String
+    $changelogLayout: String
+    $docLayout: String
+    $docFaqLayout: String
   ) {
     updateDashboardLayout(
       community: $community
@@ -198,6 +203,10 @@ const updateDashboardLayout = gql`
       gossBlur: $gossBlur
       gossBlurDark: $gossBlurDark
       brandLayout: $brandLayout
+      bannerLayout: $bannerLayout
+      changelogLayout: $changelogLayout
+      docLayout: $docLayout
+      docFaqLayout: $docFaqLayout
     ) {
       slug
     }
@@ -205,7 +214,7 @@ const updateDashboardLayout = gql`
 `
 
 const updateDashboardSocialLinks = gql`
-  mutation ($community: String!, $socialLinks: [dashboardSocialLinkMap]) {
+  mutation($community: String!, $socialLinks: [DashboardSocialLinkMap]) {
     updateDashboardSocialLinks(community: $community, socialLinks: $socialLinks) {
       slug
     }
@@ -213,7 +222,7 @@ const updateDashboardSocialLinks = gql`
 `
 
 const updateDashboardNameAlias = gql`
-  mutation ($community: String!, $nameAlias: [dashboardAliasMap]) {
+  mutation ($community: String!, $nameAlias: [DashboardAliasMap]) {
     updateDashboardNameAlias(community: $community, nameAlias: $nameAlias) {
       slug
     }
@@ -317,7 +326,7 @@ const communityOverview = gql`
 `
 
 const updateDashboardHeaderLinks = gql`
-  mutation ($community: String!, $headerLinks: [dashboardLinkMap]) {
+  mutation ($community: String!, $headerLinks: [DashboardLinkMap]) {
     updateDashboardHeaderLinks(community: $community, headerLinks: $headerLinks) {
       slug
       dashboard {
@@ -329,7 +338,7 @@ const updateDashboardHeaderLinks = gql`
   }
 `
 const updateDashboardFooterLinks = gql`
-  mutation ($community: String!, $footerLinks: [dashboardLinkMap]) {
+  mutation ($community: String!, $footerLinks: [DashboardLinkMap]) {
     updateDashboardFooterLinks(community: $community, footerLinks: $footerLinks) {
       slug
       dashboard {

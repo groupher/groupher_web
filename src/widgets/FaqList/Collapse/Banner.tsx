@@ -1,9 +1,9 @@
-import { FC, memo, useCallback } from 'react'
+import { type FC, memo, useCallback } from 'react'
 import { pluck } from 'ramda'
 
-import type { TMenuOption, TFAQSection } from '@/spec'
+import type { TMenuOption, TFAQSection } from '~/spec'
 
-import MenuButton from '@/widgets/Buttons/MenuButton'
+import MenuButton from '~/widgets/Buttons/MenuButton'
 
 import { Wrapper, Title, MenuWrapper, MenuIcon } from '../styles/collapse/banner'
 
@@ -32,7 +32,7 @@ const Banner: FC<TProps> = ({ menuOptions, setOpenedIndexes, sections }) => {
       }
 
       default: {
-        console.log('todo')
+        console.log('## todo')
         return
       }
     }

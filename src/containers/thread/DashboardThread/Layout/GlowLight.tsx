@@ -1,19 +1,16 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { GLOW_OPACITY, GLOW_EFFECTS_KEYS } from '~/const/glow_effect'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useTheme from '~/hooks/useTheme'
 
-import { GLOW_OPACITY, GLOW_EFFECTS_KEYS } from '@/constant/glow_effect'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import useTheme from '@/hooks/useTheme'
-
-import { Br } from '@/widgets/Common'
-import Radio from '@/widgets/Switcher/Radio'
+import { Br } from '~/widgets/Common'
+import Radio from '~/widgets/Switcher/Radio'
 
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import { SETTING_FIELD } from '../constant'
 
-import useGlowLightInfo from '../hooks/useGlowLightInfo'
+import useGlowLight from '../logic/useGlowLight'
 import {
   Wrapper,
   Row,
@@ -25,20 +22,24 @@ import {
   SettingsRow,
   SettingTitle,
 } from '../styles/layout/glow_light'
-import { edit } from '../logic'
 
-const GlowLight: FC = () => {
+export default () => {
   const {
     glowType,
     glowFixed,
     glowOpacity,
-    isTouched,
-    isGrowFixedTouched,
-    isGrowOpacityTouched,
+    getIsTouched,
+    getIsGrowFixedTouched,
+    getIsGrowOpacityTouched,
     saving,
-  } = useGlowLightInfo()
+    edit,
+  } = useGlowLight()
   const primaryColor = usePrimaryColor()
   const { theme } = useTheme()
+
+  const isTouched = getIsTouched()
+  const isGrowFixedTouched = getIsGrowFixedTouched()
+  const isGrowOpacityTouched = getIsGrowOpacityTouched()
 
   return (
     <Wrapper>
@@ -139,5 +140,3 @@ const GlowLight: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(GlowLight)

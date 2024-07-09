@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-import { ROUTE } from '@/constant/route'
+import { ROUTE } from '~/const/route'
 
 export function oopsMiddleware(req: NextRequest) {
   const { pathname } = req.nextUrl

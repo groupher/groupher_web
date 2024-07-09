@@ -1,11 +1,13 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 import { keys } from 'ramda'
 
-import Tooltip from '@/widgets/Tooltip'
-import Radio from '@/widgets/Switcher/Radio'
+import Tooltip from '~/widgets/Tooltip'
+import Radio from '~/widgets/Switcher/Radio'
 
 import type { TLinearBorderPos, TSettingLevel } from '../spec'
 import { IMAGE_BORDER_RADIUS, SETTING_LEVEL, LINEAR_BORDER } from '../constant'
+
+import useLogic from '../useLogic'
 import {
   Wrapper,
   Block,
@@ -23,7 +25,6 @@ import {
   RowTitle,
   RadiusContentsRow,
 } from '../styles/toolbox/border_block'
-import { borderRadiusOnChange, linearBorderPosOnChange, glassBorderOnChange } from '../logic'
 
 type TProps = {
   borderRadiusLevel: TSettingLevel
@@ -38,6 +39,8 @@ const ArchBlock: FC<TProps> = ({
   shadowLevel,
   hasGlassBorder,
 }) => {
+  const { borderRadiusOnChange, linearBorderPosOnChange, glassBorderOnChange } = useLogic()
+
   const [panelOpen, setPanelOpen] = useState(false)
 
   return (

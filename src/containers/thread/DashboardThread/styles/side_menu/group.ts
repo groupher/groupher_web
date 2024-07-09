@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
-import type { TActive, TColor } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
 
-import ArrowSVG from '@/icons/ArrowSimple'
+import ArrowSVG from '~/icons/ArrowSimple'
 
 export const Wrapper = styled.div`
   margin-bottom: 16px;

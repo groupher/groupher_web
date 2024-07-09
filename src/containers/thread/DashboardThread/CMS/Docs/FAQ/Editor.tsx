@@ -1,12 +1,12 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TFAQSection } from '@/spec'
+import type { TFAQSection } from '~/spec'
 
 import { SETTING_FIELD } from '../../../constant'
 import SavingBar from '../../../SavingBar'
 
+import useFAQ from '../../../logic/useFAQ'
 import { Wrapper, TitleInput, BodyInput } from '../../../styles/cms/docs/faq/editor'
-import { triggerEditFAQ, updateEditingFAQ } from '../../../logic/faq'
 
 type TProps = {
   editingFAQ: TFAQSection
@@ -14,6 +14,7 @@ type TProps = {
 }
 
 const Editor: FC<TProps> = ({ editingFAQ, addNew = false }) => {
+  const { triggerEditFAQ, updateEditingFAQ } = useFAQ()
   return (
     <Wrapper>
       <TitleInput

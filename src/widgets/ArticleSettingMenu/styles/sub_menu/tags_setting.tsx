@@ -1,6 +1,6 @@
-import type { TActive, TColor } from '@/spec'
-import styled, { css, theme, rainbow } from '@/css'
-import CheckSVG from '@/icons/CheckBold'
+import type { TActive, TColor } from '~/spec'
+import styled, { css, theme, rainbow } from '~/css'
+import CheckSVG from '~/icons/CheckBold'
 
 export const Wrapper = styled.div`
   margin-right: 5px;

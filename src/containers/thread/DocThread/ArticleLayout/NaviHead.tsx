@@ -1,13 +1,13 @@
-import { FC } from 'react'
-
-import { SpaceGrow } from '@/widgets/Common'
+import { SpaceGrow } from '~/widgets/Common'
 
 import HeadAction from './HeadAction'
 
+import useLogic from '../useLogic'
 import { Wrapper, Home, Slash, Cur } from '../styles/article_layout/navi_head'
-import { back2Layout } from '../logic'
 
-const NaviHead: FC = () => {
+export default () => {
+  const { back2Layout } = useLogic()
+
   return (
     <Wrapper>
       <Home leftLayout onClick={() => back2Layout()}>
@@ -20,5 +20,3 @@ const NaviHead: FC = () => {
     </Wrapper>
   )
 }
-
-export default NaviHead

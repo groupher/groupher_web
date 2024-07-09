@@ -8,8 +8,6 @@
 
 export { default as asyncSuit } from './async/index'
 
-export { buildLog, log } from './logger'
-
 export { default as uid } from './uid'
 
 export { send, joinUS, closeDrawer, report, errRescue } from './signal'
@@ -60,8 +58,6 @@ export {
   getRouteMainPath,
   markRoute,
 } from './route'
-
-export { markStates, toJS, updateEditing } from './mobx'
 
 export {
   scrollIntoEle,

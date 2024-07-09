@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { Wrapper, Title, Ul, Li } from '../../../styles/cms/docs/tree/note'
 

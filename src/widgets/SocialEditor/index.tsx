@@ -4,16 +4,15 @@
  *
  */
 
-import { FC, memo, useState, useCallback, useEffect, Fragment } from 'react'
+import { type FC, memo, useState, useCallback, useEffect, Fragment } from 'react'
 import { keys, includes, reject, findIndex, update } from 'ramda'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-import type { TSocialType, TSocialItem, TSpace } from '@/spec'
-import { SOCIAL_LIST } from '@/constant/social'
-import { buildLog } from '@/logger'
+import type { TSocialType, TSocialItem, TSpace } from '~/spec'
+import { SOCIAL_LIST } from '~/const/social'
 
-import { Br } from '@/widgets/Common'
+import { Br } from '~/widgets/Common'
 
 import InputBar from './InputBar'
 
@@ -27,8 +26,6 @@ import {
   Icon,
 } from './styles'
 
-const log = buildLog('w:SocialEditor:index')
-
 type TProps = {
   testid?: string
   width?: string
@@ -41,7 +38,7 @@ const SocialEditor: FC<TProps> = ({
   testid = 'social-editor',
   width = '310px',
   withTitle = true,
-  onChange = log,
+  onChange = console.log,
   value = [],
   ...restProps
 }) => {

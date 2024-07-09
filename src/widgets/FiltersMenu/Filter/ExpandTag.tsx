@@ -1,6 +1,6 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TTag } from '@/spec'
+import type { TTag } from '~/spec'
 import type { TProps as TFilter } from '.'
 import { Wrapper, Dot, Title } from '../styles/filter/tag'
 

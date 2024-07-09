@@ -1,7 +1,7 @@
-import type { TTestable } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TTestable } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import PlusSVG from '@/icons/BoxAdd'
+import PlusSVG from '~/icons/BoxAdd'
 
 type TWrapper = TTestable
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({

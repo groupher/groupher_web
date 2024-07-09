@@ -1,18 +1,15 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { BRAND_LAYOUT } from '~/const/layout'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import { BRAND_LAYOUT } from '@/constant/layout'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-
-import { Space, SexyDivider as Divider } from '@/widgets/Common'
-import CheckLabel from '@/widgets/CheckLabel'
+import { Space, SexyDivider as Divider } from '~/widgets/Common'
+import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../constant'
 import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
-import useBrandInfo from '../hooks/useBrandInfo'
+import useBrand from '../logic/useBrand'
 import {
   Wrapper,
   SelectWrapper,
@@ -23,12 +20,12 @@ import {
   BrandIcon,
   BrandTitle,
 } from '../styles/layout/brand_layout'
-import { edit } from '../logic'
 
-const BrandLayout: FC = () => {
+export default () => {
   const primaryColor = usePrimaryColor()
   const curCommunity = useViewingCommunity()
-  const { layout, isTouched, saving } = useBrandInfo()
+  const { edit, layout, getIsTouched, saving } = useBrand()
+  const isTouched = getIsTouched()
 
   return (
     <Wrapper>
@@ -89,5 +86,3 @@ const BrandLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(BrandLayout)

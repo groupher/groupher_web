@@ -1,20 +1,14 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { ANCHOR } from '~/const/dom'
+import useHeaderLinks from '~/hooks/useHeaderLinks'
+import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
+import useMetric from '~/hooks/useMetric'
 
-import dynamic from 'next/dynamic'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import { HEADER_LAYOUT } from '~/const/layout'
 
-import { ANCHOR } from '@/constant/dom'
-import useHeaderLinks from '@/hooks/useHeaderLinks'
-import useCommunityDigestViewport from '@/hooks/useCommunityDigestViewport'
-import useMetric from '@/hooks/useMetric'
-
-import { HEADER_LAYOUT } from '@/constant/layout'
-
-import ViewportTracker from '@/widgets/ViewportTracker'
-import MobileThreadNavi from '@/widgets/MobileThreadNavi'
-import { Row, SpaceGrow } from '@/widgets/Common'
-import AccountUnit from '@/widgets/AccountUnit'
+import ViewportTracker from '~/widgets/ViewportTracker'
+import MobileThreadNavi from '~/widgets/MobileThreadNavi'
+import { Row, SpaceGrow } from '~/widgets/Common'
+import AccountUnit from '~/widgets/AccountUnit'
 
 import ThreadTab from './ThreadTab'
 import CommunityBrief from './CommunityBrief'
@@ -26,31 +20,19 @@ import {
   CommunityBaseInfo,
   MobileNaviWrapper,
   WatchIcon,
-  // GithubItem,
 } from '../styles/header_layout'
 
-// export const CommunityBrief = dynamic(() => import('./CommunityBrief'), {
-//   loading: () => <LavaLampLoading left={20} />,
-//   ssr: false,
-// })
-
-const HeaderLayout: FC = () => {
+export default () => {
   const metric = useMetric()
-  const { layout: headerLayout } = useHeaderLinks()
+  const { layout } = useHeaderLinks()
   const { enterView, leaveView } = useCommunityDigestViewport()
-
-  // return (
-  //   <>
-  //     <h3>this is h3</h3>
-  //   </>
-  // )
 
   return (
     <Wrapper
       id={ANCHOR.GLOBAL_HEADER_ID}
       $testid="community-digest"
       metric={metric}
-      $headerLayout={headerLayout}
+      $headerLayout={layout}
     >
       <InnerWrapper metric={metric}>
         <BannerContentWrapper>
@@ -60,8 +42,8 @@ const HeaderLayout: FC = () => {
             <MobileNaviWrapper>
               <MobileThreadNavi />
             </MobileNaviWrapper>
-            {headerLayout === HEADER_LAYOUT.RIGHT && <SpaceGrow />}
-            <ThreadTab right={headerLayout === HEADER_LAYOUT.RIGHT ? 20 : 0} />
+            {layout === HEADER_LAYOUT.RIGHT && <SpaceGrow />}
+            <ThreadTab right={layout === HEADER_LAYOUT.RIGHT ? 20 : 0} />
             <Row>
               {/* <GithubItem href="/">
                 <img
@@ -79,5 +61,3 @@ const HeaderLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(HeaderLayout)

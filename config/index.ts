@@ -1,4 +1,4 @@
-import type { TThemeName } from '@/spec'
+import type { TThemeName } from '~/spec'
 
 import CONFIG from './config.json'
 

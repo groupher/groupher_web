@@ -1,4 +1,4 @@
-import { FC, ReactNode, memo, useState } from 'react'
+import { type FC, type ReactNode, memo, useState, useCallback } from 'react'
 import { pick } from 'ramda'
 
 import { LazyLoadImage } from 'react-lazy-load-image-component'
@@ -35,14 +35,46 @@ const LazyLoadImg: FC<TProps> = ({
   onClick,
   threshold = 200,
 }) => {
-  const [imgLoaded, setImgLoaded] = useState(false)
+  const [imgLoaded, setImgLoaded] = useState(true)
   const [checkError, setCheckError] = useState(false)
   const [loadError, setLoadError] = useState(false)
+  const [over, setOver] = useState(false)
 
   // @ts-ignore
   const fallbackOpt = pick(['size', 'left', 'right', 'top', 'bottom'], fallback?.props || {})
   const Wrapper = !imgLoaded ? FallbackOffsetWrapper : NormalWrapper
 
+  const handleBeforeLoad = useCallback(() => {
+    if (!over) {
+      // console.log('## ## handleBeforeLoad')
+      setImgLoaded(false)
+      setCheckError(true)
+    }
+  }, [over])
+
+  const handleLoad = useCallback(() => {
+    if (!over) {
+      setImgLoaded(true)
+      setLoadError(false)
+      setCheckError(false)
+      setOver(true)
+    }
+  }, [])
+
+  const handleError = useCallback(() => {
+    console.error('## lazy image load.: ', src)
+    setLoadError(true)
+    setImgLoaded(false)
+    setOver(true)
+  }, [])
+
+  if (!src) {
+    return (
+      <Wrapper key={src} onClick={onClick} {...fallbackOpt}>
+        <FallbackWrapper>{fallback}</FallbackWrapper>
+      </Wrapper>
+    )
+  }
   /**
    * CheckPixel is a workaround for lazy loading has no onError callback,
    * for most OSS providers the cache control is lager than 5 mins
@@ -53,22 +85,7 @@ const LazyLoadImg: FC<TProps> = ({
       {!imgLoaded && <FallbackWrapper>{fallback}</FallbackWrapper>}
 
       <LazyImageWrapper>
-        {checkError && (
-          <CheckPixel
-            src={src}
-            alt=""
-            onLoad={() => {
-              setCheckError(false)
-              setLoadError(false)
-              // setImgLoaded(true)
-            }}
-            onError={() => {
-              console.error('## lazy image load: ', src)
-              setLoadError(true)
-              setImgLoaded(false)
-            }}
-          />
-        )}
+        {checkError && <CheckPixel src={src} alt="" onLoad={handleLoad} onError={handleError} />}
 
         {!loadError && (
           <LazyLoadImage
@@ -77,14 +94,8 @@ const LazyLoadImg: FC<TProps> = ({
             alt={alt}
             effect="blur"
             visibleByDefault={visibleByDefault}
-            onLoad={() => {
-              setImgLoaded(true)
-              setLoadError(false)
-              setCheckError(false)
-            }}
-            beforeLoad={() => {
-              setCheckError(true)
-            }}
+            onLoad={handleLoad}
+            beforeLoad={handleBeforeLoad}
             threshold={threshold}
           />
         )}

@@ -1,19 +1,19 @@
-import { ARTICLE_CAT } from '@/constant/gtd'
+import { ARTICLE_CAT } from '~/const/gtd'
 
-import type { TColor } from '@/spec'
-import styled, { css, theme, rainbow, rainbowLight } from '@/css'
-import { COLOR_NAME } from '@/constant/colors'
+import type { TColor } from '~/spec'
+import styled, { css, theme, rainbow, rainbowLight } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
-import LightSVG from '@/icons/Light'
-import BugSVG from '@/icons/Bug'
-import QuestionSVG from '@/icons/Question'
-import DiscussSVG from '@/icons/Discuss'
-import ToolSVG from '@/icons/Tool'
+import LightSVG from '~/icons/Light'
+import BugSVG from '~/icons/Bug'
+import QuestionSVG from '~/icons/Question'
+import DiscussSVG from '~/icons/Discuss'
+import ToolSVG from '~/icons/Tool'
 
-import PinSVG from '@/icons/Pin'
-import TagSVG from '@/icons/HashTag'
-import TargetSVG from '@/icons/TargetBold'
-import ClipSVG from '@/icons/Clip'
+import PinSVG from '~/icons/Pin'
+import TagSVG from '~/icons/HashTag'
+import TargetSVG from '~/icons/TargetBold'
+import ClipSVG from '~/icons/Clip'
 
 type TWrapper = { $longer?: boolean } & TColor
 export const Wrapper = styled.div<TWrapper>`

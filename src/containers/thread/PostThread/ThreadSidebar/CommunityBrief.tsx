@@ -6,13 +6,12 @@
  *
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import { Space } from '@/widgets/Common'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import { Space } from '~/widgets/Common'
+import ImgFallback from '~/widgets/ImgFallback'
 
-import { buildLog } from '@/logger'
 import {
   Wrapper,
   Brief,
@@ -22,9 +21,7 @@ import {
   Label,
   Count,
 } from '../styles/thread_sidebar/community_brief'
-import { assetSrc } from '@/utils/helper'
-
-const _log = buildLog('w:ClassicSidebar')
+import { assetSrc } from '~/utils/helper'
 
 type TProps = {
   show: boolean
@@ -35,7 +32,12 @@ const CommunityBrief: FC<TProps> = ({ show }) => {
 
   return (
     <Wrapper $show={show}>
-      <Logo src={assetSrc(logo)} noLazy />
+      <Logo
+        src={assetSrc(logo)}
+        fallback={<ImgFallback size={32} top={-6} title={title} />}
+        noLazy
+      />
+
       <Brief>
         <Title>{title}</Title>
         <InfoBar>
@@ -51,4 +53,4 @@ const CommunityBrief: FC<TProps> = ({ show }) => {
   )
 }
 
-export default observer(CommunityBrief)
+export default CommunityBrief

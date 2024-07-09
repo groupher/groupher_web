@@ -1,14 +1,13 @@
-import { FC, Fragment } from 'react'
-import { observer } from 'mobx-react-lite'
+import { type FC, Fragment } from 'react'
 import { keys, startsWith } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-import type { TLinkItem } from '@/spec'
-import { MORE_GROUP, ONE_LINK_GROUP } from '@/constant/dashboard'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { sortByIndex, groupByKey } from '@/helper'
+import type { TLinkItem } from '~/spec'
+import { MORE_GROUP, ONE_LINK_GROUP } from '~/const/dashboard'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import { sortByIndex, groupByKey } from '~/helper'
 
-import Tooltip from '@/widgets/Tooltip'
+import Tooltip from '~/widgets/Tooltip'
 
 import type { TProps, TLinkGroup } from './spec'
 
@@ -76,4 +75,4 @@ const CustomHeaderLinks: FC<TProps> = ({ links }) => {
   )
 }
 
-export default observer(CustomHeaderLinks)
+export default CustomHeaderLinks

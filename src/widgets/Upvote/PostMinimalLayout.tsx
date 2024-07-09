@@ -4,20 +4,16 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
-
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { UPVOTE_LAYOUT } from '@/constant/layout'
-import AnimatedCount from '@/widgets/AnimatedCount'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import { UPVOTE_LAYOUT } from '~/const/layout'
+import AnimatedCount from '~/widgets/AnimatedCount'
 
 import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
 
 import { Wrapper, Button, UpWrapper, CountWrapper } from './styles/post_minimal_layout'
-
-const log = buildLog('w:Upvote:index')
 
 type TProps = {
   testid?: string
@@ -30,7 +26,7 @@ const Upvote: FC<TProps> = ({
   testid = 'upvote',
   count = 0,
   viewerHasUpvoted = false,
-  onAction = log,
+  onAction = console.log,
 }) => {
   const primaryColor = usePrimaryColor()
   const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })

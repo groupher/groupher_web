@@ -1,7 +1,7 @@
-import type { TTestable } from '@/spec'
+import type { TTestable } from '~/spec'
 
-import styled, { css, theme } from '@/css'
-import ShareSVG from '@/icons/Share'
+import styled, { css, theme } from '~/css'
+import ShareSVG from '~/icons/Share'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

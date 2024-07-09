@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import ArrowButton from '@/widgets/Buttons/ArrowButton'
+import ArrowButton from '~/widgets/Buttons/ArrowButton'
 import { Wrapper } from './styles/top_info'
 
 const TopInfo: FC = () => {

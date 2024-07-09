@@ -4,17 +4,14 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TDashboardLayout, TPostLayout } from '@/spec'
-import { DASHBOARD_DESC_LAYOUT } from '@/constant/layout'
+import type { TDashboardLayout, TPostLayout } from '~/spec'
+import { DASHBOARD_DESC_LAYOUT } from '~/const/layout'
 
-import { buildLog } from '@/logger'
 import PostLayoutxample from './PostLayoutExample'
 
 import { Wrapper } from './styles'
-
-const _log = buildLog('w:DashboardDesc:index')
 
 type TProps = {
   testid?: string

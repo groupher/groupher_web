@@ -1,11 +1,11 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 import { SelectItem as SelectItemBase } from '.'
 
-import GtdWipSVG from '@/icons/GtdWip'
-import GtdDoneSVG from '@/icons/GtdDone'
-import GtdTodoSVG from '@/icons/GtdTodo'
-import GtdRejectSVG from '@/icons/Reject'
+import GtdWipSVG from '~/icons/GtdWip'
+import GtdDoneSVG from '~/icons/GtdDone'
+import GtdTodoSVG from '~/icons/GtdTodo'
+import GtdRejectSVG from '~/icons/Reject'
 
 export const Wrapper = styled.div`
   ${css.column()};

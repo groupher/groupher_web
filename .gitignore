@@ -20,3 +20,4 @@ public/workbox-*
 tsconfig.tsbuildinfo
 bun.lockb
 *.tsbuildinfo
+.VSCodeCounter/

@@ -1,9 +1,7 @@
-import { FC, memo } from 'react'
-
-import { Space } from '@/widgets/Common'
+import { Space } from '~/widgets/Common'
 import { Wrapper, Inputer, PlusIcon, AddButton } from '../styles/admin/adder'
 
-const Adder: FC = () => {
+export default () => {
   return (
     <Wrapper>
       <Inputer placeholder="账户名称 / 登入ID (TODO: use react-select)" />
@@ -15,5 +13,3 @@ const Adder: FC = () => {
     </Wrapper>
   )
 }
-
-export default memo(Adder)

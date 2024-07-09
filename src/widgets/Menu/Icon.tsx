@@ -1,10 +1,9 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TActive, TColorName, TMenu } from '@/spec'
-import { COLOR_NAME } from '@/constant/colors'
-import MENU from '@/constant/menu'
-import useKanbanBgColors from '@/hooks/useKanbanBgColors'
+import type { TActive, TColorName, TMenu } from '~/spec'
+import { COLOR_NAME } from '~/const/colors'
+import MENU from '~/const/menu'
+import useKanbanBgColors from '~/hooks/useKanbanBgColors'
 
 import { Wrapper, ICONS } from './styles/icon'
 
@@ -46,4 +45,4 @@ const Icon: FC<TProps> = ({ type, $active }) => {
   )
 }
 
-export default observer(Icon)
+export default Icon

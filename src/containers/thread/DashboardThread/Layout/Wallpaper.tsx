@@ -1,22 +1,20 @@
-import { FC, useCallback } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useCallback } from 'react'
 
-import { WIDTH } from '@/css'
-import { callWallpaperEditor } from '@/signal'
-import { parseWallpaper } from '@/wallpaper'
-import { blurRGB } from '@/fmt'
+import { WIDTH } from '~/css'
+import { callWallpaperEditor } from '~/signal'
+import { blurRGB } from '~/fmt'
 
-import THEME from '@/constant/theme'
-import useThemeData from '@/hooks/useThemeData'
-import useGossBlur from '@/hooks/useGossBlur'
-import useTheme from '@/hooks/useTheme'
+import THEME from '~/const/theme'
+import useThemeData from '~/hooks/useThemeData'
+import useGossBlur from '~/hooks/useGossBlur'
+import useTheme from '~/hooks/useTheme'
+import useWallpaper from '~/hooks/useWallpaper'
 
-import { Brick } from '@/widgets/Common'
-import CheckLabel from '@/widgets/CheckLabel'
+import { Brick } from '~/widgets/Common'
+import CheckLabel from '~/widgets/CheckLabel'
 
 import SectionLabel from '../SectionLabel'
 
-import useWallpaperInfo from '../hooks/useWallpaperInfo'
 import {
   Wrapper,
   Section,
@@ -29,11 +27,9 @@ import {
   ContentBlock,
 } from '../styles/layout/wallpaper'
 
-const Wallpaper: FC = () => {
+export default () => {
   const gossBlur = useGossBlur()
-  const { wallpapers, wallpaper, customWallpaper, hasShadow } = useWallpaperInfo()
-
-  const { background, effect } = parseWallpaper(wallpapers, wallpaper, customWallpaper)
+  const { background, effect, hasShadow } = useWallpaper()
 
   const { theme } = useTheme()
   const themeData = useThemeData()
@@ -90,5 +86,3 @@ const Wallpaper: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(Wallpaper)

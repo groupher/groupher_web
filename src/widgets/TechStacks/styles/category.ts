@@ -1,9 +1,9 @@
-import styled, { css, theme } from '@/css'
-import CodeSVG from '@/icons/Code'
-import DevopsSVG from '@/icons/Devops'
-import FrameworkSVG from '@/icons/Framework'
-import DatabaseSVG from '@/icons/Database'
-import DesignSVG from '@/icons/Design'
+import styled, { css, theme } from '~/css'
+import CodeSVG from '~/icons/Code'
+import DevopsSVG from '~/icons/Devops'
+import FrameworkSVG from '~/icons/Framework'
+import DatabaseSVG from '~/icons/Database'
+import DesignSVG from '~/icons/Design'
 
 export const Wrapper = styled.div`
   ${css.column('align-start')};

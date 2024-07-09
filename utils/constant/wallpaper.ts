@@ -1,6 +1,20 @@
-import type { TSnakeUpperCase, TWallpaper, TWallpaperType, TWallpaperGradientDir } from '@/spec'
+import type { TSnakeUpperCase, TWallpaper, TWallpaperType, TWallpaperGradientDir } from '~/spec'
 
 const DIR = '/wallpaper'
+
+// refs to @/stores3/wallpaper
+export const WALLPAPER_STATE_KEYS = [
+  'customWallpaper',
+  'customColorValue',
+  'wallpaper',
+  'wallpaperType',
+  'hasPattern',
+  'hasBlur',
+  'hasShadow',
+  'direction',
+  'bgSize',
+  // 'uploadBgImage',
+]
 
 export const WALLPAPER_TYPE = {
   PATTERN: 'pattern',

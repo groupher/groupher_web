@@ -1,190 +1,177 @@
-import { useEffect } from 'react'
-import { values } from 'ramda'
+// import { useEffect } from 'react'
+// import { values } from 'ramda'
 
-import type { TEditValue, TCommunity, TTag, TArticleCat } from '@/spec'
-import { HCN } from '@/constant/name'
-import EVENT from '@/constant/event'
-import ERR from '@/constant/err'
+// import type { TEditValue, TCommunity, TTag, TArticleCat } from '~/spec'
+// import EVENT from '~/const/event'
+// import ERR from '~/const/err'
 
-import { buildLog } from '@/logger'
-import asyncSuit from '@/async'
-import { getParameterByName } from '@/utils/route'
-import { titleCase } from '@/fmt'
-import { errRescue } from '@/signal'
-import { updateEditing } from '@/mobx'
-import { matchArticles } from '@/utils/macros'
+// import asyncSuit from '~/async'
+// import { getParameterByName } from '~/utils/route'
+// import { errRescue } from '~/signal'
+// import { matchArticles } from '~/utils/macros'
 
-import type { TStore } from './store'
-import S from './schema'
+// import type { TStore } from './store'
+// import S from './schema'
 
-const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
-const sr71$ = new SR71({
-  // @ts-ignore
-  receive: [EVENT.ARTICLE_SELECTOR],
-})
+// const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
+// const sr71$ = new SR71({
+//   // @ts-ignore
+//   receive: [EVENT.ARTICLE_SELECTOR],
+// })
 
-let sub$ = null
-let store: TStore | undefined
+// let sub$ = null
+// let store: TStore | undefined
 
-const log = buildLog('L:ArticleEditor')
+// export const changeCommunity = (community: TCommunity): void => {
+//   store.mark({ community })
+// }
 
-export const changeCommunity = (community: TCommunity): void => {
-  store.mark({ community })
-}
+// export const onTagSelect = (tag: TTag): void => {
+//   store.mark({ activeTag: tag })
+// }
 
-export const onTagSelect = (tag: TTag): void => {
-  store.mark({ activeTag: tag })
-}
+// export const loadCommunity = (): void => {
+//   const { mode } = store
 
-export const loadCommunity = (): void => {
-  const { mode } = store
+//   if (mode !== 'publish') return
+//   const slug = getParameterByName('community')?.toLowerCase()
 
-  if (mode !== 'publish') return
-  const slug = getParameterByName('community')?.toLowerCase()
+//   sr71$.query(S.community, { slug })
+// }
 
-  sr71$.query(S.community, { slug })
-}
+// export const loadArticle = (): void => {
+//   // const { thread, viewingArticle } = store
+//   // const { id } = viewingArticle
+//   // sr71$.query(S[thread], { id })
+// }
 
-export const loadArticle = (): void => {
-  const { thread, viewingArticle } = store
-  const { id } = viewingArticle
+// export const editOnChange = (e: TEditValue, key: string): void => {
+//   updateEditing(store, key, e)
+// }
 
-  sr71$.query(S[thread], { id })
-}
+// export const onCancel = (): void => {
+//   const { mode } = store
 
-export const editOnChange = (e: TEditValue, key: string): void => {
-  updateEditing(store, key, e)
-}
+//   mode === 'publish' ? gotoBackToCommunity() : gotoArticleDetail()
+// }
 
-export const onCancel = (): void => {
-  const { mode } = store
+// const gotoArticleDetail = () => {
+//   // const { viewingArticle, thread } = store
+//   // Router.push(`/${thread}/${viewingArticle.id}`)
+//   console.log('## ## TODO: gotoArticleDetail')
+// }
 
-  mode === 'publish' ? gotoBackToCommunity() : gotoArticleDetail()
-}
+// const gotoBackToCommunity = () => {
+//   // const path = slug === HCN ? '/' : `/${slug}`
+//   // Router.push(path)
+//   console.log('## ## TODO: gotoBackToCommunity')
+// }
 
-const gotoArticleDetail = () => {
-  const { viewingArticle, thread } = store
-  // Router.push(`/${thread}/${viewingArticle.id}`)
-  console.log('## TODO: gotoArticleDetail')
-}
+// export const onPublish = (): void => {
+//   const { mode } = store
+//   store.mark({ publishing: true })
 
-const gotoBackToCommunity = () => {
-  const { communityData } = store
-  const { slug } = communityData
+//   mode === 'publish' ? doCreate() : doUpdate()
+// }
 
-  const path = slug === HCN ? '/' : `/${slug}`
-  // Router.push(path)
-  console.log('## TODO: gotoBackToCommunity')
-}
+// const doCreate = () => {
+//   console.log('## TODO doCreate')
+//   // const { thread, editData, communityId } = store
+//   // const variables = { communityId, ...editData }
+//   // const schema = S[`create${titleCase(thread)}`]
+//   // sr71$.mutate(schema, variables)
+// }
 
-export const onPublish = (): void => {
-  const { mode } = store
-  store.mark({ publishing: true })
+// const doUpdate = () => {
+//   console.log('## TODO doUpdate')
+//   // const { thread, editData, viewingArticle } = store
+//   // const { id } = viewingArticle
+//   // const variables = { id, ...editData }
+//   // const schema = S[`update${titleCase(thread)}`]
+//   // sr71$.mutate(schema, variables)
+// }
 
-  mode === 'publish' ? doCreate() : doUpdate()
-}
+// export const setWordsCountState = (wordsCountReady: boolean): void => {
+//   store?.mark({ wordsCountReady })
+// }
 
-const doCreate = () => {
-  const { thread, editData, communityId } = store
-  const variables = { communityId, ...editData }
-  log('onPublish --> ', variables)
+// export const catOnChange = (activeCat: TArticleCat) => {
+//   store.mark({ activeCat })
+// }
 
-  const schema = S[`create${titleCase(thread)}`]
-  sr71$.mutate(schema, variables)
-}
+// export const tagOnChange = (activeTag: TTag) => {
+//   store.mark({ activeTag })
+// }
 
-const doUpdate = () => {
-  const { thread, editData, viewingArticle } = store
-  const { id } = viewingArticle
-  const variables = { id, ...editData }
-  log('onUpdate --> ', variables)
+// // ###############################
+// // init & uninit handlers
+// // ###############################
 
-  const schema = S[`update${titleCase(thread)}`]
-  sr71$.mutate(schema, variables)
-}
+// const handleArticleRes = (article) => {
+//   store.setViewing(article)
 
-export const setWordsCountState = (wordsCountReady: boolean): void => {
-  store?.mark({ wordsCountReady })
-}
+//   store.loadEditData(article)
+// }
 
-export const catOnChange = (activeCat: TArticleCat) => {
-  store.mark({ activeCat })
-}
+// const handleMutateRes = (data): void => {
+//   store.mark({ publishing: false, publishDone: true })
+//   store.setViewing(values(data)[0])
 
-export const tagOnChange = (activeTag: TTag) => {
-  store.mark({ activeTag })
-}
+//   gotoArticleDetail()
+// }
 
-// ###############################
-// init & uninit handlers
-// ###############################
+// const DataSolver = [
+//   ...matchArticles(handleArticleRes),
+//   {
+//     match: asyncRes('createPost'),
+//     action: handleMutateRes,
+//   },
+//   {
+//     match: asyncRes('updatePost'),
+//     action: handleMutateRes,
+//   },
+//   {
+//     match: asyncRes('community'),
+//     action: ({ community }) => store.mark({ community }),
+//   },
+//   {
+//     match: asyncRes(EVENT.ARTICLE_SELECTOR),
+//     action: (data) => {
+//       const {
+//         data: { cat, tag },
+//       } = data[EVENT.ARTICLE_SELECTOR]
 
-const handleArticleRes = (article) => {
-  store.setViewing(article)
+//       cat && catOnChange(cat)
+//       tag?.id !== '' && tagOnChange(tag)
+//     },
+//   },
+// ]
 
-  store.loadEditData(article)
-}
+// const ErrSolver = [
+//   {
+//     match: asyncErr(ERR.GRAPHQL),
+//     action: ({ details }) => {
+//       store.mark({ publishing: false })
+//       errRescue({ type: ERR.GRAPHQL, details, path: 'publishPost' })
+//       //
+//     },
+//   },
+// ]
 
-const handleMutateRes = (data): void => {
-  store.mark({ publishing: false, publishDone: true })
-  store.setViewing(values(data)[0])
+// export const useInit = (_store: TStore): void => {
+//   useEffect(() => {
+//     store = _store
+//     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 
-  gotoArticleDetail()
-}
+//     loadCommunity()
+//     if (store.mode === 'update') loadArticle()
 
-const DataSolver = [
-  ...matchArticles(handleArticleRes),
-  {
-    match: asyncRes('createPost'),
-    action: handleMutateRes,
-  },
-  {
-    match: asyncRes('updatePost'),
-    action: handleMutateRes,
-  },
-  {
-    match: asyncRes('community'),
-    action: ({ community }) => store.mark({ community }),
-  },
-  {
-    match: asyncRes(EVENT.ARTICLE_SELECTOR),
-    action: (data) => {
-      const {
-        data: { cat, tag },
-      } = data[EVENT.ARTICLE_SELECTOR]
-
-      cat && catOnChange(cat)
-      tag?.id !== '' && tagOnChange(tag)
-    },
-  },
-]
-
-const ErrSolver = [
-  {
-    match: asyncErr(ERR.GRAPHQL),
-    action: ({ details }) => {
-      store.mark({ publishing: false })
-      errRescue({ type: ERR.GRAPHQL, details, path: 'publishPost' })
-      //
-    },
-  },
-]
-
-export const useInit = (_store: TStore): void => {
-  useEffect(() => {
-    store = _store
-    sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
-    log('useInit: ', store)
-
-    loadCommunity()
-    if (store.mode === 'update') loadArticle()
-
-    // return () => store.reset()
-    return () => {
-      sr71$.stop()
-      sub$.unsubscribe()
-      sub$ = null
-      store.reset()
-    }
-  }, [_store])
-}
+//     // return () => store.reset()
+//     return () => {
+//       sr71$.stop()
+//       sub$.unsubscribe()
+//       sub$ = null
+//       store.reset()
+//     }
+//   }, [_store])
+// }

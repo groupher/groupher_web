@@ -1,6 +1,6 @@
-import type { TBannerLayout } from '@/spec'
-import { BANNER_LAYOUT } from '@/constant/layout'
-import styled, { css, theme } from '@/css'
+import type { TBannerLayout } from '~/spec'
+import { BANNER_LAYOUT } from '~/const/layout'
+import styled, { css, theme } from '~/css'
 
 import { MainWrapper } from '..'
 

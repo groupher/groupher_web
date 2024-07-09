@@ -1,17 +1,12 @@
-import { FC } from 'react'
+import { prettyNum } from '~/fmt'
 
-import { prettyNum } from '@/fmt'
+import NoteTip from '~/widgets/NoteTip'
 
-import NoteTip from '@/widgets/NoteTip'
-
-import type { TProps as TIndexProps } from '.'
-
+import useOverview from '../logic/useOverview'
 import { Wrapper, Left, Right, Section, Hint, Num } from '../styles/overview/basic_numbers'
 
-type TProps = Pick<TIndexProps, 'data'>
-
-const BasicNumbers: FC<TProps> = ({ data }) => {
-  const { views, subscribersCount, postsCount, changelogsCount, docsCount } = data
+export default () => {
+  const { views, subscribersCount, postsCount, changelogsCount, docsCount } = useOverview()
 
   return (
     <Wrapper>
@@ -50,5 +45,3 @@ const BasicNumbers: FC<TProps> = ({ data }) => {
     </Wrapper>
   )
 }
-
-export default BasicNumbers

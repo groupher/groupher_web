@@ -1,8 +1,8 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TUser } from '@/spec'
+import type { TUser } from '~/spec'
 
-import ImgFallback from '@/widgets/ImgFallback'
+import ImgFallback from '~/widgets/ImgFallback'
 
 import {
   Avatar,

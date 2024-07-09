@@ -1,5 +1,5 @@
-import type { TSpace } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TSpace } from '~/spec'
+import styled, { css, theme } from '~/css'
 
 export const Wrapper = styled.div<TSpace>`
   ${css.row('align-end')};

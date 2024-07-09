@@ -1,7 +1,7 @@
-import type { TBannerLayout, TMetric, TTestable } from '@/spec'
-import { BANNER_LAYOUT } from '@/constant/layout'
+import type { TBannerLayout, TMetric, TTestable } from '~/spec'
+import { BANNER_LAYOUT } from '~/const/layout'
 
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
 const BaseWrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,

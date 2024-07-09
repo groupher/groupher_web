@@ -1,10 +1,12 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TMediaReport } from '@/spec'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
-import { Br } from '@/widgets/Common'
+import type { TMediaReport } from '~/spec'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
+import { Br } from '~/widgets/Common'
 
 import MediaPreview from './MediaPreview'
+
+import useBaseInfo from '../../logic/useBaseInfo'
 
 import {
   Wrapper,
@@ -14,7 +16,6 @@ import {
   DeleteWrapper,
   DeleteIcon,
 } from '../../styles/basic_info/other_info/input_box'
-import { removeMediaReport, mediaReportOnChange, queryOpenGraphInfo } from '../../logic'
 
 type TProps = {
   item: TMediaReport
@@ -23,6 +24,8 @@ type TProps = {
 
 const InputBox: FC<TProps> = ({ item, queringMediaReportIndex }) => {
   const { index, editUrl, title } = item
+
+  const { removeMediaReport, mediaReportOnChange, queryOpenGraphInfo } = useBaseInfo()
 
   return (
     <Wrapper>

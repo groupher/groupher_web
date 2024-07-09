@@ -1,8 +1,7 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import { THREAD } from '@/constant/thread'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import { THREAD } from '~/const/thread'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import {
   DiscussIcon,
@@ -49,4 +48,4 @@ const TabIcon: FC<TProps> = ({ slug, active, small }) => {
   }
 }
 
-export default observer(TabIcon)
+export default TabIcon

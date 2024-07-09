@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import MentionSVG from '@/icons/Mention'
+import MentionSVG from '~/icons/Mention'
 
 export { Item, Content, Highlight } from '.'
 

@@ -1,12 +1,12 @@
 import Link from 'next/link'
 
-// import type { TTestable } from '@/spec'
+// import type { TTestable } from '~/spec'
 
-// import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+// import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
-import UserSVG from '@/icons/User'
-import CommunityFaceLogo from '@/widgets/CommunityFaceLogo'
+import UserSVG from '~/icons/User'
+import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
   ${css.column()};

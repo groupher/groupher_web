@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Img from '@/Img'
+import Img from '~/Img'
 export const Wrapper = styled.div`
   ${css.row('align-center', 'justify-between')};
   padding: 0 15px;

@@ -1,7 +1,7 @@
-import type { TActive } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, theme } from '~/css'
 
-import Input from '@/widgets/Input'
+import Input from '~/widgets/Input'
 
 export const Header = styled.div`
   ${css.row('justify-between', 'align-center')};

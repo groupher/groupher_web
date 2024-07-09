@@ -1,6 +1,6 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import FingerPrintSVG from '@/icons/FingerPrintDuo'
+import FingerPrintSVG from '~/icons/FingerPrintDuo'
 
 export const Wrapper = styled.div`
   ${css.column()};

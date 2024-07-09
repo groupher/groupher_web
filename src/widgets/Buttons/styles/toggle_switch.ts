@@ -1,8 +1,8 @@
-import type { TColor, TSizeSM } from '@/spec'
-import SIZE from '@/constant/size'
+import type { TColor, TSizeSM } from '~/spec'
+import SIZE from '~/const/size'
 
-import HookSVG from '@/icons/CheckBold'
-import styled, { css, theme, rainbow } from '@/css'
+import HookSVG from '~/icons/CheckBold'
+import styled, { css, theme, rainbow } from '~/css'
 
 export const Wrapper = styled.div<{ size: TSizeSM }>`
   ${css.row('align-center')};

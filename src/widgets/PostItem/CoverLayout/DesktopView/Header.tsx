@@ -1,11 +1,10 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TPost } from '@/spec'
-import { THREAD } from '@/constant/thread'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import type { TPost } from '~/spec'
+import { THREAD } from '~/const/thread'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import ArticleReadLabel from '@/widgets/ArticleReadLabel'
+import ArticleReadLabel from '~/widgets/ArticleReadLabel'
 
 import { Wrapper, Main, Title } from '../../styles/cover_layout/desktop_view/header'
 
@@ -30,4 +29,4 @@ const Header: FC<TProps> = ({ article }) => {
   )
 }
 
-export default observer(Header)
+export default Header

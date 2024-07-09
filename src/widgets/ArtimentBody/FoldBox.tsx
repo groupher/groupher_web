@@ -1,6 +1,6 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { ICON } from '@/config'
+import { ICON } from '~/config'
 import { Wrapper, Hint, FoldHint, ArrowIcon } from './styles/fold_box'
 
 type TProps = {

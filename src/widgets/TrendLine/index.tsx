@@ -4,11 +4,7 @@
  *
  */
 
-import { FC, memo } from 'react'
-
-import { buildLog } from '@/logger'
-
-const _log = buildLog('w:TrendLine:index')
+import { type FC, memo } from 'react'
 
 type TProps = {
   data: number[]

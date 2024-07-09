@@ -1,17 +1,16 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
-import type { TCommunityThread } from '@/spec'
-import { ROUTE } from '@/constant/route'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import usePublicThreads from '@/hooks/usePublicThreads'
-import useViewingThread from '@/hooks/useViewingThread'
+import type { TCommunityThread } from '~/spec'
+import { ROUTE } from '~/const/route'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import usePublicThreads from '~/hooks/usePublicThreads'
+import useViewingThread from '~/hooks/useViewingThread'
 
-import { toast } from '@/signal'
+import { toast } from '~/signal'
 
-import Tooltip from '@/widgets/Tooltip'
-import { Divider } from '@/widgets/Common'
+import Tooltip from '~/widgets/Tooltip'
+import { Divider } from '~/widgets/Common'
 
 import { Wrapper, Title, ArrowIcon, Panel, Item, ShareItem, ModelineDivider } from './styles'
 
@@ -60,4 +59,4 @@ const MobileThreadNav: FC<TProps> = ({ mode = 'mobile' }) => {
   )
 }
 
-export default observer(MobileThreadNav)
+export default MobileThreadNav

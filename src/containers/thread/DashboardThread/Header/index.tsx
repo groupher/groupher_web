@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import { SETTING_FIELD } from '../constant'
 
@@ -7,11 +7,12 @@ import SavingBar from '../SavingBar'
 import Templates from './Templates'
 import Editor from './Editors'
 
-import useHeaderSettingsInfo from '../hooks/useHeaderSettingsInfo'
+import useHeader from '../logic/useHeader'
 import { Wrapper } from '../styles/header'
 
 const Header: FC = () => {
-  const { isTouched, saving } = useHeaderSettingsInfo()
+  const { saving, getIsTouched } = useHeader()
+  const isTouched = getIsTouched()
 
   return (
     <Wrapper>

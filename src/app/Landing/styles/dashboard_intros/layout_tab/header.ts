@@ -1,5 +1,5 @@
-import styled, { css, theme, rainbow } from '@/css'
-import type { TColor } from '@/spec'
+import styled, { css, theme, rainbow } from '~/css'
+import type { TColor } from '~/spec'
 
 export const Wrapper = styled.div`
   ${css.row('align-both')};

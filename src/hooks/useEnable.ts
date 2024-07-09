@@ -1,19 +1,8 @@
-import { useContext } from 'react'
-import { MobXProviderContext } from 'mobx-react'
+import useSubStore from '~/hooks/useSubStore'
+import type { TEnableConfig } from '~/spec'
 
-import type { TEnableConfig } from '@/spec'
+export default (): TEnableConfig => {
+  const store = useSubStore('dashboard')
 
-/**
- * NOTE: should use observer to wrap the component who use this hook
- */
-const useEnable = (): TEnableConfig => {
-  const { store } = useContext(MobXProviderContext)
-
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
-
-  return store.dashboardThread.enable
+  return store.enable
 }
-
-export default useEnable

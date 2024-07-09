@@ -1,18 +1,14 @@
 /* *
  * KanbanThread
- *
  */
 
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
-import useIsSidebarLayout from '@/hooks/useIsSidebarLayout'
+import useIsSidebarLayout from '~/hooks/useIsSidebarLayout'
 
 import Actions from './Actions'
 import Sections from './Sections'
 import { Wrapper } from '../styles/waterfall_layout'
 
-const WaterLayout: FC = () => {
+export default () => {
   const isSidebarLayout = useIsSidebarLayout()
 
   return (
@@ -22,5 +18,3 @@ const WaterLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(WaterLayout)

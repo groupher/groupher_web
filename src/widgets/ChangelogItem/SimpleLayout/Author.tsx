@@ -1,13 +1,10 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-
-import useAvatarLayout from '@/hooks/useAvatarLayout'
-import { mockUsers } from '@/mock'
+import useLayout from '~/hooks/useLayout'
+import { mockUsers } from '~/mock'
 
 import { Wrapper, Avatar, Name } from '../styles/simple_layout/author'
 
-const Author: FC = () => {
-  const avatarLayout = useAvatarLayout()
+export default () => {
+  const { avatarLayout } = useLayout()
   const user = mockUsers(1)[0]
 
   return (
@@ -17,5 +14,3 @@ const Author: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(Author)

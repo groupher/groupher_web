@@ -1,11 +1,11 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import Modal from '@/widgets/Modal'
+import Modal from '~/widgets/Modal'
 
-// import NoteTip from '@/widgets/NoteTip'
-import HeadsUp from '@/widgets/HeadsUp'
+// import NoteTip from '~/widgets/NoteTip'
+import HeadsUp from '~/widgets/HeadsUp'
 
-// import from '@/widgets/Alert'
+// import from '~/widgets/Alert'
 import List from './List'
 import ConfirmFooter from './ConfirmFooter'
 

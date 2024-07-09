@@ -1,5 +1,5 @@
 import { gql } from 'urql'
-import { F } from '@/schemas'
+import { F } from '~/schemas'
 
 // post
 const createPost = gql`
@@ -173,7 +173,7 @@ const updateRadar = gql`
 
 // viewer_has_subscribed
 const community = gql`
-  query ($slug: String) {
+  query ($slug: String!) {
     community(slug: $slug) {
       id
       logo

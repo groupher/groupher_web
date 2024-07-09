@@ -1,5 +1,5 @@
-import type { TSizeSM } from '@/spec'
-import SIZE from '@/constant/size'
+import type { TSizeSM } from '~/spec'
+import SIZE from '~/const/size'
 
 export const getFontSize = (size: TSizeSM): string => {
   switch (size) {

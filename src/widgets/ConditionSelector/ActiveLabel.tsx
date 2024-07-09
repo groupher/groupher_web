@@ -1,11 +1,9 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TActive } from '@/spec'
-import { ARTICLE_STATE } from '@/constant/gtd'
+import type { TActive } from '~/spec'
 
-import { Trans } from '@/i18n'
-import Icon from '@/widgets/Menu/Icon'
+import { Trans } from '~/i18n'
+import Icon from '~/widgets/Menu/Icon'
 
 import type { TActiveCondition, TMenuItem } from './spec'
 
@@ -32,4 +30,4 @@ const ActiveLabel: FC<TProps> = ({ title, condition, activeItem }) => {
   )
 }
 
-export default observer(ActiveLabel)
+export default ActiveLabel

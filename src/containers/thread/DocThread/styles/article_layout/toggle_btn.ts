@@ -1,7 +1,7 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ArrowSVG from '@/icons/ArrowSimple'
-import ListSVG from '@/icons/List'
+import ArrowSVG from '~/icons/ArrowSimple'
+import ListSVG from '~/icons/List'
 
 type TWrapper = { open: boolean; onClick: () => void }
 export const Wrapper = styled.div<TWrapper>`

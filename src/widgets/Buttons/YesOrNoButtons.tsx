@@ -1,13 +1,10 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { buildLog } from '@/logger'
-import { Space } from '@/widgets/Common'
+import { Space } from '~/widgets/Common'
 
 import Button from './Button'
 
 import { Wrapper, CancelBtn } from './styles/yes_or_no_buttons'
-
-const log = buildLog('C:YesOrNoButton')
 
 type TProps = {
   align?: 'center' | 'right'
@@ -24,8 +21,8 @@ const YesOrNoButton: FC<TProps> = ({
   align = 'center',
   cancelText = '取消',
   confirmText = '确定',
-  onCancel = log,
-  onConfirm = log,
+  onCancel = console.log,
+  onConfirm = console.log,
   disabled = false,
   loading = false,
   space = 1,

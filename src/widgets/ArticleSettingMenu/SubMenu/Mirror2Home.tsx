@@ -1,8 +1,8 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { useMutation } from 'urql'
 
-import useViewingArticle from '@/hooks/useViewingArticle'
-import { toast, updateViewingArticle } from '@/signal'
+import useViewingArticle from '~/hooks/useViewingArticle'
+import { toast, updateViewingArticle } from '~/signal'
 
 import S from '../schema'
 import useTouched from '../useTouched'
@@ -16,12 +16,12 @@ type TProps = {
 
 const Mirrow2Home: FC<TProps> = ({ onBack }) => {
   const { article } = useViewingArticle()
-  const { touched, setTouched, resetTouched } = useTouched()
+  const { resetTouched } = useTouched()
   const [result, updatePost] = useMutation(S.updatePost)
 
   const handleUpdate = () => {
     const params = { id: article.id }
-    console.log('## handle action')
+    console.log('## ## handle action')
     updatePost(params).then((result) => {
       if (result.error) {
         toast('修改失败', 'error')

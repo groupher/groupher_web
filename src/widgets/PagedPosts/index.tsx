@@ -4,27 +4,22 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 import dynamic from 'next/dynamic'
 
-// import Pagi from '@/widgets/Pagi'
+// import Pagi from '~/widgets/Pagi'
 
-import EVENT from '@/constant/event'
+import EVENT from '~/const/event'
 
-import { send } from '@/signal'
-import { buildLog } from '@/logger'
+import { send } from '~/signal'
 
 import PostList from './PostList'
 
-const _log = buildLog('w:PagedArticles:index')
-
-export const Pagi = dynamic(() => import('@/widgets/Pagi'), {
+export const Pagi = dynamic(() => import('~/widgets/Pagi'), {
   ssr: false,
 })
 
 const PagedPosts: FC = () => {
-  console.log('## PagedPosts render')
-
   return (
     <>
       <PostList />

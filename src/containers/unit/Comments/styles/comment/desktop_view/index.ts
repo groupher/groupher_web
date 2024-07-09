@@ -1,8 +1,8 @@
-import Img from '@/Img'
-import styled, { css, theme, animate } from '@/css'
+import Img from '~/Img'
+import styled, { css, theme, animate } from '~/css'
 
-import PinSVG from '@/icons/Pin'
-import UserBadge from '@/icons/UserBadge'
+import PinSVG from '~/icons/Pin'
+import UserBadge from '~/icons/UserBadge'
 
 type TWrapper = {
   $isPinned: boolean

@@ -1,13 +1,9 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import { buildLog } from '@/logger'
-
-import MenuItem from '@/widgets/MenuItem'
-import MENU from '@/constant/menu'
+import MenuItem from '~/widgets/MenuItem'
+import MENU from '~/const/menu'
 
 import { Wrapper } from '../../styles/footer/editors/link_menu'
-
-const log = buildLog('C:Dashboard:LinkEditor')
 
 type TProps = {
   isFirst?: boolean
@@ -21,9 +17,9 @@ type TProps = {
 const LinkMenu: FC<TProps> = ({
   isFirst = false,
   isLast = false,
-  move2Top = log,
-  move2Bottom = log,
-  onDelete = log,
+  move2Top = console.log,
+  move2Bottom = console.log,
+  onDelete = console.log,
 }) => {
   return (
     <Wrapper>

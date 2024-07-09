@@ -1,8 +1,8 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 
-import type { TThread } from '@/spec'
-import { THREAD } from '@/constant/thread'
-import { COLOR_NAME } from '@/constant/colors'
+import type { TThread } from '~/spec'
+import { THREAD } from '~/const/thread'
+import { COLOR_NAME } from '~/const/colors'
 
 import PreviewBars from './PreviewBars'
 

@@ -2,12 +2,12 @@
  * this selector is only used for normal user edtior
  */
 
-import { FC, memo, useState, Fragment } from 'react'
+import { type FC, memo, useState, Fragment } from 'react'
 
-import type { TTag, TGroupedTags } from '@/spec'
+import type { TTag, TGroupedTags } from '~/spec'
 
-import Tooltip from '@/widgets/Tooltip'
-import DropdownButton from '@/widgets/Buttons/DropdownButton'
+import Tooltip from '~/widgets/Tooltip'
+import DropdownButton from '~/widgets/Buttons/DropdownButton'
 
 import ActiveTag from './ActiveTag'
 import FilterPanel from './FilterPanel'

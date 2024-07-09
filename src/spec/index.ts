@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
-import type { TRootStore as RootStoreType } from '@/stores/RootStore'
-
 import type { TThemeName } from './theme'
 import type { TArticle } from './article'
 import type { TCommunity } from './community'
@@ -111,7 +109,6 @@ export type {
   TDocFAQLayout,
   THeaderLayout,
   TFooterLayout,
-  TGlobalLayout,
   TBroadcastLayout,
   TBroadcastArticleLayout,
   TBroadcastConfig,
@@ -122,6 +119,8 @@ export type {
   TRSSType,
   TMediaReport,
   TDashboard,
+  TOverview,
+  TEditFunc,
 } from './dashboard'
 
 export type {
@@ -154,6 +153,7 @@ export type {
   TArticleTitle,
   TPagedPosts,
   TPagedChangelogs,
+  TPagedDocs,
   TPagedArticlesParams,
   TArticleParams,
   TArticleOrder,
@@ -207,8 +207,6 @@ export type TRoute = {
   mainPath?: string
   subPath?: string
 }
-
-export type TRootStore = RootStoreType
 
 export type TViewing = TCommunity | TArticle
 

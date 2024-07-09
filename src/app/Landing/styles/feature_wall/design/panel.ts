@@ -1,7 +1,7 @@
-import styled, { css, theme, animate } from '@/css'
+import styled, { css, theme, animate } from '~/css'
 
-import CursorSVG from '@/icons/Cursor'
-import { WithPosition } from '@/widgets/Common'
+import CursorSVG from '~/icons/Cursor'
+import { WithPosition } from '~/widgets/Common'
 
 import { getCursorGradient } from '../../metric'
 import { GradientText } from '../..'

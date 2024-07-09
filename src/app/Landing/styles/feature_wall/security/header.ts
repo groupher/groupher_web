@@ -1,9 +1,9 @@
-import styled, { css, rainbow, theme } from '@/css'
-import { TColor } from '@/spec'
+import styled, { css, rainbow, theme } from '~/css'
+import type { TColor } from '~/spec'
 
-import MoreSVG from '@/icons/menu/MoreL'
+import MoreSVG from '~/icons/menu/MoreL'
 
-import { WithPosition } from '@/widgets/Common'
+import { WithPosition } from '~/widgets/Common'
 
 export const Wrapper = styled(WithPosition)`
   height: 32px;

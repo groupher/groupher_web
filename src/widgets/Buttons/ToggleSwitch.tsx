@@ -1,14 +1,10 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TSizeSM } from '@/spec'
-import SIZE from '@/constant/size'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import { buildLog } from '@/logger'
+import type { TSizeSM } from '~/spec'
+import SIZE from '~/const/size'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import { Wrapper, Track, Indicator, CheckIcon } from './styles/toggle_switch'
-
-const log = buildLog('w:ToggleSwitch')
 
 type TProps = {
   size?: TSizeSM
@@ -16,7 +12,11 @@ type TProps = {
   onChange?: (checked: boolean) => void
 }
 
-const ToggleSwitch: FC<TProps> = ({ size = SIZE.SMALL, checked = false, onChange = log }) => {
+const ToggleSwitch: FC<TProps> = ({
+  size = SIZE.SMALL,
+  checked = false,
+  onChange = console.log,
+}) => {
   const primaryColor = usePrimaryColor()
 
   return (
@@ -30,4 +30,4 @@ const ToggleSwitch: FC<TProps> = ({ size = SIZE.SMALL, checked = false, onChange
   )
 }
 
-export default observer(ToggleSwitch)
+export default ToggleSwitch

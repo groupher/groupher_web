@@ -4,75 +4,45 @@
  *
  */
 
-import { FC, memo } from 'react'
-
-import { buildLog } from '@/logger'
-
 import SelectType from './SelectType'
 import SetupDomain from './SetupDomain'
 import SetupInfo from './SetupInfo'
 import SetupExtra from './SetupExtra'
 import Finished from './Finished'
 
-import { Wrapper } from '../styles/banner'
-import type {
-  TStep,
-  TSelectTypeStatus,
-  TSetupDomainStatus,
-  TSetupInfoStatus,
-  TValidState,
-  TSetupExtraStatus,
-  TFinishedStatus,
-} from '../spec'
 import { STEP } from '../constant'
 
-const _log = buildLog('C:CreateCommunityBanner')
+import useLogic from '../useLogic'
+import { Wrapper } from '../styles/banner'
 
-type TProps = {
-  step: TStep
-  selectTypeStatus: TSelectTypeStatus
-  setupDomainStatus: TSetupDomainStatus
-  setupInfoStatus: TSetupInfoStatus
-  setupExtraStatus: TSetupExtraStatus
-  finishedStatus: TFinishedStatus
-  validState: TValidState
-}
+export default () => {
+  const { step } = useLogic()
 
-const Banner: FC<TProps> = ({
-  step,
-  selectTypeStatus,
-  setupDomainStatus,
-  setupInfoStatus,
-  setupExtraStatus,
-  finishedStatus,
-  validState,
-}) => {
-  let stepComp
+  let stepComp = null
 
   switch (step) {
     case STEP.SELECT_TYPE: {
-      stepComp = <SelectType status={selectTypeStatus} validState={validState} />
+      stepComp = <SelectType />
       break
     }
     case STEP.SETUP_INFO: {
-      stepComp = <SetupInfo status={setupInfoStatus} validState={validState} />
+      stepComp = <SetupInfo />
       break
     }
+
     case STEP.SETUP_EXTRA: {
-      stepComp = <SetupExtra status={setupExtraStatus} validState={validState} />
+      stepComp = <SetupExtra />
       break
     }
     case STEP.FINISHED: {
-      stepComp = <Finished status={finishedStatus} />
+      stepComp = <Finished />
       break
     }
     default: {
-      stepComp = <SetupDomain status={setupDomainStatus} validState={validState} />
+      stepComp = <SetupDomain />
       break
     }
   }
 
   return <Wrapper $testid="create-community-digest">{stepComp}</Wrapper>
 }
-
-export default memo(Banner)

@@ -1,7 +1,7 @@
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 
-import useInterval from '@/hooks/useInterval'
-import AnimatedCount from '@/widgets/AnimatedCount'
+import useInterval from '~/hooks/useInterval'
+import AnimatedCount from '~/widgets/AnimatedCount'
 
 import { Wrapper, SprintIcon, Text } from '../../styles/enjoy_dev/our_way/sprint_counter'
 

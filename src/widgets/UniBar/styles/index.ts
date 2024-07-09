@@ -1,12 +1,12 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import type { TActive } from '@/spec'
+import type { TActive } from '~/spec'
 
-import ArrowTopSVG from '@/icons/Arrow2Top'
-import NotifySVG from '@/icons/Notify'
-import PeopleSVG from '@/icons/HeartPulse'
-import I18nSVG from '@/icons/I18n'
-import MoreSVG from '@/icons/menu/MoreL'
+import ArrowTopSVG from '~/icons/Arrow2Top'
+import NotifySVG from '~/icons/Notify'
+import PeopleSVG from '~/icons/HeartPulse'
+import I18nSVG from '~/icons/I18n'
+import MoreSVG from '~/icons/menu/MoreL'
 
 type TWrapper = {
   $expand: boolean

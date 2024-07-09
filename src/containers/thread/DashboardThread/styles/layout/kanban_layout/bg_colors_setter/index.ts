@@ -1,9 +1,9 @@
-import type { TActive, TColorName } from '@/spec'
+import type { TActive, TColorName } from '~/spec'
 
-import styled, { css, theme, rainbow, rainbowLight } from '@/css'
+import styled, { css, theme, rainbow, rainbowLight } from '~/css'
 
-import DiceSVG from '@/icons/Dice'
-import ResetSVG from '@/icons/Reset'
+import DiceSVG from '~/icons/Dice'
+import ResetSVG from '~/icons/Reset'
 
 export { Bar, Circle } from '..'
 

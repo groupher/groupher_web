@@ -1,4 +1,4 @@
-import styled, { css } from '@/css'
+import styled, { css } from '~/css'
 
 export const Wrapper = styled.article`
   ${css.row()};

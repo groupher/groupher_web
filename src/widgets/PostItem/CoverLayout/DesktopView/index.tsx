@@ -1,11 +1,11 @@
-import { FC, memo, useState, useEffect } from 'react'
+import { type FC, memo, useState, useEffect } from 'react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
-import { previewArticle } from '@/signal'
-import { mockImage } from '@/mock'
+import { previewArticle } from '~/signal'
+import { mockImage } from '~/mock'
 
-import ArticlePinLabel from '@/widgets/ArticlePinLabel'
+import ArticlePinLabel from '~/widgets/ArticlePinLabel'
 
 import ViewingSign from '../../ViewingSign'
 

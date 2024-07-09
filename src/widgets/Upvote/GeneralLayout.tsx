@@ -4,22 +4,19 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TUser } from '@/spec'
-import { buildLog } from '@/logger'
+import type { TUser } from '~/spec'
 
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import Facepile from '@/widgets/Facepile'
-import { DesktopOnly, LineDivider } from '@/widgets/Common'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import Facepile from '~/widgets/Facepile'
+import { DesktopOnly, LineDivider } from '~/widgets/Common'
 
 import useUpvote from './useUpvote'
 import AnimatedCount from '../AnimatedCount'
 import UpvoteBtn from './UpvoteBtn'
 
 import { Wrapper, Button, UpvoteBtnWrapper } from './styles/general_layout'
-
-const log = buildLog('w:Upvote:index')
 
 type TProps = {
   testid?: string
@@ -33,7 +30,7 @@ const Upvote: FC<TProps> = ({
   testid = 'upvote',
   count = 4,
   viewerHasUpvoted = false,
-  onAction = log,
+  onAction = console.log,
   avatarList,
 }) => {
   const primaryColor = usePrimaryColor()

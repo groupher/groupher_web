@@ -1,16 +1,15 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import type { TSpace } from '@/spec'
-import { HEADER_LAYOUT } from '@/constant/layout'
+import type { TSpace } from '~/spec'
+import { HEADER_LAYOUT } from '~/const/layout'
 
-import useViewingCommunity from '@/hooks/useViewingCommunity'
-import usePublicThreads from '@/hooks/usePublicThreads'
-import useHeaderLinks from '@/hooks/useHeaderLinks'
-import useViewingThread from '@/hooks/useViewingThread'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+import usePublicThreads from '~/hooks/usePublicThreads'
+import useHeaderLinks from '~/hooks/useHeaderLinks'
+import useViewingThread from '~/hooks/useViewingThread'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import CustomHeaderLinks from '@/widgets/CustomHeaderLinks'
+import CustomHeaderLinks from '~/widgets/CustomHeaderLinks'
 
 import { NormalWrapper, FloatWrapper, Title } from '../styles/header_layout/thread_tab'
 
@@ -18,12 +17,13 @@ type TProps = TSpace
 
 const ThreadTab: FC<TProps> = ({ ...restProps }) => {
   const community = useViewingCommunity()
-  const { layout: headerLayout, customLinks } = useHeaderLinks()
+  const { layout, getCustomLinks } = useHeaderLinks()
   const threads = usePublicThreads()
   const activeThread = useViewingThread()
   const primaryColor = usePrimaryColor()
 
-  const Wrapper = headerLayout === HEADER_LAYOUT.FLOAT ? FloatWrapper : NormalWrapper
+  const customLinks = getCustomLinks()
+  const Wrapper = layout === HEADER_LAYOUT.FLOAT ? FloatWrapper : NormalWrapper
 
   return (
     <Wrapper {...restProps}>
@@ -43,4 +43,4 @@ const ThreadTab: FC<TProps> = ({ ...restProps }) => {
   )
 }
 
-export default observer(ThreadTab)
+export default ThreadTab

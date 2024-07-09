@@ -1,7 +1,7 @@
 import { gql } from 'urql'
-import { P, F } from '@/schemas'
+import { P, F } from '~/schemas'
 
-import { plural } from '@/fmt'
+import { plural } from '~/fmt'
 
 const getPagedArticlesSchema = (thread) => {
   return gql`
@@ -33,8 +33,8 @@ const schema = {
   pagedArticleTags,
   getPagedArticlesSchema,
   getArticleFreshSchema,
-  getUpvoteSchema: F.getUpvoteSchema,
-  getUndoUpvoteSchema: F.getUndoUpvoteSchema,
+  getUpvote: F.getUpvote,
+  getUndoUpvote: F.getUndoUpvote,
 }
 
 export default schema

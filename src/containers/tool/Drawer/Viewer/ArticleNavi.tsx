@@ -1,10 +1,6 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import useNaviArticle from '~/hooks/useNaviArticle'
 
-import { buildLog } from '@/logger'
-
-import useNaviArticle from '@/hooks/useNaviArticle'
-
+import useLogic from '../useLogic'
 import {
   Wrapper,
   UpSwitchBlock,
@@ -16,13 +12,9 @@ import {
   DownIndexWrapper,
 } from '../styles/article_navi'
 
-import { naviToArticle } from '../logic'
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const log = buildLog('C:ArticleNavi')
-
-const ArticleNavi: FC = () => {
+export default () => {
   const articleNavi = useNaviArticle()
+  const { naviToArticle } = useLogic()
 
   return (
     <Wrapper>
@@ -45,5 +37,3 @@ const ArticleNavi: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(ArticleNavi)

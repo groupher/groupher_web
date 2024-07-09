@@ -1,10 +1,10 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TDocLayout } from '@/spec'
-import { DOC_LAYOUT } from '@/constant/layout'
-import { COLOR_NAME } from '@/constant/colors'
+import type { TDocLayout } from '~/spec'
+import { DOC_LAYOUT } from '~/const/layout'
+import { COLOR_NAME } from '~/const/colors'
 
-import { Br, Row } from '@/widgets/Common'
+import { Br, Row } from '~/widgets/Common'
 
 import {
   Bar,

@@ -1,9 +1,9 @@
-import type { TSpace, TTestable } from '@/spec'
+import type { TSpace, TTestable } from '~/spec'
 
-import InfoSVG from '@/icons/Info'
+import InfoSVG from '~/icons/Info'
 
-// import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+// import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
 type TWrapper = TTestable & TSpace & { fontSize: number }
 

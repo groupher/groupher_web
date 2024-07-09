@@ -1,8 +1,8 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import ZhihuSVG from '@/icons/social/Zhihu'
-import WechatSVG from '@/icons/social/WeChat'
-import TwitterSVG from '@/icons/TwitterX'
+import ZhihuSVG from '~/icons/social/Zhihu'
+import WechatSVG from '~/icons/social/WeChat'
+import TwitterSVG from '~/icons/TwitterX'
 
 export const Wrapper = styled.div`
   ${css.row('justify-between')};

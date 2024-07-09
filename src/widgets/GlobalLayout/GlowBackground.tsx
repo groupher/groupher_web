@@ -1,12 +1,10 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
-import type { TMetric, TGlowPosition } from '@/spec'
+import type { TMetric, TGlowPosition } from '~/spec'
 
-import useGlowLight from '@/hooks/useGlowLight'
-import useMetric from '@/hooks/useMetric'
-import useTheme from '@/hooks/useTheme'
+import useGlowLight from '~/hooks/useGlowLight'
+import useMetric from '~/hooks/useMetric'
+import useTheme from '~/hooks/useTheme'
 
-import METRIC from '@/constant/metric'
+import METRIC from '~/const/metric'
 
 import { Wrapper } from './styles/glow_background'
 
@@ -18,7 +16,7 @@ const getGlowPosition = (metric: TMetric, glowFixed: boolean): TGlowPosition => 
   return glowFixed ? 'fixed' : 'absolute'
 }
 
-const GlowBackground: FC = () => {
+export default () => {
   const metric = useMetric()
   const { theme } = useTheme()
   const { glowType, glowFixed, glowOpacity } = useGlowLight()
@@ -34,5 +32,3 @@ const GlowBackground: FC = () => {
     />
   )
 }
-
-export default observer(GlowBackground)

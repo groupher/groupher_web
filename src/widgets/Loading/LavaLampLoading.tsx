@@ -1,10 +1,9 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 import { range, mergeRight } from 'ramda'
 
-import type { TSpace, TSizeTSM } from '@/spec'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-import SIZE from '@/constant/size'
+import type { TSpace, TSizeTSM } from '~/spec'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
+import SIZE from '~/const/size'
 
 import { Wrapper, Container, Circle } from './styles/lava_lamp_loading'
 
@@ -27,4 +26,4 @@ const LavaLampLoading: FC<TProps> = (props) => {
   )
 }
 
-export default observer(LavaLampLoading)
+export default LavaLampLoading

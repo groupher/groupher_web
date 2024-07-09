@@ -1,12 +1,11 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { DASHBOARD_DOC_ROUTE } from '@/constant/route'
-import VIEW from '@/constant/view'
-import useViewingCommunity from '@/hooks/useViewingCommunity'
+import { DASHBOARD_DOC_ROUTE } from '~/const/route'
+import VIEW from '~/const/view'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import Tabs from '@/widgets/Switcher/Tabs'
+import Tabs from '~/widgets/Switcher/Tabs'
 
 import TableView from './Table'
 import TreeView from './Tree'
@@ -14,11 +13,13 @@ import Cover from './Cover'
 import FAQ from './FAQ'
 
 import { DOC_TABS } from '../../constant'
+import useDoc from '../../logic/useDoc'
 import useCMSInfo from '../../hooks/useCMSInfo'
 import { Wrapper, TabsWrapper } from '../../styles/cms/docs'
-import { edit } from '../../logic'
 
 const Docs: FC = () => {
+  const { edit } = useDoc()
+
   const {
     pagedDocs,
     docTab,
@@ -71,4 +72,4 @@ const Docs: FC = () => {
   )
 }
 
-export default observer(Docs)
+export default Docs

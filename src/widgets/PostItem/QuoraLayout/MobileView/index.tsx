@@ -1,6 +1,6 @@
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import type { TPost } from '@/spec'
+import type { TPost } from '~/spec'
 
 import Header from './Header'
 import Body from './Body'

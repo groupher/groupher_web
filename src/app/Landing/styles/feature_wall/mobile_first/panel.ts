@@ -1,10 +1,10 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import Img from '@/Img'
-import WeChatSVG from '@/widgets/Icons/social/WeChat'
-import LinkSVG from '@/widgets/Icons/Share'
-import QRCodeSolidSVG from '@/widgets/Icons/QRCodeSolid'
-import AndroidSVG from '@/widgets/Icons/Android'
+import Img from '~/Img'
+import WeChatSVG from '~/widgets/Icons/social/WeChat'
+import LinkSVG from '~/widgets/Icons/Share'
+import QRCodeSolidSVG from '~/widgets/Icons/QRCodeSolid'
+import AndroidSVG from '~/widgets/Icons/Android'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

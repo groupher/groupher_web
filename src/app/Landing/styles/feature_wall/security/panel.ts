@@ -1,14 +1,14 @@
-import styled, { css, theme } from '@/css'
+import styled, { css, theme } from '~/css'
 
-import LockSVG from '@/icons/Lock'
-import SettingSVG from '@/icons/Setting'
-import SearchSVG from '@/icons/HeaderSearch'
-import AuthSVG from '@/icons/Auth'
-import HashSVG from '@/icons/HashTagBold'
-import UploadSVG from '@/icons/Upload'
-import CloudSVG from '@/icons/CloudCheck'
+import LockSVG from '~/icons/Lock'
+import SettingSVG from '~/icons/Setting'
+import SearchSVG from '~/icons/HeaderSearch'
+import AuthSVG from '~/icons/Auth'
+import HashSVG from '~/icons/HashTagBold'
+import UploadSVG from '~/icons/Upload'
+import CloudSVG from '~/icons/CloudCheck'
 
-import { WithMargin, WithPosition } from '@/widgets/Common'
+import { WithMargin, WithPosition } from '~/widgets/Common'
 
 export const Wrapper = styled.div`
   padding: 15px;

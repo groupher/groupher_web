@@ -12,14 +12,14 @@ import { usePathname, useSearchParams } from 'next/navigation'
 
 // import LangParser from 'accept-language-parser'
 
-import type { TCommunity, TMetric, TThemeName } from '@/spec'
-import { P } from '@/schemas'
-import { THREAD, ARTICLE_THREAD } from '@/constant/thread'
-import THEME from '@/constant/theme'
-import METRIC from '@/constant/metric'
-import URL_PARAM from '@/constant/url_param'
-import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '@/constant/gtd'
-import { i18nQuery, useParseLang } from '@/i18n'
+import type { TCommunity, TMetric, TThemeName } from '~/spec'
+import { P } from '~/schemas'
+import { THREAD, ARTICLE_THREAD } from '~/const/thread'
+import THEME from '~/const/theme'
+import METRIC from '~/const/metric'
+import URL_PARAM from '~/const/url_param'
+import { ARTICLE_CAT, ARTICLE_STATE, ARTICLE_ORDER } from '~/const/gtd'
+import { i18nQuery, useParseLang } from '~/i18n'
 
 import type {
   TCommunityRes,
@@ -71,12 +71,11 @@ export const useThemeFromURL = (): TThemeName => {
 export const useI18n = (): TUseI18n => {
   const locale = useParseLang()
   // const searchParams = useSearchParams()
-  console.log('## my lang: ', locale)
-  // console.log('## data: ', data)
+  // console.log('## ## data: ', data)
 
   // NOTE: put this parser into frontend maybe ?
   // const hello = LangParser.parse('zh-CN,zh;q=0.9,en;q=0.8,ja;q=0.7,it;q=0.6,fr;q=0.5,zh-TW;q=0.4')
-  // console.log('## hello: ', hello)
+  // console.log('## ## hello: ', hello)
 
   const [result] = useQuery({
     query: i18nQuery,
@@ -96,7 +95,7 @@ export const useI18n = (): TUseI18n => {
 // export const useThemeFromURL = (): TThemeName => {
 //   const searchParams = useSearchParams()
 //   const theme = searchParams.get('theme')
-//   console.log('## geting theme from url')
+//   console.log('## ## geting theme from url')
 
 //   if (theme === THEME.NIGHT) {
 //     return THEME.NIGHT

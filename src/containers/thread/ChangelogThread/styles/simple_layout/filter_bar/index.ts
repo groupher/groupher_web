@@ -1,5 +1,5 @@
-import type { TActive } from '@/spec'
-import styled, { css, animate, theme } from '@/css'
+import type { TActive } from '~/spec'
+import styled, { css, animate, theme } from '~/css'
 
 type TWrapper = TActive & { alignLeft: boolean }
 export const Wrapper = styled.div<TWrapper>`

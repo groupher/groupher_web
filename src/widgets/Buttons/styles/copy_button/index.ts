@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import CopySVG from '@/icons/Copy'
+import styled, { css, theme } from '~/css'
+import CopySVG from '~/icons/Copy'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};

@@ -4,13 +4,9 @@
  *
  */
 
-import { FC, memo, ReactNode } from 'react'
-
-import { buildLog } from '@/logger'
+import { type FC, memo, type ReactNode } from 'react'
 
 import { Wrapper, Content } from './styles'
-
-const _log = buildLog('w:MobileMockup:index')
 
 type TProps = {
   testid?: string

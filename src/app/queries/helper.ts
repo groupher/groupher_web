@@ -16,12 +16,14 @@ import type {
   TDashboardAliasRoute,
   TPagedArticlesParams,
   TArticleParams,
-} from '@/spec'
-import { BUILDIN_ALIAS, HCN } from '@/constant/name'
-import { THREAD } from '@/constant/thread'
-import URL_PARAM from '@/constant/url_param'
-import { nilOrEmpty } from '@/validator'
+} from '~/spec'
+import { BUILDIN_ALIAS } from '~/const/name'
+import { THREAD } from '~/const/thread'
+import { HCN } from '~/const/name'
+import URL_PARAM from '~/const/url_param'
+import { nilOrEmpty } from '~/validator'
 import {
+  ROUTE,
   STATIC_ROUTES,
   DASHBOARD_ROUTE,
   DASHBOARD_BASEINFO_ROUTE,
@@ -30,8 +32,8 @@ import {
   DASHBOARD_BROADCAST_ROUTE,
   DASHBOARD_LAYOUT_ROUTE,
   DASHBOARD_ALIAS_ROUTE,
-} from '@/constant/route'
-import { removeEmptyValuesFromObject } from '@/helper'
+} from '~/const/route'
+import { removeEmptyValuesFromObject } from '~/helper'
 
 import type { TGQSSRResult, TParsedWallpaper, TParseDashboard, TDashboardTab } from './spec'
 import { ARTICLES_FILTER } from './constant'
@@ -118,6 +120,9 @@ export const useArticleParams = (): TArticleParams => {
 }
 
 export const parseCommunity = (communityPath: string): string => {
+  const pathname = usePathname()
+  if (pathname === ROUTE.APPLY_COMMUNITY) return HCN
+
   if (!communityPath) return null // HCN
   if (communityPath === '_next') return null
 
@@ -238,6 +243,7 @@ export const parseDashboard = (community: TCommunity, pathname: string): TParseD
   if (!community) return {}
 
   const { dashboard, moderators } = community
+
   const {
     enable,
     nameAlias,
@@ -269,51 +275,7 @@ export const parseDashboard = (community: TCommunity, pathname: string): TParseD
 
   return {
     ...fieldsObj,
-    initSettings: {
-      ...fieldsObj,
-    },
-    ...parseDashboardThread(pathname),
-  }
-}
-
-export const parseDashboardbackup = (community: TCommunity, pathname: string): TParseDashboard => {
-  // NOTE: if the backend is not ready, return default config
-  // @ts-ignore
-  if (!community) return {}
-
-  const { dashboard, moderators } = community
-  const {
-    enable,
-    nameAlias,
-    socialLinks,
-    faqs,
-    seo,
-    layout,
-    rss,
-    baseInfo,
-    headerLinks,
-    footerLinks,
-    mediaReports,
-  } = dashboard
-
-  const fieldsObj = removeEmptyValuesFromObject({
-    enable,
-    nameAlias: parseDashboardAlias(nameAlias),
-    socialLinks,
-    faqSections: faqs,
-    ...baseInfo,
-    ...seo,
-    ...layout,
-    ...rss,
-    headerLinks,
-    footerLinks,
-    moderators,
-    mediaReports,
-  })
-
-  return {
-    ...fieldsObj,
-    initSettings: {
+    original: {
       ...fieldsObj,
     },
     ...parseDashboardThread(pathname),

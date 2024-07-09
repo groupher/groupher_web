@@ -1,9 +1,9 @@
 import { mergeRight, toUpper, clone } from 'ramda'
 import { createClient, cacheExchange, fetchExchange } from '@urql/core'
 
-import BStore from '@/utils/bstore'
+import BStore from '~/utils/bstore'
 
-import { GRAPHQL_ENDPOINT, PAGE_SIZE } from '@/config'
+import { GRAPHQL_ENDPOINT, PAGE_SIZE } from '~/config'
 import { isString } from './validator'
 
 // for client(widgest most) only

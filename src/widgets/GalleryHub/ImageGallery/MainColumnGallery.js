@@ -7,10 +7,9 @@
 import React from 'react'
 import T from 'prop-types'
 
-import { ICON_CMD, ASSETS_ENDPOINT } from '@/config'
-import { buildLog } from '@/logger'
+import { ICON_CMD, ASSETS_ENDPOINT } from '~/config'
 
-import IconText from '@/widgets/IconText'
+import IconText from '~/widgets/IconText'
 
 import {
   Wrapper,
@@ -26,8 +25,6 @@ import {
   FlagIcon,
   Footer,
 } from '../styles/image_gallery/main_column_gallery'
-
-const _log = buildLog('w:ImageGallery:index')
 
 const MainColumnGallery = ({ items }) => {
   return (

@@ -1,28 +1,25 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import { KANBAN_LAYOUT } from '~/const/layout'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import { KANBAN_LAYOUT } from '@/constant/layout'
-import usePrimaryColor from '@/hooks/usePrimaryColor'
-
-import { Brick } from '@/widgets/Common'
-import CheckLabel from '@/widgets/CheckLabel'
+import { Brick } from '~/widgets/Common'
+import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../../constant'
 import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
-import useKanbanInfo from '../../hooks/useKanbanInfo'
+import useKanban from '../../logic/useKanban'
 import {
   SelectWrapper,
   Layout,
   LayoutTitle,
   Block,
 } from '../../styles/layout/kanban_layout/global_layout'
-import { edit } from '../../logic'
 
-const KanbanGlobalLayout: FC = () => {
-  const { layout, isTouched, saving } = useKanbanInfo()
+export default () => {
+  const { kanbanLayout: layout, getKanbanLayoutTouched, saving, edit } = useKanban()
   const primaryColor = usePrimaryColor()
+  const isTouched = getKanbanLayoutTouched()
 
   return (
     <>
@@ -116,5 +113,3 @@ const KanbanGlobalLayout: FC = () => {
     </>
   )
 }
-
-export default observer(KanbanGlobalLayout)

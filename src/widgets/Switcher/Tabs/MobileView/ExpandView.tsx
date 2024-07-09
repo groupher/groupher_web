@@ -4,19 +4,16 @@
  *
  */
 
-import { FC, useEffect, useRef, useState, useCallback, memo } from 'react'
+import { type FC, useEffect, useRef, useState, useCallback, memo } from 'react'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import type { TSizeSM, TTabItem } from '@/spec'
-import { ICON } from '@/config'
-import SIZE from '@/constant/size'
-import { isString } from '@/validator'
-import { buildLog } from '@/logger'
+import type { TSizeSM, TTabItem } from '~/spec'
+import { ICON } from '~/config'
+import SIZE from '~/const/size'
+import { isString } from '~/validator'
 
 import TabItem from '../TabItem'
 import { Wrapper, Nav, MoreWrapper, ArrowIcon } from '../../styles/tabs/mobile_view/expand_view'
-
-const log = buildLog('w:Tabs:index')
 
 type TProps = {
   items: TTabItem[]
@@ -28,7 +25,7 @@ type TProps = {
 
 const MobileView: FC<TProps> = ({
   size = SIZE.MEDIUM,
-  onChange = log,
+  onChange = console.log,
   items,
   activeKey = '',
   toggleExpand,

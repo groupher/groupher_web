@@ -1,8 +1,7 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import { ARTICLE_CAT } from '@/constant/gtd'
-import useNameAlias from '@/hooks/useNameAlias'
+import { ARTICLE_CAT } from '~/const/gtd'
+import useNameAlias from '~/hooks/useNameAlias'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
 
@@ -52,4 +51,4 @@ const Label: FC<TProps> = ({ cat, smaller }) => {
   }
 }
 
-export default observer(Label)
+export default Label

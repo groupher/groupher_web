@@ -1,11 +1,10 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
 
-import useBannerLayout from '@/hooks/useBannerLayout'
-import useViewingThread from '@/hooks/useViewingThread'
+import useLayout from '~/hooks/useLayout'
+import useViewingThread from '~/hooks/useViewingThread'
 
-import { BANNER_LAYOUT } from '@/constant/layout'
-import { THREAD } from '@/constant/thread'
+import { BANNER_LAYOUT } from '~/const/layout'
+import { THREAD } from '~/const/thread'
 
 import type { TProps } from './spec'
 
@@ -14,7 +13,7 @@ import HeaderLayout from './HeaderLayout'
 import SidebarLayout from './SidebarLayout'
 
 const CustomHeaderLinks: FC<TProps> = (props) => {
-  const bannerLayout = useBannerLayout()
+  const { bannerLayout } = useLayout()
   const activeThread = useViewingThread()
 
   if (activeThread === THREAD.DASHBOARD) {
@@ -36,4 +35,4 @@ const CustomHeaderLinks: FC<TProps> = (props) => {
   }
 }
 
-export default observer(CustomHeaderLinks)
+export default CustomHeaderLinks

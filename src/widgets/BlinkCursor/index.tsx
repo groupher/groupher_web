@@ -4,14 +4,10 @@
  *
  */
 
-import { FC, memo } from 'react'
+import { type FC, memo } from 'react'
 
-import { buildLog } from '@/logger'
-
-import type { TSpace } from '@/spec'
+import type { TSpace } from '~/spec'
 import { Wrapper } from './styles'
-
-const log = buildLog('w:BlinkCursor:index')
 
 type TProps = {
   testid?: string

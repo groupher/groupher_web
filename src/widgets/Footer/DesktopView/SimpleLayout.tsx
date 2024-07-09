@@ -1,14 +1,12 @@
-import { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 import { keys } from 'ramda'
 
-import type { TLinkItem } from '@/spec'
-import useFooterLinks from '@/hooks/useFooterLinks'
-import { DEME_SOCIALS } from '@/constant/social'
+import type { TLinkItem } from '~/spec'
+import useFooterLinks from '~/hooks/useFooterLinks'
+import { DEME_SOCIALS } from '~/const/social'
 
-import { sortByIndex, groupByKey } from '@/helper'
+import { sortByIndex, groupByKey } from '~/helper'
 
-import SocialList from '@/widgets/SocialList'
+import SocialList from '~/widgets/SocialList'
 
 import {
   Wrapper,
@@ -19,7 +17,7 @@ import {
   SocialInfo,
 } from '../styles/desktop_view/simple_layout'
 
-const SimpleLayout: FC = () => {
+export default () => {
   const { links } = useFooterLinks()
 
   // @ts-ignore
@@ -44,5 +42,3 @@ const SimpleLayout: FC = () => {
     </Wrapper>
   )
 }
-
-export default observer(SimpleLayout)

@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import Img from '@/Img'
+import styled, { css, theme } from '~/css'
+import Img from '~/Img'
 
 import { ReplyBarBase, ReplyToBodyBase, ReplyToFloorBase } from './base'
 

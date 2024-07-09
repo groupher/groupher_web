@@ -1,10 +1,10 @@
 import Link from 'next/link'
 
-import Img from '@/Img'
-import styled, { css, theme } from '@/css'
+import Img from '~/Img'
+import styled, { css, theme } from '~/css'
 
-import SiteLogo from '@/icons/CPLogo'
-import DotDivider from '@/widgets/DotDivider'
+import SiteLogo from '~/icons/CPLogo'
+import DotDivider from '~/widgets/DotDivider'
 
 export const Wrapper = styled.div`
   height: 150px;

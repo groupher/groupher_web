@@ -1,11 +1,11 @@
-import { FC, Suspense } from 'react'
+import { type FC, Suspense, memo } from 'react'
 
-import TYPE from '@/constant/type'
-import { LoadWatcher } from '@/widgets/Common'
-// import ModeLineMenu from '@/containers/unit/ModeLineMenu'
-import LavaLampLoading from '@/widgets/Loading/LavaLampLoading'
+import TYPE from '~/const/type'
+import { LoadWatcher } from '~/widgets/Common'
+// import ModeLineMenu from '~/containers/unit/ModeLineMenu'
+import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
-// import ArticleViewer from '@/containers/viewer/ArticleViewer'
+// import ArticleViewer from '~/containers/viewer/ArticleViewer'
 
 import {
   ArticleViewer,
@@ -13,12 +13,11 @@ import {
   PassportEditor,
   ArticleEditor,
   WallpaperEditor,
-  AccountEditor,
   // MailsViewer,
 } from './dynamic'
 
-import UserList from '@/widgets/UserList'
-import SearchPanel from '@/widgets/SearchPanel'
+import UserList from '~/widgets/UserList'
+import SearchPanel from '~/widgets/SearchPanel'
 
 type TProps = {
   type: string
@@ -39,13 +38,6 @@ const Content: FC<TProps> = ({ type, onLoad }) => {
       return (
         <Suspense fallback={<Loading />}>
           <SearchPanel />
-        </Suspense>
-      )
-
-    case DRAWER.ACCOUNT_EDIT:
-      return (
-        <Suspense fallback={<Loading />}>
-          <AccountEditor />
         </Suspense>
       )
 
@@ -75,9 +67,6 @@ const Content: FC<TProps> = ({ type, onLoad }) => {
 
     case DRAWER.MODELINE_MENU:
       return null
-
-    // @ts-ignore
-    // return <ModeLineMenu type={extraInfo.mmType} />
 
     case DRAWER.LIST_USERS: {
       return (
@@ -116,4 +105,4 @@ const Content: FC<TProps> = ({ type, onLoad }) => {
   }
 }
 
-export default Content
+export default memo(Content)

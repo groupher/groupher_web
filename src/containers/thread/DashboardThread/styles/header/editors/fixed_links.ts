@@ -1,5 +1,5 @@
-import styled, { css, theme } from '@/css'
-import ArrowSVG from '@/icons/ArrowSimple'
+import styled, { css, theme } from '~/css'
+import ArrowSVG from '~/icons/ArrowSimple'
 
 export const Wrapper = styled.div``
 export const Note = styled.div`

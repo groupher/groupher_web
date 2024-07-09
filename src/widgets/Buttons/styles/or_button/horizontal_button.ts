@@ -1,5 +1,5 @@
-import type { TButton, TSize } from '@/spec'
-import styled, { css, theme } from '@/css'
+import type { TButton, TSize } from '~/spec'
+import styled, { css, theme } from '~/css'
 
 import { Wrapper as BaseBtnWrapper } from '../button'
 import { OrSignBase } from '.'

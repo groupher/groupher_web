@@ -2,14 +2,12 @@
  * EmojiSelector
  */
 
-import { FC, memo, Fragment } from 'react'
-import { buildLog } from '@/logger'
+import { type FC, memo, Fragment } from 'react'
 
-import type { TEmotion, TEmotionType } from '@/spec'
+import type { TEmotion, TEmotionType } from '~/spec'
 
 import { getEmotionName } from '../helper'
 import EmotionUnit from './EmotionUnit'
-const _log = buildLog('w:SelectedEmotions:index')
 
 type TProps = {
   emotions: TEmotion[]
