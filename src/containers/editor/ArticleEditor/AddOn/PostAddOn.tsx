@@ -5,7 +5,6 @@ import Checker from '~/widgets/Checker'
 
 import type { TEditData } from '../spec'
 import { Wrapper, LinkWrapper, LinkInput, LinkIcon } from '../styles/addon/post_addon'
-import { editOnChange } from '../logic'
 
 type TProps = {
   editData: TEditData
@@ -23,7 +22,9 @@ const PostAddOn: FC<TProps> = ({ editData }) => {
         dimWhenIdle
         onChange={(checked) => {
           setReprint(checked)
-          if (!checked) editOnChange('', 'linkAddr')
+          if (!checked) {
+            console.log('## TODO update')
+          }
         }}
       >
         转载 / 翻译
@@ -42,8 +43,7 @@ const PostAddOn: FC<TProps> = ({ editData }) => {
               } else {
                 setInvalid(false)
               }
-
-              editOnChange(v, 'linkAddr')
+              console.log('## TODO update')
             }}
             autoFocus
           />

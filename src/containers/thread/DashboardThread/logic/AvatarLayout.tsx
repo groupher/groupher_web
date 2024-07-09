@@ -19,10 +19,9 @@ import {
   Avatar,
   AvatarList,
 } from '../styles/layout/avatar_layout'
-import { edit } from '../logic'
 
 export default () => {
-  const { layout, getIsTouched, saving } = useAvatar()
+  const { layout, getIsTouched, saving, edit } = useAvatar()
   const primaryColor = usePrimaryColor()
   const isTouched = getIsTouched()
 

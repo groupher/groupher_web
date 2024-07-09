@@ -14,6 +14,7 @@ type TRet = TDashboardSEOConfig & {
   seoTab: TDashboardSEORoute
   loading: boolean
   getIsTouched: () => boolean
+  toggleSEO: (seoEnable: boolean) => void
 }
 
 export default (): TRet => {
@@ -24,10 +25,18 @@ export default (): TRet => {
   // @ts-ignorei
   const getIsTouched = useCallback(() => anyChanged(SEO_KEYS), [store])
 
+  const toggleSEO = (seoEnable: boolean): void => {
+    // const { curCommunity } = store
+
+    console.log('## toggleSEO: ', seoEnable)
+    // sr71$.mutate(S.updateDashboardSeo, { community: curCommunity.slug, seoEnable })
+  }
+
   return {
     edit,
     ...pick(SEO_KEYS, store),
     ...pick(['seoTab', 'loading', 'saving'], store),
     getIsTouched,
+    toggleSEO,
   }
 }

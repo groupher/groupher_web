@@ -6,10 +6,9 @@ import SavingBar from '../SavingBar'
 
 import useRSS from '../logic/useRSS'
 import { Wrapper, InnerWrapper, SettingsRow, NumRow, SettingTitle } from '../styles/rss'
-import { rssOnSave, rssOnCancel } from '../logic'
 
 export default () => {
-  const { rssFeedType, rssFeedCount, saving, getIsTouched, edit } = useRSS()
+  const { rssFeedType, rssFeedCount, saving, getIsTouched, edit, rssOnSave, rssOnCancel } = useRSS()
   const isTouched = getIsTouched()
 
   return (

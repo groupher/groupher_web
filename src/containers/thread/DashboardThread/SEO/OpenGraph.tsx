@@ -5,14 +5,14 @@ import SearchEnginePreview from './SearchEnginePreview'
 
 import useSEO from '../logic/useSEO'
 import { Wrapper, Label, EnableDesc, DetailLink, Inputer } from '../styles/seo/open_graph'
-import { toggleSEO } from '../logic'
 
 /*
  see: https://mintlify.com/docs/settings/seo for details
 */
 
 export default () => {
-  const { seoEnable, ogSiteName, ogTitle, ogDescription, ogImage, ogUrl, edit } = useSEO()
+  const { seoEnable, ogSiteName, ogTitle, ogDescription, ogImage, ogUrl, edit, toggleSEO } =
+    useSEO()
 
   return (
     <Wrapper>
