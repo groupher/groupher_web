@@ -1,5 +1,4 @@
 import { type FC, useCallback, useState } from 'react'
-import { observer } from 'mobx-react-lite'
 import { pluck } from 'ramda'
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table'
 
@@ -10,7 +9,6 @@ import FilterBar from '../FilterBar'
 
 import useCMSInfo from '../../hooks/useCMSInfo'
 import { Title, SortIcon } from '../../styles/cms/communities'
-import { batchSelectAll } from '../../logic'
 
 /**
  * example: https://table.rsuitejs.com/#fixed-column
@@ -18,7 +16,7 @@ import { batchSelectAll } from '../../logic'
  */
 
 const Communities: FC = () => {
-  const { pagedCommunities, loading, batchSelectedIDs } = useCMSInfo()
+  const { pagedCommunities, loading, batchSelectedIDs, batchSelectAll } = useCMSInfo()
   const [showCheckColumn, setShowCheckColumn] = useState(false)
   const [sortColumn, setSortColumn] = useState('id')
 
@@ -154,4 +152,4 @@ const Communities: FC = () => {
   )
 }
 
-export default observer(Communities)
+export default Communities

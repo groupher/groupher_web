@@ -59,8 +59,6 @@ export {
   markRoute,
 } from './route'
 
-export { markStates, toJS, updateEditing } from './mobx'
-
 export {
   scrollIntoEle,
   scrollToHeader,

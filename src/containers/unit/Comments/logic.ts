@@ -11,7 +11,6 @@
 // import { titleCase } from '~/fmt'
 // import { errRescue } from '~/signal'
 // import { scrollIntoEle } from '~/dom'
-// import { updateEditing } from '~/mobx'
 
 // import { API_MODE, EDIT_MODE } from './constant'
 

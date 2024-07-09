@@ -1,9 +1,9 @@
-import type { FC } from 'react'
-
+import useDoc from '../../../logic/useDoc'
 import { Wrapper, AddButton, AddIcon, Notes } from '../../../styles/cms/docs/faq/adder'
-import { addFAQSection } from '../../../logic/faq'
 
-const Adder: FC = () => {
+export default () => {
+  const { addFAQSection } = useDoc()
+
   return (
     <Wrapper>
       <AddButton onClick={addFAQSection}>
@@ -14,5 +14,3 @@ const Adder: FC = () => {
     </Wrapper>
   )
 }
-
-export default Adder

@@ -1,5 +1,4 @@
-import { type FC, useCallback, useState } from 'react'
-import { observer } from 'mobx-react-lite'
+import { useCallback, useState } from 'react'
 import { pluck } from 'ramda'
 
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table'
@@ -11,15 +10,14 @@ import FilterBar from '../FilterBar'
 
 import useCMSInfo from '../../hooks/useCMSInfo'
 import { Title, SortIcon } from '../../styles/cms/changelogs'
-import { loadChangelogs, batchSelectAll } from '../../logic'
 
 /**
  * example: https://table.rsuitejs.com/#fixed-column
  * API: https://github.com/rsuite/rsuite-table#api
  */
-
-const Changelogs: FC = () => {
-  const { pagedChangelogs, loading, batchSelectedIDs } = useCMSInfo()
+export default () => {
+  const { pagedChangelogs, loading, batchSelectedIDs, batchSelectAll, loadChangelogs } =
+    useCMSInfo()
   const [showCheckColumn, setShowCheckColumn] = useState(false)
   const [sortColumn, setSortColumn] = useState('id')
 
@@ -156,5 +154,3 @@ const Changelogs: FC = () => {
     </>
   )
 }
-
-export default observer(Changelogs)

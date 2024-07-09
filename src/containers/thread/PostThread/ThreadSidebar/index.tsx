@@ -16,7 +16,6 @@ import useActiveTag from '~/hooks/useActiveTag'
 
 import { Link, SpaceGrow, Br, SexyDivider } from '~/widgets/Common'
 import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '~/signal'
-import { toJS } from '~/mobx'
 import { mockUsers } from '~/mock'
 import { BANNER_LAYOUT } from '~/const/layout'
 
@@ -103,7 +102,7 @@ export default () => {
               text="参与讨论"
               onMenuSelect={(cat) => {
                 callGEditor()
-                setTimeout(() => callSyncSelector({ cat, tag: toJS(activeTag) }), 500)
+                setTimeout(() => callSyncSelector({ cat, tag: activeTag }), 500)
               }}
               left={-2}
               offset={[0, 5]}

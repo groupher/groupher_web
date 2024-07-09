@@ -4,7 +4,6 @@
 // import { values, findIndex, propEq, pick, uniqBy, prop } from 'ramda'
 
 // import type { TID, TPagedComments, TComment, TEmotion, TSubmitState } from '~/spec'
-// import { T, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
 // import { Comment, PagedComments, emptyPagi, SimpleUser } from '~/model'
 
 // import type { TFoldState, TEditMode, TEditState, TRepliesState } from './spec'
@@ -239,6 +238,5 @@
 
 // export type TStore = Instance<typeof CommentsStore>
 // // @ts-ignore
-// export const useStore = (): TStore => useMobxContext().store.comments
 
 // export default CommentsStore

@@ -13,6 +13,7 @@ import TagsList from '~/widgets/TagsList'
 
 // import { mockTags } from '~/mock'
 
+import useCMSInfo from '../../hooks/useCMSInfo'
 import {
   ArticleWrapper,
   ArticleTitle,
@@ -31,9 +32,9 @@ import {
   // PublishIcon,
   PulseIcon,
 } from '../../styles/cms/cell'
-import { batchSelect } from '../../logic'
 
 export const CheckCell = ({ rowData, ...props }) => {
+  const { batchSelect } = useCMSInfo()
   // const { cat, state } = rowData
   const { id, _checked } = rowData
 

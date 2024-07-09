@@ -41,13 +41,6 @@ const Content: FC<TProps> = ({ type, onLoad }) => {
         </Suspense>
       )
 
-    // case DRAWER.ACCOUNT_EDIT:
-    //   return (
-    //     <Suspense fallback={<Loading />}>
-    //       <AccountEditor />
-    //     </Suspense>
-    //   )
-
     case DRAWER.PASSPORT_EDITOR:
       return (
         <Suspense fallback={<Loading />}>
@@ -74,9 +67,6 @@ const Content: FC<TProps> = ({ type, onLoad }) => {
 
     case DRAWER.MODELINE_MENU:
       return null
-
-    // @ts-ignore
-    // return <ModeLineMenu type={extraInfo.mmType} />
 
     case DRAWER.LIST_USERS: {
       return (

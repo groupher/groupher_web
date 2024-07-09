@@ -1,6 +1,5 @@
 import { upvoteArticle } from '~/signal'
 import useViewingArticle from '~/hooks/useViewingArticle'
-import { toJS } from '~/mobx'
 import { AVATAR_LAYOUT, UPVOTE_LAYOUT } from '~/const/layout'
 
 import { Br } from '~/widgets/Common'
@@ -55,7 +54,7 @@ export default () => {
         <Br bottom={25} />
         <Label>标签</Label>
         <TagsSection>
-          <TagsList items={toJS(articleTags)} size="medium" left={2} max={20} />
+          <TagsList items={articleTags} size="medium" left={2} max={20} />
         </TagsSection>
 
         <Br bottom={25} />

@@ -7,8 +7,8 @@ import { SpaceGrow } from '~/widgets/Common'
 import WordsCounter from '~/widgets/WordsCounter'
 
 import type { TEditData } from './spec'
+import useLogic from './useLogic'
 import { Wrapper, PublishFooter } from './styles/footer'
-import { onPublish, onCancel, setWordsCountState } from './logic'
 
 type TProps = {
   mode: TEditMode
@@ -17,6 +17,8 @@ type TProps = {
 }
 
 const Footer: FC<TProps> = ({ mode, editData, submitState }) => {
+  const { onPublish, onCancel, setWordsCountState } = useLogic()
+
   const { body } = editData
   return (
     <Wrapper>

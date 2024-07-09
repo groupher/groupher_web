@@ -17,7 +17,6 @@ const store = proxy<TStore>({
 export default store
 
 // import type {
-//   TRootStore,
 //   TCommunity,
 //   TThread,
 //   TArticle,
@@ -26,7 +25,6 @@ export default store
 //   TResState,
 //   TTag,
 // } from '~/spec'
-// import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
 
 // const MushroomStore = T.model('MushroomStore', {
 //   online: T.opt(T.bool, true),
@@ -40,45 +38,37 @@ export default store
 // })
 //   .views((self) => ({
 //     get userHasLogin(): boolean {
-//       // const root = getParent(self) as TRootStore
 //       // return root.accountInfo.isLogin
 
 //       return false
 //     },
 //     get curCommunity(): TCommunity {
-//       const root = getParent(self) as TRootStore
 //       return toJS(root.viewing.community)
 //     },
 //     get curThread(): TThread {
-//       const root = getParent(self) as TRootStore
 //       return root.viewing.activeThread
 //     },
 //     get activeTag(): TTag {
 //       return null
-//       // const root = getParent(self) as TRootStore
 //       // return toJS(root.tagsBar.activeTag)
 //     },
 //   }))
 //   .actions((self) => ({
 //     loadDemoSetting(): void {
-//       // const root = getParent(self) as TRootStore
 
 //       console.log('## loadDemoSetting')
 //       // root.dashboardThread.afterCreate()
 //     },
 //     updateResState(state: TResState): void {
 //       console.log('## updateResState: ', state)
-//       // const root = getParent(self) as TRootStore
 //       // root.articles.updateResState(state)
 //     },
 //     updatePagedArticles(pagedArticles: TPagedArticles): void {
-//       // const root = getParent(self) as TRootStore
 //       // root.articles.updatePagedArticles(pagedArticles)
 //       console.log('## TODO: updatePagedArticles')
 //     },
 //     syncArticle(article: TArticle): void {
 //       console.log('## TODO: syncArticle')
-//       // const root = getParent(self) as TRootStore
 //       // const viewingArticle = toJS(root.viewingArticle)
 //       // const updatedArticle = mergeRight(viewingArticle, article)
 
@@ -88,16 +78,13 @@ export default store
 //       // root.articles.updateArticle(updatedArticle)
 //     },
 //     setViewingAlways(article: TArticle): void {
-//       const root = getParent(self) as TRootStore
 //       root.viewing.updateViewing(toJS(article))
 //     },
 //     updateViewerHasUpvoted(viewerHasUpvoted: boolean): void {
-//       const root = getParent(self) as TRootStore
 //       root.viewing.updateViewerUpvoted(viewerHasUpvoted)
 //     },
 //     syncUploadInfo(upvotesCount: number, meta: TArticleMeta): void {
 //       console.log('## TODO syncUploadInfo')
-//       // const root = getParent(self) as TRootStore
 
 //       // for viewing article
 //       // root.viewing.updateUpvoteCount(upvotesCount, meta)
@@ -110,7 +97,6 @@ export default store
 //       //root.articles.updateArticle({ id, viewerHasUpvoted, upvotesCount, meta: syncMeta })
 //     },
 //     clearLocalSettings(): void {
-//       // const root = getParent(self) as TRootStore
 //       // root.dashboardThread.clearLocalSettings()
 //       console.log('## clearLocalSettings')
 //     },
@@ -123,6 +109,5 @@ export default store
 //   }))
 
 // export type TStore = Instance<typeof MushroomStore>
-// export const useStore = (): TStore => useMobxContext().store.mushroom
 
 // export default MushroomStore

@@ -24,3 +24,5 @@ export const EMPTY_PAGED_COMMUNITIES = {
   totalCount: 0,
   totalPages: 0,
 } as TPagedCommunities
+
+export const EMPTY_TAG = { id: '', title: '', color: '', slug: '' }

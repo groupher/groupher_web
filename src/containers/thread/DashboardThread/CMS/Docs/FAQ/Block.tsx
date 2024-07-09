@@ -5,6 +5,7 @@ import type { TFAQSection } from '~/spec'
 
 import Editor from './Editor'
 
+import useFAQ from '../../../logic/useFAQ'
 import {
   Wrapper,
   Actions,
@@ -17,8 +18,6 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
 } from '../../../styles/cms/docs/faq/block'
-import { deleteFAQSection } from '../../../logic'
-import { triggerEditFAQ, moveUpFAQ, moveDownFAQ } from '../../../logic/faq'
 
 import type { TProps as TIndex } from '.'
 
@@ -30,6 +29,8 @@ type TProps = {
 } & Pick<TIndex, 'editingFAQIndex' | 'editingFAQ'>
 
 const Block: FC<TProps> = ({ section, editingFAQIndex, editingFAQ, isFirst, isLast, sortOnly }) => {
+  const { deleteFAQSection, triggerEditFAQ, moveUpFAQ, moveDownFAQ } = useFAQ()
+
   if (editingFAQIndex === section.index) {
     return <Editor editingFAQ={editingFAQ} />
   }

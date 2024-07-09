@@ -1,9 +1,9 @@
-import { type FC, memo } from 'react'
-
+import useDoc from '../../logic/useDoc'
 import { Wrapper, AddIcon, Title } from '../../styles/doc/block_layout/adder_block'
-import { addDocCategory } from '../../logic'
 
-const AdderBlock: FC = () => {
+export default () => {
+  const { addDocCategory } = useDoc()
+
   return (
     <Wrapper onClick={() => addDocCategory()}>
       <AddIcon />
@@ -11,5 +11,3 @@ const AdderBlock: FC = () => {
     </Wrapper>
   )
 }
-
-export default memo(AdderBlock)

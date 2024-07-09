@@ -14,6 +14,9 @@ import type { TEditData, TStore } from './spec'
 import S from './schema'
 
 type TRet = {
+  onCancel: () => void
+  setWordsCountState: () => void
+  onPublish: () => void
   getEditData: () => TEditData
   getGroupedTags: () => TGroupedTags
   loadCommunity: () => void
@@ -87,8 +90,22 @@ export default (): TRet => {
   const snap = useSnapshot(store)
   const curCommunity = useViewingCommunity()
 
+  const onPublish = (): void => {
+    console.log('## onPublish')
+    // const { mode } = store
+    // store.mark({ publishing: true })
+
+    // mode === 'publish' ? doCreate() : doUpdate()
+  }
+
+  const onCancel = (): void => {
+    console.log('## onCancel')
+  }
+  const setWordsCountState = (): void => {
+    console.log('## setWordsCountState')
+  }
+
   const getGroupedTags = useCallback((): TGroupedTags => {
-    // const root = getParent(self) as TRootStore
     // return root.tagsBar.groupedTags
     return []
   }, [])
@@ -146,6 +163,9 @@ export default (): TRet => {
   // @ts-ignore
   return {
     ...pick(keys(snap), snap),
+    onPublish,
+    onCancel,
+    setWordsCountState,
     getEditData,
     getGroupedTags,
 

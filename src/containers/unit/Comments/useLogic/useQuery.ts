@@ -45,7 +45,7 @@ export default (): TRet => {
       freshkey: uid.gen(),
     }
 
-    console.log('## loadCommentsState args: ', params)
+    // console.log('## loadCommentsState args: ', params)
     query(S.commentsState, params).then(({ commentsState }) => {
       snap.commit({ ...commentsState })
     })

@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import type { TColorName, TTag } from '~/spec'
 import { cutRest } from '~/fmt'
 import { Trans } from '~/i18n'
-import { emptyTag } from '~/model'
+import { EMPTY_TAG } from '~/const/utils'
 import TagNode from '~/widgets/TagNode'
 
 import { Wrapper, Tag, Grow, Title, CloseWrapper, CloseIcon } from '../styles/desktop_view/tag_item'
@@ -33,7 +33,7 @@ const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
       </Tag>
       <Grow onClick={() => onSelect(tag)} />
       {active && (
-        <CloseWrapper onClick={(e) => onSelect(emptyTag)}>
+        <CloseWrapper onClick={(e) => onSelect(EMPTY_TAG)}>
           <CloseIcon />
         </CloseWrapper>
       )}

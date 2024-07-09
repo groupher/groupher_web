@@ -6,7 +6,7 @@ import type { TSwipeOption } from '../spec'
 import Content from './Content'
 import { getMobileContentHeight } from '../styles/metrics'
 import { Wrapper } from '../styles/content'
-import { toggleSwipeAviliable, toggleHeaderTextVisiable } from '../logic'
+import useLogic from '../useLogic'
 
 type TProps = {
   visible: boolean
@@ -15,6 +15,8 @@ type TProps = {
 }
 
 const MobileView: FC<TProps> = ({ visible, options, type }) => {
+  const { toggleSwipeAviliable, toggleHeaderTextVisiable } = useLogic()
+
   const ref = useRef(null)
 
   const [topEnterTimer, setTopEnterTimer] = useState(null)

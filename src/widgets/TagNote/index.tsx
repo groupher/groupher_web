@@ -6,7 +6,6 @@
  */
 
 import type { FC } from 'react'
-import { observer } from 'mobx-react-lite'
 
 import Markdown from 'markdown-to-jsx'
 import type { TColorName } from '~/spec'
@@ -48,4 +47,4 @@ const TagNote: FC = () => {
   )
 }
 
-export default observer(TagNote)
+export default TagNote

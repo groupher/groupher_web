@@ -1,8 +1,6 @@
 import type { FC } from 'react'
 import { isEmpty } from 'ramda'
 
-import type { TTag } from '~/spec'
-import { toJS } from '~/mobx'
 import useViewingArticle from '~/hooks/useViewingArticle'
 
 import { SpaceGrow } from '~/widgets/Common'
@@ -17,7 +15,7 @@ type TProps = {
 
 const TagsItem: FC<TProps> = ({ onClick }) => {
   const { article } = useViewingArticle()
-  const tags = toJS(article.articleTags) as TTag[]
+  const tags = article.articleTags
 
   if (!isEmpty(tags)) {
     const tag = tags[0]

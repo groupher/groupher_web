@@ -10,8 +10,8 @@ import Checker from '~/widgets/Checker'
 import { CheckCell, ArticleCell, StateCell, AuthorDateCell, DateCell } from '../Cell'
 import FilterBar from '../FilterBar'
 
+import useCMSInfo from '../../hooks/useCMSInfo'
 import { Title, SortIcon } from '../../styles/cms/docs/table'
-import { batchSelectAll } from '../../logic'
 
 /**
  * example: https://table.rsuitejs.com/#fixed-column
@@ -25,6 +25,8 @@ type TProps = {
 }
 
 const DocsTables: FC<TProps> = ({ pagedDocs, loading, batchSelectedIDs }) => {
+  const { batchSelectAll } = useCMSInfo()
+
   const [showCheckColumn, setShowCheckColumn] = useState(false)
   const [sortColumn, setSortColumn] = useState('id')
 

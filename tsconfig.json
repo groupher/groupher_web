@@ -36,8 +36,6 @@
       "~/utils/*": ["utils/*"],
       "~/signal": ["utils/signal"],
       "~/signal/*": ["utils/signal/*"],
-      "~/mobx": ["utils/mobx"],
-      "~/mobx/*": ["utils/mobx/*"],
       "~/dom": ["utils/dom"],
       "~/dom/*": ["utils/dom/*"],
       "~/logger": ["utils/logger"],

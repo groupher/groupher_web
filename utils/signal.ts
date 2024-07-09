@@ -19,7 +19,6 @@ import { THREAD } from '~/const/thread'
 import TYPE from '~/const/type'
 import EVENT from '~/const/event'
 
-import { toJS } from './mobx'
 import PubSub from './pubsub'
 import BStore from './bstore'
 import { scrollToHeader } from './dom'
@@ -225,7 +224,7 @@ export const changeToCommunity = (slug = ''): void => {
  */
 export const previewArticle = (article: TArticle): void => {
   const type = TYPE.DRAWER[`${article.meta.thread}_VIEW`]
-  const data = toJS(article)
+  const data = article
 
   send(EVENT.DRAWER.OPEN, { type, data })
 }
