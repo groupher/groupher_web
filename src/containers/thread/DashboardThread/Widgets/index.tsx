@@ -23,10 +23,9 @@ import {
   InputLabel,
   Inputer,
 } from '../styles/widgets'
-import { edit, onSave } from '../logic'
 
 export default () => {
-  const { widgetsType } = useWidgets()
+  const { widgetsType, edit } = useWidgets()
 
   return (
     <Wrapper>
@@ -44,7 +43,8 @@ export default () => {
             activeKey={widgetsType}
             onChange={(slug) => {
               edit(slug, 'widgetsType')
-              onSave('widgetsType')
+              // onSave('widgetsType')
+              console.log('## onSave widgetsType')
             }}
           />
         </TabWrapper>

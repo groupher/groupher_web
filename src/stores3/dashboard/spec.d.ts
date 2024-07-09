@@ -339,6 +339,11 @@ export type TSettingField =
   | 'ogImage'
   | 'broadcastTab'
   | 'docTab'
+  | 'twTitle'
+  | 'twDescription'
+  | 'twUrl'
+  | 'twSite'
+  | 'twCard'
 
 export type THeaderEditType = 'logo' | 'title'
 export type TFooterEditType = THeaderEditType | 'social'

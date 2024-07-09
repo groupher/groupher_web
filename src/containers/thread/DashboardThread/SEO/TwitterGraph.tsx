@@ -7,10 +7,9 @@ import { TW_CARD_OPTIONS } from '../constant'
 import TwitterPreview from './TwitterPreview'
 import useSEO from '../logic/useSEO'
 import { Wrapper, SelectWrapper, Label, Inputer } from '../styles/seo/twitter_graph'
-import { edit } from '../logic'
 
 export default () => {
-  const { twTitle, twDescription, twUrl, twSite, twCard } = useSEO()
+  const { twTitle, twDescription, twUrl, twSite, twCard, edit } = useSEO()
 
   return (
     <Wrapper>
