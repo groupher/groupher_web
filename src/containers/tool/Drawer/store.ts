@@ -5,13 +5,13 @@
 
 import { values, mergeRight, includes } from 'ramda'
 
-import type { TRootStore, TArticle } from '~/spec'
+import type { TArticle } from '~/spec'
 import { DASHBOARD_DESC_LAYOUT } from '~/const/layout'
 import { ARTICLE_THREAD } from '~/const/thread'
 import METRIC from '~/const/metric'
 import TYPE from '~/const/type'
 
-import { T, getParent, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
+import { T, markStates, type Instance, toJS, useMobxContext } from '~/mobx'
 import { lockPage, unlockPage } from '~/dom'
 import { Global } from '~/helper'
 import { mediaBreakPoints } from '~/css/metric'
@@ -132,8 +132,7 @@ const DrawerStore = T.model('DrawerStore', {
       }
     },
     setViewing(sobj: Record<string, unknown>): void {
-      const root = getParent(self) as TRootStore
-      root.setViewing(sobj)
+      console.log('## TODO: setViewing: ', sobj)
     },
     close(): void {
       const slf = self as TStore

@@ -155,6 +155,7 @@ export type {
   TArticleTitle,
   TPagedPosts,
   TPagedChangelogs,
+  TPagedDocs,
   TPagedArticlesParams,
   TArticleParams,
   TArticleOrder,

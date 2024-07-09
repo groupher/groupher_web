@@ -1,6 +1,4 @@
-import { useContext } from 'react'
 import { includes } from 'ramda'
-import { MobXProviderContext } from 'mobx-react'
 
 import type {
   TID,
@@ -10,7 +8,7 @@ import type {
   TFAQSection,
   TArticleEntries,
 } from '~/spec'
-import { toJS } from '~/mobx'
+import useSubStore from '~/hooks/useSubStore'
 
 import useHelper from './useHelper'
 
@@ -38,13 +36,9 @@ const assignChecked = (entries: TArticleEntries, batchSelectedIDs: TID[]): TArti
   }))
 }
 
-const useCMSInfo = (): TRet => {
-  const { store } = useContext(MobXProviderContext)
+export default (): TRet => {
+  const dashboard = useSubStore('dashboard')
   const { mapArrayChanged } = useHelper()
-
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
 
   const {
     loading,
@@ -57,39 +51,33 @@ const useCMSInfo = (): TRet => {
     pagedChangelogs,
     faqSections,
     editingFAQ,
-  } = store.dashboardThread
-  const _batchSelectedIds = toJS(batchSelectedIDs)
-  const _pagedCommunities = toJS(pagedCommunities)
-  const _pagedPosts = toJS(pagedPosts)
-  const _pagedDocs = toJS(pagedDocs)
-  const _pagedChangelogs = toJS(pagedChangelogs)
+  } = dashboard
 
   return {
     loading,
     docTab,
     editingFAQIndex,
-    batchSelectedIDs: _batchSelectedIds,
+    batchSelectedIDs,
     pagedCommunities: {
-      ..._pagedCommunities,
-      entries: assignChecked(_pagedCommunities.entries, _batchSelectedIds),
+      ...pagedCommunities,
+      // @ts-ignore
+      entries: assignChecked(pagedCommunities.entries, batchSelectedIDs),
     },
     pagedPosts: {
-      ..._pagedPosts,
-      entries: assignChecked(_pagedPosts.entries, _batchSelectedIds),
+      ...pagedPosts,
+      entries: assignChecked(pagedPosts.entries, batchSelectedIDs),
     },
     pagedDocs: {
-      ..._pagedDocs,
-      entries: assignChecked(_pagedDocs.entries, _batchSelectedIds),
+      ...pagedDocs,
+      entries: assignChecked(pagedDocs.entries, batchSelectedIDs),
     },
     pagedChangelogs: {
-      ..._pagedChangelogs,
-      entries: assignChecked(_pagedChangelogs.entries, _batchSelectedIds),
+      ...pagedChangelogs,
+      entries: assignChecked(pagedChangelogs.entries, batchSelectedIDs),
     },
 
-    faqSections: toJS(faqSections),
-    editingFAQ: toJS(editingFAQ),
+    faqSections,
+    editingFAQ,
     isFaqSectionsTouched: mapArrayChanged('faqSections'),
   }
 }
-
-export default useCMSInfo

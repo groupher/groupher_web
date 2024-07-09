@@ -5,32 +5,21 @@
  * unless you're sure what you're doing
  */
 
-import type { TArticle } from '~/spec'
-
 import { T, type Instance } from '~/mobx'
 
-import { ViewingStore, MushroomStore, DrawerStore } from '..'
+import { DrawerStore } from '..'
 
 const rootStore = T.model({
-  viewing: T.opt(ViewingStore, {}),
-
   // toolbox
   drawer: T.opt(DrawerStore, { visible: false }),
-  mushroom: T.opt(MushroomStore, {}),
-})
-  .views((self) => ({
-    get viewingArticle(): TArticle {
-      return self.viewing.viewingArticle
-    },
-  }))
-  .actions((self) => ({
-    showTopModeline(bool: boolean): void {
-      // self.modeLine.showTopBar(bool)
-    },
-    setViewing(sobj): void {
-      self.viewing.setViewing(sobj)
-    },
-  }))
+}).actions((self) => ({
+  showTopModeline(bool: boolean): void {
+    // self.modeLine.showTopBar(bool)
+  },
+  // setViewing(sobj): void {
+  //   self.viewing.setViewing(sobj)
+  // },
+}))
 
 /**
  *   NOTE: if use TRootStore in sub container, e.g:

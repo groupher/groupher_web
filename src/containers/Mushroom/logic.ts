@@ -1,224 +1,215 @@
-import { type ReactNode, useEffect, Children, isValidElement, cloneElement } from 'react'
+// import { type ReactNode, useEffect, Children, isValidElement, cloneElement } from 'react'
 
-import { APP_VERSION } from '~/config'
-import type { TMetric, TScrollDirection, TGlowPosition, TArticle, TResState } from '~/spec'
-import METRIC from '~/const/metric'
-import EVENT from '~/const/event'
-import TYPE from '~/const/type'
-import ERR from '~/const/err'
+// import { APP_VERSION } from '~/config'
+// import type { TScrollDirection, TArticle, TResState } from '~/spec'
+// import EVENT from '~/const/event'
+// import TYPE from '~/const/type'
+// import ERR from '~/const/err'
 
-import { errRescue } from '~/signal'
-import { Global } from '~/helper'
+// import { errRescue } from '~/signal'
+// import { Global } from '~/helper'
 
-import { matchArticleUpvotes } from '~/utils/macros'
-//import { scrollToTop } from '~/dom'
-import asyncSuit from '~/async'
+// import { matchArticleUpvotes } from '~/utils/macros'
+// //import { scrollToTop } from '~/dom'
+// import asyncSuit from '~/async'
 
-import S from './schema'
-import type { TStore } from './store'
+// import S from './schema'
+// // import type { TStore } from './store'
 
-let store: TStore | undefined
-let sub$ = null
+// let store: undefined
+// let sub$ = null
 
-const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
-const sr71$ = new SR71({
-  // @ts-ignore
-  receive: [
-    EVENT.UPVOTE_ARTICLE,
-    EVENT.UPDATE_VIEWING_ARTICLE,
-    EVENT.REFRESH_ARTICLES,
-    EVENT.LIST_USER_MODAL,
-  ],
-})
+// const { SR71, $solver, asyncRes, asyncErr } = asyncSuit
+// const sr71$ = new SR71({
+//   // @ts-ignore
+//   receive: [
+//     EVENT.UPVOTE_ARTICLE,
+//     EVENT.UPDATE_VIEWING_ARTICLE,
+//     EVENT.REFRESH_ARTICLES,
+//     EVENT.LIST_USER_MODAL,
+//   ],
+// })
 
-// custromScroll's scroll direction change
-export const onPageScrollDirhange = (bodyScrollDirection: TScrollDirection): void =>
-  store.mark({ bodyScrollDirection })
+// // custromScroll's scroll direction change
+// export const onPageScrollDirhange = (bodyScrollDirection: TScrollDirection): void =>
+//   store.mark({ bodyScrollDirection })
 
-export const getGlowPosition = (metric: TMetric, glowFixed: boolean): TGlowPosition => {
-  if (metric === METRIC.HOME) {
-    return 'absolute'
-  }
+// export const clearDemoSetting = () => store.clearLocalSettings()
 
-  return glowFixed ? 'fixed' : 'absolute'
-}
+// // cloning children with new props
+// // see detail: https://stackoverflow.com/questions/32370994/how-to-pass-props-to-this-props-children
+// export const childrenWithProps = (
+//   children: ReactNode,
+//   props: Record<string, unknown>,
+// ): ReactNode => {
+//   return Children.map(children, (child) => {
+//     // checking isValidElement is the safe way and avoids a typescript error too
+//     if (isValidElement(child)) {
+//       return cloneElement(child, { ...props })
+//     }
+//     return child
+//   })
+// }
 
-export const clearDemoSetting = () => store.clearLocalSettings()
+// /**
+//  * set appVersion to window from package.json
+//  * @link https://stackoverflow.com/a/67701490/4050784
+//  */
+// const initAppVersion = (): void => {
+//   Global.appVersion = APP_VERSION || 'unknow'
+// }
 
-// cloning children with new props
-// see detail: https://stackoverflow.com/questions/32370994/how-to-pass-props-to-this-props-children
-export const childrenWithProps = (
-  children: ReactNode,
-  props: Record<string, unknown>,
-): ReactNode => {
-  return Children.map(children, (child) => {
-    // checking isValidElement is the safe way and avoids a typescript error too
-    if (isValidElement(child)) {
-      return cloneElement(child, { ...props })
-    }
-    return child
-  })
-}
+// const loadArticles = (page = 1): void => {
+//   console.log('## TODO: load loadArticles: ', page)
+//   // const { curCommunity, userHasLogin, activeTag, activeCat, activeState, activeOrder } = store
+//   // store.updateResState(TYPE.RES_STATE.LOADING as TResState)
+//   // scrollToTop()
 
-/**
- * set appVersion to window from package.json
- * @link https://stackoverflow.com/a/67701490/4050784
- */
-const initAppVersion = (): void => {
-  Global.appVersion = APP_VERSION || 'unknow'
-}
+//   // const filter = { page, size: 20, community: curCommunity.slug } as TPagedArticlesParams
 
-const loadArticles = (page = 1): void => {
-  console.log('## TODO: load loadArticles: ', page)
-  // const { curCommunity, userHasLogin, activeTag, activeCat, activeState, activeOrder } = store
-  // store.updateResState(TYPE.RES_STATE.LOADING as TResState)
-  // scrollToTop()
+//   // if (activeTag?.slug) filter.articleTag = activeTag?.slug
 
-  // const filter = { page, size: 20, community: curCommunity.slug } as TPagedArticlesParams
+//   // if (activeCat) filter.cat = activeCat
+//   // if (activeState) filter.state = activeState
+//   // if (activeOrder) filter.order = activeOrder
 
-  // if (activeTag?.slug) filter.articleTag = activeTag?.slug
+//   // sr71$.query(S.pagedPosts, { filter, userHasLogin })
+// }
 
-  // if (activeCat) filter.cat = activeCat
-  // if (activeState) filter.state = activeState
-  // if (activeOrder) filter.order = activeOrder
+// // TODO: use sanitor to filter whitelist oueries if nend
+// const syncURL = (page: number): void => {
+//   console.log('## TODO: syncURL: ', page)
+//   // const { activeTag, activeCat, activeState, activeOrder } = store
+//   // const curSearchParams = getCurSearchParams()
 
-  // sr71$.query(S.pagedPosts, { filter, userHasLogin })
-}
+//   // // handle tag spec logic
+//   // activeTag?.slug ? (curSearchParams.tag = activeTag?.slug) : delete curSearchParams.tag
+//   // activeCat ? (curSearchParams.cat = activeCat.toLowerCase()) : delete curSearchParams.cat
+//   // activeState ? (curSearchParams.state = activeState.toLowerCase()) : delete curSearchParams.state
+//   // activeOrder ? (curSearchParams.order = activeOrder.toLowerCase()) : delete curSearchParams.order
 
-// TODO: use sanitor to filter whitelist oueries if nend
-const syncURL = (page: number): void => {
-  console.log('## TODO: syncURL: ', page)
-  // const { activeTag, activeCat, activeState, activeOrder } = store
-  // const curSearchParams = getCurSearchParams()
+//   // // handle page number spec logic
+//   // page !== 1 ? (curSearchParams.page = page) : delete curSearchParams.page
 
-  // // handle tag spec logic
-  // activeTag?.slug ? (curSearchParams.tag = activeTag?.slug) : delete curSearchParams.tag
-  // activeCat ? (curSearchParams.cat = activeCat.toLowerCase()) : delete curSearchParams.cat
-  // activeState ? (curSearchParams.state = activeState.toLowerCase()) : delete curSearchParams.state
-  // activeOrder ? (curSearchParams.order = activeOrder.toLowerCase()) : delete curSearchParams.order
+//   // doSyncRoute(searchParams2String(curSearchParams))
+// }
 
-  // // handle page number spec logic
-  // page !== 1 ? (curSearchParams.page = page) : delete curSearchParams.page
+// export const searchParams2String = (obj): string => new URLSearchParams(obj).toString()
 
-  // doSyncRoute(searchParams2String(curSearchParams))
-}
+// // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// export const getCurSearchParams = (): Record<any, any> =>
+//   Object.fromEntries(new URLSearchParams(window.location.search))
 
-export const searchParams2String = (obj): string => new URLSearchParams(obj).toString()
+// export const doSyncRoute = (queryString: string): void => {
+//   const { curCommunity, curThread } = store
+//   const mainPath = `/${curCommunity.slug}/${curThread}`
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const getCurSearchParams = (): Record<any, any> =>
-  Object.fromEntries(new URLSearchParams(window.location.search))
+//   if (!queryString) {
+//     Global.history.pushState(null, '', `${mainPath}`)
+//     return
+//   }
 
-export const doSyncRoute = (queryString: string): void => {
-  const { curCommunity, curThread } = store
-  const mainPath = `/${curCommunity.slug}/${curThread}`
+//   Global.history.pushState(null, '', `${mainPath}?${queryString}`)
+// }
 
-  if (!queryString) {
-    Global.history.pushState(null, '', `${mainPath}`)
-    return
-  }
+// // ###############################
+// // init & uninit
+// // ###############################
+// export const handleUpvote = (article: TArticle, viewerHasUpvoted: boolean): void => {
+//   const { id, meta } = article
 
-  Global.history.pushState(null, '', `${mainPath}?${queryString}`)
-}
+//   store.setViewingAlways(article)
+//   store.updateViewerHasUpvoted(viewerHasUpvoted)
+//   const queryLatestUsers = true
 
-// ###############################
-// init & uninit
-// ###############################
-export const handleUpvote = (article: TArticle, viewerHasUpvoted: boolean): void => {
-  const { id, meta } = article
+//   viewerHasUpvoted
+//     ? sr71$.mutate(S.getUpvote(meta.thread, queryLatestUsers), { id })
+//     : sr71$.mutate(S.getUndoUpvote(meta.thread, queryLatestUsers), { id })
+// }
 
-  store.setViewingAlways(article)
-  store.updateViewerHasUpvoted(viewerHasUpvoted)
-  const queryLatestUsers = true
+// const handleUovoteRes = ({ upvotesCount, meta }) => {
+//   store.syncUploadInfo(upvotesCount, meta)
+// }
 
-  viewerHasUpvoted
-    ? sr71$.mutate(S.getUpvote(meta.thread, queryLatestUsers), { id })
-    : sr71$.mutate(S.getUndoUpvote(meta.thread, queryLatestUsers), { id })
-}
+// const DataSolver = [
+//   ...matchArticleUpvotes(handleUovoteRes),
+//   {
+//     match: asyncRes(EVENT.REFRESH_ARTICLES),
+//     action: (data) => {
+//       const { page } = data[EVENT.REFRESH_ARTICLES]
+//       loadArticles(page)
+//     },
+//   },
+//   {
+//     match: asyncRes('pagedPosts'),
+//     action: (res) => {
+//       store.updateResState(TYPE.RES_STATE.DONE as TResState)
+//       store.updatePagedArticles(res.pagedPosts)
 
-const handleUovoteRes = ({ upvotesCount, meta }) => {
-  store.syncUploadInfo(upvotesCount, meta)
-}
+//       syncURL(res.pagedPosts.pageNumber)
+//     },
+//   },
+//   {
+//     match: asyncRes(EVENT.UPDATE_VIEWING_ARTICLE),
+//     action: (_data) => {
+//       const { article } = _data[EVENT.UPDATE_VIEWING_ARTICLE].data
+//       store.syncArticle(article)
+//     },
+//   },
+//   {
+//     match: asyncRes(EVENT.LIST_USER_MODAL),
+//     action: () => {
+//       store.mark({ showUserListModal: true })
+//     },
+//   },
 
-const DataSolver = [
-  ...matchArticleUpvotes(handleUovoteRes),
-  {
-    match: asyncRes(EVENT.REFRESH_ARTICLES),
-    action: (data) => {
-      const { page } = data[EVENT.REFRESH_ARTICLES]
-      loadArticles(page)
-    },
-  },
-  {
-    match: asyncRes('pagedPosts'),
-    action: (res) => {
-      store.updateResState(TYPE.RES_STATE.DONE as TResState)
-      store.updatePagedArticles(res.pagedPosts)
+//   {
+//     match: asyncRes(EVENT.UPVOTE_ARTICLE),
+//     action: (_data) => {
+//       const { data } = _data[EVENT.UPVOTE_ARTICLE]
+//       const { article, viewerHasUpvoted } = data
+//       handleUpvote(article, viewerHasUpvoted)
+//     },
+//   },
+// ]
+// const _handleError = () => {
+//   //
+// }
 
-      syncURL(res.pagedPosts.pageNumber)
-    },
-  },
-  {
-    match: asyncRes(EVENT.UPDATE_VIEWING_ARTICLE),
-    action: (_data) => {
-      const { article } = _data[EVENT.UPDATE_VIEWING_ARTICLE].data
-      store.syncArticle(article)
-    },
-  },
-  {
-    match: asyncRes(EVENT.LIST_USER_MODAL),
-    action: () => {
-      store.mark({ showUserListModal: true })
-    },
-  },
+// const ErrSolver = [
+//   {
+//     match: asyncErr(ERR.GRAPHQL),
+//     action: ({ details }) => {
+//       _handleError()
+//       errRescue({ type: ERR.GRAPHQL, details, path: 'GlobalLayout' })
+//     },
+//   },
+//   {
+//     match: asyncErr(ERR.TIMEOUT),
+//     action: ({ details }) => {
+//       _handleError()
+//       errRescue({ type: ERR.TIMEOUT, details, path: 'GlobalLayout' })
+//     },
+//   },
+//   {
+//     match: asyncErr(ERR.NETWORK),
+//     action: () => {
+//       _handleError()
+//       errRescue({ type: ERR.NETWORK, path: 'GlobalLayout' })
+//     },
+//   },
+// ]
 
-  {
-    match: asyncRes(EVENT.UPVOTE_ARTICLE),
-    action: (_data) => {
-      const { data } = _data[EVENT.UPVOTE_ARTICLE]
-      const { article, viewerHasUpvoted } = data
-      handleUpvote(article, viewerHasUpvoted)
-    },
-  },
-]
-const _handleError = () => {
-  //
-}
+// export const useInit = (_store: TStore): void => {
+//   useEffect(() => {
+//     store = _store
+//     sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
 
-const ErrSolver = [
-  {
-    match: asyncErr(ERR.GRAPHQL),
-    action: ({ details }) => {
-      _handleError()
-      errRescue({ type: ERR.GRAPHQL, details, path: 'GlobalLayout' })
-    },
-  },
-  {
-    match: asyncErr(ERR.TIMEOUT),
-    action: ({ details }) => {
-      _handleError()
-      errRescue({ type: ERR.TIMEOUT, details, path: 'GlobalLayout' })
-    },
-  },
-  {
-    match: asyncErr(ERR.NETWORK),
-    action: () => {
-      _handleError()
-      errRescue({ type: ERR.NETWORK, path: 'GlobalLayout' })
-    },
-  },
-]
+//     initAppVersion()
 
-export const useInit = (_store: TStore): void => {
-  useEffect(() => {
-    store = _store
-    sub$ = sr71$.data().subscribe($solver(DataSolver, ErrSolver))
-
-    initAppVersion()
-
-    return () => {
-      sr71$.stop()
-      sub$.unsubscribe()
-    }
-  }, [_store])
-}
+//     return () => {
+//       sr71$.stop()
+//       sub$.unsubscribe()
+//     }
+//   }, [_store])
+// }

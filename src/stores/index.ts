@@ -10,7 +10,7 @@
 
 // domain store
 /* export { default as RouteStore } from './RouteStore' */
-export { default as ViewingStore } from './ViewingStore'
+// export { default as ViewingStore } from './ViewingStore'
 
 // utils store
 // export { default as SidebarStore } from '~/containers/unit/Sidebar/store'
@@ -30,4 +30,4 @@ export { default as DrawerStore } from '~/containers/tool/Drawer/store'
 
 // export { default as ModeLineMenuStore } from '~/containers/unit/ModeLineMenu/store'
 // export { default as ModeLineStore } from '~/containers/unit/ModeLine/store'
-export { default as MushroomStore } from '~/containers/Mushroom/store'
+// export { default as MushroomStore } from '~/containers/Mushroom/store'

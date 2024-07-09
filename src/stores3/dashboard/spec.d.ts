@@ -36,6 +36,8 @@ import type {
   TCommunity,
   TFAQSection,
   TOverview,
+  TPagedArticles,
+  TPagedCommunities,
 } from '~/spec'
 
 import type {
@@ -200,16 +202,16 @@ export type TStore = TSettingsFields & {
   editingGroup: string | null
   editingGroupIndex: number | null
   editingFAQIndex: number | null
-  // editingFAQ: T.maybeNull(FAQSection),
+  editingFAQ: TFAQSection | null
 
   queringMediaReportIndex: number
 
   // cms
   batchSelectedIDs: string[]
-  // pagedCommunities: T.opt(PagedCommunities, emptyPagi),
-  // pagedPosts: T.opt(PagedPosts, emptyPagi),
-  // pagedDocs: T.opt(PagedDocs, emptyPagi),
-  // pagedChangelogs: T.opt(PagedChangelogs, emptyPagi),
+  pagedCommunities: TPagedCommunities
+  pagedPosts: TPagedArticles
+  pagedDocs: TPagedArticles
+  pagedChangelogs: TPagedArticles
 
   // for global alert
   demoAlertEnable: boolean

@@ -1,4 +1,4 @@
-import type { TPagedArticles, TPagedComments } from '~/spec'
+import type { TPagedArticles, TPagedComments, TPagedCommunities } from '~/spec'
 import { PAGE_SIZE } from '~/config'
 
 export const EMPTY_PAGED_ARTICLES = {
@@ -16,3 +16,11 @@ export const EMPTY_PAGED_COMMENTS = {
   totalCount: 0,
   totalPages: 0,
 } as TPagedComments
+
+export const EMPTY_PAGED_COMMUNITIES = {
+  entries: [],
+  pageNumber: 1,
+  pageSize: PAGE_SIZE.D,
+  totalCount: 0,
+  totalPages: 0,
+} as TPagedCommunities

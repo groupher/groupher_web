@@ -8,6 +8,7 @@ import { COLOR_NAME } from '~/const/colors'
 import { BUILDIN_ALIAS } from '~/const/name'
 import { GLOW_OPACITY } from '~/const/glow_effect'
 import { CHANGE_MODE } from '~/const/mode'
+import { EMPTY_PAGED_COMMUNITIES, EMPTY_PAGED_ARTICLES } from '~/const/utils'
 import { TW_CARD, WIDGET_TYPE, INIT_KANBAN_COLORS, DEFAULT_ENABLE } from '~/const/dashboard'
 import {
   HEADER_LAYOUT,
@@ -175,16 +176,16 @@ export default (initState: TInitState = {}): TStore => {
       editingGroup: null,
       editingGroupIndex: null,
       editingFAQIndex: null,
-      // editingFAQ: T.maybeNull(FAQSection),
+      editingFAQ: null,
 
       queringMediaReportIndex: null,
 
       // cms
       batchSelectedIDs: [],
-      // pagedCommunities: T.opt(PagedCommunities, emptyPagi),
-      // pagedPosts: T.opt(PagedPosts, emptyPagi),
-      // pagedDocs: T.opt(PagedDocs, emptyPagi),
-      // pagedChangelogs: T.opt(PagedChangelogs, emptyPagi),
+      pagedCommunities: EMPTY_PAGED_COMMUNITIES,
+      pagedPosts: EMPTY_PAGED_ARTICLES,
+      pagedDocs: EMPTY_PAGED_ARTICLES,
+      pagedChangelogs: EMPTY_PAGED_ARTICLES,
 
       // for global alert
       demoAlertEnable: false,

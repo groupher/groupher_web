@@ -5,13 +5,11 @@ import { type FC, useEffect, useCallback } from 'react'
 import useViewingThread from '~/hooks/useViewingThread'
 import { THREAD } from '~/const/thread'
 
-import { useStore } from './store'
-import { useInit } from './logic'
+import useLogic from './useLogic'
 
 const Mushroom: FC = () => {
-  const store = useStore()
+  const { initAppVersion } = useLogic()
 
-  useInit(store)
   const curThread = useViewingThread()
 
   const handleBrowserPopChange = useCallback(
@@ -24,7 +22,7 @@ const Mushroom: FC = () => {
   )
 
   useEffect(() => {
-    // loadLocale()
+    initAppVersion()
 
     /**
      * this event is only hanle brower back/forward, current behavior is like producthunt
