@@ -117,7 +117,7 @@ const NaviCatalog: FC<TProps> = ({
   // dashboard 中的某一级目录，locate 目录等等
   const handleGoCatalog = useCallback(
     (catalogId) => {
-      let targetPath
+      let targetPath = []
       // 如果有 catalogId 指返回到这个 catalogId 对应的 level
       // 没有则相当于 locate 已选中的 level
       if (catalogId) {
@@ -125,9 +125,6 @@ const NaviCatalog: FC<TProps> = ({
         const pathIndex = findIndex((item) => item.id === catalogId, viewPath)
         // 避免 slice(0, 0) 的情形
         targetPath = viewPath.slice(0, pathIndex + 1)
-      } else {
-        // 这种情况是在第二级目录，直接返回主目录即可
-        targetPath = []
       }
 
       const menuItem = getCurrentMenuItem(targetPath, items)

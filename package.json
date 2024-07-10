@@ -144,11 +144,5 @@
     "tsc-files": "^1.1.4",
     "type-fest": "^2.19.0",
     "typescript": "^5.3.3"
-  },
-  "nextBundleAnalysis": {
-    "budget": 512000,
-    "budgetPercentIncreaseRed": 20,
-    "minimumChangeThreshold": 30,
-    "showDetails": true
   }
 }

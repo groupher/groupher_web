@@ -101,7 +101,6 @@ jobs:
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-
       # - name: (Frontend) Run e2e Tests
       #   working-directory: ./frontend_server
       #   run: npm run test:ci

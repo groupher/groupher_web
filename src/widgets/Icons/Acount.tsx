@@ -1,4 +1,4 @@
-import { memo, SVGProps } from 'react'
+import { memo, type SVGProps } from 'react'
 
 const Account = (props: SVGProps<SVGSVGElement>) => {
   return (

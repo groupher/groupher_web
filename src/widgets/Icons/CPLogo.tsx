@@ -1,4 +1,4 @@
-import { memo, SVGProps } from 'react'
+import { memo, type SVGProps } from 'react'
 
 const CPLogo = (props: SVGProps<SVGSVGElement>) => {
   return (
