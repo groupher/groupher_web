@@ -39,10 +39,7 @@ export default () => {
         <TechItem path="nextjs.png" name="Next.js" size={55} />
         <TechItem path="react.png" name="React" size={44} />
         <TechItem path="typescript.png" name="TypeScript" size={30} />
-        <TechItem path="mobx.png" name="Mobx" size={30} />
-        <TechItem path="mst.png" name="MST" size={32} />
         <TechItem path="ramda.png" name="Ramda" size={28} />
-        <TechItem path="rxjs.png" name="Rx.js" size={32} />
         <TechItem path="styled.png" name="Styled" size={33} />
         <TechItem path="slate.png" name="Slate" size={30} />
         <TechItem path="phosphor.png" name="Phosphor" size={32} />
