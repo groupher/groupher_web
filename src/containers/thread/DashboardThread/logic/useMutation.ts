@@ -9,7 +9,7 @@ import { mutate } from '~/utils/api'
 import useSubStore from '~/hooks/useSubStore'
 import useViewing from '~/hooks/useViewing'
 
-import type { TSettingField } from '~/stores3/dashboard/spec'
+import type { TSettingField } from '~/stores/dashboard/spec'
 
 import {
   SETTING_FIELD,
@@ -18,7 +18,7 @@ import {
   SETTING_LAYOUT_FIELD,
   SEO_KEYS,
   BASEINFO_KEYS,
-} from '~/stores3/dashboard/constant'
+} from '~/stores/dashboard/constant'
 import S from '../schema'
 
 type TRet = {

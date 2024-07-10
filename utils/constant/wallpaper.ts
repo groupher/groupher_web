@@ -2,7 +2,6 @@ import type { TSnakeUpperCase, TWallpaper, TWallpaperType, TWallpaperGradientDir
 
 const DIR = '/wallpaper'
 
-// refs to @/stores3/wallpaper
 export const WALLPAPER_STATE_KEYS = [
   'customWallpaper',
   'customColorValue',

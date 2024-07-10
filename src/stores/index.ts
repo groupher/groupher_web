@@ -1,33 +1,44 @@
-/**
- * NOTE: this file is generate automatically, DO NOT modify
- * unless you're sure what you're doing
- */
+import { createContext, useRef } from 'react'
+import { proxy } from 'valtio'
 
-// TRootStore imported by container/xx/store, which is imported by RootStore index
-// cause the cycle import issue, but type info is removed after ts compile,
-// so cycle issue it's fine, ingore it
-/* eslint-disable import/no-cycle */
+import type { TRootStore } from './spec'
 
-// domain store
-/* export { default as RouteStore } from './RouteStore' */
-// export { default as ViewingStore } from './ViewingStore'
+import THEME from '~/const/theme'
+import { LOCALE } from '~/const/i18n'
 
-// utils store
-// export { default as SidebarStore } from '~/containers/unit/Sidebar/store'
-// export { default as DrawerStore } from '~/containers/tool/Drawer/store'
-// export { default as HeaderStore } from '~/containers/unit/Header/store'
+import setupLocale from './locale'
+import setupTheme from './theme'
+import setupAccount from './account'
+import setupArticles from './articles'
+import setupViewing from './viewing'
+import setupDashboard from './dashboard'
+import setupWallpaper from './wallpaper'
 
-// threads store
-// export { default as ReposThreadStore } from '~/containers/thread/ReposThread/store'
+const INITIAL_STATE = {
+  theme: THEME.DAY,
+  locale: LOCALE.EN,
+  localeData: '{}',
+  viewing: {},
+  dashboard: {},
+  wallpaper: {},
+  articles: {},
+}
 
-// toolbox
-// export { default as RepoEditorStore } from '~/containers/editor/RepoEditor/store'
-// export { default as CommentsStore } from '~/containers/unit/Comments/store'
+const setupRootStore = (init = INITIAL_STATE): TRootStore => {
+  return proxy({
+    locale: setupLocale(init.locale, init.localeData),
+    account: setupAccount(),
+    theme: setupTheme(init.theme),
+    viewing: setupViewing(init.viewing),
+    articles: setupArticles(init.articles),
+    dashboard: setupDashboard(init.dashboard),
+    wallpaper: setupWallpaper(init.wallpaper),
+  })
+}
 
-// user page
+export const StoreContext = createContext(setupRootStore())
 
-// editor
-
-// export { default as ModeLineMenuStore } from '~/containers/unit/ModeLineMenu/store'
-// export { default as ModeLineStore } from '~/containers/unit/ModeLine/store'
-// export { default as MushroomStore } from '~/containers/Mushroom/store'
+export const useStore = (initState) => {
+  // see details: https://valtio.pmnd.rs/docs/how-tos/how-to-use-with-context
+  return useRef(proxy(setupRootStore(initState))).current
+}

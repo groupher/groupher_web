@@ -1,6 +1,6 @@
 import type { TDashboardAliasRoute, TNameAlias, TEditFunc } from '~/spec'
 
-import { SETTING_FIELD } from '~/stores3/dashboard/constant'
+import { SETTING_FIELD } from '~/stores/dashboard/constant'
 import useSubState from '~/hooks/useSubStore'
 
 import useHelper from './useHelper'

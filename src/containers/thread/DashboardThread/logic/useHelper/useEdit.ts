@@ -11,9 +11,9 @@ import {
   SETTING_FIELD,
   BASEINFO_KEYS,
   SEO_KEYS,
-} from '~/stores3/dashboard/constant'
+} from '~/stores/dashboard/constant'
 
-import type { TSettingField } from '~/stores3/dashboard/spec'
+import type { TSettingField } from '~/stores/dashboard/spec'
 import useMutation from '../useMutation'
 
 export type TRet = {

@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react'
 
-import { StoreContext, useStore } from '~/stores3'
+import { StoreContext, useStore } from '~/stores'
 import { HOME_COMMUNITY } from '~/const/name'
 
 import {
