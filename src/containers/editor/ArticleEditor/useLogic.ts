@@ -5,7 +5,7 @@ import { proxy, useSnapshot } from 'valtio'
 import type { TSubmitState, TEditMode, TTag, TCommunity, TGroupedTags, TArticleCat } from '~/spec'
 import { ARTICLE_CAT } from '~/const/gtd'
 
-import { query } from '~/utils/api'
+import { query } from '~/server'
 
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 

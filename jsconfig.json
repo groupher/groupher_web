@@ -16,6 +16,8 @@
       "~/stores/*": ["src/stores/*"],
       "~/utils": ["utils"],
       "~/utils/*": ["utils/*"],
+      "~/server": ["utils/api"],
+      "~/server/*": ["utils/api/*"],
       "~/css": ["utils/css"],
       "~/css/*": ["utils/css/*"],
       "~/schemas": ["src/schemas"],

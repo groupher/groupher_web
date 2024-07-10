@@ -31,6 +31,8 @@
       "~/stores": ["src/stores"],
       "~/utils": ["utils"],
       "~/utils/*": ["utils/*"],
+      "~/server": ["utils/api"],
+      "~/server/*": ["utils/api/*"],
       "~/signal": ["utils/signal"],
       "~/signal/*": ["utils/signal/*"],
       "~/dom": ["utils/dom"],

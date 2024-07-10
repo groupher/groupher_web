@@ -11,7 +11,7 @@ import type {
 
 import useSubStore from '~/hooks/useSubStore'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
-import { query } from '~/utils/api'
+import { query } from '~/server'
 
 import useHelper from './useHelper'
 

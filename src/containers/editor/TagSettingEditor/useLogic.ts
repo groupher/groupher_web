@@ -5,7 +5,7 @@ import type { TTag, TEditValue, TChangeMode, TSelectOption } from '~/spec'
 import EVENT from '~/const/event'
 import { CHANGE_MODE } from '~/const/mode'
 
-import { mutate } from '~/utils/api'
+import { mutate } from '~/server'
 import { nilOrEmpty } from '~/validator'
 
 import { send, closeDrawer } from '~/signal'

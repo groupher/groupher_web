@@ -5,7 +5,7 @@ import type { TEditValue, TTag } from '~/spec'
 import { DASHBOARD_BASEINFO_ROUTE } from '~/const/route'
 import { toast } from '~/signal'
 
-import { mutate } from '~/utils/api'
+import { mutate } from '~/server'
 import useSubStore from '~/hooks/useSubStore'
 import useViewing from '~/hooks/useViewing'
 
