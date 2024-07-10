@@ -1,7 +1,7 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
-name: 'Next.js Bundle Analysis'
+name: "Next.js Bundle Analysis"
 
 on:
   pull_request:
@@ -33,6 +33,9 @@ jobs:
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+          install-command: npm install --legacy-peer-deps
 
       # If pnpm is used, you need to switch the previous step with the following one. pnpm does not create a package-lock.json
       # so the step above will fail to pull dependencies
@@ -110,7 +113,7 @@ jobs:
         id: fc
         with:
           issue-number: ${{ github.event.number }}
-          body-includes: '<!-- __NEXTJS_BUNDLE -->'
+          body-includes: "<!-- __NEXTJS_BUNDLE -->"
 
       - name: Create Comment
         uses: peter-evans/create-or-update-comment@v2
