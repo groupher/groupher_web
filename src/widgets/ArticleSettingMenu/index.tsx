@@ -6,7 +6,7 @@
 
 import { type FC, memo, useState, useEffect } from 'react'
 import { Provider } from 'urql'
-import client from '~/utils/async/gq_client'
+import client from '~/server/gq_client'
 
 import type { TSpace } from '~/spec'
 

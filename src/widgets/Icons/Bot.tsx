@@ -1,4 +1,4 @@
-import { memo, SVGProps } from 'react'
+import { memo, type SVGProps } from 'react'
 
 const Bot = (props: SVGProps<SVGSVGElement>) => {
   return (

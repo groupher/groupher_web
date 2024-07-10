@@ -31,7 +31,7 @@ const NativeImg: FC<TProps> = ({
     if (image?.complete) {
       image.naturalWidth === 0 ? setLoadCheck(false) : setLoadCheck(true)
     }
-  }, [ref, loadCheck, loadCheck2])
+  }, [])
 
   const handleOnLoad = useCallback(() => setLoadCheck2(true), [])
   const handleOnError = useCallback(() => {

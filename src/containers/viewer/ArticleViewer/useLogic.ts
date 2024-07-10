@@ -6,7 +6,7 @@ import useSubStore from '~/hooks/useSubStore'
 import useViewing from '~/hooks/useViewing'
 import useAccount from '~/hooks/useAccount'
 
-import { query } from '~/utils/api'
+import { query } from '~/server'
 
 import S from './schema'
 

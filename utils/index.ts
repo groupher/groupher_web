@@ -6,8 +6,6 @@
  * utils functiosn
  */
 
-export { default as asyncSuit } from './async/index'
-
 export { default as uid } from './uid'
 
 export { send, joinUS, closeDrawer, report, errRescue } from './signal'

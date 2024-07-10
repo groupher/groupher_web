@@ -2,7 +2,7 @@ import { proxy, useSnapshot } from 'valtio'
 import { pick, isEmpty, keys, mergeDeepRight } from 'ramda'
 
 import type { TEditValue } from '~/spec'
-import { query, mutate } from '~/utils/api'
+import { query, mutate } from '~/server'
 
 import type {
   TStore,

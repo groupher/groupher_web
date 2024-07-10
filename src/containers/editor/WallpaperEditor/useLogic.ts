@@ -8,7 +8,7 @@ import useSubStore from '~/hooks/useSubStore'
 import useFullWallpaper from '~/hooks/useFullWallpaper'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 import { closeDrawer, toast } from '~/signal'
-import { mutate } from '~/utils/api'
+import { mutate } from '~/server'
 
 import type { TTab } from './spec'
 import { TAB } from './constant'

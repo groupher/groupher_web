@@ -4,8 +4,6 @@
  *
  */
 
-import type { FC } from 'react'
-
 import type { TArticleCat, TArticleOrder, TArticleState } from '~/spec'
 import { refreshArticles, callGEditor, callSyncSelector } from '~/signal'
 import { PUBLISH_MODE } from '~/const/publish'
@@ -23,10 +21,9 @@ import ConditionSelector from '~/widgets/ConditionSelector'
 import SearchBox from '~/widgets/SearchBox'
 import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
-import type { TProps } from '.'
 import { Wrapper } from './styles'
 
-const ArticlesFilter: FC<TProps> = ({ mode = 'default' }) => {
+export default () => {
   const { resState } = usePagedPosts()
   const { bannerLayout } = useLayout()
 
@@ -90,5 +87,3 @@ const ArticlesFilter: FC<TProps> = ({ mode = 'default' }) => {
     </Wrapper>
   )
 }
-
-export default ArticlesFilter

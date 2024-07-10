@@ -8,7 +8,7 @@ import type {
   TEditFunc,
 } from '~/spec'
 import useSubStore from '~/hooks/useSubStore'
-import { SETTING_FIELD } from '~/stores3/dashboard/constant'
+import { SETTING_FIELD } from '~/stores/dashboard/constant'
 
 import useHelper from './useHelper'
 

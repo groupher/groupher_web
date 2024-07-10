@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { memo, SVGProps } from 'react'
+import { memo, type SVGProps } from 'react'
 
 const Blog = (props: SVGProps<SVGSVGElement>) => {
   return (

@@ -1,7 +1,7 @@
 import { pick } from 'ramda'
 
 import type { TTag, TThread, TEditFunc, TTagLayout } from '~/spec'
-import type { TChangeTagMode } from '~/stores3/dashboard/spec'
+import type { TChangeTagMode } from '~/stores/dashboard/spec'
 import useSubState from '~/hooks/useSubStore'
 
 import useHelper from '../useHelper'

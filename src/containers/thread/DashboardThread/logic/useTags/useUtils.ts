@@ -6,7 +6,7 @@ import { sortByIndex } from '~/helper'
 
 import useSubState from '~/hooks/useSubStore'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
-import { query } from '~/utils/api'
+import { query } from '~/server'
 
 import S from '../../schema'
 

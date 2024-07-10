@@ -1,4 +1,4 @@
-import { memo, SVGProps } from 'react'
+import { memo, type SVGProps } from 'react'
 
 // see https://www.svgrepo.com/svg/406090/light-bulb?edit=true
 const Light = (props: SVGProps<SVGSVGElement>) => {

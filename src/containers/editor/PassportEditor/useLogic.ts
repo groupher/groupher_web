@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react'
 import { find, reject, uniq, keys, forEach } from 'ramda'
 
 import type { TUser } from '~/spec'
-import { query, mutate } from '~/utils/api'
+import { query, mutate } from '~/server'
 
 import EVENT from '~/const/event'
 import { send, closeDrawer } from '~/signal'

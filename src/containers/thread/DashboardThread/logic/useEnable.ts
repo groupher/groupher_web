@@ -1,7 +1,7 @@
 import type { TEnableConfig } from '~/spec'
 
 import useSubState from '~/hooks/useSubStore'
-import { SETTING_FIELD } from '~/stores3/dashboard/constant'
+import { SETTING_FIELD } from '~/stores/dashboard/constant'
 
 import useHelper from './useHelper'
 

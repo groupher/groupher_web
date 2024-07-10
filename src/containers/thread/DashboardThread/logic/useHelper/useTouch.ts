@@ -2,7 +2,7 @@ import { equals, any } from 'ramda'
 
 import useSubStore from '~/hooks/useSubStore'
 
-import type { TSettingField } from '~/stores3/dashboard/spec'
+import type { TSettingField } from '~/stores/dashboard/spec'
 
 export type TRet = {
   isChanged: (field: TSettingField) => boolean
