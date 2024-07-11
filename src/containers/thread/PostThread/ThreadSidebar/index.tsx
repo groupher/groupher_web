@@ -28,7 +28,7 @@ import TagsBar from '~/containers/unit/TagsBar'
 
 import CommunityBrief from './CommunityBrief'
 
-import {
+import useStyle, {
   Wrapper,
   TagsBarWrapper,
   StickyWrapper,
@@ -53,13 +53,17 @@ export default () => {
   const { avatarLayout, bannerLayout } = useLayout()
   const activeTag = useActiveTag()
 
+  const s = useStyle()
+
   return (
     <Wrapper $testid="thread-sidebar">
       <Sticky offsetTop={0}>
         <Fragment>
           {showCommunityBadge && bannerLayout !== BANNER_LAYOUT.TABBER && (
             <Fragment>
+              <div className={`${s.text}`}>hello</div>
               <DividerTitle>{t('intro', 'titleCase')}</DividerTitle>
+              <h3 className={`${s.dividerTitle}`}>{t('intro', 'titleCase')}</h3>
               <Br top={10} />
               <CommunityNoteWrapper>{curCommunity.desc}</CommunityNoteWrapper>
               <HomeLinkWrapper>

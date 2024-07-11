@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.row {
+  @apply flex flex-row;
+}
+
+.row-align-center {
+  @apply flex flex-row items-center;
+}
+
+.row-align-both {
+  @apply flex flex-row items-center justify-center;
+}
+
+.column {
+  @apply flex flex-col;
+}
+
+.column-align-both {
+  @apply flex flex-col items-center justify-center;
+}
+
+.wrap {
+  @apply flex-wrap;
+}

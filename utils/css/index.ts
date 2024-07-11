@@ -7,11 +7,18 @@
 import styled from 'styled-components'
 import type { TSpace } from '~/spec'
 
+import { twMerge } from 'tailwind-merge'
+import { clsx, type ClassValue } from 'clsx'
+
 import { mediaBreakPoints } from './metric'
 import { media, fitContentWidth, fitStickerWidth, fitPageWidth } from './media'
 import { flex, flexGrow, flexWrap, flexColumn, flexColumnGrow, flexColumnWrap } from './flex'
 
 import { circle, size } from './shape'
+
+export const cn = (...inputs: ClassValue[]) => {
+  return twMerge(clsx(inputs))
+}
 
 const smokey = (initOpacity = 0.6): string => `
   opacity: ${initOpacity};

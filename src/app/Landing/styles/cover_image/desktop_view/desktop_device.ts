@@ -22,7 +22,7 @@ export const Wrapper = styled.div`
   z-index: 3;
 `
 export const BrowerHead = styled.div`
-  ${css.row('align-center', 'justify-center')};
+  ${css.row('align-both')};
   color: ${theme('article.digest')};
   width: 100%;
   position: absolute;

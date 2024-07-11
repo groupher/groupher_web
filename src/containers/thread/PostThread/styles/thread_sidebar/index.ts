@@ -1,9 +1,22 @@
 import type { TActive, TAvatarLayout, TTestable } from '~/spec'
 import { AVATAR_LAYOUT } from '~/const/layout'
 
-import styled, { css, theme } from '~/css'
+import styled, { css, theme, cn } from '~/css'
 import Img from '~/Img'
 import LinkSVG from '~/icons/Link'
+
+import usePrimaryClass from '~/hooks/usePrimaryClass'
+import useTwUtils from '~/hooks/useTwUtils'
+
+export default () => {
+  const { textColor } = usePrimaryClass()
+  const { theme } = useTwUtils()
+
+  return {
+    text: cn('z-10', textColor),
+    dividerTitle: `row-align-center text-sm font-medium ${theme('article.title')}`,
+  }
+}
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
