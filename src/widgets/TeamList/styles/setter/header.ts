@@ -6,7 +6,6 @@ export const Wrapper = styled.div`
   height: 50px;
   width: 100%;
   background: ${theme('modal.bg')};
-  filter: ${theme('modal.subPanelShadow')};
   color: ${theme('article.title')};
   padding-left: 20px;
   padding-right: 11px;

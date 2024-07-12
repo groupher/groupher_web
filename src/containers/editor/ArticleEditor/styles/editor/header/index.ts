@@ -29,7 +29,6 @@ export const TitleInput = styled(Input)`
   min-height: 28px;
   font-size: 25px;
   color: ${theme('article.title')};
-  /* background: ${theme('editor.headerBg')}; */
   background: transparent;
   width: 100%;
 

@@ -8,7 +8,6 @@ const bannerBg = '#222222' //  '#161616'
 const contentBg = '#222222' // '#161616'
 const contentBoxBg = '#222222' // '#161616'
 const fontColor = primaryColor
-const markdownFont = '#9eb8bd'
 const border = '#3c3c3c' // '#282828'
 const link = '#418ccc'
 
@@ -52,7 +51,6 @@ export default {
   heightIcon: '#e48a3d',
   heightGradient: 'linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%)',
   bodyBg: contentBg,
-  selectionBg: '#FFFEDE',
   textBadge: '#e2e2e287', // with alpha
   lightText: '#999999',
   hint,
@@ -108,9 +106,6 @@ export default {
     pinkBg: '#73526159',
     pinkSoft: '#73526159',
 
-    pinkLite: '#82606b',
-    pinkBtnText: '#ded0d0',
-
     black: '#343333',
     blackRow: '#282828',
     blackBg: '#313131',
@@ -142,11 +137,6 @@ export default {
     bg: bannerBg,
     spliter: '#efefef',
     fixed: contentBoxBg,
-    tabActive: '#EB6224', // articleTitle
-    tabOthers: lighten('#849ca0', 10),
-    cardBg: '#ffffff',
-    cardBorder: '#e6e6e6',
-    cardLogoText: 'lightgrey',
     cardTitle: 'darkgrey',
   },
   banner: {
@@ -171,10 +161,6 @@ export default {
   },
   content: {
     bg: contentBoxBg,
-    border: '#EEEEEE',
-    cardBg: contentBoxBg,
-    cardBorder: '#e6e6e6',
-    cardBorderHover: primaryColor,
   },
   footer: {
     text: descText,
@@ -184,10 +170,7 @@ export default {
     shadow: 'rgb(25 25 25) 0px 0px 50px 0px inset',
   },
   drawer: {
-    title: threadTitle,
     mask: 'rgb(31 34 37 / 41%)',
-    desc: descText,
-    font: primaryColor,
     bg: '#252525',
     shadow: '-13px 1px 20px 11px rgb(0 0 0 / 9%)',
     shadowLite: '-5px 5px 20px 11px rgb(13 13 13 / 14%)',
@@ -214,8 +197,6 @@ export default {
     // mention popover background
     mentionBg: '#F9FCFC',
     mentionBorder: primaryColor,
-    mentionActiveBg: darken('#F9FCFC', 10),
-    mentionShadow: '0px 2px 10px 1px rgba(235, 235, 235, 1)',
 
     indentLine: '#E7E9ED',
     indentActive: '#B5BCCB',
@@ -224,43 +205,14 @@ export default {
     title: '#7ea9ad',
     content: '#a6bebf',
     placeholder: '#B3CFD0',
-    headerBg: '#F9FCFC',
     contentBg: '#F9FCFC',
     border: '#414141',
     borderActive: descText,
     borderNormal: '#e2eaea',
     footer: '#a6bebf',
-    footerHover: darken('#a6bebf', 5),
-  },
-  markdown: {
-    title: primaryColor,
-    fg: markdownFont,
-    titleBottom: lighten(primaryColor, 30),
-    hrColor: '#154452',
-    blockquoteBorder: '#b8d0ce',
-    blockquoteFg: darken(markdownFont, 10),
-    strongFg: '#7c999c',
-    strongBg: contentBoxBg,
-    link,
-    tableBg: darken(contentBoxBg, 5),
-    tableBg2n: darken(contentBoxBg, 5),
-    tableborder: `1px solid ${darken(contentBoxBg, 10)}`,
-    taskDone: '#528416',
-    taskPeding: darken(contentBoxBg, 10),
-    br: '#e8e8e8',
   },
   code: {
     bg: darken(contentBoxBg, 5),
-  },
-  shell: {
-    link,
-    searchInput: descText,
-    searchIcon: lighten(descText, 10),
-    barBg: contentBoxBg,
-    border: '#f3f3f3',
-    title: threadTitle,
-    desc: descText,
-    activeBg: '#F5F5F5',
   },
   button: {
     primary: primaryColor,
@@ -288,7 +240,6 @@ export default {
     activeBorder: '#70707094',
   },
   tags: {
-    dotOpacity: 0.7,
     text: descText,
   },
   tagger: {
@@ -313,8 +264,6 @@ export default {
     shadow: '-4px 5px 20px 5px rgb(21 21 21 / 47%)',
     innerSelectBg: '#e4eeed45',
     subPanel: '#1b1b1b',
-    // subPanelShadow: 'drop-shadow(3px 3px 6px #EAE9E9)',
-    subPanelShadow: 'none',
   },
   form: {
     inputBg: '#1f1f1f7a',

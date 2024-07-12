@@ -9,12 +9,12 @@ export const Wrapper = styled.div`
 `
 export const CardWrapper = styled.div`
   position: absolute;
-  background: ${theme('header.cardBg')};
   border-radius: 4px;
   width: 150px;
   height: 68px;
   border: 1px solid;
-  border-color: ${theme('header.cardBorder')};
+  border-color: ${theme('divider')};
+  border: 1px solid tomato;
   z-index: 1000;
   top: 6.5px;
 `
@@ -32,14 +32,14 @@ export const CommunityInfo = styled.div`
   margin-top: -2px;
 `
 export const LogoText = styled(Link)`
-  color: ${theme('header.cardLogoText')};
+  color: ${theme('article.digest')};
   font-size: 0.8rem;
   font-family: Cursive, Helvetica;
   display: block;
 
   &:hover {
     text-decoration: none;
-    color: ${theme('header.cardLogoText')};
+    color: ${theme('article.title')};
   }
 `
 

@@ -59,7 +59,6 @@ const GlobalStyle = createGlobalStyle<TColor>`
     border: 1px solid;
     border-color: ${theme('comment.mentionBorder')};
     background: ${theme('comment.mentionBg')};
-    box-shadow: ${theme('comment.mentionShadow')};
     margin-top: 10px;
     position: absolute;
     min-width: 160px;
@@ -86,7 +85,6 @@ const GlobalStyle = createGlobalStyle<TColor>`
     background-color: ${theme('rainbow.red')};
   }
   .markdown-editor-mentionSuggestionsEntryFocused {
-    background-color: ${theme('comment.mentionActiveBg')};
     padding: 7px 10px 3px 10px;
     display: flex;
   }
@@ -110,10 +108,10 @@ const GlobalStyle = createGlobalStyle<TColor>`
   }
 
   .markdown-editor-link {
-    color: ${theme('markdown.link')};
+    color: ${theme('link')};
 
     &:hover {
-      color: ${theme('markdown.link')};
+      color: ${theme('link')};
       text-decoration: underline;
     }
   }
