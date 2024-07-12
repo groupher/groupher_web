@@ -83,8 +83,6 @@ export {
   theme,
   themeMeta,
   themeSkins,
-  themeCoverMap,
-  themeCoverIndexMap,
   rainbow,
   rainbowLight,
   rainbowSoft,

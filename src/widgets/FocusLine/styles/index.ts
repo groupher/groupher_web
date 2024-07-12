@@ -20,7 +20,7 @@ export const Icon = styled(Img)<TActive>`
 `
 export const Focus = styled.div`
   font-size: 1.1rem;
-  color: ${theme('contrastFg')};
+  color: ${theme('divider')};
   margin-left: 3px;
   margin-right: 3px;
 `

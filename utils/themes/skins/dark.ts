@@ -20,18 +20,8 @@ const hint = '#9d9999'
 // const primaryMate = 'orange'
 
 export default {
-  _meta: {
-    category: 'night',
-  },
-  name: 'night',
   primary: primaryColor,
-  logoText: descText,
-  cover: 'white',
-  coverIndex: '#F9FCFC',
-  contrastFg: '#eca014',
   htmlBg: bannerBg,
-  spaceBg: '#fff',
-  mobileTab: '#323344',
   loading: {
     basic: '#E0E0E0',
     animate: contentBg,
@@ -61,7 +51,6 @@ export default {
   linkHover: lighten(link, 5),
   heightIcon: '#e48a3d',
   heightGradient: 'linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%)',
-  main: '#7DC0C5',
   bodyBg: contentBg,
   selectionBg: '#FFFEDE',
   textBadge: '#e2e2e287', // with alpha
@@ -343,9 +332,6 @@ export default {
     border,
     title: '#afafaf',
   },
-  mailBox: {
-    headHightBg: '#e8f9f8',
-  },
   table: {
     headerBg: '#F8F8F8',
     headTitle: '#949494',
@@ -353,15 +339,9 @@ export default {
     border: '#F0F0F0',
     hoverBg: '#FAFBFC',
   },
-  searchHighlight: {
-    doramonFg: '#03a9f4',
-    doramonBg: 'transparent',
-  },
   avatar: {
-    opacity: 1,
     quote: '#217470',
     shadow: '0px 0px 4px 0px rgb(0 0 0 / 50%) inset',
-    quoteShadow: '0px 0px 3px 0px rgb(0 0 0 / 30%) inset',
   },
   dashboard: {
     menuCat: '#c1c1c1',

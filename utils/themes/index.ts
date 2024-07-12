@@ -11,7 +11,7 @@
  * Earthsung https://atom.io/themes/earthsung-by-jackson-syntax
  */
 
-import { map, path, split } from 'ramda'
+import { path, split } from 'ramda'
 
 import type { TColorName, TTheme } from '~/spec'
 import { COLOR_NAME } from '~/const/colors'
@@ -22,13 +22,6 @@ import type { TFlatThemeKey } from './skins'
 import skinsData from './skins'
 
 export const themeSkins = { ...skinsData }
-
-// cover color of a theme
-// @ts-ignore
-export const themeCoverMap = map(path(['cover']), themeSkins)
-// the "T" color in themeSelector
-// @ts-ignore
-export const themeCoverIndexMap = map(path(['coverIndex']), themeSkins)
 
 // curried shorthand for style-components
 export const theme = (themeKey: TFlatThemeKey): TTheme => {

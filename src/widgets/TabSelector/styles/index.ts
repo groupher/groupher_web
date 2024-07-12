@@ -23,7 +23,7 @@ export const Option = styled.div<TActive>`
   ${css.row('align-center')};
 
   color: ${({ active }) => (active ? theme('banner.title') : theme('banner.desc'))};
-  background: ${({ active }) => (active ? theme('mailBox.headHightBg') : '')};
+  background: ${({ active }) => (active ? theme('hoverBg') : '')};
   padding: 2px 8px;
   border-radius: 5px;
   line-height: 1;

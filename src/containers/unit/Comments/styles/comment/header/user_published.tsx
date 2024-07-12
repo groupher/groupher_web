@@ -9,7 +9,6 @@ export { HeaderBaseInfo, BaseInfo, FloorNum } from '.'
 
 export const Avatar = styled(Img)<{ avatarSize: number }>`
   ${({ avatarSize }) => css.circle(avatarSize)};
-  opacity: ${theme('avatar.opacity')};
   margin-right: 13px;
 `
 export const ArticleBase = styled.div`

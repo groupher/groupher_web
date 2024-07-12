@@ -46,7 +46,6 @@ export const UserAvatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
 
   fill: ${theme('comment.placeholder')};
   margin-left: 4%;
-  opacity: ${theme('avatar.opacity')};
 `
 export const LeaveResponseText = styled.div`
   font-size: 14px;

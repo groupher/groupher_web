@@ -48,7 +48,6 @@ export const ExpandIcon = styled(ExpandSVG)`
 export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
   ${css.size(16)};
   border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '3px' : '100%')};
-  opacity: ${theme('avatar.opacity')};
   margin-right: 10px;
 `
 export const CommentBody = styled.div`

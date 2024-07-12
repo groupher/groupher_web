@@ -73,7 +73,6 @@ const VerticalScroller: FC<TProps> = ({
 
   // @ts-ignore
   // const { themeMap } = useTheme()
-  // const { _meta: themeMeta } = themeMap
   // const { category: themeCategory } = themeMeta
 
   //   <Wrapper
