@@ -18,12 +18,12 @@ export function themeMiddleware(request: NextRequest) {
   const themeCookie = request.cookies.get('theme')
 
   // 如果theme值为'night'，则重写URL
-  if (themeCookie && themeCookie.value === THEME.NIGHT) {
+  if (themeCookie && themeCookie.value === THEME.DARK) {
     // 获取请求的URL
     const url = request.nextUrl.clone()
 
     // 为URL添加查询参数?theme=night
-    url.searchParams.set('theme', THEME.NIGHT)
+    url.searchParams.set('theme', THEME.DARK)
 
     // 重写请求的URL
     return NextResponse.rewrite(url)

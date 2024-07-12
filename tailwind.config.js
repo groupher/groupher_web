@@ -6,7 +6,7 @@ module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     colors: {
-      ...include.dayTheme(),
+      ...include.theme(),
     },
   },
   safelist: include.safelist(),

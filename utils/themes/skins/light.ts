@@ -18,7 +18,7 @@ const threadTitle = '#333333'
 const hoverBg = '#efefef78' // '#efefef9c' // with alpha
 const hint = '#9d9999'
 
-const day = {
+export default {
   _meta: {
     category: 'light',
   },
@@ -373,5 +373,3 @@ const day = {
   },
   hiddenPanel: 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 40%)',
 }
-
-export default day

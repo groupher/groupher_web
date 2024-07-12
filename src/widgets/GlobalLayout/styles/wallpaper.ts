@@ -11,7 +11,7 @@ export const Wrapper = styled.div<TWrapper>`
 
   ${({ $effect }) => $effect || ''};
 
-  filter: ${({ $theme }) => ($theme === THEME.NIGHT ? 'brightness(0.85)' : '')};
+  filter: ${({ $theme }) => ($theme === THEME.DARK ? 'brightness(0.85)' : '')};
   /* adjust s value for speed */
   /* position: fixed; */
   /* see https://www.zhangxinxu.com/wordpress/2015/11/css3-will-change-improve-paint/ */

@@ -49,7 +49,7 @@ export default () => {
 
         <ContentWrapper>
           <PreviewerWrapper>
-            <PreviewImage style={{ background }} effect={effect} $darker={theme === THEME.NIGHT} />
+            <PreviewImage style={{ background }} effect={effect} $darker={theme === THEME.DARK} />
             <ContentBlock $bgColor={bgColor}>
               <Brick $width={100} $height={7} $opacity={0.25} top={24} left={20} />
               <Brick $width={180} $height={7} $opacity={0.15} top={42} left={20} />

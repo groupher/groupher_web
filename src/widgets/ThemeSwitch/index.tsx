@@ -28,7 +28,7 @@ const ThemeSwitch: FC<TProps> = ({ testid = 'theme-switch', ...restProps }) => {
         aria-live="polite"
         onClick={toggle}
       >
-        {theme === THEME.DAY ? <SunIcon /> : <MoonIcon />}
+        {theme === THEME.LIGHT ? <SunIcon /> : <MoonIcon />}
       </Button>
     </Wrapper>
   )

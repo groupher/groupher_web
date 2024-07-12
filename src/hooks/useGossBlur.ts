@@ -9,5 +9,5 @@ export default (): number => {
 
   const { gossBlur, gossBlurDark } = store
 
-  return theme === THEME.DAY ? gossBlur : gossBlurDark
+  return theme === THEME.LIGHT ? gossBlur : gossBlurDark
 }

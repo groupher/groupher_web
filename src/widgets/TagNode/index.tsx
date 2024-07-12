@@ -45,7 +45,7 @@ const TagNode: FC<TProps> = ({
 }) => {
   const { tagLayout } = useLayout()
   const { theme } = useTheme()
-  const darkTheme = theme === THEME.NIGHT
+  const darkTheme = theme === THEME.DARK
 
   const HashIcon = boldHash ? HashBoldIcon : HashNormalIcon
 

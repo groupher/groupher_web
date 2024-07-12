@@ -26,10 +26,10 @@ type TProps = {
 const Panel: FC<TProps> = ({ hovering }) => {
   const { theme } = useTheme()
 
-  if (theme === THEME.DAY) {
+  if (theme === THEME.LIGHT) {
     return (
       <Wrapper>
-        <DayCard hovering={hovering} metric={CARDS_METRICS[theme][THEME.DAY] as TCardMetric} />
+        <DayCard hovering={hovering} metric={CARDS_METRICS[theme][THEME.LIGHT] as TCardMetric} />
         <DivideColumn $hovering={hovering} />
         <SwitchBox $hovering={hovering}>
           <ThemeBox $active={!hovering}>{!hovering ? <SunSolidIcon /> : <SunIcon />}</ThemeBox>
@@ -37,15 +37,15 @@ const Panel: FC<TProps> = ({ hovering }) => {
             <ThemeBox>{!hovering ? <MoonIcon /> : <MoonSolidIcon />}</ThemeBox>
           </ThemeBox>
         </SwitchBox>
-        <NightCard hovering={hovering} metric={CARDS_METRICS[theme][THEME.NIGHT] as TCardMetric} />
+        <NightCard hovering={hovering} metric={CARDS_METRICS[theme][THEME.DARK] as TCardMetric} />
       </Wrapper>
     )
   }
 
   return (
     <Wrapper>
-      <NightCard hovering={hovering} metric={CARDS_METRICS[theme][THEME.NIGHT] as TCardMetric} />
-      <DayCard hovering={hovering} metric={CARDS_METRICS[theme][THEME.DAY] as TCardMetric} />
+      <NightCard hovering={hovering} metric={CARDS_METRICS[theme][THEME.DARK] as TCardMetric} />
+      <DayCard hovering={hovering} metric={CARDS_METRICS[theme][THEME.LIGHT] as TCardMetric} />
     </Wrapper>
   )
 }

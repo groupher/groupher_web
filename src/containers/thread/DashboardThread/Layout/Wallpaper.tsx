@@ -54,7 +54,7 @@ export default () => {
         <PreviewWrapper>
           <HoverMask onClick={handleCallEditor}>
             <UploadIcon />
-            <PreviewImage style={{ background }} effect={effect} $darker={theme === THEME.NIGHT} />
+            <PreviewImage style={{ background }} effect={effect} $darker={theme === THEME.DARK} />
             <CheckLabel title="原图" top={15} left={-15} $active={false} />
           </HoverMask>
           <PreviewerWrapper>
@@ -63,7 +63,7 @@ export default () => {
                 style={{ background }}
                 effect={effect}
                 noHover
-                $darker={theme === THEME.NIGHT}
+                $darker={theme === THEME.DARK}
               />
               <ContentBlock hasShadow={hasShadow} $bgColor={bgColor}>
                 <Brick $width={100} $height={7} $opacity={0.25} top={14} left={20} />

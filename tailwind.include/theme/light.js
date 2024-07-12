@@ -1,29 +1,25 @@
-/*
- * dark mode
- */
-import { lighten, darken } from '~/utils/color'
+/** @type {import('tailwindcss').Config} */
 
 const primaryColor = '#333333' // '#000000'
-const bannerBg = '#222222' //  '#161616'
-const contentBg = '#222222' // '#161616'
-const contentBoxBg = '#222222' // '#161616'
+const bannerBg = '#fff'
+const contentBg = '#fff'
+const contentBoxBg = '#fff'
 const fontColor = primaryColor
 const markdownFont = '#9eb8bd'
-const border = '#3c3c3c' // '#282828'
-const link = '#418ccc'
+const border = '#EAE9E9'
+const link = '#5073C6'
 
-const actionText = '#7f8695'
-const descText = '#7c7f82'
-const threadTitle = '#dddddd'
-const hoverBg = '#42424259' // with alpha
+const actionText = '#647392'
+const descText = '#666'
+const threadTitle = '#333333'
+const hoverBg = '#efefef78' // '#efefef9c' // with alpha
 const hint = '#9d9999'
-// const primaryMate = 'orange'
 
-const night = {
+module.exports = {
   _meta: {
-    category: 'night',
+    category: 'light',
   },
-  name: 'night',
+  name: 'light',
   primary: primaryColor,
   logoText: descText,
   cover: 'white',
@@ -38,27 +34,26 @@ const night = {
   },
   error: {
     title: primaryColor,
-    desc: darken(primaryColor, 10),
-    bg: lighten(contentBoxBg, 2),
+    desc: primaryColor,
+    bg: contentBoxBg,
   },
   landing: {
-    greyBg: hoverBg,
+    greyBg: '#fbfbfb',
   },
   font: fontColor,
   link,
   blackActive: '#3171DB',
   divider: border,
-  alphaBg: hoverBg,
-  alphaBg2: '#1c1c1cb8',
+  alphaBg: '#ffffff95',
+  alphaBg2: '#fffffff2',
   hoverBg,
-  hoverActive: '#3f3f3f',
-  menuHoverBg: hoverBg,
-  lineDivider: '#5a5a5ac9',
-  savingBarBg: '#f7f7f7',
-  hoverBorder: '#393939',
-  hoverLinear: 'linear-gradient(315deg, rgb(104 104 104 / 0%) 0%, #2c2c2c 100%);',
+  hoverActive: 'white',
+  menuHoverBg: 'white',
+  lineDivider: '#acacacc9',
+  hoverBorder: hoverBg,
+  hoverLinear: 'linear-gradient(315deg, rgba(255, 255, 255, 0) 0%, #fafafa 100%)',
   menuActive: '#e9e9e991',
-  linkHover: lighten(link, 5),
+  linkHover: link,
   heightIcon: '#e48a3d',
   heightGradient: 'linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%)',
   main: '#7DC0C5',
@@ -67,86 +62,87 @@ const night = {
   textBadge: '#e2e2e287', // with alpha
   lightText: '#999999',
   hint,
-  articleCardShadow: '0 2px 40px 0 rgb(62 62 62 / 27%))',
-  articleCardHover: '#575757',
-  dashboardBlockOpacity: 0.7,
+  articleCardShadow: '0 2px 40px 0 rgb(224 226 228 / 27%)',
+  articleCardHover: '#c1c1c1',
+  dashboardBlockOpacity: 0.65,
 
   rainbow: {
     red: '#ca5f4d',
-    redBg: '#7d3b363d',
-    redSoft: 'linear-gradient(90deg, #7a37323d 0%, #46211e2b 100%)',
+    redBg: '#ffbfba3d',
+    redSoft: 'linear-gradient(90deg, #fec0bb33 0%, #f8e4e226 100%)',
 
-    orange: '#ce9f6f',
-    orangeBg: '#4c3e37',
-    orangeSoft: 'linear-gradient(90deg, #44352ead 0%, #382c27a1 100%)',
+    orange: 'orange',
+    orangeBg: '#FEF7E8',
+    orangeSoft: 'linear-gradient(90deg, #fcb32d26 0%, #f5dfb726 100%)',
 
     brown: '#8d691e',
-    brownBg: '#3a342b',
-    brownSoft: 'linear-gradient(90deg, #45320569 0%, #3929024a 100%)',
+    brownBg: '#fff3df',
+    brownSoft: 'linear-gradient(90deg, #cf806921 0%, #dbd0d01c 100%)',
 
-    yellow: '#eddd85',
-    yellowBg: '#a9a06a30',
-    yellowSoft: 'linear-gradient(90deg, #635e184d 0%, #433e2330 100%)',
+    yellow: '#c7b96d',
+    yellowBg: '#FEFBE8',
+    yellowSoft: 'linear-gradient(90deg, #fffde5 0%, rgb(255 252 241 / 37%) 100%)',
 
     green: '#699411',
-    greenBg: '#8a97764a',
-    greenSoft: 'linear-gradient(90deg, #636e534a 0%, #474e3c36 100%)',
+    greenBg: '#eefdd89c',
+    greenSoft: 'linear-gradient(90deg, #e3f3cc4a 0%, #f2ffe05c 100%)',
 
-    greenLight: '#37B784',
-    greenLightBg: '#69735a4a',
-    greenLightSoft: 'linear-gradient(90deg, #636e534a 0%, #474e3c36 100%)',
+    greenLight: '#79d08f',
+    greenLightBg: '#e3f3cc4a',
+    greenLightSoft: 'linear-gradient(90deg, #e3f3cc4a 0%, #f2ffe05c 100%)',
 
     cyan: '#24878C',
-    cyanBg: '#2c3738',
-    cyanSoft: 'linear-gradient(90deg, #2c3738 0%, #2c37386e 100%)',
+    cyanBg: '#e1fcff',
+    cyanSoft: 'linear-gradient(90deg, #e1fcff94 0%, #e1fcff5e 100%)',
 
     // naming, fix later
     cyanLight: '#00B5CC',
-    cyanLightBg: '#39494b94',
-    cyanLightSoft: '#39494b94',
+    cyanLightBg: '#e1fcff94',
+    cyanLightSoft: '#e1fcff94',
 
-    blue: '#0073E3',
-    blueBg: '#76809654',
-    blueSoft: 'linear-gradient(90deg, #505a7254 0%, #3a415038 100%)',
+    blue: '#5073C6',
+    blueBg: '#E7EDF7',
+    blueSoft: 'linear-gradient(90deg, #f3f7ff 0%, #f5f8ffb5 100%);',
 
     purple: '#7d519e',
-    purpleBg: '#7c618238',
-    purpleSoft: 'linear-gradient(90deg, #86539147  0%, #58445d38 100%)',
+    purpleBg: '#f7d8fd38',
+    purpleSoft: 'linear-gradient(90deg, #f7d8fd38 0%, #f5e5f838 100%)',
 
     grey: '#106d8a',
 
     pink: '#b36976',
-    pinkBg: '#73526159',
-    pinkSoft: '#73526159',
+    pinkBg: '#ffd8ea59',
+    pinkSoft: '#ffd8ea59',
 
     pinkLite: '#82606b',
     pinkBtnText: '#ded0d0',
 
-    black: '#343333',
-    blackRow: '#282828',
-    blackBg: '#313131',
-    blackSoft: '#313131',
+    black: '#333333',
+    blackRow: '#333333',
+    blackBg: '#f4f4f4',
+    blackSoft: '#f4f4f4',
   },
   grey: {
-    rare: '#272727',
-    middle: '#333333',
-    hard: '#414141',
+    rare: '#fafafa',
+    middle: '#F1F3F4',
+    hard: '#F1F3F4',
   },
   shadow: {
     md: 'rgba(0, 0, 0, 0.03) 0px 6px 24px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;',
     lg: '',
     xl: '',
-    xxl: 'rgb(21 21 21 / 48%) 0px 11px 24px;',
+    xxl: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
   },
+  // inspired by https://endless.design/
   gradientBg: {
-    purple: 'linear-gradient(-149deg,#373439d4 0%,rgb(86 70 99) 100%)',
-    blue: 'linear-gradient(310deg,#303435 13%,rgb(49 84 121 / 83%) 100%)',
-    green: 'linear-gradient(133deg,#343434 0%,rgb(58 83 63 / 80%) 100%)',
-    orange: 'linear-gradient(244deg,#3d3d3d 0%,rgb(106 82 62 / 72%) 100%)',
-    pink: 'linear-gradient(140deg,#fff5fb99 0%,rgb(255 231 230 / 84%) 100%)',
-    black: 'linear-gradient(220deg,#fafafaba 0%,#ededede3 100%)',
-    cyan: 'linear-gradient(310deg,#eafffe7a 13%,rgb(183 242 246 / 46%) 100%)',
-    yellow: 'linear-gradient(53deg,#fffff37a 13%,rgb(255 244 140 / 25%) 100%)',
+    purple: 'linear-gradient(152deg,#faf5ff9c 0%,rgb(222 198 243) 100%)',
+    blue: 'linear-gradient(310deg,#f6f3ff54 13%,rgb(209 237 255 / 83%) 100%)',
+    green: 'linear-gradient(28deg,#fffbf6 0%,rgb(216 240 221 / 80%) 100%)',
+    orange: 'linear-gradient(244deg,#fffcf75e 0%,rgb(255 234 217 / 72%) 100%)',
+    pink: 'linear-gradient(224deg,#fde4ff24 0%,rgb(255 223 234 / 79%) 100%)',
+    black: 'linear-gradient(25deg,#fafafaba 20%,#bdccce63 100%)',
+    cyan: 'linear-gradient(213deg,#fffff3ba 13%,#aff5ffc2 100%)',
+    yellow: 'linear-gradient(150deg,#ffe5e529 20%,rgb(255 251 216 / 58%) 100%)',
   },
   header: {
     fg: '#8c8c8c',
@@ -154,7 +150,7 @@ const night = {
     spliter: '#efefef',
     fixed: contentBoxBg,
     tabActive: '#EB6224', // articleTitle
-    tabOthers: lighten('#849ca0', 10),
+    tabOthers: '#849ca0',
     cardBg: '#ffffff',
     cardBorder: '#e6e6e6',
     cardLogoText: 'lightgrey',
@@ -172,9 +168,13 @@ const night = {
     numberHoverBg: '#f3f3f3',
   },
   article: {
-    title: threadTitle,
+    // title: threadTitle,
+    title: {
+      DEFAULT: 'red',
+      dark: 'green',
+    },
     digest: descText,
-    info: descText,
+    info: actionText,
     link,
     linkHover: 'orange',
     reactionTitle: '#7f979a',
@@ -192,18 +192,18 @@ const night = {
     hover: '#949CB5',
     title: '#77706B',
     bottomBg: '#252325',
-    shadow: 'rgb(25 25 25) 0px 0px 50px 0px inset',
+    shadow: 'rgb(241 241 241) 0px 0px 50px 0px inset',
   },
   drawer: {
     title: threadTitle,
-    mask: 'rgb(31 34 37 / 41%)',
+    mask: 'rgba(31, 34, 37, 0.15)',
     desc: descText,
     font: primaryColor,
-    bg: '#252525',
-    shadow: '-13px 1px 20px 11px rgb(0 0 0 / 9%)',
-    shadowLite: '-5px 5px 20px 11px rgb(13 13 13 / 14%)',
-    closerShadow: '-3px 12px 20px 0px rgb(32 29 29 / 83%)',
-    border: '#363636',
+    bg: contentBg,
+    shadow: '-8px 8px 20px 11px rgb(143 143 143 / 2%)',
+    shadowLite: '-8px 8px 20px 11px rgb(143 143 143 / 2%)',
+    closerShadow: '-7px 4px 20px 0px rgb(143 143 143 / 2%)',
+    border: 'transparent',
   },
   comment: {
     bg: contentBg,
@@ -225,7 +225,7 @@ const night = {
     // mention popover background
     mentionBg: '#F9FCFC',
     mentionBorder: primaryColor,
-    mentionActiveBg: darken('#F9FCFC', 10),
+    mentionActiveBg: '#F9FCFC',
     mentionShadow: '0px 2px 10px 1px rgba(235, 235, 235, 1)',
 
     indentLine: '#E7E9ED',
@@ -237,36 +237,36 @@ const night = {
     placeholder: '#B3CFD0',
     headerBg: '#F9FCFC',
     contentBg: '#F9FCFC',
-    border: '#414141',
+    border: '#D6D6D6',
     borderActive: descText,
     borderNormal: '#e2eaea',
     footer: '#a6bebf',
-    footerHover: darken('#a6bebf', 5),
+    footerHover: '#a6bebf',
   },
   markdown: {
     title: primaryColor,
     fg: markdownFont,
-    titleBottom: lighten(primaryColor, 30),
+    titleBottom: primaryColor,
     hrColor: '#154452',
     blockquoteBorder: '#b8d0ce',
-    blockquoteFg: darken(markdownFont, 10),
+    blockquoteFg: markdownFont,
     strongFg: '#7c999c',
     strongBg: contentBoxBg,
     link,
-    tableBg: darken(contentBoxBg, 5),
-    tableBg2n: darken(contentBoxBg, 5),
-    tableborder: `1px solid ${darken(contentBoxBg, 10)}`,
+    tableBg: contentBoxBg,
+    tableBg2n: contentBoxBg,
+    tableborder: `1px solid ${contentBoxBg}`,
     taskDone: '#528416',
-    taskPeding: darken(contentBoxBg, 10),
+    taskPeding: contentBoxBg,
     br: '#e8e8e8',
   },
   code: {
-    bg: darken(contentBoxBg, 5),
+    bg: contentBoxBg,
   },
   shell: {
     link,
     searchInput: descText,
-    searchIcon: lighten(descText, 10),
+    searchIcon: descText,
     barBg: contentBoxBg,
     border: '#f3f3f3',
     title: threadTitle,
@@ -275,27 +275,27 @@ const night = {
   },
   button: {
     primary: primaryColor,
-    border: '#414141',
-    bg: '#2c2c2c',
+    bg: primaryColor,
     fg: 'white',
-    ghost: '#9A9696',
+    ghost: primaryColor,
+    border: primaryColor,
     disabledFg: descText,
-    hoverBg: lighten(primaryColor, 10),
-    activeBg: darken(primaryColor, 5),
+    hoverBg: primaryColor,
+    activeBg: primaryColor,
     clicked: primaryColor,
-    ghostBorder: '#606060',
-    upvoteBorder: '#5f5f5fb5',
-    boxShadow: 'rgb(24 24 24 / 32%) -1px 1px 16px 2px',
+    ghostBorder: hint,
+    upvoteBorder: '#c5c5c5b0',
+    boxShadow: 'rgb(202 202 202 / 10%) -1px 1px 16px 2px',
   },
   navigator: {
     activeBottom: primaryColor,
-    borderRight: darken(bannerBg, 5),
+    borderRight: bannerBg,
     hoverBg: '#eee',
   },
   popover: {
-    bg: '#2e2e2ef0',
-    borderColor: border,
-    boxShadow: '-9px 7px 20px 9px rgb(24 24 24 / 44%)',
+    bg: '#fafafa', // '#fffffff2',
+    borderColor: '#e9e9ea',
+    boxShadow: '-3px 2px 20px 0px rgb(58 58 58 / 15%)',
     activeBorder: '#70707094',
   },
   tags: {
@@ -319,16 +319,16 @@ const night = {
   },
   modal: {
     bg: contentBoxBg,
-    mask: 'rgba(31, 34, 37, 0.55)',
+    mask: 'rgba(31, 34, 37, 0.1)',
     border: primaryColor,
-    shadow: '-4px 5px 20px 5px rgb(21 21 21 / 47%)',
+    shadow: '-2px 4px 20px 0px rgb(158 157 157 / 23%)',
     innerSelectBg: '#e4eeed45',
-    subPanel: '#1b1b1b',
+    subPanel: '#F5F5F5',
     // subPanelShadow: 'drop-shadow(3px 3px 6px #EAE9E9)',
     subPanelShadow: 'none',
   },
   form: {
-    inputBg: '#1f1f1f7a',
+    inputBg: '#ffffff95',
     text: '#88a4ad',
     label: '#88a4ad',
     border: '#B8C6C0',
@@ -336,12 +336,12 @@ const night = {
   },
   a: {
     hover: primaryColor,
-    active: darken(primaryColor, 10),
+    active: primaryColor,
   },
   toast: {
-    bg: '#2c2c2c',
+    bg: contentBoxBg,
     border,
-    title: '#afafaf',
+    title: threadTitle,
   },
   mailBox: {
     headHightBg: '#e8f9f8',
@@ -364,15 +364,13 @@ const night = {
     quoteShadow: '0px 0px 3px 0px rgb(0 0 0 / 30%) inset',
   },
   dashboard: {
-    menuCat: '#c1c1c1',
-    menuTitle: '#b7b7b7',
-    blockActiveBg: '#2b2a2a7a',
+    menuCat: threadTitle,
+    menuTitle: descText,
+    blockActiveBg: '#ffffff95',
   },
   toggle: {
-    shadow: '0 0 20px 0px rgb(0 0 0 / 46%) inset',
-    ball: '#ffffffb5',
+    shadow: '0 0 10px 0 rgb(185 185 185 / 25%) inset',
+    ball: 'white',
   },
-  hiddenPanel: 'linear-gradient(180deg, rgb(0 0 0 / 0%) 0%, rgb(35 35 35) 40%)',
+  hiddenPanel: 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 40%)',
 }
-
-export default night

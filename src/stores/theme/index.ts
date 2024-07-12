@@ -7,7 +7,7 @@ import { themeSkins } from '~/utils/themes'
 
 import type { TStore } from './spec'
 
-export default (theme: TThemeName = THEME.DAY): TStore => {
+export default (theme: TThemeName = THEME.LIGHT): TStore => {
   const store = proxy({
     theme,
 
@@ -22,7 +22,7 @@ export default (theme: TThemeName = THEME.DAY): TStore => {
     },
 
     toggle: (): void => {
-      store.theme = store.theme === THEME.DAY ? THEME.NIGHT : THEME.DAY
+      store.theme = store.theme === THEME.LIGHT ? THEME.DARK : THEME.LIGHT
     },
   })
 

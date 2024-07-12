@@ -15,7 +15,7 @@ export default (): TRet => {
    * cover article.title -> article-title to match the tailwind csss varaible name
    */
   const theme = (key: TFlatThemeKey, prefix = 'bg') => {
-    return curTheme === THEME.DAY
+    return curTheme === THEME.LIGHT
       ? `${prefix}-${key.replace(/\./g, '-')}`
       : `${prefix}-${key.replace(/\./g, '-')}-dark`
   }

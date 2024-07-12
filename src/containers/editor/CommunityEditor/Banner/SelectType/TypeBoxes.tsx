@@ -32,7 +32,7 @@ export default () => {
             touched={!!communityType}
             $active={$active}
             $angle={index % 2 === 0 ? -2 : 2}
-            $withBorder={theme === THEME.NIGHT}
+            $withBorder={theme === THEME.DARK}
             onClick={() => communityTypeOnChange(item.type)}
           >
             <InnerBox $active={$active} $color={$color}>
