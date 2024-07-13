@@ -5,8 +5,7 @@ export const BaseBanner = styled.nav`
 
   position: relative;
   min-height: 108px;
-  background: ${theme('banner.bg')};
-  border-bottom: ${theme('banner.spliter')};
+  border-bottom: ${theme('divider')};
 
   ${css.media.mobile`
     min-height: 100px;

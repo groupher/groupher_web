@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
 export const LoginLabel = styled.div`
   font-size: 0.9rem;
   transition: color 0.3s;
-  color: ${theme('banner.title')};
+  color: ${theme('article.title')};
   margin-left: 3px;
   margin-right: 3px;
 

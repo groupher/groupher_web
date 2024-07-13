@@ -19,12 +19,12 @@ export const VolunteerSection = styled(NumberSection)<{ alignCenter: boolean }>`
 type TNumberTitle = { small?: boolean; readOnly?: boolean }
 // text-decoration: ${({ readOnly }) => (readOnly ? '' : 'underline')};
 export const NumberTitle = styled.div<TNumberTitle>`
-  color: ${theme('banner.numberDesc')};
+  color: ${theme('article.digest')};
   font-size: ${({ small }) => (small ? '11px' : '12px')};
   margin-top: ${({ small }) => (small ? '4px' : '0')};
   margin-bottom: 2px;
   &:hover {
-    color: ${({ readOnly }) => (readOnly ? '' : theme('banner.active'))};
+    color: ${({ readOnly }) => (readOnly ? '' : theme('article.digest'))};
     cursor: ${({ readOnly }) => (readOnly ? '' : 'pointer')};
   }
 `

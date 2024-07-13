@@ -24,20 +24,20 @@ export const ChargeSection = styled(NumberSection)`
 type TNumberTitle = { small?: boolean; readOnly?: boolean }
 // text-decoration: ${({ readOnly }) => (readOnly ? '' : 'underline')};
 export const NumberTitle = styled.div<TNumberTitle>`
-  color: ${theme('banner.numberDesc')};
+  color: ${theme('article.digest')};
   font-size: ${({ small }) => (small ? '11px' : '12px')};
   margin-top: ${({ small }) => (small ? '4px' : '0')};
   margin-bottom: 2px;
   word-break: keep-all;
 
   &:hover {
-    color: ${({ readOnly }) => (readOnly ? '' : theme('banner.active'))};
+    color: ${({ readOnly }) => (readOnly ? '' : theme('article.digest'))};
     cursor: ${({ readOnly }) => (readOnly ? '' : 'pointer')};
   }
 `
 export const NumberDivider = styled.div`
   border: 1px solid;
-  border-color: ${theme('banner.numberDivider')};
+  border-color: ${theme('divider')};
   height: 20px;
   align-self: flex-end;
   margin-left: 10px;

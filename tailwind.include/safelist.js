@@ -3,4 +3,6 @@ module.exports = [
   // ...[2, 4].map((n) => `line-clamp-${n}`)
   'bg-article-title',
   'bg-article-title-dark',
+  'text-article-title',
+  'text-article-title-dark',
 ]

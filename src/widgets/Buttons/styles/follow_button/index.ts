@@ -20,7 +20,7 @@ export const WatchIcon = styled(BtnIcon)`
   fill: ${theme('button.fg')};
 `
 export const WatchedIcon = styled(BtnIcon)`
-  fill: ${theme('banner.title')};
+  fill: ${theme('article.title')};
 `
 export const BtnText = styled.div`
   padding-top: 2px;

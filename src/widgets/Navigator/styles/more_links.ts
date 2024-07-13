@@ -4,7 +4,7 @@ import ArrowSVG from '~/icons/ArrowSolid'
 export { SiteLink } from './main_entries'
 
 export const ArrowIcon = styled(ArrowSVG)`
-  fill: ${theme('banner.desc')};
+  fill: ${theme('article.digest')};
   margin-left: 5px;
   ${css.size(10)};
   transform: rotate(90deg);

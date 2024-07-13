@@ -6,7 +6,7 @@ import { Wrapper as TagItem } from './tag_item'
 export const Wrapper = styled.div`
   position: relative;
   ${css.row()};
-  color: ${theme('banner.desc')};
+  color: ${theme('article.digest')};
   margin-top: -2px;
 `
 export const Count = styled.div`
@@ -14,11 +14,11 @@ export const Count = styled.div`
   opacity: 0.8;
 
   ${TagItem}:hover & {
-    color: ${theme('banner.title')};
+    color: ${theme('article.title')};
     opacity: 1;
   }
   &:hover {
-    color: ${theme('banner.title')};
+    color: ${theme('article.title')};
     cursor: pointer;
     opacity: 1;
   }

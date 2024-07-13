@@ -44,7 +44,7 @@ export const LogoText = styled(Link)`
 `
 
 export const CommunityTitle = styled.div`
-  color: ${theme('header.cardTitle')};
+  color: ${theme('article.title')};
   font-size: 1rem;
   font-weight: bold;
   margin-top: -2px;
@@ -59,7 +59,7 @@ export const Breadcrumbs = styled.div`
 `
 
 export const LogoHolder = styled(Img)`
-  fill: ${theme('banner.desc')};
+  fill: ${theme('article.digest')};
   ${css.size(40)};
   opacity: 0.6;
 `

@@ -73,7 +73,7 @@ export const Title = styled.div<{ $noMargin: boolean }>`
   }
 `
 export const LogoHolder = styled(Img)`
-  fill: ${theme('banner.desc')};
+  fill: ${theme('article.digest')};
   width: 50px;
   height: 50px;
   @media (max-height: 800px) {

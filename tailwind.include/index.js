@@ -1,7 +1,7 @@
-const lightTheme = require('./theme/light')
+const colors = require('./theme/colors')
 const safelist = require('./safelist')
 
 module.exports = {
-  theme: () => lightTheme,
+  theme: () => colors,
   safelist: () => safelist,
 }

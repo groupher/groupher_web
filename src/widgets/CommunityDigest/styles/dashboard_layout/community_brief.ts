@@ -78,7 +78,7 @@ export const Slash = styled.div`
   margin-left: 8px;
 `
 export const LogoHolder = styled(Img)`
-  fill: ${theme('banner.desc')};
+  fill: ${theme('article.digest')};
   width: 50px;
   height: 50px;
   @media (max-height: 800px) {

@@ -1,6 +1,6 @@
 import type { TActive } from '~/spec'
 
-import styled, { css, theme, animate } from '~/css'
+import styled, { css, theme } from '~/css'
 import SiteLogo from '~/icons/CPLogo' // TODO:
 // import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
 
@@ -69,18 +69,9 @@ export const A = styled.a`
   color: #aaa;
   cursor: pointer;
 `
-export const OfflineWrapper = styled.div`
-  ${css.column()};
-  background: ${theme('rainbow.red')};
-  color: ${theme('header.bg')};
-  margin-left: 20px;
-  padding: 0 10px;
-  border-radius: 4px;
-  /* animation: ${animate.breath} 5s linear infinite; */
-`
 export const ActionText = styled.div`
   font-size: 14px;
-  color: ${theme('banner.desc')};
+  color: ${theme('article.digest')};
   margin-left: 10px;
   margin-top: 2px;
 `

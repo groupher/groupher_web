@@ -15,9 +15,9 @@ export const ActivitySpark = styled.div`
 // text-decoration: ${({ readOnly }) => (readOnly ? '' : 'underline')};
 export const NumberItem = styled.div<{ readOnly: boolean }>`
   font-size: 16px;
-  color: ${theme('banner.number')};
+  color: ${theme('article.digest')};
   &:hover {
-    color: ${({ readOnly }) => (readOnly ? '' : theme('banner.active'))};
+    color: ${({ readOnly }) => (readOnly ? '' : theme('article.digest'))};
     cursor: ${({ readOnly }) => (readOnly ? '' : 'pointer')};
   }
 

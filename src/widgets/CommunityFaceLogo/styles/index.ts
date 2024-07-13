@@ -3,7 +3,7 @@ import Img from '~/Img'
 import SiteLogo from '~/icons/CPLogo'
 
 export const Logo = styled(Img)<{ noFill?: boolean }>`
-  fill: ${({ noFill }) => (noFill ? '' : theme('banner.desc'))};
+  fill: ${({ noFill }) => (noFill ? '' : theme('article.digest'))};
   display: block;
 `
 

@@ -36,20 +36,20 @@ export const SelectLabel = styled.div`
 `
 export const LabelDivider = styled.div`
   border-bottom: 1px solid;
-  border-color: ${theme('banner.desc')};
+  border-color: ${theme('article.digest')};
   width: 90%;
   margin-top: 5px;
   margin-bottom: 10px;
   opacity: 0.3;
 `
 export const SelectIcon = styled(Img)<{ reverse?: boolean }>`
-  fill: ${theme('banner.title')};
+  fill: ${theme('article.title')};
   ${css.size(15)};
   margin-right: 3px;
   transform: ${({ reverse }) => (reverse ? 'rotate(180deg)' : '')};
 `
 export const SelectTitle = styled.div`
-  color: ${theme('banner.title')};
+  color: ${theme('article.title')};
   font-size: 14px;
   font-weight: bold;
 `
@@ -77,7 +77,7 @@ export const SelectItem = styled.div<TActive>`
 
   &:before {
     content: '*';
-    color: ${theme('banner.title')};
+    color: ${theme('article.title')};
     opacity: ${({ active }) => (active ? 1 : 0)};
     font-weight: lighter;
     position: absolute;

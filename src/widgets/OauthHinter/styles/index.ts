@@ -7,7 +7,6 @@ export const Wrapper = styled.div`
   ${css.column('align-both')};
 
   height: 100vh;
-  background: ${theme('banner.bg')};
   border-top: 4px solid;
 `
 export const IconsWrapper = styled.div`
@@ -46,7 +45,7 @@ export const GithubLogoIcon = styled(GithubSVG)`
 `
 export const HintWrapper = styled.div`
   ${css.column()};
-  color: ${theme('banner.title')};
+  color: ${theme('article.title')};
 `
 export const FooterWrapper = styled.div`
   color: ${theme('article.digest')};

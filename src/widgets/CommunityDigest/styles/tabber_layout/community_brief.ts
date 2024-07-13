@@ -68,7 +68,7 @@ export const Digest = styled.div`
   margin-top: 5px;
 `
 export const LogoHolder = styled(Img)`
-  fill: ${theme('banner.desc')};
+  fill: ${theme('article.digest')};
   width: 50px;
   height: 50px;
   opacity: 0.6;

@@ -20,7 +20,7 @@ export const Wrapper = styled.div<TTag>`
   }
 `
 export const AllTagIcon = styled(Img)`
-  fill: ${theme('banner.desc')};
+  fill: ${theme('article.digest')};
   margin-right: 10px;
   ${css.size(14)};
   transform: rotate(17deg);

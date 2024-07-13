@@ -7,7 +7,7 @@ export const NumbersWrapper = styled.div`
 export const NumbersInfo = styled(NumbersWrapper)`
   margin-top: 0;
 `
-// background: ${theme('banner.numberHoverBg')};
+// background: ${theme('hoverBg')};
 export const NumberSection = styled.div<{ readOnly: boolean }>`
   ${css.column('justify-center')};
 
@@ -15,12 +15,12 @@ export const NumberSection = styled.div<{ readOnly: boolean }>`
   border-radius: 4px;
 
   &:hover {
-    background: ${({ readOnly }) => (readOnly ? '' : theme('banner.numberHoverBg'))};
+    background: ${({ readOnly }) => (readOnly ? '' : theme('hoverBg'))};
     cursor: ${({ readOnly }) => (readOnly ? '' : 'pointer')};
   }
 `
 export const NumberTitle = styled.div<{ readOnly: boolean }>`
-  color: ${theme('banner.numberDesc')};
+  color: ${theme('article.digest')};
   text-align: center;
   &:hover {
     color: ${({ readOnly }) => (readOnly ? '' : '#f1c48f')};
@@ -32,7 +32,7 @@ export const NumberItem = styled.div<{ readOnly: boolean }>`
   font-size: 1.5rem;
   text-align: center;
 
-  color: ${theme('banner.number')};
+  color: ${theme('article.digest')};
   &:hover {
     color: ${({ readOnly }) => (readOnly ? '' : '#f1c48f')};
     text-decoration: ${({ readOnly }) => (readOnly ? '' : 'underline')};
@@ -41,7 +41,7 @@ export const NumberItem = styled.div<{ readOnly: boolean }>`
 `
 export const NumberDivider = styled.div`
   border: 1px solid;
-  border-color: ${theme('banner.numberDivider')};
+  border-color: ${theme('divider')};
   height: 70%;
   align-self: center;
   margin-left: 10px;

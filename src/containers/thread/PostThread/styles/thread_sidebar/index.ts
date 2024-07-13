@@ -14,7 +14,7 @@ export default () => {
 
   return {
     text: cn('z-10', textColor),
-    dividerTitle: `row-align-center text-sm font-medium ${theme('article.title')}`,
+    dividerTitle: `row-align-center text-sm font-medium ${theme('article.title', 'text')}`,
   }
 }
 
