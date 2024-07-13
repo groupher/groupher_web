@@ -1,105 +1,38 @@
-import type { TActive, TAvatarLayout, TTestable } from '~/spec'
 import { AVATAR_LAYOUT } from '~/const/layout'
 
-import styled, { css, theme, cn } from '~/css'
-import Img from '~/Img'
-import LinkSVG from '~/icons/Link'
-
-import usePrimaryClass from '~/hooks/usePrimaryClass'
-import useTwUtils from '~/hooks/useTwUtils'
+import useTwBelt from '~/hooks/useTwBelt'
+import useLayout from '~/hooks/useLayout'
+import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
 
 export default () => {
-  const { textColor } = usePrimaryClass()
-  const { theme } = useTwUtils()
+  const { cn, fg, fill } = useTwBelt()
+
+  const { inView: badgeInView } = useCommunityDigestViewport()
+  const { avatarLayout } = useLayout()
 
   return {
-    text: cn('z-10', textColor),
-    dividerTitle: `row-align-center text-sm font-medium ${theme('article.title', 'text')}`,
+    wrapper: 'min-w-52 max-w-52 mt-3.5',
+    showBox: cn(
+      'transition-opacity ',
+      badgeInView ? 'opacity-100 duration-300 ease-in' : 'opacity-0 duration-100 ease-out',
+    ),
+    title: `row-align-center text-sm font-semibold mb-2.5 ${fg('article.digest')}`,
+    communityNote: `text-sm mb-2.5 line-clamp-2 leading-normal ${fg('article.digest')}`,
+    homeLinks: 'row-align-center text-sm truncate max-w-52 font-medium mb-5',
+    linkIcon: `size-5 -ml-1 mr-1 ${fill('article.digest')}`,
+    joiners: 'row mb-6',
+    tagsBar: cn('mt-6 max-w-48', {
+      'h-[56vh]': badgeInView,
+      'h-[76vh]': !badgeInView,
+    }),
+    publish: cn('w-full', {
+      block: badgeInView,
+      hidden: !badgeInView,
+    }),
+    joinAvatar: cn(
+      'size-6 mr-2',
+      avatarLayout === AVATAR_LAYOUT.SQUARE ? 'rounded-md' : 'rounded-full',
+    ),
+    moreNum: `text-base ml-1 opacity-80 ${fg('article.digest')} hover:opacity-100 hover:${fg('article.title')} hover:cursor-pointer`,
   }
 }
-
-export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TTestable>`
-  min-width: 200px;
-  max-width: 200px;
-  padding-top: 15px;
-
-  ${css.media.tablet`display: none;`};
-  ${css.media.mobile`display: none;`};
-`
-export const StickyWrapper = styled.div<{ $extend: boolean }>`
-  ${css.column()};
-  min-height: ${({ $extend }) => ($extend ? '90vh' : '63vh')};
-`
-export const DividerTitle = styled.div`
-  ${css.row('align-center')};
-  color: ${theme('article.digest')};
-  font-size: 14px;
-  font-weight: 500;
-`
-
-export const ShowBox = styled.div<{ $show: boolean }>`
-  opacity: ${({ $show }) => ($show ? 1 : 0)};
-  transition: ${({ $show }) => ($show ? 'opacity 0.25s ease-in' : 'opacity 0.1s ease-out')};
-`
-export const CommunityJoinersWrapper = styled.div<TActive>`
-  ${css.row()};
-  margin-bottom: 25px;
-`
-export const MoreNum = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 15px;
-  margin-top: 1px;
-  margin-left: 4px;
-  letter-spacing: 1px;
-  opacity: 0.8;
-
-  &:hover {
-    color: ${theme('article.title')};
-    background: ${theme('hoverBg')};
-    opacity: 1;
-    cursor: pointer;
-  }
-`
-export const JoinerAvatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
-  ${css.size(24)};
-  border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
-  margin-right: 8px;
-`
-export const CommunityNoteWrapper = styled.div`
-  ${css.lineClamp(2)}
-  font-size: 13px;
-  color: ${theme('article.digest')};
-  margin-bottom: 10px;
-  line-height: 1.6;
-`
-export const HomeLinkWrapper = styled.div`
-  ${css.row('align-center')};
-  ${css.cutRest('200px')};
-  font-size: 13px;
-  margin-bottom: 22px;
-  font-weight: 600;
-`
-export const LinkIcon = styled(LinkSVG)`
-  ${css.size(20)};
-  margin-left: -2px;
-  margin-right: 3px;
-  fill: ${theme('article.digest')};
-`
-export const PublishWrapper = styled.div<TActive>`
-  display: ${({ $show }) => ($show ? 'block' : 'none')};
-  width: 100%;
-  margin-left: 3px;
-`
-export const NoteWrapper = styled.div`
-  color: ${theme('hint')};
-  font-size: 12px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid;
-  border-bottom-color: #003b49;
-`
-export const TagsBarWrapper = styled.div`
-  margin-top: 25px;
-  max-width: 186px;
-`

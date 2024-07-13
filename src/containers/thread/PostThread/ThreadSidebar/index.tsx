@@ -14,34 +14,23 @@ import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 import useActiveTag from '~/hooks/useActiveTag'
 
-import { Link, SpaceGrow, Br, SexyDivider } from '~/widgets/Common'
 import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '~/signal'
 import { mockUsers } from '~/mock'
 import { BANNER_LAYOUT } from '~/const/layout'
 
+import { Link, SpaceGrow, Br, SexyDivider } from '~/widgets/Common'
 import ImgFallback from '~/widgets/ImgFallback'
 import Sticky from '~/widgets/Sticky'
 import GetMe from '~/widgets/GetMe'
+import Img from '~/Img'
+import LinkSVG from '~/icons/Link'
 
 import PublishButton from '~/widgets/Buttons/PublishButton'
 import TagsBar from '~/containers/unit/TagsBar'
 
 import CommunityBrief from './CommunityBrief'
 
-import useStyle, {
-  Wrapper,
-  TagsBarWrapper,
-  StickyWrapper,
-  DividerTitle,
-  CommunityJoinersWrapper,
-  ShowBox,
-  JoinerAvatar,
-  MoreNum,
-  CommunityNoteWrapper,
-  HomeLinkWrapper,
-  LinkIcon,
-  PublishWrapper,
-} from '../styles/thread_sidebar'
+import useStyle from '../styles/thread_sidebar'
 
 const UniBar = lazy(() => import('~/widgets/UniBar'))
 
@@ -50,82 +39,78 @@ export default () => {
   const curCommunity = useViewingCommunity()
 
   const { inView: showCommunityBadge } = useCommunityDigestViewport()
-  const { avatarLayout, bannerLayout } = useLayout()
+  const { bannerLayout } = useLayout()
   const activeTag = useActiveTag()
 
   const s = useStyle()
 
   return (
-    <Wrapper $testid="thread-sidebar">
+    <div className={`${s.wrapper}`} data-test-id="thread-sidebar">
       <Sticky offsetTop={0}>
         <Fragment>
           {showCommunityBadge && bannerLayout !== BANNER_LAYOUT.TABBER && (
             <Fragment>
-              <div className={`${s.text}`}>hello</div>
-              <DividerTitle>{t('intro', 'titleCase')}</DividerTitle>
-              <h3 className={`${s.dividerTitle}`}>{t('intro', 'titleCase')}</h3>
-              <Br top={10} />
-              <CommunityNoteWrapper>{curCommunity.desc}</CommunityNoteWrapper>
-              <HomeLinkWrapper>
-                <LinkIcon />
+              <h3 className={`${s.title}`}>{t('intro', 'titleCase')}</h3>
+              <div className={s.communityNote}>{curCommunity.desc}</div>
+              <div className={`${s.homeLinks}`}>
+                <LinkSVG className={`${s.linkIcon}`} />
                 <Link href="https://groupher.com" maxLength="150px">
                   {curCommunity.homepage}
                 </Link>
                 <SpaceGrow />
 
                 <GetMe />
-              </HomeLinkWrapper>
+              </div>
             </Fragment>
           )}
 
-          <ShowBox $show={showCommunityBadge}>
+          <div className={`${s.showBox}`}>
             {showCommunityBadge && (
               <Fragment>
-                <DividerTitle>{t('team.member', 'titleCase')}</DividerTitle>
+                <h3 className={`${s.title}`}>{t('team.member', 'titleCase')}</h3>
                 <Br top={14} />
               </Fragment>
             )}
 
-            <CommunityJoinersWrapper $show>
+            <div className={`${s.joiners}`}>
               {mockUsers(5).map((user) => (
-                <JoinerAvatar
+                <Img
                   key={user.login}
+                  className={`${s.joinAvatar}`}
                   src={user.avatar}
-                  $avatarLayout={avatarLayout}
                   fallback={<ImgFallback size={24} right={8} user={user} />}
                 />
               ))}
-              <MoreNum onClick={() => listUsers('drawer')}>+2</MoreNum>
-            </CommunityJoinersWrapper>
-          </ShowBox>
+              <div className={`${s.moreNum}`} onClick={() => listUsers('drawer')}>
+                +2
+              </div>
+            </div>
+          </div>
         </Fragment>
 
-        <StickyWrapper $extend={!showCommunityBadge}>
-          <PublishWrapper $show={showCommunityBadge}>
-            <PublishButton
-              text="参与讨论"
-              onMenuSelect={(cat) => {
-                callGEditor()
-                setTimeout(() => callSyncSelector({ cat, tag: activeTag }), 500)
-              }}
-              left={-2}
-              offset={[0, 5]}
-            />
-          </PublishWrapper>
+        <div className={`${s.publish}`}>
+          <PublishButton
+            text="参与讨论"
+            onMenuSelect={(cat) => {
+              callGEditor()
+              setTimeout(() => callSyncSelector({ cat, tag: activeTag }), 500)
+            }}
+            left={-2}
+            offset={[0, 5]}
+          />
+        </div>
 
-          <CommunityBrief show={!showCommunityBadge} />
-          {!showCommunityBadge && <SexyDivider bottom={5} />}
+        <CommunityBrief show={!showCommunityBadge} />
+        {!showCommunityBadge && <SexyDivider bottom={5} />}
 
-          <TagsBarWrapper>
-            <TagsBar onSelect={() => refreshArticles()} />
-          </TagsBarWrapper>
+        <div className={`${s.tagsBar}`}>
+          <TagsBar onSelect={() => refreshArticles()} />
+        </div>
 
-          <SpaceGrow />
-          <Suspense fallback={null}>
-            <UniBar />
-          </Suspense>
-        </StickyWrapper>
+        <Suspense fallback={null}>
+          <UniBar />
+        </Suspense>
       </Sticky>
-    </Wrapper>
+    </div>
   )
 }

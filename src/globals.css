@@ -26,3 +26,17 @@
 .wrap {
   @apply flex-wrap;
 }
+
+.debug-red {
+  @apply border-dashed;
+  border: 1px;
+  border-style: dashed;
+  border-color: tomato;
+}
+
+.debug-green {
+  @apply border-dashed;
+  border: 1px;
+  border-style: dashed;
+  border-color: green;
+}
