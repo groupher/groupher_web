@@ -1,9 +1,12 @@
+import { twMerge } from 'tailwind-merge'
+import { clsx, type ClassValue } from 'clsx'
+
 import type { TFlatThemeKey } from '~/utils/themes/skins'
 import useTheme from '~/hooks/useTheme'
 
 import THEME from '~/const/theme'
-import type { ClassValue } from 'clsx'
-import { cn } from '~/css'
+
+const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs))
 
 type TWColorPrefix = 'bg' | 'text' | 'fill' | 'border' | 'placeholder' | 'ring' | 'ring-offset'
 

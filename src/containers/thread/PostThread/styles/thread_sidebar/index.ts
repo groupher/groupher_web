@@ -12,27 +12,23 @@ export default () => {
 
   return {
     wrapper: 'min-w-52 max-w-52 mt-3.5',
-    showBox: cn(
-      'transition-opacity ',
-      badgeInView ? 'opacity-100 duration-300 ease-in' : 'opacity-0 duration-100 ease-out',
-    ),
+    showBox: cn('transition-opacity ', {
+      'opacity-100 duration-300 ease-in': badgeInView,
+      'opacity-0 duration-100 ease-out': !badgeInView,
+    }),
     title: `row-align-center text-sm font-semibold mb-2.5 ${fg('article.digest')}`,
     communityNote: `text-sm mb-2.5 line-clamp-2 leading-normal ${fg('article.digest')}`,
     homeLinks: 'row-align-center text-sm truncate max-w-52 font-medium mb-5',
     linkIcon: `size-5 -ml-1 mr-1 ${fill('article.digest')}`,
     joiners: 'row mb-6',
-    tagsBar: cn('mt-6 max-w-48', {
-      'h-[56vh]': badgeInView,
-      'h-[76vh]': !badgeInView,
-    }),
-    publish: cn('w-full', {
-      block: badgeInView,
-      hidden: !badgeInView,
-    }),
+    tagsBar: cn('mt-6 max-w-48', badgeInView ? 'h-[56vh]' : 'h-[76vh]'),
+    publish: cn('w-full', badgeInView ? 'block' : 'hidden'),
     joinAvatar: cn(
       'size-6 mr-2',
       avatarLayout === AVATAR_LAYOUT.SQUARE ? 'rounded-md' : 'rounded-full',
     ),
-    moreNum: `text-base ml-1 opacity-80 ${fg('article.digest')} hover:opacity-100 hover:${fg('article.title')} hover:cursor-pointer`,
+    moreNum: `text-base ml-1 opacity-80 ${fg('article.digest')} hover:opacity-100 hover:${fg(
+      'article.title',
+    )} hover:cursor-pointer`,
   }
 }
