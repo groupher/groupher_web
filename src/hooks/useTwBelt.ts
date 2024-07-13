@@ -8,11 +8,10 @@ import THEME from '~/const/theme'
 
 const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs))
 
-type TWColorPrefix = 'bg' | 'text' | 'fill' | 'border' | 'placeholder' | 'ring' | 'ring-offset'
+// type TWColorPrefix = 'bg' | 'text' | 'fill' | 'border' | 'placeholder' | 'ring' | 'ring-offset'
 
 type TRet = {
   cn: (...inputs: ClassValue[]) => string
-  theme: (key: TFlatThemeKey, prefix?: TWColorPrefix) => string
   fg: (key: TFlatThemeKey) => string
   bg: (key: TFlatThemeKey) => string
   fill: (key: TFlatThemeKey) => string
@@ -38,7 +37,6 @@ export default (): TRet => {
   // const bgColor = clsx(`bg-${color}`)
 
   return {
-    theme,
     fg,
     bg,
     fill,
