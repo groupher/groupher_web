@@ -66,6 +66,10 @@
   @apply transition-all duration-200;
 }
 
+.over-hidden {
+  @apply overflow-hidden;
+}
+
 .debug-red {
   @apply border-dashed;
   border: 1px;
