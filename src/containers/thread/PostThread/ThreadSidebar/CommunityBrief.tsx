@@ -6,51 +6,39 @@
  *
  */
 
-import type { FC } from 'react'
-
 import useViewingCommunity from '~/hooks/useViewingCommunity'
-import { Space } from '~/widgets/Common'
-import ImgFallback from '~/widgets/ImgFallback'
-
-import {
-  Wrapper,
-  Brief,
-  InfoBar,
-  Logo,
-  Title,
-  Label,
-  Count,
-} from '../styles/thread_sidebar/community_brief'
 import { assetSrc } from '~/utils/helper'
 
-type TProps = {
-  show: boolean
-}
+import { Space } from '~/widgets/Common'
+import ImgFallback from '~/widgets/ImgFallback'
+import Img from '~/Img'
 
-const CommunityBrief: FC<TProps> = ({ show }) => {
+import useSalon from '../salon/thread_sidebar/community_brief'
+
+export default () => {
   const { logo, title, meta, subscribersCount } = useViewingCommunity()
 
+  const s = useSalon()
+
   return (
-    <Wrapper $show={show}>
-      <Logo
+    <div className={`${s.wrapper}`}>
+      <Img
+        className={`${s.logo}`}
         src={assetSrc(logo)}
         fallback={<ImgFallback size={32} top={-6} title={title} />}
         noLazy
       />
 
-      <Brief>
-        <Title>{title}</Title>
-        <InfoBar>
-          <Label>关注</Label>
-          <Count>{subscribersCount}</Count>
-
+      <section className={`${s.brief}`}>
+        <h3 className={`${s.title}`}>{title}</h3>
+        <div className={`${s.row}`}>
+          <div className={`${s.label}`}>关注</div>
+          <div className={`${s.count}`}>{subscribersCount}</div>
           <Space right={15} />
-          <Label>帖子</Label>
-          <Count>{meta?.postsCount}</Count>
-        </InfoBar>
-      </Brief>
-    </Wrapper>
+          <div className={`${s.label}`}>帖子</div>
+          <div className={`${s.count}`}>{meta?.postsCount}</div>
+        </div>
+      </section>
+    </div>
   )
 }
-
-export default CommunityBrief

@@ -2,12 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .row {
   @apply flex flex-row;
 }
 
-.row-align-center {
+.row-center {
   @apply flex flex-row items-center;
 }
 
@@ -25,6 +24,46 @@
 
 .wrap {
   @apply flex-wrap;
+}
+
+.pointer {
+  @apply hover:cursor-pointer
+}
+
+.font {
+  @apply text-base;
+}
+
+.font-sm {
+  @apply text-sm;
+}
+
+.font-lg {
+  @apply text-lg;
+}
+
+.font-xl {
+  @apply text-xl;
+}
+
+.bold {
+  @apply font-semibold;
+}
+
+.bold-sm {
+  @apply font-medium;
+}
+
+.show {
+  @apply block;
+}
+
+.hide {
+  @apply hidden;
+}
+
+.trans-all-200 {
+  @apply transition-all duration-200;
 }
 
 .debug-red {

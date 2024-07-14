@@ -16,7 +16,7 @@ import ArticlesFilter from '~/widgets/ArticlesFilter'
 
 import ThreadSidebar from './ThreadSidebar'
 
-import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper } from './styles'
+import { Wrapper, MainWrapper, SidebarWrapper, FilterWrapper } from './salon'
 
 export default () => {
   const { postLayout, bannerLayout } = useLayout()

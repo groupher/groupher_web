@@ -29,8 +29,7 @@ import PublishButton from '~/widgets/Buttons/PublishButton'
 import TagsBar from '~/containers/unit/TagsBar'
 
 import CommunityBrief from './CommunityBrief'
-
-import useStyle from '../styles/thread_sidebar'
+import useSalon from '../salon/thread_sidebar'
 
 const UniBar = lazy(() => import('~/widgets/UniBar'))
 
@@ -42,7 +41,7 @@ export default () => {
   const { bannerLayout } = useLayout()
   const activeTag = useActiveTag()
 
-  const s = useStyle()
+  const s = useSalon()
 
   return (
     <div className={`${s.wrapper}`} data-test-id="thread-sidebar">
@@ -51,7 +50,7 @@ export default () => {
           {showCommunityBadge && bannerLayout !== BANNER_LAYOUT.TABBER && (
             <Fragment>
               <h3 className={`${s.title}`}>{t('intro', 'titleCase')}</h3>
-              <div className={s.communityNote}>{curCommunity.desc}</div>
+              <div className={s.desc}>{curCommunity.desc}</div>
               <div className={`${s.homeLinks}`}>
                 <LinkSVG className={`${s.linkIcon}`} />
                 <Link href="https://groupher.com" maxLength="150px">
@@ -64,7 +63,7 @@ export default () => {
             </Fragment>
           )}
 
-          <div className={`${s.showBox}`}>
+          <div className={`${s.showArea}`}>
             {showCommunityBadge && (
               <Fragment>
                 <h3 className={`${s.title}`}>{t('team.member', 'titleCase')}</h3>
@@ -100,7 +99,7 @@ export default () => {
           />
         </div>
 
-        <CommunityBrief show={!showCommunityBadge} />
+        <CommunityBrief />
         {!showCommunityBadge && <SexyDivider bottom={5} />}
 
         <div className={`${s.tagsBar}`}>
