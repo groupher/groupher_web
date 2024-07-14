@@ -12,7 +12,7 @@ import DesktopView from './DesktopView'
 import MobileView from './MobileView'
 // import ListView from './ListView'
 
-import { Wrapper } from '../styles/quora_layout'
+import useSalon from '../styles/quora_layout'
 
 type TProps = {
   article: TPost
@@ -20,15 +20,17 @@ type TProps = {
 }
 
 const PostItem: FC<TProps> = ({ article, isMobilePreview }) => {
+  const s = useSalon()
+
   if (isMobilePreview) {
     return <MobileView article={article} />
   }
 
   return (
-    <Wrapper>
+    <article className={s.wrapper}>
       <MobileView article={article} />
       <DesktopView article={article} />
-    </Wrapper>
+    </article>
   )
 }
 

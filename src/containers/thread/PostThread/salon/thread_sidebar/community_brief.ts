@@ -11,7 +11,7 @@ export default () => {
     logo: 'size-8 -mt-1.5',
     title: cn('font-sm bold-sm', fg('article.title')),
     row: 'row-center mt-1',
-    label: 'font-sm opacity-60',
+    label: 'font-sm o-60',
     count: cn('font-sm bold ml-1.5', fg('article.digest')),
   }
 }

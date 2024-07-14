@@ -1,9 +1,11 @@
 import styled, { css } from '~/css'
 
-export const Wrapper = styled.article`
-  ${css.row()};
-  position: relative;
-`
+export default () => {
+  return {
+    wrapper: 'row relative',
+  }
+}
+
 export const Main = styled.div`
   ${css.columnGrow()};
 `

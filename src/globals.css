@@ -70,6 +70,30 @@
   @apply overflow-hidden;
 }
 
+.o-100 {
+  @apply opacity-100;
+}
+
+.o-80 {
+  @apply opacity-80;
+}
+
+.o-60 {
+  @apply opacity-60;
+}
+
+.o-0 {
+  @apply opacity-0;
+}
+
+.article-hover-linear::before {
+  background: linear-gradient(315deg, rgba(255, 255, 255, 0) 0%, #f6f6f6 100%);
+}
+
+.article-hover-linear-dark::before {
+  background: linear-gradient(315deg, rgb(104 104 104 / 0%) 0%, #2c2c2c 100%);
+}
+
 .debug-red {
   @apply border-dashed;
   border: 1px;
