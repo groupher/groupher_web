@@ -7,4 +7,6 @@ module.exports = [
   // text colors
   ...TEXT_COLORS.map((c) => `text-${c} text-${c}-dark`),
   ...FILL_COLORS.map((c) => `fill-${c} fill-${c}-dark`),
+
+  'border-divider',
 ]

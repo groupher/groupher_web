@@ -1,55 +1,24 @@
-import { values, includes } from 'ramda'
-
-import type { TPostLayout, TThread } from '~/spec'
-import { CARD_THREAD } from '~/const/thread'
+import { BANNER_LAYOUT } from '~/const/layout'
 import { POST_LAYOUT } from '~/const/layout'
-import styled, { css, theme } from '~/css'
 
-export const Wrapper = styled.div`
-  ${css.row()};
-  width: 100%;
-`
+import useLayout from '~/hooks/useLayout'
+import useTwBelt from '~/hooks/useTwBelt'
 
-type TMainWrapper = {
-  $thread?: TThread
-  $postLayout?: TPostLayout
+export default () => {
+  const { cn } = useTwBelt()
+  const { postLayout, bannerLayout } = useLayout()
+
+  const isSidebarLayout = bannerLayout === BANNER_LAYOUT.SIDEBAR
+  const isMasonary = postLayout === POST_LAYOUT.MASONRY
+
+  const mainStyle = cn('w-full grow rounded-md mt-3 mr-12 pr-20 border-r border-divider')
+  const sidebarStyle = cn('w-full grow', isMasonary ? 'px-[12%]' : 'px-[20%]')
+
+  const layout = isSidebarLayout ? sidebarStyle : mainStyle
+
+  return {
+    wrapper: 'row w-full',
+    filter: 'row-center mb-1.5 h-10',
+    layout,
+  }
 }
-
-export const SidebarWrapper = styled.div<TMainWrapper>`
-  flex-grow: 1;
-  width: 100%;
-  padding: ${({ $postLayout }) => ($postLayout === POST_LAYOUT.MASONRY ? '0 12%;' : '0 20%;')};
-`
-export const MainWrapper = styled.div<TMainWrapper>`
-  flex-grow: 1;
-  width: 100%;
-
-  background: transparent;
-  border-radius: 6px;
-
-  margin-top: 12px;
-  padding-left: ${({ $thread }) => (includes($thread, values(CARD_THREAD)) ? '15px' : 0)};
-  padding-right: ${({ $thread }) => (includes($thread, values(CARD_THREAD)) ? 0 : '80px')};
-  margin-right: ${({ $thread }) => (includes($thread, values(CARD_THREAD)) ? '35px' : '50px')};
-
-  border-right: 1px solid;
-  border-right-color: ${theme('divider')};
-
-  ${css.media.mobile`
-     padding: 0px 18px;
-     margin-right: 0;
-  `};
-`
-export const MobileCardsMainWrapper = styled(MainWrapper)`
-  padding: 0;
-  padding-right: 10px;
-`
-export const FilterWrapper = styled.div`
-  ${css.row('align-center')};
-  margin-bottom: 5px;
-  height: 40px;
-
-  ${css.media.mobile`
-    margin-bottom: 0;
-  `};
-`
