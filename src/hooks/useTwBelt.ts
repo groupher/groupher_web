@@ -22,6 +22,10 @@ type TRet = {
   // after: (rules: string) => string
 }
 
+/**
+ * NOTE: the classNams returned from here, must me declared in the tailwind.config's safelist
+ * even you return static strings, cauze those are consided as dynamic, and tailwind will not know them
+ */
 export default (): TRet => {
   const { theme: curTheme } = useTheme()
   const { isSquare: isAvatarSquare } = useAvatarLayout()
