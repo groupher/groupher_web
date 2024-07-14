@@ -44,15 +44,15 @@ export default () => {
   const s = useSalon()
 
   return (
-    <div className={`${s.wrapper}`} data-test-id="thread-sidebar">
+    <div className={s.wrapper} data-test-id="thread-sidebar">
       <Sticky offsetTop={0}>
         <Fragment>
           {showCommunityBadge && bannerLayout !== BANNER_LAYOUT.TABBER && (
             <Fragment>
-              <h3 className={`${s.title}`}>{t('intro', 'titleCase')}</h3>
+              <h3 className={s.title}>{t('intro', 'titleCase')}</h3>
               <div className={s.desc}>{curCommunity.desc}</div>
-              <div className={`${s.homeLinks}`}>
-                <LinkSVG className={`${s.linkIcon}`} />
+              <div className={s.homeLinks}>
+                <LinkSVG className={s.linkIcon} />
                 <Link href="https://groupher.com" maxLength="150px">
                   {curCommunity.homepage}
                 </Link>
@@ -63,31 +63,31 @@ export default () => {
             </Fragment>
           )}
 
-          <div className={`${s.showArea}`}>
+          <div className={s.showArea}>
             {showCommunityBadge && (
               <Fragment>
-                <h3 className={`${s.title}`}>{t('team.member', 'titleCase')}</h3>
+                <h3 className={s.title}>{t('team.member', 'titleCase')}</h3>
                 <Br top={14} />
               </Fragment>
             )}
 
-            <div className={`${s.joiners}`}>
+            <div className={s.joiners}>
               {mockUsers(5).map((user) => (
                 <Img
                   key={user.login}
-                  className={`${s.joinAvatar}`}
+                  className={s.joinAvatar}
                   src={user.avatar}
                   fallback={<ImgFallback size={24} right={8} user={user} />}
                 />
               ))}
-              <div className={`${s.moreNum}`} onClick={() => listUsers('drawer')}>
+              <div className={s.moreNum} onClick={() => listUsers('drawer')}>
                 +2
               </div>
             </div>
           </div>
         </Fragment>
 
-        <div className={`${s.publish}`}>
+        <div className={s.publish}>
           <PublishButton
             text="参与讨论"
             onMenuSelect={(cat) => {
@@ -102,7 +102,7 @@ export default () => {
         <CommunityBrief />
         {!showCommunityBadge && <SexyDivider bottom={5} />}
 
-        <div className={`${s.tagsBar}`}>
+        <div className={s.tagsBar}>
           <TagsBar onSelect={() => refreshArticles()} />
         </div>
 

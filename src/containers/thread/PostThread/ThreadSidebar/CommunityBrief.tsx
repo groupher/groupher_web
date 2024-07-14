@@ -21,22 +21,22 @@ export default () => {
   const s = useSalon()
 
   return (
-    <div className={`${s.wrapper}`}>
+    <div className={s.wrapper}>
       <Img
-        className={`${s.logo}`}
+        className={s.logo}
         src={assetSrc(logo)}
         fallback={<ImgFallback size={32} top={-6} title={title} />}
         noLazy
       />
 
-      <section className={`${s.brief}`}>
-        <h3 className={`${s.title}`}>{title}</h3>
-        <div className={`${s.row}`}>
-          <div className={`${s.label}`}>关注</div>
-          <div className={`${s.count}`}>{subscribersCount}</div>
+      <section className={s.brief}>
+        <h3 className={s.title}>{title}</h3>
+        <div className={s.row}>
+          <div className={s.label}>关注</div>
+          <div className={s.count}>{subscribersCount}</div>
           <Space right={15} />
-          <div className={`${s.label}`}>帖子</div>
-          <div className={`${s.count}`}>{meta?.postsCount}</div>
+          <div className={s.label}>帖子</div>
+          <div className={s.count}>{meta?.postsCount}</div>
         </div>
       </section>
     </div>
