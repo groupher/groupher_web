@@ -18,8 +18,6 @@ type TRet = {
   fill: (key: TFlatThemeKey) => string
   br: (key: TFlatThemeKey) => string
   avatar: () => string
-  // before: (rules: string) => string
-  // after: (rules: string) => string
 }
 
 /**
@@ -45,22 +43,6 @@ export default (): TRet => {
   const fill = (key: TFlatThemeKey) => theme(key, 'fill')
   const br = (key: TFlatThemeKey) => theme(key, 'border')
 
-  /**
-   * before & after is not working cause it's gen dynamic, need add those into safelist
-   * but those are too many & dynamic, no need
-   */
-  // const _parsePseudo = (rules, type: 'before' | 'after') => {
-  //   return clsx(
-  //     rules
-  //       .split(' ')
-  //       .map((rule: string) => `${type}:${rule}`)
-  //       .join(' '),
-  //   )
-  // }
-
-  // const before = (rules: string): string => _parsePseudo(rules, 'before')
-  // const after = (rules: string): string => _parsePseudo(rules, 'after')
-
   const avatar = () => (isAvatarSquare ? 'rounded-md' : 'rounded-full')
 
   // TODO: rainbox
@@ -75,7 +57,5 @@ export default (): TRet => {
     fill,
     br,
     avatar,
-    // before,
-    // after,
   }
 }
