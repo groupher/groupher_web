@@ -1,7 +1,6 @@
 'use client'
 
 import { EMAIL_SUPPORT } from '~/config'
-// import Landing from './Landing'
 import AnimatedCount from '~/widgets/AnimatedCount'
 import { Link } from '~/widgets/Common'
 
@@ -31,7 +30,7 @@ import {
   CatPaw,
 } from './styles'
 
-export default function Page() {
+export default () => {
   const [paidHoveredRef, paidHovered] = useHover<HTMLDivElement>()
   const themeData = useThemeData()
 

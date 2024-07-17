@@ -1,13 +1,19 @@
 'use client'
 
-import OauthHinter from '~/widgets/OauthHinter'
+import { Suspense } from 'react'
 
-const BookDemoPage = () => {
+import dynamic from 'next/dynamic'
+
+// import OauthHinter from '~/widgets/OauthHinter'
+
+const OauthHinter = dynamic(() => import('~/widgets/OauthHinter'), {
+  ssr: false,
+})
+
+export default () => {
   return (
-    <>
+    <Suspense fallback={null}>
       <OauthHinter />
-    </>
+    </Suspense>
   )
 }
-
-export default BookDemoPage
