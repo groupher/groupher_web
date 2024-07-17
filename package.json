@@ -114,7 +114,7 @@
     "tsparticles-confetti": "^2.12.0",
     "typewriter-effect": "^2.19.0",
     "urql": "^4.0.7",
-    "valtio": "^1.13.2"
+    "valtio": "^2.0.0-rc.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",

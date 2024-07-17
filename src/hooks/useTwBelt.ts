@@ -7,7 +7,13 @@ import useAvatarLayout from '~/hooks/useAvatarLayout'
 
 import THEME from '~/const/theme'
 
-// usefull tips from: https://www.youtube.com/watch?v=re2JFITR7TI
+/**
+ * Prevents output of unnecessary Tailwind classes and merges classes.
+ * usefull tips from: https://www.youtube.com/watch?v=re2JFITR7TI
+ *
+ * @param inputs - Any number of class names or class name arrays.
+ * @returns A string of merged class names.
+ */
 const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs))
 
 type TRet = {
