@@ -7,7 +7,7 @@ import { previewArticle } from '~/signal'
 import Header from './Header'
 import Footer from './Footer'
 
-import useSalon from '../styles/quora_layout'
+import useSalon from '../salon/quora_layout'
 
 type TProps = {
   article: TPost

@@ -8,7 +8,7 @@ import { previewArticle } from '~/signal'
 import ArticleReadLabel from '~/widgets/ArticleReadLabel'
 import TagsList from '~/widgets/TagsList'
 
-import useSalon from '../styles/ph_layout/header'
+import useSalon from '../salon/ph_layout/header'
 
 type TProps = {
   article: TPost

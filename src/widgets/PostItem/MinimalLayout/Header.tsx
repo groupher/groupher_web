@@ -11,7 +11,7 @@ import { SpaceGrow } from '~/widgets/Common'
 import TagsList from '~/widgets/TagsList'
 import CommentsCount from '~/widgets/CommentsCount'
 
-import useSalon from '../styles/minimal_layout/header'
+import useSalon from '../salon/minimal_layout/header'
 
 type TProps = {
   article: TPost

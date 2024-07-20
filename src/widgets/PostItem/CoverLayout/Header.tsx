@@ -7,7 +7,7 @@ import useViewingCommunity from '~/hooks/useViewingCommunity'
 
 import ArticleReadLabel from '~/widgets/ArticleReadLabel'
 
-import useSalon from '../styles/cover_layout/header'
+import useSalon from '../salon/cover_layout/header'
 
 type TProps = {
   article: TPost

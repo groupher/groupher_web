@@ -12,7 +12,7 @@ import Img from '~/Img'
 import Header from './Header'
 import Body from './Body'
 
-import useSalon from '../styles/ph_layout'
+import useSalon from '../salon/ph_layout'
 
 type TProps = {
   article: TPost

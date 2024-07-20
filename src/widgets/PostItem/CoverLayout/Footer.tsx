@@ -7,7 +7,7 @@ import { UPVOTE_LAYOUT } from '~/const/layout'
 import { SpaceGrow } from '~/widgets/Common'
 import Upvote from '~/widgets/Upvote'
 
-import { Wrapper, CreateTime } from '../styles/cover_layout/footer'
+import { Wrapper, CreateTime } from '../salon/cover_layout/footer'
 
 type TProps = {
   article: TPost

@@ -11,7 +11,7 @@ import Upvote from '~/widgets/Upvote'
 import Header from './Header'
 import Footer from './Footer'
 
-import useSalon from '../styles/minimal_layout'
+import useSalon from '../salon/minimal_layout'
 
 type TProps = {
   article: TPost

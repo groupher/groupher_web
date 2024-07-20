@@ -10,7 +10,7 @@ import { Space } from '~/widgets/Common'
 import ViewsCount from '~/widgets/ViewsCount'
 import ArticleCatState from '~/widgets/ArticleCatState'
 
-import useSalon from '../styles/quora_layout/footer'
+import useSalon from '../salon/quora_layout/footer'
 
 type TProps = {
   article: TPost

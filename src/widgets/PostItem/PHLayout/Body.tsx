@@ -7,7 +7,7 @@ import ArticleCatState from '~/widgets/ArticleCatState'
 import CommentsCount from '~/widgets/CommentsCount'
 import ViewsCount from '~/widgets/ViewsCount'
 
-import useSalon from '../styles/ph_layout/body'
+import useSalon from '../salon/ph_layout/body'
 
 type TProps = {
   article: TPost

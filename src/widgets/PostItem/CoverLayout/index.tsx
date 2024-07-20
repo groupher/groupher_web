@@ -11,7 +11,7 @@ import Img from '~/Img'
 import Header from './Header'
 import Footer from './Footer'
 
-import useSalon from '../styles/cover_layout'
+import useSalon from '../salon/cover_layout'
 
 type TProps = {
   article: TPost

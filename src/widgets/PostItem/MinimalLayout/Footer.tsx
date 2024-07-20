@@ -4,7 +4,7 @@ import type { TPost } from '~/spec'
 
 import ArticleCatState from '~/widgets/ArticleCatState'
 
-import useSalon from '../styles/minimal_layout/footer'
+import useSalon from '../salon/minimal_layout/footer'
 
 type TProps = {
   article: TPost
