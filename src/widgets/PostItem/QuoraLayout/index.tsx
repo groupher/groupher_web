@@ -1,15 +1,11 @@
-/*
- *
- * PostItem
- *
- */
-
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TPost } from '~/spec'
 
-import DesktopView from './DesktopView'
-// import ListView from './ListView'
+import { previewArticle } from '~/signal'
+
+import Header from './Header'
+import Footer from './Footer'
 
 import useSalon from '../styles/quora_layout'
 
@@ -21,10 +17,14 @@ const PostItem: FC<TProps> = ({ article }) => {
   const s = useSalon()
 
   return (
-    <article className={s.wrapper}>
-      <DesktopView article={article} />
-    </article>
+    <div className={s.wrapper}>
+      <Header article={article} />
+      <div className={s.digest} onClick={() => previewArticle(article)}>
+        {article.digest}
+      </div>
+      <Footer article={article} />
+    </div>
   )
 }
 
-export default memo(PostItem)
+export default PostItem

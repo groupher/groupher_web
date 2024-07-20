@@ -16,7 +16,7 @@ import { SpaceGrow, Space } from '~/widgets/Common'
 import TagsList from '~/widgets/TagsList'
 import CommentsCount from '~/widgets/CommentsCount'
 
-import useSalon from '../../styles/quora_layout/desktop_view/header'
+import useSalon from '../styles/quora_layout/header'
 
 const UserCard = lazy(() => import('~/widgets/Cards/UserCard'))
 
