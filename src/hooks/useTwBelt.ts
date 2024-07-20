@@ -59,6 +59,9 @@ export default (): TRet => {
   const fill = (key: TFlatThemeKey) => theme(key, 'fill')
   const br = (key: TFlatThemeKey) => theme(key, 'border')
 
+  /**
+   * use in theme balls and all kinks of gradients
+   */
   const rainbow = (color: TColorName, prefix: 'fg'): string => {
     const prefix$ = prefix === 'fg' ? 'text-rainbow' : `${prefix}-rainbow`
     const color$ = camelize(color)
@@ -66,13 +69,13 @@ export default (): TRet => {
     return curTheme === THEME.LIGHT ? `${prefix$}-${color$}` : `${prefix$}-${color$}-dark`
   }
 
+  /**
+   * use primary color for text/background/border color
+   * primary color is set in dashboard
+   */
   const primary = (prefix?: 'fg'): string => rainbow(primaryColor, prefix)
 
   const avatar = () => (isAvatarSquare ? 'rounded-md' : 'circle')
-
-  // TODO: rainbox
-  // const textColor = clsx(`text-rainbow-${color}`)
-  // const bgColor = clsx(`bg-${color}`)
 
   return {
     cn,
