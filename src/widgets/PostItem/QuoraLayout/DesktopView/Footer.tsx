@@ -1,17 +1,16 @@
-import { memo, type FC } from 'react'
+import type { FC } from 'react'
 
 import type { TPost } from '~/spec'
 import { UPVOTE_LAYOUT } from '~/const/layout'
 
 import { upvoteArticle } from '~/signal'
-// import { mockUsers } from '~/mock'
 
 import Upvote from '~/widgets/Upvote'
 import { Space } from '~/widgets/Common'
 import ViewsCount from '~/widgets/ViewsCount'
 import ArticleCatState from '~/widgets/ArticleCatState'
 
-import { Wrapper } from '../../styles/quora_layout/desktop_view/footer'
+import useSalon from '../../styles/quora_layout/desktop_view/footer'
 
 type TProps = {
   article: TPost
@@ -20,13 +19,13 @@ type TProps = {
 const Footer: FC<TProps> = ({ article }) => {
   const { upvotesCount, meta, viewerHasUpvoted } = article
 
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Upvote
         count={upvotesCount}
         avatarList={meta.latestUpvotedUsers}
-        // count={20}
-        // avatarList={mockUsers(5)}
         onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
         viewerHasUpvoted={viewerHasUpvoted}
         type={UPVOTE_LAYOUT.GENERAL}
@@ -42,8 +41,8 @@ const Footer: FC<TProps> = ({ article }) => {
       )}
       <Space right={18} />
       <ViewsCount count={article.views} />
-    </Wrapper>
+    </div>
   )
 }
 
-export default memo(Footer)
+export default Footer

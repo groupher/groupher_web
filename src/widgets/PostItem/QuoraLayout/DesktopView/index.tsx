@@ -1,17 +1,13 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TPost } from '~/spec'
 
 import { previewArticle } from '~/signal'
 
-// import ArticlePinLabel from '~/widgets/ArticlePinLabel'
-
-// import ViewingSign from '../../ViewingSign'
-
 import Header from './Header'
 import Footer from './Footer'
 
-import useSalon, { Digest } from '../../styles/quora_layout/desktop_view'
+import useSalon from '../../styles/quora_layout/desktop_view'
 
 type TProps = {
   article: TPost
@@ -23,10 +19,12 @@ const DesktopView: FC<TProps> = ({ article }) => {
   return (
     <div className={s.wrapper}>
       <Header article={article} />
-      <Digest onClick={() => previewArticle(article)}>{article.digest}</Digest>
+      <div className={s.digest} onClick={() => previewArticle(article)}>
+        {article.digest}
+      </div>
       <Footer article={article} />
     </div>
   )
 }
 
-export default memo(DesktopView)
+export default DesktopView

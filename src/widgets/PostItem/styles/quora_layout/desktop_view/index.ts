@@ -1,28 +1,13 @@
-import styled, { css, theme } from '~/css'
-
-import useMainSalon, { DesktopHoverable, DesktopDigest } from '../..'
+import useMainSalon from '../..'
 
 import useTwBelt from '~/hooks/useTwBelt'
 
 export default () => {
-  const { cn } = useTwBelt()
+  const { cn, fg } = useTwBelt()
   const main = useMainSalon()
 
   return {
     wrapper: cn(main.hoverable, 'column grow group/post'),
+    digest: cn('text-sm mt-1.5 mb-3', fg('text.digest')),
   }
 }
-
-export const Wrapper = styled(DesktopHoverable)`
-  padding: 8px 0;
-  margin-bottom: 6px;
-`
-export const Digest = styled(DesktopDigest)`
-  ${css.cutRest('530px')};
-  margin-top: 6px;
-  margin-bottom: 12px;
-
-  ${Wrapper}:hover & {
-    color: ${theme('article.title')};
-  }
-`

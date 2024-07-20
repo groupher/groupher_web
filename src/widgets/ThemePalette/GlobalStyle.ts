@@ -29,13 +29,6 @@ const GlobalStyle = createGlobalStyle<TColor>`
     color: ${theme('button.fg')} !important;
   }
 
-  a:hover {
-    color: ${theme('a.hover')};
-  }
-  a:active {
-    color: ${theme('a.active')};
-  }
-
 // mentions
   .markdown-editor-mention {
     color: ${theme('comment.mentionText')};
