@@ -4,17 +4,14 @@
  *
  */
 
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TPost } from '~/spec'
 
-import { DesktopOnly, MobileOnly } from '~/widgets/Common'
-
 import DesktopView from './DesktopView'
-import MobileView from './MobileView'
 // import ListView from './ListView'
 
-import { Wrapper } from '../styles/minimal_layout'
+import useSalon from '../styles/minimal_layout'
 
 type TProps = {
   article: TPost
@@ -22,21 +19,13 @@ type TProps = {
 }
 
 const PostItem: FC<TProps> = ({ article, isMobilePreview }) => {
-  if (isMobilePreview) {
-    return <MobileView article={article} />
-  }
+  const s = useSalon()
 
   return (
-    <Wrapper>
-      <MobileOnly>
-        <MobileView article={article} />
-      </MobileOnly>
-
-      <DesktopOnly>
-        <DesktopView article={article} />
-      </DesktopOnly>
-    </Wrapper>
+    <section className={s.wrapper}>
+      <DesktopView article={article} />
+    </section>
   )
 }
 
-export default memo(PostItem)
+export default PostItem

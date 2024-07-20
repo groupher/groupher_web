@@ -1,4 +1,4 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TPost } from '~/spec'
 import { UPVOTE_LAYOUT } from '~/const/layout'
@@ -8,12 +8,10 @@ import { previewArticle, upvoteArticle } from '~/signal'
 import ArticlePinLabel from '~/widgets/ArticlePinLabel'
 import Upvote from '~/widgets/Upvote'
 
-import ViewingSign from '../../ViewingSign'
-
 import Header from './Header'
 import Footer from './Footer'
 
-import { Wrapper, UpvoteWrapper, Main, Digest } from '../../styles/minimal_layout/desktop_view'
+import useSalon from '../../styles/minimal_layout/desktop_view'
 
 type TProps = {
   article: TPost
@@ -21,13 +19,13 @@ type TProps = {
 }
 
 const DigestView: FC<TProps> = ({ article }) => {
+  const s = useSalon()
   const { upvotesCount, meta, viewerHasUpvoted } = article
 
   return (
-    <Wrapper>
+    <article className={s.wrapper}>
       <ArticlePinLabel isPinned={article.isPinned} />
-      <ViewingSign article={article} top={20} />
-      <UpvoteWrapper>
+      <div className={s.upvoteWrapper}>
         <Upvote
           count={upvotesCount}
           avatarList={meta.latestUpvotedUsers}
@@ -37,14 +35,14 @@ const DigestView: FC<TProps> = ({ article }) => {
           left={-2}
           top={-1}
         />
-      </UpvoteWrapper>
-      <Main onClick={() => previewArticle(article)}>
+      </div>
+      <div className={s.main} onClick={() => previewArticle(article)}>
         <Header article={article} />
-        <Digest>{article.digest}</Digest>
+        <div className={s.digest}>{article.digest}</div>
         <Footer article={article} />
-      </Main>
-    </Wrapper>
+      </div>
+    </article>
   )
 }
 
-export default memo(DigestView)
+export default DigestView

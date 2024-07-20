@@ -1,25 +1,16 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { DesktopHoverable, DesktopDigest } from '../..'
+import useMainSalon from '../..'
 
-export const Wrapper = styled(DesktopHoverable)`
-  padding: 10px 0;
-  margin-bottom: 2px;
-`
-export const Main = styled.div`
-  ${css.columnGrow()};
-`
-export const UpvoteWrapper = styled.div`
-  width: 40px;
-  margin-right: 18px;
-  margin-top: 7px;
-`
-export const Digest = styled(DesktopDigest)`
-  ${css.cutRest('510px')};
-  margin-top: 4px;
-  margin-bottom: 8px;
+export default () => {
+  const { cn, fg } = useTwBelt()
+  const main = useMainSalon()
 
-  ${Wrapper}:hover & {
-    color: ${theme('article.title')};
+  return {
+    wrapper: cn(main.hoverable, 'p-y-2.5 mb-0.5 group/post'),
+    main: 'column grow',
+    avatarWrapper: 'column-center justify-between pt-2.5 pb-0.5 mr-2',
+    digest: cn('text-sm mt-1.5 mb-3 max-w-96 line-clamp-1', fg('text.digest')),
+    upvoteWrapper: 'w-10 mr-5 mt-1.5',
   }
-`
+}
