@@ -43,7 +43,6 @@ export default {
   menuHoverBg: 'white',
   lineDivider: '#acacacc9',
   hoverBorder: hoverBg,
-  hoverLinear: 'linear-gradient(315deg, rgba(255, 255, 255, 0) 0%, #fafafa 100%)',
   linkHover: lighten(link, 5),
   heightIcon: '#e48a3d',
   heightGradient: 'linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%)',

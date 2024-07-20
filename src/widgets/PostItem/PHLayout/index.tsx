@@ -8,25 +8,20 @@ import type { FC } from 'react'
 
 import type { TPost } from '~/spec'
 
-import { DesktopOnly } from '~/widgets/Common'
-
 import DesktopView from './DesktopView'
 
 import useSalon from '../styles/ph_layout'
 
 type TProps = {
   article: TPost
-  isMobilePreview: boolean
 }
 
-const PostItem: FC<TProps> = ({ article, isMobilePreview }) => {
+const PostItem: FC<TProps> = ({ article }) => {
   const s = useSalon()
 
   return (
     <section className={s.wrapper}>
-      <DesktopOnly>
-        <DesktopView article={article} />
-      </DesktopOnly>
+      <DesktopView article={article} />
     </section>
   )
 }

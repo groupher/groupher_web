@@ -15,10 +15,9 @@ import useSalon from '../styles/minimal_layout'
 
 type TProps = {
   article: TPost
-  isMobilePreview: boolean
 }
 
-const PostItem: FC<TProps> = ({ article, isMobilePreview }) => {
+const PostItem: FC<TProps> = ({ article }) => {
   const s = useSalon()
 
   return (

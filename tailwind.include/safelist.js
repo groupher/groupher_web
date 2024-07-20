@@ -2,7 +2,7 @@ const TEXT_COLORS = ['article-title', 'article-digest', 'text-title', 'text-dige
 const BG_COLORS = ['dot']
 const FILL_COLORS = ['article-title', 'article-digest']
 
-const UTIL_CLASSES = ['bg-hoverLinear', 'border-divider', 'article-hover-linear']
+const UTIL_CLASSES = ['border-divider', 'article-hover-linear']
 const RAINBOW_COLORS = ['blue', 'red', 'green', 'purple']
 
 module.exports = [

@@ -54,10 +54,6 @@ module.exports = {
   menuHoverBg: { DEFAULT: 'white', dark: darkTokens.hoverBg },
   lineDivider: { DEFAULT: '#acacacc9', dark: '#5a5a5ac9' },
   hoverBorder: { DEFAULT: lightTokens.hoverBg, dark: '#393939' },
-  hoverLinear: {
-    DEFAULT: 'linear-gradient(315deg, rgba(255, 255, 255, 0) 0%, #fafafa 100%)',
-    dark: 'linear-gradient(315deg, rgb(104 104 104 / 0%) 0%, #2c2c2c 100%);',
-  },
   linkHover: { DEFAULT: lightTokens.link, dark: darkTokens.link },
   heightIcon: { DEFAULT: '#e48a3d', dark: '#e48a3d' },
   heightGradient: {

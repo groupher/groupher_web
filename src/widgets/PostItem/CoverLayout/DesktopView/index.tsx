@@ -1,4 +1,4 @@
-import { type FC, memo, useState, useEffect } from 'react'
+import { type FC, useState, useEffect } from 'react'
 
 import type { TPost } from '~/spec'
 
@@ -6,19 +6,12 @@ import { previewArticle } from '~/signal'
 import { mockImage } from '~/mock'
 
 import ArticlePinLabel from '~/widgets/ArticlePinLabel'
-
-import ViewingSign from '../../ViewingSign'
+import Img from '~/Img'
 
 import Header from './Header'
 import Footer from './Footer'
 
-import {
-  Wrapper,
-  CoverWrapper,
-  CoverImg,
-  Main,
-  Digest,
-} from '../../styles/cover_layout/desktop_view'
+import useSalon from '../../styles/cover_layout/desktop_view'
 
 type TProps = {
   article: TPost
@@ -26,6 +19,8 @@ type TProps = {
 }
 
 const DigestView: FC<TProps> = ({ article }) => {
+  const s = useSalon()
+
   const [coverImg, setCoverImg] = useState('')
 
   useEffect(() => {
@@ -33,19 +28,18 @@ const DigestView: FC<TProps> = ({ article }) => {
   }, [])
 
   return (
-    <Wrapper onClick={() => previewArticle(article)}>
+    <section className={s.wrapper} onClick={() => previewArticle(article)}>
       <ArticlePinLabel isPinned={article.isPinned} top={32} />
-      <ViewingSign article={article} top={30} />
-      <CoverWrapper>
-        <CoverImg src={coverImg} />
-      </CoverWrapper>
-      <Main>
+      <div className={s.coverWrapper}>
+        <Img src={coverImg} className={s.cover} />
+      </div>
+      <div className={s.main}>
         <Header article={article} />
-        <Digest>{article.digest}</Digest>
+        <div className={s.digest}>{article.digest}</div>
         <Footer article={article} />
-      </Main>
-    </Wrapper>
+      </div>
+    </section>
   )
 }
 
-export default memo(DigestView)
+export default DigestView

@@ -45,7 +45,6 @@ export default {
   lineDivider: '#5a5a5ac9',
   savingBarBg: '#f7f7f7',
   hoverBorder: '#393939',
-  hoverLinear: 'linear-gradient(315deg, rgb(104 104 104 / 0%) 0%, #2c2c2c 100%);',
   linkHover: lighten(link, 5),
   heightIcon: '#e48a3d',
   heightGradient: 'linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%)',

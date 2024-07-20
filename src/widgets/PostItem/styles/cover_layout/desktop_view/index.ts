@@ -1,33 +1,16 @@
-import styled, { css, theme } from '~/css'
-import Img from '~/Img'
+import useMainSalon from '../..'
 
-import { DesktopHoverable, DesktopDigest } from '../..'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled(DesktopHoverable)`
-  margin-bottom: 10px;
-  padding: 12px 0;
-`
-export const Main = styled.div`
-  ${css.columnGrow()};
-`
-export const CoverWrapper = styled.div`
-  width: 180px;
-  height: 100px;
-  margin-right: 20px;
-  margin-top: 14px;
-`
-export const CoverImg = styled(Img)`
-  width: 180px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 5px;
-`
-export const Digest = styled(DesktopDigest)`
-  ${css.cutRest('340px')};
-  margin-top: 6px;
-  margin-bottom: 5px;
+export default () => {
+  const { cn, fg } = useTwBelt()
+  const main = useMainSalon()
 
-  ${Wrapper}:hover & {
-    color: ${theme('article.title')};
+  return {
+    wrapper: cn(main.hoverable, 'mb-2.5 p-y-1.5 group/post'),
+    main: 'column grow',
+    digest: cn('text-sm mt-1.5 mb-3', fg('text.digest')),
+    coverWrapper: 'min-w-44 w-44 h-24 mr-5 mt-3',
+    cover: 'w-44 h-24 object-cover rounded-lg',
   }
-`
+}
