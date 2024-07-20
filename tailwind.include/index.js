@@ -1,7 +1,9 @@
 const colors = require('./theme/colors')
 const safelist = require('./safelist')
+const screens = require('./screens')
 
 module.exports = {
-  theme: () => colors,
-  safelist: () => safelist,
+  colors,
+  safelist,
+  screens,
 }

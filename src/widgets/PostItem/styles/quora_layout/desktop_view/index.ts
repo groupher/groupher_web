@@ -9,7 +9,7 @@ export default () => {
   const main = useMainSalon()
 
   return {
-    wrapper: cn(main.hoverable, 'column grow'),
+    wrapper: cn(main.hoverable, 'column grow group/post'),
   }
 }
 

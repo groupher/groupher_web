@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require('tailwindcss/colors')
 
 const lightTokens = require('./lightTokens')
 const darkTokens = require('./darkTokens')
@@ -14,8 +15,8 @@ module.exports = {
   },
   loading: {
     basic: {
-      DEFAULT: '#E0E0E0',
-      dark: '#E0E0E0',
+      DEFAULT: colors.slate['400'],
+      dark: colors.slate['500'],
     },
     animate: {
       DEFAULT: lightTokens.contentBg,
@@ -205,6 +206,16 @@ module.exports = {
       DEFAULT: 'linear-gradient(150deg,#ffe5e529 20%,rgb(255 251 216 / 58%) 100%)',
       dark: 'linear-gradient(53deg,#fffff37a 13%,rgb(255 244 140 / 25%) 100%)',
     },
+  },
+  text: {
+    // title: { DEFAULT: lightTokens.threadTitle, dark: darkTokens.threadTitle },
+    title: { DEFAULT: colors.gray['800'], dark: darkTokens.threadTitle },
+    digest: { DEFAULT: colors.gray['600'], dark: darkTokens.descText },
+    hint: {
+      DEFAULT: colors.gray['500'],
+    },
+    // body:
+    // hint
   },
   article: {
     title: {

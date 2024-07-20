@@ -130,6 +130,12 @@ export default {
     cyan: 'linear-gradient(213deg,#fffff3ba 13%,#aff5ffc2 100%)',
     yellow: 'linear-gradient(150deg,#ffe5e529 20%,rgb(255 251 216 / 58%) 100%)',
   },
+  text: {
+    title: '',
+    digest: '',
+    body: '',
+    hint: '',
+  },
   article: {
     title: threadTitle,
     digest: descText,

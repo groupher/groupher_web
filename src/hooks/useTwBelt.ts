@@ -1,11 +1,18 @@
 import { twMerge } from 'tailwind-merge'
 import { clsx, type ClassValue } from 'clsx'
 
+import type { TColorName } from '~/spec'
 import type { TFlatThemeKey } from '~/utils/themes/skins'
+
+import { camelize } from '~/fmt'
+
 import useTheme from '~/hooks/useTheme'
 import useAvatarLayout from '~/hooks/useAvatarLayout'
+import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import THEME from '~/const/theme'
+
+type TColorPrefix = 'fg' | 'bg'
 
 /**
  * Prevents output of unnecessary Tailwind classes and merges classes.
@@ -23,6 +30,8 @@ type TRet = {
   bg: (key: TFlatThemeKey) => string
   fill: (key: TFlatThemeKey) => string
   br: (key: TFlatThemeKey) => string
+  rainbow: (color: TColorName, prefix?: TColorPrefix) => string
+  primary: (prefix?: TColorPrefix) => string
   avatar: () => string
 }
 
@@ -34,6 +43,7 @@ export default (): TRet => {
   const { theme: curTheme } = useTheme()
   const { isSquare: isAvatarSquare } = useAvatarLayout()
 
+  const primaryColor = usePrimaryColor()
   /**
    * cover article.title -> article-title to match the tailwind csss varaible name
    */
@@ -49,7 +59,16 @@ export default (): TRet => {
   const fill = (key: TFlatThemeKey) => theme(key, 'fill')
   const br = (key: TFlatThemeKey) => theme(key, 'border')
 
-  const avatar = () => (isAvatarSquare ? 'rounded-md' : 'rounded-full')
+  const rainbow = (color: TColorName, prefix: 'fg'): string => {
+    const prefix$ = prefix === 'fg' ? 'text-rainbow' : `${prefix}-rainbow`
+    const color$ = camelize(color)
+
+    return curTheme === THEME.LIGHT ? `${prefix$}-${color$}` : `${prefix$}-${color$}-dark`
+  }
+
+  const primary = (prefix?: 'fg'): string => rainbow(primaryColor, prefix)
+
+  const avatar = () => (isAvatarSquare ? 'rounded-md' : 'circle')
 
   // TODO: rainbox
   // const textColor = clsx(`text-rainbow-${color}`)
@@ -62,6 +81,8 @@ export default (): TRet => {
     bg,
     fill,
     br,
+    rainbow,
+    primary,
     avatar,
   }
 }

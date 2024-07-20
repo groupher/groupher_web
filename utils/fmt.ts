@@ -70,6 +70,10 @@ export const titleCase = (str: string): string => {
   })
 }
 
+/**
+ *  camelize a string
+ * e.g: GREEN_APPLE -> greenApple
+ */
 export const camelize = (str: string): string => {
   if (!str) return ''
 

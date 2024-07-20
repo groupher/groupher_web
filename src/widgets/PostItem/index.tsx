@@ -4,7 +4,7 @@
  *
  */
 
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TPost, TPostLayout } from '~/spec'
 import { POST_LAYOUT } from '~/const/layout'
@@ -45,4 +45,4 @@ const PostItem: FC<TProps> = ({ article, layout = POST_LAYOUT.QUORA, isMobilePre
   }
 }
 
-export default memo(PostItem)
+export default PostItem
