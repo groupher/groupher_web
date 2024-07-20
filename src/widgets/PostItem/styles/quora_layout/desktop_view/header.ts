@@ -12,7 +12,7 @@ export default ({ isPinned }: TProps) => {
     topping: 'row-center mb-1',
     main: 'row-center grow',
     title: cn(
-      'row-center relative font no-underline opacity-85',
+      'row-center relative text-base no-underline opacity-85',
       isPinned ? primary('fg') : fg('text.title'),
       isPinned ? 'bold' : 'bold-sm',
       'hover:opacity-100 pointer group-hover/post:underline',

@@ -4,10 +4,11 @@ import type { TPost } from '~/spec'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 import { THREAD } from '~/const/thread'
 
+import { previewArticle } from '~/signal'
 import ArticleReadLabel from '~/widgets/ArticleReadLabel'
 import TagsList from '~/widgets/TagsList'
 
-import { Wrapper, Brief, Title } from '../../styles/ph_layout/desktop_view/header'
+import useSalon from '../../styles/ph_layout/desktop_view/header'
 
 type TProps = {
   article: TPost
@@ -16,18 +17,26 @@ type TProps = {
 const Header: FC<TProps> = ({ article }) => {
   const { innerId, title, articleTags } = article
   const { slug } = useViewingCommunity()
+  const s = useSalon()
 
   return (
-    <Wrapper>
-      <Brief>
+    <div className={s.wrapper}>
+      <div className={s.brief}>
         <ArticleReadLabel viewed={article.viewerHasViewed} right={8} size={7} top={1} />
-        <Title onClick={(e) => e.preventDefault()} href={`/${slug}/${THREAD.POST}/${innerId}`}>
+        <a
+          className={s.title}
+          onClick={(e) => {
+            e.preventDefault()
+            previewArticle(article)
+          }}
+          href={`/${slug}/${THREAD.POST}/${innerId}`}
+        >
           {title}
-        </Title>
+        </a>
         {/*  @ts-ignore */}
         <TagsList items={articleTags} left={12} />
-      </Brief>
-    </Wrapper>
+      </div>
+    </div>
   )
 }
 

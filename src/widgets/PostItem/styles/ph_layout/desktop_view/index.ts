@@ -1,29 +1,16 @@
-import type { TAvatarLayout } from '~/spec'
-import { AVATAR_LAYOUT } from '~/const/layout'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import styled, { css } from '~/css'
-import Img from '~/Img'
+import useMainSalon from '../..'
 
-import { DesktopHoverable } from '../..'
+export default () => {
+  const { cn, avatar } = useTwBelt()
+  const main = useMainSalon()
 
-export const Wrapper = styled(DesktopHoverable)`
-  padding: 12px 0;
-`
-export const Main = styled.div`
-  ${css.columnGrow()};
-`
-export const AvatarWrapper = styled.div`
-  ${css.column('align-center', 'justify-between')};
-  padding-top: 10px;
-  padding-bottom: 2px;
-  margin-right: 8px;
-`
-export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
-  ${css.size(26)};
-  border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
-`
-export const UpvoteWrapper = styled.div`
-  position: absolute;
-  top: 14px;
-  right: 0;
-`
+  return {
+    wrapper: cn(main.hoverable, 'py-2.5'),
+    main: 'column grow',
+    avatarWrapper: 'column-center justify-between pt-2.5 pb-0.5 mr-2',
+    avatar: cn('size-6', avatar()),
+    upvoteWrapper: 'absolute top-3.5 right-0',
+  }
+}

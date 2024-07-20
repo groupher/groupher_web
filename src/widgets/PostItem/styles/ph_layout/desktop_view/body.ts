@@ -1,28 +1,11 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { DesktopDigest } from '../..'
+export default () => {
+  const { cn, fg } = useTwBelt()
 
-export const Wrapper = styled.div`
-  margin-left: 10px;
-  margin-top: -12px;
-`
-export const Extra = styled.li`
-  position: relative;
-  ${css.row('align-end')};
-  color: ${theme('article.info')};
-  margin-top: 5px;
-  font-size: 12px;
-`
-
-export const Digest = styled(DesktopDigest)`
-  ${css.cutRest('450px')};
-  margin-top: 4px;
-
-  ${Wrapper}:hover & {
-    color: ${theme('article.title')};
+  return {
+    wrapper: 'ml-2.5 -mt-3',
+    digest: cn('text-sm mt-2.5 mb-3 max-w-96 line-clamp-1', fg('text.digest')),
+    footer: 'row-center mt-2',
   }
-`
-export const Footer = styled.div`
-  ${css.row('align-center')};
-  margin-top: 7px;
-`
+}

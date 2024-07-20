@@ -19,6 +19,10 @@
     @apply flex flex-col;
   }
 
+  .column-center {
+    @apply flex flex-col items-center;
+  }
+
   .column-align-both {
     @apply flex flex-col items-center justify-center;
   }
