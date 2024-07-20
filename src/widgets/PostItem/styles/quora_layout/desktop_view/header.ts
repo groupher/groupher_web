@@ -22,8 +22,8 @@ export default ({ isPinned }: TProps) => {
       'hover:opacity-100 pointer group-hover/post:underline',
       'transition-colors',
     ),
-    author: cn('font-xs', fg('text.hint')),
-    publish: cn('font-xs', fg('text.hint')),
+    author: cn('text-xs', fg('text.hint')),
+    publish: cn('text-xs', fg('text.hint')),
   }
 }
 
