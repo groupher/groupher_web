@@ -35,9 +35,6 @@ export const Title = styled.a`
 
   transition: color 0.2s;
 `
-export const TitlePopInfo = styled.div`
-  padding: 4px 8px;
-`
 export const TitleLink = styled.div`
   position: relative;
   font-size: 15px;

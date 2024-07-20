@@ -209,13 +209,18 @@ module.exports = {
   },
   text: {
     // title: { DEFAULT: lightTokens.threadTitle, dark: darkTokens.threadTitle },
-    title: { DEFAULT: colors.gray['800'], dark: darkTokens.threadTitle },
+    title: { DEFAULT: colors.gray['800'], dark: colors.gray['100'] },
     digest: { DEFAULT: colors.gray['600'], dark: darkTokens.descText },
     hint: {
       DEFAULT: colors.gray['500'],
+      dark: colors.gray['500'],
     },
     // body:
     // hint
+  },
+  dot: {
+    DEFAULT: colors.slate['500'],
+    dark: colors.slate['400'],
   },
   article: {
     title: {

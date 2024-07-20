@@ -136,6 +136,7 @@ export default {
     body: '',
     hint: '',
   },
+  dot: '',
   article: {
     title: threadTitle,
     digest: descText,

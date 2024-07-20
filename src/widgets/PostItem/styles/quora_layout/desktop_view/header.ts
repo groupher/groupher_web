@@ -1,15 +1,11 @@
-import styled, { theme } from '~/css'
-
 import useTwBelt from '~/hooks/useTwBelt'
-
-import DotDivider from '~/widgets/DotDivider'
 
 type TProps = {
   isPinned?: boolean
 }
 
 export default ({ isPinned }: TProps) => {
-  const { cn, fg, primary } = useTwBelt()
+  const { cn, fg, bg, primary } = useTwBelt()
 
   return {
     wrapper: 'column',
@@ -24,23 +20,6 @@ export default ({ isPinned }: TProps) => {
     ),
     author: cn('text-xs', fg('text.hint')),
     publish: cn('text-xs', fg('text.hint')),
+    dot: cn('size-0.5 circle ml-2 mr-1.5', bg('dot')),
   }
 }
-
-export const TitlePopInfo = styled.div`
-  padding: 4px 8px;
-`
-export const TitleLink = styled.div`
-  position: relative;
-  font-size: 15px;
-  margin-top: -1px;
-  color: ${theme('article.link')};
-  margin-left: 10px;
-  opacity: 0.8;
-  text-decoration: underline;
-`
-
-export const Dot = styled(DotDivider)`
-  background-color: ${theme('article.digest')};
-  margin-right: 8px;
-`

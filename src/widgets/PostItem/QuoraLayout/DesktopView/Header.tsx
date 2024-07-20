@@ -16,7 +16,7 @@ import { SpaceGrow, Space } from '~/widgets/Common'
 import TagsList from '~/widgets/TagsList'
 import CommentsCount from '~/widgets/CommentsCount'
 
-import useSalon, { Dot } from '../../styles/quora_layout/desktop_view/header'
+import useSalon from '../../styles/quora_layout/desktop_view/header'
 
 const UserCard = lazy(() => import('~/widgets/Cards/UserCard'))
 
@@ -49,7 +49,7 @@ const Header: FC<TProps> = ({ article }) => {
         >
           <div className={s.author}>{author.nickname}</div>
         </Tooltip>
-        <Dot radius={2.5} space={10} />
+        <div className={s.dot} />
         <Space right={2} />
         <div className={s.publish}>
           <TimeAgo datetime={insertedAt} locale="zh_CN" suppressHydrationWarning />
