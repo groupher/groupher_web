@@ -2,30 +2,27 @@ import type { FC } from 'react'
 
 import type { TPost } from '~/spec'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
-import SIZE from '~/const/size'
 import { THREAD } from '~/const/thread'
 
 import { previewArticle } from '~/signal'
 import ArticleReadLabel from '~/widgets/ArticleReadLabel'
-import { SpaceGrow } from '~/widgets/Common'
 import TagsList from '~/widgets/TagsList'
-import CommentsCount from '~/widgets/CommentsCount'
 
-import useSalon from '../../styles/minimal_layout/desktop_view/header'
+import useSalon from '../styles/ph_layout/header'
 
 type TProps = {
   article: TPost
 }
 
 const Header: FC<TProps> = ({ article }) => {
-  const s = useSalon()
+  const { innerId, title, articleTags } = article
   const { slug } = useViewingCommunity()
-  const { innerId, title, commentsCount, articleTags } = article
+  const s = useSalon()
 
   return (
-    <article className={s.wrapper}>
-      <div className={s.main}>
-        <ArticleReadLabel viewed={article.viewerHasViewed} right={8} top={2} />
+    <div className={s.wrapper}>
+      <div className={s.brief}>
+        <ArticleReadLabel viewed={article.viewerHasViewed} right={8} size={7} top={1} />
         <a
           className={s.title}
           onClick={(e) => {
@@ -38,10 +35,8 @@ const Header: FC<TProps> = ({ article }) => {
         </a>
         {/*  @ts-ignore */}
         <TagsList items={articleTags} left={12} />
-        <SpaceGrow />
-        {commentsCount !== 0 && <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />}
       </div>
-    </article>
+    </div>
   )
 }
 

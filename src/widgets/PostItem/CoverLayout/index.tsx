@@ -1,28 +1,45 @@
-/*
- *
- * PostItem
- *
- */
-
-import type { FC } from 'react'
+import { type FC, useState, useEffect } from 'react'
 
 import type { TPost } from '~/spec'
 
-import DesktopView from './DesktopView'
-// import ListView from './ListView'
+import { previewArticle } from '~/signal'
+import { mockImage } from '~/mock'
 
-import { Wrapper } from '../styles/cover_layout'
+import ArticlePinLabel from '~/widgets/ArticlePinLabel'
+import Img from '~/Img'
+
+import Header from './Header'
+import Footer from './Footer'
+
+import useSalon from '../styles/cover_layout'
 
 type TProps = {
   article: TPost
+  // onUserSelect?: (obj: TUser) => void
 }
 
-const PostItem: FC<TProps> = ({ article }) => {
+const DigestView: FC<TProps> = ({ article }) => {
+  const s = useSalon()
+
+  const [coverImg, setCoverImg] = useState('')
+
+  useEffect(() => {
+    setCoverImg(mockImage())
+  }, [])
+
   return (
-    <Wrapper>
-      <DesktopView article={article} />
-    </Wrapper>
+    <section className={s.wrapper} onClick={() => previewArticle(article)}>
+      <ArticlePinLabel isPinned={article.isPinned} top={32} />
+      <div className={s.coverWrapper}>
+        <Img src={coverImg} className={s.cover} />
+      </div>
+      <div className={s.main}>
+        <Header article={article} />
+        <div className={s.digest}>{article.digest}</div>
+        <Footer article={article} />
+      </div>
+    </section>
   )
 }
 
-export default PostItem
+export default DigestView

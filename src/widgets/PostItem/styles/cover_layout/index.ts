@@ -1,18 +1,16 @@
-import styled, { css, theme } from '~/css'
+import useMainSalon from '..'
 
-export const Wrapper = styled.article`
-  ${css.row()};
-  position: relative;
+import useTwBelt from '~/hooks/useTwBelt'
 
-  padding-top: 8px;
-  padding-bottom: 8px;
-  border-bottom: 0;
-  border-bottom-color: ${theme('divider')};
-  margin-bottom: 5px;
+export default () => {
+  const { cn, fg } = useTwBelt()
+  const main = useMainSalon()
 
-  transition: all 0.2s;
-`
-export const Main = styled.div`
-  ${css.columnGrow()};
-`
-export const holder = 1
+  return {
+    wrapper: cn(main.hoverable, 'mb-2.5 p-y-2'),
+    main: 'column grow',
+    digest: cn('text-sm mt-1.5 mb-3', fg('text.digest')),
+    coverWrapper: 'min-w-44 w-44 h-24 mr-5 mt-3',
+    cover: 'w-44 h-24 object-cover rounded-lg',
+  }
+}

@@ -1,28 +1,29 @@
 import type { FC } from 'react'
 
 import type { TPost } from '~/spec'
-import useViewingCommunity from '~/hooks/useViewingCommunity'
-import { THREAD } from '~/const/thread'
-
 import { previewArticle } from '~/signal'
-import ArticleReadLabel from '~/widgets/ArticleReadLabel'
-import TagsList from '~/widgets/TagsList'
+import { THREAD } from '~/const/thread'
+import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import useSalon from '../../styles/ph_layout/desktop_view/header'
+import ArticleReadLabel from '~/widgets/ArticleReadLabel'
+
+import useSalon from '../styles/cover_layout/header'
 
 type TProps = {
   article: TPost
 }
 
 const Header: FC<TProps> = ({ article }) => {
-  const { innerId, title, articleTags } = article
-  const { slug } = useViewingCommunity()
   const s = useSalon()
+
+  const { slug } = useViewingCommunity()
+
+  const { innerId, title } = article
 
   return (
     <div className={s.wrapper}>
-      <div className={s.brief}>
-        <ArticleReadLabel viewed={article.viewerHasViewed} right={8} size={7} top={1} />
+      <div className={s.main}>
+        <ArticleReadLabel viewed={article.viewerHasViewed} top={2} right={8} />
         <a
           className={s.title}
           onClick={(e) => {
@@ -33,8 +34,6 @@ const Header: FC<TProps> = ({ article }) => {
         >
           {title}
         </a>
-        {/*  @ts-ignore */}
-        <TagsList items={articleTags} left={12} />
       </div>
     </div>
   )

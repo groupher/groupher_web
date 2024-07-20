@@ -7,7 +7,7 @@ export default () => {
   const main = useMainSalon()
 
   return {
-    wrapper: cn(main.hoverable, 'row grow relative column group/post'),
+    wrapper: cn(main.hoverable, 'column grow'),
     digest: cn('text-sm mt-1.5 mb-3', fg('text.digest')),
   }
 }

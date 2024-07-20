@@ -17,13 +17,13 @@ const PostItem: FC<TProps> = ({ article }) => {
   const s = useSalon()
 
   return (
-    <div className={s.wrapper}>
+    <article className={s.wrapper}>
       <Header article={article} />
       <div className={s.digest} onClick={() => previewArticle(article)}>
         {article.digest}
       </div>
       <Footer article={article} />
-    </div>
+    </article>
   )
 }
 
