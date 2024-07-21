@@ -64,7 +64,7 @@ const Header: FC<TProps> = ({ article }) => {
           }}
           href={`/${slug}/${THREAD.POST}/${innerId}`}
         >
-          <ArticleReadLabel viewed={article.viewerHasViewed} right={8} top={1} size={7} />
+          <ArticleReadLabel viewed={article.viewerHasViewed} />
           {title}
         </a>
 

@@ -29,10 +29,10 @@ export type TActive = {
 }
 
 export type TSpace = {
-  top?: number
-  bottom?: number
-  left?: number
-  right?: number
+  top?: number | 'px'
+  bottom?: number | 'px'
+  left?: number | 'px'
+  right?: number | 'px'
 }
 
 // google analytis format

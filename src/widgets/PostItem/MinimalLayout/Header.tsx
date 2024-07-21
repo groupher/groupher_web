@@ -25,7 +25,7 @@ const Header: FC<TProps> = ({ article }) => {
   return (
     <article className={s.wrapper}>
       <div className={s.main}>
-        <ArticleReadLabel viewed={article.viewerHasViewed} right={8} top={2} />
+        <ArticleReadLabel viewed={article.viewerHasViewed} />
         <a
           className={s.title}
           onClick={(e) => {

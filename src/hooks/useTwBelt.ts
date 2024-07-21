@@ -1,7 +1,7 @@
 import { twMerge } from 'tailwind-merge'
 import { clsx, type ClassValue } from 'clsx'
 
-import type { TColorName } from '~/spec'
+import type { TColorName, TSpace } from '~/spec'
 import type { TFlatThemeKey } from '~/utils/themes/skins'
 
 import { camelize } from '~/fmt'
@@ -32,6 +32,8 @@ type TRet = {
   br: (key: TFlatThemeKey) => string
   rainbow: (color: TColorName, prefix?: TColorPrefix) => string
   primary: (prefix?: TColorPrefix) => string
+  zise: (unit: number) => string
+  margin: (spacing: TSpace) => string
   avatar: () => string
 }
 
@@ -75,6 +77,24 @@ export default (): TRet => {
    */
   const primary = (prefix?: 'fg'): string => rainbow(primaryColor, prefix)
 
+  /**
+   * this is not typo, cause the exsiting prama is `size`
+   */
+  const zise = (unit: number): string => {
+    const size$ = `size-${unit}`
+
+    return clsx(size$)
+  }
+
+  const margin = (spacing: TSpace): string => {
+    const dir = { top: 'mt', bottom: 'mb', left: 'ml', right: 'mr' }
+
+    return Object.entries(spacing)
+      .filter(([_, value]) => value !== undefined)
+      .map(([key, value]) => `${dir[key]}-${value}`)
+      .join(' ')
+  }
+
   const avatar = () => (isAvatarSquare ? 'rounded-md' : 'circle')
 
   return {
@@ -86,6 +106,8 @@ export default (): TRet => {
     br,
     rainbow,
     primary,
+    zise,
+    margin,
     avatar,
   }
 }
