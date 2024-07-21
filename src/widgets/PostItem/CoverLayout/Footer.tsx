@@ -1,4 +1,4 @@
-import { memo, type FC } from 'react'
+import type { FC } from 'react'
 import TimeAgo from 'timeago-react'
 
 import type { TPost } from '~/spec'
@@ -7,17 +7,19 @@ import { UPVOTE_LAYOUT } from '~/const/layout'
 import { SpaceGrow } from '~/widgets/Common'
 import Upvote from '~/widgets/Upvote'
 
-import { Wrapper, CreateTime } from '../salon/cover_layout/footer'
+import useSalon from '../salon/cover_layout/footer'
 
 type TProps = {
   article: TPost
 }
 
 const Footer: FC<TProps> = ({ article }) => {
+  const s = useSalon()
+
   const { upvotesCount, meta, viewerHasUpvoted, insertedAt } = article
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Upvote
         count={upvotesCount}
         avatarList={meta.latestUpvotedUsers}
@@ -27,11 +29,11 @@ const Footer: FC<TProps> = ({ article }) => {
         top={-1}
       />
       <SpaceGrow />
-      <CreateTime>
+      <div className={s.createTime}>
         <TimeAgo datetime={insertedAt} locale="zh_CN" />
-      </CreateTime>
-    </Wrapper>
+      </div>
+    </div>
   )
 }
 
-export default memo(Footer)
+export default Footer

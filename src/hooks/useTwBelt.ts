@@ -47,20 +47,17 @@ export default (): TRet => {
   /**
    * cover article.title -> article-title to match the tailwind csss varaible name
    */
-  const theme = (key: TFlatThemeKey, prefix = 'bg') => {
+  const _theme = (key: TFlatThemeKey, prefix = 'bg') => {
     return isLightTheme
       ? `${prefix}-${key.replace(/\./g, '-')}`
       : `${prefix}-${key.replace(/\./g, '-')}-dark`
   }
 
-  const global = (className: string) => {
-    return isLightTheme ? className : `${className}-dark`
-  }
-
-  const fg = (key: TFlatThemeKey) => theme(key, 'text')
-  const bg = (key: TFlatThemeKey) => theme(key, 'bg')
-  const fill = (key: TFlatThemeKey) => theme(key, 'fill')
-  const br = (key: TFlatThemeKey) => theme(key, 'border')
+  const global = (className: string) => (isLightTheme ? className : `${className}-dark`)
+  const fg = (key: TFlatThemeKey) => _theme(key, 'text')
+  const bg = (key: TFlatThemeKey) => _theme(key, 'bg')
+  const fill = (key: TFlatThemeKey) => _theme(key, 'fill')
+  const br = (key: TFlatThemeKey) => _theme(key, 'border')
 
   /**
    * use in theme balls and all kinks of gradients
