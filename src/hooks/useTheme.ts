@@ -1,11 +1,13 @@
 import { useTheme as useStyledTheme } from 'styled-components'
 
 import type { TThemeName, TThemeMap } from '~/spec'
+import THEME from '~/const/theme'
 
 import useSubStore from '~/hooks/useSubStore'
 
 type TRet = {
   theme: TThemeName
+  isLightTheme: boolean
   change: (name: TThemeName) => void
   toggle: () => void
   themeMap: TThemeMap
@@ -17,6 +19,7 @@ const useTheme = (): TRet => {
 
   return {
     theme,
+    isLightTheme: theme === THEME.LIGHT,
     change,
     toggle,
     themeMap: styledTheme,

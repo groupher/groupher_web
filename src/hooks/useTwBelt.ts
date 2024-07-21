@@ -10,8 +10,6 @@ import useTheme from '~/hooks/useTheme'
 import useAvatarLayout from '~/hooks/useAvatarLayout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import THEME from '~/const/theme'
-
 type TColorPrefix = 'fg' | 'bg'
 
 /**
@@ -42,7 +40,7 @@ type TRet = {
  * even you return static strings, cauze those are consided as dynamic, and tailwind will not know them
  */
 export default (): TRet => {
-  const { theme: curTheme } = useTheme()
+  const { isLightTheme } = useTheme()
   const { isSquare: isAvatarSquare } = useAvatarLayout()
 
   const primaryColor = usePrimaryColor()
@@ -50,12 +48,15 @@ export default (): TRet => {
    * cover article.title -> article-title to match the tailwind csss varaible name
    */
   const theme = (key: TFlatThemeKey, prefix = 'bg') => {
-    return curTheme === THEME.LIGHT
+    return isLightTheme
       ? `${prefix}-${key.replace(/\./g, '-')}`
       : `${prefix}-${key.replace(/\./g, '-')}-dark`
   }
 
-  const global = (className: string) => (curTheme === THEME.LIGHT ? className : `${className}-dark`)
+  const global = (className: string) => {
+    return isLightTheme ? className : `${className}-dark`
+  }
+
   const fg = (key: TFlatThemeKey) => theme(key, 'text')
   const bg = (key: TFlatThemeKey) => theme(key, 'bg')
   const fill = (key: TFlatThemeKey) => theme(key, 'fill')
@@ -68,7 +69,7 @@ export default (): TRet => {
     const prefix$ = prefix === 'fg' ? 'text-rainbow' : `${prefix}-rainbow`
     const color$ = camelize(color)
 
-    return curTheme === THEME.LIGHT ? `${prefix$}-${color$}` : `${prefix$}-${color$}-dark`
+    return isLightTheme ? `${prefix$}-${color$}` : `${prefix$}-${color$}-dark`
   }
 
   /**
@@ -80,11 +81,7 @@ export default (): TRet => {
   /**
    * this is not typo, cause the exsiting prama is `size`
    */
-  const zise = (unit: number): string => {
-    const size$ = `size-${unit}`
-
-    return clsx(size$)
-  }
+  const zise = (unit: number): string => clsx(`size-${unit}`)
 
   const margin = (spacing: TSpace): string => {
     const dir = { top: 'mt', bottom: 'mb', left: 'ml', right: 'mr' }
