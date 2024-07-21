@@ -7,7 +7,7 @@ export default () => {
   const main = useMainSalon()
 
   return {
-    wrapper: cn(main.hoverable, 'mb-2.5 p-y-2'),
+    wrapper: cn(main.hoverEffect, 'mb-2.5 py-2'),
     main: 'column grow',
     digest: cn('text-sm mt-1.5 mb-3', fg('text.digest')),
     coverWrapper: 'min-w-44 w-44 h-24 mr-5 mt-3',
