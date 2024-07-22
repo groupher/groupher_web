@@ -10,7 +10,7 @@ import { Trans } from '~/i18n'
 import { aliasGTDDoneState } from '~/fmt'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
-import useSalon, { Icon } from './styles/state'
+import useSalon, { Icon } from './salon/state'
 
 type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'state' | 'smaller'>
 

@@ -12,7 +12,7 @@ import { ARTICLE_CAT, ARTICLE_STATE } from '~/const/gtd'
 import State from './State'
 import Label from './Label'
 
-import useSalon from './styles'
+import useSalon from './salon'
 
 export type TProps = {
   testid?: string
