@@ -2,8 +2,6 @@ import type { FC } from 'react'
 
 import type { TTooltipPlacement } from '~/spec'
 import { ARTICLE_STATE } from '~/const/gtd'
-import { COLOR_NAME } from '~/const/colors'
-import useKanbanBgColors from '~/hooks/useKanbanBgColors'
 import useNameAlias from '~/hooks/useNameAlias'
 
 import Tooltip from '~/widgets/Tooltip'
@@ -12,20 +10,20 @@ import { Trans } from '~/i18n'
 import { aliasGTDDoneState } from '~/fmt'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
-import { Wrapper, TipNote, WipIcon, Text, TODOIcon, DoneIcon, RejectIcon } from './styles/state'
+import useSalon, { Icon } from './styles/state'
 
 type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'state' | 'smaller'>
 
+const tipConfig = {
+  placement: 'right' as TTooltipPlacement,
+  offset: [0, 0] as [number, number],
+  noPadding: true,
+}
+
 const State: FC<TProps> = ({ cat, state, smaller }) => {
-  const [todoColor, wipColor, doneColor] = useKanbanBgColors()
+  const s = useSalon({ cat, state })
 
   const kanbanAlias = useNameAlias('kanban')
-
-  const tipConfig = {
-    placement: 'right' as TTooltipPlacement,
-    offset: [0, 0] as [number, number],
-    noPadding: true,
-  }
 
   switch (state) {
     case ARTICLE_STATE.TODO: {
@@ -33,24 +31,24 @@ const State: FC<TProps> = ({ cat, state, smaller }) => {
         return (
           <Tooltip
             content={
-              <TipNote>
-                <Text>{kanbanAlias[ARTICLE_STATE.TODO.toLowerCase()].name}</Text>
-              </TipNote>
+              <div className={s.tipNote}>
+                <div className={s.text}>{kanbanAlias[ARTICLE_STATE.TODO.toLowerCase()].name}</div>
+              </div>
             }
             {...tipConfig}
           >
-            <Wrapper $smaller color={todoColor}>
-              <TODOIcon $smaller color={todoColor} />
-            </Wrapper>
+            <div className={s.box}>
+              <Icon.Todo className={s.todoIcon} />
+            </div>
           </Tooltip>
         )
       }
 
       return (
-        <Wrapper color={todoColor}>
-          <TODOIcon color={todoColor} />
-          <Text>{kanbanAlias[ARTICLE_STATE.TODO.toLowerCase()].name}</Text>
-        </Wrapper>
+        <div className={s.box}>
+          <Icon.Todo className={s.todoIcon} />
+          <div className={s.text}>{kanbanAlias[ARTICLE_STATE.TODO.toLowerCase()].name}</div>
+        </div>
       )
     }
 
@@ -59,25 +57,25 @@ const State: FC<TProps> = ({ cat, state, smaller }) => {
         return (
           <Tooltip
             content={
-              <TipNote>
-                <Text>{kanbanAlias[ARTICLE_STATE.WIP.toLowerCase()].name}</Text>
-              </TipNote>
+              <div className={s.tipNote}>
+                <div className={s.text}>{kanbanAlias[ARTICLE_STATE.WIP.toLowerCase()].name}</div>
+              </div>
             }
             {...tipConfig}
           >
-            <Wrapper $smaller color={wipColor}>
-              <WipIcon $smaller color={wipColor} />
-            </Wrapper>
+            <div className={s.box}>
+              <Icon.Wip className={s.wipIcon} />
+            </div>
           </Tooltip>
         )
       }
 
       return (
-        <Wrapper color={wipColor}>
-          <WipIcon color={wipColor} />
+        <div className={s.box}>
+          <Icon.Wip className={s.wipIcon} />
 
-          <Text>{kanbanAlias[ARTICLE_STATE.WIP.toLowerCase()].name}</Text>
-        </Wrapper>
+          <div className={s.text}>{kanbanAlias[ARTICLE_STATE.WIP.toLowerCase()].name}</div>
+        </div>
       )
     }
 
@@ -86,24 +84,25 @@ const State: FC<TProps> = ({ cat, state, smaller }) => {
         return (
           <Tooltip
             content={
-              <TipNote>
-                <Text>{Trans(aliasGTDDoneState(cat, state))}</Text>
-              </TipNote>
+              <div className={s.tipNote}>
+                <div className={s.text}>{Trans(aliasGTDDoneState(cat, state))}</div>
+              </div>
             }
             {...tipConfig}
           >
-            <Wrapper $smaller color={doneColor}>
-              <DoneIcon $smaller color={doneColor} />
-            </Wrapper>
+            <div className={s.box}>
+              <Icon.Done className={s.doneIcon} />
+            </div>
           </Tooltip>
         )
       }
 
       return (
-        <Wrapper color={doneColor}>
-          <DoneIcon color={doneColor === COLOR_NAME.BLACK ? COLOR_NAME.GREEN : doneColor} />
-          <Text>{Trans(aliasGTDDoneState(cat, state))}</Text>
-        </Wrapper>
+        <div className={s.box}>
+          {/* <DoneIcon color={doneColor === COLOR_NAME.BLACK ? COLOR_NAME.GREEN : doneColor} /> */}
+          <Icon.Done className={s.doneIcon} />
+          <div className={s.text}>{Trans(aliasGTDDoneState(cat, state))}</div>
+        </div>
       )
     }
 
@@ -116,24 +115,24 @@ const State: FC<TProps> = ({ cat, state, smaller }) => {
         return (
           <Tooltip
             content={
-              <TipNote>
-                <Text>{Trans(state)}</Text>
-              </TipNote>
+              <div className={s.tipNote}>
+                <div className={s.text}>{Trans(state)}</div>
+              </div>
             }
             {...tipConfig}
           >
-            <Wrapper $smaller color={COLOR_NAME.RED}>
-              <RejectIcon $smaller color={COLOR_NAME.RED} />
-            </Wrapper>
+            <div className={s.box}>
+              <Icon.Reject className={s.rejectIcon} />
+            </div>
           </Tooltip>
         )
       }
 
       return (
-        <Wrapper color={COLOR_NAME.RED}>
-          <RejectIcon color={COLOR_NAME.RED} />
-          <Text>{Trans(state)}</Text>
-        </Wrapper>
+        <div className={s.box}>
+          <Icon.Reject className={s.rejectIcon} />
+          <div className={s.text}>{Trans(state)}</div>
+        </div>
       )
     }
 

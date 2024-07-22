@@ -1,18 +1,11 @@
 import type { TColorName, TMetric } from '~/spec'
 import styled, { css, rainbow, theme } from '~/css'
 
-export const ScrollWrapper = styled.div<{ $noMobilePadding: boolean }>`
-  position: absolute;
-  width: 100%;
-
-  ${css.media.mobile`
-    width: calc(100% - 16px);
-    margin-left: 8px;
-  `};
-
-  ${({ $noMobilePadding }) =>
-    $noMobilePadding ? 'width: 100% !important; margin-left: 0 !important;' : ''};
-`
+export default () => {
+  return {
+    scrollWrapper: 'absolute w-full',
+  }
+}
 
 type TInner = {
   metric: TMetric
@@ -56,8 +49,4 @@ export const BodyWrapper = styled.div`
 export const ContentWrapper = styled.div`
   /* for global blur */
   transition: filter 0.25s;
-`
-export const ScrollHolder = styled.div`
-  height: 100vh;
-  width: 100%;
 `

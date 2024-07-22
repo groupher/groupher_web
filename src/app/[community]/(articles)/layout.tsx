@@ -7,9 +7,11 @@ import useLayout from '~/hooks/useLayout'
 
 import CommunityDigest from '~/widgets/CommunityDigest'
 
-import { Wrapper, SidebarWrapper, InnerWrapper, ContentWrapper } from './styles'
+import useSalon, { Wrapper, SidebarWrapper, InnerWrapper } from './styles'
 
 export default ({ children }) => {
+  const s = useSalon()
+
   const metric = useMetric()
   const { bannerLayout } = useLayout()
 
@@ -17,11 +19,11 @@ export default ({ children }) => {
   const LayoutWrapper = isSidebarLayout ? SidebarWrapper : Wrapper
 
   return (
-    <LayoutWrapper $testid="post-thread-content" metric={metric}>
+    <LayoutWrapper metric={metric}>
       <CommunityDigest />
 
       <InnerWrapper metric={metric} $bannerLayout={bannerLayout}>
-        <ContentWrapper>{children}</ContentWrapper>
+        <div className={s.content}>{children}</div>
       </InnerWrapper>
     </LayoutWrapper>
   )

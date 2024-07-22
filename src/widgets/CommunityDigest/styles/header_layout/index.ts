@@ -8,6 +8,12 @@ import WatchSVG from '~/icons/Watch'
 import { BaseBanner } from '..'
 import { HEADER_LAYOUT } from '~/const/layout'
 
+export default () => {
+  return {
+    //
+  }
+}
+
 type TWrapper = {
   metric?: TMetric
   $headerLayout?: THeaderLayout
@@ -30,10 +36,6 @@ export const Wrapper = styled(BaseBanner)<TWrapper>`
   );
 
   border-image-slice: 1;
-
-  ${css.media.mobile`
-    min-height: 48px;
-  `};
 `
 export const InnerWrapper = styled.div<TWrapper>`
   ${css.row('justify-center')};
@@ -43,33 +45,20 @@ export const InnerWrapper = styled.div<TWrapper>`
   // if use margin-left will cause horizontal scrollbar
   ${({ metric }) => css.fitContentWidth(metric)};
   transition: min-height 0.25s;
-
-  ${css.media.mobile`
-     padding-left: 0;
-  `};
 `
 export const BaseBannerContent = styled.div`
   ${css.column('align-center')};
   width: 100%;
-
-  ${css.media.mobile`
-    padding-left: 18px;
-    padding-right: 20px;
-  `};
 `
 export const BannerContentWrapper = styled(BaseBannerContent)`
   ${css.column('justify-between')};
   align-items: 'center';
-`
-export const BannerContainer = styled(BaseBanner)`
-  /* min-height: 125px; */
 `
 export const CommunityBaseInfo = styled.div`
   ${css.row('justify-between', 'align-center')};
   width: 100%;
   padding-top: 10px;
 `
-
 export const MobileNaviWrapper = styled.div`
   display: none;
 

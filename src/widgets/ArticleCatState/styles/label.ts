@@ -1,4 +1,4 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
 import LightSVG from '~/icons/ColorLight'
 import QuestionSVG from '~/icons/Question'
@@ -6,44 +6,30 @@ import BugSVG from '~/icons/ColorBug'
 import RejectSVG from '~/icons/Reject'
 import OtherSVG from '~/icons/menu/Feedback'
 
-type TWrapper = {
-  $smaller: boolean
+type TProps = {
+  smaller: boolean
 }
 
-export const Wrapper = styled.div<TWrapper>`
-  color: ${theme('article.title')};
-  ${css.row('align-center')};
-  padding: 0 5px;
-  line-height: ${({ $smaller }) => ($smaller ? '20px' : '32px')};
-  font-size: 12px;
-  opacity: 0.82;
-`
-export const IconWrapper = styled.div`
-  ${css.size(16)};
-  margin-right: 3px;
-  ${css.row('align-both')};
-`
-export const LockWrapper = styled.div<{ $smaller: boolean }>`
-  color: ${theme('article.info')};
-  font-size: ${({ $smaller }) => ($smaller ? '12px' : '14px')};
-  margin-right: ${({ $smaller }) => ($smaller ? '0' : '6px')};
-`
+export default ({ smaller }: TProps) => {
+  const { cn, fg, fill } = useTwBelt()
 
-const commonIcon = (comp) => {
-  return styled(comp)`
-    ${css.size(13)};
-    fill: ${theme('article.digest')};
-  `
+  return {
+    wrapper: cn(
+      'row-center px-1.5 py-0.5 bold',
+      smaller ? 'text-xs' : 'text-sm',
+      fg('text.digest'),
+    ),
+    text: 'mt-px',
+    iconBox: 'row-align-both size-4 mr-0.5',
+    icon: cn('size-3.5', fill('text.digest')),
+    iconReject: cn('size-3', fill('rainbow.red')),
+  }
 }
 
 export const Icon = {
-  REJECT: commonIcon(RejectSVG),
-  FEATURE: commonIcon(LightSVG),
-  BUG: styled(commonIcon(BugSVG))`
-    ${css.size(14)};
-  `,
-  QUESTION: styled(commonIcon(QuestionSVG))`
-    ${css.size(12)};
-  `,
-  OTHER: commonIcon(OtherSVG),
+  REJECT: RejectSVG,
+  FEATURE: LightSVG,
+  BUG: BugSVG,
+  QUESTION: QuestionSVG,
+  OTHER: OtherSVG,
 }

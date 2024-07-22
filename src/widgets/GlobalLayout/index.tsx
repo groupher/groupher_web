@@ -7,10 +7,6 @@
 import { type FC, type ReactNode, lazy, Suspense } from 'react'
 import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
-import METRIC from '~/const/metric'
-
-import useMetric from '~/hooks/useMetric'
-
 import Mushroom from '~/containers/Mushroom'
 import ThemePalette from '~/widgets/ThemePalette'
 
@@ -24,7 +20,7 @@ import SEO from './SEO'
 import Wallpaper from './Wallpaper'
 import Main from './Main'
 
-import { Skeleton, Wrapper, ScrollWrapper } from './styles'
+import useSalon from './styles'
 
 const Addon = lazy(() => import('./Addon'))
 
@@ -35,7 +31,7 @@ type TProps = {
 }
 
 const GlobalLayout: FC<TProps> = ({ children }) => {
-  const metric = useMetric()
+  const s = useSalon()
 
   // useSyncAccount()
   // const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
@@ -57,16 +53,16 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
         <Suspense fallback={null}>
           <Addon />
         </Suspense>
-        <Skeleton>
+        <div className={s.skeleton}>
           <Wallpaper />
-          <ScrollWrapper $noMobilePadding={metric === METRIC.HOME}>
-            <Wrapper>
+          <div className={s.scrollWrapper}>
+            <div className={s.wrapper}>
               <SEO />
               <Main>{children}</Main>
               {/* {isMobile && <ModeLine />} */}
-            </Wrapper>
-          </ScrollWrapper>
-        </Skeleton>
+            </div>
+          </div>
+        </div>
 
         {/* {showDashboardAlertUI && <DashboardAlert />} */}
       </ThemePalette>

@@ -2,6 +2,7 @@ import { twMerge } from 'tailwind-merge'
 import { clsx, type ClassValue } from 'clsx'
 
 import type { TColorName, TSpace } from '~/spec'
+import { COLOR_NAME } from '~/const/colors'
 import type { TFlatThemeKey } from '~/utils/themes/skins'
 
 import { camelize } from '~/fmt'
@@ -10,7 +11,7 @@ import useTheme from '~/hooks/useTheme'
 import useAvatarLayout from '~/hooks/useAvatarLayout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-type TColorPrefix = 'fg' | 'bg'
+type TColorPrefix = 'fg' | 'bg' | 'fill'
 
 /**
  * Prevents output of unnecessary Tailwind classes and merges classes.
@@ -29,6 +30,7 @@ type TRet = {
   fill: (key: TFlatThemeKey) => string
   br: (key: TFlatThemeKey) => string
   rainbow: (color: TColorName, prefix?: TColorPrefix) => string
+  rainbowLight: (color: TColorName | string) => string
   primary: (prefix?: TColorPrefix) => string
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
@@ -69,6 +71,17 @@ export default (): TRet => {
     return isLightTheme ? `${prefix$}-${color$}` : `${prefix$}-${color$}-dark`
   }
 
+  const rainbowLight = (color: TColorName | string): string => {
+    const prefix$ = 'bg-rainbow'
+    const color$ = camelize(color)
+
+    if (color === COLOR_NAME.BLACK) {
+      return bg('hoverBg')
+    }
+
+    return isLightTheme ? `${prefix$}-${color$}Bg` : `${prefix$}-${color$}Bg-dark`
+  }
+
   /**
    * use primary color for text/background/border color
    * primary color is set in dashboard
@@ -99,6 +112,7 @@ export default (): TRet => {
     fill,
     br,
     rainbow,
+    rainbowLight,
     primary,
     zise,
     margin,

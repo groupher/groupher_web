@@ -4,7 +4,7 @@
  *
  */
 
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TSpace, TArticleCat, TArticleState } from '~/spec'
 import { ARTICLE_CAT, ARTICLE_STATE } from '~/const/gtd'
@@ -12,7 +12,7 @@ import { ARTICLE_CAT, ARTICLE_STATE } from '~/const/gtd'
 import State from './State'
 import Label from './Label'
 
-import { Wrapper } from './styles'
+import useSalon from './styles'
 
 export type TProps = {
   testid?: string
@@ -29,14 +29,16 @@ const ArticleCatState: FC<TProps> = ({
   state = ARTICLE_STATE.DEFAULT,
   smaller = true,
   noBorder = false,
-  ...restProps
+  ...spacing
 }) => {
+  const s = useSalon({ noBorder, ...spacing })
+
   return (
-    <Wrapper $testid={testid} $noBorder={noBorder} {...restProps}>
+    <div className={s.wrapper}>
       {cat && <Label cat={cat} smaller={smaller} />}
       {cat && cat !== ARTICLE_CAT.OTHER && <State cat={cat} state={state} smaller={smaller} />}
-    </Wrapper>
+    </div>
   )
 }
 
-export default memo(ArticleCatState)
+export default ArticleCatState

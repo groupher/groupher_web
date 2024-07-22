@@ -18,7 +18,6 @@ export const Wrapper = styled.header.attrs<TTestable>(({ $testid }) => ({
   border-bottom-color: ${theme('divider')};
   box-shadow: ${({ noBorder }) => (noBorder ? 'none' : theme('drawer.shadow'))};
 `
-
 type TInnerWrapper = { metric: TMetric }
 const InnerWrapper = styled.div<TInnerWrapper>`
   ${css.row('align-center')};

@@ -5,49 +5,51 @@ import useNameAlias from '~/hooks/useNameAlias'
 
 import type { TProps as TArticleStateBadgeProps } from '.'
 
-import { Wrapper, IconWrapper, Icon } from './styles/label'
+import useSalon, { Icon } from './styles/label'
 
 type TProps = Pick<TArticleStateBadgeProps, 'cat' | 'smaller'>
 
 const Label: FC<TProps> = ({ cat, smaller }) => {
+  const s = useSalon({ smaller })
+
   const nameAlias = useNameAlias('kanban')
 
   switch (cat) {
     case ARTICLE_CAT.FEATURE: {
       return (
-        <Wrapper $smaller={smaller}>
-          <IconWrapper>
-            <Icon.FEATURE />
-          </IconWrapper>
-          {nameAlias[cat.toLowerCase()]?.name}
-        </Wrapper>
+        <div className={s.wrapper}>
+          <div className={s.iconBox}>
+            <Icon.FEATURE className={s.icon} />
+          </div>
+          <div className={s.text}>{nameAlias[cat.toLowerCase()]?.name}</div>
+        </div>
       )
     }
 
     case ARTICLE_CAT.BUG: {
       return (
-        <Wrapper $smaller={smaller}>
-          <IconWrapper>
-            <Icon.BUG />
-          </IconWrapper>
-          {nameAlias[cat.toLowerCase()]?.name}
-        </Wrapper>
+        <div className={s.wrapper}>
+          <div className={s.iconBox}>
+            <Icon.BUG className={s.icon} />
+          </div>
+          <div className={s.text}>{nameAlias[cat.toLowerCase()]?.name}</div>
+        </div>
       )
     }
 
     case ARTICLE_CAT.QUESTION: {
       return (
-        <Wrapper $smaller={smaller}>
-          <IconWrapper>
-            <Icon.QUESTION />
-          </IconWrapper>
-          {nameAlias[cat.toLowerCase()]?.name}
-        </Wrapper>
+        <div className={s.wrapper}>
+          <div className={s.iconBox}>
+            <Icon.QUESTION className={s.icon} />
+          </div>
+          <div className={s.text}>{nameAlias[cat.toLowerCase()]?.name}</div>
+        </div>
       )
     }
 
     default:
-      return <Wrapper $smaller={smaller}>{nameAlias[cat.toLowerCase()]?.name}</Wrapper>
+      return <div className={s.wrapper}>{nameAlias[cat.toLowerCase()]?.name}</div>
   }
 }
 

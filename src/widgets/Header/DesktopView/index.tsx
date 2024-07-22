@@ -10,6 +10,7 @@ import GeneralLayout from './GeneralLayout'
 
 const DesktopView: FC<TProps> = (props) => {
   const { metric } = props
+
   switch (metric) {
     case METRIC.ARTICLE: {
       return <ArticleLayout {...props} />
