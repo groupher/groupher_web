@@ -31,7 +31,7 @@ const KanbanItem: FC<TProps> = ({ article }) => {
     <Wrapper>
       <Title onClick={() => previewArticle(article)}>{title}</Title>
       <SpaceGrow />
-      <TagsList items={articleTags} right={12} />
+      <TagsList items={articleTags} right={1} />
       <ArticleCatState cat={cat} right={10} top={-1} />
       <UpvotesWrapper>
         <Upvote count={upvotesCount + 2} avatarList={mockUsers(3)} type={UPVOTE_LAYOUT.GENERAL} />

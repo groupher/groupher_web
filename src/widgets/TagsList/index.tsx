@@ -2,7 +2,7 @@
  * TagsList
  */
 
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TTag, TSizeTSM, TSpace } from '~/spec'
 import SIZE from '~/const/size'
@@ -15,8 +15,8 @@ import TagNode from '~/widgets/TagNode'
 
 import FullList from './FullList'
 
-import { getDotSize, getIconSize, getDotMargin, getHashMargin } from './styles/metric'
-import { Wrapper, Tag, Title, More } from './styles'
+import { getDotSize, getIconSize, getDotMargin, getHashMargin } from './salon/metric'
+import useSalon from './salon'
 
 export type TProps = {
   items: TTag[]
@@ -24,7 +24,9 @@ export type TProps = {
   size?: TSizeTSM
 } & TSpace
 
-const TagsList: FC<TProps> = ({ items, max = 2, size = SIZE.TINY, ...restProps }) => {
+const TagsList: FC<TProps> = ({ items, max = 2, size = SIZE.TINY, ...spacing }) => {
+  const s = useSalon(spacing)
+
   const dotSize = getDotSize(size)
   const hashSize = getIconSize(size)
   const dotRight = getDotMargin(size)
@@ -32,11 +34,11 @@ const TagsList: FC<TProps> = ({ items, max = 2, size = SIZE.TINY, ...restProps }
 
   if (items.length > max) {
     return (
-      <Wrapper {...restProps}>
+      <div className={s.wrapper}>
         {sortByColor(items)
           .slice(0, max)
           .map((tag) => (
-            <Tag key={tag.slug}>
+            <div className={s.tag} key={tag.slug}>
               <TagNode
                 color={tag.color}
                 dotSize={dotSize}
@@ -44,19 +46,21 @@ const TagsList: FC<TProps> = ({ items, max = 2, size = SIZE.TINY, ...restProps }
                 dotRight={dotRight}
                 hashRight={hashRight}
               />
-              <Title size={size}>{Trans(tag.title)}</Title>
-            </Tag>
+              <div className={s.title}>{Trans(tag.title)}</div>
+            </div>
           ))}
-        <Tooltip placement="bottom" content={<FullList items={items} size={size} {...restProps} />}>
-          <More>..</More>
+        <Tooltip placement="bottom" content={<FullList items={items} size={size} {...spacing} />}>
+          <div className={s.more}>..</div>
         </Tooltip>
-      </Wrapper>
+      </div>
     )
   }
 
   return (
-    <Wrapper>{items.length > 0 && <FullList items={items} size={size} {...restProps} />}</Wrapper>
+    <div className={s.wrapper}>
+      {items.length > 0 && <FullList items={items} size={size} {...spacing} />}
+    </div>
   )
 }
 
-export default memo(TagsList)
+export default TagsList

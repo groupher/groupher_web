@@ -69,7 +69,7 @@ const Header: FC<TProps> = ({ article }) => {
         </a>
 
         {/*  @ts-ignore */}
-        <TagsList items={articleTags} left={12} top={2} />
+        <TagsList items={articleTags} left={1} top="px" />
         <SpaceGrow />
         {commentsCount !== 0 && (
           <CommentsCount
