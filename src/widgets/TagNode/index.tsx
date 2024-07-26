@@ -8,16 +8,19 @@ import type { FC } from 'react'
 
 import type { TColorName } from '~/spec'
 import useLayout from '~/hooks/useLayout'
-import useTheme from '~/hooks/useTheme'
+// import useTheme from '~/hooks/useTheme'
 
 import { TAG_LAYOUT } from '~/const/layout'
 import { COLOR_NAME } from '~/const/colors'
-import THEME from '~/const/theme'
+// import THEME from '~/const/theme'
 
-import { Dot, HashBoldIcon, HashNormalIcon } from './styles'
+import HashSVG from '~/icons/HashTag'
+import HashSVGBold from '~/icons/HashTagBold'
 
-type TProps = {
-  color?: string
+import useSalon from './styles'
+
+export type TProps = {
+  color?: TColorName
   dotSize?: number
   dotRight?: number
   dotLeft?: number
@@ -26,51 +29,21 @@ type TProps = {
   hashRight?: number
   hashLeft?: number
   hashTop?: number
-  opacity?: number
   boldHash?: boolean
 }
 
-const TagNode: FC<TProps> = ({
-  color = COLOR_NAME.BLACK,
-  dotSize = 10,
-  dotRight = 5,
-  dotTop = 0,
-  dotLeft = 0,
-  hashSize = 15,
-  hashRight = 5,
-  hashLeft = 0,
-  hashTop = 0,
-  opacity = 1,
-  boldHash = false,
-}) => {
-  const { tagLayout } = useLayout()
-  const { theme } = useTheme()
-  const darkTheme = theme === THEME.DARK
+const TagNode: FC<TProps> = ({ color = COLOR_NAME.BLACK, boldHash = false, ...restProps }) => {
+  const s = useSalon({ color, ...restProps })
 
-  const HashIcon = boldHash ? HashBoldIcon : HashNormalIcon
+  const { tagLayout } = useLayout()
+  // const { theme } = useTheme()
+  // const darkTheme = theme === THEME.DARK
+
+  const HashIcon = boldHash ? HashSVGBold : HashSVG
 
   return (
     <>
-      {tagLayout === TAG_LAYOUT.DOT ? (
-        <Dot
-          $color={color as TColorName}
-          size={dotSize}
-          opacity={opacity}
-          top={dotTop}
-          left={dotLeft}
-          right={dotRight}
-        />
-      ) : (
-        <HashIcon
-          $color={color as TColorName}
-          size={hashSize}
-          opacity={opacity}
-          top={hashTop}
-          left={hashLeft}
-          right={hashRight}
-          $darkTheme={darkTheme}
-        />
-      )}
+      {tagLayout === TAG_LAYOUT.DOT ? <div className={s.dot} /> : <HashIcon className={s.hash} />}
     </>
   )
 }

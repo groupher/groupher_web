@@ -4,11 +4,11 @@ import SIZE from '~/const/size'
 export const getIconSize = (size: TSizeTSM): number => {
   switch (size) {
     case SIZE.MEDIUM: {
-      return 10
+      return 2
     }
 
     default: {
-      return 10
+      return 2
     }
   }
 }
@@ -45,22 +45,6 @@ export const getDotSize = (size: TSizeTSM): number => {
 
     default: {
       return 6
-    }
-  }
-}
-
-export const getTitleSize = (size: TSizeTSM): string => {
-  switch (size) {
-    case SIZE.SMALL: {
-      return '12px'
-    }
-
-    case SIZE.MEDIUM: {
-      return '13px'
-    }
-
-    default: {
-      return '11px'
     }
   }
 }

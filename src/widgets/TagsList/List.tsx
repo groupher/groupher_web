@@ -1,8 +1,9 @@
-import TagNode from '~/widgets/TagNode'
+import type { TColorName } from '~/spec'
 
 import { sortByColor } from '~/helper'
-
 import { Trans } from '~/i18n'
+
+import TagNode from '~/widgets/TagNode'
 
 import { getDotSize, getIconSize, getDotMargin, getHashMargin } from './salon/metric'
 import useSalon from './salon'
@@ -26,7 +27,7 @@ export default ({ items, max, size, withTitle = true, ...spacing }: TProps) => {
         .map((tag) => (
           <div className={s.tag} key={tag.slug}>
             <TagNode
-              color={tag.color}
+              color={tag.color as TColorName}
               dotSize={dotSize}
               hashSize={hashSize}
               dotRight={dotRight}

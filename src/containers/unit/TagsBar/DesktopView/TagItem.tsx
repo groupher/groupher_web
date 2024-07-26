@@ -18,17 +18,7 @@ const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
   return (
     <Wrapper $active={active}>
       <Tag $active={active} $color={tag.color as TColorName} onClick={() => onSelect(tag)}>
-        <TagNode
-          color={tag.color}
-          dotSize={8}
-          dotLeft={1}
-          dotRight={10}
-          dotTop={1}
-          hashSize={11}
-          hashRight={9}
-          opacity={0.7}
-          boldHash
-        />
+        <TagNode color={tag.color as TColorName} boldHash />
         <Title $active={active}>{cutRest(Trans(tag.title), 10)}</Title>
       </Tag>
       <Grow onClick={() => onSelect(tag)} />
