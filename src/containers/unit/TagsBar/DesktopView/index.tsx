@@ -11,7 +11,7 @@ import GobackTag from './GobackTag'
 import Folder from './Folder'
 
 import useLogic from '../useLogic'
-import useSalon from '../styles/desktop_view'
+import useSalon from '../salon'
 
 type TProps = Omit<TTagProps, 'view'>
 

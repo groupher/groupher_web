@@ -26,13 +26,12 @@ const TagNote: FC = () => {
       <Header>
         <BgWrapper $color={tag.color as TColorName}>
           <TagNode
-            color={tag.color}
+            color={tag.color as TColorName}
             dotSize={8}
-            hashSize={12}
+            hashSize={3}
             dotLeft={5}
-            hashLeft={2}
-            hashRight={8}
-            opacity={0.8}
+            hashLeft={0.5}
+            hashRight={1}
             boldHash
           />
           <Title color={tag.color as TColorName}>{tag.title}</Title>

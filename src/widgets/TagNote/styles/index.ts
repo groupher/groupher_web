@@ -27,6 +27,7 @@ export const BgWrapper = styled.div<TColor>`
   margin-left: -2px;
   padding-left: 6px;
   padding-right: 10px;
+  height: 25px;
   border-radius: 10px;
 `
 export const Title = styled.h3<{ color: TColorName }>`

@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import { isEmpty } from 'ramda'
 
+import type { TColorName } from '~/spec'
 import useViewingArticle from '~/hooks/useViewingArticle'
 
 import { SpaceGrow } from '~/widgets/Common'
@@ -23,13 +24,12 @@ const TagsItem: FC<TProps> = ({ onClick }) => {
     return (
       <MenuItem onClick={onClick}>
         <TagNode
-          opacity={0.5}
-          dotRight={8}
+          dotRight={1.5}
           dotLeft={2}
           dotTop={1}
           hashLeft={-1}
           hashRight={6}
-          color={tag.color}
+          color={tag.color as TColorName}
         />
         <TagTitle>{tag.title}</TagTitle>
         {tags.length > 1 && <TagCount>({tags.length})</TagCount>}
@@ -41,7 +41,7 @@ const TagsItem: FC<TProps> = ({ onClick }) => {
 
   return (
     <MenuItem onClick={onClick}>
-      <TagNode opacity={0.5} dotRight={8} dotLeft={2} dotTop={1} hashLeft={-1} hashRight={6} />
+      <TagNode dotRight={1.5} dotLeft={2} dotTop={1} hashLeft={-1} hashRight={6} />
       标签
       <SpaceGrow />
       <Icon.Arrow />

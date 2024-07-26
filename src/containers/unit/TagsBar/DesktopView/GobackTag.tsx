@@ -2,18 +2,22 @@ import type { FC } from 'react'
 
 import type { TTag } from '~/spec'
 import { EMPTY_TAG } from '~/const/utils'
-import { Wrapper, BackIcon, TagTitle } from '../styles/desktop_view/goback_tag'
+import ArrowSVG from '~/icons/Arrow'
+
+import useSalon from '../salon/goback_tag'
 
 type TProps = {
   onSelect?: (tag?: TTag) => void
 }
 
 const GobackTag: FC<TProps> = ({ onSelect }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper onClick={() => onSelect(EMPTY_TAG)}>
-      <BackIcon />
-      <TagTitle>全部标签</TagTitle>
-    </Wrapper>
+    <div className={s.wrapper} onClick={() => onSelect(EMPTY_TAG)}>
+      <ArrowSVG className={s.arrow} />
+      <div className={s.title}>全部标签</div>
+    </div>
   )
 }
 

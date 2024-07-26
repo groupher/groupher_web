@@ -6,7 +6,9 @@ import { Trans } from '~/i18n'
 import { EMPTY_TAG } from '~/const/utils'
 import TagNode from '~/widgets/TagNode'
 
-import { Wrapper, Tag, Grow, Title, CloseWrapper, CloseIcon } from '../styles/desktop_view/tag_item'
+import CloseSVG from '~/icons/CloseLight'
+
+import useSalon from '../salon/tag_item'
 
 type TProps = {
   tag: TTag
@@ -15,19 +17,20 @@ type TProps = {
 }
 
 const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
+  const s = useSalon({ active, color: tag.color as TColorName })
+
   return (
-    <Wrapper $active={active}>
-      <Tag $active={active} $color={tag.color as TColorName} onClick={() => onSelect(tag)}>
+    <div className={s.wrapper}>
+      <div className={s.tag} onClick={() => onSelect(tag)}>
         <TagNode color={tag.color as TColorName} boldHash />
-        <Title $active={active}>{cutRest(Trans(tag.title), 10)}</Title>
-      </Tag>
-      <Grow onClick={() => onSelect(tag)} />
+        <div className={s.title}>{cutRest(Trans(tag.title), 10)}</div>
+      </div>
       {active && (
-        <CloseWrapper onClick={(e) => onSelect(EMPTY_TAG)}>
-          <CloseIcon />
-        </CloseWrapper>
+        <div className={s.closeBox} onClick={(e) => onSelect(EMPTY_TAG)}>
+          <CloseSVG className={s.closeIcon} />
+        </div>
       )}
-    </Wrapper>
+    </div>
   )
 }
 

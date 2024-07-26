@@ -5,6 +5,10 @@ const lightTokens = require('./lightTokens')
 const darkTokens = require('./darkTokens')
 
 module.exports = {
+  transparent: {
+    DEFAULT: 'transparent',
+    dark: 'transparent',
+  },
   primary: {
     DEFAULT: lightTokens.primaryColor,
     dark: darkTokens.primaryColor,
