@@ -54,7 +54,7 @@ const TagBar: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
             </DotSelector>
           </ColorSelector>
         ) : (
-          <TagNode color={tag.color} hashSize={12} hashRight={0} boldHash dotTop={1} />
+          <TagNode color={tag.color as TColorName} boldHash dotTop={1} />
         )}
         {isEditMode ? (
           <InputWrapper>
