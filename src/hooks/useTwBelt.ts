@@ -86,7 +86,7 @@ export default (): TRet => {
    * use primary color for text/background/border color
    * primary color is set in dashboard
    */
-  const primary = (prefix?: 'fg'): string => rainbow(primaryColor, prefix)
+  const primary = (prefix: 'fg'): string => rainbow(primaryColor, prefix)
 
   /**
    * this is not typo, cause the exsiting prama is `size`
