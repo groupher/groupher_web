@@ -11,13 +11,12 @@ import useLayout from '~/hooks/useLayout'
 // import useTheme from '~/hooks/useTheme'
 
 import { TAG_LAYOUT } from '~/const/layout'
-import { COLOR_NAME } from '~/const/colors'
 // import THEME from '~/const/theme'
 
 import HashSVG from '~/icons/HashTag'
 import HashSVGBold from '~/icons/HashTagBold'
 
-import useSalon from './styles'
+import useSalon from './salon'
 
 export type TProps = {
   color?: TColorName
@@ -32,8 +31,8 @@ export type TProps = {
   boldHash?: boolean
 }
 
-const TagNode: FC<TProps> = ({ color = COLOR_NAME.BLACK, boldHash = false, ...restProps }) => {
-  const s = useSalon({ color, ...restProps })
+const TagNode: FC<TProps> = ({ boldHash = false, ...restProps }) => {
+  const s = useSalon({ ...restProps })
 
   const { tagLayout } = useLayout()
   // const { theme } = useTheme()
