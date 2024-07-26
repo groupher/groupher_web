@@ -5,11 +5,11 @@
  *
  */
 
-import Markdown from 'markdown-to-jsx'
 import type { TColorName } from '~/spec'
 
 import useActiveTag from '~/hooks/useActiveTag'
 import TagNode from '~/widgets/TagNode'
+import Markdown from '~/widgets/Markdown'
 
 import useSalon from './styles'
 
@@ -35,9 +35,7 @@ export default () => {
           <div className={s.title}>{tag.title}</div>
         </div>
       </div>
-      <div>
-        <Markdown>{tag.desc || ''}</Markdown>
-      </div>
+      <Markdown>{tag.desc || ''}</Markdown>
     </div>
   )
 }

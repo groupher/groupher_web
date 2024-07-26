@@ -1,6 +1,6 @@
-import { twMerge } from 'tailwind-merge'
 import { clsx, type ClassValue } from 'clsx'
 
+import { cn } from '~/css'
 import type { TColorName, TSpace } from '~/spec'
 import { COLOR_NAME } from '~/const/colors'
 import type { TFlatThemeKey } from '~/utils/themes/skins'
@@ -12,15 +12,6 @@ import useAvatarLayout from '~/hooks/useAvatarLayout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 type TColorPrefix = 'fg' | 'bg' | 'fill'
-
-/**
- * Prevents output of unnecessary Tailwind classes and merges classes.
- * usefull tips from: https://www.youtube.com/watch?v=re2JFITR7TI
- *
- * @param inputs - Any number of class names or class name arrays.
- * @returns A string of merged class names.
- */
-const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs))
 
 type TRet = {
   cn: (...inputs: ClassValue[]) => string

@@ -8,10 +8,10 @@ type TProps = {
 }
 
 export default ({ color }: TProps) => {
-  const { cn, fg, rainbowLight } = useTwBelt()
+  const { cn, fg, br, rainbowLight } = useTwBelt()
 
   return {
-    wrapper: 'border-b border-divider pt-3.5 mb-7 -mt-1.5',
+    wrapper: cn('border-b pt-3.5 pb-4 mb-4 -mt-1.5', br('divider')),
     header: 'row-center mb-1.5 w-full',
     tagWrapper: cn('row-align-both -ml-0.5 pl-2 pr-3 rounded-lg h-7', rainbowLight(color)),
     title: cn('z-2', fg('text.title')),

@@ -4,12 +4,12 @@
  */
 
 import type { FC } from 'react'
-import Markdown from 'markdown-to-jsx'
 
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 import useLayout from '~/hooks/useLayout'
 import { BANNER_LAYOUT } from '~/const/layout'
 
+import Markdown from '~/widgets/Markdown'
 import { SexyDivider as Divider } from '~/widgets/Common'
 
 import Members from './Members'

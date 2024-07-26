@@ -9,5 +9,5 @@ module.exports = {
     screens,
   },
   safelist,
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 }

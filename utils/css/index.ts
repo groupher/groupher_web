@@ -16,9 +16,14 @@ import { flex, flexGrow, flexWrap, flexColumn, flexColumnGrow, flexColumnWrap } 
 
 import { circle, size } from './shape'
 
-export const cn = (...inputs: ClassValue[]) => {
-  return twMerge(clsx(inputs))
-}
+/**
+ * Prevents output of unnecessary Tailwind classes and merges classes.
+ * usefull tips from: https://www.youtube.com/watch?v=re2JFITR7TI
+ *
+ * @param inputs - Any number of class names or class name arrays.
+ * @returns A string of merged class names.
+ */
+export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs))
 
 const smokey = (initOpacity = 0.6): string => `
   opacity: ${initOpacity};

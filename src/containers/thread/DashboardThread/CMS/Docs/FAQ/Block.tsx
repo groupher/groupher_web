@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
-import Markdown from 'markdown-to-jsx'
 import type { TFAQSection } from '~/spec'
 
+import Markdown from '~/widgets/Markdown'
 import Editor from './Editor'
 
 import useFAQ from '../../../logic/useFAQ'
