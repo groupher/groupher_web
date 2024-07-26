@@ -75,14 +75,7 @@ const DiscussDemo: FC = () => {
       <DetailWrapper>
         <Header>
           <ArticleCatState cat={ARTICLE_CAT.FEATURE} right={10} top={-1} left={-1} />
-          <TagNode
-            color={COLOR_NAME.PURPLE}
-            hashSize={11}
-            hashRight={3}
-            hashTop={-1}
-            opacity={0.7}
-            boldHash
-          />
+          <TagNode color={COLOR_NAME.PURPLE} boldHash />
           <Tag>UI / UX</Tag>
         </Header>
         <Title>蹲一个暗黑模式</Title>

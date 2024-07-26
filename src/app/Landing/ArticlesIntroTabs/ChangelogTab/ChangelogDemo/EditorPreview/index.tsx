@@ -28,12 +28,12 @@ const EditorPreview: FC = () => {
 
         <TagsWrapper>
           <TagItem>
-            <TagNode color={COLOR_NAME.GREEN} hashSize={10} hashRight={4} opacity={0.6} boldHash />
+            <TagNode color={COLOR_NAME.GREEN} boldHash />
             Web
           </TagItem>
 
           <TagItem>
-            <TagNode color={COLOR_NAME.ORANGE} hashSize={10} hashRight={4} opacity={0.6} boldHash />
+            <TagNode color={COLOR_NAME.ORANGE} boldHash />
             Mobile
           </TagItem>
         </TagsWrapper>
