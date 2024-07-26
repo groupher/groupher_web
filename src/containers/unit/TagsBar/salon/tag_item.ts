@@ -4,7 +4,7 @@ import useTwBelt from '~/hooks/useTwBelt'
 type TProps = TActive & TColor
 
 export default ({ active, color }: TProps) => {
-  const { cn, fg, bg, fill, rainbow, rainbowLight } = useTwBelt()
+  const { cn, fg, bg, fill, rainbowLight } = useTwBelt()
 
   return {
     wrapper: cn(
@@ -15,8 +15,7 @@ export default ({ active, color }: TProps) => {
       active ? rainbowLight(color) : 'transparent',
     ),
     title: cn(
-      active ? 'bold-sm' : '',
-      active ? rainbow(color, 'fg') : fg('text.digest'),
+      active ? fg('text.title') : fg('text.digest'),
       active || `group-hover:${fg('text.title')}`,
       'transition-colors',
     ),
