@@ -11,11 +11,13 @@ import GobackTag from './GobackTag'
 import Folder from './Folder'
 
 import useLogic from '../useLogic'
-import { Wrapper } from '../styles/desktop_view'
+import useSalon from '../styles/desktop_view'
 
 type TProps = Omit<TTagProps, 'view'>
 
 const TagsBar: FC<TProps> = ({ onSelect }) => {
+  const s = useSalon()
+
   const {
     tags,
     activeTag,
@@ -34,7 +36,7 @@ const TagsBar: FC<TProps> = ({ onSelect }) => {
   const groupsKeys = reverse(keys(groupedTags)) as string[]
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {activeTag?.title && (
         <GobackTag
           onSelect={(tag) => {
@@ -58,7 +60,7 @@ const TagsBar: FC<TProps> = ({ onSelect }) => {
           }}
         />
       ))}
-    </Wrapper>
+    </div>
   )
 }
 

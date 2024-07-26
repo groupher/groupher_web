@@ -4,21 +4,11 @@ import { findIndex, reverse } from 'ramda'
 import type { TTag } from '~/spec'
 import { sortByColor } from '~/helper'
 
-import TagItem from './TagItem'
+import ArrowSVG from '~/icons/ArrowSimple'
+import MoreSVG from '~/icons/menu/MoreL'
 
-import {
-  Wrapper,
-  Header,
-  ArrowIcon,
-  Title,
-  FolderTitle,
-  Count,
-  Content,
-  SubToggle,
-  SubToggleTitle,
-  SubTogglePrefixIcon,
-  ArrowWrapper,
-} from '../styles/desktop_view/folder'
+import TagItem from './TagItem'
+import useSalon from '../styles/desktop_view/folder'
 
 type TProps = {
   title: string
@@ -52,6 +42,9 @@ const Folder: FC<TProps> = ({
   const isActiveTagInFolder = findIndex((item: TTag) => item.id === activeTag?.id, groupTags) >= 0
 
   const subToggleRef = useRef(null)
+
+  const s = useSalon({ isFolderOpen })
+
   // 当选中的 Tag 被折叠在展示更多里面时，将其展开
   useEffect(() => {
     if (subToggleRef && isActiveTagInFolder) {
@@ -60,9 +53,9 @@ const Folder: FC<TProps> = ({
   }, [subToggleRef, isActiveTagInFolder, groupTags])
 
   return (
-    <Wrapper>
-      <Header
-        $show={title !== 'null'}
+    <>
+      <div
+        className={s.header}
         onClick={() => {
           toggleFolder(!isFolderOpen)
 
@@ -73,18 +66,18 @@ const Folder: FC<TProps> = ({
           }
         }}
       >
-        <ArrowWrapper>
-          <ArrowIcon $isOpen={isFolderOpen} />
-        </ArrowWrapper>
+        <div className={s.arrowBox}>
+          <ArrowSVG className={s.arrow} />
+        </div>
 
-        <Title>
-          <FolderTitle $isOpen={isFolderOpen}>{title}</FolderTitle>
-          {!isFolderOpen && <Count>{sortedTags.length}</Count>}
-        </Title>
+        <div className={s.title}>
+          <div className={s.folderTitle}>{title}</div>
+          {!isFolderOpen && <div className={s.count}>{sortedTags.length}</div>}
+        </div>
         {!isFolderOpen && isActiveTagInFolder && <TagItem tag={activeTag} active />}
-      </Header>
+      </div>
 
-      <Content $isOpen={isFolderOpen}>
+      <div className={s.content}>
         {sortedTags.slice(0, curDisplayCount).map((tag) => (
           <TagItem
             key={tag.slug}
@@ -94,7 +87,8 @@ const Folder: FC<TProps> = ({
           />
         ))}
         {needSubToggle && (
-          <SubToggle
+          <div
+            className={s.subToggle}
             ref={subToggleRef}
             onClick={() => {
               setCurDisplayCount(
@@ -102,12 +96,14 @@ const Folder: FC<TProps> = ({
               )
             }}
           >
-            <SubTogglePrefixIcon />
-            <SubToggleTitle>{curDisplayCount === maxDisplayCount ? '展开' : '收起'}</SubToggleTitle>
-          </SubToggle>
+            <MoreSVG className={s.toggleIcon} />
+            <div className={s.subToggleTitle}>
+              {curDisplayCount === maxDisplayCount ? '展开' : '收起'}
+            </div>
+          </div>
         )}
-      </Content>
-    </Wrapper>
+      </div>
+    </>
   )
 }
 
