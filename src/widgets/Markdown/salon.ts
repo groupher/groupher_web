@@ -12,6 +12,6 @@ export default ({ className, ...spacing }: TProps) => {
   const { isLightTheme } = useTheme()
 
   return {
-    wrapper: cn('prose', isLightTheme ? '' : 'prose-invert', className, margin(spacing)),
+    wrapper: cn('prose', !isLightTheme && 'prose-invert', className, margin(spacing)),
   }
 }
