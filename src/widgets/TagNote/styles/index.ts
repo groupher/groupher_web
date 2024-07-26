@@ -1,5 +1,4 @@
-import styled, { css, theme } from '~/css'
-import type { TColorName, TTestable } from '~/spec'
+import type { TColorName } from '~/spec'
 
 import useTwBelt from '~/hooks/useTwBelt'
 
@@ -17,16 +16,3 @@ export default ({ color }: TProps) => {
     title: cn('z-2', fg('text.title')),
   }
 }
-
-export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TTestable>`
-  ${css.rowWrap('justify-between')};
-
-  border-bottom: 1px solid;
-  border-color: ${theme('divider')};
-  padding: 20px 0;
-  padding-top: 15px;
-  margin-bottom: 25px;
-  margin-top: -8px;
-`
