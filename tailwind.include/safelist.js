@@ -38,6 +38,7 @@ module.exports = [
   'hover:fill-rainbow-red hover:fill-rainbow-red-dark',
   'hover:bg-menuHoverBg hover:bg-menuHoverBg-dark',
   'hover:bg-hoverBg hover:bg-hoverBg-dark',
+  'hover:border-divider hover:border-divider-dark',
   'group-hover:text-text-title',
   'group-hover:text-text-title-dark',
 

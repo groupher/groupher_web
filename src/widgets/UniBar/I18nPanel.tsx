@@ -8,7 +8,7 @@ import { SpaceGrow } from '~/widgets/Common'
 
 import MenuBar from './MenuBar'
 
-import useSalon from './styles/i18n_panel'
+import useSalon from './salon/i18n_panel'
 
 export default () => {
   const { locale, changeLocale } = useChangeI18n()

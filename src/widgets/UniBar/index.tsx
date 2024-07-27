@@ -24,7 +24,7 @@ import MorePanel from './MorePanel'
 import NotifyPanel from './NotifyPanel'
 
 import { MENU, TIP_OPTIONS } from './constant'
-import useSalon, { cn } from './styles'
+import useSalon, { cn } from './salon'
 
 export default () => {
   const ref = useRef(null)

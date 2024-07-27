@@ -1,4 +1,4 @@
-import useSalon from './styles/notify_panel'
+import useSalon from './salon/notify_panel'
 
 export default () => {
   const s = useSalon()

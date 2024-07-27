@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react'
 
-import useSalon from './styles/menu_bar'
+import useSalon from './salon/menu_bar'
 
 type TProps = {
   children: ReactNode
-  onClick: () => void
-  active: boolean
+  onClick?: () => void
+  active?: boolean
 }
 
-export default ({ children, active, onClick }: TProps) => {
+export default ({ children, active = false, onClick = console.log }: TProps) => {
   const s = useSalon({ active })
 
   return (
