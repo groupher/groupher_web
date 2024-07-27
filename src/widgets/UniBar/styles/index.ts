@@ -21,8 +21,7 @@ export default ({ expand }: TProps) => {
     wrapper: cn(
       'relative border rounded-2xl h-10 hover:shadow-md trans-all-200',
       badgeInView ? 'w-48' : 'w-52 -ml-2.5',
-      expand && badgeInView && '-ml-2.5',
-      expand ? 'h-52' : 'h-10', // add real menu height here
+      expand ? 'h-60' : 'h-10', // add real menu height here
       br('divider'),
       bg('popover.bg'),
     ),
@@ -31,11 +30,12 @@ export default ({ expand }: TProps) => {
     iconActive: cn(bg('hoverBg')),
     tipText: cn('py-0.5 px-1', fg('text.digest')),
     buttonBar: cn(
-      'row-align-both absolute h-[38px] w-full left-px bottom-0 -ml-px gap-x-1.5 rounded-2xl',
+      'row-align-both absolute h-[38px] w-full left-px bottom-0 -ml-px rounded-2xl',
+      badgeInView ? 'gap-x-2' : 'gap-x-1.5',
       bg('htmlBg'),
     ),
     icon,
-    iconI18n: cn(icon, 'size-6'),
+    iconI18n: cn(icon, 'size-6 mt-0.5 ml-0.5'),
     iconPeopleActive: cn(fill('rainbow.red'), `hover:${fill('rainbow.red')}`),
   }
 }

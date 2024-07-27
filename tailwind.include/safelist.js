@@ -7,7 +7,7 @@ const TEXT_COLORS = [
   'text-hint',
 ]
 
-const BG_COLORS = ['dot', 'hoverBg', 'htmlBg', 'popover-bg']
+const BG_COLORS = ['dot', 'hoverBg', 'htmlBg', 'popover-bg', 'menuHoverBg']
 const FILL_COLORS = ['text-title', 'text-digest', 'text-body', 'rainbow-red']
 
 const GENERAL_CLASSES = ['border-divider', 'article-hover-linear']
@@ -36,6 +36,7 @@ module.exports = [
 
   'hover:fill-text-title hover:fill-text-title-dark',
   'hover:fill-rainbow-red hover:fill-rainbow-red-dark',
+  'hover:bg-menuHoverBg hover:bg-menuHoverBg-dark',
   'hover:bg-hoverBg hover:bg-hoverBg-dark',
   'group-hover:text-text-title',
   'group-hover:text-text-title-dark',

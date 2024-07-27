@@ -1,8 +1,9 @@
-import styled, { theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  color: ${theme('article.digest')};
-  padding: 12px 18px;
-  font-size: 13px;
-`
-export const holder = 1
+export default () => {
+  const { cn, fg } = useTwBelt()
+
+  return {
+    wrapper: cn('px-3 py-4 text-sm', fg('text.digest')),
+  }
+}
