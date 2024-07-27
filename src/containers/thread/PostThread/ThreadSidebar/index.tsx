@@ -46,69 +46,73 @@ export default () => {
   return (
     <div className={s.wrapper} data-test-id="thread-sidebar">
       <Sticky offsetTop={0}>
-        <Fragment>
-          {showCommunityBadge && bannerLayout !== BANNER_LAYOUT.TABBER && (
-            <Fragment>
-              <h3 className={s.title}>{t('intro', 'titleCase')}</h3>
-              <div className={s.desc}>{curCommunity.desc}</div>
-              <div className={s.homeLinks}>
-                <LinkSVG className={s.linkIcon} />
-                <Link href="https://groupher.com" maxLength="150px">
-                  {curCommunity.homepage}
-                </Link>
-                <SpaceGrow />
-
-                <GetMe />
-              </div>
-            </Fragment>
-          )}
-
-          <div className={s.showArea}>
-            {showCommunityBadge && (
+        <div className={s.stickyWrapper}>
+          <Fragment>
+            {showCommunityBadge && bannerLayout !== BANNER_LAYOUT.TABBER && (
               <Fragment>
-                <h3 className={s.title}>{t('team.member', 'titleCase')}</h3>
-                <Br top={14} />
+                <h3 className={s.title}>{t('intro', 'titleCase')}</h3>
+                <div className={s.desc}>{curCommunity.desc}</div>
+                <div className={s.homeLinks}>
+                  <LinkSVG className={s.linkIcon} />
+                  <Link href="https://groupher.com" maxLength="150px">
+                    {curCommunity.homepage}
+                  </Link>
+                  <SpaceGrow />
+
+                  <GetMe />
+                </div>
               </Fragment>
             )}
 
-            <div className={s.joiners}>
-              {mockUsers(5).map((user) => (
-                <Img
-                  key={user.login}
-                  className={s.joinAvatar}
-                  src={user.avatar}
-                  fallback={<ImgFallback size={24} right={8} user={user} />}
-                />
-              ))}
-              <div className={s.moreNum} onClick={() => listUsers('drawer')}>
-                +2
+            <div className={s.showArea}>
+              {showCommunityBadge && (
+                <Fragment>
+                  <h3 className={s.title}>{t('team.member', 'titleCase')}</h3>
+                  <Br top={14} />
+                </Fragment>
+              )}
+
+              <div className={s.joiners}>
+                {mockUsers(5).map((user) => (
+                  <Img
+                    key={user.login}
+                    className={s.joinAvatar}
+                    src={user.avatar}
+                    fallback={<ImgFallback size={24} right={8} user={user} />}
+                  />
+                ))}
+                <div className={s.moreNum} onClick={() => listUsers('drawer')}>
+                  +2
+                </div>
               </div>
             </div>
+          </Fragment>
+
+          <div className={s.publish}>
+            <PublishButton
+              text="参与讨论"
+              onMenuSelect={(cat) => {
+                callGEditor()
+                setTimeout(() => callSyncSelector({ cat, tag: activeTag }), 500)
+              }}
+              left={-2}
+              offset={[0, 5]}
+            />
           </div>
-        </Fragment>
 
-        <div className={s.publish}>
-          <PublishButton
-            text="参与讨论"
-            onMenuSelect={(cat) => {
-              callGEditor()
-              setTimeout(() => callSyncSelector({ cat, tag: activeTag }), 500)
-            }}
-            left={-2}
-            offset={[0, 5]}
-          />
+          <CommunityBrief />
+          {!showCommunityBadge && <SexyDivider bottom={5} />}
+
+          <div className={s.tagsBar}>
+            <TagsBar onSelect={() => refreshArticles()} />
+          </div>
+
+          <Suspense fallback={null}>
+            <div className={s.unibarWrapper}>
+              <UniBar />
+            </div>
+          </Suspense>
         </div>
-
-        <CommunityBrief />
-        {!showCommunityBadge && <SexyDivider bottom={5} />}
-
-        <div className={s.tagsBar}>
-          <TagsBar onSelect={() => refreshArticles()} />
-        </div>
-
-        <Suspense fallback={null}>
-          <UniBar />
-        </Suspense>
       </Sticky>
     </div>
   )

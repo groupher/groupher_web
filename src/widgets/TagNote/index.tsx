@@ -35,7 +35,7 @@ export default () => {
           <div className={s.title}>{tag.title}</div>
         </div>
       </div>
-      <Markdown>{tag.desc || ''}</Markdown>
+      <Markdown className="-ml-3.5 scale-95">{tag.desc || ''}</Markdown>
     </div>
   )
 }
