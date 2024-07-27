@@ -11,12 +11,14 @@ export default ({ active }: TProps) => {
 
   return {
     wrapper: cn(
-      'row-center group gap-y-2.5 h-9 text-sm py-0.5 px-1.5 border border-transparent pointer rounded-md',
+      'row-center group border border-transparent pointer rounded-md transition-colors',
+      'gap-y-2.5 h-9 text-sm py-0.5 px-1.5 ',
       active ? 'pr-2 pl-2' : 'pl-3.5',
       badgeInView ? 'pl-3.5' : 'pl-2.5',
       active && bg('menuHoverBg'),
       active && br('divider'),
       active ? fg('text.title') : fg('text.digest'),
+
       `hover:${fg('text.title')}`,
       `hover:${br('divider')}`,
       `hover:${bg('menuHoverBg')}`,
