@@ -1,110 +1,41 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
+import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
 
-import type { TActive } from '~/spec'
+export { cn } from '~/css'
 
-import ArrowTopSVG from '~/icons/Arrow2Top'
-import NotifySVG from '~/icons/Notify'
-import PeopleSVG from '~/icons/HeartPulse'
-import I18nSVG from '~/icons/I18n'
-import MoreSVG from '~/icons/menu/MoreL'
-
-type TWrapper = {
-  $expand: boolean
-  $withTop: boolean
-  $menuHeight: string
-  $forceHidden: boolean
+type TProps = {
+  expand: boolean
 }
 
-export const Wrapper = styled.div<TWrapper>`
-  position: relative;
-  height: ${({ $expand, $menuHeight }) => ($expand ? $menuHeight : '40px')};
-  width: ${({ $expand, $withTop }) => {
-    if ($withTop && $expand) return '200px'
+export default ({ expand }: TProps) => {
+  const { cn, br, fg, bg, fill } = useTwBelt()
+  const { inView: badgeInView } = useCommunityDigestViewport()
 
-    if ($withTop) return '200px'
+  const iconBox = cn(
+    'size-6 row-align-both pointer rounded border border-transparent',
+    `hover:${bg('hoverBg')}`,
+  )
+  const icon = cn('size-4 pointer', fill('text.digest'), `hover:${fill('text.title')}`)
 
-    return '185px'
-  }};
-  margin-left: ${({ $expand, $withTop }) => {
-    if ($expand && $withTop) return '-10px'
-
-    return 0
-  }};
-  box-shadow: ${({ $expand }) => ($expand ? theme('shadow.md') : 'none')};
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  border-radius: 15px;
-  background: ${theme('popover.bg')};
-  overflow: ${({ $forceHidden }) => ($forceHidden ? 'hidden' : 'visible')};
-
-  &:hover {
-    box-shadow: ${theme('shadow.md')};
+  return {
+    wrapper: cn(
+      'relative border rounded-2xl h-10 hover:shadow-md trans-all-200',
+      badgeInView ? 'w-48' : 'w-52 -ml-2.5',
+      expand && badgeInView && '-ml-2.5',
+      expand ? 'h-52' : 'h-10', // add real menu height here
+      br('divider'),
+      bg('popover.bg'),
+    ),
+    topBox: cn(iconBox, badgeInView ? 'max-w-0' : 'max-w-6'),
+    iconBox,
+    iconActive: cn(bg('hoverBg')),
+    tipText: cn('py-0.5 px-1', fg('text.digest')),
+    buttonBar: cn(
+      'row-align-both absolute h-[38px] w-full left-px bottom-0 -ml-px gap-x-1.5 rounded-2xl',
+      bg('htmlBg'),
+    ),
+    icon,
+    iconI18n: cn(icon, 'size-6'),
+    iconPeopleActive: cn(fill('rainbow.red'), `hover:${fill('rainbow.red')}`),
   }
-
-  transition: all .2s cubic-bezier(0.4, 0.01, 0.3, 1.2);
-`
-export const ButtonBar = styled.div`
-  ${css.row('align-both')};
-  height: 36px;
-  width: calc(100% - 2px);
-  position: absolute;
-  bottom: 1px;
-  left: 1px;
-  gap: 0 5px;
-  background: ${theme('htmlBg')};
-  border-radius: 10px;
-`
-export const TipText = styled.div`
-  color: ${theme('article.digest')};
-  padding: 1px 4px;
-`
-export const IconBox = styled.div<TActive>`
-  ${css.size(26)};
-  ${css.row('align-both')};
-  border-radius: 5px;
-  cursor: pointer;
-  background: ${({ $active }) => ($active ? theme('hoverBg') : '')};
-
-  &:hover {
-    box-shadow: ${theme('shadow.xl')};
-    background: ${theme('hoverBg')};
-  }
-`
-export const PeopleBox = styled(IconBox)<TActive>`
-  background: ${({ $active }) => ($active ? theme('rainbow.redBg') : '')};
-  &:hover {
-    background: ${theme('rainbow.redBg')};
-  }
-`
-export const TopBox = styled(IconBox)<{ $show: boolean }>`
-  max-width: ${({ $show }) => ($show ? '26px' : '0')};
-  transition: all .2s;
-`
-const commonIcon = (comp) => {
-  return styled(comp)`
-    ${css.size(16)};
-    fill: ${theme('article.digest')};
-    cursor: pointer;
-
-    &:hover {
-      fill: ${theme('article.title')};
-    }
-  `
-}
-
-export const Icon = {
-  ArrowTop: commonIcon(ArrowTopSVG),
-  Notify: commonIcon(NotifySVG),
-  People: styled(commonIcon(PeopleSVG))<TActive>`
-    ${css.size(15)};
-    fill: ${({ $active }) => ($active ? theme('rainbow.red') : theme('article.digest'))};
-
-    ${PeopleBox}:hover & {
-      fill: ${theme('rainbow.red')};
-    }
-  `,
-  I18n: styled(commonIcon(I18nSVG))`
-    ${css.size(18)};
-  `,
-  More: commonIcon(MoreSVG),
 }

@@ -7,9 +7,14 @@ import { useState, useRef, useCallback } from 'react'
 
 import useOutsideClick from '~/hooks/useOutsideClick'
 import useTrans from '~/hooks/useTrans'
-import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
 
 import { scrollToHeader } from '~/dom'
+
+import ArrowTopSVG from '~/icons/Arrow2Top'
+import NotifySVG from '~/icons/Notify'
+import I18nSVG from '~/icons/I18n'
+import MoreSVG from '~/icons/menu/MoreL'
+import PeopleSVG from '~/icons/HeartPulse'
 
 import ThemeSwitch from '~/widgets/ThemeSwitch'
 import Tooltip from '~/widgets/Tooltip'
@@ -19,20 +24,14 @@ import MorePanel from './MorePanel'
 import NotifyPanel from './NotifyPanel'
 
 import { MENU, TIP_OPTIONS } from './constant'
-import { Wrapper, ButtonBar, Icon, IconBox, TipText, PeopleBox, TopBox } from './styles'
+import useSalon, { cn } from './styles'
 
 export default () => {
   const ref = useRef(null)
-  const { inView: badgeInView } = useCommunityDigestViewport()
   const { t } = useTrans()
 
   const [expand, setExpand] = useState(false)
   const [menu, setMenu] = useState(MENU.DEFAULT.key)
-  /**
-   * this forceHidden is for avoid tooltip been cut from the Wrapper settings
-   * also make sure the pop animateion as not shadows from the bottom
-   */
-  const [forceHidden, setForceHidden] = useState(false)
 
   useOutsideClick(ref, () => {
     setExpand(false)
@@ -40,68 +39,70 @@ export default () => {
   })
 
   const handleOpenMenu = useCallback((menuKey: string) => {
-    setForceHidden(true)
     setMenu(menuKey)
 
     setTimeout(() => setExpand(true))
-    setTimeout(() => setForceHidden(false), 180)
   }, [])
 
+  const s = useSalon({ expand })
+
+  // $menuHeight={MENU[menu].height}
+
   return (
-    <Wrapper
-      ref={ref}
-      $expand={expand}
-      $withTop={!badgeInView}
-      $menuHeight={MENU[menu].height}
-      $forceHidden={forceHidden}
-    >
+    <div className={s.wrapper} ref={ref}>
       {menu === MENU.I18N.key && <I18nPanel />}
       {menu === MENU.MORE.key && <MorePanel />}
       {menu === MENU.NOTIFY.key && <NotifyPanel />}
 
-      <ButtonBar>
-        <Tooltip content={<TipText>{t('to.top')}</TipText>} {...TIP_OPTIONS}>
-          <TopBox $show={!badgeInView} onClick={() => scrollToHeader()}>
-            <Icon.ArrowTop />
-          </TopBox>
+      <div className={s.buttonBar}>
+        <Tooltip content={<div className={s.tipText}>{t('to.top')}</div>} {...TIP_OPTIONS}>
+          <div className={s.topBox} onClick={() => scrollToHeader()}>
+            <ArrowTopSVG className={s.icon} />
+          </div>
         </Tooltip>
 
-        <Tooltip content={<TipText>{t('mention.msg')}</TipText>} {...TIP_OPTIONS}>
-          <IconBox
-            $active={menu === MENU.NOTIFY.key}
+        <Tooltip content={<div className={s.tipText}>{t('mention.msg')}</div>} {...TIP_OPTIONS}>
+          <div
+            className={cn(s.iconBox, menu === MENU.NOTIFY.key && s.iconActive)}
             onClick={() => {
               setMenu(MENU.NOTIFY.key)
               setExpand(true)
             }}
           >
-            <Icon.Notify />
-          </IconBox>
+            <NotifySVG className={s.icon} />
+          </div>
         </Tooltip>
 
-        <Tooltip content={<TipText>{t('active.users')}</TipText>} {...TIP_OPTIONS}>
-          <PeopleBox
-            $active={menu === MENU.PEOPLE.key}
+        <Tooltip content={<div className={s.tipText}>{t('active.users')}</div>} {...TIP_OPTIONS}>
+          <div
+            className={cn(s.iconBox, menu === MENU.PEOPLE.key && s.iconActive)}
             onClick={() => handleOpenMenu(MENU.PEOPLE.key)}
           >
-            <Icon.People $active={menu === MENU.PEOPLE.key} />
-          </PeopleBox>
+            <PeopleSVG className={cn(s.icon, menu === MENU.PEOPLE.key && s.iconPeopleActive)} />
+          </div>
         </Tooltip>
-        <Tooltip content={<TipText>{t('locale')}</TipText>} {...TIP_OPTIONS}>
-          <IconBox onClick={() => handleOpenMenu(MENU.I18N.key)}>
-            <Icon.I18n />
-          </IconBox>
+        <Tooltip content={<div className={s.tipText}>{t('locale')}</div>} {...TIP_OPTIONS}>
+          <div
+            className={cn(s.iconBox, menu === MENU.I18N.key && s.iconActive)}
+            onClick={() => handleOpenMenu(MENU.I18N.key)}
+          >
+            <I18nSVG className={s.iconI18n} />
+          </div>
         </Tooltip>
-        <Tooltip content={<TipText>{t('theme')}</TipText>} {...TIP_OPTIONS}>
-          <IconBox>
+        <Tooltip content={<div className={s.tipText}>{t('theme')}</div>} {...TIP_OPTIONS}>
+          <div className={s.iconBox}>
             <ThemeSwitch />
-          </IconBox>
+          </div>
         </Tooltip>
-        <Tooltip content={<TipText>{t('more')}</TipText>} {...TIP_OPTIONS}>
-          <IconBox $active={menu === MENU.MORE.key} onClick={() => handleOpenMenu(MENU.MORE.key)}>
-            <Icon.More />
-          </IconBox>
+        <Tooltip content={<div className={s.tipText}>{t('more')}</div>} {...TIP_OPTIONS}>
+          <div
+            className={cn(s.iconBox, menu === MENU.MORE.key && s.iconActive)}
+            onClick={() => handleOpenMenu(MENU.MORE.key)}
+          >
+            <MoreSVG className={s.icon} />
+          </div>
         </Tooltip>
-      </ButtonBar>
-    </Wrapper>
+      </div>
+    </div>
   )
 }

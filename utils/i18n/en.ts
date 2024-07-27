@@ -14,7 +14,7 @@ export default {
   // unibar
   theme: 'theme',
   'active.users': 'active users',
-  'to.top': 'back top top',
+  'to.top': 'back to top',
   'mention.msg': '@ messages',
   locale: 'locale',
   'default.locale': 'default locale',
