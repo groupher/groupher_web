@@ -50,7 +50,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath
       offset={[8, 5]}
     >
       {/* @ts-ignore */}
-      <div className={cn(s.link, s.grouItem, menuOpen && s.linkActive)}>
+      <div className={cn(s.link, s.groupItem, menuOpen && s.linkActive)}>
         {groupTitle === MORE_GROUP ? '更多' : groupTitle} <ArrowSVG className={s.arrowIcon} />
       </div>
     </Tooltip>
