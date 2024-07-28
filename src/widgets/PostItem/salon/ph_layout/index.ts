@@ -1,13 +1,13 @@
 import useTwBelt from '~/hooks/useTwBelt'
 
-import useMainSalon from '..'
+import useBase from '..'
 
 export default () => {
   const { cn, avatar } = useTwBelt()
-  const main = useMainSalon()
+  const { hoverEffect } = useBase()
 
   return {
-    wrapper: cn(main.hoverEffect),
+    wrapper: hoverEffect,
     main: 'column grow',
     avatarWrapper: 'column-center justify-between pt-2.5 pb-0.5 mr-2',
     avatar: cn('size-6', avatar()),

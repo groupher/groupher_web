@@ -1,75 +1,27 @@
-import type { TAvatarLayout } from '~/spec'
-import { AVATAR_LAYOUT } from '~/const/layout'
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import SettingSVG from '~/icons/Setting'
-import AddSVG from '~/icons/Add'
-import LogoutSVG from '~/icons/Logout'
-import CmdSVG from '~/icons/Cmd'
+export { cn } from '~/css'
 
-import Img from '~/Img'
+export default () => {
+  const { cn, avatar, fg, bg, br, fill } = useTwBelt()
 
-export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
-  ${css.size(17)};
-  border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '3px' : '100%')};
-`
-export const Panel = styled.div`
-  width: 168px;
-  padding: 8px;
-`
-export const BaseInfo = styled.div`
-  ${css.column('align-start')};
-  margin-left: 12px;
-  margin-bottom: 15px;
-`
-export const UserName = styled.div`
-  font-size: 15px;
-  color: ${theme('article.title')};
-  font-weight: 500;
-`
-export const LoginMethod = styled.div`
-  font-size: 12px;
-  color: ${theme('hint')};
-`
-export const MenuBar = styled.div`
-  ${css.row('align-center')};
-  gap: 0 8px;
-  color: ${theme('article.digest')};
-  font-size: 14px;
-  height: 32px;
-  width: 100%;
-  padding: 2px 12px;
-  padding-right: 8px;
-  border: 1px solid;
-  border-color: transparent;
-  border-radius: 6px;
-
-  &:hover {
-    color: ${theme('article.title')};
-    background: ${theme('menuHoverBg')};
-    box-shadow: ${theme('shadow.xl')};
-    border-color: ${theme('divider')};
-    cursor: pointer;
+  return {
+    panel: cn('w-40 px-2 py-2'),
+    avatar: cn('size-4', avatar('sm')),
+    baseInfo: 'ml-3 mb-4',
+    userName: cn('text-sm bold-sm', fg('text.title')),
+    loginBy: cn('font-xs opacity-80', fg('text.digest')),
+    menuBar: cn(
+      'row-center group text-sm h-8 w-full px-2.5 py-0.5 gap-y-2 border border-transparent rounded-md pointer',
+      `hover:${fg('text.title')}`,
+      `hover:${bg('menuHoverBg')}`,
+      `hover:${br('divider')}`,
+      'transition-colors',
+      fg('text.digest'),
+    ),
+    warningActive: cn(`hover:${fg('rainbow.red')}`, `hover:${bg('rainbow.redBg')}`),
+    menuTitle: cn('grow'),
+    icon: cn('size-3.5 group-smoky', fill('text.digest')),
+    logoutIcon: cn('size-3 group-smoky', `group-hover:${fill('rainbow.red')}`),
   }
-`
-
-const commonIcon = (comp) => {
-  return styled(comp)`
-    ${css.size(14)};
-    fill: ${theme('article.digest')};
-
-    ${MenuBar}:hover & {
-      fill: ${theme('article.title')};
-    }
-  `
-}
-
-export const Icon = {
-  Add: commonIcon(AddSVG),
-  Cmd: commonIcon(CmdSVG),
-  Logout: styled(commonIcon(LogoutSVG))`
-      ${css.size(13)};
-    margin-right: -1px;
-  `,
-  Setting: commonIcon(SettingSVG),
 }

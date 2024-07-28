@@ -1,22 +1,24 @@
 import useTwBelt from '~/hooks/useTwBelt'
 
+import useBase from '..'
+
 type TProps = {
   isPinned?: boolean
 }
 
 export default ({ isPinned }: TProps) => {
   const { cn, fg, bg, primary } = useTwBelt()
+  const { hoverTitle } = useBase()
 
   return {
     wrapper: 'column',
     topping: 'row-center mb-1',
     main: 'row-center grow',
     title: cn(
-      'row-center relative text-base no-underline opacity-85',
-      isPinned ? primary('fg') : fg('text.title'),
+      hoverTitle,
+      'row-center relative',
+      isPinned && primary('fg'),
       isPinned ? 'bold' : 'bold-sm',
-      'hover:opacity-100 pointer group-hover/post:underline',
-      'transition-colors',
     ),
     author: cn('text-xs', fg('text.hint')),
     publish: cn('text-xs', fg('text.hint')),

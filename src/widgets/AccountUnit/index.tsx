@@ -5,7 +5,6 @@
  */
 
 import { type FC, useState } from 'react'
-import { includes } from 'ramda'
 
 import type { TSpace } from '~/spec'
 
@@ -15,24 +14,19 @@ import useLayout from '~/hooks/useLayout'
 import { BANNER_LAYOUT } from '~/const/layout'
 
 import { SpaceGrow } from '~/widgets/Common'
+import AccountSVG from '~/icons/Acount'
 
 import LoggedInAccount from './LoggedInAccount'
 import Panel from './Panel'
 
-import {
-  NormalWrapper,
-  WithBgWrapper,
-  HoverBox,
-  UnloginIcon,
-  NickName,
-  UnLoginText,
-} from './styles'
+import useSalon from './styles'
 
 type TProps = {
   withName?: boolean
 } & TSpace
 
-const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
+const AccountUnit: FC<TProps> = ({ withName = false, ...spacing }) => {
+  const s = useSalon({ ...spacing })
   useSyncAccount()
   const user = useAccount()
 
@@ -41,29 +35,22 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...restProps }) => {
 
   const [showPanel, setShowPanel] = useState(false)
 
-  const Wrapper = includes(bannerLayout, [BANNER_LAYOUT.TABBER, BANNER_LAYOUT.SIDEBAR])
-    ? WithBgWrapper
-    : NormalWrapper
-
   return (
-    <Wrapper {...restProps}>
-      {/* {includes(bannerLayout, [BANNER_LAYOUT.HEADER, BANNER_LAYOUT.TABBER]) && (
-        <ThemeSwitch right={10} />
-      )} */}
+    <div className={s.wrapper}>
       {isLogin ? (
-        <HoverBox>
+        <div className={s.hoverBox}>
           <LoggedInAccount />
-        </HoverBox>
+        </div>
       ) : (
-        <HoverBox onClick={() => setShowPanel(true)}>
-          <UnloginIcon />
-        </HoverBox>
+        <div className={s.hoverBox} onClick={() => setShowPanel(true)}>
+          <AccountSVG className={s.unLoginIcon} />
+        </div>
       )}
-      {!isLogin && withName && <UnLoginText>未登入</UnLoginText>}
-      {isLogin && withName && <NickName>{nickname}</NickName>}
+      {!isLogin && withName && <div className={s.nickname}>未登入</div>}
+      {isLogin && withName && <div className={s.nickname}>{nickname}</div>}
       {bannerLayout === BANNER_LAYOUT.SIDEBAR && <SpaceGrow />}
       <Panel show={showPanel} onClose={() => setShowPanel(false)} />
-    </Wrapper>
+    </div>
   )
 }
 

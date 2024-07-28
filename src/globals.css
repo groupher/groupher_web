@@ -51,14 +51,6 @@
     @apply font-medium;
   }
 
-  .show {
-    @apply block;
-  }
-
-  .hide {
-    @apply hidden;
-  }
-
   .circle {
     @apply rounded-full;
   }
@@ -67,8 +59,12 @@
     @apply transition-all duration-200;
   }
 
-  .over-hide {
-    @apply overflow-hidden;
+  .group-smoky-80 {
+    @apply opacity-80 group-hover:opacity-100
+  }
+
+  .group-smoky-65 {
+    @apply opacity-65 group-hover:opacity-100
   }
 
   .article-hover-linear::before {

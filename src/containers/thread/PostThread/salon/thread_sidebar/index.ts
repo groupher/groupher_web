@@ -18,7 +18,7 @@ export default () => {
     homeLinks: 'row-center text-sm bold-sm trucate max-w-52 mb-5',
     linkIcon: cn('size-5 -ml-1 mr-1', fill('article.digest')),
     joiners: 'row mb-6',
-    publish: cn('w-full', badgeInView ? 'show' : 'hide'),
+    publish: cn('w-full', badgeInView ? 'block' : 'hidden'),
     moreNum: cn('font ml-1 pointer', fg('text.digest'), `hover:${fg('article.title')}`),
     joinAvatar: cn('size-6 mr-2', avatar()),
     tagsBar: cn('mt-6 max-w-48'),

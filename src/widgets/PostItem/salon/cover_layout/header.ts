@@ -9,7 +9,7 @@ export default () => {
     main: 'row-center grow mt-2',
     title: cn(
       'row-center relative text-base no-underline opacity-85 bold-sm',
-      'hover:opacity-100 pointer group-hover/post:underline',
+      'hover:opacity-100 pointer group-hover:underline',
       'transition-colors',
       fg('text.title'),
     ),

@@ -12,6 +12,12 @@ const UTILS = [
   'border-transparent',
   'group-hover:text-text-title',
   'group-hover:text-text-title-dark',
+
+  'group-hover:fill-rainbow-red',
+  'group-hover:fill-rainbow-red-dark',
+
+  'rounded-sm',
+  'rounded-md',
 ]
 
 // fill-rainbow-red is mainly for delete buttons
@@ -19,6 +25,8 @@ const HOVERS = [
   'text-text-title',
   'fill-text-title',
   'fill-rainbow-red',
+  'text-rainbow-red',
+  'bg-rainbow-redBg',
   'bg-hoverBg',
   'bg-htmlBg',
   'bg-menuHoverBg',

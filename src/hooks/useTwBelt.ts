@@ -25,7 +25,7 @@ type TRet = {
   primary: (prefix?: TColorPrefix) => string
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
-  avatar: () => string
+  avatar: (level?: 'md' | 'sm' | '') => string
 }
 
 /**
@@ -93,7 +93,13 @@ export default (): TRet => {
       .join(' ')
   }
 
-  const avatar = () => (isAvatarSquare ? 'rounded-md' : 'circle')
+  const avatar = (level = 'md') => {
+    if (isAvatarSquare) {
+      return level === '' ? 'rounded' : `rounded-${level}`
+    }
+
+    return 'circle'
+  }
 
   return {
     cn,
