@@ -34,7 +34,7 @@ export default () => {
     >
       <InnerWrapper metric={metric}>
         <BannerContentWrapper>
-          <CommunityBaseInfo>
+          <CommunityBaseInfo className="header-layout-community-brief">
             <CommunityBrief />
 
             {layout === HEADER_LAYOUT.RIGHT && <SpaceGrow />}

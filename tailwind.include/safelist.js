@@ -16,6 +16,7 @@ const UTILS = [
 
 // fill-rainbow-red is mainly for delete buttons
 const HOVERS = [
+  'text-text-title',
   'fill-text-title',
   'fill-rainbow-red',
   'bg-hoverBg',

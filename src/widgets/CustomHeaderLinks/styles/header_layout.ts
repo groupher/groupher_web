@@ -1,30 +1,22 @@
-import type { TActive } from '~/spec'
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { Wrapper as WrapperBase, LinkItem as LinkItemBase, ArrowIcon as ArrowIconBase } from '.'
+export { cn } from '~/css'
 
-export { MenuPanel } from '.'
+export default () => {
+  const { cn, fg, bg, br, primary, fill } = useTwBelt()
 
-export const Wrapper = styled(WrapperBase)`
-  gap: 0 16px;
-`
-export const LinkItem = styled(LinkItemBase)`
-  font-size: 14px;
-`
-export const GroupItem = styled(LinkItem)<TActive>`
-  ${css.row('align-center')};
-  position: relative;
-  padding-right: 19px;
-  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
-  background: ${({ $active }) => ($active ? theme('hoverBg') : '')};
-
-  &:hover {
-    background: ${theme('hoverBg')};
-    color: ${theme('article.title')};
+  return {
+    wrapper: cn('row-center gap-x-4'),
+    menuPanel: cn('w-36', bg('popover.bg')),
+    link: cn(
+      'row-center text-sm rounded px-2 py-px pointer no-underline border border-transparent',
+      `hover:${fg('text.title')}`,
+      `hover:${bg('menuHoverBg')}`,
+      `hover:${br('divider')}`,
+      fg('text.digest'),
+    ),
+    linkActive: cn(primary('fg'), bg('hoverBg')),
+    grouItem: cn('relative pr-4'),
+    arrowIcon: cn('absolute size-3.5 right-px -rotate-90', fill('text.digest')),
   }
-`
-export const ArrowIcon = styled(ArrowIconBase)`
-  position: absolute;
-  ${css.size(14)};
-  right: 2px;
-`
+}

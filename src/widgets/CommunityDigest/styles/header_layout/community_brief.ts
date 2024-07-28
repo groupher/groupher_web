@@ -51,11 +51,3 @@ export default () => {
     menuTitle: cn('text-sm grow', `group-hover:${fg('text.title')}`),
   }
 }
-
-// export const DisableTippyJump = createGlobalStyle<{ enable: boolean }>`
-//   // this is for disable pop animation
-//   // should have no animation when navi to sub menu
-//   .tippy-box[data-placement^=bottom][data-state='visible'] {
-//     transform: ${({ enable }) => (enable ? 'translateY(1px) !important' : 'translateY(5px)')};
-//   }
-// `

@@ -88,3 +88,9 @@
     border-color: #4d7c0f;
   }
 }
+
+.header-layout-community-brief {
+  .tippy-box[data-placement^=bottom][data-state='visible'] {
+    transform: translateY(1px) !important;
+  }
+}
