@@ -12,6 +12,6 @@ export default () => {
     title: cn('text-sm bold-sm', fg('article.title')),
     row: 'row-center mt-1',
     label: 'text-sm opacity-60',
-    count: cn('text-sm bold ml-1.5', fg('article.digest')),
+    count: cn('text-sm bold ml-1.5', fg('text.digest')),
   }
 }
