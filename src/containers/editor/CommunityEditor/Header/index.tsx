@@ -13,7 +13,7 @@ export default () => {
 
   return (
     <Wrapper>
-      <HomeLogo size={22} right={8} />
+      <HomeLogo size={5} right={2} />
       <Title>Groupher</Title>
       <Divider />
       <SubTitle>创建社区</SubTitle>

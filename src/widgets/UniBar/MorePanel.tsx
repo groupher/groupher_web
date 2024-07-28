@@ -40,7 +40,7 @@ export default () => {
       </MenuBar>
       <MenuBar>
         <div className={s.iconBox}>
-          <HomeLogo size={18} />
+          <HomeLogo size={4} />
         </div>
         {t('groupher.feedback')}
       </MenuBar>

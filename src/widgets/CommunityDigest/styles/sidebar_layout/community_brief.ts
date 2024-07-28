@@ -1,7 +1,7 @@
 import styled, { css, WIDTH, theme } from '~/css'
 import ArrowSVG from '~/icons/Arrow'
 import HomeSVG from '~/icons/Home'
-import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   ${css.column('align-center')};
@@ -20,7 +20,7 @@ export const LogoWrapper = styled.div`
   ${css.row('align-both')};
   margin-top: 20px;
 `
-export const Logo = styled(CommunityFaceLogo)`
+export const Logo = styled(Img)`
   ${css.size(30)};
 `
 export const CommunityInfo = styled.div`
