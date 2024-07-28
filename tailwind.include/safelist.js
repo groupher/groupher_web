@@ -6,19 +6,9 @@ const GENERAL_CLASSES = ['border-divider', 'article-hover-linear']
 const RAINBOW_COLORS = ['red', 'orange', 'yellow', 'green', 'greenLight', 'cyan', 'blue', 'purple']
 
 const MARGIN = ['px', 0.5, 1, 1.5, 2, 2.5, 3]
-const SIZE = ['size-1.5', 'size-2', 'size-2.5', 'size-3', 'size-3.5', 'size-4', 'size-5', 'size-6']
+const SIZE = [1.5, 2, 2.5, 3, 3.5, 4, 5, 6]
 
-const UTILS = [
-  'border-transparent',
-  'group-hover:text-text-title',
-  'group-hover:text-text-title-dark',
-
-  'group-hover:fill-rainbow-red',
-  'group-hover:fill-rainbow-red-dark',
-
-  'rounded-sm',
-  'rounded-md',
-]
+const UTILS = ['border-transparent', 'rounded-sm', 'rounded-md']
 
 // fill-rainbow-red is mainly for delete buttons
 const HOVERS = [
@@ -33,6 +23,8 @@ const HOVERS = [
   'border-divider',
 ]
 
+const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red']
+
 module.exports = [
   ...RAINBOW_COLORS.map(
     (c) =>
@@ -41,12 +33,13 @@ module.exports = [
 
   ...TEXT_COLORS.map((c) => `text-${c} text-${c}-dark`),
   ...HOVERS.map((c) => `hover:${c} hover:${c}-dark`),
+  ...GROUP_HOVERS.map((c) => `group-hover:${c} hover:${c}-dark`),
 
   ...BG_COLORS.map((c) => `bg-${c} bg-${c}-dark`),
   ...FILL_COLORS.map((c) => `fill-${c} fill-${c}-dark`),
   ...GENERAL_CLASSES.map((c) => `${c} ${c}-dark`),
 
   ...MARGIN.map((c) => `mt-${c} mb-${c} ml-${c} mr-${c}`),
-  ...SIZE,
+  ...SIZE.map((c) => `size-${c}`),
   ...UTILS,
 ]

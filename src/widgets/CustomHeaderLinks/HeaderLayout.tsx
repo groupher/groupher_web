@@ -35,7 +35,7 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath
               <Link
                 key={item.index}
                 href={item.link}
-                className={cn(s.link, 'h-9', active && s.linkActive)}
+                className={cn(s.link, active && s.linkActive)}
               >
                 {item.title}
               </Link>

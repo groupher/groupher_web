@@ -3,7 +3,12 @@
 const { colors, screens, safelist } = require('./tailwind.include')
 
 module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
+  content: [
+    // remove this after migrate from styled-components to tailwind
+    // but remove it will cause @tailwindcss/typography issue
+    './src/**/*.{js,ts,jsx,tsx}',
+    // './src/**/salon/**/*.ts',
+  ],
   theme: {
     colors,
     screens,

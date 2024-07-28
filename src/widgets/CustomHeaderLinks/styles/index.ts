@@ -16,7 +16,7 @@ export default () => {
 
   return {
     link: cn(
-      'row-center text-sm rounded px-2 py-px pointer no-underline border border-transparent',
+      'row-center text-sm rounded px-2 py-px h-9 pointer no-underline border border-transparent',
       `hover:${fg('text.title')}`,
       `hover:${bg('menuHoverBg')}`,
       `hover:${br('divider')}`,
