@@ -1,136 +1,59 @@
 import { createGlobalStyle } from 'styled-components'
-import Link from 'next/link'
+
+import useTwBelt from '~/hooks/useTwBelt'
+import useLayout from '~/hooks/useLayout'
+
+import { BRAND_LAYOUT } from '~/const/layout'
 
 import styled, { css, theme } from '~/css'
-import OptionArrowSVG from '~/icons/OptionArrow'
-import ArrowSVG from '~/icons/ArrowUpRight'
+
 import DiscussSVG from '~/icons/Discuss'
 import GithubSVG from '~/icons/Github8'
 import GlobalSVG from '~/icons/social/Global'
 import PlusSVG from '~/icons/PlusCircle'
 
-import Img from '~/Img'
+export default () => {
+  const { cn, fg, bg, br, fill } = useTwBelt()
+  const { brandLayout } = useLayout()
 
-const BaseWrapper = styled.div`
-  ${css.row('align-center')};
-  transition: all 0.2s;
-  width: 150px;
-  max-width: 150px;
-  height: 32px;
-  border-radius: 10px;
-  padding-left: 10px;
-  margin-left: -10px;
-`
-export const Wrapper = styled(BaseWrapper)`
-  border: 1px solid;
-  border-color: transparent;
+  const noMargin = brandLayout === BRAND_LAYOUT.TEXT
 
-  cursor: pointer;
+  const wrapper =
+    'row-center group w-36 min-w-36 h-9 rounded-lg -ml-2.5 pl-2.5 trans-all-200 border border-transparent pointer'
 
-  &:hover {
-    border-color: ${theme('divider')};
+  return {
+    wrapper: cn(wrapper, `hover:${br('divider')}`, `hover:${bg('htmlBg')}`),
+    panel: cn('border px-2 py-1 pr-0.5 w-36', br('divider')),
+    brandPanel: cn(wrapper, 'mb-2 border-none'),
+    menuItem: cn(
+      'row-center group w-full mt-0.5 mb-0.5 -ml-1 px-1 py-1 pr-0.5 rounded pointer no-underline',
+      'border border-transparent',
+      'hover:underline',
+      `hover:${fg('text.title')}`,
+      `hover:${bg('menuHoverBg')}`,
+      `hover:${br('divider')}`,
+      fg('text.digest'),
+    ),
+    logo: 'size-5 -ml-px mr-1',
+    title: cn('text-base bold-sm max-w-[80px] line-clamp-1', noMargin && 'ml-2', fg('text.digest')),
+    optionArrow: cn(
+      'size-3 mr-1.5 opacity-0',
+      'group-hover:opacity-100 trans-all-200',
+      fill('text.digest'),
+    ),
+    linkArrow: cn(
+      'size-3.5 opacity-0 trans-all-200',
+      'group-hover:opacity-80',
+      fill('text.digest'),
+    ),
   }
+}
 
-  ${css.media.mobile`
-    width: auto;
-    max-width: 150px;
-  `};
-`
-export const PanelWrapper = styled(BaseWrapper)`
-  border: none;
-  cursor: auto;
-  margin-bottom: 8px;
-
-  &:hover {
-    border-color: transparent;
-  }
-`
-export const OptionArrowIcon = styled(OptionArrowSVG)`
-  fill: ${theme('article.digest')};
-  ${css.size(12)};
-  margin-right: 6px;
-  opacity: 0;
-
-  ${Wrapper}:hover & {
-    opacity: 1;
-  }
-
-  transition: all 0.2s;
-`
-export const Logo = styled(Img)`
-  ${css.size(20)};
-  margin-left: -1px;
-`
-export const Title = styled.div<{ $noMargin: boolean }>`
-  color: ${theme('article.digest')};
-  ${css.cutRest('120px')};
-  font-size: 16px;
-  margin-left: ${({ $noMargin }) => ($noMargin ? 0 : '8px')};
-  font-weight: 500;
-
-  ${Wrapper}:hover & {
-    ${css.cutRest('90px')};
-  }
-`
-export const LogoHolder = styled(Img)`
-  fill: ${theme('article.digest')};
-  width: 50px;
-  height: 50px;
-  @media (max-height: 800px) {
-    width: 40px;
-    height: 40px;
-  }
-  opacity: 0.6;
-  margin-top: 3px;
-`
-export const ToolPanel = styled.div`
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  padding: 5px 12px;
-  width: 150px;
-  min-height: 112px;
-`
-export const PanelItem = styled(Link)<{ $outside?: boolean }>`
-  ${css.row('align-center')};
-  color: ${theme('article.digest')};
-  width: calc(100% + 10px);
-  margin-left: -5px;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  padding: 4px 8px;
-  padding-right: 4px;
-  border-radius: 4px;
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    color: ${theme('article.title')};
-    background: ${theme('menuHoverBg')};
-    box-shadow: ${theme('button.boxShadow')};
-    text-decoration: ${({ $outside }) => ($outside ? 'underline' : 'none')};
-    text-decoration-color: ${theme('hint')};
-  }
-`
-export const ArrowIcon = styled(ArrowSVG)`
-  ${css.size(15)};
-  fill: ${theme('hint')};
-  opacity: 0;
-
-  ${PanelItem}:hover & {
-    opacity: 0.8;
-  }
-
-  transition: all 0.2s;
-`
 const commonIcon = (comp) => {
   return styled(comp)`
     ${css.size(14)};
     fill: ${theme('hint')};
     margin-right: 11px;
-
-    ${PanelItem}:hover & {
-      fill: ${theme('article.title')};
-    }
   `
 }
 

@@ -6,7 +6,6 @@ import useMetric from '~/hooks/useMetric'
 import { HEADER_LAYOUT } from '~/const/layout'
 
 import ViewportTracker from '~/widgets/ViewportTracker'
-import MobileThreadNavi from '~/widgets/MobileThreadNavi'
 import { Row, SpaceGrow } from '~/widgets/Common'
 import AccountUnit from '~/widgets/AccountUnit'
 
@@ -18,7 +17,6 @@ import {
   InnerWrapper,
   BannerContentWrapper,
   CommunityBaseInfo,
-  MobileNaviWrapper,
   WatchIcon,
 } from '../styles/header_layout'
 
@@ -39,9 +37,6 @@ export default () => {
           <CommunityBaseInfo>
             <CommunityBrief />
 
-            <MobileNaviWrapper>
-              <MobileThreadNavi />
-            </MobileNaviWrapper>
             {layout === HEADER_LAYOUT.RIGHT && <SpaceGrow />}
             <ThreadTab right={layout === HEADER_LAYOUT.RIGHT ? 20 : 0} />
             <Row>

@@ -75,7 +75,7 @@
     background: linear-gradient(315deg, rgb(104 104 104 / 0%) 0%, #2c2c2c 100%);
   }
 
-  .debug-red {
+  .debug {
     @apply border border-dashed;
     border-color: red;
   }

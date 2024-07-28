@@ -6,7 +6,7 @@ const GENERAL_CLASSES = ['border-divider', 'article-hover-linear']
 const RAINBOW_COLORS = ['red', 'orange', 'yellow', 'green', 'greenLight', 'cyan', 'blue', 'purple']
 
 const MARGIN = ['px', 0.5, 1, 1.5, 2, 2.5, 3]
-const SIZE = ['size-2', 'size-2.5', 'size-3', 'size-3.5', 'size-4', 'size-5', 'size-6']
+const SIZE = ['size-1.5', 'size-2', 'size-2.5', 'size-3', 'size-3.5', 'size-4', 'size-5', 'size-6']
 
 const UTILS = [
   'border-transparent',
@@ -19,6 +19,7 @@ const HOVERS = [
   'fill-text-title',
   'fill-rainbow-red',
   'bg-hoverBg',
+  'bg-htmlBg',
   'bg-menuHoverBg',
   'border-divider',
 ]

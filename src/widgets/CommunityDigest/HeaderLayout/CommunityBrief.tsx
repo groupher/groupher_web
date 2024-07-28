@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 import { assetSrc } from '~/helper'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
@@ -7,24 +8,19 @@ import useHover from '~/hooks/useHover'
 
 import { BRAND_LAYOUT } from '~/const/layout'
 
+import OptionArrowSVG from '~/icons/OptionArrow'
+import ArrowSVG from '~/icons/ArrowUpRight'
+import Img from '~/Img'
+
 import Tooltip from '~/widgets/Tooltip'
 import { SpaceGrow, SexyDivider } from '~/widgets/Common'
 import ImgFallback from '~/widgets/ImgFallback'
 
-import {
-  Wrapper,
-  PanelWrapper,
-  Logo,
-  Title,
-  OptionArrowIcon,
-  ToolPanel,
-  PanelItem,
-  Icon,
-  ArrowIcon,
-  DisableTippyJump,
-} from '../styles/header_layout/community_brief'
+import useSalon, { Icon, DisableTippyJump } from '../styles/header_layout/community_brief'
 
 export default () => {
+  const s = useSalon()
+
   const [disableTippyJump, setDisableTippyJump] = useState(false)
   const { logo, title, slug, dashboard } = useViewingCommunity()
   const { brandLayout } = useLayout()
@@ -40,41 +36,41 @@ export default () => {
   return (
     <Tooltip
       content={
-        <ToolPanel>
-          <PanelWrapper>
-            {brandLayout !== BRAND_LAYOUT.TEXT && <Logo src={assetSrc(logo)} noLazy />}
-            {brandLayout !== BRAND_LAYOUT.LOGO && (
-              <Title $noMargin={brandLayout === BRAND_LAYOUT.TEXT}>{title}</Title>
+        <div className={s.panel}>
+          <div className={s.brandPanel}>
+            {brandLayout !== BRAND_LAYOUT.TEXT && (
+              <Img src={assetSrc(logo)} className={s.logo} noLazy />
             )}
-          </PanelWrapper>
+            {brandLayout !== BRAND_LAYOUT.LOGO && <h1 className={s.title}>{title}</h1>}
+          </div>
 
-          <PanelItem href={`/${slug}`}>
+          <Link className={`${s.menuItem} hover:no-underline`} href={`/${slug}`}>
             <Icon.Discuss />
             <div>社区主页</div>
-          </PanelItem>
+          </Link>
 
-          <PanelItem href={dashboard?.baseInfo.homepage} $outside>
+          <Link className={s.menuItem} href={dashboard?.baseInfo.homepage}>
             <Icon.Global />
             <div>返回官网</div>
             <SpaceGrow />
-            <ArrowIcon />
-          </PanelItem>
+            <ArrowSVG className={s.linkArrow} />
+          </Link>
 
-          <PanelItem href={`/${slug}`} $outside>
+          <Link className={s.menuItem} href={`/${slug}`}>
             <Icon.Github />
             <div>Github</div>
             <SpaceGrow />
-            <ArrowIcon />
-          </PanelItem>
+            <ArrowSVG className={s.linkArrow} />
+          </Link>
 
           <SexyDivider top={5} bottom={5} />
-          <PanelItem href="/apply/community" $outside>
+          <Link className={s.menuItem} href="/apply/community">
             <Icon.Plus />
             <div>新社区</div>
             <SpaceGrow />
-            <ArrowIcon />
-          </PanelItem>
-        </ToolPanel>
+            <ArrowSVG className={s.linkArrow} />
+          </Link>
+        </div>
       }
       placement="bottom"
       hideOnClick={false}
@@ -83,17 +79,19 @@ export default () => {
       onHide={() => setDisableTippyJump(false)}
       noPadding
     >
-      <Wrapper ref={ref}>
+      <div className={s.wrapper} ref={ref}>
         {brandLayout !== BRAND_LAYOUT.TEXT && (
-          <Logo src={assetSrc(logo)} fallback={<ImgFallback size={25} left={-2} title={title} />} />
+          <Img
+            src={assetSrc(logo)}
+            className={s.logo}
+            fallback={<ImgFallback size={25} left={-2} right={3} title={title} />}
+          />
         )}
-        {brandLayout !== BRAND_LAYOUT.LOGO && (
-          <Title $noMargin={brandLayout === BRAND_LAYOUT.TEXT}>{title}</Title>
-        )}
+        {brandLayout !== BRAND_LAYOUT.LOGO && <h1 className={s.title}>{title}</h1>}
         <SpaceGrow />
-        <OptionArrowIcon />
+        <OptionArrowSVG className={s.optionArrow} />
         <DisableTippyJump enable={disableTippyJump} />
-      </Wrapper>
+      </div>
     </Tooltip>
   )
 }
