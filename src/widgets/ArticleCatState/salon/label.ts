@@ -20,7 +20,7 @@ export default ({ smaller }: TProps) => {
       fg('text.digest'),
     ),
     text: 'mt-px',
-    iconBox: 'row-align-both size-4 mr-0.5',
+    iconBox: 'align-both size-4 mr-0.5',
     icon: cn('size-3.5', fill('text.digest')),
     iconReject: cn('size-3', fill('rainbow.red')),
   }

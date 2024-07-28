@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import styled, { css, theme } from '~/css'
-import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   ${css.rowWrap('align-center')};
@@ -13,7 +13,7 @@ export const Community = styled.div`
   margin-right: 16px;
   margin-bottom: 5px;
 `
-export const Logo = styled(CommunityFaceLogo)`
+export const Logo = styled(Img)`
   fill: #317faf;
   ${css.circle(18)};
   filter: saturate(0.6);

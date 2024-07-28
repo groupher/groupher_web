@@ -31,7 +31,7 @@ module.exports = [
   ),
 
   ...TEXT_COLORS.map((c) => `text-${c} text-${c}-dark`),
-  ...HOVERS.map((c) => `hover:${c} hover:${c}-dard`),
+  ...HOVERS.map((c) => `hover:${c} hover:${c}-dark`),
 
   ...BG_COLORS.map((c) => `bg-${c} bg-${c}-dark`),
   ...FILL_COLORS.map((c) => `fill-${c} fill-${c}-dark`),

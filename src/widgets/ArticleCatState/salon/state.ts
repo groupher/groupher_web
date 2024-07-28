@@ -40,10 +40,7 @@ export default ({ cat, state }: TProps) => {
     : doneColor
 
   return {
-    box: cn(
-      'row-align-both size-4 mr-0.5 rounded',
-      rainbowLight(stateColor[state] || COLOR_NAME.RED),
-    ),
+    box: cn('align-both size-4 mr-0.5 rounded', rainbowLight(stateColor[state] || COLOR_NAME.RED)),
     text: 'text-xs py-1.5',
     tipNote: 'row-center px-1.5 py-0.5 bold-sm',
     todoIcon: cn('size-3 z-10', rainbow(todoColor, 'fill')),

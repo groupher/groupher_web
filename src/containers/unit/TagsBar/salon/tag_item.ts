@@ -21,7 +21,7 @@ export default ({ active, color }: TProps) => {
     ),
     tag: 'row-center grow text-sm',
     closeBox: cn(
-      'row-align-both size-5 rounded',
+      'align-both size-5 rounded',
       !active ? `hover:${bg('hoverBg')}` : '',
       'hover:opacity-80 pointer',
     ),

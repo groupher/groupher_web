@@ -11,6 +11,10 @@
     @apply flex flex-row items-center;
   }
 
+  .align-both {
+    @apply flex flex-row items-center justify-center;
+  }
+
   .row-align-both {
     @apply flex flex-row items-center justify-center;
   }

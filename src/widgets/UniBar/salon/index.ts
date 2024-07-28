@@ -12,7 +12,7 @@ export default ({ expand }: TProps) => {
   const { inView: badgeInView } = useCommunityDigestViewport()
 
   const iconBox = cn(
-    'size-6 row-align-both pointer rounded border border-transparent',
+    'size-6 align-both pointer rounded border border-transparent',
     `hover:${bg('hoverBg')}`,
   )
   const icon = cn('size-4 pointer', fill('text.digest'), `hover:${fill('text.title')}`)
@@ -30,9 +30,9 @@ export default ({ expand }: TProps) => {
     iconActive: cn(bg('hoverBg')),
     tipText: cn('py-0.5 px-1', fg('text.digest')),
     buttonBar: cn(
-      'row-align-both absolute h-[38px] w-full left-px bottom-0 -ml-px rounded-2xl',
+      'align-both absolute h-[38px] w-full left-px bottom-0 -ml-px rounded-2xl',
       badgeInView ? 'gap-x-2' : 'gap-x-1.5',
-      bg('htmlBg'),
+      bg('menuHoverBg'),
     ),
     icon,
     iconI18n: cn(icon, 'size-6 mt-0.5 ml-0.5'),

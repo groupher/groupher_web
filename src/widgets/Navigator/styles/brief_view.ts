@@ -2,7 +2,6 @@ import Link from 'next/link'
 
 import styled, { css, theme } from '~/css'
 import Img from '~/Img'
-import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
 
 export const Wrapper = styled.div`
   ${css.row()};
@@ -23,7 +22,7 @@ export const CommunityWrapper = styled.div`
   width: 100%;
   height: 100%;
 `
-export const CommunityLogo = styled(CommunityFaceLogo)`
+export const CommunityLogo = styled(Img)`
   ${css.size(32)};
   margin-right: 10px;
 `

@@ -6,7 +6,7 @@ import Link from 'next/link'
 import styled, { css, theme } from '~/css'
 
 import UserSVG from '~/icons/User'
-import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   ${css.column()};
@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   min-height: 100px;
   padding-left: 8px;
 `
-export const CommunityLogo = styled(CommunityFaceLogo)`
+export const CommunityLogo = styled(Img)`
   ${css.size(30)};
 `
 export const SubsInfo = styled.div`

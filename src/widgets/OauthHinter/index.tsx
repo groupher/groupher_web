@@ -13,7 +13,6 @@ import {
   TextWrapper,
   HintTitle,
   HintDesc,
-  HomeLogoIcon,
   LinkIcon,
   GithubLogoIcon,
   FooterWrapper,
@@ -24,7 +23,6 @@ export default () => {
     <Wrapper>
       <HintWrapper>
         <IconsWrapper>
-          <HomeLogoIcon />
           <LinkIcon />
           <GithubLogoIcon />
         </IconsWrapper>
