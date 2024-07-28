@@ -29,7 +29,7 @@ export default () => {
     ),
     optionArrow: cn(
       'size-3 opacity-0 ml-2',
-      'group-hover:opacity-100 trans-all-200',
+      'group-hover:opacity-100 transition-opacity',
       fill('text.digest'),
     ),
     linkArrow: cn(

@@ -1,5 +1,5 @@
 const TEXT_COLORS = ['text-title', 'text-digest', 'text-body', 'text-hint']
-const BG_COLORS = ['dot', 'hoverBg', 'htmlBg', 'popover-bg', 'menuHoverBg']
+const BG_COLORS = ['dot', 'hoverBg', 'htmlBg', 'popover-bg', 'menuHoverBg', 'alphaBg']
 const FILL_COLORS = ['text-title', 'text-digest']
 
 const GENERAL_CLASSES = ['border-divider', 'article-hover-linear']

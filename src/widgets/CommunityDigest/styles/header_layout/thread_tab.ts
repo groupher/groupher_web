@@ -1,48 +1,37 @@
-import Link from 'next/link'
+import type { TSpace } from '~/spec'
+import { HEADER_LAYOUT } from '~/const/layout'
 
-import type { TActive, TColor } from '~/spec'
-import styled, { css, theme, rainbow } from '~/css'
-import { WithMargin } from '~/widgets/Common'
+import useTwBelt from '~/hooks/useTwBelt'
+import useHeaderLinks from '~/hooks/useHeaderLinks'
 
-export const NormalWrapper = styled(WithMargin)`
-  ${css.row('align-center')};
-  gap: 0 16px;
+export { cn } from '~/css'
 
-  ${css.media.mobile`
-    display: none;
-  `};
-`
-export const FloatWrapper = styled(NormalWrapper)`
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  border-radius: 18px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-  padding: 5px 30px;
-  padding-right: 0;
-  background: ${theme('alphaBg')};
-  margin-top: -4px;
-  margin-left: -100px;
-`
-type TTitle = TActive & TColor
-export const Title = styled(Link)<TTitle>`
-  color: ${({ $active, $color }) =>
-    $active ? rainbow($color, 'article.title') : theme('article.digest')};
-  font-size: 14px;
-  opacity: ${({ $active }) => ($active ? 1 : 0.9)};
-  font-weight: ${({ $active }) => ($active ? 500 : 400)};
-  filter: ${({ $active }) => ($active ? 'brightness(1.2)' : '')};
+type TProps = TSpace
 
-  text-decoration: none;
-  padding: 3px 10px;
-  border-radius: 5px;
+export default ({ ...spacing }: TProps) => {
+  const { cn, margin, br, fg, bg, primary } = useTwBelt()
 
-  &:hover {
-    color: ${({ $color }) => rainbow($color, 'article.title')};
-    filter: brightness(1.2);
-    opacity: 1;
-    cursor: pointer;
-    background: ${theme('hoverBg')};
+  const { layout } = useHeaderLinks()
+
+  const floatWrapper = cn(
+    'row-center gap-y-4 border rounded-2xl px-6 py-1.5 -ml-16 shadow-lg',
+    br('divider'),
+    bg('alphaBg'),
+    margin(spacing),
+  )
+
+  const normalWrapper = cn('row-center gap-y-4', margin(spacing))
+
+  const wrapper = layout === HEADER_LAYOUT.FLOAT ? floatWrapper : normalWrapper
+
+  return {
+    wrapper,
+    title: cn(
+      'font-sm no-underline px-0.5 pr-5 pointer transition-colors',
+      `hover:${primary('fg')}`,
+      `hover:${bg('hoverBg')}`,
+      fg('text.digest'),
+    ),
+    titleActive: cn('bold-sm', primary('fg')),
   }
-
-  transition: all 0.2s;
-`
+}
