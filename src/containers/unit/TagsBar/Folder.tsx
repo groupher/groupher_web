@@ -8,7 +8,7 @@ import ArrowSVG from '~/icons/ArrowSimple'
 import MoreSVG from '~/icons/menu/MoreL'
 
 import TagItem from './TagItem'
-import useSalon from '../salon/folder'
+import useSalon from './salon/folder'
 
 type TProps = {
   title: string

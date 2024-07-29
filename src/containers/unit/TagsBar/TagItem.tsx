@@ -8,7 +8,7 @@ import TagNode from '~/widgets/TagNode'
 
 import CloseSVG from '~/icons/CloseLight'
 
-import useSalon from '../salon/tag_item'
+import useSalon from './salon/tag_item'
 
 type TProps = {
   tag: TTag

@@ -1,37 +1,67 @@
 /*
- *
  * TagsBar
- *
  */
 
-import type { FC } from 'react'
+import { type FC, useEffect } from 'react'
+import { keys, reverse } from 'ramda'
 
-import VIEW from '~/const/view'
+import GobackTag from './GobackTag'
+import Folder from './Folder'
 
-import DesktopView from './DesktopView/index'
+import useLogic from './useLogic'
+import useSalon from './salon'
 
-export type TProps = {
-  view?: string
+type TProps = {
   onSelect: () => void
 }
 
-const TagsBar: FC<TProps> = (props) => {
-  const { view } = props
+const TagsBar: FC<TProps> = ({ onSelect }) => {
+  const s = useSalon()
 
-  switch (view) {
-    case VIEW.MOBILE: {
-      // TODO:
-      return <DesktopView {...props} />
-    }
+  const {
+    tags,
+    activeTag,
+    maxDisplayCount,
+    totalCountThrold,
+    getGroupedTags,
+    onTagSelect,
+    syncActiveTagFromURL,
+  } = useLogic()
 
-    // case VIEW.COMMUNITY_CARD: {
-    //   return <DesktopView {...props} />
-    // }
+  useEffect(() => {
+    syncActiveTagFromURL()
+  }, [])
 
-    default: {
-      return <DesktopView {...props} />
-    }
-  }
+  const groupedTags = getGroupedTags()
+  const groupsKeys = reverse(keys(groupedTags)) as string[]
+
+  return (
+    <div className={s.wrapper}>
+      {activeTag?.title && (
+        <GobackTag
+          onSelect={(tag) => {
+            onTagSelect(tag)
+            onSelect?.()
+          }}
+        />
+      )}
+      {groupsKeys.map((groupKey) => (
+        <Folder
+          key={groupKey}
+          title={groupKey}
+          groupTags={groupedTags[groupKey]}
+          allTags={tags}
+          activeTag={activeTag}
+          maxDisplayCount={maxDisplayCount}
+          totalCountThrold={totalCountThrold}
+          onSelect={(tag) => {
+            onTagSelect(tag)
+            onSelect?.()
+          }}
+        />
+      ))}
+    </div>
+  )
 }
 
 export default TagsBar

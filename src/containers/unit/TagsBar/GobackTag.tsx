@@ -4,7 +4,7 @@ import type { TTag } from '~/spec'
 import { EMPTY_TAG } from '~/const/utils'
 import ArrowSVG from '~/icons/Arrow'
 
-import useSalon from '../salon/goback_tag'
+import useSalon from './salon/goback_tag'
 
 type TProps = {
   onSelect?: (tag?: TTag) => void
