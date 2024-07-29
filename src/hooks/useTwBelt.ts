@@ -26,6 +26,7 @@ type TRet = {
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
   avatar: (level?: 'md' | 'sm' | '') => string
+  gradiientBar: (color: TColorName) => string
 }
 
 /**
@@ -101,6 +102,10 @@ export default (): TRet => {
     return 'circle'
   }
 
+  const gradiientBar = (color: TColorName): string => {
+    return `bg-gradient-to-r from-rainbow-${color.toLocaleLowerCase()}Bg to-transparent`
+  }
+
   return {
     cn,
     global,
@@ -114,5 +119,6 @@ export default (): TRet => {
     zise,
     margin,
     avatar,
+    gradiientBar,
   }
 }

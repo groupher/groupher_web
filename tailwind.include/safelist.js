@@ -23,7 +23,7 @@ const HOVERS = [
 ]
 
 const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red']
-const UTILS = ['border-transparent', 'rounded-sm', 'rounded-md']
+const UTILS = ['border-transparent', 'rounded-sm', 'rounded-md', 'bg-gradient-to-r to-transparent']
 
 module.exports = [
   ...GENERAL.map((c) => `${c} ${c}-dark`),
@@ -33,7 +33,7 @@ module.exports = [
   ...FILL_COLORS.map((c) => `fill-${c} fill-${c}-dark`),
   ...RAINBOW_COLORS.map(
     (c) =>
-      `text-rainbow-${c} text-rainbow-${c}-dark bg-rainbow-${c} bg-rainbow-${c}-dark bg-rainbow-${c}Bg bg-rainbow-${c}Bg-dark fill-rainbow-${c} fill-rainbow-${c}-dark`,
+      `text-rainbow-${c} text-rainbow-${c}-dark bg-rainbow-${c} bg-rainbow-${c}-dark bg-rainbow-${c}Bg bg-rainbow-${c}Bg-dark fill-rainbow-${c} fill-rainbow-${c}-dark from-rainbow-${c}Bg from-rainbow-${c}Bg-dark`,
   ),
 
   ...MARGIN.map((c) => `mt-${c} mb-${c} ml-${c} mr-${c}`),

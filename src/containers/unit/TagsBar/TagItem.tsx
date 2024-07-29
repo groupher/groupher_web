@@ -5,8 +5,8 @@ import { cutRest } from '~/fmt'
 import { Trans } from '~/i18n'
 import { EMPTY_TAG } from '~/const/utils'
 import TagNode from '~/widgets/TagNode'
-
 import CloseSVG from '~/icons/CloseLight'
+import CheckVG from '~/icons/CheckBold'
 
 import useSalon from './salon/tag_item'
 
@@ -28,6 +28,7 @@ const TagItem: FC<TProps> = ({ tag, active, onSelect }) => {
       {active && (
         <div className={s.closeBox} onClick={(e) => onSelect(EMPTY_TAG)}>
           <CloseSVG className={s.closeIcon} />
+          <CheckVG className={s.checkIcon} />
         </div>
       )}
     </div>
