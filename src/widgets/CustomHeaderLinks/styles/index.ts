@@ -14,13 +14,20 @@ type TLinkItem = TActive & TColor
 export default () => {
   const { cn, fg, bg, br, primary, fill } = useTwBelt()
 
+  const link = cn(
+    'row-center text-sm rounded px-1.5 h-8 pointer no-underline',
+    `hover:${fg('text.title')}`,
+    `hover:${bg('hoverBg')}`,
+    fg('text.digest'),
+  )
+
   return {
-    link: cn(
-      'row-center text-sm rounded px-2 py-px h-8 pointer no-underline border border-transparent',
-      `hover:${fg('text.title')}`,
-      `hover:${bg('hoverBg')}`,
+    link,
+    menuLink: cn(
+      link,
+      'border border-transparent',
+      `hover:${bg('menuHoverBg')}`,
       `hover:${br('divider')}`,
-      fg('text.digest'),
     ),
     linkActive: cn(primary('fg'), bg('hoverBg')),
     arrowIcon: cn('absolute size-3.5 right-px -rotate-90', fill('text.digest')),
