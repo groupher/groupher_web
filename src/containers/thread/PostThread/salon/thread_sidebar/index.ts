@@ -16,7 +16,7 @@ export default () => {
     title: cn('row-center text-sm bold mb-2.5', fg('text.digest')),
     desc: cn('text-sm mb-2.5 line-clamp-2 leading-normal', fg('text.digest')),
     homeLinks: 'row-center text-sm bold-sm trucate max-w-52 mb-5',
-    linkIcon: cn('size-5 -ml-1 mr-1', fill('article.digest')),
+    linkIcon: cn('size-5 -ml-1 mr-1', fill('text.digest')),
     joiners: 'row mb-6',
     publish: cn('w-full', badgeInView ? 'block' : 'hidden'),
     moreNum: cn('font ml-1 pointer', fg('text.digest'), `hover:${fg('article.title')}`),

@@ -27,7 +27,7 @@ export default ({ ...spacing }: TProps) => {
   return {
     wrapper,
     title: cn(
-      'font-sm no-underline px-0.5 pr-6 pointer transition-colors',
+      'row-center font-sm no-underline h-8 px-3 rounded pointer transition-colors',
       `hover:${primary('fg')}`,
       `hover:${bg('hoverBg')}`,
       fg('text.digest'),

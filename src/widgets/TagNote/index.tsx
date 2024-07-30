@@ -15,7 +15,7 @@ import useSalon from './styles'
 
 export default () => {
   const tag = useActiveTag()
-  const s = useSalon({ color: tag?.color as TColorName })
+  const s = useSalon()
 
   if (!tag?.title) return null
 

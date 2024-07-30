@@ -49,7 +49,7 @@ export default () => {
   // $menuHeight={MENU[menu].height}
 
   return (
-    <div className={s.wrapper} ref={ref}>
+    <div ref={ref} className={s.wrapper}>
       {menu === MENU.I18N.key && <I18nPanel />}
       {menu === MENU.MORE.key && <MorePanel />}
       {menu === MENU.NOTIFY.key && <NotifyPanel />}
