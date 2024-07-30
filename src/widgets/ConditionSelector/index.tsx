@@ -1,6 +1,6 @@
 import { type FC, useState, useRef } from 'react'
 
-import type { TSpace, TTooltipPlacement, TConditionMode } from '~/spec'
+import type { TSpace, TTooltipPlacement, TConditionMode, TButtonPrefix } from '~/spec'
 
 import useTrans from '~/hooks/useTrans'
 
@@ -20,6 +20,7 @@ type TProps = {
   placement?: TTooltipPlacement
   selected?: boolean
   closable?: boolean
+  prefixIcon?: TButtonPrefix
 
   onSelect?: (condition: TActiveCondition) => void
 } & TSpace
@@ -31,7 +32,7 @@ const ConditionSelector: FC<TProps> = ({
   selected = false,
   placement = 'bottom',
   closable = true,
-
+  prefixIcon = null,
   ...restProps
 }) => {
   const [offset, setOffset] = useState([38, 5])
@@ -63,7 +64,7 @@ const ConditionSelector: FC<TProps> = ({
           placement={placement}
           popWidth={popWidth}
         >
-          <DropdownButton $active={menuOpen} selected={selected}>
+          <DropdownButton $active={menuOpen} selected={selected} prefixIcon={prefixIcon}>
             {t(title, 'titleCase')}
             <Space right={3} />
           </DropdownButton>
@@ -78,6 +79,7 @@ const ConditionSelector: FC<TProps> = ({
             ref.current.click()
             onSelect(null)
           }}
+          prefixIcon={prefixIcon}
         >
           <Menu
             offset={offset as [number, number]}

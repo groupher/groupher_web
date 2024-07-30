@@ -234,3 +234,5 @@ export type TUploadPreview = {
 
 export type TConditionMode = 'state' | 'cat' | 'order' | 'tag'
 export type TWidgetType = 'sidebar' | 'modal' | 'popup' | 'iframe' | 'link'
+
+export type TButtonPrefix = 'sort' | 'catetory' | 'status'

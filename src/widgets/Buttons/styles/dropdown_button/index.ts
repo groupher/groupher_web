@@ -5,6 +5,9 @@ import styled, { css, theme, rainbow } from '~/css'
 import Button from '~/widgets/Buttons/Button'
 import ArrowSVG from '~/icons/ArrowSimple'
 import CloseSVG from '~/icons/CloseLight'
+import CategorySVG from '~/icons/Category'
+import SortSVG from '~/icons/Sort'
+import WipSVG from '~/icons/GtdWip'
 
 type TWrapper = { $withBorder: boolean; size: TSizeTS; selected: boolean } & TSpace &
   TActive &
@@ -30,9 +33,10 @@ export const Wrapper = styled.div<TWrapper>`
 type TInnerBtnWrapper = TActive & TColor
 export const InnerBtnWrapper = styled.div<TInnerBtnWrapper>`
   ${css.row('align-center')};
+  color: ${theme('article.digest')};
   margin-left: 2px;
   font-weight: 400;
-  font-size: 13px;
+  font-size: 14px;
 
   &:hover {
     cursor: pointer;
@@ -96,5 +100,47 @@ export const CloseIcon = styled(CloseSVG)`
     fill: ${theme('article.title')};
   }
 
+  transition: all 0.2s;
+`
+
+export const CategoryIcon = styled(CategorySVG)`
+  fill: ${theme('article.digest')};
+  ${css.size(13)};
+  margin-top: -1px;
+  margin-right: 4px;
+  opacity: 0.8;
+
+  ${CloseWrapper}:hover & {
+    fill: ${theme('article.title')};
+  }
+
+  transition: all 0.2s;
+`
+
+export const SortIcon = styled(SortSVG)`
+  fill: ${theme('article.digest')};
+  ${css.size(14)};
+  margin-top: -1px;
+  margin-right: 4px;
+
+  ${CloseWrapper}:hover & {
+    fill: ${theme('article.title')};
+  }
+
+  transition: all 0.2s;
+`
+
+export const WipIcon = styled(WipSVG)`
+  fill: ${theme('article.digest')};
+  ${css.size(14)};
+  margin-top: -1px;
+  margin-right: 4px;
+  opacity: 0.8;
+
+  ${CloseWrapper}:hover & {
+    fill: ${theme('article.title')};
+  }
+
+  transform: rotate(90deg);
   transition: all 0.2s;
 `
