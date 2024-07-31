@@ -97,7 +97,7 @@ const ConditionSelector: FC<TProps> = ({
             placement={placement}
             popWidth={popWidth}
           >
-            <ActiveLabel activeItem={activeMenuItem} title={t(title)} condition={active} />
+            <ActiveLabel activeItem={activeMenuItem} condition={active} />
           </Menu>
         </DropdownButton>
       )}

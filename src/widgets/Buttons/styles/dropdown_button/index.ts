@@ -16,7 +16,6 @@ type TWrapper = { $withBorder: boolean; size: TSizeTS; selected: boolean } & TSp
 export const Wrapper = styled.div<TWrapper>`
   ${css.row('align-center')};
   color: ${theme('article.digest')};
-
   border-radius: 10px;
 
   transform: ${({ size }) => (size === SIZE.TINY ? 'scale(0.85)' : 'none')};
@@ -33,16 +32,19 @@ export const Wrapper = styled.div<TWrapper>`
 type TInnerBtnWrapper = TActive & TColor
 export const InnerBtnWrapper = styled.div<TInnerBtnWrapper>`
   ${css.row('align-center')};
-  color: ${theme('article.digest')};
   margin-left: 2px;
-  font-weight: 400;
-  font-size: 14px;
 
   &:hover {
     cursor: pointer;
   }
 
   transition: color 0.2s;
+`
+/** TODO:  add a color in theme for hint, otherwire add opacity here will cause tooltip opacity too */
+export const Main = styled.div`
+  font-size: 14px;
+  color: ${theme('text.digest')};
+  font-weight: normal;
 `
 export const ButtonWrapper = styled(Button)`
   ${css.row('align-both')};
@@ -104,43 +106,23 @@ export const CloseIcon = styled(CloseSVG)`
 `
 
 export const CategoryIcon = styled(CategorySVG)`
-  fill: ${theme('article.digest')};
-  ${css.size(13)};
-  margin-top: -1px;
+  // fill: ${theme('article.digest')};
+  fill: ${theme('rainbow.purple')};
+  ${css.size(14)};
   margin-right: 4px;
   opacity: 0.8;
-
-  ${CloseWrapper}:hover & {
-    fill: ${theme('article.title')};
-  }
-
-  transition: all 0.2s;
 `
-
 export const SortIcon = styled(SortSVG)`
   fill: ${theme('article.digest')};
   ${css.size(14)};
-  margin-top: -1px;
   margin-right: 4px;
-
-  ${CloseWrapper}:hover & {
-    fill: ${theme('article.title')};
-  }
-
-  transition: all 0.2s;
 `
 
 export const WipIcon = styled(WipSVG)`
   fill: ${theme('article.digest')};
   ${css.size(14)};
-  margin-top: -1px;
   margin-right: 4px;
   opacity: 0.8;
 
-  ${CloseWrapper}:hover & {
-    fill: ${theme('article.title')};
-  }
-
   transform: rotate(90deg);
-  transition: all 0.2s;
 `

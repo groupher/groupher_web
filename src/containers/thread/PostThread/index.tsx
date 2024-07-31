@@ -27,10 +27,10 @@ export default () => {
   return (
     <div className={`${s.wrapper}`}>
       <div className={`${s.layout}`}>
+        <TagNote />
         <div className={`${s.filter}`}>
           <ArticlesFilter />
         </div>
-        <TagNote />
         <PagedPosts />
       </div>
 

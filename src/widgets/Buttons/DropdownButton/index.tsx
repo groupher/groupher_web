@@ -10,6 +10,7 @@ import {
   Wrapper,
   ButtonWrapper,
   InnerBtnWrapper,
+  Main,
   FilterIcon,
   CloseWrapper,
   CloseIcon,
@@ -58,7 +59,7 @@ const DropdownButton: FC<TProps> = ({
           {/* <CategoryIcon /> */}
           {/* <SortIcon /> */}
           <PrefixIcon type={prefixIcon} />
-          {children}
+          <Main>{children}</Main>
           {!noArrow && !(closable && selected) && (
             <FilterIcon $active={$active} selected={selected} $color={primaryColor} />
           )}
