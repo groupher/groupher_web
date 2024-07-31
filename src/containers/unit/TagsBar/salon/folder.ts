@@ -11,7 +11,7 @@ export default ({ isFolderOpen }: TProps) => {
     header: cn('row-center mb-2 ml-0.5 pointer hover:opacity-80 transition-opacity'),
     arrowBox: 'row-center size-4',
     title: 'row-center ml-1.5',
-    folderTitle: cn('text-sm mr-2', fg('text.title')),
+    folderTitle: cn('text-sm mr-2', fg('text.digest')),
     arrow: cn(
       'transition-transform',
       isFolderOpen ? 'rotate-[270deg]' : 'rotate-[180deg]',

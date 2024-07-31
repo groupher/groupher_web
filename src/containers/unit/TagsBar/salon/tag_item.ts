@@ -13,11 +13,7 @@ export default ({ active, color }: TProps) => {
       active && 'p-1.5 pl-2.5 -ml-1 my-0.5',
       active ? gradiientBar(color) : 'transparent',
     ),
-    title: cn(
-      active ? fg('text.title') : fg('text.digest'),
-      `group-hover:${fg('text.title')}`,
-      'transition-colors',
-    ),
+    title: cn('group-smoky-80', active && 'opacity-100', fg('text.title')),
     tag: cn('row-center grow text-sm', active && '-ml-0.5'),
     closeBox: cn(
       'align-both size-5 rounded',
