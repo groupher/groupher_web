@@ -2,19 +2,15 @@ import type { FC, ReactNode } from 'react'
 
 import type { TActive, TSizeTS, TSpace, TButtonPrefix } from '~/spec'
 import SIZE from '~/const/size'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
+
+import Button from '~/widgets/Buttons/Button'
+
+import ArrowSVG from '~/icons/ArrowSimple'
+import CloseSVG from '~/icons/CloseLight'
 
 import PrefixIcon from './PrefixIcon'
 
-import {
-  Wrapper,
-  ButtonWrapper,
-  InnerBtnWrapper,
-  Main,
-  FilterIcon,
-  CloseWrapper,
-  CloseIcon,
-} from '../styles/dropdown_button'
+import useSalon from '../styles/dropdown_button'
 
 type TProps = {
   children: ReactNode
@@ -40,42 +36,31 @@ const DropdownButton: FC<TProps> = ({
   selected = false,
   closable = false,
   prefixIcon = null,
-  ...restProps
+  ...spacing
 }) => {
-  const primaryColor = usePrimaryColor()
+  const s = useSalon({ size, selected, active: $active, ...spacing })
 
   return (
-    <Wrapper
-      $withBorder={withBorder}
-      size={size}
-      onClick={onClick}
-      $active={$active}
-      selected={selected}
-      $color={primaryColor}
-      {...restProps}
-    >
-      <ButtonWrapper size="small" type="primary" ghost>
-        <InnerBtnWrapper $active={$active} $color={primaryColor}>
-          {/* <CategoryIcon /> */}
-          {/* <SortIcon /> */}
+    <div className={s.wrapper} onClick={onClick}>
+      <Button size="small" type="primary" ghost className={s.button}>
+        <div className={s.inner}>
           <PrefixIcon type={prefixIcon} />
-          <Main>{children}</Main>
-          {!noArrow && !(closable && selected) && (
-            <FilterIcon $active={$active} selected={selected} $color={primaryColor} />
-          )}
+          {children}
+          {!noArrow && !(closable && selected) && <ArrowSVG className={s.arrowIcon} />}
           {closable && selected && (
-            <CloseWrapper
+            <div
+              className={s.closeBox}
               onClick={(e) => {
                 e.preventDefault()
                 onClear()
               }}
             >
-              <CloseIcon />
-            </CloseWrapper>
+              <CloseSVG className={s.closeIcon} />
+            </div>
           )}
-        </InnerBtnWrapper>
-      </ButtonWrapper>
-    </Wrapper>
+        </div>
+      </Button>
+    </div>
   )
 }
 

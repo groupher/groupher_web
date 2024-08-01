@@ -17,7 +17,6 @@ import {
   InnerWrapper,
   BannerContentWrapper,
   CommunityBaseInfo,
-  WatchIcon,
 } from '../styles/header_layout'
 
 export default () => {
@@ -46,7 +45,6 @@ export default () => {
                   src="https://img.shields.io/github/stars/vercel/next.js?style=social&logo=github&label=%20%20&labelColor=black&color=white"
                 />
               </GithubItem> */}
-              <WatchIcon />
               <AccountUnit />
             </Row>
           </CommunityBaseInfo>

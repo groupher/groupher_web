@@ -12,7 +12,7 @@ import ActiveLabel from './ActiveLabel'
 
 import type { TActiveCondition } from './spec'
 import { getMenuItems, getTitle, getActiveMenuItem } from './helper'
-import { Wrapper } from './styles'
+import useSalon from './salon'
 
 type TProps = {
   mode: TConditionMode
@@ -33,12 +33,13 @@ const ConditionSelector: FC<TProps> = ({
   placement = 'bottom',
   closable = true,
   prefixIcon = null,
-  ...restProps
+  ...spacing
 }) => {
   const [offset, setOffset] = useState([38, 5])
   const [menuOpen, setMenuOpen] = useState(false)
   const ref = useRef(null)
 
+  const s = useSalon({ menuOpen, selected, ...spacing })
   const { t } = useTrans()
 
   const popWidth = 142
@@ -49,7 +50,7 @@ const ConditionSelector: FC<TProps> = ({
   const title = getTitle(mode)
 
   return (
-    <Wrapper ref={ref} $selected={selected} $menuOpen={menuOpen} {...restProps}>
+    <div ref={ref} className={s.wrapper}>
       {!selected ? (
         <Menu
           offset={offset as [number, number]}
@@ -101,7 +102,7 @@ const ConditionSelector: FC<TProps> = ({
           </Menu>
         </DropdownButton>
       )}
-    </Wrapper>
+    </div>
   )
 }
 

@@ -31,7 +31,7 @@ const hasNoBorder = (metric: TMetric): boolean =>
     METRIC.HELP_CENTER,
   ])
 
-const GeneralHeader: FC<TProps> = ({ metric, accountInfo }) => {
+const GeneralHeader: FC<TProps> = ({ metric }) => {
   return (
     <Wrapper id="whereCallShowDoraemon" $testid="header" noBorder={hasNoBorder(metric)}>
       <InnerWrapper metric={metric}>
