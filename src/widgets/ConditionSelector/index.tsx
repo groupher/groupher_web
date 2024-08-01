@@ -35,7 +35,7 @@ const ConditionSelector: FC<TProps> = ({
   prefixIcon = null,
   ...spacing
 }) => {
-  const [offset, setOffset] = useState([38, 5])
+  const [offset, setOffset] = useState([28, 5])
   const [menuOpen, setMenuOpen] = useState(false)
   const ref = useRef(null)
 
@@ -58,7 +58,7 @@ const ConditionSelector: FC<TProps> = ({
           onSelect={(item) => onSelect(item.key as TActiveCondition)}
           onShow={() => setMenuOpen(true)}
           onHide={() => {
-            setOffset([30, 5])
+            // setOffset([30, 5])
             setMenuOpen(false)
           }}
           activeKey={active}

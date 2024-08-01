@@ -15,7 +15,7 @@ import usePagedPosts from '~/hooks/usePagedPosts'
 import useLayout from '~/hooks/useLayout'
 import useArticlesFilter from '~/hooks/useArticlesFilter'
 
-import { Space, SpaceGrow, DesktopOnly } from '~/widgets/Common'
+import { Space, SpaceGrow } from '~/widgets/Common'
 import PublishButton from '~/widgets/Buttons/PublishButton'
 import ConditionSelector from '~/widgets/ConditionSelector'
 import SearchBox from '~/widgets/SearchBox'
@@ -45,6 +45,7 @@ export default () => {
         }}
         selected={!!activeOrder}
         prefixIcon="sort"
+        right={0.5}
       />
       <ConditionSelector
         mode={CONDITION_MODE.CAT}
@@ -55,6 +56,7 @@ export default () => {
         }}
         selected={!!activeCat}
         prefixIcon="catetory"
+        right={0.5}
       />
       <ConditionSelector
         mode={CONDITION_MODE.STATE}
@@ -68,9 +70,7 @@ export default () => {
       />
       <Space right={10} />
       <SpaceGrow />
-      <DesktopOnly>
-        {resState === TYPE.RES_STATE.LOADING && <LavaLampLoading right={28} left={10} />}
-      </DesktopOnly>
+      {resState === TYPE.RES_STATE.LOADING && <LavaLampLoading right={28} left={10} />}
       {bannerLayout === BANNER_LAYOUT.SIDEBAR && <SearchBox right={8} />}
       {bannerLayout === BANNER_LAYOUT.SIDEBAR && (
         <PublishButton
