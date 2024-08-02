@@ -1,5 +1,5 @@
 export default () => {
   return {
-    wrapper: 'row-center w-full mb-1',
+    wrapper: 'w-auto',
   }
 }

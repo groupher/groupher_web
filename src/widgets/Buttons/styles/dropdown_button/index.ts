@@ -14,10 +14,8 @@ export default ({ size, selected, active, ...spacing }: TProps) => {
       margin(spacing),
       size === SIZE.TINY && 'scale-75',
     ),
-    button: cn(
-      'row-center !border-none !shadow-none pl-1 pr-1.5 overflow-visible hadow-none after:hidden',
-    ),
-    inner: cn('row-center ml-0.5 text-sm pointer'),
+    button: cn('row-center border-none shadow-none pl-1 pr-1.5 overflow-visible'),
+    inner: cn('row-center ml-0.5 text-sm pointer', fg('text.digest')),
     arrowIcon: cn('size-3.5 -rotate-90 mt-0.5 ml-px', fill('text.digest')),
     closeBox: 'align-both size-4 pointer',
     closeIcon: cn('size-3', fill('text.digest')),

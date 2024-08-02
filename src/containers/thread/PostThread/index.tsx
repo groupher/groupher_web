@@ -19,7 +19,6 @@ import useSalon from './salon'
 
 export default () => {
   const { bannerLayout } = useLayout()
-
   const s = useSalon()
 
   const isSidebarLayout = bannerLayout === BANNER_LAYOUT.SIDEBAR

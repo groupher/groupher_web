@@ -42,7 +42,7 @@ const ConditionSelector: FC<TProps> = ({
   const s = useSalon({ menuOpen, selected, ...spacing })
   const { t } = useTrans()
 
-  const popWidth = 142
+  const popWidth = 36
 
   const menuItems = getMenuItems(mode)
   const activeMenuItem = getActiveMenuItem(menuItems, active)

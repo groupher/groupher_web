@@ -3,8 +3,6 @@ import type { FC, ReactNode } from 'react'
 import type { TActive, TSizeTS, TSpace, TButtonPrefix } from '~/spec'
 import SIZE from '~/const/size'
 
-import Button from '~/widgets/Buttons/Button'
-
 import ArrowSVG from '~/icons/ArrowSimple'
 import CloseSVG from '~/icons/CloseLight'
 
@@ -42,7 +40,7 @@ const DropdownButton: FC<TProps> = ({
 
   return (
     <div className={s.wrapper} onClick={onClick}>
-      <Button size="small" type="primary" ghost className={s.button}>
+      <button className={s.button}>
         <div className={s.inner}>
           <PrefixIcon type={prefixIcon} />
           {children}
@@ -59,7 +57,7 @@ const DropdownButton: FC<TProps> = ({
             </div>
           )}
         </div>
-      </Button>
+      </button>
     </div>
   )
 }

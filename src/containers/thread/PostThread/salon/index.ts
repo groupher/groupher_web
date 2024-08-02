@@ -18,7 +18,7 @@ export default () => {
 
   return {
     wrapper: 'row w-full',
-    filter: 'row-center mb-1.5 h-10 -mt-1.5 -ml-0.5',
+    filter: 'row-center mb-1.5 h-10 -mt-1.5 -ml-1.5',
     layout,
   }
 }

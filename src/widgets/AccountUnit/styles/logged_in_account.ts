@@ -10,7 +10,7 @@ export default () => {
     avatar: cn('size-4', avatar('sm')),
     baseInfo: 'ml-3 mb-4',
     userName: cn('text-sm bold-sm', fg('text.title')),
-    loginBy: cn('font-xs opacity-80', fg('text.digest')),
+    loginBy: cn('text-xs opacity-80', fg('text.digest')),
     menuBar: cn(
       'row-center group text-sm h-8 w-full px-2.5 py-0.5 gap-y-2 border border-transparent rounded-md pointer',
       `hover:${fg('text.title')}`,
