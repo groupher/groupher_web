@@ -21,9 +21,11 @@ import ConditionSelector from '~/widgets/ConditionSelector'
 import SearchBox from '~/widgets/SearchBox'
 import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
-import { Wrapper } from './styles'
+import useSalon from './salon'
 
 export default () => {
+  const s = useSalon()
+
   const { resState } = usePagedPosts()
   const { bannerLayout } = useLayout()
 
@@ -35,7 +37,7 @@ export default () => {
   } = useArticlesFilter()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <ConditionSelector
         mode={CONDITION_MODE.ORDER}
         active={activeOrder}
@@ -87,6 +89,6 @@ export default () => {
       )}
 
       {bannerLayout === BANNER_LAYOUT.HEADER && <SearchBox right={-15} />}
-    </Wrapper>
+    </div>
   )
 }
