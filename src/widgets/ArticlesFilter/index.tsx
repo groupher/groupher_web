@@ -73,7 +73,7 @@ export default () => {
       <Space right={10} />
       <SpaceGrow />
       {resState === TYPE.RES_STATE.LOADING && <LavaLampLoading right={28} left={10} />}
-      {bannerLayout === BANNER_LAYOUT.SIDEBAR && <SearchBox right={8} />}
+      {bannerLayout === BANNER_LAYOUT.SIDEBAR && <SearchBox />}
       {bannerLayout === BANNER_LAYOUT.SIDEBAR && (
         <PublishButton
           text="参与讨论"
@@ -88,7 +88,7 @@ export default () => {
         />
       )}
 
-      {bannerLayout === BANNER_LAYOUT.HEADER && <SearchBox right={-15} />}
+      {bannerLayout === BANNER_LAYOUT.HEADER && <SearchBox right={-2} />}
     </div>
   )
 }

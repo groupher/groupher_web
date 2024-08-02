@@ -29,8 +29,9 @@ export default ({ ...spacing }: TProps) => {
       'row-center font-sm no-underline h-8 px-3.5 rounded pointer transition-colors',
       `hover:${primary('fg')}`,
       `hover:${bg('hoverBg')}`,
+      `hover:${fg('text.title')}`,
       fg('text.digest'),
     ),
-    titleActive: cn('bold-sm', primary('fg')),
+    titleActive: cn('bold-sm', `hover:${primary('fg')}`, primary('fg')),
   }
 }
