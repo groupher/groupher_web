@@ -20,7 +20,7 @@ export default ({ ...spacing }: TProps) => {
     margin(spacing),
   )
 
-  const normalWrapper = cn('row-center gap-y-4 -ml-7', margin(spacing))
+  const normalWrapper = cn('align-both grow gap-y-4 -ml-7', margin(spacing))
   const wrapper = layout === HEADER_LAYOUT.FLOAT ? floatWrapper : normalWrapper
 
   return {

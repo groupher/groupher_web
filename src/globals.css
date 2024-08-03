@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* tailwind can't express those sexy border style, need global css */
+/* NOTE: please sync those values with real theme colors */
+:root {
+  --divider: #EAE9E9;
+  --divider-dark: #3c3c3c;
+}
+
 @layer utilities {
   .row {
     @apply flex flex-row;
@@ -79,13 +86,41 @@
     background: linear-gradient(315deg, rgb(104 104 104 / 0%) 0%, #2c2c2c 100%);
   }
 
+ .sexy-border-02 {
+    border-image: linear-gradient(
+      0.2turn,
+      transparent,
+      var(--divider),
+      var(--divider),
+      var(--divider),
+      transparent
+    );
+    border-image-slice: 1;
+  }
+
+  .sexy-border-02-dark {
+    border-image: linear-gradient(
+      0.2turn,
+      transparent,
+      var(--divider-dark),
+      var(--divider-dark),
+      var(--divider-dark),
+      transparent
+    );
+    border-image-slice: 1;
+  }
+
   .debug {
     @apply border border-dashed;
     border-color: red;
   }
-  .debug-green {
+  .debug-g {
     @apply border border-dashed;
     border-color: #4d7c0f;
+  }
+  .debug-b {
+    @apply border border-dashed;
+    border-color: blue;
   }
 }
 

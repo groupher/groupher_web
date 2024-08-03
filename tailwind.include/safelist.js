@@ -1,4 +1,4 @@
-const GENERAL = ['border-divider', 'article-hover-linear']
+const GENERAL = ['border-divider', 'article-hover-linear', 'sexy-border-02']
 
 const TEXT_COLORS = ['text-title', 'text-digest', 'text-body', 'text-hint', 'text-invert']
 const BG_COLORS = ['dot', 'hoverBg', 'htmlBg', 'popover-bg', 'menuHoverBg', 'alphaBg', 'snackBar']
