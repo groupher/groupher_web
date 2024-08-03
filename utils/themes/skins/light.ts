@@ -53,6 +53,7 @@ export default {
   articleCardShadow: '0 2px 40px 0 rgb(224 226 228 / 27%)',
   articleCardHover: '#c1c1c1',
   dashboardBlockOpacity: 0.65,
+  snackBar: '',
 
   rainbow: {
     red: '#ca5f4d',
@@ -134,6 +135,7 @@ export default {
     digest: '',
     body: '',
     hint: '',
+    invert: '',
   },
   dot: '',
   article: {
@@ -217,7 +219,7 @@ export default {
     hoverBg: '#eee',
   },
   popover: {
-    bg: '#fafafa', // '#fffffff2',
+    bg: '#f6f6f6', // '#fafafa', // '#fffffff2',
     borderColor: '#e9e9ea',
     boxShadow: '-3px 2px 20px 0px rgb(58 58 58 / 15%)',
     activeBorder: '#70707094',

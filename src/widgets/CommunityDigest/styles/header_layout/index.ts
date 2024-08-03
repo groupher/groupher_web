@@ -8,6 +8,7 @@ import { HEADER_LAYOUT } from '~/const/layout'
 
 export default () => {
   return {
+    wrapper: 'container-community debug',
     //
   }
 }

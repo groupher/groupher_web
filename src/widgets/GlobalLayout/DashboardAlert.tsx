@@ -1,23 +1,20 @@
 import type { FC } from 'react'
+import Link from 'next/link'
 
-import { SpaceGrow } from '~/widgets/Common'
-import {
-  Wrapper,
-  WarningIcon,
-  Title,
-  ResetButton,
-  LearnMoreButton,
-  MoreLink,
-} from './styles/dashboard_alert'
+import WarningSVG from '~/icons/Warning'
+
+import useSalon from './salon/dashboard_alert'
 // import { clearDemoSetting } from './logic'
 
 const DashboardAlert: FC = () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <WarningIcon />
-      <Title>当前自定义设置只对本地演示有效</Title>
-      <SpaceGrow />
-      <ResetButton
+    <div className={s.wrapper}>
+      <WarningSVG className={s.icon} />
+      <div className={s.title}>当前自定义设置只对本地演示有效</div>
+      <button
+        className={s.resetBtn}
         onClick={() => {
           console.log('## ## clearDemoSetting')
 
@@ -25,11 +22,11 @@ const DashboardAlert: FC = () => {
         }}
       >
         恢复默认
-      </ResetButton>
-      <LearnMoreButton>
-        <MoreLink href="/">了解更多</MoreLink>
-      </LearnMoreButton>
-    </Wrapper>
+      </button>
+      <Link className={s.more} href="/">
+        了解更多
+      </Link>
+    </div>
   )
 }
 

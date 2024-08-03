@@ -20,6 +20,8 @@ import {
 } from '../styles/header_layout'
 
 export default () => {
+  // const s = useSalon()
+
   const metric = useMetric()
   const { layout } = useHeaderLinks()
   const { enterView, leaveView } = useCommunityDigestViewport()

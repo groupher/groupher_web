@@ -8,13 +8,15 @@ import type { TFlatThemeKey } from '~/utils/themes/skins'
 import { camelize } from '~/fmt'
 
 import useTheme from '~/hooks/useTheme'
+import useMetric from '~/hooks/useMetric'
 import useAvatarLayout from '~/hooks/useAvatarLayout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-type TColorPrefix = 'fg' | 'bg' | 'fill'
+type TColorPrefix = 'fg' | 'bg' | 'fill' | 'border'
 
 type TRet = {
   cn: (...inputs: ClassValue[]) => string
+  container: () => string
   global: (className: string) => string
   fg: (key: TFlatThemeKey) => string
   bg: (key: TFlatThemeKey) => string
@@ -35,9 +37,12 @@ type TRet = {
  */
 export default (): TRet => {
   const { isLightTheme } = useTheme()
+  const metric = useMetric()
   const { isSquare: isAvatarSquare } = useAvatarLayout()
 
   const primaryColor = usePrimaryColor()
+  const container = () => `container-${metric.toLowerCase()}`
+
   /**
    * cover article.title -> article-title to match the tailwind csss varaible name
    */
@@ -109,6 +114,7 @@ export default (): TRet => {
   return {
     cn,
     global,
+    container,
     fg,
     bg,
     fill,

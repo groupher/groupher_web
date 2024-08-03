@@ -20,7 +20,7 @@ import SEO from './SEO'
 import Wallpaper from './Wallpaper'
 import Main from './Main'
 
-import useSalon from './styles'
+import useSalon from './salon'
 
 const Addon = lazy(() => import('./Addon'))
 
@@ -64,6 +64,7 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
           </div>
         </div>
 
+        {/* <DashboardAlert /> */}
         {/* {showDashboardAlertUI && <DashboardAlert />} */}
       </ThemePalette>
     </BalancerTextProvider>

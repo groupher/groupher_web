@@ -74,6 +74,7 @@ module.exports = {
   },
   articleCardHover: { DEFAULT: '#c1c1c1', dark: '#575757' },
   dashboardBlockOpacity: { DEFAULT: 0.65, dark: 0.7 },
+  snackBar: { DEFAULT: colors.neutral['700'] },
 
   rainbow: {
     red: { DEFAULT: '#ca5f4d', dark: '#ca5f4d' },
@@ -214,6 +215,10 @@ module.exports = {
     hint: {
       DEFAULT: colors.gray['400'],
       dark: colors.gray['500'],
+    },
+    invert: {
+      DEFAULT: colors.gray['100'],
+      dark: colors.gray['800'],
     },
     // body:
     // hint

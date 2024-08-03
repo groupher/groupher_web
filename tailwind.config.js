@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-const { colors, screens, safelist } = require('./tailwind.include')
+const { colors, screens, safelist, plugins } = require('./tailwind.include')
 
 module.exports = {
   content: [
@@ -20,5 +20,5 @@ module.exports = {
     },
   },
   safelist,
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/typography'), plugins.containers],
 }
