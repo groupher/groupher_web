@@ -13,8 +13,8 @@ module.exports = ({ addComponents, theme }) => {
       maxWidth: '1200px',
       marginLeft: 'auto',
       marginRight: 'auto',
-      // paddingLeft: theme('spacing.4'),
-      // paddingRight: theme('spacing.4'),
+      paddingLeft: theme('spacing.36'),
+      paddingRight: theme('spacing.36'),
     },
   }
 

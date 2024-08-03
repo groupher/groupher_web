@@ -10,7 +10,7 @@ export default () => {
   const isSidebarLayout = bannerLayout === BANNER_LAYOUT.SIDEBAR
 
   return {
-    wrapper: cn(isSidebarLayout && 'row justify-between'),
+    wrapper: cn('w-full', isSidebarLayout && 'row justify-between'),
     content: 'column w-full',
   }
 }
