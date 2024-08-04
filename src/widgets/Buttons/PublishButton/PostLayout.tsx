@@ -6,8 +6,6 @@
 
 import { memo, type FC } from 'react'
 
-import { SpaceGrow } from '~/widgets/Common'
-
 // import Button from './Button'
 import { Wrapper, Title, EditIcon } from '../styles/publish_button/post_layout'
 
@@ -19,7 +17,7 @@ const PostLayout: FC<TProps> = ({ text }) => {
   return (
     <Wrapper>
       <Title>{text}</Title>
-      <SpaceGrow />
+      <div className="grow" />
       <EditIcon />
     </Wrapper>
   )

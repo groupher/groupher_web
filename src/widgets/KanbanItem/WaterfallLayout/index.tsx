@@ -15,7 +15,6 @@ import TagsList from '~/widgets/TagsList'
 import { mockUsers } from '~/mock'
 import { previewArticle } from '~/signal'
 
-import { SpaceGrow } from '~/widgets/Common'
 import Upvote from '~/widgets/Upvote'
 
 import { Wrapper, Title, UpvotesWrapper } from '../styles/waterfall_layout'
@@ -30,7 +29,7 @@ const KanbanItem: FC<TProps> = ({ article }) => {
   return (
     <Wrapper>
       <Title onClick={() => previewArticle(article)}>{title}</Title>
-      <SpaceGrow />
+      <div className="grow" />
       <TagsList items={articleTags} right={1} />
       <ArticleCatState cat={cat} right={10} top={-1} />
       <UpvotesWrapper>

@@ -8,7 +8,7 @@ import SettingSVG from '~/icons/Setting'
 import LinkSVG from '~/icons/ArrowUpRight'
 
 import HomeLogo from '~/widgets/HomeLogo'
-import { SpaceGrow, SexyDivider, LinkAble } from '~/widgets/Common'
+import { SexyDivider, LinkAble } from '~/widgets/Common'
 
 import MenuBar from './MenuBar'
 import useSalon from './salon/more_panel'
@@ -26,7 +26,7 @@ export default () => {
             <SettingSVG className={s.dashboardIcon} />
           </div>
           {t('dashboard')}
-          <SpaceGrow />
+          <div className="grow" />
           <LinkSVG className={s.linkIcon} />
         </MenuBar>
       </LinkAble>

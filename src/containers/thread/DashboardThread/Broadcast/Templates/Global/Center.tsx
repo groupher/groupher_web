@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
 import { BROADCAST_LAYOUT } from '~/const/layout'
-import { Space, SpaceGrow } from '~/widgets/Common'
+import { Space } from '~/widgets/Common'
 
 import useBroadcast from '../../../logic/useBroadcast'
 import {
@@ -32,7 +32,7 @@ const Center: FC<TProps> = ({ onSelect = null }) => {
       }}
     >
       <NotifyBar bg={broadcastBg} $active={$active} center>
-        <SpaceGrow />
+        <div className="grow" />
         <Row>
           <NotifyIcon />
           <NotifyDesc>
@@ -43,7 +43,7 @@ const Center: FC<TProps> = ({ onSelect = null }) => {
           <Space left={5} />
           <ArrowIcon />
         </Row>
-        <SpaceGrow />
+        <div className="grow" />
         <CrossIcon />
       </NotifyBar>
     </Wrapper>

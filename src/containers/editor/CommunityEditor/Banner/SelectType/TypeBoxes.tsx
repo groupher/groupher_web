@@ -1,6 +1,5 @@
 import useTheme from '~/hooks/useTheme'
 import THEME from '~/const/theme'
-import { SpaceGrow } from '~/widgets/Common'
 
 import { COMMUNITY_CATS } from '../../constant'
 import useLogic from '../../useLogic'
@@ -41,7 +40,7 @@ export default () => {
                 {$active && <CheckIcon $color={$color} />}
               </Header>
               <MainText>{item.title}</MainText>
-              <SpaceGrow />
+              <div className="grow" />
               <ColorMask $active={$active} $color={$color} />
             </InnerBox>
           </Box>

@@ -1,4 +1,3 @@
-import { SpaceGrow } from '~/widgets/Common'
 import AccountUnit from '~/widgets/AccountUnit'
 import HomeLogo from '~/widgets/HomeLogo'
 
@@ -17,9 +16,9 @@ export default () => {
       <Title>Groupher</Title>
       <Divider />
       <SubTitle>创建社区</SubTitle>
-      <SpaceGrow />
+      <div className="grow" />
       {showStep && <StepMap />}
-      <SpaceGrow />
+      <div className="grow" />
 
       <AccountUnit top={-3} />
     </Wrapper>

@@ -6,8 +6,6 @@
 
 import { type FC, memo } from 'react'
 
-import { SpaceGrow } from '~/widgets/Common'
-
 import { Wrapper, Title, Desc, BrandText } from './styles'
 
 type TProps = {
@@ -31,7 +29,7 @@ const BrandTitle: FC<TProps> = ({
     <Wrapper $testid={testid} mBottom={mBottom} onClick={() => onClick?.()}>
       <Title>
         <BrandText fontSize={fontSize}>{title}</BrandText>
-        <SpaceGrow />
+        <div className="grow" />
       </Title>
       <Desc>{desc}</Desc>
     </Wrapper>

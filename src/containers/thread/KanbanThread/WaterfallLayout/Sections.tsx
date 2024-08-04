@@ -8,7 +8,6 @@ import type { FC } from 'react'
 import useKanbanPosts from '~/hooks/useKanbanPosts'
 import useKanbanBgColors from '~/hooks/useKanbanBgColors'
 
-import { SpaceGrow } from '~/widgets/Common'
 import KanbanItem from '~/widgets/KanbanItem'
 import EmptyItem from '~/widgets/KanbanItem/EmptyItem'
 
@@ -36,7 +35,7 @@ const Sections: FC = () => {
           <TODOIcon $color={todoBg} />
           <Label>待办</Label>
           <SubTitle $color={todoBg}>{todoPosts.totalCount} 项</SubTitle>
-          <SpaceGrow />
+          <div className="grow" />
           <AddIcon />
         </Header>
         <Body>
@@ -50,7 +49,7 @@ const Sections: FC = () => {
           <WipIcon $color={wipBg} />
           <Label>进行中</Label>
           <SubTitle $color={wipBg}>{wipPosts.totalCount} 项</SubTitle>
-          <SpaceGrow />
+          <div className="grow" />
           <AddIcon />
         </Header>
         <Body>
@@ -65,7 +64,7 @@ const Sections: FC = () => {
           <DoneIcon $color={doneBg} />
           <Label>已完成</Label>
           <SubTitle $color={doneBg}>{donePosts.totalCount} 项</SubTitle>
-          <SpaceGrow />
+          <div className="grow" />
           <AddIcon />
         </Header>
         <Body>

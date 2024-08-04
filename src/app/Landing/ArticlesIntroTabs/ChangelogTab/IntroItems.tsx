@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
 import { COLOR_NAME } from '~/const/colors'
-import { SpaceGrow, DesktopOnly } from '~/widgets/Common'
+import { DesktopOnly } from '~/widgets/Common'
 
 import FeatItem from '../FeatItem'
 import MoreLink from '../MoreLink'
@@ -31,7 +31,7 @@ const IntroItems: FC = () => {
           <Contents />
         </FeatList>
 
-        <SpaceGrow />
+        <div className="grow" />
         <MoreLink href="/" color={COLOR_NAME.RED} />
       </DesktopOnly>
     </>

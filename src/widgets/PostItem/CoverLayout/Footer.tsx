@@ -4,7 +4,6 @@ import TimeAgo from 'timeago-react'
 import type { TPost } from '~/spec'
 import { UPVOTE_LAYOUT } from '~/const/layout'
 
-import { SpaceGrow } from '~/widgets/Common'
 import Upvote from '~/widgets/Upvote'
 
 import useSalon from '../salon/cover_layout/footer'
@@ -28,7 +27,7 @@ const Footer: FC<TProps> = ({ article }) => {
         left={-2}
         top={-1}
       />
-      <SpaceGrow />
+      <div className="grow" />
       <div className={s.createTime}>
         <TimeAgo datetime={insertedAt} locale="zh_CN" />
       </div>

@@ -2,7 +2,6 @@ import { type FC, memo } from 'react'
 
 import type { TEnableConfig } from '~/spec'
 
-import { SpaceGrow } from '~/widgets/Common'
 import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
 
 import useEnable from '../logic/useEnable'
@@ -20,7 +19,7 @@ const DocThread: FC<TProps> = ({ settings }) => {
       <Section>
         <Header>
           <Title>最后更新时间</Title>
-          <SpaceGrow />
+          <div className="grow" />
           <ToggleSwitch
             checked={settings.docLastUpdate}
             onChange={(c) => enableThread('helpLastUpdate', c)}
@@ -32,7 +31,7 @@ const DocThread: FC<TProps> = ({ settings }) => {
       <Section>
         <Header>
           <Title>反馈调查</Title>
-          <SpaceGrow />
+          <div className="grow" />
           <ToggleSwitch
             checked={settings.docReaction}
             onChange={(c) => enableThread('docReaction', c)}

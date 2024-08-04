@@ -4,7 +4,6 @@ import useChangeI18n from '~/hooks/useChangeI18n'
 import { LANGS_OPTIONS } from '~/const/i18n'
 
 import CheckSVG from '~/icons/Check'
-import { SpaceGrow } from '~/widgets/Common'
 
 import MenuBar from './MenuBar'
 
@@ -31,7 +30,7 @@ export default () => {
               <Icon />
             </div>
             {LANG.label}
-            <SpaceGrow />
+            <div className="grow" />
             {LANG.value === locale && <CheckSVG className={s.checked} />}
           </MenuBar>
         )

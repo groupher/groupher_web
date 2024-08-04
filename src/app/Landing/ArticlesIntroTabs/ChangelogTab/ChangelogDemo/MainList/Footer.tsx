@@ -2,7 +2,6 @@ import type { FC } from 'react'
 
 import { mockUsers } from '~/mock'
 
-import { SpaceGrow } from '~/widgets/Common'
 import Facepile from '~/widgets/Facepile/LandingPage'
 
 import {
@@ -31,8 +30,7 @@ const Footer: FC<TProps> = ({ upvotesCount = 24, date = '2013-12-01' }) => {
       <UsersWrapper>
         <Facepile users={users} />
       </UsersWrapper>
-      <SpaceGrow />
-
+      <div className="grow" />
       <PublishDate>{date}</PublishDate>
     </Wrapper>
   )

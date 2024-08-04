@@ -3,7 +3,7 @@ import { includes } from 'ramda'
 import { THREAD } from '~/const/thread'
 
 import ColorSelector from '~/widgets/ColorSelector'
-import { SpaceGrow, Br } from '~/widgets/Common'
+import { Br } from '~/widgets/Common'
 import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
 
 import { SETTING_FIELD } from '../constant'
@@ -67,7 +67,7 @@ export default () => {
         <Section>
           <Header>
             <ThreadTitle>讨论</ThreadTitle>
-            <SpaceGrow />
+            <div className="grow" />
             <ToggleSwitch
               checked={includes(THREAD.POST, widgetsThreads)}
               onChange={(checked) => threadOnChange(checked, THREAD.POST)}
@@ -78,7 +78,7 @@ export default () => {
         <Section>
           <Header>
             <ThreadTitle>看板</ThreadTitle>
-            <SpaceGrow />
+            <div className="grow" />
             <ToggleSwitch
               checked={includes(THREAD.KANBAN, widgetsThreads)}
               onChange={(checked) => threadOnChange(checked, THREAD.KANBAN)}
@@ -89,7 +89,7 @@ export default () => {
         <Section>
           <Header>
             <ThreadTitle>更新日志</ThreadTitle>
-            <SpaceGrow />
+            <div className="grow" />
             <ToggleSwitch
               checked={includes(THREAD.CHANGELOG, widgetsThreads)}
               onChange={(checked) => threadOnChange(checked, THREAD.CHANGELOG)}
@@ -100,7 +100,7 @@ export default () => {
         <Section>
           <Header>
             <ThreadTitle>帮助台</ThreadTitle>
-            <SpaceGrow />
+            <div className="grow" />
             <ToggleSwitch
               checked={includes(THREAD.DOC, widgetsThreads)}
               onChange={(checked) => threadOnChange(checked, THREAD.DOC)}

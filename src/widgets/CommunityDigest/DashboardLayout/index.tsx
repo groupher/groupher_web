@@ -2,7 +2,6 @@ import { ANCHOR } from '~/const/dom'
 import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
 
 import ViewportTracker from '~/widgets/ViewportTracker'
-import { SpaceGrow } from '~/widgets/Common'
 import AccountUnit from '~/widgets/AccountUnit'
 
 import CommunityBrief from './CommunityBrief'
@@ -20,7 +19,7 @@ export default () => {
         <div className={s.content}>
           <div className={s.baseInfo}>
             <CommunityBrief />
-            <SpaceGrow />
+            <div className="grow" />
             <AccountUnit />
           </div>
         </div>

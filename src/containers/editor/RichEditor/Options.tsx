@@ -1,7 +1,5 @@
 import { type FC, memo, type ReactNode } from 'react'
 
-import { SpaceGrow } from '~/widgets/Common'
-
 import Menu from './Menu'
 
 import { Wrapper } from './styles/options'
@@ -14,7 +12,7 @@ const Options: FC<TProps> = ({ addon }) => {
   return (
     <Wrapper>
       {addon}
-      <SpaceGrow />
+      <div className="grow" />
       <Menu />
     </Wrapper>
   )

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { SpaceGrow, Row } from '~/widgets/Common'
+import { Row } from '~/widgets/Common'
 import Button from '~/widgets/Buttons/Button'
 
 import useLogic from '../useLogic'
@@ -32,7 +32,7 @@ export default () => {
           <NoteText>支持多组 HEX 颜色值，</NoteText>
         </Row>
 
-        <SpaceGrow />
+        <div className="grow" />
         {changed && (
           <>
             <Button ghost size="small" noBorder right={8} onClick={() => setColorVal(customColor)}>

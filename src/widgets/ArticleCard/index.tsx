@@ -11,7 +11,7 @@ import useIsArticleViewing from '~/hooks/useIsArticleViewing'
 import ArticleReadLabel from '~/widgets/ArticleReadLabel'
 import ArticlePinLabel from '~/widgets/ArticlePinLabel'
 import DigestSentence from '~/widgets/DigestSentence'
-import { Br, SpaceGrow, DesktopOnly, MobileOnly } from '~/widgets/Common'
+import { Br, DesktopOnly, MobileOnly } from '~/widgets/Common'
 import ArticleImgWindow from '~/widgets/ArticleImgWindow'
 
 import Footer from './Footer'
@@ -68,7 +68,7 @@ const ArticleCard: FC<TProps> = ({ data }) => {
       <Br top={4} />
       <ArticleImgWindow />
       <Br top={18} />
-      <SpaceGrow />
+      <div className="grow" />
       <Footer data={data} />
     </Wrapper>
   )

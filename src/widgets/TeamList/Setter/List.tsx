@@ -4,7 +4,7 @@ import type { TUser } from '~/spec'
 import { ICON } from '~/config'
 
 import CustomScroller from '~/widgets/CustomScroller'
-import { SpaceGrow } from '~/widgets/Common'
+
 import Tooltip from '~/widgets/Tooltip'
 import Checker from '~/widgets/Checker'
 
@@ -38,7 +38,7 @@ const List: FC<TProps> = ({ users, withDelete = false, withSelect = false, onRem
             <Intro>
               <Name>
                 {user.nickname}
-                <SpaceGrow />
+                <div className="grow" />
                 {withSelect && (
                   <CheckWrapper>
                     <Checker size="small" onChange={(checked) => checked && onAdd(user)} />

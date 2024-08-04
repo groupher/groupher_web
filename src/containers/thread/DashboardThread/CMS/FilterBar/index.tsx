@@ -1,6 +1,5 @@
 import type { FC } from 'react'
 
-import { SpaceGrow } from '~/widgets/Common'
 import Button from '~/widgets/Buttons/Button'
 import { CONDITION_MODE } from '~/const/mode'
 import ConditionSelector from '~/widgets/ConditionSelector'
@@ -58,7 +57,7 @@ const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox, selectedCount 
         <ConditionSelector mode={CONDITION_MODE.STATE} selected={false} right={20} />
 
         <DateRangeWrapper>日期范围(TODO)</DateRangeWrapper>
-        <SpaceGrow />
+        <div className="grow" />
         <Button size="small" ghost noBorder top={-2}>
           <ResetIcon />
           重置

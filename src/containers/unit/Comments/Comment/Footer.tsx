@@ -8,7 +8,7 @@ import { UPVOTE_LAYOUT } from '~/const/layout'
 import { authWarn } from '~/signal'
 
 import DotDivider from '~/widgets/DotDivider'
-import { DesktopOnly, Space, SpaceGrow } from '~/widgets/Common'
+import { DesktopOnly, Space } from '~/widgets/Common'
 import EmotionSelector from '~/widgets/EmotionSelector'
 import Upvote from '~/widgets/Upvote'
 
@@ -61,7 +61,7 @@ const Footer: FC<TProps> = ({ data, apiMode }) => {
               作者点了赞
             </AuthorUpvoteWrapper>
           )}
-          <SpaceGrow />
+          <div className="grow" />
         </ExtraWrapper>
       )}
 
@@ -90,7 +90,7 @@ const Footer: FC<TProps> = ({ data, apiMode }) => {
         </DesktopOnly>
         {apiMode === API_MODE.ARTICLE && <Actions data={data} />}
 
-        <SpaceGrow />
+        <div className="grow" />
       </MainWrapper>
     </Wrapper>
   )

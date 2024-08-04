@@ -4,7 +4,6 @@ import { startsWith } from 'ramda'
 import { ONE_LINK_GROUP, MORE_GROUP } from '~/const/dashboard'
 
 import Tooltip from '~/widgets/Tooltip'
-import { SpaceGrow } from '~/widgets/Common'
 
 import GroupMenu from './GroupMenu'
 import GroupInputer from './GroupInputer'
@@ -94,7 +93,7 @@ const GroupHead: FC<TProps> = ({
     <Wrapper>
       <GroupTitle title={title} />
 
-      <SpaceGrow />
+      <div className="grow" />
 
       {!(startsWith(ONE_LINK_GROUP, title) || title === MORE_GROUP) && (
         <EditIcon onClick={() => triggerGroupUpdate(title, curGroupIndex)} />

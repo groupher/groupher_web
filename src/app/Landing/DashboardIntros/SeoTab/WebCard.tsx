@@ -1,6 +1,5 @@
 import type { FC } from 'react'
 
-import { SpaceGrow } from '~/widgets/Common'
 import {
   Wrapper,
   Url,
@@ -33,7 +32,7 @@ const WebCard: FC = () => {
           <Logo src="/landing/seo/ms.png" $size={16} />
         </LogoWrapper>
         <XHSLogo src="/landing/seo/duck.png" $size={18} />
-        <SpaceGrow />
+        <div className="grow" />
         <Hint>OpenGraph</Hint>
       </Footer>
     </Wrapper>

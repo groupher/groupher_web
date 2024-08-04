@@ -6,7 +6,6 @@ import useFooterLinks from '~/hooks/useFooterLinks'
 
 import { assetSrc, sortByIndex, groupByKey } from '~/helper'
 
-import { SpaceGrow } from '~/widgets/Common'
 import SocialList from '~/widgets/SocialList'
 import ImgFallback from '~/widgets/ImgFallback'
 
@@ -40,7 +39,7 @@ export default () => {
             noLazy
           />
           <BrandDesc>{desc}</BrandDesc>
-          <SpaceGrow />
+          <div className="grow" />
 
           <SocialList size="medium" selected={DEME_SOCIALS} top={10} />
         </BrandWrapper>

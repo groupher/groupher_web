@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { SpaceGrow, SexyDivider } from '~/widgets/Common'
+import { SexyDivider } from '~/widgets/Common'
 
 import { Wrapper, AppStoreBar, MenuBar, Icon, Info, Platform, Title } from './styles/panel'
 
@@ -23,7 +23,7 @@ const Panel: FC = () => {
           <Platform>Chrome 应用商店</Platform>
           <Title>Groupher</Title>
         </Info>
-        <SpaceGrow />
+        <div className="grow" />
         <Icon.Link />
       </MenuBar>
 
@@ -33,7 +33,7 @@ const Panel: FC = () => {
           <Platform>火狐插件市场</Platform>
           <Title>Groupher</Title>
         </Info>
-        <SpaceGrow />
+        <div className="grow" />
         <Icon.Link />
       </MenuBar>
 
@@ -43,7 +43,7 @@ const Panel: FC = () => {
           <Platform>Github</Platform>
           <Title>Groupher</Title>
         </Info>
-        <SpaceGrow />
+        <div className="grow" />
         <Icon.Link />
       </MenuBar>
     </Wrapper>

@@ -10,7 +10,7 @@ import usePrimaryColor from '~/hooks/usePrimaryColor'
 import { ARTICLE_THREAD } from '~/const/thread'
 
 // import ArchivedSign from '~/widgets/ArchivedSign'
-import { SpaceGrow } from '~/widgets/Common'
+
 import ArticleBaseStats from '~/widgets/ArticleBaseStats'
 import Share from '~/widgets/Share'
 import ArticleSettingMenu from '~/widgets/ArticleSettingMenu'
@@ -51,7 +51,7 @@ export default () => {
             <ArrowIcon />
             讨论区
           </BackBtnWrapper>
-          <SpaceGrow />
+          <div className="grow" />
           <Share modalOffset="38%" />
           <ArticleSettingMenu left={16} />
         </Topping>

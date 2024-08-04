@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useMutation } from 'urql'
 
 import { toast, updateViewingArticle } from '~/signal'
-import { SpaceGrow } from '~/widgets/Common'
+
 import useViewingArticle from '~/hooks/useViewingArticle'
 
 import S from '../schema'
@@ -40,7 +40,7 @@ export default () => {
     <MenuItem onClick={handlePin}>
       {pin ? <Icon.UnPin /> : <Icon.Pin />}
       {pin ? '取消置顶' : '置顶'}
-      <SpaceGrow />
+      <div className="grow" />
       {result.fetching && <Icon.Spin />}
     </MenuItem>
   )

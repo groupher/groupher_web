@@ -11,7 +11,6 @@ import useViewingArticle from '~/hooks/useViewingArticle'
 
 import TagNode from '~/widgets/TagNode'
 import Checker from '~/widgets/Checker'
-import { SpaceGrow } from '~/widgets/Common'
 
 import S from '../schema'
 import Footer from './Footer'
@@ -79,7 +78,7 @@ const TagSetting: FC<TProps> = ({ onBack }) => {
         >
           <TagNode dotSize={8} color={item.color as TColorName} hashSize={13} />
           <Title>{item.title}</Title>
-          <SpaceGrow />
+          <div className="grow" />
           <Checker size="small" checked={includes(item.id, checked)} />
         </Item>
       ))}

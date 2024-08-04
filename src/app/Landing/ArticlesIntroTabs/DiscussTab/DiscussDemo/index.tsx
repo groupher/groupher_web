@@ -4,7 +4,6 @@ import { mockUsers } from '~/mock'
 import { ARTICLE_CAT } from '~/const/gtd'
 import { COLOR_NAME } from '~/const/colors'
 
-import { SpaceGrow } from '~/widgets/Common'
 import ArticleCatState from '~/widgets/ArticleCatState'
 import TagNode from '~/widgets/TagNode'
 
@@ -85,7 +84,7 @@ const DiscussDemo: FC = () => {
             <UpvoteCount>101</UpvoteCount>
           </UpvoteWrapper>
 
-          <SpaceGrow />
+          <div className="grow" />
           <CommentIcon />
           <Count>18</Count>
         </Status>
@@ -96,7 +95,7 @@ const DiscussDemo: FC = () => {
 
         <CommentsHeader>
           评论 <Count>18</Count>
-          <SpaceGrow />
+          <div className="grow" />
           <Bar top={5} height={3} width={26} opacity={0.2} right={-3} />
         </CommentsHeader>
         <CommentItem index={0} user={users[0]} opacity={0.9} />

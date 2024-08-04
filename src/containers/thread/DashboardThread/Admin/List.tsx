@@ -1,7 +1,6 @@
 import { callPassportEditor } from '~/signal'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import { SpaceGrow } from '~/widgets/Common'
 import Button from '~/widgets/Buttons/Button'
 import AdminAvatar from '~/widgets/AdminAvatar'
 
@@ -43,7 +42,7 @@ export default () => {
                 <Name>{user.nickname}</Name>
                 <Login>@{user.login}</Login>
                 {role === 'root' && <RootSign $color={primaryColor}>ROOT</RootSign>}
-                <SpaceGrow />
+                <div className="grow" />
                 <Button
                   top={1}
                   onClick={() => {

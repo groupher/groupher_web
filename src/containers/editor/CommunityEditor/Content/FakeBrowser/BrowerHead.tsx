@@ -1,7 +1,7 @@
 import { type FC, memo } from 'react'
 import { isEmpty } from 'ramda'
 
-import { Row, SpaceGrow } from '~/widgets/Common'
+import { Row } from '~/widgets/Common'
 
 import Favicon from './Favicon'
 import type { TCommunityType } from '../../spec'
@@ -76,7 +76,7 @@ const BrowserHead: FC<TProps> = ({
                 </ThreadPath>
               </Row>
             )}
-            <SpaceGrow />
+            <div className="grow" />
             <StarIcon $color={COMMUNITY_CATS_COLOR[communityType]} />
           </Input>
         </Form>

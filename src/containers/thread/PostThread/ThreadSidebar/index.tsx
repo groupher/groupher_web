@@ -18,7 +18,7 @@ import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '~/sig
 import { mockUsers } from '~/mock'
 import { BANNER_LAYOUT } from '~/const/layout'
 
-import { Link, SpaceGrow, Br, SexyDivider } from '~/widgets/Common'
+import { Link, Br, SexyDivider } from '~/widgets/Common'
 import ImgFallback from '~/widgets/ImgFallback'
 import Sticky from '~/widgets/Sticky'
 import GetMe from '~/widgets/GetMe'
@@ -57,7 +57,7 @@ export default () => {
                   <Link href="https://groupher.com" maxLength="150px">
                     {curCommunity.homepage}
                   </Link>
-                  <SpaceGrow />
+                  <div className="grow" />
 
                   <GetMe />
                 </div>

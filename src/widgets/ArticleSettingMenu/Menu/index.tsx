@@ -2,8 +2,6 @@ import { type FC, memo, useState, useRef } from 'react'
 
 import useOutsideClick from '~/hooks/useOutsideClick'
 
-import { SpaceGrow } from '~/widgets/Common'
-
 import type { TSubMenu } from '../spec'
 import { SUB_MENU_TYPE } from '../constant'
 import SubMenu from '../SubMenu'
@@ -57,14 +55,14 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
           <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.EDIT)}>
             <Icon.Edit />
             <MenuTitle>修改标题</MenuTitle>
-            <SpaceGrow />
+            <div className="grow" />
             <Icon.Arrow />
           </MenuItem>
 
           <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.SLUG)}>
             <Icon.Slug />
             <MenuTitle>设置路径</MenuTitle>
-            <SpaceGrow />
+            <div className="grow" />
             <Icon.Arrow />
           </MenuItem>
           <ItemDivider />
@@ -80,7 +78,7 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
           <MenuItem>
             <Icon.Merge />
             <MenuTitle>合并</MenuTitle>
-            <SpaceGrow />
+            <div className="grow" />
             <Icon.Arrow />
           </MenuItem>
           <MenuItem>
@@ -90,7 +88,7 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
           <MenuItem onClick={() => openSubMenu(SUB_MENU_TYPE.MIRROR)}>
             <Icon.Mirror />
             <MenuTitle>镜像:Groupher</MenuTitle>
-            <SpaceGrow />
+            <div className="grow" />
             <Icon.Arrow />
           </MenuItem>
           <DangerMenuItem>

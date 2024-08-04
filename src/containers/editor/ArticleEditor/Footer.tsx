@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import type { TEditMode, TSubmitState } from '~/spec'
 
 import SubmitButton from '~/widgets/Buttons/SubmitButton'
-import { SpaceGrow } from '~/widgets/Common'
+
 import WordsCounter from '~/widgets/WordsCounter'
 
 import type { TEditData } from './spec'
@@ -24,7 +24,7 @@ const Footer: FC<TProps> = ({ mode, editData, submitState }) => {
     <Wrapper>
       <PublishFooter>
         <WordsCounter body={body} bottom={3} onChange={setWordsCountState} min={40} />
-        <SpaceGrow />
+        <div className="grow" />
         <SubmitButton
           submitState={submitState}
           okText={mode === 'publish' ? '发 布' : '更 新'}

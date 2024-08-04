@@ -4,7 +4,7 @@
 
 import type { FC } from 'react'
 
-import { SpaceGrow, SexyDivider } from '~/widgets/Common'
+import { SexyDivider } from '~/widgets/Common'
 import AccountUnit from '~/widgets/AccountUnit'
 import SearchBox from '~/widgets/SearchBox'
 
@@ -20,7 +20,7 @@ const PostLayout: FC<TProps> = ({ testid = 'sidebar-layout-header' }) => {
       <InnerWrapper $testid={testid}>
         <MainArea>
           <SearchBox left={-14} top={-5} />
-          <SpaceGrow />
+          <div className="grow" />
           <AccountUnit top={-5} />
         </MainArea>
       </InnerWrapper>

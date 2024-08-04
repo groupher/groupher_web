@@ -1,7 +1,6 @@
 import { type FC, Fragment } from 'react'
 
 import AddButton from '~/widgets/Buttons/AddButton'
-import { SpaceGrow } from '~/widgets/Common'
 
 import { SETTING_FIELD, BUILDIN_ALIAS_SUGGESTIONS } from '../constant'
 import Suggestion from './Suggestion'
@@ -93,7 +92,7 @@ const Item: FC<TProps> = ({ alias }) => {
             )}
           </Fragment>
         )}
-        <SpaceGrow />
+        <div className="grow" />
       </Footer>
     </Wrapper>
   )

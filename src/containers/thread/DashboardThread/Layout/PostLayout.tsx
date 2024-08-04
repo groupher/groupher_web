@@ -2,7 +2,7 @@ import { POST_LAYOUT, DASHBOARD_DESC_LAYOUT } from '~/const/layout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 import { callDashboardDesc } from '~/signal'
 
-import { Row, Br, Space, SpaceGrow, Inline } from '~/widgets/Common'
+import { Row, Br, Space, Inline } from '~/widgets/Common'
 import ArrowButton from '~/widgets/Buttons/ArrowButton'
 import CheckLabel from '~/widgets/CheckLabel'
 
@@ -60,7 +60,7 @@ export default () => {
               <Bar long={60} />
               <Space right={5} />
               <Bar thin long={8} />
-              <SpaceGrow />
+              <div className="grow" />
               <CommentIcon />
             </Row>
             <Br bottom={10} />
@@ -97,7 +97,7 @@ export default () => {
                   <Bar long={50} />
                   <Space right={5} />
                   <Bar thin long={8} />
-                  <SpaceGrow />
+                  <div className="grow" />
                   <UpvoteIcon size={20} />
                 </Row>
                 <Br bottom={5} />
@@ -159,7 +159,7 @@ export default () => {
                 <Row>
                   <Br bottom={10} />
                   <Bar long={30} />
-                  <SpaceGrow />
+                  <div className="grow" />
                   <CommentIcon />
                 </Row>
                 <Br bottom={11} />

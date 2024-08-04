@@ -13,7 +13,6 @@ import useAccount from '~/hooks/useAccount'
 import useLayout from '~/hooks/useLayout'
 import { BANNER_LAYOUT } from '~/const/layout'
 
-import { SpaceGrow } from '~/widgets/Common'
 import AccountSVG from '~/icons/Acount'
 
 import LoggedInAccount from './LoggedInAccount'
@@ -48,7 +47,7 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...spacing }) => {
       )}
       {!isLogin && withName && <div className={s.nickname}>未登入</div>}
       {isLogin && withName && <div className={s.nickname}>{nickname}</div>}
-      {bannerLayout === BANNER_LAYOUT.SIDEBAR && <SpaceGrow />}
+      {bannerLayout === BANNER_LAYOUT.SIDEBAR && <div className="grow" />}
       <Panel show={showPanel} onClose={() => setShowPanel(false)} />
     </div>
   )

@@ -1,6 +1,5 @@
 import type { FC } from 'react'
 
-import { SpaceGrow } from '~/widgets/Common'
 import {
   Wrapper,
   Title,
@@ -20,7 +19,7 @@ const ArticleCard: FC = () => {
         <Logo src="/landing/seo/medium.png" $size={15} />
         <Logo src="/landing/seo/discord.png" $size={15} />
         <Logo src="/landing/seo/tg.png" $size={15} />
-        <SpaceGrow />
+        <div className="grow" />
       </Header>
       <Title>Motojie - (摩界)</Title>
       <Desc>发现复古摩托车的魅力。我们专注于提供全球最独特...</Desc>

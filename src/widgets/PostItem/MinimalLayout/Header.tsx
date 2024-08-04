@@ -7,7 +7,7 @@ import { THREAD } from '~/const/thread'
 
 import { previewArticle } from '~/signal'
 import ArticleReadLabel from '~/widgets/ArticleReadLabel'
-import { SpaceGrow } from '~/widgets/Common'
+
 import TagsList from '~/widgets/TagsList'
 import CommentsCount from '~/widgets/CommentsCount'
 
@@ -38,7 +38,7 @@ const Header: FC<TProps> = ({ article }) => {
         </a>
         {/*  @ts-ignore */}
         <TagsList items={articleTags} left={1} />
-        <SpaceGrow />
+        <div className="grow" />
         {commentsCount !== 0 && <CommentsCount count={commentsCount} size={SIZE.MEDIUM} />}
       </div>
     </article>

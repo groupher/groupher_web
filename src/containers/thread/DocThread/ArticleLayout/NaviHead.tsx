@@ -1,5 +1,3 @@
-import { SpaceGrow } from '~/widgets/Common'
-
 import HeadAction from './HeadAction'
 
 import useLogic from '../useLogic'
@@ -15,7 +13,7 @@ export default () => {
       </Home>
       <Slash>/</Slash>
       <Cur>产品</Cur>
-      <SpaceGrow />
+      <div className="grow" />
       <HeadAction />
     </Wrapper>
   )

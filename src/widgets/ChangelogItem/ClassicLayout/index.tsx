@@ -12,7 +12,6 @@ import { previewArticle } from '~/signal'
 import { THREAD } from '~/const/thread'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import { SpaceGrow } from '~/widgets/Common'
 import CoverImage from '~/widgets/CoverImage'
 import EmotionSelector from '~/widgets/EmotionSelector'
 import CommentsCount from '~/widgets/CommentsCount'
@@ -71,7 +70,7 @@ const ClassicLayout: FC<TProps> = ({ testid = 'changelog-item', article }) => {
         <Author user={article.author} />
         <Footer>
           <EmotionSelector emotions={demoEmotion} isLegal />
-          <SpaceGrow />
+          <div className="grow" />
           <CommentsCount count={article.commentsCount} size="medium" right={15} />
           <ShareIcon />
         </Footer>

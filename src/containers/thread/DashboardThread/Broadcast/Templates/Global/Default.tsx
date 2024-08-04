@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
 import { BROADCAST_LAYOUT } from '~/const/layout'
-import { Space, SpaceGrow } from '~/widgets/Common'
+import { Space } from '~/widgets/Common'
 
 import useBroadcast from '../../../logic/useBroadcast'
 import {
@@ -35,7 +35,7 @@ const Default: FC<TProps> = ({ onSelect = null }) => {
         <NotifyDesc>
           <NotifyTextBar long={220} thin />
         </NotifyDesc>
-        <SpaceGrow />
+        <div className="grow" />
         <NotifySolidLink bg={broadcastBg}>
           <NotifyTextBar long={40} thin />
         </NotifySolidLink>

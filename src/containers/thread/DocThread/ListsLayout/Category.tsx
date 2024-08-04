@@ -3,7 +3,6 @@ import type { FC } from 'react'
 import type { TColorName } from '~/spec'
 import { mockUsers } from '~/mock'
 
-import { SpaceGrow } from '~/widgets/Common'
 import Facepile from '~/widgets/Facepile'
 import FaIcons from '~/widgets/FaIcons'
 
@@ -42,7 +41,7 @@ const Category: FC<TProps> = ({ color, title, desc }) => {
         <Footer>
           <Facepile size="small" users={mockUsers(6)} total={20} />
           <AuthorHint>6 位共同编辑</AuthorHint>
-          <SpaceGrow />
+          <div className="grow" />
           <MoreLink onClick={() => gotoDetailLayout()}>9 篇文档</MoreLink>
         </Footer>
       </Content>

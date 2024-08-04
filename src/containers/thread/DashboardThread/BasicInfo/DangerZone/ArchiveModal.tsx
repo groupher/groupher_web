@@ -2,7 +2,6 @@ import type { FC } from 'react'
 
 import Modal from '~/widgets/Modal'
 
-import { SpaceGrow } from '~/widgets/Common'
 // import NoteTip from '~/widgets/NoteTip'
 import HeadsUp from '~/widgets/HeadsUp'
 import Button from '~/widgets/Buttons/Button'
@@ -39,11 +38,11 @@ const ArchiveModal: FC<TProps> = ({ show, onClose }) => {
           />
         </Body>
         <Footer>
-          <SpaceGrow />
+          <div className="grow" />
           <Button space={15} right={10} bottom={8} onClick={() => archiveCommunity()}>
             已了解，确定归档
           </Button>
-          <SpaceGrow />
+          <div className="grow" />
         </Footer>
       </Wrapper>
     </Modal>

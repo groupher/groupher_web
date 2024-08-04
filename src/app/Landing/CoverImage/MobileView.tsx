@@ -2,7 +2,7 @@ import Typewriter from 'typewriter-effect'
 
 import useWallpaper from '~/hooks/useWallpaper'
 
-import { Space, SpaceGrow } from '~/widgets/Common'
+import { Space } from '~/widgets/Common'
 
 import {
   Wrapper,
@@ -29,7 +29,7 @@ export default () => {
         <Dot />
         <Dot />
         <Dot />
-        <SpaceGrow />
+        <div className="grow" />
         <AddrBar>
           <LockIcon />
           <AddText>https://</AddText>
@@ -46,7 +46,7 @@ export default () => {
             />
           </GradientText>
         </AddrBar>
-        <SpaceGrow />
+        <div className="grow" />
       </BrowerHead>
       <Content>
         <Image src={imageSrc} hasShadow={hasShadow} />

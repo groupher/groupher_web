@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { Space, SpaceGrow } from '~/widgets/Common'
+import { Space } from '~/widgets/Common'
 import {
   Wrapper,
   PostItem,
@@ -37,7 +37,7 @@ const Tabs: FC = () => {
         <Space right={10} />
         <StateIcon />
         <FilterTitle>进行中</FilterTitle>
-        <SpaceGrow />
+        <div className="grow" />
         <FilterTitle>1 / 9</FilterTitle>
       </BottomItem>
     </Wrapper>
