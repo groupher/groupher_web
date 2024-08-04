@@ -10,8 +10,7 @@ import useMobileDetect from '@groupher/use-mobile-detect-hook'
 import VIEW from '~/const/view'
 
 import DesktopView from './DesktopView'
-import MobileView from './MobileView/index'
-import ModelineView from './ModelineView'
+//import MobileView from './MobileView/index'
 import DrawerView from './DrawerView'
 
 const Tabs = (props) => {
@@ -23,13 +22,9 @@ const Tabs = (props) => {
   const curView = view === 'auto' ? curMedia : view
 
   switch (curView) {
-    case VIEW.MOBILE: {
-      return <MobileView {...props} />
-    }
-
-    case VIEW.MODELINE: {
-      return <ModelineView {...props} />
-    }
+    // case VIEW.MOBILE: {
+    //   return <MobileView {...props} />
+    // }
 
     case VIEW.DRAWER: {
       return <DrawerView {...props} />

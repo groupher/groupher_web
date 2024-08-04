@@ -9,11 +9,18 @@ module.exports = ({ addComponents, theme }) => {
       paddingLeft: theme('spacing.4'),
       paddingRight: theme('spacing.4'),
     },
+    '.container-community_sidebar': {
+      maxWidth: '1200px',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      paddingLeft: theme('spacing.20'),
+      paddingRight: theme('spacing.20'),
+    },
     '.container-community': {
       maxWidth: '1200px',
       marginLeft: 'auto',
       marginRight: 'auto',
-      paddingLeft: theme('spacing.36'),
+      paddingLeft: theme('spacing.40'),
       paddingRight: theme('spacing.36'),
     },
   }

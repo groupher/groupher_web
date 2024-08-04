@@ -67,15 +67,15 @@
   }
 
   .smoky-90 {
-    @apply opacity-90 hover:opacity-100
+    @apply opacity-90 hover:opacity-100 cursor-pointer
   }
 
   .group-smoky-80 {
-    @apply opacity-80 group-hover:opacity-100 transition-opacity
+    @apply opacity-80 group-hover:opacity-100 transition-opacity cursor-pointer
   }
 
   .group-smoky-65 {
-    @apply opacity-65 group-hover:opacity-100 transition-opacity
+    @apply opacity-65 group-hover:opacity-100 transition-opacity cursor-pointer
   }
 
   .article-hover-linear::before {
@@ -86,7 +86,7 @@
     background: linear-gradient(315deg, rgb(104 104 104 / 0%) 0%, #2c2c2c 100%);
   }
 
- .sexy-border-02 {
+ .sexy-border-20 {
     border-image: linear-gradient(
       0.2turn,
       transparent,
@@ -98,9 +98,57 @@
     border-image-slice: 1;
   }
 
-  .sexy-border-02-dark {
+  .sexy-border-20-dark {
     border-image: linear-gradient(
       0.2turn,
+      transparent,
+      var(--divider-dark),
+      var(--divider-dark),
+      var(--divider-dark),
+      transparent
+    );
+    border-image-slice: 1;
+  }
+
+  .sexy-border-35 {
+    border-image: linear-gradient(
+      0.35turn,
+      transparent,
+      var(--divider),
+      var(--divider),
+      var(--divider),
+      transparent
+    );
+    border-image-slice: 1;
+  }
+
+  .sexy-border-35-dark {
+    border-image: linear-gradient(
+      0.35turn,
+      transparent,
+      var(--divider-dark),
+      var(--divider-dark),
+      var(--divider-dark),
+      transparent
+    );
+    border-image-slice: 1;
+  }
+
+  .sexy-border-40 {
+    border-image: linear-gradient(
+      0.4turn,
+      transparent,
+      var(--divider),
+      var(--divider),
+      var(--divider),
+      transparent
+    );
+    border-image-slice: 1;
+  }
+
+  .sexy-border-40-dark {
+    border-image: linear-gradient(
+      0.4turn,
       transparent,
       var(--divider-dark),
       var(--divider-dark),

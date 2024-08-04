@@ -1,4 +1,5 @@
 import { type FC, Fragment, useState } from 'react'
+import Link from 'next/link'
 import { keys, startsWith, filter } from 'ramda'
 
 import type { TLinkItem } from '~/spec'
@@ -6,47 +7,42 @@ import { MORE_GROUP, ONE_LINK_GROUP } from '~/const/dashboard'
 import { sortByIndex, groupByKey } from '~/helper'
 import useAccount from '~/hooks/useAccount'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 
+import MoreSVG from '~/icons/menu/MoreL'
+import LinkSVG from '~/icons/Link'
+import ArrowSVG from '~/icons/ArrowSimple'
 import Tooltip from '~/widgets/Tooltip'
-import { SpaceGrow } from '~/widgets/Common'
 
 import type { TProps, TLinkGroup } from './spec'
 
-import {
-  Wrapper,
-  MenuLinkItem,
-  LinkItem,
-  LinkIcon,
-  GroupItem,
-  ArrowIcon,
-  MenuPanel,
-  MoreIcon,
-  ArrowUpRightIcon,
-} from './styles/sidebar_layout'
+import useSalon, { cn } from './salon/sidebar_layout'
 
 const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath }) => {
+  const s = useSalon()
+
   const [menuOpen, setMenuOpen] = useState(false)
   const { slug } = useViewingCommunity()
-  const primaryColor = usePrimaryColor()
 
   if (!showMoreFold) return null
 
   return (
     <Tooltip
       content={
-        <MenuPanel>
-          {links.map((item: TLinkItem) => (
-            <MenuLinkItem
-              key={item.index}
-              href={item.link}
-              $active={`/${slug}/${activePath}` === item.link}
-              $color={primaryColor}
-            >
-              {item.title}
-            </MenuLinkItem>
-          ))}
-        </MenuPanel>
+        <div className={s.menuPanel}>
+          {links.map((item: TLinkItem) => {
+            const active = `/${slug}/${activePath}` === item.link
+
+            return (
+              <Link
+                key={item.index}
+                className={cn(s.menuItem, active && s.menuItemActive)}
+                href={item.link}
+              >
+                {item.title}
+              </Link>
+            )
+          })}
+        </div>
       }
       onHide={() => setMenuOpen(false)}
       onShow={() => setMenuOpen(true)}
@@ -55,17 +51,18 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath
       offset={[-14, 5]}
     >
       {/* @ts-ignore */}
-      <GroupItem as="div" $active={menuOpen} $color={primaryColor}>
-        <MoreIcon $active={menuOpen} $color={primaryColor} />
-        {groupTitle === MORE_GROUP ? '更多' : groupTitle} <ArrowIcon />
-      </GroupItem>
+      <div className={cn(s.groupItem, menuOpen && s.groupItemActive)}>
+        <MoreSVG className={s.icon} />
+        {groupTitle === MORE_GROUP ? '更多' : groupTitle} <ArrowSVG className={s.arrowIcon} />
+      </div>
     </Tooltip>
   )
 }
 
 const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
+  const s = useSalon()
+
   const { isModerator } = useAccount()
-  const primaryColor = usePrimaryColor()
 
   const _links = filter((item) => item.title !== '', links)
 
@@ -74,21 +71,18 @@ const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
   const groupKeys = keys(groupedLinks)
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {groupKeys.map((groupTitle: string) => {
         const curGroupLinks = groupedLinks[groupTitle]
-
         if (curGroupLinks.length === 1 && curGroupLinks[0].title === '') return null
 
         return (
           <Fragment key={groupTitle}>
             {startsWith(ONE_LINK_GROUP, groupTitle) ? (
-              <LinkItem href={curGroupLinks[0].link} $color={primaryColor}>
-                <LinkIcon $color={primaryColor} />
+              <Link className={s.linkItem} href={curGroupLinks[0].link}>
+                <LinkSVG className={cn(s.icon, 'size-4')} />
                 {curGroupLinks[0].title}
-                <SpaceGrow />
-                <ArrowUpRightIcon $color={primaryColor} />
-              </LinkItem>
+              </Link>
             ) : (
               <LinkGroup
                 groupTitle={groupTitle}
@@ -100,7 +94,7 @@ const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
           </Fragment>
         )
       })}
-    </Wrapper>
+    </div>
   )
 }
 

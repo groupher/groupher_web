@@ -27,6 +27,7 @@ type TRet = {
   primary: (prefix?: TColorPrefix) => string
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
+  divider: (turn?: number) => string
   avatar: (level?: 'md' | 'sm' | '') => string
   gradiientBar: (color: TColorName) => string
 }
@@ -99,6 +100,10 @@ export default (): TRet => {
       .join(' ')
   }
 
+  const divider = (turn = 35): string => {
+    return cn('h-px w-full border-b', `'sexy-border-${turn}`)
+  }
+
   const avatar = (level = 'md') => {
     if (isAvatarSquare) {
       return level === '' ? 'rounded' : `rounded-${level}`
@@ -124,6 +129,7 @@ export default (): TRet => {
     primary,
     zise,
     margin,
+    divider,
     avatar,
     gradiientBar,
   }

@@ -1,48 +1,36 @@
 import { type FC, Fragment, useState } from 'react'
 import { keys, startsWith, filter } from 'ramda'
+import Link from 'next/link'
 
 import type { TLinkItem } from '~/spec'
 import { MORE_GROUP, ONE_LINK_GROUP } from '~/const/dashboard'
 import { sortByIndex, groupByKey } from '~/helper'
 import useAccount from '~/hooks/useAccount'
-import useViewingCommunity from '~/hooks/useViewingCommunity'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 
+import ArrowSVG from '~/icons/ArrowSimple'
+import LinkSVG from '~/icons/Link'
 import Tooltip from '~/widgets/Tooltip'
 
 import type { TProps, TLinkGroup } from './spec'
 
-import {
-  Wrapper,
-  LinkItem,
-  LinkIcon,
-  GroupItem,
-  ArrowIcon,
-  MenuPanel,
-} from './styles/tabber_layout'
+import useSalon, { cn } from './salon/tabber_layout'
 
-const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath }) => {
+const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold }) => {
+  const s = useSalon()
   const [menuOpen, setMenuOpen] = useState(false)
-  const { slug } = useViewingCommunity()
-  const primaryColor = usePrimaryColor()
 
   if (!showMoreFold) return null
 
   return (
     <Tooltip
       content={
-        <MenuPanel>
+        <div className={s.menuPanel}>
           {links.map((item: TLinkItem) => (
-            <LinkItem
-              key={item.index}
-              href={item.link}
-              $active={`/${slug}/${activePath}` === item.link}
-              $color={primaryColor}
-            >
+            <Link key={item.index} href={item.link} className={s.linkItem}>
               {item.title}
-            </LinkItem>
+            </Link>
           ))}
-        </MenuPanel>
+        </div>
       }
       onHide={() => setMenuOpen(false)}
       onShow={() => setMenuOpen(true)}
@@ -50,17 +38,17 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath
       placement="bottom"
       offset={[8, 5]}
     >
-      {/* @ts-ignore */}
-      <GroupItem as="div" $active={menuOpen}>
-        {groupTitle === MORE_GROUP ? '更多' : groupTitle} <ArrowIcon />
-      </GroupItem>
+      <div className={cn(s.groupItem, menuOpen && s.groupItemActive)}>
+        {groupTitle === MORE_GROUP ? '更多' : groupTitle} <ArrowSVG className={s.arrowIcon} />
+      </div>
     </Tooltip>
   )
 }
 
 const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
+  const s = useSalon()
+
   const { isModerator } = useAccount()
-  const primaryColor = usePrimaryColor()
 
   const _links = filter((item) => item.title !== '', links)
 
@@ -69,7 +57,7 @@ const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
   const groupKeys = keys(groupedLinks)
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {groupKeys.map((groupTitle: string) => {
         const curGroupLinks = groupedLinks[groupTitle]
 
@@ -78,10 +66,10 @@ const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
         return (
           <Fragment key={groupTitle}>
             {startsWith(ONE_LINK_GROUP, groupTitle) ? (
-              <LinkItem href={curGroupLinks[0].link} $color={primaryColor}>
-                <LinkIcon $color={primaryColor} />
+              <Link href={curGroupLinks[0].link} className={s.linkItem}>
+                <LinkSVG className={cn(s.icon, 'size-4')} />
                 {curGroupLinks[0].title}
-              </LinkItem>
+              </Link>
             ) : (
               <LinkGroup
                 groupTitle={groupTitle}
@@ -93,7 +81,7 @@ const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
           </Fragment>
         )
       })}
-    </Wrapper>
+    </div>
   )
 }
 

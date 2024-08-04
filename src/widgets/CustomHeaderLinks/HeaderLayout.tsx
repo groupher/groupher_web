@@ -13,7 +13,7 @@ import Tooltip from '~/widgets/Tooltip'
 
 import type { TProps, TLinkGroup } from './spec'
 
-import useSalon, { cn } from './styles/header_layout'
+import useSalon, { cn } from './salon/header_layout'
 
 const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath }) => {
   const s = useSalon()

@@ -10,7 +10,7 @@ import useViewingThread from '~/hooks/useViewingThread'
 
 import CustomHeaderLinks from '~/widgets/CustomHeaderLinks'
 
-import useSalon, { cn } from '../styles/header_layout/thread_tab'
+import useSalon, { cn } from '../salon/header_layout/thread_tab'
 
 type TProps = TSpace
 

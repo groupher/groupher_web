@@ -17,7 +17,7 @@ export default () => {
       'row-center w-full justify-between',
       isFloat ? 'h-20' : 'h-16',
       !isFloat && 'border-b border-transparent',
-      global('sexy-border-02'),
+      global('sexy-border-20'),
       br('divider'),
     ),
   }

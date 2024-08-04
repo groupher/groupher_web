@@ -21,7 +21,7 @@ import Tooltip from '~/widgets/Tooltip'
 import { SexyDivider } from '~/widgets/Common'
 import ImgFallback from '~/widgets/ImgFallback'
 
-import useSalon from '../styles/header_layout/community_brief'
+import useSalon from '../salon/header_layout/community_brief'
 
 export default () => {
   const s = useSalon()

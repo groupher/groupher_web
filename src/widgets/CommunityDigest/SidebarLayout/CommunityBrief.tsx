@@ -5,29 +5,23 @@ import { THREAD } from '~/const/thread'
 import { assetSrc } from '~/helper'
 import { prettyURL } from '~/fmt'
 
+import LinkSVG from '~/icons/Link'
+
+import { Link } from '~/widgets/Common'
+
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 import useViewingThread from '~/hooks/useViewingThread'
 import useLayout from '~/hooks/useLayout'
 
+import Img from '~/Img'
 import ImgFallback from '~/widgets/ImgFallback'
-import ArrowLinker from '~/widgets/ArrowLinker'
 import ArrowButton from '~/widgets/Buttons/ArrowButton'
-import { Row } from '~/widgets/Common'
 
-import {
-  Wrapper,
-  Logo,
-  LogoWrapper,
-  MainWrapper,
-  CommunityInfo,
-  Title,
-  Digest,
-  Desc,
-  GlobalIcon,
-} from '../styles/sidebar_layout/community_brief'
-// import { subscribeCommunity, unsubscribeCommunity } from '../logic'
+import useSalon from '../salon/sidebar_layout/community_brief'
 
 export default () => {
+  const s = useSalon()
+
   const router = useRouter()
   const { logo, slug, title, desc, dashboard } = useViewingCommunity()
   const activeThread = useViewingThread()
@@ -36,39 +30,36 @@ export default () => {
   const { baseInfo } = dashboard
 
   return (
-    <Wrapper>
-      <MainWrapper>
-        {brandLayout !== BRAND_LAYOUT.TEXT && (
-          <LogoWrapper>
-            <Logo src={assetSrc(logo)} fallback={<ImgFallback size={30} title={title} />} />
-          </LogoWrapper>
-        )}
+    <div className={s.wrapper}>
+      {brandLayout !== BRAND_LAYOUT.TEXT && (
+        <div className={s.logoBox}>
+          <Img
+            src={assetSrc(logo)}
+            className={s.logo}
+            fallback={<ImgFallback size={30} title={title} />}
+          />
+        </div>
+      )}
 
-        <CommunityInfo>
-          {brandLayout !== BRAND_LAYOUT.LOGO && <Title>{title}</Title>}
-          <Digest>
-            <Desc>{desc}</Desc>
-          </Digest>
+      {brandLayout !== BRAND_LAYOUT.LOGO && <h2 className={s.title}>{title}</h2>}
+      <div className={s.desc}>{desc}</div>
 
-          {bannerLayout === BANNER_LAYOUT.SIDEBAR && activeThread === THREAD.DOC && (
-            <ArrowButton top={12} left={-2} leftLayout onClick={() => router.push(`/${slug}`)}>
-              返回社区
-            </ArrowButton>
-          )}
+      {bannerLayout === BANNER_LAYOUT.SIDEBAR && activeThread === THREAD.DOC && (
+        <ArrowButton top={12} left={-2} leftLayout onClick={() => router.push(`/${slug}`)}>
+          返回社区
+        </ArrowButton>
+      )}
 
-          {bannerLayout !== BANNER_LAYOUT.SIDEBAR && baseInfo.homepage && (
-            <ArrowLinker href={baseInfo.homepage} top={15} bold>
-              <Row>
-                <GlobalIcon />
-                {prettyURL(baseInfo.homepage)}
-              </Row>
-            </ArrowLinker>
-          )}
-        </CommunityInfo>
-        {/* <SocialWrapper>
-          SOcial
-        </SocialWrapper> */}
-      </MainWrapper>
-    </Wrapper>
+      {baseInfo.homepage && (
+        <div className={s.homeLink}>
+          <div className={s.linkIconBox}>
+            <LinkSVG className={s.linkIcon} />
+          </div>
+          <Link href={baseInfo.homepage} maxLength="150px">
+            {prettyURL(baseInfo.homepage)}
+          </Link>
+        </div>
+      )}
+    </div>
   )
 }

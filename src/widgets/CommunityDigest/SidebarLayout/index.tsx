@@ -1,11 +1,7 @@
-import { useEffect, useState } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
-
 import { THREAD } from '~/const/thread'
 import { DEME_SOCIALS } from '~/const/social'
 
 import useViewingThread from '~/hooks/useViewingThread'
-import useWindowResize from '~/hooks/useWindowResize'
 import useEnable from '~/hooks/useEnable'
 
 import { refreshArticles } from '~/signal'
@@ -14,7 +10,6 @@ import PinedTree from '~/containers/thread/DocThread/ArticleLayout/PinedTree'
 import TagsBar from '~/containers/unit/TagsBar'
 
 import Sticky from '~/widgets/Sticky'
-import { SpaceGrow } from '~/widgets/Common'
 import AccountUnit from '~/widgets/AccountUnit'
 import FileTree from '~/widgets/FileTree'
 import SocialList from '~/widgets/SocialList'
@@ -22,65 +17,47 @@ import SocialList from '~/widgets/SocialList'
 import CommunityBrief from './CommunityBrief'
 import MainMenu from './MainMenu'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  FileTreeWrapper,
-  TabBarWrapper,
-  Divider,
-} from '../styles/sidebar_layout'
-
-// 没有各种外链接，打赏信息等的官方社区
-// const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
+import useSalon, { cn } from '../salon/sidebar_layout'
 
 export default () => {
-  const [viewHeight, setViewHeight] = useState(800)
-  const { height: windowViewHeight } = useWindowResize()
+  const s = useSalon()
 
-  useEffect(() => {
-    setViewHeight(windowViewHeight - 80)
-  }, [windowViewHeight])
-
-  const { isMobile } = useMobileDetect()
   const activeThread = useViewingThread()
   const enable = useEnable()
 
   return (
-    <Wrapper $testid="community-digest" isMobile={isMobile}>
+    <div className={s.wrapper}>
       <Sticky>
-        <InnerWrapper minHeight={viewHeight}>
+        <div className={s.innerWrapper}>
           <CommunityBrief />
-          <Divider bottom={16} />
+          <div className={cn(s.divider, 'mt-5 mb-2')} />
           {activeThread !== THREAD.DOC && (
             <>
               <MainMenu />
-              <Divider top={15} bottom={30} />
+              <div className={cn(s.divider, 'mt-4 mb-5')} />
             </>
           )}
 
           {activeThread === THREAD.POST && enable.post && (
             <>
-              <TabBarWrapper>
+              <div className={s.tabs}>
                 <TagsBar onSelect={() => refreshArticles()} />
-              </TabBarWrapper>
-              <Divider top={15} bottom={30} />
+              </div>
+              <div className={cn(s.divider, 'mt-4 mb-2')} />
             </>
           )}
 
           {activeThread === THREAD.DOC && enable.doc && (
-            <FileTreeWrapper>
+            <div className={s.fileTree}>
               <PinedTree />
               <FileTree />
-            </FileTreeWrapper>
+            </div>
           )}
 
           <SocialList top={20} left={-10} size="tiny" selected={DEME_SOCIALS} />
-          <SpaceGrow />
-          <AccountUnit withName top={40} left={2} right={30} />
-        </InnerWrapper>
+          <AccountUnit top={5} withName />
+        </div>
       </Sticky>
-
-      <SpaceGrow />
-    </Wrapper>
+    </div>
   )
 }

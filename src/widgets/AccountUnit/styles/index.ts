@@ -14,9 +14,10 @@ export default ({ ...spacing }: TProps) => {
 
   const normalWrapper = cn('row-center', margin(spacing))
   const withBgWrapper = cn(
-    'row-center border h-8 rounded-lg px-2 py-1.5 pointer',
+    'row-center border h-8 w-44 rounded-lg px-2 py-1.5 pointer shadow-md',
     br('divider'),
     bg('alphaBg'),
+    margin(spacing),
   )
 
   const wrapper = includes(bannerLayout, [BANNER_LAYOUT.TABBER, BANNER_LAYOUT.SIDEBAR])

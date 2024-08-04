@@ -1,6 +1,7 @@
+import Link from 'next/link'
+
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 import usePublicThreads from '~/hooks/usePublicThreads'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 import useViewingThread from '~/hooks/useViewingThread'
 import useHeaderLinks from '~/hooks/useHeaderLinks'
 
@@ -8,11 +9,12 @@ import CustomHeaderLinks from '~/widgets/CustomHeaderLinks'
 
 import ThreadIcon from './ThreadIcon'
 
-import { Wrapper, MenuItem, MenuTitle } from '../styles/sidebar_layout/main_menu'
+import useSalon, { cn } from '../salon/sidebar_layout/main_menu'
 
 export default () => {
+  const s = useSalon()
+
   const community = useViewingCommunity()
-  const primaryColor = usePrimaryColor()
   const communityPath = community?.slug
 
   const publicThreads = usePublicThreads()
@@ -22,21 +24,19 @@ export default () => {
   const customLinks = getCustomLinks()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {publicThreads.map((thread) => {
         const active = activeThread === thread.slug
 
         return (
-          <MenuItem key={thread.slug} href={`/${communityPath}/${thread.slug}`} $active={active}>
-            <ThreadIcon thread={thread.slug} $active={active} />
-            <MenuTitle $active={active} $color={primaryColor}>
-              {thread.title}
-            </MenuTitle>
-          </MenuItem>
+          <Link className={s.menuItem} key={thread.slug} href={`/${communityPath}/${thread.slug}`}>
+            <ThreadIcon thread={thread.slug} active={active} />
+            <div className={cn(s.menuTitle, active && s.titleActive)}>{thread.title}</div>
+          </Link>
         )
       })}
 
       <CustomHeaderLinks links={customLinks} activePath={activeThread} />
-    </Wrapper>
+    </div>
   )
 }

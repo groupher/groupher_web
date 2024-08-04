@@ -1,4 +1,10 @@
-const GENERAL = ['border-divider', 'article-hover-linear', 'sexy-border-02']
+const GENERAL = [
+  'border-divider',
+  'article-hover-linear',
+  'sexy-border-20',
+  'sexy-border-35',
+  'sexy-border-40',
+]
 
 const TEXT_COLORS = ['text-title', 'text-digest', 'text-body', 'text-hint', 'text-invert']
 const BG_COLORS = ['dot', 'hoverBg', 'htmlBg', 'popover-bg', 'menuHoverBg', 'alphaBg', 'snackBar']
@@ -23,7 +29,7 @@ const HOVERS = [
 ]
 
 const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red']
-const CONTAINERS = ['container-home', 'container-community']
+const CONTAINERS = ['container-home', 'container-community', 'container-community_sidebar']
 const UTILS = ['border-transparent', 'rounded-sm', 'rounded-md', 'bg-gradient-to-r to-transparent']
 
 module.exports = [

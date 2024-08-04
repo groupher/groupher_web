@@ -10,7 +10,7 @@ import AccountUnit from '~/widgets/AccountUnit'
 import ThreadTab from './ThreadTab'
 import CommunityBrief from './CommunityBrief'
 
-import useSalon, { cn } from '../styles/header_layout'
+import useSalon, { cn } from '../salon/header_layout'
 
 export default () => {
   const s = useSalon()
