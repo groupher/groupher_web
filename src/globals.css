@@ -86,6 +86,14 @@
     background: linear-gradient(315deg, rgb(104 104 104 / 0%) 0%, #2c2c2c 100%);
   }
 
+  .footer-inner-shadow {
+    box-shadow: rgb(241 241 241) 0px 0px 50px 0px inset;  
+  }
+
+  .footer-inner-shadow-dark {
+    box-shadow: rgb(25 25 25) 0px 0px 50px 0px inset;
+  }
+
  .sexy-border-20 {
     border-image: linear-gradient(
       0.2turn,

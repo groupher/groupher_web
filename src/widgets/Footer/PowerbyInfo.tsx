@@ -6,7 +6,7 @@ import { LineDivider, DesktopOnly, MobileOnly, Row, Br } from '~/widgets/Common'
 
 import { BEIAN_ADDR, BEIAN_TEXT } from '~/config'
 
-import { Wrapper, Note, Addr, BottomWrapper } from '../styles/desktop_view/powerby_info'
+import { Wrapper, Note, Addr, BottomWrapper } from './styles/powerby_info'
 
 export default () => {
   const metric = useMetric()

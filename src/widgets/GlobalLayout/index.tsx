@@ -5,7 +5,6 @@
  */
 
 import { type FC, type ReactNode, lazy, Suspense } from 'react'
-import { Provider as BalancerTextProvider } from 'react-wrap-balancer'
 
 import Mushroom from '~/containers/Mushroom'
 import ThemePalette from '~/widgets/ThemePalette'
@@ -47,27 +46,25 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
   // }, [showDashboardAlert])
 
   return (
-    <BalancerTextProvider>
-      <ThemePalette>
-        <Mushroom />
-        <Suspense fallback={null}>
-          <Addon />
-        </Suspense>
-        <div className={s.skeleton}>
-          <Wallpaper />
-          <div className={s.scrollWrapper}>
-            <div className={s.wrapper}>
-              <SEO />
-              <Main>{children}</Main>
-              {/* {isMobile && <ModeLine />} */}
-            </div>
+    <ThemePalette>
+      <Mushroom />
+      <Suspense fallback={null}>
+        <Addon />
+      </Suspense>
+      <div className={s.skeleton}>
+        <Wallpaper />
+        <div className={s.scrollWrapper}>
+          <div className={s.wrapper}>
+            <SEO />
+            <Main>{children}</Main>
+            {/* {isMobile && <ModeLine />} */}
           </div>
         </div>
+      </div>
 
-        {/* <DashboardAlert /> */}
-        {/* {showDashboardAlertUI && <DashboardAlert />} */}
-      </ThemePalette>
-    </BalancerTextProvider>
+      {/* <DashboardAlert /> */}
+      {/* {showDashboardAlertUI && <DashboardAlert />} */}
+    </ThemePalette>
   )
 }
 

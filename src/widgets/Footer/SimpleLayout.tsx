@@ -15,7 +15,7 @@ import {
   LinksInfo,
   LinkItem,
   SocialInfo,
-} from '../styles/desktop_view/simple_layout'
+} from './styles/simple_layout'
 
 export default () => {
   const { links } = useFooterLinks()

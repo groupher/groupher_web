@@ -1,6 +1,7 @@
 const GENERAL = [
   'border-divider',
   'article-hover-linear',
+  'footer-inner-shadow',
   'sexy-border-20',
   'sexy-border-35',
   'sexy-border-40',
@@ -12,7 +13,7 @@ const FILL_COLORS = ['text-title', 'text-digest']
 // for fg,bg & fill
 const RAINBOW_COLORS = ['red', 'orange', 'yellow', 'green', 'greenLight', 'cyan', 'blue', 'purple']
 
-const MARGIN = ['px', 0.5, 1, 1.5, 2, 2.5, 3]
+const MARGIN = ['px', 0.5, 1, 1.5, 2, 2.5, 3, 4, 5]
 const SIZE = [1.5, 2, 2.5, 3, 3.5, 4, 5, 6]
 
 // fill-rainbow-red is mainly for delete buttons
@@ -30,7 +31,18 @@ const HOVERS = [
 
 const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red']
 const CONTAINERS = ['container-home', 'container-community', 'container-community_sidebar']
-const UTILS = ['border-transparent', 'rounded-sm', 'rounded-md', 'bg-gradient-to-r to-transparent']
+const UTILS = [
+  'border-transparent',
+  'rounded-sm',
+  'rounded-md',
+  'bg-gradient-to-r to-transparent',
+  // TODO: extract those from ~/const/container
+  'max-w-[1200px]',
+  '-ml-40',
+  'mr-36',
+  'pl-40',
+  'pr-36',
+]
 
 module.exports = [
   ...GENERAL.map((c) => `${c} ${c}-dark`),

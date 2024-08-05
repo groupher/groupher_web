@@ -5,6 +5,7 @@ import type { TColorName, TSpace } from '~/spec'
 import { COLOR_NAME } from '~/const/colors'
 import type { TFlatThemeKey } from '~/utils/themes/skins'
 
+import { container as containerConf } from '~/const/container.json'
 import { camelize } from '~/fmt'
 
 import useTheme from '~/hooks/useTheme'
@@ -13,6 +14,7 @@ import useAvatarLayout from '~/hooks/useAvatarLayout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 type TColorPrefix = 'fg' | 'bg' | 'fill' | 'border'
+type TBreakOut = 'footer' | 'header'
 
 type TRet = {
   cn: (...inputs: ClassValue[]) => string
@@ -30,6 +32,7 @@ type TRet = {
   divider: (turn?: number) => string
   avatar: (level?: 'md' | 'sm' | '') => string
   gradiientBar: (color: TColorName) => string
+  breakOut: (type?: TBreakOut) => string
 }
 
 /**
@@ -116,6 +119,24 @@ export default (): TRet => {
     return `bg-gradient-to-r from-rainbow-${color.toLocaleLowerCase()}Bg to-transparent`
   }
 
+  const breakOut = (type: TBreakOut = 'footer') => {
+    const unit = containerConf[metric.toLowerCase()]
+
+    if (type === 'footer') {
+      return cn(
+        'w-full',
+        `w-[${unit.width}]`,
+        `-ml-${unit.pl}`,
+        `mr-${unit.pr}`,
+        `pl-${unit.pl}`,
+        `pr-${unit.pr}`,
+        global('footer-inner-shadow'),
+      )
+    }
+
+    return 'w-full'
+  }
+
   return {
     cn,
     global,
@@ -132,5 +153,6 @@ export default (): TRet => {
     divider,
     avatar,
     gradiientBar,
+    breakOut,
   }
 }

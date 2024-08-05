@@ -1,28 +1,9 @@
-import type { TTestable, TMetric } from '~/spec'
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-type TWrapper = TTestable & { metric?: TMetric }
-export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TWrapper>`
-  ${css.column('align-both')};
-  width: 100%;
-  min-height: 50px;
-  margin-top: 80px;
-  padding-top: 50px;
-  padding-bottom: 30px;
-  box-shadow: ${theme('footer.shadow')};
-  ${({ metric }) => css.fitPageWidth(metric)};
+export default () => {
+  const { cn, breakOut } = useTwBelt()
 
-  ${css.media.mobile`
-    margin-top: 40px;
-  `};
-`
-export const InnerWrapper = styled.div<{ metric: TMetric }>`
-  width: 100%;
-  ${({ metric }) => css.fitContentWidth(metric)};
-
-  ${css.media.mobile`
-    margin-left: 0;
-  `};
-`
+  return {
+    wrapper: cn('column-align-both min-h-14 mt-20 pt-14 pb-8', breakOut()),
+  }
+}

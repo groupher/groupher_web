@@ -19,7 +19,7 @@ import {
   Title,
   Body,
   LinkItem,
-} from '../styles/desktop_view/group_layout'
+} from './styles/group_layout'
 
 export default () => {
   const { logo, desc, title } = useViewingCommunity()
