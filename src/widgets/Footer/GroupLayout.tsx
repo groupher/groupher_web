@@ -1,4 +1,5 @@
 import { keys } from 'ramda'
+import Link from 'next/link'
 
 import { DEME_SOCIALS } from '~/const/social'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
@@ -6,22 +7,15 @@ import useFooterLinks from '~/hooks/useFooterLinks'
 
 import { assetSrc, sortByIndex, groupByKey } from '~/helper'
 
+import Img from '~/Img'
 import SocialList from '~/widgets/SocialList'
 import ImgFallback from '~/widgets/ImgFallback'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  BrandWrapper,
-  BrandLogo,
-  BrandDesc,
-  Column,
-  Title,
-  Body,
-  LinkItem,
-} from './styles/group_layout'
+import useSalon from './salon/group_layout'
 
 export default () => {
+  const s = useSalon()
+
   const { logo, desc, title } = useViewingCommunity()
   const { links } = useFooterLinks()
 
@@ -30,37 +24,38 @@ export default () => {
   const groupKeys = keys(groupedLinks)
 
   return (
-    <Wrapper>
-      <InnerWrapper>
-        <BrandWrapper>
-          <BrandLogo
+    <div className={s.wrapper}>
+      <div className={s.inner}>
+        <div className={s.brand}>
+          <Img
+            className={s.brandLogo}
             src={assetSrc(logo)}
             fallback={<ImgFallback size={25} left={-2} title={title} />}
             noLazy
           />
-          <BrandDesc>{desc}</BrandDesc>
+          <p className={s.brandDesc}>{desc}</p>
           <div className="grow" />
 
           <SocialList size="medium" selected={DEME_SOCIALS} top={10} />
-        </BrandWrapper>
+        </div>
 
         {groupKeys.map((groupTitle: string) => {
           const curGroupLinks = groupedLinks[groupTitle]
 
           return (
-            <Column key={groupTitle}>
-              <Title>{groupTitle}</Title>
-              <Body>
+            <div className={s.column} key={groupTitle}>
+              <h3 className={s.title}>{groupTitle}</h3>
+              <div className={s.body}>
                 {curGroupLinks.map((item) => (
-                  <LinkItem key={item.index} href={item.link}>
+                  <Link key={item.index} href={item.link} className={s.link}>
                     {item.title}
-                  </LinkItem>
+                  </Link>
                 ))}
-              </Body>
-            </Column>
+              </div>
+            </div>
           )
         })}
-      </InnerWrapper>
-    </Wrapper>
+      </div>
+    </div>
   )
 }

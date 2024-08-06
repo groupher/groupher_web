@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { keys } from 'ramda'
 
 import type { TLinkItem } from '~/spec'
@@ -8,16 +9,10 @@ import { sortByIndex, groupByKey } from '~/helper'
 
 import SocialList from '~/widgets/SocialList'
 
-import {
-  Wrapper,
-  BrandInfo,
-  BrandText,
-  LinksInfo,
-  LinkItem,
-  SocialInfo,
-} from './styles/simple_layout'
+import useSalon from './salon/simple_layout'
 
 export default () => {
+  const s = useSalon()
   const { links } = useFooterLinks()
 
   // @ts-ignore
@@ -25,20 +20,18 @@ export default () => {
   const groupKeys = keys(groupedLinks)
 
   return (
-    <Wrapper>
-      <BrandInfo>
-        <BrandText href="/">Groupher</BrandText>
-      </BrandInfo>
-      <LinksInfo>
+    <div className={s.wrapper}>
+      <Link className={s.brandLink} href="/">
+        Groupher
+      </Link>
+      <div className={s.linksInfo}>
         {groupedLinks[groupKeys[0]].map((item: TLinkItem) => (
-          <LinkItem key={item.index} href={item.link}>
+          <Link className={s.linkItem} key={item.index} href={item.link}>
             {item.title}
-          </LinkItem>
+          </Link>
         ))}
-      </LinksInfo>
-      <SocialInfo>
-        <SocialList selected={DEME_SOCIALS} />
-      </SocialInfo>
-    </Wrapper>
+      </div>
+      <SocialList selected={DEME_SOCIALS} />
+    </div>
   )
 }

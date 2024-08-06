@@ -1,58 +1,43 @@
 import { isEmpty } from 'ramda'
+import Link from 'next/link'
 
 import METRIC from '~/const/metric'
 import useMetric from '~/hooks/useMetric'
-import { LineDivider, DesktopOnly, MobileOnly, Row, Br } from '~/widgets/Common'
+import { LineDivider } from '~/widgets/Common'
 
 import { BEIAN_ADDR, BEIAN_TEXT } from '~/config'
 
-import { Wrapper, Note, Addr, BottomWrapper } from './styles/powerby_info'
+import useSalon from './salon/powerby_info'
 
 export default () => {
+  const s = useSalon()
   const metric = useMetric()
 
   return (
-    <Wrapper $testid="power-by">
+    <div className={s.wrapper}>
       {metric !== METRIC.HOME && (
-        <Note>
-          由<Addr href="/">Groupher</Addr>
+        <div className={s.note}>
+          由
+          <Link className={s.link} href="/">
+            Groupher
+          </Link>
           提供服务
-        </Note>
+        </div>
       )}
 
-      <DesktopOnly>
-        <BottomWrapper>
-          {metric === METRIC.HOME && <Note>Made in ChengDu</Note>}
-          {metric === METRIC.HOME && <LineDivider height={10} left={8} right={6} />}
-          {!isEmpty(BEIAN_TEXT) && (
-            <Note>
-              <Addr href={BEIAN_ADDR} target="_blank" prefetch={false}>
-                {BEIAN_TEXT}
-              </Addr>
-            </Note>
-          )}
-          {/* <LineDivider height={10} left={5} right={6} /> */}
-          <Note>违法信息举报</Note>
-        </BottomWrapper>
-      </DesktopOnly>
-
-      <MobileOnly>
-        <BottomWrapper>
-          <Row>
-            {metric === METRIC.HOME && <Note>Made in ChengDu</Note>}
-            {metric === METRIC.HOME && <LineDivider height={10} left={8} right={6} />}
-            <Note>违法信息举报</Note>
-          </Row>
-          <Br bottom={5} />
-          {!isEmpty(BEIAN_TEXT) && (
-            <Note>
-              <Addr href={BEIAN_ADDR} target="_blank" prefetch={false}>
-                {BEIAN_TEXT}
-              </Addr>
-            </Note>
-          )}
-        </BottomWrapper>
-      </MobileOnly>
-    </Wrapper>
+      <div className={s.bottom}>
+        {metric === METRIC.HOME && <div className={s.note}>Made in ChengDu</div>}
+        {metric === METRIC.HOME && <LineDivider height={10} left={8} right={6} />}
+        {!isEmpty(BEIAN_TEXT) && (
+          <div className={s.note}>
+            <Link className={s.link} href={BEIAN_ADDR} target="_blank" prefetch={false}>
+              {BEIAN_TEXT}
+            </Link>
+          </div>
+        )}
+        {/* <LineDivider height={10} left={5} right={6} /> */}
+        <div className={s.note}>违法信息举报</div>
+      </div>
+    </div>
   )
 }
