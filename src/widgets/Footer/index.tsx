@@ -26,7 +26,7 @@ export default () => {
 
   return (
     <div className={s.wrapper}>
-      {layout !== FOOTER_LAYOUT.GROUP ? <GroupLayout /> : <SimpleLayout />}
+      {layout === FOOTER_LAYOUT.GROUP ? <GroupLayout /> : <SimpleLayout />}
       <PowerbyInfo />
     </div>
   )

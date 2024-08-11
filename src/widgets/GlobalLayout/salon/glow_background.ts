@@ -39,7 +39,7 @@ export default () => {
   `,
     wrapper: cn(
       'w-full -z-10',
-      isAbsolute ? 'h-1/5' : 'h-full',
+      isAbsolute ? 'h-1/5 right-0' : 'h-full',
       `opacity-${fmtOpacity(glowOpacity)}`,
       glowPosition,
     ),

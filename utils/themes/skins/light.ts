@@ -219,7 +219,7 @@ export default {
     hoverBg: '#eee',
   },
   popover: {
-    bg: '#f6f6f6', // '#fafafa', // '#fffffff2',
+    bg: '#fafafa', // '#f6f6f6', // '#fafafa', // '#fffffff2',
     borderColor: '#e9e9ea',
     boxShadow: '-3px 2px 20px 0px rgb(58 58 58 / 15%)',
     activeBorder: '#70707094',
