@@ -35,14 +35,14 @@ export const COMMUNITY_CATS = [
   {
     //
     type: COMMUNITY_TYPE.WEB,
-    title: 'Web 应用',
+    title: 'Web/移动应用',
     color: COLOR_NAME.PURPLE,
     icon: 'Browser',
   },
   {
     //
     type: COMMUNITY_TYPE.CLIENT,
-    title: '客户端软件',
+    title: '桌面生产力',
     color: COLOR_NAME.BLUE,
     icon: 'Hammer',
   },
@@ -56,7 +56,7 @@ export const COMMUNITY_CATS = [
   {
     //
     type: COMMUNITY_TYPE.GAME,
-    title: '独立游戏',
+    title: '游戏开发',
     color: COLOR_NAME.ORANGE,
     icon: 'Game',
   },

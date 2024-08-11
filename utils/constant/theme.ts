@@ -1,8 +1,8 @@
 import type { TThemeName } from '~/spec'
 
 const THEME = {
-  DAY: 'day',
-  NIGHT: 'night',
+  LIGHT: 'light',
+  DARK: 'dark',
 } as Record<Uppercase<TThemeName>, TThemeName>
 
 export default THEME

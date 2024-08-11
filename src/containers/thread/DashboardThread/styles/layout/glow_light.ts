@@ -70,7 +70,7 @@ export const SettingsRow = styled.div`
 
 export const GrowBackground = styled('div')<TGlowEffect>`
   background: ${({ glowType, $theme }) => {
-    const GLOW_EFFECTS = $theme === THEME.DAY ? GLOW_EFFECTS_DAY : GLOW_EFFECTS_NIGHT
+    const GLOW_EFFECTS = $theme === THEME.LIGHT ? GLOW_EFFECTS_DAY : GLOW_EFFECTS_NIGHT
 
     return `
     radial-gradient(circle at ${GLOW_EFFECTS[glowType].LEFT.X} ${GLOW_EFFECTS[glowType].LEFT.Y}, ${GLOW_EFFECTS[glowType].LEFT.COLOR} 0, transparent ${GLOW_EFFECTS[glowType].LEFT.RADIUS}),

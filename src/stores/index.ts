@@ -15,7 +15,7 @@ import setupDashboard from './dashboard'
 import setupWallpaper from './wallpaper'
 
 const INITIAL_STATE = {
-  theme: THEME.DAY,
+  theme: THEME.LIGHT,
   locale: LOCALE.EN,
   localeData: '{}',
   viewing: {},

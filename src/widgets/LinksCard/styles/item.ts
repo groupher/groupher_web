@@ -8,10 +8,10 @@ export const Wrapper = styled.div`
 export const Title = styled.div`
   /* ${css.row('align-center')}; */
   ${css.cutRest('200px')};
-  color: ${theme('banner.desc')};
+  color: ${theme('article.digest')};
 
   ${Wrapper}:hover & {
-    color: ${theme('banner.title')};
+    color: ${theme('article.title')};
     cursor: pointer;
   }
 `
@@ -25,12 +25,12 @@ export const Reaction = styled.div`
   transition: all 0.2s;
 `
 export const Icon = styled(Img)`
-  fill: ${theme('banner.desc')};
+  fill: ${theme('article.digest')};
   ${css.size(11)};
   margin-right: 3px;
   margin-top: -1px;
 `
 export const Count = styled.div`
-  color: ${theme('banner.desc')};
+  color: ${theme('article.digest')};
   font-size: 12px;
 `

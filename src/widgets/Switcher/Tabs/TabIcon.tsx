@@ -18,7 +18,6 @@ const TabIcon: FC<TProps> = ({ item, clickableRef, active }) => {
 
   const IconCmp = icon && (
     <Suspense fallback={null}>
-      // @ts-ignore
       <LocalIcon slug={icon as string} active={active} small={false} />
     </Suspense>
   )

@@ -7,26 +7,22 @@ import Icon from '~/widgets/Menu/Icon'
 
 import type { TActiveCondition, TMenuItem } from './spec'
 
-import { Wrapper, Hint, LabelWrapper, StateTitle } from './styles/active_label'
+import useSalon from './salon/active_label'
 
 type TProps = {
   condition: TActiveCondition
-  title: string
   activeItem: TMenuItem
 } & TActive
 
-const ActiveLabel: FC<TProps> = ({ title, condition, activeItem }) => {
-  // const $active = condition && condition !== ARTICLE_STATE.ALL
+const ActiveLabel: FC<TProps> = ({ condition, activeItem }) => {
   const $active = !!condition
+  const s = useSalon()
 
   return (
-    <Wrapper>
-      <Hint>{title}</Hint>
-      <LabelWrapper>
-        {activeItem && <Icon type={activeItem.icon} $active={$active} />}
-        <StateTitle>{Trans(condition)}</StateTitle>
-      </LabelWrapper>
-    </Wrapper>
+    <div className={s.label}>
+      {activeItem && <Icon type={activeItem.icon} $active={$active} />}
+      <div className={s.stateTitle}>{Trans(condition)}</div>
+    </div>
   )
 }
 

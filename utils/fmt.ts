@@ -70,6 +70,10 @@ export const titleCase = (str: string): string => {
   })
 }
 
+/**
+ *  camelize a string
+ * e.g: GREEN_APPLE -> greenApple
+ */
 export const camelize = (str: string): string => {
   if (!str) return ''
 
@@ -208,4 +212,44 @@ export const blurRGB = (hex, blur = 100) => {
   if (!blur || blur === 100) return hex
 
   return `rgb(${hex2RGB(hex)} / ${blur}%)`
+}
+
+/**
+ * fomrat opacity to tw style
+ * e.g: '0.65' => 65 '1' => 100
+ */
+export const fmtOpacity = (str): number => {
+  const num = Number.parseFloat(str)
+  if (Number.isNaN(num)) {
+    return 0
+  }
+  if (num >= 0 && num <= 1) {
+    return Math.round(num * 100)
+  }
+  if (num >= 1 && num <= 100) {
+    return Math.round(num)
+  }
+  return 0
+}
+
+/**
+ * covert css style string into react component style tag way
+ * e.g: filter: blur(3px) -> {filter: blur(3px)}
+ */
+export const fmt2CompStyle = (styleString: string): { [key: string]: string } => {
+  if (styleString === '') {
+    return {}
+  }
+
+  const styles = styleString.split(';').map((style) => style.trim())
+  const result: { [key: string]: string } = {}
+
+  for (const style of styles) {
+    if (style) {
+      const [property, value] = style.split(':').map((item) => item.trim())
+      result[property] = value
+    }
+  }
+
+  return result
 }

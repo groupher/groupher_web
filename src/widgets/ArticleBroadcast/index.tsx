@@ -9,8 +9,6 @@ import { type FC, memo } from 'react'
 import type { TColorName, TSpace } from '~/spec'
 import { COLOR_NAME } from '~/const'
 
-import { SpaceGrow } from '~/widgets/Common'
-
 import {
   Wrapper,
   Content,
@@ -44,7 +42,7 @@ const ArticleBroadcast: FC<TProps> = ({
         <Title color={color}>文章页脚广播</Title>
         <Desc>由社区管理员设置，在每篇帖子下面显示，后期可提供更详细的显示设置,</Desc>
       </Content>
-      <SpaceGrow />
+      <div className="grow" />
 
       <LinkButton color={color} fontSize={12}>
         详情

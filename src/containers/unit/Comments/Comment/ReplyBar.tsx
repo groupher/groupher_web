@@ -4,7 +4,6 @@ import type { TComment } from '~/spec'
 import { ICON } from '~/config'
 import { cutRest } from '~/fmt'
 
-import { SpaceGrow } from '~/widgets/Common'
 import { Wrapper, ReplyIcon, Avatar, ReplyToBody, ReplyToFloor } from '../styles/comment/reply_bar'
 
 type TProps = {
@@ -22,7 +21,7 @@ const CommentReplyBar: FC<TProps> = ({ data }) => {
           __html: data.bodyHtml,
         }}
       />
-      <SpaceGrow />
+      <div className="grow" />
       <ReplyToFloor>#{data.floor}</ReplyToFloor>
     </Wrapper>
   )

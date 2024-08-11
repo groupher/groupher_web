@@ -2,7 +2,7 @@ import { type FC, useEffect, useState } from 'react'
 
 import type { TChangeMode, TLinkItem } from '~/spec'
 
-import { Space, SpaceGrow } from '~/widgets/Common'
+import { Space } from '~/widgets/Common'
 import Tooltip from '~/widgets/Tooltip'
 import Linker from '~/widgets/Linker'
 import CancelButton from '~/widgets/Buttons/CancelButton'
@@ -90,7 +90,7 @@ const LinkEditor: FC<TProps> = ({
             {linkItem.title || '--'} <Space right={6} />
             {notifyText && <NotifyLabel>New</NotifyLabel>}
           </Label>
-          <SpaceGrow />
+          <div className="grow" />
           <ActionWrapper editing={editing}>
             {!isFirst && <ArrowUpIcon onClick={() => moveLink(linkItem, 'up')} />}
             {!isLast && <ArrowDownIcon onClick={() => moveLink(linkItem, 'down')} />}
@@ -117,7 +117,7 @@ const LinkEditor: FC<TProps> = ({
             )}
           </ActionWrapper>
         </ReadOnlyHeader>
-        <SpaceGrow />
+        <div className="grow" />
         {!editing && <Linker src={linkItem?.link || ''} left={-2} top={5} external />}
       </ReadonlyWrapper>
 

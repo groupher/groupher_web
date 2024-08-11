@@ -12,7 +12,6 @@ import { getRandomInt } from '~/helper'
 
 import Upvote from '~/widgets/Upvote'
 import IconText from '~/widgets/IconText'
-import { SpaceGrow } from '~/widgets/Common'
 
 import { mockFameous } from '../mock'
 import CardHeader from './CardHeader'
@@ -51,7 +50,7 @@ const FamePeopleList: FC<TProps> = ({ items = mockFameous() }) => {
           </Body>
 
           <Digest>{item.desc}</Digest>
-          <SpaceGrow />
+          <div className="grow" />
 
           <Footer>
             <Upvote count={getRandomInt(10, 100)} avatarList={[]} type="general" />

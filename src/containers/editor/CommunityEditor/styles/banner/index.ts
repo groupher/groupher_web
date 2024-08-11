@@ -10,7 +10,7 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   position: relative;
   min-height: 170px;
   border-bottom: 1px solid;
-  border-bottom: ${theme('banner.spliter')};
+  border-bottom: ${theme('divider')};
 `
 export const SloganTextWrapper = styled.div<{ $highlight: boolean }>`
   margin-left: 3px;

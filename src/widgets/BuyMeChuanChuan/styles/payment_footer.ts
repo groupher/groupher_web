@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
 export const PayDesc = styled.div`
   ${css.row()};
   font-size: 0.8rem;
-  color: ${theme('banner.desc')};
+  color: ${theme('article.digest')};
 `
 export const AliPay = styled.div`
   ${css.row('align-center')};

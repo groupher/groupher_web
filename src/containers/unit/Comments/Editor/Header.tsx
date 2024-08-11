@@ -3,8 +3,6 @@ import type { FC } from 'react'
 import type { TAccount } from '~/spec'
 import useLayout from '~/hooks/useLayout'
 
-import { SpaceGrow } from '~/widgets/Common'
-
 import useLogic from '../useLogic'
 import {
   Wrapper,
@@ -43,7 +41,7 @@ const EditorHeader: FC<TProps> = ({ accountInfo, showEditor }) => {
         <UnloginUser />
       )}
       <LeaveResponseText>欢迎参与进来一起讨论 ~</LeaveResponseText>
-      <SpaceGrow />
+      <div className="grow" />
       <PenIcon />
     </Wrapper>
   )

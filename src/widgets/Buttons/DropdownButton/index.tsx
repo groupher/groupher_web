@@ -1,17 +1,14 @@
 import type { FC, ReactNode } from 'react'
 
-import type { TActive, TSizeTS, TSpace } from '~/spec'
+import type { TActive, TSizeTS, TSpace, TButtonPrefix } from '~/spec'
 import SIZE from '~/const/size'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import {
-  Wrapper,
-  ButtonWrapper,
-  InnerBtnWrapper,
-  FilterIcon,
-  CloseWrapper,
-  CloseIcon,
-} from '../styles/dropdown_button'
+import ArrowSVG from '~/icons/ArrowSimple'
+import CloseSVG from '~/icons/CloseLight'
+
+import PrefixIcon from './PrefixIcon'
+
+import useSalon from '../styles/dropdown_button'
 
 type TProps = {
   children: ReactNode
@@ -22,6 +19,7 @@ type TProps = {
   noArrow?: boolean
   selected?: boolean
   closable?: boolean
+  prefixIcon?: TButtonPrefix
 } & TSpace &
   TActive
 
@@ -35,40 +33,32 @@ const DropdownButton: FC<TProps> = ({
   $active = false,
   selected = false,
   closable = false,
-  ...restProps
+  prefixIcon = null,
+  ...spacing
 }) => {
-  const primaryColor = usePrimaryColor()
+  const s = useSalon({ size, selected, active: $active, ...spacing })
 
   return (
-    <Wrapper
-      $withBorder={withBorder}
-      size={size}
-      onClick={onClick}
-      $active={$active}
-      selected={selected}
-      $color={primaryColor}
-      {...restProps}
-    >
-      <ButtonWrapper size="small" type="primary" ghost>
-        <InnerBtnWrapper $active={$active} $color={primaryColor}>
+    <div className={s.wrapper} onClick={onClick}>
+      <button className={s.button}>
+        <div className={s.inner}>
+          <PrefixIcon type={prefixIcon} />
           {children}
-          {!noArrow && !(closable && selected) && (
-            <FilterIcon $active={$active} selected={selected} $color={primaryColor} />
-          )}
-
+          {!noArrow && !(closable && selected) && <ArrowSVG className={s.arrowIcon} />}
           {closable && selected && (
-            <CloseWrapper
+            <div
+              className={s.closeBox}
               onClick={(e) => {
                 e.preventDefault()
                 onClear()
               }}
             >
-              <CloseIcon />
-            </CloseWrapper>
+              <CloseSVG className={s.closeIcon} />
+            </div>
           )}
-        </InnerBtnWrapper>
-      </ButtonWrapper>
-    </Wrapper>
+        </div>
+      </button>
+    </div>
   )
 }
 

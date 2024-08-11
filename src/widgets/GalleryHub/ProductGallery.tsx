@@ -13,7 +13,6 @@ import { cutRest } from '~/fmt'
 import Linker from '~/widgets/Linker'
 import Upvote from '~/widgets/Upvote'
 import IconText from '~/widgets/IconText'
-import { SpaceGrow } from '~/widgets/Common'
 
 import InlineTags from './InlineTags'
 
@@ -52,7 +51,7 @@ const ProductGallery: FC<TProps> = ({ items = mockProducts() }) => {
 
           {item.desc && <Desc>{cutRest(item.desc, 50)}</Desc>}
           {item.tags && <InlineTags items={item.tags} />}
-          <SpaceGrow />
+          <div className="grow" />
           <Footer>
             <Upvote count={getRandomInt(10, 100)} avatarList={[]} type="general" />
             <CommentWrapper>

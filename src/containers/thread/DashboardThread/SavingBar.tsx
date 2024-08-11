@@ -2,7 +2,6 @@ import { type FC, memo, type ReactNode } from 'react'
 
 import type { TSpace } from '~/spec'
 
-import { SpaceGrow } from '~/widgets/Common'
 import YesOrNoButtons from '~/widgets/Buttons/YesOrNoButtons'
 
 import type { TSettingField } from './spec.d'
@@ -56,7 +55,7 @@ const SavingBar: FC<TProps> = ({
       return (
         <Wrapper direction="left" width={width} {...restProps}>
           {children}
-          <SpaceGrow />
+          <div className="grow" />
           <ActionWrapper $minimal={minimal}>
             <YesOrNoButtons
               cancelText="取消"
@@ -95,7 +94,7 @@ const SavingBar: FC<TProps> = ({
           {hint && <Hint>{hint}</Hint>} ?
         </HintText>
       </HintWrapper>
-      <SpaceGrow />
+      <div className="grow" />
       <ActionWrapper $minimal={minimal}>
         <YesOrNoButtons
           cancelText="取消"

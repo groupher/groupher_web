@@ -20,16 +20,6 @@ export default () => {
   const { bannerLayout } = useLayout()
   const pathname = usePathname()
 
-  // return <HeaderLayout />
-
-  // return (
-  //   <>
-  //     <Link href="/home/post">讨论区</Link>
-  //     <Link href="/home/kanban">看板</Link>
-  //     <HeaderLayout />
-  //   </>
-  // )
-
   if (pathname.split('/')[2] === 'dashboard') {
     return <DashboardLayout />
   }

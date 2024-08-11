@@ -1,37 +1,45 @@
-/*
- *
- * PostItem
- *
- */
-
-import { type FC, memo } from 'react'
+import { type FC, useState, useEffect } from 'react'
 
 import type { TPost } from '~/spec'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import DesktopView from './DesktopView'
-import MobileView from './MobileView'
-// import ListView from './ListView'
+import { previewArticle } from '~/signal'
+import { mockImage } from '~/mock'
 
-import { Wrapper } from '../styles/minimal_layout'
+import ArticlePinLabel from '~/widgets/ArticlePinLabel'
+import Img from '~/Img'
+
+import Header from './Header'
+import Footer from './Footer'
+
+import useSalon from '../salon/cover_layout'
 
 type TProps = {
   article: TPost
-  isMobilePreview: boolean
+  // onUserSelect?: (obj: TUser) => void
 }
 
-const PostItem: FC<TProps> = ({ article, isMobilePreview }) => {
-  const { isMobile } = useMobileDetect()
+const DigestView: FC<TProps> = ({ article }) => {
+  const s = useSalon()
+
+  const [coverImg, setCoverImg] = useState('')
+
+  useEffect(() => {
+    setCoverImg(mockImage())
+  }, [])
 
   return (
-    <Wrapper>
-      {isMobile || isMobilePreview ? (
-        <MobileView article={article} />
-      ) : (
-        <DesktopView article={article} />
-      )}
-    </Wrapper>
+    <section className={s.wrapper} onClick={() => previewArticle(article)}>
+      <ArticlePinLabel isPinned={article.isPinned} top={32} />
+      <div className={s.coverWrapper}>
+        <Img src={coverImg} className={s.cover} />
+      </div>
+      <div className={s.main}>
+        <Header article={article} />
+        <div className={s.digest}>{article.digest}</div>
+        <Footer article={article} />
+      </div>
+    </section>
   )
 }
 
-export default memo(PostItem)
+export default DigestView

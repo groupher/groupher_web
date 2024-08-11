@@ -7,7 +7,6 @@ import { upvoteArticle } from '~/signal'
 // import { addCollection } from '~/helper'
 import { UPVOTE_LAYOUT } from '~/const/layout'
 
-import { SpaceGrow } from '~/widgets/Common'
 import Upvote from '~/widgets/Upvote'
 import ArticleBaseStats from '~/widgets/ArticleBaseStats'
 
@@ -38,7 +37,7 @@ const ArticleInfo: FC<TProps> = ({ article }) => {
           viewerHasUpvoted={viewerHasUpvoted}
           onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
         />
-        <SpaceGrow />
+        <div className="grow" />
         <ArticleBaseStats article={article} container="drawer" />
         {/* <Space right={18} />
         <CollectWrapper onClick={() => addCollection()}>

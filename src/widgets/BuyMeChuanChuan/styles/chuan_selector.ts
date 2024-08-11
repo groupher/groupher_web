@@ -7,7 +7,7 @@ export const SelectBox = styled.div`
 
   margin-top: 10px;
   border: 1px solid;
-  border-color: ${theme('banner.desc')};
+  border-color: ${theme('article.digest')};
   border-radius: 4px;
   background: ${theme('modal.innerSelectBg')};
   height: 90px;

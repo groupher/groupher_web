@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
 import type { TColorName } from '~/spec'
-import { SpaceGrow, Brick } from '~/widgets/Common'
+import { Brick } from '~/widgets/Common'
 import ColorSelector from '~/widgets/ColorSelector'
 
 import {
@@ -31,7 +31,7 @@ const Header: FC<TProps> = ({ primaryColor, onPrimaryChange }) => {
       </ColorSelector>
 
       <Title>你的社区</Title>
-      <SpaceGrow />
+      <div className="grow" />
       <Brick right={10} $opacity={0.15} $width={30} top={12} $color={primaryColor} />
     </Wrapper>
   )

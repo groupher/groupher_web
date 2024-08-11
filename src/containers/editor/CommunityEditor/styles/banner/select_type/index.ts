@@ -36,7 +36,7 @@ export const AddNewIcon = styled(Img)`
   margin-top: -1px;
 `
 export const Title = styled.div`
-  color: ${theme('banner.title')};
+  color: ${theme('article.title')};
   font-size: 1.1rem;
 `
 export const NextBtn = styled.div`

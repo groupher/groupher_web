@@ -1,6 +1,5 @@
 import type { FC } from 'react'
 
-import { SpaceGrow } from '~/widgets/Common'
 import useViewingArticle from '~/hooks/useViewingArticle'
 import useKanbanBgColors from '~/hooks/useKanbanBgColors'
 import useNameAlias from '~/hooks/useNameAlias'
@@ -36,7 +35,7 @@ const StateItem: FC<TProps> = ({ onClick }) => {
             {kanbanAlias[ARTICLE_STATE[article.state].toLowerCase()]?.name || Trans(article.state)}
           </>
         )}
-        <SpaceGrow />
+        <div className="grow" />
         <Icon.Arrow />
       </MenuItem>
     )
@@ -46,7 +45,7 @@ const StateItem: FC<TProps> = ({ onClick }) => {
     <MenuItem onClick={onClick}>
       <Icon.State />
       状态
-      <SpaceGrow />
+      <div className="grow" />
       <Icon.Arrow />
     </MenuItem>
   )

@@ -1,38 +1,40 @@
 import type { TLocale } from '~/spec'
-import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
 import useChangeI18n from '~/hooks/useChangeI18n'
 
 import { LANGS_OPTIONS } from '~/const/i18n'
-import { SpaceGrow } from '~/widgets/Common'
 
-import { Wrapper, MenuBar, LangIconBox, CheckIcon } from './styles/i18n_panel'
+import CheckSVG from '~/icons/Check'
+
+import MenuBar from './MenuBar'
+
+import useSalon from './salon/i18n_panel'
 
 export default () => {
-  const { inView: badgeInView } = useCommunityDigestViewport()
   const { locale, changeLocale } = useChangeI18n()
 
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {LANGS_OPTIONS.map((LANG) => {
         const Icon = LANG.icon
 
         return (
           <MenuBar
             key={LANG.value}
-            $withTop={!badgeInView}
-            $active={locale === LANG.value}
+            active={locale === LANG.value}
             onClick={() => changeLocale(LANG.value as TLocale)}
           >
-            <LangIconBox>
+            <div className={s.iconBox}>
               {/* @ts-ignore */}
               <Icon />
-            </LangIconBox>
+            </div>
             {LANG.label}
-            <SpaceGrow />
-            {LANG.value === locale && <CheckIcon />}
+            <div className="grow" />
+            {LANG.value === locale && <CheckSVG className={s.checked} />}
           </MenuBar>
         )
       })}
-    </Wrapper>
+    </div>
   )
 }

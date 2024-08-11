@@ -29,13 +29,6 @@ const GlobalStyle = createGlobalStyle<TColor>`
     color: ${theme('button.fg')} !important;
   }
 
-  a:hover {
-    color: ${theme('a.hover')};
-  }
-  a:active {
-    color: ${theme('a.active')};
-  }
-
 // mentions
   .markdown-editor-mention {
     color: ${theme('comment.mentionText')};
@@ -59,7 +52,6 @@ const GlobalStyle = createGlobalStyle<TColor>`
     border: 1px solid;
     border-color: ${theme('comment.mentionBorder')};
     background: ${theme('comment.mentionBg')};
-    box-shadow: ${theme('comment.mentionShadow')};
     margin-top: 10px;
     position: absolute;
     min-width: 160px;
@@ -86,7 +78,6 @@ const GlobalStyle = createGlobalStyle<TColor>`
     background-color: ${theme('rainbow.red')};
   }
   .markdown-editor-mentionSuggestionsEntryFocused {
-    background-color: ${theme('comment.mentionActiveBg')};
     padding: 7px 10px 3px 10px;
     display: flex;
   }
@@ -110,10 +101,10 @@ const GlobalStyle = createGlobalStyle<TColor>`
   }
 
   .markdown-editor-link {
-    color: ${theme('markdown.link')};
+    color: ${theme('link')};
 
     &:hover {
-      color: ${theme('markdown.link')};
+      color: ${theme('link')};
       text-decoration: underline;
     }
   }
@@ -140,8 +131,8 @@ const GlobalStyle = createGlobalStyle<TColor>`
   .tippy-box {
     border: 1px solid;
     border-color: ${theme('popover.borderColor')};
-    background: white !important;
     border-radius: 4px;
+    background: ${theme('popover.bg')} !important;
     transition: all .2s ease-in-out !important;
   }
 

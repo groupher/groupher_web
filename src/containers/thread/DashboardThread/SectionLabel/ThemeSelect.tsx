@@ -10,13 +10,13 @@ const ThemeSelect = () => {
 
   return (
     <Wrapper>
-      <Section onClick={() => change(THEME.DAY)} $active={theme === THEME.DAY}>
+      <Section onClick={() => change(THEME.LIGHT)} $active={theme === THEME.LIGHT}>
         <SunIcon />
         <Title>浅色主题</Title>
       </Section>
 
       <LineDivider left={10} right={10} height={10} />
-      <Section onClick={() => change(THEME.NIGHT)} $active={theme === THEME.NIGHT}>
+      <Section onClick={() => change(THEME.DARK)} $active={theme === THEME.DARK}>
         <MoonIcon />
         <Title>暗色主题</Title>
       </Section>

@@ -14,14 +14,15 @@ export const mediaBreakPoints = {
 
 // PAGE: 页面宽度 (不包括背景图) for footer, header etc
 // CONTENT: 内容宽度
+//   #fafaf9
 export const WIDTH = {
   HOME: {
     PAGE: '1460px',
     CONTENT: '1180px',
   },
   COMMUNITY: {
-    PAGE: '1300px',
-    CONTENT: '940px',
+    PAGE: '1200px',
+    CONTENT: '960px',
     CONTENT_OFFSET: '40px',
   },
   COMMUNITY_SIDEBAR: {

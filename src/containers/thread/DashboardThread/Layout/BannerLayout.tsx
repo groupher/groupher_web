@@ -3,7 +3,7 @@ import { callDashboardDesc } from '~/signal'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 
-import { Row, Br, Space, SpaceGrow } from '~/widgets/Common'
+import { Row, Br, Space } from '~/widgets/Common'
 import CheckLabel from '~/widgets/CheckLabel'
 import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
@@ -107,7 +107,7 @@ export default () => {
           <Block $active={layout === BANNER_LAYOUT.TABBER} $color={primaryColor}>
             <Row>
               <CommunityTitle>{title}</CommunityTitle>
-              <SpaceGrow />
+              <div className="grow" />
               <Bar thin long={6} />
               <Space right={5} />
               <Circle radius={6} />
@@ -168,7 +168,7 @@ export default () => {
             <Row>
               <Space right={110} />
               <Bar thin long={10} />
-              <SpaceGrow />
+              <div className="grow" />
               <Space right={5} />
               <Bar long={10} $color={primaryColor} />
             </Row>

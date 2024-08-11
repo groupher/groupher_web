@@ -1,17 +1,11 @@
 import { useRouter } from 'next/navigation'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
-import { BRAND_LAYOUT } from '~/const/layout'
-
-import useMetric from '~/hooks/useMetric'
 import usePublicThreads from '~/hooks/usePublicThreads'
 import useViewingThread from '~/hooks/useViewingThread'
 import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 import useHeaderLinks from '~/hooks/useHeaderLinks'
-import useLayout from '~/hooks/useLayout'
 
-import { SpaceGrow } from '~/widgets/Common'
 import TabBar from '~/widgets/TabBar'
 import ViewportTracker from '~/widgets/ViewportTracker'
 import SearchBox from '~/widgets/SearchBox'
@@ -19,60 +13,40 @@ import CustomHeaderLinks from '~/widgets/CustomHeaderLinks'
 
 import CommunityBrief from './CommunityBrief'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  BannerContentWrapper,
-  CommunityBaseInfo,
-  TabBarWrapper,
-} from '../styles/tabber_layout'
+import useSalon from '../salon/tabber_layout'
 
 // 没有各种外链接，打赏信息等的官方社区
 // const NON_STANDARD_COMMUNITIES = [HCN, 'feedback']
 
 export default () => {
+  const s = useSalon()
+
   const router = useRouter()
-  const metric = useMetric()
-  const { isMobile } = useMobileDetect()
   const { enterView, leaveView } = useCommunityDigestViewport()
   const publicThreads = usePublicThreads()
   const activeThread = useViewingThread()
   const community = useViewingCommunity()
-  const { brandLayout } = useLayout()
   const { getCustomLinks } = useHeaderLinks()
 
   const customLinks = getCustomLinks()
 
   return (
-    <Wrapper
-      $testid="community-digest"
-      isMobile={isMobile}
-      $minHeight={brandLayout !== BRAND_LAYOUT.BOTH}
-    >
-      <InnerWrapper
-        metric={metric}
-        isMobile={isMobile}
-        $minHeight={brandLayout !== BRAND_LAYOUT.BOTH}
-      >
-        <BannerContentWrapper>
-          <CommunityBaseInfo>
-            <CommunityBrief />
-          </CommunityBaseInfo>
-          <SpaceGrow />
-          <TabBarWrapper>
-            <TabBar
-              source={publicThreads}
-              onChange={(path) => router.push(`/${community.slug}/${path}`)}
-              active={activeThread}
-              withIcon
-            />
-            <CustomHeaderLinks links={customLinks} />
-            <SpaceGrow />
-            <SearchBox right={-14} />
-          </TabBarWrapper>
-        </BannerContentWrapper>
-      </InnerWrapper>
+    <div className={s.wrapper}>
+      <div className={s.inner}>
+        <CommunityBrief />
+        <div className={s.tabs}>
+          <TabBar
+            source={publicThreads}
+            onChange={(path) => router.push(`/${community.slug}/${path}`)}
+            active={activeThread}
+            withIcon
+          />
+          <CustomHeaderLinks links={customLinks} />
+          <div className="grow" />
+          <SearchBox right={0} />
+        </div>
+      </div>
       <ViewportTracker onEnter={enterView} onLeave={leaveView} />
-    </Wrapper>
+    </div>
   )
 }

@@ -7,7 +7,6 @@ import useAccount from '~/hooks/useAccount'
 import { authWarn } from '~/signal'
 
 import MenuButton from '~/widgets/Buttons/MenuButton'
-import { SpaceGrow } from '~/widgets/Common'
 
 import useLogic from '../useLogic'
 import { Wrapper, ReplyAction, MoreWrapper, MoreIcon } from '../styles/comment/actions'
@@ -98,7 +97,7 @@ const Actions: FC<TProps> = ({ data }) => {
         </ReplyAction>
       )}
 
-      <SpaceGrow />
+      <div className="grow" />
       <MenuButton options={menuOptions} extraOptions={extraOptions} onClick={handleAction}>
         <MoreWrapper>
           <MoreIcon />

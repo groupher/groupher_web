@@ -2,7 +2,6 @@ import { sortByIndex } from '~/helper'
 
 import type { TMediaReport } from '~/spec'
 import AddButton from '~/widgets/Buttons/AddButton'
-import { SpaceGrow } from '~/widgets/Common'
 
 import InputBox from './InputBox'
 
@@ -16,7 +15,7 @@ export default () => {
     <Wrapper>
       <Label>
         媒体报道
-        <SpaceGrow />
+        <div className="grow" />
         <AddButton onClick={addMediaReport} top={2} dimWhenIdle>
           添加
         </AddButton>

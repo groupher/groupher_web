@@ -1,7 +1,6 @@
 import type { FC } from 'react'
 
 import { COLOR_NAME } from '~/const/colors'
-import { SpaceGrow } from '~/widgets/Common'
 
 import type { TCardMetric } from './spec'
 
@@ -49,7 +48,7 @@ const NightCard: FC<TProps> = ({ hovering, metric }) => {
           <Bar $color={COLOR_NAME.RED} width={10} />
         </CodeItem>
       </CodeBox>
-      <SpaceGrow />
+      <div className="grow" />
       <Footer top={16}>
         <UpvoteIcon $hovering={hovering} />
         <Count $hovering={hovering}>666</Count>

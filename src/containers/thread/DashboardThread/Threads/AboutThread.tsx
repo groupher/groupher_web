@@ -1,7 +1,7 @@
 import { type FC, memo } from 'react'
 
 import type { TEnableConfig } from '~/spec'
-import { SpaceGrow } from '~/widgets/Common'
+
 import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
 
 import useEnable from '../logic/useEnable'
@@ -19,7 +19,7 @@ const AboutThread: FC<TProps> = ({ settings }) => {
       <Section>
         <Header>
           <Title>技术栈</Title>
-          <SpaceGrow />
+          <div className="grow" />
           <ToggleSwitch
             checked={settings.aboutTechstack}
             onChange={(c) => enableThread('aboutTechstack', c)}
@@ -31,7 +31,7 @@ const AboutThread: FC<TProps> = ({ settings }) => {
       <Section>
         <Header>
           <Title>所在地</Title>
-          <SpaceGrow />
+          <div className="grow" />
           <ToggleSwitch
             checked={settings.aboutLocation}
             onChange={(c) => enableThread('aboutLocation', c)}
@@ -43,7 +43,7 @@ const AboutThread: FC<TProps> = ({ settings }) => {
       <Section>
         <Header>
           <Title>链接</Title>
-          <SpaceGrow />
+          <div className="grow" />
           <ToggleSwitch
             checked={settings.aboutLinks}
             onChange={(c) => enableThread('aboutLinks', c)}
@@ -55,7 +55,7 @@ const AboutThread: FC<TProps> = ({ settings }) => {
       <Section>
         <Header>
           <Title>媒体报道</Title>
-          <SpaceGrow />
+          <div className="grow" />
           <ToggleSwitch
             checked={settings.aboutMediaReport}
             onChange={(c) => enableThread('aboutMediaReport', c)}

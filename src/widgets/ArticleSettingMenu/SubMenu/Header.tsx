@@ -1,6 +1,5 @@
 import type { FC } from 'react'
 
-import { SpaceGrow } from '~/widgets/Common'
 import TagNode from '~/widgets/TagNode'
 
 import type { TSubMenu } from '../spec'
@@ -22,7 +21,7 @@ const Header: FC<TProps> = ({ type }) => {
         <>
           <Icon.Edit />
           修改标题
-          <SpaceGrow />
+          <div className="grow" />
           <Hint>
             <InfoIcon />
             <Help href="/">帮助</Help>
@@ -38,7 +37,7 @@ const Header: FC<TProps> = ({ type }) => {
         <>
           <Icon.Category />
           设置分类
-          <SpaceGrow />
+          <div className="grow" />
           <Hint>
             <InfoIcon />
             <Help href="/">帮助</Help>
@@ -54,7 +53,7 @@ const Header: FC<TProps> = ({ type }) => {
         <>
           <Icon.State />
           设置状态
-          <SpaceGrow />
+          <div className="grow" />
           <Hint>
             <InfoIcon />
             <Help href="/">帮助</Help>
@@ -70,7 +69,7 @@ const Header: FC<TProps> = ({ type }) => {
         <>
           <Icon.Slug />
           设置路径 (Slug)
-          <SpaceGrow />
+          <div className="grow" />
           <Hint>
             <InfoIcon />
             <Help href="/">帮助</Help>
@@ -86,7 +85,7 @@ const Header: FC<TProps> = ({ type }) => {
         <>
           <Icon.Slug />
           镜像到 Groupher
-          <SpaceGrow />
+          <div className="grow" />
           <Hint>
             <InfoIcon />
             <Help href="/">帮助</Help>
@@ -100,9 +99,9 @@ const Header: FC<TProps> = ({ type }) => {
     case SUB_MENU_TYPE.TAGS: {
       Content = (
         <>
-          <TagNode opacity={0.6} dotSize={8} dotLeft={4} hashLeft={4} hashSize={13} />
+          <TagNode />
           设置标签
-          <SpaceGrow />
+          <div className="grow" />
           <Hint>
             <InfoIcon />
             <Help href="/">帮助</Help>
@@ -116,7 +115,7 @@ const Header: FC<TProps> = ({ type }) => {
       Content = (
         <>
           <div>??</div>
-          <SpaceGrow />
+          <div className="grow" />
           <InfoIcon />
         </>
       )

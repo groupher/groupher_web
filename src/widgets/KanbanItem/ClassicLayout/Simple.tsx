@@ -41,7 +41,7 @@ const KanbanItem: FC<TProps> = ({ testid = 'gtd-item', article }) => {
   return (
     <Wrapper $testid={testid}>
       <Header>
-        <TagsList items={[tags[titleIdx]]} left={2} />
+        <TagsList items={[tags[titleIdx]]} left={1} />
         {/* <IconButton path="shape/more.svg" /> */}
       </Header>
       <Title onClick={() => previewArticle(article)}>{article.title}</Title>

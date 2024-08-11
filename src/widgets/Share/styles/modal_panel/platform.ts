@@ -18,7 +18,6 @@ export const Wrapper = styled.div`
   padding-bottom: 15px;
   width: 100%;
   min-height: 220px;
-  filter: ${theme('modal.subPanelShadow')};
   transition: min-height 0.2s;
 
   ${css.media.mobile`

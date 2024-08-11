@@ -39,11 +39,11 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
 `
 export const SocialWrapper = styled(Link)`
   ${css.row('align-center')};
-  color: ${theme('banner.desc')};
+  color: ${theme('article.digest')};
   font-size: 12px;
 
   &:hover {
-    color: ${theme('banner.active')};
+    color: ${theme('article.digest')};
     cursor: pointer;
   }
 `

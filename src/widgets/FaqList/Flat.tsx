@@ -1,6 +1,6 @@
 import { type FC, memo } from 'react'
 
-import Markdown from 'markdown-to-jsx'
+import Markdown from '~/widgets/Markdown'
 
 import {
   Wrapper,

@@ -62,16 +62,15 @@ export const MenuDivider = styled.div`
   margin-top: 3px;
   margin-bottom: 6px;
   border-bottom: 1px solid;
-  border-bottom-color: ${theme('banner.numberDivider')};
+  border-bottom-color: ${theme('divider')};
 `
 export const AvatarIcon = styled.img`
   ${css.size(16)};
   cursor: pointer;
   border-radius: 3px;
-  opacity: ${theme('avatar.opacity')};
 `
 export const DefaultUserIcon = styled(UserSVG)`
-  fill: ${theme('header.fg')};
+  fill: ${theme('article.digest')};
   ${css.size(16)};
   cursor: pointer;
   margin-right: 2px;

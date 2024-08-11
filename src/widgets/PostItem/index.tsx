@@ -4,7 +4,7 @@
  *
  */
 
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TPost, TPostLayout } from '~/spec'
 import { POST_LAYOUT } from '~/const/layout'
@@ -21,18 +21,18 @@ type TProps = {
   layout?: TPostLayout
 }
 
-const PostItem: FC<TProps> = ({ article, layout = POST_LAYOUT.QUORA, isMobilePreview = false }) => {
+const PostItem: FC<TProps> = ({ article, layout = POST_LAYOUT.QUORA }) => {
   switch (layout) {
     case POST_LAYOUT.MINIMAL: {
-      return <MinimalLayout article={article} isMobilePreview={isMobilePreview} />
+      return <MinimalLayout article={article} />
     }
 
     case POST_LAYOUT.PH: {
-      return <PHLayout article={article} isMobilePreview={isMobilePreview} />
+      return <PHLayout article={article} />
     }
 
     case POST_LAYOUT.COVER: {
-      return <CoverLayout article={article} isMobilePreview={isMobilePreview} />
+      return <CoverLayout article={article} />
     }
 
     case POST_LAYOUT.MASONRY: {
@@ -40,9 +40,9 @@ const PostItem: FC<TProps> = ({ article, layout = POST_LAYOUT.QUORA, isMobilePre
     }
 
     default: {
-      return <QuoraLayout article={article} isMobilePreview={isMobilePreview} />
+      return <QuoraLayout article={article} />
     }
   }
 }
 
-export default memo(PostItem)
+export default PostItem

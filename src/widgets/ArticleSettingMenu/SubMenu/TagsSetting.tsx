@@ -2,7 +2,7 @@ import { type FC, useState, useEffect } from 'react'
 import { includes, reject, uniq, equals } from 'ramda'
 import { useQuery, useMutation } from 'urql'
 
-import type { TID, TTag } from '~/spec'
+import type { TColorName, TID, TTag } from '~/spec'
 import { toast, updateViewingArticle } from '~/signal'
 // import { mockTags } from '~/mock'
 import { THREAD } from '~/const/thread'
@@ -11,7 +11,6 @@ import useViewingArticle from '~/hooks/useViewingArticle'
 
 import TagNode from '~/widgets/TagNode'
 import Checker from '~/widgets/Checker'
-import { SpaceGrow } from '~/widgets/Common'
 
 import S from '../schema'
 import Footer from './Footer'
@@ -77,9 +76,9 @@ const TagSetting: FC<TProps> = ({ onBack }) => {
           key={item.id}
           onClick={() => handleCheck(item.id, !includes(String(item.id), checked))}
         >
-          <TagNode dotSize={8} color={item.color} hashSize={13} />
+          <TagNode dotSize={8} color={item.color as TColorName} hashSize={13} />
           <Title>{item.title}</Title>
-          <SpaceGrow />
+          <div className="grow" />
           <Checker size="small" checked={includes(item.id, checked)} />
         </Item>
       ))}

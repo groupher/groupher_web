@@ -9,8 +9,6 @@ import { mergeRight, isEmpty } from 'ramda'
 
 import type { TTag } from '~/spec'
 
-import { SpaceGrow } from '~/widgets/Common'
-
 import Header from './Header'
 import Filter from './Filter'
 import { Wrapper, ItemWrapper, Item, Icon } from './styles'
@@ -70,13 +68,13 @@ const FiltersMenu: FC<TProps> = ({
             {!revert ? (
               <>
                 <Icon active={item.id === expandMenuId} src={item.icon} />
-                <SpaceGrow />
+                <div className="grow" />
                 {item.title}
               </>
             ) : (
               <>
                 {item.title}
-                <SpaceGrow />
+                <div className="grow" />
                 <Icon active={item.id === expandMenuId} src={item.icon} />
               </>
             )}

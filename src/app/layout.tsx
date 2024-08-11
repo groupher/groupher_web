@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
+import '../globals.css'
+
 import {
   StyledComponentsRegistry,
   GraphQLProvider,
@@ -17,9 +19,6 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   // const token = cookies().get('jwtToken')?.value || null
-  // const token = null
-  // const theme = cookies().get('theme')?.value === 'night' ? 'night' : 'day'
-  // const theme = 'day'
 
   // NOTE: SessionProvider is not nessary, just can not use useSession in component, which
   // has wired behavior for query /sesssion mutiple times.

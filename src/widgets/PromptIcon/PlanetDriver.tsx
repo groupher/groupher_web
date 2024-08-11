@@ -1,7 +1,6 @@
 import { type FC, memo } from 'react'
 
 import { ICON_BASE } from '~/config'
-import useTheme from '~/hooks/useTheme'
 import { getRandomInt } from '~/helper'
 
 import { PlanetDriverIcon } from './styles'
@@ -28,12 +27,10 @@ type TProps = {
 }
 
 const PlanetDriver: FC<TProps> = ({ className }) => {
-  const { themeMap } = useTheme()
-
   return (
     <PlanetDriverIcon
       className={className}
-      src={`${ICON_BASE}/404/not-found-${themeMap.name}.png`}
+      src={`${ICON_BASE}/404/not-found-todo.png`}
       angle={getRandomAngle()}
     />
   )

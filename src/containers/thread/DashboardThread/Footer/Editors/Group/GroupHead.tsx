@@ -1,7 +1,6 @@
 import type { FC } from 'react'
 
 import Tooltip from '~/widgets/Tooltip'
-import { SpaceGrow } from '~/widgets/Common'
 
 import GroupMenu from '../GroupMenu'
 import GroupInputer from '../GroupInputer'
@@ -61,7 +60,7 @@ const GroupHead: FC<TProps> = ({
   return (
     <Wrapper>
       <Title>{title}</Title>
-      <SpaceGrow />
+      <div className="grow" />
       <EditIcon onClick={() => triggerGroupUpdate(title, curGroupIndex)} />
       <Tooltip
         content={

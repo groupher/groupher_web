@@ -1,10 +1,11 @@
-import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
 import styled, { css, theme } from '~/css'
+
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   ${css.row('align-end')};
 `
-export const CommunityLogo = styled(CommunityFaceLogo)`
+export const CommunityLogo = styled(Img)`
   ${css.size(22)};
   margin-right: 22px;
   margin-bottom: 4px;

@@ -1,5 +1,5 @@
 import styled, { css, theme } from '~/css'
-import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   ${css.column()};
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 export const Body = styled.div`
   ${css.row()};
 `
-export const CommunityLogo = styled(CommunityFaceLogo)`
+export const CommunityLogo = styled(Img)`
   width: 80px;
   height: 80px;
   margin-right: 15px;

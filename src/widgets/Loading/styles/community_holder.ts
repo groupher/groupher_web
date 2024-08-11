@@ -7,8 +7,8 @@ export const BannerWrapper = styled.div`
   height: 60px;
   border-radius: 4px;
   border-style: double;
-  border-color: ${theme('banner.desc')};
-  color: ${theme('banner.desc')};
+  border-color: ${theme('article.digest')};
+  color: ${theme('article.digest')};
 `
 export const SidebarText = styled.div`
   color: grey;
@@ -17,12 +17,12 @@ export const SidebarText = styled.div`
 `
 export const CommunitiesText = styled.div`
   ${css.row('align-both')};
-  color: ${theme('banner.desc')};
+  color: ${theme('article.digest')};
   width: 54px;
   height: 54px;
   border-radius: 4px;
   border-style: double;
-  border-color: ${theme('banner.desc')};
+  border-color: ${theme('article.digest')};
   text-align: center;
   margin-top: -35px;
   margin-bottom: 8px;

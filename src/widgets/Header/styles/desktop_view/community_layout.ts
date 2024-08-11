@@ -13,13 +13,11 @@ export const Wrapper = styled.header.attrs<TTestable>(({ $testid }) => ({
   width: 100%;
   height: 33px;
   ${css.row('justify-center')};
-  background: ${theme('header.bg')};
   opacity: 1;
   border-bottom: ${({ noBorder }) => (noBorder ? 'none' : '1px solid')};
-  border-bottom-color: ${theme('header.spliter')};
+  border-bottom-color: ${theme('divider')};
   box-shadow: ${({ noBorder }) => (noBorder ? 'none' : theme('drawer.shadow'))};
 `
-
 type TInnerWrapper = { metric: TMetric }
 const InnerWrapper = styled.div<TInnerWrapper>`
   ${css.row('align-center')};

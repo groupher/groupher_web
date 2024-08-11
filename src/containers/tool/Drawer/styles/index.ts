@@ -56,7 +56,6 @@ export const DrawerWrapper = styled.div.attrs<TDrawer>(
     isWideMode(type) ? $rightOffset : pixelAdd($rightOffset, 30)};
   top: ${({ type }) => (isWideMode(type) ? 0 : '25px')};
 
-  color: ${theme('drawer.font')};
   box-sizing: border-box;
   font-family: Roboto, sans-serif;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);

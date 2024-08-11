@@ -1,7 +1,5 @@
 import type { FC } from 'react'
 
-import { SpaceGrow } from '~/widgets/Common'
-
 import ToolBox from './ToolBox'
 import InlineToolBox from './InlineToolBox'
 
@@ -28,7 +26,7 @@ const Panel: FC<TProps> = ({ hovering }) => {
         <ToolBox hovering={hovering} />
         <Header>
           <Mention>@老大</Mention>
-          <SpaceGrow />
+          <div className="grow" />
         </Header>
         <Text>
           {hovering ? <Highlight $color="CYAN">推进器</Highlight> : <>推进器</>}

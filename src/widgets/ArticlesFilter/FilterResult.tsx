@@ -2,7 +2,7 @@ import { type FC, memo } from 'react'
 
 import DotDivider from '~/widgets/DotDivider'
 
-import { Wrapper, ResultText } from './styles/filter_result'
+import useSalon from './salon/filter_result'
 
 type TProps = {
   totalCount: number
@@ -10,12 +10,14 @@ type TProps = {
 }
 
 const FilterResult: FC<TProps> = ({ pageNumber, totalCount }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <ResultText>第 {pageNumber} 页</ResultText>
+    <div className={s.wrapper}>
+      <div className={s.text}>第 {pageNumber} 页</div>
       <DotDivider space={8} />
-      <ResultText>共 {totalCount} 条</ResultText>
-    </Wrapper>
+      <div className={s.text}>共 {totalCount} 条</div>
+    </div>
   )
 }
 

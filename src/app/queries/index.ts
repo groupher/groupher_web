@@ -56,10 +56,10 @@ export const useThemeFromURL = (): TThemeName => {
   const theme = searchParams.get('theme')
 
   return useMemo(() => {
-    if (theme === THEME.NIGHT) {
-      return THEME.NIGHT
+    if (theme === THEME.DARK) {
+      return THEME.DARK
     }
-    return THEME.DAY
+    return THEME.LIGHT
   }, [theme]) // 依赖项是 theme，只有 theme 变化时才重新计算
 }
 
@@ -97,11 +97,11 @@ export const useI18n = (): TUseI18n => {
 //   const theme = searchParams.get('theme')
 //   console.log('## ## geting theme from url')
 
-//   if (theme === THEME.NIGHT) {
-//     return THEME.NIGHT
+//   if (theme === THEME.DARK) {
+//     return THEME.DARK
 //   }
 
-//   return THEME.DAY
+//   return THEME.LIGHT
 // }
 
 export const useMetric = (): TMetric => {

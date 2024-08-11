@@ -1,5 +1,6 @@
 import styled, { css, theme } from '~/css'
-import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
+
+import Img from '~/Img'
 
 export const Wrapper = styled.div`
   ${css.rowWrap('align-center')};
@@ -36,7 +37,7 @@ export const DeleteHint = styled.div`
 
   transition: opacity 0.2s;
 `
-export const Logo = styled(CommunityFaceLogo)`
+export const Logo = styled(Img)`
   ${css.size(22)};
   filter: saturate(0.8);
 `

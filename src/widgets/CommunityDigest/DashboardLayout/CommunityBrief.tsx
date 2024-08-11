@@ -1,112 +1,108 @@
-import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 import usePublicThreads from '~/hooks/usePublicThreads'
 import useLayout from '~/hooks/useLayout'
-import useHover from '~/hooks/useHover'
 
 import { BRAND_LAYOUT } from '~/const/layout'
 
 import { assetSrc } from '~/helper'
-import { titleCase } from '~/fmt'
+// import { titleCase } from '~/fmt'
 
-import { Space, SpaceGrow, SexyDivider } from '~/widgets/Common'
+import Img from '~/Img'
+import ArrowSVG from '~/icons/ArrowUpRight'
+// import DiscussSVG from '~/icons/Discuss'
+// import KanbanSVG from '~/icons/Kanban'
+import AboutSVG from '~/icons/Info'
+// import GuideSVG from '~/icons/Guide'
+// import ChangelogSVG from '~/icons/TadaRaw'
+
+import GithubSVG from '~/icons/Github8'
+import GlobalSVG from '~/icons/social/Global'
+import PlusSVG from '~/icons/PlusCircle'
+
+import OptionArrowSVG from '~/icons/OptionArrow'
+import { Space, SexyDivider } from '~/widgets/Common'
 import Tooltip from '~/widgets/Tooltip'
 import ImgFallback from '~/widgets/ImgFallback'
 
-import {
-  Wrapper,
-  MenuWrapper,
-  Logo,
-  Title,
-  Slash,
-  OptionArrowIcon,
-  ToolPanel,
-  PanelItem,
-  Icon,
-  ArrowIcon,
-  DisableTippyJump,
-} from '../styles/dashboard_layout/community_brief'
+import useSalon, { cn } from '../salon/dashboard_layout/community_brief'
 
 export default () => {
+  const s = useSalon()
+
   const threads = usePublicThreads()
   const { title, logo, slug, dashboard } = useViewingCommunity()
   const { brandLayout } = useLayout()
 
-  const [disableTippyJump, setDisableTippyJump] = useState(false)
-  const [ref, isHovering] = useHover<HTMLDivElement>()
-
-  useEffect(() => {
-    if (isHovering && disableTippyJump !== true) {
-      setDisableTippyJump(true)
-    }
-  }, [isHovering, disableTippyJump])
-
   return (
-    <Wrapper ref={ref}>
+    <div className={s.wrapper}>
       {brandLayout !== BRAND_LAYOUT.TEXT && (
-        <Logo src={assetSrc(logo)} fallback={<ImgFallback size={25} title={title} />} />
+        <Img
+          className={s.logo}
+          src={assetSrc(logo)}
+          fallback={<ImgFallback size={25} title={title} />}
+        />
       )}
-      {brandLayout !== BRAND_LAYOUT.LOGO && <Title>{title}</Title>}
-      <Slash>/</Slash>
+      {brandLayout !== BRAND_LAYOUT.LOGO && <div className={s.title}>{title}</div>}
+      <div className={s.slash}>/</div>
 
       <Tooltip
         content={
-          <ToolPanel>
+          <div className={s.topPanel}>
             {threads.map((item) => {
-              const ThreadIcon = Icon[titleCase(item.slug)]
+              // const ThreadIcon = Icon[titleCase(item.slug)]
               return (
-                <PanelItem key={item.slug} href={`/${slug}/${item.slug}`}>
-                  <ThreadIcon />
+                <Link key={item.slug} className={s.panelItem} href={`/${slug}/${item.slug}`}>
+                  <>TODO</>
+                  {/* <ThreadIcon /> */}
                   <div>{item.title}</div>
-                </PanelItem>
+                </Link>
               )
             })}
 
-            <PanelItem href={`/${slug}/about`}>
-              <Icon.About />
+            <Link className={s.panelItem} href={`/${slug}/about`}>
+              <AboutSVG className={s.icon} />
               <div>关于</div>
-            </PanelItem>
+            </Link>
 
             <SexyDivider top={5} bottom={5} />
 
-            <PanelItem href={dashboard.baseInfo.homepage} $outside>
-              <Icon.Global />
+            <Link className={cn(s.panelItem, s.outside)} href={dashboard.baseInfo.homepage}>
+              <GlobalSVG className={s.icon} />
               <div>返回官网</div>
-              <SpaceGrow />
-              <ArrowIcon />
-            </PanelItem>
+              <div className="grow" />
+              <ArrowSVG className={s.arrowIcon} />
+            </Link>
 
-            <PanelItem href={`/${slug}`} $outside>
-              <Icon.Github />
+            <Link className={cn(s.panelItem, s.outside)} href={`/${slug}`}>
+              <GithubSVG className={s.icon} />
               <div>Github</div>
-              <SpaceGrow />
-              <ArrowIcon />
-            </PanelItem>
+              <div className="grow" />
+              <ArrowSVG className={s.arrowIcon} />
+            </Link>
 
             <SexyDivider top={5} bottom={5} />
-            <PanelItem href="/apply/community" $outside>
-              <Icon.Plus />
+            <Link className={cn(s.panelItem, s.outside)} href="/apply/community">
+              <PlusSVG className={s.icon} />
               <div>新社区</div>
-              <SpaceGrow />
-              <ArrowIcon />
-            </PanelItem>
-          </ToolPanel>
+              <div className="grow" />
+              <ArrowSVG className={s.arrowIcon} />
+            </Link>
+          </div>
         }
         placement="bottom"
         hideOnClick={false}
         offset={[-7, -39]}
         trigger="click"
-        onHide={() => setDisableTippyJump(false)}
         noPadding
       >
-        <MenuWrapper>
-          <Title>管理后台</Title>
+        <div className={s.menuWrapper}>
+          <div className={s.title}>管理后台</div>
           <Space right={12} />
-          <OptionArrowIcon />
-        </MenuWrapper>
+          <OptionArrowSVG className={s.optArrowIcon} />
+        </div>
       </Tooltip>
-      <DisableTippyJump enable={disableTippyJump} />
-    </Wrapper>
+    </div>
   )
 }

@@ -1,6 +1,5 @@
 import type { FC } from 'react'
 
-import { SpaceGrow } from '~/widgets/Common'
 import useViewingArticle from '~/hooks/useViewingArticle'
 import { Trans } from '~/i18n'
 
@@ -22,7 +21,7 @@ const CatItem: FC<TProps> = ({ onClick }) => {
       <MenuItem onClick={onClick}>
         <TheIcon />
         {Trans(article.cat)}
-        <SpaceGrow />
+        <div className="grow" />
         <Icon.Arrow />
       </MenuItem>
     )
@@ -32,7 +31,7 @@ const CatItem: FC<TProps> = ({ onClick }) => {
     <MenuItem onClick={onClick}>
       <Icon.Category />
       分类
-      <SpaceGrow />
+      <div className="grow" />
       <Icon.Arrow />
     </MenuItem>
   )

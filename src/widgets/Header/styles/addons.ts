@@ -8,14 +8,14 @@ export const Wrapper = styled.div`
   ${css.row('align-center')};
 `
 export const SettingIcon = styled(MagicStickSVG)`
-  fill: ${theme('header.fg')};
+  fill: ${theme('article.digest')};
   ${css.size(16)};
   margin-top: -2px;
   cursor: pointer;
 `
 export const Divider = styled.div`
   border-left: 1px solid;
-  border-color: ${theme('header.fg')};
+  border-color: ${theme('article.digest')};
   height: 15px;
   margin-left: 10px;
   margin-right: 6px;
@@ -24,7 +24,7 @@ export const Divider = styled.div`
 export const HeaderSearchIcon = styled(HeaderSearchSVG).attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
-  fill: ${theme('header.fg')};
+  fill: ${theme('article.digest')};
   ${css.size(18)};
   display: block;
   cursor: pointer;
@@ -37,5 +37,5 @@ export const Operations = styled.div`
 export const Search = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
 }))<TTestable>`
-  color: ${theme('header.fg')};
+  color: ${theme('article.digest')};
 `

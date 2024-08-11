@@ -1,23 +1,25 @@
 import { type FC, Fragment, useState } from 'react'
-import { keys, startsWith, filter } from 'ramda'
+import { startsWith } from 'ramda'
+import Link from 'next/link'
 
 import type { TLinkItem } from '~/spec'
 import { MORE_GROUP, ONE_LINK_GROUP } from '~/const/dashboard'
-import { sortByIndex, groupByKey } from '~/helper'
 import useAccount from '~/hooks/useAccount'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
+import useHeaderLinks from '~/hooks/useHeaderLinks'
 
+import ArrowSVG from '~/icons/ArrowSimple'
 import Tooltip from '~/widgets/Tooltip'
 
 import type { TProps, TLinkGroup } from './spec'
 
-import { Wrapper, LinkItem, GroupItem, ArrowIcon, MenuPanel } from './styles/header_layout'
+import useSalon, { cn } from './salon/header_layout'
 
 const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath }) => {
+  const s = useSalon()
+
   const [menuOpen, setMenuOpen] = useState(false)
   const { slug } = useViewingCommunity()
-  const primaryColor = usePrimaryColor()
 
   if (!showMoreFold) return null
 
@@ -25,18 +27,21 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath
   return (
     <Tooltip
       content={
-        <MenuPanel>
-          {links.map((item: TLinkItem) => (
-            <LinkItem
-              key={item.index}
-              href={item.link}
-              $active={`/${slug}/${activePath}` === item.link}
-              $color={primaryColor}
-            >
-              {item.title}
-            </LinkItem>
-          ))}
-        </MenuPanel>
+        <div className={s.menuPanel}>
+          {links.map((item: TLinkItem) => {
+            const active = `/${slug}/${activePath}` === item.link
+
+            return (
+              <Link
+                key={item.index}
+                href={item.link}
+                className={cn(s.menuLink, active && s.linkActive)}
+              >
+                {item.title}
+              </Link>
+            )
+          })}
+        </div>
       }
       onHide={() => setMenuOpen(false)}
       onShow={() => setMenuOpen(true)}
@@ -45,25 +50,23 @@ const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold, activePath
       offset={[8, 5]}
     >
       {/* @ts-ignore */}
-      <GroupItem as="div" $active={menuOpen}>
-        {groupTitle === MORE_GROUP ? '更多' : groupTitle} <ArrowIcon />
-      </GroupItem>
+      <div className={cn(s.link, s.groupItem, menuOpen && s.linkActive)}>
+        {groupTitle === MORE_GROUP ? '更多' : groupTitle} <ArrowSVG className={s.arrowIcon} />
+      </div>
     </Tooltip>
   )
 }
 
-const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
+const CustomHeaderLinks: FC<TProps> = ({ activePath = '' }) => {
+  const s = useSalon()
+
   const { isModerator } = useAccount()
-  const primaryColor = usePrimaryColor()
-
-  const _links = filter((item) => item.title !== '', links)
-
-  // @ts-ignore
-  const groupedLinks = groupByKey(sortByIndex(_links, 'groupIndex'), 'group')
-  const groupKeys = keys(groupedLinks)
+  const { getCustomLinks, getGroupedLinks } = useHeaderLinks()
+  const links = getCustomLinks()
+  const { groupedLinks, groupKeys } = getGroupedLinks()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {groupKeys.map((groupTitle: string) => {
         const curGroupLinks = groupedLinks[groupTitle]
 
@@ -72,9 +75,9 @@ const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
         return (
           <Fragment key={groupTitle}>
             {startsWith(ONE_LINK_GROUP, groupTitle) ? (
-              <LinkItem href={curGroupLinks[0].link} $color={primaryColor}>
+              <Link className={s.link} href={curGroupLinks[0].link}>
                 {curGroupLinks[0].title}
-              </LinkItem>
+              </Link>
             ) : (
               <LinkGroup
                 groupTitle={groupTitle}
@@ -86,7 +89,7 @@ const CustomHeaderLinks: FC<TProps> = ({ links, activePath = '' }) => {
           </Fragment>
         )
       })}
-    </Wrapper>
+    </div>
   )
 }
 

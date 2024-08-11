@@ -15,7 +15,6 @@ export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   height: 100vh;
   width: 100%;
   z-index: 1;
-  // background: ${theme('banner.bg')};
   background: rgba(0, 59, 74, 0.5);
 `
 export const LogoWrapper = styled(Link).attrs<TTestable>(({ $testid }) => ({

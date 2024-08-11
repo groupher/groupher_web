@@ -11,7 +11,7 @@ export const SiteLogo = styled(Img)`
   opacity: 0.2;
 `
 export const Desc = styled.div`
-  color: ${theme('banner.desc')};
+  color: ${theme('article.digest')};
   font-size: 1rem;
   margin-top: 20px;
   font-weight: bold;

@@ -10,7 +10,7 @@ export const Wrapper = styled.div<TActive>`
   left: 10px;
   top: 35vh;
   z-index: 1;
-  color: ${theme('drawer.font')};
+  color: ${theme('article.digest')};
   width: 34px;
   height: 70px;
   border: 1px solid;

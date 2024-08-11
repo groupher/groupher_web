@@ -2,7 +2,6 @@ import type { FC } from 'react'
 
 import useTheme from '~/hooks/useTheme'
 
-import { SpaceGrow } from '~/widgets/Common'
 import {
   Wrapper,
   InnerWrapper,
@@ -60,7 +59,7 @@ const Article: FC = () => {
         <Footer>
           <LeftArrowIcon />
           <ArrowText>编辑目录</ArrowText>
-          <SpaceGrow />
+          <div className="grow" />
           <ArrowText>文档反馈</ArrowText>
           <RightArrowIcon />
         </Footer>

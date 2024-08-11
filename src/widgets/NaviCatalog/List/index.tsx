@@ -8,7 +8,7 @@ import { type FC, memo } from 'react'
 import { map, prop, includes } from 'ramda'
 
 import type { TNaviTag } from '~/spec'
-import { SpaceGrow, Space } from '~/widgets/Common'
+import { Space } from '~/widgets/Common'
 
 import { ROOT_MENU } from '../constant'
 
@@ -65,7 +65,7 @@ const List: FC<TProps> = ({
           >
             {item.fixedIcon && <FixedIcon src={item.fixedIcon} />}
             {item.title}
-            <SpaceGrow />
+            <div className="grow" />
             {renderRightIcon(item, active, showItemTotal)}
           </Item>
         )

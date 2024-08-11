@@ -31,7 +31,7 @@ const ScaleSelector: FC<TProps> = ({ communityType }) => {
   const { theme } = useTheme()
   const [step, setStep] = useState(STEP.X)
   const colors = COMMUNITY_CATS_TEXT_COLORS[communityType]
-  const darker = theme === THEME.NIGHT
+  const darker = theme === THEME.DARK
 
   return (
     <Wrapper>

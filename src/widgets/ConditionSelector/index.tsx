@@ -1,6 +1,6 @@
 import { type FC, useState, useRef } from 'react'
 
-import type { TSpace, TTooltipPlacement, TConditionMode } from '~/spec'
+import type { TSpace, TTooltipPlacement, TConditionMode, TButtonPrefix } from '~/spec'
 
 import useTrans from '~/hooks/useTrans'
 
@@ -12,7 +12,7 @@ import ActiveLabel from './ActiveLabel'
 
 import type { TActiveCondition } from './spec'
 import { getMenuItems, getTitle, getActiveMenuItem } from './helper'
-import { Wrapper } from './styles'
+import useSalon from './salon'
 
 type TProps = {
   mode: TConditionMode
@@ -20,6 +20,7 @@ type TProps = {
   placement?: TTooltipPlacement
   selected?: boolean
   closable?: boolean
+  prefixIcon?: TButtonPrefix
 
   onSelect?: (condition: TActiveCondition) => void
 } & TSpace
@@ -31,16 +32,17 @@ const ConditionSelector: FC<TProps> = ({
   selected = false,
   placement = 'bottom',
   closable = true,
-
-  ...restProps
+  prefixIcon = null,
+  ...spacing
 }) => {
-  const [offset, setOffset] = useState([38, 5])
+  const [offset, setOffset] = useState([28, 5])
   const [menuOpen, setMenuOpen] = useState(false)
   const ref = useRef(null)
 
+  const s = useSalon({ menuOpen, selected, ...spacing })
   const { t } = useTrans()
 
-  const popWidth = 142
+  const popWidth = 36
 
   const menuItems = getMenuItems(mode)
   const activeMenuItem = getActiveMenuItem(menuItems, active)
@@ -48,7 +50,7 @@ const ConditionSelector: FC<TProps> = ({
   const title = getTitle(mode)
 
   return (
-    <Wrapper ref={ref} $selected={selected} $menuOpen={menuOpen} {...restProps}>
+    <div ref={ref} className={s.wrapper}>
       {!selected ? (
         <Menu
           offset={offset as [number, number]}
@@ -56,14 +58,14 @@ const ConditionSelector: FC<TProps> = ({
           onSelect={(item) => onSelect(item.key as TActiveCondition)}
           onShow={() => setMenuOpen(true)}
           onHide={() => {
-            setOffset([30, 5])
+            // setOffset([30, 5])
             setMenuOpen(false)
           }}
           activeKey={active}
           placement={placement}
           popWidth={popWidth}
         >
-          <DropdownButton $active={menuOpen} selected={selected}>
+          <DropdownButton $active={menuOpen} selected={selected} prefixIcon={prefixIcon}>
             {t(title, 'titleCase')}
             <Space right={3} />
           </DropdownButton>
@@ -78,6 +80,7 @@ const ConditionSelector: FC<TProps> = ({
             ref.current.click()
             onSelect(null)
           }}
+          prefixIcon={prefixIcon}
         >
           <Menu
             offset={offset as [number, number]}
@@ -95,11 +98,11 @@ const ConditionSelector: FC<TProps> = ({
             placement={placement}
             popWidth={popWidth}
           >
-            <ActiveLabel activeItem={activeMenuItem} title={t(title)} condition={active} />
+            <ActiveLabel activeItem={activeMenuItem} condition={active} />
           </Menu>
         </DropdownButton>
       )}
-    </Wrapper>
+    </div>
   )
 }
 

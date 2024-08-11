@@ -1,53 +1,52 @@
-import styled, { css, theme } from '~/css'
+import { includes } from 'ramda'
 
-import AccountSVG from '~/icons/Acount'
-import { WithMargin } from '~/widgets/Common'
+import type { TSpace } from '~/spec'
 
-export const NormalWrapper = styled(WithMargin)`
-  ${css.row('align-center')};
-`
-export const WithBgWrapper = styled(NormalWrapper)`
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  height: 32px;
-  border-radius: 10px;
-  padding: 5px 8px;
-  width: auto;
-  background: ${theme('alphaBg')};
-  box-shadow: ${theme('popover.boxShadow')};
+import useTwBelt from '~/hooks/useTwBelt'
+import useLayout from '~/hooks/useLayout'
+import { BANNER_LAYOUT } from '~/const/layout'
 
-  &:hover {
-    cursor: pointer;
+type TProps = TSpace
+
+export default ({ ...spacing }: TProps) => {
+  const { cn, margin, fg, bg, br, fill } = useTwBelt()
+  const { bannerLayout } = useLayout()
+
+  const normalWrapper = cn('row-center', margin(spacing))
+  const withBgWrapper = cn(
+    'row-center border h-8 w-44 rounded-lg px-2 py-1.5 pointer shadow-md',
+    br('divider'),
+    bg('alphaBg'),
+    margin(spacing),
+  )
+
+  const wrapper = includes(bannerLayout, [BANNER_LAYOUT.TABBER, BANNER_LAYOUT.SIDEBAR])
+    ? withBgWrapper
+    : normalWrapper
+
+  return {
+    wrapper,
+    hoverBox: cn(
+      'align-both size-6 rounded border border-transparent pointer',
+      `hover:${bg('hoverBg')}`,
+      `hover:${br('divider')}`,
+    ),
+    nickname: cn('font-sm ml-2.5', fg('text.digest')),
+    unLoginIcon: cn('size-3 pointer', fill('text.digest'), `hover:${fill('text.title')}`),
   }
-`
-export const HoverBox = styled.div`
-  ${css.size(24)};
-  ${css.row('align-both')};
-  border-radius: 5px;
+}
 
-  &:hover {
-    background: ${theme('hoverBg')};
-    border: 1px solid;
-    border-color: ${theme('divider')};
-    cursor: pointer;
-  }
-`
-export const UnloginIcon = styled(AccountSVG)`
-  fill: ${theme('article.digest')};
-  ${css.size(13)};
-  cursor: pointer;
-  &:hover {
-    fill: ${theme('article.title')};
-  }
-`
-export const NickName = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 13px;
-  ${css.cutRest('80px')};
-  margin-left: 10px;
-`
+// export const WithBgWrapper = styled(NormalWrapper)`
+//   border: 1px solid;
+//   border-color: ${theme('divider')};
+//   height: 32px;
+//   border-radius: 10px;
+//   padding: 5px 8px;
+//   width: auto;
+//   background: ${theme('alphaBg')};
+//   box-shadow: ${theme('popover.boxShadow')};
 
-export const UnLoginText = styled(NickName)`
-  font-size: 12px;
-  margin-top: 1px;
-`
+//   &:hover {
+//     cursor: pointer;
+//   }
+// `

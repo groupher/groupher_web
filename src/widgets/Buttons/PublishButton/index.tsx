@@ -54,10 +54,7 @@ const PublishButton: FC<TProps> = ({
         placement={placement}
         items={POST_CAT_MENU_ITEMS}
         onSelect={(item) => onMenuSelect(item.key as TArticleCat)}
-        // onShow={() => setMenuOpen(true)}
-        // onHide={() => setMenuOpen(false)}
-        // activeKey={activeCat}
-        popWidth={195}
+        popWidth={48}
         withDesc
       >
         <PubButton $color={primaryColor} $smaller={mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER}>

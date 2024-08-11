@@ -4,22 +4,22 @@ import THEME from '~/const/theme'
 // means top: hovering is 15, idle is 30
 
 export const CARDS_METRICS = {
-  [THEME.DAY]: {
-    [THEME.DAY]: {
+  [THEME.LIGHT]: {
+    [THEME.LIGHT]: {
       width: [112, 112],
       height: [132, 132],
     },
-    [THEME.NIGHT]: {
+    [THEME.DARK]: {
       width: [112, 112],
       height: [132, 132],
     },
   },
-  [THEME.NIGHT]: {
-    [THEME.DAY]: {
+  [THEME.DARK]: {
+    [THEME.LIGHT]: {
       width: [132, 130],
       height: [132, 160],
     },
-    [THEME.NIGHT]: {
+    [THEME.DARK]: {
       width: [120, 120],
       height: [160, 132],
     },

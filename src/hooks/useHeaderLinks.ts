@@ -1,16 +1,23 @@
 import { useCallback } from 'react'
-import { find } from 'ramda'
+import { find, keys, filter } from 'ramda'
 
 import type { TLinkItem, THeaderLayout } from '~/spec'
 import { MORE_GROUP } from '~/const/dashboard'
+import { sortByIndex, groupByKey } from '~/helper'
 
 import useSubStore from '~/hooks/useSubStore'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
+
+type TGroupInfo = {
+  groupedLinks: Record<string, TLinkItem[]>
+  groupKeys: string[]
+}
 
 type THeaderLinks = {
   layout: THeaderLayout
   links: TLinkItem[]
   getCustomLinks: () => TLinkItem[]
+  getGroupedLinks: () => TGroupInfo
 }
 
 export default (): THeaderLinks => {
@@ -41,12 +48,30 @@ export default (): THeaderLinks => {
       link: `/${community}/dashboard`,
     }
 
-    return isModerator ? [...headerLinks, aboutLink, dashboardLink] : headerLinks
+    const retLinks = isModerator ? [...headerLinks, aboutLink, dashboardLink] : headerLinks
+
+    return filter((item) => item.title !== '', retLinks)
   }, [headerLinks, community])
+
+  const getGroupedLinks = useCallback(() => {
+    const links = getCustomLinks()
+    // @ts-ignore
+    const groupedLinks = groupByKey(sortByIndex(links, 'groupIndex'), 'group') as Record<
+      string,
+      TLinkItem[]
+    >
+    const groupKeys = keys(groupedLinks)
+
+    return {
+      groupedLinks,
+      groupKeys,
+    }
+  }, [getCustomLinks])
 
   return {
     layout: store.headerLayout,
     links: headerLinks,
     getCustomLinks,
+    getGroupedLinks,
   }
 }

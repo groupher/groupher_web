@@ -3,8 +3,6 @@ import type { FC } from 'react'
 import type { TArticleCat } from '~/spec'
 import { ARTICLE_CAT } from '~/const/gtd'
 
-import { SpaceGrow } from '~/widgets/Common'
-
 import { METRIC } from '../constant'
 import UpdateCounter from './UpdateCounter'
 import SprintCounter from './SprintCounter'
@@ -58,7 +56,7 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
         <Bar $bg={colors.barBg} />
         <Bar $bg={colors.barBg} $short />
         {index === 0 && <Bar $bg={colors.barBg} $short />}
-        <SpaceGrow />
+        <div className="grow" />
         <Footer>
           {cat === 'DEFAULT' ? (
             <SprintCounter
@@ -76,7 +74,7 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
               mainColor={colors.bg}
             />
           )}
-          <SpaceGrow />
+          <div className="grow" />
         </Footer>
       </Content>
     </Wrapper>

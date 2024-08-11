@@ -22,12 +22,10 @@ export const QuoteShadow = styled(InnerShadow)`
   ${css.circle(32)};
   top: 0;
   left: 0;
-  box-shadow: ${theme('avatar.quoteShadow')};
 `
 export const Avatar = styled(Img)`
   ${css.circle(22)};
   fill: ${theme('article.title')};
-  opacity: ${theme('avatar.opacity')};
 `
 export const QuoteAvatar = styled(Avatar)`
   ${css.circle(34)};

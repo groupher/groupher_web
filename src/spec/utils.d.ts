@@ -29,10 +29,10 @@ export type TActive = {
 }
 
 export type TSpace = {
-  top?: number
-  bottom?: number
-  left?: number
-  right?: number
+  top?: number | 'px'
+  bottom?: number | 'px'
+  left?: number | 'px'
+  right?: number | 'px'
 }
 
 // google analytis format
@@ -234,3 +234,5 @@ export type TUploadPreview = {
 
 export type TConditionMode = 'state' | 'cat' | 'order' | 'tag'
 export type TWidgetType = 'sidebar' | 'modal' | 'popup' | 'iframe' | 'link'
+
+export type TButtonPrefix = 'sort' | 'catetory' | 'status'

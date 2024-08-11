@@ -2,7 +2,6 @@ import type { FC } from 'react'
 
 import { mockUsers } from '~/mock'
 
-import { SpaceGrow } from '~/widgets/Common'
 import Facepile from '~/widgets/Facepile'
 
 import {
@@ -31,7 +30,7 @@ const Banner: FC = () => {
           <KanbenIcon />
           <Title>看板墙</Title>
           <Bar top={0} height={6} width={15} left={6} opacity={0.2} />
-          <SpaceGrow />
+          <div className="grow" />
           <UsersWrapper>
             <Facepile users={users} total={23} />
           </UsersWrapper>

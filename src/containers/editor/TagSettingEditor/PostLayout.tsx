@@ -4,7 +4,7 @@ import type { TPostLayout } from '~/spec'
 
 import { POST_LAYOUT } from '~/const/layout'
 
-import { Row, Br, Space, SpaceGrow } from '~/widgets/Common'
+import { Row, Br, Space } from '~/widgets/Common'
 import CheckLabel from '~/widgets/CheckLabel'
 
 import {
@@ -37,7 +37,7 @@ const PostListLayout: FC<TProps> = ({ layout, onChange }) => {
             <Bar long={60} />
             <Space right={5} />
             <Bar thin long={8} />
-            <SpaceGrow />
+            <div className="grow" />
             <CommentIcon />
           </Row>
           <Br bottom={10} />
@@ -74,7 +74,7 @@ const PostListLayout: FC<TProps> = ({ layout, onChange }) => {
                 <Bar long={50} />
                 <Space right={5} />
                 <Bar thin long={8} />
-                <SpaceGrow />
+                <div className="grow" />
                 <Bar long={20} />
               </Row>
               <Br bottom={8} />
@@ -136,7 +136,7 @@ const PostListLayout: FC<TProps> = ({ layout, onChange }) => {
               <Row>
                 <Br bottom={10} />
                 <Bar long={30} />
-                <SpaceGrow />
+                <div className="grow" />
                 <CommentIcon />
               </Row>
               <Br bottom={11} />

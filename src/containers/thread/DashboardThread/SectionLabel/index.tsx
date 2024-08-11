@@ -1,7 +1,5 @@
 import { type FC, memo, type ReactNode } from 'react'
 
-import { SpaceGrow } from '~/widgets/Common'
-
 import ThemeSelect from './ThemeSelect'
 import { Wrapper, Header, Title, Desc } from '../styles/section_label'
 
@@ -27,11 +25,11 @@ const SectionLabel: FC<TProps> = ({
           {title}{' '}
           {withThemeSelect && (
             <>
-              <SpaceGrow /> <ThemeSelect />
+              <div className="grow" /> <ThemeSelect />
             </>
           )}
         </Title>
-        <SpaceGrow />
+        <div className="grow" />
         {addon}
       </Header>
       {desc && <Desc>{desc}</Desc>}

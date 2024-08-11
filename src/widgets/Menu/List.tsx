@@ -1,11 +1,8 @@
 import type { FC } from 'react'
 
-import type { TMenu } from '~/spec'
-import { Trans } from '~/i18n'
-
 import type { TMenuItem } from './spec'
-import Icon from './Icon'
-import { Wrapper, Item, FullIcon, FullItem, Main, Title, FullTitle, Desc } from './styles/list'
+import Item from './Item'
+import useSalon from './salon/list'
 
 type TProps = {
   items: TMenuItem[]
@@ -16,37 +13,32 @@ type TProps = {
 }
 
 const List: FC<TProps> = ({ items, activeKey, onSelect, popWidth, withDesc }) => {
+  const s = useSalon({ popWidth })
+
   if (withDesc) {
     return (
-      <Wrapper $popWidth={popWidth}>
+      <div className={s.wrapper}>
         {items.map((item) => (
-          <FullItem key={item.key} $active={activeKey === item.key} onClick={() => onSelect(item)}>
-            <FullIcon>
-              <Icon type={item.icon as TMenu} $active={activeKey === item.key} />
-            </FullIcon>
-            <Main>
-              <FullTitle>{Trans(item.key)}</FullTitle>
-              <Desc>{item.desc || '--'}</Desc>
-            </Main>
-          </FullItem>
+          <Item
+            key={item.key}
+            withDesc={withDesc}
+            item={item}
+            active={activeKey === item.key}
+            onClick={() => onSelect(item)}
+          />
         ))}
-      </Wrapper>
+      </div>
     )
   }
 
   return (
-    <Wrapper $popWidth={popWidth}>
+    <div className={s.wrapper}>
       {items.map((item) => {
         const active = activeKey === item.key
 
-        return (
-          <Item key={item.key} $active={active} onClick={() => onSelect(item)}>
-            <Icon type={item.icon as TMenu} $active={active} />
-            <Title>{Trans(item.key)}</Title>
-          </Item>
-        )
+        return <Item key={item.key} item={item} active={active} onClick={() => onSelect(item)} />
       })}
-    </Wrapper>
+    </div>
   )
 }
 

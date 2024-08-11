@@ -1,10 +1,10 @@
 // cmd is for doraemon usage
 
 const themeMeta = {
-  day: {
-    title: 'day',
-    desc: 'day theme',
-    slug: 'day',
+  light: {
+    title: 'light',
+    desc: 'light theme',
+    slug: 'light',
     cmd: 'theme',
   },
 }

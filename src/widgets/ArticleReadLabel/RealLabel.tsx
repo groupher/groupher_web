@@ -5,20 +5,25 @@
 import type { FC } from 'react'
 
 import type { TSpace } from '~/spec'
+import useAccount from '~/hooks/useAccount'
 
-import { ReadedLabel } from './styles'
+import useSalon from './salon'
 
 export type TProps = {
   viewed?: boolean
   size?: number
-  isLogin: boolean
 } & TSpace
 
-const ReadLabel: FC<TProps> = ({ isLogin, viewed, size = 8, ...restProps }) => {
+const ReadLabel: FC<TProps> = ({ viewed, size = 1.5, ...spacing }) => {
+  const spacing$ = { top: 0.5, right: 2, ...spacing }
+  const s = useSalon({ size, ...spacing$ })
+
+  const { isLogin } = useAccount()
+
   if (!isLogin) return null
 
   if (!viewed) {
-    return <ReadedLabel size={size} {...restProps} />
+    return <div className={s.wrapper} />
   }
 
   return null

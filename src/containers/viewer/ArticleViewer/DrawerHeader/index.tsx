@@ -1,6 +1,5 @@
 import { closeDrawer } from '~/signal'
 
-import { SpaceGrow } from '~/widgets/Common'
 import Share from '~/widgets/Share'
 import ArticleSettingMenu from '~/widgets/ArticleSettingMenu'
 
@@ -12,7 +11,7 @@ export default () => (
       <ArrowIcon />
       <BackText>返回列表</BackText>
     </BackButton>
-    <SpaceGrow />
+    <div className="grow" />
     <Share modalOffset="53%" />
     <ReportIcon />
     <ArticleSettingMenu left={16} />

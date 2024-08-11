@@ -1,7 +1,7 @@
 import { KANBAN_CARD_LAYOUT } from '~/const/layout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import { Space, SpaceGrow, Brick } from '~/widgets/Common'
+import { Space, Brick } from '~/widgets/Common'
 import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../../constant'
@@ -41,7 +41,7 @@ export default () => {
               <UpvoteIcon size={15} />
               <Space right={12} />
               <CommentIcon />
-              <SpaceGrow />
+              <div className="grow" />
             </Footer>
           </Block>
           <LayoutTitle $active={cardLayout === KANBAN_CARD_LAYOUT.SIMPLE}>

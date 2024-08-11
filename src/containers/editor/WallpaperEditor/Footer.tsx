@@ -1,6 +1,5 @@
 import { WALLPAPER_TYPE } from '~/const/wallpaper'
 
-import { SpaceGrow } from '~/widgets/Common'
 import YesOrNoButtons from '~/widgets/Buttons/YesOrNoButtons'
 import Button from '~/widgets/Buttons/Button'
 
@@ -23,7 +22,7 @@ export default () => {
         ) : (
           <div />
         )}
-        <SpaceGrow />
+        <div className="grow" />
 
         {isTouched ? (
           <YesOrNoButtons

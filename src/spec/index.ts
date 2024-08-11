@@ -91,6 +91,7 @@ export type {
   TPagi,
   TConditionMode,
   TWidgetType,
+  TButtonPrefix,
 } from './utils'
 
 export type { TGQLError } from './graphql'

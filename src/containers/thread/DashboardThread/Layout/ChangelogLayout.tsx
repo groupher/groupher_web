@@ -2,7 +2,7 @@ import { CHANGELOG_LAYOUT, DASHBOARD_DESC_LAYOUT } from '~/const/layout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 import { callDashboardDesc } from '~/signal'
 
-import { Row, Br, Space, SpaceGrow, Divider, Inline } from '~/widgets/Common'
+import { Row, Br, Space, Divider, Inline } from '~/widgets/Common'
 import ArrowButton from '~/widgets/Buttons/ArrowButton'
 import CheckLabel from '~/widgets/CheckLabel'
 
@@ -110,7 +110,7 @@ export default () => {
                   <MiniBar long={46} />
                   <Space right={5} />
                   <MiniBar thin long={8} />
-                  <SpaceGrow />
+                  <div className="grow" />
                 </Row>
                 <Br top={8} />
                 <MiniBar thin long={90} />
@@ -131,7 +131,7 @@ export default () => {
                   <MiniBar long={46} />
                   <Space right={5} />
                   <MiniBar thin long={8} />
-                  <SpaceGrow />
+                  <div className="grow" />
                 </Row>
                 <Br top={8} />
                 <MiniBar thin long={90} />
@@ -152,7 +152,7 @@ export default () => {
                   <MiniBar long={46} />
                   <Space right={5} />
                   <MiniBar thin long={8} />
-                  <SpaceGrow />
+                  <div className="grow" />
                 </Row>
                 <Br top={8} />
                 <MiniBar thin long={90} />
@@ -173,7 +173,7 @@ export default () => {
                   <MiniBar long={46} />
                   <Space right={5} />
                   <MiniBar thin long={8} />
-                  <SpaceGrow />
+                  <div className="grow" />
                 </Row>
                 <Br top={8} />
                 <MiniBar thin long={90} />

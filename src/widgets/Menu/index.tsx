@@ -12,7 +12,7 @@ import Tooltip from '~/widgets/Tooltip'
 import type { TMenuItem } from './spec'
 import List from './List'
 
-import { Wrapper } from './styles'
+import useSalon from './salon'
 
 type TProps = {
   activeKey?: string
@@ -36,9 +36,11 @@ const Menu: FC<TProps> = ({
   onHide = console.log,
   placement = 'bottom',
   offset = [-5, 5],
-  popWidth = 120,
+  popWidth = 36,
   withDesc = false,
 }) => {
+  const s = useSalon()
+
   return (
     <Tooltip
       placement={placement}
@@ -57,7 +59,7 @@ const Menu: FC<TProps> = ({
         />
       }
     >
-      <Wrapper>{children}</Wrapper>
+      <div className={s.wrapper}>{children}</div>
     </Tooltip>
   )
 }

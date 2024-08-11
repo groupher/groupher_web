@@ -1,35 +1,30 @@
-/*
- *
- * PostItem
- *
- */
-
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TPost } from '~/spec'
 
-import DesktopView from './DesktopView'
-import MobileView from './MobileView'
-// import ListView from './ListView'
+import { previewArticle } from '~/signal'
 
-import { Wrapper } from '../styles/quora_layout'
+import Header from './Header'
+import Footer from './Footer'
+
+import useSalon from '../salon/quora_layout'
 
 type TProps = {
   article: TPost
-  isMobilePreview: boolean
 }
 
-const PostItem: FC<TProps> = ({ article, isMobilePreview }) => {
-  if (isMobilePreview) {
-    return <MobileView article={article} />
-  }
+const PostItem: FC<TProps> = ({ article }) => {
+  const s = useSalon()
 
   return (
-    <Wrapper>
-      <MobileView article={article} />
-      <DesktopView article={article} />
-    </Wrapper>
+    <article className={s.wrapper}>
+      <Header article={article} />
+      <div className={s.digest} onClick={() => previewArticle(article)}>
+        {article.digest}
+      </div>
+      <Footer article={article} />
+    </article>
   )
 }
 
-export default memo(PostItem)
+export default PostItem

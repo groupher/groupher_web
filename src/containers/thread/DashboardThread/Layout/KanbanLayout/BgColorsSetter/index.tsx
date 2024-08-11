@@ -9,7 +9,7 @@ import useHover from '~/hooks/useHover'
 
 import { INIT_KANBAN_COLORS } from '~/const/dashboard'
 
-import { SpaceGrow, Space } from '~/widgets/Common'
+import { Space } from '~/widgets/Common'
 import ColorSelector from '~/widgets/ColorSelector'
 
 import { SETTING_FIELD } from '../../../constant'
@@ -80,7 +80,7 @@ export default () => {
             <ColorBall ref={board3Ref} color={BG3} setable />
           </ColorSelector>
         </Preset>
-        <SpaceGrow />
+        <div className="grow" />
         <Action onClick={() => edit(INIT_KANBAN_COLORS, 'kanbanBgColors')}>
           <ResetIcon />
           重置

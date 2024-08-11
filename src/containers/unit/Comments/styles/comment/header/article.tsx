@@ -36,7 +36,6 @@ export const CurveLine = styled.div`
 `
 export const Avatar = styled(Img)<TAvatar>`
   ${({ avatarSize }) => css.size(avatarSize)};
-  opacity: ${theme('avatar.opacity')};
   margin-right: 13px;
   border-radius: ${({ $avatarLayout }) => ($avatarLayout === AVATAR_LAYOUT.SQUARE ? '6px' : '100%')};
   ${css.media.mobile`

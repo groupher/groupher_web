@@ -37,7 +37,7 @@ export const Desc = styled.div`
 const Link = styled.a`
   text-decoration: none;
   font-weight: bolder;
-  color: ${theme('header.fg')};
+  color: ${theme('article.digest')};
   transition: color 0.3s;
   &:hover {
     text-decoration: underline;

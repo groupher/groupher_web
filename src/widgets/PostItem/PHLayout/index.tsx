@@ -1,42 +1,53 @@
-/*
- *
- * PostItem
- *
- */
-
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TPost } from '~/spec'
+import { UPVOTE_LAYOUT } from '~/const/layout'
 
-import { DesktopOnly, MobileOnly } from '~/widgets/Common'
+import { upvoteArticle, previewArticle } from '~/signal'
+import ArticlePinLabel from '~/widgets/ArticlePinLabel'
+import Upvote from '~/widgets/Upvote'
+import ImgFallback from '~/widgets/ImgFallback'
+import Img from '~/Img'
 
-import DesktopView from './DesktopView'
-import MobileView from './MobileView'
-// import ListView from './ListView'
+import Header from './Header'
+import Body from './Body'
 
-import { Wrapper } from '../styles/ph_layout'
+import useSalon from '../salon/ph_layout'
 
 type TProps = {
   article: TPost
-  isMobilePreview: boolean
 }
 
-const PostItem: FC<TProps> = ({ article, isMobilePreview }) => {
-  if (isMobilePreview) {
-    return <MobileView article={article} />
-  }
+const DigestView: FC<TProps> = ({ article }) => {
+  const s = useSalon()
+  const { author } = article
 
   return (
-    <Wrapper>
-      <MobileOnly>
-        <MobileView article={article} />
-      </MobileOnly>
+    <div className={s.wrapper}>
+      <ArticlePinLabel isPinned={article.isPinned} top={26} />
 
-      <DesktopOnly>
-        <DesktopView article={article} />
-      </DesktopOnly>
-    </Wrapper>
+      <div className={s.avatarWrapper}>
+        <Img
+          src={author.avatar}
+          className={s.avatar}
+          fallback={<ImgFallback size={26} user={author} />}
+        />
+      </div>
+      <div className={s.main} onClick={() => previewArticle(article)}>
+        <Header article={article} />
+        <Body article={article} />
+      </div>
+
+      <div className={s.upvoteWrapper}>
+        <Upvote
+          type={UPVOTE_LAYOUT.POST_MINIMAL}
+          count={article.upvotesCount}
+          viewerHasUpvoted={article.viewerHasUpvoted}
+          onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
+        />
+      </div>
+    </div>
   )
 }
 
-export default memo(PostItem)
+export default DigestView

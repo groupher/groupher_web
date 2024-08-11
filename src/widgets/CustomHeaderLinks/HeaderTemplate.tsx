@@ -1,47 +1,48 @@
 import { type FC, Fragment } from 'react'
+import Link from 'next/link'
 import { keys, startsWith } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TLinkItem } from '~/spec'
 import { MORE_GROUP, ONE_LINK_GROUP } from '~/const/dashboard'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 import { sortByIndex, groupByKey } from '~/helper'
 
+import ArrowSVG from '~/icons/ArrowSimple'
 import Tooltip from '~/widgets/Tooltip'
 
 import type { TProps, TLinkGroup } from './spec'
 
-import { Wrapper, LinkItem, GroupItem, ArrowIcon, MenuPanel } from './styles/header_template'
+import useSalon from './salon/header_template'
 
 const LinkGroup: FC<TLinkGroup> = ({ groupTitle, links, showMoreFold }) => {
-  const primaryColor = usePrimaryColor()
+  const s = useSalon()
 
   if (!showMoreFold) return null
 
   return (
     <Tooltip
       content={
-        <MenuPanel>
+        <div className={s.menuPanel}>
           {links.map((item: TLinkItem) => (
-            <LinkItem key={item.index} href={item.link} $color={primaryColor}>
+            <Link className={s.linkItem} key={item.index} href={item.link}>
               {item.title}
-            </LinkItem>
+            </Link>
           ))}
-        </MenuPanel>
+        </div>
       }
       placement="bottom"
       offset={[-5, 5]}
     >
-      {/* @ts-ignore */}
-      <GroupItem as="div">
-        {groupTitle === MORE_GROUP ? '更多' : groupTitle} <ArrowIcon />
-      </GroupItem>
+      <div className={s.groupItem}>
+        {groupTitle === MORE_GROUP ? '更多' : groupTitle} <ArrowSVG className={s.arrowIcon} />
+      </div>
     </Tooltip>
   )
 }
 
 const CustomHeaderLinks: FC<TProps> = ({ links }) => {
-  const primaryColor = usePrimaryColor()
+  const s = useSalon()
+
   const [animateRef] = useAutoAnimate()
 
   // @ts-ignore
@@ -49,7 +50,7 @@ const CustomHeaderLinks: FC<TProps> = ({ links }) => {
   const groupKeys = keys(groupedLinks)
 
   return (
-    <Wrapper ref={animateRef}>
+    <div className={s.wrapper} ref={animateRef}>
       {groupKeys.map((groupTitle: string) => {
         const curGroupLinks = groupedLinks[groupTitle]
 
@@ -58,9 +59,9 @@ const CustomHeaderLinks: FC<TProps> = ({ links }) => {
         return (
           <Fragment key={groupTitle}>
             {startsWith(ONE_LINK_GROUP, groupTitle) ? (
-              <LinkItem href={curGroupLinks[0].link} $color={primaryColor}>
+              <Link className={s.linkItem} href={curGroupLinks[0].link}>
                 {curGroupLinks[0].title}
-              </LinkItem>
+              </Link>
             ) : (
               <LinkGroup
                 groupTitle={groupTitle}
@@ -71,7 +72,7 @@ const CustomHeaderLinks: FC<TProps> = ({ links }) => {
           </Fragment>
         )
       })}
-    </Wrapper>
+    </div>
   )
 }
 

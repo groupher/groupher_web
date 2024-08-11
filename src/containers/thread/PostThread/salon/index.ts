@@ -1,0 +1,24 @@
+import { BANNER_LAYOUT } from '~/const/layout'
+import { POST_LAYOUT } from '~/const/layout'
+
+import useLayout from '~/hooks/useLayout'
+import useTwBelt from '~/hooks/useTwBelt'
+
+export default () => {
+  const { cn, br } = useTwBelt()
+  const { postLayout, bannerLayout } = useLayout()
+
+  const isSidebarLayout = bannerLayout === BANNER_LAYOUT.SIDEBAR
+  const isMasonary = postLayout === POST_LAYOUT.MASONRY
+
+  const main = cn('w-full grow rounded-md mt-3 mr-12 pr-20 border-r', br('divider'))
+  const sidebar = cn('w-full grow', isMasonary ? 'px-[12%]' : 'px-[20%]')
+
+  const layout = isSidebarLayout ? sidebar : main
+
+  return {
+    wrapper: 'row w-full',
+    filter: 'row-center h-10 -ml-1.5',
+    layout,
+  }
+}

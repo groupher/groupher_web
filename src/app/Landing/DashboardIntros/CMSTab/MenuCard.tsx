@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { SpaceGrow, SexyDivider } from '~/widgets/Common'
+import { SexyDivider } from '~/widgets/Common'
 import {
   Wrapper,
   MenuItem,
@@ -16,35 +16,35 @@ const MenuCard: FC = () => {
       <MenuItem>
         <Icon.Edit />
         <MenuTitle>修改标题</MenuTitle>
-        <SpaceGrow />
+        <div className="grow" />
         <Icon.Arrow />
       </MenuItem>
 
       <MenuItem>
         <Icon.Slug />
         <MenuTitle>设置 Slug</MenuTitle>
-        <SpaceGrow />
+        <div className="grow" />
         <Icon.Arrow />
       </MenuItem>
       <SexyDivider top={10} bottom={10} />
       <MenuItem>
         <Icon.FEATURE />
         <MenuTitle>功能请求</MenuTitle>
-        <SpaceGrow />
+        <div className="grow" />
         <Icon.Arrow />
       </MenuItem>
 
       <MenuItem>
         <Icon.WIP />
         <MenuTitle>进行中</MenuTitle>
-        <SpaceGrow />
+        <div className="grow" />
         <Icon.Arrow />
       </MenuItem>
 
       <MenuItem>
         <TagIcon />
         <MenuTitle>标签</MenuTitle>
-        <SpaceGrow />
+        <div className="grow" />
         <Icon.Arrow />
       </MenuItem>
 
@@ -62,7 +62,7 @@ const MenuCard: FC = () => {
       <MenuItem>
         <Icon.Merge />
         <MenuTitle>合并</MenuTitle>
-        <SpaceGrow />
+        <div className="grow" />
         <Icon.Arrow />
       </MenuItem>
       <MenuItem>
@@ -72,7 +72,7 @@ const MenuCard: FC = () => {
       <MenuItem>
         <Icon.Mirror />
         <MenuTitle>镜像:Groupher</MenuTitle>
-        <SpaceGrow />
+        <div className="grow" />
         <Icon.Arrow />
       </MenuItem>
       <DangerMenuItem>

@@ -42,7 +42,7 @@ const Loading: FC<TProps> = ({ provider }) => {
           <Icon />
         </ProviderLogo>
         <SideLogo>
-          <HomeLogo size={20} />
+          <HomeLogo size={4} />
         </SideLogo>
       </IconWrapper>
       <Title>

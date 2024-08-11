@@ -36,12 +36,12 @@ export const DescWrapper = styled.div`
 export const IssueLink = styled.a`
   margin-left: 3px;
   text-decoration: none;
-  color: ${theme('banner.title')};
+  color: ${theme('article.title')};
   transition: color 0.3s;
   text-decoration: underline;
   &:hover {
     font-weight: bolder;
     text-decoration: underline;
-    color: ${theme('banner.title')};
+    color: ${theme('article.title')};
   }
 `

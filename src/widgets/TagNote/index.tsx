@@ -5,46 +5,37 @@
  *
  */
 
-import type { FC } from 'react'
-
-import Markdown from 'markdown-to-jsx'
 import type { TColorName } from '~/spec'
 
 import useActiveTag from '~/hooks/useActiveTag'
-import { SpaceGrow } from '~/widgets/Common'
 import TagNode from '~/widgets/TagNode'
+import Markdown from '~/widgets/Markdown'
 
-import { Wrapper, Header, BgWrapper, Title, Desc, InfoIcon } from './styles'
+import useSalon from './styles'
 
-const TagNote: FC = () => {
+export default () => {
   const tag = useActiveTag()
+  const s = useSalon()
 
-  if (!tag?.desc) return null
+  if (!tag?.title) return null
 
   return (
-    <Wrapper $testid="tag-note">
-      <Header>
-        <BgWrapper $color={tag.color as TColorName}>
+    <div className={s.wrapper}>
+      <div className={s.header}>
+        <div className={s.tagWrapper}>
           <TagNode
-            color={tag.color}
+            color={tag.color as TColorName}
             dotSize={8}
-            hashSize={12}
+            hashSize={3}
             dotLeft={5}
-            hashLeft={2}
-            hashRight={8}
-            opacity={0.8}
+            hashLeft={0.5}
+            hashRight={1}
             boldHash
           />
-          <Title color={tag.color as TColorName}>{tag.title}</Title>
-        </BgWrapper>
-        <SpaceGrow />
-        <InfoIcon />
-      </Header>
-      <Desc>
-        <Markdown>{tag.desc || ''}</Markdown>
-      </Desc>
-    </Wrapper>
+          <div className={s.title}>{tag.title}</div>
+        </div>
+      </div>
+      <Markdown className="-ml-3.5 scale-95">{tag.desc || ''}</Markdown>
+    </div>
   )
 }
-
-export default TagNote

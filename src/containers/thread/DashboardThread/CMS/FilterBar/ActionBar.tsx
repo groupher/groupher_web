@@ -1,6 +1,5 @@
 import type { FC } from 'react'
 
-import { SpaceGrow } from '~/widgets/Common'
 import Button from '~/widgets/Buttons/Button'
 
 import {
@@ -29,7 +28,7 @@ const ActionBar: FC<TProps> = ({ onCancel, selectedCount }) => {
           <Note>操作:</Note>
           <DeleteNote>删除</DeleteNote>
         </ActionNotes>
-        <SpaceGrow />
+        <div className="grow" />
         <Button size="small" ghost noBorder right={5} onClick={onCancel}>
           取消
         </Button>

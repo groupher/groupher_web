@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
 `
 export const SubNumberWrapper = styled.div`
   ${css.row('align-center')};
-  color: ${theme('banner.numberDesc')};
+  color: ${theme('article.digest')};
   font-size: 13px;
   margin-top: -1px;
 `
@@ -18,9 +18,9 @@ export const SubNum = styled.div`
 // text-decoration: ${({ readOnly }) => (readOnly ? '' : 'underline')};
 export const NumberItem = styled.div<{ readOnly: boolean }>`
   font-size: 16px;
-  color: ${theme('banner.number')};
+  color: ${theme('article.digest')};
   &:hover {
-    color: ${({ readOnly }) => (readOnly ? '' : theme('banner.active'))};
+    color: ${({ readOnly }) => (readOnly ? '' : theme('article.digest'))};
     cursor: ${({ readOnly }) => (readOnly ? '' : 'pointer')};
   }
 

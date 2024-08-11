@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import type { TColorName, TTag } from '~/spec'
 
 import TagNode from '~/widgets/TagNode'
-import { SpaceGrow } from '~/widgets/Common'
+
 import ColorSelector from '~/widgets/ColorSelector'
 
 import { SETTING_FIELD } from '../constant'
@@ -54,7 +54,7 @@ const TagBar: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
             </DotSelector>
           </ColorSelector>
         ) : (
-          <TagNode color={tag.color} hashSize={12} hashRight={0} boldHash dotTop={1} />
+          <TagNode color={tag.color as TColorName} boldHash dotTop={1} />
         )}
         {isEditMode ? (
           <InputWrapper>
@@ -70,7 +70,7 @@ const TagBar: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
             {!activeTagGroup && <CatNote>{tag.group}</CatNote>}
           </Title>
         )}
-        <SpaceGrow />
+        <div className="grow" />
         {!isEditMode && <TagAction tag={tag} isFirst={isFirst} isLast={isLast} total={total} />}
       </SavingBar>
     </Wrapper>

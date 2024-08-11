@@ -40,7 +40,7 @@ export const LoginHint = styled.div`
   }
 `
 export const MoreIcon = styled(Img)`
-  fill: ${theme('banner.desc')};
+  fill: ${theme('article.digest')};
   ${css.size(24)};
   cursor: pointer;
 `

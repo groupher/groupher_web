@@ -1,8 +1,8 @@
 import { keys } from 'ramda'
 
 export const GLOW_OPACITY = {
-  NORMAL: '1',
-  WEEK: '0.68',
+  NORMAL: '100',
+  WEEK: '65',
 }
 
 export const GLOW_EFFECT_NAME = {

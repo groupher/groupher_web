@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import type { TTag } from '~/spec'
+import type { TColorName, TTag } from '~/spec'
 import TagNode from '~/widgets/TagNode'
 
 import { Wrapper, TagItem, TagTitle } from './styles/active_tag'
@@ -15,16 +15,7 @@ const ActiveTag: FC<TProps> = ({ activeTag, mode }) => {
     <Wrapper>
       {activeTag?.id ? (
         <TagItem>
-          <TagNode
-            color={activeTag.color}
-            dotSize={8}
-            dotLeft={1}
-            dotRight={7}
-            hashSize={12}
-            hashRight={4}
-            opacity={0.7}
-            boldHash
-          />
+          <TagNode color={activeTag.color as TColorName} boldHash />
           <TagTitle>{activeTag.title}</TagTitle>
         </TagItem>
       ) : (

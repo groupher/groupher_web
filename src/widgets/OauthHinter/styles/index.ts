@@ -1,5 +1,6 @@
 import styled, { css, theme, animate } from '~/css'
-import CommunityFaceLogo from '~/widgets/CommunityFaceLogo'
+
+import Img from '~/Img'
 import LinkSVG from '~/icons/Link'
 import GithubSVG from '~/icons/GithubCat'
 
@@ -7,7 +8,6 @@ export const Wrapper = styled.div`
   ${css.column('align-both')};
 
   height: 100vh;
-  background: ${theme('banner.bg')};
   border-top: 4px solid;
 `
 export const IconsWrapper = styled.div`
@@ -28,7 +28,7 @@ export const HintDesc = styled.div`
   margin-top: 4px;
 `
 // fill: ${theme('font')};
-export const HomeLogoIcon = styled(CommunityFaceLogo)`
+export const HomeLogoIcon = styled(Img)`
   ${css.size(48)};
 `
 export const LinkIcon = styled(LinkSVG)`
@@ -46,7 +46,7 @@ export const GithubLogoIcon = styled(GithubSVG)`
 `
 export const HintWrapper = styled.div`
   ${css.column()};
-  color: ${theme('banner.title')};
+  color: ${theme('article.title')};
 `
 export const FooterWrapper = styled.div`
   color: ${theme('article.digest')};

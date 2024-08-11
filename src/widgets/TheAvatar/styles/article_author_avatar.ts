@@ -11,7 +11,6 @@ export const Wrapper = styled.div`
 export const Avatar = styled(Img)`
   ${css.circle(36)};
   fill: ${theme('article.title')};
-  opacity: ${theme('avatar.opacity')};
 `
 export const Tail = styled(TailBase)`
   ${Wrapper}:hover & {

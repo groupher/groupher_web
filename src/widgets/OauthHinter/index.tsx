@@ -4,8 +4,6 @@
  *
  */
 
-import { type FC, memo } from 'react'
-
 import Linker from '~/widgets/Linker'
 
 import {
@@ -15,18 +13,16 @@ import {
   TextWrapper,
   HintTitle,
   HintDesc,
-  HomeLogoIcon,
   LinkIcon,
   GithubLogoIcon,
   FooterWrapper,
 } from './styles'
 
-const OauthHinter: FC = () => {
+export default () => {
   return (
     <Wrapper>
       <HintWrapper>
         <IconsWrapper>
-          <HomeLogoIcon />
           <LinkIcon />
           <GithubLogoIcon />
         </IconsWrapper>
@@ -42,5 +38,3 @@ const OauthHinter: FC = () => {
     </Wrapper>
   )
 }
-
-export default memo(OauthHinter)

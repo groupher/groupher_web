@@ -3,7 +3,6 @@
  */
 
 import { useCallback, useState, useEffect } from 'react'
-import Balancer from 'react-wrap-balancer'
 
 import { scrollDrawerToTop } from '~/dom'
 import { BROADCAST_ARTICLE_LAYOUT } from '~/const/layout'
@@ -54,9 +53,7 @@ export default () => {
       <Wrapper>
         <Header article={article} />
         <Title>
-          <Balancer>
-            <TitleText>{article.title}</TitleText>
-          </Balancer>
+          <TitleText>{article.title}</TitleText>
           <SubTitle>{article.innerId}</SubTitle>
         </Title>
         <ArticleInfo article={article} />
