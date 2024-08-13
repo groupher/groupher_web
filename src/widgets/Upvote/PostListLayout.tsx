@@ -10,7 +10,7 @@ import AnimatedCount from '~/widgets/AnimatedCount'
 
 import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
-import { Wrapper, UpWrapper, CountWrapper } from './styles/post_list_layout'
+import useSalon from './salon/post_list_layout'
 
 type TProps = {
   testid?: string
@@ -25,17 +25,14 @@ const Upvote: FC<TProps> = ({
   viewerHasUpvoted = false,
   onAction = console.log,
 }) => {
-  const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
+  const s = useSalon()
+  const { handleClick } = useUpvote({ viewerHasUpvoted, onAction })
 
   return (
-    <Wrapper $testid={testid}>
-      <UpWrapper onClick={handleClick}>
-        <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} count={count} startAnimate={startAnimate} />
-      </UpWrapper>
-      <CountWrapper>
-        <AnimatedCount count={count} $active={viewerHasUpvoted} />
-      </CountWrapper>
-    </Wrapper>
+    <button className={s.wrapper} data-testid={testid} onClick={handleClick}>
+      <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} count={count} />
+      <AnimatedCount count={count} active={viewerHasUpvoted} />
+    </button>
   )
 }
 

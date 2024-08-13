@@ -33,6 +33,7 @@ type TRet = {
   avatar: (level?: 'md' | 'sm' | '') => string
   gradiientBar: (color: TColorName) => string
   breakOut: (type?: TBreakOut) => string
+  enhanceDark: () => string
 }
 
 /**
@@ -137,6 +138,12 @@ export default (): TRet => {
     return 'w-full'
   }
 
+  const enhanceDark = (): string => {
+    if (!isLightTheme) return 'saturate-150 brightness-125'
+
+    return ''
+  }
+
   return {
     cn,
     global,
@@ -154,5 +161,6 @@ export default (): TRet => {
     avatar,
     gradiientBar,
     breakOut,
+    enhanceDark,
   }
 }

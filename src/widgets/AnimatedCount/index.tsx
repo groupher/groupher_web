@@ -6,30 +6,7 @@ import SIZE from '~/const/size'
 
 import AnimatedCount from './AnimatedCount'
 
-import { Wrapper } from './styles'
-
-// @ts-ignore
-// const LoadingValueContext = createContext()
-
-// props is not accessable in loading
-// see https://github.com/vercel/next.js/issues/7906#issuecomment-787686440
-// const AnimatedCount = dynamic(() => import('./AnimatedCount'), {
-//   /* eslint-disable react/display-name */
-//   loading: () => {
-//     // eslint-disable-next-line react-hooks/rules-of-hooks
-//     const { count, active } = useContext(LoadingValueContext) as {
-//       count: number
-//       size: TSize
-//       active: boolean
-//     }
-//     return (
-//       <Wrapper $active={active} count={count}>
-//         {count}
-//       </Wrapper>
-//     )
-//   },
-//   ssr: false,
-// })
+import useSalon from './styles'
 
 export type TProps = {
   count?: number
@@ -40,18 +17,21 @@ export type TProps = {
 
 const Count: FC<TProps> = ({
   count = 0,
-  size = SIZE.SMALL,
-  $active = false,
   forceColor = '',
-  ...restProps
+  size = SIZE.SMALL,
+  active = false,
+  ...spacing
 }) => {
+  const s = useSalon({ count, active, ...spacing })
+
+  if (forceColor) {
+    console.log('## forceColor: ', forceColor)
+  }
+
   return (
-    <Wrapper $active={$active} $count={count} {...restProps}>
-      <AnimatedCount count={count} size={size} $active={$active} forceColor={forceColor} />
-    </Wrapper>
-    // <LoadingValueContext.Provider value={{ count, size, active }}>
-    //   <AnimatedCount count={count} size={size} active={active} />
-    // </LoadingValueContext.Provider>
+    <div className={s.wrapper}>
+      <AnimatedCount count={count} size={size} active={active} />
+    </div>
   )
 }
 

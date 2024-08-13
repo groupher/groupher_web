@@ -40,11 +40,11 @@ export const getCountColor = (
   primaryColor: TColorName,
   count: number,
 ): string => {
-  if (count === 0) return themeMap.article.digest
+  if (count === 0) return themeMap.text.digest
 
   if (primaryColor === COLOR_NAME.BLACK) {
-    return themeMap.article.digest
+    return themeMap.text.digest
   }
 
-  return active ? themeMap.rainbow[primaryColor.toLowerCase()] : themeMap.article.title
+  return active ? themeMap.rainbow[primaryColor.toLowerCase()] : themeMap.text.digest
 }

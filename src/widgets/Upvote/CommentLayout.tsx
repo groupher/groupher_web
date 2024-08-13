@@ -6,14 +6,13 @@
 
 import { type FC, memo } from 'react'
 
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 import { UPVOTE_LAYOUT } from '~/const/layout'
 import AnimatedCount from '~/widgets/AnimatedCount'
 
 import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
 
-import { Wrapper, Button, Alias, UpWrapper, CountWrapper } from './styles/comment_layout'
+import useSalon from './salon/comment_layout'
 
 type TProps = {
   testid?: string
@@ -30,30 +29,17 @@ const Upvote: FC<TProps> = ({
   viewerHasUpvoted = false,
   onAction = console.log,
 }) => {
-  const primaryColor = usePrimaryColor()
-  const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
+  const s = useSalon({ viewerHasUpvoted })
+  const { handleClick } = useUpvote({ viewerHasUpvoted, onAction })
 
   return (
-    <Wrapper $testid={testid}>
-      <Button color={primaryColor} $active={viewerHasUpvoted} onClick={handleClick}>
-        <UpWrapper>
-          <UpvoteBtn
-            type={UPVOTE_LAYOUT.COMMENT}
-            viewerHasUpvoted={viewerHasUpvoted}
-            startAnimate={startAnimate}
-            count={count}
-          />
-        </UpWrapper>
-        <Alias color={primaryColor} $active={viewerHasUpvoted}>
-          {alias}
-        </Alias>
-        {count !== 0 && (
-          <CountWrapper>
-            <AnimatedCount count={count} $active={viewerHasUpvoted} size="small" />
-          </CountWrapper>
-        )}
-      </Button>
-    </Wrapper>
+    <div className={s.wrapper} data-testid={testid}>
+      <button className={s.button} onClick={handleClick}>
+        <UpvoteBtn type={UPVOTE_LAYOUT.COMMENT} viewerHasUpvoted={viewerHasUpvoted} count={count} />
+        <div className={s.alias}>{alias}</div>
+        {count !== 0 && <AnimatedCount count={count} active={viewerHasUpvoted} size="medium" />}
+      </button>
+    </div>
   )
 }
 

@@ -26,7 +26,9 @@ const HOVERS = [
   'bg-hoverBg',
   'bg-htmlBg',
   'bg-menuHoverBg',
+  'bg-alphaBg2',
   'border-divider',
+  'border-text-digest',
 ]
 
 const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red']
@@ -42,6 +44,8 @@ const UTILS = [
   'mr-36',
   'pl-40',
   'pr-36',
+  'saturate-150',
+  'brightness-125',
 ]
 
 module.exports = [

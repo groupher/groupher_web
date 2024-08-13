@@ -1,12 +1,21 @@
-import styled from '~/css'
-import type { TActive } from '~/spec'
+import useTwBelt from '~/hooks/useTwBelt'
+import type { TActive, TSpace } from '~/spec'
 
-import { WithMargin } from '~/widgets/Common'
+type TProps = {
+  count: number
+} & TSpace &
+  TActive
 
-type TWrapper = { $count: number } & TActive
+export default ({ count, active, ...spacing }: TProps) => {
+  const { cn, fg, enhanceDark, margin, primary } = useTwBelt()
 
-export const Wrapper = styled(WithMargin)<TWrapper>`
-  font-weight: ${({ $count }) => ($count > 0 ? 500 : 400)};
-  filter: brightness(1.1);
-`
-export const holder = 1
+  return {
+    wrapper: cn(
+      fg('text.digest'),
+      active && primary('fg'),
+      count > 0 && 'bold-sm',
+      enhanceDark(),
+      margin(spacing),
+    ),
+  }
+}
