@@ -10,16 +10,16 @@ import type { TUser, TUpvoteLayout, TSpace } from '~/spec'
 import { UPVOTE_LAYOUT } from '~/const/layout'
 
 import DefaultLayout from './DefaultLayout'
+import ArticleLayout from './ArticleLayout'
 import GeneralLayout from './GeneralLayout'
 import FixedHeaderLayout from './FixedHeaderLayout'
 import CommentLayout from './CommentLayout'
 import PostMinimalLayout from './PostMinimalLayout'
 import PostListLayout from './PostListLayout'
-import ArticleLayout from './ArticleLayout'
 import StickerLayout from './StickerLayout'
 import SimpleLayout from './SimpleLayout'
 
-import { Wrapper } from './styles'
+import useSalon from './salon'
 
 type TProps = {
   testid?: string
@@ -40,6 +40,10 @@ const Upvote: FC<TProps> = ({
   bottom = 0,
   ...restProps
 }) => {
+  const spacing = { left, right, top, bottom }
+
+  const s = useSalon(spacing)
+
   let Layout = null
 
   switch (type) {
@@ -82,9 +86,9 @@ const Upvote: FC<TProps> = ({
   }
 
   return (
-    <Wrapper left={left} right={right} top={top} bottom={bottom}>
+    <div className={s.wrapper}>
       <Layout {...restProps} />
-    </Wrapper>
+    </div>
   )
 }
 

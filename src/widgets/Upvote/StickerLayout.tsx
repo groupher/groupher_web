@@ -14,7 +14,7 @@ import Facepile from '~/widgets/Facepile'
 
 import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
-import { Wrapper, Button, FacesWrapper, UpWrapper, CountWrapper } from './styles/sticker_layout'
+import useSalon from './salon/sticker_layout'
 
 type TProps = {
   testid?: string
@@ -31,30 +31,25 @@ const Upvote: FC<TProps> = ({
   onAction = console.log,
   avatarList = [],
 }) => {
-  const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
+  const s = useSalon({ viewerHasUpvoted })
+
+  const { handleClick } = useUpvote({ viewerHasUpvoted, onAction })
   const noOne = count === 0
 
   return (
-    <Wrapper $testid={testid}>
-      <Button onClick={handleClick}>
-        <UpWrapper>
-          <UpvoteBtn
-            type={UPVOTE_LAYOUT.COMMENT}
-            viewerHasUpvoted={viewerHasUpvoted}
-            startAnimate={startAnimate}
-            count={count}
-          />
-        </UpWrapper>
-        <CountWrapper>
-          <AnimatedCount count={count} $active={viewerHasUpvoted} size="medium" />
-        </CountWrapper>
-      </Button>
-      {!noOne && (
-        <FacesWrapper count={count}>
-          <Facepile users={avatarList} showMore={false} limit={3} />
-        </FacesWrapper>
-      )}
-    </Wrapper>
+    <div className={s.wrapper} data-testid={testid}>
+      <button className={s.button} onClick={handleClick}>
+        <UpvoteBtn type={UPVOTE_LAYOUT.COMMENT} viewerHasUpvoted={viewerHasUpvoted} count={count} />
+        <AnimatedCount
+          count={count}
+          active={viewerHasUpvoted}
+          size="medium"
+          top={0.5}
+          bottom={0.5}
+        />
+      </button>
+      {!noOne && <Facepile users={avatarList} showMore={false} limit={3} />}
+    </div>
   )
 }
 

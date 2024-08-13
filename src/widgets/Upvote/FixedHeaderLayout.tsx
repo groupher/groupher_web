@@ -6,12 +6,10 @@
 
 import { type FC, memo } from 'react'
 
-import { Space } from '~/widgets/Common'
-
 import useUpvote from './useUpvote'
 import UpvoteBtn from './UpvoteBtn'
 
-import { Wrapper, UpvoteBtnWrapper, Count } from './styles/fixed_header_layout'
+import useSalon from './salon/fixed_header_layout'
 
 type TProps = {
   testid?: string
@@ -26,18 +24,14 @@ const Upvote: FC<TProps> = ({
   viewerHasUpvoted = false,
   onAction = console.log,
 }) => {
-  const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
-
-  const noOne = count === 0
+  const s = useSalon({ viewerHasUpvoted })
+  const { handleClick } = useUpvote({ viewerHasUpvoted, onAction })
 
   return (
-    <Wrapper $testid={testid} onClick={handleClick}>
-      <UpvoteBtnWrapper>
-        <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} count={count} startAnimate={startAnimate} />
-      </UpvoteBtnWrapper>
-      <Space right={2} />
-      <Count $noOne={noOne}>{count}</Count>
-    </Wrapper>
+    <div className={s.wrapper} data-testid={testid} onClick={handleClick}>
+      <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} count={count} />
+      <div className={s.count}>{count}</div>
+    </div>
   )
 }
 

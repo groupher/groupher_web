@@ -1,41 +1,32 @@
 import { type FC, memo } from 'react'
 
 import SIZE from '~/const/size'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
-import useTheme from '~/hooks/useTheme'
 
 import FlipNumbers from 'react-flip-numbers'
 
 import type { TProps } from '.'
-import { Wrapper } from './styles'
-import { getFontSize, getFlipNumOffset, getCountColor } from './styles/metric'
+import { getFontSize, getFlipNumOffset } from './styles/metric'
 
-const AnimatedCount: FC<TProps> = ({
-  count = 0,
-  size = SIZE.SMALL,
-  $active = false,
-  forceColor,
-}) => {
-  const primaryColor = usePrimaryColor()
-  const { themeMap } = useTheme()
+import useSalon from './styles'
+
+const AnimatedCount: FC<TProps> = ({ count = 0, size = SIZE.SMALL, active = false }) => {
+  const s = useSalon({ count, active })
 
   const numSize = getFontSize(size)
   const offset = getFlipNumOffset(size)
 
-  const countColor = forceColor || getCountColor($active, themeMap, primaryColor, count)
-
   return (
-    <Wrapper key={countColor} $active={$active} $count={count}>
+    <div key={count} className={s.wrapper}>
       <FlipNumbers
         height={numSize}
         width={numSize - offset}
-        color={countColor}
+        color="inherit"
         perspective={400}
         duration={0.8}
         numbers={String(count)}
         play
       />
-    </Wrapper>
+    </div>
   )
 }
 

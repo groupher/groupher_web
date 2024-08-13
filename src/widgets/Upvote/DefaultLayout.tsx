@@ -7,22 +7,13 @@ import { type FC, Fragment } from 'react'
 
 import type { TUser } from '~/spec'
 
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 import Facepile from '~/widgets/Facepile'
 
 import useUpvote from './useUpvote'
 import AnimatedCount from '../AnimatedCount'
 import UpvoteBtn from './UpvoteBtn'
 
-import {
-  Wrapper,
-  Button,
-  UpvoteBtnWrapper,
-  Count,
-  Digest,
-  Note,
-  Name,
-} from './styles/default_layout'
+import useSalon from './salon/default_layout'
 
 type TProps = {
   testid?: string
@@ -41,41 +32,34 @@ const Upvote: FC<TProps> = ({
   onAction = console.log,
   avatarList,
 }) => {
-  const primaryColor = usePrimaryColor()
-  const { handleClick, startAnimate } = useUpvote({ viewerHasUpvoted, onAction })
+  const s = useSalon({ viewerHasUpvoted })
+
+  const { handleClick } = useUpvote({ viewerHasUpvoted, onAction })
 
   const noOne = count === 0
   const names = !noOne ? avatarList.map((user) => user.nickname).slice(0, 4) : []
 
   return (
-    <Wrapper $testid={testid}>
-      <Button $active={viewerHasUpvoted} color={primaryColor} onClick={handleClick}>
-        <UpvoteBtnWrapper>
-          <UpvoteBtn
-            viewerHasUpvoted={viewerHasUpvoted}
-            count={count}
-            startAnimate={startAnimate}
-          />
-        </UpvoteBtnWrapper>
-        <Count>
-          <AnimatedCount count={count} $active={viewerHasUpvoted} size="large" />
-        </Count>
-      </Button>
+    <div className={s.wrapper} data-testid={testid}>
+      <button className={s.button} onClick={handleClick}>
+        <UpvoteBtn viewerHasUpvoted={viewerHasUpvoted} count={count} />
+        <AnimatedCount count={count} active={viewerHasUpvoted} size="large" left={2} />
+      </button>
       {!noOne && (
-        <Digest>
+        <div className={s.digest}>
           <Facepile users={avatarList} showMore={false} left={-4} bottom={3} top={3} />
-          <Note>
+          <div className={s.note}>
             {names.map((name, index) => (
               <Fragment key={name}>
-                <Name>{name}</Name>
+                <div className={s.user}>{name}</div>
                 {index !== names.length - 1 ? <>，</> : <>&nbsp;</>}
               </Fragment>
             ))}
             {alias}
-          </Note>
-        </Digest>
+          </div>
+        </div>
       )}
-    </Wrapper>
+    </div>
   )
 }
 

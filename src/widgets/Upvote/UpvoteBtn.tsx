@@ -6,33 +6,26 @@
 
 import { type FC, memo } from 'react'
 
-import usePrimaryColor from '~/hooks/usePrimaryColor'
-
 import type { TUpvoteLayout } from '~/spec'
 
-import { Wrapper, IconWrapper, UpIcon } from './styles/upvote_btn'
+import UpvoteIcon from '~/icons/Upvote'
+import useSalon from './salon/upvote_btn'
 
 type TProps = {
   type?: TUpvoteLayout
   viewerHasUpvoted?: boolean
   count?: number
-  startAnimate?: boolean
 }
 
-const UpvoteBtn: FC<TProps> = ({
-  type = 'default',
-  viewerHasUpvoted = false,
-  startAnimate = false,
-  count = 0,
-}) => {
-  const primaryColor = usePrimaryColor()
+const UpvoteBtn: FC<TProps> = ({ type = 'default', viewerHasUpvoted = false, count = 0 }) => {
+  const s = useSalon({ viewerHasUpvoted })
 
   return (
-    <Wrapper $showAnimation={startAnimate} type={type}>
-      <IconWrapper type={type}>
-        <UpIcon type={type} $active={viewerHasUpvoted} count={count} color={primaryColor} />
-      </IconWrapper>
-    </Wrapper>
+    <div className={s.wrapper}>
+      <div className={s.inner}>
+        <UpvoteIcon className={s.upIcon} />
+      </div>
+    </div>
   )
 }
 
