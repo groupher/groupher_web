@@ -1,26 +1,33 @@
 import { type FC, memo } from 'react'
 
-import { Wrapper, ViewsIcon, Count, HighlightWrapper } from './styles'
+import ViewedSVG from '~/icons/article/Viewed'
+
+import useSalon, { cn } from './salon'
 
 type TProps = {
   count: number
 }
 
+// <ViewsIcon $highlight />
 const ViewsCount: FC<TProps> = ({ count }) => {
+  const isHighLight = count >= 400
+
+  const s = useSalon({ isHighLight })
+
   return (
-    <div>
-      {count >= 400 ? (
-        <HighlightWrapper>
-          <ViewsIcon $highlight />
-          <Count>{count}</Count>
-        </HighlightWrapper>
+    <>
+      {isHighLight ? (
+        <div className={cn(s.wrapper, s.highLight)}>
+          <ViewedSVG className={s.viewIcon} />
+          <div className={s.count}>{count}</div>
+        </div>
       ) : (
-        <Wrapper>
-          <ViewsIcon />
-          <Count>{count}</Count>
-        </Wrapper>
+        <div className={s.wrapper}>
+          <ViewedSVG className={s.viewIcon} />
+          <div className={s.count}>{count}</div>
+        </div>
       )}
-    </div>
+    </>
   )
 }
 

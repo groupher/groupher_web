@@ -6,7 +6,6 @@ import { UPVOTE_LAYOUT } from '~/const/layout'
 import { upvoteArticle } from '~/signal'
 
 import Upvote from '~/widgets/Upvote'
-import { Space } from '~/widgets/Common'
 import ViewsCount from '~/widgets/ViewsCount'
 import ArticleCatState from '~/widgets/ArticleCatState'
 
@@ -33,13 +32,8 @@ const Footer: FC<TProps> = ({ article }) => {
         top={-1}
       />
       {article.cat && (
-        <ArticleCatState
-          left={upvotesCount === 0 ? 10 : 18}
-          cat={article.cat}
-          state={article.state}
-        />
+        <ArticleCatState left={2} right={3} cat={article.cat} state={article.state} />
       )}
-      <Space right={18} />
       <ViewsCount count={article.views} />
     </div>
   )

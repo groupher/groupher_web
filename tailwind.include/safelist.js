@@ -1,6 +1,7 @@
 const GENERAL = [
   'border-divider',
   'article-hover-linear',
+  'count-highlight',
   'footer-inner-shadow',
   'sexy-border-20',
   'sexy-border-35',
@@ -9,7 +10,7 @@ const GENERAL = [
 
 const TEXT_COLORS = ['text-title', 'text-digest', 'text-body', 'text-hint', 'text-invert']
 const BG_COLORS = ['dot', 'hoverBg', 'htmlBg', 'popover-bg', 'menuHoverBg', 'alphaBg', 'snackBar']
-const FILL_COLORS = ['text-title', 'text-digest']
+const FILL_COLORS = ['text-title', 'text-digest', 'heightIcon']
 // for fg,bg & fill
 const RAINBOW_COLORS = ['red', 'orange', 'yellow', 'green', 'greenLight', 'cyan', 'blue', 'purple']
 

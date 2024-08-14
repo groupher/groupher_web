@@ -86,6 +86,18 @@
     background: linear-gradient(315deg, rgb(104 104 104 / 0%) 0%, #2c2c2c 100%);
   }
 
+  .count-highlight {
+    background: linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .count-highlight-dark {
+    background: linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   .footer-inner-shadow {
     box-shadow: rgb(241 241 241) 0px 0px 50px 0px inset;  
   }
