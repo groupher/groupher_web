@@ -12,27 +12,15 @@ import { AVATARS_LIST_LENGTH } from '~/config'
 
 import SIZE from '~/const/size'
 
+import ImgFallback from '~/widgets/ImgFallback'
+
 import type { TAvatarSize } from './spec'
 import MoreItem from './MoreItem'
 
-import { getAvatarSize } from './styles/metric'
-import { Wrapper, AvatarsWrapper, TotalOneOffset, AvatarFallback } from './styles'
+import { getAvatarSize } from './salon/metric'
+import useSalon from './salon'
 
 const RealAvatar = lazy(() => import('./RealAvatar'))
-
-// export const RealAvatar = dynamic(() => import('./RealAvatar'), {
-//   /* eslint-disable react/display-name */
-//   loading: () => {
-//     // eslint-disable-next-line react-hooks/rules-of-hooks
-//     const { size, user } = useContext(RealAvatarContext) as {
-//       user: TUser
-//       size: TSize
-//     }
-
-//     return <AvatarFallback size={getAvatarSize(size, 'number') as number} user={user} />
-//   },
-//   ssr: false,
-// })
 
 const validUser = compose(not, isNil)
 
@@ -75,13 +63,15 @@ const Facepile: FC<TProps> = ({
   showMore = true,
   reverse = false,
   popCardPlacement = 'bottom',
-  ...restProps
+  ...spacing
 }) => {
+  const totalCount = total || users.length
+
+  const s = useSalon({ total: totalCount, ...spacing })
+
   if (users.length === 0) {
     return <span />
   }
-
-  const totalCount = total || users.length
 
   users = filter(validUser, getUniqueArray(users, 'login'))
   const sortedUsers = reverse ? reverseFn(users) : users
@@ -89,19 +79,20 @@ const Facepile: FC<TProps> = ({
   // delete restProps?.forwardRef
 
   return (
-    <Wrapper $total={totalCount} {...restProps}>
-      {totalCount <= 1 || !showMore ? (
-        <TotalOneOffset />
-      ) : (
-        <MoreItem size={size} onTotalSelect={onTotalSelect} />
-      )}
+    <ul className={s.wrapper}>
       {totalCount === 1 ? (
         <Suspense
           fallback={
-            <AvatarFallback size={getAvatarSize(size, 'number') as number} user={sortedUsers[0]} />
+            <ImgFallback
+              className={s.avatarFallback}
+              size={getAvatarSize(size, 'number') as number}
+              user={sortedUsers[0]}
+            />
           }
         >
           <RealAvatar
+            isFirst
+            isLast
             user={sortedUsers[0]}
             size={size}
             noLazyLoad={noLazyLoad}
@@ -110,15 +101,21 @@ const Facepile: FC<TProps> = ({
           />
         </Suspense>
       ) : (
-        <AvatarsWrapper>
-          {slice(0, limit, sortedUsers).map((user) => (
+        <div className={s.avatars}>
+          {slice(0, limit, sortedUsers).map((user, index) => (
             <Suspense
               key={user.login}
               fallback={
-                <AvatarFallback size={getAvatarSize(size, 'number') as number} user={user} />
+                <ImgFallback
+                  className={s.avatarFallback}
+                  size={getAvatarSize(size, 'number') as number}
+                  user={user}
+                />
               }
             >
               <RealAvatar
+                isFirst={index === 0}
+                isLast={index === limit}
                 user={user}
                 size={size}
                 noLazyLoad={noLazyLoad}
@@ -127,9 +124,15 @@ const Facepile: FC<TProps> = ({
               />
             </Suspense>
           ))}
-        </AvatarsWrapper>
+        </div>
       )}
-    </Wrapper>
+
+      {totalCount <= 1 || !showMore ? (
+        <div className={s.totalOneOffset} />
+      ) : (
+        <MoreItem size={size} onTotalSelect={onTotalSelect} />
+      )}
+    </ul>
   )
 }
 

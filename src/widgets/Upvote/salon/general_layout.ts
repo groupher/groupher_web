@@ -12,7 +12,7 @@ export default ({ viewerHasUpvoted }: TProps) => {
   const color = usePrimaryColor()
 
   return {
-    wrapper: cn('align-both ml-0.5', enhanceDark()),
+    wrapper: cn('align-both', enhanceDark()),
     button: cn(
       'row-center h-5 border border-transparent rounded-md pl-1 pr-1.5 -ml-1.5',
       'hover:ml-px',

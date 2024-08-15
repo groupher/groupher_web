@@ -28,8 +28,6 @@ const Footer: FC<TProps> = ({ article }) => {
         onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
         viewerHasUpvoted={viewerHasUpvoted}
         type={UPVOTE_LAYOUT.GENERAL}
-        left={-1}
-        top={-1}
       />
       {article.cat && <ArticleCatState left={2} cat={article.cat} state={article.state} />}
       <ViewsCount count={article.views} left={3} />
