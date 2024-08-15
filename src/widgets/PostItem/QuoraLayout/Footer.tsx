@@ -31,10 +31,8 @@ const Footer: FC<TProps> = ({ article }) => {
         left={-1}
         top={-1}
       />
-      {article.cat && (
-        <ArticleCatState left={2} right={3} cat={article.cat} state={article.state} />
-      )}
-      <ViewsCount count={article.views} />
+      {article.cat && <ArticleCatState left={2} cat={article.cat} state={article.state} />}
+      <ViewsCount count={article.views} left={3} />
     </div>
   )
 }

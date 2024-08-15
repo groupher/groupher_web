@@ -1,18 +1,18 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
+
+import type { TSpace } from '~/spec'
 
 import ViewedSVG from '~/icons/article/Viewed'
-
 import useSalon, { cn } from './salon'
 
 type TProps = {
   count: number
-}
+} & TSpace
 
-// <ViewsIcon $highlight />
-const ViewsCount: FC<TProps> = ({ count }) => {
+const ViewsCount: FC<TProps> = ({ count, ...spacing }) => {
   const isHighLight = count >= 400
 
-  const s = useSalon({ isHighLight })
+  const s = useSalon({ isHighLight, ...spacing })
 
   return (
     <>
@@ -31,4 +31,4 @@ const ViewsCount: FC<TProps> = ({ count }) => {
   )
 }
 
-export default memo(ViewsCount)
+export default ViewsCount

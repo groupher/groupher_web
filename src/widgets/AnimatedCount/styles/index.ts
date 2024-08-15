@@ -11,6 +11,7 @@ export default ({ count, active, ...spacing }: TProps) => {
 
   return {
     wrapper: cn(
+      'text-sm',
       fg('text.digest'),
       active && primary('fg'),
       count > 0 && 'bold-sm',
