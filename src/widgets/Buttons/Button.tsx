@@ -4,7 +4,7 @@ import type { TSizeTSM, TSpace } from '~/spec'
 import SIZE from '~/const/size'
 
 import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
-import useSalon, { cn } from './styles/button'
+import useSalon, { cn } from './salon/button'
 
 type TProps = {
   children?: ReactNode

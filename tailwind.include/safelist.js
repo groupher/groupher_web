@@ -26,6 +26,7 @@ const BG_COLORS = [
   'alphaBg',
   'snackBar',
   'button-redBg',
+  'button-toggle',
 ]
 const FILL_COLORS = ['text-title', 'text-digest', 'button-fg', 'heightIcon']
 // for fg,bg & fill

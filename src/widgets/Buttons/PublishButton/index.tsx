@@ -16,8 +16,8 @@ import PostLayout from './PostLayout'
 import SidebarHeaderLayout from './SidebarHeaderLayout'
 import Button from '../Button'
 
-import useSalon from '../styles/publish_button'
 import { getText } from './helper'
+import useSalon from '../salon/publish_button'
 
 type TProps = {
   text?: string

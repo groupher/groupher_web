@@ -24,6 +24,7 @@ export default ({ type, ghost, noBorder, size, space, disabled, ...spacing }: TP
   return {
     wrapper: cn(
       common,
+      disabled && 'saturate-50 cursor-not-allowed',
       space && `pl-${space} pr-${space}`,
       !ghost && !isRed && 'border border-4',
       getRouned(size),

@@ -1,10 +1,8 @@
 import type { FC } from 'react'
 
-import { Space } from '~/widgets/Common'
-
 import Button from './Button'
 
-import { Wrapper, CancelBtn } from './styles/yes_or_no_buttons'
+import useSalon from './salon/yes_or_no_buttons'
 
 type TProps = {
   align?: 'center' | 'right'
@@ -27,10 +25,16 @@ const YesOrNoButton: FC<TProps> = ({
   loading = false,
   space = 1,
 }) => {
+  const s = useSalon({ align })
+
   return (
-    <Wrapper align={align}>
-      {!loading && <CancelBtn onClick={() => onCancel?.()}>{cancelText}</CancelBtn>}
-      <Space left={5} right={10} />
+    <div className={s.wrapper}>
+      {!loading && (
+        <button className={s.cancelBtn} onClick={() => onCancel?.()}>
+          {cancelText}
+        </button>
+      )}
+      <div className="ml-1.5 mr-2.5" />
 
       <Button
         size="small"
@@ -39,11 +43,11 @@ const YesOrNoButton: FC<TProps> = ({
         disabled={disabled}
         onClick={() => onConfirm?.()}
       >
-        <Space left={space} />
+        <div className={`pl-${space}`} />
         {confirmText}
-        <Space right={space - 1} />
+        <div className={`pr-${space}`} />
       </Button>
-    </Wrapper>
+    </div>
   )
 }
 

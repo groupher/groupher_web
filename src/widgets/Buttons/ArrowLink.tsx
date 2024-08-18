@@ -8,8 +8,9 @@ import { type FC, type ReactNode, memo } from 'react'
 
 import type { TSize } from '~/spec'
 import SIZE from '~/const/size'
+import ArrowSVG from '~/icons/Arrow'
 
-import { Wrapper, Text, RightIcon } from './styles/arrow_link'
+import useSalon, { cn } from './salon/arrow_link'
 
 type TProps = {
   className?: string
@@ -28,15 +29,14 @@ const ArrowLink: FC<TProps> = ({
   href = '',
   target = '_blank',
   color = '',
-  hoverColor = '',
 }) => {
+  const s = useSalon({ size, color })
+
   return (
-    <Wrapper className={className} href={href} rel="noopener noreferrer" target={target}>
-      <Text size={size} color={color} $hoverColor={hoverColor}>
-        {children}
-      </Text>
-      <RightIcon size={size} color={color} $hoverColor={hoverColor} />
-    </Wrapper>
+    <a className={cn(s.wrapper, className)} href={href} rel="noopener noreferrer" target={target}>
+      <div className={s.text}>{children}</div>
+      <ArrowSVG className={s.rightIcon} />
+    </a>
   )
 }
 

@@ -302,6 +302,7 @@ module.exports = {
   },
   button: {
     primary: { DEFAULT: lightTokens.primaryColor, dark: darkTokens.primaryColor },
+    toggle: { DEFAULT: 'white', dark: colors.slate['50'] },
     redBg: { DEFAULT: colors.rose['100'], dark: '#472823' },
     fg: { DEFAULT: 'white', dark: 'white' },
     hoverBg: { DEFAULT: lightTokens.primaryColor, dark: darkTokens.primaryColor },

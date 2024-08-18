@@ -7,7 +7,7 @@
 import { memo, type FC, Fragment } from 'react'
 import EditPenSVG from '~/icons/EditPen'
 
-import useSalon from '../styles/publish_button/sidebar_header_layout'
+import useSalon from '../salon/publish_button/sidebar_header_layout'
 
 type TProps = {
   text: string

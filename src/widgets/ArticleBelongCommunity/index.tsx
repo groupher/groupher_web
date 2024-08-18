@@ -4,7 +4,6 @@ import { filter } from 'ramda'
 import type { TArticle, TCommunity } from '~/spec'
 import { HCN } from '~/const/name'
 
-import FollowButton from '~/widgets/Buttons/FollowButton'
 import MirrorHint from './MirrorHint'
 
 import { Wrapper, HomeLogo, Icon, Name, JoinDesc } from './styles'
@@ -15,7 +14,7 @@ type TProps = {
   onUndoFollow: () => void
 }
 
-const ArticleBelongCommunity: FC<TProps> = ({ article, onFollow, onUndoFollow }) => {
+const ArticleBelongCommunity: FC<TProps> = ({ article }) => {
   const { originalCommunity: oc, communities } = article
 
   // @ts-ignore
@@ -30,16 +29,6 @@ const ArticleBelongCommunity: FC<TProps> = ({ article, onFollow, onUndoFollow })
         {oc.title}
       </Name>
       <JoinDesc>{oc.subscribersCount} 人加入</JoinDesc>
-      <FollowButton
-        size="tiny"
-        hasFollowed={oc.slug !== HCN ? oc.viewerHasSubscribed : true}
-        followingOffset={-6}
-        onFollow={onFollow}
-        onUndoFollow={() => {
-          if (oc.slug === HCN) return
-          onUndoFollow()
-        }}
-      />
     </Wrapper>
   )
 }

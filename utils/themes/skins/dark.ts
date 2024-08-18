@@ -193,6 +193,7 @@ export default {
   },
   button: {
     primary: primaryColor,
+    toggle: 'white',
     redBg: '#fff9f8',
     fg: 'white',
     hoverBg: lighten(primaryColor, 10),

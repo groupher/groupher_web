@@ -7,7 +7,7 @@
 import { memo, type FC } from 'react'
 import EditPenSVG from '~/icons/EditPen'
 
-import useSalon from '../styles/publish_button/post_layout'
+import useSalon from '../salon/publish_button/post_layout'
 
 type TProps = {
   text: string

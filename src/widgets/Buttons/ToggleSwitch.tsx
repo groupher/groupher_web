@@ -2,9 +2,10 @@ import type { FC } from 'react'
 
 import type { TSizeSM } from '~/spec'
 import SIZE from '~/const/size'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import { Wrapper, Track, Indicator, CheckIcon } from './styles/toggle_switch'
+import HookSVG from '~/icons/CheckBold'
+
+import useSalon from './salon/toggle_switch'
 
 type TProps = {
   size?: TSizeSM
@@ -17,16 +18,16 @@ const ToggleSwitch: FC<TProps> = ({
   checked = false,
   onChange = console.log,
 }) => {
-  const primaryColor = usePrimaryColor()
+  const s = useSalon({ size, checked })
 
   return (
-    <Wrapper onClick={() => onChange(!checked)} size={size}>
-      <Track checked={checked} $color={primaryColor}>
-        <Indicator checked={checked} $color={primaryColor}>
-          <CheckIcon checked={checked} $color={primaryColor} />
-        </Indicator>
-      </Track>
-    </Wrapper>
+    <div className={s.wrapper} onClick={() => onChange(!checked)}>
+      <div className={s.track}>
+        <div className={s.indicator}>
+          <HookSVG className={s.checkIcon} />
+        </div>
+      </div>
+    </div>
   )
 }
 

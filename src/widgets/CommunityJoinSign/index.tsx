@@ -4,8 +4,6 @@
 
 import { type FC, memo } from 'react'
 
-import FollowButton from '~/widgets/Buttons/FollowButton'
-
 import { Wrapper } from './styles'
 
 type TProps = {
@@ -14,23 +12,8 @@ type TProps = {
   onUndoFollow?: () => void
 }
 
-const CommunityJoinSign: FC<TProps> = ({
-  hasFollowed = false,
-  onFollow = console.log,
-  onUndoFollow = console.log,
-}) => {
-  return (
-    <Wrapper hasFollowed={hasFollowed}>
-      <FollowButton
-        followText="&nbsp;加 入&nbsp;"
-        followingText="已加入"
-        size="tiny"
-        hasFollowed={hasFollowed}
-        onFollow={onFollow}
-        onUndoFollow={onUndoFollow}
-      />
-    </Wrapper>
-  )
+const CommunityJoinSign: FC<TProps> = ({ hasFollowed = false }) => {
+  return <Wrapper hasFollowed={hasFollowed}>TODO</Wrapper>
 }
 
 export default memo(CommunityJoinSign)

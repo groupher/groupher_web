@@ -2,10 +2,10 @@ import { type FC, memo, type ReactNode } from 'react'
 
 import type { TSpace } from '~/spec'
 import { ICON } from '~/config'
-import SVG from '~/const/svg'
+import Img from '~/Img'
 
 import Tooltip from '~/widgets/Tooltip'
-import { Wrapper, Content, Icon, Hint, getLocalIcon, HoverBg } from './styles/icon_button'
+import useSalon from './salon/icon_button'
 
 export type TProps = {
   path?: string | null
@@ -22,45 +22,44 @@ export type TProps = {
 const IconButton: FC<TProps> = ({
   path = null,
   icon = null,
-  size = 16,
+  size = 3.5,
   active = false,
   dimWhenIdle = false,
   hint = null,
   hintDelay = 500,
   hintPlacement = 'top',
   onClick = console.log,
-  ...restProps
+  ...spacing
 }) => {
+  const s = useSalon({ size, active, dimWhenIdle, ...spacing })
+
   let realIcon = null
 
   if (path) {
     // icon from OSS
-    realIcon = (
-      <Icon src={`${ICON}/${path}`} size={size} $active={active} $dimWhenIdle={dimWhenIdle} />
-    )
+    realIcon = <Img src={`${ICON}/${path}`} className={s.icon} />
   } else {
-    const LocalIcon = getLocalIcon(icon || SVG.UPVOTE)
+    // const LocalIcon = getLocalIcon(icon || SVG.UPVOTE)
 
-    realIcon = <LocalIcon size={size} $active={active} $dimWhenIdle={dimWhenIdle} />
+    realIcon = <div>TODO</div>
   }
 
   return (
-    <Wrapper size={size} onClick={onClick} {...restProps}>
+    <div className={s.wrapper} onClick={onClick} {...spacing}>
       {hint ? (
         <Tooltip
           placement={hintPlacement}
-          content={<Hint>{hint}</Hint>}
+          content={<div className={s.hint}>{hint}</div>}
           noPadding
           delay={hintDelay}
           forceZIndex
         >
-          <Content>{realIcon}</Content>
+          <div className={s.content}>{realIcon}</div>
         </Tooltip>
       ) : (
-        <Content>{realIcon}</Content>
+        <div className={s.content}>{realIcon}</div>
       )}
-      <HoverBg size={size} />
-    </Wrapper>
+    </div>
   )
 }
 
