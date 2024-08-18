@@ -7,7 +7,7 @@ export default () => {
   const { inView: badgeInView } = useCommunityDigestViewport()
 
   return {
-    wrapper: 'min-w-52 max-w-52 mt-3.5',
+    wrapper: 'min-w-52 max-w-52 mt-5',
     stickyWrapper: 'relative min-h-screen',
     showArea: cn('transition-opacity ', {
       'opacity-100 duration-300 ease-in': badgeInView,

@@ -201,17 +201,10 @@ export default {
   },
   button: {
     primary: primaryColor,
-    bg: primaryColor,
+    redBg: '#fff9f8',
     fg: 'white',
-    ghost: primaryColor,
-    border: primaryColor,
-    disabledFg: descText,
     hoverBg: lighten(primaryColor, 10),
-    activeBg: darken(primaryColor, 5),
-    clicked: primaryColor,
-    ghostBorder: hint,
     upvoteBorder: '#c5c5c5b0',
-    boxShadow: 'rgb(202 202 202 / 10%) -1px 1px 16px 2px',
   },
   navigator: {
     activeBottom: primaryColor,

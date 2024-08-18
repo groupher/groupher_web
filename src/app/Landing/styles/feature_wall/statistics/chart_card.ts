@@ -8,7 +8,6 @@ export const Wrapper = styled(WithPosition)`
   border: 1px solid;
   border-color: ${theme('divider')};
   border-radius: 10px;
-  box-shadow: ${theme('button.boxShadow')};
   background: ${theme('htmlBg')};
 
   background-size: cover;
@@ -47,7 +46,6 @@ export const HighlightColumn = styled(Column)<TLine>`
 `
 export const HighlightDot = styled(WithPosition)`
   ${css.circle(12)};
-  box-shadow: ${theme('button.boxShadow')};
   background: ${theme('rainbow.orange')};
   border: 2px solid;
   border-color: ${theme('htmlBg')};

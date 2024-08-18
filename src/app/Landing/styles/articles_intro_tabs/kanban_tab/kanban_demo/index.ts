@@ -1,4 +1,4 @@
-import styled, { css, theme } from '~/css'
+import styled, { css } from '~/css'
 
 export const BoardsWrapper = styled.div`
   ${css.row('justify-center', 'align-end')};
@@ -19,5 +19,4 @@ export const Board = styled.div<{ shadow?: boolean }>`
   border-radius: 8px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  box-shadow: ${theme('button.boxShadow')};
 `

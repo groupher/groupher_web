@@ -8,9 +8,26 @@ const GENERAL = [
   'sexy-border-40',
 ]
 
-const TEXT_COLORS = ['text-title', 'text-digest', 'text-body', 'text-hint', 'text-invert']
-const BG_COLORS = ['dot', 'hoverBg', 'htmlBg', 'popover-bg', 'menuHoverBg', 'alphaBg', 'snackBar']
-const FILL_COLORS = ['text-title', 'text-digest', 'heightIcon']
+const TEXT_COLORS = [
+  'text-title',
+  'text-digest',
+  'text-body',
+  'text-hint',
+  'text-invert',
+  'button-fg',
+]
+const BG_COLORS = [
+  'dot',
+  'divider',
+  'hoverBg',
+  'htmlBg',
+  'popover-bg',
+  'menuHoverBg',
+  'alphaBg',
+  'snackBar',
+  'button-redBg',
+]
+const FILL_COLORS = ['text-title', 'text-digest', 'button-fg', 'heightIcon']
 // for fg,bg & fill
 const RAINBOW_COLORS = ['red', 'orange', 'yellow', 'green', 'greenLight', 'cyan', 'blue', 'purple']
 
@@ -47,6 +64,11 @@ const UTILS = [
   'pr-36',
   'saturate-150',
   'brightness-125',
+  'select-none',
+  'touch-manipulation',
+  'outline-none',
+  'bg-none',
+  'rounded-3xl',
 ]
 
 module.exports = [

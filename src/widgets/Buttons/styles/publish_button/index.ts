@@ -1,28 +1,16 @@
-import type { TColor, TSpace } from '~/spec'
-// import Img from '~/Img'
-import styled, { css, theme, rainbow } from '~/css'
-import { WithMargin } from '~/widgets/Common'
+import type { TSpace } from '~/spec'
 
-import Button from '../../Button'
-// see example: https://codepen.io/mydearxym2/pen/qBEvvpo
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled(WithMargin)`
-  ${css.row('align-center')};
-`
+type TProps = TSpace
 
-type TPubButton = { $smaller?: boolean } & TColor
-export const PubButton = styled(Button)<TPubButton>`
-  ${css.row('justify-between')};
-  width: 100%;
+export default ({ ...spacing }: TProps) => {
+  const { cn, fg, margin } = useTwBelt()
 
-  font-weight: 600;
-  background: ${({ $color }) => rainbow($color, 'button.bg')};
-  color: ${theme('button.fg')};
-  height: ${({ $smaller }) => ($smaller ? '28px' : '33px')};
-  border-radius: 10px;
-`
-export const MoreOption = styled.div<TSpace>`
-  ${css.row('align-both')};
-  margin-left: ${({ left }) => `${left}px` || 0};
-  margin-right: ${({ right }) => `${right}px` || 0};
-`
+  // $smaller={mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER}
+
+  return {
+    wrapper: cn('row-center', margin(spacing)),
+    pubBtn: cn('row justify-between bold w-full rounded-xl', fg('button.fg')),
+  }
+}

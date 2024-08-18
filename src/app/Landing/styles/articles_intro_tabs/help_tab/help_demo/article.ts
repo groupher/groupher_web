@@ -163,5 +163,4 @@ export const CommentDot = styled.div`
 export const CommentDotSolid = styled.div`
   ${css.circle(8)};
   background: ${theme('rainbow.cyan')};
-  box-shadow: ${theme('button.boxShadow')};
 `

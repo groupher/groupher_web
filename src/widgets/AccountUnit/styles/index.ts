@@ -31,7 +31,7 @@ export default ({ ...spacing }: TProps) => {
       `hover:${bg('hoverBg')}`,
       `hover:${br('divider')}`,
     ),
-    nickname: cn('font-sm ml-2.5', fg('text.digest')),
+    nickname: cn('text-sm ml-2.5', fg('text.digest')),
     unLoginIcon: cn('size-3 pointer', fill('text.digest'), `hover:${fill('text.title')}`),
   }
 }

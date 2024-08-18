@@ -193,17 +193,10 @@ export default {
   },
   button: {
     primary: primaryColor,
-    border: '#414141',
-    bg: '#2c2c2c',
+    redBg: '#fff9f8',
     fg: 'white',
-    ghost: '#9A9696',
-    disabledFg: descText,
     hoverBg: lighten(primaryColor, 10),
-    activeBg: darken(primaryColor, 5),
-    clicked: primaryColor,
-    ghostBorder: '#606060',
     upvoteBorder: '#5f5f5fb5',
-    boxShadow: 'rgb(24 24 24 / 32%) -1px 1px 16px 2px',
   },
   navigator: {
     activeBottom: primaryColor,

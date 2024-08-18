@@ -23,7 +23,6 @@ export const Item = styled.div`
   background: ${theme('htmlBg')};
   ${css.size(30)};
   ${css.column('align-both')};
-  box-shadow: ${theme('button.boxShadow')};
   padding: 2px;
   padding-top: 3px;
   border-radius: 4px;

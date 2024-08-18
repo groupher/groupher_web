@@ -30,7 +30,6 @@ export const Card = styled.div`
   border: 1px solid;
   border-radius: 5px;
   border-color: ${theme('divider')};
-  box-shadow: ${theme('button.boxShadow')};
   background: ${theme('htmlBg')};
 `
 export const UpvoteBox = styled.div`
@@ -41,7 +40,6 @@ export const UpvoteBox = styled.div`
   border: 1px solid;
   border-radius: 5px;
   border-color: ${theme('divider')};
-  box-shadow: ${theme('button.boxShadow')};
   background: ${theme('htmlBg')};
 `
 

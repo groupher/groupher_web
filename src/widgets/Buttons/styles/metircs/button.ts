@@ -1,57 +1,4 @@
 import SIZE from '~/const/size'
-import { theme, rainbow } from '~/css'
-
-import type { TColorName, TTheme } from '~/spec'
-
-export const getColor = (ghost: boolean, disabled: boolean): TTheme => {
-  if (ghost) {
-    return theme('button.ghost')
-  }
-
-  if (disabled) {
-    return theme('button.disabledFg')
-  }
-
-  return theme('button.fg')
-}
-
-export const getBackgroundColor = (
-  primaryColor: TColorName,
-  ghost: boolean,
-  disabled: boolean,
-  hover = false,
-): TTheme => {
-  if (ghost) {
-    return 'transparent'
-  }
-  if (disabled) {
-    return theme('divider') // TODO:  same as dimOnIdle background
-  }
-
-  // should be button.primary
-  return hover ? theme('button.hoverBg') : rainbow(primaryColor, 'button.bg')
-}
-
-export const getBorderColor = (
-  primaryColor: TColorName,
-  noBorder: boolean,
-  disabled: boolean,
-  ghost: boolean,
-  hover = false,
-): TTheme => {
-  if (noBorder) {
-    return 'transparent'
-  }
-  if (disabled) {
-    return theme('divider') // TODO:  same as dimOnIdle background
-  }
-
-  if (ghost) {
-    return hover ? theme('button.primary') : theme('button.ghostBorder')
-  }
-
-  return hover ? theme('button.hoverBg') : rainbow(primaryColor, 'button.border')
-}
 
 export const getHeight = (size: string): string => {
   switch (size) {
@@ -60,11 +7,23 @@ export const getHeight = (size: string): string => {
     }
 
     case SIZE.SMALL: {
-      return '24px'
+      return 'h-6'
     }
 
     default: {
-      return '32px'
+      return 'h-9'
+    }
+  }
+}
+
+export const getRouned = (size: string): string => {
+  switch (size) {
+    case SIZE.TINY: {
+      return 'rounded-md'
+    }
+
+    default: {
+      return 'rounded-xl'
     }
   }
 }
@@ -80,7 +39,7 @@ export const getPadding = (size: string): string => {
     }
 
     default: {
-      return '4px 15px'
+      return 'py-1.5 px-3.5'
     }
   }
 }
@@ -88,35 +47,11 @@ export const getPadding = (size: string): string => {
 export const getFontSize = (size: string): string => {
   switch (size) {
     case SIZE.TINY: {
-      return '11px'
-    }
-
-    case SIZE.MEDIUM: {
-      return '15px'
-    }
-
-    case SIZE.SMALL: {
-      return '12px'
+      return 'text-xs'
     }
 
     default: {
-      return '16px'
-    }
-  }
-}
-
-export const getLineHeight = (size: string): string => {
-  switch (size) {
-    case SIZE.TINY: {
-      return '12px'
-    }
-
-    case SIZE.SMALL: {
-      return '12px'
-    }
-
-    default: {
-      return '12px'
+      return 'text-sm'
     }
   }
 }

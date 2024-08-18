@@ -44,7 +44,6 @@ export const BaseCard = styled.div<TColor>`
 
   &:hover {
     border-color: ${({ $color }) => rainbow($color)};
-    box-shadow: ${theme('button.boxShadow')};
   }
   transition: all 0.2s;
 `

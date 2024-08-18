@@ -36,14 +36,12 @@ export const SelectItem = styled.div<TActive>`
   border-radius: 5px;
   margin-bottom: 6px;
   background: ${({ $active }) => ($active ? theme('menuHoverBg') : 'transparent')};
-  box-shadow: ${({ $active }) => ($active ? theme('button.boxShadow') : '')};
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
   position: relative;
 
   &:hover {
     color: ${theme('article.title')};
     background: ${theme('menuHoverBg')};
-    box-shadow: ${theme('button.boxShadow')};
     cursor: pointer;
   }
 `

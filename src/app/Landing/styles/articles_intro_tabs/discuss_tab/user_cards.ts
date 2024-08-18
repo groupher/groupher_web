@@ -17,7 +17,6 @@ export const CardWrapper = styled(WithPosition)`
   padding: 2px 8px;
   height: 42px;
   border-radius: 10px;
-  box-shadow: ${theme('button.boxShadow')};
   width: auto;
   position: absolute;
   top: ${({ top }) => `${top}px`};
@@ -27,7 +26,6 @@ export const Avatar = styled(Img)`
   ${css.size(25)};
   border-radius: 5px;
   opacity: 0.8;
-  box-shadow: ${theme('button.boxShadow')};
 `
 export const Say = styled.div`
   color: ${theme('article.digest')};

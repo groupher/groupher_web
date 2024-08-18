@@ -1,17 +1,11 @@
-import styled, { css, theme } from '~/css'
-import EditPenSVG from '~/icons/EditPen'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.row('justify-between', 'align-center')};
-  width: 154px;
-`
-export const Title = styled.div`
-  letter-spacing: 2px;
-  font-size: 12px;
-  padding-left: 2px;
-  font-weight: 550;
-`
-export const EditIcon = styled(EditPenSVG)`
-  ${css.size(13)};
-  fill: ${theme('button.fg')};
-`
+export default () => {
+  const { cn, fill } = useTwBelt()
+
+  return {
+    wrapper: 'row-center justify-between w-40',
+    title: cn('text-xs pl-0.5 bold-sm'),
+    editIcon: cn('size-3', fill('button.fg')),
+  }
+}

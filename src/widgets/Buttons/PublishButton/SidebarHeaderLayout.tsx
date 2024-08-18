@@ -5,22 +5,24 @@
  */
 
 import { memo, type FC, Fragment } from 'react'
+import EditPenSVG from '~/icons/EditPen'
 
-// import Button from './Button'
-import { Wrapper, Title, EditIcon } from '../styles/publish_button/sidebar_header_layout'
+import useSalon from '../styles/publish_button/sidebar_header_layout'
 
 type TProps = {
   text: string
 }
 
 const SidebarHeaderLayout: FC<TProps> = ({ text }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Fragment>
-        <EditIcon />
-        <Title>{text}</Title>
+        <EditPenSVG className={s.editIcon} />
+        <div className={s.title}>{text}</div>
       </Fragment>
-    </Wrapper>
+    </div>
   )
 }
 

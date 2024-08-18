@@ -11,7 +11,6 @@ export const TagItem = styled.div`
   ${css.row('align-center')};
   background: ${theme('hoverActive')};
   height: 26px;
-  box-shadow: ${theme('button.boxShadow')};
   padding: 5px 6px;
   padding-right: 8px;
   border-radius: 6px;

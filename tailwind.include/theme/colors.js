@@ -302,20 +302,10 @@ module.exports = {
   },
   button: {
     primary: { DEFAULT: lightTokens.primaryColor, dark: darkTokens.primaryColor },
-    bg: { DEFAULT: lightTokens.primaryColor, dark: '#414141' },
+    redBg: { DEFAULT: colors.rose['100'], dark: '#472823' },
     fg: { DEFAULT: 'white', dark: 'white' },
-    ghost: { DEFAULT: lightTokens.primaryColor, ghost: '#9A9696' },
-    border: { DEFAULT: lightTokens.primaryColor },
-    disabledFg: { DEFAULT: lightTokens.descText, dark: darkTokens.descText },
     hoverBg: { DEFAULT: lightTokens.primaryColor, dark: darkTokens.primaryColor },
-    activeBg: { DEFAULT: lightTokens.primaryColor, dark: darkTokens.primaryColor },
-    clicked: { DEFAULT: lightTokens.primaryColor, dark: darkTokens.primaryColor },
-    ghostBorder: { DEFAULT: lightTokens.hint, dark: '#606060' },
     upvoteBorder: { DEFAULT: '#c5c5c5b0', dark: '#5f5f5fb5' },
-    boxShadow: {
-      DEFAULT: 'rgb(202 202 202 / 10%) -1px 1px 16px 2px',
-      dark: 'rgb(24 24 24 / 32%) -1px 1px 16px 2px',
-    },
   },
   navigator: {
     activeBottom: { DEFAULT: lightTokens.primaryColor, dark: darkTokens.primaryColor },

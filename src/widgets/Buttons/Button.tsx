@@ -1,11 +1,10 @@
 import type { FC, ReactNode } from 'react'
 
 import type { TSizeTSM, TSpace } from '~/spec'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 import SIZE from '~/const/size'
 
 import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
-import { Wrapper, RedWrapper, ChildrenWrapper } from './styles/button'
+import useSalon, { cn } from './styles/button'
 
 type TProps = {
   children?: ReactNode
@@ -31,50 +30,20 @@ const Button: FC<TProps> = ({
   loading = false,
   noBorder = false,
   disabled = false,
-  ...restProps
+  ...spacing
 }) => {
-  const primaryColor = usePrimaryColor()
+  const s = useSalon({ type, ghost, space, size, noBorder, disabled, ...spacing })
 
-  if (loading) return <LavaLampLoading size="small" />
+  const isRed = type === 'red'
 
-  switch (type) {
-    case 'red': {
-      return (
-        <RedWrapper
-          $ghost={ghost}
-          onClick={onClick}
-          size={size}
-          className={className}
-          $noBorder={noBorder}
-          space={space}
-          disabled={disabled}
-          $color={primaryColor}
-          {...restProps}
-        >
-          {children}
-        </RedWrapper>
-      )
-    }
-    default: {
-      return (
-        <Wrapper
-          $ghost={ghost}
-          onClick={() => !disabled && onClick()}
-          size={size}
-          className={className}
-          space={space}
-          $noBorder={noBorder}
-          disabled={disabled}
-          $color={primaryColor}
-          {...restProps}
-        >
-          <ChildrenWrapper size={size} $ghost={ghost} $noBorder={noBorder}>
-            {children}
-          </ChildrenWrapper>
-        </Wrapper>
-      )
-    }
-  }
+  return (
+    <button className={cn(s.wrapper, className)} onClick={() => !disabled && onClick()}>
+      <div className={cn(s.inner, isRed && s.innerRed)}>
+        {loading && <LavaLampLoading size="small" />}
+        {!loading && <div className={s.children}>{children}</div>}
+      </div>
+    </button>
+  )
 }
 
 export default Button
