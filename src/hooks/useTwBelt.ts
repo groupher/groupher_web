@@ -15,6 +15,8 @@ import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 type TColorPrefix = 'fg' | 'bg' | 'fill' | 'border'
 type TBreakOut = 'footer' | 'header'
+type TMenuPart = 'bg' | 'bar' | 'title' | 'link'
+type TShadowSize = 'md' | 'lg' | 'xl'
 
 type TRet = {
   cn: (...inputs: ClassValue[]) => string
@@ -34,6 +36,8 @@ type TRet = {
   gradiientBar: (color: TColorName) => string
   breakOut: (type?: TBreakOut) => string
   enhanceDark: () => string
+  menu: (part: TMenuPart) => string
+  shadow: (size: TShadowSize) => string
 }
 
 /**
@@ -144,6 +148,38 @@ export default (): TRet => {
     return ''
   }
 
+  const menu = (part: TMenuPart): string => {
+    switch (part) {
+      case 'bg': {
+        return _theme('popover.bg')
+      }
+      case 'bar': {
+        return cn(
+          'group/menubar row-center text-sm w-full border border-transparent rounded-md pointer',
+          'px-1.5 py-2 cursor-pointer',
+          'trans-all-100',
+          `hover:${fg('text.title')}`,
+          `hover:${bg('menuHoverBg')}`,
+          `hover:${br('divider')}`,
+          fg('text.digest'),
+        )
+      }
+      case 'title': {
+        return cn('text-sm', `group-hover/menubar:${fg('text.title')}`)
+      }
+      case 'link': {
+        return cn('size-3.5 opacity-0 group-hover/menubar:opacity-60', fill('text.digest'))
+      }
+      default: {
+        return ''
+      }
+    }
+  }
+
+  const shadow = (size: TShadowSize): string => {
+    return global(`shadow-${size}`)
+  }
+
   return {
     cn,
     global,
@@ -162,5 +198,7 @@ export default (): TRet => {
     gradiientBar,
     breakOut,
     enhanceDark,
+    menu,
+    shadow,
   }
 }

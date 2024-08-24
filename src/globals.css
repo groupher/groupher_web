@@ -66,6 +66,10 @@
     @apply transition-all duration-200;
   }
 
+  .trans-all-100 {
+    @apply transition-all duration-100;
+  }
+
   .smoky-90 {
     @apply opacity-90 hover:opacity-100 cursor-pointer
   }
@@ -196,4 +200,8 @@
   .tippy-box[data-placement^=bottom][data-state='visible'] {
     transform: translateY(1px) !important;
   }
+}
+
+.tippy-arrow {
+  display: none;
 }

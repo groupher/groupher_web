@@ -161,18 +161,6 @@ module.exports = {
     middle: { DEFAULT: '#F1F3F4', dark: '#333333' },
     hard: { DEFAULT: '#F1F3F4', dark: '#414141' },
   },
-  shadow: {
-    md: {
-      DEFAULT: 'rgba(0, 0, 0, 0.03) 0px 6px 24px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;',
-      dark: 'rgba(0, 0, 0, 0.03) 0px 6px 24px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;',
-    },
-    lg: { DEFAULT: '', dark: '' },
-    xl: { DEFAULT: '', dark: '' },
-    xxl: {
-      DEFAULT: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
-      dark: 'rgb(21 21 21 / 48%) 0px 11px 24px;',
-    },
-  },
   // inspired by https://endless.design/
   gradientBg: {
     purple: {

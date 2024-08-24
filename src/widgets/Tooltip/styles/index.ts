@@ -2,11 +2,28 @@ import Tippy from '@tippyjs/react'
 
 import styled, { theme } from '~/css'
 
+import useTwBelt from '~/hooks/useTwBelt'
+
+export { cn } from '~/css'
+
+export default () => {
+  const { cn, fg, br, shadow } = useTwBelt()
+
+  return {
+    tooltip: cn(
+      'relative p-1.5 rounded border backdrop-blur-sm cursor-default',
+      shadow('xl'),
+      fg('text.digest'),
+      br('divider'),
+    ),
+  }
+}
+
 export const StyledTippy = styled(Tippy)<{ wechatEnv?: boolean }>`
   position: relative;
   color: ${theme('article.digest')};
   box-shadow: ${theme('popover.boxShadow')};
-  outline: none;
+  /* outline: none; */
   max-width: 480px !important;
 
   border-radius: 5px;
@@ -15,10 +32,6 @@ export const StyledTippy = styled(Tippy)<{ wechatEnv?: boolean }>`
   border: 1px solid;
   border-color: ${theme('divider')};
   backdrop-filter: blur(5px);
-
-  .tippy-arrow {
-    display: none;
-  }
 `
 export const NoPaddingStyledTippy = styled(StyledTippy)`
   padding: 0;
