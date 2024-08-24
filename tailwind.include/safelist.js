@@ -6,6 +6,9 @@ const GENERAL = [
   'sexy-border-20',
   'sexy-border-35',
   'sexy-border-40',
+  'shadow-md',
+  'shadow-lg',
+  'shadow-xl',
 ]
 
 const TEXT_COLORS = [

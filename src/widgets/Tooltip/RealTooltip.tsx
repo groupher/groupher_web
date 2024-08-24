@@ -9,7 +9,6 @@ import { hideAll } from 'tippy.js'
 import Tippy from '@tippyjs/react'
 
 import { zIndex } from '~/css'
-import { isString } from '~/validator'
 import { isDescendant, isWechatBrower } from '~/dom'
 
 import useOutsideClick from '~/hooks/useOutsideClick'
@@ -18,7 +17,7 @@ import type { TProps } from '.'
 import { FOOTER_BEHAVIOR } from './constant'
 import ConfirmFooter from './ConfirmFooter'
 
-import useSalon, { cn, ContentWrapper } from './styles'
+import useSalon, { cn } from './salon'
 
 const Tooltip: FC<TProps> = ({
   children,
@@ -53,9 +52,8 @@ const Tooltip: FC<TProps> = ({
   }, [])
 
   const PopoverContent = (
-    <ContentWrapper
+    <div
       ref={contentRef}
-      $hasMaxWidth={isString(content)}
       onClick={() => {
         if (hideOnClick) instance?.hide()
       }}
@@ -71,7 +69,7 @@ const Tooltip: FC<TProps> = ({
           behavior={behavior}
         />
       )}
-    </ContentWrapper>
+    </div>
   )
 
   const ref = useRef()
