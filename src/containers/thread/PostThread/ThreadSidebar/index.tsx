@@ -9,14 +9,12 @@
 import { Fragment, lazy, Suspense } from 'react'
 
 import useTrans from '~/hooks/useTrans'
-import useLayout from '~/hooks/useLayout'
 import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 import useActiveTag from '~/hooks/useActiveTag'
 
 import { refreshArticles, callGEditor, callSyncSelector, listUsers } from '~/signal'
 import { mockUsers } from '~/mock'
-import { BANNER_LAYOUT } from '~/const/layout'
 
 import { Link, Br, SexyDivider } from '~/widgets/Common'
 import ImgFallback from '~/widgets/ImgFallback'
@@ -38,7 +36,6 @@ export default () => {
   const curCommunity = useViewingCommunity()
 
   const { inView: showCommunityBadge } = useCommunityDigestViewport()
-  const { bannerLayout } = useLayout()
   const activeTag = useActiveTag()
 
   const s = useSalon()
@@ -48,13 +45,13 @@ export default () => {
       <Sticky offsetTop={0}>
         <div className={s.stickyWrapper}>
           <Fragment>
-            {showCommunityBadge && bannerLayout !== BANNER_LAYOUT.TABBER && (
+            {showCommunityBadge && (
               <Fragment>
                 <h3 className={s.title}>{t('intro', 'titleCase')}</h3>
                 <div className={s.desc}>{curCommunity.desc}</div>
                 <div className={s.homeLinks}>
                   <LinkSVG className={s.linkIcon} />
-                  <Link href="https://groupher.com" maxLength="150px">
+                  <Link href={curCommunity.homepage} maxLength="150px">
                     {curCommunity.homepage}
                   </Link>
                   <div className="grow" />

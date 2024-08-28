@@ -23,6 +23,7 @@ export const Wrapper = styled.div<TTab>`
   min-width: auto;
 
   margin-bottom: ${({ $wrapMode }) => getMarginBottom($wrapMode)};
+  
 
   /* background: ${({ active }) => (active ? '#114758' : '')}; */
 

@@ -8,7 +8,6 @@ import useHeaderLinks from '~/hooks/useHeaderLinks'
 
 import TabBar from '~/widgets/TabBar'
 import ViewportTracker from '~/widgets/ViewportTracker'
-import SearchBox from '~/widgets/SearchBox'
 import CustomHeaderLinks from '~/widgets/CustomHeaderLinks'
 
 import CommunityBrief from './CommunityBrief'
@@ -29,6 +28,7 @@ export default () => {
   const { getCustomLinks } = useHeaderLinks()
 
   const customLinks = getCustomLinks()
+  const tmp = false
 
   return (
     <div className={s.wrapper}>
@@ -41,9 +41,7 @@ export default () => {
             active={activeThread}
             withIcon
           />
-          <CustomHeaderLinks links={customLinks} />
-          <div className="grow" />
-          <SearchBox right={0} />
+          {tmp && <CustomHeaderLinks links={customLinks} />}
         </div>
       </div>
       <ViewportTracker onEnter={enterView} onLeave={leaveView} />

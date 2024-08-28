@@ -21,7 +21,7 @@ import Tooltip from '~/widgets/Tooltip'
 import { SexyDivider } from '~/widgets/Common'
 import ImgFallback from '~/widgets/ImgFallback'
 
-import useSalon from '../salon/header_layout/community_brief'
+import useSalon, { cn } from '../salon/header_layout/community_brief'
 
 export default () => {
   const s = useSalon()
@@ -54,7 +54,7 @@ export default () => {
             {brandLayout !== BRAND_LAYOUT.LOGO && <h1 className={s.title}>{title}</h1>}
           </div>
 
-          <Link className={`${s.menuItem} hover:no-underline`} href={`/${slug}`}>
+          <Link className={cn(s.menuItem, 'hover:no-underline')} href={`/${slug}`}>
             <div className={s.menuIconBox}>
               <DiscussSVG className={s.menuIcon} />
             </div>
@@ -72,7 +72,7 @@ export default () => {
 
           <Link className={s.menuItem} href={`/${slug}`}>
             <div className={s.menuIconBox}>
-              <GithubSVG className={`${s.menuIcon} size-3`} />
+              <GithubSVG className={cn(s.menuIcon, 'size-3')} />
             </div>
             <div className={s.menuTitle}>Github</div>
             <ArrowSVG className={s.linkArrow} />

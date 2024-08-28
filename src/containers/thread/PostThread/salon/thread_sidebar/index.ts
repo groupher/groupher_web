@@ -1,10 +1,15 @@
+import { BANNER_LAYOUT } from '~/const/layout'
+
 import useTwBelt from '~/hooks/useTwBelt'
+import useLayout from '~/hooks/useLayout'
 import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
 
 export default () => {
   const { cn, fg, fill, avatar } = useTwBelt()
+  const { bannerLayout } = useLayout()
 
   const { inView: badgeInView } = useCommunityDigestViewport()
+  const isTabberLayout = BANNER_LAYOUT.TABBER === bannerLayout
 
   return {
     wrapper: 'min-w-52 max-w-52 mt-5',
@@ -18,7 +23,7 @@ export default () => {
     homeLinks: 'row-center text-sm bold-sm trucate max-w-52 mb-5',
     linkIcon: cn('size-5 -ml-1 mr-1', fill('text.digest')),
     joiners: 'row mb-6',
-    publish: cn('w-full -ml-0.5', badgeInView ? 'block' : 'hidden'),
+    publish: cn('w-full -ml-0.5', badgeInView ? 'block' : 'hidden', isTabberLayout && 'hidden'),
     moreNum: cn('font ml-1 pointer', fg('text.digest'), `hover:${fg('article.title')}`),
     joinAvatar: cn('size-6 mr-2', avatar()),
     tagsBar: cn('mt-6 max-w-48'),

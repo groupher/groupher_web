@@ -9,16 +9,18 @@ export default () => {
   const { postLayout, bannerLayout } = useLayout()
 
   const isSidebarLayout = bannerLayout === BANNER_LAYOUT.SIDEBAR
+  const isHeaderLayout = bannerLayout === BANNER_LAYOUT.HEADER
+  const isTabberLayout = bannerLayout === BANNER_LAYOUT.TABBER
+
   const isMasonary = postLayout === POST_LAYOUT.MASONRY
-
-  const main = cn('w-full grow rounded-md mt-3 mr-12 pr-20 border-r', br('divider'))
-  const sidebar = cn('w-full grow', isMasonary ? 'px-[12%]' : 'px-[20%]')
-
-  const layout = isSidebarLayout ? sidebar : main
 
   return {
     wrapper: 'row w-full',
     filter: 'row-center h-10 -ml-1.5',
-    layout,
+    layout: cn(
+      isSidebarLayout && `w-full grow ${isMasonary ? 'px-[12%]' : 'px-[20%]'}`,
+      isHeaderLayout && `w-full grow rounded-md mt-3 mr-12 pr-20 border-r ${br('divider')}`,
+      isTabberLayout && 'w-full grow rounded-md mt-4 mr-12',
+    ),
   }
 }
