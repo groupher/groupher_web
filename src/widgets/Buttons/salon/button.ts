@@ -29,7 +29,7 @@ export default ({ type, ghost, noBorder, size, space, disabled, ...spacing }: TP
       !ghost && !isRed && 'border border-4',
       getRouned(size),
       br('divider'),
-      bg('divider'),
+      !ghost && bg('divider'),
       margin(spacing),
     ),
     inner: cn(
@@ -41,7 +41,9 @@ export default ({ type, ghost, noBorder, size, space, disabled, ...spacing }: TP
       getFontSize(size),
       !ghost && primary('bg'),
       ghost && `hover:${bg('hoverBg')}`,
+      ghost && 'saturate-50',
       ghost && primary('border'),
+      ghost && bg('transparent'),
       ghost ? primary('fg') : fg('button.fg'),
     ),
     innerRed: cn(

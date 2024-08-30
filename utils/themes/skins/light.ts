@@ -18,6 +18,7 @@ const hoverBg = '#efefef78' // '#efefef9c' // with alpha
 const hint = '#9d9999'
 
 export default {
+  transparent: '',
   primary: primaryColor,
   htmlBg: bannerBg,
   loading: {

@@ -7,8 +7,8 @@ import useViewingCommunity from '~/hooks/useViewingCommunity'
 import useHeaderLinks from '~/hooks/useHeaderLinks'
 
 import TabBar from '~/widgets/TabBar'
-import ViewportTracker from '~/widgets/ViewportTracker'
 import CustomHeaderLinks from '~/widgets/CustomHeaderLinks'
+import ViewportTracker from '~/widgets/ViewportTracker'
 
 import CommunityBrief from './CommunityBrief'
 
@@ -28,7 +28,6 @@ export default () => {
   const { getCustomLinks } = useHeaderLinks()
 
   const customLinks = getCustomLinks()
-  const tmp = false
 
   return (
     <div className={s.wrapper}>
@@ -41,10 +40,10 @@ export default () => {
             active={activeThread}
             withIcon
           />
-          {tmp && <CustomHeaderLinks links={customLinks} />}
+          <CustomHeaderLinks links={customLinks} />
         </div>
+        <ViewportTracker onEnter={enterView} onLeave={leaveView} />
       </div>
-      <ViewportTracker onEnter={enterView} onLeave={leaveView} />
     </div>
   )
 }

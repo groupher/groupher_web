@@ -90,6 +90,14 @@
     background: linear-gradient(315deg, rgb(104 104 104 / 0%) 0%, #2c2c2c 100%);
   }
 
+  .unibar-linear-mask {
+    background: radial-gradient(circle, #ffffffa1 30%, #0000 100%);
+  }
+
+  .unibar-linear-mask-dark {
+    background: radial-gradient(circle, #292929a1 30%, #0000 100%);
+  }
+
   .count-highlight {
     background: linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%);
     -webkit-background-clip: text;

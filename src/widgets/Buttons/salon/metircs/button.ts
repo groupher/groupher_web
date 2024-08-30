@@ -31,15 +31,15 @@ export const getRouned = (size: string): string => {
 export const getPadding = (size: string): string => {
   switch (size) {
     case SIZE.TINY: {
-      return '0 4px'
+      return 'py-0.5 px-0.5'
     }
 
     case SIZE.SMALL: {
-      return '0 7px'
+      return 'py-1 px-1'
     }
 
     default: {
-      return 'py-1.5 px-3.5'
+      return 'py-1.5 px-3'
     }
   }
 }

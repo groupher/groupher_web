@@ -12,7 +12,6 @@ import useLayout from '~/hooks/useLayout'
 import PagedPosts from '~/widgets/PagedPosts'
 import TagNote from '~/widgets/TagNote'
 import ArticlesFilter from '~/widgets/ArticlesFilter'
-import CommunityDigest from '~/widgets/CommunityDigest'
 
 import ThreadSidebar from './ThreadSidebar'
 
@@ -25,7 +24,6 @@ export default () => {
   return (
     <div className={s.wrapper}>
       <div className={s.layout}>
-        {bannerLayout === BANNER_LAYOUT.TABBER && <CommunityDigest />}
         <TagNote />
         <div className={s.filter}>
           <ArticlesFilter />

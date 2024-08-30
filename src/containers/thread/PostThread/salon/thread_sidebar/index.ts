@@ -2,14 +2,19 @@ import { BANNER_LAYOUT } from '~/const/layout'
 
 import useTwBelt from '~/hooks/useTwBelt'
 import useLayout from '~/hooks/useLayout'
+import useScroll from '~/hooks/useScroll'
 import useCommunityDigestViewport from '~/hooks/useCommunityDigestViewport'
 
 export default () => {
   const { cn, fg, fill, avatar } = useTwBelt()
   const { bannerLayout } = useLayout()
 
-  const { inView: badgeInView } = useCommunityDigestViewport()
   const isTabberLayout = BANNER_LAYOUT.TABBER === bannerLayout
+  const isHeaderLayout = BANNER_LAYOUT.HEADER === bannerLayout
+
+  const { isAtTop } = useScroll({ disable: !isTabberLayout })
+
+  const { inView: badgeInView } = useCommunityDigestViewport()
 
   return {
     wrapper: 'min-w-52 max-w-52 mt-5',
@@ -26,7 +31,11 @@ export default () => {
     publish: cn('w-full -ml-0.5', badgeInView ? 'block' : 'hidden', isTabberLayout && 'hidden'),
     moreNum: cn('font ml-1 pointer', fg('text.digest'), `hover:${fg('article.title')}`),
     joinAvatar: cn('size-6 mr-2', avatar()),
-    tagsBar: cn('mt-6 max-w-48'),
-    unibarWrapper: cn('absolute bottom-0.5', badgeInView ? 'mb-32' : 'mb-10'),
+    tagsBar: cn('mt-6 max-w-48', isTabberLayout && 'mt-1'),
+    unibarWrapper: cn(
+      'absolute bottom-0.5',
+      isHeaderLayout && (badgeInView ? 'mb-28 pb-2' : 'mb-10'),
+      isTabberLayout && (isAtTop ? 'mb-80 pb-4' : 'mb-8'),
+    ),
   }
 }

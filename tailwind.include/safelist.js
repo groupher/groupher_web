@@ -1,6 +1,8 @@
 const GENERAL = [
   'border-divider',
+  'border-text-hint',
   'article-hover-linear',
+  'unibar-linear-mask',
   'count-highlight',
   'footer-inner-shadow',
   'sexy-border-20',
@@ -72,7 +74,9 @@ const UTILS = [
   'touch-manipulation',
   'outline-none',
   'bg-none',
+  'bg-transparent',
   'rounded-3xl',
+  'w-[1200px]',
 ]
 
 module.exports = [

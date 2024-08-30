@@ -20,14 +20,14 @@ export default ({ ...spacing }: TProps) => {
     margin(spacing),
   )
 
-  const wrapper = includes(bannerLayout, [BANNER_LAYOUT.TABBER, BANNER_LAYOUT.SIDEBAR])
-    ? withBgWrapper
-    : normalWrapper
+  const isTabberLayout = bannerLayout === BANNER_LAYOUT.TABBER
+  const wrapper = includes(bannerLayout, [BANNER_LAYOUT.SIDEBAR]) ? withBgWrapper : normalWrapper
 
   return {
     wrapper,
     hoverBox: cn(
       'align-both size-6 rounded border border-transparent pointer',
+      isTabberLayout && bg('hoverBg'),
       `hover:${bg('hoverBg')}`,
       `hover:${br('divider')}`,
     ),

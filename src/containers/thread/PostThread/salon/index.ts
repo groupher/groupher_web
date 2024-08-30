@@ -20,7 +20,7 @@ export default () => {
     layout: cn(
       isSidebarLayout && `w-full grow ${isMasonary ? 'px-[12%]' : 'px-[20%]'}`,
       isHeaderLayout && `w-full grow rounded-md mt-3 mr-12 pr-20 border-r ${br('divider')}`,
-      isTabberLayout && 'w-full grow rounded-md mt-4 mr-12',
+      isTabberLayout && 'w-full grow rounded-md mt-3.5 mr-12',
     ),
   }
 }
