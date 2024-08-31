@@ -7,7 +7,7 @@ type TProps = {
 }
 
 export default ({ viewerHasUpvoted }: TProps) => {
-  const { cn, br, bg, rainbowLight } = useTwBelt()
+  const { cn, br, bg, rainbowSoft } = useTwBelt()
   const color = usePrimaryColor()
 
   return {
@@ -18,7 +18,7 @@ export default ({ viewerHasUpvoted }: TProps) => {
       `hover:${bg('alphaBg2')}`,
       'trans-all-200',
       br('divider'),
-      viewerHasUpvoted && cn(rainbowLight(color)),
+      viewerHasUpvoted && cn(rainbowSoft(color)),
     ),
   }
 }

@@ -1,4 +1,4 @@
-import styled, { css, rainbow, rainbowLight } from '~/css'
+import styled, { css, rainbow, rainbowSoft } from '~/css'
 
 import type { TAvatarLayout, TColorName, TTestable } from '~/spec'
 import { AVATAR_LAYOUT } from '~/const/layout'
@@ -13,7 +13,7 @@ export const Wrapper = styled.div.attrs<TWrapper>(({ $testid }) => ({
 }))<TWrapper>`
   ${css.row('align-both')};
 
-  background: ${({ color }) => rainbowLight(color)};
+  background: ${({ color }) => rainbowSoft(color)};
 
   width: ${({ size }) => `${size}px`};
   height: ${({ size }) => `${size}px`};

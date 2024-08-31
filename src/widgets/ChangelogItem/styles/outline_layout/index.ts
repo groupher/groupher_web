@@ -1,6 +1,6 @@
 import type { TTestable } from '~/spec'
 
-import styled, { css, theme, rainbowLight } from '~/css'
+import styled, { css, theme, rainbowSoft } from '~/css'
 
 import CommentSVG from '~/icons/Comment'
 
@@ -81,6 +81,6 @@ export const TagsWrapper = styled.div`
 `
 export const TagDot = styled.div<{ color: string }>`
   ${css.circle(6)};
-  background-color: ${({ color }) => rainbowLight(color)};
+  background-color: ${({ color }) => rainbowSoft(color)};
   margin-left: 6px;
 `

@@ -42,7 +42,7 @@ export const FreeLabel2 = styled.div`
   height: 35px;
   border-radius: 8px;
   color: ${theme('rainbow.purple')};
-  background: ${theme('rainbow.purpleBg')};
+  background: ${theme('rainbow.purpleSoft')};
   padding-right: 10px;
   padding-left: 8px;
 

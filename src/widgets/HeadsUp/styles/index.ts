@@ -21,11 +21,11 @@ const Wrapper = styled.article.attrs<TWrapper>(({ $testid }) => ({
   ${(props) => css.spaceMargins(props)};
 `
 export const WarningWrapper = styled(Wrapper)`
-  background: ${theme('rainbow.orangeBg')};
+  background: ${theme('rainbow.orangeSoft')};
   color: ${theme('rainbow.brown')};
 `
 export const DangerWrapper = styled(Wrapper)`
-  background: ${theme('rainbow.redBg')};
+  background: ${theme('rainbow.redSoft')};
   color: ${theme('rainbow.red')};
 `
 export const IconBox = styled.div`

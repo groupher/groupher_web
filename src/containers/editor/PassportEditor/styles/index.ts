@@ -22,7 +22,7 @@ export const Footer = styled.div`
 
 export const RootSign = styled.span`
   display: inline-block;
-  background: ${theme('rainbow.blueBg')};
+  background: ${theme('rainbow.blueSoft')};
   color: ${theme('rainbow.blue')};
   border: 1px solid;
   border-color: ${theme('rainbow.blue')};

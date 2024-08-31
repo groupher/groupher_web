@@ -35,7 +35,7 @@ export const Title = styled.div`
 export const ColorBall = styled.div`
   ${css.circle(10)};
   margin-top: -2px;
-  background: ${theme('rainbow.redBg')};
+  background: ${theme('rainbow.redSoft')};
 `
 // icons
 const commonIcon = (comp) => {

@@ -34,7 +34,7 @@ export const WarningMask = styled.div`
   border-top-right-radius: 8px;
   border-top: 1px dashed;
   border-top-color: ${theme('rainbow.red')};
-  background: ${theme('rainbow.redBg')};
+  background: ${theme('rainbow.redSoft')};
   position: absolute;
   bottom: 0;
   left: 0;

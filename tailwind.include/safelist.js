@@ -91,9 +91,9 @@ module.exports = [
     (c) =>
       `text-rainbow-${c} text-rainbow-${c}-dark
        bg-rainbow-${c} bg-rainbow-${c}-dark 
-       hover:bg-rainbow-${c}Bg hover:bg-rainbow-${c}Bg-dark
-       bg-rainbow-${c}Bg bg-rainbow-${c}Bg-dark fill-rainbow-${c} fill-rainbow-${c}-dark 
-       from-rainbow-${c}Bg from-rainbow-${c}Bg-dark 
+       hover:bg-rainbow-${c}Soft hover:bg-rainbow-${c}Soft-dark
+       bg-rainbow-${c}Soft bg-rainbow-${c}Soft-dark fill-rainbow-${c} fill-rainbow-${c}-dark 
+       from-rainbow-${c}Soft from-rainbow-${c}Soft-dark 
        border-rainbow-${c}/${borderSoft.opacity} border-rainbow-${c}-dark/${borderSoft.opacity_dark}
       `,
   ),

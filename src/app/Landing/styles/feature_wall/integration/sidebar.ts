@@ -1,4 +1,4 @@
-import styled, { css, rainbowLight, theme } from '~/css'
+import styled, { css, rainbowSoft, theme } from '~/css'
 
 import type { TColor, TSpace } from '~/spec'
 import { WithPosition } from '~/widgets/Common'
@@ -25,7 +25,7 @@ type TAvatar = { size?: number; hovering: boolean } & TColor & TSpace
 export const Avatar = styled(Img)<TAvatar>`
   ${({ size }) => `${css.circle(size)}`};
   border: 2px solid;
-  border-color: ${({ $color }) => rainbowLight($color)};
+  border-color: ${({ $color }) => rainbowSoft($color)};
   visibility: ${({ hovering }) => (hovering ? 'visiable' : 'hidden')};
 
   box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;

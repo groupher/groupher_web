@@ -84,7 +84,7 @@ export {
   themeMeta,
   themeSkins,
   rainbow,
-  rainbowLight,
+  rainbowSoft,
   rainbowPale,
 } from './themes'
 

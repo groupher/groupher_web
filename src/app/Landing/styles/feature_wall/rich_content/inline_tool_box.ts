@@ -28,7 +28,7 @@ export const Wrapper = styled.div<{ $hovering: boolean }>`
 type TItem = TActive & { $opacity?: number }
 export const Item = styled.div<TItem>`
   ${css.row('align-center')};
-  background: ${({ $active }) => ($active ? theme('rainbow.cyanBg') : 'transparent')};
+  background: ${({ $active }) => ($active ? theme('rainbow.cyanSoft') : 'transparent')};
   opacity: ${({ $opacity }) => $opacity || 1};
   padding: 2px;
   border-radius: 3px;

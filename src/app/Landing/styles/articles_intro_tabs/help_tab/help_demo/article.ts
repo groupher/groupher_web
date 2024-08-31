@@ -157,7 +157,7 @@ export const CommentDot = styled.div`
   bottom: 228px;
   ${css.circle(14)};
   ${css.row('align-both')};
-  background: ${theme('rainbow.cyanBg')};
+  background: ${theme('rainbow.cyanSoft')};
   z-index: 100;
 `
 export const CommentDotSolid = styled.div`

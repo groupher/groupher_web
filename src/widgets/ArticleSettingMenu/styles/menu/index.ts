@@ -37,7 +37,7 @@ export const MenuTitle = styled.div`
 `
 export const DangerMenuItem = styled(MenuItem)`
   &:hover {
-    background: ${theme('rainbow.redBg')};
+    background: ${theme('rainbow.redSoft')};
     color: ${theme('rainbow.red')};
     cursor: pointer;
   }

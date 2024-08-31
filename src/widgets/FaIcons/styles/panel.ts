@@ -1,5 +1,5 @@
 import type { TActive, TColorName } from '~/spec'
-import styled, { css, theme, rainbow, rainbowLight } from '~/css'
+import styled, { css, theme, rainbow, rainbowSoft } from '~/css'
 
 import FormInput from '~/widgets/Input'
 
@@ -70,7 +70,7 @@ export const ColorBlock = styled.div<TColorBlock>`
   ${css.size(24)};
   ${css.row('align-both')};
   border-radius: 6px;
-  background: ${({ color }) => rainbowLight(color)};
+  background: ${({ color }) => rainbowSoft(color)};
   border: 1px dotted;
   border-color: ${({ $active, color }) => ($active ? rainbow(color) : 'transparent')};
 

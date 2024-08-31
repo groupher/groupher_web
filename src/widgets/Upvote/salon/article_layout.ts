@@ -6,7 +6,7 @@ type TProps = {
 }
 
 export default ({ viewerHasUpvoted }: TProps) => {
-  const { cn, br, bg, fg, rainbowLight, primary, enhanceDark } = useTwBelt()
+  const { cn, br, bg, fg, rainbowSoft, primary, enhanceDark } = useTwBelt()
   const color = usePrimaryColor()
 
   return {
@@ -15,7 +15,7 @@ export default ({ viewerHasUpvoted }: TProps) => {
       'align-both w-44 py-2 rounded-xl border',
       br('divider'),
       `hover:${bg('alphaBg2')}`,
-      viewerHasUpvoted && cn(rainbowLight(color)),
+      viewerHasUpvoted && cn(rainbowSoft(color)),
     ),
     alias: cn('text-sm ml-1.5 mt-px', viewerHasUpvoted ? primary('fg') : fg('text.digest')),
   }

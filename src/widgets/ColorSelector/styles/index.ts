@@ -2,7 +2,7 @@ import type { TTestable, TActive, TColorName } from '~/spec'
 import { COLOR_NAME } from '~/const/colors'
 
 import HookSVG from '~/icons/Hook'
-import styled, { css, theme, rainbow, rainbowLight } from '~/css'
+import styled, { css, theme, rainbow, rainbowSoft } from '~/css'
 
 export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
   'data-test-id': $testid,
@@ -20,7 +20,7 @@ export const Dot = styled.div<TDot>`
     $active ? css.circle(20) : css.circle(colorName === COLOR_NAME.BLACK ? 18 : 16)};
   ${css.row('align-both')};
   background-color: ${({ colorName, bgMode }) =>
-    !bgMode ? rainbow(colorName, 'rainbow.blackRow') : rainbowLight(colorName)};
+    !bgMode ? rainbow(colorName, 'rainbow.blackRow') : rainbowSoft(colorName)};
 
   box-shadow: ${({ $active }) => ($active ? '0px 0px 7px 0px rgb(151 151 151 / 30%)' : '')};
 

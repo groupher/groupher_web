@@ -12,7 +12,7 @@ export default () => {
     userName: cn('text-sm bold-sm', fg('text.title')),
     loginBy: cn('text-xs opacity-80', fg('text.digest')),
     menuBar: cn(menu('bar'), 'group h-8 w-full px-2.5 py-0.5 gap-y-2'),
-    warningActive: cn(`hover:${fg('rainbow.red')}`, `hover:${bg('rainbow.redBg')}`),
+    warningActive: cn(`hover:${fg('rainbow.red')}`, `hover:${bg('rainbow.redSoft')}`),
     menuTitle: cn('grow'),
     icon: cn('size-3.5 group-smoky', fill('text.digest')),
     logoutIcon: cn('size-3 group-smoky', `group-hover:${fill('rainbow.red')}`),

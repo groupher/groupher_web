@@ -13,7 +13,6 @@ import useMetric from '~/hooks/useMetric'
 import useAvatarLayout from '~/hooks/useAvatarLayout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-// TODO: rename 'border -> borderSolt'
 type TColorPrefix = 'fg' | 'bg' | 'bgSoft' | 'fill' | 'border' | 'borderSoft'
 type TBreakOut = 'footer' | 'header'
 type TMenuPart = 'bg' | 'bar' | 'title' | 'link'
@@ -28,7 +27,7 @@ type TRet = {
   fill: (key: TFlatThemeKey) => string
   br: (key: TFlatThemeKey) => string
   rainbow: (color: TColorName, prefix?: TColorPrefix) => string
-  rainbowLight: (color: TColorName | string) => string
+  rainbowSoft: (color: TColorName | string) => string
   primary: (prefix?: TColorPrefix) => string
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
@@ -96,8 +95,7 @@ export default (): TRet => {
     const color$ = camelize(color)
 
     if (prefix === 'bgSoft') {
-      // return isLightTheme ? `bg-rainbow-${color$}Soft` : `bg-rainbow-${color$}Soft-dark`
-      return isLightTheme ? `${prefix$}-${color$}Bg` : `${prefix$}-${color$}Bg-dark`
+      return isLightTheme ? `${prefix$}-${color$}Soft` : `${prefix$}-${color$}Soft-dark`
     }
 
     if (prefix === 'borderSoft') {
@@ -110,7 +108,7 @@ export default (): TRet => {
     return isLightTheme ? `${prefix$}-${color$}` : `${prefix$}-${color$}-dark`
   }
 
-  const rainbowLight = (color: TColorName | string): string => {
+  const rainbowSoft = (color: TColorName | string): string => {
     const prefix$ = 'bg-rainbow'
     const color$ = camelize(color)
 
@@ -118,7 +116,7 @@ export default (): TRet => {
       return bg('hoverBg')
     }
 
-    return isLightTheme ? `${prefix$}-${color$}Bg` : `${prefix$}-${color$}Bg-dark`
+    return isLightTheme ? `${prefix$}-${color$}Soft` : `${prefix$}-${color$}Soft-dark`
   }
 
   /**
@@ -222,7 +220,7 @@ export default (): TRet => {
     fill,
     br,
     rainbow,
-    rainbowLight,
+    rainbowSoft,
     primary,
     zise,
     margin,

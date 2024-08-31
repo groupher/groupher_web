@@ -35,10 +35,10 @@ const Article: FC = () => {
           <Title>自定义帮助台封面</Title>
 
           <CoverWrappers>
-            <Cover $fromBg={themeMap.rainbow.cyan} $toBg={themeMap.rainbow.cyanBg}>
+            <Cover $fromBg={themeMap.rainbow.cyan} $toBg={themeMap.rainbow.cyanSoft}>
               <CoverTitle>卡片视图</CoverTitle>
             </Cover>
-            <Cover $fromBg={themeMap.rainbow.cyan} $toBg={themeMap.rainbow.cyanBg}>
+            <Cover $fromBg={themeMap.rainbow.cyan} $toBg={themeMap.rainbow.cyanSoft}>
               <CoverTitle>列表视图</CoverTitle>
             </Cover>
           </CoverWrappers>
