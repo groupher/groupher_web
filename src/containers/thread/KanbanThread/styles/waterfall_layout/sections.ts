@@ -1,4 +1,4 @@
-import styled, { css, theme, rainbow, rainbowSoft } from '~/css'
+import styled, { css, theme, rainbow, rainbowPale } from '~/css'
 import type { TColor } from '~/spec'
 
 import GtdWipSVG from '~/icons/GtdWip'
@@ -19,7 +19,7 @@ export const Column = styled.div`
 `
 export const Header = styled.div<TColor>`
   ${css.row('align-center')};
-  background: ${({ $color }) => rainbowSoft($color)};
+  background: ${({ $color }) => rainbowPale($color)};
   height: 42px;
   padding: 0 20px;
   border-radius: 20px;

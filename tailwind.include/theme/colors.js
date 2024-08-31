@@ -81,49 +81,49 @@ module.exports = {
   rainbow: {
     red: { DEFAULT: '#ca5f4d', dark: '#ca5f4d' },
     redBg: { DEFAULT: '#ffbfba3d', dark: '#7d3b363d' },
-    redSoft: {
+    redPale: {
       DEFAULT: 'linear-gradient(90deg, #fec0bb33 0%, #f8e4e226 100%)',
       dark: 'linear-gradient(90deg, #7a37323d 0%, #46211e2b 100%)',
     },
 
     orange: { DEFAULT: 'orange', dark: '#ce9f6f' },
     orangeBg: { DEFAULT: '#FEF7E8', dark: '#4c3e37' },
-    orangeSoft: {
+    orangePale: {
       DEFAULT: 'linear-gradient(90deg, #fcb32d26 0%, #f5dfb726 100%)',
       dark: 'linear-gradient(90deg, #44352ead 0%, #382c27a1 100%)',
     },
 
     brown: { DEFAULT: '#8d691e', dark: '#8d691e' },
     brownBg: { DEFAULT: '#fff3df', dark: '#3a342b' },
-    brownSoft: {
+    brownPale: {
       DEFAULT: 'linear-gradient(90deg, #cf806921 0%, #dbd0d01c 100%)',
       dark: 'linear-gradient(90deg, #45320569 0%, #3929024a 100%)',
     },
 
     yellow: { DEFAULT: '#c7b96d', dark: '#eddd85' },
     yellowBg: { DEFAULT: '#FEFBE8', dark: '#a9a06a30' },
-    yellowSoft: {
+    yellowPale: {
       DEFAULT: 'linear-gradient(90deg, #fffde5 0%, rgb(255 252 241 / 37%) 100%)',
       dark: 'linear-gradient(90deg, #635e184d 0%, #433e2330 100%)',
     },
 
     green: { DEFAULT: '#699411', dark: '#699411' },
     greenBg: { DEFAULT: '#eefdd89c', dark: '#8a97764a' },
-    greenSoft: {
+    greenPale: {
       DEFAULT: 'linear-gradient(90deg, #e3f3cc4a 0%, #f2ffe05c 100%)',
       dark: 'linear-gradient(90deg, #636e534a 0%, #474e3c36 100%)',
     },
 
     greenLight: { DEFAULT: '#79d08f', dark: '#37B784' },
     greenLightBg: { DEFAULT: '#e3f3cc4a', dark: '#69735a4a' },
-    greenLightSoft: {
+    greenLightPale: {
       DEFAULT: 'linear-gradient(90deg, #e3f3cc4a 0%, #f2ffe05c 100%)',
       dark: 'linear-gradient(90deg, #636e534a 0%, #474e3c36 100%)',
     },
 
     cyan: { DEFAULT: '#24878C', dark: '#24878C' },
     cyanBg: { DEFAULT: '#e1fcff', dark: '#2c3738' },
-    cyanSoft: {
+    cyanPale: {
       DEFAULT: 'linear-gradient(90deg, #e1fcff94 0%, #e1fcff5e 100%)',
       dark: 'linear-gradient(90deg, #2c3738 0%, #2c37386e 100%)',
     },
@@ -131,18 +131,18 @@ module.exports = {
     // naming, fix later
     cyanLight: { DEFAULT: '#00B5CC', dark: '#00B5CC' },
     cyanLightBg: { DEFAULT: '#e1fcff94', dark: '#39494b94' },
-    cyanLightSoft: { DEFAULT: '#e1fcff94', dark: '#39494b94' },
+    cyanLightPale: { DEFAULT: '#e1fcff94', dark: '#39494b94' },
 
     blue: { DEFAULT: '#5073C6', dark: '#0073E3' },
     blueBg: { DEFAULT: '#E7EDF7', dark: '#76809654' },
-    blueSoft: {
+    bluePale: {
       DEFAULT: 'linear-gradient(90deg, #f3f7ff 0%, #f5f8ffb5 100%);',
       dark: 'linear-gradient(90deg, #505a7254 0%, #3a415038 100%)',
     },
 
     purple: { DEFAULT: '#7d519e', dark: '#7d519e' },
     purpleBg: { DEFAULT: '#f7d8fd38', dark: '#7c618238' },
-    purpleSoft: {
+    purplePale: {
       DEFAULT: 'linear-gradient(90deg, #f7d8fd38 0%, #f5e5f838 100%)',
       dark: 'linear-gradient(90deg, #86539147  0%, #58445d38 100%)',
     },
@@ -151,12 +151,12 @@ module.exports = {
 
     pink: { DEFAULT: '#b36976', dark: '#b36976' },
     pinkBg: { DEFAULT: '#ffd8ea59', dark: '#73526159' },
-    pinkSoft: { DEFAULT: '#ffd8ea59', dark: '#73526159' },
+    pinkPale: { DEFAULT: '#ffd8ea59', dark: '#73526159' },
 
     black: { DEFAULT: '#333333', dark: '#343333' },
     blackRow: { DEFAULT: '#333333', dark: '#282828' },
     blackBg: { DEFAULT: '#f4f4f4', dark: '#313131' },
-    blackSoft: { DEFAULT: '#f4f4f4', dark: '#313131' },
+    blackPale: { DEFAULT: '#f4f4f4', dark: '#313131' },
   },
   grey: {
     rare: { DEFAULT: '#fafafa', dark: '#272727' },

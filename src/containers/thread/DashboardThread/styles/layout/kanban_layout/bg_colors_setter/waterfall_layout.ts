@@ -1,6 +1,6 @@
 import type { TActive, TColor } from '~/spec'
 
-import styled, { css, theme, rainbowSoft } from '~/css'
+import styled, { css, theme, rainbowPale } from '~/css'
 
 export { Bar, Circle } from '..'
 
@@ -23,7 +23,7 @@ export const Header = styled.div<TBoard>`
 
   width: 100%;
   height: 30px;
-  background: ${({ $color }) => rainbowSoft($color)};
+  background: ${({ $color }) => rainbowPale($color)};
   border-radius: 20px;
 
   border: 1px solid;

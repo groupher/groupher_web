@@ -85,7 +85,7 @@ export {
   themeSkins,
   rainbow,
   rainbowLight,
-  rainbowSoft,
+  rainbowPale,
 } from './themes'
 
 // helpers
