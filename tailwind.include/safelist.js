@@ -1,3 +1,5 @@
+const { borderSoft } = require('../utils/constant/twConfig.json')
+
 const GENERAL = [
   'border-divider',
   'border-text-hint',
@@ -62,8 +64,6 @@ const UTILS = [
   'rounded-sm',
   'rounded-md',
   'bg-gradient-to-r to-transparent',
-  // TODO: extract those from ~/const/container
-  'max-w-[1200px]',
   '-ml-40',
   'mr-36',
   'pl-40',
@@ -76,6 +76,8 @@ const UTILS = [
   'bg-none',
   'bg-transparent',
   'rounded-3xl',
+  // TODO:
+  'max-w-[1200px]',
   'w-[1200px]',
 ]
 
@@ -87,7 +89,13 @@ module.exports = [
   ...FILL_COLORS.map((c) => `fill-${c} fill-${c}-dark`),
   ...RAINBOW_COLORS.map(
     (c) =>
-      `text-rainbow-${c} text-rainbow-${c}-dark bg-rainbow-${c} bg-rainbow-${c}-dark bg-rainbow-${c}Bg bg-rainbow-${c}Bg-dark fill-rainbow-${c} fill-rainbow-${c}-dark from-rainbow-${c}Bg from-rainbow-${c}Bg-dark 'border-rainbow-${c} border-rainbow-${c}-dark'`,
+      `text-rainbow-${c} text-rainbow-${c}-dark
+       bg-rainbow-${c} bg-rainbow-${c}-dark 
+       hover:bg-rainbow-${c}Bg hover:bg-rainbow-${c}Bg-dark
+       bg-rainbow-${c}Bg bg-rainbow-${c}Bg-dark fill-rainbow-${c} fill-rainbow-${c}-dark 
+       from-rainbow-${c}Bg from-rainbow-${c}Bg-dark 
+       border-rainbow-${c}/${borderSoft.opacity} border-rainbow-${c}-dark/${borderSoft.opacity_dark}
+      `,
   ),
 
   ...MARGIN.map((c) => `mt-${c} mb-${c} ml-${c} mr-${c}`),

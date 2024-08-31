@@ -5,7 +5,7 @@ import type { TColorName, TSpace } from '~/spec'
 import { COLOR_NAME } from '~/const/colors'
 import type { TFlatThemeKey } from '~/utils/themes/skins'
 
-import { container as containerConf } from '~/const/container.json'
+import { container as containerConf, borderSoft as borderSoftConf } from '~/const/twConfig.json'
 import { camelize } from '~/fmt'
 
 import useTheme from '~/hooks/useTheme'
@@ -13,7 +13,8 @@ import useMetric from '~/hooks/useMetric'
 import useAvatarLayout from '~/hooks/useAvatarLayout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-type TColorPrefix = 'fg' | 'bg' | 'fill' | 'border'
+// TODO: rename 'border -> borderSolt'
+type TColorPrefix = 'fg' | 'bg' | 'bgSoft' | 'fill' | 'border' | 'borderSoft'
 type TBreakOut = 'footer' | 'header'
 type TMenuPart = 'bg' | 'bar' | 'title' | 'link'
 type TShadowSize = 'md' | 'lg' | 'xl'
@@ -67,12 +68,44 @@ export default (): TRet => {
   const fill = (key: TFlatThemeKey) => _theme(key, 'fill')
   const br = (key: TFlatThemeKey) => _theme(key, 'border')
 
+  const _rainbowalias = (prefix: TColorPrefix): string => {
+    switch (prefix) {
+      case 'fg': {
+        return 'text-rainbow'
+      }
+
+      case 'bgSoft': {
+        return 'bg-rainbow'
+      }
+
+      case 'borderSoft': {
+        return 'border-rainbow'
+      }
+
+      default: {
+        return `${prefix}-rainbow`
+      }
+    }
+  }
+
   /**
    * use in theme balls and all kinks of gradients
    */
-  const rainbow = (color: TColorName, prefix: 'fg'): string => {
-    const prefix$ = prefix === 'fg' ? 'text-rainbow' : `${prefix}-rainbow`
+  const rainbow = (color: TColorName, prefix = 'fg'): string => {
+    const prefix$ = _rainbowalias(prefix as TColorPrefix)
     const color$ = camelize(color)
+
+    if (prefix === 'bgSoft') {
+      // return isLightTheme ? `bg-rainbow-${color$}Soft` : `bg-rainbow-${color$}Soft-dark`
+      return isLightTheme ? `${prefix$}-${color$}Bg` : `${prefix$}-${color$}Bg-dark`
+    }
+
+    if (prefix === 'borderSoft') {
+      const opacity = isLightTheme ? borderSoftConf.opacity : borderSoftConf.opacity_dark
+      return isLightTheme
+        ? `${prefix$}-${color$}/${opacity}`
+        : `${prefix$}-${color$}-dark/${opacity}`
+    }
 
     return isLightTheme ? `${prefix$}-${color$}` : `${prefix$}-${color$}-dark`
   }

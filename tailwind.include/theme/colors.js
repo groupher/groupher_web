@@ -76,6 +76,8 @@ module.exports = {
   dashboardBlockOpacity: { DEFAULT: 0.65, dark: 0.7 },
   snackBar: { DEFAULT: colors.neutral['700'] },
 
+  // TODO: 有歧义，现在的 xxBg 应改为 xxSoft
+  // 现在的 xxSoft 应改为 xxPale
   rainbow: {
     red: { DEFAULT: '#ca5f4d', dark: '#ca5f4d' },
     redBg: { DEFAULT: '#ffbfba3d', dark: '#7d3b363d' },

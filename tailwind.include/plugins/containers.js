@@ -1,6 +1,6 @@
 // doc: https://tailwindcss.com/docs/screens
 
-const { container: C } = require('../../utils/constant/container.json')
+const { container: C } = require('../../utils/constant/twConfig.json')
 
 module.exports = ({ addComponents, theme }) => {
   const containers = {

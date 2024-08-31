@@ -1,4 +1,8 @@
 {
+  "borderSoft": {
+    "opacity": 35,
+    "opacity_dark": 75
+  },
   "container": {
     "home": {
       "width": "1460px",
