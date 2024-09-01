@@ -57,7 +57,7 @@ const HOVERS = [
   'border-text-digest',
 ]
 
-const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red']
+const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red', 'fill-text-title']
 const CONTAINERS = ['container-home', 'container-community', 'container-community_sidebar']
 const UTILS = [
   'border-transparent',

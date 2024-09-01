@@ -1,50 +1,21 @@
-import type { TTestable, TColor } from '~/spec'
-import styled, { css, rainbow } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-type TSlipBar = {
-  $slipHeight: string
-  $width: string
-  $translateX: string
-  $noAnimation?: boolean
+type TProps = {
+  noAnimation: boolean
+  slipHeight: 'px' | 0.5
 }
 
-export const Wrapper = styled.nav.attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TTestable>`
-  position: relative;
-  overflow: hidden;
-  width: auto;
-  font-size: 14px;
+export default ({ noAnimation, slipHeight }: TProps) => {
+  const { cn, primary, enhanceDark } = useTwBelt()
 
-  ${css.media.mobile`
-    overflow: scroll;
-  `};
-`
-export const Nav = styled.nav`
-  position: relative;
-  ${css.row('align-center')};
-  flex-flow: nowrap;
-  margin: 0 auto;
-  padding: 0;
-`
-
-export const SlipBar = styled.span<TSlipBar>`
-  position: absolute;
-  ${css.row('justify-center')};
-  width: ${({ $width }) => $width};
-  bottom: 1px;
-  left: 0;
-  height: ${({ $slipHeight }) => $slipHeight};
-  transform: ${({ $translateX }) => `translate3d(${$translateX}, 0, 0);`};
-
-  transition: ${({ $noAnimation }) => ($noAnimation ? 'none' : 'transform 0.25s')};
-`
-
-type TRealBar = { $width: string } & TColor
-export const RealBar = styled.span<TRealBar>`
-  width: ${({ $width }) => $width};
-  height: 2px;
-  background: ${({ $color }) => rainbow($color, 'dashboard.menuTitle')};
-`
-// transform: ${({ active }) =>
-//     active ? 'translate3d(0,0,0);' : 'translate3d(0, 150%, 0);'};
+  return {
+    wrapper: cn('relative text-sm w-auto overflow-hidden'),
+    nav: cn('row-center relative flex-nowrap p-o my-auto'),
+    slipbar: cn(
+      'row justify-center absolute bottom-px left-0 opacity-65',
+      noAnimation && 'trans-all-200',
+      `h-${slipHeight}`,
+    ),
+    realBar: cn('h-0.5', primary('bg'), enhanceDark()),
+  }
+}

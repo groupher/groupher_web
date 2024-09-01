@@ -2,6 +2,18 @@ import type { TActive } from '~/spec'
 import Img from '~/Img'
 import styled, { css, theme } from '~/css'
 
+import useTwBelt from '~/hooks/useTwBelt'
+
+export default () => {
+  const { cn, fill } = useTwBelt()
+
+  return {
+    wrapper: 'row-center h-4 w-5',
+    icon: cn('size-4', fill('text.digest')),
+    iconActive: cn('size-4', fill('text.title')),
+  }
+}
+
 export const Wrapper = styled.div`
   ${css.row('align-center')};
   /* NOTE: the width and height here is a MUST, to hold the icon place, otherwise the width-calc will fail  */

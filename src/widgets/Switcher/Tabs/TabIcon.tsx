@@ -1,7 +1,7 @@
 import { type FC, useCallback, lazy, Suspense } from 'react'
 
 import type { TTabItem } from '~/spec'
-import { Wrapper } from '../styles/tabs/tab_icon'
+import useSalon from '../styles/tabs/tab_icon'
 
 type TProps = {
   item: TTabItem
@@ -14,6 +14,7 @@ type TProps = {
 export const LocalIcon = lazy(() => import('./LocalIcon'))
 
 const TabIcon: FC<TProps> = ({ item, clickableRef, active }) => {
+  const s = useSalon()
   const { icon } = item
 
   const IconCmp = icon && (
@@ -30,7 +31,11 @@ const TabIcon: FC<TProps> = ({ item, clickableRef, active }) => {
     [clickableRef],
   )
 
-  return <Wrapper onClick={handleClick}>{IconCmp}</Wrapper>
+  return (
+    <div className={s.wrapper} onClick={handleClick}>
+      {IconCmp}
+    </div>
+  )
 }
 
 export default TabIcon

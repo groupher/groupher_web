@@ -7,30 +7,25 @@
 import { type FC, useEffect, useCallback, useRef } from 'react'
 
 import type { TSizeSM, TTabItem } from '~/spec'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 import { Trans } from '~/i18n'
 import { isString } from '~/validator'
 import { isElementInViewport } from '~/dom'
 
 import TabIcon from './TabIcon'
-import { Wrapper, Label, ActiveLineWrapper, ActiveLine } from '../styles/tabs/tab_item'
+import useSalon, { cn } from '../styles/tabs/tab_item'
 
 type TProps = {
-  mobileView?: boolean
-  modelineView?: boolean
   wrapMode?: boolean
   item: TTabItem
   index: number
   size: TSizeSM
   activeKey: string
-  bottomSpace?: number
+  bottomSpace?: number | string
   setItemWidth?: (index: number, width: number) => void
   onClick?: (index: number, e) => void
 }
 
 const TabItem: FC<TProps> = ({
-  mobileView = false,
-  modelineView = false,
   wrapMode = false,
   bottomSpace = 0,
   activeKey,
@@ -40,7 +35,9 @@ const TabItem: FC<TProps> = ({
   onClick,
   setItemWidth,
 }) => {
-  const primaryColor = usePrimaryColor()
+  const active = item.slug === activeKey
+
+  const s = useSalon({ bottomSpace })
 
   const ref = useRef(null)
   const clickableRef = useRef(null)
@@ -63,7 +60,7 @@ const TabItem: FC<TProps> = ({
   )
 
   useEffect(() => {
-    if (item.slug === activeKey && !(mobileView || modelineView) && !wrapMode) {
+    if (item.slug === activeKey && !wrapMode) {
       const curEl = activeRef?.current
       const inViewport = isElementInViewport(curEl)
 
@@ -77,25 +74,14 @@ const TabItem: FC<TProps> = ({
         })
       }
     }
-  }, [activeRef, item, activeKey, mobileView, modelineView, wrapMode])
+  }, [activeRef, item, activeKey, wrapMode])
 
   return (
-    <Wrapper
-      ref={ref}
-      $mobileView={mobileView}
-      $modelineView={modelineView}
-      $wrapMode={wrapMode}
-      size={size}
-      onClick={handleWrapperClick}
-      $active={item.slug === activeKey}
-    >
-      <Label
+    <div className={s.wrapper} ref={ref} onClick={handleWrapperClick}>
+      <span
         ref={clickableRef}
+        className={cn(s.label, active && s.labelActive)}
         onClick={handleLabelClick}
-        $active={item.slug === activeKey}
-        size={size}
-        $bottomSpace={bottomSpace}
-        $color={primaryColor}
       >
         {!isString(item) && item.icon && (
           <TabIcon item={item} clickableRef={clickableRef} active={item.slug === activeKey} />
@@ -103,14 +89,8 @@ const TabItem: FC<TProps> = ({
         <div ref={item.slug === activeKey ? activeRef : null}>
           {isString(item) ? item : item.alias || Trans(item.title)}
         </div>
-      </Label>
-
-      {wrapMode && item.slug === activeKey && (
-        <ActiveLineWrapper>
-          <ActiveLine />
-        </ActiveLineWrapper>
-      )}
-    </Wrapper>
+      </span>
+    </div>
   )
 }
 

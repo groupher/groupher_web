@@ -9,12 +9,11 @@ import { isEmpty, findIndex, pluck, includes } from 'ramda'
 import useMobileDetect from '@groupher/use-mobile-detect-hook'
 
 import type { TSizeSM, TTabItem } from '~/spec'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 import SIZE from '~/const/size'
 import { isString } from '~/validator'
 
 import TabItem from './TabItem'
-import { Wrapper, Nav, SlipBar, RealBar } from '../styles/tabs'
+import useSalon from '../styles/tabs'
 import { getSlipMargin } from '../styles/metric/tabs'
 
 const temItems = [
@@ -47,7 +46,7 @@ type TProps = {
   onChange: () => void
   activeKey?: string
   size: TSizeSM
-  slipHeight: '1px' | '2px'
+  slipHeight: 'px' | 0.5
   bottomSpace?: number
   noAnimation?: boolean
 }
@@ -57,12 +56,13 @@ const Tabs: FC<TProps> = ({
   onChange = console.log,
   items = temItems,
   activeKey = '',
-  slipHeight = '1px',
+  slipHeight = 'px',
   bottomSpace = 0,
   noAnimation = false,
 }) => {
+  const s = useSalon({ noAnimation, slipHeight })
+
   const { isMobile } = useMobileDetect()
-  const primaryColor = usePrimaryColor()
 
   const defaultActiveTabIndex = getDefaultActiveTabIndex(items, activeKey)
   // @ts-ignore
@@ -112,12 +112,11 @@ const Tabs: FC<TProps> = ({
   }px`
 
   return (
-    <Wrapper $testid="tabs">
-      <Nav ref={navRef}>
+    <div data-testid="tabs" className={s.wrapper}>
+      <nav ref={navRef} className={s.nav}>
         {items.map((item, index) => (
           <TabItem
             key={isString(item) ? item : item.slug || item.title}
-            mobileView={isMobile}
             activeKey={activeKey}
             index={index}
             item={item}
@@ -129,17 +128,18 @@ const Tabs: FC<TProps> = ({
         ))}
 
         {hasActiveItem && (
-          <SlipBar
-            $translateX={translateX}
-            $width={`${tabWidthList[active]}px`}
-            $slipHeight={slipHeight}
-            $noAnimation={noAnimation}
+          <span
+            className={s.slipbar}
+            style={{
+              transform: `translate3d(${translateX}, 0, 0)`,
+              width: `${tabWidthList[active]}px`,
+            }}
           >
-            <RealBar $width={`${slipWidth}px`} $color={primaryColor} />
-          </SlipBar>
+            <span className={s.realBar} style={{ width: `${slipWidth}px` }} />
+          </span>
         )}
-      </Nav>
-    </Wrapper>
+      </nav>
+    </div>
   )
 }
 

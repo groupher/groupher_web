@@ -9,7 +9,7 @@ import { type FC, useCallback, memo } from 'react'
 import type { TTabItem } from '~/spec'
 import { isString } from '~/validator'
 
-import { Wrapper, TabItem } from '../styles/tabs/drawer_view'
+import useSalon, { cn } from '../styles/tabs/drawer_view'
 
 const temItems = [
   {
@@ -23,10 +23,11 @@ type TProps = {
   items?: TTabItem[]
   onChange: () => void
   activeKey?: string
-  // slipHeight: '1px' | '2px'
 }
 
 const Tabs: FC<TProps> = ({ onChange = console.log, items = temItems, activeKey = '' }) => {
+  const s = useSalon()
+
   const handleItemClick = useCallback(
     (item) => {
       onChange(isString(item) ? item : item.slug || item.title)
@@ -35,17 +36,17 @@ const Tabs: FC<TProps> = ({ onChange = console.log, items = temItems, activeKey 
   )
 
   return (
-    <Wrapper $testid="tabs">
+    <div className={s.wrapper} data-testid="tabs">
       {items.map((item) => (
-        <TabItem
+        <div
           key={isString(item) ? item : item.slug || item.title}
-          $active={activeKey === item.slug}
+          className={cn(s.tabItem, activeKey === item.slug && s.tabItemActive)}
           onClick={() => handleItemClick(item)}
         >
           {item.title}
-        </TabItem>
+        </div>
       ))}
-    </Wrapper>
+    </div>
   )
 }
 
