@@ -8,7 +8,7 @@ import CloseSVG from '~/icons/CloseLight'
 
 import PrefixIcon from './PrefixIcon'
 
-import useSalon from '../styles/dropdown_button'
+import useSalon from '../salon/dropdown_button'
 
 type TProps = {
   children: ReactNode

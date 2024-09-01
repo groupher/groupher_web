@@ -1,4 +1,4 @@
-import styled, { css, theme, rainbowLight, rainbow } from '~/css'
+import styled, { css, theme, rainbowSoft, rainbow } from '~/css'
 import type { TColor, TColorName } from '~/spec'
 
 import GtdWipSVG from '~/icons/GtdWip'
@@ -21,7 +21,7 @@ export const Header = styled.div`
   padding-left: 3px;
 `
 export const Body = styled.div<{ color: TColorName }>`
-  background-color: ${({ color }) => rainbowLight(color)};
+  background-color: ${({ color }) => rainbowSoft(color)};
   padding: 8px;
   padding-bottom: 0;
   border-radius: 12px;

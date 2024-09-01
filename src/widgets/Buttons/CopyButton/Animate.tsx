@@ -1,6 +1,6 @@
 import { type FC, memo, useEffect, useState } from 'react'
 
-import { CopyedHint, CopyIcon, CopyedText } from '../styles/copy_button'
+import { CopyedHint, CopyIcon, CopyedText } from '../salon/copy_button'
 
 const CopyButton: FC = () => {
   const [done, setDone] = useState(false)

@@ -20,18 +20,18 @@ export default ({ ...spacing }: TProps) => {
     margin(spacing),
   )
 
-  const wrapper = includes(bannerLayout, [BANNER_LAYOUT.TABBER, BANNER_LAYOUT.SIDEBAR])
-    ? withBgWrapper
-    : normalWrapper
+  const isTabberLayout = bannerLayout === BANNER_LAYOUT.TABBER
+  const wrapper = includes(bannerLayout, [BANNER_LAYOUT.SIDEBAR]) ? withBgWrapper : normalWrapper
 
   return {
     wrapper,
     hoverBox: cn(
       'align-both size-6 rounded border border-transparent pointer',
+      isTabberLayout && bg('hoverBg'),
       `hover:${bg('hoverBg')}`,
       `hover:${br('divider')}`,
     ),
-    nickname: cn('font-sm ml-2.5', fg('text.digest')),
+    nickname: cn('text-sm ml-2.5', fg('text.digest')),
     unLoginIcon: cn('size-3 pointer', fill('text.digest'), `hover:${fill('text.title')}`),
   }
 }

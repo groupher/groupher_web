@@ -1,6 +1,6 @@
 import type { TColor, TTestable } from '~/spec'
 
-import styled, { css, theme, rainbowLight } from '~/css'
+import styled, { css, theme, rainbowSoft } from '~/css'
 
 import { getUserwallGradient, getUserwallGradientOpacity } from '../metric'
 
@@ -94,5 +94,5 @@ export const Highlight = styled.span<TColor>`
   color: ${theme('article.digest')};
   font-weight: 450;
   padding: 0 2px;
-  background-color: ${({ $color }) => rainbowLight($color)};
+  background-color: ${({ $color }) => rainbowSoft($color)};
 `

@@ -8,7 +8,8 @@ type TProps = {
 }
 
 export default ({ expand }: TProps) => {
-  const { cn, br, fg, bg, fill } = useTwBelt()
+  const { cn, br, fg, bg, fill, global, shadow } = useTwBelt()
+
   const { inView: badgeInView } = useCommunityDigestViewport()
 
   const iconBox = cn(
@@ -19,11 +20,16 @@ export default ({ expand }: TProps) => {
 
   return {
     wrapper: cn(
-      'relative border rounded-2xl h-10 hover:shadow-md trans-all-200',
+      'relative border rounded-2xl h-10 trans-all-200 z-20 -ml-0.5',
       badgeInView ? 'w-48' : 'w-52 -ml-2.5',
       expand ? 'h-60' : 'h-10', // add real menu height here
       br('divider'),
       bg('popover.bg'),
+      shadow('lg'),
+    ),
+    shadowMask: cn(
+      'absolute -left-14 -bottom-7 w-64 h-28 circle -z-10 blur-sm',
+      global('unibar-linear-mask'),
     ),
     topBox: cn(iconBox, badgeInView ? 'max-w-0' : 'max-w-6'),
     iconBox,

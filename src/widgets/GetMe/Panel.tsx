@@ -1,52 +1,67 @@
 import type { FC } from 'react'
 
+import FirefoxSVG from '~/icons/Firefox'
+import ChromeWebStoreSVG from '~/icons/ChromeWebStore'
+import GooglePlaySVG from '~/icons/GooglePlay'
+import AppStoreSVG from '~/icons/AppStore'
+import GithubSVG from '~/icons/social/Github'
+
+import LinkSVG from '~/icons/ArrowUpRight'
 import { SexyDivider } from '~/widgets/Common'
 
-import { Wrapper, AppStoreBar, MenuBar, Icon, Info, Platform, Title } from './styles/panel'
+import useSalon from './styles/panel'
 
 const Panel: FC = () => {
-  return (
-    <Wrapper>
-      <AppStoreBar>
-        <Icon.GooglePlay />
-      </AppStoreBar>
+  const s = useSalon()
 
-      <AppStoreBar>
-        <Icon.AppStore />
-      </AppStoreBar>
+  return (
+    <div className={s.wrapper}>
+      <div className={s.appStoreBar}>
+        <GooglePlaySVG className={s.storeIcon} />
+      </div>
+
+      <div className={s.appStoreBar}>
+        <AppStoreSVG className={s.storeIcon} />
+      </div>
 
       <SexyDivider top={8} bottom={6} />
 
-      <MenuBar>
-        <Icon.ChromeWebStore />
-        <Info>
-          <Platform>Chrome 应用商店</Platform>
-          <Title>Groupher</Title>
-        </Info>
+      <div className={s.menuBar}>
+        <div className={s.iconBox}>
+          <ChromeWebStoreSVG className={s.icon} />
+        </div>
+        <div className={s.info}>
+          <div className={s.platform}>Chrome 应用商店</div>
+          <h3 className={s.title}>Groupher</h3>
+        </div>
         <div className="grow" />
-        <Icon.Link />
-      </MenuBar>
+        <LinkSVG className={s.linkIcon} />
+      </div>
 
-      <MenuBar>
-        <Icon.Firefox />
-        <Info>
-          <Platform>火狐插件市场</Platform>
-          <Title>Groupher</Title>
-        </Info>
+      <div className={s.menuBar}>
+        <div className={s.iconBox}>
+          <FirefoxSVG className={s.icon} />
+        </div>
+        <div className={s.info}>
+          <div className={s.platform}>火狐插件市场</div>
+          <h3 className={s.title}>Groupher</h3>
+        </div>
         <div className="grow" />
-        <Icon.Link />
-      </MenuBar>
+        <LinkSVG className={s.linkIcon} />
+      </div>
 
-      <MenuBar>
-        <Icon.Github />
-        <Info>
-          <Platform>Github</Platform>
-          <Title>Groupher</Title>
-        </Info>
+      <div className={s.menuBar}>
+        <div className={s.iconBox}>
+          <GithubSVG className={s.icon} />
+        </div>
+        <div className={s.info}>
+          <div className={s.platform}>Github</div>
+          <h3 className={s.title}>Groupher</h3>
+        </div>
         <div className="grow" />
-        <Icon.Link />
-      </MenuBar>
-    </Wrapper>
+        <LinkSVG className={s.linkIcon} />
+      </div>
+    </div>
   )
 }
 

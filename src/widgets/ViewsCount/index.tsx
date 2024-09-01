@@ -1,27 +1,34 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
-import { Wrapper, ViewsIcon, Count, HighlightWrapper } from './styles'
+import type { TSpace } from '~/spec'
+
+import ViewedSVG from '~/icons/article/Viewed'
+import useSalon, { cn } from './salon'
 
 type TProps = {
   count: number
-}
+} & TSpace
 
-const ViewsCount: FC<TProps> = ({ count }) => {
+const ViewsCount: FC<TProps> = ({ count, ...spacing }) => {
+  const isHighLight = count >= 400
+
+  const s = useSalon({ isHighLight, ...spacing })
+
   return (
-    <div>
-      {count >= 400 ? (
-        <HighlightWrapper>
-          <ViewsIcon $highlight />
-          <Count>{count}</Count>
-        </HighlightWrapper>
+    <>
+      {isHighLight ? (
+        <div className={cn(s.wrapper, s.highLight)}>
+          <ViewedSVG className={s.viewIcon} />
+          <div className={s.count}>{count}</div>
+        </div>
       ) : (
-        <Wrapper>
-          <ViewsIcon />
-          <Count>{count}</Count>
-        </Wrapper>
+        <div className={s.wrapper}>
+          <ViewedSVG className={s.viewIcon} />
+          <div className={s.count}>{count}</div>
+        </div>
       )}
-    </div>
+    </>
   )
 }
 
-export default memo(ViewsCount)
+export default ViewsCount

@@ -1,6 +1,6 @@
-import type { FC } from 'react'
+import type { SVGProps } from 'react'
 
-const EditPen: FC = (props) => (
+const Icon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     className="prefix__icon"
     viewBox="0 0 1024 1024"
@@ -16,4 +16,4 @@ const EditPen: FC = (props) => (
   </svg>
 )
 
-export default EditPen
+export default Icon

@@ -32,7 +32,6 @@ export const CommentUsers = styled.div<TComemntUsers>`
   border: 1px solid;
   background: ${theme('htmlBg')};
   border-color: #d3d3d3;
-  box-shadow: ${theme('button.boxShadow')};
   width: ${({ $width }) => `${$width || 100}px`};
   padding-left: 5px;
   height: 38px;

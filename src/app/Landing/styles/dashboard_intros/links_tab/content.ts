@@ -54,7 +54,6 @@ export const Desc = styled.div`
 export const Logo = styled.div`
   ${css.size(35)};
   background: ${theme('gradientBg.orange')};
-  box-shadow: ${theme('button.boxShadow')};
   border: 1px solid;
   border-color: ${theme('divider')};
   border-radius: 5px;

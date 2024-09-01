@@ -2,16 +2,19 @@ import type { FC } from 'react'
 
 import type { TUser } from '~/spec'
 
-import useLayout from '~/hooks/useLayout'
+import Img from '~/Img'
 import Tooltip from '~/widgets/Tooltip'
 import UserCard from '~/widgets/Cards/UserCard'
+import ImgFallback from '~/widgets/ImgFallback'
 
-import { getAvatarSize } from './styles/metric'
+import { getAvatarSize } from './salon/metric'
 import type { TAvatarSize } from './spec'
 
-import { Wrapper, InnerWrapper, AvatarsImg, AvatarFallback } from './styles/real_avatar'
+import useSalon from './salon/real_avatar'
 
 type TProps = {
+  isFirst: boolean
+  isLast: boolean
   user?: TUser
   size?: TAvatarSize
   noLazyLoad: boolean
@@ -19,11 +22,19 @@ type TProps = {
   onUserSelect: (user: TUser) => void
 }
 
-const RealAvatar: FC<TProps> = ({ user, size, noLazyLoad, onUserSelect, popCardPlacement }) => {
-  const { avatarLayout } = useLayout()
+const RealAvatar: FC<TProps> = ({
+  isFirst,
+  isLast,
+  user,
+  size,
+  noLazyLoad,
+  onUserSelect,
+  popCardPlacement,
+}) => {
+  const s = useSalon({ size, isFirst, isLast })
 
   return (
-    <Wrapper size={size}>
+    <li className={s.wrapper}>
       <Tooltip
         content={<UserCard user={user} />}
         delay={0}
@@ -31,18 +42,21 @@ const RealAvatar: FC<TProps> = ({ user, size, noLazyLoad, onUserSelect, popCardP
         placement={popCardPlacement}
         interactive={false}
       >
-        <InnerWrapper>
-          <AvatarsImg
-            src={user.avatar}
-            size={size}
-            onClick={() => onUserSelect(user)}
-            noLazy={noLazyLoad}
-            $avatarLayout={avatarLayout}
-            fallback={<AvatarFallback size={getAvatarSize(size, 'number') as number} user={user} />}
-          />
-        </InnerWrapper>
+        <Img
+          src={user.avatar}
+          className={s.avatar}
+          onClick={() => onUserSelect(user)}
+          noLazy={noLazyLoad}
+          fallback={
+            <ImgFallback
+              className={s.avatarFallback}
+              size={getAvatarSize(size, 'number') as number}
+              user={user}
+            />
+          }
+        />
       </Tooltip>
-    </Wrapper>
+    </li>
   )
 }
 

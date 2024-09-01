@@ -7,10 +7,15 @@ type TProps = {
 } & TSpace
 
 export default ({ size, ...spacing }: TProps) => {
-  const { cn, zise, margin, primary } = useTwBelt()
+  const { cn, zise, margin, bg, primary, enhanceDark, isBlackPrimary, isDarkBlack } = useTwBelt()
 
   return {
-    // bg('dot')
-    wrapper: cn('circle opacity-80', zise(size), margin(spacing), primary('bg')),
+    wrapper: cn(
+      'circle opacity-80',
+      zise(size),
+      margin(spacing),
+      isBlackPrimary ? bg('link') : primary('bg'),
+      !isDarkBlack && enhanceDark(),
+    ),
   }
 }

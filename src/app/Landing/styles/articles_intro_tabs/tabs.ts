@@ -6,7 +6,7 @@ import TadaSVG from '~/icons/Tada'
 import GuideSVG from '~/icons/Book'
 import KanbanSVG from '~/icons/Kanban'
 
-import styled, { css, rainbow, rainbowLight, theme } from '~/css'
+import styled, { css, rainbow, rainbowSoft, theme } from '~/css'
 
 export const Wrapper = styled.div`
   ${css.row('align-both')};
@@ -33,7 +33,7 @@ type TIconBox = TColor & TActive
 export const IconBox = styled.div<TIconBox>`
   ${css.size(40)};
   border-radius: 6px;
-  background: ${({ $color, $active }) => ($active ? rainbowLight($color) : 'transparent')};
+  background: ${({ $color, $active }) => ($active ? rainbowSoft($color) : 'transparent')};
   position: relative;
   border: 1px dotted;
   border-color: ${({ $color }) => rainbow($color)};

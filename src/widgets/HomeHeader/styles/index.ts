@@ -181,7 +181,6 @@ export const MenuItem = styled(Link)<{ noDesc?: boolean }>`
   &:hover {
     color: ${theme('article.title')};
     background: ${theme('menuHoverBg')};
-    box-shadow: ${theme('button.boxShadow')};
     cursor: pointer;
     text-decoration: none;
   }

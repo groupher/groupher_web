@@ -1,61 +1,21 @@
-import type { TColor } from '~/spec'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import styled, { css, theme, rainbow } from '~/css'
+export { cn } from '~/css'
 
-// user page
-import DiscussSVG from '~/icons/Discuss'
-import KanbanSVG from '~/icons/Kanban'
-import GuideSVG from '~/icons/Book'
-import TadaSVG from '~/icons/TadaRaw'
-import InfoSVG from '~/icons/Info'
-import ArrowSVG from '~/icons/ArrowUpRight'
-
-import PublishSVG from '~/icons/Publish'
-import BillingSVG from '~/icons/Billing'
-import TabCommentsSVG from '~/SvgIcons/TabCommentsSVG'
-import SettingSVG from '~/icons/Setting'
-import TabFavoritesSVG from '~/widgets/SvgIcons/TabFavoritesSVG'
-
-import { Label } from './tab_item'
-
-export const LableWrapper = styled.div`
-  ${css.row('align-center')};
-`
-
-type TCommonIcon = { $active: boolean; $small: boolean } & TColor
-
-const commonIcon = (comp) => {
-  return styled(comp)<TCommonIcon>`
-    fill: ${({ $active, $color }) => ($active ? rainbow($color) : theme('hint'))};
-    width: ${({ $small }: { $small: boolean }) => ($small ? '12px' : '14px')};
-    height: ${({ $small }) => ($small ? '12px' : '14px')};
-    margin-right: 5px;
-    display: block;
-
-    ${Label}:hover & {
-      fill: ${({ $color }) => rainbow($color)};
-    }
-  `
+type TProps = {
+  small: boolean
 }
 
-// export const TabRepoIcon = commonIcon(TabRepoSVG)
-// export const TabCheatsheetIcon = commonIcon(TabCheatsheetSVG)
-export const DiscussIcon = styled(commonIcon(DiscussSVG))`
-  transform: scale(0.96);
-  margin-top: 2px;
-`
-export const TadaIcon = commonIcon(TadaSVG)
-export const InfoIcon = commonIcon(InfoSVG)
-export const ArrowIcon = commonIcon(ArrowSVG)
+export default ({ small }: TProps) => {
+  const { cn, fill } = useTwBelt()
 
-export const KanbanIcon = styled(commonIcon(KanbanSVG))`
-  transform: rotate(180deg);
-`
-export const GuideIcon = commonIcon(GuideSVG)
-
-// user page
-export const PublishIcon = commonIcon(PublishSVG)
-export const TabBillingIcon = commonIcon(BillingSVG)
-export const TabCommentsIcon = commonIcon(TabCommentsSVG)
-export const SettingIcon = commonIcon(SettingSVG)
-export const TabFavoritesIcon = commonIcon(TabFavoritesSVG)
+  return {
+    icon: cn(
+      'mr-1.5 opacity-60 transition-colors',
+      small ? 'size-3' : 'size-3.5',
+      `group-hover:${fill('text.title')}`,
+      fill('text.digest'),
+    ),
+    active: cn('opacity-80', fill('text.title')),
+  }
+}

@@ -1,5 +1,5 @@
 import type { TActive, TColor } from '~/spec'
-import styled, { css, theme, rainbow, rainbowLight } from '~/css'
+import styled, { css, theme, rainbow, rainbowSoft } from '~/css'
 
 import HashTagSVG from '~/icons/HashTag'
 
@@ -20,7 +20,7 @@ export const BgWrapper = styled.div<TColor>`
   ${css.size(22)};
   ${css.row('align-both')};
   border-radius: 4px;
-  background: ${({ $color }) => rainbowLight($color)};
+  background: ${({ $color }) => rainbowSoft($color)};
 `
 export const HashTagIcon = styled(HashTagSVG)<TColor>`
   ${css.size(18)};

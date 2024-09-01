@@ -2,19 +2,22 @@ import type { FC } from 'react'
 
 import type { TSpace, TUser } from '~/spec'
 
-import { Wrapper, AvatarsImg } from './styles/landing_page'
+import Img from '~/Img'
+import useSalon from './salon/landing_page'
 
 type TProps = {
   users: TUser[]
 } & TSpace
 
-const LandingPage: FC<TProps> = ({ users, ...restProps }) => {
+const LandingPage: FC<TProps> = ({ users, ...spacing }) => {
+  const s = useSalon({ ...spacing })
+
   return (
-    <Wrapper {...restProps}>
+    <div className={s.wrapper}>
       {users.map((user) => (
-        <AvatarsImg key={user.login} src={user.avatar} />
+        <Img key={user.login} src={user.avatar} className={s.avatar} />
       ))}
-    </Wrapper>
+    </div>
   )
 }
 

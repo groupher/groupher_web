@@ -24,7 +24,7 @@ export const Avatar = styled(Img)<{ $avatarLayout: TAvatarLayout }>`
 export const BadgeWrapper = styled.div<{ $avatarLayout: TAvatarLayout }>`
   ${css.circle(14)};
   ${css.row('align-both')};
-  background: ${theme('rainbow.blackRow')};
+  background: ${theme('rainbow.blackBtn')};
   padding: 1px;
   border: 1px solid;
   border-color: ${theme('hint')};

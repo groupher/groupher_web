@@ -9,7 +9,7 @@ export { cn } from '~/css'
 type TProps = TSpace
 
 export default ({ ...spacing }: TProps) => {
-  const { cn, margin, br, fg, bg, primary } = useTwBelt()
+  const { cn, margin, br, fg, bg, primary, enhanceDark } = useTwBelt()
 
   const { layout } = useHeaderLinks()
 
@@ -26,12 +26,12 @@ export default ({ ...spacing }: TProps) => {
   return {
     wrapper,
     title: cn(
-      'row-center font-sm no-underline h-8 px-3.5 rounded pointer transition-colors',
+      'row-center text-sm no-underline h-8 px-3.5 rounded pointer transition-colors',
       `hover:${primary('fg')}`,
       `hover:${bg('hoverBg')}`,
       `hover:${fg('text.title')}`,
       fg('text.digest'),
     ),
-    titleActive: cn('bold-sm', `hover:${primary('fg')}`, primary('fg')),
+    titleActive: cn('bold-sm', `hover:${primary('fg')}`, primary('fg'), enhanceDark()),
   }
 }

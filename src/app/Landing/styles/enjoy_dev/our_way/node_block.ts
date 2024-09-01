@@ -1,7 +1,7 @@
 import { ARTICLE_CAT } from '~/const/gtd'
 
 import type { TColor } from '~/spec'
-import styled, { css, theme, rainbow, rainbowLight } from '~/css'
+import styled, { css, theme, rainbow, rainbowSoft } from '~/css'
 import { COLOR_NAME } from '~/const/colors'
 
 import LightSVG from '~/icons/Light'
@@ -39,7 +39,7 @@ export const Wrapper = styled.div<TWrapper>`
     top: 0;
     width: 100%;
     height: 100%;
-    background: ${({ $color }) => rainbowLight($color)};
+    background: ${({ $color }) => rainbowSoft($color)};
 
     z-index: 0;
     border-radius: 16px;

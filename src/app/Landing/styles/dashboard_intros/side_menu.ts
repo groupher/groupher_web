@@ -32,7 +32,6 @@ export const TabItem = styled.div<TTabItem>`
   width: 280px;
 
   background: ${({ $active }) => ($active ? theme('htmlBg') : 'transparent')};
-  box-shadow: ${({ $active }) => ($active ? theme('button.boxShadow') : '')};
   border-left: 2px solid;
   border-left-color: ${theme('divider')};
   margin-top: ${({ $active }) => ($active ? '2px' : 0)};
@@ -41,7 +40,6 @@ export const TabItem = styled.div<TTabItem>`
   &:hover {
     border-left-color: ${({ $color }) => rainbow($color)};
     background: ${theme('htmlBg')};
-    box-shadow: ${theme('button.boxShadow')};
   }
 
   &:before {

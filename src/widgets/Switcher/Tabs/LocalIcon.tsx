@@ -1,16 +1,15 @@
 import type { FC } from 'react'
 
 import { THREAD } from '~/const/thread'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import {
-  DiscussIcon,
-  TadaIcon,
-  KanbanIcon,
-  GuideIcon,
-  InfoIcon,
-  ArrowIcon,
-} from '../styles/tabs/local_icon'
+import DiscussSVG from '~/icons/Discuss'
+import KanbanSVG from '~/icons/Kanban'
+import GuideSVG from '~/icons/Book'
+import TadaSVG from '~/icons/TadaRaw'
+import InfoSVG from '~/icons/Info'
+import ArrowSVG from '~/icons/ArrowUpRight'
+
+import useSalon, { cn } from '../styles/tabs/local_icon'
 
 type TProps = {
   slug: string
@@ -19,31 +18,33 @@ type TProps = {
 }
 
 const TabIcon: FC<TProps> = ({ slug, active, small }) => {
-  const primaryColor = usePrimaryColor()
+  const s = useSalon({ small })
+
+  const className = cn(s.icon, active && s.active)
 
   switch (slug) {
     case THREAD.POST: {
-      return <DiscussIcon $active={active} $small={small} $color={primaryColor} />
+      return <DiscussSVG className={className} />
     }
 
     case THREAD.KANBAN: {
-      return <KanbanIcon $active={active} $small={small} $color={primaryColor} />
+      return <KanbanSVG className={cn(className, 'rotate-180')} />
     }
 
     case THREAD.DOC: {
-      return <GuideIcon $active={active} $small={small} $color={primaryColor} />
+      return <GuideSVG className={className} />
     }
 
     case THREAD.CHANGELOG: {
-      return <TadaIcon $active={active} $small={small} $color={primaryColor} />
+      return <TadaSVG className={className} />
     }
 
     case THREAD.ABOUT: {
-      return <InfoIcon $active={active} $small={small} $color={primaryColor} />
+      return <InfoSVG className={className} />
     }
 
     default: {
-      return <ArrowIcon $active={active} $small={small} $color={primaryColor} />
+      return <ArrowSVG className={className} />
     }
   }
 }

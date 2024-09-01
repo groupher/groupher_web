@@ -7,9 +7,8 @@ import useViewingCommunity from '~/hooks/useViewingCommunity'
 import useHeaderLinks from '~/hooks/useHeaderLinks'
 
 import TabBar from '~/widgets/TabBar'
-import ViewportTracker from '~/widgets/ViewportTracker'
-import SearchBox from '~/widgets/SearchBox'
 import CustomHeaderLinks from '~/widgets/CustomHeaderLinks'
+import ViewportTracker from '~/widgets/ViewportTracker'
 
 import CommunityBrief from './CommunityBrief'
 
@@ -42,11 +41,9 @@ export default () => {
             withIcon
           />
           <CustomHeaderLinks links={customLinks} />
-          <div className="grow" />
-          <SearchBox right={0} />
         </div>
+        <ViewportTracker onEnter={enterView} onLeave={leaveView} />
       </div>
-      <ViewportTracker onEnter={enterView} onLeave={leaveView} />
     </div>
   )
 }

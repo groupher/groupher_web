@@ -89,6 +89,7 @@ export default () => {
       )}
 
       {bannerLayout === BANNER_LAYOUT.HEADER && <SearchBox right={-2} />}
+      {bannerLayout === BANNER_LAYOUT.TABBER && <SearchBox right={6} />}
     </div>
   )
 }

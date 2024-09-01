@@ -2,7 +2,7 @@ import type { FC } from 'react'
 
 import type { TColorName } from '~/spec'
 
-import { RightArrow, LeftArrow, UpArrow, DownArrow } from '../styles/arrow_button/arrow'
+import { RightArrow, LeftArrow, UpArrow, DownArrow } from '../salon/arrow_button/arrow'
 
 type TProps = {
   color: TColorName

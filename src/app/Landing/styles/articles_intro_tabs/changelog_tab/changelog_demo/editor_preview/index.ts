@@ -30,9 +30,9 @@ export const Cover = styled.div`
   border-radius: 5px;
   margin-bottom: 5px;
 
-  background: ${theme('rainbow.redBg')};
+  background: ${theme('rainbow.redSoft')};
   border: 1px dotted;
-  border-color: ${theme('rainbow.redBg')};
+  border-color: ${theme('rainbow.redSoft')};
 `
 export const Title = styled.div`
   ${css.row('align-center')};

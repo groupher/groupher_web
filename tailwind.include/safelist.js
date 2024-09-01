@@ -1,17 +1,56 @@
+const { borderSoft } = require('../utils/constant/twConfig.json')
+
 const GENERAL = [
   'border-divider',
+  'border-text-hint',
   'article-hover-linear',
+  'unibar-linear-mask',
+  'count-highlight',
   'footer-inner-shadow',
   'sexy-border-20',
   'sexy-border-35',
   'sexy-border-40',
+  'shadow-md',
+  'shadow-lg',
+  'shadow-xl',
 ]
 
-const TEXT_COLORS = ['text-title', 'text-digest', 'text-body', 'text-hint', 'text-invert']
-const BG_COLORS = ['dot', 'hoverBg', 'htmlBg', 'popover-bg', 'menuHoverBg', 'alphaBg', 'snackBar']
-const FILL_COLORS = ['text-title', 'text-digest']
+const TEXT_COLORS = [
+  'text-title',
+  'text-digest',
+  'text-body',
+  'text-hint',
+  'text-invert',
+  'button-fg',
+]
+const BG_COLORS = [
+  'dot',
+  'text-digest',
+  'link',
+  'divider',
+  'hoverBg',
+  'htmlBg',
+  'popover-bg',
+  'menuHoverBg',
+  'alphaBg',
+  'snackBar',
+  'button-redBg',
+  'button-toggle',
+]
+const FILL_COLORS = ['text-title', 'text-digest', 'button-fg', 'heightIcon']
 // for fg,bg & fill
-const RAINBOW_COLORS = ['red', 'orange', 'yellow', 'green', 'greenLight', 'cyan', 'blue', 'purple']
+const RAINBOW_COLORS = [
+  'black',
+  'blackBtn',
+  'red',
+  'orange',
+  'yellow',
+  'green',
+  'greenLight',
+  'cyan',
+  'blue',
+  'purple',
+]
 
 const MARGIN = ['px', 0.5, 1, 1.5, 2, 2.5, 3, 4, 5]
 const SIZE = [1.5, 2, 2.5, 3, 3.5, 4, 5, 6]
@@ -31,21 +70,29 @@ const HOVERS = [
   'border-text-digest',
 ]
 
-const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red']
+const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red', 'fill-text-title']
 const CONTAINERS = ['container-home', 'container-community', 'container-community_sidebar']
 const UTILS = [
   'border-transparent',
   'rounded-sm',
   'rounded-md',
   'bg-gradient-to-r to-transparent',
-  // TODO: extract those from ~/const/container
-  'max-w-[1200px]',
   '-ml-40',
   'mr-36',
   'pl-40',
   'pr-36',
   'saturate-150',
   'brightness-125',
+  'select-none',
+  'touch-manipulation',
+  'outline-none',
+  'bg-none',
+  'bg-transparent',
+  'rounded-3xl',
+
+  // TODO:
+  'max-w-[1200px]',
+  'w-[1200px]',
 ]
 
 module.exports = [
@@ -56,7 +103,13 @@ module.exports = [
   ...FILL_COLORS.map((c) => `fill-${c} fill-${c}-dark`),
   ...RAINBOW_COLORS.map(
     (c) =>
-      `text-rainbow-${c} text-rainbow-${c}-dark bg-rainbow-${c} bg-rainbow-${c}-dark bg-rainbow-${c}Bg bg-rainbow-${c}Bg-dark fill-rainbow-${c} fill-rainbow-${c}-dark from-rainbow-${c}Bg from-rainbow-${c}Bg-dark 'border-rainbow-${c} border-rainbow-${c}-dark'`,
+      `text-rainbow-${c} text-rainbow-${c}-dark
+       bg-rainbow-${c} bg-rainbow-${c}-dark 
+       hover:bg-rainbow-${c}Soft hover:bg-rainbow-${c}Soft-dark
+       bg-rainbow-${c}Soft bg-rainbow-${c}Soft-dark fill-rainbow-${c} fill-rainbow-${c}-dark 
+       from-rainbow-${c}Soft from-rainbow-${c}Soft-dark 
+       border-rainbow-${c}/${borderSoft.opacity} border-rainbow-${c}-dark/${borderSoft.opacity_dark}
+      `,
   ),
 
   ...MARGIN.map((c) => `mt-${c} mb-${c} ml-${c} mr-${c}`),

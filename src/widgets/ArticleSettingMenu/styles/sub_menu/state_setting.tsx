@@ -1,5 +1,5 @@
 import type { TActive, TColor } from '~/spec'
-import styled, { css, theme, rainbow, rainbowLight } from '~/css'
+import styled, { css, theme, rainbow, rainbowSoft } from '~/css'
 import CheckSVG from '~/icons/CheckBold'
 
 export const Wrapper = styled.div`
@@ -17,10 +17,10 @@ export const Item = styled.div<TItem>`
   position: relative;
   margin-top: ${({ hasDivider }) => (hasDivider ? '20px;' : 0)};
 
-  background: ${({ $active, $color }) => ($active ? rainbowLight($color) : 'transparent')};
+  background: ${({ $active, $color }) => ($active ? rainbowSoft($color) : 'transparent')};
 
   &:hover {
-    background: ${({ $color }) => rainbowLight($color)};
+    background: ${({ $color }) => rainbowSoft($color)};
     svg {
       fill: ${({ $color }) => rainbow($color)};
     }

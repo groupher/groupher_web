@@ -36,19 +36,19 @@ const IconWrapper = styled.div`
   margin-left: -2px;
 `
 export const UsersWrapper = styled(IconWrapper)`
-  background: ${theme('rainbow.blueBg')};
+  background: ${theme('rainbow.blueSoft')};
 `
 export const ContentWrapper = styled(IconWrapper)`
-  background: ${theme('rainbow.purpleBg')};
+  background: ${theme('rainbow.purpleSoft')};
 `
 export const CommentsWrapper = styled(IconWrapper)`
-  background: ${theme('rainbow.orangeBg')};
+  background: ${theme('rainbow.orangeSoft')};
 `
 export const EmojisWrapper = styled(IconWrapper)`
-  background: ${theme('rainbow.redBg')};
+  background: ${theme('rainbow.redSoft')};
 `
 export const TrendWrapper = styled(IconWrapper)`
-  background: ${theme('rainbow.greenBg')};
+  background: ${theme('rainbow.greenSoft')};
 `
 export const UsersIcon = styled(UserSVG)`
   ${css.size(14)};

@@ -8,7 +8,10 @@ import { type FC, memo, type ReactNode } from 'react'
 
 import type { TSpace } from '~/spec'
 
-import { Wrapper, PlusIcon, EditIcon, Text } from './styles/add_button'
+import PlusSVG from '~/icons/Plus'
+import EditSVG from '~/icons/EditPen'
+
+import useSalon from './salon/add_button'
 
 type TProps = {
   children?: ReactNode
@@ -26,19 +29,16 @@ const AddButton: FC<TProps> = ({
   disabled = false,
   withIcon = true,
   icon = 'adder',
-  ...restProps
+  ...spacing
 }) => {
+  const s = useSalon({ dimWhenIdle, disabled, ...spacing })
+
   return (
-    <Wrapper
-      onClick={() => !disabled && onClick()}
-      $dimWhenIdle={dimWhenIdle}
-      disabled={disabled}
-      {...restProps}
-    >
-      {withIcon && icon === 'adder' && <PlusIcon />}
-      {withIcon && icon === 'edit' && <EditIcon />}
-      <Text>{children}</Text>
-    </Wrapper>
+    <div className={s.wrapper} onClick={() => !disabled && onClick()}>
+      {withIcon && icon === 'adder' && <PlusSVG className={s.icon} />}
+      {withIcon && icon === 'edit' && <EditSVG className={s.icon} />}
+      <div className={s.text}>{children}</div>
+    </div>
   )
 }
 

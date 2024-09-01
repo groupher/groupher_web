@@ -3,6 +3,8 @@ import useLayout from '~/hooks/useLayout'
 
 import { BRAND_LAYOUT } from '~/const/layout'
 
+export { cn } from '~/css'
+
 export default () => {
   const { cn, fg, bg, br, fill } = useTwBelt()
   const { brandLayout } = useLayout()

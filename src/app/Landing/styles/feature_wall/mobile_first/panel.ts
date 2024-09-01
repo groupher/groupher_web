@@ -108,7 +108,7 @@ export const Block = styled.div<TBlock>`
   background: ${({ $solid, $hovering }) => {
     if ($solid) return theme('htmlBg')
 
-    return $hovering ? theme('rainbow.orangeBg') : theme('hoverBg')
+    return $hovering ? theme('rainbow.orangeSoft') : theme('hoverBg')
   }};
   border: 1px dashed;
   border-color: ${theme('divider')};

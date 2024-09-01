@@ -1,6 +1,6 @@
 import type { TActive, TColorName } from '~/spec'
 
-import styled, { css, theme, rainbow, rainbowLight } from '~/css'
+import styled, { css, theme, rainbow, rainbowSoft } from '~/css'
 
 import DiceSVG from '~/icons/Dice'
 import ResetSVG from '~/icons/Reset'
@@ -62,7 +62,7 @@ export const Preset = styled.div<{ setable?: boolean }>`
 
 type TColorBall = { color: TColorName; setable?: boolean }
 export const ColorBall = styled.div<TColorBall>`
-  background-color: ${({ color }) => rainbowLight(color)};
+  background-color: ${({ color }) => rainbowSoft(color)};
 
   border: 1px dashed;
   border-color: ${({ color }) => rainbow(color)};

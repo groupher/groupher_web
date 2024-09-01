@@ -11,7 +11,6 @@ export const Wrapper = styled.div`
   width: 180px;
   height: 80px;
   box-shadow: rgb(201 201 201 / 30%) 0px 1px 10px 0px, rgb(199 199 199 / 15%) 0px 2px 6px 2px;
-  box-shadow: ${theme('button.boxShadow')};
   border-top-left-radius: 6px;
   padding: 5px;
 `

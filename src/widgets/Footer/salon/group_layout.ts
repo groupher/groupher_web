@@ -15,7 +15,7 @@ export default () => {
     title: cn('text-sm mb-3.5', fg('text.title')),
     body: cn('gap-y-3'),
     link: cn(
-      'row-center font-sm -ml-px no-underline pointer',
+      'row-center text-sm -ml-px no-underline pointer',
       'hover:underline',
       `hover:${fg('text.title')}`,
       fg('text.digest'),

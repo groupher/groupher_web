@@ -13,7 +13,7 @@ export const Wrapper = styled.div<{ $giveup: boolean }>`
   border-radius: 12px;
   width: auto;
   padding: 5px 10px;
-  background-color: ${({ $giveup }) => ($giveup ? theme('rainbow.redBg') : theme('alphaBg'))};
+  background-color: ${({ $giveup }) => ($giveup ? theme('rainbow.redSoft') : theme('alphaBg'))};
   box-shadow: 0 5px 25px rgb(35 35 35 / 10%);
 `
 export const Building = styled.span`

@@ -11,7 +11,7 @@ import type { TColorName, TSpace } from '~/spec'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import Arrow from './Arrow'
-import { Wrapper, Text } from '../styles/arrow_button'
+import { Wrapper, Text } from '../salon/arrow_button'
 
 export type TProps = {
   children?: ReactNode

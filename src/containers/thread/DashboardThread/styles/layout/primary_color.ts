@@ -14,7 +14,7 @@ export const Label = styled.div<TColor>`
 `
 export const ColorBall = styled.div<TColor>`
   ${css.circle(34)};
-  background-color: ${({ $color }) => rainbow($color, 'rainbow.blackRow')};
+  background-color: ${({ $color }) => rainbow($color, 'rainbow.blackBtn')};
   margin-top: 3px;
   margin-left: 3px;
 `

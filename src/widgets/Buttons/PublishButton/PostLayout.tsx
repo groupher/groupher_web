@@ -5,21 +5,23 @@
  */
 
 import { memo, type FC } from 'react'
+import EditPenSVG from '~/icons/EditPen'
 
-// import Button from './Button'
-import { Wrapper, Title, EditIcon } from '../styles/publish_button/post_layout'
+import useSalon from '../salon/publish_button/post_layout'
 
 type TProps = {
   text: string
 }
 
 const PostLayout: FC<TProps> = ({ text }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <Title>{text}</Title>
+    <div className={s.wrapper}>
+      <div className={s.title}>{text}</div>
       <div className="grow" />
-      <EditIcon />
-    </Wrapper>
+      <EditPenSVG className={s.editIcon} />
+    </div>
   )
 }
 

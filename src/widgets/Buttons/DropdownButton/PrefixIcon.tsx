@@ -5,7 +5,7 @@ import CategorySVG from '~/icons/Category'
 import SortSVG from '~/icons/Sort'
 import WipSVG from '~/icons/GtdWip'
 
-import useSalon from '../styles/dropdown_button/prefix_icon'
+import useSalon from '../salon/dropdown_button/prefix_icon'
 
 type TProps = {
   type: TButtonPrefix | null

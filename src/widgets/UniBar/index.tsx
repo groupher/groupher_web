@@ -103,6 +103,7 @@ export default () => {
           </div>
         </Tooltip>
       </div>
+      <div className={s.shadowMask} />
     </div>
   )
 }

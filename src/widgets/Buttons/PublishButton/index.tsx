@@ -4,21 +4,20 @@
 import { memo, type FC } from 'react'
 
 import type { TPublishMode, TArticleCat, TSpace, TTooltipPlacement } from '~/spec'
+
 import { PUBLISH_MODE } from '~/const/publish'
-
-import usePrimaryColor from '~/hooks/usePrimaryColor'
-import useViewingThread from '~/hooks/useViewingThread'
-
 import { POST_CAT_MENU_ITEMS } from '~/const/menu'
 
+import useViewingThread from '~/hooks/useViewingThread'
 import Menu from '~/widgets/Menu'
 
 // import { MORE_MENU } from './constant'
 import PostLayout from './PostLayout'
 import SidebarHeaderLayout from './SidebarHeaderLayout'
+import Button from '../Button'
 
-import { Wrapper, PubButton } from '../styles/publish_button'
 import { getText } from './helper'
+import useSalon from '../salon/publish_button'
 
 type TProps = {
   text?: string
@@ -36,19 +35,15 @@ const PublishButton: FC<TProps> = ({
   onMenuSelect = console.log,
   menuLeft = false,
   offset = [-5, 5],
-  ...restProps
+  ...spacing
 }) => {
-  const primaryColor = usePrimaryColor()
+  const s = useSalon({ ...spacing })
   const activeThread = useViewingThread()
 
-  // const [show, setShow] = useState(false)
   const _text = text || getText(activeThread)
 
-  // const menuOptions = MORE_MENU[mode]
-  // const hasNoMenu = isEmpty(menuOptions)
-
   return (
-    <Wrapper {...restProps}>
+    <div className={s.wrapper}>
       <Menu
         offset={offset as [number, number]}
         placement={placement}
@@ -57,12 +52,14 @@ const PublishButton: FC<TProps> = ({
         popWidth={48}
         withDesc
       >
-        <PubButton $color={primaryColor} $smaller={mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER}>
-          {mode === PUBLISH_MODE.DEFAULT && <PostLayout text={_text} />}
-          {mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER && <SidebarHeaderLayout text={text} />}
-        </PubButton>
+        <div className={s.pubBtn}>
+          <Button>
+            {mode === PUBLISH_MODE.DEFAULT && <PostLayout text={_text} />}
+            {mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER && <SidebarHeaderLayout text={text} />}
+          </Button>
+        </div>
       </Menu>
-    </Wrapper>
+    </div>
   )
 }
 

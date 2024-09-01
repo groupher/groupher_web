@@ -18,13 +18,7 @@ const BriefView: FC<TProps> = ({ source, active, onChange }) => {
 
   return (
     <Wrapper>
-      <Tabs
-        items={sortByIndex(items)}
-        activeKey={active}
-        onChange={onChange}
-        size="small"
-        slipHeight="1px"
-      />
+      <Tabs items={sortByIndex(items)} activeKey={active} onChange={onChange} size="small" />
     </Wrapper>
   )
 }

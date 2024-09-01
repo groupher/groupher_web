@@ -24,5 +24,4 @@ export const Card = styled.div`
   border: 1px solid;
   border-radius: 8px;
   border-color: ${theme('divider')};
-  box-shadow: ${theme('button.boxShadow')};
 `

@@ -27,7 +27,6 @@ export const Wrapper = styled.div<{ $hovering: boolean }>`
 export const TopActions = styled.div`
   ${css.row('align-center')};
   gap: 0 5px;
-  box-shadow: ${theme('button.boxShadow')};
 `
 export const ActionBlock = styled.div`
   ${css.size(28)};
@@ -56,7 +55,6 @@ export const BottomActions = styled.div`
   border-top-right-radius: 4px;
   width: 98%;
   background: ${theme('htmlBg')};
-  box-shadow: ${theme('button.boxShadow')};
   padding: 5px;
 `
 

@@ -5,7 +5,7 @@ import type { TColorName, TSpace } from '~/spec'
 import { COLOR_NAME } from '~/const/colors'
 import type { TFlatThemeKey } from '~/utils/themes/skins'
 
-import { container as containerConf } from '~/const/container.json'
+import { container as containerConf, borderSoft as borderSoftConf } from '~/const/twConfig.json'
 import { camelize } from '~/fmt'
 
 import useTheme from '~/hooks/useTheme'
@@ -13,8 +13,10 @@ import useMetric from '~/hooks/useMetric'
 import useAvatarLayout from '~/hooks/useAvatarLayout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-type TColorPrefix = 'fg' | 'bg' | 'fill' | 'border'
+type TColorPrefix = 'fg' | 'bg' | 'bgSoft' | 'fill' | 'border' | 'borderSoft'
 type TBreakOut = 'footer' | 'header'
+type TMenuPart = 'bg' | 'bar' | 'title' | 'link'
+type TShadowSize = 'md' | 'lg' | 'xl'
 
 type TRet = {
   cn: (...inputs: ClassValue[]) => string
@@ -25,7 +27,7 @@ type TRet = {
   fill: (key: TFlatThemeKey) => string
   br: (key: TFlatThemeKey) => string
   rainbow: (color: TColorName, prefix?: TColorPrefix) => string
-  rainbowLight: (color: TColorName | string) => string
+  rainbowSoft: (color: TColorName | string) => string
   primary: (prefix?: TColorPrefix) => string
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
@@ -34,6 +36,11 @@ type TRet = {
   gradiientBar: (color: TColorName) => string
   breakOut: (type?: TBreakOut) => string
   enhanceDark: () => string
+  menu: (part: TMenuPart) => string
+  shadow: (size: TShadowSize) => string
+
+  isDarkBlack: boolean
+  isBlackPrimary: boolean
 }
 
 /**
@@ -47,6 +54,13 @@ export default (): TRet => {
 
   const primaryColor = usePrimaryColor()
   const container = () => `container-${metric.toLowerCase()}`
+
+  /**
+   * black color (default primary color) in dark theme should be treat different
+   * need spec color for it according the situation
+   */
+  const isDarkBlack = !isLightTheme && primaryColor === COLOR_NAME.BLACK
+  const isBlackPrimary = primaryColor === COLOR_NAME.BLACK
 
   /**
    * cover article.title -> article-title to match the tailwind csss varaible name
@@ -63,17 +77,57 @@ export default (): TRet => {
   const fill = (key: TFlatThemeKey) => _theme(key, 'fill')
   const br = (key: TFlatThemeKey) => _theme(key, 'border')
 
+  const _rainbowalias = (prefix: TColorPrefix): string => {
+    switch (prefix) {
+      case 'fg': {
+        return 'text-rainbow'
+      }
+
+      case 'bgSoft': {
+        return 'bg-rainbow'
+      }
+
+      case 'borderSoft': {
+        return 'border-rainbow'
+      }
+
+      default: {
+        return `${prefix}-rainbow`
+      }
+    }
+  }
+
   /**
    * use in theme balls and all kinks of gradients
    */
-  const rainbow = (color: TColorName, prefix: 'fg'): string => {
-    const prefix$ = prefix === 'fg' ? 'text-rainbow' : `${prefix}-rainbow`
+  const rainbow = (color: TColorName, prefix = 'fg'): string => {
+    const prefix$ = _rainbowalias(prefix as TColorPrefix)
     const color$ = camelize(color)
+
+    if (prefix === 'bgSoft') {
+      if (color === COLOR_NAME.BLACK) {
+        return bg('hoverBg')
+      }
+
+      return isLightTheme ? `${prefix$}-${color$}Soft` : `${prefix$}-${color$}Soft-dark`
+    }
+
+    if (prefix === 'borderSoft') {
+      const opacity = isLightTheme ? borderSoftConf.opacity : borderSoftConf.opacity_dark
+
+      if (isDarkBlack) {
+        return 'border-text-hint-dark'
+      }
+
+      return isLightTheme
+        ? `${prefix$}-${color$}/${opacity}`
+        : `${prefix$}-${color$}-dark/${opacity}`
+    }
 
     return isLightTheme ? `${prefix$}-${color$}` : `${prefix$}-${color$}-dark`
   }
 
-  const rainbowLight = (color: TColorName | string): string => {
+  const rainbowSoft = (color: TColorName | string): string => {
     const prefix$ = 'bg-rainbow'
     const color$ = camelize(color)
 
@@ -81,7 +135,7 @@ export default (): TRet => {
       return bg('hoverBg')
     }
 
-    return isLightTheme ? `${prefix$}-${color$}Bg` : `${prefix$}-${color$}Bg-dark`
+    return isLightTheme ? `${prefix$}-${color$}Soft` : `${prefix$}-${color$}Soft-dark`
   }
 
   /**
@@ -144,6 +198,38 @@ export default (): TRet => {
     return ''
   }
 
+  const menu = (part: TMenuPart): string => {
+    switch (part) {
+      case 'bg': {
+        return _theme('popover.bg')
+      }
+      case 'bar': {
+        return cn(
+          'group/menubar row-center text-sm w-full border border-transparent rounded-md pointer',
+          'px-1.5 py-2 cursor-pointer',
+          'trans-all-100',
+          `hover:${fg('text.title')}`,
+          `hover:${bg('menuHoverBg')}`,
+          `hover:${br('divider')}`,
+          fg('text.digest'),
+        )
+      }
+      case 'title': {
+        return cn('text-sm', `group-hover/menubar:${fg('text.title')}`)
+      }
+      case 'link': {
+        return cn('size-3.5 opacity-0 group-hover/menubar:opacity-60', fill('text.digest'))
+      }
+      default: {
+        return ''
+      }
+    }
+  }
+
+  const shadow = (size: TShadowSize): string => {
+    return global(`shadow-${size}`)
+  }
+
   return {
     cn,
     global,
@@ -153,7 +239,7 @@ export default (): TRet => {
     fill,
     br,
     rainbow,
-    rainbowLight,
+    rainbowSoft,
     primary,
     zise,
     margin,
@@ -162,5 +248,9 @@ export default (): TRet => {
     gradiientBar,
     breakOut,
     enhanceDark,
+    menu,
+    shadow,
+    isDarkBlack,
+    isBlackPrimary,
   }
 }

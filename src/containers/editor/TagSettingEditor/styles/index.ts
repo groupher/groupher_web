@@ -26,7 +26,7 @@ export const DotSelector = styled.div`
 `
 export const TitleDot = styled.div<{ color: TColorName }>`
   ${css.circle(28)};
-  background: ${({ color }) => rainbow(color, 'rainbow.blackRow')};
+  background: ${({ color }) => rainbow(color, 'rainbow.blackBtn')};
 `
 export const TitleInputer = styled(Input)`
   margin-left: 10px;

@@ -23,7 +23,6 @@ export const MenuItem = styled.div`
   &:hover {
     color: ${theme('article.title')};
     background: ${theme('menuHoverBg')};
-    box-shadow: ${theme('button.boxShadow')};
     cursor: pointer;
 
     svg {
@@ -38,7 +37,7 @@ export const MenuTitle = styled.div`
 `
 export const DangerMenuItem = styled(MenuItem)`
   &:hover {
-    background: ${theme('rainbow.redBg')};
+    background: ${theme('rainbow.redSoft')};
     color: ${theme('rainbow.red')};
     cursor: pointer;
   }

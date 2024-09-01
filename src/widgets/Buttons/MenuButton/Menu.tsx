@@ -18,7 +18,7 @@ import {
   LinkIcon,
   Divider,
   getIcon,
-} from '../styles/menu_button/menu'
+} from '../salon/menu_button/menu'
 
 // there is two types of block, normal block and link
 const OptionBlock = ({ item, onClick }) => {

@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
-import { css, theme, rainbow, rainbowLight } from '~/css'
+import { css, theme, rainbow, rainbowSoft } from '~/css'
 import type { TColor } from '~/spec'
 
 import normalize from './normalize'
@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle<TColor>`
   }
 
   *::-moz-selection {
-    background-color: ${({ $color }) => rainbowLight($color)} !important;
+    background-color: ${({ $color }) => rainbowSoft($color)} !important;
     color: ${({ $color }) => rainbow($color)} !important;
   }
 

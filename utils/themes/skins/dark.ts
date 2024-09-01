@@ -58,56 +58,56 @@ export default {
 
   rainbow: {
     red: '#ca5f4d',
-    redBg: '#7d3b363d',
-    redSoft: 'linear-gradient(90deg, #7a37323d 0%, #46211e2b 100%)',
+    redSoft: '#7d3b363d',
+    redPale: 'linear-gradient(90deg, #7a37323d 0%, #46211e2b 100%)',
 
     orange: '#ce9f6f',
-    orangeBg: '#4c3e37',
-    orangeSoft: 'linear-gradient(90deg, #44352ead 0%, #382c27a1 100%)',
+    orangeSoft: '#4c3e37',
+    orangePale: 'linear-gradient(90deg, #44352ead 0%, #382c27a1 100%)',
 
     brown: '#8d691e',
-    brownBg: '#3a342b',
-    brownSoft: 'linear-gradient(90deg, #45320569 0%, #3929024a 100%)',
+    brownSoft: '#3a342b',
+    brownPale: 'linear-gradient(90deg, #45320569 0%, #3929024a 100%)',
 
     yellow: '#eddd85',
-    yellowBg: '#a9a06a30',
-    yellowSoft: 'linear-gradient(90deg, #635e184d 0%, #433e2330 100%)',
+    yellowSoft: '#a9a06a30',
+    yellowPale: 'linear-gradient(90deg, #635e184d 0%, #433e2330 100%)',
 
     green: '#699411',
-    greenBg: '#8a97764a',
-    greenSoft: 'linear-gradient(90deg, #636e534a 0%, #474e3c36 100%)',
+    greenSoft: '#8a97764a',
+    greenPale: 'linear-gradient(90deg, #636e534a 0%, #474e3c36 100%)',
 
     greenLight: '#37B784',
-    greenLightBg: '#69735a4a',
-    greenLightSoft: 'linear-gradient(90deg, #636e534a 0%, #474e3c36 100%)',
+    greenLightSoft: '#69735a4a',
+    greenLightPale: 'linear-gradient(90deg, #636e534a 0%, #474e3c36 100%)',
 
     cyan: '#24878C',
-    cyanBg: '#2c3738',
-    cyanSoft: 'linear-gradient(90deg, #2c3738 0%, #2c37386e 100%)',
+    cyanSoft: '#2c3738',
+    cyanPale: 'linear-gradient(90deg, #2c3738 0%, #2c37386e 100%)',
 
     // naming, fix later
     cyanLight: '#00B5CC',
-    cyanLightBg: '#39494b94',
     cyanLightSoft: '#39494b94',
+    cyanLightPale: '#39494b94',
 
     blue: '#0073E3',
-    blueBg: '#76809654',
-    blueSoft: 'linear-gradient(90deg, #505a7254 0%, #3a415038 100%)',
+    blueSoft: '#76809654',
+    bluePale: 'linear-gradient(90deg, #505a7254 0%, #3a415038 100%)',
 
     purple: '#7d519e',
-    purpleBg: '#7c618238',
-    purpleSoft: 'linear-gradient(90deg, #86539147  0%, #58445d38 100%)',
+    purpleSoft: '#7c618238',
+    purplePale: 'linear-gradient(90deg, #86539147  0%, #58445d38 100%)',
 
     grey: '#106d8a',
 
     pink: '#b36976',
-    pinkBg: '#73526159',
     pinkSoft: '#73526159',
+    pinkPale: '#73526159',
 
     black: '#343333',
-    blackRow: '#282828',
-    blackBg: '#313131',
+    blackBtn: '',
     blackSoft: '#313131',
+    blackPale: '#313131',
   },
   grey: {
     rare: '#272727',
@@ -193,17 +193,11 @@ export default {
   },
   button: {
     primary: primaryColor,
-    border: '#414141',
-    bg: '#2c2c2c',
+    toggle: 'white',
+    redBg: '#fff9f8',
     fg: 'white',
-    ghost: '#9A9696',
-    disabledFg: descText,
     hoverBg: lighten(primaryColor, 10),
-    activeBg: darken(primaryColor, 5),
-    clicked: primaryColor,
-    ghostBorder: '#606060',
     upvoteBorder: '#5f5f5fb5',
-    boxShadow: 'rgb(24 24 24 / 32%) -1px 1px 16px 2px',
   },
   navigator: {
     activeBottom: primaryColor,

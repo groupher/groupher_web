@@ -18,7 +18,6 @@ export const BlocksWrapper = styled(WithPosition)<{ $hovering: boolean }>`
   border: 1px solid;
   border-color: ${theme('divider')};
   border-radius: 10px;
-  box-shadow: ${theme('button.boxShadow')};
   background: ${({ $hovering }) => ($hovering ? '#ecececd9' : theme('htmlBg'))};
   overflow: hidden;
   transition: all .2s;

@@ -6,9 +6,9 @@
 
 import { type FC, useState, useRef, useEffect } from 'react'
 import { hideAll } from 'tippy.js'
+import Tippy from '@tippyjs/react'
 
 import { zIndex } from '~/css'
-import { isString } from '~/validator'
 import { isDescendant, isWechatBrower } from '~/dom'
 
 import useOutsideClick from '~/hooks/useOutsideClick'
@@ -17,7 +17,7 @@ import type { TProps } from '.'
 import { FOOTER_BEHAVIOR } from './constant'
 import ConfirmFooter from './ConfirmFooter'
 
-import { StyledTippy, NoPaddingStyledTippy, ChildrenWrapper, ContentWrapper } from './styles'
+import useSalon, { cn } from './salon'
 
 const Tooltip: FC<TProps> = ({
   children,
@@ -38,9 +38,11 @@ const Tooltip: FC<TProps> = ({
   onConfirm,
   contentHeight,
 }) => {
+  const s = useSalon()
+
   const [instance, setInstance] = useState(null)
   const [active, setActive] = useState(false)
-  const [wechatEnv, setWechatEnv] = useState(false)
+  const [, setWechatEnv] = useState(false)
 
   const contentRef = useRef()
 
@@ -50,9 +52,8 @@ const Tooltip: FC<TProps> = ({
   }, [])
 
   const PopoverContent = (
-    <ContentWrapper
+    <div
       ref={contentRef}
-      $hasMaxWidth={isString(content)}
       onClick={() => {
         if (hideOnClick) instance?.hide()
       }}
@@ -68,7 +69,7 @@ const Tooltip: FC<TProps> = ({
           behavior={behavior}
         />
       )}
-    </ContentWrapper>
+    </div>
   )
 
   const ref = useRef()
@@ -123,18 +124,15 @@ const Tooltip: FC<TProps> = ({
   // @ts-ignore
   props = visible === null ? props : { ...props, visible }
 
+  // <ChildrenWrapper $contentHeight={contentHeight} $forceZIndex={forceZIndex}>
   return !noPadding ? (
-    <StyledTippy {...props} wechatEnv={wechatEnv}>
-      <ChildrenWrapper $contentHeight={contentHeight} $forceZIndex={forceZIndex}>
-        {children}
-      </ChildrenWrapper>
-    </StyledTippy>
+    <Tippy className={s.tooltip} {...props}>
+      <div>{children}</div>
+    </Tippy>
   ) : (
-    <NoPaddingStyledTippy {...props} wechatEnv={wechatEnv}>
-      <ChildrenWrapper $contentHeight={contentHeight} $forceZIndex={forceZIndex}>
-        {children}
-      </ChildrenWrapper>
-    </NoPaddingStyledTippy>
+    <Tippy className={cn(s.tooltip, 'p-0')} {...props}>
+      <div>{children}</div>
+    </Tippy>
   )
 }
 

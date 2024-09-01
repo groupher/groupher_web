@@ -3,7 +3,7 @@ import { type FC, memo, lazy, Suspense } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import IconButton from '../IconButton'
-import { Wrapper } from '../styles/copy_button'
+import { Wrapper } from '../salon/copy_button'
 
 const AnimatedCopyButton = lazy(() => import('./Animate'))
 

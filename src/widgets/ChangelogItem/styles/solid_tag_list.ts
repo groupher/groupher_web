@@ -1,6 +1,6 @@
 import type { TColorName } from '~/spec'
 
-import styled, { css, theme, rainbowLight } from '~/css'
+import styled, { css, theme, rainbowSoft } from '~/css'
 
 export const Wrapper = styled.div`
   ${css.row('align-center')};
@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
 `
 
 export const TagWrapper = styled.div<{ color: TColorName }>`
-  background: ${({ color }) => rainbowLight(color)};
+  background: ${({ color }) => rainbowSoft(color)};
   padding: 2px 10px;
   border-radius: 10px;
 

@@ -2,9 +2,11 @@ import { type FC, memo } from 'react'
 
 import type { TSubmitState } from '~/spec'
 
+import CheckedSVG from '~/icons/Checked'
+
 import YesOrNoButtons from './YesOrNoButtons'
 import Button from './Button'
-import { DonwWrapper, DoneIcon, DoneHint } from './styles/submit_button'
+import useSalon from './salon/submit_button'
 
 const space = 22
 
@@ -65,6 +67,7 @@ const SubmitButton: FC<TProps> = ({
     isArticleAuthor: false,
   },
 }) => {
+  const s = useSalon()
   const { publishDone, isArchived, mode, isArticleAuthor } = submitState
 
   if (mode === 'update' && !isArticleAuthor) {
@@ -86,10 +89,10 @@ const SubmitButton: FC<TProps> = ({
   return (
     <div>
       {publishDone ? (
-        <DonwWrapper>
-          <DoneIcon />
-          <DoneHint>已提交</DoneHint>
-        </DonwWrapper>
+        <div className={s.donwWrapper}>
+          <CheckedSVG className={s.doneIcon} />
+          <div className={s.downHint}>已提交</div>
+        </div>
       ) : (
         <TheButton
           submitState={submitState}

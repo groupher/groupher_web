@@ -1,38 +1,16 @@
-import type { TTestable, TActive } from '~/spec'
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.nav.attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TTestable>`
-  ${css.row('align-center')};
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  height: 38px;
-  border-radius: 15px;
-  padding: 1px 3px;
-  background: ${theme('hoverBg')};
-`
-export const TabItem = styled.div<TActive>`
-  ${css.row('align-both')};
-  height: 30px;
+export { cn } from '~/css'
 
-  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
-  background: ${({ $active }) => ($active ? 'white' : 'transparent')};
-  font-weight: ${({ $active }) => ($active ? 600 : 'normal')};
-  font-size: 12px;
-  flex-grow: 1;
-  border-radius: 12px;
-  margin-left: 1px;
-  margin-right: 1px;
+export default () => {
+  const { cn, fg, bg } = useTwBelt()
 
-  border: 1px solid transparent;
-  border-color: ${({ $active }) => ($active ? theme('divider') : 'transparent')};
-
-  &:hover {
-    color: ${theme('article.title')};
-    cursor: pointer;
+  return {
+    wrapper: cn(
+      'row-center relative overflow-hidden w-full h-9 rounded-md py-1.5 px-1',
+      bg('hoverBg'),
+    ),
+    tabItem: cn('align-both h-full grow ml-px mr-px rounded-md text-xs pointer', fg('text.title')),
+    tabItemActive: cn('bold-sm', fg('text.digest')),
   }
-
-  transition: all 0.2s;
-`
+}

@@ -1,6 +1,6 @@
 import type { TTestable, TColorName } from '~/spec'
 
-import styled, { css, theme, rainbow, rainbowLight } from '~/css'
+import styled, { css, theme, rainbow, rainbowSoft } from '~/css'
 import BroadcastSVG from '~/icons/Broadcast'
 import ArrowButton from '~/widgets/Buttons/ArrowButton'
 import { WithMargin } from '~/widgets/Common'
@@ -15,7 +15,7 @@ export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({
 
   height: 120px;
   /* background: #fafafb; */
-  background-color: ${({ color }) => rainbowLight(color)};
+  background-color: ${({ color }) => rainbowSoft(color)};
   border-radius: 15px;
 
   overflow: hidden;
@@ -64,7 +64,7 @@ export const Title = styled.span<{ color: TColorName }>`
     position: absolute;
     left: 0;
     bottom: 1px;
-    background-color: ${({ color }) => rainbowLight(color)};
+    background-color: ${({ color }) => rainbowSoft(color)};
     opacity: 0.25;
   }
 `

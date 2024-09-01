@@ -8,11 +8,11 @@ type TProps = {
 }
 
 export default ({ viewerHasUpvoted }: TProps) => {
-  const { cn, bg, br, rainbowLight, enhanceDark } = useTwBelt()
+  const { cn, bg, br, rainbowSoft, enhanceDark } = useTwBelt()
   const color = usePrimaryColor()
 
   return {
-    wrapper: cn('align-both ml-0.5', enhanceDark()),
+    wrapper: cn('align-both', enhanceDark()),
     button: cn(
       'row-center h-5 border border-transparent rounded-md pl-1 pr-1.5 -ml-1.5',
       'hover:ml-px',
@@ -20,7 +20,7 @@ export default ({ viewerHasUpvoted }: TProps) => {
       `hover:${br('text.digest')}`,
       `hover:${bg('alphaBg2')}`,
       'trans-all-200',
-      viewerHasUpvoted && cn('mr-2 ml-px pr-2', br('divider'), rainbowLight(color)),
+      viewerHasUpvoted && cn('mr-2 ml-px pr-2', br('divider'), rainbowSoft(color)),
     ),
     upvote: 'align-both scale-90',
   }
