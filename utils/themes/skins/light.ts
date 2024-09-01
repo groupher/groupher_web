@@ -105,7 +105,7 @@ export default {
     pinkPale: '#ffd8ea59',
 
     black: '#333333',
-    blackRow: '#333333',
+    blackBtn: '',
     blackSoft: '#f4f4f4',
     blackPale: '#f4f4f4',
   },

@@ -11,6 +11,7 @@ import { blurRGB } from '~/fmt'
 import useTrans from '~/hooks/useTrans'
 import useThemeData from '~/hooks/useThemeData'
 import useGossBlur from '~/hooks/useGossBlur'
+import useTopbar from '~/hooks/useTopbar'
 
 // import Broadcast from '~/widgets/Broadcast'
 import Footer from '~/widgets/Footer'
@@ -29,6 +30,7 @@ type TProps = {
 const Main: FC<TProps> = ({ children }) => {
   const s = useSalon()
 
+  const { hasTopbar } = useTopbar()
   const gossBlur = useGossBlur()
   /**
    * this is tricy, when clientside changed locale, we force render hte entire app here
@@ -43,6 +45,7 @@ const Main: FC<TProps> = ({ children }) => {
 
   return (
     <div key={locale} className={s.wrapper} style={{ background: bgColor }}>
+      {hasTopbar && <div className={s.topBar} />}
       {/* <Broadcast /> */}
       <div className={s.body}>{children}</div>
       <Footer />

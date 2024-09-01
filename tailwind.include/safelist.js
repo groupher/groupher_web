@@ -25,6 +25,8 @@ const TEXT_COLORS = [
 ]
 const BG_COLORS = [
   'dot',
+  'text-digest',
+  'link',
   'divider',
   'hoverBg',
   'htmlBg',
@@ -37,7 +39,18 @@ const BG_COLORS = [
 ]
 const FILL_COLORS = ['text-title', 'text-digest', 'button-fg', 'heightIcon']
 // for fg,bg & fill
-const RAINBOW_COLORS = ['red', 'orange', 'yellow', 'green', 'greenLight', 'cyan', 'blue', 'purple']
+const RAINBOW_COLORS = [
+  'black',
+  'blackBtn',
+  'red',
+  'orange',
+  'yellow',
+  'green',
+  'greenLight',
+  'cyan',
+  'blue',
+  'purple',
+]
 
 const MARGIN = ['px', 0.5, 1, 1.5, 2, 2.5, 3, 4, 5]
 const SIZE = [1.5, 2, 2.5, 3, 3.5, 4, 5, 6]
@@ -76,6 +89,7 @@ const UTILS = [
   'bg-none',
   'bg-transparent',
   'rounded-3xl',
+
   // TODO:
   'max-w-[1200px]',
   'w-[1200px]',

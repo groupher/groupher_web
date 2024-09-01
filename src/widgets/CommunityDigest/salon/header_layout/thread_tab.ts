@@ -9,7 +9,7 @@ export { cn } from '~/css'
 type TProps = TSpace
 
 export default ({ ...spacing }: TProps) => {
-  const { cn, margin, br, fg, bg, primary } = useTwBelt()
+  const { cn, margin, br, fg, bg, primary, enhanceDark } = useTwBelt()
 
   const { layout } = useHeaderLinks()
 
@@ -32,6 +32,6 @@ export default ({ ...spacing }: TProps) => {
       `hover:${fg('text.title')}`,
       fg('text.digest'),
     ),
-    titleActive: cn('bold-sm', `hover:${primary('fg')}`, primary('fg')),
+    titleActive: cn('bold-sm', `hover:${primary('fg')}`, primary('fg'), enhanceDark()),
   }
 }

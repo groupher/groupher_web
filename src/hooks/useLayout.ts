@@ -26,34 +26,17 @@ type TRet = {
 export default (): TRet => {
   const store = useSubStore('dashboard')
 
-  return {
-    bannerLayout: 'tabber',
-    ...pick(
-      [
-        'avatarLayout',
-        // 'bannerLayout',
-        'brandLayout',
-        'tagLayout',
-        'postLayout',
-        'kanbanLayout',
-        'kanbanCardLayout',
-        'changelogLayout',
-      ],
-      store,
-    ),
-  }
-
-  // return pick(
-  //   [
-  //     'avatarLayout',
-  //     'bannerLayout',
-  //     'brandLayout',
-  //     'tagLayout',
-  //     'postLayout',
-  //     'kanbanLayout',
-  //     'kanbanCardLayout',
-  //     'changelogLayout',
-  //   ],
-  //   store,
-  // )
+  return pick(
+    [
+      'avatarLayout',
+      'bannerLayout',
+      'brandLayout',
+      'tagLayout',
+      'postLayout',
+      'kanbanLayout',
+      'kanbanCardLayout',
+      'changelogLayout',
+    ],
+    store,
+  )
 }

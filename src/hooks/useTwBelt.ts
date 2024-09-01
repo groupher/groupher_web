@@ -38,6 +38,9 @@ type TRet = {
   enhanceDark: () => string
   menu: (part: TMenuPart) => string
   shadow: (size: TShadowSize) => string
+
+  isDarkBlack: boolean
+  isBlackPrimary: boolean
 }
 
 /**
@@ -51,6 +54,13 @@ export default (): TRet => {
 
   const primaryColor = usePrimaryColor()
   const container = () => `container-${metric.toLowerCase()}`
+
+  /**
+   * black color (default primary color) in dark theme should be treat different
+   * need spec color for it according the situation
+   */
+  const isDarkBlack = !isLightTheme && primaryColor === COLOR_NAME.BLACK
+  const isBlackPrimary = primaryColor === COLOR_NAME.BLACK
 
   /**
    * cover article.title -> article-title to match the tailwind csss varaible name
@@ -95,11 +105,20 @@ export default (): TRet => {
     const color$ = camelize(color)
 
     if (prefix === 'bgSoft') {
+      if (color === COLOR_NAME.BLACK) {
+        return bg('hoverBg')
+      }
+
       return isLightTheme ? `${prefix$}-${color$}Soft` : `${prefix$}-${color$}Soft-dark`
     }
 
     if (prefix === 'borderSoft') {
       const opacity = isLightTheme ? borderSoftConf.opacity : borderSoftConf.opacity_dark
+
+      if (isDarkBlack) {
+        return 'border-text-hint-dark'
+      }
+
       return isLightTheme
         ? `${prefix$}-${color$}/${opacity}`
         : `${prefix$}-${color$}-dark/${opacity}`
@@ -231,5 +250,7 @@ export default (): TRet => {
     enhanceDark,
     menu,
     shadow,
+    isDarkBlack,
+    isBlackPrimary,
   }
 }

@@ -14,7 +14,7 @@ export type TProps = {
   size?: number
 } & TSpace
 
-const ReadLabel: FC<TProps> = ({ viewed, size = 2, ...spacing }) => {
+const ReadLabel: FC<TProps> = ({ viewed, size = 1.5, ...spacing }) => {
   const spacing$ = { top: 0.5, right: 2, ...spacing }
   const s = useSalon({ size, ...spacing$ })
 

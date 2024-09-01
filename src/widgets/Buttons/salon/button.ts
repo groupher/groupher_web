@@ -16,7 +16,7 @@ type TProps = {
 } & TSpace
 
 export default ({ type, ghost, noBorder, size, space, disabled, ...spacing }: TProps) => {
-  const { cn, margin, primary, br, fg, bg } = useTwBelt()
+  const { cn, margin, primary, br, fg, bg, isDarkBlack } = useTwBelt()
 
   const isRed = type === 'red'
   const common = 'select-none touch-manipulation outline-none bg-none whitespace-nowrap'
@@ -40,6 +40,7 @@ export default ({ type, ghost, noBorder, size, space, disabled, ...spacing }: TP
       getPadding(size),
       getFontSize(size),
       !ghost && primary('bg'),
+      !ghost && isDarkBlack && bg('rainbow.blackBtn'),
       ghost && `hover:${primary('bgSoft')}`,
       // ghost && `hover:${primary('bgSoft')}`,
       // ghost && 'saturate-50',
