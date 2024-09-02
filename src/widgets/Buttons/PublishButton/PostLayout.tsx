@@ -18,9 +18,9 @@ const PostLayout: FC<TProps> = ({ text }) => {
 
   return (
     <div className={s.wrapper}>
+      <EditPenSVG className={s.editIcon} />
       <div className={s.title}>{text}</div>
       <div className="grow" />
-      <EditPenSVG className={s.editIcon} />
     </div>
   )
 }

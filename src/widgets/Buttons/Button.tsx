@@ -17,6 +17,7 @@ type TProps = {
   loading?: boolean
   noBorder?: boolean
   disabled?: boolean
+  noLeftRouned?: boolean
 } & TSpace
 
 const Button: FC<TProps> = ({
@@ -30,9 +31,10 @@ const Button: FC<TProps> = ({
   loading = false,
   noBorder = false,
   disabled = false,
+  noLeftRouned = false,
   ...spacing
 }) => {
-  const s = useSalon({ type, ghost, space, size, noBorder, disabled, ...spacing })
+  const s = useSalon({ type, ghost, space, size, noBorder, disabled, noLeftRouned, ...spacing })
 
   const isRed = type === 'red'
 
