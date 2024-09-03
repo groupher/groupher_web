@@ -92,7 +92,6 @@ export default () => {
                 callGEditor()
                 setTimeout(() => callSyncSelector({ cat, tag: activeTag }), 500)
               }}
-              offset={[0, 5]}
             />
           </div>
 

@@ -7,8 +7,12 @@ import type { TPublishMode, TArticleCat, TSpace, TTooltipPlacement } from '~/spe
 
 import { PUBLISH_MODE } from '~/const/publish'
 import { POST_CAT_MENU_ITEMS } from '~/const/menu'
+import { ARTICLE_CAT } from '~/const/gtd'
 
 import useViewingThread from '~/hooks/useViewingThread'
+
+import ArrowSVG from '~/icons/ArrowSolid'
+
 import Menu from '~/widgets/Menu'
 
 // import { MORE_MENU } from './constant'
@@ -44,21 +48,26 @@ const PublishButton: FC<TProps> = ({
 
   return (
     <div className={s.wrapper}>
-      <Menu
-        offset={offset as [number, number]}
-        placement={placement}
-        items={POST_CAT_MENU_ITEMS}
-        onSelect={(item) => onMenuSelect(item.key as TArticleCat)}
-        popWidth={48}
-        withDesc
-      >
-        <div className={s.pubBtn}>
-          <Button>
-            {mode === PUBLISH_MODE.DEFAULT && <PostLayout text={_text} />}
-            {mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER && <SidebarHeaderLayout text={text} />}
+      <div className={s.pubBtn}>
+        <Button>
+          {mode === PUBLISH_MODE.DEFAULT && <PostLayout text={_text} />}
+          {mode === PUBLISH_MODE.SIDEBAR_LAYOUT_HEADER && <SidebarHeaderLayout text={text} />}
+        </Button>
+
+        <Menu
+          offset={s.menuOffset as [number, number]}
+          activeKey={ARTICLE_CAT.FEATURE}
+          placement={placement}
+          items={POST_CAT_MENU_ITEMS}
+          onSelect={(item) => onMenuSelect(item.key as TArticleCat)}
+          popWidth={48}
+          withDesc
+        >
+          <Button className={s.arrowBtn} noLeftRouned noBorder>
+            <ArrowSVG className={s.arrowIcon} />
           </Button>
-        </div>
-      </Menu>
+        </Menu>
+      </div>
     </div>
   )
 }

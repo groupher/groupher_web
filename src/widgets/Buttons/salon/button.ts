@@ -13,32 +13,43 @@ type TProps = {
   size?: TSizeTSM
   noBorder?: boolean
   disabled?: boolean
+  noLeftRouned: boolean
 } & TSpace
 
-export default ({ type, ghost, noBorder, size, space, disabled, ...spacing }: TProps) => {
+export default ({
+  type,
+  ghost,
+  noBorder,
+  size,
+  space,
+  disabled,
+  noLeftRouned,
+  ...spacing
+}: TProps) => {
   const { cn, margin, primary, br, fg, bg, isDarkBlack } = useTwBelt()
 
   const isRed = type === 'red'
-  const common = 'select-none touch-manipulation outline-none bg-none whitespace-nowrap'
+  const common = 'group select-none touch-manipulation outline-none bg-none whitespace-nowrap'
 
   return {
     wrapper: cn(
       common,
       disabled && 'saturate-50 cursor-not-allowed',
       space && `pl-${space} pr-${space}`,
-      !ghost && !isRed && 'border border-4',
-      getRouned(size),
+      !ghost && !isRed && !noBorder && 'border border-4',
+      'w-full rounded-2xl',
       br('divider'),
       !ghost && bg('divider'),
       margin(spacing),
     ),
     inner: cn(
-      'align-both relative overflow-hidden text-center border border-transparent pointer',
+      'align-both relative text-center border border-transparent pointer',
       'hover:brightness-110 active:brightness-95 trans-all-200',
       getRouned(size),
       getHeight(size),
       getPadding(size),
       getFontSize(size),
+      noLeftRouned && 'rounded-tl-none rounded-bl-none',
       !ghost && primary('bg'),
       !ghost && isDarkBlack && bg('rainbow.blackBtn'),
       ghost && `hover:${primary('bgSoft')}`,
@@ -53,6 +64,6 @@ export default ({ type, ghost, noBorder, size, space, disabled, ...spacing }: TP
       bg('button.redBg'),
       fg('rainbow.red'),
     ),
-    children: 'align-both relative w-full z-20',
+    children: 'align-both relative w-auto',
   }
 }
