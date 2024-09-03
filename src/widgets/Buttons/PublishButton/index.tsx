@@ -55,7 +55,7 @@ const PublishButton: FC<TProps> = ({
         </Button>
 
         <Menu
-          offset={[-110, 4]}
+          offset={s.menuOffset as [number, number]}
           activeKey={ARTICLE_CAT.FEATURE}
           placement={placement}
           items={POST_CAT_MENU_ITEMS}
@@ -63,7 +63,7 @@ const PublishButton: FC<TProps> = ({
           popWidth={48}
           withDesc
         >
-          <Button className="-ml-14" noLeftRouned>
+          <Button className={s.arrowBtn} noLeftRouned noBorder>
             <ArrowSVG className={s.arrowIcon} />
           </Button>
         </Menu>

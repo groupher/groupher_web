@@ -36,8 +36,8 @@ export default ({
       common,
       disabled && 'saturate-50 cursor-not-allowed',
       space && `pl-${space} pr-${space}`,
-      !ghost && !isRed && 'border border-4',
-      'rounded-2xl',
+      !ghost && !isRed && !noBorder && 'border border-4',
+      'w-full rounded-2xl',
       br('divider'),
       !ghost && bg('divider'),
       margin(spacing),
@@ -64,6 +64,6 @@ export default ({
       bg('button.redBg'),
       fg('rainbow.red'),
     ),
-    children: 'align-both relative w-full z-20',
+    children: 'align-both relative w-auto',
   }
 }

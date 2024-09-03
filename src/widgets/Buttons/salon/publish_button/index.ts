@@ -1,16 +1,25 @@
 import type { TSpace } from '~/spec'
 
 import useTwBelt from '~/hooks/useTwBelt'
+import useLayout from '~/hooks/useLayout'
+
+import { BANNER_LAYOUT } from '~/const/layout'
 
 type TProps = TSpace
 
 export default ({ ...spacing }: TProps) => {
   const { cn, fg, margin, fill } = useTwBelt()
+  const { bannerLayout } = useLayout()
 
   return {
     wrapper: cn('row-center', margin(spacing)),
-    pubBtn: cn('row justify-between bold w-full rounded-xl', fg('button.fg')),
+    pubBtn: cn('row relative justify-between bold w-full rounded-xl', fg('button.fg')),
 
-    arrowIcon: cn('size-3 rotate-90 opacity-40', fill('button.fg')),
+    arrowBtn: cn(
+      'absolute  h-full w-9',
+      bannerLayout === BANNER_LAYOUT.HEADER ? 'right-1' : 'right-1',
+    ),
+    arrowIcon: cn('size-3 rotate-90 opacity-40 z-30', fill('button.fg')),
+    menuOffset: bannerLayout === BANNER_LAYOUT.HEADER ? [-110, 4] : [-80, 4],
   }
 }
