@@ -179,11 +179,10 @@ export default (): TRet => {
 
   const breakOut = (type: TBreakOut = 'footer') => {
     const curMetric = metric || METRIC.COMMUNITY
-    console.log('## curMetric: ', curMetric)
 
     const unit = containerConf[curMetric.toLowerCase()]
 
-    if (unit && type === 'footer') {
+    if (type === 'footer') {
       return cn(
         'w-full',
         `w-[${unit.width}]`,

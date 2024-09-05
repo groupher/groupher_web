@@ -1,4 +1,5 @@
-const { borderSoft } = require('../utils/constant/twConfig.json')
+const { keys, uniq } = require('ramda')
+const { borderSoft, container } = require('../utils/constant/twConfig.json')
 
 const GENERAL = [
   'border-divider',
@@ -71,21 +72,19 @@ const HOVERS = [
 ]
 
 const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red', 'fill-text-title']
-const CONTAINERS = [
-  'container-home',
-  'container-community',
-  'container-dashboard',
-  'container-community_sidebar',
-]
+const CONTAINERS = keys(container).map(
+  (c) =>
+    `container-${c} w-[${container[c].width}] pl-${container[c].pl} pr-${container[c].pr} -ml-${container[c].pl} mr-${container[c].pr}`,
+)
+
+console.log('## CONTAINERS: ', CONTAINERS)
+
 const UTILS = [
   'border-transparent',
   'rounded-sm',
   'rounded-md',
   'bg-gradient-to-r to-transparent',
-  '-ml-40',
-  'mr-36',
-  'pl-40',
-  'pr-36',
+
   'saturate-150',
   'brightness-125',
   'select-none',
@@ -94,14 +93,9 @@ const UTILS = [
   'bg-none',
   'bg-transparent',
   'rounded-3xl',
-
-  // TODO:
-  'max-w-[1200px]',
-  'w-[1200px]',
-  'w-[1300px]',
 ]
 
-module.exports = [
+module.exports = uniq([
   ...GENERAL.map((c) => `${c} ${c}-dark`),
 
   ...TEXT_COLORS.map((c) => `text-${c} text-${c}-dark`),
@@ -126,4 +120,4 @@ module.exports = [
 
   ...CONTAINERS,
   ...UTILS,
-]
+])
