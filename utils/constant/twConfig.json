@@ -14,10 +14,16 @@
       "pl": 40,
       "pr": 36
     },
+    "dashboard": {
+      "width": "1300px",
+      "pl": 24,
+      "pr": 16
+    },
     "community_sidebar": {
       "width": "1200px",
       "pl": 20,
       "pr": 20
     }
+
   }
 }

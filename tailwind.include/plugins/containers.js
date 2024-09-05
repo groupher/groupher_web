@@ -3,6 +3,7 @@
 const { container: C } = require('../../utils/constant/twConfig.json')
 
 module.exports = ({ addComponents, theme }) => {
+  // TODO: refactor, based on const/twConfig
   const containers = {
     '.container-home': {
       maxWidth: C.home.width,
@@ -24,6 +25,12 @@ module.exports = ({ addComponents, theme }) => {
       maxWidth: C.community.width,
       paddingLeft: theme(`spacing.${C.community.pl}`),
       paddingRight: theme(`spacing.${C.community.pr}`),
+      '@apply mx-auto': {},
+    },
+    '.container-dashboard': {
+      maxWidth: C.dashboard.width,
+      paddingLeft: theme(`spacing.${C.dashboard.pl}`),
+      paddingRight: theme(`spacing.${C.dashboard.pr}`),
       '@apply mx-auto': {},
     },
   }

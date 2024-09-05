@@ -71,7 +71,12 @@ const HOVERS = [
 ]
 
 const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red', 'fill-text-title']
-const CONTAINERS = ['container-home', 'container-community', 'container-community_sidebar']
+const CONTAINERS = [
+  'container-home',
+  'container-community',
+  'container-dashboard',
+  'container-community_sidebar',
+]
 const UTILS = [
   'border-transparent',
   'rounded-sm',
@@ -93,6 +98,7 @@ const UTILS = [
   // TODO:
   'max-w-[1200px]',
   'w-[1200px]',
+  'w-[1300px]',
 ]
 
 module.exports = [

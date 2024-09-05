@@ -40,6 +40,7 @@ export default () => {
     wrapper: cn(
       'w-full -z-10',
       isAbsolute ? 'h-1/5 right-0' : 'h-full',
+      isAbsolute && metric === METRIC.DASHBOARD && 'h-2/5',
       `opacity-${fmtOpacity(glowOpacity)}`,
       glowPosition,
     ),

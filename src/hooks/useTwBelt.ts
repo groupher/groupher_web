@@ -8,6 +8,7 @@ import type { TFlatThemeKey } from '~/utils/themes/skins'
 import { container as containerConf, borderSoft as borderSoftConf } from '~/const/twConfig.json'
 import { camelize } from '~/fmt'
 
+import METRIC from '~/const/metric'
 import useTheme from '~/hooks/useTheme'
 import useMetric from '~/hooks/useMetric'
 import useAvatarLayout from '~/hooks/useAvatarLayout'
@@ -53,7 +54,9 @@ export default (): TRet => {
   const { isSquare: isAvatarSquare } = useAvatarLayout()
 
   const primaryColor = usePrimaryColor()
-  const container = () => `container-${metric.toLowerCase()}`
+  const container = () => {
+    return `container-${metric.toLowerCase()}`
+  }
 
   /**
    * black color (default primary color) in dark theme should be treat different
@@ -175,9 +178,12 @@ export default (): TRet => {
   }
 
   const breakOut = (type: TBreakOut = 'footer') => {
-    const unit = containerConf[metric.toLowerCase()]
+    const curMetric = metric || METRIC.COMMUNITY
+    console.log('## curMetric: ', curMetric)
 
-    if (type === 'footer') {
+    const unit = containerConf[curMetric.toLowerCase()]
+
+    if (unit && type === 'footer') {
       return cn(
         'w-full',
         `w-[${unit.width}]`,
