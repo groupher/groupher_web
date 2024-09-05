@@ -22,14 +22,16 @@ export default ({ fold }: TProps) => {
     menu: cn('ml-1.5 mt-2 border-l border-transparent', global('sexy-border-50')),
     item: cn(
       'block relative no-underline w-full text-sm px-1 py-1 pl-5 mt-1 mb-0 rounded-lg',
+      `hover:${bg('hoverBg')}`,
       fg('text.digest'),
       isDarkBlack && fg('text.title'),
     ),
     itemActive: cn('bold-sm rounded-tl-none rounded-bl-none py-1.5', primary('fg'), bg('hoverBg')),
     itemActiveBar: cn(
-      'absolute -left-0.5 top-1.5 w-1 h-5 rounded opacity-80',
+      'absolute -left-0.5 top-2 w-1 h-4 rounded opacity-80',
       primary('bg'),
       isDarkBlack && bg('text.digest'),
     ),
+    menuIcon: cn('size-3.5', fill('text.digest')),
   }
 }

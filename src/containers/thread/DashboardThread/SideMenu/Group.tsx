@@ -7,6 +7,10 @@ import useDashboardTab from '~/hooks/useDashboardTab'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 
 import ArrowSVG from '~/icons/ArrowSimple'
+import InfoSVG from '~/icons/Info'
+import PulseSVG from '~/icons/Pulse'
+import ManagementSVG from '~/icons/Management'
+import BindSVG from '~/icons/Bind'
 
 import type { TMenuGroup } from '../spec'
 
@@ -26,7 +30,12 @@ const Group: FC<TProps> = ({ group }) => {
   return (
     <div className={s.wrapper}>
       <div className={s.folder} onClick={() => setFold(!fold)}>
-        <div className={s.iconBox}>{group.icon}</div>
+        <div className={s.iconBox}>
+          {group.icon === 'basic' && <InfoSVG className={s.menuIcon} />}
+          {group.icon === 'cms' && <ManagementSVG className={cn(s.menuIcon, 'size-4 -mt-px')} />}
+          {group.icon === 'analysis' && <PulseSVG className={s.menuIcon} />}
+          {group.icon === 'bind' && <BindSVG className={s.menuIcon} />}
+        </div>
         <h3 className={s.title}>{group.title}</h3>
         <ArrowSVG className={s.arrowIcon} />
       </div>
