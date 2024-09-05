@@ -22,6 +22,10 @@ export const getRouned = (size: string): string => {
       return 'rounded-md'
     }
 
+    case SIZE.SMALL: {
+      return 'rounded-lg'
+    }
+
     default: {
       return 'rounded-xl'
     }

@@ -14,6 +14,6 @@ export default ({ width, desc }: TProps) => {
     wrapper: cn('column', width === '100%' ? 'w-full' : width),
     header: 'row-center',
     title: cn('row-center w-full text-base', !desc && 'mb-4', fg('text.title')),
-    desc: cn('text-sm mt-2.5 mb-5 mt-2', fg('text.digest')),
+    desc: cn('text-sm mt-2.5 mb-8 mt-2.5', fg('text.digest')),
   }
 }

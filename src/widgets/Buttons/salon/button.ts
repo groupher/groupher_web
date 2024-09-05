@@ -35,7 +35,6 @@ export default ({
     wrapper: cn(
       common,
       disabled && 'saturate-50 cursor-not-allowed',
-      space && `pl-${space} pr-${space}`,
       !ghost && !isRed && !noBorder && 'border border-4',
       'w-full rounded-2xl',
       br('divider'),
@@ -43,11 +42,12 @@ export default ({
       margin(spacing),
     ),
     inner: cn(
-      'align-both relative text-center border border-transparent pointer',
+      'align-both relative text-center break-keep border border-transparent pointer',
       'hover:brightness-110 active:brightness-95 trans-all-200',
       getRouned(size),
       getHeight(size),
       getPadding(size),
+      space && `px-${space}`,
       getFontSize(size),
       noLeftRouned && 'rounded-tl-none rounded-bl-none',
       !ghost && primary('bg'),
@@ -64,6 +64,6 @@ export default ({
       bg('button.redBg'),
       fg('rainbow.red'),
     ),
-    children: 'align-both relative w-auto',
+    children: cn('align-both relative w-auto'),
   }
 }

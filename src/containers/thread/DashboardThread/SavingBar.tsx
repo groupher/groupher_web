@@ -62,7 +62,7 @@ const SavingBar: FC<TProps> = ({
               confirmText="确定"
               disabled={disabled}
               loading={loading}
-              space={4}
+              space={2.5}
               onCancel={() => {
                 onCancel?.()
                 field && rollbackEdit(field)
@@ -101,7 +101,7 @@ const SavingBar: FC<TProps> = ({
           disabled={disabled}
           confirmText="确定"
           loading={loading}
-          space={4}
+          space={5}
           onConfirm={() => {
             if (field) {
               onSave(field)

@@ -29,7 +29,6 @@ export default () => {
         isTouched={isTouched}
         field={SETTING_FIELD.PRIMARY_COLOR}
         loading={saving}
-        width="90%"
         left={-8}
       >
         <div className={s.label}>

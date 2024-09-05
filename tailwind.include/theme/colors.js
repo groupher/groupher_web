@@ -133,7 +133,7 @@ module.exports = {
     cyanLightSoft: { DEFAULT: '#e1fcff94', dark: '#39494b94' },
     cyanLightPale: { DEFAULT: '#e1fcff94', dark: '#39494b94' },
 
-    blue: { DEFAULT: '#5073C6', dark: '#0073E3' },
+    blue: { DEFAULT: '#5073C6', dark: '#3a7ec7' },
     blueSoft: { DEFAULT: '#E7EDF7', dark: '#76809654' },
     bluePale: {
       DEFAULT: 'linear-gradient(90deg, #f3f7ff 0%, #f5f8ffb5 100%);',
