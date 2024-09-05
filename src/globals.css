@@ -190,6 +190,30 @@
     border-image-slice: 1;
   }
 
+  .sexy-border-50 {
+    border-image: linear-gradient(
+      0.5turn,
+      transparent,
+      var(--divider),
+      var(--divider),
+      var(--divider),
+      transparent
+    );
+    border-image-slice: 1;
+  }
+
+  .sexy-border-50-dark {
+    border-image: linear-gradient(
+      0.5turn,
+      transparent,
+      var(--divider-dark),
+      var(--divider-dark),
+      var(--divider-dark),
+      transparent
+    );
+    border-image-slice: 1;
+  }
+
   .debug {
     @apply border border-dashed;
     border-color: red;

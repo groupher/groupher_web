@@ -1,22 +1,16 @@
 import { type FC, useState } from 'react'
+import Link from 'next/link'
 
 import { DASHBOARD_ROUTE } from '~/const/route'
 
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 import useDashboardTab from '~/hooks/useDashboardTab'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 
+import ArrowSVG from '~/icons/ArrowSimple'
+
 import type { TMenuGroup } from '../spec'
 
-import {
-  Wrapper,
-  Folder,
-  Item,
-  FoldArrowIcon,
-  Title,
-  MenuWrapper,
-  IconWrapper,
-} from '../styles/side_menu/group'
+import useSalon, { cn } from '../styles/side_menu/group'
 
 type TProps = {
   group: TMenuGroup
@@ -25,37 +19,40 @@ type TProps = {
 const Group: FC<TProps> = ({ group }) => {
   const { curTab, changeTab } = useDashboardTab()
   const community = useViewingCommunity()
-  const primaryColor = usePrimaryColor()
   const [fold, setFold] = useState(group.initFold)
 
+  const s = useSalon({ fold })
+
   return (
-    <Wrapper>
-      <Folder onClick={() => setFold(!fold)}>
-        <IconWrapper>{group.icon}</IconWrapper>
-        <Title>{group.title}</Title>
-        <FoldArrowIcon fold={fold} />
-      </Folder>
+    <div className={s.wrapper}>
+      <div className={s.folder} onClick={() => setFold(!fold)}>
+        <div className={s.iconBox}>{group.icon}</div>
+        <h3 className={s.title}>{group.title}</h3>
+        <ArrowSVG className={s.arrowIcon} />
+      </div>
 
       {!fold && (
-        <MenuWrapper>
+        <div className={s.menu}>
           {group.children.map((item) => {
             const subPath = item.slug === DASHBOARD_ROUTE.DASHBOARD ? '' : item.slug
+            const isActive = item.slug === curTab
 
             return (
-              <Item
+              <Link
                 key={item.slug}
-                $active={item.slug === curTab}
+                className={cn(s.item, isActive && s.itemActive)}
                 onClick={() => changeTab(item.slug)}
                 href={`/${community.slug}/${DASHBOARD_ROUTE.DASHBOARD}/${subPath}`}
-                $color={primaryColor}
               >
+                {isActive && <div className={s.itemActiveBar} />}
+
                 {item.title}
-              </Item>
+              </Link>
             )
           })}
-        </MenuWrapper>
+        </div>
       )}
-    </Wrapper>
+    </div>
   )
 }
 

@@ -7,6 +7,6 @@ export default () => {
     wrapper: cn('column-center justify-start min-h-full w-full'),
     inner: cn('column-center w-full mt-14'),
     content: 'row w-full',
-    main: 'ml-24 mt-7 grow bg-transparent',
+    main: 'ml-28 mt-7 grow bg-transparent',
   }
 }

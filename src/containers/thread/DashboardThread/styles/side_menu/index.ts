@@ -1,4 +1,4 @@
-import type { TTestable } from '~/spec'
+import useTwBelt from '~/hooks/useTwBelt'
 
 import InfoSVG from '~/icons/Info'
 import PulseSVG from '~/icons/Pulse'
@@ -7,30 +7,13 @@ import BindSVG from '~/icons/Bind'
 
 import styled, { css, theme } from '~/css'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TTestable>`
-  ${css.column()};
-  width: 168px;
-  min-width: 168px;
-  color: ${theme('article.digest')};
-  padding-top: 32px;
+export default () => {
+  const { cn, fg } = useTwBelt()
 
-  ${css.media.mobile`
-    display: none;
-  `};
-`
-
-export const MobileWrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TTestable>`
-  ${css.column()};
-  width: 175px;
-  min-width: 175px;
-  color: ${theme('article.digest')};
-  padding-top: 15px;
-  padding-left: 15px;
-`
+  return {
+    wrapper: cn('column w-40 min-w-40 pt-8', fg('text.digest')),
+  }
+}
 
 export const Folder = styled.div`
   ${css.row('align-center')};
