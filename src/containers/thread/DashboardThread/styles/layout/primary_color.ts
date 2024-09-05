@@ -1,20 +1,11 @@
-import type { TColor } from '~/spec'
-import styled, { css, rainbow } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { BaseSection } from '.'
+export default () => {
+  const { cn, primary } = useTwBelt()
 
-export const Wrapper = styled(BaseSection)``
-
-export const Label = styled.div<TColor>`
-  ${css.row('align-both')};
-  ${css.circle(42)};
-  border: 1px solid;
-  border-color: ${({ $color }) => rainbow($color, 'article.digest')};
-  cursor: pointer;
-`
-export const ColorBall = styled.div<TColor>`
-  ${css.circle(34)};
-  background-color: ${({ $color }) => rainbow($color, 'rainbow.blackBtn')};
-  margin-top: 3px;
-  margin-left: 3px;
-`
+  return {
+    wrapper: 'pb-7',
+    label: cn('align-both size-10 align-both circle border pointer', primary('borderSoft')),
+    colorBall: cn('size-8 circle', primary('bg')),
+  }
+}

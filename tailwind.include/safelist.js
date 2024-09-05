@@ -43,9 +43,11 @@ const FILL_COLORS = ['text-title', 'text-digest', 'button-fg', 'heightIcon']
 const RAINBOW_COLORS = [
   'black',
   'blackBtn',
+  'pink',
   'red',
   'orange',
   'yellow',
+  'brown',
   'green',
   'greenLight',
   'cyan',

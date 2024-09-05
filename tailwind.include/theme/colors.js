@@ -153,9 +153,8 @@ module.exports = {
     pinkSoft: { DEFAULT: '#ffd8ea59', dark: '#73526159' },
     pinkPale: { DEFAULT: '#ffd8ea59', dark: '#73526159' },
 
-    black: { DEFAULT: '#333333', dark: '#343333' },
-    // is for dark theme only
-    // TODO: remove this ?
+    black: { DEFAULT: '#333333', dark: '#4e4e4e' },
+    // TODO: is for dark theme only
     blackBtn: { DEFAULT: colors.gray['800'], dark: '#4e4e4e' },
 
     blackSoft: { DEFAULT: '#f4f4f4', dark: '#313131' },

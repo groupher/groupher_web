@@ -1,3 +1,4 @@
+import useTheme from '~/hooks/useTheme'
 import useTwBelt from '~/hooks/useTwBelt'
 
 export { cn } from '~/css'
@@ -7,7 +8,8 @@ type TProps = {
 }
 
 export default ({ fold }: TProps) => {
-  const { cn, fill, fg, bg, global, primary, isDarkBlack } = useTwBelt()
+  const { isLightTheme } = useTheme()
+  const { cn, fill, fg, bg, global, primary, enhanceDark, isDarkBlack } = useTwBelt()
 
   return {
     wrapper: 'mb-4',
@@ -26,7 +28,13 @@ export default ({ fold }: TProps) => {
       fg('text.digest'),
       isDarkBlack && fg('text.title'),
     ),
-    itemActive: cn('bold-sm rounded-tl-none rounded-bl-none py-1.5', primary('fg'), bg('hoverBg')),
+    itemActive: cn(
+      'rounded-tl-none rounded-bl-none py-1.5',
+      isLightTheme && 'bold-sm',
+      primary('fg'),
+      bg('hoverBg'),
+      enhanceDark(),
+    ),
     itemActiveBar: cn(
       'absolute -left-0.5 top-2 w-1 h-4 rounded opacity-80',
       primary('bg'),

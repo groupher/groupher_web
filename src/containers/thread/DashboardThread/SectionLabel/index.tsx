@@ -1,7 +1,7 @@
-import { type FC, memo, type ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 
 import ThemeSelect from './ThemeSelect'
-import { Wrapper, Header, Title, Desc } from '../styles/section_label'
+import useSalon from '../styles/section_label'
 
 type TProps = {
   title: string
@@ -18,23 +18,25 @@ const SectionLabel: FC<TProps> = ({
   width = '100%',
   withThemeSelect = false,
 }) => {
+  const s = useSalon({ width, desc })
+
   return (
-    <Wrapper width={width}>
-      <Header>
-        <Title noDesc={desc === null}>
-          {title}{' '}
+    <div className={s.wrapper}>
+      <div className={s.header}>
+        <h3 className={s.title}>
+          {title}
           {withThemeSelect && (
             <>
               <div className="grow" /> <ThemeSelect />
             </>
           )}
-        </Title>
+        </h3>
         <div className="grow" />
         {addon}
-      </Header>
-      {desc && <Desc>{desc}</Desc>}
-    </Wrapper>
+      </div>
+      {desc && <div className={s.desc}>{desc}</div>}
+    </div>
   )
 }
 
-export default memo(SectionLabel)
+export default SectionLabel
