@@ -5,6 +5,8 @@ const GENERAL = [
   'border-divider',
   'border-text-hint',
   'article-hover-linear',
+  'saving-bar-left-linear',
+  'saving-bar-right-linear',
   'unibar-linear-mask',
   'count-highlight',
   'footer-inner-shadow',
@@ -55,7 +57,7 @@ const RAINBOW_COLORS = [
   'purple',
 ]
 
-const MARGIN = ['px', 0.5, 1, 1.5, 2, 2.5, 3, 4, 5]
+const MARGIN = ['px', 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 10]
 const SIZE = [1.5, 2, 2.5, 3, 3.5, 4, 5, 6]
 
 // fill-rainbow-red is mainly for delete buttons

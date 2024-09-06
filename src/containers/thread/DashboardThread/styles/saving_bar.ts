@@ -1,48 +1,27 @@
 import type { TSpace } from '~/spec'
-import styled, { css, theme } from '~/css'
 
-import InfoSVG from '~/icons/Save'
-import { WithMargin } from '~/widgets/Common'
+import useTwBelt from '~/hooks/useTwBelt'
 
-type TWrapper = { direction: 'left' | 'right'; width: string } & TSpace
-export const NormalWrapper = styled(WithMargin)<TWrapper>`
-  ${css.row('align-center')};
-  width: ${({ direction, width }) => (direction === 'right' ? `calc(${width} + 10px)` : width)};
-  background: ${(props) => {
-    const { direction } = props
-    // @ts-ignore
-    const themeVal = theme('hoverBg')(props)
+export { cn } from '~/css'
 
-    return `linear-gradient(to ${direction}, ${themeVal} 60%, transparent)`
-  }};
+type TProps = {
+  minimal: boolean
+  width: string
+} & TSpace
 
-  height: 42px;
-  padding: 0 10px;
-  border-radius: 10px;
-`
-export const MinimalWrapper = styled(NormalWrapper)`
-  height: 34px;
-  padding: 0 8px;
-`
-export const HintWrapper = styled.div`
-  ${css.row('align-center')};
-  color: ${theme('article.digest')};
-`
-export const InfoIcon = styled(InfoSVG)<{ $minimal: boolean }>`
-  ${css.size(13)};
-  fill: ${theme('article.digest')};
-  margin-right: 6px;
-  margin-top: ${({ $minimal }) => ($minimal ? '-1px' : 0)}};
-`
-export const HintText = styled.div<{ $minimal: boolean }>`
-  font-size: ${({ $minimal }) => ($minimal ? '11px' : '13px')}};
-`
-export const Hint = styled.span`
-  color: ${theme('article.title')};
-  margin-left: 2px;
-`
-export const ActionWrapper = styled.div<{ $minimal: boolean }>`
-  ${css.row('align-center')};
+export default ({ minimal, width, ...spacing }: TProps) => {
+  const { cn, margin, fg, fill } = useTwBelt()
 
-  ${({ $minimal }) => ($minimal ? ' transform: scale(0.85);  margin-right: -8px;' : '')};
-`
+  return {
+    wrapper: cn(
+      'row-center h-11 py-2.5 pr-2 rounded-lg mr-3',
+      width !== '100%' && width,
+      minimal && 'h-8 py-2',
+      margin(spacing),
+    ),
+    hint: cn('ml-0.5', fg('text.title')),
+    hintText: cn(minimal ? 'text-xs' : 'text-sm', fg('text.title')),
+    infoIcon: cn('size-4 mr-2', fill('text.digest')),
+    actions: cn('row-center', minimal && 'scale-90 -mr-2'),
+  }
+}

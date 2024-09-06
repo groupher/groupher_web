@@ -98,6 +98,22 @@
     background: radial-gradient(circle, #292929a1 30%, #0000 100%);
   }
 
+  .saving-bar-left-linear {
+    background: linear-gradient(to left, #efefef78 45%, transparent);
+  }
+
+  .saving-bar-left-linear-dark {
+    background: linear-gradient(to left, #42424259 45%, transparent);
+  }
+
+  .saving-bar-right-linear {
+     background:linear-gradient(to right, #efefef78 45%, transparent);
+  }
+
+  .saving-bar-right-linear-dark {
+    background: linear-gradient(to right, #42424259 45%, transparent);
+  }
+
   .count-highlight {
     background: linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%);
     -webkit-background-clip: text;

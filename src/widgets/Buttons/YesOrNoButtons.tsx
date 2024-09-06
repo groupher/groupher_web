@@ -40,6 +40,7 @@ const YesOrNoButton: FC<TProps> = ({
         type="primary"
         loading={loading}
         disabled={disabled}
+        noBorder
         space={space}
         onClick={() => onConfirm?.()}
       >

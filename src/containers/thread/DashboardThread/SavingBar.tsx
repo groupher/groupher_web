@@ -2,18 +2,12 @@ import { type FC, memo, type ReactNode } from 'react'
 
 import type { TSpace } from '~/spec'
 
+import useTwBelt from '~/hooks/useTwBelt'
 import YesOrNoButtons from '~/widgets/Buttons/YesOrNoButtons'
 
 import type { TSettingField } from './spec.d'
-import {
-  NormalWrapper,
-  MinimalWrapper,
-  HintWrapper,
-  InfoIcon,
-  HintText,
-  Hint,
-  ActionWrapper,
-} from './styles/saving_bar'
+import InfoSVG from '~/icons/Save'
+import useSalon, { cn } from './styles/saving_bar'
 
 import useHelper from './logic/useHelper'
 
@@ -43,20 +37,25 @@ const SavingBar: FC<TProps> = ({
   onCancel = console.log,
   onConfirm = console.log,
   width = '100%',
-  ...restProps
+  ...spacing
 }) => {
+  const { global } = useTwBelt()
+  const s = useSalon({ minimal, width, ...spacing })
   const { rollbackEdit, onSave } = useHelper()
 
   // cannot pass minimal to Wrapper, cuz the wired issue on styled-components@6
-  const Wrapper = !minimal ? NormalWrapper : MinimalWrapper
+  // const Wrapper = !minimal ? NormalWrapper : MinimalWrapper
+
+  // direction="left"
+  // direction="right"
 
   if (children !== null) {
     if (isTouched) {
       return (
-        <Wrapper direction="left" width={width} {...restProps}>
+        <div className={cn(s.wrapper, global('saving-bar-left-linear'))}>
           {children}
           <div className="grow" />
-          <ActionWrapper $minimal={minimal}>
+          <div className={s.actions}>
             <YesOrNoButtons
               cancelText="取消"
               confirmText="确定"
@@ -76,8 +75,8 @@ const SavingBar: FC<TProps> = ({
                 }
               }}
             />
-          </ActionWrapper>
-        </Wrapper>
+          </div>
+        </div>
       )
     }
     return <>{children}</>
@@ -86,22 +85,22 @@ const SavingBar: FC<TProps> = ({
   if (!isTouched) return null
 
   return (
-    <Wrapper direction="right" width={width} {...restProps}>
-      <HintWrapper>
-        <InfoIcon $minimal={minimal} />
-        <HintText $minimal={minimal}>
+    <div className={cn(s.wrapper, 'pl-2.5', global('saving-bar-right-linear'))}>
+      <div className="row-center">
+        <InfoSVG className={s.infoIcon} />
+        <div className={s.hintText}>
           {prefix}
-          {hint && <Hint>{hint}</Hint>} ?
-        </HintText>
-      </HintWrapper>
+          {hint && <div className={s.hint}>{hint}</div>} ?
+        </div>
+      </div>
       <div className="grow" />
-      <ActionWrapper $minimal={minimal}>
+      <div className={s.actions}>
         <YesOrNoButtons
           cancelText="取消"
           disabled={disabled}
           confirmText="确定"
           loading={loading}
-          space={5}
+          space={2.5}
           onConfirm={() => {
             if (field) {
               onSave(field)
@@ -115,8 +114,8 @@ const SavingBar: FC<TProps> = ({
             field && rollbackEdit(field)
           }}
         />
-      </ActionWrapper>
-    </Wrapper>
+      </div>
+    </div>
   )
 }
 

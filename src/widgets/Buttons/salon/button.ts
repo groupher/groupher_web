@@ -36,7 +36,7 @@ export default ({
       common,
       disabled && 'saturate-50 cursor-not-allowed',
       !ghost && !isRed && !noBorder && 'border border-4',
-      'w-full rounded-2xl',
+      'w-full rounded-xl',
       br('divider'),
       !ghost && bg('divider'),
       margin(spacing),

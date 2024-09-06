@@ -81,7 +81,7 @@ export default () => {
         isTouched={isTouched}
         field={SETTING_FIELD.BRAND_LAYOUT}
         loading={saving}
-        top={36}
+        top={10}
       />
     </Wrapper>
   )
