@@ -34,7 +34,17 @@ const Button: FC<TProps> = ({
   noLeftRouned = false,
   ...spacing
 }) => {
-  const s = useSalon({ type, ghost, space, size, noBorder, disabled, noLeftRouned, ...spacing })
+  const s = useSalon({
+    type,
+    ghost,
+    space,
+    size,
+    noBorder,
+    disabled,
+    loading,
+    noLeftRouned,
+    ...spacing,
+  })
 
   const isRed = type === 'red'
 

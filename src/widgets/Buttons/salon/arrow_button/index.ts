@@ -1,47 +1,27 @@
 import type { TSpace } from '~/spec'
 
-import styled, { css, rainbowLink } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import type { TProps } from '../../ArrowButton'
+export { cn } from '~/css'
 
-type TWrapper = Pick<TProps, 'disabled' | 'color' | 'fontSize'> & {
-  width: number
-  $reverseColor: boolean
-  $dimWhenIdle: boolean
+type TProps = {
+  disabled: boolean
+  dimWhenIdle: boolean
+  leftLayout: boolean
 } & TSpace
 
-export const Wrapper = styled.button<TWrapper>`
-  position: relative;
-  ${css.row('align-center')};
-  display: inline-flex;
-  opacity: ${({ $dimWhenIdle, disabled }) => ($dimWhenIdle || disabled ? '0.65' : 1)};
-  color: ${({ color, $reverseColor }) => {
-    if ($reverseColor) return 'white'
+export default ({ disabled, dimWhenIdle, leftLayout, ...spacing }: TProps) => {
+  const { cn, margin, primary } = useTwBelt()
 
-    return rainbowLink(color)
-  }};
-
-  border: none;
-  background: transparent;
-  vertical-align: middle;
-  font-weight: 500;
-
-  gap: 0 0.6em;
-
-  ${(props) => css.spaceMargins(props)};
-
-  width: ${({ width }) => `${width + 25}px`};
-
-  &:hover {
-    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-    opacity: ${({ disabled }) => (disabled ? 0.65 : 0.8)};
+  return {
+    wrapper: cn(
+      'group row-center relative inline-flex border-none bg-transparent bold-sm',
+      leftLayout ? 'pl-2' : 'pr-3.5',
+      !leftLayout && 'hover:pr-1',
+      'hover:brightness-110 trans-all-100 pointer',
+      primary('fg'),
+      margin(spacing),
+    ),
+    text: cn('break-keep whitespace-nowrap text-sm'),
   }
-
-  transition: all 0.2s;
-`
-export const Text = styled.div<{ fontSize: number }>`
-  word-break: keep-all;
-  white-space: nowrap;
-  line-height: 15px;
-  font-size: ${({ fontSize }) => `${fontSize}px`};
-`
+}

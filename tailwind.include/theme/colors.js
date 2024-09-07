@@ -86,7 +86,7 @@ module.exports = {
       dark: 'linear-gradient(90deg, #7a37323d 0%, #46211e2b 100%)',
     },
 
-    orange: { DEFAULT: 'orange', dark: '#ce9f6f' },
+    orange: { DEFAULT: 'orange', dark: '#ffa500c7' },
     orangeSoft: { DEFAULT: '#FEF7E8', dark: '#4c3e37' },
     orangePale: {
       DEFAULT: 'linear-gradient(90deg, #fcb32d26 0%, #f5dfb726 100%)',
@@ -100,7 +100,7 @@ module.exports = {
       dark: 'linear-gradient(90deg, #45320569 0%, #3929024a 100%)',
     },
 
-    yellow: { DEFAULT: '#c7b96d', dark: '#eddd85' },
+    yellow: { DEFAULT: '#c7b96d', dark: '#dac933cf' },
     yellowSoft: { DEFAULT: '#FEFBE8', dark: '#a9a06a30' },
     yellowPale: {
       DEFAULT: 'linear-gradient(90deg, #fffde5 0%, rgb(255 252 241 / 37%) 100%)',

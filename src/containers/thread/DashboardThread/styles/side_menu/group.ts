@@ -15,7 +15,7 @@ export default ({ fold }: TProps) => {
     wrapper: 'mb-4',
     folder: cn('row-center group justify-between pointer mb-3'),
     iconBox: cn('align-both size-5'),
-    title: cn('text-sm grow ml-2 bold', fg('text.digest')),
+    title: cn('text-sm grow ml-2 bold', fg('text.digest'), !isLightTheme && 'brightness-110'),
     arrowIcon: cn(
       'size-4 group-smoky-65 trans-all-200',
       !fold ? '-rotate-90' : 'rotate-180',

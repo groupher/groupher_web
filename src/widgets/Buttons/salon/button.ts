@@ -12,6 +12,7 @@ type TProps = {
   space?: number | null
   size?: TSizeTSM
   noBorder?: boolean
+  loading: boolean
   disabled?: boolean
   noLeftRouned: boolean
 } & TSpace
@@ -23,6 +24,7 @@ export default ({
   size,
   space,
   disabled,
+  loading,
   noLeftRouned,
   ...spacing
 }: TProps) => {
@@ -39,6 +41,7 @@ export default ({
       'w-full rounded-xl',
       br('divider'),
       !ghost && bg('divider'),
+      loading && bg('transparent'),
       margin(spacing),
     ),
     inner: cn(
@@ -58,6 +61,7 @@ export default ({
       ghost && primary('borderSoft'),
       ghost && bg('transparent'),
       ghost ? primary('fg') : fg('button.fg'),
+      loading && bg('transparent'),
     ),
     innerRed: cn(
       'hover:brightness-105 active:brightness-95 trans-all-200',
