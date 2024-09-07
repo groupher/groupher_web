@@ -95,12 +95,7 @@ export default () => {
             </Main>
           </Block>
           <LayoutTitle $active={layout === BANNER_LAYOUT.HEADER}>
-            <CheckLabel
-              title="标题式"
-              $active={layout === BANNER_LAYOUT.HEADER}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="标题式" active={layout === BANNER_LAYOUT.HEADER} top={4} />
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(BANNER_LAYOUT.TABBER, 'bannerLayout')}>
@@ -155,12 +150,7 @@ export default () => {
             </Main>
           </Block>
           <LayoutTitle $active={layout === BANNER_LAYOUT.TABBER}>
-            <CheckLabel
-              title="标签卡式"
-              $active={layout === BANNER_LAYOUT.TABBER}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="标签卡式" active={layout === BANNER_LAYOUT.TABBER} top={4} />
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(BANNER_LAYOUT.SIDEBAR, 'bannerLayout')}>
@@ -216,12 +206,7 @@ export default () => {
             </Main>
           </Block>
           <LayoutTitle $active={layout === BANNER_LAYOUT.SIDEBAR}>
-            <CheckLabel
-              title="边栏式"
-              $active={layout === BANNER_LAYOUT.SIDEBAR}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="边栏式" active={layout === BANNER_LAYOUT.SIDEBAR} top={4} />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>

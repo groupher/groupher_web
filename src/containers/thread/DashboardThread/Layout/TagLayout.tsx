@@ -47,7 +47,7 @@ export default () => {
           </Block>
 
           <LayoutTitle $active={tagLayout === TAG_LAYOUT.HASH}>
-            <CheckLabel title="井字" $active={tagLayout === TAG_LAYOUT.HASH} top={15} left={-15} />
+            <CheckLabel title="井字" active={tagLayout === TAG_LAYOUT.HASH} top={4} />
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(TAG_LAYOUT.DOT, 'tagLayout')}>
@@ -66,7 +66,7 @@ export default () => {
           </Block>
 
           <LayoutTitle $active={tagLayout === TAG_LAYOUT.DOT}>
-            <CheckLabel title="圆点" $active={tagLayout === TAG_LAYOUT.DOT} top={15} left={-15} />
+            <CheckLabel title="圆点" active={tagLayout === TAG_LAYOUT.DOT} top={4} />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>

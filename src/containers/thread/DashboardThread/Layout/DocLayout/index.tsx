@@ -54,12 +54,7 @@ export default () => {
             </Main>
           </Block>
           <LayoutTitle $active={docLayout === DOC_LAYOUT.BLOCKS}>
-            <CheckLabel
-              title="块状排列"
-              $active={docLayout === DOC_LAYOUT.BLOCKS}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="块状排列" active={docLayout === DOC_LAYOUT.BLOCKS} top={4} />
           </LayoutTitle>
         </Layout>
 
@@ -71,12 +66,7 @@ export default () => {
             </Main>
           </Block>
           <LayoutTitle $active={docLayout === DOC_LAYOUT.LISTS}>
-            <CheckLabel
-              title="列表排列"
-              $active={docLayout === DOC_LAYOUT.LISTS}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="列表排列" active={docLayout === DOC_LAYOUT.LISTS} top={4} />
           </LayoutTitle>
         </Layout>
 
@@ -88,12 +78,7 @@ export default () => {
             </Main>
           </Block>
           <LayoutTitle $active={docLayout === DOC_LAYOUT.CARDS}>
-            <CheckLabel
-              title="卡片排列"
-              $active={docLayout === DOC_LAYOUT.CARDS}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="卡片排列" active={docLayout === DOC_LAYOUT.CARDS} top={4} />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>
@@ -131,12 +116,7 @@ export default () => {
             </Main>
           </Block>
           <LayoutTitle $active={docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE}>
-            <CheckLabel
-              title="可折叠"
-              $active={docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="可折叠" active={docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE} top={4} />
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(DOC_FAQ_LAYOUT.FLAT, 'docFaqLayout')}>
@@ -147,12 +127,7 @@ export default () => {
             </Main>
           </Block>
           <LayoutTitle $active={docFaqLayout === DOC_FAQ_LAYOUT.FLAT}>
-            <CheckLabel
-              title="铺开式"
-              $active={docFaqLayout === DOC_FAQ_LAYOUT.FLAT}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="铺开式" active={docFaqLayout === DOC_FAQ_LAYOUT.FLAT} top={4} />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>

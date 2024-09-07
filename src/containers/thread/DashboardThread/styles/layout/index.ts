@@ -2,6 +2,47 @@ import styled, { css, theme, rainbow } from '~/css'
 
 import type { TActive, TColor, TColorName } from '~/spec'
 
+import useTwBelt from '~/hooks/useTwBelt'
+import useTheme from '~/hooks/useTheme'
+
+export default () => {
+  const { cn, br, primary } = useTwBelt()
+  const { isLightTheme } = useTheme()
+
+  return {
+    baseSection: 'pb-7',
+    blockBase: cn(
+      'relative border rounded-md px-4 py-4 border pointer',
+      isLightTheme ? 'opacity-65' : 'opacity-50',
+      'hover:opacity-100 trans-all-100',
+      br('text.hint'),
+    ),
+    blockBaseActive: cn('opacity-100', primary('border')),
+  }
+}
+
+type TBlockBase = TActive & TColor
+export const BlockBase = styled.div<TBlockBase>`
+  position: relative;
+  opacity: ${({ $active }) => ($active ? 1 : theme('dashboardBlockOpacity'))};
+  box-shadow: ${({ $active }) => ($active ? css.cardShadow : '')};
+  background-color: ${({ $active }) => ($active ? theme('dashboard.blockActiveBg') : 'transparent')};
+
+  border: 1px solid;
+  border-radius: 7px;
+  border-color: ${({ $active, $color }) =>
+    $active ? rainbow($color, 'article.digest') : theme('button.upvoteBorder')};
+  padding: 16px 15px;
+
+  &:hover {
+    opacity: ${({ $active }) => ($active ? 0.85 : 0.65)};
+    border-color: ${({ $color }) => rainbow($color, 'article.digest')};
+    cursor: pointer;
+  }
+
+  transition: all 0.2s;
+`
+
 export const Wrapper = styled.div`
   ${css.column()};
   padding-left: 56px;
@@ -10,6 +51,9 @@ export const Wrapper = styled.div`
   ${css.media.mobile`
     padding: 20px;
   `};
+`
+export const BaseSection = styled.section`
+  padding-bottom: 30px;
 `
 export const Banner = styled.div`
   height: 70px;
@@ -33,35 +77,11 @@ export const TabsWrapper = styled.div`
     overflow: scroll;
   `};
 `
-export const BaseSection = styled.section`
-  padding-bottom: 30px;
-`
+
 export const TitleBase = styled.div`
   color: ${theme('article.title')};
   font-size: 15px;
   margin-bottom: 12px;
-`
-
-type TBlockBase = TActive & TColor
-export const BlockBase = styled.div<TBlockBase>`
-  position: relative;
-  opacity: ${({ $active }) => ($active ? 1 : theme('dashboardBlockOpacity'))};
-  box-shadow: ${({ $active }) => ($active ? css.cardShadow : '')};
-  background-color: ${({ $active }) => ($active ? theme('dashboard.blockActiveBg') : 'transparent')};
-
-  border: 1px solid;
-  border-radius: 7px;
-  border-color: ${({ $active, $color }) =>
-    $active ? rainbow($color, 'article.digest') : theme('button.upvoteBorder')};
-  padding: 16px 15px;
-
-  &:hover {
-    opacity: ${({ $active }) => ($active ? 0.85 : 0.65)};
-    border-color: ${({ $color }) => rainbow($color, 'article.digest')};
-    cursor: pointer;
-  }
-
-  transition: all 0.2s;
 `
 
 // base shapes

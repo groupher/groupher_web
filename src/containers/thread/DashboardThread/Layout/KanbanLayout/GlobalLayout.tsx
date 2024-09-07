@@ -49,12 +49,7 @@ export default () => {
             <Brick bottom={8} left={195} $height={25} $width={63} $opacity={0.05} />
           </Block>
           <LayoutTitle $active={layout === KANBAN_LAYOUT.CLASSIC}>
-            <CheckLabel
-              title="经典"
-              $active={layout === KANBAN_LAYOUT.CLASSIC}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="经典" active={layout === KANBAN_LAYOUT.CLASSIC} top={4} />
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(KANBAN_LAYOUT.WATERFALL, 'kanbanLayout')}>
@@ -92,12 +87,7 @@ export default () => {
             <Brick bottom={20} left={20} $height={3} $width={30} $opacity={0.2} />
           </Block>
           <LayoutTitle $active={layout === KANBAN_LAYOUT.WATERFALL}>
-            <CheckLabel
-              title="瀑布"
-              $active={layout === KANBAN_LAYOUT.WATERFALL}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="瀑布" active={layout === KANBAN_LAYOUT.WATERFALL} top={4} />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>

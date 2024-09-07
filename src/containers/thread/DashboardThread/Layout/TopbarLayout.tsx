@@ -81,12 +81,7 @@ export default () => {
             </Main>
           </Block>
           <LayoutTitle $active={layout === TOPBAR_LAYOUT.YES}>
-            <CheckLabel
-              title="有 Topbar"
-              $active={layout === TOPBAR_LAYOUT.YES}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="有 Topbar" active={layout === TOPBAR_LAYOUT.YES} top={4} />
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(TOPBAR_LAYOUT.NO, 'topbarLayout')}>
@@ -114,12 +109,7 @@ export default () => {
             </Main>
           </Block>
           <LayoutTitle $active={layout === TOPBAR_LAYOUT.NO}>
-            <CheckLabel
-              title="无 Topbar"
-              $active={layout === TOPBAR_LAYOUT.NO}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="无 Topbar" active={layout === TOPBAR_LAYOUT.NO} top={4} />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>

@@ -93,12 +93,7 @@ export default () => {
             </Column>
           </Block>
           <LayoutTitle $active={layout === CHANGELOG_LAYOUT.CLASSIC}>
-            <CheckLabel
-              title="经典模式"
-              $active={layout === CHANGELOG_LAYOUT.CLASSIC}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="经典模式" active={layout === CHANGELOG_LAYOUT.CLASSIC} top={4} />
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(CHANGELOG_LAYOUT.SIMPLE, 'changelogLayout')}>
@@ -189,12 +184,7 @@ export default () => {
           </Block>
 
           <LayoutTitle $active={layout === CHANGELOG_LAYOUT.SIMPLE}>
-            <CheckLabel
-              title="极简模式"
-              $active={layout === CHANGELOG_LAYOUT.SIMPLE}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="极简模式" active={layout === CHANGELOG_LAYOUT.SIMPLE} top={4} />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>

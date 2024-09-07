@@ -45,12 +45,7 @@ export default () => {
             </Footer>
           </Block>
           <LayoutTitle $active={cardLayout === KANBAN_CARD_LAYOUT.SIMPLE}>
-            <CheckLabel
-              title="简洁"
-              $active={cardLayout === KANBAN_CARD_LAYOUT.SIMPLE}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="简洁" active={cardLayout === KANBAN_CARD_LAYOUT.SIMPLE} top={4} />
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(KANBAN_CARD_LAYOUT.FULL, 'kanbanCardLayout')}>
@@ -70,12 +65,7 @@ export default () => {
             </Footer>
           </Block>
           <LayoutTitle $active={cardLayout === KANBAN_CARD_LAYOUT.FULL}>
-            <CheckLabel
-              title="摘要"
-              $active={cardLayout === KANBAN_CARD_LAYOUT.FULL}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="摘要" active={cardLayout === KANBAN_CARD_LAYOUT.FULL} top={4} />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>

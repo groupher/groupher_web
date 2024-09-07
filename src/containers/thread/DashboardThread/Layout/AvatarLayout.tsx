@@ -49,12 +49,7 @@ export default () => {
           </Block>
 
           <LayoutTitle $active={layout === AVATAR_LAYOUT.SQUARE}>
-            <CheckLabel
-              title="圆角方形"
-              $active={layout === AVATAR_LAYOUT.SQUARE}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="圆角方形" active={layout === AVATAR_LAYOUT.SQUARE} top={4} />
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(AVATAR_LAYOUT.CIRCLE, 'avatarLayout')}>
@@ -80,12 +75,7 @@ export default () => {
           </Block>
 
           <LayoutTitle $active={layout === AVATAR_LAYOUT.CIRCLE}>
-            <CheckLabel
-              title="圆形"
-              $active={layout === AVATAR_LAYOUT.CIRCLE}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="圆形" active={layout === AVATAR_LAYOUT.CIRCLE} top={15} left={-15} />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>

@@ -76,12 +76,7 @@ export default () => {
             </Row>
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.QUORA}>
-            <CheckLabel
-              title="经典（默认）"
-              $active={layout === POST_LAYOUT.QUORA}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="经典（默认）" active={layout === POST_LAYOUT.QUORA} top={4} />
           </LayoutTitle>
         </Layout>
         <Layout onClick={() => edit(POST_LAYOUT.PH, 'postLayout')}>
@@ -112,7 +107,7 @@ export default () => {
             </Row>
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.PH}>
-            <CheckLabel title="三段式" $active={layout === POST_LAYOUT.PH} top={15} left={-15} />
+            <CheckLabel title="三段式" active={layout === POST_LAYOUT.PH} top={15} left={-15} />
           </LayoutTitle>
         </Layout>
 
@@ -131,12 +126,7 @@ export default () => {
             </Row>
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.MASONRY}>
-            <CheckLabel
-              title="瀑布流卡片"
-              $active={layout === POST_LAYOUT.MASONRY}
-              top={15}
-              left={-15}
-            />
+            <CheckLabel title="瀑布流卡片" active={layout === POST_LAYOUT.MASONRY} top={4} />
           </LayoutTitle>
         </Layout>
 
@@ -172,7 +162,7 @@ export default () => {
             </Row>
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.MINIMAL}>
-            <CheckLabel title="极简" $active={layout === POST_LAYOUT.MINIMAL} top={15} left={-15} />
+            <CheckLabel title="极简" active={layout === POST_LAYOUT.MINIMAL} top={15} left={-15} />
           </LayoutTitle>
         </Layout>
 
@@ -195,7 +185,7 @@ export default () => {
             </Row>
           </Block>
           <LayoutTitle $active={layout === POST_LAYOUT.COVER}>
-            <CheckLabel title="封面图" $active={layout === POST_LAYOUT.COVER} top={15} left={-15} />
+            <CheckLabel title="封面图" active={layout === POST_LAYOUT.COVER} top={4} />
           </LayoutTitle>
         </Layout>
       </SelectWrapper>
