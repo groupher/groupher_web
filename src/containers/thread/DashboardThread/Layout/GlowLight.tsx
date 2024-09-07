@@ -72,7 +72,7 @@ export default () => {
         field={SETTING_FIELD.GLOW_TYPE}
         loading={saving}
         left={-5}
-        top={35}
+        top={10}
         width="628px"
       />
 

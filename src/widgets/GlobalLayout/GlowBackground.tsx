@@ -8,5 +8,7 @@ export default () => {
   const { glowType } = useGlowLight()
   if (!glowType) return null
 
-  return <div className={s.wrapper} style={{ background: s.bgStyle }} />
+  const style = { background: `${s.bgStyle}` }
+
+  return <div className={s.wrapper} style={style} />
 }
