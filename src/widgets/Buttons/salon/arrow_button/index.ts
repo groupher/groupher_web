@@ -11,7 +11,7 @@ type TProps = {
 } & TSpace
 
 export default ({ disabled, dimWhenIdle, leftLayout, ...spacing }: TProps) => {
-  const { cn, margin, primary } = useTwBelt()
+  const { cn, margin, linker } = useTwBelt()
 
   return {
     wrapper: cn(
@@ -19,7 +19,7 @@ export default ({ disabled, dimWhenIdle, leftLayout, ...spacing }: TProps) => {
       leftLayout ? 'pl-2' : 'pr-3.5',
       !leftLayout && 'hover:pr-1',
       'hover:brightness-110 trans-all-100 pointer',
-      primary('fg'),
+      linker('fg'),
       margin(spacing),
     ),
     text: cn('break-keep whitespace-nowrap text-sm'),

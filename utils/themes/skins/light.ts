@@ -137,6 +137,7 @@ export default {
     body: '',
     hint: '',
     invert: '',
+    link: '',
   },
   dot: '',
   article: {

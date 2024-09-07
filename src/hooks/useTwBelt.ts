@@ -15,6 +15,7 @@ import useAvatarLayout from '~/hooks/useAvatarLayout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 type TColorPrefix = 'fg' | 'bg' | 'bgSoft' | 'fill' | 'border' | 'borderSoft'
+type TLinkColorPrefix = 'fg' | 'fill'
 type TBreakOut = 'footer' | 'header'
 type TMenuPart = 'bg' | 'bar' | 'title' | 'link'
 type TShadowSize = 'md' | 'lg' | 'xl'
@@ -30,6 +31,7 @@ type TRet = {
   rainbow: (color: TColorName, prefix?: TColorPrefix) => string
   rainbowSoft: (color: TColorName | string) => string
   primary: (prefix?: TColorPrefix) => string
+  linker: (prefix?: TLinkColorPrefix) => string
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
   divider: (turn?: number) => string
@@ -145,8 +147,17 @@ export default (): TRet => {
    * use primary color for text/background/border color
    * primary color is set in dashboard
    */
-  const primary = (prefix: 'fg'): string => rainbow(primaryColor, prefix)
+  const primary = (prefix = 'fg'): string => rainbow(primaryColor, prefix)
 
+  const linker = (prefix = 'fg'): string => {
+    if (primaryColor === COLOR_NAME.BLACK) {
+      if (prefix === 'fg') return fg('text.link')
+
+      return fill('text.link')
+    }
+
+    return rainbow(primaryColor, prefix)
+  }
   /**
    * this is not typo, cause the exsiting prama is `size`
    */
@@ -246,6 +257,7 @@ export default (): TRet => {
     rainbow,
     rainbowSoft,
     primary,
+    linker,
     zise,
     margin,
     divider,

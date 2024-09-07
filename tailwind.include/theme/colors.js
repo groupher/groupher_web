@@ -212,8 +212,7 @@ module.exports = {
       DEFAULT: colors.gray['100'],
       dark: colors.gray['800'],
     },
-    // body:
-    // hint
+    link: { DEFAULT: lightTokens.link, dark: darkTokens.link },
   },
   dot: {
     DEFAULT: colors.slate['500'],

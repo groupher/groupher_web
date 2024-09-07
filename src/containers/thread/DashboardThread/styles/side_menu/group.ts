@@ -26,13 +26,13 @@ export default ({ fold }: TProps) => {
       'block relative no-underline w-full text-sm px-1 py-1 pl-5 mt-1 mb-0 rounded-lg',
       `hover:${bg('hoverBg')}`,
       fg('text.digest'),
-      isDarkBlack && fg('text.title'),
     ),
     itemActive: cn(
       'rounded-tl-none rounded-bl-none py-1.5',
       isLightTheme && 'bold-sm',
       primary('fg'),
       bg('hoverBg'),
+      isDarkBlack && fg('text.digest'),
       enhanceDark(),
     ),
     itemActiveBar: cn(

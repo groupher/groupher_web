@@ -6,11 +6,10 @@ type TProps = {
   color?: TColorName | null
 }
 export default ({ color }: TProps) => {
-  // TODO: linker helper for link, arrow-buttons
-  const { cn, primary } = useTwBelt()
+  const { cn, linker } = useTwBelt()
 
   console.log(color)
-  const base = cn('size-3 trans-all-100', primary('fill'))
+  const base = cn('size-3 trans-all-100', linker('fill'))
 
   return {
     rightArrow: cn(base, 'size-3 ml-0.5 group-hover:ml-1.5 rotate-180'),

@@ -13,6 +13,7 @@ const GENERAL = [
   'sexy-border-20',
   'sexy-border-35',
   'sexy-border-40',
+  'sexy-border-50',
   'shadow-md',
   'shadow-lg',
   'shadow-xl',
@@ -24,6 +25,7 @@ const TEXT_COLORS = [
   'text-body',
   'text-hint',
   'text-invert',
+  'text-link',
   'button-fg',
 ]
 const BG_COLORS = [
@@ -40,7 +42,7 @@ const BG_COLORS = [
   'button-redBg',
   'button-toggle',
 ]
-const FILL_COLORS = ['text-title', 'text-digest', 'button-fg', 'heightIcon']
+const FILL_COLORS = ['text-title', 'text-digest', 'button-fg', 'heightIcon', 'text-link']
 // for fg,bg & fill
 const RAINBOW_COLORS = [
   'black',
