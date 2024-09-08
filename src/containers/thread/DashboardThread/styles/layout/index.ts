@@ -18,7 +18,7 @@ export default () => {
     blockBase: cn(
       'relative border rounded-md px-4 py-4 border pointer',
       isLightTheme ? 'opacity-65' : 'opacity-50',
-      'hover:opacity-100 trans-all-100',
+      'hover:opacity-100 trans-all-200',
       br('text.hint'),
     ),
     blockBaseActive: cn('opacity-100', primary('border')),

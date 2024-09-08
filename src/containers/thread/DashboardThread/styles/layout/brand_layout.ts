@@ -1,8 +1,7 @@
-import useTwBelt from '~/hooks/useTwBelt'
-
-import useBase from '.'
-
 export { cn } from '~/css'
+
+import useTwBelt from '~/hooks/useTwBelt'
+import useBase from '.'
 
 export default () => {
   const { cn, fill, fg } = useTwBelt()
@@ -17,7 +16,6 @@ export default () => {
     brandIcon: cn('size-6', fill('text.digest')),
     brandTitle: cn('text-base bold-sm', fg('text.digest')),
     layout: 'column-align-both group',
-    layoutTitle: cn('group-smoky-65'),
     layoutTitleActive: cn('opacity-100'),
   }
 }

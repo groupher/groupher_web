@@ -1,28 +1,33 @@
-import type { TActive } from '~/spec'
-
 import styled, { css, theme } from '~/css'
 
 import { Divider } from '~/widgets/Common'
-import { BaseSection, BlockBase } from '.'
+
+import useTwBelt from '~/hooks/useTwBelt'
+import useBase from '.'
 
 export { Bar, Circle } from '.'
 
-export const Wrapper = styled(BaseSection)``
-export const CommunityTitle = styled.div`
-  font-weight: 600;
-  color: ${theme('article.title')};
-  font-size: 12px;
-  ${css.cutRest('50px')};
-`
-export const SelectWrapper = styled.div`
-  ${css.rowWrap('align-center')};
-  gap: 30px;
-  width: calc(100% + 40px);
+export { cn } from '~/css'
 
-  ${css.media.mobile`
-    width: 100%;
-  `}
-`
+export default () => {
+  const { cn, fg, bg, cutRest, primary, sexyHBorder, sexyVBorder } = useTwBelt()
+  const base = useBase()
+
+  return {
+    wrapper: base.baseSection,
+    select: cn('row-center wrap gap-8 w-full'),
+    layout: 'column-align-both group',
+    block: cn(base.blockBase, 'relative w-72 h-56'),
+    blockActive: base.blockBaseActive,
+    communityTitle: cn('text-xs bold-sm', cutRest('w-14'), fg('text.digest')),
+    primaryBar: cn('opacity-65', primary('bg')),
+    bar: cn('absolute h-1.5 w-20 opacity-40 rounded', bg('text.digest')),
+    circle: cn('absolute size-2 circle opacity-40', bg('text.digest')),
+    hDivider: cn(sexyHBorder(35)),
+    vDivider: cn('absolute', sexyVBorder(35)),
+  }
+}
+
 export const Main = styled.div`
   ${css.row()};
   width: 100%%;
@@ -47,23 +52,7 @@ export const SidebarWrapper = styled.div`
 export const ExampleBtn = styled.div`
   display: inline-block;
 `
-export const Layout = styled.div`
-  ${css.column('align-both')};
-`
-export const LayoutTitle = styled.div<TActive>`
-  opacity: ${({ $active }) => ($active ? 1 : 0.65)};
 
-  ${Layout}:hover & {
-    opacity: 1;
-    cursor: pointer;
-  }
-  transition: all 0.2s;
-`
-export const Block = styled(BlockBase)`
-  width: 300px;
-  height: 200px;
-  padding: 12px 25px;
-`
 export const DividerLine = styled(Divider)`
   opacity: 0.8;
 `

@@ -12,14 +12,9 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import useBanner from '../logic/useBanner'
-import {
-  Wrapper,
-  CommunityTitle,
-  SelectWrapper,
-  Layout,
-  LayoutTitle,
+import useSalon, {
+  cn,
   DividerLine,
-  Block,
   Bar,
   Circle,
   Main,
@@ -29,6 +24,8 @@ import {
 } from '../styles/layout/banner_layout'
 
 export default () => {
+  const s = useSalon()
+
   const { edit, layout, getIsTouched, saving } = useBanner()
   const primaryColor = usePrimaryColor()
   const { title } = useViewingCommunity()
@@ -36,7 +33,7 @@ export default () => {
   const isTouched = getIsTouched()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <SectionLabel
         title="整体布局"
         desc={
@@ -48,37 +45,44 @@ export default () => {
           </Row>
         }
       />
-      <SelectWrapper>
-        <Layout onClick={() => edit(BANNER_LAYOUT.HEADER, 'bannerLayout')}>
-          <Block $active={layout === BANNER_LAYOUT.HEADER} $color={primaryColor}>
-            <Row>
-              <CommunityTitle>{title}</CommunityTitle>
-              <Space right={42} />
-              <Bar thin long={40} />
-              <Space right={45} />
-              <Bar thin long={6} />
-              <Space right={5} />
-              <Circle radius={6} />
-            </Row>
+      <div className={s.select}>
+        <div className={s.layout} onClick={() => edit(BANNER_LAYOUT.HEADER, 'bannerLayout')}>
+          <div className={cn(s.block, layout === BANNER_LAYOUT.HEADER && s.blockActive)}>
+            <h4 className={s.communityTitle}>{title}</h4>
+            <div className={cn(s.bar, 'left-28 top-5')} />
+            <div className={cn(s.circle, 'right-5 top-5')} />
+            <div className={cn(s.hDivider, 'mt-1.5 mb-5')} />
 
-            <DividerLine top={10} bottom={20} />
+            <div className="absolute w-full h-6 left-4 top-14">
+              <div className={cn(s.bar, 'left-0 top-0 w-36')} />
+              <div className={cn(s.bar, 'left-0 top-4 h-1 w-28 opacity-30')} />
+            </div>
 
-            <Main>
-              <ListsWrapper>
-                <Bar long={60} thin />
-                <Br bottom={14} />
-                <Bar long={50} thin />
-                <Br bottom={14} />
-                <Bar long={55} thin />
-                <Br bottom={14} />
-                <Bar long={40} thin />
-                <Br bottom={14} />
-                <Bar long={60} thin />
-                <Br bottom={14} />
-                <Bar long={50} thin />
-                <Br bottom={14} />
-                <Bar long={55} thin />
-              </ListsWrapper>
+            <div className="absolute w-full h-6 left-4 top-24">
+              <div className={cn(s.bar, 'left-0 top-0 w-28')} />
+              <div className={cn(s.bar, 'left-0 top-4 h-1 w-24 opacity-30')} />
+            </div>
+
+            <div className="absolute w-full h-6 left-4 bottom-14">
+              <div className={cn(s.bar, 'left-0 top-0 w-24')} />
+              <div className={cn(s.bar, 'left-0 top-4 h-1 w-32 opacity-30')} />
+            </div>
+
+            <div className="absolute w-full h-6 left-4 bottom-4">
+              <div className={cn(s.bar, 'left-0 top-0 w-32')} />
+              <div className={cn(s.bar, 'left-0 top-4 h-1 w-28 opacity-30')} />
+            </div>
+
+            <div className={cn(s.vDivider, 'h-3/5 right-20 top-12')} />
+
+            <div className={cn(s.bar, s.primaryBar, 'right-6 top-14 h-1 w-10 h-2.5')} />
+
+            <div className={cn(s.bar, 'right-9 top-24 h-1 w-6 opacity-20')} />
+            <div className={cn(s.bar, 'right-5 top-28 h-1 w-10 opacity-20')} />
+            <div className={cn(s.bar, 'right-7 top-32 h-1 w-8 opacity-20')} />
+            <div className={cn(s.bar, 'right-7 bottom-5 h-1 w-8 opacity-30')} />
+
+            {/* <Main>
               <TagsWrapper>
                 <Bar long={100} $color={primaryColor} />
                 <Br bottom={15} />
@@ -92,16 +96,14 @@ export default () => {
                 <Br bottom={6} />
                 <Bar long={50} thin />
               </TagsWrapper>
-            </Main>
-          </Block>
-          <LayoutTitle $active={layout === BANNER_LAYOUT.HEADER}>
-            <CheckLabel title="标题式" active={layout === BANNER_LAYOUT.HEADER} top={4} />
-          </LayoutTitle>
-        </Layout>
-        <Layout onClick={() => edit(BANNER_LAYOUT.TABBER, 'bannerLayout')}>
-          <Block $active={layout === BANNER_LAYOUT.TABBER} $color={primaryColor}>
+            </Main> */}
+          </div>
+          <CheckLabel title="标题式" active={layout === BANNER_LAYOUT.HEADER} top={4} />
+        </div>
+        <div className={s.layout} onClick={() => edit(BANNER_LAYOUT.TABBER, 'bannerLayout')}>
+          <div className={cn(s.block, layout === BANNER_LAYOUT.TABBER && s.blockActive)}>
             <Row>
-              <CommunityTitle>{title}</CommunityTitle>
+              <h4 className={s.communityTitle}>{title}</h4>
               <div className="grow" />
               <Bar thin long={6} />
               <Space right={5} />
@@ -148,13 +150,11 @@ export default () => {
                 <Bar long={50} thin />
               </TagsWrapper>
             </Main>
-          </Block>
-          <LayoutTitle $active={layout === BANNER_LAYOUT.TABBER}>
-            <CheckLabel title="标签卡式" active={layout === BANNER_LAYOUT.TABBER} top={4} />
-          </LayoutTitle>
-        </Layout>
-        <Layout onClick={() => edit(BANNER_LAYOUT.SIDEBAR, 'bannerLayout')}>
-          <Block $active={layout === BANNER_LAYOUT.SIDEBAR} $color={primaryColor}>
+          </div>
+          <CheckLabel title="标签卡式" active={layout === BANNER_LAYOUT.TABBER} top={4} />
+        </div>
+        <div className={s.layout} onClick={() => edit(BANNER_LAYOUT.SIDEBAR, 'bannerLayout')}>
+          <div className={cn(s.block, layout === BANNER_LAYOUT.SIDEBAR && s.blockActive)}>
             <Row>
               <Space right={110} />
               <Bar thin long={10} />
@@ -164,7 +164,7 @@ export default () => {
             </Row>
             <Main>
               <SidebarWrapper>
-                <CommunityTitle>{title}</CommunityTitle>
+                <h4 className={s.communityTitle}>{title}</h4>
                 <Br bottom={15} />
                 <Bar long={60} thin />
                 <Br bottom={6} />
@@ -204,20 +204,16 @@ export default () => {
                 <Br bottom={14} />
               </ListsWrapper>
             </Main>
-          </Block>
-          <LayoutTitle $active={layout === BANNER_LAYOUT.SIDEBAR}>
-            <CheckLabel title="边栏式" active={layout === BANNER_LAYOUT.SIDEBAR} top={4} />
-          </LayoutTitle>
-        </Layout>
-      </SelectWrapper>
+          </div>
+          <CheckLabel title="边栏式" active={layout === BANNER_LAYOUT.SIDEBAR} top={4} />
+        </div>
+      </div>
       <SavingBar
         isTouched={isTouched}
         field={SETTING_FIELD.BANNER_LAYOUT}
         loading={saving}
-        width="632px"
-        left={-5}
-        top={20}
+        top={10}
       />
-    </Wrapper>
+    </div>
   )
 }

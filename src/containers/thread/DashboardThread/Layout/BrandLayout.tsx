@@ -32,9 +32,7 @@ export default () => {
             </div>
             <Divider top={15} />
           </div>
-          <div className={cn(s.layoutTitle, layout === BRAND_LAYOUT.BOTH && s.layoutTitleActive)}>
-            <CheckLabel title="Logo & 文字" active={layout === BRAND_LAYOUT.BOTH} top={4} />
-          </div>
+          <CheckLabel title="Logo & 文字" active={layout === BRAND_LAYOUT.BOTH} top={4} />
         </div>
         <div className={s.layout} onClick={() => edit(BRAND_LAYOUT.LOGO, 'brandLayout')}>
           <div className={cn(s.block, layout === BRAND_LAYOUT.LOGO && s.blockActive)}>
@@ -43,9 +41,7 @@ export default () => {
             </div>
             <Divider top={15} />
           </div>
-          <div className={cn(s.layoutTitle, layout === BRAND_LAYOUT.LOGO && s.layoutTitleActive)}>
-            <CheckLabel title="仅 Logo" active={layout === BRAND_LAYOUT.LOGO} top={4} />
-          </div>
+          <CheckLabel title="仅 Logo" active={layout === BRAND_LAYOUT.LOGO} top={4} />
         </div>
         <div className={s.layout} onClick={() => edit(BRAND_LAYOUT.TEXT, 'brandLayout')}>
           <div className={cn(s.block, layout === BRAND_LAYOUT.TEXT && s.blockActive)}>
@@ -54,9 +50,7 @@ export default () => {
             </div>
             <Divider top={15} />
           </div>
-          <div className={cn(s.layoutTitle, layout === BRAND_LAYOUT.TEXT && s.layoutTitleActive)}>
-            <CheckLabel title="仅文字" active={layout === BRAND_LAYOUT.TEXT} top={4} />
-          </div>
+          <CheckLabel title="仅文字" active={layout === BRAND_LAYOUT.TEXT} top={4} />
         </div>
       </div>
       <SavingBar

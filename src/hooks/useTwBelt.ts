@@ -35,12 +35,14 @@ type TRet = {
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
   sexyHBorder: (turn: number, classNames?: string) => string
+  sexyVBorder: (turn: number, classNames?: string) => string
   avatar: (level?: 'md' | 'sm' | '') => string
   gradiientBar: (color: TColorName) => string
   breakOut: (type?: TBreakOut) => string
   enhanceDark: () => string
   menu: (part: TMenuPart) => string
   shadow: (size: TShadowSize) => string
+  cutRest: (classname?: string) => string
 
   isDarkBlack: boolean
   isBlackPrimary: boolean
@@ -176,6 +178,10 @@ export default (): TRet => {
     return cn('h-px w-full border-b', global(`sexy-border-${turn}`), classNames)
   }
 
+  const sexyVBorder = (turn: number, classNames = ''): string => {
+    return cn('h-full w-px border-l', global(`sexy-border-${turn}`), classNames)
+  }
+
   const avatar = (level = 'md') => {
     if (isAvatarSquare) {
       return level === '' ? 'rounded' : `rounded-${level}`
@@ -246,6 +252,10 @@ export default (): TRet => {
     return global(`shadow-${size}`)
   }
 
+  const cutRest = (classnames = 'w-12'): string => {
+    return cn('truncate', classnames)
+  }
+
   return {
     cn,
     global,
@@ -261,12 +271,14 @@ export default (): TRet => {
     zise,
     margin,
     sexyHBorder,
+    sexyVBorder,
     avatar,
     gradiientBar,
     breakOut,
     enhanceDark,
     menu,
     shadow,
+    cutRest,
     isDarkBlack,
     isBlackPrimary,
   }
