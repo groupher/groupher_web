@@ -4,7 +4,6 @@ import { DASHBOARD_LAYOUT_ROUTE } from '~/const/route'
 import VIEW from '~/const/view'
 
 import useViewingCommunity from '~/hooks/useViewingCommunity'
-import { SexyDivider as Divider } from '~/widgets/Common'
 import Tabs from '~/widgets/Switcher/Tabs'
 
 import { LAYOUT_TABS } from '../constant'
@@ -20,24 +19,26 @@ import KanbanLayout from './KanbanLayout'
 import TopbarLayout from './TopbarLayout'
 
 import PrimaryColor from './PrimaryColor'
+import PageBackground from './PageBackground'
 import GlowLight from './GlowLight'
 import GossBlur from './GossBlur'
 import Wallpaper from './Wallpaper'
 
 import useTab from '../logic/useTab'
-import { Wrapper, Banner, TabsWrapper } from '../styles/layout'
+import useSalon from '../styles/layout'
 
 export default () => {
   const curCommunity = useViewingCommunity()
   const router = useRouter()
 
+  const s = useSalon()
   const { edit, layoutTab } = useTab()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Portal title="布局与样式" desc="社区板块自定义布局与全局样式。" withDivider={false} />
-      <Banner>
-        <TabsWrapper>
+      <div className={s.banner}>
+        <div className={s.tabs}>
           <Tabs
             items={LAYOUT_TABS}
             activeKey={layoutTab}
@@ -54,21 +55,23 @@ export default () => {
             view={VIEW.DESKTOP}
             noAnimation
           />
-        </TabsWrapper>
-      </Banner>
+        </div>
+      </div>
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.GLOBAL && (
         <>
           <PrimaryColor />
-          <Divider top={20} bottom={60} />
+          <div className={s.divider} />
+          <PageBackground />
+          <div className={s.divider} />
           <BrandLayout />
-          <Divider top={20} bottom={60} />
+          <div className={s.divider} />
           <BannerLayout />
-          <Divider top={20} bottom={60} />
+          <div className={s.divider} />
           <Wallpaper />
-          <Divider top={20} bottom={60} />
+          <div className={s.divider} />
           <GossBlur />
-          <Divider top={20} bottom={60} />
+          <div className={s.divider} />
           <GlowLight />
         </>
       )}
@@ -84,12 +87,12 @@ export default () => {
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.OTHER && (
         <>
           <AvatarLayout />
-          <Divider top={20} bottom={60} />
+          <div className={s.divider} />
           <TagLayout />
-          <Divider top={20} bottom={60} />
+          <div className={s.divider} />
           <TopbarLayout />
         </>
       )}
-    </Wrapper>
+    </div>
   )
 }

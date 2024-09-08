@@ -59,7 +59,7 @@ const RAINBOW_COLORS = [
   'purple',
 ]
 
-const MARGIN = ['px', 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 10]
+const MARGIN = ['px', 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 10, 12]
 const SIZE = [1.5, 2, 2.5, 3, 3.5, 4, 5, 6]
 
 // fill-rainbow-red is mainly for delete buttons

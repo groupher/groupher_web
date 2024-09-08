@@ -34,7 +34,7 @@ type TRet = {
   linker: (prefix?: TLinkColorPrefix) => string
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
-  divider: (turn?: number) => string
+  sexyHBorder: (turn: number, classNames?: string) => string
   avatar: (level?: 'md' | 'sm' | '') => string
   gradiientBar: (color: TColorName) => string
   breakOut: (type?: TBreakOut) => string
@@ -172,8 +172,8 @@ export default (): TRet => {
       .join(' ')
   }
 
-  const divider = (turn = 35): string => {
-    return cn('h-px w-full border-b', `'sexy-border-${turn}`)
+  const sexyHBorder = (turn: number, classNames = ''): string => {
+    return cn('h-px w-full border-b', global(`sexy-border-${turn}`), classNames)
   }
 
   const avatar = (level = 'md') => {
@@ -260,7 +260,7 @@ export default (): TRet => {
     linker,
     zise,
     margin,
-    divider,
+    sexyHBorder,
     avatar,
     gradiientBar,
     breakOut,

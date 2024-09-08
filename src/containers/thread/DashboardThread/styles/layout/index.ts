@@ -6,10 +6,14 @@ import useTwBelt from '~/hooks/useTwBelt'
 import useTheme from '~/hooks/useTheme'
 
 export default () => {
-  const { cn, br, primary } = useTwBelt()
+  const { cn, br, primary, sexyHBorder } = useTwBelt()
   const { isLightTheme } = useTheme()
 
   return {
+    wrapper: 'column pl-16 w-10/12',
+    banner: cn('relative h-16 w-full border-b mb-10', br('divider')),
+    tabs: 'absolute -left-2 bottom-0',
+    //
     baseSection: 'pb-7',
     blockBase: cn(
       'relative border rounded-md px-4 py-4 border pointer',
@@ -18,6 +22,7 @@ export default () => {
       br('text.hint'),
     ),
     blockBaseActive: cn('opacity-100', primary('border')),
+    divider: sexyHBorder(35, 'mt-5 mb-12'),
   }
 }
 
@@ -43,39 +48,8 @@ export const BlockBase = styled.div<TBlockBase>`
   transition: all 0.2s;
 `
 
-export const Wrapper = styled.div`
-  ${css.column()};
-  padding-left: 56px;
-  width: 700px;
-
-  ${css.media.mobile`
-    padding: 20px;
-  `};
-`
 export const BaseSection = styled.section`
   padding-bottom: 30px;
-`
-export const Banner = styled.div`
-  height: 70px;
-  width: 100%;
-  border-bottom: 1px solid;
-  border-bottom-color: ${theme('divider')};
-  margin-bottom: 40px;
-  position: relative;
-
-  ${css.media.mobile`
-    margin-bottom: 25px;
-  `};
-`
-export const TabsWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: -8px;
-
-  ${css.media.mobile`
-    width: 100%;
-    overflow: scroll;
-  `};
 `
 
 export const TitleBase = styled.div`
