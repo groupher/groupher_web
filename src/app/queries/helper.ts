@@ -18,6 +18,7 @@ import type {
   TArticleParams,
 } from '~/spec'
 import { BUILDIN_ALIAS } from '~/const/name'
+import { PAGE_COLOR_DEFAULT } from '~/const/colors'
 import { THREAD } from '~/const/thread'
 import { HCN } from '~/const/name'
 import URL_PARAM from '~/const/url_param'
@@ -256,6 +257,8 @@ export const parseDashboard = (community: TCommunity, pathname: string): TParseD
     headerLinks,
     footerLinks,
     mediaReports,
+    pageBg,
+    pageBgDark,
   } = dashboard
 
   const fieldsObj = removeEmptyValuesFromObject({
@@ -271,6 +274,8 @@ export const parseDashboard = (community: TCommunity, pathname: string): TParseD
     footerLinks,
     moderators,
     mediaReports,
+    pageBg: pageBg || PAGE_COLOR_DEFAULT.light,
+    pageBgDark: pageBgDark || PAGE_COLOR_DEFAULT.dark,
   })
 
   return {

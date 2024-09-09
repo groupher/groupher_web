@@ -83,7 +83,7 @@ const CONTAINERS = keys(container).map(
     `container-${c} w-[${container[c].width}] pl-${container[c].pl} pr-${container[c].pr} -ml-${container[c].pl} mr-${container[c].pr}`,
 )
 
-console.log('## CONTAINERS: ', CONTAINERS)
+const ROTATES = [6, 3, 2, 1, 1, 2, 3, 6, 2, 3, 1, 6]
 
 const UTILS = [
   'border-transparent',
@@ -100,6 +100,8 @@ const UTILS = [
   'bg-transparent',
   'rounded-3xl',
 ]
+
+// const PAGE_BG_COLORS = [...keys(pageBgColor.dark).map((c) => `page-bg-dark-${c}`)]
 
 module.exports = uniq([
   ...GENERAL.map((c) => `${c} ${c}-dark`),
@@ -124,7 +126,9 @@ module.exports = uniq([
 
   ...HOVERS.map((c) => `hover:${c} hover:${c}-dark`),
   ...GROUP_HOVERS.map((c) => `group-hover:${c} hover:${c}-dark`),
+  ...ROTATES.map((r) => `rotate-${r}`),
 
   ...CONTAINERS,
   ...UTILS,
+  // ...PAGE_BG_COLORS,
 ])

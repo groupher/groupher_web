@@ -1,4 +1,6 @@
-import ColorSelector from '~/widgets/ColorSelector'
+import { titleCaseHM, upperSnakeCase } from '~/fmt'
+
+import useTheme from '~/hooks/useTheme'
 import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 import SectionLabel from '../SectionLabel'
@@ -6,13 +8,16 @@ import SavingBar from '../SavingBar'
 
 import { SETTING_FIELD } from '../constant'
 
-import usePrimaryColor from '../logic/usePrimaryColor'
-import useSalon from '../styles/layout/page_background'
+import usePageBg from '../logic/usePageBg'
+import useSalon, { cn } from '../styles/layout/page_background'
 
 export default () => {
+  const { rawBg, edit, getIsTouched, getIsDarkTouched, saving } = usePageBg()
+
   const s = useSalon()
-  const { edit, primaryColor, getIsTouched, saving } = usePrimaryColor()
+  const { isLightTheme } = useTheme()
   const isTouched = getIsTouched()
+  const isDarkTouched = getIsDarkTouched()
 
   return (
     <section className={s.wrapper}>
@@ -20,28 +25,53 @@ export default () => {
         title="页面背景色"
         desc={
           <div className="row">
-            设置后会在常见组件，功能性文字等位置显示该个性化主题色。参考
+            设置主页面背景色。参考
             <ArrowButton left={1}>影响范围</ArrowButton>
           </div>
         }
+        withThemeSelect
       />
-      <SavingBar
-        isTouched={isTouched}
-        field={SETTING_FIELD.PRIMARY_COLOR}
-        loading={saving}
-        left={-8}
-      >
-        <div className={s.label}>
-          <ColorSelector
-            activeColor={primaryColor}
-            onChange={(color) => edit(color, 'primaryColor')}
-            placement="right"
-            offset={[-1, 15]}
-          >
-            <div className={s.colorBall} />
-          </ColorSelector>
-        </div>
-      </SavingBar>
+
+      <div className={s.themeGroup}>
+        {s.bgColors.map((bg, index) => {
+          const bgTitle = titleCaseHM(bg)
+          const currentBg = s.bgColorsObj[bg]
+          const active = rawBg === currentBg
+
+          return (
+            <div
+              key={bg}
+              className={cn(s.block, `rotate-${s.rotateAngle[index]}`, active && s.blockActive)}
+              style={{ backgroundColor: currentBg }}
+              onClick={() => {
+                edit(upperSnakeCase(bg), isLightTheme ? 'pageBg' : 'pageBgDark')
+              }}
+            >
+              {!active && <div className={s.titleHint}>{bgTitle}</div>}
+              {active && <div className={s.colorTitle}>{bgTitle}</div>}
+              {active && <div className={s.hex}>{currentBg}</div>}
+            </div>
+          )
+        })}
+      </div>
+
+      {isLightTheme ? (
+        <SavingBar
+          isTouched={isTouched}
+          field={SETTING_FIELD.PAGE_BG}
+          loading={saving}
+          top={10}
+          left={-8}
+        />
+      ) : (
+        <SavingBar
+          isTouched={isDarkTouched}
+          field={SETTING_FIELD.PAGE_BG_DARK}
+          loading={saving}
+          top={10}
+          left={-8}
+        />
+      )}
     </section>
   )
 }

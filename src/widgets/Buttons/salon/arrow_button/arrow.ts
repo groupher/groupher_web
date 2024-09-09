@@ -8,7 +8,7 @@ type TProps = {
 export default ({ color }: TProps) => {
   const { cn, linker } = useTwBelt()
 
-  console.log(color)
+  console.log('## rm later', color)
   const base = cn('size-3 trans-all-100', linker('fill'))
 
   return {

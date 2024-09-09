@@ -70,6 +70,8 @@ export const SETTING_FIELD = {
   GLOW_FIXED: 'glowFixed',
   GLOW_OPACITY: 'glowOpacity',
   GOSS_BLUR: 'gossBlur',
+  PAGE_BG: 'pageBg',
+  PAGE_BG_DARK: 'pageBgDark',
 } as Record<TSnakeUpperCase<TSettingField>, TSettingField>
 
 export const MENU = {

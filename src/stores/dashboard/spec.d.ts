@@ -89,6 +89,10 @@ export type TSettingsFields = {
   socialLinks: TSocialItem[]
   mediaReports: TMediaReport[]
 
+  // page
+  pageBg: string
+  pageBgDark: string
+
   // seo
   seoEnable: boolean
   ogSiteName: string
@@ -344,6 +348,8 @@ export type TSettingField =
   | 'twUrl'
   | 'twSite'
   | 'twCard'
+  | 'pageBg'
+  | 'pageBgDark'
 
 export type THeaderEditType = 'logo' | 'title'
 export type TFooterEditType = THeaderEditType | 'social'

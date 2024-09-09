@@ -79,6 +79,9 @@ export type TDashboard = {
     homepage?: string
   }
   mediaReports?: TMediaReport[]
+
+  pageBg?: string
+  pageBgDark?: string
 }
 
 export type TBroadcastConfig = {

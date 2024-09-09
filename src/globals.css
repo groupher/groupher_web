@@ -70,6 +70,10 @@
     @apply opacity-90 hover:opacity-100 cursor-pointer
   }
 
+  .group-smoky-0 {
+    @apply opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer
+  }
+
   .group-smoky-80 {
     @apply opacity-80 group-hover:opacity-100 transition-opacity cursor-pointer
   }

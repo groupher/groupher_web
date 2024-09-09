@@ -96,7 +96,6 @@ export default (): TRet => {
       original = { ...store.original, ...current }
     }
 
-    console.log('## handle done')
     store.commit({ original })
 
     // avoid page component jump caused by saving state
