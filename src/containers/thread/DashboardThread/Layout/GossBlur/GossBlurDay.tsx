@@ -43,8 +43,8 @@ export default () => {
         <SectionLabel
           title="毛玻璃效果"
           desc="主要页面的高斯模糊值，类似主流音乐播放器效果"
+          classNames="pr-8"
           withThemeSelect
-          width="96%"
         />
 
         <ContentWrapper>
@@ -81,11 +81,11 @@ export default () => {
             <RangeSlider
               value={gossBlur}
               onChange={(v) => edit(v, 'gossBlur')}
-              top={10}
+              top={5}
               min={50}
               max={100}
               unit="%"
-              width="275px"
+              width="w-11/12"
             />
           </Actions>
         </ContentWrapper>

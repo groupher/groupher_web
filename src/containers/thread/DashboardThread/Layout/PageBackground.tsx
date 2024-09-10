@@ -1,6 +1,9 @@
+import { useEffect } from 'react'
+
 import { titleCaseHM, upperSnakeCase } from '~/fmt'
 
 import useTheme from '~/hooks/useTheme'
+import useCustomPrimary from '~/hooks/useCustomPrimary'
 import ArrowButton from '~/widgets/Buttons/ArrowButton'
 
 import SectionLabel from '../SectionLabel'
@@ -13,6 +16,13 @@ import useSalon, { cn } from '../styles/layout/page_background'
 
 export default () => {
   const { rawBg, edit, getIsTouched, getIsDarkTouched, saving } = usePageBg()
+  const { setCSSVar } = useCustomPrimary()
+
+  useEffect(() => {
+    setTimeout(() => {
+      setCSSVar('--rainbow-custom-dark', '#0176F9')
+    }, 2000)
+  }, [])
 
   const s = useSalon()
   const { isLightTheme } = useTheme()
@@ -29,6 +39,7 @@ export default () => {
             <ArrowButton left={1}>影响范围</ArrowButton>
           </div>
         }
+        classNames="pr-8"
         withThemeSelect
       />
 

@@ -7,6 +7,9 @@
 :root {
   --divider: #EAE9E9;
   --divider-dark: #3c3c3c;
+
+  --rainbow-custom: #94C37E;
+  --rainbow-custom-dark: #E08A85;
 }
 
 @layer utilities {
@@ -131,7 +134,7 @@
   }
 
   .footer-inner-shadow-dark {
-    box-shadow: rgb(25 25 25) 0px 0px 50px 0px inset;
+    box-shadow: inset 0 0 50px #1919198c;
   }
 
  .sexy-border-20 {

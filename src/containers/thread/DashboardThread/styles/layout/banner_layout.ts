@@ -1,7 +1,3 @@
-import styled, { css, theme } from '~/css'
-
-import { Divider } from '~/widgets/Common'
-
 import useTwBelt from '~/hooks/useTwBelt'
 import useBase from '.'
 
@@ -27,32 +23,3 @@ export default () => {
     vDivider: cn('absolute', sexyVBorder(35)),
   }
 }
-
-export const Main = styled.div`
-  ${css.row()};
-  width: 100%%;
-`
-export const ListsWrapper = styled.div<{ noBorder?: boolean }>`
-  border-right: ${({ noBorder }) => (noBorder ? 'none' : '1px solid')};
-  border-right-color: ${theme('divider')};
-  width: 85%;
-`
-export const TagsWrapper = styled.div`
-  width: 15%;
-  margin-left: 20px;
-`
-export const SidebarWrapper = styled.div`
-  width: 80px;
-  padding-right: 15px;
-  border-right: 1px solid;
-  border-right-color: ${theme('divider')};
-  z-index: 2;
-  margin-top: -6px;
-`
-export const ExampleBtn = styled.div`
-  display: inline-block;
-`
-
-export const DividerLine = styled(Divider)`
-  opacity: 0.8;
-`

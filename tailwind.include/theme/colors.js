@@ -159,6 +159,10 @@ module.exports = {
 
     blackSoft: { DEFAULT: '#f4f4f4', dark: '#313131' },
     blackPale: { DEFAULT: '#f4f4f4', dark: '#313131' },
+
+    // custom primary
+    // custom: { DEFAULT: '--var(rainbow-custom)', dark: '--var(rainbow-custom-dark)' },
+    // custom: { DEFAULT: 'var(--rainbow-custom)', dark: 'var(--rainbow-custom-dark)' },
   },
   grey: {
     rare: { DEFAULT: '#fafafa', dark: '#272727' },
@@ -235,10 +239,6 @@ module.exports = {
     hover: { DEFAULT: '#949CB5', dark: '#949CB5' },
     title: { DEFAULT: '#77706B', dark: '#77706B' },
     bottomBg: { DEFAULT: '#252325', dark: '#252325' },
-    shadow: {
-      DEFAULT: 'rgb(241 241 241) 0px 0px 50px 0px inset',
-      dark: 'rgb(25 25 25) 0px 0px 50px 0px inset',
-    },
   },
   drawer: {
     mask: { DEFAULT: 'rgba(31, 34, 37, 0.15)', dark: 'rgb(31 34 37 / 41%)' },

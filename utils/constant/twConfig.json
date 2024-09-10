@@ -2,7 +2,13 @@
   "pageBgColor": {
     "light": {
       "pure-white": "#fff",
-      "solarized": "#FEF6E4"
+      "solarized": "#FEF6E4",
+      "white-smoke": "#F7F5F4",
+      "floral-white": "#FFFAF0",
+      "mint-white": "#F5FEFA",
+      "todo2": "#FDF2E8",
+      "blue": "#F1F9FC",
+      "todo": "#FEF8F7"
     },
     "dark": {
       "charcoal-gray": "#121212",
@@ -18,6 +24,7 @@
       "smoky-black": "#101720",
       "oxford-blue": "#212A37",
       "eerie-black": "#232023",
+      "daylight-green": "#1C1D12",
       "jet-black": "#161618",
       "arsenic": "#11181C"
     }

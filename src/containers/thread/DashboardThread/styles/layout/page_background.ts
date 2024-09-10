@@ -26,7 +26,7 @@ export default () => {
       br('divider'),
     ),
     blockActive: cn(
-      'column w-28 h-24 z-10 -mt-2 rotate-3 border-b-8 hover:-mt-2',
+      'column w-28 h-24 z-10 -mt-2 rotate-3 border-b-8 rounded-lg hover:-mt-2',
       primary('borderSoft'),
       shadow('xl'),
     ),
