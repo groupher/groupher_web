@@ -101,8 +101,6 @@ const UTILS = [
   'rounded-3xl',
 ]
 
-// const PAGE_BG_COLORS = [...keys(pageBgColor.dark).map((c) => `page-bg-dark-${c}`)]
-
 module.exports = uniq([
   ...GENERAL.map((c) => `${c} ${c}-dark`),
 
@@ -130,5 +128,4 @@ module.exports = uniq([
 
   ...CONTAINERS,
   ...UTILS,
-  // ...PAGE_BG_COLORS,
 ])

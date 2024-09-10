@@ -1,27 +1,34 @@
-import { LineDivider } from '~/widgets/Common'
-
-import useTheme from '~/hooks/useTheme'
 import THEME from '~/const/theme'
+import useTheme from '~/hooks/useTheme'
 
-import { Wrapper, Section, Title, SunIcon, MoonIcon } from '../styles/section_label/theme_select'
+import SunSVG from '~/icons/Sun'
+import MoonSVG from '~/icons/Moon'
 
-const ThemeSelect = () => {
+import useSalon, { cn } from '../styles/section_label/theme_select'
+
+export default () => {
+  const s = useSalon()
   const { theme, change } = useTheme()
 
   return (
-    <Wrapper>
-      <Section onClick={() => change(THEME.LIGHT)} $active={theme === THEME.LIGHT}>
-        <SunIcon />
-        <Title>浅色主题</Title>
-      </Section>
+    <div className={s.wrapper}>
+      <section
+        className={cn(s.section, theme === THEME.LIGHT && s.sectionActive)}
+        onClick={() => change(THEME.LIGHT)}
+      >
+        <SunSVG className={s.icon} />
+        <div className={s.title}>浅色主题</div>
+      </section>
 
-      <LineDivider left={10} right={10} height={10} />
-      <Section onClick={() => change(THEME.DARK)} $active={theme === THEME.DARK}>
-        <MoonIcon />
-        <Title>暗色主题</Title>
-      </Section>
-    </Wrapper>
+      <div className={s.dovider} />
+
+      <section
+        className={cn(s.section, theme === THEME.DARK && s.sectionActive)}
+        onClick={() => change(THEME.DARK)}
+      >
+        <MoonSVG className={s.icon} />
+        <div className={s.title}>暗色主题</div>
+      </section>
+    </div>
   )
 }
-
-export default ThemeSelect
