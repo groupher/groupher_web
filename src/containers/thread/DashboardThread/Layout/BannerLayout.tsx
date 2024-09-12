@@ -149,6 +149,7 @@ export default () => {
         field={SETTING_FIELD.BANNER_LAYOUT}
         loading={saving}
         top={10}
+        width="w-11/12"
       />
     </div>
   )

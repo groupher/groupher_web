@@ -36,7 +36,7 @@ const SavingBar: FC<TProps> = ({
   disabled = false,
   onCancel = console.log,
   onConfirm = console.log,
-  width = '100%',
+  width = 'w-full',
   ...spacing
 }) => {
   const { global } = useTwBelt()

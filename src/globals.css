@@ -128,7 +128,7 @@
   }
 
   .count-highlight-dark {
-    background: linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%);
+    background: linear-gradient(90deg, #d19406 0%, #ba3727 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }

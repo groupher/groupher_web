@@ -58,6 +58,8 @@ export default () => {
         field={SETTING_FIELD.BRAND_LAYOUT}
         loading={saving}
         top={10}
+        left={1}
+        width="w-11/12"
       />
     </div>
   )

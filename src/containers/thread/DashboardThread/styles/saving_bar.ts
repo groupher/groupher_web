@@ -15,7 +15,7 @@ export default ({ minimal, width, ...spacing }: TProps) => {
   return {
     wrapper: cn(
       'row-center h-11 py-2.5 pr-2 rounded-lg mr-3',
-      width !== '100%' && width,
+      width,
       minimal && 'h-8 py-2',
       margin(spacing),
     ),

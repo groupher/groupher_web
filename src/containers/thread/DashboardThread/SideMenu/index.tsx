@@ -14,7 +14,7 @@ export default () => {
 
   return (
     <div className={s.wrapper}>
-      <Sticky offsetTop={30}>
+      <Sticky offsetTop={36}>
         {groupKeys.map((key) => (
           <Group key={key} group={MENU[key] as TMenuGroup} />
         ))}

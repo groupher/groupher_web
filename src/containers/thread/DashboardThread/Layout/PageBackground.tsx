@@ -72,7 +72,8 @@ export default () => {
           field={SETTING_FIELD.PAGE_BG}
           loading={saving}
           top={10}
-          left={-8}
+          left={1}
+          width="w-11/12"
         />
       ) : (
         <SavingBar
@@ -80,7 +81,8 @@ export default () => {
           field={SETTING_FIELD.PAGE_BG_DARK}
           loading={saving}
           top={10}
-          left={-8}
+          left={1}
+          width="w-11/12"
         />
       )}
     </section>
