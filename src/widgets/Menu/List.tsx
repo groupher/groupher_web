@@ -9,27 +9,10 @@ type TProps = {
   activeKey: string
   onSelect: (item: TMenuItem) => void
   popWidth: number
-  withDesc: boolean
 }
 
-const List: FC<TProps> = ({ items, activeKey, onSelect, popWidth, withDesc }) => {
+const List: FC<TProps> = ({ items, activeKey, onSelect, popWidth }) => {
   const s = useSalon({ popWidth })
-
-  if (withDesc) {
-    return (
-      <div className={s.wrapper}>
-        {items.map((item) => (
-          <Item
-            key={item.key}
-            withDesc={withDesc}
-            item={item}
-            active={activeKey === item.key}
-            onClick={() => onSelect(item)}
-          />
-        ))}
-      </div>
-    )
-  }
 
   return (
     <div className={s.wrapper}>

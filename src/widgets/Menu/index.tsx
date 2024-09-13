@@ -24,7 +24,6 @@ type TProps = {
   onShow?: () => void
   onHide?: () => void
   popWidth?: number
-  withDesc?: boolean
 }
 
 const Menu: FC<TProps> = ({
@@ -37,7 +36,6 @@ const Menu: FC<TProps> = ({
   placement = 'bottom',
   offset = [-5, 5],
   popWidth = 36,
-  withDesc = false,
 }) => {
   const s = useSalon()
 
@@ -49,15 +47,7 @@ const Menu: FC<TProps> = ({
       onHide={() => onHide?.()}
       offset={offset as [number, number]}
       noPadding
-      content={
-        <List
-          items={items}
-          activeKey={activeKey}
-          onSelect={onSelect}
-          popWidth={popWidth}
-          withDesc={withDesc}
-        />
-      }
+      content={<List items={items} activeKey={activeKey} onSelect={onSelect} popWidth={popWidth} />}
     >
       <div className={s.wrapper}>{children}</div>
     </Tooltip>

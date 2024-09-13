@@ -123,7 +123,7 @@ module.exports = uniq([
   ...SIZE.map((c) => `size-${c}`),
 
   ...HOVERS.map((c) => `hover:${c} hover:${c}-dark`),
-  ...GROUP_HOVERS.map((c) => `group-hover:${c} hover:${c}-dark`),
+  ...GROUP_HOVERS.map((c) => `group-hover:${c} group-hover:${c}-dark`),
   ...ROTATES.map((r) => `rotate-${r}`),
 
   ...CONTAINERS,

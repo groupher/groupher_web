@@ -11,6 +11,7 @@ type TProps = {
   className?: string
   ghost?: boolean
   type?: 'primary' | 'red'
+  width?: string
   space?: number | null
   size?: TSizeTSM
   onClick?: () => void
@@ -24,6 +25,7 @@ const Button: FC<TProps> = ({
   children = 'button',
   ghost = false,
   type = 'primary',
+  width = 'w-full',
   onClick = console.log,
   space = null,
   size = SIZE.MEDIUM,
@@ -36,6 +38,7 @@ const Button: FC<TProps> = ({
 }) => {
   const s = useSalon({
     type,
+    width,
     ghost,
     space,
     size,

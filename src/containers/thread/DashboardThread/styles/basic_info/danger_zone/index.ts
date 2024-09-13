@@ -1,55 +1,19 @@
-import styled, { css, theme } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
-import InfoSVG from '~/icons/Info'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.column()};
-  width: 100%;
-`
-export const DangerTitle = styled.div`
-  color: ${theme('rainbow.red')};
-  font-size: 18px;
-  font-weight: 500;
-  padding-top: 42px;
-  margin-bottom: 22px;
-  border-top: 1px solid;
-  border-top-color: ${theme('divider')};
-`
-export const Item = styled.div`
-  ${css.row('align-start')};
-  padding-top: 15px;
-  min-height: 80px;
-  width: 100%;
-  border-bottom: 1px solid;
-  border-bottom-color: ${theme('divider')};
-  position: relative;
-`
-export const Intro = styled.div`
-  flex-grow: 1;
-`
-export const Title = styled.div`
-  ${css.row('align-center')};
-  font-size: 15px;
-  color: ${theme('article.title')};
-  font-weight: 500;
-  margin-bottom: 3px;
-`
-export const InfoIcon = styled(InfoSVG)`
-  fill: ${theme('hint')};
-  ${css.size(16)};
-  margin-left: 4px;
-  cursor: pointer;
+export { cn } from '~/css'
 
-  &:hover {
-    fill: ${theme('article.title')};
+export default () => {
+  const { cn, rainbow, fg, bg, fill } = useTwBelt()
+
+  return {
+    wrapper: 'column w-full',
+    divider: cn('w-full h-px', bg('divider')),
+    dangerTitle: cn('text-base bold-sm mb-5', rainbow(COLOR_NAME.RED, 'fg')),
+    item: cn('row items-start pt-3.5 w-full'),
+    title: cn('row-center text-sm mb-2.5', fg('text.title')),
+    desc: cn('text-sm', fg('text.digest')),
+    icon: cn('size-4 ml-1 pointer', `hover: ${fill('text.title')}`, fill('text.digest')),
   }
-`
-export const Desc = styled.div`
-  font-size: 14px;
-  color: ${theme('article.digest')};
-`
-export const TabsWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: -14px;
-`
+}

@@ -19,7 +19,7 @@ export default () => {
     filter: 'row-center h-10 -ml-1.5',
     layout: cn(
       isSidebarLayout && `w-full grow ${isMasonary ? 'px-[12%]' : 'px-[20%]'}`,
-      isHeaderLayout && `w-full grow rounded-md mt-3 mr-12 pr-20 border-r ${br('divider')}`,
+      isHeaderLayout && `w-full grow rounded-md mt-3 mr-12 pr-16 border-r ${br('divider')}`,
       isTabberLayout && 'w-full grow rounded-md mt-3.5 mr-12',
     ),
   }

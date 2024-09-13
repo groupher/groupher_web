@@ -20,6 +20,7 @@ import { Link, Br, SexyDivider } from '~/widgets/Common'
 import ImgFallback from '~/widgets/ImgFallback'
 import Sticky from '~/widgets/Sticky'
 import GetMe from '~/widgets/GetMe'
+import SocialBanner from '~/widgets/SocialBanner'
 import Img from '~/Img'
 import LinkSVG from '~/icons/Link'
 
@@ -47,7 +48,8 @@ export default () => {
           <Fragment>
             {showCommunityBadge && (
               <Fragment>
-                <h3 className={s.title}>{t('intro', 'titleCase')}</h3>
+                {/* <h3 className={s.title}>{t('intro', 'titleCase')}</h3> */}
+                <SocialBanner />
                 <div className={s.desc}>{curCommunity.desc}</div>
                 <div className={s.homeLinks}>
                   <LinkSVG className={s.linkIcon} />

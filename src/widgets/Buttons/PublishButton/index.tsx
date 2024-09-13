@@ -61,7 +61,6 @@ const PublishButton: FC<TProps> = ({
           items={POST_CAT_MENU_ITEMS}
           onSelect={(item) => onMenuSelect(item.key as TArticleCat)}
           popWidth={48}
-          withDesc
         >
           <Button className={s.arrowBtn} noLeftRouned noBorder>
             <ArrowSVG className={s.arrowIcon} />
