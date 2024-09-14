@@ -4,13 +4,14 @@
  *
  */
 
-import { type FC, useCallback, memo } from 'react'
+import { type FC, useCallback } from 'react'
 import { pickBy } from 'ramda'
 
+import Img from '~/Img'
 import { nilOrEmpty } from '~/validator'
 
 import Textarea from './Textarea'
-import { Wrapper, PrefixWrapper, SuffixWrapper, Icon, InputWrapper } from './styles'
+import useSalon, { cn } from './salon'
 
 type TProps = {
   testid?: string
@@ -24,6 +25,7 @@ type TProps = {
   disabled?: boolean
   autoFocus?: boolean
   disableEnter?: boolean
+  className?: string
 
   onFocus?: (e) => void
   onBlur?: (e) => void
@@ -44,8 +46,11 @@ const Input: FC<TProps> = ({
   testid = 'input',
   autoFocus = false,
   disableEnter = false,
+  className = '',
   ...restProps
 }) => {
+  const s = useSalon()
+
   const handleOnChange = useCallback((e) => onChange?.(e), [onChange])
   const handleOnKeydown = useCallback(
     (e) => {
@@ -61,30 +66,39 @@ const Input: FC<TProps> = ({
   const validProps = pickBy((v) => v !== null, restProps)
 
   return behavior === 'default' ? (
-    <Wrapper $testid={testid}>
-      <PrefixWrapper show={!nilOrEmpty(prefixIcon)}>
-        {prefixIcon && <Icon src={prefixIcon} active={prefixActive} />}
-      </PrefixWrapper>
-      <InputWrapper
+    <div className={s.wrapper} data-testid={testid}>
+      <div className={cn(s.prefix, nilOrEmpty(prefixIcon) && 'hidden')}>
+        {prefixIcon && (
+          <Img className={cn(s.icon, prefixActive && s.iconActive)} src={prefixIcon} />
+        )}
+      </div>
+      <input
+        className={cn(
+          s.input,
+          !nilOrEmpty(prefixIcon) && 'pl-7',
+          !nilOrEmpty(suffixIcon) && 'pr-7',
+          className,
+        )}
         onChange={handleOnChange}
         onKeyDown={handleOnKeydown}
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
         spellCheck="false"
-        // prefix={false}
-        $hasPrefix={!nilOrEmpty(prefixIcon)}
-        $hasSuffix={!nilOrEmpty(suffixIcon)}
+        // biome-ignore lint/a11y/noAutofocus: <explanation>
         autoFocus={autoFocus}
         // @ts-ignore
         {...validProps}
       />
-      <SuffixWrapper show={!nilOrEmpty(suffixIcon)}>
-        {suffixIcon && <Icon src={suffixIcon} active={suffixActive} />}
-      </SuffixWrapper>
-    </Wrapper>
+      <div className={cn(s.suffix, nilOrEmpty(suffixIcon) && 'hidden')}>
+        {suffixIcon && (
+          <Img className={cn(s.icon, suffixActive && s.iconActive)} src={suffixIcon} />
+        )}
+      </div>
+    </div>
   ) : (
     <Textarea
       testid={testid}
+      className={className}
       onChange={onChange}
       autoFocus={autoFocus}
       disableEnter={disableEnter}
@@ -93,4 +107,4 @@ const Input: FC<TProps> = ({
   )
 }
 
-export default memo(Input)
+export default Input

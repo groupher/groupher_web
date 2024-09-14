@@ -77,6 +77,8 @@ const HOVERS = [
   'border-text-digest',
 ]
 
+const INPUTS = ['border-text-digest']
+
 const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red', 'fill-text-title']
 const CONTAINERS = keys(container).map(
   (c) =>
@@ -123,6 +125,8 @@ module.exports = uniq([
   ...SIZE.map((c) => `size-${c}`),
 
   ...HOVERS.map((c) => `hover:${c} hover:${c}-dark`),
+  ...INPUTS.map((c) => `focus:${c} active:${c} focus:${c}-dark active:${c}-dark`),
+
   ...GROUP_HOVERS.map((c) => `group-hover:${c} group-hover:${c}-dark`),
   ...ROTATES.map((r) => `rotate-${r}`),
 

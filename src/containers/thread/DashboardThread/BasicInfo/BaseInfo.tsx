@@ -5,6 +5,7 @@ import { LANGS_OPTIONS } from '~/const/i18n'
 
 import { Br } from '~/widgets/Common'
 import Select from '~/widgets/Select'
+import Input from '~/widgets/Input'
 
 import DangerZone from './DangerZone'
 
@@ -12,17 +13,18 @@ import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 import useBaseInfo from '../logic/useBaseInfo'
 
-import { Wrapper, Label, Inputer, Hint } from '../styles/basic_info/base_info'
+import useSalon from '../styles/basic_info/base_info'
 
 export default () => {
   const { saving, locale, desc, title, slug, homepage, introduction, isTouched, edit } =
     useBaseInfo()
 
+  const s = useSalon()
   const curLangOption = find((o) => o.value === locale, LANGS_OPTIONS)
 
   return (
-    <Wrapper>
-      <Label>默认语言</Label>
+    <div className={s.wrapper}>
+      <div className={s.label}>默认语言</div>
       <Select
         value={curLangOption}
         options={LANGS_OPTIONS}
@@ -32,33 +34,39 @@ export default () => {
         bottom={10}
         right={8}
       />
-      <Hint>社区界面的默认语言</Hint>
+      <p className={s.hint}>社区界面的默认语言</p>
 
-      <Label>社区域名</Label>
-      <Inputer value={slug} onChange={(v) => edit(v, 'slug')} />
-      <Hint>
+      <div className={s.label}>社区域名</div>
+      <Input value={slug} className={s.input} onChange={(v) => edit(v, 'slug')} />
+      <p className={s.hint}>
         社区的 URL 地址段，填写后可通过 https://groupher.com/[slug] 或 https://[slug].groupher.com
         访问。
-      </Hint>
+      </p>
       <Br bottom={10} />
 
-      <Label>社区名称</Label>
-      <Inputer value={title} onChange={(v) => edit(v, 'title')} />
+      <div className={s.label}>社区名称</div>
+      <Input value={title} className={s.input} onChange={(v) => edit(v, 'title')} />
 
       <Br bottom={10} />
 
-      <Label>官方主页</Label>
-      <Inputer value={homepage} onChange={(v) => edit(v, 'homepage')} />
-      <Hint>您产品或服务的官方地址。</Hint>
+      <div className={s.label}>官方主页</div>
+      <Input value={homepage} className={s.input} onChange={(v) => edit(v, 'homepage')} />
+      <p className={s.hint}>您产品或服务的官方地址。</p>
 
-      <Label>社区简介</Label>
-      <Inputer placeholder="一句话简介" value={desc} onChange={(v) => edit(v, 'desc')} />
+      <div className={s.label}>社区简介</div>
+      <Input
+        placeholder="一句话简介"
+        value={desc}
+        className={s.input}
+        onChange={(v) => edit(v, 'desc')}
+      />
       <Br bottom={15} />
 
-      <Label>关于社区</Label>
-      <Inputer
+      <div className={s.label}>关于社区</div>
+      <Input
         behavior="textarea"
         placeholder="支持 Markdown 语法"
+        className={s.input}
         value={introduction}
         onChange={(v) => edit(v, 'introduction')}
       />
@@ -75,6 +83,6 @@ export default () => {
 
       <Br bottom={45} />
       <DangerZone />
-    </Wrapper>
+    </div>
   )
 }
