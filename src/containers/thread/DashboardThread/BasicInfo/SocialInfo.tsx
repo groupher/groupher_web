@@ -4,13 +4,14 @@ import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 
 import useBaseInfo from '../logic/useBaseInfo'
-import { Wrapper } from '../styles/basic_info/base_info'
+import useSalon from '../styles/basic_info/base_info'
 
 export default () => {
+  const s = useSalon()
   const { socialLinks, saving, isSocialLinksTouched, edit } = useBaseInfo()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <SocialEditor
         width="100%"
         value={socialLinks}
@@ -26,6 +27,6 @@ export default () => {
         loading={saving}
         top={50}
       />
-    </Wrapper>
+    </div>
   )
 }

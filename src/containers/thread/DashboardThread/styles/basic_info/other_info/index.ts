@@ -1,21 +1,15 @@
-import styled, { theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import Input from '~/widgets/Input'
+export { cn } from '~/css'
 
-export { Desc } from '../base_info'
+export default () => {
+  const { cn, fg, bg } = useTwBelt()
 
-export const Wrapper = styled.div`
-  padding-bottom: 30px;
-  margin-bottom: 20px;
-  width: 300px;
-`
-export const Label = styled.div<{ left?: number }>`
-  color: ${theme('article.digest')};
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 10px;
-  margin-left: ${({ left }) => `${left || 0}px`};
-`
-export const Inputer = styled(Input)`
-  width: 300px !important;
-`
+  return {
+    wrapper: 'pb-8 mb-5 w-80',
+    label: cn('text-sm bold-sm mb-2.5', fg('text.digest')),
+    input: 'w-80',
+    divider: cn('w-full h-px mt-8 mb-8', bg('divider')),
+    hint: cn('font-sm opacity-80 mt-1.5 ml-0.5', fg('text.digest')),
+  }
+}

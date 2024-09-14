@@ -1,31 +1,32 @@
 import type { FC } from 'react'
 
 import CitySelector from '~/widgets/CitySelector'
-import { Br, SexyDivider } from '~/widgets/Common'
+import Input from '~/widgets/Input'
 
 import { SETTING_FIELD } from '../../constant'
 
 import SavingBar from '../../SavingBar'
 
 import useBaseInfo from '../../logic/useBaseInfo'
-import { Wrapper, Label, Inputer, Desc } from '../../styles/basic_info/other_info'
+import useSalon, { cn } from '../../styles/basic_info/other_info'
 
 import MediaEditor from './MediaEditor'
 
 const OtherInfo: FC = () => {
   const { city, techstack, isTouched, isMediaReportsTouched, edit } = useBaseInfo()
+  const s = useSalon()
 
   return (
-    <Wrapper>
-      <Label left={-6}>（团队）所在城市</Label>
+    <div className={s.wrapper}>
+      <div className={cn(s.label, '-ml-1.5')}>（团队）所在城市</div>
       <CitySelector value={city} onChange={(v) => edit(v, 'city')} top={15} />
 
-      <Br top={20} />
-      <Label>技术栈</Label>
-      <Inputer value={techstack} onChange={(v) => edit(v, 'techstack')} />
-      <Desc>团队主要使用的开发或创作工具等，多项请用 , 隔开。</Desc>
+      <div className="mt-5" />
+      <div className={s.label}>技术栈</div>
+      <Input className={s.input} value={techstack} onChange={(v) => edit(v, 'techstack')} />
+      <p className={s.hint}>团队主要使用的开发或创作工具等，多项请用 , 隔开。</p>
 
-      <Br top={22} />
+      <div className="mt-5" />
 
       <SavingBar
         field={SETTING_FIELD.BASE_INFO}
@@ -35,7 +36,7 @@ const OtherInfo: FC = () => {
         left={-1}
       />
 
-      <SexyDivider top={30} bottom={30} />
+      <div className={s.divider} />
 
       <MediaEditor />
 
@@ -46,7 +47,7 @@ const OtherInfo: FC = () => {
         top={30}
         left={-1}
       />
-    </Wrapper>
+    </div>
   )
 }
 

@@ -12,7 +12,7 @@ export default ({ dimWhenIdle, disabled, ...spacing }: TProps) => {
 
   return {
     wrapper: cn(
-      'relative group',
+      'row-center relative group',
       'hover:opacity:100',
       'trans-all-200',
       dimWhenIdle || disabled ? 'opacity-65' : 'opacity-100',
