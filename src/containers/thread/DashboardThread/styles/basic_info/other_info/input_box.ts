@@ -7,8 +7,8 @@ export default () => {
     wrapper: 'w-full',
     inputWrapper: 'relative',
     deleteIcon: cn(
-      'pointer absolute top-1.5 -right-2.5',
-      'size-6 trans-all-200',
+      'pointer absolute top-2 -right-2',
+      'size-5 trans-all-200',
       `hover:${fill('rainbow.red')}`,
       fill('text.digest'),
     ),

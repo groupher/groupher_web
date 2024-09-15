@@ -4,7 +4,7 @@ import type { TSettingField } from '~/stores/dashboard/spec'
 import useSubStore from '~/hooks/useSubStore'
 
 import useHelper from '../useHelper'
-import { BASEINFO_BASIC_KEYS } from '../../constant'
+import { BASEINFO_BASIC_KEYS, BASEINFO_OTHER_KEYS } from '../../constant'
 
 export type TRet = {
   favicon: string
@@ -18,6 +18,7 @@ export type TRet = {
   city: string
   techstack: string
   isTouched: boolean
+  isCityTouched: boolean
 }
 
 export default (): TRet => {
@@ -26,6 +27,8 @@ export default (): TRet => {
 
   return {
     ...pick(BASEINFO_BASIC_KEYS, store),
+    ...pick(BASEINFO_OTHER_KEYS, store),
     isTouched: anyChanged(BASEINFO_BASIC_KEYS as TSettingField[]),
+    isCityTouched: anyChanged(['city']),
   }
 }
