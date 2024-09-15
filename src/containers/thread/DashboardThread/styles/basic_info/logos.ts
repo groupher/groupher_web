@@ -1,40 +1,16 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-// import Input from '~/widgets/Input'
+export default () => {
+  const { cn, fg, bg } = useTwBelt()
 
-export const Wrapper = styled.div`
-  width: 310px;
-  padding-bottom: 30px;
-  margin-bottom: 20px;
-`
-export const FaviconWrapper = styled.div`
-  ${css.size(30)};
-`
-export const Favicon = styled.div`
-  ${css.size(30)};
-  background: ${theme('hoverBg')};
-  border-radius: 4px;
-`
-export const LogoWrapper = styled.div`
-  ${css.size(70)};
-`
-export const Logo = styled.div`
-  ${css.size(70)};
-  background: ${theme('hoverBg')};
-  border-radius: 4px;
-`
-export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 15px;
-  margin-bottom: 12px;
-`
-export const Desc = styled.div`
-  color: ${theme('hint')};
-  font-size: 12px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-`
+  return {
+    wrapper: cn('w-full pb-8 mb-5'),
+    faviconBox: cn('size-8 rounded', bg('hoverBg')),
+    favicon: cn('w-full h-full'),
+    logoBox: cn('size-16', bg('hoverBg')),
+    logo: cn('w-full h-full'),
 
-export const Row = styled.div`
-  ${css.row('align-center')};
-`
+    title: cn('text-sm mb-3', fg('text.title')),
+    desc: cn('text-xs mt-2.5 mt-5 opacity-80', fg('text.digest')),
+  }
+}
