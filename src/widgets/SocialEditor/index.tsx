@@ -81,7 +81,7 @@ const SocialEditor: FC<TProps> = ({
           return (
             <div key={social} className={cn(s.iconBox, active && s.iconBoxActive)}>
               <SocialIcon
-                className={cn(s.icon, active && s.iconActive)}
+                className={cn(s.icon, active && s.iconActive, social === 'WEIBO' && 'size-5')}
                 onClick={() => {
                   if (!includes(social, selectedTypes)) {
                     setSelected([...selected, { type: social, link: '' }])

@@ -17,6 +17,7 @@ export default () => {
     input: cn(
       'outline-none tabular-nums box-border m-0 list-none relative inline-block w-full bg-none border appearance-none',
       'px-2.5 py-1 h-9 rounded-md text-sm text-left leading-normal caret-inherit saturate-0',
+      'placeholder:italic placeholder:opacity-65 placeholder:text-xs',
       'trans-all-200',
       `hover:${br('text.digest')}`,
       `focus:${br('text.digest')}`,

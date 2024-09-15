@@ -11,6 +11,7 @@ import GithubSVG from '~/icons/social/Github'
 import BiliBiliSVG from '~/icons/social/BiliBili'
 import BossSVG from '~/icons/social/Boss'
 
+import useTheme from '~/hooks/useTheme'
 import useTwBelt from '~/hooks/useTwBelt'
 
 export { cn } from '~/css'
@@ -20,22 +21,29 @@ type TProps = {
 } & TSpace
 
 export default ({ width, ...spacing }: TProps) => {
+  const { isLightTheme } = useTheme()
   const { cn, margin, fg, br, bg, shadow, fill, primary } = useTwBelt()
 
   return {
     wrapper: cn('mb-7', width, margin(spacing)),
     platforms: cn(
       'row-center wrap mt-4 mb-6 px-2 py-1.5 gap-x-3 gap-y-1.5 rounded-md w-full border',
-      `hover:${br('text.digest')}`,
       br('divider'),
     ),
     label: cn('text-sm mb-3', fg('text.title')),
     hint: cn('text-xs leading-relaxed', fg('text.digest')),
     inputWrapper: cn('column gap-y-4'),
     iconBox: cn('align-both relative size-5 pointer rounded'),
-    iconActiveBar: cn('absolute -bottom-2 size-1 circle opacity-65', primary('bg')),
+    iconActiveBar: cn(
+      'absolute -bottom-2.5 size-1.5 circle',
+      isLightTheme && 'opacity-65',
+      primary('bg'),
+    ),
     iconBoxActive: cn(bg('hoverBg'), shadow('md')),
-    icon: cn('size-4 saturate-0', fill('text.digest')),
+    icon: cn(
+      'size-4 saturate-0 hover:saturate-100 hover:scale-110 trans-all-100',
+      fill('text.digest'),
+    ),
     iconActive: cn('saturate-100'),
   }
 }
