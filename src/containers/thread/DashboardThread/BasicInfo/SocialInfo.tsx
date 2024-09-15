@@ -13,7 +13,6 @@ export default () => {
   return (
     <div className={s.wrapper}>
       <SocialEditor
-        width="100%"
         value={socialLinks}
         onChange={(links) => {
           // @ts-ignore
