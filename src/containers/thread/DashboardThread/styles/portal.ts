@@ -1,17 +1,11 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div``
-export const Title = styled.div`
-  color: ${theme('dashboard.menuCat')};
-  font-size: 19px;
-  width: auto;
+export default () => {
+  const { cn, fg, bg } = useTwBelt()
 
-  ${css.media.mobile`
-    display: none;
-  `};
-`
-export const Desc = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 13px;
-  margin-top: 10px;
-`
+  return {
+    title: cn('text-lg w-auto', fg('text.title')),
+    desc: cn('text-sm mt-2.5', fg('text.digest')),
+    divider: cn('w-full h-px mt-5 mb-8', bg('divider')),
+  }
+}

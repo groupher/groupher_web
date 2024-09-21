@@ -1,16 +1,11 @@
-import styled, { css } from '~/css'
-import { ALIGN_HEADER_OFFSET } from '../../constant'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  padding: 0;
-  padding: ${() => `0 ${ALIGN_HEADER_OFFSET}`};
-  max-width: 700px;
+export default () => {
+  const { cn, divider } = useTwBelt()
 
-  ${css.media.mobile`
-    padding: 0 20px;
-  `};
-`
-export const Desc = styled.div`
-  width: 80%;
-  line-height: 1.65;
-`
+  return {
+    wrapper: cn('w-96 ml-32'),
+    desc: 'w-4/5 leading-relaxed',
+    divider: cn(divider(), 'mt-6 mb-8'),
+  }
+}
