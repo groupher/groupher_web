@@ -19,7 +19,13 @@ export default () => {
       <SectionLabel
         title="讨论区"
         desc={<Desc>用户可在此发帖，参与社区讨论，帖子可由团队管理员同步到看板墙。</Desc>}
-        addon={<ToggleSwitch checked={settings.post} onChange={(c) => enableThread('post', c)} />}
+        addon={
+          <ToggleSwitch
+            size="small"
+            checked={settings.post}
+            onChange={(c) => enableThread('post', c)}
+          />
+        }
       />
       <Divider top={25} bottom={30} />
       <SectionLabel

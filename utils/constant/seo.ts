@@ -4,8 +4,9 @@ export const SEO_OG_KEYS = [
   'ogDescription',
   'ogUrl',
   'ogImage',
-  'ogLocale',
-  'ogPublisher',
+  // not sync with backend, not not add
+  // 'ogLocale',
+  // 'ogPublisher',
 ]
 
 export const SEO_TW_KEYS = [

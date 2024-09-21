@@ -7,11 +7,11 @@
 import type { FC, ReactNode } from 'react'
 
 import type { TColorName, TSpace } from '~/spec'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 
+import ArrowSVG from '~/icons/ArrowUpRight'
 import { Link } from '~/widgets/Common'
 
-import { Wrapper, Title, ArrowIcon } from './styles'
+import useSalon from './styles'
 
 type TProps = {
   testid?: string
@@ -31,18 +31,16 @@ const ArrowLinker: FC<TProps> = ({
   bold = false,
   color = null,
   children,
-  ...restProps
+  ...spacing
 }) => {
-  const primaryColor = color || usePrimaryColor()
+  const s = useSalon({ ...spacing })
 
   return (
     <Link href={href} target={target}>
-      <Wrapper $testid={testid} $color={primaryColor} {...restProps}>
-        <Title fontSize={fontSize} bold={bold} $color={primaryColor}>
-          {children}
-        </Title>
-        <ArrowIcon fontSize={fontSize} $color={primaryColor} />
-      </Wrapper>
+      <div className={s.wrapper} data-testid={testid}>
+        <div className={s.title}>{children}</div>
+        <ArrowSVG className={s.arrowIcon} />
+      </div>
     </Link>
   )
 }

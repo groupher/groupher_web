@@ -292,7 +292,8 @@ export const removeEmptyValuesFromObject = (object) => {
 
   Object.keys(object).forEach((key) => {
     const value = object[key]
-    if (value !== null && value !== undefined && value !== '') {
+    // if (value !== null && value !== undefined && value !== '') {
+    if (value !== null && value !== undefined) {
       newObject[key] = value
     }
   })

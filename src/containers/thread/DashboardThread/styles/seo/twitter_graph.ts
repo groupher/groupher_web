@@ -1,26 +1,13 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import Input from '~/widgets/Input'
+export default () => {
+  const { cn, fg } = useTwBelt()
 
-export const Wrapper = styled.div`
-  padding-bottom: 30px;
-  margin-bottom: 20px;
-`
-export const Row = styled.div`
-  ${css.row('align-center')};
-`
-export const Label = styled.div`
-  color: ${theme('article.title')};
-  font-size: 14px;
-`
-export const Inputer = styled(Input)`
-  margin-top: 10px;
-  margin-bottom: 20px;
-  width: 300px !important;
-  background: transparent;
-`
-export const SelectWrapper = styled.div`
-  margin-top: 10px;
-  margin-bottom: 20px;
-  width: 300px;
-`
+  return {
+    wrapper: 'pb-8 mb-5',
+    label: cn('font-sm', fg('text.title')),
+    input: 'mt-2.5 mb-5 w-full',
+    enableDesc: cn('row-center w-full leading-relaxed'),
+    selectWrapper: 'mt-2.5 mb-5 w-full',
+  }
+}

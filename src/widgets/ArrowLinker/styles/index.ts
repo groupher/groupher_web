@@ -1,35 +1,15 @@
-import type { TTestable, TSpace, TColor } from '~/spec'
+import type { TSpace } from '~/spec'
 
-import styled, { css, rainbow, rainbowLink } from '~/css'
-import ArrowSVG from '~/icons/ArrowUpRight'
+import useTwBelt from '~/hooks/useTwBelt'
 
-type TWrapper = TTestable & TSpace & TColor
+type TProps = {} & TSpace
 
-export const Wrapper = styled.article.attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TWrapper>`
-  ${css.row('align-center')};
+export default ({ ...spacing }: TProps) => {
+  const { cn, margin, primary } = useTwBelt()
 
-  ${(props) => css.spaceMargins(props)};
-
-  &:hover {
-    text-decoration: underline;
-    text-decoration-color: ${({ $color }) => rainbow($color)};
+  return {
+    wrapper: cn('row-center hover:underline', primary('fg'), margin(spacing)),
+    title: cn('text-sm'),
+    arrowIcon: cn('size-3 ml-1', primary('fill')),
   }
-`
-
-type TArrowIcon = { fontSize: number; bold?: boolean } & TColor
-
-export const ArrowIcon = styled(ArrowSVG)<TArrowIcon>`
-  fill: ${({ $color }) => rainbowLink($color)};
-  width: ${({ fontSize }) => `${fontSize - 1}px`};
-  height: ${({ fontSize }) => `${fontSize - 1}px`};
-  margin-left: 1px;
-  opacity: 0.6;
-`
-export const Title = styled.span<TArrowIcon>`
-  color: ${({ $color }) => rainbowLink($color)};
-  display: inline-block;
-  font-size: ${({ fontSize }) => `${fontSize}px`};
-  font-weight: ${({ bold }) => (bold ? 550 : 400)};
-`
+}
