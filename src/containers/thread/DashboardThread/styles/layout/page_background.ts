@@ -7,7 +7,7 @@ import useTheme from '~/hooks/useTheme'
 export { cn } from '~/css'
 
 export default () => {
-  const { cn, shadow, br, fg, primary } = useTwBelt()
+  const { cn, shadow, br, fg, primary, isBlackPrimary } = useTwBelt()
   const { theme } = useTheme()
 
   return {
@@ -28,6 +28,7 @@ export default () => {
     blockActive: cn(
       'column w-28 h-24 z-10 -mt-2 rotate-3 border-b-8 rounded-lg hover:-mt-2',
       primary('borderSoft'),
+      isBlackPrimary && br('text.link'),
       shadow('xl'),
     ),
     colorTitle: cn('text-xs grow', fg('text.digest')),

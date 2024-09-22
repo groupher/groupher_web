@@ -1,6 +1,9 @@
 import { POST_LAYOUT, DASHBOARD_DESC_LAYOUT } from '~/const/layout'
 import { callDashboardDesc } from '~/signal'
 
+import UpvoteSVG from '~/icons/Upvote'
+import CommentSVG from '~/icons/Comment'
+
 import { Row, Br, Space } from '~/widgets/Common'
 import ArrowButton from '~/widgets/Buttons/ArrowButton'
 import CheckLabel from '~/widgets/CheckLabel'
@@ -46,26 +49,16 @@ export default () => {
       <div className={s.select}>
         <div className={s.layout} onClick={() => edit(POST_LAYOUT.QUORA, 'postLayout')}>
           <div className={cn(s.block, layout === POST_LAYOUT.QUORA && s.blockActive)}>
-            <Bar thin long={30} />
-            <Br bottom={7} />
-            <Row>
-              <Bar long={60} />
-              <Space right={5} />
-              <Bar thin long={8} />
-              <div className="grow" />
-              <CommentIcon />
-            </Row>
-            <Br bottom={10} />
+            <div className={cn(s.bar, 'left-4 top-5 h-1 opacity-30')} />
 
-            <Bar long={80} thin />
-            <Br bottom={10} />
-            <Row>
-              <UpvoteIcon size={15} />
-              <Space right={5} />
-              <Bar long={12} />
-              <Space right={15} />
-              <Bar long={12} thin />
-            </Row>
+            <div className={cn(s.bar, 'left-4 top-8 w-28 h-2.5 opacity-50')} />
+            <div className={cn(s.bar, 'left-4 top-12 w-48 mt-0.5 opacity-30')} />
+
+            <CommentSVG className={cn(s.commentIcon, 'right-5 top-5')} />
+
+            <UpvoteSVG className={cn(s.upvoteIcon, 'left-4 bottom-3')} />
+            <div className={cn(s.bar, 'left-10 bottom-4 w-10 h-2 opacity-40')} />
+            <div className={cn(s.bar, 'left-24 bottom-4 w-10 h-1 mb-0.5 opacity-20')} />
           </div>
           <CheckLabel title="经典（默认）" active={layout === POST_LAYOUT.QUORA} top={4} />
         </div>

@@ -11,16 +11,21 @@ export { cn } from '~/css'
 export { Bar, Circle } from '.'
 
 export default () => {
-  const { cn } = useTwBelt()
   const base = useBase()
+  const { cn, primary } = useTwBelt()
 
   return {
     wrapper: cn(base.baseSection),
     select: cn('row-center wrap gap-x-5 gap-y-5 w-full'),
     inline: 'inline-block',
     layout: 'column-center justify-between h-32',
-    block: cn(base.blockBase, 'w-72 h-24'),
+    block: cn(base.blockBase, 'h-24 min-h-24'),
     blockActive: base.blockBaseActive,
+
+    bar: cn(base.bar, 'h-1.5 w-20 opacity-40'),
+    circle: cn(base.circle, 'opacity-40'),
+    commentIcon: cn('absolute size-3 opacity-65', primary('fill')),
+    upvoteIcon: cn('absolute size-4 opacity-65', primary('fill')),
   }
 }
 

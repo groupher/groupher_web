@@ -3,6 +3,7 @@ const { borderSoft, container } = require('../utils/constant/twConfig.json')
 
 const GENERAL = [
   'border-divider',
+  'border-text-link',
   'border-text-hint',
   'article-hover-linear',
   'saving-bar-left-linear',
@@ -31,7 +32,7 @@ const TEXT_COLORS = [
 const BG_COLORS = [
   'dot',
   'text-digest',
-  'link',
+  'text-link',
   'divider',
   'hoverBg',
   'htmlBg',
