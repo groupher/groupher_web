@@ -1,8 +1,7 @@
 import { POST_LAYOUT, DASHBOARD_DESC_LAYOUT } from '~/const/layout'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 import { callDashboardDesc } from '~/signal'
 
-import { Row, Br, Space, Inline } from '~/widgets/Common'
+import { Row, Br, Space } from '~/widgets/Common'
 import ArrowButton from '~/widgets/Buttons/ArrowButton'
 import CheckLabel from '~/widgets/CheckLabel'
 
@@ -11,13 +10,9 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import usePost from '../logic/usePost'
-import {
-  Wrapper,
-  SelectWrapper,
-  Layout,
-  LayoutTitle,
+import useSalon, {
+  cn,
   Border,
-  Block,
   Bar,
   Circle,
   Box,
@@ -28,32 +23,29 @@ import {
 } from '../styles/layout/post_layout'
 
 export default () => {
+  const s = useSalon()
   const { layout, getIsTouched, saving, edit } = usePost()
-  const primaryColor = usePrimaryColor()
 
   const isTouched = getIsTouched()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <SectionLabel
         title="讨论区布局"
         desc={
           <>
-            「讨论区」列表的默认布局，同时可对不同标签设置不同的布局，切换布局不影响已发布内容。
-            <Inline>
-              <ArrowButton
-                onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
-                fontSize={12}
-              >
+            「讨论区」列表的默认布局，切换布局不影响已发布内容。
+            <div className={s.inline}>
+              <ArrowButton onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}>
                 查看示例
               </ArrowButton>
-            </Inline>
+            </div>
           </>
         }
       />
-      <SelectWrapper>
-        <Layout onClick={() => edit(POST_LAYOUT.QUORA, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.QUORA} $color={primaryColor}>
+      <div className={s.select}>
+        <div className={s.layout} onClick={() => edit(POST_LAYOUT.QUORA, 'postLayout')}>
+          <div className={cn(s.block, layout === POST_LAYOUT.QUORA && s.blockActive)}>
             <Bar thin long={30} />
             <Br bottom={7} />
             <Row>
@@ -74,13 +66,11 @@ export default () => {
               <Space right={15} />
               <Bar long={12} thin />
             </Row>
-          </Block>
-          <LayoutTitle $active={layout === POST_LAYOUT.QUORA}>
-            <CheckLabel title="经典（默认）" active={layout === POST_LAYOUT.QUORA} top={4} />
-          </LayoutTitle>
-        </Layout>
-        <Layout onClick={() => edit(POST_LAYOUT.PH, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.PH} $color={primaryColor}>
+          </div>
+          <CheckLabel title="经典（默认）" active={layout === POST_LAYOUT.QUORA} top={4} />
+        </div>
+        <div className={s.layout} onClick={() => edit(POST_LAYOUT.PH, 'postLayout')}>
+          <div className={cn(s.block, layout === POST_LAYOUT.PH && s.blockActive)}>
             <Row>
               <Column center>
                 <Circle />
@@ -105,14 +95,12 @@ export default () => {
                 </Row>
               </Column>
             </Row>
-          </Block>
-          <LayoutTitle $active={layout === POST_LAYOUT.PH}>
-            <CheckLabel title="三段式" active={layout === POST_LAYOUT.PH} top={15} left={-15} />
-          </LayoutTitle>
-        </Layout>
+          </div>
+          <CheckLabel title="三段式" active={layout === POST_LAYOUT.PH} top={15} />
+        </div>
 
-        <Layout onClick={() => edit(POST_LAYOUT.MASONRY, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.MASONRY} $color={primaryColor}>
+        <div className={s.layout} onClick={() => edit(POST_LAYOUT.MASONRY, 'postLayout')}>
+          <div className={cn(s.block, layout === POST_LAYOUT.MASONRY && s.blockActive)}>
             <Row>
               <Column grow>
                 <Box />
@@ -124,14 +112,12 @@ export default () => {
                 <Bar thin long={80} />
               </Column>
             </Row>
-          </Block>
-          <LayoutTitle $active={layout === POST_LAYOUT.MASONRY}>
-            <CheckLabel title="瀑布流卡片" active={layout === POST_LAYOUT.MASONRY} top={4} />
-          </LayoutTitle>
-        </Layout>
+          </div>
+          <CheckLabel title="瀑布流卡片" active={layout === POST_LAYOUT.MASONRY} top={4} />
+        </div>
 
-        <Layout onClick={() => edit(POST_LAYOUT.MINIMAL, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.MINIMAL} $color={primaryColor}>
+        <div className={s.layout} onClick={() => edit(POST_LAYOUT.MINIMAL, 'postLayout')}>
+          <div className={cn(s.block, layout === POST_LAYOUT.MINIMAL && s.blockActive)}>
             <Row>
               <Space right={5} />
               <Column center>
@@ -160,14 +146,12 @@ export default () => {
                 </Row>
               </Column>
             </Row>
-          </Block>
-          <LayoutTitle $active={layout === POST_LAYOUT.MINIMAL}>
-            <CheckLabel title="极简" active={layout === POST_LAYOUT.MINIMAL} top={15} left={-15} />
-          </LayoutTitle>
-        </Layout>
+          </div>
+          <CheckLabel title="极简" active={layout === POST_LAYOUT.MINIMAL} top={15} />
+        </div>
 
-        <Layout onClick={() => edit(POST_LAYOUT.COVER, 'postLayout')}>
-          <Block $active={layout === POST_LAYOUT.COVER} $color={primaryColor}>
+        <div className={s.layout} onClick={() => edit(POST_LAYOUT.COVER, 'postLayout')}>
+          <div className={cn(s.block, layout === POST_LAYOUT.COVER && s.blockActive)}>
             <Row>
               <Cover />
               <Space right={17} />
@@ -183,12 +167,10 @@ export default () => {
                 </Row>
               </Column>
             </Row>
-          </Block>
-          <LayoutTitle $active={layout === POST_LAYOUT.COVER}>
-            <CheckLabel title="封面图" active={layout === POST_LAYOUT.COVER} top={4} />
-          </LayoutTitle>
-        </Layout>
-      </SelectWrapper>
+          </div>
+          <CheckLabel title="封面图" active={layout === POST_LAYOUT.COVER} top={4} />
+        </div>
+      </div>
 
       <SavingBar
         width="84%"
@@ -197,6 +179,6 @@ export default () => {
         loading={saving}
         top={20}
       />
-    </Wrapper>
+    </div>
   )
 }

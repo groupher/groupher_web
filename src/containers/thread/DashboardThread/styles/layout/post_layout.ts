@@ -1,20 +1,29 @@
-import type { TActive } from '~/spec'
-
 import styled, { css, theme } from '~/css'
 
 import UpvoteSVG from '~/icons/Upvote'
 import CommentSVG from '~/icons/Comment'
 
-import { BaseSection, BlockBase } from '.'
+import useTwBelt from '~/hooks/useTwBelt'
 
+import useBase from '.'
+
+export { cn } from '~/css'
 export { Bar, Circle } from '.'
 
-export const Wrapper = styled(BaseSection)``
-export const SelectWrapper = styled.div`
-  ${css.rowWrap('align-center')};
-  gap: 20px 30px;
-  width: 100%;
-`
+export default () => {
+  const { cn } = useTwBelt()
+  const base = useBase()
+
+  return {
+    wrapper: cn(base.baseSection),
+    select: cn('row-center wrap gap-x-5 gap-y-5 w-full'),
+    inline: 'inline-block',
+    layout: 'column-center justify-between h-32',
+    block: cn(base.blockBase, 'w-72 h-24'),
+    blockActive: base.blockBaseActive,
+  }
+}
+
 export const Box = styled.div`
   width: 100%;
   height: 40px;
@@ -37,24 +46,6 @@ export const Column = styled.div<TColumn>`
   ${({ center }) => (center ? 'align-items: center;' : '')};
   ${({ grow }) => (grow ? 'flex-grow: 1;' : '')};
 `
-export const Layout = styled.div`
-  ${css.column('align-both')};
-`
-export const LayoutTitle = styled.div<TActive>`
-  opacity: ${({ $active }) => ($active ? 1 : 0.65)};
-
-  ${Layout}:hover & {
-    opacity: 1;
-    cursor: pointer;
-  }
-  transition: all 0.2s;
-`
-export const Block = styled(BlockBase)`
-  width: 280px;
-  height: 94px;
-  padding: 16px 15px;
-`
-
 export const Border = styled.div`
   ${css.column('align-both')};
   border: 1px solid;
