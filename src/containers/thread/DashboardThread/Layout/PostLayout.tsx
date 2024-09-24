@@ -4,7 +4,6 @@ import { callDashboardDesc } from '~/signal'
 import UpvoteSVG from '~/icons/Upvote'
 import CommentSVG from '~/icons/Comment'
 
-import { Row, Br, Space } from '~/widgets/Common'
 import ArrowButton from '~/widgets/Buttons/ArrowButton'
 import CheckLabel from '~/widgets/CheckLabel'
 
@@ -13,17 +12,7 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import usePost from '../logic/usePost'
-import useSalon, {
-  cn,
-  Border,
-  Bar,
-  Circle,
-  Box,
-  Cover,
-  Column,
-  UpvoteIcon,
-  CommentIcon,
-} from '../styles/layout/post_layout'
+import useSalon, { cn } from '../styles/layout/post_layout'
 
 export default () => {
   const s = useSalon()
@@ -64,102 +53,59 @@ export default () => {
         </div>
         <div className={s.layout} onClick={() => edit(POST_LAYOUT.PH, 'postLayout')}>
           <div className={cn(s.block, layout === POST_LAYOUT.PH && s.blockActive)}>
-            <Row>
-              <Column center>
-                <Circle />
-                <Br bottom={18} />
-              </Column>
-              <Space right={12} />
-              <Column grow>
-                <Row>
-                  <Bar long={50} />
-                  <Space right={5} />
-                  <Bar thin long={8} />
-                  <div className="grow" />
-                  <UpvoteIcon size={20} />
-                </Row>
-                <Br bottom={5} />
-                <Bar thin long={80} />
-                <Br bottom={11} />
-                <Row>
-                  <Bar long={20} />
-                  <Space right={12} />
-                  <Bar thin long={20} />
-                </Row>
-              </Column>
-            </Row>
+            <div className={s.userAvatar} />
+            <div className={cn(s.upvoteBtn, 'top-4 right-5 scale-90')}>
+              <UpvoteSVG className={cn(s.upvoteIcon, 'relative')} />
+              <div>N</div>
+            </div>
+
+            <div className={cn(s.bar, 'left-14 top-6 w-24 h-2.5 opacity-40')} />
+            <div className={cn(s.bar, 'left-14 top-11 w-36 h-1.5 opacity-20')} />
+            <div className={cn(s.bar, 'left-14 top-14 w-14 h-1.5 opacity-15')} />
           </div>
           <CheckLabel title="三段式" active={layout === POST_LAYOUT.PH} top={15} />
         </div>
 
         <div className={s.layout} onClick={() => edit(POST_LAYOUT.MASONRY, 'postLayout')}>
           <div className={cn(s.block, layout === POST_LAYOUT.MASONRY && s.blockActive)}>
-            <Row>
-              <Column grow>
-                <Box />
-                <Bar thin long={70} />
-              </Column>
-              <Space right={12} />
-              <Column grow>
-                <Box />
-                <Bar thin long={80} />
-              </Column>
-            </Row>
+            <div className={cn(s.bar, 'left-6 top-0 w-28 h-2 opacity-15')} />
+            <div className={cn(s.bar, 'left-6 top-4 w-28 h-12 opacity-50')} />
+            <div className={cn(s.bar, 'left-6 bottom-0 w-28 h-6 opacity-20')} />
+
+            <div className={cn(s.bar, 'right-6 top-0 w-28 h-4 opacity-20')} />
+            <div className={cn(s.bar, 'right-6 top-6 w-28 h-14 opacity-40')} />
+            <div className={cn(s.bar, 'right-6 bottom-0 w-28 h-2 opacity-15')} />
           </div>
           <CheckLabel title="瀑布流卡片" active={layout === POST_LAYOUT.MASONRY} top={4} />
         </div>
 
         <div className={s.layout} onClick={() => edit(POST_LAYOUT.MINIMAL, 'postLayout')}>
           <div className={cn(s.block, layout === POST_LAYOUT.MINIMAL && s.blockActive)}>
-            <Row>
-              <Space right={5} />
-              <Column center>
-                <Border>
-                  <UpvoteIcon size={14} />
-                  <Br bottom={3} />
-                  <Bar long={70} />
-                </Border>
-              </Column>
+            <div className={cn(s.upvoteBtn, 'top-5 left-5')}>
+              <UpvoteSVG className={cn(s.upvoteIcon, 'relative')} />
+              <div>N</div>
+            </div>
 
-              <Space right={15} />
+            <div className={cn(s.bar, 'left-20 top-6 w-28 h-2.5 opacity-40')} />
+            <div className={cn(s.bar, 'left-20 top-11 w-36 h-1.5 opacity-20')} />
+            <div className={cn(s.bar, 'left-20 top-14 w-10 h-1.5 opacity-15')} />
 
-              <Column grow>
-                <Br bottom={10} />
-                <Row>
-                  <Br bottom={10} />
-                  <Bar long={30} />
-                  <div className="grow" />
-                  <CommentIcon />
-                </Row>
-                <Br bottom={11} />
-                <Bar thin long={80} />
-                <Br bottom={10} />
-                <Row>
-                  <Bar thin long={20} />
-                </Row>
-              </Column>
-            </Row>
+            <CommentSVG className={cn(s.upvoteIcon, 'right-6 top-6 ml-5 size-3')} />
           </div>
           <CheckLabel title="极简" active={layout === POST_LAYOUT.MINIMAL} top={15} />
         </div>
 
         <div className={s.layout} onClick={() => edit(POST_LAYOUT.COVER, 'postLayout')}>
           <div className={cn(s.block, layout === POST_LAYOUT.COVER && s.blockActive)}>
-            <Row>
-              <Cover />
-              <Space right={17} />
-              <Column grow>
-                <Column>
-                  <Bar long={50} />
-                </Column>
-                <Br bottom={10} />
-                <Bar thin long={90} />
-                <Br bottom={20} />
-                <Row>
-                  <Bar thin long={20} />
-                </Row>
-              </Column>
-            </Row>
+            <div className={cn(s.bar, 'left-5 top-4 w-24 h-16 opacity-30')} />
+            <div className={cn(s.bar, 'right-28 top-6 w-12 h-1.5 opacity-20')} />
+            <div className={cn(s.bar, 'right-12 top-10 w-28 h-2 opacity-40')} />
+
+            <UpvoteSVG className={cn(s.upvoteIcon, 'right-36 bottom-4 ml-5')} />
+            <div className={cn(s.bar, 'left-36 bottom-5 w-4 h-1.5 opacity-30')} />
+
+            <CommentSVG className={cn(s.upvoteIcon, 'right-24 bottom-4 ml-5 size-3.5')} />
+            <div className={cn(s.bar, 'right-16 bottom-5 ml-2 w-6 h-1.5 opacity-20')} />
           </div>
           <CheckLabel title="封面图" active={layout === POST_LAYOUT.COVER} top={4} />
         </div>

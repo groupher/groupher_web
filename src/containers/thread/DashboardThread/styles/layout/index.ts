@@ -3,12 +3,10 @@ import styled, { css, theme, rainbow } from '~/css'
 import type { TActive, TColor, TColorName } from '~/spec'
 
 import useTwBelt from '~/hooks/useTwBelt'
-import useTheme from '~/hooks/useTheme'
 
 export default () => {
   const { cn, br, bg, fill, shadow, primary, sexyHBorder, enhanceDark, isBlackPrimary } =
     useTwBelt()
-  const { isLightTheme } = useTheme()
 
   return {
     wrapper: 'column pl-16 w-10/12',
@@ -17,8 +15,7 @@ export default () => {
     //
     baseSection: 'pb-7',
     blockBase: cn(
-      'relative border w-72 rounded-md px-4 py-4 border pointer saturate-0',
-      isLightTheme ? 'opacity-55' : 'opacity-50',
+      'relative border w-72 rounded-md px-4 py-4 border pointer saturate-0 opacity-55',
       'hover:opacity-100 hover:saturate-100 trans-all-200',
       `hover:${primary('borderSoft')}`,
       br('text.hint'),
@@ -48,6 +45,8 @@ export default () => {
     icon: cn('absolute size-3 opacity-65', primary('fill'), isBlackPrimary && fill('text.link')),
   }
 }
+
+// TODO: remove those
 
 type TBlockBase = TActive & TColor
 export const BlockBase = styled.div<TBlockBase>`
