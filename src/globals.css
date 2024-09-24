@@ -141,6 +141,10 @@
     box-shadow: inset 0 0 50px #1919198c;
   }
 
+  .hover-underline {
+    @apply no-underline hover:underline
+  }
+
  .sexy-border-20 {
     border-image: linear-gradient(
       0.2turn,

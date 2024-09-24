@@ -24,6 +24,7 @@ export default () => {
     primaryBar: cn('opacity-65', primary('bg'), isBlackPrimary && bg('text.link')),
     bar: base.bar,
     circle: base.circle,
+
     hDivider: cn(sexyHBorder(35)),
     vDivider: cn('absolute', sexyVBorder(35)),
   }

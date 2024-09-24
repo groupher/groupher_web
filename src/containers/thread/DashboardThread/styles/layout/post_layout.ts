@@ -12,7 +12,7 @@ export { Bar, Circle } from '.'
 
 export default () => {
   const base = useBase()
-  const { cn, primary } = useTwBelt()
+  const { cn } = useTwBelt()
 
   return {
     wrapper: cn(base.baseSection),
@@ -24,8 +24,8 @@ export default () => {
 
     bar: cn(base.bar, 'h-1.5 w-20 opacity-40'),
     circle: cn(base.circle, 'opacity-40'),
-    commentIcon: cn('absolute size-3 opacity-65', primary('fill')),
-    upvoteIcon: cn('absolute size-4 opacity-65', primary('fill')),
+    commentIcon: cn(base.icon),
+    upvoteIcon: cn(base.icon, 'size-4'),
   }
 }
 

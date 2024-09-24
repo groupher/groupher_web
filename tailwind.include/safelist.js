@@ -102,6 +102,7 @@ const UTILS = [
   'bg-none',
   'bg-transparent',
   'rounded-3xl',
+  'hover-underline',
 ]
 
 module.exports = uniq([
@@ -115,10 +116,12 @@ module.exports = uniq([
       `text-rainbow-${c} text-rainbow-${c}-dark
        bg-rainbow-${c} bg-rainbow-${c}-dark 
        hover:bg-rainbow-${c}Soft hover:bg-rainbow-${c}Soft-dark
+       hover:border-rainbow-${c} hover:border-rainbow-${c}-dark
        bg-rainbow-${c}Soft bg-rainbow-${c}Soft-dark fill-rainbow-${c} fill-rainbow-${c}-dark 
        from-rainbow-${c}Soft from-rainbow-${c}Soft-dark 
        border-rainbow-${c} border-rainbow-${c}-dark
        border-rainbow-${c}/${borderSoft.opacity} border-rainbow-${c}-dark/${borderSoft.opacity_dark}
+       hover:border-rainbow-${c}/${borderSoft.opacity} hover:border-rainbow-${c}-dark/${borderSoft.opacity_dark}
       `,
   ),
 

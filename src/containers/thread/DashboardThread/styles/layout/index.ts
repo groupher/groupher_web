@@ -6,7 +6,8 @@ import useTwBelt from '~/hooks/useTwBelt'
 import useTheme from '~/hooks/useTheme'
 
 export default () => {
-  const { cn, br, bg, shadow, primary, sexyHBorder, enhanceDark, isBlackPrimary } = useTwBelt()
+  const { cn, br, bg, fill, shadow, primary, sexyHBorder, enhanceDark, isBlackPrimary } =
+    useTwBelt()
   const { isLightTheme } = useTheme()
 
   return {
@@ -17,13 +18,15 @@ export default () => {
     baseSection: 'pb-7',
     blockBase: cn(
       'relative border w-72 rounded-md px-4 py-4 border pointer saturate-0',
-      isLightTheme ? 'opacity-65' : 'opacity-50',
-      'hover:opacity-100 trans-all-200',
+      isLightTheme ? 'opacity-55' : 'opacity-50',
+      'hover:opacity-100 hover:saturate-100 trans-all-200',
+      `hover:${primary('borderSoft')}`,
       br('text.hint'),
     ),
     blockBaseActive: cn(
       'opacity-100 saturate-100',
-      primary('border'),
+      primary('borderSoft'),
+      `hover:${primary('border')}`,
       isBlackPrimary && br('text.link'),
       shadow('md'),
     ),
@@ -42,6 +45,7 @@ export default () => {
       isBlackPrimary && bg('text.link'),
       enhanceDark(),
     ),
+    icon: cn('absolute size-3 opacity-65', primary('fill'), isBlackPrimary && fill('text.link')),
   }
 }
 
