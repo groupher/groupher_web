@@ -112,7 +112,7 @@ export default () => {
       </div>
 
       <SavingBar
-        width="84%"
+        width="w-11/12"
         isTouched={isTouched}
         field={SETTING_FIELD.POST_LAYOUT}
         loading={saving}
