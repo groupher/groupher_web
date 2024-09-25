@@ -63,7 +63,7 @@ export default () => {
             <div className={cn(s.bar, 'w-8 h-1.5 right-4 top-32 mt-3 opacity-10')} />
 
             <div className={cn(s.bar, 'w-64 h-3.5 left-4 bottom-5 opacity-10')} />
-            <div className={cn(s.bar, 'w-10 h-1.5 left-6 bottom-6 opacity-40')} />
+            <div className={cn(s.bar, 'w-8 h-1.5 left-6 bottom-6 opacity-25')} />
 
             <div className={cn(s.bar, 'w-12 h-1.5 left-6 bottom-2 mt-3.5 opacity-10')} />
             <div className={cn(s.bar, 'w-8 h-1.5 right-4 bottom-2 mt-3 opacity-10')} />
