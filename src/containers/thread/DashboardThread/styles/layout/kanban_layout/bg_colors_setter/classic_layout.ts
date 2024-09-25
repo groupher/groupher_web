@@ -12,21 +12,6 @@ export const BoardsWrapper = styled.div`
     display: none;
   `}
 `
-export const MobileBoardsWrapper = styled.div`
-  width: 100%;
-  margin-top: 26px;
-  display: none;
-
-  ${css.media.mobile`
-    display: block;
-    overflow: scroll;
-  `}
-`
-export const MobileBoardsInnerWrapper = styled.div`
-  ${css.row('justify-center', 'align-end')};
-  width: 150%;
-  gap: 0 18px;
-`
 type TBoard = TColor & TActive
 export const Board = styled.div<TBoard>`
   ${css.column()};
