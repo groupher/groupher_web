@@ -5,8 +5,6 @@ import styled, { css, theme, rainbow, rainbowSoft } from '~/css'
 import DiceSVG from '~/icons/Dice'
 import ResetSVG from '~/icons/Reset'
 
-export { Bar, Circle } from '..'
-
 export const ColorsWrapper = styled.div`
   ${css.row('align-center')};
   gap: 0 10px;

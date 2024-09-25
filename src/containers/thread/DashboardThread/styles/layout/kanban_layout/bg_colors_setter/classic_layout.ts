@@ -2,8 +2,6 @@ import type { TActive, TColor } from '~/spec'
 
 import styled, { css, theme, rainbowSoft } from '~/css'
 
-export { Bar, Circle } from '..'
-
 export const BoardsWrapper = styled.div`
   ${css.row('align-center')};
   gap: 0 16px;

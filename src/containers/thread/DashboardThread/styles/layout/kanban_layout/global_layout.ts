@@ -1,37 +1,21 @@
-import type { TActive } from '~/spec'
+import useTwBelt from '~/hooks/useTwBelt'
+import useBase from '..'
 
-import styled, { css } from '~/css'
+export { cn } from '~/css'
 
-import { BlockBase } from '..'
+export default () => {
+  const { cn } = useTwBelt()
+  const base = useBase()
 
-export { Circle } from '..'
+  return {
+    select: cn('row-center wrap gap-x-5 gap-y-8 w-full'),
+    block: cn(base.blockBase, 'h-48'),
+    blockActive: base.blockBaseActive,
+    layout: 'column-align-both',
 
-export const SelectWrapper = styled.div`
-  ${css.rowWrap('align-center')};
-  gap: 20px 30px;
-  width: 100%;
-  margin-bottom: 35px;
-`
-type TColumn = { center?: boolean; grow?: boolean }
-export const Column = styled.div<TColumn>`
-  ${css.column()};
-  ${({ center }) => (center ? 'align-items: center;' : '')};
-  ${({ grow }) => (grow ? 'flex-grow: 1;' : '')};
-`
-export const Layout = styled.div`
-  ${css.column('align-both')};
-`
-export const LayoutTitle = styled.div<TActive>`
-  opacity: ${({ $active }) => ($active ? 1 : 0.65)};
-
-  ${Layout}:hover & {
-    opacity: 1;
-    cursor: pointer;
+    bar: cn(base.bar, 'h-1.5 w-20 opacity-40'),
+    board: 'bottom-0 w-20 h-36 opacity-10 rounded-lg rounded-b-none',
+    item: 'h-7 w-16',
+    circle: cn(base.circle, 'opacity-40'),
   }
-  transition: all 0.2s;
-`
-export const Block = styled(BlockBase)`
-  width: 286px;
-  height: 180px;
-  padding: 16px 15px;
-`
+}

@@ -2,8 +2,6 @@ import type { TActive, TColor } from '~/spec'
 
 import styled, { css, theme, rainbowPale } from '~/css'
 
-export { Bar, Circle } from '..'
-
 export const Wrapper = styled.div`
   ${css.column()};
   gap: 0 16px;

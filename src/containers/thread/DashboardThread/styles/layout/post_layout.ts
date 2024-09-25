@@ -3,14 +3,13 @@ import useTwBelt from '~/hooks/useTwBelt'
 import useBase from '.'
 
 export { cn } from '~/css'
-export { Bar, Circle } from '.'
 
 export default () => {
   const base = useBase()
   const { cn, avatar, primary } = useTwBelt()
 
   return {
-    wrapper: cn(base.baseSection),
+    wrapper: base.baseSection,
     select: cn('row-center wrap gap-x-5 gap-y-8 w-full'),
     inline: 'inline-block',
     layout: 'column-center justify-between h-32',
@@ -19,7 +18,7 @@ export default () => {
 
     bar: cn(base.bar, 'h-1.5 w-20 opacity-40'),
     circle: cn(base.circle, 'opacity-40'),
-    commentIcon: cn(base.icon),
+    commentIcon: base.icon,
     upvoteIcon: cn(base.icon, 'size-4'),
 
     userAvatar: cn(base.bar, 'absolute left-4 top-6 size-6', avatar()),

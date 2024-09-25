@@ -1,9 +1,12 @@
-import styled from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { BaseSection } from '..'
+import useBase from '..'
 
-export { Bar, Circle } from '..'
+export default () => {
+  const { cn } = useTwBelt()
+  const base = useBase()
 
-export const Wrapper = styled(BaseSection)``
-
-export const holder = 1
+  return {
+    wrapper: cn(base.baseSection),
+  }
+}

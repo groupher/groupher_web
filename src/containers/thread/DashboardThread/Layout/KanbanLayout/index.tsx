@@ -6,19 +6,20 @@ import ItemCardLayout from './ItemCardLayout'
 import BgColorsSetter from './BgColorsSetter'
 
 import useKanban from '../../logic/useKanban'
-import { Wrapper } from '../../styles/layout/kanban_layout'
+import useSalon from '../../styles/layout/kanban_layout'
 
 export default () => {
   const { kanbanLayout } = useKanban()
+  const s = useSalon()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <GlobalLayout />
 
       {kanbanLayout === KANBAN_LAYOUT.CLASSIC && <ItemCardLayout />}
 
       <Br top={50} />
       <BgColorsSetter />
-    </Wrapper>
+    </div>
   )
 }
