@@ -35,6 +35,7 @@ const BG_COLORS = [
   'text-link',
   'divider',
   'hoverBg',
+  'sandBox',
   'htmlBg',
   'popover-bg',
   'menuHoverBg',

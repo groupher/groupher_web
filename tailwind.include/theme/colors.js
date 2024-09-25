@@ -53,6 +53,7 @@ module.exports = {
   divider: { DEFAULT: lightTokens.border, dark: darkTokens.border },
   alphaBg: { DEFAULT: '#ffffff95', dark: darkTokens.hoverBg },
   alphaBg2: { DEFAULT: '#fffffff2', dark: '#1c1c1cb8' },
+  sandBox: { DEFAULT: '#f9f9f9', dark: '#31303059' },
   hoverBg: { DEFAULT: lightTokens.hoverBg, dark: darkTokens.hoverBg },
   hoverActive: { DEFAULT: 'white', dark: '#3f3f3f' },
   menuHoverBg: { DEFAULT: 'white', dark: darkTokens.hoverBg },

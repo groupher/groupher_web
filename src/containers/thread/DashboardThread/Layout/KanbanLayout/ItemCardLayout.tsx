@@ -61,7 +61,6 @@ export default () => {
       </div>
 
       <SavingBar
-        width="w-11/12"
         isTouched={isTouched}
         field={SETTING_FIELD.KANBAN_CARD_LAYOUT}
         loading={saving}

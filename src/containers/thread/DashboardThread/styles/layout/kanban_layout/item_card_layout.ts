@@ -5,11 +5,15 @@ import useBase from '..'
 export { cn } from '~/css'
 
 export default () => {
-  const { cn, bg, avatar } = useTwBelt()
+  const { cn, br, bg, avatar } = useTwBelt()
   const base = useBase()
 
   return {
-    wrapper: cn('p-5 pl-6 rounded-md w-11/12 mt-7', bg('hoverBg')),
+    wrapper: cn(
+      'p-5 pl-7 rounded-md w-11/12 mt-7 border border-transparent',
+      `hover:${br('divider')}`,
+      bg('sandBox'),
+    ),
 
     select: cn('row-center wrap gap-x-7 gap-y-8 w-full'),
     block: cn(base.blockBase, 'w-64 h-24'),
