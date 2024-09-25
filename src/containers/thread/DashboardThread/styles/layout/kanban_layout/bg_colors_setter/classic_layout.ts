@@ -1,37 +1,30 @@
-import type { TActive, TColor } from '~/spec'
+import { isEmpty } from 'ramda'
 
-import styled, { css, theme, rainbowSoft } from '~/css'
+import { INIT_KANBAN_COLORS } from '~/const/dashboard'
 
-export const BoardsWrapper = styled.div`
-  ${css.row('align-center')};
-  gap: 0 16px;
-  width: 100%;
-  margin-top: 26px;
+import useTwBelt from '~/hooks/useTwBelt'
 
-  ${css.media.mobile`
-    display: none;
-  `}
-`
-type TBoard = TColor & TActive
-export const Board = styled.div<TBoard>`
-  ${css.column()};
-  padding: 8px;
-  gap: 6px;
-  overflow: hidden;
+import useKanban from '../../../../logic/useKanban'
 
-  width: 220px;
-  height: 280px;
-  background-color: ${({ $color }) => rainbowSoft($color)};
+export { cn } from '~/css'
 
-  border-radius: 8px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+export default () => {
+  const { cn, rainbow, rainbowSoft, shadow } = useTwBelt()
 
-  border: 1px solid;
-  border-color: ${({ $active }) => ($active ? theme('lightText') : 'transparent')};
+  const { kanbanBgColors } = useKanban()
 
-  ${css.media.mobile`
-    width: 50%;
-  `}
-  transition: all 0.2s;
-`
+  const [BG1, BG2, BG3] = isEmpty(kanbanBgColors) ? INIT_KANBAN_COLORS : kanbanBgColors
+
+  return {
+    boardsWrapper: 'row-center gap-x-4 w-full mt-7',
+    board:
+      'column w-56 h-72 p-2 gap-1.5 overflow-hidden rounded-md rounded-b-none border border-dashed border-transparent trans-all-200',
+
+    boardTodo: rainbowSoft(BG1),
+    todoActive: cn('-mt-2', rainbow(BG1, 'border'), shadow('lg')),
+    boardWip: rainbowSoft(BG2),
+    wipActive: cn('-mt-2', rainbow(BG2, 'border'), shadow('lg')),
+    boardDone: rainbowSoft(BG3),
+    doneActive: cn('-mt-2', rainbow(BG3, 'border'), shadow('lg')),
+  }
+}
