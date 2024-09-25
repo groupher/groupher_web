@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { isEmpty } from 'ramda'
 
 import { COLOR_NAME } from '~/const/colors'
@@ -9,7 +7,9 @@ import useHover from '~/hooks/useHover'
 
 import { INIT_KANBAN_COLORS } from '~/const/dashboard'
 
-import { Space } from '~/widgets/Common'
+import ResetSVG from '~/icons/Reset'
+import DiceSVG from '~/icons/Dice'
+
 import ColorSelector from '~/widgets/ColorSelector'
 
 import { SETTING_FIELD } from '../../../constant'
@@ -21,18 +21,12 @@ import WaterfallLayout from './WaterfallLayout'
 
 import useKanban from '../../../logic/useKanban'
 
-import {
-  ColorsWrapper,
-  Preset,
-  ColorBall,
-  Action,
-  DiceIcon,
-  ResetIcon,
-} from '../../../styles/layout/kanban_layout/bg_colors_setter'
+import useSalon, { cn } from '../../../styles/layout/kanban_layout/bg_colors_setter'
 
 export default () => {
+  const s = useSalon()
+
   const { kanbanLayout: layout, kanbanBgColors, getKanbanColorsTouched, saving, edit } = useKanban()
-  const [diceRotate, setDiceRotate] = useState(0)
 
   const [board1Ref, isBoard1Hovered] = useHover<HTMLDivElement>()
   const [board2Ref, isBoard2Hovered] = useHover<HTMLDivElement>()
@@ -45,8 +39,8 @@ export default () => {
     <>
       <SectionLabel title="看板背景色" desc="看板页面每列的背景版颜色，默认为浅灰色。" />
 
-      <ColorsWrapper>
-        <Preset setable>
+      <div className={s.colorsWrapper}>
+        <div className={s.preset}>
           <ColorSelector
             activeColor={BG1}
             onChange={(color) => edit([color, BG2, BG3], 'kanbanBgColors')}
@@ -55,7 +49,7 @@ export default () => {
             excepts={[COLOR_NAME.CYAN, COLOR_NAME.GREEN]}
             bgMode
           >
-            <ColorBall ref={board1Ref} color={BG1} setable />
+            <div className={cn(s.colorBall, s.todoBall)} ref={board1Ref} />
           </ColorSelector>
 
           <ColorSelector
@@ -66,7 +60,7 @@ export default () => {
             excepts={[COLOR_NAME.CYAN, COLOR_NAME.GREEN]}
             bgMode
           >
-            <ColorBall ref={board2Ref} color={BG2} setable />
+            <div className={cn(s.colorBall, s.wipBall)} ref={board2Ref} />
           </ColorSelector>
 
           <ColorSelector
@@ -77,25 +71,23 @@ export default () => {
             excepts={[COLOR_NAME.CYAN, COLOR_NAME.GREEN]}
             bgMode
           >
-            <ColorBall ref={board3Ref} color={BG3} setable />
+            <div className={cn(s.colorBall, s.doneBall)} ref={board3Ref} />
           </ColorSelector>
-        </Preset>
+        </div>
         <div className="grow" />
-        <Action onClick={() => edit(INIT_KANBAN_COLORS, 'kanbanBgColors')}>
-          <ResetIcon />
+        <div className={s.action} onClick={() => edit(INIT_KANBAN_COLORS, 'kanbanBgColors')}>
+          <ResetSVG className={s.resetIcon} />
           重置
-        </Action>
-        <Space right={0} />
-        <Action
+        </div>
+        <div
+          className={s.action}
           onClick={() => {
-            setDiceRotate(diceRotate + 80)
             edit(randomBgNames(3), 'kanbanBgColors')
           }}
         >
-          <DiceIcon rotate={diceRotate} /> 随缘
-        </Action>
-        <Space right={0} />
-      </ColorsWrapper>
+          <DiceSVG className={cn(s.resetIcon, 'size-3.5')} /> 随缘
+        </div>
+      </div>
 
       {layout === KANBAN_LAYOUT.CLASSIC ? (
         <ClassicLayout
@@ -112,11 +104,10 @@ export default () => {
       )}
 
       <SavingBar
-        width="698px"
         isTouched={isBgColorsTouched}
         field={SETTING_FIELD.KANBAN_BG_COLORS}
         loading={saving}
-        top={40}
+        top={10}
       />
     </>
   )
