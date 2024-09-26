@@ -15,10 +15,10 @@ export default () => {
       bg('sandBox'),
     ),
 
-    select: cn('row-center wrap gap-x-7 gap-y-8 w-full'),
-    block: cn(base.blockBase, 'w-64 h-24'),
+    select: cn('row-center wrap w-full -ml-2'),
+    block: cn(base.blockBase, 'w-72 h-24 scale-90'),
     blockActive: base.blockBaseActive,
-    layout: 'column-align-both',
+    layout: 'column-align-both w-1/2',
     icon: cn(base.icon, 'size-5'),
     userAvatar: cn(base.bar, 'absolute size-4', avatar()),
     bar: cn(base.bar, 'h-1.5 w-20 opacity-40'),

@@ -38,7 +38,7 @@ export default () => {
             <CommentSVG className={cn(s.icon, 'size-3.5 bottom-3.5 left-12')} />
           </div>
 
-          <CheckLabel title="简洁" active={cardLayout === KANBAN_CARD_LAYOUT.SIMPLE} top={4} />
+          <CheckLabel title="简洁" active={cardLayout === KANBAN_CARD_LAYOUT.SIMPLE} top={2} />
         </div>
         <div className={s.layout} onClick={() => edit(KANBAN_CARD_LAYOUT.FULL, 'kanbanCardLayout')}>
           <div className={cn(s.block, cardLayout === KANBAN_CARD_LAYOUT.FULL && s.blockActive)}>
@@ -56,7 +56,7 @@ export default () => {
 
             <div className={cn(s.bar, 'w-4 bottom-5 right-4 mt-1 opacity-20')} />
           </div>
-          <CheckLabel title="摘要" active={cardLayout === KANBAN_CARD_LAYOUT.FULL} top={4} />
+          <CheckLabel title="摘要" active={cardLayout === KANBAN_CARD_LAYOUT.FULL} top={2} />
         </div>
       </div>
 

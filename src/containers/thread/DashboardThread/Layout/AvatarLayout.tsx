@@ -1,6 +1,4 @@
 import { AVATAR_LAYOUT } from '~/const/layout'
-import { COLOR_NAME } from '~/const/colors'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import CheckLabel from '~/widgets/CheckLabel'
 
@@ -9,84 +7,55 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import useAvatar from '../logic/useAvatar'
-import {
-  Wrapper,
-  SelectWrapper,
-  Layout,
-  LayoutTitle,
-  Block,
-  Divider,
-  Avatar,
-  AvatarList,
-} from '../styles/layout/avatar_layout'
+import useSalon, { cn } from '../styles/layout/avatar_layout'
 
 export default () => {
+  const s = useSalon()
+
   const { edit, layout, getIsTouched, saving } = useAvatar()
-  const primaryColor = usePrimaryColor()
 
   const isTouched = getIsTouched()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <SectionLabel title="头像样式" desc="用户/用户列表头像展示样式。" />
-      <SelectWrapper>
-        <Layout onClick={() => edit(AVATAR_LAYOUT.SQUARE, 'avatarLayout')}>
-          <Block $active={layout === AVATAR_LAYOUT.SQUARE} $color={primaryColor}>
-            <Avatar color={COLOR_NAME.BLUE}>YM</Avatar>
-            <Divider />
-            <AvatarList>
-              <Avatar color={COLOR_NAME.GREEN}>ST</Avatar>
-              <Avatar left="-5px" color={COLOR_NAME.RED}>
-                LH
-              </Avatar>
-              <Avatar left="-5px" color={COLOR_NAME.ORANGE}>
-                UV
-              </Avatar>
-              <Avatar left="-5px" color={COLOR_NAME.PURPLE}>
-                WN
-              </Avatar>
-            </AvatarList>
-          </Block>
+      <div className={s.select}>
+        <div className={s.layout} onClick={() => edit(AVATAR_LAYOUT.SQUARE, 'avatarLayout')}>
+          <div className={cn(s.block, layout === AVATAR_LAYOUT.SQUARE && s.blockActive)}>
+            <div className={cn(s.avatar, s.blue)}>YM</div>
+            <div className={s.divider} />
+            <div className={s.list}>
+              <div className={cn(s.avatar, s.green)}>ST</div>
+              <div className={cn(s.avatar, s.red)}>LH</div>
+              <div className={cn(s.avatar, s.orange)}>UV</div>
+              <div className={cn(s.avatar, s.purple)}>WN</div>
+            </div>
+          </div>
 
-          <LayoutTitle $active={layout === AVATAR_LAYOUT.SQUARE}>
-            <CheckLabel title="圆角方形" active={layout === AVATAR_LAYOUT.SQUARE} top={4} />
-          </LayoutTitle>
-        </Layout>
-        <Layout onClick={() => edit(AVATAR_LAYOUT.CIRCLE, 'avatarLayout')}>
-          <Block $active={layout === AVATAR_LAYOUT.CIRCLE} $color={primaryColor}>
-            <Avatar color={COLOR_NAME.BLUE} circle>
-              YM
-            </Avatar>
-            <Divider />
-            <AvatarList>
-              <Avatar color={COLOR_NAME.GREEN} circle>
-                ST
-              </Avatar>
-              <Avatar left="-5px" color={COLOR_NAME.RED} circle>
-                LH
-              </Avatar>
-              <Avatar left="-5px" color={COLOR_NAME.ORANGE} circle>
-                UV
-              </Avatar>
-              <Avatar left="-5px" color={COLOR_NAME.PURPLE} circle>
-                WN
-              </Avatar>
-            </AvatarList>
-          </Block>
+          <CheckLabel title="圆角方形" active={layout === AVATAR_LAYOUT.SQUARE} top={3} />
+        </div>
+        <div className={s.layout} onClick={() => edit(AVATAR_LAYOUT.CIRCLE, 'avatarLayout')}>
+          <div className={cn(s.block, layout === AVATAR_LAYOUT.CIRCLE && s.blockActive)}>
+            <div className={cn(s.avatar, s.blue, 'circle')}>YM</div>
+            <div className={s.divider} />
+            <div className={s.list}>
+              <div className={cn(s.avatar, s.green, 'circle')}>ST</div>
+              <div className={cn(s.avatar, s.red, 'circle')}>LH</div>
+              <div className={cn(s.avatar, s.orange, 'circle')}>UV</div>
+              <div className={cn(s.avatar, s.purple, 'circle')}>WN</div>
+            </div>
+          </div>
 
-          <LayoutTitle $active={layout === AVATAR_LAYOUT.CIRCLE}>
-            <CheckLabel title="圆形" active={layout === AVATAR_LAYOUT.CIRCLE} top={15} left={-15} />
-          </LayoutTitle>
-        </Layout>
-      </SelectWrapper>
+          <CheckLabel title="圆形" active={layout === AVATAR_LAYOUT.CIRCLE} top={3} />
+        </div>
+      </div>
       <SavingBar
         isTouched={isTouched}
         field={SETTING_FIELD.AVATAR_LAYOUT}
         loading={saving}
-        width="580px"
-        left={-5}
-        top={25}
+        width="w-10/12"
+        top={8}
       />
-    </Wrapper>
+    </div>
   )
 }

@@ -18,7 +18,7 @@ export default () => {
   return {
     wrapper: 'column w-full mt-7',
     header: cn(
-      'column w-full h-7 rounded-xl trans-all-200',
+      'column w-full h-7 rounded-md trans-all-200',
       'border border-dashed border-transparent ',
     ),
     bgTodo: rainbowSoft(BG1),
