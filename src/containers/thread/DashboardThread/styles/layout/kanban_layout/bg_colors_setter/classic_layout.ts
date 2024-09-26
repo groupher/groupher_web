@@ -17,8 +17,11 @@ export default () => {
 
   return {
     boardsWrapper: 'row-center gap-x-4 w-full mt-7',
-    board:
-      'column w-56 h-72 p-2 gap-1.5 overflow-hidden rounded-md rounded-b-none border border-dashed border-transparent trans-all-200',
+    board: cn(
+      'column w-56 h-72 p-2 gap-1.5 overflow-hidden rounded-md rounded-b-none',
+      'border border-dashed border-transparent',
+      'trans-all-200',
+    ),
 
     boardTodo: rainbowSoft(BG1),
     todoActive: cn('-mt-2', rainbow(BG1, 'border'), shadow('lg')),

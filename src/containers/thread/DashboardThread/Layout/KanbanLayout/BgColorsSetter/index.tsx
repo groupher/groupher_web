@@ -89,7 +89,7 @@ export default () => {
         </div>
       </div>
 
-      {layout === KANBAN_LAYOUT.CLASSIC ? (
+      {layout !== KANBAN_LAYOUT.CLASSIC ? (
         <ClassicLayout
           isBoard1Hovered={isBoard1Hovered}
           isBoard2Hovered={isBoard2Hovered}

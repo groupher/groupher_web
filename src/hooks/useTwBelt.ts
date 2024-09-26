@@ -30,6 +30,7 @@ type TRet = {
   br: (key: TFlatThemeKey) => string
   rainbow: (color: TColorName, prefix?: TColorPrefix) => string
   rainbowSoft: (color: TColorName | string) => string
+  rainbowPale: (color: TColorName | string) => string
   primary: (prefix?: TColorPrefix) => string
   linker: (prefix?: TLinkColorPrefix) => string
   zise: (unit: number) => string
@@ -144,6 +145,17 @@ export default (): TRet => {
     }
 
     return isLightTheme ? `${prefix$}-${color$}Soft` : `${prefix$}-${color$}Soft-dark`
+  }
+
+  const rainbowPale = (color: TColorName | string): string => {
+    const prefix$ = 'bg-rainbow'
+    const color$ = camelize(color)
+
+    if (color === COLOR_NAME.BLACK) {
+      return bg('hoverBg')
+    }
+
+    return isLightTheme ? `${prefix$}-${color$}Pale` : `${prefix$}-${color$}Pale-dark`
   }
 
   /**
@@ -271,6 +283,7 @@ export default (): TRet => {
     br,
     rainbow,
     rainbowSoft,
+    rainbowPale,
     primary,
     linker,
     zise,
