@@ -21,27 +21,27 @@ export default () => {
     blue: cn(
       rainbow(COLOR_NAME.BLUE, 'fg'),
       rainbow(COLOR_NAME.BLUE, 'bgSoft'),
-      rainbow(COLOR_NAME.BLUE, 'border'),
+      rainbow(COLOR_NAME.BLUE, 'borderSoft'),
     ),
     green: cn(
       rainbow(COLOR_NAME.GREEN, 'fg'),
       rainbow(COLOR_NAME.GREEN, 'bgSoft'),
-      rainbow(COLOR_NAME.GREEN, 'border'),
+      rainbow(COLOR_NAME.GREEN, 'borderSoft'),
     ),
     red: cn(
       rainbow(COLOR_NAME.RED, 'fg'),
       rainbow(COLOR_NAME.RED, 'bgSoft'),
-      rainbow(COLOR_NAME.RED, 'border'),
+      rainbow(COLOR_NAME.RED, 'borderSoft'),
     ),
     orange: cn(
       rainbow(COLOR_NAME.ORANGE, 'fg'),
       rainbow(COLOR_NAME.ORANGE, 'bgSoft'),
-      rainbow(COLOR_NAME.ORANGE, 'border'),
+      rainbow(COLOR_NAME.ORANGE, 'borderSoft'),
     ),
     purple: cn(
       rainbow(COLOR_NAME.PURPLE, 'fg'),
       rainbow(COLOR_NAME.PURPLE, 'bgSoft'),
-      rainbow(COLOR_NAME.PURPLE, 'border'),
+      rainbow(COLOR_NAME.PURPLE, 'borderSoft'),
     ),
   }
 }

@@ -18,7 +18,7 @@ export default () => {
 
   return (
     <div className={s.wrapper}>
-      <SectionLabel title="头像样式" desc="用户/用户列表头像展示样式。" />
+      <SectionLabel title="头像样式" desc="用户/用户列表头像展示样式，作用于投票列表，评论区等。" />
       <div className={s.select}>
         <div className={s.layout} onClick={() => edit(AVATAR_LAYOUT.SQUARE, 'avatarLayout')}>
           <div className={cn(s.block, layout === AVATAR_LAYOUT.SQUARE && s.blockActive)}>
