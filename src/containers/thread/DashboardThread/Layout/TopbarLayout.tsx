@@ -1,5 +1,4 @@
 import { TOPBAR_LAYOUT, DASHBOARD_DESC_LAYOUT } from '~/const/layout'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 import { callDashboardDesc } from '~/signal'
 
 import { Br, Inline } from '~/widgets/Common'
@@ -12,31 +11,18 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import useTopbar from '../logic/useTopbar'
-import {
-  Wrapper,
-  SelectWrapper,
-  Layout,
-  LayoutTitle,
-  Block,
-  Bar,
-  TopBar,
-  Main,
-  ListsWrapper,
-  TagssWrapper,
-  BgWrapper,
-  BgLabel,
-  TheColor,
-} from '../styles/layout/topbar_layout'
+import useSalon, { cn } from '../styles/layout/topbar_layout'
 
 export default () => {
+  const s = useSalon()
+
   const { edit, layout, getIsBgTouched, getIsLayoutTouched, saving, bg } = useTopbar()
-  const primaryColor = usePrimaryColor()
 
   const isLayoutTouched = getIsLayoutTouched()
   const isBgTouched = getIsBgTouched()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <SectionLabel
         title="Topbar 样式"
         desc={
@@ -53,73 +39,29 @@ export default () => {
           </>
         }
       />
-      <SelectWrapper>
-        <Layout onClick={() => edit(TOPBAR_LAYOUT.YES, 'topbarLayout')}>
-          <Block $active={layout === TOPBAR_LAYOUT.YES} $color={primaryColor}>
-            <TopBar bg={bg}>--</TopBar>
-
-            <Main>
-              <ListsWrapper>
-                <Bar long={60} thin />
-                <Br bottom={14} />
-                <Bar long={50} thin />
-                <Br bottom={14} />
-                <Bar long={55} thin />
-                <Br bottom={14} />
-                <Bar long={40} thin />
-                <Br bottom={14} />
-              </ListsWrapper>
-              <TagssWrapper>
-                <Br bottom={10} />
-                <Bar long={60} thin />
-                <Br bottom={6} />
-                <Bar long={85} thin />
-                <Br bottom={6} />
-                <Bar long={50} thin />
-                <Br bottom={6} />
-              </TagssWrapper>
-            </Main>
-          </Block>
-          <LayoutTitle $active={layout === TOPBAR_LAYOUT.YES}>
-            <CheckLabel title="有 Topbar" active={layout === TOPBAR_LAYOUT.YES} top={4} />
-          </LayoutTitle>
-        </Layout>
-        <Layout onClick={() => edit(TOPBAR_LAYOUT.NO, 'topbarLayout')}>
-          <Block $active={layout === TOPBAR_LAYOUT.NO} $color={primaryColor}>
-            <Main>
-              <ListsWrapper>
-                <Bar long={60} thin />
-                <Br bottom={14} />
-                <Bar long={50} thin />
-                <Br bottom={14} />
-                <Bar long={55} thin />
-                <Br bottom={14} />
-                <Bar long={40} thin />
-                <Br bottom={14} />
-              </ListsWrapper>
-              <TagssWrapper>
-                <Br bottom={10} />
-                <Bar long={60} thin />
-                <Br bottom={6} />
-                <Bar long={85} thin />
-                <Br bottom={6} />
-                <Bar long={50} thin />
-                <Br bottom={6} />
-              </TagssWrapper>
-            </Main>
-          </Block>
-          <LayoutTitle $active={layout === TOPBAR_LAYOUT.NO}>
-            <CheckLabel title="无 Topbar" active={layout === TOPBAR_LAYOUT.NO} top={4} />
-          </LayoutTitle>
-        </Layout>
-      </SelectWrapper>
+      <div className={s.select}>
+        <div className={s.layout} onClick={() => edit(TOPBAR_LAYOUT.YES, 'topbarLayout')}>
+          <div className={cn(s.block, layout === TOPBAR_LAYOUT.YES && s.blockActive)}>
+            <div className={s.topBar} />
+            <div className={cn(s.bar, 'top-8 left-5 h-28 w-6/12 opacity-5')} />
+            <div className={cn(s.bar, 'top-8 right-5 h-24 w-20 opacity-5')} />
+          </div>
+          <CheckLabel title="有 Topbar" active={layout === TOPBAR_LAYOUT.YES} top={4} />
+        </div>
+        <div className={s.layout} onClick={() => edit(TOPBAR_LAYOUT.NO, 'topbarLayout')}>
+          <div className={cn(s.block, layout === TOPBAR_LAYOUT.NO && s.blockActive)}>
+            <div className={cn(s.bar, 'top-8 left-5 h-28 w-6/12 opacity-5')} />
+            <div className={cn(s.bar, 'top-8 right-5 h-24 w-20 opacity-5')} />
+          </div>
+          <CheckLabel title="无 Topbar" active={layout === TOPBAR_LAYOUT.NO} top={4} />
+        </div>
+      </div>
 
       <SavingBar
         isTouched={isLayoutTouched}
         field={SETTING_FIELD.TOPBAR_LAYOUT}
-        width="88%"
         loading={saving}
-        top={30}
+        top={10}
       />
 
       <Br top={30} />
@@ -133,22 +75,22 @@ export default () => {
             top={30}
             width="89%"
           >
-            <BgWrapper>
+            <div className={s.bgWrapper}>
               <div>颜色:</div>
-              <BgLabel bg={bg}>
+              <div className={s.bgLabel}>
                 <ColorSelector
                   activeColor={bg}
                   onChange={(color) => edit(color, 'topbarBg')}
                   placement="right"
                   offset={[-1, 15]}
                 >
-                  <TheColor $color={bg} />
+                  <div className={s.theColor} />
                 </ColorSelector>
-              </BgLabel>
-            </BgWrapper>
+              </div>
+            </div>
           </SavingBar>
         </>
       )}
-    </Wrapper>
+    </div>
   )
 }
