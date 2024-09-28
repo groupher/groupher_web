@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import type { TDocLayout } from '~/spec'
 import { DOC_LAYOUT } from '~/const/layout'
 
-import ToolSVG from '~/icons/Heart'
+import ToolSVG from '~/icons/Book'
 
 import useSalon, { cn } from '../../styles/layout/doc_layout/main_template'
 
