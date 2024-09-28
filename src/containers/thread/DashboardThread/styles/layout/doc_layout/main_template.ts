@@ -6,8 +6,6 @@ import useBase from '..'
 
 export { cn } from '~/css'
 
-export { Bar, Circle } from '..'
-
 export default () => {
   const { cn, rainbow } = useTwBelt()
   const base = useBase()

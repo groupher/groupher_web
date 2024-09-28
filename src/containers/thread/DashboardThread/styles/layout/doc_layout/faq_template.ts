@@ -1,39 +1,21 @@
-import styled, { css, theme } from '~/css'
-
-import CheckSVG from '~/icons/Check'
+import useTwBelt from '~/hooks/useTwBelt'
 
 export { Bar, Circle } from '..'
 
-export const FlatLayoutWrapper = styled.div`
-  ${css.column('align-both')};
-  width: 100%;
-`
-export const FlatLists = styled.div`
-  ${css.rowWrap()};
-  gap: 22px 0;
-  width: 100%;
-  margin-top: 15px;
-`
-export const CollapseLayoutWrapper = styled.div`
-  width: 60%;
-  margin-left: 26%;
-`
-export const FAQTitle = styled.div`
-  font-size: 13px;
-  color: ${theme('article.title')};
-  font-weight: 500;
-`
-export const Box = styled.div`
-  width: 50%;
-`
-export const Box3 = styled.div`
-  width: 33.3%;
-`
-export const CheckIcon = styled(CheckSVG)`
-  ${css.size(10)};
-  fill: ${theme('rainbow.green')};
-  margin-right: 4px;
-`
-export const CollapseContent = styled.div`
-  margin-left: 15px;
-`
+import useBase from '..'
+
+export { cn } from '~/css'
+
+export default () => {
+  const { cn, fg } = useTwBelt()
+  const base = useBase()
+
+  return {
+    block: 'row-center row wrap relative w-full h-full',
+    bar: cn(base.bar, 'h-1.5 w-20 opacity-40'),
+    icon: 'size-2.5',
+    faqTitle: cn('text-xs absolute -ml-1', fg('text.title')),
+    list: 'row-center row wrap w-full h-36 gap-x-1.5 mt-20',
+    box: cn(base.box, 'border-none w-20 h-16'),
+  }
+}
