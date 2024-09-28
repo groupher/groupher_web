@@ -1,10 +1,34 @@
-import type { TColorName } from '~/spec'
+import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import styled, { css, theme, rainbow, rainbowSoft } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
-import ToolSVG from '~/icons/Heart'
+import useBase from '..'
+
+export { cn } from '~/css'
 
 export { Bar, Circle } from '..'
+
+export default () => {
+  const { cn, rainbow } = useTwBelt()
+  const base = useBase()
+
+  return {
+    block: 'relative w-full h-full',
+    bar: cn(base.bar, 'h-1.5 w-20 opacity-40'),
+    circle: cn(base.circle, 'size-3.5 opacity-40'),
+    iconBox: cn('absolute align-both size-4 rounded mt-2 mr-5'),
+    icon: 'size-2',
+    red: rainbow(COLOR_NAME.RED, 'fill'),
+    redBg: rainbow(COLOR_NAME.RED, 'bgSoft'),
+    blue: rainbow(COLOR_NAME.BLUE, 'fill'),
+    blueBg: rainbow(COLOR_NAME.BLUE, 'bgSoft'),
+    green: rainbow(COLOR_NAME.GREEN, 'fill'),
+    greenBg: rainbow(COLOR_NAME.GREEN, 'bgSoft'),
+    purple: rainbow(COLOR_NAME.PURPLE, 'fill'),
+    purpleBg: rainbow(COLOR_NAME.PURPLE, 'bgSoft'),
+  }
+}
 
 export const CardssLayoutWrapper = styled.div`
   ${css.rowWrap()};
@@ -28,14 +52,6 @@ export const BlocksLayoutWrapper = styled.div<{ withDivider?: boolean }>`
   border-right-color: ${theme('divider')};
   width: 100%;
 `
-export const ListsLayoutWrapper = styled.div`
-  ${css.column('align-both')};
-  width: 100%;
-  margin-left: 30px;
-`
-export const Box = styled.div`
-  width: 100%;
-`
 export const Box3 = styled.div`
   width: 33.3%;
 `
@@ -45,20 +61,4 @@ export const BorderBox3 = styled.div`
   border: 1px solid;
   border-color: ${theme('divider')};
   padding: 10px;
-`
-export const IconWrapper = styled.div<{ color: TColorName }>`
-  ${css.size(15)};
-  ${css.row('align-both')};
-  border-radius: 2px;
-  background-color: ${({ color }) => rainbowSoft(color)};
-  margin-bottom: 8px;
-  margin-right: 20px;
-`
-export const ToolIcon = styled(ToolSVG)<{ color: TColorName }>`
-  ${css.size(8)};
-  fill: ${({ color }) => rainbow(color)};
-`
-
-export const ListContent = styled.div`
-  width: 120px;
 `

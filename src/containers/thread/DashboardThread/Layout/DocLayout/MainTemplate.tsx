@@ -1,23 +1,20 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TDocLayout } from '~/spec'
 import { DOC_LAYOUT } from '~/const/layout'
-import { COLOR_NAME } from '~/const/colors'
 
-import { Br, Row } from '~/widgets/Common'
+import ToolSVG from '~/icons/Heart'
 
-import {
+import { Br } from '~/widgets/Common'
+
+import useSalon, {
+  cn,
   Bar,
-  Box,
   Box3,
   BorderBox3,
   CardssLayoutWrapper,
-  ListsLayoutWrapper,
   BlocksLayoutWrapper,
-  IconWrapper,
   FooterMore,
-  ToolIcon,
-  ListContent,
 } from '../../styles/layout/doc_layout/main_template'
 
 type TProps = {
@@ -25,6 +22,8 @@ type TProps = {
 }
 
 const MainTemplate: FC<TProps> = ({ layout }) => {
+  const s = useSalon()
+
   if (layout === DOC_LAYOUT.CARDS) {
     return (
       <CardssLayoutWrapper>
@@ -87,57 +86,44 @@ const MainTemplate: FC<TProps> = ({ layout }) => {
 
   if (layout === DOC_LAYOUT.LISTS) {
     return (
-      <ListsLayoutWrapper>
-        <Box>
-          <Row>
-            <IconWrapper color={COLOR_NAME.BLACK}>
-              <ToolIcon color={COLOR_NAME.BLACK} />
-            </IconWrapper>
-            <ListContent>
-              <Bar long={60} thin bold />
-              <Br bottom={8} />
-              <Bar long={100} thin />
-              <Br bottom={10} />
-              <Bar long={30} thin />
-            </ListContent>
-          </Row>
-          <Br bottom={16} />
-          <Row>
-            <IconWrapper color={COLOR_NAME.RED}>
-              <ToolIcon color={COLOR_NAME.RED} />
-            </IconWrapper>
-            <ListContent>
-              <Bar long={60} thin bold />
-              <Br bottom={8} />
-              <Bar long={100} thin />
-              <Br bottom={10} />
-              <Bar long={30} thin />
-            </ListContent>
-          </Row>
-          <Br bottom={16} />
-          <Row>
-            <IconWrapper color={COLOR_NAME.BLUE}>
-              <ToolIcon color={COLOR_NAME.BLUE} />
-            </IconWrapper>
-            <ListContent>
-              <Bar long={60} thin bold />
-              <Br bottom={8} />
-              <Bar long={100} thin />
-              <Br bottom={10} />
-              <Bar long={30} thin />
-            </ListContent>
-          </Row>
-        </Box>
-      </ListsLayoutWrapper>
+      <div className={s.block}>
+        <div className={cn(s.iconBox, s.redBg, 'top-2 left-12')}>
+          <ToolSVG className={cn(s.icon, s.red)} />
+        </div>
+        <div className={cn(s.bar, 'h-1.5 top-3 left-20')} />
+        <div className={cn(s.bar, 'w-28 h-1 top-6 left-20 opacity-20')} />
+        <div className={cn(s.bar, 'w-16 mt-0.5 h-1 top-8 left-20 opacity-10')} />
+
+        <div className={cn(s.iconBox, s.blueBg, 'top-12 left-12')}>
+          <ToolSVG className={cn(s.icon, s.blue)} />
+        </div>
+        <div className={cn(s.bar, 'h-1.5 top-14 -mt-1 left-20 w-16')} />
+        <div className={cn(s.bar, 'w-24 h-1 top-16 left-20 opacity-20')} />
+        <div className={cn(s.bar, 'w-20 mt-0.5 h-1 top-20 -mt-1.5 left-20 opacity-10')} />
+
+        <div className={cn(s.iconBox, s.purpleBg, 'bottom-16 left-12')}>
+          <ToolSVG className={cn(s.icon, s.purple)} />
+        </div>
+        <div className={cn(s.bar, 'h-1.5 bottom-16 mb-3 left-20 w-20')} />
+        <div className={cn(s.bar, 'w-24 h-1 bottom-16 mb-0.5 left-20 opacity-20')} />
+        <div className={cn(s.bar, 'w-10 mt-0.5 h-1 bottom-14 mt-1 left-20 opacity-10')} />
+
+        <div className={cn(s.iconBox, s.greenBg, 'bottom-6 left-12')}>
+          <ToolSVG className={cn(s.icon, s.green)} />
+        </div>
+        <div className={cn(s.bar, 'h-1.5 bottom-6 mb-3 left-20 w-14')} />
+        <div className={cn(s.bar, 'w-28 h-1 bottom-6 mb-0.5 left-20 opacity-20')} />
+        <div className={cn(s.bar, 'w-10 mt-0.5 h-1 bottom-4 mt-1 left-20 opacity-10')} />
+      </div>
     )
   }
 
   return (
     <BlocksLayoutWrapper>
       <Box3>
-        <IconWrapper color={COLOR_NAME.BLACK}>
-          <ToolIcon color={COLOR_NAME.BLACK} />
-        </IconWrapper>
+        <div className={cn(s.iconBox, s.blueBg)}>
+          <ToolSVG className={cn(s.icon, s.blue)} />
+        </div>
         <Bar long={60} thin bold />
         <Br bottom={10} />
         <Bar long={50} thin />
@@ -145,9 +131,9 @@ const MainTemplate: FC<TProps> = ({ layout }) => {
         <Bar long={40} thin />
       </Box3>
       <Box3>
-        <IconWrapper color={COLOR_NAME.RED}>
-          <ToolIcon color={COLOR_NAME.RED} />
-        </IconWrapper>
+        <div className={cn(s.iconBox, s.redBg)}>
+          <ToolSVG className={cn(s.icon, s.red)} />
+        </div>
         <Bar long={60} thin bold />
         <Br bottom={10} />
         <Bar long={50} thin />
@@ -155,9 +141,9 @@ const MainTemplate: FC<TProps> = ({ layout }) => {
         <Bar long={40} thin />
       </Box3>
       <Box3>
-        <IconWrapper color={COLOR_NAME.GREEN}>
-          <ToolIcon color={COLOR_NAME.GREEN} />
-        </IconWrapper>
+        <div className={cn(s.iconBox, s.purpleBg)}>
+          <ToolSVG className={cn(s.icon, s.purple)} />
+        </div>
         <Bar long={60} thin bold />
         <Br bottom={10} />
         <Bar long={50} thin />
@@ -165,9 +151,9 @@ const MainTemplate: FC<TProps> = ({ layout }) => {
         <Bar long={40} thin />
       </Box3>
       <Box3>
-        <IconWrapper color={COLOR_NAME.BLUE}>
-          <ToolIcon color={COLOR_NAME.BLUE} />
-        </IconWrapper>
+        <div className={cn(s.iconBox, s.greenBg)}>
+          <ToolSVG className={cn(s.icon, s.green)} />
+        </div>
         <Bar long={60} thin bold />
         <Br bottom={10} />
         <Bar long={50} thin />
@@ -175,9 +161,9 @@ const MainTemplate: FC<TProps> = ({ layout }) => {
         <Bar long={40} thin />
       </Box3>
       <Box3>
-        <IconWrapper color={COLOR_NAME.PURPLE}>
-          <ToolIcon color={COLOR_NAME.PURPLE} />
-        </IconWrapper>
+        <div className={cn(s.iconBox, s.blueBg)}>
+          <ToolSVG className={cn(s.icon, s.purple)} />
+        </div>
         <Bar long={60} thin bold />
         <Br bottom={10} />
         <Bar long={50} thin />
@@ -188,4 +174,4 @@ const MainTemplate: FC<TProps> = ({ layout }) => {
   )
 }
 
-export default memo(MainTemplate)
+export default MainTemplate
