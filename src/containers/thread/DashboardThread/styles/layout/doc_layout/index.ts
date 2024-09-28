@@ -1,50 +1,23 @@
-import type { TActive } from '~/spec'
-
-import styled, { css } from '~/css'
-
-import { Divider } from '~/widgets/Common'
-import { BaseSection, BlockBase } from '..'
+import useBase from '..'
+import useTwBelt from '~/hooks/useTwBelt'
 
 export { Bar, Circle } from '..'
 
-export const Wrapper = styled(BaseSection)``
-export const SelectWrapper = styled.div`
-  ${css.rowWrap('align-center')};
-  gap: 20px 30px;
-  width: 100%;
-`
-export const Main = styled.div`
-  ${css.row()};
-  width: 100%;
-`
-export const FAQWrapper = styled.div`
-  width: 20%;
-  margin-left: 20px;
-`
-export const ExampleBtn = styled.div`
-  display: inline-block;
-`
-export const Layout = styled.div`
-  ${css.column('align-both')};
-  margin-bottom: 30px;
-`
-export const LayoutTitle = styled.div<TActive>`
-  opacity: ${({ $active }) => ($active ? 1 : 0.65)};
+export { cn } from '~/css'
 
-  ${Layout}:hover & {
-    opacity: 1;
-    cursor: pointer;
+export default () => {
+  const { cn, sexyHBorder } = useTwBelt()
+  const base = useBase()
+
+  return {
+    wrapper: base.baseSection,
+    block: cn(base.blockBase, 'align-both w-72 h-52'),
+    blockActive: base.blockBaseActive,
+    select: cn('row-center wrap gap-x-8 gap-y-8 w-full'),
+    layout: 'column-align-both',
+    divider: cn(sexyHBorder(35, 'mt-20 mb-20')),
+
+    bar: cn(base.bar, 'h-1.5 w-20 opacity-40'),
+    circle: cn(base.circle, 'size-3.5 opacity-40'),
   }
-  transition: all 0.2s;
-`
-export const Block = styled(BlockBase)`
-  width: 280px;
-  height: 200px;
-  padding: 12px 25px;
-`
-export const DividerLine = styled(Divider)`
-  opacity: 0.8;
-`
-export const FileTreeSettings = styled.div`
-  ${css.row('align-center')};
-`
+}
