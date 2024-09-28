@@ -11,7 +11,7 @@ export default () => {
 
   return {
     wrapper: base.baseSection,
-    block: cn(base.blockBase, 'align-both w-72 h-52'),
+    block: cn(base.blockBase, 'align-both w-72 h-60'),
     blockActive: base.blockBaseActive,
     select: cn('row-center wrap gap-x-8 gap-y-8 w-full'),
     layout: 'column-align-both',

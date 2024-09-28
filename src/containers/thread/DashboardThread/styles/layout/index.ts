@@ -28,6 +28,8 @@ export default () => {
       isBlackPrimary && br('text.link'),
       shadow('md'),
     ),
+
+    box: cn('relative rounded-md border', primary('borderSoft'), isBlackPrimary && br('text.link')),
     divider: sexyHBorder(35, 'mt-5 mb-12'),
 
     // basic shape

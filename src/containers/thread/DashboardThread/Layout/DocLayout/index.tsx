@@ -53,7 +53,13 @@ export default () => {
         </div>
 
         <div className={s.layout} onClick={() => edit(DOC_LAYOUT.CARDS, 'docLayout')}>
-          <div className={cn(s.block, docLayout === DOC_LAYOUT.CARDS && s.blockActive)}>
+          <div
+            className={cn(
+              s.block,
+              'py-2 pl-2.5 pr-0',
+              docLayout === DOC_LAYOUT.CARDS && s.blockActive,
+            )}
+          >
             <MainTemplate layout={DOC_LAYOUT.CARDS} />
           </div>
           <CheckLabel title="卡片排列" active={docLayout === DOC_LAYOUT.CARDS} top={4} />
