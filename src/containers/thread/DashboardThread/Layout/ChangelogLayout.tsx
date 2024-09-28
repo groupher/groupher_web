@@ -50,7 +50,7 @@ export default () => {
           <CheckLabel title="经典模式" active={layout === CHANGELOG_LAYOUT.CLASSIC} top={4} />
         </div>
         <div className={s.layout} onClick={() => edit(CHANGELOG_LAYOUT.SIMPLE, 'changelogLayout')}>
-          <div className={cn(s.block, layout !== CHANGELOG_LAYOUT.SIMPLE && s.blockActive)}>
+          <div className={cn(s.block, layout === CHANGELOG_LAYOUT.SIMPLE && s.blockActive)}>
             <div className={cn(s.bar, 'h-1.5 w-7 top-5 mt-0.5 left-10 ml-0.5 opacity-20')} />
             <div className={cn(s.bar, 'h-2.5 top-5 left-24 ml-0.5 opacity-30')} />
             <div className={cn(s.bar, 'h-1.5 top-10 left-24 ml-0.5 mt-2 w-28 opacity-30')} />
