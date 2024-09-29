@@ -3,8 +3,6 @@ import ArrowSVG from '~/icons/ArrowSimple'
 import MoreSVG from '~/icons/menu/MoreL'
 import EditSVG from '~/icons/EditPen'
 
-import { ColumnWrapper } from '.'
-
 export const Wrapper = styled.div`
   ${css.row('align-center')};
   width: 100%;
@@ -40,9 +38,7 @@ export const EditIcon = styled(EditSVG)<{ onClick: () => void }>`
   opacity: 0;
   margin-right: 3px;
 
-  ${ColumnWrapper}:hover & {
-    opacity: 0.8;
-  }
+  
 `
 export const ArrowIcon = styled(ArrowSVG)`
   ${css.size(15)};
@@ -56,8 +52,4 @@ export const SettingIcon = styled(MoreSVG)`
   ${iconBase};
   opacity: 0;
   margin-right: 5px;
-
-  ${ColumnWrapper}:hover & {
-    opacity: 1;
-  }
 `

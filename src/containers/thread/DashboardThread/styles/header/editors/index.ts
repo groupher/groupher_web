@@ -1,11 +1,7 @@
-import styled, { css, theme } from '~/css'
-
-import PlusSVG from '~/icons/Plus'
-
 import useTwBelt from '~/hooks/useTwBelt'
 
 export default () => {
-  const { cn, fg, sexyHBorder } = useTwBelt()
+  const { cn, fg, sexyHBorder, primary } = useTwBelt()
 
   return {
     topWrapper: cn('row justify-between mb-5'),
@@ -15,40 +11,12 @@ export default () => {
     rightPart: 'w-56 mr-4',
     noteTitle: cn('text-xs mb-2.5 bold-sm', fg('text.digest')),
     noteP: cn('text-xs mb-3 opacity-80', fg('text.digest')),
+    adder: 'row-center w-44 -ml-1 scale-95',
+    slash: cn('text-xs ml-3 mr-3', fg('text.hint')),
+    plusIcon: cn('size-3 mr-1.5', primary('fill')),
+    //
+    linkGroup: 'row wrap justify-items-start mt-7 w-full gap-7',
+    columnWrapper: 'w-[30%] h-full',
+    itemsWrapper: 'column gap-y-5 mb-8',
   }
 }
-
-export const Adder = styled.div`
-  ${css.row('align-center')}
-  width: 180px;
-  margin-left: -5px;
-  transform: scale(0.96);
-`
-export const Slash = styled.div`
-  font-size: 12px;
-  color: ${theme('article.digest')};
-  margin-left: 10px;
-  margin-right: 10px;
-  opacity: 0.8;
-`
-export const PlusIcon = styled(PlusSVG)`
-  ${css.size(12)};
-  fill: ${theme('article.digest')};
-  margin-right: 6px;
-`
-
-export const LinkGroup = styled.div`
-  ${css.rowWrap('justify-start')};
-  margin-top: 30px;
-  width: calc(100% + 50px);
-  gap: 30px;
-`
-export const ColumnWrapper = styled.div`
-  width: 30%;
-  height: 100%;
-`
-export const ItemsWrapper = styled.div`
-  ${css.column()};
-  gap: 20px 0;
-  margin-bottom: 32px;
-`

@@ -74,7 +74,9 @@ export default (): TRet => {
     groupLinks[targetIndex].index = groupLinks[linkIndex].index
     groupLinks[linkIndex].index = tmpIndex
 
-    store[linksKey] = [...restLinks, ...reindex(groupLinks)]
+    store.commit({
+      [linksKey]: [...restLinks, ...reindex(groupLinks)],
+    })
   }
 
   const doMoveLink2Edge = (link: TLinkItem, opt: 'top' | 'bottom'): void => {
@@ -92,7 +94,9 @@ export default (): TRet => {
         ? [curLinkItem, ...remove(curLinkItemIndex, 1, groupLinks)]
         : [...remove(curLinkItemIndex, 1, groupLinks), curLinkItem]
 
-    store[linksKey] = [...restLinks, ...reindex(newLinks)]
+    store.commit({
+      [linksKey]: [...restLinks, ...reindex(newLinks)],
+    })
   }
 
   /**
@@ -258,7 +262,7 @@ export default (): TRet => {
     const newLinks = []
     forEach((key) => newLinks.push(...groupedLinks[key]), groupKeys)
 
-    store[linksKey] = newLinks
+    store.commit({ [linksKey]: newLinks })
   }
 
   return {

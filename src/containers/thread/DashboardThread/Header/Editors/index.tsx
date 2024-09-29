@@ -7,6 +7,7 @@ import type { TLinkItem } from '~/spec'
 import { MORE_GROUP, ONE_LINK_GROUP } from '~/const/dashboard'
 import { sortByIndex, groupByKey } from '~/helper'
 
+import PlusSVG from '~/icons/Plus'
 import Button from '~/widgets/Buttons/Button'
 
 import LinkEditor from '../../Footer/Editors/LinkEditor'
@@ -16,15 +17,7 @@ import FixedLinks from './FixedLinks'
 import GroupHead from './GroupHead'
 
 import useHeader from '../../logic/useHeader'
-
-import useSalon, {
-  Adder,
-  Slash,
-  PlusIcon,
-  LinkGroup,
-  ColumnWrapper,
-  ItemsWrapper,
-} from '../../styles/header/editors'
+import useSalon from '../../styles/header/editors'
 
 const Editor: FC = () => {
   const s = useSalon()
@@ -85,20 +78,20 @@ const Editor: FC = () => {
             />
           </div>
         ) : (
-          <Adder>
+          <div className={s.adder}>
             <Button size="small" onClick={addHeaderLinkGroup} space={8} ghost>
-              <PlusIcon />
+              <PlusSVG className={s.plusIcon} />
               链接&nbsp;
             </Button>
-            <Slash>/</Slash>
+            <div className={s.slash}>/</div>
             <Button size="small" onClick={triggerGroupAdd} space={10} ghost>
-              <PlusIcon />
+              <PlusSVG className={s.plusIcon} />
               链接组&nbsp;
             </Button>
-          </Adder>
+          </div>
         )}
 
-        <LinkGroup ref={groupAnimateRef}>
+        <div className={s.linkGroup} ref={groupAnimateRef}>
           {groupKeys.map((groupKey: string, index) => {
             const curGroupLinks = groupedLinks[groupKey]
 
@@ -112,8 +105,8 @@ const Editor: FC = () => {
             }
 
             return (
-              <ColumnWrapper key={groupKey}>
-                <ItemsWrapper ref={animateRef}>
+              <div className={s.columnWrapper} key={groupKey}>
+                <div className={s.itemsWrapper} ref={animateRef}>
                   <GroupHead
                     title={groupKey as string}
                     curGroupIndex={index}
@@ -143,25 +136,25 @@ const Editor: FC = () => {
                       />
                     )
                   })}
-                </ItemsWrapper>
+                </div>
 
                 {!editingLink && !startsWith(ONE_LINK_GROUP, groupKey) && (
-                  <Adder>
+                  <div className={s.adder}>
                     <Button
                       size="small"
                       ghost
                       space={8}
                       onClick={() => add2Group(groupKey, curGroupLinks.length)}
                     >
-                      <PlusIcon />
+                      <PlusSVG className={s.plusIcon} />
                       链接&nbsp;
                     </Button>
-                  </Adder>
+                  </div>
                 )}
-              </ColumnWrapper>
+              </div>
             )
           })}
-        </LinkGroup>
+        </div>
       </>
     </div>
   )
