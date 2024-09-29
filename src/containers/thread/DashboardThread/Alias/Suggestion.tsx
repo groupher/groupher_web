@@ -1,7 +1,9 @@
 import { type FC, memo } from 'react'
 import { isEmpty } from 'ramda'
 
-import { Wrapper, Hint, List, Item } from '../styles/alias/suggestion'
+import Button from '~/widgets/Buttons/Button'
+
+import useSalon from '../styles/alias/suggestion'
 
 type TProps = {
   items: string[]
@@ -9,19 +11,28 @@ type TProps = {
 }
 
 const Suggestion: FC<TProps> = ({ items, onChange }) => {
+  const s = useSalon()
+
   if (isEmpty(items)) return null
 
   return (
-    <Wrapper>
-      <Hint>常用别名:</Hint>
-      <List>
+    <div className={s.wrapper}>
+      <label className={s.hint}>常用别名:</label>
+      <div className={s.list}>
         {items.map((item) => (
-          <Item key={item} size="tiny" ghost onClick={() => onChange(item)}>
+          <Button
+            key={item}
+            className={s.item}
+            space={2}
+            size="tiny"
+            ghost
+            onClick={() => onChange(item)}
+          >
             {item}
-          </Item>
+          </Button>
         ))}
-      </List>
-    </Wrapper>
+      </div>
+    </div>
   )
 }
 

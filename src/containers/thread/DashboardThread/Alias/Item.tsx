@@ -1,6 +1,8 @@
-import { type FC, Fragment } from 'react'
+import type { FC } from 'react'
 
+import ArrowSVG from '~/icons/ArrowSolid'
 import AddButton from '~/widgets/Buttons/AddButton'
+import Input from '~/widgets/Input'
 
 import { SETTING_FIELD, BUILDIN_ALIAS_SUGGESTIONS } from '../constant'
 import Suggestion from './Suggestion'
@@ -10,69 +12,60 @@ import type { TNameAlias } from '../spec'
 
 import useAlias from '../logic/useAlias'
 
-import {
-  Wrapper,
-  Header,
-  Title,
-  AliasTitle,
-  InputWrapper,
-  Inputer,
-  Footer,
-  ArrowWrapper,
-  ArrowLine,
-  ArrowIcon,
-} from '../styles/alias/item'
+import useSalon, { cn } from '../styles/alias/item'
 
 type TProps = {
   alias: TNameAlias
 }
 
 const Item: FC<TProps> = ({ alias }) => {
+  const s = useSalon()
   const { updateEditingAlias, editingAlias, resetEdit } = useAlias()
 
   const isEditMode: boolean = alias.slug === editingAlias?.slug
   const isChanged: boolean = alias.original !== alias.name
 
   return (
-    <Wrapper>
-      <Header>
+    <div className={s.wrapper}>
+      <div className={s.header}>
         {isEditMode ? (
           <SavingBar isTouched field={SETTING_FIELD.NAME_ALIAS}>
-            <InputWrapper>
-              <Inputer
+            <div className={s.inputWrapper}>
+              <Input
+                className={s.input}
                 value={editingAlias?.name}
                 autoFocus
                 onChange={(e) => updateEditingAlias({ ...editingAlias, name: e.target.value })}
               />
-            </InputWrapper>
+            </div>
           </SavingBar>
         ) : (
-          <Title>{alias.original}</Title>
+          <div className={s.title}>{alias.original}</div>
         )}
 
         {!isEditMode && isChanged && (
-          <Fragment>
-            <ArrowWrapper>
-              <ArrowLine />
-              <ArrowIcon />
-            </ArrowWrapper>
-            <AliasTitle>{alias.name}</AliasTitle>
-          </Fragment>
+          <>
+            <div className={s.arrowBar}>
+              <div className={s.arrowLine} />
+              <ArrowSVG className={s.arrowIcon} />
+            </div>
+            <div className={cn(s.title, 'w-auto')}>{alias.name}</div>
+          </>
         )}
-      </Header>
-      <Footer>
+      </div>
+      <div className={s.footer}>
         {isEditMode ? (
           <Suggestion
             items={BUILDIN_ALIAS_SUGGESTIONS[alias.slug]}
             onChange={(name) => updateEditingAlias({ ...alias, name })}
           />
         ) : (
-          <Fragment>
+          <>
             <AddButton
               top={10}
               icon="edit"
               dimWhenIdle
-              right={15}
+              right={4}
               onClick={() => updateEditingAlias(alias)}
             >
               修改
@@ -90,11 +83,11 @@ const Item: FC<TProps> = ({ alias }) => {
                 恢复默认
               </AddButton>
             )}
-          </Fragment>
+          </>
         )}
         <div className="grow" />
-      </Footer>
-    </Wrapper>
+      </div>
+    </div>
   )
 }
 
