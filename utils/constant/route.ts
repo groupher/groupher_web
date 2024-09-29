@@ -71,12 +71,12 @@ export const DASHBOARD_DOC_ROUTE = {
 } as Record<Uppercase<TDashboardDocRoute>, TDashboardDocRoute>
 
 export const DASHBOARD_LAYOUT_ROUTE = {
-  GLOBAL: 'global',
+  GENERAL: 'general',
+  THEME: 'theme',
   POST: 'post',
   KANBAN: 'kanban',
   CHANGELOG: 'changelog',
   DOC: 'doc',
-  OTHER: 'other',
 } as Record<Uppercase<TDashboardLayoutRoute>, TDashboardLayoutRoute>
 
 export const DASHBOARD_BROADCAST_ROUTE = {

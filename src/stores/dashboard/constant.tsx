@@ -313,8 +313,12 @@ export const SEO_TABS = [
 
 export const LAYOUT_TABS = [
   {
-    title: '全局',
-    slug: DASHBOARD_LAYOUT_ROUTE.GLOBAL,
+    title: '通用',
+    slug: DASHBOARD_LAYOUT_ROUTE.GENERAL,
+  },
+  {
+    title: '主题/背景',
+    slug: DASHBOARD_LAYOUT_ROUTE.THEME,
   },
   {
     title: '讨论区',
@@ -331,10 +335,6 @@ export const LAYOUT_TABS = [
   {
     title: '帮助台',
     slug: DASHBOARD_LAYOUT_ROUTE.DOC,
-  },
-  {
-    title: '其他',
-    slug: DASHBOARD_LAYOUT_ROUTE.OTHER,
   },
 ]
 

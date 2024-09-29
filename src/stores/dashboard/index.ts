@@ -164,7 +164,7 @@ export default (initState: TInitState = {}): TStore => {
       aliasTab: DASHBOARD_ALIAS_ROUTE.THREAD,
       seoTab: DASHBOARD_SEO_ROUTE.SEARCH_ENGINE,
       docTab: DASHBOARD_DOC_ROUTE.TABLE,
-      layoutTab: DASHBOARD_LAYOUT_ROUTE.GLOBAL,
+      layoutTab: DASHBOARD_LAYOUT_ROUTE.GENERAL,
       broadcastTab: DASHBOARD_BROADCAST_ROUTE.GLOBAL,
 
       // overview

@@ -226,7 +226,7 @@ const parseDashboardThread = (pathname: string): TDashboardTab => {
     case DASHBOARD_ROUTE.LAYOUT: {
       return {
         curTab: DASHBOARD_ROUTE.LAYOUT,
-        layoutTab: (dashLeaf || DASHBOARD_LAYOUT_ROUTE.GLOBAL) as TDashboardLayoutRoute,
+        layoutTab: (dashLeaf || DASHBOARD_LAYOUT_ROUTE.GENERAL) as TDashboardLayoutRoute,
       }
     }
 

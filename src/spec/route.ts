@@ -1,7 +1,7 @@
 export type TDashboardBaseInfoRoute = 'basic' | 'social' | 'logos' | 'other'
 export type TDashboardSEORoute = 'search_engine' | 'twitter'
 export type TDashboardDocRoute = 'table' | 'tree' | 'cover' | 'faq'
-export type TDashboardLayoutRoute = 'global' | 'post' | 'kanban' | 'changelog' | 'doc' | 'other'
+export type TDashboardLayoutRoute = 'general' | 'theme' | 'post' | 'kanban' | 'changelog' | 'doc'
 export type TDashboardBroadcastRoute = 'global' | 'article'
 export type TDashboardAliasRoute = 'thread' | 'kanban' | 'others'
 
