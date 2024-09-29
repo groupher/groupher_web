@@ -1,14 +1,9 @@
-import styled, { css } from '~/css'
-import { ALIGN_HEADER_OFFSET } from '../../constant'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.column()};
-  padding: ${() => `0 ${ALIGN_HEADER_OFFSET}`};
-  padding-left: 68px;
+export default () => {
+  const { cn } = useTwBelt()
 
-  ${css.media.mobile`
-    padding: 0 20px;
-  `};
-`
-
-export const Title = styled.div``
+  return {
+    wrapper: cn('column pl-36 w-8/12'),
+  }
+}
