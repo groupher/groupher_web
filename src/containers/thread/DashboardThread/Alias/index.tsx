@@ -15,9 +15,10 @@ import Portal from '../Portal'
 import Item from './Item'
 
 import useAlias from '../logic/useAlias'
-import { Wrapper, Banner, TabsWrapper } from '../styles/alias'
+import useSalon from '../styles/alias'
 
 const Alias: FC = () => {
+  const s = useSalon()
   const router = useRouter()
   const curCommunity = useViewingCommunity()
   const { nameAlias, aliasTab, changeTab } = useAlias()
@@ -29,14 +30,14 @@ const Alias: FC = () => {
   const othersAlias = groupedAlias[ALIAS_GROUP.OTHERS] || []
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Portal
         title="别名设置"
         desc="覆盖社区内默认的板块，组件，提示信息等名称，注意对应的路由不会改变。"
         withDivider={false}
       />
-      <Banner>
-        <TabsWrapper>
+      <div className={s.banner}>
+        <div className={s.tabs}>
           <Tabs
             items={ALIAS_TABS}
             activeKey={aliasTab}
@@ -52,15 +53,16 @@ const Alias: FC = () => {
             view={VIEW.DESKTOP}
             noAnimation
           />
-        </TabsWrapper>
-      </Banner>
+        </div>
+      </div>
+
       {aliasTab === ALIAS_GROUP.THREAD &&
         generalAlias.map((item) => <Item key={item.slug} alias={item} />)}
       {aliasTab === ALIAS_GROUP.KANBAN &&
         kanbanAlias.map((item) => <Item key={item.slug} alias={item} />)}
       {aliasTab === ALIAS_GROUP.OTHERS &&
         othersAlias.map((item) => <Item key={item.slug} alias={item} />)}
-    </Wrapper>
+    </div>
   )
 }
 

@@ -1,31 +1,12 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import Button from '~/widgets/Buttons/Button'
+export default () => {
+  const { cn, fg } = useTwBelt()
 
-export const Wrapper = styled.div`
-  ${css.row('align-center')};
-  margin-top: 10px;
-`
-export const Hint = styled.div`
-  font-size: 12px;
-  color: ${theme('lightText')};
-  margin-left: 2px;
-`
-export const List = styled.div`
-  ${css.row('align-center')};
-  margin-left: 12px;
-  gap: 10px;
-`
-export const Item = styled(Button)`
-  height: 18px;
-  opacity: 0.8;
-  padding-top: 1px;
-  padding-left: 6px;
-  padding-right: 6px;
-  border: 1px dotted;
-
-  &:hover {
-    opacity: 1;
-    cursor: pointer;
+  return {
+    wrapper: cn('row-center mt-2.5'),
+    list: 'row-center ml-3 gap-2.5 gap-x-2 -mt-0.5',
+    hint: cn('text-xs ml-1', fg('text.digest')),
+    item: cn('h-5'),
   }
-`
+}
