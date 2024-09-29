@@ -5,23 +5,24 @@ import ArrowSVG from '~/icons/ArrowSimple'
 
 import Button from '~/widgets/Buttons/Button'
 
-export const Wrapper = styled.div`
-  ${css.column('align-both')};
-  gap: 15px;
-  padding-bottom: 30px;
+import useTwBelt from '~/hooks/useTwBelt'
 
-  border-bottom: 1px solid transparent;
-  border-image: linear-gradient(
-    0.25turn,
-    transparent,
-    ${theme('divider')},
-    ${theme('divider')},
-    ${theme('divider')},
-    transparent
-  );
+export default () => {
+  const { cn, br, bg } = useTwBelt()
 
-  border-image-slice: 1;
-`
+  return {
+    wrapper: cn('column-align-both gap-4 pb-8'),
+    template: cn(
+      'w-full h-16 border rounded-md pointer',
+      `hover:${br('text.digest')}`,
+      br('text.hint'),
+      bg('alphaBg'),
+      'trans-all-100',
+    ),
+    templateActive: cn(br('text.digest')),
+  }
+}
+
 export const TemplateBlock = styled.div<TActive>`
   width: 100%;
   border: 1px solid;

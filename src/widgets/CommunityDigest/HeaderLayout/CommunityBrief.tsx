@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
-import { assetSrc } from '~/helper'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
-import useLayout from '~/hooks/useLayout'
 import useHover from '~/hooks/useHover'
-
-import { BRAND_LAYOUT } from '~/const/layout'
 
 import OptionArrowSVG from '~/icons/OptionArrow'
 import ArrowSVG from '~/icons/ArrowUpRight'
@@ -15,11 +11,9 @@ import GithubSVG from '~/icons/Github8'
 import GlobalSVG from '~/icons/social/Global'
 import PlusSVG from '~/icons/PlusCircle'
 
-import Img from '~/Img'
-
 import Tooltip from '~/widgets/Tooltip'
 import { SexyDivider } from '~/widgets/Common'
-import ImgFallback from '~/widgets/ImgFallback'
+import CommunityBrand from '~/widgets/CommunityBrand'
 
 import useSalon, { cn } from '../salon/header_layout/community_brief'
 
@@ -27,8 +21,7 @@ export default () => {
   const s = useSalon()
 
   const [disableTippyJump, setDisableTippyJump] = useState(false)
-  const { logo, title, slug, dashboard } = useViewingCommunity()
-  const { brandLayout } = useLayout()
+  const { slug, dashboard } = useViewingCommunity()
 
   const [ref, isHovering] = useHover<HTMLDivElement>()
 
@@ -43,15 +36,7 @@ export default () => {
       content={
         <div className={s.panel}>
           <div className={s.brandPanel}>
-            {brandLayout !== BRAND_LAYOUT.TEXT && (
-              <Img
-                src={assetSrc(logo)}
-                className={s.logo}
-                noLazy
-                fallback={<ImgFallback size={25} left={-2} right={3} title={title} />}
-              />
-            )}
-            {brandLayout !== BRAND_LAYOUT.LOGO && <h1 className={s.title}>{title}</h1>}
+            <CommunityBrand />
           </div>
 
           <Link className={cn(s.menuItem, 'hover:no-underline')} href={`/${slug}`}>
@@ -96,14 +81,7 @@ export default () => {
       noPadding
     >
       <div className={s.wrapper} ref={ref}>
-        {brandLayout !== BRAND_LAYOUT.TEXT && (
-          <Img
-            src={assetSrc(logo)}
-            className={s.logo}
-            fallback={<ImgFallback size={25} left={-2} right={3} title={title} />}
-          />
-        )}
-        {brandLayout !== BRAND_LAYOUT.LOGO && <h1 className={s.title}>{title}</h1>}
+        <CommunityBrand />
         <OptionArrowSVG className={s.optionArrow} />
       </div>
     </Tooltip>

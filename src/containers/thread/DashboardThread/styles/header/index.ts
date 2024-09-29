@@ -1,7 +1,10 @@
-import styled, { css } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.column()};
-`
+export default () => {
+  const { cn, sexyHBorder } = useTwBelt()
 
-export const holder = 1
+  return {
+    wrapper: 'column',
+    divider: cn('mb-12', sexyHBorder(35)),
+  }
+}

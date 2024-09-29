@@ -1,15 +1,9 @@
 import useTwBelt from '~/hooks/useTwBelt'
-import useLayout from '~/hooks/useLayout'
-
-import { BRAND_LAYOUT } from '~/const/layout'
 
 export { cn } from '~/css'
 
 export default () => {
   const { cn, fg, bg, br, fill } = useTwBelt()
-  const { brandLayout } = useLayout()
-
-  const noMargin = brandLayout === BRAND_LAYOUT.TEXT
 
   const wrapper =
     'row-center group w-36 min-w-36 h-9 rounded-lg -ml-2.5 pl-2.5 trans-all-200 border border-transparent pointer'
@@ -23,12 +17,6 @@ export default () => {
       bg('menuHoverBg'),
     ),
 
-    logo: 'size-5 -ml-px mr-1',
-    title: cn(
-      'text-base bold-sm grow max-w-[80px] line-clamp-1',
-      noMargin && 'ml-2',
-      fg('text.digest'),
-    ),
     optionArrow: cn(
       'size-3 opacity-0 ml-2',
       'group-hover:opacity-100 transition-opacity',

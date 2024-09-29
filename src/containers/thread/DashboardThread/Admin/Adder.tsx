@@ -11,7 +11,7 @@ export default () => {
   return (
     <div className={s.wrapper}>
       <Input className={s.input} placeholder="账户名称 / 登入ID (TODO: use react-select)" />
-      <Button className={s.addBtn} size="small" disabled>
+      <Button className={s.addBtn} size="small">
         <PlusSVG className={s.plusIcon} />
         管理员
       </Button>

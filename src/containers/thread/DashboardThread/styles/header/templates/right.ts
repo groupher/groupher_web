@@ -1,42 +1,22 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import AccountSVG from '~/icons/Acount'
+import useBase from '.'
 
-import { TemplateBlock } from '.'
+export { cn } from '~/css'
 
-export const Wrapper = styled(TemplateBlock)`
-  ${css.row('align-center', 'justify-between')};
-  height: 60px;
-  padding: 0 20px;
-  background: ${theme('alphaBg')};
-`
-export const LeftWrapper = styled.div`
-  ${css.row('align-center')};
-  gap: 0 10px;
-`
-export const BrandLogo = styled.div`
-  ${css.circle(18)};
-  background: ${theme('divider')};
-`
-export const BrandText = styled.div`
-  color: ${theme('article.title')};
-`
-export const LinkItem = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 12px;
+export default () => {
+  const { cn, fg, bg, fill } = useTwBelt()
+  const base = useBase()
 
-  &:hover {
-    color: ${theme('article.title')};
-    cursor: pointer;
+  return {
+    wrapper: cn(base.template, 'row-center justify-between px-5'),
+    active: base.templateActive,
+    left: 'row-center gap-x-2.5',
+    right: 'row-center gap-x-3.5',
+    brandLogo: cn('size-5 rounded-md', bg('hoverBg')),
+    brandText: cn('text-sm', fg('text.digest')),
+    center: 'row-center gap-x-5 -ml-4',
+    linkItem: cn('text-xs pointer trans-all-100', `hover:${fg('text.title')}`, fg('text.digest')),
+    accountIcon: cn('size-3 -mt-0.5', fill('text.digest')),
   }
-`
-export const RightWrapper = styled.div`
-  ${css.row('align-center')};
-  gap: 0 14px;
-`
-export const AccountIcon = styled(AccountSVG)`
-  ${css.size(12)};
-  fill: ${theme('article.digest')};
-  margin-left: 5px;
-  margin-top: -2px;
-`
+}

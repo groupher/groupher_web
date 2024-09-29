@@ -10,9 +10,11 @@ import Float from './Float'
 import Right from './Right'
 
 import useHeader from '../../logic/useHeader'
-import { Wrapper, ArrowIcon, ToggleButton, ToggleText } from '../../styles/header/templates'
+import useSalon, { ArrowIcon, ToggleButton, ToggleText } from '../../styles/header/templates'
 
 const Templates: FC = () => {
+  const s = useSalon()
+
   const { getIsLayoutTouched, headerLayout, saving, headerLinks: links, getThreads } = useHeader()
   const [showAll, setShowAll] = useState<boolean>(false)
   const threads = getThreads()
@@ -21,12 +23,12 @@ const Templates: FC = () => {
   const isLayoutTouched = getIsLayoutTouched()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {showAll ? (
         <>
-          <Center {...linksProps} $active={headerLayout === HEADER_LAYOUT.CENTER} />
-          <Right {...linksProps} $active={headerLayout === HEADER_LAYOUT.RIGHT} />
-          <Float {...linksProps} $active={headerLayout === HEADER_LAYOUT.FLOAT} />
+          <Center {...linksProps} active={headerLayout === HEADER_LAYOUT.CENTER} />
+          <Right {...linksProps} active={headerLayout === HEADER_LAYOUT.RIGHT} />
+          <Float {...linksProps} active={headerLayout === HEADER_LAYOUT.FLOAT} />
         </>
       ) : (
         <>
@@ -41,8 +43,7 @@ const Templates: FC = () => {
         field={SETTING_FIELD.HEADER_LAYOUT}
         onConfirm={() => setShowAll(false)}
         loading={saving}
-        top={20}
-        bottom={30}
+        top={10}
       />
 
       {!isLayoutTouched && !saving && (
@@ -54,7 +55,7 @@ const Templates: FC = () => {
           </ToggleText>
         </ToggleButton>
       )}
-    </Wrapper>
+    </div>
   )
 }
 

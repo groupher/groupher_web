@@ -10,7 +10,7 @@ export default () => {
   )
 
   return {
-    wrapper: 'row-center gap-x-3.5 h-4',
+    wrapper: 'row-center gap-x-2 h-4',
     linkItem,
     menuPanel: cn(bg('popover.bg')),
     groupItem: cn(linkItem, 'relative'),

@@ -1,23 +1,21 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export {
-  Wrapper,
-  LeftWrapper,
-  BrandLogo,
-  BrandText,
-  LinkItem,
-  RightWrapper,
-  AccountIcon,
-} from './center'
+import useBase from '.'
 
-export const CenterWrapper = styled.div`
-  ${css.row('align-center')};
-  gap: 0 14px;
-  border-radius: 18px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-  padding: 5px 20px;
-  padding-right: 5px;
-  background: ${theme('alphaBg')};
-  margin-top: -2px;
-  margin-left: -50px;
-`
+export { cn } from '~/css'
+
+export default () => {
+  const { cn, fg, bg, fill, shadow } = useTwBelt()
+  const base = useBase()
+
+  return {
+    wrapper: cn(base.template, 'row-center justify-between px-5'),
+    active: base.templateActive,
+    left: 'row-center gap-x-2.5',
+    brandLogo: cn('size-5 rounded-md', bg('hoverBg')),
+    brandText: cn('text-sm', fg('text.digest')),
+    center: cn('row-center gap-x-5 -ml-4 rounded-2xl px-5 py-2', shadow('lg'), bg('alphaBg')),
+    linkItem: cn('text-xs pointer trans-all-100', `hover:${fg('text.title')}`, fg('text.digest')),
+    accountIcon: cn('size-3 -mt-0.5', fill('text.digest')),
+  }
+}
