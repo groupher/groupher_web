@@ -1,15 +1,20 @@
-import { Space } from '~/widgets/Common'
-import { Wrapper, Inputer, PlusIcon, AddButton } from '../styles/admin/adder'
+import Input from '~/widgets/Input'
+import Button from '~/widgets/Buttons/Button'
+
+import PlusSVG from '~/icons/Plus'
+
+import useSalon from '../styles/admin/adder'
 
 export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <Inputer placeholder="账户名称 / 登入ID (TODO: use react-select)" />
-      <Space right={30} />
-      <AddButton size="small" disabled>
-        <PlusIcon disabled />
+    <div className={s.wrapper}>
+      <Input className={s.input} placeholder="账户名称 / 登入ID (TODO: use react-select)" />
+      <Button className={s.addBtn} size="small" disabled>
+        <PlusSVG className={s.plusIcon} />
         管理员
-      </AddButton>
-    </Wrapper>
+      </Button>
+    </div>
   )
 }

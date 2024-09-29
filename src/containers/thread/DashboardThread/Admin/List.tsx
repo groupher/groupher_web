@@ -1,50 +1,38 @@
 import { callPassportEditor } from '~/signal'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
+
+import ArrowSVG from '~/icons/ArrowSimple'
 
 import Button from '~/widgets/Buttons/Button'
 import AdminAvatar from '~/widgets/AdminAvatar'
 
 import useAdmins from '../logic/useAdmins'
 
-import {
-  Wrapper,
-  User,
-  SettingIcon,
-  Intro,
-  Header,
-  Name,
-  Login,
-  Bio,
-  RootSign,
-  AllPassportText,
-  ArrowIcon,
-} from '../styles/admin/list'
+import useSalon, { cn } from '../styles/admin/list'
 
 export default () => {
+  const s = useSalon()
   const { getModerators, activeModerator, setActiveSettingAdmin } = useAdmins()
-  const primaryColor = usePrimaryColor()
 
   const moderators = getModerators()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {moderators.map((item) => {
         const { user, passportItemCount, role } = item
         const active = user.login === activeModerator?.login
 
         return (
-          <User key={user.login} $active={active} $noActive={activeModerator === null}>
-            {active && <SettingIcon />}
-
-            <AdminAvatar user={user} right={16} top={5} />
-            <Intro>
-              <Header>
-                <Name>{user.nickname}</Name>
-                <Login>@{user.login}</Login>
-                {role === 'root' && <RootSign $color={primaryColor}>ROOT</RootSign>}
+          <div key={user.login} className={cn(s.user, active && s.userActive)}>
+            <AdminAvatar user={user} right={5} top={3} />
+            <div className={s.intro}>
+              <div className={s.header}>
+                <div className={s.name}>{user.nickname}</div>
+                <div className={s.login}>@{user.login}</div>
+                {role === 'root' && <div className={s.rootSign}>root</div>}
                 <div className="grow" />
                 <Button
                   top={1}
+                  className="w-28"
                   onClick={() => {
                     setActiveSettingAdmin(user)
                     callPassportEditor()
@@ -53,19 +41,15 @@ export default () => {
                   noBorder
                   size="small"
                 >
-                  {role === 'root' ? (
-                    <AllPassportText $color={primaryColor}>全部权限</AllPassportText>
-                  ) : (
-                    <>{passportItemCount} 项权限</>
-                  )}
-                  <ArrowIcon $color={primaryColor} $isRoot={role === 'root'} />
+                  {role === 'root' ? <>全部权限</> : <>{passportItemCount} 项权限</>}
+                  <ArrowSVG className={s.arrowIcon} />
                 </Button>
-              </Header>
-              <Bio>{user.bio}</Bio>
-            </Intro>
-          </User>
+              </div>
+              <p className={s.bio}>{user.bio}</p>
+            </div>
+          </div>
         )
       })}
-    </Wrapper>
+    </div>
   )
 }

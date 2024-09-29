@@ -5,11 +5,13 @@ import Portal from '../Portal'
 import Adder from './Adder'
 import List from './List'
 
-import { Wrapper } from '../styles/admin'
+import useSalon from '../styles/admin'
 
 export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Portal
         title="管理员"
         desc={
@@ -23,6 +25,6 @@ export default () => {
       />
       <Adder />
       <List />
-    </Wrapper>
+    </div>
   )
 }
