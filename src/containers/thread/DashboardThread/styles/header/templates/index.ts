@@ -1,14 +1,9 @@
-import type { TActive } from '~/spec'
-import styled, { css, theme } from '~/css'
-
-import ArrowSVG from '~/icons/ArrowSimple'
-
-import Button from '~/widgets/Buttons/Button'
-
 import useTwBelt from '~/hooks/useTwBelt'
 
+export { cn } from '~/css'
+
 export default () => {
-  const { cn, br, bg } = useTwBelt()
+  const { cn, br, bg, primary } = useTwBelt()
 
   return {
     wrapper: cn('column-align-both gap-4 pb-8'),
@@ -20,42 +15,7 @@ export default () => {
       'trans-all-100',
     ),
     templateActive: cn(br('text.digest')),
+    arrowIcon: cn('size-3.5 rotate-180', primary('fill')),
+    toggleText: '',
   }
 }
-
-export const TemplateBlock = styled.div<TActive>`
-  width: 100%;
-  border: 1px solid;
-  border-color: ${({ $active }) => ($active ? theme('article.digest') : theme('divider'))};
-  box-shadow: ${({ $active }) => ($active ? css.cardShadow : '')};
-
-  border-radius: 5px;
-
-  &:hover {
-    border-color: ${theme('article.digest')};
-    box-shadow: ${css.cardShadow};
-    cursor: pointer;
-  }
-
-  transition: all 0.2s;
-`
-
-export const ArrowIcon = styled(ArrowSVG)<{ rotate?: boolean }>`
-  ${css.size(14)};
-  fill: ${theme('article.title')};
-  margin-left: 5px;
-  transform: ${({ rotate }) => (rotate ? 'rotate(90deg);' : 'rotate(180deg);')};
-`
-
-export const ToggleButton = styled(Button)``
-
-export const ToggleText = styled.div`
-  ${css.row('align-center')};
-  opacity: 0.8;
-
-  ${ToggleButton}:hover & {
-    opacity: 1;
-  }
-
-  transition: all 0.2s;
-`

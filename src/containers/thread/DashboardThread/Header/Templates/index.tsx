@@ -2,6 +2,9 @@ import { type FC, useState } from 'react'
 
 import { HEADER_LAYOUT } from '~/const/layout'
 
+import ArrowSVG from '~/icons/ArrowSimple'
+import Button from '~/widgets/Buttons/Button'
+
 import { SETTING_FIELD } from '../../constant'
 import SavingBar from '../../SavingBar'
 
@@ -10,7 +13,7 @@ import Float from './Float'
 import Right from './Right'
 
 import useHeader from '../../logic/useHeader'
-import useSalon, { ArrowIcon, ToggleButton, ToggleText } from '../../styles/header/templates'
+import useSalon, { cn } from '../../styles/header/templates'
 
 const Templates: FC = () => {
   const s = useSalon()
@@ -47,13 +50,11 @@ const Templates: FC = () => {
       />
 
       {!isLayoutTouched && !saving && (
-        <ToggleButton size="small" ghost noBorder onClick={() => setShowAll(!showAll)}>
-          <ToggleText>
-            {showAll ? '收起' : '更换模板'}
-            {/* @ts-ignore */}
-            <ArrowIcon rotate={showAll} />
-          </ToggleText>
-        </ToggleButton>
+        <Button size="small" ghost noBorder className="w-40" onClick={() => setShowAll(!showAll)}>
+          {showAll ? '收起' : '更换模板'}
+
+          <ArrowSVG className={cn(s.arrowIcon, showAll && 'rotate-90')} />
+        </Button>
       )}
     </div>
   )
