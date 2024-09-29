@@ -9,12 +9,12 @@ export default () => {
     wrapper: cn('column-align-both gap-4 pb-8'),
     template: cn(
       'w-full h-16 border rounded-md pointer',
-      `hover:${br('text.digest')}`,
-      br('text.hint'),
+      `hover:${primary('border')}`,
+      br('divider'),
       bg('alphaBg'),
       'trans-all-100',
     ),
-    templateActive: cn(br('text.digest'), shadow('md')),
+    templateActive: cn(primary('borderSoft'), shadow('md')),
     arrowIcon: cn('size-3.5 rotate-180', primary('fill')),
   }
 }

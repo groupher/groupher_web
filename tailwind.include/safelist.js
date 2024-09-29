@@ -5,6 +5,7 @@ const GENERAL = [
   'border-divider',
   'border-text-link',
   'border-text-hint',
+  'border-text-digest',
   'article-hover-linear',
   'saving-bar-left-linear',
   'saving-bar-right-linear',

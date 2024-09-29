@@ -50,7 +50,7 @@ const Templates: FC = () => {
       />
 
       {!isLayoutTouched && !saving && (
-        <Button size="small" ghost noBorder className="w-40" onClick={() => setShowAll(!showAll)}>
+        <Button size="small" ghost noBorder className="w-36" onClick={() => setShowAll(!showAll)}>
           {showAll ? '收起' : '更换模板'}
 
           <ArrowSVG className={cn(s.arrowIcon, showAll && 'rotate-90')} />

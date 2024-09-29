@@ -30,7 +30,7 @@ const CommunityBrand: FC<TProps> = ({ className = '', ...spacing }) => {
           src={assetSrc(logo)}
           className={s.logo}
           noLazy
-          fallback={<ImgFallback size={25} left={-2} right={3} title={title} />}
+          fallback={<ImgFallback size={25} left={-2} right={6} title={title} />}
         />
       )}
       {brandLayout !== BRAND_LAYOUT.LOGO && <h1 className={s.title}>{title}</h1>}
