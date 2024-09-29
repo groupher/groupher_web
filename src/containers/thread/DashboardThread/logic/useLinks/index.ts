@@ -96,7 +96,9 @@ export default (): TRet => {
 
     linksAfter = emptyLinksIfNedd(linksAfter)
 
-    store[linksKey] = reindex(linksAfter)
+    store.commit({
+      [linksKey]: reindex(linksAfter),
+    })
   }
 
   const deleteGroup = (groupIndex: number): void => {
@@ -105,7 +107,9 @@ export default (): TRet => {
 
     linksAfter = emptyLinksIfNedd(linksAfter)
 
-    store[linksKey] = reindexGroup(linksAfter)
+    store.commit({
+      [linksKey]: reindexGroup(linksAfter),
+    })
   }
 
   const cancelLinkEditing = (): void => {
@@ -113,7 +117,7 @@ export default (): TRet => {
     const links = getLinks()
 
     if (editingLinkMode === CHANGE_MODE.UPDATE) {
-      store.editingLink = null
+      store.commit({ editingLink: null })
       return
     }
 
@@ -174,8 +178,10 @@ export default (): TRet => {
       links,
     ).concat(editingLinkAfter)
 
-    store[linksKey] = linksAfter
-    store.editingLink = null
+    store.commit({
+      editingLink: null,
+      [linksKey]: linksAfter,
+    })
 
     keepMoreGroup2EndIfNeed()
 

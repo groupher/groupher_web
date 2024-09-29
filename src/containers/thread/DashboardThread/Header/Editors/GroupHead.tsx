@@ -4,41 +4,39 @@ import { startsWith } from 'ramda'
 import { ONE_LINK_GROUP, MORE_GROUP } from '~/const/dashboard'
 
 import Tooltip from '~/widgets/Tooltip'
+import ArrowSVG from '~/icons/ArrowSimple'
+import MoreSVG from '~/icons/menu/MoreL'
+import EditSVG from '~/icons/EditPen'
 
 import GroupMenu from './GroupMenu'
 import GroupInputer from './GroupInputer'
 
 import useHeader from '../../logic/useHeader'
-import {
-  Wrapper,
-  Title,
-  ArrowIcon,
-  HintTitle,
-  EditIcon,
-  SettingIcon,
-} from '../../styles/header/editors/group_head'
+import useSalon from '../../styles/header/editors/group_head'
 
 type TGroupTitle = {
   title: string
 }
 
 const GroupTitle: FC<TGroupTitle> = ({ title }) => {
+  const s = useSalon()
+
   if (startsWith(ONE_LINK_GROUP, title)) {
-    return <HintTitle>单链接</HintTitle>
+    return <div className={s.hintTitle}>单链接</div>
   }
 
   if (title === MORE_GROUP) {
     return (
-      <Title>
-        更多 <ArrowIcon />
-      </Title>
+      <div className={s.title}>
+        更多 <ArrowSVG className={s.arrowIcon} />
+      </div>
     )
   }
 
   return (
-    <Title>
-      {title} <ArrowIcon />
-    </Title>
+    <div className={s.title}>
+      {title} <ArrowSVG className={s.arrowIcon} />
+    </div>
   )
 }
 
@@ -66,6 +64,8 @@ const GroupHead: FC<TProps> = ({
   isEdgeLeft,
   isEdgeRight,
 }) => {
+  const s = useSalon()
+
   const {
     editingGroup,
     editingGroupIndex,
@@ -78,25 +78,25 @@ const GroupHead: FC<TProps> = ({
   // null is void empty checked when input value is ""
   if (editingGroup !== null && editingGroupIndex === curGroupIndex) {
     return (
-      <Wrapper>
+      <div className={s.wrapper}>
         <GroupInputer
           value={editingGroup}
           onChange={updateEditingGroup}
           onConfirm={confirmGroupUpdate}
           onCancel={cancelGroupChange}
         />
-      </Wrapper>
+      </div>
     )
   }
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <GroupTitle title={title} />
 
       <div className="grow" />
 
       {!(startsWith(ONE_LINK_GROUP, title) || title === MORE_GROUP) && (
-        <EditIcon onClick={() => triggerGroupUpdate(title, curGroupIndex)} />
+        <EditSVG className={s.editIcon} onClick={() => triggerGroupUpdate(title, curGroupIndex)} />
       )}
 
       {title !== MORE_GROUP && (
@@ -118,10 +118,10 @@ const GroupHead: FC<TProps> = ({
           hideOnClick
           noPadding
         >
-          <SettingIcon />
+          <MoreSVG className={s.settingIcon} />
         </Tooltip>
       )}
-    </Wrapper>
+    </div>
   )
 }
 

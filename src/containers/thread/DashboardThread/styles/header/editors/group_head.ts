@@ -1,55 +1,16 @@
-import styled, { css, theme } from '~/css'
-import ArrowSVG from '~/icons/ArrowSimple'
-import MoreSVG from '~/icons/menu/MoreL'
-import EditSVG from '~/icons/EditPen'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.row('align-center')};
-  width: 100%;
-  height: 22px;
-`
-export const Title = styled.div`
-  ${css.row('align-center')};
-  color: ${theme('article.title')};
-  font-size: 14px;
-`
-export const HintTitle = styled(Title)`
-  color: ${theme('article.digest')};
-  margin-top: 4px;
-  font-size: 12px;
-  font-style: italic;
-  opacity: 0.6;
-`
-const iconBase = `
-  fill: ${theme('article.info')};
-  opacity: 0.6;
+export default () => {
+  const { cn, fg, fill } = useTwBelt()
 
-  &:hover {
-    opacity: 1;
-    cursor: pointer;
+  const common = 'size-3.5 pointer pointer trans-all-100'
+
+  return {
+    wrapper: cn('row-center w-full h-6 group'),
+    title: cn('row-center text-sm', fg('text.title')),
+    hintTitle: cn('mt-1 text-xs italic', fg('text.hint')),
+    arrowIcon: cn(common, 'ml-1 -rotate-90', fill('text.digest')),
+    settingIcon: cn(common, 'mr-1 opacity-0 group-hover:opacity-100', fill('text.digest')),
+    editIcon: cn(common, 'size-3.5 mr-1 opacity-0 group-hover:opacity-100', fill('text.digest')),
   }
-
-  transition: all 0.2s;
-`
-
-export const EditIcon = styled(EditSVG)<{ onClick: () => void }>`
-  ${css.size(14)};
-  ${iconBase};
-  opacity: 0;
-  margin-right: 3px;
-
-  
-`
-export const ArrowIcon = styled(ArrowSVG)`
-  ${css.size(15)};
-  fill: ${theme('article.digest')};
-  margin-left: 4px;
-  transform: rotate(-90deg);
-  opacity: 0.6;
-`
-export const SettingIcon = styled(MoreSVG)`
-  ${css.size(14)};
-  ${iconBase};
-  opacity: 0;
-  margin-right: 5px;
-`
+}
