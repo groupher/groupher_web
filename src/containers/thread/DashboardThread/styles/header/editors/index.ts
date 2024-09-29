@@ -2,51 +2,22 @@ import styled, { css, theme } from '~/css'
 
 import PlusSVG from '~/icons/Plus'
 
-export const Wrapper = styled.div``
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const TopWrapper = styled.div`
-  ${css.row('justify-between')};
-  margin-bottom: 20px;
-  padding-bottom: 40px;
-  border-bottom: 1px solid transparent;
-  border-image: linear-gradient(
-    0.25turn,
-    transparent,
-    ${theme('divider')},
-    ${theme('divider')},
-    ${theme('divider')},
-    transparent
-  );
+export default () => {
+  const { cn, fg, sexyHBorder } = useTwBelt()
 
-  border-image-slice: 1;
-`
-export const BottomWrapper = styled.div`
-  margin-top: 25px;
-`
-export const GroupInputerWrapper = styled.div`
-  width: 250px;
-`
-export const LeftPart = styled.div`
-  ${css.column()};
-  width: 260px;
-  gap: 25px 0;
-`
-export const RightPart = styled.div`
-  width: 220px;
-  margin-right: 15px;
-`
-export const NoteTitle = styled.div`
-  color: ${theme('article.digest')};
-  margin-bottom: 10px;
-  font-size: 13px;
-  font-weight: bold;
-`
-export const NoteP = styled.p`
-  font-size: 13px;
-  color: ${theme('article.digest')};
-  margin-bottom: 12px;
-  opacity: 0.8;
-`
+  return {
+    topWrapper: cn('row justify-between mb-5'),
+    divider: cn('mb-10', sexyHBorder(35)),
+    groupInputer: 'w-60',
+    leftPart: 'column w-64 gap-y-6',
+    rightPart: 'w-56 mr-4',
+    noteTitle: cn('text-xs mb-2.5 bold-sm', fg('text.digest')),
+    noteP: cn('text-xs mb-3 opacity-80', fg('text.digest')),
+  }
+}
+
 export const Adder = styled.div`
   ${css.row('align-center')}
   width: 180px;

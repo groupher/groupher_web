@@ -17,15 +17,7 @@ import GroupHead from './GroupHead'
 
 import useHeader from '../../logic/useHeader'
 
-import {
-  Wrapper,
-  TopWrapper,
-  BottomWrapper,
-  GroupInputerWrapper,
-  LeftPart,
-  RightPart,
-  NoteTitle,
-  NoteP,
+import useSalon, {
   Adder,
   Slash,
   PlusIcon,
@@ -35,6 +27,8 @@ import {
 } from '../../styles/header/editors'
 
 const Editor: FC = () => {
+  const s = useSalon()
+
   const [animateRef] = useAutoAnimate()
   const [groupAnimateRef] = useAutoAnimate()
 
@@ -65,29 +59,31 @@ const Editor: FC = () => {
   const groupKeys = keys(groupedLinks) as string[]
 
   return (
-    <Wrapper>
-      <TopWrapper>
-        <LeftPart>
+    <div>
+      <div className={s.topWrapper}>
+        <div className={s.leftPart}>
           <FixedLinks isAboutLinkFold={isAboutLinkFold} />
-        </LeftPart>
-        <RightPart>
-          <NoteTitle>注意事项</NoteTitle>
-          <NoteP>改变顺序后可通过上方模板预览效果。</NoteP>
-          <NoteP>固定链接无法调整顺序，分组链接会自动折叠。</NoteP>
-          <NoteP>新增链接或链接组后，"关于"会自动折叠到"更多"中。</NoteP>
-        </RightPart>
-      </TopWrapper>
+        </div>
+        <div className={s.rightPart}>
+          <h3 className={s.noteTitle}>注意事项</h3>
+          <p className={s.noteP}>改变顺序后可通过上方模板预览效果。</p>
+          <p className={s.noteP}>固定链接无法调整顺序，分组链接会自动折叠。</p>
+          <p className={s.noteP}>新增链接或链接组后，"关于"会自动折叠到"更多"中。</p>
+        </div>
+      </div>
 
-      <BottomWrapper>
+      <div className={s.divider} />
+
+      <>
         {editingGroup !== null && editingGroupIndex === null ? (
-          <GroupInputerWrapper>
+          <div className={s.groupInputer}>
             <GroupInputer
               value={editingGroup}
               onChange={updateEditingGroup}
               onConfirm={confirmGroupAdd}
               onCancel={cancelGroupChange}
             />
-          </GroupInputerWrapper>
+          </div>
         ) : (
           <Adder>
             <Button size="small" onClick={addHeaderLinkGroup} space={8} ghost>
@@ -166,8 +162,8 @@ const Editor: FC = () => {
             )
           })}
         </LinkGroup>
-      </BottomWrapper>
-    </Wrapper>
+      </>
+    </div>
   )
 }
 
