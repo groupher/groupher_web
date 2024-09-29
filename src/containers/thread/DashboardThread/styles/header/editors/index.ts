@@ -4,7 +4,7 @@ export default () => {
   const { cn, fg, sexyHBorder, primary } = useTwBelt()
 
   return {
-    topWrapper: cn('row justify-between mb-5'),
+    topWrapper: cn('row justify-between mb-5 p-1 pr-3'),
     divider: cn('mb-10', sexyHBorder(35)),
     groupInputer: 'w-60',
     leftPart: 'column w-64 gap-y-6',

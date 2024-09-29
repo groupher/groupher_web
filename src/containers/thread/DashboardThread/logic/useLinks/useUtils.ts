@@ -143,7 +143,9 @@ export default (): TRet => {
       }
 
       const linksAfter = [...links, newLinkItem]
-      store.headerLinks = reindexGroup(linksAfter)
+      store.commit({
+        headerLinks: reindexGroup(linksAfter),
+      })
     } else {
       // console.log('## 222: ', links)
 
@@ -153,7 +155,9 @@ export default (): TRet => {
         groupIndex: item.group === MORE_GROUP ? links.length + 2 : item.groupIndex,
       }))
 
-      store.headerLinks = reindexGroup(linksAfter)
+      store.commit({
+        headerLinks: reindexGroup(linksAfter),
+      })
     }
   }
 

@@ -144,9 +144,11 @@ const LinkEditor: FC<TProps> = ({
           <EditFooter>
             {isTouched ? (
               <SavingBar
-                prefix="是否添加"
+                prefix="确认添加"
                 onConfirm={confirmLinkEditing}
                 onCancel={cancelLinkEditing}
+                top={2}
+                bottom={2}
                 isTouched
                 minimal
               />

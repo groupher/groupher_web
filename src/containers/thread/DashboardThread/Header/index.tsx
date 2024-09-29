@@ -27,6 +27,7 @@ const Header: FC = () => {
         isTouched={isTouched}
         loading={saving}
         top={10}
+        width="w-11/12"
       />
     </div>
   )

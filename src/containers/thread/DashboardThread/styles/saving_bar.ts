@@ -16,7 +16,7 @@ export default ({ minimal, width, ...spacing }: TProps) => {
     wrapper: cn(
       'row-center h-11 py-2.5 pr-2 rounded-lg mr-3',
       width,
-      minimal && 'h-8 py-2',
+      minimal && 'h-8 py-2 mr-0',
       margin(spacing),
     ),
     hint: cn('ml-0.5', fg('text.title')),
