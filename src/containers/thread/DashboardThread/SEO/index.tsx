@@ -23,6 +23,8 @@ export default () => {
 
   const isTouched = getIsTouched()
 
+  console.log('## isTouched: ', isTouched)
+
   return (
     <Wrapper>
       <Portal title="SEO" desc="搜索引擎及社交媒体展示优化。" withDivider={false} />

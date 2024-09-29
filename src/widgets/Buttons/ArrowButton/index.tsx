@@ -4,14 +4,14 @@
  *
  */
 
-import { type FC, type ReactNode, useRef, useEffect, useState } from 'react'
+import type { FC, ReactNode } from 'react'
 
 import type { TColorName, TSpace } from '~/spec'
 
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 import Arrow from './Arrow'
-import { Wrapper, Text } from '../salon/arrow_button'
+import useSalon, { cn } from '../salon/arrow_button'
 
 export type TProps = {
   children?: ReactNode
@@ -41,32 +41,16 @@ const ArrowButton: FC<TProps> = ({
   down = false,
   fontSize = 13,
   initWidth = 55,
-  ...restProps
+  ...spacing
 }) => {
-  const primaryColor = usePrimaryColor()
-  const ref = useRef()
-  const [width, setWidth] = useState(initWidth)
+  const s = useSalon({ disabled, dimWhenIdle, leftLayout, ...spacing })
 
-  useEffect(() => {
-    if (ref.current) {
-      // @ts-ignore
-      setWidth(ref.current.offsetWidth)
-    }
-  }, [ref])
+  const primaryColor = usePrimaryColor()
+  const isLeft = leftLayout || up || down
 
   return (
-    <Wrapper
-      width={width}
-      className={className}
-      onClick={() => !disabled && onClick()}
-      $dimWhenIdle={dimWhenIdle}
-      disabled={disabled}
-      color={color || primaryColor}
-      $reverseColor={reverseColor}
-      fontSize={fontSize}
-      {...restProps}
-    >
-      {leftLayout && (
+    <div className={cn(s.wrapper, className)} onClick={() => !disabled && onClick()}>
+      {isLeft && (
         <Arrow
           color={color || primaryColor}
           reverseColor={reverseColor}
@@ -75,10 +59,8 @@ const ArrowButton: FC<TProps> = ({
           down={down}
         />
       )}
-      <Text ref={ref} fontSize={fontSize}>
-        {children}
-      </Text>
-      {!leftLayout && (
+      <div className={s.text}>{children}</div>
+      {!isLeft && (
         <Arrow
           color={color || primaryColor}
           reverseColor={reverseColor}
@@ -87,7 +69,7 @@ const ArrowButton: FC<TProps> = ({
           down={down}
         />
       )}
-    </Wrapper>
+    </div>
   )
 }
 

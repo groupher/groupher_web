@@ -1,15 +1,17 @@
 import useSEO from '../logic/useSEO'
-import { Wrapper, URL, Title, Desc, Hint } from '../styles/seo/search_engine_preview'
+
+import useSalon from '../styles/seo/search_engine_preview'
 
 export default () => {
   const { ogSiteName, ogDescription, ogUrl } = useSEO()
+  const s = useSalon()
 
   return (
-    <Wrapper>
-      <Hint>预览</Hint>
-      <URL>{ogUrl || '--'}</URL>
-      <Title>{ogSiteName || '--'} </Title>
-      <Desc>{ogDescription || '--'} </Desc>
-    </Wrapper>
+    <div className={s.wrapper}>
+      <div className={s.hint}>预览</div>
+      <div className={s.url}>{ogUrl || '--'}</div>
+      <h3 className={s.title}>{ogSiteName || '--'} </h3>
+      <p className={s.desc}>{ogDescription || '--'} </p>
+    </div>
   )
 }

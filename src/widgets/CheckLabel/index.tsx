@@ -8,7 +8,9 @@ import { type FC, memo } from 'react'
 
 import type { TActive, TSpace } from '~/spec'
 
-import { Wrapper, CheckIcon, Title } from './styles'
+import HookSVG from '~/icons/Hook'
+
+import useSalon, { cn } from './salon'
 
 type TProps = {
   testid?: string
@@ -19,14 +21,16 @@ type TProps = {
 const CheckLabel: FC<TProps> = ({
   testid = 'check-label',
   title = '--',
-  $active = true,
-  ...restProps
+  active = true,
+  ...spacing
 }) => {
+  const s = useSalon({ ...spacing })
+
   return (
-    <Wrapper $testid={testid} {...restProps}>
-      <CheckIcon $active={$active} />
-      <Title $active={$active}>{title}</Title>
-    </Wrapper>
+    <div className={s.wrapper} data-testid={testid}>
+      <HookSVG className={cn(s.checkIcon, active && s.checkIconActive)} />
+      <div className={cn(s.title, active && s.titleActive)}>{title}</div>
+    </div>
   )
 }
 

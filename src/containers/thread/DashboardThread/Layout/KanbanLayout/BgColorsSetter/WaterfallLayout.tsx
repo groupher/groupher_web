@@ -1,14 +1,7 @@
 import type { FC } from 'react'
-import { isEmpty } from 'ramda'
 
-import { INIT_KANBAN_COLORS } from '~/const/dashboard'
-import { Brick } from '~/widgets/Common'
-
-import useKanban from '../../../logic/useKanban'
-import {
-  Wrapper,
-  Header,
-  Content,
+import useSalon, {
+  cn,
 } from '../../../styles/layout/kanban_layout/bg_colors_setter/waterfall_layout'
 
 type TProps = {
@@ -18,46 +11,44 @@ type TProps = {
 }
 
 const WaterfallLayout: FC<TProps> = ({ isBoard1Hovered, isBoard2Hovered, isBoard3Hovered }) => {
-  const { kanbanBgColors } = useKanban()
-  const [BG1, BG2, BG3] = isEmpty(kanbanBgColors) ? INIT_KANBAN_COLORS : kanbanBgColors
+  const s = useSalon()
 
   return (
-    <Wrapper>
-      <Header $color={BG1} $active={isBoard1Hovered} />
-      <Content $height="110px">
-        <Brick $width={350} $height={6} $opacity={0.2} top={20} left={6} />
-        <Brick $width={50} $height={6} $opacity={0.12} top={20} right={10} />
-        <Brick $width={35} $height={6} $opacity={0.08} top={20} right={70} />
+    <div className={s.wrapper}>
+      <div className={cn(s.header, s.bgTodo, isBoard1Hovered && s.bgTodoActive)} />
+      <div className={s.content}>
+        <div className={cn(s.bar, 'top-5 left-2 w-4/12')} />
+        <div className={cn(s.bar, 'top-5 right-2 w-14 opacity-20')} />
 
-        <Brick $width={380} $height={6} $opacity={0.2} top={45} left={6} />
-        <Brick $width={50} $height={6} $opacity={0.12} top={45} right={10} />
-        <Brick $width={35} $height={6} $opacity={0.08} top={45} right={70} />
+        <div className={cn(s.bar, 'top-10 left-2 w-6/12 mt-0.5 opacity-20')} />
+        <div className={cn(s.bar, 'top-10 right-2 w-14 opacity-15')} />
 
-        <Brick $width={250} $height={6} $opacity={0.1} top={68} left={6} />
-        <Brick $width={50} $height={6} $opacity={0.08} top={68} right={10} />
-        <Brick $width={35} $height={6} $opacity={0.05} top={68} right={70} />
-      </Content>
-      <Header $color={BG2} $active={isBoard2Hovered} />
-      <Content $height="90px">
-        <Brick $width={350} $height={6} $opacity={0.2} top={20} left={6} />
-        <Brick $width={50} $height={6} $opacity={0.12} top={20} right={10} />
-        <Brick $width={35} $height={6} $opacity={0.08} top={20} right={70} />
+        <div className={cn(s.bar, 'top-16 left-2 w-4/12 opacity-10')} />
+        <div className={cn(s.bar, 'top-16 right-2 w-10 opacity-10')} />
+      </div>
+      <div className={cn(s.header, s.bgWip, isBoard2Hovered && s.bgWipActive)} />
+      <div className={s.content}>
+        <div className={cn(s.bar, 'top-5 left-2 w-6/12')} />
+        <div className={cn(s.bar, 'top-5 right-2 w-14 opacity-20')} />
 
-        <Brick $width={250} $height={6} $opacity={0.1} top={46} left={6} />
-        <Brick $width={50} $height={6} $opacity={0.08} top={46} right={10} />
-        <Brick $width={35} $height={6} $opacity={0.05} top={46} right={70} />
-      </Content>
-      <Header $color={BG3} $active={isBoard3Hovered} />
-      <Content $height="90px">
-        <Brick $width={350} $height={6} $opacity={0.2} top={20} left={6} />
-        <Brick $width={50} $height={6} $opacity={0.12} top={20} right={10} />
-        <Brick $width={35} $height={6} $opacity={0.08} top={20} right={70} />
+        <div className={cn(s.bar, 'top-10 left-2 w-7/12 mt-0.5 opacity-20')} />
+        <div className={cn(s.bar, 'top-10 right-2 w-14 opacity-15')} />
 
-        <Brick $width={250} $height={6} $opacity={0.1} top={46} left={6} />
-        <Brick $width={50} $height={6} $opacity={0.08} top={46} right={10} />
-        <Brick $width={35} $height={6} $opacity={0.05} top={46} right={70} />
-      </Content>
-    </Wrapper>
+        <div className={cn(s.bar, 'top-16 left-2 w-4/12 opacity-10')} />
+        <div className={cn(s.bar, 'top-16 right-2 w-10 opacity-10')} />
+      </div>
+      <div className={cn(s.header, s.bgDone, isBoard3Hovered && s.bgDoneActive)} />
+      <div className={s.content}>
+        <div className={cn(s.bar, 'top-5 left-2 w-3/12')} />
+        <div className={cn(s.bar, 'top-5 right-2 w-14 opacity-20')} />
+
+        <div className={cn(s.bar, 'top-10 left-2 w-7/12 mt-0.5 opacity-20')} />
+        <div className={cn(s.bar, 'top-10 right-2 w-14 opacity-15')} />
+
+        <div className={cn(s.bar, 'top-16 left-2 w-4/12 opacity-10')} />
+        <div className={cn(s.bar, 'top-16 right-2 w-10 opacity-10')} />
+      </div>
+    </div>
   )
 }
 

@@ -1,8 +1,6 @@
 import { DOC_LAYOUT, DOC_FAQ_LAYOUT, DASHBOARD_DESC_LAYOUT } from '~/const/layout'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 import { callDashboardDesc } from '~/signal'
 
-import { Br, Divider } from '~/widgets/Common'
 import ArrowButton from '~/widgets/Buttons/ArrowButton'
 import CheckLabel from '~/widgets/CheckLabel'
 
@@ -14,27 +12,21 @@ import MainTemplate from './MainTemplate'
 import FaqTemplate from './FaqTemplate'
 
 import useDoc from '../../logic/useDoc'
-import {
-  Wrapper,
-  SelectWrapper,
-  Layout,
-  LayoutTitle,
-  Block,
-  Main,
-} from '../../styles/layout/doc_layout'
+import useSalon, { cn } from '../../styles/layout/doc_layout'
 
 export default () => {
+  const s = useSalon()
+
   const { docLayout, docFaqLayout, getIsTouched, getIsFaqTouched, saving, edit } = useDoc()
-  const primaryColor = usePrimaryColor()
   const isTouched = getIsTouched()
   const isFaqTouched = getIsFaqTouched()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <SectionLabel
         title="封面目录布局"
         desc={
-          <>
+          <div className="inline-flex">
             全部文档的目录布局。
             <ArrowButton
               onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
@@ -42,76 +34,51 @@ export default () => {
             >
               查看示例
             </ArrowButton>
-          </>
+          </div>
         }
       />
-      <SelectWrapper>
-        <Layout onClick={() => edit(DOC_LAYOUT.BLOCKS, 'docLayout')}>
-          <Block $active={docLayout === DOC_LAYOUT.BLOCKS} $color={primaryColor}>
-            <Br bottom={14} />
-            <Main>
-              <MainTemplate layout={DOC_LAYOUT.BLOCKS} />
-            </Main>
-          </Block>
-          <LayoutTitle $active={docLayout === DOC_LAYOUT.BLOCKS}>
-            <CheckLabel
-              title="块状排列"
-              $active={docLayout === DOC_LAYOUT.BLOCKS}
-              top={15}
-              left={-15}
-            />
-          </LayoutTitle>
-        </Layout>
+      <div className={s.select}>
+        <div className={s.layout} onClick={() => edit(DOC_LAYOUT.BLOCKS, 'docLayout')}>
+          <div className={cn(s.block, docLayout === DOC_LAYOUT.BLOCKS && s.blockActive)}>
+            <MainTemplate layout={DOC_LAYOUT.BLOCKS} />
+          </div>
+          <CheckLabel title="块状排列" active={docLayout === DOC_LAYOUT.BLOCKS} top={4} />
+        </div>
 
-        <Layout onClick={() => edit(DOC_LAYOUT.LISTS, 'docLayout')}>
-          <Block $active={docLayout === DOC_LAYOUT.LISTS} $color={primaryColor}>
-            <Br bottom={14} />
-            <Main>
-              <MainTemplate layout={DOC_LAYOUT.LISTS} />
-            </Main>
-          </Block>
-          <LayoutTitle $active={docLayout === DOC_LAYOUT.LISTS}>
-            <CheckLabel
-              title="列表排列"
-              $active={docLayout === DOC_LAYOUT.LISTS}
-              top={15}
-              left={-15}
-            />
-          </LayoutTitle>
-        </Layout>
+        <div className={s.layout} onClick={() => edit(DOC_LAYOUT.LISTS, 'docLayout')}>
+          <div className={cn(s.block, docLayout === DOC_LAYOUT.LISTS && s.blockActive)}>
+            <MainTemplate layout={DOC_LAYOUT.LISTS} />
+          </div>
+          <CheckLabel title="列表排列" active={docLayout === DOC_LAYOUT.LISTS} top={4} />
+        </div>
 
-        <Layout onClick={() => edit(DOC_LAYOUT.CARDS, 'docLayout')}>
-          <Block $active={docLayout === DOC_LAYOUT.CARDS} $color={primaryColor}>
-            <Br bottom={14} />
-            <Main>
-              <MainTemplate layout={DOC_LAYOUT.CARDS} />
-            </Main>
-          </Block>
-          <LayoutTitle $active={docLayout === DOC_LAYOUT.CARDS}>
-            <CheckLabel
-              title="卡片排列"
-              $active={docLayout === DOC_LAYOUT.CARDS}
-              top={15}
-              left={-15}
-            />
-          </LayoutTitle>
-        </Layout>
-      </SelectWrapper>
+        <div className={s.layout} onClick={() => edit(DOC_LAYOUT.CARDS, 'docLayout')}>
+          <div
+            className={cn(
+              s.block,
+              'py-2 pl-2.5 pr-0',
+              docLayout === DOC_LAYOUT.CARDS && s.blockActive,
+            )}
+          >
+            <MainTemplate layout={DOC_LAYOUT.CARDS} />
+          </div>
+          <CheckLabel title="卡片排列" active={docLayout === DOC_LAYOUT.CARDS} top={4} />
+        </div>
+      </div>
       <SavingBar
         isTouched={isTouched}
         field={SETTING_FIELD.DOC_LAYOUT}
         loading={saving}
-        width="600px"
-        top={20}
-        bottom={30}
+        width="w-11/12"
+        top={10}
       />
 
-      <Divider top={50} bottom={60} />
+      <div className={s.divider} />
 
       <SectionLabel
         title="常见问题（FAQ）布局"
         desc={
-          <>
+          <div className="inline-flex">
             当前设置仅针对常见问题的展示样式。
             <ArrowButton
               onClick={() => callDashboardDesc(DASHBOARD_DESC_LAYOUT.POST_LIST)}
@@ -119,51 +86,30 @@ export default () => {
             >
               查看示例
             </ArrowButton>
-          </>
+          </div>
         }
       />
-      <SelectWrapper>
-        <Layout onClick={() => edit(DOC_FAQ_LAYOUT.COLLAPSE, 'docFaqLayout')}>
-          <Block $active={docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE} $color={primaryColor}>
-            <Br bottom={14} />
-            <Main>
-              <FaqTemplate layout={DOC_FAQ_LAYOUT.COLLAPSE} />
-            </Main>
-          </Block>
-          <LayoutTitle $active={docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE}>
-            <CheckLabel
-              title="可折叠"
-              $active={docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE}
-              top={15}
-              left={-15}
-            />
-          </LayoutTitle>
-        </Layout>
-        <Layout onClick={() => edit(DOC_FAQ_LAYOUT.FLAT, 'docFaqLayout')}>
-          <Block $active={docFaqLayout === DOC_FAQ_LAYOUT.FLAT} $color={primaryColor}>
-            <Br bottom={14} />
-            <Main>
-              <FaqTemplate layout={DOC_FAQ_LAYOUT.FLAT} />
-            </Main>
-          </Block>
-          <LayoutTitle $active={docFaqLayout === DOC_FAQ_LAYOUT.FLAT}>
-            <CheckLabel
-              title="铺开式"
-              $active={docFaqLayout === DOC_FAQ_LAYOUT.FLAT}
-              top={15}
-              left={-15}
-            />
-          </LayoutTitle>
-        </Layout>
-      </SelectWrapper>
+      <div className={s.select}>
+        <div className={s.layout} onClick={() => edit(DOC_FAQ_LAYOUT.COLLAPSE, 'docFaqLayout')}>
+          <div className={cn(s.block, docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE && s.blockActive)}>
+            <FaqTemplate layout={DOC_FAQ_LAYOUT.COLLAPSE} />
+          </div>
+          <CheckLabel title="可折叠" active={docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE} top={4} />
+        </div>
+        <div className={s.layout} onClick={() => edit(DOC_FAQ_LAYOUT.FLAT, 'docFaqLayout')}>
+          <div className={cn(s.block, docFaqLayout === DOC_FAQ_LAYOUT.FLAT && s.blockActive)}>
+            <FaqTemplate layout={DOC_FAQ_LAYOUT.FLAT} />
+          </div>
+          <CheckLabel title="铺开式" active={docFaqLayout === DOC_FAQ_LAYOUT.FLAT} top={4} />
+        </div>
+      </div>
       <SavingBar
         isTouched={isFaqTouched}
         field={SETTING_FIELD.DOC_FAQ_LAYOUT}
         loading={saving}
-        width="600px"
-        top={20}
-        bottom={30}
+        width="w-11/12"
+        top={10}
       />
-    </Wrapper>
+    </div>
   )
 }

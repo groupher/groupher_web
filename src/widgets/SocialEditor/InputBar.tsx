@@ -4,13 +4,16 @@
  *
  */
 
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TSocialItem } from '~/spec'
 
 import { Trans } from '~/i18n'
 
-import { Wrapper, IconWrapper, DeleteWrapper, DeleteIcon, Inputer, Icon } from './styles/input_bar'
+import DeleteSVG from '~/icons/DeleteSolid'
+import Input from '~/widgets/Input'
+
+import useSalon, { Icon } from './salon/input_bar'
 
 type TProps = {
   social: TSocialItem
@@ -19,23 +22,23 @@ type TProps = {
 }
 
 const InputBar: FC<TProps> = ({ social, onDelete, onChange }) => {
+  const s = useSalon()
+
   const SocalIcon = Icon[social.type]
 
   return (
-    <Wrapper>
-      <IconWrapper>
-        <SocalIcon $active />
-      </IconWrapper>
-      <Inputer
+    <div className={s.wrapper}>
+      <div className={s.iconWrapper}>
+        <SocalIcon className={s.icon} />
+      </div>
+      <Input
         placeholder={Trans(social.type)}
         value={social.link}
         onChange={(e) => onChange(social.type, e.target.value)}
       />
-      <DeleteWrapper onClick={() => onDelete(social)}>
-        <DeleteIcon />
-      </DeleteWrapper>
-    </Wrapper>
+      <DeleteSVG onClick={() => onDelete(social)} className={s.deleteIcon} />
+    </div>
   )
 }
 
-export default memo(InputBar)
+export default InputBar

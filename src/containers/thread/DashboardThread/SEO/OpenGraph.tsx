@@ -1,49 +1,56 @@
 import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
+import Input from '~/widgets/Input'
+import ArrowLinker from '~/widgets/ArrowLinker'
 
 import SectionLabel from '../SectionLabel'
 import SearchEnginePreview from './SearchEnginePreview'
 
 import useSEO from '../logic/useSEO'
-import { Wrapper, Label, EnableDesc, DetailLink, Inputer } from '../styles/seo/open_graph'
+import useSalon from '../styles/seo/open_graph'
 
 /*
  see: https://mintlify.com/docs/settings/seo for details
 */
 
 export default () => {
+  const s = useSalon()
   const { seoEnable, ogSiteName, ogTitle, ogDescription, ogImage, ogUrl, edit, toggleSEO } =
     useSEO()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <SectionLabel
         title="允许搜索引擎收录"
         width="90%"
         desc={
-          <EnableDesc>
+          <p className={s.enableDesc}>
             请确保你知道该操作的含义，
-            <DetailLink href="https://developers.google.com/search/docs/crawling-indexing/block-indexing?hl=zh-cn">
+            <ArrowLinker href="https://developers.google.com/search/docs/crawling-indexing/block-indexing?hl=zh-cn">
               实现原理
-            </DetailLink>
-          </EnableDesc>
+            </ArrowLinker>
+          </p>
         }
         addon={<ToggleSwitch checked={seoEnable} onChange={(v) => toggleSEO(v)} />}
       />
       {seoEnable && (
         <>
           <SearchEnginePreview />
-          <Label>og:site_name</Label>
-          <Inputer value={ogSiteName} onChange={(e) => edit(e, 'ogSiteName')} />
-          <Label>og:title</Label>
-          <Inputer value={ogTitle} onChange={(e) => edit(e, 'ogTitle')} />
-          <Label>og:description</Label>
-          <Inputer value={ogDescription} onChange={(e) => edit(e, 'ogDescription')} />
-          <Label>og:url</Label>
-          <Inputer value={ogUrl} onChange={(e) => edit(e, 'ogUrl')} />
-          <Label>og:image</Label>
-          <Inputer value={ogImage} onChange={(e) => edit(e, 'ogImage')} />
+          <label className={s.label}>og:site_name</label>
+          <Input className={s.input} value={ogSiteName} onChange={(e) => edit(e, 'ogSiteName')} />
+          <label className={s.label}>og:title</label>
+          <Input className={s.input} value={ogTitle} onChange={(e) => edit(e, 'ogTitle')} />
+          <label className={s.label}>og:description</label>
+          <Input
+            className={s.input}
+            value={ogDescription}
+            onChange={(e) => edit(e, 'ogDescription')}
+          />
+          <label className={s.label}>og:url</label>
+          <Input className={s.input} value={ogUrl} onChange={(e) => edit(e, 'ogUrl')} />
+          <label className={s.label}>og:image</label>
+          <Input className={s.input} value={ogImage} onChange={(e) => edit(e, 'ogImage')} />
         </>
       )}
-    </Wrapper>
+    </div>
   )
 }

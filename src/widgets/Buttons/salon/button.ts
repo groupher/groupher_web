@@ -9,20 +9,24 @@ export { cn } from '~/css'
 type TProps = {
   ghost?: boolean
   type?: 'primary' | 'red'
+  width: string
   space?: number | null
   size?: TSizeTSM
   noBorder?: boolean
+  loading: boolean
   disabled?: boolean
   noLeftRouned: boolean
 } & TSpace
 
 export default ({
   type,
+  width,
   ghost,
   noBorder,
   size,
   space,
   disabled,
+  loading,
   noLeftRouned,
   ...spacing
 }: TProps) => {
@@ -35,19 +39,21 @@ export default ({
     wrapper: cn(
       common,
       disabled && 'saturate-50 cursor-not-allowed',
-      space && `pl-${space} pr-${space}`,
       !ghost && !isRed && !noBorder && 'border border-4',
-      'w-full rounded-2xl',
+      width,
+      'rounded-xl',
       br('divider'),
       !ghost && bg('divider'),
+      loading && bg('transparent'),
       margin(spacing),
     ),
     inner: cn(
-      'align-both relative text-center border border-transparent pointer',
+      'align-both relative text-center break-keep border border-transparent pointer',
       'hover:brightness-110 active:brightness-95 trans-all-200',
       getRouned(size),
-      getHeight(size),
       getPadding(size),
+      getHeight(size),
+      space && `px-${space}`,
       getFontSize(size),
       noLeftRouned && 'rounded-tl-none rounded-bl-none',
       !ghost && primary('bg'),
@@ -58,12 +64,14 @@ export default ({
       ghost && primary('borderSoft'),
       ghost && bg('transparent'),
       ghost ? primary('fg') : fg('button.fg'),
+      isRed && 'border-transparent',
+      loading && bg('transparent'),
     ),
     innerRed: cn(
       'hover:brightness-105 active:brightness-95 trans-all-200',
       bg('button.redBg'),
       fg('rainbow.red'),
     ),
-    children: 'align-both relative w-auto',
+    children: cn('align-both relative w-auto'),
   }
 }

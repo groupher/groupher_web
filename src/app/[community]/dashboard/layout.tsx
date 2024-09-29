@@ -1,29 +1,25 @@
 'use client'
 
-import useMetric from '~/hooks/useMetric'
-
 import CommunityDigest from '~/widgets/CommunityDigest'
 
-import { Wrapper, InnerWrapper, ContentWrapper, FrameWrapper, MainWrapper } from './styles'
+import useSalon from './salon'
 
 import SideMenu from '~/containers/thread/DashboardThread/SideMenu'
 
 const Layout = ({ children }) => {
-  const metric = useMetric()
+  const s = useSalon()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <CommunityDigest />
 
-      <InnerWrapper metric={metric}>
-        <ContentWrapper>
-          <FrameWrapper metric={metric}>
-            <SideMenu />
-            <MainWrapper>{children}</MainWrapper>
-          </FrameWrapper>
-        </ContentWrapper>
-      </InnerWrapper>
-    </Wrapper>
+      <div className={s.inner}>
+        <div className={s.content}>
+          <SideMenu />
+          <div className={s.main}>{children}</div>
+        </div>
+      </div>
+    </div>
   )
 }
 

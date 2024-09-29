@@ -11,7 +11,7 @@ export const getHeight = (size: string): string => {
     }
 
     default: {
-      return 'h-9'
+      return 'h-8'
     }
   }
 }
@@ -20,6 +20,10 @@ export const getRouned = (size: string): string => {
   switch (size) {
     case SIZE.TINY: {
       return 'rounded-md'
+    }
+
+    case SIZE.SMALL: {
+      return 'rounded-lg'
     }
 
     default: {
@@ -47,6 +51,10 @@ export const getPadding = (size: string): string => {
 export const getFontSize = (size: string): string => {
   switch (size) {
     case SIZE.TINY: {
+      return 'text-xs'
+    }
+
+    case SIZE.SMALL: {
       return 'text-xs'
     }
 

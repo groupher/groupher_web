@@ -7,7 +7,7 @@
 import { type FC, memo } from 'react'
 
 import type { TSpace } from '~/spec'
-import { Wrapper, Value, Unit, RangeInput } from './styles'
+import useSalon from './salon'
 
 type TProps = {
   testid?: string
@@ -25,25 +25,28 @@ const RangeSlider: FC<TProps> = ({
   value = 0,
   min = -15,
   max = 15,
-  width = 'auto',
+  width = 'w-auto',
   unit = 'deg',
   onChange,
-  ...restProps
+  ...spacing
 }) => {
+  const s = useSalon({ width, ...spacing })
+
   return (
-    <Wrapper $testid={testid} width={width} {...restProps}>
-      <Value>
+    <div className={s.wrapper} data-testid={testid}>
+      <div className={s.value}>
         {value}
-        <Unit>{unit}</Unit>
-      </Value>
-      <RangeInput
+        <div className={s.unit}>{unit}</div>
+      </div>
+      <input
+        className={s.range}
         value={value}
         type="range"
         min={min}
         max={max}
         onChange={(v) => onChange(Number.parseInt(v.target.value, 10))}
       />
-    </Wrapper>
+    </div>
   )
 }
 

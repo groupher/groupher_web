@@ -1,41 +1,21 @@
-import type { TActive } from '~/spec'
+export { cn } from '~/css'
 
-import styled, { css, theme } from '~/css'
-import BrandSVG from '~/icons/Brand'
+import useTwBelt from '~/hooks/useTwBelt'
+import useBase from '.'
 
-import { BaseSection, BlockBase } from '.'
+export default () => {
+  const { cn, primary, isBlackPrimary, fg, fill } = useTwBelt()
+  const base = useBase()
 
-export const Wrapper = styled(BaseSection)``
-export const SelectWrapper = styled.div`
-  ${css.row('align-center')};
-  gap: 0 42px;
-  width: 100%;
-`
-export const Brand = styled.div`
-  ${css.row('align-center')};
-`
-export const BrandIcon = styled(BrandSVG)`
-  fill: ${theme('article.digest')};
-  ${css.size(22)};
-`
-export const BrandTitle = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 16px;
-  font-weight: 600;
-`
-export const Layout = styled.div`
-  ${css.column('align-both')};
-`
-export const Block = styled(BlockBase)`
-  width: 184px;
-  height: 80px;
-`
-export const LayoutTitle = styled.div<TActive>`
-  opacity: ${({ $active }) => ($active ? 1 : 0.65)};
-
-  ${Layout}:hover & {
-    opacity: 1;
-    cursor: pointer;
+  return {
+    wrapper: base.baseSection,
+    block: cn(base.blockBase, 'w-44 h-20'),
+    blockActive: base.blockBaseActive,
+    select: cn('row-center gap-x-10 w-full'),
+    brand: 'row-center',
+    brandIcon: cn('size-6', primary('fill'), isBlackPrimary && fill('text.link')),
+    brandTitle: cn('text-base bold-sm', primary('fg'), isBlackPrimary && fg('text.link')),
+    layout: 'column-align-both group',
+    layoutTitleActive: cn('opacity-100'),
   }
-  transition: all 0.2s;
-`
+}

@@ -8,5 +8,5 @@ import SummaryLayout from './SummaryLayout'
 export default () => {
   const { twCard } = useSEO()
 
-  return twCard === TW_CARD.SUMMARY_LARGE_IMAGE ? <SummaryLargeLayout /> : <SummaryLayout />
+  return twCard !== TW_CARD.SUMMARY_LARGE_IMAGE ? <SummaryLargeLayout /> : <SummaryLayout />
 }

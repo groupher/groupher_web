@@ -1,39 +1,16 @@
-import styled, { css, theme } from '~/css'
-import DeleteSVG from '~/icons/DeleteSolid'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export { Desc, Inputer } from '.'
+export default () => {
+  const { cn, fill } = useTwBelt()
 
-export const Wrapper = styled.div`
-  width: 300px;
-`
-export const InputWrapper = styled.div`
-  position: relative;
-`
-export const DeleteWrapper = styled.div`
-  ${css.circle(18)};
-  ${css.row('align-both')};
-  position: absolute;
-  top: 8px;
-  right: -8px;
-  background: #ffffff42;
-  z-index: 2;
-`
-export const DeleteIcon = styled(DeleteSVG)`
-  ${css.size(18)};
-  fill: ${theme('article.digest')};
-  opacity: 1;
-
-  ${DeleteWrapper}:hover & {
-    fill: ${theme('rainbow.red')};
-    opacity: 1;
-    cursor: pointer;
+  return {
+    wrapper: 'w-full',
+    inputWrapper: 'relative',
+    deleteIcon: cn(
+      'pointer absolute top-2 -right-2',
+      'size-5 trans-all-200',
+      `hover:${fill('rainbow.red')}`,
+      fill('text.digest'),
+    ),
   }
-
-  &:before {
-    content: '';
-    position: absolute;
-    ${css.size(18)};
-  }
-
-  transition: all 0.2s;
-`
+}

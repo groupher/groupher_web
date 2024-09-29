@@ -1,79 +1,34 @@
-import type { TActive, TColorName } from '~/spec'
+import { isEmpty } from 'ramda'
 
-import styled, { css, theme, rainbow, rainbowSoft } from '~/css'
+import { INIT_KANBAN_COLORS } from '~/const/dashboard'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import DiceSVG from '~/icons/Dice'
-import ResetSVG from '~/icons/Reset'
+import useKanban from '../../../../logic/useKanban'
 
-export { Bar, Circle } from '..'
+export { cn } from '~/css'
 
-export const ColorsWrapper = styled.div`
-  ${css.row('align-center')};
-  gap: 0 10px;
-  width: 94%;
-`
-export const Action = styled.div<TActive>`
-  ${css.row('align-center')};
-  color: ${theme('article.info')};
-  font-size: 12px;
-  opacity: ${({ $active }) => ($active ? 1 : 0.85)};
-  margin-top: 5px;
+export default () => {
+  const { cn, fg, br, bg, fill, rainbowSoft, rainbow } = useTwBelt()
 
-  &:hover {
-    cursor: pointer;
-    opacity: 1;
+  const { kanbanBgColors } = useKanban()
+  const [BG1, BG2, BG3] = isEmpty(kanbanBgColors) ? INIT_KANBAN_COLORS : kanbanBgColors
+
+  return {
+    colorsWrapper: cn('row-center gap-x-2 w-full'),
+    preset: cn(
+      'align-both rounded-md gap-x-2.5 w-20 h-8 border',
+      `hover:${bg('hoverBg')}`,
+      br('divider'),
+    ),
+    colorBall: cn('size-4 circle border pointer hover:scale-110 trans-all-100'),
+    todoBall: cn(rainbowSoft(BG1), rainbow(BG1, 'border')),
+    wipBall: cn(rainbowSoft(BG2), rainbow(BG2, 'border')),
+    doneBall: cn(rainbowSoft(BG3), rainbow(BG3, 'border')),
+    action: cn(
+      'row-center group text-xs mt-1 mr-1 pointer',
+      fg('text.digest'),
+      `hover:${fg('text.title')}`,
+    ),
+    resetIcon: cn('size-3 mr-1 group-hover:rotate-180 trans-all-200', fill('text.digest')),
   }
-
-  transition: all 0.2s;
-`
-export const ResetIcon = styled(ResetSVG)`
-  ${css.size(13)};
-  fill: ${theme('article.info')};
-  margin-right: 5px;
-`
-
-export const DiceIcon = styled(DiceSVG)<{ rotate: number }>`
-  margin-top: -1px;
-  ${css.size(13)};
-  fill: ${theme('article.info')};
-  margin-right: 5px;
-  transform: ${({ rotate }) => `rotate(${rotate}deg)`};
-  transition: all 0.2s;
-`
-
-export const Preset = styled.div<{ setable?: boolean }>`
-  ${css.row('align-both')};
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  border-radius: 10px;
-  gap: 0 8px;
-  width: 80px;
-  height: 30px;
-
-  &:hover {
-    cursor: ${({ setable }) => (!setable ? 'pointer' : 'normal')};
-    border-color: ${theme('article.digest')};
-    border-color: ${({ setable }) => (!setable ? theme('article.digest') : theme('divider'))};
-    box-shadow: ${css.cardShadow};
-  }
-
-  transition: all 0.2s;
-`
-
-type TColorBall = { color: TColorName; setable?: boolean }
-export const ColorBall = styled.div<TColorBall>`
-  background-color: ${({ color }) => rainbowSoft(color)};
-
-  border: 1px dashed;
-  border-color: ${({ color }) => rainbow(color)};
-  ${css.circle(16)};
-  padding: 5px;
-
-  &:hover {
-    border: ${({ setable }) => (setable ? '1px solid' : '1px dashed')};
-    border-color: ${({ color }) => rainbow(color)};
-  }
-
-  transition: all 0.2s;
-  cursor: pointer;
-`
+}

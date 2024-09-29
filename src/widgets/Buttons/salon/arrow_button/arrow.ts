@@ -1,119 +1,20 @@
-// import Img from '~/Img'
-import type { TColor } from '~/spec'
-import styled, { css, rainbowLink } from '~/css'
+import type { TColorName } from '~/spec'
 
-import { Wrapper as ButtonWrapper } from '.'
+import useTwBelt from '~/hooks/useTwBelt'
 
-type TArrow = { $down?: boolean; $up?: boolean } & { $reverseColor: boolean } & TColor
+type TProps = {
+  color?: TColorName | null
+}
+export default ({ color }: TProps) => {
+  const { cn, linker } = useTwBelt()
 
-const BaseArrow = styled.div<TArrow>`
-  opacity: 0.65;
-  width: 0;
-  height: 0;
+  const base = cn('size-3 trans-all-100', linker('fill'))
 
-  position: relative;
-  background: transparent;
-  border-color: inherit;
-
-  border: dotted;
-  border-width: 0 0px 1px 0;
-
-  transform: ${({ $up, $down }) => {
-    if ($down) return 'rotate(90deg)'
-    if ($up) return 'rotate(-90deg)'
-
-    return 'none'
-  }};
-
-  ${ButtonWrapper}:hover & {
-    width: 8px;
-    height: 1px;
-    opacity: 0.9;
+  return {
+    rightArrow: cn(base, 'size-3 ml-0.5 group-hover:ml-1.5 rotate-180'),
+    leftArrow: cn(base, 'size-4 pr-1 group-hover:-ml-1 group-hover:mr-1'),
+    upArrow: cn(base, 'size-4 pr-1 mt-1 rotate-90 group-hover:mt-0.5'),
+    downArrow: cn(base, 'size-4 pr-1 -mt-1 -rotate-90 group-hover:mt-0'),
+    wrapper: '',
   }
-
-  ${ButtonWrapper}:hover &:before {
-    right: 0;
-  }
-
-  transition: 0.1s;
-
-  &:before {
-    content: '';
-    box-sizing: border-box;
-    position: absolute;
-    border: solid;
-    border-color: ${({ $color, $reverseColor }) => {
-      if ($reverseColor) return 'white'
-
-      return rainbowLink($color)
-    }};
-    border-width: 0 1px 1px 0;
-    padding: 3px;
-    transform: rotate(-45deg);
-    transition: 0.1s ease-out;
-  }
-`
-
-export const LeftArrow = styled(BaseArrow)`
-  box-sizing: border-box;
-  margin-right: 6px;
-
-  ${ButtonWrapper}:hover & {
-    width: 8px;
-    margin-right: 0;
-  }
-
-  ${ButtonWrapper}:hover &:before {
-    left: -1px;
-  }
-
-  &:before {
-    ${css.size(11)};
-    border-width: 1px 0 0 1px;
-    transform: rotate(-45deg) scale(0.7);
-    top: -5px;
-    left: 2px;
-  }
-`
-
-export const RightArrow = styled(BaseArrow)`
-  box-sizing: border-box;
-  margin-left: 6px;
-  margin-top: 0 !important;
-
-  ${ButtonWrapper}:hover & {
-    width: 8px;
-    margin-left: 0px;
-  }
-
-  ${ButtonWrapper}:hover &:before {
-    right: 0;
-  }
-
-  &:before {
-    top: -3px;
-    right: 3px;
-  }
-`
-
-export const DownArrow = styled(RightArrow)`
-  margin-left: 4px;
-  margin-top: 8px;
-
-  ${ButtonWrapper}:hover & {
-    width: 8px;
-    margin-left: 0;
-    margin-top: 0;
-  }
-`
-
-export const UpArrow = styled(RightArrow)`
-  margin-left: 4px;
-  margin-top: -9px;
-
-  ${ButtonWrapper}:hover & {
-    width: 8px;
-    margin-left: 0;
-    margin-top: 2px;
-  }
-`
+}

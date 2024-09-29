@@ -1,7 +1,8 @@
 import { KANBAN_CARD_LAYOUT } from '~/const/layout'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import { Space, Brick } from '~/widgets/Common'
+import UpvoteSVG from '~/icons/Upvote'
+import CommentSVG from '~/icons/Comment'
+
 import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../../constant'
@@ -9,84 +10,62 @@ import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
 import useKanban from '../../logic/useKanban'
-import {
-  Wrapper,
-  SelectWrapper,
-  Layout,
-  LayoutTitle,
-  Block,
-  Footer,
-  UpvoteIcon,
-  CommentIcon,
-} from '../../styles/layout/kanban_layout/item_card_layout'
+import useSalon, { cn } from '../../styles/layout/kanban_layout/item_card_layout'
 
 export default () => {
+  const s = useSalon()
+
   const { kanbanCardLayout: cardLayout, getKanbanCardLayoutTouched, saving, edit } = useKanban()
-  const primaryColor = usePrimaryColor()
   const isTouched = getKanbanCardLayoutTouched()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <SectionLabel
         title="看板卡片布局"
         desc="「看板」卡片的显示样式，只在整体布局为「经典」时有效。"
       />
-      <SelectWrapper>
-        <Layout onClick={() => edit(KANBAN_CARD_LAYOUT.SIMPLE, 'kanbanCardLayout')}>
-          <Block $active={cardLayout === KANBAN_CARD_LAYOUT.SIMPLE} $color={primaryColor}>
-            <Brick $width={30} $height={5} $opacity={0.3} top={18} left={15} />
-            <Brick $width={128} $height={10} $opacity={0.4} top={32} />
-            <Brick $width={38} $height={5} $opacity={0.2} bottom={14} right={10} />
-            <Footer bottom={10}>
-              <UpvoteIcon size={15} />
-              <Space right={12} />
-              <CommentIcon />
-              <div className="grow" />
-            </Footer>
-          </Block>
-          <LayoutTitle $active={cardLayout === KANBAN_CARD_LAYOUT.SIMPLE}>
-            <CheckLabel
-              title="简洁"
-              $active={cardLayout === KANBAN_CARD_LAYOUT.SIMPLE}
-              top={15}
-              left={-15}
-            />
-          </LayoutTitle>
-        </Layout>
-        <Layout onClick={() => edit(KANBAN_CARD_LAYOUT.FULL, 'kanbanCardLayout')}>
-          <Block $active={cardLayout === KANBAN_CARD_LAYOUT.FULL} $color={primaryColor}>
-            <Brick $width={30} $height={5} $opacity={0.3} top={15} left={15} />
-            <Brick $width={128} $height={8} $opacity={0.4} top={28} />
-            <Brick $width={80} $height={5} $opacity={0.2} top={44} />
+      <div className={s.select}>
+        <div
+          className={s.layout}
+          onClick={() => edit(KANBAN_CARD_LAYOUT.SIMPLE, 'kanbanCardLayout')}
+        >
+          <div className={cn(s.block, cardLayout === KANBAN_CARD_LAYOUT.SIMPLE && s.blockActive)}>
+            <div className={cn(s.bar, 'w-16')} />
+            <div className={cn(s.bar, 'top-8 w-28 h-2.5 opacity-60')} />
+            <div className={cn(s.bar, 'bottom-4 right-4 w-10 opacity-30')} />
 
-            <Brick $width={10} $height={10} $opacity={0.4} bottom={12} left={34} $radius={100} />
-            <Brick $width={10} $height={10} $opacity={0.4} bottom={12} left={48} $radius={100} />
-            <Brick $width={10} $height={10} $opacity={0.4} bottom={12} left={62} $radius={100} />
+            <UpvoteSVG className={cn(s.icon, 'bottom-3 left-4')} />
+            <CommentSVG className={cn(s.icon, 'size-3.5 bottom-3.5 left-12')} />
+          </div>
 
-            <Footer bottom={10}>
-              <UpvoteIcon size={15} />
-              <Space right={200} />
-              <CommentIcon />
-            </Footer>
-          </Block>
-          <LayoutTitle $active={cardLayout === KANBAN_CARD_LAYOUT.FULL}>
-            <CheckLabel
-              title="摘要"
-              $active={cardLayout === KANBAN_CARD_LAYOUT.FULL}
-              top={15}
-              left={-15}
-            />
-          </LayoutTitle>
-        </Layout>
-      </SelectWrapper>
+          <CheckLabel title="简洁" active={cardLayout === KANBAN_CARD_LAYOUT.SIMPLE} top={2} />
+        </div>
+        <div className={s.layout} onClick={() => edit(KANBAN_CARD_LAYOUT.FULL, 'kanbanCardLayout')}>
+          <div className={cn(s.block, cardLayout === KANBAN_CARD_LAYOUT.FULL && s.blockActive)}>
+            <div className={cn(s.bar, 'w-16')} />
+            <div className={cn(s.bar, 'top-8 w-28 h-2.5 opacity-60')} />
+
+            <div className={cn(s.bar, 'bottom-12 right-4 w-10 mb-1 opacity-20')} />
+
+            <UpvoteSVG className={cn(s.icon, 'bottom-3 left-4')} />
+            <div className={cn(s.userAvatar, 'left-10 bottom-3.5')} />
+            <div className={cn(s.userAvatar, 'left-16 bottom-3.5 -ml-1 opacity-30')} />
+            <div className={cn(s.userAvatar, 'left-20 bottom-3.5 opacity-20')} />
+
+            <CommentSVG className={cn(s.icon, 'size-3.5 bottom-3.5 right-10')} />
+
+            <div className={cn(s.bar, 'w-4 bottom-5 right-4 mt-1 opacity-20')} />
+          </div>
+          <CheckLabel title="摘要" active={cardLayout === KANBAN_CARD_LAYOUT.FULL} top={2} />
+        </div>
+      </div>
 
       <SavingBar
-        width="540px"
         isTouched={isTouched}
         field={SETTING_FIELD.KANBAN_CARD_LAYOUT}
         loading={saving}
-        top={20}
+        top={10}
       />
-    </Wrapper>
+    </div>
   )
 }

@@ -3,30 +3,32 @@ import { type FC, memo, Fragment } from 'react'
 import type { TSizeSM, TSpace } from '~/spec'
 import SIZE from '~/const/size'
 
-import { Space } from '~/widgets/Common'
+import CommentSVG from '~/icons/Comment'
 
-import { Wrapper, Count, CommentsIcon, HighlightWrapper } from './styles'
+import useSalon, { cn } from './salon'
 
 type TProps = {
   count: number
   size?: TSizeSM
 } & TSpace
 
-const CommentsCount: FC<TProps> = ({ count, size = SIZE.SMALL, ...restProps }) => {
+const CommentsCount: FC<TProps> = ({ count, size = SIZE.SMALL, ...spacing }) => {
+  const s = useSalon({ ...spacing })
+
   return (
     <Fragment>
       {count >= 100 ? (
-        <HighlightWrapper size={size} {...restProps}>
-          <CommentsIcon size={size} $highlight />
-          {size === SIZE.MEDIUM && <Space right={2} />}
-          <Count>{count}</Count>
-        </HighlightWrapper>
+        <div className={cn(s.wrapper, s.highlightWrapper)}>
+          <CommentSVG className={cn(s.icon, s.iconHighlight)} />
+          {size === SIZE.MEDIUM && <div className="mr-0.5" />}
+          <div className={s.count}>{count}</div>
+        </div>
       ) : (
-        <Wrapper size={size} {...restProps}>
-          <CommentsIcon size={size} />
-          {size === SIZE.MEDIUM && <Space right={2} />}
-          <Count>{count}</Count>
-        </Wrapper>
+        <div className={s.wrapper}>
+          <CommentSVG className={s.icon} />
+          {size === SIZE.MEDIUM && <div className="mr-0.5" />}
+          <div className={s.count}>{count}</div>
+        </div>
       )}
     </Fragment>
   )

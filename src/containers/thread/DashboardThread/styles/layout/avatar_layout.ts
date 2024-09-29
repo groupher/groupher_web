@@ -1,55 +1,47 @@
-import type { TActive } from '~/spec'
-import styled, { css, theme, rainbow, rainbowSoft } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
-import { LineDivider } from '~/widgets/Common'
+import useTwBelt from '~/hooks/useTwBelt'
+import useBase from '.'
 
-import { BaseSection, BlockBase } from '.'
+export { cn } from '~/css'
 
-export const Wrapper = styled(BaseSection)``
+export default () => {
+  const { cn, bg, rainbow } = useTwBelt()
+  const base = useBase()
 
-export const SelectWrapper = styled.div`
-  ${css.rowWrap('align-center')};
-  gap: 20px 30px;
-  width: 100%;
-`
-
-type TAvatar = { left?: string; circle?: boolean }
-export const Avatar = styled.div<TAvatar>`
-  ${css.size(30)};
-  ${css.row('align-both')};
-  font-size: 13px;
-  font-weight: bold;
-  border-radius: ${({ circle }) => (circle ? '100px' : '6px')};
-  color: ${({ color }) => rainbow(color)};
-  background-color: ${({ color }) => rainbowSoft(color)};
-  margin-left: ${({ left }) => left};
-  margin-left: 5px;
-  border: 1px solid;
-  border-color: ${({ color }) => rainbow(color)};
-`
-export const AvatarList = styled.div`
-  ${css.row('align-center')};
-`
-export const Layout = styled.div`
-  ${css.column('align-both')};
-`
-export const Divider = styled(LineDivider)`
-  background: ${theme('article.digest')};
-  height: 16px;
-  opacity: 0.6;
-`
-export const Block = styled(BlockBase)`
-  ${css.row('align-center', 'justify-between')};
-  width: 270px;
-  height: 100px;
-  padding: 0 20px;
-`
-export const LayoutTitle = styled.div<TActive>`
-  opacity: ${({ $active }) => ($active ? 1 : 0.65)};
-
-  ${Layout}:hover & {
-    opacity: 1;
-    cursor: pointer;
+  return {
+    wrapper: base.baseSection,
+    block: cn(base.blockBase, 'align-both w-64 h-20'),
+    blockActive: base.blockBaseActive,
+    select: cn('row-center gap-x-8 w-full'),
+    layout: 'column-align-both',
+    list: 'row-center gap-x-2',
+    divider: cn('h-6 w-px ml-4 mr-4 opacity-65', bg('text.digest')),
+    avatar: cn('align-both size-7 text-xs border bold-sm rounded'),
+    blue: cn(
+      rainbow(COLOR_NAME.BLUE, 'fg'),
+      rainbow(COLOR_NAME.BLUE, 'bgSoft'),
+      rainbow(COLOR_NAME.BLUE, 'borderSoft'),
+    ),
+    green: cn(
+      rainbow(COLOR_NAME.GREEN, 'fg'),
+      rainbow(COLOR_NAME.GREEN, 'bgSoft'),
+      rainbow(COLOR_NAME.GREEN, 'borderSoft'),
+    ),
+    red: cn(
+      rainbow(COLOR_NAME.RED, 'fg'),
+      rainbow(COLOR_NAME.RED, 'bgSoft'),
+      rainbow(COLOR_NAME.RED, 'borderSoft'),
+    ),
+    orange: cn(
+      rainbow(COLOR_NAME.ORANGE, 'fg'),
+      rainbow(COLOR_NAME.ORANGE, 'bgSoft'),
+      rainbow(COLOR_NAME.ORANGE, 'borderSoft'),
+    ),
+    purple: cn(
+      rainbow(COLOR_NAME.PURPLE, 'fg'),
+      rainbow(COLOR_NAME.PURPLE, 'bgSoft'),
+      rainbow(COLOR_NAME.PURPLE, 'borderSoft'),
+    ),
   }
-  transition: all 0.2s;
-`
+}

@@ -71,9 +71,9 @@ export default () => {
         isTouched={isTouched}
         field={SETTING_FIELD.GLOW_TYPE}
         loading={saving}
-        left={-5}
-        top={35}
-        width="628px"
+        left={1}
+        top={10}
+        width="w-11/12"
       />
 
       <Br bottom={40} />

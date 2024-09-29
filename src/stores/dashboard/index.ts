@@ -4,7 +4,7 @@ import { mergeDeepRight, mergeLeft } from 'ramda'
 import { LOCALE } from '~/const/i18n'
 import { THREAD } from '~/const/thread'
 import SIZE from '~/const/size'
-import { COLOR_NAME } from '~/const/colors'
+import { COLOR_NAME, PAGE_COLOR_DEFAULT } from '~/const/colors'
 import { BUILDIN_ALIAS } from '~/const/name'
 import { GLOW_OPACITY } from '~/const/glow_effect'
 import { CHANGE_MODE } from '~/const/mode'
@@ -57,6 +57,10 @@ export const settingsFields: TSettingsFields = {
   // social
   socialLinks: [],
   mediaReports: [EMPTY_MEDIA_REPORT],
+
+  // page
+  pageBg: PAGE_COLOR_DEFAULT.light,
+  pageBgDark: PAGE_COLOR_DEFAULT.dark,
 
   // seo
   seoEnable: true,

@@ -39,6 +39,7 @@ export default {
   divider: border,
   alphaBg: '#ffffff95',
   alphaBg2: '#fffffff2',
+  sandBox: '',
   hoverBg,
   hoverActive: 'white',
   menuHoverBg: 'white',
@@ -137,6 +138,7 @@ export default {
     body: '',
     hint: '',
     invert: '',
+    link: '',
   },
   dot: '',
   article: {

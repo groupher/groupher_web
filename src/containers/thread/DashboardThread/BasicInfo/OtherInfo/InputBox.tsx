@@ -1,21 +1,17 @@
 import type { FC } from 'react'
 
 import type { TMediaReport } from '~/spec'
+
+import DeleteSVG from '~/icons/DeleteSolid'
 import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 import { Br } from '~/widgets/Common'
+import Input from '~/widgets/Input'
 
 import MediaPreview from './MediaPreview'
 
 import useBaseInfo from '../../logic/useBaseInfo'
 
-import {
-  Wrapper,
-  Inputer,
-  Desc,
-  InputWrapper,
-  DeleteWrapper,
-  DeleteIcon,
-} from '../../styles/basic_info/other_info/input_box'
+import useSalon from '../../styles/basic_info/other_info/input_box'
 
 type TProps = {
   item: TMediaReport
@@ -23,29 +19,28 @@ type TProps = {
 }
 
 const InputBox: FC<TProps> = ({ item, queringMediaReportIndex }) => {
-  const { index, editUrl, title } = item
+  const s = useSalon()
 
+  const { index, editUrl, title } = item
   const { removeMediaReport, mediaReportOnChange, queryOpenGraphInfo } = useBaseInfo()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {index !== null && queringMediaReportIndex === index && (
         <LavaLampLoading size="tiny" top={-2} />
       )}
       {title && <MediaPreview item={item} />}
-      <InputWrapper>
-        <Inputer
+      <div className={s.inputWrapper}>
+        <Input
           value={editUrl}
           onChange={(e) => mediaReportOnChange(item.index, e.target.value)}
           onBlur={() => queryOpenGraphInfo(item)}
         />
-        <DeleteWrapper onClick={() => removeMediaReport(index)}>
-          <DeleteIcon />
-        </DeleteWrapper>
-      </InputWrapper>
+        <DeleteSVG className={s.deleteIcon} onClick={() => removeMediaReport(index)} />
+      </div>
       {editUrl && <Br bottom={20} />}
-      {!editUrl && <Desc>复制相关媒体报道的 URL 链接</Desc>}
-    </Wrapper>
+      {!editUrl && <p>复制相关媒体报道的 URL 链接</p>}
+    </div>
   )
 }
 

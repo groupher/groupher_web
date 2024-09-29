@@ -6,7 +6,7 @@ module.exports = {
   fontColor: '#333333',
   markdownFont: '#9eb8bd',
   border: '#3c3c3c', // '#282828'
-  link: '#418ccc',
+  link: '#6B97D4',
 
   actionText: '#7f8695',
   descText: '#7c7f82',

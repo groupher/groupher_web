@@ -1,25 +1,23 @@
-import styled, { css, theme } from '~/css'
+import type { ReactNode } from 'react'
 
-export const Wrapper = styled.div<{ width: string }>`
-  ${css.column()};
-  width: ${({ width }) => width};
-`
-export const Header = styled.div`
-  ${css.row('align-center')};
-`
-export const Title = styled.div<{ noDesc: boolean }>`
-  ${css.row('align-center')};
-  color: ${theme('dashboard.menuCat')};
-  font-size: 16px;
-  font-weight: 400;
-  margin-bottom: ${({ noDesc }) => (noDesc ? '25px' : '0')};
-  width: 100%;
-`
-export const Desc = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.9;
-  font-size: 14px;
-  margin-top: 10px;
-  margin-bottom: 25px;
-  line-height: 22px;
-`
+import type { TSpace } from '~/spec'
+
+import useTwBelt from '~/hooks/useTwBelt'
+
+export { cn } from '~/css'
+
+type TProps = {
+  width: string
+  desc: ReactNode
+} & TSpace
+
+export default ({ width, desc, ...spacing }: TProps) => {
+  const { cn, fg, margin } = useTwBelt()
+
+  return {
+    wrapper: cn('column', width === '100%' ? 'w-full' : width, margin(spacing)),
+    header: 'row-center',
+    title: cn('row-center w-full text-sm', !desc && 'mb-4', fg('text.title')),
+    desc: cn('text-sm mt-2.5 mb-8 mt-2.5', fg('text.digest')),
+  }
+}

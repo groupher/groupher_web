@@ -1,61 +1,20 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import ImageSVG from '~/icons/Image'
+export default () => {
+  const { cn, bg, fill, fg, br } = useTwBelt()
 
-export const Wrapper = styled.div`
-  ${css.column()};
-  background: ${theme('alphaBg')};
-  margin-bottom: 30px;
-  border-radius: 16px;
-  width: 566px;
-  margin-left: -100px;
-  position: relative;
-  border: 1px solid;
-  border-color: #cfd9de;
-  overflow: hidden;
-`
-export const CoverWrapper = styled.div`
-  ${css.row('align-both')};
-  width: 566px;
-  height: 296px;
-  /* border-radius: 15px; */
-  background: ${theme('hoverBg')};
-`
-
-export const ImageIcon = styled(ImageSVG)`
-  ${css.size(80)};
-  fill: ${theme('article.digest')};
-  opacity: 0.2;
-`
-
-export const Content = styled.div`
-  padding: 12px 10px;
-`
-export const Hint = styled.div`
-  font-size: 10px;
-  position: absolute;
-  right: 8px;
-  top: 8px;
-  color: ${theme('lightText')};
-`
-export const URL = styled.div`
-  font-size: 14px;
-  line-height: 19px;
-  color: #536471;
-`
-export const Title = styled.div`
-  display: inline-block;
-  line-height: 19px;
-  font-size: 14px;
-  font-weight: 400;
-  font-family: arial, sans-serif;
-
-  color: #0f1419;
-  ${css.lineClamp(1)};
-`
-export const Desc = styled.div`
-  font-size: 14px;
-  color: #536471;
-  ${css.lineClamp(2)};
-  line-height: 19px;
-`
+  return {
+    wrapper: cn(
+      'column w-96 mb-8 -ml-2 rounded-2xl relative border overflow-hidden',
+      bg('alphaBg'),
+      br('divider'),
+    ),
+    coverWrapper: cn('align-both w-full h-64', bg('hoverBg')),
+    holdImg: cn('size-20 opacity-20', fill('text.digest')),
+    content: 'grow px-3 py-2.5',
+    hint: cn('absolute right-2 top-2 text-xs', fg('text.hint')),
+    url: cn('text-sm', fg('text.hint')),
+    title: cn('text-sm bold-sm line-clamp-1', fg('text.title')),
+    desc: cn('text-sm line-clamp-2 opacity-65', fg('text.title')),
+  }
+}

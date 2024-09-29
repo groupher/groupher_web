@@ -53,6 +53,7 @@ module.exports = {
   divider: { DEFAULT: lightTokens.border, dark: darkTokens.border },
   alphaBg: { DEFAULT: '#ffffff95', dark: darkTokens.hoverBg },
   alphaBg2: { DEFAULT: '#fffffff2', dark: '#1c1c1cb8' },
+  sandBox: { DEFAULT: '#f9f9f9', dark: '#31303059' },
   hoverBg: { DEFAULT: lightTokens.hoverBg, dark: darkTokens.hoverBg },
   hoverActive: { DEFAULT: 'white', dark: '#3f3f3f' },
   menuHoverBg: { DEFAULT: 'white', dark: darkTokens.hoverBg },
@@ -86,7 +87,7 @@ module.exports = {
       dark: 'linear-gradient(90deg, #7a37323d 0%, #46211e2b 100%)',
     },
 
-    orange: { DEFAULT: 'orange', dark: '#ce9f6f' },
+    orange: { DEFAULT: 'orange', dark: '#ffa500c7' },
     orangeSoft: { DEFAULT: '#FEF7E8', dark: '#4c3e37' },
     orangePale: {
       DEFAULT: 'linear-gradient(90deg, #fcb32d26 0%, #f5dfb726 100%)',
@@ -100,7 +101,7 @@ module.exports = {
       dark: 'linear-gradient(90deg, #45320569 0%, #3929024a 100%)',
     },
 
-    yellow: { DEFAULT: '#c7b96d', dark: '#eddd85' },
+    yellow: { DEFAULT: '#c7b96d', dark: '#dac933cf' },
     yellowSoft: { DEFAULT: '#FEFBE8', dark: '#a9a06a30' },
     yellowPale: {
       DEFAULT: 'linear-gradient(90deg, #fffde5 0%, rgb(255 252 241 / 37%) 100%)',
@@ -133,7 +134,7 @@ module.exports = {
     cyanLightSoft: { DEFAULT: '#e1fcff94', dark: '#39494b94' },
     cyanLightPale: { DEFAULT: '#e1fcff94', dark: '#39494b94' },
 
-    blue: { DEFAULT: '#5073C6', dark: '#0073E3' },
+    blue: { DEFAULT: '#5073C6', dark: '#3a7ec7' },
     blueSoft: { DEFAULT: '#E7EDF7', dark: '#76809654' },
     bluePale: {
       DEFAULT: 'linear-gradient(90deg, #f3f7ff 0%, #f5f8ffb5 100%);',
@@ -153,13 +154,16 @@ module.exports = {
     pinkSoft: { DEFAULT: '#ffd8ea59', dark: '#73526159' },
     pinkPale: { DEFAULT: '#ffd8ea59', dark: '#73526159' },
 
-    black: { DEFAULT: '#333333', dark: '#343333' },
-    // is for dark theme only
-    // TODO: remove this ?
+    black: { DEFAULT: '#333333', dark: '#4e4e4e' },
+    // TODO: is for dark theme only
     blackBtn: { DEFAULT: colors.gray['800'], dark: '#4e4e4e' },
 
     blackSoft: { DEFAULT: '#f4f4f4', dark: '#313131' },
     blackPale: { DEFAULT: '#f4f4f4', dark: '#313131' },
+
+    // custom primary
+    // custom: { DEFAULT: '--var(rainbow-custom)', dark: '--var(rainbow-custom-dark)' },
+    // custom: { DEFAULT: 'var(--rainbow-custom)', dark: 'var(--rainbow-custom-dark)' },
   },
   grey: {
     rare: { DEFAULT: '#fafafa', dark: '#272727' },
@@ -213,8 +217,7 @@ module.exports = {
       DEFAULT: colors.gray['100'],
       dark: colors.gray['800'],
     },
-    // body:
-    // hint
+    link: { DEFAULT: lightTokens.link, dark: darkTokens.link },
   },
   dot: {
     DEFAULT: colors.slate['500'],
@@ -237,10 +240,6 @@ module.exports = {
     hover: { DEFAULT: '#949CB5', dark: '#949CB5' },
     title: { DEFAULT: '#77706B', dark: '#77706B' },
     bottomBg: { DEFAULT: '#252325', dark: '#252325' },
-    shadow: {
-      DEFAULT: 'rgb(241 241 241) 0px 0px 50px 0px inset',
-      dark: 'rgb(25 25 25) 0px 0px 50px 0px inset',
-    },
   },
   drawer: {
     mask: { DEFAULT: 'rgba(31, 34, 37, 0.15)', dark: 'rgb(31 34 37 / 41%)' },

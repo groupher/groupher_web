@@ -1,12 +1,12 @@
-import styled, { css } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { Label as LabelBase } from '.'
+export default () => {
+  const { cn, fg } = useTwBelt()
 
-export { Desc, Inputer } from '.'
+  return {
+    wrapper: 'w-full',
 
-export const Wrapper = styled.div`
-  width: 300px;
-`
-export const Label = styled(LabelBase)`
-  ${css.row('align-center')};
-`
+    hint: cn('font-sm opacity-80 mt-1.5 ml-0.5', fg('text.digest')),
+    label: cn('row-center text-sm bold-sm mb-4', fg('text.digest')),
+  }
+}

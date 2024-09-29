@@ -1,30 +1,16 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.rowWrap('justify-between')};
+export default () => {
+  const { cn, fg, bg } = useTwBelt()
 
-  border-left: 2px solid;
-  border-left-color: ${theme('divider')};
-  padding: 10px 20px;
-  padding-right: 0;
-  gap: 20px;
-`
-export const Section = styled.div`
-  width: 100%;
-  padding-top: 4px;
-`
-export const Header = styled.div`
-  ${css.row('align-center')};
-  width: 100%;
-`
-export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 14px;
-`
-export const Desc = styled.div`
-  color: ${theme('article.digest')};
-  margin-top: 2px;
-  font-size: 12px;
-  width: 80%;
-  opacity: 0.8;
-`
+  return {
+    wrapper: cn(
+      'row justify-between wrap py-4 px-5 pr-2 gap-y-4 -mt-2.5 mb-10 -ml-0.5 rounded-lg',
+      bg('hoverBg'),
+    ),
+    section: 'w-full pt-1',
+    header: 'row-center w-full',
+    title: cn('text-sm', fg('text.title')),
+    desc: cn('text-xs mt-1 w-4/5', fg('text.digest')),
+  }
+}

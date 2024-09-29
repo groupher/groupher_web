@@ -1,7 +1,9 @@
-import { type FC, memo, type ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
+
+import type { TSpace } from '~/spec'
 
 import ThemeSelect from './ThemeSelect'
-import { Wrapper, Header, Title, Desc } from '../styles/section_label'
+import useSalon, { cn } from '../styles/section_label'
 
 type TProps = {
   title: string
@@ -9,7 +11,8 @@ type TProps = {
   addon?: ReactNode
   width?: string
   withThemeSelect?: boolean
-}
+  classNames?: string
+} & TSpace
 
 const SectionLabel: FC<TProps> = ({
   title,
@@ -17,24 +20,28 @@ const SectionLabel: FC<TProps> = ({
   addon = null,
   width = '100%',
   withThemeSelect = false,
+  classNames = '',
+  ...spacing
 }) => {
+  const s = useSalon({ width, desc, ...spacing })
+
   return (
-    <Wrapper width={width}>
-      <Header>
-        <Title noDesc={desc === null}>
-          {title}{' '}
+    <div className={cn(s.wrapper, classNames)}>
+      <div className={s.header}>
+        <h3 className={s.title}>
+          {title}
           {withThemeSelect && (
             <>
               <div className="grow" /> <ThemeSelect />
             </>
           )}
-        </Title>
+        </h3>
         <div className="grow" />
         {addon}
-      </Header>
-      {desc && <Desc>{desc}</Desc>}
-    </Wrapper>
+      </div>
+      {desc && <div className={s.desc}>{desc}</div>}
+    </div>
   )
 }
 
-export default memo(SectionLabel)
+export default SectionLabel

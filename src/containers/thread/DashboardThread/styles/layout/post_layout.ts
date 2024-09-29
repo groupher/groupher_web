@@ -1,75 +1,31 @@
-import type { TActive } from '~/spec'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import styled, { css, theme } from '~/css'
+import useBase from '.'
 
-import UpvoteSVG from '~/icons/Upvote'
-import CommentSVG from '~/icons/Comment'
+export { cn } from '~/css'
 
-import { BaseSection, BlockBase } from '.'
+export default () => {
+  const base = useBase()
+  const { cn, avatar, primary } = useTwBelt()
 
-export { Bar, Circle } from '.'
+  return {
+    wrapper: base.baseSection,
+    select: cn('row-center wrap gap-x-5 gap-y-8 w-full'),
+    inline: 'inline-block',
+    layout: 'column-center justify-between h-32',
+    block: cn(base.blockBase, 'h-24 min-h-24'),
+    blockActive: base.blockBaseActive,
 
-export const Wrapper = styled(BaseSection)``
-export const SelectWrapper = styled.div`
-  ${css.rowWrap('align-center')};
-  gap: 20px 30px;
-  width: 100%;
-`
-export const Box = styled.div`
-  width: 100%;
-  height: 40px;
-  border-radius: 5px;
-  background: ${theme('article.digest')};
-  opacity: 0.5;
-  margin-bottom: 8px;
-`
-export const Cover = styled.div`
-  width: 90px;
-  height: 62px;
-  border-radius: 5px;
-  background: ${theme('article.digest')};
-  opacity: 0.5;
-`
+    bar: cn(base.bar, 'h-1.5 w-20 opacity-40'),
+    circle: cn(base.circle, 'opacity-40'),
+    commentIcon: base.icon,
+    upvoteIcon: cn(base.icon, 'size-4'),
 
-type TColumn = { center?: boolean; grow?: boolean }
-export const Column = styled.div<TColumn>`
-  ${css.column()};
-  ${({ center }) => (center ? 'align-items: center;' : '')};
-  ${({ grow }) => (grow ? 'flex-grow: 1;' : '')};
-`
-export const Layout = styled.div`
-  ${css.column('align-both')};
-`
-export const LayoutTitle = styled.div<TActive>`
-  opacity: ${({ $active }) => ($active ? 1 : 0.65)};
-
-  ${Layout}:hover & {
-    opacity: 1;
-    cursor: pointer;
+    userAvatar: cn(base.bar, 'absolute left-4 top-6 size-6', avatar()),
+    upvoteBtn: cn(
+      'column-align-both absolute w-10 h-11 border rounded-lg text-xs',
+      primary('borderSoft'),
+      primary('fg'),
+    ),
   }
-  transition: all 0.2s;
-`
-export const Block = styled(BlockBase)`
-  width: 280px;
-  height: 94px;
-  padding: 16px 15px;
-`
-
-export const Border = styled.div`
-  ${css.column('align-both')};
-  border: 1px solid;
-  border-color: ${theme('divider')};
-
-  border-radius: 6px;
-  padding: 6px 8px;
-`
-
-export const UpvoteIcon = styled(UpvoteSVG)<{ size: number }>`
-  ${({ size }) => css.size(size)};
-  fill: ${theme('article.title')};
-  transform: scaleY(0.8);
-`
-export const CommentIcon = styled(CommentSVG)`
-  ${css.size(10)};
-  fill: ${theme('article.title')};
-`
+}

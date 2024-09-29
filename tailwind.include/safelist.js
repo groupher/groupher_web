@@ -1,15 +1,20 @@
-const { borderSoft } = require('../utils/constant/twConfig.json')
+const { keys, uniq } = require('ramda')
+const { borderSoft, container } = require('../utils/constant/twConfig.json')
 
 const GENERAL = [
   'border-divider',
+  'border-text-link',
   'border-text-hint',
   'article-hover-linear',
+  'saving-bar-left-linear',
+  'saving-bar-right-linear',
   'unibar-linear-mask',
   'count-highlight',
   'footer-inner-shadow',
   'sexy-border-20',
   'sexy-border-35',
   'sexy-border-40',
+  'sexy-border-50',
   'shadow-md',
   'shadow-lg',
   'shadow-xl',
@@ -21,14 +26,16 @@ const TEXT_COLORS = [
   'text-body',
   'text-hint',
   'text-invert',
+  'text-link',
   'button-fg',
 ]
 const BG_COLORS = [
   'dot',
   'text-digest',
-  'link',
+  'text-link',
   'divider',
   'hoverBg',
+  'sandBox',
   'htmlBg',
   'popover-bg',
   'menuHoverBg',
@@ -37,14 +44,16 @@ const BG_COLORS = [
   'button-redBg',
   'button-toggle',
 ]
-const FILL_COLORS = ['text-title', 'text-digest', 'button-fg', 'heightIcon']
+const FILL_COLORS = ['text-title', 'text-digest', 'button-fg', 'heightIcon', 'text-link']
 // for fg,bg & fill
 const RAINBOW_COLORS = [
   'black',
   'blackBtn',
+  'pink',
   'red',
   'orange',
   'yellow',
+  'brown',
   'green',
   'greenLight',
   'cyan',
@@ -52,7 +61,7 @@ const RAINBOW_COLORS = [
   'purple',
 ]
 
-const MARGIN = ['px', 0.5, 1, 1.5, 2, 2.5, 3, 4, 5]
+const MARGIN = ['px', 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 10, 12]
 const SIZE = [1.5, 2, 2.5, 3, 3.5, 4, 5, 6]
 
 // fill-rainbow-red is mainly for delete buttons
@@ -70,17 +79,22 @@ const HOVERS = [
   'border-text-digest',
 ]
 
+const INPUTS = ['border-text-digest']
+
 const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red', 'fill-text-title']
-const CONTAINERS = ['container-home', 'container-community', 'container-community_sidebar']
+const CONTAINERS = keys(container).map(
+  (c) =>
+    `container-${c} w-[${container[c].width}] pl-${container[c].pl} pr-${container[c].pr} -ml-${container[c].pl} mr-${container[c].pr}`,
+)
+
+const ROTATES = [6, 3, 2, 1, 1, 2, 3, 6, 2, 3, 1, 6]
+
 const UTILS = [
   'border-transparent',
   'rounded-sm',
   'rounded-md',
   'bg-gradient-to-r to-transparent',
-  '-ml-40',
-  'mr-36',
-  'pl-40',
-  'pr-36',
+
   'saturate-150',
   'brightness-125',
   'select-none',
@@ -89,13 +103,10 @@ const UTILS = [
   'bg-none',
   'bg-transparent',
   'rounded-3xl',
-
-  // TODO:
-  'max-w-[1200px]',
-  'w-[1200px]',
+  'hover-underline',
 ]
 
-module.exports = [
+module.exports = uniq([
   ...GENERAL.map((c) => `${c} ${c}-dark`),
 
   ...TEXT_COLORS.map((c) => `text-${c} text-${c}-dark`),
@@ -106,9 +117,12 @@ module.exports = [
       `text-rainbow-${c} text-rainbow-${c}-dark
        bg-rainbow-${c} bg-rainbow-${c}-dark 
        hover:bg-rainbow-${c}Soft hover:bg-rainbow-${c}Soft-dark
+       hover:border-rainbow-${c} hover:border-rainbow-${c}-dark
        bg-rainbow-${c}Soft bg-rainbow-${c}Soft-dark fill-rainbow-${c} fill-rainbow-${c}-dark 
        from-rainbow-${c}Soft from-rainbow-${c}Soft-dark 
+       border-rainbow-${c} border-rainbow-${c}-dark
        border-rainbow-${c}/${borderSoft.opacity} border-rainbow-${c}-dark/${borderSoft.opacity_dark}
+       hover:border-rainbow-${c}/${borderSoft.opacity} hover:border-rainbow-${c}-dark/${borderSoft.opacity_dark}
       `,
   ),
 
@@ -116,8 +130,11 @@ module.exports = [
   ...SIZE.map((c) => `size-${c}`),
 
   ...HOVERS.map((c) => `hover:${c} hover:${c}-dark`),
-  ...GROUP_HOVERS.map((c) => `group-hover:${c} hover:${c}-dark`),
+  ...INPUTS.map((c) => `focus:${c} active:${c} focus:${c}-dark active:${c}-dark`),
+
+  ...GROUP_HOVERS.map((c) => `group-hover:${c} group-hover:${c}-dark`),
+  ...ROTATES.map((r) => `rotate-${r}`),
 
   ...CONTAINERS,
   ...UTILS,
-]
+])

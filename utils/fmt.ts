@@ -70,6 +70,27 @@ export const titleCase = (str: string): string => {
   })
 }
 
+export const titleCaseHM = (input: string): string => {
+  // First, split the input string into words
+  const words = input.split(/[-_\s]|(?=[A-Z])/).filter((word) => word.length > 0)
+
+  // Then, capitalize the first letter of each word and lowercase the rest
+  const titleCasedWords = words.map(
+    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+  )
+
+  // Finally, join the words with spaces
+  return titleCasedWords.join(' ')
+}
+
+// 将 kebab-case 或 snake_case 转换为 UPPER_SNAKE_CASE
+export const upperSnakeCase = (str: string): string => {
+  return str
+    .split(/[-_]/)
+    .map((word) => word.toUpperCase())
+    .join('_')
+}
+
 /**
  *  camelize a string
  * e.g: GREEN_APPLE -> greenApple

@@ -17,8 +17,9 @@ export default ({ bottomSpace }: TProps) => {
     ),
     label: cn(
       'row-center whitespace-nowrap py-1.5 px-1.5 rounded-md',
-      `hover:${bg('hoverBg')}`,
       fg('text.digest'),
+      `hover:${bg('hoverBg')}`,
+      `hover:${fg('text.title')}`,
       `mb-${bottomSpace}`,
     ),
     labelActive: cn('bold-sm', fg('text.title'), enhanceDark()),

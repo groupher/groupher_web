@@ -9,7 +9,7 @@ export const getSlipMargin = (size: string, mobileView: boolean): number => {
     }
 
     default:
-      return 18
+      return 16
   }
 }
 

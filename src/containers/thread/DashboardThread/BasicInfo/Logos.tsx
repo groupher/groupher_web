@@ -5,31 +5,24 @@ import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 
 import useBaseInfo from '../logic/useBaseInfo'
-import {
-  Wrapper,
-  FaviconWrapper,
-  Favicon,
-  LogoWrapper,
-  Logo,
-  Title,
-  Desc,
-} from '../styles/basic_info/logos'
+import useSalon from '../styles/basic_info/logos'
 
 export default () => {
+  const s = useSalon()
   const { edit, saving, logo, isLogosTouched } = useBaseInfo()
 
   return (
-    <Wrapper>
-      <Title>favicon</Title>
-      <FaviconWrapper>
+    <div className={s.wrapper}>
+      <h3 className={s.title}>favicon</h3>
+      <div className={s.faviconBox}>
         <OSSUploader previewHeight={30} previewWidth={30}>
-          <Favicon />
+          <div className={s.favicon} />
         </OSSUploader>
-      </FaviconWrapper>
-      <Desc>上传 favicon, 仅支持 ico 格式，最大 10 KB。可选。</Desc>
+      </div>
+      <div className={s.desc}>上传 favicon, 仅支持 ico 格式，最大 10 KB。可选。</div>
       <Br bottom={30} />
-      <Title>LOGO</Title>
-      <LogoWrapper>
+      <h3 className={s.title}>LOGO</h3>
+      <div className={s.logoBox}>
         <OSSUploader
           previewUrl={logo}
           previewHeight={70}
@@ -37,18 +30,17 @@ export default () => {
           onDelete={() => edit('', 'logo')}
           onUploadDone={(v) => edit(v, 'logo')}
         >
-          <Logo />
+          <div className={s.logo} />
         </OSSUploader>
-      </LogoWrapper>
-      <Desc>上传社区 Logo, 支持常见图片格式，200 KB以内。可选。</Desc>
-      <Br bottom={30} />
+      </div>
+      <div className={s.desc}>上传社区 Logo, 支持常见图片格式，200 KB以内。可选。</div>
 
       <SavingBar
         field={SETTING_FIELD.BASE_INFO}
         isTouched={isLogosTouched}
         loading={saving}
-        top={30}
+        top={10}
       />
-    </Wrapper>
+    </div>
   )
 }

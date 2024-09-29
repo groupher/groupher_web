@@ -173,6 +173,8 @@ export type TSettingField =
   | 'widgetsThreads'
   | 'widgetsSize'
   | 'widgetsType'
+  | 'pageBg'
+  | 'pageBgDark'
 
 type TDocFile = {
   index: number

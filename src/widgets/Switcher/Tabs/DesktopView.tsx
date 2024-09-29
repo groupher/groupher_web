@@ -46,7 +46,7 @@ type TProps = {
   onChange: () => void
   activeKey?: string
   size: TSizeSM
-  slipHeight: 'px' | 0.5
+  slipHeight: 'px' | 1
   bottomSpace?: number
   noAnimation?: boolean
 }
@@ -56,7 +56,7 @@ const Tabs: FC<TProps> = ({
   onChange = console.log,
   items = temItems,
   activeKey = '',
-  slipHeight = 'px',
+  slipHeight = 1,
   bottomSpace = 0,
   noAnimation = false,
 }) => {

@@ -10,20 +10,18 @@ import { find, includes, without, reject, isEmpty, forEach } from 'ramda'
 import type { TCityOption, TSpace } from '~/spec'
 import { CITY_OPTIONS, HOME_CITY_OPTIONS, CITY_OPTION_VALUES } from '~/const/city'
 
-import { Wrapper, Box, MoreBtn, Flag, InputLabel, Inputer } from './styles'
+import Input from '~/widgets/Input'
+
+import useSalon, { cn, FLAGS } from './salon'
 
 type TProps = {
-  radius?: number
   value?: string
   onChange?: (value: string) => void
 } & TSpace
 
-const CitySelector: FC<TProps> = ({
-  radius = 5,
-  value = '',
-  onChange = console.log,
-  ...restProps
-}) => {
+const CitySelector: FC<TProps> = ({ value = '', onChange = console.log, ...spacing }) => {
+  const s = useSalon({ ...spacing })
+
   const [selected, setSelected] = useState(value.split(','))
   const [showMore, setShowMore] = useState(false)
   const [extraCities, setExtraCities] = useState('')
@@ -58,7 +56,7 @@ const CitySelector: FC<TProps> = ({
   }, [])
 
   const cityOnChange = (option) => {
-    let selectedAfter
+    let selectedAfter = []
     if (!find((item) => item === option.value, selected)) {
       selectedAfter = [...selected, option.value]
     } else {
@@ -81,30 +79,32 @@ const CitySelector: FC<TProps> = ({
   }
 
   return (
-    <Wrapper {...restProps}>
+    <div className={s.wrapper}>
       {options.map((option: TCityOption) => {
-        const NationFlag = Flag[option.flag] || null
+        const NationFlag = FLAGS[option.flag] || null
 
         const active = includes(option.value, selected)
 
         return (
-          <Box
-            $active={active}
+          <div
+            className={cn(s.box, active && s.boxActive, option.flag && 'px-2.5')}
             key={option.value}
-            radius={radius}
-            hasFlag={!!option.flag}
             onClick={() => cityOnChange(option)}
           >
             {option.label}
-            {NationFlag && <NationFlag $active={active} />}
-          </Box>
+            {NationFlag && <NationFlag className={cn(s.flag, !active && 'opacity-65')} />}
+          </div>
         )
       })}
-      {!showMore && <MoreBtn onClick={() => setShowMore(true)}>更多..</MoreBtn>}
+      {!showMore && (
+        <div className={s.moreBtn} onClick={() => setShowMore(true)}>
+          更多..
+        </div>
+      )}
       {showMore && (
         <>
-          <InputLabel>或者/以及，其他城市（地区）：</InputLabel>
-          <Inputer
+          <div className={s.inputLabel}>其他城市（地区）：</div>
+          <Input
             placeholder="多个城市请用 , 分隔开"
             value={extraCities}
             onChange={(e) => setExtraCities(e.target.value)}
@@ -112,7 +112,7 @@ const CitySelector: FC<TProps> = ({
           />
         </>
       )}
-    </Wrapper>
+    </div>
   )
 }
 

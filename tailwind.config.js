@@ -19,6 +19,10 @@ module.exports = {
         xl: '-3px 2px 20px 0px rgb(58 58 58 / 15%)',
         'xl-dark': '-9px 7px 20px 9px rgb(24 24 24 / 44%)',
       },
+      // borderColor: (theme) => ({
+      // 'custom-light/35': `${theme('colors.rainbow.purple.light')}59`, // 35% 透明度
+      // 'rainbow-purple-dark/75': 'rgba(var(--rainbow-custom-dark), 0.75)',
+      // }),
     },
   },
   safelist,

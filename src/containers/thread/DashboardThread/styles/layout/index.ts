@@ -2,45 +2,54 @@ import styled, { css, theme, rainbow } from '~/css'
 
 import type { TActive, TColor, TColorName } from '~/spec'
 
-export const Wrapper = styled.div`
-  ${css.column()};
-  padding-left: 56px;
-  width: 700px;
+import useTwBelt from '~/hooks/useTwBelt'
 
-  ${css.media.mobile`
-    padding: 20px;
-  `};
-`
-export const Banner = styled.div`
-  height: 70px;
-  width: 100%;
-  border-bottom: 1px solid;
-  border-bottom-color: ${theme('divider')};
-  margin-bottom: 40px;
-  position: relative;
+export default () => {
+  const { cn, br, bg, fill, shadow, primary, sexyHBorder, enhanceDark, isBlackPrimary } =
+    useTwBelt()
 
-  ${css.media.mobile`
-    margin-bottom: 25px;
-  `};
-`
-export const TabsWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: -8px;
+  return {
+    wrapper: 'column pl-16 w-10/12',
+    banner: cn('relative h-16 w-full border-b mb-10', br('divider')),
+    tabs: 'absolute -left-2 bottom-0',
+    //
+    baseSection: 'pb-7',
+    blockBase: cn(
+      'relative border w-72 rounded-md px-4 py-4 border pointer saturate-0 opacity-55',
+      'hover:opacity-100 hover:saturate-100 trans-all-200',
+      `hover:${primary('borderSoft')}`,
+      br('text.hint'),
+      bg('alphaBg'),
+    ),
+    blockBaseActive: cn(
+      'opacity-100 saturate-100',
+      primary('borderSoft'),
+      `hover:${primary('border')}`,
+      isBlackPrimary && br('text.link'),
+      shadow('md'),
+    ),
 
-  ${css.media.mobile`
-    width: 100%;
-    overflow: scroll;
-  `};
-`
-export const BaseSection = styled.section`
-  padding-bottom: 30px;
-`
-export const TitleBase = styled.div`
-  color: ${theme('article.title')};
-  font-size: 15px;
-  margin-bottom: 12px;
-`
+    box: cn('relative rounded-md border', primary('borderSoft'), isBlackPrimary && br('text.link')),
+    divider: sexyHBorder(35, 'mt-5 mb-12'),
+
+    // basic shape
+    bar: cn(
+      'absolute h-1.5 w-20 opacity-40 rounded',
+      primary('bg'),
+      isBlackPrimary && bg('text.link'),
+      enhanceDark(),
+    ),
+    circle: cn(
+      'absolute size-2 circle opacity-40',
+      primary('bg'),
+      isBlackPrimary && bg('text.link'),
+      enhanceDark(),
+    ),
+    icon: cn('absolute size-3 opacity-65', primary('fill'), isBlackPrimary && fill('text.link')),
+  }
+}
+
+// TODO: remove those
 
 type TBlockBase = TActive & TColor
 export const BlockBase = styled.div<TBlockBase>`
@@ -62,6 +71,16 @@ export const BlockBase = styled.div<TBlockBase>`
   }
 
   transition: all 0.2s;
+`
+
+export const BaseSection = styled.section`
+  padding-bottom: 30px;
+`
+
+export const TitleBase = styled.div`
+  color: ${theme('article.title')};
+  font-size: 15px;
+  margin-bottom: 12px;
 `
 
 // base shapes

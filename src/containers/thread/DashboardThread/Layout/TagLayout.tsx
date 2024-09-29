@@ -1,6 +1,6 @@
 import { TAG_LAYOUT } from '~/const/layout'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 
+import HashTagSVG from '~/icons/HashTag'
 import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../constant'
@@ -9,75 +9,48 @@ import SavingBar from '../SavingBar'
 
 import useTags from '../logic/useTags'
 
-import {
-  Wrapper,
-  SelectWrapper,
-  Layout,
-  LayoutTitle,
-  Block,
-  TagItem,
-  Dot,
-  BgWrapper,
-  HashTagIcon,
-  Bar,
-} from '../styles/layout/tag_layout'
+import useSalon, { cn } from '../styles/layout/tag_layout'
 
 export default () => {
+  const s = useSalon()
+
   const { edit, tagLayout, getTagLayoutTouched, saving } = useTags()
-  const primaryColor = usePrimaryColor()
   const isTouched = getTagLayoutTouched()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <SectionLabel title="标签样式" desc="列表内容及文章详情的标签的展现形式。" />
-      <SelectWrapper>
-        <Layout onClick={() => edit(TAG_LAYOUT.HASH, 'tagLayout')}>
-          <Block $active={tagLayout === TAG_LAYOUT.HASH} $color={primaryColor}>
-            <TagItem>
-              <HashTagIcon $color={primaryColor} />
-              <Bar />
-            </TagItem>
+      <div className={s.select}>
+        <div className={s.layout} onClick={() => edit(TAG_LAYOUT.HASH, 'tagLayout')}>
+          <div className={cn(s.block, tagLayout === TAG_LAYOUT.HASH && s.blockActive)}>
+            <HashTagSVG className={cn(s.hashIcon, 'left-8')} />
+            <div className={cn(s.bar, 'left-16 w-10 h-1.5')} />
 
-            <TagItem>
-              <BgWrapper $color={primaryColor}>
-                <HashTagIcon $color={primaryColor} />
-              </BgWrapper>
-              <Bar />
-            </TagItem>
-          </Block>
+            <HashTagSVG className={cn(s.hashIcon, 'left-36')} />
+            <div className={cn(s.bar, 'right-10 w-10 h-1.5')} />
+          </div>
 
-          <LayoutTitle $active={tagLayout === TAG_LAYOUT.HASH}>
-            <CheckLabel title="井字" $active={tagLayout === TAG_LAYOUT.HASH} top={15} left={-15} />
-          </LayoutTitle>
-        </Layout>
-        <Layout onClick={() => edit(TAG_LAYOUT.DOT, 'tagLayout')}>
-          <Block $active={tagLayout === TAG_LAYOUT.DOT} $color={primaryColor}>
-            <TagItem>
-              <Dot $color={primaryColor} />
-              <Bar />
-            </TagItem>
+          <CheckLabel title="井字" active={tagLayout === TAG_LAYOUT.HASH} top={3} />
+        </div>
+        <div className={s.layout} onClick={() => edit(TAG_LAYOUT.DOT, 'tagLayout')}>
+          <div className={cn(s.block, tagLayout === TAG_LAYOUT.DOT && s.blockActive)}>
+            <div className={cn(s.circle, 'left-10')} />
+            <div className={cn(s.bar, 'left-16 w-10 h-1.5')} />
 
-            <TagItem>
-              <BgWrapper $color={primaryColor}>
-                <Dot $color={primaryColor} />
-              </BgWrapper>
-              <Bar />
-            </TagItem>
-          </Block>
+            <div className={cn(s.circle, 'right-24')} />
+            <div className={cn(s.bar, 'right-11 w-10 h-1.5')} />
+          </div>
 
-          <LayoutTitle $active={tagLayout === TAG_LAYOUT.DOT}>
-            <CheckLabel title="圆点" $active={tagLayout === TAG_LAYOUT.DOT} top={15} left={-15} />
-          </LayoutTitle>
-        </Layout>
-      </SelectWrapper>
+          <CheckLabel title="圆点" active={tagLayout === TAG_LAYOUT.DOT} top={3} />
+        </div>
+      </div>
       <SavingBar
         isTouched={isTouched}
         field={SETTING_FIELD.TAG_LAYOUT}
         loading={saving}
-        left={-5}
-        width="580px"
-        top={25}
+        width="w-10/12"
+        top={10}
       />
-    </Wrapper>
+    </div>
   )
 }

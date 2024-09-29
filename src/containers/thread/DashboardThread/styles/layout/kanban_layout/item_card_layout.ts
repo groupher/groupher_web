@@ -1,58 +1,27 @@
-import type { TActive } from '~/spec'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import styled, { css, theme } from '~/css'
+import useBase from '..'
 
-import { WithPosition } from '~/widgets/Common'
-import UpvoteSVG from '~/icons/Upvote'
-import CommentSVG from '~/icons/Comment'
+export { cn } from '~/css'
 
-import { BlockBase } from '..'
+export default () => {
+  const { cn, br, bg, avatar } = useTwBelt()
+  const base = useBase()
 
-export { Circle } from '..'
+  return {
+    wrapper: cn(
+      'p-5 pl-7 rounded-md w-11/12 mt-7 border border-transparent',
+      `hover:${br('divider')}`,
+      bg('sandBox'),
+    ),
 
-export const Wrapper = styled.div`
-  background: ${theme('grey.rare')};
-  padding: 20px;
-  border-radius: 15px;
-  width: 608px;
-`
-export const SelectWrapper = styled.div`
-  ${css.rowWrap('align-center')};
-  gap: 20px 30px;
-  width: 100%;
-`
-type TColumn = { center?: boolean; grow?: boolean }
-export const Column = styled.div<TColumn>`
-  ${css.column()};
-  ${({ center }) => (center ? 'align-items: center;' : '')};
-  ${({ grow }) => (grow ? 'flex-grow: 1;' : '')};
-`
-export const Layout = styled.div`
-  ${css.column('align-both')};
-`
-export const LayoutTitle = styled.div<TActive>`
-  opacity: ${({ $active }) => ($active ? 1 : 0.65)};
-
-  ${Layout}:hover & {
-    opacity: 1;
-    cursor: pointer;
+    select: cn('row-center wrap w-full -ml-2'),
+    block: cn(base.blockBase, 'w-72 h-24 scale-90'),
+    blockActive: base.blockBaseActive,
+    layout: 'column-align-both w-1/2',
+    icon: cn(base.icon, 'size-5'),
+    userAvatar: cn(base.bar, 'absolute size-4', avatar()),
+    bar: cn(base.bar, 'h-1.5 w-20 opacity-40'),
+    circle: cn(base.circle, 'opacity-40'),
   }
-  transition: all 0.2s;
-`
-export const Block = styled(BlockBase)`
-  width: 255px;
-  height: 90px;
-  padding: 16px 15px;
-`
-export const UpvoteIcon = styled(UpvoteSVG)<{ size: number }>`
-  ${({ size }) => css.size(size)};
-  fill: ${theme('article.digest')};
-`
-export const CommentIcon = styled(CommentSVG)`
-  ${css.size(12)};
-  margin-top: 2px;
-  fill: ${theme('article.digest')};
-`
-export const Footer = styled(WithPosition)`
-  ${css.row('align-center')};
-`
+}

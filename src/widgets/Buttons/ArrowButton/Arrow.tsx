@@ -2,7 +2,9 @@ import type { FC } from 'react'
 
 import type { TColorName } from '~/spec'
 
-import { RightArrow, LeftArrow, UpArrow, DownArrow } from '../salon/arrow_button/arrow'
+import ArrowSVG from '~/icons/Arrow'
+
+import useSalon from '../salon/arrow_button/arrow'
 
 type TProps = {
   color: TColorName
@@ -13,15 +15,17 @@ type TProps = {
   down: boolean
 }
 
-const Arrow: FC<TProps> = ({ color, leftLayout, reverseColor, up, down }) => {
-  if (!leftLayout) {
-    if (down) return <DownArrow color={color} $reverseColor={reverseColor} />
-    if (up) return <UpArrow color={color} $reverseColor={reverseColor} />
+const Arrow: FC<TProps> = ({ color, leftLayout, up, down }) => {
+  const s = useSalon({ color })
 
-    return <RightArrow color={color} $reverseColor={reverseColor} />
+  if (!leftLayout) {
+    if (down) return <ArrowSVG className={s.downArrow} />
+    if (up) return <ArrowSVG className={s.upArrow} />
+
+    return <ArrowSVG className={s.rightArrow} />
   }
 
-  return <LeftArrow color={color} $reverseColor={reverseColor} $up={up} $down={down} />
+  return <ArrowSVG className={s.leftArrow} />
 }
 
 export default Arrow

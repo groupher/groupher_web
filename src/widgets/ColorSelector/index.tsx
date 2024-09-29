@@ -4,14 +4,18 @@
  *
  */
 
-import { type FC, memo, type ReactNode } from 'react'
-import { keys, includes, isEmpty } from 'ramda'
+import type { FC, ReactNode } from 'react'
+import { keys, includes, isEmpty, endsWith } from 'ramda'
 
 import type { TColorName, TTooltipPlacement } from '~/spec'
-import { COLOR_NAME } from '~/const/colors'
 
+import { COLOR_NAME } from '~/const/colors'
+import useTwBelt from '~/hooks/useTwBelt'
+
+import HookSVG from '~/icons/Hook'
 import Tooltip from '~/widgets/Tooltip'
-import { Wrapper, DotWrapper, Dot, HookIcon } from './styles'
+
+import useSalon, { cn } from './salon'
 
 type TProps = {
   activeColor?: TColorName | string
@@ -38,6 +42,9 @@ const ColorSelector: FC<TProps> = ({
     ? keys(COLOR_NAME)
     : keys(COLOR_NAME).filter((k) => !includes(k, excepts))
 
+  const s = useSalon()
+  const { rainbow } = useTwBelt()
+
   return (
     <Tooltip
       placement={placement}
@@ -45,20 +52,21 @@ const ColorSelector: FC<TProps> = ({
       hideOnClick={false}
       offset={offset}
       content={
-        <Wrapper $testid={testid}>
-          {colorKeys.map((name) => {
-            // const $active = name === activeColor || COLOR_NAME.BLACK === activeColor
-            const $active = name === activeColor
+        <div className={s.wrapper} data-testid={testid}>
+          {colorKeys.map((color) => {
+            const selected = color === activeColor
+
+            if (endsWith('_LIGHT', color)) return null
 
             return (
-              <DotWrapper key={name} onClick={() => onChange(name)}>
-                <Dot $active={$active} colorName={name} bgMode={bgMode}>
-                  {$active && <HookIcon />}
-                </Dot>
-              </DotWrapper>
+              <div key={color} className={s.dotWrapper} onClick={() => onChange(color)}>
+                <div className={cn(s.dot, selected && s.dotActive, rainbow(color, 'bg'))}>
+                  {selected && <HookSVG className={s.checkIcon} />}
+                </div>
+              </div>
             )
           })}
-        </Wrapper>
+        </div>
       }
     >
       {children}
@@ -66,4 +74,4 @@ const ColorSelector: FC<TProps> = ({
   )
 }
 
-export default memo(ColorSelector)
+export default ColorSelector

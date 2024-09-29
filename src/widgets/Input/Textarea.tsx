@@ -7,11 +7,13 @@
 import { type FC, useCallback, memo } from 'react'
 import { pickBy } from 'ramda'
 
-import { Wrapper } from './styles/textarea'
+import TextareaAutosize from 'react-textarea-autosize'
+import useSalon, { cn } from './salon/textarea'
 
 type TProps = {
   testid?: string
   placeholder?: string
+  className?: string
   value?: string | null
   autoFocus: boolean
   disableEnter: boolean
@@ -21,10 +23,13 @@ type TProps = {
 const Textarea: FC<TProps> = ({
   onChange = null,
   testid = 'textarea',
+  className = '',
   autoFocus,
   disableEnter,
   ...restProps
 }) => {
+  const s = useSalon()
+
   const handleOnChange = useCallback((e) => onChange?.(e), [onChange])
 
   const handleKeydown = useCallback(
@@ -39,8 +44,9 @@ const Textarea: FC<TProps> = ({
   const validProps = pickBy((v) => v !== null, restProps)
 
   return (
-    <Wrapper
-      $testid={testid}
+    <TextareaAutosize
+      className={cn(s.wrapper, className)}
+      data-testid={testid}
       onChange={handleOnChange}
       onKeyDown={handleKeydown}
       minRows={1}

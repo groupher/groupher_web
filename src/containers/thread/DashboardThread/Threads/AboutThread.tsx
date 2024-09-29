@@ -5,65 +5,66 @@ import type { TEnableConfig } from '~/spec'
 import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
 
 import useEnable from '../logic/useEnable'
-import { Wrapper, Section, Header, Title, Desc } from '../styles/threads/doc_thread'
+import useSalon from '../styles/threads/doc_thread'
 
 type TProps = {
   settings: TEnableConfig
 }
 
 const AboutThread: FC<TProps> = ({ settings }) => {
+  const s = useSalon()
   const { enableThread } = useEnable()
 
   return (
-    <Wrapper>
-      <Section>
-        <Header>
-          <Title>技术栈</Title>
+    <div className={s.wrapper}>
+      <section className={s.section}>
+        <div className={s.header}>
+          <h3 className={s.title}>技术栈</h3>
           <div className="grow" />
           <ToggleSwitch
             checked={settings.aboutTechstack}
             onChange={(c) => enableThread('aboutTechstack', c)}
           />
-        </Header>
-        <Desc>团队所使用的主要工具/服务等</Desc>
-      </Section>
+        </div>
+        <p className={s.desc}>团队所使用的主要工具/服务等</p>
+      </section>
 
-      <Section>
-        <Header>
-          <Title>所在地</Title>
+      <section className={s.section}>
+        <div className={s.header}>
+          <h4 className={s.title}>所在地</h4>
           <div className="grow" />
           <ToggleSwitch
             checked={settings.aboutLocation}
             onChange={(c) => enableThread('aboutLocation', c)}
           />
-        </Header>
-        <Desc>团队或团队成员国家/城市信息（手动填写，非 IP 探测）</Desc>
-      </Section>
+        </div>
+        <p className={s.desc}>团队或团队成员国家/城市信息（手动填写，非 IP 探测）</p>
+      </section>
 
-      <Section>
-        <Header>
-          <Title>链接</Title>
+      <section className={s.section}>
+        <div className={s.header}>
+          <h4 className={s.title}>链接</h4>
           <div className="grow" />
           <ToggleSwitch
             checked={settings.aboutLinks}
             onChange={(c) => enableThread('aboutLinks', c)}
           />
-        </Header>
-        <Desc>其他模块或相关链接。</Desc>
-      </Section>
+        </div>
+        <p className={s.desc}>其他模块或相关链接。</p>
+      </section>
 
-      <Section>
-        <Header>
-          <Title>媒体报道</Title>
+      <section className={s.section}>
+        <div className={s.header}>
+          <h4 className={s.title}>媒体报道</h4>
           <div className="grow" />
           <ToggleSwitch
             checked={settings.aboutMediaReport}
             onChange={(c) => enableThread('aboutMediaReport', c)}
           />
-        </Header>
-        <Desc>其他媒体报道的文章/播客/视频等链接。</Desc>
-      </Section>
-    </Wrapper>
+        </div>
+        <p className={s.desc}>其他媒体报道的文章/播客/视频等链接。</p>
+      </section>
+    </div>
   )
 }
 

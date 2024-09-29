@@ -13,8 +13,6 @@ import { COLOR_NAME } from '~/const/colors'
 
 import type { TSettingField, THeaderEditType, TFooterEditType } from './spec'
 
-import { Icon } from './styles/side_menu'
-
 export { SEO_KEYS, SEO_OG_KEYS, SEO_TW_KEYS } from '~/const/seo'
 
 export const ALIGN_HEADER_OFFSET = '100px'
@@ -72,12 +70,14 @@ export const SETTING_FIELD = {
   GLOW_FIXED: 'glowFixed',
   GLOW_OPACITY: 'glowOpacity',
   GOSS_BLUR: 'gossBlur',
+  PAGE_BG: 'pageBg',
+  PAGE_BG_DARK: 'pageBgDark',
 } as Record<TSnakeUpperCase<TSettingField>, TSettingField>
 
 export const MENU = {
   BASIC: {
     title: '工作区',
-    icon: <Icon.Basic />,
+    icon: 'basic',
     initFold: false,
     children: [
       {
@@ -126,7 +126,7 @@ export const MENU = {
 
   CMS: {
     title: '内容管理',
-    icon: <Icon.Management />,
+    icon: 'cms',
     initFold: false,
     children: [
       {
@@ -166,7 +166,7 @@ export const MENU = {
 
   ANALYSIS: {
     title: '统计分析',
-    icon: <Icon.Analysis />,
+    icon: 'analysis',
     initFold: true,
     children: [
       {
@@ -182,7 +182,7 @@ export const MENU = {
 
   INTEGRATE: {
     title: '绑定集成',
-    icon: <Icon.Bind />,
+    icon: 'bind',
     initFold: true,
     children: [
       {

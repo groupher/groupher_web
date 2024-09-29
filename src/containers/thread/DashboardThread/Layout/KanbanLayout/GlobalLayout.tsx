@@ -1,7 +1,5 @@
 import { KANBAN_LAYOUT } from '~/const/layout'
-import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-import { Brick } from '~/widgets/Common'
 import CheckLabel from '~/widgets/CheckLabel'
 
 import { SETTING_FIELD } from '../../constant'
@@ -9,106 +7,78 @@ import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
 import useKanban from '../../logic/useKanban'
-import {
-  SelectWrapper,
-  Layout,
-  LayoutTitle,
-  Block,
-} from '../../styles/layout/kanban_layout/global_layout'
+import useSalon, { cn } from '../../styles/layout/kanban_layout/global_layout'
 
 export default () => {
+  const s = useSalon()
+
   const { kanbanLayout: layout, getKanbanLayoutTouched, saving, edit } = useKanban()
-  const primaryColor = usePrimaryColor()
   const isTouched = getKanbanLayoutTouched()
 
   return (
     <>
       <SectionLabel title="整体布局" desc="「看板」的整体布局，切换不影响内容。" />
-      <SelectWrapper>
-        <Layout onClick={() => edit(KANBAN_LAYOUT.CLASSIC, 'kanbanLayout')}>
-          <Block $active={layout === KANBAN_LAYOUT.CLASSIC} $color={primaryColor}>
-            <Brick top={15} left={20} $height={6} $width={40} $opacity={0.2} />
-            <Brick top={15} right={20} $height={6} $width={25} $opacity={0.1} />
+      <div className={s.select}>
+        <div className={s.layout} onClick={() => edit(KANBAN_LAYOUT.CLASSIC, 'kanbanLayout')}>
+          <div className={cn(s.block, layout === KANBAN_LAYOUT.CLASSIC && s.blockActive)}>
+            <div className={cn(s.bar, 'w-10')} />
+            <div className={cn(s.bar, 'w-6 right-5 opacity-30')} />
 
-            <Brick bottom={0} left={13} $height={140} $width={78} $opacity={0.06} />
-            <Brick bottom={105} left={20} $height={25} $width={63} $opacity={0.1} />
-            <Brick bottom={72} left={20} $height={25} $width={63} $opacity={0.1} />
-            <Brick bottom={40} left={20} $height={25} $width={63} $opacity={0.08} />
-            <Brick bottom={8} left={20} $height={25} $width={63} $opacity={0.05} />
+            <div className={cn(s.bar, s.board, 'left-3')} />
+            <div className={cn(s.bar, s.item, 'left-5 top-14 opacity-35')} />
+            <div className={cn(s.bar, s.item, 'left-5 top-24 opacity-20 -mt-1')} />
 
-            <Brick bottom={0} left={100} $height={140} $width={78} $opacity={0.06} />
-            <Brick bottom={105} left={108} $height={25} $width={63} $opacity={0.1} />
-            <Brick bottom={72} left={108} $height={25} $width={63} $opacity={0.1} />
-            <Brick bottom={40} left={108} $height={25} $width={63} $opacity={0.08} />
-            <Brick bottom={8} left={108} $height={25} $width={63} $opacity={0.05} />
+            <div className={cn(s.bar, s.board, 'left-24 ml-1')} />
+            <div className={cn(s.bar, s.item, 'left-24 top-14 opacity-35 ml-3')} />
+            <div className={cn(s.bar, s.item, 'left-24 top-24 opacity-25 -mt-1 ml-3')} />
+            <div className={cn(s.bar, s.item, 'left-24 bottom-9 opacity-15 ml-3')} />
+            <div className={cn(s.bar, s.item, 'left-24 bottom-0 opacity-10 ml-3')} />
 
-            <Brick bottom={0} left={188} $height={140} $width={78} $opacity={0.06} />
-            <Brick bottom={105} left={195} $height={25} $width={63} $opacity={0.1} />
-            <Brick bottom={72} left={195} $height={25} $width={63} $opacity={0.1} />
-            <Brick bottom={40} left={195} $height={25} $width={63} $opacity={0.08} />
-            <Brick bottom={8} left={195} $height={25} $width={63} $opacity={0.05} />
-          </Block>
-          <LayoutTitle $active={layout === KANBAN_LAYOUT.CLASSIC}>
-            <CheckLabel
-              title="经典"
-              $active={layout === KANBAN_LAYOUT.CLASSIC}
-              top={15}
-              left={-15}
-            />
-          </LayoutTitle>
-        </Layout>
-        <Layout onClick={() => edit(KANBAN_LAYOUT.WATERFALL, 'kanbanLayout')}>
-          <Block $active={layout === KANBAN_LAYOUT.WATERFALL} $color={primaryColor}>
-            <Brick top={15} left={20} $height={6} $width={40} $opacity={0.2} />
-            <Brick top={15} right={20} $height={6} $width={25} $opacity={0.1} />
+            <div className={cn(s.bar, s.board, 'right-4 ml-1')} />
+            <div className={cn(s.bar, s.item, 'right-6 top-14 opacity-35')} />
+            <div className={cn(s.bar, s.item, 'right-6 top-24 opacity-25 -mt-1')} />
+            <div className={cn(s.bar, s.item, 'right-6 bottom-9 opacity-15')} />
+          </div>
+          <CheckLabel title="经典" active={layout === KANBAN_LAYOUT.CLASSIC} top={4} />
+        </div>
+        <div className={s.layout} onClick={() => edit(KANBAN_LAYOUT.WATERFALL, 'kanbanLayout')}>
+          <div className={cn(s.block, layout === KANBAN_LAYOUT.WATERFALL && s.blockActive)}>
+            <div className={cn(s.bar, 'w-10')} />
+            <div className={cn(s.bar, 'w-6 right-5 opacity-30')} />
 
-            <Brick bottom={122} left={13} $height={16} $width={250} $opacity={0.04} />
-            <Brick bottom={127} left={20} $height={5} $width={30} $opacity={0.2} />
+            <div className={cn(s.bar, 'w-64 h-3.5 left-4 top-12 opacity-10')} />
+            <div className={cn(s.bar, 'w-8 h-1.5 left-6 top-12 mt-1 opacity-30')} />
 
-            <Brick bottom={110} left={20} $height={4} $width={70} $opacity={0.3} />
-            <Brick bottom={110} right={20} $height={4} $width={30} $opacity={0.25} />
-            <Brick bottom={110} right={58} $height={4} $width={18} $opacity={0.2} />
+            <div className={cn(s.bar, 'w-32 h-1.5 left-6 top-16 mt-2 opacity-30')} />
+            <div className={cn(s.bar, 'w-24 h-1.5 left-6 top-20 mt-2 opacity-20')} />
+            <div className={cn(s.bar, 'w-8 h-1.5 right-4 top-16 mt-2 opacity-20')} />
+            <div className={cn(s.bar, 'w-8 h-1.5 right-4 top-20 mt-1.5 opacity-10')} />
 
-            <Brick bottom={100} left={20} $height={4} $width={100} $opacity={0.3} />
-            <Brick bottom={100} right={20} $height={4} $width={30} $opacity={0.25} />
-            <Brick bottom={100} right={58} $height={4} $width={18} $opacity={0.2} />
+            <div className={cn(s.bar, 'w-64 h-3.5 left-4 top-24 mt-2 opacity-10')} />
+            <div className={cn(s.bar, 'w-10 h-1.5 left-6 top-24 mt-3 opacity-40')} />
 
-            <Brick bottom={90} left={20} $height={4} $width={80} $opacity={0.2} />
-            <Brick bottom={90} right={20} $height={4} $width={30} $opacity={0.15} />
-            <Brick bottom={90} right={58} $height={4} $width={18} $opacity={0.1} />
+            <div className={cn(s.bar, 'w-32 h-1.5 left-6 top-28 mt-3.5 opacity-30')} />
+            <div className={cn(s.bar, 'w-24 h-1.5 left-6 top-32 mt-3.5 opacity-20')} />
+            <div className={cn(s.bar, 'w-8 h-1.5 right-4 top-28 mt-3.5 opacity-20')} />
+            <div className={cn(s.bar, 'w-8 h-1.5 right-4 top-32 mt-3 opacity-10')} />
 
-            <Brick bottom={62} left={13} $height={16} $width={250} $opacity={0.04} />
-            <Brick bottom={67} left={20} $height={5} $width={30} $opacity={0.2} />
+            <div className={cn(s.bar, 'w-64 h-3.5 left-4 bottom-5 opacity-10')} />
+            <div className={cn(s.bar, 'w-8 h-1.5 left-6 bottom-6 opacity-25')} />
 
-            <Brick bottom={50} left={20} $height={4} $width={110} $opacity={0.3} />
-            <Brick bottom={50} right={20} $height={4} $width={30} $opacity={0.28} />
-            <Brick bottom={50} right={58} $height={4} $width={20} $opacity={0.22} />
-
-            <Brick bottom={40} left={20} $height={4} $width={80} $opacity={0.3} />
-            <Brick bottom={40} right={20} $height={4} $width={30} $opacity={0.25} />
-            <Brick bottom={40} right={58} $height={4} $width={20} $opacity={0.08} />
-
-            <Brick bottom={13} left={13} $height={16} $width={250} $opacity={0.04} />
-            <Brick bottom={20} left={20} $height={3} $width={30} $opacity={0.2} />
-          </Block>
-          <LayoutTitle $active={layout === KANBAN_LAYOUT.WATERFALL}>
-            <CheckLabel
-              title="瀑布"
-              $active={layout === KANBAN_LAYOUT.WATERFALL}
-              top={15}
-              left={-15}
-            />
-          </LayoutTitle>
-        </Layout>
-      </SelectWrapper>
+            <div className={cn(s.bar, 'w-12 h-1.5 left-6 bottom-2 mt-3.5 opacity-10')} />
+            <div className={cn(s.bar, 'w-8 h-1.5 right-4 bottom-2 mt-3 opacity-10')} />
+          </div>
+          <CheckLabel title="瀑布" active={layout === KANBAN_LAYOUT.WATERFALL} top={4} />
+        </div>
+      </div>
 
       <SavingBar
-        width="605px"
+        width="w-11/12"
         isTouched={isTouched}
         field={SETTING_FIELD.KANBAN_LAYOUT}
         loading={saving}
-        top={20}
-        bottom={30}
+        top={8}
+        bottom={20}
       />
     </>
   )

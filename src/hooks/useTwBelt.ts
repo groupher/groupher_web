@@ -8,12 +8,14 @@ import type { TFlatThemeKey } from '~/utils/themes/skins'
 import { container as containerConf, borderSoft as borderSoftConf } from '~/const/twConfig.json'
 import { camelize } from '~/fmt'
 
+import METRIC from '~/const/metric'
 import useTheme from '~/hooks/useTheme'
 import useMetric from '~/hooks/useMetric'
 import useAvatarLayout from '~/hooks/useAvatarLayout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
 type TColorPrefix = 'fg' | 'bg' | 'bgSoft' | 'fill' | 'border' | 'borderSoft'
+type TLinkColorPrefix = 'fg' | 'fill'
 type TBreakOut = 'footer' | 'header'
 type TMenuPart = 'bg' | 'bar' | 'title' | 'link'
 type TShadowSize = 'md' | 'lg' | 'xl'
@@ -28,16 +30,21 @@ type TRet = {
   br: (key: TFlatThemeKey) => string
   rainbow: (color: TColorName, prefix?: TColorPrefix) => string
   rainbowSoft: (color: TColorName | string) => string
+  rainbowPale: (color: TColorName | string) => string
   primary: (prefix?: TColorPrefix) => string
+  linker: (prefix?: TLinkColorPrefix) => string
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
-  divider: (turn?: number) => string
+  divider: () => string
+  sexyHBorder: (turn: number, classNames?: string) => string
+  sexyVBorder: (turn: number, classNames?: string) => string
   avatar: (level?: 'md' | 'sm' | '') => string
   gradiientBar: (color: TColorName) => string
   breakOut: (type?: TBreakOut) => string
   enhanceDark: () => string
   menu: (part: TMenuPart) => string
   shadow: (size: TShadowSize) => string
+  cutRest: (classname?: string) => string
 
   isDarkBlack: boolean
   isBlackPrimary: boolean
@@ -53,7 +60,9 @@ export default (): TRet => {
   const { isSquare: isAvatarSquare } = useAvatarLayout()
 
   const primaryColor = usePrimaryColor()
-  const container = () => `container-${metric.toLowerCase()}`
+  const container = () => {
+    return `container-${metric.toLowerCase()}`
+  }
 
   /**
    * black color (default primary color) in dark theme should be treat different
@@ -138,12 +147,32 @@ export default (): TRet => {
     return isLightTheme ? `${prefix$}-${color$}Soft` : `${prefix$}-${color$}Soft-dark`
   }
 
+  const rainbowPale = (color: TColorName | string): string => {
+    const prefix$ = 'bg-rainbow'
+    const color$ = camelize(color)
+
+    if (color === COLOR_NAME.BLACK) {
+      return bg('hoverBg')
+    }
+
+    return isLightTheme ? `${prefix$}-${color$}Pale` : `${prefix$}-${color$}Pale-dark`
+  }
+
   /**
    * use primary color for text/background/border color
    * primary color is set in dashboard
    */
-  const primary = (prefix: 'fg'): string => rainbow(primaryColor, prefix)
+  const primary = (prefix = 'fg'): string => rainbow(primaryColor, prefix)
 
+  const linker = (prefix = 'fg'): string => {
+    if (primaryColor === COLOR_NAME.BLACK) {
+      if (prefix === 'fg') return fg('text.link')
+
+      return fill('text.link')
+    }
+
+    return rainbow(primaryColor, prefix)
+  }
   /**
    * this is not typo, cause the exsiting prama is `size`
    */
@@ -158,8 +187,16 @@ export default (): TRet => {
       .join(' ')
   }
 
-  const divider = (turn = 35): string => {
-    return cn('h-px w-full border-b', `'sexy-border-${turn}`)
+  const divider = (): string => {
+    return cn('w-full h-px', bg('divider'))
+  }
+
+  const sexyHBorder = (turn: number, classNames = ''): string => {
+    return cn('h-px w-full border-b', global(`sexy-border-${turn}`), classNames)
+  }
+
+  const sexyVBorder = (turn: number, classNames = ''): string => {
+    return cn('h-full w-px border-l', global(`sexy-border-${turn}`), classNames)
   }
 
   const avatar = (level = 'md') => {
@@ -175,7 +212,9 @@ export default (): TRet => {
   }
 
   const breakOut = (type: TBreakOut = 'footer') => {
-    const unit = containerConf[metric.toLowerCase()]
+    const curMetric = metric || METRIC.COMMUNITY
+
+    const unit = containerConf[curMetric.toLowerCase()]
 
     if (type === 'footer') {
       return cn(
@@ -230,6 +269,10 @@ export default (): TRet => {
     return global(`shadow-${size}`)
   }
 
+  const cutRest = (classnames = 'w-12'): string => {
+    return cn('truncate', classnames)
+  }
+
   return {
     cn,
     global,
@@ -240,16 +283,21 @@ export default (): TRet => {
     br,
     rainbow,
     rainbowSoft,
+    rainbowPale,
     primary,
+    linker,
     zise,
     margin,
     divider,
+    sexyHBorder,
+    sexyVBorder,
     avatar,
     gradiientBar,
     breakOut,
     enhanceDark,
     menu,
     shadow,
+    cutRest,
     isDarkBlack,
     isBlackPrimary,
   }
