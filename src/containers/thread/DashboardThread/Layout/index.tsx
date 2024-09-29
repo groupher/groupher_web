@@ -4,9 +4,10 @@ import { DASHBOARD_LAYOUT_ROUTE } from '~/const/route'
 import VIEW from '~/const/view'
 
 import useViewingCommunity from '~/hooks/useViewingCommunity'
+import { LAYOUT_TABS } from '~/stores/dashboard/constant'
+
 import Tabs from '~/widgets/Switcher/Tabs'
 
-import { LAYOUT_TABS } from '../constant'
 import Portal from '../Portal'
 import AvatarLayout from './AvatarLayout'
 import TagLayout from './TagLayout'
@@ -45,11 +46,10 @@ export default () => {
             onChange={(tab) => {
               edit(tab, 'layoutTab')
               const targetPath =
-                tab === DASHBOARD_LAYOUT_ROUTE.GLOBAL
+                tab === DASHBOARD_LAYOUT_ROUTE.GENERAL
                   ? `/${curCommunity.slug}/dashboard/layout`
                   : `/${curCommunity.slug}/dashboard/layout/${tab}`
 
-              console.log('## push targetPath:', targetPath)
               router.push(targetPath)
             }}
             view={VIEW.DESKTOP}
@@ -58,15 +58,25 @@ export default () => {
         </div>
       </div>
 
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.GLOBAL && (
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.GENERAL && (
+        <>
+          <BrandLayout />
+          <div className={s.divider} />
+          <BannerLayout />
+          <div className={s.divider} />
+          <AvatarLayout />
+          <div className={s.divider} />
+          <TagLayout />
+          <div className={s.divider} />
+          <TopbarLayout />
+        </>
+      )}
+
+      {layoutTab === DASHBOARD_LAYOUT_ROUTE.THEME && (
         <>
           <PrimaryColor />
           <div className={s.divider} />
           <PageBackground />
-          <div className={s.divider} />
-          <BrandLayout />
-          <div className={s.divider} />
-          <BannerLayout />
           <div className={s.divider} />
           <Wallpaper />
           <div className={s.divider} />
@@ -83,16 +93,6 @@ export default () => {
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.CHANGELOG && <ChangelogLayout />}
 
       {layoutTab === DASHBOARD_LAYOUT_ROUTE.DOC && <DocLayout />}
-
-      {layoutTab === DASHBOARD_LAYOUT_ROUTE.OTHER && (
-        <>
-          <AvatarLayout />
-          <div className={s.divider} />
-          <TagLayout />
-          <div className={s.divider} />
-          <TopbarLayout />
-        </>
-      )}
     </div>
   )
 }
