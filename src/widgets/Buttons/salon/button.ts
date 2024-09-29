@@ -3,6 +3,7 @@ import type { TSpace, TSizeTSM } from '~/spec'
 import { getHeight, getPadding, getRouned, getFontSize } from './metircs/button'
 
 import useTwBelt from '~/hooks/useTwBelt'
+import { COLOR_NAME } from '~/const/colors'
 
 export { cn } from '~/css'
 
@@ -30,7 +31,7 @@ export default ({
   noLeftRouned,
   ...spacing
 }: TProps) => {
-  const { cn, margin, primary, br, fg, bg, isDarkBlack } = useTwBelt()
+  const { cn, margin, primary, br, fg, bg, rainbow, isDarkBlack } = useTwBelt()
 
   const isRed = type === 'red'
   const common = 'group select-none touch-manipulation outline-none bg-none whitespace-nowrap'
@@ -65,11 +66,12 @@ export default ({
       ghost && bg('transparent'),
       ghost ? primary('fg') : fg('button.fg'),
       isRed && 'border-transparent',
+      isRed && ghost && rainbow(COLOR_NAME.RED, 'borderSoft'),
       loading && bg('transparent'),
     ),
     innerRed: cn(
       'hover:brightness-105 active:brightness-95 trans-all-200',
-      bg('button.redBg'),
+      ghost ? bg('alphaBg') : bg('button.redBg'),
       fg('rainbow.red'),
     ),
     children: cn('align-both relative w-auto'),
