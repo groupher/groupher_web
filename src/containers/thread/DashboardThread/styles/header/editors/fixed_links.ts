@@ -1,34 +1,14 @@
-import styled, { css, theme } from '~/css'
-import ArrowSVG from '~/icons/ArrowSimple'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div``
-export const Note = styled.div`
-  color: ${theme('article.title')};
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 15px;
-`
-export const ItemsWrapper = styled.div`
-  ${css.column('')};
-  width: 260px;
-  gap: 10px 0;
-`
-export const Item = styled.div`
-  ${css.row('align-center')};
-`
-export const Title = styled.div`
-  ${css.row('align-center')};
-  font-size: 13px;
-  color: ${theme('article.title')};
-  width: 80px;
-`
-export const ArrowIcon = styled(ArrowSVG)`
-  ${css.size(12)};
-  fill: ${theme('article.digest')};
-  margin-left: 5px;
-  transform: rotate(180deg);
-`
-export const LinkSlug = styled.div`
-  font-size: 13px;
-  color: ${theme('hint')};
-`
+export default () => {
+  const { cn, fg, fill } = useTwBelt()
+
+  return {
+    note: cn('text-xs bold-sm mb-4', fg('text.title')),
+    items: 'column w-64 gap-y-3.5',
+    item: 'row-center',
+    title: cn('row-center w-20 text-xs', fg('text.title')),
+    linkSlug: cn('text-xs', fg('text.hint')),
+    arrowIcon: cn('size-3 rotate-180 ml-1.5', fill('text.digest')),
+  }
+}

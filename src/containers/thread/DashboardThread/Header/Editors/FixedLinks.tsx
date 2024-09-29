@@ -5,58 +5,52 @@ import type { TCommunityThread } from '~/spec'
 import { ROUTE } from '~/const/route'
 
 import useViewingCommunity from '~/hooks/useViewingCommunity'
+import ArrowSVG from '~/icons/ArrowSimple'
 
-import {
-  Wrapper,
-  ItemsWrapper,
-  Note,
-  Item,
-  Title,
-  ArrowIcon,
-  LinkSlug,
-} from '../../styles/header/editors/fixed_links'
+import useSalon from '../../styles/header/editors/fixed_links'
 
 type TProps = {
   isAboutLinkFold: boolean
 }
 
 const FixedLinks: FC<TProps> = ({ isAboutLinkFold }) => {
+  const s = useSalon()
   const { slug, threads } = useViewingCommunity()
 
   return (
-    <Wrapper>
-      <Note>固定链接:</Note>
+    <div>
+      <h3 className={s.note}>固定链接:</h3>
 
-      <ItemsWrapper>
+      <div className={s.items}>
         {reject((t: TCommunityThread) => t.slug === ROUTE.ABOUT, threads).map(
           (item: TCommunityThread) => (
-            <Item key={item.slug}>
-              <Title>{item.title}</Title>
-              <LinkSlug>
+            <div key={item.slug} className={s.item}>
+              <h4 className={s.title}>{item.title}</h4>
+              <div className={s.linkSlug}>
                 /{slug}/{item.slug}
-              </LinkSlug>
-            </Item>
+              </div>
+            </div>
           ),
         )}
 
         {isAboutLinkFold ? (
-          <Item>
-            <Title>
+          <div className={s.item}>
+            <h4 className={s.title}>
               更多
-              <ArrowIcon />
-            </Title>
-            <LinkSlug>关于</LinkSlug>
-          </Item>
+              <ArrowSVG className={s.arrowIcon} />
+            </h4>
+            <div className={s.linkSlug}>关于</div>
+          </div>
         ) : (
-          <Item>
-            <Title>关于</Title>
-            <LinkSlug>
+          <div className={s.item}>
+            <h4 className={s.title}>关于</h4>
+            <div className={s.linkSlug}>
               /{slug}/{ROUTE.ABOUT}
-            </LinkSlug>
-          </Item>
+            </div>
+          </div>
         )}
-      </ItemsWrapper>
-    </Wrapper>
+      </div>
+    </div>
   )
 }
 
