@@ -16,10 +16,10 @@ import useHeader from '../../logic/useHeader'
 import useSalon, { cn } from '../../styles/header/templates'
 
 const Templates: FC = () => {
+  const [showAll, setShowAll] = useState<boolean>(false)
   const s = useSalon()
 
   const { getIsLayoutTouched, headerLayout, saving, headerLinks: links, getThreads } = useHeader()
-  const [showAll, setShowAll] = useState<boolean>(false)
   const threads = getThreads()
   const linksProps = { threads, links }
 
@@ -34,11 +34,11 @@ const Templates: FC = () => {
           <Float {...linksProps} active={headerLayout === HEADER_LAYOUT.FLOAT} />
         </>
       ) : (
-        <>
-          {headerLayout === HEADER_LAYOUT.CENTER && <Center {...linksProps} $active />}
-          {headerLayout === HEADER_LAYOUT.RIGHT && <Right {...linksProps} $active />}
-          {headerLayout === HEADER_LAYOUT.FLOAT && <Float {...linksProps} $active />}
-        </>
+        <div className="w-full" onClick={() => setShowAll(true)}>
+          {headerLayout === HEADER_LAYOUT.CENTER && <Center {...linksProps} active />}
+          {headerLayout === HEADER_LAYOUT.RIGHT && <Right {...linksProps} active />}
+          {headerLayout === HEADER_LAYOUT.FLOAT && <Float {...linksProps} active />}
+        </div>
       )}
 
       <SavingBar
