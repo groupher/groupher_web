@@ -57,12 +57,14 @@ const Editor: FC = () => {
         <div className={s.leftPart}>
           <FixedLinks isAboutLinkFold={isAboutLinkFold} />
         </div>
-        <div className={s.rightPart}>
-          <h3 className={s.noteTitle}>注意事项</h3>
-          <p className={s.noteP}>改变顺序后可通过上方模板预览效果。</p>
-          <p className={s.noteP}>固定链接无法调整顺序，分组链接会自动折叠。</p>
-          <p className={s.noteP}>新增链接或链接组后，"关于"会自动折叠到"更多"中。</p>
-        </div>
+        <ul className={s.rightPart}>
+          <h3 className={s.noteTitle}>注意事项:</h3>
+          <li className={s.noteP}>固定链接无法调整顺序，分组链接会自动折叠。</li>
+          <li className={s.noteP}>
+            新增链接或链接组后，"关于"会自动折叠到"更多"中，且位于最后一项。
+          </li>
+          <li className={s.noteP}>改变顺序后可通过上方模板预览效果。</li>
+        </ul>
       </div>
 
       <div className={s.divider} />

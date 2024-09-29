@@ -19,7 +19,7 @@ const Header: FC = () => {
   return (
     <div className={s.wrapper}>
       <Templates />
-      <div className={s.divider} />
+      <div className="mt-4" />
       <Editor />
 
       <SavingBar

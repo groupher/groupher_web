@@ -3,7 +3,7 @@ import useTwBelt from '~/hooks/useTwBelt'
 export { cn } from '~/css'
 
 export default () => {
-  const { cn, br, bg, primary } = useTwBelt()
+  const { cn, br, bg, primary, shadow } = useTwBelt()
 
   return {
     wrapper: cn('column-align-both gap-4 pb-8'),
@@ -14,8 +14,7 @@ export default () => {
       bg('alphaBg'),
       'trans-all-100',
     ),
-    templateActive: cn(br('text.digest')),
+    templateActive: cn(br('text.digest'), shadow('md')),
     arrowIcon: cn('size-3.5 rotate-180', primary('fill')),
-    toggleText: '',
   }
 }
