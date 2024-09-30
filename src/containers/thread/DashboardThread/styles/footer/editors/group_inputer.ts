@@ -1,19 +1,10 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import Input from '~/widgets/Input'
+export default () => {
+  const { cn, bg } = useTwBelt()
 
-export const Wrapper = styled.div`
-  ${css.row('align-center')}
-  margin-left: -10px;
-`
-export const Inputer = styled(Input)`
-  width: 132px;
-  height: 26px;
-  font-size: 13px;
-  background: ${theme('alphaBg')};
-
-  ::placeholder {
-    color: ${theme('article.digest')};
-    opacity: 0.8;
+  return {
+    wrapper: cn('row-center -ml-2.5'),
+    input: cn('w-36 h-7', bg('alphaBg')),
   }
-`
+}

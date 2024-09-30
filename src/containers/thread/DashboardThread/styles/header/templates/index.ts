@@ -6,9 +6,9 @@ export default () => {
   const { cn, br, bg, primary, shadow } = useTwBelt()
 
   return {
-    wrapper: cn('column-align-both gap-4 pb-8'),
+    wrapper: cn('column gap-4 pb-8'),
     template: cn(
-      'w-full h-16 border rounded-md pointer',
+      'w-11/12 h-16 border rounded-md pointer',
       `hover:${primary('border')}`,
       br('divider'),
       bg('alphaBg'),

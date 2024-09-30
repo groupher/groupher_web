@@ -49,13 +49,15 @@ const Templates: FC = () => {
         top={10}
       />
 
-      {!isLayoutTouched && !saving && (
-        <Button size="small" ghost noBorder className="w-36" onClick={() => setShowAll(!showAll)}>
-          {showAll ? '收起' : '更换模板'}
+      <div className="w-11/12 align-both">
+        {!isLayoutTouched && !saving && (
+          <Button size="small" ghost noBorder className="w-36" onClick={() => setShowAll(!showAll)}>
+            {showAll ? '收起' : '更换模板'}
 
-          <ArrowSVG className={cn(s.arrowIcon, showAll && 'rotate-90')} />
-        </Button>
-      )}
+            <ArrowSVG className={cn(s.arrowIcon, showAll && 'rotate-90')} />
+          </Button>
+        )}
+      </div>
     </div>
   )
 }

@@ -1,8 +1,9 @@
 import type { FC } from 'react'
 
-import SavingBar from '../../SavingBar'
+import Input from '~/widgets/Input'
 
-import { Wrapper, Inputer } from '../../styles/footer/editors/group_inputer'
+import SavingBar from '../../SavingBar'
+import useSalon from '../../styles/footer/editors/group_inputer'
 
 type TProps = {
   value: string
@@ -12,6 +13,8 @@ type TProps = {
 }
 
 const GroupInputer: FC<TProps> = ({ value, onChange, onConfirm, onCancel }) => {
+  const s = useSalon()
+
   return (
     <SavingBar
       onConfirm={onConfirm}
@@ -20,14 +23,15 @@ const GroupInputer: FC<TProps> = ({ value, onChange, onConfirm, onCancel }) => {
       isTouched
       minimal
     >
-      <Wrapper>
-        <Inputer
+      <div className={s.wrapper}>
+        <Input
+          className={s.input}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="// 新分组名称"
           autoFocus
         />
-      </Wrapper>
+      </div>
     </SavingBar>
   )
 }
