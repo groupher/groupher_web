@@ -4,7 +4,7 @@
  *
  */
 
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import MENU from '~/const/menu'
 
@@ -33,4 +33,4 @@ const MenuItem: FC<TProps> = ({ title, icon, onClick = console.log }) => {
   )
 }
 
-export default memo(MenuItem)
+export default MenuItem
