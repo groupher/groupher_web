@@ -17,6 +17,6 @@ export default () => {
     //
     linkGroup: 'row wrap justify-items-start mt-7 w-full gap-x-5 gap-y-7',
     columnWrapper: 'w-[30%] h-full',
-    itemsWrapper: 'column gap-y-5 mb-8',
+    itemsWrapper: 'column gap-y-5 mb-5',
   }
 }

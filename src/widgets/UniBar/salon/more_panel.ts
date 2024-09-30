@@ -9,7 +9,7 @@ export default () => {
     wrapper: 'px-2.5 py-2',
     iconBox: 'align-both size-5 mr-2',
     icon,
-    linkIcon: cn(icon, 'opacity-0 group-hover:opacity-100'),
+    linkIcon: cn(icon, 'group-smoky-0'),
     dashboardIcon: cn(icon, 'size-4'),
   }
 }

@@ -10,7 +10,7 @@ export default () => {
     title: cn('row-center text-sm', fg('text.title')),
     hintTitle: cn('mt-1 text-xs italic', fg('text.hint')),
     arrowIcon: cn(common, 'ml-1 -rotate-90', fill('text.digest')),
-    settingIcon: cn(common, 'mr-1 opacity-0 group-hover:opacity-100', fill('text.digest')),
-    editIcon: cn(common, 'size-3.5 mr-1 opacity-0 group-hover:opacity-100', fill('text.digest')),
+    settingIcon: cn(common, 'mr-1 group-smoky-0', fill('text.digest')),
+    editIcon: cn(common, 'size-3.5 mr-1 opacity-0 group-smoky-0', fill('text.digest')),
   }
 }

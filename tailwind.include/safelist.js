@@ -105,6 +105,7 @@ const UTILS = [
   'bg-transparent',
   'rounded-3xl',
   'hover-underline',
+  'hidden',
 ]
 
 module.exports = uniq([
