@@ -15,7 +15,7 @@ export default () => {
     slash: cn('text-xs ml-3 mr-3', fg('text.hint')),
     plusIcon: cn('size-3 mr-1.5', primary('fill')),
     //
-    linkGroup: 'row wrap justify-items-start mt-7 w-full gap-x-5 gap-y-7',
+    linkGroup: 'row wrap justify-start mt-7 w-full gap-x-5 gap-y-7',
     columnWrapper: 'w-[30%] h-full',
     itemsWrapper: 'column gap-y-5 mb-5',
   }

@@ -83,6 +83,8 @@ const HOVERS = [
 const INPUTS = ['border-text-digest']
 
 const GROUP_HOVERS = ['text-text-title', 'fill-rainbow-red', 'fill-text-title']
+const MENU_GROUP_HOVERS = ['text-rainbow-red', 'fill-rainbow-red', 'fill-text-title']
+
 const CONTAINERS = keys(container).map(
   (c) =>
     `container-${c} w-[${container[c].width}] pl-${container[c].pl} pr-${container[c].pr} -ml-${container[c].pl} mr-${container[c].pr}`,
@@ -106,6 +108,8 @@ const UTILS = [
   'rounded-3xl',
   'hover-underline',
   'hidden',
+  'group-hover/menubar:text-rainbow-red',
+  'group-hover/menubar:text-rainbow-red-dark',
 ]
 
 module.exports = uniq([
@@ -135,6 +139,7 @@ module.exports = uniq([
   ...INPUTS.map((c) => `focus:${c} active:${c} focus:${c}-dark active:${c}-dark`),
 
   ...GROUP_HOVERS.map((c) => `group-hover:${c} group-hover:${c}-dark`),
+  ...MENU_GROUP_HOVERS.map((c) => `group-hover/menubar:${c} group-hover/menubar:${c}-dark`),
   ...ROTATES.map((r) => `rotate-${r}`),
 
   ...CONTAINERS,

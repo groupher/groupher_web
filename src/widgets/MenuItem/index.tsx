@@ -9,7 +9,7 @@ import { type FC, memo } from 'react'
 import MENU from '~/const/menu'
 
 import type { TMenu } from '~/spec'
-import { Wrapper, Title, MenuIcon, DeleteTitle } from './styles'
+import useSalon, { cn, MenuIcon } from './salon'
 
 type TProps = {
   icon: TMenu
@@ -18,13 +18,18 @@ type TProps = {
 }
 
 const MenuItem: FC<TProps> = ({ title, icon, onClick = console.log }) => {
+  const s = useSalon()
   const Icon = MenuIcon[icon]
 
   return (
-    <Wrapper onClick={onClick}>
-      <Icon />
-      {icon === MENU.DELETE ? <DeleteTitle>{title}</DeleteTitle> : <Title>{title}</Title>}
-    </Wrapper>
+    <div className={s.wrapper} onClick={onClick}>
+      <Icon className={cn(s.icon, s[icon] || '')} />
+      {icon === MENU.DELETE ? (
+        <div className={s.deleteTitle}>{title}</div>
+      ) : (
+        <div className={s.title}>{title}</div>
+      )}
+    </div>
   )
 }
 

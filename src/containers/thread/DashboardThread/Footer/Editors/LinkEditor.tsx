@@ -2,6 +2,8 @@ import { type FC, useEffect, useState } from 'react'
 
 import type { TChangeMode, TLinkItem } from '~/spec'
 
+import { CHANGE_MODE } from '~/const/mode'
+
 import MoreSVG from '~/icons/menu/MoreL'
 import EditPenSVG from '~/icons/EditPen'
 import ArrowSVG from '~/icons/Arrow'
@@ -11,15 +13,13 @@ import Linker from '~/widgets/Linker'
 import Input from '~/widgets/Input'
 import CancelButton from '~/widgets/Buttons/CancelButton'
 
+import { EMPTY_LINK_ITEM } from '../../constant'
 import SavingBar from '../../SavingBar'
 
-import { EMPTY_LINK_ITEM } from '../../constant'
 import LinkMenu from './LinkMenu'
 
 import useFooter from '../../logic/useFooter'
 import useSalon, { cn } from '../../styles/footer/editors/link_editor'
-
-import { CHANGE_MODE } from '~/const/mode'
 
 type TProps = {
   notifyText?: string

@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import MenuItem from '~/widgets/MenuItem'
 import MENU from '~/const/menu'
 
-import { Wrapper } from '../../styles/footer/editors/link_menu'
+import useSalon from '../../styles/footer/editors/link_menu'
 
 type TProps = {
   moveLeft?: () => void
@@ -27,8 +27,10 @@ const GroupMenu: FC<TProps> = ({
   isEdgeLeft,
   isEdgeRight,
 }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {!isEdgeLeft && <MenuItem icon={MENU.ARROW_LEFT} title="左移" onClick={() => moveLeft()} />}
       {!isEdgeRight && (
         <MenuItem icon={MENU.ARROW_RIGHT} title="右移" onClick={() => moveRight()} />
@@ -43,7 +45,7 @@ const GroupMenu: FC<TProps> = ({
       )} */}
 
       <MenuItem icon={MENU.DELETE} title="删除" onClick={() => onDelete()} />
-    </Wrapper>
+    </div>
   )
 }
 
