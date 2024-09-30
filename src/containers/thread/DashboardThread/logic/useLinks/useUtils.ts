@@ -147,8 +147,6 @@ export default (): TRet => {
         headerLinks: reindexGroup(linksAfter),
       })
     } else {
-      // console.log('## 222: ', links)
-
       // make sure the "more" gorup is always in the end
       const linksAfter = links.map((item) => ({
         ...item,
@@ -202,7 +200,7 @@ export default (): TRet => {
     store.commit({
       editingGroup: null,
       editingGroupIndex: null,
-      [linksKey]: linksAfter,
+      [linksKey]: reindexGroup(reindex(linksAfter)),
     })
   }
 
