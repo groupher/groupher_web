@@ -1,5 +1,6 @@
 // logics for header & footer links
 
+import { useEffect, useRef } from 'react'
 import { keys, findIndex, clone, remove, filter, reject, forEach, find } from 'ramda'
 
 import type { TLinkItem, TGroupedLinks } from '~/spec'
@@ -30,8 +31,14 @@ export default (): TRet => {
   const community = useViewingCommunity()
   const { curTab } = store
 
+  const storeRef = useRef(store)
+
+  useEffect(() => {
+    storeRef.current = store
+  }, [store])
+
   const getLinks = (): TLinkItem[] => {
-    const { curTab, headerLinks, footerLinks } = store
+    const { curTab, headerLinks, footerLinks } = storeRef.current
     return clone(curTab !== DASHBOARD_ROUTE.FOOTER ? headerLinks : footerLinks)
   }
 
@@ -143,6 +150,7 @@ export default (): TRet => {
       }
 
       const linksAfter = [...links, newLinkItem]
+
       store.commit({
         headerLinks: reindexGroup(linksAfter),
       })
@@ -161,6 +169,7 @@ export default (): TRet => {
 
   const confirmGroupAdd = (): void => {
     const { editingGroup } = store
+
     const links = getLinks()
 
     const _groupedLinks = groupByKey(links, 'group')
@@ -180,7 +189,7 @@ export default (): TRet => {
       [linksKey]: linksAfter,
     })
 
-    keepMoreGroup2EndIfNeed()
+    setTimeout(keepMoreGroup2EndIfNeed, 100)
   }
 
   const confirmGroupUpdate = (): void => {
