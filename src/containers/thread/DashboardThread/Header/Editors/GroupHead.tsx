@@ -21,6 +21,8 @@ type TGroupTitle = {
 const GroupTitle: FC<TGroupTitle> = ({ title }) => {
   const s = useSalon()
 
+  // console.log('## title: ', title)
+
   if (startsWith(ONE_LINK_GROUP, title)) {
     return <div className={s.hintTitle}>单链接</div>
   }

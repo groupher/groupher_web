@@ -39,6 +39,7 @@ export default (): TRet => {
 
   const getLinks = (): TLinkItem[] => {
     const { curTab, headerLinks, footerLinks } = storeRef.current
+
     return clone(curTab !== DASHBOARD_ROUTE.FOOTER ? headerLinks : footerLinks)
   }
 
@@ -168,7 +169,7 @@ export default (): TRet => {
   }
 
   const confirmGroupAdd = (): void => {
-    const { editingGroup } = store
+    const { editingGroup } = storeRef.current
 
     const links = getLinks()
 

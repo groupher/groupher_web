@@ -161,7 +161,7 @@ export default (): TRet => {
     }
 
     if (field === SETTING_FIELD.HEADER_LINKS) {
-      const { headerLinks } = store
+      const { headerLinks } = storeRef.current
 
       handleMutation(S.updateDashboardHeaderLinks, { community, headerLinks })
       return

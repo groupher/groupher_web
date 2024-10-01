@@ -201,6 +201,10 @@ export default (initState: TInitState = {}): TStore => {
       commit: (patch: Partial<TStore>): void => {
         Object.assign(store, mergeDeepRight(store, patch))
       },
+      debug: () => {
+        store.editingLink = null
+        store.headerLinks = []
+      },
     }),
   )
 

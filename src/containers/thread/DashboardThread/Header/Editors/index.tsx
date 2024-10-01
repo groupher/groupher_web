@@ -70,7 +70,9 @@ const Editor: FC = () => {
       <div className={s.divider} />
 
       <>
-        {editingGroup !== null && editingGroupIndex === null ? (
+        {editingGroup !== null &&
+        !startsWith(ONE_LINK_GROUP, editingGroup) &&
+        editingGroupIndex === null ? (
           <div className={s.groupInputer}>
             <GroupInputer
               value={editingGroup}
@@ -83,12 +85,12 @@ const Editor: FC = () => {
           <div className={s.adder}>
             <Button size="small" onClick={addHeaderLinkGroup} space={8} ghost>
               <PlusSVG className={s.plusIcon} />
-              链接&nbsp;
+              链接
             </Button>
             <div className={s.slash}>/</div>
             <Button size="small" onClick={triggerGroupAdd} space={10} ghost>
               <PlusSVG className={s.plusIcon} />
-              链接组&nbsp;
+              链接组
             </Button>
           </div>
         )}
@@ -149,7 +151,7 @@ const Editor: FC = () => {
                       onClick={() => add2Group(groupKey, curGroupLinks.length)}
                     >
                       <PlusSVG className={s.plusIcon} />
-                      链接&nbsp;
+                      链接
                     </Button>
                   </div>
                 )}

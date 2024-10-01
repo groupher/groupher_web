@@ -15,6 +15,7 @@ type TRet = {
 
 export default (): TRet => {
   const store = useSubStore('dashboard')
+
   const useLinksData = useLinks()
   const { edit } = useHelper()
 

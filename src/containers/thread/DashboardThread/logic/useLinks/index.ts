@@ -1,5 +1,6 @@
 // logics for header & footer links
-import { find, findIndex, filter, reject } from 'ramda'
+import { useEffect, useRef } from 'react'
+import { find, findIndex, filter, reject, clone } from 'ramda'
 
 import { ONE_LINK_GROUP, MORE_GROUP } from '~/const/dashboard'
 import { DASHBOARD_ROUTE } from '~/const/route'
@@ -44,6 +45,13 @@ export type TRet = {
 
 export default (): TRet => {
   const store = useSubStore('dashboard')
+
+  const storeRef = useRef(store)
+
+  useEffect(() => {
+    storeRef.current = store
+  }, [store])
+
   const {
     getLinks,
     moveGroup,
@@ -54,7 +62,7 @@ export default (): TRet => {
     emptyLinksIfNedd,
     confirmGroupAdd,
     confirmGroupUpdate,
-    keepMoreGroup2EndIfNeed,
+    // keepMoreGroup2EndIfNeed,
   } = useUtils()
   const drived = useDrived()
 
@@ -137,7 +145,6 @@ export default (): TRet => {
 
   const confirmLinkEditing = (): void => {
     const { editingLink, editingLinkMode } = store
-    // const links = getLinks()
     const links = getLinks()
 
     if (editingLinkMode === CHANGE_MODE.UPDATE) {
@@ -165,13 +172,11 @@ export default (): TRet => {
     )
 
     const editingLinkAfter = {
-      ...editingLink,
+      ...clone(editingLink),
       index: newAddLink.index,
       group: newAddLink.group,
       groupIndex: newAddLink.groupIndex,
     }
-
-    console.log('## editingLinkAfter: ', editingLinkAfter)
 
     const linksAfter = reject(
       (link: TLinkItem) => link.group === newAddLink.group && link.index === newAddLink.index,
@@ -179,14 +184,14 @@ export default (): TRet => {
     ).concat(editingLinkAfter)
 
     store.commit({
+      [linksKey]: clone(linksAfter),
       editingLink: null,
-      [linksKey]: linksAfter,
     })
 
-    keepMoreGroup2EndIfNeed()
+    // setTimeout(keepMoreGroup2EndIfNeed, 100)
 
     if (newAddLink.group === MORE_GROUP) {
-      moveAboutLink2Bottom()
+      setTimeout(moveAboutLink2Bottom, 100)
     }
   }
 
@@ -222,7 +227,10 @@ export default (): TRet => {
     const time = new Date().getTime()
 
     store.commit({ editingGroup: `${ONE_LINK_GROUP}_${time}` })
-    confirmGroupAdd()
+    // TMP
+    store.commit({ editingLink: { title: 'hello', link: 'hello', index: 0 } })
+    // TMP end
+    setTimeout(confirmGroupAdd, 100)
   }
 
   const moveLink = (link: TLinkItem, dir: TMoveLinkDir): void => {
