@@ -1,44 +1,21 @@
-import styled, { css, theme } from '~/css'
+import useBase from '.'
 
-import { TemplateBlock } from '.'
+import useTwBelt from '~/hooks/useTwBelt'
+export { cn } from '~/css'
 
-export const Wrapper = styled(TemplateBlock)`
-  ${css.row('align-center', 'justify-between')};
-  height: 60px;
-  padding: 0 20px;
-  background: ${theme('alphaBg')};
-`
-export const LeftWrapper = styled.div`
-  ${css.row('align-center')};
-  gap: 0 10px;
-`
-export const BrandLogo = styled.div`
-  ${css.circle(18)};
-  background: ${theme('divider')};
-`
-export const BrandText = styled.div`
-  color: ${theme('article.title')};
-`
+export default () => {
+  const { cn, cutRest, fg } = useTwBelt()
+  const base = useBase()
 
-export const CenterWrapper = styled.div`
-  ${css.row('align-center')};
-  gap: 0 20px;
-`
-
-export const LinkItem = styled.a`
-  ${css.cutRest('50px')};
-  color: ${theme('article.digest')};
-  font-size: 12px;
-  text-decoration: none;
-
-  &:hover {
-    color: ${theme('article.title')};
-    cursor: pointer;
-    text-decoration: underline;
+  return {
+    wrapper: cn(base.template, 'row-center h-20 justify-between px-7 pr-8'),
+    active: base.templateActive,
+    center: 'row-center gap-x-5',
+    right: 'row-center gap-x-4',
+    linkItem: cn(
+      'text-xs no-underline hover:underline pointer',
+      cutRest('w-12'),
+      fg('text.digest'),
+    ),
   }
-`
-
-export const RightWrapper = styled.div`
-  ${css.row('align-center')};
-  gap: 0 10px;
-`
+}

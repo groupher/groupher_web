@@ -4,6 +4,6 @@ export default () => {
   const { cn } = useTwBelt()
 
   return {
-    wrapper: cn('column'),
+    wrapper: cn('column items-center'),
   }
 }
