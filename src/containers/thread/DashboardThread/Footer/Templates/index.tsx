@@ -22,12 +22,12 @@ const Templates: FC = () => {
       {showAll ? (
         <>
           <Simple $active={footerLayout === FOOTER_LAYOUT.SIMPLE} links={footerLinks} />
-          <Group $active={footerLayout === FOOTER_LAYOUT.GROUP} links={footerLinks} />
+          <Group active={footerLayout === FOOTER_LAYOUT.GROUP} links={footerLinks} />
         </>
       ) : (
         <>
           {footerLayout === FOOTER_LAYOUT.SIMPLE && <Simple $active links={footerLinks} />}
-          {footerLayout === FOOTER_LAYOUT.GROUP && <Group $active links={footerLinks} />}
+          {footerLayout === FOOTER_LAYOUT.GROUP && <Group active links={footerLinks} />}
         </>
       )}
 

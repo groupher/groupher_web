@@ -5,6 +5,25 @@ import ArrowSVG from '~/icons/ArrowSimple'
 
 import Button from '~/widgets/Buttons/Button'
 
+import useTwBelt from '~/hooks/useTwBelt'
+
+export default () => {
+  const { cn, primary, br, bg, shadow } = useTwBelt()
+
+  return {
+    wrapper: cn('column gap-4 pb-8'),
+    template: cn(
+      'w-11/12 h-16 border rounded-md pointer',
+      `hover:${primary('border')}`,
+      br('divider'),
+      bg('alphaBg'),
+      'trans-all-100',
+    ),
+    templateActive: cn(primary('borderSoft'), shadow('md')),
+    arrowIcon: cn('size-3.5 rotate-180', primary('fill')),
+  }
+}
+
 export const Wrapper = styled.div`
   ${css.column('align-both')};
   gap: 15px;
