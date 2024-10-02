@@ -1,36 +1,10 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import Button from '~/widgets/Buttons/Button'
-import AdderSVG from '~/icons/Plus'
+export default () => {
+  const { cn, primary } = useTwBelt()
 
-export const Wrapper = styled.div`
-  padding: 0 100px;
-  padding-right: 120px;
-
-  ${css.media.mobile`
-    padding: 0 20px;
-  `};
-`
-export const InnerWrapper = styled.div`
-  ${css.column()};
-`
-export const ContentWrapper = styled.div`
-  height: 100%;
-  width: 100%;
-`
-export const AddButton = styled(Button)`
-  ${css.row('align-center')};
-  width: 100px;
-  border-color: ${theme('divider')};
-  height: 30px !important;
-`
-export const AddIcon = styled(AdderSVG)`
-  ${css.size(12)};
-  fill: ${theme('article.digest')};
-  margin-right: 8px;
-  margin-left: -10px;
-
-  ${AddButton}:hover & {
-    fill: ${theme('article.title')};
+  return {
+    wrapper: cn('pl-36 pr-48'),
+    icon: cn('size-3 mr-1', primary('fill')),
   }
-`
+}

@@ -1,24 +1,13 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.row('align-start')};
-  margin-bottom: 30px;
-  margin-top: 1px;
-`
-export const Hint = styled.div`
-  font-size: 13px;
-  color: ${theme('hint')};
-  margin-top: 3px;
-  width: 70px;
-  min-width: 70px;
-`
-export const CatsWrapper = styled.div`
-  ${css.rowWrap('align-center')};
-  margin-left: 15px;
-  gap: 14px;
+export { cn } from '~/css'
 
-  ${css.media.mobile`
-    margin-left: 0;
-    gap: 6px;
-  `};
-`
+export default () => {
+  const { cn, fg } = useTwBelt()
+
+  return {
+    wrapper: cn('row mb-32 mt-px'),
+    hint: cn('text-sm mt-0.5 w-20 opacity-80', fg('text.digest')),
+    cardsWrapper: cn('row-center w-full wrap ml-4 gap-3.5'),
+  }
+}
