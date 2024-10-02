@@ -41,7 +41,7 @@ const Templates: FC = () => {
         onConfirm={() => setShowAll(false)}
         loading={saving}
         top={10}
-        bottom={20}
+        width="w-11/12"
       />
 
       {!isLayoutTouched && !saving && (

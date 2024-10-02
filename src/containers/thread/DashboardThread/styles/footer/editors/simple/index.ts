@@ -1,47 +1,17 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import PlusSVG from '~/icons/Plus'
+export default () => {
+  const { cn, fg, primary } = useTwBelt()
 
-export const Wrapper = styled.div`
-  ${css.row('justify-between')};
-`
-export const LeftPart = styled.div`
-  ${css.column()};
-  width: 260px;
-  gap: 25px 0;
-`
+  return {
+    wrapper: cn('row justify-between w-11/12'),
+    left: 'column w-full',
+    linkBlock: 'w-60 pr-2',
+    links: 'row wrap gap-6',
+    right: 'w-48 list-disc mr-4',
+    noteTitle: cn('text-xs mb-4 -ml-3.5 bold-sm', fg('text.digest')),
+    noteP: cn('text-xs mb-3 leading-relaxed', fg('text.digest')),
 
-export const RightPart = styled.div`
-  width: 220px;
-  margin-right: 15px;
-`
-export const NoteTitle = styled.div`
-  color: ${theme('article.digest')};
-  margin-bottom: 10px;
-  font-size: 12px;
-  font-weight: bold;
-`
-export const NoteP = styled.p`
-  font-size: 12px;
-  color: ${theme('article.digest')};
-  margin-bottom: 12px;
-  opacity: 0.8;
-`
-export const Adder = styled.div`
-  width: 120px;
-  margin-left: -5px;
-  transform: scale(0.95);
-  opacity: 0.8;
-
-  ${Wrapper}:hover & {
-    opacity: 1;
+    icon: cn('size-3', primary('fill')),
   }
-
-  transition: all 0.25s;
-`
-
-export const PlusIcon = styled(PlusSVG)`
-  ${css.size(12)};
-  fill: ${theme('article.digest')};
-  margin-right: 6px;
-`
+}
