@@ -1,20 +1,23 @@
 import Button from '~/widgets/Buttons/Button'
 
 import useTags from '../logic/useTags'
-import { Wrapper, Hint, CatsWrapper } from '../styles/tags/thread_selector'
+import useSalon, { cn } from '../styles/tags/thread_selector'
 
 export default () => {
+  const s = useSalon()
+
   const { activeTagThread, changeThread, getThreads } = useTags()
   const active = activeTagThread
 
   return (
-    <Wrapper>
-      <Hint>社区板块:</Hint>
-      <CatsWrapper>
+    <div className={s.wrapper}>
+      <label className={s.hint}>社区板块:</label>
+      <div className={s.cardsWrapper}>
         {getThreads().map((thread) => (
           <Button
             key={thread.slug}
             size="small"
+            className={cn('w-20', !active && 'saturate-0')}
             noBorder={thread.slug !== active}
             onClick={() => {
               changeThread(thread.slug)
@@ -25,7 +28,7 @@ export default () => {
             {thread.title}
           </Button>
         ))}
-      </CatsWrapper>
-    </Wrapper>
+      </div>
+    </div>
   )
 }
