@@ -1,17 +1,14 @@
 import type { FC } from 'react'
 
 import Tooltip from '~/widgets/Tooltip'
+import MoreSVG from '~/icons/menu/MoreL'
+import EditSVG from '~/icons/EditPen'
 
 import GroupMenu from '../GroupMenu'
 import GroupInputer from '../GroupInputer'
 
 import useFooter from '../../../logic/useFooter'
-import {
-  Wrapper,
-  Title,
-  EditIcon,
-  SettingIcon,
-} from '../../../styles/footer/editors/group/group_head'
+import useSalon from '../../../styles/footer/editors/group/group_head'
 
 type TProps = {
   title: string
@@ -41,27 +38,29 @@ const GroupHead: FC<TProps> = ({
   isEdgeLeft,
   isEdgeRight,
 }) => {
+  const s = useSalon()
+
   const { triggerGroupUpdate, cancelGroupChange, updateEditingGroup, confirmGroupUpdate } =
     useFooter()
 
   // null is void empty checked when input value is ""
   if (editingGroup !== null && editingGroupIndex === curGroupIndex) {
     return (
-      <Wrapper>
+      <div className={s.wrapper}>
         <GroupInputer
           value={editingGroup}
           onChange={updateEditingGroup}
           onConfirm={confirmGroupUpdate}
           onCancel={cancelGroupChange}
         />
-      </Wrapper>
+      </div>
     )
   }
   return (
-    <Wrapper>
-      <Title>{title}</Title>
+    <div className={s.wrapper}>
+      <div className={s.title}>{title}</div>
       <div className="grow" />
-      <EditIcon onClick={() => triggerGroupUpdate(title, curGroupIndex)} />
+      <EditSVG onClick={() => triggerGroupUpdate(title, curGroupIndex)} className={s.icon} />
       <Tooltip
         content={
           <GroupMenu
@@ -80,9 +79,9 @@ const GroupHead: FC<TProps> = ({
         hideOnClick
         noPadding
       >
-        <SettingIcon />
+        <MoreSVG className={s.icon} />
       </Tooltip>
-    </Wrapper>
+    </div>
   )
 }
 

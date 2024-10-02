@@ -1,49 +1,11 @@
-import styled, { css, theme } from '~/css'
-import MoreSVG from '~/icons/menu/MoreL'
-import EditSVG from '~/icons/EditPen'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { ColumnWrapper } from '.'
+export default () => {
+  const { cn, fg, fill } = useTwBelt()
 
-export const Wrapper = styled.div`
-  ${css.row('align-center')};
-  width: 100%;
-`
-
-export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 14px;
-`
-
-const iconBase = `
-  fill: ${theme('article.info')};
-  opacity: 0.6;
-
-  &:hover {
-    opacity: 1;
-    cursor: pointer;
+  return {
+    wrapper: 'row-center w-11/12',
+    title: cn('text-sm bold-sm', fg('text.title')),
+    icon: cn('size-3.5 group-smoky-0 mr-0.5', fill('text.digest')),
   }
-
-  transition: all 0.2s;
-`
-
-export const EditIcon = styled(EditSVG)<{ onClick: () => void }>`
-  ${css.size(14)};
-  ${iconBase};
-  opacity: 0;
-  margin-right: 3px;
-
-  ${ColumnWrapper}:hover & {
-    opacity: 0.8;
-  }
-`
-
-export const SettingIcon = styled(MoreSVG)`
-  ${css.size(14)};
-  ${iconBase};
-  opacity: 0;
-  margin-right: 5px;
-
-  ${ColumnWrapper}:hover & {
-    opacity: 1;
-  }
-`
+}

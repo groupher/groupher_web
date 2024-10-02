@@ -8,14 +8,15 @@ import Templates from './Templates'
 import Editor from './Editors'
 
 import useFooter from '../logic/useFooter'
-import { Wrapper } from '../styles/footer'
+import useSalon from '../styles/footer'
 
 const Footer: FC = () => {
+  const s = useSalon()
   const { saving, getIsTouched } = useFooter()
   const isTouched = getIsTouched('footerLinks')
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Templates />
       <br />
       <br />
@@ -25,10 +26,10 @@ const Footer: FC = () => {
         field={SETTING_FIELD.FOOTER_LINKS}
         isTouched={isTouched}
         loading={saving}
-        top={30}
-        width="98%"
+        top={10}
+        width="w-11/12"
       />
-    </Wrapper>
+    </div>
   )
 }
 

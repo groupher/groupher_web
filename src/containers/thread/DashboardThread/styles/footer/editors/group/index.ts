@@ -1,44 +1,15 @@
-import styled, { css, theme } from '~/css'
-import PlusSVG from '~/icons/Plus'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.column('align-start', 'justify-between')};
-`
-export const ActionRow = styled.div`
-  ${css.row('justify-start', 'align-center')};
-  width: 250px;
-  margin-bottom: 30px;
-  margin-left: -1px;
-`
-export const PlusIcon = styled(PlusSVG)`
-  ${css.size(12)};
-  fill: ${theme('article.digest')};
-  margin-right: 6px;
-`
-export const LinkGroup = styled.div`
-  ${css.rowWrap('justify-start')};
-  width: calc(100% + 50px);
-  gap: 30px;
-`
-export const ColumnWrapper = styled.div`
-  width: 30%;
-  height: 100%;
-`
-export const ItemsWrapper = styled.div`
-  ${css.column()};
-  gap: 25px 0;
-  margin-bottom: 32px;
-`
+export default () => {
+  const { cn, primary } = useTwBelt()
 
-export const Adder = styled.div`
-  width: 120px;
-  margin-left: -5px;
-  transform: scale(0.95);
-  opacity: 0.8;
-
-  ${ColumnWrapper}:hover & {
-    opacity: 1;
+  return {
+    wrapper: cn('column align-start justify-between'),
+    actionRow: 'row-center w-60 mb-8 -ml-px',
+    linkGroup: 'row wrap justify-start w-full gap-8',
+    column: 'group w-[30%] h-full',
+    items: 'column gap-x-6 gap-y-3 mb-6',
+    adder: 'w-28',
+    plusIcon: cn('size-3 mr-1.5', primary('fill')),
   }
-
-  transition: all 0.25s;
-`
+}
