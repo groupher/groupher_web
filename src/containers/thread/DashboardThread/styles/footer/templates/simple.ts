@@ -8,7 +8,7 @@ export default () => {
   const base = useBase()
 
   return {
-    wrapper: cn(base.template, 'row-center h-20 justify-between px-7 pr-8'),
+    wrapper: cn(base.template, 'row-center h-16 justify-between px-7 pr-8'),
     active: base.templateActive,
     center: 'row-center gap-x-5',
     right: 'row-center gap-x-4',

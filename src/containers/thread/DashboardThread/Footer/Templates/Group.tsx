@@ -8,6 +8,8 @@ import { sortByIndex, groupByKey } from '~/helper'
 import { FOOTER_LAYOUT } from '~/const/layout'
 import { DEME_SOCIALS } from '~/const/social'
 
+import useViewingCommunity from '~/hooks/useViewingCommunity'
+
 import CommunityBrand from '~/widgets/CommunityBrand'
 import SocialList from '~/widgets/SocialList'
 
@@ -20,6 +22,8 @@ type TProps = {
 
 const Group: FC<TProps> = ({ links, active }) => {
   const s = useSalon()
+
+  const { desc } = useViewingCommunity()
   const { edit } = useFooter()
   const [animateRef] = useAutoAnimate()
   const [groupAnimateRef] = useAutoAnimate()
@@ -35,7 +39,7 @@ const Group: FC<TProps> = ({ links, active }) => {
     >
       <div className={s.left}>
         <CommunityBrand className="-ml-1 scale-90" />
-        <div className={s.desc}>让你的产品听见用户的声音</div>
+        <div className={s.desc}>{desc}</div>
         <SocialList top={20} left={-5} size="tiny" selected={DEME_SOCIALS} />
       </div>
 
