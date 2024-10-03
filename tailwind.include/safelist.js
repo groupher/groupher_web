@@ -44,6 +44,7 @@ const BG_COLORS = [
   'snackBar',
   'button-redBg',
   'button-toggle',
+  'button-fg',
 ]
 const FILL_COLORS = ['text-title', 'text-digest', 'button-fg', 'heightIcon', 'text-link']
 // for fg,bg & fill

@@ -8,22 +8,25 @@ import Tabs from '~/widgets/Switcher/Tabs'
 
 import { BROADCAST_TABS } from '../constant'
 import Portal from '../Portal'
+
 import Editor from './Editor'
 
 import useBroadcast from '../logic/useBroadcast'
-import { Wrapper, Banner, TabsWrapper, InnerWrapper } from '../styles/broadcast'
+import useSalon from '../styles/broadcast'
 
 export default () => {
+  const s = useSalon()
+
   const router = useRouter()
   const curCommunity = useViewingCommunity()
   const { broadcastTab, edit } = useBroadcast()
 
   return (
-    <Wrapper>
-      <Banner>
+    <div className={s.wrapper}>
+      <div className={s.banner}>
         <Portal title="布局/样式" desc="社区板块自定义布局与全局样式。" withDivider={false} />
 
-        <TabsWrapper>
+        <div className={s.tabs}>
           <Tabs
             items={BROADCAST_TABS}
             activeKey={broadcastTab}
@@ -39,12 +42,12 @@ export default () => {
             view={VIEW.DESKTOP}
             noAnimation
           />
-        </TabsWrapper>
-      </Banner>
+        </div>
+      </div>
 
-      <InnerWrapper>
+      <div className={s.content}>
         <Editor />
-      </InnerWrapper>
-    </Wrapper>
+      </div>
+    </div>
   )
 }

@@ -2,23 +2,23 @@ import { useState } from 'react'
 
 import { BROADCAST_LAYOUT } from '~/const/layout'
 
+import ArrowSVG from '~/icons/ArrowSimple'
+import Button from '~/widgets/Buttons/Button'
+
 import Center from './Center'
 import Default from './Default'
 
 import useBroadcast from '../../../logic/useBroadcast'
-import {
-  Wrapper,
-  ArrowIcon,
-  ToggleButton,
-  ToggleText,
-} from '../../../styles/broadcast/templates/global'
+import useSalon, { cn } from '../../../styles/broadcast/templates/global'
 
 export default () => {
+  const s = useSalon()
+
   const [showAll, setShowAll] = useState<boolean>(false)
   const { broadcastLayout } = useBroadcast()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {showAll ? (
         <>
           <Center onSelect={() => setShowAll(false)} />
@@ -30,13 +30,10 @@ export default () => {
           {broadcastLayout === BROADCAST_LAYOUT.DEFAULT && <Default />}
         </>
       )}
-      <ToggleButton size="small" ghost noBorder onClick={() => setShowAll(!showAll)}>
-        <ToggleText>
-          {showAll ? '收起' : '更换模板'}
-          {/* @ts-ignore */}
-          <ArrowIcon rotate={showAll} />
-        </ToggleText>
-      </ToggleButton>
-    </Wrapper>
+      <Button size="small" ghost noBorder onClick={() => setShowAll(!showAll)}>
+        {showAll ? '收起' : '更换模板'}
+        <ArrowSVG className={cn(s.arrow, showAll ? 'rotate-90' : 'rotate-180')} />
+      </Button>
+    </div>
   )
 }
