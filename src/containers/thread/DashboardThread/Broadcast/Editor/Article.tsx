@@ -1,21 +1,14 @@
-import { Br } from '~/widgets/Common'
 import ColorSelector from '~/widgets/ColorSelector'
 import ToggleSwitch from '~/widgets/Buttons/ToggleSwitch'
+
+import Input from '~/widgets/Input'
 
 import SectionLabel from '../../SectionLabel'
 import ArticleTemplate from '../Templates/Article'
 import SavingBar from '../../SavingBar'
 
 import useBroadcast from '../../logic/useBroadcast'
-import {
-  Wrapper,
-  Item,
-  Label,
-  BgLabel,
-  TheColor,
-  Inputer,
-  EnableDesc,
-} from '../../styles/broadcast/editor/article'
+import useSalon from '../../styles/broadcast/editor/article'
 
 export default () => {
   const {
@@ -28,13 +21,15 @@ export default () => {
     edit,
   } = useBroadcast()
 
+  const s = useSalon()
+
   const isArticleTouched = getIsArticleTouched()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <SectionLabel
         title="开启页脚广播"
-        desc={<EnableDesc>开启后，相关帖子底部会出现广播内容</EnableDesc>}
+        desc={<div className={s.enableDesc}>开启后，相关帖子底部会出现广播内容</div>}
         addon={
           <ToggleSwitch
             checked={broadcastArticleEnable}
@@ -42,40 +37,42 @@ export default () => {
           />
         }
       />
-      <Br bottom={10} />
+      <div className="mb-2.5" />
+
       <ArticleTemplate />
-      <Br bottom={50} />
-      <Item>
-        <Label>背景色：</Label>
-        <BgLabel bg={broadcastArticleBg}>
+      <div className="mb-12" />
+
+      <div className={s.item}>
+        <label className={s.label}>背景色：</label>
+        <div className={s.bgLabel}>
           <ColorSelector
             activeColor={broadcastArticleBg}
             onChange={(color) => edit(color, 'broadcastArticleBg')}
             placement="right"
             offset={[-1, 15]}
           >
-            <TheColor color={broadcastArticleBg} />
+            <div className={s.colorBall} color={broadcastArticleBg} />
           </ColorSelector>
-        </BgLabel>
-      </Item>
+        </div>
+      </div>
 
-      <Item>
-        <Label>广播内容</Label>
-        <Inputer />
-      </Item>
+      <div className={s.item}>
+        <label className={s.label}>广播内容</label>
+        <Input />
+      </div>
 
-      <Item>
-        <Label>链接地址</Label>
-        <Inputer />
-      </Item>
+      <div className={s.item}>
+        <label className={s.label}>链接地址</label>
+        <Input />
+      </div>
 
       <SavingBar
         isTouched={isArticleTouched}
         onCancel={() => broadcastOnCancel(true)}
         onConfirm={() => broadcastOnSave(true)}
         loading={saving}
-        top={50}
+        top={10}
       />
-    </Wrapper>
+    </div>
   )
 }

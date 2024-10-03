@@ -17,11 +17,11 @@ const Center: FC<TProps> = ({ onSelect = null }) => {
   const s = useSalon()
 
   const { broadcastLayout, edit } = useBroadcast()
-  const $active = broadcastLayout === BROADCAST_LAYOUT.CENTER
+  const active = broadcastLayout === BROADCAST_LAYOUT.CENTER
 
   return (
     <div
-      className={cn(s.wrapper, $active && s.active)}
+      className={cn(s.wrapper, active && s.active)}
       onClick={() => {
         edit(BROADCAST_LAYOUT.CENTER, 'broadcastLayout')
         onSelect?.()
