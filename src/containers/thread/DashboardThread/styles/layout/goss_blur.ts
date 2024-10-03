@@ -1,76 +1,31 @@
-import styled, { css, theme } from '~/css'
-import { BaseSection } from '.'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.column()};
-`
-export const Section = styled(BaseSection)``
+import useBase from '.'
 
-export const ContentWrapper = styled.div`
-  ${css.row('align-start')};
-  margin-top: 40px;
-  margin-bottom: 30px;
-`
+export { cn } from '~/css'
 
-type TPreviewImage = { effect: string; $darker: boolean }
-export const PreviewImage = styled.div<TPreviewImage>`
-  ${css.column('align-both')};
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  background-color: ${theme('hoverBg')};
+export default () => {
+  const { cn, fg, br, shadow } = useTwBelt()
+  const base = useBase()
 
-  width: 292px;
-  height: 240px;
-  border-radius: 10px;
-  ${({ effect }) => effect || ''};
-  filter: ${({ $darker }) => `brightness(${$darker ? 0.85 : 1})`};
-
-  transition: all 0.2s;
-`
-export const PreviewerWrapper = styled.div`
-  ${css.column('align-center')};
-  
-  position: relative;
-`
-export const ContentBlock = styled.div<{ $bgColor: string }>`
-  position: absolute;
-  top: -28px;
-  left: 15px;
-  width: 264px;
-  height: 245px;
-  background: ${({ $bgColor }) => $bgColor};
-  backdrop-filter: blur(50px);
-
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  z-index: 2;
-  border-radius: 8px;
-  padding: 20px;
-
-  box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
-
-  transition: all 0.2s;
-`
-export const Actions = styled.div`
-  width: 50%;
-  height: 100%;
-  flex-grow: 1;
-  margin-left: 50px;
-`
-export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 15px;
-  margin-bottom: 10px;
-`
-export const Desc = styled.div`
-  color: ${theme('article.digest')};
-  opacity: 0.8;
-  font-size: 14px;
-  margin-bottom: 3px;
-`
-export const Highlight = styled.span`
-  color: ${theme('article.title')};
-  font-weight: 500;
-  margin-left: 1px;
-  margin-right: 1px;
-`
+  return {
+    wrapper: cn('column'),
+    content: 'row align-start mt-10 mb-8',
+    previewer: 'column-center relative',
+    previewImage: cn('column-align-both w-72 h-60 rounded-md border', br('divider')),
+    //
+    contentBlock: cn(
+      'absolute -top-5 left-4 w-64 h-60 border',
+      'z-20 p-5 rounded-md trans-all-200',
+      br('divider'),
+      shadow('xl'),
+    ),
+    //
+    actions: 'w-1/2 h-full grow ml-12 list-disc',
+    title: cn('text-sm mb-2.5', fg('text.title')),
+    desc: cn('text-sm mb-1.5 ml-5', fg('text.digest')),
+    highlight: cn('ml-px mr-px bold-sm', fg('text.title')),
+    //
+    bar: cn(base.bar, 'h-2 w-24 saturate-50 opacity-40'),
+  }
+}
