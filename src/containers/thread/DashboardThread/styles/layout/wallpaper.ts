@@ -1,11 +1,10 @@
 import styled, { css, theme } from '~/css'
 import SettingSVG from '~/icons/Setting'
-import { BaseSection } from '.'
 
 export const Wrapper = styled.div`
   ${css.column()};
 `
-export const Section = styled(BaseSection)``
+export const Section = styled.div``
 
 export const PreviewWrapper = styled.div`
   ${css.rowWrap('align-center')};

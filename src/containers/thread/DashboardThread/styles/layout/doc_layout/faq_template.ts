@@ -1,7 +1,5 @@
 import useTwBelt from '~/hooks/useTwBelt'
 
-export { Bar, Circle } from '..'
-
 import useBase from '..'
 
 export { cn } from '~/css'
