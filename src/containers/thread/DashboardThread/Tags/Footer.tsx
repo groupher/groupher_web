@@ -12,8 +12,7 @@ export default () => {
       isTouched={isTouched}
       field={SETTING_FIELD.TAG_INDEX}
       prefix="是否保存标签排序"
-      top={24}
-      left={-10}
+      top={10}
     />
   )
 }

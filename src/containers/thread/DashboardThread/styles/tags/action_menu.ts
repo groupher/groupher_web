@@ -1,26 +1,9 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.column()};
-  padding: 6px;
-  width: 100px;
-`
+export default () => {
+  const { cn, menu } = useTwBelt()
 
-export const Item = styled.div`
-  ${css.row('justify-between', 'align-center')};
-  padding: 3px 4px;
-
-  &:hover {
-    background: ${theme('hoverBg')};
-    cursor: pointer;
+  return {
+    wrapper: cn('w-28 p-1', menu('bg')),
   }
-`
-
-export const Title = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 12px;
-
-  ${Item}:hover & {
-    color: ${theme('article.title')};
-  }
-`
+}

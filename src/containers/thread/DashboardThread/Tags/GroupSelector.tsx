@@ -21,7 +21,7 @@ export default memo(() => {
         <Button
           ghost
           size="small"
-          className="w-20"
+          className={cn('w-20', active !== null && 'saturate-0')}
           noBorder={active !== null}
           onClick={() => edit(null, 'activeTagGroup')}
         >
@@ -33,7 +33,7 @@ export default memo(() => {
             key={cat}
             ghost
             size="small"
-            className={cn('w-20', !active && 'saturate-0')}
+            className={cn('w-20', active !== cat && 'saturate-0')}
             noBorder={active !== cat}
             onClick={() => edit(cat, 'activeTagGroup')}
           >

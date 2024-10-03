@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import MenuItem from '~/widgets/MenuItem'
 import MENU from '~/const/menu'
 
-import { Wrapper } from '../styles/tags/action_menu'
+import useSalon from '../styles/tags/action_menu'
 
 type TProps = {
   isFirst?: boolean
@@ -23,8 +23,10 @@ const LinkMenu: FC<TProps> = ({
   move2Bottom = console.log,
   onSetting = console.log,
 }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {activeTagGroup && !isFirst && (
         <MenuItem icon={MENU.ARROW_TO_TOP} title="移至最前" onClick={() => move2Top()} />
       )}
@@ -34,7 +36,7 @@ const LinkMenu: FC<TProps> = ({
       )}
 
       <MenuItem icon={MENU.SETTING} title="高级设置" onClick={() => onSetting()} />
-    </Wrapper>
+    </div>
   )
 }
 

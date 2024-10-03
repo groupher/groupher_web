@@ -81,7 +81,7 @@ module.exports = {
   // 现在的 xxSoft 应改为 xxPale
   rainbow: {
     red: { DEFAULT: '#ca5f4d', dark: '#ca5f4d' },
-    redSoft: { DEFAULT: '#ffbfba3d', dark: '#7d3b363d' },
+    redSoft: { DEFAULT: '#FFEBEC', dark: '#7d3b363d' },
     redPale: {
       DEFAULT: 'linear-gradient(90deg, #fec0bb33 0%, #f8e4e226 100%)',
       dark: 'linear-gradient(90deg, #7a37323d 0%, #46211e2b 100%)',

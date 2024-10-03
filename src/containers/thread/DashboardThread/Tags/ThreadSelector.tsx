@@ -17,12 +17,9 @@ export default () => {
           <Button
             key={thread.slug}
             size="small"
-            className={cn('w-20', !active && 'saturate-0')}
+            className={cn('w-20', thread.slug !== active && 'saturate-0')}
             noBorder={thread.slug !== active}
-            onClick={() => {
-              changeThread(thread.slug)
-            }}
-            space={10}
+            onClick={() => changeThread(thread.slug)}
             ghost
           >
             {thread.title}

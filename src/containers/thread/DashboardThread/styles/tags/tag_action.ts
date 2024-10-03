@@ -1,75 +1,15 @@
-import styled, { css, theme } from '~/css'
+// import { Wrapper as BarWrapper } from './tag_bar'
 
-import MoreSVG from '~/icons/menu/MoreL'
-import EditSVG from '~/icons/EditPen'
-import ArrowSVG from '~/icons/Arrow'
-import SettingSVG from '~/icons/Setting'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import Input from '~/widgets/Input'
+export { cn } from '~/css'
 
-import { Wrapper as BarWrapper } from './tag_bar'
+export default () => {
+  const { cn, fill, bg } = useTwBelt()
 
-export const Wrapper = styled.div`
-  ${css.row('align-center')};
-  opacity: 0.5;
-
-  ${BarWrapper}:hover & {
-    opacity: 1;
+  return {
+    wrapper: cn('row-center gap-x-1'),
+    iconBox: cn('align-both size-4 pointer rounded', `hover:${bg('hoverBg')}`),
+    icon: cn('size-3.5', `hover:${fill('text.title')}`, fill('text.digest')),
   }
-
-  transition: all 0.2s;
-`
-export const EditIcon = styled(EditSVG)<{ onClick: () => void }>`
-  ${css.size(14)};
-  fill: ${theme('article.digest')};
-  margin-right: -4px;
-
-  &:hover {
-    fill: ${theme('article.title')};
-    cursor: pointer;
-  }
-
-  transition: all 0.2s;
-`
-export const MoreIcon = styled(MoreSVG)`
-  ${css.size(14)};
-  fill: ${theme('article.digest')};
-
-  &:hover {
-    fill: ${theme('article.title')};
-    cursor: pointer;
-  }
-
-  transition: all 0.2s;
-`
-
-export const SettingIcon = styled(SettingSVG)<{ onClick: () => void }>`
-  ${css.size(11)};
-  fill: ${theme('article.digest')};
-  margin-left: 5px;
-  cursor: pointer;
-`
-
-export const ArrowUpIcon = styled(ArrowSVG)`
-  ${css.size(11)};
-  fill: ${theme('article.digest')};
-  transform: rotate(90deg);
-  margin-right: 6px;
-
-  &:hover {
-    opacity: 1;
-    cursor: pointer;
-  }
-`
-export const ArrowDownIcon = styled(ArrowUpIcon)`
-  transform: rotate(-90deg);
-`
-
-export const InputWrapper = styled.div`
-  width: auto;
-`
-export const Inputer = styled(Input)`
-  width: 180px;
-  height: 30px;
-  margin-left: 10px;
-`
+}

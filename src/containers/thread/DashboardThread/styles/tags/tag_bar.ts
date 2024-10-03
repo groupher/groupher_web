@@ -1,76 +1,23 @@
 import type { TColorName } from '~/spec'
-import styled, { css, theme, rainbow } from '~/css'
-import Input from '~/widgets/Input'
 
-type TWrapper = { isEditMode: boolean; isSetting: boolean; hasSettingTag: boolean }
-export const Wrapper = styled.div<TWrapper>`
-  ${css.row('align-center')};
-  width: 100%;
-  height: ${({ isEditMode }) => (isEditMode ? '46px' : '40px')};
-  /* margin-left: -8px; */
-  padding: ${({ isEditMode }) => (isEditMode ? 0 : '10px')};
-  border: ${({ isEditMode }) => (isEditMode ? 'none' : '1px solid')};
-  border-color: ${({ hasSettingTag }) => {
-    if (!hasSettingTag) return theme('divider')
+import useTwBelt from '~/hooks/useTwBelt'
 
-    return theme('article.digest')
-  }};
-  border-radius: 5px;
-  margin-bottom: 12px;
+export { cn } from '~/css'
 
-  opacity: ${({ isSetting, hasSettingTag }) => {
-    if (!hasSettingTag) return 1
-    return isSetting ? 1 : 0.3
-  }};
+type TProps = {
+  color: TColorName | null
+}
 
-  &:hover {
-    border-color: ${({ isEditMode }) => (!isEditMode ? theme('article.digest') : 'divider')};
+export default ({ color }: TProps) => {
+  const { cn, br, fg, rainbow } = useTwBelt()
+
+  return {
+    wrapper: cn('row-center group w-full h-10 p-2.5 border mb-3', br('divider')),
+    wrapperEdit: cn('h-12 p-0 ml-2 border-none'),
+    dotSelector: cn('align-both size-7 circle border-2 p-0.5 -ml-1.5 mr-1 pointer', br('divider')),
+    title: cn('row-center text-sm ml-2.5', fg('text.title')),
+    catNote: cn('text-xs ml-3', fg('text.hint')),
+    input: 'w-44 h-8 ml-2.5',
+    dot: cn('size-5 circle', color && rainbow(color, 'bg')),
   }
-  transition: all 0.1s;
-`
-type TDot = { color: TColorName; isEditMode?: boolean }
-export const Dot = styled.div<TDot>`
-  ${({ isEditMode }) => (!isEditMode ? css.circle(11) : css.circle(20))};
-  background: ${({ color }) => rainbow(color)};
-`
-export const DotSelector = styled.div`
-  ${css.circle(26)};
-  ${css.row('align-both')};
-  border: 1px solid;
-  border-color: ${theme('editor.border')};
-  background: ${theme('divider')};
-  margin-left: -6px;
-  margin-right: 4px;
-  cursor: pointer;
-`
-export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 14px;
-  margin-left: 10px;
-`
-export const CatNote = styled.span`
-  color: ${theme('hint')};
-  font-size: 12px;
-  margin-left: 12px;
-
-  &:before {
-    content: '(';
-    opacity: 0.5;
-    margin-right: 1px;
-  }
-
-  &:after {
-    content: ')';
-    opacity: 0.5;
-    margin-left: 1px;
-  }
-`
-
-export const InputWrapper = styled.div`
-  width: auto;
-`
-export const Inputer = styled(Input)`
-  width: 180px;
-  height: 30px;
-  margin-left: 10px;
-`
+}
