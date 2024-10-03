@@ -2,7 +2,6 @@ import { GLOW_OPACITY, GLOW_EFFECTS_KEYS } from '~/const/glow_effect'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 import useTheme from '~/hooks/useTheme'
 
-import { Br } from '~/widgets/Common'
 import Radio from '~/widgets/Switcher/Radio'
 
 import SectionLabel from '../SectionLabel'
@@ -76,15 +75,13 @@ export default () => {
         width="w-11/12"
       />
 
-      <Br bottom={40} />
+      <div className="mb-10" />
 
       <SavingBar
         isTouched={isGrowFixedTouched}
         field={SETTING_FIELD.GLOW_FIXED}
         loading={saving}
-        width="88%"
-        left={-10}
-        top={-8}
+        width="w-11/12"
       >
         <SettingsRow>
           <SettingTitle>滑动跟随:</SettingTitle>
@@ -106,7 +103,7 @@ export default () => {
         </SettingsRow>
       </SavingBar>
 
-      <Br bottom={40} />
+      <div className="mb-10" />
 
       {glowType !== '' && (
         <SavingBar

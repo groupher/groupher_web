@@ -9,6 +9,16 @@ import ClossSVG from '~/icons/CloseLight'
 
 import { BaseSection } from '.'
 
+import useTwBelt from '~/hooks/useTwBelt'
+
+export default () => {
+  const { cn } = useTwBelt()
+
+  return {
+    wrapper: cn(''),
+  }
+}
+
 export const Wrapper = styled(BaseSection)``
 
 export const Row = styled.div`
