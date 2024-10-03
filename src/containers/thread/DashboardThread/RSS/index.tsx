@@ -5,18 +5,20 @@ import Portal from '../Portal'
 import SavingBar from '../SavingBar'
 
 import useRSS from '../logic/useRSS'
-import { Wrapper, InnerWrapper, SettingsRow, NumRow, SettingTitle } from '../styles/rss'
+import useSalon from '../styles/rss'
 
 export default () => {
+  const s = useSalon()
+
   const { rssFeedType, rssFeedCount, saving, getIsTouched, edit, rssOnSave, rssOnCancel } = useRSS()
   const isTouched = getIsTouched()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Portal title="RSS 设置" desc="RSS 设置说明。" />
-      <InnerWrapper>
-        <SettingsRow>
-          <SettingTitle>Feed 类型</SettingTitle>
+      <div className={s.innerWrapper}>
+        <div className={s.setting}>
+          <h3 className={s.title}>Feed 类型</h3>
           <Radio
             size="small"
             items={[
@@ -32,29 +34,29 @@ export default () => {
             activeKey={rssFeedType}
             onChange={(item) => edit(item.key, 'rssFeedType')}
           />
-        </SettingsRow>
+        </div>
 
-        <NumRow>
-          <SettingTitle>Feed 数目</SettingTitle>
+        <div className={s.setting}>
+          <h3 className={s.title}>Feed 数目</h3>
           <RangeSlider
-            width="160px"
-            bottom={5}
+            width="w-48"
+            bottom={12}
             value={rssFeedCount}
             min={5}
             max={50}
             onChange={(v) => edit(v, 'rssFeedCount')}
             unit="条"
           />
-        </NumRow>
+        </div>
 
         <SavingBar
           isTouched={isTouched}
           onCancel={() => rssOnCancel()}
           onConfirm={() => rssOnSave()}
           loading={saving}
-          top={50}
+          top={10}
         />
-      </InnerWrapper>
-    </Wrapper>
+      </div>
+    </div>
   )
 }

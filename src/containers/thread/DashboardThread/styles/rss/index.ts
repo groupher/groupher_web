@@ -1,26 +1,12 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-padding-left: 150px;
-  width: 580px;
+export default () => {
+  const { cn, fg } = useTwBelt()
 
-  ${css.media.mobile`
-    padding: 0 20px;
-  `};
-`
-export const InnerWrapper = styled.div`
-  ${css.column()};
-  margin-top: 50px;
-`
-export const SettingsRow = styled.div`
-  ${css.row('align-center')};
-  margin-bottom: 40px;
-`
-export const NumRow = styled.div`
-  ${css.row('align-end')};
-`
-export const SettingTitle = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 13px;
-  width: 100px;
-`
+  return {
+    wrapper: cn('pl-40 w-10/12'),
+    innerWrapper: 'column mt-12',
+    setting: 'row-center mb-12',
+    title: cn('w-28', fg('text.title')),
+  }
+}
