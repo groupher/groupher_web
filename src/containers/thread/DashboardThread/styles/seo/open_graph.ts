@@ -7,6 +7,6 @@ export default () => {
     wrapper: 'pb-8 mb-5',
     label: cn('font-sm', fg('text.title')),
     input: 'mt-2.5 mb-5 w-full',
-    enableDesc: cn('row-center w-full leading-relaxed'),
+    enableDesc: cn('row-center w-full inline-flex leading-relaxed'),
   }
 }

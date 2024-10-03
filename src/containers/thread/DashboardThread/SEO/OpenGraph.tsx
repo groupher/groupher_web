@@ -21,14 +21,13 @@ export default () => {
     <div className={s.wrapper}>
       <SectionLabel
         title="允许搜索引擎收录"
-        width="90%"
         desc={
-          <p className={s.enableDesc}>
+          <div className={s.enableDesc}>
             请确保你知道该操作的含义，
             <ArrowLinker href="https://developers.google.com/search/docs/crawling-indexing/block-indexing?hl=zh-cn">
               实现原理
             </ArrowLinker>
-          </p>
+          </div>
         }
         addon={<ToggleSwitch checked={seoEnable} onChange={(v) => toggleSEO(v)} />}
       />

@@ -2,11 +2,10 @@ import { type FC, useState } from 'react'
 
 import VIEW from '~/const/view'
 
+import Input from '~/widgets/Input'
 import Modal from '~/widgets/Modal'
-import { Br } from '~/widgets/Common'
 import Tabs from '~/widgets/Switcher/Tabs'
 import Button from '~/widgets/Buttons/Button'
-// import NoteTip from '~/widgets/NoteTip'
 import HeadsUp from '~/widgets/HeadsUp'
 
 // import from '~/widgets/Alert'
@@ -14,14 +13,7 @@ import List from './List'
 
 import useBaseInfo from '../../logic/useBaseInfo'
 
-import {
-  Wrapper,
-  WarningTitle,
-  Body,
-  Desc,
-  Footer,
-  TextareaInput,
-} from '../../styles/basic_info/danger_zone/modal'
+import useSalon from '../../styles/basic_info/danger_zone/modal'
 
 type TProps = {
   show: boolean
@@ -42,6 +34,8 @@ export const VISIBLE_OPTIONS = [
 const defaultPrivateNote = '当前社区为私有状态，只对管理员开放。'
 
 const PublicModal: FC<TProps> = ({ show, onClose }) => {
+  const s = useSalon()
+
   const { toggleVisiable } = useBaseInfo()
 
   const [visible, setVisible] = useState('public')
@@ -49,9 +43,9 @@ const PublicModal: FC<TProps> = ({ show, onClose }) => {
 
   return (
     <Modal show={show} width="390px" offsetLeft="40%" onClose={() => onClose()} showCloseBtn>
-      <Wrapper>
-        <WarningTitle>社区可见性</WarningTitle>
-        <Body>
+      <div className={s.wrapper}>
+        <h3 className={s.warningTitle}>社区可见性</h3>
+        <div className={s.body}>
           <HeadsUp type="warning">隐藏后所有内容只对管理员可见，当前为公开。</HeadsUp>
 
           <List
@@ -60,33 +54,33 @@ const PublicModal: FC<TProps> = ({ show, onClose }) => {
               '社区创建者以及管理员不受影响',
               '后台操作不受影响',
             ]}
-            left={31}
-            top={28}
+            left={6}
+            top={5}
           />
-        </Body>
-        <Br bottom={15} />
-        <Footer>
+        </div>
+        <div className={s.footer}>
           <Tabs
             items={VISIBLE_OPTIONS}
             activeKey={visible}
             onChange={(value) => setVisible(value)}
             view={VIEW.DRAWER}
           />
-          <Br bottom={20} />
-          <Desc>对外提示信息（支持 Markdown）</Desc>
-          <Br bottom={8} />
-          <TextareaInput
+          <div className="mt-5" />
+          <div className={s.desc}>对外提示信息（支持 Markdown）</div>
+          <div className="mt-2" />
+          <Input
+            className={s.textarea}
             value={privateNote}
             placeholder={defaultPrivateNote}
             behavior="textarea"
             onChange={(e) => setPrivateNote(e.target.value)}
           />
-          <Br bottom={15} />
+          <div className="mt-4" />
           <Button type="primary" onClick={() => toggleVisiable()}>
             确定变更
           </Button>
-        </Footer>
-      </Wrapper>
+        </div>
+      </div>
     </Modal>
   )
 }

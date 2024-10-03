@@ -18,7 +18,7 @@ const SectionLabel: FC<TProps> = ({
   title,
   desc = null,
   addon = null,
-  width = '100%',
+  width = 'w-full',
   withThemeSelect = false,
   classNames = '',
   ...spacing

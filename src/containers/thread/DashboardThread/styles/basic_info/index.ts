@@ -1,24 +1,12 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.column('')};
-  padding-left: 160px;
-  width: 520px;
+export default () => {
+  const { cn, br } = useTwBelt()
 
-  ${css.media.mobile`
-    padding: 0 20px;
-  `};
-`
-export const Banner = styled.div`
-  height: 70px;
-  width: 100%;
-  border-bottom: 1px solid;
-  border-bottom-color: ${theme('divider')};
-  margin-bottom: 30px;
-  position: relative;
-`
-export const TabsWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: -14px;
-`
+  return {
+    wrapper: cn('column pl-48'),
+
+    banner: cn('w-full h-20 mb-10 relative border-b', br('divider')),
+    tabs: cn('absolute -left-2 bottom-0'),
+  }
+}

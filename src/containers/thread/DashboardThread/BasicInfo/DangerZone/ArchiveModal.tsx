@@ -10,7 +10,7 @@ import Button from '~/widgets/Buttons/Button'
 import List from './List'
 
 import useBaseInfo from '../../logic/useBaseInfo'
-import { Wrapper, WarningTitle, Body, Footer } from '../../styles/basic_info/danger_zone/modal'
+import useSalon from '../../styles/basic_info/danger_zone/modal'
 
 type TProps = {
   show: boolean
@@ -18,13 +18,14 @@ type TProps = {
 }
 
 const ArchiveModal: FC<TProps> = ({ show, onClose }) => {
+  const s = useSalon()
   const { archiveCommunity } = useBaseInfo()
 
   return (
     <Modal show={show} width="390px" offsetLeft="40%" onClose={() => onClose()} showCloseBtn>
-      <Wrapper>
-        <WarningTitle>社区归档</WarningTitle>
-        <Body>
+      <div className={s.wrapper}>
+        <h3 className={s.warningTitle}>社区归档</h3>
+        <div className={s.body}>
           <HeadsUp type="warning">归档后社区将变为只读，可再次切换。</HeadsUp>
 
           <List
@@ -33,18 +34,18 @@ const ArchiveModal: FC<TProps> = ({ show, onClose }) => {
               '无法评论，点增等互动操作',
               '相关的操作队列将停止运行',
             ]}
-            left={31}
-            top={28}
+            left={6}
+            top={5}
           />
-        </Body>
-        <Footer>
+        </div>
+        <div className={s.footer}>
           <div className="grow" />
-          <Button space={15} right={10} bottom={8} onClick={() => archiveCommunity()}>
+          <Button space={10} right={10} bottom={8} onClick={() => archiveCommunity()}>
             已了解，确定归档
           </Button>
           <div className="grow" />
-        </Footer>
-      </Wrapper>
+        </div>
+      </div>
     </Modal>
   )
 }
