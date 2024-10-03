@@ -19,6 +19,8 @@ export default () => {
 
   return (
     <div className={s.wrapper}>
+      <div className={cn(s.divider, 'mt-2 mb-10')} />
+
       {showAll ? (
         <>
           <Center onSelect={() => setShowAll(false)} />
@@ -34,6 +36,8 @@ export default () => {
         {showAll ? '收起' : '更换模板'}
         <ArrowSVG className={cn(s.arrow, showAll ? 'rotate-90' : 'rotate-180')} />
       </Button>
+
+      <div className={cn(s.divider, 'mt-8')} />
     </div>
   )
 }

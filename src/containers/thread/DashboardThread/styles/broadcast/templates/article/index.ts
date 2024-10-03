@@ -3,7 +3,19 @@ import styled, { css, theme } from '~/css'
 
 import ArrowSVG from '~/icons/ArrowSimple'
 
-import Button from '~/widgets/Buttons/Button'
+import useTwBelt from '~/hooks/useTwBelt'
+
+export { cn } from '~/css'
+
+export default () => {
+  const { cn, primary, sexyHBorder } = useTwBelt()
+
+  return {
+    wrapper: cn('column-align-both w-full h-full gap-4 pb-8'),
+    arrow: cn('size-3.5 ml-1', primary('fill')),
+    divider: cn(sexyHBorder(35)),
+  }
+}
 
 export const Wrapper = styled.div`
   ${css.column('align-both')};
@@ -41,17 +53,4 @@ export const ArrowIcon = styled(ArrowSVG)<{ rotate?: boolean }>`
   fill: ${theme('article.title')};
   margin-left: 5px;
   transform: ${({ rotate }) => (rotate ? 'rotate(90deg);' : 'rotate(180deg);')};
-`
-
-export const ToggleButton = styled(Button)``
-
-export const ToggleText = styled.div`
-  ${css.row('align-center')};
-  opacity: 0.8;
-
-  ${ToggleButton}:hover & {
-    opacity: 1;
-  }
-
-  transition: all 0.2s;
 `
