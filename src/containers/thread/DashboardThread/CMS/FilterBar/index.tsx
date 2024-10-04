@@ -1,22 +1,18 @@
 import type { FC } from 'react'
 
-import Button from '~/widgets/Buttons/Button'
+import ResetSVG from '~/icons/Reset'
+import DubbleCheckSVG from '~/icons/DubbleCheck'
+import SearchSVG from '~/icons/HeaderSearch'
 import { CONDITION_MODE } from '~/const/mode'
+
+import Input from '~/widgets/Input'
+import Button from '~/widgets/Buttons/Button'
 import ConditionSelector from '~/widgets/ConditionSelector'
 
 import ActionBar from './ActionBar'
 
 import useCMSInfo from '../../hooks/useCMSInfo'
-import {
-  Wrapper,
-  MainWrapper,
-  InputerWrapper,
-  SearchIcon,
-  ResetIcon,
-  Inputer,
-  DateRangeWrapper,
-  DubbleCheckIcon,
-} from '../../styles/cms/filter_bar'
+import useSalon, { cn } from '../../styles/cms/filter_bar'
 
 type TProps = {
   triggerCheckbox: (show: boolean) => void
@@ -25,15 +21,17 @@ type TProps = {
 }
 
 const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox, selectedCount }) => {
+  const s = useSalon()
+
   const { batchSelectAll } = useCMSInfo()
 
   return (
-    <Wrapper>
-      <MainWrapper>
+    <div className={s.wrapper}>
+      <div className={s.main}>
         <Button
           size="small"
-          left={-6}
-          right={5}
+          className="w-24 min-w-24"
+          left={-5}
           onClick={() => {
             if (checkboxActive) {
               batchSelectAll(false)
@@ -43,26 +41,26 @@ const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox, selectedCount 
           ghost
           noBorder
         >
-          <DubbleCheckIcon />
+          <DubbleCheckSVG className={s.icon} />
           {checkboxActive && '取消'}
           选择
         </Button>
 
-        <InputerWrapper>
-          <SearchIcon />
-          <Inputer placeholder="按标题搜索" />
-        </InputerWrapper>
+        <div className={s.inputWrapper}>
+          <SearchSVG className={cn(s.icon, 'absolute left-2 top-2')} />
+          <Input placeholder="按标题搜索" className={s.input} />
+        </div>
 
         <ConditionSelector mode={CONDITION_MODE.CAT} selected={false} right={20} />
         <ConditionSelector mode={CONDITION_MODE.STATE} selected={false} right={20} />
 
-        <DateRangeWrapper>日期范围(TODO)</DateRangeWrapper>
+        <div className={s.dateRange}>日期范围(TODO)</div>
         <div className="grow" />
-        <Button size="small" ghost noBorder top={-2}>
-          <ResetIcon />
+        <Button size="small" className="w-24" ghost noBorder>
+          <ResetSVG className={s.icon} />
           重置
         </Button>
-      </MainWrapper>
+      </div>
       {checkboxActive && selectedCount > 0 && (
         <ActionBar
           selectedCount={selectedCount}
@@ -72,7 +70,7 @@ const FilterBar: FC<TProps> = ({ checkboxActive, triggerCheckbox, selectedCount 
           }}
         />
       )}
-    </Wrapper>
+    </div>
   )
 }
 
