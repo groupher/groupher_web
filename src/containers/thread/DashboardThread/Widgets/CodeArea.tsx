@@ -1,21 +1,23 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import CopyButton from '~/widgets/Buttons/CopyButton'
 
-import { Wrapper, CopyBtnWrapper } from '../styles/widgets/code_area'
+import useSalon from '../styles/widgets/code_area'
 
 const CodeArea: FC = () => {
   const id = 'your-id'
   const value = `<script async src="https://groupher.com/xxx" id="${id}" data-token="yyy" data-width="normal" />`
 
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {value}
-      <CopyBtnWrapper>
+      <div className={s.copyBtn}>
         <CopyButton value={value} />
-      </CopyBtnWrapper>
-    </Wrapper>
+      </div>
+    </div>
   )
 }
 
-export default memo(CodeArea)
+export default CodeArea

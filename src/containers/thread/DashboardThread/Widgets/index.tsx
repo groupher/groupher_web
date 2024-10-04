@@ -1,8 +1,9 @@
-import { Br } from '~/widgets/Common'
-
 import Button from '~/widgets/Buttons/Button'
 import Tabs from '~/widgets/Switcher/Tabs'
 import Radio from '~/widgets/Switcher/Radio'
+
+import Input from '~/widgets/Input'
+import ViewSVG from '~/icons/article/Viewed'
 
 import { WIDGET_TYPES } from '../constant'
 
@@ -11,35 +12,26 @@ import BaseSetting from './BaseSetting'
 import CodeArea from './CodeArea'
 
 import useWidgets from '../logic/useWidgets'
-import {
-  Wrapper,
-  TypeSelect,
-  TabWrapper,
-  BtnWrapper,
-  ViewIcon,
-  HintTitle,
-  HintDesc,
-  InputWrapper,
-  InputLabel,
-  Inputer,
-} from '../styles/widgets'
+import useSalon from '../styles/widgets'
 
 export default () => {
+  const s = useSalon()
+
   const { widgetsType, edit } = useWidgets()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Portal
         title="网站插件"
         desc="为您的主页添加社区，更新日志，看板等插件，让产品用户及时方便的了解最新动态。"
       />
 
       <BaseSetting />
-      <TypeSelect>
-        <TabWrapper>
+
+      <div className={s.typeSelect}>
+        <div className={s.tabs}>
           <Tabs
             items={WIDGET_TYPES}
-            size="small"
             activeKey={widgetsType}
             onChange={(slug) => {
               edit(slug, 'widgetsType')
@@ -47,20 +39,26 @@ export default () => {
               console.log('## onSave widgetsType')
             }}
           />
-        </TabWrapper>
-        <Button size="small" space={8} top={-2} right={2} ghost>
-          <BtnWrapper>
-            <ViewIcon />
-            预览
-          </BtnWrapper>
+        </div>
+        <Button size="small" space={8} ghost className="w-20">
+          <ViewSVG className={s.viewIcon} />
+          预览
         </Button>
-      </TypeSelect>
-      <InputWrapper>
-        <InputLabel>目标元素 ID:</InputLabel>
-        <Inputer />
-      </InputWrapper>
-      <InputWrapper>
-        <InputLabel>组件尺寸:</InputLabel>
+      </div>
+      <div className="mt-4" />
+      <CodeArea />
+      <div className={s.hint}>
+        启用网站插件，请复制以上代码到您的站点源码中。如果团队中缺乏相关技术人员，请联系我们。
+      </div>
+
+      <div className="mt-8" />
+
+      <div className={s.inputWrapper}>
+        <label className={s.inputLabel}>目标元素 ID:</label>
+        <Input className={s.input} />
+      </div>
+      <div className={s.inputWrapper}>
+        <label className={s.inputLabel}>组件尺寸:</label>
         <Radio
           size="small"
           left={-20}
@@ -82,13 +80,7 @@ export default () => {
           ]}
           activeKey="1"
         />
-      </InputWrapper>
-      <Br top={30} />
-      <HintTitle>启用网站插件，请复制以下代码到您的站点源码中。</HintTitle>
-      <Br top={8} />
-      <CodeArea />
-      <Br top={10} />
-      <HintDesc>如果团队中缺乏相关技术人员，请联系我们。</HintDesc>
-    </Wrapper>
+      </div>
+    </div>
   )
 }

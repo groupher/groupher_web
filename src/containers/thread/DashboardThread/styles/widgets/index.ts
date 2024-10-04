@@ -1,50 +1,17 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import ViewSVG from '~/icons/article/Viewed'
-import Input from '~/widgets/Input'
+export default () => {
+  const { cn, fg, br, primary } = useTwBelt()
 
-export const Wrapper = styled.div`
-  ${css.column()};
-  padding-left: 25px;
-  padding-right: 50px;
-`
-export const TypeSelect = styled.div`
-  ${css.row('align-center', 'justify-between')};
-  margin-left: -10px;
-  margin-bottom: 20px;
-`
-export const TabWrapper = styled.div`
-  border-bottom: 1px solid;
-  border-bottom-color: ${theme('divider')};
-`
-export const BtnWrapper = styled.div`
-  ${css.row('align-both')};
-`
-export const ViewIcon = styled(ViewSVG)`
-  fill: ${theme('button.primary')};
-  ${css.size(12)};
-  margin-right: 8px;
-`
-export const HintTitle = styled.div`
-  color: ${theme('article.title')};
-  font-size: 13px;
-  margin-bottom: 5px;
-`
-export const HintDesc = styled.div`
-  color: ${theme('lightText')};
-  font-size: 12px;
-`
-export const InputWrapper = styled.div`
-  ${css.row('align-center')};
-  margin-top: 10px;
-  margin-bottom: 10px;
-`
-export const InputLabel = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 12px;
-  width: 120px;
-`
-export const Inputer = styled(Input)`
-  height: 30px;
-  width: 150px;
-`
+  return {
+    wrapper: cn('column w-10/12 pl-7'),
+    typeSelect: 'row-center justify-between mb-5',
+    tabs: cn('border-b', br('divider')),
+
+    viewIcon: cn('size-3 mr-2', primary('fill')),
+    hint: cn('text-xs mt-4 ml-1 opacity-80', fg('text.digest')),
+    inputWrapper: 'row-center mt-2.5 mb-3 ml-1',
+    inputLabel: cn('w-32 text-sm', fg('text.digest')),
+    input: 'w-40 h-7',
+  }
+}
