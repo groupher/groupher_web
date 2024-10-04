@@ -183,7 +183,13 @@ export default (): TRet => {
 
     return Object.entries(spacing)
       .filter(([_, value]) => value !== undefined)
-      .map(([key, value]) => `${dir[key]}-${value}`)
+      .map(([key, value]) => {
+        if (value !== 'px' && value < 0) {
+          return `-${dir[key]}-${Math.abs(value)}`
+        }
+
+        return `${dir[key]}-${value}`
+      })
       .join(' ')
   }
 

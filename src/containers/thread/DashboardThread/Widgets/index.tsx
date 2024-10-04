@@ -61,7 +61,6 @@ export default () => {
         <label className={s.inputLabel}>组件尺寸:</label>
         <Radio
           size="small"
-          left={-20}
           items={[
             {
               value: '小',
