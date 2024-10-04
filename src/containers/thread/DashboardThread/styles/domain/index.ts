@@ -1,7 +1,9 @@
-import styled, { css } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.row()};
-`
+export default () => {
+  const { cn } = useTwBelt()
 
-export const Title = styled.div``
+  return {
+    wrapper: cn('row'),
+  }
+}
