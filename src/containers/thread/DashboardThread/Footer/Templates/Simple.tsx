@@ -3,28 +3,24 @@ import { keys } from 'ramda'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TActive, TLinkItem } from '~/spec'
+import { sortByIndex, groupByKey } from '~/helper'
+
 import { FOOTER_LAYOUT } from '~/const/layout'
 import { DEME_SOCIALS } from '~/const/social'
 
-import { sortByIndex, groupByKey } from '~/helper'
+import CommunityBrand from '~/widgets/CommunityBrand'
 import SocialList from '~/widgets/SocialList'
 
 import useFooter from '../../logic/useFooter'
-import {
-  Wrapper,
-  LeftWrapper,
-  BrandLogo,
-  BrandText,
-  CenterWrapper,
-  LinkItem,
-  RightWrapper,
-} from '../../styles/footer/templates/simple'
+import useSalon, { cn } from '../../salon/footer/templates/simple'
 
 type TProps = {
   links: TLinkItem[]
 } & TActive
 
-const Simple: FC<TProps> = ({ links, $active }) => {
+const Simple: FC<TProps> = ({ links, active }) => {
+  const s = useSalon()
+
   const { edit } = useFooter()
 
   const [animateRef] = useAutoAnimate()
@@ -34,23 +30,23 @@ const Simple: FC<TProps> = ({ links, $active }) => {
   const groupKeys = keys(groupedLinks)
 
   return (
-    <Wrapper $active={$active} onClick={() => edit(FOOTER_LAYOUT.SIMPLE, 'footerLayout')}>
-      <LeftWrapper>
-        <BrandLogo />
-        <BrandText>Groupher</BrandText>
-      </LeftWrapper>
+    <div
+      className={cn(s.wrapper, active && s.active)}
+      onClick={() => edit(FOOTER_LAYOUT.SIMPLE, 'footerLayout')}
+    >
+      <CommunityBrand className="scale-95" />
 
-      <CenterWrapper ref={animateRef}>
+      <div className={s.center} ref={animateRef}>
         {groupedLinks[groupKeys[0]].map((item) => (
-          <LinkItem key={item.title} href={item.link}>
+          <a className={s.linkItem} key={item.title} href={item.link}>
             {item.title}
-          </LinkItem>
+          </a>
         ))}
-      </CenterWrapper>
-      <RightWrapper>
+      </div>
+      <div className={s.right}>
         <SocialList top={0} size="tiny" selected={DEME_SOCIALS} />
-      </RightWrapper>
-    </Wrapper>
+      </div>
+    </div>
   )
 }
 

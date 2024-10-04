@@ -7,7 +7,7 @@ import PublicModal from './PublicModal'
 import ArchiveModal from './ArchiveModal'
 import DeleteModal from './DeleteModal'
 
-import useSalon, { cn } from '../../styles/basic_info/danger_zone'
+import useSalon, { cn } from '../../salon/basic_info/danger_zone'
 
 const ActionButton = ({ children, onClick }) => {
   return (

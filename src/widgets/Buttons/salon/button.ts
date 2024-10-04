@@ -51,6 +51,8 @@ export default ({
     inner: cn(
       'align-both relative text-center break-keep border border-transparent pointer',
       'hover:brightness-110 active:brightness-95 trans-all-200',
+      ghost && 'hover:brightness-125',
+      noBorder && 'border-0',
       getRouned(size),
       getPadding(size),
       getHeight(size),

@@ -14,7 +14,7 @@ import BindSVG from '~/icons/Bind'
 
 import type { TMenuGroup } from '../spec'
 
-import useSalon, { cn } from '../styles/side_menu/group'
+import useSalon, { cn } from '../salon/side_menu/group'
 
 type TProps = {
   group: TMenuGroup

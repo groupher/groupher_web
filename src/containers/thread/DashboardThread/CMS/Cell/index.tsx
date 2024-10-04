@@ -31,7 +31,7 @@ import {
   ActionCell,
   // PublishIcon,
   PulseIcon,
-} from '../../styles/cms/cell'
+} from '../../salon/cms/cell'
 
 export const CheckCell = ({ rowData, ...props }) => {
   const { batchSelect } = useCMSInfo()

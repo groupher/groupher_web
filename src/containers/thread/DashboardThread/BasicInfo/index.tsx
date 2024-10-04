@@ -16,23 +16,25 @@ import SocialInfo from './SocialInfo'
 import OtherInfo from './OtherInfo'
 
 import useBaseInfo from '../logic/useBaseInfo'
-import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
+import useSalon from '../salon/basic_info'
 
 export default () => {
+  const s = useSalon()
+
   const router = useRouter()
   const curCommunity = useViewingCommunity()
   const { baseInfoTab, edit } = useBaseInfo()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Portal
         title="社区信息"
         desc="社区基本信息，社交媒体，关于页面主要信息等。"
         withDivider={false}
       />
 
-      <Banner>
-        <TabsWrapper>
+      <div className={s.banner}>
+        <div className={s.tabs}>
           <Tabs
             items={BASEINFO_TABS}
             activeKey={baseInfoTab}
@@ -49,13 +51,13 @@ export default () => {
             view={VIEW.DESKTOP}
             noAnimation
           />
-        </TabsWrapper>
-      </Banner>
+        </div>
+      </div>
 
       {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.BASIC && <BaseInfo />}
       {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.LOGOS && <Logos />}
       {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.SOCIAL && <SocialInfo />}
       {baseInfoTab === DASHBOARD_BASEINFO_ROUTE.OTHER && <OtherInfo />}
-    </Wrapper>
+    </div>
   )
 }

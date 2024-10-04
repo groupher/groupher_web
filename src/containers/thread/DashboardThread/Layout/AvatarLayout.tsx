@@ -7,7 +7,7 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import useAvatar from '../logic/useAvatar'
-import useSalon, { cn } from '../styles/layout/avatar_layout'
+import useSalon, { cn } from '../salon/layout/avatar_layout'
 
 export default () => {
   const s = useSalon()

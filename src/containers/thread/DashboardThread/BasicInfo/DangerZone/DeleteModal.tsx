@@ -9,7 +9,7 @@ import HeadsUp from '~/widgets/HeadsUp'
 import List from './List'
 import ConfirmFooter from './ConfirmFooter'
 
-import { Wrapper, DangerTitle, Body } from '../../styles/basic_info/danger_zone/modal'
+import useSalon from '../../salon/basic_info/danger_zone/modal'
 
 type TProps = {
   show: boolean
@@ -17,11 +17,13 @@ type TProps = {
 }
 
 const DeleteModal: FC<TProps> = ({ show, onClose }) => {
+  const s = useSalon()
+
   return (
     <Modal show={show} width="390px" offsetLeft="40%" onClose={() => onClose()} showCloseBtn>
-      <Wrapper>
-        <DangerTitle>删除社区</DangerTitle>
-        <Body>
+      <div className={s.wrapper}>
+        <h3 className={s.warningTitle}>删除社区</h3>
+        <div className={s.body}>
           <HeadsUp type="danger">以下内容将被永久删除, 无法恢复, 请谨慎操作。</HeadsUp>
 
           <List
@@ -30,12 +32,12 @@ const DeleteModal: FC<TProps> = ({ show, onClose }) => {
               '帖子，看板以及更新日志等内容',
               '所有评论以及点赞，表情等信息',
             ]}
-            left={31}
-            top={28}
+            left={6}
+            top={5}
           />
-        </Body>
-        <ConfirmFooter />
-      </Wrapper>
+        </div>
+        <ConfirmFooter bottom={6} />
+      </div>
     </Modal>
   )
 }

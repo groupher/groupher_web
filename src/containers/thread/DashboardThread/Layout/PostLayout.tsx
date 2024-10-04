@@ -12,7 +12,7 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import usePost from '../logic/usePost'
-import useSalon, { cn } from '../styles/layout/post_layout'
+import useSalon, { cn } from '../salon/layout/post_layout'
 
 export default () => {
   const s = useSalon()

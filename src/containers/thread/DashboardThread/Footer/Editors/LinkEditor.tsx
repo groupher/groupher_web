@@ -2,35 +2,24 @@ import { type FC, useEffect, useState } from 'react'
 
 import type { TChangeMode, TLinkItem } from '~/spec'
 
-import { Space } from '~/widgets/Common'
+import { CHANGE_MODE } from '~/const/mode'
+
+import MoreSVG from '~/icons/menu/MoreL'
+import EditPenSVG from '~/icons/EditPen'
+import ArrowSVG from '~/icons/Arrow'
+
 import Tooltip from '~/widgets/Tooltip'
 import Linker from '~/widgets/Linker'
+import Input from '~/widgets/Input'
 import CancelButton from '~/widgets/Buttons/CancelButton'
-import SavingBar from '../../SavingBar'
 
 import { EMPTY_LINK_ITEM } from '../../constant'
+import SavingBar from '../../SavingBar'
+
 import LinkMenu from './LinkMenu'
 
 import useFooter from '../../logic/useFooter'
-import {
-  Wrapper,
-  ReadonlyWrapper,
-  ReadOnlyHeader,
-  EditWrapper,
-  ActionWrapper,
-  EditPenIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
-  SettingIcon,
-  EditItem,
-  EditFooter,
-  EditTitle,
-  Inputer,
-  Label,
-  NotifyLabel,
-} from '../../styles/footer/editors/link_editor'
-
-import { CHANGE_MODE } from '~/const/mode'
+import useSalon, { cn } from '../../salon/footer/editors/link_editor'
 
 type TProps = {
   notifyText?: string
@@ -53,6 +42,8 @@ const LinkEditor: FC<TProps> = ({
   disableSetting = false,
   disableEdit = false,
 }) => {
+  const s = useSalon()
+
   const {
     cancelLinkEditing,
     deleteLink,
@@ -83,18 +74,33 @@ const LinkEditor: FC<TProps> = ({
     (snapshot?.title !== editingLink?.title || snapshot?.link !== editingLink?.link)
 
   return (
-    <Wrapper>
-      <ReadonlyWrapper editing={editing}>
-        <ReadOnlyHeader editing={editing}>
-          <Label>
-            {linkItem.title || '--'} <Space right={6} />
-            {notifyText && <NotifyLabel>New</NotifyLabel>}
-          </Label>
+    <div className={cn(s.wrapper, editing && 'w-11/12')}>
+      <div className={s.readonly}>
+        <div className={s.readonlyHead}>
+          {editing && <div className={s.divider} />}
+          {!editing && (
+            <div className={s.label}>
+              {linkItem.title || '--'}
+              {notifyText && <div className={s.notifyLabel}>New</div>}
+            </div>
+          )}
           <div className="grow" />
-          <ActionWrapper editing={editing}>
-            {!isFirst && <ArrowUpIcon onClick={() => moveLink(linkItem, 'up')} />}
-            {!isLast && <ArrowDownIcon onClick={() => moveLink(linkItem, 'down')} />}
-            {!disableEdit && <EditPenIcon onClick={() => updateInGroup(linkItem)} />}
+          <div className={cn(s.actions, editing && '!hidden debug')}>
+            {!isFirst && (
+              <ArrowSVG
+                className={cn(s.icon, 'size-3 rotate-90')}
+                onClick={() => moveLink(linkItem, 'up')}
+              />
+            )}
+            {!isLast && (
+              <ArrowSVG
+                className={cn(s.icon, 'size-3 -rotate-90')}
+                onClick={() => moveLink(linkItem, 'down')}
+              />
+            )}
+            {!disableEdit && (
+              <EditPenSVG className={s.icon} onClick={() => updateInGroup(linkItem)} />
+            )}
             {!disableSetting && (
               <Tooltip
                 content={
@@ -112,51 +118,57 @@ const LinkEditor: FC<TProps> = ({
                 hideOnClick
                 noPadding
               >
-                <SettingIcon />
+                <MoreSVG className={s.icon} />
               </Tooltip>
             )}
-          </ActionWrapper>
-        </ReadOnlyHeader>
+          </div>
+        </div>
         <div className="grow" />
         {!editing && <Linker src={linkItem?.link || ''} left={-2} top={5} external />}
-      </ReadonlyWrapper>
+      </div>
 
       {editing && (
-        <EditWrapper>
-          <EditTitle>{mode === CHANGE_MODE.CREATE ? '添加' : '更新'}链接：</EditTitle>
-          <EditItem>
-            <Inputer
+        <div className={s.editWrapper}>
+          <div className={s.editTitle}>{mode === CHANGE_MODE.CREATE ? '添加' : '更新'}链接：</div>
+          <div className={s.editItem}>
+            <Input
+              className={s.input}
               value={editingLink?.title || ''}
               placeholder="链接名称"
               onChange={(e) => updateEditingLink('title', e.target.value)}
               autoFocus
             />
-          </EditItem>
+          </div>
 
-          <EditItem>
-            <Inputer
+          <div className={s.editItem}>
+            <Input
+              className={s.input}
               value={editingLink?.link || ''}
               placeholder="链接地址"
               onChange={(e) => updateEditingLink('link', e.target.value)}
             />
-          </EditItem>
+          </div>
 
-          <EditFooter>
+          <div className={s.footer}>
             {isTouched ? (
               <SavingBar
-                prefix="是否添加"
+                prefix="确认保存"
                 onConfirm={confirmLinkEditing}
                 onCancel={cancelLinkEditing}
+                top={2}
+                bottom={2}
                 isTouched
                 minimal
               />
             ) : (
-              <CancelButton onClick={cancelLinkEditing} top={5} left={-15} />
+              <CancelButton onClick={cancelLinkEditing} top={2} />
             )}
-          </EditFooter>
-        </EditWrapper>
+          </div>
+
+          {editing && <div className={cn(s.divider, 'mt-4')} />}
+        </div>
       )}
-    </Wrapper>
+    </div>
   )
 }
 

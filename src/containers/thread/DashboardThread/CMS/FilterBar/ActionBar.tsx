@@ -10,7 +10,7 @@ import {
   ConfirmButton,
   ActionNotes,
   DeleteNote,
-} from '../../styles/cms/filter_bar/action_bar'
+} from '../../salon/cms/filter_bar/action_bar'
 
 type TProps = {
   onCancel: () => void

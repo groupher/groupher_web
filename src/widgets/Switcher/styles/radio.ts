@@ -1,60 +1,19 @@
-import type { TTestable, TColor } from '~/spec'
-import styled, { css, theme, rainbow } from '~/css'
-import { WithMargin } from '~/widgets/Common'
+import type { TSpace } from '~/spec'
 
-import {
-  getActiveBackground,
-  getLabelColor,
-  getLabelFontsize,
-  getRadioBoxSize,
-  getRadioBoxTop,
-  getRadioBoxLeft,
-} from './metric/radio'
+import useTwBelt from '~/hooks/useTwBelt'
 
-type TWrapper = TTestable
+export { cn } from '~/css'
 
-export const Wrapper = styled(WithMargin).attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TWrapper>`
-  ${css.row('align-center')}
-`
-type TLabel = {
-  size: string
-  checked: boolean
-  dimOnActive: boolean
-} & TColor
+type TProps = TSpace
 
-export const Label = styled.label<TLabel>`
-  position: relative;
-  font-size: ${({ size }) => getLabelFontsize(size)};
-  margin-right: ${({ checked }) => (checked ? '16px' : '8px')};
-  padding-left: ${({ checked }) => (checked ? '14px' : '24px')};
-  font-weight: ${({ checked }) => (checked ? 600 : 400)};
+export default ({ ...spacing }: TProps) => {
+  const { cn, margin, br, primary, fg } = useTwBelt()
 
-  padding-right: 14px;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  cursor: pointer;
-
-  background: ${({ checked, dimOnActive, $color }) =>
-    checked ? getActiveBackground(dimOnActive, $color) : 'transparent'};
-  color: ${({ checked, dimOnActive }) => getLabelColor(checked, dimOnActive)};
-  border-radius: 15px;
-
-  &:before {
-    display: ${({ checked }) => (checked ? 'none' : 'block')};
-    box-sizing: border-box;
-    content: ' ';
-    position: absolute;
-    top: ${({ size }) => getRadioBoxTop(size)};
-    left: ${({ size }) => getRadioBoxLeft(size)};
-
-    width: ${({ size }) => getRadioBoxSize(size)};
-    height: ${({ size }) => getRadioBoxSize(size)};
-    border: 2px solid;
-    border-color: ${({ checked, $color }) => (checked ? theme('button.fg') : rainbow($color))};
-    border-radius: 50%;
+  return {
+    wrapper: cn('row-center gap-x-5', margin(spacing)),
+    label: cn('group row-center pointer', `hover:${fg('text.title')}`, fg('text.digest')),
+    labelChecked: cn(fg('text.title')),
+    circle: cn('size-3 circle mr-2 border-2 opacity-40', br('text.digest')),
+    checked: cn('size-3.5 border-4 opacity-100', primary('border')),
   }
-
-  transition: 0.25s all ease;
-`
+}

@@ -12,7 +12,7 @@ import MainTemplate from './MainTemplate'
 import FaqTemplate from './FaqTemplate'
 
 import useDoc from '../../logic/useDoc'
-import useSalon, { cn } from '../../styles/layout/doc_layout'
+import useSalon, { cn } from '../../salon/layout/doc_layout'
 
 export default () => {
   const s = useSalon()

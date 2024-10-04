@@ -8,7 +8,7 @@ import { CheckCell, CommunityCell, PendingCell, TimestampCell } from '../Cell'
 import FilterBar from '../FilterBar'
 
 import useCMSInfo from '../../hooks/useCMSInfo'
-import { Title, SortIcon } from '../../styles/cms/communities'
+import { Title, SortIcon } from '../../salon/cms/communities'
 
 /**
  * example: https://table.rsuitejs.com/#fixed-column

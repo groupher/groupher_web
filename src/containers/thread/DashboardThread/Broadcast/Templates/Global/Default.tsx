@@ -1,48 +1,39 @@
 import type { FC } from 'react'
 
 import { BROADCAST_LAYOUT } from '~/const/layout'
-import { Space } from '~/widgets/Common'
+
+import CrossSVG from '~/icons/CloseCross'
+import NotifySVG from '~/icons/Trumpet'
 
 import useBroadcast from '../../../logic/useBroadcast'
-import {
-  Wrapper,
-  NotifyBar,
-  NotifyDesc,
-  NotifySolidLink,
-  NotifyTextBar,
-  NotifyIcon,
-  CrossIcon,
-} from '../../../styles/broadcast/templates/global/default'
+import useSalon, { cn } from '../../../salon/broadcast/templates/global/default'
 
 type TProps = {
   onSelect?: () => void
 }
 
 const Default: FC<TProps> = ({ onSelect = null }) => {
-  const { broadcastLayout, broadcastBg, edit } = useBroadcast()
-  const $active = broadcastLayout === BROADCAST_LAYOUT.DEFAULT
+  const s = useSalon()
+
+  const { broadcastLayout, edit } = useBroadcast()
+  const active = broadcastLayout === BROADCAST_LAYOUT.DEFAULT
 
   return (
-    <Wrapper
-      $active={$active}
+    <div
+      className={cn(s.wrapper, active && s.active)}
       onClick={() => {
         edit(BROADCAST_LAYOUT.DEFAULT, 'broadcastLayout')
         onSelect?.()
       }}
     >
-      <NotifyBar bg={broadcastBg} $active={$active}>
-        <NotifyIcon />
-        <NotifyDesc>
-          <NotifyTextBar long={220} thin />
-        </NotifyDesc>
+      <div className={s.notifyBar}>
+        <NotifySVG className={s.icon} />
+        <div className={cn(s.bar, 'w-32 ml-2')} />
         <div className="grow" />
-        <NotifySolidLink bg={broadcastBg}>
-          <NotifyTextBar long={40} thin />
-        </NotifySolidLink>
-        <Space left={5} />
-        <CrossIcon />
-      </NotifyBar>
-    </Wrapper>
+        <div className={cn(s.bar, 'w-14 mr-1')} />
+        <CrossSVG className={s.icon} />
+      </div>
+    </div>
   )
 }
 

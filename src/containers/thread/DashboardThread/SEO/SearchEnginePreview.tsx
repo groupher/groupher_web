@@ -1,6 +1,6 @@
 import useSEO from '../logic/useSEO'
 
-import useSalon from '../styles/seo/search_engine_preview'
+import useSalon from '../salon/seo/search_engine_preview'
 
 export default () => {
   const { ogSiteName, ogDescription, ogUrl } = useSEO()

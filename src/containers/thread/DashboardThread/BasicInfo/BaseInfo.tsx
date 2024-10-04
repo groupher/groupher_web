@@ -13,7 +13,7 @@ import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 import useBaseInfo from '../logic/useBaseInfo'
 
-import useSalon from '../styles/basic_info/base_info'
+import useSalon from '../salon/basic_info/base_info'
 
 export default () => {
   const { saving, locale, desc, title, slug, homepage, introduction, isTouched, edit } =

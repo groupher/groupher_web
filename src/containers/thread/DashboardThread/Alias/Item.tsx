@@ -12,7 +12,7 @@ import type { TNameAlias } from '../spec'
 
 import useAlias from '../logic/useAlias'
 
-import useSalon, { cn } from '../styles/alias/item'
+import useSalon, { cn } from '../salon/alias/item'
 
 type TProps = {
   alias: TNameAlias

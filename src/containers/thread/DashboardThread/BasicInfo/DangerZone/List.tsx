@@ -2,20 +2,24 @@ import type { FC } from 'react'
 
 import type { TSpace } from '~/spec'
 
-import { Wrapper, Item } from '../../styles/basic_info/danger_zone/list'
+import useSalon from '../../salon/basic_info/danger_zone/list'
 
 type TProps = {
   items: string[]
 } & TSpace
 
-const List: FC<TProps> = ({ items, ...restprops }) => {
+const List: FC<TProps> = ({ items, ...spacing }) => {
+  const s = useSalon({ ...spacing })
+
   return (
-    <Wrapper {...restprops}>
+    <ul className={s.wrapper}>
       {items.map((item, index) => (
         // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-        <Item key={index}>{item}</Item>
+        <li className={s.item} key={index}>
+          {item}
+        </li>
       ))}
-    </Wrapper>
+    </ul>
   )
 }
 

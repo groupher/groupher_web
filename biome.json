@@ -37,6 +37,7 @@
 			},
 			"a11y": {
 				"noSvgWithoutTitle": "off",
+				"noAutofocus": "off",
 				"useButtonType": "off",
 				"useKeyWithClickEvents": "off"
 			}

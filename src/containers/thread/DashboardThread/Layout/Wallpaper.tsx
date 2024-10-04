@@ -4,85 +4,67 @@ import { WIDTH } from '~/css'
 import { callWallpaperEditor } from '~/signal'
 import { blurRGB } from '~/fmt'
 
-import THEME from '~/const/theme'
 import useThemeData from '~/hooks/useThemeData'
 import useGossBlur from '~/hooks/useGossBlur'
-import useTheme from '~/hooks/useTheme'
 import useWallpaper from '~/hooks/useWallpaper'
 
-import { Brick } from '~/widgets/Common'
+import SettingSVG from '~/icons/Setting'
 import CheckLabel from '~/widgets/CheckLabel'
 
 import SectionLabel from '../SectionLabel'
 
-import {
-  Wrapper,
-  Section,
-  PreviewWrapper,
-  HoverMask,
-  UploadIcon,
-  RealPreview,
-  PreviewerWrapper,
-  PreviewImage,
-  ContentBlock,
-} from '../styles/layout/wallpaper'
+import useSalon, { cn } from '../salon/layout/wallpaper'
 
 export default () => {
-  const gossBlur = useGossBlur()
-  const { background, effect, hasShadow } = useWallpaper()
+  const s = useSalon()
 
-  const { theme } = useTheme()
+  const gossBlur = useGossBlur()
+  const { background } = useWallpaper()
+
   const themeData = useThemeData()
 
   const handleCallEditor = useCallback(() => callWallpaperEditor(), [])
   const bgColor = `${blurRGB(themeData.htmlBg, gossBlur)}`
 
   return (
-    <Wrapper>
-      <Section>
-        <SectionLabel
-          title="壁纸设置"
-          desc={
-            <>
-              「壁纸」为宽屏（屏幕尺寸大于 {WIDTH.COMMUNITY.PAGE}
-              ）下，超出内容部分显示的背景图片，除内置壁纸外，你还可以上传和社区话题相关的自定义图片。
-            </>
-          }
-          width="96%"
-        />
+    <div className={s.wrapper}>
+      <SectionLabel
+        title="壁纸设置"
+        desc={
+          <>
+            「壁纸」为宽屏（屏幕尺寸大于 {WIDTH.COMMUNITY.PAGE}
+            ）下，超出内容部分显示的背景图片，除内置壁纸外，你还可以上传和社区话题相关的自定义图片。
+          </>
+        }
+        width="96%"
+      />
 
-        <PreviewWrapper>
-          <HoverMask onClick={handleCallEditor}>
-            <UploadIcon />
-            <PreviewImage style={{ background }} effect={effect} $darker={theme === THEME.DARK} />
-            <CheckLabel title="原图" top={4} active={false} />
-          </HoverMask>
-          <PreviewerWrapper>
-            <RealPreview>
-              <PreviewImage
-                style={{ background }}
-                effect={effect}
-                noHover
-                $darker={theme === THEME.DARK}
-              />
-              <ContentBlock hasShadow={hasShadow} $bgColor={bgColor}>
-                <Brick $width={100} $height={7} $opacity={0.25} top={14} left={20} />
-                <Brick $width={180} $height={7} $opacity={0.15} top={32} left={20} />
+      <div className={s.preview}>
+        <div className={s.hoverMask} onClick={handleCallEditor}>
+          <SettingSVG className={s.settingIcon} />
+          <div className={cn(s.previewImage, 'group-hover:brightness-90')} style={{ background }} />
+          <CheckLabel title="原图" top={4} active={false} />
+        </div>
+        <div className={s.previewer}>
+          <div className={s.realPreview}>
+            <div className={s.previewImage} style={{ background }} />
+            <div className={s.content} style={{ background: bgColor }}>
+              <div className={cn(s.bar, 'top-3')} />
+              <div className={cn(s.bar, 'top-8 w-40 opacity-20')} />
 
-                <Brick $width={100} $height={7} $opacity={0.22} top={54} left={20} />
-                <Brick $width={180} $height={7} $opacity={0.12} top={70} left={20} />
+              <div className={cn(s.bar, 'top-14 w-32 opacity-30')} />
+              <div className={cn(s.bar, 'top-20 w-44 -mt-1.5 opacity-20')} />
 
-                <Brick $width={100} $height={7} $opacity={0.2} top={94} left={20} />
-                <Brick $width={180} $height={7} $opacity={0.1} top={108} left={20} />
+              <div className={cn(s.bar, 'top-24 w-20 opacity-20')} />
+              <div className={cn(s.bar, 'top-28 w-32 mt-0.5 opacity-10')} />
 
-                <Brick $width={100} $height={7} $opacity={0.18} top={134} left={20} />
-                <Brick $width={180} $height={7} $opacity={0.08} top={148} left={20} />
-              </ContentBlock>
-            </RealPreview>
-            <CheckLabel title="预览效果" top={4} active={false} />
-          </PreviewerWrapper>
-        </PreviewWrapper>
-      </Section>
-    </Wrapper>
+              <div className={cn(s.bar, 'bottom-8 w-14 opacity-15')} />
+              <div className={cn(s.bar, 'bottom-4 w-32 mt-0.5 opacity-10')} />
+            </div>
+          </div>
+          <CheckLabel title="预览效果" top={4} active={false} />
+        </div>
+      </div>
+    </div>
   )
 }

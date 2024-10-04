@@ -1,13 +1,15 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
-import { Wrapper } from '../styles/third_part'
+import useSalon from '../salon/third_part'
 
 const ThirdPart: FC = () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <div>ThirdPart</div>
-    </Wrapper>
+    </div>
   )
 }
 
-export default memo(ThirdPart)
+export default ThirdPart

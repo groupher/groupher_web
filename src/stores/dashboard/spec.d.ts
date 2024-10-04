@@ -227,6 +227,7 @@ export type TStore = TSettingsFields & {
 
   // actions
   commit: (patch: Partial<TStore>) => void
+  debug: () => void
 }
 
 export type TLinkState = {

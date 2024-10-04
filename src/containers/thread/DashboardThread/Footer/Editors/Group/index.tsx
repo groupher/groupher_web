@@ -5,6 +5,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 import type { TLinkItem } from '~/spec'
 
+import PlusSVG from '~/icons/Plus'
 import Button from '~/widgets/Buttons/Button'
 
 import { sortByIndex, groupByKey } from '~/helper'
@@ -15,17 +16,11 @@ import GroupInputer from '../GroupInputer'
 import GroupHead from './GroupHead'
 
 import useFooter from '../../../logic/useFooter'
-import {
-  Wrapper,
-  LinkGroup,
-  ActionRow,
-  PlusIcon,
-  ColumnWrapper,
-  ItemsWrapper,
-  Adder,
-} from '../../../styles/footer/editors/group'
+import useSalon from '../../../salon/footer/editors/group'
 
 const Group: FC = () => {
+  const s = useSalon()
+
   const {
     footerLinks: links,
     editingLink,
@@ -52,8 +47,8 @@ const Group: FC = () => {
   const groupKeys = keys(groupedLinks)
 
   return (
-    <Wrapper>
-      <ActionRow>
+    <div className={s.wrapper}>
+      <div className={s.actionRow}>
         {editingGroup !== null && editingGroupIndex === null ? (
           <GroupInputer
             value={editingGroup}
@@ -62,19 +57,19 @@ const Group: FC = () => {
             onCancel={cancelGroupChange}
           />
         ) : (
-          <Button size="small" ghost space={10} onClick={() => triggerGroupAdd()}>
-            <PlusIcon />
-            添加分组&nbsp;
+          <Button size="small" className="w-40" ghost space={4} onClick={() => triggerGroupAdd()}>
+            <PlusSVG className={s.plusIcon} />
+            添加分组
           </Button>
         )}
-      </ActionRow>
-      <LinkGroup ref={groupAnimateRef}>
+      </div>
+      <div className={s.linkGroup} ref={groupAnimateRef}>
         {groupKeys.map((groupKey: string, index) => {
           const curGroupLinks = groupedLinks[groupKey]
 
           return (
-            <ColumnWrapper key={groupKey}>
-              <ItemsWrapper ref={animateRef}>
+            <div className={s.column} key={groupKey}>
+              <div className={s.items} ref={animateRef}>
                 <GroupHead
                   title={groupKey as string}
                   editingGroup={editingGroup}
@@ -99,26 +94,25 @@ const Group: FC = () => {
                     isLast={index === curGroupLinks.length - 1}
                   />
                 ))}
-              </ItemsWrapper>
+              </div>
 
               {!editingLink && (
-                <Adder>
-                  <Button
-                    size="small"
-                    ghost
-                    space={8}
-                    onClick={() => add2Group(groupKey, curGroupLinks.length)}
-                  >
-                    <PlusIcon />
-                    链接&nbsp;
-                  </Button>
-                </Adder>
+                <Button
+                  size="small"
+                  ghost
+                  space={4}
+                  onClick={() => add2Group(groupKey, curGroupLinks.length)}
+                  className="w-24"
+                >
+                  <PlusSVG className={s.plusIcon} />
+                  链接
+                </Button>
               )}
-            </ColumnWrapper>
+            </div>
           )
         })}
-      </LinkGroup>
-    </Wrapper>
+      </div>
+    </div>
   )
 }
 

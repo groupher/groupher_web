@@ -7,7 +7,7 @@ import YesOrNoButtons from '~/widgets/Buttons/YesOrNoButtons'
 
 import type { TSettingField } from './spec.d'
 import InfoSVG from '~/icons/Save'
-import useSalon, { cn } from './styles/saving_bar'
+import useSalon, { cn } from './salon/saving_bar'
 
 import useHelper from './logic/useHelper'
 

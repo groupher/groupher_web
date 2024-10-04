@@ -7,7 +7,7 @@ import Portal from '../Portal'
 import SectionLabel from '../SectionLabel'
 import useEnable from '../logic/useEnable'
 
-import useSalon from '../styles/threads'
+import useSalon from '../salon/threads'
 
 export default () => {
   const s = useSalon()

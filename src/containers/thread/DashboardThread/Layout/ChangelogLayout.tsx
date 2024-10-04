@@ -9,7 +9,7 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import useChangelog from '../logic/useChangelog'
-import useSalon, { cn } from '../styles/layout/changelog_layout'
+import useSalon, { cn } from '../salon/layout/changelog_layout'
 
 export default () => {
   const s = useSalon()

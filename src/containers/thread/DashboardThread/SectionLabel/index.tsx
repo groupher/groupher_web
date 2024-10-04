@@ -3,7 +3,7 @@ import type { FC, ReactNode } from 'react'
 import type { TSpace } from '~/spec'
 
 import ThemeSelect from './ThemeSelect'
-import useSalon, { cn } from '../styles/section_label'
+import useSalon, { cn } from '../salon/section_label'
 
 type TProps = {
   title: string
@@ -18,7 +18,7 @@ const SectionLabel: FC<TProps> = ({
   title,
   desc = null,
   addon = null,
-  width = '100%',
+  width = 'w-full',
   withThemeSelect = false,
   classNames = '',
   ...spacing

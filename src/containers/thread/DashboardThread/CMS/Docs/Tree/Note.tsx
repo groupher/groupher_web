@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { Wrapper, Title, Ul, Li } from '../../../styles/cms/docs/tree/note'
+import { Wrapper, Title, Ul, Li } from '../../../salon/cms/docs/tree/note'
 
 const Note: FC = () => {
   return (

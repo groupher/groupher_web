@@ -10,7 +10,7 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import useBanner from '../logic/useBanner'
-import useSalon, { cn } from '../styles/layout/banner_layout'
+import useSalon, { cn } from '../salon/layout/banner_layout'
 
 export default () => {
   const s = useSalon()

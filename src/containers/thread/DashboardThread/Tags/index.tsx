@@ -1,32 +1,34 @@
 import { callTagCreateEditor } from '~/signal'
 
+import Button from '~/widgets/Buttons/Button'
+import AddSVG from '~/icons/Plus'
+
 import Portal from '../Portal'
 
 import ThreadSelector from './ThreadSelector'
 import GroupSelector from './GroupSelector'
+
 import TagList from './TagList'
 import Footer from './Footer'
 
-import { Wrapper, InnerWrapper, ContentWrapper, AddButton, AddIcon } from '../styles/tags'
+import useSalon from '../salon/tags'
 
 export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Portal title="标签设置" desc="编辑各板块标签，标签分组，颜色名称等均可编辑。" />
-      <InnerWrapper>
-        <ThreadSelector />
-        <ContentWrapper>
-          <GroupSelector />
-          <TagList />
-        </ContentWrapper>
+      <ThreadSelector />
+      <GroupSelector />
+      <TagList />
 
-        <AddButton ghost top={10} size="small" onClick={() => callTagCreateEditor()}>
-          <AddIcon />
-          新增标签
-        </AddButton>
+      <Button ghost top={10} className="w-28" size="small" onClick={() => callTagCreateEditor()}>
+        <AddSVG className={s.icon} />
+        新增标签
+      </Button>
 
-        <Footer />
-      </InnerWrapper>
-    </Wrapper>
+      <Footer />
+    </div>
   )
 }

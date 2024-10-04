@@ -5,25 +5,22 @@ import type { TActive, TCommunityThread, TLinkItem } from '~/spec'
 import { THREAD } from '~/const/thread'
 import { HEADER_LAYOUT } from '~/const/layout'
 
+import AccountSVG from '~/icons/Acount'
 import CustomHeaderLinks from '~/widgets/CustomHeaderLinks/HeaderTemplate'
+import CommunityBrand from '~/widgets/CommunityBrand'
 
 import useHeader from '../../logic/useHeader'
-import {
-  Wrapper,
-  LeftWrapper,
-  BrandLogo,
-  BrandText,
-  LinkItem,
-  RightWrapper,
-  AccountIcon,
-} from '../../styles/header/templates/right'
+
+import useSalon, { cn } from '../../salon/header/templates/right'
 
 type TProps = {
   threads: TCommunityThread[]
   links: TLinkItem[]
 } & TActive
 
-const Right: FC<TProps> = ({ $active, threads, links }) => {
+const Right: FC<TProps> = ({ active, threads, links }) => {
+  const s = useSalon()
+
   const { edit } = useHeader()
   const isAboutFold = links.length >= 2 && links[0].title !== ''
   const _threads = isAboutFold
@@ -31,22 +28,26 @@ const Right: FC<TProps> = ({ $active, threads, links }) => {
     : threads
 
   return (
-    <Wrapper $active={$active} onClick={() => edit(HEADER_LAYOUT.RIGHT, 'headerLayout')}>
-      <LeftWrapper>
-        <BrandLogo />
-        <BrandText>Groupher</BrandText>
-      </LeftWrapper>
+    <div
+      className={cn(s.wrapper, active && s.active)}
+      onClick={() => edit(HEADER_LAYOUT.RIGHT, 'headerLayout')}
+    >
+      <div className={s.left}>
+        <CommunityBrand />
+      </div>
 
-      <RightWrapper>
+      <div className={s.right}>
         {_threads.map((thread: TCommunityThread) => (
-          <LinkItem key={thread.slug}>{thread.title}</LinkItem>
+          <div key={thread.slug} className={s.linkItem}>
+            {thread.title}
+          </div>
         ))}
 
         <CustomHeaderLinks links={links} />
 
-        <AccountIcon />
-      </RightWrapper>
-    </Wrapper>
+        <AccountSVG className={s.accountIcon} />
+      </div>
+    </div>
   )
 }
 

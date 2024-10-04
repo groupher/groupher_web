@@ -5,7 +5,7 @@ import AddButton from '~/widgets/Buttons/AddButton'
 
 import InputBox from './InputBox'
 
-import useSalon from '../../styles/basic_info/other_info/media_editor'
+import useSalon from '../../salon/basic_info/other_info/media_editor'
 import useBaseInfo from '../../logic/useBaseInfo'
 
 export default () => {

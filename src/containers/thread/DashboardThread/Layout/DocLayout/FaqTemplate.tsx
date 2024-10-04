@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import type { TDocFAQLayout } from '~/spec'
 import { DOC_FAQ_LAYOUT } from '~/const/layout'
 
-import useSalon, { cn } from '../../styles/layout/doc_layout/faq_template'
+import useSalon, { cn } from '../../salon/layout/doc_layout/faq_template'
 
 type TProps = {
   layout: TDocFAQLayout

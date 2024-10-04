@@ -1,8 +1,6 @@
 import type { FC } from 'react'
 
-import useSalon, {
-  cn,
-} from '../../../styles/layout/kanban_layout/bg_colors_setter/waterfall_layout'
+import useSalon, { cn } from '../../../salon/layout/kanban_layout/bg_colors_setter/waterfall_layout'
 
 type TProps = {
   isBoard1Hovered: boolean

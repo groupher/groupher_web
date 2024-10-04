@@ -17,7 +17,7 @@ import {
   Body,
   ArrowUpIcon,
   ArrowDownIcon,
-} from '../../../styles/cms/docs/faq/block'
+} from '../../../salon/cms/docs/faq/block'
 
 import type { TProps as TIndex } from '.'
 

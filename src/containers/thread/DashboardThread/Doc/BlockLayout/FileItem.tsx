@@ -4,7 +4,7 @@ import Tooltip from '~/widgets/Tooltip'
 
 import FileMenu from './FileMenu'
 
-import { Wrapper, Name, SettingIcon } from '../../styles/doc/block_layout/file_item'
+import { Wrapper, Name, SettingIcon } from '../../salon/doc/block_layout/file_item'
 
 type TProps = {
   name: string

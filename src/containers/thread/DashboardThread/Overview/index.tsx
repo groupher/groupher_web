@@ -1,7 +1,7 @@
 import Portal from '../Portal'
 import BasicNumbers from './BasicNumbers'
 
-import useSalon from '../styles/overview'
+import useSalon from '../salon/overview'
 
 export default () => {
   const s = useSalon()

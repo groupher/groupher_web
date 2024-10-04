@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import MenuItem from '~/widgets/MenuItem'
 import MENU from '~/const/menu'
 
-import { Wrapper } from '../../styles/footer/editors/link_menu'
+import useSalon from '../../salon/footer/editors/link_menu'
 
 type TProps = {
   isFirst?: boolean
@@ -21,8 +21,10 @@ const LinkMenu: FC<TProps> = ({
   move2Bottom = console.log,
   onDelete = console.log,
 }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {/* <MenuItem icon={MENU.ARROW_UP} title="上移" />
       <MenuItem icon={MENU.ARROW_DOWN} title="下移" /> */}
 
@@ -35,7 +37,7 @@ const LinkMenu: FC<TProps> = ({
       )}
 
       <MenuItem icon={MENU.DELETE} title="删除" onClick={() => onDelete()} />
-    </Wrapper>
+    </div>
   )
 }
 

@@ -3,7 +3,7 @@ import { prettyNum } from '~/fmt'
 import NoteTip from '~/widgets/NoteTip'
 
 import useOverview from '../logic/useOverview'
-import useSalon from '../styles/overview/basic_numbers'
+import useSalon from '../salon/overview/basic_numbers'
 
 export default () => {
   const s = useSalon()

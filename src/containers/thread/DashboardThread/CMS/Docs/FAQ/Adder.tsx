@@ -1,5 +1,5 @@
 import useDoc from '../../../logic/useDoc'
-import { Wrapper, AddButton, AddIcon, Notes } from '../../../styles/cms/docs/faq/adder'
+import { Wrapper, AddButton, AddIcon, Notes } from '../../../salon/cms/docs/faq/adder'
 
 export default () => {
   const { addFAQSection } = useDoc()

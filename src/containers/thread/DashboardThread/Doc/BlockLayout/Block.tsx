@@ -18,7 +18,7 @@ import {
   // MoreLink,
   AdderButton,
   PlusIcon,
-} from '../../styles/doc/block_layout/block'
+} from '../../salon/doc/block_layout/block'
 
 type TProps = {
   color: TColorName

@@ -8,27 +8,28 @@ import Templates from './Templates'
 import Editor from './Editors'
 
 import useHeader from '../logic/useHeader'
-import { Wrapper } from '../styles/header'
+import useSalon from '../salon/header'
 
 const Header: FC = () => {
+  const s = useSalon()
+
   const { saving, getIsTouched } = useHeader()
   const isTouched = getIsTouched()
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Templates />
-      <br />
-      <br />
+      <div className="mt-4" />
       <Editor />
 
       <SavingBar
         field={SETTING_FIELD.HEADER_LINKS}
         isTouched={isTouched}
         loading={saving}
-        width="97%"
-        top={30}
+        top={10}
+        width="w-11/12"
       />
-    </Wrapper>
+    </div>
   )
 }
 

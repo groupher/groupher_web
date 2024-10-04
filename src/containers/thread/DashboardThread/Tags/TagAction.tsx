@@ -1,25 +1,24 @@
 import type { FC } from 'react'
 
 import { callTagEditEditor } from '~/signal'
-import { Space } from '~/widgets/Common'
+
 import Tooltip from '~/widgets/Tooltip'
+import MoreSVG from '~/icons/menu/MoreL'
+import EditSVG from '~/icons/EditPen'
+import ArrowSVG from '~/icons/Arrow'
+import SettingSVG from '~/icons/Setting'
 
 import ActionMenu from './ActionMenu'
 import useTags from '../logic/useTags'
 import type { TProps as TTagBarProps } from './TagBar'
 
-import {
-  Wrapper,
-  EditIcon,
-  MoreIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
-  SettingIcon,
-} from '../styles/tags/tag_action'
+import useSalon, { cn } from '../salon/tags/tag_action'
 
 type TProps = Omit<TTagBarProps, 'settingTag'>
 
 const TagAction: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
+  const s = useSalon()
+
   const {
     editingTag,
     activeTagGroup,
@@ -34,18 +33,30 @@ const TagAction: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
   if (isEditMode) return null
 
   return (
-    <Wrapper>
-      {activeTagGroup && !isFirst && <ArrowUpIcon onClick={() => moveTagUp(tag)} />}
-      {activeTagGroup && !isLast && <ArrowDownIcon onClick={() => moveTagDown(tag)} />}
-      <EditIcon onClick={() => editTag('editingTag', tag)} />
-      <Space right={8} />
+    <div className={s.wrapper}>
+      {activeTagGroup && !isFirst && (
+        <div className={s.iconBox}>
+          <ArrowSVG className={cn(s.icon, 'size-3 rotate-90')} onClick={() => moveTagUp(tag)} />
+        </div>
+      )}
+      {activeTagGroup && !isLast && (
+        <div className={s.iconBox}>
+          <ArrowSVG className={cn(s.icon, 'size-3 -rotate-90')} onClick={() => moveTagDown(tag)} />
+        </div>
+      )}
+      <div className={s.iconBox}>
+        <EditSVG className={s.icon} onClick={() => editTag('editingTag', tag)} />
+      </div>
       {activeTagGroup === null || total <= 2 ? (
-        <SettingIcon
-          onClick={() => {
-            editTag('settingTag', tag)
-            callTagEditEditor()
-          }}
-        />
+        <div className={s.iconBox}>
+          <SettingSVG
+            className={s.icon}
+            onClick={() => {
+              editTag('settingTag', tag)
+              callTagEditEditor()
+            }}
+          />
+        </div>
       ) : (
         <Tooltip
           content={
@@ -68,10 +79,12 @@ const TagAction: FC<TProps> = ({ tag, isFirst, isLast, total }) => {
           hideOnClick
           noPadding
         >
-          <MoreIcon />
+          <div className={s.iconBox}>
+            <MoreSVG className={s.icon} />
+          </div>
         </Tooltip>
       )}
-    </Wrapper>
+    </div>
   )
 }
 

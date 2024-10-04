@@ -10,6 +10,7 @@ import {
   DASHBOARD_DOC_ROUTE,
 } from '~/const/route'
 import { COLOR_NAME } from '~/const/colors'
+import { ONE_LINK_GROUP } from '~/const/dashboard'
 
 import type { TSettingField, THeaderEditType, TFooterEditType } from './spec'
 
@@ -387,7 +388,7 @@ export const EMPTY_LINK_ITEM = {
   title: '',
   link: '',
   index: 0,
-  group: '',
+  group: ONE_LINK_GROUP,
   groupIndex: 0,
 }
 

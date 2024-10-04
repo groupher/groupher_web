@@ -2,7 +2,7 @@ import ImageSVG from '~/icons/Image'
 
 import useSEO from '../../logic/useSEO'
 
-import useSalon from '../../styles/seo/twitter_preview/summary_layout'
+import useSalon from '../../salon/seo/twitter_preview/summary_layout'
 
 // example: https://elixirweekly.net/issues/339
 // twitter:card = summary

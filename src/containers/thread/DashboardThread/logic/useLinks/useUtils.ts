@@ -1,5 +1,6 @@
 // logics for header & footer links
 
+import { useEffect, useRef } from 'react'
 import { keys, findIndex, clone, remove, filter, reject, forEach, find } from 'ramda'
 
 import type { TLinkItem, TGroupedLinks } from '~/spec'
@@ -30,8 +31,15 @@ export default (): TRet => {
   const community = useViewingCommunity()
   const { curTab } = store
 
+  const storeRef = useRef(store)
+
+  useEffect(() => {
+    storeRef.current = store
+  }, [store])
+
   const getLinks = (): TLinkItem[] => {
-    const { curTab, headerLinks, footerLinks } = store
+    const { curTab, headerLinks, footerLinks } = storeRef.current
+
     return clone(curTab !== DASHBOARD_ROUTE.FOOTER ? headerLinks : footerLinks)
   }
 
@@ -74,7 +82,9 @@ export default (): TRet => {
     groupLinks[targetIndex].index = groupLinks[linkIndex].index
     groupLinks[linkIndex].index = tmpIndex
 
-    store[linksKey] = [...restLinks, ...reindex(groupLinks)]
+    store.commit({
+      [linksKey]: [...restLinks, ...reindex(groupLinks)],
+    })
   }
 
   const doMoveLink2Edge = (link: TLinkItem, opt: 'top' | 'bottom'): void => {
@@ -92,7 +102,9 @@ export default (): TRet => {
         ? [curLinkItem, ...remove(curLinkItemIndex, 1, groupLinks)]
         : [...remove(curLinkItemIndex, 1, groupLinks), curLinkItem]
 
-    store[linksKey] = [...restLinks, ...reindex(newLinks)]
+    store.commit({
+      [linksKey]: [...restLinks, ...reindex(newLinks)],
+    })
   }
 
   /**
@@ -139,22 +151,26 @@ export default (): TRet => {
       }
 
       const linksAfter = [...links, newLinkItem]
-      store.headerLinks = reindexGroup(linksAfter)
-    } else {
-      // console.log('## 222: ', links)
 
+      store.commit({
+        headerLinks: reindexGroup(linksAfter),
+      })
+    } else {
       // make sure the "more" gorup is always in the end
       const linksAfter = links.map((item) => ({
         ...item,
         groupIndex: item.group === MORE_GROUP ? links.length + 2 : item.groupIndex,
       }))
 
-      store.headerLinks = reindexGroup(linksAfter)
+      store.commit({
+        headerLinks: reindexGroup(linksAfter),
+      })
     }
   }
 
   const confirmGroupAdd = (): void => {
-    const { editingGroup } = store
+    const { editingGroup } = storeRef.current
+
     const links = getLinks()
 
     const _groupedLinks = groupByKey(links, 'group')
@@ -174,7 +190,7 @@ export default (): TRet => {
       [linksKey]: linksAfter,
     })
 
-    keepMoreGroup2EndIfNeed()
+    setTimeout(keepMoreGroup2EndIfNeed, 100)
   }
 
   const confirmGroupUpdate = (): void => {
@@ -194,7 +210,7 @@ export default (): TRet => {
     store.commit({
       editingGroup: null,
       editingGroupIndex: null,
-      [linksKey]: linksAfter,
+      [linksKey]: reindexGroup(reindex(linksAfter)),
     })
   }
 
@@ -258,7 +274,7 @@ export default (): TRet => {
     const newLinks = []
     forEach((key) => newLinks.push(...groupedLinks[key]), groupKeys)
 
-    store[linksKey] = newLinks
+    store.commit({ [linksKey]: newLinks })
   }
 
   return {

@@ -5,7 +5,7 @@ import Portal from '../Portal'
 import Adder from './Adder'
 import List from './List'
 
-import useSalon from '../styles/admin'
+import useSalon from '../salon/admin'
 
 export default () => {
   const s = useSalon()

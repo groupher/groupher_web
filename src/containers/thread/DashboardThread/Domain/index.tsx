@@ -1,13 +1,15 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
-import { Wrapper } from '../styles/domain'
+import useSalon from '../salon/domain'
 
 const Domain: FC = () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <div>Domain</div>
-    </Wrapper>
+    </div>
   )
 }
 
-export default memo(Domain)
+export default Domain

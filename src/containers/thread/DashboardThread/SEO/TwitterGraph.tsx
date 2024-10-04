@@ -6,7 +6,7 @@ import { TW_CARD_OPTIONS } from '../constant'
 
 import TwitterPreview from './TwitterPreview'
 import useSEO from '../logic/useSEO'
-import useSalon from '../styles/seo/twitter_graph'
+import useSalon from '../salon/seo/twitter_graph'
 
 export default () => {
   const s = useSalon()

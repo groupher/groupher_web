@@ -7,7 +7,7 @@ import AdminAvatar from '~/widgets/AdminAvatar'
 
 import useAdmins from '../logic/useAdmins'
 
-import useSalon, { cn } from '../styles/admin/list'
+import useSalon, { cn } from '../salon/admin/list'
 
 export default () => {
   const s = useSalon()

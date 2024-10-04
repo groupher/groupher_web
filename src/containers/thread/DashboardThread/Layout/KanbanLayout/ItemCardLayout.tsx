@@ -10,7 +10,7 @@ import SectionLabel from '../../SectionLabel'
 import SavingBar from '../../SavingBar'
 
 import useKanban from '../../logic/useKanban'
-import useSalon, { cn } from '../../styles/layout/kanban_layout/item_card_layout'
+import useSalon, { cn } from '../../salon/layout/kanban_layout/item_card_layout'
 
 export default () => {
   const s = useSalon()

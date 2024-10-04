@@ -26,7 +26,7 @@ import GossBlur from './GossBlur'
 import Wallpaper from './Wallpaper'
 
 import useTab from '../logic/useTab'
-import useSalon from '../styles/layout'
+import useSalon from '../salon/layout'
 
 export default () => {
   const curCommunity = useViewingCommunity()

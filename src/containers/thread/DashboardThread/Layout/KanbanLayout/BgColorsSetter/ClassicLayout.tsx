@@ -2,7 +2,7 @@ import { type FC, useEffect, useRef } from 'react'
 
 import KanbanList from './KanbanList'
 
-import useSalon, { cn } from '../../../styles/layout/kanban_layout/bg_colors_setter/classic_layout'
+import useSalon, { cn } from '../../../salon/layout/kanban_layout/bg_colors_setter/classic_layout'
 
 type TProps = {
   isBoard1Hovered: boolean

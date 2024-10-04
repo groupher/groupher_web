@@ -12,7 +12,7 @@ import SavingBar from '../SavingBar'
 import { SETTING_FIELD } from '../constant'
 
 import usePageBg from '../logic/usePageBg'
-import useSalon, { cn } from '../styles/layout/page_background'
+import useSalon, { cn } from '../salon/layout/page_background'
 
 export default () => {
   const { rawBg, edit, getIsTouched, getIsDarkTouched, saving } = usePageBg()

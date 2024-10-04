@@ -1,9 +1,6 @@
 import { blurRGB } from '~/fmt'
 import useThemeData from '~/hooks/useThemeData'
-import useTheme from '~/hooks/useTheme'
-import THEME from '~/const/theme'
 
-import { Brick } from '~/widgets/Common'
 import RangeSlider from '~/widgets/RangeSlider'
 
 import useWallpaper from '~/hooks/useWallpaper'
@@ -14,90 +11,79 @@ import SavingBar from '../../SavingBar'
 
 import useGossBlur from '../../logic/useGossBlur'
 
-import {
-  Wrapper,
-  Section,
-  ContentWrapper,
-  PreviewerWrapper,
-  PreviewImage,
-  Actions,
-  Title,
-  Desc,
-  Highlight,
-  ContentBlock,
-} from '../../styles/layout/goss_blur'
+import useSalon, { cn } from '../../salon/layout/goss_blur'
 
 export default () => {
-  const { gossBlurDark: gossBlur, saving, getIsDarkTouched, edit } = useGossBlur()
-  const { wallpaper, background, effect } = useWallpaper()
+  const s = useSalon()
 
-  const { theme } = useTheme()
+  const { gossBlurDark, saving, getIsDarkTouched, edit } = useGossBlur()
+  const { wallpaper, background } = useWallpaper()
+
   const themeData = useThemeData()
 
-  const bgColor = `${blurRGB(themeData.htmlBg, gossBlur)}`
+  const bgColor = `${blurRGB(themeData.htmlBg, gossBlurDark)}`
   const isTouched = getIsDarkTouched()
 
   return (
-    <Wrapper key={wallpaper}>
-      <Section>
-        <SectionLabel
-          title="毛玻璃效果 (dark)"
-          desc="主要页面的高斯模糊值，类似主流音乐播放器效果"
-          classNames="pr-8"
-          withThemeSelect
-        />
+    <div className={s.wrapper} key={wallpaper}>
+      <SectionLabel
+        title="毛玻璃效果 (dark)"
+        desc="主要页面的高斯模糊值，类似主流音乐播放器效果"
+        classNames="pr-8"
+        withThemeSelect
+      />
 
-        <ContentWrapper>
-          <PreviewerWrapper>
-            <PreviewImage style={{ background }} effect={effect} $darker={theme === THEME.DARK} />
-            <ContentBlock $bgColor={bgColor}>
-              <Brick $width={100} $height={7} $opacity={0.25} top={24} left={20} />
-              <Brick $width={180} $height={7} $opacity={0.15} top={42} left={20} />
+      <div className={s.content}>
+        <div className={s.previewer}>
+          <div className={s.previewImage} style={{ background }} />
+          <div className={s.contentBlock} style={{ background: bgColor }}>
+            <div className={cn(s.bar)} />
+            <div className={cn(s.bar, 'top-10 w-40 opacity-20')} />
 
-              <Brick $width={100} $height={7} $opacity={0.22} top={64} left={20} />
-              <Brick $width={180} $height={7} $opacity={0.12} top={80} left={20} />
+            <div className={cn(s.bar, 'top-16 w-28')} />
+            <div className={cn(s.bar, 'top-20 w-44 opacity-20')} />
 
-              <Brick $width={100} $height={7} $opacity={0.2} top={104} left={20} />
-              <Brick $width={180} $height={7} $opacity={0.1} top={118} left={20} />
+            <div className={cn(s.bar, 'top-24 w-16 opacity-30 mt-2')} />
+            <div className={cn(s.bar, 'top-28 w-32 opacity-15 mt-2')} />
 
-              <Brick $width={100} $height={7} $opacity={0.18} top={144} left={20} />
-              <Brick $width={180} $height={7} $opacity={0.08} top={158} left={20} />
+            <div className={cn(s.bar, 'bottom-20 w-28 opacity-30')} />
+            <div className={cn(s.bar, 'bottom-16 w-44 opacity-15')} />
 
-              <Brick $width={100} $height={7} $opacity={0.15} top={184} left={20} />
-              <Brick $width={180} $height={7} $opacity={0.06} top={198} left={20} />
-            </ContentBlock>
-          </PreviewerWrapper>
-          <Actions>
-            <Title>透明度</Title>
-            <Desc>默认为无模糊白（黑）色背景。</Desc>
-            <Desc>透明度过低会导致内容无法辨认。</Desc>
-            <Desc>个别浏览器不支持相应特性，会导致效果失效。</Desc>
-            <Desc>
-              可根据<Highlight>浅色</Highlight>/<Highlight>暗色</Highlight>主题
-              <Highlight>分别设置</Highlight>。
-            </Desc>
+            <div className={cn(s.bar, 'bottom-8 w-28 opacity-20')} />
+            <div className={cn(s.bar, 'bottom-4 w-44 opacity-10')} />
+          </div>
+        </div>
+        <ul className={s.actions}>
+          <h3 className={s.title}>透明度</h3>
+          <li className={s.desc}>默认为无模糊白（黑）色背景。</li>
+          <li className={s.desc}>透明度过低会导致内容无法辨认。</li>
+          <li className={s.desc}>个别浏览器不支持相应特性，会导致效果失效。</li>
+          <li className={s.desc}>
+            可根据<span className={s.highlight}>浅色</span>/
+            <span className={s.highlight}>暗色</span>主题
+            <span className={s.highlight}>分别设置</span>。
+          </li>
 
-            <br />
-            <RangeSlider
-              value={gossBlur}
-              onChange={(v) => edit(v, 'gossBlurDark')}
-              top={5}
-              min={50}
-              max={100}
-              unit="%"
-              width="w-11/12"
-            />
-          </Actions>
-        </ContentWrapper>
+          <br />
+          <RangeSlider
+            value={gossBlurDark}
+            onChange={(v) => edit(v, 'gossBlurDark')}
+            top={5}
+            min={50}
+            max={100}
+            width="w-10/12"
+            unit="%"
+          />
+        </ul>
+      </div>
 
-        <SavingBar
-          width="96%"
-          isTouched={isTouched}
-          field={SETTING_FIELD.GOSS_BLUR_DARK}
-          loading={saving}
-          top={20}
-        />
-      </Section>
-    </Wrapper>
+      <SavingBar
+        width="96%"
+        isTouched={isTouched}
+        field={SETTING_FIELD.GOSS_BLUR_DARK}
+        loading={saving}
+        top={20}
+      />
+    </div>
   )
 }

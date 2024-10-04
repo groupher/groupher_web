@@ -14,23 +14,23 @@ import OpenGraph from './OpenGraph'
 import TwitterGraph from './TwitterGraph'
 
 import useSEO from '../logic/useSEO'
-import { Wrapper, Banner, TabsWrapper } from '../styles/basic_info'
+import useSalon from '../salon/seo'
 
 export default () => {
+  const s = useSalon()
+
   const router = useRouter()
   const curCommunity = useViewingCommunity()
   const { seoTab, saving, getIsTouched, edit } = useSEO()
 
   const isTouched = getIsTouched()
 
-  console.log('## isTouched: ', isTouched)
-
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Portal title="SEO" desc="搜索引擎及社交媒体展示优化。" withDivider={false} />
 
-      <Banner>
-        <TabsWrapper>
+      <div className={s.banner}>
+        <div className={s.tabs}>
           <Tabs
             items={SEO_TABS}
             activeKey={seoTab}
@@ -46,19 +46,13 @@ export default () => {
             view={VIEW.DESKTOP}
             noAnimation
           />
-        </TabsWrapper>
-      </Banner>
+        </div>
+      </div>
 
       {seoTab === DASHBOARD_SEO_ROUTE.SEARCH_ENGINE && <OpenGraph />}
       {seoTab === DASHBOARD_SEO_ROUTE.TWITTER && <TwitterGraph />}
 
-      <SavingBar
-        field={SETTING_FIELD.SEO}
-        isTouched={isTouched}
-        loading={saving}
-        width="305px"
-        left={-5}
-      />
-    </Wrapper>
+      <SavingBar field={SETTING_FIELD.SEO} isTouched={isTouched} loading={saving} width="7/12" />
+    </div>
   )
 }

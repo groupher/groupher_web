@@ -9,7 +9,7 @@ import SavingBar from '../SavingBar'
 
 import useTags from '../logic/useTags'
 
-import useSalon, { cn } from '../styles/layout/tag_layout'
+import useSalon, { cn } from '../salon/layout/tag_layout'
 
 export default () => {
   const s = useSalon()
