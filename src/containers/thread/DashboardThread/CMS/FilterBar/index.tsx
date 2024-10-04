@@ -12,7 +12,7 @@ import ConditionSelector from '~/widgets/ConditionSelector'
 import ActionBar from './ActionBar'
 
 import useCMSInfo from '../../hooks/useCMSInfo'
-import useSalon, { cn } from '../../styles/cms/filter_bar'
+import useSalon, { cn } from '../../salon/cms/filter_bar'
 
 type TProps = {
   triggerCheckbox: (show: boolean) => void

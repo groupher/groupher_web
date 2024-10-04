@@ -1,7 +1,7 @@
 import Button from '~/widgets/Buttons/Button'
 
 import useTags from '../logic/useTags'
-import useSalon, { cn } from '../styles/tags/thread_selector'
+import useSalon, { cn } from '../salon/tags/thread_selector'
 
 export default () => {
   const s = useSalon()

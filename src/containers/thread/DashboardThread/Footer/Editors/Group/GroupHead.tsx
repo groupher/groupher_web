@@ -8,7 +8,7 @@ import GroupMenu from '../GroupMenu'
 import GroupInputer from '../GroupInputer'
 
 import useFooter from '../../../logic/useFooter'
-import useSalon from '../../../styles/footer/editors/group/group_head'
+import useSalon from '../../../salon/footer/editors/group/group_head'
 
 type TProps = {
   title: string

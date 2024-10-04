@@ -7,7 +7,7 @@ import GlobalTemplate from '../Templates/Global'
 import SavingBar from '../../SavingBar'
 
 import useBroadcast from '../../logic/useBroadcast'
-import useSalon from '../../styles/broadcast/editor/global'
+import useSalon from '../../salon/broadcast/editor/global'
 
 export default () => {
   const {

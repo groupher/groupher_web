@@ -21,7 +21,7 @@ import WaterfallLayout from './WaterfallLayout'
 
 import useKanban from '../../../logic/useKanban'
 
-import useSalon, { cn } from '../../../styles/layout/kanban_layout/bg_colors_setter'
+import useSalon, { cn } from '../../../salon/layout/kanban_layout/bg_colors_setter'
 
 export default () => {
   const s = useSalon()

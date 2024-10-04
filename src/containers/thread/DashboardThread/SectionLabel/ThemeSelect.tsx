@@ -4,7 +4,7 @@ import useTheme from '~/hooks/useTheme'
 import SunSVG from '~/icons/Sun'
 import MoonSVG from '~/icons/Moon'
 
-import useSalon, { cn } from '../styles/section_label/theme_select'
+import useSalon, { cn } from '../salon/section_label/theme_select'
 
 export default () => {
   const s = useSalon()

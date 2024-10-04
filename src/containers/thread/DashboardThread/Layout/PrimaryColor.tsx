@@ -8,7 +8,7 @@ import SavingBar from '../SavingBar'
 import { SETTING_FIELD } from '../constant'
 
 import usePrimaryColor from '../logic/usePrimaryColor'
-import useSalon, { cn } from '../styles/layout/primary_color'
+import useSalon, { cn } from '../salon/layout/primary_color'
 
 export default () => {
   const s = useSalon()

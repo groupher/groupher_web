@@ -3,7 +3,7 @@ import { isEmpty } from 'ramda'
 
 import Button from '~/widgets/Buttons/Button'
 
-import useSalon from '../styles/alias/suggestion'
+import useSalon from '../salon/alias/suggestion'
 
 type TProps = {
   items: string[]

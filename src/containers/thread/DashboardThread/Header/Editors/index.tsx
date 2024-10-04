@@ -17,7 +17,7 @@ import FixedLinks from './FixedLinks'
 import GroupHead from './GroupHead'
 
 import useHeader from '../../logic/useHeader'
-import useSalon from '../../styles/header/editors'
+import useSalon from '../../salon/header/editors'
 
 const Editor: FC = () => {
   const s = useSalon()

@@ -8,7 +8,7 @@ import Templates from './Templates'
 import Editor from './Editors'
 
 import useFooter from '../logic/useFooter'
-import useSalon from '../styles/footer'
+import useSalon from '../salon/footer'
 
 const Footer: FC = () => {
   const s = useSalon()

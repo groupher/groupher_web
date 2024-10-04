@@ -11,7 +11,7 @@ import MediaPreview from './MediaPreview'
 
 import useBaseInfo from '../../logic/useBaseInfo'
 
-import useSalon from '../../styles/basic_info/other_info/input_box'
+import useSalon from '../../salon/basic_info/other_info/input_box'
 
 type TProps = {
   item: TMediaReport

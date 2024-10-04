@@ -5,7 +5,7 @@ import type { TDocSettings } from '../spec'
 import Header from './Header'
 import BlockLayout from './BlockLayout'
 
-import { Wrapper } from '../styles/doc'
+import { Wrapper } from '../salon/doc'
 
 type TProps = {
   settings: TDocSettings

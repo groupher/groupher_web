@@ -11,7 +11,7 @@ import { CheckCell, ArticleCell, StateCell, AuthorDateCell, DateCell } from '../
 import FilterBar from '../FilterBar'
 
 import useCMSInfo from '../../hooks/useCMSInfo'
-import { Title, SortIcon } from '../../styles/cms/docs/table'
+import { Title, SortIcon } from '../../salon/cms/docs/table'
 
 /**
  * example: https://table.rsuitejs.com/#fixed-column

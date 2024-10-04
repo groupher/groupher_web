@@ -11,7 +11,7 @@ import SavingBar from '../../SavingBar'
 
 import useGossBlur from '../../logic/useGossBlur'
 
-import useSalon, { cn } from '../../styles/layout/goss_blur'
+import useSalon, { cn } from '../../salon/layout/goss_blur'
 
 export default () => {
   const s = useSalon()

@@ -9,7 +9,7 @@ import HeadsUp from '~/widgets/HeadsUp'
 import List from './List'
 import ConfirmFooter from './ConfirmFooter'
 
-import useSalon from '../../styles/basic_info/danger_zone/modal'
+import useSalon from '../../salon/basic_info/danger_zone/modal'
 
 type TProps = {
   show: boolean

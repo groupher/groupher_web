@@ -14,7 +14,7 @@ import OpenGraph from './OpenGraph'
 import TwitterGraph from './TwitterGraph'
 
 import useSEO from '../logic/useSEO'
-import useSalon from '../styles/seo'
+import useSalon from '../salon/seo'
 
 export default () => {
   const s = useSalon()

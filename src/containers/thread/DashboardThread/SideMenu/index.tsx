@@ -6,7 +6,7 @@ import type { TMenuGroup } from '../spec'
 import { MENU } from '../constant'
 
 import Group from './Group'
-import useSalon from '../styles/side_menu'
+import useSalon from '../salon/side_menu'
 
 export default () => {
   const s = useSalon()

@@ -15,7 +15,7 @@ import FAQ from './FAQ'
 import { DOC_TABS } from '../../constant'
 import useDoc from '../../logic/useDoc'
 import useCMSInfo from '../../hooks/useCMSInfo'
-import { Wrapper, TabsWrapper } from '../../styles/cms/docs'
+import { Wrapper, TabsWrapper } from '../../salon/cms/docs'
 
 const Docs: FC = () => {
   const { edit } = useDoc()

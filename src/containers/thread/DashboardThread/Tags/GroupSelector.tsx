@@ -5,7 +5,7 @@ import { nilOrEmpty } from '~/validator'
 import Button from '~/widgets/Buttons/Button'
 
 import useTags from '../logic/useTags'
-import useSalon, { cn } from '../styles/tags/group_selector'
+import useSalon, { cn } from '../salon/tags/group_selector'
 
 export default memo(() => {
   const s = useSalon()

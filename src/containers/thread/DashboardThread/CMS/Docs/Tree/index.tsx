@@ -20,7 +20,7 @@ import {
   EditIcon,
   DeleteIcon,
   DragIcon,
-} from '../../../styles/cms/docs/tree'
+} from '../../../salon/cms/docs/tree'
 
 type TProps = {
   pagedDocs: TPagedArticles

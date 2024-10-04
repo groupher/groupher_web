@@ -6,7 +6,7 @@ import { SETTING_FIELD } from '../../../constant'
 import SavingBar from '../../../SavingBar'
 
 import useFAQ from '../../../logic/useFAQ'
-import { Wrapper, TitleInput, BodyInput } from '../../../styles/cms/docs/faq/editor'
+import { Wrapper, TitleInput, BodyInput } from '../../../salon/cms/docs/faq/editor'
 
 type TProps = {
   editingFAQ: TFAQSection

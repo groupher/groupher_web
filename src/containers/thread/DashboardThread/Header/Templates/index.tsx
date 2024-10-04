@@ -13,7 +13,7 @@ import Float from './Float'
 import Right from './Right'
 
 import useHeader from '../../logic/useHeader'
-import useSalon, { cn } from '../../styles/header/templates'
+import useSalon, { cn } from '../../salon/header/templates'
 
 const Templates: FC = () => {
   const [showAll, setShowAll] = useState<boolean>(false)

@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import useSalon from '../styles/domain'
+import useSalon from '../salon/domain'
 
 const Domain: FC = () => {
   const s = useSalon()

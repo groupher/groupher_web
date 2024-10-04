@@ -1,4 +1,4 @@
-import { Wrapper, Title, ViewWrapper } from '../styles/doc/Header'
+import { Wrapper, Title, ViewWrapper } from '../salon/doc/Header'
 
 const Header = () => {
   return (

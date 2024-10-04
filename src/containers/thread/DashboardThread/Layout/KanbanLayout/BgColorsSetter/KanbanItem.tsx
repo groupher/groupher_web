@@ -2,7 +2,7 @@ import type { FC } from 'react'
 
 import UpvoteSVG from '~/icons/Upvote'
 
-import useSalon, { cn } from '../../../styles/layout/kanban_layout/bg_colors_setter/kanben_item'
+import useSalon, { cn } from '../../../salon/layout/kanban_layout/bg_colors_setter/kanben_item'
 
 type TProps = {
   opacity?: string

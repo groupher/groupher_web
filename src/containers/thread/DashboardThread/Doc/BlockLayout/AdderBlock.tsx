@@ -1,5 +1,5 @@
 import useDoc from '../../logic/useDoc'
-import { Wrapper, AddIcon, Title } from '../../styles/doc/block_layout/adder_block'
+import { Wrapper, AddIcon, Title } from '../../salon/doc/block_layout/adder_block'
 
 export default () => {
   const { addDocCategory } = useDoc()

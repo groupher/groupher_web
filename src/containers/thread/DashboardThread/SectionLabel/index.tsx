@@ -3,7 +3,7 @@ import type { FC, ReactNode } from 'react'
 import type { TSpace } from '~/spec'
 
 import ThemeSelect from './ThemeSelect'
-import useSalon, { cn } from '../styles/section_label'
+import useSalon, { cn } from '../salon/section_label'
 
 type TProps = {
   title: string

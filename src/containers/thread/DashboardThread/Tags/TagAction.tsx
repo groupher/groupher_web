@@ -12,7 +12,7 @@ import ActionMenu from './ActionMenu'
 import useTags from '../logic/useTags'
 import type { TProps as TTagBarProps } from './TagBar'
 
-import useSalon, { cn } from '../styles/tags/tag_action'
+import useSalon, { cn } from '../salon/tags/tag_action'
 
 type TProps = Omit<TTagBarProps, 'settingTag'>
 

@@ -13,7 +13,7 @@ import CheckLabel from '~/widgets/CheckLabel'
 
 import SectionLabel from '../SectionLabel'
 
-import useSalon, { cn } from '../styles/layout/wallpaper'
+import useSalon, { cn } from '../salon/layout/wallpaper'
 
 export default () => {
   const s = useSalon()

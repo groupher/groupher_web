@@ -12,7 +12,7 @@ import SavingBar from '../SavingBar'
 import TagAction from './TagAction'
 
 import useTags from '../logic/useTags'
-import useSalon, { cn } from '../styles/tags/tag_bar'
+import useSalon, { cn } from '../salon/tags/tag_bar'
 
 export type TProps = {
   tag: TTag

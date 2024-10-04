@@ -8,7 +8,7 @@ import Templates from './Templates'
 import Editor from './Editors'
 
 import useHeader from '../logic/useHeader'
-import useSalon from '../styles/header'
+import useSalon from '../salon/header'
 
 const Header: FC = () => {
   const s = useSalon()

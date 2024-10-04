@@ -7,7 +7,7 @@ import { ROUTE } from '~/const/route'
 import useViewingCommunity from '~/hooks/useViewingCommunity'
 import ArrowSVG from '~/icons/ArrowSimple'
 
-import useSalon from '../../styles/header/editors/fixed_links'
+import useSalon from '../../salon/header/editors/fixed_links'
 
 type TProps = {
   isAboutLinkFold: boolean

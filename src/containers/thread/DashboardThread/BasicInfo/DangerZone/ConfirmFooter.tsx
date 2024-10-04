@@ -9,7 +9,7 @@ import { SexyDivider } from '~/widgets/Common'
 import Button from '~/widgets/Buttons/Button'
 
 import useBaseInfo from '../../logic/useBaseInfo'
-import useSalon from '../../styles/basic_info/danger_zone/confirm_footer'
+import useSalon from '../../salon/basic_info/danger_zone/confirm_footer'
 
 type TProps = {
   testid?: string

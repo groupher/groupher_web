@@ -11,7 +11,7 @@ import GroupSelector from './GroupSelector'
 import TagList from './TagList'
 import Footer from './Footer'
 
-import useSalon from '../styles/tags'
+import useSalon from '../salon/tags'
 
 export default () => {
   const s = useSalon()

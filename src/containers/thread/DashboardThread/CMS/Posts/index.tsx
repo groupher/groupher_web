@@ -9,7 +9,7 @@ import { CheckCell, ArticleCell, StateCell, AuthorDateCell, DateCell } from '../
 import FilterBar from '../FilterBar'
 
 import useCMSInfo from '../../hooks/useCMSInfo'
-import { Title, SortIcon } from '../../styles/cms/posts'
+import { Title, SortIcon } from '../../salon/cms/posts'
 
 /**
  * example: https://table.rsuitejs.com/#fixed-column

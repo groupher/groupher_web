@@ -12,7 +12,7 @@ import CommunityBrand from '~/widgets/CommunityBrand'
 import SocialList from '~/widgets/SocialList'
 
 import useFooter from '../../logic/useFooter'
-import useSalon, { cn } from '../../styles/footer/templates/simple'
+import useSalon, { cn } from '../../salon/footer/templates/simple'
 
 type TProps = {
   links: TLinkItem[]

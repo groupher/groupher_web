@@ -15,7 +15,7 @@ import Portal from '../Portal'
 import Item from './Item'
 
 import useAlias from '../logic/useAlias'
-import useSalon from '../styles/alias'
+import useSalon from '../salon/alias'
 
 const Alias: FC = () => {
   const s = useSalon()

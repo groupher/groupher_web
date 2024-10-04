@@ -11,7 +11,7 @@ import Button from '~/widgets/Buttons/Button'
 import LinkEditor from '../LinkEditor'
 
 import useFooter from '../../../logic/useFooter'
-import useSalon from '../../../styles/footer/editors/simple'
+import useSalon from '../../../salon/footer/editors/simple'
 
 const Simple: FC = () => {
   const s = useSalon()

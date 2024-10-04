@@ -19,7 +19,7 @@ import SavingBar from '../../SavingBar'
 import LinkMenu from './LinkMenu'
 
 import useFooter from '../../logic/useFooter'
-import useSalon, { cn } from '../../styles/footer/editors/link_editor'
+import useSalon, { cn } from '../../salon/footer/editors/link_editor'
 
 type TProps = {
   notifyText?: string

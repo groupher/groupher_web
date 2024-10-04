@@ -9,7 +9,7 @@ import Simple from './Simple'
 import Default from './Default'
 
 import useBroadcast from '../../../logic/useBroadcast'
-import useSalon, { cn } from '../../../styles/broadcast/templates/article'
+import useSalon, { cn } from '../../../salon/broadcast/templates/article'
 
 export default () => {
   const s = useSalon()

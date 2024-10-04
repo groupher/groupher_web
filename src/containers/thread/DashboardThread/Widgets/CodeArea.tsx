@@ -2,7 +2,7 @@ import type { FC } from 'react'
 
 import CopyButton from '~/widgets/Buttons/CopyButton'
 
-import useSalon from '../styles/widgets/code_area'
+import useSalon from '../salon/widgets/code_area'
 
 const CodeArea: FC = () => {
   const id = 'your-id'

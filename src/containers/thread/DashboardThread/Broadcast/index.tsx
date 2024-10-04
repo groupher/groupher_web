@@ -12,7 +12,7 @@ import Portal from '../Portal'
 import Editor from './Editor'
 
 import useBroadcast from '../logic/useBroadcast'
-import useSalon from '../styles/broadcast'
+import useSalon from '../salon/broadcast'
 
 export default () => {
   const s = useSalon()

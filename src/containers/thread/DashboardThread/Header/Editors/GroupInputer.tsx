@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import Input from '~/widgets/Input'
 
 import SavingBar from '../../SavingBar'
-import useSalon from '../../styles/footer/editors/group_inputer'
+import useSalon from '../../salon/footer/editors/group_inputer'
 
 type TProps = {
   value: string

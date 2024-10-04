@@ -4,7 +4,7 @@ import Block from './Block'
 import AdderBlock from './AdderBlock'
 
 import type { TDocSettings } from '../../spec'
-import { Wrapper, CatsWrapper } from '../../styles/doc/block_layout'
+import { Wrapper, CatsWrapper } from '../../salon/doc/block_layout'
 
 type TProps = {
   settings: TDocSettings

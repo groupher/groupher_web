@@ -11,7 +11,7 @@ import Simple from './Simple'
 import Group from './Group'
 
 import useFooter from '../../logic/useFooter'
-import useSalon, { cn } from '../../styles/footer/templates'
+import useSalon, { cn } from '../../salon/footer/templates'
 
 const Templates: FC = () => {
   const s = useSalon()

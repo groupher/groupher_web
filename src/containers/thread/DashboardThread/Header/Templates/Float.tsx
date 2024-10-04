@@ -11,7 +11,7 @@ import CommunityBrand from '~/widgets/CommunityBrand'
 import CustomHeaderLinks from '~/widgets/CustomHeaderLinks/HeaderTemplate'
 
 import useHeader from '../../logic/useHeader'
-import useSalon, { cn } from '../../styles/header/templates/float'
+import useSalon, { cn } from '../../salon/header/templates/float'
 
 type TProps = {
   threads: TCommunityThread[]

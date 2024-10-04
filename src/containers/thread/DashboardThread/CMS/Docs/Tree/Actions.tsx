@@ -13,7 +13,7 @@ import {
   ButtonsWrapper,
   AddIcon,
   EditIcon,
-} from '../../../styles/cms/docs/tree/actions'
+} from '../../../salon/cms/docs/tree/actions'
 
 const Actions: FC = () => {
   return (

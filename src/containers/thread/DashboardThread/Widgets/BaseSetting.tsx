@@ -11,7 +11,7 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import useWidgets from '../logic/useWidgets'
-import useSalon, { cn } from '../styles/widgets/base_setting'
+import useSalon, { cn } from '../salon/widgets/base_setting'
 
 export default () => {
   const s = useSalon()

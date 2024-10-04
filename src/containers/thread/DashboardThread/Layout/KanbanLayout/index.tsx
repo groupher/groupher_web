@@ -6,7 +6,7 @@ import ItemCardLayout from './ItemCardLayout'
 import BgColorsSetter from './BgColorsSetter'
 
 import useKanban from '../../logic/useKanban'
-import useSalon from '../../styles/layout/kanban_layout'
+import useSalon from '../../salon/layout/kanban_layout'
 
 export default () => {
   const { kanbanLayout } = useKanban()

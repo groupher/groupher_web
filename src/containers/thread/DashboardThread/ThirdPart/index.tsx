@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import useSalon from '../styles/third_part'
+import useSalon from '../salon/third_part'
 
 const ThirdPart: FC = () => {
   const s = useSalon()

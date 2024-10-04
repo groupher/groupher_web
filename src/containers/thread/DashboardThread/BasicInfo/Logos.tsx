@@ -5,7 +5,7 @@ import { SETTING_FIELD } from '../constant'
 import SavingBar from '../SavingBar'
 
 import useBaseInfo from '../logic/useBaseInfo'
-import useSalon from '../styles/basic_info/logos'
+import useSalon from '../salon/basic_info/logos'
 
 export default () => {
   const s = useSalon()

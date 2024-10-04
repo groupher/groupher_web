@@ -12,7 +12,7 @@ import BaseSetting from './BaseSetting'
 import CodeArea from './CodeArea'
 
 import useWidgets from '../logic/useWidgets'
-import useSalon from '../styles/widgets'
+import useSalon from '../salon/widgets'
 
 export default () => {
   const s = useSalon()

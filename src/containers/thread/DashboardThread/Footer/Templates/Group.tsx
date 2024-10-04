@@ -14,7 +14,7 @@ import CommunityBrand from '~/widgets/CommunityBrand'
 import SocialList from '~/widgets/SocialList'
 
 import useFooter from '../../logic/useFooter'
-import useSalon, { cn } from '../../styles/footer/templates/group'
+import useSalon, { cn } from '../../salon/footer/templates/group'
 
 type TProps = {
   links: TLinkItem[]

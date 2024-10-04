@@ -6,7 +6,7 @@ import SectionLabel from '../SectionLabel'
 import SearchEnginePreview from './SearchEnginePreview'
 
 import useSEO from '../logic/useSEO'
-import useSalon from '../styles/seo/open_graph'
+import useSalon from '../salon/seo/open_graph'
 
 /*
  see: https://mintlify.com/docs/settings/seo for details

@@ -8,7 +8,7 @@ import ArticleTemplate from '../Templates/Article'
 import SavingBar from '../../SavingBar'
 
 import useBroadcast from '../../logic/useBroadcast'
-import useSalon from '../../styles/broadcast/editor/article'
+import useSalon from '../../salon/broadcast/editor/article'
 
 export default () => {
   const {

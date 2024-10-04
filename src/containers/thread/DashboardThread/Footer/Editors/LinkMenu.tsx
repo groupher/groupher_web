@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import MenuItem from '~/widgets/MenuItem'
 import MENU from '~/const/menu'
 
-import useSalon from '../../styles/footer/editors/link_menu'
+import useSalon from '../../salon/footer/editors/link_menu'
 
 type TProps = {
   isFirst?: boolean

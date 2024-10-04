@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from 'react'
 
-import useSalon from './styles/portal'
+import useSalon from './salon/portal'
 
 type TProps = {
   title: string

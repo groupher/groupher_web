@@ -13,7 +13,7 @@ import List from './List'
 
 import useBaseInfo from '../../logic/useBaseInfo'
 
-import useSalon from '../../styles/basic_info/danger_zone/modal'
+import useSalon from '../../salon/basic_info/danger_zone/modal'
 
 type TProps = {
   show: boolean

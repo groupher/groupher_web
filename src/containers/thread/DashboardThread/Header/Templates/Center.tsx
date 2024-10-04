@@ -12,7 +12,7 @@ import CustomHeaderLinks from '~/widgets/CustomHeaderLinks/HeaderTemplate'
 import CommunityBrand from '~/widgets/CommunityBrand'
 
 import useHeader from '../../logic/useHeader'
-import useSalon, { cn } from '../../styles/header/templates/center'
+import useSalon, { cn } from '../../salon/header/templates/center'
 
 type TProps = {
   threads: TCommunityThread[]

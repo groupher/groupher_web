@@ -12,7 +12,7 @@ import GroupMenu from './GroupMenu'
 import GroupInputer from './GroupInputer'
 
 import useHeader from '../../logic/useHeader'
-import useSalon from '../../styles/header/editors/group_head'
+import useSalon from '../../salon/header/editors/group_head'
 
 type TGroupTitle = {
   title: string

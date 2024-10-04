@@ -11,7 +11,7 @@ import SavingBar from '../SavingBar'
 import { SETTING_FIELD } from '../constant'
 
 import useGlowLight from '../logic/useGlowLight'
-import useSalon, { cn } from '../styles/layout/glow_light'
+import useSalon, { cn } from '../salon/layout/glow_light'
 
 export default () => {
   const s = useSalon()

@@ -5,7 +5,7 @@ import Portal from '../Portal'
 import SavingBar from '../SavingBar'
 
 import useRSS from '../logic/useRSS'
-import useSalon from '../styles/rss'
+import useSalon from '../salon/rss'
 
 export default () => {
   const s = useSalon()

@@ -3,7 +3,7 @@ import Button from '~/widgets/Buttons/Button'
 
 import PlusSVG from '~/icons/Plus'
 
-import useSalon from '../styles/admin/adder'
+import useSalon from '../salon/admin/adder'
 
 export default () => {
   const s = useSalon()

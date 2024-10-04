@@ -11,7 +11,7 @@ import SectionLabel from '../SectionLabel'
 import SavingBar from '../SavingBar'
 
 import useTopbar from '../logic/useTopbar'
-import useSalon, { cn } from '../styles/layout/topbar_layout'
+import useSalon, { cn } from '../salon/layout/topbar_layout'
 
 export default () => {
   const s = useSalon()

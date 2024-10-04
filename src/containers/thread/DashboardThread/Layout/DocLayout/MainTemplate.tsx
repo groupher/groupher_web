@@ -5,7 +5,7 @@ import { DOC_LAYOUT } from '~/const/layout'
 
 import ToolSVG from '~/icons/Book'
 
-import useSalon, { cn } from '../../styles/layout/doc_layout/main_template'
+import useSalon, { cn } from '../../salon/layout/doc_layout/main_template'
 
 type TProps = {
   layout: TDocLayout

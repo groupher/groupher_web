@@ -16,7 +16,7 @@ import GroupInputer from '../GroupInputer'
 import GroupHead from './GroupHead'
 
 import useFooter from '../../../logic/useFooter'
-import useSalon from '../../../styles/footer/editors/group'
+import useSalon from '../../../salon/footer/editors/group'
 
 const Group: FC = () => {
   const s = useSalon()

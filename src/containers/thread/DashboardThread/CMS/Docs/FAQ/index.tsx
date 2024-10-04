@@ -10,7 +10,7 @@ import Editor from './Editor'
 import Adder from './Adder'
 import Block from './Block'
 
-import { Wrapper, InnerWrapper, ItemsWrapper } from '../../../styles/cms/docs/faq'
+import { Wrapper, InnerWrapper, ItemsWrapper } from '../../../salon/cms/docs/faq'
 
 export type TProps = {
   sections: TFAQSection[]

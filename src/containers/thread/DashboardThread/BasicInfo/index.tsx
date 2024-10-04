@@ -16,7 +16,7 @@ import SocialInfo from './SocialInfo'
 import OtherInfo from './OtherInfo'
 
 import useBaseInfo from '../logic/useBaseInfo'
-import useSalon from '../styles/basic_info'
+import useSalon from '../salon/basic_info'
 
 export default () => {
   const s = useSalon()
