@@ -3,7 +3,6 @@ import Link from 'next/link'
 import styled, { css, theme } from '~/css'
 
 import { LineDivider } from '~/widgets/Common'
-import ArrowSVG from '~/icons/ArrowSimple'
 import GithubSVT from '~/icons/social/Github'
 
 import useTwBelt from '~/hooks/useTwBelt'
@@ -24,19 +23,9 @@ export default () => {
     //
     requestDemoLink: cn(hoverLink('text-sm')),
     demoIcon: cn(hoverLinkIcon(), 'mt-px'),
+    arrowIcon: cn(hoverLinkIcon(), '-rotate-90 mt-px mr-0 ml-1'),
   }
 }
-
-export const ArrowIcon = styled(ArrowSVG)`
-  ${css.size(16)};
-  fill: ${theme('article.digest')};
-  opacity: 0.8;
-  transform: rotate(-90deg);
-  margin-left: 4px;
-  margin-top: 1px;
-
-  transition: all 0.2s;
-`
 
 export const RightSideInfo = styled.div`
   ${css.row('align-center', 'justify-end')};

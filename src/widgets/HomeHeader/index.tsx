@@ -4,13 +4,14 @@ import Link from 'next/link'
 import { ROUTE } from '~/const/route'
 import useSession from '~/hooks/useSession'
 
+import ArrowSVG from '~/icons/ArrowSimple'
 import DemoSVG from '~/icons/DemoTV'
+
 import Tooltip from '~/widgets/Tooltip'
 import CommunityBrand from '~/widgets/CommunityBrand'
 
 import useSalon, {
   cn,
-  ArrowIcon,
   RightSideInfo,
   Divider,
   GithubIcon,
@@ -64,7 +65,7 @@ const HomeHeader: FC = () => {
           noPadding
         >
           <div className={cn(s.stackLink, productActive && s.linkActive)}>
-            产品 <ArrowIcon />
+            产品 <ArrowSVG className={s.arrowIcon} />
           </div>
         </Tooltip>
 
@@ -103,7 +104,7 @@ const HomeHeader: FC = () => {
           noPadding
         >
           <div className={cn(s.stackLink, moreActive && s.linkActive)}>
-            了解更多 <ArrowIcon />
+            了解更多 <ArrowSVG className={s.arrowIcon} />
           </div>
         </Tooltip>
       </div>
