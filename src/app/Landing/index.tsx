@@ -31,12 +31,7 @@ import EnjoyDev from './EnjoyDev'
 import UsersWall from './UsersWall'
 import Footer from './Footer'
 
-import useSalon, {
-  cn,
-  // PatternBg,
-  StartButton,
-  ArrowLeftIcon,
-} from './styles'
+import useSalon, { cn, StartButton, ArrowLeftIcon } from './styles'
 
 const faqs = [
   {

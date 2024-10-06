@@ -1,17 +1,15 @@
 import { type FC, useState, memo } from 'react'
+import Link from 'next/link'
 
 import { ROUTE } from '~/const/route'
 import useSession from '~/hooks/useSession'
 
 import Tooltip from '~/widgets/Tooltip'
 
+import CommunityBrand from '~/widgets/CommunityBrand'
 import MobileMenu from './MobileMenu'
 
-import {
-  Wrapper,
-  Brand,
-  BrandTitle,
-  BrandLogo,
+import useSalon, {
   LinksWrapper,
   LinkItem,
   MoreLink,
@@ -29,17 +27,18 @@ import {
 } from './styles'
 
 const HomeHeader: FC = () => {
+  const s = useSalon()
+
   const [productActive, setProductActive] = useState(false)
   const [moreActive, setMoreActive] = useState(false)
 
   useSession()
 
   return (
-    <Wrapper>
-      <Brand href="/">
-        <BrandLogo src="/groupher-alpha.png" />
-        <BrandTitle>Groupher</BrandTitle>
-      </Brand>
+    <div className={s.wrapper}>
+      <Link href="/" className={s.brand}>
+        <CommunityBrand landingBrand />
+      </Link>
       <LinksWrapper>
         <Tooltip
           content={
@@ -123,7 +122,7 @@ const HomeHeader: FC = () => {
         <Divider left={14} right={12} />
         <MobileMenu />
       </MobileRightSide>
-    </Wrapper>
+    </div>
   )
 }
 

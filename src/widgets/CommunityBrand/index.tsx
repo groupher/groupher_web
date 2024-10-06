@@ -15,13 +15,32 @@ import useSalon from './salon'
 
 type TProps = {
   className?: string
+  landingBrand?: boolean
 } & TSpace
 
-const CommunityBrand: FC<TProps> = ({ className = '', ...spacing }) => {
+const CommunityBrand: FC<TProps> = ({ className = '', landingBrand = false, ...spacing }) => {
   const s = useSalon({ className, ...spacing })
 
   const { logo, title } = useViewingCommunity()
   const { brandLayout } = useLayout()
+
+  const landingLogo = '/groupher.png'
+  const landingTitle = 'Groupher'
+
+  if (landingBrand) {
+    return (
+      <div className={s.wrapper}>
+        <Img
+          src={landingLogo}
+          className={s.logo}
+          noLazy
+          fallback={<ImgFallback size={25} left={-2} right={6} title={title} />}
+        />
+
+        <h1 className={s.title}>{landingTitle}</h1>
+      </div>
+    )
+  }
 
   return (
     <div className={s.wrapper}>

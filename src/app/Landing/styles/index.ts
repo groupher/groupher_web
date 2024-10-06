@@ -29,7 +29,7 @@ export default () => {
     wrapper: cn('column-align-both relative h-full w-full overflow-hidden', container()),
     inner: 'column-align-both relative w-full h-full',
     banner: 'column-center relative w-full h-[640px]',
-    betaText: 'clip-text text-base bold mb-3 -mt-8',
+    betaText: 'clip-text text-base bold mb-3',
     betaGradientStyle: `linear-gradient(to top, ${getPathGradient(wallpaper)})`,
     title: cn('text-4xl bold-sm', fg('text.title')),
     desc: cn('text-xl mt-4', fg('text.digest')),

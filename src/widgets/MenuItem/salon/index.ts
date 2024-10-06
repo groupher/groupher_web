@@ -14,7 +14,7 @@ export default () => {
   const { cn, menu, fill, rainbow } = useTwBelt()
 
   return {
-    wrapper: cn(menu('bar'), 'row-center justify-between px-1 py-1'),
+    wrapper: cn(menu('bar'), 'row-center-between px-1 py-1'),
     title: cn(menu('title'), 'text-xs'),
     deleteTitle: cn(
       menu('title'),

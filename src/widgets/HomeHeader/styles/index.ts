@@ -1,54 +1,24 @@
 import Link from 'next/link'
 
-import type { TTestable, TActive } from '~/spec'
+import type { TActive } from '~/spec'
 
 import styled, { css, theme } from '~/css'
 
-import Img from '~/Img'
 import { LineDivider } from '~/widgets/Common'
 import DemoSVG from '~/icons/DemoTV'
 import ArrowSVG from '~/icons/ArrowSimple'
 import GithubSVT from '~/icons/social/Github'
 
-export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TTestable>`
-  ${css.row('align-center', 'justify-between')};
-  padding: 0;
-  height: 68px;
-  width: 100%;
-  margin-bottom: 8%;
+import useTwBelt from '~/hooks/useTwBelt'
 
-  ${css.media.mobile`
-     padding: 0 14px;
-  `};
-`
-export const Brand = styled(Link)`
-  ${css.row('align-center')};
-  text-decoration: none;
-  max-width: 150px;
+export default () => {
+  const { cn, linkable } = useTwBelt()
 
-  &:hover {
-    text-decoration: none;
+  return {
+    wrapper: cn('row-center-between w-full p-0 h-16 mb-12'),
+    brand: cn(linkable()),
   }
-`
-export const BrandLogo = styled(Img)`
-  ${css.size(22)};
-  margin-right: 8px;
-
-  ${css.media.mobile`
-    ${css.size(16)};
-    margin-right: 6px;
-  `};
-`
-export const BrandTitle = styled.div`
-  font-size: 18px;
-  color: ${theme('article.title')};
-
-  ${css.media.mobile`
-    font-size: 15px;
-  `};
-`
+}
 
 export const LinksWrapper = styled.div`
   ${css.row('align-center')};
