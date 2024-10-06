@@ -23,6 +23,7 @@ type TShadowSize = 'md' | 'lg' | 'xl'
 type TRet = {
   cn: (...inputs: ClassValue[]) => string
   container: () => string
+  linkable: () => string
   global: (className: string) => string
   fg: (key: TFlatThemeKey) => string
   bg: (key: TFlatThemeKey) => string
@@ -60,6 +61,11 @@ export default (): TRet => {
   const { isSquare: isAvatarSquare } = useAvatarLayout()
 
   const primaryColor = usePrimaryColor()
+
+  const linkable = () => {
+    return 'no-underline pointer hover:underline'
+  }
+
   const container = () => {
     return `container-${metric.toLowerCase()}`
   }
@@ -260,7 +266,7 @@ export default (): TRet => {
         )
       }
       case 'title': {
-        return cn('text-sm', `group-hover/menubar:${fg('text.title')}`)
+        return cn('text-sm grow', `group-hover/menubar:${fg('text.title')}`)
       }
       case 'link': {
         return cn('size-3.5 opacity-0 group-hover/menubar:opacity-60', fill('text.digest'))
@@ -283,6 +289,7 @@ export default (): TRet => {
     cn,
     global,
     container,
+    linkable,
     fg,
     bg,
     fill,

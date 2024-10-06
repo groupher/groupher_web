@@ -121,6 +121,12 @@
     background: linear-gradient(to right, #42424259 45%, transparent);
   }
 
+  .clip-text {
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent;
+  }
+
   .count-highlight {
     background: linear-gradient(90deg, rgb(243, 170, 0) 0%, rgb(228, 62, 41) 100%);
     -webkit-background-clip: text;
