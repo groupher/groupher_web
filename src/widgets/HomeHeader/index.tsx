@@ -10,8 +10,6 @@ import CommunityBrand from '~/widgets/CommunityBrand'
 import MobileMenu from './MobileMenu'
 
 import useSalon, {
-  LinksWrapper,
-  LinkItem,
   MoreLink,
   ArrowIcon,
   RequestDemo,
@@ -39,7 +37,7 @@ const HomeHeader: FC = () => {
       <Link href="/" className={s.brand}>
         <CommunityBrand landingBrand />
       </Link>
-      <LinksWrapper>
+      <div className={s.links}>
         <Tooltip
           content={
             <Panel width="220px">
@@ -74,9 +72,15 @@ const HomeHeader: FC = () => {
           </MoreLink>
         </Tooltip>
 
-        <LinkItem href={`/${ROUTE.HOME}`}>社区</LinkItem>
-        <LinkItem href={`/${ROUTE.HOME}/${ROUTE.KANBAN}`}>开发计划</LinkItem>
-        <LinkItem href={`/${ROUTE.PRICE}`}>价格</LinkItem>
+        <Link className={s.linkItem} href={`/${ROUTE.HOME}`}>
+          社区
+        </Link>
+        <Link className={s.linkItem} href={`/${ROUTE.HOME}/${ROUTE.KANBAN}`}>
+          开发计划
+        </Link>
+        <Link className={s.linkItem} href={`/${ROUTE.PRICE}`}>
+          价格
+        </Link>
         <Tooltip
           content={
             <Panel width="120px">
@@ -106,7 +110,7 @@ const HomeHeader: FC = () => {
             了解更多 <ArrowIcon />
           </MoreLink>
         </Tooltip>
-      </LinksWrapper>
+      </div>
 
       <RightSideInfo>
         <GithubIcon />

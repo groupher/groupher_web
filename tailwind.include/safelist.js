@@ -111,6 +111,9 @@ const UTILS = [
   'hidden',
   'group-hover/menubar:text-rainbow-red',
   'group-hover/menubar:text-rainbow-red-dark',
+
+  'decoration-text-hint',
+  'decoration-text-hint-dark',
 ]
 
 module.exports = uniq([
@@ -123,6 +126,7 @@ module.exports = uniq([
     (c) =>
       `text-rainbow-${c} text-rainbow-${c}-dark
        bg-rainbow-${c} bg-rainbow-${c}-dark 
+       decoration-rainbow-${c} decoration-rainbow-${c}-dark 
        hover:bg-rainbow-${c}Soft hover:bg-rainbow-${c}Soft-dark
        hover:border-rainbow-${c} hover:border-rainbow-${c}-dark
        bg-rainbow-${c}Soft bg-rainbow-${c}Soft-dark fill-rainbow-${c} fill-rainbow-${c}-dark 

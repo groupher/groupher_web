@@ -12,25 +12,17 @@ import GithubSVT from '~/icons/social/Github'
 import useTwBelt from '~/hooks/useTwBelt'
 
 export default () => {
-  const { cn, linkable } = useTwBelt()
+  const { cn, linkable, fg, hoverableLink } = useTwBelt()
 
   return {
     wrapper: cn('row-center-between w-full p-0 h-16 mb-12'),
     brand: cn(linkable()),
+    links: cn('row-center gap-x-6 ml-12 mt-px'),
+    linkItem: hoverableLink(),
+    linkItemActive: fg('text.title'),
   }
 }
 
-export const LinksWrapper = styled.div`
-  ${css.row('align-center')};
-  gap: 0 24px;
-  margin-top: 2px;
-  flex-flow: 1;
-  padding-left: 45px;
-
-  ${css.media.mobile`
-    display: none;
-  `};
-`
 export const LinkItem = styled(Link)<TActive>`
   font-size: 15px;
   color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};

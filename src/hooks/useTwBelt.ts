@@ -14,7 +14,7 @@ import useMetric from '~/hooks/useMetric'
 import useAvatarLayout from '~/hooks/useAvatarLayout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-type TColorPrefix = 'fg' | 'bg' | 'bgSoft' | 'fill' | 'border' | 'borderSoft'
+type TColorPrefix = 'fg' | 'bg' | 'bgSoft' | 'fill' | 'border' | 'borderSoft' | 'decoration'
 type TLinkColorPrefix = 'fg' | 'fill'
 type TBreakOut = 'footer' | 'header'
 type TMenuPart = 'bg' | 'bar' | 'title' | 'link'
@@ -23,7 +23,6 @@ type TShadowSize = 'md' | 'lg' | 'xl'
 type TRet = {
   cn: (...inputs: ClassValue[]) => string
   container: () => string
-  linkable: () => string
   global: (className: string) => string
   fg: (key: TFlatThemeKey) => string
   bg: (key: TFlatThemeKey) => string
@@ -34,6 +33,8 @@ type TRet = {
   rainbowPale: (color: TColorName | string) => string
   primary: (prefix?: TColorPrefix) => string
   linker: (prefix?: TLinkColorPrefix) => string
+  linkable: () => string
+  hoverableLink: (textSize?: string) => string
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
   divider: () => string
@@ -61,10 +62,6 @@ export default (): TRet => {
   const { isSquare: isAvatarSquare } = useAvatarLayout()
 
   const primaryColor = usePrimaryColor()
-
-  const linkable = () => {
-    return 'no-underline pointer hover:underline'
-  }
 
   const container = () => {
     return `container-${metric.toLowerCase()}`
@@ -179,6 +176,24 @@ export default (): TRet => {
 
     return rainbow(primaryColor, prefix)
   }
+
+  const linkable = () => {
+    return 'no-underline pointer hover:underline'
+  }
+
+  const hoverableLink = (textSize = 'text-base') => {
+    return cn(
+      `${textSize}`,
+      'px-1.5 py-0.5 rounded trans-all-100',
+      `hover:${bg('hoverBg')}`,
+      `hover:${fg('text.title')}`,
+      'underline-offset-8 hover:underline',
+      'decoration-1',
+      primary('decoration'),
+      fg('text.digest'),
+    )
+  }
+
   /**
    * this is not typo, cause the exsiting prama is `size`
    */
@@ -289,7 +304,6 @@ export default (): TRet => {
     cn,
     global,
     container,
-    linkable,
     fg,
     bg,
     fill,
@@ -299,6 +313,8 @@ export default (): TRet => {
     rainbowPale,
     primary,
     linker,
+    linkable,
+    hoverableLink,
     zise,
     margin,
     divider,
