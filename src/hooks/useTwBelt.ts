@@ -34,7 +34,8 @@ type TRet = {
   primary: (prefix?: TColorPrefix) => string
   linker: (prefix?: TLinkColorPrefix) => string
   linkable: () => string
-  hoverableLink: (textSize?: string) => string
+  hoverLink: (textSize?: string) => string
+  hoverLinkIcon: (size?: string) => string
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
   divider: () => string
@@ -181,8 +182,9 @@ export default (): TRet => {
     return 'no-underline pointer hover:underline'
   }
 
-  const hoverableLink = (textSize = 'text-base') => {
+  const hoverLink = (textSize = 'text-base') => {
     return cn(
+      'row-center group',
       `${textSize}`,
       'px-1.5 py-0.5 rounded trans-all-100',
       `hover:${bg('hoverBg')}`,
@@ -192,6 +194,10 @@ export default (): TRet => {
       primary('decoration'),
       fg('text.digest'),
     )
+  }
+
+  const hoverLinkIcon = (size = 'size-3.5') => {
+    return cn(`${size}`, 'mr-1', `group-hover:${fill('text.title')}`, fill('text.digest'))
   }
 
   /**
@@ -314,7 +320,8 @@ export default (): TRet => {
     primary,
     linker,
     linkable,
-    hoverableLink,
+    hoverLink,
+    hoverLinkIcon,
     zise,
     margin,
     divider,

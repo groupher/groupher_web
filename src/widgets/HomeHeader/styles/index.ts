@@ -1,60 +1,31 @@
 import Link from 'next/link'
 
-import type { TActive } from '~/spec'
-
 import styled, { css, theme } from '~/css'
 
 import { LineDivider } from '~/widgets/Common'
-import DemoSVG from '~/icons/DemoTV'
 import ArrowSVG from '~/icons/ArrowSimple'
 import GithubSVT from '~/icons/social/Github'
 
 import useTwBelt from '~/hooks/useTwBelt'
 
+export { cn } from '~/css'
+
 export default () => {
-  const { cn, linkable, fg, hoverableLink } = useTwBelt()
+  const { cn, linkable, fg, bg, hoverLink, hoverLinkIcon } = useTwBelt()
 
   return {
     wrapper: cn('row-center-between w-full p-0 h-16 mb-12'),
     brand: cn(linkable()),
     links: cn('row-center gap-x-6 ml-12 mt-px'),
-    linkItem: hoverableLink(),
+    linkItem: hoverLink(),
     linkItemActive: fg('text.title'),
+    stackLink: cn(hoverLink(), 'hover:no-underline'),
+    linkActive: cn(fg('text.title'), bg('hoverBg')),
+    //
+    requestDemoLink: cn(hoverLink('text-sm')),
+    demoIcon: cn(hoverLinkIcon(), 'mt-px'),
   }
 }
-
-export const LinkItem = styled(Link)<TActive>`
-  font-size: 15px;
-  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
-  text-decoration: none;
-  padding: 2px 6px;
-  border-radius: 5px;
-
-  &:hover {
-    background: ${theme('hoverBg')};
-    font-weight: 500;
-  }
-
-  transition: all 0.2s;
-`
-
-export const MoreLink = styled.div<TActive>`
-  ${css.row('align-center')};
-  font-size: 15px;
-  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
-  background: ${({ $active }) => ($active ? theme('hoverBg') : '')};
-  font-weight: ${({ $active }) => ($active ? 500 : 400)};
-  cursor: default;
-  padding: 2px 6px;
-  border-radius: 5px;
-
-  &:hover {
-    background: ${theme('hoverBg')};
-    font-weight: 500;
-  }
-
-  transition: all 0.2s;
-`
 
 export const ArrowIcon = styled(ArrowSVG)`
   ${css.size(16)};
@@ -63,11 +34,6 @@ export const ArrowIcon = styled(ArrowSVG)`
   transform: rotate(-90deg);
   margin-left: 4px;
   margin-top: 1px;
-
-  ${LinkItem}:hover & {
-    fill: ${theme('article.title')};
-    opacity: 1;
-  }
 
   transition: all 0.2s;
 `
@@ -80,14 +46,6 @@ export const RightSideInfo = styled.div`
     display: none;
   `};
 `
-export const MobileRightSide = styled.div`
-  ${css.row('align-both')};
-  display: none;
-
-  ${css.media.mobile`
-    display: flex;
-  `};
-`
 export const GithubIcon = styled(GithubSVT)`
   fill: ${theme('article.digest')};
   ${css.size(16)};
@@ -96,30 +54,6 @@ export const Divider = styled(LineDivider)`
   background: ${theme('article.digest')};
   opacity: 0.8;
   height: 10px;
-`
-export const RequestDemo = styled(Link)`
-  ${css.row('align-end')};
-  color: ${theme('article.digest')};
-  text-decoration: none;
-
-  font-size: 13px;
-
-  &:hover {
-    cursor: pointer;
-    color: ${theme('article.title')};
-  }
-  transition: all 0.2s;
-`
-export const DemoIcon = styled(DemoSVG)`
-  ${css.size(15)};
-  fill: ${theme('article.digest')};
-  margin-right: 10px;
-  margin-bottom: 2px;
-
-  ${RequestDemo}:hover & {
-    fill: ${theme('article.title')};
-  }
-  transition: all 0.2s;
 `
 
 export const Panel = styled.div<{ width?: string }>`

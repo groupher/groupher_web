@@ -4,16 +4,13 @@ import Link from 'next/link'
 import { ROUTE } from '~/const/route'
 import useSession from '~/hooks/useSession'
 
+import DemoSVG from '~/icons/DemoTV'
 import Tooltip from '~/widgets/Tooltip'
-
 import CommunityBrand from '~/widgets/CommunityBrand'
-import MobileMenu from './MobileMenu'
 
 import useSalon, {
-  MoreLink,
+  cn,
   ArrowIcon,
-  RequestDemo,
-  DemoIcon,
   RightSideInfo,
   Divider,
   GithubIcon,
@@ -21,7 +18,6 @@ import useSalon, {
   MenuItem,
   MenuTitle,
   MenuDesc,
-  MobileRightSide,
 } from './styles'
 
 const HomeHeader: FC = () => {
@@ -67,9 +63,9 @@ const HomeHeader: FC = () => {
           delay={200}
           noPadding
         >
-          <MoreLink $active={productActive}>
+          <div className={cn(s.stackLink, productActive && s.linkActive)}>
             产品 <ArrowIcon />
-          </MoreLink>
+          </div>
         </Tooltip>
 
         <Link className={s.linkItem} href={`/${ROUTE.HOME}`}>
@@ -106,26 +102,20 @@ const HomeHeader: FC = () => {
           delay={200}
           noPadding
         >
-          <MoreLink $active={moreActive}>
+          <div className={cn(s.stackLink, moreActive && s.linkActive)}>
             了解更多 <ArrowIcon />
-          </MoreLink>
+          </div>
         </Tooltip>
       </div>
 
       <RightSideInfo>
         <GithubIcon />
         <Divider left={14} right={12} />
-        <RequestDemo href={`/${ROUTE.BOOK_DEMO}`}>
-          <DemoIcon />
+        <Link className={s.requestDemoLink} href={`/${ROUTE.BOOK_DEMO}`}>
+          <DemoSVG className={s.demoIcon} />
           <div>预约演示</div>
-        </RequestDemo>
+        </Link>
       </RightSideInfo>
-
-      <MobileRightSide>
-        <GithubIcon />
-        <Divider left={14} right={12} />
-        <MobileMenu />
-      </MobileRightSide>
     </div>
   )
 }
