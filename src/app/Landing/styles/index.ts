@@ -32,7 +32,7 @@ export default () => {
     betaText: 'clip-text text-base bold mb-3',
     betaGradientStyle: `linear-gradient(to top, ${getPathGradient(wallpaper)})`,
     title: cn('text-4xl bold-sm', fg('text.title')),
-    desc: cn('text-xl mt-4', fg('text.digest')),
+    desc: cn('text-lg mt-4', fg('text.digest')),
     //
     buttonGroup: 'row-center mt-6 gap-x-6 w-auto',
     linkable: linkable(),

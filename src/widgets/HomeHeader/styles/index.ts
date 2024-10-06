@@ -2,15 +2,12 @@ import Link from 'next/link'
 
 import styled, { css, theme } from '~/css'
 
-import { LineDivider } from '~/widgets/Common'
-import GithubSVT from '~/icons/social/Github'
-
 import useTwBelt from '~/hooks/useTwBelt'
 
 export { cn } from '~/css'
 
 export default () => {
-  const { cn, linkable, fg, bg, hoverLink, hoverLinkIcon } = useTwBelt()
+  const { cn, linkable, fg, bg, fill, hoverLink, hoverLinkIcon, VDivider } = useTwBelt()
 
   return {
     wrapper: cn('row-center-between w-full p-0 h-16 mb-12'),
@@ -24,26 +21,12 @@ export default () => {
     requestDemoLink: cn(hoverLink('text-sm')),
     demoIcon: cn(hoverLinkIcon(), 'mt-px'),
     arrowIcon: cn(hoverLinkIcon(), '-rotate-90 mt-px mr-0 ml-1'),
+    //
+    extraInfo: 'row-center w-40 justify-end',
+    githubIcon: cn('size-4', fill('text.digest')),
+    divider: cn(VDivider(), 'ml-3'),
   }
 }
-
-export const RightSideInfo = styled.div`
-  ${css.row('align-center', 'justify-end')};
-  width: 150px;
-
-  ${css.media.mobile`
-    display: none;
-  `};
-`
-export const GithubIcon = styled(GithubSVT)`
-  fill: ${theme('article.digest')};
-  ${css.size(16)};
-`
-export const Divider = styled(LineDivider)`
-  background: ${theme('article.digest')};
-  opacity: 0.8;
-  height: 10px;
-`
 
 export const Panel = styled.div<{ width?: string }>`
   ${css.column()};

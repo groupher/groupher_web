@@ -39,6 +39,7 @@ type TRet = {
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
   divider: () => string
+  VDivider: () => string
   sexyHBorder: (turn: number, classNames?: string) => string
   sexyVBorder: (turn: number, classNames?: string) => string
   avatar: (level?: 'md' | 'sm' | '') => string
@@ -224,6 +225,10 @@ export default (): TRet => {
     return cn('w-full h-px', bg('divider'))
   }
 
+  const VDivider = (): string => {
+    return cn('w-px h-3 ml-1.5 mr-1.5', bg('text.digest'))
+  }
+
   const sexyHBorder = (turn: number, classNames = ''): string => {
     return cn('h-px w-full border-b', global(`sexy-border-${turn}`), classNames)
   }
@@ -325,6 +330,7 @@ export default (): TRet => {
     zise,
     margin,
     divider,
+    VDivider,
     sexyHBorder,
     sexyVBorder,
     avatar,

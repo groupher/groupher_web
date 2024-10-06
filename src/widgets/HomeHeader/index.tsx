@@ -5,21 +5,13 @@ import { ROUTE } from '~/const/route'
 import useSession from '~/hooks/useSession'
 
 import ArrowSVG from '~/icons/ArrowSimple'
+import GithubSVG from '~/icons/social/Github'
 import DemoSVG from '~/icons/DemoTV'
 
 import Tooltip from '~/widgets/Tooltip'
 import CommunityBrand from '~/widgets/CommunityBrand'
 
-import useSalon, {
-  cn,
-  RightSideInfo,
-  Divider,
-  GithubIcon,
-  Panel,
-  MenuItem,
-  MenuTitle,
-  MenuDesc,
-} from './styles'
+import useSalon, { cn, Panel, MenuItem, MenuTitle, MenuDesc } from './styles'
 
 const HomeHeader: FC = () => {
   const s = useSalon()
@@ -109,14 +101,14 @@ const HomeHeader: FC = () => {
         </Tooltip>
       </div>
 
-      <RightSideInfo>
-        <GithubIcon />
-        <Divider left={14} right={12} />
+      <div className={s.extraInfo}>
+        <GithubSVG className={s.githubIcon} />
+        <div className={s.divider} />
         <Link className={s.requestDemoLink} href={`/${ROUTE.BOOK_DEMO}`}>
           <DemoSVG className={s.demoIcon} />
           <div>预约演示</div>
         </Link>
-      </RightSideInfo>
+      </div>
     </div>
   )
 }
