@@ -4,6 +4,11 @@ import Link from 'next/link'
 import { ROUTE } from '~/const/route'
 import useSession from '~/hooks/useSession'
 
+import DiscussSVG from '~/icons/Discuss'
+import ChangelogSVG from '~/icons/TadaRaw'
+import KanbanSVG from '~/icons/Kanban'
+import BookSVG from '~/icons/Book'
+
 import ArrowSVG from '~/icons/ArrowSimple'
 import GithubSVG from '~/icons/social/Github'
 import DemoSVG from '~/icons/DemoTV'
@@ -11,7 +16,7 @@ import DemoSVG from '~/icons/DemoTV'
 import Tooltip from '~/widgets/Tooltip'
 import CommunityBrand from '~/widgets/CommunityBrand'
 
-import useSalon, { cn, Panel, MenuItem, MenuTitle, MenuDesc } from './styles'
+import useSalon, { cn } from './salon'
 
 const HomeHeader: FC = () => {
   const s = useSalon()
@@ -29,27 +34,52 @@ const HomeHeader: FC = () => {
       <div className={s.links}>
         <Tooltip
           content={
-            <Panel width="220px">
-              <MenuItem href={`/${ROUTE.HOME}`}>
-                <MenuTitle>讨论区</MenuTitle>
-                <MenuDesc>讨论，投票功能需求，问题等</MenuDesc>
-              </MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.KANBAN}`}>
-                <MenuTitle>看板</MenuTitle>
-                <MenuDesc>公开的开发计划，产品路线图</MenuDesc>
-              </MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.CHANGELOG}`}>
-                <MenuTitle>更新日志</MenuTitle>
-                <MenuDesc>产品更新详情，版本说明等</MenuDesc>
-              </MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.HELP}`}>
-                <MenuTitle>帮助文档</MenuTitle>
-                <MenuDesc>常见问题，使用引导，开发指南等</MenuDesc>
-              </MenuItem>
-            </Panel>
+            <div className={cn(s.panel, 'w-52 mt-1 mb-1.5')}>
+              <Link className={cn(s.menuBar, '!items-start')} href={`/${ROUTE.HOME}`}>
+                <div className={cn(s.menuIconBox, s.purpleBg)}>
+                  <DiscussSVG className={cn(s.menuIcon, 'size-4', s.purpleIcon)} />
+                </div>
+                <div>
+                  <div className={cn(s.menuTitle, 'bold-sm')}>讨论区</div>
+                  <div className={s.menuDesc}>功能需求，问题上报，常规讨论等</div>
+                </div>
+              </Link>
+              <Link
+                className={cn(s.menuBar, '!items-start')}
+                href={`/${ROUTE.HOME}/${ROUTE.KANBAN}`}
+              >
+                <div className={cn(s.menuIconBox, s.blueBg)}>
+                  <KanbanSVG className={cn(s.menuIcon, 'rotate-180', s.blueIcon)} />
+                </div>
+                <div>
+                  <div className={cn(s.menuTitle, 'bold-sm')}>看板</div>
+                  <div className={s.menuDesc}>开发计划，产品路线图</div>
+                </div>
+              </Link>
+              <Link
+                className={cn(s.menuBar, '!items-start')}
+                href={`/${ROUTE.HOME}/${ROUTE.CHANGELOG}`}
+              >
+                <div className={cn(s.menuIconBox, s.redBg)}>
+                  <ChangelogSVG className={cn(s.menuIcon, 'size-4', s.redIcon)} />
+                </div>
+                <div>
+                  <div className={cn(s.menuTitle, 'bold-sm')}>更新日志</div>
+                  <div className={s.menuDesc}>产品更新详情，历史版本发布记录。</div>
+                </div>
+              </Link>
+              <Link className={cn(s.menuBar, '!items-start')} href={`/${ROUTE.HOME}/${ROUTE.HELP}`}>
+                <div className={cn(s.menuIconBox, s.cyanBg)}>
+                  <BookSVG className={cn(s.menuIcon, 'size-5', s.cyanIcon)} />
+                </div>
+                <div>
+                  <div className={cn(s.menuTitle, 'bold-sm')}>帮助文档</div>
+                  <div className={s.menuDesc}>常见问题，使用引导，开发指南等</div>
+                </div>
+              </Link>
+            </div>
           }
           placement="bottom"
-          trigger="mouseenter focus"
           offset={[-5, 5]}
           onShow={() => setProductActive(true)}
           onHide={() => setProductActive(false)}
@@ -72,20 +102,20 @@ const HomeHeader: FC = () => {
         </Link>
         <Tooltip
           content={
-            <Panel width="120px">
-              <MenuItem href={`/${ROUTE.HOME}`} noDesc>
-                <MenuTitle>团队博客</MenuTitle>
-              </MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`} noDesc>
-                <MenuTitle>帮助文档</MenuTitle>
-              </MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`} noDesc>
-                <MenuTitle>更新日志</MenuTitle>
-              </MenuItem>
-              <MenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`} noDesc>
-                <MenuTitle>自定义</MenuTitle>
-              </MenuItem>
-            </Panel>
+            <div className={s.panel}>
+              <Link className={s.menuBar} href={`/${ROUTE.HOME}`}>
+                <div className={s.menuTitle}>团队博客</div>
+              </Link>
+              <Link className={s.menuBar} href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`}>
+                <div className={s.menuTitle}>帮助文档</div>
+              </Link>
+              <Link className={s.menuBar} href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`}>
+                <div className={s.menuTitle}>更新日志</div>
+              </Link>
+              <Link className={s.menuBar} href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`}>
+                <div className={s.menuTitle}>自定义</div>
+              </Link>
+            </div>
           }
           placement="bottom"
           trigger="mouseenter focus"
