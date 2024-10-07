@@ -18,8 +18,9 @@ export const Digest = styled.div`
   width: 320px;
   margin-top: -32px;
   margin-bottom: 30px;
-  font-size: 19px;
+  font-size: 18px;
 `
 export const Highlight = styled(HighlightWord)`
   color: ${theme('rainbow.purple')};
+  background: ${theme('rainbow.purpleSoft')};
 `

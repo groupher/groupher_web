@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { ROUTE } from '~/const/route'
 import useSession from '~/hooks/useSession'
 
-import DiscussSVG from '~/icons/Discuss'
+import DiscussSVG from '~/icons/DiscussSolid'
 import ChangelogSVG from '~/icons/TadaRaw'
 import KanbanSVG from '~/icons/Kanban'
 import BookSVG from '~/icons/Book'
@@ -37,7 +37,7 @@ const HomeHeader: FC = () => {
             <div className={cn(s.panel, 'w-52 mt-1 mb-1.5')}>
               <Link className={cn(s.menuBar, '!items-start')} href={`/${ROUTE.HOME}`}>
                 <div className={cn(s.menuIconBox, s.purpleBg)}>
-                  <DiscussSVG className={cn(s.menuIcon, 'size-4', s.purpleIcon)} />
+                  <DiscussSVG className={cn(s.menuIcon, s.purpleIcon)} />
                 </div>
                 <div>
                   <div className={cn(s.menuTitle, 'bold-sm')}>讨论区</div>
@@ -83,7 +83,7 @@ const HomeHeader: FC = () => {
           offset={[-5, 5]}
           onShow={() => setProductActive(true)}
           onHide={() => setProductActive(false)}
-          delay={200}
+          delay={100}
           noPadding
         >
           <div className={cn(s.stackLink, productActive && s.linkActive)}>
@@ -122,7 +122,7 @@ const HomeHeader: FC = () => {
           offset={[-5, 5]}
           onShow={() => setMoreActive(true)}
           onHide={() => setMoreActive(false)}
-          delay={200}
+          delay={100}
           noPadding
         >
           <div className={cn(s.stackLink, moreActive && s.linkActive)}>

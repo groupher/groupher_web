@@ -14,7 +14,7 @@ export default () => {
     links: cn('row-center gap-x-6 ml-12 mt-px'),
     linkItem: hoverLink(),
     linkItemActive: fg('text.title'),
-    stackLink: cn(hoverLink(), 'hover:no-underline'),
+    stackLink: cn(hoverLink(), 'pl-3 hover:no-underline'),
     linkActive: cn(fg('text.title'), bg('hoverBg')),
     //
     requestDemoLink: cn(hoverLink('text-sm')),

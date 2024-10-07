@@ -7,8 +7,8 @@ export const Wrapper = styled(MainContent)`
 
 
   *::selection {
-    background-color: ${theme('rainbow.purple')} !important;
-    color: white;
+    background-color: ${theme('rainbow.purpleSoft')} !important;
+    color: ${theme('rainbow.purple')} !important;
   }
 `
 export const Slogan = styled.div`

@@ -1,6 +1,16 @@
 import styled, { css } from '~/css'
 import type { TActive } from '~/spec'
 
+import useTwBelt from '~/hooks/useTwBelt'
+
+export default () => {
+  const { cn } = useTwBelt()
+
+  return {
+    wrapper: cn('column-align-both w-full mt-32'),
+  }
+}
+
 export const Wrapper = styled.div`
   ${css.column('align-both')};
   width: 100%;

@@ -17,9 +17,9 @@ const Contents = () => {
       <FeatItem text="标签，状态分类" color={color} />
       <FeatItem text="富文本内容" color={color} />
       <FeatItem text="移动端友好" color={color} />
-      <FeatItem text="强大的后台管理" color={color} />
+      {/* <FeatItem text="强大的后台管理" color={color} />
       <FeatItem text="内置搜索，SEO 优化" color={color} />
-      <FeatItem text="高度自定义" color={color} />
+      <FeatItem text="高度自定义" color={color} /> */}
     </>
   )
 }

@@ -12,7 +12,7 @@ const FeatItem: FC<TProps> = ({ text = '--', color }) => {
   return (
     <Wrapper>
       <CheckIcon $color={color} />
-      <Text>{text}</Text>
+      <Text $color={color}>{text}</Text>
     </Wrapper>
   )
 }
