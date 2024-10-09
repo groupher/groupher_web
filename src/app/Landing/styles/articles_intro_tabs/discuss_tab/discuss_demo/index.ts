@@ -41,7 +41,7 @@ export default () => {
 
     //
     commentsHeader: cn('row-center text-xs mt-6 mb-4', fg('text.digest')),
-    content: 'relative h-20',
+    content: 'relative h-16',
     bar: cn('absolute h-1.5 w-20 rounded-md opacity-30', bg('text.digest')),
   }
 }
