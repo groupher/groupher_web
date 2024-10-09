@@ -93,10 +93,11 @@ const DiscussDemo: FC = () => {
           <div className="grow" />
           <div className={cn(s.bar, 'w-8 mt-1 right-6 opacity-15')} />
         </div>
-        <CommentItem index={0} user={users[0]} opacity={0.9} />
-        <CommentItem index={1} user={users[1]} opacity={0.68} />
-        <CommentItem index={2} user={users[2]} opacity={0.42} />
-        <CommentItem index={3} user={users[4]} opacity={0.25} />
+
+        <CommentItem user={users[0]} className="opacity-90" />
+        <CommentItem user={users[1]} className="opacity-65" />
+        <CommentItem user={users[2]} className="opacity-40" />
+        <CommentItem user={users[4]} className="opacity-25" />
       </div>
     </div>
   )
