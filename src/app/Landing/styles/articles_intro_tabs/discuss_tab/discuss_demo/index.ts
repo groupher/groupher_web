@@ -31,8 +31,8 @@ export default () => {
     upvote: cn(
       'row-center px-1.5 py-px mt-0.5 rounded-md border',
       fg('text.title'),
-      br('divider'),
       rainbow(COLOR_NAME.PURPLE, 'bgSoft'),
+      rainbow(COLOR_NAME.PURPLE, 'borderSoft'),
     ),
     icon: cn('size-3', rainbow(COLOR_NAME.PURPLE, 'fill')),
     count: cn('text-sm bold-sm ml-1', rainbow(COLOR_NAME.PURPLE, 'fg')),

@@ -14,9 +14,11 @@ export default ({ active }: TProps) => {
     wrapper: cn('row h-12 px-1.5 py-1 mb-2.5', bg('htmlBg')),
     upvote: cn(
       'column-align-both size-10 rounded-md border',
-      br('divider'),
+      br('text.digest'),
       shadow('sm'),
+      !active && 'border-dotted',
       active && rainbow(COLOR_NAME.PURPLE, 'bgSoft'),
+      active && rainbow(COLOR_NAME.PURPLE, 'borderSoft'),
     ),
     upvoteIcon: cn('size-3', fill('text.digest'), active && rainbow(COLOR_NAME.PURPLE, 'fill')),
     count: cn('text-xs bold mt-0.5', fg('text.digest'), active && rainbow(COLOR_NAME.PURPLE, 'fg')),
