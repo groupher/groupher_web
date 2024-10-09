@@ -32,7 +32,7 @@ const PreviewBars: FC<TProps> = ({ tab, color }) => {
       return (
         <>
           <div className={cn(s.bar, s[`${color}Bg`], 'top-1 opacity-20')} />
-          <div className={cn(s.bar, s[`${color}Bg`], 'top-3 w-8 h-4 rounded')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-3 w-7 h-4 rounded')} />
           <div className={cn(s.bar, s[`${color}Bg`], 'bottom-0.5 mb-0.5 h-0.5')} />
         </>
       )
@@ -41,9 +41,19 @@ const PreviewBars: FC<TProps> = ({ tab, color }) => {
     case THREAD.DOC: {
       return (
         <>
-          <div className={cn(s.bar, s[`${color}Bg`], 'top-1.5 h-7 w-3 rounded opacity-10')} />
-          <div className={cn(s.bar, s[`${color}Bg`], 'top-1.5 left-5 opacity-20 w-3.5')} />
-          <div className={cn(s.bar, s[`${color}Bg`], 'top-3.5 left-5 opacity-20 w-3.5')} />
+          <div
+            className={cn(
+              s.bar,
+              s[`${color}Bg`],
+              'top-1.5 left-3.5 ml-0.5 h-7 w-4 rounded-sm opacity-20',
+            )}
+          />
+
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-2 left-1 h-0.5 opacity-20 w-2')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-3.5 left-1 h-0.5 opacity-30 w-2')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-5 left-1 h-0.5 opacity-15 w-2')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-6 left-1 mt-px h-0.5 opacity-30 w-2')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-7 left-1 mt-0.5 h-0.5 opacity-15 w-2')} />
         </>
       )
     }

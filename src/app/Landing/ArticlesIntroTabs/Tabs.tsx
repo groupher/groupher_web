@@ -55,13 +55,22 @@ const Tabs: FC<TProps> = ({ tab, onChange }) => {
             className={cn(s.tabItem, active && s.tabActive, active && s[`${color}Border`])}
             onClick={() => onChange(item.key as TThread)}
           >
-            <div className={cn(s.iconBox, s[`${color}Border`], active && s[`${color}Bg`])}>
+            <div
+              className={cn(
+                s.iconBox,
+                s[`${color}Border`],
+                active && '-rotate-3',
+                active && s[`${color}Bg`],
+              )}
+            >
               <PreviewBars color={color} tab={item.key} />
               <CurIcon
                 className={cn(
                   s.icon,
                   s[`${color}Fill`],
                   item.key === THREAD.KANBAN && 'rotate-180 -bottom-2.5',
+                  active ? '-bottom-2 -right-2 opacity-100' : '-bottom-4 -right-3 opacity-0',
+                  'trans-all-200',
                 )}
               />
             </div>
