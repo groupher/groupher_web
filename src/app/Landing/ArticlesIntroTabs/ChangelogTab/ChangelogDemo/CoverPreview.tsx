@@ -1,29 +1,23 @@
-import type { FC } from 'react'
+import CardsSVG from '~/icons/Cards'
+import Cards2SVG from '~/icons/Cards2'
 
-import {
-  Wrapper,
-  Header,
-  Dot,
-  BlocksWrapper,
-  BlocksSolidIcon,
+import useSalon, {
+  cn,
 } from '../../../styles/articles_intro_tabs/changelog_tab/changelog_demo/cover_preview'
 
-const CoverPreview: FC = () => {
+export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <Header>
-        <Dot />
-        <Dot />
-        <Dot />
-      </Header>
-      <BlocksWrapper>
-        <BlocksSolidIcon />
-        <BlocksSolidIcon />
-        <BlocksSolidIcon />
-        <BlocksSolidIcon />
-      </BlocksWrapper>
-    </Wrapper>
+    <div className={s.wrapper}>
+      <div className={cn(s.dot, ' left-2')} />
+      <div className={cn(s.dot, ' left-5')} />
+      <div className={cn(s.dot, ' left-8')} />
+
+      <div className={s.cardsWrapper}>
+        <CardsSVG className={s.cardsIcon} />
+        <Cards2SVG className={s.cardsIcon} />
+      </div>
+    </div>
   )
 }
-
-export default CoverPreview

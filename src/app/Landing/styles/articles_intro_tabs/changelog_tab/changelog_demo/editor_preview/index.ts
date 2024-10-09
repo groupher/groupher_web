@@ -21,7 +21,7 @@ export default () => {
     tagItem: 'row-center text-xs',
     //
     cover: cn(
-      'relative w-48 h-24 overflow-hidden rounded mb-1.5',
+      'relative w-44 h-24 overflow-hidden rounded mb-1.5',
       rainbow(COLOR_NAME.RED, 'bgSoft'),
     ),
     content: 'column mt-12 w-48 gap-2.5',

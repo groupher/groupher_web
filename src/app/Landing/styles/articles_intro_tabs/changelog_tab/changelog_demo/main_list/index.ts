@@ -16,7 +16,7 @@ export default () => {
       shadow('sm'),
     ),
     header: 'column w-48 mt-6 mb-2.5',
-    title: cn('row-center text-base bold-sm', fg('text.digest')),
+    title: cn('row-center text-base', fg('text.title')),
     version: cn('opacity-80 text-sm ml-2 mt-0.5 italic', fg('text.digest')),
 
     tags: cn('row-center mt-0.5 gap-x-2', fg('text.digest')),
@@ -25,7 +25,7 @@ export default () => {
     //
     divider: cn('mt-8 -ml-4', sexyHBorder(35)),
     cover: cn(
-      'relative w-52 h-24 overflow-hidden rounded mb-1 border border-dashed',
+      'relative w-44 h-24 overflow-hidden rounded mb-1 border border-dashed',
       bg('hoverBg'),
       br('divider'),
     ),
