@@ -11,5 +11,6 @@ export default () => {
   return {
     wrapper: cn(base.main, 'align-both purple-selection'),
     active: base.mainActive,
+    divider: 'ml-5 mr-8',
   }
 }

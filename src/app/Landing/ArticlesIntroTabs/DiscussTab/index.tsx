@@ -13,6 +13,7 @@ const DiscussFeat: FC<TActive> = ({ active }) => {
   return (
     <div className={cn(s.wrapper, active && s.active)}>
       <IntroDigest />
+      <div className={s.divider} />
       <DiscussDemo />
     </div>
   )

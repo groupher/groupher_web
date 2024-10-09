@@ -6,7 +6,7 @@ export default () => {
   const { cn, fg, rainbow } = useTwBelt()
 
   return {
-    wrapper: cn('column mr-3'),
+    wrapper: cn('column'),
     title: cn('text-xl bold-sm mt-1', rainbow(COLOR_NAME.PURPLE, 'fg')),
     digest: cn('w-80 text-base mt-4 leading-relaxed opacity-80', fg('text.digest')),
     highlight: cn(

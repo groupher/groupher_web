@@ -4,35 +4,25 @@ import { mockUsers } from '~/mock'
 import { ARTICLE_CAT } from '~/const/gtd'
 import { COLOR_NAME } from '~/const/colors'
 
+import UpvoteSVG from '~/icons/Upvote'
+import CommentSVG from '~/icons/Comment'
+
 import ArticleCatState from '~/widgets/ArticleCatState'
 import TagNode from '~/widgets/TagNode'
 
 import PostItem from './PostItem'
 import CommentItem from './CommentItem'
 
-import {
-  Wrapper,
-  Title,
-  ListsWrapper,
-  DetailWrapper,
-  Status,
-  UpvoteWrapper,
-  UpvoteIcon,
-  CommentIcon,
-  UpvoteCount,
-  Tag,
-  Header,
-  Count,
-  Bar,
-  CommentsHeader,
-} from '../../../styles/articles_intro_tabs/discuss_tab/discuss_demo'
+import useSalon, { cn } from '../../../styles/articles_intro_tabs/discuss_tab/discuss_demo'
 
 const DiscussDemo: FC = () => {
+  const s = useSalon()
+
   const users = mockUsers(5)
 
   return (
-    <Wrapper>
-      <ListsWrapper>
+    <div className={s.wrapper}>
+      <div className={s.listCard}>
         <PostItem
           count={101}
           opacity={0.85}
@@ -69,41 +59,47 @@ const DiscussDemo: FC = () => {
           title="安卓版本在哪里下载"
           cat={ARTICLE_CAT.QUESTION}
         />
-      </ListsWrapper>
+      </div>
 
-      <DetailWrapper>
-        <Header>
-          <ArticleCatState cat={ARTICLE_CAT.FEATURE} right={10} top={-1} left={-1} />
-          <TagNode color={COLOR_NAME.PURPLE} boldHash />
-          <Tag>UI / UX</Tag>
-        </Header>
-        <Title>蹲一个暗黑模式</Title>
-        <Status>
-          <UpvoteWrapper>
-            <UpvoteIcon />
-            <UpvoteCount>101</UpvoteCount>
-          </UpvoteWrapper>
+      <div className={s.detailCard}>
+        <div className={s.header}>
+          <ArticleCatState cat={ARTICLE_CAT.FEATURE} right={3} />
+          <div className={s.tagBox}>
+            <TagNode color={COLOR_NAME.PURPLE} boldHash />
+            <div className={s.tag}>UI / UX</div>
+          </div>
+        </div>
+
+        <div className={s.title}>蹲一个暗黑模式</div>
+        <div className={s.status}>
+          <div className={s.upvote}>
+            <UpvoteSVG className={s.icon} />
+            <div className={s.count}>101</div>
+          </div>
 
           <div className="grow" />
-          <CommentIcon />
-          <Count>18</Count>
-        </Status>
-        <Bar top={5} height={6} width={238} bottom={12} opacity={0.2} />
-        <Bar top={5} height={6} width={160} bottom={26} opacity={0.2} />
-        <Bar top={5} height={6} width={180} bottom={12} opacity={0.2} />
-        <Bar top={5} height={6} width={80} bottom={12} opacity={0.2} />
+          <CommentSVG className={s.commentIcon} />
+          <div className={s.commentCount}>18</div>
+        </div>
 
-        <CommentsHeader>
-          评论 <Count>18</Count>
+        <div className={s.content}>
+          <div className={cn(s.bar, 'w-8/12')} />
+          <div className={cn(s.bar, 'w-10/12 top-5 opacity-25')} />
+          <div className={cn(s.bar, 'w-6/12 top-10 opacity-25')} />
+          <div className={cn(s.bar, 'w-4/12 top-14 mt-1 opacity-20')} />
+        </div>
+
+        <div className={s.commentsHeader}>
+          评论 <div className={s.commentCount}>18</div>
           <div className="grow" />
-          <Bar top={5} height={3} width={26} opacity={0.2} right={-3} />
-        </CommentsHeader>
+          <div className={cn(s.bar, 'w-8 mt-1 right-6 opacity-15')} />
+        </div>
         <CommentItem index={0} user={users[0]} opacity={0.9} />
         <CommentItem index={1} user={users[1]} opacity={0.68} />
         <CommentItem index={2} user={users[2]} opacity={0.42} />
         <CommentItem index={3} user={users[4]} opacity={0.25} />
-      </DetailWrapper>
-    </Wrapper>
+      </div>
+    </div>
   )
 }
 

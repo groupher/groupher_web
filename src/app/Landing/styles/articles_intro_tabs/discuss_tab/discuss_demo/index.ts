@@ -1,104 +1,47 @@
-import { Bar as BarBase } from '~/widgets/Common'
+import { COLOR_NAME } from '~/const/colors'
 
-import UpvoteSVG from '~/icons/Upvote'
-import CommentSVG from '~/icons/Comment'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import styled, { css, theme } from '~/css'
+export { cn } from '~/css'
 
-export const Wrapper = styled.div`
-  ${css.row('align-end')};
-  position: relative;
-  margin-left: 36px;
-`
-export const ListsWrapper = styled.div`
-  background: ${theme('htmlBg')};
-  height: 380px;
-  padding: 25px;
-  z-index: 2;
-  box-shadow: rgba(100, 100, 111, 0.1) 1px 2px 29px 0px;
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  border-radius: 5px;
-  margin-bottom: 20px;
-`
-export const DetailWrapper = styled.div`
-  background: ${theme('htmlBg')};
-  flex-grow: 1;
-  height: 100%;
-  padding: 30px;
-  padding-top: 18px;
-  z-index: 2;
+export default () => {
+  const { cn, shadow, fg, bg, br, fill, rainbow } = useTwBelt()
 
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  border-radius: 10px;
+  return {
+    wrapper: cn('row items-end relative'),
+    listCard: cn(
+      'relative h-96 p-6 rounded-md mb-5 border',
+      shadow('sm'),
+      br('divider'),
+      bg('htmlBg'),
+    ),
 
-  width: 340px;
-  height: 450px;
-  margin-left: -20px;
-  box-shadow: rgba(100, 100, 111, 0.1) 0px 3px 29px 0px;
-`
-export const Header = styled.div`
-  ${css.row('align-center')};
-  margin-bottom: 10px;
-  transform: scale(0.8);
-  margin-left: -30px;
-`
-export const Tag = styled.div`
-  font-size: 13px;
-  color: ${theme('article.digest')};
-`
+    // detail card
+    detailCard: cn(
+      'relative grow w-80 -ml-5 mt-4 p-8 pt-5 z-20 rounded-md border',
+      bg('htmlBg'),
+      br('divider'),
+      shadow('sm'),
+    ),
+    header: 'row-center mb-2.5 scale-90 -ml-5',
+    tagBox: cn('row-center border rounded-md px-1.5 py-0.5', br('divider')),
+    tag: cn('text-xs', fg('text.title')),
+    title: cn('text-base', fg('text.title')),
+    status: 'row-center mt-2.5 mb-6',
+    upvote: cn(
+      'row-center px-1.5 py-px mt-0.5 rounded-md border',
+      fg('text.title'),
+      br('divider'),
+      rainbow(COLOR_NAME.PURPLE, 'bgSoft'),
+    ),
+    icon: cn('size-3', rainbow(COLOR_NAME.PURPLE, 'fill')),
+    count: cn('text-sm bold-sm ml-1', rainbow(COLOR_NAME.PURPLE, 'fg')),
+    commentIcon: cn('size-2.5 opacity-80', fill('text.digest')),
+    commentCount: cn('text-sm ml-1', fg('text.digest')),
 
-export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-weight: 500;
-  font-size: 16px;
-`
-export const Status = styled.div`
-  ${css.row('align-center')};
-  margin-top: 10px;
-  margin-bottom: 22px;
-`
-export const UpvoteWrapper = styled.div`
-  ${css.row('align-center')};
-  border: 1px solid;
-  color: ${theme('article.title')};
-  border-color: ${theme('button.upvoteBorder')};
-  padding: 2px 6px;
-  border-radius: 5px;
-  margin-top: 2px;
-`
-export const UpvoteIcon = styled(UpvoteSVG)`
-  ${css.size(12)};
-  fill: ${theme('article.digest')};
-`
-export const UpvoteCount = styled.div`
-  color: ${theme('article.title')};
-  font-size: 13px;
-  font-weight: 500;
-  margin-left: 3px;
-`
-export const CommentIcon = styled(CommentSVG)`
-  ${css.size(10)};
-  fill: ${theme('hint')};
-  opacity: 0.6;
-`
-export const Count = styled.div`
-  color: ${theme('hint')};
-  font-size: 12px;
-  font-weight: 400;
-  margin-left: 3px;
-  opacity: 0.8;
-`
-export const Bar = styled(BarBase)`
-  background: ${theme('article.title')};
-`
-export const CommentsHeader = styled.div`
-  ${css.row('align-center')};
-  color: ${theme('article.title')};
-  font-weight: 500;
-  font-size: 12px;
-  margin-top: 24px;
-  margin-bottom: 15px;
-  opacity: 0.8;
-`
+    //
+    commentsHeader: cn('row-center text-xs mt-6 mb-4', fg('text.digest')),
+    content: 'relative h-20',
+    bar: cn('absolute h-1.5 w-20 rounded-md opacity-30', bg('text.digest')),
+  }
+}
