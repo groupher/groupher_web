@@ -4,6 +4,8 @@ import useTwBelt from '~/hooks/useTwBelt'
 
 type TProps = TSpace
 
+export { cn } from '~/css'
+
 export default ({ ...spacing }: TProps) => {
   const { cn, br, margin } = useTwBelt()
 

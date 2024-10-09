@@ -9,6 +9,7 @@ import CommentSVG from '~/icons/Comment'
 
 import ArticleCatState from '~/widgets/ArticleCatState'
 import TagNode from '~/widgets/TagNode'
+import Facepile from '~/widgets/Facepile/LandingPage'
 
 import PostItem from './PostItem'
 import CommentItem from './CommentItem'
@@ -18,44 +19,40 @@ import useSalon, { cn } from '../../../styles/articles_intro_tabs/discuss_tab/di
 const DiscussDemo: FC = () => {
   const s = useSalon()
 
-  const users = mockUsers(5)
+  const users = mockUsers(10)
 
   return (
     <div className={s.wrapper}>
       <div className={s.listCard}>
         <PostItem
           count={101}
-          opacity={0.85}
-          width={80}
+          className="opacity-85"
           title="蹲一个暗黑模式"
           cat={ARTICLE_CAT.FEATURE}
+          active
         />
         <PostItem
-          opacity={0.75}
+          className="opacity-75"
           count={65}
-          width={90}
           title="手机上点击标题没反应"
           cat={ARTICLE_CAT.BUG}
         />
-        <PostItem opacity={0.65} count={44} width={60} title="希望更新日志支持视频内容" />
+        <PostItem className="opacity-65" count={44} title="希望更新日志支持视频内容" />
         <PostItem
-          opacity={0.5}
+          className="opacity-50"
           count={86}
-          width={110}
           title="管理员可以删除评论吗"
           cat={ARTICLE_CAT.QUESTION}
         />
         <PostItem
-          opacity={0.38}
+          className="opacity-30"
           count={74}
-          width={70}
           title="是否支持私有部署"
           cat={ARTICLE_CAT.QUESTION}
         />
         <PostItem
-          opacity={0.25}
+          className="opacity-25"
           count={13}
-          width={88}
           title="安卓版本在哪里下载"
           cat={ARTICLE_CAT.QUESTION}
         />
@@ -76,6 +73,8 @@ const DiscussDemo: FC = () => {
             <UpvoteSVG className={s.icon} />
             <div className={s.count}>101</div>
           </div>
+
+          <Facepile users={users.slice(3, 6)} className="mt-0.5 scale-75 opacity-65 gap-x-1.5" />
 
           <div className="grow" />
           <CommentSVG className={s.commentIcon} />

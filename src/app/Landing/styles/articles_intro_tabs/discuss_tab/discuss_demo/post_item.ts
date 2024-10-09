@@ -1,50 +1,28 @@
-import UpvoteSVG from '~/icons/Upvote'
+import type { TActive } from '~/spec'
 
-import styled, { css, theme } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
-export const Wrapper = styled.div<{ opacity: number }>`
-  ${css.row()};
-  background: ${theme('htmlBg')};
-  border-radius: 6px;
-  height: 50px;
-  padding: 3px 6px;
-  opacity: ${({ opacity }) => opacity};
-  margin-bottom: 6px;
-`
-export const UpvotesWrapper = styled.div`
-  ${css.size(40)};
-  ${css.column('align-both')};
+import useTwBelt from '~/hooks/useTwBelt'
 
-  border: 1px solid;
-  border-color: ${theme('button.upvoteBorder')};
-  border-radius: 8px;
+export { cn } from '~/css'
+type TProps = TActive
 
-  box-shadow: rgb(151 149 165 / 15%) 0px 8px 24px;
-`
-export const RightPart = styled.div`
-  ${css.column()};
-  margin-left: 14px;
-`
-export const Title = styled.div`
-  font-size: 13px;
-  font-weight: 500;
-  color: ${theme('article.title')};
-`
-export const Footer = styled.div`
-  transform: scale(0.8);
-  width: 120px;
-  margin-top: 4px;
-  margin-left: -18px;
-`
-export const UpvoteIcon = styled(UpvoteSVG)`
-  ${css.size(12)};
-  transform: scaleY(0.8);
-  fill: ${theme('article.digest')};
-  opacity: 0.8;
-  margin-top: 2px;
-`
+export default ({ active }: TProps) => {
+  const { cn, fg, bg, br, fill, shadow, rainbow } = useTwBelt()
 
-export const Count = styled.div`
-  font-size: 13px;
-  color: ${theme('article.title')};
-`
+  return {
+    wrapper: cn('row h-12 px-1.5 py-1 mb-2.5', bg('htmlBg')),
+    upvote: cn(
+      'column-align-both size-10 rounded-md border',
+      br('divider'),
+      shadow('sm'),
+      active && rainbow(COLOR_NAME.PURPLE, 'bgSoft'),
+    ),
+    upvoteIcon: cn('size-3', fill('text.digest'), active && rainbow(COLOR_NAME.PURPLE, 'fill')),
+    count: cn('text-xs bold mt-0.5', fg('text.digest'), active && rainbow(COLOR_NAME.PURPLE, 'fg')),
+    //
+    rightPart: 'column ml-3.5',
+    title: cn('text-sm bold-sm', fg('text.title')),
+    footer: 'scale-90 w-32 mt-1 -ml-3.5',
+  }
+}
