@@ -8,9 +8,8 @@ import FeatItem from '../FeatItem'
 
 import { FeatList } from '../../styles/articles_intro_tabs/intro_items'
 
+const color = COLOR_NAME.CYAN
 const Contents = () => {
-  const color = COLOR_NAME.CYAN
-
   return (
     <>
       <FeatItem text="保存即发布，No bullshit" color={color} />
@@ -33,8 +32,10 @@ const IntroItems: FC = () => {
 
       <div className="grow" />
       <div className="w-32 mt-14 row gap-x-2">
-        <Button>体验 Demo</Button>
-        <Button ghost>了解更多</Button>
+        <Button color={color}>体验 Demo</Button>
+        <Button color={color} ghost>
+          了解更多
+        </Button>
       </div>
     </>
   )

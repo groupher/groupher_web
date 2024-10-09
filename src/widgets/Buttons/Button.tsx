@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from 'react'
 
-import type { TSizeTSM, TSpace } from '~/spec'
+import type { TColorName, TSizeTSM, TSpace } from '~/spec'
 import SIZE from '~/const/size'
 
 import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
@@ -19,6 +19,7 @@ type TProps = {
   noBorder?: boolean
   disabled?: boolean
   noLeftRouned?: boolean
+  color?: TColorName | null
 } & TSpace
 
 const Button: FC<TProps> = ({
@@ -34,6 +35,7 @@ const Button: FC<TProps> = ({
   noBorder = false,
   disabled = false,
   noLeftRouned = false,
+  color = null,
   ...spacing
 }) => {
   const s = useSalon({
@@ -46,6 +48,7 @@ const Button: FC<TProps> = ({
     disabled,
     loading,
     noLeftRouned,
+    color,
     ...spacing,
   })
 

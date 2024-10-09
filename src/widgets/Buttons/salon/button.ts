@@ -1,4 +1,4 @@
-import type { TSpace, TSizeTSM } from '~/spec'
+import type { TSpace, TSizeTSM, TColorName } from '~/spec'
 
 import { getHeight, getPadding, getRouned, getFontSize } from './metircs/button'
 
@@ -17,6 +17,7 @@ type TProps = {
   loading: boolean
   disabled?: boolean
   noLeftRouned: boolean
+  color?: TColorName | null
 } & TSpace
 
 export default ({
@@ -29,6 +30,7 @@ export default ({
   disabled,
   loading,
   noLeftRouned,
+  color,
   ...spacing
 }: TProps) => {
   const { cn, margin, primary, br, fg, bg, rainbow, isDarkBlack } = useTwBelt()
@@ -70,6 +72,9 @@ export default ({
       isRed && 'border-transparent',
       isRed && ghost && rainbow(COLOR_NAME.RED, 'borderSoft'),
       loading && bg('transparent'),
+      color && !ghost && rainbow(color, 'bg'),
+      color && ghost && rainbow(color, 'borderSoft'),
+      color && ghost && rainbow(color, 'fg'),
     ),
     innerRed: cn(
       'hover:brightness-105 active:brightness-95 trans-all-200',

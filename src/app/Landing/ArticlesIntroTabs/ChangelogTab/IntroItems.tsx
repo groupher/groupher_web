@@ -7,9 +7,9 @@ import FeatItem from '../FeatItem'
 
 import { FeatList } from '../../styles/articles_intro_tabs/intro_items'
 
-const Contents = () => {
-  const color = COLOR_NAME.RED
+const color = COLOR_NAME.RED
 
+const Contents = () => {
   return (
     <>
       <FeatItem text="封面图片编辑" color={color} />
@@ -31,8 +31,10 @@ const IntroItems: FC = () => {
 
       <div className="grow" />
       <div className="w-32 mt-14 row gap-x-2">
-        <Button>体验 Demo</Button>
-        <Button ghost>了解更多</Button>
+        <Button color={color}>体验 Demo</Button>
+        <Button color={color} ghost>
+          了解更多
+        </Button>
       </div>
     </>
   )
