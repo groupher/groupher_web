@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
-import { css, theme, rainbow, rainbowSoft } from '~/css'
+import { css, theme } from '~/css'
 import type { TColor } from '~/spec'
 
 import normalize from './normalize'
@@ -19,15 +19,6 @@ const GlobalStyle = createGlobalStyle<TColor>`
     overflow-x: hidden;
   }
 
-  *::-moz-selection {
-    background-color: ${({ $color }) => rainbowSoft($color)} !important;
-    color: ${({ $color }) => rainbow($color)} !important;
-  }
-
-  *::selection {
-    background-color: ${({ $color }) => rainbow($color)} !important;
-    color: ${theme('button.fg')} !important;
-  }
 
 // mentions
   .markdown-editor-mention {

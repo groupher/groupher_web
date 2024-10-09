@@ -9,7 +9,7 @@ export default () => {
     useTwBelt()
 
   return {
-    wrapper: cn('row-center-between w-full p-0 h-16 mb-12'),
+    wrapper: cn('row-center-between w-full px-28 h-16 mb-12'),
     brand: cn(linkable()),
     links: cn('row-center gap-x-6 ml-12 mt-px'),
     linkItem: hoverLink(),

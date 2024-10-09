@@ -8,14 +8,11 @@ export default () => {
 
   return {
     wrapper: cn('column-align-both w-full mt-32'),
+    main: 'w-full relative overflow-hidden h-0',
+    mainActive: 'h-full',
   }
 }
 
-export const Wrapper = styled.div`
-  ${css.column('align-both')};
-  width: 100%;
-  margin-top: 140px;
-`
 export const MainContent = styled.div<TActive>`
   width: 100%;
   position: relative;
@@ -24,7 +21,7 @@ export const MainContent = styled.div<TActive>`
 `
 export const FeatList = styled.div`
   ${css.column()};
-  gap: 18px 0;
+  gap: 16px 0;
   margin-top: 28px;
 `
 export const MobileIntroLists = styled.div`

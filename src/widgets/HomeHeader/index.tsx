@@ -1,4 +1,4 @@
-import { type FC, useState, memo } from 'react'
+import { type FC, useState } from 'react'
 import Link from 'next/link'
 
 import { ROUTE } from '~/const/route'
@@ -143,4 +143,4 @@ const HomeHeader: FC = () => {
   )
 }
 
-export default memo(HomeHeader)
+export default HomeHeader

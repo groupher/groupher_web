@@ -1,16 +1,15 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { MainContent } from '..'
+import useBase from '..'
 
-export const Wrapper = styled(MainContent)`
-  ${css.row('align-both')};
+export { cn } from '~/css'
 
+export default () => {
+  const { cn } = useTwBelt()
+  const base = useBase()
 
-  *::selection {
-    background-color: ${theme('rainbow.purpleSoft')} !important;
-    color: ${theme('rainbow.purple')} !important;
+  return {
+    wrapper: cn(base.main, 'align-both purple-selection'),
+    active: base.mainActive,
   }
-`
-export const Slogan = styled.div`
-  ${css.column('align-both')};
-`
+}

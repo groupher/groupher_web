@@ -39,8 +39,8 @@
   "container": {
     "home": {
       "width": "1460px",
-      "pl": 20,
-      "pr": 20
+      "pl": 0,
+      "pr": 0
     },
     "community": {
       "width": "1200px",

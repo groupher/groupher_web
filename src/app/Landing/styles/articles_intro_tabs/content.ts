@@ -1,25 +1,49 @@
-import type { TThread, TMetric } from '~/spec'
+import type { TThread } from '~/spec'
 import { THREAD } from '~/const/thread'
 
-import styled, { css, theme, WIDTH } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-type TWrapper = { tab?: TThread } & { metric: TMetric }
-export const Wrapper = styled.div<TWrapper>`
-  ${css.column('align-both')};
-  width: ${({ metric }) => WIDTH[metric].PAGE};
-  background: ${theme('landing.greyBg')};
-`
-export const InnerWrapper = styled.div<TWrapper>`
-  ${css.column('align-both')};
-  padding: 0 20px;
-  width: 100%;
-  height: ${({ tab }) => {
-    if (tab === THREAD.KANBAN) return '700px'
-    if (tab === THREAD.CHANGELOG) return '650px'
-    if (tab === THREAD.DOC) return '662px'
+export { cn } from '~/css'
 
-    return '600px'
-  }};
-  ${({ metric }) => css.fitContentWidth(metric)};
-  transition: all 0.15s;
-`
+type TProps = {
+  tab: TThread
+}
+
+export default ({ tab }: TProps) => {
+  const { cn, global } = useTwBelt()
+
+  const bgGradient = cn(
+    'absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-700',
+  )
+
+  return {
+    wrapper: cn('column-align-both relative w-full'),
+    inner: cn(
+      'column-align-both relative w-full trans-all-200',
+      tab === THREAD.POST && 'h-[600px]',
+      tab === THREAD.KANBAN && 'h-[700px]',
+      tab === THREAD.CHANGELOG && 'h-[650px]',
+      tab === THREAD.DOC && 'h-[662px]',
+    ),
+    bgGradientPurple: cn(
+      bgGradient,
+      global('landing-gradient-purple'),
+      tab === THREAD.POST && 'opacity-100',
+    ),
+    bgGradientBlue: cn(
+      bgGradient,
+      global('landing-gradient-blue'),
+      tab === THREAD.KANBAN && 'opacity-100',
+    ),
+    bgGradientRed: cn(
+      bgGradient,
+      global('landing-gradient-red'),
+      tab === THREAD.CHANGELOG && 'opacity-100',
+    ),
+    bgGradientCyan: cn(
+      bgGradient,
+      global('landing-gradient-cyan'),
+      tab === THREAD.DOC && 'opacity-100',
+    ),
+  }
+}

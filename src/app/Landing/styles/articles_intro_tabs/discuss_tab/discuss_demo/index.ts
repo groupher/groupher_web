@@ -8,10 +8,10 @@ import styled, { css, theme } from '~/css'
 export const Wrapper = styled.div`
   ${css.row('align-end')};
   position: relative;
+  margin-left: 36px;
 `
 export const ListsWrapper = styled.div`
   background: ${theme('htmlBg')};
-  width: 320px;
   height: 380px;
   padding: 25px;
   z-index: 2;

@@ -1,10 +1,9 @@
 import type { FC } from 'react'
 
 import { COLOR_NAME } from '~/const/colors'
-import { DesktopOnly } from '~/widgets/Common'
 
+import Button from '~/widgets/Buttons/Button'
 import FeatItem from '../FeatItem'
-import MoreLink from '../MoreLink'
 
 import { FeatList } from '../../styles/articles_intro_tabs/intro_items'
 
@@ -26,14 +25,15 @@ const Contents = () => {
 const IntroItems: FC = () => {
   return (
     <>
-      <DesktopOnly>
-        <FeatList>
-          <Contents />
-        </FeatList>
+      <FeatList>
+        <Contents />
+      </FeatList>
 
-        <div className="grow" />
-        <MoreLink href="/" color={COLOR_NAME.RED} />
-      </DesktopOnly>
+      <div className="grow" />
+      <div className="w-32 mt-14 row gap-x-2">
+        <Button>体验 Demo</Button>
+        <Button ghost>了解更多</Button>
+      </div>
     </>
   )
 }

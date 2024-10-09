@@ -1,26 +1,19 @@
-import type { FC } from 'react'
-
-import { DesktopOnly } from '~/widgets/Common'
-
 import IntroItems from './IntroItems'
-import {
-  Wrapper,
-  Digest,
-  Highlight,
-} from '../../styles/articles_intro_tabs/changelog_tab/intro_digest'
+import useSalon, {} from '../../styles/articles_intro_tabs/changelog_tab/intro_digest'
 
-const IntroDigest: FC = () => {
+export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <Digest>
-        官方团队发布，方便<Highlight>用户</Highlight>快速获取产品
-        <Highlight>新功能</Highlight>以及<Highlight>Bug 修复</Highlight>等。
-      </Digest>
-      <DesktopOnly>
-        <IntroItems />
-      </DesktopOnly>
-    </Wrapper>
+    <div className={s.wrapper}>
+      <div className={s.title}>版本日志 / 新功能 / 错误修复</div>
+      <div className={s.digest}>
+        官方团队发布，方便用户快速获取产品
+        <span className={s.highlight}>新功能</span>, <span className={s.highlight}>Bug 修复</span>
+        等动态。
+      </div>
+
+      <IntroItems />
+    </div>
   )
 }
-
-export default IntroDigest

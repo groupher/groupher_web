@@ -17,7 +17,7 @@ export default () => {
     wrapper: cn('align-both w-full gap-x-20'),
     tabItem: cn(
       'column-align-both group w-44 border-b-2 border-b-transparent pb-5',
-      'smoky-90 saturate-0 hover:saturate-100',
+      'smoky-80 saturate-0 hover:saturate-100',
     ),
     tabActive: cn('saturate-100 opacity-100'),
 
@@ -26,10 +26,16 @@ export default () => {
     redBorder: rainbow(COLOR_NAME.RED, 'border'),
     cyanBorder: rainbow(COLOR_NAME.CYAN, 'border'),
 
+    purpleBg: rainbow(COLOR_NAME.PURPLE, 'bgSoft'),
+    blueBg: rainbow(COLOR_NAME.BLUE, 'bgSoft'),
+    redBg: rainbow(COLOR_NAME.RED, 'bgSoft'),
+    cyanBg: rainbow(COLOR_NAME.CYAN, 'bgSoft'),
+
     purpleFill: rainbow(COLOR_NAME.PURPLE, 'fill'),
     blueFill: rainbow(COLOR_NAME.BLUE, 'fill'),
     redFill: rainbow(COLOR_NAME.RED, 'fill'),
     cyanFill: rainbow(COLOR_NAME.CYAN, 'fill'),
+
     //
     title: cn(
       'text-lg mb-1.5 mt-4 trans-all-100',

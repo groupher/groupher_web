@@ -12,7 +12,7 @@ const TAB_ITEMS = [
   {
     key: THREAD.POST,
     title: '讨论区',
-    desc: '功能请求 / Bug / 问题 / 交流',
+    desc: '功能请求 / Bug / 技术支持',
     color: COLOR_NAME.PURPLE,
   },
   {
@@ -30,7 +30,7 @@ const TAB_ITEMS = [
   {
     key: THREAD.DOC,
     title: '帮助台',
-    desc: '文档中心 / 产品手册',
+    desc: '知识库 / 教程 / 产品手册',
     color: COLOR_NAME.CYAN,
   },
 ]
@@ -55,7 +55,7 @@ const Tabs: FC<TProps> = ({ tab, onChange }) => {
             className={cn(s.tabItem, active && s.tabActive, active && s[`${color}Border`])}
             onClick={() => onChange(item.key as TThread)}
           >
-            <div className={cn(s.iconBox, s[`${color}Border`])}>
+            <div className={cn(s.iconBox, s[`${color}Border`], active && s[`${color}Bg`])}>
               <PreviewBars color={color} tab={item.key} />
               <CurIcon
                 className={cn(

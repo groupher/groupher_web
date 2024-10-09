@@ -1,6 +1,6 @@
 import type { TColor } from '~/spec'
 
-import styled, { css, rainbow } from '~/css'
+import styled, { css, theme, rainbow } from '~/css'
 import CheckSVG from '~/icons/CheckBold'
 
 export const Wrapper = styled.div`
@@ -15,6 +15,7 @@ export const CheckIcon = styled(CheckSVG)<TColor>`
 
 export const Text = styled.div<TColor>`
   color: ${({ $color }) => rainbow($color)};
+  /* color: ${theme('article.digest')}; */
   font-size: 16px;
   filter: saturate(0.8);
 `

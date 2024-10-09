@@ -1,20 +1,19 @@
-import type { FC } from 'react'
-
 import IntroItems from './IntroItems'
 
-import { Wrapper, Digest, Highlight } from '../../styles/articles_intro_tabs/help_tab/intro_digest'
+import useSalon from '../../styles/articles_intro_tabs/help_tab/intro_digest'
 
-const IntroDigest: FC = () => {
+export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <Digest>
-        沉淀<Highlight>常见问题</Highlight>，<Highlight>公共知识库</Highlight>以及
-        <Highlight>操作指南</Highlight>等，快速解决用户疑惑。
-      </Digest>
+    <div className={s.wrapper}>
+      <div className={s.title}>知识库 / 教程 / 产品手册</div>
+      <div className={s.digest}>
+        沉淀<span className={s.highlight}>常见问题</span>，
+        <span className={s.highlight}>公共知识库</span>等文档类内容，快速解决用户遇到的问题。
+      </div>
 
       <IntroItems />
-    </Wrapper>
+    </div>
   )
 }
-
-export default IntroDigest
