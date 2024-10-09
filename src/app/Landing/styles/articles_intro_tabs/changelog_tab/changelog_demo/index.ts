@@ -1,10 +1,9 @@
-import styled, { css } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.row('align-start')};
-  margin-right: -10px;
-  margin-top: 30px;
-  position: relative;
-`
+export default () => {
+  const { cn } = useTwBelt()
 
-export const holder = 1
+  return {
+    wrapper: cn('row relative items-start mt-7 -mr-2.5'),
+  }
+}

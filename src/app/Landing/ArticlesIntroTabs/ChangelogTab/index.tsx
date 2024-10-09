@@ -5,14 +5,17 @@ import type { TActive } from '~/spec'
 import IntroDigest from './IntroDigest'
 import ChangelogDemo from './ChangelogDemo'
 
-import { Wrapper } from '../../styles/articles_intro_tabs/changelog_tab'
+import useSalon, { cn } from '../../styles/articles_intro_tabs/changelog_tab'
 
-const ChangelogFeat: FC<TActive> = ({ $active }) => {
+const ChangelogFeat: FC<TActive> = ({ active }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper $active={$active}>
+    <div className={cn(s.wrapper, active && s.active)}>
       <IntroDigest />
+      <div className={s.divider} />
       <ChangelogDemo />
-    </Wrapper>
+    </div>
   )
 }
 
