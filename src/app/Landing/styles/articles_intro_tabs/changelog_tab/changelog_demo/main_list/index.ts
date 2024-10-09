@@ -1,122 +1,38 @@
-import { Bar as BarBase } from '~/widgets/Common'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import styled, { css, theme } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
-import StarSVG from '../../Star'
+export { cn } from '~/css'
 
-export const Wrapper = styled.div`
-  ${css.column('align-start')};
-  width: 360px;
-  height: 460px;
-  z-index: 2;
-  background: ${theme('htmlBg')};
-  border-radius: 10px;
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  box-shadow: rgba(100, 100, 111, 0.1) 1px 2px 29px 0px;
+export default () => {
+  const { cn, fg, bg, br, rainbow, shadow, sexyHBorder } = useTwBelt()
 
-  position: relative;
-  padding-left: 40px;
-  margin-top: 18px;
-`
-export const Header = styled.div`
-  ${css.column()};
-  width: 200px;
-  margin-top: 25px;
-  margin-bottom: 10px;
-`
-export const Cover = styled.div`
-  position: relative;
-  overflow: hidden;
-  width: 200px;
-  height: 100px;
-  border-radius: 5px;
-  margin-bottom: 5px;
+  return {
+    wrapper: cn(
+      'column items-start relative mt-4 w-[348px] h-[460px] rounded-md border',
+      'pl-10',
+      bg('htmlBg'),
+      br('divider'),
+      shadow('sm'),
+    ),
+    header: 'column w-48 mt-6 mb-2.5',
+    title: cn('row-center text-base bold-sm', fg('text.digest')),
+    version: cn('opacity-80 text-sm ml-2 mt-0.5 italic', fg('text.digest')),
 
-  background: ${theme('hoverBg')};
-  border: 1px dotted;
-  border-color: ${theme('hoverBg')};
-`
-export const Title = styled.div`
-  ${css.row('align-center')};
-  color: ${theme('article.digest')};
-  font-weight: 500;
-  font-size: 16px;
-`
-export const Version = styled.span`
-  color: ${theme('hint')};
-  opacity: 0.8;
-  font-size: 15px;
-  margin-left: 8px;
-`
-export const TagsWrapper = styled.div`
-  ${css.row('align-center')};
-  margin-top: 2px;
-  color: ${theme('hint')};
-  gap: 0 8px;
-`
-export const TagItem = styled.div`
-  ${css.row('align-center')};
-  font-size: 12px;
-`
-export const Content = styled.div`
-  ${css.column()};
-  margin-top: 15px;
-  width: 200px;
-  gap: 10px;
-`
-export const Divider = styled.div`
-  width: 300px;
-  height: 1px;
-  background: ${theme('divider')};
-  margin-top: 30px;
-`
-export const Bar = styled(BarBase)`
-  background: ${theme('hint')};
-`
-export const Previous = styled.div`
-  opacity: 0.75;
-`
-export const StarIcon = styled(StarSVG)`
-  ${css.size(13)};
-  fill: ${theme('rainbow.orange')};
-
-  position: absolute;
-  top: 140px;
-  left: 30px;
-
-  filter: drop-shadow(2px 4px 6px #f1cac9);
-  z-index: 3;
-`
-
-export const StarIcon2 = styled(StarSVG)`
-  ${css.size(20)};
-  fill: #ffd67e;
-
-  position: absolute;
-  top: 70px;
-  right: 180px;
-
-  filter: drop-shadow(2px 4px 6px #f1cac9);
-  z-index: 3;
-
-  ${css.media.mobile`
-    animation: none;
-  `};
-`
-
-export const StarIcon3 = styled(StarSVG)`
-  ${css.size(15)};
-  fill: #f9b7b6;
-
-  position: absolute;
-  top: 160px;
-  left: 100px;
-
-  filter: drop-shadow(2px 4px 6px #f1cac9);
-  z-index: 3;
-
-  ${css.media.mobile`
-    animation: none;
-  `};
-`
+    tags: cn('row-center mt-0.5 gap-x-2', fg('text.digest')),
+    tagItem: 'row-center text-xs',
+    content: 'column mt-4 w-52 gap-2.5',
+    //
+    divider: cn('mt-8 -ml-4', sexyHBorder(35)),
+    cover: cn(
+      'relative w-52 h-24 overflow-hidden rounded mb-1 border border-dashed',
+      bg('hoverBg'),
+      br('divider'),
+    ),
+    bar: cn('w-40 h-1.5 opacity-30', bg('text.digest')),
+    starIcon: 'absolute size-4 z-30',
+    starYellow: rainbow(COLOR_NAME.YELLOW, 'fill'),
+    starRed: rainbow(COLOR_NAME.PINK, 'fill'),
+    starOrange: rainbow(COLOR_NAME.ORANGE, 'fill'),
+  }
+}
