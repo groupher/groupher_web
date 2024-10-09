@@ -1,35 +1,16 @@
-import Img from '~/Img'
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.row('align-center')};
-  gap: 0 15px;
-  width: 254px;
-  height: 42px;
-  z-index: 2;
-  padding: 0 15px;
-  background: ${theme('htmlBg')};
-  border-radius: 10px;
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  box-shadow: rgba(100, 100, 111, 0.1) 1px 2px 29px 0px;
+export default () => {
+  const { cn, fg, bg, shadow } = useTwBelt()
 
-  position: absolute;
-  bottom: 142px;
-  right: 68px;
-`
-export const EmojiImg = styled(Img)`
-  ${css.size(20)};
-  opacity: 0.8;
-`
-export const Item = styled.div`
-  ${css.row('align-both')};
-  height: 1005;
-`
-export const Count = styled.div`
-  font-size: 16px;
-  font-weight: 500;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
-  margin-left: 6px;
-`
+  return {
+    wrapper: cn(
+      'align-both absolute bottom-32 right-16 rounded-xl w-64 gap-x-4 py-2',
+      bg('htmlBg'),
+      shadow('lg'),
+    ),
+    item: 'align-both',
+    emoji: 'size-4 opacity-80',
+    count: cn('text-base ml-1.5 bold-sm', fg('text.digest')),
+  }
+}
