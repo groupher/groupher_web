@@ -1,50 +1,50 @@
-import type { FC } from 'react'
+import RotateSVG from '~/icons/Rotate'
+import ArchSVG from '~/icons/Arch'
+import ShadowSVG from '~/icons/Shadow'
+import BlocksSVG from '~/icons/Blocks'
+import LightSVG from '~/icons/FlashLight'
+import RatioSVG from '~/icons/Ratio'
+import SizeSVG from '~/icons/ImageSize'
 
-import {
-  Wrapper,
-  Icon,
-  Item,
-  Title,
-  ColorBall,
-} from '../../../../styles/articles_intro_tabs/changelog_tab/changelog_demo/editor_preview/toolbox'
+import useSalon from '../../../../styles/articles_intro_tabs/changelog_tab/changelog_demo/editor_preview/toolbox'
 
-const EditorToolbox: FC = () => {
+export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <Item>
-        <Icon.Rotate />
-        <Title>旋转</Title>
-      </Item>
-      <Item>
-        <Icon.Arch />
-        <Title>弧度</Title>
-      </Item>
-      <Item>
-        <Icon.Shadow />
-        <Title>阴影</Title>
-      </Item>
-      <Item>
-        <Icon.Position />
-        <Title>位置</Title>
-      </Item>
-      <Item>
-        <Icon.Size />
-        <Title>大小</Title>
-      </Item>
-      <Item>
-        <Icon.Light />
-        <Title>灯光</Title>
-      </Item>
-      <Item>
-        <Icon.Ratio />
-        <Title>比例</Title>
-      </Item>
-      <Item>
-        <ColorBall />
-        <Title>背景</Title>
-      </Item>
-    </Wrapper>
+    <div className={s.wrapper}>
+      <div className={s.item}>
+        <RotateSVG className={s.icon} />
+        <div className={s.title}>旋转</div>
+      </div>
+      <div className={s.item}>
+        <ArchSVG className={s.icon} />
+        <div className={s.title}>弧度</div>
+      </div>
+      <div className={s.item}>
+        <ShadowSVG className={s.item} />
+        <div className={s.title}>阴影</div>
+      </div>
+      <div className={s.item}>
+        <BlocksSVG className={s.icon} />
+        <div className={s.title}>位置</div>
+      </div>
+      <div className={s.item}>
+        <SizeSVG className={s.icon} />
+        <div className={s.title}>大小</div>
+      </div>
+      <div className={s.item}>
+        <LightSVG className={s.icon} />
+        <div className={s.title}>灯光</div>
+      </div>
+      <div className={s.item}>
+        <RatioSVG className={s.icon} />
+        <div className={s.title}>比例</div>
+      </div>
+      <div className={s.item}>
+        <div className={s.colorBall} />
+        <div className={s.title}>背景</div>
+      </div>
+    </div>
   )
 }
-
-export default EditorToolbox
