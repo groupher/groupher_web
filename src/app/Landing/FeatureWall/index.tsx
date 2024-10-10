@@ -11,43 +11,34 @@ import Statistics from './Statistics'
 
 import GridBlocks from './GridBlocks'
 
-import {
-  Wrapper,
-  Slogan,
-  Title,
-  Desc,
-  CardsWrapper,
-  FooterCards,
-  LeftCards,
-  RightCards,
-} from '../styles/feature_wall'
+import useSalon from '../styles/feature_wall'
 
 const FeatureWall: FC = () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <Slogan>
-        <Title>自带电池、开箱即用</Title>
-        <Desc>无需繁琐配置，即刻拥有功能完善的反馈社区</Desc>
-      </Slogan>
-      <CardsWrapper>
-        <LeftCards>
+    <div className={s.wrapper}>
+      <section className={s.slogan}>
+        <h3 className={s.title}>自带电池、开箱即用</h3>
+        <div className={s.desc}>无需繁琐配置，即刻拥有功能完善的反馈社区</div>
+      </section>
+      <div className={s.cards}>
+        <div className={s.leftCards}>
           <MobileFirst />
           <RichContent />
           <DarkMode />
           <Integration />
-        </LeftCards>
-        <RightCards>
-          <BundleSizeCard />
-        </RightCards>
-      </CardsWrapper>
-      <FooterCards>
+        </div>
+        <BundleSizeCard />
+      </div>
+      <div className={s.footerCards}>
         <Security />
         <Statistics />
         <Design />
-      </FooterCards>
+      </div>
 
       <GridBlocks />
-    </Wrapper>
+    </div>
   )
 }
 

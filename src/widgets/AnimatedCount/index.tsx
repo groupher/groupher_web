@@ -25,7 +25,7 @@ const Count: FC<TProps> = ({
   const s = useSalon({ count, active, ...spacing })
 
   if (forceColor) {
-    console.log('## forceColor: ', forceColor)
+    // console.log('## forceColor: ', forceColor)
   }
 
   return (

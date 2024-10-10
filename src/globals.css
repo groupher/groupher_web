@@ -255,6 +255,10 @@
     border-image-slice: 1;
   }
 
+  .text-shadow {
+    text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;
+  }
+
   .landing-gradient-purple {
     background: linear-gradient(rgb(236 229 255 / 30%) 0%, rgb(255 255 255 / 96%) 100%);
   }
