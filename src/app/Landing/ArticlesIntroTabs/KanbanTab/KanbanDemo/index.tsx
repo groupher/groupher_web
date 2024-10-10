@@ -1,15 +1,18 @@
-import type { FC } from 'react'
-
 import { ARTICLE_CAT } from '~/const/gtd'
 
 import Banner from './Banner'
 import KanbanItem from './KanbanItem'
 
-import { BoardsWrapper, Board } from '../../../styles/articles_intro_tabs/kanban_tab/kanban_demo'
+import useSalon, {
+  BoardsWrapper,
+  Board,
+} from '../../../styles/articles_intro_tabs/kanban_tab/kanban_demo'
 
-const KanbanDemo: FC = () => {
+export default () => {
+  const s = useSalon()
+
   return (
-    <>
+    <div className={s.wrapper}>
       <Banner />
       <BoardsWrapper>
         <Board>
@@ -42,8 +45,6 @@ const KanbanDemo: FC = () => {
           <KanbanItem opacity={0.3} count={62} title="评论支持盖楼" cat={ARTICLE_CAT.FEATURE} />
         </Board>
       </BoardsWrapper>
-    </>
+    </div>
   )
 }
-
-export default KanbanDemo

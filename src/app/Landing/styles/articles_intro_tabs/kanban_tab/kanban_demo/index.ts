@@ -1,5 +1,20 @@
 import styled, { css } from '~/css'
 
+import useTwBelt from '~/hooks/useTwBelt'
+
+export default () => {
+  const { cn, bg, br, shadow } = useTwBelt()
+
+  return {
+    wrapper: cn(
+      'column border w-7/12 h-4/6 mb-7 rounded-lg',
+      bg('htmlBg'),
+      br('divider'),
+      shadow('sm'),
+    ),
+  }
+}
+
 export const BoardsWrapper = styled.div`
   ${css.row('justify-center', 'align-end')};
   gap: 0 28px;

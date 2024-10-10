@@ -21,7 +21,7 @@ export default ({ tab }: TProps) => {
     inner: cn(
       'column-align-both relative w-full trans-all-200',
       tab === THREAD.POST && 'h-[600px]',
-      tab === THREAD.KANBAN && 'h-[700px]',
+      tab === THREAD.KANBAN && 'h-[740px]',
       tab === THREAD.CHANGELOG && 'h-[650px]',
       tab === THREAD.DOC && 'h-[662px]',
     ),

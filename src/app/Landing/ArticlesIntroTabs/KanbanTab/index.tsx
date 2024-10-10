@@ -3,16 +3,18 @@ import type { FC } from 'react'
 import type { TActive } from '~/spec'
 
 import IntroDigest from './IntroDigest'
-import IntroImage from './IntroImage'
+import KanbanDemo from './KanbanDemo'
 
-import { Wrapper } from '../../styles/articles_intro_tabs/kanban_tab'
+import useSalon, { cn } from '../../styles/articles_intro_tabs/kanban_tab'
 
-const KanbanFeat: FC<TActive> = ({ $active }) => {
+const KanbanFeat: FC<TActive> = ({ active }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper $active={$active}>
+    <div className={cn(s.wrapper, active && s.active)}>
       <IntroDigest />
-      <IntroImage />
-    </Wrapper>
+      <KanbanDemo />
+    </div>
   )
 }
 
