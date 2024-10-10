@@ -272,6 +272,69 @@
     background: linear-gradient(rgb(255 204 204 / 19%) 0%, rgb(255 255 255) 100%);
   }
 
+  .gradient-purple {
+    background: linear-gradient(152deg,#faf5ff9c 0%,rgb(222 198 243) 100%);
+  }
+
+  .gradient-purple-dark {
+    background: linear-gradient(-149deg,#373439d4 0%,rgb(86 70 99) 100%);
+  }
+
+  .gradient-blue {
+    background: linear-gradient(310deg,#f6f3ff54 13%,rgb(209 237 255 / 83%) 100%);
+  }
+
+  .gradient-blue-dark {
+    background: linear-gradient(310deg,#303435 13%,rgb(49 84 121 / 83%) 100%);
+  }
+
+  .gradient-green {
+    background: linear-gradient(28deg,#fffbf6 0%,rgb(216 240 221 / 80%) 100%);
+  }
+
+  .gradient-green-dark {
+    background: linear-gradient(133deg,#343434 0%,rgb(58 83 63 / 80%) 100%);
+  }
+
+  .gradient-orange {
+    background: linear-gradient(244deg,#fffcf75e 0%,rgb(255 234 217 / 72%) 100%);
+  }
+
+  .gradient-orange-dark {
+    background: linear-gradient(244deg,#3d3d3d 0%,rgb(106 82 62 / 72%) 100%);
+  }
+
+  .gradient-pink {
+    background: linear-gradient(224deg,#fde4ff24 0%,rgb(255 223 234 / 79%) 100%);
+  }
+
+  .gradient-pink-dark {
+    background: linear-gradient(140deg,#fff5fb99 0%,rgb(255 231 230 / 84%) 100%);
+  }
+
+  .gradient-black {
+    background: linear-gradient(25deg,#fafafaba 20%,#bdccce63 100%);
+  }
+
+  .gradient-black-dark {
+    background: linear-gradient(220deg,#fafafaba 0%,#ededede3 100%);
+  }
+
+  .gradient-cyan {
+    background: linear-gradient(213deg,#fffff3ba 13%,#aff5ffc2 100%);
+  }
+
+  .gradient-cyan-dark {
+    background: linear-gradient(310deg,#eafffe7a 13%,rgb(183 242 246 / 46%) 100%);
+  }
+
+  .gradient-yellow {
+    background: linear-gradient(150deg,#ffe5e529 20%,rgb(255 251 216 / 58%) 100%);
+  }
+
+  .gradient-yellow-dark {
+    background: linear-gradient(53deg,#fffff37a 13%,rgb(255 244 140 / 25%) 100%);
+  }
 
   .debug {
     @apply border border-dashed;

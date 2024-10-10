@@ -1,41 +1,33 @@
 import type { FC } from 'react'
 
+import Img from '~/Img'
+
 import ToolBox from './ToolBox'
 import InlineToolBox from './InlineToolBox'
 
-import {
-  Wrapper,
-  Mention,
-  Content,
-  Header,
-  Text,
-  DemoPic,
-  Highlight,
-  MarkdownIcon,
-} from '../../styles/feature_wall/rich_content/panel'
+import useSalon from '../../styles/feature_wall/rich_content/panel'
 
 type TProps = {
   hovering: boolean
 }
 
 const Panel: FC<TProps> = ({ hovering }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <Content>
+    <div className={s.wrapper}>
+      <div className={s.content}>
         <InlineToolBox hovering={hovering} />
         <ToolBox hovering={hovering} />
-        <Header>
-          <Mention>@老大</Mention>
-          <div className="grow" />
-        </Header>
-        <Text>
-          {hovering ? <Highlight $color="CYAN">推进器</Highlight> : <>推进器</>}
-          设计有点问题：
-        </Text>
-        <DemoPic src="landing/starship.png" />
-        <MarkdownIcon />
-      </Content>
-    </Wrapper>
+        <div className={s.header}>
+          <div className={s.mention}>@老大</div>
+          <span className={s.highlight} />
+        </div>
+
+        <div className={s.text}>推进器设计有点问题：</div>
+        <Img src="landing/starship.png" className={s.pic} />
+      </div>
+    </div>
   )
 }
 

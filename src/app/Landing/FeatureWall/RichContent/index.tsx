@@ -1,23 +1,20 @@
-import type { FC } from 'react'
-
-import { COLOR_NAME } from '~/const/colors'
 import useHover from '~/hooks/useHover'
 
 import Panel from './Panel'
-import { Wrapper, Footer, Title, Desc } from '../../styles/feature_wall/rich_content'
+import useSalon from '../../styles/feature_wall/rich_content'
 
-const RichContent: FC = () => {
+export default () => {
+  const s = useSalon()
+
   const [cardRef, isCardHovered] = useHover<HTMLDivElement>()
 
   return (
-    <Wrapper ref={cardRef} $color={COLOR_NAME.BLUE}>
+    <div ref={cardRef} className={s.wrapper}>
       <Panel hovering={isCardHovered} />
-      <Footer>
-        <Title>富文本内容</Title>
-        <Desc>支持主流富文本内容及多媒体，兼容 Markdown。</Desc>
-      </Footer>
-    </Wrapper>
+      <div className={s.footer}>
+        <h3 className={s.title}>富文本内容</h3>
+        <div className={s.desc}>支持主流富文本内容及多媒体，兼容 Markdown。</div>
+      </div>
+    </div>
   )
 }
-
-export default RichContent
