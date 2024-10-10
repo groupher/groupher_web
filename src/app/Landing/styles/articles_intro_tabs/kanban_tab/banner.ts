@@ -1,71 +1,23 @@
-import { Bar as BarBase, WithPosition } from '~/widgets/Common'
+import { COLOR_NAME } from '~/const/colors'
 
-import KanbenSVG from '~/icons/Kanban'
-import GtdWipSVG from '~/icons/GtdWip'
-import GtdDoneSVG from '~/icons/GtdDone'
-import GtdTodoSVG from '~/icons/GtdTodo'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import styled, { css, theme } from '~/css'
+export { cn } from '~/css'
 
-export const Wrapper = styled.div`
-  ${css.column('align-both')};
-  width: 100%;
-  flex-grow: 1;
-`
-export const InnerWrapper = styled.div`
-  ${css.column()};
-  width: 650px;
-  height: 100%;
-  padding-top: 24px;
-`
-export const Header = styled.div`
-  ${css.row('align-center')};
-`
-export const Title = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 13px;
-  font-weight: 500;
-`
-export const UsersWrapper = styled.div`
-  filter: saturate(0.7);
-  transform: scale(0.95);
-`
-export const Bar = styled(BarBase)`
-  background: ${theme('hint')};
-`
-export const KanbenIcon = styled(KanbenSVG)`
-  ${css.size(18)};
-  transform: rotate(180deg);
-  fill: ${theme('hint')};
-  margin-left: -1px;
-  margin-right: 2px;
-  opacity: 0.8;
-`
-export const LabelBar = styled.div`
-  flex-grow: 1;
-  width: 100%;
-  margin-bottom: 10px;
-  position: relative;
-`
-export const Item = styled(WithPosition)`
-  ${css.row('align-center')};
-`
-export const Label = styled.div`
-  fill: ${theme('hint')};
-  font-size: 11px;
-  margin-left: 5px;
-`
-export const Icon1 = styled(GtdTodoSVG)`
-  ${css.size(12)};
-  fill: ${theme('hint')};
-  opacity: 0.6;
-`
-export const Icon2 = styled(GtdWipSVG)`
-  ${css.size(12)};
-  fill: ${theme('hint')};
-  opacity: 0.8;
-`
-export const Icon3 = styled(GtdDoneSVG)`
-  ${css.size(12)};
-  fill: ${theme('hint')};
-`
+export default () => {
+  const { cn, fg, fill, rainbow } = useTwBelt()
+
+  return {
+    wrapper: cn('column-align-both w-full grow'),
+    inner: 'column w-10/12 pt-6 px-5 h-full',
+    header: 'row-center',
+    title: cn('text-sm bold-sm ml-1', fg('text.digest')),
+    titleActrive: rainbow(COLOR_NAME.BLUE, 'fg'),
+    //
+    labelBar: 'relative grow w-full mb-2.5',
+    item: 'absolute row-center',
+    label: cn('text-xs ml-1', fg('text.digest')),
+
+    icon: cn('size-3', fill('text.digest')),
+  }
+}
