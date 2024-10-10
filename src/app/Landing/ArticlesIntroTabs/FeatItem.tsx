@@ -1,19 +1,22 @@
 import type { FC } from 'react'
 
 import type { TColor } from '~/spec'
+import CheckSVG from '~/icons/CheckBold'
 
-import { Wrapper, Text, CheckIcon } from '../styles/articles_intro_tabs/feat_item'
+import useSalon from '../styles/articles_intro_tabs/feat_item'
 
 type TProps = {
   text?: string
 } & TColor
 
 const FeatItem: FC<TProps> = ({ text = '--', color }) => {
+  const s = useSalon({ color })
+
   return (
-    <Wrapper>
-      <CheckIcon $color={color} />
-      <Text $color={color}>{text}</Text>
-    </Wrapper>
+    <div className={s.wrapper}>
+      <CheckSVG className={s.icon} />
+      <div className={s.text}>{text}</div>
+    </div>
   )
 }
 

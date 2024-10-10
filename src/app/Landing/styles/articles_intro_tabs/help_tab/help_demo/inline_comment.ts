@@ -5,7 +5,7 @@ export default () => {
 
   return {
     wrapper: cn(
-      'absolute bottom-36 -right-16 w-44 h-20 p-2.5 z-50 rounded-xl text-xs',
+      'absolute bottom-40 -right-16 w-44 h-20 p-2.5 z-50 rounded-xl text-xs',
       fg('text.digest'),
       bg('htmlBg'),
       shadow('lg'),

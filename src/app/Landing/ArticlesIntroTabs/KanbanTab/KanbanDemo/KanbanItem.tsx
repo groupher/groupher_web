@@ -2,52 +2,50 @@ import type { FC } from 'react'
 
 import type { TArticleCat } from '~/spec'
 
+import UpvoteSVG from '~/icons/Upvote'
 import ArticleCatState from '~/widgets/ArticleCatState'
 
-import {
-  Wrapper,
-  TargetWrapper,
-  Title,
-  Footer,
-  UpvoteIcon,
-  Count,
+import useSalon, {
+  cn,
 } from '../../../styles/articles_intro_tabs/kanban_tab/kanban_demo/kanban_item'
 
 type TProps = {
-  opacity?: number
   count?: number
   title?: string
   cat?: TArticleCat
   draging?: boolean
   dragTarget?: boolean
+  className?: string
 }
 
 const KanbanItem: FC<TProps> = ({
-  opacity = 1,
   count = 9,
   title = '支持暗黑模式',
   cat = 'FEATURE',
   draging = false,
   dragTarget = false,
+  className = '',
 }) => {
+  const s = useSalon()
+
   if (dragTarget) {
     return (
-      <TargetWrapper>
+      <div className={s.target}>
         <div>已解决</div>
-      </TargetWrapper>
+      </div>
     )
   }
 
   return (
-    <Wrapper opacity={opacity} $draging={draging}>
-      <Title>{title}</Title>
+    <div className={cn(s.wrapper, draging && s.draging, className)}>
+      <div className={s.title}>{title}</div>
 
-      <Footer>
-        <UpvoteIcon />
-        <Count>{count}</Count>
+      <div className={s.footer}>
+        <UpvoteSVG className={s.upvoteIcon} />
+        <div className={s.count}>{count}</div>
         <ArticleCatState cat={cat} noBorder />
-      </Footer>
-    </Wrapper>
+      </div>
+    </div>
   )
 }
 

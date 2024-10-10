@@ -26,7 +26,7 @@ const Content: FC<TProps> = ({ tab }) => {
 
       <div className={s.inner}>
         <DiscussTab active={tab === THREAD.POST} />
-        <KanbanTab $active={tab === THREAD.KANBAN} />
+        <KanbanTab active={tab === THREAD.KANBAN} />
         <ChangelogTab active={tab === THREAD.CHANGELOG} />
         <HelpTab active={tab === THREAD.DOC} />
       </div>

@@ -1,59 +1,45 @@
-import type { FC } from 'react'
-
 import { mockUsers } from '~/mock'
 
-import Facepile from '~/widgets/Facepile'
+import Facepile from '~/widgets/Facepile/LandingPage'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  Header,
-  Title,
-  UsersWrapper,
-  KanbenIcon,
-  LabelBar,
-  Bar,
-  Item,
-  Label,
-  Icon1,
-  Icon2,
-  Icon3,
-} from '../../../styles/articles_intro_tabs/kanban_tab/banner'
+import GtdWipSVG from '~/icons/GtdWip'
+import GtdDoneSVG from '~/icons/GtdDone'
+import GtdTodoSVG from '~/icons/GtdTodo'
 
-const Banner: FC = () => {
+import useSalon, { cn } from '../../../styles/articles_intro_tabs/kanban_tab/banner'
+
+export default () => {
+  const s = useSalon()
+
   const users = mockUsers(5)
 
   return (
-    <Wrapper>
-      <InnerWrapper>
-        <Header>
-          <KanbenIcon />
-          <Title>看板墙</Title>
-          <Bar top={0} height={6} width={15} left={6} opacity={0.2} />
+    <div className={s.wrapper}>
+      <div className={s.inner}>
+        <div className={s.header}>
+          <div className={cn(s.title, s.titleActrive)}>当前</div>
+          <div className={cn(s.title, 'ml-1.5 mr-0.5 opacity-50')}>/</div>
+          <div className={s.title}>中长期规划</div>
           <div className="grow" />
-          <UsersWrapper>
-            <Facepile users={users} total={23} />
-          </UsersWrapper>
-        </Header>
-        <LabelBar>
-          <Item left={1} bottom={0}>
-            <Icon1 />
-            <Label>已计划</Label>
-          </Item>
+          <Facepile users={users} className="-mr-2 scale-75 gap-x-1 opacity-65" />
+        </div>
+        <div className={s.labelBar}>
+          <div className={cn(s.item, 'left-1 bottom-0')}>
+            <GtdWipSVG className={s.icon} />
+            <label className={s.label}>已计划</label>
+          </div>
 
-          <Item left={228} bottom={0}>
-            <Icon2 />
-            <Label>进行中</Label>
-          </Item>
+          <div className={cn(s.item, 'left-60 bottom-0')}>
+            <GtdDoneSVG className={s.icon} />
+            <label className={s.label}>进行中</label>
+          </div>
 
-          <Item left={460} bottom={0}>
-            <Icon3 />
-            <Label>已完成</Label>
-          </Item>
-        </LabelBar>
-      </InnerWrapper>
-    </Wrapper>
+          <div className={cn(s.item, 'right-36 bottom-0')}>
+            <GtdTodoSVG className={s.icon} />
+            <label className={s.label}>已完成</label>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
-
-export default Banner
