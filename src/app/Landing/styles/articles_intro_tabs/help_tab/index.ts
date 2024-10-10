@@ -8,6 +8,5 @@ export default () => {
   return {
     wrapper: base.main,
     active: base.mainActive,
-    divider: 'ml-5',
   }
 }

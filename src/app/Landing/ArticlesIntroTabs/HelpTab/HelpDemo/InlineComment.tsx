@@ -1,27 +1,20 @@
-import type { FC } from 'react'
-
+import Img from '~/Img'
 import { mockUsers } from '~/mock'
 
-import {
-  Wrapper,
-  User,
-  Avatar,
-  Nickname,
-  Comment,
-} from '../../../styles/articles_intro_tabs/help_tab/help_demo/inline_comment'
+import useSalon, {} from '../../../styles/articles_intro_tabs/help_tab/help_demo/inline_comment'
 
-const InlineComment: FC = () => {
+export default () => {
+  const s = useSalon()
+
   const user = mockUsers(1)
 
   return (
-    <Wrapper>
-      <User>
-        <Avatar src={user[0].avatar} />
-        <Nickname>{user[0].nickname}</Nickname>
-      </User>
-      <Comment>可以在行内评论里支持富文本内容吗？</Comment>
-    </Wrapper>
+    <div className={s.wrapper}>
+      <div className={s.user}>
+        <Img className={s.avatar} src={user[0].avatar} />
+        <div className={s.nickname}>{user[0].nickname}</div>
+      </div>
+      <div>可以在行内评论里支持富文本内容吗？</div>
+    </div>
   )
 }
-
-export default InlineComment

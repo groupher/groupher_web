@@ -1,77 +1,56 @@
-import type { FC } from 'react'
+import ShareSVG from '~/icons/Share'
+import GoodSVG from '~/icons/EmojiGood'
+import SosoSVG from '~/icons/EmojiSoSo'
+import BadSVG from '~/icons/EmojiBad'
+import ArrowSimple from '~/icons/ArrowSimple'
 
-import useTheme from '~/hooks/useTheme'
+import useSalon, { cn } from '../../../styles/articles_intro_tabs/help_tab/help_demo/article'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  LeftArrowIcon,
-  RightArrowIcon,
-  InnerContent,
-  Title,
-  CoverWrappers,
-  Cover,
-  CoverTitle,
-  Bar,
-  ShareIcon,
-  Footer,
-  ArrowText,
-  Feedback,
-  GoodIcon,
-  SodoIcon,
-  BadIcon,
-  CommentDot,
-  CommentDotSolid,
-} from '../../../styles/articles_intro_tabs/help_tab/help_demo/article'
-
-const Article: FC = () => {
-  const { themeMap } = useTheme()
+export default () => {
+  const s = useSalon()
 
   return (
-    <Wrapper>
-      <InnerWrapper>
-        <InnerContent>
-          <ShareIcon />
-          <Title>自定义帮助台封面</Title>
+    <div className={s.wrapper}>
+      <div className={s.underPaper} />
 
-          <CoverWrappers>
-            <Cover $fromBg={themeMap.rainbow.cyan} $toBg={themeMap.rainbow.cyanSoft}>
-              <CoverTitle>卡片视图</CoverTitle>
-            </Cover>
-            <Cover $fromBg={themeMap.rainbow.cyan} $toBg={themeMap.rainbow.cyanSoft}>
-              <CoverTitle>列表视图</CoverTitle>
-            </Cover>
-          </CoverWrappers>
+      <div className={s.inner}>
+        <div className={s.content}>
+          <ShareSVG className={s.shareIcon} />
+          <div className={s.title}>自定义帮助台封面</div>
 
-          <Bar width={150} height={6} opacity={0.2} top={14} />
-          <Bar width={160} height={6} opacity={0.15} top={13} />
-          <Bar width={160} height={6} opacity={0.1} top={14} />
-          <Bar width={120} height={6} opacity={0.1} top={16} />
-          <Bar width={220} height={6} opacity={0.15} top={13} />
-          <Bar width={160} height={6} opacity={0.1} top={14} />
-          <Bar width={120} height={6} opacity={0.1} top={16} />
-        </InnerContent>
+          <div className={s.coverWrapper}>
+            <div className={s.slash} />
+            <div className={cn(s.coverText, 'left-4')}>卡片视图</div>
+            <div className={cn(s.coverText, 'right-8')}>列表视图</div>
+          </div>
 
-        <CommentDot>
-          <CommentDotSolid />
-        </CommentDot>
+          <div className={cn(s.bar, 'w-44')} />
+          <div className={cn(s.bar, 'w-52')} />
+          <div className={cn(s.bar, 'opacity-30')} />
+          <div className={cn(s.bar, 'opacity-25')} />
+          <div className={cn(s.bar, 'w-52 opacity-20')} />
+          <div className={cn(s.bar, 'opacity-20')} />
+          <div className={cn(s.bar, 'opacity-15 w-20')} />
+        </div>
 
-        <Footer>
-          <LeftArrowIcon />
-          <ArrowText>编辑目录</ArrowText>
+        <div className={s.commentDot}>
+          <div className={s.commentSolid} />
+        </div>
+
+        <div className={s.footer}>
+          <ArrowSimple className={s.arrowIcon} />
+          <div className={s.arrowText}>编辑目录</div>
           <div className="grow" />
-          <ArrowText>文档反馈</ArrowText>
-          <RightArrowIcon />
-        </Footer>
+          <div className={s.arrowText}>文档反馈</div>
+          <ArrowSimple className={cn(s.arrowIcon, 'rotate-180')} />
+        </div>
 
-        <Feedback>
-          <GoodIcon />
-          <SodoIcon />
-          <BadIcon />
-        </Feedback>
-      </InnerWrapper>
-    </Wrapper>
+        <div className={s.feedback}>
+          <GoodSVG className={s.feedIcon} />
+          <SosoSVG className={s.feedIcon} />
+          <BadSVG className={s.feedIcon} />
+        </div>
+      </div>
+    </div>
   )
 }
-
-export default Article

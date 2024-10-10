@@ -1,34 +1,18 @@
-import Img from '~/Img'
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  position: absolute;
-  bottom: 146px;
-  right: -78px;
-  background: ${theme('htmlBg')};
-  ${css.column('align-start')};
-  z-index: 10;
-  width: 188px;
-  height: 100px;
-  padding: 10px;
+export default () => {
+  const { cn, fg, bg, shadow } = useTwBelt()
 
-  border: 1px solid;
-  border-radius: 8px;
-  border-color: ${theme('divider')};
-  box-shadow: rgba(100, 100, 111, 0.1) 0px 3px 29px 0px;
-`
-export const User = styled.div`
-  ${css.row('align-center')};
-  margin-bottom: 10px;
-`
-export const Avatar = styled(Img)`
-  ${css.size(18)};
-  border-radius: 4px;
-`
-export const Nickname = styled.div`
-  font-size: 13px;
-  margin-left: 6px;
-`
-export const Comment = styled.div`
-  color: ${theme('article.digest')};
-`
+  return {
+    wrapper: cn(
+      'absolute bottom-36 -right-16 w-44 h-20 p-2.5 z-50 rounded-xl text-xs',
+      fg('text.digest'),
+      bg('htmlBg'),
+      shadow('lg'),
+    ),
+
+    user: 'row-center mb-2.5',
+    avatar: 'size-4 rounded-md',
+    nickname: cn('text-xs ml-1.5', fg('text.title')),
+  }
+}
