@@ -1,40 +1,37 @@
 import type { FC } from 'react'
 
-import {
-  Wrapper,
-  Item,
-  IconWrapper,
-  Icon,
-} from '../../styles/feature_wall/rich_content/inline_tool_box'
+import BoldSVG from '~/icons/editor/Bold'
+import StrikeSVG from '~/icons/editor/Strike'
+import LinkSVG from '~/icons/editor/Link'
+import HighlightSVG from '~/icons/editor/Highlight'
+
+import useSalon, { cn } from '../../styles/feature_wall/rich_content/inline_tool_box'
 
 type TProps = {
   hovering: boolean
 }
 
 const InlineToolBox: FC<TProps> = ({ hovering }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper $hovering={hovering}>
-      <Item>
-        <IconWrapper>
-          <Icon.Bold />
-        </IconWrapper>
-      </Item>
-      <Item>
-        <IconWrapper>
-          <Icon.Strike />
-        </IconWrapper>
-      </Item>
-      <Item>
-        <IconWrapper>
-          <Icon.Link />
-        </IconWrapper>
-      </Item>
-      <Item $active>
-        <IconWrapper>
-          <Icon.Highlight />
-        </IconWrapper>
-      </Item>
-    </Wrapper>
+    <div className={cn(s.wrapper, hovering && s.hover)}>
+      <div className={s.item}>
+        <BoldSVG className={s.icon} />
+      </div>
+
+      <div className={s.item}>
+        <StrikeSVG className={s.icon} />
+      </div>
+
+      <div className={s.item}>
+        <LinkSVG className={s.icon} />
+      </div>
+
+      <div className={cn(s.item, s.itemActive)}>
+        <HighlightSVG className={cn(s.icon, s.iconActive)} />
+      </div>
+    </div>
   )
 }
 

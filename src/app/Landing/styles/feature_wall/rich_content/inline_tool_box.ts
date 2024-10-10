@@ -1,55 +1,24 @@
-import type { TActive } from '~/spec'
-import styled, { css, theme } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
-import BoldSVG from '~/icons/editor/Bold'
-import StrikeSVG from '~/icons/editor/Strike'
-import LinkSVG from '~/icons/editor/Link'
-import HighlightSVG from '~/icons/editor/Highlight'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div<{ $hovering: boolean }>`
-  ${css.row('align-center')};
-  position: absolute;
-  left: -8px;
-  top: ${({ $hovering }) => ($hovering ? '-6px' : '-12px')};
-  opacity: ${({ $hovering }) => ($hovering ? 1 : 0)};
-  width: 110px;
-  height: 30px;
-  padding: 0 5px;
-  gap: 0 6px;
-  background: ${theme('landing.greyBg')};
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  border-radius: 6px;
-  z-index: 10;
+export { cn } from '~/css'
 
-  transition: all 0.2s;
-`
-type TItem = TActive & { $opacity?: number }
-export const Item = styled.div<TItem>`
-  ${css.row('align-center')};
-  background: ${({ $active }) => ($active ? theme('rainbow.cyanSoft') : 'transparent')};
-  opacity: ${({ $opacity }) => $opacity || 1};
-  padding: 2px;
-  border-radius: 3px;
-`
-export const IconWrapper = styled.div`
-  ${css.size(14)};
-  ${css.row('align-both')};
-`
+export default () => {
+  const { cn, menu, fill, shadow, rainbow } = useTwBelt()
 
-const commonIcon = (comp) => {
-  return styled(comp)`
-    ${css.size(14)};
-    fill: ${theme('article.title')};
-  `
-}
-
-export const Icon = {
-  Bold: commonIcon(BoldSVG),
-  Strike: commonIcon(StrikeSVG),
-  Link: commonIcon(LinkSVG),
-  Highlight: styled(commonIcon(HighlightSVG))`
-    fill: ${theme('rainbow.cyan')};
-  `,
+  return {
+    wrapper: cn(
+      'row-center absolute -left-3 -top-4 w-24 h-7 px-1 z-20 trans-all-200 rounded-md gap-x-1.5',
+      'scale-0 group-hover:scale-100',
+      menu('bg'),
+      shadow('md'),
+    ),
+    hover: '-top-1.5',
+    //
+    item: 'align-both size-4',
+    itemActive: cn('rounded-md', rainbow(COLOR_NAME.CYAN, 'bgSoft')),
+    icon: cn('size-3.5', fill('text.digest')),
+    iconActive: rainbow(COLOR_NAME.CYAN, 'fill'),
+  }
 }
