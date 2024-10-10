@@ -5,7 +5,7 @@ import { COLOR_NAME } from '~/const/colors'
 import Button from '~/widgets/Buttons/Button'
 import FeatItem from '../FeatItem'
 
-import { FeatList } from '../../styles/articles_intro_tabs/intro_items'
+import useSalon from '../../styles/articles_intro_tabs'
 
 const color = COLOR_NAME.RED
 
@@ -23,11 +23,13 @@ const Contents = () => {
 }
 
 const IntroItems: FC = () => {
+  const s = useSalon()
+
   return (
     <>
-      <FeatList>
+      <div className={s.featList}>
         <Contents />
-      </FeatList>
+      </div>
 
       <div className="grow" />
       <div className="w-32 mt-14 row gap-x-2">

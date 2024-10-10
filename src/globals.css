@@ -255,15 +255,6 @@
     border-image-slice: 1;
   }
 
-  .purple-selection *::selection {
-    color: #7d519e;
-    background: #f7d8fd38;
-  }
-
-  .purple-selection *::selection:before {
-    content: "hello";
-  }
-
   .landing-gradient-purple {
     background: linear-gradient(rgb(236 229 255 / 30%) 0%, rgb(255 255 255 / 96%) 100%);
   }

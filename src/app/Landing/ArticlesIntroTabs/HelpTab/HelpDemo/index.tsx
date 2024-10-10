@@ -1,19 +1,17 @@
-import type { FC } from 'react'
-
 import DirTree from './DirTree'
 import Article from './Article'
 import InlineComment from './InlineComment'
 
-import { Wrapper } from '../../../styles/articles_intro_tabs/help_tab/help_demo'
+import useSalon from '../../../styles/articles_intro_tabs/help_tab/help_demo'
 
-const HelpItem: FC = () => {
+export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <DirTree />
       <Article />
       <InlineComment />
-    </Wrapper>
+    </div>
   )
 }
-
-export default HelpItem

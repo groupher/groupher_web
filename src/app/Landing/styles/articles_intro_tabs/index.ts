@@ -8,8 +8,9 @@ export default () => {
 
   return {
     wrapper: cn('column-align-both w-full mt-32'),
-    main: 'w-full relative overflow-hidden h-0',
+    main: 'align-both w-full relative overflow-hidden h-0',
     mainActive: 'h-full',
+    featList: 'column gap-y-4 mt-7',
   }
 }
 
@@ -23,12 +24,6 @@ export const FeatList = styled.div`
   ${css.column()};
   gap: 16px 0;
   margin-top: 28px;
-`
-export const MobileIntroLists = styled.div`
-  ${css.rowWrap()};
-  gap: 16px 0;
-  padding-left: 10px;
-  margin-top: -25px;
 `
 export const HighlightWord = styled.span`
   font-weight: 450;
