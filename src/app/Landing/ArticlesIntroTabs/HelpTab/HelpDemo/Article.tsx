@@ -20,8 +20,8 @@ export default () => {
 
           <div className={s.coverWrapper}>
             <div className={s.slash} />
-            <div className={cn(s.coverText, 'left-4')}>卡片视图</div>
-            <div className={cn(s.coverText, 'right-8')}>列表视图</div>
+            <div className={cn(s.coverText, 'left-5')}>卡片视图</div>
+            <div className={cn(s.coverText, 'right-7')}>列表视图</div>
           </div>
 
           <div className={cn(s.bar, 'w-44')} />

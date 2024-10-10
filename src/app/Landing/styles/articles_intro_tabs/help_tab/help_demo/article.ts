@@ -45,7 +45,7 @@ export default () => {
       'relative row-center-between mt-5 mb-4 w-64 h-24 rounded-md opacity-25',
       rainbow('CYAN', 'bg'),
     ),
-    slash: cn('absolute h-28 w-1 left-28 top-0 rotate-12', bg('htmlBg')),
+    slash: cn('absolute h-28 w-1 left-1/2 top-0 rotate-12', bg('htmlBg')),
     coverText: cn('text-lg absolute bold', fg('button.fg')),
     // comment
     commentDot: cn(
