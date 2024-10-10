@@ -5,21 +5,23 @@
  */
 
 import { Suspense } from 'react'
+import Link from 'next/link'
 
 import { DOC_FAQ_LAYOUT } from '~/const/layout'
 import useWallpaper from '~/hooks/useWallpaper'
-import useMetric from '~/hooks/useMetric'
 
 import { ROUTE } from '~/const/route'
 
+import ArrowSVG from '~/icons/ArrowSimple'
+import LinkSVG from '~/icons/LinkOutside'
+
+import Button from '~/widgets/Buttons/Button'
 import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
-import { DesktopOnly, LinkAble } from '~/widgets/Common'
 import Tooltip from '~/widgets/Tooltip'
 import FaqList from '~/widgets/FaqList'
 import HomeHeader from '~/widgets/HomeHeader'
 
 import CoverImage from './CoverImage'
-// import WallpaperBar from './WallpaperBar'
 
 import ArticlesIntroTabs from './ArticlesIntroTabs'
 import FeatureWall from './FeatureWall'
@@ -29,26 +31,7 @@ import EnjoyDev from './EnjoyDev'
 import UsersWall from './UsersWall'
 import Footer from './Footer'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  BgGlow,
-  PatternBg,
-  Banner,
-  BetaText,
-  Title,
-  Desc,
-  ButtonGroup,
-  DemoPanel,
-  DemoMenuItem,
-  LinkIcon,
-  StartButton,
-  DemoButton,
-  ArrowLeftIcon,
-  ArrowDownIcon,
-  Divider,
-  FAQWrapper,
-} from './styles'
+import useSalon, { cn, StartButton, ArrowLeftIcon } from './styles'
 
 const faqs = [
   {
@@ -84,51 +67,56 @@ const faqs = [
 ]
 
 export default () => {
+  const s = useSalon()
+
   const { wallpaper } = useWallpaper()
-  const metric = useMetric()
 
   return (
-    <Wrapper $testid="landing-page" metric={metric}>
-      <PatternBg />
-      <InnerWrapper metric={metric}>
-        <DesktopOnly>
-          <BgGlow wallpaper={wallpaper} />
-        </DesktopOnly>
-        <Banner>
+    <div className={s.wrapper} data-testid="landing-page">
+      {/* <PatternBg /> */}
+      <div className={s.inner}>
+        {/* <BgGlow wallpaper={wallpaper} /> */}
+        <div className={s.banner}>
           <HomeHeader />
-          <BetaText wallpaper={wallpaper}>内测中</BetaText>
-          <Title>让你的产品听见用户的声音</Title>
-          <Desc>讨论区、看板、更新日志、帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品</Desc>
-          <ButtonGroup>
-            <LinkAble href={ROUTE.APPLY_COMMUNITY}>
+          <div className={s.betaText} style={{ background: s.betaGradientStyle }}>
+            内测中
+          </div>
+          <h1 className={s.title}>让你的产品听见用户的声音</h1>
+          <div className={s.desc}>
+            讨论区、看板、更新日志、帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品
+          </div>
+          <div className={s.buttonGroup}>
+            <Link href={ROUTE.APPLY_COMMUNITY} className={s.linkable}>
               <StartButton wallpaper={wallpaper} size="medium">
                 开始使用 <ArrowLeftIcon />
               </StartButton>
-            </LinkAble>
+            </Link>
 
             <Tooltip
               content={
-                <DemoPanel>
-                  <DemoMenuItem href={`/${ROUTE.HOME}`}>
-                    官方社区
-                    <LinkIcon />
-                  </DemoMenuItem>
-                  <DemoMenuItem href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`}>
-                    管理后台
-                    <LinkIcon />
-                  </DemoMenuItem>
-                </DemoPanel>
+                <div className={s.demoPanel}>
+                  <Link href={`/${ROUTE.HOME}`} className={s.demoItem}>
+                    <div className={s.demoItemTitle}>官方社区</div>
+                    <LinkSVG className={s.outLink} />
+                  </Link>
+                  <Link href={`/${ROUTE.HOME}/${ROUTE.DASHBOARD.OVERVIEW}`} className={s.demoItem}>
+                    <div className={s.demoItemTitle}>管理后台</div>
+
+                    <LinkSVG className={s.outLink} />
+                  </Link>
+                </div>
               }
               placement="bottom"
               delay={200}
               offset={[1, 5]}
             >
-              <DemoButton size="medium" ghost>
-                在线体验 <ArrowDownIcon />
-              </DemoButton>
+              <Button size="medium" ghost>
+                在线体验 <ArrowSVG className={s.arrow} />
+              </Button>
             </Tooltip>
-          </ButtonGroup>
-        </Banner>
+          </div>
+        </div>
+
         <CoverImage />
 
         <ArticlesIntroTabs />
@@ -149,18 +137,18 @@ export default () => {
           <TechStacks />
         </Suspense>
 
-        <Divider top={80} bottom={80} />
+        <div className={cn(s.divider, 'mt-20')} />
         <UsersWall wallpaper={wallpaper} />
-        <Divider top={60} bottom={80} />
+        <div className={s.divider} />
 
-        <FAQWrapper>
+        <div className={s.faqWrapper}>
           <FaqList layout={DOC_FAQ_LAYOUT.FLAT} large sections={faqs} />
-        </FAQWrapper>
+        </div>
 
-        <Divider top={60} bottom={80} />
+        <div className={s.divider} />
 
         <Footer />
-      </InnerWrapper>
-    </Wrapper>
+      </div>
+    </div>
   )
 }

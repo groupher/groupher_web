@@ -6,48 +6,43 @@ import { COLOR_NAME } from '~/const/colors'
 import Toolbox from './Toolbox'
 import CoverPreview from '../CoverPreview'
 
-import {
-  Wrapper,
-  Header,
-  Title,
-  Version,
-  Bar,
-  Cover,
-  TagsWrapper,
-  TagItem,
-  Content,
+import useSalon, {
+  cn,
 } from '../../../../styles/articles_intro_tabs/changelog_tab/changelog_demo/editor_preview'
 
 const EditorPreview: FC = () => {
-  return (
-    <Wrapper>
-      <Header>
-        <Title>
-          船新封面图编辑器 <Version>v2.0</Version>
-        </Title>
+  const s = useSalon()
 
-        <TagsWrapper>
-          <TagItem>
+  return (
+    <div className={s.wrapper}>
+      <div className={s.header}>
+        <div className={s.title}>
+          船新封面图编辑器 <div className={s.version}>v2.0</div>
+        </div>
+
+        <div className={s.tags}>
+          <div className={s.tagItem}>
             <TagNode color={COLOR_NAME.GREEN} boldHash />
             Web
-          </TagItem>
+          </div>
 
-          <TagItem>
+          <div className={s.tagItem}>
             <TagNode color={COLOR_NAME.ORANGE} boldHash />
             Mobile
-          </TagItem>
-        </TagsWrapper>
-      </Header>
-      <Cover>
+          </div>
+        </div>
+      </div>
+      <div className={s.cover}>
         <CoverPreview />
-      </Cover>
+      </div>
       <Toolbox />
-      <Content>
-        <Bar height={6} width={159} right={7} opacity={0.15} />
-        <Bar height={6} width={100} opacity={0.1} />
-        <Bar height={6} width={60} opacity={0.1} />
-      </Content>
-    </Wrapper>
+
+      <div className={s.content}>
+        <div className={cn(s.bar)} />
+        <div className={cn(s.bar, 'w-32 opacity-20')} />
+        <div className={cn(s.bar, 'w-20 opacity-15')} />
+      </div>
+    </div>
   )
 }
 

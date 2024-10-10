@@ -1,15 +1,16 @@
-import styled, { theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { Wrapper as WrapperBase } from './emotion_bar'
+export default () => {
+  const { cn, fg, bg, shadow } = useTwBelt()
 
-export { EmojiImg, Item, Count } from './emotion_bar'
-
-export const Wrapper = styled(WrapperBase)`
-  width: 200px;
-  position: absolute;
-  bottom: 68px;
-  right: 50px;
-  transform: rotate(3deg);
-  background: ${theme('alphaBg2')};
-  opacity: 0.8;
-`
+  return {
+    wrapper: cn(
+      'align-both absolute rotate-3 bottom-16 right-16 rounded-xl w-44 gap-x-4 py-2',
+      bg('htmlBg'),
+      shadow('lg'),
+    ),
+    item: 'align-both',
+    emoji: 'size-4 opacity-80',
+    count: cn('text-base ml-1.5 bold-sm', fg('text.digest')),
+  }
+}

@@ -13,7 +13,9 @@ export const CheckIcon = styled(CheckSVG)<TColor>`
   margin-right: 14px;
 `
 
-export const Text = styled.div`
-  color: ${theme('article.digest')};
+export const Text = styled.div<TColor>`
+  color: ${({ $color }) => rainbow($color)};
+  /* color: ${theme('article.digest')}; */
   font-size: 16px;
+  filter: saturate(0.8);
 `

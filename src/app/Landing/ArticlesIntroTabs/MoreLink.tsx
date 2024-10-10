@@ -10,7 +10,7 @@ type TProps = {
 
 const MoreLink: FC<TProps> = ({ title = '了解更多', href = '/', color }) => {
   return (
-    <ArrowLinker href={href} color={color} top={55} fontSize={15}>
+    <ArrowLinker href={href} color={color} top={10}>
       {title}
     </ArrowLinker>
   )

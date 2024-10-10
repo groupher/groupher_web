@@ -1,73 +1,70 @@
 import type { FC } from 'react'
 
-import type { TColor, TThread } from '~/spec'
+import type { TThread } from '~/spec'
 import { THREAD } from '~/const/thread'
 
-import { Row, Column, TreeColumn, DocColumn, Bar } from '../styles/articles_intro_tabs/preview_bars'
+import useSalon, { cn } from '../styles/articles_intro_tabs/preview_bars'
 
 type TProps = {
   tab: TThread
-} & TColor
+  color: string
+}
 
-const PreviewBars: FC<TProps> = ({ tab, $color }) => {
+const PreviewBars: FC<TProps> = ({ tab, color }) => {
+  const s = useSalon()
+
   switch (tab) {
     case THREAD.KANBAN: {
       return (
-        <Row>
-          <Column>
-            <Bar $color={$color} width={68} height={3} top={6} />
-            <Bar top={13} width={65} $color={$color} height={3} />
-            <Bar top={20} $color={$color} width={69} height={3} />
-            <Bar top={28} $color={$color} width={45} height={3} />
-          </Column>
+        <>
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-1 w-3 opacity-20 h-0.5')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-2.5 w-3 h-6 opacity-20 rounded')} />
 
-          <Column right={5}>
-            <Bar $color={$color} width={38} height={3} top={6} />
-            <Bar top={13} width={75} $color={$color} height={3} />
-            <Bar top={19} $color={$color} width={32} height={3} />
-            <Bar top={26} $color={$color} width={45} height={3} />
-          </Column>
-        </Row>
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-1 w-3 opacity-20 h-0.5 left-5')} />
+          <div
+            className={cn(s.bar, s[`${color}Bg`], 'top-2.5 w-3 h-6 opacity-20 rounded left-5')}
+          />
+        </>
       )
     }
 
     case THREAD.CHANGELOG: {
       return (
         <>
-          <Bar $color={$color} height={3} />
-          <Bar top={11} width={75} height={14} $color={$color} $radius={3} />
-          <Bar top={29} width={30} height={3} $color={$color} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-1 opacity-20')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-3 w-7 h-4 rounded')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'bottom-0.5 mb-0.5 h-0.5')} />
         </>
       )
     }
 
     case THREAD.DOC: {
       return (
-        <Row>
-          <TreeColumn left={0}>
-            <Bar $color={$color} width={80} height={3} top={6} />
-            <Bar top={14} width={80} $color={$color} height={3} />
-            <Bar top={21} $color={$color} width={80} height={3} />
-            <Bar top={28} $color={$color} width={80} height={3} />
-          </TreeColumn>
+        <>
+          <div
+            className={cn(
+              s.bar,
+              s[`${color}Bg`],
+              'top-1.5 left-3.5 ml-0.5 h-7 w-4 rounded-sm opacity-20',
+            )}
+          />
 
-          <DocColumn left={2}>
-            <Bar $color={$color} width={38} height={3} top={6} />
-            <Bar top={14} width={75} $color={$color} height={3} />
-            <Bar top={21} $color={$color} width={32} height={3} />
-            <Bar top={28} $color={$color} width={45} height={3} />
-          </DocColumn>
-        </Row>
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-2 left-1 h-0.5 opacity-20 w-2')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-3.5 left-1 h-0.5 opacity-30 w-2')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-5 left-1 h-0.5 opacity-15 w-2')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-6 left-1 mt-px h-0.5 opacity-30 w-2')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-7 left-1 mt-0.5 h-0.5 opacity-15 w-2')} />
+        </>
       )
     }
 
     default: {
       return (
         <>
-          <Bar $color={$color} />
-          <Bar top={13} width={75} $color={$color} />
-          <Bar top={21} $color={$color} />
-          <Bar top={29} width={30} $color={$color} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-1')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-3 w-7')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-5 w-3.5')} />
+          <div className={cn(s.bar, s[`${color}Bg`], 'top-7 w-2.5')} />
         </>
       )
     }

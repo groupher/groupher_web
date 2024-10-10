@@ -1,15 +1,13 @@
-import styled, { css, theme } from '~/css'
+import useBase from '..'
 
-import { MainContent } from '..'
+export { cn } from '~/css'
 
-export const Wrapper = styled(MainContent)`
-  ${css.row('align-both')};
+export default () => {
+  const base = useBase()
 
-  *::selection {
-    background-color: ${theme('rainbow.red')} !important;
-    color: white;
+  return {
+    wrapper: base.main,
+    active: base.mainActive,
+    divider: 'ml-5 mr-8',
   }
-`
-export const Slogan = styled.div`
-  ${css.column('align-both')};
-`
+}

@@ -1,11 +1,19 @@
 import styled, { css } from '~/css'
 import type { TActive } from '~/spec'
 
-export const Wrapper = styled.div`
-  ${css.column('align-both')};
-  width: 100%;
-  margin-top: 140px;
-`
+import useTwBelt from '~/hooks/useTwBelt'
+
+export default () => {
+  const { cn } = useTwBelt()
+
+  return {
+    wrapper: cn('column-align-both w-full mt-32'),
+    main: 'align-both w-full relative overflow-hidden h-0',
+    mainActive: 'h-full',
+    featList: 'column gap-y-4 mt-7',
+  }
+}
+
 export const MainContent = styled.div<TActive>`
   width: 100%;
   position: relative;
@@ -14,14 +22,8 @@ export const MainContent = styled.div<TActive>`
 `
 export const FeatList = styled.div`
   ${css.column()};
-  gap: 18px 0;
-  margin-top: 28px;
-`
-export const MobileIntroLists = styled.div`
-  ${css.rowWrap()};
   gap: 16px 0;
-  padding-left: 10px;
-  margin-top: -25px;
+  margin-top: 28px;
 `
 export const HighlightWord = styled.span`
   font-weight: 450;

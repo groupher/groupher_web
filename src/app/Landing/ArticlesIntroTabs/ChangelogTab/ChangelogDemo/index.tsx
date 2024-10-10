@@ -1,21 +1,19 @@
-import type { FC } from 'react'
-
 import MainList from './MainList'
 import EditorPreview from './EditorPreview'
 import EmotionBar from './EmotionBar'
 import EmotionBarBad from './EmotionBarBad'
 
-import { Wrapper } from '../../../styles/articles_intro_tabs/changelog_tab/changelog_demo'
+import useSalon from '../../../styles/articles_intro_tabs/changelog_tab/changelog_demo'
 
-const ChangeLogDemo: FC = () => {
+export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <MainList />
       <EditorPreview />
       <EmotionBar />
       <EmotionBarBad />
-    </Wrapper>
+    </div>
   )
 }
-
-export default ChangeLogDemo

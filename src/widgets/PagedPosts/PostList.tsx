@@ -22,6 +22,8 @@ export const EmptyThread = dynamic(() => import('~/widgets/EmptyThread'), {
 export default () => {
   const { postLayout } = useLayout()
   const { pagedPosts, resState } = usePagedPosts()
+  if (!pagedPosts) return null
+
   const { entries } = pagedPosts
 
   // if (resState === TYPE.RES_STATE.LOADING && entries.length === 0) {

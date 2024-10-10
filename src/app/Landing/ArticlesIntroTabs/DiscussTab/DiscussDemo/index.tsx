@@ -4,106 +4,102 @@ import { mockUsers } from '~/mock'
 import { ARTICLE_CAT } from '~/const/gtd'
 import { COLOR_NAME } from '~/const/colors'
 
+import UpvoteSVG from '~/icons/Upvote'
+import CommentSVG from '~/icons/Comment'
+
 import ArticleCatState from '~/widgets/ArticleCatState'
 import TagNode from '~/widgets/TagNode'
+import Facepile from '~/widgets/Facepile/LandingPage'
 
 import PostItem from './PostItem'
 import CommentItem from './CommentItem'
 
-import {
-  Wrapper,
-  Title,
-  ListsWrapper,
-  DetailWrapper,
-  Status,
-  UpvoteWrapper,
-  UpvoteIcon,
-  CommentIcon,
-  UpvoteCount,
-  Tag,
-  Header,
-  Count,
-  Bar,
-  CommentsHeader,
-} from '../../../styles/articles_intro_tabs/discuss_tab/discuss_demo'
+import useSalon, { cn } from '../../../styles/articles_intro_tabs/discuss_tab/discuss_demo'
 
 const DiscussDemo: FC = () => {
-  const users = mockUsers(5)
+  const s = useSalon()
+
+  const users = mockUsers(10)
 
   return (
-    <Wrapper>
-      <ListsWrapper>
+    <div className={s.wrapper}>
+      <div className={s.listCard}>
         <PostItem
           count={101}
-          opacity={0.85}
-          width={80}
+          className="opacity-85"
           title="蹲一个暗黑模式"
           cat={ARTICLE_CAT.FEATURE}
+          active
         />
         <PostItem
-          opacity={0.75}
+          className="opacity-75"
           count={65}
-          width={90}
           title="手机上点击标题没反应"
           cat={ARTICLE_CAT.BUG}
         />
-        <PostItem opacity={0.65} count={44} width={60} title="希望更新日志支持视频内容" />
+        <PostItem className="opacity-65" count={44} title="希望更新日志支持视频内容" />
         <PostItem
-          opacity={0.5}
+          className="opacity-50"
           count={86}
-          width={110}
           title="管理员可以删除评论吗"
           cat={ARTICLE_CAT.QUESTION}
         />
         <PostItem
-          opacity={0.38}
+          className="opacity-30"
           count={74}
-          width={70}
           title="是否支持私有部署"
           cat={ARTICLE_CAT.QUESTION}
         />
         <PostItem
-          opacity={0.25}
+          className="opacity-25"
           count={13}
-          width={88}
           title="安卓版本在哪里下载"
           cat={ARTICLE_CAT.QUESTION}
         />
-      </ListsWrapper>
+      </div>
 
-      <DetailWrapper>
-        <Header>
-          <ArticleCatState cat={ARTICLE_CAT.FEATURE} right={10} top={-1} left={-1} />
-          <TagNode color={COLOR_NAME.PURPLE} boldHash />
-          <Tag>UI / UX</Tag>
-        </Header>
-        <Title>蹲一个暗黑模式</Title>
-        <Status>
-          <UpvoteWrapper>
-            <UpvoteIcon />
-            <UpvoteCount>101</UpvoteCount>
-          </UpvoteWrapper>
+      <div className={s.detailCard}>
+        <div className={s.header}>
+          <ArticleCatState cat={ARTICLE_CAT.FEATURE} right={3} />
+          <div className={s.tagBox}>
+            <TagNode color={COLOR_NAME.PURPLE} boldHash />
+            <div className={s.tag}>UI / UX</div>
+          </div>
+        </div>
+
+        <div className={s.title}>蹲一个暗黑模式</div>
+        <div className={s.status}>
+          <div className={s.upvote}>
+            <UpvoteSVG className={s.icon} />
+            <div className={s.count}>101</div>
+          </div>
+
+          <Facepile users={users.slice(3, 6)} className="mt-0.5 scale-75 opacity-65 gap-x-1.5" />
 
           <div className="grow" />
-          <CommentIcon />
-          <Count>18</Count>
-        </Status>
-        <Bar top={5} height={6} width={238} bottom={12} opacity={0.2} />
-        <Bar top={5} height={6} width={160} bottom={26} opacity={0.2} />
-        <Bar top={5} height={6} width={180} bottom={12} opacity={0.2} />
-        <Bar top={5} height={6} width={80} bottom={12} opacity={0.2} />
+          <CommentSVG className={s.commentIcon} />
+          <div className={s.commentCount}>18</div>
+        </div>
 
-        <CommentsHeader>
-          评论 <Count>18</Count>
+        <div className={s.content}>
+          <div className={cn(s.bar, 'w-8/12')} />
+          <div className={cn(s.bar, 'w-10/12 top-5 opacity-25')} />
+          <div className={cn(s.bar, 'w-6/12 top-10 opacity-25')} />
+          <div className={cn(s.bar, 'w-4/12 top-14 mt-1 opacity-20')} />
+        </div>
+
+        <div className={s.commentsHeader}>
+          评论 <div className={s.commentCount}>18</div>
           <div className="grow" />
-          <Bar top={5} height={3} width={26} opacity={0.2} right={-3} />
-        </CommentsHeader>
-        <CommentItem index={0} user={users[0]} opacity={0.9} />
-        <CommentItem index={1} user={users[1]} opacity={0.68} />
-        <CommentItem index={2} user={users[2]} opacity={0.42} />
-        <CommentItem index={3} user={users[4]} opacity={0.25} />
-      </DetailWrapper>
-    </Wrapper>
+          <div className={cn(s.bar, 'w-8 mt-1 right-6 opacity-15')} />
+        </div>
+
+        <CommentItem user={users[0]} className="opacity-90" />
+        <CommentItem user={users[1]} className="opacity-65" />
+        <CommentItem user={users[2]} className="opacity-40" />
+        <CommentItem user={users[4]} className="opacity-25" />
+      </div>
+    </div>
   )
 }
 

@@ -16,6 +16,7 @@ const GENERAL = [
   'sexy-border-35',
   'sexy-border-40',
   'sexy-border-50',
+  'shadow-sm',
   'shadow-md',
   'shadow-lg',
   'shadow-xl',
@@ -123,6 +124,7 @@ module.exports = uniq([
     (c) =>
       `text-rainbow-${c} text-rainbow-${c}-dark
        bg-rainbow-${c} bg-rainbow-${c}-dark 
+       decoration-rainbow-${c} bg-rainbow-${c}-dark 
        hover:bg-rainbow-${c}Soft hover:bg-rainbow-${c}Soft-dark
        hover:border-rainbow-${c} hover:border-rainbow-${c}-dark
        bg-rainbow-${c}Soft bg-rainbow-${c}Soft-dark fill-rainbow-${c} fill-rainbow-${c}-dark 

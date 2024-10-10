@@ -6,13 +6,13 @@ import { COLOR_NAME } from '~/const/colors'
 
 import PreviewBars from './PreviewBars'
 
-import { Wrapper, TabItem, IconBox, Icon, Title, Desc } from '../styles/articles_intro_tabs/tabs'
+import useSalon, { cn, ICON } from '../styles/articles_intro_tabs/tabs'
 
 const TAB_ITEMS = [
   {
     key: THREAD.POST,
     title: '讨论区',
-    desc: '功能请求 / Bug / 问题 / 交流',
+    desc: '功能请求 / Bug / 技术支持',
     color: COLOR_NAME.PURPLE,
   },
   {
@@ -30,7 +30,7 @@ const TAB_ITEMS = [
   {
     key: THREAD.DOC,
     title: '帮助台',
-    desc: '文档中心 / 产品手册',
+    desc: '知识库 / 教程 / 产品手册',
     color: COLOR_NAME.CYAN,
   },
 ]
@@ -40,25 +40,47 @@ type TProps = {
   onChange: (tab: TThread) => void
 }
 const Tabs: FC<TProps> = ({ tab, onChange }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       {TAB_ITEMS.map((item) => {
-        const $color = item.color
-        const $active = item.key === tab
-        const CurIcon = Icon[item.key]
+        const color = item.color.toLowerCase()
+        const active = item.key === tab
+        const CurIcon = ICON[item.key]
 
         return (
-          <TabItem key={item.key} $active={$active} onClick={() => onChange(item.key as TThread)}>
-            <IconBox $color={$color} $active={$active}>
-              <PreviewBars $color={$color} tab={item.key} />
-              <CurIcon $color={$color} />
-            </IconBox>
-            <Title $active={$active}>{item.title}</Title>
-            <Desc>{item.desc}</Desc>
-          </TabItem>
+          <div
+            key={item.key}
+            className={cn(s.tabItem, active && s.tabActive, active && s[`${color}Border`])}
+            onClick={() => onChange(item.key as TThread)}
+          >
+            <div
+              className={cn(
+                s.iconBox,
+                s[`${color}Border`],
+                active && '-rotate-3',
+                active && s[`${color}Bg`],
+              )}
+            >
+              <PreviewBars color={color} tab={item.key} />
+              <CurIcon
+                className={cn(
+                  s.icon,
+                  s[`${color}Fill`],
+                  item.key === THREAD.KANBAN && 'rotate-180 -bottom-2.5',
+                  active ? '-bottom-2 -right-2 opacity-100' : '-bottom-4 -right-3 opacity-0',
+                  'trans-all-200',
+                )}
+              />
+            </div>
+
+            <h3 className={cn(s.title, active && s.titleActive)}>{item.title}</h3>
+            <div className={cn(s.desc, active && s.descActive)}>{item.desc}</div>
+          </div>
         )
       })}
-    </Wrapper>
+    </div>
   )
 }
 

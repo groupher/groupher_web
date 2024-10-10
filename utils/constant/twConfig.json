@@ -4,6 +4,7 @@
       "pure-white": "#fff",
       "solarized": "#FEF6E4",
       "hacker news": "#F6F6F0",
+      "light grey": "#FAFAF9",
       "floral-white": "#FFFAF0",
       "mint-white": "#F5FEFA",
       "pink": "#fff8fd",
@@ -38,8 +39,8 @@
   "container": {
     "home": {
       "width": "1460px",
-      "pl": 20,
-      "pr": 20
+      "pl": 0,
+      "pr": 0
     },
     "community": {
       "width": "1200px",

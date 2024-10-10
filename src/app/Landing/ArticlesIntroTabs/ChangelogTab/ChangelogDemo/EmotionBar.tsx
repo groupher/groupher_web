@@ -1,38 +1,33 @@
-import type { FC } from 'react'
+import Img from '~/Img'
 
-import {
-  Wrapper,
-  Item,
-  EmojiImg,
-  Count,
-} from '../../../styles/articles_intro_tabs/changelog_tab/changelog_demo/emotion_bar'
+import useSalon from '../../../styles/articles_intro_tabs/changelog_tab/changelog_demo/emotion_bar'
 
 const EMOTION_STATIC = 'icons/emotion'
 
-const EditorPreview: FC = () => {
+export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <Item>
-        <EmojiImg src={`${EMOTION_STATIC}/tada.png`} />
-        <Count>41</Count>
-      </Item>
+    <div className={s.wrapper}>
+      <div className={s.item}>
+        <Img src={`${EMOTION_STATIC}/tada.png`} className={s.emoji} />
+        <div className={s.count}>41</div>
+      </div>
 
-      <Item>
-        <EmojiImg src={`${EMOTION_STATIC}/beer.png`} />
-        <Count>32</Count>
-      </Item>
+      <div className={s.item}>
+        <Img src={`${EMOTION_STATIC}/beer.png`} className={s.emoji} />
+        <div className={s.count}>32</div>
+      </div>
 
-      <Item>
-        <EmojiImg src={`${EMOTION_STATIC}/biceps.png`} />
-        <Count>17</Count>
-      </Item>
+      <div className={s.item}>
+        <Img src={`${EMOTION_STATIC}/biceps.png`} className={s.emoji} />
+        <div className={s.count}>17</div>
+      </div>
 
-      <Item>
-        <EmojiImg src={`${EMOTION_STATIC}/popcorn.png`} />
-        <Count>10</Count>
-      </Item>
-    </Wrapper>
+      <div className={s.item}>
+        <Img src={`${EMOTION_STATIC}/popcorn.png`} className={s.emoji} />
+        <div className={s.count}>10</div>
+      </div>
+    </div>
   )
 }
-
-export default EditorPreview

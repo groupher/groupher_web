@@ -1,22 +1,20 @@
 import type { FC } from 'react'
 
 import { COLOR_NAME } from '~/const/colors'
-import { DesktopOnly, MobileOnly } from '~/widgets/Common'
+
+import Button from '~/widgets/Buttons/Button'
 
 import FeatItem from '../FeatItem'
-import MoreLink from '../MoreLink'
+import useSalon from '../../styles/articles_intro_tabs'
 
-import { FeatList, MobileIntroLists } from '../../styles/articles_intro_tabs/intro_items'
+const color = COLOR_NAME.PURPLE
 
 const Contents = () => {
-  const color = COLOR_NAME.PURPLE
-
   return (
     <>
       <FeatItem text="投票，发帖，评论" color={color} />
       <FeatItem text="标签，状态分类" color={color} />
       <FeatItem text="富文本内容" color={color} />
-      <FeatItem text="移动端友好" color={color} />
       <FeatItem text="强大的后台管理" color={color} />
       <FeatItem text="内置搜索，SEO 优化" color={color} />
       <FeatItem text="高度自定义" color={color} />
@@ -25,23 +23,21 @@ const Contents = () => {
 }
 
 const IntroItems: FC = () => {
+  const s = useSalon()
+
   return (
     <>
-      <MobileOnly>
-        <MobileIntroLists>
-          <Contents />
-          <MoreLink href="/" color={COLOR_NAME.PURPLE} />
-        </MobileIntroLists>
-      </MobileOnly>
+      <div className={s.featList}>
+        <Contents />
+      </div>
 
-      <DesktopOnly>
-        <FeatList>
-          <Contents />
-        </FeatList>
-
-        <div className="grow" />
-        <MoreLink href="/" color={COLOR_NAME.PURPLE} />
-      </DesktopOnly>
+      <div className="grow" />
+      <div className="w-32 mt-14 row gap-x-2">
+        <Button color={color}>体验 Demo</Button>
+        <Button color={color} ghost>
+          了解更多
+        </Button>
+      </div>
     </>
   )
 }

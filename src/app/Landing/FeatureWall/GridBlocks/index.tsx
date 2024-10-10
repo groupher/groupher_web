@@ -41,14 +41,12 @@ const GridBlocks: FC = () => {
         <Icon.Triangle left={325} bottom={-6} $active={includes('6', SHINE_DOTS[shineIdx])} />
 
         {BLOCKS.map((block) => (
-          <div key={block.key}>
+          <Block key={block.key}>
             {block.key === 4 && <SexyDivider />}
-            <Block>
-              {block.icon}
-              <Title>{block.title}</Title>
-              <Desc>{block.desc}</Desc>
-            </Block>
-          </div>
+            {block.icon}
+            <Title>{block.title}</Title>
+            <Desc>{block.desc}</Desc>
+          </Block>
         ))}
 
         <SexyDivider bottom={0} />

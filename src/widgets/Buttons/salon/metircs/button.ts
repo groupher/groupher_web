@@ -19,15 +19,15 @@ export const getHeight = (size: string): string => {
 export const getRouned = (size: string): string => {
   switch (size) {
     case SIZE.TINY: {
-      return 'rounded-md'
+      return 'rounded'
     }
 
     case SIZE.SMALL: {
-      return 'rounded-lg'
+      return 'rounded-md'
     }
 
     default: {
-      return 'rounded-xl'
+      return 'rounded-lg'
     }
   }
 }

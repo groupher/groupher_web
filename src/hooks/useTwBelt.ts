@@ -14,11 +14,11 @@ import useMetric from '~/hooks/useMetric'
 import useAvatarLayout from '~/hooks/useAvatarLayout'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 
-type TColorPrefix = 'fg' | 'bg' | 'bgSoft' | 'fill' | 'border' | 'borderSoft'
+type TColorPrefix = 'fg' | 'bg' | 'bgSoft' | 'fill' | 'border' | 'borderSoft' | 'decoration'
 type TLinkColorPrefix = 'fg' | 'fill'
 type TBreakOut = 'footer' | 'header'
 type TMenuPart = 'bg' | 'bar' | 'title' | 'link'
-type TShadowSize = 'md' | 'lg' | 'xl'
+type TShadowSize = 'sm' | 'md' | 'lg' | 'xl'
 
 type TRet = {
   cn: (...inputs: ClassValue[]) => string
@@ -33,9 +33,13 @@ type TRet = {
   rainbowPale: (color: TColorName | string) => string
   primary: (prefix?: TColorPrefix) => string
   linker: (prefix?: TLinkColorPrefix) => string
+  linkable: () => string
+  hoverLink: (textSize?: string) => string
+  hoverLinkIcon: (size?: string) => string
   zise: (unit: number) => string
   margin: (spacing: TSpace) => string
   divider: () => string
+  VDivider: () => string
   sexyHBorder: (turn: number, classNames?: string) => string
   sexyVBorder: (turn: number, classNames?: string) => string
   avatar: (level?: 'md' | 'sm' | '') => string
@@ -60,6 +64,7 @@ export default (): TRet => {
   const { isSquare: isAvatarSquare } = useAvatarLayout()
 
   const primaryColor = usePrimaryColor()
+
   const container = () => {
     return `container-${metric.toLowerCase()}`
   }
@@ -173,6 +178,29 @@ export default (): TRet => {
 
     return rainbow(primaryColor, prefix)
   }
+
+  const linkable = () => {
+    return 'no-underline pointer hover:underline'
+  }
+
+  const hoverLink = (textSize = 'text-base') => {
+    return cn(
+      'row-center group',
+      `${textSize}`,
+      'px-1.5 py-0.5 rounded trans-all-100',
+      `hover:${bg('hoverBg')}`,
+      `hover:${fg('text.title')}`,
+      'underline-offset-8 hover:underline',
+      'decoration-1',
+      primary('decoration'),
+      fg('text.digest'),
+    )
+  }
+
+  const hoverLinkIcon = (size = 'size-3.5') => {
+    return cn(`${size}`, 'mr-1', `group-hover:${fill('text.title')}`, fill('text.digest'))
+  }
+
   /**
    * this is not typo, cause the exsiting prama is `size`
    */
@@ -195,6 +223,10 @@ export default (): TRet => {
 
   const divider = (): string => {
     return cn('w-full h-px', bg('divider'))
+  }
+
+  const VDivider = (): string => {
+    return cn('w-px h-3 ml-1.5 mr-1.5', bg('text.digest'))
   }
 
   const sexyHBorder = (turn: number, classNames = ''): string => {
@@ -251,7 +283,7 @@ export default (): TRet => {
       case 'bar': {
         return cn(
           'group/menubar row-center text-sm w-full border border-transparent rounded-md pointer',
-          'px-1.5 py-2 cursor-pointer',
+          'px-1.5 py-1.5 cursor-pointer',
           'trans-all-100',
           `hover:${fg('text.title')}`,
           `hover:${bg('menuHoverBg')}`,
@@ -260,7 +292,7 @@ export default (): TRet => {
         )
       }
       case 'title': {
-        return cn('text-sm', `group-hover/menubar:${fg('text.title')}`)
+        return cn('text-sm grow', `group-hover/menubar:${fg('text.title')}`)
       }
       case 'link': {
         return cn('size-3.5 opacity-0 group-hover/menubar:opacity-60', fill('text.digest'))
@@ -292,9 +324,13 @@ export default (): TRet => {
     rainbowPale,
     primary,
     linker,
+    linkable,
+    hoverLink,
+    hoverLinkIcon,
     zise,
     margin,
     divider,
+    VDivider,
     sexyHBorder,
     sexyVBorder,
     avatar,

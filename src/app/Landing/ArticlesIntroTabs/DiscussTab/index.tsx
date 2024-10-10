@@ -2,17 +2,20 @@ import type { FC } from 'react'
 
 import type { TActive } from '~/spec'
 
-import DiscussDemo from './DiscussDemo'
 import IntroDigest from './IntroDigest'
+import DiscussDemo from './DiscussDemo'
 
-import { Wrapper } from '../../styles/articles_intro_tabs/discuss_tab'
+import useSalon, { cn } from '../../styles/articles_intro_tabs/discuss_tab'
 
-const DiscussFeat: FC<TActive> = ({ $active }) => {
+const DiscussFeat: FC<TActive> = ({ active }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper $active={$active}>
+    <div className={cn(s.wrapper, active && s.active)}>
       <IntroDigest />
+      <div className={s.divider} />
       <DiscussDemo />
-    </Wrapper>
+    </div>
   )
 }
 

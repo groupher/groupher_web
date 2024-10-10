@@ -1,4 +1,4 @@
-import { type FC, useState } from 'react'
+import { useState } from 'react'
 
 import type { TThread } from '~/spec'
 import { THREAD } from '~/const/thread'
@@ -6,17 +6,16 @@ import { THREAD } from '~/const/thread'
 import Tabs from './Tabs'
 import Content from './Content'
 
-import { Wrapper } from '../styles/articles_intro_tabs'
+import useSalon from '../styles/articles_intro_tabs'
 
-const ArticlesIntroTabs: FC = () => {
+export default () => {
+  const s = useSalon()
   const [tab, setTab] = useState<TThread>(THREAD.POST)
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Tabs tab={tab} onChange={(tab) => setTab(tab)} />
       <Content tab={tab} />
-    </Wrapper>
+    </div>
   )
 }
-
-export default ArticlesIntroTabs

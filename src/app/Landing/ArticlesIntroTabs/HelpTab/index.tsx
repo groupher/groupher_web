@@ -5,14 +5,16 @@ import type { TActive } from '~/spec'
 import IntroDigest from './IntroDigest'
 import HelpDemo from './HelpDemo'
 
-import { Wrapper } from '../../styles/articles_intro_tabs/help_tab'
+import useSalon, { cn } from '../../styles/articles_intro_tabs/help_tab'
 
-const HelpFeat: FC<TActive> = ({ $active }) => {
+const HelpFeat: FC<TActive> = ({ active }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper $active={$active}>
+    <div className={cn(s.wrapper, active && s.active)}>
       <IntroDigest />
       <HelpDemo />
-    </Wrapper>
+    </div>
   )
 }
 

@@ -25,6 +25,10 @@
     @apply flex flex-row items-center justify-center;
   }
 
+  .row-center-between {
+    @apply flex flex-row items-center justify-between;
+  }
+
   .column {
     @apply flex flex-col;
   }
@@ -73,6 +77,10 @@
     @apply opacity-65 hover:opacity-100 cursor-pointer
   }
 
+  .smoky-80 {
+    @apply opacity-80 hover:opacity-100 cursor-pointer
+  }
+
   .smoky-90 {
     @apply opacity-90 hover:opacity-100 cursor-pointer
   }
@@ -119,6 +127,12 @@
 
   .saving-bar-right-linear-dark {
     background: linear-gradient(to right, #42424259 45%, transparent);
+  }
+
+  .clip-text {
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent;
   }
 
   .count-highlight {
@@ -240,6 +254,20 @@
     );
     border-image-slice: 1;
   }
+
+  .landing-gradient-purple {
+    background: linear-gradient(rgb(236 229 255 / 30%) 0%, rgb(255 255 255 / 96%) 100%);
+  }
+  .landing-gradient-blue {
+    background: linear-gradient(rgb(240 246 255 / 82%) 0%, rgb(255 255 255 / 96%) 100%);
+  }
+  .landing-gradient-cyan {
+    background: linear-gradient(#e0feff66 0%, rgb(255 255 255) 100%);
+  }
+  .landing-gradient-red {
+    background: linear-gradient(rgb(255 204 204 / 19%) 0%, rgb(255 255 255) 100%);
+  }
+
 
   .debug {
     @apply border border-dashed;

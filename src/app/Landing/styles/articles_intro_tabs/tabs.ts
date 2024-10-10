@@ -1,88 +1,61 @@
-import type { TActive, TColor } from '~/spec'
 import { THREAD } from '~/const/thread'
+import { COLOR_NAME } from '~/const/colors'
 
 import DiscussSVG from '~/icons/DiscussSolid'
 import TadaSVG from '~/icons/Tada'
 import GuideSVG from '~/icons/Book'
 import KanbanSVG from '~/icons/Kanban'
 
-import styled, { css, rainbow, rainbowSoft, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.row('align-both')};
-  gap: 0 64px;
-  width: 100%;
-`
-export const TabItem = styled.div<TActive>`
-  ${css.column('align-both')};
-  width: 162px;
-  border-bottom: 2px solid;
-  border-bottom-color: ${({ $active }) => ($active ? theme('hint') : 'transparent')};
-  padding-bottom: 22px;
-  cursor: pointer;
+export { cn } from '~/css'
 
-  filter: ${({ $active }) => ($active ? 'saturate(1)' : 'saturate(0)')};
-  opacity: ${({ $active }) => ($active ? 1 : 0.8)};
+export default () => {
+  const { cn, fg, rainbow } = useTwBelt()
 
-  &:hover {
-    opacity: 1;
-    border-bottom-color: ${({ $active }) => ($active ? theme('article.title') : theme('hoverBg'))};
+  return {
+    wrapper: cn('align-both w-full gap-x-20'),
+    tabItem: cn(
+      'column-align-both group w-44 border-b-2 border-b-transparent pb-5',
+      'smoky-80 saturate-0 hover:saturate-100',
+    ),
+    tabActive: cn('saturate-100 opacity-100'),
+
+    purpleBorder: rainbow(COLOR_NAME.PURPLE, 'border'),
+    blueBorder: rainbow(COLOR_NAME.BLUE, 'border'),
+    redBorder: rainbow(COLOR_NAME.RED, 'border'),
+    cyanBorder: rainbow(COLOR_NAME.CYAN, 'border'),
+
+    purpleBg: rainbow(COLOR_NAME.PURPLE, 'bgSoft'),
+    blueBg: rainbow(COLOR_NAME.BLUE, 'bgSoft'),
+    redBg: rainbow(COLOR_NAME.RED, 'bgSoft'),
+    cyanBg: rainbow(COLOR_NAME.CYAN, 'bgSoft'),
+
+    purpleFill: rainbow(COLOR_NAME.PURPLE, 'fill'),
+    blueFill: rainbow(COLOR_NAME.BLUE, 'fill'),
+    redFill: rainbow(COLOR_NAME.RED, 'fill'),
+    cyanFill: rainbow(COLOR_NAME.CYAN, 'fill'),
+
+    //
+    title: cn(
+      'text-lg mb-1.5 mt-4 trans-all-100',
+      `group-hover:${fg('text.title')}`,
+      fg('text.digest'),
+    ),
+    titleActive: cn('bold-sm', fg('text.title')),
+
+    desc: cn('text-sm group-smoky-80', fg('text.digest')),
+    descActive: '!opacity-100',
+
+    //
+    iconBox: cn('size-10 rounded-md relative border border-dotted trans-all-200'),
+    icon: cn('size-7 absolute'),
   }
-`
-type TIconBox = TColor & TActive
-export const IconBox = styled.div<TIconBox>`
-  ${css.size(40)};
-  border-radius: 6px;
-  background: ${({ $color, $active }) => ($active ? rainbowSoft($color) : 'transparent')};
-  position: relative;
-  border: 1px dotted;
-  border-color: ${({ $color }) => rainbow($color)};
-  transform: scale(0.9);
-`
-
-type TIcon = TColor
-const commonIcon = (comp) => {
-  return styled(comp)<TIcon>`
-    ${css.size(28)};
-    fill: ${({ $color }) => rainbow($color)};
-    position: absolute;
-    bottom: -8px;
-    right: -8px;
-  `
 }
 
-export const Icon = {
-  [THREAD.POST]: commonIcon(DiscussSVG),
-  [THREAD.KANBAN]: styled(commonIcon(KanbanSVG))`
-    transform: rotate(180deg) rotateY(180deg);
-    bottom: -9px;
-    right: -8px;
-  `,
-  [THREAD.CHANGELOG]: styled(commonIcon(TadaSVG))`
-    ${css.size(26)};
-    bottom: -9px;
-    right: -8px;
-  `,
-  [THREAD.DOC]: styled(commonIcon(GuideSVG))`
-    bottom: -9px;
-    right: -8px;
-  `,
+export const ICON = {
+  [THREAD.POST]: DiscussSVG,
+  [THREAD.KANBAN]: KanbanSVG,
+  [THREAD.CHANGELOG]: TadaSVG,
+  [THREAD.DOC]: GuideSVG,
 }
-
-export const Title = styled.div<TActive>`
-  font-size: 18px;
-  margin-top: 18px;
-  margin-bottom: 5px;
-  color: ${({ $active }) => ($active ? theme('article.title') : theme('article.digest'))};
-  font-weight: 500;
-
-  ${TabItem}:hover & {
-    color: ${theme('article.title')};
-  }
-
-  transition: all 0.2s;
-`
-export const Desc = styled.div`
-  font-size: 13px;
-  color: ${theme('article.digest')};
-`

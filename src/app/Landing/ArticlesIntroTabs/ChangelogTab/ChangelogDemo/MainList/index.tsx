@@ -1,89 +1,74 @@
-import type { FC } from 'react'
-
 import { COLOR_NAME } from '~/const/colors'
 
 import TagNode from '~/widgets/TagNode'
 
+import StarSVG from '../../../../styles/articles_intro_tabs/changelog_tab/Star'
+
 import CoverPreview from '../CoverPreview'
 import Footer from './Footer'
 
-import {
-  Wrapper,
-  Header,
-  Title,
-  Version,
-  Bar,
-  Cover,
-  TagsWrapper,
-  TagItem,
-  Content,
-  Divider,
-  Previous,
-  StarIcon,
-  StarIcon2,
-  StarIcon3,
+import useSalon, {
+  cn,
 } from '../../../../styles/articles_intro_tabs/changelog_tab/changelog_demo/main_list'
 
-const MainList: FC = () => {
-  return (
-    <Wrapper>
-      <StarIcon />
-      <StarIcon2 />
-      <StarIcon3 />
-      <Header>
-        <Title>
-          船新封面图编辑器 <Version>v2.0</Version>
-        </Title>
+export default () => {
+  const s = useSalon()
 
-        <TagsWrapper>
-          <TagItem>
+  return (
+    <div className={s.wrapper}>
+      <StarSVG className={cn(s.starIcon, s.starOrange, 'top-32 left-8')} />
+      <StarSVG className={cn(s.starIcon, s.starRed, 'top-32 right-32 opacity-60')} />
+      <StarSVG className={cn(s.starIcon, s.starOrange, 'top-40 left-20 opacity-60')} />
+      <div className={s.header}>
+        <div className={s.title}>
+          船新封面图编辑器 <div className={s.version}>v2.0</div>
+        </div>
+
+        <div className={s.tags}>
+          <div className={s.tagItem}>
             <TagNode color={COLOR_NAME.GREEN} boldHash />
             Web
-          </TagItem>
+          </div>
 
-          <TagItem>
+          <div className={s.tagItem}>
             <TagNode color={COLOR_NAME.ORANGE} boldHash />
             Mobile
-          </TagItem>
-        </TagsWrapper>
-      </Header>
-      <Cover>
+          </div>
+        </div>
+      </div>
+      <div className={s.cover}>
         <CoverPreview />
-      </Cover>
-      <Content>
-        <Bar height={6} width={159} right={7} opacity={0.3} />
-        <Bar height={6} width={100} opacity={0.2} />
-      </Content>
+      </div>
+      <div className={s.content}>
+        <div className={s.bar} />
+        <div className={cn(s.bar, 'w-28 opacity-20')} />
+      </div>
       <Footer upvotesCount={24} date="2013-12-01" />
-      <Divider />
-      <Previous>
-        <Header>
-          <Title>
-            AI 加持的文章搜索 <Version>v1.9</Version>
-          </Title>
+      <div className={s.divider} />
+      <div className="opacity-75">
+        <div className={s.header}>
+          <div className={s.title}>
+            AI 加持的文章搜索 <div className={s.version}>v1.9</div>
+          </div>
 
-          <TagsWrapper>
-            <TagsWrapper>
-              <TagItem>
-                <TagNode color={COLOR_NAME.GREEN} boldHash />
-                Web
-              </TagItem>
+          <div className={s.tags}>
+            <div className={s.tagItem}>
+              <TagNode color={COLOR_NAME.GREEN} boldHash />
+              Web
+            </div>
 
-              <TagItem>
-                <TagNode color={COLOR_NAME.PINK} boldHash />
-                编辑器
-              </TagItem>
-            </TagsWrapper>
-          </TagsWrapper>
-        </Header>
-        <Content>
-          <Bar height={6} width={159} right={7} opacity={0.3} />
-          <Bar height={6} width={100} opacity={0.2} />
-        </Content>
+            <div className={s.tagItem}>
+              <TagNode color={COLOR_NAME.PINK} boldHash />
+              编辑器
+            </div>
+          </div>
+        </div>
+        <div className={s.content}>
+          <div className={cn(s.bar, 'w-32 opacity-25')} />
+          <div className={cn(s.bar, 'w-28 opacity-20')} />
+        </div>
         <Footer upvotesCount={98} date="2013-11-26" />
-      </Previous>
-    </Wrapper>
+      </div>
+    </div>
   )
 }
-
-export default MainList

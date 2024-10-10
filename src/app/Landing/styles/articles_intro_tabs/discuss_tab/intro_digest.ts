@@ -1,25 +1,18 @@
-import type { TTestable } from '~/spec'
-import styled, { css, theme } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
-import { HighlightWord } from '..'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export { FeatList } from '..'
+export default () => {
+  const { cn, fg, rainbow } = useTwBelt()
 
-export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TTestable>`
-  ${css.column('align-start')};
-  margin-left: 12px;
-  margin-top: 40px;
-`
-export const Digest = styled.div`
-  color: ${theme('article.digest')};
-  line-height: 1.78em;
-  width: 320px;
-  margin-top: -32px;
-  margin-bottom: 30px;
-  font-size: 19px;
-`
-export const Highlight = styled(HighlightWord)`
-  color: ${theme('rainbow.purple')};
-`
+  return {
+    wrapper: cn('column mt-6'),
+    title: cn('text-xl bold-sm mt-1', rainbow(COLOR_NAME.PURPLE, 'fg')),
+    digest: cn('w-80 text-base mt-4 leading-relaxed opacity-80', fg('text.digest')),
+    highlight: cn(
+      'bold-sm italic ml-px mr-px px-0.5',
+      rainbow(COLOR_NAME.PURPLE, 'fg'),
+      rainbow(COLOR_NAME.PURPLE, 'bgSoft'),
+    ),
+  }
+}

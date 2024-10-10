@@ -1,48 +1,45 @@
 import type { FC } from 'react'
 
+import type { TArticleCat, TActive } from '~/spec'
+
+import UpvoteSVG from '~/icons/Upvote'
 import ArticleCatState from '~/widgets/ArticleCatState'
 
-import type { TArticleCat } from '~/spec'
-
-import {
-  Wrapper,
-  UpvotesWrapper,
-  RightPart,
-  Title,
-  Footer,
-  UpvoteIcon,
-  Count,
+import useSalon, {
+  cn,
 } from '../../../styles/articles_intro_tabs/discuss_tab/discuss_demo/post_item'
 
 type TProps = {
   title?: string
-  opacity?: number
+  opacity?: string
   count?: number
-  width?: number
   cat?: TArticleCat
-}
+  className?: string
+} & TActive
 
 const PostItem: FC<TProps> = ({
   title = '',
   cat = 'FEATURE',
-  opacity = 1,
   count = 9,
-  width = 80,
+  className = '',
+  active,
 }) => {
-  return (
-    <Wrapper opacity={opacity}>
-      <UpvotesWrapper>
-        <UpvoteIcon />
-        <Count>{count}</Count>
-      </UpvotesWrapper>
+  const s = useSalon({ active })
 
-      <RightPart>
-        <Title>{title}</Title>
-        <Footer>
+  return (
+    <div className={cn(s.wrapper, className)}>
+      <div className={s.upvote}>
+        <UpvoteSVG className={s.upvoteIcon} />
+        <div className={s.count}>{count}</div>
+      </div>
+
+      <div className={s.rightPart}>
+        <div className={s.title}>{title}</div>
+        <div className={s.footer}>
           <ArticleCatState cat={cat} noBorder />
-        </Footer>
-      </RightPart>
-    </Wrapper>
+        </div>
+      </div>
+    </div>
   )
 }
 

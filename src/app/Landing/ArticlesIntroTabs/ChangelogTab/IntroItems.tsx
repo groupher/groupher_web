@@ -1,16 +1,15 @@
 import type { FC } from 'react'
 
 import { COLOR_NAME } from '~/const/colors'
-import { DesktopOnly } from '~/widgets/Common'
 
+import Button from '~/widgets/Buttons/Button'
 import FeatItem from '../FeatItem'
-import MoreLink from '../MoreLink'
 
-import { FeatList } from '../../styles/articles_intro_tabs/intro_items'
+import useSalon from '../../styles/articles_intro_tabs'
+
+const color = COLOR_NAME.RED
 
 const Contents = () => {
-  const color = COLOR_NAME.RED
-
   return (
     <>
       <FeatItem text="封面图片编辑" color={color} />
@@ -24,16 +23,21 @@ const Contents = () => {
 }
 
 const IntroItems: FC = () => {
+  const s = useSalon()
+
   return (
     <>
-      <DesktopOnly>
-        <FeatList>
-          <Contents />
-        </FeatList>
+      <div className={s.featList}>
+        <Contents />
+      </div>
 
-        <div className="grow" />
-        <MoreLink href="/" color={COLOR_NAME.RED} />
-      </DesktopOnly>
+      <div className="grow" />
+      <div className="w-32 mt-14 row gap-x-2">
+        <Button color={color}>体验 Demo</Button>
+        <Button color={color} ghost>
+          了解更多
+        </Button>
+      </div>
     </>
   )
 }
