@@ -24,6 +24,8 @@ const GENERAL = [
   'gradient-blue',
   'gradient-purple',
   'gradient-pink',
+  'gradient-green',
+  'gradient-yellow',
 ]
 
 const TEXT_COLORS = [

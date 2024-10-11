@@ -1,23 +1,19 @@
-import type { FC } from 'react'
-
-import { COLOR_NAME } from '~/const/colors'
 import useHover from '~/hooks/useHover'
 
 import Panel from './Panel'
-import { Wrapper, Footer, Title, Desc } from '../../styles/feature_wall/statistics'
+import useSalon from '../../styles/feature_wall/statistics'
 
-const statistics: FC = () => {
+export default () => {
+  const s = useSalon()
   const [cardRef, isCardHovered] = useHover<HTMLDivElement>()
 
   return (
-    <Wrapper ref={cardRef} $color={COLOR_NAME.YELLOW}>
+    <div ref={cardRef} className={s.wrapper}>
       <Panel hovering={isCardHovered} />
-      <Footer>
-        <Title>统计分析</Title>
-        <Desc>社区访问趋势，地域分布，站点来源等，进一步了解你的产品用户。</Desc>
-      </Footer>
-    </Wrapper>
+      <div className={s.footer}>
+        <h3 className={s.title}>统计分析</h3>
+        <div className={s.desc}>社区访问趋势，地域分布，站点来源等，进一步了解你的产品用户。</div>
+      </div>
+    </div>
   )
 }
-
-export default statistics

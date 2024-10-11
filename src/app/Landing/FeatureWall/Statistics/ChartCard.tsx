@@ -17,8 +17,10 @@ type TProps = {
 }
 
 const ChartCard: FC<TProps> = ({ hovering }) => {
+  const flipCount = hovering ? 152 : 23
+
   return (
-    <>
+    <div>
       <Column top={45} right={50} height="120px" />
       <Column top={56} left={170} height="100px" />
       {!hovering && <Column top={45} right={75} height="120px" />}
@@ -33,11 +35,12 @@ const ChartCard: FC<TProps> = ({ hovering }) => {
         </TrendText>
 
         <TrendNum top={30} left={13}>
-          <AnimatedCount count={hovering ? 99 : 26} forceColor="#323232" size="large" />
+          <AnimatedCount count={flipCount} forceColor="#323232" size="large" />
         </TrendNum>
+
         <ChartBottomGradient />
       </Wrapper>
-    </>
+    </div>
   )
 }
 

@@ -8,16 +8,27 @@ function useHover<T>(): [MutableRefObject<T>, boolean] {
   const ref: any = useRef<T | null>(null)
   const handleMouseOver = (): void => setValue(true)
   const handleMouseOut = (): void => setValue(false)
+
   useEffect(
     () => {
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const node: any = ref.current
       if (node) {
+        if (node._hoverListenersAdded) {
+          node.removeEventListener('mouseover', handleMouseOver)
+          node.removeEventListener('mouseout', handleMouseOut)
+        }
+
         node.addEventListener('mouseover', handleMouseOver)
         node.addEventListener('mouseout', handleMouseOut)
+
+        node._hoverListenersAdded = true
+
         return () => {
           node.removeEventListener('mouseover', handleMouseOver)
           node.removeEventListener('mouseout', handleMouseOut)
+
+          delete node._hoverListenersAdded
         }
       }
     },

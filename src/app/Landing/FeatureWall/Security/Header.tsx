@@ -1,27 +1,30 @@
 import type { FC } from 'react'
 
-import { COLOR_NAME } from '~/const/colors'
+import MoreSVG from '~/icons/menu/MoreL'
 
-import { Wrapper, Dot, Domain, MoreIcon } from '../../styles/feature_wall/security/header'
+import useSalon, { cn } from '../../styles/feature_wall/security/header'
 
 type TProps = {
   hovering: boolean
 }
 
-const Panel: FC<TProps> = ({ hovering }) => {
+const Header: FC<TProps> = ({ hovering }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper left={0} top={hovering ? 0 : -30}>
-      <Dot left={18} top={16} $color={COLOR_NAME.RED} />
-      <Dot left={34} top={16} $color={COLOR_NAME.ORANGE} />
-      <Dot left={50} top={16} $color={COLOR_NAME.GREEN_LIGHT} />
+    <div className={cn(s.wrapper, !hovering && '-top-8')}>
+      <div className={s.actions}>
+        <div className={cn(s.dot, s.redBg)} />
+        <div className={cn(s.dot, s.yellowBg)} />
+        <div className={cn(s.dot, s.greenowBg)} />
+      </div>
 
-      <Domain top={10} left={112}>
-        自定义域名
-      </Domain>
+      <div className={s.domain} />
+      <div className={s.domainText}>自定义域名</div>
 
-      <MoreIcon />
-    </Wrapper>
+      <MoreSVG className={s.moreIcon} />
+    </div>
   )
 }
 
-export default Panel
+export default Header

@@ -1,90 +1,28 @@
-import styled, { css, theme } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
-import LockSVG from '~/icons/Lock'
-import SettingSVG from '~/icons/Setting'
-import SearchSVG from '~/icons/HeaderSearch'
-import AuthSVG from '~/icons/Auth'
-import HashSVG from '~/icons/HashTagBold'
-import UploadSVG from '~/icons/Upload'
-import CloudSVG from '~/icons/CloudCheck'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { WithMargin, WithPosition } from '~/widgets/Common'
+export { cn } from '~/css'
 
-export const Wrapper = styled.div`
-  padding: 15px;
-  padding-top: 30px;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-`
-type TLine = { height?: string; width?: string; $hovering: boolean }
-export const Column = styled(WithPosition)<TLine>`
-  height: ${({ height }) => height || '100px'};
-  width: 1px;
-  border-right: 1px dotted;
-  border-right-color: ${theme('rainbow.green')};
-  opacity: 0.3;
-  z-index: 2;
-  transition: all 0.2s;
-`
-export const Line = styled(WithPosition)<TLine>`
-  width: ${({ width }) => width || '200px'};
-  height: 1px;
-  border-top: 1px dotted;
-  border-top-color: ${theme('rainbow.green')};
-  opacity: 0.3;
-  z-index: 2;
-  transition: all 0.2s;
-`
-export const BlocksWrapper = styled.div<{ top: number }>`
-  ${css.row('align-center')};
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: ${({ top }) => `${top}px`};
-  transition: all .2s;
-`
-export const Block = styled(WithMargin)<{ $opacity?: number }>`
-  ${css.row('align-both')};
-  color: ${theme('article.digest')};
-  min-height: 34px;
-  width: auto;
-  padding: 0 8px;
-  border: 1px solid;
-  border-radius: 8px;
-  border-color: ${theme('divider')};
-  background: ${theme('htmlBg')};
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  z-index: 2;
-  opacity: ${({ $opacity }) => $opacity || 1};
+export default () => {
+  const { cn, fg, bg, rainbow, shadow } = useTwBelt()
 
-  transition: all 0.2s;
-`
-export const Title = styled.div`
-  font-size: 12px;
-  margin-left: 4px;
-`
-const commonIcon = (comp) => {
-  return styled(comp)`
-    ${css.size(12)};
-    fill: ${theme('article.digest')};
-    opacity: 0.8;
-  `
-}
-
-export const Icon = {
-  Lock: styled(commonIcon(LockSVG))`
-    fill: ${theme('rainbow.green')};
-    margin-top: -1px;
-  `,
-  Setting: commonIcon(SettingSVG),
-  Search: commonIcon(SearchSVG),
-  Auth: styled(commonIcon(AuthSVG))`
-    fill: ${theme('rainbow.green')};
-  `,
-  Hash: styled(commonIcon(HashSVG))`
-    transform: rotate(15deg);
-  `,
-  Upload: commonIcon(UploadSVG),
-  Cloud: commonIcon(CloudSVG),
+  return {
+    wrapper: cn('w-full h-full p-4 pt-7 overflow-hidden relative'),
+    nestIcon: cn(
+      'absolute size-44 rotate-45 top-0 left-10 opacity-10 trans-all-200',
+      rainbow(COLOR_NAME.GREEN, 'fill'),
+    ),
+    nextIconHover: '-rotate-12 top-6 left-20 size-44',
+    //
+    blocks: cn('row-center wrap mt-1.5 gap-3 trans-all-200'),
+    brick: cn(
+      'align-both px-2 z-20 border h-8 rounded-md trans-all-100',
+      rainbow(COLOR_NAME.GREEN, 'borderSoft'),
+      shadow('sm'),
+      bg('htmlBg'),
+    ),
+    icon: cn('size-3', rainbow(COLOR_NAME.GREEN, 'fill')),
+    title: cn('text-xs ml-1', fg('text.digest')),
+  }
 }

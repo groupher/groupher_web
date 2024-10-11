@@ -1,67 +1,62 @@
 import type { FC } from 'react'
 
+import NestlSVG from '~/icons/NestGlobal'
+
+import LockSVG from '~/icons/Lock'
+import SettingSVG from '~/icons/Setting'
+import SearchSVG from '~/icons/HeaderSearch'
+import AuthSVG from '~/icons/Auth'
+import HashSVG from '~/icons/HashTagBold'
+import UploadSVG from '~/icons/Upload'
+import CloudSVG from '~/icons/CloudCheck'
+
 import Header from './Header'
-import {
-  Wrapper,
-  BlocksWrapper,
-  Block,
-  Line,
-  Column,
-  Icon,
-  Title,
-} from '../../styles/feature_wall/security/panel'
+import useSalon, { cn } from '../../styles/feature_wall/security/panel'
 
 type TProps = {
   hovering: boolean
 }
 
 const Panel: FC<TProps> = ({ hovering }) => {
-  return (
-    <Wrapper>
-      <Line top={40} left={10} $hovering={hovering} />
-      <Line top={72} right={30} width="100px" $hovering={hovering} />
-      <Line top={85} right={10} $hovering={hovering} />
-      <Line top={120} right={30} width="220px" $hovering={hovering} />
+  const s = useSalon()
 
-      <Column top={12} left={30} height="168px" $hovering={hovering} />
-      <Column top={12} left={60} height="108px" $hovering={hovering} />
-      <Column top={30} left={100} height="108px" $hovering={hovering} />
-      <Column top={30} right={80} height="148px" $hovering={hovering} />
-      <Column top={30} right={30} height="108px" $hovering={hovering} />
+  return (
+    <div className={s.wrapper}>
+      <NestlSVG className={cn(s.nestIcon, hovering && s.nextIconHover)} />
 
       <Header hovering={hovering} />
 
-      <BlocksWrapper top={hovering ? 20 : 5}>
-        <Block left={hovering ? 6 : 15}>
-          <Icon.Lock />
-          <Title>https加密</Title>
-        </Block>
-        <Block>
-          <Icon.Setting />
-          <Title>外观自定义</Title>
-        </Block>
-        <Block left={hovering ? 10 : 0}>
-          <Icon.Upload />
-          <Title>导入导出</Title>
-        </Block>
-        <Block>
-          <Icon.Hash />
-          <Title>用户标签</Title>
-        </Block>
-        <Block>
-          <Icon.Search />
-          <Title>SEO</Title>
-        </Block>
-        <Block left={hovering ? 35 : 25} $opacity={0.8}>
-          <Icon.Auth />
-          <Title>灵活权限</Title>
-        </Block>
-        <Block $opacity={0.8}>
-          <Icon.Cloud />
-          <Title>私有部署</Title>
-        </Block>
-      </BlocksWrapper>
-    </Wrapper>
+      <div className={cn(s.blocks, hovering && 'mt-5')}>
+        <div className={cn(s.brick, hovering ? 'ml-4' : 'ml-2')}>
+          <LockSVG className={s.icon} />
+          <div className={s.title}>https加密</div>
+        </div>
+        <div className={s.brick}>
+          <SettingSVG className={s.icon} />
+          <div className={s.title}>外观自定义</div>
+        </div>
+        <div className={cn(s.brick, hovering ? 'ml-1' : 'ml-2')}>
+          <UploadSVG className={s.icon} />
+          <div className={s.title}>导入导出</div>
+        </div>
+        <div className={s.brick}>
+          <HashSVG className={s.icon} />
+          <div className={s.title}>用户标签</div>
+        </div>
+        <div className={s.brick}>
+          <SearchSVG className={s.icon} />
+          <div className={s.title}>SEO</div>
+        </div>
+        <div className={cn(s.brick, 'opacity-80', hovering ? 'ml-8' : 'ml-5')}>
+          <AuthSVG className={s.icon} />
+          <div className={s.title}>灵活权限</div>
+        </div>
+        <div className={cn(s.brick, 'opacity-80')}>
+          <CloudSVG className={s.icon} />
+          <div className={s.title}>私有部署</div>
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -16,7 +16,7 @@ type TProps = {
 
 const SummaryCard: FC<TProps> = ({ hovering }) => {
   return (
-    <Wrapper left={25} bottom={6}>
+    <Wrapper left={25} top={80}>
       <Block>
         <Title>访客数</Title>
         <Num>1008</Num>

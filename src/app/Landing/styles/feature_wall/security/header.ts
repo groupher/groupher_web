@@ -1,34 +1,26 @@
-import styled, { css, rainbow, theme } from '~/css'
-import type { TColor } from '~/spec'
+import { COLOR_NAME } from '~/const/colors'
 
-import MoreSVG from '~/icons/menu/MoreL'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { WithPosition } from '~/widgets/Common'
+export { cn } from '~/css'
 
-export const Wrapper = styled(WithPosition)`
-  height: 32px;
-  width: 100%;
-  transition: all .2s;
-`
-export const Domain = styled(WithPosition)`
-  ${css.row('align-both')};
-  background-color: #304d0952;
-  width: 90px;
-  height: 20px;
-  border-radius: 5px;
-  color: ${theme('button.fg')};
-  font-size: 12px;
-  font-weight: 500;
-`
-export const Dot = styled(WithPosition)<TColor>`
-  ${css.circle(9)};
-  background: ${({ $color }) => rainbow($color)};
-  opacity: 0.65;
-`
-export const MoreIcon = styled(MoreSVG)`
-  ${css.size(14)};
-  fill: ${theme('rainbow.green')};
-  position: absolute;
-  top: 12px;
-  right: 14px;
-`
+export default () => {
+  const { cn, fg, rainbow } = useTwBelt()
+
+  return {
+    wrapper: cn('row-center-between absolute left-0 top-0 w-full h-8 px-3 trans-all-200'),
+    actions: 'row-center mt-1.5',
+    dot: 'size-2 circle ml-2 brightness-125',
+    redBg: rainbow(COLOR_NAME.RED, 'bg'),
+    yellowBg: rainbow(COLOR_NAME.YELLOW, 'bg'),
+    greenowBg: rainbow(COLOR_NAME.GREEN, 'bg'),
+    moreIcon: cn('size-3.5', rainbow(COLOR_NAME.GREEN, 'fill')),
+
+    domain: cn(
+      'brightness-50 w-28 h-5 mt-1 rounded-md px-2 opacity-50',
+      rainbow(COLOR_NAME.GREEN, 'bgSoft'),
+    ),
+
+    domainText: cn('absolute left-1/2 top-2.5 -ml-3.5 text-xs bold', fg('button.fg')),
+  }
+}
