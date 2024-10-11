@@ -1,21 +1,16 @@
-import type { FC } from 'react'
+import useSalon, { cn } from '../../styles/feature_wall/integration/header'
 
-import { Brick } from '~/widgets/Common'
-import { Wrapper, Dot } from '../../styles/feature_wall/integration/header'
-
-const Header: FC = () => {
-  const top = 6
+export default () => {
+  const s = useSalon()
 
   return (
-    <Wrapper top={5} left={0}>
-      <Dot left={10} top={top} />
-      <Dot left={20} top={top} />
-      <Dot left={30} top={top} />
+    <div className={s.wrapper}>
+      <div className={cn(s.dot, 'left-4')} />
+      <div className={cn(s.dot, 'left-7')} />
+      <div className={cn(s.dot, 'left-10')} />
 
-      <Brick $opacity={0.08} left={80} $width={90} $height={6} top={top - 1} />
-      <Brick $opacity={0.06} right={15} $width={18} $height={4} top={top} />
-    </Wrapper>
+      <div className={cn(s.bar, 'left-24')} />
+      <div className={cn(s.bar, 'right-5 w-5 opacity-15')} />
+    </div>
   )
 }
-
-export default Header

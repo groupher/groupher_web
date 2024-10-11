@@ -20,6 +20,10 @@ const GENERAL = [
   'shadow-md',
   'shadow-lg',
   'shadow-xl',
+
+  'gradient-blue',
+  'gradient-purple',
+  'gradient-pink',
 ]
 
 const TEXT_COLORS = [

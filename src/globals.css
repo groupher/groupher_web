@@ -259,6 +259,10 @@
     text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;
   }
 
+  .trans-jump {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2)
+  }
+
   .landing-gradient-purple {
     background: linear-gradient(rgb(236 229 255 / 30%) 0%, rgb(255 255 255 / 96%) 100%);
   }

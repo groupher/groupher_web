@@ -1,37 +1,20 @@
-import type { FC } from 'react'
+import TerminalSVG from '~/icons/Terminal'
 
-import { COLOR_NAME } from '~/const/colors'
-import { Brick } from '~/widgets/Common'
+import useSalon from '../../styles/feature_wall/integration/embed_script'
 
-import {
-  Codes,
-  TerminalIcon,
-  BlickCursor,
-  Highlight,
-} from '../../styles/feature_wall/integration/embed_script'
+export default () => {
+  const s = useSalon()
 
-const EmbedScript: FC = () => {
   return (
-    <>
-      <Brick
-        $width={215}
-        $height={20}
-        $radius={4}
-        $opacity={0.1}
-        bottom={10}
-        left={18}
-        $color={COLOR_NAME.ORANGE}
-      />
+    <div className={s.wrapper}>
+      <TerminalSVG className={s.icon} />
 
-      <TerminalIcon />
-      <BlickCursor bottom={14} right={29} />
+      <div className={s.codes}>
+        script: groupher/<span className={s.embed}>embed</span>?id=
+        <span className={s.redText}>your-site</span>
+      </div>
 
-      <Codes bottom={12} left={40}>
-        script: groupher/<Highlight $color={COLOR_NAME.BLACK}>embed</Highlight>?id=
-        <Highlight $color={COLOR_NAME.RED}>your-site</Highlight>
-      </Codes>
-    </>
+      <div className={s.cursor} />
+    </div>
   )
 }
-
-export default EmbedScript

@@ -1,30 +1,21 @@
-import type { FC } from 'react'
-
 import useHover from '~/hooks/useHover'
-import { COLOR_NAME } from '~/const/colors'
 
 import Panel from './Panel'
-import {
-  Wrapper,
-  Banner,
-  Title,
-  Desc,
-  WarningMask,
-} from '../../styles/feature_wall/bundle_size_card'
+import useSalon from '../../styles/feature_wall/bundle_size_card'
 
-const BundleSizeCard: FC = () => {
+export default () => {
+  const s = useSalon()
+
   const [ref, isHovered] = useHover<HTMLDivElement>()
 
   return (
-    <Wrapper $color={COLOR_NAME.PURPLE} ref={ref}>
-      <Banner>
-        <Title>精简 & 轻量</Title>
-        <Desc>对比国内外同类服务，体积更小</Desc>
-      </Banner>
+    <div ref={ref} className={s.wrapper}>
+      <div className={s.banner}>
+        <h3 className={s.title}>精简 & 轻量</h3>
+        <div className={s.desc}>对比国内外同类服务，体积更小</div>
+      </div>
       <Panel hovering={isHovered} />
-      <WarningMask />
-    </Wrapper>
+      <div className={s.warningMask} />
+    </div>
   )
 }
-
-export default BundleSizeCard

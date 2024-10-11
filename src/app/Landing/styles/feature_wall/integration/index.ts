@@ -1,24 +1,16 @@
-import styled, { css, theme } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { BaseCard } from '..'
+import useBase from '..'
 
-export const Wrapper = styled(BaseCard)`
-  padding: 0;
-`
-export const Footer = styled.div`
-  ${css.column()};
-  width: 100%;
-  padding: 15px 30px;
-`
-export const Title = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 15px;
-  font-weight: 500;
-  margin-bottom: 2px;
-`
-export const Desc = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 14px;
-  opacity: 0.8;
-  line-break: anywhere;
-`
+export default () => {
+  const { cn } = useTwBelt()
+  const base = useBase()
+
+  return {
+    wrapper: cn(base.baseCard, 'p-0', base.gradient(COLOR_NAME.PINK)),
+    title: base.introTitle,
+    desc: base.introDesc,
+    footer: 'column w-full p-4 pt-0',
+  }
+}

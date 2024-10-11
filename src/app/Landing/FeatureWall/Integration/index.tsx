@@ -1,24 +1,22 @@
-import type { FC } from 'react'
-
-import { COLOR_NAME } from '~/const/colors'
 import useHover from '~/hooks/useHover'
 
 import Panel from './Panel'
 
-import { Wrapper, Footer, Title, Desc } from '../../styles/feature_wall/integration'
+import useSalon from '../../styles/feature_wall/integration'
 
-const Integration: FC = () => {
+export default () => {
   const [cardRef, isCardHovered] = useHover<HTMLDivElement>()
+  const s = useSalon()
 
   return (
-    <Wrapper ref={cardRef} $color={COLOR_NAME.PINK}>
+    <div ref={cardRef} className={s.wrapper}>
       <Panel hovering={isCardHovered} />
-      <Footer>
-        <Title>一键集成</Title>
-        <Desc>一行代码让你的网站通过 Sidebar/Modal/iframe 等方式接入反馈组件。</Desc>
-      </Footer>
-    </Wrapper>
+      <div className={s.footer}>
+        <h3 className={s.title}>一键集成</h3>
+        <div className={s.desc}>
+          一行代码让你的网站通过 Sidebar/Modal/iframe 等方式接入反馈组件。
+        </div>
+      </div>
+    </div>
   )
 }
-
-export default Integration

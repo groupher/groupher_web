@@ -1,16 +1,13 @@
-import { WithPosition } from '~/widgets/Common'
-import type { TColor } from '~/spec'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import styled, { css, theme } from '~/css'
+export { cn } from '~/css'
 
-export const Wrapper = styled(WithPosition)`
-  ${css.row('align-center')};
-  width: 100%;
-  height: 20px;
-  z-index: 2;
-`
-export const Dot = styled(WithPosition)<TColor>`
-  ${css.circle(5)};
-  background: ${theme('hint')};
-  opacity: 0.3;
-`
+export default () => {
+  const { cn, bg } = useTwBelt()
+
+  return {
+    wrapper: cn('row-center w-full h-5 z-20 absolute top-1.5'),
+    dot: cn('size-1.5 circle absolute top-1 opacity-20', bg('text.digest')),
+    bar: cn('absolute top-1 w-20 h-1 rounded-md opacity-20', bg('text.digest')),
+  }
+}

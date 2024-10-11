@@ -1,15 +1,16 @@
-import useBase from '..'
-
+import { COLOR_NAME } from '~/const/colors'
 import useTwBelt from '~/hooks/useTwBelt'
 
+import useBase from '..'
+
 export default () => {
-  const { cn, fg, global } = useTwBelt()
+  const { cn } = useTwBelt()
   const base = useBase()
 
   return {
-    wrapper: cn(base.baseCard, global('gradient-blue')),
+    wrapper: cn(base.baseCard, base.gradient(COLOR_NAME.BLUE)),
+    title: base.introTitle,
+    desc: base.introDesc,
     footer: 'column w-full p-4 pt-0',
-    title: cn('text-base mb-1', fg('text.title')),
-    desc: cn('text-sm', fg('text.digest')),
   }
 }

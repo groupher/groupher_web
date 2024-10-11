@@ -1,11 +1,11 @@
-import type { TColor } from '~/spec'
+import type { TColor, TColorName } from '~/spec'
 
 import styled, { css, rainbow, gradientBg } from '~/css'
 
 import useTwBelt from '~/hooks/useTwBelt'
 
 export default () => {
-  const { cn, fg, global } = useTwBelt()
+  const { cn, fg, global, rainbow } = useTwBelt()
 
   return {
     wrapper: cn('column-align-both w-full mt-32 mb-16'),
@@ -22,6 +22,14 @@ export default () => {
       'column-center group justify-end relative',
       'w-[300px] h-[278px] border border-dotted border-transparent pointer rounded-xl px-3 trans-all-200',
     ),
+
+    gradient: (color: TColorName): string => {
+      const color$ = color.toLowerCase()
+
+      return cn(global(`gradient-${color$}`), `hover:${rainbow(color, 'border')}`)
+    },
+    introTitle: cn('text-base mb-1', fg('text.title')),
+    introDesc: cn('text-sm break-all', fg('text.digest')),
   }
 }
 

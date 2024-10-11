@@ -1,49 +1,27 @@
-import styled, { css, theme } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { BaseCard } from '..'
+import useBase from '..'
 
-export const Wrapper = styled(BaseCard)`
-  /** this maybe a chrome bug, the purple panel show's top border if not use it */
-  border-top: none;
-  height: 582px;
-  &:hover {
-    border-top: 0.5px dotted;
+export default () => {
+  const { cn, rainbow, shadow } = useTwBelt()
+  const base = useBase()
+
+  return {
+    wrapper: cn(base.baseCard, base.gradient(COLOR_NAME.PURPLE), 'h-[582px]'),
+    banner: 'column w-full pl-5 mb-3.5',
+    warningMask: cn(
+      'w-full h-3 border-t-2 border-dotted opacity-30 rounded-xl',
+      'absolute bottom-0 left-0',
+      'group-hover:h-80 saturate-200 brightness-90',
+      'trans-jump',
+      shadow('sm'),
+
+      rainbow(COLOR_NAME.RED, 'border'),
+      rainbow(COLOR_NAME.RED, 'bgSoft'),
+    ),
+    //
+    title: base.introTitle,
+    desc: base.introDesc,
   }
-`
-export const Banner = styled.div`
-  ${css.column()};
-  padding-left: 20px;
-  margin-bottom: 14px;
-  width: 100%;
-`
-export const Title = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 15px;
-  font-weight: 500;
-  margin-bottom: 2px;
-`
-export const Desc = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 14px;
-  opacity: 0.8;
-`
-export const WarningMask = styled.div`
-  width: 100%;
-  height: 12px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  border-top: 1px dashed;
-  border-top-color: ${theme('rainbow.red')};
-  background: ${theme('rainbow.redSoft')};
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  opacity: 0.6;
-
-  ${Wrapper}:hover & {
-    height: 300px;
-    opacity: 0.8;
-  }
-
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
-`
+}

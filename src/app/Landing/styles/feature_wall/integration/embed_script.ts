@@ -1,29 +1,22 @@
-import styled, { css, theme, animate, rainbow } from '~/css'
-import type { TColor } from '~/spec'
+import { COLOR_NAME } from '~/const/colors'
 
-import { WithPosition } from '~/widgets/Common'
-import TerminalSVG from '~/icons/Terminal'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Codes = styled(WithPosition)`
-  font-size: 10px;
-  color: ${theme('article.digest')};
-  opacity: 0.8;
-`
-export const TerminalIcon = styled(TerminalSVG)`
-  fill: ${theme('hint')};
-  ${css.size(12)};
-  position: absolute;
-  left: 23px;
-  bottom: 14px;
-`
-export const BlickCursor = styled(WithPosition)`
-  width: 1px;
-  height: 11px;
-  border-radius: 3px;
-  background: ${theme('rainbow.red')};
-  animation: ${animate.blink} 1s linear infinite alternate;
-`
-export const Highlight = styled.span<TColor>`
-  color: ${({ $color }) => rainbow($color)};
-  font-weight: 550;
-`
+export { cn } from '~/css'
+
+export default () => {
+  const { cn, fg, fill, rainbow } = useTwBelt()
+
+  return {
+    wrapper: cn(
+      'row-center absolute bottom-3 h-5 w-11/12 pl-2',
+      rainbow(COLOR_NAME.ORANGE, 'bgSoft'),
+    ),
+    codes: cn('text-xs scale-90 -ml-1', fg('text.digest')),
+    embed: cn('bold-sm', fg('text.title')),
+    redText: cn(rainbow(COLOR_NAME.RED, 'fg')),
+
+    icon: cn('size-3', fill('text.digest')),
+    cursor: cn('w-0.5 rounded h-2 opacity-80 animate-ping', rainbow(COLOR_NAME.RED, 'bg')),
+  }
+}

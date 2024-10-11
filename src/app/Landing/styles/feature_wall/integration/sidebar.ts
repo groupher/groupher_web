@@ -1,59 +1,23 @@
-import styled, { css, rainbowSoft, theme } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
-import type { TColor, TSpace } from '~/spec'
-import { WithPosition } from '~/widgets/Common'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import Img from '~/widgets/Img'
-import UpvoteSVG from '~/icons/Upvote'
-import CommentSVG from '~/icons/Comment'
+export { cn } from '~/css'
 
-export const Wrapper = styled(WithPosition)`
-  width: 86px;
-  height: 150px;
-  background: ${theme('htmlBg')};
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  border-radius: 6px;
-  padding: 5px;
+export default () => {
+  const { cn, bg, br, shadow, rainbow } = useTwBelt()
 
-  box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;
-  z-index: 2;
-  transition: all 0.2s;
-`
-
-type TAvatar = { size?: number; hovering: boolean } & TColor & TSpace
-export const Avatar = styled(Img)<TAvatar>`
-  ${({ size }) => `${css.circle(size)}`};
-  border: 2px solid;
-  border-color: ${({ $color }) => rainbowSoft($color)};
-  visibility: ${({ hovering }) => (hovering ? 'visiable' : 'hidden')};
-
-  box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;
-  position: absolute;
-
-  ${({ top }) => (top !== undefined ? `top: ${top}px;` : '')}
-  ${({ left }) => (left !== undefined ? `left: ${left}px;` : '')}
-  ${({ bottom }) => (bottom !== undefined ? `bottom: ${bottom}px;` : '')}
-  ${({ right }) => (right !== undefined ? `right: ${right}px;` : '')}
-`
-export const Action = styled(WithPosition)`
-  ${css.circle(18)};
-  ${css.row('align-both')};
-  background: ${theme('htmlBg')};
-  border: 1px solid;
-  border-color: ${theme('hint')};
-  box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px;
-  opacity: 1;
-  z-index: 10;
-`
-export const CommonIcon = styled(CommentSVG)`
-  ${css.size(9)};
-  margin-left: 1px;
-  margin-top: 1px;
-  fill: ${theme('article.digest')};
-`
-export const UpvoteIcon = styled(UpvoteSVG)`
-  ${css.size(14)};
-  margin-top: -1px;
-  fill: ${theme('article.digest')};
-`
+  return {
+    wrapper: cn(
+      'absolute top-6 w-20 h-36 border rounded-md p-1.5 z-30 trans-all-200 opacity-0',
+      shadow('sm'),
+      br('divider'),
+      bg('htmlBg'),
+    ),
+    avatar: cn('size-5 z-40 circle border border-transparent absolute', shadow('sm')),
+    brGreen: rainbow(COLOR_NAME.GREEN, 'border'),
+    brBlue: rainbow(COLOR_NAME.BLUE, 'border'),
+    brORange: rainbow(COLOR_NAME.ORANGE, 'border'),
+    bar: cn('absolute left-2 w-12 h-1.5 rounded-md opacity-30', bg('text.digest')),
+  }
+}
