@@ -14,6 +14,7 @@ export default () => {
       bg('htmlBg'),
       shadow('sm'),
     ),
+    mask: bg('hoverBg'),
 
     bar: cn('absolute top-1 w-20 h-5 rounded-md opacity-20', bg('text.digest')),
     redBg: rainbow(COLOR_NAME.RED, 'bg'),

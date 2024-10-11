@@ -15,7 +15,7 @@ const Panel: FC<TProps> = ({ hovering }) => {
 
   return (
     <div className={s.wrapper}>
-      <div className={cn(s.block, hovering && 'brightness-95')}>
+      <div className={cn(s.block, hovering && s.mask)}>
         <Header />
 
         <div className={cn(s.bar, 'left-5 top-10 h-3.5 opacity-50')} />
@@ -28,8 +28,8 @@ const Panel: FC<TProps> = ({ hovering }) => {
         <div className={cn(s.bar, 'right-4 top-10 h-16 w-12 opacity-10')} />
 
         <EmbedScript />
+        <Sidebar hovering={hovering} />
       </div>
-      <Sidebar hovering={hovering} />
     </div>
   )
 }

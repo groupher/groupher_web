@@ -1,12 +1,10 @@
-import type { FC } from 'react'
-
 import { COLOR_NAME } from '~/const/colors'
 import useHover from '~/hooks/useHover'
 
 import Panel from './Panel'
 import { Wrapper, Footer, Title, Desc } from '../../styles/feature_wall/security'
 
-const Security: FC = () => {
+export default () => {
   const [cardRef, isCardHovered] = useHover<HTMLDivElement>()
 
   return (
@@ -19,5 +17,3 @@ const Security: FC = () => {
     </Wrapper>
   )
 }
-
-export default Security

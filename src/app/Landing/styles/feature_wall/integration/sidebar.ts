@@ -9,7 +9,7 @@ export default () => {
 
   return {
     wrapper: cn(
-      'absolute top-6 w-20 h-36 border rounded-md p-1.5 z-30 trans-all-200 opacity-0',
+      'absolute top-2 w-20 h-36 border rounded-md p-1.5 z-30 trans-all-200 opacity-0',
       shadow('sm'),
       br('divider'),
       bg('htmlBg'),
