@@ -61,6 +61,10 @@
     @apply font-medium;
   }
 
+  .bold-lg {
+    @apply font-bold;
+  }
+
   .circle {
     @apply rounded-full;
   }

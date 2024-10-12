@@ -1,78 +1,77 @@
 import type { FC } from 'react'
 
-import useWallpaper from '~/hooks/useWallpaper'
+import CursorSVG from '~/icons/Cursor'
 
-import {
-  Wrapper,
-  GridMask,
-  CavansBlock,
-  CursorIcon,
-  CursorText,
-  MainTextGradient,
-  MainText,
-  Line,
-  IndexBar,
-  LeftIndexText,
-  IndexRowBar,
-  IndexText,
-  BottomIndexBar,
-  Column,
-  LocateDot,
-} from '../../styles/feature_wall/design/panel'
+import useSalon, { cn } from '../../styles/feature_wall/design/panel'
 
 type TProps = {
   hovering: boolean
 }
 
 const Panel: FC<TProps> = ({ hovering }) => {
-  const { wallpaper } = useWallpaper()
-
-  const stickOpacity = hovering ? 1 : 0.4
-  const textOpacity = hovering ? 1 : 0.8
-  const rotate = hovering ? -1 : -4
+  const s = useSalon()
 
   return (
-    <Wrapper>
-      <Line top={10} left={0} $hovering={hovering} $rotate={rotate} />
-      <Line top={160} left={0} $hovering={hovering} $rotate={rotate} />
-      <Column top={0} left={10} $hovering={hovering} $rotate={rotate} />
-      <LocateDot top={hovering ? 160 : 18} left={hovering ? 18 : 11} $rotate={rotate} />
-      <LocateDot top={hovering ? 10 : 168} left={hovering ? 15 : 21} $rotate={rotate} />
+    <div className={s.wrapper}>
+      <div className={cn(s.line, 'top-4', hovering && 'rotate-0')} />
+      <div className={cn(s.line, '-bottom-1', hovering && 'rotate-0')} />
+      <div className={cn(s.column, 'rotate-3', hovering && 'rotate-0')} />
 
-      <CavansBlock right={-10} top={20} $rotate={rotate}>
-        <CursorIcon top={hovering ? 30 : 15} right={hovering ? 40 : 50} wallpaper={wallpaper} />
-        <CursorText top={hovering ? 48 : 34} right={hovering ? 20 : 30} wallpaper={wallpaper}>
-          Mr. Tony
-        </CursorText>
+      <div
+        className={cn(
+          s.locateDot,
+          !hovering ? 'top-1.5 left-5 -ml-0.5' : 'top-40 left-4 mt-2.5 -ml-0.5',
+        )}
+      />
+      <div
+        className={cn(
+          s.locateDot,
+          hovering ? 'top-3 left-4 -ml-0.5' : 'top-40 left-4 mt-1 -ml-1.5',
+        )}
+      />
 
-        <LeftIndexText top={72} left={5} $opacity={textOpacity}>
-          wechat:
-        </LeftIndexText>
+      <div className={cn(s.mainCard, hovering && 'rotate-0 top-6 -right-7')}>
+        <div
+          className={cn(
+            s.cursor,
+            !hovering ? 'top-8 right-8 opacity-65' : 'top-5 right-10 opacity-100',
+          )}
+        >
+          <CursorSVG className={s.cursorIcon} style={s.cursorIconStyle} />
+          <div className={cn(s.cursorText)} style={s.cursorTextStyle}>
+            Mr. Tony
+          </div>
+        </div>
 
-        <IndexRowBar top={80} left={38} width={18} $opacity={stickOpacity} />
+        <div className={cn(s.indexText, 'top-16 -left-1 mt-1 -rotate-90 opacity-60')}>wechat:</div>
 
-        <IndexBar top={34} left={70} height={26} $opacity={stickOpacity} />
-        <IndexText top={15} left={50} $opacity={textOpacity}>
-          mydear
-        </IndexText>
+        <div className={cn(s.indexBarBottom, 'left-10 w-3 bottom-16')} />
 
-        <IndexBar top={48} left={126} height={14} $opacity={stickOpacity} />
-        <IndexText top={28} left={112} $opacity={textOpacity}>
-          xym
-        </IndexText>
+        <div className={cn(s.indexBar, 'top-8 left-16 ml-2 h-5')} />
+        <div className={cn(s.indexText, 'top-3 left-10 ml-1')}>mydear</div>
 
-        {hovering && <MainTextGradient wallpaper={wallpaper}>design</MainTextGradient>}
-        {!hovering && <MainText>design</MainText>}
+        <div className={cn(s.indexBar, 'top-10 left-32 -ml-1 mt-1 h-4')} />
+        <div className={cn(s.indexText, 'top-6 left-24 ml-3')}>xym</div>
 
-        <BottomIndexBar bottom={36} $opacity={hovering ? 0.8 : 0.4} />
+        <div
+          className={cn(s.designTextGradient, hovering ? 'opacity-100' : 'opacity-0')}
+          style={s.designTextGradientStyle}
+        >
+          design
+        </div>
+        <div
+          className={cn(s.designText, hovering ? 'opacity-0' : 'opacity-100')}
+          style={s.designTextStyle}
+        >
+          design
+        </div>
 
-        <IndexText bottom={31} left={107} $opacity={textOpacity}>
-          2022 born
-        </IndexText>
+        <div className={s.indexBarBottom} />
+        <div className={cn(s.indexText, 'bottom-5 left-20 mb-0.5 bold-sm')}>2022 born</div>
 
-        <GridMask />
-      </CavansBlock>
-    </Wrapper>
+        <div className={s.gridBg} style={s.gridBgStyle} />
+      </div>
+    </div>
   )
 }
 
