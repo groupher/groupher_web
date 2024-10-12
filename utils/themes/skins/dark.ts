@@ -30,9 +30,6 @@ export default {
     desc: darken(primaryColor, 10),
     bg: lighten(contentBoxBg, 2),
   },
-  landing: {
-    greyBg: hoverBg,
-  },
   font: fontColor,
   link,
   blackActive: '#3171DB',

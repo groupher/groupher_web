@@ -41,12 +41,6 @@ module.exports = {
       dark: darkTokens.contentBoxBg,
     },
   },
-  landing: {
-    greyBg: {
-      DEFAULT: '#fbfbfb',
-      dark: darkTokens.hoverBg,
-    },
-  },
   font: { DEFAULT: lightTokens.fontColor, dark: darkTokens.fontColor },
   link: { DEFAULT: lightTokens.link, dark: darkTokens.link },
   blackActive: { DEFAULT: '#3171DB', dark: '#3171DB' },
