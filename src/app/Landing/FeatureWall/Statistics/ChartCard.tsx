@@ -31,7 +31,7 @@ const ChartCard: FC<TProps> = ({ hovering }) => {
         <div className={s.trendText}>实时访客</div>
 
         <div className={s.trendNum}>
-          <AnimatedCount count={flipCount} forceColor="#323232" size="large" />
+          <AnimatedCount count={flipCount} size="large" />
         </div>
 
         <div className={s.topGradient} style={{ background: s.topGradientBg }} />

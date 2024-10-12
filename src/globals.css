@@ -340,6 +340,14 @@
     background: linear-gradient(53deg,#fffff37a 13%,rgb(255 244 140 / 25%) 100%);
   }
 
+  .animation-fade-up {
+     @apply animate-fade-up animate-once animate-duration-200
+  }
+
+  .animation-fade-down {
+     @apply animate-fade-down animate-once animate-duration-200
+  }
+
   .debug {
     @apply border border-dashed;
     border-color: red;
