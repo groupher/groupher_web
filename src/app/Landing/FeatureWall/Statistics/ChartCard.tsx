@@ -2,44 +2,41 @@ import type { FC } from 'react'
 
 import AnimatedCount from '~/widgets/AnimatedCount'
 
-import {
-  Wrapper,
-  TrendText,
-  TrendNum,
-  ChartBottomGradient,
-  Column,
-  HighlightColumn,
-  HighlightDot,
-} from '../../styles/feature_wall/statistics/chart_card'
+import useSalon, { cn } from '../../styles/feature_wall/statistics/chart_card'
 
 type TProps = {
   hovering: boolean
 }
 
 const ChartCard: FC<TProps> = ({ hovering }) => {
+  const s = useSalon()
+
   const flipCount = hovering ? 152 : 23
 
   return (
     <div>
-      <Column top={45} right={50} height="120px" />
-      <Column top={56} left={170} height="100px" />
-      {!hovering && <Column top={45} right={75} height="120px" />}
-      {hovering && <Column top={45} right={100} height="120px" />}
+      <div className={cn(s.column, 'right-12')} />
+      <div className={cn(s.column, 'right-32')} />
 
-      <HighlightColumn top={45} right={hovering ? 75 : 100} height="122px" />
-      <HighlightDot top={hovering ? 67 : 103} right={hovering ? 69 : 95} />
+      <div className={cn(s.column, 'right-24 mr-1.5', !hovering && 'opacity-0')} />
+      <div className={cn(s.column, 'right-16 mr-3', hovering && 'opacity-0')} />
 
-      <Wrapper top={20} right={30}>
-        <TrendText top={11} left={12}>
-          实时访客
-        </TrendText>
+      <div className={cn(s.highlightColumn, hovering && s.highlightColumnHover)} />
+      <div
+        className={cn(s.highlightDot, hovering && s.highlightDotHover)}
+        style={s.dotBorderStyle}
+      />
 
-        <TrendNum top={30} left={13}>
+      <div className={s.wrapper} style={{ backgroundImage: s.gradientBg }}>
+        <div className={s.trendText}>实时访客</div>
+
+        <div className={s.trendNum}>
           <AnimatedCount count={flipCount} forceColor="#323232" size="large" />
-        </TrendNum>
+        </div>
 
-        <ChartBottomGradient />
-      </Wrapper>
+        <div className={s.topGradient} style={{ background: s.topGradientBg }} />
+        <div className={s.bottomGradient} style={{ background: s.bottomGradientBg }} />
+      </div>
     </div>
   )
 }

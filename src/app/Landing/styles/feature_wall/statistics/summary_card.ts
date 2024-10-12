@@ -18,7 +18,7 @@ export const Wrapper = styled(WithPosition)`
   border-top-right-radius: 10px;
   box-shadow: rgb(194 193 177 / 20%) 0px -3px 24px;
   background: linear-gradient(162deg,#fffaf0 0%,rgb(254 254 254 / 93%) 50%);
-  z-index: 20;
+  z-index: 40;
 `
 export const Block = styled.div`
   position: relative;

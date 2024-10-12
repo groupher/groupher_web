@@ -22,7 +22,7 @@ const AnimatedCount: FC<TProps> = ({ count = 0, size = SIZE.SMALL, active = fals
         width={numSize - offset}
         color="inherit"
         perspective={400}
-        duration={0.4}
+        duration={0.8}
         numbers={String(count)}
         play
       />
