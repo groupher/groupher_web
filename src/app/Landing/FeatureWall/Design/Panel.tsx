@@ -30,7 +30,7 @@ const Panel: FC<TProps> = ({ hovering }) => {
         )}
       />
 
-      <div className={cn(s.mainCard, hovering && 'rotate-0 top-6 -right-7')}>
+      <div className={cn(s.mainCard, hovering && 'rotate-0 top-6 scale-95')}>
         <div
           className={cn(
             s.cursor,
