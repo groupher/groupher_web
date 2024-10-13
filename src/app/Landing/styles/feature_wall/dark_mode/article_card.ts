@@ -2,8 +2,6 @@ import useBase from './panel'
 
 import useTwBelt from '~/hooks/useTwBelt'
 
-export { Footer, CodeItem } from './panel'
-
 export { cn } from '~/css'
 
 type TProps = {
