@@ -1,78 +1,51 @@
-import type { TActive, TColor } from '~/spec'
+import type { TColor } from '~/spec'
 import styled, { css, theme } from '~/css'
 
-import SunSVG from '~/icons/Sun'
-import SunSolidSVG from '~/icons/SunSolid'
-import MoonSVG from '~/icons/Moon'
-import MoonSolidSVG from '~/icons/MoonSolid'
+import { COLOR_NAME } from '~/const/colors'
 
 import { WithMargin } from '~/widgets/Common'
 
-export const Wrapper = styled.div`
-  ${css.row('align-both')};
-  width: 100%;
-  height: 300px;
-  padding-top: 10px;
-  position: relative;
-`
-export const DivideColumn = styled.div<{ $hovering: boolean }>`
-  background: ${theme('rainbow.red')};
-  width: 3px;
-  // height: ${({ $hovering }) => ($hovering ? '180px' : '150px')};
-  height: 150px;
-  position: absolute;
-  border-radius: 5px;
-  z-index: 10;
-  transition: all 0.2s;
-`
-export const SwitchBox = styled.div<{ $hovering: boolean }>`
-  ${css.row('align-center', 'justify-between')};
-  background: ${theme('alphaBg')};
-  padding: 0 3px;
-  width: 65px;
-  height: 30px;
-  position: absolute;
-  left: 102px;
-  top: 100px;
-  z-index: 11;
-  border: 1px solid;
-  border-radius: 10px;
-  border-color: ${theme('divider')};
+import useTwBelt from '~/hooks/useTwBelt'
 
-  transform: ${({ $hovering }) => ($hovering ? 'rotate(180deg) scale(1);' : 'scale(0.8)')};
-  transition: all .3s;
-`
-export const ThemeBox = styled.div<TActive>`
-  ${css.size(24)};
-  ${css.row('align-both')};
-  background: ${({ $active }) => ($active ? theme('alphaBg2') : 'transparent')};
-  border: 1px solid;
-  border-radius: 8px;
-  border-color: ${({ $active }) => ($active ? theme('divider') : 'transparent')};
-  transition: all .2s;
-`
-export const SunIcon = styled(SunSVG)`
-  ${css.size(16)};
-  fill: ${theme('article.title')};
-`
-export const SunSolidIcon = styled(SunSolidSVG)`
-  ${css.size(15)};
-  fill: ${theme('article.title')};
-`
-export const MoonIcon = styled(MoonSVG)`
-  ${css.size(14)};
-  fill: ${theme('article.title')};
-`
-export const MoonSolidIcon = styled(MoonSolidSVG)`
-  ${css.size(12)};
-  fill: ${theme('article.title')};
-  transform: rotate(180deg);
-`
-export const Item = styled.div`
-  ${css.row('align-center')};
-  gap: 6px;
-  margin-bottom: 7px;
-`
+export { cn } from '~/css'
+
+export default () => {
+  const { cn, bg, br, fill, rainbow, shadow } = useTwBelt()
+
+  return {
+    wrapper: cn('align-both w-full h-72 relative mt-3'),
+    divideColumn: cn(
+      'absolute left-30 top-3 w-1 h-40 rounded-md z-10 opacity-65 trans-all-200',
+      rainbow(COLOR_NAME.RED, 'bg'),
+    ),
+    //
+    switchBox: cn(
+      'absolute row-center-between px-1 w-16 h-7 z-20 rounded-lg border scale-90 trans-all-200',
+      br('divider'),
+      bg('alphaBg'),
+      shadow('xl'),
+    ),
+    themeBox: cn('align-both size-6 border border-transparent rounded-md trans-all-200'),
+    boxSolid: cn(br('divider'), rainbow(COLOR_NAME.CYAN, 'bg'), 'opacity-80'),
+    icon: cn('size-4', fill('text.title')),
+    iconSolid: fill('button.fg'),
+
+    //
+    cardFooter: 'row-center mt-1 w-full',
+    card: cn('column w-28 h-32 p-2.5 rounded-lg border trans-all-200', shadow('sm'), br('divider')),
+    lightBg: 'bg-htmlBg',
+    darkBg: 'bg-htmlBg-dark',
+    lightText: 'text-text-title',
+    darkText: 'text-text-title-dark',
+
+    lightFill: 'fill-text-title',
+    darkFill: 'fill-text-title-dark',
+
+    lightBox: 'bg-hoverBg',
+    darkBox: 'bg-hoverBg-dark',
+  }
+}
+
 export const Footer = styled(WithMargin)`
   ${css.row('align-center')};
   opacity: 0.8;

@@ -1,56 +1,25 @@
-import styled, { css, theme, animate } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import StarSVG from '~/icons/Star'
+import useBase from '..'
 
-import { BaseCard } from '..'
+export { cn } from '~/css'
 
-export const Wrapper = styled(BaseCard)`
-  background: none;
-  overflow: hidden;
-`
-export const InnerWrapper = styled(BaseCard)<{ $hovering: boolean }>`
-  position: absolute;
-  width: 142%;
-  height: 142%;
-  left: -20%;
-  top: -20%;
-  z-index: -1;
-  transform: ${({ $hovering }) => `rotate(${$hovering ? '-180deg' : '0'})`};
-  transition: all .3s;
-`
-export const StarIcon = styled(StarSVG)`
-  fill: ${theme('rainbow.orange')};
-  ${css.size(18)};
-  z-index: 3;
-  opacity: 0.8;
-  position: absolute;
-  top: 16px;
-  right: 20px;
-  animation: ${animate.jump} 0.3s linear;
-`
-export const StarIcon2 = styled(StarIcon)`
-  ${css.size(13)};
-  opacity: 0.6;
-  z-index: 3;
-  top: 13px;
-  right: 40px;
-`
-export const Footer = styled.div`
-  ${css.column()};
-  width: 100%;
-  padding: 15px 10px;
-  padding-left: 20px;
-  padding-top: 0;
-  z-index: 2;
-`
-export const Title = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 15px;
-  font-weight: 500;
-  margin-bottom: 2px;
-`
-export const Desc = styled.div`
-  color: ${theme('article.digest')};
-  font-size: 14px;
-  opacity: 0.8;
-`
+export default () => {
+  const { cn, rainbow } = useTwBelt()
+  const base = useBase()
+
+  return {
+    wrapper: cn(base.baseCard, 'overflow-hidden', `hover:${rainbow(COLOR_NAME.CYAN, 'border')}`),
+    inner: cn(
+      'absolute -top-16 -left-16 -ml-2 w-[150%] h-[150%] -z-10 trans-all-200 debug',
+      base.gradient(COLOR_NAME.CYAN),
+    ),
+    //
+    footer: 'column w-full pl-5 mb-3.5',
+    title: base.introTitle,
+    desc: base.introDesc,
+
+    starIcon: cn('absolute size-5 animation-fade-down', rainbow(COLOR_NAME.ORANGE, 'fill')),
+  }
+}

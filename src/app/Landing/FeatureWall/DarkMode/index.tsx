@@ -1,39 +1,30 @@
-import type { FC } from 'react'
+import StarSVG from '~/icons/Star'
 
-import { COLOR_NAME } from '~/const/colors'
 import useHover from '~/hooks/useHover'
 import useTheme from '~/hooks/useTheme'
 
 import Panel from './Panel'
 
-import {
-  Wrapper,
-  InnerWrapper,
-  StarIcon,
-  StarIcon2,
-  Footer,
-  Title,
-  Desc,
-} from '../../styles/feature_wall/dark_mode'
+import useSalon, { cn } from '../../styles/feature_wall/dark_mode'
 
-const DarkMode: FC = () => {
+export default () => {
+  const s = useSalon()
+
   const { toggle } = useTheme()
 
   const [ref, isHovered] = useHover<HTMLDivElement>()
 
   return (
-    <Wrapper ref={ref} onClick={() => toggle()} $color={COLOR_NAME.CYAN}>
-      <InnerWrapper $color={COLOR_NAME.CYAN} $hovering={isHovered} />
-      {isHovered && <StarIcon />}
-      {isHovered && <StarIcon2 />}
+    <div className={s.wrapper} ref={ref} onClick={() => toggle()}>
+      <div className={cn(s.inner, isHovered && '-rotate-180')} />
+      {isHovered && <StarSVG className={cn(s.starIcon, 'top-3 right-8')} />}
+      {isHovered && <StarSVG className={cn(s.starIcon, 'top-6 right-3 !opacity-50')} />}
 
       <Panel hovering={isHovered} />
-      <Footer>
-        <Title>暗黑模式</Title>
-        <Desc>支持手动或根据系统切换主题。</Desc>
-      </Footer>
-    </Wrapper>
+      <div className={s.footer}>
+        <h3 className={s.title}>暗黑模式</h3>
+        <div className={s.desc}>精心设计的的双色主题，同时适配各种自定义设置。</div>
+      </div>
+    </div>
   )
 }
-
-export default DarkMode
