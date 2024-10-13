@@ -18,7 +18,6 @@ export const Layouts = styled.div`
   flex-wrap: wrap;
   border-radius: 10px;
   gap: 15px 20px;
-  /* background: ${theme('landing.greyBg')}; */
 `
 export const Card = styled.div`
   position: relative;

@@ -24,7 +24,7 @@ import HomeHeader from '~/widgets/HomeHeader'
 import CoverImage from './CoverImage'
 
 import ArticlesIntroTabs from './ArticlesIntroTabs'
-import FeatureWall from './FeatureWall'
+import BatteryBento from './BatteryBento'
 import TechStacks from './TechStacks'
 import DashboardIntros from './DashboardIntros'
 import EnjoyDev from './EnjoyDev'
@@ -122,7 +122,7 @@ export default () => {
         <ArticlesIntroTabs />
 
         <Suspense fallback={<LavaLampLoading />}>
-          <FeatureWall />
+          <BatteryBento />
         </Suspense>
 
         <Suspense fallback={<LavaLampLoading />}>

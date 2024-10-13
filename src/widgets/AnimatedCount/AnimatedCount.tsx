@@ -1,4 +1,4 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import SIZE from '~/const/size'
 
@@ -16,7 +16,7 @@ const AnimatedCount: FC<TProps> = ({ count = 0, size = SIZE.SMALL, active = fals
   const offset = getFlipNumOffset(size)
 
   return (
-    <div key={count} className={s.wrapper}>
+    <div className={s.wrapper}>
       <FlipNumbers
         height={numSize}
         width={numSize - offset}
@@ -30,4 +30,4 @@ const AnimatedCount: FC<TProps> = ({ count = 0, size = SIZE.SMALL, active = fals
   )
 }
 
-export default memo(AnimatedCount)
+export default AnimatedCount

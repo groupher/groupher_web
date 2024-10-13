@@ -41,12 +41,6 @@ module.exports = {
       dark: darkTokens.contentBoxBg,
     },
   },
-  landing: {
-    greyBg: {
-      DEFAULT: '#fbfbfb',
-      dark: darkTokens.hoverBg,
-    },
-  },
   font: { DEFAULT: lightTokens.fontColor, dark: darkTokens.fontColor },
   link: { DEFAULT: lightTokens.link, dark: darkTokens.link },
   blackActive: { DEFAULT: '#3171DB', dark: '#3171DB' },
@@ -82,84 +76,83 @@ module.exports = {
   rainbow: {
     red: { DEFAULT: '#ca5f4d', dark: '#ca5f4d' },
     redSoft: { DEFAULT: '#FFEBEC', dark: '#7d3b363d' },
-    redPale: {
-      DEFAULT: 'linear-gradient(90deg, #fec0bb33 0%, #f8e4e226 100%)',
-      dark: 'linear-gradient(90deg, #7a37323d 0%, #46211e2b 100%)',
-    },
+    // redPale: {
+    //   DEFAULT: 'linear-gradient(90deg, #fec0bb33 0%, #f8e4e226 100%)',
+    //   dark: 'linear-gradient(90deg, #7a37323d 0%, #46211e2b 100%)',
+    // },
 
     orange: { DEFAULT: 'orange', dark: '#ffa500c7' },
     orangeSoft: { DEFAULT: '#FEF7E8', dark: '#4c3e37' },
-    orangePale: {
-      DEFAULT: 'linear-gradient(90deg, #fcb32d26 0%, #f5dfb726 100%)',
-      dark: 'linear-gradient(90deg, #44352ead 0%, #382c27a1 100%)',
-    },
+    // orangePale: {
+    //   DEFAULT: 'linear-gradient(90deg, #fcb32d26 0%, #f5dfb726 100%)',
+    //   dark: 'linear-gradient(90deg, #44352ead 0%, #382c27a1 100%)',
+    // },
 
     brown: { DEFAULT: '#8d691e', dark: '#8d691e' },
     brownSoft: { DEFAULT: '#fff3df', dark: '#3a342b' },
-    brownPale: {
-      DEFAULT: 'linear-gradient(90deg, #cf806921 0%, #dbd0d01c 100%)',
-      dark: 'linear-gradient(90deg, #45320569 0%, #3929024a 100%)',
-    },
+    // brownPale: {
+    //   DEFAULT: 'linear-gradient(90deg, #cf806921 0%, #dbd0d01c 100%)',
+    //   dark: 'linear-gradient(90deg, #45320569 0%, #3929024a 100%)',
+    // },
 
     yellow: { DEFAULT: '#c7b96d', dark: '#dac933cf' },
     yellowSoft: { DEFAULT: '#FEFBE8', dark: '#a9a06a30' },
-    yellowPale: {
-      DEFAULT: 'linear-gradient(90deg, #fffde5 0%, rgb(255 252 241 / 37%) 100%)',
-      dark: 'linear-gradient(90deg, #635e184d 0%, #433e2330 100%)',
-    },
+    // yellowPale: {
+    //   DEFAULT: 'linear-gradient(90deg, #fffde5 0%, rgb(255 252 241 / 37%) 100%)',
+    //   dark: 'linear-gradient(90deg, #635e184d 0%, #433e2330 100%)',
+    // },
 
     green: { DEFAULT: '#699411', dark: '#699411' },
     greenSoft: { DEFAULT: '#eefdd89c', dark: '#8a97764a' },
-    greenPale: {
-      DEFAULT: 'linear-gradient(90deg, #e3f3cc4a 0%, #f2ffe05c 100%)',
-      dark: 'linear-gradient(90deg, #636e534a 0%, #474e3c36 100%)',
-    },
+    // greenPale: {
+    //   DEFAULT: 'linear-gradient(90deg, #e3f3cc4a 0%, #f2ffe05c 100%)',
+    //   dark: 'linear-gradient(90deg, #636e534a 0%, #474e3c36 100%)',
+    // },
 
     greenLight: { DEFAULT: '#79d08f', dark: '#37B784' },
     greenLightSoft: { DEFAULT: '#e3f3cc4a', dark: '#69735a4a' },
-    greenLightPale: {
-      DEFAULT: 'linear-gradient(90deg, #e3f3cc4a 0%, #f2ffe05c 100%)',
-      dark: 'linear-gradient(90deg, #636e534a 0%, #474e3c36 100%)',
-    },
+    // greenLightPale: {
+    //   DEFAULT: 'linear-gradient(90deg, #e3f3cc4a 0%, #f2ffe05c 100%)',
+    //   dark: 'linear-gradient(90deg, #636e534a 0%, #474e3c36 100%)',
+    // },
 
     cyan: { DEFAULT: '#24878C', dark: '#24878C' },
     cyanSoft: { DEFAULT: '#e1fcff', dark: '#2c3738' },
-    cyanPale: {
-      DEFAULT: 'linear-gradient(90deg, #e1fcff94 0%, #e1fcff5e 100%)',
-      dark: 'linear-gradient(90deg, #2c3738 0%, #2c37386e 100%)',
-    },
+    // cyanPale: {
+    //   DEFAULT: 'linear-gradient(90deg, #e1fcff94 0%, #e1fcff5e 100%)',
+    //   dark: 'linear-gradient(90deg, #2c3738 0%, #2c37386e 100%)',
+    // },
 
     // naming, fix later
     cyanLight: { DEFAULT: '#00B5CC', dark: '#00B5CC' },
     cyanLightSoft: { DEFAULT: '#e1fcff94', dark: '#39494b94' },
-    cyanLightPale: { DEFAULT: '#e1fcff94', dark: '#39494b94' },
+    // cyanLightPale: { DEFAULT: '#e1fcff94', dark: '#39494b94' },
 
     blue: { DEFAULT: '#5073C6', dark: '#3a7ec7' },
     blueSoft: { DEFAULT: '#E7EDF7', dark: '#76809654' },
-    bluePale: {
-      DEFAULT: 'linear-gradient(90deg, #f3f7ff 0%, #f5f8ffb5 100%);',
-      dark: 'linear-gradient(90deg, #505a7254 0%, #3a415038 100%)',
-    },
+    // bluePale: {
+    //   DEFAULT: 'linear-gradient(90deg, #f3f7ff 0%, #f5f8ffb5 100%);',
+    //   dark: 'linear-gradient(90deg, #505a7254 0%, #3a415038 100%)',
+    // },
 
     purple: { DEFAULT: '#7d519e', dark: '#7d519e' },
     purpleSoft: { DEFAULT: '#f7d8fd38', dark: '#7c618238' },
-    purplePale: {
-      DEFAULT: 'linear-gradient(90deg, #f7d8fd38 0%, #f5e5f838 100%)',
-      dark: 'linear-gradient(90deg, #86539147  0%, #58445d38 100%)',
-    },
+    // purplePale: {
+    //   DEFAULT: 'linear-gradient(90deg, #f7d8fd38 0%, #f5e5f838 100%)',
+    //   dark: 'linear-gradient(90deg, #86539147  0%, #58445d38 100%)',
+    // },
 
     grey: { DEFAULT: '#106d8a', dark: '#106d8a' },
 
     pink: { DEFAULT: '#b36976', dark: '#b36976' },
     pinkSoft: { DEFAULT: '#ffd8ea59', dark: '#73526159' },
-    pinkPale: { DEFAULT: '#ffd8ea59', dark: '#73526159' },
+    // pinkPale: { DEFAULT: '#ffd8ea59', dark: '#73526159' },
 
     black: { DEFAULT: '#333333', dark: '#4e4e4e' },
     // TODO: is for dark theme only
     blackBtn: { DEFAULT: colors.gray['800'], dark: '#4e4e4e' },
-
     blackSoft: { DEFAULT: '#f4f4f4', dark: '#313131' },
-    blackPale: { DEFAULT: '#f4f4f4', dark: '#313131' },
+    // blackPale: { DEFAULT: '#f4f4f4', dark: '#313131' },
 
     // custom primary
     // custom: { DEFAULT: '--var(rainbow-custom)', dark: '--var(rainbow-custom-dark)' },
@@ -170,6 +163,7 @@ module.exports = {
     middle: { DEFAULT: '#F1F3F4', dark: '#333333' },
     hard: { DEFAULT: '#F1F3F4', dark: '#414141' },
   },
+
   // inspired by https://endless.design/
   gradientBg: {
     purple: {

@@ -1,4 +1,4 @@
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import type { TActive, TSize, TSpace } from '~/spec'
 
@@ -25,7 +25,7 @@ const Count: FC<TProps> = ({
   const s = useSalon({ count, active, ...spacing })
 
   if (forceColor) {
-    console.log('## forceColor: ', forceColor)
+    // console.log('## forceColor: ', forceColor)
   }
 
   return (
@@ -35,4 +35,4 @@ const Count: FC<TProps> = ({
   )
 }
 
-export default memo(Count)
+export default Count

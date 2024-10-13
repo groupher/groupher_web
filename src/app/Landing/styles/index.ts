@@ -22,7 +22,7 @@ export const GradientText = styled.div<{ wallpaper: string }>`
 `
 
 export default () => {
-  const { cn, fg, fill, container, linkable, menu, sexyHBorder } = useTwBelt()
+  const { cn, fg, fill, container, linkable, menu, global, sexyHBorder } = useTwBelt()
   const { wallpaper } = useWallpaper()
 
   return {
@@ -31,7 +31,7 @@ export default () => {
     banner: 'column-center relative w-full h-[640px]',
     betaText: 'clip-text text-base bold mb-3',
     betaGradientStyle: `linear-gradient(to top, ${getPathGradient(wallpaper)})`,
-    title: cn('text-4xl bold-sm', fg('text.title')),
+    title: cn('text-4xl bold-sm opacity-70', fg('text.title'), global('text-shadow')),
     desc: cn('text-lg mt-4', fg('text.digest')),
     //
     buttonGroup: 'row-center mt-6 gap-x-6 w-auto',

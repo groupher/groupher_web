@@ -28,5 +28,9 @@ module.exports = {
     },
   },
   safelist,
-  plugins: [require('@tailwindcss/typography'), plugins.containers],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('tailwindcss-animated'),
+    plugins.containers,
+  ],
 }
