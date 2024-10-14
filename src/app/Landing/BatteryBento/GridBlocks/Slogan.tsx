@@ -1,19 +1,20 @@
-import type { FC } from 'react'
+import PlugSVG from '~/icons/Plug'
+import PointSVG from '~/icons/PointDuo'
 
-import { Main, Topping, PlugIcon, PoinstIcon } from '../../styles/battery_bento/grid_blocks/slogan'
+import useSalon from '../../styles/battery_bento/grid_blocks/slogan'
 
-const Slogan: FC = () => {
+export default () => {
+  const s = useSalon()
+
   return (
     <>
-      <Topping>
-        <PlugIcon />
+      <div className={s.topping}>
+        <PlugSVG className={s.plugIcon} />
         Bizz~
-      </Topping>
-      <Main>
-        除此之外，我们深知这些细节也至关重要，所以还内置了 <PoinstIcon />
-      </Main>
+      </div>
+      <div className={s.main}>
+        除此之外，我们深知这些细节也至关重要，所以还内置了 <PointSVG className={s.pointIcon} />
+      </div>
     </>
   )
 }
-
-export default Slogan

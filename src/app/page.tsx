@@ -1,9 +1,5 @@
-import { memo } from 'react'
-
 import Landing from './Landing'
 
-const Page = () => {
+export default () => {
   return <Landing />
 }
-
-export default memo(Page)

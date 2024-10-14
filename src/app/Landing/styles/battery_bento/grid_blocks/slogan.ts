@@ -1,39 +1,14 @@
-import styled, { css, theme, animate } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
-import PlugSVG from '~/icons/Plug'
-import PointSVG from '~/icons/PointDuo'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Main = styled.div`
-  width: 325px;
-  text-align: center;
-  font-size: 18px;
-  color: ${theme('article.digest')};
-  line-height: 30px;
-  margin-bottom: 40px;
-`
-export const Topping = styled.div`
-  ${css.row('align-both')};
-  width: auto;
-  height: 28px;
-  padding: 0 10px;
-  border: 1px solid;
-  border-color: ${theme('divider')};
-  color: ${theme('article.digest')};
-  border-radius: 20px;
-  margin-bottom: 15px;
-`
-export const PlugIcon = styled(PlugSVG)`
-  ${css.size(18)};
-  fill: ${theme('article.digest')};
-  margin-right: 8px;
-  margin-top: 1px;
-  animation: ${animate.breath} 0.8s linear infinite alternate;
-`
+export default () => {
+  const { cn, fg, br, fill, rainbow } = useTwBelt()
 
-export const PoinstIcon = styled(PointSVG)`
-  ${css.size(24)};
-  margin-bottom: -7px;
-  display: inline-block;
-  fill: #f0a156; 
-  transform: rotateZ(180deg) rotateY(180deg);
-`
+  return {
+    main: cn('w-80 text-center text-lg leading-8 mb-10', fg('text.digest')),
+    topping: cn('align-both h-7 px-2.5 rounded-xl mb-4 border', br('divider'), fg('text.digest')),
+    plugIcon: cn('size-4 mr-2 animate-pulse', fill('text.digest')),
+    pointIcon: cn('size-6 inline-block rotate-180', rainbow(COLOR_NAME.ORANGE, 'fill')),
+  }
+}
