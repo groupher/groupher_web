@@ -70,6 +70,7 @@ export const useThemeFromURL = (): TThemeName => {
  */
 export const useI18n = (): TUseI18n => {
   const locale = useParseLang()
+  const skipLandingQuery = useSkipStaticQuery()
   // const searchParams = useSearchParams()
   // console.log('## ## data: ', data)
 
@@ -81,7 +82,8 @@ export const useI18n = (): TUseI18n => {
     query: i18nQuery,
     // TODO: use community.locale or search lang query
     variables: { locale },
-    pause: false,
+    // pause: false,
+    pause: skipLandingQuery,
   })
 
   return useMemo(() => {
