@@ -14,7 +14,7 @@ export default () => {
 
       <div className={s.topping}>
         <div className={s.githubTitle} style={s.gradientTextStyle}>
-          Github
+          OpenSource
         </div>
       </div>
       <RepoPreview
