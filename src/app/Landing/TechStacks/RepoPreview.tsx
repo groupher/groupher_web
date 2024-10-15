@@ -8,10 +8,9 @@ import useSalon, { cn } from '../styles/tech_stacks/repo_preview'
 type TProps = {
   name: string
   desc: string
-  type: 'frontend' | 'backend'
 }
 
-const RepoPreview: FC<TProps> = ({ name, desc, type }) => {
+const RepoPreview: FC<TProps> = ({ name, desc }) => {
   const s = useSalon()
 
   return (
