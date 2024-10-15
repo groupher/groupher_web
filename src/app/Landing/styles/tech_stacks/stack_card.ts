@@ -18,7 +18,7 @@ export default () => {
       bg('htmlBg'),
     ),
     banner: 'w-auto mb-5 -mt-2',
-    title: cn('text-xl bold-sm mt-2', fg('text.title')),
+    title: cn('text-xl bold-sm mt-4', fg('text.title')),
     techs: cn('row wrap w-full -ml-1 mt-2 h-72 items-start gap-x-10 z-20'),
     topping: cn('row-center -mt-1 mb-1.5 -ml-2 px-2.5 w-28', bg('htmlBg')),
     //

@@ -1,67 +1,26 @@
-import styled, { css } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
+import { COLOR_NAME } from '~/const/colors'
 
-import StarSVG from '~/icons/github/Star'
-import ForkSVG from '~/icons/github/Fork'
-import ContributeSVG from '~/icons/github/Contribute'
+export { cn } from '~/css'
 
-export const Wrapper = styled.div`
-  margin-top: 22px;
-  padding: 20px 18px;
-  width: 100%;
-  height: 148px;
-  color: #ababab;
-  border-radius: 8px;
-  position: relative;
-  border: 1px solid transparent;
-  cursor: pointer;
+export default () => {
+  const { cn, rainbow } = useTwBelt()
 
-  &:hover {
-    border-color: #615F62;
+  return {
+    wrapper: cn('relative mt-5 w-full h-32 text-text-digest-dark'),
+    header: 'row-center',
+    repo: 'text-lg h-full',
+    repoName: 'text-text-title-dark bold-sm',
+    repoDesc: 'text-sm text-text-digest-dark w-full break-all mt-1',
+    //
+    footer: 'row-center mt-3',
+    info: 'row-center text-sm mr-4 text-text-title-dark',
+    icon: 'size-3.5 fill-text-digest-dark mr-1.5',
+    //
+    langBar: 'w-full row-center -mt-2',
+    bar: 'h-1.5 brightness-90',
+    bgPurple: rainbow(COLOR_NAME.PURPLE, 'bg'),
+    bgBlue: rainbow(COLOR_NAME.BLUE, 'bg'),
+    bgYellow: rainbow(COLOR_NAME.YELLOW, 'bg'),
   }
-
-  transition: all .2s;
-`
-export const Repo = styled.div`
-  font-size: 18px;
-  height: 100%;
-`
-export const RepoName = styled.span`
-  font-weight: 500;
-  color: #e0e0e0;
-`
-export const RepoDesc = styled.div`
-  font-size: 14px;
-  opacity: 0.8;
-  width: 260px;
-  word-break: break-all;
-`
-export const Footer = styled.div`
-  ${css.row('align-center')};
-  margin-top: 18px;
-`
-export const Info = styled.div`
-  ${css.row('align-center')};
-  color: #e0e0e0;
-  font-size: 14px;
-  margin-right: 12px;
-`
-const commonIcon = (comp) => {
-  return styled(comp)`
-    ${css.size(13)};
-    fill: #ababab;
-    margin-right: 5px;
-  `
 }
-export const Icon = {
-  Star: commonIcon(StarSVG),
-  Fork: commonIcon(ForkSVG),
-  Contribute: commonIcon(ContributeSVG),
-}
-
-export const LangBar = styled.div`
-  width: 100%;
-  filter: brightness(0.8);
-  position: absolute;
-  bottom: 0;
-  left: 0;
-`

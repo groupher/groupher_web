@@ -14,7 +14,7 @@ export default () => {
 
   return {
     wrapper: cn(
-      'column w-[340px] h-96 rounded-xl p-5 bg-htmlBg-dark z-30 rotate-2 border-2',
+      'column w-[340px] h-96 rounded-xl p-5 px-8 bg-htmlBg-dark z-30 rotate-2 border-2',
       shadow('xl'),
       rainbow(COLOR_NAME.PURPLE, 'border'),
     ),
@@ -22,8 +22,8 @@ export default () => {
     //
     topping: 'row-center mb-1.5',
     //
-    githubIcon: cn('size-10 absolute top-4 right-6 opacity-20', fill('text.digest')),
-    githubTitle: cn('text-lg clip-text mt-1.5 ml-1.5'),
+    githubIcon: cn('size-14 absolute top-3 right-6 opacity-15', fill('text.digest')),
+    githubTitle: cn('text-lg clip-text mt-1.5'),
     gradientTextStyle: base.textGradientStyle,
   }
 }
