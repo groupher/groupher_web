@@ -31,6 +31,7 @@ export default () => {
     banner: 'column-center relative w-full h-[640px]',
     betaText: 'clip-text text-base bold mb-3',
     betaGradientStyle: `linear-gradient(to top, ${getPathGradient(wallpaper)})`,
+    textGradientStyle: { background: `linear-gradient(to left, ${getPathGradient(wallpaper)})` },
     title: cn('text-4xl bold-sm opacity-70', fg('text.title'), global('text-shadow')),
     desc: cn('text-lg mt-4', fg('text.digest')),
     //

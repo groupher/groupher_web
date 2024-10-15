@@ -1,47 +1,20 @@
-import type { TTestable } from '~/spec'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import styled, { css, theme } from '~/css'
+export default () => {
+  const { cn, fg, br, global } = useTwBelt()
 
-export const Wrapper = styled.div.attrs<TTestable>(({ $testid }) => ({
-  'data-test-id': $testid,
-}))<TTestable>`
-  ${css.column('align-both')};
-  width: 100%;
-  margin-top: 20px;
-`
-export const Slogan = styled.div`
-  ${css.column('align-both')};
-`
-export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 32px;
-  font-weight: 500;
-
-  text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;
-  opacity: 0.9;
-
-  ${css.media.mobile`
-    font-size: 22px;
-    font-weight: 600;
-  `};
-`
-export const Desc = styled.div`
-  ${css.row('align-center')};
-  font-size: 17px;
-  color: ${theme('article.digest')};
-  margin-top: 12px;
-  margin-bottom: 20px;
-  opacity: 0.8;
-
-  ${css.media.mobile`
-    font-size: 15px;
-    text-align: center;
-    padding: 0 20px;
-    display: inline-block;
-  `};
-`
-export const Wall = styled.div`
-  ${css.row('align-start', 'justify-between')};
-  margin-bottom: 50px;
-  width: 1024px;
-`
+  return {
+    wrapper: cn('column-align-both w-full mt-32'),
+    wall: 'align-both w-full mt-20 mb-12',
+    inner: cn(
+      'align-both justify-between relative w-[1024px] h-[340px] rounded-2xl border',
+      br('divider'),
+    ),
+    innerBgWrapper: cn('absolute top-0 left-0 w-full h-full overflow-hidden rounded-xl'),
+    slogan: 'column-align-both',
+    title: cn('text-3xl bold-sm opacity-70', fg('text.title'), global('text-shadow')),
+    desc: cn('text-lg mt-3', fg('text.digest')),
+    cadBg: cn('absolute left-0 top-0 w-8/12 h-full object-cover z-10 opacity-60'),
+    cadBg2: cn('absolute right-0 top-0 w-4/12 h-full object-cover z-10 opacity-85'),
+  }
+}
