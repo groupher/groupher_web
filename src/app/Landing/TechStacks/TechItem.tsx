@@ -1,25 +1,24 @@
 import type { FC } from 'react'
 
-import { Wrapper, IconWrapper, TeckIcon, NotesIcon, Name } from '../styles/tech_stacks/tech_item'
+import Img from '~/Img'
+import useSalon, { cn } from '../styles/tech_stacks/tech_item'
 
 type TProps = {
   path: string
-  size?: number
   name: string
+  iconSize?: string
 }
 
-const TechItem: FC<TProps> = ({ path, size = 40, name }) => {
+const TechItem: FC<TProps> = ({ path, name, iconSize = 'size-8' }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <IconWrapper>
-        {name === 'Notes' ? (
-          <NotesIcon src={`landing/stacks/${path}`} size={size} />
-        ) : (
-          <TeckIcon src={`landing/stacks/${path}`} size={size} />
-        )}
-      </IconWrapper>
-      <Name>{name}</Name>
-    </Wrapper>
+    <div className={s.wrapper}>
+      <div className={s.iconBox}>
+        <Img src={`landing/stacks/${path}`} className={cn(s.techIcon, iconSize)} />
+      </div>
+      <div className={s.name}>{name}</div>
+    </div>
   )
 }
 

@@ -130,11 +130,11 @@ export default () => {
         </Suspense>
 
         <Suspense fallback={<LavaLampLoading />}>
-          <EnjoyDev />
+          <TechStacks />
         </Suspense>
 
         <Suspense fallback={<LavaLampLoading />}>
-          <TechStacks />
+          <EnjoyDev />
         </Suspense>
 
         <div className={cn(s.divider, 'mt-20')} />

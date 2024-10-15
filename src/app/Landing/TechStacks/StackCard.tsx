@@ -1,54 +1,41 @@
-import useWallpaper from '~/hooks/useWallpaper'
+import HammerSVG from '~/icons/HammerSolid'
 
 import TechItem from './TechItem'
 
-import {
-  Wrapper,
-  Banner,
-  Title,
-  Desc,
-  BgWrapper,
-  TechsWrapper,
-  CADBackground,
-  Topping,
-  HighlightText,
-  HammerIcon,
-} from '../styles/tech_stacks/stack_card'
+import useSalon from '../styles/tech_stacks/stack_card'
 
 export default () => {
-  const { wallpaper } = useWallpaper()
+  const s = useSalon()
 
   return (
-    <Wrapper>
-      <Banner>
-        <Topping>
-          <HammerIcon wallpaper={wallpaper} />
-          <HighlightText wallpaper={wallpaper}>Techstack</HighlightText>
-        </Topping>
+    <div className={s.wrapper}>
+      <div className={s.banner}>
+        <div className={s.topping}>
+          <HammerSVG className={s.hammerIcon} style={s.hammerIconStyle} />
+          <div className={s.stackText} style={s.gradientTextStyle}>
+            Techstack
+          </div>
+        </div>
 
-        <Title>主要技术栈</Title>
-        <Desc>现代化的产品体验得益于现代化的技术栈及生产工具，这里列出主要部分，略表敬意。</Desc>
-      </Banner>
-      <TechsWrapper>
-        <TechItem path="elixir.png" name="Elixir" size={34} />
-        <TechItem path="phoenix.png" name="Phoenix" size={32} />
-        <TechItem path="pg.png" name="PG" size={34} />
-        <TechItem path="absinthe.png" name="Absinthe" size={33} />
-        <TechItem path="ecto.png" name="Ecto" size={38} />
-        <TechItem path="graphql.png" name="GraphQL" size={33} />
-        <TechItem path="nextjs.png" name="Next.js" size={54} />
-        <TechItem path="react.png" name="React" size={44} />
-        <TechItem path="typescript.png" name="TypeScript" size={30} />
-        <TechItem path="valtio.png" name="Valtio" size={28} />
-        <TechItem path="tailwind.png" name="Tailwind" size={36} />
-        <TechItem path="slate.png" name="Slate" size={30} />
-        <TechItem path="phosphor.png" name="Phosphor" size={32} />
-        <TechItem path="emacs.png" name="Emacs" size={33} />
-        <TechItem path="notes.png" name="Notes" size={32} />
-      </TechsWrapper>
-      <BgWrapper>
-        <CADBackground src="/cad-bg.png" />
-      </BgWrapper>
-    </Wrapper>
+        <h3 className={s.title}>主要技术栈</h3>
+      </div>
+      <div className={s.techs}>
+        <TechItem path="elixir.png" name="Elixir" />
+        <TechItem path="phoenix.png" name="Phoenix" />
+        <TechItem path="pg.png" name="PG" />
+        <TechItem path="absinthe.png" name="Absinthe" />
+        <TechItem path="ecto.png" name="Ecto" />
+        <TechItem path="graphql.png" name="GraphQL" />
+        <TechItem path="nextjs.png" name="Next.js" />
+        <TechItem path="react.png" name="React" />
+        <TechItem path="typescript.png" name="TypeScript" />
+        <TechItem path="valtio.png" name="Valtio" />
+        <TechItem path="tailwind.png" name="Tailwind" iconSize="size-12" />
+        <TechItem path="slate.png" name="Slate" />
+        <TechItem path="phosphor.png" name="Phosphor" />
+        <TechItem path="emacs.png" name="Emacs" />
+        <TechItem path="notes.png" name="Notes" />
+      </div>
+    </div>
   )
 }

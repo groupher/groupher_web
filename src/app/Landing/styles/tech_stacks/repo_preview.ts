@@ -9,8 +9,6 @@ export const Wrapper = styled.div`
   padding: 20px 18px;
   width: 100%;
   height: 148px;
-  background: rgb(24 24 24 / 46%);
-  backdrop-filter: blur(10px);
   color: #ababab;
   border-radius: 8px;
   position: relative;
