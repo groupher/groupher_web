@@ -1,64 +1,39 @@
-import { useRef, useEffect } from 'react'
-import useMobileDetect from '@groupher/use-mobile-detect-hook'
-
-import useWallpaper from '~/hooks/useWallpaper'
+import CheckSVG from '~/icons/CheckBold'
+import CloseCrossSVG from '~/icons/CloseCross'
 
 import HighWay from './HighWay'
 import OurWay from './OurWay'
 
-import {
-  Wrapper,
-  Slogan,
-  Tips,
-  Title,
-  Desc,
-  Wall,
-  GridBgWrapper,
-  CompareWraper,
-  VS,
-  YesNote,
-  NoNote,
-  YesIcon,
-  NoIcon,
-  GradientText,
-} from '../styles/enjoy_dev'
+import useSalon, { cn } from '../styles/enjoy_dev'
 
 export default () => {
-  const ref = useRef(null)
-  const { isMobile } = useMobileDetect()
-  const { wallpaper } = useWallpaper()
-
-  useEffect(() => {
-    if (isMobile && ref) {
-      ref.current.scrollLeft += 310
-    }
-  }, [isMobile, ref])
+  const s = useSalon()
 
   return (
-    <Wrapper>
-      <Slogan>
-        <Tips>It's Simple !</Tips>
-        <Title>
-          上线、<GradientText wallpaper={wallpaper}>获取反馈</GradientText>、迭代
-        </Title>
-        <Desc>将用户反馈融入开发流程，避免平行世界闭门造车</Desc>
-      </Slogan>
-      <Wall ref={ref}>
+    <div className={s.wrapper}>
+      <div className={s.slogan}>
+        <div className={s.tips}>It's should be Simple !</div>
+        <h3 className={s.title}>上线、获取反馈、迭代</h3>
+        <div className={s.desc}>将用户反馈融入开发流程，避免平行世界闭门造车</div>
+      </div>
+      <div className={s.ourWall}>
+        <div className={s.ourWallBg} />
+
+        <div className={s.ourlabel}>
+          <CheckSVG className={cn(s.checkIcon, s.fillGreen)} />
+          与用户共赢
+        </div>
+
         <OurWay />
-        <CompareWraper>
-          <YesNote>
-            <YesIcon />
-            与用户共赢
-          </YesNote>
-          <VS>VS</VS>
-          <NoNote>
-            <NoIcon />
-            团队两行泪
-          </NoNote>
-        </CompareWraper>
+      </div>
+      <div className={s.theirWall}>
+        <div className={s.theirWallBg} />
+        <div className={s.theirlabel}>
+          <CloseCrossSVG className={cn(s.checkIcon, s.fillRed)} />
+          团队两行泪
+        </div>
         <HighWay />
-        <GridBgWrapper />
-      </Wall>
-    </Wrapper>
+      </div>
+    </div>
   )
 }

@@ -320,6 +320,14 @@
     background: linear-gradient(140deg,#fff5fb99 0%,rgb(255 231 230 / 84%) 100%);
   }
 
+  .gradient-red {
+    background: linear-gradient(45deg, #ffede478 0%, #ffdcdcc9 100%);
+  }
+
+  .gradient-red-dark {
+    background: linear-gradient(45deg, #ffe4e424 0%, #ffdcdcc9 100%);
+  }
+
   .gradient-black {
     background: linear-gradient(25deg,#fafafaba 20%,#bdccce63 100%);
   }
