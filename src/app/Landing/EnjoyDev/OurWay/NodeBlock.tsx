@@ -24,24 +24,33 @@ type TProps = {
   cat?: TArticleCat | 'DEFAULT'
   index?: number
   className?: string
+  rightDot?: string
+  leftDot?: string
   bg?: TColorName
 }
 
-const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1, className = '', bg = null }) => {
+const NodeBlock: FC<TProps> = ({
+  cat = 'DEFAULT',
+  index = -1,
+  className = '',
+  bg = null,
+  leftDot = 'bottom-4',
+  rightDot = 'bottom-4',
+}) => {
   const s = useSalon({ bgColor: bg })
 
   const metric = METRIC[cat]
 
   return (
-    <div className={cn(s.wrapper, className)}>
+    <div className={cn(s.wrapper, className, cat === 'DEFAULT' && 'h-32')}>
       {cat === ARTICLE_CAT.FEATURE && <ClipSVG className={s.attachIcon} />}
       {cat === ARTICLE_CAT.QUESTION && <PinSVG className={cn(s.attachIcon, 'rotate-12')} />}
       {cat === ARTICLE_CAT.BUG && <TargetSVG className={s.attachIcon} />}
       {cat === ARTICLE_CAT.OTHER && <TagSVG className={cn(s.attachIcon, 'rotate-12')} />}
 
-      {cat === 'DEFAULT' && index === 0 && <div className={s.leftDot} />}
+      {cat === 'DEFAULT' && index === 0 && <div className={cn(s.leftDot, leftDot)} />}
 
-      <div className={cn(s.rightDot, cat === 'DEFAULT' ? 'bottom-9' : 'bottom-4')} />
+      <div className={cn(s.rightDot, rightDot)} />
 
       <div className={s.header}>
         {cat === ARTICLE_CAT.FEATURE && <LightSVG className={s.headIcon} />}
@@ -52,16 +61,14 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1, className = '', bg
 
         <div className={s.text}>{metric.title}</div>
       </div>
-      <div className={s.innerCard}>
+      <div className={cn(s.innerCard, cat === 'DEFAULT' && 'h-20')}>
         <div className={cn(s.bar, 'w-24')} />
         <div className={cn(s.bar)} />
-
-        {index === 0 && <div className={cn(s.bar)} />}
 
         <div className="grow" />
         <div className={s.footer}>
           {cat === 'DEFAULT' ? (
-            <SprintCounter num={metric.upvoteNum + index} />
+            <SprintCounter num={metric.upvoteNum + index + 20} />
           ) : (
             <UpdateCounter text={metric.upvoteText} num={metric.upvoteNum} color={bg} />
           )}

@@ -74,8 +74,6 @@ export default () => {
   return (
     <div className={s.wrapper} data-testid="landing-page">
       {/* <PatternBg /> */}
-      <EnjoyDev />
-
       <div className={s.inner}>
         {/* <BgGlow wallpaper={wallpaper} /> */}
         <div className={s.banner}>
@@ -136,7 +134,9 @@ export default () => {
           <TechStacks />
         </Suspense>
 
-        <Suspense fallback={<LavaLampLoading />}>{/* <EnjoyDev /> */}</Suspense>
+        <Suspense fallback={<LavaLampLoading />}>
+          <EnjoyDev />
+        </Suspense>
 
         <div className={cn(s.divider, 'mt-20')} />
         <UsersWall wallpaper={wallpaper} />

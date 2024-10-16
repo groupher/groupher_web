@@ -14,7 +14,7 @@ export default () => {
     title: cn('text-3xl bold-sm opacity-70', fg('text.title'), global('text-shadow')),
     desc: cn('text-lg mt-3', fg('text.digest')),
     //
-    ourWall: cn('relative column-align-both w-full h-auto'),
+    ourWall: cn('relative column-align-both w-full h-auto overflow-hidden'),
     ourWallBg: cn('absolute top-0 left-0 w-full h-full rotate-180', global('gradient-green')),
     ourlabel: cn(
       'row-center absolute right-16 top-0 text-lg px-3 py-1 rounded-b-xl',
