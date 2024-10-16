@@ -59,17 +59,11 @@ const NodeBlock: FC<TProps> = ({ cat = 'DEFAULT', index = -1 }) => {
         <div className="grow" />
         <Footer>
           {cat === 'DEFAULT' ? (
-            <SprintCounter
-              num={metric.upvoteNum + index}
-              delay={metric.delay}
-              dividerColor={colors.barBg}
-              mainColor={colors.main}
-            />
+            <SprintCounter num={metric.upvoteNum + index} />
           ) : (
             <UpdateCounter
               text={metric.upvoteText}
               num={metric.upvoteNum}
-              delay={metric.delay}
               dividerColor={colors.barBg}
               mainColor={colors.bg}
             />

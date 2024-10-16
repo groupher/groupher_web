@@ -1,47 +1,37 @@
-import type { FC } from 'react'
-
 import NodeBlock from './NodeBlock'
 import BgShapes from './BgShapes'
 import Fans from './Fans'
 
-import {
-  Wrapper,
-  SeedIcon,
-  TadaIcon,
-  HeadConnectLine,
-  TailConnectLine,
-  MainConnectLine,
-  PositionWrapper,
-} from '../../styles/enjoy_dev/our_way'
+import SeedSVG from '~/icons/Seed'
+import TadaSVG from '~/icons/Tada'
 
-const OurWay: FC = () => {
+import useSalon from '../../styles/enjoy_dev/our_way'
+
+export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <BgShapes />
       <Fans />
-      <SeedIcon left="-38px" top="298px" />
-      <HeadConnectLine left="-10px" top="306px" />
+      <div className="row-center">
+        <SeedSVG className={s.seedIcon} />
+        <div className={s.connectLine} />
+      </div>
+
       <NodeBlock index={0} cat="DEFAULT" />
-      <MainConnectLine left="120px" top="306px" />
-      <PositionWrapper left="200px" top="20px">
-        <NodeBlock cat="FEATURE" />
-      </PositionWrapper>
-      <PositionWrapper left="210px" top="390px">
-        <NodeBlock cat="OTHER" />
-      </PositionWrapper>
+      {/* <MainConnectLine left="120px" top="306px" /> */}
+      <NodeBlock cat="FEATURE" />
+      <NodeBlock cat="OTHER" />
       <NodeBlock index={1} cat="DEFAULT" />
-      <MainConnectLine left="500px" top="306px" />
-      <PositionWrapper left="590px" top="40px">
-        <NodeBlock cat="QUESTION" />
-      </PositionWrapper>
-      <PositionWrapper left="600px" top="375px">
-        <NodeBlock cat="BUG" />
-      </PositionWrapper>
+      {/* <MainConnectLine left="500px" top="306px" /> */}
+      <NodeBlock cat="QUESTION" />
+      <NodeBlock cat="BUG" />
       <NodeBlock index={2} cat="DEFAULT" />
-      <TailConnectLine left="965px" top="307px" />
-      <TadaIcon left="1028px" top="298px" />
-    </Wrapper>
+      <div className="row-center">
+        <div className={s.connectLine} />
+        <TadaSVG className={s.tadaIcon} />
+      </div>
+    </div>
   )
 }
-
-export default OurWay

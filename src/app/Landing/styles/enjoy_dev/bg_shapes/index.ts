@@ -1,4 +1,4 @@
-import styled, { css, animate, theme } from '~/css'
+import styled, { css, theme } from '~/css'
 
 import CurveLine1SVG from './CurveLine1'
 import CurveLine2SVG from './CurveLine2'
@@ -18,7 +18,6 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
 `
-
 export const CurveLine1 = styled(CurveLine1SVG)`
   ${css.size(300)};
   position: absolute;
@@ -27,14 +26,7 @@ export const CurveLine1 = styled(CurveLine1SVG)`
   transform: scaleY(1.05) rotate(1deg);
   z-index: -1;
   filter: drop-shadow(2px 4px 6px lightgrey);
-
-  animation: ${animate.blinker} 4s linear infinite alternate;
-
-  ${css.media.mobile`
-    animation: none;
-  `};
 `
-
 export const CurveLine2 = styled(CurveLine2SVG)`
   ${css.size(300)};
   position: absolute;
@@ -44,13 +36,10 @@ export const CurveLine2 = styled(CurveLine2SVG)`
   z-index: -1;
   filter: drop-shadow(2px 4px 6px lightgrey);
 
-  animation: ${animate.blinker} 3s cubic-bezier(0.17, 0.67, 0.91, 0.27) infinite alternate;
-
   ${css.media.mobile`
     animation: none;
   `};
 `
-
 export const CurveLine3 = styled(CurveLine3SVG)`
   ${css.size(300)};
   position: absolute;
@@ -60,7 +49,6 @@ export const CurveLine3 = styled(CurveLine3SVG)`
   z-index: -1;
   filter: drop-shadow(2px 4px 6px lightgrey);
 
-  animation: ${animate.blinker} 2s cubic-bezier(0.53, 0.24, 0.91, 0.27) infinite alternate;
   animation-delay: 2s;
 
   ${css.media.mobile`
@@ -76,8 +64,6 @@ export const CurveLine4 = styled(CurveLine4SVG)`
   z-index: -1;
   filter: drop-shadow(2px 4px 6px lightgrey);
 
-  animation: ${animate.blinker} 1s cubic-bezier(0.09, 0.74, 0.36, 1.05) infinite alternate;
-
   ${css.media.mobile`
     animation: none;
   `};
@@ -89,14 +75,8 @@ export const ShapeCross1Icon = styled(ShapeCross2SVG)`
   bottom: 70px;
   right: 120px;
   fill: #ffe4a0;
-  opacity: 0.6;
-
-  animation: ${animate.breath} 1s linear infinite alternate;
-  transition: all 0.2s;
-
-  ${css.media.mobile`
-    animation: none;
-  `};
+  fill: green;
+  opacity: 0.3;
 `
 export const ShapeCross2Icon = styled(ShapeCross2SVG)`
   ${css.size(16)};
@@ -104,9 +84,9 @@ export const ShapeCross2Icon = styled(ShapeCross2SVG)`
   bottom: 40px;
   right: 140px;
   fill: #ff6754;
-  opacity: 0.3;
+  fill: green;
+  opacity: 0.2;
 `
-
 export const ShapeCircleIcon = styled(ShapeCircleSVG)`
   ${css.circle(25)};
   fill: #c287ba;
@@ -123,29 +103,26 @@ export const ShapeCircle2Icon = styled.div`
   top: 50px;
   left: 65px;
 `
-
 export const ShapeSquareIcon = styled.div`
   ${css.size(16)};
   border-radius: 4px;
-  background: #5a7ab7;
+  background: green;
   position: absolute;
   bottom: 50px;
   left: 65px;
   transform: rotate(45deg);
   opacity: 0.3;
 `
-
 export const ShapeSquare2Icon = styled.div`
   ${css.size(16)};
   border-radius: 3px;
-  background: #5a7ab7;
+  background: green;
   position: absolute;
   top: 530px;
   left: 65px;
   transform: rotate(45deg);
   opacity: 0.1;
 `
-
 export const ShapeCircleHalfIcon = styled(ShapeCircleHalfSVG)`
   ${css.size(50)};
   fill: orange;
@@ -155,7 +132,6 @@ export const ShapeCircleHalfIcon = styled(ShapeCircleHalfSVG)`
   transform: rotate(-140deg);
   opacity: 0.4;
 `
-
 export const TwoLineIcon = styled(TwoLineSVG)`
   ${css.size(32)};
   fill: ${theme('hint')};

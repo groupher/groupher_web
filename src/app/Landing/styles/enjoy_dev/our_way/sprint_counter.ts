@@ -1,16 +1,12 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import SprintSVG from '~/icons/Sprint'
+export default () => {
+  const { cn, fg, fill } = useTwBelt()
 
-export const Wrapper = styled.div<{ color: string }>`
-  ${css.row('align-center')};
-`
-export const SprintIcon = styled(SprintSVG)`
-  ${css.size(14)};
-  fill: ${theme('hint')};
-`
-export const Text = styled.div<{ color: string }>`
-  color: ${({ color }) => color || theme('article.title')};
-  font-size: 13px;
-  margin-left: 4px;
-`
+  return {
+    wrapper: cn('row-center'),
+    text: cn('text-xs', fg('text.digest')),
+    count: cn('text-sm ml-1 mr-1 mb-px', fg('text.title')),
+    icon: cn('size-3.5 mr-1.5 opacity-65', fill('text.digest')),
+  }
+}

@@ -1,49 +1,28 @@
-import type { TColor } from '~/spec'
-import styled, { css, rainbow, theme, animate } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
-import Img from '~/Img'
+import useTwBelt from '~/hooks/useTwBelt'
 
-import { WithPosition } from '~/widgets/Common'
-import DiscussSVG from '~/icons/Comment'
+export { cn } from '~/css'
 
-export const Wrapper = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-`
-type TSingleUser = TColor & { $width: number; $opacity?: number }
-export const SingleWrapper = styled(WithPosition)<TSingleUser>`
-  ${({ $width }) => css.circle($width)};
-  ${css.row('align-both')};
-  border: 3px solid;
-  border-color: ${({ $color }) => rainbow($color)};
-  opacity: ${({ $opacity }) => $opacity || 0.8};
-`
-export const SingleUser = styled(Img)<{ $width: number }>`
-  padding: 1px;
-  ${({ $width }) => css.circle($width)};
-`
-type TComemntUsers = { $rotate?: number; $width?: number }
-export const CommentAnimate = styled(WithPosition)`
-  animation: ${animate.jump} 4s linear infinite;
-`
-export const CommentUsers = styled.div<TComemntUsers>`
-  ${css.row('align-both')};
-  border: 1px solid;
-  background: ${theme('htmlBg')};
-  border-color: #d3d3d3;
-  width: ${({ $width }) => `${$width || 100}px`};
-  padding-left: 5px;
-  height: 38px;
-  border-radius: 20px;
-  transform: ${({ $rotate }) => `rotate(${$rotate || 0}deg)`};
-  opacity: 0.8;
-`
-export const DiscussIcon = styled(DiscussSVG)`
-  ${css.size(15)};
-  fill: ${theme('hint')};
-`
+export default () => {
+  const { cn, br, bg, rainbow } = useTwBelt()
 
-export const Emoji = styled(Img)`
-  ${css.size(18)};
-`
+  return {
+    wrapper: cn('absolute w-full h-full'),
+    commentsGroup: cn(
+      'absolute align-both rounded-xl h-9 w-auto py-1.5 px-2 border',
+      'animate-bounce animate-infinite animate-duration-[5000ms]',
+      bg('alphaBg'),
+      br('divider'),
+    ),
+    emoji: 'size-4',
+    discussIcon: cn('size-5 opacity-65', rainbow(COLOR_NAME.GREEN, 'fill')),
+    //
+    userWrapper: 'align-both absolute circle border-4',
+    borderOrange: rainbow(COLOR_NAME.ORANGE, 'borderSoft'),
+    borderGreen: rainbow(COLOR_NAME.GREEN, 'borderSoft'),
+    borderBlue: rainbow(COLOR_NAME.BLUE, 'borderSoft'),
+    borderPurple: rainbow(COLOR_NAME.PURPLE, 'borderSoft'),
+    avatar: 'size-7 circle p-px',
+  }
+}

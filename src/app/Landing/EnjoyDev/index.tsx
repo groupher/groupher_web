@@ -1,8 +1,8 @@
 import CheckSVG from '~/icons/CheckBold'
 import CloseCrossSVG from '~/icons/CloseCross'
 
-import HighWay from './HighWay'
 import OurWay from './OurWay'
+import HighWay from './HighWay'
 
 import useSalon, { cn } from '../styles/enjoy_dev'
 

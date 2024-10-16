@@ -1,27 +1,24 @@
-import type { FC } from 'react'
-
 import Block from './Block'
 
-import { Wrapper, DashLine, SeedIcon, ConnectLine } from '../../styles/enjoy_dev/high_way'
+import SeedSVG from '~/icons/Seed'
+import useSalon, { cn } from '../../styles/enjoy_dev/high_way'
 
-const HighWay: FC = () => {
+export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <SeedIcon left="100px" top="60px" />
-      <DashLine />
+    <div className={s.wrapper}>
+      <SeedSVG className={cn(s.seedIcon, 'top-14 -left-6')} />
+      <div className={s.dashline} />
       <Block text="开发" noDot />
-      <ConnectLine />
+      <div className={s.connectline} />
       <Block text="开发" />
-      <ConnectLine />
+      <div className={s.connectline} />
       <Block text="开发" />
-      <ConnectLine />
-      <Block text="开发" />
-      <ConnectLine />
+      <div className={s.connectline} />
       <Block text="上线没人用" type="online" />
-      <ConnectLine />
+      <div className={s.connectline} />
       <Block text="扑街" type="giveup" />
-    </Wrapper>
+    </div>
   )
 }
-
-export default HighWay

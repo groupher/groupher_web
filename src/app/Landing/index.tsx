@@ -74,6 +74,8 @@ export default () => {
   return (
     <div className={s.wrapper} data-testid="landing-page">
       {/* <PatternBg /> */}
+      <EnjoyDev />
+
       <div className={s.inner}>
         {/* <BgGlow wallpaper={wallpaper} /> */}
         <div className={s.banner}>
@@ -85,6 +87,7 @@ export default () => {
           <div className={s.desc}>
             讨论区、看板、更新日志、帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品
           </div>
+
           <div className={s.buttonGroup}>
             <Link href={ROUTE.APPLY_COMMUNITY} className={s.linkable}>
               <StartButton wallpaper={wallpaper} size="medium">
@@ -133,9 +136,7 @@ export default () => {
           <TechStacks />
         </Suspense>
 
-        <Suspense fallback={<LavaLampLoading />}>
-          <EnjoyDev />
-        </Suspense>
+        <Suspense fallback={<LavaLampLoading />}>{/* <EnjoyDev /> */}</Suspense>
 
         <div className={cn(s.divider, 'mt-20')} />
         <UsersWall wallpaper={wallpaper} />

@@ -1,35 +1,23 @@
-import { type FC, useState } from 'react'
+import type { FC } from 'react'
 
-import useInterval from '~/hooks/useInterval'
-import AnimatedCount from '~/widgets/AnimatedCount'
+import SprintSVG from '~/icons/Sprint'
 
-import { Wrapper, SprintIcon, Text } from '../../styles/enjoy_dev/our_way/sprint_counter'
+import useSalon from '../../styles/enjoy_dev/our_way/sprint_counter'
 
 type TProps = {
   num?: number
-  delay: number
-  dividerColor: string
-  mainColor: string
 }
 
-const SprintCounter: FC<TProps> = ({ num = 13, delay, dividerColor, mainColor }) => {
-  const [count, setCount] = useState(num)
-
-  useInterval(() => {
-    if (count >= 999) {
-      setCount(0)
-    } else {
-      setCount(count + 1)
-    }
-  }, delay)
+const SprintCounter: FC<TProps> = ({ num = 13 }) => {
+  const s = useSalon()
 
   return (
-    <Wrapper color={dividerColor}>
-      <SprintIcon />
-      <Text color={mainColor}>第</Text>
-      <AnimatedCount count={count} forceColor="#323232" left={5} top={-1} />
-      <Text color={mainColor}>周</Text>
-    </Wrapper>
+    <div className={s.wrapper}>
+      <SprintSVG className={s.icon} />
+      <div className={s.text}>第</div>
+      <div className={s.count}>{num}</div>
+      <div className={s.text}>周</div>
+    </div>
   )
 }
 

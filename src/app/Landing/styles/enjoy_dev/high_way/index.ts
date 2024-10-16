@@ -1,43 +1,19 @@
-import styled, { css, theme } from '~/css'
+import { COLOR_NAME } from '~/const/colors'
 
-export { SeedIcon } from '../our_way'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.row('align-both')};
-  gap: 15px 0px;
-  height: 140px;
-  width: 100%;
-  padding: 40px 80px;
-  position: relative;
-  margin-left: -10px;
+export { cn } from '~/css'
 
-  ${css.media.mobile`
-    transform: scale(1.2);
-  `};
-`
-export const DashLine = styled.div`
-  width: 54px;
-  height: 2px;
-  margin-top: -1px;
-  border-top: 3px dashed;
-  margin-left: -3px;
-  border-color: ${theme('divider')};
-  filter: drop-shadow(2px 4px 6px lightgrey);
-`
-export const ConnectLine = styled.div`
-  width: 60px;
-  height: 2px;
-  margin-top: -1px;
+export default () => {
+  const { cn, rainbow } = useTwBelt()
 
-  border-bottom: 2px solid transparent;
-  border-image: linear-gradient(
-    0.35turn,
-    transparent,
-    ${theme('divider')},
-    ${theme('divider')},
-    ${theme('divider')},
-    ${theme('divider')}
-  );
-
-  border-image-slice: 1;
-`
+  return {
+    wrapper: cn('relative align-both gap-x-4 py-12'),
+    seedIcon: cn('size-4 absolute opacity-65', rainbow(COLOR_NAME.GREEN, 'fill')),
+    dashline: cn('w-14 h-1 border-t border-dashed opacity-30', rainbow(COLOR_NAME.BLACK, 'border')),
+    connectline: cn(
+      'w-14 h-1 border-t border-dashed opacity-50 -ml-4 mt-0.5',
+      rainbow(COLOR_NAME.RED, 'border'),
+    ),
+  }
+}

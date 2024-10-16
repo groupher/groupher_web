@@ -1,75 +1,58 @@
-import type { FC } from 'react'
-
-import Facepile from '~/widgets/Facepile/LandingPage'
 import { mockUsers } from '~/mock'
 
-import {
-  Wrapper,
-  SingleWrapper,
-  SingleUser,
-  CommentUsers,
-  CommentAnimate,
-  Emoji,
-  DiscussIcon,
-} from '../../styles/enjoy_dev/fans'
+import DiscussSVG from '~/icons/DiscussSolid'
 
-const Fans: FC = () => {
+import Facepile from '~/widgets/Facepile/LandingPage'
+import Img from '~/Img'
+
+import useSalon, { cn } from '../../styles/enjoy_dev/fans'
+
+export default () => {
+  const s = useSalon()
   const users = mockUsers(10)
 
   return (
-    <Wrapper>
-      <SingleWrapper $color="PURPLE" left={40} top={50} $width={36}>
-        <SingleUser src={users[4].avatar} $width={30} />
-      </SingleWrapper>
+    <div className={s.wrapper}>
+      <div className={cn(s.userWrapper, s.borderPurple, 'top-12 left-10')}>
+        <Img src={users[4].avatar} className={cn(s.avatar)} />
+      </div>
 
-      <SingleWrapper $color="GREEN" left={350} top={120} $width={34}>
-        <SingleUser src={users[6].avatar} $width={28} />
-      </SingleWrapper>
+      <div className={cn(s.userWrapper, s.borderGreen, 'top-20 left-52')}>
+        <Img src={users[6].avatar} className={cn(s.avatar, 'size-8')} />
+      </div>
 
-      <SingleWrapper $color="ORANGE" right={200} bottom={120} $width={34}>
-        <SingleUser src={users[6].avatar} $width={28} />
-      </SingleWrapper>
+      <div className={cn(s.userWrapper, s.borderOrange, 'bottom-20 right-32')}>
+        <Img src={users[6].avatar} className={cn(s.avatar)} />
+      </div>
 
-      <SingleWrapper $color="BLUE" right={172} bottom={92} $width={28} $opacity={0.6}>
-        <SingleUser src={users[0].avatar} $width={22} />
-      </SingleWrapper>
+      <div className={cn(s.userWrapper, s.borderBlue, 'bottom-40 right-52')}>
+        <Img src={users[0].avatar} className={cn(s.avatar, 'size-6')} />
+      </div>
 
-      <CommentAnimate left={480} top={80}>
-        <CommentUsers $rotate={3} $width={90}>
-          <Emoji src="icons/emotion/confused.png" />
-          <Facepile users={users.slice(8, 10)} left={8} />
-        </CommentUsers>
-      </CommentAnimate>
+      <div className={cn(s.commentsGroup, 'top-10 left-80')}>
+        <Img src="icons/emotion/confused.png" className={s.emoji} />
+        <Facepile users={users.slice(8, 10)} left={2} className="scale-90 gap-x-1" />
+      </div>
 
-      <CommentAnimate left={200} top={180}>
-        <CommentUsers $rotate={1} $width={88}>
-          <DiscussIcon />
-          <Facepile users={users.slice(7, 9)} left={6} />
-        </CommentUsers>
-      </CommentAnimate>
+      <div className={cn(s.commentsGroup, 'top-44 left-64 animate-delay-800')}>
+        <DiscussSVG className={s.discussIcon} />
+        <Facepile users={users.slice(7, 9)} left={2} className="scale-90 gap-x-1" />
+      </div>
 
-      <CommentAnimate left={40} bottom={100}>
-        <CommentUsers $rotate={-5} $width={116}>
-          <Emoji src="icons/emotion/biceps.png" />
-          <Facepile users={users.slice(0, 3)} left={6} />
-        </CommentUsers>
-      </CommentAnimate>
+      <div className={cn(s.commentsGroup, 'bottom-10 left-40 animate-delay-1000')}>
+        <Img src="icons/emotion/biceps.png" className={s.emoji} />
+        <Facepile users={users.slice(0, 3)} left={2} className="scale-90 gap-x-1" />
+      </div>
 
-      <CommentAnimate left={420} bottom={80}>
-        <CommentUsers $rotate={3} $width={116}>
-          <Emoji src="icons/emotion/heart.png" />
-          <Facepile users={users.slice(2, 5)} left={6} />
-        </CommentUsers>
-      </CommentAnimate>
+      <div className={cn(s.commentsGroup, 'bottom-20 left-80')}>
+        <Img src="icons/emotion/heart.png" className={s.emoji} />
+        <Facepile users={users.slice(2, 5)} left={2} className="scale-90 gap-x-1" />
+      </div>
 
-      <CommentAnimate right={140} top={110}>
-        <CommentUsers $rotate={-3} $width={136}>
-          <Emoji src="icons/emotion/beer.png" />
-          <Facepile users={users.slice(3, 7)} left={6} />
-        </CommentUsers>
-      </CommentAnimate>
-    </Wrapper>
+      <div className={cn(s.commentsGroup, 'top-24 right-40 animate-delay-500')}>
+        <Img src="icons/emotion/beer.png" className={s.emoji} />
+        <Facepile users={users.slice(3, 6)} left={2} className="scale-90 gap-x-1" />
+      </div>
+    </div>
   )
 }
-
-export default Fans

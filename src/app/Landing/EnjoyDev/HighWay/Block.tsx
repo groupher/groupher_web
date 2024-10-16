@@ -1,13 +1,9 @@
 import type { FC } from 'react'
 
-import {
-  Wrapper,
-  Building,
-  SadIcon,
-  InternetIcon,
-  Text,
-  Dot,
-} from '../../styles/enjoy_dev/high_way/block'
+import GraveSVG from '~/icons/Grave'
+import PlaneSVG from '~/icons/Plane'
+
+import useSalon, { cn } from '../../styles/enjoy_dev/high_way/block'
 
 type TProps = {
   text: string
@@ -16,18 +12,20 @@ type TProps = {
 }
 
 const Block: FC<TProps> = ({ text, noDot = false, type = '' }) => {
+  const s = useSalon()
+
   return (
-    <Wrapper $giveup={type === 'giveup'}>
-      {type === 'online' && <InternetIcon />}
-      {type === 'giveup' && <SadIcon />}
+    <div className={s.wrapper}>
+      {type === 'online' && <PlaneSVG className={s.launchIcon} />}
+      {type === 'giveup' && <GraveSVG className={s.graveIcon} />}
       {type === '' && (
-        <Building role="img" aria-label="wip">
+        <div className={s.buildIcon} role="img" aria-label="wip">
           🚧
-        </Building>
+        </div>
       )}
-      <Text $giveup={type === 'giveup'}>{text}</Text>
-      {!noDot && <Dot />}
-    </Wrapper>
+      <div className={cn(s.text, type === 'giveup' && `${s.textRed} bold`)}>{text}</div>
+      {!noDot && <div className={s.dot} />}
+    </div>
   )
 }
 
