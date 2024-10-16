@@ -1,21 +1,26 @@
 import type { FC } from 'react'
 
-import { Wrapper, UpvoteIcon, Text, Counter } from '../../styles/enjoy_dev/our_way/upvote_counter'
+import type { TColorName } from '~/spec'
+
+import UpvoteSVG from '~/icons/Upvote'
+
+import useSalon from '../../styles/enjoy_dev/our_way/upvote_counter'
 
 type TProps = {
   text?: string
   num?: number
-  dividerColor: string
-  mainColor: string
+  color: TColorName
 }
 
-const UpdateCounter: FC<TProps> = ({ text = '投票', num = 13, dividerColor, mainColor }) => {
+const UpdateCounter: FC<TProps> = ({ text = '投票', num = 13, color }) => {
+  const s = useSalon({ color })
+
   return (
-    <Wrapper color={dividerColor}>
-      <UpvoteIcon color={mainColor} />
-      <Text color={mainColor}>{text}</Text>
-      <Counter>{num}</Counter>
-    </Wrapper>
+    <div className={s.wrapper}>
+      <UpvoteSVG className={s.upvoteIcon} />
+      <div className={s.text}>{text}</div>
+      <div className={s.count}>{num}</div>
+    </div>
   )
 }
 

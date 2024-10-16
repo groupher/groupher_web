@@ -1,28 +1,26 @@
-import styled, { css, theme } from '~/css'
+import type { TColorName } from '~/spec'
 
-import UpvoteSVG from '~/icons/Upvote'
+import { COLOR_NAME } from '~/const/colors'
 
-export const Wrapper = styled.div<{ color: string }>`
-  ${css.row('align-center')};
-  padding: 0 5px;
-  border: 1px solid;
-  border-color: ${({ color }) => color || theme('divider')};
-  border-radius: 5px;
-  margin-left: -1px;
-  filter: saturate(0.6);
-`
-export const UpvoteIcon = styled(UpvoteSVG)<{ color: string }>`
-  ${css.size(14)};
-  fill: ${({ color }) => color || theme('article.digest')};
-  opacity: 0.4;
-  margin-top: -1px;
-`
-export const Text = styled.div<{ color: string }>`
-  color: ${({ color }) => color || theme('article.title')};
-  font-size: 13px;
-  margin-left: 6px;
-  opacity: 0.6;
-`
-export const Counter = styled.div`
-  opacity: 0.6;
-`
+import useTwBelt from '~/hooks/useTwBelt'
+
+type TProps = {
+  color?: TColorName
+}
+
+export default ({ color }: TProps) => {
+  const { cn, rainbow, fg, fill } = useTwBelt()
+
+  const fillColor = color ? rainbow(COLOR_NAME[color], 'fill') : fill('text.digest')
+  const textColor = color ? rainbow(COLOR_NAME[color], 'fg') : fg('text.digest')
+
+  return {
+    wrapper: cn(
+      'row-center px-1.5 py-0.5 border border-dotted rounded-md',
+      rainbow(COLOR_NAME[color], 'borderSoft'),
+    ),
+    text: cn('text-xs ml-1.5', textColor),
+    count: cn('text-xs ml-1.5 bold-sm ml-1', textColor),
+    upvoteIcon: cn('size-3 -mt-px opacity-80', fillColor),
+  }
+}
