@@ -1,34 +1,36 @@
-import useWallpaper from '~/hooks/useWallpaper'
 import { ROUTE } from '~/const/route'
 
-import { LinkAble } from '~/widgets/Common'
+import Img from '~/Img'
 import Button from '~/widgets/Buttons/Button'
 
-import { Wrapper, Logo, Title, Desc, Highlight, Buttons, CreateButton } from '../styles/footer'
+import { LinkAble } from '~/widgets/Common'
+
+import useSalon from '../styles/footer'
 
 export default () => {
-  const { wallpaper } = useWallpaper()
+  const s = useSalon()
 
   return (
-    <Wrapper>
-      <Logo src="groupher-alpha.png" />
+    <div className={s.wrapper}>
+      <Img src="groupher.png" className={s.logo} />
 
-      <Title>节省团队宝贵时间</Title>
-      <Desc>
-        你只需专注于产品的<Highlight>核心功能</Highlight>，将周边的「<Highlight>杂活儿</Highlight>
+      <h3 className={s.title}>节省团队宝贵时间</h3>
+      <div className={s.desc}>
+        你只需专注于产品的<span className={s.hightLight}>核心功能</span>，将周边的「
+        <span className={s.hightLight}>杂活儿</span>
         」交给 Groupher
-      </Desc>
-      <Buttons>
+      </div>
+      <div className={s.buttons}>
         <LinkAble href={ROUTE.APPLY_COMMUNITY}>
-          <CreateButton size="medium" wallpaper={wallpaper}>
+          <Button className={s.createButton} style={s.createButtonStyle} size="medium">
             创建我的社区
-          </CreateButton>
+          </Button>
         </LinkAble>
 
         <Button size="medium" ghost>
           预约演示
         </Button>
-      </Buttons>
-    </Wrapper>
+      </div>
+    </div>
   )
 }

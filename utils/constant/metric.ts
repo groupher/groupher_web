@@ -1,7 +1,7 @@
 import type { TMetric } from '~/spec'
 // NOTE:  the value is mapping to @/utils/media's key
 // so do not change to lowercase etc...
-const METRIC = {
+export default {
   HOME: 'HOME',
   COMMUNITY: 'COMMUNITY',
   COMMUNITY_SIDEBAR: 'COMMUNITY_SIDEBAR',
@@ -19,5 +19,3 @@ const METRIC = {
   COMMUNITY_EDITOR: 'COMMUNITY_EDITOR',
   ARTICLE_EDITOR: 'ARTICLE_EDITOR',
 } as Record<Uppercase<TMetric>, Uppercase<TMetric>>
-
-export default METRIC

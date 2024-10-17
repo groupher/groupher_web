@@ -20,6 +20,7 @@ type TProps = {
   disabled?: boolean
   noLeftRouned?: boolean
   color?: TColorName | null
+  style?: any
 } & TSpace
 
 const Button: FC<TProps> = ({
@@ -36,6 +37,7 @@ const Button: FC<TProps> = ({
   disabled = false,
   noLeftRouned = false,
   color = null,
+  style = {},
   ...spacing
 }) => {
   const s = useSalon({
@@ -55,7 +57,11 @@ const Button: FC<TProps> = ({
   const isRed = type === 'red'
 
   return (
-    <button className={cn(s.wrapper, className)} onClick={() => !disabled && onClick()}>
+    <button
+      className={cn(s.wrapper, className)}
+      style={style}
+      onClick={() => !disabled && onClick()}
+    >
       <div className={cn(s.inner, isRed && s.innerRed)}>
         {loading && <LavaLampLoading size="small" />}
         {!loading && <div className={s.children}>{children}</div>}

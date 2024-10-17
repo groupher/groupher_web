@@ -31,7 +31,7 @@ import CompareDev from './CompareDev'
 import UsersWall from './UsersWall'
 import Footer from './Footer'
 
-import useSalon, { cn, StartButton, ArrowLeftIcon } from './styles'
+import useSalon, { cn } from './styles'
 
 const faqs = [
   {
@@ -88,9 +88,9 @@ export default () => {
 
           <div className={s.buttonGroup}>
             <Link href={ROUTE.APPLY_COMMUNITY} className={s.linkable}>
-              <StartButton wallpaper={wallpaper} size="medium">
-                开始使用 <ArrowLeftIcon />
-              </StartButton>
+              <Button className={s.tryButton} style={s.tryButtonStyle} size="medium">
+                开始使用 <ArrowSVG className={s.tryArrow} />
+              </Button>
             </Link>
 
             <Tooltip
