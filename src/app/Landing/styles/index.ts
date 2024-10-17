@@ -1,10 +1,6 @@
-import styled, { css, theme } from '~/css'
+import styled, { theme } from '~/css'
 
 import useWallpaper from '~/hooks/useWallpaper'
-
-import Button from '~/widgets/Buttons/Button'
-
-import ArrowSVG from '~/icons/ArrowSimple'
 
 // import { getGlowOpacity, getGlowBackground, getPathGradient } from './metric'
 import { getPathGradient } from './metric'
@@ -45,47 +41,14 @@ export default () => {
     arrow: cn('size-3.5 rotate-180 ml-0.5', fill('text.digest')),
     //
     divider: cn('mb-20 mt-14', sexyHBorder(35)),
-    faqWrapper: 'w-full mb-5',
+    faqWrapper: 'w-full mb-5 px-32',
+    //
+    tryButton: cn('group rounded-xl border-4 border-transparent pl-5 h-10 trans-all-200'),
+    tryButtonStyle: {
+      background: `linear-gradient(#323132, #323132) padding-box, linear-gradient(to left, ${getPathGradient(
+        wallpaper,
+      )}) border-box;`,
+    },
+    tryArrow: cn('size-4 rotate-180 ml-2 group-smoky-0 trans-all-100', fill('button.fg')),
   }
 }
-
-export const StartButton = styled(Button)<{ wallpaper: string }>`
-  text-decoration: none;
-
-  background: ${({ wallpaper }) =>
-    `linear-gradient(#323132, #323132) padding-box, linear-gradient(to left, ${getPathGradient(
-      wallpaper,
-    )}) border-box;`};
-
-  border-radius: 10px;
-  border: 4px solid transparent;
-  padding-left: 20px;
-  padding-right: 24px;
-  height: 40px;
-
-  &:hover {
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-    padding-right: 20px;
-  }
-
-  &:active {
-    box-shadow: none;
-  }
-
-  transition: all 0.2s;
-`
-
-export const ArrowLeftIcon = styled(ArrowSVG)`
-  ${css.size(16)};
-  margin-left: 4px;
-  fill: ${theme('button.fg')};
-  transform: rotate(180deg);
-  margin-right: -8px;
-  max-width: 0;
-
-  ${StartButton}:hover & {
-    max-width: 16px;
-  }
-
-  transition: all 0.2s;
-`

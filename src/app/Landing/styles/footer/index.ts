@@ -1,63 +1,27 @@
-import styled, { css, theme } from '~/css'
-import Img from '~/Img'
-import Button from '~/widgets/Buttons/Button'
+import useWallpaper from '~/hooks/useWallpaper'
 
 import { getPathGradient } from '../metric'
 
-export const Wrapper = styled.div`
-  ${css.column('align-both')};
-  width: 100%;
-  height: 300px;
-`
-export const Logo = styled(Img)`
-  ${css.size(52)};
-  margin-bottom: 20px;
-`
-export const Title = styled.div`
-  color: ${theme('article.title')};
-  font-size: 28px;
-  font-weight: 500;
+import useTwBelt from '~/hooks/useTwBelt'
 
-  text-shadow: rgb(0 0 0 / 8%) 0px 10px 20px;
-  opacity: 0.9;
-`
-export const Desc = styled.div`
-  ${css.row('align-center')};
-  font-size: 18px;
-  color: ${theme('hint')};
-  margin-top: 12px;
-  margin-bottom: 38px;
-`
-export const Highlight = styled.span`
-  color: ${theme('article.title')};
-  margin-left: 1px;
-  margin-right: 1px;
-  font-weight: 500;
-`
-export const Buttons = styled.div`
-  ${css.row('align-center')};
-  gap: 0 18px;
-  margin-bottom: 25px;
-`
-export const CreateButton = styled(Button)<{ wallpaper: string }>`
-  background: ${({ wallpaper }) =>
-    `linear-gradient(#323132, #323132) padding-box, linear-gradient(to left, ${getPathGradient(
-      wallpaper,
-    )}) border-box;`};
+export default () => {
+  const { cn, fg, global } = useTwBelt()
+  const { wallpaper } = useWallpaper()
 
-  border-radius: 10px;
-  border: 4px solid transparent;
-  padding-left: 20px;
-  padding-right: 20px;
-  height: 40px;
+  return {
+    wrapper: cn('column-align-both w-full h-72'),
+    logo: 'size-12 mb-5',
+    title: cn('text-2xl bold-sm opacity-90', fg('text.title'), global('text-shadow')),
+    desc: cn('row-center text-lg mt-4 mb-10', fg('text.digest')),
+    hightLight: cn('bold-sm ml-px mr-px', fg('text.title')),
+    //
+    buttons: 'row-center gap-x-4',
 
-  &:hover {
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    createButton: cn('group rounded-xl border-4 border-transparent px-3 h-10 trans-all-200'),
+    createButtonStyle: {
+      background: `linear-gradient(#323132, #323132) padding-box, linear-gradient(to left, ${getPathGradient(
+        wallpaper,
+      )}) border-box;`,
+    },
   }
-
-  &:active {
-    box-shadow: none;
-  }
-
-  transition: all 0.2s;
-`
+}
