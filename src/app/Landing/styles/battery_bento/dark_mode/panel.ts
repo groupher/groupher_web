@@ -5,7 +5,7 @@ import useTwBelt from '~/hooks/useTwBelt'
 export { cn } from '~/css'
 
 export default () => {
-  const { cn, bg, br, fill, rainbow, shadow } = useTwBelt()
+  const { cn, fg, bg, br, fill, rainbow, shadow } = useTwBelt()
 
   return {
     wrapper: cn('align-both w-full h-72 relative mt-3'),
@@ -31,7 +31,7 @@ export default () => {
     lightBg: 'bg-htmlBg',
     darkBg: 'bg-htmlBg-dark',
     lightText: 'text-text-title',
-    darkText: 'text-text-title-dark',
+    darkText: fg('text.title', 'dark'),
 
     lightFill: 'fill-text-title',
     darkFill: 'fill-text-title-dark',

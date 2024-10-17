@@ -4,7 +4,7 @@ import { COLOR_NAME } from '~/const/colors'
 export { cn } from '~/css'
 
 export default () => {
-  const { cn, shadow, rainbow } = useTwBelt()
+  const { cn, fg, shadow, rainbow } = useTwBelt()
 
   return {
     wrapper: cn(
@@ -20,7 +20,7 @@ export default () => {
     bottomActions: cn('mt-1 w-24 p-1.5 rounded-t-md grow', 'bg-menuHoverBg-dark'),
     //
     icon: 'size-3 fill-text-digest-dark opacity-80 saturate-50',
-    menuItem: cn('row-center mb-2 mt-0.5 ml-0.5 text-xs', 'text-text-digest-dark'),
+    menuItem: cn('row-center mb-2 mt-0.5 ml-0.5 text-xs', fg('text.digest', 'dark')),
     bar: 'ml-2 w-10 h-1 rounded-md opacity-20 bg-text-digest-dark',
   }
 }

@@ -19,14 +19,15 @@ type TLinkColorPrefix = 'fg' | 'fill'
 type TBreakOut = 'footer' | 'header'
 type TMenuPart = 'bg' | 'bar' | 'title' | 'link'
 type TShadowSize = 'sm' | 'md' | 'lg' | 'xl'
+type TThemeSwitch = 'auto' | 'dark' | 'light'
 
 type TRet = {
   cn: (...inputs: ClassValue[]) => string
   container: () => string
   global: (className: string) => string
-  fg: (key: TFlatThemeKey) => string
-  bg: (key: TFlatThemeKey) => string
-  fill: (key: TFlatThemeKey) => string
+  fg: (key: TFlatThemeKey, switchBy?: TThemeSwitch) => string
+  bg: (key: TFlatThemeKey, switchBy?: TThemeSwitch) => string
+  fill: (key: TFlatThemeKey, switchBy?: TThemeSwitch) => string
   br: (key: TFlatThemeKey) => string
   rainbow: (color: TColorName, prefix?: TColorPrefix) => string
   rainbowSoft: (color: TColorName | string) => string
@@ -79,16 +80,22 @@ export default (): TRet => {
   /**
    * cover article.title -> article-title to match the tailwind csss varaible name
    */
-  const _theme = (key: TFlatThemeKey, prefix = 'bg') => {
+  const _theme = (key: TFlatThemeKey, prefix: string, switchBy?: TThemeSwitch) => {
+    if (switchBy === 'dark') return `${prefix}-${key.replace(/\./g, '-')}-dark`
+    if (switchBy === 'light') `${prefix}-${key.replace(/\./g, '-')}`
+
     return isLightTheme
       ? `${prefix}-${key.replace(/\./g, '-')}`
       : `${prefix}-${key.replace(/\./g, '-')}-dark`
   }
 
   const global = (className: string) => (isLightTheme ? className : `${className}-dark`)
-  const fg = (key: TFlatThemeKey) => _theme(key, 'text')
-  const bg = (key: TFlatThemeKey) => _theme(key, 'bg')
-  const fill = (key: TFlatThemeKey) => _theme(key, 'fill')
+  const fg = (key: TFlatThemeKey, switchBy: TThemeSwitch = 'auto') => {
+    return _theme(key, 'text', switchBy)
+  }
+  const bg = (key: TFlatThemeKey, switchBy: TThemeSwitch = 'auto') => _theme(key, 'bg', switchBy)
+  const fill = (key: TFlatThemeKey, switchBy: TThemeSwitch = 'auto') =>
+    _theme(key, 'fill', switchBy)
   const br = (key: TFlatThemeKey) => _theme(key, 'border')
 
   const _rainbowalias = (prefix: TColorPrefix): string => {
@@ -278,7 +285,7 @@ export default (): TRet => {
   const menu = (part: TMenuPart): string => {
     switch (part) {
       case 'bg': {
-        return _theme('popover.bg')
+        return _theme('popover.bg', 'bg')
       }
       case 'bar': {
         return cn(
