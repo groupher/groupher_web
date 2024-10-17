@@ -1,3 +1,6 @@
+import GtdWipSVG from '~/icons/GtdWip'
+import TagSVG from '~/icons/HashTagBold'
+
 import CurveLine1SVG from '../../styles/enjoy_dev/bg_shapes/CurveLine1'
 import CurveLine2SVG from '../../styles/enjoy_dev/bg_shapes/CurveLine2'
 import CurveLine3SVG from '../../styles/enjoy_dev/bg_shapes/CurveLine3'
@@ -15,6 +18,21 @@ export default () => {
 
   return (
     <div className={s.wrapper}>
+      <div className={s.wipItem}>
+        <GtdWipSVG className={cn(s.wipIcon, 'animate-spin')} />
+        <div className={s.wipText}>进行中</div>
+
+        <TwoLineSVG className={s.waweLine} />
+      </div>
+
+      <div className={s.topicItem}>
+        <TagSVG className={s.wipIcon} />
+        <div className={s.wipText}>使用分享</div>
+      </div>
+
+      <div className={s.versionText}>v 1.4.2</div>
+      <div className={s.thxText}>感谢，已解决!</div>
+
       <CurveLine1SVG className={s.curveLineTL} />
       <CurveLine3SVG className={s.curveLineBL} />
 
@@ -24,7 +42,9 @@ export default () => {
       <ShapeCross2SVG className={cn(s.shapeIcon, s.fillGreen, 'bottom-36 right-60')} />
       <ShapeCross2SVG className={cn(s.shapeIcon, s.fillOrange, 'bottom-24 right-52 opacity-20')} />
 
-      <ShapeCircleSVG className={cn(s.shapeIcon, s.fillGreen, 'size-8 top-14 left-40')} />
+      <ShapeCircleSVG
+        className={cn(s.shapeIcon, s.fillGreen, 'size-8 top-14 left-40 opacity-20')}
+      />
 
       <ShapeCircleHalfSVG
         className={cn(s.shapeIcon, s.fillOrange, 'size-14 top-14 right-32 -rotate-12')}
@@ -37,8 +57,8 @@ export default () => {
         )}
       />
 
-      <div className={cn(s.squareIcon, 'bottom-36 left-28 opacity-15')} />
-      <div className={cn(s.squareIcon, 'bottom-48 left-20')} />
+      <div className={cn(s.squareIcon, 'bottom-48 left-28')} />
+      <div className={cn(s.circleIcon, 'bottom-24 left-36')} />
     </div>
   )
 }

@@ -17,7 +17,7 @@ export default () => {
     buildIcon: 'text-xs opacity-65',
     text: cn('text-sm ml-1.5', fg('text.digest')),
     textRed: rainbow(COLOR_NAME.RED, 'fg'),
-    graveIcon: cn('size-4 opacity-65', rainbow(COLOR_NAME.BLACK, 'fill')),
+    graveIcon: cn('size-4 opacity-65', rainbow(COLOR_NAME.PINK, 'fill')),
     launchIcon: cn('size-3', fill('text.digest')),
   }
 }

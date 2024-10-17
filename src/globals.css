@@ -321,11 +321,11 @@
   }
 
   .gradient-red {
-    background: linear-gradient(45deg, #ffede478 0%, #ffdcdcc9 100%);
+    background: linear-gradient(6deg, #ffede478 0%, #ffdcdcc9 100%);
   }
 
   .gradient-red-dark {
-    background: linear-gradient(45deg, #ffe4e424 0%, #ffdcdcc9 100%);
+    background: linear-gradient(6deg, #ffe4e424 0%, #ffdcdcc9 100%);
   }
 
   .gradient-black {
