@@ -24,6 +24,7 @@ const GENERAL = [
   'gradient-blue',
   'gradient-purple',
   'gradient-pink',
+  'gradient-red',
   'gradient-green',
   'gradient-yellow',
   'gradient-black',

@@ -27,7 +27,7 @@ import ArticlesIntroTabs from './ArticlesIntroTabs'
 import BatteryBento from './BatteryBento'
 import TechStacks from './TechStacks'
 import DashboardIntros from './DashboardIntros'
-import EnjoyDev from './EnjoyDev'
+import CompareDev from './CompareDev'
 import UsersWall from './UsersWall'
 import Footer from './Footer'
 
@@ -85,6 +85,7 @@ export default () => {
           <div className={s.desc}>
             讨论区、看板、更新日志、帮助文档多合一，收集沉淀用户反馈，助你打造更好的产品
           </div>
+
           <div className={s.buttonGroup}>
             <Link href={ROUTE.APPLY_COMMUNITY} className={s.linkable}>
               <StartButton wallpaper={wallpaper} size="medium">
@@ -134,7 +135,7 @@ export default () => {
         </Suspense>
 
         <Suspense fallback={<LavaLampLoading />}>
-          <EnjoyDev />
+          <CompareDev />
         </Suspense>
 
         <div className={cn(s.divider, 'mt-20')} />

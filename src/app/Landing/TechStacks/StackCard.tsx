@@ -26,10 +26,10 @@ export default () => {
         <TechItem path="absinthe.png" name="Absinthe" />
         <TechItem path="ecto.png" name="Ecto" />
         <TechItem path="graphql.png" name="GraphQL" />
-        <TechItem path="nextjs.png" name="Next.js" />
+        <TechItem path="nextjs.png" name="Next.js" iconSize="size-12" />
         <TechItem path="react.png" name="React" />
-        <TechItem path="typescript.png" name="TypeScript" />
-        <TechItem path="valtio.png" name="Valtio" />
+        <TechItem path="typescript.png" name="TypeScript" iconSize="size-7" />
+        <TechItem path="valtio.png" name="Valtio" iconSize="size-7" />
         <TechItem path="tailwind.png" name="Tailwind" iconSize="size-12" />
         <TechItem path="slate.png" name="Slate" />
         <TechItem path="phosphor.png" name="Phosphor" />

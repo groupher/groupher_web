@@ -4,16 +4,16 @@ const SVG = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" {...props}>
       <path
-        d="M494.619 19.73c-16.144 6.13-78.326-8.968-96.861 36.772-18.535 45.74 3.139 184.604-14.35 237.668-17.489 53.065-75.486 67.265-90.583 80.718"
+        d="M340.359 14.35c13.303 10.463 59.79 8.221 79.82 62.78 20.03 54.56 20.18 212.855 40.36 264.574 20.178 51.719 67.264 38.117 80.717 45.74"
         fill="none"
-        strokeWidth={3}
-        stroke='url("#cl-4")'
+        strokeWidth={6}
+        stroke='url("#cl-2")'
         strokeLinecap="round"
       />
       <defs>
-        <linearGradient id="cl-4">
-          <stop stopColor="#FFECEC" offset={0} />
-          <stop stopColor="#DF796B" offset={1} />
+        <linearGradient id="cl-2">
+          <stop stopColor="#FCEBD9" offset={0} />
+          <stop stopColor="#eea123" offset={1} />
         </linearGradient>
       </defs>
     </svg>
