@@ -2,7 +2,7 @@ import type { FC } from 'react'
 
 import SprintSVG from '~/icons/Sprint'
 
-import useSalon from '../../styles/enjoy_dev/our_way/sprint_counter'
+import useSalon from '../../styles/compare_dev/our_way/sprint_counter'
 
 type TProps = {
   num?: number

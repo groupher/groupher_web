@@ -27,7 +27,7 @@ import ArticlesIntroTabs from './ArticlesIntroTabs'
 import BatteryBento from './BatteryBento'
 import TechStacks from './TechStacks'
 import DashboardIntros from './DashboardIntros'
-import EnjoyDev from './EnjoyDev'
+import CompareDev from './CompareDev'
 import UsersWall from './UsersWall'
 import Footer from './Footer'
 
@@ -135,7 +135,7 @@ export default () => {
         </Suspense>
 
         <Suspense fallback={<LavaLampLoading />}>
-          <EnjoyDev />
+          <CompareDev />
         </Suspense>
 
         <div className={cn(s.divider, 'mt-20')} />

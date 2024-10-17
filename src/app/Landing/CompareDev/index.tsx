@@ -4,7 +4,7 @@ import CloseCrossSVG from '~/icons/CloseCross'
 import OurWay from './OurWay'
 import HighWay from './HighWay'
 
-import useSalon, { cn } from '../styles/enjoy_dev'
+import useSalon, { cn } from '../styles/compare_dev'
 
 export default () => {
   const s = useSalon()
