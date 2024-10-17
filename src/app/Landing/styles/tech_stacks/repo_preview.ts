@@ -4,18 +4,19 @@ import { COLOR_NAME } from '~/const/colors'
 export { cn } from '~/css'
 
 export default () => {
-  const { cn, rainbow } = useTwBelt()
+  const { cn, rainbow, fg, fill } = useTwBelt()
 
   return {
-    wrapper: cn('relative mt-5 w-full h-32 text-text-digest-dark'),
+    wrapper: cn('relative mt-5 w-full h-32', fg('text.digest', 'dark')),
     header: 'row-center',
     repo: 'text-lg h-full',
-    repoName: 'text-text-title-dark bold-sm',
-    repoDesc: 'text-sm text-text-digest-dark w-full break-all mt-1',
+    repoName: cn('bold-sm', fg('text.title', 'dark')),
+    repoDesc: cn('text-sm w-full break-all mt-1', fg('text.digest', 'dark')),
     //
     footer: 'row-center mt-3',
-    info: 'row-center text-sm mr-4 text-text-title-dark',
-    icon: 'size-3.5 fill-text-digest-dark mr-1.5',
+    info: cn('row-center text-sm mr-4', fg('text.title', 'dark')),
+    icon: cn('size-3.5 mr-1.5', fill('text.digest', 'dark')),
+    infoDesc: cn('text-sm', fg('text.digest', 'dark')),
     //
     langBar: 'w-full row-center -mt-2',
     bar: 'h-1.5 brightness-90',

@@ -2,6 +2,8 @@ import type { FC } from 'react'
 
 import StarSVG from '~/icons/github/Star'
 import ForkSVG from '~/icons/github/Fork'
+import PrSVG from '~/icons/github/Pr'
+import EditSVG from '~/icons/EditPen'
 
 import useSalon, { cn } from '../styles/tech_stacks/repo_preview'
 
@@ -28,6 +30,16 @@ const RepoPreview: FC<TProps> = ({ name, desc }) => {
           </div>
           <div className={s.info}>
             <ForkSVG className={s.icon} />1
+          </div>
+
+          <div className={s.info}>
+            <PrSVG className={s.icon} />
+            24
+          </div>
+          <div className="grow" />
+          <div className={s.info}>
+            <EditSVG className={cn(s.icon, 'size-3')} />
+            <div className={s.infoDesc}>6h</div>
           </div>
         </div>
       </div>
