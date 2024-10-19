@@ -93,9 +93,12 @@ export default (): TRet => {
   const fg = (key: TFlatThemeKey, switchBy: TThemeSwitch = 'auto') => {
     return _theme(key, 'text', switchBy)
   }
-  const bg = (key: TFlatThemeKey, switchBy: TThemeSwitch = 'auto') => _theme(key, 'bg', switchBy)
-  const fill = (key: TFlatThemeKey, switchBy: TThemeSwitch = 'auto') =>
-    _theme(key, 'fill', switchBy)
+  const bg = (key: TFlatThemeKey, switchBy: TThemeSwitch = 'auto') => {
+    return _theme(key, 'bg', switchBy)
+  }
+  const fill = (key: TFlatThemeKey, switchBy: TThemeSwitch = 'auto') => {
+    return _theme(key, 'fill', switchBy)
+  }
   const br = (key: TFlatThemeKey) => _theme(key, 'border')
 
   const _rainbowalias = (prefix: TColorPrefix): string => {

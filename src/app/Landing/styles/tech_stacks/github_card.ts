@@ -8,13 +8,14 @@ import useTwBelt from '~/hooks/useTwBelt'
 import useBase from '..'
 
 export default () => {
-  const { cn, fill, shadow, rainbow } = useTwBelt()
+  const { cn, fill, bg, shadow, rainbow } = useTwBelt()
   const { wallpaper } = useWallpaper()
   const base = useBase()
 
   return {
     wrapper: cn(
-      'column w-[340px] h-96 rounded-xl p-5 px-8 bg-htmlBg-dark z-30 rotate-2 border-2',
+      'column w-[340px] h-96 rounded-xl p-5 px-8 z-30 rotate-2 border-2',
+      bg('htmlBg', 'dark'),
       shadow('xl'),
       rainbow(wallpaper as TColorName, 'border'),
     ),

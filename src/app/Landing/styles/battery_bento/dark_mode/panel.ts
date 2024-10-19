@@ -29,14 +29,14 @@ export default () => {
     cardFooter: 'row-center mt-1 w-full',
     card: cn('column w-28 h-32 p-2.5 rounded-lg border trans-all-200', shadow('sm'), br('divider')),
     lightBg: 'bg-htmlBg',
-    darkBg: 'bg-htmlBg-dark',
+    darkBg: bg('htmlBg', 'dark'),
     lightText: 'text-text-title',
     darkText: fg('text.title', 'dark'),
 
     lightFill: 'fill-text-title',
-    darkFill: 'fill-text-title-dark',
+    darkFill: fill('text.title', 'dark'),
 
     lightBox: 'bg-hoverBg',
-    darkBox: 'bg-hoverBg-dark',
+    darkBox: bg('hoverBg', 'dark'),
   }
 }
