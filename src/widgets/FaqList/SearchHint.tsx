@@ -51,7 +51,7 @@ const SearchHint: FC<TProps> = ({ sections }) => {
 
       <Footer>
         更多类似问题，请移步
-        <ArrowLinker href={`/${community.slug}/${THREAD.DOC}`} fontSize={12} left={1}>
+        <ArrowLinker href={`/${community.slug}/${THREAD.DOC}`} left={1}>
           帮助台
         </ArrowLinker>
       </Footer>

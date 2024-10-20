@@ -15,5 +15,6 @@ export default ({ color }: TProps) => {
     wrapper: cn('row-center'),
     icon: cn('size-4 mr-3.5 opacity-65', fillColor(color)),
     text: cn('text-base brightness-90 opacity-90', textColor(color)),
+    // text: cn('text-base', fg('text.digest')),
   }
 }
