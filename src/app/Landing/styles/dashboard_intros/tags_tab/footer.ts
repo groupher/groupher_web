@@ -16,8 +16,8 @@ export const Wrapper = styled.div`
   background: ${theme('gradientBg.green')};
   border-radius: 12px;
   position: absolute;
-  bottom: 100px;
-  left: 120px;
+  bottom: 40px;
+  left: -20px;
   z-index: 5;
   box-shadow: rgba(149, 157, 165, 0.2) 0px -4px 24px;
 `

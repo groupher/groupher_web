@@ -9,7 +9,6 @@ import { ACTIVE_ITMES } from './constant'
 import {
   Wrapper,
   InnerWrapper,
-  Header,
   Item,
   Num,
   Avatar,
@@ -37,7 +36,6 @@ const Admins: FC<TProps> = ({ onHover, userHover }) => {
 
   return (
     <Wrapper>
-      <Header>社区管理员 / 志愿者</Header>
       <InnerWrapper>
         <Item ref={user1Ref} $active={user1Hovered || userHover[0]}>
           <Avatar src={users[0].avatar} />

@@ -5,18 +5,17 @@
  */
 
 import type { FC, ReactNode } from 'react'
+import Link from 'next/link'
 
 import type { TColorName, TSpace } from '~/spec'
 
 import ArrowSVG from '~/icons/ArrowUpRight'
-import { Link } from '~/widgets/Common'
 
 import useSalon from './styles'
 
 type TProps = {
   testid?: string
   href?: string
-  fontSize?: number
   children: ReactNode
   target?: string
   bold?: boolean
@@ -25,7 +24,6 @@ type TProps = {
 
 const ArrowLinker: FC<TProps> = ({
   testid = 'arrow-linker',
-  fontSize = 13,
   href = '/',
   target = '_blank',
   bold = false,
@@ -33,7 +31,7 @@ const ArrowLinker: FC<TProps> = ({
   children,
   ...spacing
 }) => {
-  const s = useSalon({ ...spacing })
+  const s = useSalon({ color, ...spacing })
 
   return (
     <Link href={href} target={target}>

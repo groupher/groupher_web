@@ -7,14 +7,13 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-  margin-left: 26px;
   animation: ${animate.jump} 0.5s linear;
 `
 export const Notes = styled(WithPosition)`
   color: ${theme('hint')};
   font-size: 15px;
-  bottom: 80px;
-  left: 180px;
+  bottom: 40px;
+  left: 50px;
 `
 export const Highlight = styled.span`
   color: ${theme('rainbow.pink')};

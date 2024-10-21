@@ -273,11 +273,20 @@
   .landing-gradient-blue {
     background: linear-gradient(rgb(240 246 255 / 82%) 0%, rgb(255 255 255 / 96%) 100%);
   }
+  .landing-gradient-green {
+    background: linear-gradient(#F0F8EE 0%, rgb(255 255 255) 100%);
+  }
   .landing-gradient-cyan {
     background: linear-gradient(#e0feff66 0%, rgb(255 255 255) 100%);
   }
   .landing-gradient-red {
     background: linear-gradient(rgb(255 204 204 / 19%) 0%, rgb(255 255 255) 100%);
+  }
+  .landing-gradient-brown {
+    background: linear-gradient(rgb(231 206 195 / 12%) 0%, rgb(255 255 255) 100%);  
+  }
+  .landing-gradient-yellow {
+    background: linear-gradient(#f5f7cf42 0%, rgb(255 255 255) 100%);
   }
 
   .gradient-purple {

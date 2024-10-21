@@ -1,15 +1,20 @@
-import type { TSpace } from '~/spec'
+import type { TColorName, TSpace } from '~/spec'
 
 import useTwBelt from '~/hooks/useTwBelt'
 
-type TProps = {} & TSpace
+type TProps = {
+  color: TColorName | null
+} & TSpace
 
-export default ({ ...spacing }: TProps) => {
-  const { cn, margin, primary } = useTwBelt()
+export default ({ color, ...spacing }: TProps) => {
+  const { cn, margin, primary, rainbow } = useTwBelt()
+
+  const fgColor = color ? rainbow(color, 'fg') : primary('fg')
+  const fillColor = color ? rainbow(color, 'fill') : primary('fill')
 
   return {
-    wrapper: cn('row-center hover:underline', primary('fg'), margin(spacing)),
-    title: cn('text-sm'),
-    arrowIcon: cn('size-3 ml-1', primary('fill')),
+    wrapper: cn('row-center hover:underline', margin(spacing)),
+    title: cn('text-sm', fgColor),
+    arrowIcon: cn('size-3 ml-0.5 opacity-50', fillColor),
   }
 }

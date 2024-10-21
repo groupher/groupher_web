@@ -8,20 +8,13 @@ export const Wrapper = styled.div`
   width: 440px;
   height: auto;
   position: absolute;
-  top: 100px;
-  left: 140px;
+  top: 40px;
+  left: 20px;
 `
 export const InnerWrapper = styled.div`
   ${css.row('justify-between')};
   width: 100%;
   padding: 0 10px;
-`
-export const Header = styled.div`
-  font-size: 20px;
-  color: ${theme('rainbow.pink')};
-  opacity: 0.8;
-  font-weight: 500;
-  margin-bottom: 20px;
 `
 export const Item = styled.div<TActive>`
   ${css.row('align-both')};

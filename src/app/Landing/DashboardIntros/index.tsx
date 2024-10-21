@@ -1,113 +1,65 @@
-import { type FC, useState, lazy, Suspense } from 'react'
+import { useState } from 'react'
 
 import { DASHBOARD_ROUTE } from '~/const/route'
-import useMetric from '~/hooks/useMetric'
-
-import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 
 import type { TIntroTab } from './spec'
 
-export const SideMenus = lazy(() => import('./SideMenus'))
-export const LayoutTab = lazy(() => import('./LayoutTab'))
-export const SeoTab = lazy(() => import('./SeoTab'))
+import HeadTabs from './HeadTabs'
+import SideIntros from './SideIntros'
 
-export const CMSTab = lazy(() => import('./CMSTab'))
-export const TagsTab = lazy(() => import('./TagsTab'))
-export const AdminsTab = lazy(() => import('./AdminsTab'))
-export const LinksTab = lazy(() => import('./LinksTab'))
+import LayoutTab from './LayoutTab'
+import SeoTab from './SeoTab'
 
-export const IntegrateTab = lazy(() => import('./IntegrateTab'))
-export const ImportTab = lazy(() => import('./ImportTab'))
-export const TrendTab = lazy(() => import('./TrendTab'))
+import CMSTab from './CMSTab'
+import TagsTab from './TagsTab'
+import AdminsTab from './AdminsTab'
+import LinksTab from './LinksTab'
 
-import {
-  Wrapper,
-  ContentWrapper,
-  InnerWrapper,
-  Slogan,
-  Title,
-  Desc,
-  Right,
-} from '../styles/dashboard_intros'
+import IntegrateTab from './IntegrateTab'
+import ImportTab from './ImportTab'
+import TrendTab from './TrendTab'
 
-const Loading = () => {
-  return <LavaLampLoading top={0} left={30} />
-}
+import useSalon from '../styles/dashboard_intros'
 
-const DashboardIntros: FC = () => {
-  const metric = useMetric()
+export default () => {
   const [tab, setTab] = useState<TIntroTab>(DASHBOARD_ROUTE.LAYOUT)
 
+  const s = useSalon({ tab })
+
   return (
-    <Wrapper>
-      <Slogan>
-        <Title>完善的后台管理</Title>
-        <Desc>强大的自定义设置，满足你的品牌个性化及内容管理需要</Desc>
-      </Slogan>
+    <div className={s.wrapper}>
+      <div className={s.slogan}>
+        <h3 className={s.title}>完善的后台管理</h3>
+        <div className={s.desc}>强大的自定义设置，满足你的品牌个性化及内容管理需要</div>
+      </div>
 
-      <ContentWrapper metric={metric}>
-        <InnerWrapper $tab={tab} metric={metric}>
-          <SideMenus tab={tab} onChange={(tab) => setTab(tab)} />
+      <div className={s.content}>
+        <HeadTabs tab={tab} onChange={(tab) => setTab(tab)} />
 
-          <Right>
-            {tab === DASHBOARD_ROUTE.LAYOUT && (
-              <Suspense fallback={<Loading />}>
-                <LayoutTab />
-              </Suspense>
-            )}
+        <div className={s.inner}>
+          <SideIntros tab={tab} />
 
-            {tab === DASHBOARD_ROUTE.SEO && (
-              <Suspense fallback={<Loading />}>
-                <SeoTab />
-              </Suspense>
-            )}
+          <div className={s.bgGradientPurple} />
+          <div className={s.bgGradientBlue} />
+          <div className={s.bgGradientGreen} />
+          <div className={s.bgGradientRed} />
+          <div className={s.bgGradientBrown} />
+          <div className={s.bgGradientCyan} />
+          <div className={s.bgGradientYellow} />
 
-            {tab === DASHBOARD_ROUTE.POST && (
-              <Suspense fallback={<Loading />}>
-                <CMSTab />
-              </Suspense>
-            )}
-
-            {tab === DASHBOARD_ROUTE.TAGS && (
-              <Suspense fallback={<Loading />}>
-                <TagsTab />
-              </Suspense>
-            )}
-
-            {tab === DASHBOARD_ROUTE.ADMINS && (
-              <Suspense fallback={<Loading />}>
-                <AdminsTab />
-              </Suspense>
-            )}
-
-            {tab === DASHBOARD_ROUTE.HEADER && (
-              <Suspense fallback={<Loading />}>
-                <LinksTab />
-              </Suspense>
-            )}
-
-            {tab === DASHBOARD_ROUTE.WIDGETS && (
-              <Suspense fallback={<Loading />}>
-                <IntegrateTab />
-              </Suspense>
-            )}
-
-            {tab === DASHBOARD_ROUTE.INOUT && (
-              <Suspense fallback={<Loading />}>
-                <ImportTab />
-              </Suspense>
-            )}
-
-            {tab === DASHBOARD_ROUTE.TREND && (
-              <Suspense fallback={<Loading />}>
-                <TrendTab />
-              </Suspense>
-            )}
-          </Right>
-        </InnerWrapper>
-      </ContentWrapper>
-    </Wrapper>
+          <div className={s.graphDemo}>
+            {tab === DASHBOARD_ROUTE.LAYOUT && <LayoutTab />}
+            {tab === DASHBOARD_ROUTE.SEO && <SeoTab />}
+            {tab === DASHBOARD_ROUTE.POST && <CMSTab />}
+            {tab === DASHBOARD_ROUTE.TAGS && <TagsTab />}
+            {tab === DASHBOARD_ROUTE.ADMINS && <AdminsTab />}
+            {tab === DASHBOARD_ROUTE.HEADER && <LinksTab />}
+            {tab === DASHBOARD_ROUTE.WIDGETS && <IntegrateTab />}
+            {tab === DASHBOARD_ROUTE.INOUT && <ImportTab />}
+            {tab === DASHBOARD_ROUTE.TREND && <TrendTab />}
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
-
-export default DashboardIntros

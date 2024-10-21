@@ -10,8 +10,8 @@ export const Wrapper = styled.div`
   box-shadow: rgb(147 136 132 / 20%) 1px 3px 24px;
   z-index: 1;
   position: absolute;
-  bottom: 100px;
-  left: 80px;
+  bottom: 40px;
+  left: -52px;
 `
 export const Background = styled.div<{ effect: string }>`
   ${css.row('align-both')}

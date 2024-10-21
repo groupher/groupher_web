@@ -10,8 +10,8 @@ export const Wrapper = styled.div`
   height: 500px;
   z-index: 2;
   position: absolute;
-  bottom: 100px;
-  left: 140px;
+  bottom: 40px;
+  left: -20px;
 `
 export const Bot = styled(WithPosition)`
   width: auto;
