@@ -29,7 +29,7 @@ export default {
 
   [DASHBOARD_ROUTE.POST]: {
     title: '内容管理',
-    desc: '社区与内容展示的各种个性化设置',
+    desc: '社区内容管理，文章状态设置',
     color: COLOR_NAME.BLUE,
     icon: CMSSVG,
 

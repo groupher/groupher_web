@@ -16,7 +16,7 @@ export default ({ tab }: TProps) => {
   )
 
   return {
-    wrapper: cn('column-align-both w-full mt-32 mb-16'),
+    wrapper: cn('column-align-both w-full mt-20 mb-16'),
     slogan: 'column align-both mb-16',
     title: cn('text-3xl bold-sm opacity-70', fg('text.title'), global('text-shadow')),
     desc: cn('text-lg mt-3', fg('text.digest')),
