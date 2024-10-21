@@ -47,7 +47,7 @@ export default () => {
     tryButtonStyle: {
       background: `linear-gradient(#323132, #323132) padding-box, linear-gradient(to left, ${getPathGradient(
         wallpaper,
-      )}) border-box;`,
+      )}) border-box !important;`,
     },
     tryArrow: cn('size-4 rotate-180 ml-2 group-smoky-0 trans-all-100', fill('button.fg')),
   }
