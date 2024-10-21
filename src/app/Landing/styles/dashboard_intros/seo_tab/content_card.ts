@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   border-radius: 15px;
   z-index: 2;
   position: absolute;
-  bottom: 90px;
-  left: 140px;
+  bottom: 10px;
+  left: 0px;
 `
 export const holder = 1

@@ -15,7 +15,7 @@ export default () => {
   )
 
   return {
-    wrapper: cn('align-both gap-x-3 w-10/12 mt-24 mb-16'),
+    wrapper: cn('row-center-between wrap gap-x-3.5 gap-y-3 w-8/12 mt-24 mb-16'),
     button: cn(
       'align-both text-sm min-w-20 h-8 px-3.5 rounded-xl border trans-all-100',
       `hover:${fg('text.title')}`,

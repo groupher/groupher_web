@@ -9,8 +9,8 @@ export const Wrapper = styled.div`
   ${css.column()};
   z-index: 1;
   position: absolute;
-  top: 120px;
-  left: 130px;
+  top: 28px;
+  left: 30px;
 `
 const Item = styled.div`
   position: absolute;

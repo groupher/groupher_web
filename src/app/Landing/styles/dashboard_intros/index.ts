@@ -22,8 +22,8 @@ export default ({ tab }: TProps) => {
     desc: cn('text-lg mt-3', fg('text.digest')),
     //
     content: 'column align-both relative w-full px-30 h-[720px]',
-    inner: 'align-both w-full h-full gap-x-10',
-    graphDemo: 'align-both w-1/2 h-full',
+    inner: 'row-center-between w-8/12 h-full gap-x-10 pl-2',
+    graphDemo: 'align-both w-1/2 h-full mr-2',
 
     bgGradientPurple: cn(
       bgGradient,

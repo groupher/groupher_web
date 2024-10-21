@@ -8,8 +8,8 @@ export const Wrapper = styled.div`
   width: 440px;
   height: auto;
   position: absolute;
-  top: 100px;
-  left: 140px;
+  top: 10px;
+  left: 20px;
 `
 export const InnerWrapper = styled.div`
   ${css.row('justify-between')};
