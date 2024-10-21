@@ -8,7 +8,7 @@ export default () => {
   const { cn, fg, bg, br, shadow, rainbow } = useTwBelt()
 
   const activeBtn = cn(
-    'bold-sm px-4 opacity-90',
+    'bold-sm opacity-90',
     fg('button.fg'),
     `hover:${fg('button.fg')}`,
     shadow('sm'),
