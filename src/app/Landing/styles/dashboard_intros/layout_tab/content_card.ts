@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 2;
   position: absolute;
-  bottom: 68px;
+  top: 50px;
   left: 10px;
   animation: ${animate.jump} 5s linear infinite alternate;
 `

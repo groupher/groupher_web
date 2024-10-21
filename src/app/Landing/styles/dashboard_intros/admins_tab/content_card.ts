@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 2;
   position: absolute;
-  top: 100px;
+  top: 140px;
   left: 20px;
   z-index: 2;
 

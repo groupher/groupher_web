@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 11;
   position: absolute;
-  bottom: 100px;
+  bottom: 120px;
   right: -44px;
   background: rgb(247 247 247 / 57%);
   backdrop-filter: blur(50px);

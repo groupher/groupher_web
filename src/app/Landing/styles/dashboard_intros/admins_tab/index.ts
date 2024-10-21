@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 export const Notes = styled(WithPosition)`
   color: ${theme('hint')};
   font-size: 15px;
-  bottom: 32px;
+  bottom: 40px;
   left: 50px;
 `
 export const Highlight = styled.span`

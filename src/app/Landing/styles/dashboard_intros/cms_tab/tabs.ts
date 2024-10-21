@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   ${css.column()};
   z-index: 1;
   position: absolute;
-  top: 28px;
+  top: 52px;
   left: 30px;
 `
 const Item = styled.div`

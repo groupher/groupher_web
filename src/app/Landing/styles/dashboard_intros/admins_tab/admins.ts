@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   width: 440px;
   height: auto;
   position: absolute;
-  top: 20px;
+  top: 40px;
   left: 20px;
 `
 export const InnerWrapper = styled.div`

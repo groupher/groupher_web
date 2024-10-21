@@ -20,7 +20,7 @@ export const Wrapper = styled.div`
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 10;
   position: absolute;
-  bottom: 30px;
+  bottom: 68px;
   left: 0;
 `
 export const Tip = styled(WithPosition)`
