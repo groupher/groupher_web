@@ -55,8 +55,8 @@
     "@next/bundle-analyzer": "^12.3.4",
     "@tailwindcss/typography": "^0.5.13",
     "@tippyjs/react": "^4.2.6",
-    "@urql/core": "^5.0.2",
-    "@urql/next": "^1.1.1",
+    "@urql/core": "^5.0.8",
+    "@urql/next": "^1.1.2",
     "@vercel/analytics": "^1.2.2",
     "@vercel/speed-insights": "^1.0.10",
     "accept-language-parser": "^1.5.0",
@@ -113,7 +113,7 @@
     "tinykeys": "^2.1.0",
     "tsparticles-confetti": "^2.12.0",
     "typewriter-effect": "^2.19.0",
-    "urql": "^4.0.7",
+    "urql": "^4.2.0",
     "valtio": "^2.0.0"
   },
   "devDependencies": {
