@@ -8,9 +8,9 @@ export default () => {
   return {
     wrapper: cn('relative group'),
     button: cn(shadow('xl')),
-    background: cn('relative align-center p-1 rounded-lg overflow-hidden'),
+    background: cn('relative align-center p-1 rounded-xl overflow-hidden'),
     realBg: cn(
-      'absolute -top-12 -left-2 size-44 circle',
+      'absolute -top-12 -left-2 size-40 circle',
       'animate-spin animate-infinite animate-duration-[30000ms]',
       global('gradient-purple'),
     ),
