@@ -43,12 +43,10 @@ export default () => {
     divider: cn('mb-20 mt-14', sexyHBorder(35)),
     faqWrapper: 'w-full mb-5 px-32',
     //
-    tryButton: cn('group rounded-xl border-4 border-transparent pl-5 h-10 trans-all-200'),
-    tryButtonStyle: {
-      background: `linear-gradient(#323132, #323132) padding-box, linear-gradient(to left, ${getPathGradient(
-        wallpaper,
-      )}) border-box !important;`,
-    },
-    tryArrow: cn('size-4 rotate-180 ml-2 group-smoky-0 trans-all-100', fill('button.fg')),
+    tryArrow: cn(
+      'absolute -right-5 top-0.5 size-4 rotate-180 opacity-65 hidden group-hover:block trans-all-100',
+      fill('button.fg'),
+    ),
+    // 'group-smoky-0'
   }
 }
