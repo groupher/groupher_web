@@ -1,33 +1,16 @@
-import styled, { css, theme } from '~/css'
+import useTwBelt from '~/hooks/useTwBelt'
 
-export const Wrapper = styled.div`
-  ${css.row('align-both')};
-  background: ${theme('htmlBg')};
-  color: ${theme('article.digest')};
-  width: 540px;
-  height: 360px;
-  border-radius: 14px;
-  box-shadow: rgb(147 136 132 / 20%) 1px 3px 24px;
-  z-index: 1;
-  position: absolute;
-  bottom: 40px;
-  left: -52px;
-`
-export const Background = styled.div<{ effect: string }>`
-  ${css.row('align-both')}
-  width: calc(100% - 10px);
-  height: calc(100% - 10px);
-  background transparent;
-  position: absolute;
-  border-radius: 10px;
-  top: 5px;
-  left:5px;
+export default () => {
+  const { cn, bg, shadow } = useTwBelt()
 
-  ${({ effect }) => effect || ''};
-  will-change: transform;
-  transition: all 0.3s;
-`
-export const EditToolbox = styled.div`
-  position: relative;
-  bottom: -145px;
-`
+  return {
+    wrapper: cn(
+      'align-both w-[540px] h-[360px] rounded-2xl p-1.5',
+      'absolute bottom-10 -left-14',
+      bg('htmlBg'),
+      shadow('sm'),
+    ),
+    background: 'w-full h-full rounded-xl trans-all-200',
+    edittool: 'absolute -bottom-3 left-28 z-30',
+  }
+}

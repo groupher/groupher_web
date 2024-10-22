@@ -1,15 +1,9 @@
 import type { FC } from 'react'
 
 import type { TColorName } from '~/spec'
-import { Brick } from '~/widgets/Common'
 import ColorSelector from '~/widgets/ColorSelector'
 
-import {
-  Wrapper,
-  ColorBox,
-  ColorBall,
-  Title,
-} from '../../styles/dashboard_intros/layout_tab/header'
+import useSalon, { cn } from '../../styles/dashboard_intros/layout_tab/header'
 
 type TProps = {
   primaryColor: TColorName
@@ -17,23 +11,25 @@ type TProps = {
 }
 
 const Header: FC<TProps> = ({ primaryColor, onPrimaryChange }) => {
+  const s = useSalon({ color: primaryColor })
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <ColorSelector
         activeColor={primaryColor}
         onChange={(color) => onPrimaryChange(color)}
         placement="bottom-start"
         offset={[0, 0]}
       >
-        <ColorBox>
-          <ColorBall $color={primaryColor} />
-        </ColorBox>
+        <div className={s.colorBox}>
+          <div className={s.colorBall} />
+        </div>
       </ColorSelector>
 
-      <Title>你的社区</Title>
+      <h3 className={s.title}>你的社区</h3>
       <div className="grow" />
-      <Brick right={10} $opacity={0.15} $width={30} top={12} $color={primaryColor} />
-    </Wrapper>
+      <div className={cn(s.bar, 'right-2 top-2')} />
+    </div>
   )
 }
 

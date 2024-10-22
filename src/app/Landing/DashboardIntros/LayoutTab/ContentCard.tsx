@@ -1,23 +1,27 @@
-import { type FC, useState } from 'react'
+import { useState } from 'react'
 
 import { COLOR_NAME } from '~/const/colors'
 
 import Header from './Header'
+import BannerTab from './BannerTab'
+
+import BrandLayout from './BrandLayout'
 import MainLayouts from './MainLayouts'
-import PostLayouts from './PostLayouts'
 
-import { Wrapper } from '../../styles/dashboard_intros/layout_tab/content_card'
+import useSalon from '../../styles/dashboard_intros/layout_tab/content_card'
 
-const ContentCard: FC = () => {
+export default () => {
+  const s = useSalon()
   const [primaryColor, setPrimaryColor] = useState(COLOR_NAME.PURPLE)
 
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <Header primaryColor={primaryColor} onPrimaryChange={(color) => setPrimaryColor(color)} />
+
+      <BannerTab primaryColor={primaryColor} />
+
+      <BrandLayout primaryColor={primaryColor} />
       <MainLayouts primaryColor={primaryColor} />
-      <PostLayouts primaryColor={primaryColor} />
-    </Wrapper>
+    </div>
   )
 }
-
-export default ContentCard
