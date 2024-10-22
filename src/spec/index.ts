@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
+import type { ReadonlyURLSearchParams } from 'next/navigation'
 import type { TThemeName } from './theme'
 import type { TArticle } from './article'
 import type { TCommunity } from './community'
@@ -240,3 +241,9 @@ interface IWindow extends Window {
 }
 
 export type TWindow = IWindow | null
+
+export type TSSRRoute = {
+  params: Record<string, string | string[]>
+  pathname: string
+  searchParams: ReadonlyURLSearchParams
+}

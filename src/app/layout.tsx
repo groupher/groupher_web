@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import type { Metadata } from 'next'
 
 import { Analytics } from '@vercel/analytics/react'
@@ -28,13 +29,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <StyledComponentsRegistry>
-          <GraphQLProvider>
-            <StateStoreProvider>
-              <GlobalLayout>{children}</GlobalLayout>
-            </StateStoreProvider>
-          </GraphQLProvider>
-        </StyledComponentsRegistry>
+        <GraphQLProvider>
+          <StyledComponentsRegistry>
+            <Suspense fallback={null}>
+              <StateStoreProvider>
+                <GlobalLayout>{children}</GlobalLayout>
+              </StateStoreProvider>
+            </Suspense>
+          </StyledComponentsRegistry>
+        </GraphQLProvider>
         <Analytics />
         <SpeedInsights />
       </body>

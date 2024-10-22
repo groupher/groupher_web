@@ -4,7 +4,9 @@
  *
  */
 
-import { type FC, type ReactNode, lazy, Suspense } from 'react'
+import type { FC, ReactNode } from 'react'
+
+import dynamic from 'next/dynamic'
 
 import Mushroom from '~/containers/Mushroom'
 import ThemePalette from '~/widgets/ThemePalette'
@@ -21,7 +23,9 @@ import Main from './Main'
 
 import useSalon from './salon'
 
-const Addon = lazy(() => import('./Addon'))
+const Addon = dynamic(() => import('./Addon'), {
+  ssr: false,
+})
 
 // let DashboardAlert = null
 
@@ -48,16 +52,13 @@ const GlobalLayout: FC<TProps> = ({ children }) => {
   return (
     <ThemePalette>
       <Mushroom />
-      <Suspense fallback={null}>
-        <Addon />
-      </Suspense>
+      <Addon />
       <div className={s.skeleton}>
         <Wallpaper />
         <div className={s.scrollWrapper}>
           <div className={s.wrapper}>
             <SEO />
             <Main>{children}</Main>
-            {/* {isMobile && <ModeLine />} */}
           </div>
         </div>
       </div>

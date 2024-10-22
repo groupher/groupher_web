@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { reject, includes, values, isEmpty, mergeRight, startsWith } from 'ramda'
-import { useParams, useSearchParams, usePathname } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 
 import type {
   TCommunity,
@@ -16,6 +16,7 @@ import type {
   TDashboardAliasRoute,
   TPagedArticlesParams,
   TArticleParams,
+  TSSRRoute,
 } from '~/spec'
 import { BUILDIN_ALIAS } from '~/const/name'
 import { PAGE_COLOR_DEFAULT } from '~/const/colors'
@@ -47,9 +48,7 @@ export const commonRes = (result): TGQSSRResult => {
   }
 }
 
-export const useIsFrameworkQuery = (): boolean => {
-  const pathname = usePathname()
-
+export const useIsFrameworkQuery = ({ pathname }: TSSRRoute): boolean => {
   // return startsWith('/_next', pathname) || startsWith('/_vercel', pathname)
   return (
     startsWith('/_next', pathname) || startsWith('/_vercel', pathname)
@@ -57,29 +56,23 @@ export const useIsFrameworkQuery = (): boolean => {
   )
 }
 
-export const useIsStaticPages = (): boolean => {
-  const pathname = usePathname()
-
+export const useIsStaticPages = ({ pathname }: TSSRRoute): boolean => {
   return includes(pathname, STATIC_ROUTES)
 }
 
-export const useSkipStaticQuery = (): boolean => {
-  const isFrameworkQuery = useIsFrameworkQuery()
-  const isStaticPages = useIsStaticPages()
+export const useSkipStaticQuery = (route: TSSRRoute): boolean => {
+  const isFrameworkQuery = useIsFrameworkQuery(route)
+  const isStaticPages = useIsStaticPages(route)
 
   return isFrameworkQuery || isStaticPages
 }
 
-export const useCommunityParam = (): string => {
-  const params = useParams()
-
-  return useMemo(() => parseCommunity(params.community as string), [params])
+export const useCommunityParam = ({ params }: TSSRRoute): string => {
+  return parseCommunity(params.community as string)
 }
 
-export const useThreadParam = (): string => {
-  const pathname = usePathname()
-
-  return useMemo(() => parseThread(pathname), [pathname])
+export const useThreadParam = ({ pathname }: TSSRRoute): string => {
+  return parseThread(pathname)
 }
 
 export const useIdParam = (): string => {
@@ -91,9 +84,9 @@ export const useIdParam = (): string => {
 /**
  * common url filter logic for all paged articles queries
  */
-export const usePagedArticlesParams = (): TPagedArticlesParams => {
-  const searchParams = useSearchParams()
-  const community = useCommunityParam()
+export const usePagedArticlesParams = (route: TSSRRoute): TPagedArticlesParams => {
+  const { searchParams } = route
+  const community = useCommunityParam(route)
 
   const filter = reject(nilOrEmpty)({
     community,
@@ -111,11 +104,9 @@ export const usePagedArticlesParams = (): TPagedArticlesParams => {
 /**
  * common url filter logic for all paged articles queries
  */
-export const useArticleParams = (): TArticleParams => {
-  const params = useParams()
-
+export const useArticleParams = (params: any): TArticleParams => {
   return {
-    community: useMemo(() => parseCommunity(params.community as string), [params]),
+    community: parseCommunity(params.community as string),
     id: params.id as string,
   }
 }

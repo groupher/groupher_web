@@ -2,6 +2,8 @@
 
 import type { ReactNode } from 'react'
 
+import { useParams, usePathname, useSearchParams } from 'next/navigation'
+
 import { StoreContext, useStore } from '~/stores'
 import { HOME_COMMUNITY } from '~/const/name'
 
@@ -23,23 +25,29 @@ import {
 } from '../queries'
 
 export default ({ children }: { children: ReactNode }) => {
-  const metric = useMetric()
-  const { locale, localeData } = useI18n()
+  const route = {
+    params: useParams(),
+    pathname: usePathname(),
+    searchParams: useSearchParams(),
+  }
 
-  const theme = useThemeFromURL()
-  const { pagedPosts } = usePagedPosts()
-  const { pagedChangelogs } = usePagedChangelogs()
-  const { groupedKanbanPosts } = useGroupedKanbanPosts()
+  const metric = useMetric(route)
+  const { locale, localeData } = useI18n(route)
+
+  const theme = useThemeFromURL(route)
+  const { pagedPosts } = usePagedPosts(route)
+  const { pagedChangelogs } = usePagedChangelogs(route)
+  const { groupedKanbanPosts } = useGroupedKanbanPosts(route)
   const filterSearchParams = useFilterSearchParams()
 
-  const { post } = usePost()
-  const { changelog } = useChangelog()
-  const { community } = useCommunity()
-  const activeThread = useThreadParam()
-  const { tags } = useTags()
+  const { post } = usePost(route)
+  const { changelog } = useChangelog(route)
+  const { community } = useCommunity(route)
+  const activeThread = useThreadParam(route)
+  const { tags } = useTags(route)
 
-  const dashboard = useDashboard(community)
-  const wallpaper = useWallpaper(community)
+  const dashboard = useDashboard(community, route)
+  const wallpaper = useWallpaper(community, route)
 
   // @ts-ignore
   // console.log('## dashbaord: ', dashboard)

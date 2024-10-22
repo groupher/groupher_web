@@ -26,14 +26,12 @@ const nextConfig = {
   // see https://nextjs.org/docs/pages/building-your-application/rendering
   //     https://github.com/vercel/next.js/issues/35822
   reactStrictMode: true,
-  swcMinify: true,
+  // swcMinify: true,
   productionBrowserSourceMaps: true,
   experimental: {
     reactCompiler: true,
     scrollRestoration: true,
     optimizePackageImports: ['ramda'],
-    // for fix build error for useSearchParams
-    missingSuspenseWithCSRBailout: false,
   },
 
   async headers() {

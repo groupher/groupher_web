@@ -20,7 +20,7 @@ export default ({ tab }: TProps) => {
   const Icon = icon
 
   return (
-    <div key={tab} className={s.wrapper}>
+    <div className={s.wrapper}>
       <div className={s.head}>
         <div className={s.iconBox}>
           <Icon className={cn(s.icon, intro.iconClass || '')} />
@@ -30,8 +30,9 @@ export default ({ tab }: TProps) => {
         <div className={s.barDivider} />
       </div>
 
-      {intro.items.map((item) => (
-        <FeatItem key={tab} text={item} color={color} />
+      {intro.items.map((item, index) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+        <FeatItem key={index} text={item} color={color} />
       ))}
 
       <div className={s.footer}>

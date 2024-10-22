@@ -4,7 +4,6 @@
  * LandingPage
  */
 
-import { Suspense } from 'react'
 import Link from 'next/link'
 
 import { DOC_FAQ_LAYOUT } from '~/const/layout'
@@ -17,7 +16,6 @@ import LinkSVG from '~/icons/LinkOutside'
 
 import Button from '~/widgets/Buttons/Button'
 import BorderButton from '~/widgets/Buttons/BorderButton'
-import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 import Tooltip from '~/widgets/Tooltip'
 import FaqList from '~/widgets/FaqList'
 import HomeHeader from '~/widgets/HomeHeader'
@@ -77,7 +75,6 @@ export default () => {
       {/* <PatternBg /> */}
       <div className={s.inner}>
         {/* <BgGlow wallpaper={wallpaper} /> */}
-        {/* <DashboardIntros /> */}
         <div className={s.banner}>
           <HomeHeader />
           <div className={s.betaText} style={{ background: s.betaGradientStyle }}>
@@ -121,22 +118,10 @@ export default () => {
         <CoverImage />
 
         <ArticlesIntroTabs />
-
-        <Suspense fallback={<LavaLampLoading />}>
-          <BatteryBento />
-        </Suspense>
-
-        <Suspense fallback={<LavaLampLoading />}>
-          <DashboardIntros />
-        </Suspense>
-
-        <Suspense fallback={<LavaLampLoading />}>
-          <TechStacks />
-        </Suspense>
-
-        <Suspense fallback={<LavaLampLoading />}>
-          <CompareDev />
-        </Suspense>
+        <BatteryBento />
+        <DashboardIntros />
+        <TechStacks />
+        <CompareDev />
 
         <div className={cn(s.divider, 'mt-20')} />
         <UsersWall wallpaper={wallpaper} />

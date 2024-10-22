@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 
 /**
@@ -10,7 +10,8 @@ export async function POST(req: NextRequest) {
     message: 'removed',
   }
 
-  cookies().delete('authjs.session-token')
+  // @ts-ignore
+  await cookies().delete('authjs.session-token')
 
   return NextResponse.json(result, {
     status: 200,

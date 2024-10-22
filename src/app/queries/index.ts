@@ -8,11 +8,11 @@ import { useMemo } from 'react'
 import { values, includes } from 'ramda'
 
 import { useQuery } from '@urql/next'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 
 // import LangParser from 'accept-language-parser'
 
-import type { TCommunity, TMetric, TThemeName } from '~/spec'
+import type { TCommunity, TMetric, TThemeName, TSSRRoute } from '~/spec'
 import { P } from '~/schemas'
 import { THREAD, ARTICLE_THREAD } from '~/const/thread'
 import THEME from '~/const/theme'
@@ -51,8 +51,8 @@ import {
 
 export { parseCommunity, useThreadParam } from './helper'
 
-export const useThemeFromURL = (): TThemeName => {
-  const searchParams = useSearchParams()
+export const useThemeFromURL = (route: TSSRRoute): TThemeName => {
+  const { searchParams } = route
   const theme = searchParams.get('theme')
 
   return useMemo(() => {
@@ -68,10 +68,9 @@ export const useThemeFromURL = (): TThemeName => {
  * 其他 GQ API 一样发起请求，但是这里的请求是被 GraphqlClient 拦截的，不会真的去后端
  * 而是返回本地文件，这里的 locale 参数来自 query string
  */
-export const useI18n = (): TUseI18n => {
-  const locale = useParseLang()
-  const skipLandingQuery = useSkipStaticQuery()
-  // const searchParams = useSearchParams()
+export const useI18n = (route: TSSRRoute): TUseI18n => {
+  const locale = useParseLang(route)
+  const skipLandingQuery = useSkipStaticQuery(route)
   // console.log('## ## data: ', data)
 
   // NOTE: put this parser into frontend maybe ?
@@ -95,7 +94,6 @@ export const useI18n = (): TUseI18n => {
 }
 
 // export const useThemeFromURL = (): TThemeName => {
-//   const searchParams = useSearchParams()
 //   const theme = searchParams.get('theme')
 //   console.log('## ## geting theme from url')
 
@@ -106,24 +104,24 @@ export const useI18n = (): TUseI18n => {
 //   return THEME.LIGHT
 // }
 
-export const useMetric = (): TMetric => {
-  const thread = useThreadParam()
-  const articleParams = useArticleParams()
+export const useMetric = (route: TSSRRoute): TMetric => {
+  const thread = useThreadParam(route)
+  const articleParams = useArticleParams(route.params)
 
   if (includes(thread, values(ARTICLE_THREAD)) && articleParams.id) {
     return METRIC.ARTICLE
   }
 
-  if (thread === THREAD.DASHBOARD) {
-    return METRIC.DASHBOARD
-  }
+  // if (thread === THREAD.DASHBOARD) {
+  //   return METRIC.DASHBOARD
+  // }
 
   return METRIC.COMMUNITY
 }
 
-export const useCommunity = (): TCommunityRes => {
-  const slug = useCommunityParam()
-  const skipLandingQuery = useSkipStaticQuery()
+export const useCommunity = (route: TSSRRoute): TCommunityRes => {
+  const slug = useCommunityParam(route)
+  const skipLandingQuery = useSkipStaticQuery(route)
 
   const [result] = useQuery({
     query: P.community,
@@ -140,10 +138,10 @@ export const useCommunity = (): TCommunityRes => {
   }
 }
 
-export const useTags = (): TTagsRes => {
-  const community = useCommunityParam()
-  const skipLandingQuery = useSkipStaticQuery()
-  const thread = useThreadParam()
+export const useTags = (route: TSSRRoute): TTagsRes => {
+  const community = useCommunityParam(route)
+  const skipLandingQuery = useSkipStaticQuery(route)
+  const thread = useThreadParam(route)
 
   const [result] = useQuery({
     query: P.pagedArticleTags,
@@ -159,10 +157,10 @@ export const useTags = (): TTagsRes => {
   }
 }
 
-export const usePagedPosts = (): TPagedPostsRes => {
-  const filter = usePagedArticlesParams()
-  const thread = useThreadParam()
-  const skipLandingQuery = useSkipStaticQuery()
+export const usePagedPosts = (route: TSSRRoute): TPagedPostsRes => {
+  const filter = usePagedArticlesParams(route)
+  const thread = useThreadParam(route)
+  const skipLandingQuery = useSkipStaticQuery(route)
   const id = useIdParam()
 
   const [result] = useQuery({
@@ -177,10 +175,10 @@ export const usePagedPosts = (): TPagedPostsRes => {
   }
 }
 
-export const usePagedChangelogs = (): TPagedChangelogsRes => {
-  const filter = usePagedArticlesParams()
-  const skipLandingQuery = useSkipStaticQuery()
-  const thread = useThreadParam()
+export const usePagedChangelogs = (route: TSSRRoute): TPagedChangelogsRes => {
+  const filter = usePagedArticlesParams(route)
+  const skipLandingQuery = useSkipStaticQuery(route)
+  const thread = useThreadParam(route)
 
   const [result] = useQuery({
     query: P.pagedChangelogs,
@@ -194,10 +192,10 @@ export const usePagedChangelogs = (): TPagedChangelogsRes => {
   }
 }
 
-export const usePost = (): TPostRes => {
-  const { community, id } = useArticleParams()
-  const skipLandingQuery = useSkipStaticQuery()
-  const thread = useThreadParam()
+export const usePost = (route: TSSRRoute): TPostRes => {
+  const { community, id } = useArticleParams(route.params)
+  const skipLandingQuery = useSkipStaticQuery(route)
+  const thread = useThreadParam(route)
 
   const [result] = useQuery({
     query: P.post,
@@ -211,10 +209,10 @@ export const usePost = (): TPostRes => {
   }
 }
 
-export const useChangelog = (): TChangelogRes => {
-  const { community, id } = useArticleParams()
-  const skipLandingQuery = useSkipStaticQuery()
-  const thread = useThreadParam()
+export const useChangelog = (route: TSSRRoute): TChangelogRes => {
+  const { community, id } = useArticleParams(route.params)
+  const skipLandingQuery = useSkipStaticQuery(route)
+  const thread = useThreadParam(route)
 
   const [result] = useQuery({
     query: P.changelog,
@@ -228,10 +226,10 @@ export const useChangelog = (): TChangelogRes => {
   }
 }
 
-export const useGroupedKanbanPosts = (): TGroupedKanbanPostsRes => {
-  const community = useCommunityParam()
-  const skipLandingQuery = useSkipStaticQuery()
-  const thread = useThreadParam()
+export const useGroupedKanbanPosts = (route: TSSRRoute): TGroupedKanbanPostsRes => {
+  const community = useCommunityParam(route)
+  const skipLandingQuery = useSkipStaticQuery(route)
+  const thread = useThreadParam(route)
 
   const [result] = useQuery({
     query: P.groupedKanbanPosts,
@@ -248,8 +246,8 @@ export const useGroupedKanbanPosts = (): TGroupedKanbanPostsRes => {
 /**
  * wallpaper related settings for all page
  */
-export const useWallpaper = (community: TCommunity): TParsedWallpaper => {
-  const isStaticQuery = useIsFrameworkQuery()
+export const useWallpaper = (community: TCommunity, route: TSSRRoute): TParsedWallpaper => {
+  const isStaticQuery = useIsFrameworkQuery(route)
 
   // @ts-ignore
   return !isStaticQuery ? parseWallpaper(community) : {}
@@ -268,9 +266,9 @@ export const useWallpaper = (community: TCommunity): TParsedWallpaper => {
 //   return parseDashboard(community, pathname)
 // }
 
-export const useDashboard = (community: TCommunity): TParseDashboard => {
-  const isStaticQuery = useIsFrameworkQuery()
-  const pathname = usePathname()
+export const useDashboard = (community: TCommunity, route: TSSRRoute): TParseDashboard => {
+  const isStaticQuery = useIsFrameworkQuery(route)
+  const { pathname } = route
 
   return useMemo(() => {
     // 如果是静态查询或者 community 不存在，直接返回空对象
@@ -308,7 +306,6 @@ export const useFilterSearchParams = (): TFilterSearchParams => {
 }
 
 // export const useFilterSearchParams = (): TFilterSearchParams => {
-//   const searchParams = useSearchParams()
 //   const filter = {
 //     activeCat: null,
 //     activeState: null,
