@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
-import { keys, includes } from 'ramda'
+import { keys } from 'ramda'
+
+import ThemeSVG from '~/icons/Theme'
 
 import useFullWallpaper from '~/hooks/useFullWallpaper'
 import useGlowLight from '~/hooks/useGlowLight'
@@ -9,16 +11,11 @@ import { callWallpaperEditor } from '~/signal'
 import { GRADIENT_WALLPAPER_NAME } from '~/const/wallpaper'
 import { GLOW_EFFECT_NAME } from '~/const/glow_effect'
 
-import {
-  Wrapper,
-  MainWrapper,
-  BallWrapper,
-  ColorBall,
-  CustomBall,
-  ThemeIcon,
-} from '../../../styles/dashboard_intros/layout_tab/wallpaper_bar'
+import useSalon, { cn } from '../../../styles/dashboard_intros/layout_tab/wallpaper_bar'
 
 export default () => {
+  const s = useSalon()
+
   const { wallpaper, getGradientWallpapers, changeWallpaper } = useFullWallpaper()
   const gradientWallpapers = getGradientWallpapers()
 
@@ -60,30 +57,26 @@ export default () => {
     [changeGlowEffect],
   )
 
-  const isCustomWallpaper = wallpaper && !includes(wallpaper, gradientKeys)
-
   return (
-    <Wrapper>
-      <MainWrapper>
-        {gradientKeys.map((name) => (
-          <BallWrapper
-            key={name}
-            $active={name === wallpaper}
-            onClick={() => {
-              changeWallpaper(name)
-              changeGlow(name)
-            }}
-          >
-            <ColorBall
-              $active={name === wallpaper}
-              background={parseWallpaper(gradientWallpapers, name).background}
-            />
-          </BallWrapper>
-        ))}
-        <CustomBall onClick={() => handleCallEditor()} $active={isCustomWallpaper}>
-          <ThemeIcon />
-        </CustomBall>
-      </MainWrapper>
-    </Wrapper>
+    <div className={s.wrapper}>
+      {gradientKeys.map((name) => (
+        <div
+          key={name}
+          className={cn(s.ballWrapper, name === wallpaper && s.ballWrapperActive)}
+          onClick={() => {
+            changeWallpaper(name)
+            changeGlow(name)
+          }}
+        >
+          <div
+            className={cn(s.colorBall, name === wallpaper && s.colorBallActive)}
+            style={{ background: parseWallpaper(gradientWallpapers, name).background }}
+          />
+        </div>
+      ))}
+      <div className={s.curstomBall} onClick={() => handleCallEditor()}>
+        <ThemeSVG className={s.themeIcon} />
+      </div>
+    </div>
   )
 }

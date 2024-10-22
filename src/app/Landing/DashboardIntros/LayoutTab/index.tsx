@@ -1,17 +1,15 @@
-import type { FC } from 'react'
-
 import ContentCard from './ContentCard'
 import WallpaperCard from './WallpaperCard'
 
-import { Wrapper } from '../../styles/dashboard_intros/layout_tab'
+import useSalon from '../../styles/dashboard_intros/layout_tab'
 
-const LayoutTab: FC = () => {
+export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
+    <div className={s.wrapper}>
       <ContentCard />
       <WallpaperCard />
-    </Wrapper>
+    </div>
   )
 }
-
-export default LayoutTab
