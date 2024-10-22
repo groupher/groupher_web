@@ -15,7 +15,7 @@ export default ({ color }: TProps) => {
     wrapper: cn('column-align-both mt-10'),
     layouts: 'row-center gap-x-7 gap-y-4 mb-3',
     card: cn('relative w-24 h-14 rounded-md border', rainbow(color, 'borderSoft')),
-    cardInactive: 'saturate-0 opacity-65',
+    cardInactive: 'saturate-0 opacity-45',
     title: cn('text-xs', fg('text.digest')),
     //
     logo: cn('absolute size-5 circle opacity-25', rainbow(color, 'bg')),
