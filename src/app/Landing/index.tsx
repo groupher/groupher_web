@@ -16,6 +16,7 @@ import ArrowSVG from '~/icons/ArrowSimple'
 import LinkSVG from '~/icons/LinkOutside'
 
 import Button from '~/widgets/Buttons/Button'
+import BorderButton from '~/widgets/Buttons/BorderButton'
 import LavaLampLoading from '~/widgets/Loading/LavaLampLoading'
 import Tooltip from '~/widgets/Tooltip'
 import FaqList from '~/widgets/FaqList'
@@ -89,9 +90,7 @@ export default () => {
 
           <div className={s.buttonGroup}>
             <Link href={ROUTE.APPLY_COMMUNITY} className={s.linkable}>
-              <Button className={s.tryButton} style={s.tryButtonStyle} size="medium">
-                开始使用 <ArrowSVG className={s.tryArrow} />
-              </Button>
+              <BorderButton space={8}>开始使用</BorderButton>
             </Link>
 
             <Tooltip

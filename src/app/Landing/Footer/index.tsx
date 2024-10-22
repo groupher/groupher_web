@@ -2,6 +2,7 @@ import { ROUTE } from '~/const/route'
 
 import Img from '~/Img'
 import Button from '~/widgets/Buttons/Button'
+import BorderButton from '~/widgets/Buttons/BorderButton'
 
 import { LinkAble } from '~/widgets/Common'
 
@@ -22,9 +23,7 @@ export default () => {
       </div>
       <div className={s.buttons}>
         <LinkAble href={ROUTE.APPLY_COMMUNITY}>
-          <Button className={s.createButton} style={s.createButtonStyle} size="medium">
-            创建我的社区
-          </Button>
+          <BorderButton space={8}>创建新社区</BorderButton>
         </LinkAble>
 
         <Button size="medium" ghost>
