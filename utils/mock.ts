@@ -8,7 +8,7 @@ import { getRandomInt } from './helper'
 const users = [
   {
     id: '1',
-    avatar: '/avatars/2-blue.png',
+    avatar: '/avatars/2-purple.png',
     nickname: '橙猫猫',
     login: 'Sparkles',
     bio: 'the codex core teamf',
@@ -22,7 +22,7 @@ const users = [
   },
   {
     id: '3',
-    avatar: '/avatars/1-purple.png',
+    avatar: '/avatars/1.png',
     nickname: '圆滚滚',
     login: 'dimples',
     bio: 'Technical Director @nearform, TSC member',
@@ -36,7 +36,7 @@ const users = [
   },
   {
     id: '5',
-    avatar: '/avatars/1-blue.png',
+    avatar: '/avatars/5.png',
     nickname: '最爱电炒饭',
     login: 'susie',
     bio: 'Angel Investor, Serial Entrepreneur, Machine Learning PhD Student',
