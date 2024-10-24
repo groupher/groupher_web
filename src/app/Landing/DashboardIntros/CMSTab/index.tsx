@@ -1,21 +1,17 @@
-import type { FC } from 'react'
-
 import Tabs from './Tabs'
-import ContentCard from './MainCard'
+import ContentCard from './ContentCard'
 import MenuCard from './MenuCard'
 
-import { Wrapper, InnerWrapper } from '../../styles/dashboard_intros/cms_tab'
+import useSalon from '../../styles/dashboard_intros/cms_tab'
 
-const CMSTab: FC = () => {
+export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <InnerWrapper>
-        <Tabs />
-        <ContentCard />
-        <MenuCard />
-      </InnerWrapper>
-    </Wrapper>
+    <div className={s.wrapper}>
+      <Tabs />
+      <ContentCard />
+      <MenuCard />
+    </div>
   )
 }
-
-export default CMSTab
