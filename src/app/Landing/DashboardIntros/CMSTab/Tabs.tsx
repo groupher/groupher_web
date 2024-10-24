@@ -1,47 +1,35 @@
-import type { FC } from 'react'
+import TimeSVG from '~/icons/TimelineMode'
+import CategorySVG from '~/icons/Category'
+import WipSVG from '~/icons/GtdWip'
 
-import { Space } from '~/widgets/Common'
-import {
-  Wrapper,
-  PostItem,
-  KanbanItem,
-  ChangelogItem,
-  DocItem,
-  UserItem,
-  BottomItem,
-  FilterBox,
-  FilterIcon,
-  TimeIcon,
-  FilterTitle,
-  CatIcon,
-  StateIcon,
-} from '../../styles/dashboard_intros/cms_tab/tabs'
+import useSalon, { cn } from '../../styles/dashboard_intros/cms_tab/tabs'
 
-const Tabs: FC = () => {
+export default () => {
+  const s = useSalon()
+
   return (
-    <Wrapper>
-      <PostItem>讨论区</PostItem>
-      <KanbanItem>看板</KanbanItem>
-      <ChangelogItem>更新日志</ChangelogItem>
-      <DocItem>帮助台</DocItem>
-      <UserItem>成员</UserItem>
-      <BottomItem>
-        <FilterBox>
-          <FilterIcon />
-        </FilterBox>
-        <TimeIcon />
-        <FilterTitle>本周</FilterTitle>
-        <Space right={10} />
-        <CatIcon />
-        <FilterTitle>功能请求</FilterTitle>
-        <Space right={10} />
-        <StateIcon />
-        <FilterTitle>进行中</FilterTitle>
+    <div className={s.wrapper}>
+      <div className={s.postItemWrapper}>
+        <div className={s.postItem}>讨论区</div>
+      </div>
+      <div className={cn(s.item, '-top-1 left-24')}>看板</div>
+      <div className={cn(s.item, '-top-0.5 left-40 ml-2 z-10')}>更新日志</div>
+      <div className={cn(s.item, '-top-0.5 left-56 ml-3 z-0')}>帮助台</div>
+      <div className={cn(s.item, 'top-0 left-72 ml-2 -z-10')}>成员</div>
+
+      <div className={s.bottomItem}>
+        <div className={s.bottomGradient} />
+        <TimeSVG className={s.icon} />
+        <div className={s.title}>本周</div>
+        <div className="mr-2.5" />
+        <CategorySVG className={s.icon} />
+        <div className={s.title}>功能请求</div>
+        <div className="mr-2.5" />
+        <WipSVG className={s.icon} />
+        <div className={s.title}>进行中</div>
         <div className="grow" />
-        <FilterTitle>1 / 9</FilterTitle>
-      </BottomItem>
-    </Wrapper>
+        <div className={s.title}>1 / 9</div>
+      </div>
+    </div>
   )
 }
-
-export default Tabs

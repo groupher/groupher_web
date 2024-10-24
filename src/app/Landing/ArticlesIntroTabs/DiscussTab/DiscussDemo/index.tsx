@@ -97,7 +97,6 @@ const DiscussDemo: FC = () => {
         <CommentItem user={users[0]} className="opacity-90" />
         <CommentItem user={users[1]} className="opacity-65" />
         <CommentItem user={users[2]} className="opacity-40" />
-        <CommentItem user={users[4]} className="opacity-25" />
       </div>
     </div>
   )
