@@ -65,7 +65,7 @@ jobs:
     name: Deploy Edge Router Worker
     needs: validate
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/dev')
 
     steps:
       - uses: actions/checkout@v4
@@ -86,3 +86,9 @@ jobs:
         run: pnpm --filter @groupher/edge-router run deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: Verify public Landing assets
+        run: node scripts/check-public-landing.mjs
+        env:
+          PUBLIC_LANDING_ATTEMPTS: '24'
+          PUBLIC_LANDING_RETRY_MS: '5000'

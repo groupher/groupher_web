@@ -19,6 +19,30 @@ for (const htmlFile of htmlFiles) {
   if (namespacedHtml.includes('_next') || /(?:href|src)="\/assets\//.test(namespacedHtml)) {
     throw new Error(`Legacy or unowned asset path remains in ${htmlFile}`)
   }
+
+  const assetReferences = [
+    ...new Set(
+      [
+        ...namespacedHtml.matchAll(/(?:href|src)="(\/landing\/assets\/[^"?#]+)(?:[?#][^"]*)?"/g),
+      ].map(([, reference]) => reference),
+    ),
+  ]
+  if (assetReferences.length === 0) {
+    throw new Error(`No Landing bundle assets found in ${htmlFile}`)
+  }
+
+  const assetsRoot = path.resolve(clientRoot, 'assets')
+  for (const reference of assetReferences) {
+    const relativeAssetPath = decodeURIComponent(reference.slice('/landing/assets/'.length))
+    const assetPath = path.resolve(assetsRoot, relativeAssetPath)
+    if (assetPath !== assetsRoot && !assetPath.startsWith(`${assetsRoot}${path.sep}`)) {
+      throw new Error(`Landing asset escapes the bundle directory: ${reference}`)
+    }
+    await access(assetPath).catch(() => {
+      throw new Error(`Landing asset is missing from dist/client/assets: ${reference}`)
+    })
+  }
+
   await writeFile(htmlFile, namespacedHtml)
 }
 
