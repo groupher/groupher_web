@@ -10,7 +10,6 @@
 @source '../../../gateway';
 
 @import 'tailwindcss-animated';
-@plugin '@tailwindcss/typography';
 
 @import './tokens';
 @import './safelist';

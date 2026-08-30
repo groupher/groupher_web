@@ -1,7 +1,5 @@
 import { DevHubReporter } from '@groupher/frontend-core/dev-hub-reporter/react'
 import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router'
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/react'
 import type { ReactNode } from 'react'
 
 import { LOCALE } from '~/const/i18n'
@@ -65,8 +63,6 @@ function RootComponent() {
           <Outlet />
         </StaticLayout>
       </StaticShellProvider>
-      <Analytics />
-      <SpeedInsights />
     </>
   )
 }
