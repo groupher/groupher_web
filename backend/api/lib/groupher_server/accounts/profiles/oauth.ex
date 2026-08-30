@@ -23,6 +23,7 @@ defmodule GroupherServer.Accounts.Profiles.Oauth do
   alias GroupherServer.Accounts.FrontDesk
   alias GroupherServer.Accounts.Model.{Achievement, OauthProvider, Social, User}
   alias GroupherServer.Accounts.Profiles.BrowserSessions
+  alias GroupherServer.Auth.Contract, as: AuthContract
   alias Helper.{Multi, ORM}
 
   def link_oauth(login, provider) do
@@ -419,16 +420,25 @@ defmodule GroupherServer.Accounts.Profiles.Oauth do
   end
 
   defp oauth_identity_already_linked_error,
-    do: [message: "oauth identity already linked", code: "OAUTH_IDENTITY_ALREADY_LINKED"]
+    do: [
+      message: "oauth identity already linked",
+      code: AuthContract.oauth_identity_already_linked()
+    ]
 
   defp oauth_provider_already_linked_error,
-    do: [message: "oauth provider already linked", code: "OAUTH_PROVIDER_ALREADY_LINKED"]
+    do: [
+      message: "oauth provider already linked",
+      code: AuthContract.oauth_provider_already_linked()
+    ]
 
   defp oauth_binding_not_found_error,
-    do: [message: "oauth binding not found", code: "OAUTH_BINDING_NOT_FOUND"]
+    do: [message: "oauth binding not found", code: AuthContract.oauth_binding_not_found()]
 
   defp oauth_last_login_method_error,
-    do: [message: "can not delete last oauth provider", code: "OAUTH_LAST_LOGIN_METHOD"]
+    do: [
+      message: "can not delete last oauth provider",
+      code: AuthContract.oauth_last_login_method()
+    ]
 
   defp update_social_ifneed(%User{} = user, %{social: attrs}) do
     attrs = Map.merge(%{user_id: user.id}, attrs)

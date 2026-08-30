@@ -1,3 +1,5 @@
+import { API_ROUTE } from '@groupher/route-contract'
+
 import { validateSlug } from './validator'
 
 type TSlugifyResponse = {
@@ -8,7 +10,7 @@ type TSlugifyResponse = {
 
 /** Runs the slugify operation at the frontend shared boundary. */
 export const slugify = async (value: string): Promise<string> => {
-  const response = await fetch('/api/utils/slugify', {
+  const response = await fetch(API_ROUTE.SLUGIFY, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

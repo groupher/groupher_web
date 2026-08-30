@@ -35,6 +35,23 @@
 - 不要出现裸露的字符串，封装到 ./constant.ts
 - 工具函数封装到 ./helper.ts, 多模块复用的加在 utils 下
 
+## constant 与 spec
+
+- `constant.ts` / `constants.ts` 只放运行时语义常量、枚举和非样式配置，不导出
+  `type` / `interface`
+- 跨文件消费的公开类型、数据结构和组件协议统一放在同目录 `spec.d.ts`；目录已有
+  `spec.d.ts` 时直接补充，不再从 `constant.ts` 导出类型
+- 即使类型由常量推导，也放在 `spec.d.ts`，通过 type-only import 引用常量，例如
+  `type TMode = (typeof MODE)[keyof typeof MODE]`
+- `constant.ts` 如果需要类型约束，可以 type-only import 同目录 `spec.d.ts`；禁止因此形成运行时
+  循环依赖
+- 只服务于本文件常量构造或回调签名、且不导出的私有辅助类型可以留在 `constant.ts`，不要为了
+  几行局部类型机械创建 `spec.d.ts`
+- 类型一旦被其他文件消费，就应迁入 `spec.d.ts`，并让消费者从 `spec` 导入；值继续从
+  `constant` 导入，不要在同一 import 中混取值和公开类型
+- 不同领域不要因为名称相同就合并类型；必要时使用更具体的领域命名，例如
+  `TDocsPublishMode`，避免与全局 `TPublishMode` 混淆
+
 ## 测试
 
 - 如果使用 playwright, 用 /home/xx 社区测试，其他社区没有数据

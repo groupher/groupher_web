@@ -1,3 +1,4 @@
+import { AUTH_ERROR } from '@groupher/contracts/auth'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import {
@@ -45,7 +46,7 @@ describe('Auth core integration', () => {
         return Response.json({
           errors: [
             {
-              extensions: { code: 'SESSION_REVOKED' },
+              extensions: { code: AUTH_ERROR.SESSION_REVOKED },
               message: 'Browser Session revoked.',
             },
           ],
@@ -54,7 +55,7 @@ describe('Auth core integration', () => {
     )
 
     await expect(refreshBrowserSession('bs_revoked')).rejects.toMatchObject({
-      code: 'SESSION_REVOKED',
+      code: AUTH_ERROR.SESSION_REVOKED,
       name: 'PhoenixBrowserSessionError',
     } satisfies Partial<PhoenixBrowserSessionError>)
   })

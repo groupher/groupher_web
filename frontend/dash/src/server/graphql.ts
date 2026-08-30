@@ -1,9 +1,11 @@
 import { serializeGraphQLError } from '@dash/utils/graphql-error'
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import {
+  AUTH_ERROR,
   GROUPHER_AUTH_SIGNED_IN_COOKIE,
   GROUPHER_AUTH_TOKEN_COOKIE,
 } from '@groupher/contracts/auth'
+import { LOCAL_PHOENIX_GRAPHQL_ENDPOINT } from '@groupher/contracts/endpoint'
 import { getRequest, setResponseHeader } from '@tanstack/react-start/server'
 import { print, type DocumentNode } from 'graphql'
 
@@ -68,7 +70,7 @@ export async function fetchGraphQL<TData>(
   variables: Record<string, unknown>,
   token: string | null,
 ): Promise<TGraphQLResponse<TData>> {
-  const endpoint = process.env.GRAPHQL_ENDPOINT || 'http://127.0.0.1:4001/graphiql'
+  const endpoint = process.env.GRAPHQL_ENDPOINT || LOCAL_PHOENIX_GRAPHQL_ENDPOINT
   const response = await fetch(endpoint, {
     method: 'POST',
     cache: 'no-store',
@@ -95,7 +97,7 @@ export async function fetchGraphQL<TData>(
       typeof rawCode === 'string'
         ? rawCode
         : rawCode === 4301 && hasSignedInHint()
-          ? 'TOKEN_MISSING'
+          ? AUTH_ERROR.TOKEN_MISSING
           : undefined
     throw new GraphQLRequestError(
       serializeGraphQLError(

@@ -1,5 +1,5 @@
 import useSalon, { cn } from '../salon/custom/verifying_table'
-import type { TVerifyingDomainRow } from './constant'
+import type { TVerifyingDomainRow } from './spec'
 
 type Props = {
   rows: TVerifyingDomainRow[]

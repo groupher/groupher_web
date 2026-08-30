@@ -1,30 +1,21 @@
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import {
+  AUTH_ERROR,
   GROUPHER_AUTH_CSRF_HEADER,
   GROUPHER_AUTH_CSRF_VALUE,
   GROUPHER_AUTH_SIGNED_IN_COOKIE,
 } from '@groupher/contracts/auth'
+import { API_ROUTE } from '@groupher/route-contract'
 import { print, type DocumentNode } from 'graphql'
+import { ClientError, GraphQLClient } from 'graphql-request'
 
-import {
-  AuthRequestError,
-  invalidateAuthState,
-  requestLogin,
-  resolveAuthFailure,
-  withAuthRetry,
-} from '~/auth'
+import { invalidateAuthState, requestLogin, resolveAuthFailure, withAuthRetry } from '~/auth'
 
 const ACCOUNT_LOGIN_ERROR_CODE = 4301
 
 type TGraphQLError = {
   message?: string
   extensions?: { code?: unknown }
-}
-
-type TGraphQLCombinedError = {
-  graphQLErrors: TGraphQLError[]
-  networkError?: Error
-  response?: Response
 }
 
 export class GraphQLRequestError extends Error {
@@ -50,7 +41,7 @@ const hasSignedInHint = (): boolean =>
 
 const normalizeAuthCode = (code: unknown): string | undefined => {
   if (typeof code === 'string') return code
-  if (code === ACCOUNT_LOGIN_ERROR_CODE && hasSignedInHint()) return 'TOKEN_MISSING'
+  if (code === ACCOUNT_LOGIN_ERROR_CODE && hasSignedInHint()) return AUTH_ERROR.TOKEN_MISSING
   return undefined
 }
 
@@ -72,13 +63,6 @@ class GraphQLAuthResponseError extends Error {
  * cookies are still included so the Next route handler can read the Groupher
  * auth token cookie and forward only that cookie to Phoenix.
  *
- * @example
- * ```ts
- * createClient({
- *   url: '/api/graphql',
- *   fetchOptions: GRAPHQL_FETCH_OPTIONS,
- * })
- * ```
  */
 export const GRAPHQL_FETCH_OPTIONS = (): RequestInit => ({
   credentials: 'include',
@@ -87,40 +71,6 @@ export const GRAPHQL_FETCH_OPTIONS = (): RequestInit => ({
     [GROUPHER_AUTH_CSRF_HEADER]: GROUPHER_AUTH_CSRF_VALUE,
   },
 })
-
-/**
- * Retry policy for browser GraphQL clients.
- *
- * Only network errors are retried. GraphQL validation and business errors must
- * be returned to callers unchanged so UI code can render the exact failure.
- *
- * @example
- * ```ts
- * createClient({
- *   exchanges: [cacheExchange, retryExchange(GRAPHQL_RETRY_OPTIONS), fetchExchange],
- * })
- * ```
- */
-export const GRAPHQL_RETRY_OPTIONS = {
-  initialDelayMs: 1000,
-  maxDelayMs: 15000,
-  randomDelay: true,
-  maxNumberAttempts: 2,
-  retryIf: (err: TGraphQLCombinedError | undefined) =>
-    !!err?.networkError && !(err.networkError instanceof AuthRequestError),
-}
-
-/** Resolves graph qlfailure without leaking frontend shared routing details to callers. */
-export const resolveGraphQLFailure = (
-  error: TGraphQLCombinedError,
-): { code?: string; status?: number } => {
-  const code = error.graphQLErrors
-    .map((item) => item.extensions?.code)
-    .map(normalizeAuthCode)
-    .find((item): item is string => typeof item === 'string')
-
-  return { code, status: error.response?.status }
-}
 
 const responseAuthFailure = async (
   response: Response,
@@ -137,7 +87,7 @@ const responseAuthFailure = async (
     // `sessionState` is the explicit authenticated probe. The public nullable
     // `me` field must never be used as a refresh signal.
     if (!code && payload.data?.sessionState?.isValid === false && hasSignedInHint()) {
-      return { code: 'TOKEN_MISSING', status: response.status }
+      return { code: AUTH_ERROR.TOKEN_MISSING, status: response.status }
     }
     return { code, status: response.status }
   } catch {
@@ -175,26 +125,59 @@ export const createAuthFetch =
     }
   }
 
-/** Typed same-origin browser transport shared by TanStack Query and mutations. */
-export const browserQuery = async <TResult, TVariables = Record<string, unknown>>(
+export type TBrowserGraphQLRequestOptions = {
+  fetcher?: typeof fetch
+  signal?: AbortSignal
+}
+
+const browserGraphQLEndpoint = (): string =>
+  typeof window === 'undefined'
+    ? API_ROUTE.GRAPHQL
+    : new URL(API_ROUTE.GRAPHQL, window.location.origin).toString()
+
+/** Typed same-origin GraphQL transport shared by TanStack Query and mutations. */
+export const browserGraphQLRequest = async <
+  TResult,
+  TVariables extends object = Record<string, unknown>,
+>(
   document: string | DocumentNode | TypedDocumentNode<TResult, TVariables>,
   variables: TVariables = {} as TVariables,
-  fetcher: typeof fetch = fetch,
+  options: TBrowserGraphQLRequestOptions = {},
 ): Promise<TResult> => {
-  const response = await createAuthFetch(fetcher)('/api/graphql', {
-    ...GRAPHQL_FETCH_OPTIONS(),
-    method: 'POST',
-    cache: 'no-store',
-    body: JSON.stringify({
-      query: typeof document === 'string' ? document : print(document),
-      variables,
-    }),
-  })
-  const payload = (await response.json()) as { data?: TResult; errors?: TGraphQLError[] }
-
-  if (!response.ok || payload.errors?.length || !payload.data) {
-    throw new GraphQLRequestError(response, payload.errors || [])
+  let response: Response | undefined
+  const fetcher = createAuthFetch(options.fetcher || fetch)
+  const observedFetch: typeof fetch = async (input, init) => {
+    response = await fetcher(input, options.signal ? { ...init, signal: options.signal } : init)
+    return response
   }
+  const fetchOptions = GRAPHQL_FETCH_OPTIONS()
+  const client = new GraphQLClient(browserGraphQLEndpoint(), {
+    credentials: fetchOptions.credentials,
+    headers: fetchOptions.headers,
+    cache: 'no-store',
+    fetch: observedFetch,
+  })
 
-  return payload.data
+  try {
+    const result = await client.rawRequest<TResult, TVariables>(
+      typeof document === 'string' ? document : print(document),
+      variables,
+    )
+    return result.data
+  } catch (error) {
+    if (!(error instanceof ClientError)) throw error
+
+    const errors = (error.response.errors || []).map((item) => ({
+      message: item.message,
+      extensions: { code: item.extensions?.code },
+    }))
+    const errorResponse =
+      response ||
+      new Response(error.response.body, {
+        status: error.response.status,
+        headers: error.response.headers,
+      })
+
+    throw new GraphQLRequestError(errorResponse, errors)
+  }
 }

@@ -16,6 +16,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts do
 
   alias GroupherServer.Accounts.Model.User
   alias GroupherServer.CMS.Passport.Registry
+  alias GroupherServer.Auth.Contract, as: AuthContract
 
   def me(_root, _args, %{context: %{cur_user: cur_user}}), do: {:ok, cur_user}
   def me(_root, _args, _info), do: {:ok, nil}
@@ -103,22 +104,22 @@ defmodule GroupherServerWeb.Resolvers.Accounts do
     {message, code} =
       case error_reason(reason) do
         :session_expired ->
-          {"Browser Session expired.", "SESSION_EXPIRED"}
+          {"Browser Session expired.", AuthContract.session_expired()}
 
         :session_revoked ->
-          {"Browser Session revoked.", "SESSION_REVOKED"}
+          {"Browser Session revoked.", AuthContract.session_revoked()}
 
         :session_not_found ->
-          {"Browser Session no longer exists.", "SESSION_REVOKED"}
+          {"Browser Session no longer exists.", AuthContract.session_revoked()}
 
         :current_session ->
-          {"The current Browser Session cannot be revoked here.", "SESSION_CONFLICT"}
+          {"The current Browser Session cannot be revoked here.", AuthContract.session_conflict()}
 
         :account_blocked ->
-          {"Account is blocked.", "ACCOUNT_BLOCKED"}
+          {"Account is blocked.", AuthContract.account_blocked()}
 
         _ ->
-          {"Browser Session operation failed.", "SESSION_UNAVAILABLE"}
+          {"Browser Session operation failed.", AuthContract.session_unavailable()}
       end
 
     {:error, [message: message, code: code]}

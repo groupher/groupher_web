@@ -4,7 +4,8 @@ import EditPenSVG from '~/icons/EditPen'
 import JoinEyeSVG from '~/icons/JoinEye'
 import type { TTransKey } from '~/spec'
 
-import { DOC_EDITOR_MODE, type TDocEditorMode } from '../../Editor/constant'
+import { DOC_EDITOR_MODE } from '../../Editor/constant'
+import type { TDocEditorMode } from '../../Editor/spec'
 
 type TModeItem = {
   key: TDocEditorMode

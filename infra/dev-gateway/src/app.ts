@@ -9,7 +9,11 @@
  *     -> proxied response
  */
 
-import { GROUPHER_AUTH_CSRF_HEADER, GROUPHER_AUTH_CSRF_VALUE } from '@groupher/contracts/auth'
+import {
+  AUTH_ERROR,
+  GROUPHER_AUTH_CSRF_HEADER,
+  GROUPHER_AUTH_CSRF_VALUE,
+} from '@groupher/contracts/auth'
 import { Hono } from 'hono'
 
 import { buildHealthResponse } from './health.js'
@@ -22,7 +26,10 @@ type TOptions = {
 }
 
 const invalidGraphQLRequest = (message: string) =>
-  Response.json({ errors: [{ extensions: { code: 'INVALID_CSRF' }, message }] }, { status: 400 })
+  Response.json(
+    { errors: [{ extensions: { code: AUTH_ERROR.INVALID_CSRF }, message }] },
+    { status: 400 },
+  )
 
 const notFound = () => new Response('Not Found', { status: 404 })
 

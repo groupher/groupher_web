@@ -1,3 +1,4 @@
+import { AUTH_ERROR } from '@groupher/contracts/auth'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { createApp, mapBrowserSessionError } from './app'
@@ -26,11 +27,11 @@ describe('Auth Hono application', () => {
   })
 
   it.each([
-    ['SESSION_EXPIRED', 401],
-    ['SESSION_REVOKED', 401],
-    ['ACCOUNT_BLOCKED', 403],
-    ['SESSION_CONFLICT', 409],
-    ['RATE_LIMITED', 429],
+    [AUTH_ERROR.SESSION_EXPIRED, 401],
+    [AUTH_ERROR.SESSION_REVOKED, 401],
+    [AUTH_ERROR.ACCOUNT_BLOCKED, 403],
+    [AUTH_ERROR.SESSION_CONFLICT, 409],
+    [AUTH_ERROR.RATE_LIMITED, 429],
   ] as const)('maps Phoenix %s to HTTP %i', (code, status) => {
     expect(
       mapBrowserSessionError(new PhoenixBrowserSessionError(code, { code }), 'fallback'),
@@ -177,7 +178,7 @@ describe('Auth Hono application', () => {
         sessionAbsoluteExpiresAt: '2026-11-08T00:00:00.000Z',
       }),
       refreshBrowserSession: async () => {
-        throw new PhoenixBrowserSessionError('revoked', { code: 'SESSION_REVOKED' })
+        throw new PhoenixBrowserSessionError('revoked', { code: AUTH_ERROR.SESSION_REVOKED })
       },
     }).request('/api/auth/token/refresh', {
       method: 'POST',
@@ -189,7 +190,7 @@ describe('Auth Hono application', () => {
     })
 
     expect(response.status).toBe(401)
-    await expect(response.json()).resolves.toEqual({ code: 'SESSION_REVOKED' })
+    await expect(response.json()).resolves.toEqual({ code: AUTH_ERROR.SESSION_REVOKED })
     expect(response.headers.get('set-cookie')).toContain('Max-Age=0')
   })
 
@@ -455,7 +456,9 @@ describe('Auth Hono application', () => {
     const linkOauthIdentity = vi.fn(async () => {
       linkAttempts += 1
       if (linkAttempts === 1) {
-        throw new PhoenixBrowserSessionError('Phoenix token expired.', { code: 'TOKEN_EXPIRED' })
+        throw new PhoenixBrowserSessionError('Phoenix token expired.', {
+          code: AUTH_ERROR.TOKEN_EXPIRED,
+        })
       }
       return []
     })

@@ -14,11 +14,13 @@ import { createHash } from 'node:crypto'
 import { Auth, type AuthConfig, setEnvDefaults } from '@auth/core'
 import GitHub from '@auth/core/providers/github'
 import {
+  AUTH_ERROR,
   GROUPHER_AUTH_SIGNED_IN_COOKIE,
   GROUPHER_AUTH_TOKEN_COOKIE,
   getAuthCookieNames,
   getAuthSessionCookieName,
 } from '@groupher/contracts/auth'
+import { LOCAL_PHOENIX_GRAPHQL_ENDPOINT } from '@groupher/contracts/endpoint'
 import { GROUPHER_USER_AUTHORIZATION_HEADER } from '@groupher/contracts/headers'
 import { createServiceAuthClientFromEnv, type TServiceAuthClient } from '@groupher/service/auth'
 import { serialize } from 'hono/utils/cookie'
@@ -32,7 +34,7 @@ export const ACCESS_TOKEN_MAX_AGE = 60 * 30
 export const BROWSER_SESSION_MAX_AGE = 60 * 60 * 24 * 90
 export const BROWSER_SESSION_USER_AGENT_MAX_LENGTH = 255
 const PHOENIX_GRAPHQL_ENDPOINT =
-  process.env.PHOENIX_GRAPHQL_ENDPOINT?.trim() || 'http://127.0.0.1:4001/graphiql'
+  process.env.PHOENIX_GRAPHQL_ENDPOINT?.trim() || LOCAL_PHOENIX_GRAPHQL_ENDPOINT
 const PHOENIX_AUTH_RESOURCE = 'https://api.groupher.com/auth'
 let serviceTokenProvider: TServiceAuthClient | undefined
 
@@ -644,7 +646,7 @@ const callPhoenix = async <TData>(
     })
   } catch {
     throw new PhoenixBrowserSessionError('Phoenix request was not completed.', {
-      code: 'PHOENIX_NETWORK_ERROR',
+      code: AUTH_ERROR.PHOENIX_NETWORK_ERROR,
       upstreamStatus: undefined,
     })
   }

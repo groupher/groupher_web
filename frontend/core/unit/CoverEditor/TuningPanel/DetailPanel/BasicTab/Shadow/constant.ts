@@ -1,21 +1,5 @@
-import type { CSSProperties } from 'react'
-
 import { COVER_SHADOW_COLOR_MODE, COVER_SHADOW_PRESET } from '../../../../constant'
-import type { TCoverShadowColorMode, TCoverShadowPreset } from '../../../../spec'
-
-type TShadowPresetOption = {
-  label: string
-  value: TCoverShadowPreset
-}
-
-type TShadowColorOption = {
-  label: string
-  value: TCoverShadowColorMode
-}
-
-export type TShadowPanelStyle = CSSProperties & {
-  '--shadow-preview'?: string
-}
+import type { TShadowColorOption, TShadowPresetOption } from './spec'
 
 export const PRESET_OPTIONS: TShadowPresetOption[] = [
   { label: 'None', value: COVER_SHADOW_PRESET.NONE },

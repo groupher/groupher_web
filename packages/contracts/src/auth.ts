@@ -1,3 +1,6 @@
+export { AUTH_ERROR, PHOENIX_BROWSER_TOKEN_CLAIMS, type TAuthErrorCode } from './auth.generated'
+export { GROUPHER_AUTH_TOKEN_COOKIE } from './auth-cookie'
+
 const AUTH_COOKIE_BASENAME = {
   callbackUrl: 'groupher-auth.callback-url',
   csrfToken: 'groupher-auth.csrf-token',
@@ -8,7 +11,6 @@ const AUTH_COOKIE_BASENAME = {
   webauthnChallenge: 'groupher-auth.challenge',
 } as const
 
-export const GROUPHER_AUTH_TOKEN_COOKIE = 'groupher-auth.token'
 export const GROUPHER_AUTH_CSRF_HEADER = 'X-Groupher-CSRF'
 export const GROUPHER_AUTH_CSRF_VALUE = '1'
 /**

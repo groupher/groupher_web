@@ -2,8 +2,8 @@ import useTrans from '~/hooks/useTrans'
 import CheckSVG from '~/icons/CheckCircle'
 
 import useSalon, { cn } from '../salon/custom/step_bar'
-import type { TDomainStep } from './constant'
 import { DOMAIN_STEP_ORDER, STEPS } from './constant'
+import type { TDomainStep } from './spec'
 
 type Props = {
   step: TDomainStep

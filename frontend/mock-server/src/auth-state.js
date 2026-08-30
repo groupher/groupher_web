@@ -1,3 +1,5 @@
+import { GROUPHER_AUTH_TOKEN_COOKIE } from '@groupher/contracts/auth-cookie'
+import { AUTH_ERROR } from '@groupher/contracts/auth-generated'
 import { GraphQLError } from 'graphql'
 
 const ACCESS_TTL_SECONDS = Number(process.env.E2E_AUTH_ACCESS_TTL_SECONDS ?? 60)
@@ -31,7 +33,7 @@ const expiresAt = (seconds) => new Date(Date.now() + seconds * 1000).toISOString
 
 const sessionFailure = (code) => {
   throw new GraphQLError(
-    code === 'SESSION_REVOKED' ? 'Browser Session was revoked.' : 'Session failed.',
+    code === AUTH_ERROR.SESSION_REVOKED ? 'Browser Session was revoked.' : 'Session failed.',
     {
       extensions: { code },
     },
@@ -40,8 +42,8 @@ const sessionFailure = (code) => {
 
 const activeSession = (ref) => {
   const session = sessions.get(ref)
-  if (!session) sessionFailure('SESSION_EXPIRED')
-  if (session.status !== 'active') sessionFailure('SESSION_REVOKED')
+  if (!session) sessionFailure(AUTH_ERROR.SESSION_EXPIRED)
+  if (session.status !== 'active') sessionFailure(AUTH_ERROR.SESSION_REVOKED)
   return session
 }
 
@@ -128,7 +130,7 @@ export const revokeAuthSessionPublic = (currentRef, publicRef) => {
   const target = [...sessions.values()].find(
     (session) => session.publicRef === publicRef && session.login === current.login,
   )
-  if (!target) sessionFailure('SESSION_EXPIRED')
+  if (!target) sessionFailure(AUTH_ERROR.SESSION_EXPIRED)
   target.status = 'revoked'
   return { done: true }
 }
@@ -154,13 +156,13 @@ const readCookie = (cookieHeader, name) => {
 /** Runs the record protected request operation at the frontend shared boundary. */
 export const recordProtectedRequest = (cookieHeader) => {
   stats.protectedCalls += 1
-  const token = readCookie(cookieHeader, 'groupher-auth.token')
-  if (!token) return 'TOKEN_MISSING'
+  const token = readCookie(cookieHeader, GROUPHER_AUTH_TOKEN_COOKIE)
+  if (!token) return AUTH_ERROR.TOKEN_MISSING
   const access = accessTokens.get(token)
-  if (!access) return 'TOKEN_INVALID'
-  if (Date.parse(access.expiresAt) <= Date.now()) return 'TOKEN_EXPIRED'
+  if (!access) return AUTH_ERROR.TOKEN_INVALID
+  if (Date.parse(access.expiresAt) <= Date.now()) return AUTH_ERROR.TOKEN_EXPIRED
   const session = sessions.get(access.sessionRef)
-  if (!session || session.status !== 'active') return 'SESSION_REVOKED'
+  if (!session || session.status !== 'active') return AUTH_ERROR.SESSION_REVOKED
   return null
 }
 

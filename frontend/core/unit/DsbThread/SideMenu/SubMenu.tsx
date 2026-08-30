@@ -8,8 +8,8 @@ import { dsbRoutes, Link, parseDsbPathname, resolveDsbRoute } from '~/platform'
 import useCommunity from '~/stores/community/hooks'
 
 import ActiveMark from './ActiveMark'
-import type { TSubMenuItem, TSubMenuScope } from './constant'
 import useSalon, { cnMerge } from './salon/doc'
+import type { TSubMenuItem, TSubMenuScope } from './spec'
 import SubMenuBack from './SubMenuBack'
 
 type TProps = {

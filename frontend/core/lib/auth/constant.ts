@@ -12,4 +12,9 @@ export const AUTH_DOM_EVENT = {
   LOGOUT: 'groupher-auth:logout',
 } as const
 
-export type TAuthEvent = (typeof AUTH_EVENT)[keyof typeof AUTH_EVENT]
+export const AUTH_RECOVERY = {
+  REFRESH: 'refresh',
+  LOGIN: 'login',
+  PERMISSION: 'permission',
+  NONE: 'none',
+} as const

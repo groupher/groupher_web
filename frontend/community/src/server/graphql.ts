@@ -52,7 +52,7 @@ export async function fetchGraphQL<TData>(
   token: string | null = null,
   options: { allowErrorCodes?: readonly number[] } = {},
 ): Promise<TGraphQLResponse<TData>> {
-  const response = await fetch(process.env.GRAPHQL_ENDPOINT || 'http://127.0.0.1:4001/graphiql', {
+  const response = await fetch(process.env.GRAPHQL_ENDPOINT || LOCAL_PHOENIX_GRAPHQL_ENDPOINT, {
     method: 'POST',
     cache: 'no-store',
     signal: AbortSignal.timeout(10_000),
@@ -100,3 +100,4 @@ export async function fetchGraphQL<TData>(
 
   return payload
 }
+import { LOCAL_PHOENIX_GRAPHQL_ENDPOINT } from '@groupher/contracts/endpoint'

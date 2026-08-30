@@ -1,9 +1,10 @@
 import { type FC, useState } from 'react'
 
 import useSalon from '../salon/custom'
-import { STEPS, type TStep } from './constant'
+import { STEPS } from './constant'
 import DNSSetup from './DNSSetup'
 import DomainAdder from './DomainAdder'
+import type { TStep } from './spec'
 import StepBar from './StepBar'
 import VerifyDomain from './VerifyDomain'
 

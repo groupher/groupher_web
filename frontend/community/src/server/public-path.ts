@@ -1,16 +1,7 @@
-const PLATFORM_HOSTS = new Set([
-  'groupher.com',
-  'www.groupher.com',
-  'groupher.localhost',
-  'www.groupher.localhost',
-  'community.groupher.localhost',
-  'localhost',
-  '127.0.0.1',
-])
+import { isPlatformHost } from '@groupher/route-contract'
 
 /** Returns whether the hostname belongs to a Groupher platform domain rather than a custom community domain. */
-export const isPlatformHost = (hostname: string): boolean =>
-  PLATFORM_HOSTS.has(hostname.toLowerCase())
+export { isPlatformHost }
 
 const normalizeSuffix = (suffix: string): string => {
   if (!suffix || suffix === '/') return ''

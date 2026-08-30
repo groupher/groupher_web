@@ -96,7 +96,7 @@ const SITE_QUERY = `query PressSite($community: String!) {
 
 /** Creates phoenix origin from typed press inputs. */
 export const createPhoenixOrigin = (
-  endpoint = process.env.PHOENIX_GRAPHQL_ENDPOINT || 'http://127.0.0.1:4001/graphiql',
+  endpoint = process.env.PHOENIX_GRAPHQL_ENDPOINT || LOCAL_PHOENIX_GRAPHQL_ENDPOINT,
   fetcher: typeof fetch = fetch,
   tokenProvider?: TServiceAuthClient,
 ): Origin => {
@@ -186,3 +186,4 @@ export const createPhoenixOrigin = (
     },
   }
 }
+import { LOCAL_PHOENIX_GRAPHQL_ENDPOINT } from '@groupher/contracts/endpoint'

@@ -1,4 +1,8 @@
-import { GROUPHER_AUTH_CSRF_HEADER, GROUPHER_AUTH_CSRF_VALUE } from '@groupher/contracts/auth'
+import {
+  AUTH_ERROR,
+  GROUPHER_AUTH_CSRF_HEADER,
+  GROUPHER_AUTH_CSRF_VALUE,
+} from '@groupher/contracts/auth'
 import { SERVICE_HEALTH_SCHEMA_VERSION } from '@groupher/contracts/health'
 import {
   PRODUCTION_PLATFORM_HOSTS,
@@ -13,7 +17,10 @@ let startedAt: number | undefined
 const notFound = (): Response => new Response('Not Found', { status: 404 })
 
 const invalidGraphQLRequest = (message: string): Response =>
-  Response.json({ errors: [{ extensions: { code: 'INVALID_CSRF' }, message }] }, { status: 400 })
+  Response.json(
+    { errors: [{ extensions: { code: AUTH_ERROR.INVALID_CSRF }, message }] },
+    { status: 400 },
+  )
 
 const validateGraphQLRequest = (request: Request, target: PublicRoute): Response | null => {
   if (target.requestHeaderPolicy !== 'graphql-browser-clean' || request.method !== 'POST') {

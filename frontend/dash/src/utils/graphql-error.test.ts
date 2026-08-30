@@ -1,3 +1,4 @@
+import { AUTH_ERROR } from '@groupher/contracts/auth'
 import { describe, expect, it } from 'vitest'
 
 import {
@@ -8,15 +9,15 @@ import {
 
 describe('GraphQL route error serialization', () => {
   it('prefers a custom code while the Error instance is intact', () => {
-    const error = Object.assign(new Error('Access expired.'), { code: 'TOKEN_EXPIRED' })
+    const error = Object.assign(new Error('Access expired.'), { code: AUTH_ERROR.TOKEN_EXPIRED })
 
-    expect(readGraphQLErrorCode(error)).toBe('TOKEN_EXPIRED')
+    expect(readGraphQLErrorCode(error)).toBe(AUTH_ERROR.TOKEN_EXPIRED)
   })
 
   it('recovers the code from the standard message field after SSR serialization', () => {
-    const message = serializeGraphQLError('Access expired.', 'TOKEN_EXPIRED')
+    const message = serializeGraphQLError('Access expired.', AUTH_ERROR.TOKEN_EXPIRED)
 
-    expect(readGraphQLErrorCode(new Error(message))).toBe('TOKEN_EXPIRED')
+    expect(readGraphQLErrorCode(new Error(message))).toBe(AUTH_ERROR.TOKEN_EXPIRED)
   })
 
   it('does not infer a code from arbitrary error text', () => {
@@ -24,7 +25,7 @@ describe('GraphQL route error serialization', () => {
   })
 
   it('keeps the transport marker out of the user-facing message', () => {
-    const message = serializeGraphQLError('Access expired.', 'TOKEN_EXPIRED')
+    const message = serializeGraphQLError('Access expired.', AUTH_ERROR.TOKEN_EXPIRED)
 
     expect(readGraphQLErrorMessage(message)).toBe('Access expired.')
   })

@@ -1,4 +1,5 @@
 import {
+  AUTH_ERROR,
   GROUPHER_AUTH_CSRF_HEADER,
   GROUPHER_AUTH_CSRF_VALUE,
   GROUPHER_AUTH_TOKEN_COOKIE,
@@ -105,13 +106,21 @@ export const proxyGraphQLRequest = async (
     const contentType = request.headers.get('content-type') || ''
     if (!contentType.startsWith('application/json')) {
       return Response.json(
-        { errors: [{ extensions: { code: 'INVALID_REQUEST' }, message: 'JSON is required.' }] },
+        {
+          errors: [
+            { extensions: { code: AUTH_ERROR.INVALID_REQUEST }, message: 'JSON is required.' },
+          ],
+        },
         { status: 400 },
       )
     }
     if (request.headers.get(GROUPHER_AUTH_CSRF_HEADER) !== GROUPHER_AUTH_CSRF_VALUE) {
       return Response.json(
-        { errors: [{ extensions: { code: 'INVALID_CSRF' }, message: 'CSRF proof is required.' }] },
+        {
+          errors: [
+            { extensions: { code: AUTH_ERROR.INVALID_CSRF }, message: 'CSRF proof is required.' },
+          ],
+        },
         { status: 400 },
       )
     }

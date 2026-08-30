@@ -1,4 +1,5 @@
 import { GROUPHER_AUTH_TOKEN_COOKIE } from '@groupher/contracts/auth'
+import { GROUPHER_COMMUNITY_SLUG_HEADER } from '@groupher/contracts/headers'
 import type { RequestHeaderPolicy } from '@groupher/route-contract'
 
 const HOP_BY_HOP_HEADERS = [
@@ -47,14 +48,14 @@ export const buildProxyHeaders = (
   headers.delete('x-forwarded-for')
   headers.delete('x-forwarded-host')
   headers.delete('x-forwarded-proto')
-  headers.delete('x-groupher-community-slug')
+  headers.delete(GROUPHER_COMMUNITY_SLUG_HEADER)
 
   headers.set('x-forwarded-host', requestUrl.host)
   headers.set('x-forwarded-proto', requestUrl.protocol.replace(':', ''))
   const connectingIp = request.headers.get('cf-connecting-ip')
   if (connectingIp) headers.set('x-forwarded-for', connectingIp)
   if (communitySlug) {
-    headers.set('x-groupher-community-slug', communitySlug)
+    headers.set(GROUPHER_COMMUNITY_SLUG_HEADER, communitySlug)
   }
 
   if (requestHeaderPolicy === 'graphql-browser-clean') {

@@ -1,6 +1,10 @@
 import type { TBgConfig } from '~/lib/bg'
 import type { TDocCoverLayout, TMarkerValue } from '~/spec'
 
+import type { DOC_COVER_VIEW } from './constant'
+
+export type TDocCoverView = (typeof DOC_COVER_VIEW)[keyof typeof DOC_COVER_VIEW]
+
 export type TArticleThumbnail = {
   version: number
   blocks: readonly TThumbnailBlock[]

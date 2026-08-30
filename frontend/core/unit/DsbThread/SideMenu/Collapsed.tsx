@@ -7,10 +7,10 @@ import { dsbRoutes, Link as PlatformLink } from '~/platform'
 import useCommunity from '~/stores/community/hooks'
 
 import { MENU_VIEW } from '../constant'
-import type { TSubMenuItem } from './constant'
 import { dispatchMenuView, type TMenuView } from './events'
 import DsbMenuIcon from './icons'
 import useSalon, { cn } from './salon/collapsed'
+import type { TSubMenuItem } from './spec'
 
 type TProps = {
   activeSlug: string | null

@@ -10,6 +10,7 @@
  */
 
 import { GROUPHER_AUTH_TOKEN_COOKIE } from '@groupher/contracts/auth'
+import { GROUPHER_COMMUNITY_SLUG_HEADER } from '@groupher/contracts/headers'
 
 import type { TGatewayTarget } from './routing'
 
@@ -70,9 +71,9 @@ export const buildProxyHeaders = (request: Request, target: TGatewayTarget): Hea
 
   headers.set('x-forwarded-host', forwardedHost)
   headers.set('x-forwarded-proto', requestUrl.protocol.replace(':', ''))
-  headers.delete('x-groupher-community-slug')
+  headers.delete(GROUPHER_COMMUNITY_SLUG_HEADER)
   if (target.communitySlug) {
-    headers.set('x-groupher-community-slug', target.communitySlug)
+    headers.set(GROUPHER_COMMUNITY_SLUG_HEADER, target.communitySlug)
   }
 
   if (target.requestHeaderPolicy === 'graphql-browser-clean') {

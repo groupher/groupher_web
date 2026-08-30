@@ -1,22 +1,35 @@
-import { GROUPHER_AUTH_CSRF_HEADER, GROUPHER_AUTH_CSRF_VALUE } from '@groupher/contracts/auth'
+import {
+  AUTH_ERROR,
+  GROUPHER_AUTH_CSRF_HEADER,
+  GROUPHER_AUTH_CSRF_VALUE,
+} from '@groupher/contracts/auth'
 
 import { AUTH_ENDPOINT } from '~/const/oauth'
 import type { TOauthProvider } from '~/spec'
 
 import { logout } from '../signal'
-import { AUTH_CHANNEL, AUTH_EVENT, type TAuthEvent } from './constant'
+import { AUTH_CHANNEL, AUTH_EVENT, AUTH_RECOVERY } from './constant'
 import { requestLogin } from './login-request'
+import type {
+  TAuthEvent,
+  TAuthFailure,
+  TAuthRecovery,
+  TBrowserSessionSummary,
+  TLinkedOauthAccount,
+} from './spec'
 
 export { AUTH_CHANNEL, AUTH_DOM_EVENT, AUTH_EVENT } from './constant'
 export { requestLogin } from './login-request'
+export type {
+  TAuthEvent,
+  TAuthFailure,
+  TAuthRecovery,
+  TBrowserSessionSummary,
+  TLinkedOauthAccount,
+} from './spec'
 
 type TCsrfResponse = {
   csrfToken?: unknown
-}
-
-export type TAuthFailure = {
-  code?: string
-  status?: number
 }
 
 export class AuthRequestError extends Error {
@@ -31,35 +44,18 @@ export class AuthRequestError extends Error {
   }
 }
 
-export type TBrowserSessionSummary = {
-  browserFamily?: string | null
-  createdCity?: string | null
-  createdCountry?: string | null
-  createdRegion?: string | null
-  deviceFamily?: string | null
-  insertedAt?: string | null
-  isCurrent: boolean
-  lastSeenCity?: string | null
-  lastSeenCountry?: string | null
-  lastSeenAt?: string | null
-  lastSeenRegion?: string | null
-  osFamily?: string | null
-  publicRef: string
-  status?: string | null
-  userAgentSummary?: string | null
-}
-
-export type TLinkedOauthAccount = {
-  publicRef: string
-  provider: string
-  login?: string | null
-  nickname?: string | null
-  avatar?: string | null
-  canUnlink: boolean
-  linkedAt: string
-}
-
-const REFRESHABLE_CODES = new Set(['TOKEN_EXPIRED', 'TOKEN_MISSING'])
+const REFRESHABLE_CODES: ReadonlySet<string> = new Set([
+  AUTH_ERROR.TOKEN_EXPIRED,
+  AUTH_ERROR.TOKEN_MISSING,
+])
+const LOGIN_REQUIRED_CODES: ReadonlySet<string> = new Set([
+  AUTH_ERROR.TOKEN_INVALID,
+  AUTH_ERROR.TOKEN_REVOKED,
+  AUTH_ERROR.SESSION_MISSING,
+  AUTH_ERROR.SESSION_EXPIRED,
+  AUTH_ERROR.SESSION_REVOKED,
+  AUTH_ERROR.ACCOUNT_BLOCKED,
+])
 let refreshPromise: Promise<void> | null = null
 
 const appendHiddenField = (form: HTMLFormElement, name: string, value: string) => {
@@ -255,25 +251,19 @@ export const unlinkLinkedOauthAccount = async (
 }
 
 /** Resolves auth failure without leaking frontend shared routing details to callers. */
-export const resolveAuthFailure = (
-  failure: TAuthFailure,
-): 'refresh' | 'login' | 'permission' | 'none' => {
-  if (failure.code && REFRESHABLE_CODES.has(failure.code)) return 'refresh'
-  if (
-    failure.status === 401 ||
-    (failure.code &&
-      /TOKEN_(INVALID|REVOKED)|SESSION_(MISSING|EXPIRED|REVOKED)|ACCOUNT_BLOCKED/.test(
-        failure.code,
-      ))
-  ) {
-    return 'login'
+export const resolveAuthFailure = (failure: TAuthFailure): TAuthRecovery => {
+  if (failure.code && REFRESHABLE_CODES.has(failure.code)) return AUTH_RECOVERY.REFRESH
+  if (failure.status === 401 || (failure.code && LOGIN_REQUIRED_CODES.has(failure.code))) {
+    return AUTH_RECOVERY.LOGIN
   }
-  if (failure.status === 403 || failure.code === 'PERMISSION_DENIED') return 'permission'
-  return 'none'
+  if (failure.status === 403 || failure.code === AUTH_ERROR.PERMISSION_DENIED) {
+    return AUTH_RECOVERY.PERMISSION
+  }
+  return AUTH_RECOVERY.NONE
 }
 
 const recoverTerminalFailure = async (error: unknown): Promise<void> => {
-  if (resolveAuthFailure(authFailureFromError(error)) !== 'login') return
+  if (resolveAuthFailure(authFailureFromError(error)) !== AUTH_RECOVERY.LOGIN) return
   invalidateAuthState()
   requestLogin()
 }
@@ -287,8 +277,8 @@ export const withAuthRetry = async <T>(
     return await operation()
   } catch (error) {
     const action = resolveAuthFailure(resolveFailure(error))
-    if (action !== 'refresh') {
-      if (action === 'login') {
+    if (action !== AUTH_RECOVERY.REFRESH) {
+      if (action === AUTH_RECOVERY.LOGIN) {
         invalidateAuthState()
         requestLogin()
       }

@@ -4,7 +4,8 @@ import { type CSSProperties, type FC, useLayoutEffect, useRef, useState } from '
 
 import useTrans from '~/hooks/useTrans'
 
-import { DOC_EDITOR_MODE, type TDocEditorMode } from '../../Editor/constant'
+import { DOC_EDITOR_MODE } from '../../Editor/constant'
+import type { TDocEditorMode } from '../../Editor/spec'
 import useDocsEditor from '../../Editor/store/hooks'
 import useSalon from '../salon/edit_toggle'
 import { MODE_ITEMS } from './constant'

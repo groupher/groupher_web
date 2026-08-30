@@ -1,3 +1,4 @@
+import { AUTH_ERROR } from '@groupher/contracts/auth'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 const { refreshSession } = vi.hoisted(() => ({
@@ -11,7 +12,7 @@ vi.mock('~/auth', () => ({
   refreshSession,
   requestLogin: vi.fn(),
   resolveAuthFailure: ({ code }: { code?: string }) =>
-    code === 'TOKEN_EXPIRED' || code === 'TOKEN_MISSING' ? 'refresh' : 'none',
+    code === AUTH_ERROR.TOKEN_EXPIRED || code === AUTH_ERROR.TOKEN_MISSING ? 'refresh' : 'none',
   withAuthRetry: async <T>(
     operation: () => Promise<T>,
     resolveFailure: (error: unknown) => { code?: string },
@@ -20,7 +21,8 @@ vi.mock('~/auth', () => ({
       return await operation()
     } catch (error) {
       const failure = resolveFailure(error)
-      if (failure.code !== 'TOKEN_EXPIRED' && failure.code !== 'TOKEN_MISSING') throw error
+      if (failure.code !== AUTH_ERROR.TOKEN_EXPIRED && failure.code !== AUTH_ERROR.TOKEN_MISSING)
+        throw error
       await refreshSession()
       return operation()
     }
@@ -29,7 +31,7 @@ vi.mock('~/auth', () => ({
 
 import { parse } from 'graphql'
 
-import { browserQuery, createAuthFetch, GraphQLRequestError } from './client'
+import { browserGraphQLRequest, createAuthFetch, GraphQLRequestError } from './client'
 
 describe('createAuthFetch', () => {
   afterEach(() => {
@@ -42,7 +44,7 @@ describe('createAuthFetch', () => {
       .fn<typeof fetch>()
       .mockResolvedValueOnce(
         Response.json({
-          errors: [{ extensions: { code: 'TOKEN_EXPIRED' }, message: 'expired' }],
+          errors: [{ extensions: { code: AUTH_ERROR.TOKEN_EXPIRED }, message: 'expired' }],
         }),
       )
       .mockResolvedValueOnce(Response.json({ data: { me: { id: '42' } } }))
@@ -118,17 +120,25 @@ describe('createAuthFetch', () => {
 
   it('returns typed data through the same-origin browser transport', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(Response.json({ data: { value: 42 } }))
-    const data = await browserQuery<{ value: number }, Record<string, never>>(
+    const data = await browserGraphQLRequest<{ value: number }, Record<string, never>>(
       parse('query Value { value }'),
       {},
-      fetcher,
+      { fetcher },
     )
 
     expect(data).toEqual({ value: 42 })
-    expect(fetcher).toHaveBeenCalledWith(
-      '/api/graphql',
-      expect.objectContaining({ method: 'POST', credentials: 'include' }),
-    )
+    const [requestUrl, requestInit] = fetcher.mock.calls[0] || []
+    expect(String(requestUrl)).toContain('/api/graphql')
+    expect(requestInit).toEqual(expect.objectContaining({ method: 'POST', credentials: 'include' }))
+  })
+
+  it('forwards AbortSignal through the GraphQL transport', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(Response.json({ data: { value: 42 } }))
+    const signal = new AbortController().signal
+
+    await browserGraphQLRequest(parse('query Value { value }'), {}, { fetcher, signal })
+
+    expect(fetcher.mock.calls[0]?.[1]?.signal).toBe(signal)
   })
 
   it('throws GraphQL business errors so Query does not treat them as data', async () => {
@@ -138,9 +148,9 @@ describe('createAuthFetch', () => {
         Response.json({ errors: [{ extensions: { code: 'INVALID_INPUT' }, message: 'invalid' }] }),
       )
 
-    await expect(browserQuery(parse('mutation Save { save }'), {}, fetcher)).rejects.toBeInstanceOf(
-      GraphQLRequestError,
-    )
+    await expect(
+      browserGraphQLRequest(parse('mutation Save { save }'), {}, { fetcher }),
+    ).rejects.toBeInstanceOf(GraphQLRequestError)
     expect(fetcher).toHaveBeenCalledTimes(1)
   })
 })

@@ -161,13 +161,13 @@ export const createApp = ({
 
   app.get('/health', (context) => context.json(createHealthResponse({ service: 'content-import' })))
 
-  app.post('/api/docs/import/previews', async (context) => {
+  app.post(DOCS_IMPORT_ROUTE.PREVIEWS, async (context) => {
     const options = await resolveAuthOptions(context.req.raw, environment, verifier, resolveSubject)
     if (options instanceof Response) return options
     return resolvedHandlers.createPreview(context.req.raw, options)
   })
 
-  app.get('/api/docs/import/previews/:previewRef', async (context) => {
+  app.get(DOCS_IMPORT_ROUTE.PREVIEW_PATTERN, async (context) => {
     const options = await resolveAuthOptions(context.req.raw, environment, verifier, resolveSubject)
     if (options instanceof Response) return options
     const community = new URL(context.req.url).searchParams.get('community') || ''
@@ -177,7 +177,7 @@ export const createApp = ({
     })
   })
 
-  app.delete('/api/docs/import/previews/:previewRef', async (context) => {
+  app.delete(DOCS_IMPORT_ROUTE.PREVIEW_PATTERN, async (context) => {
     const options = await resolveAuthOptions(context.req.raw, environment, verifier, resolveSubject)
     if (options instanceof Response) return options
     const community = new URL(context.req.url).searchParams.get('community') || ''
@@ -187,7 +187,7 @@ export const createApp = ({
     })
   })
 
-  app.post('/api/docs/import/previews/:previewRef/apply', async (context) => {
+  app.post(DOCS_IMPORT_ROUTE.APPLY_PATTERN, async (context) => {
     const options = await resolveAuthOptions(context.req.raw, environment, verifier, resolveSubject)
     if (options instanceof Response) return options
     return resolvedHandlers.applyPreview(context.req.raw, context.req.param('previewRef'), options)
@@ -196,3 +196,4 @@ export const createApp = ({
 }
 
 export default createApp()
+import { DOCS_IMPORT_ROUTE } from '@groupher/route-contract'

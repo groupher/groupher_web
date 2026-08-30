@@ -5,8 +5,9 @@ import useTrans from '~/hooks/useTrans'
 import PaperPlaneTiltSVG from '~/icons/PaperPlaneTilt'
 
 import { DOC_EDITOR_LABEL_KEY } from '../../constant'
-import { TITLE_STAGE_VIEW, type TTitleStageView } from './constant'
+import { TITLE_STAGE_VIEW } from './constant'
 import useSalon from './salon/stage'
+import type { TTitleStageView } from './spec'
 
 type TProps = {
   view: TTitleStageView
