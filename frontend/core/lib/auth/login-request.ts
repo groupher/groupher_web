@@ -1,3 +1,5 @@
+import { AUTH_DOM_EVENT } from './constant'
+
 export type TLoginRequest = {
   returnTo?: string
 }
@@ -6,7 +8,6 @@ type TListener = () => void
 
 let currentRequest: TLoginRequest | null = null
 const listeners = new Set<TListener>()
-const LOGIN_REQUEST_EVENT = 'groupher-auth:login-request'
 const LOGIN_REQUEST_STATE = '__groupherAuthLoginRequest'
 
 const getBrowserRequest = (): TLoginRequest | null => {
@@ -33,7 +34,7 @@ export const getServerLoginRequest = (): null => null
 /** Runs the subscribe login request operation at the frontend shared boundary. */
 export const subscribeLoginRequest = (listener: TListener): (() => void) => {
   if (typeof window !== 'undefined') {
-    window.addEventListener(LOGIN_REQUEST_EVENT, listener)
+    window.addEventListener(AUTH_DOM_EVENT.LOGIN_REQUEST, listener)
   } else {
     listeners.add(listener)
   }
@@ -41,14 +42,14 @@ export const subscribeLoginRequest = (listener: TListener): (() => void) => {
   return () => {
     listeners.delete(listener)
     if (typeof window !== 'undefined') {
-      window.removeEventListener(LOGIN_REQUEST_EVENT, listener)
+      window.removeEventListener(AUTH_DOM_EVENT.LOGIN_REQUEST, listener)
     }
   }
 }
 
 const notify = (): void => {
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new Event(LOGIN_REQUEST_EVENT))
+    window.dispatchEvent(new Event(AUTH_DOM_EVENT.LOGIN_REQUEST))
     return
   }
 

@@ -4,8 +4,10 @@ import { AUTH_ENDPOINT } from '~/const/oauth'
 import type { TOauthProvider } from '~/spec'
 
 import { logout } from '../signal'
+import { AUTH_CHANNEL, AUTH_EVENT, type TAuthEvent } from './constant'
 import { requestLogin } from './login-request'
 
+export { AUTH_CHANNEL, AUTH_DOM_EVENT, AUTH_EVENT } from './constant'
 export { requestLogin } from './login-request'
 
 type TCsrfResponse = {
@@ -72,9 +74,9 @@ const stateChangeHeaders = (): HeadersInit => ({
   [GROUPHER_AUTH_CSRF_HEADER]: GROUPHER_AUTH_CSRF_VALUE,
 })
 
-const broadcast = (type: 'auth:refreshed' | 'auth:logout' | 'auth:invalid') => {
+const broadcast = (type: TAuthEvent) => {
   if (typeof BroadcastChannel === 'undefined') return
-  const channel = new BroadcastChannel('groupher-auth')
+  const channel = new BroadcastChannel(AUTH_CHANNEL)
   channel.postMessage({ type })
   channel.close()
 }
@@ -135,7 +137,7 @@ export const clearAuthState = (): void => {
 /** Runs the invalidate auth state operation at the frontend shared boundary. */
 export const invalidateAuthState = (): void => {
   clearAuthState()
-  broadcast('auth:invalid')
+  broadcast(AUTH_EVENT.INVALID)
 }
 
 /** Revokes the current server-side Browser Session before clearing local UI state. */
@@ -148,7 +150,7 @@ export const signOut = async (onComplete?: () => void): Promise<void> => {
   if (!response.ok) throw new Error(`Auth logout failed with status ${response.status}.`)
 
   clearAuthState()
-  broadcast('auth:logout')
+  broadcast(AUTH_EVENT.LOGOUT)
   onComplete?.()
 }
 
@@ -163,7 +165,7 @@ export const refreshSession = async (): Promise<void> => {
       method: 'POST',
     })
     if (!response.ok) throw await requestError(response, 'Auth refresh')
-    broadcast('auth:refreshed')
+    broadcast(AUTH_EVENT.REFRESHED)
   })()
 
   try {
@@ -305,4 +307,4 @@ export const withAuthRetry = async <T>(
 
 /** Runs the session channel operation at the frontend shared boundary. */
 export const sessionChannel = (): BroadcastChannel | null =>
-  typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel('groupher-auth')
+  typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel(AUTH_CHANNEL)

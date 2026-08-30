@@ -3,7 +3,7 @@
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { type ReactNode, useEffect } from 'react'
 
-import { clearAuthState, sessionChannel } from '~/auth'
+import { AUTH_EVENT, clearAuthState, sessionChannel } from '~/auth'
 import EVENT from '~/const/event'
 import useEvent from '~/hooks/useEvent'
 import type { TArticle } from '~/spec'
@@ -49,10 +49,12 @@ const SessionQueryBoundary = ({ children }: { children: ReactNode }) => {
 
     channel.onmessage = (event: MessageEvent<{ type?: string }>) => {
       const type = event.data?.type
-      if (type !== 'auth:logout' && type !== 'auth:invalid' && type !== 'auth:login') return
+      if (type !== AUTH_EVENT.LOGOUT && type !== AUTH_EVENT.INVALID && type !== AUTH_EVENT.LOGIN) {
+        return
+      }
 
       void queryClient.removeQueries({ queryKey: viewerKeys.all })
-      if (type !== 'auth:login') clearAuthState()
+      if (type !== AUTH_EVENT.LOGIN) clearAuthState()
     }
 
     return () => channel.close()
