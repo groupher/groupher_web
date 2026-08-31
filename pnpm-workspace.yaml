@@ -20,8 +20,10 @@ pmOnFail: ignore
 # reproducible and do not silently execute new dependency scripts.
 allowBuilds:
   '@swc/core': false
+  '@vgpu/adapter-node': true
   cbor-extract: false
   esbuild: false
   lefthook: true
   tsparticles-engine: false
+  webgpu: true
   workerd: false
