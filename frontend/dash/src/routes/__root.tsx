@@ -1,6 +1,10 @@
 import { loadLocale } from '@dash/server/locale'
 import { loadThemeSeed } from '@dash/server/theme'
-import { prePaintRuntimeSeedScript, prePaintThemeDetectScript } from '@dash/utils/first-paint'
+import {
+  prePaintRuntimeSeedScript,
+  prePaintThemeDetectScript,
+  resolvePrePaintThemeSeed,
+} from '@dash/utils/first-paint'
 import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 
@@ -39,11 +43,12 @@ export const Route = createRootRouteWithContext<TRouterContext>()({
 
 function RootComponent() {
   const { locale, renderedAt, theme } = Route.useLoaderData()
+  const hydrationTheme = resolvePrePaintThemeSeed(theme)
 
   return (
     <InitialNowProvider initialNow={renderedAt}>
       <LocaleStoreProvider initData={locale}>
-        <ThemeStoreProvider initData={theme}>
+        <ThemeStoreProvider initData={hydrationTheme}>
           <Outlet />
           <AuthLoginModal />
         </ThemeStoreProvider>

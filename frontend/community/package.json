@@ -24,7 +24,7 @@
     "@groupher/contracts": "workspace:*",
     "@groupher/frontend-core": "workspace:*",
     "@groupher/route-contract": "workspace:*",
-    "@tanstack/query-core": "5.101.4",
+    "@tanstack/query-core": "5.102.8",
     "@tanstack/react-query": "^5.101.4",
     "@tanstack/react-router": "1.170.21",
     "@tanstack/react-router-ssr-query": "1.167.1",

@@ -1,5 +1,11 @@
 import { LOCAL_THEME_KEY, THEME_FIRST_PAINT_STYLE_ID, THEME_MODE } from '~/const/theme'
 import { THEME_FIRST_PAINT_VAR_NAMES } from '~/const/theme-first-paint.generated'
+import type { TThemeMode, TThemeName } from '~/spec'
+
+export type TThemeSeed = {
+  theme: TThemeName
+  themeMode: TThemeMode
+}
 
 const serializeForInlineScript = (value: unknown): string =>
   JSON.stringify(value).replace(/</g, '\\u003c')
@@ -16,17 +22,41 @@ ${script}
 export const prePaintThemeDetectScript = () =>
   withTryCatch(`    var stored = localStorage.getItem('${LOCAL_THEME_KEY}');
     var theme = '${THEME_MODE.LIGHT}';
+    var mode = '${THEME_MODE.SYSTEM}';
 
     if (stored === '${THEME_MODE.DARK}' || stored === '${THEME_MODE.LIGHT}') {
       theme = stored;
+      mode = stored;
     } else {
       var media = window.matchMedia('(prefers-color-scheme: dark)');
       theme = media.matches ? '${THEME_MODE.DARK}' : '${THEME_MODE.LIGHT}';
     }
 
     document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-theme-mode', mode);
     document.documentElement.style.colorScheme = theme;
 `)
+
+const isThemeName = (value: string | undefined): value is TThemeName =>
+  value === THEME_MODE.LIGHT || value === THEME_MODE.DARK
+
+const isThemeMode = (value: string | undefined): value is TThemeMode =>
+  isThemeName(value) || value === THEME_MODE.SYSTEM
+
+/** Returns the theme resolved before paint, with the static SSR seed as fallback. */
+export const resolvePrePaintThemeSeed = (): TThemeSeed => {
+  const fallback: TThemeSeed = {
+    theme: THEME_MODE.LIGHT,
+    themeMode: THEME_MODE.SYSTEM,
+  }
+  if (typeof document === 'undefined') return fallback
+
+  const { theme, themeMode } = document.documentElement.dataset
+  return {
+    theme: isThemeName(theme) ? theme : fallback.theme,
+    themeMode: isThemeMode(themeMode) ? themeMode : fallback.themeMode,
+  }
+}
 
 /** Seeds the shared initial timestamp before React hydration starts. */
 export const prePaintInitTime = () =>

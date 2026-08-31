@@ -1,5 +1,6 @@
 import { communityQueries } from '@community/query/queries'
 import type { TCommunityLocale } from '@community/server/locale'
+import type { TThemeSeed } from '@community/utils/first-paint'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 
@@ -10,11 +11,13 @@ export default function CommunityBoundary({
   community,
   locale,
   initialNow,
+  theme,
 }: {
   children: ReactNode
   community: string
   locale: TCommunityLocale
   initialNow: number
+  theme: TThemeSeed
 }) {
   const { data: shell } = useSuspenseQuery(communityQueries.shell(community))
 
@@ -25,6 +28,7 @@ export default function CommunityBoundary({
         community: shell.community,
         dashboard: shell.dashboard,
         wallpaper: shell.wallpaper,
+        theme,
       }}
       locale={locale.locale}
       localeData={locale.localeData}

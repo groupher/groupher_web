@@ -9,7 +9,11 @@ import landingMessages from '~/i18n/en/landing'
 import { I18N_NS } from '~/i18n/namespaces'
 import StaticLayout from '~/shell/StaticLayout'
 import StaticShellProvider from '~/stores/StaticShellProvider'
-import { prePaintInitTime, prePaintThemeDetectScript } from '~/utils/ssr/script'
+import {
+  prePaintInitTime,
+  prePaintThemeDetectScript,
+  resolvePrePaintThemeSeed,
+} from '~/utils/ssr/script'
 
 import '../domain.css'
 import '../../../core/tailwind/global.css'
@@ -46,6 +50,7 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   const { localeData } = Route.useLoaderData()
+  const hydrationTheme = resolvePrePaintThemeSeed()
 
   return (
     <>
@@ -58,6 +63,7 @@ function RootComponent() {
         wallpaper={LANDING_INIT_DATA.wallpaper}
         locale={LOCALE.EN}
         localeData={JSON.stringify(localeData)}
+        theme={hydrationTheme}
       >
         <StaticLayout mainBlock={Main}>
           <Outlet />

@@ -3,7 +3,14 @@ import type { FC, ReactNode } from 'react'
 import { LOCALE } from '~/const/i18n'
 import METRIC from '~/const/metric'
 import { InitialNowProvider } from '~/hooks/useInitialNow'
-import type { TCommunity, TLocale, TMetric, TParseDashboard } from '~/spec'
+import type {
+  TCommunity,
+  TLocale,
+  TMetric,
+  TParseDashboard,
+  TThemeMode,
+  TThemeName,
+} from '~/spec'
 import AccountStoreProvider from '~/stores/account/provider'
 import type { TInit as TAccountInit } from '~/stores/account/spec'
 import CommunityStoreProvider from '~/stores/community/provider'
@@ -19,6 +26,10 @@ type TProps = {
   initData: {
     community: TCommunity
     dashboard: TParseDashboard
+    theme: {
+      theme: TThemeName
+      themeMode: TThemeMode
+    }
     wallpaper?: TWallpaperInit
     account?: TAccountInit
   }
@@ -45,10 +56,10 @@ export default function CommunityShellProvider({
   noAccount = false,
   metric = METRIC.COMMUNITY,
 }: TProps) {
-  const { account, dashboard, community, wallpaper } = initData
+  const { account, dashboard, community, theme, wallpaper } = initData
 
   return (
-    <ThemeStoreProvider>
+    <ThemeStoreProvider initData={theme}>
       <InitialNowProvider initialNow={initialNow}>
         <LocaleStoreProvider initData={{ locale, localeData }}>
           <AccountWrapper initData={account} noAccount={noAccount}>

@@ -1,25 +1,11 @@
 import { describe, expect, it } from 'vitest'
 
-import { resolveThemeSeed } from './theme'
+import { PUBLIC_THEME_SEED } from './theme'
 
-describe('resolveThemeSeed', () => {
-  it('defaults to system mode with a light server fallback', () => {
-    expect(resolveThemeSeed(null)).toEqual({
+describe('public theme seed', () => {
+  it('is stable and leaves browser preference resolution to pre-paint', () => {
+    expect(PUBLIC_THEME_SEED).toEqual({
       theme: 'light',
-      themeMode: 'system',
-    })
-  })
-
-  it('uses explicit theme modes without consulting the resolved cookie', () => {
-    expect(resolveThemeSeed('themeMode=dark; resolvedTheme=light')).toEqual({
-      theme: 'dark',
-      themeMode: 'dark',
-    })
-  })
-
-  it('uses the remembered resolved theme for system mode', () => {
-    expect(resolveThemeSeed('themeMode=system; resolvedTheme=dark')).toEqual({
-      theme: 'dark',
       themeMode: 'system',
     })
   })

@@ -8,6 +8,7 @@ import CommunityStoreProvider from '~/stores/community/provider'
 import DsbStoreProvider from '~/stores/dsb/provider'
 import LocaleStoreProvider from '~/stores/locale/provider'
 import ThemeStoreProvider from '~/stores/theme/provider'
+import type { TInit as TThemeInit } from '~/stores/theme/spec'
 import WallpaperStoreProvider from '~/stores/wallpaper/provider'
 import type { TInit as TWallpaperInit } from '~/stores/wallpaper/spec'
 
@@ -19,6 +20,7 @@ type TProps = {
   locale?: TLocale
   localeData?: string
   initialNow?: number
+  theme: TThemeInit
 }
 
 export default function StaticShellProvider({
@@ -29,9 +31,10 @@ export default function StaticShellProvider({
   locale = LOCALE.EN,
   localeData = '{}',
   initialNow,
+  theme,
 }: TProps) {
   return (
-    <ThemeStoreProvider>
+    <ThemeStoreProvider initData={theme}>
       <InitialNowProvider initialNow={initialNow}>
         <LocaleStoreProvider initData={{ locale, localeData }}>
           <CommunityStoreProvider initData={community}>

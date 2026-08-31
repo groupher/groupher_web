@@ -15,6 +15,13 @@ strictDepBuilds: true
 # instructions. Do not persist pnpm's own bootstrap packages in the project lockfile.
 pmOnFail: ignore
 
+# Keep shared TanStack runtime packages singular across every workspace and
+# override transitive ranges that would otherwise resolve independently.
+overrides:
+  '@tanstack/query-core': 5.102.8
+  '@tanstack/react-query': 5.102.8
+  '@tanstack/router-ssr-query-core': 1.169.2
+
 # Only Lefthook needs its install script in the current repository. Keep every
 # other observed build-script decision explicit so clean frozen installs are
 # reproducible and do not silently execute new dependency scripts.

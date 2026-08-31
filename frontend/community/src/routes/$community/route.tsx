@@ -5,6 +5,7 @@ import { loadCommunityRequestContext } from '@community/server/community'
 import { projectCommunityHead } from '@community/server/head'
 import { loadLocale } from '@community/server/locale'
 import { communityPublicPath } from '@community/server/public-path'
+import { resolvePrePaintThemeSeed } from '@community/utils/first-paint'
 import { Outlet, createFileRoute, notFound, redirect, useLoaderData } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/$community')({
@@ -82,13 +83,15 @@ export const Route = createFileRoute('/$community')({
 function CommunityLayout() {
   const { locale } = Route.useLoaderData()
   const { community } = Route.useParams()
-  const { renderedAt } = useLoaderData({ from: '__root__' })
+  const { renderedAt, theme } = useLoaderData({ from: '__root__' })
+  const hydrationTheme = resolvePrePaintThemeSeed(theme)
   return (
     <CommunityBoundary
       key={community}
       community={community}
       locale={locale}
       initialNow={renderedAt}
+      theme={hydrationTheme}
     >
       <CommunityShell>
         <Outlet />
