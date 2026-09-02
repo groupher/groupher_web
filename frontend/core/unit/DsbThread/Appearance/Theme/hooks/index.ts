@@ -5,7 +5,7 @@ import { THEME_PRESET } from '~/const/theme_preset'
 import useTheme from '~/hooks/useTheme'
 import useThemePreset from '~/hooks/useThemePreset'
 import type { TResolvedThemePreset } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import {
   composeCustomPresetEditFields,
@@ -37,10 +37,14 @@ import useThemePresetPreview from './useThemePresetPreview'
 export default function useAppearance({
   initialPresetOptions = [],
 }: TUseAppearanceOptions = {}): TUseAppearanceRet {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
   const { theme } = useTheme()
   const { isThemePresetTouched, editThemePresetFields } = useThemePresetDraft()
-  const { saveThemePreset, rollbackThemePreset } = useThemePresetMutation()
+  const {
+    saveThemePreset,
+    rollbackThemePreset,
+    isPending: isThemeSaving,
+  } = useThemePresetMutation()
   const themePreset$ = useThemePreset()
   const selectedTokens = themePreset$.themeTokens as TResolvedThemePreset
   const presetOptions = dsb$.themePresets.length
@@ -259,6 +263,7 @@ export default function useAppearance({
     isTouched: isThemePresetTouched,
     showDetailsSavingBar,
     showPresetSavingBar,
+    isThemeSaving,
     details,
     selectPreset,
     resetCustomPresetTo,

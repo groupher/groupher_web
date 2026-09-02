@@ -4,7 +4,7 @@ import type {
   TThemePresetOverwrite,
   TThemePresetOption,
 } from '~/spec'
-import type { TDsbFieldMap } from '~/stores/dsb/spec'
+import type { TDsbFieldMap } from '~/spec'
 
 import type { TPageBgDraft } from './DetailsPanel/CustomPageBg/hooks'
 
@@ -69,6 +69,8 @@ export type TThemePresetMutationRet = {
    *   saveThemePreset()
    */
   saveThemePreset: () => void
+  isPending: boolean
+  error: Error | null
   /**
    * Roll back all preset-owned dashboard fields to their original values.
    *
@@ -228,6 +230,7 @@ export type TUseAppearanceRet = {
   isTouched: boolean
   showDetailsSavingBar: boolean
   showPresetSavingBar: boolean
+  isThemeSaving: boolean
   details: TThemeDetails
   /**
    * Select a built-in or existing Custom preset card.

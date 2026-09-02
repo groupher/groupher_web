@@ -42,6 +42,7 @@ export default function Appearance({ initialPresetOptions = EMPTY_PRESET_OPTIONS
     showResetMenu,
     showDetailsSavingBar,
     showPresetSavingBar,
+    isThemeSaving,
     details,
     selectPreset,
     resetCustomPresetTo,
@@ -69,6 +70,7 @@ export default function Appearance({ initialPresetOptions = EMPTY_PRESET_OPTIONS
 
       <SavingBar
         isTouched={showPresetSavingBar}
+        loading={isThemeSaving}
         wrapperClassName={s.presetSavingWrapper}
         onCancel={cancelAppearance}
         onConfirm={saveAppearance}
@@ -87,6 +89,7 @@ export default function Appearance({ initialPresetOptions = EMPTY_PRESET_OPTIONS
       <SavingBar
         top={6}
         isTouched={showDetailsSavingBar}
+        loading={isThemeSaving}
         onCancel={cancelAppearance}
         onConfirm={saveAppearance}
       />

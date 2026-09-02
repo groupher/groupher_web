@@ -1,6 +1,6 @@
 import { THEME_PRESET } from '~/const/theme_preset'
 import { blurRGB } from '~/fmt'
-import type { TDsbFieldMap } from '~/stores/dsb/spec'
+import type { TDsbFieldMap } from '~/spec'
 
 import { resolveRawBg } from './DetailsPanel/CustomPageBg/hooks'
 import type {

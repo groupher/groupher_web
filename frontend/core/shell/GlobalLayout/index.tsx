@@ -8,7 +8,6 @@ import { type FC, lazy, type ReactNode, Suspense } from 'react'
 
 import Toaster from '~/ui/Toaster'
 
-import DemoModeSnackbarGate from './DemoModeSnackbarGate'
 // import Broadcast from '~/ui/Broadcast'
 import LocaleSync from './LocaleSync'
 // import CustomScroller from '~/ui/CustomScroller'
@@ -58,7 +57,6 @@ const GlobalLayout: FC<TProps> = ({ children, mainBlock }) => {
       <ThemeMonitor />
 
       <Toaster />
-      <DemoModeSnackbarGate />
     </>
   )
 }
