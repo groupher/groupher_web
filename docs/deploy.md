@@ -135,6 +135,31 @@ local development
 如果之后需要公开的 staging 环境，应显式添加一个 `staging.groupher.com` 或
 `dev.groupher.com` 这样的自定义域名，并绑定到对应的 Worker deployment。
 
+### 主题偏好 Cookie
+
+Dash、Community 和 Landing 共享主题偏好时，构建环境应配置公开变量
+`VITE_THEME_COOKIE_DOMAIN`：
+
+```text
+production:       .groupher.com
+local subdomains:  .groupher.localhost
+staging/preview:   当前部署环境可覆盖目标宿主的根域名
+```
+
+该变量由 Core 的 pre-paint script 和运行时主题持久化共同使用。Vite 会自动暴露
+`VITE_` 前缀变量。主题 Cookie Domain 按当前 host 解析，优先级为：
+
+1. `VITE_THEME_COOKIE_DOMAIN` 已设置且当前 host 属于该根域：使用 env Domain。
+2. env 未设置或不匹配当前 host：尝试内置 `.groupher.localhost` / `.groupher.com`
+   白名单。
+3. env 和内置白名单都不匹配：降级为 host-only cookie。
+
+env Domain 不匹配当前 host 时不会强行写入无效的跨域 Domain。裸 `localhost`、IP 地址和
+不属于上述根域的 preview host 不能跨宿主共享主题偏好。
+
+不要把该变量配置成认证 Cookie 的 Domain，也不要为了共享主题扩大 session、token 或
+其他认证 Cookie 的作用域。
+
 ## DNS 记录
 
 apex 与 `www` 保留 orange-cloud proxied DNS 记录，并由 Worker Routes 接管：

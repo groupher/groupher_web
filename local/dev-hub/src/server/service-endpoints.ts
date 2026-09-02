@@ -13,6 +13,8 @@ export const LOCAL_SERVICE_ENDPOINTS = {
   press: 'http://127.0.0.1:8003',
 } as const
 
+export const LOCAL_SERVICE_AUTH_ISSUER = 'https://auth.groupher.localhost'
+
 export const LOCAL_SERVICE_GRAPHQL_ENDPOINTS = {
   phoenix: `${LOCAL_SERVICE_ENDPOINTS.phoenix}/graphiql`,
 } as const

@@ -80,6 +80,20 @@ const CHAIN_TARGET_SERVICE: TServiceDefinition = {
   },
 }
 
+const CONTRACT_TARGET_SERVICE: TServiceDefinition = {
+  ...CHAIN_TARGET_SERVICE,
+  id: 'contract-target',
+  name: 'Contract Target',
+  startupChecks: [
+    {
+      healthCheckName: 'phoenix-service-auth',
+      id: 'service-auth-contract',
+      label: 'Auth to Phoenix Service Identity contract',
+      url: 'http://127.0.0.1:3004/health/service-auth',
+    },
+  ],
+}
+
 const ADOPTED_TARGET_SERVICE: TServiceDefinition = {
   ...EXTERNAL_FIXTURE_SERVICE,
   id: 'adopted-target',
@@ -240,6 +254,28 @@ test('restart waits for the managed process to stop before starting a replacemen
   )
 })
 
+test('restart reruns configured startup contracts before replacing the target', async (t) => {
+  const checks: string[] = []
+  const manager = new ServiceManager(
+    [CONTRACT_TARGET_SERVICE],
+    null,
+    async () => false,
+    {
+      findProcessGroups: async () => [],
+      terminateProcessGroup: async () => undefined,
+    },
+    async (check) => {
+      checks.push(check.id)
+    },
+  )
+  t.after(async () => manager.shutdown())
+
+  await manager.start(CONTRACT_TARGET_SERVICE.id)
+  await manager.restart(CONTRACT_TARGET_SERVICE.id)
+
+  assert.deepEqual(checks, ['service-auth-contract'])
+})
+
 test('restart waits for the managed port to be released before starting a replacement', async (t) => {
   let portChecks = 0
   const portProbe = async () => {
@@ -354,6 +390,73 @@ test('default start mode starts required dependencies before the target service'
     `${CHAIN_DEPENDENCY_SERVICE.id}:running`,
     `${CHAIN_TARGET_SERVICE.id}:running`,
   ])
+})
+
+test('chain startup runs contract checks after required dependencies are ready', async (t) => {
+  const checks: string[] = []
+  let manager: ServiceManager
+  manager = new ServiceManager(
+    [CHAIN_DEPENDENCY_SERVICE, CONTRACT_TARGET_SERVICE],
+    null,
+    async () => false,
+    {
+      findProcessGroups: async () => [],
+      terminateProcessGroup: async () => undefined,
+    },
+    async (check) => {
+      checks.push(check.id)
+      assert.equal(
+        manager.listServices().find((service) => service.id === CHAIN_DEPENDENCY_SERVICE.id)
+          ?.status,
+        'running',
+      )
+      assert.equal(
+        manager.listServices().find((service) => service.id === CONTRACT_TARGET_SERVICE.id)?.status,
+        'stopped',
+      )
+    },
+  )
+  t.after(async () => manager.shutdown())
+
+  await manager.startWithMode(CONTRACT_TARGET_SERVICE.id)
+
+  assert.deepEqual(checks, ['service-auth-contract'])
+  assert.equal(
+    manager.listServices().find((service) => service.id === CONTRACT_TARGET_SERVICE.id)?.status,
+    'running',
+  )
+})
+
+test('a failed startup contract blocks the target and preserves the reason', async (t) => {
+  const manager = new ServiceManager(
+    [CHAIN_DEPENDENCY_SERVICE, CONTRACT_TARGET_SERVICE],
+    null,
+    async () => false,
+    {
+      findProcessGroups: async () => [],
+      terminateProcessGroup: async () => undefined,
+    },
+    async () => {
+      throw new Error('SERVICE_TOKEN_INVALID')
+    },
+  )
+  t.after(async () => manager.shutdown())
+
+  await assert.rejects(
+    manager.startWithMode(CONTRACT_TARGET_SERVICE.id),
+    /Auth to Phoenix Service Identity contract failed: SERVICE_TOKEN_INVALID/,
+  )
+  assert.equal(
+    manager.listServices().find((service) => service.id === CONTRACT_TARGET_SERVICE.id)?.status,
+    'stopped',
+  )
+  assert.match(
+    manager
+      .getLogs(CONTRACT_TARGET_SERVICE.id)
+      .map((log) => log.chunk)
+      .join(''),
+    /SERVICE_TOKEN_INVALID/,
+  )
 })
 
 test('required dependencies in the same layer start in parallel', async (t) => {
