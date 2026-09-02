@@ -1,5 +1,7 @@
 import type { TThread } from '~/spec'
 
+const CACHE_TAG_PATTERN = /^community\[[A-Za-z0-9][A-Za-z0-9-]*\](?:-[A-Za-z0-9\x5b\x5d-]+)?$/
+
 const communityCache = (community: string): string => {
   return `community[${community}]`
 }
@@ -30,3 +32,7 @@ export const CACHE_TAG = {
   commentsCache,
   docTreeCache,
 }
+
+/** Validates the public cache-tag wire contract shared by Dash and Community. */
+export const isCacheTag = (value: unknown): value is string =>
+  typeof value === 'string' && CACHE_TAG_PATTERN.test(value)

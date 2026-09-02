@@ -1,7 +1,8 @@
 import { purgeCommunityTags } from '@community/server/revalidation'
 import { createFileRoute } from '@tanstack/react-router'
 
-const TAG_PATTERN = /^community\[[A-Za-z0-9][A-Za-z0-9-]*\](?:-[A-Za-z0-9\x5b\x5d-]+)?$/
+import { isCacheTag } from '~/constant/cache'
+
 const MAX_TAGS = 20
 
 const json = (body: Record<string, unknown>, status = 200): Response =>
@@ -36,11 +37,7 @@ export const Route = createFileRoute('/internal/cache/revalidate')({
         const tags = Array.isArray(payload.tags)
           ? payload.tags.filter((tag): tag is string => typeof tag === 'string')
           : []
-        if (
-          tags.length === 0 ||
-          tags.length > MAX_TAGS ||
-          tags.some((tag) => !TAG_PATTERN.test(tag))
-        ) {
+        if (tags.length === 0 || tags.length > MAX_TAGS || tags.some((tag) => !isCacheTag(tag))) {
           return json({ ok: false, error: 'invalid_tags' }, 400)
         }
 
