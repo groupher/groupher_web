@@ -23,11 +23,11 @@ export const createQueryClient = (): QueryClient =>
     },
   })
 
-let browserQueryClient: QueryClient | undefined
+let browserClient: QueryClient | undefined
 
 /** Returns a request-local server client or the stable browser QueryClient singleton. */
 export const getQueryClient = (): QueryClient => {
   if (isServer) return createQueryClient()
-  browserQueryClient ??= createQueryClient()
-  return browserQueryClient
+  browserClient ??= createQueryClient()
+  return browserClient
 }

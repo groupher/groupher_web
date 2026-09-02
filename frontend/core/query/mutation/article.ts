@@ -2,7 +2,7 @@ import type { QueryClient } from '@tanstack/react-query'
 
 import { THREAD } from '~/const/thread'
 import { graphql } from '~/graphql/authoring'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import type { TArticle, TThread } from '~/spec'
 
 import { articleKeys, mutationKeys, viewerKeys } from '../key'
@@ -132,7 +132,7 @@ const patchViewerState = (
   viewerHasUpvoted: boolean,
 ): void => {
   queryClient.setQueriesData<Record<string, TArticleViewerState>>(
-    { queryKey: [...viewerKeys.all, viewerScope, 'article-state'] },
+    { queryKey: viewerKeys.articleStatePrefix(viewerScope) },
     (states) =>
       states
         ? {
@@ -140,10 +140,6 @@ const patchViewerState = (
             [articleKey]: { ...states[articleKey], articleKey, viewerHasUpvoted },
           }
         : states,
-  )
-  queryClient.setQueryData(
-    viewerKeys.articleState(viewerScope, articleKey),
-    (state: TArticleViewerState | undefined) => (state ? { ...state, viewerHasUpvoted } : state),
   )
 }
 
@@ -178,15 +174,15 @@ export const toggleArticleUpvote = async (
     const result =
       path.thread === THREAD.CHANGELOG
         ? nextViewerState
-          ? (await browserQuery(upvoteChangelog, variables)).upvoteChangelog
-          : (await browserQuery(undoUpvoteChangelog, variables)).undoUpvoteChangelog
+          ? (await browserGraphQLRequest(upvoteChangelog, variables)).upvoteChangelog
+          : (await browserGraphQLRequest(undoUpvoteChangelog, variables)).undoUpvoteChangelog
         : path.thread === THREAD.DOC
           ? nextViewerState
-            ? (await browserQuery(upvoteDoc, variables)).upvoteDoc
-            : (await browserQuery(undoUpvoteDoc, variables)).undoUpvoteDoc
+            ? (await browserGraphQLRequest(upvoteDoc, variables)).upvoteDoc
+            : (await browserGraphQLRequest(undoUpvoteDoc, variables)).undoUpvoteDoc
           : nextViewerState
-            ? (await browserQuery(upvotePost, variables)).upvotePost
-            : (await browserQuery(undoUpvotePost, variables)).undoUpvotePost
+            ? (await browserGraphQLRequest(upvotePost, variables)).upvotePost
+            : (await browserGraphQLRequest(undoUpvotePost, variables)).undoUpvotePost
 
     patchArticleEverywhere(queryClient, path, (current) => ({
       ...current,

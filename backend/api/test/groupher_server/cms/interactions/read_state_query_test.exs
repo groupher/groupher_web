@@ -2,6 +2,28 @@ defmodule GroupherServer.Test.CMS.Interactions.ReadStateQueryTest do
   use GroupherServer.TestMate, async: false
 
   alias GroupherServer.CMS.Model.Community
+  alias GroupherServerWeb.Resolvers.CMS, as: ResolverCMS
+
+  test "viewer batch resolvers return empty lists without an authenticated session" do
+    info = %{context: %{cur_user: nil}}
+
+    assert {:ok, []} =
+             ResolverCMS.article_viewer_states(
+               nil,
+               %{refs: [%{community: "home", thread: "POST", inner_id: "1"}]},
+               info
+             )
+
+    assert {:ok, []} =
+             ResolverCMS.comment_viewer_states(
+               nil,
+               %{
+                 article: %{community: "home", thread: "POST", inner_id: "1"},
+                 comment_inner_ids: ["1"]
+               },
+               info
+             )
+  end
 
   test "returns Article read state with complete emotion vocabulary" do
     {_community, post, _attrs, user} = mock_article(:post)

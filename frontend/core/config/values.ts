@@ -1,3 +1,5 @@
+import { API_ROUTE } from '@groupher/route-contract'
+
 const readPublicEnv = (name: string, fallback: string): string => process.env[name] ?? fallback
 const privateGraphQLEndpoint = process.env.GRAPHQL_ENDPOINT
 
@@ -24,7 +26,7 @@ export const ASSETS_HUB_READ_ENDPOINT = readPublicEnv(
 export const ICON = readPublicEnv('NEXT_PUBLIC_ICON', 'https://static.groupher.com/icons/static')
 export const ICON_BASE = readPublicEnv('NEXT_PUBLIC_ICON_BASE', 'https://static.groupher.com/icons')
 export const GRAPHQL_ENDPOINT =
-  (typeof window === 'undefined' ? privateGraphQLEndpoint : '/api/graphql') ??
+  (typeof window === 'undefined' ? privateGraphQLEndpoint : API_ROUTE.GRAPHQL) ??
   (() => {
     return 'http://localhost:4001/graphiql'
   })()

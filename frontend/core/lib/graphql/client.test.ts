@@ -153,4 +153,21 @@ describe('createAuthFetch', () => {
     ).rejects.toBeInstanceOf(GraphQLRequestError)
     expect(fetcher).toHaveBeenCalledTimes(1)
   })
+
+  it('formats structured changeset errors instead of collapsing them to object text', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(
+      Response.json({
+        errors: [
+          {
+            extensions: { code: 4102 },
+            message: [{ key: 'gradient', message: 'has unsupported config' }],
+          },
+        ],
+      }),
+    )
+
+    await expect(
+      browserGraphQLRequest(parse('mutation Save { save }'), {}, { fetcher }),
+    ).rejects.toMatchObject({ message: 'gradient: has unsupported config' })
+  })
 })

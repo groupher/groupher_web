@@ -58,7 +58,7 @@ describe('comment query mutation helpers', () => {
 
   it('patches viewer flags without changing the public comment cache', () => {
     const queryClient = new QueryClient()
-    const viewerKey = viewerKeys.commentStates('alice', 'home:POST:42', 1, 'REPLIES')
+    const viewerKey = viewerKeys.commentStates('alice', 'home:POST:42', ['1'])
     queryClient.setQueryData(key, { entries: [root], totalCount: 1 })
     queryClient.setQueryData<TCommentViewerStates>(viewerKey, {
       '1': { emotionFlags: { HEART: false }, viewerHasUpvoted: false },

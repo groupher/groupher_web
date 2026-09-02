@@ -1,14 +1,14 @@
-import type { VariablesOf } from '@graphql-typed-document-node/core'
 import { queryOptions } from '@tanstack/react-query'
 
-import { THREAD } from '~/const/thread'
 import { graphql } from '~/graphql/authoring'
-import { browserQuery } from '~/graphql/client'
-import { extractCommentViewerStates, type TCommentViewerStates } from '~/lib/commentViewerState'
-import type { TCommentsState, TPagedArticlesParams, TPagedComments, TThread } from '~/spec'
+import { browserGraphQLRequest } from '~/graphql/client'
+import type { TCommentViewerStates } from '~/lib/commentViewerState'
+import type { ArticleRefInput } from '~/lib/graphql/generated/graphql'
+import { sessionState } from '~/schemas/pages/user'
+import type { TCommentsState, TThread } from '~/spec'
 import commentsSchema from '~/unit/Comments/schema'
 
-import { normalizeArticleFilter, viewerKeys } from './key'
+import { viewerKeys } from './key'
 
 export type TArticleViewerState = {
   articleKey: string
@@ -16,198 +16,167 @@ export type TArticleViewerState = {
   viewerHasUpvoted?: boolean
 }
 
-export const viewerArticleStates = graphql(`
-  query ViewerArticleStates($filter: PagedPostsFilter!) {
-    pagedPosts(filter: $filter) {
-      entries {
-        innerId
-        community {
-          slug
-        }
-        meta {
-          thread
-        }
-        viewerHasViewed
-        viewerHasUpvoted
+export type TViewerArticleRef = ArticleRefInput
+
+const articleViewerStates = graphql(`
+  query ArticleViewerStates($refs: [ArticleRefInput!]!) {
+    articleViewerStates(refs: $refs) {
+      community
+      thread
+      innerId
+      viewerHasViewed
+      viewerHasUpvoted
+    }
+  }
+`)
+
+const commentViewerStates = graphql(`
+  query CommentViewerStates($article: ArticleRefInput!, $commentInnerIds: [ID!]!) {
+    commentViewerStates(article: $article, commentInnerIds: $commentInnerIds) {
+      innerId
+      viewerHasUpvoted
+      viewerHasReported
+      emotions {
+        type
+        viewerHasReacted
       }
     }
   }
 `)
 
-const viewerChangelogStates = graphql(`
-  query ViewerChangelogStates($filter: PagedChangelogsFilter!) {
-    pagedChangelogs(filter: $filter) {
-      entries {
-        innerId
-        community {
-          slug
-        }
-        meta {
-          thread
-        }
-        viewerHasViewed
-        viewerHasUpvoted
-      }
-    }
-  }
-`)
+const viewerBatchSize = 100
 
-const postViewerState = graphql(`
-  query PostViewerState($article: ArticlePathInput!) {
-    post(article: $article) {
-      innerId
-      viewerHasCollected
-      viewerHasUpvoted
-    }
-  }
-`)
+const articleKey = (article: Pick<TViewerArticleRef, 'community' | 'thread' | 'innerId'>): string =>
+  `${article.community}:${article.thread}:${String(article.innerId)}`
 
-const changelogViewerState = graphql(`
-  query ChangelogViewerState($article: ArticlePathInput!) {
-    changelog(article: $article) {
-      innerId
-      viewerHasCollected
-      viewerHasUpvoted
-    }
+const normalizeArticleRefs = (articles: readonly TViewerArticleRef[]): TViewerArticleRef[] => {
+  const refs = new Map<string, TViewerArticleRef>()
+  for (const article of articles) {
+    const normalized = {
+      community: article.community.trim(),
+      thread: article.thread,
+      innerId: String(article.innerId),
+    } satisfies TViewerArticleRef
+    refs.set(articleKey(normalized), normalized)
   }
-`)
+  return [...refs.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([, article]) => article)
+}
 
-const docViewerState = graphql(`
-  query DocViewerState($article: ArticlePathInput!) {
-    doc(article: $article) {
-      innerId
-      viewerHasCollected
-      viewerHasUpvoted
-    }
+const chunk = <T>(values: readonly T[], size: number): T[][] => {
+  const chunks: T[][] = []
+  for (let index = 0; index < values.length; index += size) {
+    chunks.push(values.slice(index, index + size))
   }
-`)
+  return chunks
+}
 
-const articleStates = (
-  viewerScope: string,
-  filter: TPagedArticlesParams,
-  articleKeys: readonly string[],
-) =>
-  queryOptions({
-    queryKey: viewerKeys.articleStates(viewerScope, articleKeys),
-    queryFn: async () => {
-      const normalized = normalizeArticleFilter(filter)
-      const data = await browserQuery(viewerArticleStates, {
-        filter: {
-          community: normalized.community,
-          page: normalized.page,
-          size: normalized.size,
-          communityTag: normalized.communityTag,
-          cat: normalized.cat as VariablesOf<typeof viewerArticleStates>['filter']['cat'],
-          status: normalized.status as VariablesOf<typeof viewerArticleStates>['filter']['status'],
-          order: normalized.order as VariablesOf<typeof viewerArticleStates>['filter']['order'],
+const toViewerState = (article: {
+  community: string
+  thread: string
+  innerId: string | number
+  viewerHasViewed?: boolean | null
+  viewerHasUpvoted?: boolean | null
+}): TArticleViewerState => {
+  const key = articleKey(article as TViewerArticleRef)
+  return {
+    articleKey: key,
+    viewerHasViewed: article.viewerHasViewed ?? undefined,
+    viewerHasUpvoted: article.viewerHasUpvoted ?? undefined,
+  }
+}
+
+const fetchArticleViewerStates = async (
+  articles: readonly TViewerArticleRef[],
+  signal?: AbortSignal,
+): Promise<Record<string, TArticleViewerState>> => {
+  const normalized = normalizeArticleRefs(articles)
+  const responses = await Promise.all(
+    chunk(normalized, viewerBatchSize).map((batch) =>
+      browserGraphQLRequest(articleViewerStates, { refs: batch }, { signal }),
+    ),
+  )
+  return Object.fromEntries(
+    responses.flatMap((data) =>
+      data.articleViewerStates.map((article) => {
+        const state = toViewerState(article)
+        return [state.articleKey, state] as const
+      }),
+    ),
+  )
+}
+
+const fetchCommentViewerStates = async (
+  article: ArticleRefInput,
+  commentInnerIds: readonly string[],
+  signal?: AbortSignal,
+): Promise<TCommentViewerStates> => {
+  const normalizedIds = [...new Set(commentInnerIds.map(String))].sort()
+  const responses = await Promise.all(
+    chunk(normalizedIds, viewerBatchSize).map((ids) =>
+      browserGraphQLRequest(
+        commentViewerStates,
+        {
+          article,
+          commentInnerIds: ids,
         },
-      })
-
-      return Object.fromEntries(
-        data.pagedPosts.entries.map((article) => {
-          const key = `${article.community.slug}:${article.meta.thread}:${article.innerId}`
-          return [
-            key,
-            {
-              articleKey: key,
-              viewerHasViewed: article.viewerHasViewed,
-              viewerHasUpvoted: article.viewerHasUpvoted,
-            } satisfies TArticleViewerState,
-          ]
-        }),
-      ) as Record<string, TArticleViewerState>
-    },
-    enabled: !!viewerScope && articleKeys.length > 0,
-    staleTime: 30_000,
-  })
-
-const articleState = (
-  viewerScope: string,
-  community: string,
-  thread: TThread,
-  innerId: string | number,
-) =>
-  queryOptions({
-    queryKey: viewerKeys.articleState(viewerScope, `${community}:${thread}:${String(innerId)}`),
-    queryFn: async () => {
-      const article = { community, thread, innerId: String(innerId) }
-      if (thread === THREAD.CHANGELOG) {
-        const data = await browserQuery(changelogViewerState, { article })
-        return data.changelog
+        { signal },
+      ),
+    ),
+  )
+  const states: TCommentViewerStates = {}
+  for (const data of responses) {
+    for (const comment of data.commentViewerStates) {
+      const emotionFlags: TCommentViewerStates[string]['emotionFlags'] = {}
+      for (const emotion of comment.emotions) {
+        if (emotion.type !== 'UPVOTE') emotionFlags[emotion.type] = emotion.viewerHasReacted
       }
-      if (thread === THREAD.DOC) {
-        const data = await browserQuery(docViewerState, { article })
-        return data.doc
+      states[String(comment.innerId)] = {
+        emotionFlags,
+        viewerHasUpvoted: comment.viewerHasUpvoted ?? undefined,
+        viewerHasReported: comment.viewerHasReported ?? undefined,
       }
-      const data = await browserQuery(postViewerState, { article })
-      return data.post
-    },
-    enabled: !!viewerScope && !!community && !!innerId,
-    staleTime: 30_000,
-  })
+    }
+  }
+  return states
+}
 
-const changelogStates = (
-  viewerScope: string,
-  filter: TPagedArticlesParams,
-  articleKeys: readonly string[],
-) =>
-  queryOptions({
-    queryKey: viewerKeys.articleStates(viewerScope, articleKeys),
-    queryFn: async () => {
-      const normalized = normalizeArticleFilter(filter)
-      const data = await browserQuery(viewerChangelogStates, {
-        filter: {
-          community: normalized.community,
-          page: normalized.page,
-          size: normalized.size,
-          communityTag: normalized.communityTag,
-          order: normalized.order as VariablesOf<typeof viewerChangelogStates>['filter']['order'],
-        },
-      })
-      return Object.fromEntries(
-        data.pagedChangelogs.entries.map((article) => {
-          const key = `${article.community.slug}:${article.meta.thread}:${article.innerId}`
-          return [
-            key,
-            {
-              articleKey: key,
-              viewerHasViewed: article.viewerHasViewed,
-              viewerHasUpvoted: article.viewerHasUpvoted,
-            },
-          ]
-        }),
-      ) as Record<string, TArticleViewerState>
-    },
-    enabled: !!viewerScope && articleKeys.length > 0,
+const articleStates = (viewerScope: string, articles: readonly TViewerArticleRef[]) => {
+  const normalized = normalizeArticleRefs(articles)
+  return queryOptions({
+    queryKey: viewerKeys.articleStates(viewerScope, normalized.map(articleKey)),
+    queryFn: ({ signal }) => (viewerScope ? fetchArticleViewerStates(normalized, signal) : {}),
+    enabled: !!viewerScope && normalized.length > 0,
     staleTime: 30_000,
   })
+}
 
 const commentStates = (
   viewerScope: string,
-  community: string,
-  thread: TThread,
-  innerId: string | number,
-  page: number,
-  mode: string,
-) =>
+  article: TViewerArticleRef,
+  commentInnerIds: readonly string[],
+) => {
+  const normalizedArticle = {
+    community: article.community.trim(),
+    thread: article.thread,
+    innerId: String(article.innerId),
+  } satisfies TViewerArticleRef
+  const articleKeyValue = articleKey(normalizedArticle)
+  const normalizedIds = [...new Set(commentInnerIds.map(String))].sort()
+  return queryOptions({
+    queryKey: viewerKeys.commentStates(viewerScope, articleKeyValue, normalizedIds),
+    queryFn: ({ signal }) =>
+      viewerScope ? fetchCommentViewerStates(normalizedArticle, normalizedIds, signal) : {},
+    enabled: !!viewerScope && normalizedIds.length > 0,
+    staleTime: 30_000,
+  })
+}
+
+const session = () =>
   queryOptions({
-    queryKey: viewerKeys.commentStates(
-      viewerScope,
-      `${community}:${thread}:${String(innerId)}`,
-      page,
-      mode,
-    ),
-    queryFn: async () => {
-      const data = await browserQuery(commentsSchema.pagedComments, {
-        article: { community, thread, innerId: String(innerId) },
-        mode: mode as 'REPLIES' | 'TIMELINE',
-        filter: { page, size: 30 },
-      })
-      return extractCommentViewerStates(
-        data.pagedComments as unknown as TPagedComments,
-      ) satisfies TCommentViewerStates
-    },
-    enabled: !!viewerScope && !!community && !!innerId,
+    queryKey: viewerKeys.session(),
+    queryFn: ({ signal }) => browserGraphQLRequest(sessionState, {}, { signal }),
     staleTime: 30_000,
   })
 
@@ -219,10 +188,12 @@ const commentSummary = (
 ) =>
   queryOptions({
     queryKey: viewerKeys.commentSummary(viewerScope, `${community}:${thread}:${String(innerId)}`),
-    queryFn: async () => {
-      const data = await browserQuery(commentsSchema.commentsState, {
-        article: { community, thread, innerId: String(innerId) },
-      })
+    queryFn: async ({ signal }) => {
+      const data = await browserGraphQLRequest(
+        commentsSchema.commentsState,
+        { article: { community, thread, innerId: String(innerId) } },
+        { signal },
+      )
       return data.commentsState as TCommentsState
     },
     enabled: !!community && !!innerId,
@@ -230,9 +201,8 @@ const commentSummary = (
   })
 
 export const viewerQueries = {
+  session,
   articleStates,
-  changelogStates,
-  articleState,
   commentStates,
   commentSummary,
 }

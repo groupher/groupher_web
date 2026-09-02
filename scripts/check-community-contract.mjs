@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
@@ -97,13 +97,15 @@ const boundary = readFileSync(
   path.join(communityRoot, 'src/components/CommunityBoundary.tsx'),
   'utf8',
 )
-if (!boundary.includes('useSuspenseQuery(communityQueries.shell(community))')) {
-  throw new Error('CommunityBoundary must read the complete shell from Query cache')
+for (const query of ['Q.community.config(community)', 'Q.dsb.config(community)', 'Q.wallpaper.config(community)']) {
+  if (!boundary.includes(`useSuspenseQuery(${query})`)) {
+    throw new Error(`CommunityBoundary must read ${query} from its canonical Query key`)
+  }
 }
 
 const graphqlProxy = readFileSync(path.join(communityRoot, 'src/routes/api/graphql.ts'), 'utf8')
 if (
-  !graphqlProxy.includes('waitUntil(observeCommunityTagPurge(tags))') ||
+  !graphqlProxy.includes('waitUntil(observeCommunityTagPurge(effect.tags))') ||
   graphqlProxy.includes('await purgeCommunityTags')
 ) {
   throw new Error('Community GraphQL purge must run as a Worker waitUntil task')
@@ -111,8 +113,78 @@ if (
 
 const communityServer = readFileSync(path.join(communityRoot, 'src/server/community.ts'), 'utf8')
 const authTokenReads = communityServer.match(/getAuthToken\(\)/g)?.length || 0
-if (authTokenReads !== 2) {
-  throw new Error('Only cache policy and the personalized shell may read the auth token')
+if (authTokenReads !== 0) {
+  throw new Error('Public Community loaders must not read the auth token')
+}
+
+const stripTypeScriptComments = (source) =>
+  source
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/(^|\s)\/\/.*$/gm, '$1')
+
+const collectSourceFiles = (directory) => {
+  const files = []
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const absolute = path.join(directory, entry.name)
+    if (entry.isDirectory()) files.push(...collectSourceFiles(absolute))
+    else if (/\.(ts|tsx)$/.test(entry.name)) files.push(absolute)
+  }
+  return files
+}
+
+const coreSourceFiles = collectSourceFiles(path.join(repoRoot, 'frontend/core')).filter(
+  (absolute) => !absolute.includes(`${path.sep}lib${path.sep}graphql${path.sep}generated${path.sep}`),
+)
+const forbiddenCompatibility = [
+  'mutationCacheTags',
+  'revalidateCommunityCache',
+  'community$.commit',
+  'ArticleMutationBridge',
+  'UPVOTE_ARTICLE',
+  'makeDsbResponseFieldReader',
+]
+for (const token of forbiddenCompatibility) {
+  const callers = coreSourceFiles.filter((absolute) =>
+    readFileSync(absolute, 'utf8').includes(token),
+  )
+  if (callers.length > 0) {
+    throw new Error(
+      `Removed Query/Store compatibility '${token}' returned in: ${callers
+        .map((absolute) => path.relative(repoRoot, absolute))
+        .join(', ')}`,
+    )
+  }
+}
+
+const publicQuerySources = [
+  ...collectSourceFiles(path.join(communityRoot, 'src/server')),
+  ...[
+    'schemas/pages/article.fragments.ts',
+    'schemas/pages/community.ts',
+    'schemas/pages/post.ts',
+    'schemas/pages/changelog.ts',
+    'schemas/pages/doc.ts',
+    'schemas/pages/comment.ts',
+  ].map((relative) => path.join(repoRoot, 'frontend/core', relative)),
+]
+const viewerSelectionFiles = publicQuerySources.filter((absolute) => {
+  const source = stripTypeScriptComments(readFileSync(absolute, 'utf8'))
+  const hasUnconditionalViewerField = source
+    .split('\n')
+    .some(
+      (line) =>
+        /\bviewerHas[A-Za-z0-9_]*\b/.test(line) &&
+        !line.includes('@include(if: $userHasLogin)'),
+    )
+  const enablesViewerSelection = /\buserHasLogin\s*:\s*true\b/.test(source)
+  return hasUnconditionalViewerField || enablesViewerSelection
+})
+if (viewerSelectionFiles.length > 0) {
+  throw new Error(
+    `Public Community loader/query sources must gate viewer fields and must not enable them: ${viewerSelectionFiles
+      .map((absolute) => path.relative(repoRoot, absolute))
+      .join(', ')}`,
+  )
 }
 
 const healthRoute = readFileSync(path.join(communityRoot, 'src/routes/health.ts'), 'utf8')

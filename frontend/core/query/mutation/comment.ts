@@ -113,7 +113,7 @@ export const patchCommentViewerState = (
   updater: (state: TCommentViewerStates[string]) => TCommentViewerStates[string],
 ): void => {
   queryClient.setQueriesData<TCommentViewerStates>(
-    { queryKey: [...viewerKeys.all, viewerScope, 'comment-state', articleKey] },
+    { queryKey: viewerKeys.commentStatePrefix(viewerScope, articleKey) },
     (states) => {
       if (!states) return states
       const key = String(innerId)

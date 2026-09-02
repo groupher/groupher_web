@@ -42,13 +42,6 @@ export const logout = (): void => {
 export const closeDrawer = (type = ''): void => send(EVENT.DRAWER.CLOSE, { type })
 
 /**
- * Broadcasts optimistic upvote state for the currently viewed article.
- */
-export const upvoteArticle = (article: TArticle, viewerHasUpvoted): void => {
-  send(EVENT.UPVOTE_ARTICLE, { type: 'upvote_article', data: { article, viewerHasUpvoted } })
-}
-
-/**
  * Broadcasts a hydrated article payload to surfaces that mirror the viewer's
  * current article state.
  */

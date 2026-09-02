@@ -108,9 +108,12 @@ export const community = graphql(`
           }
         }
         wallpaper {
+          staticRevision
           light {
             type
             source
+            assetPublicRef
+            staticAssetPublicRef
             gradient
             pattern
             contentShadow
@@ -120,6 +123,8 @@ export const community = graphql(`
           dark {
             type
             source
+            assetPublicRef
+            staticAssetPublicRef
             gradient
             pattern
             contentShadow

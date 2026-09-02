@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
 
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import useViewingArticle from '~/hooks/useViewingArticle'
 import type { TComment, TEmotionRawType, TEmotionType } from '~/spec'
 import useAccount from '~/stores/account/hooks'
@@ -51,7 +51,7 @@ export default function useCommentReactions(comment: TComment) {
     predicate: (query: Parameters<typeof isCommentQueryForArticle>[0]) =>
       isCommentQueryForArticle(query, commentScope),
   }
-  const viewerPrefix = [...viewerKeys.all, viewerScope, 'comment-state', articleKey] as const
+  const viewerPrefix = viewerKeys.commentStatePrefix(viewerScope, articleKey)
   const upvoteDesiredRef = useRef(Boolean(comment.viewerHasUpvoted))
   const upvoteRunningRef = useRef(false)
   const emotionDesiredRef = useRef(new Map<TEmotionType, boolean>())
@@ -81,12 +81,12 @@ export default function useCommentReactions(comment: TComment) {
     mutationFn: async (nextViewerState: boolean): Promise<TComment> => {
       const result = nextViewerState
         ? (
-            await browserQuery(commentsSchema.upvoteComment, {
+            await browserGraphQLRequest(commentsSchema.upvoteComment, {
               comment: commentPath,
             })
           ).upvoteComment
         : (
-            await browserQuery(commentsSchema.undoUpvoteComment, {
+            await browserGraphQLRequest(commentsSchema.undoUpvoteComment, {
               comment: commentPath,
             })
           ).undoUpvoteComment
@@ -150,13 +150,13 @@ export default function useCommentReactions(comment: TComment) {
       const emotionType = name.toUpperCase() as Exclude<TEmotionRawType, 'UPVOTE'>
       const result = nextViewerState
         ? (
-            await browserQuery(commentsSchema.emotionToComment, {
+            await browserGraphQLRequest(commentsSchema.emotionToComment, {
               comment: commentPath,
               emotion: emotionType,
             })
           ).emotionToComment
         : (
-            await browserQuery(commentsSchema.undoEmotionToComment, {
+            await browserGraphQLRequest(commentsSchema.undoEmotionToComment, {
               comment: commentPath,
               emotion: emotionType,
             })

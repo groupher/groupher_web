@@ -17,10 +17,6 @@ describe('usePagedChangelogs', () => {
       `/acme/changelog?${URL_PARAM.PAGE}=2&${URL_PARAM.CAT}=${ARTICLE_CAT.BUG}&${URL_PARAM.STATUS}=${ARTICLE_STATUS.TODO}&${URL_PARAM.ORDER}=${ARTICLE_ORDER.UPVOTES}&${URL_PARAM.TAG}=t1`,
     )
 
-    const StoreWrapper = makeStoreWrapper({
-      community: { slug: 'acme' },
-      articleList: true,
-    })
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false, staleTime: Number.POSITIVE_INFINITY } },
     })
@@ -36,6 +32,11 @@ describe('usePagedChangelogs', () => {
       }),
       { entries: [], pageNumber: 2 },
     )
+    const StoreWrapper = makeStoreWrapper({
+      community: { slug: 'acme' },
+      articleList: true,
+      queryClient,
+    })
     const wrapper = ({ children }: { children: ReactNode }) => (
       <QueryClientProvider client={queryClient}>
         <AccountStoreProvider initData={{ loading: false, user: null }}>

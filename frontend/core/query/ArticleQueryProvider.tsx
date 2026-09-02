@@ -7,6 +7,7 @@ import type { TArticle, TThread } from '~/spec'
 import useAccount from '~/stores/account/hooks'
 
 import { Q } from './client'
+import type { TViewerArticleRef } from './viewer'
 
 type TValue = {
   article: TArticle | null
@@ -39,13 +40,18 @@ export default function ArticleQueryProvider({
     initialData: initialArticle || undefined,
   })
   const viewerScope = account.user?.login || ''
-  const viewerQuery = useQuery(Q.viewer.articleState(viewerScope, community, thread, innerId))
+  const articleRef = {
+    community,
+    thread,
+    innerId: String(innerId),
+  } satisfies TViewerArticleRef
+  const viewerQuery = useQuery(Q.viewer.articleStates(viewerScope, [articleRef]))
   const article = useMemo(() => {
     if (!articleQuery.data) return null
-    return viewerQuery.data
-      ? ({ ...articleQuery.data, ...viewerQuery.data } as TArticle)
-      : articleQuery.data
-  }, [articleQuery.data, viewerQuery.data])
+    const key = `${community}:${thread}:${String(innerId)}`
+    const viewerState = viewerQuery.data?.[key]
+    return viewerState ? ({ ...articleQuery.data, ...viewerState } as TArticle) : articleQuery.data
+  }, [articleQuery.data, community, innerId, thread, viewerQuery.data])
   const value = useMemo(
     () => ({
       article,

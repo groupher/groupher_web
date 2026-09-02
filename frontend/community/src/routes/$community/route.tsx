@@ -1,24 +1,35 @@
 import CommunityBoundary from '@community/components/CommunityBoundary'
 import CommunityShell from '@community/components/CommunityShell'
-import { communityQueries } from '@community/query/queries'
-import { loadCommunityRequestContext } from '@community/server/community'
+import { loadCommunity, loadCommunityRequestContext } from '@community/server/community'
 import { projectCommunityHead } from '@community/server/head'
 import { loadLocale } from '@community/server/locale'
 import { communityPublicPath } from '@community/server/public-path'
-import { resolvePrePaintThemeSeed } from '@community/utils/first-paint'
 import { Outlet, createFileRoute, notFound, redirect, useLoaderData } from '@tanstack/react-router'
+
+import { communityQueries, dsbQueries, wallpaperQueries } from '~/query'
 
 export const Route = createFileRoute('/$community')({
   beforeLoad: ({ params }) => {
     if (params.community === '.well-known') throw notFound()
   },
   loader: async ({ params, context, location }) => {
-    const [shell, locale, requestContext] = await Promise.all([
-      context.queryClient.ensureQueryData(communityQueries.shell(params.community)),
+    const [loadedShell, locale, requestContext] = await Promise.all([
+      loadCommunity({ data: { community: params.community } }),
       loadLocale({ data: {} }),
       loadCommunityRequestContext(),
     ])
-    if (!shell) throw notFound()
+    if (!loadedShell) throw notFound()
+    await Promise.all([
+      context.queryClient.ensureQueryData(
+        communityQueries.config(params.community, () => loadedShell.community),
+      ),
+      context.queryClient.ensureQueryData(
+        dsbQueries.config(params.community, () => loadedShell.dashboard),
+      ),
+      context.queryClient.ensureQueryData(
+        wallpaperQueries.config(params.community, () => loadedShell.wallpaper),
+      ),
+    ])
     if (
       location.pathname === `/${params.community}` ||
       location.pathname === `/${params.community}/`
@@ -28,8 +39,8 @@ export const Route = createFileRoute('/$community')({
         replace: true,
       })
     }
-    if (!shell.community.slug) throw notFound()
-    return { head: projectCommunityHead(shell), locale, requestContext }
+    if (!loadedShell.community.slug) throw notFound()
+    return { head: projectCommunityHead(loadedShell), locale, requestContext }
   },
   head: ({ loaderData, matches }) => ({
     meta: [
@@ -84,14 +95,13 @@ function CommunityLayout() {
   const { locale } = Route.useLoaderData()
   const { community } = Route.useParams()
   const { renderedAt, theme } = useLoaderData({ from: '__root__' })
-  const hydrationTheme = resolvePrePaintThemeSeed(theme)
   return (
     <CommunityBoundary
       key={community}
       community={community}
       locale={locale}
       initialNow={renderedAt}
-      theme={hydrationTheme}
+      theme={theme}
     >
       <CommunityShell>
         <Outlet />

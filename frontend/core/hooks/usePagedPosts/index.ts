@@ -28,15 +28,17 @@ export default function usePagedPosts(): TRes {
   const searchParams = useURLSearchParams()
   const pagedParams = getPagedArticlesParams(slug, searchParams)
   const query = useQuery(Q.article.posts(pagedParams))
-  const articleKeys = useMemo(
+  const articleRefs = useMemo(
     () =>
-      (query.data?.entries || []).map(
-        (article) => `${article.community.slug}:${article.meta.thread}:${article.innerId}`,
-      ),
+      (query.data?.entries || []).map((article) => ({
+        community: article.community.slug,
+        thread: article.meta.thread,
+        innerId: article.innerId,
+      })),
     [query.data?.entries],
   )
   const viewerScope = account.user?.login || ''
-  const viewerQuery = useQuery(Q.viewer.articleStates(viewerScope, pagedParams, articleKeys))
+  const viewerQuery = useQuery(Q.viewer.articleStates(viewerScope, articleRefs))
   const pagedPosts = useMemo(() => {
     if (!query.data || !viewerQuery.data) return query.data || EMPTY_PAGED_ARTICLES
 

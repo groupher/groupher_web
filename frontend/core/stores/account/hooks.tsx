@@ -7,7 +7,8 @@ import { use, useEffect, useRef, useState } from 'react'
 
 import EVENT from '~/const/event'
 import useEvent from '~/hooks/useEvent'
-import { graphqlQueryOptions } from '~/query'
+import { Q } from '~/query'
+import { viewerKeys } from '~/query/key'
 import type { TUser } from '~/spec'
 
 import { sessionState } from '../../schemas/pages/user'
@@ -40,7 +41,7 @@ export default function Hooks() {
 
   useEffect(() => setIsHydrated(true), [])
 
-  const options = graphqlQueryOptions(sessionState, {})
+  const options = Q.viewer.session()
   const shouldFetchMe =
     isHydrated && hasSignedInHintCookie() && (seed.loading !== false || !seed.user)
 
@@ -58,6 +59,7 @@ export default function Hooks() {
   }, [query.refetch, shouldFetchMe])
 
   const clearSession = () => {
+    void queryClient.removeQueries({ queryKey: viewerKeys.all })
     queryClient.setQueryData(options.queryKey, makeSessionResult(null))
   }
 

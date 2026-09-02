@@ -2,12 +2,11 @@ import type { ResultOf } from '@graphql-typed-document-node/core'
 import { createServerFn } from '@tanstack/react-start'
 
 import { parseDashboard, parseWallpaper } from '~/lib/ssr/parse'
-import { serializeCommunityThemePresetCss } from '~/lib/themePreset'
+import { serializeCommunityThemePresetCss } from '~/lib/theme'
 import { community as communityQuery } from '~/schemas/pages/community'
 import { sessionState as sessionStateQuery } from '~/schemas/pages/user'
 import type { TCommunity, TParseDashboard, TUser } from '~/spec'
 import type { TInit as TAccountInit } from '~/stores/account/spec'
-import { isDsbDemoMode } from '~/utils/dsb-demo'
 
 import { fetchGraphQL, getAuthToken, hasSignedInHint, setPrivateCacheHeader } from './graphql'
 
@@ -45,7 +44,7 @@ export const loadCommunity = createServerFn({ method: 'GET', strict: false })
   .handler(async ({ data }): Promise<TCommunityShell> => {
     const token = getAuthToken()
     const userHasLogin = Boolean(token)
-    const isDemoMode = isDsbDemoMode(data.community, data.mode)
+    const isDemoMode = data.community === 'home' && data.mode === 'demo'
     const signedInHint = hasSignedInHint()
 
     setPrivateCacheHeader()

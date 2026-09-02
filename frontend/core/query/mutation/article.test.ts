@@ -6,8 +6,8 @@ import type { TArticle, TPagedPosts } from '~/spec'
 import { articleKeys, viewerKeys } from '../key'
 import { mutateArticleUpvote, patchArticleEverywhere, toggleArticleUpvote } from './article'
 
-const { browserQuery } = vi.hoisted(() => ({ browserQuery: vi.fn() }))
-vi.mock('~/graphql/client', () => ({ browserQuery }))
+const { browserGraphQLRequest } = vi.hoisted(() => ({ browserGraphQLRequest: vi.fn() }))
+vi.mock('~/graphql/client', () => ({ browserGraphQLRequest }))
 
 const article = {
   id: 'db-1',
@@ -33,7 +33,7 @@ const setupClient = () => {
 }
 
 describe('article query mutation helpers', () => {
-  beforeEach(() => browserQuery.mockReset())
+  beforeEach(() => browserGraphQLRequest.mockReset())
 
   it('patches matching list and detail entries without touching other cache domains', () => {
     const queryClient = setupClient()
@@ -51,7 +51,7 @@ describe('article query mutation helpers', () => {
 
   it('uses the server-confirmed count and viewer state', async () => {
     const queryClient = setupClient()
-    browserQuery.mockResolvedValue({
+    browserGraphQLRequest.mockResolvedValue({
       upvotePost: { innerId: '42', upvotesCount: 9, viewerHasUpvoted: true },
     })
 
@@ -67,7 +67,7 @@ describe('article query mutation helpers', () => {
 
   it('rolls back list, detail and viewer cache when the mutation fails', async () => {
     const queryClient = setupClient()
-    browserQuery.mockImplementationOnce(() => {
+    browserGraphQLRequest.mockImplementationOnce(() => {
       throw new Error('network')
     })
 
@@ -90,19 +90,19 @@ describe('article query mutation helpers', () => {
     const queryClient = new QueryClient()
     const docKey = articleKeys.detail('home', THREAD.DOC, '42')
     queryClient.setQueryData(docKey, docArticle)
-    browserQuery.mockResolvedValue({
+    browserGraphQLRequest.mockResolvedValue({
       upvoteDoc: { innerId: '42', upvotesCount: 5, viewerHasUpvoted: true },
     })
 
     await expect(toggleArticleUpvote(queryClient, docArticle, true, 'alice')).resolves.toBe(true)
 
-    expect(browserQuery).toHaveBeenCalledOnce()
+    expect(browserGraphQLRequest).toHaveBeenCalledOnce()
     expect(queryClient.getQueryData<TArticle>(docKey)?.upvotesCount).toBe(5)
   })
 
   it('coalesces rapid toggles to the last intent and removes command mutations', async () => {
     const queryClient = setupClient()
-    browserQuery
+    browserGraphQLRequest
       .mockResolvedValueOnce({
         upvotePost: { innerId: '42', upvotesCount: 4, viewerHasUpvoted: true },
       })
@@ -114,7 +114,7 @@ describe('article query mutation helpers', () => {
     const second = mutateArticleUpvote(queryClient, article, true, 'alice')
     await Promise.all([first, second])
 
-    expect(browserQuery).toHaveBeenCalledTimes(2)
+    expect(browserGraphQLRequest).toHaveBeenCalledTimes(2)
     expect(queryClient.getQueryData<TArticle>(detailKey)?.upvotesCount).toBe(3)
     expect(
       queryClient.getQueryData<Record<string, { viewerHasUpvoted: boolean }>>(viewerKey)?.[
@@ -126,7 +126,7 @@ describe('article query mutation helpers', () => {
 
   it('collapses three rapid toggles into the first in-flight target', async () => {
     const queryClient = setupClient()
-    browserQuery.mockResolvedValue({
+    browserGraphQLRequest.mockResolvedValue({
       upvotePost: { innerId: '42', upvotesCount: 4, viewerHasUpvoted: true },
     })
 
@@ -135,7 +135,7 @@ describe('article query mutation helpers', () => {
     const third = mutateArticleUpvote(queryClient, article, true, 'alice')
     await Promise.all([first, second, third])
 
-    expect(browserQuery).toHaveBeenCalledOnce()
+    expect(browserGraphQLRequest).toHaveBeenCalledOnce()
     expect(queryClient.getQueryData<TArticle>(detailKey)?.upvotesCount).toBe(4)
     expect(queryClient.getMutationCache().getAll()).toHaveLength(0)
   })

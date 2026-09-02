@@ -1294,6 +1294,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   end
 
   object :dsb_wallpaper do
+    field(:static_revision, :string)
     field(:light, :dsb_bg_config)
     field(:dark, :dsb_bg_config)
   end
@@ -1622,6 +1623,26 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:count, :integer)
     field(:viewer_has_reacted, :boolean)
     field(:latest_users, list_of(:common_user))
+  end
+
+  object :viewer_article_state do
+    field(:community, non_null(:string))
+    field(:thread, non_null(:thread))
+    field(:inner_id, non_null(:id))
+    field(:viewer_has_viewed, :boolean)
+    field(:viewer_has_upvoted, :boolean)
+  end
+
+  object :viewer_comment_emotion_state do
+    field(:type, non_null(:emotion_type))
+    field(:viewer_has_reacted, :boolean)
+  end
+
+  object :viewer_comment_state do
+    field(:inner_id, non_null(:id))
+    field(:viewer_has_upvoted, :boolean)
+    field(:viewer_has_reported, :boolean)
+    field(:emotions, non_null(list_of(non_null(:viewer_comment_emotion_state))))
   end
 
   object :comment_meta do

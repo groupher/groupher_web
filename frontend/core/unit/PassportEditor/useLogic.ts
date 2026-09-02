@@ -1,15 +1,17 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { find, forEach, reject, uniq } from 'ramda'
 import { useMemo, useState } from 'react'
 
 import EVENT from '~/const/event'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
+import { patchCommunityConfig } from '~/query'
 import { closeDrawer, send } from '~/signal'
 import type { TModerator, TUser } from '~/spec'
 import useAccount from '~/stores/account/hooks'
 import useCommunity from '~/stores/community/hooks'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
+import { useModeratorEditorUi } from '~/stores/dsbEditorUi/hooks'
 import { toast } from '~/ui/Toaster'
-import { revalidateCommunityCache } from '~/utils/revalidateCommunityCache'
 
 import { PASSPORT_SCOPE } from './constant'
 import S from './schema'
@@ -155,11 +157,13 @@ type TRet = {
 
 /** Exposes logic state and actions through the shared React hook boundary. */
 export default function useLogic(): TRet {
-  const dsb$ = useDsb()
+  const queryClient = useQueryClient()
+  const dsb$ = useDsbEdit()
+  const moderatorUi$ = useModeratorEditorUi()
   const community$ = useCommunity()
   const account$ = useAccount()
 
-  const { activeModerator, allRootRules, allModeratorRules } = dsb$
+  const { activeModerator, allRootRules, allModeratorRules } = moderatorUi$
   const [selectedGlobalRules, setSelectedGlobalRules] = useState<string[]>([])
   const [selectedRules, setSelectedRules] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
@@ -204,7 +208,7 @@ export default function useLogic(): TRet {
     }
 
     try {
-      const res = await browserQuery(S.userPassport, { login: activeModerator.login })
+      const res = await browserGraphQLRequest(S.userPassport, { login: activeModerator.login })
       const { passportString = '{}', social = null } = res?.user ?? {}
       const passportJson = safeParsePassport(passportString)
       const globalRules = ruleMapFrom(passportJson.global)
@@ -223,8 +227,9 @@ export default function useLogic(): TRet {
         nextModeratorPatch,
       )
 
-      dsb$.commit({ activeModerator: { ...activeModerator, social }, moderators })
-      community$.commit({ moderators })
+      moderatorUi$.patch({ activeModerator: { ...activeModerator, social } })
+      dsb$.editMany({ moderators })
+      patchCommunityConfig(queryClient, community$.slug, { moderators })
 
       setSelectedGlobalRules(enabledRuleKeys(globalRules))
       setSelectedRules(enabledRuleKeys(communityRules))
@@ -232,7 +237,7 @@ export default function useLogic(): TRet {
       console.error('## load user passport error: ', error)
       setSelectedGlobalRules([])
       setSelectedRules([])
-      dsb$.commit({ activeModerator: { ...activeModerator, social: null } })
+      moderatorUi$.patch({ activeModerator: { ...activeModerator, social: null } })
     } finally {
       setLoading(false)
     }
@@ -240,14 +245,14 @@ export default function useLogic(): TRet {
 
   const loadAllPassportRules = (): void => {
     setLoading(true)
-    browserQuery(S.allPassportRules)
+    browserGraphQLRequest(S.allPassportRules)
       .then((res) => {
         const { cms } = res.allPassportRulesString as {
           cms: { general?: unknown; community?: unknown }
         }
         const { general, community } = cms
 
-        dsb$.commit({
+        moderatorUi$.patch({
           allRootRules: normalizeRules(general),
           allModeratorRules: normalizeRules(community),
         })
@@ -291,12 +296,12 @@ export default function useLogic(): TRet {
 
     const rules = { global: globalRules, [community]: { cms: innerRules } }
 
-    browserQuery(S.updateModeratorPassport, {
+    browserGraphQLRequest(S.updateModeratorPassport, {
       community,
       user: activeModerator.login,
       rules: JSON.stringify(rules),
     })
-      .then(async (res) => {
+      .then((res) => {
         const remoteModerators = (res.updateModeratorPassport?.moderators ?? []).filter(
           (moderator) => Boolean(moderator.user?.login),
         ) as TModerator[]
@@ -311,13 +316,8 @@ export default function useLogic(): TRet {
           savedModeratorPatch,
         )
 
-        dsb$.commit({ moderators })
-        community$.commit({ moderators })
-        try {
-          await revalidateCommunityCache(community)
-        } catch (error) {
-          console.error('## revalidate community cache error: ', error)
-        }
+        dsb$.editMany({ moderators })
+        patchCommunityConfig(queryClient, community, { moderators })
         closeDrawer()
       })
       .catch((error) => {
@@ -328,21 +328,17 @@ export default function useLogic(): TRet {
   const deleteModerator = (): void => {
     if (!activeModerator?.login) return
 
-    browserQuery(S.removeModerator, {
+    browserGraphQLRequest(S.removeModerator, {
       community: community$.slug,
       user: activeModerator.login,
-    }).then(async (res) => {
+    }).then((res) => {
       const moderators = (res.removeModerator?.moderators ?? []).filter(
         (moderator) => moderator.user?.login,
       )
 
-      dsb$.commit({ moderators, activeModerator: null })
-      community$.commit({ moderators })
-      try {
-        await revalidateCommunityCache(community$.slug)
-      } catch (error) {
-        console.error('## revalidate community cache error: ', error)
-      }
+      dsb$.editMany({ moderators })
+      moderatorUi$.patch({ activeModerator: null })
+      patchCommunityConfig(queryClient, community$.slug, { moderators })
 
       closeDrawer()
       send(EVENT.REFRESH_MODERATORS)

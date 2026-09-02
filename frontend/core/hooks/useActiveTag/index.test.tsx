@@ -11,10 +11,11 @@ describe('useActiveTag', () => {
   it('returns activeTag from url slug', () => {
     window.history.replaceState(null, '', '/acme/post?tag=tag-1')
 
+    const queryClient = new QueryClient()
     const StoreWrapper = makeStoreWrapper({
       community: { slug: 'acme' },
+      queryClient,
     })
-    const queryClient = new QueryClient()
     queryClient.setQueryData(articleKeys.tagGroups('acme', THREAD.POST), [
       {
         id: 'g1',

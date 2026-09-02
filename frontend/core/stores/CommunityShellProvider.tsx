@@ -3,19 +3,13 @@ import type { FC, ReactNode } from 'react'
 import { LOCALE } from '~/const/i18n'
 import METRIC from '~/const/metric'
 import { InitialNowProvider } from '~/hooks/useInitialNow'
-import type {
-  TCommunity,
-  TLocale,
-  TMetric,
-  TParseDashboard,
-  TThemeMode,
-  TThemeName,
-} from '~/spec'
+import type { TCommunity, TLocale, TMetric, TParseDashboard, TThemeMode, TThemeName } from '~/spec'
 import AccountStoreProvider from '~/stores/account/provider'
 import type { TInit as TAccountInit } from '~/stores/account/spec'
 import CommunityStoreProvider from '~/stores/community/provider'
-import DsbStoreProvider from '~/stores/dsb/provider'
 import LocaleStoreProvider from '~/stores/locale/provider'
+import { MetricProvider } from '~/stores/metric'
+import StaticWallpaperProvider from '~/stores/staticWallpaper/provider'
 import ThemeStoreProvider from '~/stores/theme/provider'
 import ThemePresetStoreProvider from '~/stores/ThemePreset/provider'
 import WallpaperStoreProvider from '~/stores/wallpaper/provider'
@@ -62,15 +56,17 @@ export default function CommunityShellProvider({
     <ThemeStoreProvider initData={theme}>
       <InitialNowProvider initialNow={initialNow}>
         <LocaleStoreProvider initData={{ locale, localeData }}>
-          <AccountWrapper initData={account} noAccount={noAccount}>
-            <CommunityStoreProvider initData={community}>
-              <DsbStoreProvider initData={{ ...dashboard, metric }}>
+          <MetricProvider value={metric}>
+            <AccountWrapper initData={account} noAccount={noAccount}>
+              <CommunityStoreProvider initData={community}>
                 <ThemePresetStoreProvider initData={dashboard}>
-                  <WallpaperStoreProvider initData={wallpaper}>{children}</WallpaperStoreProvider>
+                  <StaticWallpaperProvider initData={wallpaper?.staticWallpaper}>
+                    <WallpaperStoreProvider initData={wallpaper}>{children}</WallpaperStoreProvider>
+                  </StaticWallpaperProvider>
                 </ThemePresetStoreProvider>
-              </DsbStoreProvider>
-            </CommunityStoreProvider>
-          </AccountWrapper>
+              </CommunityStoreProvider>
+            </AccountWrapper>
+          </MetricProvider>
         </LocaleStoreProvider>
       </InitialNowProvider>
     </ThemeStoreProvider>

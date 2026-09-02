@@ -3,7 +3,7 @@ import { type MutableRefObject, useContext, useEffect, useRef } from 'react'
 
 import { ANCHOR } from '~/const/dom'
 import { scrollIntoEle } from '~/dom'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import useViewingArticle from '~/hooks/useViewingArticle'
 import { stripCommentViewerState } from '~/lib/commentViewerState'
 import { articleKeys, mutationKeys, Q, viewerKeys } from '~/query'
@@ -117,7 +117,7 @@ export default function useQuery(): TRet {
       body: string
       pending: TComment
     }) => {
-      const { createComment } = await browserQuery(S.createComment, {
+      const { createComment } = await browserGraphQLRequest(S.createComment, {
         article: articleInput,
         body,
       })
@@ -175,7 +175,7 @@ export default function useQuery(): TRet {
       parentId: TID
       pending: TComment
     }) => {
-      const { replyComment } = await browserQuery(S.replyComment, {
+      const { replyComment } = await browserGraphQLRequest(S.replyComment, {
         comment: commentInput,
         body,
       })
@@ -231,7 +231,7 @@ export default function useQuery(): TRet {
       commentInput: ReturnType<typeof buildCommentPath>
       body: string
     }) => {
-      const { updateComment } = await browserQuery(S.updateComment, {
+      const { updateComment } = await browserGraphQLRequest(S.updateComment, {
         comment: commentInput,
         body,
       })
@@ -271,9 +271,11 @@ export default function useQuery(): TRet {
 
   const openUpdateEditor = (comment: TComment): void => {
     commentsStore.commit({ showUpdateEditor: true })
-    browserQuery(S.oneComment, { comment: buildCommentPath(comment) }).then(({ oneComment }) => {
-      commentsStore.commit({ updateInnerId: oneComment.innerId, updateBody: oneComment.body })
-    })
+    browserGraphQLRequest(S.oneComment, { comment: buildCommentPath(comment) }).then(
+      ({ oneComment }) => {
+        commentsStore.commit({ updateInnerId: oneComment.innerId, updateBody: oneComment.body })
+      },
+    )
   }
 
   const _getRepliesPagiNo = (parentId: TID): number => {
@@ -299,7 +301,7 @@ export default function useQuery(): TRet {
       },
     })
     console.log('## loadCommentReplies args: ', params)
-    browserQuery(S.pagedCommentReplies, params).then(({ pagedCommentReplies }) => {
+    browserGraphQLRequest(S.pagedCommentReplies, params).then(({ pagedCommentReplies }) => {
       if (shouldIgnoreResult(requestId, repliesRequestRef, requestArticlePath)) return
 
       addToReplies(innerId, pagedCommentReplies.entries as unknown as TComment[])

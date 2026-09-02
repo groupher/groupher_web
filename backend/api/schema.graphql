@@ -211,6 +211,12 @@ type RootQueryType {
   "got basic comments state"
   commentsState(article: ArticlePathInput!, freshkey: String): CommentsListState
 
+  "Reads current viewer state for up to 100 canonical Article references; anonymous requests return an empty list"
+  articleViewerStates(refs: [ArticleRefInput!]!): [ViewerArticleState!]!
+
+  "Reads current viewer state for up to 100 canonical Comment references; anonymous requests return an empty list"
+  commentViewerStates(article: ArticleRefInput!, commentInnerIds: [ID!]!): [ViewerCommentState!]!
+
   "got spec comment by ref"
   oneComment(comment: CommentPathInput!): Comment
 
@@ -2642,6 +2648,8 @@ type DsbSeo {
 type DsbBgConfig {
   type: String
   source: String
+  assetPublicRef: String
+  staticAssetPublicRef: String
   pattern: Json
   gradient: Json
   contentShadow: Json
@@ -2653,6 +2661,8 @@ type CoverBackground {
   id: ID
   type: String
   source: String
+  assetPublicRef: String
+  staticAssetPublicRef: String
   pattern: Json
   gradient: Json
   contentShadow: Json
@@ -2682,6 +2692,8 @@ type CoverEditInfo {
 input CoverBackgroundInput {
   type: String
   source: String
+  assetPublicRef: String
+  staticAssetPublicRef: String
   pattern: Json
   gradient: Json
   contentShadow: Json
@@ -2706,6 +2718,7 @@ input CoverEditInfoInput {
 }
 
 type DsbWallpaper {
+  staticRevision: String
   light: DsbBgConfig
   dark: DsbBgConfig
 }
@@ -3082,6 +3095,26 @@ type EmotionStat {
   count: Int
   viewerHasReacted: Boolean
   latestUsers: [CommonUser]
+}
+
+type ViewerArticleState {
+  community: String!
+  thread: Thread!
+  innerId: ID!
+  viewerHasViewed: Boolean
+  viewerHasUpvoted: Boolean
+}
+
+type ViewerCommentEmotionState {
+  type: EmotionType!
+  viewerHasReacted: Boolean
+}
+
+type ViewerCommentState {
+  innerId: ID!
+  viewerHasUpvoted: Boolean
+  viewerHasReported: Boolean
+  emotions: [ViewerCommentEmotionState!]!
 }
 
 type CommentMeta {
@@ -3634,6 +3667,12 @@ input ArticlePathInput {
   thread: Thread!
 }
 
+input ArticleRefInput {
+  innerId: ID!
+  community: String!
+  thread: Thread!
+}
+
 input CommentPathInput {
   article: ArticlePathInput!
   innerId: ID!
@@ -3866,6 +3905,8 @@ input DsbMediaReportMap {
 input DsbBgConfigInput {
   type: String
   source: String
+  assetPublicRef: String
+  staticAssetPublicRef: String
   pattern: Json
   gradient: Json
   contentShadow: Json
@@ -3874,6 +3915,7 @@ input DsbBgConfigInput {
 }
 
 input DsbWallpaperInput {
+  staticRevision: String
   light: DsbBgConfigInput
   dark: DsbBgConfigInput
 }

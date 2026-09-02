@@ -1,10 +1,10 @@
 import type { TMetric } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useMetricContext from '~/stores/metric/hooks'
 
 type TFmt = 'default' | 'lowercase'
 
 export default (fmt: TFmt = 'default'): TMetric => {
-  const { metric } = useDsb()
+  const metric = useMetricContext()
 
   if (fmt === 'lowercase') {
     return metric.toLowerCase() as TMetric

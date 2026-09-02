@@ -1,7 +1,8 @@
 import type { TCommunityLocale } from '@dash/server/locale'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 
-import type { TCommunity } from '~/spec'
+import { Q } from '~/query'
 import AccountStoreProvider from '~/stores/account/provider'
 import type { TInit as TAccountInit } from '~/stores/account/spec'
 import CommunityStoreProvider from '~/stores/community/provider'
@@ -9,16 +10,18 @@ import LocaleStoreProvider from '~/stores/locale/provider'
 
 type TProps = {
   children: ReactNode
-  community: TCommunity
+  community: string
   account: TAccountInit
   locale: TCommunityLocale
 }
 
 export default function CommunityBoundary({ children, account, community, locale }: TProps) {
+  const { data: communityConfig } = useSuspenseQuery(Q.community.config(community))
+
   return (
     <LocaleStoreProvider initData={locale}>
       <AccountStoreProvider initData={account}>
-        <CommunityStoreProvider initData={community}>{children}</CommunityStoreProvider>
+        <CommunityStoreProvider initData={communityConfig}>{children}</CommunityStoreProvider>
       </AccountStoreProvider>
     </LocaleStoreProvider>
   )

@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { lazy, Suspense, useCallback, useState } from 'react'
 
 import useTrans from '~/hooks/useTrans'
+import { visitorKeys } from '~/query'
 import type { TVisitorLocationMap } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
 
@@ -20,7 +21,7 @@ export default function VisitorLocationMap() {
   const onGlobeUnavailable = useCallback(() => setGlobeUnavailable(true), [])
 
   const query = useQuery({
-    queryKey: ['visitor-location-map', community, locale],
+    queryKey: visitorKeys.locationMap(community, locale),
     queryFn: async () => {
       const response = await fetch(
         `/api/visitor-location-map/${encodeURIComponent(community)}?locale=${encodeURIComponent(locale)}`,

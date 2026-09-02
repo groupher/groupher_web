@@ -32,40 +32,23 @@ const stripComment = (comment: TComment): TComment => {
 /** Removes viewer-private fields from every comment-bearing path in one comment graph. */
 export const stripCommentViewerState = (comment: TComment): TComment => stripComment(comment)
 
-/** Removes viewer-private fields before a paged comment response enters public Query cache. */
-export const stripPagedCommentViewerState = (comments: TPagedComments): TPagedComments => ({
-  ...comments,
-  entries: (comments.entries as unknown as TComment[]).map(stripComment),
-})
-
-/** Extracts the current viewer flags from an authenticated, unstripped comment response. */
-export const extractCommentViewerStates = (comments: TPagedComments): TCommentViewerStates => {
-  const states: TCommentViewerStates = {}
+/** Gathers every comment innerId addressed by the viewer batch query. */
+export const gatherCommentViewerIds = (comments: TPagedComments): string[] => {
+  const ids: string[] = []
   const visited = new Set<string>()
 
-  const collect = (comment: TComment): void => {
+  const gather = (comment: TComment): void => {
     const innerId = String(comment.innerId)
     if (visited.has(innerId)) return
     visited.add(innerId)
+    ids.push(innerId)
 
-    const emotionFlags: TCommentViewerState['emotionFlags'] = {}
-    for (const emotion of comment.emotions || []) {
-      if (emotion.type === 'UPVOTE' || typeof emotion.viewerHasReacted !== 'boolean') continue
-      emotionFlags[emotion.type as TCommentEmotionType] = emotion.viewerHasReacted
-    }
-
-    states[innerId] = {
-      emotionFlags,
-      viewerHasUpvoted: comment.viewerHasUpvoted,
-      viewerHasReported: comment.viewerHasReported,
-    }
-
-    for (const reply of comment.replies || []) collect(reply)
-    if (comment.replyToComment) collect(comment.replyToComment)
+    for (const reply of comment.replies || []) gather(reply)
+    if (comment.replyToComment) gather(comment.replyToComment)
   }
 
-  for (const comment of comments.entries as unknown as TComment[]) collect(comment)
-  return states
+  for (const comment of comments.entries as unknown as TComment[]) gather(comment)
+  return ids
 }
 
 /** Overlays viewer flags without allowing private query data to replace public aggregates. */

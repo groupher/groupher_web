@@ -4,8 +4,8 @@ import { includes } from 'ramda'
 
 import METRIC from '~/const/metric'
 import useMetric from '~/hooks/useMetric'
+import useDsb from '~/query/useDsbConfig'
 import type { TColorName } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
 
 type TRet = {
   hasTopbar: boolean

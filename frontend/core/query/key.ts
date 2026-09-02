@@ -92,12 +92,18 @@ export const commentKeys = {
 
 export const viewerKeys = {
   all: ['viewer'] as const,
+  session: () => [...viewerKeys.all, 'session'] as const,
+  articleStatePrefix: (viewerScope: string) =>
+    [...viewerKeys.all, viewerScope, 'article-state'] as const,
   articleStates: (viewerScope: string, articleKeys: readonly string[]) =>
-    [...viewerKeys.all, viewerScope, 'article-state', [...articleKeys].sort()] as const,
-  articleState: (viewerScope: string, articleKey: string) =>
-    [...viewerKeys.all, viewerScope, 'article-detail-state', articleKey] as const,
-  commentStates: (viewerScope: string, articleKey: string, page: number, mode: string) =>
-    [...viewerKeys.all, viewerScope, 'comment-state', articleKey, { mode, page }] as const,
+    [...viewerKeys.articleStatePrefix(viewerScope), [...articleKeys].sort()] as const,
+  commentStatePrefix: (viewerScope: string, articleKey: string) =>
+    [...viewerKeys.all, viewerScope, 'comment-state', articleKey] as const,
+  commentStates: (viewerScope: string, articleKey: string, commentInnerIds: readonly string[]) =>
+    [
+      ...viewerKeys.commentStatePrefix(viewerScope, articleKey),
+      [...commentInnerIds].sort(),
+    ] as const,
   commentSummary: (viewerScope: string, articleKey: string) =>
     [...viewerKeys.all, viewerScope || 'anonymous', 'comment-summary', articleKey] as const,
 }
@@ -108,4 +114,10 @@ export const mutationKeys = {
     [...mutationKeys.all, 'article', articleKey, operation] as const,
   comment: (commentKey: string, operation: string) =>
     [...mutationKeys.all, 'comment', commentKey, operation] as const,
+}
+
+export const visitorKeys = {
+  all: ['visitor-location-map'] as const,
+  locationMap: (community: string, locale: string) =>
+    [...visitorKeys.all, community, locale] as const,
 }

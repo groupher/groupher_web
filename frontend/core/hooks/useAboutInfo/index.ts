@@ -1,5 +1,5 @@
+import useDsb from '~/query/useDsbConfig'
 import type { TMediaReport, TSocialItem } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
 
 type TABoutInfo = {
   homepage: string | null

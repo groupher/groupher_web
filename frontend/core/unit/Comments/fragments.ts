@@ -88,6 +88,71 @@ export const CommentReplyFields = graphql(`
   }
 `)
 
+// Public comment queries intentionally omit every viewer-owned field. The
+// browser loads those fields through Q.viewer.commentStates after hydration.
+export const CommentPublicEmotionFields = graphql(`
+  fragment CommentPublicEmotionFields on EmotionStat {
+    type
+    count
+    latestUsers {
+      login
+      nickname
+      avatar
+    }
+  }
+`)
+
+export const CommentPublicFields = graphql(`
+  fragment CommentPublicFields on Comment {
+    innerId
+    bodyHtml
+    author {
+      ...CommentAuthorFields
+    }
+    meta {
+      ...CommentMetaFields
+    }
+    emotions {
+      ...CommentPublicEmotionFields
+    }
+    isPinned
+    isSolution
+    floor
+    upvotesCount
+    isArticleAuthor
+    repliesCount
+    insertedAt
+    updatedAt
+  }
+`)
+
+export const CommentPublicReplyFields = graphql(`
+  fragment CommentPublicReplyFields on CommentReply {
+    innerId
+    bodyHtml
+    author {
+      ...CommentAuthorFields
+    }
+    meta {
+      ...CommentMetaFields
+    }
+    emotions {
+      ...CommentPublicEmotionFields
+    }
+    isPinned
+    isSolution
+    floor
+    upvotesCount
+    isArticleAuthor
+    repliesCount
+    insertedAt
+    updatedAt
+    replyToComment {
+      ...CommentPublicFields
+    }
+  }
+`)
+
 export const CommentPageFields = graphql(`
   fragment CommentPageFields on PagedComments {
     totalPages

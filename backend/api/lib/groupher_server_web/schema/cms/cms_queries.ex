@@ -474,6 +474,21 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
       resolve(&R.CMS.comments_state/3)
     end
 
+    @desc "Reads current viewer state for up to 100 canonical Article references; anonymous requests return an empty list"
+    field :article_viewer_states, non_null(list_of(non_null(:viewer_article_state))) do
+      arg(:refs, non_null(list_of(non_null(:article_ref_input))))
+
+      resolve(&R.CMS.article_viewer_states/3)
+    end
+
+    @desc "Reads current viewer state for up to 100 canonical Comment references; anonymous requests return an empty list"
+    field :comment_viewer_states, non_null(list_of(non_null(:viewer_comment_state))) do
+      arg(:article, non_null(:article_ref_input))
+      arg(:comment_inner_ids, non_null(list_of(non_null(:id))))
+
+      resolve(&R.CMS.comment_viewer_states/3)
+    end
+
     @desc "got spec comment by ref"
     field :one_comment, :comment do
       arg(:comment, non_null(:comment_path_input))

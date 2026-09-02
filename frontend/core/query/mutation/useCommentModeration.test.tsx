@@ -8,9 +8,9 @@ import type { TComment } from '~/spec'
 import { commentKeys } from '../key'
 import useCommentModeration from './useCommentModeration'
 
-const mocks = vi.hoisted(() => ({ browserQuery: vi.fn() }))
+const mocks = vi.hoisted(() => ({ browserGraphQLRequest: vi.fn() }))
 
-vi.mock('~/graphql/client', () => ({ browserQuery: mocks.browserQuery }))
+vi.mock('~/graphql/client', () => ({ browserGraphQLRequest: mocks.browserGraphQLRequest }))
 vi.mock('~/hooks/useViewingArticle', () => ({
   default: () => ({
     article: {
@@ -28,8 +28,8 @@ const comment = { innerId: '1', replies: [] } as TComment
 
 describe('useCommentModeration', () => {
   beforeEach(() => {
-    mocks.browserQuery.mockReset()
-    mocks.browserQuery.mockResolvedValue({ deleteComment: { ok: true } })
+    mocks.browserGraphQLRequest.mockReset()
+    mocks.browserGraphQLRequest.mockResolvedValue({ deleteComment: { ok: true } })
   })
 
   it('deletes only the comment in the current article cache', async () => {
@@ -47,7 +47,7 @@ describe('useCommentModeration', () => {
     const { result } = renderHook(() => useCommentModeration(comment), { wrapper })
 
     act(() => result.current.deleteComment())
-    await waitFor(() => expect(mocks.browserQuery).toHaveBeenCalledOnce())
+    await waitFor(() => expect(mocks.browserGraphQLRequest).toHaveBeenCalledOnce())
 
     expect(queryClient.getQueryData<{ entries: TComment[] }>(currentArticleKey)?.entries).toEqual(
       [],

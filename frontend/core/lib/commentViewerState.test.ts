@@ -3,9 +3,9 @@ import { describe, expect, it } from 'vitest'
 import type { TComment, TPagedComments } from '~/spec'
 
 import {
-  extractCommentViewerStates,
+  gatherCommentViewerIds,
   mergeCommentViewerState,
-  stripPagedCommentViewerState,
+  stripCommentViewerState,
 } from './commentViewerState'
 
 const comment = (innerId: string, overrides: Partial<TComment> = {}): TComment =>
@@ -31,14 +31,11 @@ const page = (entries: TComment[]): TPagedComments =>
 
 describe('comment viewer state boundary', () => {
   it('strips viewer fields recursively from replies and replyToComment', () => {
-    const source = page([
+    const root = stripCommentViewerState(
       comment('root', {
         replies: [comment('reply', { replyToComment: comment('quoted') })],
       }),
-    ])
-
-    const result = stripPagedCommentViewerState(source)
-    const root = result.entries[0] as unknown as TComment
+    )
     const reply = root.replies[0]
     const quoted = reply.replyToComment
 
@@ -49,18 +46,19 @@ describe('comment viewer state boundary', () => {
     }
   })
 
-  it('extracts private flags without carrying public emotion counts', () => {
-    const states = extractCommentViewerStates(
-      page([comment('root', { replies: [comment('reply')] })]),
-    )
+  it('gathers nested reply and replyToComment ids for the viewer batch', () => {
+    const source = page([
+      comment('root', {
+        replies: [
+          comment('reply', {
+            replies: [comment('nested')],
+            replyToComment: comment('quoted'),
+          }),
+        ],
+      }),
+    ])
 
-    expect(states.root).toEqual({
-      emotionFlags: { HEART: false },
-      viewerHasReported: false,
-      viewerHasUpvoted: false,
-    })
-    expect(states.reply).toBeDefined()
-    expect(states.root).not.toHaveProperty('emotions')
+    expect(gatherCommentViewerIds(source)).toEqual(['root', 'reply', 'nested', 'quoted'])
   })
 
   it('keeps public counts while overlaying viewer flags by emotion type', () => {

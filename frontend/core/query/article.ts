@@ -2,7 +2,7 @@ import type { VariablesOf } from '@graphql-typed-document-node/core'
 import { queryOptions } from '@tanstack/react-query'
 
 import { THREAD } from '~/const/thread'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import { changelog, pagedChangelogs } from '~/schemas/pages/changelog'
 import { doc } from '~/schemas/pages/doc'
 import { communityTagGroups, communityTagStats } from '~/schemas/pages/misc'
@@ -47,7 +47,7 @@ const posts = (filter: TPagedArticlesParams) =>
   queryOptions({
     queryKey: articleKeys.posts(filter),
     queryFn: async () => {
-      const data = await browserQuery(pagedPosts, {
+      const data = await browserGraphQLRequest(pagedPosts, {
         filter: toPostsFilter(filter),
         userHasLogin: false,
       })
@@ -59,7 +59,7 @@ const changelogs = (filter: TPagedArticlesParams) =>
   queryOptions({
     queryKey: articleKeys.changelogs(filter),
     queryFn: async () => {
-      const data = await browserQuery(pagedChangelogs, {
+      const data = await browserGraphQLRequest(pagedChangelogs, {
         filter: toPostsFilter(filter) as VariablesOf<typeof pagedChangelogs>['filter'],
         userHasLogin: false,
       })
@@ -71,7 +71,7 @@ const kanban = (community: string) =>
   queryOptions({
     queryKey: articleKeys.kanban(community),
     queryFn: async () => {
-      const data = await browserQuery(groupedKanbanPosts, { community })
+      const data = await browserGraphQLRequest(groupedKanbanPosts, { community })
       return data.groupedKanbanPosts as unknown as TGroupedKanbanPosts
     },
     enabled: !!community,
@@ -83,14 +83,14 @@ const detail = (community: string, thread: TThread, innerId: string | number) =>
     queryFn: async () => {
       const article = { community, thread, innerId: String(innerId) }
       if (thread === THREAD.CHANGELOG) {
-        const data = await browserQuery(changelog, { article, userHasLogin: false })
+        const data = await browserGraphQLRequest(changelog, { article, userHasLogin: false })
         return data.changelog as unknown as TPost
       }
       if (thread === THREAD.DOC) {
-        const data = await browserQuery(doc, { article, userHasLogin: false })
+        const data = await browserGraphQLRequest(doc, { article, userHasLogin: false })
         return data.doc as unknown as TPost
       }
-      const data = await browserQuery(post, { article, userHasLogin: false })
+      const data = await browserGraphQLRequest(post, { article, userHasLogin: false })
       return data.post as unknown as TPost
     },
   })
@@ -100,7 +100,7 @@ const tagStats = (community: string, thread: TThread, slug: string | null | unde
     queryKey: articleKeys.tagStats(community, thread, slug),
     queryFn: async () => {
       if (!slug) return null
-      const data = await browserQuery(communityTagStats, { community, thread, slug })
+      const data = await browserGraphQLRequest(communityTagStats, { community, thread, slug })
       return data.communityTagStats ? ({ ...data.communityTagStats, slug } as TTagStats) : null
     },
     enabled: !!community && !!thread && !!slug,
@@ -110,7 +110,7 @@ const tagGroups = (community: string, thread: TThread) =>
   queryOptions({
     queryKey: articleKeys.tagGroups(community, thread),
     queryFn: async () => {
-      const data = await browserQuery(communityTagGroups, { community, thread })
+      const data = await browserGraphQLRequest(communityTagGroups, { community, thread })
       return (data.communityTagGroups || []) as unknown as TTagGroup[]
     },
     enabled: !!community && !!thread,

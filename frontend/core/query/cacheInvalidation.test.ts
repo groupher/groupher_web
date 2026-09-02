@@ -1,78 +1,118 @@
 import { THREAD } from '~/const/thread'
 
-import { mutationCacheTags } from './cacheInvalidation'
+import { mutationCacheEffect } from './cacheInvalidation'
 
-describe('mutation cache tag mapping', () => {
+describe('mutation cache effect mapping', () => {
   const article = { community: 'home', thread: THREAD.POST, innerId: '42' }
 
-  it('maps an article mutation to exact detail and list tags', () => {
+  it('does not immediately purge for high-frequency article interactions', () => {
     expect(
-      mutationCacheTags(
+      mutationCacheEffect(
         'mutation QueryUpvotePost($article: ArticlePathInput!) { upvotePost(article: $article) { innerId } }',
-        {
-          article,
-        },
+        { article },
       ),
-    ).toEqual(['community[home]-thread[POST]-article[42]', 'community[home]-thread[POST]-articles'])
+    ).toEqual({
+      mode: 'none',
+      operationName: 'QueryUpvotePost',
+      tags: ['community[home]-thread[POST]-article[42]', 'community[home]-thread[POST]-articles'],
+    })
   })
 
-  it('maps a comment mutation through its nested article path', () => {
+  it('does not immediately purge for high-frequency comment interactions', () => {
     expect(
-      mutationCacheTags(
-        'mutation UpvoteComment($comment: CommentPathInput!) { upvoteComment(comment: $comment) { innerId } }',
-        {
-          comment: { article, innerId: '7' },
-        },
+      mutationCacheEffect(
+        'mutation EmotionToComment($comment: CommentPathInput!) { emotionToComment(comment: $comment) { innerId } }',
+        { comment: { article, innerId: '7' } },
       ),
-    ).toEqual([
-      'community[home]-thread[POST]-article[42]',
-      'community[home]-thread[POST]-articles',
-      'community[home]-thread[POST]-article[42]-comments',
-    ])
+    ).toMatchObject({ mode: 'none', operationName: 'EmotionToComment' })
+  })
+
+  it('immediately invalidates public comment content changes', () => {
+    expect(
+      mutationCacheEffect(
+        'mutation CreateComment($comment: CommentPathInput!) { createComment(comment: $comment) { innerId } }',
+        { comment: { article } },
+      ),
+    ).toEqual({
+      mode: 'immediate',
+      operationName: 'CreateComment',
+      tags: [
+        'community[home]-thread[POST]-article[42]',
+        'community[home]-thread[POST]-articles',
+        'community[home]-thread[POST]-article[42]-comments',
+      ],
+    })
   })
 
   it('ignores caller-provided tags and unknown operations', () => {
     expect(
-      mutationCacheTags('mutation Unknown { unknown }', {
-        article,
-        tag: 'community[other]',
-      }),
-    ).toEqual([])
+      mutationCacheEffect('mutation Unknown { unknown }', { article, tag: 'community[other]' }),
+    ).toBeNull()
   })
 
-  it('maps community-scoped post restore mutations to post tags', () => {
+  it('invalidates the public post list after creating a post', () => {
     expect(
-      mutationCacheTags(
-        'mutation restoreTrashedPost($community: String!, $id: ID!) { restoreTrashedArticle(community: $community, id: $id, thread: POST) { innerId } }',
-        { community: 'home', id: '42' },
+      mutationCacheEffect(
+        'mutation CreatePost($community: String!) { createPost(community: $community) { innerId } }',
+        { community: 'home' },
       ),
-    ).toEqual(['community[home]-thread[POST]-article[42]', 'community[home]-thread[POST]-articles'])
+    ).toMatchObject({ mode: 'immediate', tags: ['community[home]-thread[POST]-articles'] })
   })
 
   it('maps document publishing to only the document list and tree tags', () => {
     expect(
-      mutationCacheTags(
-        'mutation publishDocChanges($community: String!, $input: DocPublishChangesInput) { publishDocChanges(community: $community, input: $input) { done } }',
-        {
-          community: 'home',
-          input: { docChangeIds: ['change:42'], treeChangeIds: ['tree:7'] },
-        },
+      mutationCacheEffect(
+        'mutation publishDocChanges($community: String!) { publishDocChanges(community: $community) { done } }',
+        { community: 'home' },
       ),
-    ).toEqual(['community[home]-thread[DOC]-articles', 'community[home]-doc-tree'])
+    ).toMatchObject({
+      mode: 'immediate',
+      tags: ['community[home]-thread[DOC]-articles', 'community[home]-doc-tree'],
+    })
   })
 
-  it('does not treat publishDocChanges as an article mutation without its community rule', () => {
-    expect(
-      mutationCacheTags('mutation publishDocChanges { publishDocChanges { done } }', { article }),
-    ).toEqual([])
+  it('maps dashboard and theme mutations to the community tag', () => {
+    for (const operationName of [
+      'UpdateDashboardSeo',
+      'SaveCustomThemePreset',
+      'DashboardAddModerator',
+    ]) {
+      expect(
+        mutationCacheEffect(
+          `mutation ${operationName}($community: String!) { result: update(community: $community) }`,
+          { community: 'home' },
+        ),
+      ).toMatchObject({ mode: 'immediate', tags: ['community[home]'] })
+    }
   })
 
-  it('invalidates the public document tree for community-scoped tree mutations', () => {
+  it('maps typed tag mutations to tag and article-list tags', () => {
     expect(
-      mutationCacheTags(
-        'mutation UpdateDocTreeNode($community: String!, $id: ID!) { updateDocTreeNode(community: $community, id: $id) { revision } }',
-        { community: 'home', id: 'node-1' },
+      mutationCacheEffect(
+        'mutation DashboardCreateCommunityTag($community: String!, $thread: Thread!) { createCommunityTag(community: $community, thread: $thread) { id } }',
+        { community: 'home', thread: THREAD.POST },
       ),
-    ).toEqual(['community[home]-doc-tree'])
+    ).toMatchObject({
+      mode: 'immediate',
+      tags: ['community[home]-thread[POST]-tags', 'community[home]-thread[POST]-articles'],
+    })
+  })
+
+  it('falls back to the community tag when a tag mutation has no thread variable', () => {
+    expect(
+      mutationCacheEffect(
+        'mutation DashboardUpdateCommunityTag($community: String!) { updateCommunityTag(community: $community) { id } }',
+        { community: 'home' },
+      ),
+    ).toMatchObject({ mode: 'immediate', tags: ['community[home]'] })
+  })
+
+  it('reads community from nested dashboard press config input', () => {
+    expect(
+      mutationCacheEffect(
+        'mutation UpdateDashboardPressConfig($input: UpdatePressConfigInput!) { updatePressConfig(input: $input) { config { revision } } }',
+        { input: { community: 'home', feedEnabled: true } },
+      ),
+    ).toMatchObject({ mode: 'immediate', tags: ['community[home]'] })
   })
 })

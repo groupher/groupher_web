@@ -17,6 +17,27 @@ const pagedComments = graphql(`
   }
 `)
 
+const publicPagedComments = graphql(`
+  query PublicPagedComments(
+    $article: ArticlePathInput!
+    $mode: CommentsMode
+    $filter: CommentsFilter!
+  ) {
+    pagedComments(article: $article, mode: $mode, filter: $filter) {
+      entries {
+        ...CommentPublicFields
+        replyToComment {
+          ...CommentPublicFields
+        }
+        replies {
+          ...CommentPublicReplyFields
+        }
+      }
+      ...CommentPageFields
+    }
+  }
+`)
+
 const pagedCommentReplies = graphql(`
   query PagedCommentReplies($comment: CommentPathInput!, $filter: CommentsFilter!) {
     pagedCommentReplies(comment: $comment, filter: $filter) {
@@ -222,6 +243,7 @@ const pagedPublishedComments = graphql(`
 
 export default {
   pagedComments,
+  publicPagedComments,
   pagedCommentReplies,
   createComment,
   oneComment,

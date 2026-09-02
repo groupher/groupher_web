@@ -4,7 +4,7 @@ import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { OperationDefinitionNode } from 'graphql'
 
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 
 import { articleKeys, mutationKeys } from '../key'
 
@@ -21,7 +21,7 @@ export default function useArticleSettingMutation<
   const mutation = useMutation({
     mutationKey: mutationKeys.article('current', `setting:${operation || 'unknown'}`),
     retry: false,
-    mutationFn: (variables: TVariables) => browserQuery(document, variables),
+    mutationFn: (variables: TVariables) => browserGraphQLRequest(document, variables),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: articleKeys.all, refetchType: 'none' }),
   })

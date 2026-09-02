@@ -1,6 +1,6 @@
 import { UPVOTE_LAYOUT } from '~/const/layout'
 import Img from '~/Img'
-import { upvoteArticle } from '~/signal'
+import useArticleUpvoteMutation from '~/query/mutation/useArticleUpvoteMutation'
 import useArticle from '~/stores/article/hooks'
 import ReadableDate from '~/ui/ReadableDate'
 import ArticleCatStatus from '~/unit/ArticleCatStatus'
@@ -12,6 +12,7 @@ import useSalon from './salon/side_info'
 export default function SideInfo() {
   const s = useSalon()
   const { article } = useArticle()
+  const upvoteArticle = useArticleUpvoteMutation(article)
 
   if (!article) {
     return <h1>Error article</h1>
@@ -27,7 +28,7 @@ export default function SideInfo() {
           count={upvotesCount}
           avatarList={latestUpvotedUsers}
           viewerHasUpvoted={viewerHasUpvoted}
-          onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
+          onAction={upvoteArticle}
           type={UPVOTE_LAYOUT.ARTICLE}
           bottom={8}
         />

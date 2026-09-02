@@ -14,8 +14,26 @@ import { invalidateAuthState, requestLogin, resolveAuthFailure, withAuthRetry } 
 const ACCOUNT_LOGIN_ERROR_CODE = 4301
 
 type TGraphQLError = {
-  message?: string
+  message?: unknown
   extensions?: { code?: unknown }
+}
+
+const formatGraphQLErrorMessage = (message: unknown): string => {
+  if (typeof message === 'string') return message
+  if (Array.isArray(message)) {
+    return message
+      .map((item) => {
+        if (!item || typeof item !== 'object') return String(item)
+        const entry = item as { key?: unknown; message?: unknown }
+        const detail =
+          typeof entry.message === 'string' ? entry.message : String(entry.message ?? '')
+        return entry.key ? `${String(entry.key)}: ${detail}` : detail
+      })
+      .filter(Boolean)
+      .join('\n')
+  }
+  if (message && typeof message === 'object') return JSON.stringify(message)
+  return message == null ? '' : String(message)
 }
 
 export class GraphQLRequestError extends Error {
@@ -25,7 +43,7 @@ export class GraphQLRequestError extends Error {
   constructor(response: Response, errors: TGraphQLError[]) {
     super(
       errors
-        .map((error) => error.message)
+        .map((error) => formatGraphQLErrorMessage(error.message))
         .filter(Boolean)
         .join('\n') || 'GraphQL request failed.',
     )
