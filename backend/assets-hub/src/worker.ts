@@ -39,6 +39,7 @@ const corsHeaders = {
   'access-control-allow-origin': '*',
 }
 const startedAt = Date.now()
+const SERVICE_AUTH_CONTRACT_PROBE_REF = 'dev-hub-assets-service-auth-contract-probe'
 
 const json = (input: unknown, init?: ResponseInit) =>
   new Response(JSON.stringify(input), {
@@ -187,6 +188,64 @@ const originLookupFailed = (error: unknown) => {
   })
 }
 
+const healthResponse = ({
+  env,
+  checks = [],
+  status = 'ok',
+}: {
+  env: Env
+  checks?: Array<{
+    name: string
+    status: 'ok' | 'down'
+    latencyMs?: number
+    message?: string
+  }>
+  status?: 'ok' | 'down'
+}) =>
+  json(
+    {
+      schemaVersion: 'health.v1',
+      status,
+      service: 'assets-hub',
+      version: env.VERSION || 'dev',
+      environment: env.ENVIRONMENT || 'development',
+      timestamp: new Date().toISOString(),
+      uptimeMs: Date.now() - startedAt,
+      checks,
+    },
+    { status: status === 'down' ? 503 : 200 },
+  )
+
+const serviceAuthContractProbe = async (env: Env) => {
+  const startedAt = performance.now()
+
+  try {
+    const originInfo = await fetchAssetOriginInfo({
+      environment: env,
+      publicRef: SERVICE_AUTH_CONTRACT_PROBE_REF,
+    })
+
+    if (originInfo !== null) {
+      return {
+        latencyMs: Math.round(performance.now() - startedAt),
+        message: 'Phoenix unexpectedly returned an origin for the reserved asset reference.',
+        status: 'down' as const,
+      }
+    }
+
+    return {
+      latencyMs: Math.round(performance.now() - startedAt),
+      status: 'ok' as const,
+    }
+  } catch (error) {
+    return {
+      latencyMs: Math.round(performance.now() - startedAt),
+      message: error instanceof Error ? error.message : 'Assets service-auth contract failed.',
+      status: 'down' as const,
+    }
+  }
+}
+
 const serveAsset = async (request: Request, env: Env) => {
   const url = new URL(request.url)
   const assetPath = parseAssetPath(url.pathname)
@@ -288,16 +347,17 @@ export default {
     const url = new URL(request.url)
 
     if (url.pathname === '/health') {
-      return json({
-        schemaVersion: 'health.v1',
-        status: 'ok',
-        service: 'assets-hub',
-        version: env.VERSION || 'dev',
-        environment: env.ENVIRONMENT || 'production',
-        timestamp: new Date().toISOString(),
-        uptimeMs: Date.now() - startedAt,
-        checks: [],
-      })
+      return healthResponse({ env })
+    }
+
+    if (url.pathname === '/health/ready') {
+      return serviceAuthContractProbe(env).then((check) =>
+        healthResponse({
+          env,
+          checks: [{ name: 'assets-service-auth', ...check }],
+          status: check.status,
+        }),
+      )
     }
 
     if (url.pathname === '/internal/assets/delete') return enqueueAssetDelete(request, env)

@@ -120,6 +120,8 @@ const noStore = (): Record<string, string> => ({ 'Cache-Control': 'no-store' })
 
 const retryAfter = (): Record<string, string> => ({ ...noStore(), 'Retry-After': '60' })
 
+const SERVICE_AUTH_PROBE_REF = 'dev-hub-service-auth-contract-probe'
+
 const clientRateLimitKey = (request: Request): string => {
   const forwardedFor = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
   return request.headers.get('cf-connecting-ip') || forwardedFor || 'unknown-client'
@@ -137,6 +139,9 @@ export const mapBrowserSessionError = (
     if (error.code === AUTH_ERROR.TOKEN_INVALID || error.code === AUTH_ERROR.TOKEN_EXPIRED) {
       return { code: error.code, status: 401 }
     }
+    if (error.code === AUTH_ERROR.SERVICE_TOKEN_INVALID) return { code: error.code, status: 401 }
+    if (error.code === AUTH_ERROR.SERVICE_SCOPE_FORBIDDEN) return { code: error.code, status: 403 }
+    if (error.code === AUTH_ERROR.SERVICE_JWKS_UNAVAILABLE) return { code: error.code, status: 503 }
     if (error.code === AUTH_ERROR.ACCOUNT_BLOCKED) return { code: error.code, status: 403 }
     if (error.code === AUTH_ERROR.SESSION_CONFLICT) return { code: error.code, status: 409 }
     if (error.code === AUTH_ERROR.RATE_LIMITED) return { code: error.code, status: 429 }
@@ -152,6 +157,13 @@ export const mapBrowserSessionError = (
 
   return { code: fallbackCode, status: 503 }
 }
+
+const clearsBrowserSession = (code: string): boolean =>
+  code === AUTH_ERROR.SESSION_REVOKED ||
+  code === AUTH_ERROR.SESSION_EXPIRED ||
+  code === AUTH_ERROR.TOKEN_INVALID ||
+  code === AUTH_ERROR.TOKEN_EXPIRED ||
+  code === AUTH_ERROR.ACCOUNT_BLOCKED
 
 /** Creates the auth application with injectable runtime dependencies. */
 export const createApp = ({
@@ -241,6 +253,69 @@ export const createApp = ({
 
   app.get('/health', (context) => context.json(createHealthResponse({ service: 'auth' })))
 
+  app.get('/health/service-auth', async (context) => {
+    if (process.env.DEV_HUB_SERVICE_AUTH_PROBE !== 'true') return context.notFound()
+
+    const startedAt = performance.now()
+    try {
+      await refreshSession(SERVICE_AUTH_PROBE_REF)
+      return context.json(
+        createHealthResponse({
+          service: 'auth',
+          status: 'down',
+          checks: [
+            {
+              name: 'phoenix-service-auth',
+              status: 'down',
+              latencyMs: Math.round(performance.now() - startedAt),
+              message: 'Phoenix unexpectedly accepted the reserved probe Session reference.',
+            },
+          ],
+        }),
+        503,
+        noStore(),
+      )
+    } catch (error) {
+      if (
+        error instanceof PhoenixBrowserSessionError &&
+        error.code === AUTH_ERROR.SESSION_REVOKED
+      ) {
+        return context.json(
+          createHealthResponse({
+            service: 'auth',
+            checks: [
+              {
+                name: 'phoenix-service-auth',
+                status: 'ok',
+                latencyMs: Math.round(performance.now() - startedAt),
+              },
+            ],
+          }),
+          200,
+          noStore(),
+        )
+      }
+
+      const failure = mapBrowserSessionError(error, AUTH_ERROR.REFRESH_UNAVAILABLE)
+      return context.json(
+        createHealthResponse({
+          service: 'auth',
+          status: 'down',
+          checks: [
+            {
+              name: 'phoenix-service-auth',
+              status: 'down',
+              latencyMs: Math.round(performance.now() - startedAt),
+              message: failure.code,
+            },
+          ],
+        }),
+        503,
+        noStore(),
+      )
+    }
+  })
+
   app.get('/.well-known/jwks.json', async (context) =>
     context.json(await serviceJwks(process.env), 200, { 'Cache-Control': 'public, max-age=300' }),
   )
@@ -328,7 +403,7 @@ export const createApp = ({
       )
     } catch (error) {
       const failure = mapBrowserSessionError(error, AUTH_ERROR.REFRESH_UNAVAILABLE)
-      if (failure.status === 401 || failure.status === 403) {
+      if (clearsBrowserSession(failure.code)) {
         for (const cookie of buildAuthCookieClearingHeaders(context.req.raw)) {
           context.header('Set-Cookie', cookie, { append: true })
         }

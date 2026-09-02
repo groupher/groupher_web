@@ -12,7 +12,7 @@ defmodule GroupherServerWeb.Middleware.ServiceScope do
 
   @behaviour Absinthe.Middleware
 
-  alias GroupherServer.ErrorCat
+  alias GroupherServer.Auth.Contract, as: AuthContract
   import Helper.Utils, only: [handle_absinthe_error: 3]
 
   @impl Absinthe.Middleware
@@ -25,17 +25,27 @@ defmodule GroupherServerWeb.Middleware.ServiceScope do
     if test_actor or (actor.audience == audience and MapSet.member?(actor.scopes, scope)) do
       resolution
     else
-      reject(resolution)
+      reject(
+        resolution,
+        "service identity is not authorized for this operation",
+        AuthContract.service_scope_forbidden()
+      )
     end
   end
 
-  def call(resolution, _opts), do: reject(resolution)
+  def call(%{context: %{service_auth_failure: code}} = resolution, _opts) do
+    reject(resolution, "service identity could not be verified", code)
+  end
 
-  defp reject(resolution) do
-    handle_absinthe_error(
+  def call(resolution, _opts) do
+    reject(
       resolution,
-      "service identity is not authorized for this operation",
-      ErrorCat.code(GroupherServerWeb.ErrorCat.service_auth())
+      "service identity is required for this operation",
+      AuthContract.service_token_invalid()
     )
+  end
+
+  defp reject(resolution, message, code) do
+    handle_absinthe_error(resolution, message, code)
   end
 end

@@ -33,7 +33,9 @@ defmodule GroupherServer.Auth.Contract do
     oauth_link_unavailable: "OAUTH_LINK_UNAVAILABLE",
     oauth_unlink_unavailable: "OAUTH_UNLINK_UNAVAILABLE",
     logout_unavailable: "LOGOUT_UNAVAILABLE",
-    service_token_invalid: "SERVICE_TOKEN_INVALID"
+    service_token_invalid: "SERVICE_TOKEN_INVALID",
+    service_scope_forbidden: "SERVICE_SCOPE_FORBIDDEN",
+    service_jwks_unavailable: "SERVICE_JWKS_UNAVAILABLE"
   }
 
   @phoenix_browser_token_claims %{

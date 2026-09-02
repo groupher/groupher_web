@@ -66,6 +66,21 @@ export type TBrowserSigninResult = {
   sessionAbsoluteExpiresAt: string
 }
 
+const LEGACY_PHOENIX_ERROR_CODES = new Map<number, string>([
+  [4018, AUTH_ERROR.SERVICE_TOKEN_INVALID],
+  [4019, AUTH_ERROR.SERVICE_TOKEN_INVALID],
+  [4020, AUTH_ERROR.SERVICE_TOKEN_INVALID],
+  [4021, AUTH_ERROR.SERVICE_JWKS_UNAVAILABLE],
+  [4022, AUTH_ERROR.SERVICE_TOKEN_INVALID],
+])
+
+/** Normalizes only legacy Phoenix codes whose public Auth meaning is unambiguous. */
+export const normalizePhoenixErrorCode = (code: unknown): string | undefined => {
+  if (typeof code === 'string') return code
+  if (typeof code !== 'number' || !Number.isSafeInteger(code)) return undefined
+  return LEGACY_PHOENIX_ERROR_CODES.get(code)
+}
+
 type TBrowserSessionMetadata = {
   userAgentSummary?: string
 }
@@ -663,7 +678,7 @@ const callPhoenix = async <TData>(
   if (payload.errors?.length || !payload.data) {
     const error = payload.errors?.[0]
     throw new PhoenixBrowserSessionError(error?.message || 'Phoenix request failed.', {
-      code: typeof error?.extensions?.code === 'string' ? error.extensions.code : undefined,
+      code: normalizePhoenixErrorCode(error?.extensions?.code),
     })
   }
 

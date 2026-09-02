@@ -30,7 +30,9 @@
     "OAUTH_LINK_UNAVAILABLE",
     "OAUTH_UNLINK_UNAVAILABLE",
     "LOGOUT_UNAVAILABLE",
-    "SERVICE_TOKEN_INVALID"
+    "SERVICE_TOKEN_INVALID",
+    "SERVICE_SCOPE_FORBIDDEN",
+    "SERVICE_JWKS_UNAVAILABLE"
   ],
   "phoenixBrowserTokenClaims": {
     "issuer": "groupher:phoenix",

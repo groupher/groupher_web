@@ -159,14 +159,16 @@ defmodule Helper.Utils do
     |> Absinthe.Resolution.put_result({:error, message: message, extensions: %{code: error_code}})
   end
 
-  def handle_absinthe_error(resolution, {reason, meta}, code) when is_integer(code) do
+  def handle_absinthe_error(resolution, {reason, meta}, code)
+      when is_integer(code) or is_binary(code) do
     message = if is_binary(meta), do: meta, else: Atom.to_string(reason)
 
     resolution
     |> Absinthe.Resolution.put_result({:error, message: message, extensions: %{code: code}})
   end
 
-  def handle_absinthe_error(resolution, err_msg, code) when is_integer(code) do
+  def handle_absinthe_error(resolution, err_msg, code)
+      when is_integer(code) or is_binary(code) do
     resolution
     |> Absinthe.Resolution.put_result({:error, message: err_msg, extensions: %{code: code}})
   end

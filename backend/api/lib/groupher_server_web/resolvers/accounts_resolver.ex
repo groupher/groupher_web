@@ -38,6 +38,10 @@ defmodule GroupherServerWeb.Resolvers.Accounts do
     {:error, [message: "Authorize: browser token is invalid", code: code]}
   end
 
+  def session_state(_root, _args, %{context: %{service_auth_failure: code}}) do
+    {:error, [message: "Authorize: service identity could not be verified", code: code]}
+  end
+
   def session_state(_root, _args, %{context: %{cur_user: cur_user}}) do
     CMS.Communities.subscribe_default_ifnot(cur_user)
 

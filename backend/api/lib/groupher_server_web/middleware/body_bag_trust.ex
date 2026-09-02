@@ -17,7 +17,7 @@ defmodule GroupherServerWeb.Middleware.BodyBagTrust do
 
   @behaviour Absinthe.Middleware
 
-  alias GroupherServer.ErrorCat
+  alias GroupherServer.Auth.Contract, as: AuthContract
   import Helper.Utils, only: [handle_absinthe_error: 3]
 
   @doc "Allows ordinary mutations and requires a bounded publisher scope for BodyBag writes."
@@ -31,18 +31,34 @@ defmodule GroupherServerWeb.Middleware.BodyBagTrust do
         (actor.audience == "phoenix:content-import-api" and
            MapSet.member?(actor.scopes, "content-import:write"))
 
-    if allowed, do: resolution, else: reject(resolution)
+    if allowed,
+      do: resolution,
+      else:
+        reject(
+          resolution,
+          "BodyBag requires the content-import audience and write scope",
+          AuthContract.service_scope_forbidden()
+        )
   end
 
-  def call(%{arguments: %{body_bag: _}} = resolution, _opts), do: reject(resolution)
+  def call(
+        %{arguments: %{body_bag: _}, context: %{service_auth_failure: code}} = resolution,
+        _opts
+      ) do
+    reject(resolution, "BodyBag publisher identity could not be verified", code)
+  end
+
+  def call(%{arguments: %{body_bag: _}} = resolution, _opts) do
+    reject(
+      resolution,
+      "BodyBag requires an authorized Groupher publisher service",
+      AuthContract.service_token_invalid()
+    )
+  end
 
   def call(resolution, _opts), do: resolution
 
-  defp reject(resolution) do
-    handle_absinthe_error(
-      resolution,
-      "BodyBag requires an authorized Groupher publisher service",
-      ErrorCat.code(GroupherServerWeb.ErrorCat.service_auth())
-    )
+  defp reject(resolution, message, code) do
+    handle_absinthe_error(resolution, message, code)
   end
 end

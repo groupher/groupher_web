@@ -4,6 +4,10 @@ defmodule GroupherServerWeb.ServiceAuthVerifierTest do
   alias GroupherServerWeb.ServiceAuth.Verifier
 
   setup do
+    if :ets.whereis(:groupher_service_auth_jwks) != :undefined do
+      :ets.delete_all_objects(:groupher_service_auth_jwks)
+    end
+
     key = JOSE.JWK.generate_key({:rsa, 2048})
     {_, public_jwk} = key |> JOSE.JWK.to_public() |> JOSE.JWK.to_map()
     public_jwk = Map.put(public_jwk, "kid", "service-test-key")
@@ -27,7 +31,7 @@ defmodule GroupherServerWeb.ServiceAuthVerifierTest do
   end
 
   test "rejects the same signature for another audience", %{key: key} do
-    assert {:error, %GroupherServer.ErrorCat.Error{reason: :invalid_service_token}} =
+    assert {:error, %GroupherServer.ErrorCat.Error{reason: :invalid_claims}} =
              key
              |> token(%{"aud" => "press:internal-api"})
              |> Verifier.verify()
@@ -41,9 +45,33 @@ defmodule GroupherServerWeb.ServiceAuthVerifierTest do
           %{"nbf" => (DateTime.utc_now() |> DateTime.to_unix()) + 601},
           %{"exp" => (DateTime.utc_now() |> DateTime.to_unix()) - 601}
         ] do
-      assert {:error, %GroupherServer.ErrorCat.Error{reason: :invalid_service_token}} =
+      assert {:error, %GroupherServer.ErrorCat.Error{reason: :invalid_claims}} =
                key |> token(overrides) |> Verifier.verify()
     end
+  end
+
+  test "preserves malformed, unknown-key, and signature failures", %{key: key} do
+    assert {:error, %GroupherServer.ErrorCat.Error{reason: :malformed_token}} =
+             Verifier.verify("not-a-jwt")
+
+    assert {:error, %GroupherServer.ErrorCat.Error{reason: :unknown_kid}} =
+             key |> token(%{}, "service_access+jwt", "unknown-key") |> Verifier.verify()
+
+    other_key = JOSE.JWK.generate_key({:rsa, 2048})
+
+    assert {:error, %GroupherServer.ErrorCat.Error{reason: :invalid_service_token}} =
+             other_key |> token() |> Verifier.verify()
+  end
+
+  test "preserves retryable JWKS failures", %{key: key} do
+    Application.put_env(:groupher_server, Verifier,
+      issuer: "https://auth.groupher.test",
+      audiences: ["phoenix:press-api"],
+      jwks_url: "http://127.0.0.1:1/.well-known/jwks.json"
+    )
+
+    assert {:error, %GroupherServer.ErrorCat.Error{reason: :jwks_unavailable}} =
+             key |> token() |> Verifier.verify()
   end
 
   test "recognizes only the dedicated service token type", %{key: key} do
@@ -51,7 +79,12 @@ defmodule GroupherServerWeb.ServiceAuthVerifierTest do
     refute Verifier.service_token?(token(key, %{}, "JWT"))
   end
 
-  defp token(key, overrides \\ %{}, type \\ "service_access+jwt") do
+  defp token(
+         key,
+         overrides \\ %{},
+         type \\ "service_access+jwt",
+         kid \\ "service-test-key"
+       ) do
     now = DateTime.utc_now() |> DateTime.to_unix()
 
     claims =
@@ -72,7 +105,7 @@ defmodule GroupherServerWeb.ServiceAuthVerifierTest do
     signed =
       JOSE.JWT.sign(
         key,
-        %{"alg" => "RS256", "kid" => "service-test-key", "typ" => type},
+        %{"alg" => "RS256", "kid" => kid, "typ" => type},
         claims
       )
 
