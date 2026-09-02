@@ -1,59 +1,38 @@
-import { LOCAL_THEME_KEY, THEME_FIRST_PAINT_STYLE_ID, THEME_MODE } from '~/const/theme'
-
-import {
-  injectThemeFirstPaintVars,
-  prePaintInitTime,
-  prePaintThemeDetectScript,
-  resolvePrePaintThemeSeed,
-} from './script'
+import { prePaintRuntimeSeedScript, prePaintThemeDetectScript } from './script'
 
 const runInlineScript = (script: string) => Function(script)()
 
 describe('first-paint scripts', () => {
   beforeEach(() => {
-    localStorage.clear()
-    document.getElementById(THEME_FIRST_PAINT_STYLE_ID)?.remove()
+    document.cookie = 'themeMode=; Path=/; Max-Age=0'
+    document.cookie = 'resolvedTheme=; Path=/; Max-Age=0'
     document.documentElement.removeAttribute('data-theme')
     document.documentElement.removeAttribute('data-theme-mode')
+    document.documentElement.removeAttribute('style')
   })
 
-  it('applies a persisted theme before paint', () => {
-    localStorage.setItem(LOCAL_THEME_KEY, THEME_MODE.DARK)
+  it('applies an explicit theme from the preference cookie before paint', () => {
+    document.cookie = 'themeMode=dark; Path=/'
+
     runInlineScript(prePaintThemeDetectScript())
-    expect(document.documentElement.dataset.theme).toBe(THEME_MODE.DARK)
-    expect(document.documentElement.dataset.themeMode).toBe(THEME_MODE.DARK)
-    expect(resolvePrePaintThemeSeed()).toEqual({
-      theme: THEME_MODE.DARK,
-      themeMode: THEME_MODE.DARK,
-    })
+
+    expect(document.cookie).toContain('themeMode=dark')
+    expect(document.cookie).not.toContain('resolvedTheme=')
   })
 
-  it('keeps the resolved system theme for hydration', () => {
+  it('resolves system mode with matchMedia before hydration', () => {
     vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: true }))
 
     runInlineScript(prePaintThemeDetectScript())
 
-    expect(resolvePrePaintThemeSeed()).toEqual({
-      theme: THEME_MODE.DARK,
-      themeMode: THEME_MODE.SYSTEM,
-    })
+    expect(document.cookie).toContain('themeMode=system')
   })
 
-  it('captures the initial browser timestamp', () => {
-    vi.spyOn(Date, 'now').mockReturnValue(123456)
-    runInlineScript(prePaintInitTime())
+  it('captures the initial browser timestamp in the shared runtime script', () => {
+    runInlineScript(prePaintRuntimeSeedScript(123_456))
+
     expect(
       (window as Window & { __GROUPHER_INITIAL_NOW__?: number }).__GROUPHER_INITIAL_NOW__,
-    ).toBe(123456)
-  })
-
-  it('snapshots computed theme variables', () => {
-    vi.spyOn(globalThis, 'getComputedStyle').mockReturnValue({
-      getPropertyValue: (name: string) => (name === '--color-title' ? '#f5f5f5' : ''),
-    } as CSSStyleDeclaration)
-    runInlineScript(injectThemeFirstPaintVars())
-    expect(document.getElementById(THEME_FIRST_PAINT_STYLE_ID)?.textContent).toContain(
-      '--color-title:#f5f5f5 !important;',
-    )
+    ).toBe(123_456)
   })
 })

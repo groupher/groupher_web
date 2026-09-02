@@ -1,8 +1,7 @@
-import THEME, { LOCAL_THEME_KEY, THEME_MODE } from '~/const/theme'
-import { persistThemeCookies, resolveSystemTheme } from '~/lib/themeRuntime'
+import THEME, { THEME_MODE } from '~/const/theme'
+import { persistThemeMode, resolveRuntimeTheme } from '~/lib/theme'
 import type { TThemeMode, TThemeName } from '~/spec'
 import useThemeDomain from '~/stores/theme/hooks'
-import { removeThemeFirstPaintVars } from '~/utils/themeFirstPaint'
 
 type TRet = {
   theme: TThemeName
@@ -10,13 +9,9 @@ type TRet = {
   isLightTheme: boolean
   isDarkTheme: boolean
   change: (name: TThemeName) => void
-  changeMode: (name: TThemeMode, options?: TApplyRuntimeThemeOptions) => void
+  changeMode: (name: TThemeMode) => void
   preview: (name: TThemeName) => void
   toggle: () => void
-}
-
-type TApplyRuntimeThemeOptions = {
-  keepFirstPaintVars?: boolean
 }
 
 /** Exposes theme state and actions through the shared React hook boundary. */
@@ -29,41 +24,15 @@ export default function useTheme(): TRet {
     document.documentElement.style.colorScheme = t
   }
 
-  const applyRuntimeTheme = (t: TThemeName, options: TApplyRuntimeThemeOptions = {}) => {
-    applyTheme(t)
-
-    if (!options.keepFirstPaintVars) {
-      removeThemeFirstPaintVars()
-    }
-  }
-
-  const changeMode = (mode: TThemeMode, options?: TApplyRuntimeThemeOptions) => {
+  const changeMode = (mode: TThemeMode) => {
     doChangeMode(mode)
 
-    try {
-      localStorage.setItem(LOCAL_THEME_KEY, mode)
-    } catch {}
-
-    const runtimeTheme =
-      mode === THEME_MODE.LIGHT
-        ? THEME.LIGHT
-        : mode === THEME_MODE.DARK
-          ? THEME.DARK
-          : resolveSystemTheme()
-
-    applyRuntimeTheme(runtimeTheme, options)
-    persistThemeCookies(mode, runtimeTheme)
+    applyTheme(resolveRuntimeTheme(mode))
+    persistThemeMode(mode)
   }
 
   const toggle = () => {
-    if (theme === THEME.DARK) {
-      applyRuntimeTheme(THEME.LIGHT)
-      persistThemeCookies(themeMode, THEME.LIGHT)
-      return
-    }
-
-    applyRuntimeTheme(THEME.DARK)
-    persistThemeCookies(themeMode, THEME.DARK)
+    changeMode(theme === THEME.DARK ? THEME_MODE.LIGHT : THEME_MODE.DARK)
   }
 
   return {
@@ -71,9 +40,9 @@ export default function useTheme(): TRet {
     themeMode,
     isLightTheme: theme === THEME.LIGHT,
     isDarkTheme: theme === THEME.DARK,
-    change: changeTheme,
+    change: applyTheme,
     changeMode,
-    preview: applyRuntimeTheme,
+    preview: applyTheme,
     toggle,
   }
 }

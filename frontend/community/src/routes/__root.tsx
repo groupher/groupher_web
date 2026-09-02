@@ -1,9 +1,10 @@
 import { loadThemeSeed } from '@community/server/theme'
-import { prePaintRuntimeSeedScript, prePaintThemeDetectScript } from '@community/utils/first-paint'
+import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 
 import '../../../core/tailwind/global.css'
-import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
+
+import { prePaintRuntimeSeedScript, prePaintThemeDetectScript } from '~/lib/ssr/script'
 
 import type { TRouterContext } from '../router-context'
 

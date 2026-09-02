@@ -1,15 +1,12 @@
 import { loadLocale } from '@dash/server/locale'
 import { loadThemeSeed } from '@dash/server/theme'
-import {
-  prePaintRuntimeSeedScript,
-  prePaintThemeDetectScript,
-  resolvePrePaintThemeSeed,
-} from '@dash/utils/first-paint'
 import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 
-import '../../../core/tailwind/global.css'
 import { InitialNowProvider } from '~/hooks/useInitialNow'
+
+import '../../../core/tailwind/global.css'
+import { prePaintRuntimeSeedScript, prePaintThemeDetectScript } from '~/lib/ssr/script'
 import LocaleStoreProvider from '~/stores/locale/provider'
 import ThemeStoreProvider from '~/stores/theme/provider'
 import AuthLoginModal from '~/ui/AuthLoginModal'
@@ -43,12 +40,11 @@ export const Route = createRootRouteWithContext<TRouterContext>()({
 
 function RootComponent() {
   const { locale, renderedAt, theme } = Route.useLoaderData()
-  const hydrationTheme = resolvePrePaintThemeSeed(theme)
 
   return (
     <InitialNowProvider initialNow={renderedAt}>
       <LocaleStoreProvider initData={locale}>
-        <ThemeStoreProvider initData={hydrationTheme}>
+        <ThemeStoreProvider initData={theme}>
           <Outlet />
           <AuthLoginModal />
         </ThemeStoreProvider>

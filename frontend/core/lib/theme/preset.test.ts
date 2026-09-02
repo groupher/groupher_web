@@ -4,7 +4,7 @@ import {
   composeThemePresetCssVars,
   serializeCommunityThemePresetCss,
   THEME_PRESET_PAGE_BG_CSS_VAR,
-} from './themePreset'
+} from './preset'
 
 const tokens: TResolvedThemePreset = {
   shared: { glowFixed: true },

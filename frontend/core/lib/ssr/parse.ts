@@ -1,10 +1,11 @@
 import { includes, reject } from 'ramda'
 
+import { ASSETS_HUB_READ_ENDPOINT } from '~/config'
 import { INIT_KANBAN_BOARDS, normalizeKanbanBoards } from '~/const/dashboard'
 import { BUILTIN_ALIAS } from '~/const/name'
+import { FIELDS } from '~/constant/dsb-fields'
 import { removeEmptyValuesFromObject } from '~/helper'
 import type { TCommunity, TNameAlias, TParseDashboard, TParsedWallpaper } from '~/spec'
-import { FIELDS } from '~/stores/dsb/constant'
 
 /** Parses wallpaper into the canonical frontend shared representation. */
 export const parseWallpaper = (community: TCommunity): TParsedWallpaper => {
@@ -13,8 +14,27 @@ export const parseWallpaper = (community: TCommunity): TParsedWallpaper => {
   const { dashboard } = community
   const { wallpaper } = dashboard
 
+  const staticAsset = (branch: typeof wallpaper.light) => {
+    const assetPublicRef = branch?.staticAssetPublicRef
+    if (!assetPublicRef) return null
+
+    return {
+      assetPublicRef,
+      url: `${ASSETS_HUB_READ_ENDPOINT}/a/${assetPublicRef}/original`,
+    }
+  }
+
+  const staticWallpaper = wallpaper.staticRevision
+    ? {
+        light: staticAsset(wallpaper.light),
+        dark: staticAsset(wallpaper.dark),
+        revision: wallpaper.staticRevision,
+      }
+    : null
+
   return {
     ...wallpaper,
+    staticWallpaper,
     initWallpaper: {
       ...wallpaper,
     },
@@ -74,7 +94,11 @@ export const parseDashboard = (community: TCommunity): TParseDashboard => {
     footerLinks,
     footerOnelineLinks,
     moderators,
-    mediaReports,
+    mediaReports: (mediaReports || []).map((item, index) => ({
+      ...item,
+      editUrl: item.url,
+      index: item.index || index,
+    })),
     thirdPartyAnalytics,
     enabledThirdPartyAnalytics,
   }) as Partial<TParseDashboard>

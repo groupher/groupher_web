@@ -1,7 +1,7 @@
 import { blurRGB } from '~/fmt'
 import useGaussBlur from '~/hooks/useGaussBlur'
 import useTheme from '~/hooks/useTheme'
-import { THEME_PRESET_PAGE_BG_CSS_VAR } from '~/lib/themePreset'
+import { THEME_PRESET_PAGE_BG_CSS_VAR } from '~/lib/theme'
 import type { TResolvedThemePreset } from '~/spec'
 import useThemePreset from '~/stores/ThemePreset/hooks'
 

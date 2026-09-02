@@ -10,9 +10,9 @@ import { I18N_NS } from '~/i18n/namespaces'
 import StaticLayout from '~/shell/StaticLayout'
 import StaticShellProvider from '~/stores/StaticShellProvider'
 import {
-  prePaintInitTime,
+  PUBLIC_THEME_SEED,
+  prePaintRuntimeSeedScript,
   prePaintThemeDetectScript,
-  resolvePrePaintThemeSeed,
 } from '~/utils/ssr/script'
 
 import '../domain.css'
@@ -23,6 +23,8 @@ import Main from '../widgets/Main'
 export const Route = createRootRoute({
   loader: async () => ({
     localeData: await loadLocaleFile(LOCALE.EN, I18N_NS.LANDING),
+    renderedAt: Date.now(),
+    theme: PUBLIC_THEME_SEED,
   }),
   head: () => ({
     links: [
@@ -49,8 +51,7 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
-  const { localeData } = Route.useLoaderData()
-  const hydrationTheme = resolvePrePaintThemeSeed()
+  const { localeData, theme } = Route.useLoaderData()
 
   return (
     <>
@@ -63,7 +64,7 @@ function RootComponent() {
         wallpaper={LANDING_INIT_DATA.wallpaper}
         locale={LOCALE.EN}
         localeData={JSON.stringify(localeData)}
-        theme={hydrationTheme}
+        theme={theme}
       >
         <StaticLayout mainBlock={Main}>
           <Outlet />
@@ -74,13 +75,21 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
+  const { renderedAt, theme } = Route.useLoaderData()
+
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html
+      lang='en'
+      data-theme={theme.theme}
+      data-theme-mode={theme.themeMode}
+      style={{ colorScheme: theme.theme }}
+      suppressHydrationWarning
+    >
       <head>
         <script
           // oxlint-disable-next-line react/no-danger -- Theme and time must be seeded before paint.
           dangerouslySetInnerHTML={{
-            __html: `${prePaintThemeDetectScript()}\n${prePaintInitTime()}`,
+            __html: `${prePaintThemeDetectScript(theme)}\n${prePaintRuntimeSeedScript(renderedAt)}`,
           }}
         />
         <HeadContent />
