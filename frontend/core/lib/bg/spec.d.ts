@@ -45,6 +45,10 @@ export type TBgTexture = TWallpaperTexture & {
 
 export type TBgConfig = {
   customWallpaper: TCustomWallpaper
+  /** Stable Assets Hub ref for an uploaded source image. */
+  assetPublicRef?: string | null
+  /** Stable Assets Hub ref for the published, renderer-produced image. */
+  staticAssetPublicRef?: string | null
   source: string
   type: TWallpaperType
 
@@ -132,4 +136,15 @@ export type TBgRenderSpec = {
   gradientRecipe: TGradientRecipe | null
   meshRecipe: TMeshGradientRecipe | null
   imageUrl: string
+}
+
+/**
+ * One transient renderer update shared by every registered preview target.
+ *
+ * `version` makes the latest-wins contract explicit for subscribers that may
+ * receive a frame while an earlier GPU submission is still in flight.
+ */
+export type TBgPreviewFrame = {
+  version: number
+  renderSpec: TBgRenderSpec | null
 }

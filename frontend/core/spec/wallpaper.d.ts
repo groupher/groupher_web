@@ -23,6 +23,8 @@ export type TWallpaperGradient = {
 export type TWallpaperPic = {
   image?: string
   preview?: string
+  /** Stable Assets Hub ref retained when the image is uploaded by the editor. */
+  assetPublicRef?: string | null
 
   // Applied by dashboard wallpaper settings before parsing the render background.
   blurIntensity?: number
@@ -83,6 +85,8 @@ export type TWallpaperData = {
 
 export type TWallpaperConfigData = {
   customWallpaper: TCustomWallpaper
+  assetPublicRef?: string | null
+  staticAssetPublicRef?: string | null
   source: string
   type: TWallpaperType
   pattern: TBgPattern
@@ -98,8 +102,21 @@ export type TWallpaperConfigData = {
 export type TWallpaperConfig = {
   light: Partial<TWallpaperConfigData>
   dark: Partial<TWallpaperConfigData>
+  staticRevision?: string | null
+}
+
+export type TStaticWallpaperAsset = {
+  assetPublicRef: string
+  url: string
+}
+
+export type TStaticWallpaper = {
+  light: TStaticWallpaperAsset | null
+  dark: TStaticWallpaperAsset | null
+  revision: string
 }
 
 export type TParsedWallpaper = Partial<TWallpaperConfig> & {
   initWallpaper?: Partial<TWallpaperConfig>
+  staticWallpaper?: TStaticWallpaper | null
 }

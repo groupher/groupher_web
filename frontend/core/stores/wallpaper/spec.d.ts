@@ -21,7 +21,16 @@ export type TWallpaperPatch = {
 export type TStore = TWallpaperState & {
   original: TWallpaperState
   // actions
-  commit: (patch: Partial<Omit<TStore, 'light' | 'dark' | 'commit'>> & TWallpaperPatch) => void
+  commit: (
+    patch: Partial<
+      Omit<TStore, 'light' | 'dark' | 'commit' | 'acceptSubmitted' | 'reconcileConfirmed'>
+    > &
+      TWallpaperPatch,
+  ) => void
+  acceptSubmitted: (submitted: TWallpaperPatch) => void
+  reconcileConfirmed: (confirmed: TInit) => void
 }
 
-export type TInit = TWallpaperPatch
+export type TInit = TWallpaperPatch & {
+  staticWallpaper?: import('~/spec').TStaticWallpaper | null
+}

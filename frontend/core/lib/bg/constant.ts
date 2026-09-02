@@ -20,6 +20,12 @@ export enum BG_RENDER_TYPE {
  */
 export const DEFAULT_RENDER_COLORS = ['#fbeede', '#d8b9e3']
 
+/** Canonical pattern scale shared by editor previews and static wallpaper export. */
+export const DEFAULT_WALLPAPER_PATTERN_SIZE = '260px auto'
+
+/** Canonical bitmap size shared by wallpaper export and the editor's cover viewport. */
+export const DEFAULT_WALLPAPER_EXPORT_SIZE = [1200, 630] as const
+
 /**
  * Pattern overlay color for `WALLPAPER_PATTERN_TONE.LIGHT`.
  *

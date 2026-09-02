@@ -18,7 +18,6 @@ type TRangeDraft = {
 export default function TuningPanel() {
   const {
     getWallpaper,
-    angleDraft,
     togglePattern,
     toggleTexture,
     toggleShadow,
@@ -31,6 +30,7 @@ export default function TuningPanel() {
   } = useLogic()
   const wallpaper = getWallpaper()
   const { type, effect, pattern } = wallpaper
+  const angle = wallpaper.gradient && 'angle' in wallpaper.gradient ? wallpaper.gradient.angle : 180
   const contentRef = useRef<HTMLDivElement | null>(null)
   const [expanded, setExpanded] = useState(false)
   const [panelHeight, setPanelHeight] = useState<number | null>(null)
@@ -105,7 +105,7 @@ export default function TuningPanel() {
         {!expanded && (
           <HudPanel
             wallpaper={wallpaper}
-            angle={angleDraft}
+            angle={angle}
             isGradient={isGradient}
             canUseAngle={canUseAngle}
             canUseTexture={canUseTexture}

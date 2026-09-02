@@ -2,7 +2,8 @@ import { PAGE_BG_CSS_KEY } from '~/const/colors'
 import { blurRGB } from '~/fmt'
 import useCSSVar from '~/hooks/useCssVar'
 import useGaussBlur from '~/hooks/useGaussBlur'
-import WallpaperRenderer from '~/render/WallpaperRenderer'
+import { DEFAULT_WALLPAPER_PATTERN_SIZE } from '~/lib/bg'
+import WallpaperPreview from '~/render/WallpaperPreview'
 
 import useSalon, { cnMerge } from './salon/global_preview'
 
@@ -16,7 +17,12 @@ export default function GlobalPreview() {
 
   return (
     <div className={s.realPreview}>
-      <WallpaperRenderer className={s.previewImage} patternSize='260px auto' textureScale={0.72} />
+      <WallpaperPreview
+        className={s.previewImage}
+        patternSize={DEFAULT_WALLPAPER_PATTERN_SIZE}
+        preferVgpu
+        textureScale={0.72}
+      />
       <div className={s.content} style={{ background: bgColor }}>
         <div className={s.contentTop}>
           <div className={cnMerge(s.bar, s.titleBar)} />

@@ -107,4 +107,45 @@ describe('stores/wallpaper', () => {
       },
     })
   })
+
+  it('reconciles confirmed wallpaper without overwriting a local draft', () => {
+    const store = setupStore({
+      light: { source: 'saved-light' },
+      dark: { source: 'saved-dark' },
+    })
+    store.commit({ dark: { source: 'local-dark-draft' } })
+
+    store.reconcileConfirmed({
+      light: { source: 'remote-light' },
+      dark: { source: 'remote-dark' },
+    })
+
+    expect(store.light.source).toBe('remote-light')
+    expect(store.dark.source).toBe('local-dark-draft')
+    expect(store.original.light.source).toBe('remote-light')
+    expect(store.original.dark.source).toBe('remote-dark')
+  })
+
+  it('accepts the submitted patch without retaining a dirty state', () => {
+    const store = setupStore({ light: { source: 'saved-light' } })
+    store.commit({ light: { source: 'submitted-light' } })
+
+    store.acceptSubmitted({ light: { source: 'submitted-light' } })
+
+    expect(store.light.source).toBe('submitted-light')
+    expect(store.original.light.source).toBe('submitted-light')
+    expect(store.light.source).toBe(store.original.light.source)
+  })
+
+  it('preserves a newer edit while accepting the in-flight submitted baseline', () => {
+    const store = setupStore({ light: { source: 'saved-light' } })
+    store.commit({ light: { source: 'submitted-light' } })
+
+    store.acceptSubmitted({ light: { source: 'submitted-light' } })
+    store.commit({ light: { source: 'newer-light' } })
+    store.acceptSubmitted({ light: { source: 'submitted-light' } })
+
+    expect(store.light.source).toBe('newer-light')
+    expect(store.original.light.source).toBe('submitted-light')
+  })
 })

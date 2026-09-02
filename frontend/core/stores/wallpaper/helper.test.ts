@@ -85,4 +85,12 @@ describe('stores/wallpaper/helper', () => {
       },
     })
   })
+
+  it('does not include non-savable custom wallpaper data in the dirty patch', () => {
+    const store = setupStore()
+
+    store.commit({ light: { customWallpaper: { image: 'https://example.com/wallpaper.webp' } } })
+
+    expect(getWallpaperSavablePatch(store)).toEqual({})
+  })
 })

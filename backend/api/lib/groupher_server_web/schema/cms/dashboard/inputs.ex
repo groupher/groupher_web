@@ -54,6 +54,7 @@ defmodule GroupherServerWeb.Schema.CMS.Dashboard.Metrics.Inputs do
   end
 
   input_object :dsb_wallpaper_input do
+    field(:static_revision, :string)
     field(:light, :dsb_bg_config_input)
     field(:dark, :dsb_bg_config_input)
   end

@@ -1,4 +1,48 @@
 @layer components {
+  .static-wallpaper {
+    background-image: var(--wallpaper-light-image);
+  }
+
+  [data-theme='dark'] .static-wallpaper {
+    background-image: var(--wallpaper-dark-image, var(--wallpaper-light-image));
+  }
+
+  .wallpaper-preview-fallback .wallpaper-preview-branch {
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+  }
+
+  .wallpaper-preview-fallback .wallpaper-preview-light,
+  [data-theme='dark'] .wallpaper-preview-fallback .wallpaper-preview-dark {
+    opacity: 1;
+  }
+
+  .theme-light-branch,
+  .theme-dark-branch {
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+  }
+
+  .theme-light-branch {
+    opacity: 1;
+  }
+
+  [data-theme='dark'] .theme-light-branch {
+    opacity: 0;
+  }
+
+  [data-theme='dark'] .theme-dark-branch {
+    opacity: 1;
+  }
+
+  .wallpaper-pattern-preview {
+    background-color: #000;
+  }
+
+  [data-theme='dark'] .wallpaper-pattern-preview {
+    background-color: #fff;
+  }
+
   .row {
     @apply flex flex-row;
   }

@@ -2,9 +2,12 @@ import { graphql } from '~/graphql/authoring'
 
 export const DashboardWallpaperFields = graphql(`
   fragment DashboardWallpaperFields on DsbWallpaper {
+    staticRevision
     light {
       type
       source
+      assetPublicRef
+      staticAssetPublicRef
       gradient
       pattern
       contentShadow
@@ -14,6 +17,8 @@ export const DashboardWallpaperFields = graphql(`
     dark {
       type
       source
+      assetPublicRef
+      staticAssetPublicRef
       gradient
       pattern
       contentShadow

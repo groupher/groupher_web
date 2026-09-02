@@ -271,6 +271,7 @@ defmodule GroupherServer.CMS.Dashboard.Fields do
 
   def macro_schema(:wallpaper) do
     [
+      [:static_revision, :string, nil],
       [:light, :map, wallpaper_bg_default()],
       [:dark, :map, wallpaper_bg_default()]
     ]
@@ -283,6 +284,8 @@ defmodule GroupherServer.CMS.Dashboard.Fields do
     [
       [:type, :string, @default_wallpaper_type],
       [:source, :string, @default_wallpaper_source],
+      [:asset_public_ref, :string, nil],
+      [:static_asset_public_ref, :string, nil],
       [
         :pattern,
         :map,

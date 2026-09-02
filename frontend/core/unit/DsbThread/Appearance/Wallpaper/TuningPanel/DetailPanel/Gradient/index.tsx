@@ -135,7 +135,9 @@ export default function Gradient({ gradient, canUseAngle }: Props) {
           </GroupItem>
         )}
 
-        {canUseAngle && activeGradient.renderer !== GRADIENT_RENDERER.RADIAL && <AngleWheel />}
+        {canUseAngle && activeGradient.renderer !== GRADIENT_RENDERER.RADIAL && (
+          <AngleWheel angle={'angle' in activeGradient ? activeGradient.angle : 180} />
+        )}
       </div>
     </section>
   )

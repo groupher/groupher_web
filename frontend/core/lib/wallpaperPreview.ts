@@ -1,12 +1,9 @@
-import type { TWallpaperThemeState } from '~/stores/wallpaper/spec'
+import type { TBgPreviewFrame, TBgRenderSpec } from '~/lib/bg'
 
-export const WALLPAPER_PREVIEW_EVENT = 'groupher:wallpaper-preview'
+type TWallpaperPreviewListener = (frame: TBgPreviewFrame) => void
 
-export type TWallpaperPreviewDetail = {
-  state: TWallpaperThemeState | null
-}
-
-type TWallpaperPreviewEvent = CustomEvent<TWallpaperPreviewDetail>
+const listeners = new Set<TWallpaperPreviewListener>()
+let previewVersion = 0
 
 /**
  * Emits an ephemeral wallpaper preview outside the persisted wallpaper store.
@@ -14,29 +11,20 @@ type TWallpaperPreviewEvent = CustomEvent<TWallpaperPreviewDetail>
  * This keeps hover/drag previews cheap and reversible while the final selected
  * value is still committed through the wallpaper store.
  */
-export const emitWallpaperPreview = (state: TWallpaperThemeState | null): void => {
-  if (typeof window === 'undefined') return
+export const emitWallpaperPreview = (renderSpec: TBgRenderSpec | null): void => {
+  const frame: TBgPreviewFrame = {
+    version: ++previewVersion,
+    renderSpec,
+  }
 
-  window.dispatchEvent(
-    new CustomEvent<TWallpaperPreviewDetail>(WALLPAPER_PREVIEW_EVENT, {
-      detail: { state },
-    }),
-  )
+  for (const listener of listeners) listener(frame)
 }
 
 /**
  * Subscribes to transient wallpaper preview changes and returns a cleanup.
  */
-export const subscribeWallpaperPreview = (
-  listener: (state: TWallpaperThemeState | null) => void,
-): (() => void) => {
-  if (typeof window === 'undefined') return () => undefined
+export const subscribeWallpaperPreview = (listener: TWallpaperPreviewListener): (() => void) => {
+  listeners.add(listener)
 
-  const handlePreview = (event: Event): void => {
-    listener((event as TWallpaperPreviewEvent).detail.state)
-  }
-
-  window.addEventListener(WALLPAPER_PREVIEW_EVENT, handlePreview)
-
-  return () => window.removeEventListener(WALLPAPER_PREVIEW_EVENT, handlePreview)
+  return () => listeners.delete(listener)
 }

@@ -1,24 +1,22 @@
 import { useCallback, useEffect, useRef } from 'react'
 
 import useDebouncedPreviewCommit from '~/hooks/useDebouncedPreviewCommit'
-import useUpdatePreviewCssVars from '~/hooks/useUpdatePreviewCssVars'
-import { composeWallpaperBgCss } from '~/hooks/useWallpaper'
+import { adaptWallpaperBgRenderSpec } from '~/hooks/useWallpaper'
 import { emitWallpaperPreview } from '~/lib/wallpaperPreview'
 import type { TWallpaperThemeState } from '~/stores/wallpaper/spec'
-
-type TWallpaperPreviewVars = Record<`--${string}`, string | null>
 
 /**
  * A preview-safe patch type for wallpaper state.
  *
  * Top-level fields ({@link type}, {@link source}) are replaced wholesale while
- * nested sub-objects ({@link contentShadow}, {@link effect}, {@link pattern},
- * {@link texture}) accept partial updates so callers never need to pass the
+ * nested sub-objects ({@link gradient}, {@link contentShadow}, {@link effect},
+ * {@link pattern}, {@link texture}) accept partial updates so callers never need to pass the
  * full sub-object to change one field.
  */
 export type TWallpaperPreviewPatch = Partial<
-  Omit<TWallpaperThemeState, 'contentShadow' | 'effect' | 'pattern' | 'texture'>
+  Omit<TWallpaperThemeState, 'gradient' | 'contentShadow' | 'effect' | 'pattern' | 'texture'>
 > & {
+  gradient?: Partial<NonNullable<TWallpaperThemeState['gradient']>> | null
   contentShadow?: Partial<TWallpaperThemeState['contentShadow']>
   effect?: Partial<TWallpaperThemeState['effect']>
   pattern?: Partial<TWallpaperThemeState['pattern']>
@@ -28,58 +26,6 @@ export type TWallpaperPreviewPatch = Partial<
 type TOptions = {
   state: TWallpaperThemeState
   onCommit: (patch: Partial<TWallpaperThemeState>) => void
-}
-
-const PREVIEW_CSS_VAR_CLEANUP: TWallpaperPreviewVars = {
-  '--preview-wallpaper-bg': null,
-  '--preview-wallpaper-filter': null,
-}
-
-const MAX_BLUR_PX = 6
-
-/**
- * Compose a CSS `filter` value from the wallpaper effect settings.
- *
- * Problem scenario: the wallpaper live preview needs to reflect blur,
- * brightness, and saturation changes in real time, but the effect values are
- * stored as dimensionless integers (0–100). This helper normalises blur into
- * pixels (max 6 px) and builds the full filter string consumed by the preview
- * CSS variable.
- *
- * @example
- * const state = { effect: { blurIntensity: 50, brightness: 80, saturation: 120 } } as TWallpaperThemeState
- * composeFilterValue(state)
- * // => "blur(3.0px) brightness(80%) saturate(120%)"
- */
-const composeFilterValue = ({
-  effect: { blurIntensity = 0, brightness = 100, saturation = 100 },
-}: TWallpaperThemeState): string => {
-  const safeBlurIntensity = Math.max(0, Math.min(100, blurIntensity))
-  const blurPx = Number(((safeBlurIntensity / 100) * MAX_BLUR_PX).toFixed(1))
-
-  return `blur(${blurPx}px) brightness(${brightness}%) saturate(${saturation}%)`
-}
-
-/**
- * Compose the CSS variable patch used by the wallpaper live preview.
- *
- * Problem scenario: the live preview writes to two CSS variables —
- * `--preview-wallpaper-bg` for the rendered background and
- * `--preview-wallpaper-filter` for effect adjustments. Both must be built from
- * the draft wallpaper state on every preview pulse so the DOM always sees the
- * full, up-to-date visual.
- *
- * @example
- * const vars = composePreviewCssVars(draftState)
- * // => { '--preview-wallpaper-bg': 'linear-gradient(...)', '--preview-wallpaper-filter': 'blur(0px) ...' }
- */
-const composePreviewCssVars = (state: TWallpaperThemeState): TWallpaperPreviewVars => {
-  const { background } = composeWallpaperBgCss(state)
-
-  return {
-    '--preview-wallpaper-bg': background || 'transparent',
-    '--preview-wallpaper-filter': composeFilterValue(state),
-  }
 }
 
 /**
@@ -106,6 +52,12 @@ const mergeNestedWallpaperPatch = <TState extends Partial<TWallpaperPreviewPatch
 ): TState & Partial<TWallpaperPreviewPatch> => ({
   ...state,
   ...patch,
+  gradient:
+    patch.gradient === null
+      ? null
+      : patch.gradient
+        ? { ...state.gradient, ...patch.gradient }
+        : state.gradient,
   contentShadow: patch.contentShadow
     ? { ...state.contentShadow, ...patch.contentShadow }
     : state.contentShadow,
@@ -172,9 +124,8 @@ const mergeWallpaperDraftPatch = (
  * This hook implements two parallel paths:
  *
  * 1. **Preview path** (instant, every frame)
- *    - Writes CSS variables to the DOM via `useUpdatePreviewCssVars`.
- *    - Dispatches a `wallpaper-preview` custom event so other components
- *      (e.g. preview panels) can react immediately.
+ *    - Adapts the draft once into a renderer-ready spec.
+ *    - Publishes one latest-wins preview frame to every registered target.
  *
  * 2. **Commit path** (debounced, 300 ms)
  *    - Accumulates incremental patches via `useDebouncedPreviewCommit`.
@@ -194,7 +145,7 @@ const mergeWallpaperDraftPatch = (
  * | `scheduleWallpaperPreview(patch)` | Apply visual preview **and** schedule a debounced commit. Use for slider changes that should auto-save. |
  * | `flushWallpaperDraft()` | Immediately flush any pending debounced commit. Call before navigating away or triggering an explicit save. |
  * | `clearPendingWallpaperDraft()` | Cancel any pending debounced commit without flushing. Use when rolling back unsaved changes. |
- * | `clearWallpaperPreview()` | Remove all preview CSS variables from the DOM and emit a `null` preview event. Call when closing the editor. |
+ * | `clearWallpaperPreview()` | Emit a null preview frame so targets return to their committed spec. |
  *
  * @example
  * const {
@@ -219,9 +170,10 @@ const mergeWallpaperDraftPatch = (
  * }, [flushWallpaperDraft])
  */
 export default function useWallpaperPreview({ state, onCommit }: TOptions) {
-  const updatePreviewCssVars = useUpdatePreviewCssVars({ selector: 'html' })
   const draftRef = useRef(state)
   const stateRef = useRef(state)
+  const previewFrameRef = useRef<number | null>(null)
+  const pendingPreviewRef = useRef<TWallpaperThemeState | null>(null)
   const {
     schedule: scheduleWallpaperDraft,
     flush: flushWallpaperDraft,
@@ -236,14 +188,33 @@ export default function useWallpaperPreview({ state, onCommit }: TOptions) {
     draftRef.current = state
   }, [state])
 
+  const flushPreview = useCallback(() => {
+    previewFrameRef.current = null
+
+    const nextState = pendingPreviewRef.current
+    pendingPreviewRef.current = null
+    if (!nextState) return
+
+    emitWallpaperPreview(adaptWallpaperBgRenderSpec(nextState))
+  }, [])
+
+  const queuePreview = useCallback(
+    (nextState: TWallpaperThemeState) => {
+      pendingPreviewRef.current = nextState
+
+      if (previewFrameRef.current !== null) return
+      previewFrameRef.current = window.requestAnimationFrame(flushPreview)
+    },
+    [flushPreview],
+  )
+
   const previewWallpaper = useCallback(
     (patch: TWallpaperPreviewPatch) => {
-      draftRef.current = mergeWallpaperPreviewPatch(draftRef.current, patch)
-
-      updatePreviewCssVars(composePreviewCssVars(draftRef.current))
-      emitWallpaperPreview(draftRef.current)
+      const nextState = mergeWallpaperPreviewPatch(draftRef.current, patch)
+      draftRef.current = nextState
+      queuePreview(nextState)
     },
-    [updatePreviewCssVars],
+    [queuePreview],
   )
 
   const scheduleWallpaperPreview = useCallback(
@@ -254,15 +225,41 @@ export default function useWallpaperPreview({ state, onCommit }: TOptions) {
     [previewWallpaper, scheduleWallpaperDraft],
   )
 
+  const flushWallpaperPreview = useCallback(() => {
+    if (previewFrameRef.current !== null) {
+      window.cancelAnimationFrame(previewFrameRef.current)
+      previewFrameRef.current = null
+    }
+
+    flushPreview()
+  }, [flushPreview])
+
   const clearWallpaperPreview = useCallback(() => {
-    updatePreviewCssVars(PREVIEW_CSS_VAR_CLEANUP)
+    if (previewFrameRef.current !== null) {
+      window.cancelAnimationFrame(previewFrameRef.current)
+      previewFrameRef.current = null
+    }
+    pendingPreviewRef.current = null
     emitWallpaperPreview(null)
-  }, [updatePreviewCssVars])
+  }, [])
+
+  const flushWallpaperDraftPreview = useCallback(() => {
+    flushWallpaperPreview()
+    flushWallpaperDraft()
+  }, [flushWallpaperDraft, flushWallpaperPreview])
+
+  useEffect(() => {
+    return () => {
+      if (previewFrameRef.current !== null) {
+        window.cancelAnimationFrame(previewFrameRef.current)
+      }
+    }
+  }, [])
 
   return {
     previewWallpaper,
     scheduleWallpaperPreview,
-    flushWallpaperDraft,
+    flushWallpaperDraft: flushWallpaperDraftPreview,
     clearPendingWallpaperDraft,
     clearWallpaperPreview,
   }

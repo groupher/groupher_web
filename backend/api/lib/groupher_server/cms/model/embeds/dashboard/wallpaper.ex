@@ -25,13 +25,14 @@ defmodule GroupherServer.CMS.Model.Embeds.Dashboard.Wallpaper do
 
   @primary_key false
   embedded_schema do
+    field(:static_revision, :string)
     embeds_one(:light, __MODULE__.BgConfig, on_replace: :update)
     embeds_one(:dark, __MODULE__.BgConfig, on_replace: :update)
   end
 
   def changeset(struct, params) do
     struct
-    |> cast(params, [])
+    |> cast(params, [:static_revision])
     |> cast_embed(:light, with: &__MODULE__.BgConfig.changeset/2)
     |> cast_embed(:dark, with: &__MODULE__.BgConfig.changeset/2)
   end

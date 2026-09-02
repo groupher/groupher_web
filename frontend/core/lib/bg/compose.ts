@@ -87,6 +87,8 @@ const getBgRenderFallbackConfig = (config: TBgConfig): TBgConfig =>
  * const bg = toBgConfig(pickWallpaperThemeState(store, isDarkTheme))
  */
 export const toBgConfig = (store: TWallpaperThemeState): TBgConfig => ({
+  assetPublicRef: store.assetPublicRef,
+  staticAssetPublicRef: store.staticAssetPublicRef,
   source: store.source,
   pattern: store.pattern,
   gradient: store.gradient,

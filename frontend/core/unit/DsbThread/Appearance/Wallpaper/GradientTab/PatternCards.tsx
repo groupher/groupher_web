@@ -2,7 +2,7 @@ import { keys } from 'ramda'
 import { type CSSProperties, useMemo, useState } from 'react'
 
 import { WALLPAPER_PATTERN } from '~/const/wallpaper'
-import useTheme from '~/hooks/useTheme'
+import useDidMount from '~/hooks/useDidMount'
 import useTrans from '~/hooks/useTrans'
 import type { TWallpaperData, TWallpaperPattern } from '~/spec'
 import SelectableCard from '~/ui/SelectableCard'
@@ -40,7 +40,7 @@ const getVisiblePatternKeys = (
 export default function PatternCards({ patternId, wallpaper, onPatternSelect }: TProps) {
   const s = useSalon()
   const { t } = useTrans()
-  const { isDarkTheme } = useTheme()
+  const didMount = useDidMount()
   const [expanded, setExpanded] = useState(false)
 
   const patternKeys = useMemo(() => keys(WALLPAPER_PATTERN), [])
@@ -55,9 +55,8 @@ export default function PatternCards({ patternId, wallpaper, onPatternSelect }: 
       <div className={s.grid}>
         {visiblePatternKeys.map((id) => {
           const pattern = WALLPAPER_PATTERN[id] as TWallpaperPattern
-          const selected = canSelectPattern && patternId === id
+          const selected = didMount && canSelectPattern && patternId === id
           const previewStyle: CSSProperties = {
-            backgroundColor: isDarkTheme ? '#ffffff' : '#000000',
             maskImage: `url(${pattern.preview})`,
             maskRepeat: 'repeat',
             maskSize: '300%',
@@ -72,7 +71,7 @@ export default function PatternCards({ patternId, wallpaper, onPatternSelect }: 
               active={selected}
               ariaLabel={`Pattern ${id}`}
               className={s.card}
-              disabled={!canSelectPattern}
+              disabled={!didMount || !canSelectPattern}
               onClick={() => onPatternSelect(id)}
             >
               <span className={s.preview} style={previewStyle} />
