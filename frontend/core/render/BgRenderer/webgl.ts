@@ -510,6 +510,9 @@ const textureTypeToUniform = (renderSpec: TBgRenderSpec): number => {
   return TEXTURE_TYPE[renderSpec.texture.type] ?? 0
 }
 
+const sameArray = <T>(left: readonly T[], right: readonly T[]): boolean =>
+  left.length === right.length && left.every((value, index) => value === right[index])
+
 class BgWebglRenderer {
   private readonly canvas: HTMLCanvasElement
   private readonly gl: WebGLRenderingContext
@@ -518,6 +521,7 @@ class BgWebglRenderer {
   private readonly vertexBuffer: WebGLBuffer
   private readonly imageTexture: WebGLTexture
   private readonly textureScale: number
+  private readonly renderSize: readonly [number, number] | undefined
   private frame: number | null = null
   private renderSpec: TBgRenderSpec | null = null
   private imageUrl = ''
@@ -526,6 +530,11 @@ class BgWebglRenderer {
   private imageReady = false
   private imageToken = 0
   private dpr = 1
+  private sizeDirty = true
+  private readonly colors = new Float32Array(MAX_COLORS * 3)
+  private readonly colorStops = new Float32Array(MAX_COLORS)
+  private colorSource: readonly string[] = []
+  private colorStopSource: readonly number[] = []
   private disposed = false
 
   constructor(
@@ -535,6 +544,7 @@ class BgWebglRenderer {
     vertexBuffer: WebGLBuffer,
     imageTexture: WebGLTexture,
     textureScale: number,
+    renderSize?: readonly [number, number],
   ) {
     this.canvas = canvas
     this.gl = gl
@@ -542,6 +552,7 @@ class BgWebglRenderer {
     this.vertexBuffer = vertexBuffer
     this.imageTexture = imageTexture
     this.textureScale = textureScale
+    this.renderSize = renderSize
     this.uniforms = getUniforms(gl, program)
 
     this.prepare()
@@ -562,7 +573,23 @@ class BgWebglRenderer {
     this.scheduleRender()
   }
 
+  updatePreviewFrame(renderSpec: TBgRenderSpec): void {
+    this.renderSpec = renderSpec
+
+    if (renderSpec.type === BG_RENDER_TYPE.IMAGE && renderSpec.imageUrl !== this.imageUrl) {
+      this.loadImage(renderSpec.imageUrl)
+    }
+
+    if (renderSpec.type !== BG_RENDER_TYPE.IMAGE) {
+      this.imageUrl = ''
+      this.imageReady = false
+    }
+
+    this.scheduleRender()
+  }
+
   resize(): void {
+    this.sizeDirty = true
     this.scheduleRender()
   }
 
@@ -652,16 +679,24 @@ class BgWebglRenderer {
   }
 
   private syncSize(): void {
+    if (!this.sizeDirty) return
+
     const rect = this.canvas.getBoundingClientRect()
     this.dpr = Math.min(window.devicePixelRatio || 1, getDprCap(this.renderSpec))
-    const width = Math.max(1, Math.round(rect.width * this.dpr))
-    const height = Math.max(1, Math.round(rect.height * this.dpr))
+    const [width, height] = this.renderSize ?? [
+      Math.max(1, Math.round(rect.width * this.dpr)),
+      Math.max(1, Math.round(rect.height * this.dpr)),
+    ]
 
-    if (this.canvas.width === width && this.canvas.height === height) return
+    if (this.canvas.width === width && this.canvas.height === height) {
+      this.sizeDirty = false
+      return
+    }
 
     this.canvas.width = width
     this.canvas.height = height
     this.gl.viewport(0, 0, width, height)
+    this.sizeDirty = false
   }
 
   private render(): void {
@@ -671,16 +706,22 @@ class BgWebglRenderer {
     const { gl, uniforms } = this
     this.syncSize()
 
-    const colors = new Float32Array(MAX_COLORS * 3)
-    const colorStops = new Float32Array(MAX_COLORS)
     const renderSpecColors = renderSpec.colors.slice(0, MAX_COLORS)
-    for (let index = 0; index < renderSpecColors.length; index += 1) {
-      const color = renderSpecColors[index]
-      const rgb = parseColor(color)
-      colors[index * 3] = rgb[0]
-      colors[index * 3 + 1] = rgb[1]
-      colors[index * 3 + 2] = rgb[2]
-      colorStops[index] = clamp(renderSpec.colorStops[index] ?? 0, 0, 100) / 100
+    if (
+      !sameArray(this.colorSource, renderSpecColors) ||
+      !sameArray(this.colorStopSource, renderSpec.colorStops)
+    ) {
+      this.colors.fill(0)
+      this.colorStops.fill(0)
+      for (let index = 0; index < renderSpecColors.length; index += 1) {
+        const rgb = parseColor(renderSpecColors[index])
+        this.colors[index * 3] = rgb[0]
+        this.colors[index * 3 + 1] = rgb[1]
+        this.colors[index * 3 + 2] = rgb[2]
+        this.colorStops[index] = clamp(renderSpec.colorStops[index] ?? 0, 0, 100) / 100
+      }
+      this.colorSource = renderSpecColors
+      this.colorStopSource = renderSpec.colorStops
     }
 
     const meshRecipe = renderSpec.meshRecipe
@@ -729,8 +770,8 @@ class BgWebglRenderer {
     gl.uniform2f(uniforms.resolution, this.canvas.width, this.canvas.height)
     gl.uniform2f(uniforms.imageSize, this.imageWidth, this.imageHeight)
     gl.uniform2f(uniforms.radialCenter, radialCenter.x, radialCenter.y)
-    gl.uniform1fv(uniforms.colorStops, colorStops)
-    gl.uniform3fv(uniforms.colors, colors)
+    gl.uniform1fv(uniforms.colorStops, this.colorStops)
+    gl.uniform3fv(uniforms.colors, this.colors)
 
     gl.clear(gl.COLOR_BUFFER_BIT)
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
@@ -741,6 +782,7 @@ class BgWebglRenderer {
 export const createBgWebglRenderer = (
   canvas: HTMLCanvasElement,
   textureScale = 1,
+  renderSize?: readonly [number, number],
 ): BgWebglRenderer | null => {
   const gl = canvas.getContext('webgl', {
     alpha: true,
@@ -764,5 +806,13 @@ export const createBgWebglRenderer = (
     return null
   }
 
-  return new BgWebglRenderer(canvas, gl, program, vertexBuffer, imageTexture, textureScale)
+  return new BgWebglRenderer(
+    canvas,
+    gl,
+    program,
+    vertexBuffer,
+    imageTexture,
+    textureScale,
+    renderSize,
+  )
 }

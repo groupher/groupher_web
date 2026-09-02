@@ -3,18 +3,27 @@ import type { CSSProperties } from 'react'
 import { BG_RENDER_TYPE } from '~/lib/bg'
 import type { TBgRenderSpec } from '~/lib/bg'
 
+type TBgRendererEngine = 'failed' | 'webgl' | 'webgpu'
+
 /** Returns fallback style for the frontend shared workflow. */
 export const getFallbackStyle = (renderSpec: TBgRenderSpec): CSSProperties => ({
   background: renderSpec.background,
 })
 
-// Core background content generation stays in WebGL; visual adjustments stay in CSS.
-// CSS filter gives blur/brightness/saturation the same final-layer semantics for
-// gradient, mesh, picture, texture effects, and the pattern overlay.
 /** Returns filter layer style for the frontend shared workflow. */
-export const getFilterLayerStyle = (renderSpec: TBgRenderSpec): CSSProperties => ({
-  filter: `var(--preview-wallpaper-filter, ${renderSpec.filter})`,
-})
+export const getFilterLayerStyle = (
+  renderSpec: TBgRenderSpec,
+  engine: TBgRendererEngine = 'webgl',
+): CSSProperties => {
+  if (engine === 'webgpu') {
+    // WebGPU owns the complete exported pixel pipeline, including global effects.
+    return { filter: 'none' }
+  }
+
+  if (engine === 'failed') return { filter: 'none' }
+
+  return { filter: renderSpec.filter }
+}
 
 /** Returns pattern layer style for the frontend shared workflow. */
 export const getPatternLayerStyle = (

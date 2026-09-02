@@ -5,6 +5,8 @@ import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 
+import { createVgpuWgslVitePlugin } from './config/vgpuVitePlugin.mts'
+
 // This config is shared by frontend apps and Hono backend apps.
 // Run with: `vitest --config frontend/core/vitest.config.mts`
 const configDir = path.dirname(fileURLToPath(import.meta.url))
@@ -13,7 +15,7 @@ const repoRoot = path.resolve(configDir, '../..')
 export default defineConfig({
   root: repoRoot,
   resolve: { tsconfigPaths: true },
-  plugins: [react()],
+  plugins: [createVgpuWgslVitePlugin(), react()],
   test: {
     environment: 'jsdom',
     setupFiles: [path.join(repoRoot, 'frontend/core/vitest.setup.ts')],

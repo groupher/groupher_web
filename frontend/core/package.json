@@ -7,6 +7,7 @@
     "./tsconfig": "./tsconfig.app.json",
     "./jsconfig": "./jsconfig.json",
     "./tailwind.config": "./tailwind.config.js",
+    "./vgpu-vite": "./config/vgpuVitePlugin.mts",
     "./oxfmt": "./config/oxfmt.json",
     "./oxlint": "./config/oxlint.json",
     "./dev-hub-reporter": "./lib/devHubReporter/index.ts",
@@ -17,6 +18,8 @@
     "lint": "pnpm exec oxlint . --threads=1",
     "format": "pnpm exec oxfmt -c ./config/oxfmt.json .",
     "format:check": "pnpm exec oxfmt -c ./config/oxfmt.json --check .",
+    "poc:vgpu:build": "vite build --config ./render/BgRenderer/vgpu-poc/vite.config.mts",
+    "poc:vgpu:dev": "vite --config ./render/BgRenderer/vgpu-poc/vite.config.mts",
     "build": "echo 'skip build'"
   },
   "dependencies": {
@@ -69,7 +72,8 @@
     "stringz": "^2.0.0",
     "tinykeys": "^2.1.0",
     "tippy.js": "6.3.7",
-    "valtio": "2.3.2"
+    "valtio": "2.3.2",
+    "vgpu": "0.3.1"
   },
   "devDependencies": {
     "@tanstack/react-query": "^5.101.4",
@@ -80,7 +84,9 @@
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
     "@types/sanitize-html": "^2.16.1",
+    "@vgpu/wgsl": "0.3.1",
     "@vitejs/plugin-react": "^6.0.5",
+    "@webgpu/types": "0.1.72",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwindcss": "4.3.3",
