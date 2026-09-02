@@ -334,6 +334,7 @@ type TGeneratedImagePublishCapability = {
   manifest: TGeneratedImageManifestEntry[]
   manifestDigest: string
   policyVersion: string
+  signingKeyId: string
   expiresAt: string
 }
 
@@ -434,6 +435,7 @@ type TWallpaperThemeRevision = {
   publicRef: string
   communityId: string
   theme: 'light' | 'dark'
+  sourceBatchRef: string | null
   recipeSchemaVersion: number
   rendererVersion: number
   profileVersion: number
@@ -447,7 +449,12 @@ type TWallpaperThemeRevision = {
 ```
 
 `authoring: null` 表示该 theme 明确保存为 `NONE`。NONE 是正式 Revision，能够进入最近 5 次和被
-恢复，但不生成静态 Variant。
+恢复，但不生成静态 Variant。非 NONE Revision 的 `sourceBatchRef` 必须记录生成其完整 manifest 的
+Batch ref；NONE Revision 没有 Batch，必须为 `null`。后端数据库字段名为 `source_batch_ref`。
+
+`sourceBatchRef` 是不可变的产物来源审计链接，不阻止成功 Batch 的运行期 claim/lease 元数据清理。
+Batch 生成的 Asset 仍保留各自 `batchRef`，因此 Publish Receipt GC 后仍可断言同一 Revision 的所有
+generated assets 均来自 `sourceBatchRef` 指向的同一批次。
 
 Revision 不保存 `pending/ready/active/retained/retired/deleting/failed` 状态：
 
@@ -511,6 +518,25 @@ Receipt，事务失败时也不会留下虚假的成功 Receipt。
 
 ### 6.1 正常保存
 
+`publishWallpaper` 的请求契约为：
+
+```ts
+type TPublishWallpaperInput = {
+  baseStateVersion: number
+  idempotencyKey: string
+  batchRef: string | null
+  candidateThemeRevisionRefs: Partial<Record<'light' | 'dark', string>>
+  authoring: Partial<Record<'light' | 'dark', TWallpaperThemeAuthoringConfig | null>>
+}
+```
+
+`communityId` 由已鉴权的 API scope/route 提供，不接受 Browser 在载荷中任意指定。第一次提交和
+`publishWallpaper` 都以 `communityId + baseStateVersion + canonical authoring` 计算同一个
+`requestDigest`；服务端生成的 `batchRef` 和 `candidateThemeRevisionRefs` 不进入 digest。发布时
+Phoenix 必须重新计算 digest，非 NONE candidate ref 必须与冻结 manifest 的
+`candidateOwnerRef` 一致；`batchRef` 必须与 capability 一致。纯 NONE 请求的 `batchRef=null`，其
+candidate ref 由步骤 3 预分配并在事务唯一约束下创建。
+
 ```text
 1. Browser 提交 baseStateVersion、本次 light/dark authoring 和 idempotencyKey
 2. Phoenix 计算 requestDigest 并查询 Publish Receipt；命中相同 digest 时直接返回历史结果
@@ -518,7 +544,8 @@ Receipt，事务失败时也不会留下虚假的成功 Receipt。
 4. 如果存在变化且非 NONE 的 theme，创建临时 Batch 并返回 required targets
 5. Browser 为这些 theme 批量 WebGPU 导出并上传全部 Variant
 6. 任一 Variant 失败：cancel Batch、显示失败 flash、流程结束
-7. Browser 请求 Phoenix publishWallpaper
+7. Browser 携带 batchRef、idempotencyKey、candidateThemeRevisionRefs、authoring 和
+   baseStateVersion 请求 Phoenix publishWallpaper
 8. Phoenix 再次查询 Publish Receipt，处理响应丢失后的重复请求
 9. Receipt 未命中时调用 Assets Hub claimForPublish(batchRef, idempotencyKey)
 10. Assets Hub 在一次原子操作内校验并冻结完整 manifest、取得 publish claim，并返回有期限的
@@ -531,7 +558,7 @@ Receipt，事务失败时也不会留下虚假的成功 Receipt。
 14. 在事务内最后一次查询 Publish Receipt，命中则返回已有结果
 15. 锁定 CommunityWallpaperState，并断言当前 version 等于 baseStateVersion
 16. 重新校验 capability 有效期，并使用步骤 11 已验证且由 digest 绑定的同一份冻结 manifest
-17. 创建发生变化的正式 Theme Revision 和 RevisionAsset
+17. 创建发生变化的正式 Theme Revision 和 RevisionAsset，并为非 NONE Revision 写入 sourceBatchRef
 18. 原子更新 active light/dark refs，并将 version + 1
 19. 重新计算 light/dark 合计最近 5 次并安排超额 Revision 删除
 20. 写入包含发布响应的 WallpaperPublishReceipt
@@ -856,6 +883,7 @@ Phoenix 负责 Wallpaper 业务：
 - 预分配 candidate Revision refs；
 - 锁定 State、校验 base version 并原子切换 light/dark；
 - 只在成功 `publishWallpaper` 时创建正式 Revision；
+- 为非 NONE Revision 持久化不可变的 `sourceBatchRef` 产物来源；
 - 管理统一最近 5 次和 Restore；
 - 计算已发布 Revision 的删除宽限期；
 - 失效当前 Wallpaper Snapshot。
@@ -919,12 +947,14 @@ Reconciliation 与异常处理分成三类。
 - active 非 NONE Revision 必须拥有自身 `profileVersion` 要求的完整 manifest；
 - active Revision 的 `deleteAfter` 必须为空；
 - 最近集合包含 active light/dark 且总数不超过 5；
-- 正式 RevisionAsset 只能引用冻结 publish manifest 内的 Asset，且 Asset 的 `candidateOwnerRef` 必须
-  等于 Theme Revision ref；
+- 非 NONE Revision 的 `sourceBatchRef` 必须非空，其正式 RevisionAsset 只能引用冻结 publish
+  manifest 内、`batchRef` 等于该 `sourceBatchRef` 的 Asset，且 Asset 的 `candidateOwnerRef` 必须等于
+  Theme Revision ref；
 - 拥有 generated variants 的非 NONE 正式 Revision 必须来自一个由相同 `idempotencyKey` 成功
-  `claimForPublish` 并冻结完整 manifest 的 Batch；
+  `claimForPublish` 并冻结完整 manifest 的 Batch；该条件在发布事务中强制校验，Batch 运行期元数据
+  GC 后由 Revision 的 `sourceBatchRef` 与 Asset 的 `batchRef` 持续核验产物来源；
 - NONE Revision 必须 `authoring=null` 且没有 generated variants，可以直接在 Phoenix 事务中创建，
-  不依赖 Batch 或 publish claim；
+  `sourceBatchRef=null`，不依赖 Batch 或 publish claim；
 - 每次成功的 `publishWallpaper` 必须存在同事务写入的 Phoenix Publish Receipt；相同
   `(communityId, idempotencyKey)` 只能对应一个 `requestDigest` 和响应结果。
 
@@ -941,6 +971,7 @@ active State，也不能后台重新渲染缺失图片。Assets Hub 只负责资
 - render/encode/upload 并发上限；
 - open Batch TTL、publish claim TTL、`publishTransactionBudget` 和 `publishTransactionSafetyMargin`；
 - Phoenix `databaseTransactionTimeout`、Assets Hub/Phoenix 最大时钟偏差和 cleanup 调度抖动；
+- Assets Hub capability active signing key/key id，以及 Phoenix trusted verification key set；
 - Phoenix `publishReceiptRetention`，即 API 承诺幂等重放的时间窗口；
 - Snapshot TTL、CDN stale window、client safety margin 和已发布 Revision 删除宽限期；
 - `profileVersion` 与默认 center-cover/framing resolver 规则。
@@ -977,6 +1008,12 @@ claim capability 使用 Assets Hub 服务端签发的 UTC 绝对时间，Phoenix
 transaction budget 与其接受的最小 claim TTL 兼容。publish capability 必须携带绝对 `expiresAt`、
 policy version、冻结 manifest 及其 digest。任一启动断言失败时服务不得接收流量，并通过配置测试
 覆盖所有不等式。
+
+签名配置同样必须通过启动断言：Assets Hub 必须存在唯一 active signing key 和非空 key id；Phoenix
+必须存在非空 trusted verification key set，并能按 capability key id 找到验证密钥。未知 key id、
+验签失败或签名算法不在允许列表时一律拒绝发布。密钥轮换遵循先消费后签发：先向 Phoenix trust set
+加入新 verification key，再让 Assets Hub 切换 active signing key；旧 capability 全部过期后才能从
+Phoenix 移除旧 verification key。私钥只存在于 Assets Hub，不跨服务共享。
 
 `policyVersion` 升级使用 expand-contract 顺序：先让 Phoenix 同时支持 old/new，且暂不提高最低接受
 版本；再让 Assets Hub 开始签发 new；等待所有 old publish claim 过期并完成 reconciliation 后，Phoenix
@@ -1027,8 +1064,12 @@ capability，不能先提高最低版本再升级签发方。
   publishTransactionBudget。
 - publish capability 必须签名绑定完整冻结 manifest、manifestDigest 和 policyVersion；Phoenix 在事务
   外完成产品矩阵校验，事务内不得为读取 manifest 再调用 Assets Hub。
+- `publishWallpaper` 必须携带 batchRef、idempotencyKey、candidateThemeRevisionRefs、authoring 和
+  baseStateVersion；两次请求按同一用户意图重算的 requestDigest 必须一致。
 - lease policy 升级必须先扩展 Phoenix 支持范围，再切换 Assets Hub 签发版本，旧 claim 排空后才收缩
   Phoenix 最低接受版本。
+- Assets Hub signing key/key id 和 Phoenix trusted verification key set 必须通过启动断言；密钥轮换
+  必须先部署 verifier，再切换 signer，最后等待旧 capability 排空后移除旧 key。
 - `databaseTransactionTimeout` 从事务 callback 开始计时并覆盖 State 行锁等待和全部事务语句；超时
   必须保证数据库事务回滚。
 - publish claim 成功后 Browser cancel 必须被拒绝；所有临时 Batch 删除都必须先取得 delete claim。
@@ -1041,6 +1082,8 @@ capability，不能先提高最低版本再升级签发方。
 - 不存在部分 Revision、中间 Variant 续传、Session 接管、后台补渲染或自动合并。
 - 两个 Tab 基于同一 version 保存时，只有第一个 `publishWallpaper` 成功；冲突批次作废并提示重新保存。
 - 拥有 generated variants 的非 NONE 正式 Theme Revision 只在完整 Batch 成功发布时创建。
+- 非 NONE Revision 必须持久化 `sourceBatchRef`，并与其全部 generated Asset 的 `batchRef` 一致；NONE
+  Revision 的 `sourceBatchRef` 必须为 `null`。
 - light/dark 在同一 State 事务中原子切换。
 - light/dark 合计最近 5 个 Revision 可直接恢复，不保证每个 theme 分别拥有历史。
 - Restore 不生成、不上传、不复制 Asset，只替换目标 theme 当前引用。
