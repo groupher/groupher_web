@@ -1,12 +1,14 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import { sortByKey } from '~/helper'
+import { patchCommunityConfig } from '~/query'
 import type { TModerator, TUser } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
+import { useModeratorEditorUi } from '~/stores/dsbEditorUi/hooks'
 import S from '~/unit/DsbThread/schema/admins'
-import { revalidateCommunityCache } from '~/utils/revalidateCommunityCache'
 
 type TPassportJson = Record<string, unknown>
 
@@ -50,9 +52,12 @@ type TRet = {
 
 /** Exposes admins state and actions through the shared React hook boundary. */
 export default function useAdmins(): TRet {
-  const dsb$ = useDsb()
+  const queryClient = useQueryClient()
+  const dsb$ = useDsbEdit()
+  const moderatorUi$ = useModeratorEditorUi()
   const community$ = useCommunity()
-  const { moderators: originalModerators, activeModerator } = dsb$
+  const { moderators: originalModerators } = dsb$
+  const { activeModerator } = moderatorUi$
   const hydrationSignatureRef = useRef('')
 
   const moderatorLoginSet = useMemo(() => {
@@ -70,7 +75,7 @@ export default function useAdmins(): TRet {
     ).reverse() as TModerator[]
   }, [originalModerators])
 
-  const setActiveSettingAdmin = (user: TUser): void => dsb$.commit({ activeModerator: user })
+  const setActiveSettingAdmin = (user: TUser): void => moderatorUi$.patch({ activeModerator: user })
 
   const hydrateModerators = useCallback(
     async (moderators: readonly TModerator[]): Promise<void> => {
@@ -89,7 +94,7 @@ export default function useAdmins(): TRet {
             const login = moderator.user?.login
             if (!login || !moderatorNeedsHydration(moderator)) return moderator
 
-            const res = await browserQuery<
+            const res = await browserGraphQLRequest<
               { user?: { passportString?: string } },
               { login: string }
             >(S.userPassport, { login })
@@ -109,13 +114,13 @@ export default function useAdmins(): TRet {
           }),
         )
 
-        dsb$.commit({ moderators: hydratedModerators })
-        community$.commit({ moderators: hydratedModerators })
+        dsb$.editMany({ moderators: hydratedModerators })
+        patchCommunityConfig(queryClient, slug, { moderators: hydratedModerators })
       } catch (error) {
         console.error('## hydrate moderators passport error: ', error)
       }
     },
-    [community$, dsb$],
+    [community$, dsb$, queryClient],
   )
 
   useEffect(() => {
@@ -135,10 +140,10 @@ export default function useAdmins(): TRet {
       const keyword = name.trim()
       if (!keyword) return []
 
-      const data = await browserQuery<{ searchUsers: { entries: TUser[] } }, { name: string }>(
-        S.searchUsers,
-        { name: keyword },
-      )
+      const data = await browserGraphQLRequest<
+        { searchUsers: { entries: TUser[] } },
+        { name: string }
+      >(S.searchUsers, { name: keyword })
 
       return data.searchUsers.entries.filter(
         (user) => user.login && !moderatorLoginSet.has(user.login),
@@ -152,7 +157,7 @@ export default function useAdmins(): TRet {
       const validUsers = users.filter((user) => user.login && !moderatorLoginSet.has(user.login))
       if (!community$.slug || !validUsers.length) return
 
-      const data = await browserQuery<
+      const data = await browserGraphQLRequest<
         { addModerators: { moderators: TModerator[] } },
         { community: string; users: string[] }
       >(S.addModerators, {
@@ -186,15 +191,10 @@ export default function useAdmins(): TRet {
 
       const resolvedModerators = nextModerators.length ? nextModerators : fallbackModerators
 
-      dsb$.commit({ moderators: resolvedModerators })
-      community$.commit({ moderators: resolvedModerators })
-      try {
-        await revalidateCommunityCache(community$.slug)
-      } catch (error) {
-        console.error('## revalidate community cache error: ', error)
-      }
+      dsb$.editMany({ moderators: resolvedModerators })
+      patchCommunityConfig(queryClient, community$.slug, { moderators: resolvedModerators })
     },
-    [community$, dsb$, moderatorLoginSet, originalModerators],
+    [community$, dsb$, moderatorLoginSet, originalModerators, queryClient],
   )
 
   return {

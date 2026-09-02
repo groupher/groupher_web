@@ -1,11 +1,9 @@
 'use client'
 
-import type { ResultOf, VariablesOf } from '@graphql-typed-document-node/core'
 import { useQuery } from '@tanstack/react-query'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { ASSETS_HUB_ENDPOINT } from '~/config'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import { graphqlQueryOptions } from '~/query'
 import useCommunity from '~/stores/community/hooks'
 import { toast } from '~/ui/Toaster'
@@ -19,30 +17,20 @@ import {
   ASSETS_HUB_THREAD_FILTER,
   ASSETS_HUB_UPLOAD_STATUS,
 } from './constant'
-import {
-  assetPublicReadUrl,
-  assetTypeFromMime,
-  checksumSha256,
-  extractErrorMessage,
-  putFileWithProgress,
-} from './helper'
+import { assetPublicReadUrl, extractErrorMessage } from './helper'
 import type {
   TAsset,
   TAssetStats,
   TAssetThreadFilter,
   TAssetsHubLogic,
   TDeleteResult,
-  TFinalizeResult,
-  THubUploadResult,
   TPagedAssetRefs,
   TPagedAssets,
   TReferencesState,
   TTiming,
   TUploadProgress,
 } from './spec'
-
-type TCreateAssetUploadIntent = ResultOf<typeof S.createCommunityAssetUploadIntent>
-type TCreateAssetUploadVariables = VariablesOf<typeof S.createCommunityAssetUploadIntent>
+import { uploadCommunityAsset, type TCommunityAssetUploadStage } from './uploadCommunityAsset'
 
 const EMPTY_REFS_STATE: TReferencesState = {
   assetId: null,
@@ -132,7 +120,7 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
       })
 
       try {
-        const refData = await browserQuery<
+        const refData = await browserGraphQLRequest<
           { communityAssetRefs: TPagedAssetRefs },
           { assetId: string; community: string; filter: { page: number; size: number } }
         >(S.communityAssetRefs, {
@@ -188,88 +176,33 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
       setTimings([])
       setUploadProgress(null)
 
-      const runStage = async <T>(label: string, task: () => Promise<T>): Promise<T> => {
-        setStatus(label)
-        setTimings((items) => [...items, { label, state: 'running' }])
-
-        const startedAt = performance.now()
-
-        try {
-          return await task()
-        } finally {
-          const duration = performance.now() - startedAt
-          setTimings((items) =>
-            items.map((item) =>
-              item.label === label ? { ...item, duration, state: 'done' } : item,
-            ),
-          )
-        }
-      }
-
       try {
-        const digest = await runStage(ASSETS_HUB_UPLOAD_STATUS.CHECKSUM, () => checksumSha256(file))
-        const intent = await runStage(ASSETS_HUB_UPLOAD_STATUS.INTENT, () =>
-          browserQuery<TCreateAssetUploadIntent, TCreateAssetUploadVariables>(
-            S.createCommunityAssetUploadIntent,
-            {
-              community,
-              file: {
-                assetType: assetTypeFromMime(file.type),
-                checksumSha256: digest,
-                filename: file.name,
-                mimeType: file.type,
-                sizeBytes: file.size,
-                thread: ASSETS_HUB_DEBUG_UPLOAD_THREAD,
-              },
-            },
-          ),
-        )
-        const capability = intent.createCommunityAssetUploadIntent.capability
-        const presignJson = await runStage(ASSETS_HUB_UPLOAD_STATUS.PRESIGN, async () => {
-          const presign = await fetch(`${ASSETS_HUB_ENDPOINT}/uploads`, {
-            body: JSON.stringify({ capability }),
-            headers: { 'content-type': 'application/json' },
-            method: 'POST',
-          })
-          const payload = (await presign.json()) as THubUploadResult
+        const upload = await uploadCommunityAsset({
+          community,
+          file,
+          onProgress: setUploadProgress,
+          onStage: (stage: TCommunityAssetUploadStage, state, duration) => {
+            const label =
+              ASSETS_HUB_UPLOAD_STATUS[stage.toUpperCase() as keyof typeof ASSETS_HUB_UPLOAD_STATUS]
+            if (state === 'running') {
+              setStatus(label)
+              setTimings((items) => [...items, { label, state: 'running' }])
+              return
+            }
 
-          if (!presign.ok) throw new Error(JSON.stringify(payload))
-
-          return payload
+            setTimings((items) =>
+              items.map((item) =>
+                item.label === label ? { ...item, duration, state: 'done' } : item,
+              ),
+            )
+          },
+          thread: ASSETS_HUB_DEBUG_UPLOAD_THREAD,
         })
 
-        await runStage(ASSETS_HUB_UPLOAD_STATUS.PUT, async () => {
-          await putFileWithProgress({
-            file,
-            headers: presignJson.result.upload.headers,
-            method: presignJson.result.upload.method,
-            onProgress: setUploadProgress,
-            url: presignJson.result.upload.url,
-          })
-        })
-
-        const finalizeJson = await runStage(ASSETS_HUB_UPLOAD_STATUS.FINALIZE, async () => {
-          const response = await fetch(
-            `${ASSETS_HUB_ENDPOINT}/uploads/${intent.createCommunityAssetUploadIntent.uploadRef}/finalize`,
-            {
-              body: JSON.stringify({ capability }),
-              headers: { 'content-type': 'application/json' },
-              method: 'POST',
-            },
-          )
-          const payload = (await response.json()) as TFinalizeResult
-
-          if (!response.ok) throw new Error(JSON.stringify(payload))
-
-          return payload
-        })
-
-        const finalizeTimings = finalizeJson.result?.timings ?? []
-
-        if (finalizeTimings.length > 0) {
+        if (upload.timings.length > 0) {
           setTimings((items) => [
             ...items,
-            ...finalizeTimings.map((item) => ({
+            ...upload.timings.map((item) => ({
               duration: item.duration,
               label: `finalize.${item.label}`,
               state: 'done' as const,
@@ -331,7 +264,7 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
       setDeletingAssetId(asset.id)
 
       try {
-        await browserQuery<TDeleteResult>(S.deleteCommunityAsset, {
+        await browserGraphQLRequest<TDeleteResult>(S.deleteCommunityAsset, {
           community,
           id: asset.id,
         })

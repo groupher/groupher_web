@@ -4,7 +4,7 @@ import useTrans from '~/hooks/useTrans'
 import Img from '~/Img'
 import type { TThirdPartyAnalyticsConfig } from '~/lib/thirdPartyAnalytics'
 import { isValidThirdPartyAnalyticsConfig } from '~/lib/thirdPartyAnalytics'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 import ArrowLinker from '~/ui/ArrowLinker'
 import Button from '~/ui/Buttons/Button'
 import ToggleSwitch from '~/ui/Buttons/ToggleSwitch'
@@ -35,8 +35,8 @@ const getIdentityConfigField = (
 const SettingModal = ({ show, onClose, service }: TProps) => {
   const s = useSalon()
   const { t } = useTrans()
-  const dsb$ = useDsb()
-  const { onSave } = useHelper()
+  const dsb$ = useDsbEdit()
+  const { onSave, isPending } = useHelper()
   const [enabled, setEnabled] = useState(false)
   const [value, setValue] = useState('')
 
@@ -80,7 +80,7 @@ const SettingModal = ({ show, onClose, service }: TProps) => {
       nextConfig,
     ]
 
-    dsb$.editField(FIELD.THIRD_PARTY_ANALYTICS, nextConfigs)
+    dsb$.edit(FIELD.THIRD_PARTY_ANALYTICS, nextConfigs)
     onSave(FIELD.THIRD_PARTY_ANALYTICS)
     onClose()
   }
@@ -119,11 +119,7 @@ const SettingModal = ({ show, onClose, service }: TProps) => {
             {t('dsb.third_part.learn_more')}
           </ArrowLinker>
 
-          <Button
-            disabled={!canSave}
-            loading={dsb$.savingField === FIELD.THIRD_PARTY_ANALYTICS}
-            onClick={handleSave}
-          >
+          <Button disabled={!canSave} loading={isPending} onClick={handleSave}>
             {t('dsb.third_part.confirm')}
           </Button>
         </div>

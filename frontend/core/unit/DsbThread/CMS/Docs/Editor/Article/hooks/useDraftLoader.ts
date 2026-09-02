@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 
 import { ARTICLE_STAGE } from '~/const/article'
 import { DSB_DOC_EVENT, type TDocDraftPatchPayload } from '~/const/dsb/docs'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import useEvent from '~/hooks/useEvent'
 import useCommunity from '~/stores/community/hooks'
 import S from '~/unit/DsbThread/schema/docs'
@@ -51,10 +51,10 @@ export default function useDraftLoader(draftState: TDraftEditorState): void {
 
     const abortController = new AbortController()
 
-    browserQuery<{ docDraft?: TDocDraftDTO }>(
+    browserGraphQLRequest<{ docDraft?: TDocDraftDTO }>(
       S.docDraft,
       { community, id: activePage.docId },
-      (input, init) => fetch(input, { ...init, signal: abortController.signal }),
+      { signal: abortController.signal },
     )
       .then((data) => {
         if (loadIdRef.current !== loadId) return

@@ -1,5 +1,5 @@
+import { DEFAULT_DOC_FAQ } from '~/constant/dsb-fields'
 import type { TDocFaq, TDocFaqGroup, TDocFaqItem } from '~/spec'
-import { DEFAULT_DOC_FAQ } from '~/stores/dsb/constant'
 
 import {
   DEFAULT_GROUP_ID,

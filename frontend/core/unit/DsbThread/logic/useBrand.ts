@@ -1,5 +1,5 @@
 import type { TBrandLayout, TEditFunc } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { FIELD } from '../constant'
 import useHelper from './useHelper'
@@ -13,17 +13,17 @@ type TRet = {
 
 /** Exposes brand state and actions through the shared React hook boundary. */
 export default function useBrand(): TRet {
-  const dsb$ = useDsb()
-  const { isChanged, edit } = useHelper()
+  const dsb$ = useDsbEdit()
+  const { isChanged, edit, isPending } = useHelper()
 
-  const { brandLayout, saving } = dsb$
+  const { brandLayout } = dsb$
 
   const isTouched = isChanged(FIELD.BRAND_LAYOUT)
 
   return {
     edit,
     layout: brandLayout,
-    saving,
+    saving: isPending,
     isTouched,
   }
 }

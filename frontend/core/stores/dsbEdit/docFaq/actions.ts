@@ -3,8 +3,9 @@
 import { useCallback } from 'react'
 
 import type { TDocFaq, TDocFaqGroup } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
-import type { TDocFaqSaveZone } from '~/stores/dsb/spec'
+import type { TDocFaqSaveZone } from '~/spec'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
+import { useFaqEditorUi } from '~/stores/dsbEditorUi/hooks'
 
 import {
   DEFAULT_GROUP_ID,
@@ -48,23 +49,24 @@ type TDocFaqItemAction = (typeof DOC_FAQ_ITEM_ACTION)[keyof typeof DOC_FAQ_ITEM_
  * dashboard field, and assigns the save zone used by SavingBar.
  */
 export default function useDocFaqActions(): TRet {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
+  const faqUi$ = useFaqEditorUi()
   const docFaq = dsb$.docFaq
 
   const setSaveZone = useCallback(
     (zone: TDocFaqSaveZone): void => {
-      dsb$.commit({ docFaqSaveZone: zone })
+      faqUi$.patch({ docFaqSaveZone: zone })
     },
-    [dsb$],
+    [faqUi$],
   )
 
   const clearSaveZone = useCallback((): void => {
-    dsb$.commit({ docFaqSaveZone: null })
-  }, [dsb$])
+    faqUi$.patch({ docFaqSaveZone: null })
+  }, [faqUi$])
 
   const updateFaq = useCallback(
     (nextFaq: TDocFaq): void => {
-      dsb$.editField(DOC_FAQ_FIELD, normalizeDocFaq(nextFaq))
+      dsb$.edit(DOC_FAQ_FIELD, normalizeDocFaq(nextFaq))
     },
     [dsb$],
   )
@@ -72,12 +74,12 @@ export default function useDocFaqActions(): TRet {
   const updateFaqWithSaveZone = useCallback(
     (nextFaq: TDocFaq, zone: Exclude<TDocFaqSaveZone, null>): void => {
       const normalizedFaq = normalizeDocFaq(nextFaq)
-      dsb$.editField(DOC_FAQ_FIELD, normalizedFaq)
-      dsb$.commit({
+      dsb$.edit(DOC_FAQ_FIELD, normalizedFaq)
+      faqUi$.patch({
         docFaqSaveZone: sameDocFaq(normalizedFaq, dsb$.original.docFaq) ? null : zone,
       })
     },
-    [dsb$],
+    [dsb$, faqUi$],
   )
 
   const setTitle = useCallback(

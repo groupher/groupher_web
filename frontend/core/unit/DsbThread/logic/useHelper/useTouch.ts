@@ -1,9 +1,9 @@
 import { equals } from 'ramda'
 
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { FIELD } from '../../constant'
-import type { TDsbFieldKey, TDsbStoreFieldKey } from '../../spec'
+import type { TDsbEditableFieldKey, TDsbFieldKey } from '../../spec'
 
 export type TRet = {
   isChanged: (field: TDsbFieldKey) => boolean
@@ -11,7 +11,7 @@ export type TRet = {
   mapArrayChanged: (key: string) => boolean
 }
 
-const LEGACY_COMPARE_FIELDS = new Set<TDsbStoreFieldKey>([
+const LEGACY_COMPARE_FIELDS = new Set<TDsbEditableFieldKey>([
   FIELD.HEADER_LINKS,
   FIELD.FOOTER_LINKS,
   FIELD.FOOTER_ONELINE_LINKS,
@@ -19,11 +19,11 @@ const LEGACY_COMPARE_FIELDS = new Set<TDsbStoreFieldKey>([
 
 /** Exposes touch state and actions through the shared React hook boundary. */
 export default function useTouch(): TRet {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
 
   const { original, touchedFields } = dsb$
 
-  const isStoreField = (field: TDsbFieldKey | string): field is TDsbStoreFieldKey =>
+  const isStoreField = (field: TDsbFieldKey | string): field is TDsbEditableFieldKey =>
     field in original
 
   const isChanged = (field: TDsbFieldKey): boolean => {

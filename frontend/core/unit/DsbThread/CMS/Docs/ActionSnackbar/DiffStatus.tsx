@@ -3,7 +3,7 @@
 import { type FC, lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { DSB_DOC_EVENT } from '~/const/dsb/docs'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import useEvent from '~/hooks/useEvent'
 import useTrans from '~/hooks/useTrans'
 import MergeSVG from '~/icons/Merge'
@@ -46,12 +46,12 @@ const DiffStatus: FC = () => {
 
     try {
       const [draftData, publishedData] = await Promise.all([
-        browserQuery<TDocDraftSnapshotsPayload>(S.docDraftSnapshots, {
+        browserGraphQLRequest<TDocDraftSnapshotsPayload>(S.docDraftSnapshots, {
           community,
           id: docDraftId,
           stage: 'DRAFT',
         }),
-        browserQuery<TDocDraftSnapshotsPayload>(S.docDraftSnapshots, {
+        browserGraphQLRequest<TDocDraftSnapshotsPayload>(S.docDraftSnapshots, {
           community,
           id: docDraftId,
           stage: 'PUBLIC',

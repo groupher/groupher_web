@@ -3,7 +3,7 @@ import type { FC } from 'react'
 
 import useTrans from '~/hooks/useTrans'
 import PlusSVG from '~/icons/Plus'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 import Button from '~/ui/Buttons/Button'
 import { FIELD } from '~/unit/DsbThread/constant'
 
@@ -28,7 +28,7 @@ const Group: FC = () => {
 
   const { footerLinks: links } = useFooter()
   const editor = useFooterEditorActions(links)
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
 
   return (
     <div className={s.wrapper}>
@@ -57,7 +57,7 @@ const Group: FC = () => {
 
       <FooterDndContext
         links={links}
-        onCommit={(nextLinks) => dsb$.editField(FIELD.FOOTER_LINKS, nextLinks)}
+        onCommit={(nextLinks) => dsb$.edit(FIELD.FOOTER_LINKS, nextLinks)}
         enableColumnSorting
       >
         {({ activeDragColumnId, columns, targetDragColumnId }) => (

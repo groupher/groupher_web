@@ -3,7 +3,7 @@ import { pick } from 'ramda'
 import { COLOR } from '~/const/colors'
 import useTrans from '~/hooks/useTrans'
 import type { TDocCoverLayout, TDocFAQLayout, TEditFunc } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { FIELD } from '../constant'
 import useHelper from './useHelper'
@@ -21,8 +21,8 @@ type TRet = {
 
 /** Exposes doc state and actions through the shared React hook boundary. */
 export default function useDoc(): TRet {
-  const dsb$ = useDsb()
-  const { isChanged, edit } = useHelper()
+  const dsb$ = useDsbEdit()
+  const { isChanged, edit, isPending } = useHelper()
   const { t } = useTrans()
 
   const addDocCategory = (): void => {
@@ -33,7 +33,7 @@ export default function useDoc(): TRet {
       files: [],
     })
 
-    dsb$.commit({ docCategories })
+    dsb$.editMany({ docCategories })
   }
 
   const isTouched = isChanged(FIELD.DOC_COVER_LAYOUT)
@@ -41,7 +41,8 @@ export default function useDoc(): TRet {
 
   return {
     edit,
-    ...pick(['docCoverLayout', 'docFaqLayout', 'saving'], dsb$),
+    ...pick(['docCoverLayout', 'docFaqLayout'], dsb$),
+    saving: isPending,
     isTouched,
     isFaqTouched,
     addDocCategory,

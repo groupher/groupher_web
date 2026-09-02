@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { ARTICLE_STAGE, type TArticleStage } from '~/const/article'
 import { DSB_DOC_EVENT } from '~/const/dsb/docs'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import useTrans from '~/hooks/useTrans'
 import { send } from '~/lib/signal'
 import { graphqlQueryOptions } from '~/query'
@@ -888,7 +888,7 @@ export default function useLogic(initialData?: TDocTreeInitialData): TSideTreeCo
     }
 
     if (action === SIDE_TREE_NODE_MENU_ACTION.MOVE_TO_DRAFT) {
-      browserQuery<TMoveDocToDraftData>(S.moveDocToDraft, { community, id: childId })
+      browserGraphQLRequest<TMoveDocToDraftData>(S.moveDocToDraft, { community, id: childId })
         .then((data) => {
           const payload = data?.moveDocToDraft
           const current = findChild(readGroups(), childId)
@@ -921,7 +921,7 @@ export default function useLogic(initialData?: TDocTreeInitialData): TSideTreeCo
       action === SIDE_TREE_NODE_MENU_ACTION.UNPIN_FROM_COVER
     ) {
       const pinning = action === SIDE_TREE_NODE_MENU_ACTION.PIN_TO_COVER
-      browserQuery(pinning ? S.pinDocToCover : S.unpinDocFromCover, {
+      browserGraphQLRequest(pinning ? S.pinDocToCover : S.unpinDocFromCover, {
         community,
         nodeId: childId,
       })

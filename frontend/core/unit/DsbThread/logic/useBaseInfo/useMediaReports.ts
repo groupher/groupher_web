@@ -1,8 +1,9 @@
 import { equals, filter, find, isEmpty, mergeRight, reject, startsWith } from 'ramda'
+import { useRef, useState } from 'react'
 
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import type { TMediaReport } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit, { useDsbEditStore } from '~/stores/dsbEdit/hooks'
 import S from '~/unit/DsbThread/schema/integrations'
 
 import { EMPTY_MEDIA_REPORT } from '../../constant'
@@ -21,9 +22,17 @@ export type TRet = {
 
 /** Exposes media reports state and actions through the shared React hook boundary. */
 export default function useMediaReports(): TRet {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
+  const dsbStore = useDsbEditStore()
 
-  const { mediaReports, original, queryingMediaReportIndex } = dsb$
+  const { mediaReports, original } = dsb$
+  const [queryingMediaReportIndex, setQueryingMediaReportIndex] = useState<number | null>(null)
+  const queryingMediaReportIndexRef = useRef<number | null>(null)
+
+  const setQueryingMediaReportIndexSafe = (index: number | null): void => {
+    queryingMediaReportIndexRef.current = index
+    setQueryingMediaReportIndex(index)
+  }
 
   const mediaReportsTouched = () => {
     const curValues = reject((item: TMediaReport) => !item.editUrl, mediaReports)
@@ -39,7 +48,7 @@ export default function useMediaReports(): TRet {
     const { mediaReports } = dsb$
     const newReport = mergeRight(EMPTY_MEDIA_REPORT, { index: Date.now() })
 
-    dsb$.commit({ mediaReports: [...mediaReports, newReport] })
+    dsb$.editMany({ mediaReports: [...mediaReports, newReport] })
   }
 
   const mediaReportOnChange = (index: number, url: string): void => {
@@ -49,18 +58,19 @@ export default function useMediaReports(): TRet {
 
     report.editUrl = url
 
-    dsb$.commit({ mediaReports: [...restReports, report] })
+    dsb$.editMany({ mediaReports: [...restReports, report] })
   }
 
   const removeMediaReport = (index: number): void => {
     const { mediaReports } = dsb$
     const newReports = reject((item: TMediaReport) => item.index === index, mediaReports)
 
-    dsb$.commit({ mediaReports: newReports })
+    dsb$.editMany({ mediaReports: newReports })
   }
 
   const handleOgQueryInfo = (data) => {
-    const { queryingMediaReportIndex, mediaReports } = dsb$
+    const { mediaReports } = dsbStore
+    const queryingMediaReportIndex = queryingMediaReportIndexRef.current
 
     const restReports = reject(
       (item: TMediaReport) => item.index === queryingMediaReportIndex,
@@ -72,24 +82,21 @@ export default function useMediaReports(): TRet {
     )
     const updatedReport = mergeRight(report, data)
 
-    dsb$.commit({
-      queryingMediaReportIndex: null,
-      loading: false,
-      mediaReports: [...restReports, updatedReport],
-    })
+    setQueryingMediaReportIndexSafe(null)
+    dsbStore.edit('mediaReports', [...restReports, updatedReport])
   }
 
   const queryOpenGraphInfo = (item: TMediaReport): void => {
     const { url, editUrl } = item
 
     if ((startsWith('https://', editUrl) || startsWith('http://', editUrl)) && url !== editUrl) {
-      dsb$.commit({ loading: true, queryingMediaReportIndex: item.index })
+      setQueryingMediaReportIndexSafe(item.index)
 
       const params = { url: editUrl.trim() }
-      browserQuery(S.openGraphInfo, params)
+      browserGraphQLRequest(S.openGraphInfo, params)
         .then(({ openGraphInfo }) => handleOgQueryInfo(openGraphInfo))
         .catch((e) => {
-          dsb$.commit({ loading: false, queryingMediaReportIndex: null })
+          setQueryingMediaReportIndexSafe(null)
           console.error('## og info: ', e)
           // oxlint-disable-next-line no-alert -- Legacy admin fallback while media report fetching is still alert-based.
           alert('## queryOpenGraphInfo error')

@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { isValidFooterLinks } from '~/lib/footerLinks'
 import type { TLinkItem } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 import { FIELD } from '~/unit/DsbThread/constant'
 
 import { makeDashboardLinkId } from '../../LinkEditor/model'
@@ -23,7 +23,7 @@ export default function useFooterEditorActions(
   sourceLinks: readonly TLinkItem[],
   onEditLinks?: (links: readonly TLinkItem[]) => void,
 ): TFooterEditorActions {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
   const links = useMemo(() => validLinks(sourceLinks), [sourceLinks])
 
   const editLinks = useCallback(
@@ -33,7 +33,7 @@ export default function useFooterEditorActions(
         return
       }
 
-      dsb$.editField(FIELD.FOOTER_LINKS, nextLinks)
+      dsb$.edit(FIELD.FOOTER_LINKS, nextLinks)
     },
     [dsb$, onEditLinks],
   )
@@ -42,6 +42,5 @@ export default function useFooterEditorActions(
     links,
     editLinks,
     makeId: makeDashboardLinkId,
-    onEditingLinkChange: (link, mode) => dsb$.commit({ editingLink: link, editingLinkMode: mode }),
   })
 }

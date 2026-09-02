@@ -37,7 +37,7 @@ export default function useSalon({ density, width, ...spacing }: TProps) {
       '[&>div]:h-7 [&>div]:min-w-7 [&>div]:rounded-md [&>div]:px-2 [&>div]:text-xs [&>div]:font-medium',
       '@max-[10.5rem]:[&>div]:w-7 @max-[10.5rem]:[&>div]:px-0',
     ),
-    cancelIcon: 'size-3.5 shrink-0 fill-current',
+    cancelIcon: 'size-3.5 shrink-0 fill-current mr-1.5',
     saveIcon: '@max-[10.5rem]:block hidden size-3.5 shrink-0 fill-current',
     cancelLabel: '@max-[13rem]:hidden whitespace-nowrap',
     saveLabel: '@max-[10.5rem]:hidden whitespace-nowrap',

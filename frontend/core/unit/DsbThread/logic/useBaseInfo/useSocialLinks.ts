@@ -1,7 +1,7 @@
 import { isEmpty, reject } from 'ramda'
 
 import type { TSocialItem } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { FIELD } from '../../constant'
 import useHelper from '../useHelper'
@@ -13,7 +13,7 @@ export type TRet = {
 
 /** Exposes social links state and actions through the shared React hook boundary. */
 export default function useSocialLinks(): TRet {
-  const { socialLinks } = useDsb()
+  const { socialLinks } = useDsbEdit()
   const { isChanged } = useHelper()
 
   return {

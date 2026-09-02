@@ -1,7 +1,7 @@
 import { pick, reject } from 'ramda'
 
 import type { TColorName, TEditFunc, TSizeSML, TThread } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { FIELD } from '../constant'
 import useHelper from './useHelper'
@@ -20,8 +20,8 @@ type TRet = {
 
 /** Exposes widgets state and actions through the shared React hook boundary. */
 export default function useWidgets(): TRet {
-  const dsb$ = useDsb()
-  const { isChanged, edit } = useHelper()
+  const dsb$ = useDsbEdit()
+  const { isChanged, edit, isPending } = useHelper()
 
   const { widgetsThreads } = dsb$
 
@@ -30,7 +30,7 @@ export default function useWidgets(): TRet {
       ? [...widgetsThreads, thread]
       : reject((t: TThread) => t === thread, widgetsThreads)
 
-    dsb$.editField(FIELD.WIDGETS_THREADS, newThreads)
+    dsb$.edit(FIELD.WIDGETS_THREADS, newThreads)
   }
 
   const isThreadTouched = isChanged(FIELD.WIDGETS_THREADS)
@@ -39,7 +39,8 @@ export default function useWidgets(): TRet {
   const isSizeTouched = isChanged(FIELD.WIDGETS_SIZE)
 
   return {
-    ...pick(['saving', 'widgetsPrimaryColor', 'widgetsThreads', 'widgetsSize'], dsb$),
+    ...pick(['widgetsPrimaryColor', 'widgetsThreads', 'widgetsSize'], dsb$),
+    saving: isPending,
     threadOnChange,
     isThreadTouched,
     isPrimaryColorTouched,

@@ -2,7 +2,7 @@ import { equals } from 'ramda'
 import { type FC, useEffect, useMemo, useState } from 'react'
 
 import { DOC_COVER_LAYOUT } from '~/const/layout'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import useTrans from '~/hooks/useTrans'
 import useTwBelt from '~/hooks/useTwBelt'
 import type { TDocCoverLayout, TMarkerValue } from '~/spec'
@@ -78,7 +78,7 @@ const GroupSettingPanel: FC<TProps> = ({ section, layout, community, onDone }) =
     setSaving(true)
 
     try {
-      await browserQuery(S.updateDocCoverCardAppearance, {
+      await browserGraphQLRequest(S.updateDocCoverCardAppearance, {
         community,
         id: section.id,
         appearance,

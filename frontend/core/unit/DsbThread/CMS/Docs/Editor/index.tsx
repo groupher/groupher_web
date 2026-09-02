@@ -5,7 +5,7 @@ import { Group as PanelGroup, Panel, Separator } from 'react-resizable-panels'
 
 import { DSB_DOC_EVENT } from '~/const/dsb/docs'
 import useEvent from '~/hooks/useEvent'
-import useDsb from '~/stores/dsb/hooks'
+import { useDsbShellUi } from '~/stores/dsbShellUi'
 
 import ActionSnackbar from '../ActionSnackbar'
 import AddTabPortal from './AddTabPortal'
@@ -30,7 +30,7 @@ type TProps = {
 }
 
 const Editor: FC<TProps> = ({ initialData }) => {
-  const { submenuCollapsed } = useDsb()
+  const { submenuCollapsed } = useDsbShellUi()
   const sideTree = useSideTreeLogic(initialData?.docTree ?? undefined)
   const showTabs = sideTree.tabs.length > 0
   const s = useSalon({ showTabs, submenuCollapsed })

@@ -23,7 +23,7 @@ const mocks = vi.hoisted(() => ({
   syncDocIdToUrl: vi.fn(),
 }))
 
-vi.mock('~/graphql/client', () => ({ browserQuery: mocks.mutate }))
+vi.mock('~/graphql/client', () => ({ browserGraphQLRequest: mocks.mutate }))
 
 vi.mock('@tanstack/react-query', async () => ({
   ...(await vi.importActual('@tanstack/react-query')),

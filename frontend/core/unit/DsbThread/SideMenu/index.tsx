@@ -10,7 +10,7 @@ import useDsbTab from '~/hooks/useDsbTab'
 import { Q } from '~/query'
 import type { TDsbPath } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
-import useDsb from '~/stores/dsb/hooks'
+import { useDsbShellUi } from '~/stores/dsbShellUi'
 import Sticky from '~/ui/Sticky'
 
 import { DASHBOARD_SIDE_MENU_STICKY_OFFSET, MENU, MENU_VIEW } from '../constant'
@@ -94,7 +94,7 @@ const sideMenuReducer = (state: TSideMenuState, action: TSideMenuAction): TSideM
 
 export default function SideMenu() {
   const { mainTab } = useDsbTab()
-  const { commit, submenuCollapsed } = useDsb()
+  const { submenuCollapsed, setSubmenuCollapsed } = useDsbShellUi()
   const { slug: community } = useCommunity()
   const postsQuery = useQuery(Q.article.posts({ community, page: 1, size: 20 }))
   const groupKeys = keys(MENU)
@@ -116,8 +116,8 @@ export default function SideMenu() {
   )
 
   useEffect(() => {
-    if (menuView === MENU_VIEW.MAIN) commit({ submenuCollapsed: false })
-  }, [commit, menuView])
+    if (menuView === MENU_VIEW.MAIN) setSubmenuCollapsed(false)
+  }, [menuView, setSubmenuCollapsed])
 
   useEffect(() => {
     // Once the router catches up, pathname becomes the source of truth again.
@@ -159,7 +159,7 @@ export default function SideMenu() {
                 <Collapsed
                   activeSlug={optimisticSubTab}
                   className={s.collapsedRail}
-                  onExpand={() => commit({ submenuCollapsed: false })}
+                  onExpand={() => setSubmenuCollapsed(false)}
                   view={menuView as TSubmenuView}
                   {...submenuConfig}
                 />
@@ -167,7 +167,7 @@ export default function SideMenu() {
                 <SubMenu
                   activeSlug={optimisticSubTab}
                   endSlots={menuView === MENU_VIEW.POST ? postEndSlots : undefined}
-                  onCollapse={() => commit({ submenuCollapsed: true })}
+                  onCollapse={() => setSubmenuCollapsed(true)}
                   returnTo={returnToByView[menuView] ?? null}
                   {...submenuConfig}
                 />

@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react'
 
-import useDsb from '~/stores/dsb/hooks'
+import { useDsbShellUi } from '~/stores/dsbShellUi'
 import useSalon, { cnMerge } from '~/unit/DsbThread/salon'
 
 type TProps = {
@@ -14,7 +14,7 @@ const COLLAPSED_CONTENT_INLINE_INSET = 'pl-0'
 
 export default function SubMenuContentLayout({ children }: TProps) {
   const s = useSalon()
-  const { submenuCollapsed } = useDsb()
+  const { submenuCollapsed } = useDsbShellUi()
 
   return (
     <div

@@ -1,12 +1,5 @@
-import type {
-  TChangeMode,
-  TColorName,
-  TConstValues,
-  TDsbPath,
-  TLinkDraftItem,
-  TTransKey,
-} from '~/spec'
-import type { TDsbFieldMap } from '~/stores/dsb/spec'
+import type { TColorName, TConstValues, TDsbPath, TTransKey } from '~/spec'
+import type { TDsbFieldMap } from '~/spec'
 
 import type { DSB_MENU_ICON, FIELD } from './constant'
 import type { TDsbMenuIcon } from './SideMenu/icons'
@@ -29,16 +22,8 @@ export type TDsbMenu = {
   [k: TMenuGroupName]: TDsbMenuGroup
 }
 
-export type TLinkState = {
-  editingLink: TLinkDraftItem | null
-  saving: boolean
-  editingLinkMode: TChangeMode
-  editingGroup: string | null
-  editingGroupIndex: number | null
-}
-
-export type TDsbStoreFieldKey = keyof TDsbFieldMap
-export type TDsbFieldKey = TDsbStoreFieldKey | TConstValues<typeof FIELD>
+export type TDsbEditableFieldKey = keyof TDsbFieldMap
+export type TDsbFieldKey = TDsbEditableFieldKey | TConstValues<typeof FIELD>
 
 type TDocFile = {
   index: number

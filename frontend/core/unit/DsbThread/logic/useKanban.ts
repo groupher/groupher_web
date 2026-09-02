@@ -1,7 +1,7 @@
 import { pick } from 'ramda'
 
 import type { TColorName, TEditFunc, TKanbanBoard, TKanbanCardLayout, TKanbanLayout } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { FIELD } from '../constant'
 import useHelper from './useHelper'
@@ -23,8 +23,8 @@ type TRet = {
 
 /** Exposes kanban state and actions through the shared React hook boundary. */
 export default function useKanban(): TRet {
-  const dsb$ = useDsb()
-  const { isChanged, edit } = useHelper()
+  const dsb$ = useDsbEdit()
+  const { isChanged, edit, isPending } = useHelper()
 
   const isKanbanLayoutTouched = isChanged(FIELD.KANBAN_LAYOUT)
   const isKanbanCardLayoutTouched = isChanged(FIELD.KANBAN_CARD_LAYOUT)
@@ -33,7 +33,8 @@ export default function useKanban(): TRet {
 
   return {
     edit,
-    ...pick(['kanbanLayout', 'kanbanCardLayout', 'kanbanBoards', 'kanbanBgColors', 'saving'], dsb$),
+    ...pick(['kanbanLayout', 'kanbanCardLayout', 'kanbanBoards', 'kanbanBgColors'], dsb$),
+    saving: isPending,
     isKanbanLayoutTouched,
     isKanbanCardLayoutTouched,
     isKanbanBoardsTouched,

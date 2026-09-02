@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import useTrans from '~/hooks/useTrans'
 import useCommunity from '~/stores/community/hooks'
 import { toast } from '~/ui/Toaster'
@@ -40,7 +40,7 @@ export default function useTrashedPosts(initialData?: TPagedTrashedPosts | null)
       setLoading(true)
 
       try {
-        const data = await browserQuery<TTrashedPostsData>(S.trashedPosts, {
+        const data = await browserGraphQLRequest<TTrashedPostsData>(S.trashedPosts, {
           community,
           page: targetPage,
           size: PAGE_SIZE,
@@ -81,7 +81,7 @@ export default function useTrashedPosts(initialData?: TPagedTrashedPosts | null)
       setActiveActionId(id)
 
       try {
-        const data = await browserQuery<TRestoreTrashedPostData>(S.restoreTrashedPost, {
+        const data = await browserGraphQLRequest<TRestoreTrashedPostData>(S.restoreTrashedPost, {
           community,
           id,
         })
@@ -106,7 +106,7 @@ export default function useTrashedPosts(initialData?: TPagedTrashedPosts | null)
       setActiveActionId(id)
 
       try {
-        const data = await browserQuery<TPermanentlyDeleteTrashedPostData>(
+        const data = await browserGraphQLRequest<TPermanentlyDeleteTrashedPostData>(
           S.permanentlyDeleteTrashedPost,
           { community, id },
         )

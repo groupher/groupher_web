@@ -11,7 +11,7 @@ const mocks = vi.hoisted(() => ({
   reload: vi.fn(),
 }))
 
-vi.mock('~/graphql/client', () => ({ browserQuery: mocks.mutate }))
+vi.mock('~/graphql/client', () => ({ browserGraphQLRequest: mocks.mutate }))
 
 vi.mock('@tanstack/react-query', async () => ({
   ...(await vi.importActual('@tanstack/react-query')),
@@ -19,7 +19,7 @@ vi.mock('@tanstack/react-query', async () => ({
 }))
 
 vi.mock('~/stores/community/hooks', () => ({ default: () => ({ slug: 'home' }) }))
-vi.mock('~/stores/dsb/hooks', () => ({
+vi.mock('~/stores/dsbEdit/hooks', () => ({
   default: () => ({ docCoverLayout: 'OUTLINE_COLUMNS' }),
 }))
 

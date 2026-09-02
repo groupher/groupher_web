@@ -2,7 +2,7 @@ import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import type { DocumentNode } from 'graphql'
 import { useCallback } from 'react'
 
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import useTrans from '~/hooks/useTrans'
 import useCommunity from '~/stores/community/hooks'
 import { toast } from '~/ui/Toaster'
@@ -39,7 +39,7 @@ export default function useSideTreePersistence({
       pickPayload: (data: TDocTreeMutationData) => TDocTreeMutationPayload | null | undefined,
     ): Promise<TDocTreeMutationPayload | null | undefined> => {
       try {
-        const data = await browserQuery<TDocTreeMutationData>(schema, {
+        const data = await browserGraphQLRequest<TDocTreeMutationData>(schema, {
           community,
           baseRevision: revisionRef.current,
           ...variables,
@@ -75,7 +75,7 @@ export default function useSideTreePersistence({
       variables: Record<string, unknown>,
     ): Promise<boolean> => {
       try {
-        await browserQuery(schema, { community, ...variables })
+        await browserGraphQLRequest(schema, { community, ...variables })
         reload()
         return true
       } catch (err) {

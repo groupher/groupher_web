@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import ArrowSVG from '~/icons/ArrowSimple'
-import useDocFaqActions from '~/stores/dsb/docFaq/actions'
+import useDocFaqActions from '~/stores/dsbEdit/docFaq/actions'
 import MarkdownEditor from '~/ui/MarkdownEditor'
 
 import { FIELD } from '../../../../constant'
