@@ -25,7 +25,11 @@ import type {
 
 import { setPublicCacheHeaders } from './cache-headers'
 import { fetchGraphQL } from './graphql'
-import { isCommunityPathContextTrusted, isPlatformHost } from './public-path'
+import {
+  isCommunityPathContextTrusted,
+  isDirectCommunityOriginPage,
+  isPlatformHost,
+} from './public-path'
 
 export type TCommunityShell = {
   community: TCommunity
@@ -43,6 +47,7 @@ export const loadCommunityRequestContext = createServerFn({ method: 'GET', stric
       .toLowerCase()
     return {
       customDomain: isCommunityPathContextTrusted(pathname, slug) && !isPlatformHost(host),
+      directOriginPage: isDirectCommunityOriginPage(host, pathname),
     }
   },
 )

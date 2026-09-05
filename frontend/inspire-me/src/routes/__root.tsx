@@ -4,13 +4,16 @@ import type { ReactNode } from 'react'
 
 import '../styles/global.css'
 import NotFound from '../components/NotFound'
+import { disableSearchIndexing } from '../server/search-index'
 
 export const Route = createRootRoute({
+  loader: () => disableSearchIndexing(),
   head: () => ({
     links: [{ rel: 'icon', href: '/favicon.svg' }],
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'robots', content: 'noindex, nofollow' },
       { title: 'Inspire Me | Feedback platform ideas' },
       {
         name: 'description',

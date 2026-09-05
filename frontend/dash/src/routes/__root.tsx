@@ -12,10 +12,15 @@ import ThemeStoreProvider from '~/stores/theme/provider'
 import AuthLoginModal from '~/ui/AuthLoginModal'
 
 import type { TRouterContext } from '../router-context'
+import { disableSearchIndexing } from '../server/search-index'
 
 export const Route = createRootRouteWithContext<TRouterContext>()({
   loader: async () => {
-    const [locale, theme] = await Promise.all([loadLocale({ data: {} }), loadThemeSeed()])
+    const [locale, theme] = await Promise.all([
+      loadLocale({ data: {} }),
+      loadThemeSeed(),
+      disableSearchIndexing(),
+    ])
     return { locale, renderedAt: Date.now(), theme }
   },
   head: () => ({
@@ -31,6 +36,10 @@ export const Route = createRootRouteWithContext<TRouterContext>()({
       },
       {
         title: 'Groupher Dash',
+      },
+      {
+        name: 'robots',
+        content: 'noindex, nofollow',
       },
     ],
   }),

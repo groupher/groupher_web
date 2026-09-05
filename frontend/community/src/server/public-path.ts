@@ -3,6 +3,13 @@ import { isPlatformHost } from '@groupher/route-contract'
 /** Returns whether the hostname belongs to a Groupher platform domain rather than a custom community domain. */
 export { isPlatformHost }
 
+const COMMUNITY_DEPLOYMENT_HOST = 'community.groupher.com'
+
+/** Identifies public page requests made directly to the Community deployment origin. */
+export const isDirectCommunityOriginPage = (hostname: string, pathname: string): boolean =>
+  hostname.trim().toLowerCase().replace(/\.$/, '').split(':')[0] === COMMUNITY_DEPLOYMENT_HOST &&
+  pathname !== '/health'
+
 const normalizeSuffix = (suffix: string): string => {
   if (!suffix || suffix === '/') return ''
   return suffix.startsWith('/') ? suffix : `/${suffix}`
