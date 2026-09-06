@@ -113,6 +113,13 @@ settings 和对应的静态 Profile 图片；active 指针按 theme 分开。不
 - [ ] 完成 Upload 面板真实上传和 `assetPublicRef` 写回。
 - [ ] 完成当前 theme 的 history 列表、restore 和 remove UI。
 - [ ] 补两支独立 dirty draft 的切换、离开 route 提示和恢复后的 baseline 更新。
+- [x] 离开 Wallpaper route 的 blocker 已接入本地化确认文案；仍需补真实跨 route remount 的 draft
+      浏览器用例，store-level reconcile 用例不能替代 route 生命周期验证。
+- [x] Assets Hub cleanup/授权回归：实际 DO cleanup 的 probe-unknown 保留、`/cleanup` 的 503 映射、
+      register/claim/cleanup 的 401/403 service-auth 矩阵，以及 Browser `/cancel` 的无效 capability 400
+      均已落地并有测试。
+- [ ] 为 publish loser cleanup 补真实并发时序测试；Phoenix 与 Hub 的双 probe 只缩小竞态窗口，不能
+      代替后续 publish-finalization/cleanup lease 的跨系统原子协议。
 - [x] 将编辑页 settings/history 从普通 `PageCommunity` 大查询拆成按 route 的 `WallpaperEditor` 请求；普通页面不再
       携带编辑器 settings/history。
 - [x] 迁移范围外仍保留 v1 `static_revision` 语义的文档已明确标注为 incident/archive；仅历史归档文档保留原术语，
