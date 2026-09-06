@@ -56,6 +56,7 @@ class BgRendererAdapter implements TBgRendererAdapter {
   private readonly vgpuCanvas: HTMLCanvasElement
   private readonly textureScale: number
   private readonly renderSize: readonly [number, number] | undefined
+  private readonly renderLogicalSize: readonly [number, number] | undefined
   private readonly patternSize: string
   private readonly preferVgpu: boolean
   private readonly onEngineChange: (engine: TBgRendererEngine) => void
@@ -79,6 +80,7 @@ class BgRendererAdapter implements TBgRendererAdapter {
     onFailure: (failure: TBgRendererFailure) => void,
     patternSize = 'auto',
     renderSize?: readonly [number, number],
+    renderLogicalSize?: readonly [number, number],
   ) {
     this.webglCanvas = webglCanvas
     this.vgpuCanvas = vgpuCanvas
@@ -86,6 +88,7 @@ class BgRendererAdapter implements TBgRendererAdapter {
     this.textureScale = textureScale
     this.patternSize = patternSize
     this.renderSize = renderSize
+    this.renderLogicalSize = renderLogicalSize
     this.preferVgpu = preferVgpu
     this.onEngineChange = onEngineChange
     this.onFailure = onFailure
@@ -211,6 +214,7 @@ class BgRendererAdapter implements TBgRendererAdapter {
         (error) => this.failVgpu('gpu-run', error),
         this.patternSize,
         this.renderSize,
+        this.renderLogicalSize,
       )
       if (!this.isActivationCurrent(token)) {
         renderer.destroy()
@@ -273,6 +277,7 @@ export const createBgRendererAdapter = (
   onFailure: (failure: TBgRendererFailure) => void = () => undefined,
   patternSize = 'auto',
   renderSize?: readonly [number, number],
+  renderLogicalSize?: readonly [number, number],
 ): TBgRendererAdapter =>
   new BgRendererAdapter(
     webglCanvas,
@@ -284,4 +289,5 @@ export const createBgRendererAdapter = (
     onFailure,
     patternSize,
     renderSize,
+    renderLogicalSize,
   )

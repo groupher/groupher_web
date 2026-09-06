@@ -1,12 +1,77 @@
 # Wallpaper 响应式静态产物、历史与共享导出机制
 
-> 状态：目标架构已确认，尚未实施
+> 文档角色：Active contract；Profile、Assets Hub、生命周期和共享导出边界仍有效
 >
-> 日期：2026-09-02
+> 日期：2026-09-06
 >
-> 关联文档：[实时编辑与静态发布边界](./static_wallpaper.md) ·
-> [浏览器端导出与上传](./browser_export_upload.md) ·
+> Current save contract：[当前 theme 单独保存重构](./current_theme_save_refactor.md)
+>
+> Active background contract：[Wallpaper NONE 与页面背景绘制边界](./content_background_fallback.md)
+>
+> Active：[保存链路与数据边界](./save_pipeline_contract.md) ·
 > [实时预览架构](./preview_architecture.md)
+>
+> Mixed：[实时编辑与静态发布边界（v1 主体归档）](./static_wallpaper.md)
+>
+> Archive：[浏览器端导出与上传（v1）](./browser_export_upload.md)
+
+> 契约提示：本文早期的双 theme 聚合保存模型已被
+> [当前 theme 单独保存重构](./current_theme_save_refactor.md) 和
+> [保存链路与数据边界](./save_pipeline_contract.md) 取代。当前 theme 的保存粒度、Settings、Snapshot、
+> NONE 和单支指针规则以上述两篇为准；本文件继续作为 Profile 矩阵、Assets Hub、生命周期、保留和
+> 安全边界的 Active 参考，不能从旧段落恢复双支运行路径。
+
+> v2 阅读边界：下方早期章节中出现的 `CommunityWallpaperState`、Theme Revision、RevisionAsset、
+> authoring、candidate refs、Variant、`stateVersion`、`staticWallpaper` 以及 light/dark 双支同时保存，
+> 都是历史设计记录，不是当前运行时契约。当前实现使用 `CommunityWallpaper`、`WallpaperSnapshot`、
+> `WallpaperSnapshotImage`、Settings、Snapshot、Image、`version` 和 `wallpaper`；一次保存只更新当前
+> theme 指针，但当前指针、`version + 1`、Snapshot/Images 与 Receipt 仍在同一数据库事务中完成。
+> 本文件的 Profile、Assets Hub、lease、reconciliation、保留策略、静态消费和安全边界继续有效；保存、
+> GraphQL shape、错误码和命名以两篇 Active contract 为准。
+
+## 0. 当前实现基线（2026-09-02）
+
+本轮实现已将本文的首期契约落到 Phoenix、Assets Hub Worker 和 Dashboard：
+
+- Batch 协调状态由 Cloudflare Durable Object 的 SQLite storage API 保存；这是 Durable Object 的存储
+  后端，不是 D1，也不需要另外创建 SQLite 服务。部署仍必须在 Wrangler 中声明 Durable Object
+  binding 和 SQLite migration；生产账户需要具备 Durable Objects 使用权限。
+- 内部鉴权 scope 固定为：claim `assets:generated-batch:claim`、cleanup
+  `assets:generated-batch:cleanup`、对象删除 `assets:object:delete`、finalize 后注册 manifest entry
+  `assets:generated-batch:register`。注册只接受 `service:assets-hub`，其余三个 scope 只接受
+  `service:phoenix`。
+- manifest digest v1 使用排序后的 camelCase wire entry；TypeScript 与 Elixir 共用
+  `packages/contracts/fixtures/wallpaper-manifest-digest-v1.json` golden fixture。
+- Profile/Variant 矩阵由 `packages/contracts/fixtures/wallpaper-profile-matrix-v1.json` 固定，并由
+  Frontend、Phoenix 与 Assets Hub 分别执行 golden test；Profile 名不得包含 `-`。
+- GraphQL 中 variants、candidate revision refs、expected variants、upload intents 和 static variants
+  均已类型化。Absinthe 负责 GraphQL camelCase 到内部 snake_case 的映射；Assets Hub capability 与
+  manifest 的 camelCase 只在 `CMS.Assets.GeneratedBatch.PublishCapability` 双向转换。
+- Wallpaper settings 使用 typed 稳定骨架和版本化 JSON recipe，由 Frontend codec 与
+  `CMS.Wallpaper.Settings` 明确规范化；request digest 只由 `CMS.Wallpaper.RequestDigest` 计算。
+- claim 会在冻结 manifest 后对每个 R2 object 执行 `head`，复核存在性、MIME 和 SHA-256；manifest
+  不完整或物理对象不一致时，先持久化 delete claim，再删除对象与 Durable Object 元数据。
+- publish cleanup 在删除 claim 和 CommunityAsset 行前会再次查询 `batch_published?(batchRef)`；同一
+  idempotency key 的重复请求即使其中一个事务已失败，也不会误删胜者 Revision 正在引用的对象。
+- Phoenix 在事务外预检 lease，并在事务 callback 内二次校验。当前 policy `v1`：DB transaction
+  timeout 5 秒、lock timeout 4 秒、publish transaction budget 10 秒、最大时钟偏差 5 秒；Batch TTL
+  15 分钟。
+- light/dark 合计保留最近使用的 5 个 Snapshot。淘汰 Snapshot 的 `deleteAfter` 为当前时间加 2 小时，
+  不再立即删除。Oban 每 15 分钟清理过期 Receipt、过宽限期且非 active 的 Revision，并对超过
+  30 分钟仍未被 Revision 引用的 `wallpaper-generated` CommunityAsset 做孤儿对账。
+- Editor 返回 `version` 和当前 theme 最近 5 次 Snapshot 历史；`restoreWallpaperSnapshot` 通过聚合行锁和
+  base version 原子恢复 retained Snapshot。NONE Snapshot 同样可恢复。
+- Receipt 重放按 Receipt 自带的 `requestDigestVersion` 重算；遇到当前服务不支持的历史版本时返回
+  显式 unsupported-version 错误，不伪装成普通 idempotency conflict。
+- 浏览器对同一份失败 Save 保留 idempotency key；响应丢失后的重试可命中 Phoenix Receipt，而用户
+  修改内容或 State version 改变后会生成新 key。
+- Assets Hub 增加真实 workerd/Miniflare Durable Object 测试，覆盖成功 claim、manifest 不完整以及
+  R2 object 缺失。Wrangler dry-run、跨语言 golden fixture 和 Phoenix 测试共同作为发布门禁。
+
+首期 capability 签名仍采用单个 HMAC key，`signingKeyId = hmac-v1`，尚未提供多 key 轮换。这是已知
+缩减，不影响当前单 key 部署；引入轮换前必须先让 Phoenix 支持 trusted key set，再切换签发 key。
+生产部署还必须在服务身份注册表中给 `service:assets-hub` 授予
+`assets:generated-batch:register`，否则 finalize 后的 manifest 注册会被拒绝。
 
 ## 1. 背景与目标
 
@@ -18,11 +83,11 @@ WebGPU 预览、SSR 静态背景和路由切换后的静态背景不一致。
 “万能尺寸”，而是：
 
 - 为每个 viewport Profile 单独生成静态产物；
-- light/dark 分别保存不可变的成功 Revision；
-- 原子切换当前 light/dark 引用；
-- light/dark 合计保留最近使用的 5 个 Revision；
+- 当前 theme 分别保存不可变的成功 Snapshot；
+- 每次事务只切换当前 theme 引用；
+- light/dark 合计保留最近使用的 5 个 Snapshot；
 - 任何生成或上传失败都放弃整个临时批次，不发布、不续传、不修补；
-- 普通路由只消费静态图片，不加载 WebGPU 或 authoring recipe；
+- 普通路由只消费静态图片，不加载 WebGPU 或 settings recipe；
 - 共享浏览器导出和 Assets Hub 能力，为后续 Cover 多用途输出复用机制，但不提前统一产品模型。
 
 本文件取代旧单图目标：
@@ -94,7 +159,7 @@ Wallpaper 与 Cover 不共享：
 
 ### 2.3 成功结果进入业务模型，失败过程留在临时批次
 
-正式 `WallpaperThemeRevision` 只表示一次成功发布过、可以被当前状态或历史引用的完整结果。
+正式 `WallpaperSnapshot` 只表示一次成功发布过、可以被当前状态或历史引用的完整结果。
 pending、ready、failed、conflicted 等上传过程不进入 Revision 生命周期。
 
 ```text
@@ -150,6 +215,42 @@ type TWallpaperVariantSpec = {
 
 Profile 表达 viewport 场景和逻辑宽高比，Variant 表达实际输出像素。不同 Profile 必须独立构图，
 不能先生成一张固定大图，再二次裁切冒充不同 Profile。
+
+### 3.1.1 Static 与 Editor runtime 的 Profile 选择契约
+
+`StaticWallpaper` 以 `wide` 为默认分支，再由 media query 覆盖：`<= 767px` 为 `phone`、
+`768..1023px` 为 `tablet`、`>= 1024px` 且宽高比 `<= 16/10` 为 `desktop`，其余为 `wide`。client
+renderer 的 Profile resolver 必须镜像这套 cascade 和边界；不能另外维护一套“近似” breakpoint。
+Profile contract test 同时读取 `utils.css` 和 TS Profile spec，校验 base `wide`、每个 light/dark media block
+及 `wide -> desktop` cascade 顺序；resolver 测试覆盖 `16/10` 等号边界。该测试锁定源码契约，真实浏览器的
+computed-style matrix 仍属于跨浏览器验收。它不会执行 CSS cascade，也不能证明任意规则重排后的行为等价；
+例如 media block 相对 base 的整体位置变化仍必须由浏览器矩阵发现。
+
+有当前主题的 published Wallpaper 时，编辑页全屏 GPU 接管遵守以下规则：
+
+```text
+CSS media query / client resolver
+  -> 同一个 active Profile
+  -> Profile logical width/height 作为 renderer 构图尺寸
+  -> backing store = logical size × min(devicePixelRatio, 2)
+  -> canvas 与静态图片都在 viewport 内 cover center
+```
+
+其中 Profile logical size 决定 Pattern repeat、Gradient 中心和 framing；DPR 只提高栅格分辨率，不能改变
+这些视觉参数。没有当前主题的 published Wallpaper 时，编辑页 CSS draft 与 client renderer 共同按实际 viewport
+构图；AuthPreview、GlobalPreview 等卡片目标则按各自 DOM rect 构图。显式 export 始终使用 Target 的固定 logical/
+pixel size，不读取设备 DPR。
+
+因此“SSR 与 client 一致”不是要求静态 WebP 与 GPU canvas 逐像素同源，而是要求接管前后使用同一 Profile、
+同一逻辑坐标系、同一 `cover center` presentation。React 没有 hydration warning 也不能证明这项视觉契约成立。
+
+连续 resize 时 active Profile 必须立即跟随 CSS，但 GPU renderer Profile 可以等待 `150ms` 稳定后再替换。
+等待期间立即撤销旧 Profile 的 ready handoff、显示静态层；不能通过给 TS resolver 增加 CSS 不具备的状态性
+迟滞带来减少重建，否则会在迟滞区重新产生 CSS↔GPU Profile 分歧。
+
+settle 只属于 client renderer 生命周期，不属于响应式 Profile 选择协议。当前首次 hydration 后从 SSR `wide`
+校正到真实 client Profile 也会触发 settle；后续优化应在 hydration commit 后立即完成这一次初始化校正，再把
+`150ms` 仅保留给用户 resize。禁止通过 render 阶段的 `typeof window` 分支绕开 SSR snapshot。
 
 ### 3.2 Profile source override
 
@@ -261,6 +362,11 @@ type TImageExportProgress = {
 }
 ```
 
+GraphQL 使用类型化 `WallpaperBatchVariantInput` 列表承载批次变体，Browser 不 stringify 固定结构；
+Absinthe 将字段映射为内部 snake_case。事故时间线和当前边界见
+[保存链路与数据边界](./save_pipeline_contract.md)。variants 不保留 camelCase/snake_case 双格式读取；
+Assets Hub manifest 的 camelCase 由 `CMS.Assets.GeneratedBatch.PublishCapability` 负责解析和 digest 发射。
+
 Wallpaper adapter 将 `TWallpaperVariantSpec` 转成 `TImageExportTarget`；未来 Cover adapter 将
 article cover、card、share、Open Graph 等用途转成自己的 Target。中立 Target 和 adapter 命名在
 Cover 真正接入前属于 provisional 内部契约；本期只保留直接的纯函数映射，不建设 adapter 注册表或
@@ -273,7 +379,6 @@ Wallpaper 提交发生变化的 theme 和全部要求 Target：
 ```ts
 type TRenderWallpaperThemeInput = {
   theme: 'light' | 'dark'
-  candidateThemeRevisionRef: string
   renderSpec: TBgRenderSpec
 }
 
@@ -311,7 +416,7 @@ type TGeneratedImageUploadBatchTarget = {
 }
 
 type TGeneratedImageBatchClaim = {
-  kind: 'publish' | 'delete'
+  type: 'publish' | 'delete'
   key: string
   claimedAt: string
   expiresAt: string
@@ -331,6 +436,8 @@ type TGeneratedImagePublishCapability = {
   batchRef: string
   purpose: string
   claimKey: string
+  requestDigest: string
+  requestDigestVersion: number
   manifest: TGeneratedImageManifestEntry[]
   manifestDigest: string
   policyVersion: string
@@ -341,6 +448,8 @@ type TGeneratedImagePublishCapability = {
 type TGeneratedImageUploadBatch = {
   publicRef: string
   purpose: string
+  requestDigest: string
+  requestDigestVersion: number
   expectedVariants: TGeneratedImageUploadBatchTarget[]
   expiresAt: string
   claim: TGeneratedImageBatchClaim | null
@@ -349,7 +458,8 @@ type TGeneratedImageUploadBatch = {
 
 `purpose` 是 Phoenix 创建 Batch 时指定、并由 publish capability 绑定的开放字符串，例如
 `wallpaper-render`、`cover-render`。Assets Hub 将它作为经过服务端授权的 opaque metadata，不维护
-封闭 enum，也不接受 Browser 任意指定。
+封闭 enum，也不接受 Browser 任意指定。`requestDigest` 及其 `requestDigestVersion` 同样由 Phoenix
+在创建 Batch 时提供，Assets Hub 只负责原样持久化并签名绑定，不解析 Wallpaper authoring。
 
 `candidateOwnerRef + variantKey` 在 Batch 内唯一，因此 light/dark 同时生成相同 Profile 时不会发生
 Variant key 冲突。
@@ -374,8 +484,8 @@ per-asset finalize 不是 Batch 生命周期阶段，不恢复已删除的批次
 - 取得 publish claim 前，Batch 及其 generated assets 都是临时资源；
 - `claimForPublish(batchRef, idempotencyKey)` 必须在 Assets Hub 的同一个事务/行锁内确认 Batch open、
   未过期且未被 claim，原子校验 Variant key、尺寸、MIME、checksum、数量和 owner，随后冻结 manifest、
-  记录其 digest、写入 publish claim，并返回签名绑定完整 manifest、digest 和 lease 的有期限
-  capability；
+  记录其 digest、写入 publish claim，并返回签名绑定 Batch `requestDigest`、完整 manifest、
+  manifest digest 和 lease 的有期限 capability；
 - manifest 冻结后不再接受上传或修改；相同 Batch 和 `idempotencyKey` 在 claim 有效期内重试时返回
   同一语义的 capability，不创建第二个 claim，不同 key 直接拒绝；
 - manifest 校验失败时不保留可重试中间态：Batch 原子转入 delete claim，拒绝发布并显示重新保存
@@ -408,23 +518,53 @@ publish orphan。该过程不会继续执行用户发布，也不会后台补渲
 
 ## 5. Wallpaper 产品模型
 
-### 5.1 CommunityWallpaperState
+### 5.1 CommunityWallpaper 聚合行
 
-每个 Community 使用一条可变状态行保存当前 light/dark 引用，不建立 append-only Publication：
+历史设计中的聚合行保存当前 light/dark 引用；当前实现仍使用一条 `CommunityWallpaper` 聚合行，但每笔
+保存只更新当前 theme 的一支指针，不再要求两支指针作为一组切换：
 
 ```ts
-type TCommunityWallpaperState = {
+type TCommunityWallpaper = {
   communityId: string
   publicRef: string
   version: number
-  activeLightThemeRevisionRef: string | null
-  activeDarkThemeRevisionRef: string | null
+  activeLightSnapshotRef: string | null
+  activeDarkSnapshotRef: string | null
   updatedAt: string
 }
 ```
 
-`version` 同时用于乐观并发和 Snapshot 缓存失效。light/dark 引用在同一数据库事务中更新，不能逐个
-切换。没有整组恢复或 light/dark 组合审计需求，因此不增加 `WallpaperPublication`。
+`version` 同时用于乐观并发和 Wallpaper 缓存失效。当前保存事务锁定该聚合行，只更新当前 theme 指针，
+并将 Snapshot、Images、`version + 1` 和 Receipt 一起提交；另一支指针保持原值。没有整组恢复或
+light/dark 组合审计需求，因此不增加 `WallpaperPublication`。
+
+### 5.1.1 Editor snapshot 的默认值与空值边界
+
+`CommunityWallpaper` 可以在第一次 Wallpaper Save 之前不存在，但这不代表编辑器的设置分支为空。
+`wallpaperSettings` 在以下情况下必须返回非空的 `light/dark` JSON：
+
+- 没有聚合行：调用 `DashboardFields.wallpaper_default()` 返回两个默认分支，`version=0`，
+  历史为空；
+- State 存在但某个 theme 没有 active Revision：该 theme 调用
+  `DashboardFields.wallpaper_bg_default()` 返回同一份默认分支；
+- theme 被明确保存为 `NONE`：返回 `{ "type": "none" }`，不能与未设置的默认配置混淆。
+
+`wallpaper_default()` 本质上用同一份 `wallpaper_bg_default()` 组装 light/dark，因此两个调用点共享一个
+后端默认值 source of truth。
+
+因此 GraphQL `wallpaperSettings.light` 和 `wallpaperSettings.dark` 是 non-null。默认配置只由后端
+Dashboard Fields 提供，前端不得复制默认 source、颜色或其他 Wallpaper 字段。前端可以把不符合契约
+的旧缓存/异常响应中的 `null` 归一为“未提供”，交给已有 Store 初始化安全网处理，但不能把这个防御
+分支当作业务默认值来源。
+
+这条规则只适用于编辑器 settings。`wallpaper` 外层始终非空，但其 theme branch 仍可以为
+`null`：它表示尚未生成可供普通路由消费的静态产物；普通路由在这种情况下只显示 Root page color，
+不启用 Content surface 的半透明颜色或 blur。
+
+> 历史章节说明：5.2–6.4 中保留的 `WallpaperThemeRevision`、旧 authoring payload 和双支保存步骤，
+> 仅用于记录迁移前的设计背景，不是当前实现清单。当前 Snapshot、Settings、单 theme 保存、NONE 和
+> restore 契约以 [当前 theme 单独保存重构](./current_theme_save_refactor.md) 与
+> [保存链路与数据边界](./save_pipeline_contract.md) 为准。
 
 ### 5.2 WallpaperThemeRevision
 
@@ -499,6 +639,7 @@ type TWallpaperPublishReceipt = {
   communityId: string
   idempotencyKey: string
   requestDigest: string
+  requestDigestVersion: number
   responsePayload: TPublishWallpaperResult
   insertedAt: string
   expiresAt: string
@@ -509,7 +650,8 @@ type TWallpaperPublishReceipt = {
 RevisionAsset 和 Wallpaper State 在同一个 Phoenix 事务中写入，保证 State 发布成功时一定存在对应
 Receipt，事务失败时也不会留下虚假的成功 Receipt。
 
-相同 key 重试时 Phoenix 先查询 Receipt：`requestDigest` 相同则直接返回保存的 `responsePayload`，
+相同 key 重试时 Phoenix 先查询 Receipt，并按 Receipt 的 `requestDigestVersion` 重算：
+`requestDigest` 相同则直接返回保存的 `responsePayload`，
 不访问 Assets Hub，也不要求原 Revision 仍在最近 5 次；digest 不同则拒绝，不能把一个 key 用于两次
 不同用户操作。`createdThemeRevisionRefs` 和 `responsePayload` 是响应快照，不建立阻止 Revision 淘汰的
 外键。Receipt 是有期限的轻量幂等记录，不参与 Wallpaper 历史、active 引用或 Asset 删除。
@@ -532,16 +674,19 @@ type TPublishWallpaperInput = {
 
 `communityId` 由已鉴权的 API scope/route 提供，不接受 Browser 在载荷中任意指定。第一次提交和
 `publishWallpaper` 都以 `communityId + baseStateVersion + canonical authoring` 计算同一个
-`requestDigest`；服务端生成的 `batchRef` 和 `candidateThemeRevisionRefs` 不进入 digest。发布时
-Phoenix 必须重新计算 digest，非 NONE candidate ref 必须与冻结 manifest 的
-`candidateOwnerRef` 一致；`batchRef` 必须与 capability 一致。纯 NONE 请求的 `batchRef=null`，其
-candidate ref 由步骤 3 预分配并在事务唯一约束下创建。
+`requestDigest`；服务端生成的 `batchRef` 和 `candidateThemeRevisionRefs` 不进入 digest。创建 Batch
+时 Phoenix 选择当前 `requestDigestVersion`，发布时必须按 capability 指定的同一版本调用服务端
+canonicalization 函数重新计算，不能信任 Browser 提交的 digest。非 NONE candidate ref 必须与冻结
+manifest 的 `candidateOwnerRef` 一致；`batchRef` 必须与 capability 一致。纯 NONE 请求的
+`batchRef=null`，其 candidate ref 由步骤 3 预分配并在事务唯一约束下创建。
 
 ```text
 1. Browser 提交 baseStateVersion、本次 light/dark authoring 和 idempotencyKey
-2. Phoenix 计算 requestDigest 并查询 Publish Receipt；命中相同 digest 时直接返回历史结果
+2. Phoenix 查询 Publish Receipt；命中时按 Receipt.requestDigestVersion 重算并比较 digest，相同则
+   直接返回历史结果；未命中时按当前 requestDigestVersion 计算 requestDigest
 3. Receipt 未命中时校验 authoring，预分配 candidate Theme Revision refs
-4. 如果存在变化且非 NONE 的 theme，创建临时 Batch 并返回 required targets
+4. 如果存在变化且非 NONE 的 theme，创建绑定 requestDigest 和 requestDigestVersion 的临时 Batch，
+   并返回 required targets
 5. Browser 为这些 theme 批量 WebGPU 导出并上传全部 Variant
 6. 任一 Variant 失败：cancel Batch、显示失败 flash、流程结束
 7. Browser 携带 batchRef、idempotencyKey、candidateThemeRevisionRefs、authoring 和
@@ -549,10 +694,12 @@ candidate ref 由步骤 3 预分配并在事务唯一约束下创建。
 8. Phoenix 再次查询 Publish Receipt，处理响应丢失后的重复请求
 9. Receipt 未命中时调用 Assets Hub claimForPublish(batchRef, idempotencyKey)
 10. Assets Hub 在一次原子操作内校验并冻结完整 manifest、取得 publish claim，并返回有期限的
-    publish capability；capability 同时携带签名绑定的冻结 manifest 和 manifestDigest
-11. Phoenix 在事务外校验 capability 签名、policyVersion、manifestDigest、candidateOwnerRef、
-    candidate Revision refs 和 Wallpaper required target 矩阵；同时预检剩余时间足以覆盖
-    publishTransactionBudget，并配置更短的事务 timeout
+    publish capability；capability 同时携带签名绑定的 requestDigest、requestDigestVersion、冻结
+    manifest 和 manifestDigest
+11. Phoenix 在事务外按 capability.requestDigestVersion 重新计算 requestDigest，并校验它与
+    capability.requestDigest 相同；同时校验 capability 签名、policyVersion、manifestDigest、
+    candidateOwnerRef、candidate Revision refs 和 Wallpaper required target 矩阵，预检剩余时间足以
+    覆盖 publishTransactionBudget，并配置更短的事务 timeout
 12. Phoenix 开启数据库事务
 13. 在事务 callback 开始时按服务端 UTC 重新断言 remaining lease > publishTransactionBudget
 14. 在事务内最后一次查询 Publish Receipt，命中则返回已有结果
@@ -575,8 +722,11 @@ Phoenix 仍负责验证 manifest 是否满足 Wallpaper 当前 profileVersion �
 验证签名、digest 和产品矩阵，事务内只消费由同一 digest 绑定的 manifest 并重验 lease，从而避免把
 跨服务网络延迟计入数据库事务预算。
 
-本次 authoring 在创建 Batch 时固定，`publishWallpaper` 不接受另一份不同 authoring，防止上传产物
-与最终 recipe 不一致。唯一约束和事务内 Receipt 查询共同处理并发重复请求；相同
+Batch 创建时绑定由 Phoenix 根据 canonical authoring 计算的 `requestDigest` 及其算法版本，publish
+capability 签名回显二者；`publishWallpaper` 必须按该版本重新计算并比对，保证创建 Batch 与发布
+Revision 使用相同的声明 authoring。该绑定防止两次请求中的 recipe 内容被意外替换，但不提供 recipe
+与 Browser 上传像素之间的像素级证明；浏览器导出产物仍属于客户端信任边界。唯一约束和事务内
+Receipt 查询共同处理并发重复请求；相同
 `idempotencyKey + requestDigest` 返回同一个持久化响应，不能重复创建 Revision。
 
 ### 6.2 失败和浏览器退出
@@ -639,7 +789,8 @@ Tab B: baseVersion=12 -> publish -> conflict
 ```
 
 Tab B 的整个临时 Batch 立即作废和删除，不接管、不复用、不自动合并。UI 保留当前本地编辑值并显示
-冲突 flash；用户确认内容后重新 Save，新 Save 使用最新 State version 并重新生成全部目标产物。
+冲突 flash；用户确认内容后重新 Save，新 Save 使用最新 State version、全新的 `idempotencyKey` 和
+全新 Batch，并重新生成全部目标产物。冲突后的操作是新的用户意图，不能沿用旧 key。
 
 ### 6.4 removeWallpaper / NONE
 
@@ -649,7 +800,8 @@ Tab B 的整个临时 Batch 立即作废和删除，不接管、不复用、不�
 - 不创建 generated variants；
 - 与另一支当前引用一起原子提交；
 - NONE 计入最近 5 次，并可以恢复；
-- light/dark 都为 NONE 时，State 仍是已发布状态，但 Snapshot 两个 theme branch 都为 `null`。
+- light/dark 都为 NONE 时，State 仍是已发布状态；Editor snapshot 两个 branch 都返回
+  `{ "type": "none" }`，StaticWallpaper snapshot 的两个 branch 才返回 `null`。
 
 只有存在变化且非 NONE 的 theme 时才创建 Generated Image Upload Batch：
 
@@ -783,7 +935,7 @@ type TStaticWallpaper = {
 
 active manifest 损坏时，Snapshot 也会将对应 theme 临时降级为 `null` 并触发高优先级报警。该异常
 降级只影响当前静态输出，不能被解释为用户发布了 NONE，也不能改写 Wallpaper State；普通消费端
-仍统一显示默认背景，Editor/Phoenix 通过 Revision 数据和报警区分真实 NONE 与损坏降级。
+仍统一显示 Root page color，Editor/Phoenix 通过 Revision 数据和报警区分真实 NONE 与损坏降级。
 
 SSR 输出当前 State 的 light/dark 双分支，并按各 Revision 自身 `profileVersion` 展开全部候选 URL。
 pre-paint 的 `html[data-theme]` 选择 light/dark，media query/`<picture>`/`image-set` 选择具体 Profile
@@ -956,7 +1108,7 @@ Reconciliation 与异常处理分成三类。
 - NONE Revision 必须 `authoring=null` 且没有 generated variants，可以直接在 Phoenix 事务中创建，
   `sourceBatchRef=null`，不依赖 Batch 或 publish claim；
 - 每次成功的 `publishWallpaper` 必须存在同事务写入的 Phoenix Publish Receipt；相同
-  `(communityId, idempotencyKey)` 只能对应一个 `requestDigest` 和响应结果。
+  `(communityId, idempotencyKey)` 只能对应一个 `requestDigestVersion`、`requestDigest` 和响应结果。
 
 人工处理只能修正被确认的数据错误或要求用户重新 Save；系统不能自动选择另一个 Revision 修复
 active State，也不能后台重新渲染缺失图片。Assets Hub 只负责资产侧保护和物理清理重试，Phoenix
@@ -972,6 +1124,7 @@ active State，也不能后台重新渲染缺失图片。Assets Hub 只负责资
 - open Batch TTL、publish claim TTL、`publishTransactionBudget` 和 `publishTransactionSafetyMargin`；
 - Phoenix `databaseTransactionTimeout`、Assets Hub/Phoenix 最大时钟偏差和 cleanup 调度抖动；
 - Assets Hub capability active signing key/key id，以及 Phoenix trusted verification key set；
+- Phoenix active/supported `requestDigestVersion` 和对应 canonicalization 实现；
 - Phoenix `publishReceiptRetention`，即 API 承诺幂等重放的时间窗口；
 - Snapshot TTL、CDN stale window、client safety margin 和已发布 Revision 删除宽限期；
 - `profileVersion` 与默认 center-cover/framing resolver 规则。
@@ -1006,8 +1159,8 @@ claim capability 使用 Assets Hub 服务端签发的 UTC 绝对时间，Phoenix
 这些参数属于一份版本化的跨服务 lease policy，而不是散落的常量。Assets Hub 集中配置并在启动时
 断言 claim TTL、safety margin、时钟偏差和清理抖动关系；Phoenix 集中配置并在启动时断言事务 timeout、
 transaction budget 与其接受的最小 claim TTL 兼容。publish capability 必须携带绝对 `expiresAt`、
-policy version、冻结 manifest 及其 digest。任一启动断言失败时服务不得接收流量，并通过配置测试
-覆盖所有不等式。
+policy version、Batch `requestDigestVersion`、`requestDigest`、冻结 manifest 及其 digest。任一启动
+断言失败时服务不得接收流量，并通过配置测试覆盖所有不等式。
 
 签名配置同样必须通过启动断言：Assets Hub 必须存在唯一 active signing key 和非空 key id；Phoenix
 必须存在非空 trusted verification key set，并能按 capability key id 找到验证密钥。未知 key id、
@@ -1019,6 +1172,14 @@ Phoenix 移除旧 verification key。私钥只存在于 Assets Hub，不跨服�
 版本；再让 Assets Hub 开始签发 new；等待所有 old publish claim 过期并完成 reconciliation 后，Phoenix
 才提高最低接受版本并移除 old。Phoenix 必须拒绝不在支持集合内或低于当前最低接受版本的
 capability，不能先提高最低版本再升级签发方。
+
+`requestDigestVersion` 独立于 lease `policyVersion`，canonicalization 必须在 Phoenix 滚动部署期间
+保持兼容。同一 Save 的建批和发布可能由不同实例处理，Receipt 重放也可能发生在后续版本：先部署
+同时支持 old/new digest 的 Phoenix，但继续用 old 创建新 Batch；确认所有实例均支持 new 后，再切换
+active digest version；只有使用 old 的 open Batch、publish claim 和未过期 Receipt 全部排空后，才可
+删除 old canonicalization。发布按 capability 版本重算，Receipt 重放按 Receipt 版本重算，未知版本
+一律拒绝。每个版本必须提供固定输入/输出的 golden fixtures，覆盖对象 key 顺序、缺省字段、数值
+规范化和新增可选参数；禁止直接依赖普通对象序列化的隐式顺序，新增字段也不能静默改变旧版本结果。
 
 ### 12.2 可以提前上线的基础设施
 
@@ -1035,11 +1196,12 @@ capability，不能先提高最低版本再升级签发方。
 
 以下用户可见链路必须通过同一个 release gate 同时切换：
 
-1. Editor 从 Wallpaper State + active Theme Revision authoring 初始化。
+1. Editor 从 `CommunityWallpaper` + 当前 theme 的 active Snapshot settings 初始化。
 2. Save 使用临时 Batch、完整矩阵和原子 `publishWallpaper`。
-3. Snapshot/StaticWallpaper 只读取新 State 和响应式 Variant。
+3. `dashboard.wallpaper`/StaticWallpaper 只读取新聚合行和响应式 Profile 图片。
 4. Phoenix 关闭旧 v1 Wallpaper mutation/write path。
-5. 未按新模型保存的 Community 返回 `staticWallpaper=null` 和默认背景。
+5. 未按新模型保存的 Community 返回外层非空的 `dashboard.wallpaper`，其 theme branch 为 `null`，
+   Root page canvas 继续绘制不透明页面基础颜色，Content surface 不启用透明度或 blur。
 
 不允许出现新读旧写、旧读新写或 recipe 已保存但静态产物未发布的生产中间态。
 
@@ -1048,8 +1210,17 @@ capability，不能先提高最低版本再升级签发方。
 
 ## 13. 验收标准
 
+> 本节是当前实现的验收标准。当前 theme 重构落地时，双支原子切换、candidate refs、Revision/Variant
+> 命名等条目必须按 [重构验收](./current_theme_save_refactor.md#11-验收) 同步替换。
+
 - wide、desktop、tablet、phone 分别导出，不再使用固定 `1200 × 630` Wallpaper。
 - Editor 使用同一 Profile 画布预览时，与对应静态产物保持像素语义一致。
+- SSR CSS 与 client resolver 在 breakpoint、宽高比边界和默认 `wide` 分支上命中同一 Profile；resize 跨 Profile
+  后等待新 Profile 的 GPU 首帧再接管。
+- CSS↔TS source contract test 覆盖 base/media variable 映射、规则顺序和 `16/10` 边界；跨边界抖动只延迟
+  renderer 重建，不延迟 active Profile 或静态选图。
+- Profile logical size、backing-store pixel size 与 CSS presentation size 分离；DPR 不改变 Pattern repeat、
+  Gradient 中心或 framing。
 - Gradient、Pattern、Texture、滤镜和上传图片全部由 WebGPU 生成。
 - 一次 Save 只生成发生变化且非 NONE 的 theme，但必须完成该 theme 的全部 required targets。
 - 每个 Variant 必须先完成 per-asset intent、PUT 和完成登记，未登记的 Asset 不能进入冻结 manifest。
@@ -1062,10 +1233,15 @@ capability，不能先提高最低版本再升级签发方。
   余量之后转入删除。
 - capability 在事务外预检后，必须在事务 callback 开始时重新断言剩余 lease；调度延迟不能侵占
   publishTransactionBudget。
-- publish capability 必须签名绑定完整冻结 manifest、manifestDigest 和 policyVersion；Phoenix 在事务
-  外完成产品矩阵校验，事务内不得为读取 manifest 再调用 Assets Hub。
-- `publishWallpaper` 必须携带 batchRef、idempotencyKey、candidateThemeRevisionRefs、authoring 和
-  baseStateVersion；两次请求按同一用户意图重算的 requestDigest 必须一致。
+- publish capability 必须签名绑定 Batch requestDigestVersion、requestDigest、完整冻结 manifest、
+  manifestDigest 和 policyVersion；Phoenix 在事务外按指定 digest 版本完成比对和产品矩阵校验，
+  事务内不得为读取 manifest 再调用 Assets Hub。
+- `publishWallpaper` 必须携带当前 theme 的 settings、batchRef（NONE 除外）、idempotencyKey 和
+  baseVersion；两次请求按同一用户意图重算的 requestDigest 必须一致。
+- recipe 内容变化必须导致 requestDigest 不同并拒绝发布；该绑定不承诺服务端能够证明上传像素由
+  recipe 渲染。
+- requestDigest canonicalization 必须版本化并提供 golden fixtures；发布按 capability 版本重算，
+  Receipt 重放按 Receipt 版本重算，old Batch/claim/Receipt 排空前不能删除旧算法。
 - lease policy 升级必须先扩展 Phoenix 支持范围，再切换 Assets Hub 签发版本，旧 claim 排空后才收缩
   Phoenix 最低接受版本。
 - Assets Hub signing key/key id 和 Phoenix trusted verification key set 必须通过启动断言；密钥轮换
@@ -1080,7 +1256,8 @@ capability，不能先提高最低版本再升级签发方。
   不同 request digest 必须被拒绝。
 - 发布成功路径不做同步 Batch 元数据清理，周期 reconciliation 最终清理且不影响用户成功响应。
 - 不存在部分 Revision、中间 Variant 续传、Session 接管、后台补渲染或自动合并。
-- 两个 Tab 基于同一 version 保存时，只有第一个 `publishWallpaper` 成功；冲突批次作废并提示重新保存。
+- 两个 Tab 基于同一 version 保存时，只有第一个 `publishWallpaper` 成功；冲突批次作废并提示使用
+  最新 State version、全新 idempotencyKey 和全新 Batch 重新保存。
 - 拥有 generated variants 的非 NONE 正式 Theme Revision 只在完整 Batch 成功发布时创建。
 - 非 NONE Revision 必须持久化 `sourceBatchRef`，并与其全部 generated Asset 的 `batchRef` 一致；NONE
   Revision 的 `sourceBatchRef` 必须为 `null`。
@@ -1098,4 +1275,4 @@ capability，不能先提高最低版本再升级签发方。
 - SSR 输出当前 State 双主题和全部 Profile 候选 URL，不猜 viewport。
 - 普通路由不加载 Wallpaper WebGPU、shader 或 authoring recipe。
 - Cover 后续能够复用导出 Target、批次调度和 Assets Hub 协议，而不依赖 Wallpaper 历史模型。
-- 硬切换后运行时不读取旧单图字段，存量 Community 在首次新 Save 前使用默认背景。
+- 硬切换后运行时不读取旧单图字段，存量 Community 在首次新 Save 前只显示 Root page color。

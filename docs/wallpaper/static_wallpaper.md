@@ -1,19 +1,30 @@
-# Wallpaper 实时编辑与静态发布边界
+# Wallpaper 实时编辑与静态发布边界（v1 主体归档）
 
-> 状态：第一阶段已实施（静态契约、保存发布、共享 Shell 边界）；编辑页 SSR→GPU 双层接管已实现
-> `gpu-ready`/failure 信号、context 丢失恢复与主题 CSS 首屏选择；编辑页无静态产物时的
-> CSS fallback 已补齐；Landing Shell 静态背景、
-> bundle 产物审计、启动契约检查、产物计划分支单测和 wallpaper reconciliation 策略待后续验收
+> 文档角色：Mixed reference。v1 单图保存、上传和数据模型已经归档；§4.1.1 的编辑页 SSR→GPU
+> 接管、§7 的 pre-paint `data-theme`/CSS 主题选择，以及 §4.2/§8 中普通路由 static-first、默认不加载
+> GPU runtime 的边界仍然有效。涉及单 `staticAssetPublicRef` 的具体实现继续按 v1 归档理解。
+> §9/§10 中标记为“待补”或“待决策”的内容（包括 `reconcileConfirmed` 和产物计划分支测试）均为
+> v1 遗留记录，不代表 v2 现行 backlog；v2 后续工作以 Active contract 的收敛清单和验收标准为准。
 >
-> 日期：2026-09-01
+> Active：[当前 theme 单独保存重构](./current_theme_save_refactor.md) ·
+> [保存链路与数据边界](./save_pipeline_contract.md) ·
+> [响应式静态产物、历史与共享导出机制](./responsive_revisions.md) ·
+> [实时预览架构](./preview_architecture.md)
 >
-> 关联文档：[实时预览架构](./preview_architecture.md) · [浏览器端导出与上传](./browser_export_upload.md)
+> Active background contract：[Wallpaper NONE 与页面背景绘制边界](./content_background_fallback.md)
 >
-> 协议版本说明：本文记录已经实施的 v1 单图静态发布契约。响应式 Profile/Variant、
-> light/dark 独立 Theme Revision、Wallpaper State、临时上传批次和最近 5 次历史的 v2 目标契约见
-> [响应式静态产物与版本历史](./responsive_revisions.md)。实施时采用硬切换，不迁移、不读取也不
-> 回退本文的旧单图数据；本文仅作为旧实现记录。固定单图、单 `staticAssetPublicRef` 和无效果
-> UPLOAD 复用规则不再代表后续目标。
+> 历史状态：第一阶段已实施（静态契约、保存发布、共享 Shell 边界）；编辑页 SSR→GPU 双层接管已实现
+> `gpu-ready`/failure 信号、context 丢失恢复与主题 CSS 首屏选择。v2 已改为当前 theme 单独保存、
+> `dashboard.wallpaper` Profile 图片和 NONE→Root page color；本文件只保留仍有效的编辑页接管、首屏
+> 主题选择和 static-first 消费边界。Landing Shell 静态背景、bundle 产物审计和线上验收仍需单独完成。
+>
+> 日期：2026-09-06
+>
+> Archive：[浏览器端导出与上传（v1）](./browser_export_upload.md)
+>
+> 协议版本说明：本文记录已归档的 v1 单图实现。当前 v2 的 Profile 图片、当前 theme 单独保存、
+> Snapshot/Settings 和最近 5 次历史以 [保存链路与数据边界](./save_pipeline_contract.md) 与
+> [当前 theme 单独保存重构](./current_theme_save_refactor.md) 为准；本文不提供运行时兼容路径。
 
 ## 1. 决策
 
@@ -146,14 +157,15 @@ route id = /$community/appearance/wallpaper
 ```
 
 共享 `GlobalLayout/Wallpaper` 在内部读取这个 mode：`editor` 时 lazy mount
-`WallpaperRenderer`，`static` 时渲染 `StaticWallpaper`。因此编辑页不需要从内容组件向上控制
-Shell，也不会让 `WallpaperRenderer` 成为普通路由的静态 import。
+`EditorStaticWallpaper` 与 `WallpaperRenderer`，`static` 时只渲染 `StaticWallpaper`。因此编辑页不需要从
+内容组件向上控制 Shell，普通路由的静态 import 也不会进入 authoring composer/store 或 GPU renderer。
 
 ### 4.1.1 编辑页 SSR 首屏与 GPU 接管（已实施）
 
-编辑页允许 SSR 首屏与 client 完成后的 GPU 像素实现不同，但不允许在 renderer 初始化窗口中出现
-空白或无意的背景跳变。当前已实现 `gpu-ready`/failure 信号、双层透明度接管和 GPU context
-丢失后的静态层恢复。切换顺序是：
+编辑页的 SSR 静态层与 client GPU 层可以使用不同 renderer，但两者在接管时必须使用同一主题、同一
+responsive Profile 和同一构图语义；不能把“实现不同”解释为允许 Pattern 密度、Gradient 中心或可见裁切
+发生跳变。当前已实现 `gpu-ready`/failure 信号、双层透明度接管和 GPU context 丢失后的静态层恢复。
+切换顺序是：
 
 ```text
 SSR / 首屏
@@ -169,8 +181,8 @@ SSR / 首屏
 chunk 已加载；`gpu-ready` 还必须表示 renderer 已创建并成功提交至少一帧。不能在 Suspense
 解除时立即卸载静态层。
 
-编辑页采用静态层与 GPU 层的双层结构：静态层先保持可见，GPU 层初始透明，收到与当前首屏
-主题相同的 `gpu-ready` 后淡入，静态层再淡出。主题切换会重新建立对应主题的 GPU layer；在
+编辑页采用已发布静态层、CSS draft 层与 GPU 层的三层结构：静态层先保持可见，GPU 层初始透明，
+收到与当前首屏主题相同的 `gpu-ready` 后淡入，静态层再淡出。主题切换会重新建立对应主题的 GPU layer；在
 新 layer ready 前，旧静态双分支仍保持可见，因此不会把 hydration 期间的 light 快照误当成
 dark 用户的可见结果。动画结束后可以保留静态层作为不可见 fallback；如果 GPU context 丢失或
 初始化失败，应恢复静态层，而不是让页面变空。
@@ -181,12 +193,30 @@ light，但 renderer 不得使用未解析的 store 快照选 branch；`useTheme
 读取 DOM 值并向业务层提供当前主题，从而与首屏 CSS 选择保持一致。编辑页的 Global/Auth 预览
 共用相同的双分支静态 fallback，pattern 的颜色、mask 和背景也按同一主题 branch 选择。
 
-SSR fallback 优先使用已发布的 `staticWallpaper`，GPU Editor 使用当前 authoring recipe。
-如果本地或历史数据没有 `staticRevision/staticAssetPublicRef`，编辑页静态层会临时把当前
-authoring recipe 转成 CSS-only fallback，避免 SSR 空白；该 fallback 不会写入发布契约，也不
+SSR fallback 优先使用已发布的 `wallpaper` Profile 图片，GPU Editor 使用当前编辑 settings。
+如果当前 theme 没有已发布 Profile 图片，`EditorStaticWallpaper` 会把 light/dark 两套当前 settings 同时
+SSR 成 `.theme-light-branch` / `.theme-dark-branch`，由 pre-paint 写入的 `html[data-theme]` 在 CSS 层
+选择首帧。不能在 React render 中只输出当前 theme 的一套 inline background；否则 system-dark 在 hydration
+前仍会短暂看到 light draft。pre-paint 必须保持为 `<head>` 内的同步 inline script，在 `</head>`/`<body>` 与
+首次绘制前写入 `data-theme`；React 可能把 stylesheet link hoist 到脚本前，因此不以两者 HTML 顺序为契约。
+这样双分支的 200ms transition 才不会形成首帧 cross-fade。Editor fallback 外层不使用 `.static-wallpaper`，
+背景只由两个显式主题子层绘制。该 fallback 不会写入发布契约，也不
 替代 Save 时的 WebGPU 导出。两者应通过相同的发布 revision 保持语义一致；在 recipe 尚未
 生成新静态产物或产物与 renderer 存在像素差异时，静态层只承担首屏/fallback 职责，不能被
 当作 GPU 首帧的像素等价证明。
+
+接管一致性还包含尺寸契约：有当前主题的已发布图片时，CSS 静态层和 client renderer 必须命中同一个
+`wide/desktop/tablet/phone` Profile。GPU 的逻辑画布使用该 Profile 的逻辑宽高，backing store 再按
+`min(devicePixelRatio, 2)` 提高清晰度，最终 canvas 与静态图片都在 viewport 内 `cover center`。Pattern repeat
+始终以逻辑画布单位计算，不能随 backing-store DPR 改变。没有已发布图片时，CSS draft 与 GPU 才共同使用
+实际 viewport 构图。
+
+ready/failure 不能只按 theme 记忆，还必须包含 Profile（无已发布图片时为 viewport 模式）。resize 导致
+Profile 切换后，active Profile 立即使旧 ready 状态失效并显示新 Profile 的静态层；GPU renderer Profile 仅在
+边界稳定 `150ms` 后替换，避免在 `16/10` 附近反复销毁和初始化。新 key 的首帧成功后才能再次接管。
+这里的 `150ms` 只 debounce resize 后的 renderer 重建，不延迟 CSS 选图。当前 post-hydration 的首次
+`wide -> client Profile` 校正也会经过该 settle，可能产生一次多余的初始 renderer 工作；安全优化必须在 hydration
+commit 后直接确定首次 client renderer Profile，不能在首次 client render 中读取 `window` 改变 SSR tree。
 
 ### 4.2 StaticWallpaper
 
@@ -195,7 +225,7 @@ authoring recipe 转成 CSS-only fallback，避免 SSR 空白；该 fallback 不
 
 ```ts
 export type TStaticWallpaperProps = {
-  wallpaper?: TStaticWallpaper | null
+  wallpaper?: TPublishedWallpaper | null
   className?: string
 }
 ```
@@ -203,9 +233,9 @@ export type TStaticWallpaperProps = {
 `StaticWallpaper` 只负责：
 
 - 根据 light/dark theme 显示对应静态图片；
-- 在没有已发布图片或图片加载失败时保留默认背景色；
-- 使用 CSS 或 `<picture>` 完成主题选择；
-- （目标）保持 SSR 首屏和 hydration 前后稳定；
+- 在没有已发布图片或图片加载失败时不产生图片绘制，让 Root page color 显示；
+- 使用 CSS variables 和 `<html data-theme>` 完成主题/Profile 选择；
+- 保持 SSR 首屏和 hydration 前后稳定；
 - 为静态图片提供可长期缓存的 URL。
 
 它不得：
@@ -216,9 +246,11 @@ export type TStaticWallpaperProps = {
 - 挂载 Canvas；
 - import `BgRenderer`、vgpu、WebGL renderer 或 shader。
 
-`StaticWallpaper` 本身不维护“上一版 ref”本地缓存。发布失败时 backend 不切换 snapshot，
-普通页面自然继续拿到上一版完整 `TStaticWallpaper`；若当前 snapshot 中的图片本身加载失败，
-组件只回退默认背景色，不跨 revision 猜测旧 URL。
+`StaticWallpaper` 本身不维护“上一版 ref”本地缓存。发布失败时 Backend 不切换 Snapshot，
+普通页面自然继续拿到上一版完整 `TPublishedWallpaper`；若当前 branch 为空或图片加载失败，组件
+不跨 theme、跨 Snapshot 猜测旧 URL，也不写入默认颜色；Root page canvas 继续负责基础颜色。目标模型中
+Content surface 只按当前 theme 的 published branch 是否非空决定是否启用透明度与 blur，不跟踪图片
+网络加载状态。
 
 ## 5. 数据契约
 
@@ -314,7 +346,8 @@ backend 前必须转换为持久化使用的 `0..359`；`pattern`、`contentShad
 ### 6.1 removeWallpaper / NONE
 
 `removeWallpaper()` 把当前 theme branch 设为 `type: NONE`。保存时该 branch 的静态引用必须
-写为 `null`，不执行 GPU 导出，也不继续沿用旧图片。普通页面看到 `null` 后显示默认背景色。
+写为 `null`，不执行 GPU 导出，也不继续沿用旧图片。普通页面看到 `null` 后只显示 Root page color，
+Content surface 不重复绘制半透明颜色或 blur。
 
 如果只删除 light 或 dark 中的一支，另一支仍按其当前配置生成或复用静态引用；最终 mutation
 仍需一次发布两支的完整结果，避免 snapshot 出现新旧 revision 混合。
@@ -438,7 +471,7 @@ Wallpaper 边界回归；仍需确认它没有引入 Wallpaper Editor 的 previe
 - 普通路由中不存在 Wallpaper Canvas、GPU device 初始化或 preview subscription。
 - Community Snapshot 不向普通消费者暴露 authoring recipe。
 - light/dark 主题切换不触发 GPU 渲染且没有明显背景闪烁。
-- `NONE` 发布后对应静态引用为 `null`，普通页面显示默认背景。
+- `NONE` 发布后对应静态引用为 `null`，普通页面只显示 Root page color。
 - 无效果 `UPLOAD` 复用原始 asset ref，不产生重复编码资产。
 - 无 WebGPU 时可以发布 `NONE`/可复用 `UPLOAD`，但不能发布需要派生渲染的 recipe。
 - Landing 两处营销演示不再 import `WallpaperRenderer`。

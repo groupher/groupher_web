@@ -91,6 +91,7 @@ describe('BgRenderer dual-canvas adapter', () => {
       expect.any(Function),
       'auto',
       renderSize,
+      undefined,
     )
 
     const previewSpec = { ...createMeshSpec(), flow: 88 }

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 import type { TBgRenderSpec } from '~/lib/bg'
 
 import BgLayer from './BgLayer'
@@ -27,6 +27,7 @@ export default function BgRenderer({
   renderSpec,
   patternSize = 'auto',
   renderSize,
+  renderLogicalSize,
   positioned = true,
   preferVgpu = false,
   previewSubscriber,
@@ -99,15 +100,13 @@ export default function BgRenderer({
   }, [applySpec, previewSubscriber])
 
   return (
-    <div
-      className={cnMerge(positioned && s.wrapperPositioned, s.wrapper, className)}
-      aria-hidden='true'
-    >
+    <div className={cn(positioned && s.wrapperPositioned, s.wrapper, className)} aria-hidden='true'>
       <BgLayer
         ref={activeLayerRef}
         renderSpec={activeSpec}
         patternSize={patternSize}
         renderSize={renderSize}
+        renderLogicalSize={renderLogicalSize}
         preferVgpu={preferVgpu}
         textureScale={textureScale}
         onReady={onReady}
@@ -120,6 +119,7 @@ export default function BgRenderer({
           exiting
           patternSize={patternSize}
           renderSize={renderSize}
+          renderLogicalSize={renderLogicalSize}
           preferVgpu={preferVgpu}
           textureScale={textureScale}
           onExited={() => setExitingSpec(null)}

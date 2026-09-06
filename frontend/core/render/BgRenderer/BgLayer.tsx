@@ -2,7 +2,7 @@
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 
 import { FADE_MS } from './constant'
 import { getFallbackStyle, getFilterLayerStyle, getPatternLayerStyle } from './helper'
@@ -24,6 +24,7 @@ const BgLayer = forwardRef<TBgLayerHandle, TBgLayerProps>(function BgLayer(
     exiting = false,
     patternSize,
     renderSize,
+    renderLogicalSize,
     preferVgpu,
     textureScale,
     onExited,
@@ -124,6 +125,7 @@ const BgLayer = forwardRef<TBgLayerHandle, TBgLayerProps>(function BgLayer(
         handleFailure,
         patternSize,
         renderSize,
+        renderLogicalSize,
       )
     }
 
@@ -163,7 +165,7 @@ const BgLayer = forwardRef<TBgLayerHandle, TBgLayerProps>(function BgLayer(
       rendererRef.current?.destroy()
       rendererRef.current = null
     }
-  }, [handleFailure, patternSize, preferVgpu, renderSize, textureScale])
+  }, [handleFailure, patternSize, preferVgpu, renderLogicalSize, renderSize, textureScale])
 
   useEffect(() => {
     if (failure || !rendererRef.current?.isCanvasActive() || (preferVgpu && engine !== 'webgpu')) {
@@ -197,7 +199,7 @@ const BgLayer = forwardRef<TBgLayerHandle, TBgLayerProps>(function BgLayer(
   return (
     <div
       ref={layerRef}
-      className={cnMerge(s.layer, exiting && (fadeOut ? s.layerFadeOut : s.layerFadeIn), className)}
+      className={cn(s.layer, exiting && (fadeOut ? s.layerFadeOut : s.layerFadeIn), className)}
       data-bg-renderer-error={failure?.error.message}
       data-bg-renderer-failure-stage={failure?.stage}
       style={getFilterLayerStyle(renderSpec, engine)}
@@ -207,17 +209,25 @@ const BgLayer = forwardRef<TBgLayerHandle, TBgLayerProps>(function BgLayer(
       )}
       <canvas
         ref={webglCanvasRef}
-        className={cnMerge(s.canvas, engine !== 'webgl' && s.canvasHidden)}
+        className={cn(s.canvas, engine !== 'webgl' && s.canvasHidden)}
         data-bg-renderer={engine === 'webgl' ? 'active' : 'standby'}
         data-bg-renderer-engine='webgl'
-        style={renderSize ? { objectFit: 'cover', objectPosition: 'center' } : undefined}
+        style={
+          renderSize || renderLogicalSize
+            ? { objectFit: 'cover', objectPosition: 'center' }
+            : undefined
+        }
       />
       <canvas
         ref={vgpuCanvasRef}
-        className={cnMerge(s.canvas, engine !== 'webgpu' && s.canvasHidden)}
+        className={cn(s.canvas, engine !== 'webgpu' && s.canvasHidden)}
         data-bg-renderer={engine === 'webgpu' ? 'active' : 'standby'}
         data-bg-renderer-engine='webgpu'
-        style={renderSize ? { objectFit: 'cover', objectPosition: 'center' } : undefined}
+        style={
+          renderSize || renderLogicalSize
+            ? { objectFit: 'cover', objectPosition: 'center' }
+            : undefined
+        }
       />
       {engine === 'webgl' && renderSpec.patternImage && (
         <div ref={patternRef} className={s.pattern} style={patternStyle} />

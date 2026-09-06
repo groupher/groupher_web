@@ -1,7 +1,7 @@
 import { createContext } from 'react'
 
-import type { TStaticWallpaper } from '~/spec'
+import type { TPublishedWallpaper } from '~/spec'
 
-export const StaticWallpaperContext = createContext<TStaticWallpaper | null>(null)
+export const StaticWallpaperContext = createContext<TPublishedWallpaper | null>(null)
 
 StaticWallpaperContext.displayName = 'StaticWallpaper'

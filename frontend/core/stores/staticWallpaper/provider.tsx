@@ -2,13 +2,13 @@
 
 import type { ReactNode } from 'react'
 
-import type { TStaticWallpaper } from '~/spec'
+import type { TPublishedWallpaper } from '~/spec'
 
 import { StaticWallpaperContext } from './context'
 
 type TProps = {
   children: ReactNode
-  initData?: TStaticWallpaper | null
+  initData?: TPublishedWallpaper | null
 }
 
 export default function StaticWallpaperProvider({ children, initData = null }: TProps) {

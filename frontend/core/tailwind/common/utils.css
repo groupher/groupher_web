@@ -1,10 +1,58 @@
 @layer components {
   .static-wallpaper {
-    background-image: var(--wallpaper-light-image);
+    background-image: var(--wallpaper-light-wide, none);
+  }
+
+  @media (min-width: 1440px) and (min-aspect-ratio: 16/10) {
+    .static-wallpaper {
+      background-image: var(--wallpaper-light-wide, none);
+    }
+  }
+
+  @media (min-width: 1024px) and (max-aspect-ratio: 16/10) {
+    .static-wallpaper {
+      background-image: var(--wallpaper-light-desktop, none);
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .static-wallpaper {
+      background-image: var(--wallpaper-light-tablet, none);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .static-wallpaper {
+      background-image: var(--wallpaper-light-phone, none);
+    }
   }
 
   [data-theme='dark'] .static-wallpaper {
-    background-image: var(--wallpaper-dark-image, var(--wallpaper-light-image));
+    background-image: var(--wallpaper-dark-wide, none);
+  }
+
+  @media (min-width: 1440px) and (min-aspect-ratio: 16/10) {
+    [data-theme='dark'] .static-wallpaper {
+      background-image: var(--wallpaper-dark-wide, none);
+    }
+  }
+
+  @media (min-width: 1024px) and (max-aspect-ratio: 16/10) {
+    [data-theme='dark'] .static-wallpaper {
+      background-image: var(--wallpaper-dark-desktop, none);
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    [data-theme='dark'] .static-wallpaper {
+      background-image: var(--wallpaper-dark-tablet, none);
+    }
+  }
+
+  @media (max-width: 767px) {
+    [data-theme='dark'] .static-wallpaper {
+      background-image: var(--wallpaper-dark-phone, none);
+    }
   }
 
   .wallpaper-preview-fallback .wallpaper-preview-branch {
@@ -17,6 +65,9 @@
     opacity: 1;
   }
 
+  /* The synchronous head pre-paint script must set data-theme before the
+   * browser's first rendered frame. Moving it into/after body could animate
+   * the initial light -> dark selection through this transition. */
   .theme-light-branch,
   .theme-dark-branch {
     opacity: 0;

@@ -1,9 +1,19 @@
 # Wallpaper 实时预览架构
 
-> 状态：PreviewFrame 第一轮已实现，Wallpaper Editor 的 Gradient/Texture/图片/全局效果 GPU 通路已接入；
-> SSR→GPU 双层接管的 `gpu-ready`/failure 协议和 context 丢失恢复已实现，浏览器矩阵待验收
+> 文档角色：Active contract
 >
-> 日期：2026-08-31
+> 状态：PreviewFrame 第一轮已实现，Wallpaper Editor 的 Gradient/Texture/图片/全局效果 GPU 通路已接入；
+> SSR→GPU 双层接管的 `gpu-ready`/failure 协议、Profile/DPR 构图一致性和 context 丢失恢复已实现，
+> 跨浏览器矩阵待验收
+>
+> 日期：2026-09-06
+>
+> Current save contract：[当前 theme 单独保存重构](./current_theme_save_refactor.md)
+>
+> Active background contract：[Wallpaper NONE 与页面背景绘制边界](./content_background_fallback.md)
+>
+> Active：[保存链路与数据边界](./save_pipeline_contract.md) ·
+> [响应式静态产物、历史与共享导出机制](./responsive_revisions.md)
 >
 > 关联文档：[shaders_v1.md](./shaders_v1.md)
 
@@ -223,14 +233,15 @@ WebGL 和 WebGPU renderer 都在 render loop 中调用 `getBoundingClientRect()`
 尺寸和 backing size。是否实际触发 forced layout 需要在基线 trace 中单独确认，不能只凭函数
 调用断言。
 
-### 4.8 全屏 WebGL Flow 可能是最大的 GPU 单帧成本
+### 4.8 迁移期全屏 WebGL Flow 可能是最大的 GPU 单帧成本
 
 迁移期 Global Wallpaper 仍可能使用全屏 WebGL Flow。Flow shader 的多 strand 和 noise
 计算作用于整窗分辨率；即使 React 和事件链路完全优化，它仍可能与两个 WebGPU preview
 以及活跃 CSS filter 合计超过 16.7ms。
 
-`FLOW_DPR_CAP = 1` 只限制 DPR 上限，不代表已经降低了内部渲染分辨率。Phase 1 如果真实
-frame trace 仍超预算，应优先考虑：
+本节记录迁移期的 WebGL 性能判断：当时的 `FLOW_DPR_CAP = 1` 只限制 DPR 上限，不代表已经降低
+内部渲染分辨率。当前 Editor 的 Profile/DPR 规则以 §5.6 为准；如果真实 frame trace 仍超预算，
+应显式引入与构图坐标系分离的质量档位，而不是重新改变 Profile logical size。可考虑：
 
 - Global Wallpaper 使用独立的内部低分辨率 surface。
 - 根据 GPU frame time 在 0.5x、0.75x、1x 之间选择质量档位。
@@ -316,7 +327,8 @@ type TWallpaperPreviewFrame = {
 - 高频参数只生成一次。
 - 所有目标使用相同的 frame version。
 - 不把 Dashboard store、React state 和业务 patch 直接传进 renderer。
-- 目标可以根据自己的尺寸、DPR 和 backend 生成本地提交参数。
+- 目标可以根据自己的逻辑尺寸、backing-store DPR 和 backend 生成本地提交参数，但不得自行改变
+  `TBgRenderSpec` 的构图语义。
 
 ### 5.3 PreviewScheduler：统一 latest-wins 和单 rAF
 
@@ -355,8 +367,9 @@ type TWallpaperPreviewTarget = {
 目标之间仍然可以有不同实现：
 
 - Global Wallpaper 在迁移期可以由调用方明确选择全屏 WebGL legacy lane；启用 WebGPU 后失败
-  必须进入可诊断失败态，不自动切回 WebGL。
-- AuthPreview 和 GlobalPreview 可以使用小尺寸 WebGPU canvas。
+  必须进入可诊断失败态，不自动切回 WebGL。编辑页存在已发布图片时，全屏 WebGPU target 使用当前
+  responsive Profile 的逻辑画布，而不是直接拿 viewport 重新构图。
+- AuthPreview 和 GlobalPreview 这类卡片目标使用自身 DOM rect 作为逻辑画布，并按 DPR 分配 backing store。
 - CoverEditor 将来可以使用自己的 compositor surface。
 
 但它们不再重复执行业务 state merge 和完整 render spec adaptation。
@@ -383,20 +396,20 @@ texture、uniform 映射和已准备的 spec，只突变 Angle、Flow 等变化�
 ### 5.6 SSR 首屏与 GPU 接管（基础协议已实施）
 
 当前已在 `BgRenderer` 暴露 renderer 首帧 ready/failure 信号，并由 GlobalLayout 保持静态层与
-GPU 层同时挂载完成接管。若没有已发布 static artifact，编辑页静态层会从 authoring recipe
+GPU 层同时挂载完成接管。若没有已发布 Wallpaper 图片，编辑页静态层会从当前 settings recipe
 生成 CSS-only fallback；GPU context 丢失时会恢复静态层，context restored 后重新等待首帧
 再接管；不同浏览器的事件/能力矩阵仍需验收。
 
 Wallpaper 编辑页的 SSR 首屏和 client GPU 预览不是同一个像素阶段。SSR 同时输出 light/dark
-两套 authoring fallback，theme domain 内部只使用 pre-paint 脚本已经写入的
+两套 settings fallback，theme domain 内部只使用 pre-paint 脚本已经写入的
 `document.documentElement[data-theme]` 解析当前 branch；该 DOM 值是 wallpaper 的唯一主题
 真相源，业务组件统一通过 `useTheme()` 获取结果。SSR 不能执行
 `BgLayer` 的 renderer effect，因此首屏只能显示已发布的 `StaticWallpaper`，或显示
 `BgRenderer` 提供的 CSS fallback；client 才会创建 WebGL/WebGPU context 并提交真实 GPU frame。
 
-`ThemeStoreProvider` 在浏览器创建 store 时读取 pre-paint 已写入的 `data-theme`，因此 React
-theme store 与首屏主题从第一份客户端快照开始一致；业务代码仍只通过 `useTheme()` 获取当前
-theme，不需要知道 first-paint 的实现细节。Global Wallpaper 和 Global/Auth 编辑预览都在对应
+`ThemeStoreProvider` 在浏览器创建 runtime store 时读取 pre-paint 已写入的 `data-theme`；每个
+`useTheme()` 消费者的第一次 hydration snapshot 仍复用 SSR seed，完成自身 hydration 后再读取 runtime
+store。业务代码不需要知道 first-paint 的实现细节。Global Wallpaper 和 Global/Auth 编辑预览都在对应
 主题的 GPU 首帧 ready 前保留静态双分支；因此 pattern image、pattern tone 和 background 不会经历
 light → dark 的中间渲染。
 
@@ -415,8 +428,44 @@ Suspense 的解除只能作为 chunk loaded 信号，不能作为 `gpu-ready` �
 之前不得卸载；动画结束后可以保留为不可见 fallback，以便 renderer 初始化失败、WebGPU device
 丢失或 WebGL context 丢失时恢复。普通路由不进入这条接管链路，继续只使用 `StaticWallpaper`。
 
-首屏静态层来自已发布 static artifact，GPU 层来自当前 authoring recipe；revision、主题选择
+首屏静态层来自已发布 Wallpaper 图片，GPU 层来自当前 settings recipe；Snapshot、主题选择
 和 fallback 语义必须可诊断，不能把静态层与 GPU 层的视觉差异误判成 preview frame 传播错误。
+
+这里存在三种不能混用的尺寸：
+
+| 尺寸                     | 含义                                                     | 规则                                                                                                          |
+| ------------------------ | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Profile logical size     | Pattern repeat、Gradient 中心、图片 framing 的构图坐标系 | 有已发布 Wallpaper 时使用当前 `wide/desktop/tablet/phone` Profile；无已发布图片和卡片预览使用目标自身逻辑尺寸 |
+| backing-store pixel size | GPU 实际栅格分辨率                                       | 逻辑尺寸乘 `min(devicePixelRatio, 2)`；不得反向改变 Pattern tile 或其他视觉参数                               |
+| CSS presentation size    | canvas 在页面中的显示范围                                | 全屏 published handoff 与静态图片统一 `cover center`；卡片按自己的布局显示                                    |
+
+SSR 通过 CSS cascade 选择静态 Profile，client 必须用同一选择规则解析 Profile；不能用 `innerWidth × innerHeight`
+替代已发布 Profile 的逻辑画布。否则即使 React DOM 完全 hydration 成功，GPU 接管时也会出现 Pattern 密度、
+Gradient 中心或裁切跳变。ready/failure 状态因此按 `theme + profile/viewport` 标识，Profile 改变后必须等待新画布
+首帧，不能复用旧 Profile 的 ready 状态。active Profile 始终立即跟随 CSS；只有昂贵的 renderer Profile 替换
+等待 `150ms` 稳定期。在等待期间 GPU 层隐藏、静态层可见，因此不会用迟滞后的旧 canvas 覆盖 CSS 已选择的
+新 Profile。
+
+#### 5.6.1 `150ms` settle 的职责与已知边界
+
+`150ms` 不是 SSR、hydration、Pattern 或 GPU 绘制时长的一部分，也不是要求所有预览延迟显示。它只用于
+debounce 连续 resize 中的昂贵 renderer Profile 替换：每次跨 `desktop/wide` 边界都会重新计时，只有 active
+Profile 连续稳定 `150ms` 后才更换 `renderLogicalSize` 和 renderer key。active Profile、CSS 静态选图和旧 GPU
+handoff 的失效仍立即发生。
+
+当前实现还有两个明确的非正确性成本：
+
+- hydration 首次 render 为了复用 SSR snapshot 固定从 `wide` 开始；desktop 用户进入 client runtime 后也会走
+  一次 `150ms` settle，若旧 renderer 已开始初始化，可能出现先建 wide、再建 desktop 的额外工作。不能在
+  hydration render 中用 `typeof window !== 'undefined'` 直接读取 viewport 初始化 state，否则会让服务端与首次
+  client tree 再次不一致。后续应保持首次 hydration snapshot 不变，在 commit 后读取客户端 Profile，并让这次
+  初始校正立即完成且只启动正确 Profile 的 renderer；只有后续用户 resize 才使用 settle。
+- settle 等待期旧 renderer 保持 mounted 且不可见，最多持续到边界稳定；这是用少量短期隐藏成本换取避免重复
+  init/prepare。只有性能数据证明该成本显著时，才增加 pending pause/suspend 能力，不能为了暂停而改变 active
+  Profile 或静态接管正确性。
+
+`150ms` 是可调的交互参数，不属于 Profile 数据协议。调整它需要复验快速跨界时的 renderer 创建次数、静态层
+接管和最终首帧延迟。
 
 ## 6. 状态生命周期
 

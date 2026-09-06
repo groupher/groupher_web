@@ -14,6 +14,7 @@ export default function WallpaperRenderer({
   className,
   patternSize = DEFAULT_WALLPAPER_PATTERN_SIZE,
   renderSize,
+  renderLogicalSize,
   positioned = true,
   preferVgpu = false,
   textureScale = 1,
@@ -32,6 +33,7 @@ export default function WallpaperRenderer({
       renderSpec={renderSpec}
       patternSize={patternSize}
       renderSize={renderSize}
+      renderLogicalSize={renderLogicalSize}
       positioned={positioned}
       preferVgpu={preferVgpu}
       previewSubscriber={previewSubscriber}

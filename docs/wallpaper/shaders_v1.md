@@ -2,7 +2,7 @@
 
 > 状态：Wallpaper Editor 的 Gradient/Flow/Liquid/Texture/图片/Blur GPU preview/export slice 已接入；浏览器矩阵与全量迁移验收中
 >
-> 日期：2026-08-31
+> 日期：2026-09-06
 >
 > 目标：以 `vgpu + WebGPU + WGSL` 统一 wallpaper / cover editor 的 shader
 > 预览与静态图片导出。v1 优先采用浏览器端生成，Cloudflare 只承担上传控制和资产保存，
@@ -60,18 +60,18 @@ renderer。`<canvas>` 仍可以作为 WebGPU surface，`toBlob()` 仍可以作�
 当前已经可以把 Flow/Liquid 定义为“首批 POC 与 Editor 实时预览链路已验证”，但还不能把它
 等同于所有浏览器和所有导出场景均已生产就绪：
 
-| 能力                                                                  | 状态     | 说明                                                                                                           |
-| --------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
-| Linear/Radial/Flow/Liquid + Pattern + Texture + 图片 + Blur WGSL 迁移 | 已接入   | 同一份 shader 已用于 Editor 预览和浏览器端导出；Blur 使用共享 WGSL 后处理采样                                  |
-| Chromium Editor 预览                                                  | 待复验   | WebGPU 接管、Angle 拖动、latest-wins 调度需在完整 shader 修复后复验                                            |
-| WebGL legacy lane                                                     | 已验证   | 仅在调用方明确未启用 `preferVgpu` 时保留旧路径                                                                 |
-| POC readback/WebP                                                     | 已验证   | 固定尺寸、top-origin、尺寸和 WebP Blob 已断言                                                                  |
-| 正式 Wallpaper 导出                                                   | 部分完成 | 已有带超时的懒加载 API、调试按钮和 Gradient/Flow/Liquid/Texture/图片/Blur 下载；真实上传与正式产品入口仍待接入 |
-| Safari                                                                | 待验收   | 包括 surface、异步 readback、编码和 device loss                                                                |
-| 移动端                                                                | 待验收   | 至少覆盖一个真实 WebGPU 设备                                                                                   |
-| WebGL/WebGPU A/B                                                      | 待验收   | 需要同一 recipe、尺寸和设备的视觉/性能数据                                                                     |
-| 完整 Wallpaper renderer                                               | 部分完成 | Linear/Radial/Flow/Liquid、六种程序化 texture、图片、Pattern 和 Blur 使用 vgpu；跨浏览器和 A/B 仍待验收        |
-| CoverEditor compositor                                                | 未开始   | 需要图片图层、transform、mask 和特效合成                                                                       |
+| 能力                                                                  | 状态       | 说明                                                                                                           |
+| --------------------------------------------------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
+| Linear/Radial/Flow/Liquid + Pattern + Texture + 图片 + Blur WGSL 迁移 | 已接入     | 同一份 shader 已用于 Editor 预览和浏览器端导出；Blur 使用共享 WGSL 后处理采样                                  |
+| Chromium Editor 预览                                                  | 本地已验证 | WebGPU 首帧接管、Profile/DPR backing store 与 resize 跨 Profile 已通过本地 smoke；跨浏览器仍待验收             |
+| WebGL legacy lane                                                     | 已验证     | 仅在调用方明确未启用 `preferVgpu` 时保留旧路径                                                                 |
+| POC readback/WebP                                                     | 已验证     | 固定尺寸、top-origin、尺寸和 WebP Blob 已断言                                                                  |
+| 正式 Wallpaper 导出                                                   | 部分完成   | 已有带超时的懒加载 API、调试按钮和 Gradient/Flow/Liquid/Texture/图片/Blur 下载；真实上传与正式产品入口仍待接入 |
+| Safari                                                                | 待验收     | 包括 surface、异步 readback、编码和 device loss                                                                |
+| 移动端                                                                | 待验收     | 至少覆盖一个真实 WebGPU 设备                                                                                   |
+| WebGL/WebGPU A/B                                                      | 待验收     | 需要同一 recipe、尺寸和设备的视觉/性能数据                                                                     |
+| 完整 Wallpaper renderer                                               | 部分完成   | Linear/Radial/Flow/Liquid、六种程序化 texture、图片、Pattern 和 Blur 使用 vgpu；跨浏览器和 A/B 仍待验收        |
+| CoverEditor compositor                                                | 未开始     | 需要图片图层、transform、mask 和特效合成                                                                       |
 
 后续执行顺序按依赖和风险安排为：
 
@@ -237,7 +237,8 @@ browser surface   offscreen target
 - `TBgRenderSpec` 继续是业务层和 GPU renderer 之间的稳定协议。
 - WGSL shader 不读取 Dashboard store，不理解 ThemePreset，也不拼接业务 URL。
 - preview 和 export 使用同一 shader module、同一 uniform 映射、同一混合顺序。
-- preview 使用跟随 DOM 尺寸和 DPR 的 surface。
+- 卡片 preview 与无已发布产物的全屏 preview 使用目标 DOM 逻辑尺寸；有已发布产物的全屏 Editor preview
+  使用 active Wallpaper Profile 逻辑尺寸。两者的 backing store 都可按受控 DPR 提高清晰度。
 - export 使用固定 width、height、seed、time 和 color format 的 offscreen target。
 - 输出编码和上传是 shader renderer 之后的独立步骤。
 
@@ -622,8 +623,8 @@ Phase 0 退出后，下一条最小可交付纵向链路是：Flow/Liquid 固定
 - adapter/参数测试覆盖 WebGL 过渡画面、vgpu 就绪后接管、初始化失败 fail-fast、失效 spec
   对迟到 renderer 的取消，以及 `TBgRenderSpec -> WGSL uniforms` 映射。
 - 当前 Chromium 页面曾复现完整 `wallpaper-mesh.wgsl` 的 `random2` 未导入错误；修复后必须
-  重新完成真实 WebGPU 接管、Flow/Liquid 和导出验收。当前两个 Editor preview 仍限制为 DPR 1，
-  以保证交互期间的渲染预算；最终导出不复用这个预览 DPR。
+  重新完成真实 WebGPU 接管、Flow/Liquid 和导出验收。本阶段曾将两个 Editor preview 限制为 DPR 1；
+  该历史策略已被下方 2026-09-06 的 Profile/DPR 契约取代，最终导出仍不读取预览设备 DPR。
 
 #### 2026-08-31 vgpu 交互性能修复
 
@@ -631,8 +632,8 @@ Phase 0 退出后，下一条最小可交付纵向链路是：Flow/Liquid 固定
   `emitWallpaperPreview` 合并为每帧最多一次，拖动事件只保留最新状态。
 - vgpu renderer 改为单个 GPU frame 在途的 latest-wins 调度；前一帧尚未完成时不再向 GPU
   队列继续提交新帧，避免 Angle 拖动后积累 work 导致页面失去响应。
-- Editor 的 Flow/Liquid surface 使用 DPR 1；后续静态导出使用独立的固定尺寸与质量策略，
-  不与实时预览共享 DPR 限制。
+- 本阶段 Editor 的 Flow/Liquid surface 曾使用 DPR 1；当前 preview 使用受控 HiDPI backing store，
+  静态导出继续使用独立的固定尺寸与质量策略。
 
 #### 2026-08-31 vgpu Pattern overlay
 
@@ -669,6 +670,31 @@ Phase 0 退出后，下一条最小可交付纵向链路是：Flow/Liquid 固定
 - 本次是 Chromium smoke test，不等价于逐像素误差和跨设备性能结论；正式 A/B 仍需固定设备
   收集初始化、首帧、warm frame、交互帧和导出分段耗时。
 - 当前环境的 Playwright WebKit 未安装，不能代替真实 Safari 验收；移动端真实设备也尚未执行。
+
+#### 2026-09-06 Profile/DPR 与 SSR 接管修正
+
+- Pattern 发糊的 root-cause 不是 Blur、intensity 或 pattern asset，而是全屏 Editor 曾把 `1200×630 @ DPR 1`
+  canvas 放大到 viewport；Gradient 与细线同样被放大，只是 Pattern 最明显。
+- renderer 现在区分 Profile logical size、backing-store pixel size 和 CSS presentation size。DPR 上限为 2，
+  只提高实际像素密度；`patternSize` 继续按 logical size 解释，不能因 DPR=2 把 `260px` tile 缩成 `130px`。
+- 有 published Wallpaper 时，全屏 Editor 使用与 `StaticWallpaper` CSS cascade 相同的 active Profile 逻辑画布，
+  backing store 为 `profile × min(DPR, 2)`，两层均在 viewport 内 `cover center`。直接按 viewport 重绘虽然清晰，
+  但会改变 Pattern 密度和构图，不能作为修复。
+- 无 published Wallpaper 时，全屏 CSS draft 与 GPU 都按 viewport 构图；AuthPreview/GlobalPreview 等卡片按自身
+  DOM rect 构图。显式 export 的 logical/pixel target 仍固定且与设备 DPR 无关。
+- GPU ready/failure 以 `theme + profile/viewport` 为 identity。resize 跨 Profile 后 active Profile 立即使旧
+  canvas 退出接管；renderer Profile 等待 `150ms` 稳定后再替换，避免在 `16/10` 附近反复执行 vgpu
+  init/prepare。等待期显示 CSS 静态层，新 Profile 首帧完成后再接管。
+- 真实 Chromium 已验证 `1720×1250 @ DPR 2` 命中 desktop：逻辑 `1440×900`、backing `2880×1800`；
+  resize 到 `1800×1000` 命中 wide：逻辑 `1920×1080`、backing `3840×2160`。这属于本地 smoke，不能替代
+  Safari/移动端矩阵。
+- 边界 settle smoke 在 `1600×1000` 与 `1601×1000` 间以 `50ms` 往返：原 desktop canvas 保持同一 DOM identity
+  但立即隐藏，静态层接管；稳定后才创建 wide canvas。证明 debounce 没有让旧 Profile 继续覆盖新静态图。
+- `150ms` 只是 resize Profile replacement debounce，不是 shader 或首帧预算。当前 hydration 后的首次
+  `wide -> desktop/tablet/phone` 校正仍会经过该等待，并可能先初始化一次 wide renderer；应在不改变首次 hydration
+  snapshot 的前提下，于 commit 后直接确定首个 client renderer Profile，避免用 render-time `window` 分支。
+- settle pending 期间旧 GPU 仍 mounted 且不可见。当前把它视为可接受的短时成本；若后续 trace 证明 GPU 预算受压，
+  再为 pending renderer 增加暂停提交能力，不提前增加额外状态机。
 
 这一批尚未启用全局 Wallpaper，也尚未接入 CoverEditor。下一批先完成 Editor 内同设备
 WebGL/WebGPU 视觉 A/B、Safari/移动端验证与运行指标，再决定是否扩大 `preferVgpu` 范围。

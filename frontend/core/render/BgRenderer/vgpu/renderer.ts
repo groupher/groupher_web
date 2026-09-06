@@ -10,11 +10,11 @@ import {
   loadPatternTexture,
   type TPatternTexture,
 } from './pattern'
+import { resolvePreviewSurfaceSize } from './previewSize'
 import './wgsl-env.d.ts'
 import wallpaperMeshShader from './wallpaper-mesh.wgsl'
 
 const GPU_INIT_TIMEOUT_MS = 10_000
-const EDITOR_PREVIEW_DPR_CAP = 1
 
 const getStaticParamsKey = (renderSpec: TBgRenderSpec): string => {
   const meshRecipe = renderSpec.meshRecipe
@@ -100,12 +100,14 @@ class BgVgpuRenderer implements TBgVgpuRenderer {
   private imageWidth = 1
   private imageHeight = 1
   private imageLoadToken = 0
+  private logicalSize: readonly [number, number] = [1, 1]
   private sizeDirty = true
   private paramsDirty = true
   private paramsKey = ''
   private meshParams: Record<string, unknown> | null = null
   private readonly patternSize: string
   private readonly renderSize: readonly [number, number] | undefined
+  private readonly renderLogicalSize: readonly [number, number] | undefined
 
   constructor(
     gpu: Gpu,
@@ -114,12 +116,14 @@ class BgVgpuRenderer implements TBgVgpuRenderer {
     onFailure: (error: Error) => void,
     patternSize = 'auto',
     renderSize?: readonly [number, number],
+    renderLogicalSize?: readonly [number, number],
   ) {
     this.gpu = gpu
     this.canvas = canvas
     this.renderSpec = renderSpec
     this.patternSize = patternSize
     this.renderSize = renderSize
+    this.renderLogicalSize = renderLogicalSize
     this.onFailure = onFailure
     this.canvasSurface = surface(gpu, canvas, {
       autoResize: false,
@@ -252,15 +256,18 @@ class BgVgpuRenderer implements TBgVgpuRenderer {
     if (!this.sizeDirty) return
 
     const rect = this.canvas.getBoundingClientRect()
-    const dpr = Math.min(window.devicePixelRatio || 1, EDITOR_PREVIEW_DPR_CAP)
-    const size = this.renderSize
-      ? this.renderSize
-      : ([
-          Math.max(1, Math.round(rect.width * dpr)),
-          Math.max(1, Math.round(rect.height * dpr)),
-        ] as const)
-    if (this.canvasSurface.size[0] !== size[0] || this.canvasSurface.size[1] !== size[1]) {
-      this.canvasSurface.resize(size)
+    const { logicalSize, pixelSize } = resolvePreviewSurfaceSize(
+      rect,
+      window.devicePixelRatio,
+      this.renderSize,
+      this.renderLogicalSize,
+    )
+    this.logicalSize = logicalSize
+    if (
+      this.canvasSurface.size[0] !== pixelSize[0] ||
+      this.canvasSurface.size[1] !== pixelSize[1]
+    ) {
+      this.canvasSurface.resize(pixelSize)
     }
     this.sizeDirty = false
   }
@@ -270,7 +277,7 @@ class BgVgpuRenderer implements TBgVgpuRenderer {
 
     this.syncSize()
     const size = this.canvasSurface.size
-    const patternRepeat = getPatternRepeat(size, this.patternSize, [
+    const patternRepeat = getPatternRepeat(this.logicalSize, this.patternSize, [
       this.patternTexture.width,
       this.patternTexture.height,
     ])
@@ -430,9 +437,18 @@ export const createBgVgpuRenderer = async (
   onFailure: (error: Error) => void,
   patternSize = 'auto',
   renderSize?: readonly [number, number],
+  renderLogicalSize?: readonly [number, number],
 ): Promise<TBgVgpuRenderer> => {
   const gpu = await initGpuWithTimeout()
-  const renderer = new BgVgpuRenderer(gpu, canvas, renderSpec, onFailure, patternSize, renderSize)
+  const renderer = new BgVgpuRenderer(
+    gpu,
+    canvas,
+    renderSpec,
+    onFailure,
+    patternSize,
+    renderSize,
+    renderLogicalSize,
+  )
 
   try {
     await renderer.prepare()

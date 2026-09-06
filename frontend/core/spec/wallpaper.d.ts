@@ -40,7 +40,15 @@ export type TWallpaperPattern = {
   preview: string
 }
 
-export type TCustomWallpaper = TWallpaper | null
+/**
+ * A custom wallpaper is a tagged value in shared background state. The tag is
+ * deliberately part of the domain value so renderers never infer the branch
+ * from optional fields such as `image`.
+ */
+export type TCustomWallpaper =
+  | ({ type: 'gradient' } & TWallpaperGradient)
+  | ({ type: 'picture' } & TWallpaperPic)
+  | null
 
 export type TWallpaperType = WALLPAPER_TYPE
 
@@ -86,7 +94,6 @@ export type TWallpaperData = {
 export type TWallpaperConfigData = {
   customWallpaper: TCustomWallpaper
   assetPublicRef?: string | null
-  staticAssetPublicRef?: string | null
   source: string
   type: TWallpaperType
   pattern: TBgPattern
@@ -102,21 +109,28 @@ export type TWallpaperConfigData = {
 export type TWallpaperConfig = {
   light: Partial<TWallpaperConfigData>
   dark: Partial<TWallpaperConfigData>
-  staticRevision?: string | null
 }
-
-export type TStaticWallpaperAsset = {
-  assetPublicRef: string
+export type TPublishedWallpaperImage = {
   url: string
+  width: number
+  height: number
 }
 
-export type TStaticWallpaper = {
-  light: TStaticWallpaperAsset | null
-  dark: TStaticWallpaperAsset | null
-  revision: string
+export type TPublishedWallpaper = {
+  version: number
+  light: Record<
+    import('~/lib/wallpaperProfiles').TWallpaperProfile,
+    TPublishedWallpaperImage
+  > | null
+  dark: Record<import('~/lib/wallpaperProfiles').TWallpaperProfile, TPublishedWallpaperImage> | null
+}
+
+export type TWallpaperSettingsTransportByTheme = {
+  light: import('~/lib/wallpaperSettingsCodec').TWallpaperSettingsTransport
+  dark: import('~/lib/wallpaperSettingsCodec').TWallpaperSettingsTransport
 }
 
 export type TParsedWallpaper = Partial<TWallpaperConfig> & {
   initWallpaper?: Partial<TWallpaperConfig>
-  staticWallpaper?: TStaticWallpaper | null
+  wallpaper?: TPublishedWallpaper | null
 }

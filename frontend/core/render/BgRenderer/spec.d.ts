@@ -35,6 +35,8 @@ export type TProps = {
   patternSize?: string
   /** Optional fixed backing-store size displayed with CSS cover semantics. */
   renderSize?: readonly [number, number]
+  /** Optional profile composition size rendered at the current display density. */
+  renderLogicalSize?: readonly [number, number]
   positioned?: boolean
   previewSubscriber?: TBgPreviewSubscriber
   preferVgpu?: boolean
@@ -54,6 +56,7 @@ export type TBgLayerProps = {
   exiting?: boolean
   patternSize: string
   renderSize?: readonly [number, number]
+  renderLogicalSize?: readonly [number, number]
   preferVgpu: boolean
   textureScale: number
   onExited?: () => void
