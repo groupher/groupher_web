@@ -28,7 +28,6 @@ const baseState = (patch: Partial<TWallpaperThemeState> = {}): TWallpaperThemeSt
   },
   effect: { blurIntensity: 0, brightness: 100, saturation: 100 },
   texture: { enabled: false, type: 'noise', intensity: 0, params: {} },
-  contentShadow: { enabled: false },
   ...patch,
 })
 

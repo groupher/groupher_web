@@ -1,16 +1,12 @@
-import useTheme from '~/hooks/useTheme'
 import useTwBelt from '~/hooks/useTwBelt'
-import { pickWallpaperThemeState } from '~/stores/wallpaper/helper'
-import useWallpaperDomain from '~/stores/wallpaper/hooks'
+import useContentShadowStore from '~/stores/contentShadow/hooks'
 
 import useBase from '../../../../useDsbSalon'
 
 export default function useSalon() {
   const { cn, br, bg, shadow, primary } = useTwBelt()
 
-  const { isDarkTheme } = useTheme()
-  const wallpaper = useWallpaperDomain()
-  const { contentShadow } = pickWallpaperThemeState(wallpaper, isDarkTheme)
+  const contentShadow = useContentShadowStore().enabled
   const base = useBase()
 
   return {
@@ -26,7 +22,7 @@ export default function useSalon() {
     authCard: cn(
       'absolute top-10 left-1/2 -translate-x-1/2 w-24 h-24 rounded-lg column-center px-6 py-3 gap-2',
       bg('card'),
-      contentShadow.enabled && shadow('md'),
+      contentShadow && shadow('md'),
     ),
     authTitle: 'w-10 h-1.5 mb-2 opacity-30',
     authInput: cn('w-full h-2.5 rounded opacity-15', primary('bg')),

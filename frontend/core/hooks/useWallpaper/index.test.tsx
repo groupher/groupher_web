@@ -20,16 +20,15 @@ import type { TLinearGradientRecipe, TMeshGradientRecipe } from '~/lib/wallpaper
 import type { TWallpaperThemeState } from '~/stores/wallpaper/spec'
 
 type TWallpaperStatePatch = Partial<
-  Omit<TWallpaperThemeState, 'contentShadow' | 'effect' | 'pattern' | 'texture'>
+  Omit<TWallpaperThemeState, 'effect' | 'pattern' | 'texture'>
 > & {
-  contentShadow?: Partial<TWallpaperThemeState['contentShadow']>
   effect?: Partial<TWallpaperThemeState['effect']>
   pattern?: Partial<TWallpaperThemeState['pattern']>
   texture?: Partial<TWallpaperThemeState['texture']>
 }
 
 const createWallpaperState = (patch: TWallpaperStatePatch = {}): TWallpaperThemeState => {
-  const { contentShadow, effect, pattern, texture, ...rest } = patch
+  const { effect, pattern, texture, ...rest } = patch
 
   return {
     customWallpaper: null,
@@ -43,10 +42,6 @@ const createWallpaperState = (patch: TWallpaperStatePatch = {}): TWallpaperTheme
       intensity: 100,
       tone: WALLPAPER_PATTERN_TONE.DARK,
       ...pattern,
-    },
-    contentShadow: {
-      enabled: false,
-      ...contentShadow,
     },
     effect: {
       blurIntensity: 0,
@@ -93,7 +88,6 @@ describe('useWallpaper', () => {
             tone: WALLPAPER_PATTERN_TONE.DARK,
           },
           effect: { blurIntensity: 50, brightness: 100, saturation: 100 },
-          contentShadow: { enabled: true },
         },
       },
     })

@@ -109,6 +109,8 @@ export const community = graphql(`
         }
         wallpaper {
           version
+          lightSource
+          darkSource
           light {
             wide {
               url
@@ -154,30 +156,7 @@ export const community = graphql(`
             }
           }
         }
-        wallpaperSettings {
-          light {
-            settingsSchemaVersion
-            type
-            source
-            customWallpaper {
-              type
-              assetPublicRef
-              config
-            }
-            renderConfig
-          }
-          dark {
-            settingsSchemaVersion
-            type
-            source
-            customWallpaper {
-              type
-              assetPublicRef
-              config
-            }
-            renderConfig
-          }
-        }
+        contentShadow
         headerLinks {
           id
           type

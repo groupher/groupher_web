@@ -1,14 +1,20 @@
 'use client'
 
-import { useMemo } from 'react'
+import { use, useMemo } from 'react'
+import { useSnapshot } from 'valtio'
 
 import useTheme from '~/hooks/useTheme'
 import { composeBgCss, composeBgRenderSpec } from '~/lib/bg'
 import type { TBgRenderSpec } from '~/lib/bg'
 import type { TWallpaperFmt } from '~/spec'
+import useStaticWallpaper from '~/stores/staticWallpaper/hooks'
+import createWallpaperStore from '~/stores/wallpaper'
+import { INITIAL_WALLPAPER_THEME_STATE } from '~/stores/wallpaper/constant'
+import { StoreContext } from '~/stores/wallpaper/context'
 import { pickWallpaperThemeState } from '~/stores/wallpaper/helper'
-import useWallpaperDomain from '~/stores/wallpaper/hooks'
 import type { TWallpaperThemeState } from '~/stores/wallpaper/spec'
+
+const EMPTY_WALLPAPER_STORE = createWallpaperStore()
 
 type TRet = { source: string } & TWallpaperFmt
 
@@ -43,9 +49,23 @@ export const adaptWallpaperBgRenderSpec = (state: TWallpaperThemeState): TBgRend
 
 /** Exposes wallpaper state and actions through the shared React hook boundary. */
 export default function useWallpaper(): TRet {
-  const store = useWallpaperDomain()
+  const store = use(StoreContext)
   const { isDarkTheme } = useTheme()
-  const state = toWallpaperBgCssConfig(pickWallpaperThemeState(store, isDarkTheme))
+  const staticWallpaper = useStaticWallpaper()
+  const snapshot = useSnapshot(store ?? EMPTY_WALLPAPER_STORE) as unknown as {
+    light: TWallpaperThemeState
+    dark: TWallpaperThemeState
+  }
+  const state = toWallpaperBgCssConfig(
+    store
+      ? pickWallpaperThemeState(snapshot, isDarkTheme)
+      : {
+          ...INITIAL_WALLPAPER_THEME_STATE,
+          source:
+            staticWallpaper?.[isDarkTheme ? 'darkSource' : 'lightSource'] ??
+            INITIAL_WALLPAPER_THEME_STATE.source,
+        },
+  )
 
   return useMemo(
     () => composeWallpaperBgCss(state),
@@ -55,9 +75,15 @@ export default function useWallpaper(): TRet {
 
 /** Exposes wallpaper bg render spec state and actions through the shared React hook boundary. */
 export function useWallpaperBgRenderSpec(): TBgRenderSpec {
-  const store = useWallpaperDomain()
+  const store = use(StoreContext)
+  if (!store)
+    throw new Error('useWallpaperBgRenderSpec must be used within a WallpaperStoreProvider')
+  const snapshot = useSnapshot(store) as unknown as {
+    light: TWallpaperThemeState
+    dark: TWallpaperThemeState
+  }
   const { isDarkTheme } = useTheme()
-  const state = pickWallpaperThemeState(store, isDarkTheme)
+  const state = pickWallpaperThemeState(snapshot, isDarkTheme)
 
   return useMemo(
     () => adaptWallpaperBgRenderSpec(state),

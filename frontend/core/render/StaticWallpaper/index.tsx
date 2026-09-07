@@ -27,7 +27,6 @@ export default function StaticWallpaper({
         'static-wallpaper pointer-events-none fixed s-full top-0 bg-cover bg-center bg-no-repeat',
         className,
       )}
-      data-wallpaper-version={wallpaper?.version}
       style={style}
     />
   )

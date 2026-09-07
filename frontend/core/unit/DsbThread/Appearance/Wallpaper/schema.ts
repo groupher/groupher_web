@@ -4,6 +4,7 @@ const wallpaperEditor = graphql(`
   query WallpaperEditor($community: String!) {
     community(slug: $community) {
       dashboard {
+        contentShadow
         wallpaperSettings {
           light {
             settingsSchemaVersion
@@ -90,6 +91,14 @@ const publishWallpaper = graphql(`
   }
 `)
 
+const updateDashboardContentShadow = graphql(`
+  mutation UpdateDashboardContentShadow($community: String!, $enabled: Boolean!) {
+    updateDashboardContentShadow(community: $community, enabled: $enabled) {
+      contentShadow
+    }
+  }
+`)
+
 const restoreWallpaperSnapshot = graphql(`
   mutation RestoreWallpaperSnapshot($community: String!, $input: WallpaperRestoreSnapshotInput!) {
     restoreWallpaperSnapshot(community: $community, input: $input) {
@@ -102,5 +111,6 @@ export default {
   wallpaperEditor,
   prepareWallpaperUpload,
   publishWallpaper,
+  updateDashboardContentShadow,
   restoreWallpaperSnapshot,
 }

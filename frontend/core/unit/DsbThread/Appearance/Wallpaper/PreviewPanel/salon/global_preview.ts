@@ -1,6 +1,7 @@
 import useTheme from '~/hooks/useTheme'
 import useTwBelt from '~/hooks/useTwBelt'
 import { hasPreviewWallpaper } from '~/shell/GlobalLayout/background'
+import useContentShadowStore from '~/stores/contentShadow/hooks'
 import { pickWallpaperThemeState } from '~/stores/wallpaper/helper'
 import useWallpaperDomain from '~/stores/wallpaper/hooks'
 
@@ -12,7 +13,7 @@ export default function useSalon() {
   const { isDarkTheme } = useTheme()
   const wallpaper = useWallpaperDomain()
   const wallpaperState = pickWallpaperThemeState(wallpaper, isDarkTheme)
-  const { contentShadow } = wallpaperState
+  const contentShadow = useContentShadowStore().enabled
   const hasWallpaper = hasPreviewWallpaper(wallpaperState)
   const base = useBase()
 
@@ -27,7 +28,7 @@ export default function useSalon() {
     content: cn(
       'absolute bottom-0 left-8 right-8 h-40 column-start px-5 pt-3 pb-4 rounded-t-md',
       hasWallpaper && 'backdrop-blur-sm',
-      hasWallpaper && contentShadow.enabled && shadow('md'),
+      hasWallpaper && contentShadow && shadow('md'),
     ),
     contentTop: 'column gap-3',
     contentBottom: 'column gap-3 mt-auto',

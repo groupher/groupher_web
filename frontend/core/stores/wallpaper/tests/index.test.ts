@@ -82,7 +82,6 @@ describe('stores/wallpaper', () => {
         },
         gradient: { ...GRADIENT_WALLPAPER[GRADIENT_WALLPAPER_NAME.STONE_GREEN], angle: 45 },
         effect: { blurIntensity: 35, brightness: 85, saturation: 120 },
-        contentShadow: { enabled: true },
         texture: { enabled: true, type: WALLPAPER_TEXTURE.TILE, intensity: 72, params: {} },
       },
     })
@@ -102,7 +101,6 @@ describe('stores/wallpaper', () => {
         },
         gradient: { ...GRADIENT_WALLPAPER[GRADIENT_WALLPAPER_NAME.STONE_GREEN], angle: 45 },
         effect: { blurIntensity: 35, brightness: 85, saturation: 120 },
-        contentShadow: { enabled: true },
         texture: { enabled: true, type: WALLPAPER_TEXTURE.TILE, intensity: 72, params: {} },
       },
     })

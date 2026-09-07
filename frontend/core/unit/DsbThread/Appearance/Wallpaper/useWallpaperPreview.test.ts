@@ -32,7 +32,6 @@ const initialState = {
   effect: {},
   pattern: {},
   texture: {},
-  contentShadow: {},
 } as unknown as TWallpaperThemeState
 
 describe('useWallpaperPreview', () => {

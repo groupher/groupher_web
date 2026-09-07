@@ -42,7 +42,7 @@ type TCustomWallpaperInput = {
 
 type TCustomWallpaperValue = Exclude<TCustomWallpaper, null>
 
-const RENDER_CONFIG_KEYS = ['pattern', 'gradient', 'texture', 'effect', 'contentShadow'] as const
+const RENDER_CONFIG_KEYS = ['pattern', 'gradient', 'texture', 'effect'] as const
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -162,7 +162,6 @@ export const normalizeWallpaperSettings = (settings: TWallpaperThemeState): TWal
 
   return {
     assetPublicRef: settings.assetPublicRef ?? null,
-    contentShadow: { ...settings.contentShadow },
     customWallpaper: normalizeCustomWallpaper(settings.customWallpaper),
     effect: { ...settings.effect },
     gradient: settings.gradient
@@ -245,7 +244,6 @@ export const encodeWallpaperSettings = (
   }
 
   const renderConfig = {
-    contentShadow: normalized.contentShadow,
     effect: normalized.effect,
     gradient: normalized.gradient,
     pattern: normalized.pattern,
@@ -306,19 +304,13 @@ const decodeRenderConfig = (value: unknown): TWallpaperThemeState => {
     !isRecord(config.pattern) ||
     !isRecord(config.effect) ||
     !isRecord(config.texture) ||
-    !isRecord(config.contentShadow) ||
     (config.gradient !== null && !isRecord(config.gradient)) ||
     (config.gradient !== null && !isGradientRecipe(config.gradient))
   ) {
     throw new Error('WALLPAPER_SETTINGS_INVALID: renderConfig shape is invalid')
   }
 
-  const { contentShadow, ...renderConfig } = config
-
-  return {
-    ...renderConfig,
-    contentShadow,
-  } as TWallpaperThemeState
+  return config as TWallpaperThemeState
 }
 
 /**

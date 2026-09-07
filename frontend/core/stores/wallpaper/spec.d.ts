@@ -1,12 +1,7 @@
 import type { TBgConfig } from '~/lib/bg'
 
-export type TWallpaperContentShadow = {
-  enabled: boolean
-}
-
-export type TWallpaperThemeState = TBgConfig & {
-  contentShadow: TWallpaperContentShadow
-}
+/** Wallpaper-only working copy; Dashboard content shadow has a separate store/lane. */
+export type TWallpaperThemeState = TBgConfig
 
 export type TWallpaperState = {
   light: TWallpaperThemeState

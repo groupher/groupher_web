@@ -9,15 +9,14 @@ import type { TWallpaperThemeState } from '~/stores/wallpaper/spec'
  * A preview-safe patch type for wallpaper state.
  *
  * Top-level fields ({@link type}, {@link source}) are replaced wholesale while
- * nested sub-objects ({@link gradient}, {@link contentShadow}, {@link effect},
- * {@link pattern}, {@link texture}) accept partial updates so callers never need to pass the
+ * nested sub-objects ({@link gradient}, {@link effect}, {@link pattern},
+ * {@link texture}) accept partial updates so callers never need to pass the
  * full sub-object to change one field.
  */
 export type TWallpaperPreviewPatch = Partial<
-  Omit<TWallpaperThemeState, 'gradient' | 'contentShadow' | 'effect' | 'pattern' | 'texture'>
+  Omit<TWallpaperThemeState, 'gradient' | 'effect' | 'pattern' | 'texture'>
 > & {
   gradient?: Partial<NonNullable<TWallpaperThemeState['gradient']>> | null
-  contentShadow?: Partial<TWallpaperThemeState['contentShadow']>
   effect?: Partial<TWallpaperThemeState['effect']>
   pattern?: Partial<TWallpaperThemeState['pattern']>
   texture?: Partial<TWallpaperThemeState['texture']>
@@ -32,8 +31,8 @@ type TOptions = {
  * Merge a wallpaper preview patch into existing state with deep merge for
  * nested sub-objects.
  *
- * Problem scenario: wallpaper config has four nested sub-objects — `contentShadow`,
- * `effect`, `pattern`, and `texture`. A plain spread would overwrite an entire
+ * Problem scenario: wallpaper config has three nested sub-objects — `effect`,
+ * `pattern`, and `texture`. A plain spread would overwrite an entire
  * nested object even when the caller only intends to change one field inside it
  * (e.g., only `pattern.intensity`). Deep-merging preserves unmentioned
  * sub-fields while still shallow-merging top-level fields like `type` and
@@ -58,9 +57,6 @@ const mergeNestedWallpaperPatch = <TState extends Partial<TWallpaperPreviewPatch
       : patch.gradient
         ? { ...state.gradient, ...patch.gradient }
         : state.gradient,
-  contentShadow: patch.contentShadow
-    ? { ...state.contentShadow, ...patch.contentShadow }
-    : state.contentShadow,
   effect: patch.effect ? { ...state.effect, ...patch.effect } : state.effect,
   pattern: patch.pattern ? { ...state.pattern, ...patch.pattern } : state.pattern,
   texture: patch.texture ? { ...state.texture, ...patch.texture } : state.texture,

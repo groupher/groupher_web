@@ -2,11 +2,9 @@ import useTheme from '~/hooks/useTheme'
 import useTopbar from '~/hooks/useTopbar'
 import useTwBelt from '~/hooks/useTwBelt'
 import type { TContainerMetric } from '~/hooks/useTwBelt/spec'
-import { hasPreviewWallpaper, hasPublishedWallpaper } from '~/shell/GlobalLayout/background'
+import { hasPublishedWallpaper } from '~/shell/GlobalLayout/background'
+import useDsbConfig from '~/stores/dsbConfig/hooks'
 import useStaticWallpaper from '~/stores/staticWallpaper/hooks'
-import { pickWallpaperThemeState } from '~/stores/wallpaper/helper'
-import useWallpaperDomain from '~/stores/wallpaper/hooks'
-import useWallpaperRuntimeMode from '~/stores/wallpaperRuntime/hooks'
 
 type TProps = {
   containerMetric: TContainerMetric | null
@@ -17,22 +15,18 @@ export default function useSalon({ containerMetric }: TProps) {
 
   const { topbarBg } = useTopbar()
   const { isDarkTheme } = useTheme()
-  const runtimeMode = useWallpaperRuntimeMode()
   const publishedWallpaper = useStaticWallpaper()
-  const wallpaper = useWallpaperDomain()
-  const wallpaperTheme = pickWallpaperThemeState(wallpaper, isDarkTheme)
+  const dashboard = useDsbConfig()
   const theme = isDarkTheme ? 'dark' : 'light'
-  const hasWallpaper =
-    runtimeMode === 'editor'
-      ? hasPreviewWallpaper(wallpaperTheme)
-      : hasPublishedWallpaper(publishedWallpaper, theme)
+  const hasWallpaper = hasPublishedWallpaper(publishedWallpaper, theme)
+  const contentShadowEnabled = dashboard.contentShadow ?? false
 
   return {
     wrapper: cn(
       containerWrapper(),
       'column relative isolate s-full min-h-fit',
       'transition-transform transition-shadow',
-      hasWallpaper && wallpaperTheme.contentShadow.enabled && 'shadow-lg',
+      hasWallpaper && contentShadowEnabled && 'shadow-lg',
       page(),
     ),
     topBar: cn('h-0.5 w-full absolute top-0 left-0 z-20', rainbow(topbarBg, 'bg'), vividDark()),

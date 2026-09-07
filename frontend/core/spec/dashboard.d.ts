@@ -143,6 +143,7 @@ export type TDsb = {
   footerOnelineLinks?: readonly TFooterOnelineLink[]
 
   wallpaper?: TPublishedWallpaper
+  contentShadow?: boolean
   wallpaperSettings?: TWallpaperSettingsTransportByTheme
   baseInfo?: {
     title?: string
@@ -156,6 +157,7 @@ export type TDsb = {
 }
 
 export type TParseDashboard = TDsbFieldMap & {
+  contentShadow?: boolean
   original: TDsbFieldMap
 }
 

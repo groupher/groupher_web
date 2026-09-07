@@ -1544,6 +1544,7 @@ export type PageCommunityQuery = {
     } | null> | null
     dashboard: {
       umamiWebsiteId: string | null
+      contentShadow: boolean
       baseInfo: {
         title: string | null
         slug: string | null
@@ -1605,6 +1606,8 @@ export type PageCommunityQuery = {
       } | null
       wallpaper: {
         version: number
+        lightSource: string | null
+        darkSource: string | null
         light: {
           wide: { url: string; width: number; height: number }
           desktop: { url: string; width: number; height: number }
@@ -1617,30 +1620,6 @@ export type PageCommunityQuery = {
           tablet: { url: string; width: number; height: number }
           phone: { url: string; width: number; height: number }
         } | null
-      }
-      wallpaperSettings: {
-        light: {
-          settingsSchemaVersion: number
-          type: WallpaperType
-          source: string | null
-          renderConfig: unknown
-          customWallpaper: {
-            type: CustomWallpaperType
-            assetPublicRef: string | null
-            config: unknown
-          } | null
-        }
-        dark: {
-          settingsSchemaVersion: number
-          type: WallpaperType
-          source: string | null
-          renderConfig: unknown
-          customWallpaper: {
-            type: CustomWallpaperType
-            assetPublicRef: string | null
-            config: unknown
-          } | null
-        }
       }
       headerLinks: Array<{
         id: string | null
@@ -4466,6 +4445,7 @@ export type WallpaperEditorQueryVariables = Exact<{
 export type WallpaperEditorQuery = {
   community: {
     dashboard: {
+      contentShadow: boolean
       wallpaperSettings: {
         light: {
           settingsSchemaVersion: number
@@ -4548,6 +4528,15 @@ export type PublishWallpaperMutationVariables = Exact<{
 }>
 
 export type PublishWallpaperMutation = { publishWallpaper: { version: number } | null }
+
+export type UpdateDashboardContentShadowMutationVariables = Exact<{
+  community: string
+  enabled: boolean
+}>
+
+export type UpdateDashboardContentShadowMutation = {
+  updateDashboardContentShadow: { contentShadow: boolean } | null
+}
 
 export type RestoreWallpaperSnapshotMutationVariables = Exact<{
   community: string
@@ -12786,6 +12775,8 @@ export const PageCommunityDocument = {
                           kind: 'SelectionSet',
                           selections: [
                             { kind: 'Field', name: { kind: 'Name', value: 'version' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'lightSource' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'darkSource' } },
                             {
                               kind: 'Field',
                               name: { kind: 'Name', value: 'light' },
@@ -12903,77 +12894,7 @@ export const PageCommunityDocument = {
                           ],
                         },
                       },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'wallpaperSettings' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'light' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'settingsSchemaVersion' },
-                                  },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'source' } },
-                                  {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'customWallpaper' },
-                                    selectionSet: {
-                                      kind: 'SelectionSet',
-                                      selections: [
-                                        { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                        {
-                                          kind: 'Field',
-                                          name: { kind: 'Name', value: 'assetPublicRef' },
-                                        },
-                                        { kind: 'Field', name: { kind: 'Name', value: 'config' } },
-                                      ],
-                                    },
-                                  },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'renderConfig' } },
-                                ],
-                              },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'dark' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'settingsSchemaVersion' },
-                                  },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'source' } },
-                                  {
-                                    kind: 'Field',
-                                    name: { kind: 'Name', value: 'customWallpaper' },
-                                    selectionSet: {
-                                      kind: 'SelectionSet',
-                                      selections: [
-                                        { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                        {
-                                          kind: 'Field',
-                                          name: { kind: 'Name', value: 'assetPublicRef' },
-                                        },
-                                        { kind: 'Field', name: { kind: 'Name', value: 'config' } },
-                                      ],
-                                    },
-                                  },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'renderConfig' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'contentShadow' } },
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'headerLinks' },
@@ -20263,6 +20184,7 @@ export const WallpaperEditorDocument = {
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'contentShadow' } },
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'wallpaperSettings' },
@@ -20577,6 +20499,62 @@ export const PublishWallpaperDocument = {
     },
   ],
 } as unknown as DocumentNode<PublishWallpaperMutation, PublishWallpaperMutationVariables>
+export const UpdateDashboardContentShadowDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UpdateDashboardContentShadow' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'community' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'enabled' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Boolean' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateDashboardContentShadow' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'community' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'community' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'enabled' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'enabled' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'contentShadow' } }],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateDashboardContentShadowMutation,
+  UpdateDashboardContentShadowMutationVariables
+>
 export const RestoreWallpaperSnapshotDocument = {
   kind: 'Document',
   definitions: [

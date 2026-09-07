@@ -13,8 +13,11 @@ vi.mock('~/stores/wallpaper/hooks', () => ({
 vi.mock('~/stores/wallpaper/helper', () => ({
   pickWallpaperThemeState: () => ({
     type: wallpaperState.type,
-    contentShadow: { enabled: false },
   }),
+}))
+
+vi.mock('~/stores/contentShadow/hooks', () => ({
+  default: () => ({ enabled: false }),
 }))
 
 vi.mock('~/hooks/useTwBelt', () => ({

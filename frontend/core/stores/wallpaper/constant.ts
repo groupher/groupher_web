@@ -16,7 +16,6 @@ export const WALLPAPER_THEME_STATE_KEYS = [
   'source',
   'type',
   'pattern',
-  'contentShadow',
   'effect',
   'gradient',
   'texture',
@@ -28,7 +27,6 @@ export const WALLPAPER_SAVABLE_THEME_STATE_KEYS = [
   'source',
   'type',
   'pattern',
-  'contentShadow',
   'effect',
   'gradient',
   'texture',
@@ -46,9 +44,6 @@ export const INITIAL_WALLPAPER_THEME_STATE = {
     id: DEFAULT_WALLPAPER_PATTERN_ID,
     intensity: 50,
     tone: WALLPAPER_PATTERN_TONE.DARK,
-  },
-  contentShadow: {
-    enabled: false,
   },
   gradient: GRADIENT_WALLPAPER.amber_mauve,
   effect: {

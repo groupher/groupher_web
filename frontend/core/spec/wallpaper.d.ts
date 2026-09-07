@@ -84,9 +84,7 @@ export type TWallpaperData = {
   pattern: TBgPattern
   texture: TBgTexture
   hasBlur: boolean
-  contentShadow: {
-    enabled: boolean
-  }
+  contentShadow: boolean
   effect: TBgEffect
   gradient: TGradientRecipe | null
 }
@@ -99,9 +97,7 @@ export type TWallpaperConfigData = {
   pattern: TBgPattern
   texture: TBgTexture
   hasBlur?: boolean
-  contentShadow: {
-    enabled: boolean
-  }
+  contentShadow: boolean
   effect: TBgEffect
   gradient: TGradientRecipe | null
 }
@@ -118,6 +114,8 @@ export type TPublishedWallpaperImage = {
 
 export type TPublishedWallpaper = {
   version: number
+  lightSource?: string | null
+  darkSource?: string | null
   light: Record<
     import('~/lib/wallpaperProfiles').TWallpaperProfile,
     TPublishedWallpaperImage

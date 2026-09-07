@@ -12,7 +12,6 @@ import { MetricProvider } from '~/stores/metric'
 import StaticWallpaperProvider from '~/stores/staticWallpaper/provider'
 import ThemeStoreProvider from '~/stores/theme/provider'
 import type { TInit as TThemeInit } from '~/stores/theme/spec'
-import WallpaperStoreProvider from '~/stores/wallpaper/provider'
 import type { TInit as TWallpaperInit } from '~/stores/wallpaper/spec'
 
 type TProps = {
@@ -59,7 +58,7 @@ export default function StaticShellProvider({
             <MetricProvider value={METRIC.LANDING}>
               <CommunityStoreProvider initData={community}>
                 <StaticWallpaperProvider initData={wallpaper?.wallpaper}>
-                  <WallpaperStoreProvider initData={wallpaper}>{children}</WallpaperStoreProvider>
+                  {children}
                 </StaticWallpaperProvider>
               </CommunityStoreProvider>
             </MetricProvider>

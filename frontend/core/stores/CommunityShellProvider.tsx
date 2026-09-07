@@ -13,7 +13,6 @@ import { MetricProvider } from '~/stores/metric'
 import StaticWallpaperProvider from '~/stores/staticWallpaper/provider'
 import ThemeStoreProvider from '~/stores/theme/provider'
 import ThemePresetStoreProvider from '~/stores/ThemePreset/provider'
-import WallpaperStoreProvider from '~/stores/wallpaper/provider'
 import type { TInit as TWallpaperInit } from '~/stores/wallpaper/spec'
 
 type TProps = {
@@ -63,9 +62,7 @@ export default function CommunityShellProvider({
                 <DsbConfigProvider initData={dashboard}>
                   <ThemePresetStoreProvider initData={dashboard}>
                     <StaticWallpaperProvider initData={wallpaper?.wallpaper}>
-                      <WallpaperStoreProvider initData={wallpaper}>
-                        {children}
-                      </WallpaperStoreProvider>
+                      {children}
                     </StaticWallpaperProvider>
                   </ThemePresetStoreProvider>
                 </DsbConfigProvider>

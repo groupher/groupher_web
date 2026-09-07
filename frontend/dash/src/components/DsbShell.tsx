@@ -7,6 +7,7 @@ import METRIC from '~/const/metric'
 import { parseWallpaper } from '~/lib/ssr/parse'
 import { Q } from '~/query'
 import type { TCommunity } from '~/spec'
+import ContentShadowProvider from '~/stores/contentShadow/provider'
 import DsbConfigProvider from '~/stores/dsbConfig/provider'
 import DsbEditProvider from '~/stores/dsbEdit/provider'
 import { DsbEditorUiProvider } from '~/stores/dsbEditorUi'
@@ -47,6 +48,10 @@ export default function DsbShell({ children, shell }: TProps) {
     if (!isEditorRoute || !editorData?.community) return null
     return parseWallpaper(editorData.community as unknown as TCommunity)
   }, [editorData?.community, isEditorRoute])
+  const editorContentShadow = useMemo(() => {
+    if (!isEditorRoute || !editorData?.community) return dashboard.contentShadow
+    return editorData.community.dashboard?.contentShadow ?? dashboard.contentShadow
+  }, [dashboard.contentShadow, editorData?.community, isEditorRoute])
   const wallpaperInit = useMemo(
     () =>
       editorWallpaper
@@ -64,36 +69,42 @@ export default function DsbShell({ children, shell }: TProps) {
     clearAuthRouteRecoveryAttempt(window.location.href)
   }, [])
 
-  const content = (
+  const shellContent = (
     <DsbConfigProvider initData={dashboard}>
       <ThemePresetStoreProvider initData={dashboard}>
         <StaticWallpaperProvider initData={wallpaper?.wallpaper}>
-          <WallpaperStoreProvider initData={wallpaperInit}>
-            <WallpaperRuntimeProvider mode={wallpaperRuntimeMode}>
-              <GlobalProvider authLoginModal={false}>
-                <div
-                  className='column-center min-h-full w-full justify-start'
-                  data-demo-mode={shell.demoMode}
-                >
-                  <div className='container-dashboard relative w-full transition-all duration-150 ease-out'>
-                    <CommunityDigest />
+          <WallpaperRuntimeProvider mode={wallpaperRuntimeMode}>
+            <GlobalProvider authLoginModal={false}>
+              <div
+                className='column-center min-h-full w-full justify-start'
+                data-demo-mode={shell.demoMode}
+              >
+                <div className='container-dashboard relative w-full transition-all duration-150 ease-out'>
+                  <CommunityDigest />
 
-                    <div className='row mt-7 min-h-screen w-full'>
-                      <div className='shrink-0 self-stretch overflow-visible transition-all duration-150 ease-out'>
-                        <SideMenu />
-                      </div>
-                      <div className='column min-w-0 grow items-center bg-transparent'>
-                        {children}
-                      </div>
+                  <div className='row mt-7 min-h-screen w-full'>
+                    <div className='shrink-0 self-stretch overflow-visible transition-all duration-150 ease-out'>
+                      <SideMenu />
+                    </div>
+                    <div className='column min-w-0 grow items-center bg-transparent'>
+                      {children}
                     </div>
                   </div>
                 </div>
-              </GlobalProvider>
-            </WallpaperRuntimeProvider>
-          </WallpaperStoreProvider>
+              </div>
+            </GlobalProvider>
+          </WallpaperRuntimeProvider>
         </StaticWallpaperProvider>
       </ThemePresetStoreProvider>
     </DsbConfigProvider>
+  )
+
+  const content = isEditorRoute ? (
+    <ContentShadowProvider initData={editorContentShadow}>
+      <WallpaperStoreProvider initData={wallpaperInit}>{shellContent}</WallpaperStoreProvider>
+    </ContentShadowProvider>
+  ) : (
+    shellContent
   )
 
   return (

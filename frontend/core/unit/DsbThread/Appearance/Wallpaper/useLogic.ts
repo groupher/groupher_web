@@ -15,9 +15,11 @@ import {
   isMeshGradientRecipe,
 } from '~/lib/wallpaperMesh'
 import type { TGradientRecipe, TGradientRenderer } from '~/lib/wallpaperMesh'
-import { wallpaperEditorKeys, wallpaperKeys, wallpaperQueries } from '~/query'
-import type { TParsedWallpaper, TWallpaperData, TWallpaperType } from '~/spec'
+import { dsbKeys, wallpaperEditorKeys, wallpaperKeys, wallpaperQueries } from '~/query'
+import type { TParseDashboard, TParsedWallpaper, TWallpaperData, TWallpaperType } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
+import { hasContentShadowPatch } from '~/stores/contentShadow/helper'
+import useContentShadowStore, { useContentShadowStoreLive } from '~/stores/contentShadow/hooks'
 import {
   getWallpaperThemeSavablePatch,
   pickWallpaperThemeState,
@@ -29,10 +31,12 @@ import { toast } from '~/ui/Toaster'
 import { extractErrorMessage } from '~/unit/DsbThread/AssetsHub/helper'
 
 import { TAB } from './constant'
+import { executeContentShadowUpdate, type TContentShadowSavePlan } from './contentShadowExecutor'
 import { executeWallpaperPublish } from './publishExecutor'
 import { buildWallpaperPublishPlan } from './publishPlan'
 import { updatePublishedWallpaperVersion } from './queryCache'
 import { resolveWallpaperIdempotencyKey, type TPendingWallpaperSave } from './requestCoordinator'
+import { executeAppearanceSave } from './saveCoordinator'
 import type { TTab } from './spec'
 import useWallpaperPreview, { type TWallpaperPreviewPatch } from './useWallpaperPreview'
 
@@ -163,14 +167,40 @@ export const composeGradientWallpaperPatch = (
 export function useLogicValue(): TWallpaperLogic {
   const wallpaper$ = useWallpaperDomain()
   const liveWallpaper$ = useWallpaperStore()
+  const contentShadow$ = useContentShadowStore()
+  const liveContentShadow$ = useContentShadowStoreLive()
   const community$ = useCommunity()
-  const { getWallpaper } = useFullWallpaper()
+  const { getWallpaper: getWallpaperBase } = useFullWallpaper()
   const { isDarkTheme } = useTheme()
   const { t } = useTrans()
   const queryClient = useQueryClient()
   const { data: wallpaperConfig } = useQuery(wallpaperQueries.config(community$.slug))
   const wallpaperStateVersion = wallpaperConfig?.wallpaper?.version ?? 0
   const pendingSaveRef = useRef<TPendingWallpaperSave | null>(null)
+  const savePlanRef = useRef<{
+    hasWallpaper: boolean
+    hasShadow: boolean
+    wallpaperDone: boolean
+    shadowDone: boolean
+  } | null>(null)
+
+  const markSaveLaneComplete = (lane: 'wallpaper' | 'shadow'): void => {
+    const plan = savePlanRef.current
+    if (!plan) return
+
+    const next = {
+      ...plan,
+      ...(lane === 'wallpaper' ? { wallpaperDone: true } : { shadowDone: true }),
+    }
+    savePlanRef.current = next
+
+    const wallpaperComplete = !next.hasWallpaper || next.wallpaperDone
+    const shadowComplete = !next.hasShadow || next.shadowDone
+    if (wallpaperComplete && shadowComplete) {
+      toast(t('dsb.appearance.saved'), 'success')
+      savePlanRef.current = null
+    }
+  }
 
   const [tab, setTab] = useState<TTab>(() =>
     getInitialTab(pickWallpaperThemeState(wallpaper$, isDarkTheme).type),
@@ -191,8 +221,18 @@ export function useLogicValue(): TWallpaperLogic {
   })
   const isTouched = useMemo((): boolean => {
     const theme: 'light' | 'dark' = isDarkTheme ? 'dark' : 'light'
-    return Object.keys(getWallpaperThemeSavablePatch(wallpaper$, theme)).length > 0
-  }, [isDarkTheme, wallpaper$.dark, wallpaper$.light, wallpaper$.original])
+    return (
+      Object.keys(getWallpaperThemeSavablePatch(wallpaper$, theme)).length > 0 ||
+      hasContentShadowPatch(contentShadow$)
+    )
+  }, [
+    contentShadow$.enabled,
+    contentShadow$.original,
+    isDarkTheme,
+    wallpaper$.dark,
+    wallpaper$.light,
+    wallpaper$.original,
+  ])
 
   const wallpaperMutation = useMutation({
     mutationKey: ['dsb', 'wallpaper', community$.slug],
@@ -206,6 +246,7 @@ export function useLogicValue(): TWallpaperLogic {
       const plan = buildWallpaperPublishPlan({
         baseVersion,
         community,
+        reuseKey: idempotencyKey,
         theme,
         wallpaper: clone(liveWallpaper$[theme]),
       })
@@ -224,7 +265,7 @@ export function useLogicValue(): TWallpaperLogic {
         queryKey: wallpaperEditorKeys.config(community),
         exact: true,
       })
-      toast(t('dsb.appearance.saved'), 'success')
+      markSaveLaneComplete('wallpaper')
     },
     onError: (err) => {
       console.error('## wallpaper publish error: ', err)
@@ -233,6 +274,37 @@ export function useLogicValue(): TWallpaperLogic {
       }
       toast(extractErrorMessage(err), 'error')
     },
+  })
+
+  const contentShadowMutation = useMutation({
+    mutationKey: ['dsb', 'content-shadow', community$.slug],
+    mutationFn: (plan: TContentShadowSavePlan) => executeContentShadowUpdate(plan),
+    onSuccess: ({ contentShadow }, { community, enabled }) => {
+      liveContentShadow$.acceptSubmitted(contentShadow ?? enabled)
+      queryClient.setQueryData<TParseDashboard>(dsbKeys.config(community), (current) =>
+        current
+          ? {
+              ...current,
+              contentShadow: contentShadow ?? current.contentShadow,
+            }
+          : current,
+      )
+      void queryClient.invalidateQueries({ queryKey: dsbKeys.config(community), exact: true })
+      void queryClient.invalidateQueries({
+        queryKey: wallpaperEditorKeys.config(community),
+        exact: true,
+      })
+      markSaveLaneComplete('shadow')
+    },
+    onError: (err) => {
+      console.error('## content shadow update error: ', err)
+      toast(extractErrorMessage(err), 'error')
+    },
+  })
+
+  const getWallpaper = (): TWallpaperData => ({
+    ...getWallpaperBase(),
+    contentShadow: contentShadow$.enabled,
   })
 
   const commitWallpaperPatch = (patch: Partial<TWallpaperThemeState>): void => {
@@ -245,6 +317,7 @@ export function useLogicValue(): TWallpaperLogic {
     clearPendingWallpaperDraft()
     clearWallpaperPreview()
     liveWallpaper$.commit({ ...liveWallpaper$.original })
+    liveContentShadow$.commit(contentShadow$.original)
   }
 
   const onSave = (): void => {
@@ -253,22 +326,49 @@ export function useLogicValue(): TWallpaperLogic {
     const community = community$.slug
     const theme = isDarkTheme ? 'dark' : 'light'
     const submittedTheme = clone(getWallpaperThemeSavablePatch(liveWallpaper$, theme))
-    if (Object.keys(submittedTheme).length === 0) return
     const submitted = { [theme]: submittedTheme } as TWallpaperPatch
-    const fingerprint = JSON.stringify({ baseVersion: wallpaperStateVersion, submitted, theme })
-    const pending = resolveWallpaperIdempotencyKey({
-      fingerprint,
-      pending: pendingSaveRef.current,
-    })
-    pendingSaveRef.current = pending
-    const params: TWallpaperSaveRequest = {
+    const hasWallpaperChanges = Object.keys(submittedTheme).length > 0
+    const hasShadowChanges = hasContentShadowPatch(contentShadow$)
+    if (!hasWallpaperChanges && !hasShadowChanges) return
+    savePlanRef.current = {
+      hasShadow: hasShadowChanges,
+      hasWallpaper: hasWallpaperChanges,
+      shadowDone: false,
+      wallpaperDone: false,
+    }
+
+    const wallpaperFingerprint = JSON.stringify({
       baseVersion: wallpaperStateVersion,
       community,
-      idempotencyKey: pending.idempotencyKey,
       submitted,
       theme,
-    }
-    wallpaperMutation.mutate(params)
+    })
+    void executeAppearanceSave({
+      contentShadow: hasShadowChanges
+        ? async () => {
+            await contentShadowMutation.mutateAsync({
+              community,
+              enabled: contentShadow$.enabled,
+            })
+          }
+        : undefined,
+      wallpaper: hasWallpaperChanges
+        ? async () => {
+            const pending = resolveWallpaperIdempotencyKey({
+              fingerprint: wallpaperFingerprint,
+              pending: pendingSaveRef.current,
+            })
+            pendingSaveRef.current = pending
+            await wallpaperMutation.mutateAsync({
+              baseVersion: wallpaperStateVersion,
+              community,
+              idempotencyKey: pending.idempotencyKey,
+              submitted,
+              theme,
+            })
+          }
+        : undefined,
+    }).catch(() => undefined)
   }
 
   const changeTab = (tab: TTab): void => setTab(tab)
@@ -348,8 +448,11 @@ export function useLogicValue(): TWallpaperLogic {
     scheduleWallpaperPreview({
       pattern: { intensity: patternIntensity },
     })
-  const toggleShadow = (enabled: boolean): void =>
-    commitWallpaperPatch({ contentShadow: { enabled } })
+  const toggleShadow = (enabled: boolean): void => {
+    flushWallpaperDraft()
+    clearWallpaperPreview()
+    liveContentShadow$.commit(enabled)
+  }
   const changeBrightness = (brightness: number): void =>
     scheduleWallpaperPreview({ effect: { brightness } })
   const changeSaturation = (saturation: number): void =>
@@ -359,7 +462,7 @@ export function useLogicValue(): TWallpaperLogic {
 
   return {
     tab,
-    loading: wallpaperMutation.isPending,
+    loading: wallpaperMutation.isPending || contentShadowMutation.isPending,
     // drive
     getWallpaper,
     isTouched,

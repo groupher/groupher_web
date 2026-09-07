@@ -14,6 +14,7 @@ export type TWallpaperPublishPlan =
       theme: 'light' | 'dark'
       baseVersion: number
       settings: TWallpaperSettingsInput
+      idempotencyKey?: string
     }
   | {
       type: 'generated'
@@ -21,6 +22,7 @@ export type TWallpaperPublishPlan =
       theme: 'light' | 'dark'
       baseVersion: number
       settings: TWallpaperSettingsInput
+      idempotencyKey?: string
       renderSpec: TBgRenderSpec
       targets: readonly TImageExportTarget[]
     }
@@ -30,6 +32,8 @@ type TBuildWallpaperPublishPlanInput = {
   theme: 'light' | 'dark'
   baseVersion: number
   wallpaper: TWallpaperThemeState
+  /** Reuse the coordinator-selected key when retrying the same fingerprint. */
+  reuseKey?: string
 }
 
 /** Builds the immutable input shared by Wallpaper export and publish steps. */
@@ -38,16 +42,19 @@ export const buildWallpaperPublishPlan = ({
   theme,
   baseVersion,
   wallpaper,
+  reuseKey,
 }: TBuildWallpaperPublishPlanInput): TWallpaperPublishPlan => {
   const settings = encodeWallpaperSettings(wallpaper)
+  const key = reuseKey ? { idempotencyKey: reuseKey } : {}
 
   if (wallpaper.type === WALLPAPER_TYPE.NONE) {
-    return { baseVersion, community, settings, theme, type: 'none' }
+    return { baseVersion, community, settings, theme, type: 'none', ...key }
   }
 
   return {
     baseVersion,
     community,
+    ...key,
     renderSpec: adaptWallpaperBgRenderSpec(wallpaper),
     settings,
     targets: wallpaperExportTargets(),
