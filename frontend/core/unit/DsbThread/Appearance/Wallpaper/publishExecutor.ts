@@ -188,7 +188,11 @@ export const executeWallpaperPublish = async (
     await uploadImages(exported, batch, plan, deps)
     return await publish(plan, idempotencyKey, batch.batchRef, deps)
   } catch (error) {
-    await deps.cancelBatch(batch.batchRef, batch.batchCapability)
+    await deps
+      .cancelBatch(batch.batchRef, batch.batchCapability)
+      .catch((cleanupError: unknown) =>
+        console.error('## wallpaper batch cleanup error: ', cleanupError),
+      )
     throw error
   }
 }

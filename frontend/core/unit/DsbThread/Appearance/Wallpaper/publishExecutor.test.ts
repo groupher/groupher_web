@@ -83,6 +83,17 @@ describe('executeWallpaperPublish', () => {
     expect(deps.cancelBatch).not.toHaveBeenCalled()
   })
 
+  it('does not call GraphQL or cancel when WebGPU is unavailable', async () => {
+    const deps = makeDeps({ hasWebGPU: vi.fn().mockReturnValue(false) })
+
+    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toThrow(
+      'WebGPU is required to publish this Wallpaper',
+    )
+    expect(deps.exportBatch).not.toHaveBeenCalled()
+    expect(deps.graphqlRequest).not.toHaveBeenCalled()
+    expect(deps.cancelBatch).not.toHaveBeenCalled()
+  })
+
   it('does not cancel when prepare returns an empty batch', async () => {
     const deps = makeDeps()
     deps.graphqlRequest.mockResolvedValue({ prepareWallpaperUpload: null })
@@ -140,6 +151,18 @@ describe('executeWallpaperPublish', () => {
     expect(deps.cancelBatch).toHaveBeenCalledWith('batch-ref', 'batch-capability')
   })
 
+  it('cancels the batch when Assets Hub batch creation fails', async () => {
+    const deps = makeDeps({
+      createBatch: vi.fn().mockRejectedValue(new Error('create failed')),
+    })
+    deps.graphqlRequest.mockResolvedValue({ prepareWallpaperUpload: preparedBatch })
+
+    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toThrow(
+      'create failed',
+    )
+    expect(deps.cancelBatch).toHaveBeenCalledWith('batch-ref', 'batch-capability')
+  })
+
   it('cancels the batch when publish explicitly fails', async () => {
     const deps = makeDeps()
     deps.graphqlRequest
@@ -150,5 +173,30 @@ describe('executeWallpaperPublish', () => {
       'publish failed',
     )
     expect(deps.cancelBatch).toHaveBeenCalledWith('batch-ref', 'batch-capability')
+  })
+
+  it('does not cancel when publish resolves with an empty payload', async () => {
+    const deps = makeDeps()
+    deps.graphqlRequest
+      .mockResolvedValueOnce({ prepareWallpaperUpload: preparedBatch })
+      .mockResolvedValueOnce({ publishWallpaper: null })
+
+    const result = await executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)
+
+    expect(result).toBeNull()
+    expect(deps.cancelBatch).not.toHaveBeenCalled()
+  })
+
+  it('keeps the publish error when cleanup also fails', async () => {
+    const deps = makeDeps({
+      cancelBatch: vi.fn().mockRejectedValue(new Error('cancel failed')),
+    })
+    deps.graphqlRequest
+      .mockResolvedValueOnce({ prepareWallpaperUpload: preparedBatch })
+      .mockRejectedValueOnce(new Error('publish failed'))
+
+    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toThrow(
+      'publish failed',
+    )
   })
 })
