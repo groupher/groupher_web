@@ -1,5 +1,5 @@
-import type { TVgpuPocMeshSpec } from './types'
 import { packVgpuColors } from '../vgpu/params'
+import type { TVgpuPocMeshSpec } from './types'
 
 /** Maps a normalized Flow/Liquid recipe to the reflected WGSL uniform object. */
 export const toVgpuMeshParams = (spec: TVgpuPocMeshSpec): Record<string, unknown> => {

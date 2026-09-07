@@ -1,11 +1,11 @@
 import { DSB_INFO_ROUTE } from '~/const/route'
 import type { TDsbFieldMap } from '~/spec'
-import SettingsSchema from '~/unit/DsbThread/schema/settings'
 import {
   BASEINFO_BASIC_KEYS,
   BASEINFO_LOGOS_KEYS,
   BASEINFO_OTHER_KEYS,
 } from '~/unit/DsbThread/constant'
+import SettingsSchema from '~/unit/DsbThread/schema/settings'
 
 import type { TDsbSaveContext, TDsbSaveRequest } from './types'
 
