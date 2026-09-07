@@ -4,26 +4,26 @@ import { validateSlug } from '../validator'
 import { slugify } from './slugify'
 
 describe('slugify', () => {
-  it('keeps latin text and converts han characters to pinyin', () => {
-    expect(slugify('Next.js 中文教程')).toBe('next-js-zhong-wen-jiao-cheng')
-    expect(slugify('React经验分享')).toBe('react-jing-yan-fen-xiang')
+  it('keeps latin text and converts han characters to pinyin', async () => {
+    await expect(slugify('Next.js 中文教程')).resolves.toBe('next-js-zhong-wen-jiao-cheng')
+    await expect(slugify('React经验分享')).resolves.toBe('react-jing-yan-fen-xiang')
   })
 
-  it('handles mixed latin, han, numbers, and separators', () => {
-    expect(slugify('React 19 中文版 Part 2')).toBe('react-19-zhong-wen-ban-part-2')
-    expect(slugify('API接口-v2')).toBe('api-jie-kou-v2')
-    expect(slugify('  hello___world  ')).toBe('hello-world')
+  it('handles mixed latin, han, numbers, and separators', async () => {
+    await expect(slugify('React 19 中文版 Part 2')).resolves.toBe('react-19-zhong-wen-ban-part-2')
+    await expect(slugify('API接口-v2')).resolves.toBe('api-jie-kou-v2')
+    await expect(slugify('  hello___world  ')).resolves.toBe('hello-world')
   })
 
-  it('folds latin diacritics', () => {
-    expect(slugify('Café Über uns')).toBe('cafe-uber-uns')
-    expect(slugify('Crème brûlée à la carte')).toBe('creme-brulee-a-la-carte')
+  it('folds latin diacritics', async () => {
+    await expect(slugify('Café Über uns')).resolves.toBe('cafe-uber-uns')
+    await expect(slugify('Crème brûlée à la carte')).resolves.toBe('creme-brulee-a-la-carte')
   })
 
-  it('falls back when no URL-safe content remains', () => {
-    expect(slugify('と')).toBe('untitled')
-    expect(slugify('と', 'tag')).toBe('tag')
-    expect(slugify('と', 'bad fallback')).toBe('untitled')
+  it('falls back when no URL-safe content remains', async () => {
+    await expect(slugify('と')).resolves.toBe('untitled')
+    await expect(slugify('と', 'tag')).resolves.toBe('tag')
+    await expect(slugify('と', 'bad fallback')).resolves.toBe('untitled')
   })
 
   it('shares the same slug validator contract', () => {

@@ -16,7 +16,7 @@ export const titleSlugify = async (req: Request) => {
     return Response.json({ ok: false, error: 'value is required' }, { status: 400 })
   }
 
-  const slug = slugify(value, payload.fallback)
+  const slug = await slugify(value, payload.fallback)
 
   if (!isValidSlug(slug)) {
     return Response.json({ ok: false, error: 'invalid slug' }, { status: 422 })
