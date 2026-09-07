@@ -22,6 +22,15 @@
 Wallpaper 与 Content 是两套独立设置：Wallpaper 只决定图片层，Content 只决定中间内容显示区的视觉。
 两者不能互相复制配置，也不能把同一份半透明背景同时画在 Root 和 Content 上。
 
+`contentShadow` 独立存储后，渲染门仍保持按 theme 的合取关系：
+
+```text
+effectiveContentShadow[theme] = hasWallpaper[theme] && dashboard.contentShadow[theme].enabled
+```
+
+因此 `contentShadow.enabled = true` 不会在 Wallpaper 为 NONE/`null` 时单独制造 Content surface 效果；
+NONE 只关闭本次视觉消费，不清除 Dashboard 中保存的 shadow 配置。
+
 最终绘制分为三层：
 
 ```text
@@ -212,6 +221,8 @@ color 或 Content 设置所有权。图片加载失败不创建新的页面状�
       绘制该颜色或启用 blur。
 - [x] `Main.background` 仅在 `hasPublishedWallpaper` 为真时通过 `--color-pageBg` 绘制 Content surface
       颜色与 blur。
+- [ ] hard cut 后仍保持 `hasWallpaper[theme] && dashboard.contentShadow[theme].enabled` 的 per-theme
+      渲染门；NONE/`null` 只关闭效果，不删除独立 Dashboard shadow 配置。
 - [x] 显式固定 Root、Wallpaper、Content surface 和内容的 stacking context，不能依赖 sibling DOM 顺序。
 - [x] Global/Auth Preview host 复用真实 Root page color，并由 `hasPreviewWallpaper` 控制 Content surface；真实浏览器验收仍待完成。
 - [ ] SSR 在首次 paint 前同步决定当前 theme 的 Wallpaper 与 Content surface 状态。
@@ -227,14 +238,15 @@ color 或 Content 设置所有权。图片加载失败不创建新的页面状�
 
 ## 11. 验收矩阵
 
-| 场景                                  | 预期                                                               |
-| ------------------------------------- | ------------------------------------------------------------------ |
-| light 有 Wallpaper，dark 有 Wallpaper | 两个 theme 各自显示对应 Profile 图片；Content surface 各自启用     |
-| light 为 NONE，dark 有 Wallpaper      | light 只显示 Root page color；dark 显示图片及 Content surface 效果 |
-| light 有 Wallpaper，dark 为 NONE      | light 显示图片及 Content surface 效果；dark 只显示 Root page color |
-| light/dark 都为 NONE                  | 两边都只显示各自的 Root page color，Content 区域没有色块           |
-| 未初始化                              | 普通页面只显示 Root page color；编辑器使用 Backend 默认 settings   |
-| 保存当前 theme 为 NONE                | 外层保留，当前 branch 为 `null`；Content surface 同步关闭          |
-| Editor 选择 NONE                      | 预览显示真实 Root page color，Save 不导出图片                      |
-| Editor Cancel NONE                    | 恢复之前的 Wallpaper 图片及 Content surface 效果                   |
-| 窄屏切换 Profile                      | 选择 phone/tablet 图片，Root 与 Content 设置所有权不变             |
+| 场景                                                 | 预期                                                                       |
+| ---------------------------------------------------- | -------------------------------------------------------------------------- |
+| light 有 Wallpaper，dark 有 Wallpaper                | 两个 theme 各自显示对应 Profile 图片；Content surface 各自启用             |
+| light 为 NONE，dark 有 Wallpaper                     | light 只显示 Root page color；dark 显示图片及 Content surface 效果         |
+| light 有 Wallpaper，dark 为 NONE                     | light 显示图片及 Content surface 效果；dark 只显示 Root page color         |
+| light/dark 都为 NONE                                 | 两边都只显示各自的 Root page color，Content 区域没有色块                   |
+| Wallpaper 为 NONE，但 `contentShadow.enabled = true` | 仍不绘制 Content surface；独立 shadow 配置保留，Wallpaper 恢复后可重新生效 |
+| 未初始化                                             | 普通页面只显示 Root page color；编辑器使用 Backend 默认 settings           |
+| 保存当前 theme 为 NONE                               | 外层保留，当前 branch 为 `null`；Content surface 同步关闭                  |
+| Editor 选择 NONE                                     | 预览显示真实 Root page color，Save 不导出图片                              |
+| Editor Cancel NONE                                   | 恢复之前的 Wallpaper 图片及 Content surface 效果                           |
+| 窄屏切换 Profile                                     | 选择 phone/tablet 图片，Root 与 Content 设置所有权不变                     |

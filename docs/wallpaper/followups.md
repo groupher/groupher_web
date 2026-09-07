@@ -122,6 +122,10 @@ settings 和对应的静态 Profile 图片；active 指针按 theme 分开。不
       代替后续 publish-finalization/cleanup lease 的跨系统原子协议。
 - [ ] `WallpaperEditor` route-only 请求已存在，但普通 `PageCommunity` 仍携带并解析 `wallpaperSettings`；待普通页
       Valtio 读点迁移完成后删除遗留字段和解析链路。
+- [ ] 将 `contentShadow` draft 从 Wallpaper store/savable patch 拆出，补齐 Dashboard mutation 的 per-theme
+      revision、幂等 key、baseline reconcile，以及 Appearance Save 两 mutation 的部分成功矩阵。
+- [ ] 完成 settings v1→v2 的一次性 Snapshot materialization：旧 Snapshot 归档不可 restore，旧 Receipt 排空，
+      不在运行时增加旧字段兼容解码。
 - [x] 迁移范围外仍保留 v1 `static_revision` 语义的文档已明确标注为 incident/archive；仅历史归档文档保留原术语，
       不作为当前实现依据。
 

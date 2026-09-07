@@ -23,7 +23,9 @@
 Wallpaper 与 ThemePreset 当前一直是独立系统。Theme 系统只向编辑器提供当前 `light`/`dark`；
 Wallpaper 保存不参与 ThemePreset mutation、token 保存、历史或发布流程。
 
-本次重构删除一次 Save 同时聚合 light/dark 的设计。一次 Save 只处理当前 theme 的 Wallpaper：
+本次重构删除一次 Save 同时聚合 light/dark 的设计。一次 Wallpaper publish 只处理当前 theme 的
+Wallpaper；Appearance Save 若同时包含 Dashboard `contentShadow`，由外层 coordinator 另行编排第二个
+独立 mutation：
 
 ```text
 当前 theme
@@ -415,6 +417,10 @@ Profile 是固定集合，输出使用具名字段，不返回需要 `find(profi
 Batch ref、Asset public ref、manifest 或 editor settings；`contentShadow` 是独立的 Dashboard 内容字段，
 不从 Wallpaper Snapshot 读取。
 
+普通查询只选择 `contentShadow.light/dark.enabled` 等渲染所需窄字段；editor route 额外读取当前 theme 的
+content-shadow revision，用于独立 `baseVersion`/幂等协调。该 revision 不进入 StaticWallpaper Context，
+也不与 `dashboard.wallpaper.version` 合并。
+
 Wallpaper 编辑 route 额外查询：
 
 ```graphql
@@ -475,7 +481,7 @@ Backend 的 `CMS.Wallpaper.Settings` 在 RequestDigest 计算前执行同一契�
 等价值在比较前统一到 `0..359`，避免 `-1/359`、`0/360` 造成视觉未变但 touched 为真的情况。两端通过
 同一份 fixture 对账，不共享运行时代码，也不各自维护不同默认值。
 
-保存规则只有三条：
+Wallpaper publish 规则只有三条：
 
 ```text
 当前 theme 未修改
@@ -494,6 +500,12 @@ Backend 的 `CMS.Wallpaper.Settings` 在 RequestDigest 计算前执行同一契�
 不得再通过 sparse patch 是否包含 `type` 判断是否导出。每个 theme 独立保存 dirty 状态：切换 theme
 不丢弃另一支未保存设置；Save 只保存并接管当前 theme 的 original；另一支仍保持 dirty。离开 Wallpaper
 route 时，只要任一 theme dirty 就提示用户，不自动串行保存两支，也不静默丢弃。
+
+`contentShadow` 不再进入上述 Wallpaper touched、settings normalize 或 publish payload。Appearance Save
+若同时发现 Wallpaper patch 与 Dashboard content-shadow patch，按 Dashboard mutation → Wallpaper publish
+顺序提交；两个 mutation 各自确认 baseline，部分成功不做跨 aggregate rollback，下一次 Save 只重试失败
+aggregate。Dashboard content-shadow mutation 使用独立的 per-theme revision 和 idempotency key，不复用
+Wallpaper `version`/`baseVersion`。
 
 ## 6. 写入 API
 
@@ -662,6 +674,12 @@ Batch 和 Profile version 不可变；`activated_at`、`history_used_at`、`dele
 镜像，不是第二个版本真相源。NONE 的 canonical settings 内容仍是 `{type: 'none'}`，完整 envelope 为
 `{settingsSchemaVersion: <version>, type: 'none'}`。
 
+跨版本 restore 以 hard cut 为边界：既有 v1 Snapshot 保持不可变，不在原行上删除 `contentShadow` 或重算
+digest。cutover 前为当前 active 以及产品承诺仍可恢复的 retained history 新建 v2 Snapshot，复用或复制
+原有图片资产后切换 active pointer；旧 v1 Snapshot 只保留为 archive，不再进入可恢复 history，restore
+遇到旧版本直接返回不可恢复错误。旧 v1 Receipt 不 re-digest，必须在 cutover 前排空或失效；运行时不增加
+旧字段兼容解码路径。
+
 不保留 `renderer_version`：当前静态图片已经烘焙并随 Snapshot 保存，恢复只复用原图片，不按 renderer
 版本重新渲染。`settings_schema_version` 负责 settings 解码，`profile_version` 负责图片矩阵，
 `request_digest_version` 负责发布摘要。未来若确有产物生成器审计需求，应记录在 Batch/Image 生成元数据，
@@ -730,6 +748,9 @@ Digest。调整如下：
 - [ ] 完成 Dashboard `contentShadow` 的一次性回填、独立 mutation 与普通页/Editor 同步切换；从 Wallpaper
       settings、Snapshot canonical JSON、RequestDigest 和 Receipt fixtures 中移除旧
       `renderConfig.contentShadow`，并升级对应版本；不保留 editor wire 兼容例外。
+- [ ] 冻结并实施跨版本 restore 边界：新建 v2 Snapshot 而非原地改写 v1，关闭旧 history restore，排空旧
+      Receipt，并覆盖 active/retained history materialization 与不可恢复错误；读取旧/不支持版本不得静默
+      fallback 为默认 settings。
 - [ ] 实施并验收 [Wallpaper NONE 与页面背景绘制边界](./content_background_fallback.md) 的 Root/Content
       条件绘制；Wallpaper 不补色的代码边界已完成，浏览器验收仍待完成。
 
@@ -740,9 +761,13 @@ Digest。调整如下：
 - 修改 light 不创建或切换 dark Snapshot，反之亦然；
 - 当前 theme 指针、`version + 1` 和 Receipt 在同一个数据库事务中提交；
 - NONE 可进入历史并恢复；
+- cutover 前的 v1 Snapshot 不进入可恢复 history；active/retained history 已通过新建 v2 Snapshot 完成物化，
+  restore 不依赖旧字段兼容解码，旧/不支持版本也不会静默 fallback 为默认 settings；
 - 普通页面只查询 `dashboard.wallpaper` 与独立的 `dashboard.contentShadow`（迁移目标）；
 - `dashboard.wallpaper` 外层始终非空；未初始化或 NONE 只令对应 branch 为 `null`；
 - branch 为 `null` 时 Frontend 不补齐 Content 数据，只是不渲染 Wallpaper 图片层；
+- `contentShadow` 的有效渲染门固定为 `hasWallpaper[theme] && dashboard.contentShadow[theme].enabled`；
+  Wallpaper 为 NONE/`null` 时不绘制 Content surface 效果，但不清除独立保存的 shadow 配置；
 - `version=0` 可参与 SSR、缓存键和并发比较，所有消费者均不得使用 truthy 判断；
 - Profile 图片可以通过 `wallpaper[theme][profile]` 直接选择；
 - Wallpaper 业务代码只感知历史恢复所需的公开 Snapshot ID，不感知 active/candidate/owner ref、manifest
@@ -768,3 +793,5 @@ Digest。调整如下：
   失败，不能任选一处继续解码。
 - 两个不同 theme 基于同一旧 `baseVersion` 保存时，后提交者得到预期并发冲突；本地 dirty 设置保留并
   显示区别于普通失败的重试文案。
+- Dashboard content-shadow 使用独立 per-theme revision；其冲突只刷新 Dashboard Query 并保留本地 shadow
+  draft，不覆盖 Wallpaper draft，也不复用 Wallpaper `baseVersion`。

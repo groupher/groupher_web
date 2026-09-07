@@ -60,7 +60,8 @@ Wallpaper store 前必须把该判定迁移到 Landing 自有静态配置，或�
 
 本方案不改变以下 invariant：
 
-- 一次 Save 只处理当前 `light | dark` theme；
+- Wallpaper publish 一次只处理当前 `light | dark` theme；一次 Appearance Save 可以由 coordinator
+  编排 Wallpaper publish 与 Dashboard `contentShadow` mutation 两个独立请求；
 - `NONE` 不导出图片，直接发布当前 theme 的空 Snapshot 指针；
 - 其他类型一律导出 `wide/desktop/tablet/phone` 四张最终图片；
 - Browser 仍按 `prepareWallpaperUpload -> Assets Hub Batch -> upload -> publishWallpaper` 执行；
@@ -68,7 +69,13 @@ Wallpaper store 前必须把该判定迁移到 Landing 自有静态配置，或�
 - Assets Hub 仍负责 capability、manifest、对象校验、lease 和 reconciliation；
 - 相同提交重试仍复用 idempotency key；
 - 请求在飞行期间产生的新本地编辑不能被旧请求的成功响应覆盖；
-- `TWallpaperLogic`、loading 语义、toast 和面向用户的错误文案默认保持不变。
+- Wallpaper lane 的 `TWallpaperLogic`、loading 语义、toast 和面向用户的错误文案默认保持不变；Appearance
+  coordinator 只额外定义双 mutation 的整体/部分成功状态，不改写 Wallpaper 原始错误。
+
+`contentShadow` 从 Wallpaper wire 拆出后，不能继续把“当前 theme 的全部 dirty patch”作为一个
+Wallpaper publish 请求的隐含输入。Appearance Save 的提交边界固定为：Wallpaper draft 只进入
+Wallpaper publish；Dashboard content-shadow draft 只进入 Dashboard mutation；两者可以由同一个 UI Save
+触发，但各自拥有独立的版本、幂等 key、Query 更新和 baseline 确认。
 
 不建议第一步把 Assets Hub Batch 创建改成 Phoenix 代办。那会把浏览器复杂度转移为 Phoenix 到 Assets Hub
 的同步可用性耦合，且改变现有 capability 边界；只有独立证明当前协议不可维护时才重新评估。
@@ -135,12 +142,15 @@ type TWallpaperPublishPlan =
 
 幂等 key 是请求协调职责，不属于 plan builder：
 
-1. hook/coordinator 根据 `{baseVersion, theme, submitted}` 形成 fingerprint；
-2. 与 pending fingerprint 相同则复用旧 key；
-3. 不同则创建新 key；
-4. executor 接收已经确定的 `{plan, idempotencyKey}`。
+Wallpaper 与 Dashboard content-shadow 各自拥有一条幂等 lane：
 
-同 fingerprint 重试必须把旧 key 原样传给 executor；builder 本身不根据重试上下文做决策。
+1. Wallpaper lane 根据 `{wallpaperBaseVersion, theme, wallpaperSubmitted}` 形成 fingerprint；
+2. Dashboard lane 根据 `{contentShadowBaseVersion, theme, shadowSubmitted}` 形成 fingerprint；
+3. 对应 lane 的 pending fingerprint 相同则复用旧 key，不同则创建新 key；
+4. 两条 lane 的 key 不能互相复用，不能把 Dashboard revision 当成 Wallpaper `baseVersion`；
+5. 各自 executor 只接收已经确定的 `{plan, idempotencyKey}`。
+
+同 fingerprint 重试必须把对应 lane 的旧 key 原样传给 executor；builder 本身不根据重试上下文做决策。
 
 ### 5.3 `exportWallpaperImages`
 
@@ -191,19 +201,34 @@ GraphQL client、Batch client、uploader 和 exporter 作为依赖注入，测�
 
 当前 `cancelAssetsHubBatch` 只吞掉 rejected fetch，没有检查非 2xx；拆分时应补齐响应检查和可观测性。
 
-### 5.5 React hook
+### 5.5 React hook 与 Appearance Save coordinator
 
-React hook 只保留交互职责：
+Wallpaper hook 只保留 Wallpaper 领域的交互职责：
 
-- flush 当前 preview/draft；
-- 从 Wallpaper editor store 读取 working copy；
+- flush Wallpaper preview/draft；
+- 从 Wallpaper editor store 读取背景 working copy；
 - 直接订阅 `wallpaperKeys.config(community)` 的当前发布 version；
-- 为相同 fingerprint 复用 pending idempotency key；
-- 调用一个 `useMutation`；
-- 成功后确认本次 submitted patch；
+- 为 Wallpaper fingerprint 复用 pending idempotency key；
+- 调用 Wallpaper publish mutation；
+- 成功后只确认 Wallpaper submitted patch；
 - 用 `setQueryData` 同步写回 `wallpaperKeys.config` 的新 version，再 invalidate/refetch；
-- invalidate `wallpaperEditorKeys.config`，由 editor Query 刷新 confirmed settings/history；
-- 展示 toast。
+- invalidate `wallpaperEditorKeys.config`，由 editor Query 刷新 confirmed Wallpaper settings/history。
+
+外层 `AppearanceSaveCoordinator` 负责一次 UI Save 的跨域编排：
+
+- 分别从 Wallpaper draft 和 Dashboard content-shadow draft 计算两个 savable patch；
+- 两个 patch 都为空时不发请求；只有一个 patch 脏时只调用对应 mutation；
+- 两个 patch 都脏时按固定顺序提交：先 Dashboard content-shadow mutation，再 Wallpaper publish，避免
+  在廉价的 Dashboard revision 冲突后启动 WebGPU/Assets Hub 流程；
+- 不做跨 aggregate rollback。一个 mutation 成功后立即确认该 aggregate 的 submitted baseline，另一个
+  mutation 失败时只保留失败 aggregate 的 dirty draft；
+- 两者都成功才显示整体成功 toast；部分成功必须显示原始失败错误并保持下一次 Save 只重试失败 lane；
+- loading 只有在两个 mutation 都 settled 后结束，失败 lane 的重试 key 与 baseline 独立保留。
+
+Dashboard content-shadow mutation 自己拥有 `theme + baseVersion + idempotencyKey + shadowSubmitted` 输入，
+返回新的 content-shadow revision。它不调用 Assets Hub，不参与 Wallpaper batch cancel，也不复用
+Wallpaper `version`。普通 `PageCommunity` 只选择 `enabled` 等渲染所需窄字段；per-theme revision 只需由
+editor Query/mutation 返回给 Appearance Save coordinator，不进入 StaticWallpaper Context。
 
 `wallpaperStateVersion` 不再复制到局部 `useState`。`getQueryData` 只能读瞬时 cache，不能替代订阅；hook 应通过
 同一个 Query key 的 `useQuery`/既有 route Query 结果读取 version，不会因此产生第二份请求缓存。
@@ -215,8 +240,12 @@ refetch 的入口。迁移必须保留该映射，并保证 refetch 只更新 co
 
 目标边界如下：
 
-- Wallpaper editor Valtio store：`light/dark` working draft、`original` 基线和 draft reconcile/accept 行为；
-- TanStack Query：已发布 Wallpaper、version、editor route 的 confirmed settings/history；
+- Wallpaper editor Valtio store：`light/dark` Wallpaper working draft、`original` 基线和 draft
+  reconcile/accept 行为；`contentShadow` 不再属于该 store、codec 或 Wallpaper savable patch；
+- Dashboard content-shadow draft：`light/dark` working draft、独立 original 基线和独立
+  reconcile/accept 行为；它是 UI draft，不是 Query 的可变镜像；
+- TanStack Query：已发布 Wallpaper、Wallpaper version、editor route 的 confirmed settings/history；
+- TanStack Query：已发布 Dashboard `contentShadow` 与其独立 revision；
 - StaticWallpaper React Context：从 Query 或 SSR 数据投影出的静态渲染输入，不承担版本所有权；
 - Preview：event bus、animation frame/debounce 和最终 commit，不进入 store 字段；
 - touched：从 working draft 与 `original` 的 diff 派生，不进入 store 字段。
@@ -229,6 +258,10 @@ refetch 的入口。迁移必须保留该映射，并保证 refetch 只更新 co
 `contentShadow` 是 Dashboard 下独立的内容表面呈现配置，不是 Wallpaper 配置，也不是
 `wallpaperPresentation`（该名称不是现有代码概念）。它由 GlobalLayout、Community 内容容器和 Landing
 内容容器消费；Wallpaper renderer 只接收背景本身的 render spec，不接收 `contentShadow`。
+
+独立存储不改变 Content surface 的视觉门：当前 theme 的有效 shadow 仍为
+`hasWallpaper[theme] && dashboard.contentShadow[theme].enabled`。Wallpaper 为 `NONE`/`null` 时只
+关闭本次渲染效果，不清除 Dashboard shadow 配置；Wallpaper 恢复后，已保存的 shadow 配置可以重新生效。
 
 当前实现仍把它按 `light/dark` 放在 `wallpaperSettings.*.renderConfig` 中。这是待迁移的旧形态，不是
 目标归属。目标是提供独立的 `dashboard.contentShadow` 字段，并保留现有 `light/dark` 语义，避免迁移时
@@ -273,9 +306,13 @@ Phase 0 必须冻结以下持久化与生命周期契约，才能执行上述 ha
    外观，必须由显式的跨域 restore 输入同时更新 Dashboard 字段；不能让只切 active pointer 的 mutation 隐式改变它。
 5. **digest/Receipt**：hard cut 时 Wallpaper `renderConfig` 只保留背景四键，升级 settings/request digest
    version，重生成跨语言 fixtures；旧 v1 数据若已存在，必须在切换前完成一次性数据迁移，禁止运行时保留旧 key。
+6. **跨版本 restore**：不得原地重写既有 v1 Snapshot，也不得在运行时为 restore 增加旧字段兼容解码。cutover
+   前必须为当前 active（以及产品承诺仍可恢复的 retained history）物化新的 v2 Snapshot，移除旧
+   `contentShadow`，复用或复制既有图片资产后切换 active pointer；旧 v1 Snapshot 保留为 archive，但不再
+   出现在可恢复 history，restore 直接返回不可恢复错误。旧 v1 Receipt 不 re-digest，必须在 cutover 前排空或失效。
 
 Phase 0 的验收记录必须同时写明：存储位置、per-theme shape、mutation 名称、事务归属、真相源、restore 是否联动、
-SSR 回填终止条件、版本升级和已有 Snapshot/Receipt 的一次性迁移方案。
+SSR 回填终止条件、版本升级、跨版本 restore 边界和已有 Snapshot/Receipt 的一次性迁移方案。
 
 ## 7. 测试矩阵
 
@@ -289,6 +326,7 @@ SSR 回填终止条件、版本升级和已有 Snapshot/Receipt 的一次性迁�
 - 保存飞行期间的新编辑不会被旧成功响应覆盖；
 - fingerprint 相同复用旧 idempotency key；
 - `5702/5708` refetch version 且不覆盖本地 draft；
+- Dashboard content-shadow mutation 的 revision conflict 不覆盖本地 shadow draft；
 - NONE 与 generated 的当前请求顺序；
 - export、prepare、create、upload、publish、cancel 各失败窗口的当前基线。
 
@@ -301,7 +339,8 @@ SSR 回填终止条件、版本升级和已有 Snapshot/Receipt 的一次性迁�
 - `NONE` 无 targets、无 WebGPU；
 - picture/gradient/upload 都生成且只生成四个固定 Profile；
 - renderSpec 在计划创建后不受 store 后续修改影响；
-- fingerprint 对相同提交稳定，对 version/settings/theme 变化敏感；
+- Wallpaper fingerprint 对相同提交稳定，对 Wallpaper version/settings/theme 变化敏感；Dashboard
+  content-shadow fingerprint 对 shadow revision/patch/theme 变化敏感；
 - builder 不生成 idempotency key；相同 fingerprint 重试时 coordinator 把旧 key 传给 executor。
 
 ### 7.3 导出与网络编排
@@ -321,10 +360,16 @@ SSR 回填终止条件、版本升级和已有 Snapshot/Receipt 的一次性迁�
 ### 7.4 React 集成
 
 - 未 touched 不触发 mutation；
+- 只 dirty Wallpaper 或只 dirty contentShadow 时只调用对应 mutation；
+- 两者都 dirty 时按 Dashboard mutation → Wallpaper publish 顺序执行；
+- Dashboard 成功/Wallpaper 失败与 Wallpaper 成功/Dashboard 失败都分别确认成功 aggregate 的 baseline，
+  不做跨 aggregate rollback；
 - 保存中产生的新编辑不会被成功响应覆盖；
 - 成功后先同步更新 Wallpaper Query version，再失效 static/editor Query；
+- Dashboard mutation 成功后同步更新 content-shadow Query revision；
 - 下一次连续保存读取新 version；
 - `5702/5708` 保留本地 draft，并刷新 Query version；
+- Dashboard revision conflict 保留本地 shadow draft，并刷新 Dashboard Query；
 - 错误 toast 使用原始发布错误；
 - editor 卸载不把 confirmed server state 留在普通页面 Valtio 中。
 
@@ -340,6 +385,8 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 - 明确 Landing 静态展示配置来源；
 - 冻结 Dashboard `contentShadow` 独立字段的 GraphQL/持久化 shape、mutation 和事务归属；hard cut 时删除旧
   `wallpaperSettings.renderConfig.contentShadow`，不保留 editor wire 兼容层；
+- 冻结 Dashboard content-shadow draft 不进入 Wallpaper store；冻结独立 mutation 的 per-theme revision、
+  idempotency、baseline accept/reconcile 和 Appearance Save 的部分成功矩阵；
 - 同步冻结共享背景 shape 的影响面：`Dashboard.Fields.macro_schema(:wallpaper_bg)` 与
   `BgConfigValidator` 当前同时服务 Dashboard Wallpaper 和 `CoverBackground`，但 `contentShadow` 只是
   共享 macro 泄漏到 Cover 的字段，不是 Cover 能力。一次性拆分时从 shared macro/validator 移除
@@ -369,7 +416,10 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 - 删除局部 `wallpaperStateVersion`；
 - 由 `wallpaperKeys.config` 独占 confirmed version；
 - mutation success 先 `setQueryData` 写回新 version，再刷新 static/editor Query；
+- Dashboard content-shadow revision 由对应 Dashboard Query 独占；mutation success 先写回该 revision，再
+  刷新普通页/编辑器 Query；Wallpaper 与 Dashboard 不共享 version；
 - `5702/5708` 统一 refetch canonical Query；
+- Dashboard content-shadow revision conflict 只 refetch Dashboard Query，不覆盖本地 shadow draft；
 - 验证请求在飞期间的新 draft 保留逻辑。
 
 ### Phase 4：普通页面读点迁移
@@ -399,9 +449,11 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
   `contentShadow` 而有意升级，Dashboard content mutation 独立存在；
 - 除明确批准的 Dashboard `contentShadow` 窄字段外，GraphQL schema 不变；该字段属于内容呈现契约，
   不属于 Wallpaper schema；
-- `baseVersion` 只有 `wallpaperKeys.config` 一个 confirmed owner；
+- Wallpaper `baseVersion` 只有 `wallpaperKeys.config` 一个 confirmed owner；Dashboard content-shadow revision
+  只有对应 Dashboard Query 一个 confirmed owner，二者不共享 version 或 idempotency key；
 - 普通页面不查询 settings/history，不挂载 authoring store；
-- 保存中继续编辑、导出失败、prepare 空响应、部分上传失败、publish 结果未知和 cancel 失败均有明确测试；
+- 保存中继续编辑、两 mutation 部分成功、导出失败、prepare 空响应、部分上传失败、publish 结果未知和
+  cancel 失败均有明确测试；
 - `5702/5708` 冲突刷新 Query，但不覆盖本地 draft；
 - 生产行为仍是当前 theme 单独保存，非 NONE 固定发布四张响应式图片。
 

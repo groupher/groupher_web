@@ -62,10 +62,11 @@
 - light/dark 合计保留最近使用的 5 个 Snapshot。淘汰 Snapshot 的 `deleteAfter` 为当前时间加 2 小时，
   不再立即删除。Oban 每 15 分钟清理过期 Receipt、过宽限期且非 active 的 Revision，并对超过
   30 分钟仍未被 Revision 引用的 `wallpaper-generated` CommunityAsset 做孤儿对账。
-- Editor 返回 `version` 和当前 theme 最近 5 次 Snapshot 历史；`restoreWallpaperSnapshot` 通过聚合行锁和
-  base version 原子恢复 retained Snapshot。NONE Snapshot 同样可恢复。
-- Receipt 重放按 Receipt 自带的 `requestDigestVersion` 重算；遇到当前服务不支持的历史版本时返回
-  显式 unsupported-version 错误，不伪装成普通 idempotency conflict。
+- Editor 返回 `version` 和当前 theme 最近 5 次 post-cutover Snapshot 历史；`restoreWallpaperSnapshot` 通过
+  聚合行锁和 base version 原子恢复 retained Snapshot。NONE Snapshot 同样可恢复。cutover 前的 v1 Snapshot
+  只保留为 archive，不进入可恢复 history；active/retained history 必须先物化为当前版本的新 Snapshot。
+- Receipt 重放只处理当前 cutover 版本；pre-cutover v1 Receipt 不 re-digest，必须在切换前排空或失效，不能
+  通过 restore 或 idempotency replay 引入旧字段兼容路径。
 - 浏览器对同一份失败 Save 保留 idempotency key；响应丢失后的重试可命中 Phoenix Receipt，而用户
   修改内容或 State version 改变后会生成新 key。
 - Assets Hub 增加真实 workerd/Miniflare Durable Object 测试，覆盖成功 claim、manifest 不完整以及
@@ -1184,8 +1185,9 @@ capability，不能先提高最低版本再升级签发方。
 保持兼容。同一 Save 的建批和发布可能由不同实例处理，Receipt 重放也可能发生在后续版本：先部署
 同时支持 old/new digest 的 Phoenix，但继续用 old 创建新 Batch；确认所有实例均支持 new 后，再切换
 active digest version；只有使用 old 的 open Batch、publish claim 和未过期 Receipt 全部排空后，才可
-删除 old canonicalization。发布按 capability 版本重算，Receipt 重放按 Receipt 版本重算，未知版本
-一律拒绝。每个版本必须提供固定输入/输出的 golden fixtures，覆盖对象 key 顺序、缺省字段、数值
+删除 old canonicalization。正常的协议升级按 capability 版本重算、按 Receipt 版本重放，未知版本
+一律拒绝；但本次 Wallpaper hard cut 的 pre-cutover v1 Receipt 是显式例外，只能在切换前排空或失效，
+不得进入新的 restore 或 idempotency replay。每个版本必须提供固定输入/输出的 golden fixtures，覆盖对象 key 顺序、缺省字段、数值
 规范化和新增可选参数；禁止直接依赖普通对象序列化的隐式顺序，新增字段也不能静默改变旧版本结果。
 
 ### 12.2 可以提前上线的基础设施
@@ -1229,7 +1231,8 @@ active digest version；只有使用 old 的 open Batch、publish claim 和未�
 - Profile logical size、backing-store pixel size 与 CSS presentation size 分离；DPR 不改变 Pattern repeat、
   Gradient 中心或 framing。
 - Gradient、Pattern、Texture、滤镜和上传图片全部由 WebGPU 生成。
-- 一次 Save 只生成发生变化且非 NONE 的 theme，但必须完成该 theme 的全部 required targets。
+- Wallpaper publish lane 一次只生成发生变化且非 NONE 的 theme，但必须完成该 theme 的全部 required targets；
+  Appearance Save 若同时包含 Dashboard `contentShadow`，由独立 mutation lane 另行提交。
 - 每个 Variant 必须先完成 per-asset intent、PUT 和完成登记，未登记的 Asset 不能进入冻结 manifest。
 - 任一 Variant 失败时，整个 Batch 作废，线上 State 不变，UI 显示重新保存 flash。
 - 已知失败立即 cancel；浏览器崩溃留下的 open Batch 在 TTL 后删除。
@@ -1247,8 +1250,9 @@ active digest version；只有使用 old 的 open Batch、publish claim 和未�
   baseVersion；两次请求按同一用户意图重算的 requestDigest 必须一致。
 - recipe 内容变化必须导致 requestDigest 不同并拒绝发布；该绑定不承诺服务端能够证明上传像素由
   recipe 渲染。
-- requestDigest canonicalization 必须版本化并提供 golden fixtures；发布按 capability 版本重算，
-  Receipt 重放按 Receipt 版本重算，old Batch/claim/Receipt 排空前不能删除旧算法。
+- requestDigest canonicalization 必须版本化并提供 golden fixtures；正常协议升级时发布按 capability 版本
+  重算、Receipt 重放按 Receipt 版本重算，old Batch/claim/Receipt 排空前不能删除旧算法。本次 Wallpaper
+  hard cut 的 pre-cutover v1 Receipt 不进入重放路径，必须先排空或失效。
 - lease policy 升级必须先扩展 Phoenix 支持范围，再切换 Assets Hub 签发版本，旧 claim 排空后才收缩
   Phoenix 最低接受版本。
 - Assets Hub signing key/key id 和 Phoenix trusted verification key set 必须通过启动断言；密钥轮换
@@ -1270,7 +1274,8 @@ active digest version；只有使用 old 的 open Batch、publish claim 和未�
   Revision 的 `sourceBatchRef` 必须为 `null`。
 - light/dark 在同一 State 事务中原子切换。
 - light/dark 合计最近 5 个 Revision 可直接恢复，不保证每个 theme 分别拥有历史。
-- Restore 不生成、不上传、不复制 Asset，只替换目标 theme 当前引用。
+- 普通 Restore 不生成、不上传、不复制 Asset，只替换目标 theme 当前引用；cutover 的一次性 Snapshot
+  materialization 属于迁移操作，不是用户 restore。
 - NONE 可以发布、计入最近 5 次并恢复。
 - 纯 NONE 保存不创建 Batch；无变化保存不创建 Batch 或 Revision；两者仍写入 Publish Receipt。
 - 非 NONE Revision 必须由冻结完整 manifest 并取得 publish claim 的 Batch 发布；NONE Revision 不依赖
