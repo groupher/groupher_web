@@ -24,8 +24,8 @@ Wallpaper 与 ThemePreset 当前一直是独立系统。Theme 系统只向编辑
 Wallpaper 保存不参与 ThemePreset mutation、token 保存、历史或发布流程。
 
 本次重构删除一次 Save 同时聚合 light/dark 的设计。一次 Wallpaper publish 只处理当前 theme 的
-Wallpaper；Appearance Save 若同时包含 Dashboard `contentShadow`，由外层 coordinator 另行编排第二个
-独立 mutation：
+Wallpaper；Appearance Save 若同时包含 Dashboard `contentShadow`，由外层 coordinator 另行编排一次
+普通 Dashboard 字段 mutation：
 
 ```text
 当前 theme
@@ -104,8 +104,8 @@ Store 和 renderer 领域类型来源。`wallpaperSettingsCodec` 显式完成 ge
 GraphQL 的 `WallpaperSettings` 是传输 envelope；它的 `renderConfig` 在 decode 后展开回现有共享
 `TBgConfig`，不在 Store 与 renderer 之间再创建一个 envelope 或中间模型。
 
-> 归属说明：当前（hard cut 前）editor/publish wire 仍把 `contentShadow` 放在每个 theme 的
-> `renderConfig` 中，这是待迁移的旧形态，不是目标领域归属。`contentShadow` 的唯一目标 owner 是 Dashboard
+> 归属说明：归档的 hard-cut 前 editor/publish wire 曾把 `contentShadow` 放在每个 theme 的
+> `renderConfig` 中，这是历史形态，不是当前领域归属。`contentShadow` 的唯一 owner 是 Dashboard
 > 的独立内容呈现字段 `dashboard.contentShadow`；普通页面不得继续从 Wallpaper settings 读取它。一次性
 > contract cutover 时 editor、普通页和 schema 同时切换，切换后不保留旧字段的运行时兼容读写。
 
@@ -310,6 +310,9 @@ fixture 改名时同步更新 `packages/contracts/package.json` export、Fronten
 从 v1 起步；实施前若发现旧 authoring Batch/Receipt 数据，不迁移、不兼容，也不让新路径读取或重放，按部署
 清理策略直接退出旧数据生命周期。
 
+因此，若 cutover 早于首次部署，四键 Wallpaper shape 直接以 settings v1 上线，不产生 settings/request digest
+版本升级或历史数据迁移；只有五键 settings v1 已先行部署时，hard cut 才需要升级版本并退出旧数据生命周期。
+
 `packages/contracts/fixtures` 中只保留一份人工审阅的 canonical settings fixture 集合，由实际理解
 settings 的 Frontend 与 Phoenix 测试共同消费；Assets Hub 继续只消费自身需要的 manifest/profile/digest
 协议 fixture，不引入 Wallpaper settings 语义。不能让各端复制 fixture，也不能由某一端实现自动生成
@@ -406,10 +409,7 @@ dashboard {
     light { wide { url width height } desktop { url width height } tablet { url width height } phone { url width height } }
     dark { wide { url width height } desktop { url width height } tablet { url width height } phone { url width height } }
   }
-  contentShadow {
-    light { enabled }
-    dark { enabled }
-  }
+  contentShadow
 }
 ```
 
@@ -417,9 +417,8 @@ Profile 是固定集合，输出使用具名字段，不返回需要 `find(profi
 Batch ref、Asset public ref、manifest 或 editor settings；`contentShadow` 是独立的 Dashboard 内容字段，
 不从 Wallpaper Snapshot 读取。
 
-普通查询只选择 `contentShadow.light/dark.enabled` 等渲染所需窄字段；editor route 额外读取当前 theme 的
-content-shadow revision，用于独立 `baseVersion`/幂等协调。该 revision 不进入 StaticWallpaper Context，
-也不与 `dashboard.wallpaper.version` 合并。
+普通查询和 editor route 都只读取 `contentShadow` boolean；它是 Dashboard 的普通字段，不引入
+独立 revision、`baseVersion` 或幂等协调，也不与 `dashboard.wallpaper.version` 合并。
 
 Wallpaper 编辑 route 额外查询：
 
@@ -504,8 +503,7 @@ route 时，只要任一 theme dirty 就提示用户，不自动串行保存两�
 `contentShadow` 不再进入上述 Wallpaper touched、settings normalize 或 publish payload。Appearance Save
 若同时发现 Wallpaper patch 与 Dashboard content-shadow patch，按 Dashboard mutation → Wallpaper publish
 顺序提交；两个 mutation 各自确认 baseline，部分成功不做跨 aggregate rollback，下一次 Save 只重试失败
-aggregate。Dashboard content-shadow mutation 使用独立的 per-theme revision 和 idempotency key，不复用
-Wallpaper `version`/`baseVersion`。
+aggregate。Dashboard content-shadow 使用普通字段 patch，不复用 Wallpaper `version`/`baseVersion`。
 
 ## 6. 写入 API
 
@@ -629,7 +627,7 @@ community_wallpapers
   updated_at
 
 community_dashboards
-  content_shadow (embedded light/dark content-surface config)
+  content_shadow (boolean: content-surface shadow enabled)
 
 wallpaper_snapshots
   public_ref
@@ -659,10 +657,10 @@ wallpaper_snapshot_images
 保留一个 `CommunityWallpaper` 聚合。保存 light 只更新 `active_light_snapshot_ref`；保存 dark 只更新
 `active_dark_snapshot_ref`。数据库字段和 GraphQL Wallpaper scope 对外名称统一为 `version`。
 
-`content_shadow` 属于 `CommunityDashboard` 的独立 embed/section，不进入 `community_wallpapers` 或
+`content_shadow` 属于 `CommunityDashboard` 的普通 boolean 字段，不进入 `community_wallpapers` 或
 `wallpaper_snapshots.settings`。它由 Dashboard section mutation 持久化，使用独立事务；Wallpaper publish、
-Snapshot restore 和 Dashboard content mutation 之间没有隐式的跨 aggregate 原子性。一次性 hard cut 的回填
-负责把当前 active Snapshot 中的旧值写入该 embed，之后普通 SSR/Query 只读 Dashboard 字段。
+Snapshot restore 和 Dashboard content mutation 之间没有隐式的跨 aggregate 原子性。由于本次是首次部署前
+hard cut，不做历史 Snapshot 回填；普通 SSR/Query 从该字段读取，未配置时使用字段默认值。
 
 现有最近 5 次历史、淘汰宽限期和审计列全部保留，只改领域命名。Snapshot 的 settings、theme、来源
 Batch 和 Profile version 不可变；`activated_at`、`history_used_at`、`delete_after` 是可更新的生命周期
@@ -737,19 +735,17 @@ Digest。调整如下：
       同一份 canonical fixtures，不复制默认值或 canonical 规则。
 - [ ] 增加两支独立 dirty 的 theme 切换、保存和离开 route 提示。
 - [x] 将 `dashboard.staticWallpaper` 改为具名 Profile 的 `dashboard.wallpaper`。
-- [ ] `WallpaperEditor` route-only 请求已存在，但普通 `PageCommunity` 仍携带并解析 `wallpaperSettings`；待普通
-      页 Valtio 读点迁移完成后删除，普通查询最终只返回已发布 Wallpaper 与独立的
-      `dashboard.contentShadow`。
+- [x] `WallpaperEditor` route-only 请求已存在；普通 `PageCommunity` 已删除 `wallpaperSettings`，普通查询只返回
+      已发布 Wallpaper 与独立的 `dashboard.contentShadow`。
 - [x] 更新 GraphQL schema、生成类型和跨语言 fixtures。
 - [x] 以 `packages/contracts/fixtures` 的单份人工审阅数据作为 Frontend、Backend 和 contracts 测试的
       golden source，并覆盖 Linear/Radial/Mesh renderer、NONE 和 CustomWallpaper 分支；expected digest
       不由任一端实现自动生成。
-- [ ] 完成 Dashboard `contentShadow` 的一次性回填、独立 mutation 与普通页/Editor 同步切换；从 Wallpaper
-      settings、Snapshot canonical JSON、RequestDigest 和 Receipt fixtures 中移除旧
-      `renderConfig.contentShadow`，并升级对应版本；不保留 editor wire 兼容例外。
-- [ ] 冻结并实施历史 hard cut：不迁移或兼容 pre-cutover Snapshot/Receipt，关闭旧 history restore/replay，
-      post-cutover 新 Snapshot 才进入最近 5 次与 `deleteAfter` 配额；读取旧/不支持版本不得静默 fallback
-      为默认 settings。
+- [x] 完成 Dashboard `contentShadow` 普通字段 mutation、普通页/Editor 同步切换，并从 Wallpaper settings、Snapshot
+      canonical JSON、RequestDigest 和 Receipt fixtures 中移除 `renderConfig.contentShadow`；本次 cutover 早于首次
+      部署，settings/request digest 仍为 v1，不保留 editor wire 兼容例外。
+- [x] 实施历史 hard cut：不迁移或兼容 pre-cutover Snapshot/Receipt，history/restore 只接受四键 post-cutover
+      Snapshot；旧/不支持版本不会静默 fallback 为默认 settings。
 - [ ] 实施并验收 [Wallpaper NONE 与页面背景绘制边界](./content_background_fallback.md) 的 Root/Content
       条件绘制；Wallpaper 不补色的代码边界已完成，浏览器验收仍待完成。
 
@@ -762,10 +758,10 @@ Digest。调整如下：
 - NONE 可进入历史并恢复；
 - cutover 前的 Snapshot 不进入 post-cutover 可恢复 history，也不做 v1→v2 materialization；restore 不依赖旧
   字段兼容解码，旧/不支持版本也不会静默 fallback 为默认 settings；
-- 普通页面只查询 `dashboard.wallpaper` 与独立的 `dashboard.contentShadow`（迁移目标）；
+- 普通页面只查询 `dashboard.wallpaper` 与独立的 `dashboard.contentShadow`；
 - `dashboard.wallpaper` 外层始终非空；未初始化或 NONE 只令对应 branch 为 `null`；
 - branch 为 `null` 时 Frontend 不补齐 Content 数据，只是不渲染 Wallpaper 图片层；
-- `contentShadow` 的有效渲染门固定为 `hasWallpaper[theme] && dashboard.contentShadow[theme].enabled`；
+- `contentShadow` 的有效渲染门固定为 `hasWallpaper[theme] && dashboard.contentShadow`；
   Wallpaper 为 NONE/`null` 时不绘制 Content surface 效果，但不清除独立保存的 shadow 配置；
 - `version=0` 可参与 SSR、缓存键和并发比较，所有消费者均不得使用 truthy 判断；
 - Profile 图片可以通过 `wallpaper[theme][profile]` 直接选择；
@@ -792,6 +788,5 @@ Digest。调整如下：
   失败，不能任选一处继续解码。
 - 两个不同 theme 基于同一旧 `baseVersion` 保存时，后提交者得到预期并发冲突；本地 dirty 设置保留并
   显示区别于普通失败的重试文案。
-- Dashboard content-shadow 使用独立 per-theme revision；`5702` 表示 revision conflict、`5708` 表示
-  idempotency conflict，canonical Query key 固定为 `dsbKeys.config(community)`。冲突只刷新该 Query 并保留
-  本地 shadow draft，不覆盖 Wallpaper draft，也不复用 Wallpaper `baseVersion`。
+- Dashboard content-shadow 是普通 boolean 字段；更新成功写回 `dsbKeys.config(community)` 并保留本地 draft，
+  不引入独立 revision、`5702/5708` 或 Wallpaper `baseVersion`。

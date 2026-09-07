@@ -84,8 +84,8 @@ settings 和对应的静态 Profile 图片；active 指针按 theme 分开。不
       不引用 light 分支。
 - [x] 补齐 `Main.background` 布局集成测试：双 nil 时 Root 仍有页面基础色，Content surface 为透明且无
       `backdrop-filter`。
-- [ ] 普通页面不加载 editor settings/history；当前 `PageCommunity` 仍选择并解析 `wallpaperSettings`，需在
-      普通页 Valtio 读点迁移完成后删除；GPU runtime 继续保持既有 Static/Editor 运行时边界。
+- [x] 普通页面不加载 editor settings/history；`PageCommunity` 已删除 `wallpaperSettings`，GPU runtime 继续保持
+      Static/Editor 运行时边界。
 - [x] 已发布 Wallpaper 的 SSR static 与 client GPU 使用同一 responsive Profile、逻辑画布和 `cover center`；
       backing store 按 DPR（上限 2）提高清晰度，Pattern repeat 不随 DPR 改变。
 - [x] resize 跨 `desktop/wide` Profile 后重置 GPU ready identity，等待新 Profile 首帧后再接管；无已发布图片
@@ -120,12 +120,11 @@ settings 和对应的静态 Profile 图片；active 指针按 theme 分开。不
       均已落地并有测试。
 - [ ] 为 publish loser cleanup 补真实并发时序测试；Phoenix 与 Hub 的双 probe 只缩小竞态窗口，不能
       代替后续 publish-finalization/cleanup lease 的跨系统原子协议。
-- [ ] `WallpaperEditor` route-only 请求已存在，但普通 `PageCommunity` 仍携带并解析 `wallpaperSettings`；待普通页
-      Valtio 读点迁移完成后删除遗留字段和解析链路。
-- [ ] 将 `contentShadow` draft 从 Wallpaper store/savable patch 拆出，补齐 Dashboard mutation 的 per-theme
-      revision、幂等 key、baseline reconcile，以及 Appearance Save 两 mutation 的部分成功矩阵。
-- [ ] 完成历史 hard cut：不迁移或兼容 pre-cutover Snapshot/Receipt，关闭旧 history restore/replay；post-cutover
-      新 Snapshot 才进入最近 5 次 history 与 `deleteAfter` 配额。
+- [x] `WallpaperEditor` route-only 请求已存在；普通 `PageCommunity` 已删除 `wallpaperSettings` 选择和解析链路。
+- [x] `contentShadow` draft 已从 Wallpaper store/savable patch 拆出，Dashboard 普通字段 mutation、baseline
+      reconcile，以及 Appearance Save 两 mutation 的部分成功语义已落地。
+- [x] 完成历史 hard cut：不迁移或兼容 pre-cutover Snapshot/Receipt，history/restore 只接受四键 post-cutover
+      Snapshot；post-cutover 新 Snapshot 才进入最近 5 次 history 与 `deleteAfter` 配额。
 - [x] 迁移范围外仍保留 v1 `static_revision` 语义的文档已明确标注为 incident/archive；仅历史归档文档保留原术语，
       不作为当前实现依据。
 

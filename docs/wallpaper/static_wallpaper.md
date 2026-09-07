@@ -25,6 +25,8 @@
 > 协议版本说明：本文记录已归档的 v1 单图实现。当前 v2 的 Profile 图片、当前 theme 单独保存、
 > Snapshot/Settings 和最近 5 次历史以 [保存链路与数据边界](./save_pipeline_contract.md) 与
 > [当前 theme 单独保存重构](./current_theme_save_refactor.md) 为准；本文不提供运行时兼容路径。
+> 当前方案只复用本文 §8 末段的 bundle 边界决策和 §9.10 的 Landing 静态背景决策表述；§9 的其他
+> v1 历史步骤（尤其旧的 light/dark 合并保存）均不可执行，也不构成当前迁移清单。
 
 ## 1. 决策
 

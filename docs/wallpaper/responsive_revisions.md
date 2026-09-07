@@ -101,9 +101,8 @@ WebGPU 预览、SSR 静态背景和路由切换后的静态背景不一致。
 - 不再使用 light/dark 各一个 `staticAssetPublicRef` 作为最终契约；
 - `UPLOAD` 也必须按照各 Profile 的构图规则生成静态产物；
 - Gradient、Pattern、Texture、滤镜和上传图片全部通过 WebGPU 生成，不增加 CSS Gradient 发布分支；
-- 不迁移或兼容旧 Wallpaper 静态产物、Snapshot 或 Receipt 数据，硬切换后由用户下一次 Save 创建新模型数据。
-  该条不覆盖 Phase 0 对 `contentShadow` 的一次性 Dashboard 字段回填；回填只迁移当前内容呈现配置，
-  不重建旧 Wallpaper Snapshot、图片资产或其兼容运行时。
+- 不迁移或兼容旧 Wallpaper 静态产物、Snapshot、Receipt 或 Dashboard `contentShadow` 数据；硬切换后由
+  新部署的默认值和用户下一次 Save 产生新模型数据。
 
 ## 2. 设计原则
 
@@ -1232,7 +1231,7 @@ idempotency replay，并在切换时退出旧数据生命周期。每个版本�
   Gradient 中心或 framing。
 - Gradient、Pattern、Texture、滤镜和上传图片全部由 WebGPU 生成。
 - Wallpaper publish lane 一次只生成发生变化且非 NONE 的 theme，但必须完成该 theme 的全部 required targets；
-  Appearance Save 若同时包含 Dashboard `contentShadow`，由独立 mutation lane 另行提交。
+  Appearance Save 若同时包含 Dashboard `contentShadow`，由 Dashboard 普通字段 mutation 另行提交。
 - 每个 Variant 必须先完成 per-asset intent、PUT 和完成登记，未登记的 Asset 不能进入冻结 manifest。
 - 任一 Variant 失败时，整个 Batch 作废，线上 State 不变，UI 显示重新保存 flash。
 - 已知失败立即 cancel；浏览器崩溃留下的 open Batch 在 TTL 后删除。
