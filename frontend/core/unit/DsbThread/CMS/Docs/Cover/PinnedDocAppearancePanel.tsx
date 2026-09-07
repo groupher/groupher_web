@@ -62,7 +62,7 @@ const imageBg = (url: string): TBgConfig => ({
   ...BASE_BG,
   source: url,
   type: WALLPAPER_TYPE.UPLOAD,
-  customWallpaper: { image: url },
+  customWallpaper: { type: 'picture', image: url },
 })
 
 export default function PinnedDocAppearancePanel({ doc, saving = false, onSave }: TProps) {
