@@ -9,7 +9,6 @@ import { browserGraphQLRequest } from '~/graphql/client'
 import useFullWallpaper from '~/hooks/useFullWallpaper'
 import useTheme from '~/hooks/useTheme'
 import useTrans from '~/hooks/useTrans'
-import { adaptWallpaperBgRenderSpec } from '~/hooks/useWallpaper'
 import { normalizeSignedAngle } from '~/lib/angle'
 import type { WallpaperProfile, WallpaperTheme } from '~/lib/graphql/generated/graphql'
 import {
@@ -21,9 +20,8 @@ import {
 } from '~/lib/wallpaperMesh'
 import type { TGradientRecipe, TGradientRenderer } from '~/lib/wallpaperMesh'
 import type { TWallpaperProfile } from '~/lib/wallpaperProfiles'
-import { encodeWallpaperSettings } from '~/lib/wallpaperSettingsCodec'
 import { wallpaperEditorKeys, wallpaperKeys, wallpaperQueries } from '~/query'
-import { exportWallpaperBatch, wallpaperExportTargets } from '~/render/WallpaperExport'
+import { exportWallpaperBatch } from '~/render/WallpaperExport'
 import type { TWallpaperData, TWallpaperType } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
 import useStaticWallpaper from '~/stores/staticWallpaper/hooks'
@@ -39,6 +37,7 @@ import { extractErrorMessage } from '~/unit/DsbThread/AssetsHub/helper'
 import { uploadGeneratedImage } from '~/unit/DsbThread/AssetsHub/uploadGeneratedImage'
 
 import { TAB } from './constant'
+import { buildWallpaperPublishPlan, type TWallpaperPublishPlan } from './publishPlan'
 import S from './schema'
 import type { TTab } from './spec'
 import useWallpaperPreview, { type TWallpaperPreviewPatch } from './useWallpaperPreview'
@@ -204,14 +203,10 @@ const cancelAssetsHubBatch = async (batchRef: string, capability: string): Promi
 }
 
 const publishWallpaperAssets = async (
-  community: string,
-  wallpaper: TWallpaperThemeState,
-  theme: 'light' | 'dark',
-  baseVersion: number,
+  plan: TWallpaperPublishPlan,
   idempotencyKey: string,
 ): Promise<ResultOf<typeof S.publishWallpaper>['publishWallpaper']> => {
-  const settings = encodeWallpaperSettings(wallpaper)
-  const generated = wallpaper.type !== WALLPAPER_TYPE.NONE
+  const generated = plan.type === 'generated'
   let exported: Awaited<ReturnType<typeof exportWallpaperBatch>> = []
 
   if (generated) {
@@ -220,14 +215,14 @@ const publishWallpaperAssets = async (
     }
 
     exported = await exportWallpaperBatch({
-      targets: wallpaperExportTargets(),
+      targets: plan.targets,
       themes: [
         {
           // Export may await a lazy GPU runtime while the editor remains live.
           // Freeze the complete render input so a later draft edit cannot alter
           // the images that are published with the captured settings.
-          renderSpec: adaptWallpaperBgRenderSpec(wallpaper),
-          theme,
+          renderSpec: plan.renderSpec,
+          theme: plan.theme,
         },
       ],
     })
@@ -238,12 +233,12 @@ const publishWallpaperAssets = async (
       ResultOf<typeof S.publishWallpaper>,
       VariablesOf<typeof S.publishWallpaper>
     >(S.publishWallpaper, {
-      community,
+      community: plan.community,
       input: {
-        baseVersion,
+        baseVersion: plan.baseVersion,
         idempotencyKey,
-        settings,
-        theme: toGraphqlTheme(theme),
+        settings: plan.settings,
+        theme: toGraphqlTheme(plan.theme),
         batchRef: null,
       },
     })
@@ -254,20 +249,22 @@ const publishWallpaperAssets = async (
     ResultOf<typeof S.prepareWallpaperUpload>,
     VariablesOf<typeof S.prepareWallpaperUpload>
   >(S.prepareWallpaperUpload, {
-    community,
+    community: plan.community,
     input: {
-      baseVersion,
+      baseVersion: plan.baseVersion,
       idempotencyKey,
       images: exported.map((variant) => ({
         checksum: variant.checksum,
         height: variant.height,
         mimeType: variant.mimeType,
-        profile: toGraphqlProfile(variant.targetKey.replace(`${theme}-`, '') as TWallpaperProfile),
+        profile: toGraphqlProfile(
+          variant.targetKey.replace(`${plan.theme}-`, '') as TWallpaperProfile,
+        ),
         sizeBytes: variant.blob.size,
         width: variant.width,
       })),
-      settings,
-      theme: toGraphqlTheme(theme),
+      settings: plan.settings,
+      theme: toGraphqlTheme(plan.theme),
     },
   })
   const batch = batchResult.prepareWallpaperUpload
@@ -280,7 +277,7 @@ const publishWallpaperAssets = async (
 
     await Promise.all(
       exported.map((variant) => {
-        const profile = variant.targetKey.replace(`${theme}-`, '')
+        const profile = variant.targetKey.replace(`${plan.theme}-`, '')
         const intent = intentByProfile.get(profile)
         if (!intent) throw new Error(`GENERATED_IMAGE_UPLOAD_INTENT_MISSING: ${profile}`)
         return uploadGeneratedImage({
@@ -295,12 +292,12 @@ const publishWallpaperAssets = async (
       ResultOf<typeof S.publishWallpaper>,
       VariablesOf<typeof S.publishWallpaper>
     >(S.publishWallpaper, {
-      community,
+      community: plan.community,
       input: {
-        baseVersion,
+        baseVersion: plan.baseVersion,
         idempotencyKey,
-        settings,
-        theme: toGraphqlTheme(theme),
+        settings: plan.settings,
+        theme: toGraphqlTheme(plan.theme),
         batchRef: batch.batchRef,
       },
     })
@@ -357,13 +354,13 @@ export function useLogicValue(): TWallpaperLogic {
       submitted,
       theme,
     }: TWallpaperSaveRequest) => {
-      const result = await publishWallpaperAssets(
-        community,
-        clone(liveWallpaper$[theme]),
-        theme,
+      const plan = buildWallpaperPublishPlan({
         baseVersion,
-        idempotencyKey,
-      )
+        community,
+        theme,
+        wallpaper: clone(liveWallpaper$[theme]),
+      })
+      const result = await publishWallpaperAssets(plan, idempotencyKey)
       if (!result) throw new Error('WALLPAPER_PUBLISH_EMPTY_RESPONSE')
       return { result, submitted }
     },
