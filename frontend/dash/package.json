@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:revision-worker": "pnpm --dir ../.. exec vite build --config frontend/dash/vite.worker.config.mts",
+    "build:revision-worker": "node ../../scripts/build-dash-revision-worker.mjs",
     "dev": "pnpm --dir ../.. run sync:assets:dash && pnpm run build:revision-worker && vite --config app.config.ts --host 127.0.0.1",
     "build": "pnpm --dir ../.. run sync:assets:dash && pnpm run build:revision-worker && CLOUDFLARE_ENV=production vite build --config app.config.ts",
     "preview": "vite preview --config app.config.ts",
