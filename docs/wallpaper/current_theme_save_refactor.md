@@ -396,7 +396,7 @@ type WallpaperSnapshot {
 `customWallpaper` 和 `renderConfig` 都为空；非 NONE 时由 codec 强制所需字段和分支结构，不能把
 GraphQL nullable 误解为任意组合都合法。
 
-普通页面只查询已发布图片：
+普通页面只查询已发布 Wallpaper 与独立的 Dashboard 内容呈现配置：
 
 ```graphql
 dashboard {
@@ -405,11 +405,16 @@ dashboard {
     light { wide { url width height } desktop { url width height } tablet { url width height } phone { url width height } }
     dark { wide { url width height } desktop { url width height } tablet { url width height } phone { url width height } }
   }
+  contentShadow {
+    light { enabled }
+    dark { enabled }
+  }
 }
 ```
 
 Profile 是固定集合，输出使用具名字段，不返回需要 `find(profile)` 的数组。普通页面不需要 Snapshot ID、
-Batch ref、Asset public ref、manifest 或 settings。
+Batch ref、Asset public ref、manifest 或 editor settings；`contentShadow` 是独立的 Dashboard 内容字段，
+不从 Wallpaper Snapshot 读取。
 
 Wallpaper 编辑 route 额外查询：
 
@@ -708,13 +713,15 @@ Digest。调整如下：
       同一份 canonical fixtures，不复制默认值或 canonical 规则。
 - [ ] 增加两支独立 dirty 的 theme 切换、保存和离开 route 提示。
 - [x] 将 `dashboard.staticWallpaper` 改为具名 Profile 的 `dashboard.wallpaper`。
-- [x] 将 editor settings/history 从普通 `PageCommunity` 查询拆出：普通查询只返回已发布 Wallpaper，编辑路由按需
-      请求独立的 `WallpaperEditor` operation。
+- [ ] `WallpaperEditor` route-only 请求已存在，但普通 `PageCommunity` 仍携带并解析 `wallpaperSettings`；待普通
+      页 Valtio 读点迁移完成后删除，普通查询最终只返回已发布 Wallpaper 与独立的
+      `dashboard.contentShadow`。
 - [x] 更新 GraphQL schema、生成类型和跨语言 fixtures。
 - [x] 以 `packages/contracts/fixtures` 的单份人工审阅数据作为 Frontend、Backend 和 contracts 测试的
       golden source，并覆盖 Linear/Radial/Mesh renderer、NONE 和 CustomWallpaper 分支；expected digest
       不由任一端实现自动生成。
-- [x] 删除旧名字、旧字段和双格式兼容，不保留并行运行路径。
+- [x] 删除 Wallpaper 领域旧名字、旧字段和并行运行路径；`contentShadow` 的旧
+      `renderConfig` 字段是本轮 Dashboard 独立字段迁移明确保留的 editor wire 兼容例外。
 - [ ] 实施并验收 [Wallpaper NONE 与页面背景绘制边界](./content_background_fallback.md) 的 Root/Content
       条件绘制；Wallpaper 不补色的代码边界已完成，浏览器验收仍待完成。
 
@@ -725,7 +732,7 @@ Digest。调整如下：
 - 修改 light 不创建或切换 dark Snapshot，反之亦然；
 - 当前 theme 指针、`version + 1` 和 Receipt 在同一个数据库事务中提交；
 - NONE 可进入历史并恢复；
-- 普通页面只查询 `dashboard.wallpaper`；
+- 普通页面只查询 `dashboard.wallpaper` 与独立的 `dashboard.contentShadow`（迁移目标）；
 - `dashboard.wallpaper` 外层始终非空；未初始化或 NONE 只令对应 branch 为 `null`；
 - branch 为 `null` 时 Frontend 不补齐 Content 数据，只是不渲染 Wallpaper 图片层；
 - `version=0` 可参与 SSR、缓存键和并发比较，所有消费者均不得使用 truthy 判断；

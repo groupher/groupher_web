@@ -308,6 +308,10 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 - 明确 Landing 静态展示配置来源；
 - 冻结 Dashboard `contentShadow` 独立字段的 GraphQL/持久化 shape，并记录旧
   `wallpaperSettings.renderConfig.contentShadow` 仅作为 editor wire 兼容层；
+- 同步冻结共享背景 shape 的影响面：`Dashboard.Fields.macro_schema(:wallpaper_bg)` 与
+  `BgConfigValidator` 当前同时服务 Dashboard Wallpaper 和 `CoverBackground`。默认收口方案是保留
+  shared macro/validator 给 Cover，拆出不含 `contentShadow` 的 Wallpaper-specific shape/validator；若选择
+  Cover 一并迁移，必须另列 Cover 数据迁移、GraphQL input 和 fixtures，不能随 Wallpaper 普通页收口隐式改动；
 - 在此阶段不卸载 Provider、不改普通页载荷。
 
 ### Phase 1：纯计划与幂等协调
