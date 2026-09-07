@@ -324,8 +324,9 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 ### Phase 4：普通页面读点迁移
 
 - 根据 Phase 0 清单逐一迁移 `contentShadow`、GlobalLayout、Landing salon 和共享 hooks 的读点；
-- 复用 [`static_wallpaper.md` §8–§9](./static_wallpaper.md#8-bundle-边界) 的 Landing 决策门：为 Landing
-  Shell 配置自有 light/dark 静态背景，或明确接受移除默认背景并验收对应 glow/页面视觉变化；
+- 仅复用归档文档 [`static_wallpaper.md` §8 末段](./static_wallpaper.md#8-bundle-边界) 与 §9.10 的
+  Landing 决策表述：为 Landing Shell 配置自有 light/dark 静态背景，或明确接受移除默认背景并验收
+  对应 glow/页面视觉变化；不得执行该文档 §9 的其他 v1 历史步骤；
 - 本阶段只处理 Landing Shell 的共享 Wallpaper 消费，不重新打开已完成的营销演示 renderer 图片化；
 - 保持 `StaticWallpaperProvider` 仅承载窄静态渲染数据。
 
