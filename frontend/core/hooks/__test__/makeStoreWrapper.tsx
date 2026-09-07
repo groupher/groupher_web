@@ -9,6 +9,7 @@ import type { TCommunity, TLocale, TMetric, TParseDashboard } from '~/spec'
 import ArticleListStoreProvider from '~/stores/articleList/provider'
 import type { TInit as TArticleListInit } from '~/stores/articleList/spec'
 import CommunityStoreProvider from '~/stores/community/provider'
+import DsbConfigProvider from '~/stores/dsbConfig/provider'
 import DsbEditProvider from '~/stores/dsbEdit/provider'
 import { DsbEditorUiProvider } from '~/stores/dsbEditorUi'
 import LocaleStoreProvider from '~/stores/locale/provider'
@@ -72,9 +73,11 @@ export const makeStoreWrapper = (opts: TWrapperOpts = {}): FC<{ children: ReactN
         <LocaleStoreProvider initData={{ locale, localeData }}>
           <MetricProvider value={metric}>
             <CommunityStoreProvider initData={initCommunity}>
-              <ThemePresetStoreProvider initData={initDashboard}>
-                <WallpaperStoreProvider initData={wallpaper}>{children}</WallpaperStoreProvider>
-              </ThemePresetStoreProvider>
+              <DsbConfigProvider initData={initDashboard}>
+                <ThemePresetStoreProvider initData={initDashboard}>
+                  <WallpaperStoreProvider initData={wallpaper}>{children}</WallpaperStoreProvider>
+                </ThemePresetStoreProvider>
+              </DsbConfigProvider>
             </CommunityStoreProvider>
           </MetricProvider>
         </LocaleStoreProvider>

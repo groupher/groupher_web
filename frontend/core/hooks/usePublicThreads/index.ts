@@ -3,9 +3,9 @@ import { find, propEq, reject } from 'ramda'
 import { THREAD_PATH } from '~/const/thread'
 import { sortByIndex } from '~/helper'
 import { normalizeHeaderLinks, shouldFoldAboutToMore } from '~/hooks/useHeaderLinks/helper'
-import useDsb from '~/query/useDsbConfig'
 import type { TCommunityThread, TNameAlias } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
+import useDsb from '~/stores/dsbConfig/hooks'
 
 /**
  * Computes the public thread list after dashboard configuration is applied.

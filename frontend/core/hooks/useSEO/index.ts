@@ -1,8 +1,8 @@
 import { pick } from 'ramda'
 
 import { SEO_KEYS } from '~/const/seo'
-import useDsb from '~/query/useDsbConfig'
 import type { TDsdSEOConf } from '~/spec'
+import useDsb from '~/stores/dsbConfig/hooks'
 
 /** Exposes seo state and actions through the shared React hook boundary. */
 export default function useSEO(): TDsdSEOConf {

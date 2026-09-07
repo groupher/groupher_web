@@ -1,6 +1,6 @@
 import { AVATAR_LAYOUT } from '~/const/layout'
-import useDsb from '~/query/useDsbConfig'
 import type { TAvatarLayout } from '~/spec'
+import useDsb from '~/stores/dsbConfig/hooks'
 
 type TRet = {
   avatarLayout: TAvatarLayout

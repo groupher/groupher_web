@@ -1,7 +1,7 @@
 import { pick } from 'ramda'
 
-import useDsb from '~/query/useDsbConfig'
 import type { TBroadcastConf } from '~/spec'
+import useDsb from '~/stores/dsbConfig/hooks'
 
 /** Exposes broadcast state and actions through the shared React hook boundary. */
 export default function useBroadcast(): TBroadcastConf {
