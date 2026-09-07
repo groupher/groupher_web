@@ -16,7 +16,6 @@ defmodule GroupherServer.Test.CMS.Model.BgConfigValidatorTest do
          %{
            type: :string,
            pattern: :map,
-           content_shadow: :map,
            effect: :map,
            texture: :map,
            gradient: :map
@@ -46,7 +45,6 @@ defmodule GroupherServer.Test.CMS.Model.BgConfigValidatorTest do
        %{
          type: :string,
          pattern: :map,
-         content_shadow: :map,
          effect: :map,
          texture: :map,
          gradient: :map

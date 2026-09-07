@@ -4,7 +4,6 @@ defmodule GroupherServer.Test.CMS.Dashboard do
   use GroupherServer.TestMate
 
   alias GroupherServer.CMS.Model.CommunityDashboard
-  alias GroupherServer.Repo
 
   @default_dashboard CommunityDashboard.default()
 
@@ -18,6 +17,18 @@ defmodule GroupherServer.Test.CMS.Dashboard do
   end
 
   describe "[community dashboard base info]" do
+    test "updates content shadow as an ordinary dashboard boolean field", ~m(community)a do
+      assert {:ok, _dashboard} =
+               CMS.Dashboard.update(community, :content_shadow, true)
+
+      assert {:ok, _dashboard} =
+               CMS.Dashboard.update(community, :content_shadow, false)
+
+      {:ok, find_community} = ORM.find(Community, community.id, preload: :dashboard)
+
+      assert find_community.dashboard.content_shadow == false
+    end
+
     test "created community should have default dashboard.", ~m(community_attrs user)a do
       {:ok, community} = CMS.Communities.create(community_attrs, user)
       {:ok, find_community} = ORM.find(Community, community.id, preload: :dashboard)
@@ -157,7 +168,6 @@ defmodule GroupherServer.Test.CMS.Dashboard do
               "intensity" => 65,
               "tone" => "light"
             },
-            content_shadow: %{"enabled" => true},
             effect: %{
               "blurIntensity" => 35,
               "brightness" => 85,
@@ -187,7 +197,6 @@ defmodule GroupherServer.Test.CMS.Dashboard do
               "intensity" => 35,
               "tone" => "dark"
             },
-            content_shadow: %{"enabled" => false},
             effect: %{
               "blurIntensity" => 15,
               "brightness" => 90,
@@ -217,8 +226,6 @@ defmodule GroupherServer.Test.CMS.Dashboard do
       assert find_community.dashboard.wallpaper.dark.pattern["intensity"] == 35
       assert find_community.dashboard.wallpaper.light.pattern["tone"] == "light"
       assert find_community.dashboard.wallpaper.dark.pattern["tone"] == "dark"
-      assert find_community.dashboard.wallpaper.light.content_shadow["enabled"] == true
-      assert find_community.dashboard.wallpaper.dark.content_shadow["enabled"] == false
       assert find_community.dashboard.wallpaper.light.effect["blurIntensity"] == 35
       assert find_community.dashboard.wallpaper.dark.effect["blurIntensity"] == 15
       assert find_community.dashboard.wallpaper.light.effect["brightness"] == 85

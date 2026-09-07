@@ -1329,6 +1329,8 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:version, non_null(:integer))
     field(:light, :wallpaper_images)
     field(:dark, :wallpaper_images)
+    field(:light_source, :string)
+    field(:dark_source, :string)
   end
 
   object :wallpaper_snapshot do
@@ -1525,6 +1527,8 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
         {:ok, CMS.Wallpaper.wallpaper_settings(dashboard.community_id)}
       end)
     end
+
+    field(:content_shadow, non_null(:boolean))
 
     field(:wallpaper_history, non_null(list_of(non_null(:wallpaper_snapshot)))) do
       arg(:theme, non_null(:wallpaper_theme))

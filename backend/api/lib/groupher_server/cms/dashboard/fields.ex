@@ -307,7 +307,6 @@ defmodule GroupherServer.CMS.Dashboard.Fields do
           "spread" => 52
         }
       ],
-      [:content_shadow, :map, %{"enabled" => false}],
       [
         :effect,
         :map,

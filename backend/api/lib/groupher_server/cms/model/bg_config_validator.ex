@@ -42,7 +42,6 @@ defmodule GroupherServer.CMS.Model.BgConfigValidator do
     changeset
     |> validate_inclusion(:type, @wallpaper_types)
     |> validate_pattern(:pattern)
-    |> validate_content_shadow(:content_shadow)
     |> validate_effect(:effect)
     |> validate_texture(:texture)
     |> validate_gradient(:gradient)
@@ -70,23 +69,6 @@ defmodule GroupherServer.CMS.Model.BgConfigValidator do
 
         tone not in @pattern_tones ->
           [{field, "has unsupported tone"}]
-
-        true ->
-          []
-      end
-    end)
-  end
-
-  defp validate_content_shadow(changeset, field) do
-    validate_change(changeset, field, fn ^field, value ->
-      enabled = map_get(value, "enabled")
-
-      cond do
-        not is_map(value) ->
-          [{field, "must be an object"}]
-
-        not is_boolean(enabled) ->
-          [{field, "has unsupported enabled"}]
 
         true ->
           []

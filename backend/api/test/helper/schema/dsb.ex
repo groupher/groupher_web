@@ -74,6 +74,16 @@ defmodule GroupherServer.Test.Helper.Schema.Dsb do
     """
   end
 
+  def m(:update_dashboard_content_shadow) do
+    """
+    mutation($community: String!, $enabled: Boolean!) {
+      updateDashboardContentShadow(community: $community, enabled: $enabled) {
+        contentShadow
+      }
+    }
+    """
+  end
+
   def m(:update_dashboard_base_info) do
     """
     mutation($community: String!, $homepage: String, $locale: String, $title: String, $slug: String, $desc: String, $introduction: String, $logo: String, $favicon: String, $city: String, $techstack: String) {
@@ -294,6 +304,18 @@ defmodule GroupherServer.Test.Helper.Schema.Dsb do
             }
           }
         }
+    """
+  end
+
+  def q(:content_shadow) do
+    """
+    query($community: String!) {
+      community(slug: $community) {
+      dashboard {
+        contentShadow
+      }
+      }
+    }
     """
   end
 

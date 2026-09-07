@@ -349,6 +349,14 @@ defmodule GroupherServerWeb.Resolvers.CMS do
     CMS.Wallpaper.publish(community, input, user)
   end
 
+  def update_dashboard_content_shadow(
+        _root,
+        %{community: %Community{} = community, enabled: enabled},
+        _info
+      ) do
+    CMS.Dashboard.update(community, :content_shadow, enabled)
+  end
+
   def prepare_wallpaper_upload(
         _root,
         %{community: %Community{} = community, input: input},

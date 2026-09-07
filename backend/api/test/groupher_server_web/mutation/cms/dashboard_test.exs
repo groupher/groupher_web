@@ -16,6 +16,23 @@ defmodule GroupherServer.Test.Mutation.CMS.Dashboard do
   end
 
   describe "[mutation cms community]" do
+    @update_content_shadow_query S.Dsb.m(:update_dashboard_content_shadow)
+    test "updates content shadow through the ordinary dashboard field path", ~m(community)a do
+      rule_conn = simu_conn(:user, cms: %{community.slug => %{"community.update" => true}})
+
+      result =
+        gq_mutation(rule_conn, @update_content_shadow_query, %{
+          community: community.slug,
+          enabled: true
+        })
+
+      assert result["contentShadow"] == true
+
+      shadow = gq_query(rule_conn, S.Dsb.q(:content_shadow), %{community: community.slug})
+
+      assert shadow["dashboard"]["contentShadow"] == true
+    end
+
     @prepare_wallpaper_upload_query S.Dsb.m(:prepare_wallpaper_upload)
     test "prepares a Wallpaper upload from typed profile input", ~m(community)a do
       rule_conn = simu_conn(:user, cms: %{community.slug => %{"community.update" => true}})
@@ -613,7 +630,6 @@ defmodule GroupherServer.Test.Mutation.CMS.Dashboard do
 
   defp wallpaper_render_config do
     %{
-      "contentShadow" => %{"enabled" => false},
       "effect" => %{"blurIntensity" => 0, "brightness" => 100, "saturation" => 100},
       "gradient" => nil,
       "pattern" => %{"enabled" => false, "id" => "01", "intensity" => 0, "tone" => "dark"},

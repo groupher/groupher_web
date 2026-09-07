@@ -13,7 +13,7 @@ defmodule GroupherServer.CMS.Wallpaper.Settings do
   alias GroupherServer.CMS.Wallpaper.ErrorCat
 
   @version 1
-  @render_config_keys ~w(pattern gradient texture effect contentShadow)
+  @render_config_keys ~w(pattern gradient texture effect)
   @linear_recipe_required ~w(version renderer preset colors angle spread)
   @linear_recipe_optional ~w(stops)
   @radial_recipe_required ~w(version renderer preset colors center radius shape spread)
@@ -63,7 +63,12 @@ defmodule GroupherServer.CMS.Wallpaper.Settings do
   @spec to_graphql(canonical(), integer()) :: map()
   def to_graphql(settings, schema_version) when is_map(settings) and is_integer(schema_version) do
     assert_persisted_version!(settings, schema_version)
-    to_graphql(settings)
+    graphql_settings = to_graphql(settings)
+
+    case normalize(graphql_settings) do
+      {:ok, _canonical} -> graphql_settings
+      {:error, _reason} -> raise ArgumentError, "WALLPAPER_SETTINGS_UNSUPPORTED_SHAPE"
+    end
   end
 
   @doc "Asserts that the Snapshot JSON version and its mirrored database column agree."
@@ -99,8 +104,7 @@ defmodule GroupherServer.CMS.Wallpaper.Settings do
         "pattern" => get(theme_settings, :pattern),
         "gradient" => get(theme_settings, :gradient),
         "texture" => get(theme_settings, :texture),
-        "effect" => get(theme_settings, :effect),
-        "contentShadow" => get(theme_settings, :content_shadow)
+        "effect" => get(theme_settings, :effect)
       }
     })
   end
@@ -156,11 +160,9 @@ defmodule GroupherServer.CMS.Wallpaper.Settings do
          is_map(get(value, :pattern)) and
          is_map(get(value, :texture)) and
          is_map(get(value, :effect)) and
-         is_map(get(value, :content_shadow)) and
          valid_gradient_recipe?(get(value, :gradient)) do
       {:ok,
        %{
-         "contentShadow" => get(value, :content_shadow),
          "effect" => get(value, :effect),
          "gradient" => get(value, :gradient),
          "pattern" => get(value, :pattern),
@@ -287,8 +289,7 @@ defmodule GroupherServer.CMS.Wallpaper.Settings do
 
   defp canonical_render_config_key(key) do
     case to_string(key) do
-      "content_shadow" -> "contentShadow"
-      key when key in ["contentShadow", "effect", "gradient", "pattern", "texture"] -> key
+      key when key in ["effect", "gradient", "pattern", "texture"] -> key
       _ -> nil
     end
   end

@@ -16,8 +16,7 @@
       },
       "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
       "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
-      "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 },
-      "contentShadow": { "enabled": false }
+      "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
     }
   },
   "transport": {
@@ -36,8 +35,7 @@
       },
       "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
       "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
-      "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 },
-      "contentShadow": { "enabled": false }
+      "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
     }
   },
   "picture": {
@@ -53,8 +51,7 @@
         "gradient": null,
         "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
         "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
-        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 },
-        "contentShadow": { "enabled": false }
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
       }
     },
     "transport": {
@@ -70,8 +67,7 @@
         "gradient": null,
         "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
         "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
-        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 },
-        "contentShadow": { "enabled": false }
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
       }
     }
   },
@@ -107,8 +103,7 @@
         },
         "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
         "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
-        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 },
-        "contentShadow": { "enabled": false }
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
       }
     },
     "transport": {
@@ -131,8 +126,7 @@
         },
         "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
         "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
-        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 },
-        "contentShadow": { "enabled": false }
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
       }
     }
   },
@@ -157,8 +151,7 @@
         },
         "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
         "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
-        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 },
-        "contentShadow": { "enabled": false }
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
       }
     },
     "transport": {
@@ -182,8 +175,7 @@
         },
         "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
         "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
-        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 },
-        "contentShadow": { "enabled": false }
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
       }
     }
   },
@@ -209,8 +201,7 @@
         },
         "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
         "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
-        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 },
-        "contentShadow": { "enabled": false }
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
       }
     }
   },
@@ -234,8 +225,7 @@
         },
         "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
         "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
-        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 },
-        "contentShadow": { "enabled": false }
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
       }
     },
     "transport": {
@@ -258,8 +248,7 @@
         },
         "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
         "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
-        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 },
-        "contentShadow": { "enabled": false }
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
       }
     }
   }

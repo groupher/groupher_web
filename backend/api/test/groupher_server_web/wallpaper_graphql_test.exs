@@ -291,7 +291,6 @@ defmodule GroupherServer.Test.WallpaperGraphQL do
 
   defp render_config do
     %{
-      "contentShadow" => %{"enabled" => false},
       "effect" => %{"blurIntensity" => 0, "brightness" => 100, "saturation" => 100},
       "gradient" => %{
         "angle" => 180,

@@ -437,7 +437,6 @@ defmodule GroupherServer.Test.ArticleCoverHelper do
           angle: 180,
           spread: 50
         }),
-      contentShadow: Jason.encode!(%{enabled: false}),
       effect: Jason.encode!(%{blurIntensity: 0, brightness: 100, saturation: 100}),
       texture: Jason.encode!(%{enabled: false, type: "noise", intensity: 0, params: %{}})
     }

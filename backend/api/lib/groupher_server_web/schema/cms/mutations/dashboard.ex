@@ -70,6 +70,17 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Dashboard do
       resolve(&R.CMS.publish_wallpaper/3)
     end
 
+    @desc "Updates the Dashboard-owned content surface shadow"
+    field :update_dashboard_content_shadow, :dsb do
+      arg(:community, non_null(:string))
+      arg(:enabled, non_null(:boolean))
+
+      middleware(M.Authorize, :login)
+      middleware(M.FrontDesk, :community)
+
+      resolve(&R.CMS.update_dashboard_content_shadow/3)
+    end
+
     @desc "Prepares the generated images for one current-theme Wallpaper save"
     field :prepare_wallpaper_upload, :wallpaper_upload_preparation do
       arg(:community, non_null(:string))

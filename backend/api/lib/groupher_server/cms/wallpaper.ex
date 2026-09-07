@@ -127,11 +127,15 @@ defmodule GroupherServer.CMS.Wallpaper do
   @doc "Returns the published image tree used by ordinary pages."
   def wallpaper(community_id) do
     state = Repo.get_by(CommunityWallpaper, community_id: community_id)
+    {light, light_source} = published_theme(state && state.active_light_snapshot_ref, :light)
+    {dark, dark_source} = published_theme(state && state.active_dark_snapshot_ref, :dark)
 
     %{
       version: state_version(state),
-      light: static_theme(state && state.active_light_snapshot_ref, :light),
-      dark: static_theme(state && state.active_dark_snapshot_ref, :dark)
+      light: light,
+      dark: dark,
+      light_source: light_source,
+      dark_source: dark_source
     }
   end
 
@@ -160,6 +164,7 @@ defmodule GroupherServer.CMS.Wallpaper do
       limit: 5
     )
     |> Repo.all()
+    |> Enum.filter(&supported_snapshot?/1)
     |> Enum.map(fn snapshot ->
       %{
         active: snapshot.public_ref == active_ref,
@@ -230,6 +235,9 @@ defmodule GroupherServer.CMS.Wallpaper do
         )
 
       if is_nil(snapshot), do: Repo.rollback(ErrorCat.wallpaper_snapshot_not_restorable())
+
+      unless supported_snapshot?(snapshot),
+        do: Repo.rollback(ErrorCat.wallpaper_snapshot_not_restorable())
 
       if snapshot.settings["type"] != "none" and
            not complete_profile_manifest?(snapshot_images(snapshot.public_ref)) do
@@ -648,22 +656,25 @@ defmodule GroupherServer.CMS.Wallpaper do
     }
   end
 
-  defp static_theme(nil, _theme), do: nil
+  defp published_theme(nil, _theme), do: {nil, nil}
 
-  defp static_theme(snapshot_ref, theme) do
+  defp published_theme(snapshot_ref, theme) do
     case Repo.get_by(WallpaperSnapshot, public_ref: snapshot_ref, theme: theme) do
       %WallpaperSnapshot{settings: %{"type" => "none"}} ->
-        nil
+        {nil, nil}
 
-      %WallpaperSnapshot{} = snapshot ->
+      %WallpaperSnapshot{settings: settings} = snapshot ->
         images = snapshot_images(snapshot.public_ref)
 
-        if complete_profile_manifest?(images),
-          do: Map.new(images, &{&1.profile, static_image(&1)}),
-          else: nil
+        static_images =
+          if complete_profile_manifest?(images),
+            do: Map.new(images, &{&1.profile, static_image(&1)}),
+            else: nil
+
+        {static_images, Map.get(settings, "source")}
 
       _ ->
-        nil
+        {nil, nil}
     end
   end
 
@@ -690,11 +701,19 @@ defmodule GroupherServer.CMS.Wallpaper do
 
   defp snapshot_settings(
          %WallpaperSnapshot{settings: settings, settings_schema_version: version},
-         default
+         _default
        ) do
     Settings.to_graphql(settings, version)
+  end
+
+  defp supported_snapshot?(%WallpaperSnapshot{
+         settings: settings,
+         settings_schema_version: version
+       }) do
+    graphql_settings = Settings.to_graphql(settings, version)
+    match?({:ok, _settings}, Settings.normalize(graphql_settings))
   rescue
-    ArgumentError -> default_settings(default)
+    ArgumentError -> false
   end
 
   defp default_settings(default) do
@@ -724,10 +743,11 @@ defmodule GroupherServer.CMS.Wallpaper do
     history_refs =
       from(snapshot in WallpaperSnapshot,
         where: snapshot.community_id == ^community_id and is_nil(snapshot.delete_after),
-        order_by: [desc: snapshot.history_used_at, desc: snapshot.inserted_at],
-        select: snapshot.public_ref
+        order_by: [desc: snapshot.history_used_at, desc: snapshot.inserted_at]
       )
       |> Repo.all()
+      |> Enum.filter(&supported_snapshot?/1)
+      |> Enum.map(& &1.public_ref)
 
     keep_refs = (active_refs ++ history_refs) |> Enum.uniq() |> Enum.take(5)
 

@@ -17,7 +17,13 @@ defmodule GroupherServer.CMS.WallpaperTest do
   test "returns an empty published wallpaper before the first save" do
     {community, _article, _attrs, _user} = mock_article(:post)
 
-    assert Wallpaper.wallpaper(community.id) == %{version: 0, light: nil, dark: nil}
+    assert Wallpaper.wallpaper(community.id) == %{
+             version: 0,
+             light: nil,
+             dark: nil,
+             light_source: nil,
+             dark_source: nil
+           }
   end
 
   test "published wallpaper defaults do not contain the legacy static revision" do
@@ -120,7 +126,6 @@ defmodule GroupherServer.CMS.WallpaperTest do
                  config: %{"image" => "https://example.com/source.webp"}
                },
                render_config: %{
-                 "contentShadow" => %{"enabled" => false},
                  "effect" => %{"blurIntensity" => 0, "brightness" => 100, "saturation" => 100},
                  "gradient" => nil,
                  "pattern" => %{

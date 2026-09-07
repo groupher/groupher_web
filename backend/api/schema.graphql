@@ -780,6 +780,9 @@ type RootMutationType {
   "Publishes one current-theme Wallpaper Snapshot"
   publishWallpaper(community: String!, input: WallpaperPublishInput!): WallpaperPublishResult
 
+  "Updates the Dashboard-owned content surface shadow"
+  updateDashboardContentShadow(community: String!, enabled: Boolean!): Dsb
+
   "Prepares the generated images for one current-theme Wallpaper save"
   prepareWallpaperUpload(community: String!, input: WallpaperUploadPrepareInput!): WallpaperUploadPreparation
 
@@ -2662,7 +2665,6 @@ type CoverBackground {
   staticAssetPublicRef: String
   pattern: Json
   gradient: Json
-  contentShadow: Json
   effect: Json
   texture: Json
 }
@@ -2693,7 +2695,6 @@ input CoverBackgroundInput {
   staticAssetPublicRef: String
   pattern: Json
   gradient: Json
-  contentShadow: Json
   effect: Json
   texture: Json
 }
@@ -2750,6 +2751,8 @@ type Wallpaper {
   version: Int!
   light: WallpaperImages
   dark: WallpaperImages
+  lightSource: String
+  darkSource: String
 }
 
 type WallpaperSnapshot {
@@ -3009,6 +3012,7 @@ type Dsb {
   seo: DsbSeo
   wallpaper: Wallpaper!
   wallpaperSettings: WallpaperSettingsByTheme!
+  contentShadow: Boolean!
   wallpaperHistory(theme: WallpaperTheme!): [WallpaperSnapshot!]!
   layout: DsbLayout
   enable: DsbEnable
