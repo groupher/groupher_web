@@ -31,6 +31,7 @@ import { extractErrorMessage } from '~/unit/DsbThread/AssetsHub/helper'
 import { TAB } from './constant'
 import { executeWallpaperPublish } from './publishExecutor'
 import { buildWallpaperPublishPlan } from './publishPlan'
+import { resolveWallpaperIdempotencyKey, type TPendingWallpaperSave } from './requestCoordinator'
 import type { TTab } from './spec'
 import useWallpaperPreview, { type TWallpaperPreviewPatch } from './useWallpaperPreview'
 
@@ -55,11 +56,6 @@ type TWallpaperSaveRequest = {
   submitted: TWallpaperPatch
   theme: 'light' | 'dark'
 }
-
-const createIdempotencyKey = (): string =>
-  typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
-    ? crypto.randomUUID()
-    : `${Date.now()}-${Math.random().toString(16).slice(2)}`
 
 const graphqlErrorCode = (error: unknown): string | undefined => {
   if (!error || typeof error !== 'object' || !('errors' in error)) return undefined
@@ -173,7 +169,7 @@ export function useLogicValue(): TWallpaperLogic {
   const queryClient = useQueryClient()
   const { data: wallpaperConfig } = useQuery(wallpaperQueries.config(community$.slug))
   const wallpaperStateVersion = wallpaperConfig?.wallpaper?.version ?? 0
-  const pendingSaveRef = useRef<{ fingerprint: string; idempotencyKey: string } | null>(null)
+  const pendingSaveRef = useRef<TPendingWallpaperSave | null>(null)
 
   const [tab, setTab] = useState<TTab>(() =>
     getInitialTab(pickWallpaperThemeState(wallpaper$, isDarkTheme).type),
@@ -264,14 +260,15 @@ export function useLogicValue(): TWallpaperLogic {
     if (Object.keys(submittedTheme).length === 0) return
     const submitted = { [theme]: submittedTheme } as TWallpaperPatch
     const fingerprint = JSON.stringify({ baseVersion: wallpaperStateVersion, submitted, theme })
-    const pending = pendingSaveRef.current
-    const idempotencyKey =
-      pending?.fingerprint === fingerprint ? pending.idempotencyKey : createIdempotencyKey()
-    pendingSaveRef.current = { fingerprint, idempotencyKey }
+    const pending = resolveWallpaperIdempotencyKey({
+      fingerprint,
+      pending: pendingSaveRef.current,
+    })
+    pendingSaveRef.current = pending
     const params: TWallpaperSaveRequest = {
       baseVersion: wallpaperStateVersion,
       community,
-      idempotencyKey,
+      idempotencyKey: pending.idempotencyKey,
       submitted,
       theme,
     }
