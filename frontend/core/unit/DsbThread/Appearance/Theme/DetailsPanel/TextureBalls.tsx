@@ -6,7 +6,7 @@ import useTrans from '~/hooks/useTrans'
 import CloseSVG from '~/icons/CloseLight'
 
 import type { TThemePresetOverwrite, TThemePresetTokens } from '../spec'
-import useSalon, { cn, cnMerge } from './salon/texture_balls'
+import useSalon, { cn } from './salon/texture_balls'
 
 type TProps = {
   selectedTokens: TThemePresetTokens
@@ -53,12 +53,12 @@ export default function TextureBalls({
 
   return (
     <div className={s.wrapper}>
-      <div className={cnMerge(s.row, rowClassName)}>
+      <div className={cn(s.row, rowClassName)}>
         {visibleOptions.map((effect) => (
           <button
             key={effect || 'none'}
             type='button'
-            className={cn(s.block, effect === glowType && s.blockActive)}
+            className={s.block({ state: effect === glowType ? 'active' : 'idle' })}
             aria-pressed={effect === glowType}
             onClick={() => commitGlowType(effect)}
           >

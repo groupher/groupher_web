@@ -13,6 +13,7 @@ import {
   isAuthRoute as isPublicAuthRoute,
   isGraphqlRoute as isPublicGraphqlRoute,
   isPressRoute as isPublicPressRoute,
+  PLATFORM_ROOT_HOSTS,
   resolvePublicRoute,
   type RequestHeaderPolicy as PublicRequestHeaderPolicy,
   type RouteTargetKind,
@@ -131,13 +132,7 @@ export const isCommunityHost = (host: string): boolean => isAppHost(host, APP.CO
 /** Reports whether platform root host at the gateway boundary. */
 export const isPlatformRootHost = (host: string): boolean => {
   const hostname = host.split(':')[0].toLowerCase()
-  return [
-    'groupher.com',
-    'www.groupher.com',
-    'groupher.localhost',
-    'localhost',
-    '127.0.0.1',
-  ].includes(hostname)
+  return (PLATFORM_ROOT_HOSTS as readonly string[]).includes(hostname)
 }
 
 /** Reports whether press route at the gateway boundary. */
@@ -224,13 +219,7 @@ const publicTarget = (
     pathname,
     method,
     customDomainCommunities: customDomainCommunities(),
-    platformHosts: [
-      'groupher.com',
-      'www.groupher.com',
-      'groupher.localhost',
-      'localhost',
-      '127.0.0.1',
-    ],
+    platformHosts: PLATFORM_ROOT_HOSTS,
   })
 
   if (resolved.targetKind === 'not-found' || resolved.targetKind === 'health') {

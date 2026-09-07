@@ -1,13 +1,13 @@
 import { memo, type SVGProps } from 'react'
 
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 
 const QRCode = ({ className, ...props }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
       viewBox='0 0 24 24'
-      className={cnMerge(className, 'fill-none')}
+      className={cn(className, 'fill-none')}
       fill='none'
       stroke='currentColor'
       strokeWidth={2}

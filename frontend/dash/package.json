@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:revision-worker": "pnpm --dir ../.. exec vite build --config frontend/dash/vite.worker.config.mts",
+    "build:revision-worker": "node ../../scripts/build-dash-revision-worker.mjs",
     "dev": "pnpm --dir ../.. run sync:assets:dash && pnpm run build:revision-worker && vite --config app.config.ts --host 127.0.0.1",
     "build": "pnpm --dir ../.. run sync:assets:dash && pnpm run build:revision-worker && CLOUDFLARE_ENV=production vite build --config app.config.ts",
     "preview": "vite preview --config app.config.ts",
@@ -23,7 +23,7 @@
     "@groupher/contracts": "workspace:*",
     "@groupher/frontend-core": "workspace:*",
     "@groupher/service": "workspace:*",
-    "@tanstack/query-core": "5.101.4",
+    "@tanstack/query-core": "5.102.8",
     "@tanstack/react-query": "^5.101.4",
     "@tanstack/react-router": "1.170.21",
     "@tanstack/react-router-ssr-query": "1.167.1",

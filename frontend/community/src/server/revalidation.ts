@@ -5,6 +5,11 @@ const configuredPurge = (): { zoneId: string; token: string } | null => {
 }
 
 const PURGE_TIMEOUT_MS = 5_000
+const PURGE_MAX_ATTEMPTS = 2
+const PURGE_RETRY_DELAY_MS = 100
+
+const waitForPurgeRetry = (): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, PURGE_RETRY_DELAY_MS))
 
 /** Reports whether Cloudflare tag purging is configured for this runtime. */
 export const hasConfiguredPurge = (): boolean => Boolean(configuredPurge())
@@ -33,13 +38,32 @@ export const purgeCommunityTags = async (tags: string[]): Promise<void> => {
 export const observeCommunityTagPurge = async (tags: string[]): Promise<void> => {
   const startedAt = Date.now()
   try {
-    await purgeCommunityTags(tags)
+    let attempt = 0
+    while (attempt < PURGE_MAX_ATTEMPTS) {
+      attempt += 1
+      try {
+        await purgeCommunityTags(tags)
+        break
+      } catch (error) {
+        if (attempt >= PURGE_MAX_ATTEMPTS) throw error
+        console.warn(
+          JSON.stringify({
+            event: 'community_cache_purge_retry',
+            tags,
+            attempt,
+            error: error instanceof Error ? error.message : String(error),
+          }),
+        )
+        await waitForPurgeRetry()
+      }
+    }
     console.info(
       JSON.stringify({
         event: 'community_cache_purge',
         status: 'ok',
         tags,
         durationMs: Date.now() - startedAt,
+        attempts: attempt,
       }),
     )
   } catch (error) {

@@ -1,0 +1,54 @@
+defmodule GroupherServer.CMS.Model.WallpaperPublishReceipt do
+  @moduledoc """
+  Short-lived idempotency receipt written with a successful Wallpaper publish.
+
+  Browser publish
+    -> Phoenix transaction
+    -> WallpaperPublishReceipt
+    -> idempotent response replay
+  """
+
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  alias GroupherServer.CMS.Model.Community
+  alias Helper.Constant.DBPrefix
+
+  @schema_prefix DBPrefix.cms()
+
+  schema "wallpaper_publish_receipts" do
+    belongs_to(:community, Community)
+    field(:idempotency_key, :string)
+    field(:request_digest, :string)
+    field(:request_digest_version, :integer)
+    field(:response_payload, :map)
+    field(:expires_at, :utc_datetime)
+
+    timestamps(type: :utc_datetime)
+  end
+
+  @doc "Validates the durable response snapshot used for idempotent replay."
+  def changeset(receipt, attrs) do
+    receipt
+    |> cast(attrs, [
+      :community_id,
+      :idempotency_key,
+      :request_digest,
+      :request_digest_version,
+      :response_payload,
+      :expires_at
+    ])
+    |> validate_required([
+      :community_id,
+      :idempotency_key,
+      :request_digest,
+      :request_digest_version,
+      :response_payload,
+      :expires_at
+    ])
+    |> validate_number(:request_digest_version, greater_than: 0)
+    |> unique_constraint([:community_id, :idempotency_key],
+      name: :wallpaper_publish_receipts_community_id_idempotency_key_index
+    )
+  end
+end

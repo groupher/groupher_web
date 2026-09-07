@@ -1,4 +1,7 @@
 import assert from 'node:assert/strict'
+import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import path from 'node:path'
 import test from 'node:test'
 
 import { ServiceManager, ServiceManagerError } from './process-manager.ts'
@@ -80,6 +83,20 @@ const CHAIN_TARGET_SERVICE: TServiceDefinition = {
   },
 }
 
+const CONTRACT_TARGET_SERVICE: TServiceDefinition = {
+  ...CHAIN_TARGET_SERVICE,
+  id: 'contract-target',
+  name: 'Contract Target',
+  startupChecks: [
+    {
+      healthCheckName: 'phoenix-service-auth',
+      id: 'service-auth-contract',
+      label: 'Auth to Phoenix Service Identity contract',
+      url: 'http://127.0.0.1:3004/health/service-auth',
+    },
+  ],
+}
+
 const ADOPTED_TARGET_SERVICE: TServiceDefinition = {
   ...EXTERNAL_FIXTURE_SERVICE,
   id: 'adopted-target',
@@ -138,6 +155,61 @@ const OPTIONAL_TARGET_SERVICE: TServiceDefinition = {
     optionalDependencies: [SLOW_OPTIONAL_DEPENDENCY.id],
   },
 }
+
+test('managed env fallbacks cannot clobber parent or orchestrator values', async (t) => {
+  const fixtureRoot = await mkdtemp(path.join(tmpdir(), 'groupher-managed-env-'))
+  const envFile = path.join(fixtureRoot, '.env.local')
+  const parentKey = 'GROUPHER_TEST_PARENT_WINS'
+  const previousParentValue = process.env[parentKey]
+  process.env[parentKey] = 'parent'
+
+  await writeFile(
+    envFile,
+    [
+      `${parentKey}=file`,
+      'GROUPHER_TEST_ORCHESTRATOR_WINS=file',
+      'GROUPHER_TEST_FALLBACK_ONLY=file',
+      'GROUPHER_TEST_UNLISTED=file',
+    ].join('\n'),
+  )
+
+  const definition: TServiceDefinition = {
+    ...FIXTURE_SERVICE,
+    id: 'managed-env-fixture',
+    args: [
+      '-e',
+      'console.log(JSON.stringify({ parent: process.env.GROUPHER_TEST_PARENT_WINS, orchestrator: process.env.GROUPHER_TEST_ORCHESTRATOR_WINS, fallback: process.env.GROUPHER_TEST_FALLBACK_ONLY, unlisted: process.env.GROUPHER_TEST_UNLISTED ?? null }))',
+    ],
+    env: {
+      GROUPHER_TEST_ORCHESTRATOR_WINS: 'orchestrator',
+    },
+    envFallback: {
+      file: envFile,
+      keys: [parentKey, 'GROUPHER_TEST_ORCHESTRATOR_WINS', 'GROUPHER_TEST_FALLBACK_ONLY'],
+    },
+  }
+  const manager = new ServiceManager([definition])
+
+  t.after(async () => {
+    await manager.shutdown()
+    await rm(fixtureRoot, { force: true, recursive: true })
+    if (previousParentValue === undefined) delete process.env[parentKey]
+    else process.env[parentKey] = previousParentValue
+  })
+
+  await manager.start(definition.id)
+  await waitForLog(manager, definition.id, '"fallback":"file"')
+
+  const output = manager
+    .getLogs(definition.id)
+    .filter((log) => log.stream === 'stdout')
+    .map((log) => log.chunk)
+    .join('')
+  assert.match(
+    output,
+    /"parent":"parent","orchestrator":"orchestrator","fallback":"file","unlisted":null/,
+  )
+})
 
 test(
   'stop gives a managed process a grace period before it exits',
@@ -238,6 +310,28 @@ test('restart waits for the managed process to stop before starting a replacemen
       .join(''),
     /Restarting service with a fresh process/,
   )
+})
+
+test('restart reruns configured startup contracts before replacing the target', async (t) => {
+  const checks: string[] = []
+  const manager = new ServiceManager(
+    [CONTRACT_TARGET_SERVICE],
+    null,
+    async () => false,
+    {
+      findProcessGroups: async () => [],
+      terminateProcessGroup: async () => undefined,
+    },
+    async (check) => {
+      checks.push(check.id)
+    },
+  )
+  t.after(async () => manager.shutdown())
+
+  await manager.start(CONTRACT_TARGET_SERVICE.id)
+  await manager.restart(CONTRACT_TARGET_SERVICE.id)
+
+  assert.deepEqual(checks, ['service-auth-contract'])
 })
 
 test('restart waits for the managed port to be released before starting a replacement', async (t) => {
@@ -354,6 +448,73 @@ test('default start mode starts required dependencies before the target service'
     `${CHAIN_DEPENDENCY_SERVICE.id}:running`,
     `${CHAIN_TARGET_SERVICE.id}:running`,
   ])
+})
+
+test('chain startup runs contract checks after required dependencies are ready', async (t) => {
+  const checks: string[] = []
+  let manager: ServiceManager
+  manager = new ServiceManager(
+    [CHAIN_DEPENDENCY_SERVICE, CONTRACT_TARGET_SERVICE],
+    null,
+    async () => false,
+    {
+      findProcessGroups: async () => [],
+      terminateProcessGroup: async () => undefined,
+    },
+    async (check) => {
+      checks.push(check.id)
+      assert.equal(
+        manager.listServices().find((service) => service.id === CHAIN_DEPENDENCY_SERVICE.id)
+          ?.status,
+        'running',
+      )
+      assert.equal(
+        manager.listServices().find((service) => service.id === CONTRACT_TARGET_SERVICE.id)?.status,
+        'stopped',
+      )
+    },
+  )
+  t.after(async () => manager.shutdown())
+
+  await manager.startWithMode(CONTRACT_TARGET_SERVICE.id)
+
+  assert.deepEqual(checks, ['service-auth-contract'])
+  assert.equal(
+    manager.listServices().find((service) => service.id === CONTRACT_TARGET_SERVICE.id)?.status,
+    'running',
+  )
+})
+
+test('a failed startup contract blocks the target and preserves the reason', async (t) => {
+  const manager = new ServiceManager(
+    [CHAIN_DEPENDENCY_SERVICE, CONTRACT_TARGET_SERVICE],
+    null,
+    async () => false,
+    {
+      findProcessGroups: async () => [],
+      terminateProcessGroup: async () => undefined,
+    },
+    async () => {
+      throw new Error('SERVICE_TOKEN_INVALID')
+    },
+  )
+  t.after(async () => manager.shutdown())
+
+  await assert.rejects(
+    manager.startWithMode(CONTRACT_TARGET_SERVICE.id),
+    /Auth to Phoenix Service Identity contract failed: SERVICE_TOKEN_INVALID/,
+  )
+  assert.equal(
+    manager.listServices().find((service) => service.id === CONTRACT_TARGET_SERVICE.id)?.status,
+    'stopped',
+  )
+  assert.match(
+    manager
+      .getLogs(CONTRACT_TARGET_SERVICE.id)
+      .map((log) => log.chunk)
+      .join(''),
+    /SERVICE_TOKEN_INVALID/,
+  )
 })
 
 test('required dependencies in the same layer start in parallel', async (t) => {

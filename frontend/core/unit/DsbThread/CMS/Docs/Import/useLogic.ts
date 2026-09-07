@@ -1,5 +1,6 @@
 'use client'
 
+import { DOCS_IMPORT_ROUTE } from '@groupher/route-contract'
 import { useLocation } from '@tanstack/react-router'
 /**
  * Client-side phase controller for the recoverable Docs import experience.
@@ -17,7 +18,7 @@ import { useLocation } from '@tanstack/react-router'
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import useTrans from '~/hooks/useTrans'
 import useCommunity from '~/stores/community/hooks'
 
@@ -109,7 +110,7 @@ export default function useLogic(): TRet {
 
   const loadJob = useCallback(
     async (jobRef: string): Promise<TContentImportJob> => {
-      const data = await browserQuery<{
+      const data = await browserGraphQLRequest<{
         contentImportJob: Omit<TContentImportJob, 'process'> & { process: unknown }
       }>(S.job, { community, jobRef })
       const latest = {
@@ -127,7 +128,7 @@ export default function useLogic(): TRet {
     setProcess(initialProcess('analyzing'))
     setPhase(PHASE.ANALYZING)
     try {
-      const response = await fetch('/api/docs/import/previews', {
+      const response = await fetch(DOCS_IMPORT_ROUTE.PREVIEWS, {
         body: JSON.stringify({
           community,
           idempotencyKey: idempotencyKey.current,
@@ -173,7 +174,7 @@ export default function useLogic(): TRet {
 
       try {
         const response = await fetch(
-          `/api/docs/import/previews/${encodeURIComponent(previewRef)}?community=${encodeURIComponent(community)}`,
+          `${DOCS_IMPORT_ROUTE.preview(previewRef)}?community=${encodeURIComponent(community)}`,
           { cache: 'no-store' },
         )
         const payload = (await response.json()) as {
@@ -239,7 +240,7 @@ export default function useLogic(): TRet {
         setProcess(initialProcess('preparing', selectedSourceIds.length))
         setPhase(PHASE.IMPORTING)
         try {
-          const response = await fetch(`/api/docs/import/previews/${preview.previewRef}/apply`, {
+          const response = await fetch(DOCS_IMPORT_ROUTE.apply(preview.previewRef), {
             body: JSON.stringify({ community, selectedSourceIds }),
             headers: { 'Content-Type': 'application/json' },
             method: 'POST',
@@ -341,7 +342,7 @@ export default function useLogic(): TRet {
       await applyInFlight.current
       if (previewRef) {
         const response = await fetch(
-          `/api/docs/import/previews/${encodeURIComponent(previewRef)}?community=${encodeURIComponent(community)}`,
+          `${DOCS_IMPORT_ROUTE.preview(previewRef)}?community=${encodeURIComponent(community)}`,
           { method: 'DELETE' },
         )
         const payload = (await response.json()) as { error?: { message?: string }; ok?: boolean }

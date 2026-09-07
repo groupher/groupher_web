@@ -2,8 +2,8 @@
 
 import type { ReactNode } from 'react'
 
-import useDsb from '~/stores/dsb/hooks'
-import useSalon, { cnMerge } from '~/unit/DsbThread/salon'
+import { useDsbShellUi } from '~/stores/dsbShellUi'
+import useSalon, { cn } from '~/unit/DsbThread/salon'
 
 type TProps = {
   children: ReactNode
@@ -14,11 +14,11 @@ const COLLAPSED_CONTENT_INLINE_INSET = 'pl-0'
 
 export default function SubMenuContentLayout({ children }: TProps) {
   const s = useSalon()
-  const { submenuCollapsed } = useDsb()
+  const { submenuCollapsed } = useDsbShellUi()
 
   return (
     <div
-      className={cnMerge(
+      className={cn(
         s.content,
         'w-full min-w-0 transition-all duration-150 ease-out',
         submenuCollapsed ? COLLAPSED_CONTENT_INLINE_INSET : CONTENT_INLINE_INSET,

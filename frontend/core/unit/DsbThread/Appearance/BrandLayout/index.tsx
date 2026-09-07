@@ -8,7 +8,7 @@ import { FIELD } from '../../constant'
 import useBrand from '../../logic/useBrand'
 import SavingBar from '../../SavingBar'
 import SectionLabel from '../../SectionLabel'
-import useSalon, { cn } from './salon'
+import useSalon from './salon'
 
 const BRAND_LAYOUT_OPTIONS = [
   {
@@ -51,7 +51,7 @@ export default function BrandLayout() {
               aria-pressed={isActive}
               onClick={() => edit(value, FIELD.BRAND_LAYOUT)}
             >
-              <div className={cn(s.block, isActive && s.blockActive)}>
+              <div className={s.block({ state: isActive ? 'active' : 'idle' })}>
                 <div className={s.brand}>
                   {value !== BRAND_LAYOUT.TEXT && <BrandSVG className={s.brandIcon} />}
                   {value === BRAND_LAYOUT.BOTH && <div className='mr-2.5' />}

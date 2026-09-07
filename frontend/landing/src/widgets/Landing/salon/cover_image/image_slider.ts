@@ -20,7 +20,7 @@ export default function useSalon() {
     rightArrow: cn(naviArrow, 'rotate-180'),
 
     slideBox: 'relative w-11/12 h-full rounded-t-lg',
-    slideImage: 'w-full h-[700px] overflow-hidden',
+    slideImage: 'relative w-full h-[700px] overflow-hidden',
     coverImg: 'object-cover w-full h-[788px] -mt-6 animation-fade-up',
     //
     themeSwitch: cn(

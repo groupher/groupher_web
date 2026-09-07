@@ -5,5 +5,3 @@ export enum VIEW {
   HOSTING_COMMUNITY = 'hosting_community',
   ARTICLE = 'article',
 }
-
-export type TFooterView = `${VIEW}`

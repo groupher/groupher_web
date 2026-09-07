@@ -78,7 +78,6 @@ export type TFillKey = 'title' | 'digest' | 'link' | 'highlight'
 
 export type TRet = {
   cn: (...inputs: ClassValue[]) => string
-  cnMerge: (...inputs: ClassValue[]) => string
   container: (metricOverride?: TContainerMetric) => string
   containerWrapper: (metricOverride?: TContainerMetric) => string
 

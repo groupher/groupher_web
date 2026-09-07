@@ -8,6 +8,14 @@
 > tagGroups、comment public/viewer ownership、article/comment optimistic intent 以及目标范围内的
 > Valtio server-state 双读均已收口。
 >
+> 2026-08-29 后续重组：公共 SSR no-user-spec、`Q.viewer` canonical batch、theme first-paint、
+> `Q.dsb.config`、`DsbEditStore`、TanStack save mutations、按领域 response normalizer、Dsb editor UI
+> owner、confirmed reconcile 与 server-owned cache-tag revalidation 已在本地实现。执行顺序与唯一外部发布门见
+> [`workflow_query_store_reorg.md`](./workflow_query_store_reorg.md)，
+> 具体缓存与 Dsb 合同见 [`tanstack_rewrite/query_sync_cache.md`](./tanstack_rewrite/query_sync_cache.md)
+> 与 [`dashboard_store_reorg.md`](./dashboard_store_reorg.md)。真实 Cloudflare purge/跨 PoP 证据仍需
+> 部署凭据。
+>
 > 范围：`frontend/main`、`frontend/dashboard`、`frontend/dash` 以及它们使用的
 > `frontend/core` server-state 链路。迁移按垂直业务切片进行，允许短期双 runtime，
 > 但不再把 Dashboard/Dash 的 urql 兼容视为长期边界。
@@ -60,8 +68,7 @@ GraphQL 三组契约及 urql 静态门禁通过；75 个后端 comment mutation 
 `/[community]/appearance/theme` 时 GraphQL endpoint 返回 HTML，`Response.json()` 失败；连续两次结果
 一致，属于构建环境数据源阻塞而不是本迁移的编译回归。Analytics 已增加 visibility 暂停、60 秒
 轮询、mount refetch、stale/unavailable 降级与 demo-mode 禁止请求的组件契约测试；真实环境仍用于验证
-浏览器节流、focus 与后端响应。全量前端测试为 190 个文件中 189 个通过、858 个用例中 857 个通过，
-唯一失败是本轮未改动的 Document Importer Mintlify `Steps` AST 旧断言，需由对应导入切片独立收口。
+浏览器节流、focus 与后端响应。当前仓库全量前端测试为 194 个文件、792 个用例，全部通过。
 
 ## 背景
 
@@ -78,7 +85,7 @@ GraphQL 三组契约及 urql 静态门禁通过；75 个后端 comment mutation 
 ```text
 SSR
   Next page/layout
-    -> getPagedPosts/getPost/getPagedComments
+    -> server GraphQL loaders
     -> gqFetch
     -> Phoenix GraphQL
     -> Valtio Provider initData
@@ -116,12 +123,17 @@ SSR 初始值还是 Valtio 中后续写入的数据。
   `QueryClient` 不是这层缓存的替代品。
 - 公共 SSR 默认不读取 Cookie 或 Header。用户特定状态在客户端到达后单独请求并
   合并到 view。
+- user-specific 数据统一进入 `Q.viewer` 命名空间；query key 使用 community、thread、
+  `innerId` 等稳定实体身份，不用列表 offset 定位。公共实体与 viewer state 只在 selector/hook
+  返回的渲染 view 中组合，不缓存第三份 ViewModel。
 - 默认文章列表由 SSR 输出并允许公共缓存；带筛选条件的文章列表在客户端请求，
   不再为了 filtered URL 将整个页面强制变成动态 SSR。
 - Query 成为已迁移 server state 的唯一客户端数据源。不得再把同一份 Query 数据
   镜像写入 Valtio。
 - Valtio 继续管理 UI state，例如弹窗、编辑器草稿、折叠状态、选中项和临时交互
   状态。本阶段只完成职责分层，不因 UI state 数量较少而额外引入 TanStack Store。
+- Dsb 已确认配置由 `Q.dsb.config` 持有；可编辑 Dash 的未保存字段、`original` 和 touched
+  由专用 `DsbEditStore` 持有。只读页面不再创建通用 Dsb Valtio store。
 - 可导航、可分享、刷新后需要恢复的页面状态由路由或 URL 管理。例如
   `isArticleLayout` 不应存入 Valtio：`/[community]/doc` 是 Doc cover，
   `/[community]/doc/[id]/[slug]` 是 Doc article，页面形态可直接由 route segment 推导。
@@ -139,12 +151,14 @@ SSR 初始值还是 Valtio 中后续写入的数据。
 - 重构与 Query 迁移无关的 Phoenix GraphQL schema；`createComment`/`replyComment` 为返回
   server-confirmed comment 与 article count 所需的窄 payload 调整属于本轮范围；
 - 修改 Auth Session、Cookie、refresh、`401` 或 `403` 合约；
+- 实现文章 collect 按钮、mutation 或 `viewerHasCollected` viewer state；
 - 默认将 user-specific 数据放入 SSR HTML；
 - 把所有 Valtio store 替换成 TanStack Store；
 - 在第一阶段引入 TanStack DB；
 - 拆分 `@groupher/rich-editor/style.css`；
 - 动态加载 CommunityDigest 的 Classic、Hero、Sidebar 布局；
-- 重构 Dashboard editing/demo store；
+- Dashboard editing/demo store 不在历史 urql Phase 中处理；本轮已按
+  [`dashboard_store_reorg.md`](./dashboard_store_reorg.md) 收口；
 - 重构 Wallpaper 编辑器/runtime。
 - 为 Kanban 卡片增加 upvote count/viewer state 和交互。当前 `groupedKanbanPosts` 不查询
   `upvotesCount` 或 viewer 字段，卡片上的 Upvote 仅为展示壳且没有 `onAction`；本轮接受该现状，
@@ -166,14 +180,14 @@ CommunityDigest 的布局动态加载曾导致 SSR 与 hydration 之间闪烁。
 
 迁移后每一层只负责一种状态：
 
-| 层               | 所有权                                             | 不负责                      |
-| ---------------- | -------------------------------------------------- | --------------------------- |
-| Phoenix          | 持久化后的业务真值、权限和计数                     | 浏览器 optimistic overlay   |
-| CDN / Vercel     | 可公开复用的 HTML/RSC 响应                         | 当前用户状态                |
-| Next `use cache` | 公共 GraphQL loader 的跨请求缓存                   | 浏览器 query freshness      |
-| TanStack Query   | 浏览器 server state、请求状态、hydration、mutation | 弹窗和编辑草稿              |
-| Valtio           | 本地 UI state、编辑状态、组件协作状态              | 已迁移的文章/评论服务端副本 |
-| Route / URL      | 页面形态、文章列表筛选、分页和可分享导航状态       | 查询结果本身                |
+| 层               | 所有权                                                              | 不负责                    |
+| ---------------- | ------------------------------------------------------------------- | ------------------------- |
+| Phoenix          | 持久化后的业务真值、权限和计数                                      | 浏览器 optimistic overlay |
+| CDN / Vercel     | 可公开复用的 HTML/RSC 响应                                          | 当前用户状态              |
+| Next `use cache` | 公共 GraphQL loader 的跨请求缓存                                    | 浏览器 query freshness    |
+| TanStack Query   | 浏览器 server state、请求状态、hydration、mutation、已确认 Dsb 配置 | 弹窗和未保存编辑值        |
+| Valtio           | 本地 UI state、Dsb 未保存字段、组件协作状态                         | 已确认的服务端数据副本    |
+| Route / URL      | 页面形态、文章列表筛选、分页和可分享导航状态                        | 查询结果本身              |
 
 原则：同一份数据在客户端只能有一个可写 owner。
 
@@ -204,7 +218,9 @@ Q.article.changelogs(filter)
 Q.article.detail(path)
 Q.article.tagGroups(community, thread)
 Q.comment.list(articlePath, filter)
-Q.viewer.articleStates(articleKeys)
+Q.viewer.session()
+Q.viewer.articleStates(viewerScope, articleRefs)
+Q.viewer.commentStates(viewerScope, articleRef, commentRefs)
 
 Q.SSR.article.posts(filter)
 Q.SSR.article.changelogs(filter)
@@ -294,7 +310,7 @@ const postsKey = ['article', 'posts', normalizedFilter]
 const changelogsKey = ['article', 'changelogs', normalizedFilter]
 const articleKey = ['article', 'detail', community, thread, innerId]
 const commentsKey = ['comment', 'list', community, thread, innerId, normalizedFilter]
-const viewerStateKey = ['viewer', viewerScope, 'article-state', articleKeys]
+const viewerStateKey = ['viewer', viewerScope, 'article-state', normalizedArticleRefs]
 ```
 
 规则：
@@ -304,8 +320,7 @@ const viewerStateKey = ['viewer', viewerScope, 'article-state', articleKeys]
 - 空字符串、`null` 和 `undefined` 不得为同一筛选语义制造多个 key；
 - filter 对象字段顺序由 factory 固定，业务组件不得手写对象 key；
 - mutation 可以使用 `['article', 'posts']` 前缀更新所有已加载列表；
-- viewer query 应包含稳定的 `viewerScope`，或在登录用户变化时清除所有 viewer
-  queries；
+- 所有用户实体 query 必须包含稳定的 `viewerScope`；登录用户变化时清除所有 viewer queries；
 - token、Cookie 和其他 secret 不得进入 query key。
 
 ## GraphQL transport
@@ -313,12 +328,12 @@ const viewerStateKey = ['viewer', viewerScope, 'article-state', articleKeys]
 TanStack Query 调用用户提供的 `queryFn`，不会自动把 GraphQL POST 变成 Next.js
 公共缓存请求。因此 transport 和 cache 必须分开设计。
 
-建议把现有服务端命名逐步收敛为：
+transport 收敛为三个明确边界：
 
 ```ts
 publicQuery(document, variables)
 authQuery(document, variables)
-browserQuery(document, variables)
+browserGraphQLRequest(document, variables, options)
 ```
 
 语义：
@@ -327,8 +342,11 @@ browserQuery(document, variables)
   loader 内；
 - `authQuery` 读取当前 request，只转发 canonical Groupher auth token，不能在
   `use cache` 内调用；
-- `browserQuery` 请求 same-origin `/api/graphql`，保留 CSRF header、Cookie、
-  demand-driven refresh 和一次 replay；
+- `browserGraphQLRequest` 以成熟的 `graphql-request` 作为标准 GraphQL transport，并用一层很薄的
+  Groupher adapter 请求 same-origin `/api/graphql`，统一 credentials、CSRF header、Cookie、
+  demand-driven refresh、一次 replay、错误形状和 `AbortSignal`；
+- 该 adapter 只负责传输，不拥有 cache、retry 或请求状态。query/mutation 生命周期全部由
+  TanStack Query 声明；不再维护功能重叠的自研 `browserQuery`；
 - GraphQL validation/business error 不自动重试；
 - query 的 network error 延续当前有上限的 retry；
 - mutation 默认不自动 retry，只有后端已经明确提供幂等 set-state 语义的 operation 才能逐项
@@ -396,7 +414,7 @@ Groupher 仍需维护：
 
 ```text
 业务组件
-  -> article/comment/dashboard 领域 hook/action
+  -> article/comment/dsb 领域 hook/action
   -> optimistic 生命周期
   -> article/comment/viewer cache helper
   -> QueryClient
@@ -470,7 +488,8 @@ Browser hydrate
   -> Q.article.posts(defaultFilter)
   -> 命中 dehydrated data
   -> staleTime 内不重复请求
-  -> Q.viewer.articleStates(visibleArticleKeys)
+  -> Q.viewer.session()
+  -> Q.viewer.articleStates(viewerScope, visibleArticleRefs)
   -> 将当前用户状态合并进 view
 ```
 
@@ -515,8 +534,6 @@ type ArticleViewerState = {
   articleKey: string
   viewerHasViewed?: boolean
   viewerHasUpvoted?: boolean
-  viewerHasCommented?: boolean
-  emotions?: ViewerEmotionState[]
 }
 ```
 
@@ -524,9 +541,94 @@ UI 组合它们，但不把 viewer state 写回公共 SSR query：
 
 ```text
 public article query ───────┐
-                            ├─> ArticleViewModel -> UI
+                            ├─> selector/hook 返回 render view -> UI
 viewer article state query ┘
 ```
+
+这里的 render view 不是另一个 Query model，也不会写回 cache。组合必须先校验 canonical identity：
+
+```text
+articleKey = community + thread + innerId
+viewerByArticleKey[articleKey]
+  -> key 完全匹配时，只覆盖 viewer-owned 字段
+  -> 不匹配或缺失时，viewer 字段保持 undefined
+```
+
+禁止按可见列表 offset 合并；分页、排序、过滤或后台 refetch 后 offset 都可能变化。公共字段
+（标题、作者、公开计数等）始终来自 public query，viewer query 不能顺带覆盖它们。
+
+viewer state 的 fetch 也必须以实体身份为输入，不能只是把分页结果转换成 keyed record：
+
+```ts
+type TArticleRef = {
+  community: string
+  thread: TThread
+  innerId: string
+}
+
+Q.viewer.articleStates(viewerScope, articleRefs)
+Q.viewer.commentStates(viewerScope, articleRef, commentRefs)
+```
+
+后端提供按 refs 批量查询 viewer state 的 operation。Query factory 对 refs 排序、去重，并让同一组
+refs 同时决定 query key 和 request variables。最终 key 不包含 list filter、page、mode 或 offset；
+`viewerScope` 是所有用户实体 query key 的必需部分，且只能是非 secret 的稳定账号 scope。
+
+### Viewer batch GraphQL 合同
+
+目标 operation 固定为 `articleViewerStates` 和 `commentViewerStates`：
+
+```graphql
+query ArticleViewerStates($refs: [ArticleRefInput!]!) {
+  articleViewerStates(refs: $refs) {
+    community
+    thread
+    innerId
+    viewerHasViewed
+    viewerHasUpvoted
+  }
+}
+
+query CommentViewerStates($article: ArticleRefInput!, $commentInnerIds: [ID!]!) {
+  commentViewerStates(article: $article, commentInnerIds: $commentInnerIds) {
+    innerId
+    viewerHasUpvoted
+    viewerHasReported
+    emotions {
+      type
+      viewerHasReacted
+    }
+  }
+}
+```
+
+合同约束：
+
+- `ArticleRefInput` 只包含 `community`、`thread`、`innerId`；
+- 单个 GraphQL request 最多接受 100 个 article refs 或 comment ids，超过上限返回 GraphQL
+  validation error；
+- Query factory 对完整 refs 排序、去重并生成一个 query key；queryFn 再按 100 条自动分片、并行请求
+  并按 canonical identity 合并，业务组件不感知分片；
+- 任一分片失败时整个 Query 失败，不返回可能被误认为完整结果的部分 record；
+- 服务端从 auth session 确定 viewer，`viewerScope` 只进入客户端 query key，不作为 GraphQL variable；
+- 未登录时在发起分片请求前直接返回空 record；服务端收到无有效 session 的请求也返回空数组，
+  不返回身份业务错误；客户端将缺失 viewer state 保持为 unknown。
+- 输入在客户端排序、去重；服务端输出顺序不承担语义；
+- article 输出以 `community + thread + innerId` 标识实体，comment 输出结合请求中的 article ref 与
+  `innerId` 标识实体；
+- response 只包含 identity 和 viewer-owned fields，不返回或覆盖 public aggregate；
+- article viewer batch 本轮只实现 `viewerHasViewed` 和 `viewerHasUpvoted`；前端 collect、
+  `viewerHasCollected`、`viewerHasCommented` 和 article emotions 均不在本轮范围；
+- `articleStates`、`changelogStates`、`articleState`、`commentStates` 全部由 batch operation 替换，
+  并删除对应旧 queryFn、query key 和 GraphQL documents；不保留共存或 fallback；
+- `ArticleQueryProvider` 使用 `Q.viewer.articleStates(viewerScope, [articleRef])`，再按 canonical
+  articleKey 从 record 读取单实体 viewer state；
+- `commentSummary` 及其 `isViewerJoined`、total/participants summary 保留，不属于 batch
+  viewer-state 合同。
+
+评论 viewer batch 的输入 ID 由 `gatherCommentViewerIds` 产生：它递归遍历 public comment graph
+中的 entries、replies 和 replyToComment，并按 innerId 去重。该命名表示“聚合查询 ID”，不是收藏
+功能；article collect/收藏仍明确不在本轮范围。
 
 评论本身是独立实体和列表，不应作为一个布尔字段塞进
 `ArticleViewerState`。评论上的 upvote/emotion 也以 comment key 为作用域；如果未来
@@ -536,29 +638,21 @@ DB。
 
 ### Comment 浏览器 cache 的字段所有权
 
-当前 `Q.comment.list` 的 GraphQL fragment 无条件请求 `viewerHasUpvoted`、
-`viewerHasReported` 和 `emotions.viewerHasReacted`。浏览器 transport 带 Cookie，因此浏览器
-list response 可能包含当前用户字段；这属于 per-user 内存 cache，不是公共缓存泄漏。只有 SSR
-进入公共跨请求缓存和 dehydration 前会裁剪 viewer 字段。
+当前 `Q.comment.list` 和 Community SSR loader 都使用 `PublicPagedComments` selection，结构上不再
+请求 `viewerHasUpvoted`、`viewerHasReported` 或 `emotions.viewerHasReacted`。因此公共 Query cache
+和 dehydration 不依赖运行时递归裁剪；`Q.viewer.commentStates` 是浏览器私有 viewer 字段的唯一
+owner。组件不能直接从 list response 读取 viewer 字段。
 
-但“response 中存在”不等于“拥有该字段”。Phase 8 将 viewer comment-state query 设为浏览器
-私有字段的唯一 owner，并明确选择在 queryFn 返回、写入 Query cache 前裁剪，而不是要求每个
-reader 自觉忽略。把 SSR runtime 中现有的递归裁剪逻辑提取为共享、transport-neutral 的
-`stripCommentViewerState`，同时供 `Q.comment.list` browser queryFn 与 SSR loader 使用，使 comment
-list cache 在结构上不含 viewer fields。组件不能直接读取原始 response 中的 viewer 字段。
-共享 helper 落在两端都可安全导入的中立模块，例如
-`frontend/core/lib/commentViewerState.ts`（`~/lib/commentViewerState`）。它必须是纯数据转换，不能
-导入 `~/app/ssr/runtime.ts`、`server-only`、Next cache API 或 browser transport。server-only 的
-SSR loader 继续位于 `~/app/ssr/runtime.ts`，browser queryFn 继续位于 `~/query/comment.ts`；依赖
-方向只能是两端分别导入中立 helper，客户端模块绝不能反向导入 SSR runtime。
+`stripCommentViewerState` 只在 create/reply/update 等可能返回混合 CommentFields 的 mutation response
+边界保留，用于保证写入公共 list cache 前移除 viewer-owned 字段。旧的 paged strip/extract helper
+如果没有生产 caller，应按
+[`query_store_boundary_hardening.md#phase-b3退出兼容层并缩小订阅`](./query_store_boundary_hardening.md#phase-b3退出兼容层并缩小订阅)
+删除，不能继续让文档暗示 public list 依赖“先请求私有字段、再裁剪”的双重合同。
 
-`Q.viewer.commentStates` 是另一条私有 queryFn：它必须直接读取 `browserQuery` 返回的原始、未裁剪
-鉴权 response，再规范化为 `TCommentViewerStates`。它可以复用 GraphQL document/transport，但不能
-复用 `Q.comment.list` 已裁剪后的 Query data，也不能在提取 flags 前调用
-`stripCommentViewerState`。
-helper 必须遍历 comment graph 中所有承载 `CommentFields` 的路径：当前至少包括 `replies` 和
-`replyToComment`。不能只沿 `replies` 递归；`replyToComment.emotions.viewerHasReacted`、
-`viewerHasUpvoted` 和 `viewerHasReported` 同样必须被裁剪。
+`Q.viewer.commentStates` 必须直接读取自己的鉴权 response，再规范化为
+`TCommentViewerStates`，不能复用 `Q.comment.list` 的公共 Query data。它的输入 ID 由
+`gatherCommentViewerIds` 递归遍历 entries、`replies` 和 `replyToComment` 产生；不能只收集顶层
+entry 或只沿 `replies` 递归。
 组合规则固定为：
 
 - `upvotesCount`、emotion `count`、`latestUsers` 等 aggregate 永远来自 comment list query；
@@ -741,8 +835,8 @@ community:      community
 
 其中 tag stats 已由 `Q.article.tagStats` 持有；tag groups 在 Phase 8 新增
 `Q.article.tagGroups(community, thread)` 与同 key 的 `Q.SSR.article.tagGroups`，由页面 SSR
-prefetch/dehydrate，`useActiveTag` 直接从 Query 读取。完成 consumer 切换后，删除页面
-`getTagGroups -> initData -> ArticleListStoreProvider.tagGroups` 的 server-state 注入。
+prefetch/dehydrate，`useActiveTag` 直接从 Query 读取。完成 consumer 切换后，删除页面通过
+`initData -> ArticleListStoreProvider.tagGroups` 注入 server state 的链路。
 
 同时删除两类遗留：
 
@@ -817,8 +911,10 @@ TanStack Store。
 ### 其他 Valtio server state
 
 - ArticleStore 的 article detail 已完全剥离，目前 Provider 只承担 Doc 页面本地 UI state；
-- Dashboard store 不再持有 overview、CMS article/community list 等只读 Query 结果。配置表单的
-  当前值、`original/touched`、拖拽排序和编辑草稿仍是本地 working copy，因此继续由 Valtio 持有；
+- Dashboard store 不再持有 overview、CMS article/community list 等只读 Query 结果；`Q.dsb.config`
+  持有已确认配置，只有可编辑 Dash route 创建 `DsbEditStore`，直接持有当前编辑字段、`original/touched`
+  和拖拽结果；不存在额外 `.draft` 或通用只读 `DsbStore`。具体 reconcile 与保存边界见
+  [`dashboard_store_reorg.md`](./dashboard_store_reorg.md)；
 - Account Valtio store 已删除。SSR account 数据只作为 Query initial data，浏览器 probe 与 logout
   直接更新同一个 query key，不再经过 Query -> effect -> Valtio 镜像；
 - 无调用者且仍声明 article/community 等服务端字段的 legacy Viewing store 已删除。
@@ -861,7 +957,8 @@ commentViewerStatesCollection
 ## 依赖与 bundle 结论
 
 TanStack Query 取代的是 urql 的 React Provider、hooks 和 cache runtime，不取代 GraphQL
-transport。完全迁移后仍保留 typed documents/codegen、`graphql`/`print`、`browserQuery`、
+transport。完全迁移后仍保留 typed documents/codegen、`graphql`/`print`、由
+`graphql-request` 支撑的 `browserGraphQLRequest`、
 SSR `publicQuery` 和 request-aware `authQuery`。
 
 基于仓库当前版本，使用 esbuild、browser ESM、ES2022、minify、React external 和 gzip `-9`
@@ -949,7 +1046,7 @@ Main、Dashboard 与 Dash 均已退出 urql。根依赖中的 `urql`、`@urql/co
 - 确认 Dashboard/Dash 专属模块不会因 Core barrel 被带入 Main；
 - 在 Main 依赖图中不存在 urql consumer 后，移除 Main 的 GraphQLProvider。
 
-完成标准：Main 首屏不再加载 urql runtime；Dashboard/Dash 尚未迁移的功能不受影响。
+完成标准：Main 首屏不再加载 urql runtime；Dashboard/Dash 已迁移的功能保持原有产品语义。
 
 ### Phase 6：清理与性能验收（已完成）
 
@@ -995,7 +1092,7 @@ Main、Dashboard 与 Dash 均已退出 urql。根依赖中的 `urql`、`@urql/co
   cache/dehydration 前递归裁剪 viewer fields，使 comment list cache 结构上只有 public-owned
   fields；helper 必须同时递归 `replies` 与 `replyToComment`，修复当前 SSR runtime 只处理
   `replies` 的缺口；helper 放在 client/server 都能导入的 `~/lib/commentViewerState` 中立模块，
-  禁止 `~/query/comment.ts` 依赖 `~/app/ssr/runtime.ts`；
+  禁止 `frontend/core/query/comment.ts` 依赖 `frontend/community/src/server/community.ts`；
 - viewer comment-state query 返回明确的 `TCommentViewerStates` 契约；emotions 按 `type` 只
   overlay `viewerHasReacted`，公共 `count`/`latestUsers` 永远来自 comment list，禁止数组整体覆盖；
   `Q.viewer.commentStates` 直接消费未裁剪的 authenticated browser response，不能复用已裁剪的
@@ -1110,7 +1207,7 @@ wrapper、过渡 `~/hooks/useQuery` 或依赖；ArticleList/Comments Valtio stor
   `viewerKeys.commentStates`；本轮不要求 report optimistic；
 - `TCommentViewerStates` 只含 upvote/report flags 和按 emotion type 的 reaction flags，不含公共
   emotion count/latestUsers；
-- `Q.viewer.commentStates` 能从未裁剪 response 提取 view model 所需的 root/reply viewer flags，
+- `Q.viewer.commentStates` 能从未裁剪 response 提取 render view 所需的 root/reply viewer flags，
   且不读取已裁剪的 `Q.comment.list` cache；
 - comment merge 中公共 count/latestUsers 以 list query 为准，viewer flags 以 viewer query 为准；
 - emotion merge 按 type overlay `viewerHasReacted`，旧 viewer emotions 不得覆盖 optimistic count；
@@ -1168,15 +1265,20 @@ Server Component 与 Client Query 中分别长期展示同一份可变化数据�
 
 ### 公共缓存被身份污染
 
-`Q.SSR` 默认只能调用 public loader。任何调用 `headers()`、Cookie 或 `authQuery`
-的 query 必须位于明确的 request-aware 动态边界，不能进入 `use cache`。
+`Q.SSR` 默认只能调用 public loader。公共 Community route 必须从 GraphQL selection 开始就排除
+account、subscription 和全部 viewer 字段；不能因为入站请求恰好带 Cookie 就把公共 loader 标记为
+private。真正调用 `headers()`、Cookie 或 `authQuery` 的 query 必须位于明确的 request-aware 动态
+边界，不能进入 `use cache`。
+
+theme 不作为 SSR 用户数据：公共 SSR 输出稳定默认 theme，现有 pre-paint script 在 hydration 前从
+浏览器可读 cookie/`prefers-color-scheme` 应用用户 theme。服务端不读取 theme cookie 来改变公共
+HTML；本轮已落实这一边界，发布后仍需复验实际响应。
 
 ### 全应用迁移的回归面
 
-Dashboard/Dash 的 CMS、Docs editor、Assets、Passport、Theme、Analytics 等 consumer 不能只做
-机械 transport 替换。按领域建立 query key、mutation invalidation 和测试，并逐个应用验证
-production reachability。迁移期间根依赖暂留；Phase 8 完成后不允许以“另一个应用还在用”为由
-保留 urql。
+Dashboard/Dash 的 CMS、Docs editor、Assets、Passport、Theme、Analytics 等 consumer 已按领域
+接入 query key、mutation invalidation 和测试；根依赖不再保留 urql。发布后仍需验证真实 URL 的
+reachability 和缓存行为。
 
 ### 把 TanStack DB 当成本地持久数据库
 

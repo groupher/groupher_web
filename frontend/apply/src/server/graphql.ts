@@ -31,7 +31,7 @@ export const requestGraphQL = async <T>(
 ): Promise<T> => {
   setResponseHeader('cache-control', 'private, no-store')
   const token = readToken(getRequest().headers.get('cookie'))
-  const endpoint = process.env.GRAPHQL_ENDPOINT || 'http://127.0.0.1:4001/graphiql'
+  const endpoint = process.env.GRAPHQL_ENDPOINT || LOCAL_PHOENIX_GRAPHQL_ENDPOINT
   const response = await fetch(endpoint, {
     method: 'POST',
     cache: 'no-store',
@@ -59,3 +59,4 @@ export const requestGraphQL = async <T>(
   if (!payload.data) throw new GraphQLRequestError('GraphQL response did not include data.')
   return payload.data
 }
+import { LOCAL_PHOENIX_GRAPHQL_ENDPOINT } from '@groupher/contracts/endpoint'

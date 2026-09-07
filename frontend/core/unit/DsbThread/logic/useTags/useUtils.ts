@@ -1,50 +1,128 @@
-import type { ResultOf, VariablesOf } from '@graphql-typed-document-node/core'
+import type { VariablesOf } from '@graphql-typed-document-node/core'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
 
 import { COLOR } from '~/const/colors'
 import { THREAD } from '~/const/thread'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
+import { Q, articleKeys } from '~/query'
 import type { TColorName, TTag, TTagGroup, TThread } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
+import { useTagEditorUi } from '~/stores/dsbEditorUi/hooks'
 import S from '~/unit/DsbThread/schema/tags'
 import { slugify } from '~/utils/slug'
 
-type TCommunityTagGroupsResult = ResultOf<typeof S.communityTagGroups>
 type TUpdateCommunityTagVariables = VariablesOf<typeof S.updateCommunityTag>
 
 type TRet = {
   loadTags: (thread?: TThread) => void
+  loading: boolean
   createGroup: (title: string) => Promise<void>
   createTag: (title: string, groupId: string, color?: TColorName) => Promise<void>
   updateTag: (tag: TTag) => Promise<void>
   renameGroup: (groupId: string, toGroup: string) => Promise<void>
   commitTagSorting: (tagGroups: TTagGroup[]) => void
+  saving: boolean
 }
 
 /** Exposes utils state and actions through the shared React hook boundary. */
 export default function useUtils(): TRet {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
+  const tagUi$ = useTagEditorUi()
   const community$ = useCommunity()
+  const queryClient = useQueryClient()
+  const [loading, setLoading] = useState(false)
 
-  const { original } = dsb$
+  const invalidateTags = (thread: TThread): void => {
+    void queryClient.invalidateQueries({ queryKey: articleKeys.tagGroups(community$.slug, thread) })
+  }
+  const confirmTagGroups = (tagGroups: readonly TTagGroup[]): void => {
+    const confirmed = { tagGroups }
+    dsb$.reconcile({ fields: ['tagGroups'], submitted: confirmed, confirmed })
+  }
+  const createGroupMutation = useMutation({
+    mutationKey: ['dsb', 'tag-group-create', community$.slug],
+    mutationFn: ({ title, thread }: { title: string; thread: TThread }) =>
+      browserGraphQLRequest(S.createCommunityTagGroup, {
+        thread,
+        title,
+        community: community$.slug,
+      }),
+    onSuccess: (_data, { thread }) => {
+      invalidateTags(thread)
+    },
+  })
+  const createTagMutation = useMutation({
+    mutationKey: ['dsb', 'tag-create', community$.slug],
+    mutationFn: (input: {
+      thread: TThread
+      title: string
+      slug: string
+      layout: null
+      groupId: string
+      color: TColorName
+    }) => browserGraphQLRequest(S.createCommunityTag, { ...input, community: community$.slug }),
+    onSuccess: (_data, { thread }) => {
+      invalidateTags(thread)
+    },
+  })
+  const updateTagMutation = useMutation({
+    mutationKey: ['dsb', 'tag-update', community$.slug],
+    mutationFn: async ({ tag, thread }: { tag: TTag; thread: TThread }) => {
+      const title = tag.title.trim()
+      const slug = await slugify(title)
+      const nextTag = { ...tag, title, slug }
+      await browserGraphQLRequest<unknown, TUpdateCommunityTagVariables>(S.updateCommunityTag, {
+        ...nextTag,
+        id: tag.id,
+        community: community$.slug,
+      } as TUpdateCommunityTagVariables)
+      return { nextTag, thread }
+    },
+    onSuccess: ({ nextTag, thread }) => {
+      invalidateTags(thread)
+      const updatedTagGroups = dsb$.tagGroups.map((group) => ({
+        ...group,
+        tags: group.tags.map((item) => (item.id === nextTag.id ? nextTag : item)),
+      }))
+      confirmTagGroups(updatedTagGroups)
+      tagUi$.patch({ editingTag: null })
+    },
+  })
+  const renameGroupMutation = useMutation({
+    mutationKey: ['dsb', 'tag-group-update', community$.slug],
+    mutationFn: ({ groupId, title, thread }: { groupId: string; title: string; thread: TThread }) =>
+      browserGraphQLRequest(S.updateCommunityTagGroup, {
+        id: groupId,
+        community: community$.slug,
+        thread,
+        title,
+      }),
+    onSuccess: (_data, { thread }) => {
+      invalidateTags(thread)
+    },
+  })
 
   const loadTags = (activeThread: TThread = THREAD.POST): void => {
     const community = community$.slug
     const thread = activeThread
 
-    const params = { community, thread }
-
-    dsb$.commit({ loading: true })
-    browserQuery(S.communityTagGroups, params).then((data) => {
-      const tagGroups = (data.communityTagGroups ?? []).map((group) => ({
-        ...group,
-        tags: (group.tags ?? []).map((tag) => ({
-          ...tag,
-          thread: tag.thread as TThread,
-        })),
-      })) as TCommunityTagGroupsResult['communityTagGroups'] as TTagGroup[]
-      dsb$.commit({ tagGroups, original: { ...original, tagGroups }, loading: false })
-    })
+    setLoading(true)
+    void queryClient
+      .fetchQuery(Q.article.tagGroups(community, thread))
+      .then((tagGroups) => {
+        const normalizedTagGroups = tagGroups.map((group) => ({
+          ...group,
+          tags: group.tags.map((tag) => ({
+            ...tag,
+            thread: tag.thread as TThread,
+          })),
+        }))
+        confirmTagGroups(normalizedTagGroups)
+      })
+      .catch((error) => console.error('## load tag groups error: ', error))
+      .finally(() => setLoading(false))
   }
 
   const createGroup = async (title: string): Promise<void> => {
@@ -54,18 +132,8 @@ export default function useUtils(): TRet {
 
     if (!trimmedTitle) return
 
-    dsb$.commit({ saving: true })
-
-    try {
-      await browserQuery(S.createCommunityTagGroup, {
-        thread,
-        title: trimmedTitle,
-        community: community$.slug,
-      })
-      loadTags(thread)
-    } finally {
-      dsb$.commit({ saving: false })
-    }
+    await createGroupMutation.mutateAsync({ title: trimmedTitle, thread })
+    loadTags(thread)
   }
 
   const createTag = async (
@@ -79,25 +147,18 @@ export default function useUtils(): TRet {
 
     if (!trimmedTitle || !groupId) return
 
-    dsb$.commit({ saving: true })
+    const slug = await slugify(trimmedTitle)
 
-    try {
-      const slug = await slugify(trimmedTitle)
+    await createTagMutation.mutateAsync({
+      thread,
+      title: trimmedTitle,
+      slug,
+      layout: null,
+      color,
+      groupId,
+    })
 
-      await browserQuery(S.createCommunityTag, {
-        thread,
-        title: trimmedTitle,
-        slug,
-        layout: null,
-        color,
-        groupId,
-        community: community$.slug,
-      })
-
-      loadTags(thread)
-    } finally {
-      dsb$.commit({ saving: false })
-    }
+    loadTags(thread)
   }
 
   const updateTag = async (tag: TTag): Promise<void> => {
@@ -105,40 +166,15 @@ export default function useUtils(): TRet {
 
     if (!tag.id || !title) return
 
-    dsb$.commit({ saving: true })
-
-    try {
-      const slug = await slugify(title)
-      const nextTag = { ...tag, title, slug }
-
-      await browserQuery<unknown, TUpdateCommunityTagVariables>(S.updateCommunityTag, {
-        ...nextTag,
-        id: tag.id,
-        community: community$.slug,
-      } as TUpdateCommunityTagVariables)
-
-      const updatedTagGroups = dsb$.tagGroups.map((group) => ({
-        ...group,
-        tags: group.tags.map((item) => (item.id === tag.id ? nextTag : item)),
-      }))
-
-      dsb$.commit({
-        tagGroups: updatedTagGroups,
-        editingTag: null,
-        original: { ...dsb$.original, tagGroups: updatedTagGroups },
-      })
-    } finally {
-      dsb$.commit({ saving: false })
-    }
+    await updateTagMutation.mutateAsync({ tag, thread: dsb$.activeTagThread || THREAD.POST })
   }
 
   const commitTagSorting = (tagGroups: TTagGroup[]): void => {
-    dsb$.commit({ tagGroups })
+    dsb$.editMany({ tagGroups })
   }
 
   const renameGroup = async (groupId: string, toGroup: string): Promise<void> => {
     const { activeTagThread, tagGroups } = dsb$
-    const community = community$.slug
     const trimmedGroup = toGroup.trim()
     const targetGroup = tagGroups.find((group) => group.id === groupId)
 
@@ -146,41 +182,37 @@ export default function useUtils(): TRet {
       return
     }
 
-    dsb$.commit({ saving: true })
+    await renameGroupMutation.mutateAsync({
+      groupId,
+      thread: activeTagThread,
+      title: trimmedGroup,
+    })
 
-    try {
-      await browserQuery(S.updateCommunityTagGroup, {
-        id: groupId,
-        community,
-        thread: activeTagThread,
-        title: trimmedGroup,
-      })
+    const updatedGroups = tagGroups.map((group) =>
+      group.id === groupId
+        ? {
+            ...group,
+            title: trimmedGroup,
+            tags: group.tags.map((tag) => ({ ...tag, group: trimmedGroup })),
+          }
+        : group,
+    )
 
-      const updatedGroups = tagGroups.map((group) =>
-        group.id === groupId
-          ? {
-              ...group,
-              title: trimmedGroup,
-              tags: group.tags.map((tag) => ({ ...tag, group: trimmedGroup })),
-            }
-          : group,
-      )
-
-      dsb$.commit({
-        tagGroups: updatedGroups,
-        original: { ...dsb$.original, tagGroups: updatedGroups },
-      })
-    } finally {
-      dsb$.commit({ saving: false })
-    }
+    confirmTagGroups(updatedGroups)
   }
 
   return {
     loadTags,
+    loading,
     createGroup,
     createTag,
     updateTag,
     renameGroup,
     commitTagSorting,
+    saving:
+      createGroupMutation.isPending ||
+      createTagMutation.isPending ||
+      updateTagMutation.isPending ||
+      renameGroupMutation.isPending,
   }
 }

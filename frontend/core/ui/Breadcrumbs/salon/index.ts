@@ -6,10 +6,10 @@ export { cn } from '~/css'
 type TProps = TSpace
 
 export default function useSalon({ ...spacing }: TProps) {
-  const { cn, cnMerge, fg, margin, hover } = useTwBelt()
+  const { cn, fg, margin, hover } = useTwBelt()
 
   return {
-    wrapper: cnMerge('mb-2.5', margin(spacing)),
+    wrapper: cn('mb-2.5', margin(spacing)),
     li: 'row-center group',
     itemGroup: 'row-center',
     item: 'text-xs py-0.5 px-1',

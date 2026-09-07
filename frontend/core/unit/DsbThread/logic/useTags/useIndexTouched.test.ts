@@ -9,7 +9,7 @@ const dashboardMock = vi.hoisted(() => ({
   originalTagGroups: [] as TTagGroup[],
 }))
 
-vi.mock('~/stores/dsb/hooks', () => ({
+vi.mock('~/stores/dsbEdit/hooks', () => ({
   default: () => ({
     tagGroups: dashboardMock.tagGroups,
     original: { tagGroups: dashboardMock.originalTagGroups },

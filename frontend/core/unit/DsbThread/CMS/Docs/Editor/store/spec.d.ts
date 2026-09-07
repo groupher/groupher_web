@@ -3,8 +3,8 @@ import type { TRichEditorValue } from '@groupher/rich-editor'
 import type { TArticleStage } from '~/const/article'
 
 import type { TDocDraftInitialData } from '../Article/spec'
-import type { TDocEditorMode } from '../constant'
 import type { TDocTreeNodePublishState, TSideTreeController } from '../SideTree/spec'
+import type { TDocEditorMode } from '../spec'
 
 export type TDocSaveStatus = 'idle' | 'dirty' | 'saving' | 'saved' | 'error'
 export type TDocPublishChecklistStatus = 'checking' | 'pending' | 'none'

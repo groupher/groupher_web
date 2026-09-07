@@ -1,3 +1,4 @@
+import { AUTH_ERROR } from '@groupher/contracts/auth'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import {
@@ -8,6 +9,7 @@ import {
   buildPhoenixTokenCookie,
   buildSignedInHintCookie,
   createAuthRequestHandler,
+  normalizePhoenixErrorCode,
   PhoenixBrowserSessionError,
   refreshBrowserSession,
   toCanonicalAuthRequest,
@@ -45,7 +47,7 @@ describe('Auth core integration', () => {
         return Response.json({
           errors: [
             {
-              extensions: { code: 'SESSION_REVOKED' },
+              extensions: { code: AUTH_ERROR.SESSION_REVOKED },
               message: 'Browser Session revoked.',
             },
           ],
@@ -54,9 +56,23 @@ describe('Auth core integration', () => {
     )
 
     await expect(refreshBrowserSession('bs_revoked')).rejects.toMatchObject({
-      code: 'SESSION_REVOKED',
+      code: AUTH_ERROR.SESSION_REVOKED,
       name: 'PhoenixBrowserSessionError',
     } satisfies Partial<PhoenixBrowserSessionError>)
+  })
+
+  it.each([
+    [4018, AUTH_ERROR.SERVICE_TOKEN_INVALID],
+    [4019, AUTH_ERROR.SERVICE_TOKEN_INVALID],
+    [4020, AUTH_ERROR.SERVICE_TOKEN_INVALID],
+    [4021, AUTH_ERROR.SERVICE_JWKS_UNAVAILABLE],
+    [4022, AUTH_ERROR.SERVICE_TOKEN_INVALID],
+  ] as const)('normalizes unambiguous legacy Phoenix code %i', (code, expected) => {
+    expect(normalizePhoenixErrorCode(code)).toBe(expected)
+  })
+
+  it.each([4017, 4023, 4102])('does not guess the meaning of legacy Phoenix code %i', (code) => {
+    expect(normalizePhoenixErrorCode(code)).toBeUndefined()
   })
 
   it('normalizes internal Hono requests to the canonical OAuth origin', () => {

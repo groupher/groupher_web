@@ -9,7 +9,7 @@ export default function useSalon() {
     title: cn('text-sm mb-5', fg('digest')),
     grid: 'grid w-full grid-cols-7 gap-4',
     card: 'h-40 w-full',
-    preview: 'block s-full rounded-md',
+    preview: 'wallpaper-pattern-preview block s-full rounded-md',
     toggleSlot: 'h-40 row-center',
     toggle: cn(
       toggleBase,

@@ -7,6 +7,8 @@ export default {
   'dsb.appearance.layout': 'Layout',
   'dsb.appearance.theme': 'Theme',
   'dsb.appearance.wallpaper': 'Wallpaper',
+  'dsb.appearance.wallpaper.unsaved_confirm':
+    'You have unsaved wallpaper changes. Leave without saving?',
   'dsb.appearance.post': 'Posts',
   'dsb.appearance.kanban': 'Kanban',
   'dsb.appearance.changelog': 'Changelog',

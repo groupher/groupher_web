@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { proxy, useSnapshot } from 'valtio'
 
 import { ARTICLE_CAT } from '~/const/gtd'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import type { TArticleCat, TCommunity, TEditMode, TGroupedTags, TSubmitState, TTag } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
 import { isWordsCountValid } from '~/ui/WordsCounter/helper'
@@ -135,7 +135,7 @@ export default function useLogic(): TRet {
     const params = { slug }
     // console.log('## loadCommunity: ', params)
 
-    browserQuery(S.community, params).then((res) => {
+    browserGraphQLRequest(S.community, params).then((res) => {
       console.log('## loadCommunity: ', res)
     })
   }
@@ -145,7 +145,7 @@ export default function useLogic(): TRet {
     // const { thread, viewingArticle } = store
     // const { id } = viewingArticle
 
-    // sr71$.browserQuery(S[thread], { id })
+    // sr71$.browserGraphQLRequest(S[thread], { id })
   }
 
   const reset = (): void => {

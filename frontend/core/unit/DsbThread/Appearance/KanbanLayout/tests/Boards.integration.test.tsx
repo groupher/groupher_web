@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { KANBAN_BOARD } from '~/const/thread'
 import { makeStoreWrapper } from '~/hooks/__test__/makeStoreWrapper'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import useKanban from '../../../logic/useKanban'
 import Boards from '../Boards'
@@ -22,18 +22,14 @@ vi.mock('~/hooks/useTrans', () => ({
   }),
 }))
 
-vi.mock('~/hooks/useDsbDemoMode', () => ({
-  default: () => false,
-}))
-
 vi.mock('~/hooks/useDsbTab', () => ({
   default: () => ({ subTab: 'basic' }),
 }))
 
-vi.mock('~/graphql/client', () => ({ browserQuery: vi.fn() }))
+vi.mock('~/graphql/client', () => ({ browserGraphQLRequest: vi.fn() }))
 
 function Probe() {
-  const { kanbanBoards, original } = useDsb()
+  const { kanbanBoards, original } = useDsbEdit()
   const { isKanbanBoardsTouched } = useKanban()
 
   return (
@@ -49,6 +45,7 @@ describe('<Boards /> integration', () => {
       dashboard: {
         kanbanBoards: [KANBAN_BOARD.TODO, KANBAN_BOARD.WIP, KANBAN_BOARD.DONE],
       },
+      dsbEdit: true,
     })
 
     render(
@@ -77,6 +74,7 @@ describe('<Boards /> integration', () => {
       dashboard: {
         kanbanBoards: [KANBAN_BOARD.TODO, KANBAN_BOARD.WIP, KANBAN_BOARD.DONE],
       },
+      dsbEdit: true,
     })
 
     render(

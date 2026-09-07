@@ -1,14 +1,28 @@
+import { loadCommunityRequestContext } from '@community/server/community'
 import { loadThemeSeed } from '@community/server/theme'
-import { prePaintRuntimeSeedScript, prePaintThemeDetectScript } from '@community/utils/first-paint'
+import {
+  HeadContent,
+  Outlet,
+  Scripts,
+  createRootRouteWithContext,
+  notFound,
+} from '@tanstack/react-router'
 
 import '../../../core/tailwind/global.css'
-import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
+
+import { prePaintRuntimeSeedScript, prePaintThemeDetectScript } from '~/lib/ssr/script'
 
 import type { TRouterContext } from '../router-context'
 
 export const Route = createRootRouteWithContext<TRouterContext>()({
-  loader: async () => ({ theme: await loadThemeSeed(), renderedAt: Date.now() }),
+  loader: async () => {
+    const [theme, requestContext] = await Promise.all([
+      loadThemeSeed(),
+      loadCommunityRequestContext(),
+    ])
+    return { theme, renderedAt: Date.now(), directOriginPage: requestContext.directOriginPage }
+  },
   head: () => ({
     meta: [
       { charSet: 'utf-8' },
@@ -20,6 +34,8 @@ export const Route = createRootRouteWithContext<TRouterContext>()({
 })
 
 function RootComponent() {
+  const { directOriginPage } = Route.useLoaderData()
+  if (directOriginPage) throw notFound()
   return <Outlet />
 }
 

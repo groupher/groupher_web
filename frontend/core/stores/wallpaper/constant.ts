@@ -12,30 +12,34 @@ import type { TWallpaperState, TWallpaperThemeState } from './spec'
 
 export const WALLPAPER_THEME_STATE_KEYS = [
   'customWallpaper',
+  'assetPublicRef',
+  'staticAssetPublicRef',
   'source',
   'type',
   'pattern',
-  'contentShadow',
   'effect',
   'gradient',
   'texture',
 ] as const
 
 export const WALLPAPER_SAVABLE_THEME_STATE_KEYS = [
+  'customWallpaper',
+  'assetPublicRef',
+  'staticAssetPublicRef',
   'source',
   'type',
   'pattern',
-  'contentShadow',
   'effect',
   'gradient',
   'texture',
 ] as const
 
 export const WALLPAPER_STATE_KEYS = ['light', 'dark'] as const
-export const WALLPAPER_SAVABLE_STATE_KEYS = ['light', 'dark'] as const
 
 export const INITIAL_WALLPAPER_THEME_STATE = {
   customWallpaper: null,
+  assetPublicRef: null,
+  staticAssetPublicRef: null,
   source: 'amber_mauve',
   type: WALLPAPER_TYPE.GRADIENT,
   pattern: {
@@ -43,9 +47,6 @@ export const INITIAL_WALLPAPER_THEME_STATE = {
     id: DEFAULT_WALLPAPER_PATTERN_ID,
     intensity: 50,
     tone: WALLPAPER_PATTERN_TONE.DARK,
-  },
-  contentShadow: {
-    enabled: false,
   },
   gradient: GRADIENT_WALLPAPER.amber_mauve,
   effect: {

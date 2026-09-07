@@ -1,12 +1,11 @@
 import useTrans from '~/hooks/useTrans'
-import type { TWallpaperContentShadow } from '~/stores/wallpaper/spec'
 import ToggleField from '~/ui/TuningFields/ToggleField'
 
 import useSalon from '../../salon/detail_panel/content'
 import GroupTitle from '../GroupTitle'
 
 type Props = {
-  contentShadow: TWallpaperContentShadow
+  contentShadow: boolean
   onToggleShadow: (enabled: boolean) => void
 }
 
@@ -21,7 +20,7 @@ export default function Content({ contentShadow, onToggleShadow }: Props) {
       <div className={s.items}>
         <ToggleField
           label={t('dsb.appearance.wallpaper.editor.shadow')}
-          checked={contentShadow.enabled}
+          checked={contentShadow}
           onChange={onToggleShadow}
         />
       </div>

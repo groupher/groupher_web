@@ -1,4 +1,4 @@
-import useSalon, { cnMerge } from './salon'
+import useSalon from './salon'
 
 type TProps = {
   isActive: boolean
@@ -8,7 +8,7 @@ export default function MinimalPreview({ isActive }: TProps) {
   const s = useSalon()
 
   return (
-    <div className={cnMerge(s.block, isActive && s.blockActive)}>
+    <div className={s.block({ state: isActive ? 'active' : 'idle' })}>
       <div className={s.frame}>
         <div className={s.minimalList}>
           <div className={s.minimalListInner}>

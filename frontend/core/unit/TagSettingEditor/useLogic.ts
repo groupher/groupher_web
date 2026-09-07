@@ -3,11 +3,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import EVENT from '~/const/event'
 import { CHANGE_MODE } from '~/const/mode'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import { closeDrawer, send } from '~/signal'
 import type { TChangeMode, TColorName, TEditValue, TSelectOption, TTag } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
+import { useTagEditorUi } from '~/stores/dsbEditorUi/hooks'
 import { slugify } from '~/utils/slug'
 import { nilOrEmpty, validateSlug } from '~/validator'
 
@@ -37,8 +38,9 @@ type TRet = {
 
 /** Exposes logic state and actions through the shared React hook boundary. */
 export default function useLogic({ initialGroup = '', onDone }: TArgs = {}): TRet {
-  const dsb$ = useDsb()
-  const { tagGroups, settingTag, activeTagThread } = dsb$
+  const dsb$ = useDsbEdit()
+  const { settingTag } = useTagEditorUi()
+  const { tagGroups, activeTagThread } = dsb$
 
   const community$ = useCommunity()
 
@@ -113,7 +115,7 @@ export default function useLogic({ initialGroup = '', onDone }: TArgs = {}): TRe
     setProcessing(true)
     const { id, thread, community } = tag
 
-    browserQuery(S.deleteCommunityTag, { id, community: community.slug, thread })
+    browserGraphQLRequest(S.deleteCommunityTag, { id, community: community.slug, thread })
       .then((res) => {
         console.log('## deleteCommunityTag: ', res)
         _handleDone()
@@ -134,7 +136,7 @@ export default function useLogic({ initialGroup = '', onDone }: TArgs = {}): TRe
       return
     }
 
-    browserQuery(S.updateCommunityTag, {
+    browserGraphQLRequest(S.updateCommunityTag, {
       id: editingTag.id ?? '',
       color: editingTag.color as TColorName,
       title: editingTag.title,
@@ -176,7 +178,7 @@ export default function useLogic({ initialGroup = '', onDone }: TArgs = {}): TRe
       marker: editingTag.marker,
     }
 
-    browserQuery(S.createCommunityTag, params)
+    browserGraphQLRequest(S.createCommunityTag, params)
       .then((res) => {
         console.log('## createCommunityTag: ', res)
         _handleDone()

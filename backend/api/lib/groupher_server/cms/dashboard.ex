@@ -20,7 +20,8 @@ defmodule GroupherServer.CMS.Dashboard do
   @spec update(Community.t(), map()) :: T.domain_res(CommunityDashboard.t())
   def update(%Community{} = community, args), do: Writer.update(community, args)
 
-  @spec update(Community.t(), atom(), map() | list()) :: T.domain_res(CommunityDashboard.t())
+  @spec update(Community.t(), atom(), map() | list() | boolean()) ::
+          T.domain_res(CommunityDashboard.t())
   def update(%Community{} = community, key, args), do: Writer.update(community, key, args)
 
   @spec save_custom_theme_preset(Community.t(), map()) :: T.domain_res(CommunityDashboard.t())

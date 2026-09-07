@@ -15,7 +15,6 @@ export default function CommunityStore(init: TInit = { slug: 'home' }): TStore {
     homepage: init.homepage || '',
     subscribersCount: init.subscribersCount || 0,
     articlesCount: init.articlesCount || 0,
-    viewerHasSubscribed: init.viewerHasSubscribed || false,
     contributesDigest: init.contributesDigest || [],
     moderatorsCount: init.moderatorsCount || 0,
     desc: init.desc || '',
@@ -25,12 +24,10 @@ export default function CommunityStore(init: TInit = { slug: 'home' }): TStore {
     moderators: init.moderators || [],
     views: init.views || 0,
 
-    communityDigestInView: true,
-
     ...init,
 
-    commit: (patch: Partial<TStore>): void => {
-      Object.assign(store, patch)
+    hydrate: (confirmed: TInit): void => {
+      Object.assign(store, confirmed)
     },
   })
 

@@ -12,7 +12,10 @@ const mocks = vi.hoisted(() => ({
 }))
 
 vi.mock('~/graphql/client', () => ({
-  browserQuery: (document: { definitions?: Array<{ operation?: string }> }, ...args: unknown[]) =>
+  browserGraphQLRequest: (
+    document: { definitions?: Array<{ operation?: string }> },
+    ...args: unknown[]
+  ) =>
     document.definitions?.some((definition) => definition.operation === 'mutation')
       ? mocks.mutate(document, ...args)
       : mocks.query(document, ...args),

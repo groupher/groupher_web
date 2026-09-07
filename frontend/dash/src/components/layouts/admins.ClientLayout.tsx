@@ -8,7 +8,7 @@ import useTrans from '~/hooks/useTrans'
 import type { TCrumbConfig } from '~/spec'
 import ArrowButton from '~/ui/Buttons/ArrowButton'
 import Portal from '~/unit/DsbThread/Portal'
-import useSalon, { cnMerge } from '~/unit/DsbThread/salon'
+import useSalon, { cn } from '~/unit/DsbThread/salon'
 
 type TProps = {
   children: ReactNode
@@ -28,7 +28,7 @@ function Content({ children }: { children: ReactNode }) {
   const { t } = useTrans()
 
   return (
-    <div className={cnMerge(s.content, 'w-3/5')}>
+    <div className={cn(s.content, 'w-3/5')}>
       <Portal
         title={t('dsb.portal.admins.title')}
         desc={

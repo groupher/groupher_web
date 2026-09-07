@@ -36,13 +36,11 @@ vi.mock('../salon', () => ({
     wrapper: 'wrapper',
     select: 'select',
     layout: 'layout',
-    block: 'block',
-    blockActive: 'block-active',
+    block: () => 'block',
     preview: 'preview',
     previewItem: 'preview-item',
   }),
-  cnMerge: (...classes: Array<string | false | null | undefined>) =>
-    classes.filter(Boolean).join(' '),
+  cn: (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(' '),
 }))
 
 vi.mock('../../../SectionLabel', () => ({

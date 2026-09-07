@@ -234,6 +234,7 @@ config :groupher_server, Oban,
        {"*/15 * * * *", GroupherServer.CMS.CommunityApplications.Jobs.ExpireSubmitted},
        {"*/15 * * * *", GroupherServer.CMS.CommunityApplications.Jobs.ExpireLogoUploads},
        {"*/15 * * * *", GroupherServer.CMS.Communities.Jobs.ReleaseExpiredSlugClaims},
+       {"*/15 * * * *", GroupherServer.Jobs.WallpaperLifecycle},
        {"@daily", GroupherServer.Jobs.ViewEventRetention},
        {"@daily", GroupherServer.Jobs.InteractionAudit}
      ]}

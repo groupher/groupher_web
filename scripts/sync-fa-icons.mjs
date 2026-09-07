@@ -1,7 +1,9 @@
 import { spawnSync } from 'node:child_process'
-import { cpSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+
+import { syncDirectory, writeFileIfChanged } from './sync-files.mjs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -50,29 +52,26 @@ for (const app of targetApps) {
   const targetRoot = path.join(repoRoot, `frontend/${app}/public/icons`)
   mkdirSync(targetRoot, { recursive: true })
 
-  for (const entry of readdirSync(targetRoot)) {
-    const fullPath = path.join(targetRoot, entry)
-    if (entry.endsWith('.sprite.svg') || providers.includes(entry)) {
-      rmSync(fullPath, { recursive: true, force: true })
-    }
-  }
-
   for (const provider of providers) {
-    cpSync(path.join(optimizedSourceDir, provider), path.join(targetRoot, provider), {
-      recursive: true,
-    })
+    syncDirectory(path.join(optimizedSourceDir, provider), path.join(targetRoot, provider))
   }
 
   const spriteFiles = readdirSync(spriteSourceDir).filter((file) => file.endsWith('.sprite.svg'))
+  const expectedSprites = new Set(spriteFiles)
+
+  for (const entry of readdirSync(targetRoot)) {
+    if (entry.endsWith('.sprite.svg') && !expectedSprites.has(entry)) {
+      rmSync(path.join(targetRoot, entry), { force: true })
+    }
+  }
+
   for (const file of spriteFiles) {
-    cpSync(path.join(spriteSourceDir, file), path.join(targetRoot, file))
+    writeFileIfChanged(path.join(targetRoot, file), readFileSync(path.join(spriteSourceDir, file)))
   }
 
   if (existsSync(providerLogoSourceDir)) {
     const targetProviderDir = path.join(targetRoot, 'providers')
-    rmSync(targetProviderDir, { recursive: true, force: true })
-    mkdirSync(targetProviderDir, { recursive: true })
-    cpSync(providerLogoSourceDir, targetProviderDir, { recursive: true })
+    syncDirectory(providerLogoSourceDir, targetProviderDir)
   }
 
   console.log(

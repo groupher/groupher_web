@@ -5,7 +5,7 @@ export default function useSalon() {
  */
   return {
     wrapper: 'row justify-center',
-    scrollWrapper: 'absolute w-full',
-    skeleton: 's-screen antialiased',
+    scrollWrapper: 'absolute z-10 w-full',
+    skeleton: 'relative isolate s-screen antialiased',
   }
 }

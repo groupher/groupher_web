@@ -1,8 +1,9 @@
 'use client'
 
-import { type ReactNode, useRef } from 'react'
+import { type ReactNode, useLayoutEffect, useRef } from 'react'
 
 import setupStore from '.'
+import CommunityViewportProvider from '../communityViewport/provider'
 import { StoreContext } from './context'
 import type { TInit, TStore } from './spec'
 
@@ -16,5 +17,13 @@ export default function Provider({ children, initData }: TProps) {
 
   storeRef.current ??= setupStore(initData)
 
-  return <StoreContext.Provider value={storeRef.current}>{children}</StoreContext.Provider>
+  useLayoutEffect(() => {
+    storeRef.current?.hydrate(initData)
+  }, [initData])
+
+  return (
+    <StoreContext.Provider value={storeRef.current}>
+      <CommunityViewportProvider>{children}</CommunityViewportProvider>
+    </StoreContext.Provider>
+  )
 }

@@ -7,7 +7,7 @@ import useTags from '../../logic/useTags'
 import SavingBar from '../../SavingBar'
 import SectionLabel from '../../SectionLabel'
 import { TAGS_DEMO_LIST } from './constant'
-import useSalon, { cnMerge } from './salon'
+import useSalon from './salon'
 import TagItem from './TagItem'
 
 const LAYOUT_OPTIONS = [
@@ -58,7 +58,7 @@ export default function InlineTagLayout() {
               aria-pressed={isActive}
               onClick={() => edit(value, FIELD.INLINE_TAG_LAYOUT)}
             >
-              <div className={cnMerge(s.block, isActive && s.blockActive)}>
+              <div className={s.block({ state: isActive ? 'active' : 'idle' })}>
                 {TAGS_DEMO_LIST.map((item) => (
                   <TagItem key={item.id} tag={item} layout={value} />
                 ))}

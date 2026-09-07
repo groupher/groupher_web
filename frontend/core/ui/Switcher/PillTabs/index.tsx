@@ -3,7 +3,7 @@
 import { type FC, type KeyboardEvent, memo, useMemo } from 'react'
 
 import SIZE from '~/constant/size'
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 
 import useSalon from '../salon/pill_tabs'
 import type { TProps } from './spec'
@@ -78,7 +78,7 @@ const PillTabs: FC<TProps> = ({
   }
 
   return (
-    <div role='tablist' aria-orientation='horizontal' className={cnMerge(s.wrapper, className)}>
+    <div role='tablist' aria-orientation='horizontal' className={cn(s.wrapper, className)}>
       <div className={s.nav}>
         {items.map((item, index) => (
           <TabItem

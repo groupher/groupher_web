@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority'
 
 export const buttonWrapper = cva(
-  'group w-max select-none touch-manipulation outline-none bg-none whitespace-nowrap rounded-xl',
+  'group w-max select-none touch-manipulation outline-none bg-none whitespace-nowrap',
   {
     variants: {
       border: {

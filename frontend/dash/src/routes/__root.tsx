@@ -1,20 +1,26 @@
 import { loadLocale } from '@dash/server/locale'
 import { loadThemeSeed } from '@dash/server/theme'
-import { prePaintRuntimeSeedScript, prePaintThemeDetectScript } from '@dash/utils/first-paint'
 import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 
-import '../../../core/tailwind/global.css'
 import { InitialNowProvider } from '~/hooks/useInitialNow'
+
+import '../../../core/tailwind/global.css'
+import { prePaintRuntimeSeedScript, prePaintThemeDetectScript } from '~/lib/ssr/script'
 import LocaleStoreProvider from '~/stores/locale/provider'
 import ThemeStoreProvider from '~/stores/theme/provider'
 import AuthLoginModal from '~/ui/AuthLoginModal'
 
 import type { TRouterContext } from '../router-context'
+import { disableSearchIndexing } from '../server/search-index'
 
 export const Route = createRootRouteWithContext<TRouterContext>()({
   loader: async () => {
-    const [locale, theme] = await Promise.all([loadLocale({ data: {} }), loadThemeSeed()])
+    const [locale, theme] = await Promise.all([
+      loadLocale({ data: {} }),
+      loadThemeSeed(),
+      disableSearchIndexing(),
+    ])
     return { locale, renderedAt: Date.now(), theme }
   },
   head: () => ({
@@ -30,6 +36,10 @@ export const Route = createRootRouteWithContext<TRouterContext>()({
       },
       {
         title: 'Groupher Dash',
+      },
+      {
+        name: 'robots',
+        content: 'noindex, nofollow',
       },
     ],
   }),

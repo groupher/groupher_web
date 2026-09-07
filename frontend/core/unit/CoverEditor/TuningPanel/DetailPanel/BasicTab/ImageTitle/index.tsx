@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 
-import { IMAGE_TITLE, type TImageType } from './constant'
+import { IMAGE_TITLE } from './constant'
 import useSalon from './salon'
+import type { TImageType } from './spec'
 
 type TProps = {
   type: TImageType

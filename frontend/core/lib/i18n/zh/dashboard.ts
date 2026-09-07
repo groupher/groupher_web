@@ -7,6 +7,7 @@ export default {
   'dsb.appearance.layout': '布局',
   'dsb.appearance.theme': '主题',
   'dsb.appearance.wallpaper': '壁纸',
+  'dsb.appearance.wallpaper.unsaved_confirm': '壁纸有未保存的修改，确定要离开吗？',
   'dsb.appearance.post': '讨论区',
   'dsb.appearance.kanban': '看板',
   'dsb.appearance.changelog': '更新日志',

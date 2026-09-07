@@ -1,13 +1,12 @@
 // salon/button.ts
 import { COLOR } from '~/const'
-import { cnMerge } from '~/css'
 import useTwBelt from '~/hooks/useTwBelt'
 import type { TColorName, TSizeTSM, TSpace } from '~/spec'
 
 import { getFontSize, getHeight, getPadding, getRound } from '../metrics/button'
 import { buttonInner, buttonWrapper } from './variants'
 
-export { cn, cnMerge } from '~/css'
+export { cn } from '~/css'
 
 const toSpaceRem = (value: number): string => `${value * 0.25}rem`
 
@@ -65,7 +64,7 @@ export default function useButtonSalon({
   }
 
   const wrapperBase = buttonWrapper({
-    border: wrapperBorder,
+    border: loading ? 'none' : wrapperBorder,
     width: width === 'w-full' ? 'full' : 'fit',
   })
 
@@ -78,6 +77,10 @@ export default function useButtonSalon({
 
   const toneBg = () => {
     if (ghost) return bg('transparent')
+    if (soft) {
+      if (tone === 'color') return rainbow(color!, 'bgLite')
+      return bg('hoverBg')
+    }
     if (tone === 'color') return rainbow(color!, 'bg')
     if (tone === 'red') return rainbow(COLOR.RED, 'bgLite')
     return primary('bg')
@@ -115,34 +118,26 @@ export default function useButtonSalon({
     return `hover:${primary('bgLite')}`
   }
 
-  const liteBg = () => {
-    if (!soft) return ''
-    if (color) return rainbow(color, 'bgLite')
-
-    return bg('hoverBg')
-  }
-
   const innerStyle = {
     ...(px != null ? { paddingLeft: toSpaceRem(px), paddingRight: toSpaceRem(px) } : {}),
     ...(py != null ? { paddingTop: toSpaceRem(py), paddingBottom: toSpaceRem(py) } : {}),
   }
 
   return {
-    wrapper: cnMerge(
+    wrapper: cn(
       wrapperBase,
-      iconOnly && getRound(size),
+      iconOnly ? getRound(size) : 'rounded-xl',
       noLeftRound && 'rounded-tl-none rounded-bl-none',
       noRightRound && 'rounded-tr-none rounded-br-none',
 
       !(ghost || red || noBorder) && br('divider'),
       ghost && noBorder && interactive && `hover:${bg('hoverBg')}`,
 
-      !ghost && bg('divider'),
-      loading && bg('transparent'),
+      !loading && !ghost && bg('divider'),
       margin(spacing),
     ),
 
-    inner: cnMerge(
+    inner: cn(
       innerBase,
 
       getPadding(size),
@@ -152,13 +147,12 @@ export default function useButtonSalon({
       noLeftRound && 'rounded-tl-none rounded-bl-none',
       noRightRound && 'rounded-tr-none rounded-br-none',
 
-      toneBg(),
-      toneFg(),
-      toneHover(),
+      !loading && toneBg(),
+      !loading && toneFg(),
+      !loading && toneHover(),
 
-      ghostBorder(),
-      ghostHoverBg(),
-      liteBg(),
+      !loading && ghostBorder(),
+      !loading && ghostHoverBg(),
     ),
 
     children: cn('align-both relative', width === 'w-full' ? 'w-full' : 'w-auto'),

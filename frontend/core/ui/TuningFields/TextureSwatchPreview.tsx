@@ -1,4 +1,3 @@
-import { cnMerge } from '~/css'
 import useTwBelt from '~/hooks/useTwBelt'
 import { WALLPAPER_TEXTURE } from '~/lib/wallpaperMesh'
 import type { TImageTextureType } from '~/lib/wallpaperMesh'
@@ -62,7 +61,7 @@ export default function TextureSwatchPreview({ type, variant = 'picker' }: Props
       {type === WALLPAPER_TEXTURE.NOISE && (
         <div className='relative size-full'>
           {NOISE_DOTS.map(({ id, className }) => (
-            <span key={id} className={cnMerge(s.noiseDot, className)} />
+            <span key={id} className={cn(s.noiseDot, className)} />
           ))}
         </div>
       )}

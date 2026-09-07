@@ -7,7 +7,7 @@ import useNavActiveLayout from '../../logic/useNavActiveLayout'
 import SavingBar from '../../SavingBar'
 import SectionLabel from '../../SectionLabel'
 import Preview from './Preview'
-import useSalon, { cnMerge } from './salon'
+import useSalon from './salon'
 
 const LAYOUT_OPTIONS = [
   {
@@ -50,7 +50,7 @@ export default function NavActiveLayout() {
               aria-pressed={isActive}
               onClick={() => edit(value, FIELD.NAV_ACTIVE_LAYOUT)}
             >
-              <div className={cnMerge(s.block, isActive && s.blockActive)}>
+              <div className={s.block({ state: isActive ? 'active' : 'idle' })}>
                 <Preview layout={value} />
               </div>
 

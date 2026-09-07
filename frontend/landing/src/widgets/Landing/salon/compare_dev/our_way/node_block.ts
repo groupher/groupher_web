@@ -2,7 +2,7 @@ import { COLOR } from '~/const/colors'
 import useTwBelt from '~/hooks/useTwBelt'
 import type { TColorName } from '~/spec'
 
-export { cn, cnMerge } from '~/css'
+export { cn } from '~/css'
 
 type TProps = {
   bgColor?: TColorName

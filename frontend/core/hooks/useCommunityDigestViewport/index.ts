@@ -1,4 +1,4 @@
-import useCommunity from '~/stores/community/hooks'
+import useCommunityViewport from '~/stores/communityViewport/hooks'
 
 type TRet = {
   enterView: () => void
@@ -8,11 +8,5 @@ type TRet = {
 
 /** Exposes community digest viewport state and actions through the shared React hook boundary. */
 export default function useCommunityDigestViewport(): TRet {
-  const community$ = useCommunity()
-
-  return {
-    enterView: (): void => community$.commit({ communityDigestInView: true }),
-    leaveView: (): void => community$.commit({ communityDigestInView: false }),
-    inView: community$.communityDigestInView,
-  }
+  return useCommunityViewport()
 }

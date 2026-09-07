@@ -1,7 +1,12 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import test from 'node:test'
 
-import { LOCAL_SERVICE_ENDPOINTS, LOCAL_SERVICE_GRAPHQL_ENDPOINTS } from './service-endpoints.ts'
+import {
+  LOCAL_SERVICE_AUTH_ISSUER,
+  LOCAL_SERVICE_ENDPOINTS,
+  LOCAL_SERVICE_GRAPHQL_ENDPOINTS,
+} from './service-endpoints.ts'
 import { REPO_ROOT, SERVICE_DEFINITIONS, SERVICE_RELATIONS } from './services.ts'
 
 test('standalone services declare a four-item technology stack', () => {
@@ -36,6 +41,9 @@ test('frontend and Phoenix stacks match their runtime boundaries', () => {
 
   const phoenix = SERVICE_DEFINITIONS.find((definition) => definition.id === 'phoenix')
   assert.deepEqual(phoenix?.technologies, ['phoenix', 'elixir', 'absinthe', 'postgresql'])
+  assert.equal(phoenix?.env?.ASSETS_HUB_BATCH_ENDPOINT, LOCAL_SERVICE_ENDPOINTS.assetsHubRead)
+  assert.equal(phoenix?.env?.ASSETS_HUB_DELETE_ENDPOINT, LOCAL_SERVICE_ENDPOINTS.assetsHubRead)
+  assert.equal(phoenix?.env?.ASSETS_PUBLIC_ENDPOINT, 'https://assets.groupher.localhost')
 })
 
 test('frontend services keep the intended list order', () => {
@@ -62,6 +70,21 @@ test('backend services keep the intended list order', () => {
       'document-converter',
     ],
   )
+})
+
+test('assets hub starts after auth and Phoenix and gates read-worker readiness on its contract', () => {
+  const assetsHub = SERVICE_DEFINITIONS.find((definition) => definition.id === 'assets-hub')
+  assert.deepEqual(assetsHub?.startPolicy, {
+    defaultMode: 'chain',
+    requiredDependencies: ['auth', 'phoenix'],
+    optionalDependencies: [],
+  })
+  assert.equal(
+    assetsHub?.endpoints?.find((endpoint) => endpoint.id === 'read-worker')?.url,
+    'http://127.0.0.1:8787/health/ready',
+  )
+  assert.equal(assetsHub?.env?.PHOENIX_GRAPHQL_ENDPOINT, LOCAL_SERVICE_GRAPHQL_ENDPOINTS.phoenix)
+  assert.equal(assetsHub?.env?.ASSETS_HUB_BATCH_ENDPOINT, LOCAL_SERVICE_ENDPOINTS.assetsHubRead)
 })
 
 test('service relations only reference declared services', () => {
@@ -128,7 +151,6 @@ test('frontend app start chains match their local routing boundaries', () => {
     'auth',
     'inspire-me',
     'phoenix',
-    'assets-hub',
     'content-import',
     'document-converter',
   ]) {
@@ -183,6 +205,62 @@ test('gateway and auth start through backend Makefile entrypoints', () => {
 
   assert.deepEqual(gateway?.args, ['be.dev-gateway.start'])
   assert.deepEqual(auth?.args, ['be.auth.start'])
+})
+
+test('managed Phoenix startup allow-lists only local credential fallbacks', () => {
+  const phoenix = SERVICE_DEFINITIONS.find((definition) => definition.id === 'phoenix')
+
+  assert.deepEqual(phoenix?.args, ['be.start.managed'])
+  assert.match(phoenix?.envFallback?.file || '', /backend\/api\/\.env\.local$/)
+  assert.deepEqual(phoenix?.envFallback?.keys, [
+    'SERVICE_AUTH_CLIENT_ID',
+    'SERVICE_AUTH_CLIENT_SECRET',
+  ])
+
+  const makefile = readFileSync(new URL('../../../../Makefile', import.meta.url), 'utf8')
+  const managedRecipe = makefile.match(/be\.start\.managed:\n((?:\t.*\n)+)/)?.[1] || ''
+  assert.doesNotMatch(managedRecipe, /\.env\.local|\bsource\b|(?:^|\s)\.\s+/)
+})
+
+test('service identity uses one stable issuer separate from local network endpoints', () => {
+  assert.equal(LOCAL_SERVICE_AUTH_ISSUER, 'https://auth.groupher.localhost')
+
+  const serviceAuthDefinitions = SERVICE_DEFINITIONS.filter(
+    (definition) => definition.env?.SERVICE_AUTH_ISSUER,
+  )
+  assert.ok(serviceAuthDefinitions.length > 0)
+
+  for (const definition of serviceAuthDefinitions) {
+    assert.equal(definition.env?.SERVICE_AUTH_ISSUER, LOCAL_SERVICE_AUTH_ISSUER, definition.id)
+    assert.equal(
+      definition.env?.SERVICE_AUTH_TOKEN_ENDPOINT,
+      `${LOCAL_SERVICE_ENDPOINTS.auth}/oauth2/token`,
+      definition.id,
+    )
+    assert.equal(
+      definition.env?.SERVICE_AUTH_JWKS_URL,
+      `${LOCAL_SERVICE_ENDPOINTS.auth}/.well-known/jwks.json`,
+      definition.id,
+    )
+  }
+})
+
+test('Auth-backed app chains enforce the live Service Identity startup contract', () => {
+  const definitions = Object.fromEntries(
+    SERVICE_DEFINITIONS.map((definition) => [definition.id, definition]),
+  )
+
+  assert.equal(definitions.auth?.env?.DEV_HUB_SERVICE_AUTH_PROBE, 'true')
+  for (const id of ['dash', 'apply']) {
+    assert.deepEqual(definitions[id]?.startupChecks, [
+      {
+        healthCheckName: 'phoenix-service-auth',
+        id: 'service-auth-contract',
+        label: 'Auth to Phoenix Service Identity contract',
+        url: `${LOCAL_SERVICE_ENDPOINTS.auth}/health/service-auth`,
+      },
+    ])
+  }
 })
 
 test('document converter starts through the repository Makefile entrypoint', () => {

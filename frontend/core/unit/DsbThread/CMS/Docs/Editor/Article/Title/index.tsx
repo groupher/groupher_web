@@ -7,12 +7,9 @@ import Input from '~/ui/Input'
 
 import { needsPublishAttention } from '../../SideTree/helper'
 import type { TDocTreeNodePublishState } from '../../SideTree/spec'
-import {
-  TITLE_STAGE_PUBLISHED_VISIBLE_MS,
-  TITLE_STAGE_VIEW,
-  type TTitleStageView,
-} from './constant'
+import { TITLE_STAGE_PUBLISHED_VISIBLE_MS, TITLE_STAGE_VIEW } from './constant'
 import useSalon from './salon'
+import type { TTitleStageView } from './spec'
 import Stage from './Stage'
 
 type TProps = {

@@ -1,8 +1,4 @@
-export type TDnsRecord = {
-  type: 'A' | 'TXT' | 'CNAME'
-  host: string
-  value: string
-}
+import type { TDnsRecord, TStep, TVerifyingDomainRow } from './spec'
 
 export const DNS_RECORDS: TDnsRecord[] = [
   {
@@ -16,14 +12,6 @@ export const DNS_RECORDS: TDnsRecord[] = [
     value: 'vc-domain-verify=groupher.com,47085e7b4e26138313ce',
   },
 ]
-
-type TDomainVerifyStatus = 'verifying' | 'verified' | 'failed'
-
-export type TVerifyingDomainRow = {
-  url: string
-  status: TDomainVerifyStatus
-  addedAt?: string | null // ISO string or null (use '-' in UI)
-}
 
 export const VERIFYING_DOMAIN_ROWS: TVerifyingDomainRow[] = [
   {
@@ -40,8 +28,4 @@ export enum STEPS {
   VERIFY_DOMAIN = 'verify_domain',
 }
 
-export type TStep = STEPS
-
 export const DOMAIN_STEP_ORDER: TStep[] = [STEPS.ADD_DOMAIN, STEPS.DNS_SETUP, STEPS.VERIFY_DOMAIN]
-
-export type TDomainStep = TStep

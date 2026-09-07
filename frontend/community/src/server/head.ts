@@ -1,6 +1,6 @@
 import type { TCommunityShell } from '@community/server/community'
 
-import { serializeCommunityThemePresetCss } from '~/lib/themePreset'
+import { serializeCommunityThemePresetCss } from '~/lib/theme'
 
 export type TCommunityHeadProjection = {
   description?: string

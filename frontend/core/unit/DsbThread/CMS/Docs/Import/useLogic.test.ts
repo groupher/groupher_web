@@ -20,7 +20,7 @@ vi.mock('~/platform', async () => {
   }
 })
 
-vi.mock('~/graphql/client', () => ({ browserQuery: mocks.query }))
+vi.mock('~/graphql/client', () => ({ browserGraphQLRequest: mocks.query }))
 
 vi.mock('~/hooks/useTrans', () => ({
   default: () => ({ t: mocks.t }),

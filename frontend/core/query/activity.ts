@@ -1,7 +1,7 @@
 import type { VariablesOf } from '@graphql-typed-document-node/core'
 import { queryOptions } from '@tanstack/react-query'
 
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import {
   communityActivity,
   communityActivityConfig,
@@ -18,13 +18,16 @@ export const activityKeys = {
     [...activityKeys.all, 'list', community, selection, page] as const,
   stats: (community: string, selection: TActivitySelection) =>
     [...activityKeys.all, 'stats', community, selection] as const,
+  config: (community: string) => [...activityKeys.all, 'config', community] as const,
+  event: (community: string, eventRef: string) =>
+    [...activityKeys.all, 'event', community, eventRef] as const,
 }
 
 const list = (community: string, selection: TActivitySelection, page: number) =>
   queryOptions({
     queryKey: activityKeys.list(community, selection, page),
     queryFn: async () => {
-      const data = await browserQuery(communityActivity, { community, selection, page })
+      const data = await browserGraphQLRequest(communityActivity, { community, selection, page })
       return data.communityActivity
     },
     enabled: !!community,
@@ -35,7 +38,7 @@ const stats = (community: string, selection: TActivitySelection) =>
   queryOptions({
     queryKey: activityKeys.stats(community, selection),
     queryFn: async () => {
-      const data = await browserQuery(communityActivityStats, { community, selection })
+      const data = await browserGraphQLRequest(communityActivityStats, { community, selection })
       return data.communityActivityStats
     },
     enabled: !!community,
@@ -43,9 +46,9 @@ const stats = (community: string, selection: TActivitySelection) =>
 
 const config = (community: string) =>
   queryOptions({
-    queryKey: [...activityKeys.all, 'config', community] as const,
+    queryKey: activityKeys.config(community),
     queryFn: async () => {
-      const data = await browserQuery(communityActivityConfig, { community })
+      const data = await browserGraphQLRequest(communityActivityConfig, { community })
       return data.communityActivityConfig
     },
     enabled: !!community,
@@ -53,7 +56,7 @@ const config = (community: string) =>
   })
 
 const exportActivity = (community: string, selection: TActivitySelection, format: 'CSV' | 'JSON') =>
-  browserQuery(exportCommunityActivity, {
+  browserGraphQLRequest(exportCommunityActivity, {
     community,
     selection,
     format,
@@ -61,9 +64,9 @@ const exportActivity = (community: string, selection: TActivitySelection, format
 
 const event = (community: string, eventRef: string) =>
   queryOptions({
-    queryKey: [...activityKeys.all, 'event', community, eventRef] as const,
+    queryKey: activityKeys.event(community, eventRef),
     queryFn: async () => {
-      const data = await browserQuery(communityActivityEvent, { community, eventRef })
+      const data = await browserGraphQLRequest(communityActivityEvent, { community, eventRef })
       return data.communityActivityEvent
     },
     enabled: !!community && !!eventRef,

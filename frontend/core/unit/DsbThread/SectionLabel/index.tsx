@@ -5,7 +5,7 @@ import type { TSpace } from '~/spec'
 import ArrowButton from '~/ui/Buttons/ArrowButton'
 import ThemeSwitchPreview from '~/ui/ThemeSwitch/Preview'
 
-import useSalon, { cnMerge } from './salon'
+import useSalon, { cn } from './salon'
 
 type TProps = {
   title: string
@@ -38,7 +38,7 @@ const SectionLabel: FC<TProps> = ({
   const resolvedDetailText = detailText ?? t('dsb.section_label.detail')
 
   return (
-    <div className={cnMerge(s.wrapper, classNames)}>
+    <div className={cn(s.wrapper, classNames)}>
       <div className={s.header}>
         <h3 className={s.title}>
           {title}

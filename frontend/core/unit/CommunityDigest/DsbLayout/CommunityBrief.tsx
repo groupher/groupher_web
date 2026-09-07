@@ -19,11 +19,11 @@ import ChangelogSVG from '~/icons/TadaRaw'
 import Img from '~/Img'
 import { Link } from '~/platform'
 import useCommunity from '~/stores/community/hooks'
-import useDsb from '~/stores/dsb/hooks'
+import useDsb from '~/stores/dsbConfig/hooks'
 import ImgFallback from '~/ui/ImgFallback'
 import Tooltip from '~/ui/Tooltip'
 
-import useSalon, { cn, cnMerge } from '../salon/dashboard_layout/community_brief'
+import useSalon, { cn } from '../salon/dashboard_layout/community_brief'
 
 export default function CommunityBrief() {
   const s = useSalon()
@@ -121,7 +121,7 @@ export default function CommunityBrief() {
         noPadding
       >
         <div className={s.menuWrapper}>
-          <SettingSVG className={cnMerge(s.icon, 'mr-0')} />
+          <SettingSVG className={cn(s.icon, 'mr-0')} />
           <div className={s.title}>{t('dsb.community_brief.dashboard')}</div>
           <div className='mr-3' />
           <OptionArrowSVG className={s.optArrowIcon} />

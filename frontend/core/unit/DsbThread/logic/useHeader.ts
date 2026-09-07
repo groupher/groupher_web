@@ -1,9 +1,8 @@
 import { pick } from 'ramda'
 
 import type { TEditFunc, THeaderLayout, TLinkItem } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
-import type { TLinkState } from '../spec'
 import useHelper from './useHelper'
 import useLinkDerived, { type TRet as TDerived } from './useLinkDerived'
 
@@ -11,29 +10,19 @@ type TRet = {
   headerLayout: THeaderLayout
   headerLinks: readonly TLinkItem[]
   edit: TEditFunc
-} & TLinkState &
-  TDerived
+  saving: boolean
+} & TDerived
 
 /** Exposes header state and actions through the shared React hook boundary. */
 export default function useHeader(): TRet {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
   const derived = useLinkDerived()
-  const { edit } = useHelper()
+  const { edit, isPending } = useHelper()
 
   return {
-    ...pick(
-      [
-        'headerLayout',
-        'headerLinks',
-        'editingLink',
-        'editingLinkMode',
-        'editingGroup',
-        'editingGroupIndex',
-        'saving',
-      ],
-      dsb$,
-    ),
+    ...pick(['headerLayout', 'headerLinks'], dsb$),
     edit,
+    saving: isPending,
     ...derived,
   }
 }

@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { ARTICLE_STAGE } from '~/const/article'
 import { DSB_DOC_EVENT } from '~/const/dsb/docs'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import useTrans from '~/hooks/useTrans'
 import { send } from '~/lib/signal'
 import useCommunity from '~/stores/community/hooks'
@@ -12,8 +12,9 @@ import S from '~/unit/DsbThread/schema/docs'
 import { needsPublishAttention } from '../../Editor/SideTree/helper'
 import useDocsEditor from '../../Editor/store/hooks'
 import { SAVE_ACTION_LABEL_KEY } from '../constant'
-import { PUBLISH_MODE, type TPublishMode } from './constant'
+import { PUBLISH_MODE } from './constant'
 import { getPublishInputAction, hasSelectableChecklistItems } from './helper'
+import type { TDocsPublishMode } from './spec'
 import type { TPublishChangesData, TPublishSelectedInput } from './spec'
 
 const docIdFromChecklistItemId = (id: string): string | null => {
@@ -46,7 +47,7 @@ export default function usePublishActions({
   } = useDocsEditor()
 
   const publishDraft = useCallback(
-    async (mode: TPublishMode = PUBLISH_MODE.ALL) => {
+    async (mode: TDocsPublishMode = PUBLISH_MODE.ALL) => {
       const disabled =
         mode === PUBLISH_MODE.SELECTED ? selectedPublishDisabled : publishView.publishDisabled
       if (disabled) return
@@ -68,7 +69,7 @@ export default function usePublishActions({
               ? [currentDocId]
               : []
         const currentDocPublished = currentDocId ? publishedDocIds.includes(currentDocId) : false
-        const data = await browserQuery<TPublishChangesData>(S.publishDocChanges, {
+        const data = await browserGraphQLRequest<TPublishChangesData>(S.publishDocChanges, {
           community,
           input,
           mode: 'WITH_COVER_SYNC',

@@ -17,7 +17,7 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 
 import { verifyCapability, type TUploadCapability } from './capability'
-import { completePhoenixUpload } from './phoenix'
+import { completePhoenixUpload, registerGeneratedAsset } from './phoenix'
 import {
   createPresignedGetUrl,
   createPresignedPutUrl,
@@ -198,9 +198,6 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
           upload: {
             headers: {
               'content-type': capability.declaredMimeType,
-              ...(capability.checksumSha256
-                ? { 'x-amz-checksum-sha256': capability.checksumSha256 }
-                : {}),
             },
             method: 'PUT',
             url: uploadUrl,
@@ -229,7 +226,8 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
     const timings: TTiming[] = []
 
     try {
-      const capability = verifyCapability(await parseCapabilityInput(context), environment)
+      const capabilityToken = await parseCapabilityInput(context)
+      const capability = verifyCapability(capabilityToken, environment)
       const uploadRef = context.req.param('uploadRef')
       if (uploadRef !== capability.uploadRef) throw new Error('uploadRef does not match capability')
 
@@ -249,6 +247,20 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
       }
 
       const contentHash = await timed('contentHash', timings, () => objectContentHash(capability))
+
+      if (capability.purpose === 'generated_image') {
+        await timed('batchAssetRegister', timings, () =>
+          registerGeneratedAsset({
+            capability,
+            capabilityToken,
+            environment,
+            entry: {
+              checksum: contentHash,
+              storageKey: capability.objectKey,
+            },
+          }),
+        )
+      }
 
       const asset = await timed('phoenixComplete', timings, () =>
         completePhoenixUpload({

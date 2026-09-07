@@ -6,7 +6,7 @@
 
 import type { FC, ReactNode } from 'react'
 
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 import ArrowSVG from '~/icons/ArrowUpRight'
 import { Link } from '~/platform'
 import type { TColorName, TSpace } from '~/spec'
@@ -41,7 +41,7 @@ const ArrowLinker: FC<TProps> = ({
 
   return (
     <Link href={href} navigation='document' target={target} className='inline-block'>
-      <div className={cnMerge(s.wrapper, className)} data-testid={testid}>
+      <div className={cn(s.wrapper, className)} data-testid={testid}>
         <div className={s.title}>{children}</div>
         <ArrowSVG className={s.arrowIcon} />
       </div>

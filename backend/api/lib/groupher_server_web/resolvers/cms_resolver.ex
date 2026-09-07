@@ -34,6 +34,8 @@ defmodule GroupherServerWeb.Resolvers.CMS do
 
   require CMS.Const
 
+  @viewer_batch_size 100
+
   def article_logs(_root, %{article: article} = args, info) do
     actor = Map.get(info.context, :cur_user)
     filter = Map.get(args, :filter, %{})
@@ -297,6 +299,10 @@ defmodule GroupherServerWeb.Resolvers.CMS do
     end
   end
 
+  def wallpaper_batch_published(_root, %{batch_ref: batch_ref}, _info) do
+    {:ok, CMS.Wallpaper.batch_published?(batch_ref)}
+  end
+
   def register_community_asset(_root, %{community: %Community{} = community, asset: asset}, %{
         context: %{cur_user: user}
       }) do
@@ -335,8 +341,36 @@ defmodule GroupherServerWeb.Resolvers.CMS do
     CMS.Dashboard.update(community, args)
   end
 
-  def update_dashboard_wallpaper(_root, %{community: community, wallpaper: wallpaper}, _info) do
-    CMS.Dashboard.update(community, :wallpaper, wallpaper)
+  def publish_wallpaper(
+        _root,
+        %{community: %Community{} = community, input: input},
+        %{context: %{cur_user: %User{} = user}}
+      ) do
+    CMS.Wallpaper.publish(community, input, user)
+  end
+
+  def update_dashboard_content_shadow(
+        _root,
+        %{community: %Community{} = community, enabled: enabled},
+        _info
+      ) do
+    CMS.Dashboard.update(community, :content_shadow, enabled)
+  end
+
+  def prepare_wallpaper_upload(
+        _root,
+        %{community: %Community{} = community, input: input},
+        %{context: %{cur_user: %User{} = user}}
+      ) do
+    CMS.Wallpaper.prepare_upload(community, input, user)
+  end
+
+  def restore_wallpaper_snapshot(
+        _root,
+        %{community: %Community{} = community, input: input},
+        %{context: %{cur_user: %User{} = user}}
+      ) do
+    CMS.Wallpaper.restore_snapshot(community, input, user)
   end
 
   def save_custom_theme_preset(_root, %{community: community} = args, _info) do
@@ -1311,6 +1345,109 @@ defmodule GroupherServerWeb.Resolvers.CMS do
 
   def comments_state(_root, %{article: article, article_path: %{thread: thread}}, _) do
     CMS.Comments.comments_state(thread, article.id)
+  end
+
+  def article_viewer_states(_root, %{refs: refs}, info) do
+    with :ok <- validate_viewer_batch(refs) do
+      case Map.get(info.context, :cur_user) do
+        %User{} = user -> resolve_article_viewer_states(refs, user)
+        _ -> {:ok, []}
+      end
+    end
+  end
+
+  def comment_viewer_states(
+        _root,
+        %{article: article_path, comment_inner_ids: comment_inner_ids},
+        info
+      ) do
+    with :ok <- validate_viewer_batch(comment_inner_ids) do
+      case Map.get(info.context, :cur_user) do
+        %User{} = user -> resolve_comment_viewer_states(article_path, comment_inner_ids, user)
+        _ -> {:ok, []}
+      end
+    end
+  end
+
+  defp validate_viewer_batch(refs) when is_list(refs) and length(refs) <= @viewer_batch_size,
+    do: :ok
+
+  defp validate_viewer_batch(_refs),
+    do: {:error, "viewer batch cannot contain more than 100 refs"}
+
+  defp resolve_article_viewer_states(refs, user) do
+    with {:ok, resolved} <- resolve_article_viewer_batch(refs),
+         {:ok, hydrated} <- hydrate_article_viewer_batch(resolved, user) do
+      {:ok,
+       Enum.zip(resolved, hydrated)
+       |> Enum.map(fn {%{path: path}, article} ->
+         %{
+           community: path.community,
+           thread: path.thread,
+           inner_id: article.inner_id,
+           viewer_has_viewed: article.viewer_has_viewed,
+           viewer_has_upvoted: article.viewer_has_upvoted
+         }
+       end)}
+    end
+  end
+
+  defp resolve_article_viewer_batch(paths) do
+    paths
+    |> Enum.reduce_while({:ok, []}, fn path, {:ok, acc} ->
+      case resolve_article_path(path) do
+        {:ok, {_thread, article}} -> {:cont, {:ok, [%{path: path, article: article} | acc]}}
+        {:error, reason} -> {:halt, {:error, reason}}
+      end
+    end)
+    |> case do
+      {:ok, resolved} -> {:ok, Enum.reverse(resolved)}
+      error -> error
+    end
+  end
+
+  defp hydrate_article_viewer_batch(resolved, %User{} = user) do
+    CMS.Articles.InteractionResponse.many(Enum.map(resolved, &elem(&1, 1)), user)
+  end
+
+  defp resolve_comment_viewer_batch(article_path, comment_inner_ids) do
+    comment_inner_ids
+    |> Enum.reduce_while({:ok, []}, fn inner_id, {:ok, acc} ->
+      case CMS.FrontDesk.comment(%{article: article_path, inner_id: inner_id}) do
+        {:ok, comment} -> {:cont, {:ok, [comment | acc]}}
+        {:error, reason} -> {:halt, {:error, reason}}
+      end
+    end)
+    |> case do
+      {:ok, comments} -> {:ok, Enum.reverse(comments)}
+      error -> error
+    end
+  end
+
+  defp hydrate_comment_viewer_batch(comments, %User{} = user),
+    do: CMS.Comments.InteractionResponse.many(comments, user)
+
+  defp resolve_comment_viewer_states(article_path, comment_inner_ids, user) do
+    with {:ok, comments} <- resolve_comment_viewer_batch(article_path, comment_inner_ids),
+         {:ok, hydrated} <- hydrate_comment_viewer_batch(comments, user) do
+      {:ok,
+       Enum.zip(comments, hydrated)
+       |> Enum.map(fn {_comment, comment} ->
+         %{
+           inner_id: comment.inner_id,
+           viewer_has_upvoted: comment.viewer_has_upvoted,
+           viewer_has_reported: comment.viewer_has_reported,
+           emotions: viewer_comment_emotions(comment)
+         }
+       end)}
+    end
+  end
+
+  defp viewer_comment_emotions(comment) do
+    EmotionFormatter.format(comment, :comment)
+    |> Enum.map(fn emotion ->
+      %{type: emotion.type, viewer_has_reacted: emotion.viewer_has_reacted}
+    end)
   end
 
   def one_comment(_root, %{comment: comment}, %{context: %{cur_user: user}}) do

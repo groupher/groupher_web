@@ -1,48 +1,20 @@
 import { act, render, waitFor } from '@testing-library/react'
+import type { ReactNode } from 'react'
 
-import THEME, { LOCAL_THEME_KEY, THEME_FIRST_PAINT_STYLE_ID, THEME_MODE } from '~/const/theme'
-import { makeStoreWrapper } from '~/hooks/__test__/makeStoreWrapper'
+import THEME, { THEME_MODE } from '~/const/theme'
+import useTheme from '~/hooks/useTheme'
+import type { TThemeMode } from '~/spec'
+import ThemeStoreProvider from '~/stores/theme/provider'
 
 import ThemeMonitor from './ThemeMonitor'
 
 describe('ThemeMonitor', () => {
-  const originalRequestAnimationFrame = window.requestAnimationFrame
-  const originalCancelAnimationFrame = window.cancelAnimationFrame
   const originalMatchMedia = window.matchMedia
 
-  let rafId = 0
-  let rafCallbacks: FrameRequestCallback[] = []
-
-  const flushAnimationFrame = () => {
-    const callbacks = rafCallbacks
-    rafCallbacks = []
-
-    for (const callback of callbacks) {
-      callback(performance.now())
-    }
-  }
-
   beforeEach(() => {
-    rafId = 0
-    rafCallbacks = []
-    localStorage.clear()
     document.documentElement.removeAttribute('data-theme')
     document.documentElement.removeAttribute('data-theme-mode')
     document.documentElement.style.colorScheme = ''
-    document.getElementById(THEME_FIRST_PAINT_STYLE_ID)?.remove()
-
-    Object.defineProperty(window, 'requestAnimationFrame', {
-      writable: true,
-      value: vi.fn((callback: FrameRequestCallback) => {
-        rafCallbacks.push(callback)
-        rafId += 1
-        return rafId
-      }),
-    })
-    Object.defineProperty(window, 'cancelAnimationFrame', {
-      writable: true,
-      value: vi.fn(),
-    })
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: vi.fn(() => ({
@@ -55,41 +27,24 @@ describe('ThemeMonitor', () => {
   })
 
   afterEach(() => {
-    window.requestAnimationFrame = originalRequestAnimationFrame
-    window.cancelAnimationFrame = originalCancelAnimationFrame
     window.matchMedia = originalMatchMedia
   })
 
-  it('keeps first-paint vars until runtime dark theme has taken over', async () => {
-    const style = document.createElement('style')
-    style.id = THEME_FIRST_PAINT_STYLE_ID
-    style.textContent = ':root { --color-title: #fff; }'
-    document.head.appendChild(style)
-    localStorage.setItem(LOCAL_THEME_KEY, THEME.DARK)
+  it('does not re-resolve the theme on mount', () => {
+    document.documentElement.dataset.theme = THEME.LIGHT
+    document.documentElement.dataset.themeMode = THEME_MODE.LIGHT
 
-    const wrapper = makeStoreWrapper()
-    render(<ThemeMonitor />, { wrapper })
+    render(
+      <ThemeStoreProvider initData={{ theme: THEME.LIGHT, themeMode: THEME_MODE.LIGHT }}>
+        <ThemeMonitor />
+      </ThemeStoreProvider>,
+    )
 
-    await waitFor(() => {
-      expect(document.documentElement.getAttribute('data-theme')).toBe(THEME.DARK)
-    })
-
-    expect(document.getElementById(THEME_FIRST_PAINT_STYLE_ID)).not.toBeNull()
-
-    await waitFor(() => {
-      expect(window.requestAnimationFrame).toHaveBeenCalled()
-    })
-
-    act(() => {
-      flushAnimationFrame()
-    })
-
-    await waitFor(() => {
-      expect(document.getElementById(THEME_FIRST_PAINT_STYLE_ID)).toBeNull()
-    })
+    expect(document.documentElement.dataset.theme).toBe(THEME.LIGHT)
+    expect(window.matchMedia).not.toHaveBeenCalled()
   })
 
-  it('keeps following system changes when Dash was seeded from cookies', async () => {
+  it('attaches and detaches system listeners as the store mode changes', async () => {
     let changeListener: (() => void) | undefined
     const media = {
       matches: false,
@@ -104,16 +59,32 @@ describe('ThemeMonitor', () => {
       writable: true,
       value: vi.fn(() => media),
     })
+    document.documentElement.dataset.theme = THEME.LIGHT
+    document.documentElement.dataset.themeMode = THEME_MODE.DARK
 
-    document.documentElement.dataset.themeMode = THEME_MODE.SYSTEM
-    localStorage.setItem(LOCAL_THEME_KEY, THEME_MODE.DARK)
+    let setMode: ((mode: TThemeMode) => void) | undefined
+    const Controller = ({ children }: { children: ReactNode }) => {
+      const { changeMode } = useTheme()
+      setMode = changeMode
+      return children
+    }
 
-    const wrapper = makeStoreWrapper()
-    render(<ThemeMonitor />, { wrapper })
+    render(
+      <ThemeStoreProvider initData={{ theme: THEME.LIGHT, themeMode: THEME_MODE.DARK }}>
+        <Controller>
+          <ThemeMonitor />
+        </Controller>
+      </ThemeStoreProvider>,
+    )
 
-    await waitFor(() => {
-      expect(document.documentElement.dataset.theme).toBe(THEME.LIGHT)
+    expect(document.documentElement.dataset.theme).toBe(THEME.LIGHT)
+    expect(media.addEventListener).not.toHaveBeenCalled()
+
+    await act(async () => {
+      setMode?.(THEME_MODE.SYSTEM)
     })
+
+    await waitFor(() => expect(media.addEventListener).toHaveBeenCalledOnce())
 
     media.matches = true
     act(() => changeListener?.())
@@ -121,5 +92,11 @@ describe('ThemeMonitor', () => {
     await waitFor(() => {
       expect(document.documentElement.dataset.theme).toBe(THEME.DARK)
     })
+
+    await act(async () => {
+      setMode?.(THEME_MODE.LIGHT)
+    })
+
+    await waitFor(() => expect(media.removeEventListener).toHaveBeenCalledOnce())
   })
 })

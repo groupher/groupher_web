@@ -1,6 +1,6 @@
 import { pick } from 'ramda'
 
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { BASEINFO_LOGOS_KEYS } from '../../constant'
 import type { TDsbFieldKey } from '../../spec'
@@ -14,7 +14,7 @@ export type TRet = {
 
 /** Exposes logos state and actions through the shared React hook boundary. */
 export default function useLogos(): TRet {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
   const { anyChanged } = useHelper()
 
   // TODO: handle image upload

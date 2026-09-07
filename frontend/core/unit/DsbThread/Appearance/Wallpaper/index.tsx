@@ -1,8 +1,8 @@
 'use client'
 
 import { AnimatePresence, domAnimation, LazyMotion, m } from 'motion/react'
+import { useEffect } from 'react'
 
-import useMount from '~/hooks/useMount'
 import useTrans from '~/hooks/useTrans'
 import { SegmentTabs } from '~/ui/Switcher'
 import ThemeSwitchPreview from '~/ui/ThemeSwitch/Preview'
@@ -31,10 +31,19 @@ const TAB_ANIMATION = {
 function Wallpaper() {
   const s = useSalon()
   const { t } = useTrans()
-  const { tab, changeTab, initRollback, isTouched } = useLogic()
+  const { tab, changeTab, isTouched } = useLogic()
   const tabItems = TAB_OPTIONS.map(({ key, labelKey }) => ({ key, label: t(labelKey) }))
 
-  useMount(initRollback)
+  useEffect(() => {
+    if (!isTouched) return
+
+    const warnBeforeUnload = (event: BeforeUnloadEvent): void => {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+    window.addEventListener('beforeunload', warnBeforeUnload)
+    return () => window.removeEventListener('beforeunload', warnBeforeUnload)
+  }, [isTouched])
 
   return (
     <div className={s.wrapper}>

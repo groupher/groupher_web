@@ -1,7 +1,7 @@
 import { COLOR } from '~/const/colors'
 import useTwBelt from '~/hooks/useTwBelt'
 
-export { cn, cnMerge } from '~/css'
+export { cn } from '~/css'
 
 export default function useSalon() {
   const { cn, bg, br, fg, fill, hover, primary, rainbow, shadow } = useTwBelt()

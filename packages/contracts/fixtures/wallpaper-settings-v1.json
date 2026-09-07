@@ -1,0 +1,255 @@
+{
+  "settingsSchemaVersion": 1,
+  "theme": "light",
+  "domain": {
+    "type": "gradient",
+    "source": "amber_mauve",
+    "customWallpaper": null,
+    "renderConfig": {
+      "gradient": {
+        "version": 2,
+        "renderer": "linear",
+        "preset": "amber_mauve",
+        "colors": ["#FBEFDE", "#D8B9E3"],
+        "angle": 270,
+        "spread": 52
+      },
+      "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
+      "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
+      "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
+    }
+  },
+  "transport": {
+    "settingsSchemaVersion": 1,
+    "type": "GRADIENT",
+    "source": "amber_mauve",
+    "customWallpaper": null,
+    "renderConfig": {
+      "gradient": {
+        "version": 2,
+        "renderer": "linear",
+        "preset": "amber_mauve",
+        "colors": ["#FBEFDE", "#D8B9E3"],
+        "angle": 270,
+        "spread": 52
+      },
+      "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
+      "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
+      "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
+    }
+  },
+  "picture": {
+    "domain": {
+      "type": "picture",
+      "source": "https://example.com/source.webp",
+      "customWallpaper": {
+        "type": "picture",
+        "assetPublicRef": "asset_picture",
+        "config": { "image": "https://example.com/source.webp" }
+      },
+      "renderConfig": {
+        "gradient": null,
+        "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
+        "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
+      }
+    },
+    "transport": {
+      "settingsSchemaVersion": 1,
+      "type": "UPLOAD",
+      "source": "https://example.com/source.webp",
+      "customWallpaper": {
+        "type": "PICTURE",
+        "assetPublicRef": "asset_picture",
+        "config": { "image": "https://example.com/source.webp" }
+      },
+      "renderConfig": {
+        "gradient": null,
+        "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
+        "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
+      }
+    }
+  },
+  "none": {
+    "domain": {
+      "type": "none"
+    },
+    "transport": {
+      "settingsSchemaVersion": 1,
+      "type": "NONE",
+      "source": null,
+      "customWallpaper": null,
+      "renderConfig": null
+    }
+  },
+  "radial": {
+    "domain": {
+      "type": "gradient",
+      "source": "aurora",
+      "customWallpaper": null,
+      "renderConfig": {
+        "gradient": {
+          "version": 2,
+          "renderer": "radial",
+          "preset": "aurora",
+          "colors": ["#153B50", "#D8B9E3"],
+          "angle": 45,
+          "center": { "x": 0.5, "y": 0.5 },
+          "radius": 80,
+          "shape": "circle",
+          "stops": [0, 1],
+          "spread": 52
+        },
+        "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
+        "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
+      }
+    },
+    "transport": {
+      "settingsSchemaVersion": 1,
+      "type": "GRADIENT",
+      "source": "aurora",
+      "customWallpaper": null,
+      "renderConfig": {
+        "gradient": {
+          "version": 2,
+          "renderer": "radial",
+          "preset": "aurora",
+          "colors": ["#153B50", "#D8B9E3"],
+          "angle": 45,
+          "center": { "x": 0.5, "y": 0.5 },
+          "radius": 80,
+          "shape": "circle",
+          "stops": [0, 1],
+          "spread": 52
+        },
+        "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
+        "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
+      }
+    }
+  },
+  "mesh": {
+    "domain": {
+      "type": "gradient",
+      "source": "flow",
+      "customWallpaper": null,
+      "renderConfig": {
+        "gradient": {
+          "version": 2,
+          "renderer": "flow",
+          "preset": "flow",
+          "seed": 7,
+          "colors": ["#153B50", "#D8B9E3", "#FBEFDE"],
+          "angle": 15,
+          "softness": 72,
+          "warp": 55,
+          "scale": 55,
+          "contrast": 100,
+          "brightness": 100
+        },
+        "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
+        "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
+      }
+    },
+    "transport": {
+      "settingsSchemaVersion": 1,
+      "type": "GRADIENT",
+      "source": "flow",
+      "customWallpaper": null,
+      "renderConfig": {
+        "gradient": {
+          "version": 2,
+          "renderer": "flow",
+          "preset": "flow",
+          "seed": 7,
+          "colors": ["#153B50", "#D8B9E3", "#FBEFDE"],
+          "angle": 15,
+          "softness": 72,
+          "warp": 55,
+          "scale": 55,
+          "contrast": 100,
+          "brightness": 100
+        },
+        "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
+        "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
+      }
+    }
+  },
+  "meshLiquid": {
+    "transport": {
+      "settingsSchemaVersion": 1,
+      "type": "GRADIENT",
+      "source": "liquid",
+      "customWallpaper": null,
+      "renderConfig": {
+        "gradient": {
+          "version": 2,
+          "renderer": "liquid",
+          "preset": "liquid",
+          "seed": 11,
+          "colors": ["#153B50", "#D8B9E3", "#FBEFDE"],
+          "angle": 195,
+          "softness": 64,
+          "warp": 62,
+          "scale": 48,
+          "contrast": 104,
+          "brightness": 96
+        },
+        "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
+        "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
+      }
+    }
+  },
+  "gradientCustomWallpaper": {
+    "domain": {
+      "type": "gradient",
+      "source": "custom",
+      "customWallpaper": {
+        "type": "gradient",
+        "assetPublicRef": null,
+        "config": { "colors": ["#153B50", "#D8B9E3"], "direction": "to bottom" }
+      },
+      "renderConfig": {
+        "gradient": {
+          "version": 2,
+          "renderer": "linear",
+          "preset": "custom",
+          "colors": ["#153B50", "#D8B9E3"],
+          "angle": 180,
+          "spread": 52
+        },
+        "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
+        "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
+      }
+    },
+    "transport": {
+      "settingsSchemaVersion": 1,
+      "type": "GRADIENT",
+      "source": "custom",
+      "customWallpaper": {
+        "type": "GRADIENT",
+        "assetPublicRef": null,
+        "config": { "colors": ["#153B50", "#D8B9E3"], "direction": "to bottom" }
+      },
+      "renderConfig": {
+        "gradient": {
+          "version": 2,
+          "renderer": "linear",
+          "preset": "custom",
+          "colors": ["#153B50", "#D8B9E3"],
+          "angle": 180,
+          "spread": 52
+        },
+        "pattern": { "enabled": false, "id": "01", "intensity": 0, "tone": "dark" },
+        "texture": { "enabled": false, "type": "noise", "intensity": 0, "params": {} },
+        "effect": { "blurIntensity": 0, "brightness": 100, "saturation": 100 }
+      }
+    }
+  }
+}

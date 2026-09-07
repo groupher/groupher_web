@@ -1,6 +1,7 @@
 import { execFile, spawn, type ChildProcess } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 import net from 'node:net'
-import { promisify } from 'node:util'
+import { parseEnv, promisify } from 'node:util'
 
 import type {
   THubEvent,
@@ -12,7 +13,7 @@ import type {
   TServiceStartPolicy,
   TServiceStatus,
 } from '../shared/contracts.ts'
-import type { TServiceDefinition } from './services.ts'
+import type { TServiceDefinition, TServiceStartupCheck } from './services.ts'
 
 const MAX_LOG_CHARS = 300_000
 const EXTERNAL_POLL_MS = 2_500
@@ -54,6 +55,27 @@ type TExternalProcessControls = {
   terminateProcessGroup: (pgid: number) => Promise<void>
 }
 
+type TStartupCheckRunner = (check: TServiceStartupCheck) => Promise<void>
+
+const readEnvFallback = (definition: TServiceDefinition): Record<string, string> => {
+  if (!definition.envFallback) return {}
+
+  let parsed: NodeJS.Dict<string>
+  try {
+    parsed = parseEnv(readFileSync(definition.envFallback.file, 'utf8'))
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return {}
+    throw error
+  }
+
+  const fallback: Record<string, string> = {}
+  for (const key of definition.envFallback.keys) {
+    const value = parsed[key]
+    if (value !== undefined) fallback[key] = value
+  }
+  return fallback
+}
+
 export type TManagedProcessTarget = {
   serviceId: string
   pid: number
@@ -83,6 +105,7 @@ export class ServiceManager {
       findProcessGroups: findExternalProcessGroups,
       terminateProcessGroup: terminateExternalProcessGroup,
     },
+    private readonly startupCheckRunner: TStartupCheckRunner = runHttpStartupCheck,
   ) {
     this.devHubOrigin = devHubOrigin
     for (const definition of definitions) {
@@ -219,6 +242,7 @@ export class ServiceManager {
     const child = spawn(definition.command, definition.args || [], {
       cwd: definition.cwd,
       env: {
+        ...readEnvFallback(definition),
         ...childEnv,
         FORCE_COLOR: '3',
         CLICOLOR_FORCE: '1',
@@ -271,6 +295,8 @@ export class ServiceManager {
       waitForReady: true,
       includeOptionalDependencies: false,
     })
+
+    if (resolvedMode !== 'self') await this.runStartupChecks(this.getRuntime(id))
 
     const optionalStart = this.startServiceLayers(optionalIds, touched, {
       optional: true,
@@ -328,6 +354,7 @@ export class ServiceManager {
     if (hasManagedProcess) await this.stop(id)
     else await this.stopExternalProcesses(runtime)
     await this.waitForPortRelease(runtime)
+    await this.runStartupChecks(runtime)
     return this.start(id, 'restart')
   }
 
@@ -511,6 +538,22 @@ export class ServiceManager {
     runtime.externalProcess = null
     runtime.endedAt = null
     runtime.exitCode = null
+  }
+
+  private async runStartupChecks(runtime: TRuntimeService): Promise<void> {
+    for (const check of runtime.definition.startupChecks || []) {
+      try {
+        await this.startupCheckRunner(check)
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown contract failure.'
+        this.appendLog(
+          runtime,
+          'system',
+          `\r\n\u001b[31m${check.label} failed: ${message}\u001b[0m\r\n`,
+        )
+        throw new ServiceManagerError(`${check.label} failed: ${message}`, 409)
+      }
+    }
   }
 
   private appendLog(runtime: TRuntimeService, stream: TLogStream, chunk: string): void {
@@ -801,6 +844,39 @@ async function isHttpReady(url: string): Promise<boolean> {
   } catch {
     return false
   }
+}
+
+async function runHttpStartupCheck(check: TServiceStartupCheck): Promise<void> {
+  let response: Response
+  try {
+    response = await fetch(check.url, { signal: AbortSignal.timeout(10_000) })
+  } catch {
+    throw new Error(`could not reach ${check.url}`)
+  }
+
+  const payload = (await response.json().catch(() => null)) as {
+    schemaVersion?: unknown
+    status?: unknown
+    checks?: Array<{ name?: unknown; status?: unknown; message?: unknown }>
+  } | null
+  const contractCheck = payload?.checks?.find((item) => item.name === check.healthCheckName)
+
+  if (
+    response.ok &&
+    payload?.schemaVersion === 'health.v1' &&
+    payload.status === 'ok' &&
+    contractCheck?.status === 'ok'
+  ) {
+    return
+  }
+
+  const detail =
+    typeof contractCheck?.message === 'string'
+      ? ` (${contractCheck.message})`
+      : payload
+        ? ' (invalid health contract)'
+        : ''
+  throw new Error(`returned HTTP ${response.status}${detail}`)
 }
 
 async function isDefinitionReady(

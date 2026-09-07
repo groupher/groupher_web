@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import { graphqlQueryOptions } from '~/query'
 import type { TDocCoverLayout } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 import { DOC_COVER_VIEW } from '~/unit/DocCovers/constant'
 import S from '~/unit/DocCovers/schema'
 import type {
@@ -64,7 +64,7 @@ const collectPages = (
  */
 export default function useLogic(): TRet {
   const { slug: community } = useCommunity()
-  const dashboard = useDsb()
+  const dashboard = useDsbEdit()
   const { data, refetch: reloadCover } = useQuery(
     graphqlQueryOptions<{ docCover?: TDocCovers }>(S.docCover, {
       community,
@@ -107,17 +107,17 @@ export default function useLogic(): TRet {
   }
 
   const pinDoc = async (nodeId: string): Promise<void> => {
-    await browserQuery(DashboardSchema.pinDocToCover, { community, nodeId })
+    await browserGraphQLRequest(DashboardSchema.pinDocToCover, { community, nodeId })
     reload()
   }
 
   const unpinDoc = async (nodeId: string): Promise<void> => {
-    await browserQuery(DashboardSchema.unpinDocFromCover, { community, nodeId })
+    await browserGraphQLRequest(DashboardSchema.unpinDocFromCover, { community, nodeId })
     reload()
   }
 
   const reorderPinnedDocs = async (pinnedDocs: readonly TDocCoverPinnedDoc[]): Promise<void> => {
-    await browserQuery(DashboardSchema.reorderDocCoverPinnedDocs, {
+    await browserGraphQLRequest(DashboardSchema.reorderDocCoverPinnedDocs, {
       community,
       nodeIds: pinnedDocs.map((doc) => doc.nodeId),
     })
@@ -128,7 +128,7 @@ export default function useLogic(): TRet {
     nodeId: string,
     appearance: TDocCoverPinnedDocAppearance,
   ): Promise<void> => {
-    await browserQuery(DashboardSchema.updatePinnedDocAppearance, {
+    await browserGraphQLRequest(DashboardSchema.updatePinnedDocAppearance, {
       community,
       nodeId,
       appearance: JSON.stringify(appearance),

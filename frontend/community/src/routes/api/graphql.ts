@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { waitUntil } from 'cloudflare:workers'
 
 import { proxyGraphQLRequest } from '~/graphql/proxy'
-import { mutationCacheTags } from '~/query/cacheInvalidation'
+import { mutationCacheEffect } from '~/query/cacheInvalidation'
 
 export const Route = createFileRoute('/api/graphql')({
   server: {
@@ -30,9 +30,9 @@ export const Route = createFileRoute('/api/graphql')({
               payload.variables && typeof payload.variables === 'object'
                 ? (payload.variables as Record<string, unknown>)
                 : {}
-            const tags = mutationCacheTags(payload.query, variables)
-            if (tags.length > 0) {
-              waitUntil(observeCommunityTagPurge(tags))
+            const effect = mutationCacheEffect(payload.query, variables)
+            if (effect?.mode === 'immediate' && effect.tags.length > 0) {
+              waitUntil(observeCommunityTagPurge(effect.tags))
             }
           }
         }

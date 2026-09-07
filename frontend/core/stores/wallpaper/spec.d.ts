@@ -1,12 +1,7 @@
 import type { TBgConfig } from '~/lib/bg'
 
-export type TWallpaperContentShadow = {
-  enabled: boolean
-}
-
-export type TWallpaperThemeState = TBgConfig & {
-  contentShadow: TWallpaperContentShadow
-}
+/** Wallpaper-only working copy; Dashboard content shadow has a separate store/lane. */
+export type TWallpaperThemeState = TBgConfig
 
 export type TWallpaperState = {
   light: TWallpaperThemeState
@@ -21,7 +16,18 @@ export type TWallpaperPatch = {
 export type TStore = TWallpaperState & {
   original: TWallpaperState
   // actions
-  commit: (patch: Partial<Omit<TStore, 'light' | 'dark' | 'commit'>> & TWallpaperPatch) => void
+  commit: (
+    patch: Partial<
+      Omit<TStore, 'light' | 'dark' | 'commit' | 'acceptSubmitted' | 'reconcileConfirmed'>
+    > &
+      TWallpaperPatch,
+  ) => void
+  acceptSubmitted: (submitted: TWallpaperPatch) => void
+  reconcileConfirmed: (confirmed: TInit) => void
 }
 
-export type TInit = TWallpaperPatch
+export type TInit = {
+  light?: Partial<TWallpaperThemeState> | null
+  dark?: Partial<TWallpaperThemeState> | null
+  wallpaper?: import('~/spec').TPublishedWallpaper | null
+}

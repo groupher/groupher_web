@@ -1,4 +1,6 @@
-import useSalon, { cnMerge } from './salon'
+import { cn } from '~/css'
+
+import useSalon from './salon'
 
 type TProps = {
   title: string
@@ -11,39 +13,39 @@ export default function ClassicContent({ title }: TProps) {
     <div className={s.frame}>
       <div className={s.nav}>
         <h4 className={s.communityTitle}>{title}</h4>
-        <div className={cnMerge(s.bar, s.navBar)} />
+        <div className={cn(s.barBase, s.navBar)} />
         <div className={s.circle} />
       </div>
-      <div className={cnMerge(s.hDivider, 'mt-1.5 mb-5')} />
+      <div className={cn(s.hDivider, 'mt-1.5 mb-5')} />
 
       <div className={s.mainClassic}>
         <div className={s.contentColumn}>
           <div className={s.sectionBlock}>
-            <div className={cnMerge(s.bar, s.contentTitleWide)} />
-            <div className={cnMerge(s.bar, s.contentDigest)} />
+            <div className={cn(s.barBase, s.contentTitleWide)} />
+            <div className={cn(s.barBase, s.contentDigest)} />
           </div>
           <div className={s.sectionBlock}>
-            <div className={cnMerge(s.bar, s.contentTitle)} />
-            <div className={cnMerge(s.bar, s.contentDigestShort)} />
+            <div className={cn(s.barBase, s.contentTitle)} />
+            <div className={cn(s.barBase, s.contentDigestShort)} />
           </div>
           <div className={s.sectionBlock}>
-            <div className={cnMerge(s.bar, s.contentTitle)} />
-            <div className={cnMerge(s.bar, s.contentDigestWide)} />
+            <div className={cn(s.barBase, s.contentTitle)} />
+            <div className={cn(s.barBase, s.contentDigestWide)} />
           </div>
           <div className={s.sectionBlock}>
-            <div className={cnMerge(s.bar, s.contentTitleWide)} />
-            <div className={cnMerge(s.bar, s.contentDigestShort)} />
+            <div className={cn(s.barBase, s.contentTitleWide)} />
+            <div className={cn(s.barBase, s.contentDigestShort)} />
           </div>
         </div>
 
         <div className={s.vDivider} />
 
         <div className={s.rightRail}>
-          <div className={cnMerge(s.bar, s.primaryBar, s.primaryChip)} />
-          <div className={cnMerge(s.bar, s.railItemShort)} />
-          <div className={cnMerge(s.bar, s.railItemWide)} />
-          <div className={cnMerge(s.bar, s.railItem)} />
-          <div className={cnMerge(s.bar, s.footerItem)} />
+          <div className={cn(s.barBase, s.primaryBar, s.primaryChip)} />
+          <div className={cn(s.barBase, s.railItemShort)} />
+          <div className={cn(s.barBase, s.railItemWide)} />
+          <div className={cn(s.barBase, s.railItem)} />
+          <div className={cn(s.barBase, s.footerItem)} />
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@
 
 import type { FC, ReactNode } from 'react'
 
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 import InfoSVG from '~/icons/Info'
 import type { TSpace, TTooltipPlacement } from '~/spec'
 import Tooltip from '~/ui/Tooltip'
@@ -30,7 +30,7 @@ const NoteTip: FC<TProps> = ({
   const s = useSalon({ ...spacing })
 
   return (
-    <div className={cnMerge(s.wrapper, className)}>
+    <div className={cn(s.wrapper, className)}>
       <Tooltip
         placement={placement}
         content={<div className={s.note}>{children}</div>}

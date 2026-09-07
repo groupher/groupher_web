@@ -1,4 +1,5 @@
 import type { TRichEditorValue } from '@groupher/rich-editor'
+import { API_ROUTE } from '@groupher/route-contract'
 
 /**
  * Browser client for the shared single-document Import Content boundary.
@@ -71,7 +72,7 @@ export const importDocument = async (file: File): Promise<TDocumentImportResult>
   const formData = new FormData()
   formData.set('file', file, file.name)
 
-  const response = await fetch('/api/artiment/import', {
+  const response = await fetch(API_ROUTE.ARTIMENT_IMPORT, {
     body: formData,
     method: 'POST',
   })
@@ -81,7 +82,7 @@ export const importDocument = async (file: File): Promise<TDocumentImportResult>
 
 /** Imports one public documentation URL exposed as bounded Markdown. */
 export const importDocumentationPlatform = async (url: string): Promise<TDocumentImportResult> => {
-  const response = await fetch('/api/artiment/import', {
+  const response = await fetch(API_ROUTE.ARTIMENT_IMPORT, {
     body: JSON.stringify({ source: 'documentation-url', url }),
     headers: { 'Content-Type': 'application/json' },
     method: 'POST',

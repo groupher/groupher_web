@@ -17,7 +17,6 @@ type TProps = {
   links: readonly TLinkItem[]
   editLinks: (links: readonly TLinkItem[]) => void
   makeId: (prefix: string) => string
-  onEditingLinkChange?: (link: TLinkDraftItem | null, mode: TChangeMode) => void
 }
 
 export type TDashboardLinkEditorActions = {
@@ -46,7 +45,6 @@ export default function useDashboardLinkEditorActions({
   links,
   editLinks,
   makeId,
-  onEditingLinkChange,
 }: TProps): TDashboardLinkEditorActions {
   const [editingLink, setEditingLink] = useState<TLinkDraftItem | null>(null)
   const [editingLinkMode, setEditingLinkMode] = useState<TChangeMode>(CHANGE_MODE.CREATE)
@@ -58,9 +56,8 @@ export default function useDashboardLinkEditorActions({
     (link: TLinkDraftItem | null, mode = editingLinkMode): void => {
       setEditingLink(link)
       setEditingLinkMode(mode)
-      onEditingLinkChange?.(link, mode)
     },
-    [editingLinkMode, onEditingLinkChange],
+    [editingLinkMode],
   )
 
   const triggerLinkAdd = useCallback((): void => {

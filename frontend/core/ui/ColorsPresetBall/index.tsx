@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 
 import SIZE from '~/const/size'
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 
 import { COLOR_PRESET_BALL_FALLBACK_COLOR, COLORS_PRESET_BALL_LAYOUT } from './constant'
 import Grid from './Grid'
@@ -55,7 +55,7 @@ export default function ColorsPresetBall({
     return (
       <button
         type='button'
-        className={cnMerge(s.wrapper, className)}
+        className={cn(s.wrapper, className)}
         style={containerStyle}
         aria-label={interactiveLabel}
         aria-pressed={active}
@@ -69,7 +69,7 @@ export default function ColorsPresetBall({
 
   return (
     <div
-      className={cnMerge(s.wrapper, className)}
+      className={cn(s.wrapper, className)}
       style={containerStyle}
       role={label ? 'img' : undefined}
       aria-label={label}

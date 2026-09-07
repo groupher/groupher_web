@@ -2,7 +2,7 @@
 
 import { type FC, type KeyboardEvent, memo, useEffect, useMemo, useRef, useState } from 'react'
 
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 
 import useSalon from '../salon/segment_tab'
 import SegmentTabItem from './Item'
@@ -111,7 +111,7 @@ const SegmentTab: FC<TSegmentTabProps> = ({
       ref={wrapperRef}
       role='radiogroup'
       aria-label={ariaLabel}
-      className={cnMerge(s.wrapper, className)}
+      className={cn(s.wrapper, className)}
     >
       <span
         aria-hidden='true'

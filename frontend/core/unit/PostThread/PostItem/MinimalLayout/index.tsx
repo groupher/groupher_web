@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import { UPVOTE_LAYOUT } from '~/const/layout'
 import { THREAD_PATH } from '~/const/thread'
 import usePreviewItemActive from '~/hooks/usePreviewItemActive'
-import { upvoteArticle } from '~/signal'
+import useArticleUpvoteMutation from '~/query/mutation/useArticleUpvoteMutation'
 import type { TPost } from '~/spec'
 import Upvote from '~/unit/Upvote'
 
@@ -20,6 +20,7 @@ const DigestView: FC<TProps> = ({ article }) => {
   const isActive = usePreviewItemActive(article.innerId, THREAD_PATH.POST)
   const s = useSalon({ active: isActive })
   const { upvotesCount, meta, viewerHasUpvoted } = article
+  const upvoteArticle = useArticleUpvoteMutation(article)
 
   return (
     <article className={s.wrapper}>
@@ -30,7 +31,7 @@ const DigestView: FC<TProps> = ({ article }) => {
           avatarList={meta.latestUpvotedUsers}
           viewerHasUpvoted={viewerHasUpvoted}
           type={UPVOTE_LAYOUT.POST_MINIMAL}
-          onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
+          onAction={upvoteArticle}
           left={-2}
           top={-1}
         />

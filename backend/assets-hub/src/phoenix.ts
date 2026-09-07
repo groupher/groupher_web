@@ -9,8 +9,10 @@
  *     -> Phoenix asset state
  */
 
+import type { TGeneratedImageManifestEntry } from '@groupher/contracts/wallpaper'
 import { createServiceAuthClientFromEnv, type TServiceAuthClient } from '@groupher/service/auth'
 
+import type { TGeneratedImageUploadCapability } from './capability'
 import type { TCommunityAssetUploadCapability, TUploadCapability } from './capability'
 
 export type TCommunityAssetOriginInfo = {
@@ -60,6 +62,7 @@ type TCompleteUploadInput = {
 type TPhoenixEnvironment = Partial<
   Record<
     | 'PHOENIX_GRAPHQL_ENDPOINT'
+    | 'ASSETS_HUB_BATCH_ENDPOINT'
     | 'SERVICE_AUTH_CLIENT_ID'
     | 'SERVICE_AUTH_CLIENT_SECRET'
     | 'SERVICE_AUTH_TOKEN_ENDPOINT',
@@ -277,6 +280,56 @@ export const completePhoenixUpload = async ({
   })
 
   return result.completeCommunityAssetUpload
+}
+
+/** Records a generated asset in its persistent batch before Phoenix completion. */
+export const registerGeneratedAsset = async ({
+  capability,
+  capabilityToken,
+  environment = process.env,
+  entry,
+}: {
+  capability: TGeneratedImageUploadCapability
+  capabilityToken: string
+  environment?: Record<string, string | undefined>
+  entry: Pick<TGeneratedImageManifestEntry, 'checksum' | 'storageKey'>
+}) => {
+  const endpoint = environment.ASSETS_HUB_BATCH_ENDPOINT?.trim()
+  if (!endpoint) throw new Error('ASSETS_HUB_BATCH_ENDPOINT is required')
+
+  serviceTokenProvider ??= createServiceAuthClientFromEnv(environment)
+  const serviceToken = await serviceTokenProvider.getToken({
+    resource: 'https://assets.groupher.com/internal',
+    scopes: ['assets:generated-batch:register'],
+  })
+
+  const response = await fetch(
+    `${endpoint.replace(/\/$/, '')}/generated-batches/${capability.batchRef}/assets`,
+    {
+      body: JSON.stringify({
+        assetPublicRef: capability.assetPublicRef,
+        candidateOwnerRef: capability.candidateOwnerRef,
+        capability: capabilityToken,
+        checksum: entry.checksum,
+        storageKey: entry.storageKey,
+      }),
+      headers: {
+        authorization: `Bearer ${serviceToken}`,
+        'content-type': 'application/json',
+      },
+      method: 'POST',
+    },
+  )
+
+  const payload = (await response.json().catch(() => null)) as {
+    error?: { message?: string }
+  } | null
+  if (!response.ok) {
+    throw new Error(
+      payload?.error?.message || `Assets Hub batch registration failed: ${response.status}`,
+    )
+  }
+  return payload
 }
 
 /** Runs the fetch community asset origin info operation at the assets hub boundary. */

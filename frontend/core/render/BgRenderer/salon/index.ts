@@ -9,6 +9,7 @@ export default function useSalon() {
     layerFadeOut: 'opacity-0',
     fallback: 'abs-full bg-center',
     canvas: 'abs-full block size-full',
+    canvasHidden: 'opacity-0',
     pattern: 'abs-full-pe-none',
   }
 }

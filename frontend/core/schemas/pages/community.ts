@@ -108,25 +108,55 @@ export const community = graphql(`
           }
         }
         wallpaper {
+          version
+          lightSource
+          darkSource
           light {
-            type
-            source
-            gradient
-            pattern
-            contentShadow
-            effect
-            texture
+            wide {
+              url
+              width
+              height
+            }
+            desktop {
+              url
+              width
+              height
+            }
+            tablet {
+              url
+              width
+              height
+            }
+            phone {
+              url
+              width
+              height
+            }
           }
           dark {
-            type
-            source
-            gradient
-            pattern
-            contentShadow
-            effect
-            texture
+            wide {
+              url
+              width
+              height
+            }
+            desktop {
+              url
+              width
+              height
+            }
+            tablet {
+              url
+              width
+              height
+            }
+            phone {
+              url
+              width
+              height
+            }
           }
         }
+        contentShadow
         headerLinks {
           id
           type

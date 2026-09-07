@@ -1293,9 +1293,69 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:dark, non_null(:cover_config_input))
   end
 
-  object :dsb_wallpaper do
-    field(:light, :dsb_bg_config)
-    field(:dark, :dsb_bg_config)
+  object :custom_wallpaper do
+    field(:type, non_null(:custom_wallpaper_type))
+    field(:asset_public_ref, :string)
+    field(:config, non_null(:json))
+  end
+
+  object :wallpaper_settings do
+    field(:settings_schema_version, non_null(:integer))
+    field(:type, non_null(:wallpaper_type))
+    field(:source, :string)
+    field(:custom_wallpaper, :custom_wallpaper)
+    field(:render_config, :json)
+  end
+
+  object :wallpaper_settings_by_theme do
+    field(:light, non_null(:wallpaper_settings))
+    field(:dark, non_null(:wallpaper_settings))
+  end
+
+  object :wallpaper_image do
+    field(:url, non_null(:string))
+    field(:width, non_null(:integer))
+    field(:height, non_null(:integer))
+  end
+
+  object :wallpaper_images do
+    field(:wide, non_null(:wallpaper_image))
+    field(:desktop, non_null(:wallpaper_image))
+    field(:tablet, non_null(:wallpaper_image))
+    field(:phone, non_null(:wallpaper_image))
+  end
+
+  object :wallpaper do
+    field(:version, non_null(:integer))
+    field(:light, :wallpaper_images)
+    field(:dark, :wallpaper_images)
+    field(:light_source, :string)
+    field(:dark_source, :string)
+  end
+
+  object :wallpaper_snapshot do
+    field(:id, non_null(:id))
+    field(:theme, non_null(:wallpaper_theme))
+    field(:settings, non_null(:wallpaper_settings))
+    field(:saved_at, non_null(:datetime))
+    field(:active, non_null(:boolean))
+  end
+
+  object :wallpaper_publish_result do
+    field(:version, non_null(:integer))
+  end
+
+  object :wallpaper_upload_preparation do
+    field(:batch_ref, non_null(:string))
+    field(:batch_capability, non_null(:string))
+    field(:expires_at, non_null(:datetime))
+    field(:upload_intents, non_null(list_of(non_null(:wallpaper_upload_intent))))
+  end
+
+  object :wallpaper_upload_intent do
+    field(:profile, non_null(:wallpaper_profile))
+    field(:capability, non_null(:string))
+    field(:upload_ref, non_null(:string))
   end
 
   object :dsb_layout do
@@ -1455,7 +1515,29 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
 
   object :dsb do
     field(:seo, :dsb_seo)
-    field(:wallpaper, :dsb_wallpaper)
+
+    field(:wallpaper, non_null(:wallpaper)) do
+      resolve(fn dashboard, _, _ ->
+        {:ok, CMS.Wallpaper.wallpaper(dashboard.community_id)}
+      end)
+    end
+
+    field(:wallpaper_settings, non_null(:wallpaper_settings_by_theme)) do
+      resolve(fn dashboard, _, _ ->
+        {:ok, CMS.Wallpaper.wallpaper_settings(dashboard.community_id)}
+      end)
+    end
+
+    field(:content_shadow, non_null(:boolean))
+
+    field(:wallpaper_history, non_null(list_of(non_null(:wallpaper_snapshot)))) do
+      arg(:theme, non_null(:wallpaper_theme))
+
+      resolve(fn dashboard, %{theme: theme}, _ ->
+        {:ok, CMS.Wallpaper.wallpaper_history(dashboard.community_id, theme)}
+      end)
+    end
+
     field(:layout, :dsb_layout)
     field(:enable, :dsb_enable)
     field(:thread_emotions, :dsb_thread_emotions)
@@ -1622,6 +1704,26 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:count, :integer)
     field(:viewer_has_reacted, :boolean)
     field(:latest_users, list_of(:common_user))
+  end
+
+  object :viewer_article_state do
+    field(:community, non_null(:string))
+    field(:thread, non_null(:thread))
+    field(:inner_id, non_null(:id))
+    field(:viewer_has_viewed, :boolean)
+    field(:viewer_has_upvoted, :boolean)
+  end
+
+  object :viewer_comment_emotion_state do
+    field(:type, non_null(:emotion_type))
+    field(:viewer_has_reacted, :boolean)
+  end
+
+  object :viewer_comment_state do
+    field(:inner_id, non_null(:id))
+    field(:viewer_has_upvoted, :boolean)
+    field(:viewer_has_reported, :boolean)
+    field(:emotions, non_null(list_of(non_null(:viewer_comment_emotion_state))))
   end
 
   object :comment_meta do

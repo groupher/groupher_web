@@ -2,7 +2,13 @@ import type { ResultOf, TypedDocumentNode, VariablesOf } from '@graphql-typed-do
 import { queryOptions } from '@tanstack/react-query'
 import { print } from 'graphql'
 
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
+
+export const graphqlKeys = {
+  all: ['graphql'] as const,
+  document: (document: string, variables: Record<string, unknown>) =>
+    [...graphqlKeys.all, document, variables] as const,
+}
 
 /** Builds TanStack options for a page-local typed GraphQL read without legacy request-policy semantics. */
 export const graphqlQueryOptions = <
@@ -17,10 +23,10 @@ export const graphqlQueryOptions = <
   variables: TVariables,
 ) =>
   queryOptions({
-    queryKey: ['graphql', print(document), variables] as const,
+    queryKey: graphqlKeys.document(print(document), variables),
     queryFn: () =>
-      browserQuery<[TOverride] extends [never] ? ResultOf<TDocument> : TOverride, TVariables>(
-        document,
-        variables,
-      ),
+      browserGraphQLRequest<
+        [TOverride] extends [never] ? ResultOf<TDocument> : TOverride,
+        TVariables
+      >(document, variables),
   })

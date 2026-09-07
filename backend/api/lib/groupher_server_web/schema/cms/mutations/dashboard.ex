@@ -59,17 +59,52 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Dashboard do
       resolve(&R.CMS.update_dashboard/3)
     end
 
-    @desc "update wallpaper in dashboard"
-    field :update_dashboard_wallpaper, :dsb do
+    @desc "Publishes one current-theme Wallpaper Snapshot"
+    field :publish_wallpaper, non_null(:wallpaper_publish_result) do
       arg(:community, non_null(:string))
-      arg(:wallpaper, non_null(:dsb_wallpaper_input))
+      arg(:input, non_null(:wallpaper_publish_input))
 
       middleware(M.Authorize, :login)
-      # middleware(M.PublishThrottle)
-      # middleware(M.PublishThrottle, interval: 3, hour_limit: 15, day_limit: 30)
+      middleware(M.Passport, action: "community.update")
       middleware(M.FrontDesk, :community)
 
-      resolve(&R.CMS.update_dashboard_wallpaper/3)
+      resolve(&R.CMS.publish_wallpaper/3)
+    end
+
+    @desc "Updates the Dashboard-owned content surface shadow"
+    field :update_dashboard_content_shadow, :dsb do
+      arg(:community, non_null(:string))
+      arg(:enabled, non_null(:boolean))
+
+      middleware(M.Authorize, :login)
+      middleware(M.Passport, action: "community.update")
+      middleware(M.FrontDesk, :community)
+
+      resolve(&R.CMS.update_dashboard_content_shadow/3)
+    end
+
+    @desc "Prepares the generated images for one current-theme Wallpaper save"
+    field :prepare_wallpaper_upload, non_null(:wallpaper_upload_preparation) do
+      arg(:community, non_null(:string))
+      arg(:input, non_null(:wallpaper_upload_prepare_input))
+
+      middleware(M.Authorize, :login)
+      middleware(M.Passport, action: "community.update")
+      middleware(M.FrontDesk, :community)
+
+      resolve(&R.CMS.prepare_wallpaper_upload/3)
+    end
+
+    @desc "Restores one retained Wallpaper Snapshot"
+    field :restore_wallpaper_snapshot, non_null(:wallpaper_publish_result) do
+      arg(:community, non_null(:string))
+      arg(:input, non_null(:wallpaper_restore_snapshot_input))
+
+      middleware(M.Authorize, :login)
+      middleware(M.Passport, action: "community.update")
+      middleware(M.FrontDesk, :community)
+
+      resolve(&R.CMS.restore_wallpaper_snapshot/3)
     end
 
     @desc "update enable in dashboard"

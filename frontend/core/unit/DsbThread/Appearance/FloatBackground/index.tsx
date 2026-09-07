@@ -1,3 +1,4 @@
+import { cn } from '~/css'
 import useTrans from '~/hooks/useTrans'
 import CheckLabel from '~/ui/CheckLabel'
 
@@ -7,7 +8,7 @@ import SavingBar from '../../SavingBar'
 import SectionLabel from '../../SectionLabel'
 import PanelContent from './PanelContent'
 import PopoverContent from './PopoverContent'
-import useSalon, { cnMerge } from './salon'
+import useSalon from './salon'
 
 export default function FloatBackground() {
   const s = useSalon()
@@ -29,17 +30,14 @@ export default function FloatBackground() {
           aria-pressed={overlayDark}
           onClick={() => edit(true, FIELD.OVERLAY_DARK)}
         >
-          <div className={cnMerge(s.block, overlayDark && s.blockActive)}>
-            <div
-              className={cnMerge(s.popover, 'left-20 top-12')}
-              style={{ borderColor: 'dimgray' }}
-            >
+          <div className={s.block({ state: overlayDark ? 'active' : 'idle' })}>
+            <div className={cn(s.popover, 'left-20 top-12')} style={{ borderColor: 'dimgray' }}>
               <PopoverContent dark />
             </div>
-            <div className={cnMerge(s.panel, s.lightPanel)}>
+            <div className={cn(s.panel, s.lightPanel)}>
               <PanelContent />
             </div>
-            <div className={cnMerge(s.panel, s.darkPanel)}>
+            <div className={cn(s.panel, s.darkPanel)}>
               <PanelContent dark />
             </div>
           </div>
@@ -56,25 +54,25 @@ export default function FloatBackground() {
           aria-pressed={!overlayDark}
           onClick={() => edit(false, FIELD.OVERLAY_DARK)}
         >
-          <div className={cnMerge(s.block, !overlayDark && s.blockActive)}>
+          <div className={s.block({ state: !overlayDark ? 'active' : 'idle' })}>
             <div
-              className={cnMerge(s.popover, 'left-5 top-12 w-24 bg-white')}
+              className={cn(s.popover, 'left-5 top-12 w-24 bg-white')}
               style={{ borderColor: 'dimgray' }}
             >
               <PopoverContent />
             </div>
 
             <div
-              className={cnMerge(s.popover, 'right-5 top-12 w-24')}
+              className={cn(s.popover, 'right-5 top-12 w-24')}
               style={{ borderColor: 'dimgray' }}
             >
               <PopoverContent dark />
             </div>
 
-            <div className={cnMerge(s.panel, s.lightPanel)}>
+            <div className={cn(s.panel, s.lightPanel)}>
               <PanelContent />
             </div>
-            <div className={cnMerge(s.panel, s.darkPanel)}>
+            <div className={cn(s.panel, s.darkPanel)}>
               <PanelContent dark />
             </div>
           </div>

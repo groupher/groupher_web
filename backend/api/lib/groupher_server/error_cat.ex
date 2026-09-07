@@ -23,6 +23,7 @@ defmodule GroupherServer.ErrorCat do
     {:cms, :interaction} => 4900..4999,
     {:cms, :community} => 5500..5599,
     {:cms, :asset} => 5600..5699,
+    {:cms, :wallpaper} => 5700..5799,
     {:cms, :article} => 6000..6099,
     {:activity} => 6100..6199
   }
@@ -66,6 +67,7 @@ defmodule GroupherServer.ErrorCat do
     GroupherServer.CMS.Interactions.ErrorCat,
     GroupherServer.CMS.Communities.ErrorCat,
     GroupherServer.CMS.Assets.ErrorCat,
+    GroupherServer.CMS.Wallpaper.ErrorCat,
     GroupherServer.CMS.Articles.ErrorCat,
     GroupherServer.Activity.ErrorCat
   ]

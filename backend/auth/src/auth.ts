@@ -14,11 +14,13 @@ import { createHash } from 'node:crypto'
 import { Auth, type AuthConfig, setEnvDefaults } from '@auth/core'
 import GitHub from '@auth/core/providers/github'
 import {
+  AUTH_ERROR,
   GROUPHER_AUTH_SIGNED_IN_COOKIE,
   GROUPHER_AUTH_TOKEN_COOKIE,
   getAuthCookieNames,
   getAuthSessionCookieName,
 } from '@groupher/contracts/auth'
+import { LOCAL_PHOENIX_GRAPHQL_ENDPOINT } from '@groupher/contracts/endpoint'
 import { GROUPHER_USER_AUTHORIZATION_HEADER } from '@groupher/contracts/headers'
 import { createServiceAuthClientFromEnv, type TServiceAuthClient } from '@groupher/service/auth'
 import { serialize } from 'hono/utils/cookie'
@@ -32,7 +34,7 @@ export const ACCESS_TOKEN_MAX_AGE = 60 * 30
 export const BROWSER_SESSION_MAX_AGE = 60 * 60 * 24 * 90
 export const BROWSER_SESSION_USER_AGENT_MAX_LENGTH = 255
 const PHOENIX_GRAPHQL_ENDPOINT =
-  process.env.PHOENIX_GRAPHQL_ENDPOINT?.trim() || 'http://127.0.0.1:4001/graphiql'
+  process.env.PHOENIX_GRAPHQL_ENDPOINT?.trim() || LOCAL_PHOENIX_GRAPHQL_ENDPOINT
 const PHOENIX_AUTH_RESOURCE = 'https://api.groupher.com/auth'
 let serviceTokenProvider: TServiceAuthClient | undefined
 
@@ -62,6 +64,21 @@ export type TBrowserSigninResult = {
   accessToken: string
   browserSessionRef: string
   sessionAbsoluteExpiresAt: string
+}
+
+const LEGACY_PHOENIX_ERROR_CODES = new Map<number, string>([
+  [4018, AUTH_ERROR.SERVICE_TOKEN_INVALID],
+  [4019, AUTH_ERROR.SERVICE_TOKEN_INVALID],
+  [4020, AUTH_ERROR.SERVICE_TOKEN_INVALID],
+  [4021, AUTH_ERROR.SERVICE_JWKS_UNAVAILABLE],
+  [4022, AUTH_ERROR.SERVICE_TOKEN_INVALID],
+])
+
+/** Normalizes only legacy Phoenix codes whose public Auth meaning is unambiguous. */
+export const normalizePhoenixErrorCode = (code: unknown): string | undefined => {
+  if (typeof code === 'string') return code
+  if (typeof code !== 'number' || !Number.isSafeInteger(code)) return undefined
+  return LEGACY_PHOENIX_ERROR_CODES.get(code)
 }
 
 type TBrowserSessionMetadata = {
@@ -644,7 +661,7 @@ const callPhoenix = async <TData>(
     })
   } catch {
     throw new PhoenixBrowserSessionError('Phoenix request was not completed.', {
-      code: 'PHOENIX_NETWORK_ERROR',
+      code: AUTH_ERROR.PHOENIX_NETWORK_ERROR,
       upstreamStatus: undefined,
     })
   }
@@ -661,7 +678,7 @@ const callPhoenix = async <TData>(
   if (payload.errors?.length || !payload.data) {
     const error = payload.errors?.[0]
     throw new PhoenixBrowserSessionError(error?.message || 'Phoenix request failed.', {
-      code: typeof error?.extensions?.code === 'string' ? error.extensions.code : undefined,
+      code: normalizePhoenixErrorCode(error?.extensions?.code),
     })
   }
 

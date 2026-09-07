@@ -1,7 +1,5 @@
 import { DevHubReporter } from '@groupher/frontend-core/dev-hub-reporter/react'
 import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router'
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/react'
 import type { ReactNode } from 'react'
 
 import { LOCALE } from '~/const/i18n'
@@ -11,7 +9,11 @@ import landingMessages from '~/i18n/en/landing'
 import { I18N_NS } from '~/i18n/namespaces'
 import StaticLayout from '~/shell/StaticLayout'
 import StaticShellProvider from '~/stores/StaticShellProvider'
-import { prePaintInitTime, prePaintThemeDetectScript } from '~/utils/ssr/script'
+import {
+  PUBLIC_THEME_SEED,
+  prePaintRuntimeSeedScript,
+  prePaintThemeDetectScript,
+} from '~/utils/ssr/script'
 
 import '../domain.css'
 import '../../../core/tailwind/global.css'
@@ -21,6 +23,8 @@ import Main from '../widgets/Main'
 export const Route = createRootRoute({
   loader: async () => ({
     localeData: await loadLocaleFile(LOCALE.EN, I18N_NS.LANDING),
+    renderedAt: Date.now(),
+    theme: PUBLIC_THEME_SEED,
   }),
   head: () => ({
     links: [
@@ -47,7 +51,7 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
-  const { localeData } = Route.useLoaderData()
+  const { localeData, theme } = Route.useLoaderData()
 
   return (
     <>
@@ -60,25 +64,32 @@ function RootComponent() {
         wallpaper={LANDING_INIT_DATA.wallpaper}
         locale={LOCALE.EN}
         localeData={JSON.stringify(localeData)}
+        theme={theme}
       >
         <StaticLayout mainBlock={Main}>
           <Outlet />
         </StaticLayout>
       </StaticShellProvider>
-      <Analytics />
-      <SpeedInsights />
     </>
   )
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
+  const { renderedAt, theme } = Route.useLoaderData()
+
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html
+      lang='en'
+      data-theme={theme.theme}
+      data-theme-mode={theme.themeMode}
+      style={{ colorScheme: theme.theme }}
+      suppressHydrationWarning
+    >
       <head>
         <script
           // oxlint-disable-next-line react/no-danger -- Theme and time must be seeded before paint.
           dangerouslySetInnerHTML={{
-            __html: `${prePaintThemeDetectScript()}\n${prePaintInitTime()}`,
+            __html: `${prePaintThemeDetectScript(theme)}\n${prePaintRuntimeSeedScript(renderedAt)}`,
           }}
         />
         <HeadContent />

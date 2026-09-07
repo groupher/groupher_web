@@ -1,17 +1,10 @@
-import {
-  cpSync,
-  existsSync,
-  mkdirSync,
-  readdirSync,
-  rmSync,
-  statSync,
-  unlinkSync,
-  writeFileSync,
-} from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, rmSync, statSync, unlinkSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import sharp from 'sharp'
+
+import { syncDirectory, writeFileIfChanged } from './sync-files.mjs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -92,7 +85,7 @@ const compressToTarget = async ({ source, target, file, maxBytes, widths, qualit
       }
 
       if (image.length <= maxBytes) {
-        writeFileSync(target, image)
+        writeFileIfChanged(target, image)
         return
       }
     }
@@ -104,7 +97,7 @@ const compressToTarget = async ({ source, target, file, maxBytes, widths, qualit
     )
   }
 
-  writeFileSync(target, bestImage)
+  writeFileIfChanged(target, bestImage)
 }
 
 const ensurePicture = async (file, duplicatedStems) => {
@@ -171,7 +164,7 @@ const ensurePreview = async (file) => {
       }
 
       if (preview.length <= previewMaxBytes) {
-        writeFileSync(target, preview)
+        writeFileIfChanged(target, preview)
         return
       }
     }
@@ -183,7 +176,7 @@ const ensurePreview = async (file) => {
     )
   }
 
-  writeFileSync(target, bestPreview)
+  writeFileIfChanged(target, bestPreview)
 }
 
 const getDuplicatedStems = (files) => {
@@ -259,21 +252,10 @@ ${patternEntries}
 } satisfies Record<string, TWallpaperPattern>
 `
 
-  writeFileSync(generatedFile, content)
+  writeFileIfChanged(generatedFile, content)
   console.log(
     `[sync-wallpaper-assets] generated ${path.relative(repoRoot, generatedFile)} with ${files.length} pictures and ${patternFiles.length} patterns`,
   )
-}
-
-const copyAssetDir = (source, target, filter = () => true) => {
-  mkdirSync(target, { recursive: true })
-
-  for (const entry of readdirSync(source, { withFileTypes: true })) {
-    if (entry.name.startsWith('.')) continue
-    if (!filter(entry)) continue
-
-    cpSync(path.join(source, entry.name), path.join(target, entry.name), { recursive: true })
-  }
 }
 
 const pictureFiles = listPictureFiles()
@@ -284,8 +266,12 @@ const webpPictureFiles = await Promise.all(
 removeSourceInputs(pictureFiles, webpPictureFiles)
 
 const syncedPictureFiles = listWebpPictureFiles()
-rmSync(previewDir, { recursive: true, force: true })
-mkdirSync(previewDir, { recursive: true })
+const expectedPreviews = new Set(syncedPictureFiles)
+for (const entry of readdirSync(previewDir)) {
+  if (!expectedPreviews.has(entry)) {
+    rmSync(path.join(previewDir, entry), { recursive: true, force: true })
+  }
+}
 await Promise.all(syncedPictureFiles.map(ensurePreview))
 generateManifest(syncedPictureFiles, listPatternPngFiles())
 
@@ -296,10 +282,6 @@ for (const app of targetApps) {
 
   const targetRoot = path.join(repoRoot, `frontend/${app}/public/wallpaper`)
 
-  if (existsSync(targetRoot)) {
-    rmSync(targetRoot, { recursive: true, force: true })
-  }
-
   mkdirSync(targetRoot, { recursive: true })
 
   for (const type of allowedTypes) {
@@ -308,7 +290,7 @@ for (const app of targetApps) {
 
     if (!existsSync(sourceTypeDir)) continue
 
-    copyAssetDir(
+    syncDirectory(
       sourceTypeDir,
       targetTypeDir,
       type === 'pattern'

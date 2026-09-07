@@ -89,9 +89,8 @@ const parseResolvedBgWallpaper = (
   customWallpaper?: TCustomWallpaper,
 ): TWallpaperFmt => {
   if (customWallpaper) {
-    return 'colors' in customWallpaper
-      ? parseBgGradientBackground(customWallpaper)
-      : parseBgPicBackground(customWallpaper)
+    if (customWallpaper.type === 'gradient') return parseBgGradientBackground(customWallpaper)
+    return parseBgPicBackground(customWallpaper)
   }
   if (wallpaper && 'renderer' in wallpaper) return parseBgGradientRecipe(wallpaper)
 

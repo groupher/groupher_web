@@ -1,4 +1,5 @@
 import type { TRichEditorValue } from '@groupher/rich-editor'
+import { API_ROUTE } from '@groupher/route-contract'
 
 type TSaveDocDraftInput = {
   value: TRichEditorValue
@@ -33,7 +34,7 @@ export const saveDocDraft = async <TDraft>({
   subtitle,
   slug,
 }: TSaveDocDraftInput): Promise<TDraft> => {
-  const response = await fetch('/api/artiment/publish', {
+  const response = await fetch(API_ROUTE.ARTIMENT_PUBLISH, {
     method: 'POST',
     cache: 'no-store',
     headers: { 'Content-Type': 'application/json' },

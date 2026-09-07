@@ -1,4 +1,6 @@
-import useSalon, { cnMerge } from './salon'
+import { cn } from '~/css'
+
+import useSalon from './salon'
 
 type TProps = {
   title: string
@@ -12,37 +14,37 @@ export default function HeroContent({ title }: TProps) {
       <div className={s.coverHero} />
       <div className={s.coverHeader}>
         <div className={s.coverLead}>
-          <div className={cnMerge(s.bar, s.coverAvatar)} />
+          <div className={cn(s.barBase, s.coverAvatar)} />
           <h4 className={s.communityTitle}>{title}</h4>
         </div>
-        <div className={cnMerge(s.bar, s.primaryBar, s.primaryChip, s.coverAction)} />
+        <div className={cn(s.barBase, s.primaryBar, s.primaryChip, s.coverAction)} />
       </div>
 
       <div className={s.coverContent}>
         <div className={s.coverMain}>
           <div className={s.coverSection}>
-            <div className={cnMerge(s.bar, s.contentTitle)} />
-            <div className={cnMerge(s.bar, s.coverBodyShort)} />
+            <div className={cn(s.barBase, s.contentTitle)} />
+            <div className={cn(s.barBase, s.coverBodyShort)} />
           </div>
           <div className={s.coverSection}>
-            <div className={cnMerge(s.bar, s.contentTitle, 'w-1/2')} />
-            <div className={cnMerge(s.bar, s.coverBodyLong)} />
+            <div className={cn(s.barBase, 'h-1.5 w-1/2 opacity-30')} />
+            <div className={cn(s.barBase, s.coverBodyLong)} />
           </div>
           <div className={s.coverSection}>
-            <div className={cnMerge(s.bar, s.contentTitle)} />
-            <div className={cnMerge(s.bar, s.coverBodyLong)} />
+            <div className={cn(s.barBase, s.contentTitle)} />
+            <div className={cn(s.barBase, s.coverBodyLong)} />
           </div>
           <div className={s.coverSection}>
-            <div className={cnMerge(s.bar, s.contentTitle, 'w-1/2')} />
-            <div className={cnMerge(s.bar, s.coverBodyLong, 'w-1/3')} />
+            <div className={cn(s.barBase, 'h-1.5 w-1/2 opacity-30')} />
+            <div className={cn(s.barBase, 'h-1 w-1/3 opacity-20')} />
           </div>
         </div>
 
         <div className={s.rightRail}>
-          <div className={cnMerge(s.bar, s.railItemShort)} />
-          <div className={cnMerge(s.bar, s.railItemWide)} />
-          <div className={cnMerge(s.bar, s.railItem)} />
-          <div className={cnMerge(s.bar, s.footerItem, 'mt-auto')} />
+          <div className={cn(s.barBase, s.railItemShort)} />
+          <div className={cn(s.barBase, s.railItemWide)} />
+          <div className={cn(s.barBase, s.railItem)} />
+          <div className={cn(s.barBase, s.footerItem, 'mt-auto')} />
         </div>
       </div>
     </div>

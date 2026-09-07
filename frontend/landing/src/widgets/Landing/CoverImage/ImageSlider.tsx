@@ -40,7 +40,7 @@ export default function ImageSlider() {
   const [curImageIndex, setCurImageIndex] = useState(0)
   const themeIndexRef = useRef(0)
 
-  const [imgSrc2, _] = useState(`/${APP.LANDING}/intro/home-dark.webp`)
+  const [imgSrc2] = useState(`/${APP.LANDING}/intro/home-dark.webp`)
   const s = useSalon()
 
   const { isLightTheme } = useTheme()
@@ -60,9 +60,8 @@ export default function ImageSlider() {
     loopTimer ? LOOP_TIMER : null,
   )
 
-  const currentImgSrc = isLightTheme
-    ? `/${APP.LANDING}/intro/home.webp`
-    : `/${APP.LANDING}/intro/home-dark.webp`
+  const lightImgSrc = `/${APP.LANDING}/intro/home.webp`
+  const darkImgSrc = `/${APP.LANDING}/intro/home-dark.webp`
 
   const applyTheme = (themeIndex: number) => {
     switch (themeIndex) {
@@ -120,7 +119,16 @@ export default function ImageSlider() {
             {range(0, MAX_INTRO_IMAGES_COUNT).map((_, i) => (
               <Slide key={INTRO_SLIDE_KEYS[i]}>
                 <div className={s.slideImage}>
-                  {i !== 1 && <Img src={currentImgSrc} alt='cover page' className={s.coverImg} />}
+                  {i !== 1 && (
+                    <>
+                      <div className='abs-full theme-light-branch'>
+                        <Img src={lightImgSrc} alt='cover page' className={s.coverImg} />
+                      </div>
+                      <div className='abs-full theme-dark-branch'>
+                        <Img src={darkImgSrc} alt='cover page' className={s.coverImg} />
+                      </div>
+                    </>
+                  )}
                   {i === 1 && <Img src={imgSrc2} alt='cover page' className={s.coverImg} />}
                 </div>
               </Slide>

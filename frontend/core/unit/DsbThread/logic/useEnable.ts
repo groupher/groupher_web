@@ -1,5 +1,5 @@
 import type { TEnableConf } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { FIELD } from '../constant'
 import useHelper from './useHelper'
@@ -11,7 +11,7 @@ type TRet = {
 
 /** Exposes enable state and actions through the shared React hook boundary. */
 export default function useEnable(): TRet {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
   const { onSave } = useHelper()
 
   const { enable } = dsb$
@@ -22,7 +22,7 @@ export default function useEnable(): TRet {
       [key]: toggle,
     }
 
-    dsb$.editField(FIELD.ENABLE, patch)
+    dsb$.edit(FIELD.ENABLE, patch)
     setTimeout(() => onSave(FIELD.ENABLE))
   }
 

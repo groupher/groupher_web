@@ -3,8 +3,9 @@ import CheckSVG from '~/icons/Check'
 import { getImageShadow, normalizeCoverShadow } from '../../../../helper'
 import type { TCoverImageWhich, TCoverShadow } from '../../../../spec'
 import useLogic from '../../../../useLogic'
-import { PRESET_OPTIONS, type TShadowPanelStyle } from './constant'
+import { PRESET_OPTIONS } from './constant'
 import useSalon from './salon/preset_grid'
+import type { TShadowPanelStyle } from './spec'
 
 type TProps = {
   shadow: TCoverShadow

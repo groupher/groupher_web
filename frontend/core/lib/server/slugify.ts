@@ -1,5 +1,3 @@
-import { pinyin } from 'pinyin-pro'
-
 import { isValidSlug } from '~/validator'
 
 const HAN_RE = /\p{Script=Han}/u
@@ -8,19 +6,22 @@ const COMBINING_MARK_RE = /\p{Mark}/gu
 const SEPARATOR_RE = /[^a-z0-9]+/g
 const EDGE_SEPARATOR_RE = /^-+|-+$/g
 
-const toPinyin = (char: string): string => {
+type TPinyin = (typeof import('pinyin-pro'))['pinyin']
+
+const toPinyin = (char: string, pinyin: TPinyin): string => {
   const [first] = pinyin(char, { toneType: 'none', type: 'array' }) as string[]
   return first || ''
 }
 
 /** Runs the slugify operation at the frontend shared boundary. */
-export const slugify = (value: string, fallback = 'untitled'): string => {
+export const slugify = async (value: string, fallback = 'untitled'): Promise<string> => {
+  const { pinyin } = await import('pinyin-pro')
   const normalized = value.normalize('NFKD').replace(COMBINING_MARK_RE, '')
   let next = ''
 
   for (const char of normalized) {
     if (HAN_RE.test(char)) {
-      next += ` ${toPinyin(char)} `
+      next += ` ${toPinyin(char, pinyin)} `
       continue
     }
 

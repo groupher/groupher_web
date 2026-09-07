@@ -1,7 +1,8 @@
 import type { TRichEditorHandle, TRichEditorValue } from '@groupher/rich-editor'
 import { forwardRef } from 'react'
 
-import { DOC_EDITOR_MODE, type TDocEditorMode } from '../../constant'
+import { DOC_EDITOR_MODE } from '../../constant'
+import type { TDocEditorMode } from '../../spec'
 import Editor from './Editor'
 import Preview from './Preview'
 import useSalon from './salon'

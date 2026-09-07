@@ -1,5 +1,5 @@
 import SIZE from '~/const/size'
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 import useTwBelt from '~/hooks/useTwBelt'
 
 import type { TColorsPresetBallSize } from '../spec'
@@ -15,7 +15,7 @@ export default function useSalon({ size, isNumericSize, interactive, active }: T
   const { br, primary } = useTwBelt()
 
   return {
-    wrapper: cnMerge(
+    wrapper: cn(
       'circle shrink-0',
       !isNumericSize && size === SIZE.TINY && 'size-5',
       !isNumericSize && size === SIZE.SMALL && 'size-7',

@@ -2,9 +2,26 @@ import { WALLPAPER_TYPE } from '~/const/wallpaper'
 import { GRADIENT_RENDERER, WALLPAPER_TEXTURE } from '~/lib/wallpaperMesh'
 
 import setupStore from '.'
-import { getWallpaperSavablePatch, pickWallpaperThemeState, toWallpaperThemePatch } from './helper'
+import { INITIAL_WALLPAPER_STATE } from './constant'
+import {
+  getWallpaperThemeSavablePatch,
+  initState,
+  initStateByTheme,
+  pickWallpaperThemeState,
+  toWallpaperThemePatch,
+} from './helper'
 
 describe('stores/wallpaper/helper', () => {
+  it('normalizes nullable server theme branches without adding a second default', () => {
+    expect(initState({ light: null, dark: null })).toEqual(INITIAL_WALLPAPER_STATE)
+  })
+
+  it('resolves a source-only gradient instead of retaining the default recipe', () => {
+    expect(initStateByTheme({ source: 'teal_indigo_mauve', gradient: undefined }).gradient).toEqual(
+      expect.objectContaining({ preset: 'teal_indigo_mauve' }),
+    )
+  })
+
   it('resolves the active light or dark wallpaper state', () => {
     const store = setupStore({
       light: {
@@ -78,11 +95,21 @@ describe('stores/wallpaper/helper', () => {
       },
     })
 
-    expect(getWallpaperSavablePatch(store)).toEqual({
-      dark: {
-        source: 'sky_mauve_blue',
-        texture: { enabled: true, type: WALLPAPER_TEXTURE.ASCII, intensity: 55, params: {} },
-      },
+    expect(getWallpaperThemeSavablePatch(store, 'dark')).toEqual({
+      source: 'sky_mauve_blue',
+      texture: { enabled: true, type: WALLPAPER_TEXTURE.ASCII, intensity: 55, params: {} },
     })
+  })
+
+  it('includes custom wallpaper data in the current-theme patch', () => {
+    const store = setupStore()
+    const customWallpaper = {
+      type: 'picture' as const,
+      image: 'https://example.com/wallpaper.webp',
+    }
+
+    store.commit({ light: { customWallpaper } })
+
+    expect(getWallpaperThemeSavablePatch(store, 'light')).toEqual({ customWallpaper })
   })
 })

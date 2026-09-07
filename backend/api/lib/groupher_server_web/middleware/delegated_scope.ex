@@ -12,7 +12,7 @@ defmodule GroupherServerWeb.Middleware.DelegatedScope do
 
   @behaviour Absinthe.Middleware
 
-  alias GroupherServer.ErrorCat
+  alias GroupherServer.Auth.Contract, as: AuthContract
   import Helper.Utils, only: [handle_absinthe_error: 3]
 
   @impl Absinthe.Middleware
@@ -26,17 +26,39 @@ defmodule GroupherServerWeb.Middleware.DelegatedScope do
             MapSet.member?(actor.scopes, Keyword.fetch!(opts, :scope))) do
       resolution
     else
-      reject(resolution)
+      reject(
+        resolution,
+        "service and user delegation is not authorized for this operation",
+        AuthContract.service_scope_forbidden()
+      )
     end
   end
 
-  def call(resolution, _opts), do: reject(resolution)
+  def call(%{context: %{service_auth_failure: code}} = resolution, _opts) do
+    reject(resolution, "service identity could not be verified", code)
+  end
 
-  defp reject(resolution) do
-    handle_absinthe_error(
+  def call(%{context: %{auth_failure: code}} = resolution, _opts) do
+    reject(resolution, "delegated user identity could not be verified", code)
+  end
+
+  def call(%{context: %{service_actor: _actor}} = resolution, _opts) do
+    reject(
       resolution,
-      "service and user delegation is not authorized for this operation",
-      ErrorCat.code(GroupherServerWeb.ErrorCat.service_auth())
+      "delegated user identity is required for this operation",
+      AuthContract.token_missing()
     )
+  end
+
+  def call(resolution, _opts) do
+    reject(
+      resolution,
+      "service identity is required for this operation",
+      AuthContract.service_token_invalid()
+    )
+  end
+
+  defp reject(resolution, message, code) do
+    handle_absinthe_error(resolution, message, code)
   end
 end

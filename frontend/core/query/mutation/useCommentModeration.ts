@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import useViewingArticle from '~/hooks/useViewingArticle'
 import type { TComment } from '~/spec'
 import useAccount from '~/stores/account/hooks'
@@ -43,7 +43,8 @@ export default function useCommentModeration(comment: TComment) {
     mutationKey: mutationKeys.comment(commentKey, 'delete'),
     scope: { id: `comment:${commentKey}:delete` },
     retry: false,
-    mutationFn: async () => browserQuery(commentsSchema.deleteComment, { comment: commentInput }),
+    mutationFn: async () =>
+      browserGraphQLRequest(commentsSchema.deleteComment, { comment: commentInput }),
     onMutate: async () => {
       await queryClient.cancelQueries(commentQueryFilter)
       const comments = queryClient.getQueriesData(commentQueryFilter)
@@ -61,7 +62,7 @@ export default function useCommentModeration(comment: TComment) {
     scope: { id: `comment:${commentKey}:report` },
     retry: false,
     mutationFn: async () => {
-      const { reportComment } = await browserQuery(commentsSchema.reportComment, {
+      const { reportComment } = await browserGraphQLRequest(commentsSchema.reportComment, {
         attr: null,
         comment: commentInput,
         reason: 'OTHER',
@@ -79,7 +80,7 @@ export default function useCommentModeration(comment: TComment) {
     },
     onSettled: () =>
       queryClient.invalidateQueries({
-        queryKey: [...viewerKeys.all, viewerScope, 'comment-state', articleKey],
+        queryKey: viewerKeys.commentStatePrefix(viewerScope, articleKey),
         refetchType: 'none',
       }),
   })

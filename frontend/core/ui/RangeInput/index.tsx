@@ -17,7 +17,7 @@ import {
   useState,
 } from 'react'
 
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 import type { TSpace } from '~/spec'
 
 import { DOT_OFFSET_REM, MAX_RIGHT_DOT_RATIO, MIN_VISUAL_RATIO, TRACK_GAP_REM } from './constant'
@@ -160,7 +160,7 @@ const RangeInput: FC<TProps> = ({
   })
 
   return (
-    <div className={cnMerge(s.wrapper, disabled && s.disabled, className)} data-testid={testid}>
+    <div className={cn(s.wrapper, disabled && s.disabled, className)} data-testid={testid}>
       <label className={s.valueLabel} htmlFor={inputId}>
         <span className={s.valueLabelPrefix}>{valueLabel}</span>
         {shouldShowValue && (
@@ -173,16 +173,13 @@ const RangeInput: FC<TProps> = ({
 
       <div ref={controlRef} className={s.control}>
         <div className={s.track} aria-hidden='true'>
+          <div className={cn(s.trackPart, s.trackLeft, s.activeTrack)} style={activeTrackStyle} />
           <div
-            className={cnMerge(s.trackPart, s.trackLeft, s.activeTrack)}
-            style={activeTrackStyle}
-          />
-          <div
-            className={cnMerge(s.trackPart, s.trackRight, s.inactiveTrack)}
+            className={cn(s.trackPart, s.trackRight, s.inactiveTrack)}
             style={inactiveTrackStyle}
           />
-          {showLeftDot && <div className={cnMerge(s.dot, s.leftDot)} style={leftDotStyle} />}
-          {showRightDot && <div className={cnMerge(s.dot, s.rightDot)} style={rightDotStyle} />}
+          {showLeftDot && <div className={cn(s.dot, s.leftDot)} style={leftDotStyle} />}
+          {showRightDot && <div className={cn(s.dot, s.rightDot)} style={rightDotStyle} />}
           <div
             className={s.indicatorHitbox}
             style={indicatorStyle}

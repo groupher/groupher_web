@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from 'node:crypto'
 
-import { GROUPHER_AUTH_TOKEN_COOKIE } from '@groupher/contracts/auth'
+import { GROUPHER_AUTH_TOKEN_COOKIE, PHOENIX_BROWSER_TOKEN_CLAIMS } from '@groupher/contracts/auth'
 
 type TJwtHeader = {
   alg?: unknown
@@ -21,9 +21,9 @@ const SUPPORTED_ALGORITHMS = {
   HS512: 'sha512',
 } as const
 
-const PHOENIX_TOKEN_ISSUER = process.env.PHOENIX_TOKEN_ISSUER || 'groupher:phoenix'
-const PHOENIX_TOKEN_AUDIENCE = 'phoenix:browser-api'
-const PHOENIX_TOKEN_TYPE = 'browser_access'
+const PHOENIX_TOKEN_ISSUER = process.env.PHOENIX_TOKEN_ISSUER || PHOENIX_BROWSER_TOKEN_CLAIMS.issuer
+const PHOENIX_TOKEN_AUDIENCE = PHOENIX_BROWSER_TOKEN_CLAIMS.audience
+const PHOENIX_TOKEN_TYPE = PHOENIX_BROWSER_TOKEN_CLAIMS.type
 
 const base64UrlDecode = (value: string): Buffer => {
   const base64 = value.replaceAll('-', '+').replaceAll('_', '/')

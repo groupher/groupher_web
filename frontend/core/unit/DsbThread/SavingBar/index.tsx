@@ -5,7 +5,6 @@ import useTrans from '~/hooks/useTrans'
 import RevertSVG from '~/icons/Back'
 import SaveSVG from '~/icons/Save'
 import type { TSpace } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
 import Button from '~/ui/Buttons/Button'
 
 import useHelper from '../logic/useHelper'
@@ -67,13 +66,12 @@ const SavingBar: FC<TProps> = ({
   const resolvedView = view ?? (children === null ? 'bottom' : 'inline')
   const resolvedDensity = density ?? (minimal ? 'compact' : 'default')
   const s = useSalon({ density: resolvedDensity, width, ...spacing })
-  const dsb$ = useDsb()
-  const { rollbackEdit, onSave } = useHelper()
+  const { rollbackEdit, onSave, isPending } = useHelper()
   const { t } = useTrans()
   const resolvedPrefix = prefix ?? t('dsb.saving_bar.prefix')
   const resolvedCancelText = cancelText ?? t('dsb.saving_bar.cancel')
   const resolvedSaveText = saveText ?? t('dsb.saving_bar.save')
-  const resolvedLoading = loading ?? dsb$.saving
+  const resolvedLoading = loading ?? isPending
   const CancelIcon = cancelIcon === undefined && resolvedView === 'bottom' ? RevertSVG : cancelIcon
   const cancel = (): void => {
     onCancel?.()
@@ -91,23 +89,25 @@ const SavingBar: FC<TProps> = ({
   }
   const actions = (
     <div className={s.actions}>
-      <Button
-        ghost
-        noBorder
-        size='small'
-        className={s.cancelButton}
-        disabled={resolvedLoading}
-        ariaLabel={resolvedCancelText}
-        onClick={cancel}
-      >
-        {CancelIcon && <CancelIcon className={s.cancelIcon} />}
-        <span className={s.cancelLabel}>{resolvedCancelText}</span>
-      </Button>
+      {!resolvedLoading && (
+        <Button
+          ghost
+          noBorder
+          size='small'
+          className={s.cancelButton}
+          ariaLabel={resolvedCancelText}
+          onClick={cancel}
+        >
+          {CancelIcon && <CancelIcon className={s.cancelIcon} />}
+          <span className={s.cancelLabel}>{resolvedCancelText}</span>
+        </Button>
+      )}
       <Button
         noBorder
         size='small'
         className={s.saveButton}
         disabled={disabled || resolvedLoading}
+        loading={resolvedLoading}
         ariaLabel={resolvedSaveText}
         onClick={confirm}
       >

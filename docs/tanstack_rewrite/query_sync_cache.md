@@ -1,9 +1,12 @@
 # Query Sync Cache：公共数据、Viewer 状态与主动失效
 
-> 状态：代码契约已落地；Cloudflare 生产 purge 与跨 PoP 验证仍属于发布门。
+> 状态：公共 SSR no-user-spec、客户端 `Q.viewer`、theme first-paint、`Q.dsb.config`、
+> `DsbEditStore` 和 cache adapter/mutation reconcile 已在本地落地（2026-08-29）。Cloudflare
+> 生产 purge 与跨 PoP 验证仍属于发布门。执行清单见
+> [`../workflow_query_store_reorg.md`](../workflow_query_store_reorg.md)。
 >
-> 本文只定义 `frontend/community` 的缓存边界和 revalidation。Community 不兼容
-> Next.js cache API；现有 Main 继续使用自己的 Next 实现。
+> 本文只定义 `frontend/community` 的缓存边界和 revalidation。Dash 通过自己的 TanStack Start
+> route/API 调用 Community revalidation，不使用 Next.js cache API。
 
 ## 结论
 
@@ -45,12 +48,12 @@ freshness；二者都不能代替 CDN TTL，也不能保证 Dashboard 改完配�
 
 SSR 的 QueryClient 必须按请求创建，不能放在 Worker 全局作用域，避免用户数据串请求。
 Community 和 Dash 使用相同的 Router Query SSR 初始化模式，但各自拥有独立 Router 和
-QueryClient；不复用 Main/Dashboard 的 Next QueryProvider、`Q.SSR`、手工
-`HydrationBoundary` 或 render-time `setQueryData` 桥接。
+QueryClient；不使用 Next QueryProvider、`Q.SSR`、手工 `HydrationBoundary` 或 render-time
+`setQueryData` 桥接。
 
 ## 公共和私有响应边界
 
-公开缓存的响应必须完全与 viewer 无关。只要 SSR 输出依赖 cookie、登录用户、权限、
+公开缓存的响应必须完全与 viewer 无关。只要 SSR 输出确实依赖 cookie、登录用户、权限、
 订阅/收藏状态或私有 GraphQL header，就返回：
 
 ```http
@@ -61,7 +64,39 @@ Cache-Control: private, no-store
 viewer state 拆开：公开部分可进入 CDN，登录态在 hydration 后或独立私有请求加载。
 
 公开响应由 Community 明确设置 `Cache-Control` 和 `Cache-Tag`。不得让“请求中碰巧有
-cookie”改变同一 public cache key 的内容。
+cookie”改变同一 public cache key 的内容，也不能仅因 cookie 存在就把本可复用的公共响应降级为
+private。目标 Community SSR loader 从 GraphQL selection 开始只请求公共 community、article、
+comment 和 Dsb 配置；account、subscription 以及全部 `viewerHasXxx` 在 hydration 后由独立客户端
+query 获取。
+
+theme 也遵循公共响应边界：SSR 输出稳定的默认 theme；现有 pre-paint script 在 hydration 前读取
+浏览器可读的 theme cookie 和 `prefers-color-scheme`，应用用户选择。服务端读取 theme cookie 并
+输出不同 HTML 会污染 public response，不能作为例外。
+
+这两组依赖必须原子切换：`Q.viewer.session()` 和登录 UI 就位后，同一实现切片从
+`loadCommunity/TCommunityShell` 删除 account；pre-paint 就位后，同一实现切片让 `loadThemeSeed`
+停止读取 cookie。在各自切换完成前，不得提前把依赖身份或 theme cookie 的响应标记为 public。
+
+客户端 user-specific query 统一位于 `Q.viewer`：
+
+```text
+Q.viewer.session()
+Q.viewer.communityState(viewerScope, community)
+Q.viewer.articleStates(viewerScope, articleRefs)
+Q.viewer.commentStates(viewerScope, articleRef, commentRefs)
+```
+
+`viewerScope` 是非 secret 的稳定账号 scope，并进入所有用户实体 query key。session query 负责得到
+当前账号和 viewerScope；它自身不以 viewerScope 为参数。当前
+`frontend/core/stores/account/hooks.tsx` 已通过 `graphqlQueryOptions + useQuery` 请求 session，目标是
+把该 generic query 收进 `Q.viewer.session()`，再移除 Community shell 中的 account seed。
+
+article/comment viewer operation 必须按 canonical refs 批量查询，不能继续通过 public list 的
+filter、page 或 mode 间接获取。排序、去重后的 refs 同时生成 query key 和 GraphQL variables；响应
+再按 `community + thread + innerId` 或 comment id 归一化。
+
+未返回前的 viewer 字段是 `undefined`，不是 `false`。登录、登出和账号切换必须清除全部 viewer
+queries；跨 tab 继续通过 session channel/BroadcastChannel 通知后再清除和 refetch。
 
 ## Version/revision 边界：当前不新增 Query revision
 
@@ -88,22 +123,24 @@ cookie”改变同一 public cache key 的内容。
 
 ```text
 Phoenix mutation response
-  -> 返回 mutation 后的 viewer 状态和 canonical public counts
+  -> 返回该 operation 能确认的 viewer 状态和 public aggregate
 
 TanStack Query
-  -> 立即 patch 当前用户的 detail/list/viewer cache
+  -> 当前 mutation tab 立即 patch detail/list/viewer cache
 
 刷新页面
   -> public HTML 可以来自 CDN 旧快照
-  -> viewer query 返回当前状态和 canonical counts
-  -> 客户端用 viewer 结果修正旧公共计数
+  -> viewer query 立即恢复当前用户 flags
+  -> public count 继续按 TTL/SWR、purge 或 public refetch 收敛
 
 其他用户
   -> 允许在 TTL/SWR 或批量 purge 窗口内看到旧公共快照
 ```
 
-这个协议已经覆盖当前需要解决的“当前用户刚操作后”和“刷新后状态恢复”问题，不需要
-为了理论上的快照比较引入新的领域 revision。
+viewer query 当前只应拥有 viewer fields，不能假定它总会返回 canonical public counts，更不能
+用它覆盖 public query。若某个 mutation payload 已明确返回确认后的 aggregate，当前 tab 可以 patch；
+刷新后公共 count 允许短暂旧值。只有产品明确要求刷新后也同步校准公开计数时，才为对应 read model
+增加 public aggregate/sync token，而不是悄悄扩大 viewer query 所有权。
 
 ### 后续触发条件
 
@@ -186,8 +223,8 @@ logged-in  -> private SSR HTML + viewer state
 - 权限、账户导航或个性化内容不能等待客户端请求；
 - 登录用户流量相对较小，可以接受失去共享 CDN。
 
-代价：登录用户每次 SSR 都要回源，Main 当前“公共 SSR + client merge”的 CDN 优势会
-减少；也不能解决高频 mutation 的全局即时一致性。
+代价：登录用户每次 SSR 都要回源，并失去“公共 SSR + client merge”的 CDN 优势；也不能解决
+高频 mutation 的全局即时一致性。
 
 ### 方案 D：Edge assembly / private fragment
 
@@ -207,7 +244,7 @@ public HTML/data cache
 - 团队愿意维护边缘组合、超时、失败降级和可观测性。
 
 代价：组合后的完整响应仍不能作为所有用户共享的公共 HTML；缓存、Cookie、失败降级
-和流式输出都会变复杂。它本质上是把 Main 的 client merge 提前到了 Edge，不是消除
+和流式输出都会变复杂。它本质上是把浏览器 client merge 提前到了 Edge，不是消除
 公共/私有边界。
 
 ### 方案 E：按用户维度缓存 HTML
@@ -250,48 +287,45 @@ community[slug]-thread[thread]-tags
 community[slug]-thread[thread]-articles
 community[slug]-thread[thread]-article[id]
 community[slug]-thread[thread]-article[id]-comments
+community[slug]-doc-tree
 ```
 
-Theme presets 是平台级数据。如果需要主动失效，应新增独立的
-`platform-theme-presets` tag；该 tag 不是当前 `CACHE_TAG` 的既有成员，也不能由任一
-community tag 代替。
+tag constructor 与 revalidation validator 必须共享一个合同：`frontend/core/constant/cache.ts`
+同时提供 `CACHE_TAG` 和 `isCacheTag`，Community endpoint 直接使用该 validator，
+不再维护独立 `TAG_PATTERN`。新增或修改 tag 时，同一提交更新 constructor、validator 和覆盖全部
+constructor 的契约测试；不保留旧 vocabulary 或兼容分支。
 
-`frontend/core/query/cacheInvalidation.ts` 的 `mutationCacheTags` 也可复用其“mutation
-影响哪些业务 tag”的映射，但后续应移除其中把 tag 描述成 Next cache tag 的命名或
-注释。Core 只产出语义 tag；Main adapter 调 `revalidateTag`，Community adapter 调
-Cloudflare purge。
+`frontend/core/query/cacheInvalidation.ts` 的 `mutationCacheEffect` 统一回答“mutation 是否产生公共
+缓存副作用、以什么模式执行、影响哪些语义 tag”。Core 只产出 typed effect；Community 和 Dash
+GraphQL server proxy 都在 Phoenix mutation 成功后解释该 effect。浏览器 mutation hook 不调用
+CDN revalidation，也不等待 purge。
 
-## 从 `runtime.ts` 迁移
+## 当前 Community SSR loader
 
-以 `frontend/core/app/ssr/runtime.ts` 为蓝本逐函数建立 Community loader，而不是从
-页面反推数据契约：
+Community loader 位于 `frontend/community/src/server/community.ts`，theme 位于同目录的
+`theme.ts`：
 
-| 数据函数                          | 当前 Main 语义                | Community 初始等价策略                                                                |
-| --------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------- |
-| `getCommunityInfo`                | days + community tag          | public CDN 长 TTL + community tag                                                     |
-| `getLocaleData`                   | days                          | request/loader cache；locale 来源冻结后再决定 CDN key                                 |
-| `getThemePresets`                 | days，无 community 参数或 tag | public CDN 长 TTL；纯 TTL 或独立 `platform-theme-presets` tag，禁止绑定 community tag |
-| `getPagedPosts` 默认列表          | minutes + articles tag        | public CDN 短 TTL + articles tag                                                      |
-| `getPagedPosts` 非默认 filter     | 当前不进入 Next cache         | 先不进 CDN，Query/Router 短缓存                                                       |
-| `getPagedChangelogs`              | minutes + articles tag        | public CDN 短 TTL + articles tag                                                      |
-| `getGroupedKanbanPosts`           | minutes + kanban articles tag | public CDN 短 TTL + kanban articles tag                                               |
-| `getTagGroups`                    | days + tags tag               | public CDN 长 TTL + tags tag                                                          |
-| `getTagStats`                     | 当前不进入 Next cache         | 先保持不进 CDN，审计后再优化                                                          |
-| `getPost`/`getChangelog`/`getDoc` | minutes + article tag         | public CDN 短 TTL + article tag                                                       |
-| `getDocPublicTree`                | minutes，当前无 tag           | 先记录为 parity 缺口，补齐失效设计后才能缓存                                          |
-| `getPagedComments`                | minutes + comments tag        | public CDN 短 TTL + comments tag；viewer 字段拆离                                     |
+| Loader                                        | 公开数据                         | Cache tag / 目标边界                                        |
+| --------------------------------------------- | -------------------------------- | ----------------------------------------------------------- |
+| `loadCommunity`                               | community、Dsb config、wallpaper | community tag；移除 account、auth token 和 viewer selection |
+| `loadPosts` / `loadChangelogs` / `loadKanban` | 默认公开列表                     | 对应 thread articles tag                                    |
+| `loadPost` / `loadChangelog`                  | 公开详情                         | article + articles tag                                      |
+| `loadDocTree`                                 | 公开 Doc tree                    | `community[slug]-doc-tree`                                  |
+| `loadDoc`                                     | 公开 Doc detail                  | doc article tag                                             |
+| `loadComments`                                | 公开 comments                    | comments tag；写入 cache 前裁剪 viewer fields               |
+| `loadThemeSeed`                               | 公共默认 theme seed              | 不读取 cookie；用户 theme 由 pre-paint 应用                 |
 
-`days`/`minutes` 只是现状级别，不直接等于最终秒数。Phase 0 记录 Main 的实际
-cache profile 后，再为每项冻结明确的 `max-age`/`s-maxage`/stale 策略。
+不在这份清单中的 locale、theme presets、tag groups 和 tag stats 不伪造成现有 SSR loader；将来确实
+接入时再建立对应 Query、cache policy 和 tag。
 
 ## Views side effect 与缓存
 
 Views 不是普通缓存字段，读取本身会产生写 side effect：
 
-| 链路           | 当前触发方式                                                         | Next cache 影响                                                          |
-| -------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| community      | Main 未显式传 `incViews`；GraphQL 默认 `true`；Reader 执行 `ORM.inc` | `getCommunityInfo` 命中 cache 时不回源，因此不是每个 HTTP request 都增加 |
-| article detail | `CMS.Articles.read -> Interactions.record_view`                      | `getPost/getChangelog/getDoc` 命中 cache 时不执行新的 read/view event    |
+| 链路           | 当前触发方式                                           | CDN cache 影响                                      |
+| -------------- | ------------------------------------------------------ | --------------------------------------------------- |
+| community      | `loadCommunity` 调用 community GraphQL read            | 命中 CDN 时不回源，因此不是每个 HTTP request 都增加 |
+| article detail | `loadPost/loadChangelog/loadDoc` 触发对应 GraphQL read | 命中 CDN 时不执行新的 read/view event               |
 
 `frontend/core/query/cacheInvalidation.ts` 中 mutation regex 包含 `View`，只说明失效匹配
 允许这类 operation name，不证明当前已有独立客户端 View mutation。Community 实施前
@@ -337,25 +371,23 @@ Cloudflare purge 不是每次点赞、收藏或浏览都触发。高频 interact
 
 默认分层：
 
-| 事件                                     | 当前用户                                     | 公共 CDN                                             |
-| ---------------------------------------- | -------------------------------------------- | ---------------------------------------------------- |
-| 文章正文、标题、slug、发布状态、权限变化 | mutation response 后立即更新                 | 高优先级立即 purge 相关 tag                          |
-| 社区主题、SEO、导航、wallpaper 配置      | mutation response 后立即更新                 | 高优先级立即 purge community tag                     |
-| 点赞、取消点赞、收藏、浏览               | mutation response + Query patch              | 不逐次 purge；依 TTL/SWR 或合并窗口                  |
-| 评论新增、删除、reaction                 | 当前 comments/query 立即 patch 或 invalidate | 默认批量合并；只有 moderation/可见性变化才立即 purge |
+| 事件                                     | 当前用户                                     | 公共 CDN                                           |
+| ---------------------------------------- | -------------------------------------------- | -------------------------------------------------- |
+| 文章正文、标题、slug、发布状态、权限变化 | mutation response 后立即更新                 | 高优先级立即 purge 相关 tag                        |
+| 社区主题、SEO、导航、wallpaper 配置      | mutation response 后立即更新                 | 高优先级立即 purge community tag                   |
+| 点赞、取消点赞、emotion、浏览            | mutation response + Query patch              | `none`：不逐次 purge，依 TTL/SWR                   |
+| 评论新增、删除、内容或 moderation        | 当前 comments/query 立即 patch 或 invalidate | `immediate`：立即 purge 相关 comments/article tags |
 
-高频事件进入 revalidation queue 后按 tag 去重，在固定窗口内合并为一次 purge 请求；
-窗口大小、最大等待时间和失败重试策略属于部署配置，不能由每个 UI mutation 自己决定。
-首版建议先采用短窗口批量失效，并为内容/权限类事件保留立即 flush 能力，具体秒数
-等真实 purge latency、命中率和事件量测量后再冻结。
+当前首版对高频 interaction 明确返回 `none`，没有伪装成已实现的合并队列。只有后续确有实时传播
+需求，并接通真实 queue、按 tag 去重、最大等待和失败策略后，才能把相应 operation 改为
+`coalesced`。内容、权限和配置 mutation 保持 `immediate`。
 
 ```text
 interaction mutation
   -> Phoenix commit
   -> current browser Query patch
-  -> enqueue affected tags
-  -> debounce/coalesce by tag
-  -> one Cloudflare purge request
+  -> CacheEffect mode=none
+  -> TTL/SWR 自然收敛
 
 content or permission mutation
   -> Phoenix commit
@@ -365,46 +397,64 @@ content or permission mutation
 ### 调用链
 
 ```text
-Dashboard / Dash 保存配置
+Dash 保存配置
   -> Phoenix mutation 成功
-  -> 根据 mutation 计算 CACHE_TAG
-  -> 调 Community /internal/cache/revalidate
+  -> Dash GraphQL proxy 计算 typed CacheEffect
+  -> Worker waitUntil（不阻塞业务 response）
+  -> Community /internal/cache/revalidate
   -> Cloudflare purge by tag
   -> 下一次 Community 请求回源并写入新响应
 ```
 
-Dashboard 和 Dash 都必须走同一个 Community revalidation client。现有 Main 的
-`/api/revalidate/community` 继续服务 Main；它不能替代 Community 的入口，也不要求
-Community 实现 Next API。
+`frontend/dash/src/server/community-revalidation.ts` 是 Dash 的服务端传播边界；GraphQL proxy 和
+手工 revalidation route 都复用它。它使用 service secret 调用 Community
+`/internal/cache/revalidate`，包含超时、一次重试和结构化日志。当前 Tab 仍先通过 mutation response
+更新 Query；传播失败不会改变已经返回的业务结果。
 
 ## 当前代码落地
 
-以下代码契约已经在 `frontend/community` 和 `frontend/dash` 中落地：
+以下主线代码契约已经在 `frontend/community` 和 `frontend/dash` 中落地。typed CacheEffect、
+server proxy 传播和最终 response-context tag 聚合已按
+[`../query_store_boundary_hardening.md`](../query_store_boundary_hardening.md) 收口：
 
 - [x] Community/Dash 各自按请求创建 QueryClient，并通过 Router context 接入官方 SSR
       Query integration；Router preload freshness 固定为 `0`。
 - [x] shell、post、changelog、Kanban、doc tree/detail、comments 均由 typed query options + `ensureQueryData` 作为 SSR 数据入口；Community route 没有 render-time
       `setQueryData`。
-- [x] public/private response header helper 已统一：带 auth token 的请求为
+- [x] public/private response header helper 已统一：当前实现仍把带 auth token 的请求标记为
       `private, no-store`，匿名公开数据写入 `Cache-Control` 和语义 `Cache-Tag`。
 - [x] Community `/internal/cache/revalidate` 已完成 service-secret、tag scope、数量和
       body 校验；Cloudflare purge adapter 在未配置生产凭据时明确返回配置缺失，而不是
       假装完成全局失效。
-- [x] Community GraphQL mutation、Main revalidation、Dash revalidation 都复用
-      `mutationCacheTags` 产出的语义 tag，并保留“业务 mutation 成功、purge 失败可观测
-      且可重试”的状态边界。
+- [x] Community GraphQL mutation 与 Dash revalidation 使用同一 `CACHE_TAG` vocabulary，并保留
+      “业务 mutation 成功、purge 失败可观测且可重试”的状态边界。
 
 仍需真实部署凭据才能完成的不是本地代码契约，而是发布证据：Cloudflare zone/套餐的
-purge-by-tag 能力、跨 PoP 命中与失效、production metrics/告警，以及 Dashboard mutation
-在真实 Phoenix 和 Community URL 上的端到端观察。
+purge-by-tag 能力、跨 PoP 命中与失效、production hit/miss/purge metrics/告警，以及 Dash
+mutation 在真实 Phoenix、Community 和 Dash URL 上的端到端观察。以下是已经收口的主线边界：
+
+- `loadCommunity` 只请求 no-user-spec community/Dsb/wallpaper；带 cookie 不改变公共内容与 TTL；
+- `loadThemeSeed` 使用固定公共 seed，用户 theme 由 hydration 前 pre-paint 逻辑应用；
+- session、community/article/comment viewer state 统一进入 `Q.viewer`，并按 viewer scope 隔离；
+- article/comment viewer operation 使用 canonical refs，排序去重，超过 100 条自动分片并合并；
+- `Q.dsb.config` 是确认配置 owner，`DsbEditStore` 只持有可编辑 working copy，旧 Dsb runtime 和
+  confirmed duplicate 已删除；
+- `mutationCacheEffect` 使用显式 operation 集合和精确 tag 规则，不使用 regex fallback；高频
+  upvote/emotion 为 `none`，内容、权限和配置变化为 `immediate`。
+
+`CreatePost` 是一个需要单独登记的例外：它的 variables 只有 `community`，没有 article path，
+因此不能依赖通用 article-path 解析。发帖成功后必须失效
+`CACHE_TAG.articlesCache(community, POST)`，并 invalidate 当前 Tab 的 posts Query。当前
+checkout 尚未发现可执行的 Dash `CreatePost` 调用点；typed effect 已显式映射并由 contract test
+锁定，路径启用后 Dash GraphQL proxy 会自动执行该映射。
 
 对于在 Community 内发生的文章/评论 mutation：
 
 1. 立即更新或 invalidate 当前浏览器的 TanStack Query；
 2. 只有 route-local 非 Query 数据或 head projection 需要重算时，才定向 invalidate 相关
    route；不使用无范围的 `router.invalidate()` 代替 query invalidation；
-3. 按事件等级向服务端 revalidation 入口提交 detail/list/comments 语义 tags：内容和权限
-   变化立即 flush，高频 interaction 进入去重合并队列；
+3. server proxy 按 typed effect 处理语义 tags：内容和权限变化立即执行；高频 interaction 返回
+   `none` 并依 TTL/SWR，不逐次 purge；
 4. CDN purge 成功后，其他浏览器和后续 SSR 才能看到新数据。
 
 只做前两步会导致“当前浏览器看起来更新了，其他用户仍命中旧 CDN”。只做 CDN purge
@@ -419,33 +469,35 @@ purge-by-tag 能力、跨 PoP 命中与失效、production metrics/告警，以�
 | 文章内容或 slug 更新                                       | article tag + 对应 articles tag                                 |
 | 评论新增、删除、reaction 或 moderation                     | comments tag；若列表展示评论计数，同时失效 article/articles tag |
 | tag 配置变化                                               | tags tag + 受影响 articles tag                                  |
-| Doc tree 结构变化                                          | 独立 doc-tree tag 或明确归入 doc articles tag                   |
+| Doc tree 结构变化                                          | `community[slug]-doc-tree`                                      |
+
+其中 `CreatePost + community` 必须显式映射到
+`CACHE_TAG.articlesCache(community, THREAD.POST)`；不能要求 `readPath(variables)` 从不存在的
+`variables.article` 推导该 tag。
 
 最终映射要和 Phoenix mutation 逐项核对，不能依赖 GraphQL operation name 的模糊字符串
 判断作为唯一长期机制。
 
-显式 tech debt：V1 的 `mutationCacheTags` 仍用 operation name regex 作为 fallback。后续必须
-改为 operation 定义旁声明 typed cache effects，或由 GraphQL codegen 生成 mutation → tag
-映射；在替换完成前，新增 mutation 必须补映射测试，不能只依赖命名恰好匹配。
+当前 `mutationCacheEffect` 使用显式 operation-name 集合映射到 mode 和精确业务 tag；这已移除原先的 regex
+fallback。后续若 mutation 数量继续增长，再评估由 operation 定义或 GraphQL codegen 生成 typed
+cache effects，不在本轮引入通用 registry。
 
 ## 实施步骤
 
 ### Phase C0：冻结现状
 
-- [ ] 为 `runtime.ts` 每个函数记录参数、viewer 依赖、当前 cacheLife、tag 和调用页面；
-- [ ] 冻结每个公开响应的 TTL、stale 和 private/public 属性；
-- [ ] 明确 doc tree、tag stats 等当前无 tag/无 cache 项是保留还是修正；
-- [ ] 冻结 community/article views 的目标触发语义及幂等策略，避免 cache hit/miss
+- [x] 为 `server/community.ts` 的 `loadCommunity/loadPosts/loadPost/loadChangelogs/loadChangelog/loadKanban/loadDocTree/loadDoc/loadComments`
+      和 `server/theme.ts` 的 `loadThemeSeed` 记录 selection、viewer 依赖、header、tag 和调用页面；
+- [x] 冻结每个公开响应的 TTL、stale 和 private/public 属性；
+- [x] 将 `CACHE_TAG` constructor 与 revalidation validator 收敛到同一 vocabulary，并覆盖 doc-tree；
+- [x] 冻结 community/article views 的目标触发语义及幂等策略，避免 cache hit/miss
       成为隐式计数规则；
-- [ ] 记录 Main `/api/revalidate/community` 和 GraphQL mutation revalidate 的真实调用方。
-- [ ] 验证生产 Cloudflare zone 是否支持 purge by tag，并冻结不支持时的全局失效 adapter。
+- [ ] 验证生产 Cloudflare zone 的 purge-by-tag 能力。
 
 ### Phase C1：建立 Community cache adapter
 
-- [ ] 先由 Dash 独立落地 request-scoped QueryClient、Router context 和官方 SSR Query
-      integration，通过生产 Gate D 后再由 Community 消费冻结的 runtime；
-- [ ] Dash/Community 显式声明 React Query 与 SSR Query integration 直接依赖；Core 声明
-      React Query peer/dev dependency，所有 workspace 不依赖根 hoisting；
+- [x] Dash/Community 显式声明 React Query 与 SSR Query integration 直接依赖；Core 通过现有 workspace
+      依赖提供 React Query，文档检查所需的 `@babel/parser` 已补入 root devDependency；
 - [x] Query `staleTime`/`gcTime` 与 Router loader/preload freshness 分工；
 - [x] 统一的 public/private response header helper；
 - [x] Community `Cache-Tag` 写入和 Cloudflare purge client；
@@ -454,17 +506,20 @@ purge-by-tag 能力、跨 PoP 命中与失效、production metrics/告警，以�
 ### Phase C2：接通 mutation
 
 - [x] Dashboard 和 Dash 配置 mutation 调用 Community revalidation；
-- [x] Community 文章/评论 mutation 按事件等级失效 Query、Router 和 CDN；高频
-      interaction 不逐次 purge，进入去重合并队列；
-- [x] 保留 Main 现有 revalidation，不让两个 host 相互冒充；
-- [x] 对部分失败定义状态：业务 mutation 已成功但 purge 失败时必须告警并可重放。
+- [x] Community 文章/评论 mutation 按事件等级处理 Query 和 CDN；高频 interaction 为 `none`，
+      内容 mutation 为 `immediate`，不再逐次 purge interaction；
+- [x] 对部分失败定义状态：业务 mutation 已成功但 purge 失败时记录结构化错误并有限重试，不回滚
+      业务。durable replay 不是当前 `immediate` adapter 的能力，若产品要求必须另建队列合同。
 
 ### Phase C3：验证
 
-- [ ] Dashboard 改 theme/wallpaper/SEO 后，Community 下一请求立即出现新配置，不等待 TTL；
-- [ ] article mutation 后 detail 和 list 同时更新；
-- [ ] comment mutation 后 comments 和计数按契约更新；
-- [ ] 登录 SSR 不进入共享 CDN，两个账号和两个社区不串数据；
+- [x] Dashboard 改 theme/wallpaper/SEO 后的 Query update/invalidation 与 revalidation 调用链通过本地测试；
+- [x] article mutation 后 detail 和 list 的精确更新/失效映射通过本地测试；
+- [x] comment mutation 后 comments 和计数的契约映射通过本地测试；
+- [x] 匿名和登录用户使用同一份 no-user-spec 公共 SSR；viewer state 仅在客户端私有请求出现；
+- [x] 两个账号和两个社区的 viewer query key 隔离，logout/account switch 清理逻辑通过本地测试；
+- [x] theme pre-paint 在 hydration 前应用用户选择，SSR seed 与 theme cookie 无关；
+- [x] public/viewer 合并按 community + thread + innerId 等 canonical identity 校验，无 offset 错配；
 - [ ] purge 在不同 Cloudflare PoP 生效，而不是只删除当前数据中心缓存；
 - [ ] 记录 hit/miss/purge metrics，并对 purge 失败建立告警。
 

@@ -21,10 +21,10 @@ import type { DSB_TAB } from '~/const/route'
 import type { KANBAN_BOARD } from '~/const/thread'
 import type { TThirdPartyAnalyticsConfig } from '~/lib/thirdPartyAnalytics'
 import type { TConstValues } from '~/spec'
-import type { TDsbFieldKey, TDsbFieldMap } from '~/stores/dsb/spec'
 
 import type { TColorName } from './color'
 import type { TModerator } from './community'
+import type { TDsbFieldKey, TDsbFieldMap } from './dsb'
 import type {
   TResolvedThemePreset,
   TThemePreset,
@@ -32,7 +32,11 @@ import type {
   TThemePresetOverwrite,
 } from './theme_preset'
 import type { TEditValue, TFooterOnelineLink, TLinkItem, TSocialItem } from './utils'
-import type { TWallpaperConfig } from './wallpaper'
+import type {
+  TPublishedWallpaper,
+  TWallpaperConfig,
+  TWallpaperSettingsTransportByTheme,
+} from './wallpaper'
 
 export type TTagLayout = TConstValues<typeof TAG_LAYOUT>
 export type TInlineTagLayout = TConstValues<typeof INLINE_TAG_LAYOUT>
@@ -138,7 +142,9 @@ export type TDsb = {
   footerLinks?: readonly TLinkItem[]
   footerOnelineLinks?: readonly TFooterOnelineLink[]
 
-  wallpaper?: TWallpaperConfig
+  wallpaper?: TPublishedWallpaper
+  contentShadow?: boolean
+  wallpaperSettings?: TWallpaperSettingsTransportByTheme
   baseInfo?: {
     title?: string
     bio?: string
@@ -151,6 +157,7 @@ export type TDsb = {
 }
 
 export type TParseDashboard = TDsbFieldMap & {
+  contentShadow?: boolean
   original: TDsbFieldMap
 }
 

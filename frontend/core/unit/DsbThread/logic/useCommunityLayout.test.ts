@@ -9,7 +9,7 @@ const isChanged = vi.fn()
 const edit = vi.fn()
 const rollbackEdit = vi.fn()
 
-vi.mock('~/stores/dsb/hooks', () => ({
+vi.mock('~/stores/dsbEdit/hooks', () => ({
   default: () => ({
     communityLayout: COMMUNITY_LAYOUT.CLASSIC,
     saving: false,

@@ -25,14 +25,14 @@ vi.mock('../salon/item_card_layout', () => ({
     wrapper: 'wrapper',
     select: 'select',
     layout: 'layout',
-    block: 'block',
-    blockActive: 'block-active',
+    block: () => 'block',
+    fullBlock: 'full-block',
+    fullBlockActive: 'full-block-active',
     bar: 'bar',
     icon: 'icon',
     userAvatar: 'user-avatar',
   }),
-  cnMerge: (...classes: Array<string | false | null | undefined>) =>
-    classes.filter(Boolean).join(' '),
+  cn: (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(' '),
 }))
 
 vi.mock('../../../SectionLabel', () => ({

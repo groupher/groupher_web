@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <title>Wallpaper vgpu POC</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">WebGPU / vgpu 0.3.1</p>
+        <h1>Wallpaper shader POC</h1>
+        <p data-status data-state="working">正在初始化 WebGPU…</p>
+      </header>
+      <section class="grid">
+        <article>
+          <div class="title-row">
+            <h2>Flow</h2>
+            <a data-download="flow" hidden>下载 WebP</a>
+          </div>
+          <canvas data-model="flow" aria-label="Flow shader output"></canvas>
+        </article>
+        <article>
+          <div class="title-row">
+            <h2>Liquid</h2>
+            <a data-download="liquid" hidden>下载 WebP</a>
+          </div>
+          <canvas data-model="liquid" aria-label="Liquid shader output"></canvas>
+        </article>
+      </section>
+      <details>
+        <summary>验收报告</summary>
+        <pre data-report>等待结果…</pre>
+      </details>
+    </main>
+    <script type="module" src="/main.ts"></script>
+  </body>
+</html>

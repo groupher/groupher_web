@@ -8,9 +8,9 @@ import type { TComment } from '~/spec'
 import { commentKeys, viewerKeys } from '../key'
 import useCommentReactions from './useCommentReactions'
 
-const mocks = vi.hoisted(() => ({ browserQuery: vi.fn() }))
+const mocks = vi.hoisted(() => ({ browserGraphQLRequest: vi.fn() }))
 
-vi.mock('~/graphql/client', () => ({ browserQuery: mocks.browserQuery }))
+vi.mock('~/graphql/client', () => ({ browserGraphQLRequest: mocks.browserGraphQLRequest }))
 vi.mock('~/hooks/useViewingArticle', () => ({
   default: () => ({
     article: {
@@ -39,13 +39,15 @@ describe('useCommentReactions', () => {
       defaultOptions: { mutations: { retry: false }, queries: { retry: false } },
     })
     const listKey = commentKeys.list('home', THREAD.POST, '42')
-    const viewerKey = viewerKeys.commentStates('alice', 'home:POST:42', 1, 'REPLIES')
+    const viewerKey = viewerKeys.commentStates('alice', 'home:POST:42', ['1'])
     queryClient.setQueryData(listKey, { entries: [comment] })
     queryClient.setQueryData(viewerKey, {
       '1': { emotionFlags: {}, viewerHasUpvoted: false },
     })
     const responses: Array<(value: unknown) => void> = []
-    mocks.browserQuery.mockImplementation(() => new Promise((resolve) => responses.push(resolve)))
+    mocks.browserGraphQLRequest.mockImplementation(
+      () => new Promise((resolve) => responses.push(resolve)),
+    )
     const wrapper = ({ children }: { children: ReactNode }) => (
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     )
@@ -56,13 +58,13 @@ describe('useCommentReactions', () => {
       result.current.handleUpvote(true)
     })
 
-    await waitFor(() => expect(mocks.browserQuery).toHaveBeenCalledTimes(1))
+    await waitFor(() => expect(mocks.browserGraphQLRequest).toHaveBeenCalledTimes(1))
     await act(async () => {
       responses.shift()?.({
         upvoteComment: { ...comment, upvotesCount: 4, viewerHasUpvoted: true },
       })
     })
-    await waitFor(() => expect(mocks.browserQuery).toHaveBeenCalledTimes(2))
+    await waitFor(() => expect(mocks.browserGraphQLRequest).toHaveBeenCalledTimes(2))
     await act(async () => {
       responses.shift()?.({
         undoUpvoteComment: { ...comment, upvotesCount: 3, viewerHasUpvoted: false },

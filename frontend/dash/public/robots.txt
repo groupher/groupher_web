@@ -1,4 +1,3 @@
-# robots.txt
+# Dash pages must remain crawlable so robots can observe the noindex response policy.
 User-agent: *
 Disallow:
-Disallow: /blockhole

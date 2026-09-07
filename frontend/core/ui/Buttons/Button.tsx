@@ -6,7 +6,7 @@ import SIZE from '~/const/size'
 import type { TColorName, TSizeTSM, TSpace } from '~/spec'
 import LavaLampLoading from '~/ui/Loading/LavaLampLoading'
 
-import useSalon, { cn, cnMerge } from './salon/button'
+import useSalon, { cn } from './salon/button'
 
 type TProps = {
   ariaLabel?: string
@@ -89,8 +89,8 @@ const Button: FC<TProps> = ({
 
   if (loading) {
     return (
-      <div className={cnMerge(s.wrapper, className, 'border-0 bg-transparent')} aria-busy>
-        <div className={cnMerge(s.inner, 'bg-transparent border-transparent')} style={s.innerStyle}>
+      <div className={cn(s.wrapper, className, 'rounded-xl bg-transparent')} aria-busy>
+        <div className={cn(s.inner, 'bg-transparent')} style={s.innerStyle}>
           <div className={cn(s.children, 'invisible select-none')}>{children}</div>
           <div className='align-both abs-full'>
             <LavaLampLoading size='small' className='!h-3 !w-10 overflow-hidden' />
@@ -103,7 +103,7 @@ const Button: FC<TProps> = ({
   return (
     <button
       type={type}
-      className={cnMerge(s.wrapper, className)}
+      className={cn(s.wrapper, className)}
       disabled={disabled}
       aria-label={ariaLabel}
       aria-disabled={disabled || loading}

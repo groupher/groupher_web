@@ -5,8 +5,6 @@ export const DOC_COVER_VIEW = {
   DASHBOARD: 'DASHBOARD',
 } as const
 
-export type TDocCoverView = (typeof DOC_COVER_VIEW)[keyof typeof DOC_COVER_VIEW]
-
 export const DOC_COVER_NODE_TYPE = {
   PAGE: 'page',
   LINK: 'link',

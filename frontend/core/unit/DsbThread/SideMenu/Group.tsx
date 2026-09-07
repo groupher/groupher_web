@@ -17,7 +17,7 @@ import type { TDsbMenuGroup } from '../spec'
 import ActiveMark from './ActiveMark'
 import { SUBMENU_CONFIG, SUBMENU_ROUTE_VIEW } from './constant'
 import { dispatchMenuView, type TMenuView } from './events'
-import useSalon, { cn, cnMerge } from './salon/group'
+import useSalon, { cn } from './salon/group'
 
 type TProps = {
   activeMainTab: TDsbPath
@@ -86,7 +86,7 @@ const Group: FC<TProps> = ({ activeMainTab, group }) => {
                 key={item.slug}
                 route={itemRoute}
                 navigation='router'
-                className={cnMerge(s.item, isActive && s.itemActive)}
+                className={cn(s.item, isActive && s.itemActive)}
                 aria-current={isActive ? 'page' : undefined}
                 preserveSearch
                 onClick={() => {

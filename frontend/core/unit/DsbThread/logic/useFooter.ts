@@ -1,7 +1,6 @@
 import type { TEditFunc, TFooterLayout, TFooterOnelineLink, TLinkItem } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
-import type { TLinkState } from '../spec'
 import useHelper from './useHelper'
 import useLinkDerived, { type TRet as TDerived } from './useLinkDerived'
 
@@ -10,39 +9,24 @@ type TRet = {
   footerLinks: readonly TLinkItem[]
   footerOnelineLinks: readonly TFooterOnelineLink[]
   edit: TEditFunc
-  resetEditingLink: () => void
-} & TLinkState &
-  TDerived
+  saving: boolean
+} & TDerived
 
 /** Exposes footer state and actions through the shared React hook boundary. */
 export default function useFooter(): TRet {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
 
   const derived = useLinkDerived()
-  const { edit } = useHelper()
+  const { edit, isPending } = useHelper()
 
-  const {
-    footerLayout,
-    footerLinks,
-    footerOnelineLinks,
-    editingLink,
-    editingLinkMode,
-    editingGroup,
-    editingGroupIndex,
-    saving,
-  } = dsb$
+  const { footerLayout, footerLinks, footerOnelineLinks } = dsb$
 
   return {
     edit,
-    resetEditingLink: () => dsb$.commit({ editingLink: null }),
     footerLayout,
     footerLinks,
     footerOnelineLinks,
-    editingLink,
-    editingLinkMode,
-    editingGroup,
-    editingGroupIndex,
-    saving,
+    saving: isPending,
     ...derived,
   }
 }

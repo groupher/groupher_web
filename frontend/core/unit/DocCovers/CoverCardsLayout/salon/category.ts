@@ -3,7 +3,7 @@ import useTwBelt from '~/hooks/useTwBelt'
 import useBase from '../../salon'
 
 export default function useSalon() {
-  const { cn, cnMerge, fg } = useTwBelt()
+  const { cn, fg } = useTwBelt()
   const base = useBase()
 
   return {
@@ -11,14 +11,14 @@ export default function useSalon() {
     groupHeader: base.groupHeader,
     groupSettingButton: base.groupSettingButton,
     groupSettingIcon: base.groupSettingIcon,
-    wrapper: cnMerge('column overflow-hidden text-left trans-all-200', base.pageItem),
+    wrapper: cn('column overflow-hidden text-left trans-all-200', base.pageItem),
     title: cn('text-lg bold-sm', fg('title')),
     sectionDesc: cn('mb-5 text-sm leading-8', fg('digest')),
     cards: 'grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3',
     cover: 'h-44 w-full bg-cover bg-center rounded-xl',
     //
     content: 'column px-1 mb-2',
-    articleTitle: cnMerge(base.pageTextLink, fg('title'), 'text-base bold-sm mt-4'),
+    articleTitle: cn(base.pageTextLink, fg('title'), 'text-base bold-sm mt-4'),
     desc: cn('text-sm leading-5 mt-1', fg('digest')),
     footer: 'row-between',
     count: cn('pretty-num text-sm', fg('hint')),

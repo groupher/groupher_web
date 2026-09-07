@@ -1,7 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 
-import { browserQuery } from '~/graphql/client'
-import { stripPagedCommentViewerState } from '~/lib/commentViewerState'
+import { browserGraphQLRequest } from '~/graphql/client'
 import type { TPagedComments, TThread } from '~/spec'
 import commentsSchema from '~/unit/Comments/schema'
 
@@ -17,12 +16,12 @@ const list = (
   queryOptions({
     queryKey: commentKeys.list(community, thread, innerId, page, mode),
     queryFn: async () => {
-      const data = await browserQuery(commentsSchema.pagedComments, {
+      const data = await browserGraphQLRequest(commentsSchema.publicPagedComments, {
         article: { community, thread, innerId: String(innerId) },
         mode: mode as 'REPLIES' | 'TIMELINE',
         filter: { page, size: 30 },
       })
-      return stripPagedCommentViewerState(data.pagedComments as unknown as TPagedComments)
+      return data.pagedComments as unknown as TPagedComments
     },
   })
 

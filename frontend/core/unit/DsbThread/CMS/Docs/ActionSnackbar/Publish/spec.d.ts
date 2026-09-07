@@ -1,3 +1,7 @@
+import type { PUBLISH_MODE } from './constant'
+
+export type TDocsPublishMode = (typeof PUBLISH_MODE)[keyof typeof PUBLISH_MODE]
+
 export type TPublishChecklistItem = {
   id: string
   title: string

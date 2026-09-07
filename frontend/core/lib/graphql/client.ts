@@ -1,30 +1,61 @@
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import {
+  AUTH_ERROR,
   GROUPHER_AUTH_CSRF_HEADER,
   GROUPHER_AUTH_CSRF_VALUE,
   GROUPHER_AUTH_SIGNED_IN_COOKIE,
 } from '@groupher/contracts/auth'
+import { API_ROUTE } from '@groupher/route-contract'
 import { print, type DocumentNode } from 'graphql'
 
-import {
-  AuthRequestError,
-  invalidateAuthState,
-  requestLogin,
-  resolveAuthFailure,
-  withAuthRetry,
-} from '~/auth'
+import { invalidateAuthState, requestLogin, resolveAuthFailure, withAuthRetry } from '~/auth'
 
 const ACCOUNT_LOGIN_ERROR_CODE = 4301
 
 type TGraphQLError = {
-  message?: string
-  extensions?: { code?: unknown }
+  message?: unknown
+  extensions?: Record<string, unknown>
 }
 
-type TGraphQLCombinedError = {
-  graphQLErrors: TGraphQLError[]
-  networkError?: Error
-  response?: Response
+type TGraphQLPayload<TResult> = {
+  data?: TResult
+  errors?: unknown
+}
+
+const formatGraphQLErrorMessage = (message: unknown): string => {
+  if (typeof message === 'string') return message
+  if (Array.isArray(message)) {
+    return message
+      .map((item) => {
+        if (!item || typeof item !== 'object') return String(item)
+        const entry = item as { key?: unknown; message?: unknown }
+        const detail =
+          typeof entry.message === 'string' ? entry.message : String(entry.message ?? '')
+        return entry.key ? `${String(entry.key)}: ${detail}` : detail
+      })
+      .filter(Boolean)
+      .join('\n')
+  }
+  if (message && typeof message === 'object') return JSON.stringify(message)
+  return message == null ? '' : String(message)
+}
+
+const graphQLErrors = (payload: unknown): TGraphQLError[] => {
+  if (!payload || typeof payload !== 'object') return []
+  const errors = (payload as TGraphQLPayload<unknown>).errors
+  if (!Array.isArray(errors)) return []
+
+  return errors
+    .filter((error): error is Record<string, unknown> =>
+      Boolean(error && typeof error === 'object'),
+    )
+    .map((error) => {
+      const extensions =
+        error.extensions && typeof error.extensions === 'object'
+          ? (error.extensions as Record<string, unknown>)
+          : undefined
+      return { extensions, message: error.message }
+    })
 }
 
 export class GraphQLRequestError extends Error {
@@ -34,7 +65,7 @@ export class GraphQLRequestError extends Error {
   constructor(response: Response, errors: TGraphQLError[]) {
     super(
       errors
-        .map((error) => error.message)
+        .map((error) => formatGraphQLErrorMessage(error.message))
         .filter(Boolean)
         .join('\n') || 'GraphQL request failed.',
     )
@@ -44,13 +75,31 @@ export class GraphQLRequestError extends Error {
   }
 }
 
+export class GraphQLResponseError extends Error {
+  readonly cause?: unknown
+  readonly payload?: unknown
+  readonly response: Response
+
+  constructor(
+    message: string,
+    response: Response,
+    options: { cause?: unknown; payload?: unknown } = {},
+  ) {
+    super(message)
+    this.name = 'GraphQLResponseError'
+    this.response = response
+    this.cause = options.cause
+    this.payload = options.payload
+  }
+}
+
 const hasSignedInHint = (): boolean =>
   typeof document !== 'undefined' &&
   document.cookie.split(';').some((item) => item.trim() === `${GROUPHER_AUTH_SIGNED_IN_COOKIE}=1`)
 
 const normalizeAuthCode = (code: unknown): string | undefined => {
   if (typeof code === 'string') return code
-  if (code === ACCOUNT_LOGIN_ERROR_CODE && hasSignedInHint()) return 'TOKEN_MISSING'
+  if (code === ACCOUNT_LOGIN_ERROR_CODE && hasSignedInHint()) return AUTH_ERROR.TOKEN_MISSING
   return undefined
 }
 
@@ -72,13 +121,6 @@ class GraphQLAuthResponseError extends Error {
  * cookies are still included so the Next route handler can read the Groupher
  * auth token cookie and forward only that cookie to Phoenix.
  *
- * @example
- * ```ts
- * createClient({
- *   url: '/api/graphql',
- *   fetchOptions: GRAPHQL_FETCH_OPTIONS,
- * })
- * ```
  */
 export const GRAPHQL_FETCH_OPTIONS = (): RequestInit => ({
   credentials: 'include',
@@ -87,40 +129,6 @@ export const GRAPHQL_FETCH_OPTIONS = (): RequestInit => ({
     [GROUPHER_AUTH_CSRF_HEADER]: GROUPHER_AUTH_CSRF_VALUE,
   },
 })
-
-/**
- * Retry policy for browser GraphQL clients.
- *
- * Only network errors are retried. GraphQL validation and business errors must
- * be returned to callers unchanged so UI code can render the exact failure.
- *
- * @example
- * ```ts
- * createClient({
- *   exchanges: [cacheExchange, retryExchange(GRAPHQL_RETRY_OPTIONS), fetchExchange],
- * })
- * ```
- */
-export const GRAPHQL_RETRY_OPTIONS = {
-  initialDelayMs: 1000,
-  maxDelayMs: 15000,
-  randomDelay: true,
-  maxNumberAttempts: 2,
-  retryIf: (err: TGraphQLCombinedError | undefined) =>
-    !!err?.networkError && !(err.networkError instanceof AuthRequestError),
-}
-
-/** Resolves graph qlfailure without leaking frontend shared routing details to callers. */
-export const resolveGraphQLFailure = (
-  error: TGraphQLCombinedError,
-): { code?: string; status?: number } => {
-  const code = error.graphQLErrors
-    .map((item) => item.extensions?.code)
-    .map(normalizeAuthCode)
-    .find((item): item is string => typeof item === 'string')
-
-  return { code, status: error.response?.status }
-}
 
 const responseAuthFailure = async (
   response: Response,
@@ -137,7 +145,7 @@ const responseAuthFailure = async (
     // `sessionState` is the explicit authenticated probe. The public nullable
     // `me` field must never be used as a refresh signal.
     if (!code && payload.data?.sessionState?.isValid === false && hasSignedInHint()) {
-      return { code: 'TOKEN_MISSING', status: response.status }
+      return { code: AUTH_ERROR.TOKEN_MISSING, status: response.status }
     }
     return { code, status: response.status }
   } catch {
@@ -175,26 +183,58 @@ export const createAuthFetch =
     }
   }
 
-/** Typed same-origin browser transport shared by TanStack Query and mutations. */
-export const browserQuery = async <TResult, TVariables = Record<string, unknown>>(
+export type TBrowserGraphQLRequestOptions = {
+  fetcher?: typeof fetch
+  signal?: AbortSignal
+}
+
+const browserGraphQLEndpoint = (): string =>
+  typeof window === 'undefined'
+    ? API_ROUTE.GRAPHQL
+    : new URL(API_ROUTE.GRAPHQL, window.location.origin).toString()
+
+/** Typed same-origin GraphQL transport shared by TanStack Query and mutations. */
+export const browserGraphQLRequest = async <
+  TResult,
+  TVariables extends object = Record<string, unknown>,
+>(
   document: string | DocumentNode | TypedDocumentNode<TResult, TVariables>,
   variables: TVariables = {} as TVariables,
-  fetcher: typeof fetch = fetch,
+  options: TBrowserGraphQLRequestOptions = {},
 ): Promise<TResult> => {
-  const response = await createAuthFetch(fetcher)('/api/graphql', {
-    ...GRAPHQL_FETCH_OPTIONS(),
-    method: 'POST',
-    cache: 'no-store',
+  const fetcher = createAuthFetch(options.fetcher || fetch)
+  const fetchOptions = GRAPHQL_FETCH_OPTIONS()
+  const response = await fetcher(browserGraphQLEndpoint(), {
     body: JSON.stringify({
       query: typeof document === 'string' ? document : print(document),
       variables,
     }),
+    cache: 'no-store',
+    credentials: fetchOptions.credentials,
+    headers: fetchOptions.headers,
+    method: 'POST',
+    signal: options.signal,
   })
-  const payload = (await response.json()) as { data?: TResult; errors?: TGraphQLError[] }
 
-  if (!response.ok || payload.errors?.length || !payload.data) {
-    throw new GraphQLRequestError(response, payload.errors || [])
+  let payload: unknown
+  try {
+    payload = await response.json()
+  } catch (error) {
+    if (!response.ok) throw new GraphQLRequestError(response, [])
+    throw new GraphQLResponseError('GraphQL response returned invalid JSON.', response, {
+      cause: error,
+    })
   }
 
-  return payload.data
+  const errors = graphQLErrors(payload)
+  if (!response.ok || errors.length > 0) throw new GraphQLRequestError(response, errors)
+  if (
+    !payload ||
+    typeof payload !== 'object' ||
+    (payload as TGraphQLPayload<TResult>).data === undefined
+  ) {
+    throw new GraphQLResponseError('GraphQL response did not include data.', response, { payload })
+  }
+
+  return (payload as TGraphQLPayload<TResult>).data as TResult
 }

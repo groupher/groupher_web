@@ -2,22 +2,20 @@ import useTwBelt from '~/hooks/useTwBelt'
 
 import useBase from '../../../useDsbSalon'
 
-export { cnMerge } from '~/css'
-
 export default function useSalon() {
-  const { cn, cnMerge, cut, primary, sexyBorder, sexyVBorder } = useTwBelt()
+  const { cn, cut, primary, sexyBorder, sexyVBorder } = useTwBelt()
   const base = useBase()
 
   return {
     wrapper: base.section,
     select: 'grid w-full grid-cols-1 gap-8 md:grid-cols-2',
     layout: 'group button-reset column-align-both w-full min-w-0',
-    block: cnMerge(base.card, 'h-56 w-full px-4 pt-4 pb-3'),
-    blockActive: base.cardActive,
+    block: base.cardRecipe('h-56 w-full px-4 pt-4 pb-3'),
     communityTitle: cn('text-xs bold-sm', cut('w-14'), primary('fg')),
     primaryBar: cn('opacity-65', primary('bg')),
-    bar: cnMerge(base.bar, 'static'),
-    circle: cnMerge(base.circle, 'static'),
+    barBase: cn(base.barBase, 'static'),
+    bar: cn(base.barBase, 'static h-1.5 w-20 opacity-30'),
+    circle: cn(base.circleBase, 'static'),
 
     hDivider: sexyBorder(),
     vDivider: sexyVBorder(35),
@@ -32,7 +30,7 @@ export default function useSalon() {
     contentColumn: 'column gap-4 grow',
     sectionBlock: 'column gap-2',
     rightRail: 'column gap-2 w-12 shrink-0 pb-1',
-    coverHero: cnMerge(base.bar, 'static h-12 w-full opacity-10 rounded-sm'),
+    coverHero: cn(base.barBase, 'static h-12 w-full opacity-10 rounded-sm'),
     coverHeader: 'row h-12 items-end gap-4 -mt-8 ml-2',
     coverContent: 'row gap-4 grow pt-2',
     coverLead: 'row-end gap-3',
@@ -42,11 +40,11 @@ export default function useSalon() {
     sidebarNav: 'column gap-2.5 w-14',
     sidebarMain: 'column gap-4 ml-5',
 
-    homeTitle: 'w-10',
-    navBar: 'w-20',
+    homeTitle: 'h-1.5 w-10 opacity-30',
+    navBar: 'h-1.5 w-20 opacity-30',
     primaryChip: 'w-10 h-2.5',
-    contentTitleWide: 'w-36',
-    contentTitle: 'w-28',
+    contentTitleWide: 'h-1.5 w-36 opacity-30',
+    contentTitle: 'h-1.5 w-28 opacity-30',
     contentDigestWide: 'w-32 h-1 opacity-20',
     contentDigest: 'w-26 h-1 opacity-20',
     contentDigestShort: 'w-24 h-1 opacity-20',

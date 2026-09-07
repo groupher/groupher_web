@@ -1,14 +1,19 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { FC, ReactNode } from 'react'
 
 import METRIC from '~/const/metric'
 import { COMMUNITY_THREADS } from '~/const/thread'
-import type { TCommunity, TLocale, TMetric } from '~/spec'
+import { FIELDS } from '~/constant/dsb-fields'
+import { createQueryClient, dsbKeys } from '~/query'
+import type { TCommunity, TLocale, TMetric, TParseDashboard } from '~/spec'
 import ArticleListStoreProvider from '~/stores/articleList/provider'
 import type { TInit as TArticleListInit } from '~/stores/articleList/spec'
 import CommunityStoreProvider from '~/stores/community/provider'
-import DsbStoreProvider from '~/stores/dsb/provider'
-import type { TInit as TDsbInit } from '~/stores/dsb/spec'
+import DsbConfigProvider from '~/stores/dsbConfig/provider'
+import DsbEditProvider from '~/stores/dsbEdit/provider'
+import { DsbEditorUiProvider } from '~/stores/dsbEditorUi'
 import LocaleStoreProvider from '~/stores/locale/provider'
+import { MetricProvider } from '~/stores/metric'
 import ThemeStoreProvider from '~/stores/theme/provider'
 import ThemePresetStoreProvider from '~/stores/ThemePreset/provider'
 import WallpaperStoreProvider from '~/stores/wallpaper/provider'
@@ -19,10 +24,12 @@ export type TWrapperOpts = {
   locale?: TLocale
   localeData?: string
   community?: Partial<Omit<TCommunity, 'slug'>> & { slug?: string }
-  dashboard?: Partial<Omit<TDsbInit, 'metric'>>
+  dashboard?: Partial<TParseDashboard>
   wallpaper?: TWallpaperInit
   articleList?: boolean
   articleListInit?: TArticleListInit
+  dsbEdit?: boolean
+  queryClient?: QueryClient
 }
 
 export const makeStoreWrapper = (opts: TWrapperOpts = {}): FC<{ children: ReactNode }> => {
@@ -35,6 +42,8 @@ export const makeStoreWrapper = (opts: TWrapperOpts = {}): FC<{ children: ReactN
     wallpaper = {},
     articleList = false,
     articleListInit = {},
+    dsbEdit = false,
+    queryClient: providedQueryClient,
   } = opts
 
   const threads = community.threads
@@ -47,29 +56,49 @@ export const makeStoreWrapper = (opts: TWrapperOpts = {}): FC<{ children: ReactN
     threads,
   }
 
-  const initDashboard: TDsbInit = {
-    metric,
+  const initDashboard: TParseDashboard = {
+    ...FIELDS,
     ...dashboard,
+    original: {
+      ...FIELDS,
+      ...dashboard,
+    },
   }
+  const queryClient = providedQueryClient ?? createQueryClient()
+  queryClient.setQueryData(dsbKeys.config(initCommunity.slug), initDashboard)
 
   const Wrapper: FC<{ children: ReactNode }> = ({ children }) => {
-    const Content = (
+    const content = (
       <ThemeStoreProvider>
         <LocaleStoreProvider initData={{ locale, localeData }}>
-          <CommunityStoreProvider initData={initCommunity}>
-            <DsbStoreProvider initData={initDashboard}>
-              <ThemePresetStoreProvider initData={initDashboard}>
-                <WallpaperStoreProvider initData={wallpaper}>{children}</WallpaperStoreProvider>
-              </ThemePresetStoreProvider>
-            </DsbStoreProvider>
-          </CommunityStoreProvider>
+          <MetricProvider value={metric}>
+            <CommunityStoreProvider initData={initCommunity}>
+              <DsbConfigProvider initData={initDashboard}>
+                <ThemePresetStoreProvider initData={initDashboard}>
+                  <WallpaperStoreProvider initData={wallpaper}>{children}</WallpaperStoreProvider>
+                </ThemePresetStoreProvider>
+              </DsbConfigProvider>
+            </CommunityStoreProvider>
+          </MetricProvider>
         </LocaleStoreProvider>
       </ThemeStoreProvider>
     )
 
-    if (!articleList) return Content
+    const Content = dsbEdit ? (
+      <DsbEditorUiProvider>
+        <DsbEditProvider initialData={initDashboard}>{content}</DsbEditProvider>
+      </DsbEditorUiProvider>
+    ) : (
+      content
+    )
 
-    return <ArticleListStoreProvider initData={articleListInit}>{Content}</ArticleListStoreProvider>
+    const QueryContent = <QueryClientProvider client={queryClient}>{Content}</QueryClientProvider>
+
+    if (!articleList) return QueryContent
+
+    return (
+      <ArticleListStoreProvider initData={articleListInit}>{QueryContent}</ArticleListStoreProvider>
+    )
   }
 
   return Wrapper

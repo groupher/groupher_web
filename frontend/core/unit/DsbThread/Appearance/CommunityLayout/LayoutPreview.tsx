@@ -1,7 +1,7 @@
 import type { COMMUNITY_LAYOUT } from '~/const/layout'
 
 import CommunityLayoutPreviewContent from './CommunityLayoutPreviewContent'
-import useSalon, { cnMerge } from './salon'
+import useSalon from './salon'
 
 type TProps = {
   isActive: boolean
@@ -13,7 +13,7 @@ export default function LayoutPreview({ isActive, title, layout }: TProps) {
   const s = useSalon()
 
   return (
-    <div className={cnMerge(s.block, isActive && s.blockActive)}>
+    <div className={s.block({ state: isActive ? 'active' : 'idle' })}>
       <CommunityLayoutPreviewContent layout={layout} title={title} />
     </div>
   )

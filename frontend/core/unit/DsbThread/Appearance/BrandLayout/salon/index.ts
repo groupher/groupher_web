@@ -5,13 +5,12 @@ import useTwBelt from '~/hooks/useTwBelt'
 import useBase from '../../../useDsbSalon'
 
 export default function useSalon() {
-  const { cn, cnMerge, primary, fg, sexyBorder } = useTwBelt()
+  const { cn, primary, fg, sexyBorder } = useTwBelt()
   const base = useBase()
 
   return {
     wrapper: base.section,
-    block: cnMerge(base.card, 'w-full h-20'),
-    blockActive: base.cardActive,
+    block: base.cardRecipe('w-full h-20'),
     select: 'grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3',
     brand: 'row-center min-w-0',
     brandIcon: cn('size-6', primary('fill')),

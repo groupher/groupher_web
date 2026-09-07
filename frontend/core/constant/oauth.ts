@@ -1,3 +1,5 @@
+import { API_ROUTE, AUTH_ROUTE } from '@groupher/route-contract'
+
 export const SOCIAL = {
   GITHUB: 'github',
   // GOOGLE: 'google'
@@ -7,7 +9,7 @@ const defaultAuthEndpoint =
   process.env.NODE_ENV === 'production'
     ? 'https://auth.groupher.com/api/auth'
     : process.env.NODE_ENV === 'test'
-      ? '/api/auth'
+      ? API_ROUTE.AUTH
       : 'https://groupher.localhost/api/auth'
 
 /** Canonical Auth origin; product applications never proxy refresh or logout. */
@@ -16,4 +18,4 @@ export const AUTH_ENDPOINT = (process.env.NEXT_PUBLIC_AUTH_ENDPOINT || defaultAu
   '',
 )
 
-export const LOGOUT_ENDPOINT = `${AUTH_ENDPOINT}/logout`
+export const LOGOUT_ENDPOINT = `${AUTH_ENDPOINT}${AUTH_ROUTE.LOGOUT.replace(API_ROUTE.AUTH, '')}`

@@ -1,4 +1,3 @@
-import { cnMerge } from '~/css'
 import useTwBelt from '~/hooks/useTwBelt'
 
 export { cn } from '~/css'
@@ -12,7 +11,7 @@ export default function useSalon() {
     item: cn(menu('bar'), 'group h-8 min-w-0 justify-start text-left'),
     moreIcon: cn('size-3.5 pointer', fill('digest')),
     iconBox: 'align-both size-6 shrink-0',
-    itemIcon: cnMerge(menu('icon'), 'shrink-0 size-3.5'),
+    itemIcon: cn(menu('icon'), 'shrink-0 size-3.5'),
     itemTitle: cn(menu('title'), 'min-w-0 flex-1'),
   }
 }

@@ -1,3 +1,5 @@
+import { WIDGET_EVENT, type TWidgetErrorDetail } from '@groupher/contracts/widget'
+
 import {
   parseWidgetCommand,
   readQueuedCommands,
@@ -12,7 +14,7 @@ const RUNTIME_ASSET_PATH =
 const reportError = (message: string, cause?: unknown): void => {
   console.error(`[Groupher Widget] ${message}`, cause)
   window.dispatchEvent(
-    new CustomEvent('groupher-widget:error', {
+    new CustomEvent<TWidgetErrorDetail>(WIDGET_EVENT.ERROR, {
       detail: { cause, message },
     }),
   )

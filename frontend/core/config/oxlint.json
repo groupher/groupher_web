@@ -55,7 +55,21 @@
     "no-restricted-imports": [
       "error",
       {
+        "paths": [
+          {
+            "name": "./tr",
+            "message": "Import `tr` from `~/css` so the shared recipe boundary stays explicit."
+          },
+          {
+            "name": "../tr",
+            "message": "Import `tr` from `~/css` so the shared recipe boundary stays explicit."
+          }
+        ],
         "patterns": [
+          {
+            "group": ["**/lib/css/tr", "**/css/tr"],
+            "message": "Import `tr` from `~/css` so the shared recipe boundary stays explicit."
+          },
           {
             "group": ["**//**"],
             "message": "hi Luka: Import path contains double slashes (`//`). Please normalize the path."
@@ -70,6 +84,12 @@
     "jsx-a11y/role-supports-aria-props": "off"
   },
   "overrides": [
+    {
+      "files": ["lib/css/index.ts"],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    },
     {
       "files": ["**/*.test.*", "**/*.spec.*", "**/tests/**"],
       "plugins": ["typescript", "unicorn", "oxc", "react", "jsx-a11y", "vitest"],

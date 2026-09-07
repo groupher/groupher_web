@@ -1,7 +1,7 @@
 import { pick } from 'ramda'
 
 import type { TBroadcastConf, TBroadcastLayout, TEditFunc } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { FIELD } from '../constant'
 import useHelper from './useHelper'
@@ -19,21 +19,20 @@ type TRet = TBroadcastConf & {
 
 /** Exposes broadcast state and actions through the shared React hook boundary. */
 export default function useBroadcast(): TRet {
-  const dsb$ = useDsb()
-  const { edit, isChanged, onSave } = useHelper()
+  const dsb$ = useDsbEdit()
+  const { edit, isChanged, onSave, isPending } = useHelper()
 
   const isTouched = isChanged(FIELD.BROADCAST_LAYOUT) || isChanged(FIELD.BROADCAST_BG)
   const isArticleTouched =
     isChanged(FIELD.BROADCAST_ARTICLE_LAYOUT) || isChanged(FIELD.BROADCAST_ARTICLE_BG)
 
   const changeEnable = (v: boolean) => {
-    dsb$.commit({ broadcastEnable: v })
+    dsb$.editMany({ broadcastEnable: v })
     setTimeout(() => onSave(FIELD.BROADCAST_ENABLE))
   }
 
   const broadcastOnSave = (isArticle = false): void => {
     console.log('## broadcastOnSave: ', isArticle)
-    dsb$.commit({ saving: true })
     // const layoutKey = !isArticle
     //   ? FIELD.BROADCAST_LAYOUT
     //   : FIELD.BROADCAST_ARTICLE_LAYOUT
@@ -77,10 +76,10 @@ export default function useBroadcast(): TRet {
         'broadcastArticleCustomBg',
         'broadcastArticleLayout',
         'broadcastArticleEnable',
-        'saving',
       ],
       dsb$,
     ),
+    saving: isPending,
     isTouched,
     isArticleTouched,
     changeEnable,

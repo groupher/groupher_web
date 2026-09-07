@@ -3,7 +3,7 @@ import { useContext, useMemo } from 'react'
 import { useSnapshot } from 'valtio'
 
 import useViewingArticle from '~/hooks/useViewingArticle'
-import { mergeCommentViewerState } from '~/lib/commentViewerState'
+import { gatherCommentViewerIds, mergeCommentViewerState } from '~/lib/commentViewerState'
 import { Q } from '~/query'
 import type { TComment, TPagedComments } from '~/spec'
 import useAccount from '~/stores/account/hooks'
@@ -30,11 +30,12 @@ export default function useCommentQueryState() {
   const viewerQuery = useQuery(
     Q.viewer.commentStates(
       account.user?.login || '',
-      article.community.slug,
-      article.meta.thread,
-      article.innerId,
-      comments.page,
-      comments.mode,
+      {
+        community: article.community.slug,
+        thread: article.meta.thread,
+        innerId: String(article.innerId),
+      },
+      query.data ? gatherCommentViewerIds(query.data as TPagedComments) : [],
     ),
   )
   const summaryQuery = useQuery(

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import THEME from '~/const/theme'
 import { getPageBgCustomColor, normalizePageBgHue, normalizePageBgIntensity } from '~/lib/color'
-import { THEME_PRESET_PAGE_BG_CSS_VAR } from '~/lib/themePreset'
+import { THEME_PRESET_PAGE_BG_CSS_VAR } from '~/lib/theme'
 
 export type TPageBgDraft = {
   pageBg: string

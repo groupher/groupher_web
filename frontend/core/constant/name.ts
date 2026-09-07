@@ -30,6 +30,13 @@ export const LANDING_INIT_DATA = {
     onelineLinks: [],
   },
   wallpaper: {
+    wallpaper: {
+      version: 0,
+      lightSource: 'amber_mauve',
+      darkSource: 'amber_mauve',
+      light: null,
+      dark: null,
+    },
     light: {
       pattern: {
         enabled: true,

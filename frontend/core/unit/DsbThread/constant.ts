@@ -1,13 +1,12 @@
 import { ONE_LINK_GROUP, TW_CARD } from '~/const/dashboard'
 import { DSB_ALIAS_ROUTE, DSB_COVERS, DSB_ROUTE } from '~/const/route'
 import { PRESET_FIELD } from '~/const/theme_preset'
-import type { TDsbFieldMap, TDsbStoreFieldKey } from '~/stores/dsb/spec'
+import type { TDsbEditableFieldKey, TDsbFieldMap } from '~/spec'
 
 import type { TDsbMenu } from './spec'
 
 export { SEO_KEYS } from '~/const/seo'
 
-export const DSB_DEMO_KEY = 'DSB_DEMO'
 export const DASHBOARD_SIDE_MENU_STICKY_OFFSET = 36
 
 const DSB_DOC_SIDE_MENU = {
@@ -122,8 +121,8 @@ export const FIELD = {
   BROADCAST_ENABLE: 'broadcastEnable',
 } as const
 
-export const TAG_STORE_FIELDS: readonly TDsbStoreFieldKey[] = [FIELD.TAGS]
-export const FAQ_STORE_FIELDS: readonly TDsbStoreFieldKey[] = [FIELD.DOC_FAQ]
+export const TAG_STORE_FIELDS: readonly TDsbEditableFieldKey[] = [FIELD.TAGS]
+export const FAQ_STORE_FIELDS: readonly TDsbEditableFieldKey[] = [FIELD.DOC_FAQ]
 export const MENU: TDsbMenu = {
   BASIC: {
     title: 'dsb.menu.basic',

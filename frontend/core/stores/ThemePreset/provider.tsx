@@ -1,11 +1,10 @@
 'use client'
 
-import { type ReactNode, useEffect, useMemo, useRef } from 'react'
+import { type ReactNode, useLayoutEffect, useMemo, useRef } from 'react'
 import { useSnapshot } from 'valtio'
 
-import { serializeCommunityThemePresetCss } from '~/lib/themePreset'
+import { serializeCommunityThemePresetCss } from '~/lib/theme'
 import type { TResolvedThemePreset } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
 
 import setupStore from '.'
 import { StoreContext } from './context'
@@ -48,18 +47,12 @@ const ThemePresetScope = ({ children, store }: TScopeProps) => {
 
 export default function Provider({ children, initData = EMPTY_INIT_DATA }: TProps) {
   const storeRef = useRef<TStore | null>(null)
-  const dsb$ = useDsb()
 
   storeRef.current ??= setupStore(initData)
 
-  useEffect(() => {
-    storeRef.current?.hydrate({
-      themePreset: dsb$.themePreset,
-      themePresetBase: dsb$.themePresetBase,
-      themeTokens: dsb$.themeTokens,
-      presetOptions: dsb$.themePresets,
-    })
-  }, [dsb$.themePreset, dsb$.themePresetBase, dsb$.themeTokens, dsb$.themePresets])
+  useLayoutEffect(() => {
+    storeRef.current?.hydrate(initData)
+  }, [initData])
 
   return (
     <StoreContext.Provider value={storeRef.current}>

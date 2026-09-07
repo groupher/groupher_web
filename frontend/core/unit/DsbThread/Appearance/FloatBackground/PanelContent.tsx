@@ -1,4 +1,6 @@
-import useSalon, { cnMerge } from './salon'
+import { cn } from '~/css'
+
+import useSalon from './salon'
 
 type TProps = {
   dark?: boolean
@@ -6,17 +8,17 @@ type TProps = {
 
 export default function PanelContent({ dark = false }: TProps) {
   const s = useSalon()
-  const tone = dark ? 'bg-white' : undefined
+  const tone = dark ? 'bg-white' : s.barToneLight
 
   return (
     <>
-      <div className={cnMerge(s.bar, s.panelTitle, tone)} />
-      <div className={cnMerge(s.bar, s.panelShort, tone)} />
-      <div className={cnMerge(s.bar, s.panelWide, tone)} />
-      <div className={cnMerge(s.bar, s.panelMid, tone)} />
-      <div className={cnMerge(s.bar, s.panelNarrow, tone)} />
-      <div className={cnMerge(s.bar, s.panelWideDim, tone)} />
-      <div className={cnMerge(s.bar, s.panelWideDim, tone)} />
+      <div className={cn(s.bar, s.panelTitle, tone)} />
+      <div className={cn(s.bar, s.panelShort, tone)} />
+      <div className={cn(s.bar, s.panelWide, tone)} />
+      <div className={cn(s.bar, s.panelMid, tone)} />
+      <div className={cn(s.bar, s.panelNarrow, tone)} />
+      <div className={cn(s.bar, s.panelWideDim, tone)} />
+      <div className={cn(s.bar, s.panelWideDim, tone)} />
     </>
   )
 }

@@ -1,8 +1,8 @@
-import { clone, equals, pick } from 'ramda'
-import { createContext, use, useEffect, useMemo, useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { clone } from 'ramda'
+import { createContext, use, useMemo, useRef, useState } from 'react'
 
 import { GRADIENT_PALETTE, GRADIENT_WALLPAPER, WALLPAPER_TYPE } from '~/const/wallpaper'
-import { browserQuery } from '~/graphql/client'
 import useFullWallpaper from '~/hooks/useFullWallpaper'
 import useTheme from '~/hooks/useTheme'
 import useTrans from '~/hooks/useTrans'
@@ -15,21 +15,28 @@ import {
   isMeshGradientRecipe,
 } from '~/lib/wallpaperMesh'
 import type { TGradientRecipe, TGradientRenderer } from '~/lib/wallpaperMesh'
-import type { TWallpaperData, TWallpaperType } from '~/spec'
+import { dsbKeys, wallpaperEditorKeys, wallpaperKeys, wallpaperQueries } from '~/query'
+import type { TParseDashboard, TParsedWallpaper, TWallpaperData, TWallpaperType } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
-import { WALLPAPER_SAVABLE_STATE_KEYS, WALLPAPER_STATE_KEYS } from '~/stores/wallpaper/constant'
+import { hasContentShadowPatch } from '~/stores/contentShadow/helper'
+import useContentShadowStore, { useContentShadowStoreLive } from '~/stores/contentShadow/hooks'
 import {
-  getWallpaperSavablePatch,
+  getWallpaperThemeSavablePatch,
   pickWallpaperThemeState,
   toWallpaperThemePatch,
 } from '~/stores/wallpaper/helper'
-import useWallpaperDomain from '~/stores/wallpaper/hooks'
+import useWallpaperDomain, { useWallpaperStore } from '~/stores/wallpaper/hooks'
 import type { TWallpaperPatch, TWallpaperThemeState } from '~/stores/wallpaper/spec'
 import { toast } from '~/ui/Toaster'
-import { revalidateCommunityCache } from '~/utils/revalidateCommunityCache'
+import { extractErrorMessage } from '~/unit/DsbThread/AssetsHub/helper'
 
 import { TAB } from './constant'
-import S from './schema'
+import { executeContentShadowUpdate, type TContentShadowSavePlan } from './contentShadowExecutor'
+import { executeWallpaperPublish } from './publishExecutor'
+import { buildWallpaperPublishPlan } from './publishPlan'
+import { updatePublishedWallpaperVersion } from './queryCache'
+import { resolveWallpaperIdempotencyKey, type TPendingWallpaperSave } from './requestCoordinator'
+import { executeAppearanceSave } from './saveCoordinator'
 import type { TTab } from './spec'
 import useWallpaperPreview, { type TWallpaperPreviewPatch } from './useWallpaperPreview'
 
@@ -47,15 +54,39 @@ const getInitialTab = (type: TWallpaperType): TTab => {
   }
 }
 
+type TWallpaperSaveRequest = {
+  community: string
+  baseVersion: number
+  idempotencyKey: string
+  submitted: TWallpaperPatch
+  theme: 'light' | 'dark'
+}
+
+const graphqlErrorCode = (error: unknown): string | undefined => {
+  if (!error || typeof error !== 'object' || !('errors' in error)) return undefined
+  const errors = error.errors
+  if (!Array.isArray(errors)) return undefined
+  const code = errors.find(
+    (item) =>
+      item &&
+      typeof item === 'object' &&
+      'extensions' in item &&
+      item.extensions &&
+      typeof item.extensions === 'object' &&
+      'code' in item.extensions,
+  )
+  return code && typeof code === 'object' && 'extensions' in code
+    ? String((code.extensions as { code?: unknown }).code)
+    : undefined
+}
+
 export type TWallpaperLogic = {
   tab: TTab
   loading: boolean
   // derived
   getWallpaper: () => TWallpaperData
   isTouched: boolean
-  angleDraft: number
   // actions
-  initRollback: () => void
   rollbackWallpaper: () => void
   onSave: () => void
 
@@ -87,30 +118,7 @@ export type TWallpaperLogic = {
 export const LogicContext = createContext<TWallpaperLogic | null>(null)
 LogicContext.displayName = 'WallpaperLogic'
 
-const getAngleDraft = (state: TWallpaperThemeState): number => {
-  const { gradient } = state
-  if (!gradient) return 180
-
-  if (gradient.renderer === GRADIENT_RENDERER.RADIAL) {
-    return radialCenterToAngle(gradient.center)
-  }
-  if (gradient.renderer === GRADIENT_RENDERER.LINEAR || isMeshGradientRecipe(gradient)) {
-    return normalizeSignedAngle(gradient.angle)
-  }
-
-  return 180
-}
-
 const RADIAL_DEFAULT_CENTER_DISTANCE = 0.22
-
-const radialCenterToAngle = ({ x, y }: { x: number; y: number }): number => {
-  const dx = x - 0.5
-  const dy = y - 0.5
-
-  if (Math.hypot(dx, dy) < 0.001) return 180
-
-  return normalizeSignedAngle((Math.atan2(dx, -dy) * 180) / Math.PI)
-}
 
 const radialCenterFromAngle = (
   angle: number,
@@ -155,65 +163,152 @@ export const composeGradientWallpaperPatch = (
   }
 }
 
-const serializeWallpaperPatch = (patch: TWallpaperPatch): Record<string, unknown> => {
-  const serialized = clone(patch) as Record<string, unknown>
-
-  for (const theme of ['light', 'dark']) {
-    const themePatch = serialized[theme] as Record<string, unknown> | undefined
-    if (!themePatch) continue
-
-    for (const key of ['gradient', 'texture']) {
-      if (key in themePatch && themePatch[key] !== null && themePatch[key] !== undefined) {
-        themePatch[key] = JSON.stringify(themePatch[key])
-      }
-    }
-  }
-
-  return serialized
-}
-
 /** Exposes logic value state and actions through the shared React hook boundary. */
 export function useLogicValue(): TWallpaperLogic {
   const wallpaper$ = useWallpaperDomain()
-  const liveWallpaper$ = wallpaper$.live$ ?? wallpaper$
+  const liveWallpaper$ = useWallpaperStore()
+  const contentShadow$ = useContentShadowStore()
+  const liveContentShadow$ = useContentShadowStoreLive()
   const community$ = useCommunity()
-  const { getWallpaper } = useFullWallpaper()
+  const { getWallpaper: getWallpaperBase } = useFullWallpaper()
   const { isDarkTheme } = useTheme()
   const { t } = useTrans()
+  const queryClient = useQueryClient()
+  const { data: wallpaperConfig } = useQuery(wallpaperQueries.config(community$.slug))
+  const wallpaperStateVersion = wallpaperConfig?.wallpaper?.version ?? 0
+  const pendingSaveRef = useRef<TPendingWallpaperSave | null>(null)
+  const savePlanRef = useRef<{
+    hasWallpaper: boolean
+    hasShadow: boolean
+    wallpaperDone: boolean
+    shadowDone: boolean
+  } | null>(null)
+
+  const markSaveLaneComplete = (lane: 'wallpaper' | 'shadow'): void => {
+    const plan = savePlanRef.current
+    if (!plan) return
+
+    const next = {
+      ...plan,
+      ...(lane === 'wallpaper' ? { wallpaperDone: true } : { shadowDone: true }),
+    }
+    savePlanRef.current = next
+
+    const wallpaperComplete = !next.hasWallpaper || next.wallpaperDone
+    const shadowComplete = !next.hasShadow || next.shadowDone
+    if (wallpaperComplete && shadowComplete) {
+      toast(t('dsb.appearance.saved'), 'success')
+      savePlanRef.current = null
+    }
+  }
 
   const [tab, setTab] = useState<TTab>(() =>
     getInitialTab(pickWallpaperThemeState(wallpaper$, isDarkTheme).type),
   )
-  const [loading, setLoading] = useState(false)
   const wallpaperState = useMemo(
     () => pickWallpaperThemeState(wallpaper$, isDarkTheme),
     [isDarkTheme, wallpaper$.light, wallpaper$.dark],
   )
-  const [angleDraft, setAngleDraft] = useState(() => getAngleDraft(wallpaperState))
   const {
     previewWallpaper,
     scheduleWallpaperPreview,
-    flushWallpaperDraft,
+    flushWallpaperDraft: flushWallpaperDraftPreview,
     clearPendingWallpaperDraft,
-    clearWallpaperPreview,
+    clearWallpaperPreview: clearWallpaperPreviewBase,
   } = useWallpaperPreview({
     state: wallpaperState,
     onCommit: (patch) => liveWallpaper$.commit(toWallpaperThemePatch(patch, isDarkTheme)),
   })
-
   const isTouched = useMemo((): boolean => {
-    const original = pick(WALLPAPER_SAVABLE_STATE_KEYS, wallpaper$.original)
-    const current = pick(WALLPAPER_SAVABLE_STATE_KEYS, wallpaper$)
+    const theme: 'light' | 'dark' = isDarkTheme ? 'dark' : 'light'
+    return (
+      Object.keys(getWallpaperThemeSavablePatch(wallpaper$, theme)).length > 0 ||
+      hasContentShadowPatch(contentShadow$)
+    )
+  }, [
+    contentShadow$.enabled,
+    contentShadow$.original,
+    isDarkTheme,
+    wallpaper$.dark,
+    wallpaper$.light,
+    wallpaper$.original,
+  ])
 
-    return !equals(clone(original), clone(current))
-  }, [wallpaper$])
+  const wallpaperMutation = useMutation({
+    mutationKey: ['dsb', 'wallpaper', community$.slug],
+    mutationFn: async ({
+      community,
+      baseVersion,
+      idempotencyKey,
+      submitted,
+      theme,
+    }: TWallpaperSaveRequest) => {
+      const plan = buildWallpaperPublishPlan({
+        baseVersion,
+        community,
+        reuseKey: idempotencyKey,
+        theme,
+        wallpaper: clone(liveWallpaper$[theme]),
+      })
+      const result = await executeWallpaperPublish(plan, idempotencyKey)
+      if (!result) throw new Error('WALLPAPER_PUBLISH_EMPTY_RESPONSE')
+      return { result, submitted }
+    },
+    onSuccess: ({ result, submitted }, { community }) => {
+      liveWallpaper$.acceptSubmitted(submitted)
+      queryClient.setQueryData<TParsedWallpaper>(wallpaperKeys.config(community), (current) =>
+        updatePublishedWallpaperVersion(current, result.version),
+      )
+      pendingSaveRef.current = null
+      void queryClient.invalidateQueries({ queryKey: wallpaperKeys.config(community), exact: true })
+      void queryClient.invalidateQueries({
+        queryKey: wallpaperEditorKeys.config(community),
+        exact: true,
+      })
+      markSaveLaneComplete('wallpaper')
+    },
+    onError: (err) => {
+      console.error('## wallpaper publish error: ', err)
+      if (graphqlErrorCode(err) === '5702' || graphqlErrorCode(err) === '5708') {
+        void queryClient
+          .invalidateQueries({ queryKey: wallpaperKeys.config(community$.slug), exact: true })
+          .then(() => queryClient.fetchQuery(wallpaperQueries.config(community$.slug)))
+          .catch(() => undefined)
+      }
+      toast(extractErrorMessage(err), 'error')
+    },
+  })
 
-  useEffect(() => {
-    setAngleDraft(getAngleDraft(wallpaperState))
-  }, [wallpaperState])
+  const contentShadowMutation = useMutation({
+    mutationKey: ['dsb', 'content-shadow', community$.slug],
+    mutationFn: (plan: TContentShadowSavePlan) => executeContentShadowUpdate(plan),
+    onSuccess: ({ contentShadow }, { community, enabled }) => {
+      liveContentShadow$.acceptSubmitted(contentShadow ?? enabled)
+      queryClient.setQueryData<TParseDashboard>(dsbKeys.config(community), (current) =>
+        current
+          ? {
+              ...current,
+              contentShadow: contentShadow ?? current.contentShadow,
+            }
+          : current,
+      )
+      void queryClient.invalidateQueries({ queryKey: dsbKeys.config(community), exact: true })
+      void queryClient.invalidateQueries({
+        queryKey: wallpaperEditorKeys.config(community),
+        exact: true,
+      })
+      markSaveLaneComplete('shadow')
+    },
+    onError: (err) => {
+      console.error('## content shadow update error: ', err)
+      toast(extractErrorMessage(err), 'error')
+    },
+  })
 
-  const initRollback = (): void =>
-    liveWallpaper$.commit({ original: clone(pick(WALLPAPER_STATE_KEYS, liveWallpaper$)) })
+  const getWallpaper = (): TWallpaperData => ({
+    ...getWallpaperBase(),
+    contentShadow: contentShadow$.enabled,
+  })
 
   const commitWallpaperPatch = (patch: Partial<TWallpaperThemeState>): void => {
     flushWallpaperDraft()
@@ -225,44 +320,69 @@ export function useLogicValue(): TWallpaperLogic {
     clearPendingWallpaperDraft()
     clearWallpaperPreview()
     liveWallpaper$.commit({ ...liveWallpaper$.original })
+    liveContentShadow$.commit(contentShadow$.original)
   }
 
   const onSave = (): void => {
     flushWallpaperDraft()
     clearWallpaperPreview()
-    setLoading(true)
     const community = community$.slug
-    const wallpaper = serializeWallpaperPatch(getWallpaperSavablePatch(liveWallpaper$))
-    const params = {
-      community,
-      wallpaper,
+    const theme = isDarkTheme ? 'dark' : 'light'
+    const submittedTheme = clone(getWallpaperThemeSavablePatch(liveWallpaper$, theme))
+    const submitted = { [theme]: submittedTheme } as TWallpaperPatch
+    const hasWallpaperChanges = Object.keys(submittedTheme).length > 0
+    const hasShadowChanges = hasContentShadowPatch(contentShadow$)
+    if (!hasWallpaperChanges && !hasShadowChanges) return
+    savePlanRef.current = {
+      hasShadow: hasShadowChanges,
+      hasWallpaper: hasWallpaperChanges,
+      shadowDone: false,
+      wallpaperDone: false,
     }
 
-    browserQuery(S.updateDashboardWallpaper, params)
-      .then(async () => {
-        await revalidateCommunityCache(community)
-        toast(t('dsb.appearance.saved'))
-        setLoading(false)
-        initRollback()
-      })
-      .catch((err) => {
-        console.error('## handle request error: ', err)
-        setLoading(false)
-      })
+    const wallpaperFingerprint = JSON.stringify({
+      baseVersion: wallpaperStateVersion,
+      community,
+      submitted,
+      theme,
+    })
+    void executeAppearanceSave({
+      contentShadow: hasShadowChanges
+        ? async () => {
+            await contentShadowMutation.mutateAsync({
+              community,
+              enabled: contentShadow$.enabled,
+            })
+          }
+        : undefined,
+      wallpaper: hasWallpaperChanges
+        ? async () => {
+            const pending = resolveWallpaperIdempotencyKey({
+              fingerprint: wallpaperFingerprint,
+              pending: pendingSaveRef.current,
+            })
+            pendingSaveRef.current = pending
+            await wallpaperMutation.mutateAsync({
+              baseVersion: wallpaperStateVersion,
+              community,
+              idempotencyKey: pending.idempotencyKey,
+              submitted,
+              theme,
+            })
+          }
+        : undefined,
+    }).catch(() => undefined)
   }
 
   const changeTab = (tab: TTab): void => setTab(tab)
-  const changeAngle = (angle: number): void => {
-    const nextAngle = normalizeSignedAngle(angle)
-    setAngleDraft(nextAngle)
-
+  const applyAngleChange = (nextAngle: number): void => {
     if (wallpaperState.gradient?.renderer === GRADIENT_RENDERER.LINEAR) {
-      scheduleWallpaperPreview({ gradient: { ...wallpaperState.gradient, angle: nextAngle } })
+      scheduleWallpaperPreview({ gradient: { angle: nextAngle } })
       return
     }
 
     if (wallpaperState.gradient && isMeshGradientRecipe(wallpaperState.gradient)) {
-      scheduleWallpaperPreview({ gradient: { ...wallpaperState.gradient, angle: nextAngle } })
+      scheduleWallpaperPreview({ gradient: { angle: nextAngle } })
       return
     }
 
@@ -281,6 +401,9 @@ export function useLogicValue(): TWallpaperLogic {
     const fallback = GRADIENT_WALLPAPER.amber_mauve
     scheduleWallpaperPreview({ gradient: { ...fallback, angle: nextAngle } })
   }
+  const clearWallpaperPreview = (): void => clearWallpaperPreviewBase()
+  const changeAngle = (angle: number): void => applyAngleChange(normalizeSignedAngle(angle))
+  const flushWallpaperDraft = (): void => flushWallpaperDraftPreview()
   const removeWallpaper = (): void => {
     clearPendingWallpaperDraft()
     clearWallpaperPreview()
@@ -328,8 +451,11 @@ export function useLogicValue(): TWallpaperLogic {
     scheduleWallpaperPreview({
       pattern: { intensity: patternIntensity },
     })
-  const toggleShadow = (enabled: boolean): void =>
-    commitWallpaperPatch({ contentShadow: { enabled } })
+  const toggleShadow = (enabled: boolean): void => {
+    flushWallpaperDraft()
+    clearWallpaperPreview()
+    liveContentShadow$.commit(enabled)
+  }
   const changeBrightness = (brightness: number): void =>
     scheduleWallpaperPreview({ effect: { brightness } })
   const changeSaturation = (saturation: number): void =>
@@ -339,13 +465,11 @@ export function useLogicValue(): TWallpaperLogic {
 
   return {
     tab,
-    loading,
+    loading: wallpaperMutation.isPending || contentShadowMutation.isPending,
     // drive
     getWallpaper,
     isTouched,
-    angleDraft,
     //actions
-    initRollback,
     rollbackWallpaper,
     onSave,
     changeTab,

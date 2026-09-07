@@ -6,14 +6,12 @@ import type { TNavActiveLayout } from '~/spec'
 
 import useBase from '../../../useDsbSalon'
 
-export { cnMerge } from '~/css'
-
 type TArgs = {
   layout?: TNavActiveLayout | null
 }
 
 export default function useSalon({ layout: currentLayout }: TArgs = {}) {
-  const { bg, cn, cnMerge, fg, primary } = useTwBelt()
+  const { bg, cn, fg, primary } = useTwBelt()
   const base = useBase()
   const { navActiveLayout } = useLayout()
   const resolvedLayout: TNavActiveLayout =
@@ -25,8 +23,7 @@ export default function useSalon({ layout: currentLayout }: TArgs = {}) {
     wrapper: base.section,
     select: 'grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3',
     layout: 'column-align-both w-full min-w-0',
-    block: cnMerge(base.card, 'align-both w-full h-14'),
-    blockActive: base.cardActive,
+    block: base.cardRecipe('align-both w-full h-14'),
     preview: 'row-center gap-1.5',
     previewItem: cn('row-center h-7 rounded-lg px-2 text-sm', fg('digest')),
     previewItemInactive: 'opacity-50',

@@ -1,6 +1,6 @@
 import { pick } from 'ramda'
 
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { BASEINFO_BASIC_KEYS, BASEINFO_OTHER_KEYS, FIELD } from '../../constant'
 import type { TDsbFieldKey } from '../../spec'
@@ -23,7 +23,7 @@ export type TRet = {
 
 /** Exposes info state and actions through the shared React hook boundary. */
 export default function useInfo(): TRet {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
   const { anyChanged } = useHelper()
 
   return {

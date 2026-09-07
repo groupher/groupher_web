@@ -3,7 +3,8 @@
 > 历史实现说明：文中的 Next `useServerInsertedHTML` 和旧 Main/Dashboard 文件路径仅用于
 > 解释迁移前实现；当前 hosts 使用 TanStack 与共享的 pre-paint script。
 
-> 状态：设计说明和实现指南。 Wallpaper/renderSpec 不在此范围内，应单独处理。
+> 状态：历史设计说明，不再作为当前实现契约。当前主题事实源、cookie、pre-paint 和 Provider 边界以
+> `docs/fix/theme_source.md` 为准；Wallpaper/renderSpec 不在此范围内，应单独处理。
 
 ## 问题
 
@@ -55,9 +56,17 @@ Groupher 采用相同的首次绘制方向，但 Next hydration 在首次绘制�
 
 - 不要用 cookie 作为主题的事实来源。
 - 主题值保持由 CSS 驱动。
-- 不要在客户端首次渲染期间从`document.documentElement.dataset.theme`初始化`ThemeStore`。这会让客户端树与服务端树不同，并可能引发 hydration mismatch。
+- 只能由主题 Provider 在初始化边界读取 pre-paint 已写入的`document.documentElement.dataset.theme`来
+  seed `ThemeStore`；业务组件不得自行读取该值。这样 `useTheme()` 的首个客户端快照与 first-paint
+  保持一致。
 - 不要通过让单个`ui`组件各自承担 hydration 窗口补丁来修复。
 - 不要把它当成仅 Dashboard 的问题。 Main、Dashboard、Landing 以及未来的子应用共享同一个根主题问题。
+
+当前 TanStack host 还要处理 lazy/Suspense boundary：根部 `ThemeMonitor` 的 effect 可能已经把运行时
+store 切到 dark，而较晚的 route boundary 仍在 hydration。`ThemeStoreProvider` 在浏览器创建 store
+时读取 pre-paint 的 `data-theme`（同时保留服务端传入的 mode），让所有 boundary 通过同一个
+`useTheme()` 快照得到相同的 resolved theme。该规则位于主题 Provider，不下放成 Theme editor
+各组件的局部补丁，也不改变 pre-paint CSS 已呈现的真实明暗主题。
 
 ## 目标模型
 

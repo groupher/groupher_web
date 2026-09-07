@@ -9,7 +9,7 @@ import type { FC, ReactNode } from 'react'
 import usePrimaryColor from '~/hooks/usePrimaryColor'
 import type { TColorName, TSpace } from '~/spec'
 
-import useSalon, { cnMerge } from '../salon/arrow_button'
+import useSalon, { cn } from '../salon/arrow_button'
 import Arrow from './Arrow'
 
 type TProps = {
@@ -80,12 +80,12 @@ const ArrowButton: FC<TProps> = ({
   )
 
   if (as === 'span') {
-    return <span className={cnMerge(s.wrapper, className)}>{content}</span>
+    return <span className={cn(s.wrapper, className)}>{content}</span>
   }
 
   return (
     <button
-      className={cnMerge(s.wrapper, className)}
+      className={cn(s.wrapper, className)}
       onClick={() => !disabled && onClick()}
       type='button'
     >

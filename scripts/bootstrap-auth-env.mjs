@@ -31,7 +31,7 @@ const values = new Map()
 try {
   const target = await readFile(targetPath, 'utf8')
   for (const [key, value] of parseEnv(target)) {
-    if (requiredKeys.includes(key) && value) values.set(key, value)
+    if (value) values.set(key, value)
   }
 } catch (cause) {
   if (cause?.code !== 'ENOENT') throw cause
@@ -53,7 +53,7 @@ if (missingKeys.length) {
   throw new Error(`Missing local Auth values: ${missingKeys.join(', ')}`)
 }
 
-const content = `${requiredKeys.map((key) => `${key}=${values.get(key)}`).join('\n')}\n`
+const content = `${Array.from(values, ([key, value]) => `${key}=${value}`).join('\n')}\n`
 await writeFile(targetPath, content, { encoding: 'utf8', mode: 0o600 })
 await chmod(targetPath, 0o600)
 console.log('Bootstrapped missing backend/auth/.env.local values from legacy frontend/auth files.')

@@ -119,25 +119,9 @@ defmodule GroupherServer.CMS.Assets.Deletion do
   end
 
   defp endpoint do
-    default_endpoint = if Mix.env() == :test, do: nil, else: "https://assets.groupher.com"
-
-    [
-      System.get_env("ASSETS_HUB_DELETE_ENDPOINT"),
-      System.get_env("ASSETS_HUB_READ_ENDPOINT"),
-      System.get_env("ASSETS_PUBLIC_ENDPOINT"),
-      default_endpoint
-    ]
-    |> Enum.find_value(fn
-      value when is_binary(value) ->
-        value = String.trim(value)
-        if value == "", do: nil, else: String.trim_trailing(value, "/")
-
-      _ ->
-        nil
-    end)
-    |> case do
-      nil -> {:error, ErrorCat.skipped()}
-      endpoint -> {:ok, endpoint}
+    case GroupherServer.CMS.Assets.Endpoints.fetch("ASSETS_HUB_DELETE_ENDPOINT") do
+      {:ok, endpoint} -> {:ok, endpoint}
+      :error -> {:error, ErrorCat.delete_enqueue_failed("ASSETS_HUB_DELETE_ENDPOINT is required")}
     end
   end
 end

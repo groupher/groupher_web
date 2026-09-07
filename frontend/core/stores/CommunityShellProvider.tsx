@@ -3,15 +3,16 @@ import type { FC, ReactNode } from 'react'
 import { LOCALE } from '~/const/i18n'
 import METRIC from '~/const/metric'
 import { InitialNowProvider } from '~/hooks/useInitialNow'
-import type { TCommunity, TLocale, TMetric, TParseDashboard } from '~/spec'
+import type { TCommunity, TLocale, TMetric, TParseDashboard, TThemeMode, TThemeName } from '~/spec'
 import AccountStoreProvider from '~/stores/account/provider'
 import type { TInit as TAccountInit } from '~/stores/account/spec'
 import CommunityStoreProvider from '~/stores/community/provider'
-import DsbStoreProvider from '~/stores/dsb/provider'
+import DsbConfigProvider from '~/stores/dsbConfig/provider'
 import LocaleStoreProvider from '~/stores/locale/provider'
+import { MetricProvider } from '~/stores/metric'
+import StaticWallpaperProvider from '~/stores/staticWallpaper/provider'
 import ThemeStoreProvider from '~/stores/theme/provider'
 import ThemePresetStoreProvider from '~/stores/ThemePreset/provider'
-import WallpaperStoreProvider from '~/stores/wallpaper/provider'
 import type { TInit as TWallpaperInit } from '~/stores/wallpaper/spec'
 
 type TProps = {
@@ -19,6 +20,10 @@ type TProps = {
   initData: {
     community: TCommunity
     dashboard: TParseDashboard
+    theme: {
+      theme: TThemeName
+      themeMode: TThemeMode
+    }
     wallpaper?: TWallpaperInit
     account?: TAccountInit
   }
@@ -45,21 +50,25 @@ export default function CommunityShellProvider({
   noAccount = false,
   metric = METRIC.COMMUNITY,
 }: TProps) {
-  const { account, dashboard, community, wallpaper } = initData
+  const { account, dashboard, community, theme, wallpaper } = initData
 
   return (
-    <ThemeStoreProvider>
+    <ThemeStoreProvider initData={theme}>
       <InitialNowProvider initialNow={initialNow}>
         <LocaleStoreProvider initData={{ locale, localeData }}>
-          <AccountWrapper initData={account} noAccount={noAccount}>
-            <CommunityStoreProvider initData={community}>
-              <DsbStoreProvider initData={{ ...dashboard, metric }}>
-                <ThemePresetStoreProvider initData={dashboard}>
-                  <WallpaperStoreProvider initData={wallpaper}>{children}</WallpaperStoreProvider>
-                </ThemePresetStoreProvider>
-              </DsbStoreProvider>
-            </CommunityStoreProvider>
-          </AccountWrapper>
+          <MetricProvider value={metric}>
+            <AccountWrapper initData={account} noAccount={noAccount}>
+              <CommunityStoreProvider initData={community}>
+                <DsbConfigProvider initData={dashboard}>
+                  <ThemePresetStoreProvider initData={dashboard}>
+                    <StaticWallpaperProvider initData={wallpaper?.wallpaper}>
+                      {children}
+                    </StaticWallpaperProvider>
+                  </ThemePresetStoreProvider>
+                </DsbConfigProvider>
+              </CommunityStoreProvider>
+            </AccountWrapper>
+          </MetricProvider>
         </LocaleStoreProvider>
       </InitialNowProvider>
     </ThemeStoreProvider>

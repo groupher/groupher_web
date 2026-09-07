@@ -1,3 +1,4 @@
+import { AUTH_ERROR } from '@groupher/contracts/auth'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { createApp, mapBrowserSessionError } from './app'
@@ -25,12 +26,63 @@ describe('Auth Hono application', () => {
     })
   })
 
+  it('keeps the service Auth contract probe disabled outside Dev Hub', async () => {
+    const response = await createApp().request('/health/service-auth')
+
+    expect(response.status).toBe(404)
+  })
+
+  it('accepts SESSION_REVOKED as proof that the service Auth contract reached Phoenix', async () => {
+    vi.stubEnv('DEV_HUB_SERVICE_AUTH_PROBE', 'true')
+    const refreshBrowserSession = vi.fn(async () => {
+      throw new PhoenixBrowserSessionError('Reserved probe Session does not exist.', {
+        code: AUTH_ERROR.SESSION_REVOKED,
+      })
+    })
+
+    const response = await createApp({ refreshBrowserSession }).request('/health/service-auth')
+
+    expect(response.status).toBe(200)
+    await expect(response.json()).resolves.toMatchObject({
+      status: 'ok',
+      service: 'auth',
+      checks: [{ name: 'phoenix-service-auth', status: 'ok' }],
+    })
+    expect(refreshBrowserSession).toHaveBeenCalledWith('dev-hub-service-auth-contract-probe')
+  })
+
+  it('reports the service Auth machine code when the startup contract fails', async () => {
+    vi.stubEnv('DEV_HUB_SERVICE_AUTH_PROBE', 'true')
+    const refreshBrowserSession = vi.fn(async () => {
+      throw new PhoenixBrowserSessionError('Service token claims are invalid.', {
+        code: AUTH_ERROR.SERVICE_TOKEN_INVALID,
+      })
+    })
+
+    const response = await createApp({ refreshBrowserSession }).request('/health/service-auth')
+
+    expect(response.status).toBe(503)
+    await expect(response.json()).resolves.toMatchObject({
+      status: 'down',
+      checks: [
+        {
+          name: 'phoenix-service-auth',
+          status: 'down',
+          message: AUTH_ERROR.SERVICE_TOKEN_INVALID,
+        },
+      ],
+    })
+  })
+
   it.each([
-    ['SESSION_EXPIRED', 401],
-    ['SESSION_REVOKED', 401],
-    ['ACCOUNT_BLOCKED', 403],
-    ['SESSION_CONFLICT', 409],
-    ['RATE_LIMITED', 429],
+    [AUTH_ERROR.SESSION_EXPIRED, 401],
+    [AUTH_ERROR.SESSION_REVOKED, 401],
+    [AUTH_ERROR.ACCOUNT_BLOCKED, 403],
+    [AUTH_ERROR.SESSION_CONFLICT, 409],
+    [AUTH_ERROR.RATE_LIMITED, 429],
+    [AUTH_ERROR.SERVICE_TOKEN_INVALID, 401],
+    [AUTH_ERROR.SERVICE_SCOPE_FORBIDDEN, 403],
+    [AUTH_ERROR.SERVICE_JWKS_UNAVAILABLE, 503],
   ] as const)('maps Phoenix %s to HTTP %i', (code, status) => {
     expect(
       mapBrowserSessionError(new PhoenixBrowserSessionError(code, { code }), 'fallback'),
@@ -177,7 +229,7 @@ describe('Auth Hono application', () => {
         sessionAbsoluteExpiresAt: '2026-11-08T00:00:00.000Z',
       }),
       refreshBrowserSession: async () => {
-        throw new PhoenixBrowserSessionError('revoked', { code: 'SESSION_REVOKED' })
+        throw new PhoenixBrowserSessionError('revoked', { code: AUTH_ERROR.SESSION_REVOKED })
       },
     }).request('/api/auth/token/refresh', {
       method: 'POST',
@@ -189,8 +241,35 @@ describe('Auth Hono application', () => {
     })
 
     expect(response.status).toBe(401)
-    await expect(response.json()).resolves.toEqual({ code: 'SESSION_REVOKED' })
+    await expect(response.json()).resolves.toEqual({ code: AUTH_ERROR.SESSION_REVOKED })
     expect(response.headers.get('set-cookie')).toContain('Max-Age=0')
+  })
+
+  it.each([
+    [AUTH_ERROR.SERVICE_TOKEN_INVALID, 401],
+    [AUTH_ERROR.SERVICE_SCOPE_FORBIDDEN, 403],
+    [AUTH_ERROR.SERVICE_JWKS_UNAVAILABLE, 503],
+  ] as const)('preserves %s without clearing the Browser Session', async (code, status) => {
+    const response = await createApp({
+      readBrowserSession: async () => ({
+        browserSessionRef: 'bs_current',
+        sessionAbsoluteExpiresAt: '2026-11-08T00:00:00.000Z',
+      }),
+      refreshBrowserSession: async () => {
+        throw new PhoenixBrowserSessionError(code, { code })
+      },
+    }).request('/api/auth/token/refresh', {
+      method: 'POST',
+      headers: {
+        cookie: '__Host-groupher-auth.session-token=current-session',
+        origin: 'https://dash.groupher.com',
+        'x-groupher-csrf': '1',
+      },
+    })
+
+    expect(response.status).toBe(status)
+    await expect(response.json()).resolves.toEqual({ code })
+    expect(response.headers.get('set-cookie')).toBeNull()
   })
 
   it('returns 429 with Retry-After when refresh exceeds its bounded rate limit', async () => {
@@ -455,7 +534,9 @@ describe('Auth Hono application', () => {
     const linkOauthIdentity = vi.fn(async () => {
       linkAttempts += 1
       if (linkAttempts === 1) {
-        throw new PhoenixBrowserSessionError('Phoenix token expired.', { code: 'TOKEN_EXPIRED' })
+        throw new PhoenixBrowserSessionError('Phoenix token expired.', {
+          code: AUTH_ERROR.TOKEN_EXPIRED,
+        })
       }
       return []
     })

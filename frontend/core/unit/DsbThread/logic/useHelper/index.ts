@@ -6,7 +6,7 @@ type TRet = TTouch & TEdit
 /** Exposes helper state and actions through the shared React hook boundary. */
 export default function useHelper(): TRet {
   const { isChanged, anyChanged, mapArrayChanged } = useTouch()
-  const { edit, rollbackEdit, resetEdit, onSave } = useEdit()
+  const { edit, rollbackEdit, resetEdit, onSave, isPending, error } = useEdit()
 
   return {
     isChanged,
@@ -16,5 +16,7 @@ export default function useHelper(): TRet {
     rollbackEdit,
     resetEdit,
     onSave,
+    isPending,
+    error,
   }
 }

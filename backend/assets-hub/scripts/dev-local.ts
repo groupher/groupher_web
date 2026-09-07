@@ -11,12 +11,39 @@
 
 import { spawn, type ChildProcess } from 'node:child_process'
 import net from 'node:net'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+import dotenv from 'dotenv'
 
 type TProcessSpec = {
   args: string[]
   command: string
   name: string
   port: number
+}
+
+const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+dotenv.config({ path: path.join(packageRoot, '.env') })
+
+const requiredReadWorkerEnvironment = [
+  'PHOENIX_GRAPHQL_ENDPOINT',
+  'SERVICE_AUTH_CLIENT_ID',
+  'SERVICE_AUTH_CLIENT_SECRET',
+  'SERVICE_AUTH_ISSUER',
+  'SERVICE_AUTH_JWKS_URL',
+  'SERVICE_AUTH_TOKEN_ENDPOINT',
+] as const
+
+const missingReadWorkerEnvironment = requiredReadWorkerEnvironment.filter(
+  (name) => !process.env[name]?.trim(),
+)
+
+if (missingReadWorkerEnvironment.length > 0) {
+  console.error(
+    `Assets Hub local read worker is missing required environment: ${missingReadWorkerEnvironment.join(', ')}`,
+  )
+  process.exit(1)
 }
 
 const processes: TProcessSpec[] = [
@@ -96,7 +123,7 @@ if (occupiedPorts.length > 0) {
 
 for (const spec of processes) {
   const child = spawn(spec.command, spec.args, {
-    cwd: process.cwd(),
+    cwd: packageRoot,
     detached: process.platform !== 'win32',
     env: process.env,
     stdio: ['ignore', 'pipe', 'pipe'],

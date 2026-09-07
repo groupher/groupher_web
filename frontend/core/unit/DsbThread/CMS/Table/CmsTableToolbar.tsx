@@ -30,7 +30,7 @@ import Button from '~/ui/Buttons/Button'
 import Input from '~/ui/Input'
 import ConditionSelector from '~/unit/ConditionSelector'
 
-import useSalon, { cn, cnMerge } from './salon/filter_bar'
+import useSalon, { cn } from './salon/filter_bar'
 import type { TCmsTableToolbarProps } from './types'
 
 const DEFAULT_DATE_RANGE = (() => {
@@ -69,7 +69,7 @@ export default function CmsTableToolbar({
           iconOnly
           ghost={!multiSelectEnabled}
         >
-          <DabbleCheckSVG className={cnMerge(s.icon, multiSelectEnabled && s.checkActive)} />
+          <DabbleCheckSVG className={cn(s.icon, multiSelectEnabled && s.checkActive)} />
         </Button>
 
         {search && (
@@ -177,7 +177,7 @@ function CmsDateRangePicker({ label }: { label: string }) {
           {(segment) => (
             <DateSegment
               segment={segment}
-              className={cnMerge(
+              className={cn(
                 s.dateRangeSegment,
                 segment.type === 'literal' && s.dateRangeLiteral,
                 segment.isPlaceholder && s.dateRangeSegmentPlaceholder,
@@ -192,7 +192,7 @@ function CmsDateRangePicker({ label }: { label: string }) {
           {(segment) => (
             <DateSegment
               segment={segment}
-              className={cnMerge(
+              className={cn(
                 s.dateRangeSegment,
                 segment.type === 'literal' && s.dateRangeLiteral,
                 segment.isPlaceholder && s.dateRangeSegmentPlaceholder,
@@ -235,7 +235,7 @@ function CmsDateRangePicker({ label }: { label: string }) {
                   <CalendarCell
                     date={date}
                     className={({ isSelected, isSelectionStart, isSelectionEnd, isToday }) =>
-                      cnMerge(
+                      cn(
                         s.dateRangeCalendarCell,
                         (isSelected || isSelectionStart || isSelectionEnd) &&
                           s.dateRangeCalendarCellActive,

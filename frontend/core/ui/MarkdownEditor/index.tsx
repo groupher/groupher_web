@@ -9,15 +9,14 @@ import {
 } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 
-import { cnMerge } from '~/css'
 import { useAutoFocusTarget } from '~/hooks/useAutoFocus'
 import useTrans from '~/hooks/useTrans'
 import Markdown from '~/render/Markdown'
 import type { TSpace } from '~/spec'
 
 import { TAB } from './constant'
-import type { TFormat } from './constant'
 import useSalon, { cn } from './salon'
+import type { TFormat } from './spec'
 import type { TTab } from './spec'
 import useFormats from './useFormats'
 import { continueListOnEnter, safeValue } from './utils'
@@ -131,7 +130,7 @@ const MarkdownEditor: FC<TProps> = ({
           {formats.slice(0, 6).map((format) => (
             <button
               aria-label={format.hint}
-              className={cnMerge(s.toolButton, format.className)}
+              className={cn(s.toolButton, format.className)}
               disabled={disabled || tab === TAB.PREVIEW}
               key={format.hint}
               title={format.hint}
@@ -146,7 +145,7 @@ const MarkdownEditor: FC<TProps> = ({
             <div className={s.listGroup}>
               <button
                 aria-label={listTriggerFormat.hint}
-                className={cnMerge(s.toolButton, s.listTrigger, listTriggerFormat.className)}
+                className={cn(s.toolButton, s.listTrigger, listTriggerFormat.className)}
                 disabled={disabled || tab === TAB.PREVIEW}
                 title={listTriggerFormat.hint}
                 type='button'
@@ -159,7 +158,7 @@ const MarkdownEditor: FC<TProps> = ({
                 {listOptionFormats.map((format) => (
                   <button
                     aria-label={format.hint}
-                    className={cnMerge(s.toolButton, format.className)}
+                    className={cn(s.toolButton, format.className)}
                     disabled={disabled || tab === TAB.PREVIEW}
                     key={format.hint}
                     title={format.hint}

@@ -1,0 +1,9 @@
+# Wrangler local read-worker variables. Secrets stay in .env or the local secret store.
+ASSETS_PUBLIC_ENDPOINT=https://assets.groupher.localhost
+ENVIRONMENT=development
+PHOENIX_GRAPHQL_ENDPOINT=http://127.0.0.1:4001/graphiql
+SERVICE_AUTH_CLIENT_ID=assets-hub-development
+SERVICE_AUTH_CLIENT_SECRET=replace-with-the-local-service-secret
+SERVICE_AUTH_ISSUER=https://auth.groupher.localhost
+SERVICE_AUTH_JWKS_URL=http://127.0.0.1:3004/.well-known/jwks.json
+SERVICE_AUTH_TOKEN_ENDPOINT=http://127.0.0.1:3004/oauth2/token

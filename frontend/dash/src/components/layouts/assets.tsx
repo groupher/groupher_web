@@ -8,7 +8,7 @@ import useTrans from '~/hooks/useTrans'
 import type { TCrumbConfig } from '~/spec'
 import StorageUsageRing from '~/unit/DsbThread/AssetsHub/StorageUsageRing'
 import Portal from '~/unit/DsbThread/Portal'
-import useSalon, { cnMerge } from '~/unit/DsbThread/salon'
+import useSalon, { cn } from '~/unit/DsbThread/salon'
 
 const seg = DSB_ROUTE.ASSETS
 const CRUMB_CONFIG = {
@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const crumbItems = useDsbCrumbItems(CRUMB_CONFIG)
 
   return (
-    <div className={cnMerge(s.content, 'w-full pl-24 pr-10')}>
+    <div className={cn(s.content, 'w-full pl-24 pr-10')}>
       <Portal
         title={t('dsb.menu.assets')}
         desc={t('dsb.covers.item.assets.desc')}

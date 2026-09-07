@@ -10,7 +10,11 @@ import type {
   TServiceStartPolicy,
   TTechnologyStack,
 } from '../shared/contracts.ts'
-import { LOCAL_SERVICE_ENDPOINTS, LOCAL_SERVICE_GRAPHQL_ENDPOINTS } from './service-endpoints.ts'
+import {
+  LOCAL_SERVICE_AUTH_ISSUER,
+  LOCAL_SERVICE_ENDPOINTS,
+  LOCAL_SERVICE_GRAPHQL_ENDPOINTS,
+} from './service-endpoints.ts'
 
 export type TServiceConfigDefinition =
   | {
@@ -30,6 +34,13 @@ export type TServiceConfigDefinition =
       environmentKeys: readonly string[]
     }
 
+export type TServiceStartupCheck = {
+  healthCheckName: string
+  id: string
+  label: string
+  url: string
+}
+
 export type TServiceDefinition = {
   id: string
   name: string
@@ -41,6 +52,10 @@ export type TServiceDefinition = {
   command?: string
   args?: string[]
   env?: Record<string, string>
+  envFallback?: {
+    file: string
+    keys: readonly string[]
+  }
   config?: TServiceConfigDefinition
   port?: number
   url?: string
@@ -64,6 +79,7 @@ export type TServiceDefinition = {
   browserMetrics?: boolean
   browserMetricOrigins?: readonly string[]
   startPolicy?: Partial<TServiceStartPolicy>
+  startupChecks?: readonly TServiceStartupCheck[]
 }
 
 export const REPO_ROOT = fileURLToPath(new URL('../../../../', import.meta.url))
@@ -106,6 +122,15 @@ const COMMUNITY_CHAIN_POLICY = {
   requiredDependencies: ['phoenix'],
   optionalDependencies: [],
 } satisfies TServiceStartPolicy
+
+const SERVICE_AUTH_STARTUP_CHECKS = [
+  {
+    healthCheckName: 'phoenix-service-auth',
+    id: 'service-auth-contract',
+    label: 'Auth to Phoenix Service Identity contract',
+    url: `${LOCAL_SERVICE_ENDPOINTS.auth}/health/service-auth`,
+  },
+] as const satisfies readonly TServiceStartupCheck[]
 
 export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
   {
@@ -162,7 +187,8 @@ export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
       AUTH_URL: 'https://auth.groupher.localhost',
       PHOENIX_GRAPHQL_ENDPOINT: LOCAL_SERVICE_GRAPHQL_ENDPOINTS.phoenix,
       AUTH_COOKIE_DOMAIN: '.groupher.localhost',
-      SERVICE_AUTH_ISSUER: LOCAL_SERVICE_ENDPOINTS.auth,
+      DEV_HUB_SERVICE_AUTH_PROBE: 'true',
+      SERVICE_AUTH_ISSUER: LOCAL_SERVICE_AUTH_ISSUER,
       SERVICE_AUTH_JWKS_URL: `${LOCAL_SERVICE_ENDPOINTS.auth}/.well-known/jwks.json`,
       SERVICE_AUTH_TOKEN_ENDPOINT: `${LOCAL_SERVICE_ENDPOINTS.auth}/oauth2/token`,
     },
@@ -244,7 +270,7 @@ export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
       NEXT_PUBLIC_ASSETS_HUB_ENDPOINT: 'https://assets-hub.groupher.localhost',
       NEXT_PUBLIC_ASSETS_HUB_READ_ENDPOINT: 'https://assets.groupher.localhost',
       CONTENT_IMPORT_APP_ENDPOINT: LOCAL_SERVICE_ENDPOINTS.contentImport,
-      SERVICE_AUTH_ISSUER: LOCAL_SERVICE_ENDPOINTS.auth,
+      SERVICE_AUTH_ISSUER: LOCAL_SERVICE_AUTH_ISSUER,
       SERVICE_AUTH_JWKS_URL: `${LOCAL_SERVICE_ENDPOINTS.auth}/.well-known/jwks.json`,
       SERVICE_AUTH_TOKEN_ENDPOINT: `${LOCAL_SERVICE_ENDPOINTS.auth}/oauth2/token`,
     },
@@ -256,6 +282,7 @@ export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
     portlessAppUrl: 'https://dash.groupher.localhost/home/overview',
     metrics: FRONTEND_METRICS,
     startPolicy: DASH_CHAIN_POLICY,
+    startupChecks: SERVICE_AUTH_STARTUP_CHECKS,
   },
   {
     id: 'apply',
@@ -284,6 +311,7 @@ export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
     browserMetricOrigins: ['http://groupher.localhost:3003', 'https://groupher.localhost'],
     metrics: FRONTEND_METRICS,
     startPolicy: APPLY_CHAIN_POLICY,
+    startupChecks: SERVICE_AUTH_STARTUP_CHECKS,
   },
   {
     id: 'inspire-me',
@@ -322,15 +350,22 @@ export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
       environment: 'mock',
     },
     command: 'make',
-    args: ['be.start'],
+    args: ['be.start.managed'],
     port: 4001,
     url: 'http://127.0.0.1:4001/health',
     portlessName: 'api',
     portlessUrl: 'https://api.groupher.localhost/health',
     env: {
-      SERVICE_AUTH_ISSUER: LOCAL_SERVICE_ENDPOINTS.auth,
+      ASSETS_HUB_BATCH_ENDPOINT: LOCAL_SERVICE_ENDPOINTS.assetsHubRead,
+      ASSETS_HUB_DELETE_ENDPOINT: LOCAL_SERVICE_ENDPOINTS.assetsHubRead,
+      ASSETS_PUBLIC_ENDPOINT: 'https://assets.groupher.localhost',
+      SERVICE_AUTH_ISSUER: LOCAL_SERVICE_AUTH_ISSUER,
       SERVICE_AUTH_JWKS_URL: `${LOCAL_SERVICE_ENDPOINTS.auth}/.well-known/jwks.json`,
       SERVICE_AUTH_TOKEN_ENDPOINT: `${LOCAL_SERVICE_ENDPOINTS.auth}/oauth2/token`,
+    },
+    envFallback: {
+      file: fromRoot('backend/api/.env.local'),
+      keys: ['SERVICE_AUTH_CLIENT_ID', 'SERVICE_AUTH_CLIENT_SECRET'],
     },
     metrics: BACKEND_METRICS,
   },
@@ -353,7 +388,7 @@ export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
       DOCUMENT_CONVERTER_APP_ENDPOINT: LOCAL_SERVICE_ENDPOINTS.documentConverter,
       PHOENIX_GRAPHQL_ENDPOINT: LOCAL_SERVICE_GRAPHQL_ENDPOINTS.phoenix,
       PORT: '8001',
-      SERVICE_AUTH_ISSUER: LOCAL_SERVICE_ENDPOINTS.auth,
+      SERVICE_AUTH_ISSUER: LOCAL_SERVICE_AUTH_ISSUER,
       SERVICE_AUTH_JWKS_URL: `${LOCAL_SERVICE_ENDPOINTS.auth}/.well-known/jwks.json`,
       SERVICE_AUTH_TOKEN_ENDPOINT: `${LOCAL_SERVICE_ENDPOINTS.auth}/oauth2/token`,
     },
@@ -386,7 +421,7 @@ export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
       DB_USERNAME: 'postgres',
       PHOENIX_GRAPHQL_ENDPOINT: LOCAL_SERVICE_GRAPHQL_ENDPOINTS.phoenix,
       PORT: '8003',
-      SERVICE_AUTH_ISSUER: LOCAL_SERVICE_ENDPOINTS.auth,
+      SERVICE_AUTH_ISSUER: LOCAL_SERVICE_AUTH_ISSUER,
       SERVICE_AUTH_JWKS_URL: `${LOCAL_SERVICE_ENDPOINTS.auth}/.well-known/jwks.json`,
       SERVICE_AUTH_TOKEN_ENDPOINT: `${LOCAL_SERVICE_ENDPOINTS.auth}/oauth2/token`,
     },
@@ -417,10 +452,12 @@ export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
     command: 'pnpm',
     args: ['run', 'dev:assets-hub'],
     env: {
+      ASSETS_HUB_BATCH_ENDPOINT: LOCAL_SERVICE_ENDPOINTS.assetsHubRead,
       ASSETS_HUB_CORS_ORIGIN:
         'http://localhost:3003,http://dash.groupher.localhost,https://dash.groupher.localhost,http://apply.groupher.localhost,https://apply.groupher.localhost,https://groupher.localhost',
+      PHOENIX_GRAPHQL_ENDPOINT: LOCAL_SERVICE_GRAPHQL_ENDPOINTS.phoenix,
       PORT: '8002',
-      SERVICE_AUTH_ISSUER: LOCAL_SERVICE_ENDPOINTS.auth,
+      SERVICE_AUTH_ISSUER: LOCAL_SERVICE_AUTH_ISSUER,
       SERVICE_AUTH_JWKS_URL: `${LOCAL_SERVICE_ENDPOINTS.auth}/.well-known/jwks.json`,
       SERVICE_AUTH_TOKEN_ENDPOINT: `${LOCAL_SERVICE_ENDPOINTS.auth}/oauth2/token`,
     },
@@ -442,7 +479,7 @@ export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
         id: 'read-worker',
         label: 'Read Worker',
         port: 8787,
-        url: 'http://127.0.0.1:8787/health',
+        url: 'http://127.0.0.1:8787/health/ready',
         appUrl: 'http://127.0.0.1:8787/',
         portlessName: 'assets',
         portlessUrl: 'https://assets.groupher.localhost/health',
@@ -450,6 +487,11 @@ export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
       },
     ],
     metrics: BACKEND_METRICS,
+    startPolicy: {
+      defaultMode: 'chain',
+      requiredDependencies: ['auth', 'phoenix'],
+      optionalDependencies: [],
+    },
   },
   {
     id: 'document-converter',

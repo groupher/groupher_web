@@ -19,6 +19,7 @@
     "@groupher/artiment-publisher": "workspace:*",
     "@groupher/contracts": "workspace:*",
     "@groupher/rich-editor": "0.0.35",
+    "@groupher/route-contract": "workspace:*",
     "@groupher/service": "workspace:*",
     "@hono/node-server": "^2.0.11",
     "@vercel/blob": "2.6.1",

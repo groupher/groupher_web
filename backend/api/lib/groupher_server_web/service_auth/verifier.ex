@@ -45,6 +45,7 @@ defmodule GroupherServerWeb.ServiceAuth.Verifier do
          token_id: claims["jti"]
        }}
     else
+      {:error, %GroupherServer.ErrorCat.Error{} = error} -> {:error, error}
       _ -> {:error, ErrorCat.invalid_service_token()}
     end
   end
@@ -60,14 +61,20 @@ defmodule GroupherServerWeb.ServiceAuth.Verifier do
   end
 
   defp signing_key(kid) do
-    with {:ok, keys} <- jwks(false),
-         nil <- Enum.find(keys, &(&1["kid"] == kid)),
-         {:ok, refreshed} <- jwks(true),
-         key when is_map(key) <- Enum.find(refreshed, &(&1["kid"] == kid)) do
-      {:ok, JOSE.JWK.from_map(key)}
-    else
-      key when is_map(key) -> {:ok, JOSE.JWK.from_map(key)}
-      _ -> {:error, ErrorCat.unknown_kid()}
+    with {:ok, keys} <- jwks(false) do
+      case Enum.find(keys, &(&1["kid"] == kid)) do
+        key when is_map(key) -> {:ok, JOSE.JWK.from_map(key)}
+        nil -> refresh_signing_key(kid)
+      end
+    end
+  end
+
+  defp refresh_signing_key(kid) do
+    with {:ok, keys} <- jwks(true) do
+      case Enum.find(keys, &(&1["kid"] == kid)) do
+        key when is_map(key) -> {:ok, JOSE.JWK.from_map(key)}
+        nil -> {:error, ErrorCat.unknown_kid()}
+      end
     end
   end
 

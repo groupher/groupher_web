@@ -2,7 +2,7 @@ import type { TRichEditorDiffResult, TRichEditorDiffValue } from '@groupher/rich
 import { type FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import TYPE from '~/const/type'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import useTrans from '~/hooks/useTrans'
 import ArrowSimpleSVG from '~/icons/ArrowSimple'
 import CloseLightSVG from '~/icons/CloseLight'
@@ -83,7 +83,7 @@ const RevisionDrawer: FC<TProps> = ({
       setRestoringId(revisionId)
 
       try {
-        await browserQuery(S.restoreDocDraftSnapshot, {
+        await browserGraphQLRequest(S.restoreDocDraftSnapshot, {
           community,
           id: docDraftId,
           snapshotId: revisionId,

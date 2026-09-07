@@ -3,6 +3,7 @@ import EVENT from '~/const/event'
 import TYPE from '~/const/type'
 import type { TArticle, TArticlePubSelector } from '~/spec'
 
+import { AUTH_DOM_EVENT } from './auth/constant'
 import PubSub from './pubsub'
 
 /**
@@ -30,7 +31,7 @@ export const logout = (): void => {
   send(EVENT.LOGOUT)
 
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new Event('groupher-auth:logout'))
+    window.dispatchEvent(new Event(AUTH_DOM_EVENT.LOGOUT))
   }
 }
 
@@ -39,13 +40,6 @@ export const logout = (): void => {
  *
  */
 export const closeDrawer = (type = ''): void => send(EVENT.DRAWER.CLOSE, { type })
-
-/**
- * Broadcasts optimistic upvote state for the currently viewed article.
- */
-export const upvoteArticle = (article: TArticle, viewerHasUpvoted): void => {
-  send(EVENT.UPVOTE_ARTICLE, { type: 'upvote_article', data: { article, viewerHasUpvoted } })
-}
 
 /**
  * Broadcasts a hydrated article payload to surfaces that mirror the viewer's

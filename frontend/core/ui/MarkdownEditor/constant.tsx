@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import CodePhosphorSVG from '~/icons/CodePhosphor'
 import LinkSVG from '~/icons/Link'
 import ListSVG from '~/icons/ListBullets'
@@ -9,39 +7,13 @@ import ListNumbersSVG from '~/icons/ListNumbers'
 import QuotesSVG from '~/icons/Quotes'
 import TextBSVG from '~/icons/TextB'
 import TextItalicSVG from '~/icons/TextItalic'
-import type { TTransKey } from '~/spec'
 
+import type { TFormatConfig } from './spec'
 import { applyLinePrefix, applyOrderedList, applyWrap } from './utils'
-import type { TSelectionUpdate } from './utils'
 
 export enum TAB {
   WRITE = 'write',
   PREVIEW = 'preview',
-}
-
-type TActionMeta = {
-  heading: string
-  bold: string
-  italic: string
-  quote: string
-  code: string
-  linkText: string
-  listItem: string
-  taskItem: string
-}
-
-export type TFormat = {
-  label: ReactNode
-  hint: string
-  action: (textarea: HTMLTextAreaElement) => TSelectionUpdate
-  className?: string
-}
-
-export type TFormatConfig = {
-  label: ReactNode
-  hintKey: TTransKey
-  action: (textarea: HTMLTextAreaElement, meta: TActionMeta) => TSelectionUpdate
-  className?: string
 }
 
 export const FORMAT_CONFIGS: TFormatConfig[] = [

@@ -9,12 +9,24 @@
  *     -> Phoenix asset state
  */
 
+import type {
+  TGeneratedImageManifestEntry,
+  TGeneratedImageUploadBatch,
+} from '@groupher/contracts/wallpaper'
 import {
   bearerToken,
   createServiceAuthVerifier,
   serviceTokenErrorStatus,
 } from '@groupher/service/auth'
 
+import {
+  signPayload,
+  verifyBatchCapability,
+  verifyPublishClaim,
+  verifyCapability,
+  type TGeneratedImageUploadCapability,
+} from './capability'
+import { GeneratedImageBatchDO } from './generated-batch-do'
 import {
   fetchAssetOriginInfo,
   PhoenixGraphQLError,
@@ -39,6 +51,14 @@ const corsHeaders = {
   'access-control-allow-origin': '*',
 }
 const startedAt = Date.now()
+const SERVICE_AUTH_CONTRACT_PROBE_REF = 'dev-hub-assets-service-auth-contract-probe'
+
+export const ASSETS_HUB_INTERNAL_SCOPE = {
+  assetDelete: 'assets:object:delete',
+  generatedBatchClaim: 'assets:generated-batch:claim',
+  generatedBatchCleanup: 'assets:generated-batch:cleanup',
+  generatedBatchRegister: 'assets:generated-batch:register',
+} as const
 
 const json = (input: unknown, init?: ResponseInit) =>
   new Response(JSON.stringify(input), {
@@ -56,9 +76,260 @@ const errorResponse = (
   headers: Record<string, string> = {},
 ) => json({ error: { code, message }, ok: false }, { headers, status })
 
+/** Keeps the retryable Phoenix probe failure distinct from invalid cleanup input. */
+export const generatedBatchCleanupHttpStatus = (message: string): 400 | 503 =>
+  message === 'GENERATED_IMAGE_BATCH_PUBLISH_STATUS_UNKNOWN' ? 503 : 400
+
 const parseJsonBody = async (request: Request) => request.json().catch(() => null)
 
-const authorizeInternalRequest = async (request: Request, env: Env): Promise<null | 401 | 403> => {
+const parseCapabilityBody = (body: unknown) => {
+  const capability = (body as { capability?: unknown } | null)?.capability
+  if (typeof capability !== 'string' || !capability.trim()) {
+    throw new Error('capability is required')
+  }
+  return capability
+}
+
+const batchStub = (env: Env, batchRef: string) => env.GENERATED_IMAGE_BATCHES.getByName(batchRef)
+
+const generatedBatchFromCapability = (capability: ReturnType<typeof verifyBatchCapability>) =>
+  ({
+    claim: null,
+    expectedVariants: capability.expectedVariants,
+    expiresAt: capability.expiresAt,
+    publicRef: capability.batchRef,
+    purpose: capability.purpose,
+    requestDigest: capability.requestDigest,
+    requestDigestVersion: capability.requestDigestVersion,
+  }) satisfies TGeneratedImageUploadBatch
+
+const handleGeneratedBatchCreate = async (request: Request, env: Env) => {
+  try {
+    const capability = verifyBatchCapability(parseCapabilityBody(await parseJsonBody(request)), env)
+    const batch = await batchStub(env, capability.batchRef).create(
+      generatedBatchFromCapability(capability),
+    )
+    return json({ ok: true, result: { batch } }, { headers: corsHeaders })
+  } catch (error) {
+    return errorResponse(
+      'generated_batch_create_failed',
+      error instanceof Error ? error.message : 'Generated image batch creation failed.',
+      400,
+      corsHeaders,
+    )
+  }
+}
+
+const handleGeneratedBatchAssetRegistration = async (
+  request: Request,
+  env: Env,
+  batchRef: string,
+) => {
+  const authErrorStatus = await authorizeInternalRequest(
+    request,
+    env,
+    ASSETS_HUB_INTERNAL_SCOPE.generatedBatchRegister,
+    ['service:assets-hub'],
+  )
+  if (authErrorStatus) {
+    return errorResponse(
+      authErrorStatus === 403 ? 'service_scope_forbidden' : 'service_auth_required',
+      authErrorStatus === 403
+        ? 'The service identity does not grant this operation.'
+        : 'A scoped service identity is required.',
+      authErrorStatus,
+    )
+  }
+
+  try {
+    const body = await parseJsonBody(request)
+    const capability = verifyCapability(parseCapabilityBody(body), env)
+    if (capability.purpose !== 'generated_image' || capability.batchRef !== batchRef) {
+      throw new Error('Generated image capability does not match batch')
+    }
+    const input = body as Partial<TGeneratedImageManifestEntry> | null
+    const entry: TGeneratedImageManifestEntry = {
+      assetPublicRef: capability.assetPublicRef,
+      candidateOwnerRef: capability.candidateOwnerRef,
+      checksum: typeof input?.checksum === 'string' ? input.checksum : '',
+      height: capability.declaredHeight,
+      mimeType: capability.declaredMimeType,
+      storageKey: typeof input?.storageKey === 'string' ? input.storageKey : '',
+      variantKey: capability.variantKey,
+      width: capability.declaredWidth,
+    }
+    if (input?.assetPublicRef && input.assetPublicRef !== entry.assetPublicRef) {
+      throw new Error('Generated image asset ref does not match capability')
+    }
+    if (input?.candidateOwnerRef && input.candidateOwnerRef !== entry.candidateOwnerRef) {
+      throw new Error('Generated image owner ref does not match capability')
+    }
+    await batchStub(env, batchRef).registerAsset(entry)
+    return json({ ok: true, result: { entry } }, { headers: corsHeaders })
+  } catch (error) {
+    return errorResponse(
+      'generated_batch_asset_registration_failed',
+      error instanceof Error ? error.message : 'Generated image asset registration failed.',
+      400,
+      corsHeaders,
+    )
+  }
+}
+
+const handleGeneratedBatchClaim = async (request: Request, env: Env, batchRef: string) => {
+  const authErrorStatus = await authorizeInternalRequest(
+    request,
+    env,
+    ASSETS_HUB_INTERNAL_SCOPE.generatedBatchClaim,
+  )
+  if (authErrorStatus) {
+    return errorResponse(
+      authErrorStatus === 403 ? 'service_scope_forbidden' : 'service_auth_required',
+      authErrorStatus === 403
+        ? 'The service identity does not grant this operation.'
+        : 'A scoped service identity is required.',
+      authErrorStatus,
+      corsHeaders,
+    )
+  }
+
+  try {
+    const body = (await parseJsonBody(request)) as { key?: unknown } | null
+    const key = typeof body?.key === 'string' ? body.key : ''
+    const stub = batchStub(env, batchRef)
+    const attempt = await stub.tryClaimForPublish(key)
+    if (!attempt.ok) throw new Error(attempt.error)
+    const result = attempt.value
+    const batch = await stub.snapshot()
+    if (!batch) throw new Error('GENERATED_IMAGE_BATCH_NOT_FOUND')
+    const capability = signPayload(
+      {
+        batchRef,
+        claimKey: result.claim.key,
+        expiresAt: result.claim.expiresAt,
+        manifest: result.manifest,
+        manifestDigest: result.manifestDigest,
+        policyVersion: env.ASSETS_HUB_BATCH_POLICY_VERSION || 'v1',
+        purpose: 'generated_image_publish',
+        requestDigest: batch.requestDigest,
+        requestDigestVersion: batch.requestDigestVersion,
+        signingKeyId: env.ASSETS_HUB_BATCH_SIGNING_KEY_ID || 'hmac-v1',
+      },
+      env,
+    )
+    return json(
+      {
+        ok: true,
+        result: {
+          capability,
+          claim: result.claim,
+          manifest: result.manifest,
+          manifestDigest: result.manifestDigest,
+        },
+      },
+      { headers: corsHeaders },
+    )
+  } catch (error) {
+    return errorResponse(
+      'generated_batch_claim_failed',
+      error instanceof Error ? error.message : 'Generated image batch claim failed.',
+      400,
+      corsHeaders,
+    )
+  }
+}
+
+const handleGeneratedBatchCancel = async (request: Request, env: Env, batchRef: string) => {
+  try {
+    const capability = verifyBatchCapability(parseCapabilityBody(await parseJsonBody(request)), env)
+    if (capability.batchRef !== batchRef)
+      throw new Error('Generated batch ref does not match capability')
+    const key = `${batchRef}:delete`
+    const stub = batchStub(env, batchRef)
+    await stub.claimForDelete(key)
+    await stub.deleteClaimed(key)
+    return json({ ok: true, result: { deleted: true } }, { headers: corsHeaders })
+  } catch (error) {
+    return errorResponse(
+      'generated_batch_cancel_failed',
+      error instanceof Error ? error.message : 'Generated image batch cancellation failed.',
+      400,
+      corsHeaders,
+    )
+  }
+}
+
+const handleGeneratedBatchCleanup = async (request: Request, env: Env, batchRef: string) => {
+  const authErrorStatus = await authorizeInternalRequest(
+    request,
+    env,
+    ASSETS_HUB_INTERNAL_SCOPE.generatedBatchCleanup,
+  )
+  if (authErrorStatus) {
+    return errorResponse(
+      authErrorStatus === 403 ? 'service_scope_forbidden' : 'service_auth_required',
+      authErrorStatus === 403
+        ? 'The service identity does not grant this operation.'
+        : 'A scoped service identity is required.',
+      authErrorStatus,
+      corsHeaders,
+    )
+  }
+
+  try {
+    const capability = parseCapabilityBody(await parseJsonBody(request))
+    const claim = verifyPublishClaim(capability, env)
+    if (claim.batchRef !== batchRef || !claim.claimKey) {
+      throw new Error('Generated publish claim does not match batch')
+    }
+    const attempt = await batchStub(env, batchRef).tryCleanupPublishClaim(claim.claimKey)
+    if (!attempt.ok) throw new Error(attempt.error)
+    return json({ ok: true, result: attempt.value }, { headers: corsHeaders })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Generated image batch cleanup failed.'
+    return errorResponse(
+      'generated_batch_cleanup_failed',
+      message,
+      generatedBatchCleanupHttpStatus(message),
+      corsHeaders,
+    )
+  }
+}
+
+const handleGeneratedBatchRequest = async (request: Request, env: Env) => {
+  const url = new URL(request.url)
+  if (request.method === 'OPTIONS') {
+    return new Response(null, {
+      headers: {
+        ...corsHeaders,
+        'access-control-allow-headers': 'authorization, content-type',
+        'access-control-allow-methods': 'OPTIONS, POST',
+      },
+      status: 204,
+    })
+  }
+  if (request.method !== 'POST')
+    return errorResponse('method_not_allowed', 'Method not allowed.', 405)
+  if (url.pathname === '/generated-batches') return handleGeneratedBatchCreate(request, env)
+
+  const assetMatch = url.pathname.match(/^\/generated-batches\/([^/]+)\/assets$/)
+  if (assetMatch) return handleGeneratedBatchAssetRegistration(request, env, assetMatch[1]!)
+  const claimMatch = url.pathname.match(/^\/generated-batches\/([^/]+)\/claim$/)
+  if (claimMatch) return handleGeneratedBatchClaim(request, env, claimMatch[1]!)
+  const cancelMatch = url.pathname.match(/^\/generated-batches\/([^/]+)\/cancel$/)
+  if (cancelMatch) return handleGeneratedBatchCancel(request, env, cancelMatch[1]!)
+  const cleanupMatch = url.pathname.match(/^\/generated-batches\/([^/]+)\/cleanup$/)
+  if (cleanupMatch) return handleGeneratedBatchCleanup(request, env, cleanupMatch[1]!)
+
+  return errorResponse('not_found', 'Not found.', 404)
+}
+
+const authorizeInternalRequest = async (
+  request: Request,
+  env: Env,
+  scope: string,
+  allowedSubjects: readonly string[] = ['service:phoenix'],
+): Promise<null | 401 | 403> => {
   const token = bearerToken(request.headers.get('authorization') || undefined)
   if (!token) return 401
   try {
@@ -67,8 +338,8 @@ const authorizeInternalRequest = async (request: Request, env: Env): Promise<nul
       issuer: env.SERVICE_AUTH_ISSUER || 'https://auth.groupher.com',
       jwksUrl: env.SERVICE_AUTH_JWKS_URL || 'https://auth.groupher.com/.well-known/jwks.json',
     })
-    const actor = await verifier.verify(token, 'assets:object:delete')
-    return actor.subject === 'service:phoenix' ? null : 403
+    const actor = await verifier.verify(token, scope)
+    return allowedSubjects.includes(actor.subject) ? null : 403
   } catch (error) {
     return serviceTokenErrorStatus(error)
   }
@@ -187,6 +458,64 @@ const originLookupFailed = (error: unknown) => {
   })
 }
 
+const healthResponse = ({
+  env,
+  checks = [],
+  status = 'ok',
+}: {
+  env: Env
+  checks?: Array<{
+    name: string
+    status: 'ok' | 'down'
+    latencyMs?: number
+    message?: string
+  }>
+  status?: 'ok' | 'down'
+}) =>
+  json(
+    {
+      schemaVersion: 'health.v1',
+      status,
+      service: 'assets-hub',
+      version: env.VERSION || 'dev',
+      environment: env.ENVIRONMENT || 'development',
+      timestamp: new Date().toISOString(),
+      uptimeMs: Date.now() - startedAt,
+      checks,
+    },
+    { status: status === 'down' ? 503 : 200 },
+  )
+
+const serviceAuthContractProbe = async (env: Env) => {
+  const startedAt = performance.now()
+
+  try {
+    const originInfo = await fetchAssetOriginInfo({
+      environment: env,
+      publicRef: SERVICE_AUTH_CONTRACT_PROBE_REF,
+    })
+
+    if (originInfo !== null) {
+      return {
+        latencyMs: Math.round(performance.now() - startedAt),
+        message: 'Phoenix unexpectedly returned an origin for the reserved asset reference.',
+        status: 'down' as const,
+      }
+    }
+
+    return {
+      latencyMs: Math.round(performance.now() - startedAt),
+      status: 'ok' as const,
+    }
+  } catch (error) {
+    return {
+      latencyMs: Math.round(performance.now() - startedAt),
+      message: error instanceof Error ? error.message : 'Assets service-auth contract failed.',
+      status: 'down' as const,
+    }
+  }
+}
+
 const serveAsset = async (request: Request, env: Env) => {
   const url = new URL(request.url)
   const assetPath = parseAssetPath(url.pathname)
@@ -227,7 +556,11 @@ const enqueueAssetDelete = async (request: Request, env: Env) => {
     })
   }
 
-  const authErrorStatus = await authorizeInternalRequest(request, env)
+  const authErrorStatus = await authorizeInternalRequest(
+    request,
+    env,
+    ASSETS_HUB_INTERNAL_SCOPE.assetDelete,
+  )
   if (authErrorStatus) {
     const forbidden = authErrorStatus === 403
     return errorResponse(
@@ -288,19 +621,24 @@ export default {
     const url = new URL(request.url)
 
     if (url.pathname === '/health') {
-      return json({
-        schemaVersion: 'health.v1',
-        status: 'ok',
-        service: 'assets-hub',
-        version: env.VERSION || 'dev',
-        environment: env.ENVIRONMENT || 'production',
-        timestamp: new Date().toISOString(),
-        uptimeMs: Date.now() - startedAt,
-        checks: [],
-      })
+      return healthResponse({ env })
+    }
+
+    if (url.pathname === '/health/ready') {
+      return serviceAuthContractProbe(env).then((check) =>
+        healthResponse({
+          env,
+          checks: [{ name: 'assets-service-auth', ...check }],
+          status: check.status,
+        }),
+      )
     }
 
     if (url.pathname === '/internal/assets/delete') return enqueueAssetDelete(request, env)
+
+    if (url.pathname === '/generated-batches' || url.pathname.startsWith('/generated-batches/')) {
+      return handleGeneratedBatchRequest(request, env)
+    }
 
     if (url.pathname.startsWith('/a/') && request.method === 'OPTIONS') {
       return new Response(null, {
@@ -329,3 +667,5 @@ export default {
     return consumeAssetDeletes(batch, env)
   },
 }
+
+export { GeneratedImageBatchDO }

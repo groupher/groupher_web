@@ -1,4 +1,4 @@
-import type { TDocFaqSaveZone } from '~/stores/dsb/spec'
+import type { TDocFaqSaveZone } from '~/spec'
 
 import type { TLinkDndTarget } from '../../../LinkEditor/Dnd/spec'
 

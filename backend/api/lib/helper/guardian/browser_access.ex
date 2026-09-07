@@ -16,11 +16,9 @@ defmodule Helper.Guardian.BrowserAccess do
   use Guardian, otp_app: :groupher_server
 
   alias GroupherServer.Accounts.Profiles.ErrorCat
+  alias GroupherServer.Auth.Contract, as: AuthContract
 
   @access_ttl_seconds 30 * 60
-  @issuer "groupher:phoenix"
-  @audience "phoenix:browser-api"
-  @token_type "browser_access"
 
   @impl true
   def subject_for_token(resource, _claims), do: {:ok, to_string(resource.id)}
@@ -39,9 +37,9 @@ defmodule Helper.Guardian.BrowserAccess do
       encode_and_sign(
         source,
         %{
-          "aud" => @audience,
+          "aud" => AuthContract.phoenix_token_audience(),
           "sid" => browser_session_ref,
-          "typ" => @token_type
+          "typ" => AuthContract.phoenix_token_type()
         },
         ttl: {ttl, :seconds}
       )
@@ -61,8 +59,10 @@ defmodule Helper.Guardian.BrowserAccess do
 
   @doc "Reports whether claims? according to `BrowserAccess`."
   def valid_claims?(claims) do
-    claims["iss"] == @issuer and claims["aud"] == @audience and
-      claims["typ"] == @token_type and is_binary(claims["sid"]) and claims["sid"] != ""
+    claims["iss"] == AuthContract.phoenix_token_issuer() and
+      claims["aud"] == AuthContract.phoenix_token_audience() and
+      claims["typ"] == AuthContract.phoenix_token_type() and is_binary(claims["sid"]) and
+      claims["sid"] != ""
   end
 
   @doc "Runs `expires_at` through the public `BrowserAccess` boundary."

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { circularAngleDistance, normalizeSignedAngle } from './angle'
+import { circularAngleDistance, normalizePersistedAngle, normalizeSignedAngle } from './angle'
 
 describe('normalizeSignedAngle', () => {
   it('keeps the editor angle model in the -180..180 range', () => {
@@ -32,5 +32,14 @@ describe('circularAngleDistance', () => {
 
   it('measures rounded decimal angles', () => {
     expect(circularAngleDistance(359.4, -0.4)).toBe(1)
+  })
+})
+
+describe('normalizePersistedAngle', () => {
+  it('converts signed editor angles into the backend range', () => {
+    expect(normalizePersistedAngle(-90)).toBe(270)
+    expect(normalizePersistedAngle(-180)).toBe(180)
+    expect(normalizePersistedAngle(359)).toBe(359)
+    expect(normalizePersistedAngle(360)).toBe(0)
   })
 })

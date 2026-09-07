@@ -25,11 +25,9 @@ vi.mock('../salon', () => ({
     wrapper: 'wrapper',
     select: 'select',
     layout: 'layout',
-    block: 'block',
-    blockActive: 'block-active',
+    block: () => 'block',
   }),
-  cnMerge: (...classes: Array<string | false | null | undefined>) =>
-    classes.filter(Boolean).join(' '),
+  cn: (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(' '),
 }))
 
 vi.mock('../TagItem', () => ({

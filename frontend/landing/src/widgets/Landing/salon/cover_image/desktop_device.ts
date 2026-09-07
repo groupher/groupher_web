@@ -1,11 +1,10 @@
-import THEME from '~/const/theme'
 import useTheme from '~/hooks/useTheme'
 import useTwBelt from '~/hooks/useTwBelt'
 
 import useBase from '..'
 
 export default function useSalon() {
-  const { theme, isLightTheme } = useTheme()
+  const { isLightTheme } = useTheme()
   const { cn, fg, bg, fill, shadow, br } = useTwBelt()
   const base = useBase()
 
@@ -14,8 +13,7 @@ export default function useSalon() {
 
     //
     background: cn(
-      'absolute h-full w-full top-0 will-change-transform overflow-hidden rounded-lg trans-all-200',
-      theme === THEME.DARK && 'brightness-75',
+      'absolute h-full w-full top-0 will-change-transform overflow-hidden rounded-lg trans-all-200 dark:brightness-75',
     ),
     // browser
     brower: cn('align-both w-full h-8 pl-4 rounded-md z-30', bg('cardAlpha')),

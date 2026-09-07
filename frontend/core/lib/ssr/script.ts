@@ -1,8 +1,16 @@
-import { LOCAL_THEME_KEY, THEME_FIRST_PAINT_STYLE_ID, THEME_MODE } from '~/const/theme'
-import { THEME_FIRST_PAINT_VAR_NAMES } from '~/const/theme-first-paint.generated'
+import { THEME_COOKIE_MAX_AGE, THEME_MODE, THEME_MODE_COOKIE } from '~/const/theme'
+import { THEME_COOKIE_CONFIG } from '~/lib/theme'
+import type { TThemeMode, TThemeName } from '~/spec'
 
-const serializeForInlineScript = (value: unknown): string =>
-  JSON.stringify(value).replace(/</g, '\\u003c')
+export type TThemeSeed = {
+  theme: TThemeName
+  themeMode: TThemeMode
+}
+
+export const PUBLIC_THEME_SEED: TThemeSeed = {
+  theme: THEME_MODE.LIGHT,
+  themeMode: THEME_MODE.SYSTEM,
+}
 
 const withTryCatch = (script: string): string => `
 (function() {
@@ -12,65 +20,61 @@ ${script}
 })();
 `
 
-/** Builds the browser script that resolves the theme before the first paint. */
-export const prePaintThemeDetectScript = () =>
-  withTryCatch(`    var stored = localStorage.getItem('${LOCAL_THEME_KEY}');
-    var theme = '${THEME_MODE.LIGHT}';
+const serializeForInlineScript = (value: unknown): string =>
+  JSON.stringify(value).replace(/</g, '\\u003c')
 
-    if (stored === '${THEME_MODE.DARK}' || stored === '${THEME_MODE.LIGHT}') {
-      theme = stored;
+/** Builds the browser script that resolves the theme before the first paint. */
+export const prePaintThemeDetectScript = (seed: TThemeSeed = PUBLIC_THEME_SEED) =>
+  withTryCatch(`    var cookieConfig = ${serializeForInlineScript(THEME_COOKIE_CONFIG)};
+    var mode = '${seed.themeMode}';
+    var theme = '${seed.theme}';
+    var cookieParts = document.cookie ? document.cookie.split(';') : [];
+    var readCookie = function(name) {
+      for (var i = 0; i < cookieParts.length; i += 1) {
+        var pair = cookieParts[i].trim().split('=');
+        if (pair.shift() === name) return decodeURIComponent(pair.join('='));
+      }
+    };
+    var storedMode = readCookie('${THEME_MODE_COOKIE}');
+
+    if (storedMode === '${THEME_MODE.LIGHT}' || storedMode === '${THEME_MODE.DARK}' || storedMode === '${THEME_MODE.SYSTEM}') {
+      mode = storedMode;
+    }
+
+    if (mode === '${THEME_MODE.SYSTEM}') {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? '${THEME_MODE.DARK}' : '${THEME_MODE.LIGHT}';
     } else {
-      var media = window.matchMedia('(prefers-color-scheme: dark)');
-      theme = media.matches ? '${THEME_MODE.DARK}' : '${THEME_MODE.LIGHT}';
+      theme = mode;
     }
 
     document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-theme-mode', mode);
     document.documentElement.style.colorScheme = theme;
+
+    var host = window.location.hostname;
+    var domain = cookieConfig.configuredDomain;
+    var domainRoot = domain ? domain.slice(1) : '';
+    var isConfiguredDomain = domain && (host === domainRoot || host.endsWith(domain));
+    if (!isConfiguredDomain) domain = '';
+    if (!domain) {
+      for (var i = 0; i < cookieConfig.defaultRules.length; i += 1) {
+        var rule = cookieConfig.defaultRules[i];
+        if (host === rule.host || host.endsWith('.' + rule.host)) {
+          domain = rule.domain;
+          break;
+        }
+      }
+    }
+    if (!domain && cookieConfig.warnOnUnknownHost && window.console) {
+      window.console.warn('[theme] No shared cookie domain configured for "' + host + '". Theme preference will remain host-only.');
+    }
+    var domainAttribute = domain ? '; Domain=' + domain : '';
+    var secureAttribute = window.location.protocol === 'https:' ? '; Secure' : '';
+    document.cookie = '${THEME_MODE_COOKIE}=' + mode + '; Path=/; Max-Age=${THEME_COOKIE_MAX_AGE}; SameSite=Lax' + domainAttribute + secureAttribute;
+  `)
+
+/** Seeds browser runtime globals required by shared code before hydration. */
+export const prePaintRuntimeSeedScript = (renderedAt: number) =>
+  withTryCatch(`    window.process = window.process || { env: {} };
+    window.__GROUPHER_INITIAL_NOW__ = ${renderedAt};
 `)
-
-/** Seeds the shared initial timestamp before React hydration starts. */
-export const prePaintInitTime = () =>
-  withTryCatch(`    window.__GROUPHER_INITIAL_NOW__ = Date.now();`)
-
-/** Captures resolved theme variables into a stable first-paint style element. */
-export const injectThemeFirstPaintVars = (): string => {
-  const names = serializeForInlineScript(THEME_FIRST_PAINT_VAR_NAMES)
-  const styleId = serializeForInlineScript(THEME_FIRST_PAINT_STYLE_ID)
-
-  return withTryCatch(`    var names = ${names};
-    var styleId = ${styleId};
-    var root = document.documentElement;
-    var style = document.getElementById(styleId);
-    var wasDisabled = false;
-
-    if (style) {
-      wasDisabled = style.disabled;
-      style.disabled = true;
-    }
-
-    var computed = getComputedStyle(root);
-    var css = ':root{';
-
-    for (var i = 0; i < names.length; i += 1) {
-      var name = names[i];
-      var value = computed.getPropertyValue(name).trim();
-      if (value) css += name + ':' + value + ' !important;';
-    }
-
-    css += '}';
-    if (style) style.disabled = wasDisabled;
-    if (css === ':root{}') {
-      if (style) style.remove();
-      return;
-    }
-
-    if (!style) {
-      style = document.createElement('style');
-      style.id = styleId;
-    }
-    if (!style.parentNode) document.head.appendChild(style);
-    style.textContent = css;
-`)
-}
-
-export const THEME_FIRST_PAINT_VARS_SCRIPT = injectThemeFirstPaintVars()

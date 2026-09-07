@@ -1,5 +1,5 @@
 import type { TEditFunc, TPostLayout } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { FIELD } from '../constant'
 import useHelper from './useHelper'
@@ -13,17 +13,17 @@ type TRet = {
 
 /** Exposes post state and actions through the shared React hook boundary. */
 export default function usePost(): TRet {
-  const dsb$ = useDsb()
-  const { isChanged, edit } = useHelper()
+  const dsb$ = useDsbEdit()
+  const { isChanged, edit, isPending } = useHelper()
 
-  const { postLayout, saving } = dsb$
+  const { postLayout } = dsb$
 
   const isTouched = isChanged(FIELD.POST_LAYOUT)
 
   return {
     edit,
     layout: postLayout,
-    saving,
+    saving: isPending,
     isTouched,
   }
 }

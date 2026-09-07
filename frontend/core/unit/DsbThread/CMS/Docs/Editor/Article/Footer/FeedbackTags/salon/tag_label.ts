@@ -1,3 +1,4 @@
+import { cn } from '~/css'
 import useTwBelt from '~/hooks/useTwBelt'
 
 type TProps = {
@@ -5,10 +6,10 @@ type TProps = {
 }
 
 export default function useSalon({ active }: TProps) {
-  const { cnMerge, bg, br, fg, selectable } = useTwBelt()
+  const { bg, br, fg, selectable } = useTwBelt()
 
   return {
-    wrapper: cnMerge(
+    wrapper: cn(
       'relative px-2.5 py-1 rounded-md text-xs border trans-all-100',
       bg('cardAlpha'),
       fg('digest'),

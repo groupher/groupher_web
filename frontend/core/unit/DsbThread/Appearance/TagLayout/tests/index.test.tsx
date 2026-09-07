@@ -25,14 +25,11 @@ vi.mock('../salon', () => ({
     wrapper: 'wrapper',
     select: 'select',
     layout: 'layout',
-    block: 'block',
-    blockActive: 'block-active',
+    block: ({ state }: { state: string }) => `block ${state}`,
     hashIcon: 'hash-icon',
     bar: 'bar',
     circle: 'circle',
   }),
-  cnMerge: (...classes: Array<string | false | null | undefined>) =>
-    classes.filter(Boolean).join(' '),
 }))
 
 vi.mock('../../../SectionLabel', () => ({

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { publicThreads } from '~/helper'
 import type { TCommunityThread } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { FIELD } from '../constant'
 import useHelper from './useHelper'
@@ -19,20 +19,20 @@ export type TRet = {
 
 /** Exposes link derived state and actions through the shared React hook boundary. */
 export default function useLinkDerived(): TRet {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
   const { isChanged } = useHelper()
   const community$ = useCommunity()
 
-  const { editingLink, enable, nameAlias } = dsb$
+  const { enable, nameAlias } = dsb$
 
   const threads = useMemo(() => {
     // @ts-expect-error
     return publicThreads(community$.threads, { enable, nameAlias })
   }, [community$, enable, nameAlias])
 
-  const isFooterLinksTouched = isChanged(FIELD.FOOTER_LINKS) && editingLink === null
-  const isFooterOnelineLinksTouched = isChanged(FIELD.FOOTER_ONELINE_LINKS) && editingLink === null
-  const isHeaderLinksTouched = isChanged(FIELD.HEADER_LINKS) && editingLink === null
+  const isFooterLinksTouched = isChanged(FIELD.FOOTER_LINKS)
+  const isFooterOnelineLinksTouched = isChanged(FIELD.FOOTER_ONELINE_LINKS)
+  const isHeaderLinksTouched = isChanged(FIELD.HEADER_LINKS)
 
   const isClassicLayoutTouched = isChanged(FIELD.HEADER_LAYOUT)
   const isFooterLayoutTouched = isChanged(FIELD.FOOTER_LAYOUT)

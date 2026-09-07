@@ -6,6 +6,8 @@ import { loadLocale } from '@dash/server/locale'
 import { validateCommunitySearch } from '@dash/utils/route-search'
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 
+import { communityQueries, dsbQueries, wallpaperQueries } from '~/query'
+
 export const Route = createFileRoute('/$community')({
   staleTime: 300_000,
   errorComponent: RouteError,
@@ -25,24 +27,44 @@ export const Route = createFileRoute('/$community')({
       })
     }
   },
-  loader: async ({ deps, params }) => {
+  loader: async ({ context, deps, params }) => {
     const [shell, locale] = await Promise.all([
       loadCommunity({ data: { community: params.community, ...deps } }),
       loadLocale({ data: { lang: deps.lang } }),
     ])
 
-    return { shell, locale }
+    await Promise.all([
+      context.queryClient.ensureQueryData(
+        communityQueries.config(params.community, () => shell.community),
+      ),
+      context.queryClient.ensureQueryData(
+        dsbQueries.config(params.community, () => shell.dashboard),
+      ),
+      context.queryClient.ensureQueryData(
+        wallpaperQueries.config(params.community, () => shell.wallpaper),
+      ),
+    ])
+
+    return {
+      shell: {
+        account: shell.account,
+        community: params.community,
+        demoMode: shell.demoMode,
+      },
+      head: {
+        title: shell.dashboard.ogTitle || shell.dashboard.title || 'Groupher Dash',
+        themeCssText: shell.themeCssText,
+      },
+      locale,
+    }
   },
   head: ({ loaderData }) => ({
     meta: [
       {
-        title:
-          loaderData?.shell.dashboard.ogTitle ||
-          loaderData?.shell.dashboard.title ||
-          'Groupher Dash',
+        title: loaderData?.head.title || 'Groupher Dash',
       },
     ],
-    styles: loaderData?.shell.themeCssText ? [{ children: loaderData.shell.themeCssText }] : [],
+    styles: loaderData?.head.themeCssText ? [{ children: loaderData.head.themeCssText }] : [],
   }),
   component: CommunityLayout,
 })
@@ -52,7 +74,7 @@ function CommunityLayout() {
 
   return (
     <CommunityBoundary
-      key={shell.community.slug}
+      key={shell.community}
       account={shell.account}
       community={shell.community}
       locale={locale}

@@ -4,20 +4,20 @@ import type { TCommunityThread } from '~/spec'
 import setupStore from '..'
 
 describe('stores/community', () => {
-  it('fills defaults and commits complex edge data', () => {
+  it('fills defaults and hydrates a confirmed Query projection', () => {
     const store = setupStore({ slug: 'home' })
 
     expect(store.slug).toBe('home')
     expect(store.title).toBe('')
     expect(store.threads).toEqual(COMMUNITY_THREADS)
-    expect(store.communityDigestInView).toBe(true)
 
     const threads: readonly TCommunityThread[] = [
       { slug: THREAD_PATH.POST, title: 'Posts', index: 2 },
       { slug: THREAD_PATH.ABOUT, title: 'About', index: 1 },
     ]
 
-    store.commit({
+    store.hydrate({
+      slug: 'home',
       title: 'Edge Community',
       // meta only supports count fields
       meta: {
@@ -27,7 +27,6 @@ describe('stores/community', () => {
       },
       threads,
       contributesDigest: [1, 2, 3],
-      viewerHasSubscribed: true,
       subscribersCount: 99999,
     })
 
@@ -38,6 +37,5 @@ describe('stores/community', () => {
       changelogsCount: 1,
     })
     expect(store.threads).toEqual(threads)
-    expect(store.viewerHasSubscribed).toBe(true)
   })
 })

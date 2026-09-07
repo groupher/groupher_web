@@ -2,10 +2,8 @@ import useTwBelt from '~/hooks/useTwBelt'
 
 import useBase from '../../../useDsbSalon'
 
-export { cnMerge } from '~/css'
-
 export default function useSalon() {
-  const { cn, cnMerge, br, bg, avatar } = useTwBelt()
+  const { cn, br, bg, avatar } = useTwBelt()
   const base = useBase()
 
   return {
@@ -16,8 +14,9 @@ export default function useSalon() {
     ),
 
     select: 'row-center wrap w-full -ml-2',
-    block: cn(base.card, 'w-72 h-24 scale-90'),
-    blockActive: base.cardActive,
+    block: base.cardRecipe('w-72 h-24 scale-90'),
+    fullBlock: cn(base.cardBase, 'w-72 h-24 scale-90'),
+    fullBlockActive: base.cardActiveDecoration,
     layout: 'column-align-both w-1/2',
     frame: 'column s-full',
     header: 'column gap-2',
@@ -25,16 +24,17 @@ export default function useSalon() {
     footer: 'row-center mt-auto justify-between',
     footerLeft: 'row-center gap-3',
     footerRight: 'row-center gap-2',
-    icon: cnMerge(base.icon, 'static size-5'),
-    commentIcon: cnMerge(base.icon, 'static size-3.5 mt-0.5'),
+    barBase: cn(base.barBase, 'static'),
+    icon: cn(base.iconBase, 'static size-5'),
+    commentIcon: cn(base.iconBase, 'static size-3.5 mt-0.5'),
     avatarList: 'row-center gap-1 mt-0.5 -ml-1.5',
-    userAvatar: cnMerge(base.bar, 'static size-4', avatar()),
-    bar: cnMerge(base.bar, 'static h-1.5 w-20 opacity-40'),
-    titleBar: 'w-16 opacity-30',
+    userAvatar: cn(base.barBase, 'static size-4', avatar()),
+    bar: cn(base.barBase, 'static h-1.5 w-20 opacity-40'),
+    titleBar: 'h-1.5 w-16 opacity-30',
     bodyBar: 'w-28 h-2.5 opacity-40',
-    sideBar: 'w-10 opacity-20',
-    simpleMetric: 'w-10 opacity-30',
-    tinyMetric: 'w-4 opacity-20',
-    circle: cnMerge(base.circle, 'opacity-40'),
+    sideBar: 'h-1.5 w-10 opacity-20',
+    simpleMetric: 'h-1.5 w-10 opacity-30',
+    tinyMetric: 'h-1.5 w-4 opacity-20',
+    circle: cn(base.circleBase, 'opacity-40'),
   }
 }

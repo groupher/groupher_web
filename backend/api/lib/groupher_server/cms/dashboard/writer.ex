@@ -5,7 +5,9 @@ defmodule GroupherServer.CMS.Dashboard.Writer do
   Dashboard updates arrive as GraphQL section payloads and are normalized before
   replacing the matching section on `CommunityDashboard`. Base-info writes are a
   special case because they must keep the community row and dashboard embed in
-  sync. Dashboard creation is ensured before the write; `sync_base_info` and
+  sync. The standalone `content_shadow` flag is persisted directly as a scalar
+  field; all embedded sections continue through `SectionPayload`. Dashboard
+  creation is ensured before the write; `sync_base_info` and
   `ORM.replace_dsb_section` then run inside one transaction.
 
       CMS resolver
@@ -26,6 +28,7 @@ defmodule GroupherServer.CMS.Dashboard.Writer do
   alias GroupherServer.CMS.Communities.ErrorCat
   alias GroupherServer.CMS.Dashboard.{BaseInfo, SectionPayload}
   alias GroupherServer.CMS.Model.{Community, CommunityDashboard}
+  alias GroupherServer.ErrorCat, as: GenericErrorCat
   alias Helper.{ORM, T, Transaction}
 
   @default_dashboard CommunityDashboard.default()
@@ -39,7 +42,8 @@ defmodule GroupherServer.CMS.Dashboard.Writer do
   def update(%Community{}, _args),
     do: {:error, ErrorCat.invalid_dsb_section()}
 
-  @spec update(Community.t(), atom(), map() | list()) :: T.domain_res(CommunityDashboard.t())
+  @spec update(Community.t(), atom(), map() | list() | boolean()) ::
+          T.domain_res(CommunityDashboard.t())
   @doc "Updates one explicit dashboard section, including base-info synchronization."
   def update(%Community{} = community, :base_info, args) do
     with {:ok, community_dashboard} <- ensure_exist(community),
@@ -65,7 +69,7 @@ defmodule GroupherServer.CMS.Dashboard.Writer do
     update_section(community, key, args)
   end
 
-  @spec update_section(Community.t(), atom(), map() | list()) ::
+  @spec update_section(Community.t(), atom(), map() | list() | boolean()) ::
           T.domain_res(CommunityDashboard.t())
   @doc "Ensures a dashboard exists and replaces one non-base-info section."
   def update_section(%Community{} = community, key, args) do
@@ -74,9 +78,19 @@ defmodule GroupherServer.CMS.Dashboard.Writer do
     end
   end
 
-  @spec replace_section(CommunityDashboard.t(), atom(), map() | list()) ::
+  @spec replace_section(CommunityDashboard.t(), atom(), map() | list() | boolean()) ::
           T.domain_res(CommunityDashboard.t())
   @doc "Normalizes and persists one section on an existing dashboard."
+  def replace_section(%CommunityDashboard{} = community_dashboard, :content_shadow, enabled)
+      when is_boolean(enabled) do
+    community_dashboard
+    |> Ecto.Changeset.change(%{content_shadow: enabled})
+    |> Repo.update()
+  end
+
+  def replace_section(%CommunityDashboard{}, :content_shadow, _args),
+    do: {:error, GenericErrorCat.custom("invalid dashboard content shadow")}
+
   def replace_section(%CommunityDashboard{} = community_dashboard, key, args) do
     with {:ok, section_payload} <- SectionPayload.prepare(community_dashboard, key, args) do
       ORM.replace_dsb_section(community_dashboard, key, section_payload)

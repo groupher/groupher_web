@@ -21,6 +21,6 @@ export default function useSalon() {
       primary('bg'),
     ),
     expandBtn: cn('size-6 shrink-0', hover('bg')),
-    expandIcon: cn('size-3 shrink-0 -rotate-90', fg('digest')),
+    expandIcon: cn('size-3 shrink-0 -rotate-90', hover('icon')),
   }
 }

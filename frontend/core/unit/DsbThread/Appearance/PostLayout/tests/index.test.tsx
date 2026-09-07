@@ -25,16 +25,15 @@ vi.mock('../salon', () => ({
     wrapper: 'wrapper',
     select: 'select',
     layout: 'layout',
-    block: 'block',
-    blockActive: 'block-active',
+    block: () => 'block',
+    masonryBlock: () => 'masonry-block',
     bar: 'bar',
     commentIcon: 'comment-icon',
     upvoteIcon: 'upvote-icon',
     userAvatar: 'user-avatar',
     upvoteBtn: 'upvote-btn',
   }),
-  cnMerge: (...classes: Array<string | false | null | undefined>) =>
-    classes.filter(Boolean).join(' '),
+  cn: (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(' '),
 }))
 
 vi.mock('../../../SectionLabel', () => ({

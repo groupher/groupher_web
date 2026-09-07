@@ -24,6 +24,8 @@ defmodule GroupherServer.Application do
   @spec start(any, any) :: {:error, any} | {:ok, pid}
   @doc "Starts the environment-appropriate Groupher supervision tree."
   def start(_type, _args) do
+    GroupherServer.CMS.Assets.Endpoints.validate!()
+
     children =
       [
         {Phoenix.PubSub, name: GroupherServer.PubSub},

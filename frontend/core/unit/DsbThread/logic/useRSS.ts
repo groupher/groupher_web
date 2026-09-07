@@ -1,19 +1,20 @@
 import type { VariablesOf } from '@graphql-typed-document-node/core'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { pick } from 'ramda'
 import { useEffect, useRef, useState } from 'react'
 
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import { graphqlQueryOptions } from '~/query'
 import type { TEditFunc, TRSSType } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { FIELD } from '../constant'
 import S from '../schema/integrations'
 import useHelper from './useHelper'
 
 type TUpdatePressConfigInput = NonNullable<VariablesOf<typeof S.updatePressConfig>['input']>
+type TUpdatePressConfigRequest = TUpdatePressConfigInput & { options: TOptions }
 
 type TOutputField = 'feedEnabled' | 'markdownEnabled' | 'llmsEnabled' | 'sitemapEnabled'
 type TOptions = Record<TOutputField, boolean> & { feedThreads: string[] }
@@ -41,12 +42,25 @@ const DEFAULT_OPTIONS: TOptions = {
 
 /** Exposes rss state and actions through the shared React hook boundary. */
 export default function useRSS(): TRet {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
   const { slug: community } = useCommunity()
   const { edit, isChanged } = useHelper()
-  const { data } = useQuery(graphqlQueryOptions(S.pressConfig, { community }))
+  const pressConfigQuery = graphqlQueryOptions(S.pressConfig, { community })
+  const { data } = useQuery(pressConfigQuery)
+  const queryClient = useQueryClient()
   const [options, setOptions] = useState<TOptions>(DEFAULT_OPTIONS)
   const original = useRef<TOptions>(DEFAULT_OPTIONS)
+
+  const updateMutation = useMutation({
+    mutationKey: ['dsb', 'press-config', community],
+    mutationFn: ({ options: _options, ...input }: TUpdatePressConfigRequest) =>
+      browserGraphQLRequest(S.updatePressConfig, { input }),
+    onSuccess: (_data, input) => {
+      original.current = input.options
+      dsb$.accept([FIELD.RSS_FEED_TYPE, FIELD.RSS_FEED_COUNT])
+      void queryClient.invalidateQueries({ queryKey: pressConfigQuery.queryKey })
+    },
+  })
 
   useEffect(() => {
     if (!data?.pressConfig) return
@@ -60,14 +74,14 @@ export default function useRSS(): TRet {
     }
     setOptions(next)
     original.current = next
-    dsb$.commit({
+    const confirmed = {
       rssFeedType: config.feedType.toLowerCase() as TRSSType,
       rssFeedCount: config.feedCount,
-      original: {
-        ...dsb$.original,
-        rssFeedType: config.feedType.toLowerCase() as TRSSType,
-        rssFeedCount: config.feedCount,
-      },
+    }
+    dsb$.reconcile({
+      fields: [FIELD.RSS_FEED_TYPE, FIELD.RSS_FEED_COUNT],
+      submitted: confirmed,
+      confirmed,
     })
   }, [data?.pressConfig])
 
@@ -77,34 +91,27 @@ export default function useRSS(): TRet {
     JSON.stringify(options) !== JSON.stringify(original.current)
 
   const rssOnSave = (): void => {
-    dsb$.commit({ saving: true })
-    void browserQuery(S.updatePressConfig, {
-      input: {
-        community,
-        feedType: dsb$.rssFeedType.toUpperCase() as TUpdatePressConfigInput['feedType'],
-        feedCount: dsb$.rssFeedCount,
-        ...options,
-        feedThreads: options.feedThreads.map(
-          (thread) => thread.toUpperCase() as TUpdatePressConfigInput['feedThreads'][number],
-        ),
-      },
+    updateMutation.mutate({
+      community,
+      feedType: dsb$.rssFeedType.toUpperCase() as TUpdatePressConfigInput['feedType'],
+      feedCount: dsb$.rssFeedCount,
+      options,
+      ...options,
+      feedThreads: options.feedThreads.map(
+        (thread) => thread.toUpperCase() as TUpdatePressConfigInput['feedThreads'][number],
+      ),
     })
-      .then(() => {
-        original.current = options
-        dsb$.markFieldsToOriginal([FIELD.RSS_FEED_TYPE, FIELD.RSS_FEED_COUNT])
-      })
-      .catch((error) => console.error('Failed to update Press config', error))
-      .finally(() => dsb$.commit({ saving: false }))
   }
 
   const rssOnCancel = (): void => {
     setOptions(original.current)
-    dsb$.rollbackFields([FIELD.RSS_FEED_TYPE, FIELD.RSS_FEED_COUNT])
+    dsb$.rollback([FIELD.RSS_FEED_TYPE, FIELD.RSS_FEED_COUNT])
   }
 
   return {
     edit,
-    ...pick(['rssFeedType', 'rssFeedCount', 'saving'], dsb$),
+    ...pick(['rssFeedType', 'rssFeedCount'], dsb$),
+    saving: updateMutation.isPending,
     ...options,
     isTouched,
     canSave: !options.feedEnabled || options.feedThreads.length > 0,

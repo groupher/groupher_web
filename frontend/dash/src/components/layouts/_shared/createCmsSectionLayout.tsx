@@ -8,7 +8,7 @@ import useDsbCrumbItems from '~/hooks/useDsbCrumbItems'
 import useTrans from '~/hooks/useTrans'
 import { mockUsers } from '~/mock'
 import type { TCrumbConfig, TTransKey } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import { useDsbShellUi } from '~/stores/dsbShellUi'
 import AdminList from '~/unit/DsbThread/AdminList'
 import Portal from '~/unit/DsbThread/Portal'
 
@@ -50,7 +50,7 @@ export default function createCmsSectionLayout({
   return function DsbCmsSectionLayout({ children }: { children: ReactNode }) {
     const { t } = useTrans()
     const crumbItems = useDsbCrumbItems(crumbConfig)
-    const { submenuCollapsed } = useDsb()
+    const { submenuCollapsed } = useDsbShellUi()
     const adminList = showAdmins ? mockUsers(4) : null
     const hasBreadcrumbs = !submenuCollapsed && crumbItems.length > 0
     const visibleBreadcrumbAddon = hasBreadcrumbs ? breadcrumbAddon : undefined

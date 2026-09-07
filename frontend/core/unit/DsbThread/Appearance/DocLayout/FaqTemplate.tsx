@@ -1,10 +1,11 @@
 import type { FC } from 'react'
 
 import { DOC_FAQ_LAYOUT } from '~/const/layout'
+import { cn } from '~/css'
 import useTrans from '~/hooks/useTrans'
 import type { TDocFAQLayout } from '~/spec'
 
-import useSalon, { cnMerge } from './salon/faq_template'
+import useSalon from './salon/faq_template'
 
 type TProps = {
   layout: TDocFAQLayout
@@ -48,9 +49,9 @@ const FaqTemplate: FC<TProps> = ({ layout }) => {
         <div className={s.collapseList}>
           {COLLAPSE_ITEMS.map((item) => (
             <div key={`${item.title}-${item.body1}-${item.body2}`} className={s.collapseItem}>
-              <div className={cnMerge(s.bar, item.title)} />
-              <div className={cnMerge(s.bar, 'h-1', item.body1, 'opacity-20')} />
-              <div className={cnMerge(s.bar, 'h-1', item.body2, 'opacity-20')} />
+              <div className={cn(s.barBase, 'h-1.5 opacity-40', item.title)} />
+              <div className={cn(s.barBase, 'h-1', item.body1, 'opacity-20')} />
+              <div className={cn(s.barBase, 'h-1', item.body2, 'opacity-20')} />
             </div>
           ))}
         </div>
@@ -64,16 +65,16 @@ const FaqTemplate: FC<TProps> = ({ layout }) => {
         <div className={s.leftRightMain}>
           <div className={s.leftRightSide}>
             <div className={s.faqTitle}>{t('dsb.appearance.doc.faq.label')}</div>
-            <div className={cnMerge(s.bar, 'h-1', 'w-16', 'opacity-20')} />
-            <div className={cnMerge(s.bar, 'h-1', 'w-12', 'opacity-10')} />
+            <div className={cn(s.barBase, 'h-1 w-16 opacity-20')} />
+            <div className={cn(s.barBase, 'h-1 w-12 opacity-10')} />
           </div>
 
           <div className={s.leftRightList}>
             {LEFT_RIGHT_ITEMS.map((item) => (
               <div key={`${item.title}-${item.body1}-${item.body2}`} className={s.leftRightItem}>
-                <div className={cnMerge(s.bar, item.title)} />
-                <div className={cnMerge(s.bar, 'h-1', item.body1, 'opacity-20')} />
-                <div className={cnMerge(s.bar, 'h-1', item.body2, 'opacity-20')} />
+                <div className={cn(s.barBase, 'h-1.5 opacity-40', item.title)} />
+                <div className={cn(s.barBase, 'h-1', item.body1, 'opacity-20')} />
+                <div className={cn(s.barBase, 'h-1', item.body2, 'opacity-20')} />
               </div>
             ))}
           </div>
@@ -93,9 +94,9 @@ const FaqTemplate: FC<TProps> = ({ layout }) => {
           <div key={row.map((item) => item.title).join('|')} className={s.flatRow}>
             {row.map((item) => (
               <div key={`${item.title}-${item.body1}-${item.body2}`} className={s.flatBox}>
-                <div className={cnMerge(s.bar, item.title)} />
-                <div className={cnMerge(s.bar, 'h-1', item.body1, 'opacity-20')} />
-                <div className={cnMerge(s.bar, 'h-1', item.body2, 'opacity-20')} />
+                <div className={cn(s.barBase, 'h-1.5 opacity-40', item.title)} />
+                <div className={cn(s.barBase, 'h-1', item.body1, 'opacity-20')} />
+                <div className={cn(s.barBase, 'h-1', item.body2, 'opacity-20')} />
               </div>
             ))}
           </div>

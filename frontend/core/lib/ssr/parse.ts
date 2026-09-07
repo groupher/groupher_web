@@ -2,21 +2,33 @@ import { includes, reject } from 'ramda'
 
 import { INIT_KANBAN_BOARDS, normalizeKanbanBoards } from '~/const/dashboard'
 import { BUILTIN_ALIAS } from '~/const/name'
+import { FIELDS } from '~/constant/dsb-fields'
 import { removeEmptyValuesFromObject } from '~/helper'
+import { decodeWallpaperSettings } from '~/lib/wallpaperSettingsCodec'
+import type { TWallpaperSettingsTransport } from '~/lib/wallpaperSettingsCodec'
 import type { TCommunity, TNameAlias, TParseDashboard, TParsedWallpaper } from '~/spec'
-import { FIELDS } from '~/stores/dsb/constant'
+import type { TWallpaperThemeState } from '~/stores/wallpaper/spec'
 
 /** Parses wallpaper into the canonical frontend shared representation. */
 export const parseWallpaper = (community: TCommunity): TParsedWallpaper => {
   if (!community) return {}
 
   const { dashboard } = community
-  const { wallpaper } = dashboard
+  if (!dashboard) return {}
+  const { wallpaper, wallpaperSettings } = dashboard
+  const decodeTheme = (value: unknown): Partial<TWallpaperThemeState> | undefined => {
+    if (!value) return undefined
+    const decoded = decodeWallpaperSettings(value as TWallpaperSettingsTransport)
+    return decoded.type === 'none' ? { type: decoded.type } : decoded
+  }
 
   return {
-    ...wallpaper,
+    light: decodeTheme(wallpaperSettings?.light),
+    dark: decodeTheme(wallpaperSettings?.dark),
+    wallpaper: wallpaper ?? null,
     initWallpaper: {
-      ...wallpaper,
+      light: decodeTheme(wallpaperSettings?.light),
+      dark: decodeTheme(wallpaperSettings?.dark),
     },
   }
 }
@@ -60,6 +72,7 @@ export const parseDashboard = (community: TCommunity): TParseDashboard => {
     mediaReports,
     thirdPartyAnalytics,
     enabledThirdPartyAnalytics,
+    contentShadow,
   } = dashboard
   const fieldsObj = removeEmptyValuesFromObject({
     enable,
@@ -74,9 +87,14 @@ export const parseDashboard = (community: TCommunity): TParseDashboard => {
     footerLinks,
     footerOnelineLinks,
     moderators,
-    mediaReports,
+    mediaReports: (mediaReports || []).map((item, index) => ({
+      ...item,
+      editUrl: item.url,
+      index: item.index ?? index,
+    })),
     thirdPartyAnalytics,
     enabledThirdPartyAnalytics,
+    contentShadow: contentShadow as boolean | undefined,
   }) as Partial<TParseDashboard>
 
   if (layout?.kanbanBoards?.length) {

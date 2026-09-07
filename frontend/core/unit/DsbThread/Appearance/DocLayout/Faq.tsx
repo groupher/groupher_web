@@ -7,7 +7,7 @@ import useDoc from '../../logic/useDoc'
 import SavingBar from '../../SavingBar'
 import SectionLabel from '../../SectionLabel'
 import FaqTemplate from './FaqTemplate'
-import useSalon, { cn } from './salon'
+import useSalon from './salon'
 
 export default function DocFaqLayout() {
   const s = useSalon()
@@ -30,7 +30,11 @@ export default function DocFaqLayout() {
           aria-pressed={docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE}
           onClick={() => edit(DOC_FAQ_LAYOUT.COLLAPSE, FIELD.DOC_FAQ_LAYOUT)}
         >
-          <div className={cn(s.block, docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE && s.blockActive)}>
+          <div
+            className={s.block({
+              state: docFaqLayout === DOC_FAQ_LAYOUT.COLLAPSE ? 'active' : 'idle',
+            })}
+          >
             <FaqTemplate layout={DOC_FAQ_LAYOUT.COLLAPSE} />
           </div>
           <CheckLabel
@@ -45,7 +49,9 @@ export default function DocFaqLayout() {
           aria-pressed={docFaqLayout === DOC_FAQ_LAYOUT.FLAT}
           onClick={() => edit(DOC_FAQ_LAYOUT.FLAT, FIELD.DOC_FAQ_LAYOUT)}
         >
-          <div className={cn(s.block, docFaqLayout === DOC_FAQ_LAYOUT.FLAT && s.blockActive)}>
+          <div
+            className={s.block({ state: docFaqLayout === DOC_FAQ_LAYOUT.FLAT ? 'active' : 'idle' })}
+          >
             <FaqTemplate layout={DOC_FAQ_LAYOUT.FLAT} />
           </div>
           <CheckLabel
@@ -60,7 +66,11 @@ export default function DocFaqLayout() {
           aria-pressed={docFaqLayout === DOC_FAQ_LAYOUT.LEFT_RIGHT}
           onClick={() => edit(DOC_FAQ_LAYOUT.LEFT_RIGHT, FIELD.DOC_FAQ_LAYOUT)}
         >
-          <div className={cn(s.block, docFaqLayout === DOC_FAQ_LAYOUT.LEFT_RIGHT && s.blockActive)}>
+          <div
+            className={s.block({
+              state: docFaqLayout === DOC_FAQ_LAYOUT.LEFT_RIGHT ? 'active' : 'idle',
+            })}
+          >
             <FaqTemplate layout={DOC_FAQ_LAYOUT.LEFT_RIGHT} />
           </div>
           <CheckLabel

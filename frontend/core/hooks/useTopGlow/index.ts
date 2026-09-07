@@ -8,16 +8,15 @@ import useMetric from '~/hooks/useMetric'
 import useTheme from '~/hooks/useTheme'
 import useThemePreset from '~/hooks/useThemePreset'
 import type { TResolvedThemePreset, TTopGlow } from '~/spec'
-import { pickWallpaperThemeState } from '~/stores/wallpaper/helper'
-import useWallpaperDomain from '~/stores/wallpaper/hooks'
+import useStaticWallpaper from '~/stores/staticWallpaper/hooks'
 
 const LANDING_GLOW_OPACITY = 65
 
 /** Exposes top glow state and actions through the shared React hook boundary. */
 export default function useTopGlow(): TTopGlow {
-  const wallpaper = useWallpaperDomain()
   const { theme, isLightTheme } = useTheme()
-  const { source } = pickWallpaperThemeState(wallpaper, !isLightTheme)
+  const publishedWallpaper = useStaticWallpaper()
+  const source = isLightTheme ? publishedWallpaper?.lightSource : publishedWallpaper?.darkSource
   const { themePreset, themeTokens } = useThemePreset()
   const tokens = themeTokens as Partial<TResolvedThemePreset>
   const activeTokens = tokens[theme]

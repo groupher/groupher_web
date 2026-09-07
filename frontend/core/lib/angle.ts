@@ -13,6 +13,17 @@ export const normalizeSignedAngle = (angle: number): number => {
 }
 
 /**
+ * Normalizes an angle for persistence into the backend's 0..359 degree range.
+ *
+ * The editor intentionally keeps signed angles for a continuous wheel UI, but
+ * persisted wallpaper recipes use an unsigned canonical representation.
+ */
+export const normalizePersistedAngle = (angle: number): number => {
+  const rounded = Math.round(angle)
+  return ((rounded % 360) + 360) % 360
+}
+
+/**
  * Returns the shortest distance between two circular angles.
  */
 export const circularAngleDistance = (angle: number, target: number): number => {

@@ -1,7 +1,8 @@
 import { COLOR } from '~/const/colors'
 import useTwBelt from '~/hooks/useTwBelt'
 
-import { TITLE_STAGE_VIEW, type TTitleStageView } from '../constant'
+import { TITLE_STAGE_VIEW } from '../constant'
+import type { TTitleStageView } from '../spec'
 
 type TArgs = {
   view: TTitleStageView

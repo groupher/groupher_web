@@ -48,7 +48,7 @@ vi.mock('../salon/boards', () => ({
   default: () => ({
     select: 'select',
     layout: 'layout',
-    block: 'block',
+    block: () => 'block',
   }),
 }))
 

@@ -15,9 +15,8 @@ vi.mock('~/hooks/useTrans', () => ({
   }),
 }))
 
-vi.mock('~/stores/dsb/hooks', () => ({ default: () => ({ saving: false }) }))
 vi.mock('../logic/useHelper', () => ({
-  default: () => ({ onSave: vi.fn(), rollbackEdit: vi.fn() }),
+  default: () => ({ onSave: vi.fn(), rollbackEdit: vi.fn(), isPending: false }),
 }))
 vi.mock('~/icons/Back', () => ({ default: () => <span data-testid='revert-icon' /> }))
 vi.mock('~/icons/Save', () => ({ default: () => <span data-testid='save-icon' /> }))
@@ -26,14 +25,22 @@ vi.mock('~/ui/Buttons/Button', () => ({
     ariaLabel,
     children,
     disabled,
+    loading,
     onClick,
   }: {
     ariaLabel?: string
     children: ReactNode
     disabled?: boolean
+    loading?: boolean
     onClick?: () => void
   }) => (
-    <button type='button' aria-label={ariaLabel} disabled={disabled} onClick={onClick}>
+    <button
+      type='button'
+      aria-label={ariaLabel}
+      aria-busy={loading}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {children}
     </button>
   ),
@@ -78,5 +85,12 @@ describe('SavingBar views', () => {
     expect(screen.getByText('Save new order')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
     expect(screen.queryByTestId('revert-icon')).not.toBeInTheDocument()
+  })
+
+  it('shows save loading state and hides cancel while saving', () => {
+    render(<SavingBar isTouched loading />)
+
+    expect(screen.getByRole('button', { name: 'Save' })).toHaveAttribute('aria-busy', 'true')
+    expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument()
   })
 })

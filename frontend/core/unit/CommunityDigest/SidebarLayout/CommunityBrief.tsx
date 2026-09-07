@@ -17,11 +17,9 @@ export default function CommunityBrief() {
   const s = useSalon()
 
   const navigate = useNavigate()
-  const { logo, slug, title, desc, dashboard } = useCommunity()
+  const { logo, slug, title, desc, homepage } = useCommunity()
   const activeThread = useViewingThread()
   const { communityLayout, brandLayout } = useLayout()
-
-  const { baseInfo } = dashboard
 
   return (
     <div className={s.wrapper}>
@@ -45,13 +43,13 @@ export default function CommunityBrief() {
         </ArrowButton>
       )}
 
-      {baseInfo.homepage && (
+      {homepage && (
         <div className={s.homeLink}>
           <div className={s.linkIconBox}>
             <LinkSVG className={s.linkIcon} />
           </div>
-          <Link href={baseInfo.homepage} navigation='document' className={s.link}>
-            {prettyURL(baseInfo.homepage)}
+          <Link href={homepage} navigation='document' className={s.link}>
+            {prettyURL(homepage)}
           </Link>
         </div>
       )}

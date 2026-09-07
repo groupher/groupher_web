@@ -7,7 +7,7 @@ import { mockUsers } from '~/mock'
 import type { TCrumbConfig } from '~/spec'
 import AdminList from '~/unit/DsbThread/AdminList'
 import Portal from '~/unit/DsbThread/Portal'
-import useSalon, { cnMerge } from '~/unit/DsbThread/salon'
+import useSalon, { cn } from '~/unit/DsbThread/salon'
 
 const seg = DSB_ROUTE.COMMUNITIES
 const CRUMB_CONFIG = {
@@ -25,7 +25,7 @@ const DashboardPostPage = ({ children }) => {
   const adminList = mockUsers(4)
 
   return (
-    <div className={cnMerge(s.content, 'w-full pl-10')}>
+    <div className={cn(s.content, 'w-full pl-10')}>
       <Portal
         title={t('dsb.portal.communities.title')}
         desc={t('dsb.portal.communities.desc')}

@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
 import SIZE from '~/const/size'
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 import type { TSpace, TUser } from '~/spec'
 
 import AvatarItem from './AvatarItem'
@@ -82,7 +82,7 @@ const Facepile: FC<TProps> = ({
   }
 
   return (
-    <ul className={cnMerge(s.wrapper, classNames)}>
+    <ul className={cn(s.wrapper, classNames)}>
       {visibleUsers.map(({ key, user }, index) => (
         <AvatarItem
           key={key}

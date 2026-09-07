@@ -283,6 +283,8 @@ defmodule GroupherServer.CMS.Dashboard.Fields do
     [
       [:type, :string, @default_wallpaper_type],
       [:source, :string, @default_wallpaper_source],
+      [:asset_public_ref, :string, nil],
+      [:static_asset_public_ref, :string, nil],
       [
         :pattern,
         :map,
@@ -305,7 +307,6 @@ defmodule GroupherServer.CMS.Dashboard.Fields do
           "spread" => 52
         }
       ],
-      [:content_shadow, :map, %{"enabled" => false}],
       [
         :effect,
         :map,

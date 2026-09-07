@@ -29,6 +29,7 @@ defmodule GroupherServerWeb.Context do
   alias GroupherServer.Accounts.Model.User
   alias GroupherServer.Accounts.Profiles.BrowserSessions
   alias GroupherServer.Accounts.Profiles.ErrorCat, as: ProfileErrorCat
+  alias GroupherServer.Auth.Contract, as: AuthContract
   alias GroupherServerWeb.ServiceAuth.Verifier
   alias Helper.{Guardian, ORM}
   alias Helper.Guardian.BrowserAccess
@@ -67,8 +68,8 @@ defmodule GroupherServerWeb.Context do
           |> Map.put(:service_actor, actor)
           |> maybe_put_delegated_user(conn)
 
-        {:error, _reason} ->
-          Map.put(context, :auth_failure, "SERVICE_TOKEN_INVALID")
+        {:error, reason} ->
+          Map.put(context, :service_auth_failure, service_auth_failure_code(reason))
       end
     else
       authorize_user_context(context, credential)
@@ -83,6 +84,11 @@ defmodule GroupherServerWeb.Context do
   end
 
   defp maybe_bind_delegated_actor(context), do: context
+
+  defp service_auth_failure_code(%GroupherServer.ErrorCat.Error{reason: :jwks_unavailable}),
+    do: AuthContract.service_jwks_unavailable()
+
+  defp service_auth_failure_code(_reason), do: AuthContract.service_token_invalid()
 
   defp maybe_put_test_service_actor(context, conn) do
     if @allow_test_service_auth and
@@ -139,7 +145,11 @@ defmodule GroupherServerWeb.Context do
   end
 
   defp maybe_put_browser_auth_failure(context, {:browser, _token}, reason) do
-    code = if reason == :token_expired, do: "TOKEN_EXPIRED", else: "TOKEN_INVALID"
+    code =
+      if reason == :token_expired,
+        do: AuthContract.token_expired(),
+        else: AuthContract.token_invalid()
+
     Map.put(context, :auth_failure, code)
   end
 

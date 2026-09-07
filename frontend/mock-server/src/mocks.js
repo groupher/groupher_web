@@ -37,6 +37,12 @@ const WALLPAPER_PATTERN_TONE = {
 
 const DEFAULT_WALLPAPER_SOURCE = 'amber_mauve'
 const DEFAULT_WALLPAPER_PATTERN_ID = '01'
+const WALLPAPER_PROFILES = {
+  wide: { width: 1920, height: 1080 },
+  desktop: { width: 1440, height: 900 },
+  tablet: { width: 1024, height: 1366 },
+  phone: { width: 390, height: 844 },
+}
 
 const DEFAULT_THEME_TOKENS = {
   shared: {
@@ -145,9 +151,6 @@ const makeWallpaperTheme = (overrides = {}) => ({
     angle: 180,
     spread: 58,
   },
-  contentShadow: {
-    enabled: false,
-  },
   effect: {
     blurIntensity: 0,
     brightness: 100,
@@ -155,6 +158,45 @@ const makeWallpaperTheme = (overrides = {}) => ({
   },
   texture: { enabled: false, type: WALLPAPER_TEXTURE.NOISE, intensity: 0, params: {} },
   ...overrides,
+})
+
+const makeWallpaperSettings = (theme) => ({
+  settingsSchemaVersion: 1,
+  type: theme.type.toUpperCase(),
+  source: theme.source,
+  customWallpaper: null,
+  renderConfig: {
+    pattern: theme.pattern,
+    gradient: theme.gradient,
+    texture: theme.texture,
+    effect: theme.effect,
+  },
+})
+
+const makeWallpaperImage = (slug, theme, profile) => {
+  const { width, height } = WALLPAPER_PROFILES[profile]
+
+  return {
+    height,
+    url: `https://assets.groupher.com/mock/wallpaper/${slug}-${theme}-${profile}.webp`,
+    width,
+  }
+}
+
+const makePublishedWallpaperTheme = (slug, theme) =>
+  Object.fromEntries(
+    Object.keys(WALLPAPER_PROFILES).map((profile) => [
+      profile,
+      makeWallpaperImage(slug, theme, profile),
+    ]),
+  )
+
+const makePublishedWallpaper = (slug) => ({
+  version: 1,
+  light: makePublishedWallpaperTheme(slug, 'light'),
+  dark: makePublishedWallpaperTheme(slug, 'dark'),
+  lightSource: DEFAULT_WALLPAPER_SOURCE,
+  darkSource: DEFAULT_WALLPAPER_SOURCE,
 })
 
 const makeUser = (overrides = {}) => {
@@ -170,6 +212,18 @@ const makeUser = (overrides = {}) => {
 }
 
 const makeDashboard = (slug = 'home') => {
+  const lightWallpaper = makeWallpaperTheme()
+  const darkWallpaper = makeWallpaperTheme({
+    gradient: {
+      version: 2,
+      renderer: GRADIENT_RENDERER.LINEAR,
+      preset: DEFAULT_WALLPAPER_SOURCE,
+      colors: ['#25161d', '#3a2945'],
+      angle: 180,
+      spread: 58,
+    },
+  })
+
   return {
     seo: {
       seoEnable: true,
@@ -190,18 +244,13 @@ const makeDashboard = (slug = 'home') => {
       twImageHeight: '630',
     },
     wallpaper: {
-      light: makeWallpaperTheme(),
-      dark: makeWallpaperTheme({
-        gradient: {
-          version: 2,
-          renderer: GRADIENT_RENDERER.LINEAR,
-          preset: DEFAULT_WALLPAPER_SOURCE,
-          colors: ['#25161d', '#3a2945'],
-          angle: 180,
-          spread: 58,
-        },
-      }),
+      ...makePublishedWallpaper(slug),
     },
+    wallpaperSettings: {
+      light: makeWallpaperSettings(lightWallpaper),
+      dark: makeWallpaperSettings(darkWallpaper),
+    },
+    contentShadow: false,
     layout: {
       themePreset: THEME_PRESET.DEFAULT,
       themeTokens: makeThemeTokens(),

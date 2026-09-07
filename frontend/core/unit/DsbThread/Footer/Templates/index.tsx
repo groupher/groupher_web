@@ -22,7 +22,6 @@ const Templates: FC = () => {
     saving,
     footerLinks,
     footerOnelineLinks,
-    resetEditingLink,
   } = useFooter()
 
   const [showAll, setShowAll] = useState(false)
@@ -68,7 +67,6 @@ const Templates: FC = () => {
             noBorder
             onClick={() => {
               setShowAll(!showAll)
-              resetEditingLink()
             }}
           >
             {showAll ? t('dsb.footer.templates.collapse') : t('dsb.footer.templates.switch')}

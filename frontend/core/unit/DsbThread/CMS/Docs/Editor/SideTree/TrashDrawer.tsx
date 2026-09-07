@@ -1,7 +1,7 @@
 import { type FC, useState } from 'react'
 
 import TYPE from '~/const/type'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import CloseLightSVG from '~/icons/CloseLight'
 import FileTextSVG from '~/icons/FileText'
 import RotateSVG from '~/icons/Rotate'
@@ -130,7 +130,7 @@ const TrashDrawer: FC<TProps> = ({
     setRestoringId(item.id)
 
     try {
-      const data = await browserQuery<TDocTreeMutationData>(S.restoreDocTreeTrashItem, {
+      const data = await browserGraphQLRequest<TDocTreeMutationData>(S.restoreDocTreeTrashItem, {
         community,
         id: item.id,
         baseRevision,

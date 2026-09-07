@@ -9,7 +9,12 @@
  *     -> Session cookies or service token
  */
 
-import { GROUPHER_AUTH_CSRF_HEADER, GROUPHER_AUTH_CSRF_VALUE } from '@groupher/contracts/auth'
+import {
+  AUTH_ERROR,
+  GROUPHER_AUTH_CSRF_HEADER,
+  GROUPHER_AUTH_CSRF_VALUE,
+} from '@groupher/contracts/auth'
+import { AUTH_ROUTE } from '@groupher/route-contract'
 import { createHealthResponse } from '@groupher/service/health'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
@@ -115,6 +120,8 @@ const noStore = (): Record<string, string> => ({ 'Cache-Control': 'no-store' })
 
 const retryAfter = (): Record<string, string> => ({ ...noStore(), 'Retry-After': '60' })
 
+const SERVICE_AUTH_PROBE_REF = 'dev-hub-service-auth-contract-probe'
+
 const clientRateLimitKey = (request: Request): string => {
   const forwardedFor = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
   return request.headers.get('cf-connecting-ip') || forwardedFor || 'unknown-client'
@@ -126,20 +133,23 @@ export const mapBrowserSessionError = (
   fallbackCode: string,
 ): { code: string; status: 401 | 403 | 404 | 409 | 429 | 503 } => {
   if (error instanceof PhoenixBrowserSessionError) {
-    if (error.code === 'SESSION_REVOKED' || error.code === 'SESSION_EXPIRED') {
+    if (error.code === AUTH_ERROR.SESSION_REVOKED || error.code === AUTH_ERROR.SESSION_EXPIRED) {
       return { code: error.code, status: 401 }
     }
-    if (error.code === 'TOKEN_INVALID' || error.code === 'TOKEN_EXPIRED') {
+    if (error.code === AUTH_ERROR.TOKEN_INVALID || error.code === AUTH_ERROR.TOKEN_EXPIRED) {
       return { code: error.code, status: 401 }
     }
-    if (error.code === 'ACCOUNT_BLOCKED') return { code: error.code, status: 403 }
-    if (error.code === 'SESSION_CONFLICT') return { code: error.code, status: 409 }
-    if (error.code === 'RATE_LIMITED') return { code: error.code, status: 429 }
-    if (error.code === 'OAUTH_BINDING_NOT_FOUND') return { code: error.code, status: 404 }
+    if (error.code === AUTH_ERROR.SERVICE_TOKEN_INVALID) return { code: error.code, status: 401 }
+    if (error.code === AUTH_ERROR.SERVICE_SCOPE_FORBIDDEN) return { code: error.code, status: 403 }
+    if (error.code === AUTH_ERROR.SERVICE_JWKS_UNAVAILABLE) return { code: error.code, status: 503 }
+    if (error.code === AUTH_ERROR.ACCOUNT_BLOCKED) return { code: error.code, status: 403 }
+    if (error.code === AUTH_ERROR.SESSION_CONFLICT) return { code: error.code, status: 409 }
+    if (error.code === AUTH_ERROR.RATE_LIMITED) return { code: error.code, status: 429 }
+    if (error.code === AUTH_ERROR.OAUTH_BINDING_NOT_FOUND) return { code: error.code, status: 404 }
     if (
-      error.code === 'OAUTH_IDENTITY_ALREADY_LINKED' ||
-      error.code === 'OAUTH_PROVIDER_ALREADY_LINKED' ||
-      error.code === 'OAUTH_LAST_LOGIN_METHOD'
+      error.code === AUTH_ERROR.OAUTH_IDENTITY_ALREADY_LINKED ||
+      error.code === AUTH_ERROR.OAUTH_PROVIDER_ALREADY_LINKED ||
+      error.code === AUTH_ERROR.OAUTH_LAST_LOGIN_METHOD
     ) {
       return { code: error.code, status: 409 }
     }
@@ -147,6 +157,13 @@ export const mapBrowserSessionError = (
 
   return { code: fallbackCode, status: 503 }
 }
+
+const clearsBrowserSession = (code: string): boolean =>
+  code === AUTH_ERROR.SESSION_REVOKED ||
+  code === AUTH_ERROR.SESSION_EXPIRED ||
+  code === AUTH_ERROR.TOKEN_INVALID ||
+  code === AUTH_ERROR.TOKEN_EXPIRED ||
+  code === AUTH_ERROR.ACCOUNT_BLOCKED
 
 /** Creates the auth application with injectable runtime dependencies. */
 export const createApp = ({
@@ -220,7 +237,7 @@ export const createApp = ({
   const providerRedirectUri = (provider: string): string => {
     const authUrl = process.env.AUTH_URL?.trim()
     if (!authUrl) throw new Error('Auth URL is not configured.')
-    return new URL(`/api/auth/accounts/${provider}/callback`, authUrl).toString()
+    return new URL(AUTH_ROUTE.accountCallback(provider), authUrl).toString()
   }
   const authCors = cors({
     allowHeaders: ['content-type', 'x-auth-return-redirect', GROUPHER_AUTH_CSRF_HEADER],
@@ -231,10 +248,73 @@ export const createApp = ({
     origin: (origin) => (isAllowedAuthOrigin(origin) ? origin : null),
   })
 
-  app.use('/api/auth', authCors)
-  app.use('/api/auth/*', authCors)
+  app.use(AUTH_ROUTE.ROOT, authCors)
+  app.use(AUTH_ROUTE.WILDCARD, authCors)
 
   app.get('/health', (context) => context.json(createHealthResponse({ service: 'auth' })))
+
+  app.get('/health/service-auth', async (context) => {
+    if (process.env.DEV_HUB_SERVICE_AUTH_PROBE !== 'true') return context.notFound()
+
+    const startedAt = performance.now()
+    try {
+      await refreshSession(SERVICE_AUTH_PROBE_REF)
+      return context.json(
+        createHealthResponse({
+          service: 'auth',
+          status: 'down',
+          checks: [
+            {
+              name: 'phoenix-service-auth',
+              status: 'down',
+              latencyMs: Math.round(performance.now() - startedAt),
+              message: 'Phoenix unexpectedly accepted the reserved probe Session reference.',
+            },
+          ],
+        }),
+        503,
+        noStore(),
+      )
+    } catch (error) {
+      if (
+        error instanceof PhoenixBrowserSessionError &&
+        error.code === AUTH_ERROR.SESSION_REVOKED
+      ) {
+        return context.json(
+          createHealthResponse({
+            service: 'auth',
+            checks: [
+              {
+                name: 'phoenix-service-auth',
+                status: 'ok',
+                latencyMs: Math.round(performance.now() - startedAt),
+              },
+            ],
+          }),
+          200,
+          noStore(),
+        )
+      }
+
+      const failure = mapBrowserSessionError(error, AUTH_ERROR.REFRESH_UNAVAILABLE)
+      return context.json(
+        createHealthResponse({
+          service: 'auth',
+          status: 'down',
+          checks: [
+            {
+              name: 'phoenix-service-auth',
+              status: 'down',
+              latencyMs: Math.round(performance.now() - startedAt),
+              message: failure.code,
+            },
+          ],
+        }),
+        503,
+        noStore(),
+      )
+    }
+  })
 
   app.get('/.well-known/jwks.json', async (context) =>
     context.json(await serviceJwks(process.env), 200, { 'Cache-Control': 'public, max-age=300' }),
@@ -275,25 +355,25 @@ export const createApp = ({
   })
 
   if (testLogin) {
-    app.post('/api/auth/test-login', async (context) => {
+    app.post(AUTH_ROUTE.TEST_LOGIN, async (context) => {
       if (!requireStateChangeOrigin(context)) {
-        return context.json({ code: 'INVALID_ORIGIN' }, 400, noStore())
+        return context.json({ code: AUTH_ERROR.INVALID_ORIGIN }, 400, noStore())
       }
 
       return testLogin(context.req.raw)
     })
   }
 
-  app.get('/api/auth/session', async (context) => {
+  app.get(AUTH_ROUTE.SESSION, async (context) => {
     const session = await readSession(context.req.raw)
     return session
       ? new Response(null, { headers: noStore(), status: 204 })
-      : Response.json({ code: 'SESSION_MISSING' }, { headers: noStore(), status: 401 })
+      : Response.json({ code: AUTH_ERROR.SESSION_MISSING }, { headers: noStore(), status: 401 })
   })
 
-  app.post('/api/auth/token/refresh', async (context) => {
+  app.post(AUTH_ROUTE.TOKEN_REFRESH, async (context) => {
     if (!requireStateChangeOrigin(context)) {
-      return context.json({ code: 'INVALID_ORIGIN' }, 400, noStore())
+      return context.json({ code: AUTH_ERROR.INVALID_ORIGIN }, 400, noStore())
     }
 
     const limiter =
@@ -302,17 +382,17 @@ export const createApp = ({
       key: `refresh:client:${clientRateLimitKey(context.req.raw)}`,
     })
     if (!clientLimit.success) {
-      return context.json({ code: 'RATE_LIMITED' }, 429, retryAfter())
+      return context.json({ code: AUTH_ERROR.RATE_LIMITED }, 429, retryAfter())
     }
 
     const session = await readSession(context.req.raw)
-    if (!session) return context.json({ code: 'SESSION_MISSING' }, 401, noStore())
+    if (!session) return context.json({ code: AUTH_ERROR.SESSION_MISSING }, 401, noStore())
 
     const sessionLimit = await limiter.limit({
       key: `refresh:session:${session.browserSessionRef}`,
     })
     if (!sessionLimit.success) {
-      return context.json({ code: 'RATE_LIMITED' }, 429, retryAfter())
+      return context.json({ code: AUTH_ERROR.RATE_LIMITED }, 429, retryAfter())
     }
 
     try {
@@ -322,8 +402,8 @@ export const createApp = ({
         result,
       )
     } catch (error) {
-      const failure = mapBrowserSessionError(error, 'REFRESH_UNAVAILABLE')
-      if (failure.status === 401 || failure.status === 403) {
+      const failure = mapBrowserSessionError(error, AUTH_ERROR.REFRESH_UNAVAILABLE)
+      if (clearsBrowserSession(failure.code)) {
         for (const cookie of buildAuthCookieClearingHeaders(context.req.raw)) {
           context.header('Set-Cookie', cookie, { append: true })
         }
@@ -336,44 +416,44 @@ export const createApp = ({
     }
   })
 
-  app.get('/api/auth/sessions', async (context) => {
+  app.get(AUTH_ROUTE.SESSIONS, async (context) => {
     const session = await readSession(context.req.raw)
-    if (!session) return context.json({ code: 'SESSION_MISSING' }, 401, noStore())
+    if (!session) return context.json({ code: AUTH_ERROR.SESSION_MISSING }, 401, noStore())
 
     try {
       return context.json(await listSessions(session.browserSessionRef), 200, noStore())
     } catch (error) {
-      const failure = mapBrowserSessionError(error, 'SESSION_UNAVAILABLE')
+      const failure = mapBrowserSessionError(error, AUTH_ERROR.SESSION_UNAVAILABLE)
       return context.json({ code: failure.code }, failure.status, noStore())
     }
   })
 
-  app.post('/api/auth/accounts/:provider/link', async (context) => {
+  app.post(AUTH_ROUTE.ACCOUNT_LINK, async (context) => {
     if (!requireStateChangeOrigin(context)) {
-      return context.json({ code: 'INVALID_ORIGIN' }, 400, noStore())
+      return context.json({ code: AUTH_ERROR.INVALID_ORIGIN }, 400, noStore())
     }
 
     const clientKey = clientRateLimitKey(context.req.raw)
     if (!(await limitOauth(context.env || {}, `oauth:link:client:${clientKey}`))) {
-      return context.json({ code: 'RATE_LIMITED' }, 429, retryAfter())
+      return context.json({ code: AUTH_ERROR.RATE_LIMITED }, 429, retryAfter())
     }
 
     const provider = context.req.param('provider')
     if (provider !== 'github')
-      return context.json({ code: 'OAUTH_PROVIDER_UNSUPPORTED' }, 400, noStore())
+      return context.json({ code: AUTH_ERROR.OAUTH_PROVIDER_UNSUPPORTED }, 400, noStore())
 
     const session = await readSession(context.req.raw)
-    if (!session) return context.json({ code: 'SESSION_MISSING' }, 401, noStore())
+    if (!session) return context.json({ code: AUTH_ERROR.SESSION_MISSING }, 401, noStore())
 
     if (!(await limitOauth(context.env || {}, `oauth:link:session:${session.browserSessionRef}`))) {
-      return context.json({ code: 'RATE_LIMITED' }, 429, retryAfter())
+      return context.json({ code: AUTH_ERROR.RATE_LIMITED }, 429, retryAfter())
     }
 
     const userToken = readPhoenixUserToken(context.req.raw)
-    if (!userToken) return context.json({ code: 'TOKEN_MISSING' }, 401, noStore())
+    if (!userToken) return context.json({ code: AUTH_ERROR.TOKEN_MISSING }, 401, noStore())
 
     const store = resolveLinkIntentStore(context.env || {})
-    if (!store) return context.json({ code: 'LINK_INTENT_UNAVAILABLE' }, 503, noStore())
+    if (!store) return context.json({ code: AUTH_ERROR.LINK_INTENT_UNAVAILABLE }, 503, noStore())
 
     let body: unknown = {}
     try {
@@ -399,11 +479,11 @@ export const createApp = ({
       context.header('Set-Cookie', setLinkIntentCookie(intent.intentRef))
       return context.json({ authorizationUrl: location }, 200, noStore())
     } catch {
-      return context.json({ code: 'LINK_INTENT_UNAVAILABLE' }, 503, noStore())
+      return context.json({ code: AUTH_ERROR.LINK_INTENT_UNAVAILABLE }, 503, noStore())
     }
   })
 
-  app.get('/api/auth/accounts/:provider/callback', async (context) => {
+  app.get(AUTH_ROUTE.ACCOUNT_CALLBACK, async (context) => {
     const provider = context.req.param('provider')
     const state = context.req.query('state')
     const intentRef = requestCookie(context.req.raw, linkIntentCookie())
@@ -412,7 +492,7 @@ export const createApp = ({
 
     const callbackKey = `${intentRef || decodedState?.intentRef || 'unknown'}:${clientRateLimitKey(context.req.raw)}`
     if (!(await limitOauth(context.env || {}, `oauth:callback:${callbackKey}`))) {
-      return context.json({ code: 'RATE_LIMITED' }, 429, retryAfter())
+      return context.json({ code: AUTH_ERROR.RATE_LIMITED }, 429, retryAfter())
     }
 
     if (
@@ -422,12 +502,12 @@ export const createApp = ({
       !decodedState ||
       decodedState.intentRef !== intentRef
     ) {
-      return context.json({ code: 'OAUTH_LINK_INVALID_INTENT' }, 400, noStore())
+      return context.json({ code: AUTH_ERROR.OAUTH_LINK_INVALID_INTENT }, 400, noStore())
     }
 
     const intent = await store.get(intentRef)
     if (!intent || intent.provider !== provider || intent.nonce !== decodedState.nonce) {
-      return context.json({ code: 'OAUTH_LINK_INVALID_INTENT' }, 400, noStore())
+      return context.json({ code: AUTH_ERROR.OAUTH_LINK_INVALID_INTENT }, 400, noStore())
     }
 
     const redirectWithResult = (
@@ -450,17 +530,20 @@ export const createApp = ({
     const session = await readSession(context.req.raw)
     const userToken = readPhoenixUserToken(context.req.raw)
     if (!session || session.browserSessionRef !== intent.browserSessionRef || !userToken) {
-      return redirectWithResult({ result: 'error', code: 'SESSION_MISSING' })
+      return redirectWithResult({ result: 'error', code: AUTH_ERROR.SESSION_MISSING })
     }
 
     const consumed = await store.consume(intentRef)
-    if (!consumed) return redirectWithResult({ result: 'error', code: 'OAUTH_LINK_REPLAYED' })
+    if (!consumed)
+      return redirectWithResult({ result: 'error', code: AUTH_ERROR.OAUTH_LINK_REPLAYED })
 
     const providerError = context.req.query('error')
     if (providerError) return redirectWithResult({ result: 'cancelled' })
 
     const code = context.req.query('code')
-    if (!code) return redirectWithResult({ result: 'error', code: 'OAUTH_LINK_INVALID_CALLBACK' })
+    if (!code) {
+      return redirectWithResult({ result: 'error', code: AUTH_ERROR.OAUTH_LINK_INVALID_CALLBACK })
+    }
 
     try {
       const identity = await exchangeGithubIdentity(
@@ -472,7 +555,10 @@ export const createApp = ({
         await linkIdentity(userToken, identity)
         return redirectWithResult({ result: 'success' })
       } catch (error) {
-        if (!(error instanceof PhoenixBrowserSessionError) || error.code !== 'TOKEN_EXPIRED') {
+        if (
+          !(error instanceof PhoenixBrowserSessionError) ||
+          error.code !== AUTH_ERROR.TOKEN_EXPIRED
+        ) {
           throw error
         }
 
@@ -481,14 +567,14 @@ export const createApp = ({
         return redirectWithResult({ result: 'success' }, refreshed)
       }
     } catch (error) {
-      const failure = mapBrowserSessionError(error, 'OAUTH_LINK_UNAVAILABLE')
+      const failure = mapBrowserSessionError(error, AUTH_ERROR.OAUTH_LINK_UNAVAILABLE)
       return redirectWithResult({ result: 'error', code: failure.code })
     }
   })
 
-  app.get('/api/auth/accounts', async (context) => {
+  app.get(AUTH_ROUTE.ACCOUNTS, async (context) => {
     const session = await readSession(context.req.raw)
-    if (!session) return context.json({ code: 'SESSION_MISSING' }, 401, noStore())
+    if (!session) return context.json({ code: AUTH_ERROR.SESSION_MISSING }, 401, noStore())
 
     if (
       !(await limitOauth(
@@ -496,11 +582,11 @@ export const createApp = ({
         `oauth:accounts:${session.browserSessionRef}:${clientRateLimitKey(context.req.raw)}`,
       ))
     ) {
-      return context.json({ code: 'RATE_LIMITED' }, 429, retryAfter())
+      return context.json({ code: AUTH_ERROR.RATE_LIMITED }, 429, retryAfter())
     }
 
     const userToken = readPhoenixUserToken(context.req.raw)
-    if (!userToken) return context.json({ code: 'TOKEN_MISSING' }, 401, noStore())
+    if (!userToken) return context.json({ code: AUTH_ERROR.TOKEN_MISSING }, 401, noStore())
 
     try {
       const accounts = await listAccounts(userToken)
@@ -510,18 +596,18 @@ export const createApp = ({
         noStore(),
       )
     } catch (error) {
-      const failure = mapBrowserSessionError(error, 'OAUTH_ACCOUNTS_UNAVAILABLE')
+      const failure = mapBrowserSessionError(error, AUTH_ERROR.OAUTH_ACCOUNTS_UNAVAILABLE)
       return context.json({ code: failure.code }, failure.status, noStore())
     }
   })
 
-  app.post('/api/auth/accounts/:publicRef/unlink', async (context) => {
+  app.post(AUTH_ROUTE.ACCOUNT_UNLINK, async (context) => {
     if (!requireStateChangeOrigin(context)) {
-      return context.json({ code: 'INVALID_ORIGIN' }, 400, noStore())
+      return context.json({ code: AUTH_ERROR.INVALID_ORIGIN }, 400, noStore())
     }
 
     const session = await readSession(context.req.raw)
-    if (!session) return context.json({ code: 'SESSION_MISSING' }, 401, noStore())
+    if (!session) return context.json({ code: AUTH_ERROR.SESSION_MISSING }, 401, noStore())
 
     if (
       !(await limitOauth(
@@ -529,17 +615,17 @@ export const createApp = ({
         `oauth:unlink:${session.browserSessionRef}:${clientRateLimitKey(context.req.raw)}`,
       ))
     ) {
-      return context.json({ code: 'RATE_LIMITED' }, 429, retryAfter())
+      return context.json({ code: AUTH_ERROR.RATE_LIMITED }, 429, retryAfter())
     }
 
     const userToken = readPhoenixUserToken(context.req.raw)
-    if (!userToken) return context.json({ code: 'TOKEN_MISSING' }, 401, noStore())
+    if (!userToken) return context.json({ code: AUTH_ERROR.TOKEN_MISSING }, 401, noStore())
 
     const publicRef = context.req.param('publicRef')
 
     const isAmbiguousFailure = (error: unknown): boolean =>
       error instanceof PhoenixBrowserSessionError &&
-      (error.code === 'PHOENIX_NETWORK_ERROR' || (error.upstreamStatus ?? 0) >= 500)
+      (error.code === AUTH_ERROR.PHOENIX_NETWORK_ERROR || (error.upstreamStatus ?? 0) >= 500)
 
     const unlinkWithReconciliation = async (): Promise<TLinkedOauthAccount[]> => {
       try {
@@ -564,46 +650,46 @@ export const createApp = ({
         noStore(),
       )
     } catch (error) {
-      const failure = mapBrowserSessionError(error, 'OAUTH_UNLINK_UNAVAILABLE')
+      const failure = mapBrowserSessionError(error, AUTH_ERROR.OAUTH_UNLINK_UNAVAILABLE)
       return context.json({ code: failure.code }, failure.status, noStore())
     }
   })
 
-  app.post('/api/auth/sessions/revoke-others', async (context) => {
+  app.post(AUTH_ROUTE.SESSION_REVOKE_OTHERS, async (context) => {
     if (!requireStateChangeOrigin(context)) {
-      return context.json({ code: 'INVALID_ORIGIN' }, 400, noStore())
+      return context.json({ code: AUTH_ERROR.INVALID_ORIGIN }, 400, noStore())
     }
     const session = await readSession(context.req.raw)
-    if (!session) return context.json({ code: 'SESSION_MISSING' }, 401, noStore())
+    if (!session) return context.json({ code: AUTH_ERROR.SESSION_MISSING }, 401, noStore())
 
     try {
       await revokeOtherSessions(session.browserSessionRef)
       return new Response(null, { headers: noStore(), status: 204 })
     } catch (error) {
-      const failure = mapBrowserSessionError(error, 'SESSION_UNAVAILABLE')
+      const failure = mapBrowserSessionError(error, AUTH_ERROR.SESSION_UNAVAILABLE)
       return context.json({ code: failure.code }, failure.status, noStore())
     }
   })
 
-  app.post('/api/auth/sessions/:publicRef/revoke', async (context) => {
+  app.post(AUTH_ROUTE.SESSION_REVOKE, async (context) => {
     if (!requireStateChangeOrigin(context)) {
-      return context.json({ code: 'INVALID_ORIGIN' }, 400, noStore())
+      return context.json({ code: AUTH_ERROR.INVALID_ORIGIN }, 400, noStore())
     }
     const session = await readSession(context.req.raw)
-    if (!session) return context.json({ code: 'SESSION_MISSING' }, 401, noStore())
+    if (!session) return context.json({ code: AUTH_ERROR.SESSION_MISSING }, 401, noStore())
 
     try {
       await revokeSessionPublic(session.browserSessionRef, context.req.param('publicRef'))
       return new Response(null, { headers: noStore(), status: 204 })
     } catch (error) {
-      const failure = mapBrowserSessionError(error, 'SESSION_UNAVAILABLE')
+      const failure = mapBrowserSessionError(error, AUTH_ERROR.SESSION_UNAVAILABLE)
       return context.json({ code: failure.code }, failure.status, noStore())
     }
   })
 
-  app.post('/api/auth/logout', async (context) => {
+  app.post(AUTH_ROUTE.LOGOUT, async (context) => {
     if (!requireStateChangeOrigin(context)) {
-      return context.json({ code: 'INVALID_ORIGIN' }, 400, noStore())
+      return context.json({ code: AUTH_ERROR.INVALID_ORIGIN }, 400, noStore())
     }
 
     const session = await readSession(context.req.raw)
@@ -611,7 +697,7 @@ export const createApp = ({
       try {
         await revokeSession(session.browserSessionRef)
       } catch (error) {
-        const failure = mapBrowserSessionError(error, 'LOGOUT_UNAVAILABLE')
+        const failure = mapBrowserSessionError(error, AUTH_ERROR.LOGOUT_UNAVAILABLE)
         return context.json({ code: failure.code }, failure.status, noStore())
       }
     }
@@ -623,8 +709,8 @@ export const createApp = ({
     return new Response(null, { status: 204 })
   })
 
-  app.on(['GET', 'POST'], '/api/auth', (context) => authHandler(context.req.raw))
-  app.on(['GET', 'POST'], '/api/auth/*', (context) => authHandler(context.req.raw))
+  app.on(['GET', 'POST'], AUTH_ROUTE.ROOT, (context) => authHandler(context.req.raw))
+  app.on(['GET', 'POST'], AUTH_ROUTE.WILDCARD, (context) => authHandler(context.req.raw))
 
   return app
 }

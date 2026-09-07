@@ -1,7 +1,7 @@
 import { type FC, type ReactNode, useEffect, useReducer, useRef } from 'react'
 
 import { hasLoadedSrc, markLoadedSrc } from './cache'
-import useSalon, { cnMerge } from './salon'
+import useSalon, { cn } from './salon'
 
 type TProps = {
   className?: string
@@ -101,7 +101,7 @@ const NativeImg: FC<TProps> = ({
       <button
         type='button'
         onClick={onClick}
-        className={cnMerge(s.wrapper, className, 'pointer')}
+        className={cn(s.wrapper, className, 'pointer')}
         aria-label={alt}
       >
         {content}
@@ -110,7 +110,7 @@ const NativeImg: FC<TProps> = ({
   }
 
   return (
-    <span className={cnMerge(s.wrapper, className)} aria-label={alt}>
+    <span className={cn(s.wrapper, className)} aria-label={alt}>
       {content}
     </span>
   )

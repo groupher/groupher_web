@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
 import { UPVOTE_LAYOUT } from '~/const/layout'
-import { upvoteArticle } from '~/signal'
+import useArticleUpvoteMutation from '~/query/mutation/useArticleUpvoteMutation'
 import type { TPost } from '~/spec'
 import ArticleCatStatus from '~/unit/ArticleCatStatus'
 import Upvote from '~/unit/Upvote'
@@ -17,13 +17,14 @@ const Footer: FC<TProps> = ({ article }) => {
   const { upvotesCount, meta, viewerHasUpvoted } = article
 
   const s = useSalon()
+  const upvoteArticle = useArticleUpvoteMutation(article)
 
   return (
     <div className={s.wrapper}>
       <Upvote
         count={upvotesCount}
         avatarList={meta.latestUpvotedUsers}
-        onAction={(viewerHasUpvoted) => upvoteArticle(article, viewerHasUpvoted)}
+        onAction={upvoteArticle}
         viewerHasUpvoted={viewerHasUpvoted}
         type={UPVOTE_LAYOUT.GENERAL}
       />

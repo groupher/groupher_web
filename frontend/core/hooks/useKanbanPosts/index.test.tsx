@@ -7,9 +7,6 @@ import useKanbanPosts from '~/hooks/useKanbanPosts'
 
 describe('useKanbanPosts', () => {
   it('reads kanban lists + resState', () => {
-    const StoreWrapper = makeStoreWrapper({
-      articleList: true,
-    })
     const queryClient = new QueryClient()
     queryClient.setQueryData(['article', 'kanban', 'acme'], {
       backlog: { entries: [{ id: 'a0' }] },
@@ -17,6 +14,10 @@ describe('useKanbanPosts', () => {
       wip: { entries: [] },
       done: { entries: [{ id: 'a2' }] },
       rejected: { entries: [{ id: 'a3' }] },
+    })
+    const StoreWrapper = makeStoreWrapper({
+      articleList: true,
+      queryClient,
     })
     const wrapper = ({ children }: { children: ReactNode }) => (
       <QueryClientProvider client={queryClient}>

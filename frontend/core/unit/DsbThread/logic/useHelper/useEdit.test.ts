@@ -3,28 +3,36 @@ import { renderHook } from '@testing-library/react'
 import { FIELD } from '../../constant'
 import useEdit from './useEdit'
 
-const rollbackFields = vi.fn()
+const rollback = vi.fn()
 const commit = vi.fn()
-const editField = vi.fn()
+const edit = vi.fn()
 
-vi.mock('~/stores/dsb/hooks', () => ({
+vi.mock('~/stores/dsbEdit/hooks', () => ({
   default: () => ({
     original: {
       themePreset: 'DEFAULT',
       themePresetBase: 'DEFAULT',
       themeTokens: {},
     },
-    rollbackFields,
-    commit,
-    editField,
+    rollback,
+    edit,
     nameAlias: [],
-    editingAlias: { slug: '' },
   }),
 }))
 
-vi.mock('../useMutation', () => ({
+vi.mock('~/stores/dsbEditorUi/hooks', () => ({
+  useAliasEditorUi: () => ({
+    editingAlias: { slug: '' },
+    patch: commit,
+  }),
+  useTagEditorUi: () => ({ editingTag: null, settingTag: null, patch: commit }),
+}))
+
+vi.mock('~/query/mutation/useDsbFieldSave', () => ({
   default: () => ({
     mutation: vi.fn(),
+    isPending: false,
+    error: null,
   }),
 }))
 
@@ -38,6 +46,6 @@ describe('useEdit', () => {
 
     result.current.rollbackEdit(FIELD.THEME_PRESET)
 
-    expect(rollbackFields).toHaveBeenCalledWith([FIELD.THEME_PRESET])
+    expect(rollback).toHaveBeenCalledWith([FIELD.THEME_PRESET])
   })
 })

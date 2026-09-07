@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from 'react'
 
 import type { TBreadcrumbItem, TSpace } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import { useDsbShellUi } from '~/stores/dsbShellUi'
 import Breadcrumbs from '~/ui/Breadcrumbs'
 
 import useSalon from './salon'
@@ -33,7 +33,7 @@ const Portal: FC<TProps> = ({
   ...spacing
 }) => {
   const s = useSalon({ ...spacing, addonAlign })
-  const { submenuCollapsed } = useDsb()
+  const { submenuCollapsed } = useDsbShellUi()
   const showBreadcrumbs = !submenuCollapsed && crumbItems.length > 0
 
   return (

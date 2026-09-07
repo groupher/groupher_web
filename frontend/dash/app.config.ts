@@ -2,6 +2,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { cloudflare } from '@cloudflare/vite-plugin'
+import { createVgpuWgslVitePlugin } from '@groupher/frontend-core/vgpu-vite'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
@@ -19,6 +20,12 @@ export default defineConfig({
   },
   publicDir: path.join(dashRoot, 'public'),
   resolve: {
+    alias:
+      process.env.E2E_AUTH_STACK === '1'
+        ? {
+            'cloudflare:workers': path.join(dashRoot, 'src/server/cloudflare-workers.e2e.ts'),
+          }
+        : undefined,
     tsconfigPaths: true,
   },
   server: {
@@ -45,6 +52,7 @@ export default defineConfig({
       ? []
       : [cloudflare({ viteEnvironment: { name: 'ssr' } })]),
     tanstackStart(),
+    createVgpuWgslVitePlugin(),
     viteReact(),
     tailwindcss(),
   ],

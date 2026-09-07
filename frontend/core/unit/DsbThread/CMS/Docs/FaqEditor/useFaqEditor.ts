@@ -1,8 +1,9 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import type { TDocFaq } from '~/spec'
-import { docFaqToDisplayGroups } from '~/stores/dsb/docFaq/model'
-import useDsb from '~/stores/dsb/hooks'
+import { docFaqToDisplayGroups } from '~/stores/dsbEdit/docFaq/model'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
+import { useFaqEditorUi } from '~/stores/dsbEditorUi/hooks'
 
 import { FIELD } from '../../../constant'
 import useHelper from '../../../logic/useHelper'
@@ -25,11 +26,12 @@ type TRet = {
  * render data and keeps UI-only expansion state.
  */
 export default function useFaqEditor(): TRet {
-  const dsb$ = useDsb()
+  const dsb$ = useDsbEdit()
+  const faqUi$ = useFaqEditorUi()
   const { isChanged } = useHelper()
   const [openedItemId, setOpenedItemId] = useState<string | null>(null)
   const docFaq = dsb$.docFaq
-  const saveZone = dsb$.docFaqSaveZone
+  const saveZone = faqUi$.docFaqSaveZone
   const isDocFaqTouched = isChanged(FIELD.DOC_FAQ)
   const displayGroups = useMemo(
     () => docFaqToDisplayGroups(docFaq) as readonly TFaqEditorGroup[],

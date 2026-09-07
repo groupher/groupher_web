@@ -1,8 +1,8 @@
 import { LOCALE } from '~/const/i18n'
 import { getI18nNamespacesByMetric, loadLocaleFile } from '~/i18n'
 import type { TLocale } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
 import useLocale from '~/stores/locale/hooks'
+import useMetricContext from '~/stores/metric/hooks'
 
 type TRet = {
   changeLocale: (locale: TLocale) => void
@@ -11,7 +11,7 @@ type TRet = {
 
 const useChangeI18n = (): TRet => {
   const { locale, setLocale, setLocaleData } = useLocale()
-  const { metric } = useDsb()
+  const metric = useMetricContext()
   const namespaces = getI18nNamespacesByMetric(metric)
 
   const changeLocale = (locale: TLocale) => {

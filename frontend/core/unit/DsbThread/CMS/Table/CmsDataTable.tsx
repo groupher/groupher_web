@@ -14,7 +14,7 @@ import ArrowSVG from '~/icons/Arrow'
 import FilterSVG from '~/icons/Filter'
 import TableLoading from '~/ui/Loading/Table'
 
-import useSalon, { cn, cnMerge } from './salon'
+import useSalon, { cn } from './salon'
 import type { TCmsDataTableProps } from './types'
 
 const ROW_SELECT_IGNORE_SELECTOR =
@@ -82,7 +82,7 @@ export default function CmsDataTable<TData>({
                 <button
                   key={header.id}
                   type='button'
-                  className={cnMerge(
+                  className={cn(
                     s.table.actionBtn,
                     alignClassName(align),
                     canSort && s.table.canSort,
@@ -170,7 +170,7 @@ export default function CmsDataTable<TData>({
                     return (
                       <div
                         key={cell.id}
-                        className={cnMerge(
+                        className={cn(
                           'table-row-cell',
                           s.table.cell,
                           isSelectCol && 'table-col-select',

@@ -1,5 +1,6 @@
 'use client'
 
+import { WIDGET_EVENT, type TWidgetErrorEvent } from '@groupher/contracts/widget'
 import { useCallback, useEffect, useState } from 'react'
 
 import { Script } from '~/platform'
@@ -10,10 +11,6 @@ const SCRIPT_ID = 'groupher-widget-v1-script'
 type TWidgetApi = {
   (...args: unknown[]): void
   q?: ArrayLike<unknown>[]
-}
-
-type TWidgetErrorDetail = {
-  message?: string
 }
 
 type TProps = {
@@ -68,12 +65,12 @@ export default function WidgetPreviewLoader({ community, sources = DEFAULT_SOURC
 
   useEffect(() => {
     const onWidgetError = (event: Event) => {
-      const detail = (event as CustomEvent<TWidgetErrorDetail>).detail
+      const detail = (event as TWidgetErrorEvent).detail
       setLoadError(detail?.message || 'Widget runtime failed to load.')
     }
 
-    window.addEventListener('groupher-widget:error', onWidgetError)
-    return () => window.removeEventListener('groupher-widget:error', onWidgetError)
+    window.addEventListener(WIDGET_EVENT.ERROR, onWidgetError)
+    return () => window.removeEventListener(WIDGET_EVENT.ERROR, onWidgetError)
   }, [])
 
   const handleScriptError = useCallback(() => {

@@ -2,10 +2,8 @@ import useTwBelt from '~/hooks/useTwBelt'
 
 import useBase from '../../../useDsbSalon'
 
-export { cnMerge } from '~/css'
-
 export default function useSalon() {
-  const { cnMerge } = useTwBelt()
+  const { cn } = useTwBelt()
   const base = useBase()
 
   return {
@@ -13,9 +11,9 @@ export default function useSalon() {
     list: 'column w-full gap-4 px-7 py-5',
     group: 'column gap-2',
     row: 'row-center gap-3',
-    title: cnMerge(base.bar, 'static h-1 mb-0.5 opacity-50'),
-    articleTitle: cnMerge(base.bar, 'static h-1 opacity-30'),
-    line: cnMerge(base.bar, 'static h-px opacity-20 grow'),
-    meta: cnMerge(base.bar, 'static h-1 opacity-20'),
+    title: cn(base.barBase, 'static h-1 mb-0.5 opacity-50'),
+    articleTitle: cn(base.barBase, 'static h-1 opacity-30'),
+    line: cn(base.barBase, 'static h-px opacity-20 grow'),
+    meta: cn(base.barBase, 'static h-1 opacity-20'),
   }
 }

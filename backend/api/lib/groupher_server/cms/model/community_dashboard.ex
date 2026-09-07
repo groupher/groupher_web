@@ -29,12 +29,12 @@ defmodule GroupherServer.CMS.Model.CommunityDashboard do
   @schema_prefix DBPrefix.cms()
 
   @required_fields ~w(community_id)a
-
   @doc "Returns the default payload for every community dashboard section."
   def default do
     %{
       base_info: Dashboard.BaseInfo.default(),
       wallpaper: Dashboard.Wallpaper.default(),
+      content_shadow: false,
       seo: Dashboard.SEO.default(),
       layout: Dashboard.Layout.default(),
       enable: Dashboard.Enable.default(),
@@ -54,6 +54,7 @@ defmodule GroupherServer.CMS.Model.CommunityDashboard do
   schema "community_dashboards" do
     belongs_to(:community, Community)
     field(:umami_website_id, Ecto.UUID)
+    field(:content_shadow, :boolean, default: false)
     embeds_one(:base_info, Dashboard.BaseInfo, on_replace: :delete)
     embeds_one(:wallpaper, Dashboard.Wallpaper, on_replace: :delete)
     embeds_one(:seo, Dashboard.SEO, on_replace: :delete)
@@ -77,7 +78,7 @@ defmodule GroupherServer.CMS.Model.CommunityDashboard do
   @doc false
   def changeset(%CommunityDashboard{} = community_dashboard, attrs) do
     community_dashboard
-    |> cast(attrs, @required_fields)
+    |> cast(attrs, @required_fields ++ [:content_shadow])
     |> cast_embed(:base_info, with: &Dashboard.BaseInfo.changeset/2)
     |> cast_embed(:wallpaper, with: &Dashboard.Wallpaper.changeset/2)
     |> cast_embed(:seo, with: &Dashboard.SEO.changeset/2)

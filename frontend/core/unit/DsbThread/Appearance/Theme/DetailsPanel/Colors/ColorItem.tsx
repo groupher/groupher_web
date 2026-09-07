@@ -7,8 +7,8 @@ import ColorSelector from '~/ui/ColorSelector'
 
 import type { TThemePresetOverwrite, TThemePresetTokens } from '../../spec'
 import useSalon from '../salon/colors/color_item'
-import type { TColorDetail } from './constant'
 import { findPresetColor, getContrastBallShadow, getContrastRingColor } from './helper'
+import type { TColorDetail } from './spec'
 
 type TProps = {
   detail: TColorDetail

@@ -90,7 +90,7 @@ export default function HudPanel({
           />
         )}
 
-        {contentShadow.enabled && (
+        {contentShadow && (
           <div className={s.hudItem}>
             <span className={s.hudLabel}>{t('dsb.appearance.wallpaper.hud.shadow')}</span>
             <span className={s.hudValue}>{t('dsb.appearance.wallpaper.hud.on')}</span>

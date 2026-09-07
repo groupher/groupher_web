@@ -4,7 +4,7 @@ defmodule GroupherServer.Test.Mutation.Account.Oauth do
   use GroupherServer.TestMate
   import Helper.Utils
 
-  alias GroupherServer.{Accounts, Repo}
+  alias GroupherServer.Repo
 
   alias GroupherServer.Accounts.Model.OauthProvider
 
@@ -67,7 +67,7 @@ defmodule GroupherServer.Test.Mutation.Account.Oauth do
              |> mutation_error?(
                @query,
                variables,
-               ErrorCat.code(GroupherServerWeb.ErrorCat.service_auth())
+               GroupherServer.Auth.Contract.service_token_invalid()
              )
     end
   end

@@ -9,7 +9,7 @@ import type { TCrumbConfig } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
 import RealtimeOnline from '~/unit/DsbThread/Analysis/RealtimeOnline'
 import Portal from '~/unit/DsbThread/Portal'
-import useSalon, { cnMerge } from '~/unit/DsbThread/salon'
+import useSalon, { cn } from '~/unit/DsbThread/salon'
 
 const CRUMB_CONFIG = {
   title: 'dsb.crumb.analytics',
@@ -25,7 +25,7 @@ export default function TrendLayout({ children }: { children: ReactNode }) {
   const crumbItems = useDsbCrumbItems(CRUMB_CONFIG)
 
   return (
-    <div className={cnMerge(s.content, 'w-full max-w-none pl-24 pr-0')}>
+    <div className={cn(s.content, 'w-full max-w-none pl-24 pr-0')}>
       <Portal
         title={t('dsb.menu.trend')}
         desc={t('dsb.analysis.desc')}

@@ -13,6 +13,7 @@ local/**/.data/
 local/dev-hub/src-tauri/gen/schemas/
 coverage/
 tools/reports
+.tmp/
 
 # =====================
 # Playwright

@@ -400,6 +400,18 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
       resolve(&R.CMS.community_asset_origin_info/3)
     end
 
+    @desc "Service-scoped check for a successfully published Wallpaper Batch"
+    field :wallpaper_batch_published, non_null(:boolean) do
+      arg(:batch_ref, non_null(:string))
+
+      middleware(M.ServiceScope,
+        audience: "phoenix:assets-api",
+        scope: "assets:generated-batch:reconcile"
+      )
+
+      resolve(&R.CMS.wallpaper_batch_published/3)
+    end
+
     @desc "Get all passport rules available to the current user."
     field :all_passport_rules, :all_rules do
       middleware(M.Authorize, :login)
@@ -472,6 +484,21 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
 
       middleware(M.FrontDesk, :article)
       resolve(&R.CMS.comments_state/3)
+    end
+
+    @desc "Reads current viewer state for up to 100 canonical Article references; anonymous requests return an empty list"
+    field :article_viewer_states, non_null(list_of(non_null(:viewer_article_state))) do
+      arg(:refs, non_null(list_of(non_null(:article_ref_input))))
+
+      resolve(&R.CMS.article_viewer_states/3)
+    end
+
+    @desc "Reads current viewer state for up to 100 canonical Comment references; anonymous requests return an empty list"
+    field :comment_viewer_states, non_null(list_of(non_null(:viewer_comment_state))) do
+      arg(:article, non_null(:article_ref_input))
+      arg(:comment_inner_ids, non_null(list_of(non_null(:id))))
+
+      resolve(&R.CMS.comment_viewer_states/3)
     end
 
     @desc "got spec comment by ref"

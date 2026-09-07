@@ -47,5 +47,3 @@ export const EXTRA_COLOR_DETAILS = [
     i18nDescKey: 'dsb.appearance.divider_color.desc',
   },
 ] as const
-
-export type TColorDetail = (typeof MAIN_COLOR_DETAILS | typeof EXTRA_COLOR_DETAILS)[number]

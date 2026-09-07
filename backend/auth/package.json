@@ -19,6 +19,7 @@
   "dependencies": {
     "@auth/core": "0.41.3",
     "@groupher/contracts": "workspace:*",
+    "@groupher/route-contract": "workspace:*",
     "@groupher/service": "workspace:*",
     "@hono/node-server": "^2.0.11",
     "dotenv": "^17.4.2",

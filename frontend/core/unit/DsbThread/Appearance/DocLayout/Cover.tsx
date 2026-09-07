@@ -10,7 +10,7 @@ import BriefCardsLayout from './BriefCardsLayout'
 import CoverCardsLayout from './CoverCardsLayout'
 import OutlineColumnsLayout from './OutlineColumnsLayout'
 import OutlineTocLayout from './OutlineTocLayout'
-import useSalon, { cn } from './salon'
+import useSalon from './salon'
 import StackCardsLayout from './StackCardsLayout'
 import TileCardsLayout from './TileCardsLayout'
 
@@ -36,10 +36,9 @@ export default function DocCoverLayout() {
           onClick={() => edit(DOC_COVER_LAYOUT.STACK_CARDS, FIELD.DOC_COVER_LAYOUT)}
         >
           <div
-            className={cn(
-              s.block,
-              docCoverLayout === DOC_COVER_LAYOUT.STACK_CARDS && s.blockActive,
-            )}
+            className={s.block({
+              state: docCoverLayout === DOC_COVER_LAYOUT.STACK_CARDS ? 'active' : 'idle',
+            })}
           >
             <StackCardsLayout />
           </div>
@@ -57,10 +56,9 @@ export default function DocCoverLayout() {
           onClick={() => edit(DOC_COVER_LAYOUT.OUTLINE_COLUMNS, FIELD.DOC_COVER_LAYOUT)}
         >
           <div
-            className={cn(
-              s.block,
-              docCoverLayout === DOC_COVER_LAYOUT.OUTLINE_COLUMNS && s.blockActive,
-            )}
+            className={s.block({
+              state: docCoverLayout === DOC_COVER_LAYOUT.OUTLINE_COLUMNS ? 'active' : 'idle',
+            })}
           >
             <OutlineColumnsLayout />
           </div>
@@ -78,10 +76,9 @@ export default function DocCoverLayout() {
           onClick={() => edit(DOC_COVER_LAYOUT.OUTLINE_TOC, FIELD.DOC_COVER_LAYOUT)}
         >
           <div
-            className={cn(
-              s.block,
-              docCoverLayout === DOC_COVER_LAYOUT.OUTLINE_TOC && s.blockActive,
-            )}
+            className={s.block({
+              state: docCoverLayout === DOC_COVER_LAYOUT.OUTLINE_TOC ? 'active' : 'idle',
+            })}
           >
             <OutlineTocLayout />
           </div>
@@ -99,10 +96,9 @@ export default function DocCoverLayout() {
           onClick={() => edit(DOC_COVER_LAYOUT.BRIEF_CARDS, FIELD.DOC_COVER_LAYOUT)}
         >
           <div
-            className={cn(
-              s.block,
-              docCoverLayout === DOC_COVER_LAYOUT.BRIEF_CARDS && s.blockActive,
-            )}
+            className={s.block({
+              state: docCoverLayout === DOC_COVER_LAYOUT.BRIEF_CARDS ? 'active' : 'idle',
+            })}
           >
             <BriefCardsLayout />
           </div>
@@ -120,7 +116,9 @@ export default function DocCoverLayout() {
           onClick={() => edit(DOC_COVER_LAYOUT.TILE_CARDS, FIELD.DOC_COVER_LAYOUT)}
         >
           <div
-            className={cn(s.block, docCoverLayout === DOC_COVER_LAYOUT.TILE_CARDS && s.blockActive)}
+            className={s.block({
+              state: docCoverLayout === DOC_COVER_LAYOUT.TILE_CARDS ? 'active' : 'idle',
+            })}
           >
             <TileCardsLayout />
           </div>
@@ -138,10 +136,9 @@ export default function DocCoverLayout() {
           onClick={() => edit(DOC_COVER_LAYOUT.COVER_CARDS, FIELD.DOC_COVER_LAYOUT)}
         >
           <div
-            className={cn(
-              s.block,
-              docCoverLayout === DOC_COVER_LAYOUT.COVER_CARDS && s.blockActive,
-            )}
+            className={s.block({
+              state: docCoverLayout === DOC_COVER_LAYOUT.COVER_CARDS ? 'active' : 'idle',
+            })}
           >
             <CoverCardsLayout />
           </div>

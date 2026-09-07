@@ -1,5 +1,5 @@
 import type { TColorName, TEditFunc } from '~/spec'
-import useDsb from '~/stores/dsb/hooks'
+import useDsbEdit from '~/stores/dsbEdit/hooks'
 
 import { FIELD } from '../constant'
 import useHelper from './useHelper'
@@ -15,10 +15,10 @@ type TRet = {
 
 /** Exposes topbar state and actions through the shared React hook boundary. */
 export default function useTopbar(): TRet {
-  const dsb$ = useDsb()
-  const { isChanged, edit } = useHelper()
+  const dsb$ = useDsbEdit()
+  const { isChanged, edit, isPending } = useHelper()
 
-  const { topbarEnabled, topbarBg, saving } = dsb$
+  const { topbarEnabled, topbarBg } = dsb$
 
   const isLayoutTouched = isChanged(FIELD.TOPBAR_ENABLED)
   const isBgTouched = isChanged(FIELD.TOPBAR_BG)
@@ -29,6 +29,6 @@ export default function useTopbar(): TRet {
     isLayoutTouched,
     isBgTouched,
     bg: topbarBg,
-    saving,
+    saving: isPending,
   }
 }

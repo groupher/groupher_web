@@ -2,21 +2,21 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 import type { TBgRenderSpec } from '~/lib/bg'
 
 import BgLayer from './BgLayer'
 import { getVisualIdentity, preloadImage, shouldCrossfade } from './helper'
 import useSalon from './salon'
-import type { TProps } from './spec'
+import type { TBgLayerHandle, TProps } from './spec'
 
 /**
  * Shared runtime renderer for Bg backgrounds.
  *
- * This is used for the global Wallpaper through `WallpaperRenderer`, and it is
- * also the component CoverEditor should use for background previews/runtime
- * rendering once Cover adopts Bg. It receives a render spec instead of
- * reading module stores, so business adapters stay outside the common layer.
+ * This remains the live renderer for Wallpaper editor previews and CoverEditor
+ * runtime rendering. Published site shells use `StaticWallpaper` instead. It
+ * receives a render spec instead of reading module stores, so business adapters
+ * stay outside the common layer.
  *
  * @example
  * const renderSpec = composeBgRenderSpec(bg)
@@ -26,9 +26,14 @@ export default function BgRenderer({
   className,
   renderSpec,
   patternSize = 'auto',
+  renderSize,
+  renderLogicalSize,
   positioned = true,
+  preferVgpu = false,
   previewSubscriber,
   textureScale = 1,
+  onReady,
+  onFailure,
 }: TProps) {
   const s = useSalon()
   // Transition state: prop changes are synchronized by the effect below, with optional crossfade/preload.
@@ -36,6 +41,9 @@ export default function BgRenderer({
   const [exitingSpec, setExitingSpec] = useState<TBgRenderSpec | null>(null)
   const committedSpecRef = useRef(renderSpec)
   const activeSpecRef = useRef(renderSpec)
+  const activeLayerRef = useRef<TBgLayerHandle | null>(null)
+  const previewVersionRef = useRef(0)
+  const previewSpecRef = useRef<TBgRenderSpec | null>(null)
   const transitionTokenRef = useRef(0)
 
   const applySpec = useCallback((nextSpec: TBgRenderSpec) => {
@@ -62,29 +70,57 @@ export default function BgRenderer({
 
   useEffect(() => {
     committedSpecRef.current = renderSpec
+
+    // A debounced control commit can arrive immediately after its final
+    // preview frame. Keep the imperative frame as the active visual and only
+    // update the committed reference in that case.
+    if (
+      previewSpecRef.current &&
+      JSON.stringify(previewSpecRef.current) === JSON.stringify(renderSpec)
+    ) {
+      activeSpecRef.current = renderSpec
+      previewSpecRef.current = null
+      return
+    }
+
+    previewSpecRef.current = null
     applySpec(renderSpec)
   }, [applySpec, renderSpec])
 
   useEffect(() => {
     if (!previewSubscriber) return
 
-    return previewSubscriber((previewSpec) => {
-      applySpec(previewSpec ?? committedSpecRef.current)
+    return previewSubscriber((frame) => {
+      if (frame.version <= previewVersionRef.current) return
+
+      previewVersionRef.current = frame.version
+      previewSpecRef.current = frame.renderSpec
+      activeLayerRef.current?.updatePreviewFrame(frame.renderSpec ?? committedSpecRef.current)
     })
   }, [applySpec, previewSubscriber])
 
   return (
-    <div
-      className={cnMerge(positioned && s.wrapperPositioned, s.wrapper, className)}
-      aria-hidden='true'
-    >
-      <BgLayer renderSpec={activeSpec} patternSize={patternSize} textureScale={textureScale} />
+    <div className={cn(positioned && s.wrapperPositioned, s.wrapper, className)} aria-hidden='true'>
+      <BgLayer
+        ref={activeLayerRef}
+        renderSpec={activeSpec}
+        patternSize={patternSize}
+        renderSize={renderSize}
+        renderLogicalSize={renderLogicalSize}
+        preferVgpu={preferVgpu}
+        textureScale={textureScale}
+        onReady={onReady}
+        onFailure={onFailure}
+      />
       {exitingSpec && (
         <BgLayer
           key={getVisualIdentity(exitingSpec)}
           renderSpec={exitingSpec}
           exiting
           patternSize={patternSize}
+          renderSize={renderSize}
+          renderLogicalSize={renderLogicalSize}
+          preferVgpu={preferVgpu}
           textureScale={textureScale}
           onExited={() => setExitingSpec(null)}
         />

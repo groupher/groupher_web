@@ -1,7 +1,7 @@
 import useTrans from '~/hooks/useTrans'
 
 import useSalon, { cn } from '../salon/custom/dns_table'
-import type { TDnsRecord } from './constant'
+import type { TDnsRecord } from './spec'
 
 type Props = {
   records: TDnsRecord[]

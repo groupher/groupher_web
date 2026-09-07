@@ -1,4 +1,6 @@
-import useSalon, { cnMerge } from './salon'
+import { cn } from '~/css'
+
+import useSalon from './salon'
 
 type TProps = {
   title: string
@@ -12,8 +14,8 @@ export default function SidebarContent({ title }: TProps) {
       <div className={s.nav}>
         <h4 className={s.communityTitle}>{title}</h4>
         <div className={s.navCenter}>
-          <div className={cnMerge(s.bar, 'w-8')} />
-          <div className={cnMerge(s.bar, s.primaryBar, s.primaryChip)} />
+          <div className={cn(s.barBase, 'h-1.5 w-8 opacity-30')} />
+          <div className={cn(s.barBase, s.primaryBar, s.primaryChip)} />
         </div>
 
         <div className={s.circle} />
@@ -21,36 +23,36 @@ export default function SidebarContent({ title }: TProps) {
 
       <div className={s.mainSidebar}>
         <div className={s.sidebarNav}>
-          <div className={cnMerge(s.bar, s.sideNavItem)} />
-          <div className={cnMerge(s.bar, s.sideNavItemWide)} />
-          <div className={cnMerge(s.bar, s.sideNavActive)} />
-          <div className={cnMerge(s.bar, s.sideNavItem)} />
-          <div className={cnMerge(s.bar, s.sideNavItem)} />
-          <div className={cnMerge(s.bar, s.sideNavActive)} />
-          <div className={cnMerge(s.bar, s.sideNavItem)} />
-          <div className={cnMerge(s.bar, s.sidebarBottom, 'mt-auto')} />
+          <div className={cn(s.barBase, s.sideNavItem)} />
+          <div className={cn(s.barBase, s.sideNavItemWide)} />
+          <div className={cn(s.barBase, s.sideNavActive)} />
+          <div className={cn(s.barBase, s.sideNavItem)} />
+          <div className={cn(s.barBase, s.sideNavItem)} />
+          <div className={cn(s.barBase, s.sideNavActive)} />
+          <div className={cn(s.barBase, s.sideNavItem)} />
+          <div className={cn(s.barBase, s.sidebarBottom, 'mt-auto')} />
         </div>
 
         <div className={s.vDivider} />
 
         <div className={s.sidebarMain}>
           <div className={s.sectionBlock}>
-            <div className={cnMerge(s.bar, s.contentTitle, 'w-1/2')} />
-            <div className={cnMerge(s.bar, s.contentDigestShort)} />
+            <div className={cn(s.barBase, 'h-1.5 w-1/2 opacity-30')} />
+            <div className={cn(s.barBase, s.contentDigestShort)} />
           </div>
           <div className={s.sectionBlock}>
-            <div className={cnMerge(s.bar, s.contentTitle)} />
-            <div className={cnMerge(s.bar, s.contentDigest)} />
+            <div className={cn(s.barBase, s.contentTitle)} />
+            <div className={cn(s.barBase, s.contentDigest)} />
           </div>
           <div className={s.sectionBlock}>
-            <div className={cnMerge(s.bar, 'w-24')} />
-            <div className={cnMerge(s.bar, s.contentDigestShort)} />
-            <div className={cnMerge(s.bar, 'w-16')} />
+            <div className={cn(s.barBase, 'h-1.5 w-24 opacity-30')} />
+            <div className={cn(s.barBase, s.contentDigestShort)} />
+            <div className={cn(s.barBase, 'h-1.5 w-16 opacity-30')} />
           </div>
           <div className={s.sectionBlock}>
-            <div className={cnMerge(s.bar, 'w-24')} />
-            <div className={cnMerge(s.bar, s.contentDigestShort)} />
-            <div className={cnMerge(s.bar, 'w-16')} />
+            <div className={cn(s.barBase, 'h-1.5 w-24 opacity-30')} />
+            <div className={cn(s.barBase, s.contentDigestShort)} />
+            <div className={cn(s.barBase, 'h-1.5 w-16 opacity-30')} />
           </div>
         </div>
       </div>

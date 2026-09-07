@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { DSB_DOC_EVENT } from '~/const/dsb/docs'
-import { browserQuery } from '~/graphql/client'
+import { browserGraphQLRequest } from '~/graphql/client'
 import useTrans from '~/hooks/useTrans'
 import { send } from '~/lib/signal'
 import useCommunity from '~/stores/community/hooks'
@@ -67,7 +67,7 @@ export default function useDraftSnapshot(draftState: TDraftEditorState): void {
 
       setSnapshotStatus((current) => ({ ...current, creating: true }))
 
-      browserQuery(S.checkpointDocDraftSnapshot, { community, id: docId })
+      browserGraphQLRequest(S.checkpointDocDraftSnapshot, { community, id: docId })
         .then(() => {
           if (latestDocIdRef.current !== docId) return
 

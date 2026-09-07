@@ -10,7 +10,7 @@ import useTrans from '~/hooks/useTrans'
 import type { TCrumbConfig } from '~/spec'
 import Tabs from '~/ui/Switcher/Tabs'
 import Portal from '~/unit/DsbThread/Portal'
-import useSalon, { cnMerge } from '~/unit/DsbThread/salon'
+import useSalon, { cn } from '~/unit/DsbThread/salon'
 
 const seg = INFO_TABS.segment
 const CRUMB_CONFIG = {
@@ -32,7 +32,7 @@ export default function InfoLayout({ children }: { children: ReactNode }) {
   const crumbItems = useDsbCrumbItems(CRUMB_CONFIG)
 
   return (
-    <div className={cnMerge(s.content, 'w-2/5')}>
+    <div className={cn(s.content, 'w-2/5')}>
       <Portal
         title={t('dashboard.info.portal.title')}
         desc={t('dashboard.info.portal.desc')}

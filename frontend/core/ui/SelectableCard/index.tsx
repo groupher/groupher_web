@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import CheckedSVG from '~/icons/CheckBold'
 
-import useSalon, { cnMerge } from './salon'
+import useSalon, { cn } from './salon'
 
 type TProps = {
   children: ReactNode
@@ -30,7 +30,7 @@ export default function SelectableCard({
   return (
     <button
       type='button'
-      className={cnMerge(s.wrapper, className)}
+      className={cn(s.wrapper, className)}
       aria-label={ariaLabel}
       aria-pressed={active}
       disabled={disabled}
@@ -41,7 +41,7 @@ export default function SelectableCard({
           <CheckedSVG className={s.checkIcon} />
         </span>
       )}
-      <span className={cnMerge(s.content, contentClassName)}>{children}</span>
+      <span className={cn(s.content, contentClassName)}>{children}</span>
     </button>
   )
 }
