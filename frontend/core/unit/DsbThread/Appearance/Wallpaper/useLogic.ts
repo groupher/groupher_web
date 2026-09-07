@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { clone } from 'ramda'
 import { createContext, use, useMemo, useRef, useState } from 'react'
 
@@ -16,9 +16,8 @@ import {
 } from '~/lib/wallpaperMesh'
 import type { TGradientRecipe, TGradientRenderer } from '~/lib/wallpaperMesh'
 import { wallpaperEditorKeys, wallpaperKeys, wallpaperQueries } from '~/query'
-import type { TWallpaperData, TWallpaperType } from '~/spec'
+import type { TParsedWallpaper, TWallpaperData, TWallpaperType } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
-import useStaticWallpaper from '~/stores/staticWallpaper/hooks'
 import {
   getWallpaperThemeSavablePatch,
   pickWallpaperThemeState,
@@ -168,14 +167,12 @@ export function useLogicValue(): TWallpaperLogic {
   const wallpaper$ = useWallpaperDomain()
   const liveWallpaper$ = useWallpaperStore()
   const community$ = useCommunity()
-  const publishedWallpaper$ = useStaticWallpaper()
   const { getWallpaper } = useFullWallpaper()
   const { isDarkTheme } = useTheme()
   const { t } = useTrans()
   const queryClient = useQueryClient()
-  const [wallpaperStateVersion, setWallpaperStateVersion] = useState(
-    () => publishedWallpaper$?.version ?? 0,
-  )
+  const { data: wallpaperConfig } = useQuery(wallpaperQueries.config(community$.slug))
+  const wallpaperStateVersion = wallpaperConfig?.wallpaper?.version ?? 0
   const pendingSaveRef = useRef<{ fingerprint: string; idempotencyKey: string } | null>(null)
 
   const [tab, setTab] = useState<TTab>(() =>
@@ -221,7 +218,14 @@ export function useLogicValue(): TWallpaperLogic {
     },
     onSuccess: ({ result, submitted }, { community }) => {
       liveWallpaper$.acceptSubmitted(submitted)
-      setWallpaperStateVersion(result.version)
+      queryClient.setQueryData<TParsedWallpaper>(wallpaperKeys.config(community), (current) => {
+        if (!current?.wallpaper) return current
+
+        return {
+          ...current,
+          wallpaper: { ...current.wallpaper, version: result.version },
+        }
+      })
       pendingSaveRef.current = null
       void queryClient.invalidateQueries({ queryKey: wallpaperKeys.config(community), exact: true })
       void queryClient.invalidateQueries({
@@ -233,10 +237,7 @@ export function useLogicValue(): TWallpaperLogic {
     onError: (err) => {
       console.error('## wallpaper publish error: ', err)
       if (graphqlErrorCode(err) === '5702' || graphqlErrorCode(err) === '5708') {
-        void queryClient
-          .fetchQuery(wallpaperQueries.config(community$.slug))
-          .then((fresh) => setWallpaperStateVersion(fresh.wallpaper?.version ?? 0))
-          .catch(() => undefined)
+        void queryClient.fetchQuery(wallpaperQueries.config(community$.slug)).catch(() => undefined)
       }
       toast(extractErrorMessage(err), 'error')
     },
