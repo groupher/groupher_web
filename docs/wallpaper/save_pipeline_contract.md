@@ -154,11 +154,14 @@ Phase 0 必须冻结并记录以下契约，才能执行 hard cut：
 - **restore**：恢复 Wallpaper Snapshot 不改变 Dashboard `contentShadow`。整套外观恢复必须显式纳入跨域输入，
   不能让只切 active pointer 的 mutation 隐式回退它。
 - **digest/Receipt**：hard cut 时移除旧 `renderConfig.contentShadow`，升级 settings/request digest version，
-  重生成 Receipt、幂等和跨语言 fixtures。已有 v1 Snapshot/Receipt 必须在切换前一次性迁移；运行时不保留旧 key。
-- **跨版本 restore**：不得原地重写既有 v1 Snapshot，也不得在 restore 路径兼容旧字段。cutover 前为当前
-  active（以及产品承诺仍可恢复的 retained history）物化新的 v2 Snapshot，移除旧 `contentShadow`，复用或
-  复制既有图片资产后切换 active pointer；旧 v1 Snapshot 保留为 archive，但不再进入可恢复 history，restore
-  直接返回不可恢复错误。旧 v1 Receipt 不 re-digest，必须在 cutover 前排空或失效。
+  重生成新模型的幂等和跨语言 fixtures。不迁移或兼容 pre-cutover Snapshot/Receipt；旧数据不进入新读、restore
+  或 replay 路径，运行时不保留旧 key。
+- **历史边界与配额**：不做 v1→v2 Snapshot materialization。post-cutover 新 Snapshot 才进入最近 5 次
+  history，`deleteAfter` 宽限期和 5 个名额只作用于这些新行；不存在迁移镜像占用配额的问题。restore 只接受
+  post-cutover Snapshot ID，旧 ID 视为不支持。
+- **Dashboard 冲突映射**：shadow mutation 复用 `5702`（revision/version conflict）和 `5708`
+  （idempotency conflict），canonical Query key 固定为 `dsbKeys.config(community)`；成功先写回该 Query，
+  冲突只 exact invalidate 该 Query 并保留本地 shadow draft。
 
 如果部署环境不得不分阶段，普通页面必须继续读取旧来源，直到 editor、普通页和 schema 同时切换；临时接收旧
 wire 时，Backend 必须在同一 Wallpaper publish 事务内镜像写入 Dashboard 字段，并设置明确的截止版本。该双写
@@ -234,8 +237,8 @@ input WallpaperPublishInput {
 - 同一事务只更新当前 theme 的 active Snapshot 指针、`version + 1` 和 Publish Receipt；另一支指针不动。
   Dashboard `contentShadow` 不属于该事务，也不随此 pointer restore 隐式回退；若选择整套外观 restore，
   必须显式纳入跨域操作；
-- pre-cutover 的旧 settings schema version 不属于当前 restore contract；跨版本 Snapshot 必须先完成一次性
-  v2 materialization，不能依赖 restore 时的旧字段解码；
+- pre-cutover 的旧 settings schema version 不属于当前 restore contract；不做跨版本 Snapshot materialization，
+  不能依赖 restore 时的旧字段解码；post-cutover 新 Snapshot 才进入可恢复 history；
 - 前端不提交或接收 active/candidate/owner ref。历史恢复使用公开的 `WallpaperSnapshot.id` 是唯一例外；
 - 恢复不重新导出或上传图片，只将指定 theme 的 active 指针切到 retained Snapshot，并递增 version；
 - `wallpaperHistory(theme)` 只返回当前查询 theme 的最近历史；`dashboard.wallpaper` 不暴露 Snapshot ID。
@@ -276,8 +279,8 @@ Snapshot JSON 内的 `settingsSchemaVersion` 与数据库 `settings_schema_versi
 - [x] Assets Hub claim 字段使用 `type`，不使用项目自有 `kind`。
 - [x] Frontend/CoverEditor 共享 `TBgConfig` 消费方通过全仓 typecheck。
 - [x] 补齐 Linear/Radial/Mesh 全 renderer 的跨语言 settings golden fixture 与 codec 分支校验。
-- [ ] 完成 v1 Snapshot/Receipt 的 cutover 迁移：新建 v2 Snapshot 而非原地改写，关闭旧 history restore，排空
-      旧 Receipt，并为跨版本 restore/不可恢复错误补测试。
+- [ ] 完成历史 hard cut：不迁移或兼容 pre-cutover Snapshot/Receipt，关闭旧 history restore/replay，验证
+      post-cutover history 的最近 5 次与 `deleteAfter` 配额不被迁移镜像占用，并为旧 ID 不支持错误补测试。
 - [ ] `WallpaperEditor` route-only 请求已存在，但普通 `PageCommunity` 仍选择并解析 `wallpaperSettings`；待普通页
       Valtio 读点迁移完成后，普通页面才只请求已发布 `dashboard.wallpaper` 与独立的
       `dashboard.contentShadow`。

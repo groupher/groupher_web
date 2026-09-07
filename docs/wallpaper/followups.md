@@ -124,8 +124,8 @@ settings 和对应的静态 Profile 图片；active 指针按 theme 分开。不
       Valtio 读点迁移完成后删除遗留字段和解析链路。
 - [ ] 将 `contentShadow` draft 从 Wallpaper store/savable patch 拆出，补齐 Dashboard mutation 的 per-theme
       revision、幂等 key、baseline reconcile，以及 Appearance Save 两 mutation 的部分成功矩阵。
-- [ ] 完成 settings v1→v2 的一次性 Snapshot materialization：旧 Snapshot 归档不可 restore，旧 Receipt 排空，
-      不在运行时增加旧字段兼容解码。
+- [ ] 完成历史 hard cut：不迁移或兼容 pre-cutover Snapshot/Receipt，关闭旧 history restore/replay；post-cutover
+      新 Snapshot 才进入最近 5 次 history 与 `deleteAfter` 配额。
 - [x] 迁移范围外仍保留 v1 `static_revision` 语义的文档已明确标注为 incident/archive；仅历史归档文档保留原术语，
       不作为当前实现依据。
 

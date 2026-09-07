@@ -307,8 +307,8 @@ output 三个方向。Absinthe 只负责 typed envelope 的字段映射；`rende
 
 fixture 改名时同步更新 `packages/contracts/package.json` export、Frontend codec test 和
 `backend/api/test/groupher_server/cms/wallpaper_test.exs` 的引用。当前协议尚未部署，因此 settings 契约
-从 v1 起步；如果实施前发现已有不可丢弃的 Batch/Receipt 使用 authoring v1，则必须改为新增 settings
-v2 并按 digest-version 排空规则处理，不能静默覆写旧 fixture 语义。
+从 v1 起步；实施前若发现旧 authoring Batch/Receipt 数据，不迁移、不兼容，也不让新路径读取或重放，按部署
+清理策略直接退出旧数据生命周期。
 
 `packages/contracts/fixtures` 中只保留一份人工审阅的 canonical settings fixture 集合，由实际理解
 settings 的 Frontend 与 Phoenix 测试共同消费；Assets Hub 继续只消费自身需要的 manifest/profile/digest
@@ -674,11 +674,10 @@ Batch 和 Profile version 不可变；`activated_at`、`history_used_at`、`dele
 镜像，不是第二个版本真相源。NONE 的 canonical settings 内容仍是 `{type: 'none'}`，完整 envelope 为
 `{settingsSchemaVersion: <version>, type: 'none'}`。
 
-跨版本 restore 以 hard cut 为边界：既有 v1 Snapshot 保持不可变，不在原行上删除 `contentShadow` 或重算
-digest。cutover 前为当前 active 以及产品承诺仍可恢复的 retained history 新建 v2 Snapshot，复用或复制
-原有图片资产后切换 active pointer；旧 v1 Snapshot 只保留为 archive，不再进入可恢复 history，restore
-遇到旧版本直接返回不可恢复错误。旧 v1 Receipt 不 re-digest，必须在 cutover 前排空或失效；运行时不增加
-旧字段兼容解码路径。
+历史 restore 以 hard cut 为边界：不对既有 v1 Snapshot 做原地改写、digest 重算或 v1→v2 materialization；
+pre-cutover Snapshot/Receipt 不属于新模型的读、restore 或 replay contract。post-cutover 的新 Snapshot 才进入
+最近 5 次 history，`deleteAfter` 宽限期和名额只计算这些新行，不存在迁移镜像挤占用户历史的问题；运行时不
+增加旧字段兼容解码路径。
 
 不保留 `renderer_version`：当前静态图片已经烘焙并随 Snapshot 保存，恢复只复用原图片，不按 renderer
 版本重新渲染。`settings_schema_version` 负责 settings 解码，`profile_version` 负责图片矩阵，
@@ -748,9 +747,9 @@ Digest。调整如下：
 - [ ] 完成 Dashboard `contentShadow` 的一次性回填、独立 mutation 与普通页/Editor 同步切换；从 Wallpaper
       settings、Snapshot canonical JSON、RequestDigest 和 Receipt fixtures 中移除旧
       `renderConfig.contentShadow`，并升级对应版本；不保留 editor wire 兼容例外。
-- [ ] 冻结并实施跨版本 restore 边界：新建 v2 Snapshot 而非原地改写 v1，关闭旧 history restore，排空旧
-      Receipt，并覆盖 active/retained history materialization 与不可恢复错误；读取旧/不支持版本不得静默
-      fallback 为默认 settings。
+- [ ] 冻结并实施历史 hard cut：不迁移或兼容 pre-cutover Snapshot/Receipt，关闭旧 history restore/replay，
+      post-cutover 新 Snapshot 才进入最近 5 次与 `deleteAfter` 配额；读取旧/不支持版本不得静默 fallback
+      为默认 settings。
 - [ ] 实施并验收 [Wallpaper NONE 与页面背景绘制边界](./content_background_fallback.md) 的 Root/Content
       条件绘制；Wallpaper 不补色的代码边界已完成，浏览器验收仍待完成。
 
@@ -761,8 +760,8 @@ Digest。调整如下：
 - 修改 light 不创建或切换 dark Snapshot，反之亦然；
 - 当前 theme 指针、`version + 1` 和 Receipt 在同一个数据库事务中提交；
 - NONE 可进入历史并恢复；
-- cutover 前的 v1 Snapshot 不进入可恢复 history；active/retained history 已通过新建 v2 Snapshot 完成物化，
-  restore 不依赖旧字段兼容解码，旧/不支持版本也不会静默 fallback 为默认 settings；
+- cutover 前的 Snapshot 不进入 post-cutover 可恢复 history，也不做 v1→v2 materialization；restore 不依赖旧
+  字段兼容解码，旧/不支持版本也不会静默 fallback 为默认 settings；
 - 普通页面只查询 `dashboard.wallpaper` 与独立的 `dashboard.contentShadow`（迁移目标）；
 - `dashboard.wallpaper` 外层始终非空；未初始化或 NONE 只令对应 branch 为 `null`；
 - branch 为 `null` 时 Frontend 不补齐 Content 数据，只是不渲染 Wallpaper 图片层；
@@ -793,5 +792,6 @@ Digest。调整如下：
   失败，不能任选一处继续解码。
 - 两个不同 theme 基于同一旧 `baseVersion` 保存时，后提交者得到预期并发冲突；本地 dirty 设置保留并
   显示区别于普通失败的重试文案。
-- Dashboard content-shadow 使用独立 per-theme revision；其冲突只刷新 Dashboard Query 并保留本地 shadow
-  draft，不覆盖 Wallpaper draft，也不复用 Wallpaper `baseVersion`。
+- Dashboard content-shadow 使用独立 per-theme revision；`5702` 表示 revision conflict、`5708` 表示
+  idempotency conflict，canonical Query key 固定为 `dsbKeys.config(community)`。冲突只刷新该 Query 并保留
+  本地 shadow draft，不覆盖 Wallpaper draft，也不复用 Wallpaper `baseVersion`。

@@ -233,8 +233,10 @@ editor Query/mutation 返回给 Appearance Save coordinator，不进入 StaticWa
 `wallpaperStateVersion` 不再复制到局部 `useState`。`getQueryData` 只能读瞬时 cache，不能替代订阅；hook 应通过
 同一个 Query key 的 `useQuery`/既有 route Query 结果读取 version，不会因此产生第二份请求缓存。
 
-错误码 `5702`（version conflict）和 `5708`（idempotency conflict）是当前触发 canonical Wallpaper Query
-refetch 的入口。迁移必须保留该映射，并保证 refetch 只更新 confirmed version/基线，不覆盖本地 draft。
+错误码 `5702`（version/revision conflict）和 `5708`（idempotency conflict）是两条 mutation lane 触发
+canonical Query refetch 的入口：Wallpaper lane 使用 `wallpaperKeys.config(community)`，Dashboard shadow
+lane 使用 `dsbKeys.config(community)`。迁移必须保留该映射，并保证 refetch 只更新对应 confirmed
+version/revision 基线，不覆盖另一 lane 或本地 draft。
 
 ## 6. Valtio / Query / Context 目标边界
 
@@ -305,14 +307,19 @@ Phase 0 必须冻结以下持久化与生命周期契约，才能执行上述 ha
 4. **restore 生命周期**：恢复 Wallpaper Snapshot 不回退 `dashboard.contentShadow`。如果产品要求恢复整套
    外观，必须由显式的跨域 restore 输入同时更新 Dashboard 字段；不能让只切 active pointer 的 mutation 隐式改变它。
 5. **digest/Receipt**：hard cut 时 Wallpaper `renderConfig` 只保留背景四键，升级 settings/request digest
-   version，重生成跨语言 fixtures；旧 v1 数据若已存在，必须在切换前完成一次性数据迁移，禁止运行时保留旧 key。
-6. **跨版本 restore**：不得原地重写既有 v1 Snapshot，也不得在运行时为 restore 增加旧字段兼容解码。cutover
-   前必须为当前 active（以及产品承诺仍可恢复的 retained history）物化新的 v2 Snapshot，移除旧
-   `contentShadow`，复用或复制既有图片资产后切换 active pointer；旧 v1 Snapshot 保留为 archive，但不再
-   出现在可恢复 history，restore 直接返回不可恢复错误。旧 v1 Receipt 不 re-digest，必须在 cutover 前排空或失效。
+   version，重生成跨语言 fixtures；不迁移、不兼容 pre-cutover 的 Snapshot/Receipt，旧数据不进入新读、restore
+   或 replay 路径，也不保留运行时旧 key。
+6. **历史边界与配额**：不做 v1→v2 Snapshot materialization，也不为历史 Snapshot 创建镜像。最近 5 次
+   history 只统计 post-cutover 新模型 Snapshot；`deleteAfter` 宽限期和 5 个名额只作用于这些新 Snapshot，
+   不存在迁移镜像占用配额的问题。restore 只接受 post-cutover Snapshot ID，旧 ID 直接视为不支持；运行时
+   不增加旧字段兼容解码或旧 Receipt replay。
+7. **Dashboard 冲突映射**：Dashboard content-shadow lane 复用现有错误码语义：`5702` 表示 revision/version
+   conflict，`5708` 表示 idempotency conflict；canonical Query key 固定为 `dsbKeys.config(community)`。
+   成功先 `setQueryData` 写回 revision，冲突只对该 key 做 exact invalidate，保留本地 shadow draft；不得
+   刷新或覆盖 `wallpaperKeys.config` / Wallpaper draft。
 
 Phase 0 的验收记录必须同时写明：存储位置、per-theme shape、mutation 名称、事务归属、真相源、restore 是否联动、
-SSR 回填终止条件、版本升级、跨版本 restore 边界和已有 Snapshot/Receipt 的一次性迁移方案。
+SSR 回填终止条件、版本升级、post-cutover history 边界/配额，以及 Dashboard shadow 的错误码和 Query key 映射。
 
 ## 7. 测试矩阵
 
@@ -325,7 +332,7 @@ SSR 回填终止条件、版本升级、跨版本 restore 边界和已有 Snapsh
 - 当前 theme 单独提交；
 - 保存飞行期间的新编辑不会被旧成功响应覆盖；
 - fingerprint 相同复用旧 idempotency key；
-- `5702/5708` refetch version 且不覆盖本地 draft；
+- `5702/5708` 按 lane refetch 对应 canonical Query，且不覆盖本地 draft；
 - Dashboard content-shadow mutation 的 revision conflict 不覆盖本地 shadow draft；
 - NONE 与 generated 的当前请求顺序；
 - export、prepare、create、upload、publish、cancel 各失败窗口的当前基线。
@@ -368,8 +375,8 @@ SSR 回填终止条件、版本升级、跨版本 restore 边界和已有 Snapsh
 - 成功后先同步更新 Wallpaper Query version，再失效 static/editor Query；
 - Dashboard mutation 成功后同步更新 content-shadow Query revision；
 - 下一次连续保存读取新 version；
-- `5702/5708` 保留本地 draft，并刷新 Query version；
-- Dashboard revision conflict 保留本地 shadow draft，并刷新 Dashboard Query；
+- `5702/5708` 保留对应 lane 的本地 draft，并刷新对应 Query version/revision；
+- Dashboard revision conflict 精确刷新 `dsbKeys.config(community)`，并保留本地 shadow draft；
 - 错误 toast 使用原始发布错误；
 - editor 卸载不把 confirmed server state 留在普通页面 Valtio 中。
 
@@ -418,8 +425,8 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 - mutation success 先 `setQueryData` 写回新 version，再刷新 static/editor Query；
 - Dashboard content-shadow revision 由对应 Dashboard Query 独占；mutation success 先写回该 revision，再
   刷新普通页/编辑器 Query；Wallpaper 与 Dashboard 不共享 version；
-- `5702/5708` 统一 refetch canonical Query；
-- Dashboard content-shadow revision conflict 只 refetch Dashboard Query，不覆盖本地 shadow draft；
+- `5702/5708` 按 lane refetch `wallpaperKeys.config(community)` 或 `dsbKeys.config(community)`；
+- Dashboard content-shadow revision conflict 只 refetch `dsbKeys.config(community)`，不覆盖本地 shadow draft；
 - 验证请求在飞期间的新 draft 保留逻辑。
 
 ### Phase 4：普通页面读点迁移
@@ -454,7 +461,8 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 - 普通页面不查询 settings/history，不挂载 authoring store；
 - 保存中继续编辑、两 mutation 部分成功、导出失败、prepare 空响应、部分上传失败、publish 结果未知和
   cancel 失败均有明确测试；
-- `5702/5708` 冲突刷新 Query，但不覆盖本地 draft；
+- `5702/5708` 按 lane 刷新对应 Query，但不覆盖本地 draft；Dashboard lane 固定使用
+  `dsbKeys.config(community)`；
 - 生产行为仍是当前 theme 单独保存，非 NONE 固定发布四张响应式图片。
 
 ## 10. 非目标
