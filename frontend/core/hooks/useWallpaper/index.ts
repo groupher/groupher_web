@@ -11,7 +11,7 @@ import useStaticWallpaper from '~/stores/staticWallpaper/hooks'
 import createWallpaperStore from '~/stores/wallpaper'
 import { INITIAL_WALLPAPER_THEME_STATE } from '~/stores/wallpaper/constant'
 import { StoreContext } from '~/stores/wallpaper/context'
-import { pickWallpaperThemeState } from '~/stores/wallpaper/helper'
+import { initStateByTheme, pickWallpaperThemeState } from '~/stores/wallpaper/helper'
 import type { TWallpaperThemeState } from '~/stores/wallpaper/spec'
 
 const EMPTY_WALLPAPER_STORE = createWallpaperStore()
@@ -59,12 +59,12 @@ export default function useWallpaper(): TRet {
   const state = toWallpaperBgCssConfig(
     store
       ? pickWallpaperThemeState(snapshot, isDarkTheme)
-      : {
-          ...INITIAL_WALLPAPER_THEME_STATE,
+      : initStateByTheme({
+          gradient: undefined,
           source:
             staticWallpaper?.[isDarkTheme ? 'darkSource' : 'lightSource'] ??
             INITIAL_WALLPAPER_THEME_STATE.source,
-        },
+        }),
   )
 
   return useMemo(

@@ -248,6 +248,20 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
 
       const contentHash = await timed('contentHash', timings, () => objectContentHash(capability))
 
+      if (capability.purpose === 'generated_image') {
+        await timed('batchAssetRegister', timings, () =>
+          registerGeneratedAsset({
+            capability,
+            capabilityToken,
+            environment,
+            entry: {
+              checksum: contentHash,
+              storageKey: capability.objectKey,
+            },
+          }),
+        )
+      }
+
       const asset = await timed('phoenixComplete', timings, () =>
         completePhoenixUpload({
           capability,
@@ -266,20 +280,6 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
           },
         }),
       )
-
-      if (capability.purpose === 'generated_image') {
-        await timed('batchAssetRegister', timings, () =>
-          registerGeneratedAsset({
-            capability,
-            capabilityToken,
-            environment,
-            entry: {
-              checksum: contentHash,
-              storageKey: capability.objectKey,
-            },
-          }),
-        )
-      }
 
       logUpload('asset_upload_finalized', {
         assetId: 'id' in asset ? asset.id : null,

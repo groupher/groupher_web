@@ -38,6 +38,7 @@
     "@tanstack/react-table": "^8.21.3",
     "@tanstack/react-virtual": "^3.13.18",
     "@tanstack/table-core": "8.21.3",
+    "@vgpu/wgsl": "0.3.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cobe": "^2.0.1",
@@ -83,12 +84,12 @@
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
     "@types/sanitize-html": "^2.16.1",
-    "@vgpu/wgsl": "0.3.1",
     "@vitejs/plugin-react": "^6.0.5",
     "@webgpu/types": "0.1.72",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwindcss": "4.3.3",
+    "vite": "^8.2.0",
     "vitest": "^4.1.10"
   },
   "peerDependencies": {

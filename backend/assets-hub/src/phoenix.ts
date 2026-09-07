@@ -282,7 +282,7 @@ export const completePhoenixUpload = async ({
   return result.completeCommunityAssetUpload
 }
 
-/** Records a generated asset in the persistent Assets Hub batch after Phoenix completion. */
+/** Records a generated asset in its persistent batch before Phoenix completion. */
 export const registerGeneratedAsset = async ({
   capability,
   capabilityToken,

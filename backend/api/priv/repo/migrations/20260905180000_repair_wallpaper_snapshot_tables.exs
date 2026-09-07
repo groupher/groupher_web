@@ -102,9 +102,6 @@ defmodule GroupherServer.Repo.Migrations.RepairWallpaperSnapshotTables do
   end
 
   def down do
-    drop_if_exists(table(:wallpaper_publish_receipts, prefix: @prefix))
-    drop_if_exists(table(:community_wallpapers, prefix: @prefix))
-    drop_if_exists(table(:wallpaper_snapshot_images, prefix: @prefix))
-    drop_if_exists(table(:wallpaper_snapshots, prefix: @prefix))
+    :ok
   end
 end

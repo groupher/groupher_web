@@ -43,20 +43,17 @@ const parseColor = (value: string): readonly [number, number, number, number] =>
   ]
 }
 
-/** Maps the canonical background render spec to the shared wallpaper WGSL uniforms. */
-export const toVgpuMeshParams = (
-  renderSpec: TBgRenderSpec,
-  patternRepeat: readonly [number, number] = [1, 1],
-  patternReady = true,
+/** Packs the color and stop arrays shared by production and browser POC meshes. */
+export const packVgpuColors = (
+  sourceColors: readonly string[],
+  sourceStops: readonly number[],
 ): Record<string, unknown> => {
-  const meshRecipe = renderSpec.meshRecipe
-  const gradientRecipe = renderSpec.gradientRecipe
   const colors = Array.from({ length: MAX_COLORS }, (_, index) =>
-    parseColor(renderSpec.colors[index] ?? renderSpec.colors.at(-1) ?? '#d8b9e3'),
+    parseColor(sourceColors[index] ?? sourceColors.at(-1) ?? '#d8b9e3'),
   )
   const stops = Array.from(
     { length: MAX_COLORS },
-    (_, index) => clamp(renderSpec.colorStops[index] ?? 100, 0, 100) / 100,
+    (_, index) => clamp(sourceStops[index] ?? 100, 0, 100) / 100,
   )
 
   return {
@@ -68,7 +65,20 @@ export const toVgpuMeshParams = (
     color5: colors[5],
     stops0: stops.slice(0, 4),
     stops1: stops.slice(4, 6),
-    colorCount: Math.max(1, Math.min(MAX_COLORS, renderSpec.colors.length)),
+    colorCount: Math.max(1, Math.min(MAX_COLORS, sourceColors.length)),
+  }
+}
+
+/** Maps the canonical background render spec to the shared wallpaper WGSL uniforms. */
+export const toVgpuMeshParams = (
+  renderSpec: TBgRenderSpec,
+  patternRepeat: readonly [number, number] = [1, 1],
+  patternReady = true,
+): Record<string, unknown> => {
+  const meshRecipe = renderSpec.meshRecipe
+  const gradientRecipe = renderSpec.gradientRecipe
+  return {
+    ...packVgpuColors(renderSpec.colors, renderSpec.colorStops),
     meshModel:
       renderSpec.type === BG_RENDER_TYPE.LINEAR_GRADIENT
         ? 0

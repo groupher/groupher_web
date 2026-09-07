@@ -140,8 +140,8 @@ export default function useDsbFieldSave(): TRet {
     params: Record<string, unknown>,
     readConfirmed?: TDsbSaveRequest['readConfirmed'],
     okCb: ((data: unknown) => void) | null = null,
+    savedFields: readonly TDsbEditableFieldKey[] = resolveSavedFields(field),
   ): void => {
-    const savedFields = resolveSavedFields(field)
     save({
       execute: () => browserGraphQLRequest<unknown>(schema, params),
       field,
@@ -203,15 +203,25 @@ export default function useDsbFieldSave(): TRet {
 
     if (field === FIELD.BASE_INFO) {
       const request = buildBaseInfoSave({ ...saveContext(), subTab })
-      handleMutation(field, request.schema, request.params, request.readConfirmed, () => {
-        const communityPatch = {}
+      const savedFields = Object.keys(request.params).filter(
+        (key): key is TDsbEditableFieldKey => key !== 'community',
+      )
+      handleMutation(
+        field,
+        request.schema,
+        request.params,
+        request.readConfirmed,
+        () => {
+          const communityPatch = {}
 
-        for (const key of COMMUNITY_BASEINFO_KEYS) {
-          if (request.params[key] !== undefined) communityPatch[key] = request.params[key]
-        }
+          for (const key of COMMUNITY_BASEINFO_KEYS) {
+            if (request.params[key] !== undefined) communityPatch[key] = request.params[key]
+          }
 
-        patchCommunityConfig(queryClient, community, communityPatch)
-      })
+          patchCommunityConfig(queryClient, community, communityPatch)
+        },
+        savedFields,
+      )
       return
     }
 

@@ -15,19 +15,29 @@ defmodule GroupherServer.Test.CMS.Assets.Endpoints do
     assert Endpoints.fetch("ASSETS_HUB_DELETE_ENDPOINT", env) == :error
   end
 
-  test "fails active runtime validation with every missing role" do
+  test "fails production runtime validation with every missing role" do
     assert_raise ArgumentError,
                  "missing Assets Hub endpoints: ASSETS_HUB_BATCH_ENDPOINT, ASSETS_HUB_DELETE_ENDPOINT",
                  fn ->
                    Endpoints.validate!(
                      %{"ASSETS_PUBLIC_ENDPOINT" => "https://assets.example"},
-                     :mock
+                     :prod
                    )
                  end
   end
 
-  test "test and seed runtimes do not require external service endpoints" do
+  test "non-production runtimes do not require external service endpoints" do
+    assert :ok = Endpoints.validate!(%{}, :dev)
+    assert :ok = Endpoints.validate!(%{}, :mock)
     assert :ok = Endpoints.validate!(%{}, :test)
     assert :ok = Endpoints.validate!(%{}, :seed_prod)
+  end
+
+  test "rejects malformed endpoint values" do
+    assert Endpoints.fetch("ASSETS_PUBLIC_ENDPOINT", %{"ASSETS_PUBLIC_ENDPOINT" => "localhost"}) ==
+             :error
+
+    assert Endpoints.fetch("ASSETS_PUBLIC_ENDPOINT", %{"ASSETS_PUBLIC_ENDPOINT" => "ftp://x.test"}) ==
+             :error
   end
 end

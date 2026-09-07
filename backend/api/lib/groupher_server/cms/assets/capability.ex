@@ -39,7 +39,7 @@ defmodule GroupherServer.CMS.Assets.Capability do
          {:ok, payload} <- Base.url_decode64(encoded, padding: false),
          {:ok, actual_signature} <- Base.url_decode64(signature, padding: false),
          true <- secure_compare(actual_signature, :crypto.mac(:hmac, :sha256, secret(), encoded)),
-         {:ok, decoded} <- Jason.decode(payload) do
+         {:ok, decoded} when is_map(decoded) <- Jason.decode(payload) do
       {:ok, decoded}
     else
       _ -> {:error, :invalid_capability}

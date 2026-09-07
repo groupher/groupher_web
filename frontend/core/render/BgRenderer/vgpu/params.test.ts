@@ -4,6 +4,7 @@ import { GRADIENT_RENDERER, GRADIENT_SHAPE, WALLPAPER_TEXTURE } from '~/lib/wall
 
 import { isVgpuWallpaperSpec } from './eligibility'
 import { toVgpuMeshParams } from './params'
+import { getPatternRepeat } from './pattern'
 
 const createMeshSpec = (
   renderer: GRADIENT_RENDERER.FLOW | GRADIENT_RENDERER.LIQUID,
@@ -173,5 +174,9 @@ describe('BgRenderer vgpu contract', () => {
     expect(params.meshModel).toBe(4)
     expect(params.imageReady).toBe(0)
     expect(params.imageSize).toEqual([1, 1])
+  })
+
+  it('preserves image ratio when only pattern height is explicit', () => {
+    expect(getPatternRepeat([1200, 600], 'auto 200px', [400, 200])).toEqual([3, 3])
   })
 })

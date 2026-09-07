@@ -4519,7 +4519,7 @@ export type PrepareWallpaperUploadMutation = {
     batchCapability: string
     expiresAt: unknown
     uploadIntents: Array<{ capability: string; uploadRef: string; profile: WallpaperProfile }>
-  } | null
+  }
 }
 
 export type PublishWallpaperMutationVariables = Exact<{
@@ -4527,7 +4527,7 @@ export type PublishWallpaperMutationVariables = Exact<{
   input: WallpaperPublishInput
 }>
 
-export type PublishWallpaperMutation = { publishWallpaper: { version: number } | null }
+export type PublishWallpaperMutation = { publishWallpaper: { version: number } }
 
 export type UpdateDashboardContentShadowMutationVariables = Exact<{
   community: string
@@ -4543,9 +4543,7 @@ export type RestoreWallpaperSnapshotMutationVariables = Exact<{
   input: WallpaperRestoreSnapshotInput
 }>
 
-export type RestoreWallpaperSnapshotMutation = {
-  restoreWallpaperSnapshot: { version: number } | null
-}
+export type RestoreWallpaperSnapshotMutation = { restoreWallpaperSnapshot: { version: number } }
 
 export type ContentImportJobFieldsFragment = {
   id: string

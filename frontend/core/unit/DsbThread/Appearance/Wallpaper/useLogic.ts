@@ -270,7 +270,10 @@ export function useLogicValue(): TWallpaperLogic {
     onError: (err) => {
       console.error('## wallpaper publish error: ', err)
       if (graphqlErrorCode(err) === '5702' || graphqlErrorCode(err) === '5708') {
-        void queryClient.fetchQuery(wallpaperQueries.config(community$.slug)).catch(() => undefined)
+        void queryClient
+          .invalidateQueries({ queryKey: wallpaperKeys.config(community$.slug), exact: true })
+          .then(() => queryClient.fetchQuery(wallpaperQueries.config(community$.slug)))
+          .catch(() => undefined)
       }
       toast(extractErrorMessage(err), 'error')
     },

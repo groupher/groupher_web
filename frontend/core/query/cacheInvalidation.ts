@@ -65,6 +65,7 @@ const DASHBOARD_CONFIG_MUTATIONS = new Set([
   'UpdateDashboardFooterLinks',
   'UpdateDashboardFooterOnelineLinks',
   'UpdateDashboardLayout',
+  'UpdateDashboardContentShadow',
   'PublishWallpaper',
   'RestoreWallpaperSnapshot',
   'UpdateDashboardPressConfig',

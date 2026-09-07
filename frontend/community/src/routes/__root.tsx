@@ -21,8 +21,7 @@ export const Route = createRootRouteWithContext<TRouterContext>()({
       loadThemeSeed(),
       loadCommunityRequestContext(),
     ])
-    if (requestContext.directOriginPage) throw notFound()
-    return { theme, renderedAt: Date.now() }
+    return { theme, renderedAt: Date.now(), directOriginPage: requestContext.directOriginPage }
   },
   head: () => ({
     meta: [
@@ -35,6 +34,8 @@ export const Route = createRootRouteWithContext<TRouterContext>()({
 })
 
 function RootComponent() {
+  const { directOriginPage } = Route.useLoaderData()
+  if (directOriginPage) throw notFound()
   return <Outlet />
 }
 

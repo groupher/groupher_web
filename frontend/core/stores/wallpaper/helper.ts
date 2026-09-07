@@ -24,7 +24,7 @@ import type { TInit, TStore, TWallpaperPatch, TWallpaperState, TWallpaperThemeSt
  * const state = initStateByTheme({ source: 'sky', type: 'gradient' })
  * // state.gradient === GRADIENT_WALLPAPER.sky
  */
-const initStateByTheme = (
+export const initStateByTheme = (
   init: Partial<TWallpaperThemeState> | null | undefined = {},
 ): TWallpaperThemeState => {
   const state = {

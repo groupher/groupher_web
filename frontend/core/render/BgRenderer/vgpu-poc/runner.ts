@@ -185,6 +185,11 @@ export const runVgpuWallpaperPoc = async (
   canvases: Readonly<Record<TVgpuPocModel, HTMLCanvasElement>>,
   specs: readonly [TVgpuPocMeshSpec, TVgpuPocMeshSpec],
 ): Promise<TVgpuPocController> => {
+  const models = new Set(specs.map((spec) => spec.model))
+  if (models.size !== 2 || !models.has('flow') || !models.has('liquid')) {
+    throw new Error('VGPU_POC_REQUIRES_FLOW_AND_LIQUID_SPECS')
+  }
+
   const initStartedAt = performance.now()
   const gpu = await initGpuWithTimeout()
   const initMs = performance.now() - initStartedAt

@@ -98,30 +98,40 @@ export const exportWallpaperBatch = async ({
     }
   }
 
-  const exported = await runtime.exportVgpuWallpaperBatch(jobs)
-  const results: TExportedImageVariant[] = []
+  for (const job of jobs)
+    onProgress?.({ stage: 'render', status: 'running', targetKey: job.targetKey })
 
-  for (const variant of exported) {
-    const target = targetByKey.get(variant.targetKey.replace(/^(light|dark)-/, ''))
-    if (!target) throw new Error(`WALLPAPER_EXPORT_TARGET_UNKNOWN: ${variant.targetKey}`)
+  try {
+    const exported = await runtime.exportVgpuWallpaperBatch(jobs)
+    const results: TExportedImageVariant[] = []
 
-    onProgress?.({ stage: 'render', status: 'done', targetKey: variant.targetKey })
-    onProgress?.({ stage: 'encode', status: 'done', targetKey: variant.targetKey })
-    onProgress?.({ stage: 'validate', status: 'done', targetKey: variant.targetKey })
-    onProgress?.({ stage: 'checksum', status: 'running', targetKey: variant.targetKey })
-    const checksum = await checksumImageFile(variant.file)
-    onProgress?.({ stage: 'checksum', status: 'done', targetKey: variant.targetKey })
-    results.push({
-      blob: variant.blob,
-      checksum,
-      height: target.height,
-      mimeType: variant.mimeType,
-      targetKey: variant.targetKey,
-      width: target.width,
-    })
+    for (const variant of exported) {
+      const target = targetByKey.get(variant.targetKey.replace(/^(light|dark)-/, ''))
+      if (!target) throw new Error(`WALLPAPER_EXPORT_TARGET_UNKNOWN: ${variant.targetKey}`)
+
+      onProgress?.({ stage: 'render', status: 'done', targetKey: variant.targetKey })
+      onProgress?.({ stage: 'encode', status: 'done', targetKey: variant.targetKey })
+      onProgress?.({ stage: 'validate', status: 'done', targetKey: variant.targetKey })
+      onProgress?.({ stage: 'checksum', status: 'running', targetKey: variant.targetKey })
+      const checksum = await checksumImageFile(variant.file)
+      onProgress?.({ stage: 'checksum', status: 'done', targetKey: variant.targetKey })
+      results.push({
+        blob: variant.blob,
+        checksum,
+        height: target.height,
+        mimeType: variant.mimeType,
+        targetKey: variant.targetKey,
+        width: target.width,
+      })
+    }
+
+    return results
+  } catch (error) {
+    for (const job of jobs) {
+      onProgress?.({ stage: 'render', status: 'failed', targetKey: job.targetKey })
+    }
+    throw error
   }
-
-  return results
 }
 
 /**

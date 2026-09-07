@@ -242,13 +242,14 @@ export const mutateArticleUpvote = (
   viewerScope: string,
 ): Promise<void> => {
   const articleKey = `${article.community.slug}:${article.meta.thread}:${article.innerId}`
+  const intentKey = `${viewerScope}:${articleKey}`
   let intents = articleUpvoteIntents.get(queryClient)
   if (!intents) {
     intents = new Map()
     articleUpvoteIntents.set(queryClient, intents)
   }
 
-  const activeIntent = intents.get(articleKey)
+  const activeIntent = intents.get(intentKey)
   if (activeIntent) {
     // Each bridge event represents one user toggle. Do not trust a second target
     // calculated from a render that may still carry the pre-mutation viewer flag.
@@ -264,9 +265,9 @@ export const mutateArticleUpvote = (
       await executeArticleUpvoteMutation(queryClient, article, applied, viewerScope, articleKey)
     } while (intent.desired !== applied)
   })().finally(() => {
-    if (intents?.get(articleKey) === intent) intents.delete(articleKey)
+    if (intents?.get(intentKey) === intent) intents.delete(intentKey)
   })
-  intents.set(articleKey, intent)
+  intents.set(intentKey, intent)
 
   return intent.promise
 }

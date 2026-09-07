@@ -37,7 +37,7 @@ defmodule GroupherServer.CMS.Assets.GeneratedBatch.PublishCapability do
     manifest
     |> Enum.sort_by(&Map.fetch!(&1, :variant_key))
     |> Enum.map(&manifest_wire_entry/1)
-    |> canonical_json()
+    |> GroupherServer.CMS.CanonicalJSON.encode()
   end
 
   @doc "Returns the v1 digest of the canonical camelCase manifest wire encoding."
@@ -141,25 +141,4 @@ defmodule GroupherServer.CMS.Assets.GeneratedBatch.PublishCapability do
 
   defp parse_datetime(value) when is_binary(value), do: DateTime.from_iso8601(value)
   defp parse_datetime(_value), do: :error
-
-  defp canonical_json(value) when is_map(value) do
-    pairs =
-      value
-      |> Enum.map(fn {key, item} -> {to_string(key), item} end)
-      |> Enum.sort_by(&elem(&1, 0))
-      |> Enum.map(fn {key, item} -> Jason.encode!(key) <> ":" <> canonical_json(item) end)
-
-    "{" <> Enum.join(pairs, ",") <> "}"
-  end
-
-  defp canonical_json(value) when is_list(value),
-    do: "[" <> (value |> Enum.map(&canonical_json/1) |> Enum.join(",")) <> "]"
-
-  defp canonical_json(true), do: "true"
-  defp canonical_json(false), do: "false"
-  defp canonical_json(nil), do: "null"
-  defp canonical_json(value) when is_atom(value), do: canonical_json(Atom.to_string(value))
-  defp canonical_json(value) when is_binary(value), do: Jason.encode!(value)
-  defp canonical_json(value) when is_integer(value), do: Integer.to_string(value)
-  defp canonical_json(value) when is_float(value), do: Jason.encode!(value)
 end

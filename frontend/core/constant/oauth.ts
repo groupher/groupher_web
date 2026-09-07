@@ -18,4 +18,4 @@ export const AUTH_ENDPOINT = (process.env.NEXT_PUBLIC_AUTH_ENDPOINT || defaultAu
   '',
 )
 
-export const LOGOUT_ENDPOINT = AUTH_ENDPOINT.replace(API_ROUTE.AUTH, AUTH_ROUTE.LOGOUT)
+export const LOGOUT_ENDPOINT = `${AUTH_ENDPOINT}${AUTH_ROUTE.LOGOUT.replace(API_ROUTE.AUTH, '')}`

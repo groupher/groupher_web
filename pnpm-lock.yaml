@@ -753,6 +753,9 @@ importers:
       '@tanstack/table-core':
         specifier: 8.21.3
         version: 8.21.3
+      '@vgpu/wgsl':
+        specifier: 0.3.1
+        version: 0.3.1(@vgpu/adapter-node@0.3.1(supports-color@10.2.2))
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -883,9 +886,6 @@ importers:
       '@types/sanitize-html':
         specifier: ^2.16.1
         version: 2.16.1
-      '@vgpu/wgsl':
-        specifier: 0.3.1
-        version: 0.3.1(@vgpu/adapter-node@0.3.1(supports-color@10.2.2))
       '@vitejs/plugin-react':
         specifier: ^6.0.5
         version: 6.1.1(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0))
@@ -901,6 +901,9 @@ importers:
       tailwindcss:
         specifier: 4.3.3
         version: 4.3.3
+      vite:
+        specifier: ^8.2.0
+        version: 8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0)
       vitest:
         specifier: ^4.1.10
         version: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@24.13.3)(jsdom@29.1.1)(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.0))

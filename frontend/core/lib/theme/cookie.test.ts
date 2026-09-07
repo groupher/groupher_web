@@ -20,4 +20,11 @@ describe('theme cookie domain', () => {
   it('keeps unknown hosts host-only', () => {
     expect(getThemeCookieDomain('localhost')).toBe('')
   })
+
+  it.each(['.localhost', '.app.localhost', '127.0.0.1', '[::1]'])(
+    'rejects non-shareable configured domain %s',
+    (domain) => {
+      expect(getThemeCookieDomain(domain.replace(/^\./, ''), domain)).toBe('')
+    },
+  )
 })

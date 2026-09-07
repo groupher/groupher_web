@@ -20,6 +20,12 @@ export default defineConfig({
   },
   publicDir: path.join(dashRoot, 'public'),
   resolve: {
+    alias:
+      process.env.E2E_AUTH_STACK === '1'
+        ? {
+            'cloudflare:workers': path.join(dashRoot, 'src/server/cloudflare-workers.e2e.ts'),
+          }
+        : undefined,
     tsconfigPaths: true,
   },
   server: {

@@ -1,6 +1,11 @@
 import { DSB_INFO_ROUTE } from '~/const/route'
 import type { TDsbFieldMap } from '~/spec'
 import SettingsSchema from '~/unit/DsbThread/schema/settings'
+import {
+  BASEINFO_BASIC_KEYS,
+  BASEINFO_LOGOS_KEYS,
+  BASEINFO_OTHER_KEYS,
+} from '~/unit/DsbThread/constant'
 
 import type { TDsbSaveContext, TDsbSaveRequest } from './types'
 
@@ -26,29 +31,21 @@ const readDocFaqResponse = (data: unknown): Partial<TDsbFieldMap> => {
   return docFaq ? { docFaq } : {}
 }
 
-const BASIC_KEYS: readonly (keyof TDsbFieldMap)[] = [
-  'locale',
-  'title',
-  'desc',
-  'introduction',
-  'homepage',
-  'slug',
-]
-
-const OTHER_KEYS: readonly (keyof TDsbFieldMap)[] = ['city', 'techstack']
-
-/** Builds the minimal enable-field mutation input for the changed toggle. */
+/** Builds the enable mutation from every field changed in the current draft. */
 export const buildEnableSave = ({
   community,
   dashboard,
   original,
 }: TDsbSaveContext): TDsbSaveRequest => {
   const current = dashboard.enable
-  const changedKey = Object.keys(current).find((key) => current[key] !== original[key])
+  const changedKeys = Object.keys(current).filter((key) => current[key] !== original[key])
 
   return {
     schema: SettingsSchema.updateDashboardEnable,
-    params: changedKey ? { community, [changedKey]: current[changedKey] } : { community },
+    params: Object.fromEntries([
+      ['community', community],
+      ...changedKeys.map((key) => [key, current[key]]),
+    ]),
     readConfirmed: readEnableResponse,
   }
 }
@@ -61,7 +58,13 @@ export const buildBaseInfoSave = ({
 }: TDsbSaveContext & { subTab: string }): TDsbSaveRequest => {
   const params: Record<string, unknown> = { community }
   const fields =
-    subTab === DSB_INFO_ROUTE.OTHER ? OTHER_KEYS : subTab === DSB_INFO_ROUTE.BASIC ? BASIC_KEYS : []
+    subTab === DSB_INFO_ROUTE.OTHER
+      ? BASEINFO_OTHER_KEYS
+      : subTab === DSB_INFO_ROUTE.BASIC
+        ? BASEINFO_BASIC_KEYS
+        : subTab === DSB_INFO_ROUTE.LOGOS
+          ? BASEINFO_LOGOS_KEYS
+          : []
 
   for (const key of fields) params[key] = dashboard[key]
 

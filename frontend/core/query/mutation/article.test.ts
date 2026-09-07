@@ -139,4 +139,18 @@ describe('article query mutation helpers', () => {
     expect(queryClient.getQueryData<TArticle>(detailKey)?.upvotesCount).toBe(4)
     expect(queryClient.getMutationCache().getAll()).toHaveLength(0)
   })
+
+  it('keeps in-flight intents isolated by viewer', async () => {
+    const queryClient = setupClient()
+    browserGraphQLRequest.mockResolvedValue({
+      upvotePost: { innerId: '42', upvotesCount: 4, viewerHasUpvoted: true },
+    })
+
+    await Promise.all([
+      mutateArticleUpvote(queryClient, article, true, 'alice'),
+      mutateArticleUpvote(queryClient, article, true, 'bob'),
+    ])
+
+    expect(browserGraphQLRequest).toHaveBeenCalledTimes(2)
+  })
 })

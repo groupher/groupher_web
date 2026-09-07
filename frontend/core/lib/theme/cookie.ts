@@ -13,6 +13,9 @@ const normalizeThemeCookieDomain = (domain: string | undefined): string => {
   if (!value) return ''
 
   const root = value.startsWith('.') ? value.slice(1) : value
+  const isIpv4 = /^(?:\d{1,3}\.){3}\d{1,3}$/.test(root)
+  const isIpv6 = root.includes(':')
+  if (root === 'localhost' || root.endsWith('.localhost') || isIpv4 || isIpv6) return ''
   const isValid = root.split('.').every((label) => /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(label))
   return isValid ? `.${root}` : ''
 }

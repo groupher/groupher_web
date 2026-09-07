@@ -36,7 +36,7 @@ export const patchCommunityConfig = (
   patch: Partial<TCommunity>,
 ): void => {
   queryClient.setQueryData<TCommunity>(communityKeys.config(community), (previous) =>
-    previous ? { ...previous, ...patch } : previous,
+    previous ? projectCommunityConfig({ ...previous, ...patch }) : previous,
   )
 }
 

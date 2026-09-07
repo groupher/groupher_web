@@ -289,7 +289,6 @@ class BgVgpuRenderer implements TBgVgpuRenderer {
       this.meshParams.flow = this.renderSpec.flow
       this.meshParams.globalBrightness = Math.max(0, this.renderSpec.brightness) / 100
       this.meshParams.globalSaturation = Math.max(0, this.renderSpec.saturation) / 100
-      this.meshParams.blurRadius = toVgpuBlurRadius(this.renderSpec.blurIntensity)
       this.meshParams.textureIntensity = this.renderSpec.hasTexture
         ? Math.min(1, Math.max(0, this.renderSpec.texture.intensity / 100))
         : 0
@@ -304,6 +303,11 @@ class BgVgpuRenderer implements TBgVgpuRenderer {
       resolution[0] = size[0]
       resolution[1] = size[1]
     }
+    const pixelScale = Math.max(
+      size[0] / Math.max(this.logicalSize[0], 1),
+      size[1] / Math.max(this.logicalSize[1], 1),
+    )
+    this.meshParams.blurRadius = toVgpuBlurRadius(this.renderSpec.blurIntensity) * pixelScale
     const imageSize = this.meshParams.imageSize as number[] | undefined
     if (imageSize && imageSize.length >= 2) {
       imageSize[0] = this.imageWidth

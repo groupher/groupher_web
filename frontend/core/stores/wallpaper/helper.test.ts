@@ -6,6 +6,7 @@ import { INITIAL_WALLPAPER_STATE } from './constant'
 import {
   getWallpaperThemeSavablePatch,
   initState,
+  initStateByTheme,
   pickWallpaperThemeState,
   toWallpaperThemePatch,
 } from './helper'
@@ -13,6 +14,12 @@ import {
 describe('stores/wallpaper/helper', () => {
   it('normalizes nullable server theme branches without adding a second default', () => {
     expect(initState({ light: null, dark: null })).toEqual(INITIAL_WALLPAPER_STATE)
+  })
+
+  it('resolves a source-only gradient instead of retaining the default recipe', () => {
+    expect(initStateByTheme({ source: 'teal_indigo_mauve', gradient: undefined }).gradient).toEqual(
+      expect.objectContaining({ preset: 'teal_indigo_mauve' }),
+    )
   })
 
   it('resolves the active light or dark wallpaper state', () => {

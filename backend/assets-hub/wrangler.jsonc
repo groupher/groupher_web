@@ -1,12 +1,13 @@
 {
   "$schema": "../../node_modules/wrangler/config-schema.json",
-  "name": "assets-hub",
+  "name": "assets-hub-dev",
   "main": "src/worker.ts",
   "compatibility_date": "2026-07-28",
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
   "vars": {
     "ASSETS_PUBLIC_ENDPOINT": "https://assets.groupher.localhost",
+    "ASSETS_HUB_BATCH_ENDPOINT": "https://assets.groupher.localhost",
     "ENVIRONMENT": "development",
     "PHOENIX_GRAPHQL_ENDPOINT": "http://127.0.0.1:4001/graphiql",
     "SERVICE_AUTH_ISSUER": "https://auth.groupher.localhost",
@@ -18,6 +19,7 @@
       "name": "assets-hub",
       "vars": {
         "ASSETS_PUBLIC_ENDPOINT": "https://assets.groupher.com",
+        "ASSETS_HUB_BATCH_ENDPOINT": "https://assets.groupher.com",
         "ENVIRONMENT": "production",
         "PHOENIX_GRAPHQL_ENDPOINT": "https://api.groupher.com/graphiql",
         "SERVICE_AUTH_ISSUER": "https://auth.groupher.com",

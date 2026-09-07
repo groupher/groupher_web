@@ -110,6 +110,7 @@ const emptyBgRenderSpec = (source: string): TBgRenderSpec => ({
  */
 export const toBgConfig = (store: TWallpaperThemeState): TBgConfig => ({
   assetPublicRef: store.assetPublicRef,
+  staticAssetPublicRef: store.staticAssetPublicRef,
   source: store.source,
   pattern: store.pattern,
   gradient: store.gradient,

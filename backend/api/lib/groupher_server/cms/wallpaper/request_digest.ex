@@ -34,7 +34,7 @@ defmodule GroupherServer.CMS.Wallpaper.RequestDigest do
         theme: theme,
         request_digest_version: @active_version
       }) do
-    canonical_json(%{
+    GroupherServer.CMS.CanonicalJSON.encode(%{
       "baseVersion" => base_version,
       "communityId" => community_id,
       "settings" => settings,
@@ -46,25 +46,4 @@ defmodule GroupherServer.CMS.Wallpaper.RequestDigest do
     do: {:error, {:unsupported_request_digest_version, version}}
 
   def canonical(_input), do: {:error, {:unsupported_request_digest_version, nil}}
-
-  defp canonical_json(value) when is_map(value) do
-    pairs =
-      value
-      |> Enum.map(fn {key, item} -> {to_string(key), item} end)
-      |> Enum.sort_by(&elem(&1, 0))
-      |> Enum.map(fn {key, item} -> Jason.encode!(key) <> ":" <> canonical_json(item) end)
-
-    "{" <> Enum.join(pairs, ",") <> "}"
-  end
-
-  defp canonical_json(value) when is_list(value),
-    do: "[" <> (value |> Enum.map(&canonical_json/1) |> Enum.join(",")) <> "]"
-
-  defp canonical_json(true), do: "true"
-  defp canonical_json(false), do: "false"
-  defp canonical_json(nil), do: "null"
-  defp canonical_json(value) when is_atom(value), do: canonical_json(Atom.to_string(value))
-  defp canonical_json(value) when is_binary(value), do: Jason.encode!(value)
-  defp canonical_json(value) when is_integer(value), do: Integer.to_string(value)
-  defp canonical_json(value) when is_float(value), do: Jason.encode!(value)
 end

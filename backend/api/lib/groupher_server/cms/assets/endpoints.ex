@@ -14,10 +14,9 @@ defmodule GroupherServer.CMS.Assets.Endpoints do
   def fetch(key, env \\ System.get_env()) when is_binary(key) and is_map(env) do
     case Map.get(env, key) do
       value when is_binary(value) ->
-        case String.trim(value) do
-          "" -> :error
-          endpoint -> {:ok, String.trim_trailing(endpoint, "/")}
-        end
+        value
+        |> String.trim()
+        |> normalize_endpoint()
 
       _ ->
         :error
@@ -36,7 +35,7 @@ defmodule GroupherServer.CMS.Assets.Endpoints do
   @doc "Fails application startup when an active Assets Hub boundary is unconfigured."
   @spec validate!(map(), atom()) :: :ok
   def validate!(env \\ System.get_env(), app_env \\ Application.get_env(:groupher_server, :env)) do
-    if app_env in [:test, :seed_prod] do
+    if app_env != :prod do
       :ok
     else
       missing = Enum.reject(@required_keys, &match?({:ok, _}, fetch(&1, env)))
@@ -46,6 +45,16 @@ defmodule GroupherServer.CMS.Assets.Endpoints do
       else
         raise ArgumentError, "missing Assets Hub endpoints: #{Enum.join(missing, ", ")}"
       end
+    end
+  end
+
+  defp normalize_endpoint(endpoint) do
+    uri = URI.parse(endpoint)
+
+    if uri.scheme in ["http", "https"] and is_binary(uri.host) and uri.host != "" do
+      {:ok, String.trim_trailing(endpoint, "/")}
+    else
+      :error
     end
   end
 end

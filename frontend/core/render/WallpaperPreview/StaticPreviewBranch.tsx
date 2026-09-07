@@ -17,7 +17,7 @@ export default function StaticPreviewBranch({ branch, patternSize, theme }: TPro
       )}
       style={{ filter: branch.filter, background: branch.background }}
     >
-      {branch.patternImage && (
+      {branch.hasPattern && branch.patternImage && (
         <div className='abs-full-pe-none' style={getPatternLayerStyle(branch, patternSize)} />
       )}
     </div>

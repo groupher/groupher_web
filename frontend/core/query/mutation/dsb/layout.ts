@@ -6,7 +6,11 @@ import type { TDsbSaveContext, TDsbSaveRequest } from './types'
 
 type TLayoutResponse = { updateDashboardLayout?: { layout?: Partial<TDsbFieldMap> } }
 const readLayoutResponse = (data: unknown): Partial<TDsbFieldMap> =>
-  (data as TLayoutResponse)?.updateDashboardLayout?.layout ?? {}
+  Object.fromEntries(
+    Object.entries((data as TLayoutResponse)?.updateDashboardLayout?.layout ?? {}).filter(
+      ([, value]) => value != null,
+    ),
+  )
 
 /** Builds the broadcast-enable layout mutation input. */
 export const buildBroadcastEnableSave = ({

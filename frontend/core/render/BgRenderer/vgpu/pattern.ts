@@ -30,8 +30,11 @@ export const getPatternRepeat = (
   const [canvasWidth, canvasHeight] = canvasSize
   const [imageWidth, imageHeight] = imageSize
   const [widthToken, heightToken] = patternSize.trim().split(/\s+/)
-  const width = parsePixels(widthToken) ?? imageWidth
-  const height = parsePixels(heightToken) ?? (width * imageHeight) / imageWidth
+  const parsedWidth = parsePixels(widthToken)
+  const parsedHeight = parsePixels(heightToken)
+  const width =
+    parsedWidth ?? (parsedHeight ? (parsedHeight * imageWidth) / imageHeight : imageWidth)
+  const height = parsedHeight ?? (width * imageHeight) / imageWidth
 
   return [canvasWidth / Math.max(width, 1), canvasHeight / Math.max(height, 1)]
 }

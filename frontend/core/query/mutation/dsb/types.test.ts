@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { DSB_INFO_ROUTE } from '~/const/route'
 import type { TDsbFieldMap } from '~/spec'
 
-import { buildBaseInfoSave } from './baseInfo'
+import { buildBaseInfoSave, buildEnableSave } from './baseInfo'
 import { buildLayoutSave } from './layout'
 
 const dashboard = { title: 'submitted', footerLayout: 'GROUP' } as TDsbFieldMap
@@ -33,5 +33,29 @@ describe('Dsb domain response normalization', () => {
         },
       }),
     ).toEqual({})
+  })
+
+  it('submits both logo fields from the Logos tab', () => {
+    const request = buildBaseInfoSave({
+      ...context,
+      dashboard: { ...dashboard, logo: '/logo.png', favicon: '/favicon.ico' },
+      subTab: DSB_INFO_ROUTE.LOGOS,
+    })
+
+    expect(request.params).toEqual({
+      community: 'home',
+      favicon: '/favicon.ico',
+      logo: '/logo.png',
+    })
+  })
+
+  it('submits every changed enable toggle', () => {
+    const request = buildEnableSave({
+      community: 'home',
+      dashboard: { enable: { post: true, doc: true } } as TDsbFieldMap,
+      original: { post: false, doc: false } as TDsbFieldMap,
+    })
+
+    expect(request.params).toEqual({ community: 'home', post: true, doc: true })
   })
 })

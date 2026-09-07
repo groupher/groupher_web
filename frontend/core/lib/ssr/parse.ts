@@ -90,7 +90,7 @@ export const parseDashboard = (community: TCommunity): TParseDashboard => {
     mediaReports: (mediaReports || []).map((item, index) => ({
       ...item,
       editUrl: item.url,
-      index: item.index || index,
+      index: item.index ?? index,
     })),
     thirdPartyAnalytics,
     enabledThirdPartyAnalytics,

@@ -18,7 +18,7 @@ defmodule GroupherServer.Test.Mutation.CMS.Dashboard do
   describe "[mutation cms community]" do
     @update_content_shadow_query S.Dsb.m(:update_dashboard_content_shadow)
     test "updates content shadow through the ordinary dashboard field path", ~m(community)a do
-      rule_conn = simu_conn(:user, cms: %{community.slug => %{"community.update" => true}})
+      rule_conn = simu_conn(:user, cms: %{"community.update" => true})
 
       result =
         gq_mutation(rule_conn, @update_content_shadow_query, %{
@@ -35,7 +35,7 @@ defmodule GroupherServer.Test.Mutation.CMS.Dashboard do
 
     @prepare_wallpaper_upload_query S.Dsb.m(:prepare_wallpaper_upload)
     test "prepares a Wallpaper upload from typed profile input", ~m(community)a do
-      rule_conn = simu_conn(:user, cms: %{community.slug => %{"community.update" => true}})
+      rule_conn = simu_conn(:user, cms: %{"community.update" => true})
       checksum = Base.encode64(:binary.copy(<<0>>, 32))
 
       images =
@@ -83,7 +83,7 @@ defmodule GroupherServer.Test.Mutation.CMS.Dashboard do
 
     test "returns the public field-level error contract for invalid Wallpaper image metadata",
          ~m(community)a do
-      rule_conn = simu_conn(:user, cms: %{community.slug => %{"community.update" => true}})
+      rule_conn = simu_conn(:user, cms: %{"community.update" => true})
       checksum = Base.encode64(:binary.copy(<<0>>, 32))
 
       images =

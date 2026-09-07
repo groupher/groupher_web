@@ -13,6 +13,7 @@ import StaticWallpaperProvider from '~/stores/staticWallpaper/provider'
 import ThemeStoreProvider from '~/stores/theme/provider'
 import type { TInit as TThemeInit } from '~/stores/theme/spec'
 import type { TInit as TWallpaperInit } from '~/stores/wallpaper/spec'
+import WallpaperStoreProvider from '~/stores/wallpaper/provider'
 
 type TProps = {
   children: ReactNode
@@ -57,9 +58,11 @@ export default function StaticShellProvider({
           <LocaleStoreProvider initData={{ locale, localeData }}>
             <MetricProvider value={METRIC.LANDING}>
               <CommunityStoreProvider initData={community}>
-                <StaticWallpaperProvider initData={wallpaper?.wallpaper}>
-                  {children}
-                </StaticWallpaperProvider>
+                <WallpaperStoreProvider initData={wallpaper}>
+                  <StaticWallpaperProvider initData={wallpaper?.wallpaper}>
+                    {children}
+                  </StaticWallpaperProvider>
+                </WallpaperStoreProvider>
               </CommunityStoreProvider>
             </MetricProvider>
           </LocaleStoreProvider>

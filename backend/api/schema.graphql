@@ -778,16 +778,16 @@ type RootMutationType {
   ): Dsb
 
   "Publishes one current-theme Wallpaper Snapshot"
-  publishWallpaper(community: String!, input: WallpaperPublishInput!): WallpaperPublishResult
+  publishWallpaper(community: String!, input: WallpaperPublishInput!): WallpaperPublishResult!
 
   "Updates the Dashboard-owned content surface shadow"
   updateDashboardContentShadow(community: String!, enabled: Boolean!): Dsb
 
   "Prepares the generated images for one current-theme Wallpaper save"
-  prepareWallpaperUpload(community: String!, input: WallpaperUploadPrepareInput!): WallpaperUploadPreparation
+  prepareWallpaperUpload(community: String!, input: WallpaperUploadPrepareInput!): WallpaperUploadPreparation!
 
   "Restores one retained Wallpaper Snapshot"
-  restoreWallpaperSnapshot(community: String!, input: WallpaperRestoreSnapshotInput!): WallpaperPublishResult
+  restoreWallpaperSnapshot(community: String!, input: WallpaperRestoreSnapshotInput!): WallpaperPublishResult!
 
   "update enable in dashboard"
   updateDashboardEnable(
