@@ -136,7 +136,9 @@ Shell `source` 会覆盖父进程已经注入的同名变量，因此 Dev Hub �
 
 1. Dev Hub 新增稳定的 `LOCAL_SERVICE_AUTH_ISSUER=https://auth.groupher.localhost`；Auth、Phoenix、Assets Hub、Content Import、Press 与 Dash 统一使用该 issuer。
 2. JWKS 与 token endpoint 继续使用 loopback 地址，身份与网络拓扑不再共用同一个常量。
-3. 新增 `be.start.managed`，Dev Hub 启动 Phoenix 时不再加载 `.env.local`；原 `be.start` 保留独立启动时的本地 fallback 行为。
+3. `be.start.managed` 不加载 `.env.local`；原 `be.start` 保留独立启动时的本地 fallback 行为。Dev Hub
+   进程管理层仅为 Phoenix 白名单补充 `SERVICE_AUTH_CLIENT_ID` / `SERVICE_AUTH_CLIENT_SECRET`，合并顺序为
+   service definition > parent env > file fallback，网络和身份拓扑变量不从文件读取。
 4. Dash、Auth、Assets Hub、Content Import、Press 的 `.env.example` 已统一 issuer 语义。
 5. Verifier 保留 claims、unknown kid、JWKS 等内部错误；Context 使用独立的 `service_auth_failure`，不再污染浏览器 `auth_failure`。
 6. ServiceScope、DelegatedScope 与 BodyBagTrust 将验证失败、scope/audience 不足、JWKS 临时失败分别输出为共享字符串机器码。
@@ -184,7 +186,9 @@ SERVICE_AUTH_JWKS_URL=http://127.0.0.1:3004/.well-known/jwks.json
 SERVICE_AUTH_TOKEN_ENDPOINT=http://127.0.0.1:3004/oauth2/token
 ```
 
-Dev Hub 启动的服务完全使用 Dev Hub 注入的拓扑配置；`backend/api/.env.local` 仅供脱离 Dev Hub 直接运行 Phoenix 时使用，Dev Hub 启动路径不再加载或覆盖它。
+Dev Hub 启动的服务完全使用 Dev Hub 注入的拓扑配置；`be.start.managed` 不读取
+`backend/api/.env.local`。未跟踪的 client id/secret 由 Dev Hub 在 spawn 前从该文件白名单补缺，任何父进程或
+service definition 的同名值仍优先；Dev Hub 不从文件读取 endpoint、issuer、JWKS 或 token endpoint。
 
 优点：
 

@@ -1,4 +1,7 @@
 import assert from 'node:assert/strict'
+import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import path from 'node:path'
 import test from 'node:test'
 
 import { ServiceManager, ServiceManagerError } from './process-manager.ts'
@@ -152,6 +155,61 @@ const OPTIONAL_TARGET_SERVICE: TServiceDefinition = {
     optionalDependencies: [SLOW_OPTIONAL_DEPENDENCY.id],
   },
 }
+
+test('managed env fallbacks cannot clobber parent or orchestrator values', async (t) => {
+  const fixtureRoot = await mkdtemp(path.join(tmpdir(), 'groupher-managed-env-'))
+  const envFile = path.join(fixtureRoot, '.env.local')
+  const parentKey = 'GROUPHER_TEST_PARENT_WINS'
+  const previousParentValue = process.env[parentKey]
+  process.env[parentKey] = 'parent'
+
+  await writeFile(
+    envFile,
+    [
+      `${parentKey}=file`,
+      'GROUPHER_TEST_ORCHESTRATOR_WINS=file',
+      'GROUPHER_TEST_FALLBACK_ONLY=file',
+      'GROUPHER_TEST_UNLISTED=file',
+    ].join('\n'),
+  )
+
+  const definition: TServiceDefinition = {
+    ...FIXTURE_SERVICE,
+    id: 'managed-env-fixture',
+    args: [
+      '-e',
+      'console.log(JSON.stringify({ parent: process.env.GROUPHER_TEST_PARENT_WINS, orchestrator: process.env.GROUPHER_TEST_ORCHESTRATOR_WINS, fallback: process.env.GROUPHER_TEST_FALLBACK_ONLY, unlisted: process.env.GROUPHER_TEST_UNLISTED ?? null }))',
+    ],
+    env: {
+      GROUPHER_TEST_ORCHESTRATOR_WINS: 'orchestrator',
+    },
+    envFallback: {
+      file: envFile,
+      keys: [parentKey, 'GROUPHER_TEST_ORCHESTRATOR_WINS', 'GROUPHER_TEST_FALLBACK_ONLY'],
+    },
+  }
+  const manager = new ServiceManager([definition])
+
+  t.after(async () => {
+    await manager.shutdown()
+    await rm(fixtureRoot, { force: true, recursive: true })
+    if (previousParentValue === undefined) delete process.env[parentKey]
+    else process.env[parentKey] = previousParentValue
+  })
+
+  await manager.start(definition.id)
+  await waitForLog(manager, definition.id, '"fallback":"file"')
+
+  const output = manager
+    .getLogs(definition.id)
+    .filter((log) => log.stream === 'stdout')
+    .map((log) => log.chunk)
+    .join('')
+  assert.match(
+    output,
+    /"parent":"parent","orchestrator":"orchestrator","fallback":"file","unlisted":null/,
+  )
+})
 
 test(
   'stop gives a managed process a grace period before it exits',

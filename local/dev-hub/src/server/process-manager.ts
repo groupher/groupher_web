@@ -1,6 +1,7 @@
 import { execFile, spawn, type ChildProcess } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 import net from 'node:net'
-import { promisify } from 'node:util'
+import { parseEnv, promisify } from 'node:util'
 
 import type {
   THubEvent,
@@ -55,6 +56,25 @@ type TExternalProcessControls = {
 }
 
 type TStartupCheckRunner = (check: TServiceStartupCheck) => Promise<void>
+
+const readEnvFallback = (definition: TServiceDefinition): Record<string, string> => {
+  if (!definition.envFallback) return {}
+
+  let parsed: NodeJS.Dict<string>
+  try {
+    parsed = parseEnv(readFileSync(definition.envFallback.file, 'utf8'))
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return {}
+    throw error
+  }
+
+  const fallback: Record<string, string> = {}
+  for (const key of definition.envFallback.keys) {
+    const value = parsed[key]
+    if (value !== undefined) fallback[key] = value
+  }
+  return fallback
+}
 
 export type TManagedProcessTarget = {
   serviceId: string
@@ -222,6 +242,7 @@ export class ServiceManager {
     const child = spawn(definition.command, definition.args || [], {
       cwd: definition.cwd,
       env: {
+        ...readEnvFallback(definition),
         ...childEnv,
         FORCE_COLOR: '3',
         CLICOLOR_FORCE: '1',

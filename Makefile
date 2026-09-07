@@ -113,7 +113,8 @@ be.install:
 be.start:
 	cd ./backend/api && if [ -f .env.local ]; then set -a; . .env.local; set +a; fi; MIX_ENV=mock mix phx.server
 
-# Dev Hub owns the managed runtime environment; do not let .env.local override it.
+# Dev Hub owns the full managed runtime environment. Credential fallbacks are
+# allow-listed by Dev Hub before this entrypoint is invoked.
 be.start.managed:
 	cd ./backend/api && MIX_ENV=mock mix phx.server
 

@@ -52,6 +52,10 @@ export type TServiceDefinition = {
   command?: string
   args?: string[]
   env?: Record<string, string>
+  envFallback?: {
+    file: string
+    keys: readonly string[]
+  }
   config?: TServiceConfigDefinition
   port?: number
   url?: string
@@ -352,9 +356,16 @@ export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
     portlessName: 'api',
     portlessUrl: 'https://api.groupher.localhost/health',
     env: {
+      ASSETS_HUB_BATCH_ENDPOINT: LOCAL_SERVICE_ENDPOINTS.assetsHubRead,
+      ASSETS_HUB_DELETE_ENDPOINT: LOCAL_SERVICE_ENDPOINTS.assetsHubRead,
+      ASSETS_PUBLIC_ENDPOINT: 'https://assets.groupher.localhost',
       SERVICE_AUTH_ISSUER: LOCAL_SERVICE_AUTH_ISSUER,
       SERVICE_AUTH_JWKS_URL: `${LOCAL_SERVICE_ENDPOINTS.auth}/.well-known/jwks.json`,
       SERVICE_AUTH_TOKEN_ENDPOINT: `${LOCAL_SERVICE_ENDPOINTS.auth}/oauth2/token`,
+    },
+    envFallback: {
+      file: fromRoot('backend/api/.env.local'),
+      keys: ['SERVICE_AUTH_CLIENT_ID', 'SERVICE_AUTH_CLIENT_SECRET'],
     },
     metrics: BACKEND_METRICS,
   },
@@ -441,6 +452,7 @@ export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
     command: 'pnpm',
     args: ['run', 'dev:assets-hub'],
     env: {
+      ASSETS_HUB_BATCH_ENDPOINT: LOCAL_SERVICE_ENDPOINTS.assetsHubRead,
       ASSETS_HUB_CORS_ORIGIN:
         'http://localhost:3003,http://dash.groupher.localhost,https://dash.groupher.localhost,http://apply.groupher.localhost,https://apply.groupher.localhost,https://groupher.localhost',
       PHOENIX_GRAPHQL_ENDPOINT: LOCAL_SERVICE_GRAPHQL_ENDPOINTS.phoenix,

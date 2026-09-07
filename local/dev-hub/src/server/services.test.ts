@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import test from 'node:test'
 
 import {
@@ -40,6 +41,9 @@ test('frontend and Phoenix stacks match their runtime boundaries', () => {
 
   const phoenix = SERVICE_DEFINITIONS.find((definition) => definition.id === 'phoenix')
   assert.deepEqual(phoenix?.technologies, ['phoenix', 'elixir', 'absinthe', 'postgresql'])
+  assert.equal(phoenix?.env?.ASSETS_HUB_BATCH_ENDPOINT, LOCAL_SERVICE_ENDPOINTS.assetsHubRead)
+  assert.equal(phoenix?.env?.ASSETS_HUB_DELETE_ENDPOINT, LOCAL_SERVICE_ENDPOINTS.assetsHubRead)
+  assert.equal(phoenix?.env?.ASSETS_PUBLIC_ENDPOINT, 'https://assets.groupher.localhost')
 })
 
 test('frontend services keep the intended list order', () => {
@@ -80,6 +84,7 @@ test('assets hub starts after auth and Phoenix and gates read-worker readiness o
     'http://127.0.0.1:8787/health/ready',
   )
   assert.equal(assetsHub?.env?.PHOENIX_GRAPHQL_ENDPOINT, LOCAL_SERVICE_GRAPHQL_ENDPOINTS.phoenix)
+  assert.equal(assetsHub?.env?.ASSETS_HUB_BATCH_ENDPOINT, LOCAL_SERVICE_ENDPOINTS.assetsHubRead)
 })
 
 test('service relations only reference declared services', () => {
@@ -202,10 +207,19 @@ test('gateway and auth start through backend Makefile entrypoints', () => {
   assert.deepEqual(auth?.args, ['be.auth.start'])
 })
 
-test('managed Phoenix startup preserves the Dev Hub runtime environment', () => {
+test('managed Phoenix startup allow-lists only local credential fallbacks', () => {
   const phoenix = SERVICE_DEFINITIONS.find((definition) => definition.id === 'phoenix')
 
   assert.deepEqual(phoenix?.args, ['be.start.managed'])
+  assert.match(phoenix?.envFallback?.file || '', /backend\/api\/\.env\.local$/)
+  assert.deepEqual(phoenix?.envFallback?.keys, [
+    'SERVICE_AUTH_CLIENT_ID',
+    'SERVICE_AUTH_CLIENT_SECRET',
+  ])
+
+  const makefile = readFileSync(new URL('../../../../Makefile', import.meta.url), 'utf8')
+  const managedRecipe = makefile.match(/be\.start\.managed:\n((?:\t.*\n)+)/)?.[1] || ''
+  assert.doesNotMatch(managedRecipe, /\.env\.local|\bsource\b|(?:^|\s)\.\s+/)
 })
 
 test('service identity uses one stable issuer separate from local network endpoints', () => {
