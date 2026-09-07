@@ -338,9 +338,11 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 - 冻结 Dashboard `contentShadow` 独立字段的 GraphQL/持久化 shape，并记录旧
   `wallpaperSettings.renderConfig.contentShadow` 仅作为 editor wire 兼容层；
 - 同步冻结共享背景 shape 的影响面：`Dashboard.Fields.macro_schema(:wallpaper_bg)` 与
-  `BgConfigValidator` 当前同时服务 Dashboard Wallpaper 和 `CoverBackground`。默认收口方案是保留
-  shared macro/validator 给 Cover，拆出不含 `contentShadow` 的 Wallpaper-specific shape/validator；若选择
-  Cover 一并迁移，必须另列 Cover 数据迁移、GraphQL input 和 fixtures，不能随 Wallpaper 普通页收口隐式改动；
+  `BgConfigValidator` 当前同时服务 Dashboard Wallpaper 和 `CoverBackground`，但 `contentShadow` 只是
+  共享 macro 泄漏到 Cover 的字段，不是 Cover 能力。一次性拆分时从 shared macro/validator 移除
+  `contentShadow`，让 Wallpaper 与 Cover 都只保留背景字段；Dashboard 另建独立的 `content_shadow`
+  配置和 validator。Cover 自己的图片级 `shadow`（`TCoverShadow`）与此无关，保持不动；不能把该
+  字段移除误写成 Cover 数据迁移。
 - 在此阶段不卸载 Provider、不改普通页载荷。
 
 ### Phase 1：纯计划与幂等协调
