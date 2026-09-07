@@ -245,6 +245,35 @@ refetch 的入口。迁移必须保留该映射，并保证 refetch 只更新 co
 这是本方案明确批准的 GraphQL/backend schema 例外。它是内容呈现契约，不应命名为 Wallpaper
 presentation，也不应由 `StaticWallpaperProvider` 或 Wallpaper Query 成为 owner。
 
+### `contentShadow` 持久化与 Snapshot 关系（Phase 0 必须冻结）
+
+当前事实不能被“独立 Dashboard 字段”这句话掩盖：
+
+- `CMS.Wallpaper.Settings` 的 `@render_config_keys` 仍把 `contentShadow` 纳入 canonical Snapshot settings；
+- `CMS.Wallpaper.RequestDigest` 的 v1 canonical JSON 对整个 `settings` 做排序和 hash，因此该键参与
+  RequestDigest、Assets Hub capability、Publish Receipt、幂等重放和跨语言 golden fixtures；
+- `restoreWallpaperSnapshot` 当前只切换指定 theme 的 active Snapshot 指针并递增 Wallpaper version；旧
+  Snapshot 没有独立的 Dashboard `contentShadow` 字段。
+
+在 Phase 0 冻结以下三项之前，不得删除 `renderConfig.contentShadow`、修改 digest key 集合，或把 SSR
+来源改成“看起来像独立字段”的临时投影：
+
+1. **canonical owner 与 SSR 来源**：推荐 Dashboard 独立字段为唯一真相源。迁移时从当前 active Snapshot
+   一次性回填；普通 Query/SSR 直接读取 `dashboard.contentShadow`，回填完成后不再运行时从 Snapshot
+   投影或 fallback。备选方案是继续以 active Snapshot 投影，但这会保留 Wallpaper 对内容呈现的所有权，
+   与本节已确认的领域边界冲突。
+2. **restore 生命周期**：若采用 Dashboard 真相源，推荐独立生命周期——恢复 Wallpaper Snapshot 不回退
+   `dashboard.contentShadow`。若产品要求恢复“整套外观”，必须把 contentShadow 作为 restore 的显式
+   Dashboard 更新，或新增跨域 bundle restore；不能让只切 active pointer 的旧 mutation 隐式改变它。若
+   选择 Snapshot 投影，则必须定义旧 Snapshot 缺失该字段时的确定性默认值。
+3. **digest/Receipt 兼容**：兼容窗口内保持 RequestDigest v1 的 canonical settings 和五键
+   `renderConfig` 原样，旧 Receipt、幂等重放和 fixtures 不得改变。完成拆分后再单独冻结新 digest version
+   或 Dashboard content config 的独立 mutation/digest；禁止仅删除 `contentShadow` 键来“完成迁移”。
+
+Phase 0 的验收记录必须同时写明：真相源、restore 是否联动、SSR 回填/fallback 终止条件、旧 v1 digest
+的保留期限，以及新字段变更是否拥有独立 revision/Receipt。未记录前，Phase 4/5 只能迁移读点，不能
+宣称 Snapshot 生命周期已完成拆分。
+
 ## 7. 测试矩阵
 
 ### 7.1 Phase 0 现状契约测试

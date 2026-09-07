@@ -131,6 +131,23 @@ GraphQL WallpaperSettings response
 和 `lib/bg` renderer 不拥有该字段；editor route 可以在兼容窗口内从旧 `renderConfig` 映射到 Dashboard
 draft/publish 输入。
 
+### `contentShadow` 持久化迁移门
+
+当前 RequestDigest v1 仍接收完整 canonical `settings`，因此 `renderConfig.contentShadow` 参与 digest、
+Assets Hub capability、Publish Receipt、幂等重放和跨语言 fixtures。`restoreWallpaperSnapshot` 当前只
+切换 active Snapshot 指针；旧 Snapshot 也没有独立的 Dashboard content field。
+
+在迁移前必须冻结：
+
+- **真相源/SSR**：推荐一次性从当前 active Snapshot 回填 `dashboard.contentShadow`，之后普通 Query/SSR
+  只读 Dashboard 字段，不在运行时从 Snapshot 投影；
+- **restore**：推荐 Dashboard 字段独立生命周期，恢复 Wallpaper Snapshot 不改变 contentShadow。若要
+  恢复整套外观，必须由显式的跨域 restore 输入同时更新 Dashboard 字段；
+- **digest/Receipt**：兼容窗口内保留 RequestDigest v1 的五键 settings 和旧 fixtures。拆分后必须新增
+  digest version 或独立 Dashboard mutation/digest，不能静默剔除 `contentShadow` 键。
+
+这些选择未冻结前，文档中的 `dashboard.contentShadow` 只能视为目标契约，不能当作已存在的持久化真相源。
+
 Frontend codec 的三个入口是：
 
 - `normalizeWallpaperSettings`：把当前 theme 的完整设置规范化；角度归一到 `0..359`，`NONE` 固定为
@@ -197,7 +214,9 @@ input WallpaperPublishInput {
 
 - `NONE` 时 `batchRef` 必须为空；其他类型必须携带完成四张 Profile 图片的 Batch；
 - publish 锁定 `CommunityWallpaper`，校验 `baseVersion`，创建一个当前 theme 的 Snapshot；
-- 同一事务只更新当前 theme 的 active Snapshot 指针、`version + 1` 和 Publish Receipt；另一支指针不动；
+- 同一事务只更新当前 theme 的 active Snapshot 指针、`version + 1` 和 Publish Receipt；另一支指针不动。
+  在 Dashboard `contentShadow` 拆分完成后，该独立字段不随此 pointer restore 隐式回退；若选择整套外观
+  restore，必须显式纳入同一跨域操作；
 - 前端不提交或接收 active/candidate/owner ref。历史恢复使用公开的 `WallpaperSnapshot.id` 是唯一例外；
 - 恢复不重新导出或上传图片，只将指定 theme 的 active 指针切到 retained Snapshot，并递增 version；
 - `wallpaperHistory(theme)` 只返回当前查询 theme 的最近历史；`dashboard.wallpaper` 不暴露 Snapshot ID。
@@ -214,7 +233,7 @@ NONE）时读取 Snapshot settings。Frontend 不用 truthy 判断 `version: 0`�
 
 ## 7. 生命周期与错误输出
 
-Snapshot 保存完整 settings 和以下生命周期列：`created_by_id`、`activated_at`、`history_used_at`、
+当前可渲染 Snapshot 保存包含 legacy `contentShadow` 的完整 settings 和以下生命周期列：`created_by_id`、`activated_at`、`history_used_at`、
 `delete_after`、`source_batch_ref`、`profile_version`、`settings_schema_version`。最近 5 个历史保留策略
 和删除宽限期继续有效；不能因为模型改名而删掉这些列。
 
