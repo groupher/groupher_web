@@ -231,5 +231,6 @@ Snapshot JSON 内的 `settingsSchemaVersion` 与数据库 `settings_schema_versi
 - [x] Assets Hub claim 字段使用 `type`，不使用项目自有 `kind`。
 - [x] Frontend/CoverEditor 共享 `TBgConfig` 消费方通过全仓 typecheck。
 - [x] 补齐 Linear/Radial/Mesh 全 renderer 的跨语言 settings golden fixture 与 codec 分支校验。
-- [x] 将编辑页 settings/history 从普通大查询拆成按 route 的 `WallpaperEditor` 请求；普通页面只请求已发布图片。
+- [ ] `WallpaperEditor` route-only 请求已存在，但普通 `PageCommunity` 仍选择并解析 `wallpaperSettings`；待普通页
+      Valtio 读点迁移完成后，普通页面才只请求已发布图片。
 - [ ] 完成部署后的 GraphQL smoke、真实 Assets Hub 和线上 Profile/Content fallback 验收。

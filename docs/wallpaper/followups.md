@@ -84,8 +84,8 @@ settings 和对应的静态 Profile 图片；active 指针按 theme 分开。不
       不引用 light 分支。
 - [x] 补齐 `Main.background` 布局集成测试：双 nil 时 Root 仍有页面基础色，Content surface 为透明且无
       `backdrop-filter`。
-- [x] 普通页面不加载 editor settings/history；`PageCommunity` 只返回已发布 Wallpaper，GPU runtime 仍按既有
-      Static/Editor 运行时边界加载。
+- [ ] 普通页面不加载 editor settings/history；当前 `PageCommunity` 仍选择并解析 `wallpaperSettings`，需在
+      普通页 Valtio 读点迁移完成后删除；GPU runtime 继续保持既有 Static/Editor 运行时边界。
 - [x] 已发布 Wallpaper 的 SSR static 与 client GPU 使用同一 responsive Profile、逻辑画布和 `cover center`；
       backing store 按 DPR（上限 2）提高清晰度，Pattern repeat 不随 DPR 改变。
 - [x] resize 跨 `desktop/wide` Profile 后重置 GPU ready identity，等待新 Profile 首帧后再接管；无已发布图片
@@ -120,8 +120,8 @@ settings 和对应的静态 Profile 图片；active 指针按 theme 分开。不
       均已落地并有测试。
 - [ ] 为 publish loser cleanup 补真实并发时序测试；Phoenix 与 Hub 的双 probe 只缩小竞态窗口，不能
       代替后续 publish-finalization/cleanup lease 的跨系统原子协议。
-- [x] 将编辑页 settings/history 从普通 `PageCommunity` 大查询拆成按 route 的 `WallpaperEditor` 请求；普通页面不再
-      携带编辑器 settings/history。
+- [ ] `WallpaperEditor` route-only 请求已存在，但普通 `PageCommunity` 仍携带并解析 `wallpaperSettings`；待普通页
+      Valtio 读点迁移完成后删除遗留字段和解析链路。
 - [x] 迁移范围外仍保留 v1 `static_revision` 语义的文档已明确标注为 incident/archive；仅历史归档文档保留原术语，
       不作为当前实现依据。
 
