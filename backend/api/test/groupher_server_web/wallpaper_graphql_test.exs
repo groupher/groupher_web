@@ -25,7 +25,7 @@ defmodule GroupherServer.Test.WallpaperGraphQL do
   setup do
     {:ok, user} = db_insert(:user)
     {:ok, community} = CMS.Communities.create(mock_attrs(:community), user)
-    rule_conn = simu_conn(:user, cms: %{community.slug => %{"community.update" => true}})
+    rule_conn = simu_conn(:user, cms: %{"community.update" => true})
 
     Application.put_env(:groupher_server, :wallpaper_batch_client, FakeBatchClient)
 
@@ -166,24 +166,30 @@ defmodule GroupherServer.Test.WallpaperGraphQL do
 
     Application.put_env(:groupher_server, :wallpaper_graphql_delete_calls, 0)
 
-    loser =
-      gq_mutation(rule_conn, S.Dsb.m(:publish_wallpaper), %{
-        community: community.slug,
-        input: %{
-          baseVersion: 0,
-          batchRef: batch_ref,
-          idempotencyKey: "graphql-loser",
-          settings: %{
-            renderConfig: Jason.encode!(render_config()),
-            settingsSchemaVersion: 1,
-            source: "amber_mauve",
-            type: "GRADIENT"
-          },
-          theme: "LIGHT"
+    loser_response =
+      rule_conn
+      |> post("/graphiql",
+        query: S.Dsb.m(:publish_wallpaper),
+        variables: %{
+          community: community.slug,
+          input: %{
+            baseVersion: 0,
+            batchRef: batch_ref,
+            idempotencyKey: "graphql-loser",
+            settings: %{
+              renderConfig: Jason.encode!(render_config()),
+              settingsSchemaVersion: 1,
+              source: "amber_mauve",
+              type: "GRADIENT"
+            },
+            theme: "LIGHT"
+          }
         }
-      })
+      )
+      |> json_response(200)
 
-    assert loser == nil
+    assert loser_response["data"] == nil
+    assert [_error] = loser_response["errors"]
     assert Application.get_env(:groupher_server, :wallpaper_graphql_delete_calls) == 0
 
     after_publish =
