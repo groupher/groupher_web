@@ -1,13 +1,12 @@
-import { QueryClientProvider } from '@tanstack/react-query'
 import { type ReactNode, useMemo } from 'react'
 
 import { LOCALE } from '~/const/i18n'
 import METRIC from '~/const/metric'
 import { FIELDS } from '~/constant/dsb-fields'
 import { InitialNowProvider } from '~/hooks/useInitialNow'
-import { createQueryClient, dsbKeys } from '~/query'
 import type { TCommunity, TFooterLinks, TLocale } from '~/spec'
 import CommunityStoreProvider from '~/stores/community/provider'
+import DsbConfigProvider from '~/stores/dsbConfig/provider'
 import LocaleStoreProvider from '~/stores/locale/provider'
 import { MetricProvider } from '~/stores/metric'
 import StaticWallpaperProvider from '~/stores/staticWallpaper/provider'
@@ -52,20 +51,14 @@ export default function StaticShellProvider({
     }),
     [footerLinks],
   )
-  const queryClient = useMemo(() => {
-    const client = createQueryClient()
-    client.setQueryData(dsbKeys.config(community.slug), dashboard)
-    return client
-  }, [community.slug, dashboard])
-
   return (
-    <QueryClientProvider client={queryClient}>
+    <DsbConfigProvider initData={dashboard}>
       <ThemeStoreProvider initData={theme}>
         <InitialNowProvider initialNow={initialNow}>
           <LocaleStoreProvider initData={{ locale, localeData }}>
             <MetricProvider value={METRIC.LANDING}>
               <CommunityStoreProvider initData={community}>
-                <StaticWallpaperProvider initData={wallpaper?.staticWallpaper}>
+                <StaticWallpaperProvider initData={wallpaper?.wallpaper}>
                   <WallpaperStoreProvider initData={wallpaper}>{children}</WallpaperStoreProvider>
                 </StaticWallpaperProvider>
               </CommunityStoreProvider>
@@ -73,6 +66,6 @@ export default function StaticShellProvider({
           </LocaleStoreProvider>
         </InitialNowProvider>
       </ThemeStoreProvider>
-    </QueryClientProvider>
+    </DsbConfigProvider>
   )
 }

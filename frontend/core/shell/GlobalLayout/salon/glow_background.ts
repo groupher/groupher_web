@@ -25,7 +25,7 @@ export default function useSalon() {
   return {
     bgStyle: buildTopGlowBackground(glow),
     wrapper: cn(
-      'pointer-events-none z-0 w-full',
+      'pointer-events-none z-1 w-full',
       isAbsolute ? 'absolute top-0 right-0 h-2/5' : 'fixed inset-0 h-screen',
       glowPosition,
     ),

@@ -4,8 +4,8 @@ import { useEffect } from 'react'
 
 import { LOCALE } from '~/const/i18n'
 import useChangeI18n from '~/hooks/useChangeI18n'
-import useDsb from '~/query/useDsbConfig'
 import type { TLocale } from '~/spec'
+import useDsb from '~/stores/dsbConfig/hooks'
 import useLocale from '~/stores/locale/hooks'
 
 const LocaleSync = () => {

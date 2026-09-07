@@ -1,10 +1,13 @@
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { useRouterState } from '@tanstack/react-router'
-import { type ReactNode, useEffect } from 'react'
+import { type ReactNode, useEffect, useMemo } from 'react'
 
 import { GlobalProvider } from '~/app/providers'
 import METRIC from '~/const/metric'
+import { parseWallpaper } from '~/lib/ssr/parse'
 import { Q } from '~/query'
+import type { TCommunity } from '~/spec'
+import DsbConfigProvider from '~/stores/dsbConfig/provider'
 import DsbEditProvider from '~/stores/dsbEdit/provider'
 import { DsbEditorUiProvider } from '~/stores/dsbEditorUi'
 import { DsbShellUiProvider } from '~/stores/dsbShellUi'
@@ -35,39 +38,62 @@ export default function DsbShell({ children, shell }: TProps) {
         ? 'editor'
         : 'static',
   })
+  const isEditorRoute = wallpaperRuntimeMode === 'editor'
+  const { data: editorData } = useQuery({
+    ...Q.wallpaperEditor.config(shell.community),
+    enabled: isEditorRoute,
+  })
+  const editorWallpaper = useMemo(() => {
+    if (!isEditorRoute || !editorData?.community) return null
+    return parseWallpaper(editorData.community as unknown as TCommunity)
+  }, [editorData?.community, isEditorRoute])
+  const wallpaperInit = useMemo(
+    () =>
+      editorWallpaper
+        ? {
+            ...wallpaper,
+            light: editorWallpaper.light,
+            dark: editorWallpaper.dark,
+            initWallpaper: editorWallpaper.initWallpaper,
+          }
+        : wallpaper,
+    [editorWallpaper, wallpaper],
+  )
 
   useEffect(() => {
     clearAuthRouteRecoveryAttempt(window.location.href)
   }, [])
 
   const content = (
-    <ThemePresetStoreProvider initData={dashboard}>
-      <StaticWallpaperProvider initData={wallpaper?.staticWallpaper}>
-        <WallpaperStoreProvider initData={wallpaper}>
-          <WallpaperRuntimeProvider mode={wallpaperRuntimeMode}>
-            <GlobalProvider authLoginModal={false}>
-              <div
-                className='column-center min-h-full w-full justify-start'
-                data-demo-mode={shell.demoMode}
-              >
-                <div className='container-dashboard relative w-full transition-all duration-150 ease-out'>
-                  <CommunityDigest />
+    <DsbConfigProvider initData={dashboard}>
+      <ThemePresetStoreProvider initData={dashboard}>
+        <StaticWallpaperProvider initData={wallpaper?.wallpaper}>
+          <WallpaperStoreProvider initData={wallpaperInit}>
+            <WallpaperRuntimeProvider mode={wallpaperRuntimeMode}>
+              <GlobalProvider authLoginModal={false}>
+                <div
+                  className='column-center min-h-full w-full justify-start'
+                  data-demo-mode={shell.demoMode}
+                >
+                  <div className='container-dashboard relative w-full transition-all duration-150 ease-out'>
+                    <CommunityDigest />
 
-                  <div className='row mt-7 min-h-screen w-full'>
-                    <div className='shrink-0 self-stretch overflow-visible transition-all duration-150 ease-out'>
-                      <SideMenu />
-                    </div>
-                    <div className='column min-w-0 grow items-center bg-transparent'>
-                      {children}
+                    <div className='row mt-7 min-h-screen w-full'>
+                      <div className='shrink-0 self-stretch overflow-visible transition-all duration-150 ease-out'>
+                        <SideMenu />
+                      </div>
+                      <div className='column min-w-0 grow items-center bg-transparent'>
+                        {children}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </GlobalProvider>
-          </WallpaperRuntimeProvider>
-        </WallpaperStoreProvider>
-      </StaticWallpaperProvider>
-    </ThemePresetStoreProvider>
+              </GlobalProvider>
+            </WallpaperRuntimeProvider>
+          </WallpaperStoreProvider>
+        </StaticWallpaperProvider>
+      </ThemePresetStoreProvider>
+    </DsbConfigProvider>
   )
 
   return (

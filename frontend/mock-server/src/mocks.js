@@ -157,6 +157,20 @@ const makeWallpaperTheme = (overrides = {}) => ({
   ...overrides,
 })
 
+const makeWallpaperSettings = (theme) => ({
+  settingsSchemaVersion: 1,
+  type: theme.type,
+  source: theme.source,
+  customWallpaper: null,
+  renderConfig: {
+    pattern: theme.pattern,
+    gradient: theme.gradient,
+    texture: theme.texture,
+    effect: theme.effect,
+    contentShadow: theme.contentShadow,
+  },
+})
+
 const makeUser = (overrides = {}) => {
   const safeOverrides = { ...overrides }
   delete safeOverrides.id
@@ -170,6 +184,18 @@ const makeUser = (overrides = {}) => {
 }
 
 const makeDashboard = (slug = 'home') => {
+  const lightWallpaper = makeWallpaperTheme()
+  const darkWallpaper = makeWallpaperTheme({
+    gradient: {
+      version: 2,
+      renderer: GRADIENT_RENDERER.LINEAR,
+      preset: DEFAULT_WALLPAPER_SOURCE,
+      colors: ['#25161d', '#3a2945'],
+      angle: 180,
+      spread: 58,
+    },
+  })
+
   return {
     seo: {
       seoEnable: true,
@@ -190,17 +216,12 @@ const makeDashboard = (slug = 'home') => {
       twImageHeight: '630',
     },
     wallpaper: {
-      light: makeWallpaperTheme(),
-      dark: makeWallpaperTheme({
-        gradient: {
-          version: 2,
-          renderer: GRADIENT_RENDERER.LINEAR,
-          preset: DEFAULT_WALLPAPER_SOURCE,
-          colors: ['#25161d', '#3a2945'],
-          angle: 180,
-          spread: 58,
-        },
-      }),
+      light: lightWallpaper,
+      dark: darkWallpaper,
+    },
+    wallpaperSettings: {
+      light: makeWallpaperSettings(lightWallpaper),
+      dark: makeWallpaperSettings(darkWallpaper),
     },
     layout: {
       themePreset: THEME_PRESET.DEFAULT,

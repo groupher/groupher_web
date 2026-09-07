@@ -47,8 +47,6 @@ export type TBgConfig = {
   customWallpaper: TCustomWallpaper
   /** Stable Assets Hub ref for an uploaded source image. */
   assetPublicRef?: string | null
-  /** Stable Assets Hub ref for the published, renderer-produced image. */
-  staticAssetPublicRef?: string | null
   source: string
   type: TWallpaperType
 

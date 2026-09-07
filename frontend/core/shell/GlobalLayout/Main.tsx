@@ -7,9 +7,11 @@
 import { useLocation } from '@tanstack/react-router'
 import type { FC, ReactNode } from 'react'
 
+import { cn } from '~/css'
 import useTopbar from '~/hooks/useTopbar'
 import useTrans from '~/hooks/useTrans'
 import type { TContainerMetric } from '~/hooks/useTwBelt/spec'
+import { getContentSurfaceRenderProps } from '~/shell/GlobalLayout/background'
 // import DashboardAlert from './D
 // import CustomScroller from '~/ui/CustomScroller'
 import GlowBackground from '~/shell/GlobalLayout/GlowBackground'
@@ -34,6 +36,7 @@ const Main: FC<TProps> = ({ children }) => {
   const { locale } = useTrans()
 
   const { hasTopbar } = useTopbar()
+  const contentSurface = getContentSurfaceRenderProps(s.hasWallpaper)
   // const [showDashboardAlertUI, setShowDashboardAlertUI] = useState(false)
   // style={{ background }}
 
@@ -46,9 +49,9 @@ const Main: FC<TProps> = ({ children }) => {
        * cheap while still letting transparent glass colors reveal the page base.
        */}
       <div
-        className={s.background}
+        className={cn(s.background, contentSurface.className)}
         style={{
-          backgroundColor: 'var(--preview-page-bg, var(--color-pageBg))',
+          backgroundColor: contentSurface.backgroundColor,
         }}
       />
       {hasTopbar && <div className={s.topBar} />}

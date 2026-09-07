@@ -299,6 +299,10 @@ defmodule GroupherServerWeb.Resolvers.CMS do
     end
   end
 
+  def wallpaper_batch_published(_root, %{batch_ref: batch_ref}, _info) do
+    {:ok, CMS.Wallpaper.batch_published?(batch_ref)}
+  end
+
   def register_community_asset(_root, %{community: %Community{} = community, asset: asset}, %{
         context: %{cur_user: user}
       }) do
@@ -337,8 +341,28 @@ defmodule GroupherServerWeb.Resolvers.CMS do
     CMS.Dashboard.update(community, args)
   end
 
-  def update_dashboard_wallpaper(_root, %{community: community, wallpaper: wallpaper}, _info) do
-    CMS.Dashboard.update(community, :wallpaper, wallpaper)
+  def publish_wallpaper(
+        _root,
+        %{community: %Community{} = community, input: input},
+        %{context: %{cur_user: %User{} = user}}
+      ) do
+    CMS.Wallpaper.publish(community, input, user)
+  end
+
+  def prepare_wallpaper_upload(
+        _root,
+        %{community: %Community{} = community, input: input},
+        %{context: %{cur_user: %User{} = user}}
+      ) do
+    CMS.Wallpaper.prepare_upload(community, input, user)
+  end
+
+  def restore_wallpaper_snapshot(
+        _root,
+        %{community: %Community{} = community, input: input},
+        %{context: %{cur_user: %User{} = user}}
+      ) do
+    CMS.Wallpaper.restore_snapshot(community, input, user)
   end
 
   def save_custom_theme_preset(_root, %{community: community} = args, _info) do

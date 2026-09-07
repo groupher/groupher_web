@@ -409,6 +409,8 @@ snapshot 只用于确保每个 boundary 第一次 virtual tree 对得上服务�
 这里的 `150ms` 仅用于后续 resize 的 Profile replacement debounce，不是 SSR 或首帧必须等待的协议值。当前实现
 仍把 hydration 后首次 `wide -> client Profile` 校正纳入 settle，可能先启动一次 wide renderer；后续应保留首次
 hydration tree 一致，在 commit 后直接初始化真实 client Profile，不能用 render-time `window` 分支规避等待。
+这段等待的目的只是防止窗口在 `desktop/wide` 边界来回拖动时连续 remount GPU renderer；旧 renderer 在
+pending 期间保持 mounted 但不可见，最多持续一个 settle 窗口。
 pending 期间旧 renderer 保持 mounted 且不可见属于已知短时成本，是否暂停其提交必须由 GPU trace 决定。
 
 ### 自动化检查

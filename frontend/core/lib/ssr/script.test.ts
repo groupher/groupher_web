@@ -18,6 +18,8 @@ describe('first-paint scripts', () => {
 
     expect(document.cookie).toContain('themeMode=dark')
     expect(document.cookie).not.toContain('resolvedTheme=')
+    expect(document.documentElement.dataset.theme).toBe('dark')
+    expect(document.documentElement.style.colorScheme).toBe('dark')
   })
 
   it('resolves system mode with matchMedia before hydration', () => {
@@ -26,6 +28,19 @@ describe('first-paint scripts', () => {
     runInlineScript(prePaintThemeDetectScript())
 
     expect(document.cookie).toContain('themeMode=system')
+    expect(document.documentElement.dataset.theme).toBe('dark')
+  })
+
+  it('applies the server-seeded dark theme before paint without consulting light', () => {
+    runInlineScript(
+      prePaintThemeDetectScript({
+        theme: 'dark',
+        themeMode: 'dark',
+      }),
+    )
+
+    expect(document.documentElement.dataset.theme).toBe('dark')
+    expect(document.documentElement.dataset.themeMode).toBe('dark')
   })
 
   it('captures the initial browser timestamp in the shared runtime script', () => {

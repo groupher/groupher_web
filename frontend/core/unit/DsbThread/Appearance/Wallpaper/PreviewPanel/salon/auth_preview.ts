@@ -5,8 +5,6 @@ import useWallpaperDomain from '~/stores/wallpaper/hooks'
 
 import useBase from '../../../../useDsbSalon'
 
-export { cnMerge } from '~/css'
-
 export default function useSalon() {
   const { cn, br, bg, shadow, primary } = useTwBelt()
 
@@ -23,7 +21,8 @@ export default function useSalon() {
       bg('hoverBg'),
     ),
     realPreview: 'relative h-44 w-full overflow-hidden',
-    bar: cn(base.bar, 'static h-2 w-24 saturate-50 opacity-40'),
+    barBase: cn(base.barBase, 'static'),
+    bar: cn(base.barBase, 'static h-2 w-24 saturate-50 opacity-40'),
     authCard: cn(
       'absolute top-10 left-1/2 -translate-x-1/2 w-24 h-24 rounded-lg column-center px-6 py-3 gap-2',
       bg('card'),

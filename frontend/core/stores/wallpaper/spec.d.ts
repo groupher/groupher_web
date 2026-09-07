@@ -31,6 +31,8 @@ export type TStore = TWallpaperState & {
   reconcileConfirmed: (confirmed: TInit) => void
 }
 
-export type TInit = TWallpaperPatch & {
-  staticWallpaper?: import('~/spec').TStaticWallpaper | null
+export type TInit = {
+  light?: Partial<TWallpaperThemeState> | null
+  dark?: Partial<TWallpaperThemeState> | null
+  wallpaper?: import('~/spec').TPublishedWallpaper | null
 }

@@ -1,0 +1,17 @@
+{
+  "canonical": "[{\"assetPublicRef\":\"asset_1\",\"candidateOwnerRef\":\"wprev_1\",\"checksum\":\"sum\",\"height\":1080,\"mimeType\":\"image/webp\",\"storageKey\":\"wallpaper-generated/x\",\"variantKey\":\"light-wide\",\"width\":1920}]",
+  "digest": "sha256:0933caeb74b61fbc28b7eca5fb9befd1b7f403ce33d87ee9604d103aa4ccede5",
+  "manifest": [
+    {
+      "assetPublicRef": "asset_1",
+      "candidateOwnerRef": "wprev_1",
+      "checksum": "sum",
+      "height": 1080,
+      "mimeType": "image/webp",
+      "storageKey": "wallpaper-generated/x",
+      "variantKey": "light-wide",
+      "width": 1920
+    }
+  ],
+  "version": 1
+}

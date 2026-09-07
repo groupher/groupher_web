@@ -24,8 +24,11 @@ defmodule GroupherServer.CMS.Assets do
   """
 
   alias GroupherServer.Accounts.Model.User
+  alias GroupherServer.Repo
   alias GroupherServer.CMS.Model.{Community, CommunityAsset}
   alias Helper.T
+
+  import Ecto.Query, only: [from: 2]
 
   alias __MODULE__.{ApplicationUploads, Deletion, Reader, Upload, Writer}
 
@@ -143,6 +146,31 @@ defmodule GroupherServer.CMS.Assets do
   @doc "Records a verified assets-hub upload completion."
   @spec complete_upload(map()) :: T.domain_res(CommunityAsset.t())
   def complete_upload(input), do: Upload.complete(input)
+
+  @doc "Creates a Wallpaper generated-image upload capability bound to a Batch target."
+  @spec create_generated_upload_intent(Community.t(), map(), User.t()) :: T.domain_res(map())
+  def create_generated_upload_intent(%Community{} = community, file, %User{} = user) do
+    Upload.create_generated_intent(community, file, user)
+  end
+
+  @doc "Soft-deletes generated asset rows after an abandoned Wallpaper Batch."
+  @spec delete_generated_assets(Community.t(), [String.t()]) :: :ok
+  def delete_generated_assets(%Community{id: community_id} = community, public_refs)
+      when is_list(public_refs) do
+    public_refs = Enum.filter(public_refs, &is_binary/1)
+
+    from(asset in CommunityAsset,
+      where:
+        asset.community_id == ^community_id and asset.public_ref in ^public_refs and
+          is_nil(asset.deleted_at)
+    )
+    |> Repo.all()
+    |> Enum.each(fn asset ->
+      _ = delete(community, asset.id)
+    end)
+
+    :ok
+  end
 
   @doc """
   Soft-deletes an unreferenced community asset.

@@ -1,6 +1,11 @@
-# Wallpaper 浏览器端导出与 R2 上传
+# Wallpaper 浏览器端导出与 R2 上传（v1 归档）
 
-> 状态：架构已确认，Save 后导出与上传链路已接入，静态资产引用切换与真实浏览器矩阵待完成
+> 文档角色：Archive，仅记录已被响应式 Batch/Revision 契约取代的 v1 单图链路
+>
+> Active：[保存链路与数据边界](./save_pipeline_contract.md) ·
+> [响应式静态产物、历史与共享导出机制](./responsive_revisions.md)
+>
+> 历史状态：架构已确认，Save 后导出与上传链路已接入，静态资产引用切换与真实浏览器矩阵待完成
 >
 > 日期：2026-09-01
 >

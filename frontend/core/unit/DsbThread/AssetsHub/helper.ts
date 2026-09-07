@@ -91,8 +91,44 @@ export const formatAssetRefMeta = (ref: TAssetRef): string =>
     .join(' · ') || ASSETS_HUB_EMPTY_VALUE
 
 /** Runs the extract error message operation at the frontend shared boundary. */
-export const extractErrorMessage = (error: unknown): string =>
-  error instanceof Error ? error.message : String(error)
+export const extractErrorMessage = (error: unknown): string => {
+  if (typeof error === 'object' && error !== null && 'errors' in error) {
+    const errors = error.errors
+    if (Array.isArray(errors)) {
+      const code = errors
+        .map((item) =>
+          item && typeof item === 'object' && 'extensions' in item
+            ? (item.extensions as { code?: unknown } | undefined)?.code
+            : undefined,
+        )
+        .find((value) => value !== undefined)
+      const messages: Record<string, string> = {
+        '5702': 'Wallpaper changed elsewhere. Refresh and retry.',
+        '5708': 'This wallpaper request conflicts with another publish. Refresh and retry.',
+        '5709': 'Wallpaper publish lease expired. Please retry.',
+        '5710': 'Wallpaper publish timed out. Please retry.',
+        '5715': 'Wallpaper images are incomplete. Export all profiles again.',
+        '5717': 'Wallpaper assets are not ready to publish. Please retry.',
+        '5718': 'Wallpaper cleanup is pending and will be retried.',
+      }
+      if (code != null && messages[String(code)]) return messages[String(code)]
+    }
+  }
+  if (error instanceof Error) return error.message
+  if (typeof error === 'object' && error !== null && 'error' in error) {
+    const nestedError = error.error
+    if (typeof nestedError === 'object' && nestedError !== null && 'message' in nestedError) {
+      const message = nestedError.message
+      if (typeof message === 'string') return message
+    }
+  }
+  if (typeof error === 'object' && error !== null && 'message' in error) {
+    const message = error.message
+    if (typeof message === 'string') return message
+  }
+
+  return String(error)
+}
 
 /** Runs the put file with progress operation at the frontend shared boundary. */
 export const putFileWithProgress = ({

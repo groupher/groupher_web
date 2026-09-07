@@ -19,7 +19,6 @@ defmodule GroupherServerWeb.Schema.CMS.Dashboard.Metrics.Enums do
 
   enum :dsb_section do
     value(:seo)
-    value(:wallpaper)
     value(:enable)
     value(:thread_emotions)
     value(:layout)
@@ -76,4 +75,28 @@ defmodule GroupherServerWeb.Schema.CMS.Dashboard.Metrics.Enums do
   dsb_enum(:footer_layout)
   dsb_enum(:theme_preset)
   dsb_enum(:rss_feed_type)
+
+  enum :wallpaper_theme do
+    value(:light)
+    value(:dark)
+  end
+
+  enum :wallpaper_type do
+    value(:picture)
+    value(:gradient)
+    value(:upload)
+    value(:none)
+  end
+
+  enum :custom_wallpaper_type do
+    value(:gradient)
+    value(:picture)
+  end
+
+  enum :wallpaper_profile do
+    value(:wide)
+    value(:desktop)
+    value(:tablet)
+    value(:phone)
+  end
 end

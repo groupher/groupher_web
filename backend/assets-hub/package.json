@@ -12,6 +12,8 @@
     "deploy:worker": "pnpm exec wrangler deploy --config wrangler.jsonc --env production",
     "deploy:worker:dry-run": "pnpm exec wrangler deploy --dry-run --config wrangler.jsonc --env production",
     "smoke:r2": "tsx scripts/r2-smoke.ts",
+    "test:unit": "pnpm exec vitest --config vitest.config.mts run",
+    "test:worker": "pnpm exec vitest --config vitest.worker.config.mts run",
     "type-check": "pnpm exec tsc --noEmit --project ./tsconfig.json",
     "build": "rimraf dist && esbuild src/server.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/server.js",
     "start": "cross-env NODE_ENV=production node dist/server.js",
@@ -30,6 +32,8 @@
     "hono": "^4.13.0"
   },
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "0.22.0",
+    "@cloudflare/workers-types": "^5.20260829.1",
     "@types/node": "^24.0.0",
     "cross-env": "^10.1.0",
     "esbuild": "^0.28.1",

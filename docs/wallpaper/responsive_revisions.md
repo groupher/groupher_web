@@ -51,8 +51,11 @@
   `CMS.Wallpaper.Settings` 明确规范化；request digest 只由 `CMS.Wallpaper.RequestDigest` 计算。
 - claim 会在冻结 manifest 后对每个 R2 object 执行 `head`，复核存在性、MIME 和 SHA-256；manifest
   不完整或物理对象不一致时，先持久化 delete claim，再删除对象与 Durable Object 元数据。
-- publish cleanup 在删除 claim 和 CommunityAsset 行前会再次查询 `batch_published?(batchRef)`；同一
-  idempotency key 的重复请求即使其中一个事务已失败，也不会误删胜者 Revision 正在引用的对象。
+- publish cleanup 在 Phoenix 侧查询 `batch_published?(batchRef)` 后，Assets Hub 的 Durable Object
+  还会在实际删除前再次执行同一 published probe；probe 为 `unknown` 时返回 retryable 错误并保留
+  claim/R2 对象，probe 为 `published` 时只清理 DO metadata，不删除对象。这个双 probe 缩小了并发
+  loser 误删胜者对象的窗口，但不是跨 Phoenix 数据库与 R2 的分布式原子事务；要完全消除窗口仍需
+  后续引入 publish-finalization/cleanup lease 协议。
 - Phoenix 在事务外预检 lease，并在事务 callback 内二次校验。当前 policy `v1`：DB transaction
   timeout 5 秒、lock timeout 4 秒、publish transaction budget 10 秒、最大时钟偏差 5 秒；Batch TTL
   15 分钟。
@@ -66,7 +69,9 @@
 - 浏览器对同一份失败 Save 保留 idempotency key；响应丢失后的重试可命中 Phoenix Receipt，而用户
   修改内容或 State version 改变后会生成新 key。
 - Assets Hub 增加真实 workerd/Miniflare Durable Object 测试，覆盖成功 claim、manifest 不完整以及
-  R2 object 缺失。Wrangler dry-run、跨语言 golden fixture 和 Phoenix 测试共同作为发布门禁。
+  R2 object 缺失；纯 kernel 测试锁定过期优先级、cleanup probe 决策和 reconcile 退避上限。Hub
+  cleanup 的真实 Phoenix probe 仍需在带 service-auth 测试绑定的 worker 环境补齐，不能用远期
+  `expiresAt` 测试替代 alarm/reconcile 覆盖。
 
 首期 capability 签名仍采用单个 HMAC key，`signingKeyId = hmac-v1`，尚未提供多 key 轮换。这是已知
 缩减，不影响当前单 key 部署；引入轮换前必须先让 Phoenix 支持 trusted key set，再切换签发 key。

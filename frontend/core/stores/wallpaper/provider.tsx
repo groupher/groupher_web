@@ -1,6 +1,6 @@
 'use client'
 
-import { type ReactNode, useRef } from 'react'
+import { type ReactNode, useEffect, useRef } from 'react'
 
 import setupStore from '.'
 import { StoreContext } from './context'
@@ -15,6 +15,10 @@ export default function Provider({ children, initData }: TProps) {
   const storeRef = useRef<TStore | null>(null)
 
   storeRef.current ??= setupStore(initData)
+
+  useEffect(() => {
+    storeRef.current?.reconcileConfirmed(initData ?? {})
+  }, [initData?.dark, initData?.light])
 
   return <StoreContext.Provider value={storeRef.current}>{children}</StoreContext.Provider>
 }

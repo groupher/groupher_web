@@ -1,6 +1,7 @@
 import { equals, mergeDeepRight, pick } from 'ramda'
 
 import { GRADIENT_WALLPAPER, WALLPAPER_TYPE } from '~/const/wallpaper'
+import { normalizeWallpaperSettings } from '~/lib/wallpaperSettingsCodec'
 
 import {
   INITIAL_WALLPAPER_THEME_STATE,
@@ -23,9 +24,11 @@ import type { TInit, TStore, TWallpaperPatch, TWallpaperState, TWallpaperThemeSt
  * const state = initStateByTheme({ source: 'sky', type: 'gradient' })
  * // state.gradient === GRADIENT_WALLPAPER.sky
  */
-const initStateByTheme = (init: Partial<TWallpaperThemeState> = {}): TWallpaperThemeState => {
+const initStateByTheme = (
+  init: Partial<TWallpaperThemeState> | null | undefined = {},
+): TWallpaperThemeState => {
   const state = {
-    ...mergeDeepRight(INITIAL_WALLPAPER_THEME_STATE, pick(WALLPAPER_THEME_STATE_KEYS, init)),
+    ...mergeDeepRight(INITIAL_WALLPAPER_THEME_STATE, pick(WALLPAPER_THEME_STATE_KEYS, init ?? {})),
   } as TWallpaperThemeState
 
   if (state.type === WALLPAPER_TYPE.GRADIENT && !state.gradient) {
@@ -87,32 +90,22 @@ export const toWallpaperThemePatch = (
   return isDarkTheme ? { dark: patch } : { light: patch }
 }
 
-/**
- * Computes the minimal savable patch by diffing store state against baseline.
- *
- * Only changed fields from each theme are included, which is compatible with
- * sparse GraphQL input payloads and avoids unnecessary writes.
- *
- * @example
- * getWallpaperSavablePatch(store)
- * // => { light: { gradient: { ... } }, dark: { texture: { ... } } }
- */
-export const getWallpaperSavablePatch = (store: TStore): TWallpaperPatch => {
-  const patch: TWallpaperPatch = {}
-  const mutablePatch = patch as Record<keyof TWallpaperState, Partial<TWallpaperThemeState>>
+/** Computes the savable patch for one theme without inspecting the other branch. */
+export const getWallpaperThemeSavablePatch = (
+  store: TStore,
+  theme: keyof TWallpaperState,
+): Partial<TWallpaperThemeState> => {
+  const current = normalizeWallpaperSettings(store[theme])
+  const original = normalizeWallpaperSettings(store.original[theme])
 
-  for (const theme of ['light', 'dark'] as const) {
-    const themePatch: Partial<TWallpaperThemeState> = {}
-    const mutableThemePatch = themePatch as Record<keyof TWallpaperThemeState, unknown>
+  if (equals(current, original)) return {}
 
-    for (const key of WALLPAPER_SAVABLE_THEME_STATE_KEYS) {
-      if (!equals(store.original[theme][key], store[theme][key])) {
-        mutableThemePatch[key] = store[theme][key]
-      }
-    }
+  const patch: Partial<TWallpaperThemeState> = {}
+  const mutablePatch = patch as Record<keyof TWallpaperThemeState, unknown>
 
-    if (Object.keys(themePatch).length > 0) {
-      mutablePatch[theme] = themePatch
+  for (const key of WALLPAPER_SAVABLE_THEME_STATE_KEYS) {
+    if (!equals(store.original[theme][key], store[theme][key])) {
+      mutablePatch[key] = store[theme][key]
     }
   }
 

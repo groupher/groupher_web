@@ -17,7 +17,7 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 
 import { verifyCapability, type TUploadCapability } from './capability'
-import { completePhoenixUpload } from './phoenix'
+import { completePhoenixUpload, registerGeneratedAsset } from './phoenix'
 import {
   createPresignedGetUrl,
   createPresignedPutUrl,
@@ -226,7 +226,8 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
     const timings: TTiming[] = []
 
     try {
-      const capability = verifyCapability(await parseCapabilityInput(context), environment)
+      const capabilityToken = await parseCapabilityInput(context)
+      const capability = verifyCapability(capabilityToken, environment)
       const uploadRef = context.req.param('uploadRef')
       if (uploadRef !== capability.uploadRef) throw new Error('uploadRef does not match capability')
 
@@ -265,6 +266,20 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
           },
         }),
       )
+
+      if (capability.purpose === 'generated_image') {
+        await timed('batchAssetRegister', timings, () =>
+          registerGeneratedAsset({
+            capability,
+            capabilityToken,
+            environment,
+            entry: {
+              checksum: contentHash,
+              storageKey: capability.objectKey,
+            },
+          }),
+        )
+      }
 
       logUpload('asset_upload_finalized', {
         assetId: 'id' in asset ? asset.id : null,

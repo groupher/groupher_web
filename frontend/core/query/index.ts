@@ -8,8 +8,8 @@ export {
   patchCommunityConfig,
   projectCommunityConfig,
 } from './community'
-export { default as useDsbConfig } from './useDsbConfig'
 export { wallpaperKeys, wallpaperQueries } from './wallpaper'
+export { wallpaperEditorKeys, wallpaperEditorQueries } from './wallpaperEditor'
 export { createQueryClient, getQueryClient } from './queryClient'
 export { graphqlKeys, graphqlQueryOptions } from './graphql'
 export { visitorKeys } from './key'

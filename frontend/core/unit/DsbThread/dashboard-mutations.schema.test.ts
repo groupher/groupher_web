@@ -5,6 +5,8 @@ import { fileURLToPath } from 'node:url'
 import { buildSchema, validate } from 'graphql'
 import { describe, expect, it } from 'vitest'
 
+import { community as communityQuery } from '~/schemas/pages/community'
+
 import * as themeSchema from './Appearance/Theme/schema'
 import wallpaperSchema from './Appearance/Wallpaper/schema'
 import dashboardAppearanceSchema from './schema/appearance'
@@ -27,7 +29,9 @@ const documents = {
   updateDashboardHeaderLinks: dashboardSettingsSchema.updateDashboardHeaderLinks,
   updateDashboardFooterLinks: dashboardSettingsSchema.updateDashboardFooterLinks,
   updateDashboardFooterOnelineLinks: dashboardSettingsSchema.updateDashboardFooterOnelineLinks,
-  updateDashboardWallpaper: wallpaperSchema.updateDashboardWallpaper,
+  prepareWallpaperUpload: wallpaperSchema.prepareWallpaperUpload,
+  publishWallpaper: wallpaperSchema.publishWallpaper,
+  restoreWallpaperSnapshot: wallpaperSchema.restoreWallpaperSnapshot,
   saveCustomThemePreset: themeSchema.saveCustomThemePreset,
   selectThemePreset: themeSchema.selectThemePreset,
 }
@@ -37,5 +41,19 @@ describe('dashboard mutation documents', () => {
     const errors = validate(schema, document)
 
     expect(errors, `${name}: ${errors.map((err) => err.message).join('\n')}`).toEqual([])
+  })
+})
+
+describe('dashboard Wallpaper query document', () => {
+  it('selects the typed Wallpaper settings and published image contract', () => {
+    const errors = validate(schema, communityQuery)
+
+    expect(errors.map((error) => error.message)).toEqual([])
+  })
+
+  it('selects editor settings and history in the route-scoped query', () => {
+    const errors = validate(schema, wallpaperSchema.wallpaperEditor)
+
+    expect(errors.map((error) => error.message)).toEqual([])
   })
 })

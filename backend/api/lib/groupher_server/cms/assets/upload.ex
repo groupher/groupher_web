@@ -97,6 +97,58 @@ defmodule GroupherServer.CMS.Assets.Upload do
     end
   end
 
+  @doc "Creates a generated-image upload capability bound to one Wallpaper Batch target."
+  @spec create_generated_intent(Community.t(), map(), User.t()) :: T.domain_res(map())
+  def create_generated_intent(%Community{} = community, file, %User{} = user) when is_map(file) do
+    with {:ok, attrs} <- validate_file(file),
+         {:ok, generated} <- validate_generated_file(file),
+         :ok <- ensure_capacity(community.id, attrs.size_bytes) do
+      issued_at = DateTime.utc_now(:second)
+      upload_ref = "upload_" <> Utils.uid(18)
+      asset_uid = Utils.uid(18)
+      asset_public_ref = "asset_" <> asset_uid
+      object_key = generated_object_key(community.slug, generated.batch_ref, asset_uid)
+      canonical_url = "#{Capability.public_endpoint()}/a/#{asset_public_ref}/original"
+      expires_at = DateTime.add(issued_at, @capability_ttl_seconds, :second)
+
+      payload = %{
+        "purpose" => "generated_image",
+        "uploadRef" => upload_ref,
+        "assetPublicRef" => asset_public_ref,
+        "communityId" => community.id,
+        "communitySlug" => community.slug,
+        "uploaderId" => user.id,
+        "objectKey" => object_key,
+        "canonicalUrl" => canonical_url,
+        "declaredFilename" => attrs.filename,
+        "declaredMimeType" => attrs.mime_type,
+        "declaredSizeBytes" => attrs.size_bytes,
+        "declaredAssetType" => "image",
+        "declaredThread" => "post",
+        "declaredWidth" => generated.width,
+        "declaredHeight" => generated.height,
+        "batchRef" => generated.batch_ref,
+        "candidateOwnerRef" => generated.candidate_owner_ref,
+        "variantKey" => generated.variant_key,
+        "checksumSha256" => attrs.checksum_sha256,
+        "allowedMimeTypes" => ["image/webp"],
+        "maxSizeBytes" => @max_size_bytes,
+        "expiresAt" => DateTime.to_iso8601(expires_at)
+      }
+
+      {:ok,
+       %{
+         upload_ref: upload_ref,
+         asset_public_ref: asset_public_ref,
+         object_key: object_key,
+         capability: Capability.sign(payload),
+         expires_at: expires_at,
+         max_size_bytes: @max_size_bytes,
+         allowed_mime_types: ["image/webp"]
+       }}
+    end
+  end
+
   @spec complete(map()) :: T.domain_res(CommunityAsset.t())
   def complete(input) when is_map(input) do
     attrs = %{
@@ -183,6 +235,36 @@ defmodule GroupherServer.CMS.Assets.Upload do
     end
   end
 
+  defp validate_generated_file(file) do
+    batch_ref = file |> get(:batch_ref) |> normalize_string()
+    candidate_owner_ref = file |> get(:candidate_owner_ref) |> normalize_string()
+    variant_key = file |> get(:variant_key) |> normalize_string()
+    width = get(file, :width)
+    height = get(file, :height)
+    mime_type = file |> get(:mime_type) |> normalize_string()
+
+    cond do
+      mime_type != "image/webp" ->
+        {:error, GroupherServer.ErrorCat.custom("generated image MIME type must be image/webp")}
+
+      not is_integer(width) or width <= 0 or not is_integer(height) or height <= 0 ->
+        {:error, GroupherServer.ErrorCat.custom("generated image dimensions are invalid")}
+
+      batch_ref == nil or candidate_owner_ref == nil or variant_key == nil ->
+        {:error, GroupherServer.ErrorCat.custom("generated image batch metadata is required")}
+
+      true ->
+        {:ok,
+         %{
+           batch_ref: batch_ref,
+           candidate_owner_ref: candidate_owner_ref,
+           height: height,
+           variant_key: variant_key,
+           width: width
+         }}
+    end
+  end
+
   defp validate_completion(attrs) do
     cond do
       not is_binary(attrs.public_ref) or not String.starts_with?(attrs.public_ref, "asset_") ->
@@ -250,6 +332,10 @@ defmodule GroupherServer.CMS.Assets.Upload do
     dated_name = "#{pad2(day)}_#{asset_uid}"
 
     "communities/#{community_slug}/assets/#{month_path}/#{dated_name}/original"
+  end
+
+  defp generated_object_key(community_slug, batch_ref, asset_uid) do
+    "communities/#{community_slug}/wallpaper-generated/#{batch_ref}/#{asset_uid}/original"
   end
 
   defp pad2(value) when is_integer(value),

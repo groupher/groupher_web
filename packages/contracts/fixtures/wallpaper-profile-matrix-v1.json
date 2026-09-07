@@ -1,0 +1,45 @@
+{
+  "profileVersion": 1,
+  "profiles": [
+    {
+      "key": "wide",
+      "logicalWidth": 1920,
+      "logicalHeight": 1080,
+      "width": 1920,
+      "height": 1080,
+      "format": "webp",
+      "lightVariantKey": "light-wide",
+      "darkVariantKey": "dark-wide"
+    },
+    {
+      "key": "desktop",
+      "logicalWidth": 1440,
+      "logicalHeight": 900,
+      "width": 1440,
+      "height": 900,
+      "format": "webp",
+      "lightVariantKey": "light-desktop",
+      "darkVariantKey": "dark-desktop"
+    },
+    {
+      "key": "tablet",
+      "logicalWidth": 1024,
+      "logicalHeight": 1366,
+      "width": 1024,
+      "height": 1366,
+      "format": "webp",
+      "lightVariantKey": "light-tablet",
+      "darkVariantKey": "dark-tablet"
+    },
+    {
+      "key": "phone",
+      "logicalWidth": 390,
+      "logicalHeight": 844,
+      "width": 390,
+      "height": 844,
+      "format": "webp",
+      "lightVariantKey": "light-phone",
+      "darkVariantKey": "dark-phone"
+    }
+  ]
+}

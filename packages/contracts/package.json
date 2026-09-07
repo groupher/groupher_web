@@ -10,6 +10,9 @@
     "./endpoint": "./src/endpoint.ts",
     "./headers": "./src/headers.ts",
     "./health": "./src/health.ts",
+    "./fixtures/wallpaper-settings-v1.json": "./fixtures/wallpaper-settings-v1.json",
+    "./fixtures/wallpaper-profile-matrix-v1.json": "./fixtures/wallpaper-profile-matrix-v1.json",
+    "./wallpaper": "./src/wallpaper.ts",
     "./widget": "./src/widget.ts"
   },
   "scripts": {

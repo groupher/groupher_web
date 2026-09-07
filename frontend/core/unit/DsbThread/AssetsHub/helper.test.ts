@@ -3,6 +3,7 @@ import { describe, expect, test } from 'vitest'
 import {
   assetPublicReadUrl,
   assetUploaderName,
+  extractErrorMessage,
   formatAssetDimensions,
   formatAssetRefMeta,
   formatAssetRefTitle,
@@ -50,5 +51,21 @@ describe('AssetsHub helper', () => {
       assetUploaderName({ id: 'asset-2', uploader: { login: 'rishi', nickname: 'Rishi' } }),
     ).toBe('Rishi')
     expect(assetUploaderName({ id: 'asset-3' })).toBe('unknown')
+  })
+
+  test('extracts messages from errors and service error payloads', () => {
+    expect(extractErrorMessage(new Error('direct failure'))).toBe('direct failure')
+    expect(extractErrorMessage({ message: 'top-level failure' })).toBe('top-level failure')
+    expect(extractErrorMessage({ error: { message: 'nested service failure' } })).toBe(
+      'nested service failure',
+    )
+  })
+
+  test('maps wallpaper publish conflicts to an actionable message', () => {
+    expect(
+      extractErrorMessage({
+        errors: [{ extensions: { code: '5702' }, message: 'version conflict' }],
+      }),
+    ).toBe('Wallpaper changed elsewhere. Refresh and retry.')
   })
 })

@@ -16,6 +16,114 @@ defmodule GroupherServer.Test.Mutation.CMS.Dashboard do
   end
 
   describe "[mutation cms community]" do
+    @prepare_wallpaper_upload_query S.Dsb.m(:prepare_wallpaper_upload)
+    test "prepares a Wallpaper upload from typed profile input", ~m(community)a do
+      rule_conn = simu_conn(:user, cms: %{community.slug => %{"community.update" => true}})
+      checksum = Base.encode64(:binary.copy(<<0>>, 32))
+
+      images =
+        [
+          {"wide", 1920, 1080},
+          {"desktop", 1440, 900},
+          {"tablet", 1024, 1366},
+          {"phone", 390, 844}
+        ]
+        |> Enum.map(fn {profile, width, height} ->
+          %{
+            checksum: checksum,
+            height: height,
+            mimeType: "image/webp",
+            profile: String.upcase(profile),
+            sizeBytes: 1,
+            width: width
+          }
+        end)
+
+      variables = %{
+        community: community.slug,
+        input: %{
+          baseVersion: 0,
+          idempotencyKey: "typed-graphql-variants",
+          images: images,
+          settings: %{
+            renderConfig: Jason.encode!(wallpaper_render_config()),
+            settingsSchemaVersion: 1,
+            source: "amber_mauve",
+            type: "GRADIENT"
+          },
+          theme: "LIGHT"
+        }
+      }
+
+      result = rule_conn |> gq_mutation(@prepare_wallpaper_upload_query, variables)
+
+      assert is_binary(result["batchRef"])
+      assert is_binary(result["batchCapability"])
+
+      assert Enum.map(result["uploadIntents"], & &1["profile"]) ==
+               ["WIDE", "DESKTOP", "TABLET", "PHONE"]
+    end
+
+    test "returns the public field-level error contract for invalid Wallpaper image metadata",
+         ~m(community)a do
+      rule_conn = simu_conn(:user, cms: %{community.slug => %{"community.update" => true}})
+      checksum = Base.encode64(:binary.copy(<<0>>, 32))
+
+      images =
+        [
+          {"wide", 1, 1080},
+          {"desktop", 1440, 900},
+          {"tablet", 1024, 1366},
+          {"phone", 390, 844}
+        ]
+        |> Enum.map(fn {profile, width, height} ->
+          %{
+            checksum: checksum,
+            height: height,
+            mimeType: "image/webp",
+            profile: String.upcase(profile),
+            sizeBytes: 1,
+            width: width
+          }
+        end)
+
+      response =
+        rule_conn
+        |> post("/graphiql",
+          query: @prepare_wallpaper_upload_query,
+          variables: %{
+            community: community.slug,
+            input: %{
+              baseVersion: 0,
+              images: images,
+              idempotencyKey: "invalid-graphql-variant-width",
+              settings: %{
+                renderConfig: Jason.encode!(wallpaper_render_config()),
+                settingsSchemaVersion: 1,
+                source: "amber_mauve",
+                type: "GRADIENT"
+              },
+              theme: "LIGHT"
+            }
+          }
+        )
+        |> json_response(200)
+
+      assert [error] = response["errors"]
+      extensions = error["extensions"]
+
+      assert extensions["code"] == 5716
+
+      assert error["message"] ==
+               "Wallpaper image wide has invalid width: expected 1920, got 1"
+
+      refute Map.has_key?(error, "reason")
+      refute Map.has_key?(error, "details")
+      refute Map.has_key?(extensions, "reason")
+      refute Map.has_key?(extensions, "details")
+      refute Map.has_key?(extensions, "legacy_reason")
+    end
+
     @update_info_query S.Dsb.m(:update_dashboard_base_info)
     test "update community dashboard base info", ~m(community)a do
       rule_conn = simu_conn(:user, cms: %{community.slug => %{"community.update" => true}})
@@ -78,176 +186,6 @@ defmodule GroupherServer.Test.Mutation.CMS.Dashboard do
 
       assert found.dashboard.seo.og_title == "new title"
       assert found.dashboard.seo.seo_enable == false
-    end
-
-    @update_wallpaper_query S.Dsb.m(:update_dashboard_wallpaper)
-    test "update community dashboard wallpaper", ~m(community)a do
-      rule_conn = simu_conn(:user, cms: %{community.slug => %{"community.update" => true}})
-
-      variables = %{
-        community: community.slug,
-        wallpaper: %{
-          light: %{
-            source: "orange",
-            type: "gradient",
-            pattern:
-              Jason.encode!(%{
-                enabled: true,
-                id: "02",
-                intensity: 65,
-                tone: "light"
-              }),
-            contentShadow: Jason.encode!(%{enabled: true}),
-            effect:
-              Jason.encode!(%{
-                blurIntensity: 35,
-                brightness: 85,
-                saturation: 120
-              }),
-            gradient:
-              Jason.encode!(%{
-                version: 2,
-                renderer: "flow",
-                preset: "test",
-                seed: 1,
-                colors: ["#fff", "#000"],
-                angle: 45,
-                softness: 60,
-                warp: 50,
-                scale: 60,
-                contrast: 100,
-                brightness: 100
-              }),
-            texture: Jason.encode!(%{enabled: true, type: "ascii", intensity: 55, params: %{}})
-          },
-          dark: %{
-            source: "purple",
-            type: "gradient",
-            pattern:
-              Jason.encode!(%{
-                enabled: true,
-                id: "03",
-                intensity: 35,
-                tone: "dark"
-              }),
-            contentShadow: Jason.encode!(%{enabled: false}),
-            effect:
-              Jason.encode!(%{
-                blurIntensity: 15,
-                brightness: 90,
-                saturation: 80
-              }),
-            gradient:
-              Jason.encode!(%{
-                version: 2,
-                renderer: "linear",
-                preset: "dark-test",
-                colors: ["#111", "#333"],
-                angle: 90,
-                spread: 50
-              }),
-            texture: Jason.encode!(%{enabled: true, type: "tile", intensity: 45, params: %{}})
-          }
-        }
-      }
-
-      updated =
-        rule_conn
-        |> gq_mutation(@update_wallpaper_query, variables)
-
-      assert get_in(updated, ["wallpaper", "light", "source"]) == "orange"
-      assert get_in(updated, ["wallpaper", "dark", "source"]) == "purple"
-      assert get_in(updated, ["wallpaper", "light", "pattern", "id"]) == "02"
-      assert get_in(updated, ["wallpaper", "dark", "pattern", "id"]) == "03"
-      assert get_in(updated, ["wallpaper", "light", "pattern", "intensity"]) == 65
-      assert get_in(updated, ["wallpaper", "dark", "pattern", "intensity"]) == 35
-      assert get_in(updated, ["wallpaper", "light", "pattern", "tone"]) == "light"
-      assert get_in(updated, ["wallpaper", "dark", "pattern", "tone"]) == "dark"
-      assert get_in(updated, ["wallpaper", "light", "contentShadow", "enabled"]) == true
-      assert get_in(updated, ["wallpaper", "dark", "contentShadow", "enabled"]) == false
-      assert get_in(updated, ["wallpaper", "light", "effect", "blurIntensity"]) == 35
-      assert get_in(updated, ["wallpaper", "dark", "effect", "blurIntensity"]) == 15
-      assert get_in(updated, ["wallpaper", "light", "effect", "brightness"]) == 85
-      assert get_in(updated, ["wallpaper", "dark", "effect", "brightness"]) == 90
-      assert get_in(updated, ["wallpaper", "light", "effect", "saturation"]) == 120
-      assert get_in(updated, ["wallpaper", "dark", "effect", "saturation"]) == 80
-      assert get_in(updated, ["wallpaper", "light", "gradient", "preset"]) == "test"
-      assert get_in(updated, ["wallpaper", "light", "gradient", "renderer"]) == "flow"
-      assert get_in(updated, ["wallpaper", "dark", "gradient", "preset"]) == "dark-test"
-      assert get_in(updated, ["wallpaper", "light", "texture", "enabled"]) == true
-      assert get_in(updated, ["wallpaper", "dark", "texture", "enabled"]) == true
-      assert get_in(updated, ["wallpaper", "light", "texture", "type"]) == "ascii"
-      assert get_in(updated, ["wallpaper", "light", "texture", "intensity"]) == 55
-      assert get_in(updated, ["wallpaper", "dark", "texture", "type"]) == "tile"
-      assert get_in(updated, ["wallpaper", "dark", "texture", "intensity"]) == 45
-
-      {:ok, found} = Community |> ORM.find(community.id, preload: :dashboard)
-
-      assert found.dashboard.wallpaper.light.source == "orange"
-      assert found.dashboard.wallpaper.dark.source == "purple"
-      assert found.dashboard.wallpaper.light.type == "gradient"
-      assert found.dashboard.wallpaper.dark.type == "gradient"
-      assert found.dashboard.wallpaper.light.pattern["id"] == "02"
-      assert found.dashboard.wallpaper.dark.pattern["id"] == "03"
-      assert found.dashboard.wallpaper.light.pattern["intensity"] == 65
-      assert found.dashboard.wallpaper.dark.pattern["intensity"] == 35
-      assert found.dashboard.wallpaper.light.pattern["tone"] == "light"
-      assert found.dashboard.wallpaper.dark.pattern["tone"] == "dark"
-      assert found.dashboard.wallpaper.light.content_shadow["enabled"] == true
-      assert found.dashboard.wallpaper.dark.content_shadow["enabled"] == false
-      assert found.dashboard.wallpaper.light.effect["blurIntensity"] == 35
-      assert found.dashboard.wallpaper.dark.effect["blurIntensity"] == 15
-      assert found.dashboard.wallpaper.light.effect["brightness"] == 85
-      assert found.dashboard.wallpaper.dark.effect["brightness"] == 90
-      assert found.dashboard.wallpaper.light.effect["saturation"] == 120
-      assert found.dashboard.wallpaper.dark.effect["saturation"] == 80
-      assert found.dashboard.wallpaper.light.gradient["preset"] == "test"
-      assert found.dashboard.wallpaper.light.gradient["renderer"] == "flow"
-      assert found.dashboard.wallpaper.dark.gradient["preset"] == "dark-test"
-      assert found.dashboard.wallpaper.light.texture["enabled"] == true
-      assert found.dashboard.wallpaper.dark.texture["enabled"] == true
-      assert found.dashboard.wallpaper.light.texture["type"] == "ascii"
-      assert found.dashboard.wallpaper.light.texture["intensity"] == 55
-      assert found.dashboard.wallpaper.dark.texture["type"] == "tile"
-      assert found.dashboard.wallpaper.dark.texture["intensity"] == 45
-
-      updated =
-        rule_conn
-        |> gq_mutation(@update_wallpaper_query, %{
-          community: community.slug,
-          wallpaper: %{
-            light: %{
-              texture: Jason.encode!(%{enabled: true, type: "dots", intensity: 42, params: %{}})
-            }
-          }
-        })
-
-      assert get_in(updated, ["wallpaper", "light", "texture", "type"]) == "dots"
-      assert get_in(updated, ["wallpaper", "light", "texture", "intensity"]) == 42
-
-      {:ok, found} = Community |> ORM.find(community.id, preload: :dashboard)
-
-      assert found.dashboard.wallpaper.light.texture["type"] == "dots"
-      assert found.dashboard.wallpaper.light.texture["intensity"] == 42
-
-      updated =
-        rule_conn
-        |> gq_mutation(@update_wallpaper_query, %{
-          community: community.slug,
-          wallpaper: %{
-            light: %{
-              texture: Jason.encode!(%{enabled: true, type: "oil", intensity: 68, params: %{}})
-            }
-          }
-        })
-
-      assert get_in(updated, ["wallpaper", "light", "texture", "type"]) == "oil"
-      assert get_in(updated, ["wallpaper", "light", "texture", "intensity"]) == 68
-
-      {:ok, found} = Community |> ORM.find(community.id, preload: :dashboard)
-
-      assert found.dashboard.wallpaper.light.texture["type"] == "oil"
-      assert found.dashboard.wallpaper.light.texture["intensity"] == 68
     end
 
     @update_enable_query S.Dsb.m(:update_dashboard_enable)
@@ -671,5 +609,15 @@ defmodule GroupherServer.Test.Mutation.CMS.Dashboard do
       assert faq.desc == "Common docs questions"
       assert item.detail == "Docs are product help content."
     end
+  end
+
+  defp wallpaper_render_config do
+    %{
+      "contentShadow" => %{"enabled" => false},
+      "effect" => %{"blurIntensity" => 0, "brightness" => 100, "saturation" => 100},
+      "gradient" => nil,
+      "pattern" => %{"enabled" => false, "id" => "01", "intensity" => 0, "tone" => "dark"},
+      "texture" => %{"enabled" => false, "intensity" => 0, "params" => %{}, "type" => "noise"}
+    }
   end
 end

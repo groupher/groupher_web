@@ -1,4 +1,4 @@
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 import type { TBgRenderSpec } from '~/lib/bg'
 import { getPatternLayerStyle } from '~/render/BgRenderer/helper'
 
@@ -11,7 +11,7 @@ type TProps = {
 export default function StaticPreviewBranch({ branch, patternSize, theme }: TProps) {
   return (
     <div
-      className={cnMerge(
+      className={cn(
         'wallpaper-preview-branch abs-full bg-center',
         theme === 'light' ? 'wallpaper-preview-light' : 'wallpaper-preview-dark',
       )}

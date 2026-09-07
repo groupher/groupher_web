@@ -80,6 +80,28 @@ const getBgRenderFallbackConfig = (config: TBgConfig): TBgConfig =>
     ? { ...config, pattern: { ...config.pattern, enabled: false } }
     : config
 
+const emptyBgRenderSpec = (source: string): TBgRenderSpec => ({
+  background: 'transparent',
+  blurIntensity: 0,
+  brightness: 100,
+  colorStops: normalizeEvenGradientStops(DEFAULT_RENDER_COLORS.length),
+  colors: DEFAULT_RENDER_COLORS,
+  filter: 'none',
+  flow: 180,
+  gradientRecipe: null,
+  hasPattern: false,
+  hasTexture: false,
+  imageUrl: '',
+  meshRecipe: null,
+  patternColor: BG_PATTERN_DARK_COLOR,
+  patternImage: '',
+  patternOpacity: 0,
+  saturation: 100,
+  source,
+  texture: { type: WALLPAPER_TEXTURE.NOISE, intensity: 0, params: {} },
+  type: BG_RENDER_TYPE.NONE,
+})
+
 /**
  * Maps the current Wallpaper store shape into the common single-theme Bg shape.
  *
@@ -88,7 +110,6 @@ const getBgRenderFallbackConfig = (config: TBgConfig): TBgConfig =>
  */
 export const toBgConfig = (store: TWallpaperThemeState): TBgConfig => ({
   assetPublicRef: store.assetPublicRef,
-  staticAssetPublicRef: store.staticAssetPublicRef,
   source: store.source,
   pattern: store.pattern,
   gradient: store.gradient,
@@ -123,13 +144,17 @@ export const toBgCssConfig = (store: TWallpaperThemeState): TBgConfig => ({
  */
 export const composeBgCss = (config: TBgConfig, options: TBgResolveOptions = {}): TResolvedBg => {
   const { source, pattern, effect, gradient, customWallpaper: customWallpaperValue, type } = config
+
+  if (type === WALLPAPER_TYPE.NONE) {
+    return { source: source || '', background: '', effect: '' }
+  }
+
   const { pictureCatalog } = options
   let customWallpaper = customWallpaperValue
 
   if (
     (type === WALLPAPER_TYPE.PATTERN || type === WALLPAPER_TYPE.GRADIENT) &&
-    customWallpaperValue &&
-    'image' in customWallpaperValue
+    customWallpaperValue?.type === 'picture'
   ) {
     customWallpaper = {
       ...customWallpaperValue,
@@ -139,6 +164,7 @@ export const composeBgCss = (config: TBgConfig, options: TBgResolveOptions = {})
 
   if (type === WALLPAPER_TYPE.UPLOAD && source) {
     customWallpaper = {
+      type: 'picture',
       image: source,
       ...effect,
     }
@@ -196,6 +222,8 @@ export const composeBgRenderSpec = (
   config: TBgConfig,
   options: TBgRenderResolveOptions = {},
 ): TBgRenderSpec => {
+  if (config.type === WALLPAPER_TYPE.NONE) return emptyBgRenderSpec(config.source || '')
+
   const fallbackConfig = options.fallbackConfig ?? getBgRenderFallbackConfig(config)
   const { background, effect } = composeBgCss(fallbackConfig, options)
   const base = {
@@ -220,10 +248,6 @@ export const composeBgRenderSpec = (
     gradientRecipe: null,
     meshRecipe: null,
     imageUrl: '',
-  }
-
-  if (config.type === WALLPAPER_TYPE.NONE) {
-    return { ...base, type: BG_RENDER_TYPE.NONE }
   }
 
   if (config.type === WALLPAPER_TYPE.GRADIENT) {

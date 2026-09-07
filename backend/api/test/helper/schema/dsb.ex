@@ -37,6 +37,43 @@ defmodule GroupherServer.Test.Helper.Schema.Dsb do
     """
   end
 
+  def m(:prepare_wallpaper_upload) do
+    """
+    mutation($community: String!, $input: WallpaperUploadPrepareInput!) {
+      prepareWallpaperUpload(community: $community, input: $input) {
+        batchRef
+        batchCapability
+        expiresAt
+        uploadIntents {
+          capability
+          uploadRef
+          profile
+        }
+      }
+    }
+    """
+  end
+
+  def m(:publish_wallpaper) do
+    """
+      mutation($community: String!, $input: WallpaperPublishInput!) {
+      publishWallpaper(community: $community, input: $input) {
+        version
+      }
+    }
+    """
+  end
+
+  def m(:restore_wallpaper_snapshot) do
+    """
+    mutation($community: String!, $input: WallpaperRestoreSnapshotInput!) {
+      restoreWallpaperSnapshot(community: $community, input: $input) {
+        version
+      }
+    }
+    """
+  end
+
   def m(:update_dashboard_base_info) do
     """
     mutation($community: String!, $homepage: String, $locale: String, $title: String, $slug: String, $desc: String, $introduction: String, $logo: String, $favicon: String, $city: String, $techstack: String) {
@@ -57,41 +94,6 @@ defmodule GroupherServer.Test.Helper.Schema.Dsb do
           updateDashboardSeo(community: $community, ogTitle: $ogTitle, ogDescription: $ogDescription, seoEnable: $seoEnable) {
             seo {
               seoEnable
-            }
-          }
-        }
-    """
-  end
-
-  def m(:update_dashboard_wallpaper) do
-    """
-    mutation (
-          $community: String!
-          $wallpaper: DsbWallpaperInput!
-          ) {
-          updateDashboardWallpaper(
-            community: $community
-            wallpaper: $wallpaper
-          ) {
-            wallpaper {
-              light {
-                type
-                source
-                gradient
-                pattern
-                contentShadow
-                effect
-                texture
-              }
-              dark {
-                type
-                source
-                gradient
-                pattern
-                contentShadow
-                effect
-                texture
-              }
             }
           }
         }
@@ -292,6 +294,61 @@ defmodule GroupherServer.Test.Helper.Schema.Dsb do
             }
           }
         }
+    """
+  end
+
+  def q(:wallpaper) do
+    """
+    query($community: String!, $theme: WallpaperTheme!) {
+      community(slug: $community) {
+        dashboard {
+          wallpaper {
+            version
+            light {
+              wide { url width height }
+              desktop { url width height }
+              tablet { url width height }
+              phone { url width height }
+            }
+            dark {
+              wide { url width height }
+              desktop { url width height }
+              tablet { url width height }
+              phone { url width height }
+            }
+          }
+          wallpaperSettings {
+            light {
+              settingsSchemaVersion
+              type
+              source
+              customWallpaper { type assetPublicRef config }
+              renderConfig
+            }
+            dark {
+              settingsSchemaVersion
+              type
+              source
+              customWallpaper { type assetPublicRef config }
+              renderConfig
+            }
+          }
+          wallpaperHistory(theme: $theme) {
+            id
+            theme
+            settings {
+              settingsSchemaVersion
+              type
+              source
+              customWallpaper { type assetPublicRef config }
+              renderConfig
+            }
+            savedAt
+            active
+          }
+        }
+      }
+    }
     """
   end
 end

@@ -32,7 +32,7 @@
 ```text
 SSR loader
   ├─ theme seed（Dash/Community 当前为 light/system fallback）
-  └─ wallpaper query（同时包含 light、dark、staticRevision）
+  └─ wallpaper query（包含 light/dark 两个已发布 Wallpaper 分支）
         ↓
 SSR HTML
   └─ Landing/Dash/Community：输出 html[data-theme] / html[data-theme-mode] SSR seed

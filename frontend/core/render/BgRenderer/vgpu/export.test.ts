@@ -2,7 +2,7 @@ import { BG_RENDER_TYPE } from '~/lib/bg'
 import type { TBgRenderSpec } from '~/lib/bg'
 import { GRADIENT_RENDERER, WALLPAPER_TEXTURE } from '~/lib/wallpaperMesh'
 
-import { exportVgpuWallpaper } from './export'
+import { exportVgpuWallpaper, exportVgpuWallpaperBatch } from './export'
 
 const mocks = vi.hoisted(() => ({
   effect: vi.fn(),
@@ -116,6 +116,17 @@ describe('exportVgpuWallpaper', () => {
     })
 
     expect(exported.mimeType).toBe('image/webp')
+  })
+
+  it('reuses one GPU device for a multi-target batch', async () => {
+    const exported = await exportVgpuWallpaperBatch([
+      { renderSpec: createMeshSpec(GRADIENT_RENDERER.FLOW), targetKey: 'light-wide' },
+      { renderSpec: createMeshSpec(GRADIENT_RENDERER.LIQUID), targetKey: 'light-desktop' },
+    ])
+
+    expect(exported.map(({ targetKey }) => targetKey)).toEqual(['light-wide', 'light-desktop'])
+    expect(mocks.init).toHaveBeenCalledTimes(1)
+    expect(mocks.surface).toHaveBeenCalledTimes(2)
   })
 
   it('rejects unsupported background specs before creating a GPU device', async () => {

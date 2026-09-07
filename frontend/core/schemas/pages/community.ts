@@ -108,28 +108,74 @@ export const community = graphql(`
           }
         }
         wallpaper {
-          staticRevision
+          version
           light {
-            type
-            source
-            assetPublicRef
-            staticAssetPublicRef
-            gradient
-            pattern
-            contentShadow
-            effect
-            texture
+            wide {
+              url
+              width
+              height
+            }
+            desktop {
+              url
+              width
+              height
+            }
+            tablet {
+              url
+              width
+              height
+            }
+            phone {
+              url
+              width
+              height
+            }
           }
           dark {
+            wide {
+              url
+              width
+              height
+            }
+            desktop {
+              url
+              width
+              height
+            }
+            tablet {
+              url
+              width
+              height
+            }
+            phone {
+              url
+              width
+              height
+            }
+          }
+        }
+        wallpaperSettings {
+          light {
+            settingsSchemaVersion
             type
             source
-            assetPublicRef
-            staticAssetPublicRef
-            gradient
-            pattern
-            contentShadow
-            effect
-            texture
+            customWallpaper {
+              type
+              assetPublicRef
+              config
+            }
+            renderConfig
+          }
+          dark {
+            settingsSchemaVersion
+            type
+            source
+            customWallpaper {
+              type
+              assetPublicRef
+              config
+            }
+            renderConfig
           }
         }
         headerLinks {

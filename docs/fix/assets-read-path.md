@@ -1,5 +1,8 @@
 # Assets 静态资源读取链路：空白背景与解耦方案
 
+> 文档角色：Incident archive；本文中的 `staticRevision`、`staticAssetPublicRef` 只描述历史 v1
+> 故障现场，不是当前 Wallpaper API。当前数据边界以 `docs/wallpaper/` 下的 Active contract 为准。
+
 ## 状态
 
 - 当前问题：已确认根因

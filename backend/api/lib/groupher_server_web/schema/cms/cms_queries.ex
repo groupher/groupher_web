@@ -400,6 +400,18 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
       resolve(&R.CMS.community_asset_origin_info/3)
     end
 
+    @desc "Service-scoped check for a successfully published Wallpaper Batch"
+    field :wallpaper_batch_published, non_null(:boolean) do
+      arg(:batch_ref, non_null(:string))
+
+      middleware(M.ServiceScope,
+        audience: "phoenix:assets-api",
+        scope: "assets:generated-batch:reconcile"
+      )
+
+      resolve(&R.CMS.wallpaper_batch_published/3)
+    end
+
     @desc "Get all passport rules available to the current user."
     field :all_passport_rules, :all_rules do
       middleware(M.Authorize, :login)

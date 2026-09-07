@@ -32,7 +32,11 @@ import type {
   TThemePresetOverwrite,
 } from './theme_preset'
 import type { TEditValue, TFooterOnelineLink, TLinkItem, TSocialItem } from './utils'
-import type { TWallpaperConfig } from './wallpaper'
+import type {
+  TPublishedWallpaper,
+  TWallpaperConfig,
+  TWallpaperSettingsTransportByTheme,
+} from './wallpaper'
 
 export type TTagLayout = TConstValues<typeof TAG_LAYOUT>
 export type TInlineTagLayout = TConstValues<typeof INLINE_TAG_LAYOUT>
@@ -138,7 +142,8 @@ export type TDsb = {
   footerLinks?: readonly TLinkItem[]
   footerOnelineLinks?: readonly TFooterOnelineLink[]
 
-  wallpaper?: TWallpaperConfig
+  wallpaper?: TPublishedWallpaper
+  wallpaperSettings?: TWallpaperSettingsTransportByTheme
   baseInfo?: {
     title?: string
     bio?: string

@@ -7,6 +7,7 @@ import type { TCommunity, TLocale, TMetric, TParseDashboard, TThemeMode, TThemeN
 import AccountStoreProvider from '~/stores/account/provider'
 import type { TInit as TAccountInit } from '~/stores/account/spec'
 import CommunityStoreProvider from '~/stores/community/provider'
+import DsbConfigProvider from '~/stores/dsbConfig/provider'
 import LocaleStoreProvider from '~/stores/locale/provider'
 import { MetricProvider } from '~/stores/metric'
 import StaticWallpaperProvider from '~/stores/staticWallpaper/provider'
@@ -59,11 +60,15 @@ export default function CommunityShellProvider({
           <MetricProvider value={metric}>
             <AccountWrapper initData={account} noAccount={noAccount}>
               <CommunityStoreProvider initData={community}>
-                <ThemePresetStoreProvider initData={dashboard}>
-                  <StaticWallpaperProvider initData={wallpaper?.staticWallpaper}>
-                    <WallpaperStoreProvider initData={wallpaper}>{children}</WallpaperStoreProvider>
-                  </StaticWallpaperProvider>
-                </ThemePresetStoreProvider>
+                <DsbConfigProvider initData={dashboard}>
+                  <ThemePresetStoreProvider initData={dashboard}>
+                    <StaticWallpaperProvider initData={wallpaper?.wallpaper}>
+                      <WallpaperStoreProvider initData={wallpaper}>
+                        {children}
+                      </WallpaperStoreProvider>
+                    </StaticWallpaperProvider>
+                  </ThemePresetStoreProvider>
+                </DsbConfigProvider>
               </CommunityStoreProvider>
             </AccountWrapper>
           </MetricProvider>

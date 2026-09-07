@@ -2,7 +2,7 @@
 
 import { lazy, Suspense, useCallback, useState } from 'react'
 
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 import useTheme from '~/hooks/useTheme'
 import { adaptWallpaperBgRenderSpec } from '~/hooks/useWallpaper'
 import { DEFAULT_WALLPAPER_PATTERN_SIZE } from '~/lib/bg'
@@ -35,9 +35,9 @@ export default function WallpaperPreview({
   const handleGpuFailure = useCallback(() => setGpuReadyTheme(null), [])
 
   return (
-    <div className={cnMerge('abs-full overflow-hidden', className)}>
+    <div className={cn('abs-full overflow-hidden', className)}>
       <div
-        className={cnMerge(
+        className={cn(
           'abs-full wallpaper-preview-fallback transition-opacity duration-200 ease-out',
           gpuReadyTheme === theme ? 'opacity-0' : 'opacity-100',
         )}
@@ -49,7 +49,7 @@ export default function WallpaperPreview({
       <Suspense fallback={null}>
         <WallpaperRenderer
           key={theme}
-          className={cnMerge(
+          className={cn(
             'abs-full transition-opacity duration-200 ease-out',
             gpuReadyTheme === theme ? 'opacity-100' : 'opacity-0',
           )}

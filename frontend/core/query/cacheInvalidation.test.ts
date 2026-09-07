@@ -76,6 +76,8 @@ describe('mutation cache effect mapping', () => {
       'UpdateDashboardSeo',
       'SaveCustomThemePreset',
       'DashboardAddModerator',
+      'PublishWallpaper',
+      'RestoreWallpaperSnapshot',
     ]) {
       expect(
         mutationCacheEffect(

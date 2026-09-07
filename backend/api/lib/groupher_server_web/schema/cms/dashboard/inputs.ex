@@ -53,9 +53,47 @@ defmodule GroupherServerWeb.Schema.CMS.Dashboard.Metrics.Inputs do
     dsb_input_fields(:wallpaper_bg)
   end
 
-  input_object :dsb_wallpaper_input do
-    field(:static_revision, :string)
-    field(:light, :dsb_bg_config_input)
-    field(:dark, :dsb_bg_config_input)
+  input_object :custom_wallpaper_input do
+    field(:type, non_null(:custom_wallpaper_type))
+    field(:asset_public_ref, :string)
+    field(:config, non_null(:json))
+  end
+
+  input_object :wallpaper_settings_input do
+    field(:settings_schema_version, non_null(:integer))
+    field(:type, non_null(:wallpaper_type))
+    field(:source, :string)
+    field(:custom_wallpaper, :custom_wallpaper_input)
+    field(:render_config, :json)
+  end
+
+  input_object :wallpaper_publish_input do
+    field(:theme, non_null(:wallpaper_theme))
+    field(:settings, non_null(:wallpaper_settings_input))
+    field(:base_version, non_null(:integer))
+    field(:idempotency_key, non_null(:string))
+    field(:batch_ref, :string)
+  end
+
+  input_object :wallpaper_image_input do
+    field(:profile, non_null(:wallpaper_profile))
+    field(:checksum, non_null(:string))
+    field(:mime_type, non_null(:string))
+    field(:size_bytes, non_null(:integer))
+    field(:width, non_null(:integer))
+    field(:height, non_null(:integer))
+  end
+
+  input_object :wallpaper_upload_prepare_input do
+    field(:theme, non_null(:wallpaper_theme))
+    field(:settings, non_null(:wallpaper_settings_input))
+    field(:base_version, non_null(:integer))
+    field(:idempotency_key, non_null(:string))
+    field(:images, non_null(list_of(non_null(:wallpaper_image_input))))
+  end
+
+  input_object :wallpaper_restore_snapshot_input do
+    field(:snapshot_id, non_null(:id))
+    field(:base_version, non_null(:integer))
   end
 end

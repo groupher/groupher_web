@@ -1,5 +1,5 @@
 import { effect, frame, init, surface } from 'vgpu'
-import type { Gpu, Surface } from 'vgpu'
+import type { Gpu } from 'vgpu'
 
 import { DEFAULT_WALLPAPER_EXPORT_SIZE, DEFAULT_WALLPAPER_PATTERN_SIZE } from '~/lib/bg'
 import type { TBgRenderSpec } from '~/lib/bg'
@@ -22,6 +22,7 @@ const GPU_INIT_TIMEOUT_MS = 10_000
 
 export type TVgpuWallpaperExportOptions = {
   filename?: string
+  logicalSize?: readonly [number, number]
   maxBytes?: number
   patternSize?: string
   quality?: number
@@ -35,6 +36,16 @@ export type TVgpuWallpaperExport = {
   height: number
   mimeType: 'image/webp'
   width: number
+}
+
+export type TVgpuWallpaperExportJob = {
+  options?: TVgpuWallpaperExportOptions
+  renderSpec: TBgRenderSpec
+  targetKey?: string
+}
+
+export type TVgpuWallpaperBatchExport = TVgpuWallpaperExport & {
+  targetKey: string
 }
 
 const initGpuWithTimeout = async (): Promise<Gpu> => {
@@ -112,6 +123,167 @@ const assertWebpDimensions = async (
   }
 }
 
+const normalizeExportOptions = (options: TVgpuWallpaperExportOptions) => {
+  const size = normalizeExportSize(options.size ?? DEFAULT_WALLPAPER_EXPORT_SIZE)
+  const logicalSize = normalizeExportSize(options.logicalSize ?? size)
+  const quality = Math.min(1, Math.max(0, options.quality ?? DEFAULT_WEBP_QUALITY))
+  const maxBytes = options.maxBytes ?? DEFAULT_WEBP_BUDGET_BYTES
+  const filename = options.filename ?? DEFAULT_EXPORT_FILENAME
+  const patternSize = options.patternSize ?? DEFAULT_WALLPAPER_PATTERN_SIZE
+
+  if (!filename.trim()) throw new Error('BG_VGPU_EXPORT_INVALID_FILENAME: filename cannot be empty')
+  if (!Number.isInteger(maxBytes) || maxBytes <= 0) {
+    throw new Error('BG_VGPU_EXPORT_INVALID_BUDGET: maxBytes must be a positive integer')
+  }
+
+  return { filename, logicalSize, maxBytes, patternSize, quality, size }
+}
+
+/**
+ * Renders several supported Wallpaper specs with one WebGPU device and shared source textures.
+ *
+ * Each job still receives an independent surface and output bitmap, so profiles are composed at
+ * their own logical aspect ratio. The GPU device, sampler, pattern textures, and source image
+ * textures are shared for the lifetime of the batch.
+ */
+export const exportVgpuWallpaperBatch = async (
+  jobs: readonly TVgpuWallpaperExportJob[],
+): Promise<TVgpuWallpaperBatchExport[]> => {
+  if (jobs.length === 0) return []
+  for (const { renderSpec } of jobs) {
+    if (!isVgpuWallpaperSpec(renderSpec)) {
+      throw new Error(
+        'BG_VGPU_EXPORT_UNSUPPORTED_SPEC: only supported gradient, mesh, and image wallpapers are supported',
+      )
+    }
+  }
+  if (typeof navigator === 'undefined' || !navigator.gpu) {
+    throw new Error('BG_VGPU_EXPORT_WEBGPU_UNAVAILABLE: current browser does not provide WebGPU')
+  }
+
+  const normalizedJobs = jobs.map((job, index) => ({
+    ...job,
+    normalized: normalizeExportOptions(job.options ?? {}),
+    targetKey: job.targetKey ?? String(index),
+  }))
+  const gpu = await initGpuWithTimeout()
+  const asyncErrors: Error[] = []
+  const unsubscribeError = gpu.onError((error) => asyncErrors.push(error))
+  const patternSampler = gpu.gpu.createSampler({
+    addressModeU: 'clamp-to-edge',
+    addressModeV: 'clamp-to-edge',
+    magFilter: 'linear',
+    minFilter: 'linear',
+  })
+  const fallbackTexture = createPatternFallbackTexture(gpu.gpu, 'wallpaper-vgpu-batch-fallback')
+  const textureCache = new Map<string, Promise<TPatternTexture>>()
+  const ownedTextures = new Set<TPatternTexture>([fallbackTexture])
+
+  const getTexture = (url: string): Promise<TPatternTexture> => {
+    if (!url) return Promise.resolve(fallbackTexture)
+
+    const cached = textureCache.get(url)
+    if (cached) return cached
+
+    const texture = loadPatternTexture(gpu.gpu, url).then((loaded) => {
+      ownedTextures.add(loaded)
+      return loaded
+    })
+    textureCache.set(url, texture)
+    return texture
+  }
+
+  const renderJob = async ({
+    normalized,
+    renderSpec,
+    targetKey,
+  }: (typeof normalizedJobs)[number]): Promise<TVgpuWallpaperBatchExport> => {
+    const { filename, logicalSize, maxBytes, patternSize, quality, size } = normalized
+    const canvas = document.createElement('canvas')
+    canvas.width = size[0]
+    canvas.height = size[1]
+    const exportSurface = surface(gpu, canvas, {
+      autoResize: false,
+      dpr: 1,
+      size,
+      alphaMode: 'premultiplied',
+      clearColor: [0, 0, 0, 0],
+      label: `wallpaper-vgpu-export-surface-${targetKey}`,
+    })
+
+    try {
+      if (canvas.width !== size[0] || canvas.height !== size[1]) {
+        throw new Error(
+          `BG_VGPU_EXPORT_INVALID_CANVAS_SIZE: expected ${size[0]}x${size[1]}, got ${canvas.width}x${canvas.height}`,
+        )
+      }
+
+      const patternTexture = renderSpec.hasPattern
+        ? await getTexture(renderSpec.patternImage)
+        : fallbackTexture
+      const imageTexture =
+        renderSpec.type === 'image' ? await getTexture(renderSpec.imageUrl) : fallbackTexture
+      const meshParams = toVgpuMeshParams(
+        renderSpec,
+        getPatternRepeat(logicalSize, patternSize, [patternTexture.width, patternTexture.height]),
+      )
+      meshParams.resolution = [size[0], size[1]]
+      meshParams.imageSize = [imageTexture.width, imageTexture.height]
+      meshParams.imageReady = renderSpec.type === 'image' ? 1 : 0
+      const mesh = effect(gpu, wallpaperMeshShader, {
+        label: `wallpaper-vgpu-export-mesh-${targetKey}`,
+        set: {
+          params: meshParams,
+          patternSampler,
+          patternTexture: patternTexture.texture,
+          imageSampler: patternSampler,
+          imageTexture: imageTexture.texture,
+        },
+      })
+
+      const errorCount = asyncErrors.length
+      await mesh.compile({ colors: [exportSurface.format], sampleCount: exportSurface.sampleCount })
+      const currentFrame = frame(gpu, (gpuFrame) => {
+        gpuFrame.pass(exportSurface, mesh)
+      })
+      await currentFrame.done
+      await gpu.settled()
+      if (asyncErrors.length > errorCount) throw asyncErrors[errorCount]
+
+      const blob = await canvasToWebp(canvas, quality)
+      await assertWebpDimensions(blob, size)
+      if (blob.size > maxBytes) {
+        throw new Error(
+          `BG_VGPU_EXPORT_TOO_LARGE: WebP is ${blob.size} bytes, limit is ${maxBytes} bytes`,
+        )
+      }
+
+      const file = new File([blob], filename, { type: 'image/webp' })
+      return {
+        blob,
+        file,
+        filename,
+        height: size[1],
+        mimeType: 'image/webp',
+        targetKey,
+        width: size[0],
+      }
+    } finally {
+      exportSurface.dispose()
+    }
+  }
+
+  try {
+    const results: TVgpuWallpaperBatchExport[] = []
+    for (const job of normalizedJobs) results.push(await renderJob(job))
+    return results
+  } finally {
+    unsubscribeError()
+    for (const texture of ownedTextures) texture.texture.destroy()
+    gpu.dispose()
+  }
+}
+
 /**
  * Renders a supported wallpaper spec to a fixed-size WebP Blob.
  *
@@ -127,115 +299,7 @@ export const exportVgpuWallpaper = async (
   renderSpec: TBgRenderSpec,
   options: TVgpuWallpaperExportOptions = {},
 ): Promise<TVgpuWallpaperExport> => {
-  if (!isVgpuWallpaperSpec(renderSpec)) {
-    throw new Error(
-      'BG_VGPU_EXPORT_UNSUPPORTED_SPEC: only supported gradient, mesh, and image wallpapers are supported',
-    )
-  }
-  if (typeof navigator === 'undefined' || !navigator.gpu) {
-    throw new Error('BG_VGPU_EXPORT_WEBGPU_UNAVAILABLE: current browser does not provide WebGPU')
-  }
-
-  const size = normalizeExportSize(options.size ?? DEFAULT_WALLPAPER_EXPORT_SIZE)
-  const quality = Math.min(1, Math.max(0, options.quality ?? DEFAULT_WEBP_QUALITY))
-  const maxBytes = options.maxBytes ?? DEFAULT_WEBP_BUDGET_BYTES
-  const filename = options.filename ?? DEFAULT_EXPORT_FILENAME
-  const patternSize = options.patternSize ?? DEFAULT_WALLPAPER_PATTERN_SIZE
-  if (!filename.trim()) throw new Error('BG_VGPU_EXPORT_INVALID_FILENAME: filename cannot be empty')
-  if (!Number.isInteger(maxBytes) || maxBytes <= 0) {
-    throw new Error('BG_VGPU_EXPORT_INVALID_BUDGET: maxBytes must be a positive integer')
-  }
-
-  const gpu = await initGpuWithTimeout()
-  const asyncErrors: Error[] = []
-  const unsubscribeError = gpu.onError((error) => asyncErrors.push(error))
-  let canvasSurface: Surface | undefined
-  let patternTexture: TPatternTexture | undefined
-  let imageTexture: TPatternTexture | undefined
-
-  try {
-    const canvas = document.createElement('canvas')
-    canvas.width = size[0]
-    canvas.height = size[1]
-    const exportSurface = surface(gpu, canvas, {
-      autoResize: false,
-      dpr: 1,
-      size,
-      alphaMode: 'premultiplied',
-      clearColor: [0, 0, 0, 0],
-      label: 'wallpaper-vgpu-export-surface',
-    })
-
-    if (canvas.width !== size[0] || canvas.height !== size[1]) {
-      throw new Error(
-        `BG_VGPU_EXPORT_INVALID_CANVAS_SIZE: expected ${size[0]}x${size[1]}, got ${canvas.width}x${canvas.height}`,
-      )
-    }
-
-    patternTexture = renderSpec.hasPattern
-      ? await loadPatternTexture(gpu.gpu, renderSpec.patternImage)
-      : createPatternFallbackTexture(gpu.gpu)
-    imageTexture =
-      renderSpec.type === 'image'
-        ? await loadPatternTexture(gpu.gpu, renderSpec.imageUrl)
-        : createPatternFallbackTexture(gpu.gpu)
-    const patternSampler = gpu.gpu.createSampler({
-      addressModeU: 'clamp-to-edge',
-      addressModeV: 'clamp-to-edge',
-      magFilter: 'linear',
-      minFilter: 'linear',
-    })
-
-    const meshParams = toVgpuMeshParams(
-      renderSpec,
-      getPatternRepeat(size, patternSize, [patternTexture.width, patternTexture.height]),
-    )
-    meshParams.resolution = [size[0], size[1]]
-    meshParams.imageSize = [imageTexture.width, imageTexture.height]
-    meshParams.imageReady = renderSpec.type === 'image' ? 1 : 0
-    const mesh = effect(gpu, wallpaperMeshShader, {
-      label: 'wallpaper-vgpu-export-mesh',
-      set: {
-        params: meshParams,
-        patternSampler,
-        patternTexture: patternTexture.texture,
-        imageSampler: patternSampler,
-        imageTexture: imageTexture.texture,
-      },
-    })
-
-    canvasSurface = exportSurface
-    await mesh.compile({ colors: [exportSurface.format], sampleCount: exportSurface.sampleCount })
-    const currentFrame = frame(gpu, (gpuFrame) => {
-      gpuFrame.pass(exportSurface, mesh)
-    })
-    await currentFrame.done
-    await gpu.settled()
-    if (asyncErrors.length > 0) throw asyncErrors[0]
-
-    const blob = await canvasToWebp(canvas, quality)
-    await assertWebpDimensions(blob, size)
-    if (blob.size > maxBytes) {
-      throw new Error(
-        `BG_VGPU_EXPORT_TOO_LARGE: WebP is ${blob.size} bytes, limit is ${maxBytes} bytes`,
-      )
-    }
-
-    const file = new File([blob], filename, { type: 'image/webp' })
-
-    return {
-      blob,
-      file,
-      filename,
-      height: size[1],
-      mimeType: 'image/webp',
-      width: size[0],
-    }
-  } finally {
-    unsubscribeError()
-    canvasSurface?.dispose()
-    patternTexture?.texture.destroy()
-    imageTexture?.texture.destroy()
-    gpu.dispose()
-  }
+  const [exported] = await exportVgpuWallpaperBatch([{ options, renderSpec }])
+  const { targetKey: _targetKey, ...result } = exported!
+  return result
 }

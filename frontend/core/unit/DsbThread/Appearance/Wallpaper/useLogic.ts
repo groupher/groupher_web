@@ -1,6 +1,7 @@
+import type { ResultOf, VariablesOf } from '@graphql-typed-document-node/core'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { clone, pick } from 'ramda'
-import { createContext, use, useMemo, useState } from 'react'
+import { clone } from 'ramda'
+import { createContext, use, useMemo, useRef, useState } from 'react'
 
 import { ASSETS_HUB_READ_ENDPOINT } from '~/config'
 import { GRADIENT_PALETTE, GRADIENT_WALLPAPER, WALLPAPER_TYPE } from '~/const/wallpaper'
@@ -9,8 +10,8 @@ import useFullWallpaper from '~/hooks/useFullWallpaper'
 import useTheme from '~/hooks/useTheme'
 import useTrans from '~/hooks/useTrans'
 import { adaptWallpaperBgRenderSpec } from '~/hooks/useWallpaper'
-import { normalizePersistedAngle, normalizeSignedAngle } from '~/lib/angle'
-import { DEFAULT_WALLPAPER_PATTERN_SIZE } from '~/lib/bg'
+import { normalizeSignedAngle } from '~/lib/angle'
+import type { WallpaperProfile, WallpaperTheme } from '~/lib/graphql/generated/graphql'
 import {
   applyGradientPalette,
   composeGradientRecipeForRenderer,
@@ -19,13 +20,15 @@ import {
   isMeshGradientRecipe,
 } from '~/lib/wallpaperMesh'
 import type { TGradientRecipe, TGradientRenderer } from '~/lib/wallpaperMesh'
-import { wallpaperKeys } from '~/query'
-import { exportWallpaperAsset } from '~/render/WallpaperExport'
-import type { TParsedWallpaper, TStaticWallpaper, TWallpaperData, TWallpaperType } from '~/spec'
+import type { TWallpaperProfile } from '~/lib/wallpaperProfiles'
+import { encodeWallpaperSettings } from '~/lib/wallpaperSettingsCodec'
+import { wallpaperEditorKeys, wallpaperKeys, wallpaperQueries } from '~/query'
+import { exportWallpaperBatch, wallpaperExportTargets } from '~/render/WallpaperExport'
+import type { TWallpaperData, TWallpaperType } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
-import { WALLPAPER_STATE_KEYS } from '~/stores/wallpaper/constant'
+import useStaticWallpaper from '~/stores/staticWallpaper/hooks'
 import {
-  getWallpaperSavablePatch,
+  getWallpaperThemeSavablePatch,
   pickWallpaperThemeState,
   toWallpaperThemePatch,
 } from '~/stores/wallpaper/helper'
@@ -33,7 +36,7 @@ import useWallpaperDomain, { useWallpaperStore } from '~/stores/wallpaper/hooks'
 import type { TWallpaperPatch, TWallpaperThemeState } from '~/stores/wallpaper/spec'
 import { toast } from '~/ui/Toaster'
 import { extractErrorMessage } from '~/unit/DsbThread/AssetsHub/helper'
-import { uploadCommunityAsset } from '~/unit/DsbThread/AssetsHub/uploadCommunityAsset'
+import { uploadGeneratedImage } from '~/unit/DsbThread/AssetsHub/uploadGeneratedImage'
 
 import { TAB } from './constant'
 import S from './schema'
@@ -56,13 +59,45 @@ const getInitialTab = (type: TWallpaperType): TTab => {
 
 type TWallpaperSaveRequest = {
   community: string
-  wallpaper: TWallpaperPatch
+  baseVersion: number
+  idempotencyKey: string
   submitted: TWallpaperPatch
+  theme: 'light' | 'dark'
 }
 
-type TWallpaperPublication = {
-  staticPatch: TWallpaperPatch
-  staticRevision: string
+type TGeneratedUploadIntent = {
+  capability: string
+  profile: string
+  uploadRef: string
+}
+
+const createIdempotencyKey = (): string =>
+  typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(16).slice(2)}`
+
+const toGraphqlTheme = (theme: 'light' | 'dark'): WallpaperTheme =>
+  theme === 'dark' ? 'DARK' : 'LIGHT'
+
+const toGraphqlProfile = (profile: TWallpaperProfile): WallpaperProfile =>
+  profile.toUpperCase() as WallpaperProfile
+
+const graphqlErrorCode = (error: unknown): string | undefined => {
+  if (!error || typeof error !== 'object' || !('errors' in error)) return undefined
+  const errors = error.errors
+  if (!Array.isArray(errors)) return undefined
+  const code = errors.find(
+    (item) =>
+      item &&
+      typeof item === 'object' &&
+      'extensions' in item &&
+      item.extensions &&
+      typeof item.extensions === 'object' &&
+      'code' in item.extensions,
+  )
+  return code && typeof code === 'object' && 'extensions' in code
+    ? String((code.extensions as { code?: unknown }).code)
+    : undefined
 }
 
 export type TWallpaperLogic = {
@@ -72,7 +107,6 @@ export type TWallpaperLogic = {
   getWallpaper: () => TWallpaperData
   isTouched: boolean
   // actions
-  initRollback: () => void
   rollbackWallpaper: () => void
   onSave: () => void
 
@@ -149,103 +183,131 @@ export const composeGradientWallpaperPatch = (
   }
 }
 
-export const serializeWallpaperPatch = (
-  patch: TWallpaperPatch & { staticRevision?: string },
-): Record<string, unknown> => {
-  const serialized = clone(patch) as Record<string, unknown>
-
-  for (const theme of ['light', 'dark']) {
-    const themePatch = serialized[theme] as Record<string, unknown> | undefined
-    if (!themePatch) continue
-
-    for (const key of ['gradient', 'pattern', 'contentShadow', 'effect', 'texture']) {
-      if (key in themePatch && themePatch[key] !== null && themePatch[key] !== undefined) {
-        const value = themePatch[key]
-        const serializableValue =
-          key === 'gradient' && value && typeof value === 'object' && !Array.isArray(value)
-            ? {
-                ...(value as Record<string, unknown>),
-                ...(typeof (value as Record<string, unknown>).angle === 'number'
-                  ? {
-                      angle: normalizePersistedAngle(
-                        (value as Record<string, unknown>).angle as number,
-                      ),
-                    }
-                  : {}),
-              }
-            : value
-
-        themePatch[key] = JSON.stringify(serializableValue)
-      }
-    }
+const createAssetsHubBatch = async (capability: string): Promise<void> => {
+  const response = await fetch(`${ASSETS_HUB_READ_ENDPOINT}/generated-batches`, {
+    body: JSON.stringify({ capability }),
+    headers: { 'content-type': 'application/json' },
+    method: 'POST',
+  })
+  if (!response.ok) {
+    const body = await response.text()
+    throw new Error(`GENERATED_IMAGE_BATCH_CREATE_FAILED: ${body || response.status}`)
   }
-
-  return serialized
 }
 
-const createStaticRevision = (): string =>
-  typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
-    ? crypto.randomUUID()
-    : `${Date.now()}`
+const cancelAssetsHubBatch = async (batchRef: string, capability: string): Promise<void> => {
+  await fetch(`${ASSETS_HUB_READ_ENDPOINT}/generated-batches/${batchRef}/cancel`, {
+    body: JSON.stringify({ capability }),
+    headers: { 'content-type': 'application/json' },
+    method: 'POST',
+  }).catch(() => undefined)
+}
 
-const hasUploadRasterEffects = (state: TWallpaperThemeState): boolean =>
-  state.texture.enabled ||
-  state.effect.blurIntensity !== 0 ||
-  state.effect.brightness !== 100 ||
-  state.effect.saturation !== 100
-
-export const requiresWallpaperExport = (state: TWallpaperThemeState): boolean =>
-  state.type !== WALLPAPER_TYPE.UPLOAD || hasUploadRasterEffects(state)
-
-const toStaticAsset = (assetPublicRef: string | null): TStaticWallpaper['light'] =>
-  assetPublicRef
-    ? {
-        assetPublicRef,
-        url: `${ASSETS_HUB_READ_ENDPOINT}/a/${assetPublicRef}/original`,
-      }
-    : null
-
-/** Builds and publishes static light/dark artifacts before the recipe mutation commits. */
 const publishWallpaperAssets = async (
   community: string,
-  wallpaper$: ReturnType<typeof useWallpaperStore>,
-  submitted: TWallpaperPatch,
-): Promise<TWallpaperPublication> => {
-  const staticPatch: TWallpaperPatch = {}
+  wallpaper: TWallpaperThemeState,
+  theme: 'light' | 'dark',
+  baseVersion: number,
+  idempotencyKey: string,
+): Promise<ResultOf<typeof S.publishWallpaper>['publishWallpaper']> => {
+  const settings = encodeWallpaperSettings(wallpaper)
+  const generated = wallpaper.type !== WALLPAPER_TYPE.NONE
+  let exported: Awaited<ReturnType<typeof exportWallpaperBatch>> = []
 
-  for (const theme of ['light', 'dark'] as const) {
-    const state = wallpaper$[theme]
-    const branchSubmitted = submitted[theme] !== undefined
-    let staticAssetPublicRef: string | null = null
-
-    if (state.type === WALLPAPER_TYPE.NONE) {
-      staticAssetPublicRef = null
-    } else if (!branchSubmitted && state.staticAssetPublicRef) {
-      staticAssetPublicRef = state.staticAssetPublicRef
-    } else if (!requiresWallpaperExport(state)) {
-      staticAssetPublicRef = state.assetPublicRef ?? null
-      if (!staticAssetPublicRef) {
-        throw new Error(`UPLOAD wallpaper ${theme} is missing assetPublicRef`)
-      }
-    } else {
-      if (typeof navigator === 'undefined' || !navigator.gpu) {
-        throw new Error('WebGPU is required to publish this Wallpaper')
-      }
-
-      const exported = await exportWallpaperAsset(adaptWallpaperBgRenderSpec(state), {
-        filename: `wallpaper-${theme}-vgpu.webp`,
-        patternSize: DEFAULT_WALLPAPER_PATTERN_SIZE,
-      })
-      const uploaded = await uploadCommunityAsset({ community, file: exported.file })
-      staticAssetPublicRef = uploaded.assetPublicRef
+  if (generated) {
+    if (typeof navigator === 'undefined' || !navigator.gpu) {
+      throw new Error('WebGPU is required to publish this Wallpaper')
     }
 
-    staticPatch[theme] = { staticAssetPublicRef }
+    exported = await exportWallpaperBatch({
+      targets: wallpaperExportTargets(),
+      themes: [
+        {
+          // Export may await a lazy GPU runtime while the editor remains live.
+          // Freeze the complete render input so a later draft edit cannot alter
+          // the images that are published with the captured settings.
+          renderSpec: adaptWallpaperBgRenderSpec(wallpaper),
+          theme,
+        },
+      ],
+    })
   }
 
-  return {
-    staticPatch,
-    staticRevision: createStaticRevision(),
+  if (!generated) {
+    const result = await browserGraphQLRequest<
+      ResultOf<typeof S.publishWallpaper>,
+      VariablesOf<typeof S.publishWallpaper>
+    >(S.publishWallpaper, {
+      community,
+      input: {
+        baseVersion,
+        idempotencyKey,
+        settings,
+        theme: toGraphqlTheme(theme),
+        batchRef: null,
+      },
+    })
+    return result.publishWallpaper
+  }
+
+  const batchResult = await browserGraphQLRequest<
+    ResultOf<typeof S.prepareWallpaperUpload>,
+    VariablesOf<typeof S.prepareWallpaperUpload>
+  >(S.prepareWallpaperUpload, {
+    community,
+    input: {
+      baseVersion,
+      idempotencyKey,
+      images: exported.map((variant) => ({
+        checksum: variant.checksum,
+        height: variant.height,
+        mimeType: variant.mimeType,
+        profile: toGraphqlProfile(variant.targetKey.replace(`${theme}-`, '') as TWallpaperProfile),
+        sizeBytes: variant.blob.size,
+        width: variant.width,
+      })),
+      settings,
+      theme: toGraphqlTheme(theme),
+    },
+  })
+  const batch = batchResult.prepareWallpaperUpload
+  if (!batch) throw new Error('GENERATED_IMAGE_BATCH_CREATE_FAILED: empty response')
+
+  try {
+    await createAssetsHubBatch(batch.batchCapability)
+    const intents = batch.uploadIntents as TGeneratedUploadIntent[]
+    const intentByProfile = new Map(intents.map((intent) => [intent.profile.toLowerCase(), intent]))
+
+    await Promise.all(
+      exported.map((variant) => {
+        const profile = variant.targetKey.replace(`${theme}-`, '')
+        const intent = intentByProfile.get(profile)
+        if (!intent) throw new Error(`GENERATED_IMAGE_UPLOAD_INTENT_MISSING: ${profile}`)
+        return uploadGeneratedImage({
+          capability: intent.capability,
+          file: variant.blob,
+          uploadRef: intent.uploadRef,
+        })
+      }),
+    )
+
+    const result = await browserGraphQLRequest<
+      ResultOf<typeof S.publishWallpaper>,
+      VariablesOf<typeof S.publishWallpaper>
+    >(S.publishWallpaper, {
+      community,
+      input: {
+        baseVersion,
+        idempotencyKey,
+        settings,
+        theme: toGraphqlTheme(theme),
+        batchRef: batch.batchRef,
+      },
+    })
+    return result.publishWallpaper
+  } catch (error) {
+    await cancelAssetsHubBatch(batch.batchRef, batch.batchCapability)
+    throw error
   }
 }
 
@@ -254,10 +316,15 @@ export function useLogicValue(): TWallpaperLogic {
   const wallpaper$ = useWallpaperDomain()
   const liveWallpaper$ = useWallpaperStore()
   const community$ = useCommunity()
+  const publishedWallpaper$ = useStaticWallpaper()
   const { getWallpaper } = useFullWallpaper()
   const { isDarkTheme } = useTheme()
   const { t } = useTrans()
   const queryClient = useQueryClient()
+  const [wallpaperStateVersion, setWallpaperStateVersion] = useState(
+    () => publishedWallpaper$?.version ?? 0,
+  )
+  const pendingSaveRef = useRef<{ fingerprint: string; idempotencyKey: string } | null>(null)
 
   const [tab, setTab] = useState<TTab>(() =>
     getInitialTab(pickWallpaperThemeState(wallpaper$, isDarkTheme).type),
@@ -277,62 +344,48 @@ export function useLogicValue(): TWallpaperLogic {
     onCommit: (patch) => liveWallpaper$.commit(toWallpaperThemePatch(patch, isDarkTheme)),
   })
   const isTouched = useMemo((): boolean => {
-    return Object.keys(getWallpaperSavablePatch(wallpaper$)).length > 0
-  }, [wallpaper$])
-
-  const initRollback = (): void =>
-    liveWallpaper$.commit({ original: clone(pick(WALLPAPER_STATE_KEYS, liveWallpaper$)) })
+    const theme: 'light' | 'dark' = isDarkTheme ? 'dark' : 'light'
+    return Object.keys(getWallpaperThemeSavablePatch(wallpaper$, theme)).length > 0
+  }, [isDarkTheme, wallpaper$.dark, wallpaper$.light, wallpaper$.original])
 
   const wallpaperMutation = useMutation({
     mutationKey: ['dsb', 'wallpaper', community$.slug],
-    mutationFn: async ({ community, submitted }: TWallpaperSaveRequest) => {
-      const publication = await publishWallpaperAssets(community, liveWallpaper$, submitted)
-      const wallpaper = {
-        staticRevision: publication.staticRevision,
-        light:
-          submitted.light || publication.staticPatch.light
-            ? { ...submitted.light, ...publication.staticPatch.light }
-            : undefined,
-        dark:
-          submitted.dark || publication.staticPatch.dark
-            ? { ...submitted.dark, ...publication.staticPatch.dark }
-            : undefined,
-      }
-
-      await browserGraphQLRequest(S.updateDashboardWallpaper, {
+    mutationFn: async ({
+      community,
+      baseVersion,
+      idempotencyKey,
+      submitted,
+      theme,
+    }: TWallpaperSaveRequest) => {
+      const result = await publishWallpaperAssets(
         community,
-        wallpaper: serializeWallpaperPatch(wallpaper),
-      })
-
-      return { publication, wallpaper }
+        clone(liveWallpaper$[theme]),
+        theme,
+        baseVersion,
+        idempotencyKey,
+      )
+      if (!result) throw new Error('WALLPAPER_PUBLISH_EMPTY_RESPONSE')
+      return { result, submitted }
     },
-    onSuccess: ({ publication, wallpaper }, { community }) => {
-      const confirmed = clone(liveWallpaper$.original)
-      for (const theme of ['light', 'dark'] as const) {
-        const patch = wallpaper[theme]
-        if (!patch) continue
-        confirmed[theme] = { ...confirmed[theme], ...patch }
-      }
-      liveWallpaper$.commit(publication.staticPatch)
-      liveWallpaper$.acceptSubmitted(wallpaper)
-      const confirmedWallpaper = {
-        ...confirmed,
-        staticRevision: publication.staticRevision,
-      }
-      queryClient.setQueryData<TParsedWallpaper>(wallpaperKeys.config(community), (previous) => ({
-        ...previous,
-        ...confirmedWallpaper,
-        initWallpaper: clone(confirmedWallpaper),
-        staticWallpaper: {
-          light: toStaticAsset(publication.staticPatch.light?.staticAssetPublicRef ?? null),
-          dark: toStaticAsset(publication.staticPatch.dark?.staticAssetPublicRef ?? null),
-          revision: publication.staticRevision,
-        },
-      }))
+    onSuccess: ({ result, submitted }, { community }) => {
+      liveWallpaper$.acceptSubmitted(submitted)
+      setWallpaperStateVersion(result.version)
+      pendingSaveRef.current = null
+      void queryClient.invalidateQueries({ queryKey: wallpaperKeys.config(community), exact: true })
+      void queryClient.invalidateQueries({
+        queryKey: wallpaperEditorKeys.config(community),
+        exact: true,
+      })
       toast(t('dsb.appearance.saved'), 'success')
     },
     onError: (err) => {
       console.error('## wallpaper publish error: ', err)
+      if (graphqlErrorCode(err) === '5702' || graphqlErrorCode(err) === '5708') {
+        void queryClient
+          .fetchQuery(wallpaperQueries.config(community$.slug))
+          .then((fresh) => setWallpaperStateVersion(fresh.wallpaper?.version ?? 0))
+          .catch(() => undefined)
+      }
       toast(extractErrorMessage(err), 'error')
     },
   })
@@ -353,11 +406,21 @@ export function useLogicValue(): TWallpaperLogic {
     flushWallpaperDraft()
     clearWallpaperPreview()
     const community = community$.slug
-    const submitted = clone(getWallpaperSavablePatch(liveWallpaper$))
-    const params = {
+    const theme = isDarkTheme ? 'dark' : 'light'
+    const submittedTheme = clone(getWallpaperThemeSavablePatch(liveWallpaper$, theme))
+    if (Object.keys(submittedTheme).length === 0) return
+    const submitted = { [theme]: submittedTheme } as TWallpaperPatch
+    const fingerprint = JSON.stringify({ baseVersion: wallpaperStateVersion, submitted, theme })
+    const pending = pendingSaveRef.current
+    const idempotencyKey =
+      pending?.fingerprint === fingerprint ? pending.idempotencyKey : createIdempotencyKey()
+    pendingSaveRef.current = { fingerprint, idempotencyKey }
+    const params: TWallpaperSaveRequest = {
+      baseVersion: wallpaperStateVersion,
       community,
+      idempotencyKey,
       submitted,
-      wallpaper: submitted,
+      theme,
     }
     wallpaperMutation.mutate(params)
   }
@@ -455,7 +518,6 @@ export function useLogicValue(): TWallpaperLogic {
     getWallpaper,
     isTouched,
     //actions
-    initRollback,
     rollbackWallpaper,
     onSave,
     changeTab,
