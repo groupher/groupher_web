@@ -1,6 +1,6 @@
 import useTwBelt from '~/hooks/useTwBelt'
 
-export { cnMerge } from '~/css'
+export { cn } from '~/css'
 
 type TProps = {
   active: boolean

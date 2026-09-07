@@ -1,7 +1,8 @@
 import { NAV_ACTIVE_LAYOUT } from '~/const/layout'
+import { cn } from '~/css'
 import useTrans from '~/hooks/useTrans'
 
-import useSalon, { cnMerge } from './salon'
+import useSalon from './salon'
 
 const PREVIEW_KEYS = [
   'dsb.appearance.nav_active.preview.post',
@@ -25,7 +26,7 @@ export default function Preview({ layout }: TProps) {
         return (
           <div
             key={titleKey}
-            className={cnMerge(
+            className={cn(
               s.previewItem,
               !isActive && s.previewItemInactive,
               isActive && s.previewItemActive,

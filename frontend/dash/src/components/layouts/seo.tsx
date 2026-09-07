@@ -10,7 +10,7 @@ import Tabs from '~/ui/Switcher/Tabs'
 import { FIELD } from '~/unit/DsbThread/constant'
 import useSEO from '~/unit/DsbThread/hooks/useSEO'
 import Portal from '~/unit/DsbThread/Portal'
-import useSalon, { cnMerge } from '~/unit/DsbThread/salon'
+import useSalon, { cn } from '~/unit/DsbThread/salon'
 import SavingBar from '~/unit/DsbThread/SavingBar'
 
 const seg = SEO_TABS.segment
@@ -33,7 +33,7 @@ export default function Layout({ children }) {
   const crumbItems = useDsbCrumbItems(CRUMB_CONFIG)
 
   return (
-    <div className={cnMerge(s.content, 'w-2/5')}>
+    <div className={cn(s.content, 'w-2/5')}>
       <Portal
         title={t('dsb.portal.seo.title')}
         desc={t('dsb.portal.seo.desc')}

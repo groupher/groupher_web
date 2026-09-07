@@ -1,7 +1,7 @@
 import { AnimatePresence, domAnimation, LazyMotion } from 'motion/react'
 import { useState } from 'react'
 
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 
 import { ARTICLE_TOC_LABEL, ARTICLE_TOC_MODE } from './constant'
 import DashList from './DashList'
@@ -52,7 +52,7 @@ export default function ArticleToc({
 
   return (
     <nav
-      className={cnMerge(s.wrapper, className)}
+      className={cn(s.wrapper, className)}
       aria-label={ariaLabel}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}

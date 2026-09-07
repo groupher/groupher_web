@@ -1,18 +1,19 @@
+import { cn } from '~/css'
 import useTwBelt from '~/hooks/useTwBelt'
 
 export default function useSalon() {
-  const { cnMerge, selectable } = useTwBelt()
+  const { selectable } = useTwBelt()
 
   return {
     section: 'column gap-3 w-full',
     gradientGrid: 'row-center wrap gap-2',
     button: (active: boolean) =>
-      cnMerge(
+      cn(
         selectable('box', { active, isCircle: true }),
         'relative p-1 shrink-0 circle trans-all-200 text-left size-10',
       ),
     content: 'row-center s-full overflow-hidden circle',
-    activeSign: cnMerge(
+    activeSign: cn(
       selectable('badge', { isCircle: true, size: 'sm' }),
       '-top-1.5 -right-1 scale-80',
     ),

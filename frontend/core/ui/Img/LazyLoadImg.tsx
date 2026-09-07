@@ -5,7 +5,7 @@ import LazyLoad from '~/ui/LazyLoad'
 
 import type { TProps as TPropsBase } from '.'
 import { hasLoadedSrc, markLoadedSrc } from './cache'
-import useSalon, { cn, cnMerge } from './salon/lazy_load_image'
+import useSalon, { cn } from './salon/lazy_load_image'
 
 type TProps = Omit<Required<TPropsBase>, 'noLazy'>
 type TImageState = {
@@ -79,13 +79,13 @@ const LazyLoadImg: FC<TProps> = ({
   if (!src) {
     if (clickable) {
       return (
-        <button type='button' onClick={onClick} className={cnMerge(s.normal, className, 'pointer')}>
+        <button type='button' onClick={onClick} className={cn(s.normal, className, 'pointer')}>
           {fallback}
         </button>
       )
     }
 
-    return <div className={cnMerge(s.normal, className)}>{fallback}</div>
+    return <div className={cn(s.normal, className)}>{fallback}</div>
   }
 
   const content = (
@@ -105,7 +105,7 @@ const LazyLoadImg: FC<TProps> = ({
           (visible || started) && showImg ? (
             <img
               ref={imgRef}
-              className={cnMerge(s.imgOverlay, !loaded && 'invisible', className)}
+              className={cn(s.imgOverlay, !loaded && 'invisible', className)}
               src={src}
               alt={alt}
               onLoad={handleLoad}
@@ -123,7 +123,7 @@ const LazyLoadImg: FC<TProps> = ({
       <button
         type='button'
         onClick={onClick}
-        className={cnMerge(s.normal, className, 'pointer')}
+        className={cn(s.normal, className, 'pointer')}
         aria-label={alt}
       >
         {content}
@@ -132,7 +132,7 @@ const LazyLoadImg: FC<TProps> = ({
   }
 
   return (
-    <div className={cnMerge(s.normal, className)} aria-label={alt}>
+    <div className={cn(s.normal, className)} aria-label={alt}>
       {content}
     </div>
   )

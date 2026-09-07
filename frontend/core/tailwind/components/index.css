@@ -1,0 +1,10 @@
+@layer components {
+  .g-appearance-full-card {
+    @apply opacity-80 saturate-0;
+  }
+
+  .g-appearance-full-card:hover,
+  .g-appearance-full-card[data-state='active'] {
+    @apply opacity-100 saturate-100;
+  }
+}

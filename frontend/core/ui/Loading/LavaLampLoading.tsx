@@ -4,7 +4,6 @@ import { range } from 'ramda'
 import type { FC } from 'react'
 
 import SIZE from '~/const/size'
-import { cnMerge } from '~/css'
 import type { TSizeTSM, TSpace } from '~/spec'
 
 import useSalon, { cn } from './salon/lava_lamp_loading'
@@ -16,7 +15,7 @@ const LavaLampLoading: FC<TProps> = ({ size, className = '', ...spacing }) => {
 
   return (
     <div
-      className={cnMerge(
+      className={cn(
         s.wrapper,
         className,
         size === SIZE.TINY && 'scale-75',

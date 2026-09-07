@@ -16,7 +16,7 @@ import { mockUsers } from '~/mock'
 import type { TArticleCat, TColorName } from '~/spec'
 import Facepile from '~/ui/Facepile/LandingPage'
 
-import useSalon, { cn, cnMerge } from '../../salon/compare_dev/our_way/node_block'
+import useSalon, { cn } from '../../salon/compare_dev/our_way/node_block'
 import { getMetricMap } from '../constant'
 import SprintCounter from './SprintCounter'
 import UpdateCounter from './UpdateCounter'
@@ -45,7 +45,7 @@ const NodeBlock: FC<TProps> = ({
   const metric = getMetricMap(t)[cat]
 
   return (
-    <div className={cnMerge(s.wrapper, className, cat === 'DEFAULT' && 'h-32')}>
+    <div className={cn(s.wrapper, className, cat === 'DEFAULT' && 'h-32')}>
       {cat === ARTICLE_CAT.IDEA && <ClipSVG className={s.attachIcon} />}
       {cat === ARTICLE_CAT.QA && <PinSVG className={cn(s.attachIcon, 'rotate-12 size-5 -top-2')} />}
       {cat === ARTICLE_CAT.BUG && <TargetSVG className={s.attachIcon} />}

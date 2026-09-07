@@ -5,7 +5,7 @@ import useDsbCrumbItems from '~/hooks/useDsbCrumbItems'
 import useTrans from '~/hooks/useTrans'
 import type { TCrumbConfig } from '~/spec'
 import Portal from '~/unit/DsbThread/Portal'
-import useSalon, { cnMerge } from '~/unit/DsbThread/salon'
+import useSalon, { cn } from '~/unit/DsbThread/salon'
 
 const seg = DSB_ROUTE.TAGS
 const CRUMB_CONFIG = {
@@ -21,7 +21,7 @@ export default function Layout({ children }) {
   const crumbItems = useDsbCrumbItems(CRUMB_CONFIG)
 
   return (
-    <div className={cnMerge(s.content, 'w-1/2')}>
+    <div className={cn(s.content, 'w-1/2')}>
       <Portal
         title={t('dsb.portal.tags.title')}
         desc={t('dsb.portal.tags.desc')}

@@ -1,4 +1,6 @@
-import useSalon, { cnMerge } from './salon/layout_selector'
+import { cn } from '~/css'
+
+import useSalon from './salon/layout_selector'
 
 const CLASSIC_COLUMNS = [
   ['opacity-35', 'opacity-20'],
@@ -15,7 +17,7 @@ export default function ClassicLayoutPreview() {
         <div key={cards.join('|')} className={s.boardColumn}>
           <div className={s.boardContent}>
             {cards.map((opacity) => (
-              <div key={opacity} className={cnMerge(s.card, opacity)} />
+              <div key={opacity} className={cn(s.cardBase, 'h-7 w-full rounded', opacity)} />
             ))}
           </div>
         </div>

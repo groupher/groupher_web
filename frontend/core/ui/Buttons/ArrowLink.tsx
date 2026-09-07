@@ -7,7 +7,7 @@
 import { type FC, memo, type ReactNode } from 'react'
 
 import SIZE from '~/const/size'
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 import ArrowSVG from '~/icons/ArrowSimple'
 import type { TSize } from '~/spec'
 
@@ -34,12 +34,7 @@ const ArrowLink: FC<TProps> = ({
   const s = useSalon({ size, color })
 
   return (
-    <a
-      className={cnMerge(s.wrapper, className)}
-      href={href}
-      rel='noopener noreferrer'
-      target={target}
-    >
+    <a className={cn(s.wrapper, className)} href={href} rel='noopener noreferrer' target={target}>
       <div className={s.text}>{children}</div>
       <ArrowSVG className={s.rightIcon} />
     </a>

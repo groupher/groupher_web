@@ -1,4 +1,5 @@
 import { KANBAN_LAYOUT } from '~/const/layout'
+import { cn } from '~/css'
 import useTrans from '~/hooks/useTrans'
 import CheckLabel from '~/ui/CheckLabel'
 
@@ -7,7 +8,7 @@ import useKanban from '../../logic/useKanban'
 import SavingBar from '../../SavingBar'
 import SectionLabel from '../../SectionLabel'
 import KanbanLayoutPreview from './KanbanLayoutPreview'
-import useSalon, { cnMerge } from './salon/layout_selector'
+import useSalon from './salon/layout_selector'
 
 export default function KanbanLayoutSelector() {
   const s = useSalon()
@@ -29,11 +30,15 @@ export default function KanbanLayoutSelector() {
           aria-pressed={layout === KANBAN_LAYOUT.CLASSIC}
           onClick={() => edit(KANBAN_LAYOUT.CLASSIC, FIELD.KANBAN_LAYOUT)}
         >
-          <div className={cnMerge(s.block, layout === KANBAN_LAYOUT.CLASSIC && s.blockActive)}>
+          <div
+            className={s.block({
+              state: layout === KANBAN_LAYOUT.CLASSIC ? 'active' : 'idle',
+            })}
+          >
             <div className={s.frame}>
               <div className={s.toolbar}>
-                <div className={cnMerge(s.bar, s.toolbarLeft)} />
-                <div className={cnMerge(s.bar, s.toolbarRight)} />
+                <div className={cn(s.barBase, s.toolbarLeft)} />
+                <div className={cn(s.barBase, s.toolbarRight)} />
               </div>
               <KanbanLayoutPreview layout={KANBAN_LAYOUT.CLASSIC} />
             </div>
@@ -50,11 +55,15 @@ export default function KanbanLayoutSelector() {
           aria-pressed={layout === KANBAN_LAYOUT.WATERFALL}
           onClick={() => edit(KANBAN_LAYOUT.WATERFALL, FIELD.KANBAN_LAYOUT)}
         >
-          <div className={cnMerge(s.block, layout === KANBAN_LAYOUT.WATERFALL && s.blockActive)}>
+          <div
+            className={s.block({
+              state: layout === KANBAN_LAYOUT.WATERFALL ? 'active' : 'idle',
+            })}
+          >
             <div className={s.frame}>
               <div className={s.toolbar}>
-                <div className={cnMerge(s.bar, s.toolbarLeft)} />
-                <div className={cnMerge(s.bar, s.toolbarRight)} />
+                <div className={cn(s.barBase, s.toolbarLeft)} />
+                <div className={cn(s.barBase, s.toolbarRight)} />
               </div>
               <KanbanLayoutPreview layout={KANBAN_LAYOUT.WATERFALL} />
             </div>

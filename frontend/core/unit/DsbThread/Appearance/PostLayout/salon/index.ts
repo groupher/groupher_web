@@ -2,23 +2,19 @@ import useTwBelt from '~/hooks/useTwBelt'
 
 import useBase from '../../../useDsbSalon'
 
-export { cnMerge } from '~/css'
-
 export default function useSalon({ compact = false }: { compact?: boolean } = {}) {
   const base = useBase()
-  const { cn, cnMerge, avatar, primary } = useTwBelt()
+  const { cn, avatar, primary } = useTwBelt()
 
   return {
     wrapper: base.section,
     select: 'row-center wrap gap-x-5 gap-y-8 w-full',
     inline: 'inline-block',
     layout: 'column-center justify-between h-32',
-    block: cnMerge(base.card, compact ? 'w-full h-[72px] min-h-[72px] p-3' : 'h-24 min-h-24 p-4'),
-    masonryBlock: cnMerge(
-      base.card,
+    block: base.cardRecipe(compact ? 'w-full h-[72px] min-h-[72px] p-3' : 'h-24 min-h-24 p-4'),
+    masonryBlock: base.cardRecipe(
       compact ? 'w-full h-[72px] min-h-[72px] px-2.5 py-0' : 'h-24 min-h-24 px-3 py-0',
     ),
-    blockActive: base.cardActive,
 
     frame: 'column s-full',
     topRow: 'row-between',
@@ -32,12 +28,14 @@ export default function useSalon({ compact = false }: { compact?: boolean } = {}
     masonryGrid: cn('row h-full items-start', compact ? 'gap-2.5' : 'gap-4'),
     masonryCol: cn('column grow basis-0 min-w-0 h-full', compact ? 'gap-1.5' : 'gap-2'),
 
-    bar: cnMerge(base.bar, 'static h-1.5 w-20 opacity-40'),
-    circle: cnMerge(base.circle, 'opacity-40'),
-    commentIcon: cnMerge(base.icon, 'static'),
-    upvoteIcon: cnMerge(base.icon, compact ? 'static size-3' : 'static size-4'),
+    barBase: cn(base.barBase, 'static'),
+    bar: cn(base.barBase, 'static h-1.5 w-20 opacity-40'),
+    circle: cn(base.circleBase, 'opacity-40'),
+    iconBase: base.iconBase,
+    commentIcon: cn(base.iconBase, 'static'),
+    upvoteIcon: cn(base.iconBase, compact ? 'static size-3' : 'static size-4'),
 
-    userAvatar: cnMerge(base.bar, compact ? 'static size-5' : 'static size-6', avatar()),
+    userAvatar: cn(base.barBase, compact ? 'static size-5' : 'static size-6', avatar()),
     upvoteBtn: cn(
       compact
         ? 'column-align-both w-8 h-9 border rounded-lg text-[10px]'

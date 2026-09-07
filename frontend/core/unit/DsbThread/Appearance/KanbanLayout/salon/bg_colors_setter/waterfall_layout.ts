@@ -4,10 +4,8 @@ import useTwBelt from '~/hooks/useTwBelt'
 import useKanban from '../../../../logic/useKanban'
 import useBase from '../../../../useDsbSalon'
 
-export { cnMerge } from '~/css'
-
 export default function useSalon() {
-  const { cn, cnMerge, shadow, rainbow, rainbowLite } = useTwBelt()
+  const { cn, shadow, rainbow, rainbowLite } = useTwBelt()
   const base = useBase()
 
   const { kanbanBgColors } = useKanban()
@@ -32,6 +30,7 @@ export default function useSalon() {
     bgRejectedActive: rainbow(BG5, 'border'),
 
     content: 'relative min-h-24',
-    bar: cnMerge(base.bar, 'h-1.5 opacity-30 saturate-0'),
+    barBase: cn(base.barBase, 'static'),
+    bar: cn(base.barBase, 'h-1.5 opacity-30 saturate-0'),
   }
 }

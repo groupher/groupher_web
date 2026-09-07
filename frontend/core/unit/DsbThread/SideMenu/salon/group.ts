@@ -1,7 +1,7 @@
 import useTheme from '~/hooks/useTheme'
 import useTwBelt from '~/hooks/useTwBelt'
 
-export { cn, cnMerge } from '~/css'
+export { cn } from '~/css'
 
 type TProps = {
   fold: boolean

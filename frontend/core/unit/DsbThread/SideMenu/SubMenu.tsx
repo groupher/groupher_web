@@ -8,7 +8,7 @@ import { dsbRoutes, Link, parseDsbPathname, resolveDsbRoute } from '~/platform'
 import useCommunity from '~/stores/community/hooks'
 
 import ActiveMark from './ActiveMark'
-import useSalon, { cnMerge } from './salon/doc'
+import useSalon, { cn } from './salon/doc'
 import type { TSubMenuItem, TSubMenuScope } from './spec'
 import SubMenuBack from './SubMenuBack'
 
@@ -90,7 +90,7 @@ export default function SubMenu({
               key={item.slug}
               route={route}
               navigation='router'
-              className={cnMerge(s.item, isActive && s.itemActive)}
+              className={cn(s.item, isActive && s.itemActive)}
               aria-current={isActive ? 'page' : undefined}
               preserveSearch
             >

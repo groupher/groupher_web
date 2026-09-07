@@ -6,7 +6,7 @@
 
 import { type FC, memo } from 'react'
 
-import useSalon, { cnMerge } from './salon'
+import useSalon, { cn } from './salon'
 
 type TProps = {
   className?: string
@@ -15,7 +15,7 @@ type TProps = {
 const DotDivider: FC<TProps> = ({ className = '' }) => {
   const s = useSalon()
 
-  return <div className={cnMerge(s.wrapper, className)} />
+  return <div className={cn(s.wrapper, className)} />
 }
 
 export default memo(DotDivider)

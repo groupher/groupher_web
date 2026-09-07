@@ -10,8 +10,7 @@ export default function useSalon() {
 
   return {
     wrapper: base.section,
-    block: cn(base.card, 'align-both h-60 w-full'),
-    blockActive: base.cardActive,
+    block: base.cardRecipe('align-both h-60 w-full p-4'),
     select: 'grid w-full grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3',
     layout: 'column-align-both min-w-0',
     divider: cn(base.divider, 'mt-14 mb-16'),

@@ -7,7 +7,6 @@
 import { pickBy } from 'ramda'
 import { type FC, type HTMLInputTypeAttribute, useCallback } from 'react'
 
-import { cnMerge } from '~/css'
 import useAutoFocus from '~/hooks/useAutoFocus'
 import Img from '~/Img'
 import { nilOrEmpty } from '~/validator'
@@ -90,7 +89,7 @@ const Input: FC<TProps> = ({
         )}
       </div>
       <input
-        className={cnMerge(
+        className={cn(
           s.input,
           !nilOrEmpty(prefixIcon) && 'pl-7',
           !nilOrEmpty(suffixIcon) && 'pr-7',

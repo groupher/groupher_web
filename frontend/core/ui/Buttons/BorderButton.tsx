@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 import useWallpaper from '~/hooks/useWallpaper'
 import ArrowSVG from '~/icons/ArrowSimple'
 
@@ -21,7 +21,7 @@ export default function BorderButton({ children, space = 2, className }: TProps)
     <div className={s.wrapper}>
       <ArrowSVG className={s.arrow} />
       <div className={s.background} style={{ background }}>
-        <Button space={space} className={cnMerge(s.button, className)} noBorder>
+        <Button space={space} className={cn(s.button, className)} noBorder>
           {children}
         </Button>
       </div>

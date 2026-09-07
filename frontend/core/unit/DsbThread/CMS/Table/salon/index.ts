@@ -1,6 +1,6 @@
 import useTwBelt from '~/hooks/useTwBelt'
 
-export { cn, cnMerge } from '~/css'
+export { cn } from '~/css'
 
 const NUMERIC_COLUMN_IDS = new Set([
   'articlesCount',

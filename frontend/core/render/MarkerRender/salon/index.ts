@@ -1,4 +1,4 @@
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 
 type TProps = {
   className?: string
@@ -6,7 +6,7 @@ type TProps = {
 
 export default function useSalon({ className }: TProps) {
   return {
-    wrapper: cnMerge(
+    wrapper: cn(
       'inline-flex size-full items-center justify-center rounded leading-none',
       className,
     ),

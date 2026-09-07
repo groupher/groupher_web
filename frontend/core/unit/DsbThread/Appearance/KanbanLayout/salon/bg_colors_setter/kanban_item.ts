@@ -2,10 +2,8 @@ import useTwBelt from '~/hooks/useTwBelt'
 
 import useBase from '../../../../useDsbSalon'
 
-export { cnMerge } from '~/css'
-
 export default function useSalon() {
-  const { cn, cnMerge, bg, fill, avatar } = useTwBelt()
+  const { cn, bg, fill, avatar } = useTwBelt()
   const base = useBase()
 
   return {
@@ -16,15 +14,16 @@ export default function useSalon() {
     footer: 'mt-auto row-center justify-between',
     footerLeft: 'row-center gap-1.5',
     footerRight: 'row-center gap-1.5',
-    bar: cnMerge(base.bar, 'static h-1 w-20 opacity-40 saturate-0'),
-    titleBar: 'w-10 opacity-15',
-    bodyBar: 'h-1.5 w-14 opacity-20',
-    sideBar: 'w-5 opacity-15',
+    barBase: cn(base.barBase, 'static'),
+    bar: cn(base.barBase, 'static h-1 w-20 opacity-40 saturate-0'),
+    titleBar: 'h-1 w-10 opacity-15',
+    bodyBar: 'h-1.5 opacity-20',
+    sideBar: 'h-1 w-5 opacity-15',
     simpleMetric: 'h-1 w-6 opacity-10',
     tinyMetric: 'h-1 w-4 opacity-10',
     icon: cn('static size-3.5 opacity-30', fill('digest')),
     commentIcon: cn('static size-2 opacity-45 mt-0.5', fill('digest')),
     avatarList: 'row-center gap-0.5 mt-0.5 -ml-0.5',
-    userAvatar: cnMerge(base.bar, 'static size-2 saturate-0 opacity-15', avatar()),
+    userAvatar: cn(base.barBase, 'static size-2 saturate-0 opacity-15', avatar()),
   }
 }

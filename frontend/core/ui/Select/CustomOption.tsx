@@ -1,6 +1,6 @@
 import { components } from 'react-select'
 
-import useSalon, { cnMerge } from './salon'
+import useSalon, { cn } from './salon'
 
 export default function CustomOption(props) {
   const s = useSalon({ ...(props.selectProps?.spacing ?? {}) })
@@ -12,7 +12,7 @@ export default function CustomOption(props) {
     <components.Option {...props}>
       <div className={s.optionRow}>
         {icon && <Icon className={s.icon} />}
-        <span className={cnMerge(s.optionTitle, isActive && s.optionTitleActive)}>{label}</span>
+        <span className={cn(s.optionTitle, isActive && s.optionTitleActive)}>{label}</span>
       </div>
     </components.Option>
   )

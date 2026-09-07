@@ -17,10 +17,16 @@
 @import './tokens';
 @import './safelist';
 @import './common';
+@import './components';
 
 @layer base {
   :root {
     text-autospace: normal;
+  }
+
+  html,
+  body {
+    background-color: var(--color-page-custom);
   }
 
   body {

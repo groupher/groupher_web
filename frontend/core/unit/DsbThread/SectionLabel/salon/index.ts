@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import useTwBelt from '~/hooks/useTwBelt'
 import type { TSpace } from '~/spec'
 
-export { cnMerge } from '~/css'
+export { cn } from '~/css'
 
 type TProps = {
   width: string

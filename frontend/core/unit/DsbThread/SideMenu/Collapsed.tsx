@@ -1,6 +1,5 @@
 'use client'
 
-import { cnMerge } from '~/css'
 import useDsbTab from '~/hooks/useDsbTab'
 import useTrans from '~/hooks/useTrans'
 import { dsbRoutes, Link as PlatformLink } from '~/platform'
@@ -39,7 +38,7 @@ export default function Collapsed({
   const activeSlug = activeSlugProp ?? subTab ?? defaultSlug
 
   return (
-    <div className={cnMerge(s.wrapper, className)}>
+    <div className={cn(s.wrapper, className)}>
       <div className={s.menu} aria-label={t('dsb.aria.dashboard_menu')}>
         <button
           type='button'

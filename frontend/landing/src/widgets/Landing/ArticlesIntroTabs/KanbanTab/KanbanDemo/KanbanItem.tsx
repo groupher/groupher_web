@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
 import { ARTICLE_CAT } from '~/const/gtd'
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 import useTrans from '~/hooks/useTrans'
 import UpvoteSVG from '~/icons/Upvote'
 import type { TArticleCat } from '~/spec'
@@ -38,7 +38,7 @@ const KanbanItem: FC<TProps> = ({
   }
 
   return (
-    <div className={cnMerge(s.wrapper, draging && s.draging, className)}>
+    <div className={cn(s.wrapper, draging && s.draging, className)}>
       <div className={s.title}>{title || t('landing.articles.kanban.item.default_title')}</div>
 
       <div className={s.footer}>

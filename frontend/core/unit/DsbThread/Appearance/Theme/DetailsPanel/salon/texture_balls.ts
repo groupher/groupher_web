@@ -1,29 +1,39 @@
+import { tr } from '~/css'
 import usePageBg from '~/hooks/usePageBg'
 import useTheme from '~/hooks/useTheme'
 import useTwBelt from '~/hooks/useTwBelt'
 import { buildTopGlowPreviewBackground, resolveTopGlow } from '~/lib/topGlow'
 
-export { cn, cnMerge } from '~/css'
+export { cn } from '~/css'
 
 export default function useSalon() {
   const { cn, fill, br, primary, bg, hover, sexyBorder } = useTwBelt()
   const { theme } = useTheme()
   const pageBg = usePageBg()
   const toggleBase = 'h-6 px-4 rounded-full'
+  const blockActive = cn(
+    'opacity-100 saturate-100',
+    primary('borderLite'),
+    `hover:${primary('border')}`,
+    'after:absolute after:-inset-1 after:rounded-full after:border after:border-current after:opacity-25',
+    primary('fg'),
+  )
 
   return {
-    block: cn(
-      'relative align-both size-9 rounded-full border pointer overflow-visible',
-      'opacity-80 saturate-90 transition-all duration-150 hover:-translate-y-0.5 hover:opacity-100 hover:saturate-100',
-      br('divider'),
-    ),
-    blockActive: cn(
-      'opacity-100 saturate-100',
-      primary('borderLite'),
-      `hover:${primary('border')}`,
-      'after:absolute after:-inset-1 after:rounded-full after:border after:border-current after:opacity-25',
-      primary('fg'),
-    ),
+    block: tr({
+      base: cn(
+        'relative align-both size-9 rounded-full border pointer overflow-visible',
+        'transition-all duration-150 hover:-translate-y-0.5',
+        br('divider'),
+      ),
+      variants: {
+        state: {
+          idle: 'opacity-80 saturate-90 hover:opacity-100 hover:saturate-100',
+          active: cn(blockActive, 'opacity-100 saturate-100 hover:opacity-100 hover:saturate-100'),
+        },
+      },
+      defaultVariants: { state: 'idle' },
+    }),
     wrapper: 'w-full',
     row: 'row align-start wrap justify-start gap-x-4 gap-y-4 w-full',
 

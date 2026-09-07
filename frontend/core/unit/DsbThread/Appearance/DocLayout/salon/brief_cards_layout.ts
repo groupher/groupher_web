@@ -2,10 +2,8 @@ import useTwBelt from '~/hooks/useTwBelt'
 
 import useBase from '../../../useDsbSalon'
 
-export { cnMerge } from '~/css'
-
 export default function useSalon() {
-  const { cnMerge, primary } = useTwBelt()
+  const { cn, primary } = useTwBelt()
   const base = useBase()
 
   return {
@@ -13,10 +11,12 @@ export default function useSalon() {
     items: 'grid w-full grid-cols-3 gap-x-5 gap-y-3',
     item: 'row-start gap-2.5',
     iconBox: 'align-both size-4 rounded -mt-0.5',
-    icon: cnMerge('size-2.5', primary('fill')),
+    icon: cn('size-2.5', primary('fill')),
     copy: 'column gap-1',
-    itemTitle: cnMerge(base.bar, 'static h-1 w-8 mb-0.5 opacity-50'),
-    itemDesc: cnMerge(base.bar, 'static h-1 w-12 opacity-20'),
-    itemDescWide: cnMerge(base.bar, 'static h-1 w-16 opacity-22'),
+    itemTitle: cn(base.barBase, 'static h-1 w-8 mb-0.5 opacity-50'),
+    itemDesc: cn(base.barBase, 'static h-1 w-12 opacity-20'),
+    itemDescWide: cn(base.barBase, 'static h-1 w-16 opacity-22'),
+    itemTitleBase: cn(base.barBase, 'static h-1'),
+    itemDescBase: cn(base.barBase, 'static h-1'),
   }
 }

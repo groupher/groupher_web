@@ -9,7 +9,7 @@ import useTopbar from '../../logic/useTopbar'
 import SavingBar from '../../SavingBar'
 import SectionLabel from '../../SectionLabel'
 import CommunityLayoutPreviewContent from '../CommunityLayout/CommunityLayoutPreviewContent'
-import useSalon, { cn } from './salon'
+import useSalon from './salon'
 
 const TOPBAR_LAYOUT_OPTIONS = [
   {
@@ -51,7 +51,7 @@ export default function TopbarLayout() {
               onClick={() => edit(value, FIELD.TOPBAR_ENABLED)}
             >
               {value && <div className={s.topBar} />}
-              <div className={cn(s.block, isActive && s.blockActive)}>
+              <div className={s.block({ state: isActive ? 'active' : 'idle' })}>
                 <div className='mb-2' />
                 <CommunityLayoutPreviewContent layout={communityLayout} title={title} />
               </div>

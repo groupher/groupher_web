@@ -45,7 +45,7 @@ export default function AvatarLayout() {
               aria-pressed={isActive}
               onClick={() => edit(value, FIELD.AVATAR_LAYOUT)}
             >
-              <div className={cn(s.block, isActive && s.blockActive)}>
+              <div className={s.block({ state: isActive ? 'active' : 'idle' })}>
                 <div className={cn(s.avatar, s.blue, shapeClass)}>YM</div>
                 <div className={s.divider} />
                 <div className={s.list}>

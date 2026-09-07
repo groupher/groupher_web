@@ -18,7 +18,7 @@ import type { TThemeName, TTooltipPlacement } from '~/spec'
 
 import ConfirmFooter from './ConfirmFooter'
 import { FOOTER_BEHAVIOR } from './constant'
-import useSalon, { cnMerge } from './salon'
+import useSalon, { cn } from './salon'
 
 /**
  * Current tooltip theme.
@@ -236,7 +236,7 @@ const Tooltip: FC<TProps> = ({
     onShow,
   ])
 
-  const wrapperClass = !noPadding ? s.tooltip : cnMerge(s.tooltip, 'p-0')
+  const wrapperClass = !noPadding ? s.tooltip : cn(s.tooltip, 'p-0')
 
   /**
    * forceZIndex: only used in some special masking scenarios (IconSwitcher)

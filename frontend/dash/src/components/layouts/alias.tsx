@@ -8,7 +8,7 @@ import useTrans from '~/hooks/useTrans'
 import type { TCrumbConfig } from '~/spec'
 import Tabs from '~/ui/Switcher/Tabs'
 import Portal from '~/unit/DsbThread/Portal'
-import useSalon, { cnMerge } from '~/unit/DsbThread/salon'
+import useSalon, { cn } from '~/unit/DsbThread/salon'
 
 const seg = ALIAS_TABS.segment
 const CRUMB_CONFIG = {
@@ -29,7 +29,7 @@ export default function Layout({ children }) {
   const { t } = useTrans()
 
   return (
-    <div className={cnMerge(s.content, 'w-1/2')}>
+    <div className={cn(s.content, 'w-1/2')}>
       <Portal
         title={t('dsb.portal.alias.title')}
         desc={t('dsb.portal.alias.desc')}

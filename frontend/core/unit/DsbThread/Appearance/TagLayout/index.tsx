@@ -8,7 +8,7 @@ import { FIELD } from '../../constant'
 import useTags from '../../logic/useTags'
 import SavingBar from '../../SavingBar'
 import SectionLabel from '../../SectionLabel'
-import useSalon, { cnMerge } from './salon'
+import useSalon from './salon'
 
 const TAG_LAYOUT_OPTIONS = [
   {
@@ -52,7 +52,7 @@ export default function TagLayout() {
               aria-pressed={isActive}
               onClick={() => edit(value, FIELD.TAG_LAYOUT)}
             >
-              <div className={cnMerge(s.block, isActive && s.blockActive)}>
+              <div className={s.block({ state: isActive ? 'active' : 'idle' })}>
                 <div className={s.previewList}>
                   {PREVIEW_ITEMS.map((item) => (
                     <div key={`${value}-${item}`} className={s.previewItem}>

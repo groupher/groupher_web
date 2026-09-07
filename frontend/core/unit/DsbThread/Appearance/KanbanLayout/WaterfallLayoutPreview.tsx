@@ -1,4 +1,6 @@
-import useSalon, { cnMerge } from './salon/layout_selector'
+import { cn } from '~/css'
+
+import useSalon from './salon/layout_selector'
 
 const WATERFALL_GROUPS = [
   {
@@ -31,14 +33,14 @@ export default function WaterfallLayoutPreview() {
     <div className={s.waterfall}>
       {WATERFALL_GROUPS.map((group) => (
         <div key={`${group.headerWidth}-${group.titleWidth}`} className={s.waterfallGroup}>
-          <div className={cnMerge(s.waterfallMain, group.headerWidth)}>
-            <div className={cnMerge(s.waterfallTitle, group.titleWidth)} />
+          <div className={cn(s.waterfallMain, group.headerWidth)}>
+            <div className={cn(s.waterfallTitle, group.titleWidth)} />
           </div>
 
           {group.rows.map((row) => (
             <div key={`${row.left}-${row.right}`} className={s.waterfallRow}>
-              <div className={cnMerge(s.waterfallMeta, row.left)} />
-              <div className={cnMerge(s.waterfallMeta, row.right)} />
+              <div className={cn(s.waterfallMeta, row.left)} />
+              <div className={cn(s.waterfallMeta, row.right)} />
             </div>
           ))}
         </div>

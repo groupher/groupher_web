@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 
 import { ARTICLE_CAT } from '~/const/gtd'
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 import UpvoteSVG from '~/icons/Upvote'
 import type { TActive, TArticleCat } from '~/spec'
 import ArticleCatStatus from '~/unit/ArticleCatStatus'
@@ -26,7 +26,7 @@ const PostItem: FC<TProps> = ({
   const s = useSalon({ active })
 
   return (
-    <div className={cnMerge(s.wrapper, className)}>
+    <div className={cn(s.wrapper, className)}>
       <div className={s.upvote}>
         <UpvoteSVG className={s.upvoteIcon} />
         <div className={s.count}>{count}</div>

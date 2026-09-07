@@ -2,7 +2,7 @@ import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { type ReactNode, type RefCallback, memo, useCallback, useRef } from 'react'
 
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 
 import type { TLinkDndType } from './spec'
 
@@ -55,7 +55,7 @@ const SortableGroup = memo(function SortableGroup({
     <SortableContext id={columnId} items={ids} strategy={verticalListSortingStrategy}>
       <div
         ref={setListNodeRef}
-        className={cnMerge(className, isOver && !targetClassName && overClassName, targetClassName)}
+        className={cn(className, isOver && !targetClassName && overClassName, targetClassName)}
       >
         {children}
       </div>

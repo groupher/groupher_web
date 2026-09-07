@@ -16,7 +16,7 @@ import type { TSelectOption, TSpace } from '~/spec'
 
 import CustomOption from './CustomOption'
 import CustomSingleValue from './CustomSingleValue'
-import useSalon, { cnMerge } from './salon'
+import useSalon, { cn } from './salon'
 
 type TProps = {
   testid?: string
@@ -83,7 +83,7 @@ const Select: FC<TProps> = ({
       clearIndicator: (_) => s.clearIndicator,
       noOptionsMessage: (_) => s.noOptionsMessage,
       loadingMessage: (_) => s.loadingMessage,
-      option: (state) => cnMerge(s.option, (state.isSelected || state.isFocused) && s.optionActive),
+      option: (state) => cn(s.option, (state.isSelected || state.isFocused) && s.optionActive),
     },
     styles: {
       option: (base, state) => ({
@@ -119,7 +119,7 @@ const Select: FC<TProps> = ({
   }
 
   return (
-    <div className={cnMerge(s.wrapper, className)}>
+    <div className={cn(s.wrapper, className)}>
       {!creatable ? (
         <ReactSelect
           {...baseProps}

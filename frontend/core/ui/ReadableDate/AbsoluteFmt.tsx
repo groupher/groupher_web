@@ -1,6 +1,6 @@
 import { type FC, Fragment, memo } from 'react'
 
-import { cnMerge } from '~/css'
+import { cn } from '~/css'
 
 import useSalon from './salon/absolute_fmt'
 
@@ -29,7 +29,7 @@ const AbsoluteFmt: FC<TProps> = ({ datetime, className, withTime }) => {
   const hour = hours > 12 ? hours - 12 : hours
 
   return (
-    <div className={cnMerge(s.wrapper, className)}>
+    <div className={cn(s.wrapper, className)}>
       {year}
       <div className='mr-0.5' />
       年

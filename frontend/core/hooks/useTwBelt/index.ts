@@ -5,7 +5,7 @@ import { clsx } from 'clsx'
 import { useMemo } from 'react'
 
 import { COLOR } from '~/const/colors'
-import { cn, cnMerge } from '~/css'
+import { cn } from '~/css'
 import { camelize } from '~/fmt'
 import useAccentColor from '~/hooks/useAccentColor'
 import useAvatarLayout from '~/hooks/useAvatarLayout'
@@ -143,10 +143,10 @@ export default function useTwBelt(): TRet {
   const VDivider = () => cn(STATIC_CLS.vDivider, fg('digest'))
 
   const sexyBorder = (turn = 35, classNames?: string) =>
-    cnMerge(STATIC_CLS.sexyBorderBase, `sexy-border-${turn}`, classNames)
+    cn(STATIC_CLS.sexyBorderBase, `sexy-border-${turn}`, classNames)
 
   const sexyVBorder = (turn: number, classNames = '') =>
-    cnMerge(STATIC_CLS.sexyVBorderBase, `sexy-border-${turn}`, classNames)
+    cn(STATIC_CLS.sexyVBorderBase, `sexy-border-${turn}`, classNames)
 
   const avatar = (level: 'md' | 'sm' | '' = 'md') => {
     if (isAvatarSquare) return level === '' ? 'rounded' : `rounded-${level}`
@@ -186,7 +186,7 @@ export default function useTwBelt(): TRet {
 
   const landingTitle = (): string => cn(STATIC_CLS.landingTitleBase, fg('title'))
   const panel = (classNames?: string): string =>
-    cnMerge(STATIC_CLS.panelBase, bg('card'), br('divider'), classNames)
+    cn(STATIC_CLS.panelBase, bg('card'), br('divider'), classNames)
 
   const hover = (part: THoverPart): string => {
     switch (part) {
@@ -332,7 +332,6 @@ export default function useTwBelt(): TRet {
   return useMemo<TRet>(
     () => ({
       cn,
-      cnMerge,
 
       container,
       containerWrapper,
