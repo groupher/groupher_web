@@ -102,10 +102,10 @@ Store 和 renderer 领域类型来源。`wallpaperSettingsCodec` 显式完成 ge
 GraphQL 的 `WallpaperSettings` 是传输 envelope；它的 `renderConfig` 在 decode 后展开回现有共享
 `TBgConfig`，不在 Store 与 renderer 之间再创建一个 envelope 或中间模型。
 
-> 归属说明：当前 editor/publish wire 仍把 `contentShadow` 放在每个 theme 的 `renderConfig` 中，这是
-> 兼容形态，不是目标领域归属。`contentShadow` 的目标 owner 是 Dashboard 的独立内容呈现字段
-> `dashboard.contentShadow`；普通页面不得继续从 Wallpaper settings 读取它。迁移期间 codec 可以继续
-> 读写旧字段以保持 editor publish 协议，但不得新增普通页面消费者。
+> 归属说明：当前（hard cut 前）editor/publish wire 仍把 `contentShadow` 放在每个 theme 的
+> `renderConfig` 中，这是待迁移的旧形态，不是目标领域归属。`contentShadow` 的唯一目标 owner 是 Dashboard
+> 的独立内容呈现字段 `dashboard.contentShadow`；普通页面不得继续从 Wallpaper settings 读取它。一次性
+> contract cutover 时 editor、普通页和 schema 同时切换，切换后不保留旧字段的运行时兼容读写。
 
 ```ts
 type TWallpaperSettings = { type: 'none' } | TRenderableWallpaperSettings
@@ -118,30 +118,29 @@ type TRenderableWallpaperSettings = {
   pattern: TBgPattern
   texture: TBgTexture
   effect: TBgEffect
-  contentShadow: TWallpaperContentShadow
 }
 
 type TCustomWallpaper =
   ({ type: 'gradient' } & TWallpaperGradient) | ({ type: 'picture' } & TWallpaperPic) | null
 ```
 
-`TRenderableWallpaperSettings` 与共享 renderer 的 `TBgConfig` 同源。当前 wire 为兼容旧协议暂时带有
-`contentShadow`，但它不是 Wallpaper 自己的 renderer 字段。`decodeWallpaperSettings` 输出这个扁平领域值；运行时只需把
-`type/source/customWallpaper/gradient/pattern/texture/effect` 交给 `composeBgRenderSpec`，而
-`contentShadow` 交给 Dashboard 内容表面层。图片 `assetPublicRef` 继续走 `TBgConfig` 的现有入口。禁止在
-Store 与 `lib/bg` 之间再定义持久化中间类型或复制一份视觉字段。
+`TRenderableWallpaperSettings` 与共享 renderer 的 `TBgConfig` 同源。目标形态不含 `contentShadow`；该字段由
+Dashboard 独立内容表面层承载。`decodeWallpaperSettings` 输出 Wallpaper 背景领域值，运行时把
+`type/source/customWallpaper/gradient/pattern/texture/effect` 交给 `composeBgRenderSpec`。图片
+`assetPublicRef` 继续走 `TBgConfig` 的现有入口。禁止在 Store 与 `lib/bg` 之间再定义持久化中间类型或复制一份
+视觉字段。
 
 约束：
 
 - Backend 是默认设置的唯一来源；Frontend 不维护第二套默认值。
 - GraphQL 只 deep-type 稳定业务骨架：`settingsSchemaVersion/type/source`、CustomWallpaper 判别字段和
-  `assetPublicRef`。当前兼容 wire 将 Gradient、Pattern、Texture、Effect、ContentShadow 等复杂配置
-  放入版本化 `renderConfig: Json`；目标 Dashboard contract 将 `contentShadow` 提升为独立字段，不能
-  再把它当作 Wallpaper renderer 配置。
-- `renderConfig` 不是任意 JSON 逃生口。它只能由 Settings codec 读写；当前兼容 wire 固定五个顶层字段和
-  camelCase，目标 Wallpaper renderer 配置只保留背景相关字段，`contentShadow` 由 Dashboard 独立字段承载；
-  复杂子树（包括 `texture.params`）保留为带 settings schema version 的 JSON leaf。resolver、业务模块
-  与 renderer adapter 禁止直接猜 key。
+  `assetPublicRef`。切换前的旧 wire 将 Gradient、Pattern、Texture、Effect、ContentShadow 等复杂配置放入
+  版本化 `renderConfig: Json`；hard cut 后 `contentShadow` 由 Dashboard 独立字段承载，不能再把它当作
+  Wallpaper renderer 配置。
+- `renderConfig` 不是任意 JSON 逃生口。它只能由 Settings codec 读写；切换前 wire 固定五个顶层字段和
+  camelCase，目标 Wallpaper renderer 配置只保留背景四键，`contentShadow` 由 Dashboard 独立字段承载；复杂
+  子树（包括 `texture.params`）保留为带 settings schema version 的 JSON leaf。resolver、业务模块与
+  renderer adapter 禁止直接猜 key。
 - 整份 settings 只使用一个 `settingsSchemaVersion`。Gradient 自身已有的 recipe `version` 属于 renderer
   内部格式，不再为 Pattern、Texture、Effect 等 leaf 分别制造 schema version。
 - 文档正文用 `NONE` 表示删除概念；TypeScript、JSON 和数据库 settings 的字面量固定为小写 `'none'`。
@@ -617,6 +616,9 @@ community_wallpapers
   inserted_at
   updated_at
 
+community_dashboards
+  content_shadow (embedded light/dark content-surface config)
+
 wallpaper_snapshots
   public_ref
   community_id
@@ -644,6 +646,11 @@ wallpaper_snapshot_images
 
 保留一个 `CommunityWallpaper` 聚合。保存 light 只更新 `active_light_snapshot_ref`；保存 dark 只更新
 `active_dark_snapshot_ref`。数据库字段和 GraphQL Wallpaper scope 对外名称统一为 `version`。
+
+`content_shadow` 属于 `CommunityDashboard` 的独立 embed/section，不进入 `community_wallpapers` 或
+`wallpaper_snapshots.settings`。它由 Dashboard section mutation 持久化，使用独立事务；Wallpaper publish、
+Snapshot restore 和 Dashboard content mutation 之间没有隐式的跨 aggregate 原子性。一次性 hard cut 的回填
+负责把当前 active Snapshot 中的旧值写入该 embed，之后普通 SSR/Query 只读 Dashboard 字段。
 
 现有最近 5 次历史、淘汰宽限期和审计列全部保留，只改领域命名。Snapshot 的 settings、theme、来源
 Batch 和 Profile version 不可变；`activated_at`、`history_used_at`、`delete_after` 是可更新的生命周期
@@ -720,8 +727,9 @@ Digest。调整如下：
 - [x] 以 `packages/contracts/fixtures` 的单份人工审阅数据作为 Frontend、Backend 和 contracts 测试的
       golden source，并覆盖 Linear/Radial/Mesh renderer、NONE 和 CustomWallpaper 分支；expected digest
       不由任一端实现自动生成。
-- [x] 删除 Wallpaper 领域旧名字、旧字段和并行运行路径；`contentShadow` 的旧
-      `renderConfig` 字段是本轮 Dashboard 独立字段迁移明确保留的 editor wire 兼容例外。
+- [ ] 完成 Dashboard `contentShadow` 的一次性回填、独立 mutation 与普通页/Editor 同步切换；从 Wallpaper
+      settings、Snapshot canonical JSON、RequestDigest 和 Receipt fixtures 中移除旧
+      `renderConfig.contentShadow`，并升级对应版本；不保留 editor wire 兼容例外。
 - [ ] 实施并验收 [Wallpaper NONE 与页面背景绘制边界](./content_background_fallback.md) 的 Root/Content
       条件绘制；Wallpaper 不补色的代码边界已完成，浏览器验收仍待完成。
 

@@ -76,11 +76,12 @@ input 的 `Json` scalar 传 JSON 字符串，Settings codec 负责解析、版�
 JSON 对象。Absinthe 不会递归转换 JSON 内部 key，因此业务代码不能在 JSON 中猜测 snake_case 或
 camelCase。
 
-当前兼容 Settings wire 固定 `renderConfig` 的五个顶层字段：`pattern`、`gradient`、`texture`、`effect`、
-`contentShadow`。每个复杂子树（例如 `texture.params`）仍是带 `settingsSchemaVersion` 约束的
-opaque JSON leaf，不复制成第二套 GraphQL object/input。目标模型中 `contentShadow` 是独立的
-`dashboard.contentShadow` 内容呈现字段，不属于 Wallpaper renderer 配置；旧 JSON 字段只在 editor
-publish 兼容窗口内保留。
+当前（hard cut 前）的 Settings wire 固定 `renderConfig` 的五个顶层字段：`pattern`、`gradient`、
+`texture`、`effect`、`contentShadow`。每个复杂子树（例如 `texture.params`）仍是带
+`settingsSchemaVersion` 约束的 opaque JSON leaf，不复制成第二套 GraphQL object/input。本轮采用一次性
+contract cutover：目标 Wallpaper renderer 的 `renderConfig` 只保留前四个背景字段，`contentShadow` 独立为
+`dashboard.contentShadow` 内容呈现字段，不属于 Wallpaper renderer 配置。旧五键 wire 只作为切换前的一次性
+数据迁移输入，切换后不保留运行时 editor 兼容窗口。
 
 `type` 是唯一 Wallpaper/CustomWallpaper 判别字段。GraphQL enum token 为大写，Frontend Store 和
 持久化 JSON 为小写；这组映射只在 codec 中实现，并由 settings golden fixture 固化。项目内禁止为
@@ -123,13 +124,13 @@ GraphQL WallpaperSettingsInput
 
 GraphQL WallpaperSettings response
   -> wallpaperSettingsCodec.decodeWallpaperSettings
-  -> TWallpaperSettings (当前兼容形态；`contentShadow` 目标上移为 `dashboard.contentShadow`)
+  -> TWallpaperSettings (hard cut 前含旧字段；目标形态不含 `contentShadow`)
   -> existing lib/bg renderer path
 ```
 
 `contentShadow` 的普通页面读取必须走 Dashboard 内容呈现字段。Wallpaper Query、StaticWallpaper Context
-和 `lib/bg` renderer 不拥有该字段；editor route 可以在兼容窗口内从旧 `renderConfig` 映射到 Dashboard
-draft/publish 输入。
+和 `lib/bg` renderer 不拥有该字段。切换时 editor route 与普通页面一起改读
+`dashboard.contentShadow`；切换后 Wallpaper codec 不再从旧 `renderConfig` 映射该字段。
 
 ### `contentShadow` 持久化迁移门
 
@@ -137,16 +138,24 @@ draft/publish 输入。
 Assets Hub capability、Publish Receipt、幂等重放和跨语言 fixtures。`restoreWallpaperSnapshot` 当前只
 切换 active Snapshot 指针；旧 Snapshot 也没有独立的 Dashboard content field。
 
-在迁移前必须冻结：
+Phase 0 必须冻结并记录以下契约，才能执行 hard cut：
 
-- **真相源/SSR**：推荐一次性从当前 active Snapshot 回填 `dashboard.contentShadow`，之后普通 Query/SSR
-  只读 Dashboard 字段，不在运行时从 Snapshot 投影；
-- **restore**：推荐 Dashboard 字段独立生命周期，恢复 Wallpaper Snapshot 不改变 contentShadow。若要
-  恢复整套外观，必须由显式的跨域 restore 输入同时更新 Dashboard 字段；
-- **digest/Receipt**：兼容窗口内保留 RequestDigest v1 的五键 settings 和旧 fixtures。拆分后必须新增
-  digest version 或独立 Dashboard mutation/digest，不能静默剔除 `contentShadow` 键。
+- **真相源/SSR**：从当前 active Snapshot 一次性回填 `dashboard.contentShadow`；之后普通 Query/SSR 只读
+  Dashboard 字段，不在运行时从 Snapshot 投影或 fallback。
+- **持久化归属**：字段落在 `CommunityDashboard` 的独立 `content_shadow` embed/section，保留 `light/dark`
+  子 map；由 Dashboard section mutation（建议命名为 `update_dashboard_content_shadow`）持久化。它与
+  `CommunityWallpaper` 是不同 aggregate，Wallpaper publish 不再写该字段。
+- **事务边界**：Dashboard mutation 与 Wallpaper publish 各自拥有事务、错误和重试语义。同一次 Appearance Save
+  若同时提交两者，只能由 UI 编排两个独立 mutation，不能假设跨 aggregate 原子性；需要整套外观原子恢复时，
+  另建显式 bundle mutation。
+- **restore**：恢复 Wallpaper Snapshot 不改变 Dashboard `contentShadow`。整套外观恢复必须显式纳入跨域输入，
+  不能让只切 active pointer 的 mutation 隐式回退它。
+- **digest/Receipt**：hard cut 时移除旧 `renderConfig.contentShadow`，升级 settings/request digest version，
+  重生成 Receipt、幂等和跨语言 fixtures。已有 v1 Snapshot/Receipt 必须在切换前一次性迁移；运行时不保留旧 key。
 
-这些选择未冻结前，文档中的 `dashboard.contentShadow` 只能视为目标契约，不能当作已存在的持久化真相源。
+如果部署环境不得不分阶段，普通页面必须继续读取旧来源，直到 editor、普通页和 schema 同时切换；临时接收旧
+wire 时，Backend 必须在同一 Wallpaper publish 事务内镜像写入 Dashboard 字段，并设置明确的截止版本。该双写
+只是过渡手段，不是目标架构。
 
 Frontend codec 的三个入口是：
 
@@ -154,7 +163,8 @@ Frontend codec 的三个入口是：
   `{type: 'none'}`，不注入默认值；
 - `encodeWallpaperSettings`：输出 `WallpaperSettingsInput`，只把稳定 enum 转为 GraphQL token，并把
   `renderConfig/config` 序列化为 JSON string；图片 `assetPublicRef` 作为 typed 字段发送；
-- `decodeWallpaperSettings`：校验 `settingsSchemaVersion`、五个顶层 renderConfig 字段和
+- `decodeWallpaperSettings`：切换前校验 `settingsSchemaVersion`、五个顶层 renderConfig 字段；hard cut 后校验
+  四个背景字段和
   CustomWallpaper 分支，并按 Linear/Radial/Mesh family 校验 `version: 2`、必填字段和跨分支禁用字段；
   未知版本或非法结构直接报错，不静默使用前端默认值。
 
@@ -215,8 +225,8 @@ input WallpaperPublishInput {
 - `NONE` 时 `batchRef` 必须为空；其他类型必须携带完成四张 Profile 图片的 Batch；
 - publish 锁定 `CommunityWallpaper`，校验 `baseVersion`，创建一个当前 theme 的 Snapshot；
 - 同一事务只更新当前 theme 的 active Snapshot 指针、`version + 1` 和 Publish Receipt；另一支指针不动。
-  在 Dashboard `contentShadow` 拆分完成后，该独立字段不随此 pointer restore 隐式回退；若选择整套外观
-  restore，必须显式纳入同一跨域操作；
+  Dashboard `contentShadow` 不属于该事务，也不随此 pointer restore 隐式回退；若选择整套外观 restore，
+  必须显式纳入跨域操作；
 - 前端不提交或接收 active/candidate/owner ref。历史恢复使用公开的 `WallpaperSnapshot.id` 是唯一例外；
 - 恢复不重新导出或上传图片，只将指定 theme 的 active 指针切到 retained Snapshot，并递增 version；
 - `wallpaperHistory(theme)` 只返回当前查询 theme 的最近历史；`dashboard.wallpaper` 不暴露 Snapshot ID。
@@ -233,9 +243,10 @@ NONE）时读取 Snapshot settings。Frontend 不用 truthy 判断 `version: 0`�
 
 ## 7. 生命周期与错误输出
 
-当前可渲染 Snapshot 保存包含 legacy `contentShadow` 的完整 settings 和以下生命周期列：`created_by_id`、`activated_at`、`history_used_at`、
-`delete_after`、`source_batch_ref`、`profile_version`、`settings_schema_version`。最近 5 个历史保留策略
-和删除宽限期继续有效；不能因为模型改名而删掉这些列。
+当前（hard cut 前）可渲染 Snapshot 保存包含 legacy `contentShadow` 的完整 settings 和以下生命周期列：
+`created_by_id`、`activated_at`、`history_used_at`、`delete_after`、`source_batch_ref`、`profile_version`、
+`settings_schema_version`。hard cut 后 Snapshot settings 不再包含该字段；最近 5 个历史保留策略和删除
+宽限期继续有效，不能因为模型改名而删掉这些列。
 
 Snapshot JSON 内的 `settingsSchemaVersion` 与数据库 `settings_schema_version` 是同一版本的两种存储
 表现：写入时断言相等，读取时不一致直接失败。JSON 内版本供 codec 解码和未知版本报错，数据库列只是
@@ -257,5 +268,6 @@ Snapshot JSON 内的 `settingsSchemaVersion` 与数据库 `settings_schema_versi
 - [x] Frontend/CoverEditor 共享 `TBgConfig` 消费方通过全仓 typecheck。
 - [x] 补齐 Linear/Radial/Mesh 全 renderer 的跨语言 settings golden fixture 与 codec 分支校验。
 - [ ] `WallpaperEditor` route-only 请求已存在，但普通 `PageCommunity` 仍选择并解析 `wallpaperSettings`；待普通页
-      Valtio 读点迁移完成后，普通页面才只请求已发布图片。
+      Valtio 读点迁移完成后，普通页面才只请求已发布 `dashboard.wallpaper` 与独立的
+      `dashboard.contentShadow`。
 - [ ] 完成部署后的 GraphQL smoke、真实 Assets Hub 和线上 Profile/Content fallback 验收。

@@ -230,17 +230,20 @@ refetch 的入口。迁移必须保留该映射，并保证 refetch 只更新 co
 `wallpaperPresentation`（该名称不是现有代码概念）。它由 GlobalLayout、Community 内容容器和 Landing
 内容容器消费；Wallpaper renderer 只接收背景本身的 render spec，不接收 `contentShadow`。
 
-当前实现仍把它按 `light/dark` 放在 `wallpaperSettings.*.renderConfig` 中。这是现有编辑器与发布协议的
-兼容形态，不代表目标归属。目标是提供独立的 `dashboard.contentShadow` 字段，并暂时保留现有
-`light/dark` 语义，避免迁移时把两个 theme 的行为合并成一个全局布尔值。
+当前实现仍把它按 `light/dark` 放在 `wallpaperSettings.*.renderConfig` 中。这是待迁移的旧形态，不是
+目标归属。目标是提供独立的 `dashboard.contentShadow` 字段，并保留现有 `light/dark` 语义，避免迁移时
+把两个 theme 的行为合并成一个全局布尔值。
 
-迁移顺序固定为：
+这不是可以让普通页先切、editor 后切的 1→2→3 分阶段顺序，而是一个一次性 contract cutover：
 
-1. Backend/Dashboard 先提供独立字段及其 PageCommunity/SSR 输出；
-2. 普通页改读 `dashboard.contentShadow`，Landing 使用自己的静态初始配置；
-3. editor route 再把 working draft 映射到该字段；
-4. 普通页删除对 `wallpaperSettings/renderConfig` 的依赖；
-5. 旧 `renderConfig.contentShadow` 仅在兼容窗口内作为 editor publish wire，不得新增普通页消费者。
+1. Dashboard 独立字段、持久化、mutation、SSR/PageCommunity 输出和一次性回填同时准备；
+2. editor route 的 working draft 与普通页同时切到 `dashboard.contentShadow`；
+3. Wallpaper codec、settings schema、Snapshot canonical JSON 和 digest 同一批移除
+   `renderConfig.contentShadow` 并升级版本。
+
+在全部切换完成前，普通页面不能开始信任独立字段。若部署环境被迫分阶段，唯一允许的临时桥接是：
+Backend 在接收旧 `renderConfig.contentShadow` 时，于同一个 Wallpaper publish 事务内镜像写入 Dashboard
+字段；该双写必须有明确截止版本，不能成为目标架构或长期兼容层。
 
 这是本方案明确批准的 GraphQL/backend schema 例外。它是内容呈现契约，不应命名为 Wallpaper
 presentation，也不应由 `StaticWallpaperProvider` 或 Wallpaper Query 成为 owner。
@@ -255,24 +258,24 @@ presentation，也不应由 `StaticWallpaperProvider` 或 Wallpaper Query 成为
 - `restoreWallpaperSnapshot` 当前只切换指定 theme 的 active Snapshot 指针并递增 Wallpaper version；旧
   Snapshot 没有独立的 Dashboard `contentShadow` 字段。
 
-在 Phase 0 冻结以下三项之前，不得删除 `renderConfig.contentShadow`、修改 digest key 集合，或把 SSR
-来源改成“看起来像独立字段”的临时投影：
+Phase 0 必须冻结以下持久化与生命周期契约，才能执行上述 hard cut：
 
-1. **canonical owner 与 SSR 来源**：推荐 Dashboard 独立字段为唯一真相源。迁移时从当前 active Snapshot
-   一次性回填；普通 Query/SSR 直接读取 `dashboard.contentShadow`，回填完成后不再运行时从 Snapshot
-   投影或 fallback。备选方案是继续以 active Snapshot 投影，但这会保留 Wallpaper 对内容呈现的所有权，
-   与本节已确认的领域边界冲突。
-2. **restore 生命周期**：若采用 Dashboard 真相源，推荐独立生命周期——恢复 Wallpaper Snapshot 不回退
-   `dashboard.contentShadow`。若产品要求恢复“整套外观”，必须把 contentShadow 作为 restore 的显式
-   Dashboard 更新，或新增跨域 bundle restore；不能让只切 active pointer 的旧 mutation 隐式改变它。若
-   选择 Snapshot 投影，则必须定义旧 Snapshot 缺失该字段时的确定性默认值。
-3. **digest/Receipt 兼容**：兼容窗口内保持 RequestDigest v1 的 canonical settings 和五键
-   `renderConfig` 原样，旧 Receipt、幂等重放和 fixtures 不得改变。完成拆分后再单独冻结新 digest version
-   或 Dashboard content config 的独立 mutation/digest；禁止仅删除 `contentShadow` 键来“完成迁移”。
+1. **canonical owner 与 SSR 来源**：Dashboard 独立字段是唯一真相源；从当前 active Snapshot 一次性回填，
+   普通 Query/SSR 直接读取 `dashboard.contentShadow`，不保留运行时 Snapshot 投影或 fallback。
+2. **持久化归属与 mutation**：`contentShadow` 落在 `CommunityDashboard` 的独立 `content_shadow` embed/section
+   中，保留 `light/dark` 子 map；由 Dashboard section mutation（建议命名为
+   `update_dashboard_content_shadow`）写入。它与 `CommunityWallpaper` 是不同 aggregate，Wallpaper publish
+   不再写该字段。
+3. **事务边界**：Dashboard content mutation 与 Wallpaper publish 各自拥有事务、错误和重试语义；同一个
+   Appearance Save 若同时提交两者，也只能由 UI 编排两个独立 mutation，不能假设跨 aggregate 原子性。若未来
+   需要“整套外观”原子恢复，必须新建显式 bundle mutation。
+4. **restore 生命周期**：恢复 Wallpaper Snapshot 不回退 `dashboard.contentShadow`。如果产品要求恢复整套
+   外观，必须由显式的跨域 restore 输入同时更新 Dashboard 字段；不能让只切 active pointer 的 mutation 隐式改变它。
+5. **digest/Receipt**：hard cut 时 Wallpaper `renderConfig` 只保留背景四键，升级 settings/request digest
+   version，重生成跨语言 fixtures；旧 v1 数据若已存在，必须在切换前完成一次性数据迁移，禁止运行时保留旧 key。
 
-Phase 0 的验收记录必须同时写明：真相源、restore 是否联动、SSR 回填/fallback 终止条件、旧 v1 digest
-的保留期限，以及新字段变更是否拥有独立 revision/Receipt。未记录前，Phase 4/5 只能迁移读点，不能
-宣称 Snapshot 生命周期已完成拆分。
+Phase 0 的验收记录必须同时写明：存储位置、per-theme shape、mutation 名称、事务归属、真相源、restore 是否联动、
+SSR 回填终止条件、版本升级和已有 Snapshot/Receipt 的一次性迁移方案。
 
 ## 7. 测试矩阵
 
@@ -335,8 +338,8 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 - 补齐 §7.1 的现状契约测试；
 - 盘点 Community、Dash、Landing 的 Provider 挂载点与全部 store 读点；
 - 明确 Landing 静态展示配置来源；
-- 冻结 Dashboard `contentShadow` 独立字段的 GraphQL/持久化 shape，并记录旧
-  `wallpaperSettings.renderConfig.contentShadow` 仅作为 editor wire 兼容层；
+- 冻结 Dashboard `contentShadow` 独立字段的 GraphQL/持久化 shape、mutation 和事务归属；hard cut 时删除旧
+  `wallpaperSettings.renderConfig.contentShadow`，不保留 editor wire 兼容层；
 - 同步冻结共享背景 shape 的影响面：`Dashboard.Fields.macro_schema(:wallpaper_bg)` 与
   `BgConfigValidator` 当前同时服务 Dashboard Wallpaper 和 `CoverBackground`，但 `contentShadow` 只是
   共享 macro 泄漏到 Cover 的字段，不是 Cover 能力。一次性拆分时从 shared macro/validator 移除
@@ -358,7 +361,8 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 - 注入 exporter/GraphQL/Batch/uploader；
 - 补齐全部失败窗口、outcome unknown 和 cancel 状态测试；
 - 拆分 prepare 空响应与 Assets Hub Batch 创建失败错误名；
-- 不改变 endpoint、后端事务或持久化协议。
+- 不改变 Wallpaper prepare/upload/publish endpoint 与其事务语义；Dashboard `contentShadow` 的独立 schema、
+  mutation、持久化迁移和 digest/version 调整属于本方案范围。
 
 ### Phase 3：Query ownership
 
@@ -382,6 +386,7 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 - 普通 `PageCommunity` 删除 `wallpaperSettings`；
 - 普通 `PageCommunity` 保留独立的 `dashboard.contentShadow` 窄字段；
 - editor route 独占 settings/history 查询；
+- editor 与普通页在同一 contract cutover 中切换，不能先切普通页再延后 editor；
 - 普通 Community、Dash、Landing 不再挂载 Wallpaper editor store；
 - 同步更新相关 contract/checklist，不再把目标状态标记为已完成事实。
 
@@ -390,7 +395,8 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 - React hook 不直接调用 Assets Hub endpoint、upload 或 WebGPU exporter；
 - 发布计划是无副作用纯函数，且不负责生成/复用 idempotency key；
 - 网络编排可在无 React、无 WebGPU、无真实网络环境下完整测试；
-- 当前发布协议、Assets Hub capability 和后端事务不变；
+- Assets Hub capability 与 Wallpaper publish 事务语义不变；Wallpaper settings/digest 版本因移除
+  `contentShadow` 而有意升级，Dashboard content mutation 独立存在；
 - 除明确批准的 Dashboard `contentShadow` 窄字段外，GraphQL schema 不变；该字段属于内容呈现契约，
   不属于 Wallpaper schema；
 - `baseVersion` 只有 `wallpaperKeys.config` 一个 confirmed owner；

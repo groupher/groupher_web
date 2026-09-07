@@ -101,7 +101,9 @@ WebGPU 预览、SSR 静态背景和路由切换后的静态背景不一致。
 - 不再使用 light/dark 各一个 `staticAssetPublicRef` 作为最终契约；
 - `UPLOAD` 也必须按照各 Profile 的构图规则生成静态产物；
 - Gradient、Pattern、Texture、滤镜和上传图片全部通过 WebGPU 生成，不增加 CSS Gradient 发布分支；
-- 不迁移或兼容旧 Wallpaper 数据，硬切换后由用户下一次 Save 创建新模型数据。
+- 不迁移或兼容旧 Wallpaper 静态产物数据，硬切换后由用户下一次 Save 创建新模型数据。该条不覆盖
+  Phase 0 对 `contentShadow` 的一次性 Dashboard 字段回填；回填只迁移内容呈现配置，不重建旧 Wallpaper
+  Snapshot、图片资产或其兼容运行时。
 
 ## 2. 设计原则
 
