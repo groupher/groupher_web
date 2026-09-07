@@ -32,19 +32,19 @@ React editor hook / request coordinator
 
 以下边界是迁移目标，不是当前代码已经具备的性质：
 
-| 范围           | 当前状态                                                                                                                | 目标状态                                                                    |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| Community      | 每个页面挂载 `WallpaperStoreProvider`；Query settings 会经 `reconcileConfirmed` 写入 Valtio                             | 普通页面只消费发布态静态数据；editor route 才挂载 authoring store           |
-| Dash           | `DsbShell` 为每个路由挂载 `WallpaperStoreProvider`                                                                      | 只有 Appearance/Wallpaper 编辑边界挂载 authoring store                      |
-| Landing        | 使用常量 `LANDING_INIT_DATA` 初始化 Wallpaper store，不是 Query 数据源                                                  | 在自有静态背景与移除默认背景之间显式决策；不能直接套用 Community Query 迁移 |
-| PageCommunity  | GraphQL 仍选择 `dashboard.wallpaperSettings`，SSR parser 仍解码 settings                                                | 普通页面载荷只保留发布态 Wallpaper 与明确批准的窄展示字段                   |
-| 静态 Wallpaper | `wallpaperKeys.config` 的结果经 `StaticWallpaperProvider` 投影为 React Context；保存 hook 又把 version 复制到局部 state | Context 只作为渲染投影；confirmed version 唯一从 Wallpaper Query 订阅和更新 |
-| ThemePreset    | confirmed preset/tokens/options 仍镜像在 Valtio，普通页面会读取                                                         | 不属于本方案；后续如收口 Query ownership，必须单独盘点 CSS 注入和普通页读点 |
+| 范围           | 当前状态                                                                                                                | 目标状态                                                                                      |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Community      | 每个页面挂载 `WallpaperStoreProvider`；Query settings 会经 `reconcileConfirmed` 写入 Valtio                             | 普通页面只消费发布态静态数据；editor route 才挂载 authoring store                             |
+| Dash           | `DsbShell` 为每个路由挂载 `WallpaperStoreProvider`                                                                      | 只有 Appearance/Wallpaper 编辑边界挂载 authoring store                                        |
+| Landing        | 使用常量 `LANDING_INIT_DATA` 初始化 Wallpaper store，不是 Query 数据源                                                  | 在自有静态背景与移除默认背景之间显式决策；不能直接套用 Community Query 迁移                   |
+| PageCommunity  | GraphQL 仍选择 `dashboard.wallpaperSettings`，SSR parser 仍解码 settings                                                | 普通页面载荷只保留发布态 Wallpaper 与独立的 `dashboard.contentShadow`；不携带 editor settings |
+| 静态 Wallpaper | `wallpaperKeys.config` 的结果经 `StaticWallpaperProvider` 投影为 React Context；保存 hook 又把 version 复制到局部 state | Context 只作为渲染投影；confirmed version 唯一从 Wallpaper Query 订阅和更新                   |
+| ThemePreset    | confirmed preset/tokens/options 仍镜像在 Valtio，普通页面会读取                                                         | 不属于本方案；后续如收口 Query ownership，必须单独盘点 CSS 注入和普通页读点                   |
 
 因此，卸载普通页面 Provider 之前必须先盘点并迁移全部 Valtio 读点，包括但不限于：
 
-- GlobalLayout 的 `contentShadow`；
-- Landing salon 的 Wallpaper 派生样式；
+- GlobalLayout 的 Dashboard `contentShadow` 内容表面效果（它不是 Wallpaper store 读点）；
+- Landing salon 的 Wallpaper 派生样式与自有内容表面配置；
 - `useFullWallpaper`、`useTopGlow` 等 Wallpaper 共享外观路径；
 - Provider 初始化和 Query 刷新后的 `reconcileConfirmed` 行为。
 
@@ -224,15 +224,26 @@ refetch 的入口。迁移必须保留该映射，并保证 refetch 只更新 co
 普通页面最终不挂载 Wallpaper editor store，也不查询 `wallpaperSettings/renderConfig`。这是 Phase 5 的目标，
 必须在普通页读点迁移完成后才成立。
 
-### `contentShadow` 决策门
+### Dashboard `contentShadow` 归属（已确认）
 
-Phase 4 开始前必须显式选择其一：
+`contentShadow` 是 Dashboard 下独立的内容表面呈现配置，不是 Wallpaper 配置，也不是
+`wallpaperPresentation`（该名称不是现有代码概念）。它由 GlobalLayout、Community 内容容器和 Landing
+内容容器消费；Wallpaper renderer 只接收背景本身的 render spec，不接收 `contentShadow`。
 
-1. **保留普通页面效果**：把 `contentShadow` 暴露为发布态静态消费契约中的窄字段。它可以从 active Snapshot
-   派生，不一定新增数据库列，但仍是 GraphQL/backend 输出契约变更，也是“GraphQL schema 不变”的唯一例外；
-2. **取消普通页面效果**：无需新增 schema，但必须验收 Community、Landing 和 GlobalLayout chrome 的视觉变化。
+当前实现仍把它按 `light/dark` 放在 `wallpaperSettings.*.renderConfig` 中。这是现有编辑器与发布协议的
+兼容形态，不代表目标归属。目标是提供独立的 `dashboard.contentShadow` 字段，并暂时保留现有
+`light/dark` 语义，避免迁移时把两个 theme 的行为合并成一个全局布尔值。
 
-未做出该决策前，不能删除普通页面对 authoring settings 的最后依赖。
+迁移顺序固定为：
+
+1. Backend/Dashboard 先提供独立字段及其 PageCommunity/SSR 输出；
+2. 普通页改读 `dashboard.contentShadow`，Landing 使用自己的静态初始配置；
+3. editor route 再把 working draft 映射到该字段；
+4. 普通页删除对 `wallpaperSettings/renderConfig` 的依赖；
+5. 旧 `renderConfig.contentShadow` 仅在兼容窗口内作为 editor publish wire，不得新增普通页消费者。
+
+这是本方案明确批准的 GraphQL/backend schema 例外。它是内容呈现契约，不应命名为 Wallpaper
+presentation，也不应由 `StaticWallpaperProvider` 或 Wallpaper Query 成为 owner。
 
 ## 7. 测试矩阵
 
@@ -295,7 +306,8 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 - 补齐 §7.1 的现状契约测试；
 - 盘点 Community、Dash、Landing 的 Provider 挂载点与全部 store 读点；
 - 明确 Landing 静态展示配置来源；
-- 完成 `contentShadow` 决策门；
+- 冻结 Dashboard `contentShadow` 独立字段的 GraphQL/持久化 shape，并记录旧
+  `wallpaperSettings.renderConfig.contentShadow` 仅作为 editor wire 兼容层；
 - 在此阶段不卸载 Provider、不改普通页载荷。
 
 ### Phase 1：纯计划与幂等协调
@@ -323,7 +335,7 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 
 ### Phase 4：普通页面读点迁移
 
-- 根据 Phase 0 清单逐一迁移 `contentShadow`、GlobalLayout、Landing salon 和共享 hooks 的读点；
+- 根据 Phase 0 清单逐一迁移 Dashboard `contentShadow`、GlobalLayout、Landing salon 和共享 hooks 的读点；
 - 仅复用归档文档 [`static_wallpaper.md` §8 末段](./static_wallpaper.md#8-bundle-边界) 与 §9.10 的
   Landing 决策表述：为 Landing Shell 配置自有 light/dark 静态背景，或明确接受移除默认背景并验收
   对应 glow/页面视觉变化；不得执行该文档 §9 的其他 v1 历史步骤；
@@ -333,6 +345,7 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 ### Phase 5：路由与载荷收口
 
 - 普通 `PageCommunity` 删除 `wallpaperSettings`；
+- 普通 `PageCommunity` 保留独立的 `dashboard.contentShadow` 窄字段；
 - editor route 独占 settings/history 查询；
 - 普通 Community、Dash、Landing 不再挂载 Wallpaper editor store；
 - 同步更新相关 contract/checklist，不再把目标状态标记为已完成事实。
@@ -343,7 +356,8 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 - 发布计划是无副作用纯函数，且不负责生成/复用 idempotency key；
 - 网络编排可在无 React、无 WebGPU、无真实网络环境下完整测试；
 - 当前发布协议、Assets Hub capability 和后端事务不变；
-- 除明确批准的 `contentShadow` 窄字段外，GraphQL schema 不变；
+- 除明确批准的 Dashboard `contentShadow` 窄字段外，GraphQL schema 不变；该字段属于内容呈现契约，
+  不属于 Wallpaper schema；
 - `baseVersion` 只有 `wallpaperKeys.config` 一个 confirmed owner；
 - 普通页面不查询 settings/history，不挂载 authoring store；
 - 保存中继续编辑、导出失败、prepare 空响应、部分上传失败、publish 结果未知和 cancel 失败均有明确测试；

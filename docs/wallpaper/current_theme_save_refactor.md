@@ -102,6 +102,11 @@ Store 和 renderer 领域类型来源。`wallpaperSettingsCodec` 显式完成 ge
 GraphQL 的 `WallpaperSettings` 是传输 envelope；它的 `renderConfig` 在 decode 后展开回现有共享
 `TBgConfig`，不在 Store 与 renderer 之间再创建一个 envelope 或中间模型。
 
+> 归属说明：当前 editor/publish wire 仍把 `contentShadow` 放在每个 theme 的 `renderConfig` 中，这是
+> 兼容形态，不是目标领域归属。`contentShadow` 的目标 owner 是 Dashboard 的独立内容呈现字段
+> `dashboard.contentShadow`；普通页面不得继续从 Wallpaper settings 读取它。迁移期间 codec 可以继续
+> 读写旧字段以保持 editor publish 协议，但不得新增普通页面消费者。
+
 ```ts
 type TWallpaperSettings = { type: 'none' } | TRenderableWallpaperSettings
 
@@ -120,19 +125,21 @@ type TCustomWallpaper =
   ({ type: 'gradient' } & TWallpaperGradient) | ({ type: 'picture' } & TWallpaperPic) | null
 ```
 
-`TRenderableWallpaperSettings` 与共享 renderer 的 `TBgConfig` 同源，实际就是 `TBgConfig` 加上 Wallpaper
-自己的 `contentShadow`。`decodeWallpaperSettings` 输出这个扁平领域值；运行时只需把
+`TRenderableWallpaperSettings` 与共享 renderer 的 `TBgConfig` 同源。当前 wire 为兼容旧协议暂时带有
+`contentShadow`，但它不是 Wallpaper 自己的 renderer 字段。`decodeWallpaperSettings` 输出这个扁平领域值；运行时只需把
 `type/source/customWallpaper/gradient/pattern/texture/effect` 交给 `composeBgRenderSpec`，而
-`contentShadow` 留在 Wallpaper 内容层。图片 `assetPublicRef` 继续走 `TBgConfig` 的现有入口。禁止在
+`contentShadow` 交给 Dashboard 内容表面层。图片 `assetPublicRef` 继续走 `TBgConfig` 的现有入口。禁止在
 Store 与 `lib/bg` 之间再定义持久化中间类型或复制一份视觉字段。
 
 约束：
 
 - Backend 是默认设置的唯一来源；Frontend 不维护第二套默认值。
 - GraphQL 只 deep-type 稳定业务骨架：`settingsSchemaVersion/type/source`、CustomWallpaper 判别字段和
-  `assetPublicRef`。Gradient、Pattern、Texture、Effect、ContentShadow 等复杂 WebGPU 配置统一放入
-  版本化 `renderConfig: Json`，不能为每层重复声明 object/input 镜像。
-- `renderConfig` 不是任意 JSON 逃生口。它只能由 Settings codec 读写，固定五个顶层字段和 camelCase；
+  `assetPublicRef`。当前兼容 wire 将 Gradient、Pattern、Texture、Effect、ContentShadow 等复杂配置
+  放入版本化 `renderConfig: Json`；目标 Dashboard contract 将 `contentShadow` 提升为独立字段，不能
+  再把它当作 Wallpaper renderer 配置。
+- `renderConfig` 不是任意 JSON 逃生口。它只能由 Settings codec 读写；当前兼容 wire 固定五个顶层字段和
+  camelCase，目标 Wallpaper renderer 配置只保留背景相关字段，`contentShadow` 由 Dashboard 独立字段承载；
   复杂子树（包括 `texture.params`）保留为带 settings schema version 的 JSON leaf。resolver、业务模块
   与 renderer adapter 禁止直接猜 key。
 - 整份 settings 只使用一个 `settingsSchemaVersion`。Gradient 自身已有的 recipe `version` 属于 renderer

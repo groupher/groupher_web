@@ -76,9 +76,11 @@ input 的 `Json` scalar 传 JSON 字符串，Settings codec 负责解析、版�
 JSON 对象。Absinthe 不会递归转换 JSON 内部 key，因此业务代码不能在 JSON 中猜测 snake_case 或
 camelCase。
 
-Settings codec 只固定 `renderConfig` 的五个顶层字段：`pattern`、`gradient`、`texture`、`effect`、
+当前兼容 Settings wire 固定 `renderConfig` 的五个顶层字段：`pattern`、`gradient`、`texture`、`effect`、
 `contentShadow`。每个复杂子树（例如 `texture.params`）仍是带 `settingsSchemaVersion` 约束的
-opaque JSON leaf，不复制成第二套 GraphQL object/input。
+opaque JSON leaf，不复制成第二套 GraphQL object/input。目标模型中 `contentShadow` 是独立的
+`dashboard.contentShadow` 内容呈现字段，不属于 Wallpaper renderer 配置；旧 JSON 字段只在 editor
+publish 兼容窗口内保留。
 
 `type` 是唯一 Wallpaper/CustomWallpaper 判别字段。GraphQL enum token 为大写，Frontend Store 和
 持久化 JSON 为小写；这组映射只在 codec 中实现，并由 settings golden fixture 固化。项目内禁止为
@@ -121,9 +123,13 @@ GraphQL WallpaperSettingsInput
 
 GraphQL WallpaperSettings response
   -> wallpaperSettingsCodec.decodeWallpaperSettings
-  -> TWallpaperSettings (= TBgConfig + contentShadow)
+  -> TWallpaperSettings (当前兼容形态；`contentShadow` 目标上移为 `dashboard.contentShadow`)
   -> existing lib/bg renderer path
 ```
+
+`contentShadow` 的普通页面读取必须走 Dashboard 内容呈现字段。Wallpaper Query、StaticWallpaper Context
+和 `lib/bg` renderer 不拥有该字段；editor route 可以在兼容窗口内从旧 `renderConfig` 映射到 Dashboard
+draft/publish 输入。
 
 Frontend codec 的三个入口是：
 

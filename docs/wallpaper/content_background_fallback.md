@@ -217,8 +217,8 @@ color 或 Content 设置所有权。图片加载失败不创建新的页面状�
 - [ ] SSR 在首次 paint 前同步决定当前 theme 的 Wallpaper 与 Content surface 状态。
 - [ ] theme 切换分别处理 light/dark 的存在与 NONE。
 - [x] active NONE Snapshot 在 Editor 中仍显示 `'none'`，不回退到 Backend 默认 settings。
-- [x] 普通页面不加载 editor settings/history；`PageCommunity` 只返回已发布 Wallpaper，GPU runtime 仍按既有
-      Static/Editor 运行时边界加载。
+- [ ] 普通页面不加载 editor settings/history；`PageCommunity` 只返回已发布 Wallpaper 与独立的
+      `dashboard.contentShadow`，GPU runtime 仍按既有 Static/Editor 运行时边界加载。
 - [x] 增加纯函数/组件测试：light-only、dark-only、双 nil、version 0、dark 不回退 light，以及 published
       branch/draft NONE 对各自 Content surface 开关的控制。
 - [x] 增加布局集成测试：双 nil 时 Root 使用 `--color-page-custom`，`Main.background` 透明且无
