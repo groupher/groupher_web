@@ -5,6 +5,7 @@ import { communityQueries } from './community'
 import { dsbQueries } from './dsb'
 import { viewerQueries } from './viewer'
 import { wallpaperQueries } from './wallpaper'
+import { wallpaperEditorQueries } from './wallpaperEditor'
 
 export const Q = {
   activity: activityQueries,
@@ -14,4 +15,5 @@ export const Q = {
   dsb: dsbQueries,
   viewer: viewerQueries,
   wallpaper: wallpaperQueries,
+  wallpaperEditor: wallpaperEditorQueries,
 }

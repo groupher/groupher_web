@@ -1,5 +1,7 @@
 import { dehydrate, hydrate } from '@tanstack/react-query'
 
+import { GraphQLRequestError, GraphQLResponseError } from '~/graphql/client'
+
 import { createQueryClient } from './queryClient'
 
 describe('QueryClient lifecycle', () => {
@@ -44,5 +46,44 @@ describe('QueryClient lifecycle', () => {
     expect(data).toEqual({ entries: [{ innerId: '1' }] })
     expect(serverFetcher).toHaveBeenCalledTimes(1)
     expect(browserFetcher).not.toHaveBeenCalled()
+  })
+
+  it('retries only fetch TypeErrors under the shared policy', async () => {
+    const networkClient = createQueryClient()
+    const networkError = new TypeError('network unavailable')
+    const networkQuery = vi.fn(async () => {
+      throw networkError
+    })
+
+    await expect(
+      networkClient.fetchQuery({
+        queryFn: networkQuery,
+        queryKey: ['retry', 'network'],
+        retryDelay: 0,
+      }),
+    ).rejects.toBe(networkError)
+    expect(networkQuery).toHaveBeenCalledTimes(3)
+
+    const response = Response.json({}, { status: 500 })
+    const nonRetryableErrors = [
+      new GraphQLRequestError(response, []),
+      new GraphQLResponseError('invalid response', response),
+    ]
+
+    for (const [index, error] of nonRetryableErrors.entries()) {
+      const queryClient = createQueryClient()
+      const queryFn = vi.fn(async () => {
+        throw error
+      })
+
+      await expect(
+        queryClient.fetchQuery({
+          queryFn,
+          queryKey: ['retry', 'graphql', index],
+          retryDelay: 0,
+        }),
+      ).rejects.toBe(error)
+      expect(queryFn).toHaveBeenCalledTimes(1)
+    }
   })
 })

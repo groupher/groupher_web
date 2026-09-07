@@ -7,7 +7,6 @@ import {
 } from '@groupher/contracts/auth'
 import { API_ROUTE } from '@groupher/route-contract'
 import { print, type DocumentNode } from 'graphql'
-import { ClientError, GraphQLClient } from 'graphql-request'
 
 import { invalidateAuthState, requestLogin, resolveAuthFailure, withAuthRetry } from '~/auth'
 
@@ -15,7 +14,12 @@ const ACCOUNT_LOGIN_ERROR_CODE = 4301
 
 type TGraphQLError = {
   message?: unknown
-  extensions?: { code?: unknown }
+  extensions?: Record<string, unknown>
+}
+
+type TGraphQLPayload<TResult> = {
+  data?: TResult
+  errors?: unknown
 }
 
 const formatGraphQLErrorMessage = (message: unknown): string => {
@@ -36,6 +40,24 @@ const formatGraphQLErrorMessage = (message: unknown): string => {
   return message == null ? '' : String(message)
 }
 
+const graphQLErrors = (payload: unknown): TGraphQLError[] => {
+  if (!payload || typeof payload !== 'object') return []
+  const errors = (payload as TGraphQLPayload<unknown>).errors
+  if (!Array.isArray(errors)) return []
+
+  return errors
+    .filter((error): error is Record<string, unknown> =>
+      Boolean(error && typeof error === 'object'),
+    )
+    .map((error) => {
+      const extensions =
+        error.extensions && typeof error.extensions === 'object'
+          ? (error.extensions as Record<string, unknown>)
+          : undefined
+      return { extensions, message: error.message }
+    })
+}
+
 export class GraphQLRequestError extends Error {
   readonly errors: TGraphQLError[]
   readonly response: Response
@@ -50,6 +72,24 @@ export class GraphQLRequestError extends Error {
     this.name = 'GraphQLRequestError'
     this.errors = errors
     this.response = response
+  }
+}
+
+export class GraphQLResponseError extends Error {
+  readonly cause?: unknown
+  readonly payload?: unknown
+  readonly response: Response
+
+  constructor(
+    message: string,
+    response: Response,
+    options: { cause?: unknown; payload?: unknown } = {},
+  ) {
+    super(message)
+    this.name = 'GraphQLResponseError'
+    this.response = response
+    this.cause = options.cause
+    this.payload = options.payload
   }
 }
 
@@ -162,40 +202,39 @@ export const browserGraphQLRequest = async <
   variables: TVariables = {} as TVariables,
   options: TBrowserGraphQLRequestOptions = {},
 ): Promise<TResult> => {
-  let response: Response | undefined
   const fetcher = createAuthFetch(options.fetcher || fetch)
-  const observedFetch: typeof fetch = async (input, init) => {
-    response = await fetcher(input, options.signal ? { ...init, signal: options.signal } : init)
-    return response
-  }
   const fetchOptions = GRAPHQL_FETCH_OPTIONS()
-  const client = new GraphQLClient(browserGraphQLEndpoint(), {
+  const response = await fetcher(browserGraphQLEndpoint(), {
+    body: JSON.stringify({
+      query: typeof document === 'string' ? document : print(document),
+      variables,
+    }),
+    cache: 'no-store',
     credentials: fetchOptions.credentials,
     headers: fetchOptions.headers,
-    cache: 'no-store',
-    fetch: observedFetch,
+    method: 'POST',
+    signal: options.signal,
   })
 
+  let payload: unknown
   try {
-    const result = await client.rawRequest<TResult, TVariables>(
-      typeof document === 'string' ? document : print(document),
-      variables,
-    )
-    return result.data
+    payload = await response.json()
   } catch (error) {
-    if (!(error instanceof ClientError)) throw error
-
-    const errors = (error.response.errors || []).map((item) => ({
-      message: item.message,
-      extensions: { code: item.extensions?.code },
-    }))
-    const errorResponse =
-      response ||
-      new Response(error.response.body, {
-        status: error.response.status,
-        headers: error.response.headers,
-      })
-
-    throw new GraphQLRequestError(errorResponse, errors)
+    if (!response.ok) throw new GraphQLRequestError(response, [])
+    throw new GraphQLResponseError('GraphQL response returned invalid JSON.', response, {
+      cause: error,
+    })
   }
+
+  const errors = graphQLErrors(payload)
+  if (!response.ok || errors.length > 0) throw new GraphQLRequestError(response, errors)
+  if (
+    !payload ||
+    typeof payload !== 'object' ||
+    (payload as TGraphQLPayload<TResult>).data === undefined
+  ) {
+    throw new GraphQLResponseError('GraphQL response did not include data.', response, { payload })
+  }
+
+  return (payload as TGraphQLPayload<TResult>).data as TResult
 }
