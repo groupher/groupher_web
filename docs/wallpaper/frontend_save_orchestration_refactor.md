@@ -36,7 +36,7 @@ React editor hook / request coordinator
 | -------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | Community      | 每个页面挂载 `WallpaperStoreProvider`；Query settings 会经 `reconcileConfirmed` 写入 Valtio                             | 普通页面只消费发布态静态数据；editor route 才挂载 authoring store           |
 | Dash           | `DsbShell` 为每个路由挂载 `WallpaperStoreProvider`                                                                      | 只有 Appearance/Wallpaper 编辑边界挂载 authoring store                      |
-| Landing        | 使用常量 `LANDING_INIT_DATA` 初始化 Wallpaper store，不是 Query 数据源                                                  | 单独定义 Landing 的静态展示配置；不能直接套用 Community Query 迁移          |
+| Landing        | 使用常量 `LANDING_INIT_DATA` 初始化 Wallpaper store，不是 Query 数据源                                                  | 在自有静态背景与移除默认背景之间显式决策；不能直接套用 Community Query 迁移 |
 | PageCommunity  | GraphQL 仍选择 `dashboard.wallpaperSettings`，SSR parser 仍解码 settings                                                | 普通页面载荷只保留发布态 Wallpaper 与明确批准的窄展示字段                   |
 | 静态 Wallpaper | `wallpaperKeys.config` 的结果经 `StaticWallpaperProvider` 投影为 React Context；保存 hook 又把 version 复制到局部 state | Context 只作为渲染投影；confirmed version 唯一从 Wallpaper Query 订阅和更新 |
 | ThemePreset    | confirmed preset/tokens/options 仍镜像在 Valtio，普通页面会读取                                                         | 不属于本方案；后续如收口 Query ownership，必须单独盘点 CSS 注入和普通页读点 |
@@ -45,10 +45,16 @@ React editor hook / request coordinator
 
 - GlobalLayout 的 `contentShadow`；
 - Landing salon 的 Wallpaper 派生样式；
-- `useFullWallpaper`、`useTopGlow`、`usePageBg` 等共享外观路径；
+- `useFullWallpaper`、`useTopGlow` 等 Wallpaper 共享外观路径；
 - Provider 初始化和 Query 刷新后的 `reconcileConfirmed` 行为。
 
+`usePageBg` 只读取 ThemePreset store，不是 Wallpaper 读点，不纳入本方案。`useTopGlow` 则同时读取
+Wallpaper `source` 和 ThemePreset tokens；其 Landing 分支依赖 `source === AMBER_MAUVE`，卸载 Landing
+Wallpaper store 前必须把该判定迁移到 Landing 自有静态配置，或明确取消对应 glow 视觉规则。
+
 `StaticWallpaperProvider` 可以继续作为静态渲染的窄投影，但它不能成为 version 的第二个 owner。
+此前 Query / Store 边界收口完成的是 confirmed owner 与 reconcile 语义，不代表普通页面 Provider 和读点
+已经移除；本方案只继续处理 route 挂载和静态消费边界。
 
 ## 3. 不变项
 
@@ -318,7 +324,9 @@ reconciliation；前端测试不重复模拟这些服务内部实现。
 ### Phase 4：普通页面读点迁移
 
 - 根据 Phase 0 清单逐一迁移 `contentShadow`、GlobalLayout、Landing salon 和共享 hooks 的读点；
-- 为 Landing 落独立的静态展示配置，不假设它来自 Query；
+- 复用 [`static_wallpaper.md` §8–§9](./static_wallpaper.md#8-bundle-边界) 的 Landing 决策门：为 Landing
+  Shell 配置自有 light/dark 静态背景，或明确接受移除默认背景并验收对应 glow/页面视觉变化；
+- 本阶段只处理 Landing Shell 的共享 Wallpaper 消费，不重新打开已完成的营销演示 renderer 图片化；
 - 保持 `StaticWallpaperProvider` 仅承载窄静态渲染数据。
 
 ### Phase 5：路由与载荷收口
