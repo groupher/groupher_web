@@ -31,6 +31,7 @@ import { extractErrorMessage } from '~/unit/DsbThread/AssetsHub/helper'
 import { TAB } from './constant'
 import { executeWallpaperPublish } from './publishExecutor'
 import { buildWallpaperPublishPlan } from './publishPlan'
+import { updatePublishedWallpaperVersion } from './queryCache'
 import { resolveWallpaperIdempotencyKey, type TPendingWallpaperSave } from './requestCoordinator'
 import type { TTab } from './spec'
 import useWallpaperPreview, { type TWallpaperPreviewPatch } from './useWallpaperPreview'
@@ -214,14 +215,9 @@ export function useLogicValue(): TWallpaperLogic {
     },
     onSuccess: ({ result, submitted }, { community }) => {
       liveWallpaper$.acceptSubmitted(submitted)
-      queryClient.setQueryData<TParsedWallpaper>(wallpaperKeys.config(community), (current) => {
-        if (!current?.wallpaper) return current
-
-        return {
-          ...current,
-          wallpaper: { ...current.wallpaper, version: result.version },
-        }
-      })
+      queryClient.setQueryData<TParsedWallpaper>(wallpaperKeys.config(community), (current) =>
+        updatePublishedWallpaperVersion(current, result.version),
+      )
       pendingSaveRef.current = null
       void queryClient.invalidateQueries({ queryKey: wallpaperKeys.config(community), exact: true })
       void queryClient.invalidateQueries({
