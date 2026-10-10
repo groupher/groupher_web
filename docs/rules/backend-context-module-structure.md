@@ -109,10 +109,10 @@ Context 的逻辑结构如下。没有对应职责的部分不创建；具有对
   error_cat.ex                       # 有 context-specific errors 时需要
   const.ex                           # 有封闭领域词汇时需要
 
-  projection.ex or projection/      # 有派生读模型时需要
-  workflow.ex or workflow/          # 有多阶段/可重试流程时需要
-  setup.ex or setup/                # 有 bootstrap/初始化流程时需要
-  helper/                           # 有多个纯领域 helper 时需要
+  projection.ex or projection/       # 有派生读模型时需要
+  workflow.ex or workflow/           # 有多阶段/可重试流程时需要
+  setup.ex or setup/                 # 有 bootstrap/初始化流程时需要
+  helper/                            # 有多个纯领域 helper 时需要
 ```
 
 单个 owner 可以使用单文件；多个同类 owner 才使用目录。例如 `Persist` 和 `Effects` 可以分别是
