@@ -17,7 +17,7 @@ defmodule GroupherServer.CMS.Articles.Tags.Assignment do
 
   alias GroupherServer.{CMS, Repo}
   alias CMS.Communities.ErrorCat
-  alias CMS.Communities.Tags.Stats
+  alias CMS.Communities.Tags.{Effects, Stats}
   alias CMS.FrontDesk
   alias CMS.Articles.Bindings.Tags, as: BindingTags
   alias CMS.Model.{Article, ArticleBinding, Community, CommunityTag}
@@ -163,15 +163,7 @@ defmodule GroupherServer.CMS.Articles.Tags.Assignment do
   defp invalidate_taxonomy(%Community{} = community, thread, effect_key, opts) do
     with {:ok, identity} <- taxonomy_identity(community, thread, opts),
          {:ok, _event} <-
-           CMS.Outbox.send(%{
-             event: "community.taxonomy_changed",
-             worker: CMS.Outbox.Workers.Community.Cleanup,
-             resource_type: "community",
-             resource_id: community.id,
-             identity: identity,
-             effect_key: effect_key,
-             data: %{community: community.slug, community_id: community.id, thread: thread}
-           }) do
+           Effects.enqueue_taxonomy_changed(community, thread, identity, effect_key) do
       {:ok, :pass}
     end
   end

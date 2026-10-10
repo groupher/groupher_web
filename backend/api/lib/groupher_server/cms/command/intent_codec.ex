@@ -76,6 +76,8 @@ defmodule GroupherServer.CMS.Command.IntentCodec do
     community_application_retry_creation: {:fields, %{"expected_version" => :raw}},
     community_application_retry_setup: {:fields, %{"expected_version" => :raw}},
     press_config_update: :digest,
+    wallpaper_publish: :digest,
+    wallpaper_restore_snapshot: :digest,
     collect_add: {:fields, %{"folder_id" => :raw}},
     collect_remove: {:fields, %{"folder_id" => :raw}},
     reaction_collect_add: {:fields, %{"operation" => :raw}},

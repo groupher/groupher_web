@@ -12,6 +12,7 @@ defmodule GroupherServer.CMS.Articles.Trash do
   import Ecto.Query, warn: false
 
   alias GroupherServer.{Activity, CMS, Repo}
+  alias CMS.Articles.Effects
   alias CMS.Articles.Lifecycle
   alias CMS.Articles.Bindings
   alias CMS.Communities.Tags.Stats
@@ -395,7 +396,7 @@ defmodule GroupherServer.CMS.Articles.Trash do
   end
 
   defp activity(article, action, actor, %TrashAction{} = trash_action, opts \\ []) do
-    Activity.log(article, action,
+    Effects.activity(article, action,
       actor: activity_actor(actor),
       source: Keyword.get(opts, :source, :api),
       operation_ref: trash_action.hash_id,

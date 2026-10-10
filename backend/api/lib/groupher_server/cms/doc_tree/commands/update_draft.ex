@@ -4,11 +4,11 @@ defmodule GroupherServer.CMS.DocTree.Commands.UpdateDraft do
 
       CMS.DocTree.update_draft
         -> UpdateDraft.execute
-        -> command support -> Writer.update_draft -> DraftResult
+        -> command support -> Persist.update_draft -> DraftResult
   """
 
   alias GroupherServer.CMS
-  alias CMS.DocTree.{Commands.Support, Writer}
+  alias CMS.DocTree.{Commands.Support, Persist}
   alias CMS.DocTree.Commands.NodeDraftConfirmation, as: Confirmation
   alias CMS.Model.Article
 
@@ -19,7 +19,7 @@ defmodule GroupherServer.CMS.DocTree.Commands.UpdateDraft do
   def execute(community, id, args, user) do
     execute = fn ->
       with {:ok, draft} <-
-             Writer.update_draft(community, id, Support.drop_command_id(args), user) do
+             Persist.update_draft(community, id, Support.drop_command_id(args), user) do
         {:ok, %Confirmation{data: confirmation_data(draft, Support.option(args, :command_id))}}
       end
     end

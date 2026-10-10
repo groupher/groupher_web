@@ -194,8 +194,8 @@ Phase 1 后的 `CMS.Kanban.Query.ensure_membership/2` 使用 Kanban-owned `Error
 - `CMS.Articles`：继续使用 `Articles.Commands.*`、Query、Writer 等 owner；
 - `CMS.DocTree`：继续使用 `DocTree.Commands.*`、Query、Writer、Publish、Trash；
 - `CMS.Assets`：删除实现归 `Assets.Deletion`；
-- `CMS.Press`：由 Query、Projection、ConfigWriter、Invalidation 承担实现；
-- `CMS.Wallpaper`：由 Query、Upload、Publisher、Retention 承担实现；
+- `CMS.Press`：由 Commands、Query、Projection、Persist、Effects、Invalidation 承担实现；
+- `CMS.Wallpaper`：由 Commands、Query、Upload、Persist、Workflow、Retention 承担实现；
 - `CMS.FrontDesk`：按 Article、Comment、Community、Relation 等资源 owner 拆分；
 - `CMS.Snapshot`：由 Query、Cache、Projection、Refresh 承担实现。
 

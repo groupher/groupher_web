@@ -52,10 +52,11 @@
 
 ## 建议补充方向
 
-- 模块结构、职责边界、transaction owner 与副作用约束见
-  [Backend Context Module Structure](./backend-context-module-structure.md)
+- Context 的目标架构见
+  [CMS Context Module Architecture](../architecture/cms-context-module-architecture.md)；可执行的模块结构、transaction owner 与副作用规则见
+  [Backend Context Module Structure](./be-context-module-structure.md)
 - 当前 CMS facade 的整改决策与执行顺序见
-  [CMS Facade 与实现目录收口](./cms-facade-directory.md)
+  [CMS Facade 与实现目录收口](../architecture/cms-facade-directory.md)
 - 状态与依赖传递方式
 - 接口变更的兼容性要求
 - 默认的测试与验证要求

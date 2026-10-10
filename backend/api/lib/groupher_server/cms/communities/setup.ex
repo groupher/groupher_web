@@ -22,7 +22,7 @@ defmodule GroupherServer.CMS.Communities.Setup do
   alias CMS.Communities.{ErrorCat, Lifecycle}
   alias CMS.Communities.Moderators.Setup, as: ModeratorSetup
   alias CMS.Communities.Jobs.Setup, as: SetupJob
-  alias CMS.CommunityApplications.Transitions
+  alias CMS.CommunityApplications.Lifecycle, as: ApplicationLifecycle
   alias CMS.Gate.Const
   alias CMS.Passport
 
@@ -87,7 +87,7 @@ defmodule GroupherServer.CMS.Communities.Setup do
                  ) do
               {:ok, _lifecycle} ->
                 Multi.new()
-                |> Transitions.add(
+                |> ApplicationLifecycle.add(
                   :application,
                   :event,
                   application,
@@ -157,7 +157,7 @@ defmodule GroupherServer.CMS.Communities.Setup do
                ) do
             {:ok, _lifecycle} ->
               Multi.new()
-              |> Transitions.add(
+              |> ApplicationLifecycle.add(
                 :application,
                 :event,
                 application,
@@ -211,7 +211,7 @@ defmodule GroupherServer.CMS.Communities.Setup do
                ) do
             {:ok, _lifecycle} ->
               Multi.new()
-              |> Transitions.add(
+              |> ApplicationLifecycle.add(
                 :application,
                 :event,
                 application,

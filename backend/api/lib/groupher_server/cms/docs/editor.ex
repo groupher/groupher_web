@@ -41,7 +41,7 @@ defmodule GroupherServer.CMS.Docs.Editor do
 
   @spec target_author(User.t() | Author.t()) :: {:ok, Author.t()} | {:error, term()}
   def target_author(%Author{} = author), do: {:ok, author}
-  def target_author(%User{} = user), do: CMS.Articles.Writer.ensure_author_exists(user)
+  def target_author(%User{} = user), do: CMS.Articles.Persist.ensure_author_exists(user)
   def target_author(_actor), do: {:error, :invalid_actor}
 
   @spec actor_user(User.t() | Author.t()) :: {:ok, User.t()} | {:error, term()}
@@ -116,7 +116,8 @@ defmodule GroupherServer.CMS.Docs.Editor do
     end
   end
 
-  @spec materialize_public(Article.t(), pos_integer(), Community.t()) :: {:ok, map()} | {:error, term()}
+  @spec materialize_public(Article.t(), pos_integer(), Community.t()) ::
+          {:ok, map()} | {:error, term()}
   def materialize_public(%Article{id: article_id} = article, branch_id, %Community{} = community) do
     with {:ok, %{community: community}} <- Bindings.get(article, community),
          {:ok, %DocPublic{} = public} <- DocStore.public(article_id, branch_id),

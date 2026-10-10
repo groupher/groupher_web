@@ -18,7 +18,7 @@ defmodule GroupherServer.CMS.Seeds.Helper do
   alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Model.User
-  alias CMS.Articles.Writer
+  alias CMS.Articles.Persist
   alias CMS.Communities.Categories.Persist, as: CategoriesPersist
   alias CMS.Communities.Tags.Maintenance
   alias CMS.Artiment.Threads
@@ -84,7 +84,7 @@ defmodule GroupherServer.CMS.Seeds.Helper do
 
   def seed_categories_ifneed(bot) do
     with true <- empty_in_db?(Category) do
-      {:ok, author} = Writer.ensure_author_exists(bot)
+      {:ok, author} = Persist.ensure_author_exists(bot)
 
       Enum.each(@categories, fn attrs ->
         attrs

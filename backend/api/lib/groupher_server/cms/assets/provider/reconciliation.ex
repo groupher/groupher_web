@@ -15,7 +15,7 @@ defmodule GroupherServer.CMS.Assets.ProviderReconciliation do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Assets.Workflow
+  alias CMS.Assets.{Effects, Workflow}
   alias CMS.Model.{AssetWorkflowRun, AssetWorkflowStep}
   alias CMS.Model.{Community, CommunityAsset}
   alias CMS.Outbox.Event
@@ -61,18 +61,35 @@ defmodule GroupherServer.CMS.Assets.ProviderReconciliation do
              status: :pending
            }),
          owner <- workflow_owner(workflow_ref),
-         {:ok, run_state} <- Workflow.claim_run(run, owner),
-         {:ok, steps} <- ensure_steps(run, assets),
-         {:ok, result} <- process_steps(steps, workflow_ref, owner),
-         {:ok, finished} <- Workflow.finish_run(run_state, owner) do
-      {:ok, Map.merge(result, %{run_ref: workflow_ref, status: finished.status})}
+         run_claim <- Workflow.claim_run(run, owner) do
+      case run_claim do
+        {:ok, run_state} ->
+          result =
+            with {:ok, steps} <- ensure_steps(run_state, assets),
+                 {:ok, result} <- process_steps(steps, workflow_ref, owner),
+                 {:ok, finished} <- Workflow.finish_run(run_state, owner) do
+              {:ok, Map.merge(result, %{run_ref: workflow_ref, status: finished.status})}
+            end
+
+          case result do
+            {:ok, _result} = success ->
+              success
+
+            {:error, reason} ->
+              _ = Workflow.fail_run(run_state, owner, reason)
+              {:error, reason}
+          end
+
+        {:completed, run} ->
+          {:ok, %{run_ref: workflow_ref, status: run.status, enqueued: 0, skipped: 0}}
+
+        {:busy, seconds} ->
+          {:error, {:workflow_busy, seconds}}
+
+        {:error, reason} ->
+          {:error, reason}
+      end
     else
-      {:completed, run} ->
-        {:ok, %{run_ref: workflow_ref, status: run.status, enqueued: 0, skipped: 0}}
-
-      {:busy, seconds} ->
-        {:error, {:workflow_busy, seconds}}
-
       {:error, reason} ->
         {:error, reason}
     end
@@ -131,16 +148,7 @@ defmodule GroupherServer.CMS.Assets.ProviderReconciliation do
     Repo.transaction(fn ->
       case Repo.get(CommunityAsset, step.resource_id) do
         %CommunityAsset{} = asset ->
-          CMS.Outbox.send(%{
-            event: "asset.provider_delete",
-            worker: CMS.Outbox.Workers.Asset.Cleanup,
-            resource_type: "community_asset",
-            resource_id: asset.id,
-            identity: {:workflow, workflow_ref},
-            effect_key: "asset:#{asset.id}",
-            retry_failed: true,
-            data: %{asset_id: asset.id, public_ref: asset.public_ref}
-          })
+          Effects.enqueue_provider_delete(asset, {:workflow, workflow_ref}, retry_failed: true)
 
         nil ->
           Repo.rollback(:asset_not_found)

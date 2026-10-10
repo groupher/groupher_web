@@ -10,7 +10,7 @@ defmodule GroupherServer.CMS.Communities.Categories do
         -> Repo / Oban
   """
 
-  import GroupherServer.CMS.Articles.Writer, only: [ensure_author_exists: 1]
+  import GroupherServer.CMS.Articles.Persist, only: [ensure_author_exists: 1]
   import ShortMaps
 
   alias GroupherServer.{Accounts, CMS}

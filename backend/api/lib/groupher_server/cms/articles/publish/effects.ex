@@ -11,8 +11,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Effects do
   projection.
   """
 
-  alias GroupherServer.{Activity, CMS, Repo}
-  alias CMS.Articles.Writer
+  alias GroupherServer.{Activity, CMS, Messaging, Repo}
   alias CMS.FrontDesk
   alias CMS.Model.{Article, Author}
   alias Helper.Later
@@ -60,12 +59,48 @@ defmodule GroupherServer.CMS.Articles.Publish.Effects do
          %Article{} = article
        ) do
     Later.run(
-      {Writer, :notify_admin_new_article,
+      {__MODULE__, :notify_admin_new_article,
        [%{target: Article, id: article.id, thread: article.thread, community: community}]}
     )
   end
 
   defp notify_admin_on_first_publish(_result, _article), do: {:ok, :pass}
+
+  @doc "Notifies community administrators after the first official Article publish."
+  def notify_admin_new_article(%{target: target, id: id, thread: thread, community: community})
+      when is_atom(target) and is_atom(thread) do
+    do_notify_admin_new_article(target, id, thread, community)
+  end
+
+  def notify_admin_new_article(%{target: target, id: id, community: community})
+      when is_atom(target) do
+    do_notify_admin_new_article(target, id, nil, community)
+  end
+
+  @doc false
+  def notify_admin_new_article(%{__struct__: target, id: id, community: community}) do
+    do_notify_admin_new_article(target, id, nil, community)
+  end
+
+  defp do_notify_admin_new_article(target, id, thread, community) do
+    with {:ok, article} <-
+           CMS.FrontDesk.article(id, mode: :internal, view: :command_context),
+         {:ok, %{community: ^community}} <-
+           CMS.Articles.Bindings.get(%{article_id: article.id}, community) do
+      info = %{
+        id: article.id,
+        title: article.title,
+        digest: Map.get(article, :digest, article.title),
+        author_name: article.author.user.nickname,
+        community_slug: community.slug,
+        type:
+          thread ||
+            target |> to_string() |> String.split(".") |> List.last() |> String.downcase()
+      }
+
+      Messaging.notify(:notify_admin_new_article, info)
+    end
+  end
 
   defp public_projection(%Article{thread: thread}, community, inner_id)
        when is_integer(inner_id) do

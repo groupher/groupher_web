@@ -57,7 +57,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
          %{actor: user, target: article, params: attrs, command_id: command_id},
          community
        ) do
-    with {:ok, author} <- CMS.Articles.Writer.ensure_author_exists(user),
+    with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user),
          {:ok, %{public: public}} <-
            update_and_publish(article, attrs, author, user, community, command_id),
          %ArticleBinding{inner_id: inner_id} when is_integer(inner_id) <-

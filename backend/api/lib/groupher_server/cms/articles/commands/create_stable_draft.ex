@@ -86,5 +86,5 @@ defmodule GroupherServer.CMS.Articles.Commands.CreateStableDraft do
 
   defp draft_opts(_branch_id), do: []
 
-  defp target_author(%User{} = user), do: Articles.Writer.ensure_author_exists(user)
+  defp target_author(%User{} = user), do: Articles.Persist.ensure_author_exists(user)
 end

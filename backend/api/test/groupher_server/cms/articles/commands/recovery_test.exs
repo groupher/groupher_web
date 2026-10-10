@@ -64,7 +64,7 @@ defmodule GroupherServer.Test.CMS.Articles.Commands.Recovery do
       GroupherServer.Repo.get_by!(CMS.Model.ArticleLifecycle, article_id: public.article_id)
 
     article = GroupherServer.Repo.get!(CMS.Model.Article, public.article_id)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
     assert {:ok, _draft} = CMS.Articles.Draft.Store.ensure_from_public(article, author)
 
     assert {:ok, draft} =
@@ -95,7 +95,7 @@ defmodule GroupherServer.Test.CMS.Articles.Commands.Recovery do
     first_revision_id = published.public.revision_id
 
     {:ok, article_after_first} = CMS.FrontDesk.article(public.article_id, mode: :internal)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
     {:ok, draft_b} = CMS.Articles.Draft.Store.ensure_from_public(article_after_first, author)
 
     assert {:ok, draft_b} =

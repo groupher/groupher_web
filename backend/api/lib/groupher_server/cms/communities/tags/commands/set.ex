@@ -1,8 +1,8 @@
-defmodule GroupherServer.CMS.Communities.Tags.Commands.SetTag do
+defmodule GroupherServer.CMS.Communities.Tags.Commands.Set do
   @moduledoc """
   Sets one community tag through a one-shot Gate admission.
 
-      GraphQL -> SetTag -> Article Gate -> Tags association + stats/effects
+      GraphQL -> Set -> Article Gate -> Tags association + stats/effects
   """
 
   alias GroupherServer.{CMS, Repo}

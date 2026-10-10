@@ -173,7 +173,7 @@ GroupherServer.CMS.Comments.Solution
   revoke_if_current/5
 ```
 
-`accept/2` 和 `revoke/2` 是完整 Command 入口；`current`、`upsert`、`record_accept` 等 relation helper 留作模块私有函数。`DeleteComment` 复用公开的 `revoke_if_current/5`，不再建立额外的 `Comments.Solutions` 或 `SolutionTransition` 模块。
+`accept/2` 和 `revoke/2` 是完整 Command 入口；`current`、`upsert`、`record_accept` 等 relation helper 留作模块私有函数。`Commands.Delete` 复用公开的 `revoke_if_current/5`，不再建立额外的 `Comments.Solutions` 或 `SolutionTransition` 模块。
 
 `Solution.accept/2`、`Solution.revoke/2` 现在使用 Gate 的双参数内部 callback 直接取得锁内 canonical Comment 与父 Article（Post），不再执行通用 FrontDesk lookup。Gate 的 Access Context 仍未暴露给 Resolver 或普通 CMS 调用方。
 
@@ -181,7 +181,7 @@ GroupherServer.CMS.Comments.Solution
 
 当前 Resolver 已持有 parent `%Comment{}`，却调用 `reply_comment_payload(comment.id, ...)`，`Comments.Writer.reply/4` 再次加载 Comment。
 
-目标是传递 parent Comment，并把带 CMS.Command.Receipt、Gate、多表写入和 post-commit effect 的完整用例收口到 `Comments.Commands.ReplyComment`；Writer 只保留具体持久化。Delete/Update Comment 的 Gate callback 同样接收锁内 canonical parent Article，避免在 callback 内再次调用 `FrontDesk.article_of/1`；replay 分支为重建返回 payload 而重新读取 Article，仍属于 replay reader。
+目标是传递 parent Comment，并把带 CMS.Command.Receipt、Gate、多表写入和 post-commit effect 的完整用例收口到 `Comments.Commands.Reply`；Writer 只保留具体持久化。Delete/Update Comment 的 Gate callback 同样接收锁内 canonical parent Article，避免在 callback 内再次调用 `FrontDesk.article_of/1`；replay 分支为重建返回 payload 而重新读取 Article，仍属于 replay reader。
 
 ### 4.3 Comment pin/unpin 与 fold/unfold
 
@@ -262,7 +262,7 @@ branch-scoped and do not fall back across branches.
 
 | 迁移项                       | 同步 transport                                                      | 同步 domain / 内部                                                                                    | post-commit / async                                                          | replay / test-only                                                      |
 | ---------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Solution accept/revoke       | `CMS Resolver.accept_solution/revoke_solution` → `CMS.Comments`     | `DeleteComment.revoke_if_current/5` 复用 `Commands.Solution`                                          | 无；Moderation 另属异步合法 reload                                           | `solution_commands_test` 等直接调用 Command/facade                      |
+| Solution accept/revoke       | `CMS Resolver.accept_solution/revoke_solution` → `CMS.Comments`     | `Delete.revoke_if_current/5` 复用 `Commands.Solution`                                                 | 无；Moderation 另属异步合法 reload                                           | `solution_commands_test` 等直接调用 Command/facade                      |
 | Comment reply                | `CMS Resolver.reply_comment` → `CMS.Comments.reply_comment_payload` | 同步主入口传 parent Comment；`Comments.Writer.reply` 的 ID adapter 暂保，待调用方迁移后删除           | 创建后的 audition、mention、订阅 effect 按各自 identity 合同执行             | CMS.Command.Receipt replay reader 读取结果；旧 ID adapter 由测试覆盖    |
 | Comment pin/fold             | GraphQL pin/unpin；fold/unfold 目前没有线上 Resolver                | `Comments.States` 使用 Gate callback 的 canonical Article                                             | 无                                                                           | `fold_for_report/1` 接收 struct；fold/unfold ID 入口仅兼容测试/内部调用 |
 | Article Draft update/publish | Article middleware → `CMS Resolver` → `CMS.Articles`                | Importer/服务调用必须传 Article struct；Publish/Lifecycle 在锁内 canonical reload                     | 首次 publish 的 `notify_admin_new_article` 见 §4.7                           | CMS.Command.Receipt replay 通过 editor/public reader 恢复结果           |
@@ -304,7 +304,7 @@ CMS.Command.Receipt.Store
 
 - accept/revoke solution 改为 `%Comment{}`；
 - 原 `AcceptSolution`、`RevokeSolution`、`SolutionTransition` 已合并为 `Comments.Solution`，用 `accept/2`、`revoke/2` 区分动作；
-- reply 改为 parent `%Comment{}`，并评估下沉到 `Commands.ReplyComment`；
+- reply 改为 parent `%Comment{}`，并评估下沉到 `Commands.Reply`；
 - pin/unpin 改为 `%Comment{}`；
 - fold/unfold 已补齐 struct 入口；现存 GraphQL 之外的 ID 兼容入口待调用方迁移后移除；
 - 删除 Writer 层无真实消费者的 Comment create ref overload；facade 兼容入口待调用方迁移后再移除；
@@ -328,7 +328,7 @@ CMS.Command.Receipt.Store
 ### Phase 4：Aggregate callback 与事务审计（Comment solution/reply/pin 已完成首轮收口）
 
 - `Commands.Solution.accept/revoke` 已改用 Gate 双参数 callback 取得锁内父 Post，不再使用通用 FrontDesk lookup；
-- `DeleteComment`、`UpdateComment`、`ReplyComment` 和 pin/unpin 均使用 Gate 双参数 callback 传回的锁内 canonical parent Article；Delete/Update 的 command replay reader 仍可为恢复结果读取 Article；
+- `Delete`、`Update`、`Reply` 和 pin/unpin 均使用 Gate 双参数 callback 传回的锁内 canonical parent Article；Delete/Update 的 command replay reader 仍可为恢复结果读取 Article；
 - 已为需要父 aggregate 的同步 Comment command 增加内部双参数 callback contract；
 - pin/unpin 已接入 `Gate.Access.with_check/4`，准入与写入处于同一 aggregate transaction；
 - 不向 Resolver 暴露 Gate Access Context。

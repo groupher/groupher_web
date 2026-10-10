@@ -1,8 +1,8 @@
-defmodule GroupherServer.CMS.Communities.Tags.Commands.CreateTag do
+defmodule GroupherServer.CMS.Communities.Tags.Commands.Create do
   @moduledoc """
   Creates a community tag through the receipt-backed command boundary.
 
-      GraphQL -> Communities facade -> CreateTag -> Command + Gate -> Tags + Outbox
+      GraphQL -> Communities facade -> Create -> Command + Gate -> Tags + Outbox
   """
 
   alias GroupherServer.CMS

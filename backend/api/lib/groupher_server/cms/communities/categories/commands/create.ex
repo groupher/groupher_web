@@ -35,8 +35,11 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Create do
 
   defp action(%{actor: actor, target: community, params: %{attrs: attrs}, command_id: command_id}) do
     Gate.with_community_check(actor, :category_create, community, fn canonical ->
-      with {:ok, author} <- CMS.Articles.Writer.ensure_author_exists(actor),
-           attrs <- attrs |> Map.drop([:community, "community"]) |> Map.update(:slug, nil, &Slug.normalize/1),
+      with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(actor),
+           attrs <-
+             attrs
+             |> Map.drop([:community, "community"])
+             |> Map.update(:slug, nil, &Slug.normalize/1),
            {:ok, %Category{} = category} <- Persist.insert_category(attrs, canonical, author.id) do
         {:ok, Support.confirmation(Confirmation, "category_id", category.id, command_id)}
       end

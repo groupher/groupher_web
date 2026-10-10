@@ -6,6 +6,10 @@ defmodule GroupherServer.CMS.Assets.Workflow do
   helper owns only row creation, claim/lease and recovery state; the caller owns
   its domain transaction and external effect semantics.
 
+  A run may remain `:pending` after an intentional subset apply releases its
+  lease. Handled failures are marked `:failed` and release the lease immediately;
+  an actual worker crash leaves the lease for expiry-based recovery.
+
       maintenance trigger
         -> durable workflow run
         -> claimed workflow step
@@ -105,7 +109,7 @@ defmodule GroupherServer.CMS.Assets.Workflow do
         Repo.one!(from(row in AssetWorkflowStep, where: row.id == ^step_id, lock: "FOR UPDATE"))
 
       cond do
-        step.status == :succeeded ->
+        step.status in [:succeeded, :skipped] ->
           {:completed, step}
 
         step.status == :claimed and not lease_expired?(step, now) ->
@@ -148,6 +152,27 @@ defmodule GroupherServer.CMS.Assets.Workflow do
     end
   end
 
+  @doc "Marks a claimed step intentionally skipped and stores its durable reason."
+  def skip_step(%AssetWorkflowStep{id: id}, owner, result) do
+    now = DateTime.utc_now(:second)
+
+    case Repo.update_all(
+           from(step in AssetWorkflowStep,
+             where: step.id == ^id and step.status == :claimed and step.locked_by == ^owner
+           ),
+           set: [
+             status: :skipped,
+             result: result,
+             locked_by: nil,
+             lease_expires_at: nil,
+             updated_at: now
+           ]
+         ) do
+      {1, _} -> {:ok, :pass}
+      _ -> {:error, :workflow_step_stale_lease}
+    end
+  end
+
   @doc "Marks a claimed step failed or conflicted while releasing its lease."
   def fail_step(%AssetWorkflowStep{id: id}, owner, reason, status \\ :failed) do
     now = DateTime.utc_now(:second)
@@ -169,7 +194,30 @@ defmodule GroupherServer.CMS.Assets.Workflow do
     end
   end
 
-  @doc "Completes a run after all of its steps have reached terminal state."
+  @doc "Marks a handled run failure and releases the current owner lease."
+  def fail_run(%AssetWorkflowRun{id: id}, owner, reason)
+      when is_binary(owner) and owner != "" do
+    now = DateTime.utc_now(:second)
+
+    case Repo.update_all(
+           from(run in AssetWorkflowRun,
+             where: run.id == ^id and run.status == :running and run.locked_by == ^owner
+           ),
+           set: [
+             status: :failed,
+             last_error: inspect(reason),
+             locked_by: nil,
+             lease_expires_at: nil,
+             completed_at: nil,
+             updated_at: now
+           ]
+         ) do
+      {1, _} -> {:ok, Repo.get!(AssetWorkflowRun, id)}
+      _ -> {:error, :workflow_run_stale_lease}
+    end
+  end
+
+  @doc "Completes or releases a run after its current steps have reached a terminal state."
   def finish_run(%AssetWorkflowRun{locked_by: owner} = run, owner),
     do: finish_run_locked(run)
 
@@ -178,7 +226,12 @@ defmodule GroupherServer.CMS.Assets.Workflow do
   defp finish_run_locked(%AssetWorkflowRun{id: id} = run) do
     steps = Repo.all(from(step in AssetWorkflowStep, where: step.run_id == ^id))
 
-    status = if Enum.all?(steps, &(&1.status == :succeeded)), do: :completed, else: :failed
+    status =
+      cond do
+        Enum.all?(steps, &terminal_step?/1) -> :completed
+        Enum.any?(steps, &failed_step?/1) -> :failed
+        true -> :pending
+      end
 
     now = DateTime.utc_now(:second)
 
@@ -196,6 +249,10 @@ defmodule GroupherServer.CMS.Assets.Workflow do
       {:error, reason} -> {:error, reason}
     end
   end
+
+  defp terminal_step?(%AssetWorkflowStep{status: status}), do: status in [:succeeded, :skipped]
+
+  defp failed_step?(%AssetWorkflowStep{status: status}), do: status in [:failed, :conflict]
 
   defp lease_expired?(%AssetWorkflowStep{lease_expires_at: nil}, _now), do: true
 

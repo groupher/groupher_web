@@ -4,17 +4,17 @@ defmodule GroupherServer.CMS.DocTree.Workflows.TreeMutation do
 
   User Commands select the action and Receipt identity; this workflow owns the
   branch resolution, advisory lock, Gate admission, state initialization, and
-  `base_revision` check before delegating node-specific work to a writer.
+  `base_revision` check before delegating node-specific work to Persist primitives.
 
-  `Writer.Operation` remains a compatibility facade for revision/payload helper
-  callers. Keeping this boundary explicit prevents node writers from being
+  `Persist.Operation` owns revision and payload helpers for the tree workflow
+  callers. Keeping this boundary explicit prevents node persistence helpers from being
   mistaken for transaction owners and gives the later Persist split one stable
   entry point.
 
       DocTree Command
           -> TreeMutation workflow
           -> Gate + branch lock + revision check
-          -> Writer callback
+          -> Persist callback
           -> Receipt confirmation
   """
 

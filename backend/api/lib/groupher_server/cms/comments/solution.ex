@@ -14,9 +14,10 @@ defmodule GroupherServer.CMS.Comments.Solution do
 
   import Ecto.Query, warn: false
 
-  alias GroupherServer.{Accounts, Activity, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.Model.User
   alias CMS.Comments.ErrorCat
+  alias CMS.Comments.Effects
   alias CMS.Model.{Article, Comment, PostSolution}
 
   @doc """
@@ -74,7 +75,7 @@ defmodule GroupherServer.CMS.Comments.Solution do
       %PostSolution{comment_id: comment_id} = solution when comment_id == comment.id ->
         with {:ok, _} <- Repo.delete(solution),
              {:ok, _} <-
-               Activity.log(post, :solution_revoked,
+               Effects.activity(post, :solution_revoked,
                  actor: actor,
                  target: comment,
                  operation_ref: operation_ref,
@@ -148,7 +149,7 @@ defmodule GroupherServer.CMS.Comments.Solution do
 
         with {:ok, _} <- Repo.delete(solution),
              {:ok, _} <-
-               Activity.log(post, :solution_revoked,
+               Effects.activity(post, :solution_revoked,
                  actor: actor,
                  target: comment,
                  operation_ref: command_id,
@@ -191,7 +192,7 @@ defmodule GroupherServer.CMS.Comments.Solution do
           {:solution_replaced, %{previous_comment_ref: current_comment_ref(previous_id)}}
       end
 
-    Activity.log(post, action,
+    Effects.activity(post, action,
       actor: actor,
       target: comment,
       operation_ref: operation_ref,

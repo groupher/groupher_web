@@ -10,7 +10,7 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
                               staging ----+---- failure/cancel
                                           |
                                           v
-                                   atomic Writer apply
+                                   atomic Persist apply
 
   `preview_ref` is the preview resource identity: a retry may return the existing Job
   only when the complete confirmed intent still matches.
@@ -22,6 +22,7 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
   import Ecto.Query, warn: false
 
   alias GroupherServer.{Accounts, CMS, Repo}
+  alias CMS.ContentImport.Transaction
   alias CMS.ErrorCat
 
   alias Accounts.Model.User
@@ -43,7 +44,7 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
            Validator.validate_intent(community, source_info, target_tree, target_revision),
          {:ok, item_attrs} <- build_item_attrs(documents, target_tree, source_info),
          {:ok, connection} <- get_or_create_connection(community, source_info) do
-      Repo.transaction(fn ->
+      Transaction.run(fn ->
         case Repo.get_by(Job,
                community_id: community.id,
                preview_ref: Map.fetch!(input, :preview_ref)
@@ -137,7 +138,7 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
           {:ok, map()} | {:error, term()}
   def fail(%Community{} = community, job_ref, code, message)
       when is_binary(code) and is_binary(message) do
-    Repo.transaction(fn ->
+    Transaction.run(fn ->
       case lock_job(community.id, job_ref) do
         {:ok, job} ->
           if job.status in [:completed, :cancelled] do
@@ -162,7 +163,7 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
   @doc "Cancels an unfinished ImportJob and removes its staged BodyBags."
   @spec cancel(Community.t(), Ecto.UUID.t()) :: {:ok, map()} | {:error, term()}
   def cancel(%Community{} = community, job_ref) do
-    Repo.transaction(fn ->
+    Transaction.run(fn ->
       case lock_job(community.id, job_ref) do
         {:ok, job} ->
           if job.status == :completed do

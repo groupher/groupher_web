@@ -2,7 +2,7 @@ defmodule GroupherServerWeb.Resolvers.ContentImport do
   @moduledoc """
   Thin GraphQL boundary for community-scoped GitHub Docs imports.
 
-      Dashboard Node -> GraphQL resolver -> Validator / Jobs / Staging / Writer
+      Dashboard Node -> GraphQL resolver -> Validator / Jobs / Staging / Workflow
 
   Resolvers adapt names and auth context only. Source parsing belongs to Node;
   target validation and transactional persistence belong to Phoenix.
@@ -15,7 +15,8 @@ defmodule GroupherServerWeb.Resolvers.ContentImport do
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.ContentImport.{Jobs, Staging}
-  alias CMS.ContentImport.Threads.Doc.{Validator, Writer}
+  alias CMS.ContentImport.Threads.Doc.Validator
+  alias CMS.DocTree.Workflows.ContentImport
   alias CMS.Model.Community
   alias CMS.Passport.{ErrorCat, Registry}
 
@@ -77,9 +78,9 @@ defmodule GroupherServerWeb.Resolvers.ContentImport do
     Jobs.get(community, job_ref)
   end
 
-  @doc "Applies a ready Job through the atomic Docs Writer."
+  @doc "Applies a ready Job through the atomic ContentImport Workflow."
   def apply(_root, %{community: %Community{} = community, job_ref: job_ref}, _info) do
-    Writer.apply(community, job_ref)
+    ContentImport.apply(community, job_ref)
   end
 
   @doc "Stages one bounded batch of BodyBags or terminal per-item outcomes."

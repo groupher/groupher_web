@@ -1,8 +1,8 @@
-defmodule GroupherServer.CMS.Communities.Tags.Commands.DeleteTag do
+defmodule GroupherServer.CMS.Communities.Tags.Commands.Delete do
   @moduledoc """
   Deletes a community tag through the receipt-backed command boundary.
 
-      GraphQL -> Communities facade -> DeleteTag -> Command + Gate -> Tags + Outbox
+      GraphQL -> Communities facade -> Delete -> Command + Gate -> Tags + Outbox
   """
 
   alias GroupherServer.CMS

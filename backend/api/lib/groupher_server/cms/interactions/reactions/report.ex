@@ -22,7 +22,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
 
   alias CMS.Gate
 
-  alias CMS.Interactions.{ErrorCat, ReadState}
+  alias CMS.Interactions.{ErrorCat, Persist, ReadState, Transaction}
   alias CMS.Interactions.Reactions.ReportConfirmation, as: Confirmation
   alias CMS.Command
   alias CMS.Model.{AbuseReport, Comment, Embeds}
@@ -137,7 +137,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
           result -> {:ok, result}
         end
       else
-        Repo.transaction(transaction)
+        Transaction.run(transaction)
       end
     end)
   end
@@ -216,7 +216,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
 
     %AbuseReport{}
     |> AbuseReport.changeset(params)
-    |> Repo.insert()
+    |> Persist.insert()
   end
 
   defp add_case(%AbuseReport{} = report, _info, _canonical, reason, attrs, actor) do
@@ -228,7 +228,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
       report
       |> Ecto.Changeset.change(report_cases_count: length(cases))
       |> Ecto.Changeset.put_embed(:report_cases, cases)
-      |> Repo.update()
+      |> Persist.update()
     end
   end
 
@@ -240,7 +240,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
 
       case cases do
         [] ->
-          case Repo.delete(report) do
+          case Persist.delete(report) do
             {:ok, _report} -> {:ok, true}
             {:error, _changeset} = error -> error
           end
@@ -249,7 +249,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
           report
           |> Ecto.Changeset.change(report_cases_count: length(cases))
           |> Ecto.Changeset.put_embed(:report_cases, cases)
-          |> Repo.update()
+          |> Persist.update()
           |> case do
             {:ok, _report} -> {:ok, true}
             {:error, _changeset} = error -> error

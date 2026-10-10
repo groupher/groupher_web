@@ -1,8 +1,8 @@
 # CMS Command Phase 5：Legacy Mutation 分类与迁移
 
-> 状态：本阶段非 deferred mutation 已完成迁移并进入验证收口（typed identity、Tag/TagGroup、Asset row mutation、Moderator、Press config、Article sink/lock/category/status、Article binding、Article moderation/visibility、Report/solution/pin、Comments、Community Categories/Subscriptions 与 Community Application 用户 Command 入口均已有 concrete boundary；Assets Upload/Provider workflow、Asset ReplacementPlan、DocTree/ContentImport 按范围 deferred）。后续只补回归证据，不再把 deferred workflow 混入本阶段。
+> 状态：本阶段非 deferred mutation 已完成迁移并进入验证收口（typed identity、Tag/TagGroup、Asset row mutation、Moderator、Press config、Article sink/lock/category/status、Article binding、Article moderation/visibility、Report/solution/pin、Comments、Community Categories/Subscriptions 与 Community Application 用户 Command 入口均已有 concrete boundary；Assets Upload/Provider workflow 与 Asset ReplacementPlan 已由独立批次完成，DocTree/ContentImport 仍按范围 deferred）。后续只补回归证据，不再把已完成的 Asset workflow 误列为迁移债务。
 >
-> 范围：Tag / TagGroup、Assets 用户 Command、Community Categories/Subscriptions、CommunityApplications，以及尚未逐项确认写入合同的 CMS mutation。Assets Upload/Provider workflow、Asset ReplacementPlan 与 DocTree/ContentImport 明确不在本阶段实现。
+> 范围：Tag / TagGroup、Assets 用户 Command、Community Categories/Subscriptions、CommunityApplications，以及尚未逐项确认写入合同的 CMS mutation。Assets Upload/Provider workflow、Asset ReplacementPlan 与 DocTree/ContentImport 不属于本阶段实现范围；前两者的当前实现和验收见 [CMS Assets 完成记录](./cms-assets-refactor.md)，DocTree/ContentImport 仍保留 deferred。
 >
 > 前置文档：
 > [CMS Command、Gate、Lifecycle 与 Persistence 边界](./cms-command-gate-lifecycle-persist-boundary.md)、
@@ -14,7 +14,8 @@
 
 现有 `CMS.Command` 内核、concrete Command、Gate facade 和客户端 `commandId` owner 已经完成；本阶段
 纳入的非 deferred mutation 已按以下边界收口。本文仍不宣称“所有 CMS mutation 都完成迁移”，因为
-Asset Upload/Provider/Replacement workflow 与 DocTree/ContentImport 明确后置。以下职责清单记录的是
+DocTree/ContentImport 仍明确后置；Asset Upload/Provider/Replacement workflow 虽不属于本阶段实现范围，
+但已由独立批次完成。以下职责清单记录的是
 本轮要从旧 Writer/Facade 中拆出的历史混合点，而不是对已完成 family 的新遗留判断：
 
 - 解释完整业务动作；
@@ -79,7 +80,7 @@ retry and unknown-outcome behavior
   递归 claim 两个 Receipt；直接 CMS reaction 调用仍可从 CollectConfirmation 恢复首次结果；
 - Asset register/delete/archive/restore 已有 concrete Command 和单一 transaction owner；ReplacementPlan
   使用稳定的 workflow step ref，不再为 locator 生成 `command_id`；provider cleanup/reconciliation
-  使用显式 `{:workflow, ref}` identity；Upload/Replacement 的 crash-resume 仍按 workflow 批次验收；
+  使用显式 `{:workflow, ref}` identity；Upload/Provider/Replacement 的 crash-resume 已由独立批次完成；
 - Tag/TagGroup GraphQL mutation 已接收必填 `command_id`，taxonomy Outbox 使用同一 command identity 和
   stable effect key；CRUD 已进入 `Commands.*`、Gate、Receipt confirmation，set/unset/reindex 使用
   Gate-admitted one-shot；旧 facade arity 已全部 fail closed，291 个测试/查询调用方显式传递 actor 与
@@ -107,8 +108,8 @@ retry and unknown-outcome behavior
   transport、concrete Command、Gate 和 result builder 已闭合；Article moderation 与 move/mirror 另按
   service workflow / shared Outbox 合同记录，不重复归入此 set-style suite。
 - Press config 已进入 `UpdateConfig` Receipt Command：GraphQL 顶层 `commandId` 必填，配置 revision
-  与 Activity `operation_ref` 复用同一 command identity；`ConfigWriter` 在 Receipt 已持有事务时直接
-  使用当前 owner，不再嵌套开启 `Repo.transaction`。Confirmation 以 community slug/revision 恢复
+  与 Activity `operation_ref` 复用同一 command identity；`Press.Persist` 只负责 row changeset/写入，
+  `Press.Effects` 在 commit 后调度失效。Confirmation 以 community slug/revision 恢复
   首次配置，重复同一 command 不递增 revision；Press focused suite 当前为 **10/10**。
 - facade/resolver 的默认 command UUID 已清退；静态脚本同时检查 facade/resolver 与 production CMS
   source 中的派生 `command_id`。
@@ -141,7 +142,7 @@ convenience arity：77 个测试文件中的 1,167 个调用现在显式传递 f
 312/312，reaction/emotion/read-state 套件为 132/132，资产 GraphQL query 套件为 3/3。
 这些数字证明测试调用方已经跟随 fail-closed 合同迁移。Tag CRUD facade arity 切片另有 226 个调用方
 迁移，focused **104/104**（路径组成同上：59 + 2 + 41 + 2），§11 aggregate suites 为 **194/194**；
-本阶段其余纳入 family 已完成，只有明确列出的 Asset workflow 与 DocTree/ContentImport 保持 deferred。
+本阶段其余纳入 family 已完成；DocTree/ContentImport 仍保持 deferred，Asset workflow 已由独立批次完成。
 
 ## 3. 分类规则
 
@@ -362,10 +363,10 @@ worker 处理流程固定为：
 当前已经符合该模式或有明确理由不再拆分的模块：`Communities.Moderators`、`Communities.Tags`、
 `Communities.Categories`、`Communities.Subscriptions`、`Assets` 用户 row mutation、`Press`、
 `Dashboard`、`Kanban`、`Interactions.Reactions`、`CommunityApplications` 和 `Comments`。其中
-`Comments.Writer` 是 Command callback 内的业务 orchestration，不再是对外 mutation 入口；低层 row
-primitive 与 effect producer 的 owner 由该 bounded context 的 Command/Writer 合同固定。`Upload`、
+`Comments.Commands.Create` 与 `Comments.Commands.Reply` 分别持有 create/reply 完整业务动作；低层 row
+primitive 与 effect producer 的 owner 由该 bounded context 的 Command/Persist 合同固定。`Upload`、
 `ProviderReconciliation`、`ReplacementPlan` 与 `DocTree/ContentImport` 保留各自的 Workflow/Maintenance
-目录和独立 identity，属于明确 deferred 范围。
+目录和独立 identity；前两者已由独立批次完成，只有 DocTree/ContentImport 仍属于 deferred 范围。
 
 ## 4. Tag / TagGroup 迁移边界
 
@@ -384,7 +385,7 @@ GraphQL
 迁移前的问题与当前处理结果如下：
 
 - GraphQL mutation 已统一接收必填 `commandId`；
-- resolver/facade 已进入 `Commands.CreateTag`、`Commands.DeleteTag` 等具体 use case；
+- resolver/facade 已进入 `Commands.Create`、`Commands.Delete` 等具体 use case；
 - taxonomy Outbox 不再生成伪 command UUID，而是接收同一 command identity，旧 service caller 使用稳定
   community/thread workflow ref；
 - create/update/delete/group CRUD 已由 `CMS.Command` Receipt 与 Confirmation 恢复；set/unset/reindex
@@ -406,14 +407,14 @@ CMS.Communities
        |-- Mutation
        |-- Maintenance
        `-- Commands
-            |-- CreateTag
-            |-- UpdateTag
-            |-- DeleteTag
+            |-- Create
+            |-- Update
+            |-- Delete
             |-- CreateTagGroup
             |-- UpdateTagGroup
             |-- DeleteTagGroup
-            |-- SetTag
-            |-- UnsetTag
+            |-- Set
+            |-- Unset
             |-- ReindexTagsInGroup
             |-- ReindexTagsAcrossGroups
             `-- ReindexTagGroups
@@ -448,7 +449,7 @@ Tag 相关实现统一收纳在 `CMS.Communities.Tags` bounded context 下：
 2. 十一个 Tag concrete Command 已移到 `communities/tags/commands/`，模块命名空间同步为
    `CMS.Communities.Tags.Commands.*`；
 3. resolver/facade 现在只调用 `Tags.Commands.*`，不直接依赖 `Persist`、`Stats` 或 `Maintenance`；
-4. Article `SetTag`/`UnsetTag` 的 association 编排已从 `Tags.Mutation` 下沉到
+4. Article `Set`/`Unset` 的 association 编排已从 `Tags.Mutation` 下沉到
    `CMS.Articles.Tags.Assignment`，但 taxonomy effect 仍使用同一个入口 identity；
 5. 本批未引入兼容目录或旧模块别名；旧 `CMS.Communities.Tags` 写入 API 已消失，查询改用
    `CMS.Communities.Tags.Query`。
@@ -468,14 +469,14 @@ Command 名称表达领域动作，不机械重复已经存在于 `CMS.Communiti
 
 | GraphQL / use case                           | Gate action         | version/lock authority                    | 协议     | Confirmation / result               | effect                                     |
 | -------------------------------------------- | ------------------- | ----------------------------------------- | -------- | ----------------------------------- | ------------------------------------------ |
-| `createCommunityTag` / `CreateTag`           | community `:update` | canonical community lock + taxonomy scope | Receipt  | `tag_id`，经 FrontDesk 返回 Tag     | taxonomy Outbox，同一 `commandId`          |
-| `updateCommunityTag` / `UpdateTag`           | community `:update` | canonical tag + community lock            | Receipt  | 最新 canonical Tag                  | taxonomy Outbox，同一 `commandId`          |
-| `deleteCommunityTag` / `DeleteTag`           | community `:update` | canonical tag + community lock            | Receipt  | stable deleted-tag id result        | taxonomy Outbox，同一 `commandId`          |
+| `createCommunityTag` / `Create`              | community `:update` | canonical community lock + taxonomy scope | Receipt  | `tag_id`，经 FrontDesk 返回 Tag     | taxonomy Outbox，同一 `commandId`          |
+| `updateCommunityTag` / `Update`              | community `:update` | canonical tag + community lock            | Receipt  | 最新 canonical Tag                  | taxonomy Outbox，同一 `commandId`          |
+| `deleteCommunityTag` / `Delete`              | community `:update` | canonical tag + community lock            | Receipt  | stable deleted-tag id result        | taxonomy Outbox，同一 `commandId`          |
 | `createCommunityTagGroup` / `CreateTagGroup` | community `:update` | canonical community lock + taxonomy scope | Receipt  | `group_id`，经 FrontDesk 返回 Group | taxonomy Outbox，同一 `commandId`          |
 | `updateCommunityTagGroup` / `UpdateTagGroup` | community `:update` | canonical group + community lock          | Receipt  | 最新 canonical Group                | taxonomy Outbox，同一 `commandId`          |
 | `deleteCommunityTagGroup` / `DeleteTagGroup` | community `:update` | group + member tags + community lock      | Receipt  | stable deleted-group id result      | taxonomy Outbox，同一 `commandId`          |
-| `setCommunityTag` / `SetTag`                 | Article `:edit`     | ArticleBinding + tag assignment lock      | one-shot | canonical Article projection        | stats/taxonomy effect 复用入口 `commandId` |
-| `unsetCommunityTag` / `UnsetTag`             | Article `:edit`     | ArticleBinding + tag assignment lock      | one-shot | canonical Article projection        | 同上                                       |
+| `setCommunityTag` / `Set`                    | Article `:edit`     | ArticleBinding + tag assignment lock      | one-shot | canonical Article projection        | stats/taxonomy effect 复用入口 `commandId` |
+| `unsetCommunityTag` / `Unset`                | Article `:edit`     | ArticleBinding + tag assignment lock      | one-shot | canonical Article projection        | 同上                                       |
 | 三类 reindex Command                         | community `:update` | `(community, thread)` taxonomy scope      | one-shot | `{:ok, :pass}` / GraphQL `done`     | taxonomy Outbox，同一 `commandId`          |
 
 这里的 one-shot 不表示“绕过 concrete Command”，只表示不创建 Command Receipt。当前 CRUD 统一使用
@@ -484,7 +485,7 @@ Receipt，避免删除或更新 response 丢失后的结果歧义；set/unset/re
 
 ### 4.3 Create 与 Update
 
-`CreateTag`、`UpdateTag`、`DeleteTag` 及三个 TagGroup CRUD Command 当前均 Receipt-backed：
+`Create`、`Update`、`Delete` 及三个 TagGroup CRUD Command 当前均 Receipt-backed：
 
 - target 使用 community/taxonomy scope，不能伪造尚不存在的 tag id；
 - intent params 包含 community、thread 和规范化后的业务字段；正文/扩展字段按 IntentCodec policy 保存 digest；
@@ -517,7 +518,7 @@ result builder 对已删除行返回带 id 的 terminal stub；后续若产品�
 
 ### 4.5 Set / Unset 与 stats
 
-`SetTag`/`UnsetTag` 天然是集合成员关系的 set-style 动作，但只有同时满足以下条件才能保持 one-shot：
+`Set`/`Unset` 天然是集合成员关系的 set-style 动作，但只有同时满足以下条件才能保持 one-shot：
 
 - association 有唯一约束或锁，重复 add 不插入第二行；
 - repeated unset 对缺失关系返回成功；
@@ -529,7 +530,7 @@ result builder 对已删除行返回带 id 的 terminal stub；后续若产品�
 recompute，不能用 Receipt 掩盖错误的 projection 算法。
 
 当前 public `ArticlePathInput` 没有显式 branch identity；FrontDesk 对公开 Doc path 解析 main branch，
-`SetTag`/`UnsetTag` 会保留这个 `ArticleView.branch_id` 并走 `CMS.Gate.with_branch_check`。因此公开
+`Set`/`Unset` 会保留这个 `ArticleView.branch_id` 并走 `CMS.Gate.with_branch_check`。因此公开
 Doc set/unset 已完成 main-branch admission；非 main branch 仍需要扩展 ArticlePathInput 和调用方合同，
 继续列入 §6 的 DocTree/Article family 验收队列。不能把缺少显式 branch input 误写成 command identity
 缺失，也不能回退到普通 Article Gate。
@@ -624,7 +625,7 @@ membership row，`Subscriptions.Query` 只读状态。focused subscription/query
 > [CMS Assets：现状审计与独立重构完成记录](./cms-assets-refactor.md)。本节保留 Phase 5 的边界和验收摘要，详细的
 > `Writer` 混合职责、Upload completion identity、Provider cleanup 和 ReplacementPlan recovery 以独立文档为准。
 
-> 状态：`RegisterAsset`、`DeleteAsset`、`ArchiveAsset`、`RestoreAsset` 的用户 Command + Confirmation/Receipt 边界已落地，
+> 状态：`Register`、`Delete`、`Archive`、`Restore` 的用户 Command + Confirmation/Receipt 边界已落地，
 > `Assets.Persist` 已承接用户 asset-row primitives；
 > Upload completion、provider reconciliation/cleanup 与 ReplacementPlan 的 durable run/step、claim/lease
 > 和 crash-resume 已由后续独立批次完成（见独立文档）；Phase 5 本节只保留本阶段的边界验收。
@@ -633,24 +634,24 @@ membership row，`Subscriptions.Query` 只读状态。focused subscription/query
 
 - register/delete/archive/restore 已通过 concrete Command 进入领域 Gate；用户入口必须传入同一
   `commandId`，不能由 facade 或 Writer 补 UUID；
-- `Assets.Writer.delete/3` 只执行已在外层锁/事务内的资产事实和 Outbox intent，不再自行开启事务；
+- `Assets.Persist` 只执行已在外层锁/事务内的资产事实和 Outbox intent；`Assets.Refs` 负责 Article ref projection，旧 Writer facade 没有兼容入口；
 - upload completion 仍由 `Assets.Upload` workflow 负责，不能当作第二次用户 Command；
 - `ProviderReconciliation` 要求持久化/调用方提供 `workflow_ref`，`Deletion` 的 retention cleanup 使用
   显式或确定性的 workflow ref；
 - `ReplacementPlan` locator 使用稳定 `step_ref`，apply 时传入 `{:workflow, ref}`，不创建第二套用户
   `command_id`；
 - upload capability、service completion、用户 mutation 和 maintenance workflow 的 identity 已分层，
-  但 Upload/Replacement 的完整 crash/resume 验收仍属于后续 workflow 批次。
+  Upload/Provider/Replacement 的完整 crash/resume、partial-success 和 lease recovery 已由独立批次完成。
 
 ### 5.1 目标模块
 
 ```text
 CMS.Assets
   -> CMS.Assets.Commands
-       |-- RegisterAsset
-       |-- DeleteAsset
-       |-- ArchiveAsset
-       |-- RestoreAsset
+       |-- Register
+       |-- Delete
+       |-- Archive
+       |-- Restore
        `-- ReplaceUse
   -> CMS.Assets.UploadWorkflow
   -> CMS.Assets.ReplacementWorkflow
@@ -663,17 +664,17 @@ Assets facade 不成为 Article 内容 Writer。
 
 ### 5.2 Mutation / workflow 合同矩阵
 
-| 入口                                       | admission                                                        | 协议                     | transaction owner     | identity / result                                                                   |
-| ------------------------------------------ | ---------------------------------------------------------------- | ------------------------ | --------------------- | ----------------------------------------------------------------------------------- |
-| `registerCommunityAsset` / `RegisterAsset` | user Gate `community :update`（transport 为 `community.update`） | Receipt                  | `CMS.Command`         | asset id + canonical confirmation；storage/public identity 冲突仍由 upsert 约束收敛 |
-| `createCommunityAssetUploadIntent`         | user Gate `asset.upload`                                         | upload workflow          | `UploadWorkflow`      | 新 `uploadRef`；允许重新签发，不创建 Receipt                                        |
-| `completeCommunityAssetUpload`             | scoped service credential + capability facts                     | upload workflow one-shot | `UploadWorkflow`      | `uploadRef`/public ref/storage identity；重复 callback 返回同一 Asset               |
-| `deleteCommunityAsset` / `DeleteAsset`     | user Gate `community :update`（transport 为 `asset.upload`）     | Receipt                  | `CMS.Command`         | asset id + deleted confirmation；provider-delete Outbox 使用同一 `commandId`        |
-| `ArchiveAsset`                             | user Gate `community :update`                                    | Receipt                  | `CMS.Command`         | asset id + archived confirmation；返回 canonical archived Asset                     |
-| `RestoreAsset`                             | user Gate `community :update`                                    | Receipt                  | `CMS.Command`         | asset id + restored confirmation；返回 canonical active Asset                       |
-| provider cleanup reconciliation            | maintenance admission                                            | maintenance workflow     | reconciliation owner  | persisted workflow/run ref，不使用 `command_id` 随机 UUID                           |
-| `CreateReplacementPlan`                    | user Gate（下一阶段冻结）                                        | Replacement workflow     | `ReplacementWorkflow` | plan ref；协议和结果恢复合同下一阶段确认                                            |
-| apply replacement plan                     | user starts, workflow revalidates each item                      | domain workflow          | `ReplacementWorkflow` | plan ref + stable step ref；支持 partial completion/resume                          |
+| 入口                                  | admission                                                        | 协议                     | transaction owner     | identity / result                                                                   |
+| ------------------------------------- | ---------------------------------------------------------------- | ------------------------ | --------------------- | ----------------------------------------------------------------------------------- |
+| `registerCommunityAsset` / `Register` | user Gate `community :update`（transport 为 `community.update`） | Receipt                  | `CMS.Command`         | asset id + canonical confirmation；storage/public identity 冲突仍由 upsert 约束收敛 |
+| `createCommunityAssetUploadIntent`    | user Gate `asset.upload`                                         | upload workflow          | `UploadWorkflow`      | 新 `uploadRef`；允许重新签发，不创建 Receipt                                        |
+| `completeCommunityAssetUpload`        | scoped service credential + capability facts                     | upload workflow one-shot | `UploadWorkflow`      | `uploadRef`/public ref/storage identity；重复 callback 返回同一 Asset               |
+| `deleteCommunityAsset` / `Delete`     | user Gate `community :update`（transport 为 `asset.upload`）     | Receipt                  | `CMS.Command`         | asset id + deleted confirmation；provider-delete Outbox 使用同一 `commandId`        |
+| `Archive`                             | user Gate `community :update`                                    | Receipt                  | `CMS.Command`         | asset id + archived confirmation；返回 canonical archived Asset                     |
+| `Restore`                             | user Gate `community :update`                                    | Receipt                  | `CMS.Command`         | asset id + restored confirmation；返回 canonical active Asset                       |
+| provider cleanup reconciliation       | maintenance admission                                            | maintenance workflow     | reconciliation owner  | persisted workflow/run ref，不使用 `command_id` 随机 UUID                           |
+| `CreateReplacementPlan`               | user Gate                                                        | Replacement workflow     | `ReplacementWorkflow` | plan ref；持久化 item/locator result 与 apply run recovery                          |
+| apply replacement plan                | user starts, workflow revalidates each item                      | domain workflow          | `ReplacementWorkflow` | plan ref + stable step ref；支持 partial completion/resume                          |
 
 archive/restore 当前主要是 facade API 和测试入口；在暴露新的 GraphQL mutation 前也必须先经过上述 Command，
 不能因为暂时没有 transport 就继续保留 Writer 业务入口。`Writer` 仍可为 Article ref projection
@@ -681,7 +682,7 @@ archive/restore 当前主要是 facade API 和测试入口；在暴露新的 Gra
 
 ### 5.3 Register 用户 mutation 与 upload boundary
 
-`RegisterAsset` 当前是 Receipt-backed CMS Command。active row 唯一约束仍是资源数据层的幂等 authority，
+`Register` 当前是 Receipt-backed CMS Command。active row 唯一约束仍是资源数据层的幂等 authority，
 但它不再决定 mutation 是否属于 one-shot；response-loss recovery 由 `Confirmation`/Receipt 提供。
 Register 的 canonical upsert 已由 `Assets.Persist` 实现并由 Receipt-backed Command 调用：
 
@@ -703,11 +704,11 @@ upload completion 是 assets-hub 的 scoped service callback，不是用户 muta
 
 ### 5.4 Delete / archive / restore
 
-`DeleteAsset` 使用 Receipt，因为首次事务同时提交 soft delete 与 provider-delete Outbox，response
+`Delete` 使用 Receipt，因为首次事务同时提交 soft delete 与 provider-delete Outbox，response
 丢失后 active lookup 已无法再次得到相同结果。流程为：
 
 ```text
-DeleteAsset.execute(actor, community, asset_id, command_id)
+Delete.execute(actor, community, asset_id, command_id)
   -> CMS.Command.execute
        -> Gate
        -> lock active asset + ref/completeness scope
@@ -740,8 +741,8 @@ archive/restore 虽然是可收敛的 set-style 状态切换，当前协议仍�
 路径是 `CMS.ContentImport.Threads.Doc.Writer -> CMS.DocTree.Import`，与 ReplacementPlan 是两个不同的
 bounded workflow。
 
-Phase 5 本阶段按 Asset workflow 范围明确延期 ReplacementPlan 的 create/apply Receipt 协议、worker recovery
-和 version-conflict 验收；这些已由后续独立批次完成，见
+Phase 5 本阶段按 Asset workflow 范围不实现 ReplacementPlan 的 create/apply workflow；相关 worker recovery
+和 version-conflict 验收已由后续独立批次完成，见
 [CMS Assets 现状审计与独立重构完成记录](./cms-assets-refactor.md)。
 
 历史实现曾在 plan 创建时为 locator 生成随机 `command_id`，随后把它传给 `ReplaceUse`；该伪业务
@@ -768,6 +769,8 @@ ReplacementPlan
 - `ReplaceUse` 已区分 user-command initiator 与 workflow-step initiator，workflow 使用
   `{:workflow, workflow_ref}`，不把 step ref 填入用户 `command_id`（已完成）；
 - 每项继续 revalidate live revision 与 expected draft version；
+- create 时判定为 `historical_only` 或 `permission_denied` 的 item 在 apply 时写入 `skipped` result，不尝试创建 Draft 或调用 `ReplaceUse`；
+- 子集 apply 不把未选中的 pending step 误报为 failed run；handled step failure 会立即释放 run lease，worker crash 则保留 lease 等待过期恢复；
 - partial completion 已写回 item/step 状态，workflow 可从未完成 step 继续；
 - apply run/step 的 claim、lease、worker crash recovery 和 version conflict 已作为独立 durable authority
   完成验收（见独立文档），不再只依赖最后一次进程内循环结果。
@@ -836,13 +839,13 @@ Receipt confirmation 已是该 mutation 的完整结果合同，不能把“没�
 | Article binding move/mirror       | 现有 `Move` / `Mirror` / `Unmirror`                                                   | Receipt（已实施）                                         | source/destination multi-scope 已复用同一 `commandId`；共享 Outbox worker 的 claim/lease/retry/completion 已覆盖                                                              |
 | Article moderation/visibility     | `Moderate` / visibility workflow                                                      | service/maintenance workflow；无当前用户 GraphQL mutation | operations/audition 使用 `{:workflow, ref}`；binding effect 复用稳定 identity，走共享 Outbox worker；不创建伪用户 Receipt                                                     |
 | Article/Comment report            | `Report` / `UndoReport`                                                               | Report Receipt；Undo Receipt                              | duplicate report、Audit/Activity、首次结果；add/remove 均复用 command identity                                                                                                |
-| Comment create/reply              | 现有 `CreateComment` / `ReplyComment`                                                 | Receipt                                                   | facade/Writer 的 `nil` identity 已 fail closed；GraphQL/Receipt 合同与 312/312 comment suite 已验证                                                                           |
+| Comment create/reply              | 现有 `Create` / `Reply`                                                               | Receipt                                                   | facade/Command 的 `nil` identity 已 fail closed；GraphQL/Receipt 合同与 312/312 comment suite 已验证                                                                          |
 | Comment solution                  | `AcceptSolution` / `RevokeSolution`                                                   | Receipt（已实施）                                         | canonical comment/article lock、唯一 solution、response recovery                                                                                                              |
 | Comment pin                       | `Pin` / `Unpin`                                                                       | Receipt（已实施）                                         | set-style、thread policy、Activity/association recovery                                                                                                                       |
 | Interaction reactions             | `Upvote` / `Emotion` / `Collect` 及 undo                                              | Receipt（已实施）                                         | 三类动作各自使用 reaction operation；同一 command id 可由 Accounts 外层 transaction 复用；Metric/Outbox identity 一致                                                         |
 | Moderator                         | `Add` / `AddMany` / `Remove` / `UpdatePassport`                                       | Receipt；AddMany root command + per-target summary        | membership uniqueness、partial success；Command/Receipt、专用 Gate action、Persist/transaction owner 与 response recovery 已实施；当前产品无 Moderator Activity/Outbox effect |
 | Activity export                   | 当前 `ExportCommunityActivity`（Community scope）                                     | 当前同步 bounded export；Article export 不在当前产品范围  | selection snapshot、audit effect 与 bounded result；不是当前 Article 功能缺口                                                                                                 |
-| Press config                      | `UpdateConfig`                                                                        | Receipt（已实施）                                         | Community Gate、ConfigWriter transaction owner、Activity operation_ref 同一 `commandId`、response recovery                                                                    |
+| Press config                      | `UpdateConfig`                                                                        | Receipt（已实施）                                         | Community Gate、Press.Persist row write、Activity operation_ref 同一 `commandId`、Press.Effects invalidation、response recovery                                               |
 | DocTree legacy                    | 按真实动作建立 Command                                                                | deferred                                                  | tree revision、branch lock、owner codec，禁止万能 payload；已拆出独立文档，见下方引用                                                                                         |
 
 DocTree/ContentImport 的“后续单独处理”已展开为独立审计与重构文档：
@@ -1042,9 +1045,9 @@ terminal result，pin 的 Activity/association 写入也必须与用户意图绑
 可以调用 `revoke_if_current/5`，但必须传入上层 delete command identity；不再生成独立 UUID。
 
 本阶段纳入的 family 已按 §4.2/§5.2 的粒度完成 concrete use case、GraphQL 参数、Gate、事务、
-Confirmation 和 effects 确认；只有 Phase 5.4 Upload/Provider workflow、Phase 5.5 ReplacementPlan 与
-DocTree/ContentImport 按范围保持 `deferred`（后者见 [`cms-doctree-refactor.md`](./cms-doctree-refactor.md)），
-不再把未来产品能力列为当前迁移债务。
+Confirmation 和 effects 确认；Phase 5.4 Upload/Provider workflow、Phase 5.5 ReplacementPlan 已由独立批次完成，
+只有 DocTree/ContentImport 按范围保持 `deferred`（见 [`cms-doctree-refactor.md`](./cms-doctree-refactor.md)），
+不再把已完成的 Asset workflow 列为当前迁移债务。
 
 明确排除：
 
@@ -1083,10 +1086,9 @@ command。GraphQL mutation 的 `commandId` 已补齐，aggregate suite **13/13**
 
 #### Comments
 
-Comment 的 concrete Command 已存在；`CreateComment` / `ReplyComment` 委托的是 Command callback 内的
-`CMS.Comments.Writer` orchestration，而不是对外 Writer 入口。Writer 不再生成 identity，也不自行开启
-Article transaction；Article lock/Gate 与 Receipt runner 持有外层 owner，Writer 只组合 caller-owned row
-writes、audition producer 和 commit 后 effects。目标链路为：
+Comment 的 concrete Command 已存在；`Create` / `Reply` 持有 Command callback 内的业务编排，低层 row
+write 统一进入 `CMS.Comments.Persist`，而不是回流到旧 Writer 入口。Article lock/Gate 与 Receipt runner
+持有外层 owner，Command 只组合 caller-owned row writes、audition producer 和 commit 后 effects。目标链路为：
 
 ```text
 CMS.Comments.Commands.*
@@ -1181,12 +1183,12 @@ seed/maintenance caller 必须显式声明 workflow admission；旧 Tags mutatio
 
 验收：create/update/delete/group response 丢失可恢复；one-shot 重试收敛；无内部 command UUID。
 
-### Phase 5.3：Asset user mutations（已完成；workflow 单独 deferred）
+### Phase 5.3：Asset user mutations（已完成；workflow 由独立批次完成）
 
 1. [done for current boundary] `Assets.Persist` 已承接 register/delete/archive/restore 的 asset-row primitives；
-   `Assets.Writer` 保留 Article ref projection 等局部 transaction，不再作为这些用户 mutation 的 owner；
+   `Assets.Refs` 保留 Article ref projection 等局部 transaction，不再由旧 Writer facade 承担这些用户 mutation；
 2. [done for current boundary] Register/Delete/Archive/Restore 均使用 concrete Command + Confirmation/Receipt 合同；
-3. [done] 用户 mutation 的 Receipt 与同 identity Outbox；provider worker recovery 属于 §5.4 deferred workflow；
+3. [done] 用户 mutation 的 Receipt 与同 identity Outbox；provider worker recovery 已在 §5.4 独立 workflow 批次完成；
 4. [done] Register 的 storage/url/public-ref canonical upsert 与 Receipt replay 合同已由 `Assets.Persist`、
    `RegisterAssetConfirmation` 和资产 focused suite 覆盖；这是资源数据唯一性和恢复合同，不是 one-shot
    分类依据；
@@ -1194,7 +1196,7 @@ seed/maintenance caller 必须显式声明 workflow admission；旧 Tags mutatio
 
 当前批次已确认用户 Command 入口、identity、canonical upsert、Receipt replay 和 archive/restore Gate
 边界，并将 user asset-row 写入移到 `Assets.Persist`；provider/ref projection 的局部 transaction 与
-user Asset mutation 分开标注，Upload/Provider/Replacement workflow recovery 由后续独立批次完成，见
+user Asset mutation 分开标注，Upload/Provider/Replacement workflow recovery 已由后续独立批次完成，见
 [CMS Assets 现状审计与独立重构完成记录](./cms-assets-refactor.md)。
 
 ### Phase 5.4：Upload 与 maintenance workflow（已由后续独立批次完成）
@@ -1218,7 +1220,7 @@ user Asset mutation 分开标注，Upload/Provider/Replacement workflow recovery
 
 ### Phase 5.6：其余 family
 
-1. [done] 按 §6 逐 family 执行 `classified -> migrated -> verified`；本阶段只保留明确 deferred 的 Asset workflow 与 DocTree/ContentImport。
+1. [done] 按 §6 逐 family 执行 `classified -> migrated -> verified`；本阶段只保留明确 deferred 的 DocTree/ContentImport，Asset workflow 已由独立批次完成。
 2. [implemented, verified for current focused suites] 移除 Comment create/reply/update/delete、Upvote/Emotion 的 `nil` command identity fallback；Comment domain suite 312/312 通过，跨目录 fixtures 继续纳入回归清单；
 3. [implemented, verified for current focused suites] Article/Comment Report add/remove 统一使用 concrete command identity、Receipt 与 result builder；GraphQL report mutations 的 `commandId` 已为必填；
 4. [implemented, verified for current focused suites] Upvote/Emotion/Collect 及 undo 均进入独立 reaction
@@ -1229,7 +1231,7 @@ user Asset mutation 分开标注，Upload/Provider/Replacement workflow recovery
 6. [done in this batch] seed、maintenance、operations caller 显式提供 workflow/operation identity，不能回退为伪客户端 command；Community contribution 通过 `update_operations/3` 写入 typed workflow Outbox；
 7. [implemented, verified for current focused suites] Comment solution/pin 的四个 GraphQL mutation 增加必填 `commandId`；`SolutionChange` / `StateChange` 使用 Receipt + Confirmation，旧两参数 facade/States arity fail closed；
 8. [implemented, verified for current focused suites] Article sink/lock/category/status GraphQL mutation 增加必填 `commandId`，并切换到六个 action-specific one-shot Command；Article state transition 仍由 Gate + ArticleBinding/branch scope owner 执行，不创建 Receipt 或第二 UUID；`backend/api/test/groupher_server_web/mutation/cms/articles` + `backend/api/test/groupher_server_web/mutation/cms/sink` 为 124/124。
-9. [implemented, verified for current focused suites] Press config mutation 增加必填 `commandId`，由 `UpdateConfig` Receipt Command 统一 Gate、ConfigWriter transaction owner、Activity identity 与 Confirmation recovery；focused suite 10/10。
+9. [implemented, verified for current focused suites] Press config mutation 增加必填 `commandId`，由 `UpdateConfig` Receipt Command 统一 Gate、Press.Persist row write、Activity identity、Press.Effects invalidation 与 Confirmation recovery；focused suite 10/10。
 10. [implemented, focused verified] Moderator Add/AddMany/Remove/UpdatePassport：
     concrete Command、显式 `commandId`、Receipt、专用 `:manage_moderators` Gate action、
     `Moderators.Persist` admission/persistence 拆分、caller-owned `add_root/2` 与旧 mutation arity
@@ -1374,10 +1376,10 @@ Outbox Event id、lease/lock ref、Article/DocTree node id、anonymous-view id �
 
 ### 10.6 Press config
 
-- `updatePressConfig` 缺失 `commandId` 时在 schema 层拒绝，非法或缺失 identity 不进入 writer；
+- `updatePressConfig` 缺失 `commandId` 时在 schema 层拒绝，非法或缺失 identity 不进入 Command；
 - 同一 `commandId` 重试只恢复第一次 configuration confirmation，不重复递增 revision 或 Activity；
-- Receipt callback 内由 `ConfigWriter` 使用已有 transaction，配置、Activity 与 confirmation 一起提交，
-  cache invalidation 仍在 commit 后 best-effort 执行；Press suite **10/10**。
+- Receipt callback 内由 `UpdateConfig` 使用 Gate/Command transaction，`Press.Persist` 配置 row、Activity 与
+  confirmation 一起提交，`Press.Effects` 在 commit 后 best-effort 调度 cache invalidation；Press suite **10/10**。
 
 ## 11. 验证命令
 
@@ -1429,8 +1431,8 @@ workflow 改用 typed workflow identity，相关 suite 为 **17/17**。这类 fi
 `nil` fallback 解决。上述数字是各迁移切片的 focused 证据；扩展到评论 create/reply 和全测试树
 reaction fixture 后，评论域套件为 **312/312**、reaction/emotion/read-state 套件为 **132/132**、
 资产 query 套件为 **3/3**。本轮 backend 全量 `mix test --max-failures 100` 为 **2189 passed,
-1 excluded, 0 failures**（2190 tests）。该数字证明回归树稳定；Asset Upload/Provider/Replacement
-workflow 与 DocTree/ContentImport 仍按 deferred 边界单独验收，不因全量回归通过而被误报为已迁移。
+1 excluded, 0 failures**（2190 tests）。该数字证明回归树稳定；DocTree/ContentImport 仍按 deferred 边界单独验收，
+Asset Upload/Provider/Replacement workflow 已有独立完成记录，不因本阶段回归数字重复计算。
 
 扩展的 GraphQL community-tag mutation 目录目前为 **41/41**：Tag CRUD、set/unset（post/blog/changelog/doc）
 和 reindex 均已通过。Doc set/unset 的实现保留 FrontDesk public projection 提供的 main-branch

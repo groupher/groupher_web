@@ -5,7 +5,7 @@ defmodule GroupherServer.CMS.Model.AssetWorkflowRun do
       maintenance request
         -> workflow run claim
         -> step processing
-        -> completed or failed run
+        -> pending, completed or failed run
   """
 
   use Ecto.Schema

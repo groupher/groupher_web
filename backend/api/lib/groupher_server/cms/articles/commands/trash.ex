@@ -7,9 +7,10 @@ defmodule GroupherServer.CMS.Articles.Commands.Trash do
         -> CMS.Command when command_id exists -> Articles.Trash aggregate
   """
 
-  alias GroupherServer.{Accounts, Activity, CMS}
+  alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.Trash, as: TrashAgg
+  alias CMS.Articles.Effects
   alias CMS.Command
   alias CMS.Model.TrashedArticle
   alias CMS.Articles.Commands.TrashConfirmation
@@ -53,7 +54,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Trash do
   end
 
   defp audit_denial({:error, %{reason: reason}} = result, article, actor, command_id, opts) do
-    case Activity.log(article, :trashed,
+    case Effects.activity(article, :trashed,
            actor: actor,
            source: Keyword.get(opts, :source, :api),
            outcome: :denied,

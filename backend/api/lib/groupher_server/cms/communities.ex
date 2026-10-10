@@ -6,7 +6,7 @@ defmodule GroupherServer.CMS.Communities do
 
       GraphQL resolver / job
         -> CMS facade
-        -> Communities.Query / Writer / Commands / Lifecycle
+        -> Communities.Query / Persist / Commands / Lifecycle
         -> Repo / external boundary
   """
 
@@ -46,11 +46,11 @@ defmodule GroupherServer.CMS.Communities do
   alias CMS.Communities.Commands.Update, as: UpdateCommand
 
   alias CMS.Communities.Tags.Commands.{
-    CreateTag,
+    Create,
     CreateTagGroup,
-    DeleteTag,
+    Delete,
     DeleteTagGroup,
-    UpdateTag,
+    Update,
     UpdateTagGroup
   }
 
@@ -488,12 +488,12 @@ defmodule GroupherServer.CMS.Communities do
     do: {:error, CMS.ErrorCat.command_id_required()}
 
   def create_tag(%Community{} = community, thread, attrs, %User{} = user, command_id) do
-    CreateTag.execute(community, thread, attrs, user, command_id)
+    Create.execute(community, thread, attrs, user, command_id)
   end
 
   def create_tag(community_ref, thread, attrs, %User{} = user, command_id) do
     with {:ok, community} <- FrontDesk.community(community_ref, mode: :internal) do
-      CreateTag.execute(community, thread, attrs, user, command_id)
+      Create.execute(community, thread, attrs, user, command_id)
     end
   end
 
@@ -504,7 +504,7 @@ defmodule GroupherServer.CMS.Communities do
   def update_tag(_id, _attrs, _command_id), do: {:error, :command_actor_required}
 
   def update_tag(id, attrs, %User{} = user, command_id),
-    do: UpdateTag.execute(id, attrs, user, command_id)
+    do: Update.execute(id, attrs, user, command_id)
 
   @doc "Creates tag group through the `Communities` write boundary."
   @spec create_tag_group(Community.t(), atom(), map()) :: T.domain_res(CommunityTagGroup.t())
@@ -602,7 +602,7 @@ defmodule GroupherServer.CMS.Communities do
 
   def delete_tag(_id, _command_id), do: {:error, :command_actor_required}
 
-  def delete_tag(id, %User{} = user, command_id), do: DeleteTag.execute(id, user, command_id)
+  def delete_tag(id, %User{} = user, command_id), do: Delete.execute(id, user, command_id)
 
   @doc "Runs `set_tag` through the public `Communities` boundary."
   @spec set_tag(Ecto.Schema.t(), T.id()) :: T.domain_res(Ecto.Schema.t())
@@ -611,7 +611,7 @@ defmodule GroupherServer.CMS.Communities do
   def set_tag(_article, _id, _command_id), do: {:error, :command_actor_required}
 
   def set_tag(article, id, %User{} = user, command_id),
-    do: CMS.Communities.Tags.Commands.SetTag.execute(article, id, user, command_id)
+    do: CMS.Communities.Tags.Commands.Set.execute(article, id, user, command_id)
 
   @doc "Runs `unset_tag` through the public `Communities` boundary."
   @spec unset_tag(Ecto.Schema.t(), T.id()) :: T.domain_res(Ecto.Schema.t())
@@ -620,7 +620,7 @@ defmodule GroupherServer.CMS.Communities do
   def unset_tag(_article, _id, _command_id), do: {:error, :command_actor_required}
 
   def unset_tag(article, id, %User{} = user, command_id),
-    do: CMS.Communities.Tags.Commands.UnsetTag.execute(article, id, user, command_id)
+    do: CMS.Communities.Tags.Commands.Unset.execute(article, id, user, command_id)
 
   @doc "Runs `tag_groups` through the public `Communities` boundary."
   @spec tag_groups(map()) :: T.domain_res(list(CommunityTagGroup.t()))

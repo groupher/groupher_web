@@ -10,7 +10,7 @@ defmodule GroupherServer.CMS.Press do
 
       GraphQL resolver / job
         -> CMS.Press facade
-        -> Query / ConfigWriter / Invalidation
+        -> Query / Commands / Effects
   """
 
   alias GroupherServer.{Accounts, CMS}

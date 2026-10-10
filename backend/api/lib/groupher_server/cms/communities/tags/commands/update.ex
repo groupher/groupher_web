@@ -1,8 +1,8 @@
-defmodule GroupherServer.CMS.Communities.Tags.Commands.UpdateTag do
+defmodule GroupherServer.CMS.Communities.Tags.Commands.Update do
   @moduledoc """
   Updates a community tag through the receipt-backed command boundary.
 
-      GraphQL -> Communities facade -> UpdateTag -> Command + Gate -> Tags + Outbox
+      GraphQL -> Communities facade -> Update -> Command + Gate -> Tags + Outbox
   """
 
   alias GroupherServer.CMS

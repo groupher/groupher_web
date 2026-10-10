@@ -2,9 +2,9 @@ defmodule GroupherServer.CMS.DocTree.Commands.CreatePin do
   @moduledoc """
   Creates one draft pin node.
 
-      CMS.DocTree.create_pin -> CreatePin.execute -> command support -> Writer.create_pin
+      CMS.DocTree.create_pin -> CreatePin.execute -> command support -> Persist.create_pin
   """
-  alias GroupherServer.CMS.DocTree.{Commands.Support, Writer}
+  alias GroupherServer.CMS.DocTree.{Commands.Support, Persist}
 
   def execute(community, args, user \\ nil) do
     if Support.has_option?(args, :command_id) do
@@ -14,10 +14,10 @@ defmodule GroupherServer.CMS.DocTree.Commands.CreatePin do
         args,
         Support.actor(args, user),
         :doc_tree_create_pin,
-        &Writer.create_pin(community, &1)
+        &Persist.create_pin(community, &1)
       )
     else
-      Support.run_tree_operation(community, args, &Writer.create_pin(community, &1))
+      Support.run_tree_operation(community, args, &Persist.create_pin(community, &1))
     end
   end
 end

@@ -225,7 +225,7 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
       valid_attrs = mock_attrs(:category)
       ~m(title slug)a = valid_attrs
 
-      {:ok, author} = CMS.Articles.Writer.ensure_author_exists(%User{id: user.id})
+      {:ok, author} = CMS.Articles.Persist.ensure_author_exists(%User{id: user.id})
       {:ok, _} = CategoriesPersist.insert_category(~m(title slug)a, %Community{}, author.id)
 
       results = guest_conn |> gq_query(@query, variables)
@@ -240,7 +240,7 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
       valid_attrs = mock_attrs(:category)
       ~m(title slug)a = valid_attrs
 
-      {:ok, author} = CMS.Articles.Writer.ensure_author_exists(%User{id: user.id})
+      {:ok, author} = CMS.Articles.Persist.ensure_author_exists(%User{id: user.id})
 
       {:ok, category} =
         CategoriesPersist.insert_category(~m(title slug)a, %Community{}, author.id)

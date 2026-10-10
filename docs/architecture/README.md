@@ -21,6 +21,7 @@
 - [`public-cache-invalidation.md`](./public-cache-invalidation.md)：Phoenix 领域事务 outbox、Oban worker 和 Cloudflare cache-tag purge 的可靠失效协议。
 - [`resource-loading-boundary.md`](./resource-loading-boundary.md)：CMS resource loading 合同。
 - [`cms-query-v2.md`](./cms-query-v2.md)：CMS Reader/List 向 Query、Store/Facts、Projection 收口，以及与 FrontDesk 的互补边界。
+- [`cms-context-module-architecture.md`](./cms-context-module-architecture.md)：CMS Context 的 specialization、ownership、调用路径与共享基础设施边界；通用模块结构见 [`be-context-module-structure.md`](../rules/be-context-module-structure.md)。
 - [`cms-multi-entry-boundary.md`](./cms-multi-entry-boundary.md)：GraphQL、CLI、MCP 与 Plugin 复用同一 CMS facade 和领域用例的多入口架构。
 - [`graphql-resolver-boundary.md`](./graphql-resolver-boundary.md)：GraphQL resolver 越界审计、目标职责和 R1-R5 完成结果。
 - [`cms-outbox.md`](./cms-outbox.md)：统一 Domain Outbox、typed event、Dispatcher 与 PublicCache Cleanup 等消费边界。

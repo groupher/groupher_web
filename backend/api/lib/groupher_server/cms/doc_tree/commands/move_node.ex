@@ -2,9 +2,9 @@ defmodule GroupherServer.CMS.DocTree.Commands.MoveNode do
   @moduledoc """
   Moves one mutable tree node to a new parent or index.
 
-      CMS.DocTree.move_node -> MoveNode.execute -> command support -> Writer.move_node
+      CMS.DocTree.move_node -> MoveNode.execute -> command support -> Persist.move_node
   """
-  alias GroupherServer.CMS.DocTree.{Commands.Support, Writer}
+  alias GroupherServer.CMS.DocTree.{Commands.Support, Persist}
 
   def execute(community, id, args) do
     if Support.has_option?(args, :command_id) do
@@ -14,10 +14,10 @@ defmodule GroupherServer.CMS.DocTree.Commands.MoveNode do
         args,
         Support.actor(args),
         :doc_tree_move_node,
-        &Writer.move_node(community, id, &1)
+        &Persist.move_node(community, id, &1)
       )
     else
-      Support.run_tree_operation(community, args, &Writer.move_node(community, id, &1))
+      Support.run_tree_operation(community, args, &Persist.move_node(community, id, &1))
     end
   end
 end

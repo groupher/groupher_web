@@ -4,7 +4,7 @@ defmodule GroupherServer.CMS.Wallpaper.Retention do
 
   Business position:
 
-      CMS.Wallpaper facade / Wallpaper.Publisher
+      CMS.Wallpaper facade / Wallpaper.Workflow
         -> Wallpaper.Retention
         -> Repo / CMS.Assets deletion
   """

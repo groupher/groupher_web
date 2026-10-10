@@ -42,7 +42,7 @@ Reader
 
 以下抽象各自拥有清晰职责，不属于过度抽象：
 
-- `AcceptSolution`、`RevokeSolution`、`DeleteComment`、`UpdateComment`；
+- `AcceptSolution`、`RevokeSolution`、`Comments.Commands.Delete`、`Comments.Commands.Update`；
 - `SolutionTransition`，复用 accept、replace、revoke 和 delete reconciliation；
 - `Gate.Access.with_check/4`；
 - `MutationLock.transact_article/3`；

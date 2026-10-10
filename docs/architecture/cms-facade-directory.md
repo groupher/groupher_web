@@ -143,15 +143,15 @@ Command 不复制底层 Writer，也不建立通用 Command Bus、DSL 或 callba
 | F9     | `CMS.Communities` | `request_destroy/3` 已移除 facade 内的 Command/Gate/Lifecycle 编排                  | `Communities.Commands.RequestDestroy`                     |
 | F10    | `CMS.Articles`    | archive/sink/status/category/comment-lock/moderation 已移入具体 Commands            | `Articles.Commands.*`                                     |
 | F11    | `CMS.Comments`    | create/reply/pin/fold/moderation 已移入具体 Commands；ID 兼容入口先解析再进入 owner | `Comments.Commands.*`                                     |
-| F12    | `CMS.Assets`      | 剩余入口逐项审计为一到两步 Writer delegate，无需虚构 Commands                       | `Assets.Writer` / `Assets.Deletion` / existing owners     |
+| F12    | `CMS.Assets`      | 剩余入口逐项审计为一到两步 Persist/Refs delegate，无需虚构 Commands                 | `Assets.Persist` / `Assets.Deletion` / existing owners    |
 | F13    | `CMS.Command`     | execute contract 已收紧为 typed Confirmation action result                          | `CMS.Command` + `Receipt`                                 |
 
 已完成的 F1–F7 实施结果：
 
 | 模块            | 当前状态                                                            |
 | --------------- | ------------------------------------------------------------------- |
-| `CMS.Wallpaper` | 已拆为 Query、Upload、Publisher、Retention                          |
-| `CMS.Press`     | 已拆为 Query、Projection、ConfigWriter、Invalidation                |
+| `CMS.Wallpaper` | 已拆为 Commands、Query、Upload、Persist、Workflow、Retention        |
+| `CMS.Press`     | 已拆为 Commands、Query、Projection、Persist、Effects、Invalidation  |
 | `CMS.DocTree`   | 已有 Commands、Query、Writer、Publish、Trash                        |
 | `CMS.FrontDesk` | 已按 Article、Comment、Community、Relation 等内部 owner 拆分        |
 | `CMS.Snapshot`  | 已拆为 Query、Cache、Projection、Refresh                            |
@@ -269,14 +269,14 @@ set_illegal / unset_illegal / set_audit_failed
 Comments 的写入口已统一进入现有 concrete command/state owner：
 
 ```text
-create_comment* / reply_comment*
+create / reply
 pin_comment / undo_pin_comment
 fold_comment / unfold_comment
 set_comment_illegal / unset_comment_illegal
 set_comment_audit_failed / paged_audit_failed_comments
 ```
 
-其中 `update_comment`、`delete_comment`、`create/reply` 使用具体 Commands，pin/fold 使用
+其中 `update`、`delete`、`create/reply` 使用具体 Commands，pin/fold 使用
 `Comments.Commands.StateChange`，moderation 使用 `Comments.Commands.Moderate`；ID overload
 只在兼容入口解析一次 canonical Comment，不把已加载 struct 降级为 ID。
 
@@ -388,13 +388,16 @@ press/
 ├── config.ex                  # 已存在：静态 thread contract
 ├── query.ex                   # article/feed/manifest authority reads
 ├── projection.ex              # article/feed/community/config projection
-├── config_writer.ex           # persisted config + Activity
+├── commands/
+│   └── update_config.ex        # Gate + Receipt + Activity owner
+├── persist.ex                  # PressConfig row primitive
+├── effects.ex                  # post-commit invalidation scheduling
 └── invalidation.ex            # Press HTTP cache invalidation
 ```
 
 ```text
 CMS.Press
-  ├── config/update_config -> ConfigWriter
+  ├── config/update_config -> Commands.UpdateConfig -> Persist + Effects
   ├── article/feed/manifest -> Query -> Projection
   └── invalidate           -> Invalidation
 ```
@@ -563,8 +566,8 @@ F13 CMS.Command 类型合同与文档一致性审计
 [x] F1  Assets.Deletion 承接删除实现
 [x] F2  Articles.Commands.{Create,Update,Draft,Publish,Trash}
 [x] F3  DocTree.Commands.{Node,Publish,Trash}
-[x] F4  Press.{Query,Projection,ConfigWriter,Invalidation}
-[x] F5  Wallpaper.{Query,Upload,Publisher,Retention}
+[x] F4  Press.{Commands,Query,Projection,Persist,Effects,Invalidation}
+[x] F5  Wallpaper.{Commands,Query,Upload,Persist,Workflow,Retention}
 [x] F6  FrontDesk 按 Article/Comment/Community/Lookup/Relation/ReactionUsers 拆分
 [x] F7  Snapshot.{Query,Cache,Projection,Refresh}
 [x] F8  Docs facade 收口

@@ -19,7 +19,9 @@ defmodule GroupherServer.CMS.CommunityApplications.Review do
   alias Ecto.Multi
   alias Accounts.Model.User
   alias CMS.Communities.{ErrorCat, NamePolicy, SlugClaims}
-  alias CMS.CommunityApplications.{Jobs.CreateCommunity, Transitions}
+  alias CMS.CommunityApplications.Jobs.CreateCommunity
+  alias CMS.CommunityApplications.Lifecycle, as: ApplicationLifecycle
+  alias CMS.CommunityApplications.Transaction
   alias CMS.Gate.Const
   alias CMS.Model.CommunityApplication
   alias CMS.Passport
@@ -147,14 +149,14 @@ defmodule GroupherServer.CMS.CommunityApplications.Review do
   def mark_creation_failed(public_ref, operation_ref, reason) do
     now = DateTime.utc_now(:second)
 
-    Repo.transaction(fn ->
+    Transaction.run(fn ->
       case lock(public_ref) do
         {:ok, application} ->
           if application.status == :creation_failed do
             application
           else
             Multi.new()
-            |> Transitions.add(
+            |> ApplicationLifecycle.add(
               :application,
               :event,
               application,
@@ -172,7 +174,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Review do
               }
             )
             |> SlugClaims.release_application(:claim, application, now)
-            |> Repo.transaction()
+            |> Transaction.run()
             |> unwrap_nested_transaction()
           end
 
@@ -193,18 +195,18 @@ defmodule GroupherServer.CMS.CommunityApplications.Review do
        ) do
     now = DateTime.utc_now(:second)
 
-    Repo.transaction(fn ->
+    Transaction.run(fn ->
       with {:ok, application} <- lock(public_ref),
            {:ok, _} <- expected_version(application, expected_version) do
         Multi.new()
-        |> Transitions.add(:application, :event, application, to, attrs, %{
+        |> ApplicationLifecycle.add(:application, :event, application, to, attrs, %{
           type: :reviewer,
           id: reviewer.id,
           operation_ref: operation_ref,
           occurred_at: now
         })
         |> extend_multi.(application, now)
-        |> Repo.transaction()
+        |> Transaction.run()
         |> unwrap_nested_transaction()
       else
         {:error, reason} -> Repo.rollback(reason)

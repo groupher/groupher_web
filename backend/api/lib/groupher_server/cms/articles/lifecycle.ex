@@ -12,8 +12,9 @@ defmodule GroupherServer.CMS.Articles.Lifecycle do
 
   import Ecto.Query, warn: false
 
-  alias GroupherServer.{Activity, CMS, Repo}
-  alias CMS.Articles.{Bindings, ErrorCat}
+  alias GroupherServer.{CMS, Repo}
+  alias CMS.Articles.Workflow
+  alias CMS.Articles.{Bindings, Effects, ErrorCat}
   alias CMS.Model.{Article, ArticleLifecycle}
 
   @article_threads CMS.Artiment.Config.threads() -- [:doc]
@@ -88,7 +89,7 @@ defmodule GroupherServer.CMS.Articles.Lifecycle do
     operation_ref = Ecto.UUID.generate()
 
     {:ok, count} =
-      Repo.transaction(fn ->
+      Workflow.transaction(fn ->
         candidates =
           ArticleLifecycle
           |> join(:inner, [lifecycle], article in Article, on: article.id == lifecycle.article_id)
@@ -127,7 +128,7 @@ defmodule GroupherServer.CMS.Articles.Lifecycle do
       Enum.reduce_while(bindings, {:ok, :pass}, fn binding, {:ok, :pass} ->
         resource = Map.put(article, :community, binding.community)
 
-        case Activity.log(resource, :archived,
+        case Effects.activity(resource, :archived,
                operation_ref: operation_ref,
                source: :maintenance,
                occurred_at: archived.changed_at,

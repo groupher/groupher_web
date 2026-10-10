@@ -277,7 +277,7 @@ const checkExportedCallables = () => {
 const checkElixirSharedFunctions = () => {
   const boundaryFiles = [
     'backend/api/lib/groupher_server/cms/comments/query.ex',
-    'backend/api/lib/groupher_server/cms/comments/writer.ex',
+    'backend/api/lib/groupher_server/cms/comments/persist.ex',
     'backend/api/lib/groupher_server/cms/comments/lifecycle.ex',
     'backend/api/lib/groupher_server/cms/comments/job_policy.ex',
     'backend/api/lib/groupher_server/cms/comments/interaction_response.ex',
@@ -289,8 +289,8 @@ const checkElixirSharedFunctions = () => {
     ).map((file) => relative(file)),
     'backend/api/lib/groupher_server/cms/model/post_solution.ex',
     'backend/api/lib/groupher_server/cms/comments/solution.ex',
-    'backend/api/lib/groupher_server/cms/comments/commands/update_comment.ex',
-    'backend/api/lib/groupher_server/cms/comments/commands/delete_comment.ex',
+    'backend/api/lib/groupher_server/cms/comments/commands/update.ex',
+    'backend/api/lib/groupher_server/cms/comments/commands/delete.ex',
     'backend/api/lib/groupher_server/accounts/collect_folders/write.ex',
     'backend/api/lib/groupher_server/cms/article_stats.ex',
     'backend/api/lib/groupher_server/cms/front_desk/article.ex',

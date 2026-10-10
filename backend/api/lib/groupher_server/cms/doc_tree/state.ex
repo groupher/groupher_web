@@ -5,7 +5,7 @@ defmodule GroupherServer.CMS.DocTree.State do
   Query modules may read a state, but only this owner may initialize the
   durable row under the global Docs site lock.
 
-      DocTree facade / writer
+      DocTree facade / Commands
         -> DocTree.State
         -> Branch.resolve + global lock
         -> DocsSiteState row

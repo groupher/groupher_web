@@ -25,8 +25,8 @@ defmodule GroupherServer.CMS.DocTree.Trash do
   alias CMS.Articles.MutationLock
   alias CMS.Docs.Branch
   alias CMS.Docs.Trash, as: DocTrash
-  alias CMS.DocTree.Events
-  alias CMS.DocTree.Writer.{EventRecorder, Index, Operation}
+  alias CMS.DocTree.{Effects, Events}
+  alias CMS.DocTree.Persist.{EventRecorder, Index, Operation}
   alias CMS.DocTree.Workflows.TreeMutation
 
   alias CMS.Model.{
@@ -171,7 +171,7 @@ defmodule GroupherServer.CMS.DocTree.Trash do
            ),
          {:ok, _} <- delete_tree_memberships(current.id),
          {:ok, _activity} <-
-           Activity.log(
+           Effects.activity(
              %{activity_type: :doc_tree, community_id: community.id, ref: current.root_ref},
              :permanently_deleted,
              actor: actor,
@@ -204,7 +204,7 @@ defmodule GroupherServer.CMS.DocTree.Trash do
            record_restore_events(community, branch, items, draft_nodes, public_nodes, actor),
          {:ok, _} <- delete_tree_memberships(action.id),
          {:ok, _activity} <-
-           Activity.log(
+           Effects.activity(
              %{
                activity_type: :doc_tree,
                community_id: community.id,

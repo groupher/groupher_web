@@ -10,7 +10,8 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
   alias CMS.ContentImport.{Jobs, Staging}
   alias CMS.ContentImport.Persistence.{ImportSourceMapping, Job}
   alias CMS.ContentImport.Persistence.Job.Body, as: StagedBody
-  alias CMS.ContentImport.Threads.Doc.{Validator, Writer}
+  alias CMS.ContentImport.Threads.Doc.Validator
+  alias CMS.DocTree.Workflows.ContentImport
   alias CMS.Docs.Branch
   alias CMS.DocTree
   alias CMS.DocTree.{Revision, State}
@@ -73,7 +74,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
 
     assert Repo.aggregate(StagedBody, :count) == 1
 
-    assert {:ok, completed} = Writer.apply(community, job.job_ref)
+    assert {:ok, completed} = ContentImport.apply(community, job.job_ref)
     assert completed.status == :completed
     assert completed.counts.pages == 1
     assert completed.skipped == []
@@ -94,7 +95,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
 
     assert Enum.any?(group.pages, &(&1.doc_id == completed.first_imported_doc_id))
 
-    assert {:ok, replayed} = Writer.apply(community, job.job_ref)
+    assert {:ok, replayed} = ContentImport.apply(community, job.job_ref)
     assert replayed == completed
 
     assert {:ok, %{status: :completed}} =
@@ -111,7 +112,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
                %{external_ref: "docs/tiny.md", body_bag: body_bag("Go", "a")}
              ])
 
-    assert {:ok, completed} = Writer.apply(community, job.job_ref)
+    assert {:ok, completed} = ContentImport.apply(community, job.job_ref)
     assert completed.status == :completed
     assert completed.counts.pages == 1
   end
@@ -130,7 +131,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
                ])
     end)
 
-    assert {:ok, completed} = Writer.apply(community, job.job_ref)
+    assert {:ok, completed} = ContentImport.apply(community, job.job_ref)
     assert completed.status == :completed
     assert completed.counts.pages == 6
     assert Repo.aggregate(ImportSourceMapping, :count) == 6
@@ -217,7 +218,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
                %{external_ref: "docs/start.md", body_bag: body_bag("First version", "a")}
              ])
 
-    assert {:ok, first_import} = Writer.apply(community, first_job.job_ref)
+    assert {:ok, first_import} = ContentImport.apply(community, first_job.job_ref)
     first_doc_id = first_import.first_imported_doc_id
 
     {:ok, branch} = Branch.resolve(community, nil)
@@ -276,7 +277,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
                %{external_ref: "docs/start.md", body_bag: body_bag("Second version", "b")}
              ])
 
-    assert {:ok, second_import} = Writer.apply(community, second_job.job_ref)
+    assert {:ok, second_import} = ContentImport.apply(community, second_job.job_ref)
     assert second_import.first_imported_doc_id == first_doc_id
     assert Repo.aggregate(ImportSourceMapping, :count) == 1
     assert Repo.aggregate(DocTreeNode, :count) == 3
@@ -299,7 +300,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
                %{external_ref: "docs/start.md", body_bag: body_bag("First version", "a")}
              ])
 
-    assert {:ok, first_import} = Writer.apply(community, first_job.job_ref)
+    assert {:ok, first_import} = ContentImport.apply(community, first_job.job_ref)
     first_doc_id = first_import.first_imported_doc_id
     page = Repo.get_by!(DocTreeNode, community_id: community.id, type: :page)
     assert page.doc_id == first_doc_id
@@ -357,7 +358,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
                %{external_ref: "docs/start.md", body_bag: body_bag("Second version", "b")}
              ])
 
-    assert {:ok, second_import} = Writer.apply(community, second_job.job_ref)
+    assert {:ok, second_import} = ContentImport.apply(community, second_job.job_ref)
     assert second_import.first_imported_doc_id == first_doc_id
 
     assert Repo.get_by!(DocTreeLog,
@@ -397,7 +398,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
               reason: :content_import_job_not_ready,
               details: :cancelled
             }} =
-             Writer.apply(community, job.job_ref)
+             ContentImport.apply(community, job.job_ref)
 
     assert {:error,
             %ErrorCat.Error{
@@ -455,7 +456,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
 
     assert staged.failed_items == []
 
-    assert {:ok, completed} = Writer.apply(community, job.job_ref)
+    assert {:ok, completed} = ContentImport.apply(community, job.job_ref)
     assert completed.status == :completed
     assert completed.counts.pages == 2
     assert completed.failed_items == staged.failed_items
@@ -497,7 +498,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
              }
            ]
 
-    assert {:ok, completed} = Writer.apply(community, job.job_ref)
+    assert {:ok, completed} = ContentImport.apply(community, job.job_ref)
     assert completed.status == :completed
     assert completed.counts.pages == 1
     assert completed.failed_items == staged.failed_items
@@ -607,7 +608,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
                %{external_ref: "docs/large.md", skipped: %{code: "content_too_large"}}
              ])
 
-    assert {:ok, completed} = Writer.apply(community, job.job_ref)
+    assert {:ok, completed} = ContentImport.apply(community, job.job_ref)
     assert completed.counts.pages == 1
 
     assert completed.skipped == [
@@ -625,7 +626,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
     assert Repo.aggregate(ImportSourceMapping, :count) == 1
   end
 
-  test "an all-skipped Job fails and never enters the writer" do
+  test "an all-skipped Job fails and never enters the processing stage" do
     %{community: community, job: job} = create_job([document("docs/large.md", "/large")])
 
     assert {:ok, failed} =
@@ -641,7 +642,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
               reason: :content_import_job_not_ready,
               details: :failed
             }} =
-             Writer.apply(community, job.job_ref)
+             ContentImport.apply(community, job.job_ref)
   end
 
   test "target revision conflicts roll back without consuming staged bodies" do
@@ -661,7 +662,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
               reason: :custom,
               details: "The Docs target changed after Review"
             }} =
-             Writer.apply(community, job.job_ref)
+             ContentImport.apply(community, job.job_ref)
 
     assert Repo.get_by!(Job, hash_id: job.job_ref).status == :ready
     assert Repo.aggregate(StagedBody, :count) == 1

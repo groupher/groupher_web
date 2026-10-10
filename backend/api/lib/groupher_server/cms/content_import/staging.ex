@@ -22,6 +22,7 @@ defmodule GroupherServer.CMS.ContentImport.Staging do
   import Ecto.Query, warn: false
 
   alias GroupherServer.{CMS, Repo}
+  alias CMS.ContentImport.Transaction
   alias CMS.ErrorCat
 
   alias CMS.Artiment.BodyBag
@@ -37,7 +38,7 @@ defmodule GroupherServer.CMS.ContentImport.Staging do
   def stage(%Community{} = community, job_ref, items)
       when is_list(items) and length(items) in 1..@max_batch_count do
     with {:ok, _} <- validate_unique_refs(items) do
-      Repo.transaction(fn ->
+      Transaction.run(fn ->
         with {:ok, job} <- Jobs.lock_job(community.id, job_ref),
              {:ok, _} <- ensure_stageable(job),
              {:ok, _} <- stage_items(job, items),

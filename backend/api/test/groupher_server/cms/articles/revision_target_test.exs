@@ -26,7 +26,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
 
   test "publish materialization keeps stable identity and reuses unchanged body snapshots" do
     {:ok, user} = db_insert(:user)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
     {:ok, article} = insert_article(author.id)
     {:ok, body} = insert_body("body-v1")
     {:ok, draft} = insert_draft(article.id, body.id, author.id, "Title one", "content-1")
@@ -57,7 +57,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
   test "autosave updates only Draft and discard preserves the selected Public Revision" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = db_insert(:community)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
     body_bag = mock_body_bag(mock_rich_text("draft body"))
 
     assert {:ok, %{article: article, draft: draft}} =
@@ -93,7 +93,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
   test "cover-only Draft edits change the content hash and Diff" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = db_insert(:community)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
 
     {:ok, %{article: article, draft: draft}} =
       Store.create(
@@ -148,7 +148,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
   test "publish atomically selects a Revision and removes the mutable workspace" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = db_insert(:community)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
 
     {:ok, %{article: article, draft: draft}} =
       Store.create(
@@ -184,7 +184,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
   test "publish waits for an in-flight autosave and preserves its newer Draft" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = db_insert(:community)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
 
     {:ok, %{article: article, draft: draft}} =
       Store.create(
@@ -245,7 +245,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
   test "Doc publish allocates durable branch versions and restore creates a new Draft" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = db_insert(:community)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
 
     branch =
       %DocBranch{}
@@ -558,7 +558,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
 
     destination_id = destination_binding.community_id
     assert destination_id == destination.id
-    assert {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    assert {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
     assert {:ok, restored} = Store.ensure_from_public(published, author)
     lifecycle = Repo.get_by!(CMS.Model.ArticleLifecycle, article_id: published.id)
 
@@ -733,7 +733,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
   test "FrontDesk resolves ArticlePath to the selected stable public revision" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = db_insert(:community)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
 
     {:ok, %{article: article, draft: draft}} =
       Store.create(

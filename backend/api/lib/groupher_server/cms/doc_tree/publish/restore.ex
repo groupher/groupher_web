@@ -30,7 +30,7 @@ defmodule GroupherServer.CMS.DocTree.Publish.Restore do
 
   alias Accounts.Model.User
   alias Activity.EventRef
-  alias CMS.DocTree.{Publish.Result, Revision}
+  alias CMS.DocTree.{Effects, Publish.Result, Revision}
 
   alias CMS.Model.{
     Community,
@@ -188,7 +188,7 @@ defmodule GroupherServer.CMS.DocTree.Publish.Restore do
         {:doc_tree_restore, community.id, branch.id, Enum.map(restore_entries, & &1.event.id)}
       )
 
-    Activity.log(
+    Effects.activity(
       %{
         activity_type: :doc_tree,
         community_id: community.id,

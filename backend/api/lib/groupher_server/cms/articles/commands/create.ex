@@ -12,10 +12,11 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
   canonical public result; it never guesses an old Draft/Public physical row.
   """
 
-  alias GroupherServer.{Accounts, Activity, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.Model.User
   alias CMS.{Articles, Communities, Command, Docs}
   alias CMS.Articles.Tags.Assignment
+  alias CMS.Articles.Effects
   alias CMS.FrontDesk
   alias CMS.Model.{Article, ArticleBinding, Community}
   alias CMS.Articles.RevisionResult
@@ -105,7 +106,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
          {:ok, %Article{} = published} <- FrontDesk.article(article.id, mode: :internal),
          {:ok, public} <- public_projection(published, community),
          {:ok, _activity} <-
-           Activity.log(Map.put(public, :community_id, community.id), :created, actor: user),
+           Effects.activity(Map.put(public, :community_id, community.id), :created, actor: user),
          {:ok, _community} <- Communities.update_count_field(community, :doc),
          {:ok, _user} <- Accounts.Publish.update_states(user, :doc) do
       {:ok, _throttle} = CMS.Gate.RateLimit.Publish.record(user)
@@ -129,7 +130,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
            Articles.publish(article.id, user, publish_opts),
          {:ok, public} <- public_projection(published, community),
          {:ok, _activity} <-
-           Activity.log(Map.put(public, :community_id, community.id), :created, actor: user) do
+           Effects.activity(Map.put(public, :community_id, community.id), :created, actor: user) do
       {:ok, public}
     end
   end

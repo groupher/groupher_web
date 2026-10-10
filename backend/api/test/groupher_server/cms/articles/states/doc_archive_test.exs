@@ -10,7 +10,7 @@ defmodule GroupherServer.Test.CMS.DocArchive do
   setup do
     {:ok, user} = db_insert(:user)
     {:ok, community} = mock_community(user)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
     {:ok, branch} = CMS.Docs.Branch.resolve(community, [])
 
     {:ok, %{article: article, draft: draft}} =

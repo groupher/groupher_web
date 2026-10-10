@@ -15,10 +15,11 @@ defmodule GroupherServer.CMS.Comments.States do
 
   import Ecto.Query, warn: false
 
-  alias GroupherServer.{Accounts, Activity, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.Model.User
   alias Accounts.Profiles.ErrorCat, as: AuthErrorCat
   alias CMS.{Comments.ErrorCat, FrontDesk}
+  alias CMS.Comments.Effects
   alias CMS.Model.{Comment, PinnedComment}
   alias Helper.{Multi, ORM, T}
 
@@ -234,7 +235,7 @@ defmodule GroupherServer.CMS.Comments.States do
   end
 
   defp record_pin_activity(%Comment{thread: :post} = comment, _article, action, user, opts) do
-    Activity.log(comment, action,
+    Effects.activity(comment, action,
       actor: user,
       operation_ref: Keyword.fetch!(opts, :operation_ref),
       occurred_at: Keyword.get(opts, :occurred_at, DateTime.utc_now(:second))

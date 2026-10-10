@@ -371,7 +371,7 @@ owner transaction 的数据库写语句成功提交时才会用 `clock_timestamp
 ### 6.3 创建 Comment
 
 ```text
-CreateComment command
+Comments.Commands.Create command
         │
         v
 Article aggregate transaction

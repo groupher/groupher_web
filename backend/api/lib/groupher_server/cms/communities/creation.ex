@@ -18,7 +18,7 @@ defmodule GroupherServer.CMS.Communities.Creation do
   alias Ecto.Multi
   alias Accounts.Model.User
   alias CMS.Communities.{ErrorCat, Jobs, Lifecycle, NamePolicy, SlugClaims, CreationPersist}
-  alias CMS.CommunityApplications.Transitions
+  alias CMS.CommunityApplications.Lifecycle, as: ApplicationLifecycle
 
   alias CMS.Model.{
     CommunityApplication,
@@ -139,7 +139,7 @@ defmodule GroupherServer.CMS.Communities.Creation do
 
   defp mark_setting_up(application, community, operation_ref, now) do
     Multi.new()
-    |> Transitions.add(
+    |> ApplicationLifecycle.add(
       :application,
       :event,
       application,

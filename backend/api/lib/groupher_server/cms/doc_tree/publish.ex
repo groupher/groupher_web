@@ -33,10 +33,11 @@ defmodule GroupherServer.CMS.DocTree.Publish do
 
   alias Accounts.Model.User
 
-  alias CMS.DocTree.Publish.{
+  alias CMS.DocTree.{Effects, Projection, Publish}
+
+  alias Publish.{
     Checklist,
     DocPublisher,
-    PublicProjection,
     Restore,
     Result,
     Selection
@@ -270,7 +271,7 @@ defmodule GroupherServer.CMS.DocTree.Publish do
          true <- root.type in [:tab, :group],
          pages <-
            community
-           |> PublicProjection.public_descendants(branch, root.node_id)
+           |> Projection.public_descendants(branch, root.node_id)
            |> Enum.filter(&(&1.type == :page)),
          {:ok, drafts} <-
            Result.map_while_ok(
@@ -345,7 +346,7 @@ defmodule GroupherServer.CMS.DocTree.Publish do
              tree_result.events
            ),
          {:ok, _} <-
-           PublicProjection.preapply_tree_delete_events(community, branch, tree_result.events),
+           Projection.preapply_tree_delete_events(community, branch, tree_result.events),
          {:ok, doc_revisions} <-
            publish_doc_checklist_items(
              community,
@@ -356,7 +357,7 @@ defmodule GroupherServer.CMS.DocTree.Publish do
              sync_cover?,
              opts
            ),
-         {:ok, _} <- PublicProjection.apply_tree_events(community, branch, tree_result.events),
+         {:ok, _} <- Projection.apply_tree_events(community, branch, tree_result.events),
          {:ok, release} <-
            DocPublishRelease.create(community, branch, user, doc_revisions, tree_result),
          next_checklist <- checklist(community, branch_id: branch.id),
@@ -382,40 +383,7 @@ defmodule GroupherServer.CMS.DocTree.Publish do
     }
   end
 
-  defp invalidate_doc_tree(community, opts) do
-    with {:ok, identity} <- outbox_identity(opts),
-         {:ok, _event} <-
-           CMS.Outbox.send(%{
-             event: "doc_tree.changed",
-             worker: CMS.Outbox.Workers.Community.Cleanup,
-             resource_type: "community",
-             resource_id: community.id,
-             identity: identity,
-             effect_key: "doc-tree:#{Keyword.get(opts, :effect_key, "changed")}",
-             data: %{community: community.slug, community_id: community.id}
-           }) do
-      {:ok, :pass}
-    end
-  end
-
-  defp outbox_identity(opts) do
-    case Keyword.get(opts, :causation_id) || Keyword.get(opts, :command_id) do
-      command_id when is_binary(command_id) ->
-        case Ecto.UUID.cast(command_id) do
-          {:ok, command_id} -> {:ok, {:command, command_id}}
-          :error -> {:error, :outbox_command_id_required}
-        end
-
-      nil ->
-        case Keyword.get(opts, :workflow_ref) do
-          workflow_ref when is_binary(workflow_ref) and workflow_ref != "" ->
-            {:ok, {:workflow, workflow_ref}}
-
-          _ ->
-            {:error, :outbox_identity_required}
-        end
-    end
-  end
+  defp invalidate_doc_tree(community, opts), do: Effects.enqueue_invalidation(community, opts)
 
   defp publish_doc_checklist_items(
          %Community{} = community,

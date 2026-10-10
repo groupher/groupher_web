@@ -20,7 +20,7 @@ defmodule GroupherServer.CMS.CommunityApplications do
   alias CMS.Gate.Const
   alias CMS.Passport
 
-  alias CMS.CommunityApplications.{Commands, LogoUploads, Policy, Query, Review, Writer}
+  alias CMS.CommunityApplications.{Commands, LogoUploads, Policy, Query, Review, Workflow}
 
   alias Helper.T
 
@@ -190,7 +190,7 @@ defmodule GroupherServer.CMS.CommunityApplications do
 
   @doc "Runs `expire_due` through the public `CommunityApplications` boundary."
   @spec expire_due(DateTime.t()) :: T.domain_res(non_neg_integer())
-  def expire_due(now), do: Writer.expire_due(now)
+  def expire_due(now), do: Workflow.expire_due(now)
 
   @doc "Runs `mark_creation_failed` through the public `CommunityApplications` boundary."
   @spec mark_creation_failed(String.t(), String.t(), term()) :: T.domain_res(term())

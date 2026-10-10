@@ -95,5 +95,6 @@ defmodule GroupherServerWeb.Schema.CMS.Dashboard.Metrics.Inputs do
   input_object :wallpaper_restore_snapshot_input do
     field(:snapshot_id, non_null(:id))
     field(:base_version, non_null(:integer))
+    field(:command_id, non_null(:id))
   end
 end

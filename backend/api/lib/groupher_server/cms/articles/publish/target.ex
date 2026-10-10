@@ -11,6 +11,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
+  alias CMS.Articles.Workflow
   alias CMS.Articles.{Bindings, Draft, Draft.Store, Lifecycle, Numbering, Public, Revision}
   alias CMS.Articles.Tags.Assignment
   alias CMS.Model.{Article, ArticleBinding, ArticlePublic, Author, Community}
@@ -35,7 +36,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
     published_at = DateTime.utc_now(:second)
 
     with {:ok, %{community: community}} <- binding_context(article, opts) do
-      Repo.transaction(fn ->
+      Workflow.transaction(fn ->
         with {:ok, locked_article} <- lock_article(article.id),
              {:ok, draft} <- Store.get_for_update(locked_article),
              {:ok, _} <- validate_version(draft.version, expected_version),

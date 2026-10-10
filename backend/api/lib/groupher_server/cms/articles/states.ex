@@ -18,7 +18,7 @@ defmodule GroupherServer.CMS.Articles.States do
   alias GroupherServer.{CMS, Repo}
 
   alias CMS.Articles.ErrorCat
-  alias CMS.{Articles.Lifecycle, Artiment.Const, Comments.Writer}
+  alias CMS.{Articles.Lifecycle, Artiment.Const, Comments.Persist}
   alias CMS.Docs.Lifecycle, as: DocLifecycle
 
   alias CMS.Model.{
@@ -48,7 +48,7 @@ defmodule GroupherServer.CMS.Articles.States do
   def set_cat(%Article{id: article_id, thread: :post} = article, cat) do
     with %PostState{} = state <- Repo.get(PostState, article_id),
          {:ok, _state} <- state |> PostState.changeset(%{cat: cat}) |> Repo.update(),
-         {:ok, _} <- Writer.batch_update_question_flag(article, cat == @article_cat.qa) do
+         {:ok, _} <- Persist.batch_update_question_flag(article, cat == @article_cat.qa) do
       {:ok, article}
     else
       nil -> {:error, ErrorCat.article_not_found("article not found")}

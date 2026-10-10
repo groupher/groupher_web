@@ -4,7 +4,7 @@ defmodule GroupherServer.CMS.Model.AssetWorkflowStep do
 
       pending step
         -> claimed with lease
-        -> succeeded result or failed/conflict result
+        -> succeeded/skipped result or failed/conflict result
   """
 
   use Ecto.Schema
@@ -15,7 +15,7 @@ defmodule GroupherServer.CMS.Model.AssetWorkflowStep do
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.cms()
-  @states [:pending, :claimed, :succeeded, :failed, :conflict]
+  @states [:pending, :claimed, :succeeded, :skipped, :failed, :conflict]
 
   schema "asset_workflow_steps" do
     belongs_to(:run, AssetWorkflowRun)

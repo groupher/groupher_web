@@ -42,7 +42,7 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
       params = Map.drop(attrs, [:command_id, :cur_user, :step_ref])
 
       if is_nil(command_id) do
-        with {:ok, author} <- CMS.Articles.Writer.ensure_author_exists(user) do
+        with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user) do
           replace_in_draft(article, community, params, author, user)
         end
       else
@@ -71,7 +71,7 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
         {:ok, result}
 
       :not_applied ->
-        with {:ok, author} <- CMS.Articles.Writer.ensure_author_exists(user),
+        with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user),
              {:ok, result} <- replace_in_draft(article, community, params, author, user) do
           {:ok, Map.put(result, :workflow_ref, workflow_ref)}
         end
@@ -136,7 +136,7 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
          %{actor: user, target: article, params: params, command_id: command_id},
          community
        ) do
-    with {:ok, author} <- CMS.Articles.Writer.ensure_author_exists(user),
+    with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user),
          {:ok, result} <- replace_in_draft(article, community, params, author, user) do
       {:ok,
        %Confirmation{

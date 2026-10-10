@@ -18,7 +18,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
   alias CMS.Articles.Bindings
   alias CMS.Communities.Enable
   alias CMS.{Gate, Command}
-  alias CMS.Interactions.{Config, ErrorCat, ReadState}
+  alias CMS.Interactions.{Config, Effects, ErrorCat, Persist, ReadState}
   alias CMS.Interactions.Reactions.EmotionConfirmation, as: Confirmation
   alias CMS.Model.{ArticleUserEmotion, Author, Comment, CommentUserEmotion}
   alias Analysis.MetricEvent
@@ -109,18 +109,13 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
   end
 
   defp enqueue_effect(canonical, actor, operation, emotion, command_id, :changed) do
-    CMS.Outbox.send(%{
-      event: "interaction.emotion_changed",
-      worker: CMS.Outbox.Workers.Interaction.Cleanup,
-      resource_type: interaction_resource_type(canonical),
-      resource_id: canonical.id,
-      command_id: command_id,
-      data: %{actor_id: actor.id, operation: operation, emotion: emotion}
-    })
-    |> case do
-      {:ok, _event} -> {:ok, :pass}
-      {:error, reason} -> {:error, reason}
-    end
+    Effects.enqueue_reaction_changed(
+      "interaction.emotion_changed",
+      interaction_resource_type(canonical),
+      canonical.id,
+      command_id,
+      %{actor_id: actor.id, operation: operation, emotion: emotion}
+    )
   end
 
   defp interaction_resource_type(%Comment{}), do: "comment"
@@ -213,7 +208,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
   def decode(_value, _type), do: {:error, ErrorCat.unknown_emotion()}
 
   defp change_fact(%Comment{} = comment, _info, emotion, actor, :add) do
-    insert_fact(
+    Persist.insert_fact(
       CommentUserEmotion,
       %{
         comment_id: comment.id,
@@ -221,17 +216,19 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
         user_id: actor.id,
         emotion: to_string(emotion)
       },
-      [:comment_id, :user_id, :emotion]
+      [:comment_id, :user_id, :emotion],
+      "emotion"
     )
   end
 
   defp change_fact(%Comment{} = comment, _info, emotion, actor, :remove) do
-    delete_fact(
+    Persist.delete_fact(
       from(row in CommentUserEmotion,
         where:
           row.comment_id == ^comment.id and row.user_id == ^actor.id and
             row.emotion == ^to_string(emotion)
-      )
+      ),
+      "emotion"
     )
   end
 
@@ -246,41 +243,20 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
 
     conflict_target = emotion_conflict_target(info.foreign_key)
 
-    insert_fact(ArticleUserEmotion, attrs, conflict_target)
+    Persist.insert_fact(ArticleUserEmotion, attrs, conflict_target, "emotion")
   end
 
   defp change_fact(article, info, emotion, actor, :remove) do
     foreign_key = info.foreign_key
 
-    delete_fact(
+    Persist.delete_fact(
       from(row in ArticleUserEmotion,
         where:
           field(row, ^foreign_key) == ^article.id and row.user_id == ^actor.id and
             row.emotion == ^to_string(emotion)
-      )
+      ),
+      "emotion"
     )
-  end
-
-  defp insert_fact(schema, attrs, conflict_target) do
-    now = DateTime.utc_now(:second)
-    attrs = Map.merge(attrs, %{inserted_at: now, updated_at: now})
-
-    case Repo.insert_all(schema, [attrs],
-           on_conflict: :nothing,
-           conflict_target: conflict_target
-         ) do
-      {1, _rows} -> {:ok, :changed}
-      {0, _rows} -> {:ok, :unchanged}
-      _ -> {:error, ErrorCat.interaction_state_conflict("unexpected emotion insert result")}
-    end
-  end
-
-  defp delete_fact(query) do
-    case Repo.delete_all(query) do
-      {1, _rows} -> {:ok, :changed}
-      {0, _rows} -> {:ok, :unchanged}
-      _ -> {:error, ErrorCat.interaction_state_conflict("multiple emotion facts deleted")}
-    end
   end
 
   defp author_user_id(%{author: %{user_id: user_id}}), do: user_id

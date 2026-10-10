@@ -221,8 +221,8 @@ normalization 或 result reconstruction；support 本身不能成为 facade 可�
 以下形状符合目标规则，作为迁移样板：
 
 ```elixir
-Comments.Commands.UpdateComment.execute(...)
-Comments.Commands.DeleteComment.execute(...)
+Comments.Commands.Update.execute(...)
+Comments.Commands.Delete.execute(...)
 ```
 
 `Interactions.Reactions.Upvote.add/remove` 与 `Emotion.add/remove` 表达的是同一 reaction 类型下的两个

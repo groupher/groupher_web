@@ -23,7 +23,7 @@ defmodule GroupherServer.CMS.Assets.Deletion do
 
   alias GroupherServer.{CMS, Repo, ServiceAuth}
 
-  alias CMS.Assets.{ErrorCat, Persist, Workflow}
+  alias CMS.Assets.{Effects, ErrorCat, Persist, Workflow}
   alias CMS.Model.{AssetWorkflowRun, Community, CommunityAsset}
   alias ServiceAuth.Client
 
@@ -38,20 +38,7 @@ defmodule GroupherServer.CMS.Assets.Deletion do
     workflow_ref = "application-upload-cleanup:#{upload.public_ref}"
 
     Repo.transaction(fn ->
-      case CMS.Outbox.send(%{
-             event: "asset.application_upload_provider_delete",
-             worker: CMS.Outbox.Workers.Asset.Cleanup,
-             resource_type: "application_logo_upload",
-             resource_id: upload.id,
-             identity: {:workflow, workflow_ref},
-             effect_key: "application-upload:#{upload.public_ref}",
-             data: %{
-               id: upload.id,
-               public_ref: upload.public_ref,
-               storage: upload.storage,
-               storage_key: upload.storage_key
-             }
-           }) do
+      case Effects.enqueue_application_upload_delete(upload, workflow_ref) do
         {:ok, _event} -> :pass
         {:error, reason} -> Repo.rollback(reason)
       end
@@ -153,15 +140,7 @@ defmodule GroupherServer.CMS.Assets.Deletion do
     Repo.transaction(fn ->
       with {:ok, deleted} <- Persist.delete(community, asset_id),
            {:ok, _event} <-
-             CMS.Outbox.send(%{
-               event: "asset.provider_delete",
-               worker: CMS.Outbox.Workers.Asset.Cleanup,
-               resource_type: "community_asset",
-               resource_id: deleted.id,
-               identity: {:workflow, workflow_ref},
-               effect_key: "asset:#{deleted.id}",
-               data: %{asset_id: deleted.id, public_ref: deleted.public_ref}
-             }) do
+             Effects.enqueue_provider_delete(deleted, {:workflow, workflow_ref}) do
         :pass
       else
         {:error, reason} -> Repo.rollback(reason)

@@ -8,7 +8,7 @@ defmodule GroupherServer.CMS.Interactions do
         -> authoritative facts and derived read state
 
   The facade owns the stable Interaction reaction and read contracts. SQL,
-  fact writers, derived ReadState, worker maintenance, and response assembly stay
+  fact persistence, derived ReadState, worker maintenance, and response assembly stay
   behind their respective domain owners.
   """
 

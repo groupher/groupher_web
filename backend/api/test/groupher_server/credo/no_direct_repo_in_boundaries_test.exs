@@ -42,9 +42,9 @@ defmodule GroupherServer.Test.Credo.NoDirectRepoInBoundariesTest do
     assert length(issues) == 1
   end
 
-  test "allows Repo inside an explicit writer boundary" do
+  test "allows Repo inside an explicit persist boundary" do
     source = """
-    defmodule GroupherServer.CMS.Articles.Writer do
+    defmodule GroupherServer.CMS.Articles.Persist do
       alias GroupherServer.Repo
 
       def load(id), do: Repo.get(GroupherServer.CMS.Model.Article, id)
@@ -53,7 +53,7 @@ defmodule GroupherServer.Test.Credo.NoDirectRepoInBoundariesTest do
 
     issues =
       source
-      |> to_source_file("lib/groupher_server/cms/articles/writer.ex")
+      |> to_source_file("lib/groupher_server/cms/articles/persist.ex")
       |> run_check(NoDirectRepoInBoundaries)
 
     assert issues == []

@@ -4,7 +4,7 @@ defmodule GroupherServer.CMS.Press.Invalidation do
 
   Business position:
 
-      CMS.Press / Press.ConfigWriter
+      CMS.Press.Effects
         -> Press.Invalidation
         -> authenticated Press HTTP endpoint
   """

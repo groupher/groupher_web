@@ -15,7 +15,7 @@ defmodule GroupherServer.CMS.Outbox.Workers.Asset.Cleanup do
     unique: [period: 86_400, keys: [:event_id], states: :incomplete]
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Assets.Deletion
+  alias CMS.Assets.Effects
   alias CMS.Model.CommunityAsset
 
   @impl Oban.Worker
@@ -41,7 +41,7 @@ defmodule GroupherServer.CMS.Outbox.Workers.Asset.Cleanup do
       "community_asset" ->
         case Repo.get(CommunityAsset, event.resource_id) do
           %CommunityAsset{} = asset ->
-            case Deletion.deliver(asset) do
+            case Effects.deliver_provider_delete(asset) do
               {:ok, _} -> {:ok, :deleted}
               {:error, reason} -> {:error, reason}
             end
@@ -51,7 +51,7 @@ defmodule GroupherServer.CMS.Outbox.Workers.Asset.Cleanup do
         end
 
       "application_logo_upload" ->
-        case Deletion.deliver_application_upload(event.data) do
+        case Effects.deliver_application_upload_delete(event.data) do
           {:ok, _} -> {:ok, :deleted}
           {:error, reason} -> {:error, reason}
         end

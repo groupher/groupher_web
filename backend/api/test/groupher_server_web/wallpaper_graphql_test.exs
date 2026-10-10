@@ -150,7 +150,7 @@ defmodule GroupherServer.Test.WallpaperGraphQL do
         input: %{
           baseVersion: 0,
           batchRef: batch_ref,
-          commandId: "graphql-publish",
+          commandId: "11111111-1111-4111-8111-111111111111",
           settings: %{
             renderConfig: Jason.encode!(render_config()),
             settingsSchemaVersion: 1,
@@ -174,7 +174,7 @@ defmodule GroupherServer.Test.WallpaperGraphQL do
           input: %{
             baseVersion: 0,
             batchRef: batch_ref,
-            commandId: "graphql-loser",
+            commandId: "33333333-3333-4333-8333-333333333333",
             settings: %{
               renderConfig: Jason.encode!(render_config()),
               settingsSchemaVersion: 1,
@@ -215,7 +215,7 @@ defmodule GroupherServer.Test.WallpaperGraphQL do
         input: %{
           baseVersion: 1,
           batchRef: nil,
-          commandId: "graphql-none",
+          commandId: "22222222-2222-4222-8222-222222222222",
           settings: %{settingsSchemaVersion: 1, type: "NONE"},
           theme: "LIGHT"
         }
@@ -229,7 +229,7 @@ defmodule GroupherServer.Test.WallpaperGraphQL do
         input: %{
           baseVersion: 0,
           batchRef: batch_ref,
-          commandId: "graphql-publish",
+          commandId: "11111111-1111-4111-8111-111111111111",
           settings: %{
             renderConfig: Jason.encode!(render_config()),
             settingsSchemaVersion: 1,
@@ -255,7 +255,11 @@ defmodule GroupherServer.Test.WallpaperGraphQL do
     restored =
       gq_mutation(rule_conn, S.Dsb.m(:restore_wallpaper_snapshot), %{
         community: community.slug,
-        input: %{baseVersion: 2, snapshotId: snapshot_id}
+        input: %{
+          baseVersion: 2,
+          commandId: "44444444-4444-4444-8444-444444444444",
+          snapshotId: snapshot_id
+        }
       })
 
     assert restored["version"] == 3

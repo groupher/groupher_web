@@ -2,7 +2,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Review do
   @moduledoc """
   Receipt-backed reviewer transition Commands.
 
-      GraphQL -> Review action -> Application Gate -> Writer transition -> Receipt result
+      GraphQL -> Review Command -> Application Gate -> Lifecycle/Persist -> Receipt result
   """
 
   alias GroupherServer.CMS

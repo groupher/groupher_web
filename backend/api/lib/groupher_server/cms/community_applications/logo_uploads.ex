@@ -18,7 +18,7 @@ defmodule GroupherServer.CMS.CommunityApplications.LogoUploads do
   alias Accounts.Model.User
   alias CMS.Assets.Capability
   alias CMS.Communities.ErrorCat
-  alias CMS.CommunityApplications.{Config, Policy}
+  alias CMS.CommunityApplications.{Config, Policy, Transaction}
   alias CMS.Model.CommunityApplicationLogoUpload
   alias Helper.Utils
 
@@ -98,7 +98,7 @@ defmodule GroupherServer.CMS.CommunityApplications.LogoUploads do
     upload_ref = get(input, :upload_ref)
     now = DateTime.utc_now(:second)
 
-    Repo.transaction(fn ->
+    Transaction.run(fn ->
       upload =
         CommunityApplicationLogoUpload
         |> where([upload], upload.public_ref == ^upload_ref)

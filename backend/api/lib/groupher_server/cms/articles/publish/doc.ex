@@ -13,7 +13,8 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Articles.{Bindings, Draft.Store, Numbering, Revision}
+  alias CMS.Articles.Workflow
+  alias CMS.Articles.{Bindings, Draft.Store, Effects, Numbering, Revision}
 
   alias CMS.Model.{
     Article,
@@ -44,7 +45,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
           | {:error, term()}
   def publish(%Article{thread: :doc} = article, branch_id, %Author{} = actor, opts) do
     with {:ok, community} <- binding_community(opts, article, branch_id) do
-      Repo.transaction(fn ->
+      Workflow.transaction(fn ->
         with {:ok, article} <- lock_article(article.id),
              {:ok, branch} <- lock_branch(branch_id, community.id),
              {:ok, draft} <- Store.get_for_update(article, branch_id: branch_id),
@@ -286,22 +287,21 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
     with %ArticleBinding{inner_id: inner_id} <- binding,
          true <- is_integer(inner_id),
          {:ok, identity} <- outbox_identity(opts) do
-      CMS.Outbox.send(%{
-        event: if(first_publish?, do: "article.published", else: "article.updated"),
-        worker: CMS.Outbox.Workers.Article.Cleanup,
-        resource_type: "article",
-        resource_id: article.id,
-        identity: identity,
-        effect_key:
-          "article:#{article.id}:#{branch.id}:#{if(first_publish?, do: "published", else: "updated")}",
-        data: %{
+      Effects.enqueue(
+        if(first_publish?, do: "article.published", else: "article.updated"),
+        "article",
+        article.id,
+        identity,
+        %{
           community: community.slug,
           community_id: community.id,
           thread: :doc,
           inner_id: inner_id,
           article_id: article.id
-        }
-      })
+        },
+        effect_key:
+          "article:#{article.id}:#{branch.id}:#{if(first_publish?, do: "published", else: "updated")}"
+      )
     else
       false -> {:ok, :not_public_path}
     end
