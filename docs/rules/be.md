@@ -32,7 +32,7 @@
 - 同步 mutation 的 transport public ref/path 由入口通过 `CMS.FrontDesk` 解析一次；Resolver 不得把已加载的领域 struct 降级为 ID，再交给 CMS facade、Command 或 Writer 重复加载。Reader/list/count/projection 的 foreign-key query 不受此限制。
 - CMS mutation facade 和 Command 使用资源 struct 作为主要目标；Gate 在 aggregate lock 内执行的 canonical reload 必须保留，调用方随后只使用 Gate 返回的 canonical resource。
 - Lifecycle 可以使用稳定 domain identity 加载并锁定自己拥有的状态行；DocTree、Trash replay 等特殊 identity 不做脱离上下文的机械 struct 化。Post-commit/Oban effect 使用稳定 identity 并在执行时重新加载当前 authority。
-- 完整边界、例外、当前偏差和迁移清单见 [CMS 资源加载与 Canonical Reload 边界](./resource-loading-boundary.md)。
+- 完整边界、例外、当前偏差和迁移清单见 [CMS 资源加载与 Canonical Reload 边界](../architecture/resource-loading-boundary.md)。
 
 ## ErrorCat
 
@@ -52,9 +52,10 @@
 
 ## 建议补充方向
 
-- 模块边界与目录约定；当前 CMS facade 的整改决策与执行顺序见
+- 模块结构、职责边界、transaction owner 与副作用约束见
+  [Backend Context Module Structure](./backend-context-module-structure.md)
+- 当前 CMS facade 的整改决策与执行顺序见
   [CMS Facade 与实现目录收口](./cms-facade-directory.md)
 - 状态与依赖传递方式
-- 数据访问与副作用约束
 - 接口变更的兼容性要求
 - 默认的测试与验证要求
