@@ -1,19 +1,21 @@
-# CMS Assets：现状审计与独立重构计划
+# CMS Assets：现状审计与独立重构完成记录
 
-> 本文把 Asset 从 CMS Phase 5 总文档中单独拆出，记录当前真实功能、入口、identity、事务 owner、目录职责和下一阶段重构边界。
+> 本文把 Asset 从 CMS Phase 5 总文档中单独拆出，记录真实功能、入口、identity、事务 owner、目录职责和已完成的重构边界。
 >
-> 当前结论：`RegisterAsset`、`DeleteAsset`、`ArchiveAsset`、`RestoreAsset` 的用户资产行 mutation 已进入 `CMS.Command` + Gate + Confirmation/Receipt；Upload、provider cleanup/reconciliation、ReplacementPlan 仍是独立的 Asset workflow，按后续阶段处理。本文不把这些 workflow 伪装成用户 Command，也不把 DocTree/ContentImport 混入 Asset 重构。
+> 当前结论：用户资产行 mutation 已进入 `CMS.Command` + Gate + Confirmation/Receipt；Upload、provider cleanup/reconciliation、ReplacementPlan 也已完成独立的 durable workflow 收口。本文不把这些 workflow 伪装成用户 Command，也不把 DocTree/ContentImport 混入 Asset 重构。
 
 ## 1. 先给结论
 
-Assets 现在不是“完全不符合规范”，而是处于两层状态：
+Assets 现在分成三条清晰边界：
 
 1. **用户资产行写入已经符合当前 CMS 写入合同。**
    `registerCommunityAsset` 进入 `Commands.RegisterAsset`，delete/archive/restore 的 concrete Command 也已经存在；Gate、Receipt、Confirmation 和 `Assets.Persist` 的 canonical row write 已经分开。
-2. **整个 `CMS.Assets` bounded context 还没有完成物理和职责收口。**
-   `Writer` 仍同时包含资产行 helper 和 Article `article_asset_refs` projection；Upload completion 仍是无持久化 callback 状态的 workflow；provider cleanup 有 Outbox workflow 和同步 provider adapter 两条路径；ReplacementPlan 仍是进程内逐项 apply，缺少 worker claim/lease/recovery。
+2. **跨请求流程已经成为 durable workflow。**
+   Upload 以 `upload_ref`/`idempotency_key` 持久化 intent、completion、failure 和 canonical result；Provider、generated cleanup 和 ReplacementPlan 都有稳定 run/step ref、claim/lease、retry/recovery 状态。
+3. **物理职责已经收口。**
+   Article refs 位于 `Assets.Refs`，资产行 mutation 只由 concrete Command + `Assets.Persist` 拥有；Upload、Provider、Replacement、Maintenance 已按目录分组。
 
-因此，下一阶段不是把所有 Assets 都塞进 `CMS.Command`，而是按下面的规则收口：
+因此，当前实现按下面的规则收口：
 
 ```text
 用户改变 community_assets 的业务动作
@@ -63,7 +65,7 @@ Assets 现在不是“完全不符合规范”，而是处于两层状态：
 
 Register 的 active row upsert 由 storage identity 或 URL hash 的数据库唯一约束收敛；delete 还会检查 usage completeness、锁定资产并拒绝仍被引用的资产。Archive/restore 是可逆状态变更，但当前仍统一使用 Receipt，避免 facade 或测试直接绕过 Command。
 
-这些用户入口的 `commandId` 必须由客户端/上层用户 mutation 提供。Facade 的旧 convenience arity 已 fail-closed；Assets 不应在 resolver、facade、Writer 或 Persist 内生成默认 command UUID。
+这些用户入口的 `commandId` 必须由客户端/上层用户 mutation 提供。Facade 的旧 convenience arity 已 fail-closed；Assets 不会在 resolver、facade、Refs 或 Persist 内生成默认 command UUID。
 
 ### 2.3 浏览器上传和 service completion
 
@@ -78,13 +80,14 @@ Dashboard/editor
   -> Assets Hub presign / object PUT
   -> completeCommunityAssetUpload
        -> ServiceScope phoenix:assets-api / assets:upload:complete
-       -> Assets.Upload.complete
-       -> quota lock + validated metadata + Persist.register
+  -> Assets.Upload.complete
+       -> upload_ref lock + capability-bound facts + quota lock
+       -> Persist.register + completion result snapshot
 ```
 
-`createCommunityAssetUploadIntent` 没有用户 `commandId`：它签发短期 capability，不提交 `community_assets` 事实；响应丢失时允许重新签发。`completeCommunityAssetUpload` 是 Assets Hub 的 service callback，也不是用户 Command 的第二次执行。
+`createCommunityAssetUploadIntent` 没有用户 `commandId`：它签发短期 capability，并在 `cms.asset_uploads` 写入 intent；响应丢失时可按新 `upload_ref` 重新签发。`completeCommunityAssetUpload` 是 Assets Hub 的 service callback，也不是用户 Command 的第二次执行。
 
-当前实现依靠 `public_ref`、storage identity 和 URL/hash upsert 让重复 completion 尽量收敛，但 GraphQL 输入中的 `idempotency_key` 没有被 `Assets.Upload.complete/1` 持久化或校验，也没有以 `uploadRef` 为主键的 durable completion record。因此它现在是“数据库唯一性驱动的重复收敛”，还不是完整的 upload workflow recovery 合同。
+`upload_ref` 是 workflow 主键，Assets Hub 同时把它作为 `idempotency_key` 回传；服务端以唯一约束、行锁和 completion snapshot 收敛重复 callback。completion 只接受 intent 绑定的 community、public ref、storage key、URL、size、MIME、asset type、thread 和 uploader facts；已完成的 callback 重放同一个 canonical asset。
 
 ### 2.4 Article asset refs
 
@@ -93,13 +96,13 @@ Assets 还承载文章内容中的使用 projection，但这不是 `community_as
 ```text
 Article command / editor save
   -> CMS.Assets.link_refs / copy_refs / cleanup_refs
-  -> Assets.Writer
+  -> Assets.Refs
   -> article_asset_refs + Article draft/revision scope
 ```
 
-`article_asset_refs` 描述“资产被哪里使用”，而 `community_assets` 描述“资产本身、存储和计费”。两者不能合并成一个 writer owner。当前 `Writer` 的局部 transaction 是为了锁 Article body draft、替换 refs 和维护 completeness scope；它不应重新取得 Register/Delete/Archive/Restore 用户 mutation 的事务所有权。
+`article_asset_refs` 描述“资产被哪里使用”，而 `community_assets` 描述“资产本身、存储和计费”。两者不能合并成一个 writer owner。`Refs` 的局部 transaction 只锁 Article body draft、替换 refs 和维护 completeness scope；它不取得 Register/Delete/Archive/Restore 用户 mutation 的事务所有权。
 
-但是，`Writer` 仍保留 `register/3`、`delete/3`、`archive/2`、`restore/2` 等旧资产行 helper，且私有函数 `Writer.resolve_asset/3` 在 Article ref 输入携带内联 asset 时仍可能调用 `Writer.register/3`。这不是新的 GraphQL Asset mutation，但说明物理代码边界还没有完全完成：Article ref projection 仍可以隐式触发资产行 upsert。
+Article ref 输入携带内联 asset 时，`Refs` 只在同一个 Article transaction 中显式调用 `Assets.Persist.register`；`Assets.Writer` 已删除，资产行 helper 不再存在。
 
 ### 2.5 Application Logo、Wallpaper 和维护能力
 
@@ -109,18 +112,17 @@ Article command / editor save
 | -------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
 | Application Logo promote   | `Assets.ApplicationUploads`                                        | 将已 finalized 的申请 Logo 转成普通 community asset，使用 Persist primitive   |
 | generated-image intent     | `Assets.Upload.create_generated_intent/3`                          | capability 绑定 Wallpaper Batch/candidate/variant                             |
-| generated asset cleanup    | `Assets.Deletion.delete_generated_assets/3`、`Wallpaper.Retention` | maintenance workflow，使用 workflow ref 和 provider-delete Outbox             |
-| provider reconciliation    | `Assets.ProviderReconciliation`                                    | 扫描已删除数据库 authority，补发缺失 cleanup intent                           |
+| generated asset cleanup    | `Assets.Deletion.delete_generated_assets/3`、`Wallpaper.Retention` | workflow run/step + provider-delete Outbox，保留 partial-success              |
+| provider reconciliation    | `Assets.ProviderReconciliation`                                    | durable run/step 扫描 authority，补发缺失 cleanup intent                      |
 | provider orphan scan       | `Assets.ProviderReconciliation.scan_provider_orphans`              | 只识别候选，不直接删除 provider object                                        |
 | completeness backfill      | `Assets.Backfill` / `Assets.Completeness`                          | 建立 version-owned ref 的安全 fence                                           |
 | GC candidate scan          | `Assets.GC`                                                        | 只产生候选，检查 ref、upload、import、replacement、legal hold                 |
 | Assets Hub generated batch | `Assets.GeneratedBatch`                                            | service-authenticated Batch claim/cleanup adapter，不是 Phoenix Asset Command |
 
-当前 `Assets.Deletion.delete_generated_assets/3` 是 maintenance 批处理，不是全量原子事务：每个 asset 单独执行
-自己的 soft-delete 与 provider-delete Outbox transaction；某个 asset 失败后会继续处理后续 asset，最终保留并返回
-第一个错误，之前已经成功提交的 asset 不会回滚。这是当前实现的 partial-success 行为，不能被误读成用户资产行
-Delete Command 的 Receipt 合同。下一阶段应由 maintenance workflow 明确确认这一语义，并补充 success/error/success
-批次的 focused test、重试和观测字段。
+`Assets.Deletion.delete_generated_assets/3` 是 maintenance 批处理而不是全量原子事务：每个 asset 单独执行自己的
+soft-delete 与 provider-delete Outbox transaction；某个 asset 失败后继续处理后续 asset，最终保留并返回第一个错误，
+之前已经成功提交的 asset 不回滚。`asset_workflow_runs/steps` 记录 owner、attempt、lease、terminal result；这不是
+用户资产行 Delete Command 的 Receipt 合同。success/error/success partial batch 已由 focused test 覆盖。
 
 ## 3. 当前目录和模块职责
 
@@ -138,19 +140,29 @@ cms/assets/
 │   └── *_confirmation.ex              # Receipt Confirmation codecs
 ├── persist.ex                         # CommunityAsset row primitives
 ├── query.ex                           # asset library/read-side queries
-├── writer.ex                           # mixed asset-row + ArticleAssetRef projection
-├── upload.ex                           # capability intent + service completion
+├── refs.ex                             # ArticleAssetRef projection
+├── workflow.ex                         # durable non-user workflow run/step protocol
+├── upload/                             # capability intent + service completion
+│   └── workflow.ex
 ├── capability.ex                       # HMAC capability contract
 ├── endpoints.ex                        # role-specific Assets Hub endpoints
-├── provider_reconciliation.ex          # maintenance reconciliation
-├── deletion.ex                         # provider deletion adapter + generated cleanup
-├── replacement_plan.ex                 # plan creation and synchronous apply loop
-├── application_uploads.ex              # Application Logo promotion
-├── backfill.ex / completeness.ex       # usage ownership fence/backfill
-├── gc.ex                               # conservative GC candidate scan
-├── generated_batch.ex                  # Assets Hub generated Batch adapter
-└── generated_batch/
-    └── publish_capability.ex
+├── provider/                           # provider deletion/reconciliation adapters
+│   ├── deletion.ex
+│   └── reconciliation.ex
+├── replacement/                        # plan/apply run and locator recovery
+│   └── plan.ex
+└── maintenance/                        # non-user maintenance workflows
+    ├── application_uploads.ex
+    ├── backfill.ex / completeness.ex
+    ├── gc.ex
+    ├── generated_batch.ex
+    └── generated_batch/
+        └── publish_capability.ex
+
+cms/model/
+├── asset_upload.ex                     # upload intent/completion state
+├── asset_workflow_run.ex               # durable workflow run
+└── asset_workflow_step.ex              # durable workflow step/lease
 ```
 
 ### 3.1 已符合规范的部分
@@ -162,14 +174,14 @@ cms/assets/
 - `ProviderReconciliation` 已经使用 `{:workflow, workflow_ref}`，没有把 maintenance UUID 冒充业务 `command_id`。
 - `ReplacementPlan` 已经使用稳定 locator/step ref 和 `apply_run_ref`，没有为每个 locator 再生成用户 command UUID。
 
-### 3.2 不符合“职责集中”规范的部分
+### 3.2 本轮已完成的职责收口
 
-1. **`writer.ex` 过宽。** 它同时包含 community asset upsert、soft delete、archive/restore、Article ref sync、copy、purge、lock、asset resolution、Outbox 旧路径。它现在是最明显的历史混合点。
-2. **workflow 模块都平铺在 `assets/` 根目录。** `upload.ex`、`provider_reconciliation.ex`、`deletion.ex`、`replacement_plan.ex`、`backfill.ex` 的业务语义不同，但物理结构没有把 Upload、Provider、Replacement、Maintenance 分组；新同事很难从目录看出谁是用户 Command、谁是 service callback、谁是 maintenance。
-3. **`Persist` 的文档和代码有一处不一致。** moduledoc 仍写“emits the provider-delete outbox intent”，但当前 `Assets.Persist.delete/3` 实际只做锁、completeness/ref 检查和 row update；Delete Command/maintenance deletion 才负责写 Outbox。`identity` 参数在 Persist.delete 中也只是 `_identity`，没有被使用。下一轮代码重构时应让文档、签名和 owner 三者一致。
-4. **Upload completion 的 identity 没有完整落库。** `idempotency_key` 出现在 GraphQL input，却没有成为 workflow state 的唯一键；当前重复行为主要依靠 asset row 的 upsert constraint。
-5. **Provider cleanup 仍有两种路径。** `ProviderReconciliation`/`Deletion.delete_generated_assets` 写 typed Outbox；`Deletion.delete_application_upload_object/1` 仍经过同步的 `enqueue/1` provider HTTP adapter。这两者的失败、重试和可观测性不同，后续应明确哪些必须由 Outbox worker 执行。
-6. **ReplacementPlan 仍不是 durable worker workflow。** apply 使用进程内 `Enum.map_reduce`，虽然有 plan/item/locator status，但还没有独立的 claim/lease、worker restart、并发 apply 互斥和 response-loss result builder。
+1. **Article refs 已从资产行 mutation 中拆出。** `Assets.Refs` 只负责 `article_asset_refs` projection；内联 asset 解析在 Article transaction 中显式调用 `Assets.Persist.register`，不再通过 `Writer` 隐式拥有资产行写入。
+2. **workflow 已按业务子域分组。** Upload、Provider、Replacement、Maintenance 分别拥有物理目录；共享的 run/step claim/lease/recovery 协议集中在 `Assets.Workflow`。
+3. **Persist 的 owner、签名和文档一致。** `Persist.delete/2` 只锁定并软删除 canonical row；provider-delete Outbox 由用户 Command 或 maintenance workflow 明确写入。
+4. **Upload completion 已有 durable identity。** `asset_uploads` 以 `upload_ref` 和 `idempotency_key` 唯一收敛 intent、completion snapshot 和 callback facts；重复 callback 返回同一 canonical asset。
+5. **Provider cleanup 已统一为 Outbox worker effect。** Application upload、generated cleanup、provider reconciliation 都写 typed Outbox；同步 adapter 仅保留在 worker/明确 adapter 边界内。
+6. **ReplacementPlan 已具备 durable apply recovery。** apply run 和 locator step 都有稳定 ref、claim/lease、attempt、result、conflict/failed 状态，worker 重启后只重试未完成 step。
 
 ## 4. 与现有 CMS 目录规范的对照
 
@@ -183,9 +195,9 @@ Articles
   -> Commands / Draft / Publish / Revision / Bindings / Tags
 ```
 
-这两种模式表达的是“先按业务子域分组，再在子域内按 Command、Query、Persist、Setup 分层”。Assets 的用户资产行部分已经采用第一种模式，但 Upload、Provider、Replacement 和 Article refs 还没有按业务子域物理分组。
+这两种模式表达的是“先按业务子域分组，再在子域内按 Command、Query、Persist、Setup 分层”。Assets 的用户资产行和非用户 workflow 现在都按业务子域物理分组。
 
-建议采用下面的目标结构；这是目录/ownership 目标，不是本轮直接移动代码：
+本轮已采用下面的结构；目录只表达 ownership，不改变用户 Command 与非用户 workflow 的 identity 边界：
 
 ```text
 CMS.Assets
@@ -211,48 +223,47 @@ CMS.Assets
 
 - `Query`、`Persist` 是否由单文件变成目录，不是规范硬要求；当一个子域只有一个稳定 module 时，`query.ex`/`persist.ex` 与现有仓库完全兼容。
 - `Setup` 不应为了形式而添加。Assets 当前没有像 Moderator/Subscription 那样的 community 初始化 membership；Application Logo promote、backfill、retention 更适合 `Maintenance`/named workflow。
-- `ReplaceUse` 属于 Article Draft authority，虽然当前物理文件在 `Assets.Commands` 下，但它不应被当作普通 `community_assets` row command；后续可保留 cross-context command 名称，或移动到 Article Draft 的 asset-use 子域，需以调用方迁移为前提。
+- `ReplaceUse` 属于 Article Draft authority，虽然当前物理文件仍在 `Assets.Commands` 下，但它被明确作为 cross-context asset-use command/workflow adapter，不被当作普通 `community_assets` row command。
 - `Provider` 不等于 `CMS.Command`。Provider cleanup 是外部副作用；它应由 Outbox/maintenance workflow 驱动，使用 workflow identity，而不是为 provider 请求生成新的 user command。
 
-## 5. 下一阶段 Asset 重构任务
+## 5. 本轮 Asset 重构结果
 
-### 5.1 先冻结合同，不改功能语义
+### 5.1 合同已冻结，功能语义保持不变
 
-为每条入口补齐一张合同表：initiator、admission、lifecycle/version authority、transaction owner、identity、result/receipt、Outbox effect、retry/unknown outcome。重点不是再命名模块，而是避免同一 asset action 既能走 Command 又能从 Writer 直接写。
+每条入口均以 initiator、admission、lifecycle/version authority、transaction owner、identity、result/receipt、Outbox effect、retry/unknown outcome 为边界。用户 asset-row action 继续走 Command；非用户过程使用独立 workflow identity，不从 Writer 或 resolver 直接写业务行。
 
-### 5.2 拆出 Article refs，消除 Writer 混合职责
+### 5.2 Article refs 已拆出，Writer 混合职责已删除
 
-目标：`Writer` 不再拥有 community asset row mutation。
+`Writer` 已删除，`Assets.Refs` 不拥有 community asset row mutation。
 
-- 将 `article_asset_refs` 的 sync/copy/purge/lock 归到 `Assets.Refs`（或 Article 现有 Draft/Bindings 子域）。
-- 将 `resolve_asset` 中“内联 asset 自动 register”的语义改成显式编排：要么上层先调用 RegisterAsset，要么由同一个 Article command transaction 调用 `Assets.Persist.register` primitive，但不能再隐藏在通用 Writer 中。
-- 删除/禁止 `Writer.register/delete/archive/restore` 作为 public business API；只保留迁移完成后仍被证明需要的 projection primitive。
-- 对 Article update、ReplaceUse、Article delete 分别验证 ref transaction owner，不把它们误归为 Asset library command。
+- `article_asset_refs` 的 sync/copy/purge/lock 已归到 `Assets.Refs`。
+- 内联 asset 解析已改为同一 Article transaction 中显式调用 `Assets.Persist.register`。
+- `Writer.register/delete/archive/restore` 已删除；没有保留兼容业务入口。
+- Article update、ReplaceUse、Article delete 的 ref transaction owner 均仍由 Article/Refs projection 边界负责。
 
-### 5.3 收口 Upload workflow
+### 5.3 Upload workflow 已收口
 
-Upload 不转成用户 `CMS.Command`，但要成为可恢复的 named workflow：
+Upload 不转成用户 `CMS.Command`，已成为可恢复的 named workflow：
 
-- 以 `upload_ref` 为 workflow 主键，持久化 intent/completion/failure/expired 状态和 capability-bound facts。
-- `idempotency_key` 要么成为明确的唯一业务键并参与 completion result recovery，要么从 GraphQL input 删除，不能保持“声明了但不使用”。
-- completion 只接受 capability 绑定的 community、public ref、storage key、checksum、size 等事实；重复 callback 返回同一 canonical asset/result。
-- quota lock、completion state 和 asset row update 的事务 owner 必须明确；provider 不得在请求内被同步调用。
-- 覆盖 response 丢失、重复 callback、过期 capability、错误 community/storage identity、并发 completion。
+- `upload_ref`、`idempotency_key`、intent facts、completion snapshot、failure/expired 状态已持久化到 `cms.asset_uploads`。
+- `idempotency_key` 是唯一业务键，并参与 completion result recovery。
+- completion 只接受 capability 绑定的 community、public ref、storage key、URL、size、MIME、asset type、thread、uploader facts；重复 callback 返回同一 canonical asset。
+- quota lock、completion state 和 asset row update 的事务 owner 已明确；provider 不在请求内同步调用。
+- focused tests 已覆盖 response-loss/replay、重复 callback、错误 storage identity；过期 capability 由 capability/intent validation 拒绝。
 
-### 5.4 收口 Provider/Maintenance workflow
+### 5.4 Provider/Maintenance workflow 已收口
 
-- `ProviderReconciliation` 持久化 run/step ref、claim/lease 和最后结果；重复扫描不能制造新的业务 identity。
-- provider-delete 统一通过 Outbox worker；`Deletion.enqueue/1` 的同步 HTTP 路径只能作为明确的非业务 adapter，不能和 durable cleanup 混用。
+- `ProviderReconciliation` 持久化 run/step ref、claim/lease 和最后结果；重复扫描复用稳定 workflow identity。
+- provider-delete 统一通过 typed Outbox worker；`Deletion.enqueue/1` 仅作为明确的 adapter/worker 边界，不是业务请求路径。
 - generated asset retention、Application Logo cleanup、GC candidate scan 分别标记 initiator 和 workflow owner。
 - Outbox effect key 继续使用 asset scope（如 `asset:<id>`）；event id 由 Outbox 生成，不能由 workflow 代替。
-- 验收 pending/executing/completed/failed、worker crash、lease expiry、重复 maintenance run、response loss，以及批处理
-  中单个 asset 失败后继续执行并保留首个错误的 partial-success 合同。
+- pending/running/completed/failed、lease expiry、重复 maintenance run、response loss，以及 partial-success 语义均由 run/step 状态和 focused test 覆盖。
 
-### 5.5 完成 ReplacementPlan workflow
+### 5.5 ReplacementPlan workflow 已完成
 
 ReplacementPlan 不是文档导入。它的功能是：从 Asset usage facts 生成计划，然后将一个 asset 在文章内容中的引用替换成另一个 asset；真正的文档导入仍由 `CMS.ContentImport -> CMS.DocTree.Import` 负责。
 
-下一阶段需要：
+本轮已完成：
 
 - plan 创建、apply run、每个 article item、每个 locator step 都有稳定 ref；
 - worker claim/lease 防止两个 apply worker 同时修改同一 locator；
@@ -261,9 +272,9 @@ ReplacementPlan 不是文档导入。它的功能是：从 Asset usage facts 生
 - `ReplaceUse` 继续区分用户 `commandId` 与 `{:workflow, workflow_ref}`，不把 step ref 填成用户 command；
 - 计划整体结果明确支持 partial completion，不用一次进程循环的返回值冒充 durable Receipt。
 
-### 5.6 物理目录迁移顺序
+### 5.6 物理目录迁移顺序与结果
 
-建议顺序如下，避免一次移动导致所有调用方同时失去边界：
+实际按以下顺序完成，避免调用方在 owner 迁移前失去边界：
 
 ```text
 1. 先补合同和 focused tests
@@ -275,7 +286,7 @@ ReplacementPlan 不是文档导入。它的功能是：从 Asset usage facts 生
 7. 删除 Writer 的资产行 public helper，并更新静态 boundary gate
 ```
 
-目录移动不能先于 owner 和调用方迁移；本项目不需要为了目录整齐而添加兼容 facade。迁移完成后，旧入口应直接删除或变为明确的无事务 persistence primitive，不能继续承担业务动作。
+目录移动没有先于 owner 和调用方迁移；没有添加兼容 facade。旧入口已删除或变为明确的无事务 persistence primitive，不能继续承担业务动作。
 
 ## 6. 验收清单
 
@@ -287,13 +298,13 @@ ReplacementPlan 不是文档导入。它的功能是：从 Asset usage facts 生
 - [x] Register active upsert 使用 storage/url identity；Delete provider Outbox 复用用户 command identity。
 - [x] facade convenience arity 不再隐式生成 command UUID。
 
-### 后续 workflow 验收
+### 本轮 workflow 验收
 
-- [ ] Upload completion durable state、`uploadRef`/`idempotency_key` 语义和 duplicate callback recovery。
-- [ ] Provider cleanup/reconciliation 的统一 Outbox owner、workflow run/step、claim/lease/retry。
-- [ ] ReplacementPlan 的 worker recovery、partial completion、version conflict 和 result recovery。
-- [ ] Writer 不再通过 `resolve_asset` 隐式拥有 Asset row register/delete/archive/restore。
-- [ ] 物理目录按 `Commands / Query / Persist / Refs / Upload / Provider / Replacement / Maintenance` 收口。
+- [x] Upload completion durable state、`uploadRef`/`idempotency_key` 语义和 duplicate callback recovery。
+- [x] Provider cleanup/reconciliation 的统一 Outbox owner、workflow run/step、claim/lease/retry。
+- [x] ReplacementPlan 的 worker recovery、partial completion、version conflict 和 result recovery。
+- [x] Writer 不再通过 `resolve_asset` 隐式拥有 Asset row register/delete/archive/restore。
+- [x] 物理目录按 `Commands / Query / Persist / Refs / Upload / Provider / Replacement / Maintenance` 收口。
 
 ### 不属于本文范围
 
@@ -310,13 +321,24 @@ ReplacementPlan 不是文档导入。它的功能是：从 Asset usage facts 生
 - `backend/api/lib/groupher_server/cms/assets/commands/`
 - `backend/api/lib/groupher_server/cms/assets/persist.ex`
 - `backend/api/lib/groupher_server/cms/assets/query.ex`
-- `backend/api/lib/groupher_server/cms/assets/writer.ex`
-- `backend/api/lib/groupher_server/cms/assets/upload.ex`
-- `backend/api/lib/groupher_server/cms/assets/provider_reconciliation.ex`
-- `backend/api/lib/groupher_server/cms/assets/replacement_plan.ex`
+- `backend/api/lib/groupher_server/cms/assets/refs.ex`
+- `backend/api/lib/groupher_server/cms/assets/upload/workflow.ex`
+- `backend/api/lib/groupher_server/cms/assets/provider/`
+- `backend/api/lib/groupher_server/cms/assets/replacement/plan.ex`
+- `backend/api/lib/groupher_server/cms/assets/maintenance/`
+- `backend/api/lib/groupher_server/cms/assets/workflow.ex`
+- `backend/api/lib/groupher_server/cms/model/asset_upload.ex`
+- `backend/api/lib/groupher_server/cms/model/asset_workflow_run.ex`
+- `backend/api/lib/groupher_server/cms/model/asset_workflow_step.ex`
+- `backend/api/priv/repo/migrations/20261010100000_create_asset_workflow_state.exs`
 - `backend/api/lib/groupher_server_web/resolvers/cms/assets.ex`
 - `backend/api/lib/groupher_server_web/schema/cms/mutations/community.ex`
 
-本轮只新增/更新文档，没有修改 Asset executable code；当前 `Assets.Deletion.delete_generated_assets/3` 的
-继续处理并保留首个错误行为来自既有代码提交，不属于本轮文档变更。文档校验基线通过：`pnpm docs:check`
-（包含 documentation、CMS facade/query/resolver、business return shape 和 command identity gates）。
+本轮已完成 Asset executable code、migration、focused tests 和文档更新。验证结果：
+
+- `mix compile --warnings-as-errors`
+- `mix test test/groupher_server/cms/assets_test.exs`
+- `pnpm --dir backend/assets-hub type-check`
+- `pnpm --dir backend/assets-hub test:unit`
+- `pnpm graphql:codegen`
+- `pnpm docs:check`

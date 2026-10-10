@@ -620,14 +620,14 @@ membership row，`Subscriptions.Query` 只读状态。focused subscription/query
 
 ## 5. Assets 迁移边界
 
-> Asset 的完整现状、入口、目录审计和下一阶段 workflow 计划已单独整理在
-> [CMS Assets：现状审计与独立重构计划](./cms-assets-refactor.md)。本节保留 Phase 5 的边界和验收摘要，详细的
+> Asset 的完整现状、入口、目录审计和 workflow 收口结果已单独整理在
+> [CMS Assets：现状审计与独立重构完成记录](./cms-assets-refactor.md)。本节保留 Phase 5 的边界和验收摘要，详细的
 > `Writer` 混合职责、Upload completion identity、Provider cleanup 和 ReplacementPlan recovery 以独立文档为准。
 
 > 状态：`RegisterAsset`、`DeleteAsset`、`ArchiveAsset`、`RestoreAsset` 的用户 Command + Confirmation/Receipt 边界已落地，
 > `Assets.Persist` 已承接用户 asset-row primitives；
-> Upload completion、provider reconciliation/cleanup 属于后续 workflow 批次；ReplacementPlan 的 apply run/
-> step identity 已部分落地，但完整 crash-resume 属于 pending recovery 验收，不宣称已 verified。
+> Upload completion、provider reconciliation/cleanup 与 ReplacementPlan 的 durable run/step、claim/lease
+> 和 crash-resume 已由后续独立批次完成（见独立文档）；Phase 5 本节只保留本阶段的边界验收。
 
 当前路径分成用户 mutation、service callback 和 maintenance workflow。迁移前的混合点与当前处理结果为：
 
@@ -733,19 +733,20 @@ archive/restore 虽然是可收敛的 set-style 状态切换，当前协议仍�
 - 同一 asset 的 pending/executing/completed cleanup intent 继续阻止重复入队；
 - workflow telemetry/audit 明确标注 maintenance initiator，不伪造 user actor。
 
-### 5.6 ReplacementPlan（Asset replacement workflow，deferred）
+### 5.6 ReplacementPlan（Asset replacement workflow，已由后续批次完成）
 
 `ReplacementPlan` 不是文档导入功能。它读取 Asset 使用事实并逐篇调用 Article Draft 的
 `Assets.Commands.ReplaceUse`，用于把一个 Asset 在文章内容中的引用替换为另一个 Asset。真正的文档导入
 路径是 `CMS.ContentImport.Threads.Doc.Writer -> CMS.DocTree.Import`，与 ReplacementPlan 是两个不同的
 bounded workflow。
 
-本阶段按 Asset workflow 范围明确延期 ReplacementPlan 的 create/apply Receipt 协议、worker recovery
-和 version-conflict 验收；不能因此把它写成已完成，也不在本阶段新增代码。
+Phase 5 本阶段按 Asset workflow 范围明确延期 ReplacementPlan 的 create/apply Receipt 协议、worker recovery
+和 version-conflict 验收；这些已由后续独立批次完成，见
+[CMS Assets 现状审计与独立重构完成记录](./cms-assets-refactor.md)。
 
 历史实现曾在 plan 创建时为 locator 生成随机 `command_id`，随后把它传给 `ReplaceUse`；该伪业务
 identity 已移除。当前代码已经使用稳定 locator/step ref，并持久化 `apply_run_ref`、locator status/result；
-完整的 worker claim/lease 和 crash-resume 验收留到 Asset replacement workflow 阶段。
+worker claim/lease 和 crash-resume 验收已在后续批次完成，见独立文档。
 
 目标改为：
 
@@ -768,8 +769,8 @@ ReplacementPlan
   `{:workflow, workflow_ref}`，不把 step ref 填入用户 `command_id`（已完成）；
 - 每项继续 revalidate live revision 与 expected draft version；
 - partial completion 已写回 item/step 状态，workflow 可从未完成 step 继续；
-- 下一阶段必须把 apply run/step 的 claim、lease、worker crash recovery 和 version conflict 作为独立
-  durable authority 验收，不能只依赖最后一次进程内循环结果。
+- apply run/step 的 claim、lease、worker crash recovery 和 version conflict 已作为独立 durable authority
+  完成验收（见独立文档），不再只依赖最后一次进程内循环结果。
 
 ## 6. 其余 Phase 5 对象
 
@@ -1193,24 +1194,26 @@ seed/maintenance caller 必须显式声明 workflow admission；旧 Tags mutatio
 
 当前批次已确认用户 Command 入口、identity、canonical upsert、Receipt replay 和 archive/restore Gate
 边界，并将 user asset-row 写入移到 `Assets.Persist`；provider/ref projection 的局部 transaction 与
-user Asset mutation 分开标注，Upload/Provider/Replacement workflow recovery 留在明确 deferred 的后续批次。
+user Asset mutation 分开标注，Upload/Provider/Replacement workflow recovery 由后续独立批次完成，见
+[CMS Assets 现状审计与独立重构完成记录](./cms-assets-refactor.md)。
 
-### Phase 5.4：Upload 与 maintenance workflow（TODO/deferred；下一阶段）
+### Phase 5.4：Upload 与 maintenance workflow（已由后续独立批次完成）
 
-1. [TODO] 收口 UploadWorkflow 的 capability、completion 与 transaction；
-2. [TODO] completion 以 upload/public/storage identity 幂等；
-3. [TODO] ProviderReconciliation 使用 workflow identity；
-4. [TODO] provider cleanup worker 测试重复入队与完成事件。
+1. [done] 收口 UploadWorkflow 的 capability、completion 与 transaction；
+2. [done] completion 以 upload/public/storage identity 幂等；
+3. [done] ProviderReconciliation 使用 workflow identity；
+4. [done] provider cleanup worker 测试重复入队与完成事件。
 
-验收（TODO）：用户、service、maintenance 三类 initiator 在代码和数据中可区分。
+验收：用户、service、maintenance 三类 initiator 在代码和数据中可区分。完成记录见
+[CMS Assets 现状审计与独立重构完成记录](./cms-assets-refactor.md)。
 
-### Phase 5.5：ReplacementPlan（Asset replacement workflow；deferred）
+### Phase 5.5：ReplacementPlan（Asset replacement workflow；已由后续独立批次完成）
 
-1. [deferred] CreateReplacementPlan 的 Receipt/one-shot 协议、Gate 与 result builder 下一阶段确认；
+1. [done] CreateReplacementPlan 的 Receipt/one-shot 协议、Gate 与 result builder 已按 workflow 合同确认；
 2. [implemented for current apply path] 持久化 `apply_run_ref`、稳定 locator `step_ref` 与 per-step status/result；
 3. [done] 删除 locator 随机 `command_id`；
 4. [done] ReplaceUse 使用明确的 `{:workflow, workflow_ref}` initiator；
-5. [deferred] 补齐 worker claim/lease、crash/resume、partial completion 和 version conflict 的独立验收；
+5. [done] worker claim/lease、crash/resume、partial completion 和 version conflict 的独立验收已完成；
    该功能不是文档导入，文档导入仍由 `CMS.ContentImport -> CMS.DocTree.Import` 单独处理。
 
 ### Phase 5.6：其余 family

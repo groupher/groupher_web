@@ -15,6 +15,8 @@ defmodule GroupherServer.CMS.Assets.ProviderReconciliation do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
+  alias CMS.Assets.Workflow
+  alias CMS.Model.{AssetWorkflowRun, AssetWorkflowStep}
   alias CMS.Model.{Community, CommunityAsset}
   alias CMS.Outbox.Event
 
@@ -49,26 +51,110 @@ defmodule GroupherServer.CMS.Assets.ProviderReconciliation do
         )
       )
 
-    Enum.reduce(assets, {:ok, 0}, fn asset, {:ok, count} ->
-      if pending_intent?(asset.id) do
-        {:ok, count}
-      else
-        case CMS.Outbox.send(%{
-               event: "asset.provider_delete",
-               worker: CMS.Outbox.Workers.Asset.Cleanup,
-               resource_type: "community_asset",
-               resource_id: asset.id,
-               identity: {:workflow, workflow_ref},
-               effect_key: "asset:#{asset.id}",
-               retry_failed: true,
-               data: %{asset_id: asset.id, public_ref: asset.public_ref}
-             }) do
-          {:ok, _event} -> {:ok, count + 1}
-          {:error, reason} -> {:error, reason}
-        end
+    with {:ok, run} <-
+           Workflow.ensure_run(%{
+             workflow_ref: workflow_ref,
+             workflow_type: "provider_reconciliation",
+             community_id: community_id,
+             resource_type: "community",
+             resource_id: to_string(community_id),
+             status: :pending
+           }),
+         owner <- workflow_owner(workflow_ref),
+         {:ok, run_state} <- Workflow.claim_run(run, owner),
+         {:ok, steps} <- ensure_steps(run, assets),
+         {:ok, result} <- process_steps(steps, workflow_ref, owner),
+         {:ok, finished} <- Workflow.finish_run(run_state, owner) do
+      {:ok, Map.merge(result, %{run_ref: workflow_ref, status: finished.status})}
+    else
+      {:completed, run} ->
+        {:ok, %{run_ref: workflow_ref, status: run.status, enqueued: 0, skipped: 0}}
+
+      {:busy, seconds} ->
+        {:error, {:workflow_busy, seconds}}
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  defp ensure_steps(%AssetWorkflowRun{} = run, assets) do
+    Enum.reduce_while(assets, {:ok, []}, fn asset, {:ok, steps} ->
+      case Workflow.ensure_step(run, %{
+             step_ref: "asset:#{asset.id}",
+             resource_type: "community_asset",
+             resource_id: to_string(asset.id),
+             status: :pending,
+             payload: %{asset_id: asset.id, public_ref: asset.public_ref},
+             result: %{},
+             attempts: 0
+           }) do
+        {:ok, step} -> {:cont, {:ok, [step | steps]}}
+        {:error, reason} -> {:halt, {:error, reason}}
+      end
+    end)
+    |> case do
+      {:ok, steps} -> {:ok, Enum.reverse(steps)}
+      error -> error
+    end
+  end
+
+  defp process_steps(steps, workflow_ref, owner) do
+    Enum.reduce_while(steps, {:ok, %{enqueued: 0, skipped: 0}}, fn step, {:ok, result} ->
+      case Workflow.claim_step(step, owner) do
+        {:completed, _step} ->
+          {:cont, {:ok, %{result | skipped: result.skipped + 1}}}
+
+        {:busy, seconds} ->
+          {:halt, {:error, {:workflow_step_busy, seconds}}}
+
+        {:ok, claimed} ->
+          if pending_intent?(claimed.resource_id) do
+            _ = Workflow.complete_step(claimed, owner, %{"outbox" => "present"})
+            {:cont, {:ok, %{result | skipped: result.skipped + 1}}}
+          else
+            case enqueue_provider_delete(claimed, workflow_ref) do
+              {:ok, _event} ->
+                _ = Workflow.complete_step(claimed, owner, %{"outbox" => "created"})
+                {:cont, {:ok, %{result | enqueued: result.enqueued + 1}}}
+
+              {:error, reason} = error ->
+                _ = Workflow.fail_step(claimed, owner, reason)
+                {:halt, error}
+            end
+          end
       end
     end)
   end
+
+  defp enqueue_provider_delete(%AssetWorkflowStep{} = step, workflow_ref) do
+    Repo.transaction(fn ->
+      case Repo.get(CommunityAsset, step.resource_id) do
+        %CommunityAsset{} = asset ->
+          CMS.Outbox.send(%{
+            event: "asset.provider_delete",
+            worker: CMS.Outbox.Workers.Asset.Cleanup,
+            resource_type: "community_asset",
+            resource_id: asset.id,
+            identity: {:workflow, workflow_ref},
+            effect_key: "asset:#{asset.id}",
+            retry_failed: true,
+            data: %{asset_id: asset.id, public_ref: asset.public_ref}
+          })
+
+        nil ->
+          Repo.rollback(:asset_not_found)
+      end
+    end)
+    |> case do
+      {:ok, {:ok, event}} -> {:ok, event}
+      {:ok, {:error, reason}} -> {:error, reason}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp workflow_owner(workflow_ref),
+    do: "provider-reconciliation:#{workflow_ref}:#{Ecto.UUID.generate()}"
 
   @doc "Returns provider objects that have no Phoenix asset authority row."
   def scan_provider_orphans(community, provider_objects, opts \\ [])

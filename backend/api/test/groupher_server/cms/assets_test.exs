@@ -12,7 +12,10 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
     ArticleAssetRef,
     ArticleBodyDraft,
     ArticleDraft,
+    AssetUpload,
     AssetReplacementPlan,
+    AssetWorkflowRun,
+    AssetWorkflowStep,
     Author,
     CommunityAsset
   }
@@ -646,6 +649,18 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
     end
 
     test "rejects upload completion when community quota is exhausted", ~m(community user)a do
+      {:ok, intent} =
+        CMS.Assets.create_upload_intent(
+          community,
+          image_asset_attrs("quota-complete-next.png", 1),
+          user
+        )
+
+      [encoded_payload, _signature] = String.split(intent.capability, ".")
+
+      capability_payload =
+        encoded_payload |> Base.url_decode64!(padding: false) |> Jason.decode!()
+
       {:ok, _asset} =
         CMS.Assets.register_to_community(
           community,
@@ -660,17 +675,81 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
                 details: "community asset storage quota exceeded"
               }} =
                CMS.Assets.complete_upload(%{
-                 asset_public_ref: "asset_quota_complete",
+                 upload_ref: intent.upload_ref,
+                 idempotency_key: intent.upload_ref,
+                 asset_public_ref: intent.asset_public_ref,
                  community_id: community.id,
                  content_hash: "sha256:quota-complete",
                  filename: "quota-complete-next.png",
                  mime_type: "image/png",
+                 asset_type: :image,
                  size_bytes: 1,
                  storage: "r2",
-                 storage_key: "communities/#{community.slug}/assets/2026_07/30_quota/original",
-                 url: "https://assets.groupher.test/a/asset_quota_complete/original",
+                 storage_key: intent.object_key,
+                 url: capability_payload["canonicalUrl"],
                  uploader_id: user.id
                })
+    end
+
+    test "persists upload completion and replays duplicate callbacks",
+         ~m(community user)a do
+      {:ok, intent} =
+        CMS.Assets.create_upload_intent(
+          community,
+          image_asset_attrs("durable-completion.png", 80),
+          user
+        )
+
+      completion = upload_completion_input(intent, community, user)
+
+      assert {:ok, %CommunityAsset{} = asset} = CMS.Assets.complete_upload(completion)
+      assert {:ok, %CommunityAsset{} = replayed} = CMS.Assets.complete_upload(completion)
+      assert replayed.id == asset.id
+      assert Repo.get_by!(AssetUpload, upload_ref: intent.upload_ref).state == :completed
+      assert Repo.aggregate(CommunityAsset, :count, :id) == 1
+    end
+
+    test "rejects completion facts that are not bound to the upload intent",
+         ~m(community user)a do
+      {:ok, intent} =
+        CMS.Assets.create_upload_intent(
+          community,
+          image_asset_attrs("bound-facts.png", 80),
+          user
+        )
+
+      assert {:error, %ErrorCat.Error{details: "storage key does not match upload intent"}} =
+               CMS.Assets.complete_upload(
+                 upload_completion_input(intent, community, user)
+                 |> Map.put(:storage_key, "other/object")
+               )
+
+      assert Repo.get_by!(AssetUpload, upload_ref: intent.upload_ref).state == :failed
+      assert Repo.aggregate(CommunityAsset, :count, :id) == 0
+    end
+
+    test "records an expired upload intent when completion arrives after its lease",
+         ~m(community user)a do
+      {:ok, intent} =
+        CMS.Assets.create_upload_intent(
+          community,
+          image_asset_attrs("expired-upload.png", 80),
+          user
+        )
+
+      intent_record = Repo.get_by!(AssetUpload, upload_ref: intent.upload_ref)
+
+      _expired_record =
+        intent_record
+        |> AssetUpload.changeset(%{
+          capability_expires_at: DateTime.add(DateTime.utc_now(:second), -1, :second)
+        })
+        |> Repo.update!()
+
+      assert {:error, %ErrorCat.Error{details: "asset upload intent expired"}} =
+               CMS.Assets.complete_upload(upload_completion_input(intent, community, user))
+
+      assert Repo.get_by!(AssetUpload, upload_ref: intent.upload_ref).state == :expired
     end
 
     test "returns origin info only for active public refs", ~m(community user)a do
@@ -800,6 +879,84 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
                )
     end
 
+    test "provider reconciliation records a durable run and outbox step",
+         ~m(community user)a do
+      {:ok, asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("provider-repair.png", 80)
+          |> Map.merge(%{storage: "r2", storage_key: "repair/original"}),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      assert {:ok, _receipt} = CMS.Assets.backfill_usage(community)
+      assert {:ok, _deleted} = CMS.Assets.Persist.delete(community, asset.id)
+
+      workflow_ref = "provider-reconciliation:test:#{community.id}"
+
+      assert {:ok, %{run_ref: ^workflow_ref, status: :completed, enqueued: 1, skipped: 0}} =
+               CMS.Assets.ProviderReconciliation.enqueue_missing(
+                 community,
+                 workflow_ref: workflow_ref,
+                 age_seconds: 0
+               )
+
+      assert Repo.get_by!(AssetWorkflowRun, workflow_ref: workflow_ref).status == :completed
+
+      assert [%AssetWorkflowStep{status: :succeeded, result: %{"outbox" => "created"}}] =
+               Repo.all(AssetWorkflowStep)
+
+      assert Repo.get_by!(CMS.Outbox.Event,
+               event: "asset.provider_delete",
+               resource_id: to_string(asset.id)
+             ).identity_type == :workflow
+    end
+
+    test "generated cleanup keeps partial success and durable step results",
+         ~m(community post user)a do
+      {:ok, referenced} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("generated-referenced.png", 80)
+          |> Map.put(:public_ref, "asset_generated_referenced"),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      {:ok, unreferenced} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("generated-unreferenced.png", 90)
+          |> Map.put(:public_ref, "asset_generated_unreferenced"),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      assert {:ok, %{body: [_]}} =
+               CMS.Assets.link_refs(
+                 post,
+                 %{cur_user: user, asset_refs: [%{asset_id: referenced.id}]},
+                 community: community
+               )
+
+      assert {:ok, _receipt} = CMS.Assets.backfill_usage(community)
+      workflow_ref = "generated-cleanup:test:#{community.id}"
+
+      assert {:error, %ErrorCat.Error{details: "asset is still referenced"}} =
+               CMS.Assets.delete_generated_assets(
+                 community,
+                 [referenced.public_ref, unreferenced.public_ref],
+                 workflow_ref: workflow_ref
+               )
+
+      assert Repo.get!(CommunityAsset, referenced.id).status == :active
+      assert Repo.get!(CommunityAsset, unreferenced.id).status == :deleted
+      assert Repo.get_by!(AssetWorkflowRun, workflow_ref: workflow_ref).status == :failed
+
+      assert Repo.all(AssetWorkflowStep) |> Enum.count(&(&1.status == :succeeded)) == 1
+    end
+
     test "does not delete assets that are still referenced", ~m(community post user)a do
       asset_attrs = image_asset_attrs("referenced.png", 80)
 
@@ -927,6 +1084,28 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
       size_bytes: size_bytes,
       width: 1200,
       height: 630
+    }
+  end
+
+  defp upload_completion_input(intent, community, user) do
+    [encoded_payload, _signature] = String.split(intent.capability, ".")
+    payload = encoded_payload |> Base.url_decode64!(padding: false) |> Jason.decode!()
+
+    %{
+      upload_ref: intent.upload_ref,
+      idempotency_key: intent.upload_ref,
+      asset_public_ref: intent.asset_public_ref,
+      community_id: community.id,
+      content_hash: "sha256:durable-completion",
+      filename: "durable-completion.png",
+      mime_type: "image/png",
+      asset_type: :image,
+      size_bytes: 80,
+      storage: "r2",
+      storage_key: intent.object_key,
+      url: payload["canonicalUrl"],
+      thread: :post,
+      uploader_id: user.id
     }
   end
 

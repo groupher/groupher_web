@@ -274,6 +274,7 @@ export const completePhoenixUpload = async ({
         thread: threadInput(capability.declaredThread),
         uploaderId: capability.uploaderId,
         url: capability.canonicalUrl,
+        uploadRef: capability.uploadRef,
         width: input.width,
       },
     },

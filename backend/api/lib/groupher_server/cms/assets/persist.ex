@@ -3,8 +3,8 @@ defmodule GroupherServer.CMS.Assets.Persist do
   Persistence primitives for user-owned CommunityAsset mutations.
 
   Gate/Command owns admission and the surrounding transaction. This module only
-  locks and writes the canonical asset row and emits the provider-delete
-  outbox intent with the identity supplied by its caller.
+  locks and writes the canonical asset row. Provider cleanup is an explicit
+  Outbox effect owned by the Command or maintenance workflow.
 
       Command / maintenance workflow
         -> Gate / workflow transaction
@@ -40,9 +40,9 @@ defmodule GroupherServer.CMS.Assets.Persist do
     upsert_active_asset(attrs)
   end
 
-  @spec delete(Community.t(), term(), {:command | :workflow, String.t()}) ::
+  @spec delete(Community.t(), term()) ::
           {:ok, CommunityAsset.t()} | {:error, term()}
-  def delete(%Community{id: community_id}, asset_id, _identity) do
+  def delete(%Community{id: community_id}, asset_id) do
     with {:ok, asset} <- find_active_asset_for_update(community_id, asset_id),
          {:ok, _} <- Completeness.guard(community_id),
          false <- referenced?(asset),

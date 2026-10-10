@@ -37,15 +37,27 @@ defmodule GroupherServer.CMS.Outbox.Workers.Asset.Cleanup do
   end
 
   defp delete_provider_object(event) do
-    case Repo.get(CommunityAsset, event.resource_id) do
-      %CommunityAsset{} = asset ->
-        case Deletion.deliver(asset) do
+    case event.resource_type do
+      "community_asset" ->
+        case Repo.get(CommunityAsset, event.resource_id) do
+          %CommunityAsset{} = asset ->
+            case Deletion.deliver(asset) do
+              {:ok, _} -> {:ok, :deleted}
+              {:error, reason} -> {:error, reason}
+            end
+
+          nil ->
+            {:ok, :already_deleted}
+        end
+
+      "application_logo_upload" ->
+        case Deletion.deliver_application_upload(event.data) do
           {:ok, _} -> {:ok, :deleted}
           {:error, reason} -> {:error, reason}
         end
 
-      nil ->
-        {:ok, :already_deleted}
+      _ ->
+        {:error, {:unsupported_asset_cleanup_resource, event.resource_type}}
     end
   end
 end

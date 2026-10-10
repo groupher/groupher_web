@@ -30,8 +30,8 @@ defmodule GroupherServer.CMS.Assets do
     Deletion,
     ProviderReconciliation,
     Query,
-    Upload,
-    Writer
+    Refs,
+    Upload
   }
 
   alias GroupherServer.{Accounts, CMS}
@@ -274,14 +274,14 @@ defmodule GroupherServer.CMS.Assets do
   @spec link_refs(T.article(), map(), Keyword.t()) :: T.domain_res(term())
   def link_refs(article, attrs, opts \\ []) do
     case Keyword.get(opts, :community) do
-      %Community{} = community -> Writer.sync_refs(community, article, attrs)
-      nil -> Writer.sync_refs(article, attrs)
+      %Community{} = community -> Refs.sync_refs(community, article, attrs)
+      nil -> Refs.sync_refs(article, attrs)
     end
   end
 
   @doc "Copies all derived document asset refs between two versions of one Article."
   @spec copy_refs(T.article(), T.article()) :: T.domain_res(term())
-  def copy_refs(source, target), do: Writer.copy_refs(source, target)
+  def copy_refs(source, target), do: Refs.copy_refs(source, target)
 
   @doc """
   Cleans up all persisted asset refs for one permanently deleted article.
@@ -296,7 +296,7 @@ defmodule GroupherServer.CMS.Assets do
 
   """
   @spec cleanup_refs(atom(), T.id()) :: T.domain_res(term())
-  def cleanup_refs(thread, article_id), do: Writer.purge_refs(thread, article_id)
+  def cleanup_refs(thread, article_id), do: Refs.purge_refs(thread, article_id)
 
   @doc "Creates an immutable, reviewable global replacement plan."
   def create_replacement_plan(%Community{} = community, attrs, %User{} = user) do

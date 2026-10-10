@@ -44,7 +44,7 @@ defmodule GroupherServer.CMS.Assets.Commands.DeleteAsset do
     community = Repo.get!(Community, asset.community_id)
 
     CMS.Gate.with_community_check(actor, :update, community, fn canonical ->
-      with {:ok, deleted} <- Persist.delete(canonical, asset.id, {:command, command_id}),
+      with {:ok, deleted} <- Persist.delete(canonical, asset.id),
            {:ok, _event} <-
              CMS.Outbox.send(%{
                event: "asset.provider_delete",

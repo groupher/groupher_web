@@ -1,6 +1,6 @@
-defmodule GroupherServer.CMS.Assets.Writer do
+defmodule GroupherServer.CMS.Assets.Refs do
   @moduledoc """
-  Write-side helpers for community assets and article refs.
+  Persistence and projection helpers for Article asset references.
 
   The write flow mirrors the storage model:
 
@@ -15,14 +15,14 @@ defmodule GroupherServer.CMS.Assets.Writer do
 
   import Ecto.Query, warn: false
 
-  alias GroupherServer.{Accounts, CMS, Repo}
+  alias GroupherServer.{CMS, Repo}
 
   alias CMS.Assets.Completeness
   alias CMS.Articles.Bindings
   alias CMS.Assets.ErrorCat, as: AssetErrorCat
   alias CMS.FrontDesk
   alias CMS.Gate.ErrorCat, as: GateErrorCat
-  alias CMS.Outbox
+  alias CMS.Assets.Persist
 
   alias CMS.Model.{
     Article,
@@ -34,7 +34,6 @@ defmodule GroupherServer.CMS.Assets.Writer do
     DocDraft
   }
 
-  alias Accounts.Model.User
   alias Helper.{ORM, T}
 
   @body_usages ~w(inline attachment embed)a
@@ -43,10 +42,6 @@ defmodule GroupherServer.CMS.Assets.Writer do
     %{usage: :cover_dark, asset_key: :cover_asset_dark, asset_id_key: :cover_asset_dark_id}
   ]
   @all_usages ArticleAssetRef.usage_values()
-  @asset_url_conflict_target {:unsafe_fragment,
-                              "(community_id, url_hash) WHERE deleted_at IS NULL"}
-  @asset_storage_conflict_target {:unsafe_fragment,
-                                  "(community_id, storage, storage_key) WHERE storage_key IS NOT NULL AND deleted_at IS NULL"}
 
   @doc false
   def draft_refs(body_draft_id) when is_binary(body_draft_id) do
@@ -65,96 +60,6 @@ defmodule GroupherServer.CMS.Assets.Writer do
   end
 
   @doc """
-  Creates or updates an active community asset row for uploaded metadata.
-
-  Active rows are deduplicated by URL hash, or by storage identity when both
-  `storage` and `storage_key` are present. The optional user is stored as the
-  uploader when available.
-
-  ## Examples
-
-      Writer.register(community, %{url: url, size_bytes: 2048}, user)
-      #=> {:ok, %CommunityAsset{}}
-
-      Writer.register(community, %{storage: "s3", storage_key: key, url: url, size_bytes: 2048})
-      #=> {:ok, %CommunityAsset{}}
-
-  """
-  @spec register(Community.t(), map(), User.t() | nil) :: T.domain_res(CommunityAsset.t())
-  def register(%Community{id: community_id}, attrs, user \\ nil) when is_map(attrs) do
-    attrs =
-      attrs
-      |> Map.put(:community_id, community_id)
-      |> put_uploader(user)
-      |> put_default_status()
-      |> put_default_asset_type()
-      |> Map.put_new(:archived_at, nil)
-
-    upsert_active_asset(attrs)
-  end
-
-  @doc """
-  Soft-deletes one active community asset when it has no refs.
-
-  The asset row is selected `FOR UPDATE` before the ref check. If any
-  `article_asset_refs` row still points to the asset, deletion is
-  rejected.
-
-  ## Examples
-
-      Writer.delete(community, asset.id, {:command, command_id})
-      #=> {:ok, %CommunityAsset{status: :deleted}}
-
-      Writer.delete(community, referenced_asset.id)
-      #=> {:error, AssetErrorCat.custom("asset is still referenced")}
-
-  """
-  @spec delete(Community.t(), T.id(), {:command | :workflow, String.t()}) ::
-          T.domain_res(CommunityAsset.t())
-  def delete(%Community{id: community_id}, asset_id, identity) do
-    with {:ok, asset} <- find_active_asset_for_update(community_id, asset_id),
-         {:ok, _} <- Completeness.guard(community_id),
-         false <- referenced?(asset),
-         {:ok, asset} <-
-           ORM.update(asset, %{
-             status: :deleted,
-             deleted_at: DateTime.utc_now(:second)
-           }),
-         {:ok, _event} <-
-           Outbox.send(%{
-             event: "asset.provider_delete",
-             worker: CMS.Outbox.Workers.Asset.Cleanup,
-             resource_type: "community_asset",
-             resource_id: asset.id,
-             identity: identity,
-             effect_key: "asset:#{asset.id}",
-             data: %{asset_id: asset.id, public_ref: asset.public_ref}
-           }) do
-      {:ok, asset}
-    else
-      true -> {:error, AssetErrorCat.custom("asset is still referenced")}
-      {:error, reason} -> {:error, reason}
-    end
-  end
-
-  @doc "Archives an asset without changing Draft or Revision-owned refs."
-  def archive(%Community{id: community_id}, asset_id) do
-    with {:ok, asset} <- find_active_asset_for_update(community_id, asset_id),
-         {:ok, archived} <-
-           ORM.update(asset, %{status: :archived, archived_at: DateTime.utc_now(:second)}) do
-      {:ok, archived}
-    end
-  end
-
-  @doc "Restores an archived asset to the active library."
-  def restore(%Community{id: community_id}, asset_id) do
-    with {:ok, asset} <- find_asset_for_update(community_id, asset_id),
-         {:ok, restored} <- ORM.update(asset, %{status: :active, archived_at: nil}) do
-      {:ok, restored}
-    end
-  end
-
-  @doc """
   Synchronizes refs for an article using an explicit community boundary.
 
   The body Draft row is locked while body and cover refs are replaced, so
@@ -162,7 +67,7 @@ defmodule GroupherServer.CMS.Assets.Writer do
 
   ## Examples
 
-      Writer.sync_refs(community, post, %{
+      Refs.sync_refs(community, post, %{
         asset_refs: [%{asset_id: asset.id, block_id: "image-1"}],
         cover_asset_id: cover_asset.id,
         cur_user: user
@@ -183,10 +88,10 @@ defmodule GroupherServer.CMS.Assets.Writer do
 
   ## Examples
 
-      Writer.sync_refs(post, %{asset_refs: [%{asset_id: asset.id}]})
+      Refs.sync_refs(post, %{asset_refs: [%{asset_id: asset.id}]})
       #=> {:ok, %{body: body_refs, cover: cover_refs}}
 
-      Writer.sync_refs(post, %{asset_refs: []})
+      Refs.sync_refs(post, %{asset_refs: []})
       #=> {:ok, :pass}
 
   """
@@ -273,7 +178,7 @@ defmodule GroupherServer.CMS.Assets.Writer do
 
   ## Examples
 
-      Writer.purge_refs(:post, post.id)
+      Refs.purge_refs(:post, post.id)
       #=> {:ok, {deleted_count, nil}}
 
   """
@@ -491,11 +396,14 @@ defmodule GroupherServer.CMS.Assets.Writer do
         {:error, AssetErrorCat.custom("asset_id and asset are mutually exclusive")}
 
       not is_nil(asset_id) ->
-        find_active_asset_for_update(community_id, asset_id)
+        load_active_asset_for_update(community_id, asset_id)
 
       is_map(asset_attrs) ->
-        with {:ok, asset} <- register(%Community{id: community_id}, asset_attrs, user) do
-          find_active_asset_for_update(community_id, asset.id)
+        with {:ok, asset} <-
+               Persist.register(%Community{id: community_id}, asset_attrs, user),
+             {:ok, asset} <-
+               load_active_asset_for_update(community_id, asset.id) do
+          {:ok, asset}
         end
 
       true ->
@@ -503,7 +411,7 @@ defmodule GroupherServer.CMS.Assets.Writer do
     end
   end
 
-  defp find_active_asset_for_update(community_id, asset_id) do
+  defp load_active_asset_for_update(community_id, asset_id) do
     community_id
     |> CommunityAsset.active_query(asset_id)
     |> lock("FOR UPDATE")
@@ -512,94 +420,6 @@ defmodule GroupherServer.CMS.Assets.Writer do
       nil -> {:error, AssetErrorCat.not_exist("asset not found")}
       asset -> {:ok, asset}
     end
-  end
-
-  defp find_asset_for_update(community_id, asset_id) do
-    CommunityAsset
-    |> where([asset], asset.community_id == ^community_id and asset.id == ^asset_id)
-    |> lock("FOR UPDATE")
-    |> Repo.one()
-    |> case do
-      nil -> {:error, AssetErrorCat.not_exist("asset not found")}
-      asset -> {:ok, asset}
-    end
-  end
-
-  defp upsert_active_asset(attrs) do
-    attrs
-    |> upsert_identity()
-    |> then(&insert_active_asset(attrs, &1))
-    |> case do
-      {:ok, asset} -> {:ok, asset}
-      {:error, %Ecto.Changeset{} = changeset} -> retry_active_asset_upsert(attrs, changeset)
-    end
-  end
-
-  defp insert_active_asset(attrs, identity) do
-    changeset = CommunityAsset.changeset(%CommunityAsset{}, attrs)
-
-    set_fields =
-      changeset.changes
-      |> Map.drop(conflict_fields(identity))
-      |> Map.put(:updated_at, DateTime.utc_now(:second))
-      |> Enum.to_list()
-
-    opts = [
-      on_conflict: [set: set_fields],
-      conflict_target: conflict_target(identity),
-      returning: true
-    ]
-
-    opts =
-      if Repo.in_transaction?() do
-        Keyword.put(opts, :mode, :savepoint)
-      else
-        opts
-      end
-
-    Repo.insert(changeset, opts)
-  end
-
-  defp retry_active_asset_upsert(attrs, changeset) do
-    cond do
-      unique_constraint_error?(changeset, :community_assets_community_url_hash_index) ->
-        insert_active_asset(attrs, :url_hash)
-
-      storage_identity?(attrs) and
-          unique_constraint_error?(changeset, :community_assets_community_storage_key_index) ->
-        insert_active_asset(attrs, :storage_key)
-
-      true ->
-        {:error, changeset}
-    end
-  end
-
-  defp upsert_identity(attrs) do
-    if storage_identity?(attrs), do: :storage_key, else: :url_hash
-  end
-
-  defp storage_identity?(attrs) do
-    is_binary(get_attr(attrs, :storage)) and is_binary(get_attr(attrs, :storage_key))
-  end
-
-  defp conflict_target(:storage_key), do: @asset_storage_conflict_target
-  defp conflict_target(:url_hash), do: @asset_url_conflict_target
-
-  defp conflict_fields(:storage_key), do: [:community_id, :storage, :storage_key]
-  defp conflict_fields(:url_hash), do: [:community_id, :url_hash]
-
-  defp unique_constraint_error?(%Ecto.Changeset{errors: errors}, constraint_name) do
-    constraint_name = to_string(constraint_name)
-
-    Enum.any?(errors, fn {_field, {_message, opts}} ->
-      opts[:constraint] == :unique and opts[:constraint_name] == constraint_name
-    end)
-  end
-
-  defp referenced?(%CommunityAsset{id: asset_id}) do
-    ArticleAssetRef
-    |> where([ref], ref.asset_id == ^asset_id)
-    |> Repo.exists?()
   end
 
   defp lock_body_draft(body_draft_id) do
@@ -646,28 +466,6 @@ defmodule GroupherServer.CMS.Assets.Writer do
       select: draft.body_draft_id
     )
   end
-
-  defp put_uploader(attrs, %User{id: user_id}), do: Map.put(attrs, :uploader_id, user_id)
-  defp put_uploader(attrs, _), do: attrs
-
-  defp put_default_status(attrs) do
-    case has_attr?(attrs, :status) do
-      true -> attrs
-      false -> Map.put(attrs, :status, :active)
-    end
-  end
-
-  defp put_default_asset_type(attrs) do
-    case has_attr?(attrs, :asset_type) do
-      true -> attrs
-      false -> Map.put(attrs, :asset_type, guessed_asset_type(get_attr(attrs, :mime_type)))
-    end
-  end
-
-  defp guessed_asset_type("image/" <> _), do: :image
-  defp guessed_asset_type("video/" <> _), do: :video
-  defp guessed_asset_type("audio/" <> _), do: :audio
-  defp guessed_asset_type(_), do: :file
 
   defp normalize_usage(nil), do: {:ok, :inline}
   defp normalize_usage(usage) when usage in @all_usages, do: {:ok, usage}

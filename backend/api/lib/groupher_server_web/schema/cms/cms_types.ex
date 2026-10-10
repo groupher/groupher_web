@@ -1191,6 +1191,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   end
 
   input_object :community_asset_upload_completion_input do
+    field(:upload_ref, non_null(:string))
     field(:idempotency_key, non_null(:string))
     field(:community_id, non_null(:id))
     field(:uploader_id, :id)
