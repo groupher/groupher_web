@@ -49,5 +49,12 @@ defmodule GroupherServer.Activity.Blog do
       Event.contract([], [:case_ref, :decision], [:community_log]) |> Event.contract_only()
   }
 
+  @doc """
+  Returns Blog's classified Activity contracts.
+
+  ## Examples
+
+      Activity.Blog.contracts()[:created].classification
+  """
   def contracts, do: Event.classify_contracts(@contracts)
 end

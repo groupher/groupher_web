@@ -8,11 +8,7 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
 
   Business position:
 
-      Main / Dashboard
-        -> GraphQL
-        -> Analysis
-        -> Umami
-        -> Repo / analytics provider
+      Analysis.Web -> Umami adapter -> Umami API -> normalized DTO
   """
 
   use Tesla
@@ -36,6 +32,13 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
 
   plug(Tesla.Middleware.JSON, engine: Jason)
 
+  @doc """
+  Returns normalized summary metrics for a community and time range.
+
+  ## Examples
+
+      Analysis.Web.Provider.Umami.summary(community, %{days: 7})
+  """
   @impl true
   def summary(%Community{} = community, range) do
     with {:ok, request} <- request_config(community.umami_website_id),
@@ -44,6 +47,13 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
     end
   end
 
+  @doc """
+  Returns normalized summary and chart sections for a community.
+
+  ## Examples
+
+      Analysis.Web.Provider.Umami.overview(community, %{days: 7})
+  """
   @impl true
   def overview(%Community{} = community, range) do
     with {:ok, request} <- request_config(community.umami_website_id) do
@@ -66,6 +76,13 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
     end
   end
 
+  @doc """
+  Returns the current active visitor count for a community.
+
+  ## Examples
+
+      Analysis.Web.Provider.Umami.active(community)
+  """
   @impl true
   def active(%Community{} = community) do
     with {:ok, request} <- request_config(community.umami_website_id) do
@@ -73,6 +90,13 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
     end
   end
 
+  @doc """
+  Returns normalized page dimensions from the provider.
+
+  ## Examples
+
+      Analysis.Web.Provider.Umami.pages(community, %{days: 7}, :path)
+  """
   @impl true
   def pages(%Community{} = community, range, dimension) when dimension in @page_dimensions do
     with {:ok, request} <- request_config(community.umami_website_id),
@@ -81,6 +105,13 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
     end
   end
 
+  @doc """
+  Returns normalized source dimensions from the provider.
+
+  ## Examples
+
+      Analysis.Web.Provider.Umami.sources(community, %{days: 7}, :referrer)
+  """
   @impl true
   def sources(%Community{} = community, range, dimension) when dimension in @source_dimensions do
     with {:ok, request} <- request_config(community.umami_website_id),
@@ -89,6 +120,13 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
     end
   end
 
+  @doc """
+  Returns normalized environment dimensions from the provider.
+
+  ## Examples
+
+      Analysis.Web.Provider.Umami.environment(community, %{days: 7}, :browser)
+  """
   @impl true
   def environment(%Community{} = community, range, dimension)
       when dimension in @environment_dimensions do
@@ -98,6 +136,13 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
     end
   end
 
+  @doc """
+  Returns normalized location dimensions from the provider.
+
+  ## Examples
+
+      Analysis.Web.Provider.Umami.location(community, %{days: 7}, :country)
+  """
   @impl true
   def location(%Community{} = community, range, dimension)
       when dimension in @location_dimensions do
@@ -107,6 +152,13 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
     end
   end
 
+  @doc """
+  Returns normalized country and region visitor rows from the provider.
+
+  ## Examples
+
+      Analysis.Web.Provider.Umami.visitor_locations(community, %{days: 30})
+  """
   @impl true
   def visitor_locations(%Community{} = community, range) do
     with {:ok, request} <- request_config(community.umami_website_id) do
@@ -136,6 +188,13 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
     end
   end
 
+  @doc """
+  Returns the normalized weekly traffic heatmap.
+
+  ## Examples
+
+      Analysis.Web.Provider.Umami.traffic(community, %{days: 7})
+  """
   @impl true
   def traffic(%Community{} = community, range) do
     with {:ok, request} <- request_config(community.umami_website_id),
@@ -144,6 +203,16 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
     end
   end
 
+  @doc """
+  Returns or creates the provider website for a community.
+
+  The adapter first looks up the stable slug/domain identity so retries reuse
+  an existing website.
+
+  ## Examples
+
+      Analysis.Web.Provider.Umami.create_website(community)
+  """
   @impl true
   def create_website(%Community{community: slug}) do
     with {:ok, request} <- request_config(nil) do
@@ -165,6 +234,10 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
 
   This is kept for the legacy summary endpoint; v2 Trends never uses a path
   prefix as its authorization or collection boundary.
+
+  ## Examples
+
+      Analysis.Web.Provider.Umami.aggregate_path_metrics(rows, "/home")
   """
   @spec aggregate_path_metrics(list(), String.t()) :: map()
   def aggregate_path_metrics(rows, path_prefix) when is_list(rows) and is_binary(path_prefix) do

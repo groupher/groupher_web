@@ -4,17 +4,19 @@ defmodule GroupherServer.Accounts.Search do
 
   Business position:
 
-      Client / Auth
-        -> GraphQL or internal API
-        -> Accounts facade
-        -> Search
-        -> Repo
+      Client / Auth -> Accounts facade -> Search.Query -> User read model
   """
 
   alias __MODULE__.User
   alias Helper.T
 
-  @doc "Runs `user` through the public `Search` boundary."
+  @doc """
+  Searches users by nickname or login.
+
+  ## Examples
+
+      Accounts.Search.user("alice")
+  """
   @spec user(String.t()) :: T.domain_res(T.paged_users())
   def user(name) when is_binary(name), do: User.search(name)
 end

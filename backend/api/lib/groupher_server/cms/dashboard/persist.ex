@@ -45,7 +45,7 @@ defmodule GroupherServer.CMS.Dashboard.Persist do
 
   ## Examples
 
-      replace_section(...)
+      CMS.Dashboard.Persist.replace_section(dashboard, :base_info, %{title: "Groupher"})
       #=> {:ok, value}
   """
   @spec replace_section(CommunityDashboard.t(), atom(), map() | list() | boolean()) ::
@@ -62,7 +62,7 @@ defmodule GroupherServer.CMS.Dashboard.Persist do
 
   ## Examples
 
-      get_dashboard(...)
+      CMS.Dashboard.Persist.get_dashboard(community)
       #=> {:ok, value}
   """
   @spec get_dashboard(Community.t()) :: T.domain_res(CommunityDashboard.t())
@@ -74,7 +74,7 @@ defmodule GroupherServer.CMS.Dashboard.Persist do
 
   ## Examples
 
-      update_content_shadow(...)
+      CMS.Dashboard.Persist.update_content_shadow(dashboard, true)
       #=> {:ok, value}
   """
   @spec update_content_shadow(CommunityDashboard.t(), boolean()) ::
@@ -86,4 +86,22 @@ defmodule GroupherServer.CMS.Dashboard.Persist do
     |> Repo.update()
   end
 
+  @doc """
+  Stores the provider website identity on a dashboard row.
+
+  The caller owns any surrounding transaction; the function only performs the
+  CMS dashboard row primitive required by the Analysis Web provisioning flow.
+
+  ## Examples
+
+      CMS.Dashboard.Persist.update_website_id(dashboard, "website-id")
+  """
+  @spec update_website_id(CommunityDashboard.t(), String.t()) ::
+          T.domain_res(CommunityDashboard.t())
+  def update_website_id(%CommunityDashboard{} = dashboard, website_id)
+      when is_binary(website_id) do
+    dashboard
+    |> Ecto.Changeset.change(%{umami_website_id: website_id})
+    |> Repo.update()
+  end
 end

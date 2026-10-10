@@ -18,9 +18,16 @@ defmodule GroupherServer.PublicCache.Telemetry do
   @event_name "groupher-public-cache-purge"
   @events [[:groupher, :public_cache, :purge]]
 
-  @doc "Starts the one process that owns the PublicCache telemetry handler."
+  @doc """
+  Starts the one process that owns the PublicCache telemetry handler.
+
+  ## Examples
+
+      PublicCache.Telemetry.start_link([])
+  """
   def start_link(_opts), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
 
+  @doc false
   @impl GenServer
   def init(:ok) do
     :telemetry.attach_many(@event_name, @events, &__MODULE__.handle_event/4, nil)
@@ -35,6 +42,7 @@ defmodule GroupherServer.PublicCache.Telemetry do
   end
 
   @impl GenServer
+  @doc false
   def terminate(_reason, _state) do
     :telemetry.detach(@event_name)
     {:ok, :pass}

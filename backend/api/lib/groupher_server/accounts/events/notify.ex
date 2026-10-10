@@ -7,25 +7,33 @@ defmodule GroupherServer.Accounts.Events.Notify do
 
   Business position:
 
-      Client / Auth
-        -> GraphQL or internal API
-        -> Accounts facade
-        -> Notify
-        -> Repo
+      Accounts event -> Events.Notify -> Messaging command -> inbox projection
   """
 
   alias GroupherServer.{Accounts, Messaging}
 
   alias Accounts.Model.User
 
-  @doc "Creates a follow notification for the target user."
+  @doc """
+  Creates a follow notification for the target user.
+
+  ## Examples
+
+      Accounts.Events.Notify.handle(:follow, target_user, follower)
+  """
   def handle(:follow, %User{} = user, %User{} = from_user) do
     notify_attrs = %{action: :follow, user_id: user.id}
 
     Messaging.send_notification(notify_attrs, from_user)
   end
 
-  @doc "Revokes the matching follow notification after an unfollow."
+  @doc """
+  Revokes the matching follow notification after an unfollow.
+
+  ## Examples
+
+      Accounts.Events.Notify.handle(:undo, :follow, target_user, follower)
+  """
   def handle(:undo, :follow, %User{} = user, %User{} = from_user) do
     notify_attrs = %{action: :follow, user_id: user.id}
 

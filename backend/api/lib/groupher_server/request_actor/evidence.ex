@@ -103,8 +103,13 @@ defmodule GroupherServer.RequestActor.Evidence do
   Conflicting or malformed trusted inputs fail closed. When no trusted input is
   present, the User-Agent may produce self-reported automation evidence; a signed
   anonymous session never upgrades such automation into a probable human.
+
+  ## Examples
+
+      RequestActor.Evidence.select(user_agent: "Mozilla/5.0")
   """
   @spec select(keyword()) :: {:ok, t()} | {:error, :conflicting_evidence | :invalid_evidence}
+
   def select(opts) when is_list(opts) do
     with {:ok, evidence} <- trusted_evidence(opts) do
       case evidence do

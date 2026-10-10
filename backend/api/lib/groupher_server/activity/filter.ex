@@ -122,6 +122,13 @@ defmodule GroupherServer.Activity.Filter do
     "activity_exports"
   ]
 
+  @doc """
+  Returns the built-in Activity filter preset descriptors.
+
+  ## Examples
+
+      Activity.Filter.descriptors()
+  """
   def descriptors do
     Enum.map(@preset_order, fn key ->
       preset = Map.fetch!(@presets, key)
@@ -132,6 +139,13 @@ defmodule GroupherServer.Activity.Filter do
     end)
   end
 
+  @doc """
+  Resolves a custom filter and optional preset against active actions.
+
+  ## Examples
+
+      Activity.Filter.resolve(%{filter: %{outcomes: [:denied]}}, active_actions)
+  """
   def resolve(selection, active_actions) when is_map(selection) do
     preset_key = Map.get(selection, :preset_key)
     user_filter = Map.get(selection, :filter) || %{}

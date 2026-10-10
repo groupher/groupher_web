@@ -18,6 +18,13 @@ defmodule GroupherServer.Jobs.Config do
           | :article_insights_retention
 
   @spec queue(job_name()) :: atom()
+  @doc """
+  Returns the Oban queue for a known job name.
+
+  ## Examples
+
+      Jobs.Config.queue(:search_index)
+  """
   def queue(:later), do: :default
   def queue(:search_index), do: :search
   def queue(:snapshot_refresh), do: :snapshot
@@ -25,6 +32,13 @@ defmodule GroupherServer.Jobs.Config do
   def queue(:article_insights_retention), do: :default
 
   @spec max_attempts(job_name()) :: pos_integer()
+  @doc """
+  Returns the retry limit for a known job name.
+
+  ## Examples
+
+      Jobs.Config.max_attempts(:snapshot_refresh)
+  """
   def max_attempts(:later), do: 3
   def max_attempts(:search_index), do: 3
   def max_attempts(:snapshot_refresh), do: 3
@@ -32,6 +46,13 @@ defmodule GroupherServer.Jobs.Config do
   def max_attempts(:article_insights_retention), do: 3
 
   @spec unique(job_name()) :: keyword()
+  @doc """
+  Returns the Oban uniqueness policy for a known job name.
+
+  ## Examples
+
+      Jobs.Config.unique(:search_index)
+  """
   def unique(:later), do: []
   def unique(:search_index), do: [period: 60, keys: [:action, :thread, :ref]]
   def unique(:snapshot_refresh), do: [period: 60, keys: [:kind, :refs]]
@@ -39,6 +60,13 @@ defmodule GroupherServer.Jobs.Config do
   def unique(:article_insights_retention), do: [period: 86_400, keys: []]
 
   @spec skip_enqueue?() :: boolean()
+  @doc """
+  Reports whether jobs should be skipped in the current environment.
+
+  ## Examples
+
+      Jobs.Config.skip_enqueue?()
+  """
   def skip_enqueue? do
     Application.get_env(:groupher_server, :env) in [:test, :seed_prod]
   end

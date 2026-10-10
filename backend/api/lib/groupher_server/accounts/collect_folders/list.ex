@@ -23,12 +23,26 @@ defmodule GroupherServer.Accounts.CollectFolders.List do
   alias Accounts.Model.{CollectFolder, User}
   alias Helper.{ORM, QueryBuilder, T}
 
+  @doc """
+  Returns public collection folders for one account.
+
+  ## Examples
+
+      Accounts.CollectFolders.List.page(user_id, %{page: 1, size: 20})
+  """
   @spec page(T.id(), map()) :: T.domain_res(T.paged_data())
   def page(user_id, filter) do
     query = CollectFolder |> where([c], c.user_id == ^user_id and not c.private)
     do_paged(filter, query)
   end
 
+  @doc """
+  Returns collection folders with private visibility for the account owner.
+
+  ## Examples
+
+      Accounts.CollectFolders.List.page(user_id, %{page: 1, size: 20}, viewer)
+  """
   @spec page(T.id(), map(), User.t()) :: T.domain_res(T.paged_data())
   def page(user_id, filter, %User{id: cur_user_id}) do
     query =

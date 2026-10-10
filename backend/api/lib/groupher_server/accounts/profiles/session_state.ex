@@ -13,7 +13,13 @@ defmodule GroupherServer.Accounts.Profiles.SessionState do
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
 
-  @doc "Bootstraps account defaults and returns the authenticated session state."
+  @doc """
+  Bootstraps account defaults and returns the authenticated session state.
+
+  ## Examples
+
+      Accounts.Profiles.SessionState.bootstrap(user)
+  """
   @spec bootstrap(User.t()) :: {:ok, map()} | {:error, term()}
   def bootstrap(%User{} = user) do
     # A deployment may intentionally omit the default Community. Session

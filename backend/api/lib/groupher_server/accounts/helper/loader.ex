@@ -20,10 +20,22 @@ defmodule GroupherServer.Accounts.Helper.Loader do
   alias Helper.QueryBuilder
   alias CMS.Model.CommunitySubscriber
 
-  @doc "Returns the Accounts Ecto Dataloader source."
+  @doc """
+  Returns the Accounts Ecto Dataloader source.
+
+  ## Examples
+
+      Accounts.Helper.Loader.data()
+  """
   def data, do: Dataloader.Ecto.new(Repo, query: &query/2)
 
-  @doc "Applies field arguments to an Accounts Dataloader query."
+  @doc """
+  Applies field arguments to an Accounts Dataloader query.
+
+  ## Examples
+
+      Accounts.Helper.Loader.query({"communities_subscribers", CommunitySubscriber}, %{filter: %{page: 1, size: 20}})
+  """
   def query({"communities_subscribers", CommunitySubscriber}, %{filter: filter}) do
     CommunitySubscriber
     |> QueryBuilder.filter_pack(filter)

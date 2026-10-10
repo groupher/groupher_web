@@ -23,7 +23,13 @@ defmodule GroupherServer.Analysis.ArticleInsights do
   @default_hours 48
   @max_buckets 720
 
-  @doc "Returns an authorized Article hourly trend with zero-filled buckets."
+  @doc """
+  Returns an authorized Article hourly trend with zero-filled buckets.
+
+  ## Examples
+
+      Analysis.ArticleInsights.trend(article, viewer, metrics: [:views])
+  """
   @spec trend(map(), term(), keyword()) :: {:ok, map()} | {:error, term()}
   def trend(article, viewer, opts \\ [])
 
@@ -42,7 +48,13 @@ defmodule GroupherServer.Analysis.ArticleInsights do
 
   def trend(_article, _viewer, _opts), do: {:error, :invalid_article_insights_request}
 
-  @doc "Resolves a public Article path through the Insights Gate scope and returns its trend."
+  @doc """
+  Resolves a public Article path through the Insights Gate scope and returns its trend.
+
+  ## Examples
+
+      Analysis.ArticleInsights.trend_by_path(%{community: "groupher", thread: :post, inner_id: 1}, viewer, [])
+  """
   @spec trend_by_path(ArticlePath.t(), term(), keyword()) :: {:ok, map()} | {:error, term()}
   def trend_by_path(article_path, viewer, opts \\ [])
 
@@ -59,7 +71,13 @@ defmodule GroupherServer.Analysis.ArticleInsights do
     {:error, :invalid_article_insights_request}
   end
 
-  @doc "Normalizes the public Insights filter and derives viewer Passport scope."
+  @doc """
+  Normalizes the public Insights filter and derives viewer Passport scope.
+
+  ## Examples
+
+      Analysis.ArticleInsights.trend_by_public_filter(article_path, viewer, %{metrics: [:views]})
+  """
   @spec trend_by_public_filter(ArticlePath.t(), term(), map()) ::
           {:ok, map()} | {:error, term()}
   def trend_by_public_filter(article_path, viewer, filter) when is_map(filter) do
@@ -77,10 +95,22 @@ defmodule GroupherServer.Analysis.ArticleInsights do
     trend_by_path(article_path, viewer, opts)
   end
 
-  @doc "Returns the current closed metric vocabulary for Article Insights."
+  @doc """
+  Returns the current closed metric vocabulary for Article Insights.
+
+  ## Examples
+
+      Analysis.ArticleInsights.metrics()
+  """
   def metrics, do: Const.metrics()
 
-  @doc "Extracts community-scoped insight grants at the trusted API boundary."
+  @doc """
+  Extracts community-scoped insight grants at the trusted API boundary.
+
+  ## Examples
+
+      Analysis.ArticleInsights.passport_granted_community_slugs(viewer)
+  """
   @spec passport_granted_community_slugs(term()) :: [String.t()]
   def passport_granted_community_slugs(viewer) do
     viewer

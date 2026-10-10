@@ -17,7 +17,13 @@ defmodule GroupherServer.Messaging.Notify do
   alias GroupherServer.CMS
   alias CMS.ErrorCat
 
-  @doc "Accepts a notification event at the stable dispatch boundary."
+  @doc """
+  Accepts a notification event at the stable dispatch boundary.
+
+  ## Examples
+
+      Messaging.Notify.dispatch(:comment_created, %{comment_id: comment.id})
+  """
   @spec dispatch(atom(), map()) :: {:ok, :pass} | {:error, term()}
   def dispatch(event, payload) when is_atom(event) and is_map(payload) do
     _ = {event, payload}

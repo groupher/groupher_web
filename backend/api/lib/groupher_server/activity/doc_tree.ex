@@ -17,14 +17,76 @@ defmodule GroupherServer.Activity.DocTree do
     permanently_deleted: Event.contract([], [:doc_count], [:community_log])
   }
 
+  @doc """
+  Returns DocTree's classified Activity contracts.
+
+  ## Examples
+
+      Activity.DocTree.contracts()[:trashed].classification
+  """
   def contracts, do: Event.classify_contracts(@contracts)
+
+  @doc """
+  Returns the DocTree Activity log schema.
+
+  ## Examples
+
+      Activity.DocTree.schema()
+  """
   def schema, do: DocTreeLog
+
+  @doc """
+  Returns the field used as the DocTree Activity stream reference.
+
+  ## Examples
+
+      Activity.DocTree.stream_field()
+  """
   def stream_field, do: :doc_tree_ref
+
+  @doc """
+  Returns the public resource type used by DocTree Activity filters.
+
+  ## Examples
+
+      Activity.DocTree.resource_type()
+  """
   def resource_type, do: :doc_tree
+
+  @doc """
+  Builds and persists a DocTree Activity event.
+
+  ## Examples
+
+      Activity.DocTree.log(node, :trashed, actor: actor)
+  """
   def log(resource, action, opts), do: Event.log(__MODULE__, resource, action, opts)
+
+  @doc """
+  Projects a DocTree Activity row for a public surface.
+
+  ## Examples
+
+      Activity.DocTree.project(log, :community_log)
+  """
   def project(log, surface), do: Event.project(__MODULE__, log, surface)
+
+  @doc """
+  Lists the DocTree actions exposed on a public Activity surface.
+
+  ## Examples
+
+      Activity.DocTree.surface_actions(:community_log)
+  """
   def surface_actions(surface), do: Event.surface_actions(__MODULE__, surface)
 
+  @doc """
+  Describes a DocTree resource for an Activity event envelope.
+
+  ## Examples
+
+      Activity.DocTree.describe(node, :trashed, [])
+  """
   def describe(%DocTreeNode{} = node, _action, _opts) do
     {:ok, descriptor(node.community_id, node.node_id, node.branch_id, node)}
   end

@@ -23,19 +23,43 @@ defmodule GroupherServer.RequestActor.Const do
     :fallback
   ]
 
-  @doc "Returns the closed request-actor vocabulary."
+  @doc """
+  Returns the closed request-actor vocabulary.
+
+  ## Examples
+
+      RequestActor.Const.actor_types()
+  """
   @spec actor_types() :: [atom()]
   def actor_types, do: @actor_types
 
-  @doc "Returns the confidence values emitted by RequestActor."
+  @doc """
+  Returns the confidence values emitted by RequestActor.
+
+  ## Examples
+
+      RequestActor.Const.confidences()
+  """
   @spec confidences() :: [atom()]
   def confidences, do: @confidences
 
-  @doc "Returns the trusted or fallback classification sources."
+  @doc """
+  Returns the trusted or fallback classification sources.
+
+  ## Examples
+
+      RequestActor.Const.classified_by()
+  """
   @spec classified_by() :: [atom()]
   def classified_by, do: @classified_by
 
-  @doc "Checks whether a value is a supported request-actor type."
+  @doc """
+  Checks whether a value is a supported request-actor type.
+
+  ## Examples
+
+      RequestActor.Const.valid_actor_type?(:agent)
+  """
   @spec valid_actor_type?(term()) :: boolean()
   def valid_actor_type?(type), do: type in @actor_types
 end

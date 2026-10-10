@@ -20,7 +20,13 @@ defmodule GroupherServer.Activity.ArticleLog do
 
   @page_size 20
 
-  @doc "Lists the permission-filtered Activity surface for one Article or Doc branch."
+  @doc """
+  Lists the permission-filtered Activity surface for one Article or Doc branch.
+
+  ## Examples
+
+      Activity.ArticleLog.list(article, actor, %{page: 1})
+  """
   @spec list(struct(), struct() | nil, map()) :: {:ok, map()} | {:error, term()}
   def list(article, actor, filter) do
     with {:ok, canonical} <- authorize_read(article, actor),

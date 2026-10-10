@@ -7,11 +7,7 @@ defmodule GroupherServer.Accounts.Events do
 
   Business position:
 
-      Client / Auth
-        -> GraphQL or internal API
-        -> Accounts facade
-        -> Events
-        -> Repo
+      Accounts command -> Events -> Notify -> Messaging command
   """
 
   alias GroupherServer.Accounts
@@ -19,7 +15,13 @@ defmodule GroupherServer.Accounts.Events do
 
   @type event_result :: {:ok, map()} | {:error, any()}
 
-  @doc "Runs `emit` through the public `Events` boundary."
+  @doc """
+  Emits a semantic account event for its downstream notification handlers.
+
+  ## Examples
+
+      Accounts.Events.emit(:follow, %{user: target_user, from_user: follower})
+  """
   @spec emit(atom(), map()) :: event_result()
   def emit(:follow, %{user: user, from_user: from_user}) do
     __MODULE__.Notify.handle(:follow, user, from_user)

@@ -18,6 +18,7 @@ defmodule GroupherServer.Jobs.SnapshotRefresh do
   alias GroupherServer.{CMS, Jobs}
   alias Jobs.Codec
 
+  @doc false
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"kind" => kind, "refs" => refs, "opts" => opts}}) do
     CMS.Snapshot.perform_refresh(

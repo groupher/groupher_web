@@ -55,5 +55,12 @@ defmodule GroupherServer.Activity.Changelog do
       Event.contract([], [:case_ref, :decision], [:community_log]) |> Event.contract_only()
   }
 
+  @doc """
+  Returns Changelog's classified Activity contracts.
+
+  ## Examples
+
+      Activity.Changelog.contracts()[:released].surfaces
+  """
   def contracts, do: Event.classify_contracts(@contracts)
 end

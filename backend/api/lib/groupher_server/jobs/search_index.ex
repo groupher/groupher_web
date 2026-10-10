@@ -19,6 +19,7 @@ defmodule GroupherServer.Jobs.SearchIndex do
 
   alias CMS.SearchArtiments.Indexer
 
+  @doc false
   @impl Oban.Worker
   def perform(%Oban.Job{
         args: %{"action" => "upsert_article", "thread" => thread, "ref" => article_id}

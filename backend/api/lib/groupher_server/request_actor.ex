@@ -16,7 +16,13 @@ defmodule GroupherServer.RequestActor do
   alias GroupherServer.RequestActor
   alias RequestActor.{Classification, Classifier, Evidence}
 
-  @doc "Classifies one request from complete trusted identity and credential objects."
+  @doc """
+  Classifies one request from complete trusted identity and credential objects.
+
+  ## Examples
+
+      RequestActor.classify(account_session: user)
+  """
   @spec classify(keyword()) ::
           {:ok, Classification.t()} | {:error, :conflicting_evidence | :invalid_evidence}
   def classify(opts) when is_list(opts) do

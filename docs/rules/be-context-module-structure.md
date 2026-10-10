@@ -3,13 +3,14 @@
 > 状态：current（2026-10-10）
 >
 > 本文定义 Groupher Backend Context 的通用结构、owner、边界和 review contract。它不复制任何单一领域的完整实现；
-> CMS、Accounts、Analysis、Messaging 等 context 只在此基础上选择自己真实需要的 owner。
+> 各业务和平台 Context 只在此基础上选择自己真实需要的 owner。
 
 相关文档：
 
 - [Backend Rules](./be.md)：后端通用实现规则、返回形状、时间和错误协议；
-- [CMS Context Module Architecture](../architecture/cms-context-module-architecture.md)：CMS specialization；
-- [CMS Context Module Refactor](../migrations/cms-context-module-refactor.md)：CMS 迁移记录；
+- [CMS Context Module Architecture](../architecture/cms-context-module-architecture.md)：CMS 的 specialization 示例，
+  不改变本文的通用适用范围；
+- [CMS Context Module Refactor](../migrations/cms-context-module-refactor.md)：将本文规则应用到一个领域的迁移示例；
 
 ## 1. 适用边界
 
@@ -17,10 +18,14 @@
 
 ```text
 backend/api/lib/groupher_server/<context>
+backend/api/lib/groupher_server/<namespace>/<context>
 ```
 
-这里的 Context 是一组围绕某项业务能力或平台能力的稳定 owner，不是一个 Ecto schema、GraphQL resolver、
-Oban worker 或历史 `Writer` 文件。
+这里的 Context 可以是根 Context，也可以是 namespace 下的子 Context，例如
+`accounts/profiles`、`cms/comments` 或 `analysis/article_insights`。Namespace 只是目录和模块的组织层级，
+不自动拥有子 Context 的业务职责；`model`、`gate`、`command` 等共享基础设施也不因为位于某个 namespace
+下就成为业务 Context。Context 是一组围绕某项业务能力或平台能力的稳定 owner，不是一个 Ecto schema、
+GraphQL resolver、Oban worker 或历史 `Writer` 文件。
 
 Transport 和 runtime entrypoint 包括：
 
@@ -88,7 +93,7 @@ actor + action + resource + context
   -> canonical resource or typed error
 ```
 
-Gate 可以被 Accounts、CMS 或其他 domain context 使用，但 Gate 不负责：
+Gate 可以被任何需要 admission 的 domain context 使用，但 Gate 不负责：
 
 - 身份认证本身；
 - 主数据写入；
@@ -96,10 +101,9 @@ Gate 可以被 Accounts、CMS 或其他 domain context 使用，但 Gate 不负�
 - Lifecycle transition；
 - Activity、Outbox、通知或外部 provider。
 
-Gate 可以读取 context-specific Policy 和 Lifecycle capability，但状态转换仍由 Lifecycle owner 执行。
-
-当前仓库的 `CMS.Gate` 是 Gate 能力在 CMS 领域的实现，包含 CMS resource、action、scope、Passport 和
-Article lock 等细节。通用架构应描述 Gate contract；CMS 文档再描述 `CMS.Gate` 的具体语义。
+Gate 可以读取 context-specific Policy 和 Lifecycle 定义的 capability/blocker 状态，但状态转换仍由 Lifecycle
+owner 执行。
+如果某个 Context 没有 authorization 或 admission 需求，不要为了目录对称性创建空的 Gate。
 
 ### 3.2 Command 与 Receipt
 
@@ -120,8 +124,9 @@ Receipt 是可靠执行协议，不等同于业务 Command：
 - Receipt-backed mutation 必须有稳定的 Confirmation 或 typed result；
 - one-shot 内部动作不应为了形式统一而创建 Receipt。
 
-当前仓库的 `CMS.Command` 是该协议的具体实现；它可以被提炼为通用 Backend execution facility，但
-Accounts 等 context 不应依赖 CMS 领域对象来表达自己的业务 Command。
+Context 可以使用共享的 execution facility，也可以拥有自己的可靠执行实现；共享 facility 不应携带某个
+领域的 resource、Policy 或业务枚举。Receipt-backed action 的具体实现必须在所属 Context 的 contract 中
+说明，不应因为其他 Context 使用 Receipt 就强制所有 one-shot action 创建 Receipt。
 
 ### 3.3 Commands 动作命名
 
@@ -129,18 +134,21 @@ Accounts 等 context 不应依赖 CMS 领域对象来表达自己的业务 Comma
 动词或动词短语，不重复 context 的资源名：
 
 ```text
-comments/commands/create.ex  -> CMS.Comments.Commands.Create
-comments/commands/delete.ex  -> CMS.Comments.Commands.Delete
-assets/commands/register.ex   -> CMS.Assets.Commands.Register
+<namespace>/<context>/commands/create.ex
+  -> <Namespace>.<Context>.Commands.Create
+
+<namespace>/<context>/commands/mark_read.ex
+  -> <Namespace>.<Context>.Commands.MarkRead
 ```
 
-不要新增 `create_comment.ex`、`delete_asset.ex` 或 `CreateTag` 这类仅重复当前 context/子 context
-名称的动作命名。Facade 的公开函数、GraphQL operation 和 `command operation` 可继续保留资源名，
-因为它们属于 transport 或稳定业务 contract，不是 Commands 目录内的模块名。
+不要新增仅重复当前 Context 或子 Context 名称的动作命名，例如
+`<context>/commands/create_<context_resource>.ex`。Facade 的公开函数、transport operation 和
+`command operation` 可继续保留资源名，因为它们属于 transport 或稳定业务 contract，不是 Commands 目录内
+的模块名。
 
-只有在同一 Commands namespace 中确实需要消除动作目标歧义时才保留名词，例如
-`CreateTagGroup`、`PinDoc`、`CreateNode`。Confirmation、codec、support 等非动作模块可以保留
-资源名，以表达其具体 result/辅助 contract。
+只有在同一 Commands namespace 同时管理多个不同资源目标、确实需要消除动作目标歧义时才保留目标名，
+例如 `CreateArticle` / `CreateComment`；如果 Context 本身就是 Group，则不能使用 `CreateGroup`。
+Confirmation、codec、support 等非动作模块可以保留资源名，以表达其具体 result/辅助 contract。
 
 ### 3.4 Outbox 与 Effects
 
@@ -158,18 +166,19 @@ Effects 必须区分：
 
 ```text
 in-transaction:
-  Activity / audit / outbox intent / cache invalidation intent
+  audit / outbox intent / cache invalidation intent
 
 post-commit:
   provider / HTTP / notification / webhook / object storage / async index
 ```
 
-当前仓库的 `CMS.Outbox` 是已有实现；通用架构只规定 intent、identity、delivery、retry 和 recovery
-边界，不要求所有 context 直接调用 `CMS.Outbox`。
+通用规则只规定 intent、identity、delivery、retry 和 recovery 的边界，不要求所有 Context 使用相同的
+Outbox namespace 或拥有完整的 Effects/Delivery 链路。
 
-### 3.5 FrontDesk 与资源解析
+### 3.5 Resource Resolution / FrontDesk
 
-资源解析是通用的 read/admission support capability：
+资源解析是可选的 read/admission support capability。只有存在 public ref、path 或稳定资源 identity 的
+Context 才需要它：
 
 ```text
 public ref / path / loaded struct
@@ -180,8 +189,8 @@ public ref / path / loaded struct
 它负责 canonical loading、public locator 和稳定关系读取，不负责 mutation、authorization decision 或
 Receipt claim。
 
-当前仓库的 `CMS.FrontDesk`、`Accounts.FrontDesk` 是不同领域的具体实现；通用文档描述的是
-FrontDesk contract，而不是某个 namespace。
+当前仓库可以使用 `FrontDesk` 作为这类能力的命名，但其他 Context 可以使用等价的
+`ResourceResolver` 或领域专属名称；名称不是本文的强制要求。
 
 ### 3.6 Model
 
@@ -198,20 +207,20 @@ context 的 ownership。
 
 ## 4. Owner 职责
 
-| Owner      | 负责                                                       | 不负责                                      |
-| ---------- | ---------------------------------------------------------- | ------------------------------------------- |
-| Facade     | 稳定 API、轻量归一化、delegate                             | Repo、transaction、Gate、Outbox、provider   |
-| Commands   | 一个完整 mutation、actor、identity、编排和结果             | 大量 ORM、第二层 transaction、外部调用      |
-| Query      | 当前事实、列表、详情、聚合和 read composition              | 主数据写入、Receipt claim、隐式副作用       |
-| Persist    | changeset、row lock、upsert、row primitive                 | Gate、Lifecycle、Receipt、transaction、通知 |
-| Gate       | admission、authorization、scope、canonical resource        | authentication、写入、transition、effects   |
-| Lifecycle  | 状态、版本、transition metadata、blocker、capability       | actor admission、主流程编排、外部调用       |
-| Projection | 从 authoritative facts 重建派生数据                        | 第二主数据 authority、授权、用户 mutation   |
-| Effects    | intent、Activity、Outbox、cache、通知和 delivery           | 主数据 authority、user identity 生成        |
-| Workflow   | 多阶段、lease、retry、recovery、maintenance、provider step | 伪装成用户 Command、重复 Receipt            |
-| Policy     | 纯规则判断                                                 | Repo、transaction、外部调用                 |
-| Adapter    | 外部协议转换、错误归一化                                   | 领域授权、主流程和主数据 orchestration      |
-| Model      | schema、association、changeset                             | 业务流程和 public facade                    |
+| Owner      | 负责                                                          | 不负责                                               |
+| ---------- | ------------------------------------------------------------- | ---------------------------------------------------- |
+| Facade     | 稳定 API、轻量归一化、delegate                                | Repo、transaction、Gate、Outbox、provider            |
+| Commands   | 一个完整 mutation、编排和结果；需要时处理 actor/identity      | 大量 ORM、第二层 transaction、外部调用               |
+| Query      | 当前事实、列表、详情、聚合和 read composition                 | 主数据写入、Receipt claim、隐式副作用                |
+| Persist    | changeset、row lock、upsert、row primitive                    | Gate、Lifecycle、Receipt、transaction、通知          |
+| Gate       | admission、authorization、scope、canonical resource           | authentication、写入、transition、effects            |
+| Lifecycle  | 状态、版本、transition metadata、blocker、capability          | actor admission、主流程编排、外部调用                |
+| Projection | 从 authoritative facts 重建派生数据                           | 主数据的第二个权威来源、授权、用户 mutation 的 owner |
+| Effects    | intent、Activity、Outbox、cache、通知和 delivery contract     | 主数据 authority、user identity 生成                 |
+| Workflow   | 存在长流程时负责多阶段、lease、retry、recovery、provider step | 伪装成用户 Command、重复 Receipt                     |
+| Policy     | 纯规则判断                                                    | Repo、transaction、外部调用                          |
+| Adapter    | 外部协议转换、错误归一化                                      | 领域授权、主流程和主数据 orchestration               |
+| Model      | schema、association、changeset                                | 业务流程和 public facade                             |
 
 ## 5. Context Profiles
 
@@ -269,11 +278,15 @@ Contract / Classifier / Cache / Adapter
 
 不应为了目录对称性创建 Commands、Persist、Effects 或 Lifecycle。
 
-## 6. 当前仓库映射
+## 6. 当前仓库示例（非规范）
+
+本节只是帮助 review 当前仓库如何套用前面的 Context Profile，不是所有 Context 的完整清单，也不是新增
+Context 时必须复制的目录模板。实际 owner 以代码和对应领域 architecture 为准；CMS 的细节见
+[CMS Context Module Architecture](../architecture/cms-context-module-architecture.md)。
 
 ### 6.1 Accounts
 
-Accounts 应按子 context 理解：
+当前仓库的 Accounts 可以按子 context 理解：
 
 ```text
 Accounts.Profiles
@@ -295,10 +308,11 @@ Accounts.Achievements
   -> achievement rules and projection
 ```
 
-建议：
+当前迁移参考：
 
-- `Profiles` 使用 Commands、Query、Persist、Effects，并为 OAuth 等多阶段流程增加 Workflow；
-- `CollectFolders` 将现有 Write 拆成 Commands、Persist、Effects；
+- `Profiles` 使用 Commands、Query、Persist、Effects；OAuth 的同步注册和绑定流程由 Commands/Oauth 编排，不额外创建空的 Workflow；
+- `CollectFolders` 将现有 Write 拆成 Commands、Persist，并通过 `CMS.Interactions` 的公开 Command/Persist contract
+  维护跨 Context 的 collect fact；它没有独立的 Accounts Effects owner；
 - `Fans` 将 relationship row、counter、achievement 和 event 拆成 Persist/Effects；
 - `Mailbox` 以 Query、Projection、Workflow 为主；
 - `Publish` 主要保留 Query，写操作移入明确的 Accounts owner；
@@ -338,9 +352,13 @@ Notify
   -> Effects dispatch
 Inbox
   -> Query + read-state mutation
-delivery jobs
-  -> Workflow / retry / recovery
+external delivery (when a provider is enabled)
+  -> delivery Workflow / retry / recovery
 ```
+
+`read-state mutation` 是 Inbox 自己维护的内部状态更新，不代表用户业务 Command，也不要求创建用户
+Command 或 Receipt。当前 Messaging 只发布稳定的 Notify dispatch boundary 和 inbox/message row
+contract，没有外部 delivery provider，因此不创建空的 Messaging Workflow。
 
 通知 row 写入、投递、重试和 inbox 读取应分开，不让单个 notification module 拥有全部职责。
 
@@ -365,7 +383,7 @@ Activity 是共享 append-only fact sink：
 Context.Effects
   -> Activity.log
   -> append-only fact
-  -> Activity.Query / resource view
+  -> ArticleLog / CommunityLog resource view
 ```
 
 Activity 不拥有业务状态、业务授权或业务 mutation。
@@ -386,11 +404,17 @@ Activity 不拥有业务状态、业务授权或业务 mutation。
 ## 7. Cross-context 规则
 
 1. 一个 context 不能直接修改另一个 context 的主数据。
-2. 跨 context 写入必须通过对方的公开 Command、Persist primitive 或明确 Workflow contract。
-3. Gate 可以作为共享 admission contract，但具体 Policy、resource 和 Lifecycle capability 由领域 context 提供。
-4. Resolver 只调用 public facade 或 concrete Command，不直接调用 Repo、Model、Persist 或 provider。
-5. Worker 只恢复 Workflow 或 Effects delivery，不重新创建 user command identity。
-6. Activity、Messaging、PublicCache 等共享设施不向 Commands 暴露 provider 和 payload 细节。
+2. 跨 context 写入必须通过目标 Context 明确公开的 contract：用户或系统业务动作默认使用公开 Command；
+   只有目标 Context 明确发布的 Persist primitive 或 Workflow contract 才允许直接调用。禁止访问目标 Context
+   的内部 Persist、Model、Repo 或 private helper。
+3. Gate 或等价的 admission facility 可以作为共享 contract，但具体 Policy、resource 和 Lifecycle capability
+   由领域 Context 提供；没有 admission 需求的 Context 不需要创建 Gate。
+4. 所有 transport adapter（Resolver、HTTP/controller、CLI、MCP 和 job entrypoint）只能调用 public facade、
+   公开 Command 或明确 Workflow contract，不直接调用 Repo、Model、内部 Persist 或 provider。
+5. Recovery/delivery worker 只能恢复 Workflow 或 Effects delivery。需要发起全新业务动作的 job 可以调用公开
+   facade 或 Command，但不能伪造、重用或隐式覆盖原用户的 command identity。
+6. Shared infrastructure 不应向业务 Commands 暴露 provider、传输协议和 payload 细节；业务 Context 通过
+   typed intent 或稳定 contract 交互。
 7. Model 可以共享 schema，但不能成为跨 context business facade。
 8. 业务层函数统一返回 `{:ok, value}` 或 `{:error, reason}`；协议和框架要求的例外必须明确。
 9. Context 之间的依赖方向应保持为：
@@ -414,31 +438,23 @@ Transport
 5. caller 切换完成后删除旧入口，不保留长期兼容 wrapper；
 6. 将已完成类别提升为 strict gate。
 
-建议优先级：
-
-```text
-P0  通用规则、Gate contract 和 static inventory
-P1  Accounts.CollectFolders / Accounts.Fans
-P2  Accounts.Profiles / Accounts.Mailbox
-P3  PublicCache / Messaging delivery
-P4  Analysis Projection / Workflow
-P5  Activity、Jobs、Auth、RequestActor、ServiceAuth 的 contract/exemption 收口
-```
-
 ### Context acceptance
 
-一个 Context 或子 Context 满足以下条件后，才能标记为 acceptance：
+一个 Context 或子 Context 满足适用于自身 owner 的条件后，才能标记为 acceptance。不存在的职责不产生
+验收项：
 
-- public facade 不直接访问 Repo、Model、transaction、Outbox 或 provider；
-- 每个公开 mutation 有明确的 Command 或 Workflow owner；
-- Gate、Lifecycle、Persist、Effects、Projection 和 Workflow 的职责没有重叠；
-- Persist 不创建 transaction、不执行 authorization、不发送不可回滚副作用；
-- Query 不修改 authoritative facts；
-- Projection 可以从 authoritative facts 重建；
-- Effects 区分 in-transaction intent 和 post-commit delivery；
-- Workflow 具备 identity、lease、retry 和 recovery contract；
-- worker 不重新进入用户 Command；
-- actor、identity、typed result 和 tagged tuple contract 有测试覆盖；
+- 如果存在 public facade，facade 不直接访问 Repo、Model、transaction、Outbox 或 provider；
+- 如果存在 mutation，每个公开 mutation 有明确的 Command 或 Workflow owner；
+- 已创建的 Gate、Lifecycle、Persist、Effects、Projection 和 Workflow 之间没有职责重叠；
+- 如果存在 Persist，Persist 不创建 transaction、不执行 authorization、不发送不可回滚副作用；
+- 如果存在 Query，Query 不修改 authoritative facts；
+- 如果存在 Projection，Projection 可以从 authoritative facts 重建；
+- 如果存在 Effects，Effects 区分 in-transaction intent 和 post-commit delivery；
+- 如果存在 Workflow，Workflow 具备适用的 identity、lease、retry 和 recovery contract；
+- recovery/delivery worker 不重新进入用户 Command；
+- 适用的 actor、identity、typed result 和 tagged tuple contract 有测试覆盖；
+- 每个 owner module 都有 `@moduledoc`，说明存在理由、owner、委托边界和业务位置，并包含 ASCII flow；
+- 每个对 Context 外部可调用的 public function 都有相邻的 `@doc` 和基于真实参数的 `## Examples`；有稳定类型边界时同时提供 `@spec`；
 - focused tests、static checks、format 和 documentation checks 通过。
 
 “目录齐全”不是完成标准；唯一 owner、清晰依赖、可靠 transaction 和可恢复副作用才是完成标准。

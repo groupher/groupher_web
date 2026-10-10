@@ -13,6 +13,13 @@ defmodule GroupherServer.Accounts.FrontDesk.Revalidate do
   alias GroupherServer.Accounts.FrontDesk
   alias FrontDesk.Cache
 
+  @doc """
+  Reloads one user from the authoritative store and refreshes the cache.
+
+  ## Examples
+
+      Accounts.FrontDesk.Revalidate.user("alice")
+  """
   @spec user(String.t()) :: {:ok, any()} | {:error, any()}
   def user(login) when is_binary(login) do
     with {:ok, user} <- FrontDesk.fresh_user(login) do
@@ -21,6 +28,13 @@ defmodule GroupherServer.Accounts.FrontDesk.Revalidate do
     end
   end
 
+  @doc """
+  Reloads several users and refreshes their cache entries in order.
+
+  ## Examples
+
+      Accounts.FrontDesk.Revalidate.users(["alice", "bob"])
+  """
   @spec users([String.t()]) :: {:ok, [any()]} | {:error, any()}
   def users(logins) when is_list(logins) do
     logins

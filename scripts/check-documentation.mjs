@@ -275,6 +275,117 @@ const checkExportedCallables = () => {
 }
 
 const checkElixirSharedFunctions = () => {
+  const deepContextDocFiles = [
+    'activity',
+    'jobs',
+    'public_cache',
+    'request_actor',
+  ].flatMap((directory) =>
+    walk(
+      path.join(root, 'backend/api/lib/groupher_server', directory),
+      (file) => file.endsWith('.ex'),
+      (file) => /\/model\//.test(file),
+    ),
+  )
+
+  const contextDocFiles = [
+    ...[
+      'achievements',
+      'collect_folders',
+      'config',
+      'events',
+      'fans',
+      'front_desk',
+      'mailbox',
+      'profiles',
+      'publish',
+      'search',
+      'upvotes',
+    ].map((file) => `backend/api/lib/groupher_server/accounts/${file}.ex`),
+    ...[
+      'analysis.ex',
+      'analysis/aggregator.ex',
+      'analysis/article_insights.ex',
+      'analysis/contribution.ex',
+      'analysis/maintenance.ex',
+      'analysis/web.ex',
+      'activity.ex',
+      'jobs.ex',
+      'messaging.ex',
+      'messaging/inbox.ex',
+      'messaging/notify.ex',
+      'public_cache.ex',
+      'request_actor.ex',
+    ].map((file) => `backend/api/lib/groupher_server/${file}`),
+    ...[
+      'accounts/mailbox/query.ex',
+      'accounts/mailbox/projection.ex',
+      'accounts/mailbox/effects.ex',
+      'accounts/mailbox/workflow.ex',
+      'accounts/collect_folders/persist.ex',
+      'accounts/collect_folders/commands/create.ex',
+      'accounts/collect_folders/commands/update.ex',
+      'accounts/collect_folders/commands/delete.ex',
+      'accounts/collect_folders/commands/add.ex',
+      'accounts/collect_folders/commands/remove.ex',
+      'accounts/fans/persist.ex',
+      'accounts/fans/effects.ex',
+      'accounts/fans/list.ex',
+      'accounts/fans/viewer_state.ex',
+      'accounts/fans/commands/follow.ex',
+      'accounts/fans/commands/unfollow.ex',
+      'accounts/profiles/query.ex',
+      'accounts/profiles/list.ex',
+      'accounts/profiles/oauth.ex',
+      'accounts/profiles/browser_sessions.ex',
+      'accounts/profiles/oauth/persist.ex',
+      'accounts/profiles/persist.ex',
+      'accounts/profiles/effects.ex',
+      'accounts/profiles/read.ex',
+      'accounts/profiles/commands/update_profile.ex',
+      'accounts/profiles/commands/update_subscribe_state.ex',
+      'accounts/profiles/commands/link_oauth.ex',
+      'accounts/profiles/commands/unlink_oauth.ex',
+      'accounts/profiles/commands/sign_in_oauth.ex',
+      'accounts/profiles/commands/link_oauth_identity.ex',
+      'accounts/profiles/commands/unlink_oauth_identity.ex',
+      'accounts/achievements/persist.ex',
+      'accounts/achievements/commands/achieve.ex',
+      'accounts/publish/persist.ex',
+      'accounts/publish/effects.ex',
+      'accounts/publish/projection.ex',
+      'accounts/publish/articles.ex',
+      'accounts/publish/comments.ex',
+      'accounts/search/user.ex',
+      'accounts/collect_folders/articles.ex',
+      'accounts/events/notify.ex',
+      'analysis/contribution/persist.ex',
+      'analysis/contribution/query.ex',
+      'analysis/contribution/effects.ex',
+      'analysis/contribution/workflow.ex',
+      'analysis/aggregator/persist.ex',
+      'analysis/aggregator/workflow.ex',
+      'analysis/maintenance/query.ex',
+      'analysis/maintenance/persist.ex',
+      'analysis/maintenance/workflow.ex',
+      'analysis/metric_event/persist.ex',
+      'analysis/web/provision.ex',
+      'messaging/mentions/query.ex',
+      'messaging/mentions/persist.ex',
+      'messaging/notifications/query.ex',
+      'messaging/notifications/persist.ex',
+      'messaging/commands/send_mention.ex',
+      'messaging/commands/send_notification.ex',
+      'messaging/commands/revoke_notification.ex',
+      'messaging/commands/mark_read.ex',
+      'messaging/commands/mark_read_all.ex',
+      'messaging/inbox/persist.ex',
+    ].map((file) => `backend/api/lib/groupher_server/${file}`),
+    ...deepContextDocFiles.map((file) => relative(file)),
+    'backend/api/lib/groupher_server/cms/interactions/persist.ex',
+    'backend/api/lib/groupher_server/cms/dashboard/persist.ex',
+  ].map((file) => path.join(root, file))
+
   const boundaryFiles = [
     'backend/api/lib/groupher_server/cms/comments/query.ex',
     'backend/api/lib/groupher_server/cms/comments/persist.ex',
@@ -291,7 +402,6 @@ const checkElixirSharedFunctions = () => {
     'backend/api/lib/groupher_server/cms/comments/solution.ex',
     'backend/api/lib/groupher_server/cms/comments/commands/update.ex',
     'backend/api/lib/groupher_server/cms/comments/commands/delete.ex',
-    'backend/api/lib/groupher_server/accounts/collect_folders/write.ex',
     'backend/api/lib/groupher_server/cms/article_stats.ex',
     'backend/api/lib/groupher_server/cms/front_desk/article.ex',
     'backend/api/lib/groupher_server/cms/interactions/read_state.ex',
@@ -319,12 +429,13 @@ const checkElixirSharedFunctions = () => {
     ...['messaging', 'analysis', 'jobs', 'activity', 'front_desk'].map((context) =>
       path.join(root, 'backend/api/lib/groupher_server', `${context}.ex`),
     ),
+    ...contextDocFiles,
     ...boundaryFiles,
   ].filter((file, index, all) => all.indexOf(file) === index)
 
   for (const file of files) {
     const lines = fs.readFileSync(file, 'utf8').split('\n')
-    const strictArity = boundaryFiles.includes(file)
+    const strictArity = boundaryFiles.includes(file) || contextDocFiles.includes(file)
     const seen = new Set()
     let previousDefinition = -1
     lines.forEach((line, index) => {
@@ -337,9 +448,17 @@ const checkElixirSharedFunctions = () => {
       previousDefinition = index
       if (seen.has(identity)) return
       seen.add(identity)
-      if (!/^\s*@(doc|impl)\b/m.test(prior) || /^\s*@doc\s+false/m.test(prior)) {
+      const hasHiddenDoc = /^\s*@doc\s+false/m.test(prior)
+      const acceptsHiddenDoc = contextDocFiles.includes(file) && hasHiddenDoc
+      if (!/^\s*@(doc|impl)\b/m.test(prior) || (hasHiddenDoc && !acceptsHiddenDoc)) {
         const label = strictArity ? identity : name
         fail(file, `shared public function ${label} is missing @doc or inherited @impl docs`)
+      } else if (
+        !acceptsHiddenDoc &&
+        contextDocFiles.includes(file) &&
+        !/## Examples|@example/.test(prior)
+      ) {
+        fail(file, `context public function ${identity} is missing a real ## Examples section`)
       }
     })
   }

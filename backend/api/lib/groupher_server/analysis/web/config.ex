@@ -7,11 +7,7 @@ defmodule GroupherServer.Analysis.Web.Config do
 
   Business position:
 
-      Main / Dashboard
-        -> GraphQL
-        -> Analysis
-        -> Config
-        -> Repo / analytics provider
+      Application env -> Analysis.Web.Config -> provider/runtime policy
   """
 
   alias GroupherServer.Analysis
@@ -63,7 +59,7 @@ defmodule GroupherServer.Analysis.Web.Config do
 
   This function does not read application environment or runtime secrets.
 
-  ## Example
+  ## Examples
 
       GroupherServer.Analysis.Web.Config.base()
       #=> %GroupherServer.Analysis.Web.Config{origin: "https://analysis.groupher.com", default_days: 7, ...}
@@ -78,7 +74,7 @@ defmodule GroupherServer.Analysis.Web.Config do
   This function reads `config :groupher_server, :web_analysis`, but only keeps
   keys that belong to runtime credentials.
 
-  ## Example
+  ## Examples
 
       config :groupher_server, :web_analysis,
         api_token: "token"

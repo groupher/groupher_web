@@ -7,108 +7,252 @@ defmodule GroupherServer.Accounts.Profiles do
       Client / Auth
         -> GraphQL or internal API
         -> Accounts facade
-        -> Profiles
-        -> Repo
+        -> Query / Read / Commands
+           -> Persist / Effects
   """
 
-  alias __MODULE__.{BrowserSessions, List, Oauth, SessionState, Subscribe, UserRead}
+  alias __MODULE__.{BrowserSessions, Commands, Query, Read, SessionState}
   alias GroupherServer.Accounts
 
   alias Accounts.Model.User
   alias Helper.T
 
-  @doc "Runs `read_user` through the public `Profiles` boundary."
-  @spec read_user(User.t()) :: T.domain_res(User.t())
-  def read_user(%User{} = user), do: UserRead.read_user(user)
+  @doc """
+  Returns the public profile projection for a user.
 
-  @doc "Returns an opaque, stable subject for service-to-user delegation."
+  ## Examples
+
+      Accounts.Profiles.read_user(user)
+  """
+  @spec read_user(User.t()) :: T.domain_res(User.t())
+  def read_user(%User{} = user), do: Read.run(user)
+
+  @doc """
+  Returns an opaque, stable subject for service-to-user delegation.
+
+  ## Examples
+
+      Accounts.Profiles.delegation_subject(user)
+  """
   @spec delegation_subject(User.t()) :: String.t()
   def delegation_subject(%User{id: id}) do
     digest = :crypto.hash(:sha256, "groupher:user:" <> to_string(id))
     "user:" <> Base.url_encode64(digest, padding: false)
   end
 
-  @doc "Bootstraps account defaults and returns the authenticated session state."
+  @doc """
+  Bootstraps account defaults and returns the authenticated session state.
+
+  ## Examples
+
+      Accounts.Profiles.session_state(user)
+  """
   @spec session_state(User.t()) :: T.domain_res(map())
   def session_state(%User{} = user), do: SessionState.bootstrap(user)
 
+  @doc """
+  Returns a viewer-aware public profile projection.
+
+  ## Examples
+
+      Accounts.Profiles.read_user(user, viewer)
+  """
   @spec read_user(User.t(), User.t()) :: T.domain_res(User.t())
-  def read_user(%User{} = user, %User{} = cur_user), do: UserRead.read_user(user, cur_user)
+  def read_user(%User{} = user, %User{} = cur_user), do: Read.run(user, cur_user)
 
-  @doc "Returns paged users from the `Profiles` read boundary."
+  @doc """
+  Returns a page of matching user profiles.
+
+  ## Examples
+
+      Accounts.Profiles.paged_users(%{page: 1, size: 20})
+  """
   @spec paged_users(map()) :: T.domain_res(T.paged_users())
-  def paged_users(filter), do: List.paged_users(filter)
+  def paged_users(filter), do: Query.paged_users(filter)
 
+  @doc """
+  Returns a user page with viewer-aware relationship fields.
+
+  ## Examples
+
+      Accounts.Profiles.paged_users(%{page: 1, size: 20}, viewer)
+  """
   @spec paged_users(map(), User.t()) :: T.domain_res(T.paged_users())
-  def paged_users(filter, %User{} = user), do: List.paged_users(filter, user)
+  def paged_users(filter, %User{} = user), do: Query.paged_users(filter, user)
 
-  @doc "Updates profile through the `Profiles` write boundary."
+  @doc """
+  Updates editable profile attributes through the account write boundary.
+
+  ## Examples
+
+      Accounts.Profiles.update_profile(user, %{nickname: "Alice"})
+  """
   @spec update_profile(User.t(), map()) :: T.gq_result(User.t())
-  def update_profile(%User{} = user, attrs), do: UserRead.update_profile(user, attrs)
+  def update_profile(%User{} = user, attrs), do: Commands.UpdateProfile.run(user, attrs)
 
-  @doc "Updates subscribe state through the `Profiles` write boundary."
+  @doc """
+  Updates the user's default subscription state.
+
+  ## Examples
+
+      Accounts.Profiles.update_subscribe_state(user)
+  """
   @spec update_subscribe_state(User.t()) :: T.domain_res(User.t())
-  def update_subscribe_state(%User{} = user), do: Subscribe.update_subscribe_state(user)
+  def update_subscribe_state(%User{} = user), do: Commands.UpdateSubscribeState.run(user)
 
-  @doc "Runs `signin_oauth` through the public `Profiles` boundary."
+  @doc """
+  Signs in through a verified OAuth provider response.
+
+  ## Examples
+
+      Accounts.Profiles.signin_oauth(provider_payload, %{ip: ip_address})
+  """
   @spec signin_oauth(map(), map()) :: T.domain_res(map())
   def signin_oauth(provider, browser_session_metadata \\ %{}) do
-    Oauth.signin_oauth(provider, browser_session_metadata)
+    Commands.SignInOauth.run(provider, browser_session_metadata)
   end
 
-  @doc "Runs `refresh_browser_session` through the public `Profiles` boundary."
+  @doc """
+  Refreshes an existing browser session reference.
+
+  ## Examples
+
+      Accounts.Profiles.refresh_browser_session(session_ref)
+  """
   def refresh_browser_session(ref), do: BrowserSessions.refresh(ref)
-  @doc "Runs `revoke_browser_session` through the public `Profiles` boundary."
+
+  @doc """
+  Revokes the browser session identified by a reference.
+
+  ## Examples
+
+      Accounts.Profiles.revoke_browser_session(session_ref)
+  """
   def revoke_browser_session(ref), do: BrowserSessions.revoke_current(ref)
-  @doc "Runs `browser_sessions` through the public `Profiles` boundary."
+
+  @doc """
+  Lists browser sessions for a user and marks the current session.
+
+  ## Examples
+
+      Accounts.Profiles.browser_sessions(user, current_session_ref)
+  """
   def browser_sessions(%User{} = user, current_ref), do: BrowserSessions.list(user, current_ref)
-  @doc "Runs `browser_sessions_for_ref` through the public `Profiles` boundary."
+
+  @doc """
+  Lists browser sessions associated with a session reference.
+
+  ## Examples
+
+      Accounts.Profiles.browser_sessions_for_ref(current_session_ref)
+  """
   def browser_sessions_for_ref(current_ref), do: BrowserSessions.list_for_ref(current_ref)
 
-  @doc "Runs `revoke_browser_session_public` through the public `Profiles` boundary."
+  @doc """
+  Revokes one public browser-session reference.
+
+  ## Examples
+
+      Accounts.Profiles.revoke_browser_session_public(current_session_ref, public_ref)
+  """
   def revoke_browser_session_public(current_ref, public_ref) do
     BrowserSessions.revoke_public_for_ref(current_ref, public_ref)
   end
 
-  @doc "Runs `revoke_other_browser_sessions` through the public `Profiles` boundary."
+  @doc """
+  Revokes all of a user's other browser sessions.
+
+  ## Examples
+
+      Accounts.Profiles.revoke_other_browser_sessions(user, current_session_ref)
+  """
   def revoke_other_browser_sessions(%User{} = user, current_ref) do
     BrowserSessions.revoke_other_sessions(user, current_ref)
   end
 
-  @doc "Runs `revoke_other_browser_sessions_for_ref` through the public `Profiles` boundary."
+  @doc """
+  Revokes other sessions associated with a public session reference.
+
+  ## Examples
+
+      Accounts.Profiles.revoke_other_browser_sessions_for_ref(current_session_ref)
+  """
   def revoke_other_browser_sessions_for_ref(current_ref) do
     BrowserSessions.revoke_other_for_ref(current_ref)
   end
 
-  @doc "Runs `link_oauth` through the public `Profiles` boundary."
+  @doc """
+  Links a verified OAuth provider identity to an account.
+
+  ## Examples
+
+      Accounts.Profiles.link_oauth("alice", provider_payload)
+  """
   @spec link_oauth(String.t(), map()) :: T.domain_res(User.t())
-  def link_oauth(login, provider), do: Oauth.link_oauth(login, provider)
+  def link_oauth(login, provider), do: Commands.LinkOauth.run(login, provider)
 
-  @doc "Runs `unlink_oauth` through the public `Profiles` boundary."
+  @doc """
+  Removes an OAuth provider link from an account.
+
+  ## Examples
+
+      Accounts.Profiles.unlink_oauth("alice", provider_payload)
+  """
   @spec unlink_oauth(String.t(), map()) :: T.domain_res(User.t())
-  def unlink_oauth(login, provider), do: Oauth.unlink_oauth(login, provider)
+  def unlink_oauth(login, provider), do: Commands.UnlinkOauth.run(login, provider)
 
-  @doc "Runs `linked_oauth_accounts` through the public `Profiles` boundary."
+  @doc """
+  Returns the OAuth identities linked to an account.
+
+  ## Examples
+
+      Accounts.Profiles.linked_oauth_accounts("alice")
+  """
   @spec linked_oauth_accounts(String.t()) :: T.domain_res(map())
-  def linked_oauth_accounts(login), do: Oauth.linked_oauth_accounts(login)
+  def linked_oauth_accounts(login), do: Query.linked_oauth_accounts(login)
 
-  @doc "Runs `link_oauth_identity` through the public `Profiles` boundary."
+  @doc """
+  Links one provider identity using its login and verified provider data.
+
+  ## Examples
+
+      Accounts.Profiles.link_oauth_identity("alice", provider_payload)
+  """
   @spec link_oauth_identity(String.t(), map()) :: T.domain_res(map())
-  def link_oauth_identity(login, provider), do: Oauth.link_oauth_identity(login, provider)
+  def link_oauth_identity(login, provider),
+    do: Commands.LinkOauthIdentity.run(login, provider)
 
-  @doc "Runs `unlink_oauth_identity` through the public `Profiles` boundary."
+  @doc """
+  Unlinks one OAuth identity by its public reference.
+
+  ## Examples
+
+      Accounts.Profiles.unlink_oauth_identity("alice", public_ref)
+  """
   @spec unlink_oauth_identity(String.t(), String.t()) :: T.domain_res(map())
   def unlink_oauth_identity(login, public_ref) do
-    Oauth.unlink_oauth_identity(login, public_ref)
+    Commands.UnlinkOauthIdentity.run(login, public_ref)
   end
 
-  @doc "Runs `default_subscribed_communities` through the public `Profiles` boundary."
-  @spec default_subscribed_communities(map()) :: T.domain_res(T.paged_data())
-  def default_subscribed_communities(filter), do: List.default_subscribed_communities(filter)
+  @doc """
+  Returns the communities recommended by the account defaults.
 
-  @doc "Runs `subscribed_communities` through the public `Profiles` boundary."
+  ## Examples
+
+      Accounts.Profiles.default_subscribed_communities(%{page: 1, size: 20})
+  """
+  @spec default_subscribed_communities(map()) :: T.domain_res(T.paged_data())
+  def default_subscribed_communities(filter), do: Query.default_subscribed_communities(filter)
+
+  @doc """
+  Returns communities subscribed to by a user.
+
+  ## Examples
+
+      Accounts.Profiles.subscribed_communities(user, %{page: 1, size: 20})
+  """
   @spec subscribed_communities(User.t(), map()) :: T.domain_res(T.paged_data())
   def subscribed_communities(%User{} = user, filter) do
-    List.subscribed_communities(user, filter)
+    Query.subscribed_communities(user, filter)
   end
 end

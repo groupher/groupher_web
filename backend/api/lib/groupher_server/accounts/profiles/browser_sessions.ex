@@ -22,6 +22,14 @@ defmodule GroupherServer.Accounts.Profiles.BrowserSessions do
 
   @type metadata :: map()
 
+  @doc """
+  Creates a browser session and returns its access token payload.
+
+  ## Examples
+
+      Accounts.Profiles.BrowserSessions.create(user, %{user_agent_summary: "Safari"})
+  """
+  @spec create(User.t(), metadata()) :: {:ok, map()} | {:error, term()}
   def create(%User{} = user, metadata \\ %{}) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
     absolute_expires_at = DateTime.add(now, @absolute_ttl_seconds, :second)
@@ -47,6 +55,14 @@ defmodule GroupherServer.Accounts.Profiles.BrowserSessions do
     end
   end
 
+  @doc """
+  Refreshes an active browser session token.
+
+  ## Examples
+
+      Accounts.Profiles.BrowserSessions.refresh(session_ref)
+  """
+  @spec refresh(String.t()) :: {:ok, map()} | {:error, term()}
   def refresh(ref) when is_binary(ref) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
@@ -66,8 +82,24 @@ defmodule GroupherServer.Accounts.Profiles.BrowserSessions do
     end
   end
 
+  @doc """
+  Revokes the browser session used for the current logout operation.
+
+  ## Examples
+
+      Accounts.Profiles.BrowserSessions.revoke_current(session_ref)
+  """
+  @spec revoke_current(String.t()) :: {:ok, atom()} | {:error, term()}
   def revoke_current(ref) when is_binary(ref), do: revoke_ref(ref, "logout")
 
+  @doc """
+  Revokes every active browser session except the current one.
+
+  ## Examples
+
+      Accounts.Profiles.BrowserSessions.revoke_other_sessions(user, session_ref)
+  """
+  @spec revoke_other_sessions(User.t(), String.t()) :: {:ok, map()}
   def revoke_other_sessions(%User{} = user, current_ref) when is_binary(current_ref) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
@@ -84,13 +116,27 @@ defmodule GroupherServer.Accounts.Profiles.BrowserSessions do
     {:ok, %{count: count}}
   end
 
+  @doc """
+  Lists sessions owned by the account behind an active session reference.
+
+  ## Examples
+
+      Accounts.Profiles.BrowserSessions.list_for_ref(session_ref)
+  """
+  @spec list_for_ref(String.t()) :: {:ok, list()} | {:error, term()}
   def list_for_ref(current_ref) when is_binary(current_ref) do
     with {:ok, session} <- active_session(current_ref, DateTime.utc_now()) do
       list(session.user, current_ref)
     end
   end
 
-  @doc "Checks that a browser access token still points to an active owned session."
+  @doc """
+  Checks that a browser access token still points to an active owned session.
+
+  ## Examples
+
+      Accounts.Profiles.BrowserSessions.active_for_user?(user.id, session_ref)
+  """
   def active_for_user?(user_id, ref) when is_integer(user_id) and is_binary(ref) do
     now = DateTime.utc_now()
 
@@ -104,12 +150,28 @@ defmodule GroupherServer.Accounts.Profiles.BrowserSessions do
 
   def active_for_user?(_user_id, _ref), do: false
 
+  @doc """
+  Revokes all sessions except the active session behind a public reference.
+
+  ## Examples
+
+      Accounts.Profiles.BrowserSessions.revoke_other_for_ref(session_ref)
+  """
+  @spec revoke_other_for_ref(String.t()) :: {:ok, map()} | {:error, term()}
   def revoke_other_for_ref(current_ref) when is_binary(current_ref) do
     with {:ok, session} <- active_session(current_ref, DateTime.utc_now()) do
       revoke_other_sessions(session.user, current_ref)
     end
   end
 
+  @doc """
+  Revokes one other session by its public reference.
+
+  ## Examples
+
+      Accounts.Profiles.BrowserSessions.revoke_public_for_ref(session_ref, public_ref)
+  """
+  @spec revoke_public_for_ref(String.t(), String.t()) :: {:ok, map()} | {:error, term()}
   def revoke_public_for_ref(current_ref, public_ref)
       when is_binary(current_ref) and is_binary(public_ref) do
     with {:ok, current} <- active_session(current_ref, DateTime.utc_now()),
@@ -126,6 +188,14 @@ defmodule GroupherServer.Accounts.Profiles.BrowserSessions do
     end
   end
 
+  @doc """
+  Lists active browser sessions and marks the current one.
+
+  ## Examples
+
+      Accounts.Profiles.BrowserSessions.list(user, session_ref)
+  """
+  @spec list(User.t(), String.t()) :: {:ok, list()}
   def list(%User{} = user, current_ref) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 

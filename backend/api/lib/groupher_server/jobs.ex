@@ -66,7 +66,13 @@ defmodule GroupherServer.Jobs do
       log_best_effort_failure(job_name, resource_ref, :exit)
   end
 
-  @doc "Enqueues a compatibility job that invokes the encoded module/function/arguments tuple."
+  @doc """
+  Enqueues a compatibility job that invokes the encoded module/function/arguments tuple.
+
+  ## Examples
+
+      Jobs.later({GroupherServer.Jobs.Comments, :perform, [payload]})
+  """
   @spec later(later_job()) :: {:ok, :pass}
   def later({mod, func, args} = job) when is_atom(mod) and is_atom(func) and is_list(args) do
     if Config.skip_enqueue?() do
@@ -149,7 +155,13 @@ defmodule GroupherServer.Jobs do
     comments_job(:reconcile_comments_participants, %{article: article, total_count: total_count})
   end
 
-  @doc "Enqueues an artiment search-index update unless job insertion is disabled."
+  @doc """
+  Enqueues an artiment search-index update unless job insertion is disabled.
+
+  ## Examples
+
+      Jobs.search_index(:updated, :post, article_ref)
+  """
   @spec search_index(atom(), atom(), term()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
   def search_index(action, thread, ref) when is_atom(action) and is_atom(thread) do
     if Config.skip_enqueue?() do
@@ -161,7 +173,13 @@ defmodule GroupherServer.Jobs do
     end
   end
 
-  @doc "Enqueues a snapshot refresh for the supplied resource kind and references."
+  @doc """
+  Enqueues a snapshot refresh for the supplied resource kind and references.
+
+  ## Examples
+
+      Jobs.snapshot_refresh(:article, [article_ref], [])
+  """
   @spec snapshot_refresh(atom(), term(), keyword()) ::
           {:ok, Oban.Job.t() | :pass} | {:error, term()}
   def snapshot_refresh(kind, refs, opts) when is_atom(kind) and is_list(opts) do

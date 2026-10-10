@@ -10,6 +10,7 @@ defmodule GroupherServer.Jobs.ViewDedupeCleanup do
   alias GroupherServer.CMS
   alias CMS.ViewTracker
 
+  @doc false
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
     _ = ViewTracker.cleanup_expired()

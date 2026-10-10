@@ -19,10 +19,22 @@ defmodule GroupherServer.PublicCache.Const do
 
   @statuses [:pending, :delivering, :delivered, :dead]
 
-  @doc "Returns all supported domain invalidation types."
+  @doc """
+  Returns all supported domain invalidation types.
+
+  ## Examples
+
+      PublicCache.Const.invalidation_types()
+  """
   def invalidation_types, do: @invalidation_types
 
-  @doc "Returns all persisted delivery states."
+  @doc """
+  Returns all persisted delivery states.
+
+  ## Examples
+
+      PublicCache.Const.statuses()
+  """
   def statuses, do: @statuses
 
   for type <- @invalidation_types do

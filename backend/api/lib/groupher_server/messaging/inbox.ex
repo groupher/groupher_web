@@ -10,34 +10,63 @@ defmodule GroupherServer.Messaging.Inbox do
           v
       Messaging.Inbox
           |
-          +--> Mentions
-          +--> Notifications
+          +--> Mentions.Query / Persist
+          +--> Notifications.Query / Persist
+          +--> Commands.MarkRead / MarkReadAll
+              -> Inbox.Persist
   """
 
   alias GroupherServer.Messaging
   alias Messaging.{Mentions, Notifications}
+  alias Messaging.Commands
 
-  @doc "Returns paged messages from the `Inbox` read boundary."
-  def paged_messages(:mention, user, filter), do: Mentions.paged(user, filter)
-  def paged_messages(:notification, user, filter), do: Notifications.paged(user, filter)
+  @doc """
+  Returns a page from the selected inbox store.
 
-  @doc "Runs `unread_count` through the public `Inbox` boundary."
-  def unread_count(:mention, user_id), do: Mentions.unread_count(user_id)
-  def unread_count(:notification, user_id), do: Notifications.unread_count(user_id)
+  ## Examples
+
+      Messaging.Inbox.paged_messages(:mention, user, %{page: 1, size: 20})
+  """
+  def paged_messages(:mention, user, filter), do: Mentions.Query.paged(user, filter)
+  def paged_messages(:notification, user, filter), do: Notifications.Query.paged(user, filter)
+
+  @doc """
+  Returns the unread count for one inbox store.
+
+  ## Examples
+
+      Messaging.Inbox.unread_count(:notification, user.id)
+  """
+  def unread_count(:mention, user_id), do: Mentions.Query.unread_count(user_id)
+  def unread_count(:notification, user_id), do: Notifications.Query.unread_count(user_id)
 
   @doc """
   Delegates a grouped unread-count query to the selected inbox store.
 
   Returns `{:ok, %{user_id => count}}`.
+
+  ## Examples
+
+      Messaging.Inbox.unread_counts(:mention, [user.id])
   """
-  def unread_counts(:mention, user_ids), do: Mentions.unread_counts(user_ids)
-  def unread_counts(:notification, user_ids), do: Notifications.unread_counts(user_ids)
+  def unread_counts(:mention, user_ids), do: Mentions.Query.unread_counts(user_ids)
+  def unread_counts(:notification, user_ids), do: Notifications.Query.unread_counts(user_ids)
 
-  @doc "Runs `mark_read` through the public `Inbox` boundary."
-  def mark_read(:mention, ids, user), do: Mentions.mark_read(ids, user)
-  def mark_read(:notification, ids, user), do: Notifications.mark_read(ids, user)
+  @doc """
+  Marks selected rows as read in the selected inbox store.
 
-  @doc "Runs `mark_read_all` through the public `Inbox` boundary."
-  def mark_read_all(:mention, user), do: Mentions.mark_read_all(user)
-  def mark_read_all(:notification, user), do: Notifications.mark_read_all(user)
+  ## Examples
+
+      Messaging.Inbox.mark_read(:mention, message_ids, user)
+  """
+  def mark_read(type, ids, user), do: Commands.MarkRead.run(type, ids, user)
+
+  @doc """
+  Marks all rows as read in the selected inbox store.
+
+  ## Examples
+
+      Messaging.Inbox.mark_read_all(:notification, user)
+  """
+  def mark_read_all(type, user), do: Commands.MarkReadAll.run(type, user)
 end

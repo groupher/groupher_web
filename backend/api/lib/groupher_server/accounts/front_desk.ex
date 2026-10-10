@@ -23,7 +23,13 @@ defmodule GroupherServer.Accounts.FrontDesk do
 
   @cache_pool :user_login
 
-  @doc "Runs `userid` through the public `FrontDesk` boundary."
+  @doc """
+  Resolves a login to the canonical user ID, using the login cache when possible.
+
+  ## Examples
+
+      Accounts.FrontDesk.userid("alice")
+  """
   @spec userid(String.t()) :: {:ok, integer()} | {:error, any()}
   def userid(login) when is_binary(login) do
     case CacheStore.get(@cache_pool, login) do
@@ -32,12 +38,24 @@ defmodule GroupherServer.Accounts.FrontDesk do
     end
   end
 
-  @doc "Runs `user` through the public `FrontDesk` boundary."
+  @doc """
+  Resolves a user by ID or login and returns the canonical user struct.
+
+  ## Examples
+
+      Accounts.FrontDesk.user("alice")
+  """
   @spec user(integer() | String.t()) :: {:ok, User.t()} | {:error, any()}
   def user(id) when is_integer(id), do: fetch_user_by_id(id)
   def user(login) when is_binary(login), do: Cache.user(login)
 
-  @doc "Reads the current User row, bypassing the full User cache."
+  @doc """
+  Reads the current User row, bypassing the full User cache.
+
+  ## Examples
+
+      Accounts.FrontDesk.fresh_user("alice")
+  """
   @spec fresh_user(integer() | String.t()) :: {:ok, User.t()} | {:error, any()}
   def fresh_user(id) when is_integer(id), do: fetch_user_by_id(id)
 

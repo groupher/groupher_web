@@ -13,7 +13,13 @@ defmodule GroupherServer.Accounts.CollectFolders.CommandResult do
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
 
-  @doc "Builds one collect mutation result through shared projection readers."
+  @doc """
+  Builds one collect mutation result through shared projection readers.
+
+  ## Examples
+
+      Accounts.CollectFolders.CommandResult.build({:ok, result}, article, viewer)
+  """
   @spec build({:ok, map()} | {:error, term()}, struct(), User.t()) ::
           {:ok, map()} | {:error, term()}
   def build({:ok, result}, article, %User{} = viewer) do

@@ -4,11 +4,7 @@ defmodule GroupherServer.Accounts.Upvotes do
 
   Business position:
 
-      Client / Auth
-        -> GraphQL or internal API
-        -> Accounts facade
-        -> Upvotes
-        -> Repo
+      Client / Auth -> Accounts facade -> Upvotes query -> CMS interaction read model
   """
 
   import Ecto.Query, warn: false
@@ -22,7 +18,13 @@ defmodule GroupherServer.Accounts.Upvotes do
   alias CMS.Model.{ArticleBinding, ArticleStats, ArticleUpvote}
   alias Helper.{ORM, QueryBuilder}
 
-  @doc "Returns paged articles from the `Upvotes` read boundary."
+  @doc """
+  Returns the articles upvoted by a user, optionally filtered by thread.
+
+  ## Examples
+
+      Accounts.Upvotes.paged_articles(user, %{page: 1, size: 20, thread: :post})
+  """
   def paged_articles(%User{id: user_id}, %{thread: thread} = filter) when is_atom(thread) do
     load_articles(user_id, thread, filter)
   end

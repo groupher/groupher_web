@@ -17,6 +17,7 @@ defmodule GroupherServer.Jobs.Later do
   alias GroupherServer.Jobs
   alias Jobs.Codec
 
+  @doc false
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"job" => encoded}}) do
     {mod, func, args} = Codec.decode(encoded)

@@ -51,7 +51,13 @@ defmodule GroupherServer.Activity do
           | :config_updated
           | :activity_exported
 
-  @doc "Appends one validated business event to its resource-specific Activity stream."
+  @doc """
+  Appends one validated business event to its resource-specific Activity stream.
+
+  ## Examples
+
+      Activity.log(article, :published, actor: user)
+  """
   @spec log(struct() | map(), action(), keyword()) ::
           {:ok, struct()} | {:error, ErrorCat.error()}
   def log(resource, action, opts \\ [])
@@ -86,38 +92,74 @@ defmodule GroupherServer.Activity do
 
   def log(resource, action, opts), do: Artiment.log(resource, action, opts)
 
-  @doc "Lists the safe ArticleLog surface after applying the Article read boundary."
+  @doc """
+  Lists the safe ArticleLog surface after applying the Article read boundary.
+
+  ## Examples
+
+      Activity.list_article_logs(article, viewer, %{page: 1, size: 20})
+  """
   @spec list_article_logs(struct(), struct() | nil, map()) :: {:ok, map()} | {:error, term()}
   def list_article_logs(article, actor, filter \\ %{}) do
     ArticleLog.list(article, actor, filter)
   end
 
-  @doc "Lists the Community management surface across Activity streams."
+  @doc """
+  Lists the Community management surface across Activity streams.
+
+  ## Examples
+
+      Activity.list_community_logs(community, viewer, %{page: 1, size: 20})
+  """
   @spec list_community_logs(Community.t(), struct(), map(), pos_integer()) ::
           {:ok, map()} | {:error, term()}
   def list_community_logs(community, actor, selection, page \\ 1) do
     CommunityLog.list(community, actor, selection, page)
   end
 
-  @doc "Returns UTC daily CommunityLog counts for the same filter boundary as list_community_logs/3."
+  @doc """
+  Returns UTC daily CommunityLog counts for the same filter boundary as list_community_logs/3.
+
+  ## Examples
+
+      Activity.get_community_log_stats(community, viewer, %{page: 1, size: 20})
+  """
   @spec get_community_log_stats(Community.t(), struct(), map()) ::
           {:ok, map()} | {:error, term()}
   def get_community_log_stats(community, actor, selection) do
     CommunityLog.stats(community, actor, selection)
   end
 
-  @doc "Returns active CommunityLog actions for dashboard filter controls."
+  @doc """
+  Returns active CommunityLog actions for dashboard filter controls.
+
+  ## Examples
+
+      Activity.get_community_log_config(community, viewer)
+  """
   @spec get_community_log_config(Community.t(), struct()) :: {:ok, map()} | {:error, term()}
   def get_community_log_config(community, actor), do: CommunityLog.config(community, actor)
 
-  @doc "Exports the current CommunityLog filter as a bounded JSON or CSV document."
+  @doc """
+  Exports the current CommunityLog filter as a bounded JSON or CSV document.
+
+  ## Examples
+
+      Activity.export_community_logs(community, viewer, %{page: 1, size: 20}, :json)
+  """
   @spec export_community_logs(Community.t(), struct(), map(), atom()) ::
           {:ok, map()} | {:error, term()}
   def export_community_logs(community, actor, selection, format) do
     CommunityLog.export_logs(community, actor, selection, format)
   end
 
-  @doc "Reads one safe CommunityLog event with related parent and child events."
+  @doc """
+  Reads one safe CommunityLog event with related parent and child events.
+
+  ## Examples
+
+      Activity.get_community_log_event(community, viewer, event_ref)
+  """
   @spec get_community_log_event(Community.t(), struct(), String.t()) ::
           {:ok, map() | nil} | {:error, term()}
   def get_community_log_event(community, actor, event_ref) do

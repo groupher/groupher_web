@@ -13,6 +13,7 @@ defmodule GroupherServer.Jobs.ArticleInsightsAggregation do
   alias GroupherServer.Analysis
   alias Analysis.{Aggregator, Config, Maintenance}
 
+  @doc false
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
     case Aggregator.drain() do

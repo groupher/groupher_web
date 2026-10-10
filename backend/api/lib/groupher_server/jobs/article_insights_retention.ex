@@ -13,6 +13,7 @@ defmodule GroupherServer.Jobs.ArticleInsightsRetention do
   alias GroupherServer.Analysis
   alias Analysis.{Config, Maintenance}
 
+  @doc false
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
     case Maintenance.delete_expired() do

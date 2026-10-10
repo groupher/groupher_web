@@ -14,9 +14,10 @@ defmodule GroupherServer.PublicCache.PurgeWorker do
 
   require Logger
 
-  alias GroupherServer.{PublicCache, Repo}
+  alias GroupherServer.PublicCache
   alias PublicCache.{Cloudflare, Model.Invalidation, Policy, Scope}
 
+  @doc false
   @impl Oban.Worker
   def backoff(%Oban.Job{attempt: attempt}) do
     base = Policy.retry_base_delay_seconds()
@@ -25,6 +26,7 @@ defmodule GroupherServer.PublicCache.PurgeWorker do
     min(exponential + jitter, Policy.max_retry_delay_seconds())
   end
 
+  @doc false
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"invalidation_id" => id}} = job) do
     lock_ref = "#{node()}:#{job.id}:#{job.attempt}:#{Ecto.UUID.generate()}"
@@ -107,7 +109,4 @@ defmodule GroupherServer.PublicCache.PurgeWorker do
 
   defp terminal_failure?({:invalid_contract, _}), do: true
   defp terminal_failure?(_reason), do: false
-
-  @doc false
-  def reload(id), do: Repo.get(Invalidation, id)
 end

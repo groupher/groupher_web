@@ -7,11 +7,7 @@ defmodule GroupherServer.Accounts.Profiles.List do
 
   Business position:
 
-      Client / Auth
-        -> GraphQL or internal API
-        -> Accounts facade
-        -> List
-        -> Repo
+      Accounts.Profiles.Query -> Profiles.List -> User / community read models
   """
 
   import Ecto.Query, warn: false
@@ -28,14 +24,35 @@ defmodule GroupherServer.Accounts.Profiles.List do
 
   @default_subscribed_communities GroupherServer.Accounts.Config.default_subscribed_communities()
 
+  @doc """
+  Returns a viewer-aware page of users.
+
+  ## Examples
+
+      Accounts.Profiles.List.paged_users(%{page: 1, size: 20}, viewer)
+  """
   def paged_users(filter, %User{} = user) do
     ORM.find_all(User, filter) |> Fans.mark_viewer_follow_status(user) |> done
   end
 
+  @doc """
+  Returns a page of users matching the filter.
+
+  ## Examples
+
+      Accounts.Profiles.List.paged_users(%{page: 1, size: 20})
+  """
   def paged_users(filter) do
     ORM.find_all(User, filter)
   end
 
+  @doc """
+  Returns the default community suggestions for a profile landing page.
+
+  ## Examples
+
+      Accounts.Profiles.List.default_subscribed_communities(%{page: 1, size: 20})
+  """
   def default_subscribed_communities(%{page: _, size: _} = filter) do
     filter = Map.merge(filter, %{size: @default_subscribed_communities, category: "pl"})
 
@@ -66,6 +83,13 @@ defmodule GroupherServer.Accounts.Profiles.List do
     end
   end
 
+  @doc """
+  Returns communities subscribed to by one user.
+
+  ## Examples
+
+      Accounts.Profiles.List.subscribed_communities(user, %{page: 1, size: 20})
+  """
   def subscribed_communities(%User{id: id} = user, %{page: page, size: size} = filter) do
     filter = filter |> Map.delete(:first)
 
