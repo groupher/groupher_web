@@ -26,7 +26,7 @@ defmodule GroupherServer.CMS.DocTree.State do
   @spec ensure_site_state(Community.t(), keyword() | map()) :: T.domain_res(DocsSiteState.t())
   def ensure_site_state(%Community{} = community, opts \\ []) do
     with {:ok, branch} <- Branch.resolve(community, opts) do
-      Transaction.lock_global("docs_site:init:#{community.id}:#{branch.id}", fn ->
+      ensure = fn ->
         case ORM.find_by(DocsSiteState, community_id: community.id, branch_id: branch.id) do
           {:ok, state} ->
             {:ok, state}
@@ -34,7 +34,17 @@ defmodule GroupherServer.CMS.DocTree.State do
           {:error, _} ->
             ORM.create(DocsSiteState, %{community_id: community.id, branch_id: branch.id})
         end
-      end)
+      end
+
+      if option(opts, :lock, true) do
+        Transaction.lock_global("docs_site:init:#{community.id}:#{branch.id}", ensure)
+      else
+        ensure.()
+      end
     end
   end
+
+  defp option(opts, key, default) when is_map(opts), do: Map.get(opts, key, default)
+  defp option(opts, key, default) when is_list(opts), do: Keyword.get(opts, key, default)
+  defp option(_opts, _key, default), do: default
 end

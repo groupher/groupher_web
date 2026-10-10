@@ -9,6 +9,8 @@ defmodule GroupherServer.CMS.DocTree.Commands.RestoreTrashItem do
 
   alias GroupherServer.Accounts.Model.User
   alias GroupherServer.CMS.Command
+  alias GroupherServer.CMS.Command.Receipt.Key, as: CommandKey
+  alias GroupherServer.CMS.ErrorCat
   alias GroupherServer.CMS.DocTree.{CommandReplay, Commands.Support, Trash}
   alias GroupherServer.CMS.DocTree.Commands.TreeConfirmation, as: Confirmation
 
@@ -16,9 +18,18 @@ defmodule GroupherServer.CMS.DocTree.Commands.RestoreTrashItem do
     clean_args = Support.drop_command_id(args)
     domain_args = canonical_args(clean_args)
 
-    case {Support.option(args, :actor), Support.option(args, :command_id)} do
-      {%User{} = actor, command_id} when is_binary(command_id) ->
-        execute_command(community, id, args, domain_args, actor)
+    case {Support.option(args, :actor), Support.option(args, :command_id),
+          Support.has_option?(args, :command_id)} do
+      {_, nil, true} ->
+        {:error, ErrorCat.command_id_required()}
+
+      {%User{} = actor, command_id, true} ->
+        with {:ok, _command_id} <- CommandKey.validate(command_id) do
+          execute_command(community, id, args, domain_args, actor)
+        end
+
+      {_, _command_id, true} ->
+        {:error, :command_actor_required}
 
       _ ->
         Trash.restore(community, id, clean_args)

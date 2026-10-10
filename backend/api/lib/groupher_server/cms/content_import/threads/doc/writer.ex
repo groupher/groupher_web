@@ -37,8 +37,9 @@ defmodule GroupherServer.CMS.ContentImport.Threads.Doc.Writer do
 
   alias CMS.ContentImport.Persistence.Job.Body, as: StagedBody
   alias CMS.Docs.Branch
-  alias CMS.{DocTree, ErrorCat}
+  alias CMS.ErrorCat
   alias CMS.DocTree.Import, as: DocTreeImport
+  alias CMS.DocTree.Workflows.ContentImport, as: DocTreeContentImport
   alias CMS.DocTree.State, as: DocTreeState
 
   alias CMS.Model.{
@@ -163,7 +164,7 @@ defmodule GroupherServer.CMS.ContentImport.Threads.Doc.Writer do
     |> Enum.reduce_while({:ok, :pass}, fn action_ref, {:ok, _} ->
       with {:ok, state} <- DocTreeState.ensure_draft_state(community, branch_id: branch.id),
            {:ok, %{conflict: false}} <-
-             DocTree.restore_trash_item(community, action_ref, %{
+             DocTreeContentImport.restore_trash_item(community, action_ref, %{
                actor_id: actor.id,
                base_revision: state.tree_lock_version,
                branch_id: branch.id

@@ -17,21 +17,27 @@ defmodule GroupherServer.CMS.DocTree.Commands.UpdateDraft do
   end
 
   def execute(community, id, args, user) do
-    Support.run_doc_command(
-      community,
-      id,
-      user,
-      :doc_update_draft,
-      args,
-      Confirmation,
-      fn ->
-        with {:ok, draft} <-
-               Writer.update_draft(community, id, Support.drop_command_id(args), user) do
-          {:ok, %Confirmation{data: confirmation_data(draft, Support.option(args, :command_id))}}
-        end
-      end,
-      &present_confirmation/1
-    )
+    execute = fn ->
+      with {:ok, draft} <-
+             Writer.update_draft(community, id, Support.drop_command_id(args), user) do
+        {:ok, %Confirmation{data: confirmation_data(draft, Support.option(args, :command_id))}}
+      end
+    end
+
+    if Support.has_option?(args, :command_id) do
+      Support.run_doc_command(
+        community,
+        id,
+        user,
+        :doc_update_draft,
+        args,
+        Confirmation,
+        execute,
+        &present_confirmation/1
+      )
+    else
+      Support.run_doc_operation(args, execute, &present_confirmation/1)
+    end
   end
 
   defp present_confirmation(%Confirmation{} = confirmation) do

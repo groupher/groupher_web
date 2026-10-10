@@ -350,27 +350,57 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
     persisted_items =
       Item
       |> where([item], item.job_id == ^job.id)
-      |> select([item], {item.external_ref, item.target_ref, item.source_hash})
+      |> select([item], %{
+        external_ref: item.external_ref,
+        metadata: item.metadata,
+        route: item.route,
+        selected: item.selected,
+        slug: item.slug,
+        source_hash: item.source_hash,
+        source_revision: item.source_revision,
+        source_version: item.source_version,
+        target_ref: item.target_ref,
+        title: item.title
+      })
       |> Repo.all()
-      |> Enum.sort()
-
-    requested_items =
-      item_attrs
-      |> Enum.map(&{&1.external_ref, &1.target_ref, &1.source_hash})
+      |> Enum.map(&item_intent/1)
       |> Enum.sort()
 
     same? =
       job.dataset_ref == Map.fetch!(input, :dataset_ref) and
         job.source_info == source_info and
         job.target_revision == Map.fetch!(input, :target_revision) and
-        job.target_tree == Map.fetch!(input, :target_tree) and
-        persisted_items == requested_items
+        job.target_tree == Map.fetch!(input, :target_tree)
 
-    if same? do
+    same? = same? and job.bad_smells == Map.get(input, :bad_smells, [])
+
+    if same? and same_item_intent?(persisted_items, item_attrs) do
       {:ok, :pass}
     else
       {:error, ErrorCat.custom("previewRef is already bound to another intent")}
     end
+  end
+
+  defp same_item_intent?(persisted_items, item_attrs) do
+    persisted_items ==
+      item_attrs
+      |> Enum.map(&item_intent/1)
+      |> Enum.sort()
+  end
+
+  defp item_intent(item) do
+    %{
+      external_ref: value(item, "external_ref"),
+      metadata: value(item, "metadata") || %{},
+      route: value(item, "route"),
+      selected: value(item, "selected"),
+      slug: value(item, "slug"),
+      source_hash: value(item, "source_hash"),
+      source_revision: value(item, "source_revision"),
+      source_version: value(item, "source_version"),
+      target_ref: value(item, "target_ref"),
+      title: value(item, "title")
+    }
   end
 
   defp counts(target_tree) do

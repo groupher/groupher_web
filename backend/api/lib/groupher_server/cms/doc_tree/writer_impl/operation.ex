@@ -1,41 +1,27 @@
 defmodule GroupherServer.CMS.DocTree.Writer.Operation do
   @moduledoc """
-  Wraps one draft tree mutation in lock, revision check, and response payload.
+  Keeps revision and response-payload helpers for the DocTree mutation workflow.
 
-      public Writer API
+      TreeMutation workflow
           |
-          v
-      global lock: doc_tree:<community_id>
+          +--> branch/Gate/lock/base_revision envelope
           |
-          v
-      ensure site/tree state + base_revision check
+          +--> Writer callback
           |
-          +--> conflict -> %{conflict: true, affected_nodes: []}
-          |
-          v
-      mutation callback
-          |
-          v
-      bump tree draft revision + build payload
+          +--> Operation.bump_revision / Operation.payload
 
-  This module owns the write envelope. It does not decide what a mutation does
-  to nodes, events, docs, or trash; it only keeps the concurrency and payload
-  contract consistent for every tree write.
+  This module keeps the payload and revision helpers used by the tree workflow.
+  Transaction and Gate admission belong to `CMS.DocTree.Workflows.TreeMutation`.
   """
 
   alias GroupherServer.CMS
-  alias CMS.ErrorCat
 
-  alias CMS.Docs.Branch
-  alias CMS.DocTree.{Query, Revision, State}
+  alias CMS.DocTree.{Query, Revision}
+  alias CMS.DocTree.Workflows.TreeMutation
   alias CMS.Model.{Community, DocsSiteState, DocTreeNode}
-  alias Helper.Transaction
 
   @doc """
-  Runs one draft tree mutation inside the doc tree write envelope.
-
-  Acquires the community/branch tree lock, re-checks `base_revision`, and
-  builds either a mutation payload or a conflict response.
+  Compatibility delegate to `TreeMutation.run/3`.
 
   ## Examples
 
@@ -51,34 +37,14 @@ defmodule GroupherServer.CMS.DocTree.Writer.Operation do
 
   """
   def run(%Community{} = community, args, fun) do
-    actor = Map.get(args, :actor, :operations)
-
-    with {:ok, branch} <- Branch.resolve(community, args) do
-      Transaction.lock_global("doc_tree:#{community.id}:#{branch.id}", fn ->
-        with {:ok, _canonical} <- CMS.Gate.access_check(actor, :manage_docs, community),
-             {:ok, _site_state} <- State.ensure_site_state(community, branch_id: branch.id),
-             {:ok, state} <- State.ensure_draft_state(community, branch_id: branch.id),
-             {:ok, _} <- revision_check(state, Map.get(args, :base_revision)) do
-          fun.(branch, state)
-        else
-          {:conflict, state} ->
-            {:ok,
-             %{
-               revision: state.tree_lock_version,
-               tree_state: Query.tree_state(community, state),
-               conflict: true,
-               affected_nodes: []
-             }}
-
-          error ->
-            error
-        end
-      end)
-    end
+    TreeMutation.run(community, args, fun)
   end
 
   def bump_revision(%Community{} = community, %DocsSiteState{} = state, event_count) do
-    Revision.bump_tree_draft(community, state, staged_event_delta: event_count)
+    Revision.bump_tree_draft(community, state,
+      staged_event_delta: event_count,
+      transaction: false
+    )
   end
 
   def payload(%Community{} = community, %DocsSiteState{} = state, node, affected \\ []) do
@@ -90,17 +56,6 @@ defmodule GroupherServer.CMS.DocTree.Writer.Operation do
       conflict: false
     }
   end
-
-  defp revision_check(%DocsSiteState{}, nil) do
-    {:error, ErrorCat.custom("base_revision is required")}
-  end
-
-  defp revision_check(%DocsSiteState{} = state, revision)
-       when revision == state.tree_lock_version do
-    {:ok, :pass}
-  end
-
-  defp revision_check(%DocsSiteState{} = state, _revision), do: {:conflict, state}
 
   defp map_node(nil), do: nil
   defp map_node(%DocTreeNode{} = node), do: Query.to_map(node)

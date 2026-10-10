@@ -50,7 +50,8 @@ defmodule GroupherServer.CMS.DocTree.Writer.EventRecorder do
   def record_tree_events(%Community{} = community, branch, args, events) do
     with {:ok, events} <-
            Events.record_staged_many(community, events, Map.get(args, :actor_id),
-             branch_id: branch.id
+             branch_id: branch.id,
+             transaction: false
            ) do
       {:ok, Enum.count(events, &(&1.owner == CMS.DocTree.Const.tree_event_owner(:tree)))}
     end

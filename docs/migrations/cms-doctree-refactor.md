@@ -1,8 +1,16 @@
 # CMS DocTree / ContentImport：现状审计与独立重构计划
 
-> 本文把 DocTree 与 Docs ContentImport 从 CMS Phase 5 总文档中单独拆出，记录当前真实功能、对外入口、Gate、lifecycle/version authority、identity、事务 owner、Receipt/workflow 边界和目录职责。
+> 本文把 DocTree 与 Docs ContentImport 从 CMS Phase 5 总文档中单独拆出，记录当前真实功能、对外入口、Gate、lifecycle/version authority、identity、事务 owner、Receipt/workflow 边界和目录职责，并持续记录已落地的重构批次。
 >
-> 当前结论：DocTree 的 GraphQL 用户 mutation 已经有 concrete Command、非空 `commandId` 和部分 Confirmation/Replay；但 facade 与内部 workflow 仍保留无 actor/无 `commandId` 的 direct Writer/Trash/Publish fallback，因此 DocTree 还没有完成 CMS.Command 收口。ContentImport 是一个有持久 Job、staging 和 atomic apply 的 workflow，不应把每个 service callback 或内部步骤强行变成用户 Command。本文不修改执行代码，也不把已有的 Node/Phoenix 架构文档重新写成第二套 source of truth。
+> 当前结论：DocTree 的 GraphQL 用户 mutation 已经有 concrete Command、非空 `commandId` 和部分 Confirmation/Replay；本轮已把 resolver-shaped 请求的缺失/非法 identity 设为 fail-closed，并把遗留 direct path 显式命名为 internal tree/document operation。它仍待业务调用方全部迁移后删除。ContentImport 是一个有持久 Job、staging 和 atomic apply 的 workflow，不应把每个 service callback 或内部步骤强行变成用户 Command；本轮选择保留 Job-only start contract，并强化 `preview_ref` 的完整 intent 比较。本文不创建第二套 Node/Phoenix 架构 source of truth。
+
+### 0.1 本轮已落地的实现批次
+
+- `CMS.DocTree.Workflows.TreeMutation` 现在是树 mutation 的 transaction/Gate/revision envelope owner；`Writer.Operation` 只保留 revision bump 和 payload helpers。
+- `Events`、`Revision`、`State` 增加显式 owner 选项；树 workflow 继续持有与 `DocTree.initialize/read` 相同的 Docs site init lock，避免首次 state 初始化竞态，独立调用仍保留默认事务行为。
+- `Commands.Support.run_tree_command/6` 与 `run_doc_command/8` 只接受显式 Command boundary；遗留无 identity 路径改为命名的 `run_tree_operation/3`、`run_doc_operation/3`，便于后续按调用方清退。
+- ContentImport 的 mapped Trash restore 改走 `DocTree.Workflows.ContentImport`，不再借用用户 `DocTree` facade；`Jobs.create/3` 重试现在比较 dataset、source/target intent、bad smells 和每个 selected document 的完整持久化字段。
+- 新增 Command boundary focused coverage；`mix test test/groupher_server/cms/doc_tree/ test/groupher_server/cms/content_import_flow_test.exs` 当前通过 88 tests，追加 `command_confirmation_test.exs` 后通过 97 tests。
 
 ## 1. 先给结论
 
@@ -376,7 +384,7 @@ CMS.ContentImport
 
 优先处理：
 
-1. 让 `create_tab/group/page/link/pin`、`update/delete/duplicate/move/restore` 的公开 domain arity 都要求 actor + command id；不再用 Support 的 direct fallback 作为业务入口。
+1. 让 `create_tab/group/page/link/pin`、`update/delete/duplicate/move/restore` 的公开 domain arity 都要求 actor + command id；当前 GraphQL-shaped request 已 fail-closed，剩余无 identity arity 仍需按调用方迁移到 named workflow/persistence API 后删除。
 2. `PublishChanges` 必须明确是“Command 启动 Publish workflow”，还是纯内部 workflow；GraphQL 用户路径保留一个 command identity，内部 caller 不得使用无 identity 的 publish 业务入口。
 3. `RestoreTrashItem` 的 import 内部调用改成明确的 workflow/persistence API，不能把 `Trash.restore` 的 direct path 和用户 Command 混在同一个 facade 名称下。
 4. 对 `restore_doc_revision_to_draft`、DocTree mutation、Docs article mutation 统一 branch、Gate action 和 version authority；不能让不同 resolver 各自决定 resource scope。
@@ -447,12 +455,13 @@ fail/cancel           -> workflow terminal transition
 
 ### 仍未收口
 
-- [ ] DocTree facade/Command Support 的 direct fallback 和无 actor convenience arity 清退。
-- [ ] Publish/Trash/Article integration 的 workflow owner 与 user Command boundary 固化。
-- [ ] Events/Revision/State/Writer 的 nested transaction API 改为显式 owner/context contract。
+- [ ] DocTree facade 的无 actor convenience arity 清退；GraphQL-shaped request 已不再静默 direct fallback，遗留 internal operation 仍待调用方迁移。
+- [x] Tree mutation workflow owner 与 user Command boundary 已拆出；Publish/Trash/Article integration 仍需分别完成 workflow owner 收口。
+- [x] Events/Revision/State/Tree Writer 的 owner 内调用已改为显式 transaction/lock 选项；独立 public helper 仍保留默认事务兼容行为。
 - [ ] 所有 tree/draft/publish/trash mutation 的 response-loss、重复 command、冲突和 replay focused coverage。
 - [ ] GraphQL transport Passport 与 domain Gate action matrix 对齐并写入合同。
-- [ ] ContentImport start 是否采用薄 Command + Receipt 的产品决策。
+- [x] ContentImport start 保持 Job-only workflow；`preview_ref` + 完整 confirmed intent 是 start retry/recovery 合同，不为 stage/apply/fail/cancel 生成用户 command id。
+- [x] ContentImport `preview_ref` 重放会比较 selected document 的完整持久化 intent，而不是只比较 source hash。
 - [ ] ContentImport apply/retry/response-loss/duplicate staging/target conflict 的 focused recovery coverage。
 - [ ] DocTree 物理目录按 `Commands / Query / Persist / Setup / Workflows` 收口；ContentImport 保持 workflow-first，不为形式添加空目录。
 
@@ -491,4 +500,4 @@ fail/cancel           -> workflow terminal transition
 - [`Content Import 产品流程`](../content-import/bulk-import.md)
 - [`CMS Command Phase 5 主迁移记录`](./cms-command-phase-5-legacy-workflows.md)
 
-本轮只新增本独立审计文档并更新文档索引，不修改 DocTree、ContentImport 或 GraphQL executable code，也不提交 Git commit。校验应至少执行 `git diff --check` 与 `pnpm docs:check`；这些检查证明文档和仓库文档门禁通过，不代表本文列出的 DocTree/ContentImport deferred work 已完成。
+本轮已修改 DocTree/ContentImport 的 Command boundary、Tree workflow owner、owner-context transaction primitives 和 ContentImport intent comparison，并新增 focused coverage；未修改 GraphQL schema 的产品字段，也不提交 Git commit。校验应至少执行 `git diff --check`、backend focused suite、`mix compile --warnings-as-errors` 与 `pnpm docs:check`；这些检查证明已落地批次通过，不代表本文列出的其余 deferred work 已完成。

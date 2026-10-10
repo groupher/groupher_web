@@ -5,6 +5,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
   import GroupherServer.Support.Factory
 
   alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.Activity.Model.DocTreeLog
   alias CMS.Artiment.BodyBag
   alias CMS.ContentImport.{Jobs, Staging}
   alias CMS.ContentImport.Persistence.{ImportSourceMapping, Job}
@@ -321,7 +322,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
     assert {:error, :doc_not_readable} =
              CMS.Docs.read_editor_head(community, first_doc_id)
 
-    assert {:ok, [_trash_item]} =
+    assert {:ok, [trash_item]} =
              DocTree.trash_items(community, actor: :operations, policy_mode: :operations)
 
     documents = [document("docs/start.md", "/start", "b")]
@@ -358,6 +359,12 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
 
     assert {:ok, second_import} = Writer.apply(community, second_job.job_ref)
     assert second_import.first_imported_doc_id == first_doc_id
+
+    assert Repo.get_by!(DocTreeLog,
+             operation_ref: trash_item.id,
+             action: :restored,
+             source: :worker
+           )
 
     assert {:ok, []} =
              DocTree.trash_items(community, actor: :operations, policy_mode: :operations)
@@ -511,6 +518,29 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
                bad_smells: [],
                dataset_ref: record.dataset_ref,
                documents: [document("docs/start.md", "/start", "b")],
+               preview_ref: record.preview_ref,
+               source_info: record.source_info,
+               target_revision: record.target_revision,
+               target_tree: record.target_tree
+             })
+  end
+
+  test "binds a previewRef to the complete selected document intent" do
+    %{actor: actor, community: community, job: job} =
+      create_job([document("docs/start.md", "/start")])
+
+    record = Repo.get_by!(Job, hash_id: job.job_ref)
+    changed_document = Map.put(document("docs/start.md", "/start"), "title", "Renamed")
+
+    assert {:error,
+            %ErrorCat.Error{
+              reason: :custom,
+              details: "previewRef is already bound to another intent"
+            }} =
+             Jobs.create(community, actor, %{
+               bad_smells: [],
+               dataset_ref: record.dataset_ref,
+               documents: [changed_document],
                preview_ref: record.preview_ref,
                source_info: record.source_info,
                target_revision: record.target_revision,
