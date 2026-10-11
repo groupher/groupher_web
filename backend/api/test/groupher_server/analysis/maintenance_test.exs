@@ -27,13 +27,14 @@ defmodule GroupherServer.Test.Analysis.MaintenanceTest do
   end
 
   test "deletes within a row budget and reports remaining work" do
-    {_community, article, _attrs, _user} = mock_article(:post)
+    {community, article, _attrs, _user} = mock_article(:post)
     now = DateTime.utc_now(:second)
     old = DateTime.add(now, -100, :day)
 
     Enum.each(1..2, fn offset ->
       Repo.insert!(%MetricEvent{
         operation_id: Ecto.UUID.generate(),
+        community_id: community.id,
         article_type: :post,
         article_id: article.id,
         metric: :upvote_added,
@@ -46,6 +47,7 @@ defmodule GroupherServer.Test.Analysis.MaintenanceTest do
       })
 
       Repo.insert!(%ArticleHourlyMetric{
+        community_id: community.id,
         article_type: :post,
         article_id: article.id,
         bucket_started_at: DateTime.add(old, offset, :hour),
@@ -59,6 +61,7 @@ defmodule GroupherServer.Test.Analysis.MaintenanceTest do
 
     Repo.insert!(%MetricEvent{
       operation_id: Ecto.UUID.generate(),
+      community_id: community.id,
       article_type: :post,
       article_id: article.id,
       metric: :upvote_added,
