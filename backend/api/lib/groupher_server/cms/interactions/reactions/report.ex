@@ -16,15 +16,11 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
   alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
-  alias CMS.Articles.MutationLock
-  alias CMS.Artiment.Matcher
+  alias CMS.{Articles.MutationLock, Artiment.Matcher, Gate, Command}
   alias CMS.Comments.States, as: CommentStates
-
-  alias CMS.Gate
 
   alias CMS.Interactions.{ErrorCat, Persist, ReadState, Transaction}
   alias CMS.Interactions.Reactions.ReportConfirmation, as: Confirmation
-  alias CMS.Command
   alias CMS.Model.{AbuseReport, Comment, Embeds}
   alias Helper.T
 

@@ -14,8 +14,7 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
 
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.Articles.Draft.Store
-  alias CMS.Articles.Bindings
+  alias CMS.Articles.{Draft.Store, Bindings}
   alias CMS.Assets.{Query, Refs}
   alias CMS.{Command, ErrorCat}
   alias CMS.FrontDesk

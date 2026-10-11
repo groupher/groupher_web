@@ -25,6 +25,16 @@ defmodule GroupherServer.Accounts.Achievements do
   def achieve(%User{} = user, operation, key), do: Commands.Achieve.run(user, operation, key)
 
   @doc """
+  Ensures the achievement projection exists during account registration.
+
+  ## Examples
+
+      Accounts.Achievements.ensure(user.id)
+  """
+  @spec ensure(integer()) :: {:ok, struct()} | {:error, term()}
+  def ensure(user_id) when is_integer(user_id), do: Commands.Ensure.run(user_id)
+
+  @doc """
   Removes a counted achievement from a user.
 
   ## Examples

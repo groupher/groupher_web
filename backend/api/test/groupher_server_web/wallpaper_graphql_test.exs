@@ -4,7 +4,7 @@ defmodule GroupherServer.Test.WallpaperGraphQL do
   use GroupherServer.TestMate, async: false
 
   alias GroupherServer.CMS
-  alias CMS.Assets.{Capability, GeneratedBatch.PublishCapability}
+  alias CMS.Assets.{Capability, Maintenance.GeneratedBatch.PublishCapability}
   alias CMS.Wallpaper
   alias CMS.Wallpaper.{RequestDigest, Settings}
 

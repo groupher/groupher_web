@@ -8,15 +8,14 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
   import ShortMaps
 
   alias GroupherServer.{CMS, FrontDesk}
-  alias GroupherServer.CMS.Helper.ArticlePath
-  alias GroupherServer.CMS.Model.Community
+  alias CMS.Model.Community
 
   def cover_edit_info(article, _, %{context: %{cur_user: user}}) do
-    CMS.Articles.cover_edit_info(article, user)
+    CMS.articles_cover_edit_info(article, user)
   end
 
   def cover_edit_info(article, _, _) do
-    CMS.Articles.cover_edit_info(article, nil)
+    CMS.articles_cover_edit_info(article, nil)
   end
 
   def read_article(root, args, info) do
@@ -24,7 +23,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
   end
 
   def read_article(_root, %{article: article_path}, info, opts) do
-    with {:ok, article_path} <- ArticlePath.parse(article_path, opts) do
+    with {:ok, article_path} <- CMS.parse_article_path(article_path, opts) do
       do_read_article(article_path, info)
     end
   end
@@ -45,29 +44,29 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
   def set_post_cat(_root, %{article: article, cat: cat, command_id: command_id}, %{
         context: %{cur_user: user}
       }) do
-    CMS.Articles.set_cat_result(article, cat, user, command_id)
+    CMS.articles_set_cat_result(article, cat, user, command_id)
   end
 
   def set_post_status(_root, %{article: article, status: status, command_id: command_id}, %{
         context: %{cur_user: user}
       }) do
-    CMS.Articles.set_status_result(article, status, user, command_id)
+    CMS.articles_set_status_result(article, status, user, command_id)
   end
 
   def paged_articles(_root, ~m(thread filter)a, %{context: %{cur_user: user}}) do
-    CMS.Articles.page(thread, filter, user)
+    CMS.articles_page(thread, filter, user)
   end
 
   def paged_articles(_root, ~m(thread filter)a, _info) do
-    CMS.Articles.page(thread, filter)
+    CMS.articles_page(thread, filter)
   end
 
   def grouped_kanban_posts(_root, %{community: community}, _info) do
-    CMS.Articles.grouped_kanban(community)
+    CMS.articles_grouped_kanban(community)
   end
 
   def paged_kanban_posts(_root, %{community: community, filter: filter}, _info) do
-    CMS.Articles.paged_kanban(community, filter)
+    CMS.articles_paged_kanban(community, filter)
   end
 
   def create_post(root, args, info) do
@@ -119,7 +118,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
   end
 
   def update_article(_root, %{article: article} = args, %{context: %{cur_user: user}}) do
-    CMS.Articles.update(
+    CMS.articles_update(
       article,
       args |> Map.drop([:article, :command_id]) |> Map.put(:cur_user, user),
       user,
@@ -128,7 +127,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
   end
 
   def trash_article(_root, %{article: article} = args, %{context: %{cur_user: user}}) do
-    CMS.Articles.trash(article, user, command_id: args[:command_id])
+    CMS.articles_trash(article, user, command_id: args[:command_id])
   end
 
   def restore_trashed_article(
@@ -138,7 +137,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
       ) do
     command_id = args[:command_id]
     opts = [command_id: command_id, community_id: community.id, thread: thread]
-    CMS.Articles.restore_trashed(id, user, opts)
+    CMS.articles_restore_trashed(id, user, opts)
   end
 
   def permanently_delete_trashed_article(
@@ -148,7 +147,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
       ) do
     command_id = args[:command_id]
     opts = [command_id: command_id, community_id: community.id, thread: thread]
-    CMS.Articles.permanently_delete_trashed(id, user, opts)
+    CMS.articles_permanently_delete_trashed(id, user, opts)
   end
 
   def permanently_delete_trash_action(
@@ -156,7 +155,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
         %{id: id, community: %Community{} = community, thread: thread} = args,
         %{context: %{cur_user: user}}
       ) do
-    CMS.Trash.permanently_delete_action_in_scope(id, community.id, thread, user,
+    CMS.trash_permanently_delete_action_in_scope(id, community.id, thread, user,
       command_id: args[:command_id]
     )
   end
@@ -167,7 +166,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
         _info
       ) do
     filter = (Map.get(args, :filter) || %{}) |> Map.put(:thread, thread)
-    CMS.Articles.list_trashed(community, filter)
+    CMS.articles_list_trashed(community, filter)
   end
 
   def trashed_article(
@@ -175,12 +174,12 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
         %{id: id, community: %Community{} = community, thread: thread},
         _info
       ) do
-    CMS.Articles.get_trashed(id, community, thread)
+    CMS.articles_get_trashed(id, community, thread)
   end
 
   def pin_article(_root, ~m(article article_path command_id)a, %{context: %{cur_user: user}}) do
     with {:ok, community} <- article_path_community(article_path) do
-      CMS.Articles.pin(community, article.id, user, command_id)
+      CMS.articles_pin(community, article.id, user, command_id)
     end
   end
 
@@ -188,22 +187,22 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
         context: %{cur_user: user}
       }) do
     with {:ok, community} <- article_path_community(article_path) do
-      CMS.Articles.undo_pin(community, article.id, user, command_id)
+      CMS.articles_undo_pin(community, article.id, user, command_id)
     end
   end
 
   def sink_article(_root, ~m(article command_id)a, %{context: %{cur_user: user}}) do
-    CMS.Articles.sink_result(article, user, command_id)
+    CMS.articles_sink_result(article, user, command_id)
   end
 
   def undo_sink_article(_root, ~m(article command_id)a, %{context: %{cur_user: user}}) do
-    CMS.Articles.undo_sink_result(article, user, command_id)
+    CMS.articles_undo_sink_result(article, user, command_id)
   end
 
   def mirror_article(_root, ~m(target_community article community_tags command_id)a, %{
         context: %{cur_user: user}
       }) do
-    CMS.Articles.mirror(
+    CMS.articles_mirror(
       target_community,
       article.id,
       community_tags,
@@ -216,7 +215,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
   def unmirror_article(_root, ~m(target_community article command_id)a, %{
         context: %{cur_user: user}
       }) do
-    CMS.Articles.unmirror(target_community, article.id, user, command_id)
+    CMS.articles_unmirror(target_community, article.id, user, command_id)
   end
 
   def move_article(_root, ~m(target_community article community_tags command_id)a, %{
@@ -224,9 +223,9 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
       }) do
     with %Community{} = source <- Map.get(article, :community),
          %Community{} = destination <- target_community do
-      CMS.Articles.move(source, destination, article.id, community_tags, user, command_id)
+      CMS.articles_move(source, destination, article.id, community_tags, user, command_id)
     else
-      _ -> {:error, CMS.Gate.ErrorCat.resource_not_found()}
+      _ -> {:error, CMS.gate_error_cat_resource_not_found()}
     end
   end
 
@@ -239,7 +238,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
   end
 
   defp create_article(_root, ~m(community thread)a = args, %{context: %{cur_user: user}}) do
-    CMS.Articles.create(community, thread, Map.put(args, :cur_user, user), user,
+    CMS.articles_create(community, thread, Map.put(args, :cur_user, user), user,
       command_id: args[:command_id]
     )
   end
@@ -249,7 +248,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
          ~m(community thread)a = args,
          %{context: %{cur_user: user}}
        ) do
-    CMS.Articles.create_stable_draft_result(
+    CMS.articles_create_stable_draft_result(
       community,
       thread,
       Map.put(args, :cur_user, user),
@@ -262,7 +261,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
          %{article: article, community: %Community{} = community} = args,
          %{context: %{cur_user: user}}
        ) do
-    CMS.Articles.update_draft(
+    CMS.articles_update_draft(
       article.id,
       args
       |> Map.drop([:community, :thread, :id, :article, :passport_is_owner])
@@ -278,7 +277,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
          %{article: article, community: %Community{} = community} = args,
          %{context: %{cur_user: user}}
        ) do
-    CMS.Articles.publish(article, user,
+    CMS.articles_publish(article, user,
       expected_draft_version: args[:expected_version],
       expected_lifecycle_version: args[:expected_lifecycle_version],
       community: community,

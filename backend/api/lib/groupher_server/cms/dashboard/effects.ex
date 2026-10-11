@@ -38,7 +38,7 @@ defmodule GroupherServer.CMS.Dashboard.Effects do
 
     Map.merge(identity_attrs, %{
       event: "community.presentation_changed",
-      worker: CMS.Outbox.Workers.Community.Cleanup,
+      worker: GroupherServer.Jobs.CMSOutboxCommunity,
       resource_type: "community",
       resource_id: community.id,
       data: %{community: community.slug, community_id: community.id}

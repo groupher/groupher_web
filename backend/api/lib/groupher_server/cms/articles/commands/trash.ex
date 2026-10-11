@@ -10,10 +10,9 @@ defmodule GroupherServer.CMS.Articles.Commands.Trash do
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.Trash, as: TrashAgg
-  alias CMS.Articles.Effects
+  alias CMS.Articles.{Effects, Commands.TrashConfirmation}
   alias CMS.Command
   alias CMS.Model.TrashedArticle
-  alias CMS.Articles.Commands.TrashConfirmation
 
   @spec execute(map(), User.t() | nil, keyword()) ::
           {:ok, TrashedArticle.t()} | {:error, term()}

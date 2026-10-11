@@ -21,7 +21,7 @@ defmodule GroupherServer.Jobs.SnapshotRefresh do
   @doc false
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"kind" => kind, "refs" => refs, "opts" => opts}}) do
-    CMS.Snapshot.perform_refresh(
+    CMS.snapshot_perform_refresh(
       String.to_existing_atom(kind),
       Codec.decode(refs),
       Codec.decode(opts)

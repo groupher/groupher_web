@@ -2,6 +2,8 @@ defmodule GroupherServer.Test.CMS.Communities.Persist do
   @moduledoc false
   use GroupherServer.TestMate
 
+  import ExUnit.CaptureLog
+
   alias GroupherServer.Repo
 
   setup do
@@ -11,6 +13,20 @@ defmodule GroupherServer.Test.CMS.Communities.Persist do
   end
 
   describe "[cms community curd]" do
+    test "community creation skips optional web analysis provisioning in test", ~m(user)a do
+      log =
+        capture_log(fn ->
+          assert {:ok, _community} =
+                   CMS.Communities.create(
+                     mock_attrs(:community),
+                     user,
+                     Ecto.UUID.generate()
+                   )
+        end)
+
+      refute log =~ "Community web analysis provisioning deferred"
+    end
+
     test "new created community should have default locale", ~m(user)a do
       community_attrs = mock_attrs(:community, %{slug: "elixir"})
       {:ok, community} = CMS.Communities.create(community_attrs, user, Ecto.UUID.generate())

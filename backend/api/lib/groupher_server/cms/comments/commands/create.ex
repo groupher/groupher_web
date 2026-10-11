@@ -16,12 +16,11 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
 
   require GroupherServer.CMS.Comments.ErrorCat
 
-  alias GroupherServer.{Accounts, Analysis, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.Model.User
   alias CMS.{Comments.ErrorCat, Command, FrontDesk}
   alias CMS.Comments.Commands.CommentConfirmation, as: Confirmation
-  alias CMS.Comments.Effects
-  alias CMS.Comments.Persist
+  alias CMS.Comments.{Effects, Persist}
   alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CMS.ErrorCat, as: CmsErrorCat
 
@@ -37,7 +36,6 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
     Article
   }
 
-  alias Analysis.MetricEvent
   alias Helper.T
 
   @doc "Executes the receipt-backed top-level Comment Command."
@@ -486,7 +484,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
   end
 
   defp record_article_metric(article, community, operation_id, metric) do
-    case MetricEvent.append_article_action(article, operation_id, metric,
+    case GroupherServer.Analysis.metric_event_append_article_action(article, operation_id, metric,
            community_id: community.id
          ) do
       {:ok, _} -> {:ok, :pass}

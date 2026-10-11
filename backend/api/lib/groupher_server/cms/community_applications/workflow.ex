@@ -11,12 +11,12 @@ defmodule GroupherServer.CMS.CommunityApplications.Workflow do
         -> Lifecycle / Persist / slug claims
   """
 
-  alias GroupherServer.Repo
+  alias GroupherServer.{CMS, Repo}
+
   alias Ecto.Multi
-  alias GroupherServer.CMS.Communities.SlugClaims
-  alias GroupherServer.CMS.CommunityApplications.Persist
-  alias GroupherServer.CMS.CommunityApplications.Lifecycle, as: ApplicationLifecycle
-  alias GroupherServer.CMS.CommunityApplications.Transaction
+  alias CMS.Communities.SlugClaims
+  alias CMS.CommunityApplications.{Persist, Transaction}
+  alias CMS.CommunityApplications.Lifecycle, as: ApplicationLifecycle
 
   @doc "Expires a bounded set of submitted applications whose deadline has passed."
   @spec expire_due(DateTime.t()) :: {:ok, non_neg_integer()} | {:error, term()}

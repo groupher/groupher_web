@@ -29,7 +29,7 @@
 
 ## 资源加载
 
-- 同步 mutation 的 transport public ref/path 由入口通过 `CMS.FrontDesk` 解析一次；Resolver 不得把已加载的领域 struct 降级为 ID，再交给 CMS facade、Command 或 Writer 重复加载。Reader/list/count/projection 的 foreign-key query 不受此限制。
+- 同步 mutation 的 transport public ref/path 由入口通过 root `GroupherServer.FrontDesk` 解析一次；CMS 内部随后使用自己的 `CMS.FrontDesk` seam。Resolver 不得直接调用 Context internal FrontDesk，也不得把已加载的领域 struct 降级为 ID，再交给 CMS facade、Command 或 Persist 重复加载。Query/list/count/projection 的 foreign-key query 不受此限制。
 - CMS mutation facade 和 Command 使用资源 struct 作为主要目标；Gate 在 aggregate lock 内执行的 canonical reload 必须保留，调用方随后只使用 Gate 返回的 canonical resource。
 - Lifecycle 可以使用稳定 domain identity 加载并锁定自己拥有的状态行；DocTree、Trash replay 等特殊 identity 不做脱离上下文的机械 struct 化。Post-commit/Oban effect 使用稳定 identity 并在执行时重新加载当前 authority。
 - 完整边界、例外、当前偏差和迁移清单见 [CMS 资源加载与 Canonical Reload 边界](../architecture/resource-loading-boundary.md)。

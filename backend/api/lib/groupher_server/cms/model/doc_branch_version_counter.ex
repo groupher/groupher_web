@@ -8,7 +8,9 @@ defmodule GroupherServer.CMS.Model.DocBranchVersionCounter do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.{Article, DocBranch}
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{Article, DocBranch}
   alias Helper.Constant.DBPrefix
 
   @primary_key false

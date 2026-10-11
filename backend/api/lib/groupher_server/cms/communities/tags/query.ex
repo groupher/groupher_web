@@ -13,9 +13,10 @@ defmodule GroupherServer.CMS.Communities.Tags.Query do
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
 
-  alias GroupherServer.Repo
-  alias GroupherServer.CMS.QueryBuilder
-  alias GroupherServer.CMS.Model.{CommunityTag, CommunityTagGroup}
+  alias GroupherServer.{CMS, Repo}
+
+  alias CMS.QueryBuilder
+  alias CMS.Model.{CommunityTag, CommunityTagGroup}
   alias Helper.T
 
   @doc "Returns tag-group titles keyed by id in one query."

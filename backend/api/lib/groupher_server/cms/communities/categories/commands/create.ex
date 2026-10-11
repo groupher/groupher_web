@@ -5,12 +5,13 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Create do
       GraphQL -> Categories.Commands.Create -> Gate -> Persist -> Receipt
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.{Command, Gate}
   alias CMS.Communities.Categories.{Confirmation, Persist}
   alias CMS.Communities.Categories.Commands.Support
   alias CMS.Model.{Category, Community}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
   alias Helper.Validator.Slug
 

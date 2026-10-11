@@ -15,13 +15,7 @@ defmodule GroupherServerWeb.Schema.CMS.Metrics do
   import Helper.Utils, only: [module_to_atom: 1]
 
   alias GroupherServer.CMS
-  alias CMS.Articles.Const, as: ArticlesConst
-  alias CMS.Artiment.Const, as: ArtimentConst
-  alias CMS.Artiment.Threads
-
-  require ArticlesConst
-  require ArtimentConst
-  require Threads
+  require CMS
 
   @doc """
   only used for reaction result, like: upvote/collect/watch ...
@@ -56,7 +50,7 @@ defmodule GroupherServerWeb.Schema.CMS.Metrics do
   enum(:emotion_type, do: emotion_values(:all))
 
   enum :thread do
-    enum_values(Threads.values())
+    enum_values(CMS.artiment_threads_values())
   end
 
   enum :search_artiment_type do
@@ -147,10 +141,10 @@ defmodule GroupherServerWeb.Schema.CMS.Metrics do
     value(:least_words)
   end
 
-  enum(:article_order_enum, do: enum_values(ArticlesConst.order_values_ast()))
+  enum(:article_order_enum, do: enum_values(CMS.articles_const_order_values_ast()))
 
-  enum(:article_cat_enum, do: enum_values(ArtimentConst.cat_values_ast()))
-  enum(:article_status_enum, do: enum_values(ArtimentConst.status_values_ast()))
+  enum(:article_cat_enum, do: enum_values(CMS.artiment_const_cat_values_ast()))
+  enum(:article_status_enum, do: enum_values(CMS.artiment_const_status_values_ast()))
 
   import_types(GroupherServerWeb.Schema.CMS.Dashboard.Metrics)
 

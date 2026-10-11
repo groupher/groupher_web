@@ -1,6 +1,7 @@
 # CMS Context Module Architecture
 
-> 状态：current（2026-10-10）
+> 状态：current（2026-10-11）。本文定义 CMS 内部 ownership；目录是否合法、谁能调用这些模块，以
+> [Backend Context Convention over Configuration](./backend-context-convention-over-configuration.md) 为最高优先级。
 >
 > 本文定义 CMS Backend Context 的目标架构、模块关系和 ownership。它回答“系统应该如何组织、为什么
 > 这样组织”；具体的强制约束、禁止依赖和 review checklist 见
@@ -80,38 +81,41 @@ Workflow 是多阶段、可重试、可恢复流程的 owner。Outbox worker 恢
 
 ## 3. Context 目标结构
 
-根 facade 通常固定存在：
+CMS 是一级 Context，必须同时存在根 Facade 与实现目录：
 
 ```text
-<context>.ex
+cms.ex
+cms/
 ```
 
-一个 context 的逻辑结构如下：
+CMS 内部 capability 若拆目录，同样必须保留同名 internal Facade。Owner 目录按通用 v2 规则处理：
 
 ```text
-<context>.ex                         # public facade
+cms.ex                               # 对 CMS 外唯一 public facade
 
-<context>/
-  commands/                          # 业务 mutation
-    confirmation/                    # typed result / Receipt contract
-  query.ex or query/                 # 当前读取
-  persist.ex                         # 主数据 row mutation
-  effects.ex                         # Activity、Outbox、cache、通知等副作用
-  lifecycle.ex or lifecycle/         # 状态和版本转换
-  projection.ex or projection/       # 派生读模型
-  workflow.ex or workflow/           # 单一 workflow owner
-  workflows/                         # 多个独立 workflow family 时允许
-  setup.ex or setup/                 # bootstrap / 初始化
-  policy.ex                          # 纯业务策略
-  settings.ex                        # 产品/领域 settings
-  config.ex                          # runtime/application config facade
-  error_cat.ex                       # context-specific errors
-  const.ex                           # 封闭领域词汇
-  helper/                            # 纯领域 helper
+cms/
+  articles.ex                        # CMS 内部 capability facade
+  articles/
+    commands/                        # 业务 mutation
+      confirmation/                  # typed result / Receipt contract
+    query.ex                         # 当前读取；若拆分则同时存在 query/
+    persist.ex                       # 主数据 row mutation；若拆分则同时存在 persist/
+    effects.ex                       # Activity、Outbox、cache、通知等副作用
+    lifecycle.ex                     # 状态和版本转换；若拆分则同时存在 lifecycle/
+    projection.ex                    # 派生读模型；若拆分则同时存在 projection/
+    workflow.ex                      # 单一 workflow owner；若拆分则同时存在 workflow/
+    workflows/                       # 多个独立 workflow family 时允许
+    setup.ex                         # bootstrap / 初始化
+    policy.ex                        # 纯业务策略
+    settings.ex                      # 产品/领域 settings
+    config.ex                        # runtime/application config facade
+    error_cat.ex                     # context-specific errors
+    const.ex                         # 封闭领域词汇
 ```
 
-以上是逻辑结构，不要求每个 context 创建完整目录。单个 owner 可以使用单文件；多个同类 owner 才继续
-使用目录。目录的存在由职责决定，职责隔离本身不能省略。
+以上是逻辑结构，不要求创建所有 Owner。普通 capability 目录必须有同名 Facade；纯 helper 使用职责明确的
+单文件，或放入既有 Owner 子树，不再创建无 Facade 的顶层 `helper/`。`commands/`、`model/`、`workflows/`
+是集合型 Owner；单数 Owner 拆目录时必须保留同名文件。
 
 ### 3.1 Commands 动作命名
 
@@ -151,9 +155,10 @@ Confirmation 类型不受此文件名约束。
 | Helper       | 不访问 Repo 的 canonicalization、digest、codec 和算法。                                      |
 | Confirmation | `commands/confirmation/<action>.ex` 中的 typed result、encode/decode 和 operation contract。 |
 
-### 4.2 Shared infrastructure
+### 4.2 CMS 内部平台能力
 
-以下模块不属于任何 context 的标准目录，而是 CMS 共享设施或明确的 aggregate seam：
+以下模块都归 CMS Context 所有，是 CMS 内部可复用的平台能力或 aggregate seam，不是独立 Context，也不是
+绕过 `GroupherServer.CMS` 的跨 Context 公共入口：
 
 ```text
 CMS.Gate
@@ -175,9 +180,10 @@ CMS.Articles.MutationLock
 | `CMS.Model`                 | 共享 Ecto schema、association、embedded data 和 changeset contract。      |
 | `CMS.Articles.MutationLock` | Article aggregate 的确定性并发锁。                                        |
 
-Context 只能调用这些模块的公开 contract，不得复制第二套 Gate、Receipt、FrontDesk 或 aggregate lock。
+CMS 内部 capability 只能调用这些模块的明确 contract，不得复制第二套 Gate、Receipt、FrontDesk 或
+aggregate lock。CMS 外部调用者必须先进入 `GroupherServer.CMS` 根 Facade。
 
-`Lifecycle` 不属于 shared infrastructure。它是 context/aggregate 的领域 owner，应保留在对应 context
+`Lifecycle` 不属于上述 CMS 平台能力。它是 capability/aggregate 的领域 owner，应保留在对应
 根目录中。
 
 ## 5. 事务与可靠执行

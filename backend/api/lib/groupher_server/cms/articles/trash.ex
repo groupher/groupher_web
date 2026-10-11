@@ -12,9 +12,7 @@ defmodule GroupherServer.CMS.Articles.Trash do
   import Ecto.Query, warn: false
 
   alias GroupherServer.{Activity, CMS, Repo}
-  alias CMS.Articles.Effects
-  alias CMS.Articles.Lifecycle
-  alias CMS.Articles.Bindings
+  alias CMS.Articles.{Effects, Lifecycle, Bindings}
   alias CMS.Communities.Tags.Stats
   alias CMS.Docs.Trash, as: DocTrash
 
@@ -405,7 +403,7 @@ defmodule GroupherServer.CMS.Articles.Trash do
   end
 
   defp activity_source(opts) do
-    Activity.Const.normalize_source(Keyword.get(opts, :source, :api))
+    Activity.const_normalize_source(Keyword.get(opts, :source, :api))
   end
 
   defp activity_actor(nil), do: :system

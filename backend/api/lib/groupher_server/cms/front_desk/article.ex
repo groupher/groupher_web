@@ -12,16 +12,16 @@ defmodule GroupherServer.CMS.FrontDesk.Article do
         -> ArticleView / stable Article
   """
 
-  import Ecto.Query, warn: false
-
   require GroupherServer.CMS.Docs.Const
+
+  import Ecto.Query, warn: false
 
   alias GroupherServer.{CMS, Repo}
 
   alias CMS.Articles.ErrorCat, as: ArticleErrorCat
   alias CMS.Communities.Enable
   alias CMS.FrontDesk.Community, as: CommunityFrontDesk
-  alias CMS.Helper.ArticlePath
+  alias CMS.ArticlePath
 
   alias CMS.Model.{
     Article,

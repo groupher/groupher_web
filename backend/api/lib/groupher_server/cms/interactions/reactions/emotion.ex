@@ -11,7 +11,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
 
   import Ecto.Query
 
-  alias GroupherServer.{Accounts, Analysis, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
   alias CMS.Artiment.Matcher
@@ -21,7 +21,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
   alias CMS.Interactions.{Config, Effects, ErrorCat, Persist, ReadState}
   alias CMS.Interactions.Reactions.EmotionConfirmation, as: Confirmation
   alias CMS.Model.{ArticleUserEmotion, Author, Comment, CommentUserEmotion}
-  alias Analysis.MetricEvent
+
   alias Helper.T
 
   @reserved_article_emotions [:upvote, :collect]
@@ -162,7 +162,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
   defp record_metric(article, operation, :changed, operation_id) do
     metric = if operation == :add, do: :emotion_added, else: :emotion_removed
 
-    case MetricEvent.append_article_action(article, operation_id, metric) do
+    case GroupherServer.Analysis.metric_event_append_article_action(article, operation_id, metric) do
       {:ok, _} -> {:ok, :pass}
       {:error, _reason} = error -> error
     end

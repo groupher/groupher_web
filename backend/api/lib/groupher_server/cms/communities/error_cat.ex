@@ -5,7 +5,7 @@ defmodule GroupherServer.CMS.Communities.ErrorCat do
   Community operation -> catalog reason -> stable protocol error.
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:cms, :community}
+  use GroupherServer.ErrorCat, namespace: {:cms, :community}
 
   error(:invalid_domain_tag, code: 5506)
   error(:community_root_only, code: 5501)

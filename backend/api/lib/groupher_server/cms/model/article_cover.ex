@@ -8,7 +8,9 @@ defmodule GroupherServer.CMS.Model.DraftCoverEdit do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.{ArticleBodyDraft, CoverBackground}
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{ArticleBodyDraft, CoverBackground}
   alias Helper.Constant.DBPrefix
 
   @primary_key false
@@ -57,7 +59,9 @@ defmodule GroupherServer.CMS.Model.RevisionCover do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.{ArticleRevision, CommunityAsset}
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{ArticleRevision, CommunityAsset}
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.cms()
@@ -91,7 +95,9 @@ defmodule GroupherServer.CMS.Model.RevisionCoverEdit do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.{ArticleRevision, CoverBackground}
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{ArticleRevision, CoverBackground}
   alias Helper.Constant.DBPrefix
 
   @primary_key false

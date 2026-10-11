@@ -3,7 +3,9 @@ Code.require_file(Path.expand("../../../credo_checks/no_direct_repo_in_boundarie
 defmodule GroupherServer.Test.Credo.NoDirectRepoInBoundariesTest do
   use Credo.Test.Case, async: false
 
-  alias GroupherServer.Credo.Check.NoDirectRepoInBoundaries
+  alias GroupherServer.Credo
+
+  alias Credo.Check.NoDirectRepoInBoundaries
 
   setup_all do
     {:ok, _apps} = Application.ensure_all_started(:credo)

@@ -11,10 +11,9 @@ defmodule GroupherServer.CMS.Press.Invalidation do
 
   require Logger
 
-  alias GroupherServer.{CMS, Repo, ServiceAuth}
+  alias GroupherServer.{CMS, Repo}
 
   alias CMS.Model.Community
-  alias ServiceAuth.Client
 
   @doc "Notifies Press that one Community projection changed."
   @spec invalidate(Community.t() | String.t() | integer()) :: {:ok, :pass}
@@ -31,7 +30,7 @@ defmodule GroupherServer.CMS.Press.Invalidation do
     endpoint = System.get_env("PRESS_INTERNAL_URL")
 
     token =
-      Client.token(
+      GroupherServer.ServiceAuth.client_token(
         System.get_env("PRESS_INTERNAL_RESOURCE") || "https://press.groupher.com/internal",
         ["press:cache:invalidate"]
       )

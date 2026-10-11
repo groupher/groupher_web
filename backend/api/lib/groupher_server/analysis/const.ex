@@ -5,9 +5,6 @@ defmodule GroupherServer.Analysis.Const do
       producer action -> Analysis.Const vocabulary -> MetricEvent / query
   """
 
-  alias GroupherServer.RequestActor
-  alias RequestActor.Const, as: RequestActorConst
-
   @metrics [
     :article_view,
     :upvote_added,
@@ -38,5 +35,5 @@ defmodule GroupherServer.Analysis.Const do
       Analysis.Const.actor_dimensions()
   """
   @spec actor_dimensions() :: [atom()]
-  def actor_dimensions, do: RequestActorConst.actor_types() ++ [:all]
+  def actor_dimensions, do: GroupherServer.RequestActor.const_actor_types() ++ [:all]
 end

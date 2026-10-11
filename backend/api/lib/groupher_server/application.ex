@@ -25,7 +25,7 @@ defmodule GroupherServer.Application do
   @doc "Starts the environment-appropriate Groupher supervision tree."
   @spec start(any, any) :: {:error, any} | {:ok, pid}
   def start(_type, _args) do
-    GroupherServer.CMS.Assets.Endpoints.validate!()
+    GroupherServer.CMS.assets_endpoints_validate!()
     validate_public_cache!()
 
     children =
@@ -92,7 +92,7 @@ defmodule GroupherServer.Application do
 
   defp validate_public_cache! do
     if Application.get_env(:groupher_server, :env) == :prod and
-         not GroupherServer.PublicCache.Cloudflare.configured?() do
+         not GroupherServer.PublicCache.cloudflare_configured?() do
       raise "Cloudflare public-cache purge is not configured"
     end
   end

@@ -38,7 +38,7 @@ GraphQL path/ref
 
 ### 2.1 Transport ref 只在入口解析一次
 
-外部输入中的 slug、path、hash id、inner id 等 public ref 必须由 transport adapter 调用 `CMS.FrontDesk` 解析。GraphQL 默认由 `GroupherServerWeb.Middleware.FrontDesk` 完成：
+外部输入中的 slug、path、hash id、inner id 等 public ref 必须由 transport adapter 调用 root `GroupherServer.FrontDesk` 解析；root 再经 `GroupherServer.CMS` 进入 CMS internal FrontDesk。GraphQL 默认由 `GroupherServerWeb.Middleware.FrontDesk` 完成：
 
 ```text
 external ref/path

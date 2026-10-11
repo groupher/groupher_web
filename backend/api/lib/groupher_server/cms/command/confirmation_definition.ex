@@ -19,8 +19,9 @@ defmodule GroupherServer.CMS.Command.ConfirmationDefinition do
     fields = ["schema_version", "operation", "data"]
 
     quote do
-      @behaviour GroupherServer.CMS.Command.ConfirmationCodec
-      alias GroupherServer.CMS.Command.Confirmation, as: Codec
+      alias GroupherServer.CMS
+      alias CMS.Command.Confirmation, as: Codec
+      @behaviour CMS.Command.ConfirmationCodec
       @schema_version unquote(schema_version)
       @supported_schema_versions unquote(supported_schema_versions)
       @confirmation_fields unquote(fields)

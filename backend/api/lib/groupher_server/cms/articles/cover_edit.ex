@@ -8,8 +8,10 @@ defmodule GroupherServer.CMS.Articles.CoverEdit do
         -> stable cover editor DTO
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.Articles.Store
+  alias GroupherServer.{CMS, Accounts}
+
+  alias Accounts.Model.User
+  alias CMS.Articles.Store
 
   @doc "Returns the selected cover editor DTO only to the Article author."
   @spec read(map(), User.t() | nil) :: {:ok, map() | nil}

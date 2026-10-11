@@ -11,9 +11,7 @@ defmodule GroupherServer.CMS.Articles.Commands.RestoreTrashed do
   alias Accounts.Model.User
   alias CMS.Articles.ErrorCat, as: ArticlesErrorCat
   alias CMS.Articles.Trash, as: TrashAgg
-  alias CMS.Command
-  alias CMS.FrontDesk
-  alias CMS.Articles.Bindings
+  alias CMS.{Command, FrontDesk, Articles.Bindings}
   alias CMS.Model.{Article, TrashedArticle, TrashedDocArticle}
   alias CMS.Articles.Commands.TrashRestoreConfirmation, as: Confirmation
 

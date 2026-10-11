@@ -19,8 +19,9 @@ defmodule GroupherServer.CMS.Assets.Workflow do
 
   import Ecto.Query, only: [from: 2]
 
-  alias GroupherServer.Repo
-  alias GroupherServer.CMS.Model.{AssetWorkflowRun, AssetWorkflowStep}
+  alias GroupherServer.{CMS, Repo}
+
+  alias CMS.Model.{AssetWorkflowRun, AssetWorkflowStep}
 
   @lease_seconds 120
 

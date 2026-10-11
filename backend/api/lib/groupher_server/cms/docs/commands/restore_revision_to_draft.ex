@@ -5,8 +5,9 @@ defmodule GroupherServer.CMS.Docs.Commands.RestoreRevisionToDraft do
       published revision -> branch workspace -> tagged Draft result
   """
 
-  alias GroupherServer.CMS
-  alias GroupherServer.Accounts.Model.User
+  alias GroupherServer.{Accounts, CMS}
+
+  alias Accounts.Model.User
   alias CMS.Docs.{BranchVersions, Editor}
   alias CMS.Model.{Author, Community}
 

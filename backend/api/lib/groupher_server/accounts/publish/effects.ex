@@ -17,7 +17,7 @@ defmodule GroupherServer.Accounts.Publish.Effects do
   """
   @spec revalidate_user(User.t()) :: {:ok, :pass}
   def revalidate_user(%User{login: login}) when is_binary(login) do
-    FrontDesk.revalidate().user(login)
+    FrontDesk.revalidate_user(login)
     {:ok, :pass}
   end
 

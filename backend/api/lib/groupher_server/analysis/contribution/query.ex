@@ -8,10 +8,12 @@ defmodule GroupherServer.Analysis.Contribution.Query do
   import Ecto.Query, warn: false
   import Helper.Utils
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{Analysis, CMS, Repo}
   alias Analysis.Contribution.Model.{CommunityContribute, UserContribute}
   alias CMS.Model.Community
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.{Cache, Datetime, QueryBuilder}
 
   @community_contribute_days Analysis.Contribution.Config.community_contribute_days()

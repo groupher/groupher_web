@@ -11,10 +11,10 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
 
   alias Ecto.Multi
   alias GroupherServer.{Accounts, CMS, Repo}
-  alias Accounts.CollectFolders.Persist
+  alias Accounts.CollectFolders.{Persist, WriteConfirmation}
   alias Accounts.Model.User
-  alias CMS.{Command, Accounts.CollectFolders.WriteConfirmation}
-  alias CMS.Interactions.Persist, as: InteractionPersist
+  alias CMS.Command
+
   alias Helper.ORM
 
   @doc """
@@ -43,7 +43,7 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
     }
 
     with {:ok, %WriteConfirmation{data: data}} <-
-           Command.execute(command,
+           GroupherServer.CMS.command_execute(command,
              action: fn context ->
                with {:ok, folder} <- transaction(article, folder_id, user, context.command_id) do
                  confirmation(folder, article, folder_id, :add)
@@ -61,8 +61,9 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
       multi =
         Multi.new()
         |> Multi.run(:add_article_collect, fn _, _ ->
-          with {:ok, _canonical} <- CMS.Interactions.collect(article, user, command_id),
-               {:ok, article_collect} <- InteractionPersist.find_collect(article, user) do
+          with {:ok, _canonical} <- CMS.interactions_collect(article, user, command_id),
+               {:ok, article_collect} <-
+                 GroupherServer.CMS.interactions_persist_find_collect(article, user) do
             {:ok, article_collect}
           end
         end)
@@ -72,7 +73,7 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
         |> Multi.run(
           :attach_article_collect_folder,
           fn _, %{add_article_collect: article_collect, add_to_collect_folder: folder} ->
-            InteractionPersist.attach_collect_folder(article_collect, folder)
+            GroupherServer.CMS.interactions_persist_attach_collect_folder(article_collect, folder)
           end
         )
 

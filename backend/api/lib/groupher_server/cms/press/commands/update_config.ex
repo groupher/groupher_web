@@ -5,13 +5,13 @@ defmodule GroupherServer.CMS.Press.Commands.UpdateConfig do
       commandId -> UpdateConfig -> Receipt -> Gate -> Persist -> Activity -> Effects
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS, Activity}
+
   alias CMS.{Command, Gate}
   alias CMS.Command.ConfirmationDefinition
   alias CMS.Model.{Community, PressConfig}
   alias CMS.Press.{Effects, Persist, Query}
-  alias GroupherServer.Activity
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   defmodule Confirmation do

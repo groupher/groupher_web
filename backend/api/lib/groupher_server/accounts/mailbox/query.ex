@@ -10,7 +10,9 @@ defmodule GroupherServer.Accounts.Mailbox.Query do
         -> Accounts.Mailbox facade
   """
 
-  alias GroupherServer.Accounts.Model.{Embeds, User}
+  alias GroupherServer.Accounts
+
+  alias Accounts.Model.{Embeds, User}
 
   @default_status Embeds.UserMailbox.default_status()
 

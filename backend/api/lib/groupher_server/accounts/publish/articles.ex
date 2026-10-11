@@ -8,7 +8,7 @@ defmodule GroupherServer.Accounts.Publish.Articles do
 
   Business position:
 
-      profile read -> CMS.Articles.paged_published -> public article page
+      profile read -> CMS.articles_paged_published -> public article page
       publication -> Publish.Projection -> User.meta count
   """
 
@@ -24,6 +24,6 @@ defmodule GroupherServer.Accounts.Publish.Articles do
   """
   @spec paged(User.t(), atom(), map(), User.t() | nil) :: term()
   def paged(%User{} = target_user, thread, filter, actor \\ nil) do
-    CMS.Articles.paged_published(thread, filter, target_user, actor)
+    CMS.articles_paged_published(thread, filter, target_user, actor)
   end
 end

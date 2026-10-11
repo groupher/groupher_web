@@ -5,7 +5,7 @@ defmodule GroupherServer.Accounts.Fans.ErrorCat do
   Fan operation -> catalog reason -> stable protocol error.
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:account, :fans}
+  use GroupherServer.ErrorCat, namespace: {:account, :fans}
 
   error(:self_conflict, code: 4801)
   error(:not_exist, code: 4802)

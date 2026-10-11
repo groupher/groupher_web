@@ -24,7 +24,7 @@ defmodule GroupherServer.CMS.Comments.Effects do
              is_map(data) and is_list(opts) do
     %{
       event: event,
-      worker: CMS.Outbox.Workers.Comment.Cleanup,
+      worker: GroupherServer.Jobs.CMSOutboxComment,
       resource_type: resource_type,
       resource_id: resource_id,
       identity: {:command, command_id},

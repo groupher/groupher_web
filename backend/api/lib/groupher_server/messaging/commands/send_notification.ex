@@ -4,12 +4,13 @@ defmodule GroupherServer.Messaging.Commands.SendNotification do
 
       SendNotification
           -> Notifications.Persist
-          -> Accounts.Mailbox.update_status_many_in_transaction/1
-          -> commit -> Accounts.Mailbox.invalidate_users/1
+          -> Accounts.mailbox_update_status_many_in_transaction/1
+          -> commit -> Accounts.mailbox_invalidate_users/1
   """
 
   alias GroupherServer.{Accounts, Messaging, Repo}
   alias Accounts.Model.User
+  alias Messaging.ErrorCat
   alias Messaging.Notifications.Persist
 
   @doc """
@@ -26,24 +27,24 @@ defmodule GroupherServer.Messaging.Commands.SendNotification do
       case Repo.transaction(fn ->
              with {:ok, notification} <- Persist.upsert(attrs, from_user),
                   {:ok, users} <-
-                    Accounts.Mailbox.update_status_many_in_transaction([notification.user_id]) do
+                    Accounts.mailbox_update_status_many_in_transaction([notification.user_id]) do
                %{result: notification, users: users}
              else
                {:error, reason} -> Repo.rollback(reason)
              end
            end) do
         {:ok, %{result: notification, users: users}} ->
-          Accounts.Mailbox.invalidate_users(users)
+          Accounts.mailbox_invalidate_users(users)
           {:ok, notification}
 
         {:error, reason} ->
           {:error, reason}
       end
     else
-      false -> {:error, "invalid args for notification"}
-      _ -> {:error, "invalid args for notification"}
+      false -> {:error, ErrorCat.invalid_notification_args()}
+      _ -> {:error, ErrorCat.invalid_notification_args()}
     end
   end
 
-  def run(_attrs, _from_user), do: {:error, "invalid args for notification"}
+  def run(_attrs, _from_user), do: {:error, ErrorCat.invalid_notification_args()}
 end

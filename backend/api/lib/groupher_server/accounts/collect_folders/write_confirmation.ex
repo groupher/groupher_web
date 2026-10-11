@@ -1,4 +1,4 @@
-defmodule GroupherServer.CMS.Accounts.CollectFolders.WriteConfirmation do
+defmodule GroupherServer.Accounts.CollectFolders.WriteConfirmation do
   @moduledoc """
   Confirms collect-folder membership writes for add and remove operations.
 
@@ -7,7 +7,9 @@ defmodule GroupherServer.CMS.Accounts.CollectFolders.WriteConfirmation do
         -> Receipt persistence / recovery
   """
 
-  use GroupherServer.CMS.Command.ConfirmationDefinition,
+  require GroupherServer.CMS
+
+  GroupherServer.CMS.command_confirmation(
     operation: :collect_add,
     operations: [:collect_add, :collect_remove],
     data_keys: ["article_id", "folder_id", "operation", "total_count"],
@@ -17,4 +19,5 @@ defmodule GroupherServer.CMS.Accounts.CollectFolders.WriteConfirmation do
       "operation" => :string,
       "total_count" => :integer
     }
+  )
 end

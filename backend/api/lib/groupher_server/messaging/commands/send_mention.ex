@@ -4,8 +4,8 @@ defmodule GroupherServer.Messaging.Commands.SendMention do
 
       SendMention
           -> Mentions.Persist
-          -> Accounts.Mailbox.update_status_many_in_transaction/1
-          -> commit -> Accounts.Mailbox.invalidate_users/1
+          -> Accounts.mailbox_update_status_many_in_transaction/1
+          -> commit -> Accounts.mailbox_invalidate_users/1
   """
 
   alias GroupherServer.{Accounts, Messaging, Repo}
@@ -28,7 +28,7 @@ defmodule GroupherServer.Messaging.Commands.SendMention do
            {:ok, users} <-
              mentions
              |> Enum.map(& &1.to_user_id)
-             |> Accounts.Mailbox.update_status_many_in_transaction() do
+             |> Accounts.mailbox_update_status_many_in_transaction() do
         %{mentions: mentions, users: users}
       else
         {:error, reason} -> Repo.rollback(reason)
@@ -37,7 +37,7 @@ defmodule GroupherServer.Messaging.Commands.SendMention do
 
     case Repo.transaction(transaction) do
       {:ok, %{users: users}} ->
-        Accounts.Mailbox.invalidate_users(users)
+        Accounts.mailbox_invalidate_users(users)
         {:ok, :pass}
 
       {:error, reason} ->

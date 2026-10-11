@@ -6,7 +6,8 @@ defmodule GroupherServer.CMS.DocTree.Commands.DuplicateNode do
         -> DuplicateNode.execute
         -> command support -> Persist.duplicate_node
   """
-  alias GroupherServer.CMS.DocTree.{Commands.Support, Persist}
+  alias GroupherServer.CMS
+  alias CMS.DocTree.{Commands.Support, Persist}
 
   def execute(community, id, args) do
     if Support.has_option?(args, :command_id) do

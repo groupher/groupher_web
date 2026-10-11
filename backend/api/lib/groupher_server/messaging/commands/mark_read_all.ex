@@ -8,8 +8,10 @@ defmodule GroupherServer.Messaging.Commands.MarkReadAll do
           -> typed update result
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.Messaging.Inbox.Persist
+  alias GroupherServer.{Messaging, Accounts}
+
+  alias Accounts.Model.User
+  alias Messaging.Inbox.Persist
 
   @doc """
   Marks every mention or notification row as read for the user.

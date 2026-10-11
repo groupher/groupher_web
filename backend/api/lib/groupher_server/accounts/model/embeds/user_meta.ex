@@ -16,7 +16,7 @@ defmodule GroupherServer.Accounts.Model.Embeds.UserMeta.Macro do
   import Helper.Utils, only: [plural: 1]
   alias GroupherServer.CMS
 
-  @threads CMS.Artiment.Config.threads()
+  @threads CMS.artiment_config_threads()
 
   defmacro published_article_count_fields do
     @threads
@@ -49,7 +49,7 @@ defmodule GroupherServer.Accounts.Model.Embeds.UserMeta do
 
   alias GroupherServer.CMS
 
-  @threads CMS.Artiment.Config.threads()
+  @threads CMS.artiment_config_threads()
 
   @general_options %{
     is_maker: false,

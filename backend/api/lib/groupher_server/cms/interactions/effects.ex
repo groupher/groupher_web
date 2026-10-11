@@ -30,7 +30,7 @@ defmodule GroupherServer.CMS.Interactions.Effects do
              is_map(data) and is_list(opts) do
     %{
       event: event,
-      worker: CMS.Outbox.Workers.Interaction.Cleanup,
+      worker: GroupherServer.Jobs.CMSOutboxInteraction,
       resource_type: resource_type,
       resource_id: resource_id,
       identity: {:command, command_id},

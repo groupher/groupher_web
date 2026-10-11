@@ -176,7 +176,7 @@ defmodule GroupherServer.Test.CMS.PostPendingFlag do
         )
     end
 
-    test "pending post's meta should have info", ~m(community post_m user)a do
+    test "pending post's meta should have info", ~m(community post_m)a do
       {:ok, _} =
         read_article(
           article_binding(post_m),

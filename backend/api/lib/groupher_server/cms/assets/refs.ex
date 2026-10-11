@@ -17,12 +17,11 @@ defmodule GroupherServer.CMS.Assets.Refs do
 
   alias GroupherServer.{CMS, Repo}
 
-  alias CMS.Assets.Completeness
+  alias CMS.Assets.{Completeness, Persist}
   alias CMS.Articles.Bindings
   alias CMS.Assets.ErrorCat, as: AssetErrorCat
   alias CMS.FrontDesk
   alias CMS.Gate.ErrorCat, as: GateErrorCat
-  alias CMS.Assets.Persist
 
   alias CMS.Model.{
     Article,

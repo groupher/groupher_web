@@ -5,12 +5,13 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Update do
       GraphQL -> Communities facade -> Update -> Command + Gate -> Tags + Outbox
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.{Command, Gate, FrontDesk}
   alias CMS.Communities.Tags.Commands.{TagConfirmation, TagSupport}
   alias CMS.Communities.Tags.Mutation
   alias CMS.Model.CommunityTag
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @spec execute(T.id(), map(), User.t(), Ecto.UUID.t()) :: T.domain_res(CommunityTag.t())

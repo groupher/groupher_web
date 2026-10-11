@@ -5,9 +5,8 @@ defmodule GroupherServer.Activity.Artiment do
       Activity facade -> CMS Artiment matcher -> thread handler
   """
 
-  alias GroupherServer.{Activity, CMS}
+  alias GroupherServer.{Activity}
   alias Activity.ErrorCat
-  alias CMS.Artiment.Matcher
 
   @handlers %{
     post: Activity.Post,
@@ -36,7 +35,7 @@ defmodule GroupherServer.Activity.Artiment do
   @spec handler(struct()) :: {:ok, module()} | {:error, term()}
   def handler(resource) do
     try do
-      with {:ok, %{thread: thread}} <- Matcher.match(resource),
+      with {:ok, %{thread: thread}} <- GroupherServer.CMS.artiment_matcher_match(resource),
            {:ok, handler} <- Map.fetch(@handlers, thread) do
         {:ok, handler}
       else

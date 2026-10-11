@@ -1,9 +1,12 @@
 # CMS Facade 与实现目录收口
 
-> 状态：F1–F13 已实施，公开 API 保持不变；实施验证记录见 §6.3。
+> 状态：历史迁移记录（F1–F13 已实施）。本文所称 `CMS.<Domain>` “公开 facade”现统一称为 CMS internal
+> capability Facade；CMS 外部 API 已由 `GroupherServer.CMS` 根 Facade 接管，不再以“公开 API 保持不变”
+> 作为当前合同。现行结构以 [Backend Context Convention over Configuration](./backend-context-convention-over-configuration.md)
+> 为准；本文保留当时的拆分理由和实施记录。
 >
 > 范围：`backend/api/lib/groupher_server/cms` 下的公开 Context/facade 与同名实现目录。
-> 本文只调整内部文件职责，不改变 GraphQL、Job 或领域调用方使用的公开 API。
+> 本文原始批次只调整内部文件职责；后续 Context v2 已迁移 GraphQL、Job 和跨 Context 调用方。
 
 相关文档：
 
@@ -463,7 +466,7 @@ front_desk/
   `FrontDesk.comment(comment_id, mode: :internal, view: :article_context)`；
 - `sync_embed_replies/1` 已移出 FrontDesk，由 `CMS.Comments.Replies`/Comments 写侧承接；
 - `live_user`、CMS 层 `revalidate_user/1` 已删除。User cache refresh 统一使用根
-  `GroupherServer.FrontDesk.revalidate().user/1`；
+  `GroupherServer.FrontDesk.revalidate_user/1`；
 - 通用 `get/get_by/preload` 与 `CMS.FrontDesk.Lookup` 已删除，不保留兼容 wrapper；内部行读取归
   owning Query、Store、Gate Loader 或 maintenance owner；
 - `community_tags/1` 已删除且不新增替代 wrapper；batch、list、stats、reaction-users 等读取归各自

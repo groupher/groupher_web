@@ -6,6 +6,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
   import Ecto.Query, warn: false
 
   alias GroupherServer.Messaging
+  alias Messaging.ErrorCat
 
   @notify_group_interval_hour GroupherServer.Messaging.Config.notify_group_interval_hour()
 
@@ -165,7 +166,8 @@ defmodule GroupherServer.Test.Messaging.Notification do
     end
 
     test "notify myself got ignored", ~m(user notify_attrs)a do
-      {:error, _} = Messaging.send_notification(notify_attrs, user)
+      assert {:error, error} = Messaging.send_notification(notify_attrs, user)
+      assert ErrorCat.reason(error) == :invalid_notification_args
     end
   end
 

@@ -10,7 +10,7 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
     assert {:ok, event} =
              CMS.Outbox.send(%{
                event: "test.completed",
-               worker: CMS.Outbox.Workers.Article.Cleanup,
+               worker: GroupherServer.Jobs.CMSOutboxArticle,
                resource_type: "test",
                resource_id: "one",
                command_id: Ecto.UUID.generate(),
@@ -40,7 +40,7 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
     assert {:ok, event} =
              CMS.Outbox.send(%{
                event: "test.retry",
-               worker: CMS.Outbox.Workers.Article.Cleanup,
+               worker: GroupherServer.Jobs.CMSOutboxArticle,
                resource_type: "test",
                resource_id: "two",
                command_id: Ecto.UUID.generate()
@@ -69,7 +69,7 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
     assert {:error, :outbox_command_id_required} =
              CMS.Outbox.send(%{
                event: "test.missing_command",
-               worker: CMS.Outbox.Workers.Article.Cleanup,
+               worker: GroupherServer.Jobs.CMSOutboxArticle,
                resource_type: "test",
                resource_id: "missing"
              })
@@ -99,7 +99,7 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
     assert {:ok, event} =
              CMS.Outbox.send(%{
                event: "test.workflow",
-               worker: CMS.Outbox.Workers.Article.Cleanup,
+               worker: GroupherServer.Jobs.CMSOutboxArticle,
                resource_type: "asset",
                resource_id: 42,
                identity: {:workflow, "reconcile-run-42"},
@@ -119,7 +119,7 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
     assert {:ok, destination} =
              CMS.Outbox.send(%{
                event: "test.scope",
-               worker: CMS.Outbox.Workers.Article.Cleanup,
+               worker: GroupherServer.Jobs.CMSOutboxArticle,
                resource_type: "test",
                resource_id: "destination",
                identity: {:command, command_id},
@@ -178,7 +178,7 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
   defp event_attrs(event, command_id) do
     %{
       event: event,
-      worker: CMS.Outbox.Workers.Article.Cleanup,
+      worker: GroupherServer.Jobs.CMSOutboxArticle,
       resource_type: "test",
       resource_id: event,
       command_id: command_id

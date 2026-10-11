@@ -10,8 +10,10 @@ defmodule GroupherServer.Accounts.FrontDesk.Revalidate do
         -> User cache
   """
 
-  alias GroupherServer.Accounts.FrontDesk
-  alias FrontDesk.Cache
+  alias GroupherServer.Accounts
+
+  alias Accounts.FrontDesk, as: AccountsFrontDesk
+  alias Accounts.FrontDesk.Cache
 
   @doc """
   Reloads one user from the authoritative store and refreshes the cache.
@@ -22,7 +24,7 @@ defmodule GroupherServer.Accounts.FrontDesk.Revalidate do
   """
   @spec user(String.t()) :: {:ok, any()} | {:error, any()}
   def user(login) when is_binary(login) do
-    with {:ok, user} <- FrontDesk.fresh_user(login) do
+    with {:ok, user} <- AccountsFrontDesk.fresh_user(login) do
       _ = Cache.put_user(user)
       {:ok, user}
     end

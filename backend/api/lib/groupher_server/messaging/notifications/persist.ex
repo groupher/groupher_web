@@ -10,9 +10,11 @@ defmodule GroupherServer.Messaging.Notifications.Persist do
 
   import Ecto.Query, warn: false
 
+  alias GroupherServer.{CMS, Accounts}
+
   alias GroupherServer.{Messaging, Repo}
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.Model.Embeds
+  alias Accounts.Model.User
+  alias CMS.Model.Embeds
   alias Messaging.Model.Notification
   alias Helper.{Datetime, ORM}
 

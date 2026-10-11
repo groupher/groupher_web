@@ -10,10 +10,7 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
   """
 
   alias GroupherServer.CMS
-  alias CMS.Dashboard.BaseInfo
-  alias CMS.Dashboard.Effects
-  alias CMS.Dashboard.SectionPayload
-  alias CMS.Dashboard.Persist
+  alias CMS.Dashboard.{BaseInfo, Effects, SectionPayload, Persist}
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.T
 

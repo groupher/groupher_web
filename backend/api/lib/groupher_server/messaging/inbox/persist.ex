@@ -14,8 +14,10 @@ defmodule GroupherServer.Messaging.Inbox.Persist do
 
   import Ecto.Query, warn: false
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.Messaging.Model.{Mention, Notification}
+  alias GroupherServer.{Messaging, Accounts}
+
+  alias Accounts.Model.User
+  alias Messaging.Model.{Mention, Notification}
   alias Helper.ORM
 
   @doc """

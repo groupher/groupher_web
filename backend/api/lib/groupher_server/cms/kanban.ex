@@ -10,10 +10,11 @@ defmodule GroupherServer.CMS.Kanban do
   have independent Kanban membership and status in different Communities.
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.Kanban.Commands.{Add, Move, Remove, SetStatus}
   alias CMS.Model.{Article, Community}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @doc "Adds a Post to one Community's Kanban with the initial status."

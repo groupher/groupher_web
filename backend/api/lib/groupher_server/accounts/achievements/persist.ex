@@ -7,7 +7,9 @@ defmodule GroupherServer.Accounts.Achievements.Persist do
 
   import ShortMaps
 
-  alias GroupherServer.Accounts.Model.Achievement
+  alias GroupherServer.Accounts
+
+  alias Accounts.Model.Achievement
   alias Helper.ORM
 
   @doc """

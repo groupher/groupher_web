@@ -14,7 +14,9 @@ defmodule GroupherServer.CMS.Model.ArticleBinding do
 
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.{Article, Community, KanbanState}
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{Article, Community, KanbanState}
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.cms()

@@ -17,7 +17,8 @@ defmodule GroupherServer.CMS.Communities.Creation do
   alias GroupherServer.{Accounts, CMS, Repo}
   alias Ecto.Multi
   alias Accounts.Model.User
-  alias CMS.Communities.{ErrorCat, Jobs, Lifecycle, NamePolicy, SlugClaims, CreationPersist}
+  alias CMS.Communities.{CreationPersist, ErrorCat, Lifecycle, NamePolicy, SlugClaims}
+
   alias CMS.CommunityApplications.Lifecycle, as: ApplicationLifecycle
 
   alias CMS.Model.{
@@ -178,7 +179,7 @@ defmodule GroupherServer.CMS.Communities.Creation do
       application_ref: application.public_ref,
       operation_ref: operation_ref
     }
-    |> Jobs.Setup.new()
+    |> GroupherServer.Jobs.community_setup_new()
     |> Repo.insert()
   end
 end

@@ -5,9 +5,11 @@ defmodule GroupherServer.CMS.Comments.Commands.Reply do
       parent Comment -> CMS.Command receipt -> canonical aggregate write
   """
 
-  alias GroupherServer.CMS.Comments.Commands.Create
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.Model.Comment
+  alias GroupherServer.{Accounts, CMS}
+
+  alias CMS.Comments.Commands.Create
+  alias Accounts.Model.User
+  alias CMS.Model.Comment
 
   @spec execute(Comment.t(), String.t(), User.t(), String.t() | nil) ::
           {:ok, map()} | {:error, term()}

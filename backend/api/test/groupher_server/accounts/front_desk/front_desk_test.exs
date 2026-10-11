@@ -62,7 +62,7 @@ defmodule GroupherServer.Test.Accounts.FrontDesk do
 
       {:ok, _updated} = ORM.update(user, %{nickname: "new nickname"})
 
-      assert {:ok, refreshed_user} = FrontDesk.revalidate().user(user.login)
+      assert {:ok, refreshed_user} = FrontDesk.revalidate_user(user.login)
       assert refreshed_user.nickname == "new nickname"
 
       assert {:ok, cached_user} = FrontDesk.user(user.login)

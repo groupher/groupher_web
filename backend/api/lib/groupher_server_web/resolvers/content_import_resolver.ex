@@ -15,8 +15,7 @@ defmodule GroupherServerWeb.Resolvers.ContentImport do
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.ContentImport.{Jobs, Staging}
-  alias CMS.ContentImport.Threads.Doc.Validator
-  alias CMS.DocTree.Workflows.ContentImport
+
   alias CMS.Model.Community
   alias CMS.Passport.{ErrorCat, Registry}
 
@@ -44,7 +43,11 @@ defmodule GroupherServerWeb.Resolvers.ContentImport do
         %{community: %Community{} = community, source_info: source_info, tree: tree},
         _info
       ) do
-    Validator.preview(community, stringify_keys(source_info), tree)
+    GroupherServer.CMS.content_import_doc_validator_preview(
+      community,
+      stringify_keys(source_info),
+      tree
+    )
   end
 
   @doc "Creates or resumes the ImportJob for one confirmed Preview intent."
@@ -80,7 +83,7 @@ defmodule GroupherServerWeb.Resolvers.ContentImport do
 
   @doc "Applies a ready Job through the atomic ContentImport Workflow."
   def apply(_root, %{community: %Community{} = community, job_ref: job_ref}, _info) do
-    ContentImport.apply(community, job_ref)
+    GroupherServer.CMS.doc_tree_workflows_content_import_apply(community, job_ref)
   end
 
   @doc "Stages one bounded batch of BodyBags or terminal per-item outcomes."

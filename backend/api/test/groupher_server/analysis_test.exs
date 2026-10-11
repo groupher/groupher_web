@@ -19,6 +19,10 @@ defmodule GroupherServer.Analysis.WebTest do
   end
 
   describe "config" do
+    test "disables create-time provisioning in the test deployment" do
+      refute Config.provision_on_community_create?()
+    end
+
     test "returns static base config without reading runtime env" do
       config = Config.base()
 

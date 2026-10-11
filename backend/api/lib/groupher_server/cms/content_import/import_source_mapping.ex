@@ -9,7 +9,7 @@ defmodule GroupherServer.CMS.ContentImport.ImportSourceMapping do
 
   alias GroupherServer.{CMS, Repo}
 
-  alias CMS.ContentImport.Persistence.ImportSourceMapping, as: Mapping
+  alias CMS.ContentImport.Model.ImportSourceMapping
 
   @replace_fields [
     :thread_ref,
@@ -53,10 +53,10 @@ defmodule GroupherServer.CMS.ContentImport.ImportSourceMapping do
   end
 
   @doc "Upserts the last successful mapping for one connection/thread/externalRef identity."
-  @spec upsert(map()) :: {:ok, Mapping.t()} | {:error, Ecto.Changeset.t()}
+  @spec upsert(map()) :: {:ok, ImportSourceMapping.t()} | {:error, Ecto.Changeset.t()}
   def upsert(attrs) do
-    %Mapping{}
-    |> Mapping.changeset(attrs)
+    %ImportSourceMapping{}
+    |> ImportSourceMapping.changeset(attrs)
     |> Repo.insert(
       conflict_target: [:connection_id, :thread, :external_ref],
       on_conflict: {:replace, @replace_fields},
@@ -72,7 +72,7 @@ defmodule GroupherServer.CMS.ContentImport.ImportSourceMapping do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
     with {:ok, rows} <- rows(attrs_list, now) do
-      Repo.insert_all(Mapping, rows,
+      Repo.insert_all(ImportSourceMapping, rows,
         conflict_target: [:connection_id, :thread, :external_ref],
         on_conflict: {:replace, @replace_fields}
       )
@@ -88,7 +88,9 @@ defmodule GroupherServer.CMS.ContentImport.ImportSourceMapping do
         |> Map.put(:inserted_at, now)
         |> Map.put(:updated_at, now)
 
-      case %Mapping{} |> Mapping.changeset(attrs) |> Ecto.Changeset.apply_action(:insert) do
+      case %ImportSourceMapping{}
+           |> ImportSourceMapping.changeset(attrs)
+           |> Ecto.Changeset.apply_action(:insert) do
         {:ok, _mapping} -> {:cont, {:ok, [Map.take(attrs, @row_fields) | rows]}}
         {:error, changeset} -> {:halt, {:error, changeset}}
       end

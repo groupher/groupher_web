@@ -17,7 +17,7 @@ defmodule GroupherServer.CMS.Kanban.ErrorCat do
       Kanban command -> membership query -> Kanban error catalog
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:cms, :kanban}
+  use GroupherServer.ErrorCat, namespace: {:cms, :kanban}
 
   error(:not_in_kanban, code: 6030)
 end

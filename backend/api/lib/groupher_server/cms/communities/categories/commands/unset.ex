@@ -5,12 +5,13 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Unset do
       Category association -> Gate(:update) -> Persist -> Receipt
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.{Command, Gate}
   alias CMS.Communities.Categories.{BindingConfirmation, Persist}
   alias CMS.Communities.Categories.Commands.Support
   alias CMS.Model.Community
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @spec execute(Community.t() | String.t(), T.id(), User.t(), Ecto.UUID.t()) ::

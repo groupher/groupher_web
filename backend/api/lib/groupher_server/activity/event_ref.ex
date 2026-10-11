@@ -7,7 +7,6 @@ defmodule GroupherServer.Activity.EventRef do
 
   import Bitwise
 
-  @spec derive(term()) :: Ecto.UUID.t()
   @doc """
   Derives a stable UUID from deterministic command identity data.
 
@@ -15,6 +14,7 @@ defmodule GroupherServer.Activity.EventRef do
 
       Activity.EventRef.derive({:article, "article-1", :created})
   """
+  @spec derive(term()) :: Ecto.UUID.t()
   def derive(identity) do
     digest =
       identity

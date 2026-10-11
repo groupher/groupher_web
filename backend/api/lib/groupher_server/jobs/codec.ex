@@ -10,7 +10,6 @@ defmodule GroupherServer.Jobs.Codec do
         -> context / service
   """
 
-  @spec encode(term()) :: String.t()
   @doc """
   Encodes a job argument into a safe persistence string.
 
@@ -18,13 +17,13 @@ defmodule GroupherServer.Jobs.Codec do
 
       Jobs.Codec.encode({:refresh, "article-1"})
   """
+  @spec encode(term()) :: String.t()
   def encode(term) do
     term
     |> :erlang.term_to_binary()
     |> Base.encode64()
   end
 
-  @spec decode(String.t()) :: term()
   @doc """
   Decodes a string produced by encode/1.
 
@@ -32,6 +31,7 @@ defmodule GroupherServer.Jobs.Codec do
 
       Jobs.Codec.decode(Jobs.Codec.encode({:refresh, "article-1"}))
   """
+  @spec decode(String.t()) :: term()
   def decode(encoded) when is_binary(encoded) do
     encoded
     |> Base.decode64!()

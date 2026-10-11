@@ -7,17 +7,17 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
 
   require GroupherServer.CMS.Communities.ErrorCat
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{CMS, Repo}
   alias CMS.{Command, Gate}
   alias Ecto.Multi
   alias CMS.Communities.{ErrorCat, NamePolicy, SlugClaims}
   alias CMS.CommunityApplications.{Config, Lifecycle, LogoUploads, Persist, Policy}
-  alias CMS.CommunityApplications.Commands.Support
-  alias CMS.CommunityApplications.Commands.Confirmation
+  alias CMS.CommunityApplications.Commands.{Support, Confirmation}
   alias CMS.Model.CommunityApplication
-  alias GroupherServer.Accounts.Model.User
-  alias Helper.Utils
-  alias Helper.T
+  alias Accounts.Model.User
+  alias Helper.{Utils, T}
 
   @categories %{
     "PRODUCT" => :PRODUCT,

@@ -369,7 +369,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedPosts do
     end
 
     test "filter sort LEAST_VIEWS should use Summary zero-row semantics",
-         ~m(guest_conn community post_last_year user)a do
+         ~m(guest_conn community post_last_year)a do
       Repo.update_all(
         from(summary in ArticleStats,
           where: summary.thread == :post and summary.article_id == ^post_last_year.id
@@ -460,7 +460,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedPosts do
     end
 
     test "THIS_MONTH option should work",
-         ~m(guest_conn last_month_community post_last_month user)a do
+         ~m(guest_conn last_month_community post_last_month)a do
       variables = %{filter: %{when: "THIS_MONTH"}}
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :post), variables)
 
@@ -473,7 +473,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedPosts do
 
   describe "[paged posts active_at]" do
     test "latest commented post should appear on top",
-         ~m(guest_conn community post_last_week user2 user)a do
+         ~m(guest_conn community post_last_week user2)a do
       variables = %{filter: %{page: 1, size: 20}}
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :post), variables)
       entries = results["entries"]
@@ -500,7 +500,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedPosts do
     end
 
     test "comment on very old post have no effect",
-         ~m(guest_conn community post_last_year user2 user)a do
+         ~m(guest_conn community post_last_year user2)a do
       variables = %{filter: %{page: 1, size: 20}}
 
       {:ok, _} =
@@ -521,7 +521,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedPosts do
     end
 
     test "latest post author commented post have no effect",
-         ~m(guest_conn community post_last_week user)a do
+         ~m(guest_conn community post_last_week)a do
       variables = %{filter: %{page: 1, size: 20}}
       post = CMS.Model.Article |> Repo.get!(post_last_week.id) |> Repo.preload(author: :user)
 

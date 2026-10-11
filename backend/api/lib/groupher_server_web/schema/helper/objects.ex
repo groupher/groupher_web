@@ -12,7 +12,7 @@ defmodule GroupherServerWeb.Schema.Helper.Objects do
   import Helper.Utils, only: [plural: 1]
   alias GroupherServer.CMS
 
-  @threads CMS.Artiment.Config.threads()
+  @threads CMS.artiment_config_threads()
 
   @doc """
   paged articles helper

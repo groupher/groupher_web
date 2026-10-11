@@ -18,7 +18,7 @@ defmodule GroupherServer.Accounts.Profiles.List do
 
   alias Accounts.Fans
   alias Accounts.Model.User
-  alias CMS.QueryBuilder
+
   alias CMS.Model.{Community, CommunitySubscriber}
   alias Helper.ORM
 
@@ -59,7 +59,7 @@ defmodule GroupherServer.Accounts.Profiles.List do
     with {:ok, home_community} <- ORM.find_by(Community, slug: "home"),
          {:ok, paged_communities} <-
            Community
-           |> QueryBuilder.filter_pack(filter)
+           |> GroupherServer.CMS.query_builder_filter_pack(filter)
            |> ORM.paginator(page: filter.page, size: filter.size)
            |> done() do
       %{
@@ -97,7 +97,7 @@ defmodule GroupherServer.Accounts.Profiles.List do
     |> where([c], c.user_id == ^id)
     |> join(:inner, [c], cc in assoc(c, :community))
     |> select([c, cc], cc)
-    |> QueryBuilder.filter_pack(filter)
+    |> GroupherServer.CMS.query_builder_filter_pack(filter)
     |> ORM.paginator(~m(page size)a)
     |> sort_communities(user)
     |> done()

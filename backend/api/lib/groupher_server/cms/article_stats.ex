@@ -189,6 +189,32 @@ defmodule GroupherServer.CMS.ArticleStats do
     end
   end
 
+  @doc "Repairs the Comments-owned participant count from a stable Article identity."
+  @spec reconcile_comment_participants_count(atom(), Ecto.UUID.t(), non_neg_integer()) ::
+          {:ok, :pass} | {:error, :article_stats_not_found}
+  def reconcile_comment_participants_count(thread, article_id, total_count)
+      when thread in @article_threads and is_binary(article_id) and
+             is_integer(total_count) and total_count >= 0 do
+    now = DateTime.utc_now(:second)
+
+    {updated, _rows} =
+      Repo.update_all(
+        from(stats in ArticleStats,
+          where: stats.thread == ^thread and stats.article_id == ^article_id
+        ),
+        set: [
+          comments_participants_count: total_count,
+          snapshot_at: now,
+          updated_at: now
+        ]
+      )
+
+    case updated do
+      1 -> {:ok, :pass}
+      0 -> {:error, :article_stats_not_found}
+    end
+  end
+
   @doc "UPSERTs the fixed Interactions-owned fields from their owner projection."
   @spec apply_interaction_counts(struct()) :: {:ok, :pass} | {:error, term()}
   def apply_interaction_counts(article) when is_struct(article) do

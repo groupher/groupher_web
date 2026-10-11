@@ -4,8 +4,8 @@ defmodule GroupherServer.Messaging.Commands.RevokeNotification do
 
       RevokeNotification
           -> Notifications.Persist
-          -> Accounts.Mailbox.update_status_many_in_transaction/1
-          -> commit -> Accounts.Mailbox.invalidate_users/1
+          -> Accounts.mailbox_update_status_many_in_transaction/1
+          -> commit -> Accounts.mailbox_invalidate_users/1
   """
 
   alias GroupherServer.{Accounts, Messaging, Repo}
@@ -31,14 +31,14 @@ defmodule GroupherServer.Messaging.Commands.RevokeNotification do
                     {:ok, users} <-
                       notifications
                       |> Enum.map(& &1.user_id)
-                      |> Accounts.Mailbox.update_status_many_in_transaction() do
+                      |> Accounts.mailbox_update_status_many_in_transaction() do
                  %{users: users}
                else
                  {:error, reason} -> Repo.rollback(reason)
                end
              end) do
           {:ok, %{users: users}} ->
-            Accounts.Mailbox.invalidate_users(users)
+            Accounts.mailbox_invalidate_users(users)
             {:ok, :pass}
 
           {:error, reason} ->

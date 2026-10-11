@@ -7,8 +7,10 @@ defmodule GroupherServer.CMS.DocTree.Commands.MoveSubtreeToDraft do
         -> command support -> DocTree.Publish -> replay result
   """
 
-  alias GroupherServer.CMS.DocTree.{CommandReplay, Commands.Support, Publish}
-  alias GroupherServer.CMS.DocTree.Commands.MoveSubtreeToDraftConfirmation, as: Confirmation
+  alias GroupherServer.CMS
+
+  alias CMS.DocTree.{CommandReplay, Commands.Support, Publish}
+  alias CMS.DocTree.Commands.MoveSubtreeToDraftConfirmation, as: Confirmation
 
   def execute(community, id, user, opts) do
     execute = fn ->

@@ -5,10 +5,11 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Review do
       GraphQL -> Review Command -> Application Gate -> Lifecycle/Persist -> Receipt result
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.{Command, Gate}
   alias CMS.CommunityApplications.{Commands.Confirmation, Commands.Support, Review}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @spec start(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())

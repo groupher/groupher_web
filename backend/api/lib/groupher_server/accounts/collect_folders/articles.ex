@@ -14,7 +14,7 @@ defmodule GroupherServer.Accounts.CollectFolders.Articles do
   import Helper.Utils, only: [done: 1]
 
   alias GroupherServer.{Accounts, CMS, FrontDesk, Repo}
-  alias CMS.Articles.Bindings
+
   alias Accounts.CollectFolders.ErrorCat
   alias Accounts.Model.{CollectFolder, User}
   alias Helper.{ORM, T}
@@ -60,7 +60,7 @@ defmodule GroupherServer.Accounts.CollectFolders.Articles do
       Enum.flat_map(folder.collects, fn collect ->
         case Repo.get(CMS.Model.Article, collect.article_id) do
           %CMS.Model.Article{} = article ->
-            {:ok, bindings} = Bindings.all(article)
+            {:ok, bindings} = GroupherServer.CMS.articles_bindings_all(article)
 
             Enum.flat_map(bindings, fn binding ->
               case FrontDesk.article(%{

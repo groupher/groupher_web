@@ -13,9 +13,9 @@ defmodule GroupherServer.CMS.Wallpaper.Persist do
 
   import Ecto.Query, only: [from: 2]
 
-  alias GroupherServer.Repo
+  alias GroupherServer.{CMS, Repo}
 
-  alias GroupherServer.CMS.Model.{
+  alias CMS.Model.{
     CommunityWallpaper,
     WallpaperPublishReceipt,
     WallpaperSnapshot,

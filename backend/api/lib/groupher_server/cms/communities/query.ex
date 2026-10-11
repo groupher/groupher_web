@@ -18,8 +18,7 @@ defmodule GroupherServer.CMS.Communities.Query do
   alias CMS.Gate.Context.Scope.Community, as: CommunityContext
   alias CMS.QueryBuilder
   alias Accounts.Model.User
-  alias CMS.Model.Community
-  alias CMS.Model.Category
+  alias CMS.Model.{Community, Category}
   alias Helper.{ORM, T}
 
   @doc """

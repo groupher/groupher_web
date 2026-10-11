@@ -24,7 +24,7 @@ defmodule GroupherServer.Accounts.Profiles.SessionState do
   def bootstrap(%User{} = user) do
     # A deployment may intentionally omit the default Community. Session
     # validity is authoritative; the idempotent bootstrap remains best effort.
-    _ = CMS.Communities.subscribe_default_ifnot(user)
+    _ = CMS.communities_subscribe_default_ifnot(user)
 
     {:ok,
      %{

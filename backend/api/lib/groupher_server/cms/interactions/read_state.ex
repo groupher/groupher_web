@@ -9,9 +9,9 @@ defmodule GroupherServer.CMS.Interactions.ReadState do
   """
 
   alias __MODULE__.{Query, Sync}
-  alias GroupherServer.Accounts
-  alias GroupherServer.CMS.Articles.Bindings
-  alias GroupherServer.CMS.Model.Article
+  alias GroupherServer.{Accounts, CMS}
+  alias CMS.Articles.Bindings
+  alias CMS.Model.Article
   alias Accounts.Model.User
 
   @doc """

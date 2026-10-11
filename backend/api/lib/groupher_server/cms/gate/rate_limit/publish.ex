@@ -22,7 +22,7 @@ defmodule GroupherServer.CMS.Gate.RateLimit.Publish do
   alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Model.User
-  alias Accounts.Profiles.ErrorCat, as: AuthErrorCat
+
   alias CMS.Gate.ErrorCat
   alias CMS.Passport.Registry
   alias CMS.Policy.{Config, Model.PublishThrottle}
@@ -52,7 +52,8 @@ defmodule GroupherServer.CMS.Gate.RateLimit.Publish do
     end
   end
 
-  def check(_user, _opts), do: {:error, AuthErrorCat.account_login()}
+  def check(_user, _opts),
+    do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
 
   defp interval_check(%PublishThrottle{last_publish_time: last_publish_time}, opts) do
     interval = Keyword.get(opts, :interval) || @interval_minutes

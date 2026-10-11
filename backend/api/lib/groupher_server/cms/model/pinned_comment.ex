@@ -18,7 +18,8 @@ defmodule GroupherServer.CMS.Model.PinnedComment do
 
   import Ecto.Changeset
   alias __MODULE__
-  alias GroupherServer.CMS.Model.{Article, Comment, DocBranch}
+  alias GroupherServer.CMS
+  alias CMS.Model.{Article, Comment, DocBranch}
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.cms()

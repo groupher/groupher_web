@@ -3,8 +3,10 @@ defmodule GroupherServer.Test.CMS.Hash do
 
   use GroupherServer.TestMate
 
-  alias GroupherServer.CMS.DocTree.ChangeDetection
-  alias GroupherServer.CMS.Model.{ArticleRevision, DocDraft}
+  alias GroupherServer.CMS
+
+  alias CMS.DocTree.ChangeDetection
+  alias CMS.Model.{ArticleRevision, DocDraft}
 
   describe "[cms hash]" do
     test "Doc change detection compares canonical content hashes" do

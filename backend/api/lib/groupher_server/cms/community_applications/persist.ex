@@ -9,9 +9,10 @@ defmodule GroupherServer.CMS.CommunityApplications.Persist do
 
   import Ecto.Query, warn: false
 
-  alias GroupherServer.Repo
-  alias GroupherServer.CMS.Communities.ErrorCat
-  alias GroupherServer.CMS.Model.CommunityApplication
+  alias GroupherServer.{CMS, Repo}
+
+  alias CMS.Communities.ErrorCat
+  alias CMS.Model.CommunityApplication
 
   @doc "Inserts a new CommunityApplication row in the caller's transaction."
   def insert_application(changeset), do: Repo.insert(changeset)

@@ -15,7 +15,9 @@ defmodule GroupherServer.CMS.Wallpaper.Commands.Confirmation do
       "command_id" => :string
     }
 
-  alias GroupherServer.CMS.Wallpaper.Query
+  alias GroupherServer.CMS
+
+  alias CMS.Wallpaper.Query
 
   @doc "Builds the stable result stored in the shared Command receipt."
   def build(module, community_id, version, command_id) when is_atom(module) do

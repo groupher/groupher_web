@@ -5,12 +5,13 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Delete do
       GraphQL -> Communities facade -> Delete -> Command + Gate -> Tags + Outbox
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.{Command, Gate, FrontDesk}
   alias CMS.Communities.Tags.Commands.{TagConfirmation, TagSupport}
   alias CMS.Communities.Tags.Mutation
   alias CMS.Model.CommunityTag
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @spec execute(T.id(), User.t(), Ecto.UUID.t()) :: T.domain_res(CommunityTag.t())
@@ -46,5 +47,5 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Delete do
   end
 
   defp action(%{target: {:community_tag, _id}}),
-    do: {:error, GroupherServer.CMS.Communities.ErrorCat.not_exist("CommunityTag")}
+    do: {:error, CMS.Communities.ErrorCat.not_exist("CommunityTag")}
 end

@@ -11,7 +11,9 @@ defmodule GroupherServer.CMS.Model.ArticleRevision do
 
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.{Article, ArticleBodySnapshot}
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{Article, ArticleBodySnapshot}
   alias Helper.Constant.DBPrefix
 
   @primary_key {:id, Ecto.UUID, autogenerate: true}

@@ -19,13 +19,15 @@ defmodule GroupherServer.CMS.Communities do
     NamePolicy,
     Setup,
     SlugClaims,
-    Commands
+    Commands,
+    Workflow
   }
 
-  alias GroupherServer.{Accounts, CMS}
+  alias GroupherServer.{Accounts, CMS, ErrorCat}
   alias Accounts.Model.User
-  alias CMS.Passport
-  alias CMS.Communities.{ErrorCat, Lifecycle}
+  alias CMS.{Passport, FrontDesk}
+  alias CMS.Communities.ErrorCat, as: CommunityErrorCat
+  alias CMS.Communities.Lifecycle
   alias CMS.Communities.Categories.Commands.Create, as: CreateCategoryCommand
   alias CMS.Communities.Categories.Commands.Delete, as: DeleteCategoryCommand
   alias CMS.Communities.Categories.Commands.Set, as: SetCategoryCommand
@@ -54,9 +56,8 @@ defmodule GroupherServer.CMS.Communities do
     UpdateTagGroup
   }
 
-  alias CMS.FrontDesk
   alias CMS.Model.{Category, Community, CommunityTag, CommunityTagGroup}
-  alias Helper.{ORM, T}
+  alias Helper.T
 
   @default_fetch_opts [inc_views: true]
 
@@ -75,7 +76,7 @@ defmodule GroupherServer.CMS.Communities do
   defp fetch_for_viewer(slug, actor, opts) do
     with {:ok, mode} <- read_mode(opts),
          {:ok, community} <- read_community(slug, actor, mode),
-         {:ok, community} <- maybe_inc_views(community, opts),
+         {:ok, community} <- Workflow.maybe_increment_views(community, opts),
          {:ok, community} <- add_viewer_states(community, actor) do
       {:ok, community}
     else
@@ -97,14 +98,6 @@ defmodule GroupherServer.CMS.Communities do
   defp read_community(slug, _actor, :internal), do: FrontDesk.community(slug, mode: :internal)
   defp read_community(slug, actor, mode), do: FrontDesk.community(slug, actor, mode: mode)
 
-  defp maybe_inc_views(community, opts) do
-    case Keyword.get(opts, :inc_views) do
-      true -> ORM.inc(community, :views)
-      false -> {:ok, community}
-      nil -> {:ok, community}
-    end
-  end
-
   defp add_viewer_states(community, %User{id: user_id}) do
     meta = community.meta || %{}
 
@@ -117,11 +110,11 @@ defmodule GroupherServer.CMS.Communities do
 
   defp add_viewer_states(community, _actor), do: {:ok, community}
 
-  defp normalize_fetch_error(%GroupherServer.ErrorCat.Error{
+  defp normalize_fetch_error(%ErrorCat.Error{
          reason: :custom,
          details: %{reason: :not_exist}
        }) do
-    ErrorCat.not_exist("Community")
+    CommunityErrorCat.not_exist("Community")
   end
 
   defp normalize_fetch_error(reason), do: reason
@@ -146,7 +139,7 @@ defmodule GroupherServer.CMS.Communities do
     end
   end
 
-  defp reason_code(ErrorCat.error_pattern(reason: reason)), do: Atom.to_string(reason)
+  defp reason_code(CommunityErrorCat.error_pattern(reason: reason)), do: Atom.to_string(reason)
   defp reason_code(reason) when is_atom(reason), do: Atom.to_string(reason)
   defp reason_code(_reason), do: "unknown"
 

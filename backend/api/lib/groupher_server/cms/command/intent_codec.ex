@@ -13,7 +13,9 @@ defmodule GroupherServer.CMS.Command.IntentCodec do
         -> Command Receipt Store
   """
 
-  alias GroupherServer.CMS.Command
+  alias GroupherServer.CMS
+
+  alias CMS.Command
 
   @type policy :: :digest | :digest_each | :empty | {:fields, %{String.t() => policy() | :raw}}
 

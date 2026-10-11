@@ -7,18 +7,18 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
   require GroupherServer.CMS.ErrorCat
 
   alias GroupherServer.{CMS, ErrorCat}
-  alias GroupherServer.CMS.ErrorCat, as: CmsErrorCat
+  alias CMS.ErrorCat, as: CmsErrorCat
 
   def community_application_state(_root, _args, %{context: %{cur_user: user}}) do
-    CMS.CommunityApplications.state(user)
+    CMS.community_applications_state(user)
   end
 
   def community_application(_root, %{ref: public_ref}, %{context: %{cur_user: user}}) do
-    CMS.CommunityApplications.get_owned(public_ref, user) |> application_result()
+    CMS.community_applications_get_owned(public_ref, user) |> application_result()
   end
 
   def review_community_application(_root, %{ref: public_ref}, %{context: %{cur_user: reviewer}}) do
-    CMS.CommunityApplications.review_detail(public_ref, reviewer) |> application_result()
+    CMS.community_applications_review_detail(public_ref, reviewer) |> application_result()
   end
 
   def paged_community_applications(_root, args, %{context: %{cur_user: reviewer}}) do
@@ -28,7 +28,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
       |> Map.put(:first, Map.get(args, :first, 20))
       |> Map.put(:after, Map.get(args, :after))
 
-    case CMS.CommunityApplications.review_queue_by_public_filter(filter, reviewer) do
+    case CMS.community_applications_review_queue_by_public_filter(filter, reviewer) do
       {:ok, page} -> {:ok, connection(page.entries, page.has_next_page, &application_cursor/1)}
       error -> application_result(error)
     end
@@ -39,11 +39,11 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
         %{input: input},
         %{context: %{cur_user: user}}
       ) do
-    CMS.CommunityApplications.create_logo_upload_intent(input, user) |> application_result()
+    CMS.community_applications_create_logo_upload_intent(input, user) |> application_result()
   end
 
   def complete_community_application_logo_upload(_root, %{input: input}, _info) do
-    CMS.CommunityApplications.complete_logo_upload(input) |> application_result()
+    CMS.community_applications_complete_logo_upload(input) |> application_result()
   end
 
   def submit_community_application(
@@ -51,7 +51,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
         %{input: input, command_id: command_id},
         %{context: %{cur_user: user}}
       ) do
-    CMS.CommunityApplications.submit(input, user, command_id) |> application_result()
+    CMS.community_applications_submit(input, user, command_id) |> application_result()
   end
 
   def cancel_community_application(
@@ -59,7 +59,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
         %{ref: public_ref, expected_version: expected_version, command_id: command_id},
         %{context: %{cur_user: user}}
       ) do
-    CMS.CommunityApplications.cancel(public_ref, user, expected_version, command_id)
+    CMS.community_applications_cancel(public_ref, user, expected_version, command_id)
     |> application_result()
   end
 
@@ -68,14 +68,14 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
         %{ref: public_ref, expected_version: expected_version, command_id: command_id},
         %{context: %{cur_user: reviewer}}
       ) do
-    CMS.CommunityApplications.start_review(public_ref, reviewer, expected_version, command_id)
+    CMS.community_applications_start_review(public_ref, reviewer, expected_version, command_id)
     |> application_result()
   end
 
   def approve_community_application(_root, args, %{context: %{cur_user: reviewer}}) do
     metadata = %{note: Map.get(args, :note)}
 
-    CMS.CommunityApplications.approve(
+    CMS.community_applications_approve(
       args.ref,
       reviewer,
       args.expected_version,
@@ -88,7 +88,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
   def reject_community_application(_root, args, %{context: %{cur_user: reviewer}}) do
     reason = %{reason_code: args.reason_code, note: Map.get(args, :note)}
 
-    CMS.CommunityApplications.reject(
+    CMS.community_applications_reject(
       args.ref,
       reviewer,
       args.expected_version,
@@ -99,7 +99,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
   end
 
   def retry_community_creation(_root, args, %{context: %{cur_user: reviewer}}) do
-    CMS.CommunityApplications.retry_creation(
+    CMS.community_applications_retry_creation(
       args.ref,
       reviewer,
       args.expected_version,
@@ -109,7 +109,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
   end
 
   def retry_community_setup(_root, args, %{context: %{cur_user: reviewer}}) do
-    CMS.CommunityApplications.retry_setup(
+    CMS.community_applications_retry_setup(
       args.ref,
       reviewer,
       args.expected_version,
@@ -119,23 +119,23 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
   end
 
   def community_application_logo(application, _args, _info) do
-    CMS.CommunityApplications.logo(application) |> application_result()
+    CMS.community_applications_logo(application) |> application_result()
   end
 
   def application_applicant(application, _args, _info) do
-    CMS.CommunityApplications.applicant(application) |> application_result()
+    CMS.community_applications_applicant(application) |> application_result()
   end
 
   def application_reviewer(application, _args, _info) do
-    CMS.CommunityApplications.reviewer(application) |> application_result()
+    CMS.community_applications_reviewer(application) |> application_result()
   end
 
   def application_community(application, _args, _info) do
-    CMS.CommunityApplications.application_community(application) |> application_result()
+    CMS.community_applications_application_community(application) |> application_result()
   end
 
   def community_application_events(application, args, _info) do
-    case CMS.CommunityApplications.events(application, args) do
+    case CMS.community_applications_events(application, args) do
       {:ok, page} -> {:ok, connection(page.entries, page.has_next_page, &event_cursor/1)}
       error -> application_result(error)
     end
@@ -165,11 +165,11 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
   end
 
   def application_event_actor(event, _args, _info) do
-    CMS.CommunityApplications.event_actor(event) |> application_result()
+    CMS.community_applications_event_actor(event) |> application_result()
   end
 
   def community_application_logo_origin_info(_root, %{public_ref: public_ref}, _info) do
-    CMS.CommunityApplications.logo_origin(public_ref) |> application_result()
+    CMS.community_applications_logo_origin(public_ref) |> application_result()
   end
 
   defp connection(entries, has_next_page, cursor_fun) do

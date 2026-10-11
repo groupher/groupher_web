@@ -282,12 +282,16 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
     value = Map.get(body, "visitors", Map.get(body, :visitors))
 
     case non_negative_int(value) do
-      {:ok, visitors} -> {:ok, %{visitors: visitors}}
-      :error -> {:error, ErrorCat.unexpected_external_response(body_kind(body))}
+      {:ok, visitors} ->
+        {:ok, %{visitors: visitors}}
+
+      :error ->
+        {:error, GroupherServer.CMS.error_cat_unexpected_external_response(body_kind(body))}
     end
   end
 
-  def normalize_active(body), do: {:error, ErrorCat.unexpected_external_response(body_kind(body))}
+  def normalize_active(body),
+    do: {:error, GroupherServer.CMS.error_cat_unexpected_external_response(body_kind(body))}
 
   defp aggregate_normalized_path_metrics(scoped_pages) do
     summary =
@@ -362,10 +366,11 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
     try do
       fun.()
     rescue
-      error -> {:error, ErrorCat.external_unavailable(Exception.message(error))}
+      error ->
+        {:error, GroupherServer.CMS.error_cat_external_unavailable(Exception.message(error))}
     catch
-      :exit, reason -> {:error, ErrorCat.external_unavailable(reason)}
-      _kind, reason -> {:error, ErrorCat.external_unavailable(reason)}
+      :exit, reason -> {:error, GroupherServer.CMS.error_cat_external_unavailable(reason)}
+      _kind, reason -> {:error, GroupherServer.CMS.error_cat_external_unavailable(reason)}
     end
   end
 
@@ -438,7 +443,7 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
             (read_string(row, "domain") || read_string(row, :domain)) == domain
         end)
         |> case do
-          nil -> {:error, ErrorCat.external_not_found()}
+          nil -> {:error, GroupherServer.CMS.error_cat_external_not_found()}
           row -> parse_website_id(row)
         end
 
@@ -455,7 +460,7 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
     else
       {:ok, %Tesla.Env{status: status, body: body}} ->
         Logger.warning("Umami create website returned HTTP #{status}: #{inspect_body(body)}")
-        {:error, ErrorCat.external_unavailable(status)}
+        {:error, GroupherServer.CMS.error_cat_external_unavailable(status)}
 
       {:error, reason} ->
         {:error, reason}
@@ -485,7 +490,7 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
   end
 
   defp fetch_required_config(value) when is_binary(value) and value != "", do: {:ok, value}
-  defp fetch_required_config(_value), do: {:error, ErrorCat.not_configured()}
+  defp fetch_required_config(_value), do: {:error, GroupherServer.CMS.error_cat_not_configured()}
 
   defp parse_stats({:ok, %Tesla.Env{status: status, body: body}})
        when status in 200..299 and is_map(body) do
@@ -494,12 +499,12 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
 
   defp parse_stats({:ok, %Tesla.Env{status: status, body: body}}) when status in 200..299 do
     Logger.warning("Umami stats returned unexpected body: #{inspect_body(body)}")
-    {:error, ErrorCat.unexpected_external_response(body_kind(body))}
+    {:error, GroupherServer.CMS.error_cat_unexpected_external_response(body_kind(body))}
   end
 
   defp parse_stats({:ok, %Tesla.Env{status: status, body: body}}) do
     Logger.warning("Umami stats returned HTTP #{status}: #{inspect_body(body)}")
-    {:error, ErrorCat.external_unavailable(status)}
+    {:error, GroupherServer.CMS.error_cat_external_unavailable(status)}
   end
 
   defp parse_stats({:error, reason}), do: {:error, reason}
@@ -511,7 +516,7 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
 
   defp parse_active({:ok, %Tesla.Env{status: status, body: body}}) do
     Logger.warning("Umami active visitors returned HTTP #{status}: #{inspect_body(body)}")
-    {:error, ErrorCat.external_unavailable(status)}
+    {:error, GroupherServer.CMS.error_cat_external_unavailable(status)}
   end
 
   defp parse_active({:error, reason}), do: {:error, reason}
@@ -519,25 +524,28 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
   defp parse_website_id(body) when is_map(body) do
     case read_string(body, "id") || read_string(body, :id) do
       id when is_binary(id) and id != "" -> {:ok, id}
-      _ -> {:error, ErrorCat.unexpected_external_response(body_kind(body))}
+      _ -> {:error, GroupherServer.CMS.error_cat_unexpected_external_response(body_kind(body))}
     end
   end
 
   defp parse_website_id(body) do
-    {:error, ErrorCat.unexpected_external_response(body_kind(body))}
+    {:error, GroupherServer.CMS.error_cat_unexpected_external_response(body_kind(body))}
   end
 
   defp parse_website_rows({:ok, %Tesla.Env{status: status, body: body}})
        when status in 200..299 do
     case rows_from(body) do
-      {:ok, rows} -> {:ok, rows}
-      :error -> {:error, ErrorCat.unexpected_external_response(body_kind(body))}
+      {:ok, rows} ->
+        {:ok, rows}
+
+      :error ->
+        {:error, GroupherServer.CMS.error_cat_unexpected_external_response(body_kind(body))}
     end
   end
 
   defp parse_website_rows({:ok, %Tesla.Env{status: status, body: body}}) do
     Logger.warning("Umami websites returned HTTP #{status}: #{inspect_body(body)}")
-    {:error, ErrorCat.external_unavailable(status)}
+    {:error, GroupherServer.CMS.error_cat_external_unavailable(status)}
   end
 
   defp parse_website_rows({:error, reason}), do: {:error, reason}
@@ -545,14 +553,17 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
   defp parse_rows({:ok, %Tesla.Env{status: status, body: body}}, _label)
        when status in 200..299 do
     case rows_from(body) do
-      {:ok, rows} -> {:ok, rows}
-      :error -> {:error, ErrorCat.unexpected_external_response(body_kind(body))}
+      {:ok, rows} ->
+        {:ok, rows}
+
+      :error ->
+        {:error, GroupherServer.CMS.error_cat_unexpected_external_response(body_kind(body))}
     end
   end
 
   defp parse_rows({:ok, %Tesla.Env{status: status, body: body}}, label) do
     Logger.warning("Umami #{label} returned HTTP #{status}: #{inspect_body(body)}")
-    {:error, ErrorCat.external_unavailable(status)}
+    {:error, GroupherServer.CMS.error_cat_external_unavailable(status)}
   end
 
   defp parse_rows({:error, reason}, _label), do: {:error, reason}
@@ -569,7 +580,7 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
 
   defp parse_timeseries_rows({:ok, %Tesla.Env{status: status, body: body}}) do
     Logger.warning("Umami pageviews returned HTTP #{status}: #{inspect_body(body)}")
-    {:error, ErrorCat.external_unavailable(status)}
+    {:error, GroupherServer.CMS.error_cat_external_unavailable(status)}
   end
 
   defp parse_timeseries_rows({:error, reason}), do: {:error, reason}

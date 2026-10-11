@@ -8,7 +8,9 @@ defmodule GroupherServer.CMS.Articles.Commands.ArticleConfirmationCodec do
         -> Receipt recovery
   """
 
-  alias GroupherServer.CMS.Command.Confirmation, as: Codec
+  alias GroupherServer.CMS
+
+  alias CMS.Command.Confirmation, as: Codec
 
   def encode_payload(operation, fields) do
     payload =

@@ -50,7 +50,7 @@ defmodule GroupherServer.Accounts.Fans.Effects do
     |> Enum.map(& &1.login)
     |> Enum.reject(&is_nil/1)
     |> Enum.uniq()
-    |> FrontDesk.revalidate().users()
+    |> FrontDesk.revalidate_users()
 
     {:ok, :pass}
   end

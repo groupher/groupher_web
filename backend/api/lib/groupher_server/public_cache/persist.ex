@@ -15,7 +15,7 @@ defmodule GroupherServer.PublicCache.Persist do
   alias Ecto.Multi
   alias GroupherServer.{Jobs, Repo}
   alias GroupherServer.PublicCache
-  alias PublicCache.{Model.Invalidation, Policy, PurgeWorker}
+  alias PublicCache.{Model.Invalidation, Policy}
 
   @doc """
   Adds an invalidation row and durable worker trigger to an Ecto.Multi.
@@ -53,30 +53,31 @@ defmodule GroupherServer.PublicCache.Persist do
 
   @doc false
   @spec claim(Ecto.UUID.t(), String.t()) ::
-          {:ok, Invalidation.t()}
-          | {:busy, pos_integer()}
-          | :dead
-          | :delivered
-          | :missing
+          {:ok,
+           Invalidation.t()
+           | {:busy, pos_integer()}
+           | :dead
+           | :delivered
+           | :missing}
           | {:error, term()}
   def claim(id, lock_ref) when is_binary(lock_ref) and lock_ref != "" do
     now = DateTime.utc_now(:second)
 
     case Repo.one(from(row in Invalidation, where: row.id == ^id, lock: "FOR UPDATE")) do
       nil ->
-        :missing
+        {:ok, :missing}
 
       %Invalidation{status: :delivered} ->
-        :delivered
+        {:ok, :delivered}
 
       %Invalidation{status: :dead} ->
-        :dead
+        {:ok, :dead}
 
       %Invalidation{status: :delivering} = row ->
         if lease_expired?(row, now) do
           {:ok, update_claim(row, lock_ref, now)}
         else
-          {:busy, remaining_lease_seconds(row, now)}
+          {:ok, {:busy, remaining_lease_seconds(row, now)}}
         end
 
       %Invalidation{} = row ->
@@ -219,11 +220,11 @@ defmodule GroupherServer.PublicCache.Persist do
 
   @doc false
   def enqueue(id) do
-    if Jobs.Config.skip_enqueue?() do
+    if Jobs.config_skip_enqueue?() do
       {:ok, :pass}
     else
-      %{invalidation_id: id}
-      |> PurgeWorker.new()
+      id
+      |> Jobs.public_cache_purge_job()
       |> Oban.insert()
     end
   end

@@ -11,8 +11,7 @@ defmodule GroupherServer.CMS.Communities.Commands.Update do
 
   alias GroupherServer.CMS
   alias CMS.Command
-  alias CMS.Communities.Commands.UpdateConfirmation
-  alias CMS.Communities.Persist
+  alias CMS.Communities.{Commands.UpdateConfirmation, Persist}
   alias CMS.Dashboard.Effects
   alias CMS.Model.Community
   alias Helper.T

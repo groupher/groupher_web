@@ -12,6 +12,6 @@ defmodule GroupherServerWeb.Resolvers.CMS.ArticleStats do
         %{community: community, thread: thread, inner_ids: inner_ids},
         _info
       ) do
-    CMS.ArticleStats.read_public(community, thread, inner_ids)
+    CMS.article_stats_read_public(community, thread, inner_ids)
   end
 end

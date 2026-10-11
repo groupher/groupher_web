@@ -6,9 +6,8 @@ defmodule GroupherServer.Accounts.Profiles.Effects do
   """
 
   alias GroupherServer.{Accounts, FrontDesk}
-  alias GroupherServer.Messaging
+  alias GroupherServer.{Messaging, Repo}
   alias Accounts.Model.User
-  alias GroupherServer.Repo
 
   @doc """
   Revalidates a user's profile cache after a mutation.
@@ -19,7 +18,7 @@ defmodule GroupherServer.Accounts.Profiles.Effects do
   """
   @spec revalidate_user(User.t()) :: {:ok, :pass}
   def revalidate_user(%User{login: login}) when is_binary(login) do
-    FrontDesk.revalidate().user(login)
+    FrontDesk.revalidate_user(login)
     {:ok, :pass}
   end
 
@@ -34,7 +33,7 @@ defmodule GroupherServer.Accounts.Profiles.Effects do
   """
   @spec oauth_registration_completed(User.t()) :: {:ok, :pass}
   def oauth_registration_completed(%User{} = user) do
-    FrontDesk.revalidate().user(user.login)
+    FrontDesk.revalidate_user(user.login)
 
     Messaging.notify(:welcome_new_register, %{
       user_id: user.id,

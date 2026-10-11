@@ -9,9 +9,8 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Commands.Unsubscribe do
   alias Accounts.Model.User
   alias CMS.{Command, Gate}
   alias CMS.Communities
-  alias CMS.Communities.ErrorCat
+  alias CMS.Communities.{ErrorCat, Subscriptions.Commands.Support}
   alias CMS.Communities.Subscriptions.{Confirmation, Persist}
-  alias CMS.Communities.Subscriptions.Commands.Support
   alias CMS.Model.Community
   alias Helper.T
 
@@ -42,7 +41,7 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Commands.Unsubscribe do
         with true <- Persist.subscribed?(canonical, actor),
              {:ok, _} <- Persist.unsubscribe(canonical, actor),
              {:ok, _} <- Communities.Count.update(canonical, actor, :subscribers_count, :dec),
-             {:ok, _} <- Accounts.Profiles.update_subscribe_state(actor) do
+             {:ok, _} <- Accounts.profiles_update_subscribe_state(actor) do
           {:ok, Support.confirmation(Confirmation, canonical.id, command_id)}
         else
           false -> {:error, ErrorCat.custom("community subscription not found")}

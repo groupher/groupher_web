@@ -631,7 +631,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
 
     assert replayed_mirror.id == mirror.id
 
-    assert {:error, %GroupherServer.ErrorCat.Error{reason: :command_id_conflict}} =
+    assert {:error, %ErrorCat.Error{reason: :command_id_conflict}} =
              CMS.Articles.mirror(
                conflicting_community,
                article.id,

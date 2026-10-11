@@ -5,13 +5,15 @@ defmodule GroupherServer.CMS.Articles.Commands.StateChange do
       state command -> canonical Article -> Gate -> aggregate transition
   """
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{CMS, Repo}
   alias CMS.Articles.States
   alias CMS.Docs.Store, as: DocStore
   alias CMS.FrontDesk
   alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CMS.Model.{Article, Community, DocBranch}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
 
   @spec execute(atom(), Ecto.UUID.t(), User.t(), keyword()) :: {:ok, term()} | {:error, term()}
   def execute(action, article_id, %User{} = actor, opts \\ [])

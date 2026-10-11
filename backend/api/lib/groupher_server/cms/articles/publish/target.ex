@@ -11,9 +11,8 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Articles.Workflow
+  alias CMS.Articles.{Workflow, Tags.Assignment}
   alias CMS.Articles.{Bindings, Draft, Draft.Store, Lifecycle, Numbering, Public, Revision}
-  alias CMS.Articles.Tags.Assignment
   alias CMS.Model.{Article, ArticleBinding, ArticlePublic, Author, Community}
 
   @doc "Publishes one ordinary Draft after validating the caller-observed Draft version.

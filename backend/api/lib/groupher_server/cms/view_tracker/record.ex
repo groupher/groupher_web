@@ -12,8 +12,8 @@ defmodule GroupherServer.CMS.ViewTracker.Record do
   import Ecto.Query
 
   alias Ecto.UUID
-  alias GroupherServer.{Analysis, CMS, Repo, RequestActor}
-  alias Analysis.MetricEvent
+  alias GroupherServer.{CMS, Repo, RequestActor}
+
   alias RequestActor.Classification
   alias CMS.Artiment.{Matcher, Threads}
   alias CMS.Articles.ErrorCat, as: ArticleErrorCat
@@ -128,7 +128,7 @@ defmodule GroupherServer.CMS.ViewTracker.Record do
   defp project_viewer_state(_identity, _thread, _article_id, _received_at), do: {:ok, :pass}
 
   defp append_metric!(operation_id, article, community, identity, received_at) do
-    case MetricEvent.append(%{
+    case GroupherServer.Analysis.metric_event_append(%{
            operation_id: operation_id,
            community_id: community.id,
            article_type: article_thread(article),

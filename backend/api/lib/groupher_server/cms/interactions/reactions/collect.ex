@@ -11,7 +11,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
 
   import Ecto.Query
 
-  alias GroupherServer.{Accounts, Analysis, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
   alias CMS.Articles.MutationLock
@@ -20,7 +20,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   alias CMS.Interactions.{Effects, ErrorCat, Persist, ReadState, Transaction}
   alias CMS.Interactions.Reactions.CollectConfirmation, as: Confirmation
   alias CMS.Model.{ArticleCollect, Author}
-  alias Analysis.MetricEvent
+
   alias Helper.T
 
   @doc """
@@ -137,7 +137,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   defp record_metric(article, operation, command_id, :changed) do
     metric = if operation == :add, do: :collect_added, else: :collect_removed
 
-    case MetricEvent.append_article_action(article, command_id, metric) do
+    case GroupherServer.Analysis.metric_event_append_article_action(article, command_id, metric) do
       {:ok, _} -> {:ok, :pass}
       {:error, _reason} = error -> error
     end
@@ -148,7 +148,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   defp sync_achievement(article, operation, :changed) do
     achievement_operation = if operation == :add, do: :inc, else: :dec
 
-    case Accounts.Achievements.achieve(
+    case Accounts.achievements_achieve(
            author_user(article),
            achievement_operation,
            :collect

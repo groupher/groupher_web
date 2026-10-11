@@ -13,7 +13,7 @@ defmodule GroupherServer.CMS.Assets.GC do
 
   alias GroupherServer.{CMS, Repo}
   alias CMS.Assets.Completeness
-  alias CMS.ContentImport.Persistence.Job, as: ImportJob
+  alias CMS.ContentImport.Model.Job
 
   alias CMS.Model.{
     ArticleAssetRef,
@@ -47,7 +47,7 @@ defmodule GroupherServer.CMS.Assets.GC do
         )
 
       pending_import =
-        from(job in ImportJob,
+        from(job in Job,
           where:
             job.community_id == parent_as(:asset).community_id and
               job.status in [:staging, :ready, :applying],

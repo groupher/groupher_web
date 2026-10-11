@@ -25,7 +25,7 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Setup do
            {:ok, _} <- Persist.subscribe(locked_community, user),
            {:ok, canonical} <- ORM.find(Community, locked_community.id),
            {:ok, canonical} <- Communities.Count.update(canonical, user, :subscribers_count, :inc),
-           {:ok, _user} <- Accounts.Profiles.update_subscribe_state(user) do
+           {:ok, _user} <- Accounts.profiles_update_subscribe_state(user) do
         {:ok, canonical}
       end
     end)
@@ -40,7 +40,7 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Setup do
              {:ok, canonical} <- ORM.find(Community, locked_community.id),
              {:ok, canonical} <-
                Communities.Count.update(canonical, user, :subscribers_count, :dec),
-             {:ok, _user} <- Accounts.Profiles.update_subscribe_state(user) do
+             {:ok, _user} <- Accounts.profiles_update_subscribe_state(user) do
           {:ok, canonical}
         end
       end)

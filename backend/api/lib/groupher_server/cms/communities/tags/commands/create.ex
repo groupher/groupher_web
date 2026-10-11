@@ -5,12 +5,13 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Create do
       GraphQL -> Communities facade -> Create -> Command + Gate -> Tags + Outbox
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.{Command, Gate}
   alias CMS.Communities.Tags.Commands.{TagConfirmation, TagSupport}
   alias CMS.Communities.Tags.Mutation
   alias CMS.Model.{Community, CommunityTag}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @spec execute(Community.t(), atom(), map(), User.t(), Ecto.UUID.t()) ::

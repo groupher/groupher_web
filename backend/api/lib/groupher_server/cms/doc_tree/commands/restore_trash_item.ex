@@ -7,12 +7,13 @@ defmodule GroupherServer.CMS.DocTree.Commands.RestoreTrashItem do
         -> CMS.Command when actor exists -> DocTree.Trash -> replay result
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.Command
-  alias GroupherServer.CMS.Command.Receipt.Key, as: CommandKey
-  alias GroupherServer.CMS.ErrorCat
-  alias GroupherServer.CMS.DocTree.{CommandReplay, Commands.Support, Trash}
-  alias GroupherServer.CMS.DocTree.Commands.TreeConfirmation, as: Confirmation
+  alias GroupherServer.{CMS, Accounts}
+
+  alias Accounts.Model.User
+  alias CMS.{Command, ErrorCat}
+  alias CMS.Command.Receipt.Key, as: CommandKey
+  alias CMS.DocTree.{CommandReplay, Commands.Support, Trash}
+  alias CMS.DocTree.Commands.TreeConfirmation, as: Confirmation
 
   def execute(community, id, args) do
     clean_args = Support.drop_command_id(args)

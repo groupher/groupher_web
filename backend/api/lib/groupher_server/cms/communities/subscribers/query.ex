@@ -12,8 +12,9 @@ defmodule GroupherServer.CMS.Communities.Subscribers.Query do
   import Helper.Utils, only: [done: 1]
   import ShortMaps
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
+  alias Accounts.Model.User
   alias CMS.Model.{Community, CommunitySubscriber}
   alias CMS.QueryBuilder
   alias Helper.{ORM, T}

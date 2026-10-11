@@ -11,7 +11,9 @@ defmodule GroupherServer.CMS.Model.AssetWorkflowStep do
 
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.AssetWorkflowRun
+  alias GroupherServer.CMS
+
+  alias CMS.Model.AssetWorkflowRun
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.cms()

@@ -48,6 +48,8 @@ config :groupher_server, :web_analysis,
   api_token: nil,
   timeout: 4000
 
+config :groupher_server, :web_analysis_policy, provision_on_community_create: true
+
 config :groupher_server, GroupherServer.Repo,
   after_connect: {Postgrex, :query!, ["SET TIME ZONE 'UTC'", []]},
   migration_timestamps: [type: :timestamptz]
@@ -266,9 +268,9 @@ config :groupher_server, Oban,
     {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(3)},
     {Oban.Plugins.Cron,
      crontab: [
-       {"*/15 * * * *", GroupherServer.CMS.CommunityApplications.Jobs.ExpireSubmitted},
-       {"*/15 * * * *", GroupherServer.CMS.CommunityApplications.Jobs.ExpireLogoUploads},
-       {"*/15 * * * *", GroupherServer.CMS.Communities.Jobs.ReleaseExpiredSlugClaims},
+       {"*/15 * * * *", GroupherServer.Jobs.ExpireCommunityApplications},
+       {"*/15 * * * *", GroupherServer.Jobs.ExpireCommunityApplicationLogoUploads},
+       {"*/15 * * * *", GroupherServer.Jobs.ReleaseExpiredCommunitySlugClaims},
        {"*/15 * * * *", GroupherServer.Jobs.WallpaperLifecycle},
        {"0 * * * *", GroupherServer.Jobs.ViewDedupeCleanup},
        {"* * * * *", GroupherServer.Jobs.ArticleInsightsAggregation},

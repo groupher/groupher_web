@@ -109,7 +109,7 @@ defmodule GroupherServer.Activity.ArtimentEvent do
             {:ok, community_id}
 
           _ ->
-            case CMS.Articles.Bindings.get(resource, Map.get(resource, :community)) do
+            case GroupherServer.CMS.articles_bindings_get(resource, Map.get(resource, :community)) do
               {:ok, %{community: %{id: community_id}}} -> {:ok, community_id}
               {:error, reason} -> {:error, Event.error(inspect(reason))}
             end

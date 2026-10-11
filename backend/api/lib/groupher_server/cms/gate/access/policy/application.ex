@@ -5,15 +5,15 @@ defmodule GroupherServer.CMS.Gate.Access.Policy.Application do
       Command -> Application Gate -> applicant/reviewer policy -> allowed or denial
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS
+  require GroupherServer.CMS.Gate.Const
+
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.Model.User
   alias CMS.CommunityApplications.Policy
   alias CMS.Communities.ErrorCat
   alias CMS.Gate.Const
   alias CMS.Model.CommunityApplication
   alias CMS.Passport
-
-  require CMS.Gate.Const
 
   @doc "Checks an applicant starting a new application command."
   def check_create(%User{} = actor) do

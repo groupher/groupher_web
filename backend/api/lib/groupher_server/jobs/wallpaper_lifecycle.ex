@@ -16,7 +16,7 @@ defmodule GroupherServer.Jobs.WallpaperLifecycle do
   @doc false
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
-    GroupherServer.CMS.Wallpaper.reconcile_lifecycle()
+    GroupherServer.CMS.wallpaper_reconcile_lifecycle()
     {:ok, :pass}
   end
 end

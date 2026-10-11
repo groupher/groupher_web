@@ -7,10 +7,12 @@ defmodule GroupherServer.Analysis.Contribution.Effects do
           -> cache / FrontDesk delivery
   """
 
+  alias GroupherServer.{CMS, Accounts}
+
   alias GroupherServer.{Analysis, FrontDesk}
   alias Analysis.Contribution.Query
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.Model.Community
+  alias Accounts.Model.User
+  alias CMS.Model.Community
   alias Helper.Later
 
   @doc """
@@ -22,7 +24,7 @@ defmodule GroupherServer.Analysis.Contribution.Effects do
   """
   @spec revalidate_user(User.t()) :: {:ok, :pass}
   def revalidate_user(%User{login: login}) when is_binary(login) do
-    FrontDesk.revalidate().user(login)
+    FrontDesk.revalidate_user(login)
     {:ok, :pass}
   end
 

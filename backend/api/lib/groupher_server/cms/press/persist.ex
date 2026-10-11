@@ -10,8 +10,9 @@ defmodule GroupherServer.CMS.Press.Persist do
         -> press_configs
   """
 
-  alias GroupherServer.Repo
-  alias GroupherServer.CMS.Model.{Community, PressConfig}
+  alias GroupherServer.{CMS, Repo}
+
+  alias CMS.Model.{Community, PressConfig}
 
   @doc "Builds the insert/update changeset for one Community Press config."
   def changeset(%Community{} = community, current, attrs) when is_map(attrs) do

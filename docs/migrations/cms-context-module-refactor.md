@@ -2,6 +2,11 @@
 
 > 状态：已完成（第二轮收口，2026-10-10）
 >
+> 后续说明（2026-10-11）：本文是 CMS 内部 ownership 的迁移记录。其“shared infrastructure”“不移入
+> context”等措辞已由 Context v2 统一为“CMS Context 内部平台能力”；跨 Context 调用必须经过
+> `GroupherServer.CMS` 根 Facade。现行结构以
+> [Backend Context Convention over Configuration](../architecture/backend-context-convention-over-configuration.md) 为准。
+>
 > 范围：按照 [CMS Context Module Architecture](../architecture/cms-context-module-architecture.md) 和
 > [Backend Context Module Structure](../rules/be-context-module-structure.md)
 > 重新梳理 CMS backend context 的 Commands、Query、Persist、Effects、Workflow、Lifecycle、Projection

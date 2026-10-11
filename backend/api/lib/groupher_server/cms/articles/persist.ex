@@ -7,8 +7,10 @@ defmodule GroupherServer.CMS.Articles.Persist do
         -> Article row or Author record
   """
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{CMS, Repo}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias CMS.Model.Author
   alias Helper.ORM
 

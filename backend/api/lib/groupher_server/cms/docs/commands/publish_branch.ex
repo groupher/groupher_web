@@ -5,8 +5,10 @@ defmodule GroupherServer.CMS.Docs.Commands.PublishBranch do
       Doc branch -> atomic publish -> public projection -> effects
   """
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{CMS, Repo}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias CMS.Articles.Publish.{Doc, Effects}
   alias CMS.Docs.Editor
   alias CMS.Model.{Author, Community, DocBranch}

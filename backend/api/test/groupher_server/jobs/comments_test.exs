@@ -3,7 +3,7 @@ defmodule GroupherServer.Test.Jobs.Comments do
 
   alias GroupherServer.{Accounts, CMS, Jobs}
   alias Jobs.Codec
-  alias CMS.Model.{Article, Comment, Community}
+  alias CMS.Model.{Comment, Community}
   alias Accounts.Model.User
 
   setup do
@@ -24,7 +24,7 @@ defmodule GroupherServer.Test.Jobs.Comments do
     comment = %Comment{id: 11}
     actor = %User{id: 12}
     community = %Community{id: 13}
-    article = %Article{id: Ecto.UUID.generate(), thread: :post}
+    article_id = Ecto.UUID.generate()
 
     calls = [
       {:sync_mentions, fn -> Jobs.sync_mentions(comment) end},
@@ -33,7 +33,7 @@ defmodule GroupherServer.Test.Jobs.Comments do
       {:notify_reply, fn -> Jobs.notify_reply(comment, actor) end},
       {:subscribe_community, fn -> Jobs.subscribe_community(community, actor) end},
       {:reconcile_comments_participants,
-       fn -> Jobs.reconcile_comments_participants(article, 7) end}
+       fn -> Jobs.reconcile_comments_participants(:post, article_id, 7) end}
     ]
 
     for {kind, enqueue} <- calls do

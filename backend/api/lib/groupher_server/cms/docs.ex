@@ -8,8 +8,9 @@ defmodule GroupherServer.CMS.Docs do
         -> DraftResult / Projection / domain owners
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
+  alias Accounts.Model.User
   alias CMS.Docs.{BranchVersions, Editor}
   alias CMS.Docs.Commands.{PublishBranch, RestoreRevisionToDraft, UpdateDraft}
   alias CMS.Model.{Author, Community}

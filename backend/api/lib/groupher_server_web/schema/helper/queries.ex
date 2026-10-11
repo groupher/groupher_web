@@ -15,7 +15,7 @@ defmodule GroupherServerWeb.Schema.Helper.Queries do
   alias GroupherServerWeb.Middleware, as: M
   alias GroupherServerWeb.Resolvers, as: R
 
-  @threads CMS.Artiment.Config.threads()
+  @threads CMS.artiment_config_threads()
 
   # user published articles
   defmacro published_article_queries do

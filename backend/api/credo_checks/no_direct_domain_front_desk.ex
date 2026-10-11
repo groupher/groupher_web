@@ -35,7 +35,7 @@ defmodule GroupherServer.Credo.Check.NoDirectDomainFrontDesk do
 
   defp walk({:alias, meta, _args} = ast, context) do
     if domain_front_desk_alias?(ast) do
-      {ast, put_issue(context, issue_for(context, meta, "domain FrontDesk alias"))}
+      {ast, put_issue(context, issue_for(context, meta, Macro.to_string(ast)))}
     else
       {ast, context}
     end
@@ -43,7 +43,7 @@ defmodule GroupherServer.Credo.Check.NoDirectDomainFrontDesk do
 
   defp walk({{:., _, [{:__aliases__, meta, parts}, _function]}, _, _args} = ast, context) do
     if domain_front_desk?(parts) do
-      {ast, put_issue(context, issue_for(context, meta, "domain FrontDesk"))}
+      {ast, put_issue(context, issue_for(context, meta, Enum.join(parts, ".")))}
     else
       {ast, context}
     end

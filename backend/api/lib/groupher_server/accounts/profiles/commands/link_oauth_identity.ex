@@ -5,7 +5,9 @@ defmodule GroupherServer.Accounts.Profiles.Commands.LinkOauthIdentity do
       LinkOauthIdentity -> LinkOauth transaction -> Query projection
   """
 
-  alias GroupherServer.Accounts.Profiles.{Commands, Query}
+  alias GroupherServer.Accounts
+
+  alias Accounts.Profiles.{Commands, Query}
 
   @doc """
   Links a verified identity and returns linked-account projections.

@@ -8,7 +8,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Passport do
   alias GroupherServer.CMS
 
   def all_passport_rules(_root, _args, _info) do
-    with {:ok, rules} <- CMS.Communities.all_passport_rules() do
+    with {:ok, rules} <- CMS.communities_all_passport_rules() do
       {:ok, %{root: Jason.encode!(rules.root), moderator: Jason.encode!(rules.moderator)}}
     end
   end

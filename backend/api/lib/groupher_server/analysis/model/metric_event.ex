@@ -16,7 +16,7 @@ defmodule GroupherServer.Analysis.Model.MetricEvent do
   schema "analysis_metric_events" do
     field(:operation_id, Ecto.UUID)
     field(:community_id, :id)
-    field(:article_type, Ecto.Enum, values: GroupherServer.CMS.Artiment.Threads.article_enums())
+    field(:article_type, Ecto.Enum, values: GroupherServer.CMS.artiment_threads_article_enums())
     field(:article_id, Ecto.UUID)
     field(:metric, Ecto.Enum, values: Const.metrics())
     field(:value, :integer, default: 1)

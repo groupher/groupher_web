@@ -5,9 +5,11 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Query do
       Query -> Persist read primitive -> subscription membership fact
   """
 
-  alias GroupherServer.CMS.Model.Community
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.Communities.Subscriptions.Persist
+  alias GroupherServer.{Accounts, CMS}
+
+  alias CMS.Model.Community
+  alias Accounts.Model.User
+  alias CMS.Communities.Subscriptions.Persist
 
   @spec subscribed?(Community.t(), User.t()) :: boolean()
   def subscribed?(%Community{} = community, %User{} = user),

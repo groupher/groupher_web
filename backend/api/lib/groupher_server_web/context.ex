@@ -27,23 +27,22 @@ defmodule GroupherServerWeb.Context do
   import Plug.Conn
   # import Ecto.Query, only: [first: 1]
 
-  alias GroupherServer.{Accounts, Auth, CMS, FrontDesk, RequestActor}
+  alias GroupherServer.{Accounts, CMS, FrontDesk, RequestActor}
 
   alias Accounts.Model.User
-  alias Accounts.Profiles.BrowserSessions
+
   alias Accounts.Profiles.ErrorCat, as: ProfileErrorCat
-  alias Auth.Contract, as: AuthContract
+
   alias GroupherServerWeb.ServiceAuth.Verifier
   alias GroupherServerWeb.ErrorCat
   alias Helper.Guardian
   alias Helper.Guardian.BrowserAccess
-  alias CMS.ViewTracker.AnonymousSession
 
   def init(opts), do: opts
 
   def call(conn, _) do
     conn = fetch_cookies(conn)
-    {conn, anonymous_session} = AnonymousSession.ensure(conn)
+    {conn, anonymous_session} = GroupherServer.CMS.view_tracker_anonymous_session_ensure(conn)
 
     context =
       conn
@@ -131,10 +130,11 @@ defmodule GroupherServerWeb.Context do
   defp maybe_bind_delegated_actor(context), do: context
 
   defp service_auth_failure_code(ErrorCat.error_pattern(reason: :jwks_unavailable)) do
-    AuthContract.service_jwks_unavailable()
+    GroupherServer.Auth.contract_service_jwks_unavailable()
   end
 
-  defp service_auth_failure_code(_reason), do: AuthContract.service_token_invalid()
+  defp service_auth_failure_code(_reason),
+    do: GroupherServer.Auth.contract_service_token_invalid()
 
   defp maybe_put_test_service_actor(context, conn) do
     if @allow_test_service_auth and
@@ -171,18 +171,22 @@ defmodule GroupherServerWeb.Context do
         end
 
       _malformed ->
-        Map.put(context, :delegation_auth_failure, AuthContract.token_invalid())
+        Map.put(context, :delegation_auth_failure, GroupherServer.Auth.contract_token_invalid())
     end
   end
 
   defp authorize_delegated_browser_token(token) do
     with {:ok, claims} <- BrowserAccess.decode_claims(token),
          {:ok, cur_user} <- load_user(%{id: claims["sub"]}),
-         true <- BrowserSessions.active_for_user?(cur_user.id, claims["sid"]) do
+         true <-
+           GroupherServer.Accounts.profiles_browser_sessions_active_for_user?(
+             cur_user.id,
+             claims["sid"]
+           ) do
       {:ok, cur_user}
     else
       # Missing, revoked, and otherwise inactive Sessions share one terminal result.
-      false -> {:error, ProfileErrorCat.session_revoked()}
+      false -> {:error, GroupherServer.Accounts.profiles_error_cat_session_revoked()}
       error -> error
     end
   end
@@ -197,21 +201,22 @@ defmodule GroupherServerWeb.Context do
   defp maybe_put_browser_auth_failure(context, {:browser, _token}, reason) do
     code =
       if reason == :token_expired,
-        do: AuthContract.token_expired(),
-        else: AuthContract.token_invalid()
+        do: GroupherServer.Auth.contract_token_expired(),
+        else: GroupherServer.Auth.contract_token_invalid()
 
     Map.put(context, :auth_failure, code)
   end
 
   defp maybe_put_browser_auth_failure(context, _token, _reason), do: context
 
-  defp delegation_auth_failure_code(:token_expired), do: AuthContract.token_expired()
+  defp delegation_auth_failure_code(:token_expired),
+    do: GroupherServer.Auth.contract_token_expired()
 
   defp delegation_auth_failure_code(ProfileErrorCat.error_pattern(reason: :session_revoked)) do
-    AuthContract.session_revoked()
+    GroupherServer.Auth.contract_session_revoked()
   end
 
-  defp delegation_auth_failure_code(_reason), do: AuthContract.token_invalid()
+  defp delegation_auth_failure_code(_reason), do: GroupherServer.Auth.contract_token_invalid()
 
   # --------------------------------------------------
   # Browser cookies must satisfy the V1 issuer/audience/type/session claims.
@@ -261,7 +266,7 @@ defmodule GroupherServerWeb.Context do
   end
 
   defp check_passport(%User{} = user) do
-    case CMS.Communities.get_passport(%User{id: user.id}) do
+    case CMS.communities_get_passport(%User{id: user.id}) do
       {:ok, passport} -> {:ok, Map.put(user, :cur_passport, passport)}
       {:error, _} -> {:ok, user}
     end

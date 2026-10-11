@@ -13,7 +13,9 @@ defmodule GroupherServer.CMS.Articles.Store do
         -> stable Article rows or public Article projection
   """
 
-  alias GroupherServer.CMS.Model.{
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{
     Article,
     ArticleBodyDraft,
     ArticleBinding,
@@ -26,10 +28,9 @@ defmodule GroupherServer.CMS.Articles.Store do
     Community
   }
 
-  alias GroupherServer.CMS.Model.RevisionCoverEdit
-  alias GroupherServer.CMS.Articles.Bindings
-  alias GroupherServer.CMS.Articles.ArticleView
-  alias GroupherServer.CMS.FrontDesk.Article, as: PublicArticleFrontDesk
+  alias CMS.Model.RevisionCoverEdit
+  alias CMS.Articles.{Bindings, ArticleView}
+  alias CMS.FrontDesk.Article, as: PublicArticleFrontDesk
 
   alias Helper.ORM
 

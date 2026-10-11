@@ -12,7 +12,9 @@ defmodule GroupherServer.CMS.Docs.Store do
         -> stable branch, revision, body, or release row
   """
 
-  alias GroupherServer.CMS.Model.{
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{
     ArticleBodyDraft,
     ArticleBodySnapshot,
     ArticleRevision,

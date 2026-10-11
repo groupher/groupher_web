@@ -17,7 +17,7 @@ defmodule GroupherServer.CMS.Comments.States do
 
   alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.Model.User
-  alias Accounts.Profiles.ErrorCat, as: AuthErrorCat
+
   alias CMS.{Comments.ErrorCat, FrontDesk}
   alias CMS.Comments.Effects
   alias CMS.Model.{Comment, PinnedComment}
@@ -37,7 +37,7 @@ defmodule GroupherServer.CMS.Comments.States do
 
   """
   @spec pin(T.id()) :: T.domain_res(Comment.t())
-  def pin(_comment_id), do: {:error, AuthErrorCat.account_login()}
+  def pin(_comment_id), do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
 
   @spec pin(Comment.t(), User.t()) :: T.domain_res(Comment.t())
   def pin(%Comment{}, %User{}), do: {:error, CMS.ErrorCat.command_id_required()}
@@ -60,7 +60,8 @@ defmodule GroupherServer.CMS.Comments.States do
   end
 
   @spec undo_pin(T.id()) :: T.domain_res(Comment.t())
-  def undo_pin(_comment_id), do: {:error, AuthErrorCat.account_login()}
+  def undo_pin(_comment_id),
+    do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
 
   @spec undo_pin(Comment.t(), User.t()) :: T.domain_res(Comment.t())
   def undo_pin(%Comment{}, %User{}), do: {:error, CMS.ErrorCat.command_id_required()}

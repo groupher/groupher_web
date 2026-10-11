@@ -11,7 +11,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
 
   import Ecto.Query
 
-  alias GroupherServer.{Accounts, Analysis, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
   alias CMS.Artiment.Matcher
@@ -19,7 +19,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
   alias Interactions.{Config, Effects, ErrorCat, Persist, ReadState}
   alias CMS.Interactions.Reactions.UpvoteConfirmation, as: Confirmation
   alias CMS.Model.{ArticleUpvote, Author, Comment, CommentUpvote}
-  alias Analysis.MetricEvent
+
   alias Helper.T
 
   @article_threads Config.article_threads()
@@ -122,7 +122,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
   defp record_metric(article, operation, :changed, operation_id) do
     metric = if operation == :add, do: :upvote_added, else: :upvote_removed
 
-    case MetricEvent.append_article_action(article, operation_id, metric) do
+    case GroupherServer.Analysis.metric_event_append_article_action(article, operation_id, metric) do
       {:ok, _} -> {:ok, :pass}
       {:error, _reason} = error -> error
     end
@@ -133,7 +133,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
   defp maybe_achieve(_article, _actor, :remove, :changed), do: {:ok, :pass}
 
   defp maybe_achieve(article, _actor, :add, :changed) do
-    case Accounts.Achievements.achieve(author_user(article), :inc, :upvote) do
+    case Accounts.achievements_achieve(author_user(article), :inc, :upvote) do
       {:ok, _achievement} -> {:ok, :pass}
       {:error, _reason} = error -> error
     end

@@ -37,7 +37,7 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Commands.Subscribe do
     Gate.with_community_check(actor, :read, community, fn canonical ->
       with {:ok, _} <- Persist.subscribe(canonical, actor),
            {:ok, _} <- Communities.Count.update(canonical, actor, :subscribers_count, :inc),
-           {:ok, _} <- Accounts.Profiles.update_subscribe_state(actor) do
+           {:ok, _} <- Accounts.profiles_update_subscribe_state(actor) do
         {:ok, Support.confirmation(Confirmation, canonical.id, command_id)}
       end
     end)

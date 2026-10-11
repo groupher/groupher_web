@@ -16,8 +16,7 @@ defmodule GroupherServer.CMS.Comments.Solution do
 
   alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.Model.User
-  alias CMS.Comments.ErrorCat
-  alias CMS.Comments.Effects
+  alias CMS.Comments.{ErrorCat, Effects}
   alias CMS.Model.{Article, Comment, PostSolution}
 
   @doc """
@@ -30,8 +29,8 @@ defmodule GroupherServer.CMS.Comments.Solution do
   @spec accept(Comment.t(), User.t()) :: {:error, term()}
   def accept(%Comment{}, %User{}), do: {:error, CMS.ErrorCat.command_id_required()}
 
-  @spec accept(Comment.t(), User.t(), Ecto.UUID.t()) :: {:ok, Comment.t()} | {:error, term()}
   @doc "Accepts or replaces the solution while binding retries to `command_id`."
+  @spec accept(Comment.t(), User.t(), Ecto.UUID.t()) :: {:ok, Comment.t()} | {:error, term()}
   def accept(%Comment{} = comment, %User{} = actor, command_id) do
     CMS.Comments.Commands.SolutionChange.execute(:accept_solution, comment, actor, command_id)
   end
@@ -46,8 +45,8 @@ defmodule GroupherServer.CMS.Comments.Solution do
   @spec revoke(Comment.t(), User.t()) :: {:error, term()}
   def revoke(%Comment{}, %User{}), do: {:error, CMS.ErrorCat.command_id_required()}
 
-  @spec revoke(Comment.t(), User.t(), Ecto.UUID.t()) :: {:ok, Comment.t()} | {:error, term()}
   @doc "Revokes the current solution while binding retries to `command_id`."
+  @spec revoke(Comment.t(), User.t(), Ecto.UUID.t()) :: {:ok, Comment.t()} | {:error, term()}
   def revoke(%Comment{} = comment, %User{} = actor, command_id) do
     CMS.Comments.Commands.SolutionChange.execute(:revoke_solution, comment, actor, command_id)
   end

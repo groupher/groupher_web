@@ -33,11 +33,11 @@ defmodule GroupherServer.ErrorCat.Domain do
 
       @doc "Builds a reserved custom error at a domain boundary."
       @spec custom(term()) :: error()
-      def custom(details \\ nil), do: GroupherServer.ErrorCat.custom(details)
+      def custom(details \\ nil), do: GroupherServer.ErrorCat.Workflow.custom(details)
 
       @doc "Builds the reserved unknown-gate error at the Gate boundary."
       @spec gate_unknown(term()) :: error()
-      def gate_unknown(details \\ nil), do: GroupherServer.ErrorCat.gate_unknown(details)
+      def gate_unknown(details \\ nil), do: GroupherServer.ErrorCat.Workflow.gate_unknown(details)
 
       @doc "Normalizes common ErrorCat results without exposing the global struct."
       @spec normalize_result(term()) :: term()

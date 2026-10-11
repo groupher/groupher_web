@@ -7,7 +7,9 @@ defmodule GroupherServer.CMS.Press.Effects do
         -> Press.Invalidation
   """
 
-  alias GroupherServer.CMS.Press.Invalidation
+  alias GroupherServer.CMS
+
+  alias CMS.Press.Invalidation
   alias Helper.Later
 
   @doc "Schedules best-effort invalidation after the caller's transaction commits."

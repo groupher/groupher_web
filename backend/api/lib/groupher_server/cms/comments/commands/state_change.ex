@@ -5,12 +5,14 @@ defmodule GroupherServer.CMS.Comments.Commands.StateChange do
       state command -> canonical Comment -> state transition -> tagged result
   """
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{CMS, Repo}
   alias CMS.{Command, FrontDesk}
   alias CMS.Comments.States
   alias CMS.Comments.Commands.StateConfirmation, as: Confirmation
-  alias GroupherServer.CMS.Model.Comment
-  alias GroupherServer.Accounts.Model.User
+  alias CMS.Model.Comment
+  alias Accounts.Model.User
 
   @spec execute(atom(), Comment.t(), User.t()) :: {:ok, term()} | {:error, term()}
   def execute(action, %Comment{} = _comment, %User{} = _user)

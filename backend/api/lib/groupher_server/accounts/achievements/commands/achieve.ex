@@ -8,7 +8,7 @@ defmodule GroupherServer.Accounts.Achievements.Commands.Achieve do
   alias GroupherServer.Accounts
   alias Accounts.Model.{Achievement, User}
   alias Accounts.Achievements.Persist
-  alias GroupherServer.Accounts.Config
+  alias Accounts.Config
   alias Helper.Transaction
 
   @collect_weight Config.achieve_collect_weight()

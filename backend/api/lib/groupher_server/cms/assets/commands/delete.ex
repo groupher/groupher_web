@@ -5,13 +5,13 @@ defmodule GroupherServer.CMS.Assets.Commands.Delete do
       GraphQL / facade -> Delete -> CMS.Command -> Gate + Persist + Outbox
   """
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{CMS, Repo}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias CMS.Assets.Commands.DeleteAssetConfirmation, as: Confirmation
-  alias CMS.Assets.Effects
-  alias CMS.Assets.Persist
-  alias CMS.Command
-  alias CMS.ErrorCat
+  alias CMS.Assets.{Effects, Persist}
+  alias CMS.{Command, ErrorCat}
   alias CMS.Model.{Community, CommunityAsset}
 
   @spec execute(Community.t(), term(), User.t(), String.t() | nil) ::

@@ -12,8 +12,10 @@ defmodule GroupherServer.Messaging.Notifications.Query do
   import Helper.Utils, only: [done: 1]
   import ShortMaps
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{Messaging, Repo}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Messaging.Model.Notification
   alias Helper.ORM
 

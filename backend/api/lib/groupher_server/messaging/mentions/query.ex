@@ -13,9 +13,11 @@ defmodule GroupherServer.Messaging.Mentions.Query do
   import Helper.Utils, only: [done: 1]
   import ShortMaps
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{Messaging, Repo}
   alias Messaging.Model.Mention
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.{ORM, T}
 
   @doc """

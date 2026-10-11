@@ -1,6 +1,4 @@
 defmodule GroupherServer.CMS.Communities.Moderators.Commands.Support do
-  require GroupherServer.CMS.Gate.ErrorCat
-
   @moduledoc """
   Shared execution boundary for concrete Moderator Commands.
 
@@ -13,6 +11,8 @@ defmodule GroupherServer.CMS.Communities.Moderators.Commands.Support do
         -> Moderators.Persist
         -> Confirmation / canonical Community
   """
+
+  require GroupherServer.CMS.Gate.ErrorCat
 
   alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.Model.User

@@ -146,7 +146,7 @@ defmodule GroupherServer.CMS.Articles.Workflow do
        ) do
     with %User{} = user <- actor_user(actor),
          {:ok, _community} <- CMS.Communities.update_count_field(community, article.thread),
-         {:ok, _user} <- Accounts.Publish.update_states(user, article.thread),
+         {:ok, _user} <- Accounts.publish_update_states(user, article.thread),
          {:ok, _throttle} <- CMS.Gate.RateLimit.Publish.record(user) do
       {:ok, result}
     else

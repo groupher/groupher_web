@@ -8,11 +8,12 @@ defmodule GroupherServer.CMS.Communities.Commands.RequestDestroy do
         -> Gate / Lifecycle / Confirmation
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.{Command, FrontDesk, Gate}
   alias CMS.Communities.{ErrorCat, Lifecycle, RequestDestroyConfirmation}
   alias CMS.Model.{Community}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @spec execute(Community.t(), User.t(), keyword()) :: T.domain_res(Community.t())

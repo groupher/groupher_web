@@ -7,10 +7,11 @@ defmodule GroupherServer.CMS.Kanban.Commands.SetStatus do
           -> KanbanState status update
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.Articles.States
   alias CMS.Model.{Article, Community}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @spec execute(Community.t(), Article.t(), atom() | nil, User.t()) ::

@@ -4,13 +4,15 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
   import Ecto.Query, warn: false
   import GroupherServer.Support.Factory
 
+  alias GroupherServer.Activity
+
   alias GroupherServer.{CMS, Repo}
-  alias GroupherServer.Activity.Model.DocTreeLog
+  alias Activity.Model.DocTreeLog
   alias CMS.Artiment.BodyBag
   alias CMS.ContentImport.{Jobs, Staging}
-  alias CMS.ContentImport.Persistence.{ImportSourceMapping, Job}
-  alias CMS.ContentImport.Persistence.Job.Body, as: StagedBody
-  alias CMS.ContentImport.Threads.Doc.Validator
+  alias CMS.ContentImport.Model.{ImportSourceMapping, Job}
+  alias CMS.ContentImport.Model.Job.Body
+  alias CMS.ContentImport.DocValidator
   alias CMS.DocTree.Workflows.ContentImport
   alias CMS.Docs.Branch
   alias CMS.DocTree
@@ -72,14 +74,14 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
                %{external_ref: "docs/start.md", body_bag: body_bag}
              ])
 
-    assert Repo.aggregate(StagedBody, :count) == 1
+    assert Repo.aggregate(Body, :count) == 1
 
     assert {:ok, completed} = ContentImport.apply(community, job.job_ref)
     assert completed.status == :completed
     assert completed.counts.pages == 1
     assert completed.skipped == []
     assert completed.target_branch == Branch.main_slug()
-    assert Repo.aggregate(StagedBody, :count) == 0
+    assert Repo.aggregate(Body, :count) == 0
 
     assert [mapping] = Repo.all(ImportSourceMapping)
     assert mapping.external_ref == "docs/start.md"
@@ -184,7 +186,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
       "source" => %{"configPaths" => [], "framework" => "vitepress", "root" => "docs"}
     }
 
-    assert {:ok, preview} = Validator.preview(community, source_info(), nested_source_tree)
+    assert {:ok, preview} = DocValidator.preview(community, source_info(), nested_source_tree)
 
     assert %{
              "schemaVersion" => 2,
@@ -249,7 +251,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
     next_source_info = Map.put(source_info(), "commit", String.duplicate("d", 40))
 
     assert {:ok, preview} =
-             Validator.preview(community, next_source_info, source_tree(documents))
+             DocValidator.preview(community, next_source_info, source_tree(documents))
 
     assert get_in(preview.target_tree, [
              "tabs",
@@ -330,7 +332,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
     next_source_info = Map.put(source_info(), "commit", String.duplicate("d", 40))
 
     assert {:ok, preview} =
-             Validator.preview(community, next_source_info, source_tree(documents))
+             DocValidator.preview(community, next_source_info, source_tree(documents))
 
     assert get_in(preview.target_tree, [
              "tabs",
@@ -385,10 +387,10 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
                %{external_ref: "docs/start.md", body_bag: body_bag("Staged body", "a")}
              ])
 
-    assert Repo.aggregate(StagedBody, :count) == 1
+    assert Repo.aggregate(Body, :count) == 1
     assert {:ok, cancelled} = Jobs.cancel(community, job.job_ref)
     assert cancelled.status == :cancelled
-    assert Repo.aggregate(StagedBody, :count) == 0
+    assert Repo.aggregate(Body, :count) == 0
 
     assert {:ok, replayed} = Jobs.cancel(community, job.job_ref)
     assert replayed.status == :cancelled
@@ -665,7 +667,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
              ContentImport.apply(community, job.job_ref)
 
     assert Repo.get_by!(Job, hash_id: job.job_ref).status == :ready
-    assert Repo.aggregate(StagedBody, :count) == 1
+    assert Repo.aggregate(Body, :count) == 1
     assert Repo.aggregate(ImportSourceMapping, :count) == 0
 
     assert {:ok, failed} =
@@ -722,7 +724,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
              }
            ]
 
-    assert Repo.aggregate(StagedBody, :count) == 0
+    assert Repo.aggregate(Body, :count) == 0
     assert Repo.get_by!(Job, hash_id: job.job_ref).status == :failed
   end
 
@@ -731,7 +733,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
     {:ok, community} = db_insert(:community)
     source_info = source_info()
     source_tree = source_tree(documents)
-    assert {:ok, preview} = Validator.preview(community, source_info, source_tree)
+    assert {:ok, preview} = DocValidator.preview(community, source_info, source_tree)
 
     assert {:ok, job} =
              Jobs.create(community, actor, %{

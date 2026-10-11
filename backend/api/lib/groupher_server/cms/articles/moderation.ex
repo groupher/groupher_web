@@ -17,8 +17,7 @@ defmodule GroupherServer.CMS.Articles.Moderation do
 
   alias GroupherServer.{CMS, FrontDesk, Repo}
 
-  alias CMS.Articles.Trash
-  alias CMS.Articles.Effects
+  alias CMS.Articles.{Trash, Effects}
   alias CMS.Communities.Tags.Stats
 
   alias CMS.Model.{
@@ -156,7 +155,7 @@ defmodule GroupherServer.CMS.Articles.Moderation do
            illegal_articles: illegal_articles
          }) do
       {:ok, _user} ->
-        FrontDesk.revalidate().user(user.login)
+        FrontDesk.revalidate_user(user.login)
         {:ok, :pass}
 
       {:error, _reason} = error ->

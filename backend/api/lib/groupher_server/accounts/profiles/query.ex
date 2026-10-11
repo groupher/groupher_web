@@ -7,13 +7,12 @@ defmodule GroupherServer.Accounts.Profiles.Query do
           -> public profile projection
   """
 
-  alias GroupherServer.{Accounts, Analysis}
+  import Ecto.Query, warn: false
+
+  alias GroupherServer.{Accounts, Analysis, Repo}
   alias Accounts.Model.{Embeds, OauthProvider, User}
   alias Accounts.Profiles.List
   alias Helper.ORM
-
-  import Ecto.Query, warn: false
-  alias GroupherServer.Repo
 
   @default_user_meta Embeds.UserMeta.default_meta()
 

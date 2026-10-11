@@ -12,7 +12,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Delete do
   foreign-key cascade semantics are not simulated here.
   """
 
-  alias GroupherServer.{Accounts, Analysis, CMS}
+  alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Model.User
   alias CMS.{Command, FrontDesk}
@@ -21,7 +21,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Delete do
   alias CMS.Comments.Commands.CommentConfirmation, as: Confirmation
   alias CMS.Comments.Effects
   alias CMS.Model.{Article, Comment, PinnedComment}
-  alias Analysis.MetricEvent
+
   alias Helper.{ORM, T}
 
   @delete_hint Comment.delete_hint()
@@ -133,7 +133,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Delete do
   end
 
   defp record_article_metric(article, operation_id, metric) do
-    case MetricEvent.append_article_action(article, operation_id, metric) do
+    case GroupherServer.Analysis.metric_event_append_article_action(article, operation_id, metric) do
       {:ok, _} -> {:ok, :pass}
       {:error, _reason} = error -> error
     end

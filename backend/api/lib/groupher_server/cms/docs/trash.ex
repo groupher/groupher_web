@@ -333,7 +333,7 @@ defmodule GroupherServer.CMS.Docs.Trash do
   end
 
   defp activity_source(opts) do
-    opts |> Keyword.get(:source, :api) |> Activity.Const.normalize_source()
+    opts |> Keyword.get(:source, :api) |> Activity.const_normalize_source()
   end
 
   defp actor_id(%User{id: id}), do: id

@@ -13,7 +13,9 @@ defmodule GroupherServer.CMS.Model.ArticleBindingTag do
 
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.{ArticleBinding, CommunityTag}
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{ArticleBinding, CommunityTag}
   alias Helper.Constant.DBPrefix
 
   @primary_key false

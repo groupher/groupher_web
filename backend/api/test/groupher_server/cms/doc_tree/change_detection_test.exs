@@ -3,8 +3,10 @@ defmodule GroupherServer.Test.CMS.DocTree.ChangeDetection do
 
   use GroupherServer.TestMate
 
-  alias GroupherServer.CMS.DocTree.ChangeDetection
-  alias GroupherServer.CMS.Model.DocDraft
+  alias GroupherServer.CMS
+
+  alias CMS.DocTree.ChangeDetection
+  alias CMS.Model.DocDraft
 
   describe "[doc tree change detection]" do
     test "treats missing public Revision as changed" do

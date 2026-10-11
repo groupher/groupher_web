@@ -5,16 +5,18 @@ defmodule GroupherServerWeb.Resolvers.CMS.Wallpaper do
       GraphQL wallpaper field -> this resolver -> CMS.Wallpaper facade
   """
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.CMS
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.Model.Community
+  alias Accounts.Model.User
+  alias CMS.Model.Community
 
   def publish_wallpaper(
         _root,
         %{community: %Community{} = community, input: input},
         %{context: %{cur_user: %User{} = user}}
       ) do
-    CMS.Wallpaper.publish(community, input, user)
+    CMS.wallpaper_publish(community, input, user)
   end
 
   def prepare_wallpaper_upload(
@@ -22,7 +24,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Wallpaper do
         %{community: %Community{} = community, input: input},
         %{context: %{cur_user: %User{} = user}}
       ) do
-    CMS.Wallpaper.prepare_upload(community, input, user)
+    CMS.wallpaper_prepare_upload(community, input, user)
   end
 
   def restore_wallpaper_snapshot(
@@ -30,6 +32,6 @@ defmodule GroupherServerWeb.Resolvers.CMS.Wallpaper do
         %{community: %Community{} = community, input: input},
         %{context: %{cur_user: %User{} = user}}
       ) do
-    CMS.Wallpaper.restore_snapshot(community, input, user)
+    CMS.wallpaper_restore_snapshot(community, input, user)
   end
 end

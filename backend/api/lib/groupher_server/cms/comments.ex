@@ -34,7 +34,7 @@ defmodule GroupherServer.CMS.Comments do
   alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Model.User
-  alias Accounts.Profiles.ErrorCat, as: AuthErrorCat
+
   alias CMS.FrontDesk
   alias CMS.Model.{Comment, Community}
   alias Helper.T
@@ -136,6 +136,13 @@ defmodule GroupherServer.CMS.Comments do
   """
   @spec comments_state(T.thread(), T.id()) :: T.domain_res(map())
   def comments_state(thread, article_id), do: Query.comments_state(thread, article_id)
+
+  @doc "Repairs the persisted Comment participant count by stable Article identity."
+  @spec reconcile_participants_count(T.thread(), Ecto.UUID.t(), non_neg_integer()) ::
+          {:ok, :pass} | {:error, term()}
+  def reconcile_participants_count(thread, article_id, total_count) do
+    CMS.ArticleStats.reconcile_comment_participants_count(thread, article_id, total_count)
+  end
 
   @doc """
   Returns aggregate comment state including whether the viewer participated.
@@ -374,7 +381,8 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.update_comment(comment, body)
   """
   @spec update_comment(Comment.t(), String.t()) :: T.domain_res(Comment.t())
-  def update_comment(%Comment{}, _body), do: {:error, AuthErrorCat.account_login()}
+  def update_comment(%Comment{}, _body),
+    do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
 
   @doc """
   Updates one authorized Comment in its canonical aggregate transaction.
@@ -415,7 +423,8 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.delete_comment(comment)
   """
   @spec delete_comment(Comment.t()) :: T.domain_res(Comment.t())
-  def delete_comment(%Comment{}), do: {:error, AuthErrorCat.account_login()}
+  def delete_comment(%Comment{}),
+    do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
 
   @doc """
   Soft-deletes one authorized Comment and reconciles its parent aggregate.
@@ -559,7 +568,8 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.pin_comment(comment_id)
   """
   @spec pin_comment(T.id()) :: T.domain_res(Comment.t())
-  def pin_comment(_comment_id), do: {:error, AuthErrorCat.account_login()}
+  def pin_comment(_comment_id),
+    do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
 
   @doc """
   Pins one Comment independently of its solution state.
@@ -590,7 +600,8 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.undo_pin_comment(comment_id)
   """
   @spec undo_pin_comment(T.id()) :: T.domain_res(Comment.t())
-  def undo_pin_comment(_comment_id), do: {:error, AuthErrorCat.account_login()}
+  def undo_pin_comment(_comment_id),
+    do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
 
   @doc """
   Removes one Comment's independent pin binding.

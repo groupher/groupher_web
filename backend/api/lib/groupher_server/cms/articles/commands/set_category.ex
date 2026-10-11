@@ -9,11 +9,12 @@ defmodule GroupherServer.CMS.Articles.Commands.SetCategory do
       commandId -> SetCategory -> Gate -> Article category transition
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.Articles.Commands.StateChange
   alias CMS.Command.Receipt
   alias CMS.Model.{Article, Community}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
 
   @spec execute(Ecto.UUID.t(), atom() | nil, User.t(), Community.t(), Ecto.UUID.t()) ::
           {:ok, Article.t()} | {:error, term()}

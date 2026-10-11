@@ -11,10 +11,7 @@ defmodule GroupherServer.Activity.ArticleLog do
 
   alias Activity.Artiment
   alias Activity.ErrorCat, as: ActivityErrorCat
-  alias CMS.Articles.ErrorCat, as: ArticlesErrorCat
-  alias CMS.Gate
-  alias CMS.Gate.Context.Scope.Article, as: ArticleContext
-  alias CMS.Gate.Context.Scope.Doc, as: DocContext
+
   alias CMS.Model.{Article, ArticleDraft, DocDraft}
   alias Helper.ORM
 
@@ -61,11 +58,11 @@ defmodule GroupherServer.Activity.ArticleLog do
           article_id,
           actor,
           :read_draft,
-          ArticleContext.draft(thread, :owner_management)
+          GroupherServer.CMS.gate_context_scope_article_draft(thread, :owner_management)
         )
 
       nil ->
-        {:error, ArticlesErrorCat.not_exist("Article")}
+        {:error, GroupherServer.CMS.articles_error_cat_not_exist("Article")}
     end
   end
 
@@ -74,12 +71,17 @@ defmodule GroupherServer.Activity.ArticleLog do
       article_id,
       actor,
       :read_draft,
-      DocContext.draft(branch_id, :owner_management)
+      GroupherServer.CMS.gate_context_scope_doc_draft(branch_id, :owner_management)
     )
   end
 
   defp authorize_read(%Article{id: article_id, thread: thread}, actor) when thread != :doc do
-    authorize_scoped(article_id, actor, :read, ArticleContext.public(thread))
+    authorize_scoped(
+      article_id,
+      actor,
+      :read,
+      GroupherServer.CMS.gate_context_scope_article_public(thread)
+    )
   end
 
   defp authorize_read(article, actor) do
@@ -95,32 +97,34 @@ defmodule GroupherServer.Activity.ArticleLog do
   end
 
   defp authorize_scoped(article_id, actor, action, context) do
-    with %Ecto.Query{} = query <- Gate.scope(Article, actor, action, context),
+    with %Ecto.Query{} = query <- GroupherServer.CMS.gate_scope(Article, actor, action, context),
          %Article{} = canonical <-
            query |> where([candidate], candidate.id == ^article_id) |> Repo.one() do
       {:ok, canonical}
     else
-      nil -> {:error, ArticlesErrorCat.not_exist("Article")}
+      nil -> {:error, GroupherServer.CMS.articles_error_cat_not_exist("Article")}
       {:error, _reason} = error -> error
     end
   end
 
   defp scope_context(%{stage: :draft, branch_id: branch_id}, :doc)
        when is_integer(branch_id) do
-    {:ok, :read_draft, DocContext.draft(branch_id, :owner_management)}
+    {:ok, :read_draft,
+     GroupherServer.CMS.gate_context_scope_doc_draft(branch_id, :owner_management)}
   end
 
   defp scope_context(%{stage: :public, branch_id: branch_id}, :doc)
        when is_integer(branch_id) do
-    {:ok, :read, DocContext.public_branch(branch_id)}
+    {:ok, :read, GroupherServer.CMS.gate_context_scope_doc_public_branch(branch_id)}
   end
 
   defp scope_context(%{stage: :draft}, thread) do
-    {:ok, :read_draft, ArticleContext.draft(thread, :owner_management)}
+    {:ok, :read_draft,
+     GroupherServer.CMS.gate_context_scope_article_draft(thread, :owner_management)}
   end
 
   defp scope_context(%{stage: :public}, thread) do
-    {:ok, :read, ArticleContext.public(thread)}
+    {:ok, :read, GroupherServer.CMS.gate_context_scope_article_public(thread)}
   end
 
   defp scope_context(_article, _thread) do

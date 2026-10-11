@@ -257,7 +257,7 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
 
   describe "[cms query community]" do
     @query S.Community.q(:community_2)
-    test "guest user can get community info without args fails", ~m(guest_conn user)a do
+    test "guest user can get community info without args fails", ~m(guest_conn)a do
       variables = %{}
       assert guest_conn |> query_error?(@query, variables)
     end
@@ -386,7 +386,7 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
 
   describe "[cms community subscribe]" do
     @query S.Community.q(:community_5)
-    test "guest can get subscribers count of a community", ~m(guest_conn community user)a do
+    test "guest can get subscribers count of a community", ~m(guest_conn community)a do
       {:ok, users} = db_insert_multi(:user, assert_v(:inner_page_size))
 
       Enum.each(
@@ -403,7 +403,7 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
 
     @query S.Community.q(:paged_community_subscribers)
     test "guest user can get paged subscribers by community slug",
-         ~m(guest_conn community user)a do
+         ~m(guest_conn community)a do
       {:ok, users} = db_insert_multi(:user, 25)
 
       Enum.each(
@@ -418,7 +418,7 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
     end
 
     test "guest user can get paged subscribers after duplicate subscribes",
-         ~m(guest_conn community user)a do
+         ~m(guest_conn community)a do
       {:ok, users} = db_insert_multi(:user, 25)
 
       Enum.each(

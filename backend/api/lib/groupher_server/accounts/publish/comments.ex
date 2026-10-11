@@ -7,7 +7,7 @@ defmodule GroupherServer.Accounts.Publish.Comments do
 
   Business position:
 
-      profile read -> CMS.Comments.paged_published_comments -> comment page
+      profile read -> CMS.comments_paged_published_comments -> comment page
   """
 
   alias GroupherServer.{Accounts, CMS}
@@ -22,7 +22,7 @@ defmodule GroupherServer.Accounts.Publish.Comments do
   """
   @spec paged(User.t(), map(), User.t() | nil) :: term()
   def paged(user, filter, actor \\ nil) do
-    CMS.Comments.paged_published_comments(user, filter, actor)
+    CMS.comments_paged_published_comments(user, filter, actor)
   end
 
   @doc """
@@ -34,6 +34,6 @@ defmodule GroupherServer.Accounts.Publish.Comments do
   """
   @spec paged(User.t(), atom(), map(), User.t() | nil) :: term()
   def paged(user, thread, filter, actor) do
-    CMS.Comments.paged_published_comments(user, thread, filter, actor)
+    CMS.comments_paged_published_comments(user, thread, filter, actor)
   end
 end

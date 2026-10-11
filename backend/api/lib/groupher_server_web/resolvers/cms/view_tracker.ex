@@ -5,8 +5,10 @@ defmodule GroupherServerWeb.Resolvers.CMS.ViewTracker do
       GraphQL view field -> this resolver -> CMS.ViewTracker facade
   """
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{CMS, FrontDesk}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
 
   @viewer_batch_size 100
 
@@ -15,7 +17,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.ViewTracker do
 
     with {:ok, classification} <- Map.fetch(info.context, :request_actor),
          {:ok, article} <- FrontDesk.article(article_path) do
-      CMS.ViewTracker.track(
+      CMS.view_tracker_track(
         article,
         viewer,
         classification,
@@ -27,7 +29,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.ViewTracker do
   def article_viewer_states(_root, %{paths: paths}, info) do
     with {:ok, :pass} <- validate_viewer_batch(paths) do
       case Map.get(info.context, :cur_user) do
-        %User{} = user -> CMS.ViewTracker.viewer_states_for_paths(paths, user)
+        %User{} = user -> CMS.view_tracker_viewer_states_for_paths(paths, user)
         _ -> {:ok, []}
       end
     end

@@ -10,13 +10,12 @@ defmodule GroupherServer.CMS.DocTree.Commands.Support do
   business action.
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS
-  alias GroupherServer.CMS.Command
+  alias GroupherServer.{Accounts, CMS}
+
+  alias Accounts.Model.User
+  alias CMS.{Command, ErrorCat, DocTree.CommandReplay}
   alias CMS.Command.Receipt.Key, as: CommandKey
-  alias CMS.ErrorCat
-  alias GroupherServer.CMS.DocTree.CommandReplay
-  alias GroupherServer.CMS.DocTree.Commands.TreeConfirmation, as: Confirmation
+  alias CMS.DocTree.Commands.TreeConfirmation, as: Confirmation
 
   def run_tree_command(community, target_id, args, user, operation, execute) do
     clean_args = drop_command_id(args)

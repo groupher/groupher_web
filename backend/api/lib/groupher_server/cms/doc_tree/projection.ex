@@ -7,7 +7,9 @@ defmodule GroupherServer.CMS.DocTree.Projection do
         -> public doc_tree_nodes
   """
 
-  alias GroupherServer.CMS.DocTree.Publish.PublicProjection
+  alias GroupherServer.CMS
+
+  alias CMS.DocTree.Publish.PublicProjection
 
   defdelegate preapply_tree_delete_events(community, branch, events), to: PublicProjection
   defdelegate apply_tree_events(community, branch, events), to: PublicProjection

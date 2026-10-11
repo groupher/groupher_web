@@ -29,7 +29,6 @@ defmodule GroupherServer.PublicCache.Cloudflare do
   alias GroupherServer.PublicCache
   alias PublicCache.{Policy, Tags}
 
-  @spec purge([String.t()]) :: {:ok, :pass} | {:error, term()}
   @doc """
   Purges the supplied validated cache tags through Cloudflare.
 
@@ -37,6 +36,7 @@ defmodule GroupherServer.PublicCache.Cloudflare do
 
       PublicCache.Cloudflare.purge(["community[acme]"])
   """
+  @spec purge([String.t()]) :: {:ok, :pass} | {:error, term()}
   def purge(tags) when is_list(tags) do
     with {:ok, tags} <- Tags.validate(tags),
          {:ok, config} <- config(),

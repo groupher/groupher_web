@@ -1,4 +1,4 @@
-defmodule GroupherServer.CMS.Assets.GeneratedBatch.PublishCapability do
+defmodule GroupherServer.CMS.Assets.Maintenance.GeneratedBatch.PublishCapability do
   @moduledoc """
   Owns the generated-image publish capability wire contract shared with Assets Hub.
 

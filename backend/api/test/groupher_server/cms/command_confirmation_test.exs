@@ -1,14 +1,16 @@
 defmodule GroupherServer.Test.CMS.CommandConfirmationTest do
   use ExUnit.Case, async: true
 
-  alias GroupherServer.CMS.Articles.Commands.PublishConfirmation
-  alias GroupherServer.CMS.Articles.Commands.RevisionConfirmation
-  alias GroupherServer.CMS.Accounts.CollectFolders.WriteConfirmation
-  alias GroupherServer.CMS.Command
-  alias GroupherServer.CMS.Comments.Commands.CommentConfirmation
-  alias GroupherServer.CMS.DocTree.Commands.TreeConfirmation
-  alias GroupherServer.CMS.Interactions.Reactions.UpvoteConfirmation, as: UpvoteConfirmation
-  alias GroupherServer.CMS.Interactions.Reactions.CollectConfirmation
+  alias GroupherServer.{Accounts, CMS}
+
+  alias Accounts.CollectFolders.WriteConfirmation
+  alias CMS.Articles.Commands.PublishConfirmation
+  alias CMS.Articles.Commands.RevisionConfirmation
+  alias CMS.Command
+  alias CMS.Comments.Commands.CommentConfirmation
+  alias CMS.DocTree.Commands.TreeConfirmation
+  alias CMS.Interactions.Reactions.UpvoteConfirmation, as: UpvoteConfirmation
+  alias CMS.Interactions.Reactions.CollectConfirmation
 
   defmodule UnknownTypeConfirmation do
     use GroupherServer.CMS.Command.ConfirmationDefinition,

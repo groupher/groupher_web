@@ -24,14 +24,14 @@ defmodule GroupherServer.Accounts.CollectFolders.CommandResult do
           {:ok, map()} | {:error, term()}
   def build({:ok, result}, article, %User{} = viewer) do
     with {:ok, article_stats} <-
-           CMS.ArticleStats.for_article(article, Map.get(article, :community)),
-         interaction when is_map(interaction) <- CMS.Interactions.viewer_state(article, viewer) do
+           CMS.article_stats_for_article(article, Map.get(article, :community)),
+         interaction when is_map(interaction) <- CMS.interactions_viewer_state(article, viewer) do
       {:ok,
        %{
          command_id: result.command_id,
          folder: result.folder,
          article_stats: article_stats,
-         interaction_state: CMS.Interactions.ReadState.article_state(article_stats, interaction)
+         interaction_state: CMS.interactions_read_state_article_state(article_stats, interaction)
        }}
     end
   end

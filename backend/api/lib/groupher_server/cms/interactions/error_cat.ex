@@ -7,7 +7,7 @@ defmodule GroupherServer.CMS.Interactions.ErrorCat do
         -> GraphQL error serialization
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:cms, :interaction}
+  use GroupherServer.ErrorCat, namespace: {:cms, :interaction}
 
   error(:unsupported_artiment, code: 4901)
   error(:unsupported_artiment_query, code: 4902)

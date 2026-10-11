@@ -4,7 +4,8 @@ defmodule GroupherServer.CMS.DocTree.Commands.CreateGroup do
 
       CMS.DocTree.create_group -> CreateGroup.execute -> command support -> Persist.create_group
   """
-  alias GroupherServer.CMS.DocTree.{Commands.Support, Persist}
+  alias GroupherServer.CMS
+  alias CMS.DocTree.{Commands.Support, Persist}
 
   def execute(community, args, user \\ nil) do
     if Support.has_option?(args, :command_id) do

@@ -11,9 +11,11 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Persist do
 
   import ShortMaps
 
-  alias GroupherServer.CMS.Model.{Community, CommunitySubscriber}
+  alias GroupherServer.{Accounts, CMS}
+
+  alias CMS.Model.{Community, CommunitySubscriber}
   alias Helper.{ORM, T}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
 
   @doc "Creates a subscription if it does not already exist."
   @spec subscribe(Community.t(), User.t()) :: T.domain_res(CommunitySubscriber.t())

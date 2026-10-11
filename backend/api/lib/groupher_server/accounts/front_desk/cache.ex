@@ -11,7 +11,7 @@ defmodule GroupherServer.Accounts.FrontDesk.Cache do
   """
 
   alias GroupherServer.Accounts
-  alias GroupherServer.Accounts.FrontDesk
+  alias Accounts.FrontDesk
 
   alias Accounts.Model.User
   alias Helper.Cache

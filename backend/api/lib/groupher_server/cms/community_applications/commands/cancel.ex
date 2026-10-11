@@ -5,13 +5,14 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Cancel do
       GraphQL -> Cancel Command -> Application Gate -> Persist / Lifecycle -> Receipt result
   """
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{CMS, Repo}
   alias CMS.{Command, Gate}
   alias Ecto.Multi
-  alias CMS.Communities.ErrorCat
-  alias CMS.Communities.SlugClaims
+  alias CMS.Communities.{ErrorCat, SlugClaims}
   alias CMS.CommunityApplications.{Commands.Confirmation, Commands.Support, Lifecycle}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @spec execute(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())

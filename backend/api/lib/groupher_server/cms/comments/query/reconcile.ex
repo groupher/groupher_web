@@ -23,7 +23,7 @@ defmodule GroupherServer.CMS.Comments.Query.Reconcile do
   alias CMS.Articles.Bindings
   alias CMS.FrontDesk
   alias CMS.Gate.Context.Scope.Comment, as: CommentContext
-  alias CMS.Helper.{ArticlePath, EmotionFormatter}
+  alias CMS.{ArticlePath, EmotionFormatter}
   alias CMS.Model.Comment
   alias Helper.{ORM, T}
 

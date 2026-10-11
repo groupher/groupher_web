@@ -25,7 +25,7 @@ defmodule GroupherServer.CMS.Gate.Scope.Comment do
 
   @behaviour Policy
 
-  @audit_illegal GroupherServer.CMS.Artiment.Const.moderation_state(:illegal)
+  @audit_illegal CMS.Artiment.Const.moderation_state(:illegal)
 
   @actions [:read, :list]
 

@@ -69,6 +69,24 @@ defmodule GroupherServer.Analysis.Web.Config do
   def base, do: %__MODULE__{}
 
   @doc """
+  Reports whether community creation should provision its analytics website.
+
+  This deployment policy is stored separately from runtime credentials so
+  credential changes cannot accidentally enable or disable provisioning.
+
+  ## Examples
+
+      GroupherServer.Analysis.Web.Config.provision_on_community_create?()
+      #=> true
+  """
+  @spec provision_on_community_create?() :: boolean()
+  def provision_on_community_create? do
+    :groupher_server
+    |> Application.get_env(:web_analysis_policy, [])
+    |> Keyword.get(:provision_on_community_create, true)
+  end
+
+  @doc """
   Returns runtime Web Analysis credentials only.
 
   This function reads `config :groupher_server, :web_analysis`, but only keeps

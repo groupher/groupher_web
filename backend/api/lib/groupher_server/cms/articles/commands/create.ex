@@ -15,11 +15,9 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
   alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.Model.User
   alias CMS.{Articles, Communities, Command, Docs}
-  alias CMS.Articles.Tags.Assignment
-  alias CMS.Articles.Effects
+  alias CMS.Articles.{Tags.Assignment, Effects, RevisionResult}
   alias CMS.FrontDesk
   alias CMS.Model.{Article, ArticleBinding, Community}
-  alias CMS.Articles.RevisionResult
   alias CMS.Articles.Commands.RevisionConfirmation, as: Confirmation
   alias Helper.T
 
@@ -108,7 +106,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
          {:ok, _activity} <-
            Effects.activity(Map.put(public, :community_id, community.id), :created, actor: user),
          {:ok, _community} <- Communities.update_count_field(community, :doc),
-         {:ok, _user} <- Accounts.Publish.update_states(user, :doc) do
+         {:ok, _user} <- Accounts.publish_update_states(user, :doc) do
       {:ok, _throttle} = CMS.Gate.RateLimit.Publish.record(user)
       {:ok, public}
     end

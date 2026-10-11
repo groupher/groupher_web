@@ -21,7 +21,7 @@ defmodule GroupherServer.CMS.Communities.Setup do
   alias Accounts.Model.User
   alias CMS.Communities.{ErrorCat, Lifecycle}
   alias CMS.Communities.Moderators.Setup, as: ModeratorSetup
-  alias CMS.Communities.Jobs.Setup, as: SetupJob
+
   alias CMS.CommunityApplications.Lifecycle, as: ApplicationLifecycle
   alias CMS.Gate.Const
   alias CMS.Passport
@@ -102,7 +102,7 @@ defmodule GroupherServer.CMS.Communities.Setup do
                 )
                 |> Multi.insert(
                   :setup_job,
-                  SetupJob.new(%{
+                  GroupherServer.Jobs.community_setup_new(%{
                     community_ref: application.slug,
                     application_ref: application.public_ref,
                     operation_ref: operation_ref
@@ -273,7 +273,7 @@ defmodule GroupherServer.CMS.Communities.Setup do
   end
 
   defp ensure_analysis(community) do
-    case Analysis.Web.provision_community(community) do
+    case Analysis.web_provision_community(community) do
       {:ok, _} -> {:ok, :pass}
       {:error, ErrorCat.error_pattern(reason: :not_configured)} -> {:ok, :pass}
       {:error, reason} -> {:error, reason}

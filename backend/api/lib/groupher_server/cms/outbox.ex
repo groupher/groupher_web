@@ -16,8 +16,10 @@ defmodule GroupherServer.CMS.Outbox do
 
   import Ecto.Query
 
+  alias GroupherServer.CMS
+
   alias GroupherServer.{Jobs, Repo}
-  alias GroupherServer.CMS.Outbox.Event
+  alias CMS.Outbox.Event
 
   @lease_seconds 120
 
@@ -239,7 +241,7 @@ defmodule GroupherServer.CMS.Outbox do
   end
 
   defp enqueue(worker, event_id) do
-    if Jobs.Config.skip_enqueue?() do
+    if Jobs.config_skip_enqueue?() do
       {:ok, :skipped}
     else
       worker.new(%{event_id: event_id}) |> Oban.insert()

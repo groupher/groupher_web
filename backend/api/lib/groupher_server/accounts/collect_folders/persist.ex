@@ -12,7 +12,6 @@ defmodule GroupherServer.Accounts.CollectFolders.Persist do
   """
 
   import GroupherServer.FrontDesk, only: [thread_of: 1]
-  import GroupherServer.CMS.Artiment.Matcher
   import ShortMaps
 
   alias Ecto.Multi
@@ -154,7 +153,7 @@ defmodule GroupherServer.Accounts.CollectFolders.Persist do
 
   defp article_not_in_folder(article, collects) do
     with {:ok, thread} <- thread_of(article),
-         {:ok, info} <- match(thread) do
+         {:ok, info} <- CMS.artiment_matcher_match(thread) do
       already_collected =
         Enum.any?(collects, fn collect -> article.id == Map.get(collect, info.foreign_key) end)
 

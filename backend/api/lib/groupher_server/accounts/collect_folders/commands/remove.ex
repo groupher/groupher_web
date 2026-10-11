@@ -11,10 +11,10 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
 
   alias Ecto.Multi
   alias GroupherServer.{Accounts, CMS, Repo}
-  alias Accounts.CollectFolders.Persist
+  alias Accounts.CollectFolders.{Persist, WriteConfirmation}
   alias Accounts.Model.User
-  alias CMS.{Command, Accounts.CollectFolders.WriteConfirmation}
-  alias CMS.Interactions.Persist, as: InteractionPersist
+  alias CMS.Command
+
   alias Helper.ORM
 
   @doc """
@@ -43,7 +43,7 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
     }
 
     with {:ok, %WriteConfirmation{data: data}} <-
-           Command.execute(command,
+           GroupherServer.CMS.command_execute(command,
              action: fn context ->
                with {:ok, folder} <- transaction(article, folder_id, user, context.command_id) do
                  confirmation(folder, article, folder_id, :remove)
@@ -62,7 +62,8 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
       multi =
         Multi.new()
         |> Multi.run(:remove_article_collect, fn _, _ ->
-          with {:ok, article_collect} <- InteractionPersist.find_collect(article, user) do
+          with {:ok, article_collect} <-
+                 GroupherServer.CMS.interactions_persist_find_collect(article, user) do
             remove_collect(article, user, command_id, article_collect)
           end
         end)
@@ -76,7 +77,10 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
                remove_article_collect: %{article_collect: article_collect, detach?: detach?}
              } ->
             if detach? do
-              InteractionPersist.detach_collect_folder(article_collect, folder)
+              GroupherServer.CMS.interactions_persist_detach_collect_folder(
+                article_collect,
+                folder
+              )
             else
               {:ok, :pass}
             end
@@ -92,7 +96,7 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
 
   defp remove_collect(article, user, command_id, article_collect) do
     if length(article_collect.collect_folders) <= 1 do
-      with {:ok, _canonical} <- CMS.Interactions.undo_collect(article, user, command_id) do
+      with {:ok, _canonical} <- CMS.interactions_undo_collect(article, user, command_id) do
         {:ok, %{article_collect: article_collect, detach?: false}}
       end
     else

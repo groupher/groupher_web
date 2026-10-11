@@ -629,7 +629,7 @@ defmodule GroupherServer.CMS.DocTree.Trash do
   defp parent_id(%DocTreeNode{} = node), do: node.parent_node_id
 
   defp activity_source(opts) do
-    opts |> Keyword.get(:source, :api) |> Activity.Const.normalize_source()
+    opts |> Keyword.get(:source, :api) |> Activity.const_normalize_source()
   end
 
   defp type_rank(:tab), do: 0

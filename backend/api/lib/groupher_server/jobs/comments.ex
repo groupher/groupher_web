@@ -18,9 +18,7 @@ defmodule GroupherServer.Jobs.Comments do
 
   alias GroupherServer.{CMS, Jobs}
 
-  alias CMS.Events
   alias Jobs.Codec
-  alias Helper.ORM
 
   @event_kinds ~w(sync_mentions audition notify_comment notify_reply subscribe_community)
 
@@ -35,13 +33,13 @@ defmodule GroupherServer.Jobs.Comments do
   def perform(%Oban.Job{args: %{"kind" => kind, "payload" => encoded}})
       when kind in @event_kinds do
     payload = Codec.decode(encoded)
-    Events.emit(String.to_existing_atom(kind), payload)
+    GroupherServer.CMS.events_emit(String.to_existing_atom(kind), payload)
   end
 
   def perform(%Oban.Job{
         args: %{"kind" => "reconcile_comments_participants", "payload" => encoded}
       }) do
-    %{article: article, total_count: total_count} = Codec.decode(encoded)
-    ORM.update(article, %{comments_participants_count: total_count})
+    %{thread: thread, article_id: article_id, total_count: total_count} = Codec.decode(encoded)
+    CMS.reconcile_comments_participants(thread, article_id, total_count)
   end
 end

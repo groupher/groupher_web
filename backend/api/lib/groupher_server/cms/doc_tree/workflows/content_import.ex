@@ -28,15 +28,13 @@ defmodule GroupherServer.CMS.DocTree.Workflows.ContentImport do
   alias CMS.Articles.Draft.Store
 
   alias CMS.ContentImport.{
+    DocValidator,
     ImportSourceMapping,
-    Jobs,
-    Persistence.Job,
-    Persistence.Job.Item,
-    Threads.Doc.Validator
+    Jobs
   }
 
-  alias CMS.ContentImport.Persistence.Job.Body, as: StagedBody
-  alias CMS.ContentImport.Transaction
+  alias CMS.ContentImport.{Model.Job, Model.Job.Item, Transaction}
+  alias CMS.ContentImport.Model.Job.Body
   alias CMS.Docs.Branch
   alias CMS.ErrorCat
   alias CMS.DocTree.Import, as: DocTreeImport
@@ -100,7 +98,7 @@ defmodule GroupherServer.CMS.DocTree.Workflows.ContentImport do
 
   defp apply_to_main_draft(community, branch, actor, job) do
     with {:ok, _} <-
-           Validator.validate_intent(
+           DocValidator.validate_intent(
              community,
              job.source_info,
              job.target_tree,
@@ -112,7 +110,7 @@ defmodule GroupherServer.CMS.DocTree.Workflows.ContentImport do
          true <- ready_items != [],
          {:ok, bodies} <- load_bodies(job.id, ready_items),
          ready_refs <- MapSet.new(ready_items, & &1.external_ref),
-         tree <- Validator.filter_target_tree(job.target_tree, ready_refs),
+         tree <- DocValidator.filter_target_tree(job.target_tree, ready_refs),
          {:ok, _} <- restore_trashed_targets(community, branch, actor, ready_items),
          {:ok, target_states} <- load_target_states(community, branch, ready_items),
          {:ok, written_items} <-
@@ -120,7 +118,7 @@ defmodule GroupherServer.CMS.DocTree.Workflows.ContentImport do
          {:ok, _tree} <- DocTreeImport.apply(community, branch, tree, written_items),
          {:ok, _} <- upsert_mappings(job, ready_items, bodies),
          result <- build_result(job, items, tree, ready_items),
-         {_count, nil} <- Repo.delete_all(from(body in StagedBody, where: body.job_id == ^job.id)),
+         {_count, nil} <- Repo.delete_all(from(body in Body, where: body.job_id == ^job.id)),
          {:ok, completed} <-
            job
            |> Job.changeset(%{
@@ -148,7 +146,7 @@ defmodule GroupherServer.CMS.DocTree.Workflows.ContentImport do
 
   defp load_bodies(job_id, ready_items) do
     bodies =
-      StagedBody
+      Body
       |> where([body], body.job_id == ^job_id)
       |> lock("FOR UPDATE")
       |> Repo.all()

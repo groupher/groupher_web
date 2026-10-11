@@ -25,8 +25,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Mutation do
   alias Accounts.Model.User
 
   alias CMS.Communities.ErrorCat
-  alias CMS.Communities.Tags.Effects
-  alias CMS.Communities.Tags.Persist
+  alias CMS.Communities.Tags.{Effects, Persist}
   alias CMS.FrontDesk
 
   alias CMS.Model.{Community, CommunityTag, CommunityTagGroup}

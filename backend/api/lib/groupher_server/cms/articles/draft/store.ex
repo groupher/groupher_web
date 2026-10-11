@@ -12,10 +12,9 @@ defmodule GroupherServer.CMS.Articles.Draft.Store do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Articles.Workflow
+  alias CMS.Articles.{Workflow, ContentFingerprint}
   alias CMS.Artiment.BodyBag
   alias CMS.CanonicalJSON
-  alias CMS.Articles.ContentFingerprint
   alias CMS.Articles.Draft.Tags, as: DraftTags
 
   alias CMS.Model.{

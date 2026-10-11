@@ -22,13 +22,13 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
   import Ecto.Query, warn: false
 
   alias GroupherServer.{Accounts, CMS, Repo}
-  alias CMS.ContentImport.Transaction
+  alias CMS.ContentImport.{Transaction, Model.Job.Item}
   alias CMS.ErrorCat
 
   alias Accounts.Model.User
-  alias CMS.ContentImport.Persistence.{Connection, Job}
-  alias CMS.ContentImport.Persistence.Job.Body, as: StagedBody
-  alias CMS.ContentImport.{Persistence.Job.Item, Process, Threads.Doc.Validator}
+  alias CMS.ContentImport.Model.{Connection, Job}
+  alias CMS.ContentImport.Model.Job.Body
+  alias CMS.ContentImport.{DocValidator, Process}
   alias CMS.Docs.Branch
   alias CMS.Model.Community
 
@@ -41,7 +41,7 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
     documents = Map.fetch!(input, :documents)
 
     with {:ok, _} <-
-           Validator.validate_intent(community, source_info, target_tree, target_revision),
+           DocValidator.validate_intent(community, source_info, target_tree, target_revision),
          {:ok, item_attrs} <- build_item_attrs(documents, target_tree, source_info),
          {:ok, connection} <- get_or_create_connection(community, source_info) do
       Transaction.run(fn ->
@@ -169,7 +169,7 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
           if job.status == :completed do
             project(job)
           else
-            Repo.delete_all(from(body in StagedBody, where: body.job_id == ^job.id))
+            Repo.delete_all(from(body in Body, where: body.job_id == ^job.id))
 
             job
             |> Job.changeset(%{
@@ -233,7 +233,7 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
   end
 
   defp build_item_attrs(documents, target_tree, source_info) when is_list(documents) do
-    targets = Validator.page_targets(target_tree)
+    targets = DocValidator.page_targets(target_tree)
 
     documents
     |> Enum.reduce_while({:ok, [], MapSet.new()}, fn document, {:ok, items, refs} ->

@@ -5,7 +5,9 @@ Code.require_file(
 defmodule GroupherServer.Test.Credo.NoExternalEffectsInCommandsTest do
   use Credo.Test.Case, async: false
 
-  alias GroupherServer.Credo.Check.NoExternalEffectsInCommands
+  alias GroupherServer.Credo
+
+  alias Credo.Check.NoExternalEffectsInCommands
 
   setup_all do
     {:ok, _apps} = Application.ensure_all_started(:credo)

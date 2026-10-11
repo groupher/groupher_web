@@ -32,4 +32,13 @@ defmodule GroupherServer.RequestActor do
   end
 
   def classify(_opts), do: {:error, :invalid_evidence}
+
+  @doc """
+  Delegates RequestActor.Const.actor_types/0 through the RequestActor Context boundary.
+
+  ## Examples
+
+      iex> GroupherServer.RequestActor.const_actor_types(...)
+  """
+  defdelegate const_actor_types(), to: GroupherServer.RequestActor.Const, as: :actor_types
 end

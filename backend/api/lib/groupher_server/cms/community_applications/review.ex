@@ -19,7 +19,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Review do
   alias Ecto.Multi
   alias Accounts.Model.User
   alias CMS.Communities.{ErrorCat, NamePolicy, SlugClaims}
-  alias CMS.CommunityApplications.Jobs.CreateCommunity
+
   alias CMS.CommunityApplications.Lifecycle, as: ApplicationLifecycle
   alias CMS.CommunityApplications.Transaction
   alias CMS.Gate.Const
@@ -73,7 +73,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Review do
           Multi.insert(
             multi,
             :create_community_job,
-            CreateCommunity.new(%{
+            GroupherServer.Jobs.create_community_new(%{
               application_ref: application.public_ref,
               operation_ref: operation_ref
             })
@@ -133,7 +133,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Review do
           |> SlugClaims.insert_application(:claim, :application, nil)
           |> Multi.insert(
             :create_community_job,
-            CreateCommunity.new(%{
+            GroupherServer.Jobs.create_community_new(%{
               application_ref: application.public_ref,
               operation_ref: operation_ref
             })

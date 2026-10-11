@@ -9,12 +9,12 @@ defmodule GroupherServer.CMS.Interactions.Persist do
         -> Effects intent
   """
 
-  alias GroupherServer.Repo
-  alias GroupherServer.CMS.Interactions.ErrorCat
-  alias GroupherServer.Accounts.Model.CollectFolder
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.Artiment.Matcher
-  alias GroupherServer.CMS.Model.ArticleCollect
+  alias GroupherServer.{Accounts, CMS, Repo}
+
+  alias CMS.Interactions.ErrorCat
+  alias Accounts.Model.{CollectFolder, User}
+  alias CMS.Artiment.Matcher
+  alias CMS.Model.ArticleCollect
   alias Helper.ORM
 
   @doc """

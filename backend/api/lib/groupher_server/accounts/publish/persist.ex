@@ -5,9 +5,11 @@ defmodule GroupherServer.Accounts.Publish.Persist do
       Publish.Projection -> Publish.Persist -> User.meta
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias Helper.ORM
   import Helper.Utils, only: [plural: 1]
+
+  alias GroupherServer.Accounts
+  alias Accounts.Model.User
+  alias Helper.ORM
 
   @doc """
   Persists one published-count projection in the caller's transaction.

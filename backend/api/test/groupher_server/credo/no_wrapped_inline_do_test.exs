@@ -3,7 +3,9 @@ Code.require_file(Path.expand("../../../credo_checks/no_wrapped_inline_do.ex", _
 defmodule GroupherServer.Test.Credo.NoWrappedInlineDoTest do
   use Credo.Test.Case, async: false
 
-  alias GroupherServer.Credo.Check.NoWrappedInlineDo
+  alias GroupherServer.Credo
+
+  alias Credo.Check.NoWrappedInlineDo
 
   setup_all do
     {:ok, _apps} = Application.ensure_all_started(:credo)

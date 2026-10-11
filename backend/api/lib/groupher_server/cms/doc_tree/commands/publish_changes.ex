@@ -8,9 +8,8 @@ defmodule GroupherServer.CMS.DocTree.Commands.PublishChanges do
   """
 
   alias GroupherServer.CMS
-  alias CMS.Command
+  alias CMS.{Command, ErrorCat}
   alias CMS.Command.Receipt.Key, as: CommandKey
-  alias CMS.ErrorCat
   alias CMS.DocTree.{Commands.Support, Publish}
   alias CMS.DocTree.Commands.PublishChangesConfirmation, as: Confirmation
 

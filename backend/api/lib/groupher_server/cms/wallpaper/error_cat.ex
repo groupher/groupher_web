@@ -5,7 +5,7 @@ defmodule GroupherServer.CMS.Wallpaper.ErrorCat do
   Wallpaper operation -> typed domain reason -> GraphQL ErrorCat boundary.
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:cms, :wallpaper}
+  use GroupherServer.ErrorCat, namespace: {:cms, :wallpaper}
 
   error(:wallpaper_publish_version_conflict, code: 5702)
   error(:wallpaper_snapshot_not_restorable, code: 5703)

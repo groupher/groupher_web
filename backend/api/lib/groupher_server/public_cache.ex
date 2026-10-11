@@ -47,11 +47,12 @@ defmodule GroupherServer.PublicCache do
       PublicCache.claim(invalidation_id, lock_ref)
   """
   @spec claim(Ecto.UUID.t(), String.t()) ::
-          {:ok, Invalidation.t()}
-          | {:busy, pos_integer()}
-          | :dead
-          | :delivered
-          | :missing
+          {:ok,
+           Invalidation.t()
+           | {:busy, pos_integer()}
+           | :dead
+           | :delivered
+           | :missing}
           | {:error, term()}
   defdelegate claim(id, lock_ref), to: Workflow
 
@@ -62,6 +63,37 @@ defmodule GroupherServer.PublicCache do
   defdelegate mark_failed(id, lock_ref, type, reason, dead?), to: Workflow
 
   @doc """
+  Delivers one committed invalidation and returns the runtime-neutral outcome.
+
+  ## Examples
+
+      iex> GroupherServer.PublicCache.deliver(...)
+  """
+  @spec deliver(Ecto.UUID.t(), String.t(), pos_integer(), pos_integer()) ::
+          {:ok, :pass | {:snooze, pos_integer()}} | {:error, term()}
+  defdelegate deliver(id, lock_ref, attempt, max_attempts), to: Workflow
+
+  @doc """
+  Returns the retry delay for a PublicCache delivery attempt.
+
+  ## Examples
+
+      iex> GroupherServer.PublicCache.delivery_retry_delay(...)
+  """
+  @spec delivery_retry_delay(pos_integer()) :: pos_integer()
+  defdelegate delivery_retry_delay(attempt), to: Workflow
+
+  @doc """
+  Returns the configured maximum number of PublicCache delivery attempts.
+
+  ## Examples
+
+      iex> GroupherServer.PublicCache.max_delivery_attempts(...)
+  """
+  @spec max_delivery_attempts() :: pos_integer()
+  defdelegate max_delivery_attempts(), to: PublicCache.Policy, as: :max_attempts
+
+  @doc """
   Returns durable purge backlog health for readiness and operations checks.
 
   ## Examples
@@ -70,4 +102,33 @@ defmodule GroupherServer.PublicCache do
   """
   @spec health() :: map()
   defdelegate health(), to: Persist
+
+  @doc """
+  Delegates GroupherServer.PublicCache.Cloudflare.configured?/0 through the PublicCache Context boundary.
+
+  ## Examples
+
+      iex> GroupherServer.PublicCache.cloudflare_configured?(...)
+  """
+  defdelegate cloudflare_configured?(),
+    to: GroupherServer.PublicCache.Cloudflare,
+    as: :configured?
+
+  @doc """
+  Delegates PublicCache.Scope.tags/2 through the PublicCache Context boundary.
+
+  ## Examples
+
+      iex> GroupherServer.PublicCache.scope_tags(...)
+  """
+  defdelegate scope_tags(arg1, arg2), to: GroupherServer.PublicCache.Scope, as: :tags
+
+  @doc """
+  Delegates PublicCache.Cloudflare.purge/1 through the PublicCache Context boundary.
+
+  ## Examples
+
+      iex> GroupherServer.PublicCache.cloudflare_purge(...)
+  """
+  defdelegate cloudflare_purge(arg1), to: GroupherServer.PublicCache.Cloudflare, as: :purge
 end

@@ -15,10 +15,7 @@ defmodule GroupherServer.CMS.CommunityApplications do
   alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Model.User
-  alias CMS.Communities.ErrorCat
-  alias CMS.FrontDesk
-  alias CMS.Gate.Const
-  alias CMS.Passport
+  alias CMS.{Communities.ErrorCat, FrontDesk, Gate.Const, Passport}
 
   alias CMS.CommunityApplications.{Commands, LogoUploads, Policy, Query, Review, Workflow}
 

@@ -15,7 +15,6 @@ defmodule GroupherServer.Activity.CommunityLog do
   alias GroupherServer.{Activity, CMS, Repo}
   alias Activity.{ErrorCat, Event, Filter}
   alias CMS.Model.Community
-  alias CMS.Passport.Authorization
 
   @handlers [
     Activity.Post,
@@ -97,7 +96,10 @@ defmodule GroupherServer.Activity.CommunityLog do
       Activity.CommunityLog.list(community, actor, %{filter: %{actions: [:created]}}, 1)
   """
   def list(%Community{} = community, actor, selection, page \\ 1) do
-    with {:ok, true} <- Authorization.check(actor, "audit.read", %{community: community}),
+    with {:ok, true} <-
+           GroupherServer.CMS.passport_authorization_check(actor, "audit.read", %{
+             community: community
+           }),
          {:ok, resolved} <- Filter.resolve(selection, active_actions()),
          {:ok, normalized} <- normalize_filter(Map.put(resolved.filter, :page, page), :list) do
       {total_count, entries} =
@@ -127,7 +129,10 @@ defmodule GroupherServer.Activity.CommunityLog do
       Activity.CommunityLog.stats(community, actor, %{filter: %{outcomes: [:denied]}})
   """
   def stats(%Community{} = community, actor, selection) do
-    with {:ok, true} <- Authorization.check(actor, "audit.read", %{community: community}),
+    with {:ok, true} <-
+           GroupherServer.CMS.passport_authorization_check(actor, "audit.read", %{
+             community: community
+           }),
          {:ok, resolved} <- Filter.resolve(selection, active_actions()),
          {:ok, normalized} <- normalize_filter(resolved.filter, :stats) do
       {total_count, counts} =
@@ -154,7 +159,10 @@ defmodule GroupherServer.Activity.CommunityLog do
       Activity.CommunityLog.config(community, actor)
   """
   def config(%Community{} = community, actor) do
-    with {:ok, true} <- Authorization.check(actor, "audit.read", %{community: community}) do
+    with {:ok, true} <-
+           GroupherServer.CMS.passport_authorization_check(actor, "audit.read", %{
+             community: community
+           }) do
       resources =
         Enum.map(@handlers, fn handler ->
           actions =
@@ -191,7 +199,10 @@ defmodule GroupherServer.Activity.CommunityLog do
   """
   def export_logs(%Community{} = community, actor, selection, format)
       when format in [:json, :csv] do
-    with {:ok, true} <- Authorization.check(actor, "audit.read", %{community: community}),
+    with {:ok, true} <-
+           GroupherServer.CMS.passport_authorization_check(actor, "audit.read", %{
+             community: community
+           }),
          {:ok, resolved} <- Filter.resolve(selection, active_actions()),
          {:ok, normalized} <- normalize_filter(Map.put(resolved.filter, :page, 1), :list) do
       {total_count, entries} =
@@ -205,7 +216,7 @@ defmodule GroupherServer.Activity.CommunityLog do
       content = encode_export(entries, format, manifest)
 
       with {:ok, _audit_event} <-
-             Activity.log(community, :activity_exported,
+             Activity.Workflow.log(community, :activity_exported,
                actor: actor,
                payload: %{
                  format: format,

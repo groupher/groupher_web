@@ -4,7 +4,8 @@ defmodule GroupherServer.CMS.DocTree.Commands.DeleteNode do
 
       CMS.DocTree.delete_node -> DeleteNode.execute -> command support -> Persist.delete_node
   """
-  alias GroupherServer.CMS.DocTree.{Commands.Support, Persist}
+  alias GroupherServer.CMS
+  alias CMS.DocTree.{Commands.Support, Persist}
 
   def execute(community, id, args) do
     if Support.has_option?(args, :command_id) do

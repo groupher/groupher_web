@@ -12,8 +12,6 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
 
   alias GroupherServer.{Analysis, CMS, Repo}
   alias Analysis.{Const, Model.MetricEvent}
-  alias CMS.Artiment.Matcher
-  alias CMS.Articles.Bindings
 
   @doc """
   Appends an Article action using the non-visitor `all` dimension.
@@ -27,9 +25,10 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
   def append_article_action(article, operation_id, metric, opts \\ [])
 
   def append_article_action(%{id: _id} = article, operation_id, metric, opts) do
-    with {:ok, %{artiment: article_type}} <- Matcher.match_interaction(article),
+    with {:ok, %{artiment: article_type}} <-
+           GroupherServer.CMS.artiment_matcher_match_interaction(article),
          {:ok, community_id} <- article_binding_id(article, opts),
-         true <- article_type in CMS.Artiment.Threads.article_enums(),
+         true <- article_type in CMS.artiment_threads_article_enums(),
          true <- metric in Const.metrics(),
          {:ok, _article_id} <- cast_article_id(Map.get(article, :id)) do
       append(%{
@@ -98,7 +97,7 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
         {:ok, community_id}
 
       _ ->
-        case Bindings.get(article, Map.get(article, :community)) do
+        case GroupherServer.CMS.articles_bindings_get(article, Map.get(article, :community)) do
           {:ok, %{community: %{id: community_id}}} -> {:ok, community_id}
           {:error, reason} -> {:error, reason}
         end
@@ -128,7 +127,7 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
        }) do
     cond do
       Ecto.UUID.cast(operation_id) == :error -> {:error, :invalid_operation_id}
-      article_type not in CMS.Artiment.Threads.article_enums() -> {:error, :invalid_article_type}
+      article_type not in CMS.artiment_threads_article_enums() -> {:error, :invalid_article_type}
       metric not in Const.metrics() -> {:error, :invalid_metric}
       actor_type not in Const.actor_dimensions() -> {:error, :invalid_actor_type}
       not is_boolean(is_authenticated) -> {:error, :invalid_authentication_flag}

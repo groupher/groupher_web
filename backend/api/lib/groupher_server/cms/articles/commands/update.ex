@@ -15,13 +15,10 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
   alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.Model.User
   alias CMS.Articles.Draft.Store, as: DraftStore
-  alias CMS.Articles.Bindings
-  alias CMS.Articles.RevisionResult
+  alias CMS.Articles.{Bindings, RevisionResult}
   alias CMS.Articles.Store, as: ArticleStore
-  alias CMS.Articles.Publish.Effects
-  alias CMS.Articles.Publish.Target
-  alias CMS.Command
-  alias CMS.FrontDesk
+  alias CMS.Articles.Publish.{Effects, Target}
+  alias CMS.{Command, FrontDesk}
   alias CMS.Model.{Article, ArticleBinding, ArticleLifecycle, Community}
   alias CMS.Articles.Commands.RevisionConfirmation, as: Confirmation
 

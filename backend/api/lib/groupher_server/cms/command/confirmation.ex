@@ -14,6 +14,7 @@ defmodule GroupherServer.CMS.Command.Confirmation do
 
   @type json_object :: %{required(String.t()) => term()}
 
+  alias GroupherServer.CMS
   alias Helper.T
 
   @spec operation_tag(atom()) :: String.t()
@@ -111,6 +112,6 @@ defmodule GroupherServer.CMS.Command.Confirmation do
     Map.get(data, key) == expected
   end
 
-  @spec decode_error() :: {:error, GroupherServer.CMS.ErrorCat.Error.t()}
-  def decode_error, do: {:error, GroupherServer.CMS.ErrorCat.command_result_unavailable()}
+  @spec decode_error() :: {:error, CMS.ErrorCat.Error.t()}
+  def decode_error, do: {:error, CMS.ErrorCat.command_result_unavailable()}
 end

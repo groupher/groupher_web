@@ -37,7 +37,7 @@ defmodule GroupherServer.Analysis.Contribution.Workflow do
            with {:ok, contribute} <- Persist.record_community(community),
                 digest <- Query.community_records(community) |> Query.digest_from_records(),
                 {:ok, result} <-
-                  CMS.Communities.update_operations(
+                  CMS.communities_update_operations(
                     community,
                     %{contributes_digest: digest},
                     "analysis:community-contribution:#{community.id}:#{Datetime.today()}:#{contribute.count}"

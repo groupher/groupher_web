@@ -14,13 +14,13 @@ defmodule GroupherServer.CMS.Communities.Lifecycle do
 
   import Ecto.Query, warn: false
 
+  alias GroupherServer.Activity
+
   alias GroupherServer.{CMS, ErrorCat, Repo}
   alias Ecto.Multi
-  alias GroupherServer.Activity.Model.CommunityLog
+  alias Activity.Model.CommunityLog
   alias CMS.Communities.ErrorCat, as: CommunityErrorCat
-  alias CMS.Communities.Const
-  alias CMS.Communities.Effects
-  alias CMS.Communities.Transaction
+  alias CMS.Communities.{Const, Effects, Transaction}
   alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CMS.Model.{Community, CommunityLifecycle, CommunityLifecycleBlocker}
 

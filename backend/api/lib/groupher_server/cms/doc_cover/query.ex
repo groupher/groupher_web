@@ -20,7 +20,6 @@ defmodule GroupherServer.CMS.DocCover.Query do
   alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
-  alias Accounts.Profiles.ErrorCat
 
   alias CMS.Model.{
     Article,
@@ -129,7 +128,8 @@ defmodule GroupherServer.CMS.DocCover.Query do
     end
   end
 
-  defp authorize_view(_community, :dashboard, _actor), do: {:error, ErrorCat.account_login()}
+  defp authorize_view(_community, :dashboard, _actor),
+    do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
 
   defp card_item(
          _community,

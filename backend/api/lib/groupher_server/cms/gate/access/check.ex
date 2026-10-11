@@ -42,7 +42,7 @@ defmodule GroupherServer.CMS.Gate.Access.Check do
     with {:ok, context} <- Load.community(community),
          %Decision{allowed: true} <-
            Decision.from_result(
-             Policy.Community.check_access(actor, action, context.community, context),
+             Policy.community(actor, action, context.community, context),
              context
            ) do
       {:ok, context.community}
@@ -62,7 +62,7 @@ defmodule GroupherServer.CMS.Gate.Access.Check do
     with {:ok, context} <- Load.community(community),
          %Decision{allowed: true} = decision <-
            Decision.from_result(
-             Policy.Community.check_access(actor, action, context.community, context),
+             Policy.community(actor, action, context.community, context),
              context
            ) do
       decision.context.community
@@ -91,7 +91,7 @@ defmodule GroupherServer.CMS.Gate.Access.Check do
              with {:ok, context} <- Load.comment(community, thread, article, comment),
                   %Decision{allowed: true} <-
                     Decision.from_result(
-                      Policy.Comment.check_access(actor, action, comment, context),
+                      Policy.comment(actor, action, comment, context),
                       context
                     ) do
                {:ok, Map.put(context.comment, :community, context.community)}
@@ -140,7 +140,7 @@ defmodule GroupherServer.CMS.Gate.Access.Check do
              with {:ok, context} <- Load.article(community, thread, resource),
                   %Decision{allowed: true} <-
                     Decision.from_result(
-                      Policy.Article.check_access(actor, action, resource, context),
+                      Policy.article(actor, action, resource, context),
                       context
                     ) do
                {:ok, canonical_resource(context_resource(context), context.community)}
@@ -188,7 +188,7 @@ defmodule GroupherServer.CMS.Gate.Access.Check do
     with {:ok, context} <- Load.comment(community, thread, article, comment),
          %Decision{allowed: true} = decision <-
            Decision.from_result(
-             Policy.Comment.check_access(actor, action, context.comment, context),
+             Policy.comment(actor, action, context.comment, context),
              context
            ) do
       decision.context.comment
@@ -213,7 +213,7 @@ defmodule GroupherServer.CMS.Gate.Access.Check do
     with {:ok, context} <- Load.comment(community, thread, article, comment),
          %Decision{allowed: true} = decision <-
            Decision.from_result(
-             Policy.Comment.check_access(actor, action, context.comment, context),
+             Policy.comment(actor, action, context.comment, context),
              context
            ) do
       parent = canonical_resource(decision.context.article, decision.context.community)
@@ -239,7 +239,7 @@ defmodule GroupherServer.CMS.Gate.Access.Check do
          {:ok, context} <- Load.article(community, thread, article),
          %Decision{allowed: true} = decision <-
            Decision.from_result(
-             Policy.Article.check_access(actor, action, context_resource(context), context),
+             Policy.article(actor, action, context_resource(context), context),
              context
            ) do
       decision.context
@@ -262,7 +262,7 @@ defmodule GroupherServer.CMS.Gate.Access.Check do
          {:ok, context} <- Load.article_in_community(community, thread, article),
          %Decision{allowed: true} = decision <-
            Decision.from_result(
-             Policy.Article.check_access(actor, action, context_resource(context), context),
+             Policy.article(actor, action, context_resource(context), context),
              context
            ) do
       decision.context
@@ -289,7 +289,7 @@ defmodule GroupherServer.CMS.Gate.Access.Check do
     with {:ok, context} <- Load.doc(community, article, branch_id),
          %Decision{allowed: true} = decision <-
            Decision.from_result(
-             Policy.Article.check_access(actor, action, context_resource(context), context),
+             Policy.article(actor, action, context_resource(context), context),
              context
            ) do
       decision.context

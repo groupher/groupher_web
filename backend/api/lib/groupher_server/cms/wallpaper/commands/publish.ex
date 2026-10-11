@@ -9,8 +9,7 @@ defmodule GroupherServer.CMS.Wallpaper.Commands.Publish do
   alias Accounts.Model.User
   alias CMS.Command
   alias CMS.Model.Community
-  alias CMS.Wallpaper.Workflow
-  alias CMS.Wallpaper.Commands.Confirmation
+  alias CMS.Wallpaper.{Workflow, Commands.Confirmation}
   alias Helper.T
 
   @spec execute(Community.t(), map(), User.t()) :: T.domain_res(map())

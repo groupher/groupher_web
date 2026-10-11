@@ -20,7 +20,7 @@ defmodule GroupherServer.CMS.DocTree.Effects do
          {:ok, _event} <-
            CMS.Outbox.send(%{
              event: "doc_tree.changed",
-             worker: CMS.Outbox.Workers.Community.Cleanup,
+             worker: GroupherServer.Jobs.CMSOutboxCommunity,
              resource_type: "community",
              resource_id: community.id,
              identity: identity,

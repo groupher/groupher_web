@@ -24,7 +24,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Effects do
       when is_atom(thread) and is_binary(effect_key) do
     CMS.Outbox.send(%{
       event: "community.taxonomy_changed",
-      worker: CMS.Outbox.Workers.Community.Cleanup,
+      worker: GroupherServer.Jobs.CMSOutboxCommunity,
       resource_type: "community",
       resource_id: community.id,
       identity: identity,

@@ -5,7 +5,7 @@ defmodule GroupherServer.CMS.ErrorCat do
   CMS operation -> catalog reason -> stable protocol error.
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:cms}
+  use GroupherServer.ErrorCat, namespace: {:cms}
 
   error(:invalid_article_path, code: 4501)
   error(:invalid_requirement, code: 4502)

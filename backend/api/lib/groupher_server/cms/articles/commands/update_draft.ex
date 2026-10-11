@@ -7,11 +7,12 @@ defmodule GroupherServer.CMS.Articles.Commands.UpdateDraft do
         -> Gate -> Draft.Store.update
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS
-  alias GroupherServer.CMS.Articles
-  alias GroupherServer.CMS.Articles.Draft.Store
-  alias GroupherServer.CMS.Model.{Article, Author, Community}
+  alias GroupherServer.{Accounts, CMS}
+
+  alias Accounts.Model.User
+  alias CMS.Articles
+  alias CMS.Articles.Draft.Store
+  alias CMS.Model.{Article, Author, Community}
   alias GroupherServer.FrontDesk, as: RootFrontDesk
 
   @spec execute(Ecto.UUID.t(), map(), User.t() | Author.t(), keyword()) ::

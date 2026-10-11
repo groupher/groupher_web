@@ -15,11 +15,8 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Query do
   alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
-  alias CMS.Artiment.Matcher
-  alias CMS.FrontDesk
-  alias CMS.Helper.EmotionFormatter
+  alias CMS.{Artiment.Matcher, FrontDesk, EmotionFormatter, Model.Interaction.RoaringBitmap}
   alias CMS.Interactions.{Config, DefaultViewerState, ErrorCat, Reactions, ReadState}
-  alias CMS.Model.Interaction.RoaringBitmap
 
   @article_threads Config.article_threads()
   @supported_threads [:comment | @article_threads]

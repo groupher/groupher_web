@@ -10,8 +10,7 @@ defmodule GroupherServer.CMS.Articles.Commands.BindingSupport do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Articles.Commands.BindingConfirmation
-  alias CMS.Articles.Effects
+  alias CMS.Articles.{Commands.BindingConfirmation, Effects}
   alias CMS.FrontDesk
   alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CMS.Model.{Article, ArticleBinding, Community, PinnedArticle}

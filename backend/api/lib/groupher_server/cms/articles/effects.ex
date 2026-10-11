@@ -25,7 +25,7 @@ defmodule GroupherServer.CMS.Articles.Effects do
       when is_binary(event) and is_binary(resource_type) and is_map(data) and is_list(opts) do
     CMS.Outbox.send(%{
       event: event,
-      worker: CMS.Outbox.Workers.Article.Cleanup,
+      worker: GroupherServer.Jobs.CMSOutboxArticle,
       resource_type: resource_type,
       resource_id: resource_id,
       identity: identity,

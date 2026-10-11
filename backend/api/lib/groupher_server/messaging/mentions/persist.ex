@@ -14,11 +14,13 @@ defmodule GroupherServer.Messaging.Mentions.Persist do
   import Ecto.Query, warn: false
   import GroupherServer.FrontDesk, only: [thread_of: 1]
 
+  alias GroupherServer.{Messaging, Accounts}
+
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Artiment.Threads
+
   alias CMS.Model.Comment
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.Messaging.Model.Mention
+  alias Accounts.Model.User
+  alias Messaging.Model.Mention
   alias Helper.ORM
 
   @doc """
@@ -67,7 +69,7 @@ defmodule GroupherServer.Messaging.Mentions.Persist do
   end
 
   defp normalize_mention(%{thread: thread} = mention) when is_atom(thread) do
-    case Threads.to_atom(thread) do
+    case GroupherServer.CMS.artiment_threads_to_atom(thread) do
       {:ok, thread} -> {:ok, %{mention | thread: thread}}
       {:error, _reason} -> {:error, "insert mentions error"}
     end

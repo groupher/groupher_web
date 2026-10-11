@@ -14,9 +14,7 @@ defmodule GroupherServerWeb.Schema.CMS.Dashboard.Metrics.Enums do
   import GroupherServerWeb.Schema.Helper.Fields, only: [dsb_enum: 1, enum_values: 1]
 
   alias GroupherServer.CMS
-  alias CMS.Dashboard.KanbanBoards
-
-  require KanbanBoards
+  require CMS
 
   enum :dsb_section do
     value(:seo)
@@ -56,7 +54,7 @@ defmodule GroupherServerWeb.Schema.CMS.Dashboard.Metrics.Enums do
     value(:custom)
   end
 
-  enum(:kanban_board, do: enum_values(KanbanBoards.values()))
+  enum(:kanban_board, do: enum_values(CMS.dashboard_kanban_boards_values()))
 
   dsb_enum(:post_layout)
   dsb_enum(:kanban_layout)

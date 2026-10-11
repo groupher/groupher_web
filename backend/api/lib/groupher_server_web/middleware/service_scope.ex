@@ -12,8 +12,6 @@ defmodule GroupherServerWeb.Middleware.ServiceScope do
 
   @behaviour Absinthe.Middleware
 
-  alias GroupherServer.Auth
-  alias Auth.Contract, as: AuthContract
   import Helper.Utils, only: [handle_absinthe_error: 3]
 
   @impl Absinthe.Middleware
@@ -31,7 +29,7 @@ defmodule GroupherServerWeb.Middleware.ServiceScope do
       reject(
         resolution,
         "service identity is not authorized for this operation",
-        AuthContract.service_scope_forbidden()
+        GroupherServer.Auth.contract_service_scope_forbidden()
       )
     end
   end
@@ -44,7 +42,7 @@ defmodule GroupherServerWeb.Middleware.ServiceScope do
     reject(
       resolution,
       "service identity is required for this operation",
-      AuthContract.service_token_invalid()
+      GroupherServer.Auth.contract_service_token_invalid()
     )
   end
 

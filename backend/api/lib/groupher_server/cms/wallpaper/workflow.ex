@@ -18,8 +18,8 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
   alias Helper.Utils
   alias Helper.ORM.TransactionSettings
   alias Accounts.Model.User
-  alias CMS.Assets.GeneratedBatch
-  alias CMS.Assets.GeneratedBatch.PublishCapability
+  alias CMS.Assets.Maintenance.GeneratedBatch
+  alias CMS.Assets.Maintenance.GeneratedBatch.PublishCapability
 
   alias CMS.Model.{
     Community,

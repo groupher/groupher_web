@@ -16,8 +16,7 @@ defmodule GroupherServer.CMS.Comments.Query do
   import ShortMaps
   alias GroupherServer.{Accounts, CMS, Jobs, Repo}
 
-  alias CMS.QueryBuilder
-  alias CMS.FrontDesk
+  alias CMS.{QueryBuilder, FrontDesk}
   alias Accounts.Model.User
   alias CMS.Gate.Context.Scope.Comment, as: CommentContext
   alias CMS.Comments.{InteractionResponse, Replies}
@@ -258,7 +257,11 @@ defmodule GroupherServer.CMS.Comments.Query do
         true ->
           {:ok, _} =
             Jobs.enqueue_best_effort(:reconcile_comments_participants, article.id, fn ->
-              Jobs.reconcile_comments_participants(article, paged_data.total_count)
+              Jobs.reconcile_comments_participants(
+                article.thread,
+                article.id,
+                paged_data.total_count
+              )
             end)
 
           done(paged_data)

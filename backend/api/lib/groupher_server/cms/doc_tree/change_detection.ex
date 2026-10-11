@@ -17,7 +17,9 @@ defmodule GroupherServer.CMS.DocTree.ChangeDetection do
         -> Repo / published projection
   """
 
-  alias GroupherServer.CMS.Model.{ArticleRevision, DocDraft}
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{ArticleRevision, DocDraft}
 
   @doc """
   Returns whether a draft doc version differs from its public version.

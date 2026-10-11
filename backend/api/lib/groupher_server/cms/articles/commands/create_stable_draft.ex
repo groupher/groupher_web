@@ -7,13 +7,11 @@ defmodule GroupherServer.CMS.Articles.Commands.CreateStableDraft do
         -> Draft.Store.create
   """
 
-  alias GroupherServer.CMS
-  alias GroupherServer.Accounts.Model.User
-  alias CMS.Articles
-  alias GroupherServer.CMS.Articles.Draft.Store
-  alias CMS.Command
-  alias CMS.FrontDesk
-  alias GroupherServer.CMS.Model.{Author, Community}
+  alias GroupherServer.{Accounts, CMS}
+
+  alias Accounts.Model.User
+  alias CMS.{Articles, Articles.Draft.Store, Command, FrontDesk}
+  alias CMS.Model.{Author, Community}
   alias CMS.Articles.Commands.CreateStableDraftConfirmation, as: Confirmation
 
   @spec execute(Community.t(), atom(), map(), User.t() | Author.t(), keyword()) ::

@@ -26,7 +26,7 @@ defmodule GroupherServer.CMS.FrontDesk do
   alias CMS.FrontDesk.Comment, as: CommentFrontDesk
   alias CMS.Comments.ErrorCat, as: CommentsErrorCat
 
-  alias CMS.Helper.ArticlePath
+  alias CMS.ArticlePath
   alias CMS.Model.CommunityTag
   alias Helper.T
 

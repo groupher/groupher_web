@@ -272,6 +272,27 @@ defmodule GroupherServer.Analysis.Web do
   end
 
   @doc """
+  Provisions analytics as an optional community-creation side effect.
+
+  Environments that disable create-time provisioning receive a tagged deferred
+  result without contacting the provider. Query paths can still use the
+  idempotent provisioning flow later.
+
+  ## Examples
+
+      Analysis.Web.provision_community_on_create(community)
+  """
+  @spec provision_community_on_create(Community.t()) ::
+          {:ok, String.t() | :deferred} | {:error, term()}
+  def provision_community_on_create(%Community{} = community) do
+    if Config.provision_on_community_create?() do
+      provision_community(community)
+    else
+      {:ok, :deferred}
+    end
+  end
+
+  @doc """
   Ensures a persisted community has its provider website identity.
 
   Community creation invokes this once its local records are ready. Query
@@ -322,8 +343,15 @@ defmodule GroupherServer.Analysis.Web do
         {:error, reason} -> {:ok, unavailable_visitor_location_payload(range, reason)}
       end
     else
-      nil -> {:ok, unavailable_visitor_location_payload(range, ErrorCat.not_configured())}
-      {:error, reason} -> {:ok, unavailable_visitor_location_payload(range, reason)}
+      nil ->
+        {:ok,
+         unavailable_visitor_location_payload(
+           range,
+           GroupherServer.CMS.error_cat_not_configured()
+         )}
+
+      {:error, reason} ->
+        {:ok, unavailable_visitor_location_payload(range, reason)}
     end
   end
 
@@ -458,7 +486,7 @@ defmodule GroupherServer.Analysis.Web do
   defp ensure_runtime_configured do
     case Config.runtime().api_token do
       token when is_binary(token) and token != "" -> {:ok, :pass}
-      _ -> {:error, ErrorCat.not_configured()}
+      _ -> {:error, GroupherServer.CMS.error_cat_not_configured()}
     end
   end
 

@@ -5,13 +5,13 @@ defmodule GroupherServer.CMS.Assets.Commands.Register do
       upload callback / GraphQL -> Register -> CMS.Command -> Gate -> Persist -> Confirmation
   """
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{CMS, Repo}
   alias CMS.Assets.Commands.RegisterAssetConfirmation, as: Confirmation
-  alias CMS.Command
-  alias CMS.Assets.Persist
-  alias CMS.ErrorCat
+  alias CMS.{Command, Assets.Persist, ErrorCat}
   alias CMS.Model.{Community, CommunityAsset}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
 
   @spec execute(Community.t(), map(), User.t() | nil, String.t() | nil) ::
           {:ok, CommunityAsset.t()} | {:error, term()}

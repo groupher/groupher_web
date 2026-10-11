@@ -5,13 +5,13 @@ defmodule GroupherServer.CMS.Assets.Commands.Restore do
       GraphQL / facade -> Restore -> CMS.Command -> Gate -> Persist -> Confirmation
   """
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{CMS, Repo}
   alias CMS.Assets.Commands.RestoreAssetConfirmation, as: Confirmation
-  alias CMS.Command
-  alias CMS.Assets.Persist
-  alias CMS.ErrorCat
+  alias CMS.{Command, Assets.Persist, ErrorCat}
   alias CMS.Model.{Community, CommunityAsset}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
 
   @spec execute(Community.t(), term(), User.t(), String.t() | nil) ::
           {:ok, CommunityAsset.t()} | {:error, term()}

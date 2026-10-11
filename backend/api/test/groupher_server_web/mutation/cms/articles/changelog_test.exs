@@ -58,7 +58,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Changelog do
       assert exist_in?(%{id: community_tag.id}, changelog.community_tags)
     end
 
-    test "create changelog should escape xss attracts", ~m(user_conn community user)a do
+    test "create changelog should escape xss attracts", ~m(user_conn community)a do
       changelog_attr = mock_attrs(:changelog, %{body: mock_xss_string()})
       variables = changelog_attr |> Map.merge(%{community: community.slug}) |> camelize_map_key
 
@@ -72,7 +72,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Changelog do
       assert not String.contains?(body_html, "<script")
     end
 
-    test "create changelog should escape xss attracts 2", ~m(user_conn community user)a do
+    test "create changelog should escape xss attracts 2", ~m(user_conn community)a do
       changelog_attr = mock_attrs(:changelog, %{body: mock_xss_string(:safe)})
       variables = changelog_attr |> Map.merge(%{community: community.slug}) |> camelize_map_key
 
@@ -89,7 +89,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Changelog do
     # NOTE: this test is IMPORTANT, cause json_codec: Jason in router will cause
     # server crash when GraphQL parse error
     test "create changelog with missing non_null field should get 200 error",
-         ~m(user_conn community user)a do
+         ~m(user_conn community)a do
       changelog_attr = mock_attrs(:changelog)
       variables = changelog_attr |> Map.merge(%{community: community.slug}) |> Map.delete(:title)
 
@@ -97,7 +97,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Changelog do
     end
 
     test "update a changelog without login user fails",
-         ~m(guest_conn community changelog user)a do
+         ~m(guest_conn community changelog)a do
       unique_num = System.unique_integer([:positive, :monotonic])
 
       variables = %{
@@ -225,7 +225,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Changelog do
     end
 
     test "update changelog with valid attrs should have is_edited meta info update",
-         ~m(owner_conn community changelog user)a do
+         ~m(owner_conn community changelog)a do
       unique_num = System.unique_integer([:positive, :monotonic])
 
       variables = %{
@@ -245,7 +245,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Changelog do
       assert true == updated_changelog["meta"]["isEdited"]
     end
 
-    test "login user with auth passport update a changelog", ~m(community changelog user)a do
+    test "login user with auth passport update a changelog", ~m(community changelog)a do
       belongs_community_slug = changelog.communities |> List.first() |> Map.get(:slug)
 
       passport_rules = %{belongs_community_slug => %{"changelog.edit" => true}}
@@ -271,7 +271,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Changelog do
     end
 
     test "unauth user update changelog fails",
-         ~m(user_conn guest_conn community changelog user)a do
+         ~m(user_conn guest_conn community changelog)a do
       unique_num = System.unique_integer([:positive, :monotonic])
 
       variables = %{

@@ -19,8 +19,7 @@ defmodule GroupherServerWeb.Middleware.Authorize do
   @behaviour Absinthe.Middleware
 
   import Helper.Utils, only: [handle_absinthe_error: 3]
-  alias GroupherServer.{Accounts, ErrorCat}
-  alias Accounts.Profiles.ErrorCat, as: ProfileErrorCat
+  alias GroupherServer.{ErrorCat}
 
   def call(%{context: %{cur_user: _}} = resolution, _info), do: resolution
 
@@ -35,7 +34,7 @@ defmodule GroupherServerWeb.Middleware.Authorize do
     resolution
     |> handle_absinthe_error(
       "Authorize: need login",
-      ErrorCat.code(ProfileErrorCat.account_login())
+      ErrorCat.code(GroupherServer.Accounts.profiles_error_cat_account_login())
     )
   end
 end

@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "contexts": {
+    "accounts": { "mode": "strict" },
+    "activity": { "mode": "strict" },
+    "analysis": { "mode": "strict" },
+    "auth": { "mode": "strict" },
+    "cms": { "mode": "strict" },
+    "error_cat": { "mode": "strict" },
+    "jobs": { "mode": "strict" },
+    "messaging": { "mode": "strict" },
+    "public_cache": { "mode": "strict" },
+    "request_actor": { "mode": "strict" },
+    "service_auth": { "mode": "strict" }
+  }
+}

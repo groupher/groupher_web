@@ -9,26 +9,26 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
   import Absinthe.Resolution.Helpers, only: [batch: 3]
 
   alias GroupherServer.CMS
-  alias GroupherServer.CMS.Model.Community
+  alias CMS.Model.Community
 
   def community(_root, %{slug: slug, inc_views: inc_views}, %{context: %{cur_user: user}}) do
-    CMS.Communities.fetch(slug, user, inc_views: inc_views)
+    CMS.communities_fetch(slug, user, inc_views: inc_views)
   end
 
   def community(_root, %{slug: slug, inc_views: inc_views}, _info) do
-    CMS.Communities.fetch(slug, inc_views: inc_views)
+    CMS.communities_fetch(slug, inc_views: inc_views)
   end
 
   def paged_communities(_root, ~m(filter)a, %{context: %{cur_user: user}}) do
-    CMS.Communities.paged(filter, user)
+    CMS.communities_paged(filter, user)
   end
 
   def paged_communities(_root, ~m(filter)a, _info) do
-    CMS.Communities.paged(filter)
+    CMS.communities_paged(filter)
   end
 
   def create_community(_root, args, %{context: %{cur_user: user}}) do
-    CMS.Communities.create(Map.delete(args, :command_id), user, args[:command_id])
+    CMS.communities_create(Map.delete(args, :command_id), user, args[:command_id])
   end
 
   def update_community(
@@ -37,25 +37,25 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
         %{context: %{cur_user: user}}
       ) do
     params = Map.drop(args, [:community, :command_id])
-    CMS.Communities.update(community, params, user, args[:command_id])
+    CMS.communities_update(community, params, user, args[:command_id])
   end
 
   def request_destroy_community(_root, %{community: %Community{} = community} = args, %{
         context: %{cur_user: user}
       }) do
-    CMS.Communities.request_destroy(community, user, command_id: args[:command_id])
+    CMS.communities_request_destroy(community, user, command_id: args[:command_id])
   end
 
   def check_community_name(_root, %{slug: slug}, _info) do
-    CMS.Communities.check_name(slug)
+    CMS.communities_check_name(slug)
   end
 
   def paged_categories(_root, ~m(filter)a, _info) do
-    CMS.Communities.paged_categories(filter)
+    CMS.communities_paged_categories(filter)
   end
 
   def create_category(_root, ~m(community title slug command_id)a, %{context: %{cur_user: user}}) do
-    CMS.Communities.create_category(
+    CMS.communities_create_category(
       %{community: community, title: title, slug: slug},
       user,
       command_id
@@ -65,48 +65,48 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
   def delete_category(_root, %{community: community, id: id, command_id: command_id}, %{
         context: %{cur_user: user}
       }) do
-    CMS.Communities.delete_category(community, id, user, command_id)
+    CMS.communities_delete_category(community, id, user, command_id)
   end
 
   def update_category(_root, ~m(community id title command_id)a, %{context: %{cur_user: user}}) do
-    CMS.Communities.update_category(community, %{id: id, title: title}, user, command_id)
+    CMS.communities_update_category(community, %{id: id, title: title}, user, command_id)
   end
 
   def set_category(_root, ~m(community category_id command_id)a, %{context: %{cur_user: user}}) do
     with {:ok, community} <- resolve_community(community) do
-      CMS.Communities.set_category(community, category_id, user, command_id)
+      CMS.communities_set_category(community, category_id, user, command_id)
     end
   end
 
   def unset_category(_root, ~m(community category_id command_id)a, %{context: %{cur_user: user}}) do
     with {:ok, community} <- resolve_community(community) do
-      CMS.Communities.unset_category(community, category_id, user, command_id)
+      CMS.communities_unset_category(community, category_id, user, command_id)
     end
   end
 
   defp resolve_community(%Community{} = community), do: {:ok, community}
-  defp resolve_community(ref), do: CMS.FrontDesk.community(ref, mode: :internal)
+  defp resolve_community(ref), do: GroupherServer.CMS.front_desk_community(ref, mode: :internal)
 
   def add_moderator(_root, ~m(community user command_id)a, %{context: %{cur_user: cur_user}}) do
-    CMS.Communities.add_moderator(community, user, cur_user, command_id)
+    CMS.communities_add_moderator(community, user, cur_user, command_id)
   end
 
   def add_moderators(_root, ~m(community users command_id)a, %{context: %{cur_user: cur_user}}) do
-    CMS.Communities.add_moderators(community, users, cur_user, command_id)
+    CMS.communities_add_moderators(community, users, cur_user, command_id)
   end
 
   def remove_moderator(_root, ~m(community user command_id)a, %{context: %{cur_user: cur_user}}) do
-    CMS.Communities.remove_moderator(community, user, cur_user, command_id)
+    CMS.communities_remove_moderator(community, user, cur_user, command_id)
   end
 
   def update_moderator_passport(_root, ~m(community user rules command_id)a, %{
         context: %{cur_user: cur_user}
       }) do
-    CMS.Communities.update_moderator_passport(community, rules, user, cur_user, command_id)
+    CMS.communities_update_moderator_passport(community, rules, user, cur_user, command_id)
   end
 
   def paged_community_moderators(_root, ~m(community filter)a, _info) do
-    CMS.Communities.members(:moderators, community, filter)
+    CMS.communities_members(:moderators, community, filter)
   end
 
   def create_community_tag(
@@ -116,7 +116,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
           context: %{cur_user: user}
         }
       ) do
-    CMS.Communities.create_tag(community, thread, args, user, command_id)
+    CMS.communities_create_tag(community, thread, args, user, command_id)
   end
 
   def create_community_tag_group(
@@ -124,13 +124,13 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
         %{thread: thread, community: community, command_id: command_id} = args,
         %{context: %{cur_user: user}}
       ) do
-    CMS.Communities.create_tag_group(community, thread, args, user, command_id)
+    CMS.communities_create_tag_group(community, thread, args, user, command_id)
   end
 
   def update_community_tag(_root, %{id: id, command_id: command_id} = args, %{
         context: %{cur_user: user}
       }) do
-    CMS.Communities.update_tag(id, args, user, command_id)
+    CMS.communities_update_tag(id, args, user, command_id)
   end
 
   def update_community_tag_group(
@@ -138,7 +138,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
         %{id: id, thread: thread, community: community, command_id: command_id} = args,
         %{context: %{cur_user: user}}
       ) do
-    CMS.Communities.update_tag_group(community, thread, id, args, user, command_id)
+    CMS.communities_update_tag_group(community, thread, id, args, user, command_id)
   end
 
   def delete_community_tag_group(
@@ -146,35 +146,35 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
         %{id: id, thread: thread, community: community, command_id: command_id},
         %{context: %{cur_user: user}}
       ) do
-    CMS.Communities.delete_tag_group(community, thread, id, user, command_id)
+    CMS.communities_delete_tag_group(community, thread, id, user, command_id)
   end
 
   def delete_community_tag(_root, %{id: id, command_id: command_id}, %{context: %{cur_user: user}}) do
-    CMS.Communities.delete_tag(id, user, command_id)
+    CMS.communities_delete_tag(id, user, command_id)
   end
 
   def set_community_tag(_root, ~m(article community_tag_id command_id)a, %{
         context: %{cur_user: user}
       }) do
-    CMS.Communities.set_tag(article, community_tag_id, user, command_id)
+    CMS.communities_set_tag(article, community_tag_id, user, command_id)
   end
 
   def unset_community_tag(_root, ~m(article community_tag_id command_id)a, %{
         context: %{cur_user: user}
       }) do
-    CMS.Communities.unset_tag(article, community_tag_id, user, command_id)
+    CMS.communities_unset_tag(article, community_tag_id, user, command_id)
   end
 
   def community_tag_groups(_root, ~m(community thread)a, _info) do
-    CMS.Communities.tag_groups(~m(community thread)a)
+    CMS.communities_tag_groups(~m(community thread)a)
   end
 
   def community_tag_stats(_root, ~m(community thread slug)a, _info) do
-    CMS.Communities.tag_stats(community, thread, slug)
+    CMS.communities_tag_stats(community, thread, slug)
   end
 
   def community_tag_stats(root, _args, _info) do
-    CMS.Communities.tag_stats(root)
+    CMS.communities_tag_stats(root)
   end
 
   def community_tag_group_title(%{tag_group: %{title: title}}, _args, _info) do
@@ -199,7 +199,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
         context: %{cur_user: user}
       }) do
     with {:ok, _} <-
-           CMS.Communities.reindex_tags_in_group(
+           CMS.communities_reindex_tags_in_group(
              community,
              thread,
              group_id,
@@ -215,7 +215,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
         context: %{cur_user: user}
       }) do
     with {:ok, _} <-
-           CMS.Communities.reindex_tags_across_groups(community, thread, tags, user, command_id) do
+           CMS.communities_reindex_tags_across_groups(community, thread, tags, user, command_id) do
       {:ok, %{done: true}}
     end
   end
@@ -224,25 +224,25 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
         context: %{cur_user: user}
       }) do
     with {:ok, _} <-
-           CMS.Communities.reindex_tag_groups(community, thread, groups, user, command_id) do
+           CMS.communities_reindex_tag_groups(community, thread, groups, user, command_id) do
       {:ok, %{done: true}}
     end
   end
 
   def subscribe_community(_root, ~m(community command_id)a, %{context: %{cur_user: cur_user}}) do
-    CMS.Communities.subscribe(community, cur_user, command_id)
+    CMS.communities_subscribe(community, cur_user, command_id)
   end
 
   def unsubscribe_community(_root, ~m(community command_id)a, %{context: %{cur_user: cur_user}}) do
-    CMS.Communities.unsubscribe(community, cur_user, command_id)
+    CMS.communities_unsubscribe(community, cur_user, command_id)
   end
 
   def paged_community_subscribers(_root, ~m(community filter)a, %{context: %{cur_user: cur_user}}) do
-    CMS.Communities.members(:subscribers, community, filter, cur_user)
+    CMS.communities_members(:subscribers, community, filter, cur_user)
   end
 
   def paged_community_subscribers(_root, ~m(community filter)a, _info) do
-    CMS.Communities.members(:subscribers, community, filter)
+    CMS.communities_members(:subscribers, community, filter)
   end
 
   def paged_community_subscribers(_root, _args, _info) do
@@ -250,6 +250,6 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
   end
 
   def community_tags_count(root, _, _) do
-    CMS.Communities.count(root, :community_tags)
+    CMS.communities_count(root, :community_tags)
   end
 end

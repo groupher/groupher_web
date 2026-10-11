@@ -17,8 +17,7 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
 
   alias GroupherServer.{CMS, Repo}
 
-  alias CMS.FrontDesk
-  alias CMS.QueryBuilder
+  alias CMS.{FrontDesk, QueryBuilder}
   alias CMS.Model.{AbuseReport, Comment, Community}
   alias Helper.{ORM, T}
 

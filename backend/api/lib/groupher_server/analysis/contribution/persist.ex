@@ -12,8 +12,10 @@ defmodule GroupherServer.Analysis.Contribution.Persist do
 
   import Ecto.Query, warn: false
 
+  alias GroupherServer.Analysis
+
   alias GroupherServer.{Accounts, Repo}
-  alias GroupherServer.Analysis.Contribution.Model.{CommunityContribute, UserContribute}
+  alias Analysis.Contribution.Model.{CommunityContribute, UserContribute}
   alias Accounts.Model.User
   alias Helper.{Datetime, ORM}
 

@@ -25,11 +25,11 @@ defmodule GroupherServer.CMS.DocTree.Publish.Restore do
 
   import Ecto.Query, warn: false
 
-  alias GroupherServer.{Accounts, Activity, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS, Repo}
   alias CMS.ErrorCat
 
   alias Accounts.Model.User
-  alias Activity.EventRef
+
   alias CMS.DocTree.{Effects, Publish.Result, Revision}
 
   alias CMS.Model.{
@@ -184,7 +184,7 @@ defmodule GroupherServer.CMS.DocTree.Publish.Restore do
     nodes = Enum.flat_map(restore_entries, & &1.nodes)
 
     operation_ref =
-      EventRef.derive(
+      GroupherServer.Activity.event_ref_derive(
         {:doc_tree_restore, community.id, branch.id, Enum.map(restore_entries, & &1.event.id)}
       )
 

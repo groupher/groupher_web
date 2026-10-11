@@ -25,7 +25,7 @@ defmodule GroupherServer.CMS.Assets.Effects do
       when is_list(opts) do
     CMS.Outbox.send(%{
       event: "asset.provider_delete",
-      worker: CMS.Outbox.Workers.Asset.Cleanup,
+      worker: GroupherServer.Jobs.CMSOutboxAsset,
       resource_type: "community_asset",
       resource_id: asset.id,
       identity: identity,
@@ -42,7 +42,7 @@ defmodule GroupherServer.CMS.Assets.Effects do
       when is_map(upload) and is_binary(workflow_ref) and workflow_ref != "" do
     CMS.Outbox.send(%{
       event: "asset.application_upload_provider_delete",
-      worker: CMS.Outbox.Workers.Asset.Cleanup,
+      worker: GroupherServer.Jobs.CMSOutboxAsset,
       resource_type: "application_logo_upload",
       resource_id: upload.id,
       identity: {:workflow, workflow_ref},
