@@ -22,6 +22,9 @@ defmodule GroupherServer.Analysis.Aggregator.Persist do
   """
   @spec run_batch(pos_integer()) :: non_neg_integer()
   def run_batch(limit) when is_integer(limit) and limit > 0 do
+    # Shared batches may run concurrently; the metric-scope migration takes the
+    # exclusive form of this lock before changing the two projection tables.
+    Repo.query!("SELECT pg_advisory_xact_lock_shared(2026101110001)")
     events = lock_pending(limit)
 
     try do

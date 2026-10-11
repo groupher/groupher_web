@@ -5,6 +5,8 @@ defmodule GroupherServer.Repo.Migrations.ScopeHourlyMetricsByCommunity do
   @new_name :article_hourly_metrics_community_dimension_index
 
   def up do
+    execute("SELECT pg_advisory_xact_lock(2026101110001)")
+    execute("LOCK TABLE cms.communities IN SHARE ROW EXCLUSIVE MODE")
     execute("LOCK TABLE cms.analysis_metric_events IN ACCESS EXCLUSIVE MODE")
     execute("LOCK TABLE cms.article_hourly_metrics IN ACCESS EXCLUSIVE MODE")
 
