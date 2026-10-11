@@ -2508,6 +2508,7 @@ input CommunityAssetFilter {
 }
 
 input CommunityAssetUploadCompletionInput {
+  uploadRef: String!
   idempotencyKey: String!
   communityId: ID!
   uploaderId: ID
@@ -4099,6 +4100,7 @@ input WallpaperUploadPrepareInput {
 input WallpaperRestoreSnapshotInput {
   snapshotId: ID!
   baseVersion: Int!
+  commandId: ID!
 }
 
 enum DsbSection {
