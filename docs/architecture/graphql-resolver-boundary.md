@@ -54,7 +54,7 @@ resolver 不要求每个函数都只有一行，但它不能拥有完整业务�
 | `article_interaction_payload.ex` |                       1 个公开函数 | 审计时为纯 mapper；R1 后因无生产调用方删除                   |
 | `article_stats_payload.ex`       |                       2 个公开函数 | 审计时拥有 projection read；读取迁入领域后因无生产调用方删除 |
 
-公共 ArticlePath 的纯 parse/validate 由 `CMS.Helper.ArticlePath` 共享；单路径与有界批量的
+公共 ArticlePath 的纯 parse/validate 由 `CMS.ArticlePath` 共享；单路径与有界批量的
 binding/database lookup 由 root `GroupherServer.FrontDesk` 经 `GroupherServer.CMS` 委托给 CMS internal FrontDesk（`article/1`、`articles/1`），
 不在 Web GraphQL resolver 内重复实现。
 

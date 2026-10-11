@@ -39,7 +39,7 @@ defmodule GroupherServer.Accounts.Achievements do
 
   ## Examples
 
-      Accounts.Achievements.downgrade_achievement(user, :follow, 1)
+      Accounts.Achievements.downgrade_achievement(user, :collect, 1)
   """
   @spec downgrade_achievement(User.t(), atom(), integer()) :: T.domain_res(User.t())
   def downgrade_achievement(%User{} = user, action, count) do

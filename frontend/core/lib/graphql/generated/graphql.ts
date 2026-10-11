@@ -528,6 +528,7 @@ export type WallpaperPublishInput = {
 
 export type WallpaperRestoreSnapshotInput = {
   baseVersion: number
+  commandId: string | number
   snapshotId: string | number
 }
 

@@ -16,7 +16,7 @@ defmodule GroupherServer.Accounts.Fans.Persist do
   alias Accounts.{FrontDesk, Model}
   alias Model.{User, UserFollower, UserFollowing}
   alias Accounts.Fans.ErrorCat
-  alias Helper.ORM
+  alias Helper.{ORM, T}
 
   @doc """
   Resolves the canonical follower and target users for a follow action.
@@ -45,17 +45,21 @@ defmodule GroupherServer.Accounts.Fans.Persist do
       Accounts.Fans.Persist.insert_relationships(target_user, follower)
   """
   @spec insert_relationships(User.t(), User.t()) ::
-          {:ok, UserFollower.t(), UserFollowing.t()} | {:error, term()}
+          T.domain_res(%{follower: UserFollower.t(), following: UserFollowing.t()})
   def insert_relationships(%User{} = target_user, %User{} = user) do
-    with {:ok, follower} <-
-           %UserFollower{}
-           |> UserFollower.changeset(%{user_id: target_user.id, follower_id: user.id})
-           |> GroupherServer.Repo.insert(),
-         {:ok, following} <-
-           %UserFollowing{}
-           |> UserFollowing.changeset(%{user_id: user.id, following_id: target_user.id})
-           |> GroupherServer.Repo.insert() do
-      {:ok, %{follower: follower, following: following}}
+    case %UserFollower{}
+         |> UserFollower.changeset(%{user_id: target_user.id, follower_id: user.id})
+         |> GroupherServer.Repo.insert() do
+      {:ok, follower} ->
+        case %UserFollowing{}
+             |> UserFollowing.changeset(%{user_id: user.id, following_id: target_user.id})
+             |> GroupherServer.Repo.insert() do
+          {:ok, following} -> {:ok, %{follower: follower, following: following}}
+          {:error, reason} -> {:error, {:insert_following_failed, reason}}
+        end
+
+      {:error, reason} ->
+        {:error, {:insert_follower_failed, reason}}
     end
   end
 
@@ -68,11 +72,18 @@ defmodule GroupherServer.Accounts.Fans.Persist do
   """
   @spec delete_relationships(User.t(), User.t()) :: {:ok, UserFollower.t()} | {:error, term()}
   def delete_relationships(%User{} = target_user, %User{} = user) do
-    with {:ok, follower} <-
-           ORM.findby_delete!(UserFollower, %{user_id: target_user.id, follower_id: user.id}),
-         {:ok, _following} <-
-           ORM.findby_delete!(UserFollowing, %{user_id: user.id, following_id: target_user.id}) do
-      {:ok, follower}
+    case ORM.findby_delete!(UserFollower, %{user_id: target_user.id, follower_id: user.id}) do
+      {:ok, follower} ->
+        case ORM.findby_delete!(UserFollowing, %{
+               user_id: user.id,
+               following_id: target_user.id
+             }) do
+          {:ok, _following} -> {:ok, follower}
+          {:error, reason} -> {:error, {:delete_following_failed, reason}}
+        end
+
+      {:error, reason} ->
+        {:error, {:delete_follower_failed, reason}}
     end
   end
 

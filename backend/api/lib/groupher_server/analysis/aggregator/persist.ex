@@ -73,6 +73,7 @@ defmodule GroupherServer.Analysis.Aggregator.Persist do
       Repo.insert_all(ArticleHourlyMetric, [attrs],
         on_conflict: [inc: [value: value], set: [updated_at: now]],
         conflict_target: [
+          :community_id,
           :article_type,
           :article_id,
           :bucket_started_at,

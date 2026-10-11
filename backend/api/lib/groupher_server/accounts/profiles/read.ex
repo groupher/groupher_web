@@ -18,10 +18,12 @@ defmodule GroupherServer.Accounts.Profiles.Read do
   """
   @spec run(User.t()) :: {:ok, User.t()} | {:error, term()}
   def run(%User{} = user) do
+    contribution_missing? = is_nil(user.contributes)
+
     with {:ok, user} <- Persist.increment_views(user),
          {:ok, projected} <- Query.project_user(user),
          {:ok, result} <- Persist.persist_contributes(user, projected) do
-      Effects.revalidate_user(result)
+      if contribution_missing?, do: Effects.revalidate_user(result)
       {:ok, result}
     end
   end

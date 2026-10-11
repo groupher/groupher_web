@@ -13,7 +13,6 @@ defmodule GroupherServer.CMS.Assets.GC do
 
   alias GroupherServer.{CMS, Repo}
   alias CMS.Assets.Completeness
-  alias CMS.ContentImport.Model.Job
 
   alias CMS.Model.{
     ArticleAssetRef,
@@ -46,13 +45,7 @@ defmodule GroupherServer.CMS.Assets.GC do
           select: 1
         )
 
-      pending_import =
-        from(job in Job,
-          where:
-            job.community_id == parent_as(:asset).community_id and
-              job.status in [:staging, :ready, :applying],
-          select: 1
-        )
+      active_import_community_ids = CMS.ContentImport.active_community_ids()
 
       pending_replacement =
         from(plan in AssetReplacementPlan,
@@ -82,7 +75,7 @@ defmodule GroupherServer.CMS.Assets.GC do
                asset.inserted_at <= ^cutoff,
            where: not exists(refs),
            where: not exists(pending_upload),
-           where: not exists(pending_import),
+           where: asset.community_id not in subquery(active_import_community_ids),
            where: not exists(pending_replacement),
            where: not exists(legal_hold),
            select: asset

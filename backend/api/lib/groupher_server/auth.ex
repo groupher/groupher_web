@@ -25,6 +25,11 @@ defmodule GroupherServer.Auth do
     to: GroupherServer.Auth.Contract,
     as: :oauth_last_login_method
 
+  @doc "Delegates Auth.Contract.oauth_binding_not_found/0 through the Auth Context boundary."
+  defdelegate contract_oauth_binding_not_found(),
+    to: GroupherServer.Auth.Contract,
+    as: :oauth_binding_not_found
+
   @doc "Delegates Auth.Contract.service_jwks_unavailable/0 through the Auth Context boundary."
   defdelegate contract_service_jwks_unavailable(),
     to: GroupherServer.Auth.Contract,
@@ -71,4 +76,13 @@ defmodule GroupherServer.Auth do
   defdelegate contract_session_unavailable(),
     to: GroupherServer.Auth.Contract,
     as: :session_unavailable
+
+  @doc "Returns the issuer required by Phoenix browser access tokens."
+  defdelegate phoenix_token_issuer(), to: GroupherServer.Auth.Contract
+
+  @doc "Returns the audience required by Phoenix browser access tokens."
+  defdelegate phoenix_token_audience(), to: GroupherServer.Auth.Contract
+
+  @doc "Returns the type required by Phoenix browser access tokens."
+  defdelegate phoenix_token_type(), to: GroupherServer.Auth.Contract
 end

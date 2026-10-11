@@ -144,7 +144,7 @@ defmodule GroupherServer.Activity.Filter do
 
   ## Examples
 
-      Activity.Filter.resolve(%{filter: %{outcomes: [:denied]}}, active_actions)
+      Activity.Filter.resolve(%{filter: %{outcomes: [:denied]}}, [:destroyed, :published])
   """
   def resolve(selection, active_actions) when is_map(selection) do
     preset_key = Map.get(selection, :preset_key)

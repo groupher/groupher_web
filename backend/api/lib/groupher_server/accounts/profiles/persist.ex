@@ -104,10 +104,13 @@ defmodule GroupherServer.Accounts.Profiles.Persist do
     attrs = Map.put(attrs, :user_id, user.id)
 
     result =
-      case ORM.find_by(Social, user_id: user.id) do
-        {:ok, _} -> ORM.update_by(Social, [user_id: user.id], attrs)
-        {:error, _} -> ORM.create(Social, attrs)
-      end
+      %Social{}
+      |> Social.changeset(attrs)
+      |> Repo.insert(
+        on_conflict: {:replace_all_except, [:id, :inserted_at]},
+        conflict_target: :user_id,
+        returning: true
+      )
 
     case result do
       {:ok, _social} -> {:ok, changeset}

@@ -32,7 +32,7 @@ defmodule GroupherServer.CMS.Articles.Bindings.Persist do
         }
 
   @doc "Resolves an ArticleBinding from an explicit Community context."
-  @spec get(struct(), Community.t()) :: {:ok, t()} | {:error, term()}
+  @spec get(map(), Community.t()) :: {:ok, t()} | {:error, term()}
   def get(%ArticleView{article_id: article_id}, %Community{} = community) do
     binding(article_id, community)
   end
@@ -68,13 +68,19 @@ defmodule GroupherServer.CMS.Articles.Bindings.Persist do
     end
   end
 
-  defp binding(article_id, %Community{id: community_id} = community) do
+  defp binding(article_id, %Community{id: community_id}) do
     case Repo.get_by(ArticleBinding, article_id: article_id, community_id: community_id) do
       %ArticleBinding{} = binding ->
+        binding = Repo.preload(binding, :community)
         inner_id = binding.inner_id
 
         {:ok,
-         %{article_id: article_id, community: community, binding: binding, inner_id: inner_id}}
+         %{
+           article_id: article_id,
+           community: binding.community,
+           binding: binding,
+           inner_id: inner_id
+         }}
 
       _ ->
         {:error, :article_binding_not_found}

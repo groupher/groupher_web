@@ -23,7 +23,7 @@ defmodule GroupherServer.Accounts.Upvotes do
 
   ## Examples
 
-      Accounts.Upvotes.paged_articles(user, %{page: 1, size: 20, thread: :post})
+      Accounts.upvotes_paged_articles(user, %{page: 1, size: 20, thread: :post})
   """
   def paged_articles(%User{id: user_id}, %{thread: thread} = filter) when is_atom(thread) do
     load_articles(user_id, thread, filter)

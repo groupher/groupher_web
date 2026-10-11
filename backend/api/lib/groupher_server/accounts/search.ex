@@ -15,7 +15,7 @@ defmodule GroupherServer.Accounts.Search do
 
   ## Examples
 
-      Accounts.Search.user("alice")
+      GroupherServer.Accounts.search_user("alice")
   """
   @spec user(String.t()) :: T.domain_res(T.paged_users())
   def user(name) when is_binary(name), do: User.search(name)

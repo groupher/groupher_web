@@ -69,13 +69,33 @@ defmodule GroupherServer.Analysis.Web.Provision do
          %CommunityDashboard{umami_website_id: nil},
          provider
        ) do
+    :global.trans({__MODULE__, community.id}, fn ->
+      with {:ok, dashboard} <- dashboard_for(community) do
+        ensure_umami_website_id_locked(community, dashboard, provider)
+      end
+    end)
+  end
+
+  defp ensure_umami_website_id(
+         _community,
+         %CommunityDashboard{umami_website_id: website_id},
+         _provider
+       )
+       when is_binary(website_id),
+       do: {:ok, website_id}
+
+  defp ensure_umami_website_id_locked(
+         %Community{} = community,
+         %CommunityDashboard{umami_website_id: nil},
+         provider
+       ) do
     with {:ok, website_id} <- provider.create_website(AnalysisCommunity.from_community(community)),
          {:ok, persisted_website_id} <- persist_website_id(community, website_id) do
       {:ok, persisted_website_id}
     end
   end
 
-  defp ensure_umami_website_id(
+  defp ensure_umami_website_id_locked(
          _community,
          %CommunityDashboard{umami_website_id: website_id},
          _provider

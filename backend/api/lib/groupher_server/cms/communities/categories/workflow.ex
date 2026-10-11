@@ -13,7 +13,7 @@ defmodule GroupherServer.CMS.Communities.Categories.Workflow do
   import GroupherServer.CMS.Articles.Persist, only: [ensure_author_exists: 1]
   import ShortMaps
 
-  alias GroupherServer.{Accounts, CMS}
+  alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
   alias CMS.Communities.ErrorCat
@@ -39,12 +39,20 @@ defmodule GroupherServer.CMS.Communities.Categories.Workflow do
   """
   @spec create(map(), User.t()) :: T.domain_res(term())
   def create(%{community: community} = attrs, %User{id: user_id}) do
-    with {:ok, _} <- ORM.find_by(Community, slug: community),
+    with {:ok, community} <- ORM.find_by(Community, slug: community),
          {:ok, author} <- ensure_author_exists(%User{id: user_id}) do
       attrs = attrs |> Map.merge(%{author_id: author.id})
       attrs = Map.update(attrs, :slug, nil, &Slug.normalize/1)
       attrs = Map.drop(attrs, [:community])
-      Category |> ORM.create(attrs)
+
+      Repo.transact(fn ->
+        with {:ok, category} <- Category |> ORM.create(attrs),
+             {:ok, _binding} <-
+               CommunityCategory
+               |> ORM.create(%{community_id: community.id, category_id: category.id}) do
+          {:ok, category}
+        end
+      end)
     end
   end
 

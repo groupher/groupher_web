@@ -120,6 +120,8 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
 
   defp validate(%{
          operation_id: operation_id,
+         community_id: community_id,
+         article_id: article_id,
          article_type: article_type,
          metric: metric,
          actor_type: actor_type,
@@ -127,6 +129,8 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
        }) do
     cond do
       Ecto.UUID.cast(operation_id) == :error -> {:error, :invalid_operation_id}
+      not (is_integer(community_id) and community_id > 0) -> {:error, :invalid_community_id}
+      cast_article_id(article_id) == :error -> {:error, :invalid_article_id}
       article_type not in CMS.artiment_threads_article_enums() -> {:error, :invalid_article_type}
       metric not in Const.metrics() -> {:error, :invalid_metric}
       actor_type not in Const.actor_dimensions() -> {:error, :invalid_actor_type}

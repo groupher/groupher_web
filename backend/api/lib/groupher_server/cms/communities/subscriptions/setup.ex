@@ -20,30 +20,37 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Setup do
 
   @spec subscribe(Community.t(), User.t()) :: T.domain_res(Community.t())
   def subscribe(%Community{} = community, %User{} = user) do
-    Repo.transact(fn ->
-      with %Community{} = locked_community <- lock_community(community.id),
-           {:ok, _} <- Persist.subscribe(locked_community, user),
-           {:ok, canonical} <- ORM.find(Community, locked_community.id),
-           {:ok, canonical} <- Communities.Count.update(canonical, user, :subscribers_count, :inc),
-           {:ok, _user} <- Accounts.profiles_update_subscribe_state(user) do
-        {:ok, canonical}
-      end
-    end)
+    result =
+      Repo.transact(fn ->
+        with %Community{} = locked_community <- lock_community(community.id),
+             {:ok, _} <- Persist.subscribe(locked_community, user),
+             {:ok, canonical} <- ORM.find(Community, locked_community.id),
+             {:ok, canonical} <-
+               Communities.Count.update(canonical, user, :subscribers_count, :inc),
+             {:ok, _user} <- Accounts.profiles_update_subscribe_state(user) do
+          {:ok, canonical}
+        end
+      end)
+
+    revalidate_user(result, user)
   end
 
   @spec unsubscribe(Community.t(), User.t()) :: T.domain_res(Community.t())
   def unsubscribe(%Community{} = community, %User{} = user) do
     with true <- community.slug != "home" do
-      Repo.transact(fn ->
-        with %Community{} = locked_community <- lock_community(community.id),
-             {:ok, _} <- Persist.unsubscribe(locked_community, user),
-             {:ok, canonical} <- ORM.find(Community, locked_community.id),
-             {:ok, canonical} <-
-               Communities.Count.update(canonical, user, :subscribers_count, :dec),
-             {:ok, _user} <- Accounts.profiles_update_subscribe_state(user) do
-          {:ok, canonical}
-        end
-      end)
+      result =
+        Repo.transact(fn ->
+          with %Community{} = locked_community <- lock_community(community.id),
+               {:ok, _} <- Persist.unsubscribe(locked_community, user),
+               {:ok, canonical} <- ORM.find(Community, locked_community.id),
+               {:ok, canonical} <-
+                 Communities.Count.update(canonical, user, :subscribers_count, :dec),
+               {:ok, _user} <- Accounts.profiles_update_subscribe_state(user) do
+            {:ok, canonical}
+          end
+        end)
+
+      revalidate_user(result, user)
     else
       false -> {:error, CommunityErrorCat.custom("can not unsubscribe home community")}
     end
@@ -55,6 +62,13 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Setup do
     |> lock("FOR UPDATE")
     |> Repo.one()
   end
+
+  defp revalidate_user({:ok, _value} = result, %User{login: login}) when is_binary(login) do
+    GroupherServer.FrontDesk.revalidate_user(login)
+    result
+  end
+
+  defp revalidate_user(result, _user), do: result
 
   @spec subscribe_ifnot(Community.t(), User.t()) :: T.domain_res(term())
   def subscribe_ifnot(%Community{} = community, %User{} = user) do

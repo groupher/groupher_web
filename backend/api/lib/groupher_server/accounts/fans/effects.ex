@@ -26,14 +26,14 @@ defmodule GroupherServer.Accounts.Fans.Effects do
   end
 
   @doc """
-  Delivers a semantic follow event after the relationship commit.
+  Enqueues a semantic follow event in the caller's transaction.
 
   ## Examples
 
-      Accounts.Fans.Effects.after_commit(:follow, follower, target_user)
+      Accounts.Fans.Effects.enqueue_event(:follow, follower, target_user)
   """
-  @spec after_commit(:follow | :undo_follow, User.t(), User.t()) :: {:ok, term()}
-  def after_commit(event, %User{} = user, %User{} = target_user) do
+  @spec enqueue_event(:follow | :undo_follow, User.t(), User.t()) :: {:ok, term()}
+  def enqueue_event(event, %User{} = user, %User{} = target_user) do
     Later.run({Events, :emit, [event, %{user: user, from_user: target_user}]})
   end
 

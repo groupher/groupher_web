@@ -84,9 +84,6 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
     end
   end
 
-  defp confirmation({:ok, folder}, article, folder_id, operation),
-    do: confirmation(folder, article, folder_id, operation)
-
   defp confirmation(folder, article, folder_id, operation) do
     {:ok,
      %WriteConfirmation{

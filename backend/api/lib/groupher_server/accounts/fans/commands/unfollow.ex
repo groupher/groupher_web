@@ -15,7 +15,7 @@ defmodule GroupherServer.Accounts.Fans.Commands.Unfollow do
 
   ## Examples
 
-      Accounts.Fans.Commands.Unfollow.run(target_user, follower)
+      Accounts.Fans.Commands.Unfollow.run(follower, target_user)
   """
   @spec run(User.t(), User.t()) :: {:ok, User.t()} | {:error, term()}
   def run(%User{} = user, %User{} = follower) do
@@ -31,16 +31,21 @@ defmodule GroupherServer.Accounts.Fans.Commands.Unfollow do
         |> Multi.run(:minus_achievement, fn _, _ ->
           Effects.record_achievement(target_user, :dec)
         end)
+        |> Multi.run(:enqueue_event, fn _, _ ->
+          Effects.enqueue_event(:undo_follow, user, target_user)
+        end)
         |> Repo.transaction()
 
       case result do
         {:ok, %{update_user_follow_info: target_user}} ->
-          Effects.after_commit(:undo_follow, user, target_user)
           Effects.revalidate_users([user, target_user])
           {:ok, target_user}
 
-        {:error, :delete_relationships, _reason, _steps} ->
+        {:error, :delete_relationships, {:delete_follower_failed, _reason}, _steps} ->
           {:error, ErrorCat.already_did("already unfollowed")}
+
+        {:error, :delete_relationships, {_step, reason}, _steps} ->
+          {:error, reason}
 
         {:error, :minus_achievement, _reason, _steps} ->
           {:error, ErrorCat.react_fails("follow acieve fails")}

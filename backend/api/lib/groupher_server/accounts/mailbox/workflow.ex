@@ -25,6 +25,7 @@ defmodule GroupherServer.Accounts.Mailbox.Workflow do
   @spec sync_one(term()) :: {:ok, struct()} | {:error, term()}
   def sync_one(user_id) do
     with {:ok, [user]} <- sync_users([user_id]) do
+      Effects.invalidate_users([user])
       {:ok, user}
     end
   end
@@ -55,9 +56,13 @@ defmodule GroupherServer.Accounts.Mailbox.Workflow do
   end
 
   defp sync_users(user_ids) do
-    case Repo.transaction(fn -> Projection.sync_many_in_transaction(user_ids) end) do
-      {:ok, {:ok, users}} -> {:ok, users}
-      {:ok, {:error, reason}} -> {:error, reason}
+    case Repo.transaction(fn ->
+           case Projection.sync_many_in_transaction(user_ids) do
+             {:ok, users} -> users
+             {:error, reason} -> Repo.rollback(reason)
+           end
+         end) do
+      {:ok, users} -> {:ok, users}
       {:error, reason} -> {:error, reason}
     end
   end

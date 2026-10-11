@@ -30,6 +30,7 @@ defmodule GroupherServer.CMS.Articles.Effects do
       resource_id: resource_id,
       identity: identity,
       effect_key: Keyword.get(opts, :effect_key, "default"),
+      retry_failed: Keyword.get(opts, :retry_failed, false),
       data: data
     })
   end

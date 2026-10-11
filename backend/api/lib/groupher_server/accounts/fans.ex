@@ -22,7 +22,7 @@ defmodule GroupherServer.Accounts.Fans do
 
   ## Examples
 
-      Accounts.Fans.follow(target_user, follower)
+      Accounts.Fans.follow(follower, target_user)
   """
   @spec follow(User.t(), User.t()) :: T.gq_result(User.t())
   def follow(%User{} = user, %User{} = follower), do: Commands.Follow.run(user, follower)
@@ -32,7 +32,7 @@ defmodule GroupherServer.Accounts.Fans do
 
   ## Examples
 
-      Accounts.Fans.undo_follow(target_user, follower)
+      Accounts.Fans.undo_follow(follower, target_user)
   """
   @spec undo_follow(User.t(), User.t()) :: T.gq_result(User.t())
   def undo_follow(%User{} = user, %User{} = follower), do: Commands.Unfollow.run(user, follower)

@@ -7,7 +7,7 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UpdateSubscribeState do
 
   alias GroupherServer.{Accounts, Repo}
   alias Accounts.Model.User
-  alias Accounts.Profiles.{Effects, Persist}
+  alias Accounts.Profiles.Persist
 
   @doc """
   Rebuilds one user's subscribed-community count and ID projection.
@@ -20,7 +20,6 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UpdateSubscribeState do
   def run(%User{} = user) do
     case Repo.transaction(fn -> Persist.rebuild_subscribe_state(user) end) do
       {:ok, {:ok, updated_user}} ->
-        Effects.revalidate_user(updated_user)
         {:ok, updated_user}
 
       {:ok, {:error, reason}} ->

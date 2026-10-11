@@ -36,15 +36,25 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
   def execute(args, %User{} = user, command_id) do
     command_params = Map.drop(args, [:author, :user, "author", "user"])
 
-    %CMS.Command{
-      actor: user,
-      command_id: command_id,
-      operation: :community_create,
-      target: {:community_create, user.id},
-      params: command_params
-    }
-    |> CMS.Command.execute(action: &create_action/1, confirmation: CreateConfirmation)
-    |> present_create()
+    result =
+      %CMS.Command{
+        actor: user,
+        command_id: command_id,
+        operation: :community_create,
+        target: {:community_create, user.id},
+        params: command_params
+      }
+      |> CMS.Command.execute(action: &create_action/1, confirmation: CreateConfirmation)
+      |> present_create()
+
+    case result do
+      {:ok, %Community{} = community} ->
+        provision_web_analysis(community)
+        result
+
+      _ ->
+        result
+    end
   end
 
   defp create_action(%{actor: %User{} = user, params: args, command_id: command_id}) do
@@ -55,8 +65,6 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
          {:ok, canonical} <- FrontDesk.community(community.slug, mode: :internal),
          {:ok, _event} <-
            CMS.Dashboard.Effects.enqueue_presentation_changed(canonical, command_id) do
-      provision_web_analysis(canonical)
-
       {:ok,
        %CreateConfirmation{
          data: %{"community_id" => canonical.id, "command_id" => command_id}

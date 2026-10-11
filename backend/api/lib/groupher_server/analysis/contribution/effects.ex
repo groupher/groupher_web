@@ -10,7 +10,6 @@ defmodule GroupherServer.Analysis.Contribution.Effects do
   alias GroupherServer.{CMS, Accounts}
 
   alias GroupherServer.{Analysis, FrontDesk}
-  alias Analysis.Contribution.Query
   alias Accounts.Model.User
   alias CMS.Model.Community
   alias Helper.Later
@@ -39,6 +38,6 @@ defmodule GroupherServer.Analysis.Contribution.Effects do
   """
   @spec cache_community_later(Community.t()) :: {:ok, term()}
   def cache_community_later(%Community{} = community) do
-    Later.run({Query, :get_contributes_then_cache, [community]})
+    Later.run({Analysis.Contribution, :get_contributes_then_cache, [community]})
   end
 end

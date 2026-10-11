@@ -39,7 +39,12 @@ defmodule GroupherServer.Jobs.Comments do
   def perform(%Oban.Job{
         args: %{"kind" => "reconcile_comments_participants", "payload" => encoded}
       }) do
-    %{thread: thread, article_id: article_id, total_count: total_count} = Codec.decode(encoded)
-    CMS.reconcile_comments_participants(thread, article_id, total_count)
+    case Codec.decode(encoded) do
+      %{thread: thread, article_id: article_id, total_count: total_count} ->
+        CMS.reconcile_comments_participants(thread, article_id, total_count)
+
+      %{article: %{thread: thread, id: article_id}, total_count: total_count} ->
+        CMS.reconcile_comments_participants(thread, article_id, total_count)
+    end
   end
 end

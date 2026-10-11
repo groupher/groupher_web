@@ -233,7 +233,10 @@ defmodule GroupherServer.Accounts.Profiles.Oauth.Workflow do
   end
 
   defp find_user_oauth_identity(%User{} = user, public_ref) do
-    ORM.find_by(OauthProvider, user_id: user.id, public_ref: public_ref)
+    case ORM.find_by(OauthProvider, user_id: user.id, public_ref: public_ref) do
+      {:ok, binding} -> {:ok, binding}
+      {:error, _reason} -> {:error, oauth_binding_not_found_error()}
+    end
   end
 
   defp ensure_multiple_login_methods(%User{} = user) do
@@ -295,6 +298,13 @@ defmodule GroupherServer.Accounts.Profiles.Oauth.Workflow do
     [
       message: "can not delete last oauth provider",
       code: GroupherServer.Auth.contract_oauth_last_login_method()
+    ]
+  end
+
+  defp oauth_binding_not_found_error do
+    [
+      message: "oauth binding not found",
+      code: GroupherServer.Auth.contract_oauth_binding_not_found()
     ]
   end
 end

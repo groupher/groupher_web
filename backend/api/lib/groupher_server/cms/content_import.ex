@@ -5,7 +5,7 @@ defmodule GroupherServer.CMS.ContentImport do
       caller -> GroupherServer.CMS.ContentImport -> result
   """
 
-  alias __MODULE__.{Jobs, Process}
+  alias __MODULE__.{Jobs, Process, Query}
 
   @doc "Runs `create` through this capability boundary."
   defdelegate create(community, actor, input), to: Jobs
@@ -17,4 +17,6 @@ defmodule GroupherServer.CMS.ContentImport do
   defdelegate cancel(community, job_ref), to: Jobs
   @doc "Runs `project` through this capability boundary."
   defdelegate project(job), to: Process
+  @doc "Returns community ids protected by active import work."
+  defdelegate active_community_ids(), to: Query
 end

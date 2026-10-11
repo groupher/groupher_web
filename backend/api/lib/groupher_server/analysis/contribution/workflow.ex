@@ -22,12 +22,12 @@ defmodule GroupherServer.Analysis.Contribution.Workflow do
 
       Analysis.Contribution.Workflow.make_contribution(user)
   """
-  @spec make_contribution(User.t()) :: {:ok, User.t()} | {:error, term()}
+  @spec make_contribution(User.t()) :: {:ok, struct()} | {:error, term()}
   def make_contribution(%User{id: id}) do
     with {:ok, user} <- ORM.find(User, id),
-         {:ok, user} <- transact_user(user) do
+         {:ok, %{contribute: contribute, user: user}} <- transact_user(user) do
       Effects.revalidate_user(user)
-      {:ok, user}
+      {:ok, contribute}
     end
   end
 
@@ -42,14 +42,14 @@ defmodule GroupherServer.Analysis.Contribution.Workflow do
                     %{contributes_digest: digest},
                     "analysis:community-contribution:#{community.id}:#{Datetime.today()}:#{contribute.count}"
                   ) do
-             result
+             %{contribute: contribute, community: result}
            else
              {:error, reason} -> Repo.rollback(reason)
            end
          end) do
-      {:ok, result} ->
+      {:ok, %{contribute: contribute}} ->
         Effects.cache_community_later(community)
-        {:ok, result}
+        {:ok, contribute}
 
       {:error, reason} ->
         {:error, reason}
@@ -58,15 +58,15 @@ defmodule GroupherServer.Analysis.Contribution.Workflow do
 
   defp transact_user(user) do
     case Repo.transaction(fn ->
-           with {:ok, _contribute} <- Persist.record_user(user),
+           with {:ok, contribute} <- Persist.record_user(user),
                 digest <- Query.list_contributions_digest(user),
                 {:ok, user} <- Persist.update_user_projection(user, unwrap(digest)) do
-             user
+             %{contribute: contribute, user: user}
            else
              {:error, reason} -> Repo.rollback(reason)
            end
          end) do
-      {:ok, user} -> {:ok, user}
+      {:ok, result} -> {:ok, result}
       {:error, reason} -> {:error, reason}
     end
   end

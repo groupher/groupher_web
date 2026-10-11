@@ -65,7 +65,7 @@ defmodule GroupherServer.Analysis.Maintenance.Workflow do
       total = total + deleted
 
       if deleted < limit do
-        {:halt, {total, false}}
+        {:halt, {total, more?.()}}
       else
         {:cont, total}
       end

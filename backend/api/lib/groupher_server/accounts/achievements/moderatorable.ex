@@ -21,7 +21,7 @@ defmodule GroupherServer.Accounts.Achievements.Moderatorable do
 
   alias Accounts.Model.User
   alias CMS.Model.CommunityModerator
-  alias Helper.ORM
+  alias Helper.{ORM, T}
 
   @doc """
   Returns communities where a user has moderator capability.
@@ -30,7 +30,7 @@ defmodule GroupherServer.Accounts.Achievements.Moderatorable do
 
       Accounts.Achievements.Moderatorable.paged_moderatorable_communities(user, %{page: 1, size: 20})
   """
-  @spec paged_moderatorable_communities(User.t(), map()) :: term()
+  @spec paged_moderatorable_communities(User.t(), map()) :: T.domain_res(T.paged_data())
   def paged_moderatorable_communities(%User{id: user_id}, %{page: page, size: size}) do
     CommunityModerator
     |> where([e], e.user_id == ^user_id)

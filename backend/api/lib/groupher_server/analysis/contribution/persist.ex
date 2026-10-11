@@ -28,12 +28,10 @@ defmodule GroupherServer.Analysis.Contribution.Persist do
   """
   @spec record_user(User.t()) :: {:ok, UserContribute.t()} | {:error, term()}
   def record_user(%User{id: id}) do
-    today = Datetime.today() |> Date.to_iso8601()
-
-    case ORM.find_by(UserContribute, user_id: id, date: today) do
-      {:ok, contribute} -> increment(contribute, :user)
-      {:error, _} -> ORM.create(UserContribute, %{user_id: id, date: today, count: 1})
-    end
+    upsert_daily(UserContribute, %{user_id: id, date: Datetime.today(), count: 1}, [
+      :user_id,
+      :date
+    ])
   end
 
   @doc """
@@ -45,12 +43,11 @@ defmodule GroupherServer.Analysis.Contribution.Persist do
   """
   @spec record_community(struct()) :: {:ok, CommunityContribute.t()} | {:error, term()}
   def record_community(%{id: id}) do
-    today = Datetime.today() |> Date.to_iso8601()
-
-    case ORM.find_by(CommunityContribute, community_id: id, date: today) do
-      {:ok, contribute} -> increment(contribute, :community)
-      {:error, _} -> ORM.create(CommunityContribute, %{community_id: id, date: today, count: 1})
-    end
+    upsert_daily(
+      CommunityContribute,
+      %{community_id: id, date: Datetime.today(), count: 1},
+      [:community_id, :date]
+    )
   end
 
   @doc """
@@ -64,20 +61,17 @@ defmodule GroupherServer.Analysis.Contribution.Persist do
   def update_user_projection(%User{} = user, digest),
     do: ORM.update_embed(user, :contributes, digest)
 
-  defp increment(contribute, :user) do
-    UserContribute
-    |> where([c], c.user_id == ^contribute.user_id and c.date == ^contribute.date)
-    |> increment_row(contribute)
-  end
+  defp upsert_daily(schema, attrs, conflict_target) do
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
+    row = Map.merge(attrs, %{inserted_at: now, updated_at: now})
 
-  defp increment(contribute, :community) do
-    CommunityContribute
-    |> where([c], c.community_id == ^contribute.community_id and c.date == ^contribute.date)
-    |> increment_row(contribute)
-  end
-
-  defp increment_row(query, contribute) do
-    {1, [count]} = Repo.update_all(from(row in query, select: row.count), inc: [count: 1])
-    {:ok, put_in(contribute.count, count)}
+    case Repo.insert_all(schema, [row],
+           on_conflict: [inc: [count: 1], set: [updated_at: now]],
+           conflict_target: conflict_target,
+           returning: true
+         ) do
+      {1, [result]} -> {:ok, result}
+      {_count, _rows} -> {:error, :contribution_upsert_failed}
+    end
   end
 end

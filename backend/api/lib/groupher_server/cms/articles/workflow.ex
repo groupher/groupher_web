@@ -87,7 +87,8 @@ defmodule GroupherServer.CMS.Articles.Workflow do
                    article_id: article.id,
                    revision_id: public.revision_id
                  },
-                 effect_key: "article-cache:#{community.id}:#{inner_id}"
+                 effect_key: "article-cache:#{community.id}:#{inner_id}",
+                 retry_failed: true
                ),
              {:ok, projection_event} <-
                Effects.enqueue(
@@ -103,7 +104,8 @@ defmodule GroupherServer.CMS.Articles.Workflow do
                    published_by_id: Map.get(result, :published_by_id),
                    revision_id: public.revision_id
                  },
-                 effect_key: "article-projections:#{community.id}:#{inner_id}"
+                 effect_key: "article-projections:#{community.id}:#{inner_id}",
+                 retry_failed: true
                ) do
           {:ok, %{cache: cache_event, projections: projection_event}}
         else

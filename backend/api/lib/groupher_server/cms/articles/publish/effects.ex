@@ -42,6 +42,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Effects do
          true <- is_integer(inner_id),
          {:ok, :pass} <- CMS.SearchArtiments.Indexer.enqueue_upsert(article),
          {:ok, public} <- public_projection(article, community, inner_id),
+         {:ok, _user} <- update_published_projection(result, public),
          {:ok, _} <- append_activity(result, Map.put(public, :community_id, community.id)) do
       Later.run({CMS.Press, :invalidate, [community.id]})
       Later.run({CMS.Events, :emit, [:sync_mentions, %{artiment: public}]})
@@ -65,6 +66,12 @@ defmodule GroupherServer.CMS.Articles.Publish.Effects do
   end
 
   defp notify_admin_on_first_publish(_result, _article), do: {:ok, :pass}
+
+  defp update_published_projection(%{first_publish?: true}, %{author: %{user: user}}) do
+    GroupherServer.FrontDesk.revalidate_user(user.login)
+  end
+
+  defp update_published_projection(_result, _public), do: {:ok, :pass}
 
   @doc "Notifies community administrators after the first official Article publish."
   def notify_admin_new_article(%{target: target, id: id, thread: thread, community: community})

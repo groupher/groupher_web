@@ -18,13 +18,15 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UpdateProfile do
   """
   @spec run(User.t(), map()) :: {:ok, User.t()} | {:error, term()}
   def run(%User{} = user, attrs) do
-    case Repo.transaction(fn -> Persist.update_profile(user, attrs) end) do
-      {:ok, {:ok, user}} ->
+    case Repo.transaction(fn ->
+           case Persist.update_profile(user, attrs) do
+             {:ok, user} -> user
+             {:error, reason} -> Repo.rollback(reason)
+           end
+         end) do
+      {:ok, user} ->
         Effects.revalidate_user(user)
         Effects.maybe_preload_social({:ok, user}, attrs)
-
-      {:ok, {:error, reason}} ->
-        {:error, reason}
 
       {:error, reason} ->
         {:error, reason}

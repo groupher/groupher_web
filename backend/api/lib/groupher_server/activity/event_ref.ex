@@ -12,7 +12,7 @@ defmodule GroupherServer.Activity.EventRef do
 
   ## Examples
 
-      Activity.EventRef.derive({:article, "article-1", :created})
+      GroupherServer.Activity.event_ref_derive({:article, "article-1", :created})
   """
   @spec derive(term()) :: Ecto.UUID.t()
   def derive(identity) do

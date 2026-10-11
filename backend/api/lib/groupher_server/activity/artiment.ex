@@ -32,7 +32,7 @@ defmodule GroupherServer.Activity.Artiment do
 
       Activity.Artiment.handler(%{thread: :post, id: "article-1"})
   """
-  @spec handler(struct()) :: {:ok, module()} | {:error, term()}
+  @spec handler(map()) :: {:ok, module()} | {:error, term()}
   def handler(resource) do
     try do
       with {:ok, %{thread: thread}} <- GroupherServer.CMS.artiment_matcher_match(resource),

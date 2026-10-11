@@ -7,7 +7,7 @@ defmodule GroupherServer.Accounts.Publish.Projection do
 
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias Accounts.Publish.{Effects, Persist}
+  alias Accounts.Publish.Persist
 
   @doc """
   Rebuilds one user's published-count metadata for a thread.
@@ -23,7 +23,6 @@ defmodule GroupherServer.Accounts.Publish.Projection do
   def update_states(%User{} = user, thread) do
     with {:ok, published_count} <- CMS.articles_count_published(thread, user),
          {:ok, updated_user} <- Persist.update_published_count(user, thread, published_count) do
-      Effects.revalidate_user(updated_user)
       {:ok, updated_user}
     end
   end

@@ -22,11 +22,14 @@ defmodule GroupherServer.CMS.Articles.Persist do
         {:ok, author}
 
       {:error, _} ->
-        %Author{user_id: user.id}
-        |> Ecto.Changeset.change()
-        |> Ecto.Changeset.unique_constraint(:user_id)
-        |> Ecto.Changeset.foreign_key_constraint(:user_id)
-        |> Repo.insert()
+        case %Author{user_id: user.id}
+             |> Ecto.Changeset.change()
+             |> Ecto.Changeset.unique_constraint(:user_id)
+             |> Ecto.Changeset.foreign_key_constraint(:user_id)
+             |> Repo.insert() do
+          {:ok, author} -> {:ok, author}
+          {:error, _changeset} -> ORM.find_by(Author, user_id: user.id)
+        end
     end
   end
 end

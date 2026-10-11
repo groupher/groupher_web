@@ -25,7 +25,7 @@ defmodule GroupherServer.Accounts.Search.User do
 
   ## Examples
 
-      Accounts.Search.User.search("alice")
+      GroupherServer.Accounts.Search.user("alice")
   """
   @spec search(String.t()) :: {:ok, map()} | {:error, any()}
   def search(name) do

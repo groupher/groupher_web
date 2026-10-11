@@ -101,7 +101,9 @@ defmodule GroupherServer.Analysis.Contribution.Query do
   defp to_counts_digest(record, days: count) do
     case length(record) == @community_contribute_days + 1 do
       true ->
-        Enum.map(record, & &1.count)
+        record
+        |> Enum.sort_by(&Datetime.to_date(&1.date), Date)
+        |> Enum.map(& &1.count)
 
       false ->
         today = Datetime.today()
