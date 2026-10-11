@@ -5,7 +5,20 @@ defmodule GroupherServer.Repo.Migrations.ScopeHourlyMetricsByCommunity do
   @new_name :article_hourly_metrics_community_dimension_index
 
   def up do
+    execute("DELETE FROM cms.analysis_metric_events WHERE community_id IS NULL")
     execute("DELETE FROM cms.article_hourly_metrics WHERE community_id IS NULL")
+
+    execute(
+      "ALTER TABLE cms.analysis_metric_events DROP CONSTRAINT IF EXISTS analysis_metric_events_community_id_fkey"
+    )
+
+    execute("""
+    ALTER TABLE cms.analysis_metric_events
+    ADD CONSTRAINT analysis_metric_events_community_id_fkey
+    FOREIGN KEY (community_id) REFERENCES cms.communities(id) ON DELETE CASCADE
+    """)
+
+    execute("ALTER TABLE cms.analysis_metric_events ALTER COLUMN community_id SET NOT NULL")
 
     execute(
       "ALTER TABLE cms.article_hourly_metrics DROP CONSTRAINT IF EXISTS article_hourly_metrics_community_id_fkey"

@@ -63,5 +63,9 @@ defmodule GroupherServer.Repo.Migrations.EnforceUniqueDailyContributions do
   def down do
     drop(index(:community_contributes, [:community_id, :date], prefix: "statistics"))
     drop(index(:user_contributes, [:user_id, :date], prefix: "statistics"))
+
+    execute("ALTER TABLE statistics.community_contributes ALTER COLUMN date DROP NOT NULL")
+    execute("ALTER TABLE statistics.user_contributes ALTER COLUMN date DROP NOT NULL")
+    execute("ALTER TABLE statistics.user_contributes ALTER COLUMN user_id DROP NOT NULL")
   end
 end

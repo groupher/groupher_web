@@ -293,7 +293,8 @@ defmodule GroupherServer.Analysis.ArticleInsights.Query do
   end
 
   defp community_matches?(community, ref) do
-    to_string(community.slug) == to_string(ref) or to_string(community.aka) == to_string(ref)
+    to_string(community.slug) == to_string(ref) or
+      (not is_nil(community.aka) and to_string(community.aka) == to_string(ref))
   end
 
   defp build_result(%{from: from, to: to} = range, metrics, rows) do
