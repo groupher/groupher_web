@@ -266,6 +266,11 @@ defmodule GroupherServer.Accounts do
     to: GroupherServer.Accounts.Publish,
     as: :update_states
 
+  @doc "Revalidates a user after its published-count projection commits."
+  defdelegate publish_revalidate_user(arg1),
+    to: GroupherServer.Accounts.Publish,
+    as: :revalidate_user
+
   @doc "Delegates GroupherServer.Accounts.Search.user/1 through the Accounts Context boundary."
   defdelegate search_user(arg1), to: GroupherServer.Accounts.Search, as: :user
 

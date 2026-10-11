@@ -97,6 +97,25 @@ defmodule GroupherServer.Jobs.Workflow do
   end
 
   @doc """
+  Enqueues a compatibility job whose insertion must participate in the caller transaction.
+
+  ## Examples
+
+      Jobs.Workflow.enqueue_later({SomeModule, :run, [payload]})
+  """
+  @spec enqueue_later(later_job()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
+  def enqueue_later({mod, func, args} = job)
+      when is_atom(mod) and is_atom(func) and is_list(args) do
+    if Config.skip_enqueue?() do
+      {:ok, :pass}
+    else
+      %{job: Codec.encode(job)}
+      |> Jobs.Later.new()
+      |> Oban.insert()
+    end
+  end
+
+  @doc """
   Enqueues mention reconciliation for one comment-like artiment.
 
   ## Examples

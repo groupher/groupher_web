@@ -63,15 +63,14 @@ defmodule GroupherServer.Analysis.Contribution.Persist do
 
   defp upsert_daily(schema, attrs, conflict_target) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
-    row = Map.merge(attrs, %{inserted_at: now, updated_at: now})
 
-    case Repo.insert_all(schema, [row],
-           on_conflict: [inc: [count: 1], set: [updated_at: now]],
-           conflict_target: conflict_target,
-           returning: true
-         ) do
-      {1, [result]} -> {:ok, result}
-      {_count, _rows} -> {:error, :contribution_upsert_failed}
-    end
+    schema
+    |> struct()
+    |> schema.changeset(attrs)
+    |> Repo.insert(
+      on_conflict: [inc: [count: 1], set: [updated_at: now]],
+      conflict_target: conflict_target,
+      returning: true
+    )
   end
 end

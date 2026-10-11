@@ -106,7 +106,8 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
          {:ok, _activity} <-
            Effects.activity(Map.put(public, :community_id, community.id), :created, actor: user),
          {:ok, _community} <- Communities.update_count_field(community, :doc),
-         {:ok, _user} <- Accounts.publish_update_states(user, :doc) do
+         {:ok, updated_user} <- Accounts.publish_update_states(user, :doc),
+         {:ok, :pass} <- Accounts.publish_revalidate_user(updated_user) do
       {:ok, _throttle} = CMS.Gate.RateLimit.Publish.record(user)
       {:ok, public}
     end

@@ -8,10 +8,9 @@ defmodule GroupherServer.Accounts.Fans.Effects do
           -> user cache revalidation
   """
 
-  alias GroupherServer.{Accounts, FrontDesk}
+  alias GroupherServer.{Accounts, FrontDesk, Jobs}
   alias Accounts.{Achievements, Events, Model}
   alias Model.User
-  alias Helper.Later
 
   @doc """
   Records the follow achievement inside the command's transaction boundary.
@@ -32,9 +31,10 @@ defmodule GroupherServer.Accounts.Fans.Effects do
 
       Accounts.Fans.Effects.enqueue_event(:follow, follower, target_user)
   """
-  @spec enqueue_event(:follow | :undo_follow, User.t(), User.t()) :: {:ok, term()}
+  @spec enqueue_event(:follow | :undo_follow, User.t(), User.t()) ::
+          {:ok, term()} | {:error, term()}
   def enqueue_event(event, %User{} = user, %User{} = target_user) do
-    Later.run({Events, :emit, [event, %{user: user, from_user: target_user}]})
+    Jobs.enqueue_later({Events, :emit, [event, %{user: user, from_user: target_user}]})
   end
 
   @doc """

@@ -44,8 +44,8 @@ defmodule GroupherServer.Accounts.Fans.Commands.Follow do
         {:error, :create_relationships, {:insert_follower_failed, _reason}, _steps} ->
           {:error, ErrorCat.already_did("already followed")}
 
-        {:error, :create_relationships, {_step, reason}, _steps} ->
-          {:error, reason}
+        {:error, :create_relationships, {:insert_following_failed, _reason}, _steps} ->
+          {:error, ErrorCat.react_fails("follow fails")}
 
         {:error, :add_achievement, _reason, _steps} ->
           {:error, ErrorCat.react_fails("follow acieve fails")}

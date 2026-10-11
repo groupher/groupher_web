@@ -63,6 +63,15 @@ defmodule GroupherServer.Jobs do
   defdelegate later(arg1), to: GroupherServer.Jobs.Workflow
 
   @doc """
+  Enqueues a compatibility job and returns insertion failures to the caller.
+
+  ## Examples
+
+      Jobs.enqueue_later({SomeModule, :run, [payload]})
+  """
+  defdelegate enqueue_later(arg1), to: GroupherServer.Jobs.Workflow
+
+  @doc """
   Delegates later_new/1 to the Jobs workflow owner.
 
   ## Examples

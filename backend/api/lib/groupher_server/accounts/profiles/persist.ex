@@ -102,12 +102,13 @@ defmodule GroupherServer.Accounts.Profiles.Persist do
 
   defp update_social_if_needed(changeset, %User{} = user, %{social: attrs}) when is_map(attrs) do
     attrs = Map.put(attrs, :user_id, user.id)
+    replace_fields = attrs |> Map.keys() |> Enum.reject(&(&1 == :user_id))
 
     result =
       %Social{}
       |> Social.changeset(attrs)
       |> Repo.insert(
-        on_conflict: {:replace_all_except, [:id, :inserted_at]},
+        on_conflict: {:replace, replace_fields},
         conflict_target: :user_id,
         returning: true
       )

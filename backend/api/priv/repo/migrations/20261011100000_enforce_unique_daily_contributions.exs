@@ -2,6 +2,15 @@ defmodule GroupherServer.Repo.Migrations.EnforceUniqueDailyContributions do
   use Ecto.Migration
 
   def up do
+    execute("LOCK TABLE statistics.user_contributes IN ACCESS EXCLUSIVE MODE")
+    execute("LOCK TABLE statistics.community_contributes IN ACCESS EXCLUSIVE MODE")
+
+    execute("DELETE FROM statistics.user_contributes WHERE user_id IS NULL OR date IS NULL")
+
+    execute(
+      "DELETE FROM statistics.community_contributes WHERE community_id IS NULL OR date IS NULL"
+    )
+
     execute("""
     WITH totals AS (
       SELECT MIN(id) AS keep_id, user_id, date, SUM(count) AS total_count
@@ -44,6 +53,11 @@ defmodule GroupherServer.Repo.Migrations.EnforceUniqueDailyContributions do
 
     create(unique_index(:user_contributes, [:user_id, :date], prefix: "statistics"))
     create(unique_index(:community_contributes, [:community_id, :date], prefix: "statistics"))
+
+    execute("ALTER TABLE statistics.user_contributes ALTER COLUMN user_id SET NOT NULL")
+    execute("ALTER TABLE statistics.user_contributes ALTER COLUMN date SET NOT NULL")
+    execute("ALTER TABLE statistics.community_contributes ALTER COLUMN community_id SET NOT NULL")
+    execute("ALTER TABLE statistics.community_contributes ALTER COLUMN date SET NOT NULL")
   end
 
   def down do

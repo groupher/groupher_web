@@ -67,7 +67,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Effects do
 
   defp notify_admin_on_first_publish(_result, _article), do: {:ok, :pass}
 
-  defp update_published_projection(%{first_publish?: true}, %{author: %{user: user}}) do
+  defp update_published_projection(%{first_publish?: true}, %{author: user}) do
     GroupherServer.FrontDesk.revalidate_user(user.login)
   end
 

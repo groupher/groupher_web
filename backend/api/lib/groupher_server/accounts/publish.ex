@@ -8,7 +8,7 @@ defmodule GroupherServer.Accounts.Publish do
                                       -> CMS reads / User projection
   """
 
-  alias __MODULE__.{Articles, Comments, Projection}
+  alias __MODULE__.{Articles, Comments, Effects, Projection}
   alias GroupherServer.Accounts
 
   alias Accounts.Model.User
@@ -44,6 +44,16 @@ defmodule GroupherServer.Accounts.Publish do
   """
   @spec update_states(User.t(), T.thread()) :: T.domain_res(User.t())
   def update_states(%User{} = user, thread), do: Projection.update_states(user, thread)
+
+  @doc """
+  Revalidates the public profile after a published-count projection commits.
+
+  ## Examples
+
+      Accounts.Publish.revalidate_user(user)
+  """
+  @spec revalidate_user(User.t()) :: {:ok, :pass}
+  def revalidate_user(%User{} = user), do: Effects.revalidate_user(user)
 
   @doc """
   Returns the user's published comments.

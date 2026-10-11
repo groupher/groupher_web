@@ -33,8 +33,17 @@ defmodule GroupherServer.Analysis.ArticleInsights.Query do
          {:ok, actor_types} <- requested_actor_types(opts),
          {:ok, is_authenticated} <- requested_authentication(opts),
          {:ok, range} <- requested_range(opts),
+         {:ok, community_id} <- resolve_community_id(article, opts),
          rows <-
-           fetch_rows(article_type, article.id, metrics, actor_types, is_authenticated, range) do
+           fetch_rows(
+             community_id,
+             article_type,
+             article.id,
+             metrics,
+             actor_types,
+             is_authenticated,
+             range
+           ) do
       {:ok, build_result(range, metrics, rows)}
     end
   end
@@ -53,7 +62,15 @@ defmodule GroupherServer.Analysis.ArticleInsights.Query do
 
   def trend_by_path(article_path, viewer, opts) when is_list(opts) do
     with {:ok, article} <- CMS.resolve_article_for_insights(article_path, viewer, opts) do
-      trend(article, viewer, Keyword.put(opts, :skip_authorize, true))
+      opts =
+        opts
+        |> Keyword.put(:skip_authorize, true)
+        |> Keyword.put(
+          :community,
+          Map.get(article_path, :community) || Map.get(article_path, "community")
+        )
+
+      trend(article, viewer, opts)
     else
       {:error, _reason} = error -> error
     end
@@ -204,6 +221,7 @@ defmodule GroupherServer.Analysis.ArticleInsights.Query do
   end
 
   defp fetch_rows(
+         community_id,
          article_type,
          article_id,
          metrics,
@@ -214,7 +232,8 @@ defmodule GroupherServer.Analysis.ArticleInsights.Query do
     query =
       from(row in ArticleHourlyMetric,
         where:
-          row.article_type == ^article_type and
+          row.community_id == ^community_id and
+            row.article_type == ^article_type and
             row.article_id == ^article_id and
             row.bucket_started_at >= ^from and
             row.bucket_started_at < ^to and
@@ -254,6 +273,27 @@ defmodule GroupherServer.Analysis.ArticleInsights.Query do
 
     from(row in query, where: ^metric_filter)
     |> Repo.all()
+  end
+
+  defp resolve_community_id(article, opts) do
+    requested_community = Keyword.get(opts, :community)
+
+    with {:ok, bindings} <- CMS.articles_bindings_all(article) do
+      matches =
+        case requested_community do
+          nil -> bindings
+          ref -> Enum.filter(bindings, &community_matches?(&1.community, ref))
+        end
+
+      case matches do
+        [%{community_id: community_id}] when is_integer(community_id) -> {:ok, community_id}
+        _ -> {:error, :article_insights_community_required}
+      end
+    end
+  end
+
+  defp community_matches?(community, ref) do
+    to_string(community.slug) == to_string(ref) or to_string(community.aka) == to_string(ref)
   end
 
   defp build_result(%{from: from, to: to} = range, metrics, rows) do
