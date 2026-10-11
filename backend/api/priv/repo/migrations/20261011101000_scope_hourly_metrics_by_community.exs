@@ -5,6 +5,9 @@ defmodule GroupherServer.Repo.Migrations.ScopeHourlyMetricsByCommunity do
   @new_name :article_hourly_metrics_community_dimension_index
 
   def up do
+    execute("LOCK TABLE cms.analysis_metric_events IN ACCESS EXCLUSIVE MODE")
+    execute("LOCK TABLE cms.article_hourly_metrics IN ACCESS EXCLUSIVE MODE")
+
     execute("DELETE FROM cms.analysis_metric_events WHERE community_id IS NULL")
     execute("DELETE FROM cms.article_hourly_metrics WHERE community_id IS NULL")
 
