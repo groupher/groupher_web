@@ -32,8 +32,10 @@ const singularOwners = new Set([
 ])
 const forbiddenArchitectureStems = new Set(['read', 'reader', 'write', 'writer'])
 const forbiddenArchitectureModules = new Set(['Read', 'Reader', 'Write', 'Writer'])
+const legacyArchitectureStems = new Set(['read_state', 'write_confirmation'])
 const legacyArchitecturePaths = new Set([
   'accounts/collect_folders/write_confirmation.ex',
+  'cms/interactions/read_state.ex',
   'cms/interactions/read_state',
 ])
 const legacyArchitectureModules = [
@@ -82,8 +84,15 @@ const expectedModule = (relativeFile) => {
 }
 
 const declaredModule = (file) => {
-  const source = readFileSync(file, 'utf8')
+  const source = maskElixir(readFileSync(file, 'utf8'))
   return source.match(/^defmodule\s+([A-Za-z0-9_.]+)\s+do\b/m)?.[1]
+}
+
+const declaredModules = (file) => {
+  const source = maskElixir(readFileSync(file, 'utf8'))
+  return [...source.matchAll(/^\s*defmodule\s+([A-Za-z0-9_.]+)\s+do\b/gm)].map(
+    (match) => match[1],
+  )
 }
 
 const checkForbiddenArchitectureNames = (root, contexts, findings) => {
@@ -92,19 +101,22 @@ const checkForbiddenArchitectureNames = (root, contexts, findings) => {
       const absolute = path.join(directory, entry.name)
       const relativePath = path.relative(root, absolute).split(path.sep).join('/')
       const stem = entry.isFile() ? entry.name.replace(/\.ex$/, '') : entry.name
-      const declared = entry.isFile() && entry.name.endsWith('.ex') ? declaredModule(absolute) : null
+      const declared =
+        entry.isFile() && entry.name.endsWith('.ex') ? declaredModules(absolute) : []
       const forbiddenStem = forbiddenArchitectureStems.has(stem)
-      const forbiddenModule = declared
-        ?.split('.')
-        .some((segment) => forbiddenArchitectureModules.has(segment))
+      const legacyStem = legacyArchitectureStems.has(stem)
+      const forbiddenModule = declared.some((module) =>
+        module.split('.').some((segment) => forbiddenArchitectureModules.has(segment)),
+      )
       const legacyPath = [...legacyArchitecturePaths].some(
         (candidate) => relativePath === candidate || relativePath.startsWith(`${candidate}/`),
       )
       const legacyModule = legacyArchitectureModules.some(
-        (candidate) => declared === candidate || declared?.startsWith(`${candidate}.`),
+        (candidate) =>
+          declared.some((module) => module === candidate || module.startsWith(`${candidate}.`)),
       )
 
-      if (forbiddenStem || forbiddenModule || legacyPath || legacyModule) {
+      if (forbiddenStem || forbiddenModule || legacyStem || legacyPath || legacyModule) {
         finding(findings, {
           category: 'forbidden_architecture_name',
           file: absolute,

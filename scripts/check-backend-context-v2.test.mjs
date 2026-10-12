@@ -82,6 +82,11 @@ test('rejects generic and compound legacy architecture names without substring f
     )
     touch(
       root,
+      'accounts/profiles/write_confirmation.ex',
+      'GroupherServer.Accounts.Profiles.MembershipResult',
+    )
+    touch(
+      root,
       'accounts/profiles/commands/reader/item.ex',
       'GroupherServer.Accounts.Profiles.Commands.Reader.Item',
     )
@@ -96,12 +101,22 @@ test('rejects generic and compound legacy architecture names without substring f
     touch(
       root,
       'cms/interactions/read_state.ex',
-      'GroupherServer.CMS.Interactions.ReadState',
+      'GroupherServer.CMS.Interactions.LegacyProjection',
     )
     touch(
       root,
       'cms/interactions/read_state/query.ex',
       'GroupherServer.CMS.Interactions.ReadState.Query',
+    )
+    const mixed = path.join(root, 'accounts/profiles/mixed.ex')
+    writeFileSync(
+      mixed,
+      `defmodule GroupherServer.Accounts.Profiles.Mixed do
+end
+
+defmodule GroupherServer.Accounts.Profiles.Writer do
+end
+`,
     )
 
     const findings = backendContextV2LayoutFindings({
@@ -115,9 +130,15 @@ test('rejects generic and compound legacy architecture names without substring f
 
     assert.equal(forbidden.some(({ file }) => file.endsWith('/profiles/read.ex')), true)
     assert.equal(forbidden.some(({ file }) => file.endsWith('/write_confirmation.ex')), true)
+    assert.equal(
+      forbidden.some(({ file }) => file.endsWith('/profiles/write_confirmation.ex')),
+      true,
+    )
     assert.equal(forbidden.some(({ file }) => file.endsWith('/commands/reader')), true)
     assert.equal(forbidden.some(({ file }) => file.endsWith('/interactions/read_state')), true)
+    assert.equal(forbidden.some(({ file }) => file.endsWith('/interactions/read_state.ex')), true)
     assert.equal(forbidden.some(({ file }) => file.endsWith('/interactions/read_state/query.ex')), true)
+    assert.equal(forbidden.some(({ file }) => file.endsWith('/profiles/mixed.ex')), true)
     assert.equal(forbidden.some(({ file }) => file.endsWith('/mark_read.ex')), false)
     assert.equal(forbidden.some(({ file }) => file.endsWith('/read_stateful.ex')), false)
   })
