@@ -25,3 +25,6 @@
   `{:ok, value}` / `{:error, reason}` 返回协议，扫描并分批清理裸 `:ok` 与混合 `with` 形状。
 - [Article Binding 命名与存储重构](./article-binding-naming-and-storage.md)：统一
   `ArticleBinding`、`ArticleView`、`Articles.Bindings` 命名，收拢 FrontDesk 路径边界，并规划物理表重命名。
+- [Backend Read / Write Owner 命名与职责修复](./backend-read-write-owner-naming-fix.md)：禁止含糊的
+  `Read` / `Reader` / `Write` / `Writer` 架构段，拆分 `Profiles.Read`，并将 Interaction 派生状态收敛到
+  `Projection` Owner。
