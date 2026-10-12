@@ -145,7 +145,7 @@ committed effect/job payload
 | Trash membership/ref                     | transport ref 或 `%TrashedArticle{}`       | struct；replay 可保留 ref fallback         | 资源消失后仍需 CMS.Command.Receipt replay         |
 | Receipt result key                       | receipt metadata                           | domain replay reader                       | 仅用于 replay，不是首次资源解析入口               |
 | Post-commit/async effect target          | durable payload 中的 stable identity       | 执行时重载当前资源                         | 合法且通常必需，必须定义 missing/obsolete 行为    |
-| Ref-loading facade overload              | public ref 或 DB id                        | facade/Writer 内再次解析                   | 无真实消费者时是死协议，应移除而非保留双协议      |
+| Ref-loading facade overload              | public ref 或 DB id                        | Facade 内再次解析后进入 Command            | 无真实消费者时是死协议，应移除而非保留双协议      |
 
 ## 4. 当前明确偏差
 
@@ -179,9 +179,13 @@ GroupherServer.CMS.Comments.Solution
 
 ### 4.2 Comment reply
 
-当前 Resolver 已持有 parent `%Comment{}`，却调用 `reply_comment_payload(comment.id, ...)`，`Comments.Writer.reply/4` 再次加载 Comment。
+当前 Resolver 已直接把 parent `%Comment{}` 传给 CMS 根 Facade，Facade 再进入
+`Comments.Commands.Reply`。已删除 `Comments.Writer`；Reply Command 持有 CMS.Command.Receipt、Gate、
+多表写入和 post-commit effect 的完整用例。Facade 仍保留一个供非 GraphQL 内部调用方使用的 ID overload，
+该 overload 只在 Facade 边界通过 FrontDesk 解析一次，不能在 Command/Persist 内再次加载 transport ref。
 
-目标是传递 parent Comment，并把带 CMS.Command.Receipt、Gate、多表写入和 post-commit effect 的完整用例收口到 `Comments.Commands.Reply`；Writer 只保留具体持久化。Delete/Update Comment 的 Gate callback 同样接收锁内 canonical parent Article，避免在 callback 内再次调用 `FrontDesk.article_of/1`；replay 分支为重建返回 payload 而重新读取 Article，仍属于 replay reader。
+Delete/Update Comment 的 Gate callback 同样接收锁内 canonical parent Article，避免在 callback 内再次调用
+`FrontDesk.article_of/1`；replay 分支为重建返回 payload 而重新读取 Article，仍属于 replay reader。
 
 ### 4.3 Comment pin/unpin 与 fold/unfold
 
@@ -231,11 +235,11 @@ branch-scoped and do not fall back across branches.
 
 ### 4.6 Comment create 的死 ref overload
 
-原先 `CMS.Comments.create_comment(%Community{}, thread, article_ref, ...)` 只转发到
-`Comments.Writer.create(%Community{}, thread, article_ref, ...)`，形成两层 `id | struct`
-双协议。Writer 的 ref overload 现已移除；兼容性的 facade 入口暂时在 facade 边界通过
+原先 `CMS.Comments.create_comment(%Community{}, thread, article_ref, ...)` 通过
+`Comments.Writer.create(%Community{}, thread, article_ref, ...)` 形成两层 `id | struct`
+双协议。Writer 已删除；Facade 的 ref 入口暂时在 Facade 边界通过
 `FrontDesk.article/3` 解析一次，再调用 struct 版本，以承接现有服务/测试调用方。待这些
-调用方迁移后，应继续删除 facade 的 ref overload，而不能恢复 Writer 内的二次解析。
+调用方迁移后，应继续删除 Facade 的 ref overload，而不能恢复下游二次解析。
 
 ### 4.7 合法的异步 reload
 
@@ -262,14 +266,14 @@ Binding identity；Worker 执行时重新加载 canonical Article、Binding 与 
 
 ### 4.9 调用方清单（审查时随迁移项更新）
 
-| 迁移项                       | 同步 transport                                                      | 同步 domain / 内部                                                                                    | post-commit / async                                                          | replay / test-only                                                      |
-| ---------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Solution accept/revoke       | `CMS Resolver.accept_solution/revoke_solution` → `CMS.Comments`     | `Delete.revoke_if_current/5` 复用 `Commands.Solution`                                                 | 无；Moderation 另属异步合法 reload                                           | `solution_commands_test` 等直接调用 Command/facade                      |
-| Comment reply                | `CMS Resolver.reply_comment` → `CMS.Comments.reply_comment_payload` | 同步主入口传 parent Comment；`Comments.Writer.reply` 的 ID adapter 暂保，待调用方迁移后删除           | 创建后的 audition、mention、订阅 effect 按各自 identity 合同执行             | CMS.Command.Receipt replay reader 读取结果；旧 ID adapter 由测试覆盖    |
-| Comment pin/fold             | GraphQL pin/unpin；fold/unfold 目前没有线上 Resolver                | `Comments.States` 使用 Gate callback 的 canonical Article                                             | 无                                                                           | `fold_for_report/1` 接收 struct；fold/unfold ID 入口仅兼容测试/内部调用 |
-| Article Draft update/publish | Article middleware → `CMS Resolver` → `CMS.Articles`                | Importer/服务调用必须传 Article struct；Publish/Lifecycle 在锁内 canonical reload                     | 首次 publish 的 `notify_admin_new_article` 见 §4.7                           | CMS.Command.Receipt replay 通过 editor/public reader 恢复结果           |
-| Doc Draft update/publish     | `update_doc_draft` 的 `:article_editor` middleware → `CMS.DocTree`  | `DocPublisher` 使用 branch-scoped `doc_id` 进入 `CMS.Docs.publish_draft/4`，由 Publish 锁内重载 Draft | Release 后的 tree/cover/history effect 使用 branch identity                  | `DocTree.Commands.Node` replay 保留 branch 参数；release tests 覆盖     |
-| Moderation / notifications   | 不属于同步 Resolver mutation                                        | 不应改成同步 FrontDesk reload                                                                         | Audition、SubscribeCommunity、Publish notify 执行时按 stable identity reload | 已完成任务可按 missing/obsolete policy no-op                            |
+| 迁移项                       | 同步 transport                                                     | 同步 domain / 内部                                                                                         | post-commit / async                                                          | replay / test-only                                                      |
+| ---------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Solution accept/revoke       | `CMS Resolver.accept_solution/revoke_solution` → `CMS.Comments`    | `Delete.revoke_if_current/5` 复用 `Commands.Solution`                                                      | 无；Moderation 另属异步合法 reload                                           | `solution_commands_test` 等直接调用 Command/facade                      |
+| Comment reply                | `CMS Resolver.reply_comment` → `CMS.Comments.reply_comment_result` | 同步主入口传 parent Comment；Facade ID overload 仅供仍未迁移的内部调用方，Command 不重复加载 transport ref | 创建后的 audition、mention、订阅 effect 按各自 identity 合同执行             | CMS.Command.Receipt replay reader 读取结果                              |
+| Comment pin/fold             | GraphQL pin/unpin；fold/unfold 目前没有线上 Resolver               | `Comments.States` 使用 Gate callback 的 canonical Article                                                  | 无                                                                           | `fold_for_report/1` 接收 struct；fold/unfold ID 入口仅兼容测试/内部调用 |
+| Article Draft update/publish | Article middleware → `CMS Resolver` → `CMS.Articles`               | Importer/服务调用必须传 Article struct；Publish/Lifecycle 在锁内 canonical reload                          | 首次 publish 的 `notify_admin_new_article` 见 §4.7                           | CMS.Command.Receipt replay 通过 editor/public reader 恢复结果           |
+| Doc Draft update/publish     | `update_doc_draft` 的 `:article_editor` middleware → `CMS.DocTree` | `DocPublisher` 使用 branch-scoped `doc_id` 进入 `CMS.Docs.publish_draft/4`，由 Publish 锁内重载 Draft      | Release 后的 tree/cover/history effect 使用 branch identity                  | `DocTree.Commands.Node` replay 保留 branch 参数；release tests 覆盖     |
+| Moderation / notifications   | 不属于同步 Resolver mutation                                       | 不应改成同步 FrontDesk reload                                                                              | Audition、SubscribeCommunity、Publish notify 执行时按 stable identity reload | 已完成任务可按 missing/obsolete policy no-op                            |
 
 这张表的用途是区分“入口已加载”“锁内 authority refresh”“异步执行时刷新”与“replay 恢复”，不能把所有调用方都默认成 GraphQL Resolver。
 

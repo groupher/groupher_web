@@ -194,7 +194,9 @@ Assets.Maintenance
   -> Assets.Effects.enqueue_provider_delete
   -> CMS.Outbox
 
-CMS.Outbox.Workers.Asset.Cleanup
+Jobs.CMSOutboxAsset
+  -> CMS.deliver_outbox(:asset, job)
+  -> CMS.Outbox.Workflow.Asset
   -> Assets.Effects.deliver_provider_delete
   -> Assets.Provider.Deletion
 ```

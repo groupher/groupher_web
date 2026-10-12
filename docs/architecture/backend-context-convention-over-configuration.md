@@ -259,7 +259,7 @@ Finding 包含路径、行号（适用时）、mode、category 和 message。
 
 新增 Context 时创建 `<context>.ex + <context>/`、登记一级目录、发布稳定根 API，并运行 lint、编译和 focused tests。
 新增 capability 时确认存在真实稳定入口，同时创建 `foo.ex + foo/`，不修改 registry。新增 Worker 时放入 `jobs/`，只调用
-目标 Context 根 Facade，并覆盖 success、retry/snooze 与 exhausted 行为。
+目标 Context 根 Facade，并覆盖成功、失败后重试或延后执行，以及达到最大尝试次数后的处理。
 
 ## 11. v1 迁移结果
 

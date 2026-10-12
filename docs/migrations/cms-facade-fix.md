@@ -91,9 +91,11 @@ CMS domain transaction
   -> CMS.Outbox.send/1
        -> Event + Oban wakeup
 
-CMS.Outbox.Workers.<Domain>.<Task>
-  -> CMS.Outbox.execute/2
-       -> worker-owned domain effect
+Jobs.CMSOutbox<Domain>
+  -> CMS.deliver_outbox/2
+       -> CMS.Outbox.Workflow.<Domain>
+            -> CMS.Outbox.execute/2
+            -> domain-owned effect
 ```
 
 `CMS.Outbox` 不应继续扩展为业务 dispatcher、通用 event registry 或领域 use case；但现有

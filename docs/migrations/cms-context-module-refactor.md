@@ -249,10 +249,11 @@ Interactions.Commands.Confirmation
 
 - Upvote、Emotion、Collect、Report 等用户动作已由 Commands 持有；
 - reaction fact、collect、report 主数据写入已由真实 `Interactions.Persist` 持有；
-- ReadState 当前读取归 Query；`ReadState.Sync` 归 Projection；
+- `Interactions.Projection` 已完整替代 `ReadState`；读取实现位于 `Projection.Query`，同步实现位于
+  `Projection.Sync`，不保留旧 module/path/alias；
 - Metric、Achievement、Activity、Outbox 和通知已归 Effects；
 - 跨文章加锁继续使用 `Articles.MutationLock`；
-- 已拆分 action 模块中混合的 Gate、Repo、ReadState、Metric 和 Outbox 逻辑；
+- 已拆分 action 模块中混合的 Gate、Repo、Projection、Metric 和 Outbox 逻辑；
 - 已为每个动作确定 one-shot 或 Receipt-backed 及对应 Confirmation；原仅包装 transaction 的 Interactions 模块已改为语义明确的 `Interactions.Transaction`。
 
 ### 4.6 Wallpaper — `acceptance`

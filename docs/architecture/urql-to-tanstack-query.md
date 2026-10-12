@@ -929,16 +929,17 @@ TanStack Query invalidation
   trigger: mutation confirmed、receipt/view projection 收敛
 
 Public CDN invalidation
-  owner: Phoenix PublicCache
+  owner: Phoenix CMS Outbox + PublicCache provider capability
   target: Cloudflare 中的公共 HTML/hydration object
   trigger: content/publish/visibility/config 领域变化
-  path: transaction outbox -> Oban PurgeWorker -> Cloudflare cache-tag purge
+  path: CMS transaction -> CMS Outbox -> Jobs.CMSOutbox<Domain>
+        -> CMS.Outbox.Workflow.<Domain> -> PublicCache -> Cloudflare purge
 ```
 
 两边可以从同一个用户动作开始，但不能共享 executor，也不能由浏览器把 tag 传给 Phoenix。upvote/view/comment count
 通常只失效当前浏览器的 ArticleStats Query，并依赖 HTML TTL；文章发布或内容修改由 Phoenix 事务创建
-`PublicCache.Invalidation`。完整协议见
-[`public-cache-invalidation.md`](./public-cache-invalidation.md)。
+CMS Outbox Event。完整可靠投递协议见 [`cms-outbox.md`](./cms-outbox.md)；tag 和 Cloudflare provider
+约束见 [`public-cache-invalidation.md`](./public-cache-invalidation.md)。
 
 ## Valtio 迁移边界
 
