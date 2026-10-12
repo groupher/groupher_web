@@ -53,14 +53,15 @@ defmodule GroupherServer.Analysis.Aggregator.Persist do
     events
     |> Enum.group_by(&aggregate_key/1)
     |> Enum.each(fn {
-                      {community_id, article_type, article_id, bucket, metric, actor_type,
-                       is_authenticated, policy_version},
+                      {community_id, binding_id, article_type, article_id, bucket, metric,
+                       actor_type, is_authenticated, policy_version},
                       grouped_events
                     } ->
       value = Enum.reduce(grouped_events, 0, &(&1.value + &2))
 
       attrs = %{
         community_id: community_id,
+        binding_id: binding_id,
         article_type: article_type,
         article_id: article_id,
         bucket_started_at: bucket,
@@ -77,6 +78,7 @@ defmodule GroupherServer.Analysis.Aggregator.Persist do
         on_conflict: [inc: [value: value], set: [updated_at: now]],
         conflict_target: [
           :community_id,
+          :binding_id,
           :article_type,
           :article_id,
           :bucket_started_at,
@@ -101,6 +103,7 @@ defmodule GroupherServer.Analysis.Aggregator.Persist do
   defp aggregate_key(event) do
     {
       event.community_id,
+      event.binding_id,
       event.article_type,
       event.article_id,
       hour_start(event.occurred_at),

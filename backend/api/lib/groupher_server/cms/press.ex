@@ -34,8 +34,9 @@ defmodule GroupherServer.CMS.Press do
   def update_config(community, attrs, %User{} = actor, command_id),
     do: Commands.UpdateConfig.execute(community, attrs, actor, command_id)
 
-  @doc "Sends best-effort Press cache invalidation after a public projection changes."
-  @spec invalidate(Community.t() | String.t() | integer()) :: {:ok, :pass}
+  @doc "Delivers Press cache invalidation for an already-committed effect."
+  @spec invalidate(Community.t() | String.t() | integer()) ::
+          {:ok, :pass} | {:error, term()}
   def invalidate(community), do: Invalidation.invalidate(community)
 
   @doc "Reads one current public Article projection."

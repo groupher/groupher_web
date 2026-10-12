@@ -22,7 +22,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Asset do
         {:snooze, seconds}
 
       {:error, _reason} when job.attempt >= job.max_attempts ->
-        _ = CMS.Outbox.mark_dead(event_id)
+        _ = CMS.Outbox.mark_failed(event_id)
         {:ok, :pass}
 
       {:error, reason} ->

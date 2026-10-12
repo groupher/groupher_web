@@ -3,7 +3,6 @@ defmodule GroupherServer.Test.CMS.Comments.QueryList do
 
   alias GroupherServer.{CMS, Jobs}
   alias CMS.Model.ArticleStats
-  alias Jobs.Codec
 
   test "participant projection repair never changes a successful read result" do
     {community, post, _, actor} = mock_article(:post, preload: [author: :user])
@@ -37,18 +36,16 @@ defmodule GroupherServer.Test.CMS.Comments.QueryList do
              thread: :post
            ).comments_participants_count == 99
 
-    encoded =
-      Codec.encode(%{
-        thread: :post,
-        article_id: post.id,
-        total_count: page.total_count
-      })
-
     assert {:ok, :pass} =
              Jobs.Comments.perform(%Oban.Job{
                args: %{
-                 "kind" => "reconcile_comments_participants",
-                 "payload" => encoded
+                 "type" => "reconcile_comments_participants",
+                 "version" => 1,
+                 "payload" => %{
+                   "thread" => "post",
+                   "article_id" => post.id,
+                   "total_count" => page.total_count
+                 }
                }
              })
 

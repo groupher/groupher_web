@@ -83,7 +83,7 @@ cms.outbox_events
   command_id         text (legacy column name; UUID for command, durable ref for workflow)
   effect_key         text
   data               bounded JSON map
-  status             pending | executing | completed | failed
+  status             waiting | running | retrying | done | failed
   attempts           non-negative integer
   available_at       UTC datetime
   locked_at          UTC datetime
@@ -190,9 +190,9 @@ end
 
 ```text
 load Event
-  -> completed: return stored completion
-  -> executing + valid lease: ask Oban to retry later
-  -> pending / expired lease:
+  -> done: return stored completion
+  -> running + valid lease: ask Oban to retry later
+  -> waiting / retrying / expired lease:
        claim
        run action
        complete, or record failure and retry
@@ -228,7 +228,7 @@ CMS.Command.execute(command,
     publish(context)
   end,
   result: fn receipt ->
-    # 首次提交和 completed retry 都执行
+    # 首次提交和 done retry 都执行
     CMS.FrontDesk.article(receipt.result_key, mode: :internal)
   end
 )
@@ -247,7 +247,7 @@ first execution
   -> COMMIT
   -> result
 
-completed retry
+done retry
   -> skip action
   -> reuse committed result identity
   -> result

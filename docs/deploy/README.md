@@ -276,6 +276,7 @@ Press / Fly secrets
 
 Phoenix / Fly secrets
   PRESS_INTERNAL_URL=https://press.groupher.com
+  PRESS_INTERNAL_RESOURCE=https://press.groupher.com/internal
   SERVICE_AUTH_TOKEN_ENDPOINT=https://auth.groupher.com/oauth2/token
   SERVICE_AUTH_CLIENT_ID=<phoenix client id>
   SERVICE_AUTH_CLIENT_SECRET=<phoenix client secret>
@@ -308,6 +309,12 @@ curl -i https://groupher.com/home/sitemap.xml
 
 Feed 是否返回内容取决于社区是否开启对应输出；未开启时 `404` 是正常产品配置，不用于判断
 Press 链路失败。Markdown、`llms.txt` 和 sitemap 是稳定的发布 smoke。
+
+生产 Phoenix 必须显式配置非空 `PRESS_INTERNAL_URL` 和正确的
+`PRESS_INTERNAL_RESOURCE`，并确认 Phoenix service identity 获得
+`press:cache:invalidate` scope。未配置 endpoint 的 dev/local 环境会把 invalidation 视为 no-op；
+该行为不能作为生产 fallback。上线验收必须修改一次 Press config，确认对应 Outbox event 执行完成，
+并验证 Press 输出已经失效或刷新，不能只检查 mutation 成功。
 
 另选一篇真实 published Doc 验证 `.md`、ETag/`304`、不增加 Article human views、metrics
 落库和 Phoenix-to-Press invalidation。完整检查表见 `docs/press/v1.md`。

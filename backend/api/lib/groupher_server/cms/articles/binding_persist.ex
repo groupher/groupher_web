@@ -48,13 +48,15 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
       )
       when thread in @ordinary_threads do
     with %Article{} = article <- lock_article(article.id),
-         {:ok, :source_matches} <- ensure_source_community(article, source),
+         {:ok, binding} <- source_binding(article.id, source_community_id),
          {:ok, :different_community} <- ensure_different_community(source, destination),
-         {:ok, binding} <- upsert_binding(article, destination),
-         {:ok, _binding} <- Numbering.assign_binding_inner_id(binding),
+         {:ok, :destination_ready} <- prepare_destination(article, destination),
          {:ok, _} <- delete_source_local_data(article.id, source_community_id),
-         {:ok, _deleted_count} <-
-           delete_source_binding(article.id, source_community_id, destination.id) do
+         {:ok, binding} <-
+           binding
+           |> ArticleBinding.changeset(%{community_id: destination.id, inner_id: nil})
+           |> Repo.update(),
+         {:ok, _binding} <- Numbering.assign_binding_inner_id(binding) do
       {:ok, article}
     else
       nil -> {:error, :article_not_found}
@@ -121,6 +123,13 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
     |> Repo.one()
   end
 
+  defp source_binding(article_id, community_id) do
+    case lock_binding(article_id, community_id) do
+      %ArticleBinding{} = binding -> {:ok, binding}
+      nil -> {:error, :source_article_binding_not_found}
+    end
+  end
+
   defp ensure_can_remove_published_article(
          _article_id,
          %ArticleBinding{visible: visible, inner_id: inner_id}
@@ -164,10 +173,16 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
     end
   end
 
-  defp ensure_source_community(%Article{} = article, %Community{id: source_id}) do
-    case Repo.get_by(ArticleBinding, article_id: article.id, community_id: source_id) do
-      %ArticleBinding{} -> {:ok, :source_matches}
-      nil -> {:error, :source_article_binding_not_found}
+  defp prepare_destination(%Article{} = article, %Community{id: destination_id}) do
+    case Repo.get_by(ArticleBinding, article_id: article.id, community_id: destination_id) do
+      nil ->
+        {:ok, :destination_ready}
+
+      %ArticleBinding{} = destination_binding ->
+        with {:ok, _} <- delete_source_local_data(article.id, destination_id),
+             {:ok, _} <- Repo.delete(destination_binding) do
+          {:ok, :destination_ready}
+        end
     end
   end
 
@@ -185,19 +200,6 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
     Repo.delete_all(from(state in KanbanState, where: state.article_binding_id in ^binding_ids))
 
     {:ok, :pass}
-  end
-
-  defp delete_source_binding(article_id, source_community_id, destination_community_id) do
-    {deleted_count, _} =
-      Repo.delete_all(
-        from(binding in ArticleBinding,
-          where:
-            binding.article_id == ^article_id and binding.community_id == ^source_community_id and
-              binding.community_id != ^destination_community_id
-        )
-      )
-
-    {:ok, deleted_count}
   end
 
   defp upsert_binding(article, community) do

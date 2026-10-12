@@ -19,10 +19,43 @@ defmodule GroupherServer.Jobs.Workflow do
   require Logger
 
   alias GroupherServer.Jobs
-  alias Jobs.{Codec, Config}
+  alias Jobs.Config
 
-  @type later_job :: {module(), atom(), list()}
   @type safe_resource_ref :: integer() | String.t() | atom() | nil
+
+  @doc """
+  Enqueues one typed Accounts event using only stable user ids.
+
+  ## Examples
+
+      Workflow.account_event(:follow, user_id, follower_id)
+  """
+  def account_event(type, user_id, from_user_id) when type in [:follow, :undo_follow] do
+    if Config.skip_enqueue?() do
+      {:ok, :pass}
+    else
+      %{type: Atom.to_string(type), version: 1, user_id: user_id, from_user_id: from_user_id}
+      |> Jobs.AccountEvent.new()
+      |> Oban.insert()
+    end
+  end
+
+  @doc """
+  Enqueues a typed Community contribution-cache rebuild.
+
+  ## Examples
+
+      Workflow.contribution_cache(community_id)
+  """
+  def contribution_cache(community_id) when is_integer(community_id) do
+    if Config.skip_enqueue?() do
+      {:ok, :pass}
+    else
+      %{type: "community_contribution_cache", version: 1, community_id: community_id}
+      |> Jobs.ContributionCache.new()
+      |> Oban.insert()
+    end
+  end
 
   @doc """
   Builds the Oban changeset for one PublicCache invalidation delivery.
@@ -41,7 +74,7 @@ defmodule GroupherServer.Jobs.Workflow do
   completed business operation.
 
   The log contains only the finite job name, a caller-supplied safe resource
-  reference, and a stable failure kind. The callback result or exception is
+  reference, and a stable failure type. The callback result or exception is
   never inspected into logs.
 
   ## Examples
@@ -79,43 +112,6 @@ defmodule GroupherServer.Jobs.Workflow do
   end
 
   @doc """
-  Enqueues a compatibility job that invokes the encoded module/function/arguments tuple.
-
-  ## Examples
-
-      Jobs.later({GroupherServer.Jobs.Comments, :perform, [payload]})
-  """
-  @spec later(later_job()) :: {:ok, :pass}
-  def later({mod, func, args} = job) when is_atom(mod) and is_atom(func) and is_list(args) do
-    if Config.skip_enqueue?() do
-      {:ok, :pass}
-    else
-      %{job: Codec.encode(job)}
-      |> Jobs.Later.new()
-      |> insert_pass()
-    end
-  end
-
-  @doc """
-  Enqueues a compatibility job whose insertion must participate in the caller transaction.
-
-  ## Examples
-
-      Jobs.Workflow.enqueue_later({SomeModule, :run, [payload]})
-  """
-  @spec enqueue_later(later_job()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def enqueue_later({mod, func, args} = job)
-      when is_atom(mod) and is_atom(func) and is_list(args) do
-    if Config.skip_enqueue?() do
-      {:ok, :pass}
-    else
-      %{job: Codec.encode(job)}
-      |> Jobs.Later.new()
-      |> Oban.insert()
-    end
-  end
-
-  @doc """
   Enqueues mention reconciliation for one comment-like artiment.
 
   ## Examples
@@ -124,7 +120,7 @@ defmodule GroupherServer.Jobs.Workflow do
       #=> {:ok, %Oban.Job{}} | {:ok, :pass} | {:error, reason}
   """
   @spec sync_mentions(struct()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def sync_mentions(artiment), do: comments_job(:sync_mentions, %{artiment: artiment})
+  def sync_mentions(%{id: id}), do: comments_job(:sync_mentions, %{comment_id: id})
 
   @doc """
   Enqueues content audition for one comment-like artiment.
@@ -134,7 +130,7 @@ defmodule GroupherServer.Jobs.Workflow do
       Jobs.audition(comment)
   """
   @spec audition(struct()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def audition(artiment), do: comments_job(:audition, %{artiment: artiment})
+  def audition(%{id: id}), do: comments_job(:audition, %{comment_id: id})
 
   @doc """
   Enqueues the notification produced by a new top-level comment.
@@ -145,7 +141,7 @@ defmodule GroupherServer.Jobs.Workflow do
   """
   @spec notify_comment(struct(), struct()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
   def notify_comment(comment, actor) do
-    comments_job(:notify_comment, %{comment: comment, from_user: actor})
+    comments_job(:notify_comment, %{comment_id: comment.id, actor_id: actor.id})
   end
 
   @doc """
@@ -157,7 +153,7 @@ defmodule GroupherServer.Jobs.Workflow do
   """
   @spec notify_reply(struct(), struct()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
   def notify_reply(reply_comment, actor) do
-    comments_job(:notify_reply, %{reply_comment: reply_comment, from_user: actor})
+    comments_job(:notify_reply, %{comment_id: reply_comment.id, actor_id: actor.id})
   end
 
   @doc """
@@ -170,7 +166,7 @@ defmodule GroupherServer.Jobs.Workflow do
   @spec subscribe_community(struct(), struct()) ::
           {:ok, Oban.Job.t() | :pass} | {:error, term()}
   def subscribe_community(target, actor) do
-    comments_job(:subscribe_community, %{target: target, user: actor})
+    comments_job(:subscribe_community, %{community_id: target.id, actor_id: actor.id})
   end
 
   @doc """
@@ -211,7 +207,7 @@ defmodule GroupherServer.Jobs.Workflow do
   end
 
   @doc """
-  Enqueues a snapshot refresh for the supplied resource kind and references.
+  Enqueues a snapshot refresh for the supplied resource type and references.
 
   ## Examples
 
@@ -219,38 +215,40 @@ defmodule GroupherServer.Jobs.Workflow do
   """
   @spec snapshot_refresh(atom(), term(), keyword()) ::
           {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def snapshot_refresh(kind, refs, opts) when is_atom(kind) and is_list(opts) do
+  def snapshot_refresh(type, refs, opts) when is_atom(type) and is_list(opts) do
     if Config.skip_enqueue?() do
       {:ok, :pass}
     else
-      %{kind: Atom.to_string(kind), refs: Codec.encode(refs), opts: Codec.encode(opts)}
+      %{
+        type: Atom.to_string(type),
+        version: 1,
+        refs: snapshot_refs(type, refs),
+        opts: Map.new(opts)
+      }
       |> Jobs.SnapshotRefresh.new()
       |> Oban.insert()
     end
   end
 
-  defp insert_pass(changeset) do
-    case Oban.insert(changeset) do
-      {:ok, _job} -> {:ok, :pass}
-      {:error, _reason} -> {:ok, :pass}
-    end
-  rescue
-    _ -> {:ok, :pass}
-  end
-
-  defp comments_job(kind, payload) do
+  defp comments_job(type, payload) do
     if Config.skip_enqueue?() do
       {:ok, :pass}
     else
-      %{kind: Atom.to_string(kind), payload: Codec.encode(payload)}
+      %{type: Atom.to_string(type), version: 1, payload: payload}
       |> Jobs.Comments.new()
       |> Oban.insert()
     end
   end
 
-  defp log_best_effort_failure(job_name, resource_ref, failure_kind) do
+  defp snapshot_refs(:user, ids) when is_list(ids), do: ids
+
+  defp snapshot_refs(type, %{thread: thread, ids: ids}) when type in [:article, :comment] do
+    %{thread: Atom.to_string(thread), ids: ids}
+  end
+
+  defp log_best_effort_failure(job_name, resource_ref, failure_type) do
     Logger.warning(
-      "optional job enqueue failed job=#{job_name} resource_ref=#{resource_ref || "none"} failure=#{failure_kind}"
+      "optional job enqueue failed job=#{job_name} resource_ref=#{resource_ref || "none"} failure=#{failure_type}"
     )
 
     {:ok, :pass}
@@ -282,24 +280,6 @@ defmodule GroupherServer.Jobs.Workflow do
       iex> GroupherServer.Jobs.Workflow.config_skip_enqueue?(...)
   """
   defdelegate config_skip_enqueue?(), to: GroupherServer.Jobs.Config, as: :skip_enqueue?
-
-  @doc """
-  Delegates GroupherServer.Jobs.Later.new/1 through the Jobs Context boundary.
-
-  ## Examples
-
-      iex> GroupherServer.Jobs.Workflow.later_new(...)
-  """
-  defdelegate later_new(arg1), to: GroupherServer.Jobs.Later, as: :new
-
-  @doc """
-  Delegates GroupherServer.Jobs.Later.new/2 through the Jobs Context boundary.
-
-  ## Examples
-
-      iex> GroupherServer.Jobs.Workflow.later_new(...)
-  """
-  defdelegate later_new(arg1, arg2), to: GroupherServer.Jobs.Later, as: :new
 
   @doc """
   Delegates GroupherServer.Jobs.PublicCachePurge.new/1 through the Jobs Context boundary.

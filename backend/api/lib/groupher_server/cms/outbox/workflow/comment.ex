@@ -26,7 +26,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Comment do
         {:snooze, seconds}
 
       {:error, _reason} when job.attempt >= job.max_attempts ->
-        _ = Outbox.mark_dead(event_id)
+        _ = Outbox.mark_failed(event_id)
         {:ok, :pass}
 
       {:error, reason} ->

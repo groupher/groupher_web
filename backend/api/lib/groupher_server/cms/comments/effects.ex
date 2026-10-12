@@ -12,7 +12,9 @@ defmodule GroupherServer.CMS.Comments.Effects do
         -> Comment cleanup worker
   """
 
-  alias GroupherServer.{Activity, CMS}
+  alias GroupherServer.{Accounts, Activity, CMS, Repo}
+  alias Accounts.Model.User
+  alias CMS.Model.{Comment, Community}
 
   @doc "Records one Comment effect in the caller-owned transaction."
   @spec enqueue(String.t(), String.t(), term(), Ecto.UUID.t(), map(), keyword()) ::
@@ -39,4 +41,53 @@ defmodule GroupherServer.CMS.Comments.Effects do
 
   @doc "Records one Comment activity in the caller-owned transaction."
   def activity(resource, event, opts), do: Activity.log(resource, event, opts)
+
+  @doc "Reloads canonical resources and delivers one typed Comment effect."
+  def deliver(:sync_mentions, %{"comment_id" => id}) do
+    with {:ok, comment} <- comment(id), do: CMS.Events.emit(:sync_mentions, %{artiment: comment})
+  end
+
+  def deliver(:audition, %{"comment_id" => id}) do
+    with {:ok, comment} <- comment(id), do: CMS.Events.emit(:audition, %{artiment: comment})
+  end
+
+  def deliver(:notify_comment, %{"comment_id" => id, "actor_id" => actor_id}) do
+    with {:ok, comment} <- comment(id),
+         {:ok, actor} <- user(actor_id) do
+      CMS.Events.emit(:notify_comment, %{comment: comment, from_user: actor})
+    end
+  end
+
+  def deliver(:notify_reply, %{"comment_id" => id, "actor_id" => actor_id}) do
+    with {:ok, comment} <- comment(id),
+         {:ok, actor} <- user(actor_id) do
+      CMS.Events.emit(:notify_reply, %{reply_comment: comment, from_user: actor})
+    end
+  end
+
+  def deliver(:subscribe_community, %{"community_id" => id, "actor_id" => actor_id}) do
+    with %Community{} = community <- Repo.get(Community, id),
+         {:ok, actor} <- user(actor_id) do
+      CMS.Events.emit(:subscribe_community, %{target: community, user: actor})
+    else
+      nil -> {:error, :comment_effect_community_not_found}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  def deliver(_type, _payload), do: {:error, :invalid_comment_effect}
+
+  defp comment(id) do
+    case Repo.get(Comment, id) do
+      %Comment{} = comment -> {:ok, comment}
+      nil -> {:error, :comment_effect_comment_not_found}
+    end
+  end
+
+  defp user(id) do
+    case Repo.get(User, id) do
+      %User{} = user -> {:ok, user}
+      nil -> {:error, :comment_effect_actor_not_found}
+    end
+  end
 end

@@ -11,9 +11,7 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
         -> Confirmation / canonical Community recovery
   """
 
-  require Logger
-
-  alias GroupherServer.{Accounts, Analysis, CMS, FrontDesk, Repo}
+  alias GroupherServer.{Accounts, CMS, FrontDesk, Repo}
   alias Accounts.Model.User
   alias CMS.Communities.{CreationPersist, Lifecycle}
   alias CMS.Communities.Moderators.Setup, as: ModeratorSetup
@@ -36,25 +34,15 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
   def execute(args, %User{} = user, command_id) do
     command_params = Map.drop(args, [:author, :user, "author", "user"])
 
-    result =
-      %CMS.Command{
-        actor: user,
-        command_id: command_id,
-        operation: :community_create,
-        target: {:community_create, user.id},
-        params: command_params
-      }
-      |> CMS.Command.execute(action: &create_action/1, confirmation: CreateConfirmation)
-      |> present_create()
-
-    case result do
-      {:ok, %Community{} = community} ->
-        provision_web_analysis(community)
-        result
-
-      _ ->
-        result
-    end
+    %CMS.Command{
+      actor: user,
+      command_id: command_id,
+      operation: :community_create,
+      target: {:community_create, user.id},
+      params: command_params
+    }
+    |> CMS.Command.execute(action: &create_action/1, confirmation: CreateConfirmation)
+    |> present_create()
   end
 
   defp create_action(%{actor: %User{} = user, params: args, command_id: command_id}) do
@@ -64,7 +52,9 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
          {:ok, _tree} <- CMS.DocTree.initialize(community),
          {:ok, canonical} <- FrontDesk.community(community.slug, mode: :internal),
          {:ok, _event} <-
-           CMS.Dashboard.Effects.enqueue_presentation_changed(canonical, command_id) do
+           CMS.Dashboard.Effects.enqueue_presentation_changed(canonical, command_id),
+         {:ok, _event} <-
+           CMS.Communities.Effects.enqueue_analysis_provision(canonical, command_id) do
       {:ok,
        %CreateConfirmation{
          data: %{"community_id" => canonical.id, "command_id" => command_id}
@@ -83,30 +73,5 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
 
   defp with_defaults(args) do
     Map.merge(args, %{meta: @default_meta, dashboard: @default_dashboard})
-  end
-
-  defp provision_web_analysis(%Community{} = community) do
-    case Analysis.web_provision_community_on_create(community) do
-      {:ok, :deferred} ->
-        {:ok, :deferred}
-
-      {:ok, _website_id} ->
-        {:ok, :provisioned}
-
-      {:error, reason} ->
-        defer_web_analysis(community, reason)
-
-      unexpected ->
-        defer_web_analysis(community, {:unexpected_result, unexpected})
-    end
-  end
-
-  defp defer_web_analysis(%Community{} = community, reason) do
-    Logger.warning("Community web analysis provisioning deferred",
-      community_id: community.id,
-      reason: inspect(reason)
-    )
-
-    {:ok, :deferred}
   end
 end

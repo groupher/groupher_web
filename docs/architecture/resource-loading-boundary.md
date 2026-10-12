@@ -130,7 +130,7 @@ committed effect/job payload
   -> effect
 ```
 
-这种 reload 是跨事务 authority refresh，不是同步 mutation 的重复查询。合法例子包括 `Events.Audition -> Comments.Moderation`、`Events.SubscribeCommunity.comment_parent_article/2`，以及首次发布后的 `Articles.Publish.run_after_publish/2`（private `defp`）→ `Later.run` → `Articles.Writer.notify_admin_new_article/1`。异步 owner 必须定义资源已删除、已归档或不再满足 effect 条件时的行为；例如 Audition 对已清理内容返回成功的 no-op。
+这种 reload 是跨事务 authority refresh，不是同步 mutation 的重复查询。合法例子包括 `Events.Audition -> Comments.Moderation`、`Events.SubscribeCommunity.comment_parent_article/2`，以及首次发布后的 `Articles.Effects.enqueue/6 -> CMS Outbox -> CMS.articles_effect/1`。异步 owner 必须定义资源已删除、已归档或不再满足 effect 条件时的行为；例如 Audition 对已清理内容返回成功的 no-op。
 
 ## 3. 参数分类
 
@@ -245,9 +245,11 @@ branch-scoped and do not fall back across branches.
 
 - `Events.SubscribeCommunity.comment_parent_article/2`：异步订阅 effect 执行时重新加载父 Article；
 - `Events.Audition -> Comments.Moderation`：重新加载当前 Comment，并把已删除内容视为 no-op；
-- `Articles.Publish.run_after_publish/2`（private `defp`）→ `Later.run` → `Articles.Writer.notify_admin_new_article/1`：首次发布成功后的真实 post-commit 链路，任务执行时按 Article ID 重新加载当前资源。
+- `Articles.Effects.enqueue/6 -> CMS Outbox -> CMS.articles_effect/1`：首次发布成功后的真实 post-commit 链路，任务执行时按 Article ID 与 Binding ID 重新加载当前资源。
 
-`notify_admin_new_article` 的 authority reload 合法；`Later.run` 现已只携带 `%{target: article_module, id: article_id}`，由任务执行端按身份重载当前资源。旧的完整 struct 形态仍被 Writer 兼容接收，以便处理已入队的历史任务。
+`notify_admin_new_article` 的 authority reload 合法。Article Effects contract 只携带稳定的 Article 与
+Binding identity；Worker 执行时重新加载 canonical Article、Binding 与 Community。旧
+`Later.run` / Writer payload 已由 migration 清理，不提供完整 struct 或旧模块名兼容读取。
 
 ### 4.8 暂不机械迁移
 

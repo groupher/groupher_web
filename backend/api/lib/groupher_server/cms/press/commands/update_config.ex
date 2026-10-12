@@ -45,10 +45,7 @@ defmodule GroupherServer.CMS.Press.Commands.UpdateConfig do
 
       with {:ok, confirmation} <-
              Command.execute(command, action: &action/1, confirmation: Confirmation) do
-        with {:ok, result} <- present(confirmation) do
-          _ = Effects.schedule_invalidation(community.slug)
-          {:ok, result}
-        end
+        present(confirmation)
       end
     end
   end
@@ -75,7 +72,8 @@ defmodule GroupherServer.CMS.Press.Commands.UpdateConfig do
                       payload: changed_payload,
                       changed_fields: Map.keys(changed_payload),
                       metadata: %{revision: config.revision}
-                    ) do
+                    ),
+                  {:ok, _effect} <- Effects.enqueue_invalidation(canonical, command_id) do
                {:ok, config}
              end
            end),

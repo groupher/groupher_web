@@ -25,17 +25,20 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
   def append_article_action(article, operation_id, metric, opts \\ [])
 
   def append_article_action(%{id: _id} = article, operation_id, metric, opts) do
+    article_id = Map.get(article, :article_id) || Map.get(article, :id)
+
     with {:ok, %{artiment: article_type}} <-
            GroupherServer.CMS.artiment_matcher_match_interaction(article),
-         {:ok, community_id} <- article_binding_id(article, opts),
+         {:ok, binding} <- article_binding(article, opts),
          true <- article_type in CMS.artiment_threads_article_enums(),
          true <- metric in Const.metrics(),
-         {:ok, _article_id} <- cast_article_id(Map.get(article, :id)) do
+         {:ok, _article_id} <- cast_article_id(article_id) do
       append(%{
         operation_id: operation_id,
-        community_id: community_id,
+        community_id: binding.community_id,
+        binding_id: binding.id,
         article_type: article_type,
-        article_id: article.id,
+        article_id: article_id,
         metric: metric,
         actor_type: :all,
         is_authenticated: false,
@@ -91,15 +94,38 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
     {:ok, :pass}
   end
 
-  defp article_binding_id(article, opts) do
-    case Keyword.get(opts, :community_id) do
-      community_id when is_integer(community_id) ->
-        {:ok, community_id}
+  defp article_binding(article, opts) do
+    community_ref = Keyword.get(opts, :community_id) || Map.get(article, :community)
+    stable_article_id = Map.get(article, :article_id) || Map.get(article, :id)
+
+    case Keyword.get(opts, :binding_id) do
+      binding_id when is_integer(binding_id) ->
+        case Repo.get(CMS.Model.ArticleBinding, binding_id) do
+          %CMS.Model.ArticleBinding{article_id: article_id} = binding
+          when article_id == stable_article_id ->
+            {:ok, binding}
+
+          _ ->
+            {:error, :invalid_article_binding}
+        end
 
       _ ->
-        case GroupherServer.CMS.articles_bindings_get(article, Map.get(article, :community)) do
-          {:ok, %{community: %{id: community_id}}} -> {:ok, community_id}
-          {:error, reason} -> {:error, reason}
+        case community_ref do
+          community_id when is_integer(community_id) ->
+            case Repo.get_by(CMS.Model.ArticleBinding,
+                   article_id: stable_article_id,
+                   community_id: community_id
+                 ) do
+              %CMS.Model.ArticleBinding{} = binding -> {:ok, binding}
+              nil -> {:error, :article_binding_not_found}
+            end
+
+          _ ->
+            case GroupherServer.CMS.articles_bindings_get(article, community_ref) do
+              {:ok, %{binding: %CMS.Model.ArticleBinding{} = binding}} -> {:ok, binding}
+              {:ok, %CMS.Model.ArticleBinding{} = binding} -> {:ok, binding}
+              {:error, reason} -> {:error, reason}
+            end
         end
     end
   end
@@ -121,6 +147,7 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
   defp validate(%{
          operation_id: operation_id,
          community_id: community_id,
+         binding_id: binding_id,
          article_id: article_id,
          article_type: article_type,
          metric: metric,
@@ -130,6 +157,7 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
     cond do
       Ecto.UUID.cast(operation_id) == :error -> {:error, :invalid_operation_id}
       not (is_integer(community_id) and community_id > 0) -> {:error, :invalid_community_id}
+      not (is_integer(binding_id) and binding_id > 0) -> {:error, :invalid_binding_id}
       cast_article_id(article_id) == :error -> {:error, :invalid_article_id}
       article_type not in CMS.artiment_threads_article_enums() -> {:error, :invalid_article_type}
       metric not in Const.metrics() -> {:error, :invalid_metric}

@@ -2,7 +2,6 @@ defmodule GroupherServer.Test.Jobs.Comments do
   use GroupherServer.TestMate, async: false
 
   alias GroupherServer.{Accounts, CMS, Jobs}
-  alias Jobs.Codec
   alias CMS.Model.{Comment, Community}
   alias Accounts.Model.User
 
@@ -36,11 +35,11 @@ defmodule GroupherServer.Test.Jobs.Comments do
        fn -> Jobs.reconcile_comments_participants(:post, article_id, 7) end}
     ]
 
-    for {kind, enqueue} <- calls do
+    for {type, enqueue} <- calls do
       assert {:ok, %Oban.Job{worker: "GroupherServer.Jobs.Comments"} = job} = enqueue.()
       args = Map.new(job.args, fn {key, value} -> {to_string(key), value} end)
-      assert args["kind"] == Atom.to_string(kind)
-      assert is_map(Codec.decode(args["payload"]))
+      assert args["type"] == Atom.to_string(type)
+      assert is_map(args["payload"])
     end
   end
 end

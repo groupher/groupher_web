@@ -9,6 +9,24 @@ defmodule GroupherServer.Jobs do
   """
 
   @doc """
+  Enqueues one typed Accounts event.
+
+  ## Examples
+
+      Jobs.account_event(:follow, user_id, follower_id)
+  """
+  defdelegate account_event(type, user_id, from_user_id), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Enqueues one typed contribution-cache rebuild.
+
+  ## Examples
+
+      Jobs.contribution_cache(community_id)
+  """
+  defdelegate contribution_cache(community_id), to: GroupherServer.Jobs.Workflow
+
+  @doc """
   Delegates audition/1 to the Jobs workflow owner.
 
   ## Examples
@@ -52,42 +70,6 @@ defmodule GroupherServer.Jobs do
       iex> GroupherServer.Jobs.enqueue_best_effort(...)
   """
   defdelegate enqueue_best_effort(arg1, arg2, arg3), to: GroupherServer.Jobs.Workflow
-
-  @doc """
-  Delegates later/1 to the Jobs workflow owner.
-
-  ## Examples
-
-      iex> GroupherServer.Jobs.later(...)
-  """
-  defdelegate later(arg1), to: GroupherServer.Jobs.Workflow
-
-  @doc """
-  Enqueues a compatibility job and returns insertion failures to the caller.
-
-  ## Examples
-
-      Jobs.enqueue_later({SomeModule, :run, [payload]})
-  """
-  defdelegate enqueue_later(arg1), to: GroupherServer.Jobs.Workflow
-
-  @doc """
-  Delegates later_new/1 to the Jobs workflow owner.
-
-  ## Examples
-
-      iex> GroupherServer.Jobs.later_new(...)
-  """
-  defdelegate later_new(arg1), to: GroupherServer.Jobs.Workflow
-
-  @doc """
-  Delegates later_new/2 to the Jobs workflow owner.
-
-  ## Examples
-
-      iex> GroupherServer.Jobs.later_new(...)
-  """
-  defdelegate later_new(arg1, arg2), to: GroupherServer.Jobs.Workflow
 
   @doc """
   Delegates notify_comment/2 to the Jobs workflow owner.

@@ -150,6 +150,49 @@ test('keeps report-only findings non-blocking and rejects them in fully-strict m
   })
 })
 
+test('rejects dynamic callbacks and unstable persisted Worker payload fields', () => {
+  withFixture((root) => {
+    touch(root, 'jobs.ex', 'GroupherServer.Jobs')
+    touch(root, 'jobs/unsafe.ex', 'GroupherServer.Jobs.Unsafe')
+    writeFileSync(
+      path.join(root, 'jobs/unsafe.ex'),
+      `defmodule GroupherServer.Jobs.Unsafe do
+  use Oban.Worker
+  def enqueue(job), do: Jobs.later(job)
+  def perform(%Oban.Job{args: %{"kind" => type, "module" => module}}), do: {type, module}
+end
+`,
+    )
+
+    const findings = backendContextV2SemanticFindings({
+      root,
+      registry: { version: 2, contexts: { jobs: { mode: 'strict' } } },
+    })
+    const categories = findings.map(({ category }) => category)
+    assert.equal(categories.includes('dynamic_job_callback'), true)
+    assert.equal(categories.includes('unstable_job_payload'), true)
+  })
+})
+
+test('rejects a tagged error returned directly from Repo.transaction', () => {
+  withFixture((root) => {
+    touch(root, 'accounts.ex', 'GroupherServer.Accounts')
+    writeFileSync(
+      path.join(root, 'accounts.ex'),
+      `defmodule GroupherServer.Accounts do
+  def unsafe, do: Repo.transaction(fn -> {:error, :must_rollback} end)
+end
+`,
+    )
+
+    const findings = backendContextV2SemanticFindings({ root, registry: registry() })
+    assert.equal(
+      findings.some(({ category }) => category === 'transaction_error_without_rollback'),
+      true,
+    )
+  })
+})
+
 test('rejects nested registry keys and root drift globally', () => {
   withFixture((root) => {
     touch(root, 'helper.ex', 'GroupherServer.Helper')

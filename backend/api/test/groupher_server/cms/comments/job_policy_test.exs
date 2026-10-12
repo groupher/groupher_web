@@ -29,7 +29,7 @@ defmodule GroupherServer.Test.CMS.Comments.JobPolicy do
 
   test "required audition enqueue failure rolls back comment creation" do
     {community, post, _, actor} = mock_article(:post, preload: [author: :user])
-    reject_job_kind(:audition)
+    reject_job_type(:audition)
 
     assert_raise Ecto.ConstraintError, fn ->
       CMS.Comments.create_comment(
@@ -61,7 +61,7 @@ defmodule GroupherServer.Test.CMS.Comments.JobPolicy do
                Ecto.UUID.generate()
              )
 
-    reject_job_kind(:audition)
+    reject_job_type(:audition)
 
     assert_raise Ecto.ConstraintError, fn ->
       CMS.Comments.reply_comment(parent.id, mock_comment("reply"), actor, Ecto.UUID.generate())
@@ -91,7 +91,7 @@ defmodule GroupherServer.Test.CMS.Comments.JobPolicy do
                Ecto.UUID.generate()
              )
 
-    reject_job_kind(:audition)
+    reject_job_type(:audition)
 
     assert_raise Ecto.ConstraintError, fn ->
       CMS.Comments.update_comment(comment, mock_comment("after"), actor, Ecto.UUID.generate())
@@ -154,7 +154,7 @@ defmodule GroupherServer.Test.CMS.Comments.JobPolicy do
 
     assert Repo.get!(Comment, comment.id)
 
-    assert %CMS.Outbox.Event{status: :pending} =
+    assert %CMS.Outbox.Event{status: :waiting} =
              Repo.get_by!(CMS.Outbox.Event,
                event: "comment.created",
                resource_type: "comment",
@@ -182,7 +182,7 @@ defmodule GroupherServer.Test.CMS.Comments.JobPolicy do
              |> Ecto.Changeset.change(comments_participants_count: 99)
              |> Repo.update()
 
-    reject_job_kind(:reconcile_comments_participants)
+    reject_job_type(:reconcile_comments_participants)
 
     log =
       capture_log(fn ->
@@ -200,8 +200,8 @@ defmodule GroupherServer.Test.CMS.Comments.JobPolicy do
            ).comments_participants_count == 99
   end
 
-  defp reject_job_kind(kind) when is_atom(kind) do
-    suffix = Atom.to_string(kind)
+  defp reject_job_type(type) when is_atom(type) do
+    suffix = Atom.to_string(type)
     constraint_name = "reject_#{suffix}_job_insert"
 
     # The test Sandbox rolls this table DDL back with each test. Dropping first
@@ -215,7 +215,7 @@ defmodule GroupherServer.Test.CMS.Comments.JobPolicy do
     Repo.query!("""
     ALTER TABLE public.oban_jobs
     ADD CONSTRAINT #{constraint_name}
-    CHECK ((args->>'kind') IS DISTINCT FROM '#{suffix}') NOT VALID
+    CHECK ((args->>'type') IS DISTINCT FROM '#{suffix}') NOT VALID
     """)
   end
 end

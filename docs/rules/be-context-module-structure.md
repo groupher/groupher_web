@@ -19,7 +19,8 @@ Backend 采用“约定大于配置”的 Context 结构。完整设计、角色
 - Worker 只允许放在 Jobs Context，并且不能直接访问 Repo、transaction 或 provider；
 - Facade 只做稳定 API、轻量适配和转发；一对一机械转发使用 `defdelegate`，基础设施访问下沉到 Owner；
 - Facade 必须返回业务值，不能返回内部 module 让调用方继续拼接调用；
-- `CMS.Outbox.send/1` 只能由 Effects Owner 调用；`execute/2` 和 `mark_dead` 只能由 `CMS.Outbox.Workflow` 调用；
+- `CMS.Outbox.send/1` 只能由 Effects Owner 调用；`execute/2` 和 `mark_failed/1` 只能由 `CMS.Outbox.Workflow` 调用；
+- 持久化 Job 必须使用有限的 `type` + version + 稳定资源 ID；禁止 `Helper.Later`、`Jobs.Later`、`{module, function, args}` 和业务 `kind`；
 - 禁止 `import` Context 根 Facade；普通函数必须显式保留 Context 名称，编译期宏按需使用 `require`；
 - 不使用 profile、shared facility 分类、逐文件 allowlist 或常规 exception。
 

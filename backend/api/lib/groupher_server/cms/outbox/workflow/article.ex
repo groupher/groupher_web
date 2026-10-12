@@ -12,7 +12,6 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
   alias GroupherServer.{CMS, Repo}
 
   alias CMS.Outbox
-  alias CMS.Articles.Publish.Effects
   alias CMS.Model.{Article, ArticleBinding, ArticlePublic, ArticleRevision, Community}
 
   def perform(%Oban.Job{args: %{"event_id" => event_id}} = job) do
@@ -24,7 +23,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
         {:snooze, seconds}
 
       {:error, _reason} when job.attempt >= job.max_attempts ->
-        _ = Outbox.mark_dead(event_id)
+        _ = Outbox.mark_failed(event_id)
         {:ok, :pass}
 
       {:error, reason} ->
@@ -55,7 +54,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
            Repo.get_by(ArticleBinding, article_id: article.id, community_id: community.id),
          %ArticlePublic{} = public <- Repo.get(ArticlePublic, article.id),
          %ArticleRevision{} = revision <- Repo.get(ArticleRevision, public.revision_id) do
-      Effects.run(%{
+      CMS.Articles.Effects.run(%{
         article: article,
         community: community,
         binding: binding,

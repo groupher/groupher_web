@@ -1,4 +1,4 @@
-defmodule GroupherServer.CMS.Articles.Publish.Effects do
+defmodule GroupherServer.CMS.Articles.Effects.Publish do
   @moduledoc """
   Starts post-commit projections after a stable Article Publish succeeds.
 
@@ -14,7 +14,6 @@ defmodule GroupherServer.CMS.Articles.Publish.Effects do
   alias GroupherServer.{Activity, CMS, Messaging, Repo}
   alias CMS.FrontDesk
   alias CMS.Model.{Article, Author}
-  alias Helper.Later
 
   @doc """
   Enqueues or schedules the rebuildable projections for one committed result.
@@ -44,11 +43,12 @@ defmodule GroupherServer.CMS.Articles.Publish.Effects do
          {:ok, public} <- public_projection(article, community, inner_id),
          {:ok, _user} <- update_published_projection(result, public),
          {:ok, _} <- append_activity(result, Map.put(public, :community_id, community.id)) do
-      Later.run({CMS.Press, :invalidate, [community.id]})
-      Later.run({CMS.Events, :emit, [:sync_mentions, %{artiment: public}]})
-      Later.run({CMS.Events, :emit, [:audition, %{artiment: public}]})
-      notify_admin_on_first_publish(result, article)
-      {:ok, result}
+      with {:ok, _} <- CMS.Press.invalidate(community.id),
+           {:ok, _} <- CMS.Events.emit(:sync_mentions, %{artiment: public}),
+           {:ok, _} <- CMS.Events.emit(:audition, %{artiment: public}),
+           {:ok, _} <- notify_admin_on_first_publish(result, article) do
+        {:ok, result}
+      end
     else
       false -> {:error, :article_binding_context_required}
       {:error, reason} -> {:error, reason}
@@ -59,10 +59,12 @@ defmodule GroupherServer.CMS.Articles.Publish.Effects do
          %{first_publish?: true, community: community},
          %Article{} = article
        ) do
-    Later.run(
-      {__MODULE__, :notify_admin_new_article,
-       [%{target: Article, id: article.id, thread: article.thread, community: community}]}
-    )
+    notify_admin_new_article(%{
+      target: Article,
+      id: article.id,
+      thread: article.thread,
+      community: community
+    })
   end
 
   defp notify_admin_on_first_publish(_result, _article), do: {:ok, :pass}
@@ -81,11 +83,6 @@ defmodule GroupherServer.CMS.Articles.Publish.Effects do
 
   def notify_admin_new_article(%{target: target, id: id, community: community})
       when is_atom(target) do
-    do_notify_admin_new_article(target, id, nil, community)
-  end
-
-  @doc false
-  def notify_admin_new_article(%{__struct__: target, id: id, community: community}) do
     do_notify_admin_new_article(target, id, nil, community)
   end
 

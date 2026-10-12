@@ -33,10 +33,11 @@ defmodule GroupherServer.Analysis.ArticleInsights.Query do
          {:ok, actor_types} <- requested_actor_types(opts),
          {:ok, is_authenticated} <- requested_authentication(opts),
          {:ok, range} <- requested_range(opts),
-         {:ok, community_id} <- resolve_community_id(article, opts),
+         {:ok, binding} <- resolve_binding(article, opts),
          rows <-
            fetch_rows(
-             community_id,
+             binding.community_id,
+             binding.id,
              article_type,
              article.id,
              metrics,
@@ -222,6 +223,7 @@ defmodule GroupherServer.Analysis.ArticleInsights.Query do
 
   defp fetch_rows(
          community_id,
+         binding_id,
          article_type,
          article_id,
          metrics,
@@ -233,6 +235,7 @@ defmodule GroupherServer.Analysis.ArticleInsights.Query do
       from(row in ArticleHourlyMetric,
         where:
           row.community_id == ^community_id and
+            row.binding_id == ^binding_id and
             row.article_type == ^article_type and
             row.article_id == ^article_id and
             row.bucket_started_at >= ^from and
@@ -275,7 +278,7 @@ defmodule GroupherServer.Analysis.ArticleInsights.Query do
     |> Repo.all()
   end
 
-  defp resolve_community_id(article, opts) do
+  defp resolve_binding(article, opts) do
     requested_community = Keyword.get(opts, :community)
 
     with {:ok, bindings} <- CMS.articles_bindings_all(article) do
@@ -286,8 +289,12 @@ defmodule GroupherServer.Analysis.ArticleInsights.Query do
         end
 
       case matches do
-        [%{community_id: community_id}] when is_integer(community_id) -> {:ok, community_id}
-        _ -> {:error, :article_insights_community_required}
+        [%{id: binding_id, community_id: community_id} = binding]
+        when is_integer(binding_id) and is_integer(community_id) ->
+          {:ok, binding}
+
+        _ ->
+          {:error, :article_insights_community_required}
       end
     end
   end

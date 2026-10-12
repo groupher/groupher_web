@@ -426,7 +426,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
     article = Repo.get!(Article, doc.article_id)
     result = %{article: article, branch_type: :preview}
 
-    assert {:ok, ^result} = CMS.Articles.Publish.Effects.run(result)
+    assert {:ok, ^result} = CMS.Articles.Effects.run(result)
   end
 
   test "move reassigns the public path and drops the source Community relationship" do
@@ -494,8 +494,11 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
     assert moved.id == published.id
     assert replayed_move.id == published.id
 
-    assert Repo.get_by!(ArticleBinding, article_id: moved.id, community_id: destination.id).inner_id ==
-             2
+    moved_binding =
+      Repo.get_by!(ArticleBinding, article_id: moved.id, community_id: destination.id)
+
+    assert moved_binding.id == source_binding.id
+    assert moved_binding.inner_id == 2
 
     assert %ArticleBinding{community_id: destination_id} =
              Repo.get_by!(ArticleBinding, article_id: moved.id)

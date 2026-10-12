@@ -17,7 +17,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
   alias CMS.Articles.Draft.Store, as: DraftStore
   alias CMS.Articles.{Bindings, RevisionResult}
   alias CMS.Articles.Store, as: ArticleStore
-  alias CMS.Articles.Publish.{Effects, Target}
+  alias CMS.Articles.Publish.Target
   alias CMS.{Command, FrontDesk}
   alias CMS.Model.{Article, ArticleBinding, ArticleLifecycle, Community}
   alias CMS.Articles.Commands.RevisionConfirmation, as: Confirmation
@@ -110,9 +110,8 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
                community: community
              ] ++
                community_tag_opts(attrs) ++ [outbox_command_id: command_id],
-           {:ok, %{article: published} = publish_result} <-
+           {:ok, %{article: published}} <-
              Target.publish(canonical, author, publish_opts),
-           {:ok, _effects} <- Effects.run(publish_result),
            {:ok, public} <- public_projection(published.id, community) do
         {:ok, %{public: public}}
       end

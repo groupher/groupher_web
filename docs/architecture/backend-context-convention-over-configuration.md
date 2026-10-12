@@ -60,12 +60,12 @@ Command / Workflow
      -> CMS.Outbox.send             # 同事务保存 intent 和 Job
         -> Job -> CMS root Facade
            -> CMS.Outbox.Workflow
-              -> execute / mark_dead
+              -> execute / mark_failed
 ```
 
 - `send/1` 只能由 Effects Owner 调用；
-- `execute/2`、`mark_dead` 只能由 `CMS.Outbox.Workflow` 调用；
-- Outbox 可以访问 Repo/transaction，但只能维护 outbox event、lease、retry、completed/dead 和对应 Job；
+- `execute/2`、`mark_failed/1` 只能由 `CMS.Outbox.Workflow` 调用；
+- Outbox 可以访问 Repo/transaction，但只能维护 outbox event、lease、retry、done/failed 和对应 Job；
 - Outbox 不修改 Article、Comment、Community 等业务事实，也不直接调用外部 provider；
 - 上述调用方向由 v2 checker 自动检查；“只写 Outbox 自有数据”等运行时语义仍由测试、数据库约束和 review 保证。
 
@@ -183,7 +183,7 @@ Checker 的实现步骤：
 5. 对 Elixir 源码先屏蔽注释与字符串，再识别 fully-qualified call、直接/重命名/grouped alias、带括号或无括号调用、
    function capture、`import/require/use` 与 `defdelegate to:`；
 6. 检查跨 Context behavior、internal 反调根 Facade、root Facade import、Facade 基础设施访问；
-7. 检查 `Outbox.send` 只能来自 Effects，`execute/mark_dead` 只能来自 Outbox Workflow；
+7. 检查 `Outbox.send` 只能来自 Effects，`execute/mark_failed` 只能来自 Outbox Workflow；
 8. 通过 `use Oban.Worker` 识别 Worker，并检查位置与 Repo/ORM/transaction/network/cache 基础设施访问；
 9. 只对 Context 根 Facade 之间的依赖建图并检查环；Jobs 的运行时触发关系由 Worker rule 单独约束。
 

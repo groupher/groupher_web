@@ -9,10 +9,9 @@ defmodule GroupherServer.Analysis.Contribution.Effects do
 
   alias GroupherServer.{CMS, Accounts}
 
-  alias GroupherServer.{Analysis, FrontDesk}
+  alias GroupherServer.{Analysis, FrontDesk, Jobs}
   alias Accounts.Model.User
   alias CMS.Model.Community
-  alias Helper.Later
 
   @doc """
   Revalidates a user's FrontDesk cache after contribution commit.
@@ -38,6 +37,19 @@ defmodule GroupherServer.Analysis.Contribution.Effects do
   """
   @spec cache_community_later(Community.t()) :: {:ok, term()}
   def cache_community_later(%Community{} = community) do
-    Later.run({Analysis.Contribution, :get_contributes_then_cache, [community]})
+    Jobs.contribution_cache(community.id)
+  end
+
+  @doc """
+  Reloads a Community and rebuilds its contribution cache for a typed Worker.
+
+  ## Examples
+
+      Effects.refresh_community(community_id)
+  """
+  def refresh_community(community_id) when is_integer(community_id) do
+    with {:ok, community} <- CMS.front_desk_community(community_id, mode: :internal) do
+      Analysis.Contribution.get_contributes_then_cache(community)
+    end
   end
 end

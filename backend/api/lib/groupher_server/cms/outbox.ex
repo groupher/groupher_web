@@ -54,7 +54,7 @@ defmodule GroupherServer.CMS.Outbox do
         identity_type: identity_type,
         effect_key: effect_key(attrs),
         data: normalize_data(Map.get(attrs, :data, %{})),
-        status: :pending,
+        status: :waiting,
         attempts: 0,
         available_at: DateTime.utc_now(:second)
       }
@@ -92,39 +92,39 @@ defmodule GroupherServer.CMS.Outbox do
     lock_ref = "#{node()}:#{Ecto.UUID.generate()}"
 
     case claim(event_id, lock_ref) do
-      {:ok, :completed} -> {:ok, :completed}
+      {:ok, :done} -> {:ok, :done}
       {:ok, %Event{} = event} -> run_action(event, lock_ref, action)
       {:busy, seconds} -> {:busy, seconds}
       {:error, reason} -> {:error, reason}
     end
   end
 
-  @doc "Marks a failed event dead after its worker has exhausted retries."
-  def mark_dead(event_id) when is_binary(event_id) do
+  @doc "Marks an event failed after its worker reaches the configured attempt limit."
+  def mark_failed(event_id) when is_binary(event_id) do
     now = DateTime.utc_now(:second)
 
     {updated, _} =
       Repo.update_all(
         from(event in Event,
-          where: event.id == ^event_id and event.status == :failed
+          where: event.id == ^event_id and event.status == :retrying
         ),
-        set: [status: :dead, updated_at: now, last_error_at: now]
+        set: [status: :failed, updated_at: now, last_error_at: now]
       )
 
     if updated == 1, do: {:ok, :pass}, else: {:error, :stale_event}
   end
 
   @doc false
-  def mark_dead(event_id, lock_ref) when is_binary(event_id) and is_binary(lock_ref) do
+  def mark_failed(event_id, lock_ref) when is_binary(event_id) and is_binary(lock_ref) do
     now = DateTime.utc_now(:second)
 
     {updated, _} =
       Repo.update_all(
         from(event in Event,
           where:
-            event.id == ^event_id and event.status == :failed and event.locked_by == ^lock_ref
+            event.id == ^event_id and event.status == :retrying and event.locked_by == ^lock_ref
         ),
-        set: [status: :dead, updated_at: now, last_error_at: now]
+        set: [status: :failed, updated_at: now, last_error_at: now]
       )
 
     if updated == 1, do: {:ok, :pass}, else: {:error, :stale_lock}
@@ -138,13 +138,13 @@ defmodule GroupherServer.CMS.Outbox do
         nil ->
           Repo.rollback(:outbox_event_not_found)
 
-        %Event{status: :completed} ->
-          {:ok, :completed}
+        %Event{status: :done} ->
+          {:ok, :done}
 
-        %Event{status: :dead} ->
-          Repo.rollback(:outbox_event_dead)
+        %Event{status: :failed} ->
+          Repo.rollback(:outbox_event_failed)
 
-        %Event{status: :executing} = event ->
+        %Event{status: :running} = event ->
           if lease_expired?(event, now) do
             {:ok, claim_row(event, lock_ref, now)}
           else
@@ -191,10 +191,10 @@ defmodule GroupherServer.CMS.Outbox do
       Repo.update_all(
         from(event in Event,
           where:
-            event.id == ^event_id and event.status == :executing and event.locked_by == ^lock_ref
+            event.id == ^event_id and event.status == :running and event.locked_by == ^lock_ref
         ),
         set: [
-          status: :completed,
+          status: :done,
           completed_at: now,
           locked_at: nil,
           locked_by: nil,
@@ -212,10 +212,10 @@ defmodule GroupherServer.CMS.Outbox do
       Repo.update_all(
         from(event in Event,
           where:
-            event.id == ^event_id and event.status == :executing and event.locked_by == ^lock_ref
+            event.id == ^event_id and event.status == :running and event.locked_by == ^lock_ref
         ),
         set: [
-          status: :failed,
+          status: :retrying,
           last_error_code: error_code(reason),
           last_error_at: now,
           locked_at: nil,
@@ -231,7 +231,7 @@ defmodule GroupherServer.CMS.Outbox do
   defp claim_row(event, lock_ref, now) do
     event
     |> Event.changeset(%{
-      status: :executing,
+      status: :running,
       attempts: event.attempts + 1,
       locked_at: now,
       locked_by: lock_ref,
@@ -249,7 +249,7 @@ defmodule GroupherServer.CMS.Outbox do
   end
 
   defp maybe_retry_existing(%Event{status: status} = event, worker, attrs)
-       when status in [:failed, :dead] do
+       when status in [:retrying, :failed] do
     if Map.get(attrs, :retry_failed, false) do
       now = DateTime.utc_now(:second)
 
@@ -257,7 +257,7 @@ defmodule GroupherServer.CMS.Outbox do
              with {:ok, event} <-
                     event
                     |> Event.changeset(%{
-                      status: :pending,
+                      status: :waiting,
                       attempts: 0,
                       available_at: now,
                       locked_at: nil,

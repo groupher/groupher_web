@@ -12,7 +12,8 @@ defmodule GroupherServer.CMS.Articles.Effects do
         -> Article cleanup worker
   """
 
-  alias GroupherServer.{Activity, CMS}
+  alias GroupherServer.CMS
+  alias CMS.Articles.Effects.{Outbox, Publish}
 
   @type identity :: {:command | :workflow, String.t()}
 
@@ -21,23 +22,12 @@ defmodule GroupherServer.CMS.Articles.Effects do
           {:ok, CMS.Outbox.Event.t()} | {:error, term()}
   def enqueue(event, resource_type, resource_id, identity, data, opts \\ [])
 
-  def enqueue(event, resource_type, resource_id, identity, data, opts)
-      when is_binary(event) and is_binary(resource_type) and is_map(data) and is_list(opts) do
-    CMS.Outbox.send(%{
-      event: event,
-      worker: GroupherServer.Jobs.CMSOutboxArticle,
-      resource_type: resource_type,
-      resource_id: resource_id,
-      identity: identity,
-      effect_key: Keyword.get(opts, :effect_key, "default"),
-      retry_failed: Keyword.get(opts, :retry_failed, false),
-      data: data
-    })
-  end
+  defdelegate enqueue(event, resource_type, resource_id, identity, data, opts), to: Outbox
 
-  def enqueue(_event, _resource_type, _resource_id, _identity, _data, _opts),
-    do: {:error, :article_effect_identity_required}
+  @doc "Executes one typed Article effect after its Outbox event is claimed."
+  @spec run(map()) :: {:ok, term()} | {:error, term()}
+  defdelegate run(effect), to: Publish
 
   @doc "Records one Article activity in the caller-owned transaction."
-  def activity(resource, event, opts), do: Activity.log(resource, event, opts)
+  defdelegate activity(resource, event, opts), to: Outbox
 end

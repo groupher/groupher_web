@@ -16,7 +16,8 @@ defmodule GroupherServer.CMS.Press.Invalidation do
   alias CMS.Model.Community
 
   @doc "Notifies Press that one Community projection changed."
-  @spec invalidate(Community.t() | String.t() | integer()) :: {:ok, :pass}
+  @spec invalidate(Community.t() | String.t() | integer()) ::
+          {:ok, :pass} | {:error, term()}
   def invalidate(%Community{slug: slug}), do: invalidate(slug)
 
   def invalidate(community_id) when is_integer(community_id) do
@@ -43,12 +44,19 @@ defmodule GroupherServer.CMS.Press.Invalidation do
              headers: [{"authorization", "Bearer #{token}"}],
              receive_timeout: 5_000
            ) do
-        {:ok, %{status: status}} when status in 200..299 -> {:ok, :pass}
-        {:ok, %{status: status}} -> Logger.warning("Press invalidation returned HTTP #{status}")
-        {:error, reason} -> Logger.warning("Press invalidation failed: #{inspect(reason)}")
-      end
-    end
+        {:ok, %{status: status}} when status in 200..299 ->
+          {:ok, :pass}
 
-    {:ok, :pass}
+        {:ok, %{status: status}} ->
+          Logger.warning("Press invalidation returned HTTP #{status}")
+          {:error, {:press_invalidation_http_status, status}}
+
+        {:error, reason} ->
+          Logger.warning("Press invalidation failed: #{inspect(reason)}")
+          {:error, :press_invalidation_request_failed}
+      end
+    else
+      {:ok, :pass}
+    end
   end
 end

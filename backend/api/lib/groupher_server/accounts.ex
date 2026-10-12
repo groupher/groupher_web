@@ -73,6 +73,11 @@ defmodule GroupherServer.Accounts do
   @doc "Delegates GroupherServer.Accounts.Fans.follow/2 through the Accounts Context boundary."
   defdelegate fans_follow(arg1, arg2), to: GroupherServer.Accounts.Fans, as: :follow
 
+  @doc "Delivers one typed Fans effect from a background worker."
+  defdelegate fans_deliver_event(type, user_id, from_user_id),
+    to: GroupherServer.Accounts.Fans.Effects,
+    as: :deliver_event
+
   @doc "Delegates GroupherServer.Accounts.Fans.paged_followers/2 through the Accounts Context boundary."
   defdelegate fans_paged_followers(arg1, arg2),
     to: GroupherServer.Accounts.Fans,

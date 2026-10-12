@@ -28,6 +28,7 @@ defmodule GroupherServer.Test.Analysis.MaintenanceTest do
 
   test "deletes within a row budget and reports remaining work" do
     {community, article, _attrs, _user} = mock_article(:post)
+    binding = Repo.get_by!(GroupherServer.CMS.Model.ArticleBinding, article_id: article.id)
     now = DateTime.utc_now(:second)
     old = DateTime.add(now, -100, :day)
 
@@ -35,6 +36,7 @@ defmodule GroupherServer.Test.Analysis.MaintenanceTest do
       Repo.insert!(%MetricEvent{
         operation_id: Ecto.UUID.generate(),
         community_id: community.id,
+        binding_id: binding.id,
         article_type: :post,
         article_id: article.id,
         metric: :upvote_added,
@@ -48,6 +50,7 @@ defmodule GroupherServer.Test.Analysis.MaintenanceTest do
 
       Repo.insert!(%ArticleHourlyMetric{
         community_id: community.id,
+        binding_id: binding.id,
         article_type: :post,
         article_id: article.id,
         bucket_started_at: DateTime.add(old, offset, :hour),
@@ -62,6 +65,7 @@ defmodule GroupherServer.Test.Analysis.MaintenanceTest do
     Repo.insert!(%MetricEvent{
       operation_id: Ecto.UUID.generate(),
       community_id: community.id,
+      binding_id: binding.id,
       article_type: :post,
       article_id: article.id,
       metric: :upvote_added,

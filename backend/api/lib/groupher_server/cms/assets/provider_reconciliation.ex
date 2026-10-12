@@ -233,7 +233,7 @@ defmodule GroupherServer.CMS.Assets.ProviderReconciliation do
         where:
           event.event == "asset.provider_delete" and event.resource_type == "community_asset" and
             event.resource_id == ^to_string(asset_id) and
-            event.status in [:pending, :executing, :completed]
+            event.status in [:waiting, :running, :retrying, :done]
       )
     )
   end

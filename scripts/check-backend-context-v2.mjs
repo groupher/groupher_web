@@ -348,6 +348,7 @@ export const backendContextV2SemanticFindings = ({
     const callerName = firstSegment?.replace(/\.ex$/, '') ?? null
     const callerMode = registry.contexts[callerName]?.mode ?? 'strict'
     const lines = executableLines(file)
+    const rawLines = readFileSync(file, 'utf8').split('\n')
     const maskedSource = lines.join('\n')
     const aliases = new Map()
     const directAlias = new RegExp(
@@ -379,6 +380,39 @@ export const backendContextV2SemanticFindings = ({
       }
     }
     const worker = lines.some((line) => /\buse\s+Oban\.Worker\b/.test(line))
+
+    if (/\b(?:Helper\.Later|Jobs\.Later|Jobs\.(?:later|enqueue_later))\b/.test(maskedSource)) {
+      finding(findings, {
+        category: 'dynamic_job_callback',
+        file,
+        message: 'persist a typed Job contract instead of a module/function/arguments callback',
+        mode: callerMode,
+      })
+    }
+
+    for (const transaction of maskedSource.matchAll(/\bRepo\.transaction\(fn\s*->[\s\S]{0,4000}?\bend\s*\)/g)) {
+      if (
+        /fn\s*->\s*\{:error\s*,/.test(transaction[0]) ||
+        /\{:error\s*,[^}]+\}\s*->\s*\{:error\s*,/.test(transaction[0])
+      ) {
+        finding(findings, {
+          category: 'transaction_error_without_rollback',
+          file,
+          message: 'use Repo.transact_result/1 or Repo.rollback/1 for tagged transaction failures',
+          mode: callerMode,
+        })
+      }
+    }
+
+    const workerRuntimeSource = rawLines.filter((_line, index) => runtimeLine(lines[index] ?? '')).join('\n')
+    if (worker && /["':](?:module|function|args|kind)["']?\s*(?:=>|:)/.test(workerRuntimeSource)) {
+      finding(findings, {
+        category: 'unstable_job_payload',
+        file,
+        message: 'Worker payloads must use typed business fields; kind and callback fields are forbidden',
+        mode: callerMode,
+      })
+    }
 
     if (worker && callerName !== 'jobs') {
       finding(findings, {
@@ -417,7 +451,7 @@ export const backendContextV2SemanticFindings = ({
       }
 
       const outboxCall = (() => {
-        const direct = /\b(?:GroupherServer\.)?CMS\.Outbox\.(send|execute|mark_dead)\b/.exec(line)
+        const direct = /\b(?:GroupherServer\.)?CMS\.Outbox\.(send|execute|mark_failed)\b/.exec(line)
         if (direct) return direct[1]
         for (const [local, target] of aliases) {
           const suffix =
@@ -428,7 +462,7 @@ export const backendContextV2SemanticFindings = ({
                 : null
           if (suffix === null) continue
           const aliased = new RegExp(
-            `(?<![A-Za-z0-9_.])${local}\\.${suffix}(send|execute|mark_dead)\\b`,
+            `(?<![A-Za-z0-9_.])${local}\\.${suffix}(send|execute|mark_failed)\\b`,
           ).exec(line)
           if (aliased) return aliased[1]
         }
@@ -448,7 +482,7 @@ export const backendContextV2SemanticFindings = ({
         })
       }
       if (
-        (outboxCall === 'execute' || outboxCall === 'mark_dead') &&
+        (outboxCall === 'execute' || outboxCall === 'mark_failed') &&
         !(
           callerName === 'cms' &&
           relativeSegments[1] === 'outbox' &&

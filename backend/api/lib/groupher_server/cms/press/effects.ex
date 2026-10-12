@@ -1,20 +1,30 @@
 defmodule GroupherServer.CMS.Press.Effects do
   @moduledoc """
-  Schedules rebuildable Press projections after a committed config command.
+  Records rebuildable Press projection effects inside the config transaction.
 
-      committed Press Command
+      Press config transaction
         -> Press.Effects
-        -> Press.Invalidation
+        -> CMS Outbox
+        -> Press invalidation Worker
   """
 
   alias GroupherServer.CMS
+  alias CMS.Model.Community
 
-  alias CMS.Press.Invalidation
-  alias Helper.Later
-
-  @doc "Schedules best-effort invalidation after the caller's transaction commits."
-  def schedule_invalidation(community_slug) when is_binary(community_slug) do
-    Later.run({Invalidation, :invalidate, [community_slug]})
-    {:ok, :pass}
+  @doc "Records one versioned Press cache-invalidation intent in the caller's transaction."
+  @spec enqueue_invalidation(Community.t(), Ecto.UUID.t()) ::
+          {:ok, CMS.Outbox.Event.t()} | {:error, term()}
+  def enqueue_invalidation(%Community{id: community_id}, command_id)
+      when is_integer(community_id) and is_binary(command_id) do
+    CMS.Outbox.send(%{
+      event: "press.cache_invalidation",
+      worker: GroupherServer.Jobs.CMSOutboxPress,
+      resource_type: "community",
+      resource_id: community_id,
+      identity: {:command, command_id},
+      contract_version: 1,
+      effect_key: "config",
+      data: %{}
+    })
   end
 end

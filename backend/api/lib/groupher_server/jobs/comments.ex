@@ -8,7 +8,7 @@ defmodule GroupherServer.Jobs.Comments do
         -> this worker after commit
         -> CMS event or projection repair
 
-  The worker intentionally accepts a closed `kind` vocabulary. It is not an
+  The worker intentionally accepts a closed `type` vocabulary. It is not an
   arbitrary module/function/arguments adapter.
   """
 
@@ -16,35 +16,34 @@ defmodule GroupherServer.Jobs.Comments do
     queue: GroupherServer.Jobs.Config.queue(:later),
     max_attempts: GroupherServer.Jobs.Config.max_attempts(:later)
 
-  alias GroupherServer.{CMS, Jobs}
+  alias GroupherServer.CMS
 
-  alias Jobs.Codec
-
-  @event_kinds ~w(sync_mentions audition notify_comment notify_reply subscribe_community)
+  @event_types ~w(sync_mentions audition notify_comment notify_reply subscribe_community)
 
   @doc """
   Performs one persisted Comments job.
 
   ## Examples
 
-      perform(%Oban.Job{args: %{"kind" => "sync_mentions", "payload" => encoded}})
+      perform(%Oban.Job{args: %{"type" => "sync_mentions", "payload" => encoded}})
   """
   @impl Oban.Worker
-  def perform(%Oban.Job{args: %{"kind" => kind, "payload" => encoded}})
-      when kind in @event_kinds do
-    payload = Codec.decode(encoded)
-    GroupherServer.CMS.events_emit(String.to_existing_atom(kind), payload)
+  def perform(%Oban.Job{args: %{"type" => type, "version" => 1, "payload" => payload}})
+      when type in @event_types do
+    CMS.comments_deliver_effect(String.to_existing_atom(type), payload)
   end
 
   def perform(%Oban.Job{
-        args: %{"kind" => "reconcile_comments_participants", "payload" => encoded}
+        args: %{
+          "type" => "reconcile_comments_participants",
+          "version" => 1,
+          "payload" => payload
+        }
       }) do
-    case Codec.decode(encoded) do
-      %{thread: thread, article_id: article_id, total_count: total_count} ->
-        CMS.reconcile_comments_participants(thread, article_id, total_count)
-
-      %{article: %{thread: thread, id: article_id}, total_count: total_count} ->
-        CMS.reconcile_comments_participants(thread, article_id, total_count)
-    end
+    CMS.reconcile_comments_participants(
+      String.to_existing_atom(payload["thread"]),
+      payload["article_id"],
+      payload["total_count"]
+    )
   end
 end

@@ -100,6 +100,22 @@ defmodule GroupherServer.CMS do
   @spec deliver_outbox(atom(), Oban.Job.t()) :: Oban.Worker.result()
   def deliver_outbox(kind, job), do: GroupherServer.CMS.Outbox.Workflow.perform(kind, job)
 
+  @doc "Executes a typed Article effect through the public CMS boundary."
+  @spec articles_effect(map()) :: {:ok, term()} | {:error, term()}
+  defdelegate articles_effect(effect), to: GroupherServer.CMS.Articles.Effects, as: :run
+
+  @doc "Delivers one typed Comment effect for the Jobs boundary."
+  defdelegate comments_deliver_effect(type, payload),
+    to: GroupherServer.CMS.Comments.Effects,
+    as: :deliver
+
+  @doc "Resolves the canonical ArticleBinding for an Article and Community reference."
+  @spec articles_resolve_binding(term(), term()) ::
+          {:ok, GroupherServer.CMS.Model.ArticleBinding.t()} | {:error, term()}
+  defdelegate articles_resolve_binding(article_ref, community_ref),
+    to: GroupherServer.CMS.FrontDesk,
+    as: :resolve_binding
+
   @doc "Delegates GroupherServer.CMS.AbuseReports.paged_reports/1 through the CMS Context boundary."
   defdelegate abuse_reports_paged_reports(arg1),
     to: GroupherServer.CMS.AbuseReports,

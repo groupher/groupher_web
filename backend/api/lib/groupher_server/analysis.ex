@@ -17,6 +17,17 @@ defmodule GroupherServer.Analysis do
   alias __MODULE__.ArticleInsights
 
   @doc """
+  Rebuilds one Community contribution cache from a stable id.
+
+  ## Examples
+
+      Analysis.contribution_refresh_community(community_id)
+  """
+  defdelegate contribution_refresh_community(community_id),
+    to: GroupherServer.Analysis.Contribution.Effects,
+    as: :refresh_community
+
+  @doc """
   Records contribution facts for the supplied user or community subject.
 
   ## Examples

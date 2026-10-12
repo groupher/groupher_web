@@ -55,7 +55,7 @@ defmodule GroupherServer.Jobs.Config do
   @spec unique(job_name()) :: keyword()
   def unique(:later), do: []
   def unique(:search_index), do: [period: 60, keys: [:action, :thread, :ref]]
-  def unique(:snapshot_refresh), do: [period: 60, keys: [:kind, :refs]]
+  def unique(:snapshot_refresh), do: [period: 60, keys: [:type, :refs]]
   def unique(:article_insights_aggregation), do: [period: 30, keys: []]
   def unique(:article_insights_retention), do: [period: 86_400, keys: []]
 

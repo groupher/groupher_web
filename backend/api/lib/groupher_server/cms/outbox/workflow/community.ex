@@ -9,7 +9,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Community do
         -> public-cache purge
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Analysis, CMS}
 
   alias CMS.Outbox
 
@@ -22,7 +22,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Community do
         {:snooze, seconds}
 
       {:error, _reason} when job.attempt >= job.max_attempts ->
-        _ = Outbox.mark_dead(event_id)
+        _ = Outbox.mark_failed(event_id)
         {:ok, :pass}
 
       {:error, reason} ->
@@ -31,6 +31,20 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Community do
   end
 
   defp cleanup(event) do
+    case event.event do
+      "community.analysis_provision" -> provision_analysis(event.resource_id)
+      _ -> purge_cache(event)
+    end
+  end
+
+  defp provision_analysis(community_id) do
+    with {:ok, community} <- CMS.FrontDesk.community(community_id, mode: :internal),
+         {:ok, result} <- Analysis.web_provision_community_on_create(community) do
+      {:ok, result}
+    end
+  end
+
+  defp purge_cache(event) do
     with {:ok, type} <- invalidation_type(event.event),
          {:ok, tags} <- GroupherServer.PublicCache.scope_tags(type, event.data),
          {:ok, _} <- GroupherServer.PublicCache.cloudflare_purge(tags) do

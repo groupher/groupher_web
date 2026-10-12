@@ -14,7 +14,6 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Interaction do
   alias CMS.Model.{Article, Comment}
   alias CMS.SearchArtiments.Indexer
   alias CMS.Events
-  alias Helper.Later
 
   def perform(%Oban.Job{args: %{"event_id" => event_id}} = job) do
     case CMS.Outbox.execute(event_id, &cleanup/1) do
@@ -25,7 +24,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Interaction do
         {:snooze, seconds}
 
       {:error, _reason} when job.attempt >= job.max_attempts ->
-        _ = CMS.Outbox.mark_dead(event_id)
+        _ = CMS.Outbox.mark_failed(event_id)
         {:ok, :pass}
 
       {:error, reason} ->
@@ -68,21 +67,20 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Interaction do
   defp load_actor(_), do: {:error, :interaction_actor_invalid}
 
   defp emit_event("interaction.upvote_changed", target, actor, _data) do
-    Later.run({Events, :emit, [:notify_upvote, %{target: target, from_user: actor}]})
-    Later.run({Events, :emit, [:subscribe_community, %{target: target, user: actor}]})
-    {:ok, :pass}
+    with {:ok, _} <- Events.emit(:notify_upvote, %{target: target, from_user: actor}),
+         {:ok, _} <- Events.emit(:subscribe_community, %{target: target, user: actor}) do
+      {:ok, :pass}
+    end
   end
 
   defp emit_event("interaction.emotion_changed", %Comment{} = target, actor, _data) do
-    Later.run({Events, :emit, [:subscribe_community, %{target: target, user: actor}]})
-    {:ok, :pass}
+    Events.emit(:subscribe_community, %{target: target, user: actor})
   end
 
   defp emit_event("interaction.collect_changed", target, actor, data) do
     operation = if data["operation"] == "add", do: :add, else: :remove
     event = if operation == :add, do: :notify_collect, else: :notify_undo_collect
-    Later.run({Events, :emit, [event, %{article: target, from_user: actor}]})
-    {:ok, :pass}
+    Events.emit(event, %{article: target, from_user: actor})
   end
 
   defp emit_event(_event, _target, _actor, _data), do: {:ok, :pass}

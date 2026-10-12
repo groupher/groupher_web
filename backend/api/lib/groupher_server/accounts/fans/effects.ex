@@ -34,7 +34,21 @@ defmodule GroupherServer.Accounts.Fans.Effects do
   @spec enqueue_event(:follow | :undo_follow, User.t(), User.t()) ::
           {:ok, term()} | {:error, term()}
   def enqueue_event(event, %User{} = user, %User{} = target_user) do
-    Jobs.enqueue_later({Events, :emit, [event, %{user: user, from_user: target_user}]})
+    Jobs.account_event(event, user.id, target_user.id)
+  end
+
+  @doc """
+  Reloads both Users and delivers one typed account event.
+
+  ## Examples
+
+      Effects.deliver_event(:follow, user_id, follower_id)
+  """
+  def deliver_event(type, user_id, from_user_id) when type in [:follow, :undo_follow] do
+    with {:ok, user} <- Accounts.FrontDesk.fresh_user(user_id),
+         {:ok, from_user} <- Accounts.FrontDesk.fresh_user(from_user_id) do
+      Events.emit(type, %{user: user, from_user: from_user})
+    end
   end
 
   @doc """

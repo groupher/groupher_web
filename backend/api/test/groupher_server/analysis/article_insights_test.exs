@@ -8,6 +8,7 @@ defmodule GroupherServer.Test.Analysis.ArticleInsightsTest do
 
   test "aggregates each metric event once and preserves actor dimensions" do
     {_community, article, _attrs, _user} = mock_article(:post)
+    binding = Repo.get_by!(GroupherServer.CMS.Model.ArticleBinding, article_id: article.id)
     bucket = DateTime.from_unix!(div(DateTime.to_unix(DateTime.utc_now(:second)), 3600) * 3600)
     operation_id = Ecto.UUID.generate()
 
@@ -26,6 +27,7 @@ defmodule GroupherServer.Test.Analysis.ArticleInsightsTest do
 
     assert %ArticleHourlyMetric{
              article_id: article_id,
+             binding_id: binding_id,
              metric: :upvote_added,
              actor_type: :all,
              is_authenticated: false,
@@ -33,6 +35,7 @@ defmodule GroupherServer.Test.Analysis.ArticleInsightsTest do
            } = Repo.get_by(ArticleHourlyMetric, article_id: article.id)
 
     assert article_id == article.id
+    assert binding_id == binding.id
     assert Repo.aggregate(MetricEvent, :count) == 1
 
     assert %{pending: 0, failed: 0, oldest_pending_at: nil, oldest_pending_age_seconds: 0} =
@@ -64,7 +67,11 @@ defmodule GroupherServer.Test.Analysis.ArticleInsightsTest do
 
     assert {:ok, path_result} =
              ArticleInsights.trend_by_path(
-               %{community: community.slug, thread: :post, inner_id: article_inner_id(article, community)},
+               %{
+                 community: community.slug,
+                 thread: :post,
+                 inner_id: article_inner_id(article, community)
+               },
                user,
                from: from,
                to: to,

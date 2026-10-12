@@ -90,4 +90,16 @@ defmodule GroupherServer.CMS.FrontDesk do
   @doc "Reads a bounded batch of visible public Articles from ArticlePaths."
   @spec articles([ArticlePath.t()]) :: {:ok, [map()]} | {:error, term()}
   def articles(article_paths) when is_list(article_paths), do: Article.read_many(article_paths)
+
+  @doc "Resolves the canonical relationship between one Article and one Community."
+  @spec resolve_binding(term(), term()) ::
+          {:ok, CMS.Model.ArticleBinding.t()} | {:error, term()}
+  def resolve_binding(article_ref, community_ref) do
+    with {:ok, article} <- article(article_ref, mode: :internal),
+         {:ok, community} <- community(community_ref, mode: :internal),
+         {:ok, %{binding: binding}} <-
+           CMS.Articles.Bindings.get(%{article_id: article.id}, community) do
+      {:ok, binding}
+    end
+  end
 end

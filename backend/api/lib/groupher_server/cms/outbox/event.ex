@@ -15,7 +15,7 @@ defmodule GroupherServer.CMS.Outbox.Event do
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.cms()
-  @statuses [:pending, :executing, :completed, :failed, :dead]
+  @statuses [:waiting, :running, :retrying, :done, :failed]
 
   @primary_key {:id, :binary_id, autogenerate: false}
 
@@ -30,7 +30,7 @@ defmodule GroupherServer.CMS.Outbox.Event do
     field(:identity_type, Ecto.Enum, values: [:command, :workflow], default: :command)
     field(:effect_key, :string, default: "default")
     field(:data, :map, default: %{})
-    field(:status, Ecto.Enum, values: @statuses, default: :pending)
+    field(:status, Ecto.Enum, values: @statuses, default: :waiting)
     field(:attempts, :integer, default: 0)
     field(:available_at, :utc_datetime)
     field(:locked_at, :utc_datetime)
