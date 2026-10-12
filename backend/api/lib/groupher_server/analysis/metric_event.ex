@@ -41,4 +41,15 @@ defmodule GroupherServer.Analysis.MetricEvent do
   @doc "Reassigns binding-scoped metric facts when the Binding moves Community."
   @spec reassign_binding(pos_integer(), pos_integer()) :: {:ok, :pass}
   defdelegate reassign_binding(binding_id, community_id), to: Persist
+
+  @doc """
+  Merges metric history when a Move reuses an existing destination Binding.
+
+  ## Examples
+
+      Analysis.MetricEvent.merge_binding(source_binding_id, destination_binding_id, community_id)
+  """
+  @spec merge_binding(pos_integer(), pos_integer(), pos_integer()) ::
+          {:ok, :pass} | {:error, term()}
+  defdelegate merge_binding(source_binding_id, destination_binding_id, community_id), to: Persist
 end

@@ -19,5 +19,7 @@ defmodule GroupherServer.Repo.Migrations.CreateNotificationDeliveries do
         name: :notification_deliveries_key_index
       )
     )
+
+    create(index(:notification_deliveries, [:notification_id], prefix: "messaging"))
   end
 end

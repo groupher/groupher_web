@@ -23,7 +23,10 @@ defmodule GroupherServer.Repo.Migrations.RestoreRollingSafeCmsOutboxStatuses do
           WHEN 'running' THEN 'executing'
           WHEN 'retrying' THEN 'failed'
           WHEN 'done' THEN 'completed'
-          WHEN 'failed' THEN 'dead'
+          -- `failed` is ambiguous while a mixed deployment is possible: it
+          -- can be a legacy retryable row or an early terminal row. Preserve
+          -- it as retryable rather than risk silently terminating live work.
+          -- New terminal writes use `dead` after this correction.
           ELSE status
         END;
 

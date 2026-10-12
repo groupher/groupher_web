@@ -38,6 +38,7 @@ export const maskElixir = (source) => {
   }
 
   const maskSigil = (start) => {
+    const interpolates = chars[start + 1] === chars[start + 1]?.toLowerCase()
     const opener = chars[start + 2]
     if (!opener) return start
 
@@ -65,7 +66,7 @@ export const maskElixir = (source) => {
       }
 
       if (triple) {
-        if (current === '#' && chars[cursor + 1] === '{') {
+        if (interpolates && current === '#' && chars[cursor + 1] === '{') {
           cursor = maskInterpolation(cursor)
           continue
         }
@@ -77,7 +78,7 @@ export const maskElixir = (source) => {
         continue
       }
 
-      if (current === '#' && chars[cursor + 1] === '{') {
+      if (interpolates && current === '#' && chars[cursor + 1] === '{') {
         cursor = maskInterpolation(cursor)
         continue
       }

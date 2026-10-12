@@ -20,7 +20,7 @@ defmodule GroupherServer.Messaging.Commands.SendNotification do
 
       Messaging.Commands.SendNotification.run(attrs, user)
   """
-  @spec run(map(), User.t()) :: {:ok, struct()} | {:error, term()}
+  @spec run(map(), User.t()) :: {:ok, struct() | :already_delivered} | {:error, term()}
   def run(%{action: _action, user_id: user_id} = attrs, %User{} = from_user) do
     with true <- Persist.valid?(attrs),
          true <- user_id !== from_user.id do

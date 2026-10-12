@@ -555,7 +555,9 @@ const maskMarkdownCode = (source) => {
   let fence = null
 
   const masked = lines.map((line) => {
-    const marker = line.match(/^ {0,3}(`{3,}|~{3,})/i)?.[1]
+    const match = line.match(/^( {0,3})(`{3,}|~{3,})/i)
+    const marker = match?.[2]
+    const markerEnd = (match?.[1].length ?? 0) + (marker?.length ?? 0)
 
     if (!fence && marker) {
       fence = { character: marker[0], length: marker.length }
@@ -567,7 +569,7 @@ const maskMarkdownCode = (source) => {
         marker &&
         marker[0] === fence.character &&
         marker.length >= fence.length &&
-        line.slice(marker.length).trim() === ''
+        line.slice(markerEnd).trim() === ''
       ) {
         fence = null
       }

@@ -192,9 +192,15 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
     end
   end
 
-  defp move_binding(source_binding, %ArticleBinding{} = destination_binding, _destination) do
+  defp move_binding(source_binding, %ArticleBinding{} = destination_binding, destination) do
     with {:ok, _} <-
            delete_source_local_data(source_binding.article_id, source_binding.community_id),
+         {:ok, :pass} <-
+           Analysis.metric_event_merge_binding(
+             source_binding.id,
+             destination_binding.id,
+             destination.id
+           ),
          {:ok, _deleted} <- Repo.delete(source_binding) do
       {:ok, destination_binding}
     end

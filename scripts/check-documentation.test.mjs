@@ -127,6 +127,19 @@ test('checks repository-local Markdown links while ignoring code and external UR
   assert.deepEqual(issues, ['line 3 links to missing path ./missing.md#section'])
 })
 
+test('checks links after an indented closing fence', () => {
+  const source = `~~~text
+[Ignored](./ignored.md)
+   ~~~
+[Missing](./missing.md)
+`
+
+  assert.deepEqual(
+    findMarkdownLocalLinkIssues(source, '/repo/docs/topic/current.md', () => false),
+    ['line 4 links to missing path ./missing.md'],
+  )
+})
+
 test('requires the fixed documentation README status vocabulary', () => {
   assert.equal(findDocumentationReadmeStatusIssue('> 状态：current\n'), null)
   assert.equal(findDocumentationReadmeStatusIssue('> 状态：in-progress\n'), null)

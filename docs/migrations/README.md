@@ -32,3 +32,5 @@
 - [Profile ViewTracker](./profile-view-tracker.md)：Profile view 显式 mutation、稳定 actor identity、
   滑动窗口去重、同步计数、有界清理和旧 ProfileVisit Job 删除的实施记录；当前合同见
   [`feature/view-tracker/profile-view-counting.md`](../feature/view-tracker/profile-view-counting.md)。
+- [PR 594 review remediation](./pr-594-review-remediation.md)：本次架构重构 review 问题的核实、
+  长期修复方式、验证证据与远端收敛状态。

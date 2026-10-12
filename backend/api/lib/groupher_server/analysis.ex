@@ -130,6 +130,17 @@ defmodule GroupherServer.Analysis do
     as: :reassign_binding
 
   @doc """
+  Merges Analysis facts into an existing destination ArticleBinding.
+
+  ## Examples
+
+      Analysis.metric_event_merge_binding(source_binding_id, destination_binding_id, community_id)
+  """
+  defdelegate metric_event_merge_binding(source_binding_id, destination_binding_id, community_id),
+    to: GroupherServer.Analysis.MetricEvent,
+    as: :merge_binding
+
+  @doc """
   Delegates Analysis.Aggregator.drain/0 through the Analysis Context boundary.
 
   ## Examples

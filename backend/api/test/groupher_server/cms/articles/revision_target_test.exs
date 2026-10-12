@@ -6,7 +6,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
   import Ecto.Query
 
   alias GroupherServer.{Analysis, CMS, Repo}
-  alias Analysis.Model.MetricEvent
+  alias Analysis.Model.{ArticleHourlyMetric, MetricEvent}
   alias CMS.Articles.{Draft.Store, Public, Revision}
   alias CMS.Articles.Publish.Target
   alias CMS.Articles.Publish.Doc, as: DocPublish
@@ -543,6 +543,25 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
     destination_binding =
       Repo.get_by!(ArticleBinding, article_id: article.id, community_id: destination.id)
 
+    source_binding =
+      Repo.get_by!(ArticleBinding, article_id: article.id, community_id: source.id)
+
+    operation_id = Ecto.UUID.generate()
+
+    assert {:ok, :pass} =
+             Analysis.metric_event_append_article_action(
+               article,
+               operation_id,
+               :upvote_added,
+               binding_id: source_binding.id,
+               community_id: source.id
+             )
+
+    bucket_started_at = DateTime.utc_now() |> DateTime.truncate(:second)
+
+    insert_hourly_metric(source_binding, article, bucket_started_at, 2)
+    insert_hourly_metric(destination_binding, article, bucket_started_at, 3)
+
     assert {:ok, _} =
              CMS.Articles.pin(destination, article.id, user, Ecto.UUID.generate())
 
@@ -568,6 +587,21 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
              Repo.get_by(PinnedArticle, article_binding_id: destination_binding.id)
 
     refute Repo.get_by(ArticleBinding, article_id: article.id, community_id: source.id)
+
+    assert %MetricEvent{binding_id: binding_id, community_id: community_id} =
+             Repo.get_by!(MetricEvent, operation_id: operation_id)
+
+    assert binding_id == destination_binding.id
+    assert community_id == destination.id
+
+    assert %ArticleHourlyMetric{value: 5} =
+             Repo.get_by!(ArticleHourlyMetric,
+               binding_id: destination_binding.id,
+               bucket_started_at: bucket_started_at,
+               metric: :upvote_added
+             )
+
+    refute Repo.get_by(ArticleHourlyMetric, binding_id: source_binding.id)
   end
 
   test "move updates the Community scope of binding-owned metrics" do
@@ -861,6 +895,23 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
 
     assert batch_article.id == article.id
     assert batch_binding.id == binding.id
+  end
+
+  defp insert_hourly_metric(binding, article, bucket_started_at, value) do
+    %ArticleHourlyMetric{}
+    |> Ecto.Changeset.change(%{
+      community_id: binding.community_id,
+      binding_id: binding.id,
+      article_type: article.thread,
+      article_id: article.id,
+      bucket_started_at: bucket_started_at,
+      metric: :upvote_added,
+      actor_type: :all,
+      is_authenticated: false,
+      policy_version: 0,
+      value: value
+    })
+    |> Repo.insert!()
   end
 
   defp insert_article(author_id) do

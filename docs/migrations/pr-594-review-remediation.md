@@ -72,6 +72,15 @@
 - Article Effects 参数 fallback 返回通用 invalid-arguments，不能把所有非法字段误报为 identity 缺失。
 - 所有修复后的 moduledoc、示例和 spec 与实际返回形状保持一致。
 
+## F. 第二轮 review
+
+- Outbox correction migration 不再把语义有歧义的 `failed` 强制改成 terminal `dead`；歧义时保留可重试，后续 terminal 写入使用明确的 `dead`。
+- 正常 Doc publish 已确认支持 `workflow_ref`，并将其转换为 workflow identity；无需恢复隐式 command ID。
+- notification replay 的公开 spec 包含 `:already_delivered`，delivery foreign key 增加反向索引。
+- Move 复用已有 destination Binding 时，raw metric 改绑，hourly metric 按维度合并 value 后再删除 source Binding，避免 cascade 丢失历史。
+- Elixir sigil masker 区分可插值的小写 sigil 与字面量大写 sigil；Markdown fence parser 支持缩进 closing fence。
+- 本文已接入 migration index，避免验证记录成为孤立文档。
+
 ## 执行批次
 
 1. 生产阻断与 migration safety。
@@ -84,6 +93,7 @@
 
 - `MIX_ENV=test mix test`：2247 passed，0 failures，1 excluded。
 - `MIX_ENV=test mix compile --warnings-as-errors`：通过。
+- 测试数据库从零执行全部 migration：通过；包含 Outbox correction 与 notification delivery 索引。
 - `mix lint`：Context v2 与 module-style gate 通过；Credo 仍只报告仓库既有债务，不作为本次新增问题。
 - `pnpm docs:check`：文档、CMS/Context/Facade/Binding/Resolver/return-shape/command-identity gate 全部通过。
 - changed Elixir files 的 `mix format --check-formatted` 与 `git diff --check`：通过。

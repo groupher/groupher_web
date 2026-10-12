@@ -149,6 +149,87 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
     {:ok, :pass}
   end
 
+  @doc """
+  Merges raw and hourly metric history into an existing destination Binding.
+
+  ## Examples
+
+      Analysis.MetricEvent.Persist.merge_binding(source_id, destination_id, community_id)
+  """
+  @spec merge_binding(pos_integer(), pos_integer(), pos_integer()) ::
+          {:ok, :pass} | {:error, term()}
+  def merge_binding(source_binding_id, destination_binding_id, community_id)
+      when is_integer(source_binding_id) and is_integer(destination_binding_id) and
+             is_integer(community_id) do
+    Repo.update_all(
+      from(event in MetricEvent, where: event.binding_id == ^source_binding_id),
+      set: [binding_id: destination_binding_id, community_id: community_id]
+    )
+
+    with {:ok, _result} <-
+           merge_hourly_metrics(source_binding_id, destination_binding_id, community_id) do
+      Repo.delete_all(
+        from(metric in Analysis.Model.ArticleHourlyMetric,
+          where: metric.binding_id == ^source_binding_id
+        )
+      )
+
+      {:ok, :pass}
+    end
+  end
+
+  defp merge_hourly_metrics(source_binding_id, destination_binding_id, community_id) do
+    Repo.query(
+      """
+      INSERT INTO cms.article_hourly_metrics (
+        community_id,
+        binding_id,
+        article_type,
+        article_id,
+        bucket_started_at,
+        metric,
+        actor_type,
+        is_authenticated,
+        policy_version,
+        value,
+        inserted_at,
+        updated_at
+      )
+      SELECT
+        $3,
+        $2,
+        article_type,
+        article_id,
+        bucket_started_at,
+        metric,
+        actor_type,
+        is_authenticated,
+        policy_version,
+        value,
+        inserted_at,
+        updated_at
+      FROM cms.article_hourly_metrics
+      WHERE binding_id = $1
+      ON CONFLICT (
+        community_id,
+        binding_id,
+        article_type,
+        article_id,
+        bucket_started_at,
+        metric,
+        actor_type,
+        is_authenticated,
+        policy_version
+      )
+      DO UPDATE SET
+        value = cms.article_hourly_metrics.value + EXCLUDED.value,
+        inserted_at = LEAST(cms.article_hourly_metrics.inserted_at, EXCLUDED.inserted_at),
+        updated_at = GREATEST(cms.article_hourly_metrics.updated_at, EXCLUDED.updated_at)
+      """,
+      [source_binding_id, destination_binding_id, community_id]
+    )
+  end
+
   defp defaults do
     now = DateTime.utc_now(:second)
 
