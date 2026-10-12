@@ -1,6 +1,6 @@
 defmodule GroupherServer.CMS.Press.Invalidation do
   @moduledoc """
-  Sends best-effort Press cache invalidation after CMS transactions commit.
+  Delivers Press cache invalidation for a committed CMS Outbox event.
 
   Business position:
 
@@ -11,7 +11,7 @@ defmodule GroupherServer.CMS.Press.Invalidation do
 
   require Logger
 
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{CMS, ErrorCat, Repo}
 
   alias CMS.Model.Community
 
@@ -30,33 +30,47 @@ defmodule GroupherServer.CMS.Press.Invalidation do
   def invalidate(slug) when is_binary(slug) do
     endpoint = System.get_env("PRESS_INTERNAL_URL")
 
-    token =
-      GroupherServer.ServiceAuth.client_token(
-        System.get_env("PRESS_INTERNAL_RESOURCE") || "https://press.groupher.com/internal",
-        ["press:cache:invalidate"]
-      )
+    if is_binary(endpoint) and endpoint != "" do
+      with {:ok, token} <- press_token(),
+           {:ok, response} <- post_invalidation(endpoint, slug, token) do
+        accept_response(response)
+      else
+        {:error, %ErrorCat.Error{} = reason} ->
+          Logger.warning(
+            "Press invalidation could not obtain a service token: #{inspect(reason)}"
+          )
 
-    if is_binary(endpoint) and endpoint != "" and match?({:ok, _}, token) do
-      {:ok, token} = token
-
-      case Req.post("#{String.trim_trailing(endpoint, "/")}/internal/invalidate",
-             json: %{community: slug},
-             headers: [{"authorization", "Bearer #{token}"}],
-             receive_timeout: 5_000
-           ) do
-        {:ok, %{status: status}} when status in 200..299 ->
-          {:ok, :pass}
-
-        {:ok, %{status: status}} ->
-          Logger.warning("Press invalidation returned HTTP #{status}")
-          {:error, {:press_invalidation_http_status, status}}
+          {:error, :press_invalidation_auth_failed}
 
         {:error, reason} ->
           Logger.warning("Press invalidation failed: #{inspect(reason)}")
           {:error, :press_invalidation_request_failed}
       end
     else
+      # Local environments may intentionally run without the Press service.
       {:ok, :pass}
     end
+  end
+
+  defp press_token do
+    GroupherServer.ServiceAuth.client_token(
+      System.get_env("PRESS_INTERNAL_RESOURCE") || "https://press.groupher.com/internal",
+      ["press:cache:invalidate"]
+    )
+  end
+
+  defp post_invalidation(endpoint, slug, token) do
+    Req.post("#{String.trim_trailing(endpoint, "/")}/internal/invalidate",
+      json: %{community: slug},
+      headers: [{"authorization", "Bearer #{token}"}],
+      receive_timeout: 5_000
+    )
+  end
+
+  defp accept_response(%{status: status}) when status in 200..299, do: {:ok, :pass}
+
+  defp accept_response(%{status: status}) do
+    Logger.warning("Press invalidation returned HTTP #{status}")
+    {:error, {:press_invalidation_http_status, status}}
   end
 end

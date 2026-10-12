@@ -313,7 +313,8 @@ Press 链路失败。Markdown、`llms.txt` 和 sitemap 是稳定的发布 smoke�
 生产 Phoenix 必须显式配置非空 `PRESS_INTERNAL_URL` 和正确的
 `PRESS_INTERNAL_RESOURCE`，并确认 Phoenix service identity 获得
 `press:cache:invalidate` scope。未配置 endpoint 的 dev/local 环境会把 invalidation 视为 no-op；
-该行为不能作为生产 fallback。上线验收必须修改一次 Press config，确认对应 Outbox event 执行完成，
+该行为不能作为生产 fallback。endpoint 已配置时，service token 获取失败必须使 Outbox event 重试，
+不能静默标记完成。上线验收必须修改一次 Press config，确认对应 Outbox event 执行完成，
 并验证 Press 输出已经失效或刷新，不能只检查 mutation 成功。
 
 另选一篇真实 published Doc 验证 `.md`、ETag/`304`、不增加 Article human views、metrics
