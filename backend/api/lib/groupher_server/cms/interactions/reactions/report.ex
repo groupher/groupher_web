@@ -19,7 +19,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
   alias CMS.{Articles.MutationLock, Artiment.Matcher, Gate, Command}
   alias CMS.Comments.States, as: CommentStates
 
-  alias CMS.Interactions.{ErrorCat, Persist, ReadState, Transaction}
+  alias CMS.Interactions.{ErrorCat, Persist, Projection, Transaction}
   alias CMS.Interactions.Reactions.ReportConfirmation, as: Confirmation
   alias CMS.Model.{AbuseReport, Comment, Embeds}
   alias Helper.T
@@ -98,7 +98,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
   defp mutate(input, actor, :report_add, %{reason: reason, attrs: attrs}) do
     mutate(input, actor, fn canonical, info ->
       with {:ok, report} <- add_fact(info, canonical, reason, attrs, actor),
-           {:ok, _projection} <- ReadState.add_report(canonical, actor),
+           {:ok, _projection} <- Projection.add_report(canonical, actor),
            {:ok, _} <- maybe_fold_comment(canonical, report, actor) do
         canonical
       end
@@ -160,7 +160,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
   defp maybe_remove_state(_canonical, _actor, false), do: {:ok, :pass}
 
   defp maybe_remove_state(canonical, actor, true) do
-    case ReadState.remove_report(canonical, actor) do
+    case Projection.remove_report(canonical, actor) do
       {:ok, _projection} -> {:ok, :pass}
       {:error, _reason} = error -> error
     end

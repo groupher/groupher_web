@@ -1,10 +1,10 @@
 # Backend Read / Write Owner 命名与职责修复
 
-> 状态：proposed
+> 状态：implemented（2026-10-12）
 >
 > 范围：修复一级业务目录内部含糊的 `Read`、`Reader`、`Write`、`Writer` 边界，拆分
 > `Accounts.Profiles.Read`，将 `CMS.Interactions.ReadState` 收敛为 Projection，并补齐架构 lint。
-> 本文只冻结目标设计和验收合同；在实施开始前不代表代码已经完成迁移。
+> 本文冻结最终设计、迁移边界和验收合同；实现已按本文完成硬切换，不保留兼容入口。
 
 相关长期合同：
 
@@ -129,7 +129,7 @@ accounts/profiles/
 
 ```text
 Profiles Facade
-  ├─ read_user(...)                   # 委托 Query.profile，返回 Profile，不写库
+  ├─ user(...)                        # 委托 Query.profile，返回 Profile，不写库
   ├─ refresh_contributions(...)       # 委托 Projection.Contributions
   └─ record_visit(...)                # 委托 Effects.RecordVisit
 ```
@@ -139,8 +139,8 @@ Profiles Facade
 ```text
 请求 Profile
   -> Accounts 根 Facade
-  -> Accounts.profiles_read_user/1,2
-  -> Profiles.read_user/1,2
+  -> Accounts.profiles_user/1,2
+  -> Profiles.user/1,2
   -> Profiles.Query.profile
   -> 返回 Profile
 
@@ -166,7 +166,7 @@ Profiles Facade
 - contributes 若可从事实重建，其写入由 Projection 持有；
 - view 记录必须定义幂等 identity，不能依赖 fire-and-forget callback；
 - 删除 `Profiles.Read`，不保留兼容 shim；
-- `read_user` 只能表示纯读，不能继续用它掩盖 view、projection 写入或缓存失效；
+- `user` 是纯读 Profile facade，不能掩盖 view、projection 写入或缓存失效；
 - Web、其他 Context 和 Worker 仍只能通过 Accounts 根 Facade 调用这些能力。
 
 ### 3.1 Facade API 合同
@@ -174,12 +174,12 @@ Profiles Facade
 本迁移保留现有纯读取口径的 public API 名称：
 
 ```text
-Accounts.Profiles.read_user/1,2
-Accounts.profiles_read_user/1,2
+Accounts.Profiles.user/1,2
+Accounts.profiles_user/1,2
 ```
 
 迁移完成后，它们只委托 `Profiles.Query.profile`，不得调用 Persist、Projection 或 Effects。长期结构文档中
-`profiles_read_user` / `Profiles.read_user` 的合法调用示例继续成立，但其合法性的前提是纯读语义。
+`profiles_user` / `Profiles.user` 是最终合法调用，其合同保持纯读语义。
 
 访问统计使用独立、显式的 API：
 
@@ -250,7 +250,10 @@ Interactions.Projection
 - `ReadState.article_state/2` 迁移到 `Projection.article_state/2`，不下沉到 Query；
 - `Interactions` Facade 暴露稳定的 `article_state/2`，CMS 根 Facade 使用
   `interactions_article_state/2`，删除带旧 Owner 名的 `interactions_read_state_article_state/2`；
-- 原有 public/root Facade 返回协议保持稳定，调用者不获得 Projection 内部模块；
+- `article_state/2` 的返回字段、值语义和错误协议保持稳定，但 CMS 根 Facade 函数名不保持稳定：
+  `interactions_read_state_article_state/2` 硬切换为 `interactions_article_state/2`；
+- 所有跨 Context 调用方必须在同一提交中迁移，不保留旧函数 delegate、shim 或 alias；调用者不获得
+  Projection 内部模块；
 - 删除 `ReadState` 文件和目录，不保留转发模块；
 - Projection 只能维护自己拥有的派生表，不能借此修改 source-of-truth 业务数据。
 
@@ -260,6 +263,8 @@ Interactions.Projection
 - `Projection.Query.article_states_for_paths/3` 对 `article_state/2` 的调用；
 - `reactions/upvote.ex`、`collect.ex`、`emotion.ex`、`report.ex`；
 - `command_result.ex` 和 CMS 根 Facade；
+- `accounts/collect_folders/command_result.ex` 中从
+  `CMS.interactions_read_state_article_state/2` 到 `CMS.interactions_article_state/2` 的跨 Context 调用迁移；
 - `default_viewer_state.ex`、Reaction/Emotion model moduledoc；
 - `comments/author_relation_state.ex` 中对旧边界的说明；
 - ReadState 的单元测试文件、module alias 和断言。
@@ -412,7 +417,8 @@ pnpm check:backend-context-v2
 1. 先冻结本文件中的 Facade API、visit identity、contributes 触发和一致性合同；
 2. 增加通用名称与 legacy module/path/stem 的正反 fixture，暂时把当前待迁移路径作为测试基线；
 3. 拆分 `Profiles.Read`，迁移 facade、GraphQL resolver、贡献写入触发和历史 projection backfill；
-4. 将 `Interactions.ReadState` 完整迁移为 Projection，并清扫调用、测试和 moduledoc；
+4. 将 `Interactions.ReadState` 完整迁移为 Projection，并清扫 Context 内调用、
+   `Accounts.CollectFolders.CommandResult` 等跨 Context 调用、测试和 moduledoc；
 5. 将 `WriteConfirmation` 改为 `MembershipConfirmation`，同步迁移 add/remove Commands 和确认结果测试；
 6. 核对并删除所有 Comments `Write` / `Writer` 入口；
 7. 删除迁移基线，使所有通用和 legacy 门禁 fully strict；
@@ -425,14 +431,28 @@ pnpm check:backend-context-v2
 - production backend 中不存在独立 `.Read`、`.Reader`、`.Write`、`.Writer` 模块段；
 - 不存在对应的 `read/`、`reader/`、`write/`、`writer/` 架构目录；
 - `Profiles.Query` 不写库、不触发 Effects；
-- `read_user/1,2` 保持纯读，Profile resolver 使用独立的 `record_visit` API；
+- `user/1,2` 保持纯读，Profile resolver 使用独立的 `record_visit` API；
 - contributes 只有 `Profiles.Projection.Contributions` 一个写 Owner，并由 contribution fact 写入触发；
 - 新用户零值 projection 和历史 backfill 已完成，Profile Query 不再修复缺失 projection；
 - profile visit 由 Effects 使用带稳定 `visit_id` 的异步 contract 记录；
 - `Interactions.Projection` 完整替代 `Interactions.ReadState`；
 - production/test 源码中不再存在旧 `ReadState` module、path、alias 或 moduledoc 引用；
+- production/test 源码中不再调用或定义 `interactions_read_state_article_state/2`，且不存在兼容 delegate、
+  shim 或 alias；
 - CollectFolders 使用业务命名的 `MembershipConfirmation`；
 - Comments 不存在 Writer 兼容层；
 - lint 正反测试覆盖 Context 根、internal capability、Owner 子树和 compound legacy stem；
 - `pnpm check:backend-context-v2`、`pnpm docs:check` 和相关 Elixir 测试全部通过；
 - 长期架构文档与最终实现一致，本文状态更新为 `implemented` 并记录验收结果。
+
+## 11. 验收结果
+
+2026-10-12 完成硬切换并通过以下验收：
+
+- `node --test scripts/check-backend-context-v2.test.mjs`：10 passed；
+- `node scripts/check-backend-context-v2.mjs --fully-strict`：0 findings；
+- `pnpm docs:check`：全部 documentation、Context、Facade、Resolver 和业务合同门禁通过；
+- 聚焦迁移测试：77 passed；
+- Backend 全量测试：2214 passed，1 excluded，0 failures；
+- production/test 源码扫描未发现旧 `ReadState`、`WriteConfirmation`、
+  `interactions_read_state_article_state/2` 或被禁止的独立文件 stem。

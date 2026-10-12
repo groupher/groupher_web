@@ -11,7 +11,7 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
 
   alias Ecto.Multi
   alias GroupherServer.{Accounts, CMS, Repo}
-  alias Accounts.CollectFolders.{Persist, WriteConfirmation}
+  alias Accounts.CollectFolders.{Persist, MembershipConfirmation}
   alias Accounts.Model.User
   alias CMS.Command
 
@@ -42,14 +42,14 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
       params: %{folder_id: folder_id}
     }
 
-    with {:ok, %WriteConfirmation{data: data}} <-
+    with {:ok, %MembershipConfirmation{data: data}} <-
            GroupherServer.CMS.command_execute(command,
              action: fn context ->
                with {:ok, folder} <- transaction(article, folder_id, user, context.command_id) do
                  confirmation(folder, article, folder_id, :remove)
                end
              end,
-             confirmation: WriteConfirmation
+             confirmation: MembershipConfirmation
            ),
          {:ok, folder} <- ORM.find(Accounts.Model.CollectFolder, data["folder_id"]) do
       {:ok, %{folder: folder, command_id: command_id}}
@@ -106,7 +106,7 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
 
   defp confirmation(folder, article, folder_id, operation) do
     {:ok,
-     %WriteConfirmation{
+     %MembershipConfirmation{
        data: %{
          "folder_id" => to_string(folder_id),
          "article_id" => to_string(article.id),

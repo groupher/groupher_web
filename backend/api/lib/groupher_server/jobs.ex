@@ -18,6 +18,15 @@ defmodule GroupherServer.Jobs do
   defdelegate account_event(type, user_id, from_user_id), to: GroupherServer.Jobs.Workflow
 
   @doc """
+  Enqueues one idempotent Profile visit using a stable visit id.
+
+  ## Examples
+
+      Jobs.profile_visit(profile_id, visit_id)
+  """
+  defdelegate profile_visit(profile_id, visit_id), to: GroupherServer.Jobs.Workflow
+
+  @doc """
   Enqueues one typed contribution-cache rebuild.
 
   ## Examples

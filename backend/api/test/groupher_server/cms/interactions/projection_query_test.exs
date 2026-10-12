@@ -1,4 +1,4 @@
-defmodule GroupherServer.Test.CMS.Interactions.ReadStateQueryTest do
+defmodule GroupherServer.Test.CMS.Interactions.ProjectionQueryTest do
   use GroupherServer.TestMate, async: false
 
   alias GroupherServer.CMS

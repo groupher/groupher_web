@@ -1445,9 +1445,9 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Interactions,
     as: :emotion_result
 
-  @doc "Delegates GroupherServer.CMS.Interactions.ReadState.article_state/2 through the CMS Context boundary."
-  defdelegate interactions_read_state_article_state(arg1, arg2),
-    to: GroupherServer.CMS.Interactions.ReadState,
+  @doc "Delegates GroupherServer.CMS.Interactions.article_state/2 through the CMS Context boundary."
+  defdelegate interactions_article_state(arg1, arg2),
+    to: GroupherServer.CMS.Interactions,
     as: :article_state
 
   @doc "Delegates GroupherServer.CMS.Interactions.report_result/5 through the CMS Context boundary."

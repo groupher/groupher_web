@@ -362,25 +362,25 @@ article-global 字段。普通 Article 暂不为它们新建总括表；字段�
 
 ### 5.1.1 现行字段 ownership
 
-| 当前字段/关系                                        | 目标权威来源                                                                                           | `ArticlePublic` 中的角色                                                    |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
-| `title/digest/slug/body`                             | Draft → Revision                                                                                       | Publish 时投影                                                              |
-| `cat`                                                | stable Post-specific category                                                                          | 直接更新并刷新 Projection；不创建 Draft/Revision                            |
-| Kanban membership/status                             | `KanbanState` under `ArticleCommunity`（已实现）                                                       | 查询当前 Community relation；不创建 Draft/Revision                          |
-| `copy_right/link_addr`                               | typed Draft → typed Revision                                                                           | Publish 时投影                                                              |
-| `cover_url/cover_url_dark`                           | Draft/Revision 的 immutable asset relation                                                             | Publish 时投影 URL/thumbnail                                                |
-| content tags                                         | Draft relation → revision-scoped relation                                                              | 通过当前 `ArticlePublic.revision_id` join，不复制第二套 Public tag relation |
-| community relation tags                              | `ArticleCommunityTag`                                                                                  | 按当前读取社区 relation join，不进入 Revision                               |
-| `pending/is_legal/illegal_reason/illegal_words`      | stable Article 的 moderation fields                                                                    | 可镜像用于 public filter，但不是权威                                        |
-| `active_at/is_sunk/last_active_at/can_undo_sink`     | stable Article；`can_undo_sink` 派生                                                                   | 可镜像 `active_at` 用于排序                                                 |
-| `is_comment_locked/next_floor/next_comment_inner_id` | stable Article 的 comment state                                                                        | 不属于内容 Projection                                                       |
-| views/comments/upvotes/collects/emotions             | `ArticleStats` + Interaction facts                                                                     | 查询时 join 或投影 count                                                    |
-| `upvoted_user_ids/reported_count`                    | typed `*_reaction_infos` 等 ReadState Projection（RoaringBitmap + count），按 stable `article_id` 重建 | viewer/management projection                                                |
-| `is_edited`                                          | stable Article 的单调标志                                                                              | 可投影；与 `has_unpublished_changes` 不同                                   |
-| `PinnedArticle`                                      | stable `article_id` 的 community relation                                                              | public list join/projection                                                 |
-| Community Articles                                   | stable `article_id` 的 `ArticleCommunity` relations                                                    | public list join/projection                                                 |
-| `PostSolution`                                       | stable Article ↔ Comment relation                                                                      | Post detail projection                                                      |
-| public `inner_id`                                    | ArticleCommunity/path 合同待决，见 [`article-community.md`](./article-community.md) §5                 | public route/list key                                                       |
+| 当前字段/关系                                        | 目标权威来源                                                                                             | `ArticlePublic` 中的角色                                                    |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `title/digest/slug/body`                             | Draft → Revision                                                                                         | Publish 时投影                                                              |
+| `cat`                                                | stable Post-specific category                                                                            | 直接更新并刷新 Projection；不创建 Draft/Revision                            |
+| Kanban membership/status                             | `KanbanState` under `ArticleCommunity`（已实现）                                                         | 查询当前 Community relation；不创建 Draft/Revision                          |
+| `copy_right/link_addr`                               | typed Draft → typed Revision                                                                             | Publish 时投影                                                              |
+| `cover_url/cover_url_dark`                           | Draft/Revision 的 immutable asset relation                                                               | Publish 时投影 URL/thumbnail                                                |
+| content tags                                         | Draft relation → revision-scoped relation                                                                | 通过当前 `ArticlePublic.revision_id` join，不复制第二套 Public tag relation |
+| community relation tags                              | `ArticleCommunityTag`                                                                                    | 按当前读取社区 relation join，不进入 Revision                               |
+| `pending/is_legal/illegal_reason/illegal_words`      | stable Article 的 moderation fields                                                                      | 可镜像用于 public filter，但不是权威                                        |
+| `active_at/is_sunk/last_active_at/can_undo_sink`     | stable Article；`can_undo_sink` 派生                                                                     | 可镜像 `active_at` 用于排序                                                 |
+| `is_comment_locked/next_floor/next_comment_inner_id` | stable Article 的 comment state                                                                          | 不属于内容 Projection                                                       |
+| views/comments/upvotes/collects/emotions             | `ArticleStats` + Interaction facts                                                                       | 查询时 join 或投影 count                                                    |
+| `upvoted_user_ids/reported_count`                    | typed `*_reaction_infos` 等 Interaction Projection（RoaringBitmap + count），按 stable `article_id` 重建 | viewer/management projection                                                |
+| `is_edited`                                          | stable Article 的单调标志                                                                                | 可投影；与 `has_unpublished_changes` 不同                                   |
+| `PinnedArticle`                                      | stable `article_id` 的 community relation                                                                | public list join/projection                                                 |
+| Community Articles                                   | stable `article_id` 的 `ArticleCommunity` relations                                                      | public list join/projection                                                 |
+| `PostSolution`                                       | stable Article ↔ Comment relation                                                                        | Post detail projection                                                      |
+| public `inner_id`                                    | ArticleCommunity/path 合同待决，见 [`article-community.md`](./article-community.md) §5                   | public route/list key                                                       |
 
 `ArticlePublic` 因而包含两类列：
 
@@ -1893,7 +1893,7 @@ Permanently Delete 可删除整个 aggregate，不受这个安全期约束。
 
 - Comments 与 mentions；
 - ArticleStats、views、emotions、collects；
-- `post_reaction_infos`、`blog_reaction_infos`、`changelog_reaction_infos`、`doc_reaction_infos` 等 typed ReadState Projection；其 `upvoted_user_ids/reported_user_ids/collected_user_ids` RoaringBitmap、counts 和 latest-user cache 全部改按 stable `article_id` 重建；
+- `post_reaction_infos`、`blog_reaction_infos`、`changelog_reaction_infos`、`doc_reaction_infos` 等 typed Interaction Projection；其 `upvoted_user_ids/reported_user_ids/collected_user_ids` RoaringBitmap、counts 和 latest-user cache 全部改按 stable `article_id` 重建；
 - moderation/report facts；
 - Activity aggregate identity；发布编辑事件继续按 stable `article_id` 记录，不依赖
   普通旧 Revision 长期存在；

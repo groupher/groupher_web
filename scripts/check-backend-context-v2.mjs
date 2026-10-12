@@ -30,6 +30,16 @@ const singularOwners = new Set([
   'query',
   'workflow',
 ])
+const forbiddenArchitectureStems = new Set(['read', 'reader', 'write', 'writer'])
+const forbiddenArchitectureModules = new Set(['Read', 'Reader', 'Write', 'Writer'])
+const legacyArchitecturePaths = new Set([
+  'accounts/collect_folders/write_confirmation.ex',
+  'cms/interactions/read_state',
+])
+const legacyArchitectureModules = [
+  'GroupherServer.Accounts.CollectFolders.WriteConfirmation',
+  'GroupherServer.CMS.Interactions.ReadState',
+]
 
 const readRegistry = (file = registryPath) => JSON.parse(readFileSync(file, 'utf8'))
 const isRecord = (value) => value !== null && typeof value === 'object' && !Array.isArray(value)
@@ -74,6 +84,43 @@ const expectedModule = (relativeFile) => {
 const declaredModule = (file) => {
   const source = readFileSync(file, 'utf8')
   return source.match(/^defmodule\s+([A-Za-z0-9_.]+)\s+do\b/m)?.[1]
+}
+
+const checkForbiddenArchitectureNames = (root, contexts, findings) => {
+  const visit = (directory, mode) => {
+    for (const entry of entriesOf(directory)) {
+      const absolute = path.join(directory, entry.name)
+      const relativePath = path.relative(root, absolute).split(path.sep).join('/')
+      const stem = entry.isFile() ? entry.name.replace(/\.ex$/, '') : entry.name
+      const declared = entry.isFile() && entry.name.endsWith('.ex') ? declaredModule(absolute) : null
+      const forbiddenStem = forbiddenArchitectureStems.has(stem)
+      const forbiddenModule = declared
+        ?.split('.')
+        .some((segment) => forbiddenArchitectureModules.has(segment))
+      const legacyPath = [...legacyArchitecturePaths].some(
+        (candidate) => relativePath === candidate || relativePath.startsWith(`${candidate}/`),
+      )
+      const legacyModule = legacyArchitectureModules.some(
+        (candidate) => declared === candidate || declared?.startsWith(`${candidate}.`),
+      )
+
+      if (forbiddenStem || forbiddenModule || legacyPath || legacyModule) {
+        finding(findings, {
+          category: 'forbidden_architecture_name',
+          file: absolute,
+          message: 'use a concrete business capability or standard Owner name',
+          mode,
+        })
+      }
+
+      if (entry.isDirectory()) visit(absolute, mode)
+    }
+  }
+
+  for (const [name, rule] of Object.entries(contexts)) {
+    const directory = path.join(root, name)
+    if (existsSync(directory)) visit(directory, modes.has(rule.mode) ? rule.mode : 'strict')
+  }
 }
 
 const validateRegistry = (registry, findings, root) => {
@@ -202,6 +249,7 @@ export const backendContextV2LayoutFindings = ({
   if (!validateRegistry(registry, findings, root)) return findings
 
   const contexts = registry.contexts
+  checkForbiddenArchitectureNames(root, contexts, findings)
   const rootEntries = entriesOf(root)
   const rootDirectories = new Set(
     rootEntries.filter((entry) => entry.isDirectory()).map((entry) => entry.name),

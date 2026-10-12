@@ -266,7 +266,7 @@ binding 上下文，或传入已经 materialize 的 ArticleView：
 
 #### R2：统计、Interaction 与 ViewTracker
 
-范围：ArticleStats、ReadState、upvote/collect、view receipt、Interaction event、viewer state。
+范围：ArticleStats、Projection、upvote/collect、view receipt、Interaction event、viewer state。
 
 验收：统计仍按 `{thread, article_id}` 聚合，但公共返回显式使用目标 binding；mirror Article 的不同
 Community 不共享错误 path/innerId；相关 mutation result、event、query tests 通过。

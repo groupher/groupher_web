@@ -1,5 +1,5 @@
-defmodule GroupherServer.Test.Query.CMS.Interactions.ReadStateContractTest do
-  @moduledoc false
+defmodule GroupherServer.Test.Query.CMS.Interactions.ProjectionContractTest do
+  @moduledoc "Verifies the public GraphQL Interaction projection contract."
 
   use GroupherServer.TestMate, async: false
 
@@ -7,7 +7,7 @@ defmodule GroupherServer.Test.Query.CMS.Interactions.ReadStateContractTest do
   alias GroupherServerWeb.Schema
 
   @operation """
-  query ReadStateContract(
+  query ProjectionContract(
     $paths: [ArticlePathInput!]!
     $article: ArticlePathInput!
     $commentInnerIds: [ID!]!
@@ -63,7 +63,14 @@ defmodule GroupherServer.Test.Query.CMS.Interactions.ReadStateContractTest do
     {community, post, _attrs, user} = mock_article(:post)
 
     {:ok, comment} =
-      CMS.Comments.create_comment(community, :post, article_inner_id(post, community), mock_comment(), user, Ecto.UUID.generate())
+      CMS.Comments.create_comment(
+        community,
+        :post,
+        article_inner_id(post, community),
+        mock_comment(),
+        user,
+        Ecto.UUID.generate()
+      )
 
     assert {:ok, _} = CMS.Interactions.upvote(post, user, Ecto.UUID.generate())
     assert {:ok, _} = CMS.Interactions.emotion(post, :beer, user, Ecto.UUID.generate())
@@ -153,7 +160,14 @@ defmodule GroupherServer.Test.Query.CMS.Interactions.ReadStateContractTest do
     {community, post, _attrs, user} = mock_article(:post)
 
     {:ok, comment} =
-      CMS.Comments.create_comment(community, :post, article_inner_id(post, community), mock_comment(), user, Ecto.UUID.generate())
+      CMS.Comments.create_comment(
+        community,
+        :post,
+        article_inner_id(post, community),
+        mock_comment(),
+        user,
+        Ecto.UUID.generate()
+      )
 
     article = %{
       "community" => community.slug,

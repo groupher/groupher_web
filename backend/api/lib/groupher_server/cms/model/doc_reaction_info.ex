@@ -4,7 +4,7 @@ defmodule GroupherServer.CMS.Model.DocReactionInfo do
 
   Business position:
 
-      CMS.Interactions.ReadState -> DocReactionInfo -> cms.doc_reaction_infos
+      CMS.Interactions.Projection -> DocReactionInfo -> cms.doc_reaction_infos
   """
 
   use GroupherServer.CMS.Model.Interaction.ReactionInfo,

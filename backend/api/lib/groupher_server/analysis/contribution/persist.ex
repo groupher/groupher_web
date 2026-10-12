@@ -1,13 +1,12 @@
 defmodule GroupherServer.Analysis.Contribution.Persist do
   @moduledoc """
-  Owns contribution fact-row and User projection persistence primitives.
+  Owns contribution fact-row persistence primitives.
 
   Persist never opens a transaction and never schedules cache work. Workflow
   decides the transaction boundary; Effects handles post-commit delivery.
 
       contribution subject
           -> daily fact row
-          -> User.contributes projection when applicable
   """
 
   import Ecto.Query, warn: false
@@ -17,7 +16,7 @@ defmodule GroupherServer.Analysis.Contribution.Persist do
   alias GroupherServer.{Accounts, Repo}
   alias Analysis.Contribution.Model.{CommunityContribute, UserContribute}
   alias Accounts.Model.User
-  alias Helper.{Datetime, ORM}
+  alias Helper.Datetime
 
   @doc """
   Increments or creates today's user contribution fact.
@@ -49,17 +48,6 @@ defmodule GroupherServer.Analysis.Contribution.Persist do
       [:community_id, :date]
     )
   end
-
-  @doc """
-  Updates the embedded User contribution projection.
-
-  ## Examples
-
-      Analysis.Contribution.Persist.update_user_projection(user, digest)
-  """
-  @spec update_user_projection(User.t(), map()) :: {:ok, User.t()} | {:error, term()}
-  def update_user_projection(%User{} = user, digest),
-    do: ORM.update_embed(user, :contributes, digest)
 
   defp upsert_daily(schema, attrs, conflict_target) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)

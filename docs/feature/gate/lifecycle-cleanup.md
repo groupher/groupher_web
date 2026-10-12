@@ -9,7 +9,7 @@
 
 - [Gate V4](./v4.md)：typed Access/Scope Context 与 canonical resource；
 - [Community Lifecycle](../lifecycle/contract.md)：Community state、Blocker 和 transition；
-- [Interaction V5](../interaction/v5.md)：同步 ReadState、Audit 退役与 ReportFact；
+- [Interaction V5](../interaction/v5.md)：同步 Projection、Audit 退役与 ReportFact；
 - [Sentinel V1](../../infra/diagnostics/sentinel-v1.md)：跨领域内容风险检测。
 
 ## 1. 背景
@@ -357,8 +357,8 @@ end)
 6. 所有 mutation 迁移后删除 `access_check/3` compatibility entry；
 7. UI/preflight 如有真实需求，另设只返回 boolean/Decision 的窄入口，不能代替 command check。
 
-Interaction command 已拥有自己的 fact/ReadState transaction。迁移时必须避免双层含混边界：要么让
-`Gate.with_check` 拥有外层 transaction 并在 callback 写 fact/ReadState，要么提供明确的 lock-internal
+Interaction command 已拥有自己的 fact/Projection transaction。迁移时必须避免双层含混边界：要么让
+`Gate.with_check` 拥有外层 transaction 并在 callback 写 fact/Projection，要么提供明确的 lock-internal
 Gate primitive；不能继续依赖“compatibility check 恰好嵌套在调用方 transaction 中”。
 
 ## 11. 删除 Passport 与 Moderator fallback
@@ -492,7 +492,7 @@ Sentinel signal
 
 ### Interaction / Governance
 
-- fact 与同步 ReadState 同事务；
+- fact 与同步 Projection 同事务；
 - 不存在全库 Audit/Repair Job；
 - Report 使用规范化 fact；
 - 举报数量和 Sentinel score 不能直接改变资源状态。

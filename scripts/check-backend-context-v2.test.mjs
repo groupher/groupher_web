@@ -70,6 +70,59 @@ test('rejects missing Context and singular Owner facades plus unknown directorie
   })
 })
 
+test('rejects generic and compound legacy architecture names without substring false positives', () => {
+  withFixture((root) => {
+    touch(root, 'accounts.ex', 'GroupherServer.Accounts')
+    touch(root, 'accounts/profiles.ex', 'GroupherServer.Accounts.Profiles')
+    touch(root, 'accounts/profiles/read.ex', 'GroupherServer.Accounts.Profiles.Read')
+    touch(
+      root,
+      'accounts/collect_folders/write_confirmation.ex',
+      'GroupherServer.Accounts.CollectFolders.WriteConfirmation',
+    )
+    touch(
+      root,
+      'accounts/profiles/commands/reader/item.ex',
+      'GroupherServer.Accounts.Profiles.Commands.Reader.Item',
+    )
+    touch(root, 'accounts/profiles/commands/mark_read.ex', 'GroupherServer.Accounts.Profiles.Commands.MarkRead')
+    touch(
+      root,
+      'accounts/profiles/read_stateful.ex',
+      'GroupherServer.Accounts.Profiles.ReadStateful',
+    )
+    touch(root, 'cms.ex', 'GroupherServer.CMS')
+    touch(root, 'cms/interactions.ex', 'GroupherServer.CMS.Interactions')
+    touch(
+      root,
+      'cms/interactions/read_state.ex',
+      'GroupherServer.CMS.Interactions.ReadState',
+    )
+    touch(
+      root,
+      'cms/interactions/read_state/query.ex',
+      'GroupherServer.CMS.Interactions.ReadState.Query',
+    )
+
+    const findings = backendContextV2LayoutFindings({
+      root,
+      registry: {
+        version: 2,
+        contexts: { accounts: { mode: 'strict' }, cms: { mode: 'strict' } },
+      },
+    })
+    const forbidden = findings.filter(({ category }) => category === 'forbidden_architecture_name')
+
+    assert.equal(forbidden.some(({ file }) => file.endsWith('/profiles/read.ex')), true)
+    assert.equal(forbidden.some(({ file }) => file.endsWith('/write_confirmation.ex')), true)
+    assert.equal(forbidden.some(({ file }) => file.endsWith('/commands/reader')), true)
+    assert.equal(forbidden.some(({ file }) => file.endsWith('/interactions/read_state')), true)
+    assert.equal(forbidden.some(({ file }) => file.endsWith('/interactions/read_state/query.ex')), true)
+    assert.equal(forbidden.some(({ file }) => file.endsWith('/mark_read.ex')), false)
+    assert.equal(forbidden.some(({ file }) => file.endsWith('/read_stateful.ex')), false)
+  })
+})
+
 test('restricts Outbox writes to Effects and delivery state to Outbox Workflow', () => {
   withFixture((root) => {
     touch(root, 'cms.ex', 'GroupherServer.CMS')

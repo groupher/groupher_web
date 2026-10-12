@@ -41,6 +41,25 @@ defmodule GroupherServer.Jobs.Workflow do
   end
 
   @doc """
+  Enqueues one durable Profile visit with an idempotent request identity.
+
+  ## Examples
+
+      Workflow.profile_visit(profile_id, visit_id)
+  """
+  @spec profile_visit(integer(), Ecto.UUID.t()) ::
+          {:ok, Oban.Job.t() | :pass} | {:error, term()}
+  def profile_visit(profile_id, visit_id) when is_integer(profile_id) and is_binary(visit_id) do
+    if Config.skip_enqueue?() do
+      {:ok, :pass}
+    else
+      %{type: "profile_visit", version: 1, profile_id: profile_id, visit_id: visit_id}
+      |> Jobs.ProfileVisit.new()
+      |> Oban.insert()
+    end
+  end
+
+  @doc """
   Enqueues a typed Community contribution-cache rebuild.
 
   ## Examples

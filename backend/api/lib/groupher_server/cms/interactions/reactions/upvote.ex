@@ -5,7 +5,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
       CMS.Interactions
         -> Gate canonical Artiment
         -> authoritative upvote row changed/unchanged
-        -> ReadState in the same transaction
+        -> Projection in the same transaction
         -> post-commit events and search metrics
   """
 
@@ -16,7 +16,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
   alias Accounts.Model.User
   alias CMS.Artiment.Matcher
   alias CMS.{Gate, Interactions, Command}
-  alias Interactions.{Config, Effects, ErrorCat, Persist, ReadState}
+  alias Interactions.{Config, Effects, ErrorCat, Persist, Projection}
   alias CMS.Interactions.Reactions.UpvoteConfirmation, as: Confirmation
   alias CMS.Model.{ArticleUpvote, Author, Comment, CommentUpvote}
 
@@ -107,8 +107,8 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
   defp sync_state(canonical, actor, operation, :changed) do
     result =
       if operation == :add,
-        do: ReadState.add_upvote(canonical, actor),
-        else: ReadState.remove_upvote(canonical, actor)
+        do: Projection.add_upvote(canonical, actor),
+        else: Projection.remove_upvote(canonical, actor)
 
     case result do
       {:ok, _projection} -> {:ok, :pass}

@@ -180,7 +180,7 @@ Comments.Query.Published
 现有 Query 名称已经表达三类局部语义，允许保留：
 
 - `Gate.Scope.Query`：根据 root/context 分发 Scope query builder；
-- `Interactions.ReadState.Query`、`ViewTracker.Query`：批量读取派生状态；
+- `Interactions.Projection.Query`、`ViewTracker.Query`：批量读取派生状态；
 - `SearchArtiments.Query`：validated query value object。
 
 Query 不被定义成一种固定 Ecto 实现形态，而被定义成“无写入的具名读取合同”。同一 domain 内不得

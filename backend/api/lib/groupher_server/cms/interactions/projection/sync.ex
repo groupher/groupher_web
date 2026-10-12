@@ -1,4 +1,4 @@
-defmodule GroupherServer.CMS.Interactions.ReadState.Sync do
+defmodule GroupherServer.CMS.Interactions.Projection.Sync do
   @moduledoc """
   Synchronizes derived Interaction state after an authoritative fact changes.
 
@@ -24,7 +24,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Sync do
 
   ## Examples
 
-      ReadState.Sync.add_upvote(article, actor)
+      Projection.Sync.add_upvote(article, actor)
 
   """
   @spec add_upvote(struct(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -39,7 +39,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Sync do
 
   ## Examples
 
-      ReadState.Sync.remove_upvote(article, actor)
+      Projection.Sync.remove_upvote(article, actor)
 
   """
   @spec remove_upvote(struct(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -54,7 +54,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Sync do
 
   ## Examples
 
-      ReadState.Sync.add_collect(article, actor)
+      Projection.Sync.add_collect(article, actor)
 
   """
   @spec add_collect(struct(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -65,7 +65,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Sync do
 
   ## Examples
 
-      ReadState.Sync.remove_collect(article, actor)
+      Projection.Sync.remove_collect(article, actor)
 
   """
   @spec remove_collect(struct(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -76,7 +76,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Sync do
 
   ## Examples
 
-      ReadState.Sync.add_emotion(article, :heart, actor)
+      Projection.Sync.add_emotion(article, :heart, actor)
 
   """
   @spec add_emotion(struct(), atom(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -93,7 +93,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Sync do
 
   ## Examples
 
-      ReadState.Sync.remove_emotion(article, :heart, actor)
+      Projection.Sync.remove_emotion(article, :heart, actor)
 
   """
   @spec remove_emotion(struct(), atom(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -110,7 +110,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Sync do
 
   ## Examples
 
-      ReadState.Sync.add_report(article, actor)
+      Projection.Sync.add_report(article, actor)
 
   """
   @spec add_report(struct(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -125,7 +125,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Sync do
 
   ## Examples
 
-      ReadState.Sync.remove_report(article, actor)
+      Projection.Sync.remove_report(article, actor)
 
   """
   @spec remove_report(struct(), User.t()) :: {:ok, map()} | {:error, term()}

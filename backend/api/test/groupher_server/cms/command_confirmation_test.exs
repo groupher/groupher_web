@@ -3,7 +3,7 @@ defmodule GroupherServer.Test.CMS.CommandConfirmationTest do
 
   alias GroupherServer.{Accounts, CMS}
 
-  alias Accounts.CollectFolders.WriteConfirmation
+  alias Accounts.CollectFolders.MembershipConfirmation
   alias CMS.Articles.Commands.PublishConfirmation
   alias CMS.Articles.Commands.RevisionConfirmation
   alias CMS.Command
@@ -97,7 +97,7 @@ defmodule GroupherServer.Test.CMS.CommandConfirmationTest do
          "comment_id" => "42",
          "command_id" => "command-1"
        }},
-      {WriteConfirmation, :collect_add, :collect_remove,
+      {MembershipConfirmation, :collect_add, :collect_remove,
        %{
          "article_id" => "article-1",
          "folder_id" => "7",

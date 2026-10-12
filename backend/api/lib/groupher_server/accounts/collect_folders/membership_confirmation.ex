@@ -1,9 +1,9 @@
-defmodule GroupherServer.Accounts.CollectFolders.WriteConfirmation do
+defmodule GroupherServer.Accounts.CollectFolders.MembershipConfirmation do
   @moduledoc """
   Confirms collect-folder membership writes for add and remove operations.
 
       collect add / remove
-        -> WriteConfirmation
+        -> MembershipConfirmation
         -> Receipt persistence / recovery
   """
 

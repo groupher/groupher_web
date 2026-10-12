@@ -45,20 +45,6 @@ defmodule GroupherServer.Accounts.Profiles.Persist do
   def increment_views(%User{} = user), do: ORM.inc(user, :views)
 
   @doc """
-  Persists a contribution projection only when a profile lacked one.
-
-  ## Examples
-
-      Accounts.Profiles.Persist.persist_contributes(user, projected_user)
-  """
-  @spec persist_contributes(User.t(), User.t()) :: {:ok, User.t()} | {:error, term()}
-  def persist_contributes(%User{contributes: nil} = user, %User{contributes: contributes}) do
-    ORM.update_embed(user, :contributes, contributes)
-  end
-
-  def persist_contributes(%User{} = _user, %User{} = projected_user), do: {:ok, projected_user}
-
-  @doc """
   Rebuilds the denormalized subscribed-community fields for one user.
 
   ## Examples

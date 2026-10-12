@@ -3,6 +3,44 @@ defmodule GroupherServer.Test.Accounts.Profiles.User do
 
   use GroupherServer.TestMate
 
+  alias Helper.ORM
+
+  describe "[profile read and projection]" do
+    test "user returns an in-memory zero projection without writing the User row" do
+      {:ok, user} = db_insert(:user)
+      {:ok, user} = ORM.update_embed(user, :contributes, nil)
+
+      assert {:ok, projected} = Accounts.Profiles.user(user)
+      assert projected.contributes.total_count == 0
+      assert projected.contributes.records == []
+
+      assert {:ok, persisted} = ORM.find(User, user.id)
+      assert persisted.contributes == nil
+      assert persisted.views == 0
+    end
+
+    test "refresh_contributions is the single persisted projection writer" do
+      {:ok, user} = db_insert(:user)
+
+      digest = %{
+        start_date: ~D[2026-01-01],
+        end_date: ~D[2026-01-02],
+        total_count: 2,
+        records: []
+      }
+
+      assert {:ok, updated} = Accounts.Profiles.refresh_contributions(user.id, digest)
+      assert updated.contributes.total_count == 2
+    end
+
+    test "deliver_visit increments the Profile view outside the read path" do
+      {:ok, user} = db_insert(:user)
+
+      assert {:ok, updated} = Accounts.Profiles.deliver_visit(user.id)
+      assert updated.views == 1
+    end
+  end
+
   describe "[update user]" do
     test "update user with valid attrs" do
       {:ok, user} = db_insert(:user)

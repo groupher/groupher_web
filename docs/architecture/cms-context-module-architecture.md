@@ -249,7 +249,7 @@ Model 是数据结构 owner，不是业务流程 owner。Query、Gate、Projecti
 
 Projection 只能拥有可由 authoritative facts 重建的派生数据，例如：
 
-- ReadState bitmap、count 和 latest-user projection；
+- Projection bitmap、count 和 latest-user projection；
 - 搜索 projection；
 - dashboard/statistics materialization；
 - 可重建的 cache 或 persisted read model。
@@ -273,8 +273,8 @@ interactions/
       emotion.ex
       collect.ex
       report.ex
+  query.ex
   query/
-    read_state.ex
     reaction_users.ex
     scope.ex
   persist.ex
@@ -285,8 +285,8 @@ interactions/
   error_cat.ex
 ```
 
-`query/read_state.ex` 负责读取；`ReadState.Sync` 负责更新派生状态时属于根级 `projection.ex`，不属于
-Query。
+`Projection.Query` 负责读取派生状态；`Projection.Sync` 负责更新派生状态。两者都位于根级
+`projection.ex` facade 的子树，不属于通用 Query。
 
 Interactions 的事务包装只使用明确命名的 `Interactions.Transaction`；reaction fact、collect 和 report
 的主数据 row write 统一由 `Interactions.Persist` 持有。

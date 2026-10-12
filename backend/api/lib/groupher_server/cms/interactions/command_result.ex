@@ -4,7 +4,7 @@ defmodule GroupherServer.CMS.Interactions.CommandResult do
   recovery.
 
       Reactions command result
-        -> ArticleStats + private ReadState
+        -> ArticleStats + private Projection
         -> stable Article reaction result
 
   Comment reactions reuse the Comment-owned response projection. ArticleStats
@@ -38,7 +38,7 @@ defmodule GroupherServer.CMS.Interactions.CommandResult do
          command_id: command_id,
          reaction_outcome: reaction_outcome,
          article_stats: article_stats,
-         interaction_state: CMS.Interactions.ReadState.article_state(article_stats, interaction)
+         interaction_state: CMS.Interactions.Projection.article_state(article_stats, interaction)
        }}
     else
       {:error, _reason} = error -> error

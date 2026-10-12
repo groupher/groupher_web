@@ -18,7 +18,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
   alias CMS.Articles.Bindings
   alias CMS.Communities.Enable
   alias CMS.{Gate, Command}
-  alias CMS.Interactions.{Config, Effects, ErrorCat, Persist, ReadState}
+  alias CMS.Interactions.{Config, Effects, ErrorCat, Persist, Projection}
   alias CMS.Interactions.Reactions.EmotionConfirmation, as: Confirmation
   alias CMS.Model.{ArticleUserEmotion, Author, Comment, CommentUserEmotion}
 
@@ -147,8 +147,8 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
   defp sync_state(canonical, emotion, actor, operation, :changed) do
     result =
       if operation == :add,
-        do: ReadState.add_emotion(canonical, emotion, actor),
-        else: ReadState.remove_emotion(canonical, emotion, actor)
+        do: Projection.add_emotion(canonical, emotion, actor),
+        else: Projection.remove_emotion(canonical, emotion, actor)
 
     case result do
       {:ok, _projection} -> {:ok, :pass}

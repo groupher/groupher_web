@@ -4,7 +4,7 @@ defmodule GroupherServer.CMS.Model.BlogEmotionInfo do
 
   Business position:
 
-      CMS.Interactions.ReadState -> BlogEmotionInfo -> cms.blog_emotion_infos
+      CMS.Interactions.Projection -> BlogEmotionInfo -> cms.blog_emotion_infos
   """
 
   use GroupherServer.CMS.Model.Interaction.EmotionInfo,

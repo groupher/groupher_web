@@ -60,7 +60,8 @@ defmodule GroupherServer.Analysis.Contribution.Workflow do
     case Repo.transaction(fn ->
            with {:ok, contribute} <- Persist.record_user(user),
                 digest <- Query.list_contributions_digest(user),
-                {:ok, user} <- Persist.update_user_projection(user, unwrap(digest)) do
+                {:ok, user} <-
+                  Accounts.profiles_refresh_contributions(user.id, unwrap(digest)) do
              %{contribute: contribute, user: user}
            else
              {:error, reason} -> Repo.rollback(reason)

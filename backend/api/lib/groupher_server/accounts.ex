@@ -182,11 +182,26 @@ defmodule GroupherServer.Accounts do
     to: GroupherServer.Accounts.Profiles,
     as: :paged_users
 
-  @doc "Delegates GroupherServer.Accounts.Profiles.read_user/1 through the Accounts Context boundary."
-  defdelegate profiles_read_user(arg1), to: GroupherServer.Accounts.Profiles, as: :read_user
+  @doc "Delegates GroupherServer.Accounts.Profiles.user/1 through the Accounts Context boundary."
+  defdelegate profiles_user(arg1), to: GroupherServer.Accounts.Profiles, as: :user
 
-  @doc "Delegates GroupherServer.Accounts.Profiles.read_user/2 through the Accounts Context boundary."
-  defdelegate profiles_read_user(arg1, arg2), to: GroupherServer.Accounts.Profiles, as: :read_user
+  @doc "Delegates GroupherServer.Accounts.Profiles.user/2 through the Accounts Context boundary."
+  defdelegate profiles_user(arg1, arg2), to: GroupherServer.Accounts.Profiles, as: :user
+
+  @doc "Delegates contribution projection refresh through the Accounts Context boundary."
+  defdelegate profiles_refresh_contributions(user_id, digest),
+    to: GroupherServer.Accounts.Profiles,
+    as: :refresh_contributions
+
+  @doc "Delegates durable Profile visit enqueue through the Accounts Context boundary."
+  defdelegate profiles_record_visit(profile_id, visit_id),
+    to: GroupherServer.Accounts.Profiles,
+    as: :record_visit
+
+  @doc "Delegates Profile visit delivery through the Accounts Context boundary."
+  defdelegate profiles_deliver_visit(profile_id),
+    to: GroupherServer.Accounts.Profiles,
+    as: :deliver_visit
 
   @doc "Delegates GroupherServer.Accounts.Profiles.refresh_browser_session/1 through the Accounts Context boundary."
   defdelegate profiles_refresh_browser_session(arg1),

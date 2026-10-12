@@ -1,4 +1,4 @@
-defmodule GroupherServer.Test.CMS.Interactions.ReadStateTest do
+defmodule GroupherServer.Test.CMS.Interactions.ProjectionTest do
   use GroupherServer.TestMate, async: false
 
   import Ecto.Query
@@ -21,7 +21,7 @@ defmodule GroupherServer.Test.CMS.Interactions.ReadStateTest do
   test "article_state maps one already-read private state without IO" do
     article = %{community: "home", thread: :post, inner_id: 42}
 
-    assert CMS.Interactions.ReadState.article_state(article, %{
+    assert CMS.Interactions.Projection.article_state(article, %{
              interaction_revision: nil,
              viewer_has_upvoted: nil,
              viewer_has_collected: true,

@@ -15,6 +15,10 @@ Backend 采用“约定大于配置”的 Context 结构。完整设计、角色
 - `query/`、`persist/`、`workflow/`、`effects/`、`policy/`、`projection/`、`cache/`、`lifecycle/`、`gate/`、`outbox/`
   是单数 Owner，拆目录时必须保留同名 `.ex`；
 - Owner 子树可用无 Facade 的目录整理实现文件；它继承父 Owner role，不形成新调用入口；
+- 禁止独立的 `Read`、`Reader`、`Write`、`Writer` 文件、目录和模块段；读取、派生状态、持久化与副作用必须分别进入
+  `Query`、`Projection`、`Persist`、`Effects` 等明确 Owner；
+- 已退役的 `Interactions.ReadState` / `read_state` 和 `CollectFolders.WriteConfirmation` /
+  `write_confirmation` 同时受 legacy 模块段与文件 stem 门禁约束，禁止重建兼容入口；
 - Web、Worker 和其他 Context 只能调用目标 Context 根 Facade；普通 struct、type 和 ErrorCat pattern 引用不算行为调用；
 - Worker 只允许放在 Jobs Context，并且不能直接访问 Repo、transaction 或 provider；
 - Facade 只做稳定 API、轻量适配和转发；一对一机械转发使用 `defdelegate`，基础设施访问下沉到 Owner；
@@ -47,8 +51,8 @@ groupher_server/
 合法调用：
 
 ```elixir
-GroupherServer.Accounts.profiles_read_user(user)
-GroupherServer.Accounts.Profiles.read_user(user)
+GroupherServer.Accounts.profiles_user(user)
+GroupherServer.Accounts.Profiles.user(user)
 GroupherServer.CMS.articles_count_published(:post, user)
 ```
 
@@ -66,6 +70,12 @@ groupher_server/accounts/query/by_id.ex # query/ 缺 query.ex
 
 groupher_server/cms/worker.ex            # use Oban.Worker，但不在 jobs/
   -> worker_outside_jobs
+
+groupher_server/accounts/profiles/read.ex # 独立 Read owner
+  -> forbidden_architecture_name
+
+groupher_server/cms/interactions/read_state/query.ex # 已退役 legacy stem
+  -> forbidden_architecture_name
 ```
 
 非法调用：

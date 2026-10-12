@@ -2,14 +2,14 @@ defmodule GroupherServer.Accounts.Profiles.Query do
   @moduledoc """
   Reads and shapes public profile projections and profile lists.
 
-      User row / contribution facts
+      User row / persisted contribution projection
           -> Profiles.Query
           -> public profile projection
   """
 
   import Ecto.Query, warn: false
 
-  alias GroupherServer.{Accounts, Analysis, Repo}
+  alias GroupherServer.{Accounts, Repo}
   alias Accounts.Model.{Embeds, OauthProvider, User}
   alias Accounts.Profiles.List
   alias Helper.ORM
@@ -21,10 +21,10 @@ defmodule GroupherServer.Accounts.Profiles.Query do
 
   ## Examples
 
-      Accounts.Profiles.Query.project_user(user)
+      Accounts.Profiles.Query.profile(user)
   """
-  @spec project_user(User.t()) :: {:ok, User.t()} | {:error, term()}
-  def project_user(%User{} = user) do
+  @spec profile(User.t()) :: {:ok, User.t()} | {:error, term()}
+  def profile(%User{} = user) do
     with {:ok, user} <- assign_meta(user),
          {:ok, user} <- assign_contributes(user) do
       {:ok, user}
@@ -36,13 +36,13 @@ defmodule GroupherServer.Accounts.Profiles.Query do
 
   ## Examples
 
-      Accounts.Profiles.Query.project_user(user, viewer)
+      Accounts.Profiles.Query.profile(user, viewer)
   """
-  @spec project_user(User.t(), User.t()) :: {:ok, User.t()} | {:error, term()}
-  def project_user(%User{} = user, %User{meta: nil}), do: project_user(user)
+  @spec profile(User.t(), User.t()) :: {:ok, User.t()} | {:error, term()}
+  def profile(%User{} = user, %User{meta: nil}), do: profile(user)
 
-  def project_user(%User{} = user, %User{} = viewer) do
-    with {:ok, user} <- project_user(user) do
+  def profile(%User{} = user, %User{} = viewer) do
+    with {:ok, user} <- profile(user) do
       {:ok,
        Map.merge(user, %{
          viewer_been_followed: user.id in viewer.meta.follower_user_ids,
@@ -132,9 +132,7 @@ defmodule GroupherServer.Accounts.Profiles.Query do
   defp assign_meta(%User{} = user), do: {:ok, user}
 
   defp assign_contributes(%User{contributes: nil} = user) do
-    with {:ok, contributes} <- Analysis.list_contributions_digest(%User{id: user.id}) do
-      {:ok, Map.put(user, :contributes, contributes)}
-    end
+    {:ok, Map.put(user, :contributes, %Embeds.UserContribute{})}
   end
 
   defp assign_contributes(%User{} = user), do: {:ok, user}

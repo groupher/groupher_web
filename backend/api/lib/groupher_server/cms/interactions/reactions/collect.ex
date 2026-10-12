@@ -17,7 +17,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   alias CMS.Articles.MutationLock
   alias CMS.Artiment.Matcher
   alias CMS.{Command, Gate, Interactions}
-  alias CMS.Interactions.{Effects, ErrorCat, Persist, ReadState, Transaction}
+  alias CMS.Interactions.{Effects, ErrorCat, Persist, Projection, Transaction}
   alias CMS.Interactions.Reactions.CollectConfirmation, as: Confirmation
   alias CMS.Model.{ArticleCollect, Author}
 
@@ -123,8 +123,8 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   defp sync_state(canonical, actor, operation, :changed) do
     result =
       if operation == :add,
-        do: ReadState.add_collect(canonical, actor),
-        else: ReadState.remove_collect(canonical, actor)
+        do: Projection.add_collect(canonical, actor),
+        else: Projection.remove_collect(canonical, actor)
 
     case result do
       {:ok, _projection} -> {:ok, :pass}

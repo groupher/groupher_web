@@ -7,11 +7,11 @@ defmodule GroupherServer.Accounts.Profiles do
       Client / Auth
         -> GraphQL or internal API
         -> Accounts facade
-        -> Query / Read / Commands
-           -> Persist / Effects
+        -> Query / Commands / Projection / Effects
+           -> Persist
   """
 
-  alias __MODULE__.{BrowserSessions, Commands, Query, Read, SessionState}
+  alias __MODULE__.{BrowserSessions, Commands, Effects, Projection, Query, SessionState}
   alias GroupherServer.Accounts
 
   alias Accounts.Model.User
@@ -22,10 +22,10 @@ defmodule GroupherServer.Accounts.Profiles do
 
   ## Examples
 
-      Accounts.Profiles.read_user(user)
+      Accounts.Profiles.user(user)
   """
-  @spec read_user(User.t()) :: T.domain_res(User.t())
-  def read_user(%User{} = user), do: Read.run(user)
+  @spec user(User.t()) :: T.domain_res(User.t())
+  def user(%User{} = user), do: Query.profile(user)
 
   @doc """
   Returns an opaque, stable subject for service-to-user delegation.
@@ -55,10 +55,42 @@ defmodule GroupherServer.Accounts.Profiles do
 
   ## Examples
 
-      Accounts.Profiles.read_user(user, viewer)
+      Accounts.Profiles.user(user, viewer)
   """
-  @spec read_user(User.t(), User.t()) :: T.domain_res(User.t())
-  def read_user(%User{} = user, %User{} = cur_user), do: Read.run(user, cur_user)
+  @spec user(User.t(), User.t()) :: T.domain_res(User.t())
+  def user(%User{} = user, %User{} = cur_user), do: Query.profile(user, cur_user)
+
+  @doc """
+  Refreshes one persisted contribution projection from an authoritative digest.
+
+  ## Examples
+
+      Profiles.refresh_contributions(user.id, digest)
+  """
+  @spec refresh_contributions(integer(), map()) :: T.domain_res(User.t())
+  def refresh_contributions(user_id, digest) when is_integer(user_id) and is_map(digest) do
+    Projection.refresh_contributions(user_id, digest)
+  end
+
+  @doc """
+  Enqueues one Profile visit using a stable request identity.
+
+  ## Examples
+
+      Profiles.record_visit(user.id, visit_id)
+  """
+  @spec record_visit(integer(), Ecto.UUID.t()) :: {:ok, :pass}
+  def record_visit(profile_id, visit_id), do: Effects.record_visit(profile_id, visit_id)
+
+  @doc """
+  Delivers one previously enqueued Profile visit.
+
+  ## Examples
+
+      Profiles.deliver_visit(user.id)
+  """
+  @spec deliver_visit(integer()) :: T.domain_res(User.t())
+  def deliver_visit(profile_id), do: Effects.deliver_visit(profile_id)
 
   @doc """
   Returns a page of matching user profiles.
@@ -219,8 +251,9 @@ defmodule GroupherServer.Accounts.Profiles do
       Accounts.Profiles.link_oauth_identity("alice", provider_payload)
   """
   @spec link_oauth_identity(String.t(), map()) :: T.domain_res(map())
-  def link_oauth_identity(login, provider),
-    do: Commands.LinkOauthIdentity.run(login, provider)
+  def link_oauth_identity(login, provider) do
+    Commands.LinkOauthIdentity.run(login, provider)
+  end
 
   @doc """
   Unlinks one OAuth identity by its public reference.

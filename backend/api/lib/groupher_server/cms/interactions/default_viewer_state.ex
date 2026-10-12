@@ -5,7 +5,7 @@ defmodule GroupherServer.CMS.Interactions.DefaultViewerState do
   The response shapes live in one module because Article, Comment, emotion,
   and moderation state are field combinations, not separate domain models.
 
-      ReadState.Query -> DefaultViewerState -> viewer-facing map
+      Projection.Query -> DefaultViewerState -> viewer-facing map
   """
 
   alias GroupherServer.CMS

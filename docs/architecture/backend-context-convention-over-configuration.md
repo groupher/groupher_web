@@ -102,7 +102,7 @@ Context 根 API 使用能力前缀避免冲突，例如：
 
 ```elixir
 CMS.articles_page(:post, filter)
-Accounts.profiles_read_user(user)
+Accounts.profiles_user(user)
 PublicCache.cloudflare_purge(tags)
 ```
 
@@ -111,9 +111,9 @@ PublicCache.cloudflare_purge(tags)
 一对一、参数顺序不变、无 guard、无 pattern dispatch、无输入输出转换时必须使用 `defdelegate`：
 
 ```elixir
-defdelegate profiles_read_user(user),
+defdelegate profiles_user(user),
   to: GroupherServer.Accounts.Profiles,
-  as: :read_user
+  as: :user
 ```
 
 需要 guard、pattern dispatch 或轻量 shape adaptation 时使用 `def`。业务编排必须下沉到 Command/Workflow，Facade 不访问

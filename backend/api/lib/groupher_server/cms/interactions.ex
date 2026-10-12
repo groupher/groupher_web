@@ -4,11 +4,11 @@ defmodule GroupherServer.CMS.Interactions do
 
       GraphQL / service Query
         -> CMS.Interactions
-        -> Reaction / ReadState / Scope
+        -> Reaction / Projection / Scope
         -> authoritative facts and derived read state
 
   The facade owns the stable Interaction reaction and read contracts. SQL,
-  fact persistence, derived ReadState, worker maintenance, and response assembly stay
+  fact persistence, derived Projection, worker maintenance, and response assembly stay
   behind their respective domain owners.
   """
 
@@ -16,7 +16,7 @@ defmodule GroupherServer.CMS.Interactions do
 
   alias Accounts.Model.User
   alias CMS.Comments.InteractionResponse
-  alias CMS.Interactions.{CommandResult, ErrorCat, Reactions, ReadState, Scope}
+  alias CMS.Interactions.{CommandResult, ErrorCat, Reactions, Projection, Scope}
   alias CMS.Model.Comment
 
   @doc """
@@ -65,7 +65,7 @@ defmodule GroupherServer.CMS.Interactions do
 
   """
   @spec viewer_state(struct(), User.t() | nil, keyword()) :: map() | {:error, term()}
-  defdelegate viewer_state(artiment, viewer, opts \\ []), to: ReadState
+  defdelegate viewer_state(artiment, viewer, opts \\ []), to: Projection
 
   @doc """
   Returns typed Interaction states keyed by Artiment type and physical id.
@@ -76,18 +76,22 @@ defmodule GroupherServer.CMS.Interactions do
 
   """
   @spec viewer_states([struct()], User.t() | nil, keyword()) :: map()
-  defdelegate viewer_states(artiments, viewer, opts \\ []), to: ReadState
+  defdelegate viewer_states(artiments, viewer, opts \\ []), to: Projection
 
   @doc "Resolves public Article paths and returns ordered private Interaction state."
   @spec article_states_for_paths([map()], User.t(), keyword()) ::
           {:ok, [map()]} | {:error, term()}
-  defdelegate article_states_for_paths(paths, viewer, opts \\ []), to: ReadState
+  defdelegate article_states_for_paths(paths, viewer, opts \\ []), to: Projection
+
+  @doc "Maps an already-read Article locator and private Interaction state without IO."
+  @spec article_state(map(), map()) :: map()
+  defdelegate article_state(article, interaction), to: Projection
 
   @doc "Returns public presentation state without current-viewer fields."
-  defdelegate public_state(artiment, opts \\ []), to: ReadState
+  defdelegate public_state(artiment, opts \\ []), to: Projection
 
   @doc "Returns batched public presentation state without current-viewer fields."
-  defdelegate public_states(artiments, opts \\ []), to: ReadState
+  defdelegate public_states(artiments, opts \\ []), to: Projection
 
   @doc """
   Returns lightweight fixed counts keyed by Artiment type and physical id.
@@ -98,7 +102,7 @@ defmodule GroupherServer.CMS.Interactions do
 
   """
   @spec counts([struct()]) :: map() | {:error, ErrorCat.error()}
-  defdelegate counts(artiments), to: ReadState
+  defdelegate counts(artiments), to: Projection
 
   defp present_report({:ok, %Comment{} = comment}, viewer) do
     InteractionResponse.one(comment, viewer, surface: :report)

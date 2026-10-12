@@ -1,11 +1,11 @@
-defmodule GroupherServer.CMS.Interactions.ReadState do
+defmodule GroupherServer.CMS.Interactions.Projection do
   @moduledoc """
   Routes reads and internal synchronization for derived Interaction state.
 
-  `ReadState` is rebuildable from reaction facts and durable view events. This
+  `Projection` is rebuildable from reaction facts and durable view events. This
   facade contains no Ecto queries or projection mutation logic.
 
-      CMS.Interactions -> ReadState -> Query / Sync
+      CMS.Interactions -> Projection -> Query / Sync
   """
 
   alias __MODULE__.{Query, Sync}
@@ -19,7 +19,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState do
 
   ## Examples
 
-      ReadState.viewer_state(article, viewer)
+      Projection.viewer_state(article, viewer)
 
   """
   @spec viewer_state(struct(), User.t() | nil, keyword()) :: map() | {:error, term()}
@@ -30,7 +30,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState do
 
   ## Examples
 
-      ReadState.viewer_states([article, comment], viewer)
+      Projection.viewer_states([article, comment], viewer)
 
   """
   @spec viewer_states([struct()], User.t() | nil, keyword()) :: map() | {:error, term()}
@@ -75,7 +75,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState do
 
   ## Examples
 
-      ReadState.counts([article, comment])
+      Projection.counts([article, comment])
 
   """
   @spec counts([struct()]) :: map() | {:error, term()}
@@ -86,7 +86,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState do
 
   ## Examples
 
-      ReadState.add_upvote(article, actor)
+      Projection.add_upvote(article, actor)
 
   """
   @spec add_upvote(struct(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -97,7 +97,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState do
 
   ## Examples
 
-      ReadState.remove_upvote(article, actor)
+      Projection.remove_upvote(article, actor)
 
   """
   @spec remove_upvote(struct(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -108,7 +108,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState do
 
   ## Examples
 
-      ReadState.add_collect(article, actor)
+      Projection.add_collect(article, actor)
 
   """
   @spec add_collect(struct(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -119,7 +119,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState do
 
   ## Examples
 
-      ReadState.remove_collect(article, actor)
+      Projection.remove_collect(article, actor)
 
   """
   @spec remove_collect(struct(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -130,7 +130,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState do
 
   ## Examples
 
-      ReadState.add_emotion(article, :heart, actor)
+      Projection.add_emotion(article, :heart, actor)
 
   """
   @spec add_emotion(struct(), atom(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -141,7 +141,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState do
 
   ## Examples
 
-      ReadState.remove_emotion(article, :heart, actor)
+      Projection.remove_emotion(article, :heart, actor)
 
   """
   @spec remove_emotion(struct(), atom(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -152,7 +152,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState do
 
   ## Examples
 
-      ReadState.add_report(article, actor)
+      Projection.add_report(article, actor)
 
   """
   @spec add_report(struct(), User.t()) :: {:ok, map()} | {:error, term()}
@@ -163,7 +163,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState do
 
   ## Examples
 
-      ReadState.remove_report(article, actor)
+      Projection.remove_report(article, actor)
 
   """
   @spec remove_report(struct(), User.t()) :: {:ok, map()} | {:error, term()}

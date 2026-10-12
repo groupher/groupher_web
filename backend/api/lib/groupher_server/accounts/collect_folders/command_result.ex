@@ -31,7 +31,7 @@ defmodule GroupherServer.Accounts.CollectFolders.CommandResult do
          command_id: result.command_id,
          folder: result.folder,
          article_stats: article_stats,
-         interaction_state: CMS.interactions_read_state_article_state(article_stats, interaction)
+         interaction_state: CMS.interactions_article_state(article_stats, interaction)
        }}
     end
   end

@@ -1,10 +1,10 @@
-defmodule GroupherServer.CMS.Interactions.ReadState.Query do
+defmodule GroupherServer.CMS.Interactions.Projection.Query do
   @moduledoc """
   Reads batched, derived Interaction state without loading reaction fact rows.
 
   Anonymous reads deliberately compile no bitmap membership expressions.
 
-      ReadState -> Query -> DefaultViewerState + projection rows
+      Projection -> Query -> DefaultViewerState + projection rows
   """
 
   require GroupherServer.CMS.Model.Interaction.RoaringBitmap
@@ -16,7 +16,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Query do
 
   alias Accounts.Model.User
   alias CMS.{Artiment.Matcher, FrontDesk, EmotionFormatter, Model.Interaction.RoaringBitmap}
-  alias CMS.Interactions.{Config, DefaultViewerState, ErrorCat, Reactions, ReadState}
+  alias CMS.Interactions.{Config, DefaultViewerState, ErrorCat, Reactions, Projection}
 
   @article_threads Config.article_threads()
   @supported_threads [:comment | @article_threads]
@@ -26,7 +26,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Query do
 
   ## Examples
 
-      ReadState.Query.viewer_state(article, viewer)
+      Projection.Query.viewer_state(article, viewer)
 
   """
   @spec viewer_state(struct(), User.t() | nil, keyword()) :: map() | {:error, term()}
@@ -49,7 +49,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Query do
 
   ## Examples
 
-      ReadState.Query.viewer_states([article, comment], viewer)
+      Projection.Query.viewer_states([article, comment], viewer)
 
   """
   @spec viewer_states([struct()], User.t() | nil, keyword()) :: map() | {:error, term()}
@@ -92,7 +92,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Query do
          {:ok, %{artiment: type}} = Matcher.match_interaction(article)
          state = Map.fetch!(states, {type, article.id})
 
-         ReadState.article_state(
+         Projection.article_state(
            %{community: path.community, thread: path.thread, inner_id: binding.inner_id},
            state
          )
@@ -113,7 +113,7 @@ defmodule GroupherServer.CMS.Interactions.ReadState.Query do
 
   ## Examples
 
-      ReadState.Query.counts([article, comment])
+      Projection.Query.counts([article, comment])
 
   """
   @spec counts([struct()]) :: map() | {:error, term()}
