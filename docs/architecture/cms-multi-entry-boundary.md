@@ -127,7 +127,8 @@ end
 - Store/Persist 使用持久化动作：`Draft.Store.update`、`Revision.Persist.create`。
 - 不使用重复且隐藏副作用的 `Commands.Update.update`。
 
-外部入口只能调用 facade，不能直接调用 `Commands.*`、`Store`、`Writer`、`Target` 或 `Repo`。
+外部入口只能调用 facade，不能直接调用 `Commands.*`、`Store`、`Persist`、`Writer`、`Target` 或
+`Repo`。
 
 ## 5. 业务原子性，而不是技术原子性
 

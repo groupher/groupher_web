@@ -61,16 +61,19 @@ test('reports empty Persist, Workflow user actions, and direct reaction writes',
     'backend/api/lib/groupher_server/cms/interactions/reactions/upvote.ex',
   )
 
-  assert.deepEqual(emptyPersist.map(({ category }) => category), ['empty_persist'])
-  assert.deepEqual(workflow.map(({ category }) => category), [
-    'workflow_user_command',
-    'workflow_user_command',
-  ])
+  assert.deepEqual(
+    emptyPersist.map(({ category }) => category),
+    ['empty_persist'],
+  )
+  assert.deepEqual(
+    workflow.map(({ category }) => category),
+    ['workflow_user_command', 'workflow_user_command'],
+  )
   assert.equal(wallpaperWorkflow[0].category, 'workflow_user_command')
-  assert.deepEqual(reactions.map(({ category }) => category), [
-    'reaction_repo_write',
-    'reaction_repo_write',
-  ])
+  assert.deepEqual(
+    reactions.map(({ category }) => category),
+    ['reaction_repo_write', 'reaction_repo_write'],
+  )
 })
 
 test('reports writer naming and Persist delegates to Workflow', () => {
@@ -93,10 +96,10 @@ test('reports Comment row writes kept inside Commands', () => {
     'backend/api/lib/groupher_server/cms/comments/commands/create.ex',
   )
 
-  assert.deepEqual(findings.map(({ category }) => category), [
-    'comment_command_row_write',
-    'comment_command_row_write',
-  ])
+  assert.deepEqual(
+    findings.map(({ category }) => category),
+    ['comment_command_row_write', 'comment_command_row_write'],
+  )
 })
 
 test('ignores comments and strings', () => {
@@ -110,4 +113,20 @@ test('ignores comments and strings', () => {
     [],
   )
   assert.equal(maskElixir(source).split('\n').length, source.split('\n').length)
+})
+
+test('masks sigils without hiding declarations that follow them', () => {
+  const source = `@matcher ~r/"/
+@paired ~S(foo("bar"))
+@heredoc ~S"""
+quoted " content
+"""
+defmodule GroupherServer.Accounts.Profiles.Read do
+end
+`
+  const masked = maskElixir(source)
+
+  assert.equal(masked.includes('quoted'), false)
+  assert.equal(masked.includes('defmodule GroupherServer.Accounts.Profiles.Read do'), true)
+  assert.equal(masked.split('\n').length, source.split('\n').length)
 })

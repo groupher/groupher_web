@@ -199,7 +199,8 @@ Accounts.profile_view_tracker_cleanup_expired()
 - cleanup 有 row/time budget、并发保护、telemetry 和定时调度；
 - GraphQL 测试验证 mutation 写入、重复调用、失败回滚与返回 reconciliation；
 - `ProfileVisit` Job、`visit_id`、record/deliver facade、Job/Workflow builder、旧 `Persist.increment_views`
-  和相关测试全部删除；
+  和相关测试全部删除；forward correction migration 同时删除已经入队但已失去 Worker 的
+  `GroupherServer.Jobs.ProfileVisit` 任务；
 - 不存在 Accounts 到 CMS ViewTracker 内部模块的依赖。
 
 ## 6. 已冻结实施参数
@@ -210,4 +211,4 @@ Accounts.profile_view_tracker_cleanup_expired()
 4. cleanup safety margin 为 86,400 秒，batch size 为 500，单次 row budget 为 50,000，time budget
    为 25,000ms；
 5. V1 不写 Accounts-owned analytics event；若未来增加，必须与计数同事务并另行定义 retention；
-6. Oban 完成记录统一由 `Oban.Pruner` 保留 7 天，Profile dedupe cleanup 每小时第 5 分钟运行。
+6. Oban 完成记录统一由 `Oban.Plugins.Pruner` 保留 7 天，Profile dedupe cleanup 每小时第 5 分钟运行。

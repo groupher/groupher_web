@@ -933,7 +933,8 @@ Public CDN invalidation
   target: Cloudflare 中的公共 HTML/hydration object
   trigger: content/publish/visibility/config 领域变化
   path: CMS transaction -> CMS Outbox -> Jobs.CMSOutbox<Domain>
-        -> CMS.Outbox.Workflow.<Domain> -> PublicCache -> Cloudflare purge
+        -> CMS.deliver_outbox -> CMS.Outbox.Workflow.<Domain>
+        -> PublicCache -> Cloudflare purge
 ```
 
 两边可以从同一个用户动作开始，但不能共享 executor，也不能由浏览器把 tag 传给 Phoenix。upvote/view/comment count

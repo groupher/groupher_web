@@ -92,9 +92,9 @@ defmodule GroupherServer.Accounts.ProfileViewTracker.Identity do
     {:error, ErrorCat.invalid_actor_type()}
   end
 
-  defp credential_id(%{token_id: id}) when is_binary(id) and byte_size(id) > 0, do: {:ok, id}
-
   defp credential_id(%{subject: id}) when is_binary(id) and byte_size(id) > 0, do: {:ok, id}
+
+  defp credential_id(%{token_id: id}) when is_binary(id) and byte_size(id) > 0, do: {:ok, id}
 
   defp credential_id(_credential), do: {:error, ErrorCat.invalid_actor_type()}
 

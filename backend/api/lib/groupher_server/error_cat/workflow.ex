@@ -21,13 +21,14 @@ defmodule GroupherServer.ErrorCat.Workflow do
     {:cms, :gate} => 4600..4699,
     {:account, :collection} => 4700..4799,
     {:account, :fans} => 4800..4899,
-    {:cms, :interaction} => 4900..4999,
+    {:cms, :interaction} => 4900..4919,
+    {:cms, :view_tracker} => 4920..4949,
     {:cms, :community} => 5500..5599,
     {:cms, :asset} => 5600..5699,
     {:cms, :wallpaper} => 5700..5799,
     {:cms, :article} => 6000..6099,
     {:activity} => 6100..6199,
-    {:cms, :view_tracker} => 6200..6249,
+    {:messaging, :notification} => 6200..6249,
     {:account, :profile_view_tracker} => 6250..6299
   }
 
@@ -74,7 +75,8 @@ defmodule GroupherServer.ErrorCat.Workflow do
     GroupherServer.CMS.Articles.ErrorCat,
     GroupherServer.CMS.ViewTracker.ErrorCat,
     GroupherServer.Accounts.ProfileViewTracker.ErrorCat,
-    GroupherServer.Activity.ErrorCat
+    GroupherServer.Activity.ErrorCat,
+    GroupherServer.Messaging.ErrorCat
   ]
 
   def ranges, do: @ranges

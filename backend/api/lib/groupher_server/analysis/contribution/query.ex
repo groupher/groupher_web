@@ -28,8 +28,11 @@ defmodule GroupherServer.Analysis.Contribution.Query do
   """
   @spec list_contributions_digest(User.t()) :: {:ok, map()}
   def list_contributions_digest(%User{id: id}) do
+    today = Datetime.today()
+
     UserContribute
     |> where([c], c.user_id == ^id)
+    |> where([c], c.date <= ^today)
     |> QueryBuilder.recent_inserted(months: @user_contribute_months)
     |> select([c], %{date: c.date, count: c.count})
     |> Repo.all()

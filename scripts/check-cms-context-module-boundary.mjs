@@ -37,6 +37,50 @@ export const maskElixir = (source) => {
     if (chars[index] !== '\n') chars[index] = ' '
   }
 
+  const maskSigil = (start) => {
+    const opener = chars[start + 2]
+    if (!opener) return start
+
+    const paired = new Map([
+      ['(', ')'],
+      ['[', ']'],
+      ['{', '}'],
+      ['<', '>'],
+    ])
+    const closer = paired.get(opener) ?? opener
+    const triple = chars[start + 3] === opener && chars[start + 4] === opener
+    let depth = paired.has(opener) ? 1 : 0
+    let cursor = start
+
+    for (; cursor <= start + (triple ? 4 : 2); cursor += 1) blank(cursor)
+
+    for (; cursor < chars.length; cursor += 1) {
+      const current = chars[cursor]
+      blank(cursor)
+
+      if (current === '\\') {
+        blank(cursor + 1)
+        cursor += 1
+        continue
+      }
+
+      if (triple) {
+        if (current === closer && chars[cursor + 1] === closer && chars[cursor + 2] === closer) {
+          blank(cursor + 1)
+          blank(cursor + 2)
+          return cursor + 2
+        }
+        continue
+      }
+
+      if (paired.has(opener) && current === opener) depth += 1
+      if (current !== closer) continue
+      if (!paired.has(opener) || --depth === 0) return cursor
+    }
+
+    return cursor
+  }
+
   for (let index = 0; index < chars.length; index += 1) {
     const current = chars[index]
     const next = chars[index + 1]
@@ -53,7 +97,9 @@ export const maskElixir = (source) => {
       if (current === '\\') {
         blank(index + 1)
         index += 1
-      } else if (heredoc ? current === quote && next === quote && third === quote : current === quote) {
+      } else if (
+        heredoc ? current === quote && next === quote && third === quote : current === quote
+      ) {
         if (heredoc) {
           blank(index + 1)
           blank(index + 2)
@@ -67,6 +113,11 @@ export const maskElixir = (source) => {
     if (current === '#') {
       blank(index)
       state = 'comment'
+      continue
+    }
+
+    if (current === '~' && /[A-Za-z]/.test(next ?? '') && chars[index + 2]) {
+      index = maskSigil(index)
       continue
     }
 
@@ -103,7 +154,11 @@ const ownerForPath = (relativePath) => {
   if (contextPath.includes('commands')) return 'commands'
   if (contextPath.includes('reactions')) return 'commands'
   if (contextPath.includes('jobs') || file.endsWith('_job.ex')) return 'workflow/job'
-  if (contextPath.includes('workflows') || file === 'workflow.ex' || contextPath.includes('workflow')) {
+  if (
+    contextPath.includes('workflows') ||
+    file === 'workflow.ex' ||
+    contextPath.includes('workflow')
+  ) {
     return 'workflow'
   }
   if (file === 'persist.ex' || file.endsWith('_persist.ex')) return 'persist'
@@ -184,7 +239,10 @@ export const boundaryFindings = (source, relativePath) => {
       }
     }
 
-    if (owner === 'commands' && /\b(?:[A-Z][A-Za-z0-9_]*\.)?Writer\.[a-z_][A-Za-z0-9_]*\s*\(/.test(line)) {
+    if (
+      owner === 'commands' &&
+      /\b(?:[A-Z][A-Za-z0-9_]*\.)?Writer\.[a-z_][A-Za-z0-9_]*\s*\(/.test(line)
+    ) {
       findings.push(
         finding(
           relativePath,
@@ -199,7 +257,9 @@ export const boundaryFindings = (source, relativePath) => {
     if (
       owner === 'commands' &&
       relativePath.includes('/cms/comments/commands/') &&
-      /\b(?:ORM|Repo)\.(?:create|insert|insert_all|update|update_all|delete|delete_all|inc|update_embed)\s*\(/.test(line)
+      /\b(?:ORM|Repo)\.(?:create|insert|insert_all|update|update_all|delete|delete_all|inc|update_embed)\s*\(/.test(
+        line,
+      )
     ) {
       findings.push(
         finding(

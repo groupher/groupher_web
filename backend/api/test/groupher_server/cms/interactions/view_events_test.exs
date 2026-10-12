@@ -62,7 +62,7 @@ defmodule GroupherServer.Test.CMS.ViewTrackerTest do
     assert {:ok,
             %{
               data: nil,
-              errors: [%{extensions: %{code: 6204}}]
+              errors: [%{extensions: %{code: 4927}}]
             }} =
              Absinthe.run(mutation, Schema,
                variables: %{

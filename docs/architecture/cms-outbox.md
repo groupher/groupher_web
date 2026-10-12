@@ -79,7 +79,12 @@ with {:ok, article} <- Persist.publish(...),
          resource_id: article.id,
          identity: {:command, command_id},
          effect_key: "publish",
-         data: %{binding_id: binding.id}
+         data: %{
+           binding_id: binding.id,
+           community: community.slug,
+           thread: article.thread,
+           inner_id: article.inner_id
+         }
        }) do
   {:ok, article}
 end
@@ -93,8 +98,9 @@ domain COMMIT
   -> insert Event in another transaction   # 禁止，进程崩溃会永久漏投递
 ```
 
-持久化 payload 只允许 JSON-safe 的 `type/version/stable IDs`。禁止持久化 module、function、匿名函数、
-Elixir struct、Erlang term 或 `{module, function, args}` 动态调用合同。
+持久化 payload 只允许 JSON-safe 的稳定 ID 和执行所需的最小、版本化业务事实，例如
+`operation`、`changed_fields` 或缓存 scope。禁止持久化 module、function、匿名函数、Elixir struct、
+Erlang term 或 `{module, function, args}` 动态调用合同。
 
 ## 4. 调用权限
 

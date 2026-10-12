@@ -90,7 +90,11 @@ test('rejects generic and compound legacy architecture names without substring f
       'accounts/profiles/commands/reader/item.ex',
       'GroupherServer.Accounts.Profiles.Commands.Reader.Item',
     )
-    touch(root, 'accounts/profiles/commands/mark_read.ex', 'GroupherServer.Accounts.Profiles.Commands.MarkRead')
+    touch(
+      root,
+      'accounts/profiles/commands/mark_read.ex',
+      'GroupherServer.Accounts.Profiles.Commands.MarkRead',
+    )
     touch(
       root,
       'accounts/profiles/read_stateful.ex',
@@ -128,19 +132,69 @@ end
     })
     const forbidden = findings.filter(({ category }) => category === 'forbidden_architecture_name')
 
-    assert.equal(forbidden.some(({ file }) => file.endsWith('/profiles/read.ex')), true)
-    assert.equal(forbidden.some(({ file }) => file.endsWith('/write_confirmation.ex')), true)
+    assert.equal(
+      forbidden.some(({ file }) => file.endsWith('/profiles/read.ex')),
+      true,
+    )
+    assert.equal(
+      forbidden.some(({ file }) => file.endsWith('/write_confirmation.ex')),
+      true,
+    )
     assert.equal(
       forbidden.some(({ file }) => file.endsWith('/profiles/write_confirmation.ex')),
       true,
     )
-    assert.equal(forbidden.some(({ file }) => file.endsWith('/commands/reader')), true)
-    assert.equal(forbidden.some(({ file }) => file.endsWith('/interactions/read_state')), true)
-    assert.equal(forbidden.some(({ file }) => file.endsWith('/interactions/read_state.ex')), true)
-    assert.equal(forbidden.some(({ file }) => file.endsWith('/interactions/read_state/query.ex')), true)
-    assert.equal(forbidden.some(({ file }) => file.endsWith('/profiles/mixed.ex')), true)
-    assert.equal(forbidden.some(({ file }) => file.endsWith('/mark_read.ex')), false)
-    assert.equal(forbidden.some(({ file }) => file.endsWith('/read_stateful.ex')), false)
+    assert.equal(
+      forbidden.some(({ file }) => file.endsWith('/commands/reader')),
+      true,
+    )
+    assert.equal(
+      forbidden.some(({ file }) => file.endsWith('/interactions/read_state')),
+      true,
+    )
+    assert.equal(
+      forbidden.some(({ file }) => file.endsWith('/interactions/read_state.ex')),
+      true,
+    )
+    assert.equal(
+      forbidden.some(({ file }) => file.endsWith('/interactions/read_state/query.ex')),
+      true,
+    )
+    assert.equal(
+      forbidden.some(({ file }) => file.endsWith('/profiles/mixed.ex')),
+      true,
+    )
+    assert.equal(
+      forbidden.some(({ file }) => file.endsWith('/mark_read.ex')),
+      false,
+    )
+    assert.equal(
+      forbidden.some(({ file }) => file.endsWith('/read_stateful.ex')),
+      false,
+    )
+  })
+})
+
+test('rejects forbidden module names after sigils containing quotes', () => {
+  withFixture((root) => {
+    touch(root, 'accounts.ex', 'GroupherServer.Accounts')
+    touch(root, 'accounts/profiles.ex', 'GroupherServer.Accounts.Profiles')
+    const file = path.join(root, 'accounts/profiles/query.ex')
+    mkdirSync(path.dirname(file), { recursive: true })
+    writeFileSync(
+      file,
+      `@matcher ~r/"/
+defmodule GroupherServer.Accounts.Profiles.Read do
+end
+`,
+    )
+
+    const findings = backendContextV2LayoutFindings({ root, registry: registry() })
+
+    assert.equal(
+      findings.some(({ category }) => category === 'forbidden_architecture_name'),
+      true,
+    )
   })
 })
 

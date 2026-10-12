@@ -17,6 +17,7 @@ CMS Domain Command transaction
   -> CMS.Outbox.send
   -> COMMIT
   -> Jobs.CMSOutbox<Domain>
+  -> CMS.deliver_outbox
   -> CMS.Outbox.Workflow.<Domain>
   -> PublicCache.scope_tags
   -> PublicCache.cloudflare_purge

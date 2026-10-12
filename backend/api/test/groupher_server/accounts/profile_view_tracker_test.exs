@@ -123,6 +123,27 @@ defmodule GroupherServer.Test.Accounts.ProfileViewTrackerTest do
              ProfileViewTracker.track(profile, nil, self_reported, read_purpose: :public_read)
   end
 
+  test "service token rotation keeps one stable agent dedupe identity" do
+    {:ok, profile} = db_insert(:user)
+    first_credential = service_credential("profile-agent")
+    rotated_credential = %{first_credential | token_id: "rotated-jti"}
+    {:ok, classification} = RequestActor.classify(service_credential: first_credential)
+
+    assert {:ok, %{views: 1}} =
+             ProfileViewTracker.track(profile, nil, classification,
+               read_purpose: :public_read,
+               service_credential: first_credential
+             )
+
+    assert {:ok, %{views: 1}} =
+             ProfileViewTracker.track(profile, nil, classification,
+               read_purpose: :public_read,
+               service_credential: rotated_credential
+             )
+
+    assert Repo.aggregate(ProfileViewDedupeState, :count) == 1
+  end
+
   test "missing read purpose fails before writing" do
     {:ok, profile} = db_insert(:user)
     {:ok, viewer} = db_insert(:user)
@@ -254,9 +275,7 @@ defmodule GroupherServer.Test.Accounts.ProfileViewTrackerTest do
     assert {:ok, %{tracked: true}} =
              ProfileViewTracker.track(profile, viewer, classification, read_purpose: :public_read)
 
-    Repo.update_all(ProfileViewDedupeState,
-      set: [expires_at: DateTime.add(DateTime.utc_now(), -1, :second)]
-    )
+    expire_profile_view_dedupe_states()
 
     assert %{deleted_rows: 1, remaining_expired_rows: 0} =
              ProfileViewTracker.cleanup_expired()
@@ -290,9 +309,7 @@ defmodule GroupherServer.Test.Accounts.ProfileViewTrackerTest do
                )
     end
 
-    Repo.update_all(ProfileViewDedupeState,
-      set: [expires_at: DateTime.add(DateTime.utc_now(), -1, :second)]
-    )
+    expire_profile_view_dedupe_states()
 
     assert %{deleted_rows: 2, budget_exhausted: true, remaining_expired_rows: 1} =
              ProfileViewTracker.cleanup_expired()
@@ -303,6 +320,17 @@ defmodule GroupherServer.Test.Accounts.ProfileViewTrackerTest do
 
   defp restore_config(nil), do: Application.delete_env(:groupher_server, Config)
   defp restore_config(config), do: Application.put_env(:groupher_server, Config, config)
+
+  defp expire_profile_view_dedupe_states do
+    now = DateTime.utc_now()
+
+    Repo.update_all(ProfileViewDedupeState,
+      set: [
+        last_counted_at: DateTime.add(now, -2, :second),
+        expires_at: DateTime.add(now, -1, :second)
+      ]
+    )
+  end
 
   defp track_profile_mutation do
     """
