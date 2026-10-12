@@ -285,7 +285,7 @@ receipt-backed mutation input 的 `commandId: ID!` 要求，也不代表客户�
 
 当前状态权威在 `CMS.Communities.Lifecycle`，owner archive 通过 Blocker 投影为 Lifecycle state。GraphQL 目前只暴露 `request_destroy_community`；`restore`、`schedule_destroy`、`cancel_destroy`、`destroy` 仍是 Context/operations 命令。
 
-实现位置：[Community Lifecycle](../../../backend/api/lib/groupher_server/cms/communities/lifecycle.ex)、[Community resolver](../../../backend/api/lib/groupher_server_web/resolvers/cms_resolver.ex)、[Community Lifecycle tests](../../../backend/api/test/groupher_server/cms/communities/lifecycle_test.exs)。
+实现位置：[Community Lifecycle](../../../backend/api/lib/groupher_server/cms/communities/lifecycle.ex)、[Community resolver](../../../backend/api/lib/groupher_server_web/resolvers/cms/communities.ex)、[Community Lifecycle tests](../../../backend/api/test/groupher_server/cms/communities/lifecycle_test.exs)。
 
 #### 切换前基线 action matrix
 
@@ -728,7 +728,7 @@ GraphQL resolver / CMS facade
 
 代码落点：
 
-- `backend/api/lib/groupher_server_web/resolvers/cms_resolver.ex`：`request_destroy_community/3`；
+- `backend/api/lib/groupher_server_web/resolvers/cms/communities.ex`：`request_destroy_community/3`；
 - `backend/api/lib/groupher_server_web/schema/cms/mutations/community.ex`：`commandId` 入参；
 - `backend/api/lib/groupher_server/cms/model/community.ex`、`cms_types.ex`：`commandId` 出参；服务端不暴露 replay 状态。
 
@@ -791,7 +791,10 @@ tree create/update/delete/duplicate/move/restore
 - `DocSnapshot`、`DocDraft`、tree mutation payload、publish payload 和 `done_state` 只暴露业务结果及必要的 `commandId`；
   不暴露 executed/replayed 等 Receipt 状态。
 
-后端入口是 `backend/api/lib/groupher_server/cms/doc_tree.ex`、`docs.ex`、`doc_tree/publish.ex` 以及 `resolvers/cms_resolver.ex`；前端的 commandId、checklist revision、SideTree queue/reconcile 对接在 `DsbThread/schema/docs.ts`、`CMS/Docs/ActionSnackbar/Publish/usePublishActions.ts`、`CMS/Docs/Editor/SideTree/usePersistence.ts`。
+后端入口是 `backend/api/lib/groupher_server/cms/doc_tree.ex`、`docs.ex`、`doc_tree/publish.ex` 以及
+`groupher_server_web/resolvers/cms/docs.ex`；前端的 commandId、checklist revision、SideTree
+queue/reconcile 对接在 `DsbThread/schema/docs.ts`、`CMS/Docs/ActionSnackbar/Publish/usePublishActions.ts`、
+`CMS/Docs/Editor/SideTree/usePersistence.ts`。
 
 ### 4.5 验收证据
 

@@ -11,7 +11,7 @@
 边界说明：`Analysis.Web` 是 Groupher 对 Umami 的 provider adapter、权限和产品 DTO 边界，不是
 Groupher 自建的 Web Analytics 数据库。原始 pageview、visitor、session 及其聚合保存在 Umami。
 Groupher 自有的 Article 有效阅读和互动趋势属于独立的
-[ViewTracker V1](../feature/view-tracker/v1.md) 与
+[Article View 计数写链路](../feature/view-tracker/article-view-counting.md) 与
 [Article Insights V1](../feature/analysis/article-insights-v1.md)，不能把两套统计口径混成一个数字。
 
 ## 实现状态

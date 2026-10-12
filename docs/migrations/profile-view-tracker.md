@@ -1,6 +1,7 @@
 # Profile ViewTracker
 
-> 状态：backend and client adapter implemented；product page consumer pending（2026-10-12）
+> 状态：historical implementation record。当前运行时合同见
+> [Profile View 计数写链路](../feature/view-tracker/profile-view-counting.md)；产品页面 consumer 仍待接入。
 >
 > 范围：定义 Profile view 的最终触发、actor identity、计数幂等、事务、保留与清理合同，并替换
 > `Accounts.Profiles.Effects.record_visit` / `Jobs.ProfileVisit` 过渡链路。实现已完成硬切换，不保留旧

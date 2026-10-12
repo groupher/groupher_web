@@ -1,6 +1,7 @@
 # CMS Command V3：Confirmation 与结果投影边界
 
-> 状态：已实施（2026-10-04）。本文冻结 `CMS.Command` V3 的当前边界与迁移验收结果。
+> 状态：historical。本文保留 V3 的实施与验收记录；当前长期合同已经合并到
+> [CMS Command](./cms-command.md) 和 [CMS Command Confirmation](./cms-command-confirmation.md)。
 > 当前 runtime 已删除 `present/2`、action result 三元组与领域层 `executed/recovered` 分支。
 >
 > 版本关系：本文取代 [CMS Command](./cms-command.md) 中 presenter、action result 和结果投影的相关合同，

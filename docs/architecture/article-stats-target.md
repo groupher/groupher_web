@@ -1,13 +1,13 @@
 # ArticleStats 目标架构
 
-> 状态：ArticleStats 持久化公共投影、三类 owner revision、排序索引、typed emotion 行表及 GraphQL/SSR/Query
-> 边界已在本地落地；本文原先的 canonical Article 长期候选已被
+> 状态：historical design record。ArticleStats 持久化公共投影、三类 owner revision、排序索引、typed
+> emotion 行表及 GraphQL/SSR/Query 边界已经落地；当前运行时合同以
+> [ArticleStats 与公共页面缓存](./article-stats-and-public-cache.md) 为准。本文原先的 canonical Article 长期候选已被
 > [Article Revision / Draft 目标架构](../feature/article/revision-draft-target.md) 吸收。
 > 当前 stats runtime 仍使用 physical identity，后续随该 direct cutover 一次性切换，
 > 不再维护第二套 canonical Article 方案。
 >
-> 本文是本次 ArticleStats 改造的最终目标，不是后续可选优化。实现不保留旧字段、旧 Query key、双读或兼容层。
-> 本文从长期维护、读取性能和扩展能力出发，定义本次按目标直接切换的 Article 公共计数架构。
+> 本文保留当时按目标直接切换的模型决策和验收背景，不再作为第二份当前合同。
 > 当前主链路及其 P0/P1 收敛补强仍以
 > [`article-stats-and-public-cache.md`](./article-stats-and-public-cache.md) 为准。
 > views 的 direct cutover 已按

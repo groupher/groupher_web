@@ -3,8 +3,10 @@ import test from 'node:test'
 
 import {
   elixirDefinitionArity,
+  findDocumentationReadmeStatusIssue,
   findElixirModuleDocumentationIssues,
   findExportedCallableDocumentationIssues,
+  findMarkdownLocalLinkIssues,
   hasAsciiFlow,
   javaScriptParserOptionsForFile,
   parseJavaScriptForDocumentation,
@@ -93,4 +95,36 @@ test('selects JSX parsing from the actual file extension', () => {
   assert.deepEqual(javaScriptParserOptionsForFile('module.mts'), { jsx: false })
   assert.deepEqual(javaScriptParserOptionsForFile('component.tsx'), { jsx: true })
   assert.deepEqual(javaScriptParserOptionsForFile('component.jsx'), { jsx: true })
+})
+
+test('checks repository-local Markdown links while ignoring code and external URLs', () => {
+  const source = `
+[Existing](./exists.md)
+[Missing](./missing.md#section)
+[External](https://example.com/docs)
+[Route](/examples)
+\`[Code](./not-a-link.md)\`
+
+\`\`\`text
+[Fenced](./also-not-a-link.md)
+\`\`\`
+`
+
+  const issues = findMarkdownLocalLinkIssues(
+    source,
+    '/repo/docs/topic/current.md',
+    (file) => file === '/repo/docs/topic/exists.md',
+  )
+
+  assert.deepEqual(issues, ['line 3 links to missing path ./missing.md#section'])
+})
+
+test('requires the fixed documentation README status vocabulary', () => {
+  assert.equal(findDocumentationReadmeStatusIssue('> 状态：current\n'), null)
+  assert.equal(findDocumentationReadmeStatusIssue('> 状态：in-progress\n'), null)
+  assert.equal(
+    findDocumentationReadmeStatusIssue('> 状态：mixed\n'),
+    'uses non-standard status mixed',
+  )
+  assert.equal(findDocumentationReadmeStatusIssue('# Missing\n'), 'is missing a standard status')
 })

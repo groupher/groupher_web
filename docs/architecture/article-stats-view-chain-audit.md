@@ -1,6 +1,7 @@
 # ArticleStats / View 全链路审计与收口清单
 
-> 状态：全链路收口已实施；Cloudflare/Edge 与低优先级容量优化继续独立跟进
+> 状态：historical audit record。全链路收口已经实施；当前合同见下方链接，Cloudflare/Edge 与
+> 低优先级容量优化继续独立跟进。
 >
 > 日期：2026-09-28
 >

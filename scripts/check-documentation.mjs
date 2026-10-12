@@ -275,17 +275,13 @@ const checkExportedCallables = () => {
 }
 
 const checkElixirSharedFunctions = () => {
-  const deepContextDocFiles = [
-    'activity',
-    'jobs',
-    'public_cache',
-    'request_actor',
-  ].flatMap((directory) =>
-    walk(
-      path.join(root, 'backend/api/lib/groupher_server', directory),
-      (file) => file.endsWith('.ex'),
-      (file) => /\/model\//.test(file),
-    ),
+  const deepContextDocFiles = ['activity', 'jobs', 'public_cache', 'request_actor'].flatMap(
+    (directory) =>
+      walk(
+        path.join(root, 'backend/api/lib/groupher_server', directory),
+        (file) => file.endsWith('.ex'),
+        (file) => /\/model\//.test(file),
+      ),
   )
 
   const contextDocFiles = [
@@ -546,6 +542,101 @@ const checkWorkspaceReadmes = () => {
   }
 }
 
+const documentationStatuses = new Set([
+  'current',
+  'in-progress',
+  'planned',
+  'superseded',
+  'historical',
+])
+
+const maskMarkdownCode = (source) =>
+  source
+    .replace(/```[\s\S]*?```/g, (block) => block.replace(/[^\n]/g, ' '))
+    .replace(/`[^`\n]*`/g, (code) => ' '.repeat(code.length))
+
+/** Returns invalid repository-local Markdown links with their source line. */
+export const findMarkdownLocalLinkIssues = (source, sourceFile, exists = fs.existsSync) => {
+  const masked = maskMarkdownCode(source)
+  const issues = []
+
+  for (const match of masked.matchAll(/\[[^\]\n]+\]\(([^)\n]+)\)/g)) {
+    const rawTarget = match[1].trim().replace(/^<|>$/g, '')
+    const target = rawTarget.split('#')[0]
+    if (
+      target === '' ||
+      target.startsWith('#') ||
+      target.startsWith('/') ||
+      /^[a-z][a-z0-9+.-]*:/i.test(target)
+    ) {
+      continue
+    }
+
+    let decoded
+    try {
+      decoded = decodeURIComponent(target)
+    } catch {
+      decoded = target
+    }
+
+    if (!exists(path.resolve(path.dirname(sourceFile), decoded))) {
+      const line = source.slice(0, match.index).split('\n').length
+      issues.push(`line ${line} links to missing path ${rawTarget}`)
+    }
+  }
+
+  return issues
+}
+
+/** Returns a README status issue unless it uses the repository's fixed vocabulary. */
+export const findDocumentationReadmeStatusIssue = (source) => {
+  const status = source.match(/^> 状态：([^\n]+)$/m)?.[1].trim()
+  if (!status) return 'is missing a standard status'
+  if (!documentationStatuses.has(status)) {
+    return `uses non-standard status ${status}`
+  }
+  return null
+}
+
+const documentationAppDirectories = [
+  'ai',
+  'apply',
+  'assets-hub',
+  'auth',
+  'community',
+  'content-import',
+  'dash',
+  'document-converter',
+  'gateway',
+  'posthouse',
+  'press',
+  'risk-center',
+  'umami',
+  'widget',
+]
+
+const checkDocumentationStructure = () => {
+  const docsDirectory = path.join(root, 'docs')
+  const markdownFiles = walk(docsDirectory, (file) => file.endsWith('.md'))
+
+  for (const file of markdownFiles) {
+    const source = fs.readFileSync(file, 'utf8')
+    for (const issue of findMarkdownLocalLinkIssues(source, file)) fail(file, issue)
+
+    if (path.basename(file) === 'README.md') {
+      const issue = findDocumentationReadmeStatusIssue(source)
+      if (issue) fail(file, issue)
+    }
+  }
+
+  for (const app of documentationAppDirectories) {
+    const directory = path.join(docsDirectory, app)
+    if (!fs.existsSync(path.join(directory, 'README.md'))) {
+      fail(directory, 'documentation application directory is missing README.md')
+    }
+  }
+}
+
 /** Runs the repository documentation audit and returns stable, user-facing failure descriptions. */
 export const runDocumentationCheck = () => {
   failures.length = 0
@@ -555,6 +646,7 @@ export const runDocumentationCheck = () => {
   checkExportedCallables()
   checkElixirSharedFunctions()
   checkWorkspaceReadmes()
+  checkDocumentationStructure()
   return [...failures]
 }
 

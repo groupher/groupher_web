@@ -1,6 +1,8 @@
 # Article emotion counts direct cutover
 
-> 状态说明：本文记录已经落地的 physical `(thread, article_id)` direct cutover。
+> 文档角色：historical implementation record。本文记录已经落地的 physical
+> `(thread, article_id)` direct cutover；当前 ArticleStats 总体合同见
+> [ArticleStats 与公共页面缓存](./article-stats-and-public-cache.md)。
 > [Article Revision / Draft 目标架构](../feature/article/revision-draft-target.md) 发布时，
 > emotion facts 将与其他 runtime relations 一次性迁到 stable Article identity；本文不是
 > stable identity 的并行长期方案。Doc 届时仍按 `article_id + branch_id` 保持 branch 隔离。
