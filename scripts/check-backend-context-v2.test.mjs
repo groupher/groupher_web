@@ -302,6 +302,31 @@ end
   })
 })
 
+test('rejects apply/3 in Workers but ignores payload words in comments and strings', () => {
+  withFixture((root) => {
+    touch(root, 'jobs.ex', 'GroupherServer.Jobs')
+    touch(root, 'jobs/unsafe.ex', 'GroupherServer.Jobs.Unsafe')
+    writeFileSync(
+      path.join(root, 'jobs/unsafe.ex'),
+      `defmodule GroupherServer.Jobs.Unsafe do
+  use Oban.Worker
+  # prior JSON used "kind": "callback"
+  def explain, do: "module: function: args: kind:"
+  def perform(%Oban.Job{args: args}), do: apply(Target, :run, [args])
+end
+`,
+    )
+
+    const findings = backendContextV2SemanticFindings({
+      root,
+      registry: { version: 2, contexts: { jobs: { mode: 'strict' } } },
+    })
+    const categories = findings.map(({ category }) => category)
+    assert.equal(categories.includes('dynamic_job_callback'), true)
+    assert.equal(categories.includes('unstable_job_payload'), false)
+  })
+})
+
 test('rejects a tagged error returned directly from Repo.transaction', () => {
   withFixture((root) => {
     touch(root, 'accounts.ex', 'GroupherServer.Accounts')
@@ -317,6 +342,29 @@ end
     assert.equal(
       findings.some(({ category }) => category === 'transaction_error_without_rollback'),
       true,
+    )
+  })
+})
+
+test('does not treat nested callback error values as the transaction result', () => {
+  withFixture((root) => {
+    touch(root, 'accounts.ex', 'GroupherServer.Accounts')
+    writeFileSync(
+      path.join(root, 'accounts.ex'),
+      `defmodule GroupherServer.Accounts do
+  def safe do
+    Repo.transaction(fn ->
+      Enum.map([:ok], fn _value -> {:error, :data} end)
+    end)
+  end
+end
+`,
+    )
+
+    const findings = backendContextV2SemanticFindings({ root, registry: registry() })
+    assert.equal(
+      findings.some(({ category }) => category === 'transaction_error_without_rollback'),
+      false,
     )
   })
 })

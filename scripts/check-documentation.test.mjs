@@ -108,12 +108,20 @@ test('checks repository-local Markdown links while ignoring code and external UR
 \`\`\`text
 [Fenced](./also-not-a-link.md)
 \`\`\`
+
+~~~text
+[Tilde fenced](./also-not-a-link.md)
+~~~
+
+[With title](./exists.md "read this")
+[Balanced](./guide_(v2).md)
 `
 
   const issues = findMarkdownLocalLinkIssues(
     source,
     '/repo/docs/topic/current.md',
-    (file) => file === '/repo/docs/topic/exists.md',
+    (file) =>
+      file === '/repo/docs/topic/exists.md' || file === '/repo/docs/topic/guide_(v2).md',
   )
 
   assert.deepEqual(issues, ['line 3 links to missing path ./missing.md#section'])

@@ -407,8 +407,8 @@ export const backendContextV2SemanticFindings = ({
     const firstSegment = relativeFile.startsWith('..') ? null : relativeFile.split(path.sep)[0]
     const callerName = firstSegment?.replace(/\.ex$/, '') ?? null
     const callerMode = registry.contexts[callerName]?.mode ?? 'strict'
-    const lines = executableLines(file)
-    const rawLines = readFileSync(file, 'utf8').split('\n')
+    const rawSource = readFileSync(file, 'utf8')
+    const lines = maskElixir(rawSource).split('\n')
     const maskedSource = lines.join('\n')
     const aliases = new Map()
     const directAlias = new RegExp(
@@ -450,11 +450,17 @@ export const backendContextV2SemanticFindings = ({
       })
     }
 
+    if (worker && /\b(?:Kernel\.)?apply\s*\(/.test(maskedSource)) {
+      finding(findings, {
+        category: 'dynamic_job_callback',
+        file,
+        message: 'Worker must dispatch a finite typed contract instead of apply/3',
+        mode: callerMode,
+      })
+    }
+
     for (const transaction of maskedSource.matchAll(/\bRepo\.transaction\(fn\s*->[\s\S]{0,4000}?\bend\s*\)/g)) {
-      if (
-        /fn\s*->\s*\{:error\s*,/.test(transaction[0]) ||
-        /\{:error\s*,[^}]+\}\s*->\s*\{:error\s*,/.test(transaction[0])
-      ) {
+      if (/fn\s*->\s*\{:error\s*,/.test(transaction[0])) {
         finding(findings, {
           category: 'transaction_error_without_rollback',
           file,
@@ -464,8 +470,12 @@ export const backendContextV2SemanticFindings = ({
       }
     }
 
-    const workerRuntimeSource = rawLines.filter((_line, index) => runtimeLine(lines[index] ?? '')).join('\n')
-    if (worker && /["':](?:module|function|args|kind)["']?\s*(?:=>|:)/.test(workerRuntimeSource)) {
+    const workerRuntimeSource = lines.filter((line) => runtimeLine(line)).join('\n')
+    const quotedPayloadKeys = rawSource
+      .replace(/^\s*#.*$/gm, '')
+      .match(/["'](?:module|function|args|kind)["']\s*=>/)
+    const atomPayloadKeys = /\b(?:module|function|kind)\s*:/.test(workerRuntimeSource)
+    if (worker && (quotedPayloadKeys || atomPayloadKeys)) {
       finding(findings, {
         category: 'unstable_job_payload',
         file,

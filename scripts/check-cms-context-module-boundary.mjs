@@ -65,11 +65,20 @@ export const maskElixir = (source) => {
       }
 
       if (triple) {
+        if (current === '#' && chars[cursor + 1] === '{') {
+          cursor = maskInterpolation(cursor)
+          continue
+        }
         if (current === closer && chars[cursor + 1] === closer && chars[cursor + 2] === closer) {
           blank(cursor + 1)
           blank(cursor + 2)
           return cursor + 2
         }
+        continue
+      }
+
+      if (current === '#' && chars[cursor + 1] === '{') {
+        cursor = maskInterpolation(cursor)
         continue
       }
 
@@ -79,6 +88,35 @@ export const maskElixir = (source) => {
     }
 
     return cursor
+  }
+
+  const maskInterpolation = (start) => {
+    let depth = 0
+    let interpolationQuote = null
+
+    for (let cursor = start; cursor < chars.length; cursor += 1) {
+      const current = chars[cursor]
+      blank(cursor)
+
+      if (interpolationQuote) {
+        if (current === '\\') {
+          blank(cursor + 1)
+          cursor += 1
+        } else if (current === interpolationQuote) {
+          interpolationQuote = null
+        }
+        continue
+      }
+
+      if (current === '"' || current === "'") {
+        interpolationQuote = current
+        continue
+      }
+      if (current === '{') depth += 1
+      if (current === '}' && --depth === 0) return cursor
+    }
+
+    return chars.length - 1
   }
 
   for (let index = 0; index < chars.length; index += 1) {

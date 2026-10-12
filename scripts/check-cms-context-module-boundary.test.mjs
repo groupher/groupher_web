@@ -117,6 +117,7 @@ test('ignores comments and strings', () => {
 
 test('masks sigils without hiding declarations that follow them', () => {
   const source = `@matcher ~r/"/
+@interpolated ~s/#{inspect("/")}/
 @paired ~S(foo("bar"))
 @heredoc ~S"""
 quoted " content

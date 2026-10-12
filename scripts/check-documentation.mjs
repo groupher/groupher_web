@@ -550,18 +550,81 @@ const documentationStatuses = new Set([
   'historical',
 ])
 
-const maskMarkdownCode = (source) =>
-  source
-    .replace(/```[\s\S]*?```/g, (block) => block.replace(/[^\n]/g, ' '))
-    .replace(/`[^`\n]*`/g, (code) => ' '.repeat(code.length))
+const maskMarkdownCode = (source) => {
+  const lines = source.split('\n')
+  let fence = null
+
+  const masked = lines.map((line) => {
+    const marker = line.match(/^ {0,3}(`{3,}|~{3,})/i)?.[1]
+
+    if (!fence && marker) {
+      fence = { character: marker[0], length: marker.length }
+      return ' '.repeat(line.length)
+    }
+
+    if (fence) {
+      if (
+        marker &&
+        marker[0] === fence.character &&
+        marker.length >= fence.length &&
+        line.slice(marker.length).trim() === ''
+      ) {
+        fence = null
+      }
+      return ' '.repeat(line.length)
+    }
+
+    return line.replace(/`[^`\n]*`/g, (code) => ' '.repeat(code.length))
+  })
+
+  return masked.join('\n')
+}
+
+const markdownLinkDestination = (source, start) => {
+  let cursor = start
+  while (/\s/.test(source[cursor] ?? '') && source[cursor] !== '\n') cursor += 1
+
+  if (source[cursor] === '<') {
+    const end = source.indexOf('>', cursor + 1)
+    return end === -1 ? null : source.slice(cursor + 1, end)
+  }
+
+  const targetStart = cursor
+  let depth = 0
+  let escaped = false
+  for (; cursor < source.length; cursor += 1) {
+    const current = source[cursor]
+    if (escaped) {
+      escaped = false
+      continue
+    }
+    if (current === '\\') {
+      escaped = true
+      continue
+    }
+    if (current === '(') {
+      depth += 1
+      continue
+    }
+    if (current === ')') {
+      if (depth === 0) break
+      depth -= 1
+      continue
+    }
+    if (/\s/.test(current) && depth === 0) break
+  }
+
+  return source.slice(targetStart, cursor)
+}
 
 /** Returns invalid repository-local Markdown links with their source line. */
 export const findMarkdownLocalLinkIssues = (source, sourceFile, exists = fs.existsSync) => {
   const masked = maskMarkdownCode(source)
   const issues = []
 
-  for (const match of masked.matchAll(/\[[^\]\n]+\]\(([^)\n]+)\)/g)) {
-    const rawTarget = match[1].trim().replace(/^<|>$/g, '')
+  for (const match of masked.matchAll(/\[[^\]\n]+\]\(/g)) {
+    const rawTarget = markdownLinkDestination(masked, match.index + match[0].length)
+    if (rawTarget === null) continue
     const target = rawTarget.split('#')[0]
     if (
       target === '' ||
