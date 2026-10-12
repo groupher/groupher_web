@@ -266,6 +266,7 @@ config :groupher_server, Oban,
   repo: GroupherServer.Repo,
   plugins: [
     {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(3)},
+    {Oban.Pruner, max_age: {7, :days}},
     {Oban.Plugins.Cron,
      crontab: [
        {"*/15 * * * *", GroupherServer.Jobs.ExpireCommunityApplications},
@@ -273,6 +274,7 @@ config :groupher_server, Oban,
        {"*/15 * * * *", GroupherServer.Jobs.ReleaseExpiredCommunitySlugClaims},
        {"*/15 * * * *", GroupherServer.Jobs.WallpaperLifecycle},
        {"0 * * * *", GroupherServer.Jobs.ViewDedupeCleanup},
+       {"5 * * * *", GroupherServer.Jobs.ProfileViewDedupeCleanup},
        {"* * * * *", GroupherServer.Jobs.ArticleInsightsAggregation},
        {"@daily", GroupherServer.Jobs.ArticleInsightsRetention},
        {"@daily", GroupherServer.Jobs.CommandReceiptRetention}

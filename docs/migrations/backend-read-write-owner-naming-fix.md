@@ -12,6 +12,7 @@
 - [Backend Context Module Structure](../rules/be-context-module-structure.md)；
 - [Backend Effects 与 Job Contract](../architecture/backend-effects-and-job-contract.md)；
 - [CMS Context Module Refactor](./cms-context-module-refactor.md)。
+- [Profile ViewTracker](./profile-view-tracker.md)：承接 Profile visit 的最终计数、幂等、保留与清理合同。
 
 ## 1. 问题
 
@@ -121,8 +122,11 @@ accounts/profiles/
   projection/
     contributions.ex
   effects.ex
-  effects/
-    record_visit.ex
+accounts/profile_view_tracker.ex
+accounts/profile_view_tracker/
+  record.ex
+  view_counter.ex
+  dedupe_cleanup.ex
 ```
 
 目标职责：
@@ -130,8 +134,10 @@ accounts/profiles/
 ```text
 Profiles Facade
   ├─ user(...)                        # 委托 Query.profile，返回 Profile，不写库
-  ├─ refresh_contributions(...)       # 委托 Projection.Contributions
-  └─ record_visit(...)                # 委托 Effects.RecordVisit
+  └─ refresh_contributions(...)       # 委托 Projection.Contributions
+
+Accounts ProfileViewTracker Facade
+  └─ track(...)                       # 显式 mutation，同步 dedupe 与计数
 ```
 
 目标调用关系：
@@ -144,13 +150,11 @@ Profiles Facade
   -> Profiles.Query.profile
   -> 返回 Profile
 
-成功读取后的非阻塞行为
-  -> request boundary 生成一次稳定 visit_id
-  -> Accounts.profiles_record_visit(profile_id, visit_id)
-  -> Profiles.Effects.RecordVisit
-  -> durable Outbox / named Job
-  -> 更新访问统计
-  -> 失效相关缓存
+Profile 在客户端可见后的显式行为
+  -> trackProfileView mutation
+  -> Accounts.profile_view_tracker_track(..., read_purpose: :public_read)
+  -> conditional dedupe UPSERT + User.views transaction
+  -> counted commit 后失效相关缓存
 
 派生数据维护
   -> contribution fact 写入流程
@@ -164,33 +168,38 @@ Profiles Facade
 - Profile 查询不能因为 view 记录失败而失败；
 - Query 不修复缺失的 contributes；
 - contributes 若可从事实重建，其写入由 Projection 持有；
-- view 记录必须定义幂等 identity，不能依赖 fire-and-forget callback；
+- 本迁移只把 visit 写入移出 Query；最终幂等 identity、计数窗口、保留与清理合同由
+  [Profile ViewTracker](./profile-view-tracker.md) 单独迁移；
 - 删除 `Profiles.Read`，不保留兼容 shim；
 - `user` 是纯读 Profile facade，不能掩盖 view、projection 写入或缓存失效；
 - Web、其他 Context 和 Worker 仍只能通过 Accounts 根 Facade 调用这些能力。
 
 ### 3.1 Facade API 合同
 
-本迁移保留现有纯读取口径的 public API 名称：
+本迁移硬切换纯读取 public API，不保留旧名称或兼容 delegate：
 
 ```text
+Accounts.Profiles.read_user/1,2 -> Accounts.Profiles.user/1,2
+Accounts.profiles_read_user/1,2 -> Accounts.profiles_user/1,2
+
 Accounts.Profiles.user/1,2
 Accounts.profiles_user/1,2
 ```
 
-迁移完成后，它们只委托 `Profiles.Query.profile`，不得调用 Persist、Projection 或 Effects。长期结构文档中
-`profiles_user` / `Profiles.user` 是最终合法调用，其合同保持纯读语义。
+所有调用方必须在同一批次迁移到新名称。迁移完成后，新 API 只委托 `Profiles.Query.profile`，不得调用
+Persist、Projection 或 Effects。长期结构文档中 `profiles_user` / `Profiles.user` 是最终合法调用，其合同
+保持纯读语义。
 
 访问统计使用独立、显式的 API：
 
 ```text
-Accounts.Profiles.record_visit(profile_id, visit_id)
-Accounts.profiles_record_visit(profile_id, visit_id)
+Accounts.ProfileViewTracker.track(profile, viewer, classification, opts)
+Accounts.profile_view_tracker_track(profile, viewer, classification, opts)
 ```
 
-`visit_id` 由请求边界为一次 Profile 访问生成，并在 Outbox / Job 重试期间保持稳定；它是执行幂等键，不改变
-“每次真实请求产生一次访问事件”的统计口径。GraphQL Profile resolver 必须在成功读取后显式调用该 API，
-enqueue 失败可记录监控，但不能把已成功的 Profile 查询改成失败。
+`visit_id`、异步 ProfileVisit Job、record/deliver facade 与旧 `Persist.increment_views` 已由
+[Profile ViewTracker](./profile-view-tracker.md) 硬切删除。Profile query 不触发统计；显式 mutation 使用
+稳定 actor identity 和滑动窗口 dedupe，同步返回 committed views。
 
 因此 Profiles 拆分步骤的迁移范围必须包含：
 
@@ -379,7 +388,7 @@ accounts/profiles/query.ex
 accounts/profiles/projection.ex
 accounts/profiles/projection/contributions.ex
 accounts/profiles/effects.ex
-accounts/profiles/effects/record_visit.ex
+accounts/profile_view_tracker/record.ex
 cms/interactions/projection.ex
 cms/interactions/projection/query.ex
 cms/interactions/projection/sync.ex
@@ -431,10 +440,10 @@ pnpm check:backend-context-v2
 - production backend 中不存在独立 `.Read`、`.Reader`、`.Write`、`.Writer` 模块段；
 - 不存在对应的 `read/`、`reader/`、`write/`、`writer/` 架构目录；
 - `Profiles.Query` 不写库、不触发 Effects；
-- `user/1,2` 保持纯读，Profile resolver 使用独立的 `record_visit` API；
+- `user/1,2` 保持纯读，Profile view 使用独立的 `trackProfileView` mutation；
 - contributes 只有 `Profiles.Projection.Contributions` 一个写 Owner，并由 contribution fact 写入触发；
 - 新用户零值 projection 和历史 backfill 已完成，Profile Query 不再修复缺失 projection；
-- profile visit 由 Effects 使用带稳定 `visit_id` 的异步 contract 记录；
+- profile visit 已由 [Profile ViewTracker](./profile-view-tracker.md) 完成同步计数、幂等、retention 与清理；
 - `Interactions.Projection` 完整替代 `Interactions.ReadState`；
 - production/test 源码中不再存在旧 `ReadState` module、path、alias 或 moduledoc 引用；
 - production/test 源码中不再调用或定义 `interactions_read_state_article_state/2`，且不存在兼容 delegate、

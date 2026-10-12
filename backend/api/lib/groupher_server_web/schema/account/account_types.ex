@@ -42,6 +42,11 @@ defmodule GroupherServerWeb.Schema.Account.Types do
     field(:entries, non_null(list_of(non_null(:linked_oauth_account))))
   end
 
+  object :profile_view_track_result do
+    field(:tracked, non_null(:boolean))
+    field(:views, non_null(:integer))
+  end
+
   object :user_meta do
     field(:reported_count, :integer)
     field(:is_maker, :boolean)

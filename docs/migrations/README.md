@@ -28,3 +28,5 @@
 - [Backend Read / Write Owner 命名与职责修复](./backend-read-write-owner-naming-fix.md)：禁止含糊的
   `Read` / `Reader` / `Write` / `Writer` 架构段，拆分 `Profiles.Read`，并将 Interaction 派生状态收敛到
   `Projection` Owner。
+- [Profile ViewTracker](./profile-view-tracker.md)：以 CMS Article ViewTracker 为参照，规划 Profile view
+  的显式 mutation、稳定 actor identity、滑动窗口去重、同步计数与有界清理，并替换过渡 ProfileVisit Job。

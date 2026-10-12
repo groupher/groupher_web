@@ -16,6 +16,19 @@ defmodule GroupherServerWeb.Schema.Account.Mutations do
   use Helper.GqlSchemaSuite
 
   object :account_mutations do
+    @desc "Records one visible public Profile read through ProfileViewTracker"
+    field :track_profile_view, non_null(:profile_view_track_result) do
+      arg(:login, non_null(:string))
+
+      middleware(M.ConditionalServiceScope,
+        audience: "phoenix:view-api",
+        scope: "view:track"
+      )
+
+      middleware(M.FrontDesk, :user)
+      resolve(&R.Accounts.ProfileViewTracker.track_profile_view/3)
+    end
+
     @desc "update user's profile"
     field :update_profile, :user do
       arg(:profile, non_null(:user_profile_input))

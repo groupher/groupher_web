@@ -26,7 +26,9 @@ defmodule GroupherServer.ErrorCat.Workflow do
     {:cms, :asset} => 5600..5699,
     {:cms, :wallpaper} => 5700..5799,
     {:cms, :article} => 6000..6099,
-    {:activity} => 6100..6199
+    {:activity} => 6100..6199,
+    {:cms, :view_tracker} => 6200..6249,
+    {:account, :profile_view_tracker} => 6250..6299
   }
 
   @reserved [
@@ -70,6 +72,8 @@ defmodule GroupherServer.ErrorCat.Workflow do
     GroupherServer.CMS.Assets.ErrorCat,
     GroupherServer.CMS.Wallpaper.ErrorCat,
     GroupherServer.CMS.Articles.ErrorCat,
+    GroupherServer.CMS.ViewTracker.ErrorCat,
+    GroupherServer.Accounts.ProfileViewTracker.ErrorCat,
     GroupherServer.Activity.ErrorCat
   ]
 

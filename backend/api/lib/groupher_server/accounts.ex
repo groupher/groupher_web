@@ -193,15 +193,15 @@ defmodule GroupherServer.Accounts do
     to: GroupherServer.Accounts.Profiles,
     as: :refresh_contributions
 
-  @doc "Delegates durable Profile visit enqueue through the Accounts Context boundary."
-  defdelegate profiles_record_visit(profile_id, visit_id),
-    to: GroupherServer.Accounts.Profiles,
-    as: :record_visit
+  @doc "Delegates explicit Profile view tracking through the Accounts Context boundary."
+  defdelegate profile_view_tracker_track(profile, viewer, classification, opts),
+    to: GroupherServer.Accounts.ProfileViewTracker,
+    as: :track
 
-  @doc "Delegates Profile visit delivery through the Accounts Context boundary."
-  defdelegate profiles_deliver_visit(profile_id),
-    to: GroupherServer.Accounts.Profiles,
-    as: :deliver_visit
+  @doc "Delegates Profile view dedupe cleanup through the Accounts Context boundary."
+  defdelegate profile_view_tracker_cleanup_expired(),
+    to: GroupherServer.Accounts.ProfileViewTracker,
+    as: :cleanup_expired
 
   @doc "Delegates GroupherServer.Accounts.Profiles.refresh_browser_session/1 through the Accounts Context boundary."
   defdelegate profiles_refresh_browser_session(arg1),

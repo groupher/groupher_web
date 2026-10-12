@@ -12,7 +12,7 @@ defmodule GroupherServer.Accounts.Profiles.Query do
   alias GroupherServer.{Accounts, Repo}
   alias Accounts.Model.{Embeds, OauthProvider, User}
   alias Accounts.Profiles.List
-  alias Helper.ORM
+  alias Helper.{Datetime, ORM}
 
   @default_user_meta Embeds.UserMeta.default_meta()
 
@@ -132,7 +132,16 @@ defmodule GroupherServer.Accounts.Profiles.Query do
   defp assign_meta(%User{} = user), do: {:ok, user}
 
   defp assign_contributes(%User{contributes: nil} = user) do
-    {:ok, Map.put(user, :contributes, %Embeds.UserContribute{})}
+    end_date = Datetime.today()
+
+    projection = %Embeds.UserContribute{
+      start_date: Datetime.shift(end_date, months: -6),
+      end_date: end_date,
+      total_count: 0,
+      records: []
+    }
+
+    {:ok, Map.put(user, :contributes, projection)}
   end
 
   defp assign_contributes(%User{} = user), do: {:ok, user}

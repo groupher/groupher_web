@@ -321,6 +321,9 @@ type RootQueryType {
 }
 
 type RootMutationType {
+  "Records one visible public Profile read through ProfileViewTracker"
+  trackProfileView(login: String!): ProfileViewTrackResult!
+
   "update user's profile"
   updateProfile(profile: UserProfileInput!, social: SocialInput): User
 
@@ -4301,6 +4304,11 @@ type LinkedOauthAccount {
 
 type LinkedOauthAccounts {
   entries: [LinkedOauthAccount!]!
+}
+
+type ProfileViewTrackResult {
+  tracked: Boolean!
+  views: Int!
 }
 
 type UserMeta {

@@ -11,7 +11,7 @@ defmodule GroupherServer.Accounts.Profiles do
            -> Persist
   """
 
-  alias __MODULE__.{BrowserSessions, Commands, Effects, Projection, Query, SessionState}
+  alias __MODULE__.{BrowserSessions, Commands, Projection, Query, SessionState}
   alias GroupherServer.Accounts
 
   alias Accounts.Model.User
@@ -71,26 +71,6 @@ defmodule GroupherServer.Accounts.Profiles do
   def refresh_contributions(user_id, digest) when is_integer(user_id) and is_map(digest) do
     Projection.refresh_contributions(user_id, digest)
   end
-
-  @doc """
-  Enqueues one Profile visit using a stable request identity.
-
-  ## Examples
-
-      Profiles.record_visit(user.id, visit_id)
-  """
-  @spec record_visit(integer(), Ecto.UUID.t()) :: {:ok, :pass}
-  def record_visit(profile_id, visit_id), do: Effects.record_visit(profile_id, visit_id)
-
-  @doc """
-  Delivers one previously enqueued Profile visit.
-
-  ## Examples
-
-      Profiles.deliver_visit(user.id)
-  """
-  @spec deliver_visit(integer()) :: T.domain_res(User.t())
-  def deliver_visit(profile_id), do: Effects.deliver_visit(profile_id)
 
   @doc """
   Returns a page of matching user profiles.

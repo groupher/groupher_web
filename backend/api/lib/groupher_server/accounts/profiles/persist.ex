@@ -35,16 +35,6 @@ defmodule GroupherServer.Accounts.Profiles.Persist do
   end
 
   @doc """
-  Increments a profile view counter.
-
-  ## Examples
-
-      Accounts.Profiles.Persist.increment_views(user)
-  """
-  @spec increment_views(User.t()) :: {:ok, User.t()} | {:error, term()}
-  def increment_views(%User{} = user), do: ORM.inc(user, :views)
-
-  @doc """
   Rebuilds the denormalized subscribed-community fields for one user.
 
   ## Examples

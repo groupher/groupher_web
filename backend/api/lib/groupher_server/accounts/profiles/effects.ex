@@ -5,39 +5,8 @@ defmodule GroupherServer.Accounts.Profiles.Effects do
       committed profile row -> Effects -> FrontDesk / response preload
   """
 
-  alias GroupherServer.{Accounts, FrontDesk, Jobs, Messaging, Repo}
+  alias GroupherServer.{Accounts, FrontDesk, Messaging, Repo}
   alias Accounts.Model.User
-  alias Accounts.Profiles.Persist
-
-  @doc """
-  Enqueues one durable, idempotent Profile visit without changing the read result.
-
-  ## Examples
-
-      Profiles.Effects.record_visit(user.id, visit_id)
-  """
-  @spec record_visit(integer(), Ecto.UUID.t()) :: {:ok, :pass}
-  def record_visit(profile_id, visit_id) when is_integer(profile_id) and is_binary(visit_id) do
-    Jobs.enqueue_best_effort(:profile_visit, profile_id, fn ->
-      Jobs.profile_visit(profile_id, visit_id)
-    end)
-  end
-
-  @doc """
-  Reloads a Profile, records one visit, and invalidates its public cache.
-
-  ## Examples
-
-      Profiles.Effects.deliver_visit(user.id)
-  """
-  @spec deliver_visit(integer()) :: {:ok, User.t()} | {:error, term()}
-  def deliver_visit(profile_id) when is_integer(profile_id) do
-    with {:ok, user} <- Accounts.FrontDesk.fresh_user(profile_id),
-         {:ok, user} <- Persist.increment_views(user),
-         {:ok, :pass} <- revalidate_user(user) do
-      {:ok, user}
-    end
-  end
 
   @doc """
   Revalidates a user's profile cache after a mutation.

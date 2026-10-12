@@ -49,6 +49,33 @@ defmodule GroupherServer.Test.CMS.ViewTrackerTest do
     assert Repo.aggregate(ViewDedupeState, :count) == 1
   end
 
+  test "GraphQL formats a ViewTracker actor error without raising" do
+    {community, post, _attrs, viewer} = mock_article(:post)
+    {:ok, classification} = RequestActor.classify(account_session: viewer)
+
+    mutation = """
+    mutation Track($article: ArticlePathInput!) {
+      trackArticleView(article: $article) { tracked }
+    }
+    """
+
+    assert {:ok,
+            %{
+              data: nil,
+              errors: [%{extensions: %{code: 6204}}]
+            }} =
+             Absinthe.run(mutation, Schema,
+               variables: %{
+                 "article" => %{
+                   "community" => community.slug,
+                   "thread" => "POST",
+                   "innerId" => Integer.to_string(article_inner_id(post, community))
+                 }
+               },
+               context: %{request_actor: classification}
+             )
+  end
+
   test "ViewerArticleState exposes only ViewTracker-owned private state" do
     query = """
     query Viewer($paths: [ArticlePathInput!]!) {

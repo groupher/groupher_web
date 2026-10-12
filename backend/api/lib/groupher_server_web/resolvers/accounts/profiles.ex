@@ -16,27 +16,16 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Profiles do
   end
 
   def user(_root, %{user: user}, %{context: %{cur_user: cur_user}}) do
-    user
-    |> Accounts.profiles_user(cur_user)
-    |> record_visit()
+    Accounts.profiles_user(user, cur_user)
   end
 
   def user(_root, %{user: user}, _info) do
-    user
-    |> Accounts.profiles_user()
-    |> record_visit()
+    Accounts.profiles_user(user)
   end
 
   def user(_root, _args, _info) do
     {:error, GroupherServer.Accounts.profiles_error_cat_account_login("need user login name")}
   end
-
-  defp record_visit({:ok, %{id: profile_id}} = result) do
-    Accounts.profiles_record_visit(profile_id, Ecto.UUID.generate())
-    result
-  end
-
-  defp record_visit(result), do: result
 
   def paged_users(_root, ~m(filter)a, %{context: %{cur_user: cur_user}}) do
     Accounts.profiles_paged_users(filter, cur_user)
