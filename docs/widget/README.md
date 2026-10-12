@@ -1,9 +1,9 @@
 # Widget
 
-> 状态：planned
+> 状态：in-progress
 
-Widget 是可嵌入外部页面的独立前端应用。当前产品和运行时合同仍处于设计阶段，首版方案见
-[Widget V1](./v1.md)。
+Widget 是可嵌入外部页面的独立前端应用。mock-first runtime、embedding protocol、构建产物和 demo 已完成；
+生产 API、持久化与部署路由仍在推进，范围见 [Widget V1](./v1.md)。
 
 ## 边界
 

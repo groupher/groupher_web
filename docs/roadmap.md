@@ -13,6 +13,7 @@
 - [Interaction V5](./feature/interaction/v5.md)：ViewTracker 迁出与 Audit 退役已落地，ReportFact/Moderation
   继续按独立设计推进。
 - [Dashboard TanStack V3](./migrations/tanstack/dash/v3.md)：当前迁移批次。
+- [Widget V1](./widget/v1.md)：mock-first runtime 与 embedding protocol 已完成；生产 API、持久化和部署路由继续推进。
 
 ## Planned
 
@@ -23,7 +24,6 @@
 - [Gate V5](./feature/gate/v5.md)：下一阶段 Gate 设计。
 - [Posthouse](./posthouse/README.md)：应用仍处于规划阶段。
 - [Risk Center](./risk-center/README.md)：应用仍处于规划阶段。
-- [Widget V1](./widget/v1.md)：嵌入协议和 runtime 尚未实施。
 
 ## Production validation
 
@@ -40,6 +40,7 @@
 
 ## Architecture cleanup
 
+- [Interaction V4](./feature/interaction/v4.md)：完成生产数据清理、旧表/旧字段删除与最终验收。
 - [PublicCache historical facility](./architecture/public-cache-invalidation.md)：确认没有新的非 CMS 生产调用方后，
   删除独立 `PublicCache.Invalidation`、`PublicCache.Workflow` 和 `Jobs.PublicCachePurge`，避免长期维护两套
   durable delivery 状态机。

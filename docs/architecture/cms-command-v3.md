@@ -4,17 +4,16 @@
 > [CMS Command](./cms-command.md) 和 [CMS Command Confirmation](./cms-command-confirmation.md)。
 > 当前 runtime 已删除 `present/2`、action result 三元组与领域层 `executed/recovered` 分支。
 >
-> 版本关系：本文取代 [CMS Command](./cms-command.md) 中 presenter、action result 和结果投影的相关合同，
-> 并修订 [CMS Command Confirmation](./cms-command-confirmation.md) 中 optional presenter 与 action seed
-> 的现行说明。Receipt identity、IntentCodec、retention、Outbox 和 Confirmation codec 合同保持不变，
-> 除非本文明确修订。
+> 版本关系：本文记录 V3 当时对 presenter、action result 和结果投影的取舍，现已由
+> [CMS Command](./cms-command.md) 与
+> [CMS Command Confirmation](./cms-command-confirmation.md) 取代。若本文与当前合同冲突，以两份当前文档为准。
 
 相关文档：
 
 - [CMS Command](./cms-command.md)：当前 Command、Receipt 与领域写入边界；
 - [CMS Command Confirmation](./cms-command-confirmation.md)：当前 Confirmation codec、Receipt JSON 与 retention 合同；
 - [CMS Domain Outbox](./cms-outbox.md)：事务内 effect intent 与提交后消费；
-- [FrontDesk V2](../feature/front-desk/v2.md)：顶层资源 canonical read 与 internal view；
+- [FrontDesk](../feature/front-desk/README.md)：顶层资源 canonical read 与 internal view；
 - [CMS Query V2](./cms-query-v2.md)：Query、Store/Facts 与 Projection 所有权。
 
 ## 1. 问题
@@ -466,7 +465,7 @@ V3 不改变：
 - Gate、Lifecycle、version 和 canonical resource lock；
 - Outbox 至少一次投递与 consumer 幂等；
 - GraphQL/public canonical result 形状；
-- FrontDesk V2 与 CMS Query V2 的资源/查询所有权。
+- FrontDesk 当前合同与 CMS Query V2 的资源/查询所有权。
 
 V3 也不引入通用 `%Command.Request{}`、`CommandOutcome`、after-commit callback 或新的 universal command
 behaviour。未来如果需要独立的异步 job/batch protocol，应按其真实生命周期设计，不扩张同步用户 Command。

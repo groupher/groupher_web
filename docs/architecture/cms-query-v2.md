@@ -4,15 +4,15 @@
 > 和 `Projection` 收敛的边界；本次迁移保持 `CMS.<Domain>` 公开 facade API 稳定，内部直接切换，
 > 不保留 `Reader` 兼容层。
 >
-> 版本关系：本文承接 [FrontDesk V2](../feature/front-desk/v2.md) 已冻结的单资源读取边界。
-> FrontDesk V2 决定“一个顶层资源如何被权威读取”，本文决定列表、批量、聚合、领域内部事实
+> 版本关系：本文承接 [FrontDesk 当前合同](../feature/front-desk/README.md) 的单资源读取边界。
+> FrontDesk 当前合同决定“一个顶层资源如何被权威读取”，本文决定列表、批量、聚合、领域内部事实
 > 和 read model 分别由谁拥有。本文同时取代
 > [CMS Facade 与实现目录收口](./cms-facade-directory.md) §2.2 中“读取模块统一命名为 Reader”
 > 的历史命名决策。
 
 相关文档：
 
-- [FrontDesk V2](../feature/front-desk/v2.md)：顶层资源的单资源唯一入口、mode/actor/view 与稳定关系；
+- [FrontDesk](../feature/front-desk/README.md)：顶层资源的单资源唯一入口、mode/actor/view 与稳定关系；
 - [CMS Facade 与实现目录收口](./cms-facade-directory.md)：公开 facade 与内部实现目录的所有权；
 - [CMS 资源加载与 Canonical Reload 边界](./resource-loading-boundary.md)：transport、Gate、Command 与 async reload；
 - [Query、Store、Draft 与缓存边界](./query-store-boundary.md)：前端 Query/Store 语义；本文只定义后端 CMS 读取模块；
@@ -190,7 +190,7 @@ Query 不被定义成一种固定 Ecto 实现形态，而被定义成“无写�
 
 ### Phase 1：文档与静态边界（已完成）
 
-- 冻结本文和 FrontDesk V2 的互补关系；
+- 冻结本文和 FrontDesk 当前合同的互补关系；
 - 更新 facade 目录文档，标记 Reader 统一命名决策已被本文取代；
 - 增加 CMS Query boundary 检查：禁止新增 CMS `*.Reader` 模块、alias、调用和 `reader.ex` 文件；
 - 禁止 FrontDesk 新增 `page/list/search/count/aggregate` surface。

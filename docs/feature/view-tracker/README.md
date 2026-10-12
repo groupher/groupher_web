@@ -8,7 +8,7 @@ Article 与 Profile 的同步计数合同已落地；生产边缘限流、观测
 - [`v1.md`](./v1.md)：历史设计；其仍有效的身份与准入规则已由当前语义文档和 RequestActor 合同承接。
 - [`v2.md`](./v2.md)：已删除异步实现的历史合同，仅用于解释旧 `ViewEvent/ViewSummary/Oban` 设计，不是当前实现。
 - [`../../architecture/article-stats-and-public-cache.md`](../../architecture/article-stats-and-public-cache.md)：ArticleStats 公共计数、SSR hydration、HTML/CDN 缓存和 tracking 判断；其中的前端缓存合同 supersede V2 的旧 placeholder/15 秒读取描述。
-- [`../../architecture/article-stats-target.md`](../../architecture/article-stats-target.md)：canonical Article identity、可排序 ArticleStats 投影、revision vector 与 drift repair 的目标架构。
+- [`../../architecture/article-stats-target.md`](../../architecture/article-stats-target.md)：早期 ArticleStats 目标设计与决策背景；当前合同以相邻的公共缓存文档为准。
 - [`article-view-counting.md`](./article-view-counting.md)：当前唯一 views 写协议；`ViewDedupeState`、ArticleStats、ViewerState 与 MetricEvent 同步事务，GraphQL 只返回 `tracked + state`。
 - [`profile-view-counting.md`](./profile-view-counting.md)：Profile views 的当前唯一写协议；显式 mutation、稳定 actor identity、同步去重计数和有界清理。
 - [`article-view-counting-simplification.md`](./article-view-counting-simplification.md)：已实施的 direct-cutover 设计记录；删除 View transport receipt 与客户端幂等 ID，统一 RequestActor 和前端 Article 状态组装。

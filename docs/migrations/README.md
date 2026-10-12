@@ -26,9 +26,9 @@
   `{:ok, value}` / `{:error, reason}` 返回协议，扫描并分批清理裸 `:ok` 与混合 `with` 形状。
 - [Article Binding 命名与存储重构](./article-binding-naming-and-storage.md)：统一
   `ArticleBinding`、`ArticleView`、`Articles.Bindings` 命名，收拢 FrontDesk 路径边界，并规划物理表重命名。
-- [Backend Read / Write Owner 命名与职责修复](./backend-read-write-owner-naming-fix.md)：禁止含糊的
-  `Read` / `Reader` / `Write` / `Writer` 架构段，拆分 `Profiles.Read`，并将 Interaction 派生状态收敛到
-  `Projection` Owner。
+- [Backend Read / Write Owner 命名与职责修复](./backend-read-write-owner-naming-fix.md)：已完成禁止含糊
+  `Read` / `Reader` / `Write` / `Writer` 名称的 gate；`Profiles.Read` 与 Interaction Projection 的职责拆分是
+  文档中的后续目标，不应误读为全部完成。
 - [Profile ViewTracker](./profile-view-tracker.md)：Profile view 显式 mutation、稳定 actor identity、
   滑动窗口去重、同步计数、有界清理和旧 ProfileVisit Job 删除的实施记录；当前合同见
   [`feature/view-tracker/profile-view-counting.md`](../feature/view-tracker/profile-view-counting.md)。

@@ -22,7 +22,7 @@ Profile visible in client
   -> RequestActor classification
   -> Accounts.profile_view_tracker_track(..., read_purpose: :public_read)
   -> one database transaction
-  -> {tracked, counted, views}
+  -> {tracked, views}
 ```
 
 服务端渲染、preview、moderation、operations 和 probe 读取不能借普通 Profile query 产生 view。
@@ -80,10 +80,11 @@ GraphQL mutation 返回 committed `views`，供客户端直接 reconciliation。
 重试，因为服务端 dedupe 由稳定 actor identity 和时间窗口决定。
 
 ```text
-tracked: false                 # policy excluded，没有写入
-tracked: true, counted: true   # 本窗口首次计数
-tracked: true, counted: false  # 本窗口重复调用
+tracked: false, views: 12  # policy excluded，没有写入
+tracked: true, views: 13   # admitted；本次是否递增是服务端内部 dedupe 判定
 ```
+
+内部事务可以使用 `counted` 区分首次计数和窗口内重复调用，但该字段不是 GraphQL contract，客户端不得依赖。
 
 Resolver 只负责 transport 参数、RequestActor context 和 ErrorCat 格式化，不拥有计数、幂等或清理规则。
 

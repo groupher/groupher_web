@@ -110,8 +110,8 @@ Profile 查询、派生数据刷新和访问统计没有“必须一起成功”
 
 ## 3. `Accounts.Profiles.Read` 拆分
 
-当前 `Accounts.Profiles.Read.run` 同时增加 view、生成 contributes、持久化 contributes，并触发缓存
-revalidation。目标结构为：
+迁移前 `Accounts.Profiles.Read.run` 在 `user.contributes` 缺失时生成并持久化 contributes，再触发缓存
+revalidation；已有 contributes 的普通读取不执行这组 effect。目标结构把该条件式 projection 与纯查询拆开：
 
 ```text
 accounts/profiles.ex

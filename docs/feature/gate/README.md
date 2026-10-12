@@ -6,12 +6,12 @@
 
 ```text
 read caller
-  -> Gate.scope(resource, actor, typed scope context)
+  -> Gate.scope(queryable, actor, action, typed scope context)
   -> composable Ecto query
 
 write command
   -> load and lock canonical resource once
-  -> Gate.access_check(resource, actor, typed access context, callback)
+  -> Gate.with_check(actor, action, resource, callback)
   -> callback reuses the authorized canonical resource
 ```
 

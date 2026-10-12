@@ -4,8 +4,8 @@
 > 生产 telemetry、真实 Cloudflare purge 验收和外部观测接线仍是部署验收项，见第 8 节。
 >
 > 本文定义 Article 公共统计、SSR hydration、HTML/CDN 缓存和阅读判断边界。
-> 本次改造的最终数据模型、排序投影和重建协议见
-> [`article-stats-target.md`](./article-stats-target.md)。
+> 当前数据模型、排序投影和重建协议以本文为准；
+> [`article-stats-target.md`](./article-stats-target.md) 只保留早期目标设计和决策背景。
 > emotion direct cutover 已改用 `cms.article_emotion_counts` typed 行、GraphQL `ArticleEmotionCount` 和
 > `emotionCounts`；旧 `reaction_counts`/`reactionCounts` 只作为历史名称保留在迁移说明中，runtime 不保留 alias、双读
 > 或 JSONB fallback。迁移协议见 [`article-emotion-counts.md`](./article-emotion-counts.md)。

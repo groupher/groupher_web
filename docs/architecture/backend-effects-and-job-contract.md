@@ -2,14 +2,15 @@
 
 ## 1. 目的
 
-业务事务只决定并持久化“必须发生什么”，Worker 只消费稳定的业务意图。任何持久化任务都不得依赖当前代码中的模块名或函数名。
+业务事务只决定并持久化“必须发生什么”，Worker 只消费稳定的业务意图。业务 payload 和动态 callback
+不得依赖当前代码中的模块名或函数名；Oban 自己持久化的 Worker 名是队列路由 metadata，不属于业务 payload。
 
 ```text
 Command / Workflow transaction
   -> <Capability>.Effects               # Effects 与 Commands 平级
   -> CMS.Outbox event + Oban wakeup     # 与业务写入同事务提交
   -> Jobs.<NamedWorker>                 # 只解析有限、版本化 payload
-  -> root Facade                        # 例如 CMS.articles_effect/1
+  -> root Facade / registered workflow # 例如 CMS.Outbox.Workflow.Article
   -> <Capability>.Effects.run/1
   -> Provider / Messaging / projection
 ```
@@ -55,17 +56,20 @@ intent 只保存稳定的 Community ID 和 command identity。HTTP 未成功时�
 - Facade 转发统一使用 `defdelegate`；需要校验、默认值或结果转换时才使用 `def`，且函数体不访问 Repo、事务或外部 I/O。
 - 不保留旧模块名 shim。发布时应先清空或删除无法按新 contract 执行的历史 Job。
 
-本次切换由 `20261012102000_delete_legacy_job_contracts.exs` 一次性删除旧
-Later、旧 Worker 模块名以及未版本化的 Comments/Snapshot Job。部署顺序必须是：
+本次切换由 `20261012102000_delete_legacy_job_contracts.exs` 删除已经移除的旧
+Later 和旧 Worker 模块名。仍在运行的 version 1 Comments/Snapshot Job 不属于清理范围。部署顺序必须是：
 
 ```text
-暂停 Oban producer/queue
-  -> 执行 migration，删除旧 contract Job
-  -> 部署只认识新 contract 的代码
+先部署不再写 legacy contract 的 compatible writers
+  -> 确认所有旧节点退出
+  -> 暂停 Oban consumer（只控制消费，不替代 writer cutover）
+  -> 执行 migration，删除已无法执行的旧 contract Job
+  -> 部署/启用只认识新 contract 的 consumer
   -> 恢复 queue
 ```
 
-不要让旧版本 producer 在 migration 之后继续写任务；本次迁移不提供旧 Job 数据兼容。
+暂停 queue 不能阻止应用插入新 Job，因此 writer cutover 必须先完成。不要让旧版本 producer 在 migration
+之后继续写任务；本次迁移不提供旧 Job 数据兼容。
 
 ## 3. 持久化 Job contract
 
@@ -92,7 +96,8 @@ Later、旧 Worker 模块名以及未版本化的 Comments/Snapshot Job。部署
 - `type` 是有限枚举；全项目新业务 contract 禁止使用 `kind`。
 - `version` 是正整数；不兼容变更必须增加 version 并显式解析。
 - `operation_id` 用于幂等；`causation_id` 关联触发它的 Command 或 Workflow。
-- `resource` 只保存稳定 ID。Article 与 Community 相关的任务必须保存 `binding_id`。
+- `resource` 只保存稳定 ID；引用业务资源时必须能在执行期重新加载 authority。没有业务资源的 retention、
+  cleanup 等 maintenance Job 可以不带 `resource`，不得为了形式统一伪造 ID。
 - Worker 根据 ID 重新加载当前 canonical 数据；不得持久化 Ecto struct 或计算结果快照。
 - 禁止 `{module, function, args}`、匿名函数、PID、进程引用以及任意 `apply/3`。
 

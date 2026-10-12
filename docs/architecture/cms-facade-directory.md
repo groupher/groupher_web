@@ -435,7 +435,7 @@ CMS.Wallpaper
 
 ### 4.10 FrontDesk
 
-FrontDesk V2 已直接切换。以下目录只描述当前资源 facade 与稳定关系，
+FrontDesk 的 V2 切换已完成。以下目录只描述当前资源 facade 与稳定关系，
 不再保留 V1 的通用 lookup、reaction-users 或写操作转发：
 
 ```text
@@ -472,7 +472,8 @@ front_desk/
 - `community_tags/1` 已删除且不新增替代 wrapper；batch、list、stats、reaction-users 等读取归各自
   owning facade，不进入 FrontDesk。
 
-以上边界以 [FrontDesk V2](../feature/front-desk/v2.md) 的 mode、single-resource 和 surface 处置表为准。
+以上边界以 [FrontDesk 当前合同](../feature/front-desk/README.md) 的 mode、single-resource、view 和
+surface 规则为准。
 
 ### 4.11 Snapshot
 
