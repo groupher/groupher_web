@@ -1,6 +1,6 @@
 # PR 594 review remediation
 
-状态：`implementation-complete / awaiting GitHub verification`
+状态：`completed`
 
 本文记录 PR 594 未解决 review thread 的核实结果、长期修复方式和完成证据。它是本次收敛工作的执行清单，不是新的架构 authority；规则仍以 `docs/rules/` 和对应 current architecture/feature 文档为准。
 
@@ -97,5 +97,7 @@
 - `mix lint`：Context v2 与 module-style gate 通过；Credo 仍只报告仓库既有债务，不作为本次新增问题。
 - `pnpm docs:check`：文档、CMS/Context/Facade/Binding/Resolver/return-shape/command-identity gate 全部通过。
 - changed Elixir files 的 `mix format --check-formatted` 与 `git diff --check`：通过。
+- PR 594 最新实现 head 的 GitHub Actions：全部通过。
+- GitHub review：两轮新增评论均已核实、回复并解决，最终未解决 thread 为 0。
 
-尚待完成的是远端步骤：推送提交、等待 GitHub Actions、逐条回复并关闭已验证的 review thread，再检查是否出现新的有效评论。
+本记录已经完成；后续若新增独立 review，应按新的代码状态单独核实，而不是重新打开已被回归测试覆盖的问题。
