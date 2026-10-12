@@ -7,6 +7,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
 
   alias GroupherServer.Messaging
   alias Messaging.ErrorCat
+  alias Messaging.Model.Notification
 
   @notify_group_interval_hour GroupherServer.Messaging.Config.notify_group_interval_hour()
 
@@ -80,6 +81,23 @@ defmodule GroupherServer.Test.Messaging.Notification do
       assert notify.from_users |> length == 2
       assert user2 |> user_exist_in?(notify.from_users)
       assert user3 |> user_exist_in?(notify.from_users)
+    end
+  end
+
+  describe "durable delivery identity" do
+    test "does not create a second row when a retry follows a read", ~m(user2 notify_attrs)a do
+      attrs = Map.put(notify_attrs, :delivery_key, "outbox:event-1:notification")
+
+      assert {:ok, %Notification{} = notification} =
+               Messaging.send_notification(attrs, user2)
+
+      assert {:ok, _} =
+               notification
+               |> Ecto.Changeset.change(read: true)
+               |> Repo.update()
+
+      assert {:ok, :already_delivered} = Messaging.send_notification(attrs, user2)
+      assert Repo.aggregate(Notification, :count) == 1
     end
   end
 

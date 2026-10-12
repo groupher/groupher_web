@@ -36,6 +36,39 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
     assert Repo.get!(Event, event.id).status == :done
   end
 
+  test "stores rolling-safe status values while exposing the current lifecycle" do
+    assert {:ok, event} =
+             CMS.Outbox.send(event_attrs("test.status_storage", Ecto.UUID.generate()))
+
+    assert %{rows: [["pending"]]} =
+             Repo.query!("SELECT status FROM cms.outbox_events WHERE id::text = $1", [event.id])
+
+    assert Repo.get!(Event, event.id).status == :waiting
+  end
+
+  test "Community provisioning resolves the string Outbox resource id as a database id" do
+    {:ok, community} = db_insert(:community)
+
+    assert {:ok, event} =
+             CMS.Outbox.send(%{
+               event: "community.analysis_provision",
+               worker: GroupherServer.Jobs.CMSOutboxCommunity,
+               resource_type: "community",
+               resource_id: community.id,
+               identity: {:workflow, "community-analysis:#{community.id}"},
+               effect_key: "analysis_provision"
+             })
+
+    assert {:ok, :pass} =
+             GroupherServer.Jobs.CMSOutboxCommunity.perform(%Oban.Job{
+               args: %{"event_id" => event.id},
+               attempt: 1,
+               max_attempts: 3
+             })
+
+    assert Repo.get!(Event, event.id).status == :done
+  end
+
   test "a failed event can be claimed and retried" do
     assert {:ok, event} =
              CMS.Outbox.send(%{

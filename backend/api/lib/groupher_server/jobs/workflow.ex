@@ -28,13 +28,18 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      Workflow.account_event(:follow, user_id, follower_id)
+      Workflow.account_event(:follow, target_user_id, follower_id)
   """
-  def account_event(type, user_id, from_user_id) when type in [:follow, :undo_follow] do
+  def account_event(type, target_user_id, actor_user_id) when type in [:follow, :undo_follow] do
     if Config.skip_enqueue?() do
       {:ok, :pass}
     else
-      %{type: Atom.to_string(type), version: 1, user_id: user_id, from_user_id: from_user_id}
+      %{
+        type: Atom.to_string(type),
+        version: 1,
+        user_id: target_user_id,
+        from_user_id: actor_user_id
+      }
       |> Jobs.AccountEvent.new()
       |> Oban.insert()
     end
@@ -211,7 +216,7 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      Jobs.snapshot_refresh(:article, [article_ref], [])
+      Jobs.snapshot_refresh(:article, %{thread: :post, ids: [article_ref]}, [])
   """
   @spec snapshot_refresh(atom(), term(), keyword()) ::
           {:ok, Oban.Job.t() | :pass} | {:error, term()}

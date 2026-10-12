@@ -3,8 +3,9 @@ defmodule GroupherServer.Test.CMS.Press.InvalidationTest do
 
   use GroupherServer.TestMate, async: false
 
-  alias GroupherServer.CMS.Press.Invalidation
-  alias GroupherServer.CMS.Outbox.Event
+  alias GroupherServer.CMS
+  alias CMS.Outbox.Event
+  alias CMS.Press.Invalidation
 
   defmodule Endpoint do
     @moduledoc false
@@ -110,6 +111,38 @@ defmodule GroupherServer.Test.CMS.Press.InvalidationTest do
              })
 
     assert Repo.get!(Event, event.id).status == :retrying
+  end
+
+  test "a completed Command replay restores a missing durable invalidation intent" do
+    {community, _post, _attrs, user} = mock_article(:post)
+    command_id = Ecto.UUID.generate()
+
+    assert {:ok, _config} =
+             CMS.Press.update_config(
+               community,
+               %{feed_enabled: true, feed_threads: [:post]},
+               user,
+               command_id
+             )
+
+    event = Repo.get_by!(Event, command_id: command_id, event: "press.cache_invalidation")
+
+    Repo.delete_all(
+      from(job in Oban.Job, where: fragment("?->>'event_id' = ?", job.args, ^event.id))
+    )
+
+    Repo.delete!(event)
+
+    assert {:ok, _replayed} =
+             CMS.Press.update_config(
+               community,
+               %{feed_enabled: true, feed_threads: [:post]},
+               user,
+               command_id
+             )
+
+    assert %Event{} =
+             Repo.get_by(Event, command_id: command_id, event: "press.cache_invalidation")
   end
 
   defp start_endpoint(status) do

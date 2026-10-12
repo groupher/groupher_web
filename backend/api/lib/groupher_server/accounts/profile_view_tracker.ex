@@ -6,8 +6,9 @@ defmodule GroupherServer.Accounts.ProfileViewTracker do
   """
 
   alias __MODULE__.{Record, DedupeCleanup}
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.RequestActor.Classification
+  alias GroupherServer.{Accounts, RequestActor}
+  alias Accounts.Model.User
+  alias RequestActor.Classification
 
   @doc "Commits one explicit Profile view and returns the committed counter."
   @spec track(User.t(), User.t() | nil, Classification.t(), keyword()) ::

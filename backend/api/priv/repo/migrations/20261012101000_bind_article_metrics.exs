@@ -44,6 +44,9 @@ defmodule GroupherServer.Repo.Migrations.BindArticleMetrics do
         name: :article_hourly_metrics_binding_dimension_index
       )
     )
+
+    create(index(:analysis_metric_events, [:binding_id], prefix: "cms"))
+    create(index(:article_hourly_metrics, [:binding_id], prefix: "cms"))
   end
 
   def down do

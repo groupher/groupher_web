@@ -44,24 +44,38 @@ defmodule GroupherServer.CMS.Comments.Effects do
 
   @doc "Reloads canonical resources and delivers one typed Comment effect."
   def deliver(:sync_mentions, %{"comment_id" => id}) do
-    with {:ok, comment} <- comment(id), do: CMS.Events.emit(:sync_mentions, %{artiment: comment})
+    with {:ok, %Comment{} = comment} <- comment(id) do
+      CMS.Events.emit(:sync_mentions, %{artiment: comment})
+    else
+      {:ok, :deleted} -> {:ok, :pass}
+    end
   end
 
   def deliver(:audition, %{"comment_id" => id}) do
-    with {:ok, comment} <- comment(id), do: CMS.Events.emit(:audition, %{artiment: comment})
+    with {:ok, %Comment{} = comment} <- comment(id) do
+      CMS.Events.emit(:audition, %{artiment: comment})
+    else
+      {:ok, :deleted} -> {:ok, :pass}
+    end
   end
 
   def deliver(:notify_comment, %{"comment_id" => id, "actor_id" => actor_id}) do
-    with {:ok, comment} <- comment(id),
+    with {:ok, %Comment{} = comment} <- comment(id),
          {:ok, actor} <- user(actor_id) do
       CMS.Events.emit(:notify_comment, %{comment: comment, from_user: actor})
+    else
+      {:ok, :deleted} -> {:ok, :pass}
+      {:error, reason} -> {:error, reason}
     end
   end
 
   def deliver(:notify_reply, %{"comment_id" => id, "actor_id" => actor_id}) do
-    with {:ok, comment} <- comment(id),
+    with {:ok, %Comment{} = comment} <- comment(id),
          {:ok, actor} <- user(actor_id) do
       CMS.Events.emit(:notify_reply, %{reply_comment: comment, from_user: actor})
+    else
+      {:ok, :deleted} -> {:ok, :pass}
+      {:error, reason} -> {:error, reason}
     end
   end
 
@@ -80,7 +94,7 @@ defmodule GroupherServer.CMS.Comments.Effects do
   defp comment(id) do
     case Repo.get(Comment, id) do
       %Comment{} = comment -> {:ok, comment}
-      nil -> {:error, :comment_effect_comment_not_found}
+      nil -> {:ok, :deleted}
     end
   end
 

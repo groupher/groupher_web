@@ -44,7 +44,8 @@ defmodule GroupherServer.CMS.Press.Commands.UpdateConfig do
       }
 
       with {:ok, confirmation} <-
-             Command.execute(command, action: &action/1, confirmation: Confirmation) do
+             Command.execute(command, action: &action/1, confirmation: Confirmation),
+           {:ok, _effect} <- Effects.ensure_invalidation(community, command_id) do
         present(confirmation)
       end
     end

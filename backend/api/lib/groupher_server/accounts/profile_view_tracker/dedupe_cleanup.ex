@@ -8,8 +8,7 @@ defmodule GroupherServer.Accounts.ProfileViewTracker.DedupeCleanup do
   import Ecto.Query
 
   alias GroupherServer.{Accounts, Repo}
-  alias Accounts.ProfileViewTracker.Config
-  alias Accounts.ProfileViewTracker.Model.ProfileViewDedupeState
+  alias Accounts.ProfileViewTracker.{Config, Model.ProfileViewDedupeState}
 
   @telemetry_event [:groupher, :accounts, :profile_view_tracker, :dedupe_cleanup]
 

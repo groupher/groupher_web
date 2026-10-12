@@ -5,7 +5,8 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
 
   import Ecto.Query
 
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{Analysis, CMS, Repo}
+  alias Analysis.Model.MetricEvent
   alias CMS.Articles.{Draft.Store, Public, Revision}
   alias CMS.Articles.Publish.Target
   alias CMS.Articles.Publish.Doc, as: DocPublish
@@ -276,15 +277,21 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
     assert %DocBranchState{moderation_state: :legal, is_edited: false} =
              Repo.get_by!(DocBranchState, article_id: article.id, branch_id: branch.id)
 
+    command_id = Ecto.UUID.generate()
+
     assert {:ok, result} =
              DocPublish.publish(article, branch.id, author,
                expected_draft_version: draft.version,
                expected_lifecycle_version: 1,
-               command_id: Ecto.UUID.generate()
+               command_id: command_id
              )
 
     assert result.version.version_number == 1
     assert result.branch_type == :main
+
+    assert Repo.all(from(event in CMS.Outbox.Event, where: event.command_id == ^command_id))
+           |> Enum.map(& &1.event)
+           |> Enum.sort() == ["article.projections", "article.published"]
 
     assert Repo.get_by!(ArticleBinding, article_id: article.id, community_id: community.id).inner_id ==
              1
@@ -517,6 +524,81 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
 
     assert {source.slug, 1} in scopes
     assert {destination.slug, 2} in scopes
+  end
+
+  test "move preserves an existing destination binding and its local data" do
+    {source, article, _attrs, user} = mock_article(:post)
+    {:ok, destination} = db_insert(:community)
+
+    assert {:ok, _} =
+             CMS.Articles.mirror(
+               destination,
+               article.id,
+               [],
+               user,
+               source,
+               Ecto.UUID.generate()
+             )
+
+    destination_binding =
+      Repo.get_by!(ArticleBinding, article_id: article.id, community_id: destination.id)
+
+    assert {:ok, _} =
+             CMS.Articles.pin(destination, article.id, user, Ecto.UUID.generate())
+
+    assert %PinnedArticle{} =
+             Repo.get_by(PinnedArticle, article_binding_id: destination_binding.id)
+
+    assert {:ok, _} =
+             CMS.Articles.move(
+               source,
+               destination,
+               article.id,
+               [],
+               user,
+               Ecto.UUID.generate()
+             )
+
+    assert Repo.get_by!(ArticleBinding,
+             article_id: article.id,
+             community_id: destination.id
+           ).id == destination_binding.id
+
+    assert %PinnedArticle{} =
+             Repo.get_by(PinnedArticle, article_binding_id: destination_binding.id)
+
+    refute Repo.get_by(ArticleBinding, article_id: article.id, community_id: source.id)
+  end
+
+  test "move updates the Community scope of binding-owned metrics" do
+    {source, article, _attrs, user} = mock_article(:post)
+    {:ok, destination} = db_insert(:community)
+    binding = Repo.get_by!(ArticleBinding, article_id: article.id, community_id: source.id)
+
+    assert {:ok, :pass} =
+             GroupherServer.Analysis.MetricEvent.append_article_action(
+               article,
+               Ecto.UUID.generate(),
+               :upvote_added,
+               binding_id: binding.id,
+               community_id: source.id
+             )
+
+    assert {:ok, _} =
+             CMS.Articles.move(
+               source,
+               destination,
+               article.id,
+               [],
+               user,
+               Ecto.UUID.generate()
+             )
+
+    assert %MetricEvent{community_id: destination_id, binding_id: binding_id} =
+             Repo.get_by!(MetricEvent, binding_id: binding.id)
+
+    assert destination_id == destination.id
+    assert binding_id == binding.id
   end
 
   test "publish always requires an explicit Community" do

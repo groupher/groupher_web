@@ -7,7 +7,8 @@ defmodule GroupherServer.Accounts.ProfileViewTracker.Model.ProfileViewDedupeStat
 
   use Ecto.Schema
 
-  alias GroupherServer.Accounts.Model.User
+  alias GroupherServer.Accounts
+  alias Accounts.Model.User
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.account()

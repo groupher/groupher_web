@@ -9,14 +9,14 @@ defmodule GroupherServer.Accounts.ProfileViewTracker.Record do
         -> post-commit public-cache revalidation
   """
 
-  import Ecto.Query
-
   require Logger
 
-  alias GroupherServer.{Accounts, Repo}
+  import Ecto.Query
+
+  alias GroupherServer.{Accounts, Repo, RequestActor}
   alias Accounts.Model.User
   alias Accounts.ProfileViewTracker.{ErrorCat, Identity, Policy, ViewCounter}
-  alias GroupherServer.RequestActor.Classification
+  alias RequestActor.Classification
 
   @telemetry_event [:groupher, :accounts, :profile_view_tracker, :track]
   @read_purposes [

@@ -37,7 +37,9 @@ defmodule GroupherServer.Analysis.Contribution.Effects do
   """
   @spec cache_community_later(Community.t()) :: {:ok, term()}
   def cache_community_later(%Community{} = community) do
-    Jobs.contribution_cache(community.id)
+    Jobs.enqueue_best_effort(:community_contribution_cache, community.id, fn ->
+      Jobs.contribution_cache(community.id)
+    end)
   end
 
   @doc """

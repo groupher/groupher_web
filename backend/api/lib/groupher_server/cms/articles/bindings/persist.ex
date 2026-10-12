@@ -48,6 +48,29 @@ defmodule GroupherServer.CMS.Articles.Bindings.Persist do
   def get(_article, %Community{}), do: {:error, :article_binding_context_required}
   def get(_article, _community), do: {:error, :article_binding_context_required}
 
+  @doc "Resolves a Binding by id and verifies both Article and optional Community ownership."
+  @spec get_by_id(map(), pos_integer(), integer() | nil) ::
+          {:ok, ArticleBinding.t()} | {:error, term()}
+  def get_by_id(article, binding_id, community_id)
+      when is_map(article) and is_integer(binding_id) do
+    article_id = Map.get(article, :article_id) || Map.get(article, :id)
+
+    case Repo.get(ArticleBinding, binding_id) do
+      %ArticleBinding{article_id: ^article_id, community_id: binding_community_id} = binding
+      when is_nil(community_id) or community_id == binding_community_id ->
+        {:ok, binding}
+
+      %ArticleBinding{} ->
+        {:error, :invalid_article_binding}
+
+      nil ->
+        {:error, :article_binding_not_found}
+    end
+  end
+
+  def get_by_id(_article, _binding_id, _community_id),
+    do: {:error, :invalid_article_binding}
+
   @doc "Lists every ArticleBinding for one stable Article."
   @spec all(Article.t() | ArticleView.t() | map()) ::
           {:ok, [ArticleBinding.t()]} | {:error, term()}

@@ -13,7 +13,13 @@ defmodule GroupherServer.Jobs.ContributionCache do
 
   ## Examples
 
-      ContributionCache.perform(%Oban.Job{args: %{"type" => "community_contribution_cache", "community_id" => 1}})
+      ContributionCache.perform(%Oban.Job{
+        args: %{
+          "type" => "community_contribution_cache",
+          "version" => 1,
+          "community_id" => 1
+        }
+      })
   """
   @impl Oban.Worker
   def perform(%Oban.Job{

@@ -42,6 +42,23 @@ defmodule GroupherServer.Test.Analysis.ArticleInsightsTest do
              GroupherServer.Analysis.Maintenance.metrics()
   end
 
+  test "rejects a binding and Community pair that identify different scopes" do
+    {community, article, _attrs, _user} = mock_article(:post)
+    {:ok, other_community} = db_insert(:community)
+    binding = Repo.get_by!(GroupherServer.CMS.Model.ArticleBinding, article_id: article.id)
+
+    assert {:error, :invalid_article_metric} =
+             MetricEventAPI.append_article_action(
+               article,
+               Ecto.UUID.generate(),
+               :upvote_added,
+               binding_id: binding.id,
+               community_id: other_community.id
+             )
+
+    assert binding.community_id == community.id
+  end
+
   test "ViewTracker events enter Article Insights with actor filtering" do
     {community, article, _attrs, user} = mock_article(:post)
     now = DateTime.utc_now(:second)

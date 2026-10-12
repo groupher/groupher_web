@@ -41,12 +41,12 @@ defmodule GroupherServer.CMS.Articles.Effects.Publish do
          true <- is_integer(inner_id),
          {:ok, :pass} <- CMS.SearchArtiments.Indexer.enqueue_upsert(article),
          {:ok, public} <- public_projection(article, community, inner_id),
-         {:ok, _user} <- update_published_projection(result, public),
-         {:ok, _} <- append_activity(result, Map.put(public, :community_id, community.id)) do
+         {:ok, _user} <- update_published_projection(result, public) do
       with {:ok, _} <- CMS.Press.invalidate(community.id),
            {:ok, _} <- CMS.Events.emit(:sync_mentions, %{artiment: public}),
            {:ok, _} <- CMS.Events.emit(:audition, %{artiment: public}),
-           {:ok, _} <- notify_admin_on_first_publish(result, article) do
+           {:ok, _} <- notify_admin_on_first_publish(result, article),
+           {:ok, _} <- append_activity(result, Map.put(public, :community_id, community.id)) do
         {:ok, result}
       end
     else

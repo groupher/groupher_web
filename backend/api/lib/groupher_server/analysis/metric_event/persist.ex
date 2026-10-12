@@ -96,29 +96,18 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
 
   defp article_binding(article, opts) do
     community_ref = Keyword.get(opts, :community_id) || Map.get(article, :community)
-    stable_article_id = Map.get(article, :article_id) || Map.get(article, :id)
 
     case Keyword.get(opts, :binding_id) do
       binding_id when is_integer(binding_id) ->
-        case Repo.get(CMS.Model.ArticleBinding, binding_id) do
-          %CMS.Model.ArticleBinding{article_id: article_id} = binding
-          when article_id == stable_article_id ->
-            {:ok, binding}
-
-          _ ->
-            {:error, :invalid_article_binding}
-        end
+        CMS.articles_resolve_binding(
+          article,
+          {:binding_id, binding_id, explicit_community_id(opts)}
+        )
 
       _ ->
         case community_ref do
           community_id when is_integer(community_id) ->
-            case Repo.get_by(CMS.Model.ArticleBinding,
-                   article_id: stable_article_id,
-                   community_id: community_id
-                 ) do
-              %CMS.Model.ArticleBinding{} = binding -> {:ok, binding}
-              nil -> {:error, :article_binding_not_found}
-            end
+            CMS.articles_resolve_binding(article, community_id)
 
           _ ->
             case GroupherServer.CMS.articles_bindings_get(article, community_ref) do
@@ -128,6 +117,36 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
             end
         end
     end
+  end
+
+  defp explicit_community_id(opts) do
+    case Keyword.get(opts, :community_id) do
+      community_id when is_integer(community_id) -> community_id
+      _ -> nil
+    end
+  end
+
+  @doc """
+  Moves Analysis facts for one binding to its new Community inside the caller transaction.
+
+  ## Examples
+
+      Analysis.MetricEvent.Persist.reassign_binding(binding_id, destination_community_id)
+  """
+  @spec reassign_binding(pos_integer(), pos_integer()) :: {:ok, :pass}
+  def reassign_binding(binding_id, community_id)
+      when is_integer(binding_id) and is_integer(community_id) do
+    Repo.update_all(
+      from(event in MetricEvent, where: event.binding_id == ^binding_id),
+      set: [community_id: community_id]
+    )
+
+    Repo.update_all(
+      from(metric in Analysis.Model.ArticleHourlyMetric, where: metric.binding_id == ^binding_id),
+      set: [community_id: community_id]
+    )
+
+    {:ok, :pass}
   end
 
   defp defaults do

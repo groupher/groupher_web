@@ -33,9 +33,11 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Interaction do
   end
 
   defp cleanup(event) do
+    data = Map.put_new(event.data, "delivery_key", "outbox:#{event.id}:notification")
+
     with {:ok, target} <- load_target(event.resource_type, event.resource_id),
-         {:ok, actor} <- load_actor(event.data["actor_id"]),
-         {:ok, _} <- emit_event(event.event, target, actor, event.data),
+         {:ok, actor} <- load_actor(data["actor_id"]),
+         {:ok, _} <- emit_event(event.event, target, actor, data),
          {:ok, _} <- maybe_sync_search(target) do
       {:ok, :delivered}
     end
@@ -66,8 +68,13 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Interaction do
 
   defp load_actor(_), do: {:error, :interaction_actor_invalid}
 
-  defp emit_event("interaction.upvote_changed", target, actor, _data) do
-    with {:ok, _} <- Events.emit(:notify_upvote, %{target: target, from_user: actor}),
+  defp emit_event("interaction.upvote_changed", target, actor, data) do
+    with {:ok, _} <-
+           Events.emit(:notify_upvote, %{
+             target: target,
+             from_user: actor,
+             delivery_key: data["delivery_key"]
+           }),
          {:ok, _} <- Events.emit(:subscribe_community, %{target: target, user: actor}) do
       {:ok, :pass}
     end
@@ -80,7 +87,12 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Interaction do
   defp emit_event("interaction.collect_changed", target, actor, data) do
     operation = if data["operation"] == "add", do: :add, else: :remove
     event = if operation == :add, do: :notify_collect, else: :notify_undo_collect
-    Events.emit(event, %{article: target, from_user: actor})
+
+    Events.emit(event, %{
+      article: target,
+      from_user: actor,
+      delivery_key: data["delivery_key"]
+    })
   end
 
   defp emit_event(_event, _target, _actor, _data), do: {:ok, :pass}

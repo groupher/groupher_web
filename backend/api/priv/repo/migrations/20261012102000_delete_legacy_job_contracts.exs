@@ -3,8 +3,6 @@ defmodule GroupherServer.Repo.Migrations.DeleteLegacyJobContracts do
 
   @obsolete_workers [
     "GroupherServer.Jobs.Later",
-    "GroupherServer.Jobs.Comments",
-    "GroupherServer.Jobs.SnapshotRefresh",
     "GroupherServer.CMS.Outbox.Workers.Article.Cleanup",
     "GroupherServer.CMS.Outbox.Workers.Asset.Cleanup",
     "GroupherServer.CMS.Outbox.Workers.Comment.Cleanup",
@@ -28,6 +26,6 @@ defmodule GroupherServer.Repo.Migrations.DeleteLegacyJobContracts do
   end
 
   def down do
-    raise "Deleted jobs referenced removed modules or unversioned payloads and cannot be restored"
+    raise "Deleted jobs referenced removed Worker modules and cannot be restored"
   end
 end

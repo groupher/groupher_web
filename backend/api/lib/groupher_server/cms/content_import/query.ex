@@ -7,7 +7,8 @@ defmodule GroupherServer.CMS.ContentImport.Query do
 
   import Ecto.Query
 
-  alias GroupherServer.CMS.ContentImport.Model.Job
+  alias GroupherServer.CMS
+  alias CMS.ContentImport.Model.Job
 
   @doc "Returns community ids protected by an active Content Import job."
   @spec active_community_ids() :: Ecto.Query.t()

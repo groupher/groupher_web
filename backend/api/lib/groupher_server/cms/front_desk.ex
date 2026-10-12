@@ -94,8 +94,28 @@ defmodule GroupherServer.CMS.FrontDesk do
   @doc "Resolves the canonical relationship between one Article and one Community."
   @spec resolve_binding(term(), term()) ::
           {:ok, CMS.Model.ArticleBinding.t()} | {:error, term()}
+  def resolve_binding(article_ref, {:binding_id, binding_id, community_id}) do
+    stable_ref =
+      if is_map(article_ref) do
+        Map.get(article_ref, :article_id) || Map.get(article_ref, :id)
+      else
+        article_ref
+      end
+
+    with {:ok, article} <- article(stable_ref, mode: :internal) do
+      CMS.Articles.Bindings.get_by_id(article, binding_id, community_id)
+    end
+  end
+
   def resolve_binding(article_ref, community_ref) do
-    with {:ok, article} <- article(article_ref, mode: :internal),
+    stable_ref =
+      if is_map(article_ref) do
+        Map.get(article_ref, :article_id) || Map.get(article_ref, :id)
+      else
+        article_ref
+      end
+
+    with {:ok, article} <- article(stable_ref, mode: :internal),
          {:ok, community} <- community(community_ref, mode: :internal),
          {:ok, %{binding: binding}} <-
            CMS.Articles.Bindings.get(%{article_id: article.id}, community) do

@@ -14,7 +14,14 @@ defmodule GroupherServer.Jobs.AccountEvent do
 
   ## Examples
 
-      AccountEvent.perform(%Oban.Job{args: %{"type" => "follow", ...}})
+      AccountEvent.perform(%Oban.Job{
+        args: %{
+          "type" => "follow",
+          "version" => 1,
+          "user_id" => target_user_id,
+          "from_user_id" => follower_id
+        }
+      })
   """
   @impl Oban.Worker
   def perform(%Oban.Job{

@@ -50,6 +50,10 @@ defmodule GroupherServer.Test.CMS.Articles.Commands.Recovery do
 
     assert {:ok, published} = CMS.Articles.update(public, attrs, user, command_id)
 
+    assert Repo.all(from(event in CMS.Outbox.Event, where: event.command_id == ^command_id))
+           |> Enum.map(& &1.event)
+           |> Enum.sort() == ["article.projections", "article.updated"]
+
     assert {:ok, replayed} = CMS.Articles.update(public, attrs, user, command_id)
     assert replayed.id == published.id
     assert replayed.stage == :public

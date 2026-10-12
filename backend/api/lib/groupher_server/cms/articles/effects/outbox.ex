@@ -28,7 +28,7 @@ defmodule GroupherServer.CMS.Articles.Effects.Outbox do
   end
 
   def enqueue(_event, _resource_type, _resource_id, _identity, _data, _opts),
-    do: {:error, :article_effect_identity_required}
+    do: {:error, :invalid_article_effect_arguments}
 
   @doc "Records one Article activity in the caller-owned transaction."
   def activity(resource, event, opts), do: Activity.log(resource, event, opts)

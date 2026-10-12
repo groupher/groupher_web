@@ -5,9 +5,10 @@ defmodule GroupherServer.Accounts.ProfileViewTracker.Identity do
       RequestActor classification + trusted handle -> HMAC tracking identity
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.Accounts.ProfileViewTracker.ErrorCat
-  alias GroupherServer.RequestActor.Classification
+  alias GroupherServer.{Accounts, RequestActor}
+  alias Accounts.Model.User
+  alias Accounts.ProfileViewTracker.ErrorCat
+  alias RequestActor.Classification
 
   @type t :: %{
           actor_type: :human | :agent | :crawler | :unknown,

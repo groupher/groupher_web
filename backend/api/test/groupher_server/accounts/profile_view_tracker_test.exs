@@ -3,12 +3,10 @@ defmodule GroupherServer.Test.Accounts.ProfileViewTrackerTest do
 
   import Ecto.Query
 
-  alias GroupherServer.{Accounts, Repo, RequestActor}
+  alias GroupherServer.{Accounts, CMS, Repo, RequestActor}
   alias Accounts.ProfileViewTracker
-  alias Accounts.ProfileViewTracker.Config
-  alias Accounts.ProfileViewTracker.ErrorCat
-  alias Accounts.ProfileViewTracker.Model.ProfileViewDedupeState
-  alias GroupherServer.CMS.ViewTracker.AnonymousSession
+  alias Accounts.ProfileViewTracker.{Config, ErrorCat, Model.ProfileViewDedupeState}
+  alias CMS.ViewTracker.AnonymousSession
   alias GroupherServerWeb.Schema
   alias Helper.ORM
 

@@ -12,7 +12,17 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
   alias GroupherServer.{CMS, Repo}
 
   alias CMS.Outbox
-  alias CMS.Model.{Article, ArticleBinding, ArticlePublic, ArticleRevision, Community}
+
+  alias CMS.Model.{
+    Article,
+    ArticleBinding,
+    ArticlePublic,
+    ArticleRevision,
+    Community,
+    DocBranch,
+    DocBranchVersion,
+    DocPublic
+  }
 
   def perform(%Oban.Job{args: %{"event_id" => event_id}} = job) do
     case Outbox.execute(event_id, &cleanup/1) do
@@ -51,22 +61,53 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
          community_id when is_integer(community_id) <- Map.get(event.data, "community_id"),
          %Community{} = community <- Repo.get(Community, community_id),
          %ArticleBinding{} = binding <-
-           Repo.get_by(ArticleBinding, article_id: article.id, community_id: community.id),
-         %ArticlePublic{} = public <- Repo.get(ArticlePublic, article.id),
-         %ArticleRevision{} = revision <- Repo.get(ArticleRevision, public.revision_id) do
-      CMS.Articles.Effects.run(%{
-        article: article,
-        community: community,
-        binding: binding,
-        public: public,
-        revision: revision,
-        first_publish?: Map.get(event.data, "first_publish?", false),
-        changed_fields: changed_fields(Map.get(event.data, "changed_fields", [])),
-        published_by_id: Map.get(event.data, "published_by_id")
-      })
+           Repo.get_by(ArticleBinding, article_id: article.id, community_id: community.id) do
+      projection_result(event, article, community, binding)
     else
       nil -> {:error, :article_projection_not_found}
     end
+  end
+
+  defp projection_result(event, %Article{thread: :doc} = article, community, binding) do
+    branch_id = Map.get(event.data, "branch_id")
+
+    with %DocBranch{} = branch <- Repo.get(DocBranch, branch_id),
+         %DocPublic{} = public <-
+           Repo.get_by(DocPublic, article_id: article.id, branch_id: branch.id),
+         %DocBranchVersion{} = version <- Repo.get(DocBranchVersion, public.branch_version_id),
+         %ArticleRevision{} = revision <- Repo.get(ArticleRevision, version.revision_id) do
+      CMS.Articles.Effects.run(
+        projection_payload(event, article, community, binding, public, revision)
+        |> Map.put(:branch_type, branch.type)
+        |> Map.put(:version, version)
+      )
+    else
+      nil -> {:error, :article_projection_not_found}
+    end
+  end
+
+  defp projection_result(event, %Article{} = article, community, binding) do
+    with %ArticlePublic{} = public <- Repo.get(ArticlePublic, article.id),
+         %ArticleRevision{} = revision <- Repo.get(ArticleRevision, public.revision_id) do
+      CMS.Articles.Effects.run(
+        projection_payload(event, article, community, binding, public, revision)
+      )
+    else
+      nil -> {:error, :article_projection_not_found}
+    end
+  end
+
+  defp projection_payload(event, article, community, binding, public, revision) do
+    %{
+      article: article,
+      community: community,
+      binding: binding,
+      public: public,
+      revision: revision,
+      first_publish?: Map.get(event.data, "first_publish?", false),
+      changed_fields: changed_fields(Map.get(event.data, "changed_fields", [])),
+      published_by_id: Map.get(event.data, "published_by_id")
+    }
   end
 
   defp changed_fields(fields) when is_list(fields) do

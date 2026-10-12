@@ -119,6 +119,17 @@ defmodule GroupherServer.Analysis do
   defdelegate metric_event_append(arg1), to: GroupherServer.Analysis.MetricEvent, as: :append
 
   @doc """
+  Reassigns Analysis facts owned by a moved ArticleBinding.
+
+  ## Examples
+
+      Analysis.metric_event_reassign_binding(binding_id, destination_community_id)
+  """
+  defdelegate metric_event_reassign_binding(binding_id, community_id),
+    to: GroupherServer.Analysis.MetricEvent,
+    as: :reassign_binding
+
+  @doc """
   Delegates Analysis.Aggregator.drain/0 through the Analysis Context boundary.
 
   ## Examples

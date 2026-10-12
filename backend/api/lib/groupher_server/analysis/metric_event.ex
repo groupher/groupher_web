@@ -37,4 +37,8 @@ defmodule GroupherServer.Analysis.MetricEvent do
   """
   @spec record_failure([Ecto.UUID.t()], term()) :: {:ok, :pass}
   defdelegate record_failure(ids, reason), to: Persist
+
+  @doc "Reassigns binding-scoped metric facts when the Binding moves Community."
+  @spec reassign_binding(pos_integer(), pos_integer()) :: {:ok, :pass}
+  defdelegate reassign_binding(binding_id, community_id), to: Persist
 end

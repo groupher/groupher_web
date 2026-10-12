@@ -72,6 +72,17 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
              {:ok, _lifecycle} <- publish_lifecycle(lifecycle),
              {:ok, _invalidation} <-
                invalidate_public_cache(article, branch, binding, community, first_publish?, opts),
+             {:ok, _projection} <-
+               enqueue_public_projection(
+                 article,
+                 branch,
+                 binding,
+                 community,
+                 revision,
+                 actor,
+                 first_publish?,
+                 opts
+               ),
              {:ok, _} <- Store.delete_workspace(article, draft) do
           %{
             article: article,
@@ -312,6 +323,52 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
          %DocBranch{},
          _binding,
          _community,
+         _first_publish?,
+         _opts
+       ) do
+    {:ok, :branch_not_public}
+  end
+
+  defp enqueue_public_projection(
+         article,
+         %DocBranch{type: :main} = branch,
+         %ArticleBinding{inner_id: inner_id},
+         community,
+         revision,
+         actor,
+         first_publish?,
+         opts
+       )
+       when is_integer(inner_id) do
+    with {:ok, identity} <- outbox_identity(opts) do
+      Effects.enqueue(
+        "article.projections",
+        "article",
+        article.id,
+        identity,
+        %{
+          first_publish?: first_publish?,
+          community_id: community.id,
+          inner_id: inner_id,
+          branch_id: branch.id,
+          branch_type: branch.type,
+          changed_fields: [],
+          published_by_id: actor.id,
+          revision_id: revision.id
+        },
+        effect_key: "article-projections:#{community.id}:#{inner_id}",
+        retry_failed: true
+      )
+    end
+  end
+
+  defp enqueue_public_projection(
+         _article,
+         %DocBranch{},
+         _binding,
+         _community,
+         _revision,
+         _actor,
          _first_publish?,
          _opts
        ) do

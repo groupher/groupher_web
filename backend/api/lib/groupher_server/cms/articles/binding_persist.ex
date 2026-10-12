@@ -15,7 +15,7 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
 
   import Ecto.Query
 
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{Analysis, CMS, Repo}
   alias CMS.Articles.Numbering
 
   alias CMS.Model.{
@@ -50,12 +50,8 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
     with %Article{} = article <- lock_article(article.id),
          {:ok, binding} <- source_binding(article.id, source_community_id),
          {:ok, :different_community} <- ensure_different_community(source, destination),
-         {:ok, :destination_ready} <- prepare_destination(article, destination),
-         {:ok, _} <- delete_source_local_data(article.id, source_community_id),
-         {:ok, binding} <-
-           binding
-           |> ArticleBinding.changeset(%{community_id: destination.id, inner_id: nil})
-           |> Repo.update(),
+         {:ok, destination_binding} <- prepare_destination(article, destination),
+         {:ok, binding} <- move_binding(binding, destination_binding, destination),
          {:ok, _binding} <- Numbering.assign_binding_inner_id(binding) do
       {:ok, article}
     else
@@ -176,13 +172,31 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
   defp prepare_destination(%Article{} = article, %Community{id: destination_id}) do
     case Repo.get_by(ArticleBinding, article_id: article.id, community_id: destination_id) do
       nil ->
-        {:ok, :destination_ready}
+        {:ok, nil}
 
       %ArticleBinding{} = destination_binding ->
-        with {:ok, _} <- delete_source_local_data(article.id, destination_id),
-             {:ok, _} <- Repo.delete(destination_binding) do
-          {:ok, :destination_ready}
-        end
+        {:ok, destination_binding}
+    end
+  end
+
+  defp move_binding(source_binding, nil, destination) do
+    with {:ok, _} <-
+           delete_source_local_data(source_binding.article_id, source_binding.community_id),
+         {:ok, moved_binding} <-
+           source_binding
+           |> ArticleBinding.changeset(%{community_id: destination.id, inner_id: nil})
+           |> Repo.update(),
+         {:ok, :pass} <-
+           Analysis.metric_event_reassign_binding(moved_binding.id, destination.id) do
+      {:ok, moved_binding}
+    end
+  end
+
+  defp move_binding(source_binding, %ArticleBinding{} = destination_binding, _destination) do
+    with {:ok, _} <-
+           delete_source_local_data(source_binding.article_id, source_binding.community_id),
+         {:ok, _deleted} <- Repo.delete(source_binding) do
+      {:ok, destination_binding}
     end
   end
 

@@ -42,4 +42,15 @@ defmodule GroupherServer.Test.Jobs.Comments do
       assert is_map(args["payload"])
     end
   end
+
+  test "a deleted Comment makes a queued effect an idempotent success" do
+    assert {:ok, :pass} =
+             Jobs.Comments.perform(%Oban.Job{
+               args: %{
+                 "type" => "sync_mentions",
+                 "version" => 1,
+                 "payload" => %{"comment_id" => 2_147_483_647}
+               }
+             })
+  end
 end

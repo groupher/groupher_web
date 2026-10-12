@@ -38,9 +38,15 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Community do
   end
 
   defp provision_analysis(community_id) do
-    with {:ok, community} <- CMS.FrontDesk.community(community_id, mode: :internal),
-         {:ok, result} <- Analysis.web_provision_community_on_create(community) do
-      {:ok, result}
+    case Integer.parse(to_string(community_id)) do
+      {community_id, ""} ->
+        with {:ok, community} <- CMS.FrontDesk.community(community_id, mode: :internal),
+             {:ok, result} <- Analysis.web_provision_community_on_create(community) do
+          {:ok, result}
+        end
+
+      _ ->
+        {:error, :invalid_community_id}
     end
   end
 

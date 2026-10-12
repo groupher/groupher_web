@@ -34,7 +34,7 @@ defmodule GroupherServer.Accounts.Fans.Effects do
   @spec enqueue_event(:follow | :undo_follow, User.t(), User.t()) ::
           {:ok, term()} | {:error, term()}
   def enqueue_event(event, %User{} = user, %User{} = target_user) do
-    Jobs.account_event(event, user.id, target_user.id)
+    Jobs.account_event(event, target_user.id, user.id)
   end
 
   @doc """

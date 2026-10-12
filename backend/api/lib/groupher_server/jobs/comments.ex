@@ -25,7 +25,13 @@ defmodule GroupherServer.Jobs.Comments do
 
   ## Examples
 
-      perform(%Oban.Job{args: %{"type" => "sync_mentions", "payload" => encoded}})
+      perform(%Oban.Job{
+        args: %{
+          "type" => "sync_mentions",
+          "version" => 1,
+          "payload" => %{"comment_id" => comment_id}
+        }
+      })
   """
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"type" => type, "version" => 1, "payload" => payload}})

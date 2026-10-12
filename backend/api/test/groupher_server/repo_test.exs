@@ -1,5 +1,5 @@
 defmodule GroupherServer.RepoTest do
-  use GroupherServer.DataCase, async: true
+  use GroupherServer.TestMate
 
   alias GroupherServer.Repo
 
@@ -9,7 +9,14 @@ defmodule GroupherServer.RepoTest do
     end
 
     test "rolls back an error tagged result" do
-      assert {:error, :invalid} = Repo.transact_result(fn -> {:error, :invalid} end)
+      assert {:error, :invalid} =
+               Repo.transact_result(fn ->
+                 {:ok, user} = db_insert(:user)
+                 Process.put(:rolled_back_user_id, user.id)
+                 {:error, :invalid}
+               end)
+
+      refute Repo.get(User, Process.get(:rolled_back_user_id))
     end
 
     test "rejects an untagged callback result" do
