@@ -3767,6 +3767,12 @@ export type UserQuery = {
   } | null
 }
 
+export type TrackProfileViewMutationVariables = Exact<{
+  login: string
+}>
+
+export type TrackProfileViewMutation = { trackProfileView: { tracked: boolean; views: number } }
+
 export type SessionStateQueryVariables = Exact<{ [key: string]: never }>
 
 export type SessionStateQuery = {
@@ -20516,6 +20522,49 @@ export const UserDocument = {
     },
   ],
 } as unknown as DocumentNode<UserQuery, UserQueryVariables>
+export const TrackProfileViewDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'TrackProfileView' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'login' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'trackProfileView' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'login' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'login' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'tracked' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'views' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TrackProfileViewMutation, TrackProfileViewMutationVariables>
 export const SessionStateDocument = {
   kind: 'Document',
   definitions: [
