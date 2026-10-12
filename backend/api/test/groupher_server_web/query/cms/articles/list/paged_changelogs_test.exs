@@ -287,7 +287,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedChangelogs do
     end
 
     test "filter sort MOST_VIEWS should work",
-         ~m(guest_conn community changelog_last_year user)a do
+         ~m(guest_conn community changelog_last_year)a do
       Repo.update_all(
         from(summary in ArticleStats,
           where: summary.thread == :changelog and summary.article_id == ^changelog_last_year.id
@@ -403,7 +403,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedChangelogs do
 
   describe "[paged changelogs active_at]" do
     test "latest commented changelog should appear on top",
-         ~m(guest_conn community changelog_last_week user2 user)a do
+         ~m(guest_conn community changelog_last_week user2)a do
       variables = %{filter: %{page: 1, size: 20}}
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :changelog), variables)
       entries = results["entries"]
@@ -431,7 +431,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedChangelogs do
     end
 
     test "comment on very old changelog have no effect",
-         ~m(guest_conn community changelog_last_year user2 user)a do
+         ~m(guest_conn community changelog_last_year user2)a do
       variables = %{filter: %{page: 1, size: 20}}
 
       {:ok, _} =
@@ -452,7 +452,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedChangelogs do
     end
 
     test "latest changelog author commented changelog have no effect",
-         ~m(guest_conn community changelog_last_week user)a do
+         ~m(guest_conn community changelog_last_week)a do
       variables = %{filter: %{page: 1, size: 20}}
 
       changelog =

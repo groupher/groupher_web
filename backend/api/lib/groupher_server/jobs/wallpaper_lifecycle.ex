@@ -13,9 +13,10 @@ defmodule GroupherServer.Jobs.WallpaperLifecycle do
 
   use Oban.Worker, queue: :default, max_attempts: 3
 
+  @doc false
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
-    GroupherServer.CMS.Wallpaper.reconcile_lifecycle()
+    GroupherServer.CMS.wallpaper_reconcile_lifecycle()
     {:ok, :pass}
   end
 end

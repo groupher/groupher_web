@@ -50,10 +50,8 @@ defmodule GroupherServerWeb.Middleware.Passport do
 
   alias Accounts.Model.User
   alias CMS.ErrorCat, as: CmsErrorCat
-  alias CMS.Helper.ArticlePath
   alias CMS.Model.Comment
   alias CMS.Passport.ErrorCat, as: PassportErrorCat
-  alias CMS.Passport.Registry
 
   def call(%{errors: errors} = resolution, _) when errors != [] do
     resolution
@@ -71,7 +69,7 @@ defmodule GroupherServerWeb.Middleware.Passport do
   end
 
   defp authorize_action(resolution, action, opts) do
-    case Registry.requirement(action) do
+    case GroupherServer.CMS.passport_registry_requirement(action) do
       {:ok, requirement} ->
         case maybe_put_article_path(resolution, opts) do
           {:ok, resolution} ->
@@ -85,7 +83,7 @@ defmodule GroupherServerWeb.Middleware.Passport do
         resolution
         |> handle_absinthe_error(
           "PassportError: unknown action #{action}.",
-          ErrorCat.code(PassportErrorCat.passport())
+          ErrorCat.code(GroupherServer.CMS.passport_error_cat_passport())
         )
     end
   end
@@ -122,7 +120,7 @@ defmodule GroupherServerWeb.Middleware.Passport do
     if Map.has_key?(arguments, :article) or Map.has_key?(arguments, :article_path) do
       # Passport runs before article loading, so it can only prepare the public
       # locator for permission checks. It must not load the article here.
-      case ArticlePath.parse_arguments(arguments, Keyword.take(opts, [:thread])) do
+      case CMS.parse_article_arguments(arguments, Keyword.take(opts, [:thread])) do
         {:ok, arguments} ->
           {:ok, %{resolution | arguments: arguments}}
 
@@ -138,7 +136,7 @@ defmodule GroupherServerWeb.Middleware.Passport do
     resolution
     |> handle_absinthe_error(
       "PassportError: action is required.",
-      ErrorCat.code(PassportErrorCat.passport())
+      ErrorCat.code(GroupherServer.CMS.passport_error_cat_passport())
     )
   end
 
@@ -151,7 +149,7 @@ defmodule GroupherServerWeb.Middleware.Passport do
     resolution
     |> handle_absinthe_error(
       "PassportError: your passport not qualified.",
-      ErrorCat.code(PassportErrorCat.passport())
+      ErrorCat.code(GroupherServer.CMS.passport_error_cat_passport())
     )
   end
 
@@ -164,10 +162,10 @@ defmodule GroupherServerWeb.Middleware.Passport do
     {:ok, cur_passport}
   end
 
-  defp fetch_cur_passport(_), do: {:error, CmsErrorCat.missing_passport()}
+  defp fetch_cur_passport(_), do: {:error, GroupherServer.CMS.error_cat_missing_passport()}
 
   defp has_permission?(cur_passport, resolution, requirement) do
-    normalized_passport = Registry.normalize_rules(cur_passport)
+    normalized_passport = GroupherServer.CMS.passport_registry_normalize_rules(cur_passport)
 
     has_god_permission?(normalized_passport) or
       check_scope_permission(normalized_passport, resolution, requirement)
@@ -209,7 +207,7 @@ defmodule GroupherServerWeb.Middleware.Passport do
     end
   end
 
-  defp resolve_grant(_, _), do: {:error, CmsErrorCat.invalid_requirement()}
+  defp resolve_grant(_, _), do: {:error, GroupherServer.CMS.error_cat_invalid_requirement()}
 
   defp fetch_thread(%{arguments: %{article_path: %{thread: thread}}}) when is_atom(thread) do
     {:ok, Atom.to_string(thread)}
@@ -220,7 +218,7 @@ defmodule GroupherServerWeb.Middleware.Passport do
   end
 
   defp fetch_thread(%{arguments: %{thread: thread}}) when is_binary(thread), do: {:ok, thread}
-  defp fetch_thread(_), do: {:error, CmsErrorCat.missing_thread()}
+  defp fetch_thread(_), do: {:error, GroupherServer.CMS.error_cat_missing_thread()}
 
   defp fetch_community_slug(%{arguments: %{article_path: %{community: %{slug: slug}}}})
        when is_binary(slug) do
@@ -245,7 +243,7 @@ defmodule GroupherServerWeb.Middleware.Passport do
     {:ok, community}
   end
 
-  defp fetch_community_slug(_), do: {:error, CmsErrorCat.missing_community()}
+  defp fetch_community_slug(_), do: {:error, GroupherServer.CMS.error_cat_missing_community()}
 
   defp has_global_permission?(passport, permission) do
     get_in(passport, ["global", permission]) == true

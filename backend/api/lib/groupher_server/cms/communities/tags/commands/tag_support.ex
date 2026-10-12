@@ -6,9 +6,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.TagSupport do
   """
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Communities.ErrorCat
-  alias CMS.FrontDesk
-  alias CMS.Marker
+  alias CMS.{Communities.ErrorCat, FrontDesk, Marker}
   alias CMS.Model.{Community, CommunityTag, CommunityTagGroup}
 
   @doc false

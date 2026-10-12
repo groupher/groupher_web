@@ -11,16 +11,16 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
 
   import Ecto.Query
 
-  alias GroupherServer.{Accounts, Analysis, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
   alias CMS.Articles.MutationLock
   alias CMS.Artiment.Matcher
   alias CMS.{Command, Gate, Interactions}
-  alias CMS.Interactions.{ErrorCat, ReadState}
+  alias CMS.Interactions.{Effects, ErrorCat, Persist, Projection, Transaction}
   alias CMS.Interactions.Reactions.CollectConfirmation, as: Confirmation
   alias CMS.Model.{ArticleCollect, Author}
-  alias Analysis.MetricEvent
+
   alias Helper.T
 
   @doc """
@@ -115,7 +115,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
       end
     end
 
-    if Repo.in_transaction?(), do: {:ok, transaction.()}, else: Repo.transaction(transaction)
+    if Repo.in_transaction?(), do: {:ok, transaction.()}, else: Transaction.run(transaction)
   end
 
   defp sync_state(_canonical, _actor, _operation, :unchanged), do: {:ok, :pass}
@@ -123,8 +123,8 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   defp sync_state(canonical, actor, operation, :changed) do
     result =
       if operation == :add,
-        do: ReadState.add_collect(canonical, actor),
-        else: ReadState.remove_collect(canonical, actor)
+        do: Projection.add_collect(canonical, actor),
+        else: Projection.remove_collect(canonical, actor)
 
     case result do
       {:ok, _projection} -> {:ok, :pass}
@@ -137,7 +137,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   defp record_metric(article, operation, command_id, :changed) do
     metric = if operation == :add, do: :collect_added, else: :collect_removed
 
-    case MetricEvent.append_article_action(article, command_id, metric) do
+    case GroupherServer.Analysis.metric_event_append_article_action(article, command_id, metric) do
       {:ok, _} -> {:ok, :pass}
       {:error, _reason} = error -> error
     end
@@ -148,7 +148,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   defp sync_achievement(article, operation, :changed) do
     achievement_operation = if operation == :add, do: :inc, else: :dec
 
-    case Accounts.Achievements.achieve(
+    case Accounts.achievements_achieve(
            author_user(article),
            achievement_operation,
            :collect
@@ -164,18 +164,14 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   defp enqueue_effect(_article, _actor, _operation, _command_id, :unchanged), do: {:ok, :pass}
 
   defp enqueue_effect(article, actor, operation, command_id, :changed) do
-    case CMS.Outbox.send(%{
-           event: "interaction.collect_changed",
-           worker: CMS.Outbox.Workers.Interaction.Cleanup,
-           resource_type: "article",
-           resource_id: article.id,
-           command_id: command_id,
-           effect_key: "article:#{article.id}:#{operation}",
-           data: %{actor_id: actor.id, operation: operation}
-         }) do
-      {:ok, _event} -> {:ok, :pass}
-      {:error, reason} -> {:error, reason}
-    end
+    Effects.enqueue_reaction_changed(
+      "interaction.collect_changed",
+      "article",
+      article.id,
+      command_id,
+      %{actor_id: actor.id, operation: operation},
+      effect_key: "article:#{article.id}:#{operation}"
+    )
   end
 
   defp require_command_id(command_id) when is_binary(command_id), do: {:ok, command_id}
@@ -234,14 +230,12 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
       }
       |> Map.put(info.foreign_key, article.id)
 
-    case Repo.insert_all(ArticleCollect, [attrs],
-           on_conflict: :nothing,
-           conflict_target: collect_conflict_target(info.foreign_key)
-         ) do
-      {1, _rows} -> {:ok, :changed}
-      {0, _rows} -> {:ok, :unchanged}
-      _ -> {:error, ErrorCat.interaction_state_conflict("unexpected collect insert result")}
-    end
+    Persist.insert_fact(
+      ArticleCollect,
+      attrs,
+      collect_conflict_target(info.foreign_key),
+      "collect"
+    )
   end
 
   defp change_fact(article, info, actor, :remove) do
@@ -252,11 +246,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
         where: field(collect, ^foreign_key) == ^article.id and collect.user_id == ^actor.id
       )
 
-    case Repo.delete_all(query) do
-      {1, _rows} -> {:ok, :changed}
-      {0, _rows} -> {:ok, :unchanged}
-      _ -> {:error, ErrorCat.interaction_state_conflict("multiple collect facts deleted")}
-    end
+    Persist.delete_fact(query, "collect")
   end
 
   defp collect_conflict_target(:article_id) do

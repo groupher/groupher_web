@@ -29,7 +29,7 @@ Community-local 的编号、标签、置顶、Kanban 等绑定状态。继续把
 ## 2. 目标边界
 
 ```text
-CMS.Helper.ArticlePath
+CMS.ArticlePath
   └── 共享纯 parse / validate，不访问数据库
 
 FrontDesk
@@ -55,7 +55,7 @@ ArticleBinding
   └── 保存 Article 在一个公共上下文中的 Community-local 状态
 ```
 
-`CMS.Helper.ArticlePath` 保留为共享纯 parser，负责 `ArticlePathInput` 的 parse/validate 和 resolver /
+`CMS.ArticlePath` 保留为共享纯 parser，负责 `ArticlePathInput` 的 parse/validate 和 resolver /
 middleware 参数规范化；它不访问 Repo，也不查询 ArticleBinding。这里的 public locator 指 transport
 输入形状，不代表对外暴露 binding locator 查询 API。
 
@@ -70,7 +70,7 @@ middleware 参数规范化；它不访问 Repo，也不查询 ArticleBinding。�
 
 ```text
 FrontDesk.article(path)
-  -> CMS.Helper.ArticlePath.parse / validate
+  -> CMS.ArticlePath.parse / validate
   -> Community
   -> ArticleBinding
   -> Article + thread validation
@@ -200,9 +200,9 @@ Ecto schema 的 `belongs_to` 不会自动创建数据库 FK/index 名称。migra
 ## 6. 验收
 
 - 生产代码中的关系 Schema、DTO、局部变量和新增/迁移代码统一使用 Binding / ArticleView 命名。
-- `CMS.Helper.ArticlePath` 只做共享 parse/validate，不访问 Repo 或查询 binding。
+- `CMS.ArticlePath` 只做共享 parse/validate，不访问 Repo 或查询 binding。
 - FrontDesk 是公共路径 binding/database lookup、Article 加载与 thread 校验、ArticleView 组装的
-  唯一入口；`CMS.Helper.ArticlePath` 仅负责共享纯 parse/validate。
+  唯一入口；`CMS.ArticlePath` 仅负责共享纯 parse/validate。
 - 生产代码不再存在 `Articles.PathResolver`、`Articles.Path`、`Articles.PublicPath` 或 Binding
   locator 查询 API；`ArticlePathInput` 和纯解析 helper 不属于该门禁。
 - `Articles.Bindings` 只暴露 binding 查询和 binding 局部数据操作，不承担路径解析或 binding locator

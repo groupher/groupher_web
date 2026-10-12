@@ -8,9 +8,11 @@ defmodule GroupherServer.CMS.Communities.Moderators.Commands.Remove do
         -> Confirmation
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.Communities.Moderators.{Persist, Commands.Support}
-  alias GroupherServer.CMS.Model.Community
+  alias GroupherServer.{CMS, Accounts}
+
+  alias Accounts.Model.User
+  alias CMS.Communities.Moderators.{Persist, Commands.Support}
+  alias CMS.Model.Community
   alias Helper.T
 
   @spec execute(Community.t(), User.t(), User.t(), Ecto.UUID.t()) ::

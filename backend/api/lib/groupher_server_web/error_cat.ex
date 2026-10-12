@@ -5,7 +5,7 @@ defmodule GroupherServerWeb.ErrorCat do
   Web request failure -> catalog reason -> stable protocol error.
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:web}
+  use GroupherServer.ErrorCat, namespace: {:web}
 
   error(:pagination, code: 4002)
   error(:service_auth, code: 4017)

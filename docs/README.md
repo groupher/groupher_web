@@ -3,7 +3,7 @@
 > 状态：current
 
 本目录按长期主题和系统边界组织。文档状态不会改变文件位置；进行中和待办事项统一记录在
-[`readmap.md`](./readmap.md)，连续版本的当前状态由各主题目录的 `README.md` 说明。
+[`roadmap.md`](./roadmap.md)，连续版本的当前状态由各主题目录的 `README.md` 说明。
 
 ## 应用
 
@@ -30,6 +30,26 @@ Lifecycle、Interaction、Post、Docs、Wallpaper、Reporting 和 Search。
 - [`migrations/`](./migrations)：跨应用或跨框架的阶段性迁移记录。
 
 新增文档应优先进入所属应用或 Feature，不再按前端/后端或完成状态划分目录。
+
+## 文档角色与命名
+
+每个业务能力只能有一个无需拼接历史版本即可阅读的当前入口，通常是目录 `README.md` 或语义明确的
+`*-contract.md`、`*-counting.md`、`*-boundary.md`：
+
+```text
+README / current semantic document
+  -> current runtime contract
+  -> optional in-progress proposal
+  -> migration and historical records
+```
+
+- 当前合同使用稳定语义命名，不使用 `v1/v2/v3`、`target`、`fix` 或 `refactor` 作为唯一含义；
+- 版本文件可以保留产品阶段或实施历史，但目录 README 必须明确哪个合同当前有效；
+- `migrations/` 只记录从 A 到 B 的有限迁移、删改清单和验收证据；迁移完成后，长期合同回到所属
+  Application、Feature 或 Architecture；
+- `architecture/` 回答跨能力的长期边界，不把一次性 audit、cutover 和完成清单当作新的当前合同；
+- historical 文档不得覆盖 current 文档；仍有效的结论应先合并到 current 文档，再把旧文降级；
+- 文件名统一使用 kebab-case，目录入口统一使用 `README.md`。
 
 ## 状态约定
 

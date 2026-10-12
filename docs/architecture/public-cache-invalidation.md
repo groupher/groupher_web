@@ -1,31 +1,26 @@
 # 公共缓存可靠失效
 
-> 状态：Phoenix outbox、Oban worker、Cloudflare adapter、领域写入接线和跨语言 tag contract 已落地；真实 Cloudflare purge、告警和生产验收见文末清单。
+> 状态：历史专项设计，部分实现仍保留。CMS 当前生产写路径已经迁移到
+> [`CMS Domain Outbox`](./cms-outbox.md)；本文的 tag/provider 约束仍有效，但独立
+> `PublicCache.Invalidation` 投递设施当前没有生产领域调用方，不能作为 CMS 当前链路引用。
 >
-> 本文定义 Phoenix 领域写入提交后，如何通过 typed `PublicCache.Invalidation`、transactional outbox、Oban
-> `PurgeWorker` 和 Cloudflare adapter 可靠失效公共 HTML。目标架构不保留 Community/Dash mutation proxy purge、
-> operation-name mapping、Edge executor 或其他兼容入口。
+> 本文记录原 typed `PublicCache.Invalidation`、transactional outbox、Oban Worker 和 Cloudflare adapter
+> 设计。当前 Worker 名为 `Jobs.PublicCachePurge`，不再存在 `PublicCache.PurgeWorker`。
 
 ## 1. 结论
 
-公共 CDN 失效由 Phoenix 完整拥有：
+CMS 当前的公共 CDN 失效由 CMS Outbox 驱动：
 
 ```text
-Phoenix domain command
-        │
-        v
-Repo.transaction
-  ├─ write domain state
-  ├─ insert PublicCache.Invalidation outbox row
-  └─ insert Oban purge trigger job
-        │
-        v commit
-Oban PublicCache.PurgeWorker
-  ├─ claim one pending invalidation
-  ├─ invalidation type -> semantic cache scopes
-  ├─ PublicCache.Tags -> canonical cache tags
-  ├─ retry / dead-letter
-  └─ PublicCache.Cloudflare.purge(tags)
+CMS Domain Command transaction
+  -> Domain.Effects
+  -> CMS.Outbox.send
+  -> COMMIT
+  -> Jobs.CMSOutbox<Domain>
+  -> CMS.deliver_outbox
+  -> CMS.Outbox.Workflow.<Domain>
+  -> PublicCache.scope_tags
+  -> PublicCache.cloudflare_purge
         │
         v
 Cloudflare evicts matching public objects
@@ -37,9 +32,12 @@ next public GET -> MISS/EXPIRED -> Community SSR -> fresh HTML + hydration
 Community 只负责在自己生成的公共 response 上输出 canonical `Cache-Tag` 和 `Cache-Control`；它不决定何时 purge，
 也不调用 Cloudflare。浏览器、Dash、Community GraphQL proxy 和 mutation response 都不参与 CDN 失效执行。
 
-领域状态、invalidation row 与 Oban trigger job 在同一个数据库事务内提交，因此不会出现“业务写入成功，但进程在
-enqueue 前崩溃，永久漏掉 purge”。Cloudflare 请求失败不回滚已经提交的业务事务，而是由 outbox 状态和 Oban 重试
-最终收敛。
+领域状态、CMS Outbox Event 与 Oban Job 在同一个数据库事务内提交，因此不会出现“业务写入成功，但进程在
+enqueue 前崩溃，永久漏掉 purge”。Cloudflare 请求失败不回滚已经提交的业务事务，而是由 CMS Outbox 状态和
+Oban 重试最终收敛。
+
+后文关于独立 `PublicCache.Invalidation` 状态机的章节是历史设计记录。相关 module 目前仍存在，但没有生产领域
+调用方；若无新使用方，应单独删除，不应与 CMS Outbox 形成两套长期并行的可靠投递协议。
 
 ## 2. 所有权
 
@@ -112,13 +110,17 @@ purge 不修改 `ArticleStats.snapshotAt`，也不主动生成 HTML。它只删�
 
 ```text
 GroupherServer.PublicCache
-├─ Invalidation       持久化的确定失效记录，不叫 Intent
+├─ Model.Invalidation 历史独立投递记录；当前无生产领域调用方
+├─ Persist            历史 invalidation/lease 持久化
+├─ Workflow           历史独立投递状态机
 ├─ Const              invalidation type/status 封闭词表
 ├─ Tags               generated canonical tag constructors
 ├─ Scope              invalidation type 到 cache scopes 的穷举映射
-├─ PurgeWorker        Oban claim、retry、dead-letter
 ├─ Policy             timeout/retry/max-attempts/tag-count 参数
 └─ Cloudflare         唯一外部 API adapter
+
+GroupherServer.Jobs.PublicCachePurge
+└─ 历史独立投递设施的 Oban Worker
 ```
 
 `PublicCache.Invalidation` 表示已经确定需要执行的缓存失效，不使用模糊的 `Intent` 命名。
@@ -326,7 +328,7 @@ Repo.transaction
   ├─ initialize ArticleStats
   └─ PublicCache.invalidate(multi, Const.article_published(), article)
        ├─ insert Invalidation row
-       └─ insert PurgeWorker trigger job
+       └─ insert Jobs.PublicCachePurge trigger job
       │
       v
 commit succeeds
@@ -345,7 +347,7 @@ UpdatePost command
   -> transaction updates content
   -> insert article_content_changed invalidation
   -> commit
-  -> PurgeWorker removes detail + list tags
+  -> Jobs.PublicCachePurge removes detail + list tags
 ```
 
 不能在领域事务内调用 Cloudflare：网络延迟会延长数据库锁，Cloudflare 故障也不应把合法领域写入变成事务失败。
@@ -355,17 +357,17 @@ wakeup，不复制 invalidation payload，也不是第二个业务 owner。若 t
 和 row lock 判定是否仍需发送。Oban Lifeline 负责把 node/process crash 后遗留的 `executing` job 重新置为可执行；worker
 若在 lease 到期前被再次唤醒，必须 snooze 到剩余 lease 到期，而不能把 job 标记 completed。当前实现不引入独立
 sweeper；若 trigger 被运维删除或发生存储外损坏，由 health 指标和显式 replay 处理，replay 仍复用同一个 invalidation row
-和 `PurgeWorker`。
-正常路径和 repair path 最终都进入同一个 `PurgeWorker`，不建立另一套 purge executor。
+和 `Jobs.PublicCachePurge`。
+正常路径和 repair path 最终都进入同一个 `Jobs.PublicCachePurge`，不建立另一套 purge executor。
 
 该原子性要求 Oban job table 与领域数据使用同一个 PostgreSQL Repo/transaction。若未来把 queue 移到外部系统，必须重新引入
 真正的 outbox relay；不能保留“同事务 enqueue”的表述却跨两个存储提交。trigger job 以 `invalidation_id` 配置唯一性，
 command replay 不创建并行有效 trigger。
 
-## 10. PurgeWorker
+## 10. 历史独立 Worker：`Jobs.PublicCachePurge`
 
 ```text
-Oban PublicCache.PurgeWorker
+Oban Jobs.PublicCachePurge
   -> load trigger invalidation id
   -> SELECT the trigger's invalidation row
        FOR UPDATE
@@ -468,7 +470,7 @@ mutation confirmed
 ```text
 Phoenix transaction
   -> Article + article_published invalidation commit together
-  -> PurgeWorker eventually purges article-list CDN tag
+  -> Jobs.PublicCachePurge eventually purges article-list CDN tag
 
 current browser
   -> QueryInvalidation.article.lists(scope)
@@ -506,7 +508,7 @@ Health/readiness：
 - dead-letter 非零：degraded 并告警；
 - production 缺少 Cloudflare zone/token：启动/readiness 失败，不把确定性配置错误排队重试；
 - Cloudflare 429/5xx 短暂重试：记录指标，不让 public read 失效；
-- PurgeWorker 长期无法 claim/drain：告警，即使 Cloudflare API 自身健康。
+- `Jobs.PublicCachePurge` 长期无法 claim/drain：告警，即使 Cloudflare API 自身健康。
 
 每条记录可从 `causation_id -> invalidation id -> Oban job -> Cloudflare result` 追踪。`:telemetry` 事件由
 `GroupherServer.PublicCache.Telemetry` 接到结构化日志 sink，并保留给未来 metrics exporter；日志只包含安全 locator、type、
@@ -519,7 +521,7 @@ id 的旧式入口必须被标记为 non-replayable，不得把每次随机 UUID
 
 1. 增加 `public-cache.contract.json`、双端生成器、stale check 和 golden vectors；
 2. 建立 `PublicCache.Const/Invalidation/Scope/Tags/Policy/Cloudflare`；
-3. 建立 outbox migration 和 `PurgeWorker`；
+3. 建立 outbox migration 和 `Jobs.PublicCachePurge`；
 4. 所有 content/publish/visibility/config command 在事务内写 typed invalidation；
 5. coverage audit 证明每个需要立即 purge 的领域写入口都有且只有一个 invalidation；
 6. 非生产环境验证 tag mapping、重试、Cloudflare body error 和 dead-letter；

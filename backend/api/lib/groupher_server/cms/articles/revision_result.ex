@@ -16,8 +16,7 @@ defmodule GroupherServer.CMS.Articles.RevisionResult do
   alias GroupherServer.{CMS, Repo}
   alias CMS.FrontDesk
   alias CMS.Articles.{Bindings, Store}
-  alias CMS.Articles.RevisionProjection
-  alias CMS.Articles.ArticleTransportResult
+  alias CMS.Articles.{RevisionProjection, ArticleTransportResult}
   alias CMS.Model.{Article, ArticleBinding, ArticleRevision, Community}
 
   @doc "Builds a stable Article result from a typed confirmation and loaded Community."

@@ -18,9 +18,6 @@ defmodule GroupherServerWeb.Middleware.BrowserCsrf do
 
   @behaviour Plug
 
-  alias GroupherServer.Auth
-  alias Auth.Contract, as: AuthContract
-
   @production_hosts MapSet.new([
                       "groupher.com",
                       "dash.groupher.com"
@@ -40,13 +37,18 @@ defmodule GroupherServerWeb.Middleware.BrowserCsrf do
         conn
 
       conn.method != "POST" ->
-        reject(conn, 405, "Mutations must use POST.", AuthContract.invalid_request())
+        reject(
+          conn,
+          405,
+          "Mutations must use POST.",
+          GroupherServer.Auth.contract_invalid_request()
+        )
 
       valid_browser_mutation?(conn) ->
         conn
 
       true ->
-        reject(conn, 400, "CSRF proof is required.", AuthContract.invalid_csrf())
+        reject(conn, 400, "CSRF proof is required.", GroupherServer.Auth.contract_invalid_csrf())
     end
   end
 

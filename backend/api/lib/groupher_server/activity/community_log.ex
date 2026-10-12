@@ -15,7 +15,6 @@ defmodule GroupherServer.Activity.CommunityLog do
   alias GroupherServer.{Activity, CMS, Repo}
   alias Activity.{ErrorCat, Event, Filter}
   alias CMS.Model.Community
-  alias CMS.Passport.Authorization
 
   @handlers [
     Activity.Post,
@@ -89,9 +88,18 @@ defmodule GroupherServer.Activity.CommunityLog do
     :parent_event_ref
   ]
 
-  @doc "Lists the safe CommunityLog surface with a fixed server-side page size."
+  @doc """
+  Lists the safe CommunityLog surface with a fixed server-side page size.
+
+  ## Examples
+
+      Activity.CommunityLog.list(community, actor, %{filter: %{actions: [:created]}}, 1)
+  """
   def list(%Community{} = community, actor, selection, page \\ 1) do
-    with {:ok, true} <- Authorization.check(actor, "audit.read", %{community: community}),
+    with {:ok, true} <-
+           GroupherServer.CMS.passport_authorization_check(actor, "audit.read", %{
+             community: community
+           }),
          {:ok, resolved} <- Filter.resolve(selection, active_actions()),
          {:ok, normalized} <- normalize_filter(Map.put(resolved.filter, :page, page), :list) do
       {total_count, entries} =
@@ -113,9 +121,18 @@ defmodule GroupherServer.Activity.CommunityLog do
     end
   end
 
-  @doc "Returns UTC daily counts for the same safe CommunityLog filter as list/3."
+  @doc """
+  Returns UTC daily counts for the same safe CommunityLog filter as list/3.
+
+  ## Examples
+
+      Activity.CommunityLog.stats(community, actor, %{filter: %{outcomes: [:denied]}})
+  """
   def stats(%Community{} = community, actor, selection) do
-    with {:ok, true} <- Authorization.check(actor, "audit.read", %{community: community}),
+    with {:ok, true} <-
+           GroupherServer.CMS.passport_authorization_check(actor, "audit.read", %{
+             community: community
+           }),
          {:ok, resolved} <- Filter.resolve(selection, active_actions()),
          {:ok, normalized} <- normalize_filter(resolved.filter, :stats) do
       {total_count, counts} =
@@ -134,9 +151,18 @@ defmodule GroupherServer.Activity.CommunityLog do
     end
   end
 
-  @doc "Returns the active CommunityLog action configuration for filter controls."
+  @doc """
+  Returns the active CommunityLog action configuration for filter controls.
+
+  ## Examples
+
+      Activity.CommunityLog.config(community, actor)
+  """
   def config(%Community{} = community, actor) do
-    with {:ok, true} <- Authorization.check(actor, "audit.read", %{community: community}) do
+    with {:ok, true} <-
+           GroupherServer.CMS.passport_authorization_check(actor, "audit.read", %{
+             community: community
+           }) do
       resources =
         Enum.map(@handlers, fn handler ->
           actions =
@@ -164,10 +190,19 @@ defmodule GroupherServer.Activity.CommunityLog do
     end
   end
 
-  @doc "Exports the current CommunityLog filter as bounded JSON or CSV data."
+  @doc """
+  Exports the current CommunityLog filter as bounded JSON or CSV data.
+
+  ## Examples
+
+      Activity.CommunityLog.export_logs(community, actor, %{filter: %{}}, :json)
+  """
   def export_logs(%Community{} = community, actor, selection, format)
       when format in [:json, :csv] do
-    with {:ok, true} <- Authorization.check(actor, "audit.read", %{community: community}),
+    with {:ok, true} <-
+           GroupherServer.CMS.passport_authorization_check(actor, "audit.read", %{
+             community: community
+           }),
          {:ok, resolved} <- Filter.resolve(selection, active_actions()),
          {:ok, normalized} <- normalize_filter(Map.put(resolved.filter, :page, 1), :list) do
       {total_count, entries} =
@@ -181,7 +216,7 @@ defmodule GroupherServer.Activity.CommunityLog do
       content = encode_export(entries, format, manifest)
 
       with {:ok, _audit_event} <-
-             Activity.log(community, :activity_exported,
+             Activity.Workflow.log(community, :activity_exported,
                actor: actor,
                payload: %{
                  format: format,
@@ -208,7 +243,13 @@ defmodule GroupherServer.Activity.CommunityLog do
     {:error, ErrorCat.invalid_pagination()}
   end
 
-  @doc "Reads one safe CommunityLog event by its public event reference."
+  @doc """
+  Reads one safe CommunityLog event by its public event reference.
+
+  ## Examples
+
+      Activity.CommunityLog.get_event(community, actor, event_ref)
+  """
   def get_event(%Community{} = community, actor, event_ref) do
     case list(community, actor, %{filter: %{event_ref: event_ref}}, 1) do
       {:ok, %{entries: [entry | _]}} -> {:ok, entry}
@@ -217,7 +258,13 @@ defmodule GroupherServer.Activity.CommunityLog do
     end
   end
 
-  @doc "Reads one event together with its safe parent and child projections."
+  @doc """
+  Reads one event together with its safe parent and child projections.
+
+  ## Examples
+
+      Activity.CommunityLog.get_event_detail(community, actor, event_ref)
+  """
   def get_event_detail(%Community{} = community, actor, event_ref) do
     with {:ok, event} <- get_event(community, actor, event_ref),
          {:ok, parent_event} <- related_event(community, actor, event && event.parent_event_ref),
@@ -244,6 +291,13 @@ defmodule GroupherServer.Activity.CommunityLog do
     list(community, actor, %{filter: %{parent_event_ref: event_ref}}, 1)
   end
 
+  @doc """
+  Returns the closed set of handlers used by the CommunityLog reader.
+
+  ## Examples
+
+      Activity.CommunityLog.handlers()
+  """
   def handlers, do: @handlers
 
   defp active_actions do

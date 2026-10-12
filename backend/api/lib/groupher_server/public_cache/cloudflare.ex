@@ -29,6 +29,13 @@ defmodule GroupherServer.PublicCache.Cloudflare do
   alias GroupherServer.PublicCache
   alias PublicCache.{Policy, Tags}
 
+  @doc """
+  Purges the supplied validated cache tags through Cloudflare.
+
+  ## Examples
+
+      PublicCache.Cloudflare.purge(["community[acme]"])
+  """
   @spec purge([String.t()]) :: {:ok, :pass} | {:error, term()}
   def purge(tags) when is_list(tags) do
     with {:ok, tags} <- Tags.validate(tags),
@@ -51,7 +58,13 @@ defmodule GroupherServer.PublicCache.Cloudflare do
     end
   end
 
-  @doc "Validates that the production purge adapter has its required credentials."
+  @doc """
+  Validates that the production purge adapter has its required credentials.
+
+  ## Examples
+
+      PublicCache.Cloudflare.configured?()
+  """
   @spec configured?() :: boolean()
   def configured? do
     match?({:ok, _config}, config())

@@ -22,12 +22,11 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   import Absinthe.Resolution.Helpers, only: [dataloader: 2]
 
   alias GroupherServer.{Accounts, CMS, FrontDesk}
-  alias Accounts.Profiles.ErrorCat, as: AuthErrorCat
-  alias CMS.Communities.ErrorCat, as: CommunityErrorCat
+
   alias CMS.Dashboard.{ThemePreset, ThirdPartyAnalytics}
-  alias CMS.Marker
+
   alias CMS.Model.{Community, CoverBackground}
-  alias CMS.Passport.Registry
+
   alias GroupherServerWeb.Schema
 
   import_types(Schema.CMS.Metrics)
@@ -936,7 +935,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
       resolve: fn draft, _, _ ->
         case Map.get(draft, :document) do
           nil ->
-            CMS.Articles.Store.body_draft(draft.body_draft_id)
+            CMS.articles_store_body_draft(draft.body_draft_id)
 
           document ->
             {:ok, document}
@@ -976,7 +975,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
 
     field(:document, :article_document,
       resolve: fn draft, _, _ ->
-        case CMS.Articles.Store.body_draft(draft.body_draft_id) do
+        case CMS.articles_store_body_draft(draft.body_draft_id) do
           {:ok, body_draft} -> {:ok, body_draft}
           {:error, _reason} -> {:ok, nil}
         end
@@ -1191,6 +1190,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   end
 
   input_object :community_asset_upload_completion_input do
+    field(:upload_ref, non_null(:string))
     field(:idempotency_key, non_null(:string))
     field(:community_id, non_null(:id))
     field(:uploader_id, :id)
@@ -1620,13 +1620,13 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
 
     field(:wallpaper, non_null(:wallpaper)) do
       resolve(fn dashboard, _, _ ->
-        {:ok, CMS.Wallpaper.wallpaper(dashboard.community_id)}
+        {:ok, CMS.wallpaper_wallpaper(dashboard.community_id)}
       end)
     end
 
     field(:wallpaper_settings, non_null(:wallpaper_settings_by_theme)) do
       resolve(fn dashboard, _, _ ->
-        {:ok, CMS.Wallpaper.wallpaper_settings(dashboard.community_id)}
+        {:ok, CMS.wallpaper_wallpaper_settings(dashboard.community_id)}
       end)
     end
 
@@ -1636,7 +1636,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
       arg(:theme, non_null(:wallpaper_theme))
 
       resolve(fn dashboard, %{theme: theme}, _ ->
-        {:ok, CMS.Wallpaper.wallpaper_history(dashboard.community_id, theme)}
+        {:ok, CMS.wallpaper_wallpaper_history(dashboard.community_id, theme)}
       end)
     end
 
@@ -1794,7 +1794,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   end
 
   defp resolve_marker_field(field, marker, _args, _info) do
-    {:ok, Marker.field(marker, field)}
+    {:ok, GroupherServer.CMS.marker_field(marker, field)}
   end
 
   object :community_tag_stat do
@@ -2120,7 +2120,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   defp moderator_passport_context(moderator) do
     with {:ok, community_slug} <- moderator_community_slug(moderator),
          {:ok, user_id} <- moderator_user_id(moderator),
-         {:ok, passport} <- CMS.Communities.get_passport(%Accounts.Model.User{id: user_id}) do
+         {:ok, passport} <- CMS.communities_get_passport(%Accounts.Model.User{id: user_id}) do
       {:ok, {passport, community_slug}}
     end
   end
@@ -2136,7 +2136,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   end
 
   defp moderator_community_slug(_) do
-    {:error, CommunityErrorCat.not_exist("community not found")}
+    {:error, GroupherServer.CMS.communities_error_cat_not_exist("community not found")}
   end
 
   defp moderator_user_id(%{user_id: user_id}) when not is_nil(user_id), do: {:ok, user_id}
@@ -2145,7 +2145,8 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     {:ok, user_id}
   end
 
-  defp moderator_user_id(_), do: {:error, AuthErrorCat.not_exist("user not found")}
+  defp moderator_user_id(_),
+    do: {:error, GroupherServer.Accounts.profiles_error_cat_not_exist("user not found")}
 
   defp moderator_root?(passport, community_slug) do
     get_in(passport, [community_slug, "root"]) == true
@@ -2153,7 +2154,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
 
   defp moderator_passport_item_count(passport, community_slug) do
     if moderator_root?(passport, community_slug) do
-      Registry.root_passport_item_count()
+      GroupherServer.CMS.passport_registry_root_passport_item_count()
     else
       passport
       |> get_in([community_slug, "cms"])
@@ -2164,7 +2165,9 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   defp fallback_moderator_passport_item_count(moderator) do
     count = moderator.passport_item_count || 0
 
-    if count >= Registry.root_passport_item_count(), do: 0, else: count
+    if count >= GroupherServer.CMS.passport_registry_root_passport_item_count(),
+      do: 0,
+      else: count
   end
 
   defp count_enabled_rules(rules) when is_map(rules) do

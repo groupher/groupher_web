@@ -14,7 +14,9 @@ defmodule GroupherServer.CMS.Model.DocBranchState do
 
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.{Article, DocBranch}
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{Article, DocBranch}
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.cms()

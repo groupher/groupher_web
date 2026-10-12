@@ -5,8 +5,10 @@ defmodule GroupherServer.CMS.Docs.Commands.UpdateDraft do
       Doc draft -> Gate/version checks -> draft write -> tagged result
   """
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{CMS, Repo}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias CMS.Docs.Editor
   alias CMS.Model.{Author, Community, DocBranch}
 

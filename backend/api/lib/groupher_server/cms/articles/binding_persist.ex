@@ -15,7 +15,7 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
 
   import Ecto.Query
 
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{Analysis, CMS, Repo}
   alias CMS.Articles.Numbering
 
   alias CMS.Model.{
@@ -48,13 +48,11 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
       )
       when thread in @ordinary_threads do
     with %Article{} = article <- lock_article(article.id),
-         {:ok, :source_matches} <- ensure_source_community(article, source),
+         {:ok, binding} <- source_binding(article.id, source_community_id),
          {:ok, :different_community} <- ensure_different_community(source, destination),
-         {:ok, binding} <- upsert_binding(article, destination),
-         {:ok, _binding} <- Numbering.assign_binding_inner_id(binding),
-         {:ok, _} <- delete_source_local_data(article.id, source_community_id),
-         {:ok, _deleted_count} <-
-           delete_source_binding(article.id, source_community_id, destination.id) do
+         {:ok, destination_binding} <- prepare_destination(article, destination),
+         {:ok, binding} <- move_binding(binding, destination_binding, destination),
+         {:ok, _binding} <- Numbering.assign_binding_inner_id(binding) do
       {:ok, article}
     else
       nil -> {:error, :article_not_found}
@@ -121,6 +119,13 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
     |> Repo.one()
   end
 
+  defp source_binding(article_id, community_id) do
+    case lock_binding(article_id, community_id) do
+      %ArticleBinding{} = binding -> {:ok, binding}
+      nil -> {:error, :source_article_binding_not_found}
+    end
+  end
+
   defp ensure_can_remove_published_article(
          _article_id,
          %ArticleBinding{visible: visible, inner_id: inner_id}
@@ -164,10 +169,40 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
     end
   end
 
-  defp ensure_source_community(%Article{} = article, %Community{id: source_id}) do
-    case Repo.get_by(ArticleBinding, article_id: article.id, community_id: source_id) do
-      %ArticleBinding{} -> {:ok, :source_matches}
-      nil -> {:error, :source_article_binding_not_found}
+  defp prepare_destination(%Article{} = article, %Community{id: destination_id}) do
+    case Repo.get_by(ArticleBinding, article_id: article.id, community_id: destination_id) do
+      nil ->
+        {:ok, nil}
+
+      %ArticleBinding{} = destination_binding ->
+        {:ok, destination_binding}
+    end
+  end
+
+  defp move_binding(source_binding, nil, destination) do
+    with {:ok, _} <-
+           delete_source_local_data(source_binding.article_id, source_binding.community_id),
+         {:ok, moved_binding} <-
+           source_binding
+           |> ArticleBinding.changeset(%{community_id: destination.id, inner_id: nil})
+           |> Repo.update(),
+         {:ok, :pass} <-
+           Analysis.metric_event_reassign_binding(moved_binding.id, destination.id) do
+      {:ok, moved_binding}
+    end
+  end
+
+  defp move_binding(source_binding, %ArticleBinding{} = destination_binding, destination) do
+    with {:ok, _} <-
+           delete_source_local_data(source_binding.article_id, source_binding.community_id),
+         {:ok, :pass} <-
+           Analysis.metric_event_merge_binding(
+             source_binding.id,
+             destination_binding.id,
+             destination.id
+           ),
+         {:ok, _deleted} <- Repo.delete(source_binding) do
+      {:ok, destination_binding}
     end
   end
 
@@ -185,19 +220,6 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
     Repo.delete_all(from(state in KanbanState, where: state.article_binding_id in ^binding_ids))
 
     {:ok, :pass}
-  end
-
-  defp delete_source_binding(article_id, source_community_id, destination_community_id) do
-    {deleted_count, _} =
-      Repo.delete_all(
-        from(binding in ArticleBinding,
-          where:
-            binding.article_id == ^article_id and binding.community_id == ^source_community_id and
-              binding.community_id != ^destination_community_id
-        )
-      )
-
-    {:ok, deleted_count}
   end
 
   defp upsert_binding(article, community) do

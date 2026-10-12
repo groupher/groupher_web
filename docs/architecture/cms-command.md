@@ -17,8 +17,8 @@ Gate、Lifecycle 或 version 规则，也不记录迁移步骤。
   [CMS Domain Outbox](./cms-outbox.md)。
 - 成功结果的 Confirmation codec 与 Receipt JSON 合同见
   [CMS Command Confirmation](./cms-command-confirmation.md)。
-- Confirmation 与提交后 result builder 的 V3 收口见
-  [CMS Command V3](./cms-command-v3.md)。
+- Confirmation 与提交后 result builder 的历史实施过程见
+  [CMS Command V3](./cms-command-v3.md)；它不覆盖本文的当前合同。
 
 发生冲突时，领域行为以 Transition Contract 为准，长期模块与 API 边界以本文为准，
 阶段顺序和临时状态以迁移文档为准。

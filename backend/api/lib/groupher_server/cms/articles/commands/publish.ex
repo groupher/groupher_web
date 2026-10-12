@@ -139,7 +139,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Publish do
           :publish,
           community,
           article,
-          fn canonical -> Articles.Writer.publish(canonical, author, actor, opts) end
+          fn canonical -> Articles.Workflow.publish(canonical, author, actor, opts) end
         )
 
       {:error, reason} ->
@@ -150,7 +150,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Publish do
   defp maybe_publish_effects(result, _opts), do: {:ok, result}
 
   defp target_author(%Author{} = author), do: {:ok, author}
-  defp target_author(%User{} = user), do: Articles.Writer.ensure_author_exists(user)
+  defp target_author(%User{} = user), do: Articles.Persist.ensure_author_exists(user)
   defp target_author(_actor), do: {:error, :invalid_actor}
 
   defp actor_user(%User{} = user), do: user

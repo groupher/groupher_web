@@ -13,19 +13,25 @@ defmodule GroupherServer.Accounts.CollectFolders.CommandResult do
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
 
-  @doc "Builds one collect mutation result through shared projection readers."
+  @doc """
+  Builds one collect mutation result through shared projection readers.
+
+  ## Examples
+
+      Accounts.CollectFolders.CommandResult.build({:ok, result}, article, viewer)
+  """
   @spec build({:ok, map()} | {:error, term()}, struct(), User.t()) ::
           {:ok, map()} | {:error, term()}
   def build({:ok, result}, article, %User{} = viewer) do
     with {:ok, article_stats} <-
-           CMS.ArticleStats.for_article(article, Map.get(article, :community)),
-         interaction when is_map(interaction) <- CMS.Interactions.viewer_state(article, viewer) do
+           CMS.article_stats_for_article(article, Map.get(article, :community)),
+         interaction when is_map(interaction) <- CMS.interactions_viewer_state(article, viewer) do
       {:ok,
        %{
          command_id: result.command_id,
          folder: result.folder,
          article_stats: article_stats,
-         interaction_state: CMS.Interactions.ReadState.article_state(article_stats, interaction)
+         interaction_state: CMS.interactions_article_state(article_stats, interaction)
        }}
     end
   end

@@ -7,11 +7,7 @@ defmodule GroupherServer.Accounts.Search.User do
 
   Business position:
 
-      Client / Auth
-        -> GraphQL or internal API
-        -> Accounts facade
-        -> User
-        -> Repo
+      Accounts.Search -> Search.User -> bounded User query
   """
 
   import Ecto.Query, warn: false
@@ -24,6 +20,13 @@ defmodule GroupherServer.Accounts.Search.User do
 
   @search_items_count 15
 
+  @doc """
+  Searches users by nickname or login for bounded picker results.
+
+  ## Examples
+
+      GroupherServer.Accounts.Search.user("alice")
+  """
   @spec search(String.t()) :: {:ok, map()} | {:error, any()}
   def search(name) do
     User

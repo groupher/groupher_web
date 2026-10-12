@@ -19,9 +19,9 @@ defmodule GroupherServer.Messaging.Model.Mention do
   import Ecto.Changeset
 
   alias __MODULE__
-  alias GroupherServer.{Accounts, CMS}
+  alias GroupherServer.{Accounts}
   alias Accounts.Model.User
-  alias CMS.Artiment.Threads
+
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.messaging()
@@ -31,7 +31,7 @@ defmodule GroupherServer.Messaging.Model.Mention do
 
   @type t :: %Mention{}
   schema "mentions" do
-    field(:thread, Ecto.Enum, values: Threads.enums())
+    field(:thread, Ecto.Enum, values: GroupherServer.CMS.artiment_threads_enums())
     field(:article_id, Ecto.UUID)
     field(:branch_id, :id)
     field(:title, :string)

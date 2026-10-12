@@ -5,9 +5,8 @@ defmodule GroupherServer.Activity.Artiment do
       Activity facade -> CMS Artiment matcher -> thread handler
   """
 
-  alias GroupherServer.{Activity, CMS}
+  alias GroupherServer.{Activity}
   alias Activity.ErrorCat
-  alias CMS.Artiment.Matcher
 
   @handlers %{
     post: Activity.Post,
@@ -16,11 +15,27 @@ defmodule GroupherServer.Activity.Artiment do
     doc: Activity.Doc
   }
 
+  @doc """
+  Returns the closed mapping from Activity thread names to handlers.
+
+  ## Examples
+
+      Activity.Artiment.handlers()
+  """
+  @spec handlers() :: %{atom() => module()}
   def handlers, do: @handlers
 
+  @doc """
+  Resolves an Article-like resource to its Activity handler.
+
+  ## Examples
+
+      Activity.Artiment.handler(%{thread: :post, id: "article-1"})
+  """
+  @spec handler(map()) :: {:ok, module()} | {:error, term()}
   def handler(resource) do
     try do
-      with {:ok, %{thread: thread}} <- Matcher.match(resource),
+      with {:ok, %{thread: thread}} <- GroupherServer.CMS.artiment_matcher_match(resource),
            {:ok, handler} <- Map.fetch(@handlers, thread) do
         {:ok, handler}
       else
@@ -33,6 +48,14 @@ defmodule GroupherServer.Activity.Artiment do
     end
   end
 
+  @doc """
+  Builds and persists an Activity event through the resource's handler.
+
+  ## Examples
+
+      Activity.Artiment.log(post, :created, actor: actor)
+  """
+  @spec log(struct(), atom(), keyword()) :: {:ok, struct()} | {:error, term()}
   def log(resource, action, opts) do
     with {:ok, handler} <- handler(resource), do: handler.log(resource, action, opts)
   end

@@ -1,0 +1,33 @@
+defmodule GroupherServer.Jobs.PublicCachePurge do
+  @moduledoc """
+  Oban entrypoint for durable PublicCache invalidation delivery.
+
+      Oban
+        -> Jobs.PublicCachePurge
+        -> PublicCache facade
+        -> Workflow / Effects / provider
+  """
+
+  use Oban.Worker,
+    queue: :public_cache,
+    max_attempts: GroupherServer.PublicCache.max_delivery_attempts(),
+    unique: [period: 86_400, keys: [:invalidation_id], states: :incomplete]
+
+  alias GroupherServer.PublicCache
+
+  @doc false
+  @impl Oban.Worker
+  def backoff(%Oban.Job{attempt: attempt}), do: PublicCache.delivery_retry_delay(attempt)
+
+  @doc false
+  @impl Oban.Worker
+  def perform(%Oban.Job{args: %{"invalidation_id" => id}} = job) do
+    lock_ref = "#{node()}:#{job.id}:#{job.attempt}:#{Ecto.UUID.generate()}"
+
+    case PublicCache.deliver(id, lock_ref, job.attempt, job.max_attempts) do
+      {:ok, {:snooze, retry_after_seconds}} -> {:snooze, retry_after_seconds}
+      {:ok, :pass} -> {:ok, :pass}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+end

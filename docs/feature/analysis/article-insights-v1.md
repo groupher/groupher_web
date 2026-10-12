@@ -2,7 +2,7 @@
 
 > 状态：V1 主体已实现；生产调度、权限和第三方统计边界仍需按本文完成部署验收。
 >
-> 本文独立于 [ViewTracker V1](../view-tracker/v1.md)。ViewTracker 只负责有效阅读；本文负责把 View、
+> 本文独立于 [Article View 计数写链路](../view-tracker/article-view-counting.md)。ViewTracker 只负责有效阅读；本文负责把 View、
 > Upvote、Collect、Comment 等共同建模为可查询的时间趋势。
 
 ## 1. 产品目标

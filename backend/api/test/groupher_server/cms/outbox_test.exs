@@ -10,7 +10,7 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
     assert {:ok, event} =
              CMS.Outbox.send(%{
                event: "test.completed",
-               worker: CMS.Outbox.Workers.Article.Cleanup,
+               worker: GroupherServer.Jobs.CMSOutboxArticle,
                resource_type: "test",
                resource_id: "one",
                command_id: Ecto.UUID.generate(),
@@ -26,21 +26,54 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
     assert_receive {:outbox_action, id, 1}
     assert id == event.id
 
-    assert {:ok, :completed} =
+    assert {:ok, :done} =
              CMS.Outbox.execute(event.id, fn _received ->
                send(self(), :must_not_run)
                {:ok, :wrong}
              end)
 
     refute_receive :must_not_run
-    assert Repo.get!(Event, event.id).status == :completed
+    assert Repo.get!(Event, event.id).status == :done
+  end
+
+  test "stores rolling-safe status values while exposing the current lifecycle" do
+    assert {:ok, event} =
+             CMS.Outbox.send(event_attrs("test.status_storage", Ecto.UUID.generate()))
+
+    assert %{rows: [["pending"]]} =
+             Repo.query!("SELECT status FROM cms.outbox_events WHERE id::text = $1", [event.id])
+
+    assert Repo.get!(Event, event.id).status == :waiting
+  end
+
+  test "Community provisioning resolves the string Outbox resource id as a database id" do
+    {:ok, community} = db_insert(:community)
+
+    assert {:ok, event} =
+             CMS.Outbox.send(%{
+               event: "community.analysis_provision",
+               worker: GroupherServer.Jobs.CMSOutboxCommunity,
+               resource_type: "community",
+               resource_id: community.id,
+               identity: {:workflow, "community-analysis:#{community.id}"},
+               effect_key: "analysis_provision"
+             })
+
+    assert {:ok, :pass} =
+             GroupherServer.Jobs.CMSOutboxCommunity.perform(%Oban.Job{
+               args: %{"event_id" => event.id},
+               attempt: 1,
+               max_attempts: 3
+             })
+
+    assert Repo.get!(Event, event.id).status == :done
   end
 
   test "a failed event can be claimed and retried" do
     assert {:ok, event} =
              CMS.Outbox.send(%{
                event: "test.retry",
-               worker: CMS.Outbox.Workers.Article.Cleanup,
+               worker: GroupherServer.Jobs.CMSOutboxArticle,
                resource_type: "test",
                resource_id: "two",
                command_id: Ecto.UUID.generate()
@@ -49,12 +82,12 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
     assert {:error, :temporary_failure} =
              CMS.Outbox.execute(event.id, fn _received -> {:error, :temporary_failure} end)
 
-    assert Repo.get!(Event, event.id).status == :failed
+    assert Repo.get!(Event, event.id).status == :retrying
 
     assert {:ok, :recovered} =
              CMS.Outbox.execute(event.id, fn _received -> {:ok, :recovered} end)
 
-    assert Repo.get!(Event, event.id).status == :completed
+    assert Repo.get!(Event, event.id).status == :done
   end
 
   test "requires an explicit worker and command id" do
@@ -69,7 +102,7 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
     assert {:error, :outbox_command_id_required} =
              CMS.Outbox.send(%{
                event: "test.missing_command",
-               worker: CMS.Outbox.Workers.Article.Cleanup,
+               worker: GroupherServer.Jobs.CMSOutboxArticle,
                resource_type: "test",
                resource_id: "missing"
              })
@@ -99,7 +132,7 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
     assert {:ok, event} =
              CMS.Outbox.send(%{
                event: "test.workflow",
-               worker: CMS.Outbox.Workers.Article.Cleanup,
+               worker: GroupherServer.Jobs.CMSOutboxArticle,
                resource_type: "asset",
                resource_id: 42,
                identity: {:workflow, "reconcile-run-42"},
@@ -119,7 +152,7 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
     assert {:ok, destination} =
              CMS.Outbox.send(%{
                event: "test.scope",
-               worker: CMS.Outbox.Workers.Article.Cleanup,
+               worker: GroupherServer.Jobs.CMSOutboxArticle,
                resource_type: "test",
                resource_id: "destination",
                identity: {:command, command_id},
@@ -135,7 +168,7 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
 
     event
     |> Event.changeset(%{
-      status: :executing,
+      status: :running,
       attempts: 1,
       locked_at: DateTime.utc_now(:second),
       locked_by: "live-worker"
@@ -151,7 +184,7 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
 
     event
     |> Event.changeset(%{
-      status: :executing,
+      status: :running,
       attempts: 1,
       locked_at: DateTime.add(DateTime.utc_now(:second), -121, :second),
       locked_by: "old-worker"
@@ -164,21 +197,23 @@ defmodule GroupherServer.Test.CMS.OutboxTest do
     assert Repo.get!(Event, event.id).attempts == 2
   end
 
-  test "a failed event can be marked dead after retry exhaustion" do
-    {:ok, event} = CMS.Outbox.send(event_attrs("test.dead", Ecto.UUID.generate()))
+  test "a retrying event can be marked failed after the final attempt" do
+    {:ok, event} = CMS.Outbox.send(event_attrs("test.failed", Ecto.UUID.generate()))
 
     assert {:error, :permanent_failure} =
              CMS.Outbox.execute(event.id, fn _event -> {:error, :permanent_failure} end)
 
-    assert {:ok, :pass} = CMS.Outbox.mark_dead(event.id)
-    assert Repo.get!(Event, event.id).status == :dead
-    assert {:error, :outbox_event_dead} = CMS.Outbox.execute(event.id, fn _ -> {:ok, :nope} end)
+    assert {:ok, :pass} = CMS.Outbox.mark_failed(event.id)
+    assert Repo.get!(Event, event.id).status == :failed
+
+    assert {:error, :outbox_event_failed} =
+             CMS.Outbox.execute(event.id, fn _ -> {:ok, :nope} end)
   end
 
   defp event_attrs(event, command_id) do
     %{
       event: event,
-      worker: CMS.Outbox.Workers.Article.Cleanup,
+      worker: GroupherServer.Jobs.CMSOutboxArticle,
       resource_type: "test",
       resource_id: event,
       command_id: command_id

@@ -124,7 +124,7 @@ defmodule GroupherServer.Test.CMS.Articles.Kanban do
 
       refute Repo.get(CMS.Model.KanbanState, binding.id)
 
-      assert {:error, %GroupherServer.ErrorCat.Error{reason: :not_in_kanban}} =
+      assert {:error, %ErrorCat.Error{reason: :not_in_kanban}} =
                CMS.Kanban.move_post(community, article, @article_status.done, user)
     end
 

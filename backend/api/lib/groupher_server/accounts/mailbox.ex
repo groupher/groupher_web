@@ -1,260 +1,105 @@
 defmodule GroupherServer.Accounts.Mailbox do
-  require Logger
-
   @moduledoc """
-  Account-facing mailbox facade and unread counter synchronizer.
+  Public account boundary for mailbox reads and unread-counter workflows.
 
-  Read operations delegate to `GroupherServer.Messaging`; status updates fold
-  unread counts from mentions and notifications back into the user's embedded
-  mailbox state.
+  Query and read-state access belongs to Messaging. This facade owns only the
+  stable Accounts entrypoint and delegates counter rebuilding to the mailbox
+  projection workflow.
 
-      Messaging row changes
+      Messaging rows
           |
           v
-      Mailbox.update_status_many/1
+      Accounts.Mailbox.Workflow
           |
-          +--> lock affected users
-          +--> group unread counts by user
-          +--> batch update User.mailbox
-          +--> invalidate user caches after commit
+          +--> Mailbox.Projection
+          +--> Mailbox.Effects
   """
 
-  import Ecto.Query, warn: false
-  import Helper.ErrorHandler, only: [not_found_formatter: 2]
-  import Helper.Utils, only: [done: 1]
+  alias __MODULE__.{Effects, Projection, Query, Workflow}
+  alias GroupherServer.{Accounts, Messaging}
 
-  alias GroupherServer.{Accounts, ErrorCat, Messaging, Repo}
+  alias Accounts.Model.User
 
-  alias Accounts.Model.{Embeds, User}
-  alias Accounts.Profiles.ErrorCat, as: ProfileErrorCat
-  alias Accounts.FrontDesk.Cache, as: FrontDeskCache
+  @doc """
+  Returns the embedded unread status for a user.
 
-  @default_status Embeds.UserMailbox.default_status()
+  ## Examples
 
-  @doc "Runs `status` through the public `Mailbox` boundary."
-  def status(%User{mailbox: nil}), do: done(@default_status)
-  def status(%User{mailbox: mailbox}), do: done(mailbox)
+      Accounts.Mailbox.status(user)
+  """
+  @spec status(User.t()) :: {:ok, map()} | {:error, term()}
+  def status(%User{} = user), do: Query.status(user)
 
-  @doc "Runs `mark_read` through the public `Mailbox` boundary."
+  @doc """
+  Marks selected mention or notification rows as read.
+
+  ## Examples
+
+      Accounts.Mailbox.mark_read(:mention, message_ids, user)
+  """
   def mark_read(type, ids, %User{} = user), do: Messaging.mark_read(type, ids, user)
-  @doc "Runs `mark_read_all` through the public `Mailbox` boundary."
+
+  @doc """
+  Marks all rows of one inbox message type as read.
+
+  ## Examples
+
+      Accounts.Mailbox.mark_read_all(:notification, user)
+  """
   def mark_read_all(type, %User{} = user), do: Messaging.mark_read_all(type, user)
-  @doc "Returns paged messages from the `Mailbox` read boundary."
+
+  @doc """
+  Returns one page of mailbox messages.
+
+  ## Examples
+
+      Accounts.Mailbox.paged_messages(:mention, user, %{page: 1, size: 20})
+  """
   def paged_messages(type, user, filter), do: Messaging.paged_messages(type, user, filter)
 
   @doc """
-  Synchronizes one user's persisted mailbox counters with the unread message rows.
+  Rebuilds and persists one user's mailbox counters.
 
-  The update owns its database transaction and invalidates the FrontDesk cache
-  only after that transaction commits. It returns the updated user.
+  ## Examples
+
+      Accounts.Mailbox.update_status(user.id)
   """
-  def update_status(user_id) do
-    with {:ok, [user]} <- update_users([user_id]) do
-      invalidate_users([user])
-      done(user)
-    end
-  end
+  @spec update_status(term()) :: {:ok, User.t()} | {:error, term()}
+  def update_status(user_id), do: Workflow.sync_one(user_id)
 
   @doc """
-  Synchronizes mailbox counters for all distinct, non-nil user IDs.
+  Rebuilds mailbox counters for all distinct user IDs and invalidates caches after commit.
 
-  Reads and writes are batched so the number of business SQL statements does not
-  grow with the number of users. Cache invalidation is deliberately kept outside
-  the database transaction.
+  ## Examples
 
-      user_ids
-          |
-          v
-      normalize + deduplicate
-          |
-          v
-      database transaction
-          |
-          +--> lock users in ID order
-          +--> group unread mention counts
-          +--> group unread notification counts
-          +--> batch update mailbox embeds
-          |
-          v
-      commit
-          |
-          v
-      invalidate FrontDesk user caches
-
-  Returns `{:ok, :pass}` when all affected users are synchronized. If any user
-  does not exist, no mailbox update is committed.
+      Accounts.Mailbox.update_status_many([user.id, another_user.id])
   """
-  def update_status_many(user_ids) when is_list(user_ids) do
-    case normalize_user_ids(user_ids) do
-      [] ->
-        done(:pass)
-
-      user_ids ->
-        with {:ok, users} <- update_users(user_ids) do
-          invalidate_users(users)
-          done(:pass)
-        end
-    end
-  end
+  @spec update_status_many([term()]) :: {:ok, :pass} | {:error, term()}
+  def update_status_many(user_ids) when is_list(user_ids), do: Workflow.sync_many(user_ids)
 
   @doc """
-  Synchronizes mailbox counters inside an existing database transaction.
+  Rebuilds mailbox counters inside a caller-owned transaction.
 
-  This is the transaction-aware entry point used by messaging write flows. It
-  performs database work only and returns the updated users so the caller can
-  invalidate their caches after the outer transaction commits.
+  This is the explicit cross-context projection primitive used by Messaging
+  Commands. It performs database work only; the caller owns commit and must
+  invoke `invalidate_users/1` after commit.
 
-      existing transaction
-          |
-          v
-      update_status_many_in_transaction/1
-          |
-          +--> lock + count + batch update
-          |
-          v
-      return updated users
-          |
-          v
-      caller commits, then invalidates caches
+  ## Examples
+
+      Accounts.Mailbox.update_status_many_in_transaction([user.id])
   """
+  @spec update_status_many_in_transaction([term()]) :: {:ok, [User.t()]} | {:error, term()}
   def update_status_many_in_transaction(user_ids) when is_list(user_ids) do
-    case normalize_user_ids(user_ids) do
-      [] -> {:ok, []}
-      user_ids -> do_update_status_many(user_ids)
-    end
+    Projection.sync_many_in_transaction(user_ids)
   end
 
   @doc """
-  Invalidates cached FrontDesk users after their mailbox transaction commits.
+  Invalidates cached FrontDesk users after a mailbox transaction commits.
 
-  Cache deletion is best-effort because the database commit has already
-  succeeded. Missing logins and duplicate users are ignored.
+  ## Examples
+
+      Accounts.Mailbox.invalidate_users([user])
   """
-  def invalidate_users(users) when is_list(users) do
-    users
-    |> Enum.map(& &1.login)
-    |> Enum.reject(&is_nil/1)
-    |> Enum.uniq()
-    |> Enum.each(&FrontDeskCache.delete_user/1)
-
-    {:ok, :pass}
-  end
-
-  defp update_users(user_ids) do
-    case Repo.transaction(fn ->
-           case update_status_many_in_transaction(user_ids) do
-             {:ok, users} -> users
-             {:error, reason} -> Repo.rollback(reason)
-           end
-         end) do
-      {:ok, users} -> {:ok, users}
-      {:error, reason} -> {:error, reason}
-    end
-  end
-
-  defp do_update_status_many(user_ids) do
-    with {:ok, users} <- lock_users(user_ids),
-         {:ok, unread_mentions} <- Messaging.unread_counts(:mention, user_ids),
-         {:ok, unread_notifications} <- Messaging.unread_counts(:notification, user_ids) do
-      batch_update_mailboxes(users, unread_mentions, unread_notifications)
-    end
-  end
-
-  defp lock_users(user_ids) do
-    users =
-      User
-      |> where([u], u.id in ^user_ids)
-      |> order_by([u], asc: u.id)
-      |> lock("FOR UPDATE")
-      |> Repo.all()
-
-    found_user_ids = users |> MapSet.new(& &1.id)
-
-    case Enum.find(user_ids, &(not MapSet.member?(found_user_ids, &1))) do
-      nil ->
-        {:ok, users}
-
-      missing_user_id ->
-        {:error, ProfileErrorCat.not_exist(not_found_formatter(User, missing_user_id))}
-    end
-  end
-
-  # Ecto API: https://hexdocs.pm/ecto/Ecto.Query.API.html#values/2 and
-  # https://hexdocs.pm/ecto/Ecto.Repo.html#update_all/3.
-  defp batch_update_mailboxes(users, unread_mentions, unread_notifications) do
-    prepared_updates =
-      Enum.map(users, fn user ->
-        mailbox =
-          build_mailbox(
-            user.mailbox,
-            Map.get(unread_mentions, user.id, 0),
-            Map.get(unread_notifications, user.id, 0)
-          )
-
-        updated_user = %{user | mailbox: mailbox}
-        payload = %{id: user.id, mailbox: Map.from_struct(mailbox)}
-
-        {updated_user, payload}
-      end)
-
-    updates = Enum.map(prepared_updates, &elem(&1, 1))
-
-    query =
-      from(user in User,
-        join: update in values(updates, %{id: :id, mailbox: :map}),
-        on: update.id == user.id,
-        update: [
-          set: [
-            mailbox: update.mailbox,
-            updated_at: fragment("date_trunc('second', now())")
-          ]
-        ],
-        select: {user.id, user.updated_at}
-      )
-
-    try do
-      case Repo.update_all(query, []) do
-        {count, rows} when count == length(users) ->
-          updated_at_by_id = Map.new(rows, fn {id, updated_at} -> {id, updated_at} end)
-
-          users =
-            Enum.map(prepared_updates, fn {user, _payload} ->
-              %{user | updated_at: Map.fetch!(updated_at_by_id, user.id)}
-            end)
-
-          {:ok, users}
-
-        {count, _rows} ->
-          {:error,
-           ErrorCat.custom(
-             "mailbox batch update affected #{count} of #{length(users)} expected users"
-           )}
-      end
-    rescue
-      exception ->
-        Logger.error("mailbox batch update failed: #{Exception.message(exception)}")
-        {:error, ErrorCat.custom()}
-    end
-  end
-
-  defp build_mailbox(mailbox, unread_mentions_count, unread_notifications_count) do
-    unread_total_count = unread_mentions_count + unread_notifications_count
-
-    mailbox = mailbox || %Embeds.UserMailbox{}
-
-    %{
-      mailbox
-      | id: mailbox.id || Ecto.UUID.generate(),
-        unread_mentions_count: unread_mentions_count,
-        unread_notifications_count: unread_notifications_count,
-        unread_total_count: unread_total_count,
-        is_empty: unread_total_count < 1
-    }
-  end
-
-  defp normalize_user_ids(user_ids) do
-    user_ids
-    |> Enum.reject(&is_nil/1)
-    |> Enum.uniq()
-  end
+  @spec invalidate_users([User.t()]) :: {:ok, :pass}
+  def invalidate_users(users) when is_list(users), do: Effects.invalidate_users(users)
 end

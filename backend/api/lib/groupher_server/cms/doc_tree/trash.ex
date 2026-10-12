@@ -25,8 +25,9 @@ defmodule GroupherServer.CMS.DocTree.Trash do
   alias CMS.Articles.MutationLock
   alias CMS.Docs.Branch
   alias CMS.Docs.Trash, as: DocTrash
-  alias CMS.DocTree.Events
-  alias CMS.DocTree.Writer.{EventRecorder, Index, Operation}
+  alias CMS.DocTree.{Effects, Events}
+  alias CMS.DocTree.Persist.{EventRecorder, Index, Operation}
+  alias CMS.DocTree.Workflows.TreeMutation
 
   alias CMS.Model.{
     Community,
@@ -79,7 +80,7 @@ defmodule GroupherServer.CMS.DocTree.Trash do
   @doc "Restores one complete Docs Trash action."
   @spec restore(Community.t(), T.id(), map()) :: T.domain_res(map())
   def restore(%Community{} = community, action_ref, args) do
-    Operation.run(community, args, fn branch, state ->
+    TreeMutation.run(community, args, fn branch, state ->
       with {:ok, actor} <- load_actor(args),
            {:ok, action} <- find_action(community, branch, action_ref),
            items <- action_nodes(action, branch),
@@ -87,7 +88,7 @@ defmodule GroupherServer.CMS.DocTree.Trash do
            doc_ids <- action_doc_ids(action, branch),
            {:ok, result} <-
              MutationLock.with_articles(community, :doc, branch.id, doc_ids, fn ->
-               restore_action(community, branch, action, items, actor)
+               restore_action(community, branch, action, items, actor, restore_options(args))
              end),
            {:ok, state} <- Operation.bump_revision(community, state, result.tree_event_count) do
         Enum.each(result.articles, &Indexer.enqueue_upsert/1)
@@ -109,6 +110,11 @@ defmodule GroupherServer.CMS.DocTree.Trash do
         error -> error
       end
     end)
+  end
+
+  @doc "Restores a Docs Trash action for the ContentImport Job workflow."
+  def restore_for_content_import(%Community{} = community, action_ref, args) do
+    restore(community, action_ref, Map.put(args, :workflow, :content_import))
   end
 
   @doc "Permanently deletes one complete Docs Trash action."
@@ -165,7 +171,7 @@ defmodule GroupherServer.CMS.DocTree.Trash do
            ),
          {:ok, _} <- delete_tree_memberships(current.id),
          {:ok, _activity} <-
-           Activity.log(
+           Effects.activity(
              %{activity_type: :doc_tree, community_id: community.id, ref: current.root_ref},
              :permanently_deleted,
              actor: actor,
@@ -178,22 +184,27 @@ defmodule GroupherServer.CMS.DocTree.Trash do
     end
   end
 
-  defp restore_action(community, branch, action, items, actor) do
+  defp restore_action(community, branch, action, items, actor, opts) do
     with {:ok, _} <- shift_root_restore_slots(community, branch, action, items),
          {:ok, _} <- ensure_restore_slots_available(community, branch, items),
          {:ok, draft_nodes} <- restore_stage_nodes(community, branch, items, :draft),
          {:ok, public_nodes} <- restore_stage_nodes(community, branch, items, :public),
          {:ok, articles} <-
-           DocTrash.restore_action_articles(action, community, branch, actor,
-             source: "api",
-             audit: false,
-             metadata: %{trash_root_type: action.root_type, trash_root_ref: action.root_ref}
+           DocTrash.restore_action_articles(
+             action,
+             community,
+             branch,
+             actor,
+             Keyword.merge(opts,
+               audit: false,
+               metadata: %{trash_root_type: action.root_type, trash_root_ref: action.root_ref}
+             )
            ),
          {:ok, events} <-
            record_restore_events(community, branch, items, draft_nodes, public_nodes, actor),
          {:ok, _} <- delete_tree_memberships(action.id),
          {:ok, _activity} <-
-           Activity.log(
+           Effects.activity(
              %{
                activity_type: :doc_tree,
                community_id: community.id,
@@ -203,7 +214,7 @@ defmodule GroupherServer.CMS.DocTree.Trash do
              :restored,
              actor: actor,
              operation_ref: action.hash_id,
-             source: :api,
+             source: Keyword.get(opts, :source, :api),
              metadata: %{node_count: length(items), doc_count: length(articles)}
            ),
          {:ok, _} <- CMS.Articles.Trash.delete_empty_action(action.id) do
@@ -271,6 +282,13 @@ defmodule GroupherServer.CMS.DocTree.Trash do
           nil ->
             {:error, ErrorCat.custom("Docs Trash restore requires an authenticated actor")}
         end
+    end
+  end
+
+  defp restore_options(args) do
+    case option(args, :workflow) do
+      :content_import -> [source: :worker]
+      _ -> [source: :api]
     end
   end
 
@@ -526,7 +544,10 @@ defmodule GroupherServer.CMS.DocTree.Trash do
         restore_events(draft, public)
       end)
 
-    Events.record_staged_many(community, events, actor.id, branch_id: branch.id)
+    Events.record_staged_many(community, events, actor.id,
+      branch_id: branch.id,
+      transaction: false
+    )
   end
 
   defp restore_events(nil, _public), do: []
@@ -608,7 +629,7 @@ defmodule GroupherServer.CMS.DocTree.Trash do
   defp parent_id(%DocTreeNode{} = node), do: node.parent_node_id
 
   defp activity_source(opts) do
-    opts |> Keyword.get(:source, :api) |> Activity.Const.normalize_source()
+    opts |> Keyword.get(:source, :api) |> Activity.const_normalize_source()
   end
 
   defp type_rank(:tab), do: 0

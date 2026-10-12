@@ -5,9 +5,11 @@ defmodule GroupherServer.CMS.Docs.Commands.PublishBranch do
       Doc branch -> atomic publish -> public projection -> effects
   """
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{CMS, Repo}
-  alias GroupherServer.Accounts.Model.User
-  alias CMS.Articles.Publish.{Doc, Effects}
+  alias Accounts.Model.User
+  alias CMS.Articles.Publish.Doc
   alias CMS.Docs.Editor
   alias CMS.Model.{Author, Community, DocBranch}
 
@@ -33,8 +35,7 @@ defmodule GroupherServer.CMS.Docs.Commands.PublishBranch do
              article,
              branch_id,
              fn canonical -> Doc.publish(canonical, branch_id, author, opts) end
-           ),
-         {:ok, result} <- Effects.run(result) do
+           ) do
       {:ok, result}
     end
   end

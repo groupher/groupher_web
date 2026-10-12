@@ -1,272 +1,218 @@
 # CMS Domain Outbox
 
-> 状态：目标架构。
+> 状态：当前合同，已落地。
 >
-> 范围：统一承载 CMS 领域事务提交后必须可靠执行的 effect，包括 Public Cache cleanup、
-> Search reindex、Notification 和 Webhook。当前实现是迁移输入，不代表本文目标已落地。
+> 范围：承载 CMS 事务提交后必须可靠执行的副作用，包括公共缓存失效、Press 缓存失效、
+> 搜索索引、通知、Webhook 和其他领域投递。
 
 ## 1. 结论
 
-Public Cache invalidation 是一种 Outbox Event。理想架构将可靠执行协议收口到
-`GroupherServer.CMS.Outbox`，但不建立 Dispatcher、Registry、通用 Handler 或额外的
-Store/Policy/Health/Telemetry 层。
+CMS Outbox 是 CMS 共享的内部持久化能力。领域业务通过自己的 `Effects` 登记 intent；`Jobs`
+拥有 Oban Worker；`CMS.Outbox.Workflow` 负责认领、重试和投递状态。Outbox 不直接包含业务规则，
+也不把 Worker 放在 `cms/outbox/` 内。
 
 ```text
-CMS domain transaction
-  -> CMS.Outbox.send(event)
-       -> insert Event
-       -> insert Oban Job
+CMS Command transaction
+  -> Domain.Effects.enqueue(...)
+       -> CMS.Outbox.send(event)
+            -> insert Event
+            -> insert Oban Job
   -> COMMIT
 
-CMS.Outbox.Workers.<Domain>.<Task>.perform(job)
-  -> CMS.Outbox.execute(event_id, &domain_action/1)
-       -> claim Event
-       -> action
-       -> complete / retry / fail
+Jobs.CMSOutbox<Domain>.perform(job)
+  -> CMS.deliver_outbox(domain, job)
+       -> CMS.Outbox.Workflow.<Domain>.perform(job)
+            -> CMS.Outbox.execute(event_id, &deliver/1)
+                 -> claim / lease Event
+                 -> reload canonical resources from stable IDs
+                 -> execute the domain effect
+                 -> done / retrying / failed
 ```
 
-每个 Worker 自己表达任务语义；Outbox 只统一 Event 的写入、认领、重试和完成状态。
-
-## 2. 模块与目录
+## 2. 目录与 owner
 
 ```text
-GroupherServer.CMS.Outbox
-|-- Event
-|-- send/1
-|-- execute/2
-`-- Workers
-    |-- Article
-    |   |-- Cleanup
-    |   |-- Reindex
-    |   `-- Notification
-    |-- Comment
-    |   `-- Cleanup
-    `-- ...
+lib/groupher_server/
+|-- cms.ex                              # CMS 对外 Facade
+|-- cms/
+|   |-- outbox.ex                       # Outbox capability Facade
+|   |-- outbox/
+|   |   |-- event.ex                    # durable event schema
+|   |   |-- persist.ex                  # event/lease/status persistence
+|   |   `-- workflow/
+|   |       |-- article.ex
+|   |       |-- comment.ex
+|   |       |-- community.ex
+|   |       |-- interaction.ex
+|   |       |-- asset.ex
+|   |       `-- press.ex
+|   `-- <domain>/effects.ex              # 业务 intent owner
+`-- jobs/
+    |-- cms_outbox_article.ex
+    |-- cms_outbox_comment.ex
+    |-- cms_outbox_community.ex
+    |-- cms_outbox_interaction.ex
+    |-- cms_outbox_asset.ex
+    `-- cms_outbox_press.ex
 ```
 
-对应目录：
+职责边界：
 
-```text
-lib/groupher_server/cms/outbox/
-|-- event.ex
-|-- workers/
-|   |-- article/
-|   |   |-- cleanup.ex
-|   |   |-- reindex.ex
-|   |   `-- notification.ex
-|   `-- comment/
-|       `-- cleanup.ex
-`-- outbox.ex
-```
+- `<Domain>.Effects` 决定何时产生什么业务副作用，并在当前事务内调用 `CMS.Outbox.send/1`；
+- `CMS.Outbox` 只维护 event、lease、attempt、retry 和最终状态；
+- `Jobs.CMSOutbox*` 只做稳定入口转发，不访问 Repo 或 provider；
+- `CMS.Outbox.Workflow.<Domain>` 按稳定 ID 重载当前资源并执行对应 effect；
+- provider module 只负责具体外部调用，不拥有 Outbox 状态机。
 
-一类领域任务一个 Worker，而不是一个 event 一个文件。Article 后续增加多种事件时，
-`Article.Cleanup` 仍可以通过模式匹配处理同一任务族：
+## 3. 写入合同
+
+Outbox Event 与领域事实必须在同一个数据库事务中写入：
 
 ```elixir
-defp cleanup(%Event{event: "article.published"} = event), do: ...
-defp cleanup(%Event{event: "article.updated"} = event), do: ...
-defp cleanup(%Event{event: "article.trashed"} = event), do: ...
-```
-
-不建立中央 event-to-module 映射；Oban Job 创建时已经选择具体 Worker。
-
-## 3. Event 模型
-
-```text
-cms.outbox_events
-  id                 UUID
-  event              stable text, e.g. article.published
-  contract_version   positive integer
-  resource_type      stable text, e.g. article
-  resource_id        stable text
-  identity_type      command | workflow
-  command_id         text (legacy column name; UUID for command, durable ref for workflow)
-  effect_key         text
-  data               bounded JSON map
-  status             pending | executing | completed | failed
-  attempts           non-negative integer
-  available_at       UTC datetime
-  locked_at          UTC datetime
-  locked_by          lease token
-  completed_at       UTC datetime
-  last_error_code    stable safe code
-  last_error_at      UTC datetime
-  inserted_at        UTC datetime
-  updated_at         UTC datetime
-```
-
-命名规则：
-
-- Command Receipt 使用客户端 `command_id`；Outbox 使用 typed `identity`，物理 `command_id` 列仅为兼容旧表名。
-- `identity: {:command, id}` 表示用户业务命令；`identity: {:workflow, ref}` 表示维护、上传或批处理 workflow。
-- `effect_key` 区分同一 identity 对多个 scope/resource 产生的独立 effect，不能通过生成第二个 command UUID 绕过唯一键。
-- 不使用 `target_type/target_key`、`aggregate_type/aggregate_id` 或 `causation_id`。
-- `data` 只保存消费所需的最小、版本化事实，不保存完整 Article 或用户私密快照。
-- Event 是可靠执行记录，不是长期 Audit/Activity。
-
-同一 Command 可发送多个独立 Event：
-
-```text
-article.publish
-  |-- article.cleanup
-  |-- article.reindex
-  |-- article.notification
-  `-- article.webhook
-```
-
-它们分别重试，避免一次通知失败迫使缓存清理和索引更新重复执行。
-
-## 4. 写入：`CMS.Outbox.send/1`
-
-领域 Command 的 `action` 在当前事务内写入领域事实和 Event：
-
-```elixir
-with {:ok, revision} <- Revision.Writer.insert(article, draft),
-     {:ok, article} <- Articles.move_live_revision(article, revision),
+with {:ok, article} <- Persist.publish(...),
      {:ok, _event} <-
        CMS.Outbox.send(%{
          event: "article.published",
          contract_version: 1,
-         worker: CMS.Outbox.Workers.Article.Cleanup,
+         worker: GroupherServer.Jobs.CMSOutboxArticle,
          resource_type: "article",
          resource_id: article.id,
          identity: {:command, command_id},
-         effect_key: "article:#{article.id}:published",
-         data: %{revision_id: revision.id}
+         effect_key: "publish",
+         data: %{
+           binding_id: binding.id,
+           community: community.slug,
+           thread: article.thread,
+           inner_id: article.inner_id
+         }
        }) do
-  {:ok, {:article, article.id}}
+  {:ok, article}
 end
 ```
 
-`send/1` 同时插入 Event 和对应 Oban Job，并复用当前数据库事务。它不自行开启第二个事务。
-所有 Groupher 内部 API 统一返回：
-
-```elixir
-{:ok, value}
-{:error, reason}
-```
-
-禁止：
+禁止在事务提交后再补写 Event：
 
 ```text
 domain COMMIT
   -> callback
-  -> insert Event in another transaction
+  -> insert Event in another transaction   # 禁止，进程崩溃会永久漏投递
 ```
 
-否则进程可能在两次事务之间崩溃并永久漏掉 effect。
+持久化 payload 只允许 JSON-safe 的稳定 ID 和执行所需的最小、版本化业务事实，例如
+`operation`、`changed_fields` 或缓存 scope。禁止持久化 module、function、匿名函数、Elixir struct、
+Erlang term 或 `{module, function, args}` 动态调用合同。
 
-## 5. 执行：`CMS.Outbox.execute/2`
+## 4. 调用权限
 
-每个具体 Worker 直接 `use Oban.Worker`：
+业务代码不能任意调用 Outbox：
+
+```text
+允许：<Domain>.Effects -> CMS.Outbox.send
+禁止：Commands / Query / Resolver -> CMS.Outbox.send
+
+允许：CMS.Outbox.Workflow -> claim / complete / retry / mark_failed
+禁止：普通 Effects / Commands / Worker -> 修改 delivery state
+```
+
+这一约束由 backend context v2 lint 检查。Outbox 是少数允许访问 Repo/transaction 的 Owner，但它只能
+维护 Outbox 自身的 event、lease、attempt、retry 和 delivery 状态。
+
+## 5. 执行合同
+
+Worker 必须通过 CMS 根 Facade 进入，不得穿透到 Workflow：
 
 ```elixir
-defmodule GroupherServer.CMS.Outbox.Workers.Article.Cleanup do
+defmodule GroupherServer.Jobs.CMSOutboxPress do
   use Oban.Worker, queue: :cms_outbox
 
-  alias GroupherServer.CMS.Outbox
-
   @impl Oban.Worker
-  def perform(%Oban.Job{args: %{"event_id" => event_id}}) do
-    case Outbox.execute(event_id, &cleanup/1) do
-      {:ok, _event} -> :ok
-      {:error, reason} -> {:error, reason}
-    end
-  end
-
-  defp cleanup(event) do
-    with {:ok, tags} <- PublicCache.Scope.tags(event),
-         {:ok, response} <- PublicCache.Cloudflare.cleanup(tags) do
-      {:ok, response}
-    end
-  end
+  def perform(job), do: GroupherServer.CMS.deliver_outbox(:press, job)
 end
 ```
 
-`perform/1` 是 Oban 要求的适配器名称；项目内部仍使用统一的 `execute`。Worker 内部函数使用
-真实业务动词，例如 `cleanup`、`reindex`、`notify`，不统一伪装成 `handle`。
+Workflow 负责：
 
-`CMS.Outbox.execute/2` 负责：
+1. 使用 event ID claim event；
+2. 对活动 lease 返回 `{:snooze, seconds}`；
+3. 从 `resource_id` 和 `data` 中的稳定 ID 重载 canonical resource；
+4. missing/obsolete resource 按各业务明确的 no-op 或 error policy 处理；
+5. provider 失败返回 `{:error, reason}`，使 Oban 重试；
+6. 达到最大尝试次数后将 event 标为 `failed`；
+7. 成功后将 event 标为 `done`，重复投递不再执行 effect。
 
-```text
-load Event
-  -> completed: return stored completion
-  -> executing + valid lease: ask Oban to retry later
-  -> pending / expired lease:
-       claim
-       run action
-       complete, or record failure and retry
-```
+不得把认证失败、网络失败或非 2xx 响应返回为成功。只有本地明确未配置可选服务时，才能按文档定义
+返回 no-op；生产部署检查必须保证所需 endpoint、resource 和 scope 均已配置。
 
-幂等性不写进函数名。它是 `CMS.Outbox.execute/2` 的固定合同，由 Event status、lease 和
-Worker 的 provider contract 共同保证。
+## 6. Public Cache 与 Press
 
-## 6. Public Cache 的位置
-
-`GroupherServer.PublicCache` 是缓存能力，不是 Outbox 基础设施：
+Public Cache 和 Press 都是 Outbox 的下游能力，不拥有可靠投递状态机：
 
 ```text
-GroupherServer.PublicCache
-|-- Scope / Tags
-`-- Cloudflare
+Article/Comment/Community Effects
+  -> CMS Outbox
+  -> Jobs.CMSOutbox<Domain>
+  -> Outbox.Workflow.<Domain>
+  -> PublicCache root Facade
+  -> tag calculation + Cloudflare provider
 
-GroupherServer.CMS.Outbox.Workers.Article.Cleanup
-  -> PublicCache.Scope
-  -> PublicCache.Cloudflare
+Press.Effects
+  -> CMS Outbox
+  -> Jobs.CMSOutboxPress
+  -> Outbox.Workflow.Press
+  -> Press.Invalidation
+  -> authenticated Press endpoint
 ```
 
-因此现有 `PublicCache.PurgeWorker` 的目标不是变成全局 `PublicCache.Cleanup`，而是按领域和
-任务迁移到 `CMS.Outbox.Workers.<Domain>.Cleanup`。Public Cache 不拥有 Event 状态机，
-但仍拥有 tag 计算和 provider 调用。
+CMS 的当前写路径不再创建 `PublicCache.Invalidation`；它由 CMS Outbox Workflow 解析 tag 并调用
+PublicCache 根 Facade。仓库仍保留一套没有生产领域调用方的 `PublicCache.Invalidation`、
+`PublicCache.Workflow` 与 `Jobs.PublicCachePurge` 独立投递设施；这是待删除或重新确认使用方的遗留能力，
+不能写成 CMS 当前主链路。`Helper.Later`、动态 callback 和旧模块名兼容入口已经退役。
 
-## 7. 与 `CMS.Command` 的关系
-
-```elixir
-CMS.Command.execute(command,
-  action: fn context ->
-    # 仅首次执行；同一事务写领域事实与 Outbox Event
-    publish(context)
-  end,
-  result: fn receipt ->
-    # 首次提交和 completed retry 都执行
-    CMS.FrontDesk.article(receipt.result_key, mode: :internal)
-  end
-)
-```
-
-`action` 不直接请求 Cloudflare、搜索服务、通知服务或 Webhook。它只在事务内调用
-`CMS.Outbox.send/1` 登记必须发生的 effect intent；真正的外部 effect 由 Worker 在 commit
-后执行。
+## 7. 与 CMS.Command 的关系
 
 ```text
-first execution
-  -> action
+首次执行
+  -> Command action
        -> domain writes
-       -> CMS.Outbox.send
+       -> Domain.Effects
+            -> CMS.Outbox.send
   -> finalize Command Receipt
   -> COMMIT
-  -> result
+  -> result reader
 
-completed retry
+done replay
   -> skip action
   -> reuse committed result identity
-  -> result
+  -> result reader
 ```
 
-Command Receipt 与 Outbox Event 都使用 `resource_type/resource_id/command_id`，但职责不同：
+- Command Receipt 防止同一用户命令重复写入，并恢复 canonical result；
+- Outbox Event 保证已提交命令产生的外部副作用最终执行；
+- 两者可共享 `command_id/resource_type/resource_id`，但不能互相替代。
 
-- Command Receipt 防止同一用户命令重复写入，并恢复 canonical result。
-- Outbox Event 保证提交后的外部 effect 最终执行。
+## 8. 测试合同
 
-## 8. 迁移方向
+公共 Outbox suite 至少覆盖：
 
-1. Command Receipt 将 `target_type/target_key` 重命名为
-   `resource_type/resource_id`，并与 Outbox 对齐。
-2. 建立 `CMS.Outbox.Event`、`CMS.Outbox.send/1` 和 `CMS.Outbox.execute/2`。
-3. 先把现有 Public Cache invalidation 迁移为
-   `CMS.Outbox.Workers.<Domain>.Cleanup`。
-4. 再迁移 Search、Notification 和 Webhook；每项保持独立 Event 和独立重试。
-5. 删除公共 `after_commit` callback；非可靠 Telemetry 保留在基础设施内部。
+- 同一 event 重复投递只执行一次；
+- effect 失败后进入 `retrying`，后续可恢复；
+- 活动 lease 返回 busy/snooze，过期 lease 可重新认领；
+- 同一 identity/effect scope 唯一；
+- 领域事务回滚时 Event 与 Job 一起回滚；
+- 达到最大尝试次数后标记 `failed`。
 
-迁移期间，当前 `PublicCache.Invalidation` 与 `PurgeWorker` 仍是已实现路径；本文描述的是最终
-所有权与命名，不应误写为当前状态。
+每个 domain workflow 还必须覆盖自己的失败注入矩阵：资源缺失、payload version 不支持、认证失败、
+provider 网络失败、非成功响应和正常成功。不能只依赖公共状态机 happy-path 测试。
+
+## 9. 门禁
+
+`pnpm check:backend-context-v2` 检查：
+
+- Outbox 写入只能来自 Effects；
+- delivery state 只能由 Outbox Workflow 修改；
+- Worker 必须位于 `jobs/`，且不能直接访问 Repo/provider；
+- Job payload 不得持久化不稳定的执行细节；
+- 外部 caller 不得穿透 CMS internal capability。
+
+运行级正确性仍由 ExUnit integration tests 负责；lint 不能证明 provider 失败一定返回错误，也不能证明
+部署环境已经配置 endpoint、resource 和 scope。

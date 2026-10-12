@@ -12,21 +12,29 @@ defmodule GroupherServer.CMS.DocTree.Commands.MoveDocToDraft do
   alias CMS.DocTree.Commands.MoveDocToDraftConfirmation, as: Confirmation
 
   def execute(community, id, user, opts) do
-    Support.run_doc_command(
-      community,
-      id,
-      user,
-      :doc_move_to_draft,
-      opts,
-      Confirmation,
-      fn ->
-        with {:ok, draft} <- Publish.move_doc_to_draft(community, id, user, opts) do
-          {:ok, %Confirmation{data: %{"article_id" => draft.article_id}}}
-        end
-      end,
-      fn %Confirmation{data: %{"article_id" => article_id}} ->
-        CMS.Docs.read_editor_head(community, article_id, opts)
+    execute = fn ->
+      with {:ok, draft} <- Publish.move_doc_to_draft(community, id, user, opts) do
+        {:ok, %Confirmation{data: %{"article_id" => draft.article_id}}}
       end
-    )
+    end
+
+    present = fn %Confirmation{data: %{"article_id" => article_id}} ->
+      CMS.Docs.read_editor_head(community, article_id, opts)
+    end
+
+    if Support.has_option?(opts, :command_id) do
+      Support.run_doc_command(
+        community,
+        id,
+        user,
+        :doc_move_to_draft,
+        opts,
+        Confirmation,
+        execute,
+        present
+      )
+    else
+      Support.run_doc_operation(opts, execute, present)
+    end
   end
 end

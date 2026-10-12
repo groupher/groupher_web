@@ -14,15 +14,12 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
 
   alias GroupherServer.CMS
 
-  alias CMS.Dashboard.Fields, as: Dashboard
-  alias CMS.Dashboard.KanbanBoards
-
   @page_size GroupherServerWeb.Config.page_size()
 
-  @emotions CMS.Artiment.Config.emotions()
-  @comment_emotions CMS.Artiment.Config.comment_emotions()
+  @emotions CMS.artiment_config_emotions()
+  @comment_emotions CMS.artiment_config_comment_emotions()
   @all_emotions (@emotions ++ @comment_emotions) |> Enum.uniq()
-  @threads CMS.Artiment.Config.threads()
+  @threads CMS.artiment_config_threads()
 
   @doc "general article fields for GraphQL resolve fields"
   defmacro general_article_fields do
@@ -362,7 +359,7 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
   fields for dsb seo
   """
   defmacro dsb_cast_fields(section \\ :layout) do
-    schema = Dashboard.macro_schema(section) |> Macro.escape()
+    schema = GroupherServer.CMS.dashboard_fields_macro_schema(section) |> Macro.escape()
 
     quote do
       Enum.reduce(unquote(schema), [], fn [k, _, _], acc ->
@@ -375,14 +372,14 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
     except = Keyword.get(opts, :except, [])
 
     fields =
-      Dashboard.macro_schema(section)
+      GroupherServer.CMS.dashboard_fields_macro_schema(section)
       |> Enum.reject(fn [key, _type, _default_v] -> key in except end)
       |> Enum.map(fn item ->
-      [key, type, _default_v] = item
+        [key, type, _default_v] = item
 
-      quote do
-        arg(unquote(key), unquote(to_absinthe_type(type, key)))
-      end
+        quote do
+          arg(unquote(key), unquote(to_absinthe_type(type, key)))
+        end
       end)
 
     [
@@ -394,7 +391,7 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
   end
 
   defmacro dsb_fields(section \\ :layout) do
-    Dashboard.macro_schema(section)
+    GroupherServer.CMS.dashboard_fields_macro_schema(section)
     |> Enum.map(fn item ->
       [key, type, default_v] = item
       default_ast = Macro.escape(default_v)
@@ -405,7 +402,7 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
             # Dsb enums use the default Ecto.Enum flow:
             #   [:quora, :ph] -> internal :quora / :ph -> DB "quora" / "ph"
             field(unquote(key), Ecto.Enum,
-              values: unquote(Dashboard.enum_values(key)),
+              values: unquote(GroupherServer.CMS.dashboard_fields_enum_values(key)),
               default: unquote(default_ast)
             )
           end
@@ -413,7 +410,7 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
         :rainbow_color ->
           quote do
             field(unquote(key), Ecto.Enum,
-              values: unquote(Dashboard.rainbow_colors()),
+              values: unquote(GroupherServer.CMS.dashboard_fields_rainbow_colors()),
               default: unquote(default_ast)
             )
           end
@@ -421,7 +418,7 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
         {:array, :kanban_board} ->
           quote do
             field(unquote(key), {:array, Ecto.Enum},
-              values: unquote(KanbanBoards.values_list()),
+              values: unquote(GroupherServer.CMS.dashboard_kanban_boards_values_list()),
               default: unquote(default_ast)
             )
           end
@@ -429,7 +426,7 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
         {:array, :rainbow_color} ->
           quote do
             field(unquote(key), {:array, Ecto.Enum},
-              values: unquote(Dashboard.rainbow_colors()),
+              values: unquote(GroupherServer.CMS.dashboard_fields_rainbow_colors()),
               default: unquote(default_ast)
             )
           end
@@ -445,7 +442,7 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
   defp build_dsb_gq_fields(section, opts) do
     except = Keyword.get(opts, :except, [])
 
-    Dashboard.macro_schema(section)
+    GroupherServer.CMS.dashboard_fields_macro_schema(section)
     |> Enum.reject(fn [key, _type, _default_v] -> key in except end)
     |> Enum.map(fn item ->
       [key, type, _default_v] = item
@@ -481,7 +478,7 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
   end
 
   defmacro dsb_default(section \\ :layout) do
-    schema = Dashboard.macro_schema(section) |> Macro.escape()
+    schema = GroupherServer.CMS.dashboard_fields_macro_schema(section) |> Macro.escape()
 
     quote do
       Enum.reduce(unquote(schema), %{}, fn [k, _t, v], acc ->
@@ -526,7 +523,7 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
   # Absinthe will expose QUORA / PH over GraphQL and map them back to
   # internal :quora / :ph atoms automatically.
   defmacro dsb_enum(enum_key) do
-    values = Dashboard.enum_values(enum_key)
+    values = GroupherServer.CMS.dashboard_fields_enum_values(enum_key)
 
     type =
       case enum_key do

@@ -5,21 +5,21 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
       CMS.Interactions
         -> Gate canonical Artiment
         -> authoritative upvote row changed/unchanged
-        -> ReadState in the same transaction
+        -> Projection in the same transaction
         -> post-commit events and search metrics
   """
 
   import Ecto.Query
 
-  alias GroupherServer.{Accounts, Analysis, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
   alias CMS.Artiment.Matcher
   alias CMS.{Gate, Interactions, Command}
-  alias Interactions.{Config, ErrorCat, ReadState}
+  alias Interactions.{Config, Effects, ErrorCat, Persist, Projection}
   alias CMS.Interactions.Reactions.UpvoteConfirmation, as: Confirmation
   alias CMS.Model.{ArticleUpvote, Author, Comment, CommentUpvote}
-  alias Analysis.MetricEvent
+
   alias Helper.T
 
   @article_threads Config.article_threads()
@@ -107,8 +107,8 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
   defp sync_state(canonical, actor, operation, :changed) do
     result =
       if operation == :add,
-        do: ReadState.add_upvote(canonical, actor),
-        else: ReadState.remove_upvote(canonical, actor)
+        do: Projection.add_upvote(canonical, actor),
+        else: Projection.remove_upvote(canonical, actor)
 
     case result do
       {:ok, _projection} -> {:ok, :pass}
@@ -122,7 +122,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
   defp record_metric(article, operation, :changed, operation_id) do
     metric = if operation == :add, do: :upvote_added, else: :upvote_removed
 
-    case MetricEvent.append_article_action(article, operation_id, metric) do
+    case GroupherServer.Analysis.metric_event_append_article_action(article, operation_id, metric) do
       {:ok, _} -> {:ok, :pass}
       {:error, _reason} = error -> error
     end
@@ -133,7 +133,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
   defp maybe_achieve(_article, _actor, :remove, :changed), do: {:ok, :pass}
 
   defp maybe_achieve(article, _actor, :add, :changed) do
-    case Accounts.Achievements.achieve(author_user(article), :inc, :upvote) do
+    case Accounts.achievements_achieve(author_user(article), :inc, :upvote) do
       {:ok, _achievement} -> {:ok, :pass}
       {:error, _reason} = error -> error
     end
@@ -142,18 +142,13 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
   defp enqueue_effect(_canonical, _operation, _actor, _command_id, :unchanged), do: {:ok, :pass}
 
   defp enqueue_effect(canonical, operation, actor, command_id, :changed) do
-    CMS.Outbox.send(%{
-      event: "interaction.upvote_changed",
-      worker: CMS.Outbox.Workers.Interaction.Cleanup,
-      resource_type: interaction_resource_type(canonical),
-      resource_id: canonical.id,
-      command_id: command_id,
-      data: %{actor_id: actor.id, operation: operation}
-    })
-    |> case do
-      {:ok, _event} -> {:ok, :pass}
-      {:error, reason} -> {:error, reason}
-    end
+    Effects.enqueue_reaction_changed(
+      "interaction.upvote_changed",
+      interaction_resource_type(canonical),
+      canonical.id,
+      command_id,
+      %{actor_id: actor.id, operation: operation}
+    )
   end
 
   defp interaction_resource_type(%Comment{}), do: "comment"
@@ -199,18 +194,20 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
   end
 
   defp change_fact(%Comment{} = comment, _info, actor, :add) do
-    insert_fact(
+    Persist.insert_fact(
       CommentUpvote,
       %{comment_id: comment.id, user_id: actor.id},
-      [:user_id, :comment_id]
+      [:user_id, :comment_id],
+      "upvote"
     )
   end
 
   defp change_fact(%Comment{} = comment, _info, actor, :remove) do
-    delete_fact(
+    Persist.delete_fact(
       from(upvote in CommentUpvote,
         where: upvote.comment_id == ^comment.id and upvote.user_id == ^actor.id
-      )
+      ),
+      "upvote"
     )
   end
 
@@ -219,36 +216,18 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
       %{user_id: actor.id, thread: info.artiment}
       |> Map.put(info.foreign_key, article.id)
 
-    insert_fact(ArticleUpvote, attrs, article_conflict_target(info.foreign_key))
+    Persist.insert_fact(ArticleUpvote, attrs, article_conflict_target(info.foreign_key), "upvote")
   end
 
   defp change_fact(article, info, actor, :remove) do
     foreign_key = info.foreign_key
 
-    delete_fact(
+    Persist.delete_fact(
       from(upvote in ArticleUpvote,
         where: field(upvote, ^foreign_key) == ^article.id and upvote.user_id == ^actor.id
-      )
+      ),
+      "upvote"
     )
-  end
-
-  defp insert_fact(schema, attrs, conflict_target) do
-    now = DateTime.utc_now(:second)
-    attrs = Map.merge(attrs, %{inserted_at: now, updated_at: now})
-
-    case Repo.insert_all(schema, [attrs], on_conflict: :nothing, conflict_target: conflict_target) do
-      {1, _rows} -> {:ok, :changed}
-      {0, _rows} -> {:ok, :unchanged}
-      _ -> {:error, ErrorCat.interaction_state_conflict("unexpected upvote insert result")}
-    end
-  end
-
-  defp delete_fact(query) do
-    case Repo.delete_all(query) do
-      {1, _rows} -> {:ok, :changed}
-      {0, _rows} -> {:ok, :unchanged}
-      _ -> {:error, ErrorCat.interaction_state_conflict("multiple upvote facts deleted")}
-    end
   end
 
   defp article_conflict_target(:article_id) do

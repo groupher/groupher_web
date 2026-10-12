@@ -16,15 +16,11 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
   alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
-  alias CMS.Articles.MutationLock
-  alias CMS.Artiment.Matcher
+  alias CMS.{Articles.MutationLock, Artiment.Matcher, Gate, Command}
   alias CMS.Comments.States, as: CommentStates
 
-  alias CMS.Gate
-
-  alias CMS.Interactions.{ErrorCat, ReadState}
+  alias CMS.Interactions.{ErrorCat, Persist, Projection, Transaction}
   alias CMS.Interactions.Reactions.ReportConfirmation, as: Confirmation
-  alias CMS.Command
   alias CMS.Model.{AbuseReport, Comment, Embeds}
   alias Helper.T
 
@@ -102,7 +98,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
   defp mutate(input, actor, :report_add, %{reason: reason, attrs: attrs}) do
     mutate(input, actor, fn canonical, info ->
       with {:ok, report} <- add_fact(info, canonical, reason, attrs, actor),
-           {:ok, _projection} <- ReadState.add_report(canonical, actor),
+           {:ok, _projection} <- Projection.add_report(canonical, actor),
            {:ok, _} <- maybe_fold_comment(canonical, report, actor) do
         canonical
       end
@@ -137,7 +133,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
           result -> {:ok, result}
         end
       else
-        Repo.transaction(transaction)
+        Transaction.run(transaction)
       end
     end)
   end
@@ -164,7 +160,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
   defp maybe_remove_state(_canonical, _actor, false), do: {:ok, :pass}
 
   defp maybe_remove_state(canonical, actor, true) do
-    case ReadState.remove_report(canonical, actor) do
+    case Projection.remove_report(canonical, actor) do
       {:ok, _projection} -> {:ok, :pass}
       {:error, _reason} = error -> error
     end
@@ -216,7 +212,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
 
     %AbuseReport{}
     |> AbuseReport.changeset(params)
-    |> Repo.insert()
+    |> Persist.insert()
   end
 
   defp add_case(%AbuseReport{} = report, _info, _canonical, reason, attrs, actor) do
@@ -228,7 +224,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
       report
       |> Ecto.Changeset.change(report_cases_count: length(cases))
       |> Ecto.Changeset.put_embed(:report_cases, cases)
-      |> Repo.update()
+      |> Persist.update()
     end
   end
 
@@ -240,7 +236,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
 
       case cases do
         [] ->
-          case Repo.delete(report) do
+          case Persist.delete(report) do
             {:ok, _report} -> {:ok, true}
             {:error, _changeset} = error -> error
           end
@@ -249,7 +245,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
           report
           |> Ecto.Changeset.change(report_cases_count: length(cases))
           |> Ecto.Changeset.put_embed(:report_cases, cases)
-          |> Repo.update()
+          |> Persist.update()
           |> case do
             {:ok, _report} -> {:ok, true}
             {:error, _changeset} = error -> error

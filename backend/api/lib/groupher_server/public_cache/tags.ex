@@ -17,33 +17,75 @@ defmodule GroupherServer.PublicCache.Tags do
 
   @tag_pattern ~r/^community\[[A-Za-z0-9][A-Za-z0-9-]*\](?:-[A-Za-z0-9\[\]-]+)?$/
 
-  @doc "Builds a community shell tag."
+  @doc """
+  Builds a community shell tag.
+
+  ## Examples
+
+      PublicCache.Tags.community("acme")
+  """
   def community(community), do: "community[#{community}]"
 
-  @doc "Builds an article-list tag."
+  @doc """
+  Builds an article-list tag.
+
+  ## Examples
+
+      PublicCache.Tags.article_list("acme", :post)
+  """
   def article_list(community, thread) do
     "#{community(community)}-thread[#{thread_name(thread)}]-articles"
   end
 
-  @doc "Builds an article-detail tag."
+  @doc """
+  Builds an article-detail tag.
+
+  ## Examples
+
+      PublicCache.Tags.article_detail("acme", :post, 42)
+  """
   def article_detail(community, thread, inner_id) do
     "#{community(community)}-thread[#{thread_name(thread)}]-article[#{inner_id}]"
   end
 
-  @doc "Builds an article-comments tag."
+  @doc """
+  Builds an article-comments tag.
+
+  ## Examples
+
+      PublicCache.Tags.comments("acme", :post, 42)
+  """
   def comments(community, thread, inner_id) do
     "#{article_detail(community, thread, inner_id)}-comments"
   end
 
-  @doc "Builds a thread-tags tag."
+  @doc """
+  Builds a thread-tags tag.
+
+  ## Examples
+
+      PublicCache.Tags.tags("acme", :post)
+  """
   def tags(community, thread) do
     "#{community(community)}-thread[#{thread_name(thread)}]-tags"
   end
 
-  @doc "Builds a documentation-tree tag."
+  @doc """
+  Builds a documentation-tree tag.
+
+  ## Examples
+
+      PublicCache.Tags.doc_tree("acme")
+  """
   def doc_tree(community), do: "#{community(community)}-doc-tree"
 
-  @doc "Maps one typed invalidation to its semantic public cache tags."
+  @doc """
+  Maps one typed invalidation to its semantic public cache tags.
+
+  ## Examples
+
+      PublicCache.Tags.for_invalidation(:community_presentation_changed, %{community: "acme"})
+  """
   @spec for_invalidation(atom(), map()) :: {:ok, [String.t()]} | {:error, atom()}
   def for_invalidation(type, payload) do
     with true <- type in Const.invalidation_types(),
@@ -82,7 +124,13 @@ defmodule GroupherServer.PublicCache.Tags do
     end
   end
 
-  @doc "Validates the wire-level tag contract before an external purge."
+  @doc """
+  Validates the wire-level tag contract before an external purge.
+
+  ## Examples
+
+      PublicCache.Tags.validate(["community[acme]"])
+  """
   def validate(tags) when is_list(tags) do
     cond do
       tags == [] ->

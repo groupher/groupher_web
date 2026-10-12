@@ -5,10 +5,11 @@ defmodule GroupherServer.CMS.Articles.Commands.UnlockComments do
       commandId -> UnlockComments -> Gate -> Article comment-unlock transition
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.Articles.Commands.CommentLock
   alias CMS.Command.Receipt
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
 
   @spec execute(Ecto.UUID.t(), User.t(), keyword(), Ecto.UUID.t()) ::
           {:ok, term()} | {:error, term()}

@@ -7,7 +7,7 @@ defmodule GroupherServer.CMS.ViewTracker.ErrorCat do
         -> GraphQL or job error serialization
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:cms, :view_tracker}
+  use GroupherServer.ErrorCat, namespace: {:cms, :view_tracker}
 
   error(:unsupported_artiment, code: 4920)
   error(:target_not_found, code: 4923)

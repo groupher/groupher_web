@@ -29,14 +29,76 @@ defmodule GroupherServer.Activity.Community do
       )
   }
 
+  @doc """
+  Returns Community's classified lifecycle Activity contracts.
+
+  ## Examples
+
+      Activity.Community.contracts()[:activated].classification
+  """
   def contracts, do: Event.classify_contracts(@contracts)
+
+  @doc """
+  Returns the Community Activity log schema.
+
+  ## Examples
+
+      Activity.Community.schema()
+  """
   def schema, do: CommunityLog
+
+  @doc """
+  Returns the field used as the Community Activity stream reference.
+
+  ## Examples
+
+      Activity.Community.stream_field()
+  """
   def stream_field, do: :community_ref
+
+  @doc """
+  Returns the public resource type used by Community Activity filters.
+
+  ## Examples
+
+      Activity.Community.resource_type()
+  """
   def resource_type, do: :community
+
+  @doc """
+  Builds and persists a Community Activity event.
+
+  ## Examples
+
+      Activity.Community.log(community, :activated, actor: actor)
+  """
   def log(resource, action, opts), do: Event.log(__MODULE__, resource, action, opts)
+
+  @doc """
+  Projects a Community Activity row for a public surface.
+
+  ## Examples
+
+      Activity.Community.project(log, :community_log)
+  """
   def project(log, surface), do: Event.project(__MODULE__, log, surface)
+
+  @doc """
+  Lists the Community actions exposed on a public Activity surface.
+
+  ## Examples
+
+      Activity.Community.surface_actions(:community_log)
+  """
   def surface_actions(surface), do: Event.surface_actions(__MODULE__, surface)
 
+  @doc """
+  Describes a Community resource for an Activity event envelope.
+
+  ## Examples
+
+      Activity.Community.describe(community, :activated, [])
+  """
   def describe(%Community{} = community, _action, _opts) do
     {:ok, descriptor(community.id, community.slug, Event.snapshot(community, [:slug, :title]))}
   end

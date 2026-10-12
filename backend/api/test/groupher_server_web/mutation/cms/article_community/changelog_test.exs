@@ -21,7 +21,7 @@ defmodule GroupherServer.Test.Mutation.ArticleBinding.Changelog do
 
   describe "[mirror/unmirror/move changelog to/from community]" do
     test "auth user can mirror a changelog to other community",
-         ~m(community community2 changelog user)a do
+         ~m(community community2 changelog)a do
       passport_rules = %{"changelog.community.mirror" => true}
       rule_conn = simu_conn(:user, cms: passport_rules)
 
@@ -40,7 +40,7 @@ defmodule GroupherServer.Test.Mutation.ArticleBinding.Changelog do
     end
 
     test "unauth user cannot mirror a changelog to a community",
-         ~m(user_conn guest_conn community community2 changelog user)a do
+         ~m(user_conn guest_conn community community2 changelog)a do
       variables = %{
         article: %{
           inner_id: article_inner_id(changelog, community),
@@ -75,7 +75,7 @@ defmodule GroupherServer.Test.Mutation.ArticleBinding.Changelog do
     end
 
     test "auth user can mirror multi changelog to other communities",
-         ~m(community community2 community3 changelog user)a do
+         ~m(community community2 community3 changelog)a do
       passport_rules = %{"changelog.community.mirror" => true}
       rule_conn = simu_conn(:user, cms: passport_rules)
 
@@ -107,7 +107,7 @@ defmodule GroupherServer.Test.Mutation.ArticleBinding.Changelog do
     end
 
     test "auth user can unmirror changelog to a community",
-         ~m(community community2 community3 changelog user)a do
+         ~m(community community2 community3 changelog)a do
       passport_rules = %{"changelog.community.mirror" => true}
       rule_conn = simu_conn(:user, cms: passport_rules)
 

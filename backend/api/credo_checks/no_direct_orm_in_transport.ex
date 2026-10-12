@@ -27,7 +27,7 @@ defmodule GroupherServer.Credo.Check.NoDirectOrmInTransport do
 
   defp walk({{:., _, [{:__aliases__, meta, parts}, _function]}, _, _args} = ast, context) do
     if orm_module?(parts) do
-      {ast, put_issue(context, issue_for(context, meta, "ORM"))}
+      {ast, put_issue(context, issue_for(context, meta, Enum.join(parts, ".")))}
     else
       {ast, context}
     end
@@ -35,7 +35,7 @@ defmodule GroupherServer.Credo.Check.NoDirectOrmInTransport do
 
   defp walk({:alias, meta, _args} = ast, context) do
     if orm_alias_declaration?(ast) do
-      {ast, put_issue(context, issue_for(context, meta, "alias ORM"))}
+      {ast, put_issue(context, issue_for(context, meta, Macro.to_string(ast)))}
     else
       {ast, context}
     end

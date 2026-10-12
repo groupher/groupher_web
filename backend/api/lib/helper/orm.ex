@@ -42,7 +42,7 @@ defmodule Helper.ORM do
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.{ORMAtom, QueryBuilder, T}
 
-  @threads CMS.Artiment.Config.threads()
+  @threads CMS.artiment_config_threads()
 
   @doc """
   Safely updates JSONB `meta` fields and returns the updated struct.
@@ -698,7 +698,7 @@ defmodule Helper.ORM do
 
   defp export_article_info(thread, article) do
     author = article.author.user
-    counts = CMS.Interactions.counts([article]) |> Map.get({thread, article.id}, %{})
+    counts = CMS.interactions_counts([article]) |> Map.get({thread, article.id}, %{})
 
     %{
       thread: thread,

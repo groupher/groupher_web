@@ -10,6 +10,13 @@ defmodule GroupherServer.Activity.Event do
   alias Accounts.Model.User
   alias Activity.{Const, ErrorCat, EventRef}
 
+  @doc """
+  Builds a handler-owned Activity contract for payloads and projections.
+
+  ## Examples
+
+      Activity.Event.contract([:title], [:revision_id], [:article_log])
+  """
   def contract(
         payload \\ [],
         metadata \\ [],
@@ -83,7 +90,13 @@ defmodule GroupherServer.Activity.Event do
     ]
   end
 
-  @doc "Marks a declared event contract that intentionally has no V1 producer."
+  @doc """
+  Marks a declared event contract that intentionally has no V1 producer.
+
+  ## Examples
+
+      Activity.Event.contract_only(Activity.Event.contract([], [], []))
+  """
   def contract_only(contract), do: Map.put(contract, :producer_status, :contract_only)
 
   @presentation_keys %{
@@ -123,7 +136,13 @@ defmodule GroupherServer.Activity.Event do
     moderation_review_resolved: %{message_key: "activity.moderation_review_resolved"}
   }
 
-  @doc "Adds the shared product classification to handler-owned action contracts."
+  @doc """
+  Adds the shared product classification to handler-owned action contracts.
+
+  ## Examples
+
+      Activity.Event.classify_contracts(%{created: Activity.Event.contract()})
+  """
   def classify_contracts(contracts) do
     Map.new(contracts, fn {action, contract} ->
       {action,
@@ -133,11 +152,24 @@ defmodule GroupherServer.Activity.Event do
     end)
   end
 
-  @doc "Returns the explicit product copy key for an action contract."
+  @doc """
+  Returns the explicit product copy key for an action contract.
+
+  ## Examples
+
+      Activity.Event.presentation(:created)
+  """
   def presentation(action) do
     Map.get(@presentation_keys, action, %{message_key: "activity.unknown"})
   end
 
+  @doc """
+  Returns the product category and risk classification for an action.
+
+  ## Examples
+
+      Activity.Event.classification(:destroyed)
+  """
   def classification(action) do
     %{
       category: category_for(action),
@@ -145,6 +177,13 @@ defmodule GroupherServer.Activity.Event do
     }
   end
 
+  @doc """
+  Validates and persists an Activity event through a handler.
+
+  ## Examples
+
+      Activity.Event.log(Activity.Post, post, :created, actor: actor)
+  """
   def log(handler, resource, action, opts) do
     with {:ok, _} <- validate_action(action),
          {:ok, contract} <- fetch_contract(handler, action),
@@ -181,6 +220,13 @@ defmodule GroupherServer.Activity.Event do
     end
   end
 
+  @doc """
+  Projects one Activity row onto a declared public surface.
+
+  ## Examples
+
+      Activity.Event.project(Activity.Post, log, :community_log)
+  """
   def project(handler, log, surface) do
     with {:ok, contract} <- fetch_contract(handler, log.action),
          {:ok, surface_contract} <- Map.fetch(contract.surfaces, surface) do
@@ -247,6 +293,13 @@ defmodule GroupherServer.Activity.Event do
     end
   end
 
+  @doc """
+  Returns active actions exposed by a handler on a public surface.
+
+  ## Examples
+
+      Activity.Event.surface_actions(Activity.Post, :article_log)
+  """
   def surface_actions(handler, surface) do
     handler.contracts()
     |> Enum.filter(fn {_action, contract} ->
@@ -327,6 +380,13 @@ defmodule GroupherServer.Activity.Event do
 
   defp category_for(_action), do: :community
 
+  @doc """
+  Builds the persisted actor projection for a user or system actor.
+
+  ## Examples
+
+      Activity.Event.actor_attrs(:system)
+  """
   def actor_attrs(%User{} = actor) do
     %{
       actor_type: :user,
@@ -348,17 +408,38 @@ defmodule GroupherServer.Activity.Event do
   def actor_attrs(nil), do: {:error, ErrorCat.invalid_actor()}
   def actor_attrs(_), do: {:error, ErrorCat.invalid_actor()}
 
+  @doc """
+  Keeps the non-nil values for the requested safe snapshot fields.
+
+  ## Examples
+
+      Activity.Event.snapshot(%{title: "Hello", slug: nil}, [:title, :slug])
+  """
   def snapshot(resource, fields) do
     Map.new(fields, fn field -> {field, Map.get(resource, field)} end)
     |> Enum.reject(fn {_key, value} -> is_nil(value) end)
     |> Map.new()
   end
 
+  @doc """
+  Converts public Activity references to stable strings.
+
+  ## Examples
+
+      Activity.Event.stringify(:article)
+  """
   def stringify(nil), do: nil
   def stringify(value) when is_binary(value), do: value
   def stringify(value) when is_atom(value) or is_integer(value), do: to_string(value)
   def stringify(value), do: to_string(value)
 
+  @doc """
+  Builds the normalized unsupported-resource error used by handlers.
+
+  ## Examples
+
+      Activity.Event.error("invalid resource")
+  """
   def error(message), do: ErrorCat.unsupported_resource(message)
 
   defp validate_action(action) when is_atom(action), do: {:ok, :pass}

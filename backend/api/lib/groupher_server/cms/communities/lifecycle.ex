@@ -14,11 +14,13 @@ defmodule GroupherServer.CMS.Communities.Lifecycle do
 
   import Ecto.Query, warn: false
 
-  alias GroupherServer.{Activity, CMS, ErrorCat, Repo}
+  alias GroupherServer.Activity
+
+  alias GroupherServer.{CMS, ErrorCat, Repo}
   alias Ecto.Multi
   alias Activity.Model.CommunityLog
   alias CMS.Communities.ErrorCat, as: CommunityErrorCat
-  alias CMS.Communities.Const
+  alias CMS.Communities.{Const, Effects, Transaction}
   alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CMS.Model.{Community, CommunityLifecycle, CommunityLifecycleBlocker}
 
@@ -187,7 +189,7 @@ defmodule GroupherServer.CMS.Communities.Lifecycle do
   @spec transition(String.t() | integer(), atom(), keyword()) ::
           {:ok, CommunityLifecycle.t()} | {:error, term()}
   def transition(community_ref, state, opts \\ []) when is_atom(state) do
-    Repo.transaction(fn ->
+    Transaction.run(fn ->
       lifecycle = lock_for_transition(community_ref)
       transition_locked(lifecycle, state, opts)
     end)
@@ -253,7 +255,7 @@ defmodule GroupherServer.CMS.Communities.Lifecycle do
   @spec apply_blocker(String.t() | integer(), map(), keyword()) ::
           {:ok, CommunityLifecycleBlocker.t()} | {:error, term()}
   def apply_blocker(community_ref, attrs, opts \\ []) when is_map(attrs) do
-    Repo.transaction(fn ->
+    Transaction.run(fn ->
       operation_ref = resolve_operation_ref!(Keyword.get(opts, :operation_ref))
       opts = Keyword.put(opts, :operation_ref, operation_ref)
       lifecycle = lock_for_transition_or_bootstrap(community_ref, opts)
@@ -297,7 +299,7 @@ defmodule GroupherServer.CMS.Communities.Lifecycle do
   @spec release_blocker(String.t() | integer(), atom(), String.t() | nil, keyword()) ::
           {:ok, CommunityLifecycleBlocker.t()} | {:error, term()}
   def release_blocker(community_ref, type, cause_ref \\ nil, opts \\ []) do
-    Repo.transaction(fn ->
+    Transaction.run(fn ->
       operation_ref = resolve_operation_ref!(Keyword.get(opts, :operation_ref))
       opts = Keyword.put(opts, :operation_ref, operation_ref)
       lifecycle = lock_for_transition(community_ref)
@@ -401,7 +403,7 @@ defmodule GroupherServer.CMS.Communities.Lifecycle do
   @spec schedule_destroy(String.t() | integer(), keyword()) ::
           {:ok, CommunityLifecycle.t()} | {:error, term()}
   def schedule_destroy(community_ref, opts \\ []) do
-    Repo.transaction(fn ->
+    Transaction.run(fn ->
       operation_ref = resolve_operation_ref!(Keyword.get(opts, :operation_ref))
       lifecycle = lock_for_transition(community_ref)
       ensure_lifecycle!(lifecycle)
@@ -427,7 +429,7 @@ defmodule GroupherServer.CMS.Communities.Lifecycle do
   @spec cancel_destroy(String.t() | integer(), keyword()) ::
           {:ok, CommunityLifecycle.t()} | {:error, term()}
   def cancel_destroy(community_ref, opts \\ []) do
-    Repo.transaction(fn ->
+    Transaction.run(fn ->
       operation_ref = resolve_operation_ref!(Keyword.get(opts, :operation_ref))
       lifecycle = lock_for_transition(community_ref)
       ensure_lifecycle!(lifecycle)
@@ -469,7 +471,7 @@ defmodule GroupherServer.CMS.Communities.Lifecycle do
   @spec destroy(String.t() | integer(), keyword()) ::
           {:ok, CommunityLifecycle.t()} | {:error, term()}
   def destroy(community_ref, opts \\ []) do
-    Repo.transaction(fn ->
+    Transaction.run(fn ->
       lifecycle = lock_for_transition(community_ref)
       ensure_lifecycle!(lifecycle)
       ensure_expected_version!(lifecycle, opts)
@@ -846,7 +848,7 @@ defmodule GroupherServer.CMS.Communities.Lifecycle do
     opts =
       if parent_event_ref, do: Keyword.put(opts, :parent_event_ref, parent_event_ref), else: opts
 
-    Activity.log(community, activity_action, opts)
+    Effects.activity(community, activity_action, opts)
   end
 
   defp scheduled_destroy_event_ref(community_id) do

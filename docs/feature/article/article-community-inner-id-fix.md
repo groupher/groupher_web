@@ -174,7 +174,7 @@ binding.inner_id     = requested_inner_id
 article.thread        = requested_thread
 ```
 
-`CMS.Helper.ArticlePath` 是共享的纯 parse/validate helper，不访问数据库，也不查询 binding；
+`CMS.ArticlePath` 是共享的纯 parse/validate helper，不访问数据库，也不查询 binding；
 Passport middleware、resolver、FrontDesk 和其他边界可以复用它规范化 `ArticlePathInput`。
 FrontDesk 独占公共路径的 Community/ArticleBinding/Article lookup、Article 加载与 thread 校验，
 并组装 ArticleView。
@@ -266,7 +266,7 @@ binding 上下文，或传入已经 materialize 的 ArticleView：
 
 #### R2：统计、Interaction 与 ViewTracker
 
-范围：ArticleStats、ReadState、upvote/collect、view receipt、Interaction event、viewer state。
+范围：ArticleStats、Projection、upvote/collect、view receipt、Interaction event、viewer state。
 
 验收：统计仍按 `{thread, article_id}` 聚合，但公共返回显式使用目标 binding；mirror Article 的不同
 Community 不共享错误 path/innerId；相关 mutation result、event、query tests 通过。
@@ -316,7 +316,7 @@ git diff --check
 
 R1–R5 的数据归属迁移主体已经落地。本轮已完成的收口包括：
 
-1. `CMS.Helper.ArticlePath` 保留为共享纯 parse/validate helper；批量 binding/database lookup
+1. `CMS.ArticlePath` 保留为共享纯 parse/validate helper；批量 binding/database lookup
    已迁入 `CMS.FrontDesk.articles/1`，`Articles.PathResolver` 已删除；没有新增
    `Articles.Path`、`Articles.PublicPath` 或 binding locator 查询 API。
 2. Move 的失效事件分别使用 source/destination binding 的 `inner_id`，并有不同编号回归测试。

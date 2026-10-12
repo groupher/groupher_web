@@ -50,6 +50,15 @@ export const user = graphql(`
   }
 `)
 
+export const trackProfileView = graphql(`
+  mutation TrackProfileView($login: String!) {
+    trackProfileView(login: $login) {
+      tracked
+      views
+    }
+  }
+`)
+
 export const sessionState = graphql(`
   query SessionState {
     sessionState {

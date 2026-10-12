@@ -16,7 +16,13 @@ defmodule GroupherServer.RequestActor do
   alias GroupherServer.RequestActor
   alias RequestActor.{Classification, Classifier, Evidence}
 
-  @doc "Classifies one request from complete trusted identity and credential objects."
+  @doc """
+  Classifies one request from complete trusted identity and credential objects.
+
+  ## Examples
+
+      RequestActor.classify(account_session: user)
+  """
   @spec classify(keyword()) ::
           {:ok, Classification.t()} | {:error, :conflicting_evidence | :invalid_evidence}
   def classify(opts) when is_list(opts) do
@@ -26,4 +32,13 @@ defmodule GroupherServer.RequestActor do
   end
 
   def classify(_opts), do: {:error, :invalid_evidence}
+
+  @doc """
+  Delegates RequestActor.Const.actor_types/0 through the RequestActor Context boundary.
+
+  ## Examples
+
+      iex> GroupherServer.RequestActor.const_actor_types(...)
+  """
+  defdelegate const_actor_types(), to: GroupherServer.RequestActor.Const, as: :actor_types
 end

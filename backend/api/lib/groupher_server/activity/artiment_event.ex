@@ -5,6 +5,17 @@ defmodule GroupherServer.Activity.ArtimentEvent do
       thread handler -> shared descriptor logic -> Activity Event
   """
 
+  @doc """
+  Injects the shared handler contract for one Article Activity thread.
+
+  ## Examples
+
+      use GroupherServer.Activity.ArtimentEvent,
+        thread: :post,
+        schema: GroupherServer.Activity.Model.PostLog,
+        stream_field: :article_id
+  """
+  @spec __using__(keyword()) :: Macro.t()
   defmacro __using__(opts) do
     thread = Keyword.fetch!(opts, :thread)
     schema = Keyword.fetch!(opts, :schema)
@@ -98,7 +109,7 @@ defmodule GroupherServer.Activity.ArtimentEvent do
             {:ok, community_id}
 
           _ ->
-            case CMS.Articles.Bindings.get(resource, Map.get(resource, :community)) do
+            case GroupherServer.CMS.articles_bindings_get(resource, Map.get(resource, :community)) do
               {:ok, %{community: %{id: community_id}}} -> {:ok, community_id}
               {:error, reason} -> {:error, Event.error(inspect(reason))}
             end

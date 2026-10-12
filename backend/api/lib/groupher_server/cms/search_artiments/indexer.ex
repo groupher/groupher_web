@@ -67,7 +67,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Indexer do
       {:ok, articles} ->
         articles
         |> Enum.reduce_while({:ok, []}, fn article, {:ok, acc} ->
-          case Projection.Article.project(thread, article) do
+          case Projection.article(thread, article) do
             {:ok, artiment} -> {:cont, {:ok, [artiment | acc]}}
             {:error, ErrorCat.error_pattern(reason: :not_searchable)} -> {:halt, {:delete, acc}}
             {:error, reason} -> {:halt, {:error, reason}}
@@ -88,9 +88,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Indexer do
   def delete_article(thread, article_id) do
     refs =
       ArticleBinding
-      |> join(:inner, [binding], community in Community,
-        on: community.id == binding.community_id
-      )
+      |> join(:inner, [binding], community in Community, on: community.id == binding.community_id)
       |> where([binding, _community], binding.article_id == ^article_id)
       |> select([_binding, community], community.slug)
       |> Repo.all()
@@ -174,7 +172,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Indexer do
 
   defp project_batch(thread, articles) do
     Enum.reduce_while(articles, {:ok, []}, fn article, {:ok, acc} ->
-      case Projection.Article.project(thread, article) do
+      case Projection.article(thread, article) do
         {:ok, artiment} -> {:cont, {:ok, [artiment | acc]}}
         {:error, reason} -> {:halt, {:error, reason}}
       end

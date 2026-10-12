@@ -9,11 +9,12 @@ defmodule GroupherServer.CMS.Articles.Commands.SetStatus do
       commandId -> SetStatus -> Gate -> Article status transition
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.Articles.Commands.StateChange
   alias CMS.Command.Receipt
   alias CMS.Model.{Article, Community}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
 
   @spec execute(map(), atom() | nil, User.t(), Community.t(), Ecto.UUID.t()) ::
           {:ok, Article.t()} | {:error, term()}

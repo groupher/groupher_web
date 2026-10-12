@@ -14,9 +14,8 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
 
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.Articles.Draft.Store
-  alias CMS.Articles.Bindings
-  alias CMS.Assets.{Query, Writer}
+  alias CMS.Articles.{Draft.Store, Bindings}
+  alias CMS.Assets.{Query, Refs}
   alias CMS.{Command, ErrorCat}
   alias CMS.FrontDesk
   alias CMS.Model.{Article, ArticleAssetRef, ArticleDraft, Community, CommunityAsset}
@@ -42,7 +41,7 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
       params = Map.drop(attrs, [:command_id, :cur_user, :step_ref])
 
       if is_nil(command_id) do
-        with {:ok, author} <- CMS.Articles.Writer.ensure_author_exists(user) do
+        with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user) do
           replace_in_draft(article, community, params, author, user)
         end
       else
@@ -71,7 +70,7 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
         {:ok, result}
 
       :not_applied ->
-        with {:ok, author} <- CMS.Articles.Writer.ensure_author_exists(user),
+        with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user),
              {:ok, result} <- replace_in_draft(article, community, params, author, user) do
           {:ok, Map.put(result, :workflow_ref, workflow_ref)}
         end
@@ -83,7 +82,7 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
          expected_version when is_integer(expected_version) <-
            value(params, :expected_draft_version),
          true <- draft.version == expected_version + 1,
-         refs <- Writer.draft_refs(draft.body_draft_id),
+         refs <- Refs.draft_refs(draft.body_draft_id),
          %ArticleAssetRef{} = ref <- Enum.find(refs, &same_locator?(&1, params)),
          true <- ref.asset_id == value(params, :to_asset_id) do
       {:ok,
@@ -136,7 +135,7 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
          %{actor: user, target: article, params: params, command_id: command_id},
          community
        ) do
-    with {:ok, author} <- CMS.Articles.Writer.ensure_author_exists(user),
+    with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user),
          {:ok, result} <- replace_in_draft(article, community, params, author, user) do
       {:ok,
        %Confirmation{
@@ -174,7 +173,7 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
                expected_version: draft.version
              ),
            {:ok, _refs} <-
-             Writer.sync_refs(
+             Refs.sync_refs(
                community,
                canonical,
                replacement_refs(draft, ref, target_asset)
@@ -204,7 +203,7 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
       cover_key = if ref.usage == :cover, do: :cover_asset_id, else: :cover_asset_dark_id
       %{cover_key => target_asset.id}
     else
-      refs = Writer.draft_refs(draft.body_draft_id)
+      refs = Refs.draft_refs(draft.body_draft_id)
 
       %{asset_refs: Enum.map(refs, &ref_input(&1, ref.id, target_asset.id))}
     end
@@ -243,7 +242,7 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
   defp locate_ref(%ArticleDraft{body_draft_id: body_draft_id}, attrs) do
     refs =
       body_draft_id
-      |> Writer.lock_draft_refs(usage(attrs))
+      |> Refs.lock_draft_refs(usage(attrs))
       |> Enum.filter(&locator_match?(&1, attrs))
 
     case refs do

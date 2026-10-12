@@ -11,9 +11,7 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
         -> Confirmation / canonical Community recovery
   """
 
-  require Logger
-
-  alias GroupherServer.{Accounts, Analysis, CMS, FrontDesk, Repo}
+  alias GroupherServer.{Accounts, CMS, FrontDesk, Repo}
   alias Accounts.Model.User
   alias CMS.Communities.{CreationPersist, Lifecycle}
   alias CMS.Communities.Moderators.Setup, as: ModeratorSetup
@@ -54,9 +52,9 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
          {:ok, _tree} <- CMS.DocTree.initialize(community),
          {:ok, canonical} <- FrontDesk.community(community.slug, mode: :internal),
          {:ok, _event} <-
-           CMS.Dashboard.Effects.enqueue_presentation_changed(canonical, command_id) do
-      provision_web_analysis(canonical)
-
+           CMS.Dashboard.Effects.enqueue_presentation_changed(canonical, command_id),
+         {:ok, _event} <-
+           CMS.Communities.Effects.enqueue_analysis_provision(canonical, command_id) do
       {:ok,
        %CreateConfirmation{
          data: %{"community_id" => canonical.id, "command_id" => command_id}
@@ -75,20 +73,5 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
 
   defp with_defaults(args) do
     Map.merge(args, %{meta: @default_meta, dashboard: @default_dashboard})
-  end
-
-  defp provision_web_analysis(%Community{} = community) do
-    case Analysis.Web.provision_community(community) do
-      {:ok, _website_id} ->
-        {:ok, :provisioned}
-
-      {:error, _reason} ->
-        Logger.warning("Community web analysis provisioning deferred", community_id: community.id)
-
-        {:ok, :deferred}
-
-      _ ->
-        {:ok, :deferred}
-    end
   end
 end

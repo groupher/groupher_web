@@ -3,7 +3,7 @@ defmodule GroupherServer.Test.CMS.Communities.Categories do
   use GroupherServer.TestMate
 
   alias GroupherServer.CMS
-  alias CMS.Articles.Writer
+  alias CMS.Articles.Persist
   alias CMS.Communities.Categories.Persist, as: CategoriesPersist
   alias CMS.Model.{Category, Community}
 
@@ -20,7 +20,7 @@ defmodule GroupherServer.Test.CMS.Communities.Categories do
       valid_attrs = mock_attrs(:category, %{user_id: user.id})
       ~m(title slug)a = valid_attrs
 
-      {:ok, author} = Writer.ensure_author_exists(user)
+      {:ok, author} = Persist.ensure_author_exists(user)
 
       {:ok, category} =
         CategoriesPersist.insert_category(~m(title slug)a, %Community{}, author.id)
@@ -32,7 +32,7 @@ defmodule GroupherServer.Test.CMS.Communities.Categories do
       valid_attrs = mock_attrs(:category, %{user_id: user.id})
       ~m(title slug)a = valid_attrs
 
-      {:ok, author} = Writer.ensure_author_exists(user)
+      {:ok, author} = Persist.ensure_author_exists(user)
 
       assert {:ok, _} =
                CategoriesPersist.insert_category(~m(title slug)a, %Community{}, author.id)
@@ -44,7 +44,7 @@ defmodule GroupherServer.Test.CMS.Communities.Categories do
       valid_attrs = mock_attrs(:category, %{user_id: user.id})
       ~m(title slug)a = valid_attrs
 
-      {:ok, author} = Writer.ensure_author_exists(user)
+      {:ok, author} = Persist.ensure_author_exists(user)
 
       {:ok, category} =
         CategoriesPersist.insert_category(~m(title slug)a, %Community{}, author.id)
@@ -61,7 +61,7 @@ defmodule GroupherServer.Test.CMS.Communities.Categories do
       valid_attrs = mock_attrs(:category, %{user_id: user.id})
       ~m(title slug)a = valid_attrs
 
-      {:ok, author} = Writer.ensure_author_exists(user)
+      {:ok, author} = Persist.ensure_author_exists(user)
 
       {:ok, category} =
         CategoriesPersist.insert_category(~m(title slug)a, %Community{}, author.id)

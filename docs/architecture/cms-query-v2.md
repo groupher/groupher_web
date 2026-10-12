@@ -4,15 +4,15 @@
 > 和 `Projection` 收敛的边界；本次迁移保持 `CMS.<Domain>` 公开 facade API 稳定，内部直接切换，
 > 不保留 `Reader` 兼容层。
 >
-> 版本关系：本文承接 [FrontDesk V2](../feature/front-desk/v2.md) 已冻结的单资源读取边界。
-> FrontDesk V2 决定“一个顶层资源如何被权威读取”，本文决定列表、批量、聚合、领域内部事实
+> 版本关系：本文承接 [FrontDesk 当前合同](../feature/front-desk/README.md) 的单资源读取边界。
+> FrontDesk 当前合同决定“一个顶层资源如何被权威读取”，本文决定列表、批量、聚合、领域内部事实
 > 和 read model 分别由谁拥有。本文同时取代
 > [CMS Facade 与实现目录收口](./cms-facade-directory.md) §2.2 中“读取模块统一命名为 Reader”
 > 的历史命名决策。
 
 相关文档：
 
-- [FrontDesk V2](../feature/front-desk/v2.md)：顶层资源的单资源唯一入口、mode/actor/view 与稳定关系；
+- [FrontDesk](../feature/front-desk/README.md)：顶层资源的单资源唯一入口、mode/actor/view 与稳定关系；
 - [CMS Facade 与实现目录收口](./cms-facade-directory.md)：公开 facade 与内部实现目录的所有权；
 - [CMS 资源加载与 Canonical Reload 边界](./resource-loading-boundary.md)：transport、Gate、Command 与 async reload；
 - [Query、Store、Draft 与缓存边界](./query-store-boundary.md)：前端 Query/Store 语义；本文只定义后端 CMS 读取模块；
@@ -132,11 +132,11 @@ CMS.Press.site_manifest(community)
 | `Docs.Reader`                  | DocPublic、branch version、revision、body、release 等 materialization facts                        | 迁入 `Docs.Store/Facts`                                                                                                                                     |
 | `Comments.Reader`              | FrontDesk 单资源 wrapper、author lookup、reconcile batch                                           | 删除单资源 wrapper；reconcile 与内部 author lookup 收口到 `Comments.Query.Reconcile`；稳定关系仍由 FrontDesk 提供                                           |
 | `Communities.Reader`           | detail、Gate scope、viewer state、views 记账、缺省 dashboard 写入、category page                   | detail 收敛 FrontDesk；category page 迁入 `Communities.Query`；记账/初始化交还写 owner，最终删除 Reader                                                     |
-| `Assets.Reader`                | page、stats、usage、refs、visibility classification、active asset lookup                           | 直接改名为 `Assets.Query`；写入继续由 `Assets.Writer`、`Upload`、`Deletion` 等具名 owner 负责；本次未新增 `Assets.Store`                                    |
+| `Assets.Reader`                | page、stats、usage、refs、visibility classification、active asset lookup                           | 直接改名为 `Assets.Query`；写入由 `Assets.Persist`、`Assets.Refs`、`Upload`、`Deletion` 等具名 owner 负责；本次未新增 `Assets.Store`                        |
 | `CommunityApplications.Reader` | current、history、review queue、events、detail，以及关联 User/Community/logo lookup                | 产品读取迁入 `CommunityApplications.Query`；顶层 User/Community 走 FrontDesk；内部 logo row 进入 Store/Query 的具名 owner                                   |
 | `DocCover.Reader`              | 带授权的完整 Docs cover read model                                                                 | 改为 `DocCover.Query`                                                                                                                                       |
 | `DocTree.Reader`               | tree 查询、状态计算、序列化和 `ensure_*` 写入                                                      | 收口为 `DocTree.Query`（读取与投影）及 `DocTree.State/Writer`（状态初始化与写入）；本次未新增独立 `Projection` 模块                                         |
-| `Press.Reader`                 | config、Article、RSS、site manifest 查询和投影                                                     | 直接改名为 `Press.Query`；Community lookup 走 FrontDesk，配置写入继续由现有 `ConfigWriter`/`PressConfig` owner 负责                                         |
+| `Press.Reader`                 | config、Article、RSS、site manifest 查询和投影                                                     | 直接改名为 `Press.Query`；Community lookup 走 FrontDesk，配置写入由 `Press.Commands.UpdateConfig` + `Press.Persist` 负责                                    |
 | `Snapshot.Reader`              | visibility-safe batch summaries                                                                    | 改为 `Snapshot.Query`                                                                                                                                       |
 | `Wallpaper.Reader`             | public/editor projection、history、snapshot/state helper                                           | 直接改名为 `Wallpaper.Query`；发布、上传、设置、保留继续由 `Publisher`、`Upload`、`Settings`、`Retention` 负责；本次未新增 `Wallpaper.Store` 或 `Validator` |
 
@@ -180,7 +180,7 @@ Comments.Query.Published
 现有 Query 名称已经表达三类局部语义，允许保留：
 
 - `Gate.Scope.Query`：根据 root/context 分发 Scope query builder；
-- `Interactions.ReadState.Query`、`ViewTracker.Query`：批量读取派生状态；
+- `Interactions.Projection.Query`、`ViewTracker.Query`：批量读取派生状态；
 - `SearchArtiments.Query`：validated query value object。
 
 Query 不被定义成一种固定 Ecto 实现形态，而被定义成“无写入的具名读取合同”。同一 domain 内不得
@@ -190,7 +190,7 @@ Query 不被定义成一种固定 Ecto 实现形态，而被定义成“无写�
 
 ### Phase 1：文档与静态边界（已完成）
 
-- 冻结本文和 FrontDesk V2 的互补关系；
+- 冻结本文和 FrontDesk 当前合同的互补关系；
 - 更新 facade 目录文档，标记 Reader 统一命名决策已被本文取代；
 - 增加 CMS Query boundary 检查：禁止新增 CMS `*.Reader` 模块、alias、调用和 `reader.ex` 文件；
 - 禁止 FrontDesk 新增 `page/list/search/count/aggregate` surface。

@@ -7,11 +7,7 @@ defmodule GroupherServer.Analysis.Web.Provider do
 
   Business position:
 
-      Main / Dashboard
-        -> GraphQL
-        -> Analysis
-        -> Provider
-        -> Repo / analytics provider
+      Analysis.Web -> Provider behaviour -> normalized analytics DTO
   """
 
   alias GroupherServer.Analysis

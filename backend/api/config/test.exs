@@ -10,6 +10,8 @@ config :groupher_server, GroupherServerWeb.Endpoint,
 
 config :groupher_server, :assets_hub, capability_secret: "test-assets-hub-capability-secret"
 
+config :groupher_server, :web_analysis_policy, provision_on_community_create: false
+
 # Print only warnings and errors during test
 config :logger, level: :warning
 

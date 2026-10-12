@@ -8,21 +8,24 @@ defmodule GroupherServer.Accounts.CollectFolders.Articles do
 
   Business position:
 
-      Client / Auth
-        -> GraphQL or internal API
-        -> Accounts facade
-        -> Articles
-        -> Repo
+      Accounts facade -> CollectFolders.Articles -> folder scope -> CMS article reads
   """
 
   import Helper.Utils, only: [done: 1]
 
   alias GroupherServer.{Accounts, CMS, FrontDesk, Repo}
-  alias CMS.Articles.Bindings
+
   alias Accounts.CollectFolders.ErrorCat
   alias Accounts.Model.{CollectFolder, User}
   alias Helper.{ORM, T}
 
+  @doc """
+  Returns public articles stored inside a collection folder.
+
+  ## Examples
+
+      Accounts.CollectFolders.Articles.paged(folder_id, %{page: 1, size: 20})
+  """
   @spec paged(T.id(), map()) :: T.domain_res(T.paged_data())
   def paged(folder_id, filter) do
     with {:ok, folder} <- ORM.find(CollectFolder, folder_id) do
@@ -33,6 +36,13 @@ defmodule GroupherServer.Accounts.CollectFolders.Articles do
     end
   end
 
+  @doc """
+  Returns folder articles after applying the viewer's privacy scope.
+
+  ## Examples
+
+      Accounts.CollectFolders.Articles.paged(folder_id, %{page: 1, size: 20}, viewer)
+  """
   @spec paged(T.id(), map(), User.t()) :: T.domain_res(T.paged_data())
   def paged(folder_id, filter, %User{id: cur_user_id}) do
     with {:ok, folder} <- ORM.find(CollectFolder, folder_id) do
@@ -50,7 +60,7 @@ defmodule GroupherServer.Accounts.CollectFolders.Articles do
       Enum.flat_map(folder.collects, fn collect ->
         case Repo.get(CMS.Model.Article, collect.article_id) do
           %CMS.Model.Article{} = article ->
-            {:ok, bindings} = Bindings.all(article)
+            {:ok, bindings} = GroupherServer.CMS.articles_bindings_all(article)
 
             Enum.flat_map(bindings, fn binding ->
               case FrontDesk.article(%{

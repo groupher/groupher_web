@@ -199,7 +199,7 @@ Assets Hub 是通用生成图片基础设施，内部保留 `Generated Batch`、
 `variantKey`、`uploadRef` 和 claim。Wallpaper 业务层只暴露 `profile`；Browser→Assets Hub 的通用
 HTTP wire 可以继续携带 `variantKey`，这不等于 Wallpaper GraphQL 暴露 Variant。
 
-`CMS.Assets.GeneratedBatch.PublishCapability` 是唯一双向边界：
+`CMS.Assets.Maintenance.GeneratedBatch.PublishCapability` 是唯一双向边界：
 
 - `verify/1` 验签后把 Assets Hub camelCase payload/manifest 解析为 Phoenix canonical snake_case；
 - `canonical_manifest/1` 和 `manifest_digest/1` 把 canonical manifest 发射为稳定 camelCase wire bytes；

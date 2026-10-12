@@ -12,9 +12,9 @@ defmodule GroupherServer.CMS.Articles.Draft.Store do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
+  alias CMS.Articles.{Workflow, ContentFingerprint}
   alias CMS.Artiment.BodyBag
   alias CMS.CanonicalJSON
-  alias CMS.Articles.ContentFingerprint
   alias CMS.Articles.Draft.Tags, as: DraftTags
 
   alias CMS.Model.{
@@ -60,7 +60,7 @@ defmodule GroupherServer.CMS.Articles.Draft.Store do
           {:ok, %{article: Article.t(), draft: ArticleDraft.t() | DocDraft.t()}}
           | {:error, term()}
   def create(%Community{} = community, thread, attrs, %Author{} = author, opts \\ []) do
-    Repo.transaction(fn ->
+    Workflow.transaction(fn ->
       with {:ok, _} <- validate_cover(attrs),
            {:ok, body_bag} <- cast_body(attrs, thread),
            {:ok, article} <- insert_article(community, thread, author, attrs),
@@ -106,7 +106,7 @@ defmodule GroupherServer.CMS.Articles.Draft.Store do
   def update(%Article{} = article, attrs, %Author{} = author, opts \\ []) do
     expected_version = Keyword.fetch!(opts, :expected_version)
 
-    Repo.transaction(fn ->
+    Workflow.transaction(fn ->
       with {:ok, _} <- validate_cover(attrs),
            {:ok, article} <- lock_article(article.id),
            {:ok, draft} <- lock_draft(article, opts),
@@ -146,7 +146,7 @@ defmodule GroupherServer.CMS.Articles.Draft.Store do
         {:ok, draft}
 
       {:error, :not_found} ->
-        Repo.transaction(fn ->
+        Workflow.transaction(fn ->
           with {:ok, public, revision} <- public_revision(article, opts),
                {:ok, body} <- snapshot_to_draft(revision),
                {:ok, extension} <- revision_extension(article.thread, revision),
@@ -183,7 +183,7 @@ defmodule GroupherServer.CMS.Articles.Draft.Store do
         opts
       )
       when article_id == article.id do
-    Repo.transaction(fn ->
+    Workflow.transaction(fn ->
       with {:ok, _} <- discard_existing_workspace(article, opts),
            {:ok, body} <- snapshot_to_draft(revision),
            {:ok, extension} <- revision_extension(:doc, revision),
@@ -219,7 +219,7 @@ defmodule GroupherServer.CMS.Articles.Draft.Store do
     expected_version = Keyword.fetch!(opts, :expected_version)
 
     result =
-      Repo.transaction(fn ->
+      Workflow.transaction(fn ->
         with {:ok, _public, _revision} <- public_revision(article, opts),
              {:ok, draft} <- lock_draft(article, opts),
              {:ok, _} <- ensure_version(draft, expected_version),

@@ -10,7 +10,7 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
                               staging ----+---- failure/cancel
                                           |
                                           v
-                                   atomic Writer apply
+                                   atomic Persist apply
 
   `preview_ref` is the preview resource identity: a retry may return the existing Job
   only when the complete confirmed intent still matches.
@@ -22,12 +22,13 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
   import Ecto.Query, warn: false
 
   alias GroupherServer.{Accounts, CMS, Repo}
+  alias CMS.ContentImport.{Transaction, Model.Job.Item}
   alias CMS.ErrorCat
 
   alias Accounts.Model.User
-  alias CMS.ContentImport.Persistence.{Connection, Job}
-  alias CMS.ContentImport.Persistence.Job.Body, as: StagedBody
-  alias CMS.ContentImport.{Persistence.Job.Item, Process, Threads.Doc.Validator}
+  alias CMS.ContentImport.Model.{Connection, Job}
+  alias CMS.ContentImport.Model.Job.Body
+  alias CMS.ContentImport.{DocValidator, Process}
   alias CMS.Docs.Branch
   alias CMS.Model.Community
 
@@ -40,10 +41,10 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
     documents = Map.fetch!(input, :documents)
 
     with {:ok, _} <-
-           Validator.validate_intent(community, source_info, target_tree, target_revision),
+           DocValidator.validate_intent(community, source_info, target_tree, target_revision),
          {:ok, item_attrs} <- build_item_attrs(documents, target_tree, source_info),
          {:ok, connection} <- get_or_create_connection(community, source_info) do
-      Repo.transaction(fn ->
+      Transaction.run(fn ->
         case Repo.get_by(Job,
                community_id: community.id,
                preview_ref: Map.fetch!(input, :preview_ref)
@@ -137,7 +138,7 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
           {:ok, map()} | {:error, term()}
   def fail(%Community{} = community, job_ref, code, message)
       when is_binary(code) and is_binary(message) do
-    Repo.transaction(fn ->
+    Transaction.run(fn ->
       case lock_job(community.id, job_ref) do
         {:ok, job} ->
           if job.status in [:completed, :cancelled] do
@@ -162,13 +163,13 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
   @doc "Cancels an unfinished ImportJob and removes its staged BodyBags."
   @spec cancel(Community.t(), Ecto.UUID.t()) :: {:ok, map()} | {:error, term()}
   def cancel(%Community{} = community, job_ref) do
-    Repo.transaction(fn ->
+    Transaction.run(fn ->
       case lock_job(community.id, job_ref) do
         {:ok, job} ->
           if job.status == :completed do
             project(job)
           else
-            Repo.delete_all(from(body in StagedBody, where: body.job_id == ^job.id))
+            Repo.delete_all(from(body in Body, where: body.job_id == ^job.id))
 
             job
             |> Job.changeset(%{
@@ -232,7 +233,7 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
   end
 
   defp build_item_attrs(documents, target_tree, source_info) when is_list(documents) do
-    targets = Validator.page_targets(target_tree)
+    targets = DocValidator.page_targets(target_tree)
 
     documents
     |> Enum.reduce_while({:ok, [], MapSet.new()}, fn document, {:ok, items, refs} ->
@@ -350,27 +351,57 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
     persisted_items =
       Item
       |> where([item], item.job_id == ^job.id)
-      |> select([item], {item.external_ref, item.target_ref, item.source_hash})
+      |> select([item], %{
+        external_ref: item.external_ref,
+        metadata: item.metadata,
+        route: item.route,
+        selected: item.selected,
+        slug: item.slug,
+        source_hash: item.source_hash,
+        source_revision: item.source_revision,
+        source_version: item.source_version,
+        target_ref: item.target_ref,
+        title: item.title
+      })
       |> Repo.all()
-      |> Enum.sort()
-
-    requested_items =
-      item_attrs
-      |> Enum.map(&{&1.external_ref, &1.target_ref, &1.source_hash})
+      |> Enum.map(&item_intent/1)
       |> Enum.sort()
 
     same? =
       job.dataset_ref == Map.fetch!(input, :dataset_ref) and
         job.source_info == source_info and
         job.target_revision == Map.fetch!(input, :target_revision) and
-        job.target_tree == Map.fetch!(input, :target_tree) and
-        persisted_items == requested_items
+        job.target_tree == Map.fetch!(input, :target_tree)
 
-    if same? do
+    same? = same? and job.bad_smells == Map.get(input, :bad_smells, [])
+
+    if same? and same_item_intent?(persisted_items, item_attrs) do
       {:ok, :pass}
     else
       {:error, ErrorCat.custom("previewRef is already bound to another intent")}
     end
+  end
+
+  defp same_item_intent?(persisted_items, item_attrs) do
+    persisted_items ==
+      item_attrs
+      |> Enum.map(&item_intent/1)
+      |> Enum.sort()
+  end
+
+  defp item_intent(item) do
+    %{
+      external_ref: value(item, "external_ref"),
+      metadata: value(item, "metadata") || %{},
+      route: value(item, "route"),
+      selected: value(item, "selected"),
+      slug: value(item, "slug"),
+      source_hash: value(item, "source_hash"),
+      source_revision: value(item, "source_revision"),
+      source_version: value(item, "source_version"),
+      target_ref: value(item, "target_ref"),
+      title: value(item, "title")
+    }
   end
 
   defp counts(target_tree) do

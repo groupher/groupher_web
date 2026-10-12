@@ -5,9 +5,6 @@ defmodule GroupherServer.Analysis.Const do
       producer action -> Analysis.Const vocabulary -> MetricEvent / query
   """
 
-  alias GroupherServer.RequestActor
-  alias RequestActor.Const, as: RequestActorConst
-
   @metrics [
     :article_view,
     :upvote_added,
@@ -20,11 +17,23 @@ defmodule GroupherServer.Analysis.Const do
     :comment_deleted
   ]
 
-  @doc "Returns the supported business metric names."
+  @doc """
+  Returns the supported business metric names.
+
+  ## Examples
+
+      Analysis.Const.metrics()
+  """
   @spec metrics() :: [atom()]
   def metrics, do: @metrics
 
-  @doc "Returns actor types plus the non-actor all aggregate dimension."
+  @doc """
+  Returns actor types plus the non-actor all aggregate dimension.
+
+  ## Examples
+
+      Analysis.Const.actor_dimensions()
+  """
   @spec actor_dimensions() :: [atom()]
-  def actor_dimensions, do: RequestActorConst.actor_types() ++ [:all]
+  def actor_dimensions, do: GroupherServer.RequestActor.const_actor_types() ++ [:all]
 end

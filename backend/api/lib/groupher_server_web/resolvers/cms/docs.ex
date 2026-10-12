@@ -6,26 +6,26 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
   """
 
   alias GroupherServer.CMS
-  alias GroupherServer.CMS.ErrorCat, as: CmsErrorCat
-  alias GroupherServer.CMS.Model.Community
+
+  alias CMS.Model.Community
 
   def doc_tree(_root, %{community: %Community{} = community}, %{context: %{cur_user: user}}) do
-    CMS.DocTree.read(community, actor: user, policy_mode: :moderator_management)
+    CMS.doc_tree_read(community, actor: user, policy_mode: :moderator_management)
   end
 
   def doc_tree(_root, %{community: community}, %{context: %{cur_user: user}}) do
-    with {:ok, community} <- CMS.Communities.fetch(community, inc_views: false) do
-      CMS.DocTree.read(community, actor: user, policy_mode: :moderator_management)
+    with {:ok, community} <- CMS.communities_fetch(community, inc_views: false) do
+      CMS.doc_tree_read(community, actor: user, policy_mode: :moderator_management)
     end
   end
 
   def doc_public_tree(_root, %{community: %Community{} = community}, _info) do
-    CMS.DocTree.read_public(community)
+    CMS.doc_tree_read_public(community)
   end
 
   def doc_public_tree(_root, %{community: community}, _info) do
-    with {:ok, community} <- CMS.Communities.fetch(community, inc_views: false) do
-      CMS.DocTree.read_public(community)
+    with {:ok, community} <- CMS.communities_fetch(community, inc_views: false) do
+      CMS.doc_tree_read_public(community)
     end
   end
 
@@ -34,7 +34,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: %Community{} = community},
         %{context: %{cur_user: user}}
       ) do
-    CMS.DocTree.trash_items(community, actor: user, policy_mode: :moderator_management)
+    CMS.doc_tree_trash_items(community, actor: user, policy_mode: :moderator_management)
   end
 
   def doc_tree_trash_items(
@@ -42,8 +42,8 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community},
         %{context: %{cur_user: user}}
       ) do
-    with {:ok, community} <- CMS.Communities.fetch(community, inc_views: false) do
-      CMS.DocTree.trash_items(community, actor: user, policy_mode: :moderator_management)
+    with {:ok, community} <- CMS.communities_fetch(community, inc_views: false) do
+      CMS.doc_tree_trash_items(community, actor: user, policy_mode: :moderator_management)
     end
   end
 
@@ -52,7 +52,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: %Community{} = community} = args,
         %{context: %{cur_user: user}}
       ) do
-    CMS.DocCover.read(community, doc_cover_view(args), user)
+    CMS.doc_cover_read(community, doc_cover_view(args), user)
   end
 
   def doc_cover(
@@ -60,8 +60,8 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community} = args,
         %{context: %{cur_user: user}}
       ) do
-    with {:ok, community} <- CMS.Communities.fetch(community, inc_views: false) do
-      CMS.DocCover.read(community, doc_cover_view(args), user)
+    with {:ok, community} <- CMS.communities_fetch(community, inc_views: false) do
+      CMS.doc_cover_read(community, doc_cover_view(args), user)
     end
   end
 
@@ -70,7 +70,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: %Community{} = community, id: doc_id},
         %{context: %{cur_user: user}}
       ) do
-    CMS.Docs.read_editor_head(community, doc_id, actor: user, policy_mode: :moderator_management)
+    CMS.docs_read_editor_head(community, doc_id, actor: user, policy_mode: :moderator_management)
   end
 
   def doc_draft(
@@ -78,8 +78,8 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community, id: doc_id},
         %{context: %{cur_user: user}}
       ) do
-    with {:ok, community} <- CMS.Communities.fetch(community, inc_views: false) do
-      CMS.Docs.read_editor_head(community, doc_id,
+    with {:ok, community} <- CMS.communities_fetch(community, inc_views: false) do
+      CMS.docs_read_editor_head(community, doc_id,
         actor: user,
         policy_mode: :moderator_management
       )
@@ -88,7 +88,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
 
   def doc_branch_versions(_root, %{doc_id: doc_id, branch_id: branch_id} = args, _info) do
     with {:ok, branch_id} <- positive_integer_id(branch_id) do
-      CMS.Docs.list_branch_versions(doc_id, branch_id, limit: Map.get(args, :limit, 30))
+      CMS.docs_list_branch_versions(doc_id, branch_id, limit: Map.get(args, :limit, 30))
     end
   end
 
@@ -99,7 +99,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
       ) do
     with {:ok, branch_id} <- positive_integer_id(branch_id),
          {:ok, branch_version_id} <- positive_integer_id(branch_version_id) do
-      CMS.Docs.get_branch_version(doc_id, branch_id, branch_version_id)
+      CMS.docs_get_branch_version(doc_id, branch_id, branch_version_id)
     end
   end
 
@@ -118,7 +118,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
             [command_id: args[:command_id]]
         end
 
-      CMS.Docs.restore_revision_to_draft(doc_id, branch_id, revision_id, user, opts)
+      CMS.docs_restore_revision_to_draft(doc_id, branch_id, revision_id, user, opts)
     end
   end
 
@@ -127,7 +127,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community, input: input} = args,
         %{context: %{cur_user: user}}
       ) do
-    CMS.DocTree.create_node(
+    CMS.doc_tree_create_node(
       community,
       input
       |> Map.put(:parent_node_id, args[:parent_node_id])
@@ -142,7 +142,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community, id: id, patch: patch} = args,
         _info
       ) do
-    CMS.DocTree.update_node(
+    CMS.doc_tree_update_node(
       community,
       id,
       patch
@@ -162,7 +162,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         } = args,
         _info
       ) do
-    CMS.DocTree.update_draft(
+    CMS.doc_tree_update_draft(
       community,
       doc,
       args
@@ -173,7 +173,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
   end
 
   def doc_publish_checklist(_root, %{community: community}, _info) do
-    {:ok, CMS.DocTree.publish_checklist(community)}
+    {:ok, CMS.doc_tree_publish_checklist(community)}
   end
 
   def publish_doc_changes(
@@ -184,14 +184,14 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
     input = Map.get(args, :input) || %{}
     sync_cover? = publish_with_cover_sync?(args)
 
-    CMS.DocTree.publish_changes(community, input, user,
+    CMS.doc_tree_publish_changes(community, input, user,
       sync_cover: sync_cover?,
       command_id: args[:command_id]
     )
   end
 
   def move_doc_to_draft(_root, %{community: community, id: id, cur_user: user} = args, _info) do
-    CMS.DocTree.move_doc_to_draft_result(community, id, user, command_id: args[:command_id])
+    CMS.doc_tree_move_doc_to_draft_result(community, id, user, command_id: args[:command_id])
   end
 
   def move_doc_tree_subtree_to_draft(
@@ -199,7 +199,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community, node_id: node_id, cur_user: user} = args,
         _info
       ) do
-    CMS.DocTree.move_subtree_to_draft(community, node_id, user, command_id: args[:command_id])
+    CMS.doc_tree_move_subtree_to_draft(community, node_id, user, command_id: args[:command_id])
   end
 
   def add_doc_cover_card(
@@ -207,7 +207,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community, group_node_id: group_node_id, command_id: command_id},
         %{context: %{cur_user: user}}
       ) do
-    CMS.DocCover.add_card(community, group_node_id, user, command_id)
+    CMS.doc_cover_add_card(community, group_node_id, user, command_id)
   end
 
   def remove_doc_cover_card(
@@ -215,7 +215,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community, group_node_id: group_node_id, command_id: command_id},
         %{context: %{cur_user: user}}
       ) do
-    CMS.DocCover.remove_card(community, group_node_id, user, command_id)
+    CMS.doc_cover_remove_card(community, group_node_id, user, command_id)
   end
 
   def reorder_doc_cover_cards(
@@ -223,7 +223,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community, ids: ids, command_id: command_id},
         %{context: %{cur_user: user}}
       ) do
-    CMS.DocCover.reorder_cards(community, ids, user, command_id)
+    CMS.doc_cover_reorder_cards(community, ids, user, command_id)
   end
 
   def update_doc_cover_card_appearance(
@@ -231,7 +231,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community, id: id, appearance: appearance, command_id: command_id},
         %{context: %{cur_user: user}}
       ) do
-    CMS.DocCover.update_card_appearance(community, id, appearance, user, command_id)
+    CMS.doc_cover_update_card_appearance(community, id, appearance, user, command_id)
   end
 
   def pin_doc_to_cover(
@@ -239,7 +239,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community, node_id: node_id, command_id: command_id},
         %{context: %{cur_user: user}}
       ) do
-    CMS.DocCover.pin_doc(community, node_id, user, command_id)
+    CMS.doc_cover_pin_doc(community, node_id, user, command_id)
   end
 
   def unpin_doc_from_cover(
@@ -247,7 +247,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community, node_id: node_id, command_id: command_id},
         %{context: %{cur_user: user}}
       ) do
-    CMS.DocCover.unpin_doc(community, node_id, user, command_id)
+    CMS.doc_cover_unpin_doc(community, node_id, user, command_id)
   end
 
   def reorder_doc_cover_pinned_docs(
@@ -255,7 +255,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community, node_ids: node_ids, command_id: command_id},
         %{context: %{cur_user: user}}
       ) do
-    CMS.DocCover.reorder_pinned_docs(community, node_ids, user, command_id)
+    CMS.doc_cover_reorder_pinned_docs(community, node_ids, user, command_id)
   end
 
   def update_pinned_doc_appearance(
@@ -263,11 +263,11 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community, node_id: node_id, appearance: appearance, command_id: command_id},
         %{context: %{cur_user: user}}
       ) do
-    CMS.DocCover.update_pinned_doc_appearance(community, node_id, appearance, user, command_id)
+    CMS.doc_cover_update_pinned_doc_appearance(community, node_id, appearance, user, command_id)
   end
 
   def delete_doc_tree_node(_root, %{community: community, id: id} = args, _info) do
-    CMS.DocTree.delete_node(
+    CMS.doc_tree_delete_node(
       community,
       id,
       %{base_revision: args[:base_revision], command_id: args[:command_id]},
@@ -276,7 +276,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
   end
 
   def restore_doc_tree_trash_item(_root, %{community: community, id: id} = args, _info) do
-    CMS.DocTree.restore_trash_item(
+    CMS.doc_tree_restore_trash_item(
       community,
       id,
       %{
@@ -290,7 +290,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
   end
 
   def duplicate_doc_tree_node(_root, %{community: community, id: id} = args, _info) do
-    CMS.DocTree.duplicate_node(
+    CMS.doc_tree_duplicate_node(
       community,
       id,
       %{base_revision: args[:base_revision], command_id: args[:command_id]},
@@ -299,7 +299,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
   end
 
   def move_doc_tree_node(_root, %{community: community, id: id} = args, _info) do
-    CMS.DocTree.move_node(
+    CMS.doc_tree_move_node(
       community,
       id,
       %{
@@ -323,12 +323,12 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
   defp positive_integer_id(value) when is_binary(value) do
     case Integer.parse(value) do
       {id, ""} when id > 0 -> {:ok, id}
-      _ -> {:error, CmsErrorCat.custom("invalid id")}
+      _ -> {:error, GroupherServer.CMS.error_cat_custom("invalid id")}
     end
   end
 
   defp positive_integer_id(_value) do
-    {:error, CmsErrorCat.custom("invalid id")}
+    {:error, GroupherServer.CMS.error_cat_custom("invalid id")}
   end
 
   defp publish_with_cover_sync?(args) do

@@ -48,6 +48,10 @@ defmodule GroupherServer.CMS.Communities.Persist do
   @spec update_fields(Community.t(), map()) :: T.domain_res(Community.t())
   def update_fields(%Community{} = community, args), do: ORM.update(community, args)
 
+  @doc "Increments the persisted Community view counter."
+  @spec increment_views(Community.t()) :: {:ok, Community.t()} | {:error, term()}
+  def increment_views(%Community{} = community), do: ORM.inc(community, :views)
+
   @doc """
   Inserts the core Community row for a create command.
 
@@ -58,7 +62,7 @@ defmodule GroupherServer.CMS.Communities.Persist do
   """
   @spec insert_core(map(), term()) :: T.domain_res(Community.t())
   def insert_core(args, actor) do
-    with {:ok, author} <- CMS.Articles.Writer.ensure_author_exists(actor) do
+    with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(actor) do
       args =
         args
         |> Map.merge(%{user_id: author.user_id})

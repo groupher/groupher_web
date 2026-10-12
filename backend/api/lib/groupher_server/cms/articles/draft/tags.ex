@@ -14,8 +14,9 @@ defmodule GroupherServer.CMS.Articles.Draft.Tags do
 
   import Ecto.Query
 
-  alias GroupherServer.Repo
-  alias GroupherServer.CMS.Model.{Article, ArticleDraft, ArticleRevision, DocDraft}
+  alias GroupherServer.{CMS, Repo}
+
+  alias CMS.Model.{Article, ArticleDraft, ArticleRevision, DocDraft}
   alias Helper.Constant.DBPrefix
 
   @cms_prefix DBPrefix.cms()

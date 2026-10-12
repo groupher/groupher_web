@@ -5,7 +5,7 @@ defmodule GroupherServer.Activity.ErrorCat do
       Activity boundary -> Activity ErrorCat -> protocol formatter
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:activity}
+  use GroupherServer.ErrorCat, namespace: {:activity}
 
   error(:invalid_action, code: 6101)
   error(:unsupported_action, code: 6102)

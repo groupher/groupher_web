@@ -14,6 +14,8 @@ defmodule GroupherServer.Test.CMS.Press do
     PressConfig
   }
 
+  alias CMS.Outbox.Event
+
   alias Ecto.Changeset
   alias CMS.Docs.Branch
   alias GroupherServerWeb.Schema
@@ -227,6 +229,22 @@ defmodule GroupherServer.Test.CMS.Press do
              CMS.Press.update_config(community, attrs, user, command_id)
 
     assert {:ok, %PressConfig{revision: 1}} = CMS.Press.config(community)
+
+    assert [%Event{} = event] =
+             Repo.all(
+               from(event in Event,
+                 where:
+                   event.command_id == ^command_id and
+                     event.event == "press.cache_invalidation"
+               )
+             )
+
+    assert event.identity_type == :command
+    assert event.contract_version == 1
+    assert event.resource_type == "community"
+    assert event.resource_id == to_string(community.id)
+    assert event.effect_key == "config"
+    assert event.data == %{}
   end
 
   test "feed reads selected public articles in one bounded projection",

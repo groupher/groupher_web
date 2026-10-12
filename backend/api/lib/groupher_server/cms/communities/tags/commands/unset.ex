@@ -1,16 +1,18 @@
-defmodule GroupherServer.CMS.Communities.Tags.Commands.UnsetTag do
+defmodule GroupherServer.CMS.Communities.Tags.Commands.Unset do
   @moduledoc """
   Unsets one community tag through a one-shot Gate admission.
 
-      GraphQL -> UnsetTag -> Article Gate -> Tags association + stats/effects
+      GraphQL -> Unset -> Article Gate -> Tags association + stats/effects
   """
+
+  alias GroupherServer.Accounts
 
   alias GroupherServer.{CMS, Repo}
   alias CMS.{FrontDesk, Gate}
   alias CMS.Communities.Tags.Commands.TagSupport
   alias CMS.Articles.Tags.Assignment
   alias CMS.Model.{Article, Community}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @spec execute(Article.t() | map(), T.id(), User.t(), Ecto.UUID.t()) :: T.domain_res(Article.t())

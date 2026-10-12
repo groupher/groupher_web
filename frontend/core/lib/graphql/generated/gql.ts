@@ -102,6 +102,7 @@ type Documents = {
   '\n  fragment UserAchievementFields on Achievement {\n    reputation\n    articlesUpvotesCount\n    articlesCollectsCount\n  }\n': typeof types.UserAchievementFieldsFragmentDoc
   '\n  query Me {\n    me {\n      login\n      nickname\n      avatar\n      bio\n      passport\n    }\n  }\n': typeof types.MeDocument
   '\n  query User($login: String!, $userHasLogin: Boolean!) {\n    user(login: $login) {\n      ...UserAuthorFields\n      views\n      sex\n      location\n      social {\n        ...UserSocialFields\n      }\n      meta {\n        isMaker\n        publishedPostsCount\n        publishedBlogsCount\n      }\n      followersCount\n      followingsCount\n      viewerHasFollowed @include(if: $userHasLogin)\n      achievement {\n        ...UserAchievementFields\n      }\n      contributes {\n        records {\n          count\n          date\n        }\n        startDate\n        endDate\n        totalCount\n      }\n\n      subscribedCommunitiesCount\n\n      insertedAt\n    }\n  }\n': typeof types.UserDocument
+  '\n  mutation TrackProfileView($login: String!) {\n    trackProfileView(login: $login) {\n      tracked\n      views\n    }\n  }\n': typeof types.TrackProfileViewDocument
   '\n  query SessionState {\n    sessionState {\n      isValid\n      user {\n        ...UserAuthorFields\n        geoCity\n        location\n        social {\n          ...UserSocialFields\n        }\n        passport\n        subscribedCommunitiesCount\n        achievement {\n          ...UserAchievementFields\n        }\n      }\n    }\n  }\n': typeof types.SessionStateDocument
   '\n  query AboutSimpleQuery($article: ArticlePathInput!) {\n    post(article: $article) {\n      innerId\n    }\n  }\n': typeof types.AboutSimpleQueryDocument
   '\n  fragment ArticleEditorAuthorFields on User {\n    login\n    nickname\n    avatar\n    bio\n    shortbio\n  }\n': typeof types.ArticleEditorAuthorFieldsFragmentDoc
@@ -427,6 +428,8 @@ const documents: Documents = {
     types.MeDocument,
   '\n  query User($login: String!, $userHasLogin: Boolean!) {\n    user(login: $login) {\n      ...UserAuthorFields\n      views\n      sex\n      location\n      social {\n        ...UserSocialFields\n      }\n      meta {\n        isMaker\n        publishedPostsCount\n        publishedBlogsCount\n      }\n      followersCount\n      followingsCount\n      viewerHasFollowed @include(if: $userHasLogin)\n      achievement {\n        ...UserAchievementFields\n      }\n      contributes {\n        records {\n          count\n          date\n        }\n        startDate\n        endDate\n        totalCount\n      }\n\n      subscribedCommunitiesCount\n\n      insertedAt\n    }\n  }\n':
     types.UserDocument,
+  '\n  mutation TrackProfileView($login: String!) {\n    trackProfileView(login: $login) {\n      tracked\n      views\n    }\n  }\n':
+    types.TrackProfileViewDocument,
   '\n  query SessionState {\n    sessionState {\n      isValid\n      user {\n        ...UserAuthorFields\n        geoCity\n        location\n        social {\n          ...UserSocialFields\n        }\n        passport\n        subscribedCommunitiesCount\n        achievement {\n          ...UserAchievementFields\n        }\n      }\n    }\n  }\n':
     types.SessionStateDocument,
   '\n  query AboutSimpleQuery($article: ArticlePathInput!) {\n    post(article: $article) {\n      innerId\n    }\n  }\n':
@@ -1265,6 +1268,12 @@ export function graphql(
 export function graphql(
   source: '\n  query User($login: String!, $userHasLogin: Boolean!) {\n    user(login: $login) {\n      ...UserAuthorFields\n      views\n      sex\n      location\n      social {\n        ...UserSocialFields\n      }\n      meta {\n        isMaker\n        publishedPostsCount\n        publishedBlogsCount\n      }\n      followersCount\n      followingsCount\n      viewerHasFollowed @include(if: $userHasLogin)\n      achievement {\n        ...UserAchievementFields\n      }\n      contributes {\n        records {\n          count\n          date\n        }\n        startDate\n        endDate\n        totalCount\n      }\n\n      subscribedCommunitiesCount\n\n      insertedAt\n    }\n  }\n',
 ): (typeof documents)['\n  query User($login: String!, $userHasLogin: Boolean!) {\n    user(login: $login) {\n      ...UserAuthorFields\n      views\n      sex\n      location\n      social {\n        ...UserSocialFields\n      }\n      meta {\n        isMaker\n        publishedPostsCount\n        publishedBlogsCount\n      }\n      followersCount\n      followingsCount\n      viewerHasFollowed @include(if: $userHasLogin)\n      achievement {\n        ...UserAchievementFields\n      }\n      contributes {\n        records {\n          count\n          date\n        }\n        startDate\n        endDate\n        totalCount\n      }\n\n      subscribedCommunitiesCount\n\n      insertedAt\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation TrackProfileView($login: String!) {\n    trackProfileView(login: $login) {\n      tracked\n      views\n    }\n  }\n',
+): (typeof documents)['\n  mutation TrackProfileView($login: String!) {\n    trackProfileView(login: $login) {\n      tracked\n      views\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

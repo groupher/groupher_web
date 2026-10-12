@@ -26,9 +26,9 @@ defmodule GroupherServer.CMS.Articles do
     Trash
   }
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
   alias Helper.T
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias CMS.Artiment.Const
   alias CMS.FrontDesk
   alias CMS.Gate.ErrorCat, as: GateErrorCat

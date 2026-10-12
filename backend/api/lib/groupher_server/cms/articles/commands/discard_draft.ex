@@ -7,10 +7,11 @@ defmodule GroupherServer.CMS.Articles.Commands.DiscardDraft do
         -> Gate -> Draft.Store.discard
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS
-  alias GroupherServer.CMS.Articles.Draft.Store
-  alias GroupherServer.CMS.Model.{Article, Community}
+  alias GroupherServer.{Accounts, CMS}
+
+  alias Accounts.Model.User
+  alias CMS.Articles.Draft.Store
+  alias CMS.Model.{Article, Community}
 
   @spec execute(Ecto.UUID.t(), User.t(), keyword()) :: {:ok, :done} | {:error, term()}
   def execute(article_id, %User{} = actor, opts) when is_binary(article_id) do

@@ -5,7 +5,8 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
 
   import Ecto.Query
 
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{Analysis, CMS, Repo}
+  alias Analysis.Model.{ArticleHourlyMetric, MetricEvent}
   alias CMS.Articles.{Draft.Store, Public, Revision}
   alias CMS.Articles.Publish.Target
   alias CMS.Articles.Publish.Doc, as: DocPublish
@@ -26,7 +27,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
 
   test "publish materialization keeps stable identity and reuses unchanged body snapshots" do
     {:ok, user} = db_insert(:user)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
     {:ok, article} = insert_article(author.id)
     {:ok, body} = insert_body("body-v1")
     {:ok, draft} = insert_draft(article.id, body.id, author.id, "Title one", "content-1")
@@ -57,7 +58,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
   test "autosave updates only Draft and discard preserves the selected Public Revision" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = db_insert(:community)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
     body_bag = mock_body_bag(mock_rich_text("draft body"))
 
     assert {:ok, %{article: article, draft: draft}} =
@@ -93,7 +94,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
   test "cover-only Draft edits change the content hash and Diff" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = db_insert(:community)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
 
     {:ok, %{article: article, draft: draft}} =
       Store.create(
@@ -148,7 +149,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
   test "publish atomically selects a Revision and removes the mutable workspace" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = db_insert(:community)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
 
     {:ok, %{article: article, draft: draft}} =
       Store.create(
@@ -184,7 +185,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
   test "publish waits for an in-flight autosave and preserves its newer Draft" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = db_insert(:community)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
 
     {:ok, %{article: article, draft: draft}} =
       Store.create(
@@ -245,7 +246,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
   test "Doc publish allocates durable branch versions and restore creates a new Draft" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = db_insert(:community)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
 
     branch =
       %DocBranch{}
@@ -276,15 +277,21 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
     assert %DocBranchState{moderation_state: :legal, is_edited: false} =
              Repo.get_by!(DocBranchState, article_id: article.id, branch_id: branch.id)
 
+    command_id = Ecto.UUID.generate()
+
     assert {:ok, result} =
              DocPublish.publish(article, branch.id, author,
                expected_draft_version: draft.version,
                expected_lifecycle_version: 1,
-               command_id: Ecto.UUID.generate()
+               command_id: command_id
              )
 
     assert result.version.version_number == 1
     assert result.branch_type == :main
+
+    assert Repo.all(from(event in CMS.Outbox.Event, where: event.command_id == ^command_id))
+           |> Enum.map(& &1.event)
+           |> Enum.sort() == ["article.projections", "article.published"]
 
     assert Repo.get_by!(ArticleBinding, article_id: article.id, community_id: community.id).inner_id ==
              1
@@ -426,7 +433,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
     article = Repo.get!(Article, doc.article_id)
     result = %{article: article, branch_type: :preview}
 
-    assert {:ok, ^result} = CMS.Articles.Publish.Effects.run(result)
+    assert {:ok, ^result} = CMS.Articles.Effects.run(result)
   end
 
   test "move reassigns the public path and drops the source Community relationship" do
@@ -494,8 +501,11 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
     assert moved.id == published.id
     assert replayed_move.id == published.id
 
-    assert Repo.get_by!(ArticleBinding, article_id: moved.id, community_id: destination.id).inner_id ==
-             2
+    moved_binding =
+      Repo.get_by!(ArticleBinding, article_id: moved.id, community_id: destination.id)
+
+    assert moved_binding.id == source_binding.id
+    assert moved_binding.inner_id == 2
 
     assert %ArticleBinding{community_id: destination_id} =
              Repo.get_by!(ArticleBinding, article_id: moved.id)
@@ -514,6 +524,115 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
 
     assert {source.slug, 1} in scopes
     assert {destination.slug, 2} in scopes
+  end
+
+  test "move preserves an existing destination binding and its local data" do
+    {source, article, _attrs, user} = mock_article(:post)
+    {:ok, destination} = db_insert(:community)
+
+    assert {:ok, _} =
+             CMS.Articles.mirror(
+               destination,
+               article.id,
+               [],
+               user,
+               source,
+               Ecto.UUID.generate()
+             )
+
+    destination_binding =
+      Repo.get_by!(ArticleBinding, article_id: article.id, community_id: destination.id)
+
+    source_binding =
+      Repo.get_by!(ArticleBinding, article_id: article.id, community_id: source.id)
+
+    operation_id = Ecto.UUID.generate()
+
+    assert {:ok, :pass} =
+             Analysis.metric_event_append_article_action(
+               article,
+               operation_id,
+               :upvote_added,
+               binding_id: source_binding.id,
+               community_id: source.id
+             )
+
+    bucket_started_at = DateTime.utc_now() |> DateTime.truncate(:second)
+
+    insert_hourly_metric(source_binding, article, bucket_started_at, 2)
+    insert_hourly_metric(destination_binding, article, bucket_started_at, 3)
+
+    assert {:ok, _} =
+             CMS.Articles.pin(destination, article.id, user, Ecto.UUID.generate())
+
+    assert %PinnedArticle{} =
+             Repo.get_by(PinnedArticle, article_binding_id: destination_binding.id)
+
+    assert {:ok, _} =
+             CMS.Articles.move(
+               source,
+               destination,
+               article.id,
+               [],
+               user,
+               Ecto.UUID.generate()
+             )
+
+    assert Repo.get_by!(ArticleBinding,
+             article_id: article.id,
+             community_id: destination.id
+           ).id == destination_binding.id
+
+    assert %PinnedArticle{} =
+             Repo.get_by(PinnedArticle, article_binding_id: destination_binding.id)
+
+    refute Repo.get_by(ArticleBinding, article_id: article.id, community_id: source.id)
+
+    assert %MetricEvent{binding_id: binding_id, community_id: community_id} =
+             Repo.get_by!(MetricEvent, operation_id: operation_id)
+
+    assert binding_id == destination_binding.id
+    assert community_id == destination.id
+
+    assert %ArticleHourlyMetric{value: 5} =
+             Repo.get_by!(ArticleHourlyMetric,
+               binding_id: destination_binding.id,
+               bucket_started_at: bucket_started_at,
+               metric: :upvote_added
+             )
+
+    refute Repo.get_by(ArticleHourlyMetric, binding_id: source_binding.id)
+  end
+
+  test "move updates the Community scope of binding-owned metrics" do
+    {source, article, _attrs, user} = mock_article(:post)
+    {:ok, destination} = db_insert(:community)
+    binding = Repo.get_by!(ArticleBinding, article_id: article.id, community_id: source.id)
+
+    assert {:ok, :pass} =
+             GroupherServer.Analysis.MetricEvent.append_article_action(
+               article,
+               Ecto.UUID.generate(),
+               :upvote_added,
+               binding_id: binding.id,
+               community_id: source.id
+             )
+
+    assert {:ok, _} =
+             CMS.Articles.move(
+               source,
+               destination,
+               article.id,
+               [],
+               user,
+               Ecto.UUID.generate()
+             )
+
+    assert %MetricEvent{community_id: destination_id, binding_id: binding_id} =
+             Repo.get_by!(MetricEvent, binding_id: binding.id)
+
+    assert destination_id == destination.id
+    assert binding_id == binding.id
   end
 
   test "publish always requires an explicit Community" do
@@ -558,7 +677,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
 
     destination_id = destination_binding.community_id
     assert destination_id == destination.id
-    assert {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    assert {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
     assert {:ok, restored} = Store.ensure_from_public(published, author)
     lifecycle = Repo.get_by!(CMS.Model.ArticleLifecycle, article_id: published.id)
 
@@ -631,7 +750,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
 
     assert replayed_mirror.id == mirror.id
 
-    assert {:error, %GroupherServer.ErrorCat.Error{reason: :command_id_conflict}} =
+    assert {:error, %ErrorCat.Error{reason: :command_id_conflict}} =
              CMS.Articles.mirror(
                conflicting_community,
                article.id,
@@ -733,7 +852,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
   test "FrontDesk resolves ArticlePath to the selected stable public revision" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = db_insert(:community)
-    {:ok, author} = CMS.Articles.Writer.ensure_author_exists(user)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
 
     {:ok, %{article: article, draft: draft}} =
       Store.create(
@@ -776,6 +895,23 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
 
     assert batch_article.id == article.id
     assert batch_binding.id == binding.id
+  end
+
+  defp insert_hourly_metric(binding, article, bucket_started_at, value) do
+    %ArticleHourlyMetric{}
+    |> Ecto.Changeset.change(%{
+      community_id: binding.community_id,
+      binding_id: binding.id,
+      article_type: article.thread,
+      article_id: article.id,
+      bucket_started_at: bucket_started_at,
+      metric: :upvote_added,
+      actor_type: :all,
+      is_authenticated: false,
+      policy_version: 0,
+      value: value
+    })
+    |> Repo.insert!()
   end
 
   defp insert_article(author_id) do

@@ -1,14 +1,16 @@
 defmodule GroupherServer.Test.CMS.CommandConfirmationTest do
   use ExUnit.Case, async: true
 
-  alias GroupherServer.CMS.Articles.Commands.PublishConfirmation
-  alias GroupherServer.CMS.Articles.Commands.RevisionConfirmation
-  alias GroupherServer.CMS.Accounts.CollectFolders.WriteConfirmation
-  alias GroupherServer.CMS.Command
-  alias GroupherServer.CMS.Comments.Commands.CommentConfirmation
-  alias GroupherServer.CMS.DocTree.Commands.TreeConfirmation
-  alias GroupherServer.CMS.Interactions.Reactions.UpvoteConfirmation, as: UpvoteConfirmation
-  alias GroupherServer.CMS.Interactions.Reactions.CollectConfirmation
+  alias GroupherServer.{Accounts, CMS}
+
+  alias Accounts.CollectFolders.MembershipConfirmation
+  alias CMS.Articles.Commands.PublishConfirmation
+  alias CMS.Articles.Commands.RevisionConfirmation
+  alias CMS.Command
+  alias CMS.Comments.Commands.CommentConfirmation
+  alias CMS.DocTree.Commands.TreeConfirmation
+  alias CMS.Interactions.Reactions.UpvoteConfirmation, as: UpvoteConfirmation
+  alias CMS.Interactions.Reactions.CollectConfirmation
 
   defmodule UnknownTypeConfirmation do
     use GroupherServer.CMS.Command.ConfirmationDefinition,
@@ -95,7 +97,7 @@ defmodule GroupherServer.Test.CMS.CommandConfirmationTest do
          "comment_id" => "42",
          "command_id" => "command-1"
        }},
-      {WriteConfirmation, :collect_add, :collect_remove,
+      {MembershipConfirmation, :collect_add, :collect_remove,
        %{
          "article_id" => "article-1",
          "folder_id" => "7",

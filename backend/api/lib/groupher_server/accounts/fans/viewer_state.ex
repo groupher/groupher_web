@@ -8,17 +8,20 @@ defmodule GroupherServer.Accounts.Fans.ViewerState do
 
   Business position:
 
-      Client / Auth
-        -> GraphQL or internal API
-        -> Accounts facade
-        -> ViewerState
-        -> Repo
+      Fans.List -> Fans.ViewerState -> flattened viewer flags
   """
 
   alias GroupherServer.Accounts
 
   alias Accounts.Model.User
 
+  @doc """
+  Adds viewer relationship flags to a paged user result.
+
+  ## Examples
+
+      Accounts.Fans.ViewerState.mark_viewer_follow_status({:ok, page}, viewer)
+  """
   def mark_viewer_follow_status({:ok, %{entries: entries} = paged_users}, cur_user) do
     entries = Enum.map(entries, &Map.merge(&1, do_mark_viewer_has_states(&1.id, cur_user)))
     Map.merge(paged_users, %{entries: entries})

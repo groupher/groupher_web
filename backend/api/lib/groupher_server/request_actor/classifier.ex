@@ -11,6 +11,13 @@ defmodule GroupherServer.RequestActor.Classifier do
   alias GroupherServer.RequestActor
   alias RequestActor.{Classification, Evidence}
 
+  @doc """
+  Converts one selected evidence variant into immutable classification data.
+
+  ## Examples
+
+      RequestActor.Classifier.classify(%RequestActor.Evidence.Unknown{classified_by: :fallback})
+  """
   @spec classify(Evidence.t()) :: Classification.t()
   def classify(%Evidence.Delegation{delegation: %{user_actor: user}}) do
     classification(:agent, not is_nil(user), :verified, :delegation_credential)

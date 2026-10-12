@@ -22,7 +22,7 @@ defmodule GroupherServer.CMS.Assets.Upload do
   alias Accounts.Model.User
   alias CMS.Artiment.Threads
   alias CMS.Assets.{Capability, Persist}
-  alias CMS.Model.{Community, CommunityAsset}
+  alias CMS.Model.{AssetUpload, Community, CommunityAsset}
   alias Helper.{T, Utils}
 
   @allowed_mime_types ~w(image/jpeg image/png image/webp image/gif)
@@ -83,16 +83,27 @@ defmodule GroupherServer.CMS.Assets.Upload do
         "expiresAt" => DateTime.to_iso8601(expires_at)
       }
 
-      {:ok,
-       %{
-         upload_ref: upload_ref,
-         asset_public_ref: asset_public_ref,
-         object_key: object_key,
-         capability: Capability.sign(payload),
-         expires_at: expires_at,
-         max_size_bytes: @max_size_bytes,
-         allowed_mime_types: @allowed_mime_types
-       }}
+      with {:ok, _upload} <-
+             persist_intent(
+               community,
+               user,
+               "asset.upload",
+               upload_ref,
+               payload,
+               attrs,
+               expires_at
+             ) do
+        {:ok,
+         %{
+           upload_ref: upload_ref,
+           asset_public_ref: asset_public_ref,
+           object_key: object_key,
+           capability: Capability.sign(payload),
+           expires_at: expires_at,
+           max_size_bytes: @max_size_bytes,
+           allowed_mime_types: @allowed_mime_types
+         }}
+      end
     end
   end
 
@@ -135,21 +146,35 @@ defmodule GroupherServer.CMS.Assets.Upload do
         "expiresAt" => DateTime.to_iso8601(expires_at)
       }
 
-      {:ok,
-       %{
-         upload_ref: upload_ref,
-         asset_public_ref: asset_public_ref,
-         object_key: object_key,
-         capability: Capability.sign(payload),
-         expires_at: expires_at,
-         max_size_bytes: @max_size_bytes,
-         allowed_mime_types: ["image/webp"]
-       }}
+      with {:ok, _upload} <-
+             persist_intent(
+               community,
+               user,
+               "generated_image",
+               upload_ref,
+               payload,
+               attrs,
+               expires_at
+             ) do
+        {:ok,
+         %{
+           upload_ref: upload_ref,
+           asset_public_ref: asset_public_ref,
+           object_key: object_key,
+           capability: Capability.sign(payload),
+           expires_at: expires_at,
+           max_size_bytes: @max_size_bytes,
+           allowed_mime_types: ["image/webp"]
+         }}
+      end
     end
   end
 
   @spec complete(map()) :: T.domain_res(CommunityAsset.t())
   def complete(input) when is_map(input) do
+    upload_ref = input |> get(:upload_ref) |> normalize_string()
+    idempotency_key = input |> get(:idempotency_key) |> normalize_string()
+
     attrs = %{
       public_ref: get(input, :asset_public_ref),
       url: get(input, :url),
@@ -167,28 +192,235 @@ defmodule GroupherServer.CMS.Assets.Upload do
       uploader_id: get(input, :uploader_id)
     }
 
-    with {:ok, _} <- validate_completion(attrs) do
-      Repo.transaction(fn ->
-        case input |> get(:community_id) |> normalize_id() do
-          nil ->
-            Repo.rollback(ErrorCat.custom("community asset storage quota exceeded"))
+    with {:ok, upload} <- load_upload(upload_ref, idempotency_key) do
+      case validate_completion(upload, input, attrs) do
+        {:ok, :pass} ->
+          complete_loaded(upload, attrs)
 
-          community_id ->
-            lock_community!(community_id)
-
-            complete_asset(community_id, attrs)
-        end
-      end)
+        {:error, reason} ->
+          _ = record_callback_failure(upload, reason)
+          {:error, reason}
+      end
     end
   end
 
-  defp complete_asset(community_id, attrs) do
-    with {:ok, _} <- ensure_capacity(community_id, attrs.size_bytes),
-         {:ok, asset} <- Persist.register(%Community{id: community_id}, attrs, nil) do
+  defp complete_loaded(%AssetUpload{} = upload, attrs) do
+    result =
+      Repo.transaction(fn ->
+        upload = lock_upload!(upload.id)
+        community_id = upload.community_id
+        lock_community!(community_id)
+
+        case upload.state do
+          :completed ->
+            load_completed_asset!(upload)
+
+          :expired ->
+            Repo.rollback(ErrorCat.custom("asset upload intent expired"))
+
+          :failed ->
+            Repo.rollback(
+              ErrorCat.custom(upload.failure_message || "asset upload completion failed")
+            )
+
+          :pending ->
+            complete_asset(upload, attrs)
+        end
+      end)
+
+    case result do
+      {:ok, asset} ->
+        {:ok, asset}
+
+      {:error, reason} = error ->
+        _ = record_callback_failure(upload, reason)
+        error
+    end
+  end
+
+  defp complete_asset(%AssetUpload{} = upload, attrs) do
+    with {:ok, _} <- ensure_capacity(upload.community_id, attrs.size_bytes),
+         {:ok, asset} <-
+           Persist.register(
+             %Community{id: upload.community_id},
+             Map.put(attrs, :uploader_id, upload.uploader_id),
+             nil
+           ),
+         {:ok, _upload} <-
+           upload
+           |> AssetUpload.changeset(%{
+             asset_id: asset.id,
+             state: :completed,
+             completion: completion_payload(asset),
+             callback_attempts: upload.callback_attempts + 1,
+             completed_at: DateTime.utc_now(:second),
+             last_callback_at: DateTime.utc_now(:second),
+             failure_code: nil,
+             failure_message: nil
+           })
+           |> Repo.update() do
       asset
     else
       {:error, reason} -> Repo.rollback(reason)
     end
+  end
+
+  defp persist_intent(community, user, purpose, upload_ref, payload, attrs, expires_at) do
+    Repo.transaction(fn ->
+      lock_community!(community.id)
+
+      case ensure_capacity(community.id, attrs.size_bytes) do
+        {:ok, :pass} -> {:ok, :pass}
+        {:error, reason} -> Repo.rollback(reason)
+      end
+
+      upload_attrs = %{
+        upload_ref: upload_ref,
+        idempotency_key: upload_ref,
+        purpose: purpose,
+        community_id: community.id,
+        uploader_id: user.id,
+        asset_public_ref: payload["assetPublicRef"],
+        object_key: payload["objectKey"],
+        canonical_url: payload["canonicalUrl"],
+        declared_filename: attrs.filename,
+        declared_mime_type: attrs.mime_type,
+        declared_size_bytes: attrs.size_bytes,
+        declared_asset_type: to_string(attrs.asset_type),
+        declared_thread: to_string(attrs.thread),
+        declared_checksum_sha256: attrs.checksum_sha256,
+        capability_expires_at: expires_at,
+        state: :pending,
+        completion: %{},
+        callback_attempts: 0
+      }
+
+      case %AssetUpload{} |> AssetUpload.changeset(upload_attrs) |> Repo.insert() do
+        {:ok, upload} -> upload
+        {:error, reason} -> Repo.rollback(reason)
+      end
+    end)
+  end
+
+  defp load_upload(upload_ref, idempotency_key)
+       when is_binary(upload_ref) and is_binary(idempotency_key) do
+    case Repo.get_by(AssetUpload, upload_ref: upload_ref, idempotency_key: idempotency_key) do
+      %AssetUpload{} = upload -> {:ok, upload}
+      nil -> {:error, ErrorCat.custom("asset upload intent not found")}
+    end
+  end
+
+  defp load_upload(_, _), do: {:error, ErrorCat.custom("asset upload identity is required")}
+
+  defp record_callback_failure(%AssetUpload{id: upload_id}, reason) do
+    Repo.transaction(fn ->
+      upload = lock_upload!(upload_id)
+
+      if upload.state == :pending do
+        now = DateTime.utc_now(:second)
+        expired? = DateTime.compare(upload.capability_expires_at, now) == :lt
+
+        changes = %{
+          state: if(expired?, do: :expired, else: :failed),
+          failure_code: if(expired?, do: "expired", else: "completion_rejected"),
+          failure_message:
+            if(expired?, do: "asset upload intent expired", else: failure_message(reason)),
+          callback_attempts: upload.callback_attempts + 1,
+          last_callback_at: now
+        }
+
+        case Repo.update(AssetUpload.changeset(upload, changes)) do
+          {:ok, updated} -> updated
+          {:error, update_reason} -> Repo.rollback(update_reason)
+        end
+      else
+        upload
+      end
+    end)
+  end
+
+  defp failure_message(%{details: details}) when is_binary(details), do: details
+  defp failure_message(reason), do: inspect(reason)
+
+  defp lock_upload!(id) do
+    AssetUpload
+    |> where([upload], upload.id == ^id)
+    |> lock("FOR UPDATE")
+    |> Repo.one!()
+  end
+
+  defp load_completed_asset!(%AssetUpload{asset_id: asset_id}) when is_integer(asset_id) do
+    case Repo.get(CommunityAsset, asset_id) do
+      %CommunityAsset{} = asset -> asset
+      nil -> Repo.rollback(ErrorCat.command_result_unavailable())
+    end
+  end
+
+  defp load_completed_asset!(_upload), do: Repo.rollback(ErrorCat.command_result_unavailable())
+
+  defp validate_completion(%AssetUpload{} = upload, input, attrs) do
+    with {:ok, :pass} <- validate_completion(attrs),
+         {:ok, :pass} <- validate_bound_fact(upload, :asset_public_ref, attrs.public_ref),
+         {:ok, :pass} <-
+           validate_bound_fact(upload, :community_id, normalize_id(get(input, :community_id))),
+         {:ok, :pass} <- validate_bound_fact(upload, :storage_key, attrs.storage_key),
+         {:ok, :pass} <- validate_bound_fact(upload, :url, attrs.url),
+         {:ok, :pass} <- validate_declared_size(upload, attrs.size_bytes),
+         {:ok, :pass} <- validate_declared_mime(upload, attrs.mime_type),
+         {:ok, :pass} <- validate_declared_asset_type(upload, attrs.asset_type),
+         {:ok, :pass} <- validate_declared_thread(upload, attrs.thread),
+         {:ok, :pass} <- validate_declared_uploader(upload, get(input, :uploader_id)) do
+      if upload.state == :pending and
+           DateTime.compare(upload.capability_expires_at, DateTime.utc_now(:second)) == :lt do
+        {:error, ErrorCat.custom("asset upload intent expired")}
+      else
+        {:ok, :pass}
+      end
+    end
+  end
+
+  defp validate_bound_fact(%AssetUpload{asset_public_ref: expected}, :asset_public_ref, actual),
+    do: compare_bound(expected, actual, "asset public ref does not match upload intent")
+
+  defp validate_bound_fact(%AssetUpload{community_id: expected}, :community_id, actual),
+    do: compare_bound(expected, actual, "community does not match upload intent")
+
+  defp validate_bound_fact(%AssetUpload{object_key: expected}, :storage_key, actual),
+    do: compare_bound(expected, actual, "storage key does not match upload intent")
+
+  defp validate_bound_fact(%AssetUpload{canonical_url: expected}, :url, actual),
+    do: compare_bound(expected, actual, "asset URL does not match upload intent")
+
+  defp compare_bound(expected, actual, _message) when expected == actual, do: {:ok, :pass}
+  defp compare_bound(_expected, _actual, message), do: {:error, ErrorCat.custom(message)}
+
+  defp validate_declared_size(%AssetUpload{declared_size_bytes: expected}, actual),
+    do: compare_bound(expected, actual, "asset size does not match upload intent")
+
+  defp validate_declared_mime(%AssetUpload{declared_mime_type: nil}, _actual), do: {:ok, :pass}
+
+  defp validate_declared_mime(%AssetUpload{declared_mime_type: expected}, actual),
+    do: compare_bound(expected, actual, "asset MIME type does not match upload intent")
+
+  defp validate_declared_asset_type(%AssetUpload{declared_asset_type: expected}, actual),
+    do: compare_bound(expected, to_string(actual), "asset type does not match upload intent")
+
+  defp validate_declared_thread(%AssetUpload{declared_thread: expected}, actual),
+    do: compare_bound(expected, to_string(actual), "asset thread does not match upload intent")
+
+  defp validate_declared_uploader(%AssetUpload{uploader_id: nil}, _actual), do: {:ok, :pass}
+
+  defp validate_declared_uploader(%AssetUpload{uploader_id: expected}, actual),
+    do:
+      compare_bound(expected, normalize_id(actual), "asset uploader does not match upload intent")
+
+  defp completion_payload(%CommunityAsset{} = asset) do
+    %{
+      "assetId" => asset.id,
+      "publicRef" => asset.public_ref,
+      "status" => Atom.to_string(asset.status),
+      "completedAt" => DateTime.to_iso8601(DateTime.utc_now(:second))
+    }
   end
 
   defp validate_file(file) do

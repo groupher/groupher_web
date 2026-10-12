@@ -17,7 +17,6 @@ defmodule Helper.Guardian.BrowserAccess do
 
   alias GroupherServer.{Accounts, Auth}
   alias Accounts.Profiles.ErrorCat
-  alias Auth.Contract, as: AuthContract
 
   @access_ttl_seconds 30 * 60
 
@@ -38,9 +37,9 @@ defmodule Helper.Guardian.BrowserAccess do
       encode_and_sign(
         source,
         %{
-          "aud" => AuthContract.phoenix_token_audience(),
+          "aud" => Auth.phoenix_token_audience(),
           "sid" => browser_session_ref,
-          "typ" => AuthContract.phoenix_token_type()
+          "typ" => Auth.phoenix_token_type()
         },
         ttl: {ttl, :seconds}
       )
@@ -60,9 +59,9 @@ defmodule Helper.Guardian.BrowserAccess do
 
   @doc "Reports whether claims? according to `BrowserAccess`."
   def valid_claims?(claims) do
-    claims["iss"] == AuthContract.phoenix_token_issuer() and
-      claims["aud"] == AuthContract.phoenix_token_audience() and
-      claims["typ"] == AuthContract.phoenix_token_type() and is_binary(claims["sid"]) and
+    claims["iss"] == Auth.phoenix_token_issuer() and
+      claims["aud"] == Auth.phoenix_token_audience() and
+      claims["typ"] == Auth.phoenix_token_type() and is_binary(claims["sid"]) and
       claims["sid"] != ""
   end
 

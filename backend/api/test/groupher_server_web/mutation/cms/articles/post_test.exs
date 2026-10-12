@@ -57,7 +57,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Post do
       assert exist_in?(%{id: community_tag.id}, post.community_tags)
     end
 
-    test "create post should escape xss attracts", ~m(user_conn community user)a do
+    test "create post should escape xss attracts", ~m(user_conn community)a do
       post_attr = mock_attrs(:post, %{body: mock_xss_string()})
       variables = post_attr |> Map.merge(%{community: community.slug}) |> camelize_map_key
 
@@ -69,7 +69,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Post do
       assert not String.contains?(body_html, "<script")
     end
 
-    test "create post should escape xss attracts 2", ~m(user_conn community user)a do
+    test "create post should escape xss attracts 2", ~m(user_conn community)a do
       post_attr = mock_attrs(:post, %{body: mock_xss_string(:safe)})
       variables = post_attr |> Map.merge(%{community: community.slug}) |> camelize_map_key
 
@@ -84,14 +84,14 @@ defmodule GroupherServer.Test.Mutation.Articles.Post do
     # NOTE: this test is IMPORTANT, cause json_codec: Jason in router will cause
     # server crash when GraphQL parse error
     test "create post with missing non_null field should get 200 error",
-         ~m(user_conn community user)a do
+         ~m(user_conn community)a do
       post_attr = mock_attrs(:post)
       variables = post_attr |> Map.merge(%{community: community.slug}) |> Map.delete(:title)
 
       assert user_conn |> mutation_error?(S.Article.m(:create_article, :post), variables)
     end
 
-    test "update a post without login user fails", ~m(guest_conn community post user)a do
+    test "update a post without login user fails", ~m(guest_conn community post)a do
       unique_num = System.unique_integer([:positive, :monotonic])
 
       variables = %{
@@ -222,7 +222,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Post do
     end
 
     test "update post with valid attrs should have is_edited meta info update",
-         ~m(owner_conn community post user)a do
+         ~m(owner_conn community post)a do
       unique_num = System.unique_integer([:positive, :monotonic])
 
       variables = %{
@@ -241,7 +241,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Post do
       assert true == updated_post["meta"]["isEdited"]
     end
 
-    test "login user with auth passport update a post", ~m(community post user)a do
+    test "login user with auth passport update a post", ~m(community post)a do
       belongs_community_slug = post.communities |> List.first() |> Map.get(:slug)
 
       passport_rules = %{belongs_community_slug => %{"post.edit" => true}}
@@ -265,7 +265,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Post do
       assert updated_post["innerId"] == to_string(article_inner_id(post, community))
     end
 
-    test "unauth user update post fails", ~m(user_conn guest_conn community post user)a do
+    test "unauth user update post fails", ~m(user_conn guest_conn community post)a do
       unique_num = System.unique_integer([:positive, :monotonic])
 
       variables = %{

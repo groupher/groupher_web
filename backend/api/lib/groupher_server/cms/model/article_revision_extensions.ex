@@ -16,7 +16,9 @@ defmodule GroupherServer.CMS.Model.ArticleRevisionExtensions do
       use Ecto.Schema
       import Ecto.Changeset
 
-      alias GroupherServer.CMS.Model.ArticleRevision
+      alias GroupherServer.CMS
+
+      alias CMS.Model.ArticleRevision
       alias Helper.Constant.DBPrefix
 
       @primary_key false

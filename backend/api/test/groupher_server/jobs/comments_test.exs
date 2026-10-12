@@ -2,8 +2,7 @@ defmodule GroupherServer.Test.Jobs.Comments do
   use GroupherServer.TestMate, async: false
 
   alias GroupherServer.{Accounts, CMS, Jobs}
-  alias Jobs.Codec
-  alias CMS.Model.{Article, Comment, Community}
+  alias CMS.Model.{Comment, Community}
   alias Accounts.Model.User
 
   setup do
@@ -24,7 +23,7 @@ defmodule GroupherServer.Test.Jobs.Comments do
     comment = %Comment{id: 11}
     actor = %User{id: 12}
     community = %Community{id: 13}
-    article = %Article{id: Ecto.UUID.generate(), thread: :post}
+    article_id = Ecto.UUID.generate()
 
     calls = [
       {:sync_mentions, fn -> Jobs.sync_mentions(comment) end},
@@ -33,14 +32,25 @@ defmodule GroupherServer.Test.Jobs.Comments do
       {:notify_reply, fn -> Jobs.notify_reply(comment, actor) end},
       {:subscribe_community, fn -> Jobs.subscribe_community(community, actor) end},
       {:reconcile_comments_participants,
-       fn -> Jobs.reconcile_comments_participants(article, 7) end}
+       fn -> Jobs.reconcile_comments_participants(:post, article_id, 7) end}
     ]
 
-    for {kind, enqueue} <- calls do
+    for {type, enqueue} <- calls do
       assert {:ok, %Oban.Job{worker: "GroupherServer.Jobs.Comments"} = job} = enqueue.()
       args = Map.new(job.args, fn {key, value} -> {to_string(key), value} end)
-      assert args["kind"] == Atom.to_string(kind)
-      assert is_map(Codec.decode(args["payload"]))
+      assert args["type"] == Atom.to_string(type)
+      assert is_map(args["payload"])
     end
+  end
+
+  test "a deleted Comment makes a queued effect an idempotent success" do
+    assert {:ok, :pass} =
+             Jobs.Comments.perform(%Oban.Job{
+               args: %{
+                 "type" => "sync_mentions",
+                 "version" => 1,
+                 "payload" => %{"comment_id" => 2_147_483_647}
+               }
+             })
   end
 end

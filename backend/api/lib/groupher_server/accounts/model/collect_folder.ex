@@ -39,11 +39,11 @@ defmodule GroupherServer.Accounts.Model.CollectFolder do
     field(:index, :integer)
     field(:total_count, :integer, default: 0)
     field(:private, :boolean, default: false)
-    # last time when add/delete items in category
+    # Tracks the most recent change to the folder's collected items.
     field(:last_updated, :utc_datetime)
 
-    # 可以参照 fragment 查询语法啊
-    # 2. article truple [{:post, 1}, [:xxx, 2]] ... 便于在计算 "成就" 的时候对比
+    # Embedded projections keep folder summaries and collected Article refs
+    # available without exposing CMS persistence operations to Accounts.
     embeds_one(:meta, Embeds.CollectFolderMeta, on_replace: :delete)
     embeds_many(:collects, ArticleCollect, on_replace: :delete)
 
@@ -64,7 +64,7 @@ defmodule GroupherServer.Accounts.Model.CollectFolder do
   def update_changeset(%CollectFolder{} = collect_folder, attrs) do
     collect_folder
     |> cast(attrs, @optional_fields ++ @required_fields)
-    |> cast_embed(:collects, with: &ArticleCollect.changeset/2)
+    |> cast_embed(:collects, with: &CMS.article_collect_changeset/2)
     |> cast_embed(:meta, with: &Embeds.CollectFolderMeta.changeset/2)
     |> validate_length(:title, min: 1)
     |> foreign_key_constraint(:user_id)

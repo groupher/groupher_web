@@ -26,7 +26,7 @@ defmodule GroupherServer.CMS.FrontDesk do
   alias CMS.FrontDesk.Comment, as: CommentFrontDesk
   alias CMS.Comments.ErrorCat, as: CommentsErrorCat
 
-  alias CMS.Helper.ArticlePath
+  alias CMS.ArticlePath
   alias CMS.Model.CommunityTag
   alias Helper.T
 
@@ -90,4 +90,36 @@ defmodule GroupherServer.CMS.FrontDesk do
   @doc "Reads a bounded batch of visible public Articles from ArticlePaths."
   @spec articles([ArticlePath.t()]) :: {:ok, [map()]} | {:error, term()}
   def articles(article_paths) when is_list(article_paths), do: Article.read_many(article_paths)
+
+  @doc "Resolves the canonical relationship between one Article and one Community."
+  @spec resolve_binding(term(), term()) ::
+          {:ok, CMS.Model.ArticleBinding.t()} | {:error, term()}
+  def resolve_binding(article_ref, {:binding_id, binding_id, community_id}) do
+    stable_ref =
+      if is_map(article_ref) do
+        Map.get(article_ref, :article_id) || Map.get(article_ref, :id)
+      else
+        article_ref
+      end
+
+    with {:ok, article} <- article(stable_ref, mode: :internal) do
+      CMS.Articles.Bindings.get_by_id(article, binding_id, community_id)
+    end
+  end
+
+  def resolve_binding(article_ref, community_ref) do
+    stable_ref =
+      if is_map(article_ref) do
+        Map.get(article_ref, :article_id) || Map.get(article_ref, :id)
+      else
+        article_ref
+      end
+
+    with {:ok, article} <- article(stable_ref, mode: :internal),
+         {:ok, community} <- community(community_ref, mode: :internal),
+         {:ok, %{binding: binding}} <-
+           CMS.Articles.Bindings.get(%{article_id: article.id}, community) do
+      {:ok, binding}
+    end
+  end
 end

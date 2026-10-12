@@ -8,9 +8,11 @@ defmodule GroupherServer.CMS.Articles.Commands.RevisionConfirmation do
         -> revision-rooted Article result
   """
 
-  @behaviour GroupherServer.CMS.Command.ConfirmationCodec
-  alias GroupherServer.CMS.Articles.Commands.ArticleConfirmationCodec, as: Codec
-  alias GroupherServer.CMS.Command.Confirmation, as: ConfirmationCodec
+  alias GroupherServer.CMS
+  alias CMS.Articles.Commands.ArticleConfirmationCodec, as: Codec
+  alias CMS.Command.Confirmation, as: ConfirmationCodec
+
+  @behaviour CMS.Command.ConfirmationCodec
 
   @operations [:article_create, :article_update]
   @fields %{

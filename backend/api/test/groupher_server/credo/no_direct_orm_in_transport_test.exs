@@ -3,7 +3,9 @@ Code.require_file(Path.expand("../../../credo_checks/no_direct_orm_in_transport.
 defmodule GroupherServer.Test.Credo.NoDirectOrmInTransportTest do
   use Credo.Test.Case, async: false
 
-  alias GroupherServer.Credo.Check.NoDirectOrmInTransport
+  alias GroupherServer.Credo
+
+  alias Credo.Check.NoDirectOrmInTransport
 
   setup_all do
     {:ok, _apps} = Application.ensure_all_started(:credo)

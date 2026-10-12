@@ -22,7 +22,7 @@ defmodule GroupherServer.CMS.ContentImport.Process do
 
   alias GroupherServer.CMS
 
-  alias CMS.ContentImport.Persistence.Job
+  alias CMS.ContentImport.Model.Job
 
   @doc "Projects one persisted Job into the shared UI process shape."
   @spec project(Job.t()) :: map()

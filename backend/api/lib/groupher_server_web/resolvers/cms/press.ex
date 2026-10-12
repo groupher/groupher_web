@@ -6,10 +6,9 @@ defmodule GroupherServerWeb.Resolvers.CMS.Press do
   """
 
   alias GroupherServer.CMS
-  alias GroupherServer.CMS.Helper.ArticlePath
 
   def press_config(_root, %{community: community}, _info) do
-    CMS.Press.config(community)
+    CMS.press_config(community)
   end
 
   def update_press_config(
@@ -21,19 +20,19 @@ defmodule GroupherServerWeb.Resolvers.CMS.Press do
       ) do
     input = Map.delete(input, :community)
 
-    with {:ok, config} <- CMS.Press.update_config(community, input, actor, command_id) do
+    with {:ok, config} <- CMS.press_update_config(community, input, actor, command_id) do
       {:ok, %{config: config}}
     end
   end
 
   def press_article(_root, %{article: article_path}, _info) do
-    with {:ok, article_path} <- ArticlePath.parse(article_path) do
-      CMS.Press.article(article_path)
+    with {:ok, article_path} <- CMS.parse_article_path(article_path) do
+      CMS.press_article(article_path)
     end
   end
 
   def press_community_rss_feed(_root, %{community: community, input: input}, _info) do
-    CMS.Press.community_rss_feed(community, input)
+    CMS.press_community_rss_feed(community, input)
   end
 
   def press_thread_rss_feed(
@@ -41,10 +40,10 @@ defmodule GroupherServerWeb.Resolvers.CMS.Press do
         %{community: community, thread: thread, input: input},
         _info
       ) do
-    CMS.Press.thread_rss_feed(community, thread, input)
+    CMS.press_thread_rss_feed(community, thread, input)
   end
 
   def press_site_manifest(_root, %{community: community}, _info) do
-    CMS.Press.site_manifest(community)
+    CMS.press_site_manifest(community)
   end
 end

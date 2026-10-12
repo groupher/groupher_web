@@ -4,11 +4,7 @@ defmodule GroupherServer.Analysis.Web.Community do
 
   Business position:
 
-      Main / Dashboard
-        -> GraphQL
-        -> Analysis
-        -> Community
-        -> Repo / analytics provider
+      CMS community -> Analysis.Web.Community -> provider request scope
   """
 
   alias GroupherServer.CMS
@@ -24,7 +20,7 @@ defmodule GroupherServer.Analysis.Web.Community do
   @doc """
   Builds the route-derived analytics scope for one CMS community.
 
-  ## Example
+  ## Examples
 
       from_community(%GroupherServer.CMS.Model.Community{slug: "home"})
       #=> %GroupherServer.Analysis.Web.Community{community: "home", path_prefix: "/home", umami_website_id: nil}
@@ -35,6 +31,13 @@ defmodule GroupherServer.Analysis.Web.Community do
     %__MODULE__{community: slug, path_prefix: "/#{slug}", umami_website_id: nil}
   end
 
+  @doc """
+  Builds a community scope with a server-resolved provider website ID.
+
+  ## Examples
+
+      Analysis.Web.Community.from_community(community, "website-id")
+  """
   @spec from_community(CMS.Model.Community.t(), String.t() | nil) :: t()
   def from_community(%CMS.Model.Community{slug: slug}, umami_website_id) when is_binary(slug) do
     %__MODULE__{

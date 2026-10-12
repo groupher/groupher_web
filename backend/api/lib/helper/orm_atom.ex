@@ -18,10 +18,10 @@ defmodule Helper.ORMAtom do
   alias Accounts.Model.User
   alias CMS.Model.{Comment, Community}
 
-  @default_user_meta Accounts.Model.Embeds.UserMeta.default_meta()
-  @default_article_meta CMS.Model.Embeds.ArticleMeta.default_meta()
-  @default_community_meta CMS.Model.Embeds.CommunityMeta.default_meta()
-  @default_comment_meta CMS.Model.Embeds.CommentMeta.default_meta()
+  @default_user_meta Accounts.model_embeds_user_meta_default_meta()
+  @default_article_meta CMS.model_embeds_article_meta_default_meta()
+  @default_community_meta CMS.model_embeds_community_meta_default_meta()
+  @default_comment_meta CMS.model_embeds_comment_meta_default_meta()
 
   defp update_error(message), do: {:error, ErrorCat.custom(message)}
 

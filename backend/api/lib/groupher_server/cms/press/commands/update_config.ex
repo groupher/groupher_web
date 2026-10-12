@@ -2,15 +2,16 @@ defmodule GroupherServer.CMS.Press.Commands.UpdateConfig do
   @moduledoc """
   Updates one Community's Press configuration through the Receipt boundary.
 
-      commandId -> UpdateConfig -> Receipt -> Gate -> ConfigWriter -> Activity
+      commandId -> UpdateConfig -> Receipt -> Gate -> Persist -> Activity -> Effects
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS, Activity}
+
   alias CMS.{Command, Gate}
   alias CMS.Command.ConfirmationDefinition
   alias CMS.Model.{Community, PressConfig}
-  alias CMS.Press.{ConfigWriter, Query}
-  alias GroupherServer.Accounts.Model.User
+  alias CMS.Press.{Effects, Persist, Query}
+  alias Accounts.Model.User
   alias Helper.T
 
   defmodule Confirmation do
@@ -43,7 +44,8 @@ defmodule GroupherServer.CMS.Press.Commands.UpdateConfig do
       }
 
       with {:ok, confirmation} <-
-             Command.execute(command, action: &action/1, confirmation: Confirmation) do
+             Command.execute(command, action: &action/1, confirmation: Confirmation),
+           {:ok, _effect} <- Effects.ensure_invalidation(community, command_id) do
         present(confirmation)
       end
     end
@@ -57,7 +59,24 @@ defmodule GroupherServer.CMS.Press.Commands.UpdateConfig do
        }) do
     with {:ok, config} <-
            Gate.with_community_check(actor, :update, community, fn canonical ->
-             ConfigWriter.update(canonical, attrs, actor, command_id)
+             with {:ok, current} <- Query.config(canonical),
+                  changeset = Persist.changeset(canonical, current, attrs),
+                  {:ok, config} <- Persist.insert_or_update(changeset),
+                  changed_payload = Map.take(changeset.changes, config_fields()),
+                  {:ok, _activity} <-
+                    Activity.log(config, :config_updated,
+                      actor: actor,
+                      source: :admin,
+                      operation_ref: command_id,
+                      stream_ref: canonical.slug,
+                      occurred_at: config.updated_at,
+                      payload: changed_payload,
+                      changed_fields: Map.keys(changed_payload),
+                      metadata: %{revision: config.revision}
+                    ),
+                  {:ok, _effect} <- Effects.enqueue_invalidation(canonical, command_id) do
+               {:ok, config}
+             end
            end),
          %PressConfig{revision: revision} <- config do
       {:ok,
@@ -75,4 +94,16 @@ defmodule GroupherServer.CMS.Press.Commands.UpdateConfig do
     do: Query.config(community)
 
   defp present(_confirmation), do: {:error, CMS.ErrorCat.command_result_unavailable()}
+
+  defp config_fields do
+    [
+      :markdown_enabled,
+      :feed_enabled,
+      :feed_type,
+      :feed_count,
+      :feed_threads,
+      :llms_enabled,
+      :sitemap_enabled
+    ]
+  end
 end

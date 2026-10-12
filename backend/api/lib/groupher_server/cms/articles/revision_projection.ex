@@ -14,9 +14,9 @@ defmodule GroupherServer.CMS.Articles.RevisionProjection do
         -> revision-rooted Article result
   """
 
-  import Ecto.Query, warn: false
-
   require GroupherServer.CMS.Docs.Const
+
+  import Ecto.Query, warn: false
 
   alias GroupherServer.{CMS, Repo}
   alias CMS.Articles.ErrorCat, as: ArticleErrorCat
@@ -333,9 +333,7 @@ defmodule GroupherServer.CMS.Articles.RevisionProjection do
 
   defp stable_pinned?(article_id, community_id) do
     PinnedArticle
-    |> join(:inner, [pin], binding in ArticleBinding,
-      on: binding.id == pin.article_binding_id
-    )
+    |> join(:inner, [pin], binding in ArticleBinding, on: binding.id == pin.article_binding_id)
     |> where(
       [pin, binding],
       binding.article_id == ^article_id and binding.community_id == ^community_id

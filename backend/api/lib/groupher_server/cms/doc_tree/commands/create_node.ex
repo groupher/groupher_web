@@ -7,8 +7,10 @@ defmodule GroupherServer.CMS.DocTree.Commands.CreateNode do
         -> CreateTab / CreateGroup / CreatePage / CreateLink / CreatePin
   """
 
-  alias GroupherServer.CMS.ErrorCat
-  alias GroupherServer.CMS.DocTree.Commands
+  alias GroupherServer.CMS
+
+  alias CMS.ErrorCat
+  alias CMS.DocTree.Commands
 
   def execute(community, %{type: :tab} = args, user) do
     Commands.CreateTab.execute(community, args, user)

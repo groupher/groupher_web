@@ -14,7 +14,7 @@ defmodule GroupherServer.Accounts.Model.Embeds.CollectFolderMeta.Macros do
         -> PostgreSQL
   """
   alias GroupherServer.CMS
-  @threads CMS.Artiment.Config.threads()
+  @threads CMS.artiment_config_threads()
 
   defmacro threads_fields do
     @threads
@@ -46,7 +46,7 @@ defmodule GroupherServer.Accounts.Model.Embeds.CollectFolderMeta do
 
   alias GroupherServer.CMS
 
-  @threads CMS.Artiment.Config.threads()
+  @threads CMS.artiment_config_threads()
 
   @optional_fields Enum.map(@threads, &:"#{&1}_count") ++
                      Enum.map(@threads, &:"has_#{&1}")

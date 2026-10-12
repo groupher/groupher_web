@@ -17,10 +17,8 @@ defmodule GroupherServer.CMS.Command.Receipt.Runner do
   alias GroupherServer.{Accounts, CMS, Repo}
   alias Helper.T
   alias Helper.ORM.TransactionSettings
-  alias CMS.ErrorCat
-  alias CMS.Command
+  alias CMS.{ErrorCat, Command, Command.IntentCodec}
   alias CMS.Command.Confirmation, as: ConfirmationCodec
-  alias CMS.Command.IntentCodec
 
   alias Accounts.Model.User
   alias CMS.Command.Receipt.{Key, Store}

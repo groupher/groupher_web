@@ -10,6 +10,13 @@ defmodule GroupherServer.PublicCache.Scope do
   alias GroupherServer.PublicCache
   alias PublicCache.Tags
 
+  @doc """
+  Resolves a typed invalidation payload into canonical cache tags.
+
+  ## Examples
+
+      PublicCache.Scope.tags(:community_presentation_changed, %{community: "acme"})
+  """
   @spec tags(atom(), map()) :: {:ok, [String.t()]} | {:error, atom()}
   def tags(type, payload), do: Tags.for_invalidation(type, payload)
 end

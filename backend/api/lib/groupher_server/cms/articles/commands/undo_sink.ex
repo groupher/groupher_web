@@ -5,10 +5,11 @@ defmodule GroupherServer.CMS.Articles.Commands.UndoSink do
       commandId -> UndoSink -> Gate -> Article restore transition
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.Articles.Commands.StateChange
   alias CMS.Command.Receipt
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
 
   @spec execute(Ecto.UUID.t(), User.t(), keyword(), Ecto.UUID.t()) ::
           {:ok, term()} | {:error, term()}

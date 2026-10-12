@@ -70,7 +70,7 @@ module，公共部分只复用经过验证的 Ecto query helper（如果确实�
 
 #### 2.2 Doc tree 批量重排
 
-文件：[`cms/doc_tree/writer_impl/index.ex`](../../backend/api/lib/groupher_server/cms/doc_tree/writer_impl/index.ex)
+文件：[`cms/doc_tree/persist/index.ex`](../../backend/api/lib/groupher_server/cms/doc_tree/persist/index.ex)
 
 `batch_reindex_nodes!/2` 使用 `UNNEST` 同时更新：
 
@@ -198,7 +198,7 @@ owner，补齐 spec、输入类型和返回值合同。
 
 文件：
 
-- [`cms/doc_tree/writer_impl/trash.ex`](../../backend/api/lib/groupher_server/cms/doc_tree/writer_impl/trash.ex)
+- [`cms/doc_tree/persist/trash.ex`](../../backend/api/lib/groupher_server/cms/doc_tree/persist/trash.ex)
 - [`cms/doc_cover/persist.ex`](../../backend/api/lib/groupher_server/cms/doc_cover/persist.ex)
 
 两处使用 recursive CTE 查询树结构。Ecto 支持 CTE/subquery，但将递归树查询改写成
@@ -242,7 +242,7 @@ count、排序、分页和时间聚合。
 文件：
 
 - [`cms/command/receipt/runner.ex`](../../backend/api/lib/groupher_server/cms/command/receipt/runner.ex)
-- [`cms/wallpaper/publisher.ex`](../../backend/api/lib/groupher_server/cms/wallpaper/publisher.ex)
+- [`cms/wallpaper/workflow.ex`](../../backend/api/lib/groupher_server/cms/wallpaper/workflow.ex)
 
 使用 `set_config(..., true)` 设置当前 transaction 的 `statement_timeout` 和 `lock_timeout`。
 这是数据库 session/transaction 原语，应集中到 `Helper.ORM.TransactionSettings`，不能用
@@ -286,7 +286,7 @@ JSONB table/field 的 query helper；普通 `count(?)` 或数据库函数表达�
 范围：
 
 - `cms/doc_cover/persist.ex` 三个 reindex helper；
-- `cms/doc_tree/writer_impl/index.ex` reindex helper。
+- `cms/doc_tree/persist/index.ex` reindex helper。
 
 已保留的合同：
 

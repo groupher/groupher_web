@@ -5,7 +5,7 @@ defmodule GroupherServer.Accounts.CollectFolders.ErrorCat do
   Collection operation -> catalog reason -> stable protocol error.
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:account, :collection}
+  use GroupherServer.ErrorCat, namespace: {:account, :collection}
 
   error(:already_collected_in_folder, code: 4702)
   error(:delete_no_empty_collect_folder, code: 4703)

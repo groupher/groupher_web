@@ -86,8 +86,8 @@ defmodule GroupherServerWeb.Schema do
     alias GroupherServer.{Accounts, CMS}
 
     Dataloader.new()
-    |> Dataloader.add_source(Accounts, Accounts.Helper.Loader.data())
-    |> Dataloader.add_source(CMS, CMS.Helper.Loader.data())
+    |> Dataloader.add_source(Accounts, Accounts.dataloader_source())
+    |> Dataloader.add_source(CMS, CMS.dataloader_source())
   end
 
   def context(ctx) do

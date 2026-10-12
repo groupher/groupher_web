@@ -1,0 +1,137 @@
+defmodule GroupherServer.CMS.Comments.Commands.Update do
+  @moduledoc """
+  Updates Comment content inside its parent Article aggregate boundary.
+
+      target Comment
+        -> Gate authorization + aggregate transaction/lock
+        -> parse body -> update canonical Comment -> sync embedded replies
+        -> enqueue required audition job -> commit
+        -> enqueue best-effort mention reconciliation
+
+  Solution identity is never inferred from a Comment flag. Read-side Query
+  code derives it from `PostSolution`; the Comment row remains the body
+  authority.
+  """
+
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.Model.User
+  alias CMS.{Command, FrontDesk, Comments}
+  alias CMS.Articles.Bindings
+  alias CMS.Comments.Commands.CommentConfirmation, as: Confirmation
+  alias CMS.Comments.Effects
+  alias Comments.{BodyCodec, JobPolicy, Persist}
+  alias CMS.Model.Comment
+  alias Helper.{ORM, T}
+
+  @type result :: %{comment: Comment.t(), article: struct(), command_id: String.t() | nil}
+
+  @doc """
+  Updates the authorized canonical Comment, requires audition enqueue before
+  commit, then schedules mention reconciliation without changing the result.
+
+  ## Examples
+
+      Update.execute(comment, body, actor)
+      #=> {:ok, %{comment: %Comment{}, article: article, command_id: id}} | {:error, reason}
+  """
+  @spec execute(Comment.t(), String.t(), User.t()) :: T.domain_res(result())
+  def execute(%Comment{}, _body, %User{}), do: {:error, CMS.ErrorCat.command_id_required()}
+
+  @doc "Updates a Comment while binding retries to the supplied command id."
+  @spec execute(Comment.t(), String.t(), User.t(), String.t()) :: T.domain_res(result())
+  def execute(%Comment{} = comment, body, %User{} = actor, command_id) do
+    command = %Command{
+      actor: actor,
+      command_id: command_id,
+      operation: :comment_update,
+      target: comment,
+      params: body
+    }
+
+    with {:ok, confirmation} <-
+           Command.execute(command, action: &update_action/1, confirmation: Confirmation) do
+      update_result(confirmation, comment.id)
+    end
+  end
+
+  defp update_action(%{
+         actor: actor,
+         target: comment,
+         params: body,
+         command_id: command_id
+       }) do
+    CMS.Gate.with_check(actor, :edit, comment, fn canonical, article ->
+      with {:ok, result} <-
+             update_new(canonical, article, body, actor, command_id, comment.community_id) do
+        {:ok, confirmation(result)}
+      end
+    end)
+  end
+
+  defp update_result(%Confirmation{data: data}, comment_id) do
+    update_result(%{command_id: data["command_id"]}, comment_id)
+  end
+
+  defp update_result(receipt, comment_id) do
+    with {:ok, current} <- ORM.find(Comment, comment_id),
+         {:ok, article} <- FrontDesk.article_of(current) do
+      {:ok, %{comment: current, article: article, command_id: receipt.command_id}}
+    end
+  end
+
+  defp update_new(canonical, article, body, actor, command_id, community_id) do
+    with {:ok, payload} <- BodyCodec.parse(body),
+         {:ok, updated} <-
+           Persist.update_content(canonical, %{body: payload.json, body_html: payload.html}),
+         {:ok, _} <- CMS.ArticleStats.record_comment_change(article),
+         {:ok, synced} <- CMS.Comments.Replies.sync_embed_replies(updated),
+         {:ok, _} <- JobPolicy.audition(synced),
+         {:ok, _invalidation} <-
+           invalidate_public_comments(article, community_id, canonical.thread, command_id),
+         {:ok, _} <- enqueue_comment_effects(canonical, actor, command_id) do
+      {:ok, %{comment: synced, article: article, command_id: command_id}}
+    end
+  end
+
+  defp confirmation(%{comment: comment, article: article, command_id: command_id}) do
+    %Confirmation{
+      data: %{
+        "comment_id" => to_string(comment.id),
+        "article_id" => to_string(article.id),
+        "command_id" => command_id
+      }
+    }
+  end
+
+  defp invalidate_public_comments(article, community_id, thread, command_id) do
+    with {:ok, community} <- FrontDesk.community(community_id, mode: :internal),
+         {:ok, %{community: community, inner_id: inner_id}} <- Bindings.get(article, community) do
+      Effects.enqueue(
+        "comment.changed",
+        "article",
+        article.id,
+        command_id,
+        %{
+          community: community.slug,
+          community_id: community.id,
+          thread: thread,
+          inner_id: inner_id,
+          article_id: article.id
+        }
+      )
+    end
+  end
+
+  defp enqueue_comment_effects(%Comment{} = comment, %User{} = actor, command_id) do
+    case Effects.enqueue(
+           "comment.updated",
+           "comment",
+           comment.id,
+           command_id,
+           %{actor_id: actor.id, article_id: comment.article_id}
+         ) do
+      {:ok, _event} -> {:ok, :pass}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+end

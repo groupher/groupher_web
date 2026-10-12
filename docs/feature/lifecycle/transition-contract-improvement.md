@@ -51,7 +51,7 @@ Activity V3：command 与 Audit / Activity event 的关联
 | [Community Lifecycle](./contract.md)                                                                   | Community state、Blocker、allowed transition 和锁内 version guard；Lifecycle 不判断 actor                    | Community action matrix 的状态和 precondition 以它为当前领域合同；`commandId` 和 receipt 由外层 Command transaction 负责                                      |
 | [Gate V3：Article Core 与 Doc Release 边界](../gate/v3.md)                                             | Article Draft/Public/Lifecycle、Doc branch、DocLifecycle、Versioning 和 `DocPublishRelease` 的边界           | Article、Doc action matrix 的领域状态和 release 以它为依据；通用 receipt 可以指向 release，但不能取代 release                                                 |
 | [Gate V4：资源级强类型 Context](../gate/v4.md) 与 [Gate V5：Scope Query 命名与分发边界](../gate/v5.md) | Gate 的 typed Access/Scope Context，以及当前 Scope query 命名和分发                                          | Gate 继续负责 actor/action admission；`commandId` 不能进入 Gate Policy/Scope Context，receipt 也不能改变 read scope                                           |
-| [Artiment Interaction V4](../interaction/v4.md)                                                        | Interaction facade、Gate transaction、reaction fact、ReadState 和切换前的幂等实现                            | 历史上的 `interaction_operation_receipts` 已在本次切换中删除并由通用 `cms.command_receipts` 取代；reaction fact、projection 和 revision 仍由 Interaction 拥有 |
+| [Artiment Interaction V4](../interaction/v4.md)                                                        | Interaction facade、Gate transaction、reaction fact、Projection 和切换前的幂等实现                           | 历史上的 `interaction_operation_receipts` 已在本次切换中删除并由通用 `cms.command_receipts` 取代；reaction fact、projection 和 revision 仍由 Interaction 拥有 |
 | [Activity V3](../activity/v3.md)                                                                       | Audit/Activity 事实、查询和规模治理                                                                          | `commandId` 用于关联一次 command；Activity 自己的 event identity 仍是另一层身份，长期审计不能依赖 24 小时 receipt                                             |
 
 现阶段其他文档仍在描述当前代码，因此其中的 `operationRef`、`operationReplayed` 和
@@ -285,7 +285,7 @@ receipt-backed mutation input 的 `commandId: ID!` 要求，也不代表客户�
 
 当前状态权威在 `CMS.Communities.Lifecycle`，owner archive 通过 Blocker 投影为 Lifecycle state。GraphQL 目前只暴露 `request_destroy_community`；`restore`、`schedule_destroy`、`cancel_destroy`、`destroy` 仍是 Context/operations 命令。
 
-实现位置：[Community Lifecycle](../../../backend/api/lib/groupher_server/cms/communities/lifecycle.ex)、[Community resolver](../../../backend/api/lib/groupher_server_web/resolvers/cms_resolver.ex)、[Community Lifecycle tests](../../../backend/api/test/groupher_server/cms/communities/lifecycle_test.exs)。
+实现位置：[Community Lifecycle](../../../backend/api/lib/groupher_server/cms/communities/lifecycle.ex)、[Community resolver](../../../backend/api/lib/groupher_server_web/resolvers/cms/communities.ex)、[Community Lifecycle tests](../../../backend/api/test/groupher_server/cms/communities/lifecycle_test.exs)。
 
 #### 切换前基线 action matrix
 
@@ -728,7 +728,7 @@ GraphQL resolver / CMS facade
 
 代码落点：
 
-- `backend/api/lib/groupher_server_web/resolvers/cms_resolver.ex`：`request_destroy_community/3`；
+- `backend/api/lib/groupher_server_web/resolvers/cms/communities.ex`：`request_destroy_community/3`；
 - `backend/api/lib/groupher_server_web/schema/cms/mutations/community.ex`：`commandId` 入参；
 - `backend/api/lib/groupher_server/cms/model/community.ex`、`cms_types.ex`：`commandId` 出参；服务端不暴露 replay 状态。
 
@@ -791,7 +791,10 @@ tree create/update/delete/duplicate/move/restore
 - `DocSnapshot`、`DocDraft`、tree mutation payload、publish payload 和 `done_state` 只暴露业务结果及必要的 `commandId`；
   不暴露 executed/replayed 等 Receipt 状态。
 
-后端入口是 `backend/api/lib/groupher_server/cms/doc_tree.ex`、`docs.ex`、`doc_tree/publish.ex` 以及 `resolvers/cms_resolver.ex`；前端的 commandId、checklist revision、SideTree queue/reconcile 对接在 `DsbThread/schema/docs.ts`、`CMS/Docs/ActionSnackbar/Publish/usePublishActions.ts`、`CMS/Docs/Editor/SideTree/usePersistence.ts`。
+后端入口是 `backend/api/lib/groupher_server/cms/doc_tree.ex`、`docs.ex`、`doc_tree/publish.ex` 以及
+`groupher_server_web/resolvers/cms/docs.ex`；前端的 commandId、checklist revision、SideTree
+queue/reconcile 对接在 `DsbThread/schema/docs.ts`、`CMS/Docs/ActionSnackbar/Publish/usePublishActions.ts`、
+`CMS/Docs/Editor/SideTree/usePersistence.ts`。
 
 ### 4.5 验收证据
 

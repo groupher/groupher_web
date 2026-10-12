@@ -10,7 +10,7 @@ defmodule GroupherServer.Repo.Migrations.CreateCmsOutboxEvents do
       add(:resource_id, :string, null: false)
       add(:command_id, :uuid, null: false)
       add(:data, :map, null: false, default: %{})
-      add(:status, :string, null: false, default: "pending")
+      add(:status, :string, null: false, default: "waiting")
       add(:attempts, :integer, null: false, default: 0)
       add(:available_at, :timestamptz, null: false)
       add(:locked_at, :timestamptz)

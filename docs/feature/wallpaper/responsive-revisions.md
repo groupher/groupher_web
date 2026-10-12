@@ -46,7 +46,7 @@
   Frontend、Phoenix 与 Assets Hub 分别执行 golden test；Profile 名不得包含 `-`。
 - GraphQL 中 variants、candidate revision refs、expected variants、upload intents 和 static variants
   均已类型化。Absinthe 负责 GraphQL camelCase 到内部 snake_case 的映射；Assets Hub capability 与
-  manifest 的 camelCase 只在 `CMS.Assets.GeneratedBatch.PublishCapability` 双向转换。
+  manifest 的 camelCase 只在 `CMS.Assets.Maintenance.GeneratedBatch.PublishCapability` 双向转换。
 - Wallpaper settings 使用 typed 稳定骨架和版本化 JSON recipe，由 Frontend codec 与
   `CMS.Wallpaper.Settings` 明确规范化；request digest 只由 `CMS.Wallpaper.RequestDigest` 计算。
 - claim 会在冻结 manifest 后对每个 R2 object 执行 `head`，复核存在性、MIME 和 SHA-256；manifest
@@ -371,7 +371,7 @@ type TImageExportProgress = {
 GraphQL 使用类型化 `WallpaperBatchVariantInput` 列表承载批次变体，Browser 不 stringify 固定结构；
 Absinthe 将字段映射为内部 snake_case。事故时间线和当前边界见
 [保存链路与数据边界](./save-pipeline-contract.md)。variants 不保留 camelCase/snake_case 双格式读取；
-Assets Hub manifest 的 camelCase 由 `CMS.Assets.GeneratedBatch.PublishCapability` 负责解析和 digest 发射。
+Assets Hub manifest 的 camelCase 由 `CMS.Assets.Maintenance.GeneratedBatch.PublishCapability` 负责解析和 digest 发射。
 
 Wallpaper adapter 将 `TWallpaperVariantSpec` 转成 `TImageExportTarget`；未来 Cover adapter 将
 article cover、card、share、Open Graph 等用途转成自己的 Target。中立 Target 和 adapter 命名在

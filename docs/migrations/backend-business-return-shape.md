@@ -157,7 +157,7 @@ Article / Publish / Draft
 
 Comments / Interaction / ViewTracker
 - cms/comments/writer.ex
-- cms/comments/commands/delete_comment.ex
+- cms/comments/commands/delete.ex
 - cms/comments/query/reconcile.ex
 - cms/interactions/reactions/collect.ex
 - cms/interactions/reactions/emotion.ex
@@ -340,8 +340,8 @@ manifest、公共返回结果与事务语义不变。
 
 ```text
 backend/api/lib/groupher_server/cms/comments/writer.ex
-backend/api/lib/groupher_server/cms/comments/commands/delete_comment.ex
-backend/api/lib/groupher_server/cms/comments/commands/update_comment.ex
+backend/api/lib/groupher_server/cms/comments/commands/delete.ex
+backend/api/lib/groupher_server/cms/comments/commands/update.ex
 backend/api/lib/groupher_server/cms/comments/query.ex
 backend/api/lib/groupher_server/cms/comments/query/reconcile.ex
 backend/api/lib/groupher_server/cms/interactions/reactions/collect.ex

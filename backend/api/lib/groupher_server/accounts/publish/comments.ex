@@ -7,20 +7,33 @@ defmodule GroupherServer.Accounts.Publish.Comments do
 
   Business position:
 
-      Client / Auth
-        -> GraphQL or internal API
-        -> Accounts facade
-        -> Comments
-        -> Repo
+      profile read -> CMS.comments_paged_published_comments -> comment page
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.Model.User
 
+  @doc """
+  Returns a page of comments published by a user.
+
+  ## Examples
+
+      Accounts.Publish.Comments.paged(user, %{page: 1, size: 20})
+  """
+  @spec paged(User.t(), map(), User.t() | nil) :: term()
   def paged(user, filter, actor \\ nil) do
-    CMS.Comments.paged_published_comments(user, filter, actor)
+    CMS.comments_paged_published_comments(user, filter, actor)
   end
 
+  @doc """
+  Returns comments published by a user in one thread.
+
+  ## Examples
+
+      Accounts.Publish.Comments.paged(user, :post, %{page: 1, size: 20}, viewer)
+  """
+  @spec paged(User.t(), atom(), map(), User.t() | nil) :: term()
   def paged(user, thread, filter, actor) do
-    CMS.Comments.paged_published_comments(user, thread, filter, actor)
+    CMS.comments_paged_published_comments(user, thread, filter, actor)
   end
 end

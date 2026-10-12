@@ -12,9 +12,7 @@ defmodule GroupherServerWeb.Middleware.ConditionalServiceScope do
 
   import Helper.Utils, only: [handle_absinthe_error: 3]
 
-  alias GroupherServer.Auth
   alias GroupherServerWeb.Middleware.ServiceScope
-  alias Auth.Contract, as: AuthContract
 
   @impl Absinthe.Middleware
   def call(%{context: %{delegation_auth_failure: code}} = resolution, _opts) do
@@ -43,7 +41,7 @@ defmodule GroupherServerWeb.Middleware.ConditionalServiceScope do
       reject(
         resolution,
         "service identity is not authorized for this operation",
-        AuthContract.service_scope_forbidden()
+        GroupherServer.Auth.contract_service_scope_forbidden()
       )
     end
   end
@@ -54,12 +52,12 @@ defmodule GroupherServerWeb.Middleware.ConditionalServiceScope do
     reject(
       resolution,
       "request identity is unavailable",
-      AuthContract.service_token_invalid()
+      GroupherServer.Auth.contract_service_token_invalid()
     )
   end
 
   defp normalize_failure_code(code) when is_binary(code) or is_integer(code), do: code
-  defp normalize_failure_code(_code), do: AuthContract.service_token_invalid()
+  defp normalize_failure_code(_code), do: GroupherServer.Auth.contract_service_token_invalid()
 
   defp reject(resolution, message, code) do
     handle_absinthe_error(resolution, message, code)

@@ -7,10 +7,11 @@ defmodule GroupherServer.CMS.Kanban.Commands.Remove do
           -> delete KanbanState
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.Articles.States
   alias CMS.Model.{Article, Community}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @spec execute(Community.t(), Article.t(), User.t()) :: T.domain_res(Article.t())

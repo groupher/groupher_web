@@ -16,11 +16,10 @@ defmodule GroupherServer.CMS.FrontDesk.Community do
   import Ecto.Query, warn: false
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.ErrorCat
+  alias CMS.{ErrorCat, Gate}
 
   alias CMS.Gate.Context.Scope.Community, as: CommunityContext
   alias CMS.Gate.ErrorCat, as: GateErrorCat
-  alias CMS.Gate
   alias CMS.Model.{Community, CommunityTag}
   alias Helper.{ORM, T}
 

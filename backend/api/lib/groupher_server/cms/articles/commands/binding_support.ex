@@ -10,7 +10,7 @@ defmodule GroupherServer.CMS.Articles.Commands.BindingSupport do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Articles.Commands.BindingConfirmation
+  alias CMS.Articles.{Commands.BindingConfirmation, Effects}
   alias CMS.FrontDesk
   alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CMS.Model.{Article, ArticleBinding, Community, PinnedArticle}
@@ -92,21 +92,20 @@ defmodule GroupherServer.CMS.Articles.Commands.BindingSupport do
         command_id,
         effect_key
       ) do
-    case CMS.Outbox.send(%{
-           event: "article.visibility_changed",
-           worker: CMS.Outbox.Workers.Article.Cleanup,
-           resource_type: "article",
-           resource_id: article_id,
-           command_id: command_id,
-           effect_key: effect_key,
-           data: %{
+    case Effects.enqueue(
+           "article.visibility_changed",
+           "article",
+           article_id,
+           {:command, command_id},
+           %{
              community: community.slug,
              community_id: community.id,
              thread: thread,
              inner_id: inner_id,
              article_id: article_id
-           }
-         }) do
+           },
+           effect_key: effect_key
+         ) do
       {:ok, _event} -> {:ok, :pass}
       {:error, reason} -> {:error, reason}
     end

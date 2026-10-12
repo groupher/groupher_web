@@ -91,9 +91,11 @@ CMS domain transaction
   -> CMS.Outbox.send/1
        -> Event + Oban wakeup
 
-CMS.Outbox.Workers.<Domain>.<Task>
-  -> CMS.Outbox.execute/2
-       -> worker-owned domain effect
+Jobs.CMSOutbox<Domain>
+  -> CMS.deliver_outbox/2
+       -> CMS.Outbox.Workflow.<Domain>
+            -> CMS.Outbox.execute/2
+            -> domain-owned effect
 ```
 
 `CMS.Outbox` 不应继续扩展为业务 dispatcher、通用 event registry 或领域 use case；但现有
@@ -194,8 +196,8 @@ Phase 1 后的 `CMS.Kanban.Query.ensure_membership/2` 使用 Kanban-owned `Error
 - `CMS.Articles`：继续使用 `Articles.Commands.*`、Query、Writer 等 owner；
 - `CMS.DocTree`：继续使用 `DocTree.Commands.*`、Query、Writer、Publish、Trash；
 - `CMS.Assets`：删除实现归 `Assets.Deletion`；
-- `CMS.Press`：由 Query、Projection、ConfigWriter、Invalidation 承担实现；
-- `CMS.Wallpaper`：由 Query、Upload、Publisher、Retention 承担实现；
+- `CMS.Press`：由 Commands、Query、Projection、Persist、Effects、Invalidation 承担实现；
+- `CMS.Wallpaper`：由 Commands、Query、Upload、Persist、Workflow、Retention 承担实现；
 - `CMS.FrontDesk`：按 Article、Comment、Community、Relation 等资源 owner 拆分；
 - `CMS.Snapshot`：由 Query、Cache、Projection、Refresh 承担实现。
 

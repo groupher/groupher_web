@@ -17,19 +17,29 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Commands.Subscribe do
   @spec execute(Community.t() | String.t(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Community.t())
   def execute(community_ref, %User{} = actor, command_id) do
-    with {:ok, community} <- Support.community(community_ref) do
-      command = %Command{
-        actor: actor,
-        command_id: command_id,
-        operation: :community_subscribe,
-        target: community,
-        params: %{community_id: community.id}
-      }
+    result =
+      with {:ok, community} <- Support.community(community_ref) do
+        command = %Command{
+          actor: actor,
+          command_id: command_id,
+          operation: :community_subscribe,
+          target: community,
+          params: %{community_id: community.id}
+        }
 
-      with {:ok, confirmation} <-
-             Command.execute(command, action: &action/1, confirmation: Confirmation) do
-        Support.community_result(confirmation)
+        with {:ok, confirmation} <-
+               Command.execute(command, action: &action/1, confirmation: Confirmation) do
+          Support.community_result(confirmation)
+        end
       end
+
+    case result do
+      {:ok, _community} ->
+        GroupherServer.FrontDesk.revalidate_user(actor.login)
+        result
+
+      _ ->
+        result
     end
   end
 
@@ -37,7 +47,7 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Commands.Subscribe do
     Gate.with_community_check(actor, :read, community, fn canonical ->
       with {:ok, _} <- Persist.subscribe(canonical, actor),
            {:ok, _} <- Communities.Count.update(canonical, actor, :subscribers_count, :inc),
-           {:ok, _} <- Accounts.Profiles.update_subscribe_state(actor) do
+           {:ok, _} <- Accounts.profiles_update_subscribe_state(actor) do
         {:ok, Support.confirmation(Confirmation, canonical.id, command_id)}
       end
     end)

@@ -5,12 +5,13 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.ReindexTagsInGroup do
       GraphQL -> ReindexTagsInGroup -> Gate -> Tags batch update + taxonomy Outbox
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.{Gate}
   alias CMS.Communities.Tags.Commands.TagSupport
   alias CMS.Communities.Tags.Mutation
   alias CMS.Model.Community
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @spec execute(Community.t() | String.t(), atom(), T.id(), list(), User.t(), Ecto.UUID.t()) ::

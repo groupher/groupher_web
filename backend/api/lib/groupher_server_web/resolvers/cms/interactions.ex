@@ -7,63 +7,64 @@ defmodule GroupherServerWeb.Resolvers.CMS.Interactions do
 
   import ShortMaps
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.CMS
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.Helper.EmotionFormatter
+  alias Accounts.Model.User
 
   @viewer_batch_size 100
 
   def report_article(_root, ~m(article reason attr)a = args, %{context: %{cur_user: user}}) do
-    CMS.Interactions.report_result(article, reason, attr, user, Map.get(args, :command_id))
+    CMS.interactions_report_result(article, reason, attr, user, Map.get(args, :command_id))
   end
 
   def undo_report_article(_root, ~m(article)a = args, %{context: %{cur_user: user}}) do
-    CMS.Interactions.undo_report_result(article, user, Map.get(args, :command_id))
+    CMS.interactions_undo_report_result(article, user, Map.get(args, :command_id))
   end
 
   def upvote_article(_root, %{article: article} = args, %{context: %{cur_user: user}}) do
-    CMS.Interactions.upvote_result(article, user, Map.get(args, :command_id))
+    CMS.interactions_upvote_result(article, user, Map.get(args, :command_id))
   end
 
   def undo_upvote_article(_root, %{article: article} = args, %{context: %{cur_user: user}}) do
-    CMS.Interactions.undo_upvote_result(article, user, Map.get(args, :command_id))
+    CMS.interactions_undo_upvote_result(article, user, Map.get(args, :command_id))
   end
 
   def upvoted_users(_root, ~m(article filter)a, _info) do
-    CMS.Interactions.upvoted_users(article, filter)
+    CMS.interactions_upvoted_users(article, filter)
   end
 
   def collected_users(_root, ~m(article filter)a, _info) do
-    CMS.Interactions.collected_users(article, filter)
+    CMS.interactions_collected_users(article, filter)
   end
 
   def emotion_to_article(_root, %{article: article, emotion: emotion} = args, %{
         context: %{cur_user: user}
       }) do
-    CMS.Interactions.emotion_result(article, emotion, user, Map.get(args, :command_id))
+    CMS.interactions_emotion_result(article, emotion, user, Map.get(args, :command_id))
   end
 
   def undo_emotion_to_article(_root, %{article: article, emotion: emotion} = args, %{
         context: %{cur_user: user}
       }) do
-    CMS.Interactions.undo_emotion_result(article, emotion, user, Map.get(args, :command_id))
+    CMS.interactions_undo_emotion_result(article, emotion, user, Map.get(args, :command_id))
   end
 
   def article_interaction_states(_root, %{paths: paths}, info) do
     with {:ok, :pass} <- validate_viewer_batch(paths) do
       case Map.get(info.context, :cur_user) do
-        %User{} = user -> CMS.Interactions.article_states_for_paths(paths, user)
+        %User{} = user -> CMS.interactions_article_states_for_paths(paths, user)
         _ -> {:ok, []}
       end
     end
   end
 
   def emotions(%{thread: _} = root, _args, _info) do
-    {:ok, EmotionFormatter.format(root, :comment)}
+    {:ok, CMS.format_emotions(root, :comment)}
   end
 
   def emotions(root, _args, _info) do
-    {:ok, EmotionFormatter.format(root, :article)}
+    {:ok, CMS.format_emotions(root, :article)}
   end
 
   defp validate_viewer_batch(paths) when is_list(paths) and length(paths) <= @viewer_batch_size do

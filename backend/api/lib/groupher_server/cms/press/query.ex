@@ -16,8 +16,7 @@ defmodule GroupherServer.CMS.Press.Query do
   import Ecto.Query, warn: false
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.ErrorCat
-  alias CMS.FrontDesk
+  alias CMS.{ErrorCat, FrontDesk}
 
   alias CMS.Gate.Context.Scope.Community, as: CommunityContext
   alias CMS.Model.{Community, DocBranch, DocPublishRelease, DocTreeNode, PressConfig}

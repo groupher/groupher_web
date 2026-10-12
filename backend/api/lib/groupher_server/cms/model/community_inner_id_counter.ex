@@ -9,7 +9,9 @@ defmodule GroupherServer.CMS.Model.CommunityInnerIdCounter do
 
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.Community
+  alias GroupherServer.CMS
+
+  alias CMS.Model.Community
   alias Helper.Constant.DBPrefix
 
   @primary_key {:community_id, :id, autogenerate: false}

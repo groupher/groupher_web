@@ -33,6 +33,14 @@ config :groupher_server, GroupherServer.CMS.ViewTracker.Config,
   cleanup_row_budget: 50_000,
   cleanup_time_budget_ms: 25_000
 
+config :groupher_server, GroupherServer.Accounts.ProfileViewTracker.Config,
+  human_dedupe_window_seconds: 600,
+  agent_dedupe_window_seconds: 600,
+  cleanup_safety_margin_seconds: 86_400,
+  cleanup_batch_size: 500,
+  cleanup_row_budget: 50_000,
+  cleanup_time_budget_ms: 25_000
+
 config :groupher_server, GroupherServer.Analysis.Config,
   metric_event_retention_days: 90,
   hourly_metric_retention_months: 13,
@@ -47,6 +55,8 @@ config :groupher_server, :web_analysis,
   website_id: nil,
   api_token: nil,
   timeout: 4000
+
+config :groupher_server, :web_analysis_policy, provision_on_community_create: true
 
 config :groupher_server, GroupherServer.Repo,
   after_connect: {Postgrex, :query!, ["SET TIME ZONE 'UTC'", []]},
@@ -264,13 +274,15 @@ config :groupher_server, Oban,
   repo: GroupherServer.Repo,
   plugins: [
     {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(3)},
+    {Oban.Plugins.Pruner, max_age: {7, :day}},
     {Oban.Plugins.Cron,
      crontab: [
-       {"*/15 * * * *", GroupherServer.CMS.CommunityApplications.Jobs.ExpireSubmitted},
-       {"*/15 * * * *", GroupherServer.CMS.CommunityApplications.Jobs.ExpireLogoUploads},
-       {"*/15 * * * *", GroupherServer.CMS.Communities.Jobs.ReleaseExpiredSlugClaims},
+       {"*/15 * * * *", GroupherServer.Jobs.ExpireCommunityApplications},
+       {"*/15 * * * *", GroupherServer.Jobs.ExpireCommunityApplicationLogoUploads},
+       {"*/15 * * * *", GroupherServer.Jobs.ReleaseExpiredCommunitySlugClaims},
        {"*/15 * * * *", GroupherServer.Jobs.WallpaperLifecycle},
        {"0 * * * *", GroupherServer.Jobs.ViewDedupeCleanup},
+       {"5 * * * *", GroupherServer.Jobs.ProfileViewDedupeCleanup},
        {"* * * * *", GroupherServer.Jobs.ArticleInsightsAggregation},
        {"@daily", GroupherServer.Jobs.ArticleInsightsRetention},
        {"@daily", GroupherServer.Jobs.CommandReceiptRetention}

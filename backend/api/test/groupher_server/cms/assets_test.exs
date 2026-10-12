@@ -12,7 +12,10 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
     ArticleAssetRef,
     ArticleBodyDraft,
     ArticleDraft,
+    AssetUpload,
     AssetReplacementPlan,
+    AssetWorkflowRun,
+    AssetWorkflowStep,
     Author,
     CommunityAsset
   }
@@ -129,6 +132,30 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
       assert restored_replay.id == restored.id
       assert restored_replay.status == :active
       assert restored_replay.command_id == restore_command_id
+    end
+
+    test "Assets.Effects records provider-delete intent in the caller transaction",
+         ~m(community user)a do
+      {:ok, asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("effects.png", 64)
+          |> Map.merge(%{storage: "r2", storage_key: "effects/original"}),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      command_id = Ecto.UUID.generate()
+
+      assert {:ok, {:ok, %CMS.Outbox.Event{identity_type: :command} = event}} =
+               Repo.transaction(fn ->
+                 CMS.Assets.Effects.enqueue_provider_delete(asset, {:command, command_id})
+               end)
+
+      assert event.event == "asset.provider_delete"
+      assert event.resource_id == to_string(asset.id)
+      assert event.command_id == command_id
+      assert event.effect_key == "asset:#{asset.id}"
     end
 
     test "deduplicates registered storage objects when url changes", ~m(community user)a do
@@ -429,8 +456,145 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
       [locator] = item[:usage_locators] || item["usage_locators"]
       assert (locator[:status] || locator["status"]) == "succeeded"
 
+      persisted = Repo.get!(AssetReplacementPlan, applied.id)
+      [persisted_item] = persisted.items
+      persisted_result = persisted_item[:result] || persisted_item["result"]
+      assert (persisted_result[:status] || persisted_result["status"]) in [:applied, "applied"]
+
       assert {:ok, %AssetReplacementPlan{status: :completed, apply_run_ref: ^run_ref}} =
                CMS.Assets.apply_replacement_plan(applied, user, body_bags: %{post.id => body_bag})
+    end
+
+    test "keeps a subset apply run pending until every article is selected",
+         ~m(community post user)a do
+      {_community, other_post, _attrs, _other_user} = mock_article(:post, community, user)
+      assert {:ok, _draft} = open_draft(other_post, user)
+
+      {:ok, from_asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("subset-a.png", 10),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      {:ok, to_asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("subset-b.png", 20),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      assert {:ok, %{body: [_]}} =
+               CMS.Assets.link_refs(
+                 post,
+                 %{asset_refs: [%{asset_id: from_asset.id, block_id: "subset-one"}]},
+                 community: community
+               )
+
+      assert {:ok, %{body: [_]}} =
+               CMS.Assets.link_refs(
+                 other_post,
+                 %{asset_refs: [%{asset_id: from_asset.id, block_id: "subset-two"}]},
+                 community: community
+               )
+
+      assert {:ok, %AssetReplacementPlan{} = plan} =
+               CMS.Assets.create_replacement_plan(
+                 community,
+                 %{from_asset_id: from_asset.id, to_asset_id: to_asset.id},
+                 user
+               )
+
+      post_body_bag = body_bag_for(post)
+      other_body_bag = body_bag_for(other_post)
+
+      assert {:ok, %AssetReplacementPlan{status: :completed} = partial} =
+               CMS.Assets.apply_replacement_plan(
+                 plan,
+                 user,
+                 article_ids: [post.id],
+                 body_bags: %{post.id => post_body_bag}
+               )
+
+      run = Repo.get_by!(AssetWorkflowRun, workflow_ref: partial.apply_run_ref)
+      assert run.status == :pending
+
+      step_statuses = Repo.all(AssetWorkflowStep) |> Enum.map(& &1.status)
+      assert Enum.count(step_statuses, &(&1 == :succeeded)) == 1
+      assert Enum.count(step_statuses, &(&1 == :pending)) == 1
+
+      assert {:ok, %AssetReplacementPlan{status: :completed}} =
+               CMS.Assets.apply_replacement_plan(
+                 partial,
+                 user,
+                 article_ids: [other_post.id],
+                 body_bags: %{other_post.id => other_body_bag}
+               )
+
+      assert Repo.get_by!(AssetWorkflowRun, workflow_ref: partial.apply_run_ref).status ==
+               :completed
+    end
+
+    test "skips historical-only plan items without creating a draft",
+         ~m(community user)a do
+      {_community, historical_post, _attrs, _other_user} = mock_article(:post, community, user)
+
+      {:ok, from_asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("historical-a.png", 10),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      {:ok, to_asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("historical-b.png", 20),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      step_ref = "historical-only-step"
+
+      {:ok, plan} =
+        %AssetReplacementPlan{}
+        |> AssetReplacementPlan.changeset(%{
+          community_id: community.id,
+          from_asset_id: from_asset.id,
+          to_asset_id: to_asset.id,
+          created_by_id: user.id,
+          status: :pending,
+          items: [
+            %{
+              article_id: historical_post.id,
+              decision: "historical_only",
+              observed_live_revision_id: nil,
+              observed_draft_version: nil,
+              usage_locators: [%{step_ref: step_ref, usage: "inline", block_id: "historical"}],
+              result: nil
+            }
+          ]
+        })
+        |> Repo.insert()
+
+      assert Repo.get_by(ArticleDraft, article_id: historical_post.id) == nil
+
+      assert {:ok, %AssetReplacementPlan{status: :completed} = applied} =
+               CMS.Assets.apply_replacement_plan(plan, user, article_ids: [historical_post.id])
+
+      [item] = applied.items
+      result = item[:result] || item["result"]
+      value = result[:value] || result["value"]
+      assert (result[:status] || result["status"]) in [:skipped, "skipped"]
+      assert (value[:reason] || value["reason"]) == "historical_only"
+
+      assert [%AssetWorkflowStep{status: :skipped, result: %{"reason" => "plan_decision"}}] =
+               Repo.all(AssetWorkflowStep)
+
+      assert Repo.get_by(ArticleDraft, article_id: historical_post.id) == nil
     end
 
     test "rejects refs with both asset_id and inline asset", ~m(community post user)a do
@@ -646,6 +810,18 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
     end
 
     test "rejects upload completion when community quota is exhausted", ~m(community user)a do
+      {:ok, intent} =
+        CMS.Assets.create_upload_intent(
+          community,
+          image_asset_attrs("quota-complete-next.png", 1),
+          user
+        )
+
+      [encoded_payload, _signature] = String.split(intent.capability, ".")
+
+      capability_payload =
+        encoded_payload |> Base.url_decode64!(padding: false) |> Jason.decode!()
+
       {:ok, _asset} =
         CMS.Assets.register_to_community(
           community,
@@ -660,17 +836,81 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
                 details: "community asset storage quota exceeded"
               }} =
                CMS.Assets.complete_upload(%{
-                 asset_public_ref: "asset_quota_complete",
+                 upload_ref: intent.upload_ref,
+                 idempotency_key: intent.upload_ref,
+                 asset_public_ref: intent.asset_public_ref,
                  community_id: community.id,
                  content_hash: "sha256:quota-complete",
                  filename: "quota-complete-next.png",
                  mime_type: "image/png",
+                 asset_type: :image,
                  size_bytes: 1,
                  storage: "r2",
-                 storage_key: "communities/#{community.slug}/assets/2026_07/30_quota/original",
-                 url: "https://assets.groupher.test/a/asset_quota_complete/original",
+                 storage_key: intent.object_key,
+                 url: capability_payload["canonicalUrl"],
                  uploader_id: user.id
                })
+    end
+
+    test "persists upload completion and replays duplicate callbacks",
+         ~m(community user)a do
+      {:ok, intent} =
+        CMS.Assets.create_upload_intent(
+          community,
+          image_asset_attrs("durable-completion.png", 80),
+          user
+        )
+
+      completion = upload_completion_input(intent, community, user)
+
+      assert {:ok, %CommunityAsset{} = asset} = CMS.Assets.complete_upload(completion)
+      assert {:ok, %CommunityAsset{} = replayed} = CMS.Assets.complete_upload(completion)
+      assert replayed.id == asset.id
+      assert Repo.get_by!(AssetUpload, upload_ref: intent.upload_ref).state == :completed
+      assert Repo.aggregate(CommunityAsset, :count, :id) == 1
+    end
+
+    test "rejects completion facts that are not bound to the upload intent",
+         ~m(community user)a do
+      {:ok, intent} =
+        CMS.Assets.create_upload_intent(
+          community,
+          image_asset_attrs("bound-facts.png", 80),
+          user
+        )
+
+      assert {:error, %ErrorCat.Error{details: "storage key does not match upload intent"}} =
+               CMS.Assets.complete_upload(
+                 upload_completion_input(intent, community, user)
+                 |> Map.put(:storage_key, "other/object")
+               )
+
+      assert Repo.get_by!(AssetUpload, upload_ref: intent.upload_ref).state == :failed
+      assert Repo.aggregate(CommunityAsset, :count, :id) == 0
+    end
+
+    test "records an expired upload intent when completion arrives after its lease",
+         ~m(community user)a do
+      {:ok, intent} =
+        CMS.Assets.create_upload_intent(
+          community,
+          image_asset_attrs("expired-upload.png", 80),
+          user
+        )
+
+      intent_record = Repo.get_by!(AssetUpload, upload_ref: intent.upload_ref)
+
+      _expired_record =
+        intent_record
+        |> AssetUpload.changeset(%{
+          capability_expires_at: DateTime.add(DateTime.utc_now(:second), -1, :second)
+        })
+        |> Repo.update!()
+
+      assert {:error, %ErrorCat.Error{details: "asset upload intent expired"}} =
+               CMS.Assets.complete_upload(upload_completion_input(intent, community, user))
+
+      assert Repo.get_by!(AssetUpload, upload_ref: intent.upload_ref).state == :expired
     end
 
     test "returns origin info only for active public refs", ~m(community user)a do
@@ -798,6 +1038,108 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
                  limit: 1,
                  grace_seconds: 0
                )
+    end
+
+    test "provider reconciliation records a durable run and outbox step",
+         ~m(community user)a do
+      {:ok, asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("provider-repair.png", 80)
+          |> Map.merge(%{storage: "r2", storage_key: "repair/original"}),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      assert {:ok, _receipt} = CMS.Assets.backfill_usage(community)
+      assert {:ok, _deleted} = CMS.Assets.Persist.delete(community, asset.id)
+
+      workflow_ref = "provider-reconciliation:test:#{community.id}"
+
+      assert {:ok, %{run_ref: ^workflow_ref, status: :completed, enqueued: 1, skipped: 0}} =
+               CMS.Assets.ProviderReconciliation.enqueue_missing(
+                 community,
+                 workflow_ref: workflow_ref,
+                 age_seconds: 0
+               )
+
+      assert Repo.get_by!(AssetWorkflowRun, workflow_ref: workflow_ref).status == :completed
+
+      assert [%AssetWorkflowStep{status: :succeeded, result: %{"outbox" => "created"}}] =
+               Repo.all(AssetWorkflowStep)
+
+      assert Repo.get_by!(CMS.Outbox.Event,
+               event: "asset.provider_delete",
+               resource_id: to_string(asset.id)
+             ).identity_type == :workflow
+    end
+
+    test "handled workflow failures release the run lease",
+         ~m(community)a do
+      workflow_ref = "provider-reconciliation:failure:#{community.id}"
+
+      assert {:ok, run} =
+               CMS.Assets.Workflow.ensure_run(%{
+                 workflow_ref: workflow_ref,
+                 workflow_type: "provider_reconciliation",
+                 community_id: community.id,
+                 resource_type: "community",
+                 resource_id: to_string(community.id),
+                 status: :pending
+               })
+
+      owner = "provider-reconciliation:test:#{community.id}"
+      assert {:ok, running} = CMS.Assets.Workflow.claim_run(run, owner)
+      assert running.status == :running
+      assert {:ok, failed} = CMS.Assets.Workflow.fail_run(running, owner, :provider_unavailable)
+      assert failed.status == :failed
+      assert failed.locked_by == nil
+      assert failed.lease_expires_at == nil
+      assert failed.last_error == ":provider_unavailable"
+    end
+
+    test "generated cleanup keeps partial success and durable step results",
+         ~m(community post user)a do
+      {:ok, referenced} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("generated-referenced.png", 80)
+          |> Map.put(:public_ref, "asset_generated_referenced"),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      {:ok, unreferenced} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("generated-unreferenced.png", 90)
+          |> Map.put(:public_ref, "asset_generated_unreferenced"),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      assert {:ok, %{body: [_]}} =
+               CMS.Assets.link_refs(
+                 post,
+                 %{cur_user: user, asset_refs: [%{asset_id: referenced.id}]},
+                 community: community
+               )
+
+      assert {:ok, _receipt} = CMS.Assets.backfill_usage(community)
+      workflow_ref = "generated-cleanup:test:#{community.id}"
+
+      assert {:error, %ErrorCat.Error{details: "asset is still referenced"}} =
+               CMS.Assets.delete_generated_assets(
+                 community,
+                 [referenced.public_ref, unreferenced.public_ref],
+                 workflow_ref: workflow_ref
+               )
+
+      assert Repo.get!(CommunityAsset, referenced.id).status == :active
+      assert Repo.get!(CommunityAsset, unreferenced.id).status == :deleted
+      assert Repo.get_by!(AssetWorkflowRun, workflow_ref: workflow_ref).status == :failed
+
+      assert Repo.all(AssetWorkflowStep) |> Enum.count(&(&1.status == :succeeded)) == 1
     end
 
     test "does not delete assets that are still referenced", ~m(community post user)a do
@@ -930,10 +1272,38 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
     }
   end
 
+  defp upload_completion_input(intent, community, user) do
+    [encoded_payload, _signature] = String.split(intent.capability, ".")
+    payload = encoded_payload |> Base.url_decode64!(padding: false) |> Jason.decode!()
+
+    %{
+      upload_ref: intent.upload_ref,
+      idempotency_key: intent.upload_ref,
+      asset_public_ref: intent.asset_public_ref,
+      community_id: community.id,
+      content_hash: "sha256:durable-completion",
+      filename: "durable-completion.png",
+      mime_type: "image/png",
+      asset_type: :image,
+      size_bytes: 80,
+      storage: "r2",
+      storage_key: intent.object_key,
+      url: payload["canonicalUrl"],
+      thread: :post,
+      uploader_id: user.id
+    }
+  end
+
   defp open_draft(article_view, user) do
     article = Repo.get!(Article, article_view.article_id)
     author = Repo.get_by!(Author, user_id: user.id)
     CMS.Articles.Draft.Store.ensure_from_public(article, author)
+  end
+
+  defp body_bag_for(article_view) do
+    draft = Repo.get_by!(ArticleDraft, article_id: article_view.id)
+    body = Repo.get!(ArticleBodyDraft, draft.body_draft_id)
+    BodyBag.from_document(body) |> elem(1)
   end
 
   defp article_refs(thread, article_id) do

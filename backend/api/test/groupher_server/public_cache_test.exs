@@ -3,8 +3,11 @@ defmodule GroupherServer.PublicCacheTest do
 
   import Ecto.Query
 
+  alias GroupherServer.Jobs
+
   alias GroupherServer.{PublicCache, Repo}
-  alias PublicCache.{Model.Invalidation, Policy, PurgeWorker, Tags}
+  alias Jobs.PublicCachePurge
+  alias PublicCache.{Model.Invalidation, Policy, Tags}
 
   @tag_fixture_path Path.expand(
                       "../../../../packages/contracts/fixtures/public-cache-tags-v1.json",
@@ -114,7 +117,7 @@ defmodule GroupherServer.PublicCacheTest do
     assert {:ok, %Invalidation{status: :delivering, locked_by: first_lock}} =
              PublicCache.claim(invalidation.id, "first-worker")
 
-    assert {:busy, retry_after_seconds} =
+    assert {:ok, {:busy, retry_after_seconds}} =
              PublicCache.claim(invalidation.id, "second-worker")
 
     assert retry_after_seconds in 1..Policy.delivery_lease_seconds()
@@ -144,7 +147,7 @@ defmodule GroupherServer.PublicCacheTest do
                true
              )
 
-    assert :dead = PublicCache.claim(invalidation.id, "second-worker")
+    assert {:ok, :dead} = PublicCache.claim(invalidation.id, "second-worker")
   end
 
   test "snoozes an in-flight delivery and reclaims it after the lease expires" do
@@ -165,7 +168,7 @@ defmodule GroupherServer.PublicCacheTest do
       max_attempts: Policy.max_attempts()
     }
 
-    assert {:snooze, retry_after_seconds} = PurgeWorker.perform(job)
+    assert {:snooze, retry_after_seconds} = PublicCachePurge.perform(job)
     assert retry_after_seconds in 1..Policy.delivery_lease_seconds()
 
     assert %Invalidation{status: :delivering, attempts: 1, locked_by: "crashed-worker"} =
@@ -175,24 +178,24 @@ defmodule GroupherServer.PublicCacheTest do
       set: [locked_at: DateTime.add(DateTime.utc_now(:second), -300, :second)]
     )
 
-    assert {:ok, :pass} = PurgeWorker.perform(%{job | attempt: 2})
+    assert {:ok, :pass} = PublicCachePurge.perform(%{job | attempt: 2})
 
     assert %Invalidation{status: :dead, attempts: 2, locked_at: nil, locked_by: nil} =
              Repo.get!(Invalidation, invalidation.id)
   end
 
   test "uses second-based bounded retry backoff" do
-    assert PurgeWorker.backoff(%Oban.Job{attempt: 1}) ==
+    assert PublicCachePurge.backoff(%Oban.Job{attempt: 1}) ==
              Policy.retry_base_delay_seconds()
 
-    assert PurgeWorker.backoff(%Oban.Job{attempt: 20}) ==
+    assert PublicCachePurge.backoff(%Oban.Job{attempt: 20}) ==
              Policy.max_retry_delay_seconds()
   end
 
   test "keeps only incomplete delivery jobs unique and configures orphan rescue" do
     unique =
       %{invalidation_id: Ecto.UUID.generate()}
-      |> PurgeWorker.new()
+      |> PublicCachePurge.new()
       |> Ecto.Changeset.fetch_change!(:unique)
 
     assert :completed not in unique.states
@@ -246,7 +249,7 @@ defmodule GroupherServer.PublicCacheTest do
              )
 
     assert {:ok, :pass} =
-             PurgeWorker.perform(%Oban.Job{
+             PublicCachePurge.perform(%Oban.Job{
                id: 1,
                args: %{"invalidation_id" => invalid_payload.id},
                attempt: 1,
@@ -268,7 +271,7 @@ defmodule GroupherServer.PublicCacheTest do
     )
 
     assert {:ok, :pass} =
-             PurgeWorker.perform(%Oban.Job{
+             PublicCachePurge.perform(%Oban.Job{
                id: 2,
                args: %{"invalidation_id" => invalid_version.id},
                attempt: 1,

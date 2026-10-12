@@ -8,22 +8,22 @@ defmodule GroupherServerWeb.Resolvers.CMS.Search do
   alias GroupherServer.CMS
 
   def search_communities(_root, %{title: title, category: category}, %{context: %{cur_user: user}}) do
-    CMS.Search.community(title, category, user)
+    CMS.search_community(title, category, user)
   end
 
   def search_communities(_root, %{title: title, category: category}, _info) do
-    CMS.Search.community(title, category)
+    CMS.search_community(title, category)
   end
 
   def search_communities(_root, %{title: title}, %{context: %{cur_user: user}}) do
-    CMS.Search.community(title, user)
+    CMS.search_community(title, user)
   end
 
   def search_communities(_root, %{title: title}, _info) do
-    CMS.Search.community(title)
+    CMS.search_community(title)
   end
 
   def search_artiments(_root, %{query: query}, _info) do
-    CMS.SearchArtiments.search(query)
+    CMS.search_artiments_search(query)
   end
 end

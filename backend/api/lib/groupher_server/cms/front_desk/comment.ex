@@ -15,13 +15,11 @@ defmodule GroupherServer.CMS.FrontDesk.Comment do
   import GroupherServer.CMS.Artiment.Matcher
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.ErrorCat
+  alias CMS.{ErrorCat, ArticlePath}
 
   alias CMS.Comments.ErrorCat, as: CommentErrorCat
-  alias CMS.FrontDesk.{Article, Relation}
-  alias CMS.Helper.ArticlePath
-  alias CMS.Model.{ArticlePublic, Comment}
-  alias CMS.Model.Article, as: ArticleModel
+  alias CMS.FrontDesk.Relation
+  alias CMS.Model.{Article, ArticlePublic, Comment}
   alias Helper.{ORM, T}
 
   @doc "Reads one Comment from a structured public path."
@@ -76,7 +74,7 @@ defmodule GroupherServer.CMS.FrontDesk.Comment do
            ArticlePath.parse(article_path),
          {:ok, inner_id} <- parse_comment_inner_id(inner_id),
          {:ok, article} <-
-           Article.read(
+           CMS.FrontDesk.Article.read(
              %{community: community, thread: thread, inner_id: article_inner_id},
              actor,
              opts
@@ -136,7 +134,7 @@ defmodule GroupherServer.CMS.FrontDesk.Comment do
 
   defp parse_comment_path(_), do: {:error, CommentErrorCat.not_exist("comment not found")}
 
-  defp extract_article_info(thread, %ArticleModel{} = article) do
+  defp extract_article_info(thread, %Article{} = article) do
     public = Repo.get(ArticlePublic, article.id)
     article_author = article.author.user
     article_info = %{title: public && public.title, id: article.id}

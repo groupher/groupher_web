@@ -1,6 +1,7 @@
 # ArticleStats / View 全链路审计与收口清单
 
-> 状态：全链路收口已实施；Cloudflare/Edge 与低优先级容量优化继续独立跟进
+> 状态：historical audit record。全链路收口已经实施；当前合同见下方链接，Cloudflare/Edge 与
+> 低优先级容量优化继续独立跟进。
 >
 > 日期：2026-09-28
 >
@@ -445,7 +446,7 @@ Invalidation 同样复用该类型：删除重复的 `TArticleInvalidationRef`�
 
 GraphQL 中只有 `articleViewerStates` / `articleInteractionStates` 的复数参数需要从 `refs` 改为 `paths`。`commentViewerStates` /
 `commentReconcileStates` 的单数参数可以继续叫 `article`，但输入类型必须切为 `ArticlePathInput`。后端 resolver 局部变量、batch validation
-错误信息以及 `read_state_query_test.exs` / `view_events_test.exs` 同步使用 `paths`。
+错误信息以及 `projection_query_test.exs` / `view_events_test.exs` 同步使用 `paths`。
 
 所有 `${community}:${thread}:${innerId}` 手拼都必须收口到 `articlePathKey(path)`，已知调用点包括 `useArticleUpvote`、
 `useCommentReceiptReconcile`、Comments `queryState` / `useQuery`、`useCmsArticles`、`useCommentTarget` 和 mutation article cache；telemetry
@@ -589,11 +590,11 @@ Upvote、collect、comment 和 private batch 当前重复拼 path、ArticleStats
 
 ```elixir
 CMS.ArticleStats.for_article(article)
-CMS.Interactions.ReadState.article_state(article_stats, interaction)
+CMS.Interactions.Projection.article_state(article_stats, interaction)
 ```
 
 `CMS.ArticleStats.for_article/1` 明确包含一次 post-commit stats 读取和目标 row 提取，并返回带 public locator 的稳定领域结果；
-`CMS.Interactions.ReadState.article_state/2` 是公开读 surface 上的纯映射，不执行查询。原 Web 层
+`CMS.Interactions.Projection.article_state/2` 是公开读 surface 上的纯映射，不执行查询。原 Web 层
 `ArticleStatsPayload` 与 `ArticleInteractionPayload` 因无生产调用方已删除。
 这些 reader/mapper 都不负责 Gate、业务写入、事务或 command replay。各 owning result builder 继续显式拥有自己的 payload：
 
@@ -889,7 +890,7 @@ Slice 2  GraphQL hard cut / 后端批量读取                         [done]
 Slice 3  写后 payload 收口                                      [done]
   -> Interactions read state 直接提供 viewerEmotion
   -> CMS.ArticleStats.for_article/1 作为共享 post-commit stats reader
-  -> CMS.Interactions.ReadState.article_state/2 作为公开纯 mapper
+  -> CMS.Interactions.Projection.article_state/2 作为公开纯 mapper
   -> 各 mutation 保留专用 payload，不建立万能 presenter
   -> Comment 领域结果统一携带 Article
   -> stats/private interactionRevision 独立来源与 post-commit snapshot skew 测试

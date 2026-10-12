@@ -101,13 +101,16 @@ defmodule GroupherServer.Test.Query.Account.Basic do
       assert results["login"] == user.login
     end
 
-    test "user's views +1 after visit", ~m(guest_conn user)a do
+    test "profile read stays pure while visit delivery is asynchronous", ~m(guest_conn user)a do
       {:ok, target_user} = ORM.find(User, user.id)
       assert target_user.views == 0
 
       variables = %{login: user.login}
       results = guest_conn |> gq_query(@query, variables)
-      assert results["views"] == 1
+      assert results["views"] == 0
+
+      {:ok, target_user} = ORM.find(User, user.id)
+      assert target_user.views == 0
     end
 
     test "login newbie user can get own empty passport", ~m(user)a do

@@ -11,6 +11,7 @@ defmodule GroupherServer.CMS.Articles.Revision.Cleanup do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
+  alias CMS.Articles.Workflow
 
   alias CMS.Model.{
     ArticleBodySnapshot,
@@ -32,7 +33,7 @@ defmodule GroupherServer.CMS.Articles.Revision.Cleanup do
     now = Keyword.get(opts, :now, DateTime.utc_now())
     batch_size = Keyword.get(opts, :batch_size, @default_batch_size)
 
-    Repo.transaction(fn ->
+    Workflow.transaction(fn ->
       public_reference =
         from(public in ArticlePublic,
           where: public.revision_id == parent_as(:revision).id,

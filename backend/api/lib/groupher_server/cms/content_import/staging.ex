@@ -22,11 +22,11 @@ defmodule GroupherServer.CMS.ContentImport.Staging do
   import Ecto.Query, warn: false
 
   alias GroupherServer.{CMS, Repo}
+  alias CMS.ContentImport.{Transaction, Jobs, Model.Job, Model.Job.Item}
   alias CMS.ErrorCat
 
   alias CMS.Artiment.BodyBag
-  alias CMS.ContentImport.{Jobs, Persistence.Job, Persistence.Job.Item}
-  alias CMS.ContentImport.Persistence.Job.Body, as: StagedBody
+  alias CMS.ContentImport.Model.Job.Body
   alias CMS.Model.Community
 
   @max_batch_count 4
@@ -37,7 +37,7 @@ defmodule GroupherServer.CMS.ContentImport.Staging do
   def stage(%Community{} = community, job_ref, items)
       when is_list(items) and length(items) in 1..@max_batch_count do
     with {:ok, _} <- validate_unique_refs(items) do
-      Repo.transaction(fn ->
+      Transaction.run(fn ->
         with {:ok, job} <- Jobs.lock_job(community.id, job_ref),
              {:ok, _} <- ensure_stageable(job),
              {:ok, _} <- stage_items(job, items),
@@ -216,15 +216,15 @@ defmodule GroupherServer.CMS.ContentImport.Staging do
 
   defp persist_body(job, item, body_map, body_hash, body_size_bytes) do
     case Repo.one(
-           from(body in StagedBody,
+           from(body in Body,
              where: body.job_id == ^job.id and body.external_ref == ^item.external_ref,
              lock: "FOR UPDATE"
            )
          ) do
-      %StagedBody{body_hash: ^body_hash} ->
+      %Body{body_hash: ^body_hash} ->
         {:ok, :pass}
 
-      %StagedBody{} ->
+      %Body{} ->
         {:error, ErrorCat.custom("BodyBag staging changed for an existing externalRef")}
 
       nil ->
@@ -237,7 +237,7 @@ defmodule GroupherServer.CMS.ContentImport.Staging do
           job_item_id: item.id
         }
 
-        case %StagedBody{} |> StagedBody.changeset(attrs) |> Repo.insert() do
+        case %Body{} |> Body.changeset(attrs) |> Repo.insert() do
           {:ok, _body} -> {:ok, :pass}
           {:error, changeset} -> {:error, changeset}
         end

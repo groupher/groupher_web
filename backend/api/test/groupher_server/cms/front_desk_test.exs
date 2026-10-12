@@ -22,7 +22,7 @@ defmodule GroupherServer.Test.CMS.FrontDeskTest do
   end
 
   test "community reads reject unsupported modes", ~m(owner community)a do
-    assert {:error, %GroupherServer.ErrorCat.Error{reason: :unknown_policy_mode}} =
+    assert {:error, %ErrorCat.Error{reason: :unknown_policy_mode}} =
              CMS.FrontDesk.community(community.slug, owner, mode: :test)
   end
 end

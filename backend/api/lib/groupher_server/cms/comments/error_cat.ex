@@ -8,7 +8,7 @@ defmodule GroupherServer.CMS.Comments.ErrorCat do
         -> GraphQL error adapter
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:cms, :comment}
+  use GroupherServer.ErrorCat, namespace: {:cms, :comment}
 
   error(:create_comment, code: 4401)
   error(:comment_already_upvote, code: 4402)

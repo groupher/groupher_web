@@ -124,10 +124,11 @@ end
 
 - facade 使用产品动作：`update_draft`、`publish`。
 - use case module 使用动作名并统一 `execute`：`UpdateDraft.execute`、`Publish.execute`。
-- Store/Writer 使用持久化动作：`Draft.Store.update`、`Revision.Writer.insert`。
+- Store/Persist 使用持久化动作：`Draft.Store.update`、`Revision.Persist.create`。
 - 不使用重复且隐藏副作用的 `Commands.Update.update`。
 
-外部入口只能调用 facade，不能直接调用 `Commands.*`、`Store`、`Writer`、`Target` 或 `Repo`。
+外部入口只能调用 facade，不能直接调用 `Commands.*`、`Store`、`Persist`、`Writer`、`Target` 或
+`Repo`。
 
 ## 5. 业务原子性，而不是技术原子性
 
@@ -230,7 +231,8 @@ effect，由 `action` 在同一事务中写入 Outbox，提交后由 worker 消�
 `CMS.Command` 基础设施自己发出，不要求每个领域 Command 再提供 callback。
 
 这里的 Outbox 是统一的 `GroupherServer.CMS.Outbox`。Public Cache invalidation、Search reindex、
-Notification 和 Webhook 都写入统一 Event，由 `CMS.Outbox.Workers.<Domain>.<Task>` 执行。
+Notification 和 Webhook 都写入统一 Event，由 `Jobs.CMSOutbox<Domain>` 经 CMS 根 Facade 进入
+`CMS.Outbox.Workflow.<Domain>` 执行。
 
 这里不是把真正的 `after_commit` 工作移进数据库事务。`action` 只登记可靠的 effect intent，实际
 外部工作仍然在 commit 后执行：

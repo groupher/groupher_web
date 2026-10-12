@@ -7,11 +7,7 @@ defmodule GroupherServer.Accounts.Fans.List do
 
   Business position:
 
-      Client / Auth
-        -> GraphQL or internal API
-        -> Accounts facade
-        -> List
-        -> Repo
+      Accounts.Fans.Query -> Fans.List -> follower/following read models
   """
 
   import Ecto.Query, warn: false
@@ -24,12 +20,26 @@ defmodule GroupherServer.Accounts.Fans.List do
   alias Accounts.Model.{User, UserFollower, UserFollowing}
   alias Helper.{ORM, QueryBuilder}
 
+  @doc """
+  Returns followers with viewer-aware relationship state.
+
+  ## Examples
+
+      Accounts.Fans.List.paged_followers(user, %{page: 1, size: 20}, viewer)
+  """
   def paged_followers(%User{id: user_id}, filter, %User{} = cur_user) do
     paged_followers(%User{id: user_id}, filter)
     |> ViewerState.mark_viewer_follow_status(cur_user)
     |> done()
   end
 
+  @doc """
+  Returns a user's followers.
+
+  ## Examples
+
+      Accounts.Fans.List.paged_followers(user, %{page: 1, size: 20})
+  """
   def paged_followers(%User{id: user_id}, filter) do
     UserFollower
     |> where([uf], uf.user_id == ^user_id)
@@ -37,12 +47,26 @@ defmodule GroupherServer.Accounts.Fans.List do
     |> load_fans(filter)
   end
 
+  @doc """
+  Returns following users with viewer-aware relationship state.
+
+  ## Examples
+
+      Accounts.Fans.List.paged_followings(user, %{page: 1, size: 20}, viewer)
+  """
   def paged_followings(%User{id: user_id}, filter, %User{} = cur_user) do
     paged_followings(%User{id: user_id}, filter)
     |> ViewerState.mark_viewer_follow_status(cur_user)
     |> done()
   end
 
+  @doc """
+  Returns the users followed by one account.
+
+  ## Examples
+
+      Accounts.Fans.List.paged_followings(user, %{page: 1, size: 20})
+  """
   def paged_followings(%User{id: user_id}, filter) do
     UserFollowing
     |> where([uf], uf.user_id == ^user_id)

@@ -60,6 +60,25 @@ defmodule GroupherServer.Test.Analysis.Contribution do
       assert length(contributes.records) == 1
     end
 
+    test "does not project future-dated user contribution facts", ~m(user)a do
+      today = Datetime.today()
+      now = DateTime.utc_now() |> DateTime.truncate(:second)
+
+      Repo.insert_all(UserContribute, [
+        %{user_id: user.id, date: today, count: 1, inserted_at: now, updated_at: now},
+        %{
+          user_id: user.id,
+          date: Datetime.shift(today, days: 1),
+          count: 100,
+          inserted_at: now,
+          updated_at: now
+        }
+      ])
+
+      assert {:ok, %{total_count: 1, records: [%{date: ^today}]}} =
+               Analysis.list_contributions_digest(%User{id: user.id})
+    end
+
     test "should update user's embeds contribute", ~m(user)a do
       Analysis.make_contribution(%User{id: user.id})
       {:ok, user} = ORM.find(User, user.id)
@@ -205,8 +224,8 @@ defmodule GroupherServer.Test.Analysis.Contribution do
       assert contributes == cached_contributes
     end
 
-    test "background jobs should be skipped in test sandbox" do
-      assert {:ok, :pass} = Helper.Later.run({IO, :puts, ["Work, work, work, work, work."]})
+    test "typed background jobs should be skipped in test sandbox", ~m(community)a do
+      assert {:ok, :pass} = GroupherServer.Jobs.contribution_cache(community.id)
     end
 
     test "cache should be update after make contributes", ~m(community)a do
@@ -214,11 +233,6 @@ defmodule GroupherServer.Test.Analysis.Contribution do
       assert {:error, nil} = Cache.get(:common, scope)
 
       Analysis.make_contribution(%Community{id: community.id})
-
-      # res = Later.run({IO, :puts, ["Work, work, work, work, work."]})
-      # Process.sleep(1000)
-
-      # assert {:ok, _} = Cache.get(:common, scope)
     end
   end
 end

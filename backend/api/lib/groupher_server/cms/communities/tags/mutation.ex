@@ -17,7 +17,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Mutation do
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
 
-  import GroupherServer.CMS.Articles.Writer,
+  import GroupherServer.CMS.Articles.Persist,
     only: [ensure_author_exists: 1]
 
   alias GroupherServer.{Accounts, CMS, Repo}
@@ -25,7 +25,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Mutation do
   alias Accounts.Model.User
 
   alias CMS.Communities.ErrorCat
-  alias CMS.Communities.Tags.Persist
+  alias CMS.Communities.Tags.{Effects, Persist}
   alias CMS.FrontDesk
 
   alias CMS.Model.{Community, CommunityTag, CommunityTagGroup}
@@ -459,15 +459,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Mutation do
   defp invalidate_taxonomy(%Community{} = community, thread, effect_key, opts) do
     with {:ok, identity} <- taxonomy_identity(community, thread, opts),
          {:ok, _event} <-
-           CMS.Outbox.send(%{
-             event: "community.taxonomy_changed",
-             worker: CMS.Outbox.Workers.Community.Cleanup,
-             resource_type: "community",
-             resource_id: community.id,
-             identity: identity,
-             effect_key: effect_key,
-             data: %{community: community.slug, community_id: community.id, thread: thread}
-           }) do
+           Effects.enqueue_taxonomy_changed(community, thread, identity, effect_key) do
       {:ok, :pass}
     end
   end
@@ -520,7 +512,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Mutation do
 
   # Gate/Command or an explicitly named maintenance workflow owns the
   # surrounding aggregate transaction. Tags.Mutation never opens a transaction
-  # for a caller, so an unclassified writer cannot silently become an owner.
+  # for a caller, so an unclassified mutation cannot silently become an owner.
   defp require_transaction(fun) when is_function(fun, 0) do
     if Repo.in_transaction?(), do: {:ok, fun.()}, else: {:error, :tag_transaction_required}
   end

@@ -9,7 +9,9 @@ defmodule GroupherServer.CMS.Model.ArticlePublic do
 
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.{Article, ArticleRevision, Author}
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{Article, ArticleRevision, Author}
   alias Helper.Constant.DBPrefix
 
   @primary_key false

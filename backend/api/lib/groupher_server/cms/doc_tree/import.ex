@@ -67,7 +67,7 @@ defmodule GroupherServer.CMS.DocTree.Import do
   def apply(%Community{} = community, %DocBranch{} = branch, tree, items_by_target)
       when is_map(tree) and is_map(items_by_target) do
     with namespace when is_binary(namespace) and namespace != "" <- Map.get(tree, "branchSlug"),
-         {:ok, state} <- State.ensure_draft_state(community, branch_id: branch.id),
+         {:ok, state} <- State.ensure_draft_state(community, branch_id: branch.id, lock: false),
          {:ok, attrs} <-
            flatten_tabs(
              community,
@@ -78,7 +78,7 @@ defmodule GroupherServer.CMS.DocTree.Import do
            ),
          attrs <- reuse_existing_node_ids(attrs),
          {:ok, nodes} <- upsert_nodes(attrs),
-         {:ok, state} <- Revision.bump_tree_draft(community, state) do
+         {:ok, state} <- Revision.bump_tree_draft(community, state, transaction: false) do
       {:ok, %{nodes: nodes, state: state}}
     else
       namespace when namespace in [nil, ""] ->

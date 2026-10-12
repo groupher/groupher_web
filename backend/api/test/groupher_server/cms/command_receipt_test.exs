@@ -1,5 +1,7 @@
 defmodule GroupherServer.Test.CMS.BadConfirmation do
-  @behaviour GroupherServer.CMS.Command.ConfirmationCodec
+  alias GroupherServer.CMS
+
+  @behaviour CMS.Command.ConfirmationCodec
 
   defstruct [:value]
 
@@ -16,7 +18,9 @@ defmodule GroupherServer.Test.CMS.BadConfirmation do
 end
 
 defmodule GroupherServer.Test.CMS.OversizedConfirmation do
-  @behaviour GroupherServer.CMS.Command.ConfirmationCodec
+  alias GroupherServer.CMS
+
+  @behaviour CMS.Command.ConfirmationCodec
 
   defstruct [:value]
 
@@ -34,7 +38,9 @@ defmodule GroupherServer.Test.CMS.OversizedConfirmation do
 end
 
 defmodule GroupherServer.Test.CMS.ReceiptConfirmation do
-  @behaviour GroupherServer.CMS.Command.ConfirmationCodec
+  alias GroupherServer.CMS
+
+  @behaviour CMS.Command.ConfirmationCodec
 
   defstruct [:value]
 
@@ -61,15 +67,17 @@ defmodule GroupherServer.Test.CMS.CommandReceiptTest do
 
   import Ecto.Query
 
+  alias GroupherServer.Test
+
   alias GroupherServer.CMS
   alias CMS.Command
   alias CMS.Command.IntentCodec
   alias CMS.Command.Receipt, as: CommandReceipt
   alias CMS.Command.Receipt.Store
   alias CMS.Interactions.Reactions.UpvoteConfirmation, as: UpvoteConfirmation
-  alias GroupherServer.Test.CMS.BadConfirmation
-  alias GroupherServer.Test.CMS.OversizedConfirmation
-  alias GroupherServer.Test.CMS.ReceiptConfirmation
+  alias Test.CMS.BadConfirmation
+  alias Test.CMS.OversizedConfirmation
+  alias Test.CMS.ReceiptConfirmation
 
   import ExUnit.CaptureLog
 

@@ -3,7 +3,7 @@ defmodule GroupherServer.CMS.Comments.AuthorRelationState do
   Computes whether an Article author upvoted each Comment in a response page.
 
   This is a Comment response binding, not state of the current viewer, so it
-  intentionally stays outside `CMS.Interactions.ReadState`.
+  intentionally stays outside `CMS.Interactions.Projection`.
 
       Comments Query -> AuthorRelationState -> author-upvoted comment ids
   """

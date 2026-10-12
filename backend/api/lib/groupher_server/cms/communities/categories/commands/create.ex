@@ -5,12 +5,13 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Create do
       GraphQL -> Categories.Commands.Create -> Gate -> Persist -> Receipt
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.{Command, Gate}
   alias CMS.Communities.Categories.{Confirmation, Persist}
   alias CMS.Communities.Categories.Commands.Support
   alias CMS.Model.{Category, Community}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
   alias Helper.Validator.Slug
 
@@ -35,8 +36,11 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Create do
 
   defp action(%{actor: actor, target: community, params: %{attrs: attrs}, command_id: command_id}) do
     Gate.with_community_check(actor, :category_create, community, fn canonical ->
-      with {:ok, author} <- CMS.Articles.Writer.ensure_author_exists(actor),
-           attrs <- attrs |> Map.drop([:community, "community"]) |> Map.update(:slug, nil, &Slug.normalize/1),
+      with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(actor),
+           attrs <-
+             attrs
+             |> Map.drop([:community, "community"])
+             |> Map.update(:slug, nil, &Slug.normalize/1),
            {:ok, %Category{} = category} <- Persist.insert_category(attrs, canonical, author.id) do
         {:ok, Support.confirmation(Confirmation, "category_id", category.id, command_id)}
       end

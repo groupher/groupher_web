@@ -8,7 +8,9 @@ defmodule GroupherServer.CMS.Model.BlogDraft do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.Article
+  alias GroupherServer.CMS
+
+  alias CMS.Model.Article
   alias Helper.Constant.DBPrefix
 
   @primary_key false

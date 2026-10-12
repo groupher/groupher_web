@@ -8,8 +8,7 @@ defmodule GroupherServer.CMS.DocCover.Commands.ReorderCards do
         -> DocCover.Persist
   """
   alias GroupherServer.CMS
-  alias CMS.DocCover.Commands.Support
-  alias CMS.DocCover.Persist
+  alias CMS.DocCover.{Commands.Support, Persist}
   alias CMS.Model.Community
 
   @doc """

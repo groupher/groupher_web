@@ -20,15 +20,33 @@ defmodule GroupherServer.Messaging.Config do
   defstruct notify_actions: Keyword.get(@general_config, :nofity_actions, []),
             notify_group_interval_hour: Keyword.get(@general_config, :notify_group_interval_hour)
 
-  @doc "Runs `base` through the public `Config` boundary."
+  @doc """
+  Returns the static messaging configuration.
+
+  ## Examples
+
+      Messaging.Config.base()
+  """
   @spec base() :: t()
   def base, do: %__MODULE__{}
 
-  @doc "Runs `notify_actions` through the public `Config` boundary."
+  @doc """
+  Returns the notification actions accepted by Messaging.
+
+  ## Examples
+
+      Messaging.Config.notify_actions()
+  """
   @spec notify_actions() :: [atom()]
   def notify_actions, do: base().notify_actions
 
-  @doc "Runs `notify_group_interval_hour` through the public `Config` boundary."
+  @doc """
+  Returns the notification grouping interval in hours.
+
+  ## Examples
+
+      Messaging.Config.notify_group_interval_hour()
+  """
   @spec notify_group_interval_hour() :: pos_integer()
   def notify_group_interval_hour, do: base().notify_group_interval_hour
 end

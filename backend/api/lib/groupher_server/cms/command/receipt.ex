@@ -11,12 +11,11 @@ defmodule GroupherServer.CMS.Command.Receipt do
   writes. This facade exposes only the shared receipt protocol used around them.
   """
 
+  alias __MODULE__.{Key, Runner, Store}
   alias GroupherServer.{Accounts, CMS}
-  alias Helper.T
-
   alias Accounts.Model.User
   alias CMS.Command
-  alias __MODULE__.{Key, Runner, Store}
+  alias Helper.T
 
   @doc "Validates the required UUID identity of one command attempt."
   @spec validate_command_id(term()) :: {:ok, Ecto.UUID.t()} | {:error, term()}

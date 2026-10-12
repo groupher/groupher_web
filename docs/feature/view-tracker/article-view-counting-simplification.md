@@ -1,6 +1,7 @@
 # Article View 计数简化方案
 
-> 状态：代码与本地合同已按 direct cutover 落地；Cloudflare 独立待办未实施
+> 状态：historical implementation record。当前运行时协议见
+> [Article View 计数写链路](./article-view-counting.md)；Cloudflare 独立待办仍未实施。
 >
 > 日期：2026-09-26
 >

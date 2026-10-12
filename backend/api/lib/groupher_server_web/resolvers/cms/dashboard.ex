@@ -6,14 +6,14 @@ defmodule GroupherServerWeb.Resolvers.CMS.Dashboard do
   """
 
   alias GroupherServer.CMS
-  alias GroupherServer.CMS.Model.Community
+  alias CMS.Model.Community
 
   def update_dashboard(
         _root,
         %{community: community, dsb_section: _key} = args,
         %{context: %{cur_user: actor}}
       ) do
-    CMS.Dashboard.update(community, args, actor, args[:command_id])
+    CMS.dashboard_update(community, args, actor, args[:command_id])
   end
 
   def update_dashboard_content_shadow(
@@ -21,7 +21,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Dashboard do
         %{community: %Community{} = community, enabled: enabled, command_id: command_id},
         %{context: %{cur_user: actor}}
       ) do
-    CMS.Dashboard.update(community, :content_shadow, enabled, actor, command_id)
+    CMS.dashboard_update(community, :content_shadow, enabled, actor, command_id)
   end
 
   def save_custom_theme_preset(
@@ -29,7 +29,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Dashboard do
         %{community: community} = args,
         %{context: %{cur_user: actor}}
       ) do
-    CMS.Dashboard.save_custom_theme_preset(community, args, actor, args[:command_id])
+    CMS.dashboard_save_custom_theme_preset(community, args, actor, args[:command_id])
   end
 
   def select_theme_preset(
@@ -37,6 +37,6 @@ defmodule GroupherServerWeb.Resolvers.CMS.Dashboard do
         %{community: community} = args,
         %{context: %{cur_user: actor}}
       ) do
-    CMS.Dashboard.select_theme_preset(community, args, actor, args[:command_id])
+    CMS.dashboard_select_theme_preset(community, args, actor, args[:command_id])
   end
 end

@@ -6,7 +6,7 @@ defmodule GroupherServer.CMS.Communities do
 
       GraphQL resolver / job
         -> CMS facade
-        -> Communities.Query / Writer / Commands / Lifecycle
+        -> Communities.Query / Persist / Commands / Lifecycle
         -> Repo / external boundary
   """
 
@@ -19,13 +19,15 @@ defmodule GroupherServer.CMS.Communities do
     NamePolicy,
     Setup,
     SlugClaims,
-    Commands
+    Commands,
+    Workflow
   }
 
-  alias GroupherServer.{Accounts, CMS}
+  alias GroupherServer.{Accounts, CMS, ErrorCat}
   alias Accounts.Model.User
-  alias CMS.Passport
-  alias CMS.Communities.{ErrorCat, Lifecycle}
+  alias CMS.{Passport, FrontDesk}
+  alias CMS.Communities.ErrorCat, as: CommunityErrorCat
+  alias CMS.Communities.Lifecycle
   alias CMS.Communities.Categories.Commands.Create, as: CreateCategoryCommand
   alias CMS.Communities.Categories.Commands.Delete, as: DeleteCategoryCommand
   alias CMS.Communities.Categories.Commands.Set, as: SetCategoryCommand
@@ -46,17 +48,16 @@ defmodule GroupherServer.CMS.Communities do
   alias CMS.Communities.Commands.Update, as: UpdateCommand
 
   alias CMS.Communities.Tags.Commands.{
-    CreateTag,
+    Create,
     CreateTagGroup,
-    DeleteTag,
+    Delete,
     DeleteTagGroup,
-    UpdateTag,
+    Update,
     UpdateTagGroup
   }
 
-  alias CMS.FrontDesk
   alias CMS.Model.{Category, Community, CommunityTag, CommunityTagGroup}
-  alias Helper.{ORM, T}
+  alias Helper.T
 
   @default_fetch_opts [inc_views: true]
 
@@ -75,7 +76,7 @@ defmodule GroupherServer.CMS.Communities do
   defp fetch_for_viewer(slug, actor, opts) do
     with {:ok, mode} <- read_mode(opts),
          {:ok, community} <- read_community(slug, actor, mode),
-         {:ok, community} <- maybe_inc_views(community, opts),
+         {:ok, community} <- Workflow.maybe_increment_views(community, opts),
          {:ok, community} <- add_viewer_states(community, actor) do
       {:ok, community}
     else
@@ -97,14 +98,6 @@ defmodule GroupherServer.CMS.Communities do
   defp read_community(slug, _actor, :internal), do: FrontDesk.community(slug, mode: :internal)
   defp read_community(slug, actor, mode), do: FrontDesk.community(slug, actor, mode: mode)
 
-  defp maybe_inc_views(community, opts) do
-    case Keyword.get(opts, :inc_views) do
-      true -> ORM.inc(community, :views)
-      false -> {:ok, community}
-      nil -> {:ok, community}
-    end
-  end
-
   defp add_viewer_states(community, %User{id: user_id}) do
     meta = community.meta || %{}
 
@@ -117,11 +110,11 @@ defmodule GroupherServer.CMS.Communities do
 
   defp add_viewer_states(community, _actor), do: {:ok, community}
 
-  defp normalize_fetch_error(%GroupherServer.ErrorCat.Error{
+  defp normalize_fetch_error(%ErrorCat.Error{
          reason: :custom,
          details: %{reason: :not_exist}
        }) do
-    ErrorCat.not_exist("Community")
+    CommunityErrorCat.not_exist("Community")
   end
 
   defp normalize_fetch_error(reason), do: reason
@@ -146,7 +139,7 @@ defmodule GroupherServer.CMS.Communities do
     end
   end
 
-  defp reason_code(ErrorCat.error_pattern(reason: reason)), do: Atom.to_string(reason)
+  defp reason_code(CommunityErrorCat.error_pattern(reason: reason)), do: Atom.to_string(reason)
   defp reason_code(reason) when is_atom(reason), do: Atom.to_string(reason)
   defp reason_code(_reason), do: "unknown"
 
@@ -488,12 +481,12 @@ defmodule GroupherServer.CMS.Communities do
     do: {:error, CMS.ErrorCat.command_id_required()}
 
   def create_tag(%Community{} = community, thread, attrs, %User{} = user, command_id) do
-    CreateTag.execute(community, thread, attrs, user, command_id)
+    Create.execute(community, thread, attrs, user, command_id)
   end
 
   def create_tag(community_ref, thread, attrs, %User{} = user, command_id) do
     with {:ok, community} <- FrontDesk.community(community_ref, mode: :internal) do
-      CreateTag.execute(community, thread, attrs, user, command_id)
+      Create.execute(community, thread, attrs, user, command_id)
     end
   end
 
@@ -504,7 +497,7 @@ defmodule GroupherServer.CMS.Communities do
   def update_tag(_id, _attrs, _command_id), do: {:error, :command_actor_required}
 
   def update_tag(id, attrs, %User{} = user, command_id),
-    do: UpdateTag.execute(id, attrs, user, command_id)
+    do: Update.execute(id, attrs, user, command_id)
 
   @doc "Creates tag group through the `Communities` write boundary."
   @spec create_tag_group(Community.t(), atom(), map()) :: T.domain_res(CommunityTagGroup.t())
@@ -602,7 +595,7 @@ defmodule GroupherServer.CMS.Communities do
 
   def delete_tag(_id, _command_id), do: {:error, :command_actor_required}
 
-  def delete_tag(id, %User{} = user, command_id), do: DeleteTag.execute(id, user, command_id)
+  def delete_tag(id, %User{} = user, command_id), do: Delete.execute(id, user, command_id)
 
   @doc "Runs `set_tag` through the public `Communities` boundary."
   @spec set_tag(Ecto.Schema.t(), T.id()) :: T.domain_res(Ecto.Schema.t())
@@ -611,7 +604,7 @@ defmodule GroupherServer.CMS.Communities do
   def set_tag(_article, _id, _command_id), do: {:error, :command_actor_required}
 
   def set_tag(article, id, %User{} = user, command_id),
-    do: CMS.Communities.Tags.Commands.SetTag.execute(article, id, user, command_id)
+    do: CMS.Communities.Tags.Commands.Set.execute(article, id, user, command_id)
 
   @doc "Runs `unset_tag` through the public `Communities` boundary."
   @spec unset_tag(Ecto.Schema.t(), T.id()) :: T.domain_res(Ecto.Schema.t())
@@ -620,7 +613,7 @@ defmodule GroupherServer.CMS.Communities do
   def unset_tag(_article, _id, _command_id), do: {:error, :command_actor_required}
 
   def unset_tag(article, id, %User{} = user, command_id),
-    do: CMS.Communities.Tags.Commands.UnsetTag.execute(article, id, user, command_id)
+    do: CMS.Communities.Tags.Commands.Unset.execute(article, id, user, command_id)
 
   @doc "Runs `tag_groups` through the public `Communities` boundary."
   @spec tag_groups(map()) :: T.domain_res(list(CommunityTagGroup.t()))

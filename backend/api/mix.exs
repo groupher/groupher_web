@@ -140,7 +140,15 @@ defmodule GroupherServer.Mixfile do
       "test.coverage": ["coveralls.html"],
       "test.coverage.short": ["coveralls"],
       "doc.report": ["inch.report"],
-      lint: ["cmd node ../../scripts/check-elixir-module-style.mjs", "credo --strict"],
+      "lint.context": [
+        "cmd node --test ../../scripts/check-backend-context-v2.test.mjs",
+        "cmd node ../../scripts/check-backend-context-v2.mjs --fully-strict"
+      ],
+      lint: [
+        "lint.context",
+        "cmd node ../../scripts/check-elixir-module-style.mjs",
+        "credo --strict"
+      ],
       "lint.static": ["dialyzer --format dialyxir"],
       sentry_recompile: ["compile", "deps.compile sentry --force"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],

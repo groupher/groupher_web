@@ -17,7 +17,7 @@ defmodule GroupherServer.CMS.Articles.Moderation do
 
   alias GroupherServer.{CMS, FrontDesk, Repo}
 
-  alias CMS.Articles.Trash
+  alias CMS.Articles.{Trash, Effects}
   alias CMS.Communities.Tags.Stats
 
   alias CMS.Model.{
@@ -155,7 +155,7 @@ defmodule GroupherServer.CMS.Articles.Moderation do
            illegal_articles: illegal_articles
          }) do
       {:ok, _user} ->
-        FrontDesk.revalidate().user(user.login)
+        FrontDesk.revalidate_user(user.login)
         {:ok, :pass}
 
       {:error, _reason} = error ->
@@ -224,23 +224,22 @@ defmodule GroupherServer.CMS.Articles.Moderation do
     |> Enum.reduce_while({:ok, :pass}, fn binding, {:ok, _} ->
       community = binding.community
 
-      case CMS.Outbox.send(%{
-             event: "article.visibility_changed",
-             worker: CMS.Outbox.Workers.Article.Cleanup,
-             resource_type: "article",
-             resource_id: article.id,
-             identity: {identity_type, identity_ref},
-             effect_key:
-               "article-binding:#{binding.id}:#{article.moderation_state}:#{article.updated_at}",
-             data: %{
+      case Effects.enqueue(
+             "article.visibility_changed",
+             "article",
+             article.id,
+             {identity_type, identity_ref},
+             %{
                operation_id: operation_id,
                community: community.slug,
                community_id: community.id,
                thread: article.thread,
                inner_id: binding_inner_id(article.id, community.id),
                article_id: article.id
-             }
-           }) do
+             },
+             effect_key:
+               "article-binding:#{binding.id}:#{article.moderation_state}:#{article.updated_at}"
+           ) do
         {:ok, _event} -> {:cont, {:ok, :pass}}
         {:error, reason} -> {:halt, {:error, reason}}
       end

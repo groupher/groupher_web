@@ -7,11 +7,7 @@ defmodule GroupherServer.Analysis.Web.Config do
 
   Business position:
 
-      Main / Dashboard
-        -> GraphQL
-        -> Analysis
-        -> Config
-        -> Repo / analytics provider
+      Application env -> Analysis.Web.Config -> provider/runtime policy
   """
 
   alias GroupherServer.Analysis
@@ -63,7 +59,7 @@ defmodule GroupherServer.Analysis.Web.Config do
 
   This function does not read application environment or runtime secrets.
 
-  ## Example
+  ## Examples
 
       GroupherServer.Analysis.Web.Config.base()
       #=> %GroupherServer.Analysis.Web.Config{origin: "https://analysis.groupher.com", default_days: 7, ...}
@@ -73,12 +69,30 @@ defmodule GroupherServer.Analysis.Web.Config do
   def base, do: %__MODULE__{}
 
   @doc """
+  Reports whether community creation should provision its analytics website.
+
+  This deployment policy is stored separately from runtime credentials so
+  credential changes cannot accidentally enable or disable provisioning.
+
+  ## Examples
+
+      GroupherServer.Analysis.Web.Config.provision_on_community_create?()
+      #=> true
+  """
+  @spec provision_on_community_create?() :: boolean()
+  def provision_on_community_create? do
+    :groupher_server
+    |> Application.get_env(:web_analysis_policy, [])
+    |> Keyword.get(:provision_on_community_create, true)
+  end
+
+  @doc """
   Returns runtime Web Analysis credentials only.
 
   This function reads `config :groupher_server, :web_analysis`, but only keeps
   keys that belong to runtime credentials.
 
-  ## Example
+  ## Examples
 
       config :groupher_server, :web_analysis,
         api_token: "token"

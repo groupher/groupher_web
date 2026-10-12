@@ -69,26 +69,28 @@ defmodule GroupherServer.CMS.DocTree.Events do
         author_id \\ nil,
         opts \\ []
       ) do
-    Repo.transaction(fn ->
-      with {:ok, branch} <- Branch.resolve(community, opts),
-           {:ok, _community} <- ORM.lock_community(community),
-           {:ok, event} <-
-             insert_staged_event(
-               community,
-               branch,
-               event_type,
-               payload,
-               inverse_payload,
-               author_id,
-               opts,
-               next_seq(community, branch)
-             ) do
-        event
-      else
-        {:error, reason} -> Repo.rollback(reason)
-      end
-    end)
-    |> transaction_result()
+    transaction(
+      fn ->
+        with {:ok, branch} <- Branch.resolve(community, opts),
+             {:ok, _community} <- ORM.lock_community(community),
+             {:ok, event} <-
+               insert_staged_event(
+                 community,
+                 branch,
+                 event_type,
+                 payload,
+                 inverse_payload,
+                 author_id,
+                 opts,
+                 next_seq(community, branch)
+               ) do
+          event
+        else
+          {:error, reason} -> Repo.rollback(reason)
+        end
+      end,
+      opts
+    )
   end
 
   defp insert_staged_event(
@@ -133,45 +135,47 @@ defmodule GroupherServer.CMS.DocTree.Events do
   def record_staged_many(%Community{}, [], _author_id, _opts), do: {:ok, []}
 
   def record_staged_many(%Community{} = community, events, author_id, opts) do
-    Repo.transaction(fn ->
-      with {:ok, branch} <- Branch.resolve(community, opts),
-           {:ok, _community} <- ORM.lock_community(community) do
-        next_seq = next_seq(community, branch)
+    transaction(
+      fn ->
+        with {:ok, branch} <- Branch.resolve(community, opts),
+             {:ok, _community} <- ORM.lock_community(community) do
+          next_seq = next_seq(community, branch)
 
-        events
-        |> Enum.with_index()
-        |> Enum.reduce_while({:ok, []}, fn {%{type: type, payload: payload, inverse: inverse} =
-                                              attrs, index},
-                                           {:ok, acc} ->
-          opts =
-            attrs
-            |> Map.take([:owner, :doc_id])
-            |> Enum.into([])
-            |> Keyword.merge(branch_id: branch.id)
+          events
+          |> Enum.with_index()
+          |> Enum.reduce_while({:ok, []}, fn {%{type: type, payload: payload, inverse: inverse} =
+                                                attrs, index},
+                                             {:ok, acc} ->
+            opts =
+              attrs
+              |> Map.take([:owner, :doc_id])
+              |> Enum.into([])
+              |> Keyword.merge(branch_id: branch.id)
 
-          record_staged_event(
-            community,
-            branch,
-            %{
-              type: type,
-              payload: payload,
-              inverse: inverse,
-              author_id: author_id,
-              opts: opts,
-              seq: next_seq + index
-            },
-            acc
-          )
-        end)
-        |> case do
-          {:ok, events} -> Enum.reverse(events)
+            record_staged_event(
+              community,
+              branch,
+              %{
+                type: type,
+                payload: payload,
+                inverse: inverse,
+                author_id: author_id,
+                opts: opts,
+                seq: next_seq + index
+              },
+              acc
+            )
+          end)
+          |> case do
+            {:ok, events} -> Enum.reverse(events)
+            {:error, reason} -> Repo.rollback(reason)
+          end
+        else
           {:error, reason} -> Repo.rollback(reason)
         end
-      else
-        {:error, reason} -> Repo.rollback(reason)
-      end
-    end)
-    |> transaction_result()
+      end,
+      opts
+    )
   end
 
   defp record_staged_event(community, branch, event_attrs, acc) do
@@ -787,6 +791,14 @@ defmodule GroupherServer.CMS.DocTree.Events do
 
   defp transaction_result({:ok, result}), do: {:ok, result}
   defp transaction_result({:error, reason}), do: {:error, reason}
+
+  defp transaction(fun, opts) do
+    if Keyword.get(opts, :transaction, true) do
+      Repo.transaction(fun) |> transaction_result()
+    else
+      transaction_result({:ok, fun.()})
+    end
+  end
 
   defp next_seq(%Community{} = community, branch) do
     DocTreeEvent

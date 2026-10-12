@@ -54,8 +54,8 @@ resolver 不要求每个函数都只有一行，但它不能拥有完整业务�
 | `article_interaction_payload.ex` |                       1 个公开函数 | 审计时为纯 mapper；R1 后因无生产调用方删除                   |
 | `article_stats_payload.ex`       |                       2 个公开函数 | 审计时拥有 projection read；读取迁入领域后因无生产调用方删除 |
 
-公共 ArticlePath 的纯 parse/validate 由 `CMS.Helper.ArticlePath` 共享；单路径与有界批量的
-binding/database lookup 由 `GroupherServer.CMS.FrontDesk`（`article/1`、`articles/1`）负责，
+公共 ArticlePath 的纯 parse/validate 由 `CMS.ArticlePath` 共享；单路径与有界批量的
+binding/database lookup 由 root `GroupherServer.FrontDesk` 经 `GroupherServer.CMS` 委托给 CMS internal FrontDesk（`article/1`、`articles/1`），
 不在 Web GraphQL resolver 内重复实现。
 
 数量和行数只描述审计快照，不是架构判定标准。一个较长的纯 adapter 可以合法存在；一个只有数行、但决定 replay 或授权策略的函数仍然越界。
@@ -135,7 +135,7 @@ P0 表示当前 resolver 已拥有业务用例、幂等恢复、授权或跨 own
 | `CMS.permanently_delete_trashed_article/3` | resolver 决定资源存在/消失时的 replay 分支                                                            | Articles trash Command/facade                    | ✅ R2 已迁出          |
 | `CMS.permanently_delete_trash_action/3`    | resolver 加载 action、校验 Community/thread 后执行删除                                                | `CMS.Trash` concrete use case                    | ✅ R2 已迁出          |
 | `CMS.article_viewer_states/3`              | resolve paths、批量读状态、匹配 Artiment identity 并组装 read model                                   | ViewTracker facade + Query                       | ✅ R1 已迁出          |
-| `CMS.article_interaction_states/3`         | resolve paths、读取 private interaction、匹配 identity 并组装 payload                                 | Interactions facade + ReadState Query            | ✅ R1 已迁出          |
+| `CMS.article_interaction_states/3`         | resolve paths、读取 private interaction、匹配 identity 并组装 payload                                 | Interactions facade + Projection Query           | ✅ R1 已迁出          |
 | `CMS.comment_viewer_states/3`              | resolve Article、读 Comments、抽取 viewer flags/emotions                                              | Comments facade + Query                          | ✅ R1 已迁出          |
 | `CMS.comment_reconcile_states/3`           | 组合 Comments 和 ArticleStats、恢复输入顺序、定义 missing/null 语义                                   | `CMS.Comments.Reconciliation` Query              | ✅ R1 已迁出          |
 | `CMS.hydrate_interaction/2`                | reaction 写入后加载 Community、private state、ArticleStats 和 outcome                                 | Interactions command result builder              | ✅ R1 已迁出          |
@@ -268,7 +268,7 @@ resolver 只负责：
 状态：2026-10-06 已完成。已增加 R1 GraphQL contract test，Comments/Interactions/ViewTracker
 公开 facade 与 Query 接管 batch read model，Comments/Interactions 各自的 command result builder
 接管写后结果；`CMS.ArticleStats.for_article/1` 成为共享 post-commit reader，private-state 纯映射归
-`CMS.Interactions.ReadState.article_state/2`。无生产调用方的两个 Web payload helper 已删除。
+`CMS.Interactions.Projection.article_state/2`。无生产调用方的两个 Web payload helper 已删除。
 
 优先迁移：
 

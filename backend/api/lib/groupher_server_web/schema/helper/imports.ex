@@ -2,7 +2,7 @@ defmodule GroupherServerWeb.Schema.Helper.Imports do
   @moduledoc """
   Generates Absinthe imports for every configured CMS artiment thread.
 
-  The macros keep the root schema aligned with `CMS.Artiment.Config.threads/0`
+  The macros keep the root schema aligned with `CMS.artiment_config_threads/0`
   so adding a thread does not require duplicating mutation-module imports.
 
   Business position:
@@ -16,7 +16,7 @@ defmodule GroupherServerWeb.Schema.Helper.Imports do
   alias GroupherServer.CMS
   alias GroupherServerWeb.Schema.CMS, as: SchemaCMS
 
-  @threads CMS.Artiment.Config.threads()
+  @threads CMS.artiment_config_threads()
   @doc """
   Imports mutation fields for every configured artiment thread.
 

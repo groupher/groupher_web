@@ -2,7 +2,8 @@ defmodule GroupherServer.CMS.ContentImport.ProcessTest do
   use ExUnit.Case, async: true
 
   alias GroupherServer.CMS
-  alias CMS.ContentImport.{Persistence.Job, Process}
+  alias CMS.ContentImport.Model.Job
+  alias CMS.ContentImport.Process
 
   test "projects bounded, safe process data from persisted job facts" do
     recent_batch =

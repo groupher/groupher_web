@@ -5,11 +5,24 @@ defmodule GroupherServer.Analysis.WebTest do
 
   alias GroupherServer.{Analysis, CMS, ErrorCat}
   alias Analysis.Web
-  alias Analysis.Web.{Config, Provider.Umami}
-  alias CMS.Model.Community
+  alias Analysis.Web.{Config, Provider.Umami, Provision}
+  alias CMS.Model.{Community, CommunityDashboard}
   alias ErrorCat.Error
 
+  defmodule ProviderOutsideTransaction do
+    alias GroupherServer.Repo
+
+    def create_website(scope) do
+      send(self(), {:provider_transaction, Repo.in_transaction?(), scope})
+      {:ok, "77777777-7777-4777-8777-777777777777"}
+    end
+  end
+
   describe "config" do
+    test "disables create-time provisioning in the test deployment" do
+      refute Config.provision_on_community_create?()
+    end
+
     test "returns static base config without reading runtime env" do
       config = Config.base()
 
@@ -344,6 +357,34 @@ defmodule GroupherServer.Analysis.WebTest do
 
       assert %{status: "unavailable", cells: [], timezone: "UTC", error: %{section: "traffic"}} =
                traffic
+    end
+  end
+
+  describe "Provision transaction boundary" do
+    test "calls the provider outside the database transaction and persists the identity" do
+      previous = Application.get_env(:groupher_server, :web_analysis)
+      Application.put_env(:groupher_server, :web_analysis, api_token: "token")
+
+      on_exit(fn ->
+        Application.put_env(:groupher_server, :web_analysis, previous)
+      end)
+
+      {:ok, user} = db_insert(:user)
+
+      {:ok, community} =
+        CMS.Communities.create(mock_attrs(:community), user, Ecto.UUID.generate())
+
+      assert {:ok, scope} = Provision.prepare_community(community, ProviderOutsideTransaction)
+      assert scope.community == community.slug
+      assert scope.umami_website_id == "77777777-7777-4777-8777-777777777777"
+
+      assert_received {:provider_transaction, false, %{community: provider_community}}
+      assert provider_community == community.slug
+
+      assert %CommunityDashboard{
+               umami_website_id: "77777777-7777-4777-8777-777777777777"
+             } =
+               Repo.get_by!(CommunityDashboard, community_id: community.id)
     end
   end
 end

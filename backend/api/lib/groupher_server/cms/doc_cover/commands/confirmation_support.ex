@@ -9,7 +9,9 @@ defmodule GroupherServer.CMS.DocCover.Commands.ConfirmationSupport do
         -> GraphQL-compatible result on first call or replay
   """
 
-  alias GroupherServer.CMS.DocCover.Commands.DocCoverConfirmation
+  alias GroupherServer.CMS
+
+  alias CMS.DocCover.Commands.DocCoverConfirmation
 
   @doc "Wraps a DocCover result with the command identity for Receipt storage."
   @spec confirmation(term(), Ecto.UUID.t()) :: DocCoverConfirmation.t()

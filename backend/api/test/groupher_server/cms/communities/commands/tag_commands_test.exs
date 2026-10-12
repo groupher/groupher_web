@@ -2,12 +2,14 @@ defmodule GroupherServer.Test.CMS.Communities.Commands.TagCommandsTest do
   @moduledoc false
   use GroupherServer.TestMate
 
-  alias GroupherServer.CMS.Communities.Tags.Commands.{
-    CreateTag,
+  alias GroupherServer.CMS
+
+  alias CMS.Communities.Tags.Commands.{
+    Create,
     CreateTagGroup,
-    DeleteTag,
-    SetTag,
-    UpdateTag
+    Delete,
+    Set,
+    Update
   }
 
   setup do
@@ -34,21 +36,21 @@ defmodule GroupherServer.Test.CMS.Communities.Commands.TagCommandsTest do
       mock_attrs(:community_tag)
       |> Map.merge(%{group_id: group.id, title: "Command Tag", slug: "command-tag"})
 
-    assert {:ok, tag} = CreateTag.execute(community, :post, attrs, user, tag_command_id)
-    assert {:ok, replayed} = CreateTag.execute(community, :post, attrs, user, tag_command_id)
+    assert {:ok, tag} = Create.execute(community, :post, attrs, user, tag_command_id)
+    assert {:ok, replayed} = Create.execute(community, :post, attrs, user, tag_command_id)
     assert replayed.id == tag.id
 
     update_command_id = Ecto.UUID.generate()
 
     assert {:ok, updated} =
-             UpdateTag.execute(tag.id, %{title: "Updated Tag"}, user, update_command_id)
+             Update.execute(tag.id, %{title: "Updated Tag"}, user, update_command_id)
 
     assert updated.title == "Updated Tag"
 
     delete_command_id = Ecto.UUID.generate()
-    assert {:ok, deleted} = DeleteTag.execute(tag.id, user, delete_command_id)
+    assert {:ok, deleted} = Delete.execute(tag.id, user, delete_command_id)
     assert deleted.id == tag.id
-    assert {:ok, deleted_replay} = DeleteTag.execute(tag.id, user, delete_command_id)
+    assert {:ok, deleted_replay} = Delete.execute(tag.id, user, delete_command_id)
     assert deleted_replay.id == tag.id
   end
 
@@ -69,6 +71,6 @@ defmodule GroupherServer.Test.CMS.Communities.Commands.TagCommandsTest do
     {:ok, tag} =
       CMS.Communities.create_tag(community, :post, attrs, user, Ecto.UUID.generate())
 
-    assert {:ok, _updated} = SetTag.execute(post, tag.id, user, Ecto.UUID.generate())
+    assert {:ok, _updated} = Set.execute(post, tag.id, user, Ecto.UUID.generate())
   end
 end

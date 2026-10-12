@@ -20,7 +20,7 @@ defmodule Helper.Scheduler do
 
   alias CMS.Events
 
-  @threads CMS.Artiment.Config.threads()
+  @threads CMS.artiment_config_threads()
 
   @doc """
   Compatibility hook reserved for a full Cachex clear.
@@ -35,13 +35,13 @@ defmodule Helper.Scheduler do
   Archives eligible artiments for every configured thread.
   """
   def archive_artiments do
-    Enum.map(@threads, &CMS.Articles.archive(&1))
+    Enum.map(@threads, &CMS.articles_archive(&1))
     |> done
   end
 
   @doc "Permanently deletes Trash actions whose retention window has elapsed."
   def purge_expired_trash do
-    CMS.Trash.purge_due()
+    CMS.trash_purge_due()
   end
 
   @doc "Emits audit events for failed Post and Blog moderation records."
@@ -52,7 +52,7 @@ defmodule Helper.Scheduler do
 
   @doc "Emits audit events for the current page of failed comment moderation records."
   def comments_audition do
-    with {:ok, paged_comments} <- CMS.Comments.paged_audit_failed_comments(%{page: 1, size: 30}) do
+    with {:ok, paged_comments} <- CMS.comments_paged_audit_failed_comments(%{page: 1, size: 30}) do
       Enum.map(paged_comments.entries, fn comment ->
         Events.emit(:audition, %{artiment: comment})
       end)
@@ -62,7 +62,7 @@ defmodule Helper.Scheduler do
 
   defp audit_articles(thread) do
     with {:ok, paged_articles} <-
-           CMS.Articles.paged_audit_failed(thread, %{page: 1, size: 30}) do
+           CMS.articles_paged_audit_failed(thread, %{page: 1, size: 30}) do
       Enum.map(paged_articles.entries, fn article ->
         Events.emit(:audition, %{artiment: article})
         # the free audition service's QPS is limit to 2

@@ -394,7 +394,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedDocs do
 
   describe "[paged docs active_at]" do
     test "latest commented doc should appear on top",
-         ~m(guest_conn community doc_last_week user2 user)a do
+         ~m(guest_conn community doc_last_week user2)a do
       {:ok, _fresh_doc} = CMS.Articles.create(community, :doc, mock_attrs(:doc), user2)
 
       variables = %{filter: %{page: 1, size: 20, community: community.slug}}
@@ -424,7 +424,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedDocs do
     end
 
     test "comment on very old doc have no effect",
-         ~m(guest_conn community doc_last_year user2 user)a do
+         ~m(guest_conn community doc_last_year user2)a do
       variables = %{filter: %{page: 1, size: 20, community: community.slug}}
 
       {:ok, _} =
@@ -445,7 +445,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedDocs do
     end
 
     test "latest doc author commented doc have no effect",
-         ~m(guest_conn community doc_last_week user)a do
+         ~m(guest_conn community doc_last_week)a do
       {:ok, user} = db_insert(:user)
       {:ok, _fresh_doc} = CMS.Articles.create(community, :doc, mock_attrs(:doc), user)
 

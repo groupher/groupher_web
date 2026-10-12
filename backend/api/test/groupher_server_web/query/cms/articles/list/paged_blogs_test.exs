@@ -433,7 +433,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
     end
 
     test "comment on very old blog have no effect",
-         ~m(guest_conn community blog_last_year user2 user)a do
+         ~m(guest_conn community blog_last_year user2)a do
       variables = %{filter: %{page: 1, size: 20, community: community.slug}}
 
       {:ok, _} =

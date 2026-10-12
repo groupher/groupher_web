@@ -275,9 +275,117 @@ const checkExportedCallables = () => {
 }
 
 const checkElixirSharedFunctions = () => {
+  const deepContextDocFiles = ['activity', 'jobs', 'public_cache', 'request_actor'].flatMap(
+    (directory) =>
+      walk(
+        path.join(root, 'backend/api/lib/groupher_server', directory),
+        (file) => file.endsWith('.ex'),
+        (file) => /\/model\//.test(file),
+      ),
+  )
+
+  const contextDocFiles = [
+    ...[
+      'achievements',
+      'collect_folders',
+      'config',
+      'events',
+      'fans',
+      'front_desk',
+      'mailbox',
+      'profiles',
+      'publish',
+      'search',
+      'upvotes',
+    ].map((file) => `backend/api/lib/groupher_server/accounts/${file}.ex`),
+    ...[
+      'analysis.ex',
+      'analysis/aggregator.ex',
+      'analysis/article_insights.ex',
+      'analysis/contribution.ex',
+      'analysis/maintenance.ex',
+      'analysis/web.ex',
+      'activity.ex',
+      'jobs.ex',
+      'messaging.ex',
+      'messaging/inbox.ex',
+      'messaging/notify.ex',
+      'public_cache.ex',
+      'request_actor.ex',
+    ].map((file) => `backend/api/lib/groupher_server/${file}`),
+    ...[
+      'accounts/mailbox/query.ex',
+      'accounts/mailbox/projection.ex',
+      'accounts/mailbox/effects.ex',
+      'accounts/mailbox/workflow.ex',
+      'accounts/collect_folders/persist.ex',
+      'accounts/collect_folders/commands/create.ex',
+      'accounts/collect_folders/commands/update.ex',
+      'accounts/collect_folders/commands/delete.ex',
+      'accounts/collect_folders/commands/add.ex',
+      'accounts/collect_folders/commands/remove.ex',
+      'accounts/fans/persist.ex',
+      'accounts/fans/effects.ex',
+      'accounts/fans/list.ex',
+      'accounts/fans/viewer_state.ex',
+      'accounts/fans/commands/follow.ex',
+      'accounts/fans/commands/unfollow.ex',
+      'accounts/profiles/query.ex',
+      'accounts/profiles/list.ex',
+      'accounts/profiles/oauth.ex',
+      'accounts/profiles/browser_sessions.ex',
+      'accounts/profiles/oauth/persist.ex',
+      'accounts/profiles/persist.ex',
+      'accounts/profiles/effects.ex',
+      'accounts/profiles/projection.ex',
+      'accounts/profiles/projection/contributions.ex',
+      'accounts/profiles/commands/update_profile.ex',
+      'accounts/profiles/commands/update_subscribe_state.ex',
+      'accounts/profiles/commands/link_oauth.ex',
+      'accounts/profiles/commands/unlink_oauth.ex',
+      'accounts/profiles/commands/sign_in_oauth.ex',
+      'accounts/profiles/commands/link_oauth_identity.ex',
+      'accounts/profiles/commands/unlink_oauth_identity.ex',
+      'accounts/achievements/persist.ex',
+      'accounts/achievements/commands/achieve.ex',
+      'accounts/publish/persist.ex',
+      'accounts/publish/effects.ex',
+      'accounts/publish/projection.ex',
+      'accounts/publish/articles.ex',
+      'accounts/publish/comments.ex',
+      'accounts/search/user.ex',
+      'accounts/collect_folders/articles.ex',
+      'accounts/events/notify.ex',
+      'analysis/contribution/persist.ex',
+      'analysis/contribution/query.ex',
+      'analysis/contribution/effects.ex',
+      'analysis/contribution/workflow.ex',
+      'analysis/aggregator/persist.ex',
+      'analysis/aggregator/workflow.ex',
+      'analysis/maintenance/query.ex',
+      'analysis/maintenance/persist.ex',
+      'analysis/maintenance/workflow.ex',
+      'analysis/metric_event/persist.ex',
+      'analysis/web/provision.ex',
+      'messaging/mentions/query.ex',
+      'messaging/mentions/persist.ex',
+      'messaging/notifications/query.ex',
+      'messaging/notifications/persist.ex',
+      'messaging/commands/send_mention.ex',
+      'messaging/commands/send_notification.ex',
+      'messaging/commands/revoke_notification.ex',
+      'messaging/commands/mark_read.ex',
+      'messaging/commands/mark_read_all.ex',
+      'messaging/inbox/persist.ex',
+    ].map((file) => `backend/api/lib/groupher_server/${file}`),
+    ...deepContextDocFiles.map((file) => relative(file)),
+    'backend/api/lib/groupher_server/cms/interactions/persist.ex',
+    'backend/api/lib/groupher_server/cms/dashboard/persist.ex',
+  ].map((file) => path.join(root, file))
+
   const boundaryFiles = [
     'backend/api/lib/groupher_server/cms/comments/query.ex',
-    'backend/api/lib/groupher_server/cms/comments/writer.ex',
+    'backend/api/lib/groupher_server/cms/comments/persist.ex',
     'backend/api/lib/groupher_server/cms/comments/lifecycle.ex',
     'backend/api/lib/groupher_server/cms/comments/job_policy.ex',
     'backend/api/lib/groupher_server/cms/comments/interaction_response.ex',
@@ -289,13 +397,12 @@ const checkElixirSharedFunctions = () => {
     ).map((file) => relative(file)),
     'backend/api/lib/groupher_server/cms/model/post_solution.ex',
     'backend/api/lib/groupher_server/cms/comments/solution.ex',
-    'backend/api/lib/groupher_server/cms/comments/commands/update_comment.ex',
-    'backend/api/lib/groupher_server/cms/comments/commands/delete_comment.ex',
-    'backend/api/lib/groupher_server/accounts/collect_folders/write.ex',
+    'backend/api/lib/groupher_server/cms/comments/commands/update.ex',
+    'backend/api/lib/groupher_server/cms/comments/commands/delete.ex',
     'backend/api/lib/groupher_server/cms/article_stats.ex',
     'backend/api/lib/groupher_server/cms/front_desk/article.ex',
-    'backend/api/lib/groupher_server/cms/interactions/read_state.ex',
-    'backend/api/lib/groupher_server/cms/interactions/read_state/query.ex',
+    'backend/api/lib/groupher_server/cms/interactions/projection.ex',
+    'backend/api/lib/groupher_server/cms/interactions/projection/query.ex',
     'backend/api/lib/groupher_server/cms/view_tracker/anonymous_session.ex',
     'backend/api/lib/groupher_server/cms/view_tracker/config.ex',
     'backend/api/lib/groupher_server/cms/view_tracker/identity.ex',
@@ -319,12 +426,13 @@ const checkElixirSharedFunctions = () => {
     ...['messaging', 'analysis', 'jobs', 'activity', 'front_desk'].map((context) =>
       path.join(root, 'backend/api/lib/groupher_server', `${context}.ex`),
     ),
+    ...contextDocFiles,
     ...boundaryFiles,
   ].filter((file, index, all) => all.indexOf(file) === index)
 
   for (const file of files) {
     const lines = fs.readFileSync(file, 'utf8').split('\n')
-    const strictArity = boundaryFiles.includes(file)
+    const strictArity = boundaryFiles.includes(file) || contextDocFiles.includes(file)
     const seen = new Set()
     let previousDefinition = -1
     lines.forEach((line, index) => {
@@ -337,9 +445,17 @@ const checkElixirSharedFunctions = () => {
       previousDefinition = index
       if (seen.has(identity)) return
       seen.add(identity)
-      if (!/^\s*@(doc|impl)\b/m.test(prior) || /^\s*@doc\s+false/m.test(prior)) {
+      const hasHiddenDoc = /^\s*@doc\s+false/m.test(prior)
+      const acceptsHiddenDoc = contextDocFiles.includes(file) && hasHiddenDoc
+      if (!/^\s*@(doc|impl)\b/m.test(prior) || (hasHiddenDoc && !acceptsHiddenDoc)) {
         const label = strictArity ? identity : name
         fail(file, `shared public function ${label} is missing @doc or inherited @impl docs`)
+      } else if (
+        !acceptsHiddenDoc &&
+        contextDocFiles.includes(file) &&
+        !/## Examples|@example/.test(prior)
+      ) {
+        fail(file, `context public function ${identity} is missing a real ## Examples section`)
       }
     })
   }
@@ -426,6 +542,166 @@ const checkWorkspaceReadmes = () => {
   }
 }
 
+const documentationStatuses = new Set([
+  'current',
+  'in-progress',
+  'planned',
+  'superseded',
+  'historical',
+])
+
+const maskMarkdownCode = (source) => {
+  const lines = source.split('\n')
+  let fence = null
+
+  const masked = lines.map((line) => {
+    const match = line.match(/^( {0,3})(`{3,}|~{3,})/i)
+    const marker = match?.[2]
+    const markerEnd = (match?.[1].length ?? 0) + (marker?.length ?? 0)
+
+    if (!fence && marker) {
+      fence = { character: marker[0], length: marker.length }
+      return ' '.repeat(line.length)
+    }
+
+    if (fence) {
+      if (
+        marker &&
+        marker[0] === fence.character &&
+        marker.length >= fence.length &&
+        line.slice(markerEnd).trim() === ''
+      ) {
+        fence = null
+      }
+      return ' '.repeat(line.length)
+    }
+
+    return line.replace(/`[^`\n]*`/g, (code) => ' '.repeat(code.length))
+  })
+
+  return masked.join('\n')
+}
+
+const markdownLinkDestination = (source, start) => {
+  let cursor = start
+  while (/\s/.test(source[cursor] ?? '') && source[cursor] !== '\n') cursor += 1
+
+  if (source[cursor] === '<') {
+    const end = source.indexOf('>', cursor + 1)
+    return end === -1 ? null : source.slice(cursor + 1, end)
+  }
+
+  const targetStart = cursor
+  let depth = 0
+  let escaped = false
+  for (; cursor < source.length; cursor += 1) {
+    const current = source[cursor]
+    if (escaped) {
+      escaped = false
+      continue
+    }
+    if (current === '\\') {
+      escaped = true
+      continue
+    }
+    if (current === '(') {
+      depth += 1
+      continue
+    }
+    if (current === ')') {
+      if (depth === 0) break
+      depth -= 1
+      continue
+    }
+    if (/\s/.test(current) && depth === 0) break
+  }
+
+  return source.slice(targetStart, cursor)
+}
+
+/** Returns invalid repository-local Markdown links with their source line. */
+export const findMarkdownLocalLinkIssues = (source, sourceFile, exists = fs.existsSync) => {
+  const masked = maskMarkdownCode(source)
+  const issues = []
+
+  for (const match of masked.matchAll(/\[[^\]\n]+\]\(/g)) {
+    const rawTarget = markdownLinkDestination(masked, match.index + match[0].length)
+    if (rawTarget === null) continue
+    const target = rawTarget.split('#')[0]
+    if (
+      target === '' ||
+      target.startsWith('#') ||
+      target.startsWith('/') ||
+      /^[a-z][a-z0-9+.-]*:/i.test(target)
+    ) {
+      continue
+    }
+
+    let decoded
+    try {
+      decoded = decodeURIComponent(target)
+    } catch {
+      decoded = target
+    }
+
+    if (!exists(path.resolve(path.dirname(sourceFile), decoded))) {
+      const line = source.slice(0, match.index).split('\n').length
+      issues.push(`line ${line} links to missing path ${rawTarget}`)
+    }
+  }
+
+  return issues
+}
+
+/** Returns a README status issue unless it uses the repository's fixed vocabulary. */
+export const findDocumentationReadmeStatusIssue = (source) => {
+  const status = source.match(/^> 状态：([^\n]+)$/m)?.[1].trim()
+  if (!status) return 'is missing a standard status'
+  if (!documentationStatuses.has(status)) {
+    return `uses non-standard status ${status}`
+  }
+  return null
+}
+
+const documentationAppDirectories = [
+  'ai',
+  'apply',
+  'assets-hub',
+  'auth',
+  'community',
+  'content-import',
+  'dash',
+  'document-converter',
+  'gateway',
+  'posthouse',
+  'press',
+  'risk-center',
+  'umami',
+  'widget',
+]
+
+const checkDocumentationStructure = () => {
+  const docsDirectory = path.join(root, 'docs')
+  const markdownFiles = walk(docsDirectory, (file) => file.endsWith('.md'))
+
+  for (const file of markdownFiles) {
+    const source = fs.readFileSync(file, 'utf8')
+    for (const issue of findMarkdownLocalLinkIssues(source, file)) fail(file, issue)
+
+    if (path.basename(file) === 'README.md') {
+      const issue = findDocumentationReadmeStatusIssue(source)
+      if (issue) fail(file, issue)
+    }
+  }
+
+  for (const app of documentationAppDirectories) {
+    const directory = path.join(docsDirectory, app)
+    if (!fs.existsSync(path.join(directory, 'README.md'))) {
+      fail(directory, 'documentation application directory is missing README.md')
+    }
+  }
+}
+
 /** Runs the repository documentation audit and returns stable, user-facing failure descriptions. */
 export const runDocumentationCheck = () => {
   failures.length = 0
@@ -435,6 +711,7 @@ export const runDocumentationCheck = () => {
   checkExportedCallables()
   checkElixirSharedFunctions()
   checkWorkspaceReadmes()
+  checkDocumentationStructure()
   return [...failures]
 }
 

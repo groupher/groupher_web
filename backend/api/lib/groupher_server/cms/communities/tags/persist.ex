@@ -14,8 +14,9 @@ defmodule GroupherServer.CMS.Communities.Tags.Persist do
 
   import Ecto.Query, warn: false
 
-  alias GroupherServer.Repo
-  alias GroupherServer.CMS.Model.{Community, CommunityTag, CommunityTagGroup}
+  alias GroupherServer.{CMS, Repo}
+
+  alias CMS.Model.{Community, CommunityTag, CommunityTagGroup}
   alias Helper.{Datetime, ORM}
 
   @doc "Inserts one tag row with its already-normalized aggregate attributes."

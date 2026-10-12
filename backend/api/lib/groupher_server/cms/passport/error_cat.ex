@@ -5,7 +5,7 @@ defmodule GroupherServer.CMS.Passport.ErrorCat do
   Passport operation -> catalog reason -> stable protocol error.
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:cms, :passport}
+  use GroupherServer.ErrorCat, namespace: {:cms, :passport}
 
   error(:passport, code: 4351)
   error(:unknown_action, code: 4352)

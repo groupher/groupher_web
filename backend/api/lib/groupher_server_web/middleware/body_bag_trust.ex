@@ -17,8 +17,6 @@ defmodule GroupherServerWeb.Middleware.BodyBagTrust do
 
   @behaviour Absinthe.Middleware
 
-  alias GroupherServer.Auth
-  alias Auth.Contract, as: AuthContract
   import Helper.Utils, only: [handle_absinthe_error: 3]
 
   @doc "Allows ordinary mutations and requires a bounded publisher scope for BodyBag writes."
@@ -38,7 +36,7 @@ defmodule GroupherServerWeb.Middleware.BodyBagTrust do
       reject(
         resolution,
         "BodyBag requires the content-import audience and write scope",
-        AuthContract.service_scope_forbidden()
+        GroupherServer.Auth.contract_service_scope_forbidden()
       )
     end
   end
@@ -54,7 +52,7 @@ defmodule GroupherServerWeb.Middleware.BodyBagTrust do
     reject(
       resolution,
       "BodyBag requires an authorized Groupher publisher service",
-      AuthContract.service_token_invalid()
+      GroupherServer.Auth.contract_service_token_invalid()
     )
   end
 

@@ -3,10 +3,12 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
 
   use GroupherServer.TestMate, async: false
 
+  alias GroupherServer.Jobs
+
   alias GroupherServer.{Activity, CMS}
   alias Activity.Model.CommunityLog
-  alias CMS.Communities.Jobs.Setup
-  alias CMS.CommunityApplications.Jobs.CreateCommunity
+  alias Jobs.CreateCommunity
+  alias Jobs.CommunitySetup, as: Setup
   alias GroupherServerWeb.Resolvers.CMS.CommunityApplications, as: ResolverCMS
 
   alias CMS.Model.{

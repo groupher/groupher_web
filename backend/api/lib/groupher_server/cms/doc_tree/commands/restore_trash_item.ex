@@ -7,18 +7,30 @@ defmodule GroupherServer.CMS.DocTree.Commands.RestoreTrashItem do
         -> CMS.Command when actor exists -> DocTree.Trash -> replay result
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.Command
-  alias GroupherServer.CMS.DocTree.{CommandReplay, Commands.Support, Trash}
-  alias GroupherServer.CMS.DocTree.Commands.TreeConfirmation, as: Confirmation
+  alias GroupherServer.{CMS, Accounts}
+
+  alias Accounts.Model.User
+  alias CMS.{Command, ErrorCat}
+  alias CMS.Command.Receipt.Key, as: CommandKey
+  alias CMS.DocTree.{CommandReplay, Commands.Support, Trash}
+  alias CMS.DocTree.Commands.TreeConfirmation, as: Confirmation
 
   def execute(community, id, args) do
     clean_args = Support.drop_command_id(args)
     domain_args = canonical_args(clean_args)
 
-    case {Support.option(args, :actor), Support.option(args, :command_id)} do
-      {%User{} = actor, command_id} when is_binary(command_id) ->
-        execute_command(community, id, args, domain_args, actor)
+    case {Support.option(args, :actor), Support.option(args, :command_id),
+          Support.has_option?(args, :command_id)} do
+      {_, nil, true} ->
+        {:error, ErrorCat.command_id_required()}
+
+      {%User{} = actor, command_id, true} ->
+        with {:ok, _command_id} <- CommandKey.validate(command_id) do
+          execute_command(community, id, args, domain_args, actor)
+        end
+
+      {_, _command_id, true} ->
+        {:error, :command_actor_required}
 
       _ ->
         Trash.restore(community, id, clean_args)

@@ -10,6 +10,6 @@ defmodule GroupherServerWeb.Resolvers.CMS.Reporting do
   alias GroupherServer.CMS
 
   def paged_reports(_root, ~m(filter)a, _) do
-    CMS.AbuseReports.paged_reports(filter)
+    CMS.abuse_reports_paged_reports(filter)
   end
 end

@@ -47,12 +47,18 @@ defmodule GroupherServer.CMS.Events.Notify do
     handle(:reply, reply_comment, from_user)
   end
 
-  def handle(%Event{type: :notify_upvote, payload: %{target: target, from_user: from_user}}) do
-    handle(:upvote, target, from_user)
+  def handle(%Event{
+        type: :notify_upvote,
+        payload: %{target: target, from_user: from_user} = payload
+      }) do
+    handle_once(:upvote, target, from_user, Map.get(payload, :delivery_key))
   end
 
-  def handle(%Event{type: :notify_collect, payload: %{article: article, from_user: from_user}}) do
-    handle(:collect, article, from_user)
+  def handle(%Event{
+        type: :notify_collect,
+        payload: %{article: article, from_user: from_user} = payload
+      }) do
+    handle_once(:collect, article, from_user, Map.get(payload, :delivery_key))
   end
 
   def handle(%Event{type: :notify_undo_upvote, payload: %{target: target, from_user: from_user}}) do
@@ -183,6 +189,46 @@ defmodule GroupherServer.CMS.Events.Notify do
       }
 
       Messaging.revoke_notification(notify_attrs, from_user)
+    else
+      error -> handle_missing_target(error)
+    end
+  end
+
+  defp handle_once(action, target, from_user, nil), do: handle(action, target, from_user)
+
+  defp handle_once(action, %Comment{} = comment, %User{} = from_user, delivery_key) do
+    with {:ok, article} <- FrontDesk.article_of(comment),
+         {:ok, thread} <- FrontDesk.thread_of(article) do
+      %{
+        action: action,
+        thread: thread,
+        article_id: article.id,
+        branch_id: Map.get(article, :branch_id),
+        title: article.title,
+        user_id: comment.author_id,
+        comment_id: comment.id,
+        delivery_key: delivery_key
+      }
+      |> Messaging.send_notification(from_user)
+    else
+      error -> handle_missing_target(error)
+    end
+  end
+
+  defp handle_once(action, article, %User{} = from_user, delivery_key) do
+    with {:ok, article} <- load_article_for_notification(article),
+         {:ok, thread} <- FrontDesk.thread_of(article),
+         {:ok, author} <- article_author(article) do
+      %{
+        action: action,
+        thread: thread,
+        article_id: article.id,
+        branch_id: Map.get(article, :branch_id),
+        title: article.title,
+        user_id: author.id,
+        delivery_key: delivery_key
+      }
+      |> Messaging.send_notification(from_user)
     else
       error -> handle_missing_target(error)
     end

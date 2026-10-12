@@ -14,14 +14,16 @@ defmodule GroupherServer.CMS.Model.ArticleAssetRef do
 
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.{
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{
     ArticleBodyDraft,
     ArticleRevision,
     Community,
     CommunityAsset
   }
 
-  alias GroupherServer.CMS.Artiment.Threads
+  alias CMS.Artiment.Threads
 
   alias Helper.Constant.DBPrefix
 

@@ -26,12 +26,8 @@ defmodule GroupherServerWeb.Middleware.FrontDesk do
   alias GroupherServer.{Accounts, CMS, ErrorCat, FrontDesk}
 
   alias Accounts.Model.User
-  alias Accounts.Profiles.ErrorCat, as: ProfileErrorCat
-  alias CMS.Articles.ErrorCat, as: ArticleErrorCat
-  alias CMS.Comments.ErrorCat, as: CommentErrorCat
-  alias CMS.Communities.ErrorCat, as: CommunityErrorCat
+
   alias CMS.ErrorCat, as: CmsErrorCat
-  alias CMS.Helper.ArticlePath
   alias CMS.Model.{Comment, Community}
 
   def call(%{errors: errors} = resolution, _) when errors != [] do
@@ -80,14 +76,14 @@ defmodule GroupherServerWeb.Middleware.FrontDesk do
       {:error, err_msg} ->
         resolution
         |> handle_absinthe_error(
-          CommunityErrorCat.not_exist(error_details(err_msg)),
-          ErrorCat.code(CommunityErrorCat.not_exist())
+          GroupherServer.CMS.communities_error_cat_not_exist(error_details(err_msg)),
+          ErrorCat.code(GroupherServer.CMS.communities_error_cat_not_exist())
         )
     end
   end
 
   defp fetch_article(%{arguments: arguments} = resolution, opts) do
-    case ArticlePath.parse_arguments(arguments, opts) do
+    case CMS.parse_article_arguments(arguments, opts) do
       {:ok, arguments} ->
         do_fetch_article(%{resolution | arguments: arguments}, opts)
 
@@ -116,8 +112,8 @@ defmodule GroupherServerWeb.Middleware.FrontDesk do
       {:error, err_msg} ->
         resolution
         |> handle_absinthe_error(
-          ArticleErrorCat.not_exist(error_details(err_msg)),
-          ErrorCat.code(ArticleErrorCat.not_exist())
+          GroupherServer.CMS.articles_error_cat_not_exist(error_details(err_msg)),
+          ErrorCat.code(GroupherServer.CMS.articles_error_cat_not_exist())
         )
     end
   end
@@ -148,8 +144,8 @@ defmodule GroupherServerWeb.Middleware.FrontDesk do
       {:error, err_msg} ->
         resolution
         |> handle_absinthe_error(
-          ArticleErrorCat.not_exist(error_details(err_msg)),
-          ErrorCat.code(ArticleErrorCat.not_exist())
+          GroupherServer.CMS.articles_error_cat_not_exist(error_details(err_msg)),
+          ErrorCat.code(GroupherServer.CMS.articles_error_cat_not_exist())
         )
     end
   end
@@ -158,24 +154,27 @@ defmodule GroupherServerWeb.Middleware.FrontDesk do
     with {:ok, %CMS.Model.Article{thread: :doc} = article} <-
            FrontDesk.article(article_id, mode: :internal, view: :with_author),
          {:ok, %{community: %Community{id: ^community_id}}} <-
-           CMS.Articles.Bindings.get(%{article_id: article.id}, community),
-         {:ok, branch} <- CMS.Docs.Branch.resolve(community, nil) do
+           GroupherServer.CMS.articles_bindings_get(%{article_id: article.id}, community),
+         {:ok, branch} <- CMS.docs_branch_resolve(community, nil) do
       {:ok, article, branch.id}
     else
-      _ -> {:error, ArticleErrorCat.not_exist("stable Doc not found")}
+      _ -> {:error, GroupherServer.CMS.articles_error_cat_not_exist("stable Doc not found")}
     end
   end
 
   defp fetch_editor_article(%Community{} = community, thread, article_id) do
     case FrontDesk.article(article_id, mode: :internal, view: :with_author) do
       {:ok, %CMS.Model.Article{thread: ^thread} = article} ->
-        case CMS.Articles.Bindings.get(%{article_id: article.id}, community) do
-          {:ok, _context} -> {:ok, article, nil}
-          _ -> {:error, ArticleErrorCat.not_exist("stable Article not found")}
+        case GroupherServer.CMS.articles_bindings_get(%{article_id: article.id}, community) do
+          {:ok, _context} ->
+            {:ok, article, nil}
+
+          _ ->
+            {:error, GroupherServer.CMS.articles_error_cat_not_exist("stable Article not found")}
         end
 
       _ ->
-        {:error, ArticleErrorCat.not_exist("stable Article not found")}
+        {:error, GroupherServer.CMS.articles_error_cat_not_exist("stable Article not found")}
     end
   end
 
@@ -195,8 +194,8 @@ defmodule GroupherServerWeb.Middleware.FrontDesk do
       {:error, err_msg} ->
         resolution
         |> handle_absinthe_error(
-          CommentErrorCat.not_exist(error_details(err_msg)),
-          ErrorCat.code(CommentErrorCat.not_exist())
+          GroupherServer.CMS.comments_error_cat_not_exist(error_details(err_msg)),
+          ErrorCat.code(GroupherServer.CMS.comments_error_cat_not_exist())
         )
     end
   end
@@ -260,8 +259,8 @@ defmodule GroupherServerWeb.Middleware.FrontDesk do
       {:error, err_msg} ->
         resolution
         |> handle_absinthe_error(
-          ProfileErrorCat.not_exist(error_details(err_msg)),
-          ErrorCat.code(ProfileErrorCat.not_exist())
+          GroupherServer.Accounts.profiles_error_cat_not_exist(error_details(err_msg)),
+          ErrorCat.code(GroupherServer.Accounts.profiles_error_cat_not_exist())
         )
     end
   end
@@ -273,7 +272,7 @@ defmodule GroupherServerWeb.Middleware.FrontDesk do
       resolution
       |> handle_absinthe_error(
         "user not found",
-        ErrorCat.code(ProfileErrorCat.not_exist("user not found"))
+        ErrorCat.code(GroupherServer.Accounts.profiles_error_cat_not_exist("user not found"))
       )
     end
   end
@@ -286,8 +285,8 @@ defmodule GroupherServerWeb.Middleware.FrontDesk do
       {:error, err_msg} ->
         resolution
         |> handle_absinthe_error(
-          ProfileErrorCat.not_exist(error_details(err_msg)),
-          ErrorCat.code(ProfileErrorCat.not_exist())
+          GroupherServer.Accounts.profiles_error_cat_not_exist(error_details(err_msg)),
+          ErrorCat.code(GroupherServer.Accounts.profiles_error_cat_not_exist())
         )
     end
   end
@@ -296,7 +295,7 @@ defmodule GroupherServerWeb.Middleware.FrontDesk do
     resolution
     |> handle_absinthe_error(
       "users not found",
-      ErrorCat.code(ProfileErrorCat.not_exist("users not found"))
+      ErrorCat.code(GroupherServer.Accounts.profiles_error_cat_not_exist("users not found"))
     )
   end
 

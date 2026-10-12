@@ -8,7 +8,9 @@ defmodule GroupherServer.CMS.Model.DocPublic do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.{Article, Author, DocBranch, DocBranchVersion}
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{Article, Author, DocBranch, DocBranchVersion}
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.cms()

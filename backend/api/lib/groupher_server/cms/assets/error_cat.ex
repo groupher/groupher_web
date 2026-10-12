@@ -5,7 +5,7 @@ defmodule GroupherServer.CMS.Assets.ErrorCat do
   Asset operation -> catalog reason -> stable protocol error.
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:cms, :asset}
+  use GroupherServer.ErrorCat, namespace: {:cms, :asset}
 
   error(:not_exist, code: 5601)
   error(:skipped, code: 5602)

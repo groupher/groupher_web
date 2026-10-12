@@ -11,8 +11,9 @@ defmodule GroupherServer.CMS.Communities.CreationPersist do
   transition, Receipt, Outbox effect, or client identity generation.
   """
 
-  alias GroupherServer.CMS
-  alias GroupherServer.Accounts.Model.User
+  alias GroupherServer.{Accounts, CMS}
+
+  alias Accounts.Model.User
   alias CMS.Model.Community
   alias Helper.T
 

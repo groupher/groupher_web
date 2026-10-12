@@ -30,8 +30,8 @@ defmodule GroupherServer.CMS.Assets do
     Deletion,
     ProviderReconciliation,
     Query,
-    Upload,
-    Writer
+    Refs,
+    Upload
   }
 
   alias GroupherServer.{Accounts, CMS}
@@ -149,7 +149,7 @@ defmodule GroupherServer.CMS.Assets do
   @spec register_to_community(Community.t(), map(), User.t() | nil, Ecto.UUID.t()) ::
           T.domain_res(CommunityAsset.t())
   def register_to_community(%Community{} = community, attrs, user, command_id) do
-    Commands.RegisterAsset.execute(community, attrs, user, command_id)
+    Commands.Register.execute(community, attrs, user, command_id)
   end
 
   @doc "Deprecated alias for register_to_community/3."
@@ -215,21 +215,21 @@ defmodule GroupherServer.CMS.Assets do
 
   @spec delete(Community.t(), T.id(), User.t(), Ecto.UUID.t()) :: T.domain_res(CommunityAsset.t())
   def delete(%Community{} = community, asset_id, %User{} = user, command_id) do
-    Commands.DeleteAsset.execute(community, asset_id, user, command_id)
+    Commands.Delete.execute(community, asset_id, user, command_id)
   end
 
   @doc "Archives an asset while preserving all existing content references."
   def archive(%Community{}, _asset_id), do: {:error, CMS.ErrorCat.command_id_required()}
 
   def archive(%Community{} = community, asset_id, %User{} = user, command_id) do
-    Commands.ArchiveAsset.execute(community, asset_id, user, command_id)
+    Commands.Archive.execute(community, asset_id, user, command_id)
   end
 
   @doc "Restores one archived asset to the active library."
   def restore(%Community{}, _asset_id), do: {:error, CMS.ErrorCat.command_id_required()}
 
   def restore(%Community{} = community, asset_id, %User{} = user, command_id) do
-    Commands.RestoreAsset.execute(community, asset_id, user, command_id)
+    Commands.Restore.execute(community, asset_id, user, command_id)
   end
 
   @doc "Replaces one Draft-owned asset use through the Article command boundary."
@@ -274,14 +274,14 @@ defmodule GroupherServer.CMS.Assets do
   @spec link_refs(T.article(), map(), Keyword.t()) :: T.domain_res(term())
   def link_refs(article, attrs, opts \\ []) do
     case Keyword.get(opts, :community) do
-      %Community{} = community -> Writer.sync_refs(community, article, attrs)
-      nil -> Writer.sync_refs(article, attrs)
+      %Community{} = community -> Refs.sync_refs(community, article, attrs)
+      nil -> Refs.sync_refs(article, attrs)
     end
   end
 
   @doc "Copies all derived document asset refs between two versions of one Article."
   @spec copy_refs(T.article(), T.article()) :: T.domain_res(term())
-  def copy_refs(source, target), do: Writer.copy_refs(source, target)
+  def copy_refs(source, target), do: Refs.copy_refs(source, target)
 
   @doc """
   Cleans up all persisted asset refs for one permanently deleted article.
@@ -296,7 +296,7 @@ defmodule GroupherServer.CMS.Assets do
 
   """
   @spec cleanup_refs(atom(), T.id()) :: T.domain_res(term())
-  def cleanup_refs(thread, article_id), do: Writer.purge_refs(thread, article_id)
+  def cleanup_refs(thread, article_id), do: Refs.purge_refs(thread, article_id)
 
   @doc "Creates an immutable, reviewable global replacement plan."
   def create_replacement_plan(%Community{} = community, attrs, %User{} = user) do

@@ -5,11 +5,12 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.RetrySetup do
       GraphQL -> RetrySetup -> Application Gate -> Setup workflow -> Receipt result
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.{Command, Gate}
   alias CMS.CommunityApplications.{Commands.Confirmation, Commands.Support}
   alias CMS.Communities.Setup
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @spec execute(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())

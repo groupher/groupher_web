@@ -14,7 +14,7 @@ defmodule GroupherServer.CMS.Artiment.BodyBag do
            +-- schema / size / Plate-shape validation
            |
            v
-      typed BodyBag -> Draft / Snapshot / ContentImport Writer
+      typed BodyBag -> Draft / Snapshot / ContentImport Workflow
 
   See `docs/content-import/article-publish-import-refactor.md` for the shared publisher boundary.
   """

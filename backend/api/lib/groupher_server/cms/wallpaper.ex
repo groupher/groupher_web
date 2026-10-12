@@ -10,14 +10,15 @@ defmodule GroupherServer.CMS.Wallpaper do
 
       GraphQL mutation / query / job
         -> CMS.Wallpaper facade
-        -> Query / Upload / Publisher / Retention
+        -> Query / Upload / Workflow / Retention
   """
 
   alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Model.User
   alias CMS.Model.Community
-  alias CMS.Wallpaper.{Publisher, Query, Retention, Upload}
+  alias CMS.Wallpaper.{Query, Retention, Upload}
+  alias CMS.Wallpaper.Commands.{Publish, RestoreSnapshot}
 
   @doc "Returns the cross-language Wallpaper profile matrix."
   def profile_specs, do: Upload.profile_specs()
@@ -46,12 +47,12 @@ defmodule GroupherServer.CMS.Wallpaper do
 
   @doc "Publishes one current-theme Snapshot, or a canonical NONE Snapshot."
   def publish(%Community{} = community, input, %User{} = user) do
-    Publisher.publish(community, input, user)
+    Publish.execute(community, input, user)
   end
 
   @doc "Restores one retained public Snapshot ID for its original theme."
   def restore_snapshot(%Community{} = community, input, %User{} = user) do
-    Publisher.restore_snapshot(community, input, user)
+    RestoreSnapshot.execute(community, input, user)
   end
 
   @doc "Deletes expired receipts, Snapshots, and unreferenced generated assets."

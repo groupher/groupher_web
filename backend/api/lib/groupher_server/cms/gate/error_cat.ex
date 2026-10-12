@@ -8,7 +8,7 @@ defmodule GroupherServer.CMS.Gate.ErrorCat do
         -> GraphQL error adapter
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:cms, :gate}
+  use GroupherServer.ErrorCat, namespace: {:cms, :gate}
 
   error(:resource_not_found, code: 4601)
   error(:gate_resource_mismatch, code: 4602)

@@ -10,8 +10,8 @@ defmodule GroupherServer.CMS.SearchArtiments do
         -> Repo / external boundary
   """
 
-  alias Helper.T
   alias __MODULE__.{Artiment, Config, Query, Result}
+  alias Helper.T
 
   @doc "Runs `search` through the public `SearchArtiments` boundary."
   @spec search(map() | Query.t()) :: T.domain_res(Result.t())

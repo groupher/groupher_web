@@ -1,203 +1,235 @@
 defmodule GroupherServer.Jobs do
   @moduledoc """
-  Application-facing facade for background jobs.
+  Public boundary for constructing and scheduling background work.
 
-  Business modules should call this facade instead of `Oban.insert/2` directly.
+  Business Contexts enqueue stable job intents here. Jobs workers decode their
+  payload and re-enter the owning Context through its root Facade.
 
-  Business position:
-
-      mutation transaction
-        -> required named Jobs API
-        -> Oban insert result participates in commit / rollback
-
-      committed mutation or successful read
-        -> enqueue_best_effort
-        -> optional named Jobs API
-        -> log safely on enqueue failure, preserve caller result
+      Context caller -> Jobs -> Oban job -> owning Context Facade
   """
 
-  require Logger
-
-  alias GroupherServer.Jobs
-  alias Jobs.{Codec, Config}
-
-  @type later_job :: {module(), atom(), list()}
-  @type safe_resource_ref :: integer() | String.t() | atom() | nil
-
   @doc """
-  Enqueues an optional job without allowing enqueue failure to fail the
-  completed business operation.
-
-  The log contains only the finite job name, a caller-supplied safe resource
-  reference, and a stable failure kind. The callback result or exception is
-  never inspected into logs.
+  Enqueues one typed Accounts event.
 
   ## Examples
 
-      Jobs.enqueue_best_effort(:notify_comment, comment.id, fn ->
-        Jobs.notify_comment(comment, actor)
-      end)
-
-      #=> {:ok, :pass}
+      Jobs.account_event(:follow, user_id, follower_id)
   """
-  @spec enqueue_best_effort(atom(), safe_resource_ref(), (-> term())) :: {:ok, :pass}
-  def enqueue_best_effort(job_name, resource_ref, enqueue)
-      when is_atom(job_name) and
-             (is_integer(resource_ref) or is_binary(resource_ref) or is_atom(resource_ref) or
-                is_nil(resource_ref)) and is_function(enqueue, 0) do
-    case enqueue.() do
-      {:ok, _job} ->
-        {:ok, :pass}
-
-      {:error, _reason} ->
-        log_best_effort_failure(job_name, resource_ref, :error_result)
-
-      _other ->
-        log_best_effort_failure(job_name, resource_ref, :unexpected_result)
-    end
-  rescue
-    _exception ->
-      log_best_effort_failure(job_name, resource_ref, :exception)
-  catch
-    :throw, _reason ->
-      log_best_effort_failure(job_name, resource_ref, :throw)
-
-    :exit, _reason ->
-      log_best_effort_failure(job_name, resource_ref, :exit)
-  end
-
-  @doc "Enqueues a compatibility job that invokes the encoded module/function/arguments tuple."
-  @spec later(later_job()) :: {:ok, :pass}
-  def later({mod, func, args} = job) when is_atom(mod) and is_atom(func) and is_list(args) do
-    if Config.skip_enqueue?() do
-      {:ok, :pass}
-    else
-      %{job: Codec.encode(job)}
-      |> Jobs.Later.new()
-      |> insert_pass()
-    end
-  end
+  defdelegate account_event(type, user_id, from_user_id), to: GroupherServer.Jobs.Workflow
 
   @doc """
-  Enqueues mention reconciliation for one comment-like artiment.
+  Enqueues one typed contribution-cache rebuild.
 
   ## Examples
 
-      Jobs.sync_mentions(comment)
-      #=> {:ok, %Oban.Job{}} | {:ok, :pass} | {:error, reason}
+      Jobs.contribution_cache(community_id)
   """
-  @spec sync_mentions(struct()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def sync_mentions(artiment), do: comments_job(:sync_mentions, %{artiment: artiment})
+  defdelegate contribution_cache(community_id), to: GroupherServer.Jobs.Workflow
 
   @doc """
-  Enqueues content audition for one comment-like artiment.
+  Delegates audition/1 to the Jobs workflow owner.
 
   ## Examples
 
-      Jobs.audition(comment)
+      iex> GroupherServer.Jobs.audition(...)
   """
-  @spec audition(struct()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def audition(artiment), do: comments_job(:audition, %{artiment: artiment})
+  defdelegate audition(arg1), to: GroupherServer.Jobs.Workflow
 
   @doc """
-  Enqueues the notification produced by a new top-level comment.
+  Delegates comments_new/1 to the Jobs workflow owner.
 
   ## Examples
 
-      Jobs.notify_comment(comment, actor)
+      iex> GroupherServer.Jobs.comments_new(...)
   """
-  @spec notify_comment(struct(), struct()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def notify_comment(comment, actor) do
-    comments_job(:notify_comment, %{comment: comment, from_user: actor})
-  end
+  defdelegate comments_new(arg1), to: GroupherServer.Jobs.Workflow
 
   @doc """
-  Enqueues the notification produced by a reply.
+  Delegates comments_new/2 to the Jobs workflow owner.
 
   ## Examples
 
-      Jobs.notify_reply(reply_comment, actor)
+      iex> GroupherServer.Jobs.comments_new(...)
   """
-  @spec notify_reply(struct(), struct()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def notify_reply(reply_comment, actor) do
-    comments_job(:notify_reply, %{reply_comment: reply_comment, from_user: actor})
-  end
+  defdelegate comments_new(arg1, arg2), to: GroupherServer.Jobs.Workflow
 
   @doc """
-  Enqueues community subscription after a successful comment mutation.
+  Delegates config_skip_enqueue?/0 to the Jobs workflow owner.
 
   ## Examples
 
-      Jobs.subscribe_community(community, actor)
+      iex> GroupherServer.Jobs.config_skip_enqueue?(...)
   """
-  @spec subscribe_community(struct(), struct()) ::
-          {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def subscribe_community(target, actor) do
-    comments_job(:subscribe_community, %{target: target, user: actor})
-  end
+  defdelegate config_skip_enqueue?(), to: GroupherServer.Jobs.Workflow
 
   @doc """
-  Enqueues repair of an article's persisted comment participant count.
+  Delegates enqueue_best_effort/3 to the Jobs workflow owner.
 
   ## Examples
 
-      Jobs.reconcile_comments_participants(article, 12)
+      iex> GroupherServer.Jobs.enqueue_best_effort(...)
   """
-  @spec reconcile_comments_participants(struct(), non_neg_integer()) ::
-          {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def reconcile_comments_participants(article, total_count) when is_integer(total_count) do
-    comments_job(:reconcile_comments_participants, %{article: article, total_count: total_count})
-  end
+  defdelegate enqueue_best_effort(arg1, arg2, arg3), to: GroupherServer.Jobs.Workflow
 
-  @doc "Enqueues an artiment search-index update unless job insertion is disabled."
-  @spec search_index(atom(), atom(), term()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def search_index(action, thread, ref) when is_atom(action) and is_atom(thread) do
-    if Config.skip_enqueue?() do
-      {:ok, :pass}
-    else
-      %{action: Atom.to_string(action), thread: Atom.to_string(thread), ref: ref}
-      |> Jobs.SearchIndex.new()
-      |> Oban.insert()
-    end
-  end
+  @doc """
+  Delegates notify_comment/2 to the Jobs workflow owner.
 
-  @doc "Enqueues a snapshot refresh for the supplied resource kind and references."
-  @spec snapshot_refresh(atom(), term(), keyword()) ::
-          {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def snapshot_refresh(kind, refs, opts) when is_atom(kind) and is_list(opts) do
-    if Config.skip_enqueue?() do
-      {:ok, :pass}
-    else
-      %{kind: Atom.to_string(kind), refs: Codec.encode(refs), opts: Codec.encode(opts)}
-      |> Jobs.SnapshotRefresh.new()
-      |> Oban.insert()
-    end
-  end
+  ## Examples
 
-  defp insert_pass(changeset) do
-    case Oban.insert(changeset) do
-      {:ok, _job} -> {:ok, :pass}
-      {:error, _reason} -> {:ok, :pass}
-    end
-  rescue
-    _ -> {:ok, :pass}
-  end
+      iex> GroupherServer.Jobs.notify_comment(...)
+  """
+  defdelegate notify_comment(arg1, arg2), to: GroupherServer.Jobs.Workflow
 
-  defp comments_job(kind, payload) do
-    if Config.skip_enqueue?() do
-      {:ok, :pass}
-    else
-      %{kind: Atom.to_string(kind), payload: Codec.encode(payload)}
-      |> Jobs.Comments.new()
-      |> Oban.insert()
-    end
-  end
+  @doc """
+  Delegates notify_reply/2 to the Jobs workflow owner.
 
-  defp log_best_effort_failure(job_name, resource_ref, failure_kind) do
-    Logger.warning(
-      "optional job enqueue failed job=#{job_name} resource_ref=#{resource_ref || "none"} failure=#{failure_kind}"
-    )
+  ## Examples
 
-    {:ok, :pass}
-  end
+      iex> GroupherServer.Jobs.notify_reply(...)
+  """
+  defdelegate notify_reply(arg1, arg2), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Delegates public_cache_purge_job/1 to the Jobs workflow owner.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.public_cache_purge_job(...)
+  """
+  defdelegate public_cache_purge_job(arg1), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Delegates public_cache_purge_new/1 to the Jobs workflow owner.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.public_cache_purge_new(...)
+  """
+  defdelegate public_cache_purge_new(arg1), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Delegates public_cache_purge_new/2 to the Jobs workflow owner.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.public_cache_purge_new(...)
+  """
+  defdelegate public_cache_purge_new(arg1, arg2), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Delegates reconcile_comments_participants/3 to the Jobs workflow owner.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.reconcile_comments_participants(...)
+  """
+  defdelegate reconcile_comments_participants(arg1, arg2, arg3), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Delegates search_index/3 to the Jobs workflow owner.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.search_index(...)
+  """
+  defdelegate search_index(arg1, arg2, arg3), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Delegates search_index_new/1 to the Jobs workflow owner.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.search_index_new(...)
+  """
+  defdelegate search_index_new(arg1), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Delegates search_index_new/2 to the Jobs workflow owner.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.search_index_new(...)
+  """
+  defdelegate search_index_new(arg1, arg2), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Delegates snapshot_refresh/3 to the Jobs workflow owner.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.snapshot_refresh(...)
+  """
+  defdelegate snapshot_refresh(arg1, arg2, arg3), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Delegates snapshot_refresh_new/1 to the Jobs workflow owner.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.snapshot_refresh_new(...)
+  """
+  defdelegate snapshot_refresh_new(arg1), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Delegates snapshot_refresh_new/2 to the Jobs workflow owner.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.snapshot_refresh_new(...)
+  """
+  defdelegate snapshot_refresh_new(arg1, arg2), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Delegates subscribe_community/2 to the Jobs workflow owner.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.subscribe_community(...)
+  """
+  defdelegate subscribe_community(arg1, arg2), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Delegates sync_mentions/1 to the Jobs workflow owner.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.sync_mentions(...)
+  """
+  defdelegate sync_mentions(arg1), to: GroupherServer.Jobs.Workflow
+
+  @doc """
+  Delegates Jobs.CommunitySetup.new/1 through the Jobs Context boundary.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.community_setup_new(...)
+  """
+  defdelegate community_setup_new(arg1), to: GroupherServer.Jobs.CommunitySetup, as: :new
+
+  @doc """
+  Delegates Jobs.CommunitySetup.new/2 through the Jobs Context boundary.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.community_setup_new(...)
+  """
+  defdelegate community_setup_new(arg1, arg2), to: GroupherServer.Jobs.CommunitySetup, as: :new
+
+  @doc """
+  Delegates Jobs.CreateCommunity.new/1 through the Jobs Context boundary.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.create_community_new(...)
+  """
+  defdelegate create_community_new(arg1), to: GroupherServer.Jobs.CreateCommunity, as: :new
+
+  @doc """
+  Delegates Jobs.CreateCommunity.new/2 through the Jobs Context boundary.
+
+  ## Examples
+
+      iex> GroupherServer.Jobs.create_community_new(...)
+  """
+  defdelegate create_community_new(arg1, arg2), to: GroupherServer.Jobs.CreateCommunity, as: :new
 end

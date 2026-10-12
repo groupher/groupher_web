@@ -12,9 +12,13 @@
   facade/Command 边界，清理重复 use-case 命名，并增加折行 inline `do:` 的仓库约束。
 - [CMS Command、Gate、Lifecycle 与 Persistence 边界](./cms-command-gate-lifecycle-persist-boundary.md)：统一
   写入入口、授权与状态职责，盘点遗漏的 Command，并收口 Writer/Persist 边界。
+- [CMS Context Module Refactor](./cms-context-module-refactor.md)：按照 context module rule 盘点
+  Commands、Query、Persist、Effects、Workflow、Lifecycle、Projection 及 Assets、DocTree、ContentImport
+  的后续重构和验收范围。
 - [CMS Command Phase 5：Legacy Mutation 分类与迁移](./cms-command-phase-5-legacy-workflows.md)：详细分类
   Tag/TagGroup、Assets 与后续 CMS mutation，冻结 one-shot、Receipt、领域 workflow、Outbox identity 和验收边界。
-- [CMS Assets：现状审计与独立重构计划](./cms-assets-refactor.md)：单独梳理 Assets 的用户 Command、Query、Persist、Article refs、Upload、Provider 和 Replacement workflow，以及目录规范和下一阶段收口顺序。
+- [CMS Assets：现状审计与独立重构完成记录](./cms-assets-refactor.md)：单独梳理 Assets 的用户 Command、Query、Persist、Article refs、Upload、Provider 和 Replacement workflow，以及已完成的 workflow recovery、partial-success 与 lease 收口结果。
+- [CMS Facade 边界修复](./cms-facade-fix.md)：Context 根 Facade、internal capability、Outbox 与结构门禁的阶段性修复记录。
 - [CMS DocTree / ContentImport：现状审计与独立重构计划](./cms-doctree-refactor.md)：单独梳理 Docs tree、publish/trash workflow、ContentImport Job、Gate、事务 owner、identity/recovery 和目标目录边界。
 - [CMS Command 客户端 Identity 边界修复](./cms-command-client-identity-fix.md)：保留 GraphQL
   `commandId`，将创建、retry 复用和 unknown outcome 恢复统一收回 mutation executor。
@@ -22,3 +26,11 @@
   `{:ok, value}` / `{:error, reason}` 返回协议，扫描并分批清理裸 `:ok` 与混合 `with` 形状。
 - [Article Binding 命名与存储重构](./article-binding-naming-and-storage.md)：统一
   `ArticleBinding`、`ArticleView`、`Articles.Bindings` 命名，收拢 FrontDesk 路径边界，并规划物理表重命名。
+- [Backend Read / Write Owner 命名与职责修复](./backend-read-write-owner-naming-fix.md)：已完成禁止含糊
+  `Read` / `Reader` / `Write` / `Writer` 名称的 gate；`Profiles.Read` 与 Interaction Projection 的职责拆分是
+  文档中的后续目标，不应误读为全部完成。
+- [Profile ViewTracker](./profile-view-tracker.md)：Profile view 显式 mutation、稳定 actor identity、
+  滑动窗口去重、同步计数、有界清理和旧 ProfileVisit Job 删除的实施记录；当前合同见
+  [`feature/view-tracker/profile-view-counting.md`](../feature/view-tracker/profile-view-counting.md)。
+- [PR 594 review remediation](./pr-594-review-remediation.md)：本次架构重构 review 问题的核实、
+  长期修复方式、验证证据与远端收敛状态。

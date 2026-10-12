@@ -8,7 +8,9 @@ defmodule GroupherServer.CMS.Model.DocDraft do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.{Article, ArticleBodyDraft, ArticleRevision, Author, DocBranch}
+  alias GroupherServer.CMS
+
+  alias CMS.Model.{Article, ArticleBodyDraft, ArticleRevision, Author, DocBranch}
   alias Helper.Constant.DBPrefix
 
   @primary_key {:id, :id, autogenerate: true}

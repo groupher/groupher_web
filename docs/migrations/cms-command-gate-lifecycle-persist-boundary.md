@@ -607,7 +607,7 @@ Lifecycle 只拥有长期资源状态和并发 guard：
 | Article binding move/mirror       | 复核 Move/Mirror/Unmirror effect identity     | Receipt；multi-scope effect 复用同一 id   |
 | Article moderation/visibility     | 拆分 user command 与 moderation workflow      | 按 initiator 分类，不得逐 binding 造 UUID |
 | Article/Comment report            | 拆为 Report/UndoReport Command                | Report 需要；Undo 可 one-shot             |
-| Comment create/reply fallback     | 收紧现有 CreateComment/ReplyComment           | 删除 nil identity 与无 Receipt fallback   |
+| Comment create/reply fallback     | 收紧现有 Create/Reply                         | 删除 nil identity 与无 Receipt fallback   |
 | Comment solution                  | 拆为 AcceptSolution/RevokeSolution            | 当前天然幂等，可 one-shot                 |
 | Comment pin                       | 拆为 Pin/Unpin                                | 当前天然幂等，可 one-shot                 |
 | Interaction reactions             | 收紧 Upvote/Emotion/Collect identity          | reactions 逐项确认，不属于 read marker    |

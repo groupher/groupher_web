@@ -15,13 +15,9 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
   alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.Model.User
   alias CMS.Articles.Draft.Store, as: DraftStore
-  alias CMS.Articles.Bindings
-  alias CMS.Articles.RevisionResult
+  alias CMS.Articles.{Bindings, RevisionResult}
   alias CMS.Articles.Store, as: ArticleStore
-  alias CMS.Articles.Publish.Effects
-  alias CMS.Articles.Publish.Target
-  alias CMS.Command
-  alias CMS.FrontDesk
+  alias CMS.{Command, FrontDesk}
   alias CMS.Model.{Article, ArticleBinding, ArticleLifecycle, Community}
   alias CMS.Articles.Commands.RevisionConfirmation, as: Confirmation
 
@@ -57,7 +53,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
          %{actor: user, target: article, params: attrs, command_id: command_id},
          community
        ) do
-    with {:ok, author} <- CMS.Articles.Writer.ensure_author_exists(user),
+    with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user),
          {:ok, %{public: public}} <-
            update_and_publish(article, attrs, author, user, community, command_id),
          %ArticleBinding{inner_id: inner_id} when is_integer(inner_id) <-
@@ -113,9 +109,8 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
                community: community
              ] ++
                community_tag_opts(attrs) ++ [outbox_command_id: command_id],
-           {:ok, %{article: published} = publish_result} <-
-             Target.publish(canonical, author, publish_opts),
-           {:ok, _effects} <- Effects.run(publish_result),
+           {:ok, %{article: published}} <-
+             CMS.Articles.Workflow.publish(canonical, author, user, publish_opts),
            {:ok, public} <- public_projection(published.id, community) do
         {:ok, %{public: public}}
       end

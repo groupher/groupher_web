@@ -5,7 +5,7 @@ defmodule GroupherServer.Accounts.Profiles.ErrorCat do
   Authentication operation -> catalog reason -> stable protocol error.
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:account, :authentication}
+  use GroupherServer.ErrorCat, namespace: {:account, :authentication}
 
   error(:account_login, code: 4301)
   error(:oauth_unlink, code: 4302)

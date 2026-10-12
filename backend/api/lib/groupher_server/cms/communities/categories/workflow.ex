@@ -1,0 +1,123 @@
+defmodule GroupherServer.CMS.Communities.Categories.Workflow do
+  @moduledoc """
+  Category helpers for communities.
+
+  Business position:
+
+      Client / reviewer
+        -> CMS.Communities
+        -> Categories
+        -> Repo / Oban
+  """
+
+  import GroupherServer.CMS.Articles.Persist, only: [ensure_author_exists: 1]
+  import ShortMaps
+
+  alias GroupherServer.{Accounts, CMS, Repo}
+
+  alias Accounts.Model.User
+  alias CMS.Communities.ErrorCat
+  alias CMS.Model.{Category, Community, CommunityCategory}
+  alias Helper.{ORM, T}
+  alias Helper.Validator.Slug
+
+  @doc """
+  Creates a Category, optionally scoped to a community.
+
+  When `attrs` carries a `:community` slug key the category is bound to that
+  community; otherwise it is created standalone. The author is resolved from
+  the user and the slug is normalized.
+
+  ## Examples
+
+      CMS.Communities.Categories.create(%{title: "Tv", community: "groupher"}, %User{id: 1})
+      #=> {:ok, %Category{}}
+
+      CMS.Communities.Categories.create(%{title: "Tv"}, %User{id: 1})
+      #=> {:ok, %Category{}}
+
+  """
+  @spec create(map(), User.t()) :: T.domain_res(term())
+  def create(%{community: community} = attrs, %User{id: user_id}) do
+    with {:ok, community} <- ORM.find_by(Community, slug: community),
+         {:ok, author} <- ensure_author_exists(%User{id: user_id}) do
+      attrs = attrs |> Map.merge(%{author_id: author.id})
+      attrs = Map.update(attrs, :slug, nil, &Slug.normalize/1)
+      attrs = Map.drop(attrs, [:community])
+
+      Repo.transact(fn ->
+        with {:ok, category} <- Category |> ORM.create(attrs),
+             {:ok, _binding} <-
+               CommunityCategory
+               |> ORM.create(%{community_id: community.id, category_id: category.id}) do
+          {:ok, category}
+        end
+      end)
+    end
+  end
+
+  def create(attrs, %User{id: user_id}) do
+    with {:ok, author} <- ensure_author_exists(%User{id: user_id}) do
+      attrs = attrs |> Map.merge(%{author_id: author.id})
+      attrs = Map.update(attrs, :slug, nil, &Slug.normalize/1)
+      Category |> ORM.create(attrs)
+    end
+  end
+
+  @spec update(String.t(), map()) :: T.domain_res(term())
+  def update(community_slug, ~m(id title)a) do
+    with {:ok, community} <- ORM.find_by(Community, slug: community_slug),
+         {:ok, category} <- ORM.find(Category, id),
+         true <- category_in_community?(community.id, category.id) do
+      category |> ORM.update(~m(title)a)
+    else
+      false -> {:error, ErrorCat.forbidden()}
+    end
+  end
+
+  def update(~m(id title)a) do
+    with {:ok, category} <- ORM.find(Category, id) do
+      category |> ORM.update(~m(title)a)
+    end
+  end
+
+  @spec delete(String.t(), T.id()) :: T.domain_res(term())
+  def delete(community_slug, id) do
+    with {:ok, community} <- ORM.find_by(Community, slug: community_slug),
+         {:ok, category} <- ORM.find(Category, id),
+         true <- category_in_community?(community.id, category.id) do
+      category |> ORM.delete()
+    else
+      false -> {:error, ErrorCat.forbidden()}
+    end
+  end
+
+  @doc """
+  set a category to community
+  """
+  @spec set(Community.t(), Category.t()) :: T.domain_res(term())
+  def set(%Community{id: community_id}, %Category{id: category_id}) do
+    with {:ok, community_category} <-
+           CommunityCategory |> ORM.create(~m(community_id category_id)a) do
+      Community |> ORM.find(community_category.community_id)
+    end
+  end
+
+  @doc """
+  unset a category to community
+  """
+  @spec unset(Community.t(), Category.t()) :: T.domain_res(term())
+  def unset(%Community{id: community_id}, %Category{id: category_id}) do
+    with {:ok, community_category} <-
+           CommunityCategory |> ORM.findby_delete!(~m(community_id category_id)a) do
+      Community |> ORM.find(community_category.community_id)
+    end
+  end
+
+  defp category_in_community?(community_id, category_id) do
+    case ORM.find_by(CommunityCategory, community_id: community_id, category_id: category_id) do
+      {:ok, _} -> true
+      _ -> false
+    end
+  end
+end

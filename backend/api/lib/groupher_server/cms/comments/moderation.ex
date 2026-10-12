@@ -133,7 +133,7 @@ defmodule GroupherServer.CMS.Comments.Moderation do
   defp result({:error, _, result, _steps}), do: {:error, result}
 
   defp revalidate_user({:ok, _result} = response, login) do
-    RootFrontDesk.revalidate().user(login)
+    RootFrontDesk.revalidate_user(login)
     response
   end
 

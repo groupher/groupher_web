@@ -17,8 +17,10 @@ defmodule GroupherServer.CMS.Model.AssetReplacementPlan do
 
   import Ecto.Changeset
 
-  alias GroupherServer.CMS.Model.{Community, CommunityAsset}
-  alias GroupherServer.Accounts.Model.User
+  alias GroupherServer.{Accounts, CMS}
+
+  alias CMS.Model.{Community, CommunityAsset}
+  alias Accounts.Model.User
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.cms()

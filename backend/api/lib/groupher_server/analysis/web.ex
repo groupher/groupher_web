@@ -11,20 +11,20 @@ defmodule GroupherServer.Analysis.Web do
       Main / Dashboard
         -> GraphQL
         -> Analysis
-        -> Web
-        -> Repo / analytics provider
+        -> Web Query / Provision
+           -> analytics provider adapter
   """
 
   require GroupherServer.CMS.ErrorCat
 
   alias __MODULE__.Community, as: AnalysisCommunity
   alias __MODULE__.Config
-  alias GroupherServer.{CMS, Repo}
+  alias __MODULE__.Provision
+  alias GroupherServer.CMS
   alias CMS.ErrorCat
 
-  alias CMS.Dashboard.Persist
   alias CMS.Model.{Community, CommunityDashboard}
-  alias Helper.{Cache, Transaction}
+  alias Helper.Cache
 
   @config Config.base()
   @active_cache_seconds 30
@@ -49,6 +49,10 @@ defmodule GroupherServer.Analysis.Web do
 
   `analysisWebSummary` remains available while existing clients migrate to the
   section-oriented Trends contract.
+
+  ## Examples
+
+      Analysis.Web.summary(community, %{days: 7})
   """
   @spec summary(Community.t(), map()) :: {:ok, map()}
   def summary(%Community{} = community, args \\ %{}) do
@@ -73,6 +77,10 @@ defmodule GroupherServer.Analysis.Web do
 
   @doc """
   Returns the SSR-sized Trends overview: summary metrics and the chart only.
+
+  ## Examples
+
+      Analysis.Web.trends_overview(community, %{days: 7})
   """
   @spec trends_overview(Community.t(), map()) :: {:ok, map()}
   def trends_overview(%Community{} = community, args \\ %{}) do
@@ -96,6 +104,10 @@ defmodule GroupherServer.Analysis.Web do
 
   The provider result is cached briefly by the trusted Umami website identity
   so multiple dashboard clients do not all refresh the same upstream value.
+
+  ## Examples
+
+      Analysis.Web.active(community)
   """
   @spec active(Community.t()) :: {:ok, %{visitors: non_neg_integer()}} | {:error, term()}
   def active(%Community{} = community) do
@@ -112,7 +124,13 @@ defmodule GroupherServer.Analysis.Web do
     end
   end
 
-  @doc "Returns the nullable Dashboard active-visitors field without swallowing provider failures."
+  @doc """
+  Returns the nullable Dashboard active-visitors field without swallowing provider failures.
+
+  ## Examples
+
+      Analysis.Web.active_for_dashboard(community)
+  """
   @spec active_for_dashboard(Community.t()) ::
           {:ok, %{visitors: non_neg_integer()} | nil} | {:error, term()}
   def active_for_dashboard(%Community{} = community) do
@@ -124,6 +142,10 @@ defmodule GroupherServer.Analysis.Web do
 
   @doc """
   Returns one selected page breakdown dimension.
+
+  ## Examples
+
+      Analysis.Web.trend_pages(community, %{days: 7}, :path)
   """
   @spec trend_pages(Community.t(), map(), page_dimension()) :: {:ok, map()}
   def trend_pages(%Community{} = community, args, dimension) when dimension in @page_dimensions do
@@ -134,6 +156,10 @@ defmodule GroupherServer.Analysis.Web do
 
   @doc """
   Returns one selected source breakdown dimension.
+
+  ## Examples
+
+      Analysis.Web.trend_sources(community, %{days: 7}, :referrer)
   """
   @spec trend_sources(Community.t(), map(), source_dimension()) :: {:ok, map()}
   def trend_sources(%Community{} = community, args, dimension)
@@ -145,6 +171,10 @@ defmodule GroupherServer.Analysis.Web do
 
   @doc """
   Returns one selected environment breakdown dimension.
+
+  ## Examples
+
+      Analysis.Web.trend_environment(community, %{days: 7}, :browser)
   """
   @spec trend_environment(Community.t(), map(), environment_dimension()) :: {:ok, map()}
   def trend_environment(%Community{} = community, args, dimension)
@@ -156,6 +186,10 @@ defmodule GroupherServer.Analysis.Web do
 
   @doc """
   Returns one selected location breakdown dimension.
+
+  ## Examples
+
+      Analysis.Web.trend_location(community, %{days: 7}, :country)
   """
   @spec trend_location(Community.t(), map(), location_dimension()) :: {:ok, map()}
   def trend_location(%Community{} = community, args, dimension)
@@ -165,7 +199,13 @@ defmodule GroupherServer.Analysis.Web do
     end)
   end
 
-  @doc "Returns the public, fixed-window visitor distribution for the About page."
+  @doc """
+  Returns the public, fixed-window visitor distribution for the About page.
+
+  ## Examples
+
+      Analysis.Web.visitor_location_map(community)
+  """
   @spec visitor_location_map(Community.t()) :: {:ok, map()}
   def visitor_location_map(%Community{} = community) do
     range = resolve_range(%{days: @visitor_location_days})
@@ -185,6 +225,10 @@ defmodule GroupherServer.Analysis.Web do
 
   @doc """
   Returns the UTC weekly traffic heatmap.
+
+  ## Examples
+
+      Analysis.Web.trend_traffic(community, %{days: 7})
   """
   @spec trend_traffic(Community.t(), map()) :: {:ok, map()}
   def trend_traffic(%Community{} = community, args \\ %{}) do
@@ -212,7 +256,13 @@ defmodule GroupherServer.Analysis.Web do
     end
   end
 
-  @doc "Runs `tracking_website_id` through the public `Web` boundary."
+  @doc """
+  Returns the trusted tracking website identity for a community.
+
+  ## Examples
+
+      Analysis.Web.tracking_website_id(community)
+  """
   @spec tracking_website_id(Community.t()) :: {:ok, String.t() | nil}
   def tracking_website_id(%Community{} = community) do
     case dashboard_for(community) do
@@ -222,11 +272,36 @@ defmodule GroupherServer.Analysis.Web do
   end
 
   @doc """
+  Provisions analytics as an optional community-creation side effect.
+
+  Environments that disable create-time provisioning receive a tagged deferred
+  result without contacting the provider. Query paths can still use the
+  idempotent provisioning flow later.
+
+  ## Examples
+
+      Analysis.Web.provision_community_on_create(community)
+  """
+  @spec provision_community_on_create(Community.t()) ::
+          {:ok, String.t() | :deferred} | {:error, term()}
+  def provision_community_on_create(%Community{} = community) do
+    if Config.provision_on_community_create?() do
+      provision_community(community)
+    else
+      {:ok, :deferred}
+    end
+  end
+
+  @doc """
   Ensures a persisted community has its provider website identity.
 
   Community creation invokes this once its local records are ready. Query
   paths also call the same idempotent preparation flow, so a transient provider
   outage can recover without creating a duplicate website.
+
+  ## Examples
+
+      Analysis.Web.provision_community(community)
   """
   @spec provision_community(Community.t()) :: {:ok, String.t()} | {:error, term()}
   def provision_community(%Community{} = community) do
@@ -268,8 +343,15 @@ defmodule GroupherServer.Analysis.Web do
         {:error, reason} -> {:ok, unavailable_visitor_location_payload(range, reason)}
       end
     else
-      nil -> {:ok, unavailable_visitor_location_payload(range, ErrorCat.not_configured())}
-      {:error, reason} -> {:ok, unavailable_visitor_location_payload(range, reason)}
+      nil ->
+        {:ok,
+         unavailable_visitor_location_payload(
+           range,
+           GroupherServer.CMS.error_cat_not_configured()
+         )}
+
+      {:error, reason} ->
+        {:ok, unavailable_visitor_location_payload(range, reason)}
     end
   end
 
@@ -314,6 +396,10 @@ defmodule GroupherServer.Analysis.Web do
   Normalizes provider country and region rows into the public visitor payload.
 
   Provider location rows -> bounded country payload -> Dashboard DTO.
+
+  ## Examples
+
+      Analysis.Web.visitor_countries(country_rows, region_rows)
   """
   def visitor_countries(country_rows, region_rows) do
     countries =
@@ -390,70 +476,17 @@ defmodule GroupherServer.Analysis.Web do
   defp percentage_of(value, total), do: Float.round(value / total * 100, 1)
 
   defp prepare_community(%Community{} = community, provider) do
-    with {:ok, _} <- ensure_runtime_configured(),
-         {:ok, _} <- ensure_persisted_community(community),
-         {:ok, dashboard} <- dashboard_for(community),
-         {:ok, website_id} <- ensure_umami_website_id(community, dashboard, provider) do
-      {:ok, AnalysisCommunity.from_community(community, website_id)}
-    end
+    Provision.prepare_community(community, provider)
   end
 
   defp dashboard_for(%Community{} = community) do
-    Transaction.lock_global("community_dashboard:ensure:#{community.id}", fn ->
-      Persist.get_or_insert_dashboard(community)
-    end)
+    Provision.dashboard_for(community)
   end
 
   defp ensure_runtime_configured do
     case Config.runtime().api_token do
       token when is_binary(token) and token != "" -> {:ok, :pass}
-      _ -> {:error, ErrorCat.not_configured()}
-    end
-  end
-
-  defp ensure_persisted_community(%Community{id: id}) when is_integer(id), do: {:ok, :pass}
-  defp ensure_persisted_community(%Community{}), do: {:error, ErrorCat.community_not_persisted()}
-
-  defp ensure_umami_website_id(
-         %Community{} = community,
-         %CommunityDashboard{umami_website_id: nil} = dashboard,
-         provider
-       ) do
-    Transaction.lock_global("community_dashboard:umami_website:#{community.id}", fn ->
-      with {:ok, dashboard} <- reload_dashboard(dashboard) do
-        case dashboard.umami_website_id do
-          website_id when is_binary(website_id) -> {:ok, website_id}
-          nil -> create_umami_website(community, dashboard, provider)
-        end
-      end
-    end)
-  end
-
-  defp ensure_umami_website_id(
-         _community,
-         %CommunityDashboard{umami_website_id: website_id},
-         _provider
-       )
-       when is_binary(website_id) do
-    {:ok, website_id}
-  end
-
-  defp reload_dashboard(%CommunityDashboard{id: id}) do
-    case Repo.get(CommunityDashboard, id) do
-      %CommunityDashboard{} = dashboard -> {:ok, dashboard}
-      nil -> {:error, ErrorCat.dashboard_not_found()}
-    end
-  end
-
-  defp create_umami_website(%Community{} = community, dashboard, provider) do
-    community_analysis = AnalysisCommunity.from_community(community)
-
-    with {:ok, website_id} <- provider.create_website(community_analysis),
-         {:ok, _dashboard} <-
-           dashboard
-           |> CommunityDashboard.update_changeset(%{umami_website_id: website_id})
-           |> Repo.update() do
-      {:ok, website_id}
+      _ -> {:error, GroupherServer.CMS.error_cat_not_configured()}
     end
   end
 

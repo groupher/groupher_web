@@ -29,7 +29,6 @@ defmodule GroupherServer.CMS.DocTree.Revision do
   """
 
   alias GroupherServer.{CMS, Repo}
-  alias Ecto.Multi
   alias CMS.DocTree.State
   alias CMS.Model.{Community, DocsSiteState}
   alias Helper.{ORM, T}
@@ -54,21 +53,17 @@ defmodule GroupherServer.CMS.DocTree.Revision do
   def bump_tree_draft(%Community{} = community, %DocsSiteState{} = state, opts \\ []) do
     staged_event_delta = Keyword.get(opts, :staged_event_delta, 0)
 
-    Multi.new()
-    |> Multi.run(:site_state, fn _, _ ->
-      ensure_current_state(community, state)
+    run_in_owner(opts, fn ->
+      with {:ok, current_state} <- ensure_current_state(community, state) do
+        current_state
+        |> Ecto.Changeset.change(%{
+          tree_lock_version: current_state.tree_lock_version + 1,
+          site_draft_version: current_state.site_draft_version + 1,
+          staged_event_count: current_state.staged_event_count + staged_event_delta
+        })
+        |> Repo.update()
+      end
     end)
-    |> Multi.run(:updated_site_state, fn _, %{site_state: state} ->
-      state
-      |> Ecto.Changeset.change(%{
-        tree_lock_version: state.tree_lock_version + 1,
-        site_draft_version: state.site_draft_version + 1,
-        staged_event_count: state.staged_event_count + staged_event_delta
-      })
-      |> Repo.update()
-    end)
-    |> Repo.transaction()
-    |> result()
   end
 
   @spec bump_site_draft(Community.t()) :: T.domain_res(DocsSiteState.t())
@@ -80,34 +75,26 @@ defmodule GroupherServer.CMS.DocTree.Revision do
 
   @spec bump_site_draft(Community.t(), DocsSiteState.t()) :: T.domain_res(DocsSiteState.t())
   def bump_site_draft(%Community{} = community, %DocsSiteState{} = state) do
-    Multi.new()
-    |> Multi.run(:site_state, fn _, _ ->
-      ensure_current_state(community, state)
+    run_in_owner([], fn ->
+      with {:ok, current_state} <- ensure_current_state(community, state) do
+        ORM.inc(current_state, :site_draft_version)
+      end
     end)
-    |> Multi.run(:updated_site_state, fn _, %{site_state: site_state} ->
-      ORM.inc(site_state, :site_draft_version)
-    end)
-    |> Repo.transaction()
-    |> result()
   end
 
   @spec apply_tree_restore(Community.t(), DocsSiteState.t(), non_neg_integer()) ::
           T.domain_res(DocsSiteState.t())
   def apply_tree_restore(%Community{} = community, %DocsSiteState{} = state, restore_count) do
-    Multi.new()
-    |> Multi.run(:site_state, fn _, _ ->
-      ensure_current_state(community, state)
+    run_in_owner([], fn ->
+      with {:ok, current_state} <- ensure_current_state(community, state) do
+        current_state
+        |> Ecto.Changeset.change(%{
+          site_draft_version: current_state.site_draft_version + 1,
+          staged_event_count: max(current_state.staged_event_count - restore_count, 0)
+        })
+        |> Repo.update()
+      end
     end)
-    |> Multi.run(:updated_site_state, fn _, %{site_state: state} ->
-      state
-      |> Ecto.Changeset.change(%{
-        site_draft_version: state.site_draft_version + 1,
-        staged_event_count: max(state.staged_event_count - restore_count, 0)
-      })
-      |> Repo.update()
-    end)
-    |> Repo.transaction()
-    |> result()
   end
 
   defp ensure_current_state(%Community{} = community, %DocsSiteState{} = state) do
@@ -118,6 +105,16 @@ defmodule GroupherServer.CMS.DocTree.Revision do
     )
   end
 
-  defp result({:ok, %{updated_site_state: state}}), do: {:ok, state}
-  defp result({:error, _step, reason, _changes}), do: {:error, reason}
+  defp run_in_owner(opts, fun) do
+    if Keyword.get(opts, :transaction, true) do
+      Repo.transaction(fn ->
+        case fun.() do
+          {:ok, value} -> value
+          {:error, reason} -> Repo.rollback(reason)
+        end
+      end)
+    else
+      fun.()
+    end
+  end
 end

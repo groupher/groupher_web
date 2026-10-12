@@ -1,9 +1,12 @@
 # CMS Facade 与实现目录收口
 
-> 状态：F1–F13 已实施，公开 API 保持不变；实施验证记录见 §6.3。
+> 状态：历史迁移记录（F1–F13 已实施）。本文所称 `CMS.<Domain>` “公开 facade”现统一称为 CMS internal
+> capability Facade；CMS 外部 API 已由 `GroupherServer.CMS` 根 Facade 接管，不再以“公开 API 保持不变”
+> 作为当前合同。现行结构以 [Backend Context Convention over Configuration](./backend-context-convention-over-configuration.md)
+> 为准；本文保留当时的拆分理由和实施记录。
 >
 > 范围：`backend/api/lib/groupher_server/cms` 下的公开 Context/facade 与同名实现目录。
-> 本文只调整内部文件职责，不改变 GraphQL、Job 或领域调用方使用的公开 API。
+> 本文原始批次只调整内部文件职责；后续 Context v2 已迁移 GraphQL、Job 和跨 Context 调用方。
 
 相关文档：
 
@@ -143,15 +146,15 @@ Command 不复制底层 Writer，也不建立通用 Command Bus、DSL 或 callba
 | F9     | `CMS.Communities` | `request_destroy/3` 已移除 facade 内的 Command/Gate/Lifecycle 编排                  | `Communities.Commands.RequestDestroy`                     |
 | F10    | `CMS.Articles`    | archive/sink/status/category/comment-lock/moderation 已移入具体 Commands            | `Articles.Commands.*`                                     |
 | F11    | `CMS.Comments`    | create/reply/pin/fold/moderation 已移入具体 Commands；ID 兼容入口先解析再进入 owner | `Comments.Commands.*`                                     |
-| F12    | `CMS.Assets`      | 剩余入口逐项审计为一到两步 Writer delegate，无需虚构 Commands                       | `Assets.Writer` / `Assets.Deletion` / existing owners     |
+| F12    | `CMS.Assets`      | 剩余入口逐项审计为一到两步 Persist/Refs delegate，无需虚构 Commands                 | `Assets.Persist` / `Assets.Deletion` / existing owners    |
 | F13    | `CMS.Command`     | execute contract 已收紧为 typed Confirmation action result                          | `CMS.Command` + `Receipt`                                 |
 
 已完成的 F1–F7 实施结果：
 
 | 模块            | 当前状态                                                            |
 | --------------- | ------------------------------------------------------------------- |
-| `CMS.Wallpaper` | 已拆为 Query、Upload、Publisher、Retention                          |
-| `CMS.Press`     | 已拆为 Query、Projection、ConfigWriter、Invalidation                |
+| `CMS.Wallpaper` | 已拆为 Commands、Query、Upload、Persist、Workflow、Retention        |
+| `CMS.Press`     | 已拆为 Commands、Query、Projection、Persist、Effects、Invalidation  |
 | `CMS.DocTree`   | 已有 Commands、Query、Writer、Publish、Trash                        |
 | `CMS.FrontDesk` | 已按 Article、Comment、Community、Relation 等内部 owner 拆分        |
 | `CMS.Snapshot`  | 已拆为 Query、Cache、Projection、Refresh                            |
@@ -269,14 +272,14 @@ set_illegal / unset_illegal / set_audit_failed
 Comments 的写入口已统一进入现有 concrete command/state owner：
 
 ```text
-create_comment* / reply_comment*
+create / reply
 pin_comment / undo_pin_comment
 fold_comment / unfold_comment
 set_comment_illegal / unset_comment_illegal
 set_comment_audit_failed / paged_audit_failed_comments
 ```
 
-其中 `update_comment`、`delete_comment`、`create/reply` 使用具体 Commands，pin/fold 使用
+其中 `update`、`delete`、`create/reply` 使用具体 Commands，pin/fold 使用
 `Comments.Commands.StateChange`，moderation 使用 `Comments.Commands.Moderate`；ID overload
 只在兼容入口解析一次 canonical Comment，不把已加载 struct 降级为 ID。
 
@@ -388,13 +391,16 @@ press/
 ├── config.ex                  # 已存在：静态 thread contract
 ├── query.ex                   # article/feed/manifest authority reads
 ├── projection.ex              # article/feed/community/config projection
-├── config_writer.ex           # persisted config + Activity
+├── commands/
+│   └── update_config.ex        # Gate + Receipt + Activity owner
+├── persist.ex                  # PressConfig row primitive
+├── effects.ex                  # post-commit invalidation scheduling
 └── invalidation.ex            # Press HTTP cache invalidation
 ```
 
 ```text
 CMS.Press
-  ├── config/update_config -> ConfigWriter
+  ├── config/update_config -> Commands.UpdateConfig -> Persist + Effects
   ├── article/feed/manifest -> Query -> Projection
   └── invalidate           -> Invalidation
 ```
@@ -429,7 +435,7 @@ CMS.Wallpaper
 
 ### 4.10 FrontDesk
 
-FrontDesk V2 已直接切换。以下目录只描述当前资源 facade 与稳定关系，
+FrontDesk 的 V2 切换已完成。以下目录只描述当前资源 facade 与稳定关系，
 不再保留 V1 的通用 lookup、reaction-users 或写操作转发：
 
 ```text
@@ -460,13 +466,14 @@ front_desk/
   `FrontDesk.comment(comment_id, mode: :internal, view: :article_context)`；
 - `sync_embed_replies/1` 已移出 FrontDesk，由 `CMS.Comments.Replies`/Comments 写侧承接；
 - `live_user`、CMS 层 `revalidate_user/1` 已删除。User cache refresh 统一使用根
-  `GroupherServer.FrontDesk.revalidate().user/1`；
+  `GroupherServer.FrontDesk.revalidate_user/1`；
 - 通用 `get/get_by/preload` 与 `CMS.FrontDesk.Lookup` 已删除，不保留兼容 wrapper；内部行读取归
   owning Query、Store、Gate Loader 或 maintenance owner；
 - `community_tags/1` 已删除且不新增替代 wrapper；batch、list、stats、reaction-users 等读取归各自
   owning facade，不进入 FrontDesk。
 
-以上边界以 [FrontDesk V2](../feature/front-desk/v2.md) 的 mode、single-resource 和 surface 处置表为准。
+以上边界以 [FrontDesk 当前合同](../feature/front-desk/README.md) 的 mode、single-resource、view 和
+surface 规则为准。
 
 ### 4.11 Snapshot
 
@@ -563,8 +570,8 @@ F13 CMS.Command 类型合同与文档一致性审计
 [x] F1  Assets.Deletion 承接删除实现
 [x] F2  Articles.Commands.{Create,Update,Draft,Publish,Trash}
 [x] F3  DocTree.Commands.{Node,Publish,Trash}
-[x] F4  Press.{Query,Projection,ConfigWriter,Invalidation}
-[x] F5  Wallpaper.{Query,Upload,Publisher,Retention}
+[x] F4  Press.{Commands,Query,Projection,Persist,Effects,Invalidation}
+[x] F5  Wallpaper.{Commands,Query,Upload,Persist,Workflow,Retention}
 [x] F6  FrontDesk 按 Article/Comment/Community/Lookup/Relation/ReactionUsers 拆分
 [x] F7  Snapshot.{Query,Cache,Projection,Refresh}
 [x] F8  Docs facade 收口

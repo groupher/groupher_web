@@ -4,11 +4,11 @@
 
 ## 版本状态
 
-- [V1](./v1.md)：基础 bitmap projection、view event 与 ShadowSync，已实现。
-- [V2](./v2.md)：核心 projection 和读写路径已落地，仍保留后续治理项。
-- [V3](./v3.md)：correctness、Gate context 与 bounded decode 已落地。
-- [V4](./v4.md)：当前主体实现；生产存量清理尚未完成。
-- [V5](./v5.md)：ViewTracker 迁出与 Audit 退役已落地；ReportFact/Moderation 仍按独立设计推进。
+- 当前运行时：reaction command 在同一事务内完成权威 fact 与 Projection；View 由独立
+  [ViewTracker](../view-tracker/README.md) 拥有；Audit repair 已退役。
+- [V5](./v5.md)：当前阶段实施记录；ReportFact/Moderation 仍按独立设计推进。
+- [V4](./v4.md)：统一 Facade、reaction 事务与 Projection 的已实施历史记录。
+- [V1–V3](./v3.md)：早期 bitmap、ShadowSync、Gate context 与 correctness 演进记录。
 
-V4 §6.2 中由 Interaction 承担的 View 查询预算，在 ViewEvents 迁出后由
-[ViewTracker V1](../view-tracker/v1.md) 的批量读取与完整 Article assembly 预算取代；V4 正文保留原版本合同。
+新代码不再使用 V1–V4 的 ViewEvents、异步 view worker 或 Audit repair 合同。Article view 当前写协议见
+[Article View 计数写链路](../view-tracker/article-view-counting.md)。

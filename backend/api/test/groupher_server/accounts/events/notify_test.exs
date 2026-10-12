@@ -14,6 +14,28 @@ defmodule GroupherServer.Test.Accounts.Events.Notify do
   end
 
   describe "[follow notify]" do
+    test "typed follow Worker delivers to the target and attributes the follower",
+         ~m(user user2)a do
+      assert {:ok, _notification} =
+               GroupherServer.Jobs.AccountEvent.perform(%Oban.Job{
+                 args: %{
+                   "type" => "follow",
+                   "version" => 1,
+                   "user_id" => user.id,
+                   "from_user_id" => user2.id
+                 }
+               })
+
+      assert {:ok, %{total_count: 1, entries: [notification]}} =
+               Messaging.paged_messages(:notification, user, %{page: 1, size: 20})
+
+      assert notification.user_id == user.id
+      assert user_exist_in?(user2, notification.from_users)
+
+      assert {:ok, %{total_count: 0}} =
+               Messaging.paged_messages(:notification, user2, %{page: 1, size: 20})
+    end
+
     test "follow notify hook should work", ~m(user user2)a do
       {:ok, _} = Fans.follow(user, user2)
       Events.emit(:follow, %{user: user, from_user: user2})

@@ -7,8 +7,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Mirror do
 
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.Articles.BindingPersist
-  alias CMS.Articles.Bindings.Tags
+  alias CMS.Articles.{BindingPersist, Bindings.Tags}
   alias CMS.Articles.Commands.{BindingConfirmation, BindingSupport}
   alias CMS.Command
 

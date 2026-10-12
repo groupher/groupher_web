@@ -5,12 +5,13 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Delete do
       Category Command -> Gate(:update) -> Categories.Persist.delete -> Receipt
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{Accounts, CMS}
+
   alias CMS.{Command, Gate}
   alias CMS.Communities.Categories.{Confirmation, Persist}
   alias CMS.Communities.Categories.Commands.Support
   alias CMS.Model.Category
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias Helper.T
 
   @spec execute(String.t(), T.id(), User.t(), Ecto.UUID.t()) :: T.domain_res(Category.t())

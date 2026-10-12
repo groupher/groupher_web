@@ -13,8 +13,10 @@ defmodule GroupherServer.CMS.Communities.Moderators.Setup do
         -> membership / count / root passport
   """
 
+  alias GroupherServer.Accounts
+
   alias GroupherServer.{CMS, Repo}
-  alias GroupherServer.Accounts.Model.User
+  alias Accounts.Model.User
   alias CMS.{Communities, Passport}
   alias CMS.Model.{Community, CommunityModerator}
   alias CMS.Passport.Registry

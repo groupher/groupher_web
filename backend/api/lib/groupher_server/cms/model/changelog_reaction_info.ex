@@ -4,7 +4,7 @@ defmodule GroupherServer.CMS.Model.ChangelogReactionInfo do
 
   Business position:
 
-      CMS.Interactions.ReadState -> ChangelogReactionInfo -> cms.changelog_reaction_infos
+      CMS.Interactions.Projection -> ChangelogReactionInfo -> cms.changelog_reaction_infos
   """
 
   use GroupherServer.CMS.Model.Interaction.ReactionInfo,

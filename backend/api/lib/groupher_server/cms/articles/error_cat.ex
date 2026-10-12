@@ -5,7 +5,7 @@ defmodule GroupherServer.CMS.Articles.ErrorCat do
   Article operation -> catalog reason -> stable protocol error.
   """
 
-  use GroupherServer.ErrorCat.Domain, namespace: {:cms, :article}
+  use GroupherServer.ErrorCat, namespace: {:cms, :article}
 
   error(:too_much_pinned_article, code: 6001)
   error(:mirror_article, code: 6002)

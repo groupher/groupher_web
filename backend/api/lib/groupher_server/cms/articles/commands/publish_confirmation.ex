@@ -5,9 +5,11 @@ defmodule GroupherServer.CMS.Articles.Commands.PublishConfirmation do
       publish action -> Confirmation.encode -> Receipt -> Confirmation.decode
   """
 
-  @behaviour GroupherServer.CMS.Command.ConfirmationCodec
+  alias GroupherServer.CMS
 
-  alias GroupherServer.CMS.Command.Confirmation, as: Codec
+  alias CMS.Command.Confirmation, as: Codec
+
+  @behaviour CMS.Command.ConfirmationCodec
 
   @schema_version 1
   @fields [

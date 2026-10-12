@@ -3,7 +3,9 @@ Code.require_file(Path.expand("../../../credo_checks/no_direct_domain_front_desk
 defmodule GroupherServer.Test.Credo.NoDirectDomainFrontDeskTest do
   use Credo.Test.Case, async: false
 
-  alias GroupherServer.Credo.Check.NoDirectDomainFrontDesk
+  alias GroupherServer.Credo
+
+  alias Credo.Check.NoDirectDomainFrontDesk
 
   setup_all do
     {:ok, _apps} = Application.ensure_all_started(:credo)

@@ -10,15 +10,13 @@ defmodule GroupherServer.Jobs.ArticleInsightsAggregation do
     max_attempts: GroupherServer.Jobs.Config.max_attempts(:article_insights_aggregation),
     unique: GroupherServer.Jobs.Config.unique(:article_insights_aggregation)
 
-  alias GroupherServer.Analysis
-  alias Analysis.{Aggregator, Config, Maintenance}
-
+  @doc false
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
-    case Aggregator.drain() do
+    case GroupherServer.Analysis.aggregator_drain() do
       {:ok, _count, true} ->
         emit_metrics()
-        {:snooze, Config.aggregation_snooze_seconds()}
+        {:snooze, GroupherServer.Analysis.config_aggregation_snooze_seconds()}
 
       {:ok, _count, false} ->
         emit_metrics()
@@ -33,7 +31,7 @@ defmodule GroupherServer.Jobs.ArticleInsightsAggregation do
   defp emit_metrics do
     :telemetry.execute(
       [:groupher, :analysis, :article_insights, :metrics],
-      Maintenance.metrics(),
+      GroupherServer.Analysis.maintenance_metrics(),
       %{}
     )
   end

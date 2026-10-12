@@ -5,8 +5,10 @@ defmodule GroupherServerWeb.Resolvers.CMS.Activity do
       GraphQL activity field -> this resolver -> Activity facade
   """
 
+  alias GroupherServer.CMS
+
   alias GroupherServer.Activity
-  alias GroupherServer.CMS.Model.Community
+  alias CMS.Model.Community
 
   def article_logs(_root, %{article: article} = args, info) do
     actor = Map.get(info.context, :cur_user)

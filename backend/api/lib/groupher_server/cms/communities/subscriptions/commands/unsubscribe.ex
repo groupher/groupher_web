@@ -9,28 +9,37 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Commands.Unsubscribe do
   alias Accounts.Model.User
   alias CMS.{Command, Gate}
   alias CMS.Communities
-  alias CMS.Communities.ErrorCat
+  alias CMS.Communities.{ErrorCat, Subscriptions.Commands.Support}
   alias CMS.Communities.Subscriptions.{Confirmation, Persist}
-  alias CMS.Communities.Subscriptions.Commands.Support
   alias CMS.Model.Community
   alias Helper.T
 
   @spec execute(Community.t() | String.t(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Community.t())
   def execute(community_ref, %User{} = actor, command_id) do
-    with {:ok, community} <- Support.community(community_ref) do
-      command = %Command{
-        actor: actor,
-        command_id: command_id,
-        operation: :community_unsubscribe,
-        target: community,
-        params: %{community_id: community.id}
-      }
+    result =
+      with {:ok, community} <- Support.community(community_ref) do
+        command = %Command{
+          actor: actor,
+          command_id: command_id,
+          operation: :community_unsubscribe,
+          target: community,
+          params: %{community_id: community.id}
+        }
 
-      with {:ok, confirmation} <-
-             Command.execute(command, action: &action/1, confirmation: Confirmation) do
-        Support.community_result(confirmation)
+        with {:ok, confirmation} <-
+               Command.execute(command, action: &action/1, confirmation: Confirmation) do
+          Support.community_result(confirmation)
+        end
       end
+
+    case result do
+      {:ok, _community} ->
+        GroupherServer.FrontDesk.revalidate_user(actor.login)
+        result
+
+      _ ->
+        result
     end
   end
 
@@ -42,7 +51,7 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Commands.Unsubscribe do
         with true <- Persist.subscribed?(canonical, actor),
              {:ok, _} <- Persist.unsubscribe(canonical, actor),
              {:ok, _} <- Communities.Count.update(canonical, actor, :subscribers_count, :dec),
-             {:ok, _} <- Accounts.Profiles.update_subscribe_state(actor) do
+             {:ok, _} <- Accounts.profiles_update_subscribe_state(actor) do
           {:ok, Support.confirmation(Confirmation, canonical.id, command_id)}
         else
           false -> {:error, ErrorCat.custom("community subscription not found")}

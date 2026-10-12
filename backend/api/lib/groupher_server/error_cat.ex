@@ -1,168 +1,66 @@
 defmodule GroupherServer.ErrorCat do
   @moduledoc """
-  Global ErrorCat registry and lookup API.
+  Public boundary for structured application errors and context-owned catalogs.
 
-  Contexts own declarations; this module owns only the global namespace/range
-  contract, reserved definitions, cross-catalog validation, and standard error
-  formatting for protocol boundaries such as GraphQL.
+  Context catalogs install the public DSL through `use GroupherServer.ErrorCat`;
+  runtime callers use this facade for registry lookup, validation, and GraphQL
+  formatting without depending on the DSL implementation.
 
-  Context catalog -> global registry and validation -> protocol error.
+      catalog / runtime caller -> ErrorCat -> DSL or registry workflow -> structured error
   """
 
-  alias GroupherServer.ErrorCat
-  alias ErrorCat.{Error, Registry, Validator}
-
-  @ranges %{
-    {:web} => 4000..4199,
-    {:account, :authentication} => 4300..4349,
-    {:cms, :passport} => 4350..4399,
-    {:cms, :comment} => 4400..4499,
-    {:cms} => 4500..4599,
-    {:cms, :gate} => 4600..4699,
-    {:account, :collection} => 4700..4799,
-    {:account, :fans} => 4800..4899,
-    {:cms, :interaction} => 4900..4999,
-    {:cms, :community} => 5500..5599,
-    {:cms, :asset} => 5600..5699,
-    {:cms, :wallpaper} => 5700..5799,
-    {:cms, :article} => 6000..6099,
-    {:activity} => 6100..6199
-  }
-
-  @reserved [
-    %{
-      namespace: {:web},
-      reason: :default,
-      code: 4000,
-      retryable: false,
-      actions: [],
-      message_key: "web.default"
-    },
-    %{
-      namespace: {:web},
-      reason: :custom,
-      code: 4001,
-      retryable: false,
-      actions: [],
-      message_key: "web.custom"
-    },
-    %{
-      namespace: {:cms, :gate},
-      reason: :gate_unknown,
-      code: 4699,
-      retryable: false,
-      actions: [],
-      message_key: "cms.gate.gate_unknown"
-    }
-  ]
-
-  @catalogs [
-    GroupherServerWeb.ErrorCat,
-    GroupherServer.Accounts.Profiles.ErrorCat,
-    GroupherServer.Accounts.CollectFolders.ErrorCat,
-    GroupherServer.Accounts.Fans.ErrorCat,
-    GroupherServer.CMS.ErrorCat,
-    GroupherServer.CMS.Gate.ErrorCat,
-    GroupherServer.CMS.Passport.ErrorCat,
-    GroupherServer.CMS.Comments.ErrorCat,
-    GroupherServer.CMS.Interactions.ErrorCat,
-    GroupherServer.CMS.Communities.ErrorCat,
-    GroupherServer.CMS.Assets.ErrorCat,
-    GroupherServer.CMS.Wallpaper.ErrorCat,
-    GroupherServer.CMS.Articles.ErrorCat,
-    GroupherServer.Activity.ErrorCat
-  ]
-
-  def ranges, do: @ranges
-  def reserved, do: @reserved
-  def catalogs, do: @catalogs
-
-  def validate!, do: Validator.validate!(@ranges, @reserved, @catalogs)
-
-  def definition(%Error{namespace: namespace, reason: reason}) do
-    definition(namespace, reason)
-  end
-
-  def definition(namespace, reason) when is_tuple(namespace) and is_atom(reason) do
-    case Registry.find(@catalogs, namespace, reason) do
-      nil ->
-        case Enum.find(@reserved, &(&1.namespace == namespace and &1.reason == reason)) do
-          nil ->
-            raise ArgumentError,
-                  "unknown ErrorCat definition: #{inspect(namespace)}.#{inspect(reason)}"
-
-          definition ->
-            definition
-        end
-
-      entry ->
-        entry
+  @doc "Installs the public ErrorCat catalog DSL in a context-owned catalog module."
+  defmacro __using__(opts) do
+    quote do
+      use GroupherServer.ErrorCat.Domain, unquote(opts)
     end
   end
 
-  def definition(namespace, reason) do
-    raise ArgumentError,
-          "invalid ErrorCat definition lookup: #{inspect(namespace)}.#{inspect(reason)}"
-  end
+  @doc "Delegates catalogs/0 to the Context workflow owner."
+  defdelegate catalogs(), to: GroupherServer.ErrorCat.Workflow
 
-  def declared?(namespace, reason) when is_tuple(namespace) and is_atom(reason) do
-    match?(%{}, Registry.find(@catalogs, namespace, reason)) or
-      Enum.any?(@reserved, &(&1.namespace == namespace and &1.reason == reason))
-  end
+  @doc "Delegates code/1 to the Context workflow owner."
+  defdelegate code(arg1), to: GroupherServer.ErrorCat.Workflow
 
-  def declared?(_, _), do: false
+  @doc "Delegates custom/0 to the Context workflow owner."
+  defdelegate custom(), to: GroupherServer.ErrorCat.Workflow
 
-  def valid?(%Error{} = error) do
-    definition = definition(error.namespace, error.reason)
+  @doc "Delegates custom/1 to the Context workflow owner."
+  defdelegate custom(arg1), to: GroupherServer.ErrorCat.Workflow
 
-    Enum.all?([:namespace, :reason, :code, :retryable, :actions, :message_key], fn field ->
-      Map.fetch!(definition, field) == Map.fetch!(error, field)
-    end)
-  rescue
-    ArgumentError -> false
-  end
+  @doc "Delegates declared?/2 to the Context workflow owner."
+  defdelegate declared?(arg1, arg2), to: GroupherServer.ErrorCat.Workflow
 
-  def valid?(_), do: false
+  @doc "Delegates default/0 to the Context workflow owner."
+  defdelegate default(), to: GroupherServer.ErrorCat.Workflow
 
-  def code(%Error{code: code}), do: code
+  @doc "Delegates default/1 to the Context workflow owner."
+  defdelegate default(arg1), to: GroupherServer.ErrorCat.Workflow
 
-  @doc "Formats a declared ErrorCat error for the GraphQL error boundary."
-  @spec gq_format(Error.t() | {:error, Error.t()} | {:error, keyword()}) :: {:error, keyword()}
-  def gq_format({:error, [message: _message, code: _code]} = error), do: error
-  def gq_format({:error, error}), do: gq_format(error)
+  @doc "Delegates definition/1 to the Context workflow owner."
+  defdelegate definition(arg1), to: GroupherServer.ErrorCat.Workflow
 
-  def gq_format(%Error{} = error) do
-    unless valid?(error) do
-      raise ArgumentError,
-            "invalid ErrorCat.Error at the GraphQL boundary: #{inspect(error)}"
-    end
+  @doc "Delegates definition/2 to the Context workflow owner."
+  defdelegate definition(arg1, arg2), to: GroupherServer.ErrorCat.Workflow
 
-    %{reason: reason, details: details, code: code} = error
+  @doc "Delegates gate_unknown/0 to the Context workflow owner."
+  defdelegate gate_unknown(), to: GroupherServer.ErrorCat.Workflow
 
-    message =
-      cond do
-        is_binary(details) -> details
-        is_map(details) and is_binary(details[:message]) -> details[:message]
-        true -> Atom.to_string(reason)
-      end
+  @doc "Delegates gate_unknown/1 to the Context workflow owner."
+  defdelegate gate_unknown(arg1), to: GroupherServer.ErrorCat.Workflow
 
-    {:error, [message: message, code: code]}
-  end
+  @doc "Delegates gq_format/1 to the Context workflow owner."
+  defdelegate gq_format(arg1), to: GroupherServer.ErrorCat.Workflow
 
-  def gq_format(value) do
-    raise ArgumentError,
-          "ErrorCat.Error is required at the GraphQL boundary, got: #{inspect(value)}"
-  end
+  @doc "Delegates ranges/0 to the Context workflow owner."
+  defdelegate ranges(), to: GroupherServer.ErrorCat.Workflow
 
-  def custom(details \\ nil), do: reserved_error({:web}, :custom, details)
-  def default(details \\ nil), do: reserved_error({:web}, :default, details)
+  @doc "Delegates reserved/0 to the Context workflow owner."
+  defdelegate reserved(), to: GroupherServer.ErrorCat.Workflow
 
-  def gate_unknown(details \\ nil) do
-    reserved_error({:cms, :gate}, :gate_unknown, details)
-  end
+  @doc "Delegates valid?/1 to the Context workflow owner."
+  defdelegate valid?(arg1), to: GroupherServer.ErrorCat.Workflow
 
-  defp reserved_error(namespace, reason, details) do
-    definition = definition(namespace, reason)
-    struct(Error, Map.put(definition, :details, details))
-  end
+  @doc "Delegates validate!/0 to the Context workflow owner."
+  defdelegate validate!(), to: GroupherServer.ErrorCat.Workflow
 end
