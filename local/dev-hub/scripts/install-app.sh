@@ -24,6 +24,10 @@ validate_cargo_mirror_mode() {
       fail "unsupported GROUPHER_CARGO_MIRROR value: $CARGO_MIRROR_MODE (expected official, rsproxy, or auto)"
       ;;
   esac
+
+  if [[ "$CARGO_MIRROR_MODE" == 'rsproxy' ]]; then
+    rsproxy_is_reachable || fail 'RsProxy is unavailable.'
+  fi
 }
 
 require_macos_build_tools() {
@@ -97,7 +101,6 @@ build_desktop_app() {
       echo 'Using the official crates.io registry.'
       ;;
     rsproxy)
-      rsproxy_is_reachable || fail 'RsProxy is unavailable.'
       use_rsproxy='true'
       ;;
     auto)
