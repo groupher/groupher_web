@@ -5,6 +5,7 @@ import type { TPublicService } from '@shared/contracts'
 
 import {
   DISCONNECTED_SERVICE_REASON,
+  getServiceDisplayStatus,
   isServiceDisconnected,
   projectDisconnectedServices,
 } from './service-connection-state'
@@ -59,5 +60,6 @@ describe('projectDisconnectedServices', () => {
       },
     ])
     assert.equal(isServiceDisconnected(projected[0]!), true)
+    assert.equal(getServiceDisplayStatus(projected[0]!), 'disconnected')
   })
 })

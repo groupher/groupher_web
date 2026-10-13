@@ -12,7 +12,11 @@ import { AnimatePresence, motion, MotionConfig } from 'motion/react'
 
 import { SERVICE_DEPLOYMENT_TARGETS } from '@/lib/infra-links'
 import { openPlatformUrl } from '@/lib/open-platform-url'
-import { isServiceDisconnected } from '@/lib/service-connection-state'
+import {
+  getServiceDisplayStatus,
+  isServiceDisconnected,
+  type TServiceDisplayStatus,
+} from '@/lib/service-connection-state'
 import { getServiceOpenUrl } from '@/lib/service-open-url'
 
 import { ServiceActionButton } from './ServiceActionButton'
@@ -42,9 +46,7 @@ type TProps = {
   onOpenExternal: (id: string) => void
 }
 
-type TDisplayStatus = TPublicService['status'] | 'disconnected'
-
-const STATUS_LABEL: Record<TDisplayStatus, string> = {
+const STATUS_LABEL: Record<TServiceDisplayStatus, string> = {
   disconnected: 'Disconnected',
   stopped: 'Stopped',
   starting: 'Starting',
@@ -80,14 +82,13 @@ export function ServiceCard({
   onOpenExternal,
 }: TProps) {
   const disconnected = isServiceDisconnected(service)
-  const displayStatus: TDisplayStatus = disconnected
-    ? 'disconnected'
-    : pending && (service.status === 'stopped' || service.status === 'unavailable')
+  const displayStatus: TServiceDisplayStatus =
+    !disconnected && pending && (service.status === 'stopped' || service.status === 'unavailable')
       ? 'starting'
-      : service.status
+      : getServiceDisplayStatus(service)
   const active =
     !disconnected && (pending || ['starting', 'running', 'stopping'].includes(service.status))
-  const stoppable = !disconnected && ['starting', 'running'].includes(service.status)
+  const stoppable = ['starting', 'running'].includes(service.status)
   const disabled =
     disconnected ||
     pending ||

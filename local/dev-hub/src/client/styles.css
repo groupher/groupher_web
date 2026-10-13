@@ -3295,6 +3295,7 @@ button.service-status-label:active {
 
 .dependency-status-dot--stopped,
 .dependency-status-dot--error,
+.dependency-status-dot--disconnected,
 .dependency-status-dot--unavailable {
   background: var(--color-destructive);
 }
@@ -3341,6 +3342,7 @@ button.service-status-label:active {
 
 .dependency-status-label--stopped,
 .dependency-status-label--error,
+.dependency-status-label--disconnected,
 .dependency-status-label--unavailable {
   color: var(--color-destructive-foreground);
 }

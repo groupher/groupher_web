@@ -1,12 +1,15 @@
 import type { TPublicService } from '@shared/contracts'
 
+import { getServiceDisplayStatus, type TServiceDisplayStatus } from '@/lib/service-connection-state'
+
 type TProps = {
   title: string
   empty: string
   services: TPublicService[]
 }
 
-const STATUS_LABEL: Record<TPublicService['status'], string> = {
+const STATUS_LABEL: Record<TServiceDisplayStatus, string> = {
+  disconnected: 'Disconnected',
   stopped: 'Stopped',
   starting: 'Starting',
   running: 'Running',
@@ -27,20 +30,23 @@ export function DependencySection({ title, empty, services }: TProps) {
         <div className='dependency-empty'>{empty}</div>
       ) : (
         <ul className='dependency-list'>
-          {services.map((service) => (
-            <li key={service.id}>
-              <span className={`dependency-status-dot dependency-status-dot--${service.status}`} />
-              <span className='dependency-copy'>
-                <strong>{service.name}</strong>
-                <span>{service.description}</span>
-              </span>
-              <span
-                className={`dependency-status-label dependency-status-label--${service.status}`}
-              >
-                {STATUS_LABEL[service.status]}
-              </span>
-            </li>
-          ))}
+          {services.map((service) => {
+            const displayStatus = getServiceDisplayStatus(service)
+            return (
+              <li key={service.id}>
+                <span className={`dependency-status-dot dependency-status-dot--${displayStatus}`} />
+                <span className='dependency-copy'>
+                  <strong>{service.name}</strong>
+                  <span>{service.description}</span>
+                </span>
+                <span
+                  className={`dependency-status-label dependency-status-label--${displayStatus}`}
+                >
+                  {STATUS_LABEL[displayStatus]}
+                </span>
+              </li>
+            )
+          })}
         </ul>
       )}
     </section>

@@ -2,6 +2,7 @@ import type { TGitDiffScope, TGitSnapshot, TPublicService } from '@shared/contra
 import { GitBranch } from 'lucide-react'
 
 import { INFRA_PLATFORMS } from '@/lib/infra-links'
+import { isServiceDisconnected } from '@/lib/service-connection-state'
 
 import { InfraPlatformMark } from './InfraPlatformMark'
 
@@ -14,8 +15,10 @@ type TProps = {
 }
 
 export function HubStatusPanel({ services, git, connected, onOpenDiff, onOpenInfra }: TProps) {
-  const activeCount = services.filter((service) =>
-    ['running', 'starting', 'external'].includes(service.status),
+  const activeCount = services.filter(
+    (service) =>
+      !isServiceDisconnected(service) &&
+      ['running', 'starting', 'external'].includes(service.status),
   ).length
   const branch = git?.branch || git?.head?.slice(0, 8) || 'no commits'
   const hasTrackedChanges = Boolean(git?.changedFiles)
