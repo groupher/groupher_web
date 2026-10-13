@@ -1,6 +1,6 @@
 # Wallpaper Seed Fixture
 
-> 状态：implemented
+> 状态：本地实现完成，线上验收待完成
 >
 > 目标：让 Community seed 在本地和线上都能生成真正可访问的 Wallpaper 图片，而不是只写入 Dashboard wallpaper 配置。
 

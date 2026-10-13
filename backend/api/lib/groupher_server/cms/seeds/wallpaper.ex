@@ -98,6 +98,7 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
                  batch_ref: prepared.batch_ref,
                  command_id:
                    seed_command_id(community.id, theme, fixture.version, base_version, :publish),
+                 fixture_version: fixture.version,
                  settings: Map.fetch!(Wallpaper.wallpaper_settings(community.id), theme),
                  theme: theme
                },
@@ -150,7 +151,8 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
     snapshot_ref = state && Map.get(state, active_field(theme))
 
     with ref when is_binary(ref) <- snapshot_ref,
-         %WallpaperSnapshot{theme: ^theme} = _snapshot <-
+         %WallpaperSnapshot{fixture_version: fixture_version, theme: ^theme} = _snapshot
+         when fixture_version == fixture.version <-
            Repo.get_by(WallpaperSnapshot, public_ref: ref, community_id: community_id),
          images when length(images) == 4 <- snapshot_images(ref),
          {:ok, true} <- snapshot_matches_fixture?(images, fixture, community_id, theme, opts) do

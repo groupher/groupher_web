@@ -142,6 +142,7 @@ defmodule GroupherServer.Test.CMS.Seeds.WallpaperTest do
 
     snapshots = Repo.all(WallpaperSnapshot) |> Enum.filter(&(&1.community_id == community.id))
     assert length(snapshots) == 2
+    assert Enum.all?(snapshots, &(&1.fixture_version == "default-v1"))
 
     snapshot_refs = Enum.map(snapshots, & &1.public_ref)
 
@@ -154,5 +155,14 @@ defmodule GroupherServer.Test.CMS.Seeds.WallpaperTest do
 
     assert {:ok, :pass} = WallpaperSeed.seed(community, opts)
     assert Wallpaper.wallpaper(community.id).version == 2
+
+    Enum.each(snapshots, fn snapshot ->
+      snapshot
+      |> Ecto.Changeset.change(fixture_version: nil)
+      |> Repo.update!()
+    end)
+
+    assert {:ok, :pass} = WallpaperSeed.seed(community, opts)
+    assert Wallpaper.wallpaper(community.id).version == 4
   end
 end
