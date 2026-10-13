@@ -1,5 +1,7 @@
 import type { TPublicService } from '@shared/contracts'
 
+import { isServiceDisconnected } from './service-connection-state'
+
 const STARTED_DEPENDENCY_STATUSES = new Set<TPublicService['status']>(['running', 'external'])
 
 export type TServiceDependencyState = {
@@ -18,7 +20,11 @@ const dependencyMissing = (
   serviceById: Map<string, TPublicService>,
 ): boolean => {
   const dependency = serviceById.get(dependencyId)
-  return !dependency || !STARTED_DEPENDENCY_STATUSES.has(dependency.status)
+  return (
+    !dependency ||
+    isServiceDisconnected(dependency) ||
+    !STARTED_DEPENDENCY_STATUSES.has(dependency.status)
+  )
 }
 
 export const buildServiceDependencyState = (

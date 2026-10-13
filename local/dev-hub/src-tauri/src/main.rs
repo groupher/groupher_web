@@ -199,6 +199,11 @@ fn spawn_hub(app: &tauri::AppHandle) -> Result<PathBuf, String> {
         .child
         .lock()
         .unwrap_or_else(|poisoned| poisoned.into_inner());
+    if state.shutting_down.load(Ordering::Acquire) {
+        drop(owned_child);
+        terminate_child(child, false);
+        return Err("Dev Hub launcher is shutting down.".to_owned());
+    }
     *owned_child = Some(child);
 
     Ok(log_path)
@@ -325,12 +330,18 @@ fn terminate_owned_hub(app: &tauri::AppHandle) {
             .unwrap_or_else(|poisoned| poisoned.into_inner());
         owned_child.take()
     };
-    let Some(mut child) = child else {
+    let Some(child) = child else {
         return;
     };
 
+    terminate_child(child, true);
+}
+
+fn terminate_child(mut child: Child, request_shutdown: bool) {
     let process_group = -(child.id() as i32);
-    let _ = request_hub_shutdown();
+    if request_shutdown {
+        let _ = request_hub_shutdown();
+    }
 
     unsafe {
         libc::kill(process_group, libc::SIGTERM);

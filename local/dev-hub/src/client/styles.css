@@ -1218,6 +1218,7 @@ button.service-status-label:active {
 
 .service-status-label--stopped,
 .service-status-label--error,
+.service-status-label--disconnected,
 .service-status-label--unavailable {
   color: #d24d4d;
 }

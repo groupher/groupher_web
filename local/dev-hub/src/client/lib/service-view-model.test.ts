@@ -3,6 +3,7 @@ import { describe, it } from 'node:test'
 
 import type { TPublicService } from '@shared/contracts'
 
+import { projectDisconnectedServices } from './service-connection-state'
 import { buildServiceViewModel } from './service-view-model'
 
 const service = (
@@ -75,6 +76,20 @@ describe('buildServiceViewModel', () => {
       hasOptionalDependencyIssue: true,
       hasRequiredDependencyIssue: false,
       hasStartedRequiredDependencies: true,
+    })
+  })
+
+  it('does not treat a disconnected dependency as live from its stale runtime status', () => {
+    const [phoenix] = projectDisconnectedServices([service('phoenix', 'running')])
+    const model = buildServiceViewModel([
+      service('community', 'running', { requiredDependencies: ['phoenix'] }),
+      phoenix!,
+    ])
+
+    assert.deepEqual(model.dependencyStateByServiceId.get('community'), {
+      hasOptionalDependencyIssue: false,
+      hasRequiredDependencyIssue: true,
+      hasStartedRequiredDependencies: false,
     })
   })
 })

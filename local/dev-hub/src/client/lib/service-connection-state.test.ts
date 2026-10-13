@@ -5,6 +5,7 @@ import type { TPublicService } from '@shared/contracts'
 
 import {
   DISCONNECTED_SERVICE_REASON,
+  isServiceDisconnected,
   projectDisconnectedServices,
 } from './service-connection-state'
 
@@ -44,11 +45,12 @@ const runningService: TPublicService = {
 }
 
 describe('projectDisconnectedServices', () => {
-  it('marks stale service snapshots unavailable and disables controls', () => {
-    assert.deepEqual(projectDisconnectedServices([runningService]), [
+  it('marks stale service snapshots disconnected without changing their runtime status', () => {
+    const projected = projectDisconnectedServices([runningService])
+
+    assert.deepEqual(projected, [
       {
         ...runningService,
-        status: 'unavailable',
         pid: null,
         startedAt: null,
         externalProcess: null,
@@ -56,5 +58,6 @@ describe('projectDisconnectedServices', () => {
         unavailableReason: DISCONNECTED_SERVICE_REASON,
       },
     ])
+    assert.equal(isServiceDisconnected(projected[0]!), true)
   })
 })

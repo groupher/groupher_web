@@ -12,6 +12,7 @@ import { AnimatePresence, motion, MotionConfig } from 'motion/react'
 
 import { SERVICE_DEPLOYMENT_TARGETS } from '@/lib/infra-links'
 import { openPlatformUrl } from '@/lib/open-platform-url'
+import { isServiceDisconnected } from '@/lib/service-connection-state'
 import { getServiceOpenUrl } from '@/lib/service-open-url'
 
 import { ServiceActionButton } from './ServiceActionButton'
@@ -41,7 +42,10 @@ type TProps = {
   onOpenExternal: (id: string) => void
 }
 
-const STATUS_LABEL: Record<TPublicService['status'], string> = {
+type TDisplayStatus = TPublicService['status'] | 'disconnected'
+
+const STATUS_LABEL: Record<TDisplayStatus, string> = {
+  disconnected: 'Disconnected',
   stopped: 'Stopped',
   starting: 'Starting',
   running: 'Running',
@@ -75,16 +79,27 @@ export function ServiceCard({
   onOpenDependencies,
   onOpenExternal,
 }: TProps) {
-  const displayStatus =
-    pending && (service.status === 'stopped' || service.status === 'unavailable')
+  const disconnected = isServiceDisconnected(service)
+  const displayStatus: TDisplayStatus = disconnected
+    ? 'disconnected'
+    : pending && (service.status === 'stopped' || service.status === 'unavailable')
       ? 'starting'
       : service.status
-  const active = pending || ['starting', 'running', 'stopping'].includes(service.status)
-  const stoppable = ['starting', 'running'].includes(service.status)
+  const active =
+    !disconnected && (pending || ['starting', 'running', 'stopping'].includes(service.status))
+  const stoppable = !disconnected && ['starting', 'running'].includes(service.status)
   const disabled =
-    pending || service.status === 'stopping' || !service.canStart || service.status === 'external'
+    disconnected ||
+    pending ||
+    service.status === 'stopping' ||
+    !service.canStart ||
+    service.status === 'external'
   const restartDisabled =
-    pending || service.status === 'stopping' || !service.canStart || service.status === 'external'
+    disconnected ||
+    pending ||
+    service.status === 'stopping' ||
+    !service.canStart ||
+    service.status === 'external'
   const emptyText =
     pending && (service.status === 'stopped' || service.status === 'unavailable')
       ? `${service.name} is starting.`
@@ -106,9 +121,10 @@ export function ServiceCard({
           : 'Start'
   const browserUrl = metrics?.browser?.url
   const openUrl = getServiceOpenUrl(service, metrics)
-  const showAddress = service.status === 'running' || Boolean(browserUrl)
+  const showAddress = !disconnected && (service.status === 'running' || Boolean(browserUrl))
   const deploymentTarget = SERVICE_DEPLOYMENT_TARGETS[service.id]
-  const externalDetailsAvailable = service.status === 'external' && Boolean(service.externalProcess)
+  const externalDetailsAvailable =
+    !disconnected && service.status === 'external' && Boolean(service.externalProcess)
 
   return (
     <MotionConfig reducedMotion='user'>
