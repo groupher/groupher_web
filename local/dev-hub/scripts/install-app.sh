@@ -9,6 +9,8 @@ APP_IDENTIFIER='com.groupher.devhub'
 BUILT_APP="$REPO_ROOT/local/dev-hub/src-tauri/target/release/bundle/macos/$APP_NAME"
 INSTALLED_APP="/Applications/$APP_NAME"
 LSREGISTER='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister'
+CARGO_MIRROR_MODE="${GROUPHER_CARGO_MIRROR:-official}"
+RSPROXY_CONFIG_URL='https://rsproxy.cn/index/config.json'
 
 fail() {
   echo "Dev Hub app setup failed: $*" >&2
@@ -71,6 +73,53 @@ run_pnpm() {
   fi
 }
 
+rsproxy_is_reachable() {
+  curl --proto '=https' --tlsv1.2 --fail --silent --show-error \
+    --connect-timeout 5 --max-time 10 \
+    --output /dev/null "$RSPROXY_CONFIG_URL"
+}
+
+build_desktop_app() {
+  local -a cargo_args=(--locked)
+  local use_rsproxy='false'
+
+  case "$CARGO_MIRROR_MODE" in
+    official)
+      echo 'Using the official crates.io registry.'
+      ;;
+    rsproxy|auto)
+      if rsproxy_is_reachable; then
+        use_rsproxy='true'
+      else
+        echo 'RsProxy is unavailable; using the official crates.io registry.'
+      fi
+      ;;
+    *)
+      fail "unsupported GROUPHER_CARGO_MIRROR value: $CARGO_MIRROR_MODE (expected official, rsproxy, or auto)"
+      ;;
+  esac
+
+  if [[ "$use_rsproxy" == 'true' ]]; then
+    echo 'Using the RsProxy crates.io mirror.'
+    cargo_args+=(
+      --config 'source.crates-io.replace-with="rsproxy-sparse"'
+      --config 'source.rsproxy-sparse.registry="sparse+https://rsproxy.cn/index/"'
+    )
+  fi
+
+  if run_pnpm --filter @groupher/local-dev-hub run desktop:build -- "${cargo_args[@]}"; then
+    return
+  fi
+
+  if [[ "$use_rsproxy" == 'true' ]]; then
+    echo 'RsProxy build failed; retrying with the official crates.io registry…' >&2
+    run_pnpm --filter @groupher/local-dev-hub run desktop:build -- --locked
+    return
+  fi
+
+  fail 'the desktop application build failed.'
+}
+
 install_app_bundle() {
   [[ -d "$BUILT_APP" ]] || fail "the build did not produce $BUILT_APP"
   codesign --verify --deep --strict "$BUILT_APP" ||
@@ -116,9 +165,7 @@ echo 'Building the production Dev Hub…'
 run_pnpm --filter @groupher/local-dev-hub run build
 
 echo 'Building the signed Dev Hub application…'
-run_pnpm --filter @groupher/local-dev-hub run desktop:build -- \
-  --config 'source.crates-io.replace-with="rsproxy-sparse"' \
-  --config 'source.rsproxy-sparse.registry="sparse+https://rsproxy.cn/index/"'
+build_desktop_app
 
 echo 'Installing and opening Groupher Dev Hub…'
 install_app_bundle
