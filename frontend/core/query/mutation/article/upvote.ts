@@ -2,19 +2,19 @@
  * Defines the retry-safe optimistic operation for setting Article upvote state.
  *
  *   UI set-state intent
- *     -> optimistic private viewer patch
+ *     -> optimistic private viewer + active public count patches
  *     -> commandId GraphQL mutation
  *     -> committed stats/private reconciliation + confirmed receipt
  *
- * Public counts are never changed optimistically. Failures roll back only tracked private changes;
- * successful payloads remain authoritative even when their two owner revisions differ.
+ * Public counts are only patched in active queries and converge through an authority refetch on
+ * failure. Successful payloads remain authoritative even when their two owner revisions differ.
  */
 import type { QueryClient } from '@tanstack/react-query'
 
 import { THREAD } from '~/const/thread'
 import { browserGraphQLRequest } from '~/graphql/client'
 import type { ReactionOutcome } from '~/graphql/generated/graphql'
-import type { TArticle } from '~/spec'
+import type { TArticle, TArticleStats } from '~/spec'
 
 import { articlePathKey, articlePathOf, type TArticlePath } from '../../articlePath'
 import { articleStatsCache } from '../../articleStats'
@@ -26,6 +26,7 @@ import {
   writeArticleUpvoteReceipt,
 } from '../articleReceipt'
 import type {
+  TAuthorityRefetch,
   TOptimisticChange,
   TOptimisticPlan,
   TOptimisticToggleOperation,
@@ -47,6 +48,66 @@ import {
 
 type TArticleReactionResult = TArticleInteractionResult & {
   reactionOutcome: ReactionOutcome
+}
+
+const isTargetStats = (stats: TArticleStats, path: TArticlePath): boolean =>
+  stats.community === path.community &&
+  stats.thread === path.thread &&
+  String(stats.innerId) === String(path.innerId)
+
+const patchActiveStatsChanges = (
+  queryClient: QueryClient,
+  path: TArticlePath,
+  nextViewerState: boolean,
+  context: TOperationContext,
+): Pick<TOptimisticPlan, 'changes' | 'refetchOnFailure'> => {
+  const changes: TOptimisticChange[] = []
+  const refetchOnFailure: TAuthorityRefetch[] = []
+  const articleKey = articlePathKey(path)
+
+  for (const query of articleStatsCache.queries(queryClient, path)) {
+    if (!query.isActive()) continue
+    const previous = queryClient.getQueryData<TArticleStats | TArticleStats[]>(query.queryKey)
+    const target = Array.isArray(previous)
+      ? previous.find((stats) => isTargetStats(stats, path))
+      : previous
+    if (!target || !isTargetStats(target, path)) continue
+
+    const before = target.upvotesCount
+    const optimistic = Math.max(0, before + (nextViewerState ? 1 : -1))
+    if (optimistic === before) continue
+
+    const updatedAt = query.state.dataUpdatedAt
+    queryClient.setQueryData<TArticleStats | TArticleStats[]>(
+      query.queryKey,
+      (current) => {
+        if (Array.isArray(current)) {
+          return current.map((stats) =>
+            isTargetStats(stats, path) ? { ...stats, upvotesCount: optimistic } : stats,
+          )
+        }
+        return current && isTargetStats(current, path)
+          ? { ...current, upvotesCount: optimistic }
+          : current
+      },
+      { updatedAt },
+    )
+    changes.push({
+      type: 'field',
+      queryKey: query.queryKey,
+      entityKey: articleKey,
+      field: 'upvotesCount',
+      before,
+      optimistic,
+      commandId: context.commandId,
+      rollback: 'refetch',
+      // Aggregate authority is restored by refetchOnFailure.
+      restore: () => undefined,
+    })
+    refetchOnFailure.push({ queryKey: query.queryKey, exact: true })
+  }
+
+  return { changes, refetchOnFailure }
 }
 
 const patchViewerChanges = (
@@ -165,7 +226,8 @@ export const articleUpvoteOperation = {
   ): TOptimisticPlan => {
     const path = articlePathOf(article)
     const articleKey = articlePathKey(path)
-    const changes: TOptimisticChange[] = []
+    const statsPlan = patchActiveStatsChanges(context.queryClient, path, nextViewerState, context)
+    const changes: TOptimisticChange[] = [...statsPlan.changes]
     if (context.accountRef) {
       changes.push(
         ...patchViewerChanges(
@@ -179,7 +241,7 @@ export const articleUpvoteOperation = {
     }
     return {
       changes,
-      refetchOnFailure: [],
+      refetchOnFailure: statsPlan.refetchOnFailure,
     }
   },
   execute: (context: TOperationContext, article: TArticle, nextViewerState: boolean) =>

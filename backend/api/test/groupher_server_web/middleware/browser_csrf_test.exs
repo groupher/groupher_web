@@ -33,6 +33,17 @@ defmodule GroupherServerWeb.Middleware.BrowserCsrfTest do
     refute conn.halted
   end
 
+  test "allows an authenticated mutation from the local Community origin" do
+    conn =
+      request(:post, %{"query" => "mutation Update { updateProfile(profile: {}) { id } }"}, [
+        {"content-type", "application/json"},
+        {"origin", "https://community.groupher.localhost"},
+        {"x-groupher-csrf", "1"}
+      ])
+
+    refute conn.halted
+  end
+
   test "uses operationName when a document contains multiple operations" do
     query = "query Viewer { me { id } } mutation Update { updateProfile(profile: {}) { id } }"
     conn = request(:post, %{"query" => query, "operationName" => "Viewer"})

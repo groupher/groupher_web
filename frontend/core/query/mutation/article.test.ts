@@ -1,4 +1,4 @@
-import { QueryClient } from '@tanstack/react-query'
+import { QueryClient, QueryObserver } from '@tanstack/react-query'
 
 import { THREAD } from '~/const/thread'
 import type { TArticle, TPagedPosts } from '~/spec'
@@ -229,14 +229,26 @@ describe('article query mutation helpers', () => {
     expect(queryClient.getQueryData<TArticle>(detailKey)).toEqual(article)
   })
 
-  it('rolls back viewer state without touching public stats on failure', async () => {
+  it('rolls back viewer state and refetches the public count on failure', async () => {
     const queryClient = setupClient()
+    const statsQuery = vi.fn(async () => stats)
+    const observer = new QueryObserver(queryClient, {
+      queryKey: statsKey,
+      queryFn: statsQuery,
+      staleTime: Number.POSITIVE_INFINITY,
+    })
+    const unsubscribe = observer.subscribe(() => undefined)
     browserGraphQLRequest.mockImplementationOnce(() => {
       throw new Error('network')
     })
 
-    await expect(executeArticleUpvote(queryClient, article, true)).rejects.toThrow('network')
+    try {
+      await expect(executeArticleUpvote(queryClient, article, true)).rejects.toThrow('network')
+    } finally {
+      unsubscribe()
+    }
 
+    expect(statsQuery).toHaveBeenCalledOnce()
     expect(queryClient.getQueryData<typeof stats>(statsKey)?.upvotesCount).toBe(3)
     expect(
       queryClient.getQueryData<Record<string, { viewerHasUpvoted: boolean }>>(viewerKey)?.[
@@ -290,15 +302,91 @@ describe('article query mutation helpers', () => {
     ).toBe(false)
   })
 
-  it('keeps public stats unchanged during the optimistic phase', () => {
+  it('optimistically increments the active public count and private viewer state', async () => {
     const queryClient = setupClient()
-    const context = { queryClient, accountRef: 'alice', commandId: 'op-count' }
-    const plan = articleUpvoteOperation.apply(context, article, true)
-    for (const change of plan.changes) markChange(queryClient, change)
+    const observer = new QueryObserver(queryClient, {
+      queryKey: statsKey,
+      queryFn: async () => stats,
+      staleTime: Number.POSITIVE_INFINITY,
+    })
+    const unsubscribe = observer.subscribe(() => undefined)
+    let resolveRequest: (value: unknown) => void = () => undefined
+    browserGraphQLRequest.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveRequest = resolve
+        }),
+    )
 
-    rollbackChanges(queryClient, plan.changes)
+    const pending = executeArticleUpvote(queryClient, article, true)
 
-    expect(queryClient.getQueryData<typeof stats>(statsKey)?.upvotesCount).toBe(3)
+    await vi.waitFor(() => {
+      expect(queryClient.getQueryData<typeof stats>(statsKey)?.upvotesCount).toBe(4)
+      expect(
+        queryClient.getQueryData<Record<string, { viewerHasUpvoted: boolean }>>(viewerKey)?.[
+          'home:POST:42'
+        ].viewerHasUpvoted,
+      ).toBe(true)
+    })
+
+    resolveRequest({ upvotePost: reactionResult(true) })
+    await pending
+    unsubscribe()
+
+    expect(queryClient.getQueryData<typeof stats>(statsKey)?.upvotesCount).toBe(4)
+  })
+
+  it('optimistically updates only the target entry in an active stats batch', () => {
+    const queryClient = setupClient()
+    const batchKey = articleQueryKeys.statsBatch('home', THREAD.POST, ['7', '42'])
+    const otherStats = { ...stats, innerId: '7', upvotesCount: 8 }
+    queryClient.setQueryData(batchKey, [otherStats, stats])
+    const observer = new QueryObserver(queryClient, {
+      queryKey: batchKey,
+      queryFn: async () => [otherStats, stats],
+      staleTime: Number.POSITIVE_INFINITY,
+    })
+    const unsubscribe = observer.subscribe(() => undefined)
+    const context = { queryClient, accountRef: 'alice', commandId: 'op-batch-count' }
+
+    articleUpvoteOperation.apply(context, article, true)
+    unsubscribe()
+
+    const batch = queryClient.getQueryData<(typeof stats)[]>(batchKey)
+
+    expect(batch?.find(({ innerId }) => innerId === '42')?.upvotesCount).toBe(4)
+    expect(batch?.find(({ innerId }) => innerId === '7')?.upvotesCount).toBe(8)
+  })
+
+  it('optimistically decrements the current count for an undo intent', () => {
+    const queryClient = setupClient()
+    queryClient.setQueryData(viewerKey, {
+      'home:POST:42': {
+        articleKey: 'home:POST:42',
+        community: 'home',
+        thread: THREAD.POST,
+        innerId: '42',
+        interactionRevision: 1,
+        viewerHasUpvoted: true,
+        viewerHasCollected: false,
+        viewerEmotion: null,
+      },
+    })
+    const observer = new QueryObserver(queryClient, {
+      queryKey: statsKey,
+      queryFn: async () => stats,
+      staleTime: Number.POSITIVE_INFINITY,
+    })
+    const unsubscribe = observer.subscribe(() => undefined)
+
+    articleUpvoteOperation.apply(
+      { queryClient, accountRef: 'alice', commandId: 'op-undo-count' },
+      article,
+      false,
+    )
+    unsubscribe()
+
+    expect(queryClient.getQueryData<typeof stats>(statsKey)?.upvotesCount).toBe(2)
     expect(
       queryClient.getQueryData<Record<string, { viewerHasUpvoted: boolean }>>(viewerKey)?.[
         'home:POST:42'

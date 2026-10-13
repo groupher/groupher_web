@@ -24,6 +24,7 @@ defmodule GroupherServerWeb.Middleware.BrowserCsrf do
                     ])
   @development_hosts MapSet.new([
                        "groupher.localhost",
+                       "community.groupher.localhost",
                        "dash.groupher.localhost"
                      ])
 
