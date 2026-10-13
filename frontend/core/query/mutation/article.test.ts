@@ -3,6 +3,7 @@ import { QueryClient, QueryObserver } from '@tanstack/react-query'
 import { THREAD } from '~/const/thread'
 import type { TArticle, TPagedPosts } from '~/spec'
 
+import { articleStats, articleStatsBatch } from '../articleStats'
 import { articleQueryKeys, viewerQueryKeys } from '../key'
 import { articleUpvoteOperation } from './article'
 import { setArticleCollected } from './article/collect'
@@ -233,7 +234,7 @@ describe('article query mutation helpers', () => {
     const queryClient = setupClient()
     const statsQuery = vi.fn(async () => stats)
     const observer = new QueryObserver(queryClient, {
-      queryKey: statsKey,
+      ...articleStats(queryClient, 'home', THREAD.POST, '42'),
       queryFn: statsQuery,
       staleTime: Number.POSITIVE_INFINITY,
     })
@@ -305,7 +306,7 @@ describe('article query mutation helpers', () => {
   it('optimistically increments the active public count and private viewer state', async () => {
     const queryClient = setupClient()
     const observer = new QueryObserver(queryClient, {
-      queryKey: statsKey,
+      ...articleStats(queryClient, 'home', THREAD.POST, '42'),
       queryFn: async () => stats,
       staleTime: Number.POSITIVE_INFINITY,
     })
@@ -318,20 +319,23 @@ describe('article query mutation helpers', () => {
         }),
     )
 
-    const pending = executeArticleUpvote(queryClient, article, true)
+    try {
+      const pending = executeArticleUpvote(queryClient, article, true)
 
-    await vi.waitFor(() => {
-      expect(queryClient.getQueryData<typeof stats>(statsKey)?.upvotesCount).toBe(4)
-      expect(
-        queryClient.getQueryData<Record<string, { viewerHasUpvoted: boolean }>>(viewerKey)?.[
-          'home:POST:42'
-        ].viewerHasUpvoted,
-      ).toBe(true)
-    })
+      await vi.waitFor(() => {
+        expect(queryClient.getQueryData<typeof stats>(statsKey)?.upvotesCount).toBe(4)
+        expect(
+          queryClient.getQueryData<Record<string, { viewerHasUpvoted: boolean }>>(viewerKey)?.[
+            'home:POST:42'
+          ].viewerHasUpvoted,
+        ).toBe(true)
+      })
 
-    resolveRequest({ upvotePost: reactionResult(true) })
-    await pending
-    unsubscribe()
+      resolveRequest({ upvotePost: reactionResult(true) })
+      await pending
+    } finally {
+      unsubscribe()
+    }
 
     expect(queryClient.getQueryData<typeof stats>(statsKey)?.upvotesCount).toBe(4)
   })
@@ -342,7 +346,7 @@ describe('article query mutation helpers', () => {
     const otherStats = { ...stats, innerId: '7', upvotesCount: 8 }
     queryClient.setQueryData(batchKey, [otherStats, stats])
     const observer = new QueryObserver(queryClient, {
-      queryKey: batchKey,
+      ...articleStatsBatch(queryClient, 'home', THREAD.POST, ['7', '42']),
       queryFn: async () => [otherStats, stats],
       staleTime: Number.POSITIVE_INFINITY,
     })
@@ -356,6 +360,48 @@ describe('article query mutation helpers', () => {
 
     expect(batch?.find(({ innerId }) => innerId === '42')?.upvotesCount).toBe(4)
     expect(batch?.find(({ innerId }) => innerId === '7')?.upvotesCount).toBe(8)
+  })
+
+  it('marks an inactive optimistic count stale after the mutation fails', async () => {
+    const queryClient = setupClient()
+    const statsQuery = vi.fn(async () => stats)
+    const observer = new QueryObserver(queryClient, {
+      ...articleStats(queryClient, 'home', THREAD.POST, '42'),
+      queryFn: statsQuery,
+      staleTime: Number.POSITIVE_INFINITY,
+    })
+    const unsubscribe = observer.subscribe(() => undefined)
+    let rejectRequest: (reason: Error) => void = () => undefined
+    browserGraphQLRequest.mockImplementationOnce(
+      () =>
+        new Promise((_resolve, reject) => {
+          rejectRequest = reject
+        }),
+    )
+    const pending = executeArticleUpvote(queryClient, article, true)
+
+    await vi.waitFor(() =>
+      expect(queryClient.getQueryData<typeof stats>(statsKey)?.upvotesCount).toBe(4),
+    )
+    unsubscribe()
+    rejectRequest(new Error('network'))
+
+    await expect(pending).rejects.toThrow('network')
+    expect(queryClient.getQueryState(statsKey)?.isInvalidated).toBe(true)
+
+    const remount = new QueryObserver(queryClient, {
+      ...articleStats(queryClient, 'home', THREAD.POST, '42'),
+      queryFn: statsQuery,
+      staleTime: Number.POSITIVE_INFINITY,
+    })
+    const unsubscribeRemount = remount.subscribe(() => undefined)
+    try {
+      await vi.waitFor(() =>
+        expect(queryClient.getQueryData<typeof stats>(statsKey)?.upvotesCount).toBe(3),
+      )
+    } finally {
+      unsubscribeRemount()
+    }
   })
 
   it('optimistically decrements the current count for an undo intent', () => {

@@ -50,10 +50,22 @@ type TArticleReactionResult = TArticleInteractionResult & {
   reactionOutcome: ReactionOutcome
 }
 
+type TStatsCacheValue = TArticleStats | TArticleStats[]
+type TStatsCacheQuery = ReturnType<typeof articleStatsCache.queries>[number]
+
 const isTargetStats = (stats: TArticleStats, path: TArticlePath): boolean =>
   stats.community === path.community &&
   stats.thread === path.thread &&
   String(stats.innerId) === String(path.innerId)
+
+const patchOptimisticStats = (
+  query: TStatsCacheQuery,
+  update: (current: TStatsCacheValue | undefined) => TStatsCacheValue | undefined,
+): void => {
+  const current = query.state.data as TStatsCacheValue | undefined
+  const next = update(current)
+  if (next !== current) query.setState({ data: next })
+}
 
 const patchActiveStatsChanges = (
   queryClient: QueryClient,
@@ -67,31 +79,27 @@ const patchActiveStatsChanges = (
 
   for (const query of articleStatsCache.queries(queryClient, path)) {
     if (!query.isActive()) continue
-    const previous = queryClient.getQueryData<TArticleStats | TArticleStats[]>(query.queryKey)
+    const previous = query.state.data as TStatsCacheValue | undefined
     const target = Array.isArray(previous)
       ? previous.find((stats) => isTargetStats(stats, path))
       : previous
     if (!target || !isTargetStats(target, path)) continue
 
     const before = target.upvotesCount
+    const beforeRevision = target.interactionRevision
     const optimistic = Math.max(0, before + (nextViewerState ? 1 : -1))
     if (optimistic === before) continue
 
-    const updatedAt = query.state.dataUpdatedAt
-    queryClient.setQueryData<TArticleStats | TArticleStats[]>(
-      query.queryKey,
-      (current) => {
-        if (Array.isArray(current)) {
-          return current.map((stats) =>
-            isTargetStats(stats, path) ? { ...stats, upvotesCount: optimistic } : stats,
-          )
-        }
-        return current && isTargetStats(current, path)
-          ? { ...current, upvotesCount: optimistic }
-          : current
-      },
-      { updatedAt },
-    )
+    patchOptimisticStats(query, (current) => {
+      if (Array.isArray(current)) {
+        return current.map((stats) =>
+          isTargetStats(stats, path) ? { ...stats, upvotesCount: optimistic } : stats,
+        )
+      }
+      return current && isTargetStats(current, path)
+        ? { ...current, upvotesCount: optimistic }
+        : current
+    })
     changes.push({
       type: 'field',
       queryKey: query.queryKey,
@@ -100,9 +108,26 @@ const patchActiveStatsChanges = (
       before,
       optimistic,
       commandId: context.commandId,
-      rollback: 'refetch',
-      // Aggregate authority is restored by refetchOnFailure.
-      restore: () => undefined,
+      rollback: 'restore-if-owned',
+      restore: () => {
+        patchOptimisticStats(query, (current) => {
+          if (Array.isArray(current)) {
+            return current.map((stats) =>
+              isTargetStats(stats, path) &&
+              stats.upvotesCount === optimistic &&
+              stats.interactionRevision === beforeRevision
+                ? { ...stats, upvotesCount: before }
+                : stats,
+            )
+          }
+          return current &&
+            isTargetStats(current, path) &&
+            current.upvotesCount === optimistic &&
+            current.interactionRevision === beforeRevision
+            ? { ...current, upvotesCount: before }
+            : current
+        })
+      },
     })
     refetchOnFailure.push({ queryKey: query.queryKey, exact: true })
   }
