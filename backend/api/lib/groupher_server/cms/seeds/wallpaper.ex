@@ -38,10 +38,10 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
   end
 
   defp seed_theme(community, theme, fixture, opts) do
-    if active_theme_matches?(community, theme, fixture) do
-      {:ok, :skipped}
-    else
-      publish_theme(community, theme, fixture, opts)
+    case active_theme_matches?(community, theme, fixture, opts) do
+      {:ok, true} -> {:ok, :skipped}
+      {:ok, false} -> publish_theme(community, theme, fixture, opts)
+      {:error, _reason} = error -> error
     end
   end
 
@@ -51,9 +51,10 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
          {:ok, :pass} <- asset_hub(opts).create_batch(prepared.batch_capability) do
       case upload_and_publish(community, theme, fixture, actor, prepared, opts) do
         {:ok, result} ->
-          case active_theme_matches?(community, theme, fixture) do
-            true -> {:ok, result}
-            false -> {:error, {:wallpaper_seed_incomplete, theme}}
+          case active_theme_matches?(community, theme, fixture, opts) do
+            {:ok, true} -> {:ok, result}
+            {:ok, false} -> {:error, {:wallpaper_seed_incomplete, theme}}
+            {:error, _reason} = error -> error
           end
 
         {:error, _reason} = error ->
@@ -144,7 +145,7 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
   defp asset_public_ref(%{asset: %{public_ref: public_ref}}), do: public_ref
   defp asset_public_ref(_result), do: nil
 
-  defp active_theme_matches?(%Community{id: community_id}, theme, fixture) do
+  defp active_theme_matches?(%Community{id: community_id}, theme, fixture, opts) do
     state = Repo.get_by(CommunityWallpaper, community_id: community_id)
     snapshot_ref = state && Map.get(state, active_field(theme))
 
@@ -152,10 +153,11 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
          %WallpaperSnapshot{theme: ^theme} = _snapshot <-
            Repo.get_by(WallpaperSnapshot, public_ref: ref, community_id: community_id),
          images when length(images) == 4 <- snapshot_images(ref),
-         true <- snapshot_matches_fixture?(images, fixture, community_id, theme) do
-      true
+         {:ok, true} <- snapshot_matches_fixture?(images, fixture, community_id, theme, opts) do
+      {:ok, true}
     else
-      _ -> false
+      {:error, _reason} = error -> error
+      _ -> {:ok, false}
     end
   end
 
@@ -167,7 +169,7 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
     )
   end
 
-  defp snapshot_matches_fixture?(images, fixture, community_id, theme) do
+  defp snapshot_matches_fixture?(images, fixture, community_id, theme, opts) do
     image_by_profile = Map.new(images, &{&1.profile, &1})
     refs = Enum.map(images, & &1.asset_public_ref)
 
@@ -184,24 +186,51 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
 
     fixture.entries
     |> Enum.filter(&(&1.theme == theme))
-    |> Enum.all?(fn entry ->
+    |> Enum.reduce_while({:ok, true}, fn entry, {:ok, true} ->
       image = Map.get(image_by_profile, entry.profile)
       asset = image && Map.get(asset_by_ref, image.asset_public_ref)
 
-      (image && asset && image.format == :webp and asset_object_available?(asset)) and
-        image.width == entry.width and image.height == entry.height and
-        image.checksum == entry.checksum and asset.content_hash == entry.checksum
+      case {image, asset} do
+        {%WallpaperSnapshotImage{} = image, %CommunityAsset{} = asset} ->
+          if image.format == :webp and image.width == entry.width and
+               image.height == entry.height and image.checksum == entry.checksum and
+               asset.content_hash == entry.checksum do
+            case asset_object_available?(asset, opts) do
+              {:ok, true} -> {:cont, {:ok, true}}
+              {:ok, false} -> {:halt, {:ok, false}}
+              {:error, reason} -> {:halt, {:error, {:wallpaper_asset_unavailable, reason}}}
+            end
+          else
+            {:halt, {:ok, false}}
+          end
+
+        _missing_image_or_asset ->
+          {:halt, {:ok, false}}
+      end
     end)
   end
 
-  defp asset_object_available?(%CommunityAsset{url: url}) when is_binary(url) do
-    case Req.head(url, receive_timeout: 5_000, retry: false) do
-      {:ok, %Req.Response{status: status}} when status in 200..299 -> true
-      _ -> false
+  defp asset_object_available?(asset, opts) do
+    probe = Keyword.get(opts, :asset_availability_probe, &http_asset_object_available?/1)
+
+    case probe.(asset) do
+      value when is_boolean(value) -> {:ok, value}
+      {:ok, value} when is_boolean(value) -> {:ok, value}
+      {:error, _reason} = error -> error
+      other -> {:error, {:invalid_probe_response, other}}
     end
   end
 
-  defp asset_object_available?(_asset), do: false
+  defp http_asset_object_available?(%CommunityAsset{url: url}) when is_binary(url) do
+    case Req.head(url, receive_timeout: 5_000, retry: false) do
+      {:ok, %Req.Response{status: status}} when status in 200..299 -> {:ok, true}
+      {:ok, %Req.Response{status: 404}} -> {:ok, false}
+      {:ok, %Req.Response{status: status}} -> {:error, {:unexpected_status, status}}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp http_asset_object_available?(_asset), do: {:ok, false}
 
   defp load_fixture(manifest_path) do
     with {:ok, raw} <- File.read(manifest_path),
@@ -370,8 +399,9 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
     end
 
     defp presign(capability) do
-      post("/uploads", %{capability: capability}, fn %{"result" => %{"upload" => upload}} ->
-        {:ok, upload}
+      post("/uploads", %{capability: capability}, fn
+        %{"result" => %{"upload" => upload}} -> {:ok, upload}
+        _body -> {:error, :asset_presign_invalid}
       end)
     end
 

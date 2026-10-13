@@ -6,6 +6,7 @@
  *   -> GeneratedImageBatchState
  *   -> publish claim and reconciliation cleanup
  */
+import { randomUUID } from 'node:crypto'
 import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
@@ -43,6 +44,7 @@ const json = (value: unknown) => JSON.stringify(value)
 
 /** Filesystem adapter for the same batch state machine used by the Worker DO. */
 export class LocalGeneratedBatchStore {
+  private readonly batchLocks = new Map<string, Promise<void>>()
   private serviceTokenProvider: TServiceAuthClient | undefined
 
   constructor(
@@ -51,93 +53,121 @@ export class LocalGeneratedBatchStore {
   ) {}
 
   async create(capability: TGeneratedImageBatchCapability): Promise<TGeneratedImageUploadBatch> {
-    const batch = this.batchFromCapability(capability)
-    const existing = await this.read(capability.batchRef)
-    if (existing) {
-      if (json(existing.batch) !== json(batch))
-        throw new Error('GENERATED_IMAGE_BATCH_REF_CONFLICT')
-      return existing.batch
-    }
-    if (Date.parse(batch.expiresAt) <= Date.now()) throw new Error('GENERATED_IMAGE_BATCH_EXPIRED')
-    await this.write({ batch, entries: [], reconcileAttempts: 0 })
-    return batch
+    return this.withBatchLock(capability.batchRef, async () => {
+      const batch = this.batchFromCapability(capability)
+      const existing = await this.read(capability.batchRef)
+      if (existing) {
+        if (json(existing.batch) !== json(batch))
+          throw new Error('GENERATED_IMAGE_BATCH_REF_CONFLICT')
+        return existing.batch
+      }
+      if (Date.parse(batch.expiresAt) <= Date.now())
+        throw new Error('GENERATED_IMAGE_BATCH_EXPIRED')
+      await this.write({ batch, entries: [], reconcileAttempts: 0 })
+      return batch
+    })
   }
 
   async registerAsset(batchRef: string, entry: TGeneratedImageManifestEntry) {
-    const stored = await this.required(batchRef)
-    const state = this.state(stored)
-    state.registerAsset(entry)
-    const entries = [
-      ...stored.entries.filter((item) => item.variantKey !== entry.variantKey),
-      entry,
-    ]
-    await this.write({ ...stored, entries })
-    return entry
+    return this.withBatchLock(batchRef, async () => {
+      const stored = await this.required(batchRef)
+      const state = this.state(stored)
+      state.registerAsset(entry)
+      const entries = [
+        ...stored.entries.filter((item) => item.variantKey !== entry.variantKey),
+        entry,
+      ]
+      await this.write({ ...stored, entries })
+      return entry
+    })
   }
 
   async claimForPublish(batchRef: string, key: string): Promise<TGeneratedImageBatchClaimResult> {
-    const stored = await this.required(batchRef)
-    if (stored.batch.claim) {
-      if (stored.batch.claim.type !== 'publish' || stored.batch.claim.key !== key) {
-        throw new Error('GENERATED_IMAGE_BATCH_ALREADY_CLAIMED')
+    return this.withBatchLock(batchRef, async () => {
+      const stored = await this.required(batchRef)
+      if (stored.batch.claim) {
+        if (stored.batch.claim.type !== 'publish' || stored.batch.claim.key !== key) {
+          throw new Error('GENERATED_IMAGE_BATCH_ALREADY_CLAIMED')
+        }
+        if (Date.parse(stored.batch.claim.expiresAt) <= Date.now()) {
+          throw new Error('GENERATED_IMAGE_BATCH_CLAIM_EXPIRED')
+        }
+        return this.claimResult(stored)
       }
-      if (Date.parse(stored.batch.claim.expiresAt) <= Date.now()) {
-        throw new Error('GENERATED_IMAGE_BATCH_CLAIM_EXPIRED')
-      }
-      return this.claimResult(stored)
-    }
-    const state = this.state(stored)
-    const result = state.claimForPublish(key)
-    await this.write({ ...stored, batch: { ...stored.batch, claim: result.claim } })
 
-    try {
-      await Promise.all(
-        result.manifest.map(async (entry) => {
-          const object = await this.objectStore.headObject(entry.storageKey)
-          if (!object) throw new Error(`GENERATED_IMAGE_BATCH_OBJECT_MISSING: ${entry.variantKey}`)
-          if (object.ContentType !== entry.mimeType) {
-            throw new Error(`GENERATED_IMAGE_BATCH_OBJECT_MIME_MISMATCH: ${entry.variantKey}`)
-          }
-          if (
-            `sha256:${Buffer.from(object.ChecksumSHA256, 'base64').toString('hex')}` !==
-            entry.checksum
-          ) {
-            throw new Error(`GENERATED_IMAGE_BATCH_OBJECT_CHECKSUM_MISMATCH: ${entry.variantKey}`)
-          }
-        }),
-      )
-      return result
-    } catch (error) {
-      await this.deleteBatch(stored)
-      throw error
-    }
+      const state = this.state(stored)
+      let result: TGeneratedImageBatchClaimResult
+      try {
+        result = state.claimForPublish(key)
+      } catch (error) {
+        if (
+          error instanceof Error &&
+          error.message === 'GENERATED_IMAGE_BATCH_INCOMPLETE_MANIFEST'
+        ) {
+          await this.deleteBatch(stored)
+        }
+        throw error
+      }
+      await this.write({ ...stored, batch: { ...stored.batch, claim: result.claim } })
+
+      try {
+        await Promise.all(
+          result.manifest.map(async (entry) => {
+            const object = await this.objectStore.headObject(entry.storageKey)
+            if (!object)
+              throw new Error(`GENERATED_IMAGE_BATCH_OBJECT_MISSING: ${entry.variantKey}`)
+            if (object.ContentType !== entry.mimeType) {
+              throw new Error(`GENERATED_IMAGE_BATCH_OBJECT_MIME_MISMATCH: ${entry.variantKey}`)
+            }
+            if (
+              `sha256:${Buffer.from(object.ChecksumSHA256, 'base64').toString('hex')}` !==
+              entry.checksum
+            ) {
+              throw new Error(`GENERATED_IMAGE_BATCH_OBJECT_CHECKSUM_MISMATCH: ${entry.variantKey}`)
+            }
+          }),
+        )
+        return result
+      } catch (error) {
+        await this.deleteBatch(stored)
+        throw error
+      }
+    })
   }
 
   async cancel(batchRef: string): Promise<void> {
-    const stored = await this.required(batchRef)
-    await this.deleteBatch(stored)
+    return this.withBatchLock(batchRef, async () => {
+      const stored = await this.required(batchRef)
+      if (stored.batch.claim) throw new Error('GENERATED_IMAGE_BATCH_ALREADY_CLAIMED')
+      const claim = this.state(stored).claimForDelete(`cancel:${batchRef}`).claim
+      const claimed = { ...stored, batch: { ...stored.batch, claim } }
+      await this.write(claimed)
+      await this.deleteBatch(claimed)
+    })
   }
 
   async cleanup(
     batchRef: string,
     claimKey: string,
   ): Promise<{ deleted: boolean; retained: boolean }> {
-    const stored = await this.required(batchRef)
-    if (stored.batch.claim?.type !== 'publish' || stored.batch.claim.key !== claimKey) {
-      throw new Error('GENERATED_IMAGE_BATCH_CLAIM_MISMATCH')
-    }
+    return this.withBatchLock(batchRef, async () => {
+      const stored = await this.required(batchRef)
+      if (stored.batch.claim?.type !== 'publish' || stored.batch.claim.key !== claimKey) {
+        throw new Error('GENERATED_IMAGE_BATCH_CLAIM_MISMATCH')
+      }
 
-    const published = await this.isWallpaperBatchPublished(batchRef)
-    const decision = generatedBatchCleanupDecision(published)
-    if (decision === 'retry') throw new Error('GENERATED_IMAGE_BATCH_PUBLISH_STATUS_UNKNOWN')
+      const published = await this.isWallpaperBatchPublished(batchRef)
+      const decision = generatedBatchCleanupDecision(published)
+      if (decision === 'retry') throw new Error('GENERATED_IMAGE_BATCH_PUBLISH_STATUS_UNKNOWN')
 
-    if (decision === 'retain') {
-      await this.removeBatchMetadata(batchRef)
-      return { deleted: false, retained: true }
-    }
+      if (decision === 'retain') {
+        await this.removeBatchMetadata(batchRef)
+        return { deleted: false, retained: true }
+      }
 
-    await this.deleteBatch(stored)
-    return { deleted: true, retained: false }
+      await this.deleteBatch(stored)
+      return { deleted: true, retained: false }
+    })
   }
 
   private batchFromCapability(
@@ -202,7 +232,7 @@ export class LocalGeneratedBatchStore {
   private async write(stored: TStoredBatch): Promise<void> {
     await mkdir(path.dirname(this.batchPath(stored.batch.publicRef)), { recursive: true })
     const target = this.batchPath(stored.batch.publicRef)
-    const temporary = `${target}.${process.pid}.tmp`
+    const temporary = `${target}.${process.pid}.${randomUUID()}.tmp`
     await writeFile(temporary, JSON.stringify(stored), 'utf8')
     await rename(temporary, target)
   }
@@ -217,6 +247,22 @@ export class LocalGeneratedBatchStore {
       await rm(this.batchPath(batchRef), { force: true })
     } catch (error) {
       if (!this.isMissing(error)) throw error
+    }
+  }
+
+  private async withBatchLock<T>(batchRef: string, operation: () => Promise<T>): Promise<T> {
+    const previous = this.batchLocks.get(batchRef) ?? Promise.resolve()
+    const current = previous.catch(() => undefined).then(operation)
+    const tail = current.then(
+      () => undefined,
+      () => undefined,
+    )
+    this.batchLocks.set(batchRef, tail)
+
+    try {
+      return await current
+    } finally {
+      if (this.batchLocks.get(batchRef) === tail) this.batchLocks.delete(batchRef)
     }
   }
 

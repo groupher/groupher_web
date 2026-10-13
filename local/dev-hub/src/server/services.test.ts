@@ -226,6 +226,16 @@ test('managed Phoenix startup allow-lists only local credential fallbacks', () =
   assert.doesNotMatch(managedRecipe, /\.env\.local|\bsource\b|(?:^|\s)\.\s+/)
 })
 
+test('managed Assets Hub startup reads only its own service identity fallback', () => {
+  const assetsHub = SERVICE_DEFINITIONS.find((definition) => definition.id === 'assets-hub')
+
+  assert.match(assetsHub?.envFallback?.file || '', /backend\/assets-hub\/\.env$/)
+  assert.deepEqual(assetsHub?.envFallback?.keys, [
+    'SERVICE_AUTH_CLIENT_ID',
+    'SERVICE_AUTH_CLIENT_SECRET',
+  ])
+})
+
 test('service identity uses one stable issuer separate from local network endpoints', () => {
   assert.equal(LOCAL_SERVICE_AUTH_ISSUER, 'https://auth.groupher.localhost')
 

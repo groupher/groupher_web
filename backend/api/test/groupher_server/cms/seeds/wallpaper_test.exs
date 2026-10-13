@@ -130,7 +130,12 @@ defmodule GroupherServer.Test.CMS.Seeds.WallpaperTest do
   test "publishes the versioned fixture through upload and publish boundaries", %{
     community: community
   } do
-    assert {:ok, :pass} = WallpaperSeed.seed(community, asset_hub: FakeAssetHub)
+    opts = [
+      asset_availability_probe: fn _asset -> {:ok, true} end,
+      asset_hub: FakeAssetHub
+    ]
+
+    assert {:ok, :pass} = WallpaperSeed.seed(community, opts)
 
     wallpaper = Wallpaper.wallpaper(community.id)
     assert wallpaper.version == 2
@@ -147,7 +152,7 @@ defmodule GroupherServer.Test.CMS.Seeds.WallpaperTest do
     assert length(images) == 8
     assert Repo.aggregate(CommunityAsset, :count, :id) == 8
 
-    assert {:ok, :pass} = WallpaperSeed.seed(community, asset_hub: FakeAssetHub)
+    assert {:ok, :pass} = WallpaperSeed.seed(community, opts)
     assert Wallpaper.wallpaper(community.id).version == 2
   end
 end

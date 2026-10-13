@@ -466,7 +466,7 @@ export const SERVICE_DEFINITIONS: TServiceDefinition[] = [
       SERVICE_AUTH_TOKEN_ENDPOINT: `${LOCAL_SERVICE_ENDPOINTS.auth}/oauth2/token`,
     },
     envFallback: {
-      file: fromRoot('backend/api/.env.local'),
+      file: fromRoot('backend/assets-hub/.env'),
       keys: ['SERVICE_AUTH_CLIENT_ID', 'SERVICE_AUTH_CLIENT_SECRET'],
     },
     port: 8002,

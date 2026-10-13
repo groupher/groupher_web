@@ -163,20 +163,14 @@ const isLocalRuntime = (environment: Record<string, string | undefined>) =>
 
 const authorizeInternalRequest = async (
   context: { req: { header: (name: string) => string | undefined } },
-  environment: Record<string, string | undefined>,
+  verifier: ReturnType<typeof createServiceAuthVerifier> | null,
   scope: string,
   allowedSubjects: readonly string[] = ['service:phoenix'],
 ): Promise<null | 401 | 403> => {
   const token = bearerToken(context.req.header('authorization'))
-  if (!token) return 401
+  if (!token || !verifier) return 401
 
   try {
-    const verifier = createServiceAuthVerifier({
-      audience: 'assets-hub:internal-api',
-      issuer: environment.SERVICE_AUTH_ISSUER || 'https://auth.groupher.com',
-      jwksUrl:
-        environment.SERVICE_AUTH_JWKS_URL || 'https://auth.groupher.com/.well-known/jwks.json',
-    })
     const actor = await verifier.verify(token, scope)
     return allowedSubjects.includes(actor.subject) ? null : 403
   } catch (error) {
@@ -213,6 +207,19 @@ const parseCapability = (input: unknown) => {
 export const createApp = ({ environment = process.env }: TOptions = {}) => {
   const app = new Hono()
   const localRuntime = isLocalRuntime(environment)
+  const serviceAuthIssuer =
+    environment.SERVICE_AUTH_ISSUER?.trim() || (localRuntime ? null : 'https://auth.groupher.com')
+  const serviceAuthJwksUrl =
+    environment.SERVICE_AUTH_JWKS_URL?.trim() ||
+    (localRuntime ? null : 'https://auth.groupher.com/.well-known/jwks.json')
+  const internalRequestVerifier =
+    serviceAuthIssuer && serviceAuthJwksUrl
+      ? createServiceAuthVerifier({
+          audience: 'assets-hub:internal-api',
+          issuer: serviceAuthIssuer,
+          jwksUrl: serviceAuthJwksUrl,
+        })
+      : null
   const localStore = localRuntime
     ? new LocalObjectStore(
         environment.ASSETS_HUB_LOCAL_STORAGE_DIR ||
@@ -248,6 +255,43 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
     }),
   )
 
+  app.use(
+    '/generated-batches',
+    cors({
+      allowHeaders: ['content-type'],
+      allowMethods: ['POST', 'OPTIONS'],
+      origin: corsOrigin(environment),
+    }),
+  )
+
+  app.use(
+    '/generated-batches/*',
+    cors({
+      allowHeaders: ['authorization', 'content-type'],
+      allowMethods: ['POST', 'OPTIONS'],
+      origin: corsOrigin(environment),
+    }),
+  )
+
+  app.use(
+    '/local/uploads/*',
+    cors({
+      allowHeaders: ['content-type'],
+      allowMethods: ['PUT', 'OPTIONS'],
+      exposeHeaders: ['etag', 'x-checksum-sha256'],
+      origin: corsOrigin(environment),
+    }),
+  )
+
+  app.use(
+    '/a/*',
+    cors({
+      allowMethods: ['GET', 'HEAD', 'OPTIONS'],
+      exposeHeaders: ['content-length', 'content-type', 'etag'],
+      origin: corsOrigin(environment),
+    }),
+  )
+
   app.get('/health', (context) => context.json(createHealthResponse({ service: 'assets-hub' })))
 
   app.get('/health/ready', async () => {
@@ -256,6 +300,8 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
       'PHOENIX_GRAPHQL_ENDPOINT',
       'SERVICE_AUTH_CLIENT_ID',
       'SERVICE_AUTH_CLIENT_SECRET',
+      'SERVICE_AUTH_ISSUER',
+      'SERVICE_AUTH_JWKS_URL',
       'SERVICE_AUTH_TOKEN_ENDPOINT',
     ]
     const missing = localRuntime ? required.filter((name) => !environment[name]?.trim()) : []
@@ -512,7 +558,7 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
       return json({ error: { code: 'not_found', message: 'Not found.' }, ok: false }, 404)
     const authError = await authorizeInternalRequest(
       context,
-      environment,
+      internalRequestVerifier,
       localInternalScopes.generatedBatchRegister,
       ['service:assets-hub'],
     )
@@ -531,13 +577,21 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
         checksum?: unknown
         storageKey?: unknown
       }
+      const checksum = typeof input.checksum === 'string' ? input.checksum.trim() : ''
+      const storageKey = typeof input.storageKey === 'string' ? input.storageKey.trim() : ''
+      if (!/^sha256:[0-9a-f]{64}$/i.test(checksum)) {
+        throw new Error('Generated image checksum is invalid')
+      }
+      if (!storageKey || storageKey !== capability.objectKey) {
+        throw new Error('Generated image storage key does not match capability')
+      }
       const entry = {
         assetPublicRef: capability.assetPublicRef,
         candidateOwnerRef: capability.candidateOwnerRef,
-        checksum: typeof input.checksum === 'string' ? input.checksum : '',
+        checksum,
         height: capability.declaredHeight,
         mimeType: capability.declaredMimeType,
-        storageKey: typeof input.storageKey === 'string' ? input.storageKey : '',
+        storageKey,
         variantKey: capability.variantKey,
         width: capability.declaredWidth,
       }
@@ -569,7 +623,7 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
       return json({ error: { code: 'not_found', message: 'Not found.' }, ok: false }, 404)
     const authError = await authorizeInternalRequest(
       context,
-      environment,
+      internalRequestVerifier,
       localInternalScopes.generatedBatchClaim,
     )
     if (authError) return internalAuthError(authError)
@@ -636,7 +690,7 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
       return json({ error: { code: 'not_found', message: 'Not found.' }, ok: false }, 404)
     const authError = await authorizeInternalRequest(
       context,
-      environment,
+      internalRequestVerifier,
       localInternalScopes.generatedBatchCleanup,
     )
     if (authError) return internalAuthError(authError)
@@ -665,7 +719,7 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
       return json({ error: { code: 'not_found', message: 'Not found.' }, ok: false }, 404)
     const authError = await authorizeInternalRequest(
       context,
-      environment,
+      internalRequestVerifier,
       localInternalScopes.assetDelete,
     )
     if (authError) return internalAuthError(authError)

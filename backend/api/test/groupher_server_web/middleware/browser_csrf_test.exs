@@ -37,11 +37,23 @@ defmodule GroupherServerWeb.Middleware.BrowserCsrfTest do
     conn =
       request(:post, %{"query" => "mutation Update { updateProfile(profile: {}) { id } }"}, [
         {"content-type", "application/json"},
-        {"origin", "https://community.groupher.localhost"},
+        {"origin", "http://community.groupher.localhost:3107"},
         {"x-groupher-csrf", "1"}
       ])
 
     refute conn.halted
+  end
+
+  test "rejects an authenticated mutation from an unconfigured local Community port" do
+    conn =
+      request(:post, %{"query" => "mutation Update { updateProfile(profile: {}) { id } }"}, [
+        {"content-type", "application/json"},
+        {"origin", "http://community.groupher.localhost:43107"},
+        {"x-groupher-csrf", "1"}
+      ])
+
+    assert conn.halted
+    assert conn.status == 400
   end
 
   test "uses operationName when a document contains multiple operations" do

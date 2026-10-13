@@ -20,6 +20,7 @@ export type TLocalObjectHead = {
 }
 
 type TLocalUpload = {
+  checksumSha256?: string | null
   contentType: string
   expiresAt: string
   objectKey: string
@@ -32,6 +33,7 @@ const sha256Base64 = (buffer: Buffer) => createHash('sha256').update(buffer).dig
 /** Stores the provider's physical bytes locally while preserving the R2 contract. */
 export class LocalObjectStore {
   readonly root: string
+  private readonly uploadLocks = new Map<string, Promise<void>>()
 
   constructor(root = path.resolve(process.cwd(), '.local/assets-hub')) {
     this.root = path.resolve(root)
@@ -42,6 +44,7 @@ export class LocalObjectStore {
     await writeFile(
       this.uploadMetadataPath(capability.uploadRef),
       JSON.stringify({
+        checksumSha256: capability.checksumSha256,
         contentType: capability.declaredMimeType,
         expiresAt: capability.expiresAt,
         objectKey: capability.objectKey,
@@ -53,23 +56,31 @@ export class LocalObjectStore {
   }
 
   async putUpload(uploadRef: string, body: Buffer, contentType: string): Promise<TLocalObjectHead> {
-    const upload = await this.readUpload(uploadRef)
-    if (!upload) throw new Error('Upload intent was not found')
-    if (Date.parse(upload.expiresAt) <= Date.now()) throw new Error('Upload intent expired')
-    if (contentType !== upload.contentType)
-      throw new Error('Uploaded object content type does not match capability')
-    if (body.byteLength !== upload.sizeBytes)
-      throw new Error('Uploaded object size does not match capability')
+    return this.withUploadLock(uploadRef, async () => {
+      const upload = await this.readUpload(uploadRef)
+      if (!upload) throw new Error('Upload intent was not found')
+      if (Date.parse(upload.expiresAt) <= Date.now()) throw new Error('Upload intent expired')
+      if (contentType !== upload.contentType)
+        throw new Error('Uploaded object content type does not match capability')
+      if (body.byteLength !== upload.sizeBytes)
+        throw new Error('Uploaded object size does not match capability')
 
-    const objectPath = this.objectPath(upload.objectKey)
-    await mkdir(path.dirname(objectPath), { recursive: true })
-    await writeFile(objectPath, body)
-    await writeFile(
-      `${objectPath}.meta.json`,
-      JSON.stringify({ contentType: upload.contentType }),
-      'utf8',
-    )
-    return this.headFromBuffer(body, contentType)
+      const checksumSha256 = sha256Base64(body)
+      if (upload.checksumSha256 && checksumSha256 !== upload.checksumSha256) {
+        throw new Error('Uploaded object checksum does not match capability')
+      }
+
+      const objectPath = this.objectPath(upload.objectKey)
+      await mkdir(path.dirname(objectPath), { recursive: true })
+      await writeFile(objectPath, body)
+      await writeFile(
+        `${objectPath}.meta.json`,
+        JSON.stringify({ contentType: upload.contentType }),
+        'utf8',
+      )
+      await unlink(this.uploadMetadataPath(uploadRef))
+      return this.headFromBuffer(body, contentType)
+    })
   }
 
   async headObject(objectKey: string): Promise<TLocalObjectHead | null> {
@@ -150,11 +161,14 @@ export class LocalObjectStore {
   }
 
   private objectPath(objectKey: string): string {
-    return this.safePath(path.join(this.objectsRoot(), objectKey))
+    return this.safeChildPath(this.objectsRoot(), path.join(this.objectsRoot(), objectKey))
   }
 
   private uploadMetadataPath(uploadRef: string): string {
-    return this.safePath(path.join(this.uploadsRoot(), `${encodeURIComponent(uploadRef)}.json`))
+    return this.safeChildPath(
+      this.uploadsRoot(),
+      path.join(this.uploadsRoot(), `${encodeURIComponent(uploadRef)}.json`),
+    )
   }
 
   private objectsRoot(): string {
@@ -165,13 +179,29 @@ export class LocalObjectStore {
     return path.join(this.root, 'uploads')
   }
 
-  private safePath(candidate: string): string {
+  private safeChildPath(root: string, candidate: string): string {
     const resolved = path.resolve(candidate)
-    const root = path.resolve(this.root)
-    if (resolved !== root && !resolved.startsWith(`${root}${path.sep}`)) {
-      throw new Error('Local asset path escapes provider root')
+    const resolvedRoot = path.resolve(root)
+    if (resolved === resolvedRoot || !resolved.startsWith(`${resolvedRoot}${path.sep}`)) {
+      throw new Error('Local asset path escapes its storage root')
     }
     return resolved
+  }
+
+  private async withUploadLock<T>(uploadRef: string, operation: () => Promise<T>): Promise<T> {
+    const previous = this.uploadLocks.get(uploadRef) ?? Promise.resolve()
+    const current = previous.catch(() => undefined).then(operation)
+    const tail = current.then(
+      () => undefined,
+      () => undefined,
+    )
+    this.uploadLocks.set(uploadRef, tail)
+
+    try {
+      return await current
+    } finally {
+      if (this.uploadLocks.get(uploadRef) === tail) this.uploadLocks.delete(uploadRef)
+    }
   }
 
   private isMissing(error: unknown): boolean {
