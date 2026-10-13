@@ -11,6 +11,7 @@ import {
 
 const AUTH_ORIGIN = 'http://auth.groupher.localhost:3104'
 const DASH_ORIGIN = 'http://dash.groupher.localhost:3103'
+const COMMUNITY_ORIGIN = 'http://community.groupher.localhost:3107'
 const AUTH_LOOPBACK_ORIGIN = 'http://127.0.0.1:3104'
 const MOCK_ORIGIN = 'http://127.0.0.1:4104'
 const ACCESS_COOKIE = 'groupher-auth.token'
@@ -48,8 +49,8 @@ const readState = async (request: APIRequestContext): Promise<TAuthState> => {
   return (await response.json()) as TAuthState
 }
 
-const testLogin = async (page: Page, login = 'e2e'): Promise<void> => {
-  await page.goto(`${DASH_ORIGIN}/health`)
+const testLogin = async (page: Page, appOrigin = DASH_ORIGIN, login = 'e2e'): Promise<void> => {
+  await page.goto(`${appOrigin}/health`)
   const result = await page.evaluate(
     async ({ authOrigin, headers, loginName }) => {
       const response = await fetch(`${authOrigin}/api/auth/test-login`, {
@@ -306,6 +307,31 @@ test.describe('Auth V1 browser protocol', () => {
     await page.reload()
     await expect(page.getByRole('button', { name: 'Open account menu' })).toBeVisible()
     await expect(page.getByRole('button', { name: 'Sign in' })).toHaveCount(0)
+  })
+
+  test('P0 hydrates the account in Community after callback cookies reach the application', async ({
+    context,
+    page,
+  }) => {
+    const sessionRequests: string[] = []
+    page.on('request', (request) => {
+      if (
+        request.url() === `${COMMUNITY_ORIGIN}/api/graphql` &&
+        request.postData()?.includes('SessionState')
+      ) {
+        sessionRequests.push(request.url())
+      }
+    })
+
+    await testLogin(page, COMMUNITY_ORIGIN)
+    expect((await context.cookies()).map((cookie) => cookie.name)).toEqual(
+      expect.arrayContaining([ACCESS_COOKIE, HINT_COOKIE, SESSION_COOKIE]),
+    )
+
+    await page.goto(`${COMMUNITY_ORIGIN}/home/post`)
+    await expect(page.getByRole('button', { name: 'Open account menu' })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Sign in' })).toHaveCount(0)
+    expect(sessionRequests).toHaveLength(1)
   })
 
   test('P1 logout revokes the session, clears cookies, and signs out a sibling tab', async ({

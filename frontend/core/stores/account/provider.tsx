@@ -60,10 +60,15 @@ export default function Provider({ children, initData }: TProps) {
   const options = Q.viewer.session()
   const shouldFetchSession =
     isHydrated && hasSignedInHintCookie() && (seed.loading !== false || !seed.user)
+  const sessionSeed = makeSessionResult(seed.user ?? null)
+  const hasResolvedUserSeed = seed.loading === false && Boolean(seed.user)
   const query = useQuery({
     ...options,
     enabled: shouldFetchSession,
-    initialData: makeSessionResult(seed.user ?? null),
+    // Anonymous state is only a render fallback. Caching it as fresh data would suppress the
+    // post-hydration session probe for a browser that still carries the signed-in hint.
+    initialData: hasResolvedUserSeed ? sessionSeed : undefined,
+    placeholderData: hasResolvedUserSeed ? undefined : sessionSeed,
   })
   const session = query.data?.sessionState
   const user =
