@@ -61,6 +61,7 @@ const defaultCorsOrigins = [
   'http://localhost:3003',
   'http://groupher.localhost:3003',
   'https://groupher.localhost',
+  'http://dash.groupher.localhost:3103',
   'http://apply.groupher.localhost',
   'https://apply.groupher.localhost',
   'http://dash.groupher.localhost',
@@ -161,6 +162,20 @@ const objectContentHash = async (capability: TUploadCapability, localStore?: Loc
 const isLocalRuntime = (environment: Record<string, string | undefined>) =>
   environment.ASSETS_HUB_RUNTIME === 'local'
 
+const createInternalRequestVerifier = (issuer: string | null, jwksUrl: string | null) => {
+  if (!issuer || !jwksUrl) return null
+
+  try {
+    return createServiceAuthVerifier({
+      audience: 'assets-hub:internal-api',
+      issuer,
+      jwksUrl,
+    })
+  } catch {
+    return null
+  }
+}
+
 const authorizeInternalRequest = async (
   context: { req: { header: (name: string) => string | undefined } },
   verifier: ReturnType<typeof createServiceAuthVerifier> | null,
@@ -212,14 +227,10 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
   const serviceAuthJwksUrl =
     environment.SERVICE_AUTH_JWKS_URL?.trim() ||
     (localRuntime ? null : 'https://auth.groupher.com/.well-known/jwks.json')
-  const internalRequestVerifier =
-    serviceAuthIssuer && serviceAuthJwksUrl
-      ? createServiceAuthVerifier({
-          audience: 'assets-hub:internal-api',
-          issuer: serviceAuthIssuer,
-          jwksUrl: serviceAuthJwksUrl,
-        })
-      : null
+  const internalRequestVerifier = createInternalRequestVerifier(
+    serviceAuthIssuer,
+    serviceAuthJwksUrl,
+  )
   const localStore = localRuntime
     ? new LocalObjectStore(
         environment.ASSETS_HUB_LOCAL_STORAGE_DIR ||
@@ -305,16 +316,16 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
       'SERVICE_AUTH_TOKEN_ENDPOINT',
     ]
     const missing = localRuntime ? required.filter((name) => !environment[name]?.trim()) : []
-    if (missing.length) {
+    const invalidServiceAuth =
+      localRuntime && serviceAuthIssuer && serviceAuthJwksUrl && !internalRequestVerifier
+    if (missing.length || invalidServiceAuth) {
+      const messages = [
+        missing.length ? `Missing local configuration: ${missing.join(', ')}` : null,
+        invalidServiceAuth ? 'Invalid local service-auth verifier configuration.' : null,
+      ].filter(Boolean)
       return json(
         {
-          checks: [
-            {
-              message: `Missing local configuration: ${missing.join(', ')}`,
-              name: 'config',
-              status: 'down',
-            },
-          ],
+          checks: messages.map((message) => ({ message, name: 'config', status: 'down' })),
           environment: 'development',
           schemaVersion: 'health.v1',
           service: 'assets-hub',

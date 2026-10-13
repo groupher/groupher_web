@@ -1,6 +1,6 @@
 # Assets Hub 本地运行时边界
 
-> 状态：已实现（local provider）；Cloudflare Worker 仍为显式集成模式
+> 状态：local provider 已落地，独立 contract/public-read 验收待补充；Cloudflare Worker 仍为显式集成模式
 >
 > 目标：本地默认运行不依赖线上 Cloudflare 资源、Cloudflare API Token 或线上 service credentials。
 
@@ -76,10 +76,10 @@ PUT 到该 URL，再调用 `POST /uploads/:uploadRef/finalize`；`PUT /uploads/:
 的临时上传路由，但 finalize 前后的 checksum、size、MIME、object key、社区范围和
 Phoenix completion 语义必须与生产一致。
 
-`POST /internal/assets/delete` 保留生产的异步删除语义：本地 provider 校验 service token
-后将 storage key 放入进程内、幂等的删除队列，并返回 `{enqueued: true}`；队列消费者删除
-`.local/assets-hub/` 中的对象。进程退出造成的未完成删除不视为永久成功，后续由 Phoenix
-`ProviderReconciliation` 重新投递。
+`POST /internal/assets/delete` 保留生产的 service-auth 和幂等边界，但本地 provider 不模拟
+持久化 Queue：校验通过后同步删除 `.local/assets-hub/` 中的对象，再返回兼容响应
+`{enqueued: true}`。删除失败时请求直接失败，Phoenix 后续通过 `ProviderReconciliation`
+重新投递。
 
 本地 provider 只承诺 `original` variant。当前 Worker 对 `thumbnail` 和 `card` 返回 404，
 本地实现也不应在文档或验收中承诺这两个 variant。

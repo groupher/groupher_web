@@ -78,7 +78,6 @@ export class LocalObjectStore {
         JSON.stringify({ contentType: upload.contentType }),
         'utf8',
       )
-      await unlink(this.uploadMetadataPath(uploadRef))
       return this.headFromBuffer(body, contentType)
     })
   }

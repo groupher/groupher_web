@@ -17,6 +17,15 @@ fail() {
   exit 1
 }
 
+validate_cargo_mirror_mode() {
+  case "$CARGO_MIRROR_MODE" in
+    official|rsproxy|auto) ;;
+    *)
+      fail "unsupported GROUPHER_CARGO_MIRROR value: $CARGO_MIRROR_MODE (expected official, rsproxy, or auto)"
+      ;;
+  esac
+}
+
 require_macos_build_tools() {
   [[ "$(uname -s)" == 'Darwin' ]] || fail 'this target currently supports macOS only.'
   command -v xcode-select >/dev/null 2>&1 || fail 'xcode-select is unavailable.'
@@ -87,15 +96,16 @@ build_desktop_app() {
     official)
       echo 'Using the official crates.io registry.'
       ;;
-    rsproxy|auto)
+    rsproxy)
+      rsproxy_is_reachable || fail 'RsProxy is unavailable.'
+      use_rsproxy='true'
+      ;;
+    auto)
       if rsproxy_is_reachable; then
         use_rsproxy='true'
       else
         echo 'RsProxy is unavailable; using the official crates.io registry.'
       fi
-      ;;
-    *)
-      fail "unsupported GROUPHER_CARGO_MIRROR value: $CARGO_MIRROR_MODE (expected official, rsproxy, or auto)"
       ;;
   esac
 
@@ -111,7 +121,7 @@ build_desktop_app() {
     return
   fi
 
-  if [[ "$use_rsproxy" == 'true' ]]; then
+  if [[ "$use_rsproxy" == 'true' && "$CARGO_MIRROR_MODE" == 'auto' ]]; then
     echo 'RsProxy build failed; retrying with the official crates.io registry…' >&2
     run_pnpm --filter @groupher/local-dev-hub run desktop:build -- --locked
     return
@@ -153,6 +163,7 @@ install_app_bundle() {
   open "$INSTALLED_APP"
 }
 
+validate_cargo_mirror_mode
 require_macos_build_tools
 install_rust_if_needed
 export PATH="$HOME/.cargo/bin:$PATH"

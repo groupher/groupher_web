@@ -27,7 +27,6 @@ export const loadAssetsHubEnvironment = (
   environment: Record<string, string | undefined> = process.env,
   root = packageRoot,
 ): void => {
-  const localRuntime = environment.ASSETS_HUB_RUNTIME === 'local'
   const fileEnvironment: Record<string, string> = {}
 
   dotenv.config({
@@ -40,9 +39,13 @@ export const loadAssetsHubEnvironment = (
     if (!environment[key]?.trim()) environment[key] = value
   }
 
+  const localRuntime = environment.ASSETS_HUB_RUNTIME === 'local'
   if (localRuntime) {
-    for (const key of localIdentityKeys) {
-      if (fileEnvironment[key]?.trim()) environment[key] = fileEnvironment[key]
+    const hasPackageIdentity = localIdentityKeys.some((key) => key in fileEnvironment)
+    if (hasPackageIdentity) {
+      for (const key of localIdentityKeys) {
+        environment[key] = fileEnvironment[key]?.trim() ? fileEnvironment[key] : undefined
+      }
     }
 
     if (!environment.ASSETS_HUB_LOCAL_STORAGE_DIR?.trim()) {

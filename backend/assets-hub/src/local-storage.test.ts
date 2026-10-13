@@ -63,7 +63,7 @@ describe('LocalObjectStore', () => {
     await expect(store.objectExists('communities/home/generated/fixture.webp')).resolves.toBe(false)
   })
 
-  it('consumes a successful upload intent and serializes concurrent PUTs', async () => {
+  it('keeps a successful upload intent retryable and serializes concurrent PUTs', async () => {
     const store = await createStore()
     const body = Buffer.from('fixture')
     await store.createUpload(uploadCapability(body))
@@ -73,8 +73,11 @@ describe('LocalObjectStore', () => {
       store.putUpload('upload-1', body, 'image/webp'),
     ])
 
-    expect(results.filter(({ status }) => status === 'fulfilled')).toHaveLength(1)
-    expect(results.filter(({ status }) => status === 'rejected')).toHaveLength(1)
+    expect(results.filter(({ status }) => status === 'fulfilled')).toHaveLength(2)
+    await expect(store.putUpload('upload-1', body, 'image/webp')).resolves.toMatchObject({
+      ContentLength: body.byteLength,
+      ContentType: 'image/webp',
+    })
     await expect(store.objectExists('communities/home/generated/fixture.webp')).resolves.toBe(true)
   })
 
@@ -87,5 +90,8 @@ describe('LocalObjectStore', () => {
       'escapes its storage root',
     )
     await expect(store.deleteObject('')).rejects.toThrow('escapes its storage root')
+    await expect(store.headObject('../uploads/hijack.json')).rejects.toThrow(
+      'escapes its storage root',
+    )
   })
 })

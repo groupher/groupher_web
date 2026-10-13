@@ -1,5 +1,18 @@
 reset? = "--reset" in System.argv()
 
+endpoint_config =
+  Application.get_env(:groupher_server, GroupherServerWeb.Endpoint, [])
+  |> Keyword.put(:server, false)
+
+Application.put_env(:groupher_server, GroupherServerWeb.Endpoint, endpoint_config)
+
+repo_config =
+  Application.get_env(:groupher_server, GroupherServer.Repo, [])
+  |> Keyword.put(:pool_size, 1)
+
+Application.put_env(:groupher_server, GroupherServer.Repo, repo_config)
+{:ok, _apps} = Application.ensure_all_started(:groupher_server)
+
 cache_pool =
   Application.get_env(:groupher_server, :cache)
   |> Keyword.fetch!(:pool)

@@ -1,6 +1,6 @@
 # 外部依赖服务的本地运行时架构
 
-> 状态：proposed
+> 状态：current
 >
 > 适用范围：依赖 Auth、存储、队列、Worker、第三方 API 或其他独立服务的本地开发运行时。
 
@@ -107,7 +107,7 @@ service manifest
 - endpoint 集中登记在 `LOCAL_SERVICE_ENDPOINTS`；
 - env 由 Dev Hub 注入，`.env.local` 只作为 fallback；
 - 依赖通过 `requiredDependencies` 声明；
-- 服务自行提供 `/health` 和 `/health/ready`；
+- 服务提供统一 `health.v1` 的 `/health`；只有存在独立 readiness 需求时才增加 `/health/ready`；
 - Portless alias 由统一脚本注册；
 - readiness 失败时报告具体缺失依赖，不把错误推迟到业务请求阶段。
 

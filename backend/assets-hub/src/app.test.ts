@@ -5,7 +5,6 @@ import { createApp } from './app'
 const allowedOrigin = 'http://dash.groupher.localhost:3103'
 const localEnvironment = {
   ASSETS_HUB_CAPABILITY_SECRET: 'test-capability-secret',
-  ASSETS_HUB_CORS_ORIGIN: allowedOrigin,
   ASSETS_HUB_RUNTIME: 'local',
   PHOENIX_GRAPHQL_ENDPOINT: 'http://127.0.0.1:4001/graphiql',
   SERVICE_AUTH_CLIENT_ID: 'assets-hub-test',
@@ -58,5 +57,25 @@ describe('local Assets Hub HTTP boundary', () => {
         },
       ],
     })
+  })
+
+  it('keeps public routes available and fails internal auth closed for an invalid JWKS URL', async () => {
+    const app = createApp({
+      environment: {
+        ...localEnvironment,
+        SERVICE_AUTH_JWKS_URL: 'not-a-url',
+      },
+    })
+
+    expect((await app.request('/health')).status).toBe(200)
+    expect((await app.request('/health/ready')).status).toBe(503)
+    expect(
+      (
+        await app.request('/internal/assets/delete', {
+          headers: { authorization: 'Bearer invalid-token' },
+          method: 'POST',
+        })
+      ).status,
+    ).toBe(401)
   })
 })

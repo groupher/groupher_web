@@ -19,7 +19,9 @@ defmodule GroupherServer.Test.Seeds.DeleteFullCommunityTest do
     Community,
     CommunityDashboard,
     CommunityTag,
-    DocPublic
+    DocPublic,
+    AssetReplacementPlan,
+    CommunityAsset
   }
 
   describe "[delete full community seeds]" do
@@ -61,6 +63,38 @@ defmodule GroupherServer.Test.Seeds.DeleteFullCommunityTest do
 
       assert count(from(a in ArticleUserEmotion, where: a.article_id in ^article_ids)) > 0
 
+      {:ok, seed_bot} = CMS.Seeds.Helper.seed_bot()
+
+      {:ok, from_asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("replacement-from.png"),
+          seed_bot,
+          Ecto.UUID.generate()
+        )
+
+      {:ok, to_asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("replacement-to.png"),
+          seed_bot,
+          Ecto.UUID.generate()
+        )
+
+      %AssetReplacementPlan{}
+      |> AssetReplacementPlan.changeset(%{
+        community_id: community.id,
+        created_by_id: seed_bot.id,
+        from_asset_id: from_asset.id,
+        items: [%{"article_id" => List.first(article_ids)}],
+        status: :pending,
+        to_asset_id: to_asset.id
+      })
+      |> Repo.insert!()
+
+      assert count(from(plan in AssetReplacementPlan, where: plan.community_id == ^community.id)) ==
+               1
+
       {:ok, :ok} = CMS.Seeds.delete_full_community(slug)
 
       assert {:error, _} = ORM.find_by(Community, %{slug: slug})
@@ -77,6 +111,11 @@ defmodule GroupherServer.Test.Seeds.DeleteFullCommunityTest do
       assert count(from(a in ArticleUpvote, where: a.article_id in ^article_ids)) == 0
 
       assert count(from(a in ArticleUserEmotion, where: a.article_id in ^article_ids)) == 0
+
+      assert count(from(plan in AssetReplacementPlan, where: plan.community_id == ^community.id)) ==
+               0
+
+      assert count(from(asset in CommunityAsset, where: asset.community_id == ^community.id)) == 0
     end
   end
 
@@ -94,5 +133,16 @@ defmodule GroupherServer.Test.Seeds.DeleteFullCommunityTest do
         select: article.id
       )
     )
+  end
+
+  defp image_asset_attrs(filename) do
+    %{
+      filename: filename,
+      height: 630,
+      mime_type: "image/png",
+      size_bytes: 120,
+      url: "https://assets.groupher.test/#{filename}",
+      width: 1200
+    }
   end
 end

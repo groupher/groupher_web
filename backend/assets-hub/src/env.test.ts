@@ -59,6 +59,48 @@ describe('loadAssetsHubEnvironment', () => {
     expect(environment.ASSETS_HUB_LOCAL_STORAGE_DIR).toBe('/tmp/custom-assets')
   })
 
+  it('applies local runtime defaults when the runtime comes from the package environment', async () => {
+    const root = await createEnvironmentRoot()
+    await writeFile(
+      path.join(root, '.env'),
+      [
+        'ASSETS_HUB_RUNTIME=local',
+        'SERVICE_AUTH_CLIENT_ID=assets-hub-development',
+        'SERVICE_AUTH_CLIENT_SECRET=assets-secret',
+        '',
+      ].join('\n'),
+    )
+    const environment: Record<string, string | undefined> = {}
+
+    loadAssetsHubEnvironment(environment, root)
+
+    expect(environment.ASSETS_HUB_LOCAL_STORAGE_DIR).toBe(
+      path.resolve(root, '../..', '.local/assets-hub'),
+    )
+  })
+
+  it('does not mix incomplete package credentials with an inherited service identity', async () => {
+    const root = await createEnvironmentRoot()
+    await writeFile(
+      path.join(root, '.env'),
+      [
+        'ASSETS_HUB_RUNTIME=local',
+        'SERVICE_AUTH_CLIENT_ID=assets-hub-development',
+        'SERVICE_AUTH_CLIENT_SECRET=',
+        '',
+      ].join('\n'),
+    )
+    const environment: Record<string, string | undefined> = {
+      SERVICE_AUTH_CLIENT_ID: 'phoenix-development',
+      SERVICE_AUTH_CLIENT_SECRET: 'phoenix-secret',
+    }
+
+    loadAssetsHubEnvironment(environment, root)
+
+    expect(environment.SERVICE_AUTH_CLIENT_ID).toBe('assets-hub-development')
+    expect(environment.SERVICE_AUTH_CLIENT_SECRET).toBeUndefined()
+  })
+
   it('preserves explicit service credentials outside the local runtime', async () => {
     const root = await createEnvironmentRoot()
     const environment = {

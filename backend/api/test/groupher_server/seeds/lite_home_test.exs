@@ -149,20 +149,25 @@ defmodule GroupherServer.Test.Seeds.LiteHomeTest do
 
     article = article_by_title!(community.id, title, thread)
 
-    assert Repo.exists?(
-             from(assignment in ArticleBindingTag,
-               join: binding in ArticleBinding,
-               on: binding.id == assignment.article_binding_id,
-               where:
-                 binding.article_id == ^article.id and
-                   binding.community_id == ^community.id and
-                   assignment.tag_id in subquery(
-                     from(tag in CMS.Model.CommunityTag,
-                       where: tag.community_id == ^community.id and tag.thread == ^thread,
-                       select: tag.id
-                     )
-                   )
-             )
-           )
+    assignment_count =
+      Repo.aggregate(
+        from(assignment in ArticleBindingTag,
+          join: binding in ArticleBinding,
+          on: binding.id == assignment.article_binding_id,
+          where:
+            binding.article_id == ^article.id and
+              binding.community_id == ^community.id and
+              assignment.tag_id in subquery(
+                from(tag in CMS.Model.CommunityTag,
+                  where: tag.community_id == ^community.id and tag.thread == ^thread,
+                  select: tag.id
+                )
+              )
+        ),
+        :count,
+        :article_binding_id
+      )
+
+    assert assignment_count == 3
   end
 end
