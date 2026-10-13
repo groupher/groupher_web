@@ -396,6 +396,8 @@ describe('article query mutation helpers', () => {
     })
     const unsubscribeRemount = remount.subscribe(() => undefined)
     try {
+      await vi.waitFor(() => expect(statsQuery).toHaveBeenCalledOnce())
+      await vi.waitFor(() => expect(remount.getCurrentResult().fetchStatus).toBe('idle'))
       await vi.waitFor(() =>
         expect(queryClient.getQueryData<typeof stats>(statsKey)?.upvotesCount).toBe(3),
       )

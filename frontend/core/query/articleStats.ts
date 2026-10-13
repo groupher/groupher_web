@@ -166,7 +166,7 @@ export const articleStatsBatchStructuralSharing =
     return stats
   }
 
-const sameArticle = (left: TArticleStats, right: TArticleStats): boolean =>
+export const sameArticle = (left: TArticleStats, right: TArticleStatsPath): boolean =>
   left.community === right.community &&
   left.thread === right.thread &&
   String(left.innerId) === String(right.innerId)

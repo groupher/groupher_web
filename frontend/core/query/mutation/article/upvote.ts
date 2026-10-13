@@ -17,7 +17,7 @@ import type { ReactionOutcome } from '~/graphql/generated/graphql'
 import type { TArticle, TArticleStats } from '~/spec'
 
 import { articlePathKey, articlePathOf, type TArticlePath } from '../../articlePath'
-import { articleStatsCache } from '../../articleStats'
+import { articleStatsCache, sameArticle } from '../../articleStats'
 import { viewerQueryKeys } from '../../key'
 import { articleInteractionStateQueries, type TArticleInteractionState } from '../../viewer'
 import {
@@ -53,11 +53,6 @@ type TArticleReactionResult = TArticleInteractionResult & {
 type TStatsCacheValue = TArticleStats | TArticleStats[]
 type TStatsCacheQuery = ReturnType<typeof articleStatsCache.queries>[number]
 
-const isTargetStats = (stats: TArticleStats, path: TArticlePath): boolean =>
-  stats.community === path.community &&
-  stats.thread === path.thread &&
-  String(stats.innerId) === String(path.innerId)
-
 const patchOptimisticStats = (
   query: TStatsCacheQuery,
   update: (current: TStatsCacheValue | undefined) => TStatsCacheValue | undefined,
@@ -81,9 +76,9 @@ const patchActiveStatsChanges = (
     if (!query.isActive()) continue
     const previous = query.state.data as TStatsCacheValue | undefined
     const target = Array.isArray(previous)
-      ? previous.find((stats) => isTargetStats(stats, path))
+      ? previous.find((stats) => sameArticle(stats, path))
       : previous
-    if (!target || !isTargetStats(target, path)) continue
+    if (!target || !sameArticle(target, path)) continue
 
     const before = target.upvotesCount
     const beforeRevision = target.interactionRevision
@@ -93,10 +88,10 @@ const patchActiveStatsChanges = (
     patchOptimisticStats(query, (current) => {
       if (Array.isArray(current)) {
         return current.map((stats) =>
-          isTargetStats(stats, path) ? { ...stats, upvotesCount: optimistic } : stats,
+          sameArticle(stats, path) ? { ...stats, upvotesCount: optimistic } : stats,
         )
       }
-      return current && isTargetStats(current, path)
+      return current && sameArticle(current, path)
         ? { ...current, upvotesCount: optimistic }
         : current
     })
@@ -108,12 +103,14 @@ const patchActiveStatsChanges = (
       before,
       optimistic,
       commandId: context.commandId,
+      // Restore the still-owned optimistic value before refetching. Without this guarded restore,
+      // ArticleStats structural sharing rejects the equal-revision authority count as a conflict.
       rollback: 'restore-if-owned',
       restore: () => {
         patchOptimisticStats(query, (current) => {
           if (Array.isArray(current)) {
             return current.map((stats) =>
-              isTargetStats(stats, path) &&
+              sameArticle(stats, path) &&
               stats.upvotesCount === optimistic &&
               stats.interactionRevision === beforeRevision
                 ? { ...stats, upvotesCount: before }
@@ -121,7 +118,7 @@ const patchActiveStatsChanges = (
             )
           }
           return current &&
-            isTargetStats(current, path) &&
+            sameArticle(current, path) &&
             current.upvotesCount === optimistic &&
             current.interactionRevision === beforeRevision
             ? { ...current, upvotesCount: before }

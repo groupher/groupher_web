@@ -45,9 +45,9 @@ export const rollbackChanges = (
 ): void => {
   for (const change of changes) {
     if (ownsChange(queryClient, change)) {
-      // Public aggregate/count changes can hit ABA: another writer may have
-      // changed the value and coincidentally returned it to the same number.
-      // Their authority path is refetch, so never restore a stale local value.
+      // Public aggregate/count changes normally use refetch because they can hit ABA. A guarded
+      // restore-if-owned is reserved for callers that additionally verify the authority revision
+      // before restoring, then still refetch the authority target.
       if (change.rollback === 'restore-if-owned' || change.type === 'pending-entity') {
         change.restore()
       }
