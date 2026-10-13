@@ -290,20 +290,22 @@ const finishShutdown = () => {
   setTimeout(() => process.exit(0), 1_500).unref()
 }
 
-const shutdown = async () => {
+const shutdown = async (signal: NodeJS.Signals) => {
+  console.warn(`Dev Hub received ${signal}; stopping managed services.`)
   await prepareShutdown()
   finishShutdown()
 }
 
 app.post('/api/shutdown', async (context) => {
+  console.info('Dev Hub shutdown requested through /api/shutdown.')
   await prepareShutdown()
   setTimeout(finishShutdown, 0).unref()
   return context.json({ shutdown: 'complete' })
 })
 
-process.on('SIGINT', () => void shutdown())
-process.on('SIGTERM', () => void shutdown())
-if (process.platform !== 'win32') process.on('SIGHUP', () => void shutdown())
+process.on('SIGINT', () => void shutdown('SIGINT'))
+process.on('SIGTERM', () => void shutdown('SIGTERM'))
+if (process.platform !== 'win32') process.on('SIGHUP', () => void shutdown('SIGHUP'))
 
 function respondWithError(context: Context, error: unknown) {
   if (

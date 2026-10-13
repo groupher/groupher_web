@@ -14,6 +14,7 @@ import {
   fetchSnapshot,
   type TServiceControlAction,
 } from '@/lib/hub-client'
+import { projectDisconnectedServices } from '@/lib/service-connection-state'
 
 type TServiceHub = {
   services: TPublicService[]
@@ -44,6 +45,11 @@ export function useServiceHub(): TServiceHub {
   const [connected, setConnected] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  const updateConnection = useCallback((nextConnected: boolean) => {
+    setConnected(nextConnected)
+    if (!nextConnected) setServices(projectDisconnectedServices)
+  }, [])
 
   const updateService = useCallback((nextService: TPublicService) => {
     setServices((current) =>
@@ -77,7 +83,7 @@ export function useServiceHub(): TServiceHub {
         setMetricsByService((current) => ({ ...current, [serviceId]: metrics }))
       },
       onMetricNotices: setMetricNotices,
-      onConnectionChange: setConnected,
+      onConnectionChange: updateConnection,
     })
 
     void fetchSnapshot(controller.signal)
@@ -99,7 +105,7 @@ export function useServiceHub(): TServiceHub {
       controller.abort()
       disconnect()
     }
-  }, [updateService])
+  }, [updateConnection, updateService])
 
   const runServiceAction = useCallback(
     async (
