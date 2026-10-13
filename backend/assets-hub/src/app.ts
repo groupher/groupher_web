@@ -12,11 +12,7 @@
 import { createHash } from 'node:crypto'
 import path from 'node:path'
 
-import {
-  bearerToken,
-  createServiceAuthVerifier,
-  serviceTokenErrorStatus,
-} from '@groupher/service/auth'
+import { bearerToken, serviceTokenErrorStatus } from '@groupher/service/auth'
 import { createHealthResponse } from '@groupher/service/health'
 import { jsonResponse } from '@groupher/service/http'
 import { Hono } from 'hono'
@@ -38,6 +34,12 @@ import {
   headR2Object,
   smokeR2,
 } from './r2'
+import {
+  createAssetsHubInternalVerifier,
+  DEFAULT_SERVICE_AUTH_ISSUER,
+  DEFAULT_SERVICE_AUTH_JWKS_URL,
+  type TAssetsHubInternalVerifier,
+} from './service-auth'
 
 type TOptions = {
   environment?: Record<string, string | undefined>
@@ -162,15 +164,14 @@ const objectContentHash = async (capability: TUploadCapability, localStore?: Loc
 const isLocalRuntime = (environment: Record<string, string | undefined>) =>
   environment.ASSETS_HUB_RUNTIME === 'local'
 
-const createInternalRequestVerifier = (issuer: string | null, jwksUrl: string | null) => {
+const createInternalRequestVerifier = (
+  issuer: string | null,
+  jwksUrl: string | null,
+): TAssetsHubInternalVerifier | null => {
   if (!issuer || !jwksUrl) return null
 
   try {
-    return createServiceAuthVerifier({
-      audience: 'assets-hub:internal-api',
-      issuer,
-      jwksUrl,
-    })
+    return createAssetsHubInternalVerifier(issuer, jwksUrl)
   } catch {
     return null
   }
@@ -178,7 +179,7 @@ const createInternalRequestVerifier = (issuer: string | null, jwksUrl: string | 
 
 const authorizeInternalRequest = async (
   context: { req: { header: (name: string) => string | undefined } },
-  verifier: ReturnType<typeof createServiceAuthVerifier> | null,
+  verifier: TAssetsHubInternalVerifier | null,
   scope: string,
   allowedSubjects: readonly string[] = ['service:phoenix'],
 ): Promise<null | 401 | 403> => {
@@ -223,10 +224,10 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
   const app = new Hono()
   const localRuntime = isLocalRuntime(environment)
   const serviceAuthIssuer =
-    environment.SERVICE_AUTH_ISSUER?.trim() || (localRuntime ? null : 'https://auth.groupher.com')
+    environment.SERVICE_AUTH_ISSUER?.trim() || (localRuntime ? null : DEFAULT_SERVICE_AUTH_ISSUER)
   const serviceAuthJwksUrl =
     environment.SERVICE_AUTH_JWKS_URL?.trim() ||
-    (localRuntime ? null : 'https://auth.groupher.com/.well-known/jwks.json')
+    (localRuntime ? null : DEFAULT_SERVICE_AUTH_JWKS_URL)
   const internalRequestVerifier = createInternalRequestVerifier(
     serviceAuthIssuer,
     serviceAuthJwksUrl,
