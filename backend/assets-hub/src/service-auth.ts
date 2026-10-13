@@ -1,3 +1,12 @@
+/**
+ * Centralizes the Assets Hub internal service-auth verifier contract.
+ *
+ *   Node provider / Cloudflare Worker
+ *     -> shared audience and endpoint defaults
+ *     -> service-token verifier
+ *     -> scoped internal Assets Hub request
+ */
+
 import { createServiceAuthVerifier } from '@groupher/service/auth'
 
 export const ASSETS_HUB_INTERNAL_AUDIENCE = 'assets-hub:internal-api'

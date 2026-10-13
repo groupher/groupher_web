@@ -166,6 +166,7 @@ export const articleStatsBatchStructuralSharing =
     return stats
   }
 
+/** Compares normalized ArticleStats identity across detail, batch, and optimistic cache paths. */
 export const sameArticle = (left: TArticleStats, right: TArticleStatsPath): boolean =>
   left.community === right.community &&
   left.thread === right.thread &&
