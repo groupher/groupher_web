@@ -22,7 +22,9 @@ defmodule GroupherServer.CMS.Seeds.FullCommunity do
 
   alias CMS.Model.{
     Community,
-    Article
+    Article,
+    AssetUpload,
+    AssetWorkflowRun
   }
 
   alias Helper.{ORM, T}
@@ -82,6 +84,10 @@ defmodule GroupherServer.CMS.Seeds.FullCommunity do
                select: binding.article_id
              )
            ),
+         {_count, _} <-
+           delete_all(from(upload in AssetUpload, where: upload.community_id == ^community.id)),
+         {_count, _} <-
+           delete_all(from(run in AssetWorkflowRun, where: run.community_id == ^community.id)),
          {_count, _} <- delete_all(from(article in Article, where: article.id in ^article_ids)),
          {:ok, _community} <- Repo.delete(community, timeout: 300_000) do
       {:ok, :ok}

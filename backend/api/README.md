@@ -56,6 +56,15 @@ MIX_ENV=dev mix ecto.setup
 MIX_ENV=dev mix phx.server
 ```
 
+`ecto.setup` only creates and migrates the database. To seed the local `home`
+community used by Community smoke tests and Dev Hub, run:
+
+```sh
+MIX_ENV=dev mix run --no-start -e 'endpoint_config = Application.get_env(:groupher_server, GroupherServerWeb.Endpoint, []); Application.put_env(:groupher_server, GroupherServerWeb.Endpoint, Keyword.put(endpoint_config, :server, false)); repo_config = Application.get_env(:groupher_server, GroupherServer.Repo, []); Application.put_env(:groupher_server, GroupherServer.Repo, Keyword.put(repo_config, :pool_size, 1)); {:ok, _apps} = Application.ensure_all_started(:groupher_server); GroupherServer.CMS.Seeds.lite_home()'
+```
+
+From the repository root, the equivalent command is `make be.seed.home`.
+
 The default local endpoint is `http://127.0.0.1:4001`; normal browser traffic
 should use the Gateway-managed local host configured by Portless.
 

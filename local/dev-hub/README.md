@@ -69,6 +69,20 @@ make dev.app
 
 当前应用是本地开发工具，没有做 Apple notarization，不用于 Mac App Store 或对外分发。
 
+Cargo 默认使用官方 `crates.io` registry。若当前网络访问官方源较慢，可以显式使用国内 RsProxy 镜像：
+
+```bash
+GROUPHER_CARGO_MIRROR=rsproxy make dev.app
+```
+
+也可以使用自动模式：脚本会先探测 RsProxy，不可用时使用官方源；RsProxy 构建失败时也会自动回退到官方源。
+
+```bash
+GROUPHER_CARGO_MIRROR=auto make dev.app
+```
+
+可选值为 `official`（默认）、`rsproxy` 和 `auto`。registry 选择只影响本次构建，不会修改 `Cargo.toml` 或 `Cargo.lock`。
+
 ## 能力
 
 - **服务编排**：启动、停止和重启服务；按进程组清理子进程。

@@ -16,6 +16,7 @@
 - [V3](./v3.md)：资源管理、stats/quota 与删除链路，实施中。
 - [V4](./v4.md)：内容生产与稳定 asset identity，规划中。
 - [V5](./v5.md)：Revision-owned usage、替换操作、删除保护与 GC 目标重构。
+- [本地运行时边界](./local-runtime.md)：默认本地 provider 与可选 Cloudflare 集成模式。
 
 ## 定位
 

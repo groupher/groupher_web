@@ -143,6 +143,9 @@ be.watch.wip2:
 be.migrate:
 	cd ./backend/api && MIX_ENV=dev mix ecto.migrate && cd -
 
+be.seed.home:
+	cd ./backend/api && if [ -f .env.local ]; then set -a; . .env.local; set +a; fi; export ASSETS_HUB_BATCH_ENDPOINT=http://127.0.0.1:8002; export ASSETS_HUB_DELETE_ENDPOINT=http://127.0.0.1:8002; MIX_ENV=dev mix run --no-start -e 'endpoint_config = Application.get_env(:groupher_server, GroupherServerWeb.Endpoint, []); Application.put_env(:groupher_server, GroupherServerWeb.Endpoint, Keyword.put(endpoint_config, :server, false)); repo_config = Application.get_env(:groupher_server, GroupherServer.Repo, []); Application.put_env(:groupher_server, GroupherServer.Repo, Keyword.put(repo_config, :pool_size, 1)); {:ok, _apps} = Application.ensure_all_started(:groupher_server); case GroupherServer.CMS.Seeds.lite_home() do {:ok, community} -> IO.puts("LiteHome seed completed: #{community.slug}"); {:error, reason} -> IO.puts(:stderr, "LiteHome seed failed: #{inspect(reason, limit: 20, printable_limit: 1000)}"); System.halt(1) end' && cd -
+
 be.migrate.prod:
 	cd ./backend/api && MIX_ENV=prod mix ecto.migrate && cd -
 
