@@ -11,7 +11,23 @@ repo_config =
   |> Keyword.put(:pool_size, 1)
 
 Application.put_env(:groupher_server, GroupherServer.Repo, repo_config)
-{:ok, _apps} = Application.ensure_all_started(:groupher_server)
+
+oban_config =
+  Application.get_env(:groupher_server, Oban, [])
+  |> Keyword.put(:testing, :manual)
+  |> Keyword.put(:plugins, false)
+  |> Keyword.put(:queues, false)
+
+Application.put_env(:groupher_server, Oban, oban_config)
+
+case Application.ensure_all_started(:groupher_server) do
+  {:ok, _apps} ->
+    :ok
+
+  {:error, reason} ->
+    IO.puts("✗ Failed to start groupher_server: #{inspect(reason)}")
+    System.halt(1)
+end
 
 cache_pool =
   Application.get_env(:groupher_server, :cache)
