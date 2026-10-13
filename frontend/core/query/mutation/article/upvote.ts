@@ -144,6 +144,7 @@ const patchViewerChanges = (
   for (const { queryKey } of queryClient.getQueryCache().findAll({ queryKey: prefix })) {
     const previous = queryClient.getQueryData<Record<string, TArticleInteractionState>>(queryKey)
     const before = previous?.[articleKey]?.viewerHasUpvoted
+    const beforeRevision = previous?.[articleKey]?.interactionRevision
     if (!previous || typeof before !== 'boolean') continue
     const next = {
       ...previous,
@@ -162,7 +163,8 @@ const patchViewerChanges = (
       rollback: 'restore-if-owned',
       restore: () => {
         queryClient.setQueryData<Record<string, TArticleInteractionState>>(queryKey, (current) =>
-          current?.[articleKey]
+          current?.[articleKey]?.viewerHasUpvoted === nextViewerState &&
+          current[articleKey].interactionRevision === beforeRevision
             ? {
                 ...current,
                 [articleKey]: { ...current[articleKey], viewerHasUpvoted: before },

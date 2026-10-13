@@ -303,6 +303,29 @@ describe('article query mutation helpers', () => {
     ).toBe(false)
   })
 
+  it('does not restore viewer state after its authority revision advances', () => {
+    const queryClient = setupClient()
+    const context = { queryClient, accountRef: 'alice', commandId: 'op-stale-viewer' }
+    const plan = articleUpvoteOperation.apply(context, article, true)
+    for (const change of plan.changes) markChange(queryClient, change)
+
+    queryClient.setQueryData<Record<string, TArticleInteractionState>>(viewerKey, (current) => ({
+      ...current,
+      'home:POST:42': {
+        ...current!['home:POST:42'],
+        interactionRevision: 2,
+        viewerHasUpvoted: true,
+      },
+    }))
+    rollbackChanges(queryClient, plan.changes)
+
+    expect(
+      queryClient.getQueryData<Record<string, TArticleInteractionState>>(viewerKey)?.[
+        'home:POST:42'
+      ],
+    ).toMatchObject({ interactionRevision: 2, viewerHasUpvoted: true })
+  })
+
   it('optimistically increments the active public count and private viewer state', async () => {
     const queryClient = setupClient()
     const observer = new QueryObserver(queryClient, {
