@@ -63,7 +63,7 @@ describe('LocalObjectStore', () => {
     await expect(store.objectExists('communities/home/generated/fixture.webp')).resolves.toBe(false)
   })
 
-  it('keeps a successful upload intent retryable and serializes concurrent PUTs', async () => {
+  it('keeps a successful upload intent retryable across concurrent PUTs', async () => {
     const store = await createStore()
     const body = Buffer.from('fixture')
     await store.createUpload(uploadCapability(body))

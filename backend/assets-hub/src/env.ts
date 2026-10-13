@@ -41,11 +41,9 @@ export const loadAssetsHubEnvironment = (
 
   const localRuntime = environment.ASSETS_HUB_RUNTIME === 'local'
   if (localRuntime) {
-    const hasPackageIdentity = localIdentityKeys.some((key) => key in fileEnvironment)
-    if (hasPackageIdentity) {
-      for (const key of localIdentityKeys) {
-        environment[key] = fileEnvironment[key]?.trim() ? fileEnvironment[key] : undefined
-      }
+    for (const key of localIdentityKeys) {
+      if (fileEnvironment[key]?.trim()) environment[key] = fileEnvironment[key]
+      else delete environment[key]
     }
 
     if (!environment.ASSETS_HUB_LOCAL_STORAGE_DIR?.trim()) {

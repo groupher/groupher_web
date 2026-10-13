@@ -20,7 +20,6 @@ import {
   verifyBatchCapability,
   verifyPublishClaim,
   verifyCapability,
-  type TGeneratedImageUploadCapability,
 } from './capability'
 import { GeneratedImageBatchDO } from './generated-batch-do'
 import {

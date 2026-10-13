@@ -172,7 +172,10 @@ const createInternalRequestVerifier = (
 
   try {
     return createAssetsHubInternalVerifier(issuer, jwksUrl)
-  } catch {
+  } catch (error) {
+    console.warn('[assets-hub] Invalid service-auth verifier configuration', {
+      error: error instanceof Error ? error.message : String(error),
+    })
     return null
   }
 }
@@ -317,12 +320,13 @@ export const createApp = ({ environment = process.env }: TOptions = {}) => {
       'SERVICE_AUTH_TOKEN_ENDPOINT',
     ]
     const missing = localRuntime ? required.filter((name) => !environment[name]?.trim()) : []
-    const invalidServiceAuth =
-      localRuntime && serviceAuthIssuer && serviceAuthJwksUrl && !internalRequestVerifier
+    const invalidServiceAuth = Boolean(
+      serviceAuthIssuer && serviceAuthJwksUrl && !internalRequestVerifier,
+    )
     if (missing.length || invalidServiceAuth) {
       const messages = [
         missing.length ? `Missing local configuration: ${missing.join(', ')}` : null,
-        invalidServiceAuth ? 'Invalid local service-auth verifier configuration.' : null,
+        invalidServiceAuth ? 'Invalid service-auth verifier configuration.' : null,
       ].filter(Boolean)
       return json(
         {
