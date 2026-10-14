@@ -197,8 +197,8 @@ defmodule GroupherServer.CMS.Wallpaper.Settings do
       get(value, :version) == 2 and
       is_binary(get(value, :preset)) and
       valid_string_list?(get(value, :colors)) and
-      is_number_value?(get(value, :angle)) and
-      is_number_value?(get(value, :spread)) and
+      number_value?(get(value, :angle)) and
+      number_value?(get(value, :spread)) and
       optional_number_list?(value, :stops)
   end
 
@@ -211,7 +211,7 @@ defmodule GroupherServer.CMS.Wallpaper.Settings do
   defp valid_mesh_recipe?(value) do
     valid_recipe_base?(value, @mesh_recipe_required) and
       normalize_gradient_renderer(get(value, :renderer)) in [:flow, :liquid] and
-      is_number_value?(get(value, :seed)) and
+      number_value?(get(value, :seed)) and
       mesh_numbers_valid?(value)
   end
 
@@ -221,20 +221,20 @@ defmodule GroupherServer.CMS.Wallpaper.Settings do
   end
 
   defp radial_geometry_valid?(value) do
-    valid_gradient_center?(get(value, :center)) and is_number_value?(get(value, :radius)) and
-      valid_gradient_shape?(get(value, :shape)) and is_number_value?(get(value, :spread))
+    valid_gradient_center?(get(value, :center)) and number_value?(get(value, :radius)) and
+      valid_gradient_shape?(get(value, :shape)) and number_value?(get(value, :spread))
   end
 
   defp mesh_numbers_valid?(value) do
     Enum.all?(~w(angle softness warp scale contrast brightness)a, fn key ->
-      is_number_value?(get(value, key))
+      number_value?(get(value, key))
     end)
   end
 
   defp valid_gradient_center?(value) when is_map(value) do
     has_only_keys?(value, ~w(x y)) and
-      is_number_value?(get(value, :x)) and
-      is_number_value?(get(value, :y))
+      number_value?(get(value, :x)) and
+      number_value?(get(value, :y))
   end
 
   defp valid_gradient_center?(_value), do: false
@@ -253,19 +253,19 @@ defmodule GroupherServer.CMS.Wallpaper.Settings do
 
   defp valid_string_list?(_value), do: false
 
-  defp valid_number_list?(value) when is_list(value), do: Enum.all?(value, &is_number_value?/1)
+  defp valid_number_list?(value) when is_list(value), do: Enum.all?(value, &number_value?/1)
 
   defp valid_number_list?(_value), do: false
 
   defp optional_number?(value, key) do
-    not has_key?(value, key) or is_number_value?(get(value, key))
+    not has_key?(value, key) or number_value?(get(value, key))
   end
 
   defp optional_number_list?(value, key) do
     not has_key?(value, key) or valid_number_list?(get(value, key))
   end
 
-  defp is_number_value?(value), do: is_integer(value) or is_float(value)
+  defp number_value?(value), do: is_integer(value) or is_float(value)
 
   defp has_only_keys?(value, required, optional \\ []) do
     keys = Enum.map(Map.keys(value), &to_string/1)
