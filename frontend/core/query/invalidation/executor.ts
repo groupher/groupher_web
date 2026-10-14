@@ -1,4 +1,4 @@
-import type { QueryClient } from '@tanstack/react-query'
+import type { QueryClient, QueryKey } from '@tanstack/react-query'
 
 import { resolve as resolveArticle } from './article'
 import { resolve as resolveComment } from './comment'
@@ -29,6 +29,18 @@ export const markStale = async (
   queryKey: readonly unknown[],
 ): Promise<void> => {
   await queryClient.invalidateQueries({ queryKey, exact: true, refetchType: 'none' })
+}
+
+/** Invalidates owner-resolved exact query keys while keeping TanStack filters inside this module. */
+export const invalidateExact = async (
+  queryClient: QueryClient,
+  targets: readonly { queryKey: QueryKey }[],
+): Promise<void> => {
+  await Promise.all(
+    targets.map(({ queryKey }) =>
+      queryClient.invalidateQueries({ queryKey, exact: true, refetchType: 'active' }),
+    ),
+  )
 }
 
 /** Executes typed invalidation plans without exposing TanStack filters to domains. */

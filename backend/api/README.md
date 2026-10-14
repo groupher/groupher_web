@@ -56,6 +56,15 @@ MIX_ENV=dev mix ecto.setup
 MIX_ENV=dev mix phx.server
 ```
 
+`ecto.setup` only creates and migrates the database. To seed the local `home`
+community used by Community smoke tests and Dev Hub, run:
+
+```sh
+make -C ../.. be.seed.home
+```
+
+From the repository root, run `make be.seed.home`.
+
 The default local endpoint is `http://127.0.0.1:4001`; normal browser traffic
 should use the Gateway-managed local host configured by Portless.
 

@@ -59,7 +59,7 @@
     "auth:env:bootstrap": "node scripts/bootstrap-auth-env.mjs",
     "smoke:auth:v1": "bash scripts/smoke-auth-v1.sh",
     "portless:setup": "portless proxy start && portless trust && pnpm run portless:sync",
-    "portless:sync": "portless alias groupher 3003 --force && portless alias dash.groupher 3005 --force && portless alias community.groupher 3007 --force && portless alias apply.groupher 3006 --force && portless alias landing.groupher 3003 --force && portless alias auth.groupher 3004 --force && portless alias inspire-me.groupher 3010 --force && portless alias api.groupher 4001 --force && portless alias content-import.groupher 8001 --force && portless alias assets-hub.groupher 8002 --force && portless alias press.groupher 8003 --force && portless alias assets.groupher 8787 --force && portless alias converter.groupher 8000 --force",
+    "portless:sync": "portless alias groupher 3003 --force && portless alias dash.groupher 3005 --force && portless alias community.groupher 3007 --force && portless alias apply.groupher 3006 --force && portless alias landing.groupher 3003 --force && portless alias auth.groupher 3004 --force && portless alias inspire-me.groupher 3010 --force && portless alias api.groupher 4001 --force && portless alias content-import.groupher 8001 --force && portless alias assets-hub.groupher 8002 --force && portless alias press.groupher 8003 --force && portless alias assets.groupher 8002 --force && portless alias converter.groupher 8000 --force",
     "build:prod:dash": "pnpm --filter @groupher/frontend-dash run build",
     "build:prod:community": "pnpm --filter @groupher/frontend-community run build",
     "build:prod:apply": "pnpm --filter @groupher/frontend-apply run build",

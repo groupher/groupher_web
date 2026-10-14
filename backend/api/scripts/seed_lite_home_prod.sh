@@ -16,4 +16,4 @@ SECRET_KEY_BASE="$SECRET_KEY_BASE" \
 PHX_JWT_SECRET="$PHX_JWT_SECRET" \
 VIEW_TRACKER_PEPPER="$VIEW_TRACKER_PEPPER" \
 DB_POOL_SIZE="$DB_POOL_SIZE" \
-mix run scripts/seed_lite_home.exs
+mix run --no-start scripts/seed_lite_home.exs

@@ -31,6 +31,10 @@ test('frontend and Phoenix stacks match their runtime boundaries', () => {
   assert.deepEqual(landing?.technologies, ['tanstack-start', 'react', 'typescript', 'tailwindcss'])
   assert.equal(landing?.config?.kind, 'env-files')
 
+  const community = SERVICE_DEFINITIONS.find((definition) => definition.id === 'community')
+  assert.equal(community?.appUrl, 'http://127.0.0.1:3007/home/post')
+  assert.equal(community?.portlessAppUrl, 'https://community.groupher.localhost/home/post')
+
   const gateway = SERVICE_DEFINITIONS.find((definition) => definition.id === 'dev-gateway')
   assert.deepEqual(gateway?.technologies, ['hono', 'nodejs', 'typescript', 'routing'])
   assert.equal(gateway?.config?.kind, 'env-files')
@@ -72,7 +76,7 @@ test('backend services keep the intended list order', () => {
   )
 })
 
-test('assets hub starts after auth and Phoenix and gates read-worker readiness on its contract', () => {
+test('assets hub starts after auth and Phoenix and exposes the local provider readiness contract', () => {
   const assetsHub = SERVICE_DEFINITIONS.find((definition) => definition.id === 'assets-hub')
   assert.deepEqual(assetsHub?.startPolicy, {
     defaultMode: 'chain',
@@ -80,8 +84,8 @@ test('assets hub starts after auth and Phoenix and gates read-worker readiness o
     optionalDependencies: [],
   })
   assert.equal(
-    assetsHub?.endpoints?.find((endpoint) => endpoint.id === 'read-worker')?.url,
-    'http://127.0.0.1:8787/health/ready',
+    assetsHub?.endpoints?.find((endpoint) => endpoint.id === 'local-provider')?.url,
+    'http://127.0.0.1:8002/health/ready',
   )
   assert.equal(assetsHub?.env?.PHOENIX_GRAPHQL_ENDPOINT, LOCAL_SERVICE_GRAPHQL_ENDPOINTS.phoenix)
   assert.equal(assetsHub?.env?.ASSETS_HUB_BATCH_ENDPOINT, LOCAL_SERVICE_ENDPOINTS.assetsHubRead)
@@ -222,6 +226,16 @@ test('managed Phoenix startup allow-lists only local credential fallbacks', () =
   assert.doesNotMatch(managedRecipe, /\.env\.local|\bsource\b|(?:^|\s)\.\s+/)
 })
 
+test('managed Assets Hub startup reads only its own service identity fallback', () => {
+  const assetsHub = SERVICE_DEFINITIONS.find((definition) => definition.id === 'assets-hub')
+
+  assert.match(assetsHub?.envFallback?.file || '', /backend\/assets-hub\/\.env$/)
+  assert.deepEqual(assetsHub?.envFallback?.keys, [
+    'SERVICE_AUTH_CLIENT_ID',
+    'SERVICE_AUTH_CLIENT_SECRET',
+  ])
+})
+
 test('service identity uses one stable issuer separate from local network endpoints', () => {
   assert.equal(LOCAL_SERVICE_AUTH_ISSUER, 'https://auth.groupher.localhost')
 
@@ -319,13 +333,8 @@ test('managed services expose stable Portless names and keep the API under the c
     })),
     [
       {
-        id: 'upload-api',
+        id: 'local-provider',
         port: 8002,
-        portlessUrl: 'https://assets-hub.groupher.localhost/health',
-      },
-      {
-        id: 'read-worker',
-        port: 8787,
         portlessUrl: 'https://assets.groupher.localhost/health',
       },
     ],

@@ -19,8 +19,9 @@ defmodule GroupherServer.CMS.Seeds.LiteHome do
   alias GroupherServer.{CMS, Repo}
 
   alias CMS.Articles.Trash
+  alias CMS.Communities.Tags.Maintenance
   alias CMS.Model.{Article, ArticleBinding, ArticlePublic, Community, KanbanState}
-  alias CMS.Seeds.{Communities, FullCommunity}
+  alias CMS.Seeds.{Communities, FullCommunity, Tags, Wallpaper}
   alias CMS.Seeds.Helper, as: SeedHelper
   alias Helper.{ORM, T}
 
@@ -37,6 +38,8 @@ defmodule GroupherServer.CMS.Seeds.LiteHome do
     "Dashboard smoke-test data refreshed",
     "GraphQL endpoint verification notes"
   ]
+  @tag_count 5
+  @tag_group_count 2
 
   @doc """
   Seeds the minimal home community dataset.
@@ -58,8 +61,11 @@ defmodule GroupherServer.CMS.Seeds.LiteHome do
     with {:ok, :ok} <- maybe_reset(reset?),
          {:ok, community} <- Communities.mock(@slug, title: "Home"),
          {:ok, _} <- configure_dashboard(community),
-         {:ok, _posts} <- seed_posts(community),
-         {:ok, _} <- seed_changelogs(community),
+         {:ok, _} <- maybe_seed_wallpaper(community, opts),
+         {:ok, post_tag_ids} <- seed_tags(community, :post),
+         {:ok, changelog_tag_ids} <- seed_tags(community, :changelog),
+         {:ok, _posts} <- seed_posts(community, post_tag_ids),
+         {:ok, _} <- seed_changelogs(community, changelog_tag_ids),
          {:ok, community} <- CMS.Communities.fetch(@slug, inc_views: false) do
       {:ok, Map.put(community, :seed_summary, summary(community))}
     end
@@ -116,33 +122,51 @@ defmodule GroupherServer.CMS.Seeds.LiteHome do
     end
   end
 
-  defp seed_posts(%Community{} = community) do
-    with {:ok, posts} <- seed_articles(community, :post, @post_titles) do
+  defp maybe_seed_wallpaper(%Community{} = community, opts) do
+    if Keyword.get(opts, :wallpaper, true) do
+      Wallpaper.seed(community, Keyword.get(opts, :wallpaper_opts, []))
+    else
+      {:ok, :skipped}
+    end
+  end
+
+  defp seed_tags(%Community{} = community, thread) do
+    Tags.mock(community, thread, count: @tag_count, group_count: @tag_group_count)
+  end
+
+  defp seed_posts(%Community{} = community, tag_ids) when is_list(tag_ids) do
+    with {:ok, posts} <- seed_articles(community, :post, @post_titles, tag_ids) do
       set_kanban_statuses(community, posts)
     end
   end
 
-  defp seed_changelogs(%Community{} = community) do
-    seed_articles(community, :changelog, @changelog_titles)
+  defp seed_changelogs(%Community{} = community, tag_ids) when is_list(tag_ids) do
+    seed_articles(community, :changelog, @changelog_titles, tag_ids)
   end
 
-  defp seed_articles(%Community{} = community, thread, titles)
+  defp seed_articles(%Community{} = community, thread, titles, tag_ids)
        when thread in [:post, :changelog] do
     existing_articles = existing_articles_by_title(thread, community.id, titles)
 
     with {:ok, author} <- SeedHelper.seed_bot() do
-      titles
-      |> Enum.reduce_while({:ok, []}, fn title, {:ok, acc} ->
-        case Map.fetch(existing_articles, title) do
-          {:ok, article} ->
-            {:cont, {:ok, [article | acc]}}
+      articles_result =
+        titles
+        |> Enum.reduce_while({:ok, []}, fn title, {:ok, acc} ->
+          case Map.fetch(existing_articles, title) do
+            {:ok, article} ->
+              {:cont, {:ok, [article | acc]}}
 
-          :error ->
-            seed_new_article(community, thread, title, author, acc)
+            :error ->
+              seed_new_article(community, thread, title, author, acc)
+          end
+        end)
+        |> case do
+          {:ok, articles} -> {:ok, Enum.reverse(articles)}
+          {:error, reason} -> {:error, reason}
         end
-      end)
-      |> case do
-        {:ok, articles} -> {:ok, Enum.reverse(articles)}
+
+      case articles_result do
+        {:ok, articles} -> ensure_article_tags(articles, tag_ids)
         {:error, reason} -> {:error, reason}
       end
     end
@@ -155,6 +179,36 @@ defmodule GroupherServer.CMS.Seeds.LiteHome do
       {:ok, article} -> {:cont, {:ok, [article | acc]}}
       {:error, reason} -> {:halt, {:error, reason}}
     end
+  end
+
+  defp ensure_article_tags(articles, tag_ids) when is_list(articles) and is_list(tag_ids) do
+    tag_ids = Enum.take(tag_ids, 3)
+
+    articles
+    |> Enum.reduce_while({:ok, []}, fn article, {:ok, acc} ->
+      case ensure_tags_for_article(article, tag_ids) do
+        {:ok, article} -> {:cont, {:ok, [article | acc]}}
+        {:error, reason} -> {:halt, {:error, reason}}
+      end
+    end)
+    |> case do
+      {:ok, articles} -> {:ok, Enum.reverse(articles)}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp ensure_tags_for_article(%{id: article_id}, tag_ids) when is_list(tag_ids) do
+    article = Repo.get!(Article, article_id)
+
+    tag_ids
+    |> Enum.reduce_while({:ok, article}, fn tag_id, {:ok, article} ->
+      workflow_ref = "seed-article-tags:#{article.id}:#{tag_id}"
+
+      case Maintenance.add(article, tag_id, workflow_ref) do
+        {:ok, article} -> {:cont, {:ok, article}}
+        {:error, reason} -> {:halt, {:error, reason}}
+      end
+    end)
   end
 
   defp existing_articles_by_title(thread, community_id, titles) do

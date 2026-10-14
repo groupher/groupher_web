@@ -62,6 +62,7 @@ const authStack = app === 'auth'
 const authHostResolverRules = [
   'MAP dash.groupher.localhost 127.0.0.1',
   'MAP auth.groupher.localhost 127.0.0.1',
+  'MAP community.groupher.localhost 127.0.0.1',
 ].join(',')
 const webServer: TWebServer[] = authStack
   ? [
@@ -77,7 +78,7 @@ const webServer: TWebServer[] = authStack
       },
       {
         ...webServerCommand(
-          'pnpm exec cross-env NODE_ENV=test PORT=3104 AUTH_URL=http://auth.groupher.localhost:3104 AUTH_COOKIE_SECURE=true AUTH_COOKIE_DOMAIN=.groupher.localhost NEXTAUTH_SECRET=e2e-auth-secret-e2e-auth-secret SERVICE_AUTH_CLIENT_ID=auth-e2e SERVICE_AUTH_CLIENT_SECRET=e2e-secret SERVICE_AUTH_TOKEN_ENDPOINT=http://127.0.0.1:4104/oauth2/token PHOENIX_GRAPHQL_ENDPOINT=http://127.0.0.1:4104/graphiql AUTH_TEST_ALLOWED_ORIGINS=http://dash.groupher.localhost:3103 pnpm --filter @groupher/backend-auth exec tsx src/e2e/server.ts',
+          'pnpm exec cross-env NODE_ENV=test PORT=3104 AUTH_URL=http://auth.groupher.localhost:3104 AUTH_COOKIE_SECURE=true AUTH_COOKIE_DOMAIN=.groupher.localhost NEXTAUTH_SECRET=e2e-auth-secret-e2e-auth-secret SERVICE_AUTH_CLIENT_ID=auth-e2e SERVICE_AUTH_CLIENT_SECRET=e2e-secret SERVICE_AUTH_TOKEN_ENDPOINT=http://127.0.0.1:4104/oauth2/token PHOENIX_GRAPHQL_ENDPOINT=http://127.0.0.1:4104/graphiql AUTH_TEST_ALLOWED_ORIGINS=http://dash.groupher.localhost:3103,http://community.groupher.localhost:3107 pnpm --filter @groupher/backend-auth exec tsx src/e2e/server.ts',
         ),
         cwd: repoRoot,
         gracefulShutdown,
@@ -92,6 +93,16 @@ const webServer: TWebServer[] = authStack
         cwd: repoRoot,
         gracefulShutdown,
         url: 'http://localhost:3103/health',
+        reuseExistingServer: false,
+        timeout: 120_000,
+      },
+      {
+        ...webServerCommand(
+          'pnpm exec cross-env PORT=3107 GRAPHQL_ENDPOINT=http://127.0.0.1:4104/graphiql NEXT_PUBLIC_AUTH_ENDPOINT=http://auth.groupher.localhost:3104/api/auth E2E_AUTH_STACK=1 pnpm --filter @groupher/frontend-community run dev',
+        ),
+        cwd: repoRoot,
+        gracefulShutdown,
+        url: 'http://127.0.0.1:3107/health',
         reuseExistingServer: false,
         timeout: 120_000,
       },

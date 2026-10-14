@@ -1,0 +1,85 @@
+{
+  "fixtureVersion": "default-v1",
+  "images": [
+    {
+      "theme": "light",
+      "profile": "wide",
+      "path": "light-wide.webp",
+      "width": 1920,
+      "height": 1080,
+      "mimeType": "image/webp",
+      "checksum": "sha256:cef87daa57803de0cd2eab7f3c6f570776c7c27ab6907f0ea10c179485b80e92",
+      "sizeBytes": 476166
+    },
+    {
+      "theme": "light",
+      "profile": "desktop",
+      "path": "light-desktop.webp",
+      "width": 1440,
+      "height": 900,
+      "mimeType": "image/webp",
+      "checksum": "sha256:d8ca99a0e6a9913b3cecfdf65b3b433076f3781f410b8ab006a256fbb718b6cf",
+      "sizeBytes": 297970
+    },
+    {
+      "theme": "light",
+      "profile": "tablet",
+      "path": "light-tablet.webp",
+      "width": 1024,
+      "height": 1366,
+      "mimeType": "image/webp",
+      "checksum": "sha256:576a4b92bfb0d0113eeb9286e9adb12af9336b3c5c633eb867d3ac90064433d1",
+      "sizeBytes": 319514
+    },
+    {
+      "theme": "light",
+      "profile": "phone",
+      "path": "light-phone.webp",
+      "width": 390,
+      "height": 844,
+      "mimeType": "image/webp",
+      "checksum": "sha256:44049e2a600e8dfb39b6288d54e02de3f1298379838baa279ac4f91c17d6ce59",
+      "sizeBytes": 76974
+    },
+    {
+      "theme": "dark",
+      "profile": "wide",
+      "path": "dark-wide.webp",
+      "width": 1920,
+      "height": 1080,
+      "mimeType": "image/webp",
+      "checksum": "sha256:bc2a59ce3372c64f53055b1f9497c742598be7ab7f7c9f67d7fd8888f78252d8",
+      "sizeBytes": 443396
+    },
+    {
+      "theme": "dark",
+      "profile": "desktop",
+      "path": "dark-desktop.webp",
+      "width": 1440,
+      "height": 900,
+      "mimeType": "image/webp",
+      "checksum": "sha256:3cd0b568388bf76c6a65817a7e0a440b0c440ab01a6c666876a245e7b0da47af",
+      "sizeBytes": 337236
+    },
+    {
+      "theme": "dark",
+      "profile": "tablet",
+      "path": "dark-tablet.webp",
+      "width": 1024,
+      "height": 1366,
+      "mimeType": "image/webp",
+      "checksum": "sha256:189e669b21ef12f13ca7a729d6e9dd01fdf2cc2895d4f574449d7c9b877b754e",
+      "sizeBytes": 213946
+    },
+    {
+      "theme": "dark",
+      "profile": "phone",
+      "path": "dark-phone.webp",
+      "width": 390,
+      "height": 844,
+      "mimeType": "image/webp",
+      "checksum": "sha256:90e42156be0312ac4d04dd4d6e592b57bad81ffcc17f3b7b453ae546e03e91d3",
+      "sizeBytes": 79840
+    }
+  ]
+}

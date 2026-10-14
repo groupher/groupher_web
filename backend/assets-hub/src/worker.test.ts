@@ -142,7 +142,16 @@ describe('Assets Hub generated-batch authorization', () => {
   const base64UrlJson = (value: unknown) =>
     base64Url(new TextEncoder().encode(JSON.stringify(value)))
 
-  const serviceToken = async (scope: string, subject: string) => {
+  let signingFixture:
+    | {
+        privateKey: CryptoKey
+        jwk: JsonWebKey
+      }
+    | undefined
+
+  const serviceSigningFixture = async () => {
+    if (signingFixture) return signingFixture
+
     const keyPair = await crypto.subtle.generateKey(
       {
         hash: 'SHA-256',
@@ -153,7 +162,15 @@ describe('Assets Hub generated-batch authorization', () => {
       true,
       ['sign', 'verify'],
     )
-    const jwk = await crypto.subtle.exportKey('jwk', keyPair.publicKey)
+    signingFixture = {
+      jwk: await crypto.subtle.exportKey('jwk', keyPair.publicKey),
+      privateKey: keyPair.privateKey,
+    }
+    return signingFixture
+  }
+
+  const serviceToken = async (scope: string, subject: string) => {
+    const { jwk, privateKey } = await serviceSigningFixture()
     const issuedAt = Math.floor(Date.now() / 1_000)
     const header = base64UrlJson({
       alg: 'RS256',
@@ -171,7 +188,7 @@ describe('Assets Hub generated-batch authorization', () => {
     })
     const signature = await crypto.subtle.sign(
       'RSASSA-PKCS1-v1_5',
-      keyPair.privateKey,
+      privateKey,
       new TextEncoder().encode(`${header}.${payload}`),
     )
     const token = `${header}.${payload}.${base64Url(new Uint8Array(signature))}`

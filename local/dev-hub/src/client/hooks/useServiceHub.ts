@@ -6,7 +6,7 @@ import type {
   TServiceMetricsSnapshot,
   TServiceStartMode,
 } from '@shared/contracts'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import {
   connectHub,
@@ -14,6 +14,7 @@ import {
   fetchSnapshot,
   type TServiceControlAction,
 } from '@/lib/hub-client'
+import { projectDisconnectedServices } from '@/lib/service-connection-state'
 
 type TServiceHub = {
   services: TPublicService[]
@@ -44,27 +45,51 @@ export function useServiceHub(): TServiceHub {
   const [connected, setConnected] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const connectedRef = useRef(false)
+  const latestServicesRef = useRef<TPublicService[]>([])
 
-  const updateService = useCallback((nextService: TPublicService) => {
-    setServices((current) =>
-      current.map((service) => (service.id === nextService.id ? nextService : service)),
+  const commitServices = useCallback((nextServices: TPublicService[]) => {
+    latestServicesRef.current = nextServices
+    setServices(connectedRef.current ? nextServices : projectDisconnectedServices(nextServices))
+  }, [])
+
+  const updateConnection = useCallback((nextConnected: boolean) => {
+    connectedRef.current = nextConnected
+    setConnected(nextConnected)
+    setServices(
+      nextConnected
+        ? latestServicesRef.current
+        : projectDisconnectedServices(latestServicesRef.current),
     )
   }, [])
 
-  const updateServices = useCallback((nextServices: TPublicService[]) => {
-    if (nextServices.length === 0) return
+  const updateService = useCallback(
+    (nextService: TPublicService) => {
+      commitServices(
+        latestServicesRef.current.map((service) =>
+          service.id === nextService.id ? nextService : service,
+        ),
+      )
+    },
+    [commitServices],
+  )
 
-    setServices((current) => {
+  const updateServices = useCallback(
+    (nextServices: TPublicService[]) => {
+      if (nextServices.length === 0) return
       const nextById = new Map(nextServices.map((service) => [service.id, service]))
-      return current.map((service) => nextById.get(service.id) || service)
-    })
-  }, [])
+      commitServices(
+        latestServicesRef.current.map((service) => nextById.get(service.id) || service),
+      )
+    },
+    [commitServices],
+  )
 
   useEffect(() => {
     const controller = new AbortController()
     const disconnect = connectHub({
       onSnapshot: (snapshot) => {
-        setServices(snapshot.services)
+        commitServices(snapshot.services)
         setRelations(snapshot.relations)
         setGit(snapshot.git)
         setMetricsByService(snapshot.metrics)
@@ -77,12 +102,12 @@ export function useServiceHub(): TServiceHub {
         setMetricsByService((current) => ({ ...current, [serviceId]: metrics }))
       },
       onMetricNotices: setMetricNotices,
-      onConnectionChange: setConnected,
+      onConnectionChange: updateConnection,
     })
 
     void fetchSnapshot(controller.signal)
       .then((snapshot) => {
-        setServices(snapshot.services)
+        commitServices(snapshot.services)
         setRelations(snapshot.relations)
         setGit(snapshot.git)
         setMetricsByService(snapshot.metrics)
@@ -99,7 +124,7 @@ export function useServiceHub(): TServiceHub {
       controller.abort()
       disconnect()
     }
-  }, [updateService])
+  }, [commitServices, updateConnection, updateService])
 
   const runServiceAction = useCallback(
     async (
@@ -107,6 +132,11 @@ export function useServiceHub(): TServiceHub {
       action: TServiceControlAction,
       mode?: TServiceStartMode | 'default',
     ) => {
+      if (!connectedRef.current) {
+        setError('Dev Hub is disconnected. Wait for it to reconnect before controlling services.')
+        return
+      }
+
       const actionIds =
         action === 'start' ? getStartActionIds(service, mode || 'default') : [service.id]
       setPendingIds((current) => {

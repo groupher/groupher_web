@@ -22,7 +22,10 @@ defmodule GroupherServer.CMS.Seeds.FullCommunity do
 
   alias CMS.Model.{
     Community,
-    Article
+    Article,
+    AssetReplacementPlan,
+    AssetUpload,
+    AssetWorkflowRun
   }
 
   alias Helper.{ORM, T}
@@ -74,17 +77,38 @@ defmodule GroupherServer.CMS.Seeds.FullCommunity do
 
   @spec delete(String.t() | atom()) :: T.domain_res(:ok)
   def delete(slug) do
-    with {:ok, community} <- ORM.find_by(Community, %{slug: to_string(slug)}),
-         article_ids <-
-           Repo.all(
-             from(binding in CMS.Model.ArticleBinding,
-               where: binding.community_id == ^community.id,
-               select: binding.article_id
-             )
-           ),
-         {_count, _} <- delete_all(from(article in Article, where: article.id in ^article_ids)),
-         {:ok, _community} <- Repo.delete(community, timeout: 300_000) do
-      {:ok, :ok}
+    with {:ok, community} <- ORM.find_by(Community, %{slug: to_string(slug)}) do
+      transaction_result =
+        Repo.transaction(
+          fn ->
+            article_ids =
+              Repo.all(
+                from(binding in CMS.Model.ArticleBinding,
+                  where: binding.community_id == ^community.id,
+                  select: binding.article_id
+                )
+              )
+
+            delete_all(
+              from(plan in AssetReplacementPlan, where: plan.community_id == ^community.id)
+            )
+
+            delete_all(from(upload in AssetUpload, where: upload.community_id == ^community.id))
+            delete_all(from(run in AssetWorkflowRun, where: run.community_id == ^community.id))
+            delete_all(from(article in Article, where: article.id in ^article_ids))
+
+            case Repo.delete(community, timeout: 300_000) do
+              {:ok, _community} -> {:ok, :ok}
+              {:error, reason} -> Repo.rollback(reason)
+            end
+          end,
+          timeout: 300_000
+        )
+
+      case transaction_result do
+        {:ok, {:ok, :ok}} -> {:ok, :ok}
+        {:error, reason} -> {:error, reason}
+      end
     end
   end
 

@@ -3,6 +3,7 @@ import { ExternalLink, Keyboard, X } from 'lucide-react'
 
 import { Badge } from '@/components/reui/badge'
 import { openExternalUrl } from '@/lib/open-external-url'
+import { getServiceDisplayStatus, isServiceDisconnected } from '@/lib/service-connection-state'
 
 import { TerminalSurface } from './TerminalSurface'
 
@@ -12,6 +13,8 @@ type TProps = {
 }
 
 export function TerminalPanel({ service, onClose }: TProps) {
+  const disconnected = isServiceDisconnected(service)
+  const displayStatus = getServiceDisplayStatus(service)
   const emptyText = service.unavailableReason || `No output from ${service.name} yet.`
   const openUrl = service.portlessAppUrl || service.appUrl || service.portlessUrl || service.url
 
@@ -31,7 +34,7 @@ export function TerminalPanel({ service, onClose }: TProps) {
           </span>
           <span>{service.name}</span>
           <Badge variant='outline' radius='full'>
-            {service.status}
+            {displayStatus}
           </Badge>
         </div>
         <div className='terminal-panel-actions'>
@@ -39,7 +42,7 @@ export function TerminalPanel({ service, onClose }: TProps) {
             <Keyboard aria-hidden='true' />
             Ctrl+C in make dev stops all Hub-managed services
           </span>
-          {openUrl && ['running', 'external'].includes(service.status) ? (
+          {openUrl && !disconnected && ['running', 'external'].includes(service.status) ? (
             <a
               href={openUrl}
               target='_blank'

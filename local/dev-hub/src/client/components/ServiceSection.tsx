@@ -6,6 +6,7 @@ import type {
 } from '@shared/contracts'
 import { useEffect, useMemo, useState } from 'react'
 
+import { isServiceDisconnected } from '@/lib/service-connection-state'
 import { buildServiceViewModel } from '@/lib/service-view-model'
 
 import { ServiceCard } from './ServiceCard'
@@ -89,8 +90,8 @@ export function ServiceSection({
   const servicesPerRow = useServicesPerRow()
   const serviceViewModel = useMemo(() => buildServiceViewModel(services), [services])
   const groupedServices = services.filter((service) => service.group === group)
-  const activeCount = groupedServices.filter((service) =>
-    ACTIVE_SERVICE_STATUSES.has(service.status),
+  const activeCount = groupedServices.filter(
+    (service) => !isServiceDisconnected(service) && ACTIVE_SERVICE_STATUSES.has(service.status),
   ).length
   const rows: TPublicService[][] = []
 

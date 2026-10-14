@@ -44,6 +44,7 @@ npm-debug.log
 # =====================
 **/.env.local
 **/.env.*.local
+**/.local/assets-hub/
 .env
 .env.*
 .dev.vars

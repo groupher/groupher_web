@@ -68,6 +68,7 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
     base_version = get(input, :base_version)
     command_id = get(input, :command_id)
     batch_ref = get(input, :batch_ref)
+    fixture_version = get(input, :fixture_version)
 
     with {:ok, _} <- validate_theme(theme),
          {:ok, settings} <- Settings.normalize(get(input, :settings)),
@@ -91,6 +92,7 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
             base_version,
             command_id,
             batch_ref,
+            fixture_version,
             digest
           )
       end
@@ -146,6 +148,7 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
          base_version,
          command_id,
          batch_ref,
+         fixture_version,
          digest
        ) do
     with {:ok, capability} <-
@@ -170,6 +173,7 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
                base_version,
                command_id,
                batch_ref,
+               fixture_version,
                capability,
                digest
              )
@@ -192,6 +196,7 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
          base_version,
          command_id,
          batch_ref,
+         fixture_version,
          capability,
          digest
        ) do
@@ -224,6 +229,7 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
           activated_at: now,
           community_id: community.id,
           created_by_id: to_string(user.id),
+          fixture_version: fixture_version,
           history_used_at: now,
           profile_version: @profile_version,
           public_ref: snapshot_ref,

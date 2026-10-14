@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm run dev:upload-api",
-    "dev:local": "tsx scripts/dev-local.ts",
+    "dev:local": "cross-env ASSETS_HUB_RUNTIME=local PORT=8002 ASSETS_HUB_BATCH_ENDPOINT=http://127.0.0.1:8002 ASSETS_HUB_DELETE_ENDPOINT=http://127.0.0.1:8002 tsx watch src/server.ts",
+    "dev:cloudflare": "tsx scripts/dev-local.ts",
     "dev:upload-api": "tsx watch src/server.ts",
     "dev:read-worker": "cf dev --mode development",
     "dev:worker": "pnpm run dev:read-worker",

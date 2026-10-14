@@ -24,6 +24,7 @@ defmodule GroupherServer.CMS.Model.WallpaperSnapshot do
     field(:settings, :map)
     field(:settings_schema_version, :integer)
     field(:source_batch_ref, :string)
+    field(:fixture_version, :string)
     field(:profile_version, :integer)
     field(:created_by_id, :string)
     field(:activated_at, :utc_datetime)
@@ -50,6 +51,7 @@ defmodule GroupherServer.CMS.Model.WallpaperSnapshot do
       :settings,
       :settings_schema_version,
       :source_batch_ref,
+      :fixture_version,
       :profile_version,
       :created_by_id,
       :activated_at,
@@ -69,6 +71,7 @@ defmodule GroupherServer.CMS.Model.WallpaperSnapshot do
     ])
     |> validate_number(:settings_schema_version, greater_than: 0)
     |> validate_number(:profile_version, greater_than: 0)
+    |> validate_length(:fixture_version, max: 64)
     |> unique_constraint(:public_ref, name: :wallpaper_snapshots_public_ref_index)
   end
 end

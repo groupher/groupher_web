@@ -8,4 +8,5 @@
 - [`preview-architecture.md`](./preview-architecture.md)：预览架构。
 - [`publish-ssr-hydration.md`](./publish-ssr-hydration.md)：发布、SSR 与 hydration。
 - [`browser-export-upload.md`](./browser-export-upload.md)：浏览器导出与上传。
+- [`seed-fixture.md`](./seed-fixture.md)：本地与线上 Community seed 的 Wallpaper fixture 与资产边界。
 - [`followups.md`](./followups.md)：剩余工作与验收项。

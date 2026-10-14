@@ -1,5 +1,34 @@
 reset? = "--reset" in System.argv()
 
+endpoint_config =
+  Application.get_env(:groupher_server, GroupherServerWeb.Endpoint, [])
+  |> Keyword.put(:server, false)
+
+Application.put_env(:groupher_server, GroupherServerWeb.Endpoint, endpoint_config)
+
+repo_config =
+  Application.get_env(:groupher_server, GroupherServer.Repo, [])
+  |> Keyword.put(:pool_size, 1)
+
+Application.put_env(:groupher_server, GroupherServer.Repo, repo_config)
+
+oban_config =
+  Application.get_env(:groupher_server, Oban, [])
+  |> Keyword.put(:testing, :manual)
+  |> Keyword.put(:plugins, false)
+  |> Keyword.put(:queues, false)
+
+Application.put_env(:groupher_server, Oban, oban_config)
+
+case Application.ensure_all_started(:groupher_server) do
+  {:ok, _apps} ->
+    :ok
+
+  {:error, reason} ->
+    IO.puts("✗ Failed to start groupher_server: #{inspect(reason)}")
+    System.halt(1)
+end
+
 cache_pool =
   Application.get_env(:groupher_server, :cache)
   |> Keyword.fetch!(:pool)

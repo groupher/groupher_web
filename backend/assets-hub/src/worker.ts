@@ -13,18 +13,13 @@ import type {
   TGeneratedImageManifestEntry,
   TGeneratedImageUploadBatch,
 } from '@groupher/contracts/wallpaper'
-import {
-  bearerToken,
-  createServiceAuthVerifier,
-  serviceTokenErrorStatus,
-} from '@groupher/service/auth'
+import { bearerToken, serviceTokenErrorStatus } from '@groupher/service/auth'
 
 import {
   signPayload,
   verifyBatchCapability,
   verifyPublishClaim,
   verifyCapability,
-  type TGeneratedImageUploadCapability,
 } from './capability'
 import { GeneratedImageBatchDO } from './generated-batch-do'
 import {
@@ -32,6 +27,11 @@ import {
   PhoenixGraphQLError,
   type TCommunityAssetOriginInfo,
 } from './phoenix'
+import {
+  createAssetsHubInternalVerifier,
+  DEFAULT_SERVICE_AUTH_ISSUER,
+  DEFAULT_SERVICE_AUTH_JWKS_URL,
+} from './service-auth'
 
 type TAssetVariant = 'original' | 'thumbnail' | 'card'
 
@@ -333,11 +333,10 @@ const authorizeInternalRequest = async (
   const token = bearerToken(request.headers.get('authorization') || undefined)
   if (!token) return 401
   try {
-    const verifier = createServiceAuthVerifier({
-      audience: 'assets-hub:internal-api',
-      issuer: env.SERVICE_AUTH_ISSUER || 'https://auth.groupher.com',
-      jwksUrl: env.SERVICE_AUTH_JWKS_URL || 'https://auth.groupher.com/.well-known/jwks.json',
-    })
+    const verifier = createAssetsHubInternalVerifier(
+      env.SERVICE_AUTH_ISSUER || DEFAULT_SERVICE_AUTH_ISSUER,
+      env.SERVICE_AUTH_JWKS_URL || DEFAULT_SERVICE_AUTH_JWKS_URL,
+    )
     const actor = await verifier.verify(token, scope)
     return allowedSubjects.includes(actor.subject) ? null : 403
   } catch (error) {

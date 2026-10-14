@@ -24,8 +24,14 @@ defmodule GroupherServerWeb.Middleware.BrowserCsrf do
                     ])
   @development_hosts MapSet.new([
                        "groupher.localhost",
+                       "community.groupher.localhost",
                        "dash.groupher.localhost"
                      ])
+  @development_http_ports %{
+    "groupher.localhost" => MapSet.new([nil, 80]),
+    "community.groupher.localhost" => MapSet.new([nil, 80, 3107]),
+    "dash.groupher.localhost" => MapSet.new([nil, 80, 3103])
+  }
 
   def init(options), do: options
 
@@ -124,8 +130,9 @@ defmodule GroupherServerWeb.Middleware.BrowserCsrf do
     MapSet.member?(@production_hosts, host) or development_host?(host)
   end
 
-  defp host_allowed?(%URI{scheme: "http", port: port, host: host}) when port in [nil, 80] do
-    development_host?(host)
+  defp host_allowed?(%URI{scheme: "http", port: port, host: host}) do
+    development_host?(host) and
+      MapSet.member?(Map.get(@development_http_ports, host, MapSet.new()), port)
   end
 
   defp host_allowed?(_), do: false

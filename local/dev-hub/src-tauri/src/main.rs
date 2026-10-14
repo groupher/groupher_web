@@ -25,6 +25,7 @@ const HUB_PORT: u16 = 4310;
 const HUB_URL: &str = "http://127.0.0.1:4310";
 const STARTUP_TIMEOUT: Duration = Duration::from_secs(120);
 const HEALTH_POLL_INTERVAL: Duration = Duration::from_millis(250);
+const HUB_MONITOR_INTERVAL: Duration = Duration::from_millis(500);
 const SHUTDOWN_REQUEST_TIMEOUT: Duration = Duration::from_secs(4);
 const PROCESS_EXIT_TIMEOUT: Duration = Duration::from_secs(2);
 const MAIN_WIDTH: f64 = 1280.0;
@@ -36,6 +37,7 @@ const MAIN_MIN_HEIGHT: f64 = 640.0;
 struct LauncherState {
     child: Mutex<Option<Child>>,
     ensuring: AtomicBool,
+    shutting_down: AtomicBool,
 }
 
 fn main() {
@@ -62,13 +64,16 @@ fn main() {
 
     app.run(|app, event| match event {
         RunEvent::Reopen { .. } => show_main_window(app),
-        RunEvent::ExitRequested { .. } | RunEvent::Exit => terminate_owned_hub(app),
+        RunEvent::Exit => terminate_owned_hub(app),
         _ => {}
     });
 }
 
 fn start_hub_ensure(app: tauri::AppHandle) {
     let state = app.state::<LauncherState>();
+    if state.shutting_down.load(Ordering::Acquire) {
+        return;
+    }
     if state.ensuring.swap(true, Ordering::AcqRel) {
         return;
     }
@@ -99,6 +104,7 @@ fn ensure_hub_is_running(app: tauri::AppHandle) {
     loop {
         if hub_is_ready() {
             open_hub(&app);
+            monitor_owned_hub(app.clone());
             return;
         }
 
@@ -127,6 +133,28 @@ fn ensure_hub_is_running(app: tauri::AppHandle) {
 
         thread::sleep(HEALTH_POLL_INTERVAL);
     }
+}
+
+fn monitor_owned_hub(app: tauri::AppHandle) {
+    thread::spawn(move || loop {
+        thread::sleep(HUB_MONITOR_INTERVAL);
+
+        let state = app.state::<LauncherState>();
+        if state.shutting_down.load(Ordering::Acquire) {
+            return;
+        }
+
+        let Some(exit_description) = owned_hub_exit_description(&app) else {
+            continue;
+        };
+
+        record_launcher_event(
+            &app,
+            &format!("Dev Hub exited unexpectedly ({exit_description}); restarting."),
+        );
+        start_hub_ensure(app.clone());
+        return;
+    });
 }
 
 fn spawn_hub(app: &tauri::AppHandle) -> Result<PathBuf, String> {
@@ -171,6 +199,11 @@ fn spawn_hub(app: &tauri::AppHandle) -> Result<PathBuf, String> {
         .child
         .lock()
         .unwrap_or_else(|poisoned| poisoned.into_inner());
+    if state.shutting_down.load(Ordering::Acquire) {
+        drop(owned_child);
+        terminate_child(child, false);
+        return Err("Dev Hub launcher is shutting down.".to_owned());
+    }
     *owned_child = Some(child);
 
     Ok(log_path)
@@ -219,6 +252,16 @@ fn log_path(app: &tauri::AppHandle) -> PathBuf {
         .app_log_dir()
         .unwrap_or_else(|_| std::env::temp_dir().join("groupher-dev-hub"))
         .join("launcher.log")
+}
+
+fn record_launcher_event(app: &tauri::AppHandle, message: &str) {
+    let path = log_path(app);
+    if let Some(parent) = path.parent() {
+        let _ = fs::create_dir_all(parent);
+    }
+    if let Ok(mut log) = OpenOptions::new().create(true).append(true).open(path) {
+        let _ = writeln!(log, "{message}");
+    }
 }
 
 fn hub_is_ready() -> bool {
@@ -279,6 +322,7 @@ fn owned_hub_exit_description(app: &tauri::AppHandle) -> Option<String> {
 
 fn terminate_owned_hub(app: &tauri::AppHandle) {
     let state = app.state::<LauncherState>();
+    state.shutting_down.store(true, Ordering::Release);
     let child = {
         let mut owned_child = state
             .child
@@ -286,12 +330,18 @@ fn terminate_owned_hub(app: &tauri::AppHandle) {
             .unwrap_or_else(|poisoned| poisoned.into_inner());
         owned_child.take()
     };
-    let Some(mut child) = child else {
+    let Some(child) = child else {
         return;
     };
 
+    terminate_child(child, true);
+}
+
+fn terminate_child(mut child: Child, request_shutdown: bool) {
     let process_group = -(child.id() as i32);
-    let _ = request_hub_shutdown();
+    if request_shutdown {
+        let _ = request_hub_shutdown();
+    }
 
     unsafe {
         libc::kill(process_group, libc::SIGTERM);

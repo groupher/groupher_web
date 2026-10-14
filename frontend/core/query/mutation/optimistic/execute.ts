@@ -1,5 +1,6 @@
 import type { QueryClient } from '@tanstack/react-query'
 
+import { invalidateExact } from '../../invalidation'
 import { clearChanges, markChange, rollbackChanges } from './effects'
 import type { TOptimisticPlan, TOptimisticOperation } from './types'
 
@@ -139,11 +140,7 @@ export const executeOptimisticOperation = async <TTarget, TInput, TResult>({
       result = await operation.execute(context, target, input)
     } catch (error) {
       rollbackChanges(queryClient, plan.changes)
-      await Promise.all(
-        plan.refetchOnFailure.map((target) =>
-          queryClient.refetchQueries({ ...target, type: 'active' }),
-        ),
-      )
+      await invalidateExact(queryClient, plan.refetchOnFailure)
       throw error
     }
 
@@ -153,11 +150,7 @@ export const executeOptimisticOperation = async <TTarget, TInput, TResult>({
     try {
       operation.reconcile(context, target, input, result)
     } catch {
-      await Promise.all(
-        plan.refetchOnFailure.map((target) =>
-          queryClient.refetchQueries({ ...target, type: 'active' }),
-        ),
-      )
+      await invalidateExact(queryClient, plan.refetchOnFailure)
     } finally {
       clearChanges(queryClient, plan.changes)
     }

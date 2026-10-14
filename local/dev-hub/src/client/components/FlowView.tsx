@@ -10,6 +10,7 @@ import { type CSSProperties, useCallback, useEffect, useMemo, useState } from 'r
 
 import { layoutServiceFlow } from '@/lib/flow-layout'
 import { FLOW_NODE_WIDTH, FLOW_USERS_TO_GATEWAY_OFFSET } from '@/lib/flow-metrics'
+import { isServiceDisconnected } from '@/lib/service-connection-state'
 import { buildServiceViewModel } from '@/lib/service-view-model'
 
 import type { TFlowEdge, TFlowLayout, TFlowNode } from './flow-spec'
@@ -55,7 +56,9 @@ const isCompactService = (service: TPublicService): boolean =>
   service.status === 'stopped' || service.status === 'unavailable'
 
 const isLiveService = (service: TPublicService | undefined): boolean =>
-  Boolean(service && ['running', 'external'].includes(service.status))
+  Boolean(
+    service && !isServiceDisconnected(service) && ['running', 'external'].includes(service.status),
+  )
 
 const getFlowLayoutKey = (
   services: Pick<TPublicService, 'id' | 'status'>[],
