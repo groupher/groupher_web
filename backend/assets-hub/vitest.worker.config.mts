@@ -28,6 +28,9 @@ export default defineConfig({
     }),
   ],
   test: {
+    // Cloudflare's workerd sandbox cannot read Vitest 5's host-side transformed
+    // module cache. Keep the Worker pool self-contained and deterministic.
+    fsModuleCache: false,
     include: ['src/**/*.worker.test.ts', 'src/worker.test.ts'],
   },
 })

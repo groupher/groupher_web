@@ -1,6 +1,6 @@
 'use client'
 
-import type { ColumnDef } from '@tanstack/react-table'
+import type { LegacyColumnDef as ColumnDef } from '@tanstack/react-table/legacy'
 import { useMemo } from 'react'
 
 import { getArticleRowId } from '~/hooks/useTanTable'
