@@ -18,8 +18,8 @@ pmOnFail: ignore
 # Keep shared TanStack runtime packages singular across every workspace and
 # override transitive ranges that would otherwise resolve independently.
 overrides:
-  '@tanstack/query-core': 5.104.0
-  '@tanstack/react-query': 5.104.0
+  '@tanstack/query-core': 5.104.2
+  '@tanstack/react-query': 5.104.2
   '@tanstack/router-ssr-query-core': 1.169.3
 
 # Only Lefthook needs its install script in the current repository. Keep every
@@ -35,8 +35,9 @@ allowBuilds:
   webgpu: true
   workerd: false
 minimumReleaseAgeExclude:
-  # Native toolchain artifacts and reviewed Cloudflare prereleases are pinned
-  # exactly; see docs/deploy/cloudflare.md for the beta decision and rollback.
+  # Native toolchain artifacts, reviewed prereleases, and explicit latest pins
+  # are pinned exactly; see docs/deploy/cloudflare.md for the Cloudflare
+  # beta decision and rollback.
   - '@oxfmt/binding-android-arm-eabi@0.71.0'
   - '@oxfmt/binding-android-arm64@0.71.0'
   - '@oxfmt/binding-darwin-arm64@0.71.0'
@@ -83,5 +84,6 @@ minimumReleaseAgeExclude:
   - '@cloudflare/workers-types@5.20260929.1'
   - cf@1.0.0-beta.5
   - wrangler@4.143.0
+  - files-sdk@3.1.1
 patchedDependencies:
   pinyin-pro@3.29.3: patches/pinyin-pro@3.29.3.patch

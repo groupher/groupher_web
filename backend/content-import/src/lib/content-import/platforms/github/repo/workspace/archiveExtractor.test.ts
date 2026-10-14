@@ -1,7 +1,7 @@
 import { Readable } from 'node:stream'
 import { createGzip } from 'node:zlib'
 
-import tar from 'tar-stream'
+import tar, { type Header } from 'tar-stream'
 import { describe, expect, it } from 'vitest'
 
 import { extractArchiveToWorkspace } from './archiveExtractor'
@@ -11,7 +11,7 @@ type TEntry = {
   body?: string
   linkname?: string
   name: string
-  type?: tar.Headers['type']
+  type?: Header['type']
 }
 
 const archive = async (entries: TEntry[]): Promise<ReadableStream<Uint8Array>> => {

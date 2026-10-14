@@ -27,8 +27,8 @@ Candidate 上的五个宿主收口到首个稳定版本。当前代码与稳定�
 | `@tanstack/react-router`           | `1.170.40` | `1.170.44` | 与目标 Start 的内部依赖对齐 |
 | `@tanstack/router-generator`       | `1.167.39` | `1.167.43` | 五个宿主统一升级            |
 | `@tanstack/react-router-ssr-query` | `1.167.3`  | `1.167.3`  | 已是当前版本，无需变更      |
-| `@tanstack/react-query`            | `5.104.0`  | 保持       | 满足 SSR Query 集成要求     |
-| `vite`                             | `8.3.1`    | 保持       | 已满足 stable 要求的 Vite 8 |
+| `@tanstack/react-query`            | `5.104.2`  | 已升级     | 满足 SSR Query 集成要求     |
+| `vite`                             | `8.3.4`    | 已升级     | 已满足 stable 要求的 Vite 8 |
 
 共享包 `frontend/core` 的 Router dev/peer 依赖也同步固定为 `1.170.44`，并由
 `scripts/check-router-runtime.mjs` 强制所有宿主及 lockfile 只解析一个 Router runtime。
@@ -194,10 +194,22 @@ SSR 直达响应。
 - Landing 补齐 `@tanstack/react-query` 宿主依赖，`pnpm peers check` 中的 Core peer
   缺失项已消失。
 
-当前 `pnpm peers check` 仍报告两项与本次 TanStack 升级无关的既有兼容性问题：
-`graphql@17.0.2` 与 `graphql-http@1.23.0`/`graphql-config@5.1.6` 的 peer 范围，及
-`files-sdk@2.2.3` 与 Nest 12 的 peer 范围。它们需要单独的 GraphQL/Nest 依赖升级批次，
-本次不通过降级或放宽 peer 范围掩盖。
+### 主依赖升级批次（2026-10-14）
+
+在稳定版迁移完成后，同批升级了前后端主依赖及 peer 相关包：
+
+- TanStack Query/Core `5.104.0 -> 5.104.2`，Virtual `3.14.10 -> 3.14.17`；
+- Vite `8.3.1 -> 8.3.4`、React plugin `6.1.1 -> 6.1.2`；
+- Plate、React Aria、Panels、Sanitize HTML、Playwright 及 GraphQL Codegen/Tools 的
+  patch/minor 版本；
+- Hono、AWS SDK、Vercel Blob、Drizzle、Workflow、Undici、Tar/YAML 解析链；
+- `files-sdk` `2.2.3 -> 3.1.1`，其 Nest 12 peer warning 已消失；
+- `graphql-http` `1.23.0 -> 1.23.1`，`graphql-config` 经 GraphQL 工具链更新到
+  `5.1.8`。
+
+当前 `pnpm peers check` 只剩 `graphql-http@1.23.1` 声明的
+`graphql >=0.11 <=17` 与 `graphql@17.0.2` 的上游 peer 范围不匹配；GraphQL 17.0.2
+已经是当前 latest，本批不降级 GraphQL，也不通过忽略规则隐藏该上游声明。
 
 ## 验收条件
 
