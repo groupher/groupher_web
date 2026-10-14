@@ -33,7 +33,7 @@ const ClassicLayout: FC<TProps> = ({ activeBoards, hoveredBoard }) => {
   const s = useSalon(activeBoards.length)
   const { kanbanCardLayout } = useKanban()
 
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement>(null)
 
   /*
    * reset when content visible

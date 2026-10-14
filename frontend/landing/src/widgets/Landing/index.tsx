@@ -115,7 +115,13 @@ export default function Landing() {
               delay={200}
               offset={[1, 5]}
             >
-              <Button size='medium' ghost noBorder soft className={isLightTheme && 'brightness-95'}>
+              <Button
+                size='medium'
+                ghost
+                noBorder
+                soft
+                className={isLightTheme ? 'brightness-95' : undefined}
+              >
                 <div className='ml-2' />
                 {t('landing.hero.cta.demo')} <ArrowSVG className={s.arrow} />
               </Button>

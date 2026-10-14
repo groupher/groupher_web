@@ -1,6 +1,6 @@
 'use client'
 
-import { type ReactNode, useEffect, useRef } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 
 import setupStore from '.'
 import { StoreContext } from './context'
@@ -9,12 +9,11 @@ import type { TContentShadowInit, TStore } from './spec'
 type TProps = { children: ReactNode; initData?: TContentShadowInit }
 
 export default function ContentShadowProvider({ children, initData = false }: TProps) {
-  const storeRef = useRef<TStore | null>(null)
-  storeRef.current ??= setupStore(initData)
+  const [store] = useState<TStore>(() => setupStore(initData))
 
   useEffect(() => {
-    storeRef.current?.reconcileConfirmed(initData)
-  }, [initData])
+    store.reconcileConfirmed(initData)
+  }, [initData, store])
 
-  return <StoreContext.Provider value={storeRef.current}>{children}</StoreContext.Provider>
+  return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
 }

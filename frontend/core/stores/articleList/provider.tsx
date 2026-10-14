@@ -1,6 +1,6 @@
 'use client'
 
-import { type ReactNode, useRef } from 'react'
+import { type ReactNode, useState } from 'react'
 
 import setupStore from '.'
 import { StoreContext } from './context'
@@ -12,9 +12,7 @@ type TProps = {
 }
 
 export default function Provider({ children, initData }: TProps) {
-  const storeRef = useRef<TStore | null>(null)
+  const [store] = useState<TStore>(() => setupStore(initData || {}))
 
-  storeRef.current ??= setupStore(initData || {})
-
-  return <StoreContext.Provider value={storeRef.current}>{children}</StoreContext.Provider>
+  return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
 }

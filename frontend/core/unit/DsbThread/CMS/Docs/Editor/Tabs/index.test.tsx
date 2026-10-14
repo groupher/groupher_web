@@ -185,7 +185,9 @@ describe('docs editor tabs', () => {
     expect(activateTab).toHaveBeenCalledWith('api')
 
     fireEvent.click(screen.getByRole('button', { name: 'Manage tabs' }))
-    const drawer = screen.getByRole('complementary', { name: 'Tab settings drawer' })
+    const drawer = screen.getByRole('complementary', {
+      name: 'Tab settings drawer',
+    })
 
     expect(within(drawer).getByText('Introduction')).toBeInTheDocument()
     expect(within(drawer).getByText('API')).toBeInTheDocument()
@@ -205,15 +207,21 @@ describe('docs editor tabs', () => {
 
     render(<Tabs controller={controller} showTabs submenuCollapsed={false} />)
     fireEvent.click(screen.getByRole('button', { name: 'Manage tabs' }))
-    const drawer = screen.getByRole('complementary', { name: 'Tab settings drawer' })
+    const drawer = screen.getByRole('complementary', {
+      name: 'Tab settings drawer',
+    })
 
     fireEvent.click(within(drawer).getByRole('button', { name: 'Rename tab: Introduction' }))
     expect(within(drawer).queryByRole('button', { name: 'Add Tab' })).not.toBeInTheDocument()
     expect(
-      within(drawer).queryByRole('button', { name: 'Drag to reorder tab: Introduction' }),
+      within(drawer).queryByRole('button', {
+        name: 'Drag to reorder tab: Introduction',
+      }),
     ).not.toBeInTheDocument()
 
-    const input = within(drawer).getByRole('textbox', { name: 'Rename tab: Introduction' })
+    const input = within(drawer).getByRole('textbox', {
+      name: 'Rename tab: Introduction',
+    })
     fireEvent.change(input, { target: { value: 'Overview' } })
     fireEvent.click(within(drawer).getByRole('button', { name: 'Save' }))
     expect(renameTab).toHaveBeenCalledWith('intro', 'Overview')

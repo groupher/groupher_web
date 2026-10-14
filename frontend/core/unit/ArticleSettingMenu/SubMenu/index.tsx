@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+import type { ComponentType, FC } from 'react'
 
 import { SUB_MENU } from '../constant'
 import type { TSubMenu } from '../spec'
@@ -15,10 +15,14 @@ type TProps = {
   subMenuType: TSubMenu
 }
 
+type TContentProps = {
+  onBack: () => void
+}
+
 const SubMenu: FC<TProps> = ({ closeSubMenu, subMenuType }) => {
   const s = useSalon()
 
-  let Content = null
+  let Content: ComponentType<TContentProps> | null = null
 
   switch (subMenuType) {
     case SUB_MENU.EDIT: {
@@ -47,10 +51,12 @@ const SubMenu: FC<TProps> = ({ closeSubMenu, subMenuType }) => {
     }
 
     default: {
-      Content = <div>??</div>
+      Content = null
       break
     }
   }
+
+  if (!Content) return null
 
   return (
     <div className={s.wrapper}>

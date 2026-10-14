@@ -37,7 +37,10 @@ const TagBar: FC<TProps> = ({
   const [draftTag, setDraftTag] = useState<TTag | null>(null)
   const editingDraft = draftTag ?? tag
   const [saving, setSaving] = useState(false)
-  const s = useSalon({ color: editingDraft.color as TColorName, editing: isEditMode })
+  const s = useSalon({
+    color: editingDraft.color as TColorName,
+    editing: isEditMode,
+  })
   const canSaveInline = !isEditMode || !!editingDraft.title?.trim()
   const desc = tag.desc?.trim()
   const editingMarker = editingDraft.marker ?? DEFAULT_TAG_MARKER
@@ -108,7 +111,12 @@ const TagBar: FC<TProps> = ({
             className={s.input}
             width='w-48'
             value={editingDraft.title}
-            onChange={(e) => setDraftTag((prev) => ({ ...(prev ?? tag), title: e.target.value }))}
+            onChange={(e) =>
+              setDraftTag((prev) => ({
+                ...(prev ?? tag),
+                title: e.target.value,
+              }))
+            }
             focusOnMount
           />
         ) : (

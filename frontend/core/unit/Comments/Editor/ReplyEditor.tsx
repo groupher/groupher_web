@@ -32,7 +32,7 @@ const ReplyEditor: FC<TProps> = ({ body, submitState, replyToComment }) => {
           className={s.replyToContent}
           // oxlint-disable-next-line react/no-danger -- Reply preview renders server-sanitized HTML returned by the comments API.
           dangerouslySetInnerHTML={{
-            __html: replyToComment?.bodyHtml,
+            __html: replyToComment?.bodyHtml ?? '',
           }}
         />
       </div>

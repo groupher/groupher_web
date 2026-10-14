@@ -132,13 +132,21 @@ const loadRunnerWithTimeout = async (): Promise<{
   }
 }
 
-const addDownloadLinks = (controller: TVgpuPocController): void => {
+const addDownloadLinks = (controller: TVgpuPocController): (() => void) => {
+  const objectUrls: string[] = []
+
   for (const model of ['flow', 'liquid'] as const) {
     const link = document.querySelector<HTMLAnchorElement>(`a[data-download="${model}"]`)
     if (!link) continue
-    link.href = URL.createObjectURL(controller.exports[model])
+    const objectUrl = URL.createObjectURL(controller.exports[model])
+    objectUrls.push(objectUrl)
+    link.href = objectUrl
     link.download = `wallpaper-${model}.webp`
     link.hidden = false
+  }
+
+  return () => {
+    for (const objectUrl of objectUrls) URL.revokeObjectURL(objectUrl)
   }
 }
 
@@ -168,7 +176,7 @@ const start = async (): Promise<void> => {
       runtimeLoadTimeoutMs: RUNNER_LOAD_TIMEOUT_MS,
     }
     window.__VGPU_WALLPAPER_POC__ = report
-    addDownloadLinks(controller)
+    const revokeDownloadUrls = addDownloadLinks(controller)
 
     const passed =
       controller.report.topOriginReadback &&
@@ -183,7 +191,14 @@ const start = async (): Promise<void> => {
       )
     setStatus(passed ? 'POC 验收项通过' : 'POC 存在未通过项', passed ? 'pass' : 'fail')
     setReport(report)
-    window.addEventListener('beforeunload', controller.dispose, { once: true })
+    window.addEventListener(
+      'beforeunload',
+      () => {
+        revokeDownloadUrls()
+        controller.dispose()
+      },
+      { once: true },
+    )
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     const runnerLoadError = error instanceof RunnerLoadError ? error : undefined

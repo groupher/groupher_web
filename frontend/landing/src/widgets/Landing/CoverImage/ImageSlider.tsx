@@ -148,7 +148,7 @@ export default function ImageSlider() {
                   curImageIndex <= 0 ? MAX_INTRO_IMAGES_COUNT - 1 : curImageIndex - 1
               }
 
-              sliderRef.current.slideTo(targetSlideIndex)
+              sliderRef.current?.slideTo(targetSlideIndex)
               setCurImageIndex(targetSlideIndex)
             }}
           >
@@ -168,7 +168,7 @@ export default function ImageSlider() {
                   curImageIndex >= MAX_INTRO_IMAGES_COUNT - 1 ? 0 : curImageIndex + 1
               }
 
-              sliderRef.current.slideTo(targetSlideIndex)
+              sliderRef.current?.slideTo(targetSlideIndex)
               setCurImageIndex(targetSlideIndex)
             }}
           >

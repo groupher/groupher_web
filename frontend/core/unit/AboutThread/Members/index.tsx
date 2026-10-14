@@ -47,7 +47,7 @@ const Members: FC<TProps> = ({ moderators }) => {
             <Img
               className={s.joinerAavtar}
               key={user.login}
-              src={user.avatar}
+              src={user.avatar ?? ''}
               fallback={<ImgFallback user={user} />}
             />
           ))}
@@ -55,7 +55,7 @@ const Members: FC<TProps> = ({ moderators }) => {
             <Img
               className={s.joinerAavtar}
               key={user.login}
-              src={user.avatar}
+              src={user.avatar ?? ''}
               fallback={<ImgFallback user={user} />}
             />
           ))}

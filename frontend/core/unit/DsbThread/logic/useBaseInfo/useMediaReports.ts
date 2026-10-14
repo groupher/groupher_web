@@ -56,6 +56,8 @@ export default function useMediaReports(): TRet {
     const restReports = reject((item: TMediaReport) => item.index === index, mediaReports)
     const report = find((item: TMediaReport) => item.index === index, mediaReports)
 
+    if (!report) return
+
     report.editUrl = url
 
     dsb$.editMany({ mediaReports: [...restReports, report] })
@@ -80,6 +82,7 @@ export default function useMediaReports(): TRet {
       (item: TMediaReport) => item.index === queryingMediaReportIndex,
       mediaReports,
     )
+    if (!report) return
     const updatedReport = mergeRight(report, data)
 
     setQueryingMediaReportIndexSafe(null)
@@ -89,7 +92,11 @@ export default function useMediaReports(): TRet {
   const queryOpenGraphInfo = (item: TMediaReport): void => {
     const { url, editUrl } = item
 
-    if ((startsWith('https://', editUrl) || startsWith('http://', editUrl)) && url !== editUrl) {
+    if (
+      editUrl &&
+      (startsWith('https://', editUrl) || startsWith('http://', editUrl)) &&
+      url !== editUrl
+    ) {
       setQueryingMediaReportIndexSafe(item.index)
 
       const params = { url: editUrl.trim() }

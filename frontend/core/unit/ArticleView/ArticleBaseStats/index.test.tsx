@@ -6,8 +6,12 @@ import type { TArticle } from '~/spec'
 import ArticleBaseStats from '.'
 
 vi.mock('~/dom', () => ({ scrollToComments: vi.fn() }))
-vi.mock('~/icons/article/Viewed', () => ({ default: () => <span data-testid='view-icon' /> }))
-vi.mock('~/icons/Comment', () => ({ default: () => <span data-testid='comment-icon' /> }))
+vi.mock('~/icons/article/Viewed', () => ({
+  default: () => <span data-testid='view-icon' />,
+}))
+vi.mock('~/icons/Comment', () => ({
+  default: () => <span data-testid='comment-icon' />,
+}))
 vi.mock('./salon', () => ({
   default: () => ({
     commentBox: 'comment-box',

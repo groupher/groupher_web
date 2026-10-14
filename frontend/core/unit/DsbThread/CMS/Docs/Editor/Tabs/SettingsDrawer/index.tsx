@@ -47,7 +47,9 @@ const SettingsDrawer: FC<TProps> = ({ controller, show, onClose }) => {
   const [pendingAction, setPendingAction] = useState<TPendingAction>(null)
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
   )
 
   const handleDragEnd = ({ active, over }: DragEndEvent): void => {

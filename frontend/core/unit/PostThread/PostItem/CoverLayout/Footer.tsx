@@ -22,16 +22,14 @@ const Footer: FC<TProps> = ({ article, stats, viewerState }) => {
     <div className={s.wrapper}>
       <Upvote
         count={stats?.upvotesCount}
-        avatarList={meta.latestUpvotedUsers}
-        viewerHasUpvoted={viewerState.viewerHasUpvoted}
+        avatarList={meta?.latestUpvotedUsers}
+        viewerHasUpvoted={Boolean(viewerState.viewerHasUpvoted)}
         type={UPVOTE_LAYOUT.GENERAL}
         left={-2}
         top={-1}
       />
       <div className='grow' />
-      <div className={s.createTime}>
-        <TimeAgo datetime={insertedAt} />
-      </div>
+      <div className={s.createTime}>{insertedAt && <TimeAgo datetime={insertedAt} />}</div>
     </div>
   )
 }

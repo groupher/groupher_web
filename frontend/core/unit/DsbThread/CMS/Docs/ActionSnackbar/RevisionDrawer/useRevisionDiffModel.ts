@@ -140,7 +140,11 @@ const useRevisionDiffModel = (history: TRevisionHistory, bodyValue: TRichEditorV
             if (cancelled || activeHistoryTabRef.current !== 'staged') return
             setCurrent((latest) =>
               latest.key === currentPair.key
-                ? { ...currentPair, ...summaryFromResult(result), pending: false }
+                ? {
+                    ...currentPair,
+                    ...summaryFromResult(result),
+                    pending: false,
+                  }
                 : latest,
             )
           })

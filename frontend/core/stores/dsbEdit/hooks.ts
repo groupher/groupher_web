@@ -1,6 +1,6 @@
 'use client'
 
-import { use, useRef } from 'react'
+import { use, useMemo } from 'react'
 import { useSnapshot } from 'valtio'
 
 import { DsbEditContext } from './context'
@@ -19,9 +19,19 @@ export const useDsbEditStore = (): TDsbEditStore => {
 export default function useDsbEdit(): Readonly<TDsbEditStore> {
   const store = useDsbEditStore()
   const snapshot = useSnapshot(store)
-  const storeRef = useRef(store)
-  storeRef.current = store
-  const actionsRef = useRef<Record<string, TFunc>>({})
+  const actions = useMemo(() => {
+    const stableActions: Record<string, TFunc> = {}
+
+    for (const key of Object.keys(store) as Array<keyof TDsbEditStore>) {
+      if (typeof store[key] !== 'function') continue
+      stableActions[key as string] = (...args: unknown[]) => {
+        const action = store[key]
+        return typeof action === 'function' ? (action as TFunc)(...args) : undefined
+      }
+    }
+
+    return stableActions
+  }, [store])
   const result = {} as Record<string, unknown>
 
   // Lazy getters preserve Valtio's field-level tracking. Eager snapshot spread
@@ -30,10 +40,7 @@ export default function useDsbEdit(): Readonly<TDsbEditStore> {
     if (typeof store[key] === 'function') {
       Object.defineProperty(result, key, {
         enumerable: true,
-        value: (actionsRef.current[key as string] ??= (...args: unknown[]) => {
-          const action = storeRef.current[key]
-          return typeof action === 'function' ? (action as TFunc)(...args) : undefined
-        }),
+        value: actions[key as string],
       })
       continue
     }

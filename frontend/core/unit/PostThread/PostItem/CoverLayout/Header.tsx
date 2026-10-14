@@ -25,7 +25,7 @@ const Header: FC<TProps> = ({ article, viewerState }) => {
         <CommunityPreviewLink
           className={s.title}
           href={`/${slug}/${THREAD_PATH.POST}/${article.innerId}`}
-          previewId={article.innerId}
+          previewId={String(article.innerId ?? '')}
         >
           {title}
         </CommunityPreviewLink>

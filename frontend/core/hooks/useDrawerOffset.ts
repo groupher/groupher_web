@@ -55,8 +55,9 @@ const useDrawerOffset = (): TRes => {
   }, [metric])
 
   return useMemo(() => {
-    const fromContentEdge = windowWidth <= maxWidth
-    const rightOffset = fromContentEdge ? '0px' : `${(windowWidth - maxWidth) / 2}px`
+    const viewportWidth = windowWidth ?? 0
+    const fromContentEdge = viewportWidth <= maxWidth
+    const rightOffset = fromContentEdge ? '0px' : `${(viewportWidth - maxWidth) / 2}px`
     return { rightOffset, fromContentEdge }
   }, [windowWidth, maxWidth])
 }

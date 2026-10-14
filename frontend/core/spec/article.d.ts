@@ -16,7 +16,10 @@ import type { TEmotion } from './emotion'
 import type { TArticleThread, TThread } from './thread'
 import type { TID, TPagi } from './utils'
 
-export type TArticleTitle = { $isPinned?: boolean; viewerHasViewed?: boolean } & TColor
+export type TArticleTitle = {
+  $isPinned?: boolean
+  viewerHasViewed?: boolean
+} & TColor
 
 export type TCopyright = 'cc' | 'approve' | 'forbid'
 
@@ -180,7 +183,7 @@ export type TComment = {
   author?: TUser
   repliesCount?: number
   replies?: TComment[]
-  replyToComment?: TComment
+  replyToComment?: TComment | null
   upvotesCount?: number
   commentInteractionRevision?: number
   reactionOutcome?: ReactionOutcome

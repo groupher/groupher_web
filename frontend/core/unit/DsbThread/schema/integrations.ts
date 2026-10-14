@@ -65,4 +65,9 @@ export const openGraphInfo = graphql(`
   }
 `)
 
-export default { pressConfig, updatePressConfig, thirdPartyAnalyticsProviders, openGraphInfo }
+export default {
+  pressConfig,
+  updatePressConfig,
+  thirdPartyAnalyticsProviders,
+  openGraphInfo,
+}

@@ -1,6 +1,6 @@
 'use client'
 import { useLocation } from '@tanstack/react-router'
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import { dsbRoutes, parseDsbPathname, resolveDsbRoute } from '~/platform'
 import type { TBreadcrumbItem, TTransKey } from '~/spec'
@@ -67,8 +67,10 @@ export default function useDsbCrumbItems(root: TDsbCrumbNode): TBreadcrumbItem[]
   const community = routeMeta?.community ?? ''
   const search = new URLSearchParams(searchStr)
   const routeSegmentsKey = routeMeta?.segments.join('/') ?? ''
-  const crumbCacheRef = useRef<TBreadcrumbItem[]>([])
-  const lastCommunityRef = useRef<string | undefined>(undefined)
+  const crumbCacheRef = useRef<{
+    community: string
+    items: TBreadcrumbItem[]
+  }>({ community, items: [] })
 
   const computed = useMemo(() => {
     if (!routeMeta || !community) return []
@@ -98,14 +100,10 @@ export default function useDsbCrumbItems(root: TDsbCrumbNode): TBreadcrumbItem[]
     })
   }, [community, root, routeSegmentsKey, searchStr])
 
-  if (community !== lastCommunityRef.current) {
-    crumbCacheRef.current = []
-    lastCommunityRef.current = community
-  }
+  useEffect(() => {
+    if (computed.length > 0) crumbCacheRef.current = { community, items: computed }
+  }, [community, computed])
 
-  if (computed.length > 0) {
-    crumbCacheRef.current = computed
-  }
-
-  return computed.length > 0 ? computed : crumbCacheRef.current
+  const cached = crumbCacheRef.current
+  return computed.length > 0 ? computed : cached.community === community ? cached.items : []
 }

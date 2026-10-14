@@ -21,7 +21,7 @@ type TProps = {
   onCommit?: () => void
 }
 
-const handleResetMouseDown = (event: MouseEvent<HTMLButtonElement>): void => {
+const handleResetMouseDown = (event: MouseEvent<HTMLSpanElement>): void => {
   event.stopPropagation()
 }
 
@@ -63,10 +63,11 @@ export default function AngleWheel({ value, label = 'Angle', onChange, onCommit 
     const isIncrease = event.key === 'ArrowRight' || event.key === 'ArrowUp'
     const isDecrease = event.key === 'ArrowLeft' || event.key === 'ArrowDown'
 
-    if (!isIncrease && !isDecrease) return
+    const isReset = event.key === 'Home'
+    if (!isIncrease && !isDecrease && !isReset) return
 
     event.preventDefault()
-    commitAngle(angle + (isIncrease ? 1 : -1))
+    commitAngle(isReset ? 0 : angle + (isIncrease ? 1 : -1))
     onCommit?.()
   }
 
@@ -80,7 +81,7 @@ export default function AngleWheel({ value, label = 'Angle', onChange, onCommit 
     updateAngle(event.clientX, event.clientY)
   }
 
-  const handleResetClick = (event: MouseEvent<HTMLButtonElement>): void => {
+  const handleResetClick = (event: MouseEvent<HTMLSpanElement>): void => {
     event.stopPropagation()
     commitAngle(0)
     onCommit?.()
@@ -150,16 +151,15 @@ export default function AngleWheel({ value, label = 'Angle', onChange, onCommit 
         </g>
         <path className={s.guideArc} d={guidePath} strokeLinecap='round' />
       </svg>
-      <button
-        type='button'
+      <span
         className={s.center}
-        aria-label='Reset angle to 0 degrees'
+        aria-hidden='true'
         onMouseDown={handleResetMouseDown}
         onClick={handleResetClick}
       >
         {isNegative && <span className={s.negativeSign}>-</span>}
         <span>{displayAngle}°</span>
-      </button>
+      </span>
       <div className={s.point} style={pointStyle} />
     </div>
   )

@@ -15,10 +15,11 @@ export default function useSalon({ visible, compact = false }) {
       bg('modal.bg'),
     ),
     mask: cn(
-      'fixed overflow-auto top-0 right-0 bottom-0 left-0 transition-opacity	duration-200',
+      'fixed overflow-auto top-0 right-0 bottom-0 left-0 w-full h-full max-w-none max-h-none m-0 p-0 border-none transition-opacity duration-200',
       bg('modal.mask'),
       zIndex('modalOverlay', visible),
     ),
+    backdrop: 'absolute inset-0 size-full border-none bg-transparent',
     children: cn(compact ? 'min-h-0' : 'min-h-72', 'h-auto', 'grow', 'overflow-y-auto'),
     //
     closeBox: cn('align-both size-7 absolute top-3.5 right-4 z-10', hover('bg')),

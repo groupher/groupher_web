@@ -26,7 +26,11 @@ const mockedUseQuery = vi.mocked(useQuery)
 
 describe('Dashboard Analytics TrafficPanel', () => {
   beforeEach(() => {
-    mockedUseQuery.mockReturnValue({ data: undefined, error: null, isFetching: false } as never)
+    mockedUseQuery.mockReturnValue({
+      data: undefined,
+      error: null,
+      isFetching: false,
+    } as never)
   })
 
   it('keeps the network query disabled when demo data owns the view', () => {

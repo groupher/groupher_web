@@ -1,11 +1,12 @@
 import { useCallback } from 'react'
 
+import { COLOR } from '~/const/colors'
 import useTwBelt from '~/hooks/useTwBelt'
 import type { TColor, TColorName } from '~/spec'
 
 type TProps = TColor
 
-export default function useSalon({ color }: TProps) {
+export default function useSalon({ color = COLOR.BLACK }: TProps) {
   const { cn, fg, rainbow } = useTwBelt()
 
   const fillColor = useCallback((color: TColorName) => rainbow(color, 'fill'), [rainbow])

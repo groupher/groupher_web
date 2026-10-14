@@ -2,7 +2,7 @@
   "extends": "../core/tsconfig.app.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "types": ["vite/client"]
   },
   "include": ["**/*.ts", "**/*.tsx"],

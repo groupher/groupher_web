@@ -22,7 +22,11 @@ const group = (
 
 describe('nested SideTree DnD model', () => {
   it('moves a Page across recursive Group parents', () => {
-    const page = { id: 'page', type: SIDE_TREE_NODE_TYPE.PAGE, title: 'Page' } as const
+    const page = {
+      id: 'page',
+      type: SIDE_TREE_NODE_TYPE.PAGE,
+      title: 'Page',
+    } as const
     const source = group('source', 'root', [page])
     const target = group('target', 'root')
     const groups = [group('root', TAB_ID, [source, target])]
@@ -114,7 +118,11 @@ describe('nested SideTree DnD model', () => {
   })
 
   it('keeps Page and Link nodes below a Group', () => {
-    const page = { id: 'page', type: SIDE_TREE_NODE_TYPE.PAGE, title: 'Page' } as const
+    const page = {
+      id: 'page',
+      type: SIDE_TREE_NODE_TYPE.PAGE,
+      title: 'Page',
+    } as const
     const groups = [group('group', TAB_ID, [page])]
 
     expect(
@@ -163,7 +171,11 @@ describe('nested SideTree DnD model', () => {
   })
 
   it('keeps nested Groups before Page and Link leaves', () => {
-    const page = { id: 'page', type: SIDE_TREE_NODE_TYPE.PAGE, title: 'Page' } as const
+    const page = {
+      id: 'page',
+      type: SIDE_TREE_NODE_TYPE.PAGE,
+      title: 'Page',
+    } as const
     const link = {
       id: 'link',
       type: SIDE_TREE_NODE_TYPE.LINK,
@@ -209,7 +221,11 @@ describe('nested SideTree DnD model', () => {
   })
 
   it('moves through a deep Group chain without repeatedly canonicalizing descendants', () => {
-    const page = { id: 'page', type: SIDE_TREE_NODE_TYPE.PAGE, title: 'Page' } as const
+    const page = {
+      id: 'page',
+      type: SIDE_TREE_NODE_TYPE.PAGE,
+      title: 'Page',
+    } as const
     let chain = group('group-199', 'group-198')
 
     for (let depth = 198; depth >= 1; depth -= 1) {
@@ -230,6 +246,9 @@ describe('nested SideTree DnD model', () => {
       TAB_ID,
     )
 
-    expect(findNodePosition(moved, page.id)).toEqual({ parentNodeId: 'group-199', index: 0 })
+    expect(findNodePosition(moved, page.id)).toEqual({
+      parentNodeId: 'group-199',
+      index: 0,
+    })
   })
 })

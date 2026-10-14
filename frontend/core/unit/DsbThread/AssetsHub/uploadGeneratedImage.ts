@@ -33,7 +33,9 @@ export const uploadGeneratedImage = async ({
     )
   }
 
-  const uploadFile = new File([file], `${uploadRef}.webp`, { type: 'image/webp' })
+  const uploadFile = new File([file], `${uploadRef}.webp`, {
+    type: 'image/webp',
+  })
   await putFileWithProgress({
     file: uploadFile,
     headers: presignPayload.result.upload.headers,

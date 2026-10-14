@@ -19,7 +19,9 @@ export const Route = createFileRoute('/$community/post/_layout')({
         context.queryClient,
         params.community,
         THREAD.POST,
-        (posts.entries || []).map((article) => article.innerId),
+        (posts?.entries || []).flatMap((article) =>
+          article.innerId === undefined ? [] : [article.innerId],
+        ),
       ),
     )
     return { posts }

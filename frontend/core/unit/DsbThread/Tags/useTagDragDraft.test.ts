@@ -125,7 +125,11 @@ describe('useTagDragDraft', () => {
   it('moves within one group without replacing unaffected groups', () => {
     const { result } = setup()
     const initialGroups = result.current.groups
-    const target = { groupId: 'group-a', tagId: 'c', position: 'after' as const }
+    const target = {
+      groupId: 'group-a',
+      tagId: 'c',
+      position: 'after' as const,
+    }
 
     act(() => result.current.startDrag('b'))
     act(() => result.current.moveTagDrag(target))
@@ -193,7 +197,11 @@ describe('useTagDragDraft', () => {
 
   it('commits the final placement once with normalized indexes', () => {
     const { result, onCommit } = setup()
-    const target = { groupId: 'group-b', tagId: 'd', position: 'before' as const }
+    const target = {
+      groupId: 'group-b',
+      tagId: 'd',
+      position: 'before' as const,
+    }
 
     act(() => result.current.startDrag('b'))
     act(() => result.current.moveTagDrag(target))

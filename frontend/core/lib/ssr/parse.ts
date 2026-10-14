@@ -76,7 +76,7 @@ export const parseDashboard = (community: TCommunity): TParseDashboard => {
   } = dashboard
   const fieldsObj = removeEmptyValuesFromObject({
     enable,
-    nameAlias: parseDashboardAlias([...nameAlias]),
+    nameAlias: parseDashboardAlias([...(nameAlias ?? [])]),
     socialLinks,
     docFaq,
     ...baseInfo,

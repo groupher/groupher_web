@@ -1,3 +1,4 @@
+import SIZE from '~/const/size'
 import useTwBelt from '~/hooks/useTwBelt'
 import type { TColorName, TSize } from '~/spec'
 
@@ -10,7 +11,7 @@ type TProps = {
   color?: string
 }
 
-export default function useSalon({ size, color }: TProps) {
+export default function useSalon({ size = SIZE.SMALL, color }: TProps) {
   const { accent, cn, rainbow, underline } = useTwBelt()
 
   return {

@@ -29,22 +29,36 @@ const parsePureTextForList = ({ items }): string => {
   return preText
 }
 
+const parseEditorBlocks = (body: string): unknown[] => {
+  try {
+    const parsed: unknown = JSON.parse(body)
+    if (!parsed || typeof parsed !== 'object' || !('blocks' in parsed)) return []
+
+    const { blocks } = parsed as { blocks?: unknown }
+    return Array.isArray(blocks) ? blocks : []
+  } catch {
+    return []
+  }
+}
+
 /**
  * extract sanitized texts from editor papare for count
  */
 const extractWords = (body: string): string => {
-  const { blocks } = JSON.parse(body)
-  if (!blocks) return ''
+  const blocks = parseEditorBlocks(body)
   let pureText = ''
 
   for (let i = 0; i < blocks.length; i += 1) {
-    const { type, data } = blocks[i]
+    const block = blocks[i]
+    if (!block || typeof block !== 'object') continue
 
-    if (type === 'list') {
+    const { type, data } = block as { data?: unknown; type?: unknown }
+
+    if (type === 'list' && data && typeof data === 'object' && 'items' in data) {
       pureText = pureText.concat(parsePureTextForList(data))
     }
 
-    if (type === 'paragraph') {
+    if (type === 'paragraph' && data && typeof data === 'object' && 'text' in data) {
       // extractParagraph
       pureText = pureText.concat(parsePureTextForParagraph(data))
     }

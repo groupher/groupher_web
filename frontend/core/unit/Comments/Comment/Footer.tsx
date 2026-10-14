@@ -32,7 +32,7 @@ const Footer: FC<TProps> = ({ data, apiMode }) => {
 
   // const { isLegal } = data.meta
   const { meta } = data
-  const { isArticleAuthorUpvoted, isLegal } = meta
+  const { isArticleAuthorUpvoted = false, isLegal = false } = meta ?? {}
 
   const isSolution = data.isSolution
   const noExtraInfo = !isSolution && !isArticleAuthorUpvoted

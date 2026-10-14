@@ -99,7 +99,14 @@ export const flattenHeaderColumns = (columns: readonly THeaderColumn[]): TLinkIt
       const link = column.links[0]
       if (!link) return []
 
-      return [{ id: link.id, type: DASHBOARD_LINK_TYPE.LINK, title: link.title, url: link.url }]
+      return [
+        {
+          id: link.id,
+          type: DASHBOARD_LINK_TYPE.LINK,
+          title: link.title,
+          url: link.url,
+        },
+      ]
     }
 
     if (column.type === HEADER_COLUMN_TYPE.MORE && column.links.length === 0) return []

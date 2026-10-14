@@ -77,7 +77,9 @@ vi.mock('../../KanbanItem/EmptyItem', () => ({
 
 describe('useColumnsData', () => {
   it('returns only configured boards', () => {
-    const { result } = renderHook(() => useColumnsData(), { wrapper: makeStoreWrapper() })
+    const { result } = renderHook(() => useColumnsData(), {
+      wrapper: makeStoreWrapper(),
+    })
 
     expect(result.current.map((column) => column.key)).toEqual(['todo', 'done'])
   })

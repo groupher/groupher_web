@@ -24,10 +24,20 @@ const BASE_BG: TBgConfig = {
   customWallpaper: null,
   source: '',
   type: WALLPAPER_TYPE.NONE,
-  pattern: { enabled: false, id: '01', intensity: 0, tone: WALLPAPER_PATTERN_TONE.DARK },
+  pattern: {
+    enabled: false,
+    id: '01',
+    intensity: 0,
+    tone: WALLPAPER_PATTERN_TONE.DARK,
+  },
   gradient: null,
   effect: { blurIntensity: 0, brightness: 100, saturation: 100 },
-  texture: { enabled: false, type: WALLPAPER_TEXTURE.NOISE, intensity: 0, params: {} },
+  texture: {
+    enabled: false,
+    type: WALLPAPER_TEXTURE.NOISE,
+    intensity: 0,
+    params: {},
+  },
 }
 
 const PRESETS = [

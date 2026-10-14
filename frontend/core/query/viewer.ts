@@ -308,7 +308,9 @@ const fetchCommentViewerStates = async (
     for (const comment of data.commentViewerStates) {
       const emotionFlags: TCommentViewerStates[string]['emotionFlags'] = {}
       for (const emotion of comment.emotions) {
-        if (emotion.type !== 'UPVOTE') emotionFlags[emotion.type] = emotion.viewerHasReacted
+        if (emotion.type !== 'UPVOTE') {
+          emotionFlags[emotion.type] = emotion.viewerHasReacted ?? false
+        }
       }
       states[String(comment.innerId)] = {
         emotionFlags,

@@ -42,11 +42,15 @@ vi.mock('@tanstack/react-query', async () => ({
 }))
 
 vi.mock('~/hooks/useTrans', () => ({
-  default: () => ({ t: (key: string) => (key.includes('untitled') ? 'Untitled' : key) }),
+  default: () => ({
+    t: (key: string) => (key.includes('untitled') ? 'Untitled' : key),
+  }),
 }))
 
 vi.mock('~/lib/signal', () => ({ send: vi.fn() }))
-vi.mock('~/stores/community/hooks', () => ({ default: () => ({ slug: 'home' }) }))
+vi.mock('~/stores/community/hooks', () => ({
+  default: () => ({ slug: 'home' }),
+}))
 vi.mock('~/ui/Toaster', () => ({ toast: vi.fn() }))
 vi.mock('../helper', () => ({ reloadDocPublishChecklist: vi.fn() }))
 

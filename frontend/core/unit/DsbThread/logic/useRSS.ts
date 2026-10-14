@@ -16,7 +16,10 @@ import S from '../schema/integrations'
 import useHelper from './useHelper'
 
 type TUpdatePressConfigInput = NonNullable<VariablesOf<typeof S.updatePressConfig>['input']>
-type TUpdatePressConfigRequest = TUpdatePressConfigInput & { options: TOptions }
+type TFeedThread = NonNullable<TUpdatePressConfigInput['feedThreads']>[number]
+type TUpdatePressConfigRequest = TUpdatePressConfigInput & {
+  options: TOptions
+}
 
 type TOutputField = 'feedEnabled' | 'markdownEnabled' | 'llmsEnabled' | 'sitemapEnabled'
 type TOptions = Record<TOutputField, boolean> & { feedThreads: string[] }
@@ -108,9 +111,7 @@ export default function useRSS(): TRet {
       feedCount: dsb$.rssFeedCount,
       options,
       ...options,
-      feedThreads: options.feedThreads.map(
-        (thread) => thread.toUpperCase() as TUpdatePressConfigInput['feedThreads'][number],
-      ),
+      feedThreads: options.feedThreads.map((thread) => thread.toUpperCase() as TFeedThread),
     })
   }
 

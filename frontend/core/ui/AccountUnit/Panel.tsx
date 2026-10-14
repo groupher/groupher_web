@@ -21,7 +21,7 @@ type TProps = {
 const Panel: FC<TProps> = ({ show, returnTo, onClose }) => {
   const s = useSalon()
 
-  const [loadingProvider, setLoadingProvider] = useState(null)
+  const [loadingProvider, setLoadingProvider] = useState<string | null>(null)
   const { t } = useTrans()
 
   useEffect(() => {

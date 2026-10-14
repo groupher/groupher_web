@@ -112,90 +112,192 @@ export const DEMO_OVERVIEW: TAnalysisTrendsOverviewDemo = {
       {
         value: '/home/post',
         label: '/home/post',
-        metrics: { visitors: 312, visits: 420, views: 796, bounceRate: 0.28, visitDuration: 265 },
+        metrics: {
+          visitors: 312,
+          visits: 420,
+          views: 796,
+          bounceRate: 0.28,
+          visitDuration: 265,
+        },
       },
       {
         value: '/home/docs',
         label: '/home/docs',
-        metrics: { visitors: 198, visits: 276, views: 512, bounceRate: 0.31, visitDuration: 318 },
+        metrics: {
+          visitors: 198,
+          visits: 276,
+          views: 512,
+          bounceRate: 0.31,
+          visitDuration: 318,
+        },
       },
       {
         value: '/home/changelog',
         label: '/home/changelog',
-        metrics: { visitors: 146, visits: 203, views: 368, bounceRate: 0.36, visitDuration: 204 },
+        metrics: {
+          visitors: 146,
+          visits: 203,
+          views: 368,
+          bounceRate: 0.36,
+          visitDuration: 204,
+        },
       },
     ],
     url: [
       {
         value: 'https://groupher.com/home/post',
         label: '/home/post',
-        metrics: { visitors: 312, visits: 420, views: 796, bounceRate: 0.28, visitDuration: 265 },
+        metrics: {
+          visitors: 312,
+          visits: 420,
+          views: 796,
+          bounceRate: 0.28,
+          visitDuration: 265,
+        },
       },
       {
         value: 'https://groupher.com/home/docs',
         label: '/home/docs',
-        metrics: { visitors: 198, visits: 276, views: 512, bounceRate: 0.31, visitDuration: 318 },
+        metrics: {
+          visitors: 198,
+          visits: 276,
+          views: 512,
+          bounceRate: 0.31,
+          visitDuration: 318,
+        },
       },
     ],
     entry: [
       {
         value: '/home',
         label: '/home',
-        metrics: { visitors: 352, visits: 468, views: 860, bounceRate: 0.27, visitDuration: 298 },
+        metrics: {
+          visitors: 352,
+          visits: 468,
+          views: 860,
+          bounceRate: 0.27,
+          visitDuration: 298,
+        },
       },
       {
         value: '/home/post',
         label: '/home/post',
-        metrics: { visitors: 194, visits: 260, views: 488, bounceRate: 0.33, visitDuration: 281 },
+        metrics: {
+          visitors: 194,
+          visits: 260,
+          views: 488,
+          bounceRate: 0.33,
+          visitDuration: 281,
+        },
       },
     ],
     exit: [
       {
         value: '/home/post',
         label: '/home/post',
-        metrics: { visitors: 176, visits: 242, views: 420, bounceRate: 0.26, visitDuration: 236 },
+        metrics: {
+          visitors: 176,
+          visits: 242,
+          views: 420,
+          bounceRate: 0.26,
+          visitDuration: 236,
+        },
       },
       {
         value: '/home/docs',
         label: '/home/docs',
-        metrics: { visitors: 118, visits: 172, views: 304, bounceRate: 0.31, visitDuration: 205 },
+        metrics: {
+          visitors: 118,
+          visits: 172,
+          views: 304,
+          bounceRate: 0.31,
+          visitDuration: 205,
+        },
       },
     ],
     title: [
       {
         value: 'Posts',
         label: 'Posts',
-        metrics: { visitors: 312, visits: 420, views: 796, bounceRate: 0.28, visitDuration: 265 },
+        metrics: {
+          visitors: 312,
+          visits: 420,
+          views: 796,
+          bounceRate: 0.28,
+          visitDuration: 265,
+        },
       },
       {
         value: 'Docs',
         label: 'Docs',
-        metrics: { visitors: 198, visits: 276, views: 512, bounceRate: 0.31, visitDuration: 318 },
+        metrics: {
+          visitors: 198,
+          visits: 276,
+          views: 512,
+          bounceRate: 0.31,
+          visitDuration: 318,
+        },
       },
     ],
     query: [
       {
         value: 'source=github',
         label: 'source=github',
-        metrics: { visitors: 82, visits: 118, views: 236, bounceRate: 0.29, visitDuration: 201 },
+        metrics: {
+          visitors: 82,
+          visits: 118,
+          views: 236,
+          bounceRate: 0.29,
+          visitDuration: 201,
+        },
       },
       {
         value: 'ref=docs',
         label: 'ref=docs',
-        metrics: { visitors: 56, visits: 78, views: 144, bounceRate: 0.34, visitDuration: 189 },
+        metrics: {
+          visitors: 56,
+          visits: 78,
+          views: 144,
+          bounceRate: 0.34,
+          visitDuration: 189,
+        },
       },
     ],
   },
   sources: {
     referrer: [
-      { value: 'direct', label: 'Direct', metrics: { visitors: 356, visits: 492, views: 940 } },
-      { value: 'google', label: 'Google', metrics: { visitors: 214, visits: 288, views: 536 } },
-      { value: 'github', label: 'GitHub', metrics: { visitors: 128, visits: 182, views: 344 } },
+      {
+        value: 'direct',
+        label: 'Direct',
+        metrics: { visitors: 356, visits: 492, views: 940 },
+      },
+      {
+        value: 'google',
+        label: 'Google',
+        metrics: { visitors: 214, visits: 288, views: 536 },
+      },
+      {
+        value: 'github',
+        label: 'GitHub',
+        metrics: { visitors: 128, visits: 182, views: 344 },
+      },
     ],
     channel: [
-      { value: 'direct', label: 'Direct', metrics: { visitors: 356, visits: 492, views: 940 } },
-      { value: 'search', label: 'Search', metrics: { visitors: 214, visits: 288, views: 536 } },
-      { value: 'social', label: 'Social', metrics: { visitors: 128, visits: 182, views: 344 } },
+      {
+        value: 'direct',
+        label: 'Direct',
+        metrics: { visitors: 356, visits: 492, views: 940 },
+      },
+      {
+        value: 'search',
+        label: 'Search',
+        metrics: { visitors: 214, visits: 288, views: 536 },
+      },
+      {
+        value: 'social',
+        label: 'Social',
+        metrics: { visitors: 128, visits: 182, views: 344 },
+      },
     ],
     domain: [
       {
@@ -352,7 +454,13 @@ export const DEMO_OVERVIEW: TAnalysisTrendsOverviewDemo = {
       const active = hour >= 8 && hour <= 20
       const visitors = active ? Math.max(0, Math.round((weekday + 1) * (hour % 6) * 0.8)) : 0
 
-      return { weekday, hour, visitors, visits: visitors + 1, views: visitors * 2 }
+      return {
+        weekday,
+        hour,
+        visitors,
+        visits: visitors + 1,
+        views: visitors * 2,
+      }
     }),
   },
   errors: [],

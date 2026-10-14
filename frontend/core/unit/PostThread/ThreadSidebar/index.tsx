@@ -48,7 +48,7 @@ export default function ThreadSidebar() {
             <div className={s.desc}>{desc}</div>
             <div className={s.homeLinks}>
               <LinkSVG className={s.linkIcon} />
-              <Link href={homepage} navigation='document' className={s.link}>
+              <Link href={homepage ?? ''} navigation='document' className={s.link}>
                 {homepage}
               </Link>
               <div className='grow' />
@@ -61,7 +61,7 @@ export default function ThreadSidebar() {
                 <Img
                   key={user.login}
                   className={s.joinAvatar}
-                  src={user.avatar}
+                  src={user.avatar ?? ''}
                   fallback={<ImgFallback user={user} />}
                 />
               ))}

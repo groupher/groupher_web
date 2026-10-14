@@ -57,7 +57,9 @@ export default function CmsDataTable<TData>({
   })
 
   const rows = table.getRowModel().rows
-  const sticky = useStickyColumns(table, { showSelectColumn: multiSelect?.enabled })
+  const sticky = useStickyColumns(table, {
+    showSelectColumn: multiSelect?.enabled,
+  })
 
   return (
     <div

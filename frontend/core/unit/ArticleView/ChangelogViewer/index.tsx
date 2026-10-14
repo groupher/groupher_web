@@ -82,7 +82,7 @@ export default function ChangelogViewer({ isFullView = true }: TProps) {
       {loading && <ArticleContentLoading num={1} top={15} bottom={30} left={-25} />}
       {!loading && (
         <div className={s.bodyWrapper}>
-          <ArticleBody document={article.document} />
+          <ArticleBody document={article.document ?? {}} />
         </div>
       )}
 

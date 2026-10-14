@@ -6,7 +6,7 @@ import Left from './Left'
 import useSalon from './salon'
 import Section from './Section'
 
-type TProps = Pick<TIndex, 'sections'>
+type TProps = Required<Pick<TIndex, 'sections'>>
 
 const LeftRight: FC<TProps> = ({ sections }) => {
   const s = useSalon()
@@ -15,7 +15,7 @@ const LeftRight: FC<TProps> = ({ sections }) => {
 
   // fold/unfold one item
   const toggle = useCallback(
-    (id) => {
+    (id: string) => {
       if (includes(id, openedIds)) {
         setOpenedIds(reject((_id) => _id === id, openedIds))
       } else {

@@ -24,7 +24,7 @@ export default function GroupLayout() {
         <div className={s.brand}>
           <Img
             className={s.brandLogo}
-            src={assetSrc(logo)}
+            src={assetSrc(logo ?? '')}
             fallback={<ImgFallback title={title} />}
             noLazy
           />

@@ -21,7 +21,9 @@ export const Route = createFileRoute('/$community/changelog/_layout')({
         context.queryClient,
         params.community,
         THREAD.CHANGELOG,
-        (changelogs.entries || []).map((article) => article.innerId),
+        (changelogs?.entries || []).flatMap((article) =>
+          article.innerId === undefined ? [] : [article.innerId],
+        ),
       ),
     )
     return { changelogs }

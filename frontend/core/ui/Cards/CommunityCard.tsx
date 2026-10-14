@@ -19,16 +19,22 @@ type TProps = {
 
 const CommunityCard: FC<TProps> = ({ item: { logo, title, slug, desc } }) => {
   const s = useSalon()
+  const communitySlug = slug ?? ''
 
   return (
-    <div key={slug} className={s.wrapper}>
+    <div key={communitySlug} className={s.wrapper}>
       <div className={s.header}>
-        <Img src={logo} className={s.communityLogo} />
+        <Img src={logo ?? ''} className={s.communityLogo} />
         <div className={s.info}>
           <div className={s.title}>{title}</div>
           <div className={s.subInfo}>
-            <Link href={`/${slug}`} navigation='router' prefetch={false} className={s.rawLink}>
-              {slug}
+            <Link
+              href={`/${communitySlug}`}
+              navigation='router'
+              prefetch={false}
+              className={s.rawLink}
+            >
+              {communitySlug}
             </Link>
             <DotDivider className='mx-1.5' />
             <div className={s.subsInfo}>
@@ -38,7 +44,7 @@ const CommunityCard: FC<TProps> = ({ item: { logo, title, slug, desc } }) => {
           </div>
         </div>
       </div>
-      <div className={s.desc}>{cutRest(desc, 50)}</div>
+      <div className={s.desc}>{cutRest(desc ?? '', 50)}</div>
     </div>
   )
 }

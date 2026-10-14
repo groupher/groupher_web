@@ -56,7 +56,11 @@ describe('RevisionDiffClient', () => {
 
   it('sends one stateless compute request and resolves the full result', async () => {
     const client = new RevisionDiffClient()
-    const pair = { after: value('after'), before: value('before'), key: 'revision:2:1' }
+    const pair = {
+      after: value('after'),
+      before: value('before'),
+      key: 'revision:2:1',
+    }
     const resultPromise = client.getOrCompute(pair)
     const request = FakeWorker.instance.postMessage.mock.calls[0][0]
     const result = diffResult('after')
@@ -100,7 +104,11 @@ describe('RevisionDiffClient', () => {
 
   it('serves repeated document pairs from the main-thread cache', async () => {
     const client = new RevisionDiffClient()
-    const pair = { after: value('after'), before: value('before'), key: 'revision:2:1' }
+    const pair = {
+      after: value('after'),
+      before: value('before'),
+      key: 'revision:2:1',
+    }
     const result = diffResult('after')
     const firstPromise = client.getOrCompute(pair)
 
@@ -113,7 +121,11 @@ describe('RevisionDiffClient', () => {
 
   it('deduplicates the same in-flight pair across publish and current scopes', async () => {
     const client = new RevisionDiffClient()
-    const pair = { after: value('after'), before: value('before'), key: 'live:1' }
+    const pair = {
+      after: value('after'),
+      before: value('before'),
+      key: 'live:1',
+    }
     const publishPromise = client.getOrCompute(pair, 'publish')
     const currentPromise = client.getOrCompute(pair, 'current')
     const result = diffResult('after')

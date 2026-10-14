@@ -18,7 +18,7 @@ const LandingPage: FC<TProps> = ({ users, circle = false, className = '', ...spa
   return (
     <div className={cn(s.wrapper, className)}>
       {users.map((user) => (
-        <Img key={user.login} src={user.avatar} className={s.avatar} />
+        <Img key={user.login} src={user.avatar ?? ''} className={s.avatar} />
       ))}
     </div>
   )

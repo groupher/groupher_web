@@ -9,6 +9,7 @@ import { updateViewingArticle } from '~/signal'
 import { toast } from '~/ui/Toaster'
 
 import { ICON } from '../constant'
+import { getArticlePath } from '../helper'
 import S from '../schema'
 import useTouched from '../useTouched'
 import Footer from './Footer'
@@ -30,23 +31,25 @@ const CatSetting: FC<TProps> = ({ onBack }) => {
   const [result, setPostCat] = useArticleSettingMutation(S.setPostCat)
 
   const handleCat = () => {
+    const articlePath = getArticlePath(article)
+    if (!articlePath || !cat) {
+      toast('文章信息不完整', 'error')
+      return
+    }
+
     const params = {
-      article: {
-        innerId: article.innerId,
-        community: article.community?.slug,
-        thread: article.meta.thread,
-      },
+      article: articlePath,
       cat,
     }
 
     setPostCat(params).then((result) => {
       if (result.error) {
         toast('修改失败', 'error')
-      } else {
+      } else if (result.data?.setPostCat?.cat) {
         toast('修改完成')
         const newCat = result.data.setPostCat.cat
         setCat(newCat)
-        updateViewingArticle({ id: article.id, cat: newCat })
+        if (article.id) updateViewingArticle({ id: article.id, cat: newCat })
         resetTouched()
       }
     })

@@ -19,7 +19,7 @@ export default function Activities() {
       <div className={s.item}>
         <div className={cn(s.tail, '-bottom-3.5 h-2.5')} />
         <Img
-          src={user.avatar}
+          src={user.avatar ?? ''}
           className={s.avatar}
           fallback={<ImgFallback user={user} left={-0.5} />}
         />

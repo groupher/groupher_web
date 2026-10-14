@@ -34,7 +34,11 @@ const Stage: FC<TProps> = ({ view }) => {
       animate={{ opacity: 1, rotateX: 0, y: 0 }}
       exit={{ opacity: 0, rotateX: 88, y: 8 }}
       transition={STAGE_TRANSITION}
-      style={{ perspective: 420, transformOrigin: '50% 50% -12px', transformStyle: 'preserve-3d' }}
+      style={{
+        perspective: 420,
+        transformOrigin: '50% 50% -12px',
+        transformStyle: 'preserve-3d',
+      }}
     >
       <div className={s.wrapper}>
         {view === TITLE_STAGE_VIEW.PUBLISHED ? (

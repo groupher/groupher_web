@@ -13,16 +13,26 @@ export default function ArticleNavi() {
   const { slug } = useCommunity()
 
   const articleNavi = useNaviArticle()
+  const previous = articleNavi?.previous
+  const next = articleNavi?.next
+  const previousHref =
+    previous?.meta?.thread && previous.innerId
+      ? `/${slug}/${thread2Path(previous.meta.thread)}/${previous.innerId}`
+      : null
+  const nextHref =
+    next?.meta?.thread && next.innerId
+      ? `/${slug}/${thread2Path(next.meta.thread)}/${next.innerId}`
+      : null
 
   return (
     <div className={s.wrapper}>
-      {articleNavi?.previous && (
+      {previousHref && (
         <button
           type='button'
           className={cn(s.switchBlock, s.upBlock)}
           onClick={() =>
             void navigate({
-              to: `/${slug}/${thread2Path(articleNavi.previous.meta.thread)}/${articleNavi.previous.innerId}`,
+              to: previousHref,
               resetScroll: false,
             } as never)
           }
@@ -33,13 +43,13 @@ export default function ArticleNavi() {
           </div> */}
         </button>
       )}
-      {articleNavi?.next && (
+      {nextHref && (
         <button
           type='button'
           className={cn(s.switchBlock, s.downBlock)}
           onClick={() =>
             void navigate({
-              to: `/${slug}/${thread2Path(articleNavi.next.meta.thread)}/${articleNavi.next.innerId}`,
+              to: nextHref,
               resetScroll: false,
             } as never)
           }

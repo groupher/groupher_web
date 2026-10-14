@@ -39,7 +39,7 @@ const Menu: FC<TProps> = ({ onSubMenuToggle, onClose }) => {
     }
   })
 
-  const openSubMenu = (type) => {
+  const openSubMenu = (type: Exclude<TSubMenu, null>) => {
     setSubMenuActive(true)
     onSubMenuToggle(true)
     setSubMenuType(type)

@@ -105,7 +105,7 @@ export default function useLogic(): TRet {
   }, [])
 
   const getEditData = useCallback((): TEditData => {
-    const tagsIds = store.communityTags.map((t) => t.id)
+    const tagsIds = store.communityTags.flatMap((tag) => (tag.id === undefined ? [] : [tag.id]))
     const baseFields: (keyof TStore)[] = [
       'title',
       'body',

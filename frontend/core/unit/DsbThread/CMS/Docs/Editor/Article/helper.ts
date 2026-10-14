@@ -96,7 +96,9 @@ export const composeEditorDraft = ({
   subtitle,
   title,
   version = 0,
-}: Omit<TEditorDraft, 'bodyJson' | 'version'> & { version?: number }): TEditorDraft => ({
+}: Omit<TEditorDraft, 'bodyJson' | 'version'> & {
+  version?: number
+}): TEditorDraft => ({
   bodyJson: serializeEditorValue(bodyValue),
   bodyValue,
   docId,

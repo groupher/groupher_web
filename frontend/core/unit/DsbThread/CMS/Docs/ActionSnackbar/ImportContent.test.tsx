@@ -37,7 +37,9 @@ describe('ImportContent', () => {
     mocks.prepareDocImport.mockReset()
 
     render(<ImportContent />)
-    const trigger = screen.getByRole('button', { name: 'dsb.doc.action.import_content' })
+    const trigger = screen.getByRole('button', {
+      name: 'dsb.doc.action.import_content',
+    })
 
     fireEvent.pointerDown(trigger)
     fireEvent.click(trigger)
@@ -52,7 +54,9 @@ describe('ImportContent', () => {
     mocks.prepareDocImport.mockReset()
 
     render(<ImportContent />)
-    const trigger = screen.getByRole('button', { name: 'dsb.doc.action.import_content' })
+    const trigger = screen.getByRole('button', {
+      name: 'dsb.doc.action.import_content',
+    })
 
     fireEvent.pointerDown(trigger)
     fireEvent.click(trigger)

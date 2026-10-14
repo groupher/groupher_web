@@ -109,7 +109,7 @@ export default function Adder() {
                     <Tooltip content={<UserCard user={user} />} delay={0} placement='top'>
                       <Img
                         className={s.selectedAvatar}
-                        src={user.avatar}
+                        src={user.avatar ?? ''}
                         fallback={<ImgFallback user={user} className={s.selectedAvatar} />}
                         noLazy
                       />
@@ -151,7 +151,7 @@ export default function Adder() {
                     <div className={s.avatarBox}>
                       <Img
                         className={s.avatar}
-                        src={user.avatar}
+                        src={user.avatar ?? ''}
                         fallback={
                           <ImgFallback user={user} className={s.avatar} size={SIZE.MEDIUM} />
                         }

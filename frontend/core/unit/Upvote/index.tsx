@@ -4,7 +4,7 @@
  *
  */
 
-import { type FC, memo } from 'react'
+import { type ElementType, type FC, memo } from 'react'
 
 import { UPVOTE_LAYOUT } from '~/const/layout'
 import type { TSpace, TUpvoteLayout, TUser } from '~/spec'
@@ -44,7 +44,7 @@ const Upvote: FC<TProps> = ({
 
   const s = useSalon(spacing)
 
-  let Layout = null
+  let Layout: ElementType = GeneralLayout
 
   switch (type) {
     case UPVOTE_LAYOUT.COMMENT: {

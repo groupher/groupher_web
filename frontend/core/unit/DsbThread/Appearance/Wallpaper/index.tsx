@@ -32,7 +32,10 @@ function Wallpaper() {
   const s = useSalon()
   const { t } = useTrans()
   const { tab, changeTab, isTouched } = useLogic()
-  const tabItems = TAB_OPTIONS.map(({ key, labelKey }) => ({ key, label: t(labelKey) }))
+  const tabItems = TAB_OPTIONS.map(({ key, labelKey }) => ({
+    key,
+    label: t(labelKey),
+  }))
 
   useEffect(() => {
     if (!isTouched) return

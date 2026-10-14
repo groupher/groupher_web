@@ -36,7 +36,7 @@ const AccountUnit: FC<TProps> = ({ withName = false, ...spacing }) => {
 
   return (
     <div className={s.wrapper}>
-      {isLogin ? (
+      {isLogin && user ? (
         <div className={s.hoverBox}>
           <LoggedInAccount user={user} />
         </div>

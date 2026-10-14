@@ -17,7 +17,7 @@ const DeletedByCell: FC<TProps> = ({ item }) => {
 
   return (
     <div className={s.deletedBy}>
-      <Img className={s.avatar} src={user.avatar} />
+      <Img className={s.avatar} src={user.avatar ?? ''} />
       <div className={s.nickname}>{user.nickname || user.login}</div>
     </div>
   )

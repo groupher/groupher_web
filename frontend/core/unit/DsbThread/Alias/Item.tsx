@@ -34,7 +34,13 @@ const Item: FC<TProps> = ({ alias }) => {
                 className={s.input}
                 value={editingAlias?.name}
                 focusOnMount
-                onChange={(e) => updateEditingAlias({ ...editingAlias, name: e.target.value })}
+                onChange={(e) => {
+                  if (editingAlias)
+                    updateEditingAlias({
+                      ...editingAlias,
+                      name: e.target.value,
+                    })
+                }}
               />
             </div>
           </SavingBar>
@@ -75,7 +81,7 @@ const Item: FC<TProps> = ({ alias }) => {
                 withIcon={false}
                 dimWhenIdle
                 onClick={() => {
-                  updateEditingAlias({ ...alias, name: alias.original })
+                  updateEditingAlias({ ...alias, name: alias.original ?? '' })
                   resetEdit()
                 }}
               >

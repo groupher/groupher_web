@@ -38,7 +38,7 @@ const EmojiPanel: FC<TProps> = ({ emotions, onAction }) => {
             type='button'
             className={s.item}
             key={name}
-            onClick={() => onAction(name, viewerHasReacted)}
+            onClick={() => onAction?.(name, viewerHasReacted)}
           >
             <Img className={s.icon} src={`${ICON}/emotion/${name}.png`} noLazy />
             <div className={cn(s.name, viewerHasReacted && s.nameActive)}>{Trans[name]}</div>

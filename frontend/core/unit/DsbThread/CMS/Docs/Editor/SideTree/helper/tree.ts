@@ -87,7 +87,10 @@ export const removeLocalTarget = (
   if ('childId' in target && isLocalId(target.childId)) {
     return mapGroups(groups, (group) =>
       group.id === target.groupId
-        ? { ...group, pages: group.pages.filter((child) => child.id !== target.childId) }
+        ? {
+            ...group,
+            pages: group.pages.filter((child) => child.id !== target.childId),
+          }
         : group,
     )
   }

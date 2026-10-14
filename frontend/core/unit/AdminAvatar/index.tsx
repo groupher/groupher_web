@@ -27,7 +27,7 @@ const AdminAvatar: FC<TProps> = ({ testid: _testid = 'admin-avatar', user, ...sp
       <div className={s.innerWrapper}>
         <Img
           className={s.avatar}
-          src={user.avatar}
+          src={user.avatar ?? ''}
           fallback={<ImgFallback user={user} className={s.avatar} size={SIZE.MEDIUM} />}
         />
         <div className={s.badge}>

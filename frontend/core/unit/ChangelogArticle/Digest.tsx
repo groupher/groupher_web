@@ -61,14 +61,16 @@ export default function Digest() {
           <div className={s.subTitle}>{innerId}</div>
         </div>
         <div className={s.bottomInfo}>
-          <Link href='/' navigation='document' className={s.authorName}>
-            <Img
-              src={author.avatar}
-              className={s.avatar}
-              fallback={<ImgFallback user={author} />}
-            />
-            {author.nickname}
-          </Link>
+          {author && (
+            <Link href='/' navigation='document' className={s.authorName}>
+              <Img
+                src={author.avatar ?? ''}
+                className={s.avatar}
+                fallback={<ImgFallback user={author} />}
+              />
+              {author.nickname}
+            </Link>
+          )}
           <ArticleBaseStats article={changelog as TChangelog} stats={stats} right={2} />
         </div>
       </div>

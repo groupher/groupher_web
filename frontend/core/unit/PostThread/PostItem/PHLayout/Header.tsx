@@ -26,12 +26,12 @@ const Header: FC<TProps> = ({ article, viewerState }) => {
         <CommunityPreviewLink
           className={s.title}
           href={`/${slug}/${THREAD_PATH.POST}/${article.innerId}`}
-          previewId={article.innerId}
+          previewId={String(article.innerId ?? '')}
         >
           {title}
         </CommunityPreviewLink>
         {/*  @ts-ignore */}
-        <TagsList items={communityTags} left={12} />
+        <TagsList items={communityTags ?? []} left={12} />
       </div>
     </div>
   )

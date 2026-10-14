@@ -1,5 +1,6 @@
 import type { FC } from 'react'
 
+import { COLOR } from '~/const/colors'
 import { ARTICLE_CAT } from '~/const/gtd'
 import useTrans from '~/hooks/useTrans'
 import BugSVG from '~/icons/Bug'
@@ -34,7 +35,7 @@ const NodeBlock: FC<TProps> = ({
   cat = 'DEFAULT',
   index = -1,
   className = '',
-  bg = null,
+  bg,
   leftDot = 'bottom-4',
   rightDot = 'bottom-4',
 }) => {
@@ -59,7 +60,7 @@ const NodeBlock: FC<TProps> = ({
 
       {cat === ARTICLE_CAT.IDEA && (
         <div className={cn(s.userWrapper, s.borderPurple, 'top-5 right-4')}>
-          <Img src={users[6].avatar} className={cn(s.avatar, 'size-7')} />
+          <Img src={users[6]?.avatar ?? ''} className={cn(s.avatar, 'size-7')} />
         </div>
       )}
 
@@ -91,7 +92,11 @@ const NodeBlock: FC<TProps> = ({
           {cat === 'DEFAULT' ? (
             <SprintCounter num={metric.upvoteNum + index + 20} />
           ) : (
-            <UpdateCounter text={metric.upvoteText} num={metric.upvoteNum} color={bg} />
+            <UpdateCounter
+              text={metric.upvoteText}
+              num={metric.upvoteNum}
+              color={bg ?? COLOR.BLACK}
+            />
           )}
           <div className='grow' />
         </div>

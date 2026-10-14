@@ -45,7 +45,7 @@ const composeFilterEffect = ({
   brightness?: number
   saturation?: number
 }): string => {
-  const filters = []
+  const filters: string[] = []
   const safeBlurIntensity = Math.max(0, Math.min(100, blurIntensity))
 
   if (safeBlurIntensity > 0) {
@@ -85,7 +85,7 @@ export const parseBgWallpaper = (
 }
 
 const parseResolvedBgWallpaper = (
-  wallpaper: TWallpaper | TGradientRecipe,
+  wallpaper: TWallpaper | TGradientRecipe | undefined,
   customWallpaper?: TCustomWallpaper,
 ): TWallpaperFmt => {
   if (customWallpaper) {
@@ -154,7 +154,7 @@ const parseBgGradientBackground = (gradient: TWallpaperGradient): TWallpaperFmt 
   const DIR = '/wallpaper'
   const { direction, hasPattern, blurIntensity, brightness, saturation } = gradient
   const patternId = (gradient as { patternId?: string }).patternId
-  const colors = gradient.colors.join(',')
+  const colors = (gradient.colors ?? []).join(',')
   let background = `linear-gradient(${formatGradientDirection(direction)}, ${colors})`
 
   const patternPic = `${DIR}/pattern/${patternId || DEFAULT_WALLPAPER_PATTERN_ID}.png`

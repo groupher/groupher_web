@@ -42,7 +42,10 @@ export default function TrafficPanel({ community, days, demoData }: TProps) {
   const isDemo = Boolean(demoData)
 
   const result = useQuery({
-    ...graphqlQueryOptions<TData>(ANALYSIS_TREND_TRAFFIC_QUERY, { community, days }),
+    ...graphqlQueryOptions<TData>(ANALYSIS_TREND_TRAFFIC_QUERY, {
+      community,
+      days,
+    }),
     enabled: visible && !isDemo,
   })
   const section =

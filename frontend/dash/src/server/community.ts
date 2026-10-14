@@ -106,15 +106,39 @@ const loadAccount = async (token: string): Promise<TAccountInit> => {
     token,
   )
   const session = result.data?.sessionState
+  const sessionUser = session?.isValid ? session.user : null
+  const user: TUser | null = sessionUser
+    ? (() => {
+        const {
+          subscribedCommunitiesCount: _subscribedCommunitiesCount,
+          social,
+          ...publicUser
+        } = sessionUser
+
+        return {
+          ...publicUser,
+          login: sessionUser.login ?? undefined,
+          nickname: sessionUser.nickname ?? undefined,
+          avatar: sessionUser.avatar ?? undefined,
+          bio: sessionUser.bio ?? undefined,
+          shortbio: sessionUser.shortbio ?? undefined,
+          geoCity: sessionUser.geoCity ?? undefined,
+          location: sessionUser.location ?? undefined,
+          social: social
+            ? {
+                github: social.github ?? undefined,
+                twitter: social.twitter ?? undefined,
+                company: social.company ?? undefined,
+                blog: social.blog ?? undefined,
+              }
+            : undefined,
+          passport: sessionUser.passport as TUser['passport'],
+        }
+      })()
+    : null
 
   return {
     loading: false,
-    user:
-      session?.isValid && session.user
-        ? {
-            ...session.user,
-            passport: session.user.passport as TUser['passport'],
-          }
-        : null,
+    user,
   }
 }

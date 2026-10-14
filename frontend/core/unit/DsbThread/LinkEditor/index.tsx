@@ -34,7 +34,10 @@ const LinkEditor: FC<TLinkEditorProps> = ({
   }
 
   const editing = linkItem.group === editingLink?.group && linkItem.index === editingLink?.index
-  const { draft, editingDraft, isTouched, setDraft } = useLogic({ editing, editingLink })
+  const { draft, editingDraft, isTouched, setDraft } = useLogic({
+    editing,
+    editingLink: editingLink ?? undefined,
+  })
 
   return (
     <div className={s.wrapper}>

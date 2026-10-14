@@ -1,4 +1,4 @@
-import { includes, isEmpty, pluck, reject } from 'ramda'
+import { includes, isEmpty, reject } from 'ramda'
 import { type FC, useCallback, useState } from 'react'
 
 import type { TMenuOption } from '~/spec'
@@ -10,7 +10,7 @@ import Footer from './Footer'
 import useSalon from './salon'
 import Section from './Section'
 
-type TProps = Pick<TIndex, 'sections'>
+type TProps = Required<Pick<TIndex, 'sections'>>
 
 const getMenuOptions = (openedIds: string[], articleIds: string[]): TMenuOption[] => {
   if (isEmpty(openedIds)) {
@@ -28,12 +28,12 @@ const Collapse: FC<TProps> = ({ sections }) => {
   const s = useSalon()
 
   const [openedIds, setOpenedIds] = useState<string[]>([])
-  const articleIds = pluck('id', sections)
+  const articleIds = sections.map((section) => section.id)
   const menuOptions = getMenuOptions(openedIds, articleIds)
 
   // fold/unfold one item
   const toggle = useCallback(
-    (id) => {
+    (id: string) => {
       if (includes(id, openedIds)) {
         setOpenedIds(reject((_id) => _id === id, openedIds))
       } else {

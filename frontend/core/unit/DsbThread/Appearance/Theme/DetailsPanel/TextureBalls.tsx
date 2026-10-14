@@ -58,7 +58,9 @@ export default function TextureBalls({
           <button
             key={effect || 'none'}
             type='button'
-            className={s.block({ state: effect === glowType ? 'active' : 'idle' })}
+            className={s.block({
+              state: effect === glowType ? 'active' : 'idle',
+            })}
             aria-pressed={effect === glowType}
             onClick={() => commitGlowType(effect)}
           >

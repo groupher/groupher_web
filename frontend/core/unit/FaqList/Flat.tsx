@@ -6,7 +6,7 @@ import Markdown from '~/render/Markdown'
 import type { TProps as TIndex } from '.'
 import useSalon from './salon/flat'
 
-type TProps = Pick<TIndex, 'sections' | 'large'>
+type TProps = Required<Pick<TIndex, 'sections' | 'large'>>
 
 const Flat: FC<TProps> = ({ sections, large }) => {
   const s = useSalon({ large })

@@ -19,10 +19,9 @@ const ThirdPart: FC = () => {
   const s = useSalon()
   const { t } = useTrans()
   const { data } = useQuery(
-    graphqlQueryOptions<{ thirdPartyAnalyticsProviders: TIntegrateAnalysisTool[] }>(
-      S.thirdPartyAnalyticsProviders,
-      {},
-    ),
+    graphqlQueryOptions<{
+      thirdPartyAnalyticsProviders: TIntegrateAnalysisTool[]
+    }>(S.thirdPartyAnalyticsProviders, {}),
   )
   const providers = data?.thirdPartyAnalyticsProviders ?? []
 

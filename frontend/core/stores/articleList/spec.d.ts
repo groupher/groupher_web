@@ -5,9 +5,9 @@ export type TInit = {
 }
 
 export type TStore = TInit & {
-  activeOrder: TArticleOrder | null
-  activeCat: TArticleCat | null
-  activeStatus: TArticleStatus | null
+  activeOrder: TArticleOrder | null | undefined
+  activeCat: TArticleCat | null | undefined
+  activeStatus: TArticleStatus | null | undefined
 
   updateActiveFilter: (filter: TArticleFilter) => void
   commit: (patch: Partial<TStore>) => void

@@ -26,7 +26,8 @@ const FoldLayout: FC<TProps> = ({ data, isReply = false }) => {
 
   const isSolution = data.isSolution
   const { meta } = data
-  const { isLegal, illegalReason, illegalWords } = meta
+  const { isLegal = false, illegalReason = [], illegalWords = [] } = meta ?? {}
+  const author = data.author ?? {}
 
   return (
     <button type='button' className={s.wrapper} onClick={() => expandComment(data.innerId)}>
@@ -34,8 +35,8 @@ const FoldLayout: FC<TProps> = ({ data, isReply = false }) => {
       <ExpandSVG className={s.expandIcon} />
       <Img
         className={s.avatar}
-        src={data.author.avatar}
-        fallback={<ImgFallback user={data.author} />}
+        src={author.avatar ?? ''}
+        fallback={<ImgFallback user={author} />}
         noLazy
       />
       {isLegal ? (
@@ -43,14 +44,14 @@ const FoldLayout: FC<TProps> = ({ data, isReply = false }) => {
           className={s.commentBody}
           // oxlint-disable-next-line react/no-danger -- Folded comment bodies use sanitized HTML from the backend renderer.
           dangerouslySetInnerHTML={{
-            __html: data.bodyHtml,
+            __html: data.bodyHtml ?? '',
           }}
         />
       ) : (
         <IllegalBar illegalReason={illegalReason} illegalWords={illegalWords} isFold />
       )}
 
-      {data.repliesCount > 0 && (
+      {(data.repliesCount ?? 0) > 0 && (
         <div className={s.repliesHint}>
           [ {data.repliesCount} {t('comment.replies.count')} ]
         </div>
@@ -58,11 +59,11 @@ const FoldLayout: FC<TProps> = ({ data, isReply = false }) => {
 
       {isSolution && (
         <CheckBoldSVG
-          className={cn(s.solutionIcon, data.meta.isArticleAuthorUpvoted && 'mt-1.5')}
+          className={cn(s.solutionIcon, data.meta?.isArticleAuthorUpvoted && 'mt-1.5')}
         />
       )}
       <div className={s.createDate}>
-        <TimeAgo datetime={data.insertedAt} />
+        {data.insertedAt && <TimeAgo datetime={data.insertedAt} />}
       </div>
     </button>
   )

@@ -57,7 +57,12 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
   const refsRequestId = useRef(0)
 
   const assetFilter = useMemo(() => {
-    const filter: { page: number; query?: string; size: number; thread?: TAssetThreadFilter } = {
+    const filter: {
+      page: number
+      query?: string
+      size: number
+      thread?: TAssetThreadFilter
+    } = {
       page: 1,
       size: ASSETS_HUB_PAGE_SIZE,
     }
@@ -123,7 +128,11 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
       try {
         const refData = await browserGraphQLRequest<
           { communityAssetRefs: TPagedAssetRefs },
-          { assetId: string; community: string; filter: { page: number; size: number } }
+          {
+            assetId: string
+            community: string
+            filter: { page: number; size: number }
+          }
         >(S.communityAssetRefs, {
           assetId,
           community,

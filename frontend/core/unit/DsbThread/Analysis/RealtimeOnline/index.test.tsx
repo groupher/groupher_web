@@ -8,16 +8,26 @@ vi.mock('@tanstack/react-query', () => ({ useQuery: vi.fn() }))
 vi.mock('~/query', () => ({
   graphqlQueryOptions: () => ({ queryKey: ['analysis', 'active-visitors'] }),
 }))
-vi.mock('~/hooks/useTrans', () => ({ default: () => ({ t: (key: string) => key }) }))
+vi.mock('~/hooks/useTrans', () => ({
+  default: () => ({ t: (key: string) => key }),
+}))
 vi.mock('./salon', () => ({
-  default: () => ({ wrapper: 'wrapper', value: 'value', stale: 'stale', label: 'label' }),
+  default: () => ({
+    wrapper: 'wrapper',
+    value: 'value',
+    stale: 'stale',
+    label: 'label',
+  }),
 }))
 
 const mockedUseQuery = vi.mocked(useQuery)
 const refetch = vi.fn()
 
 const setVisibility = (value: DocumentVisibilityState) => {
-  Object.defineProperty(document, 'visibilityState', { configurable: true, value })
+  Object.defineProperty(document, 'visibilityState', {
+    configurable: true,
+    value,
+  })
   document.dispatchEvent(new Event('visibilitychange'))
 }
 

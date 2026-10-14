@@ -17,6 +17,6 @@ export const getAnalyticsTag = () => {
 /** Runs the handle route change operation at the frontend shared boundary. */
 export const handleRouteChange = (url: string): void => {
   try {
-    Global._hmt?.push(['_trackPageview', url])
+    Global?._hmt?.push(['_trackPageview', url])
   } catch (_e) {}
 }

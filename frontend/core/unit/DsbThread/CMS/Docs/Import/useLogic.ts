@@ -112,7 +112,9 @@ export default function useLogic(): TRet {
   const loadJob = useCallback(
     async (jobRef: string): Promise<TContentImportJob> => {
       const data = await browserGraphQLRequest<{
-        contentImportJob: Omit<TContentImportJob, 'process'> & { process: unknown }
+        contentImportJob: Omit<TContentImportJob, 'process'> & {
+          process: unknown
+        }
       }>(S.job, { community, jobRef })
       const latest = {
         ...data.contentImportJob,
@@ -346,7 +348,10 @@ export default function useLogic(): TRet {
           `${DOCS_IMPORT_ROUTE.preview(previewRef)}?community=${encodeURIComponent(community)}`,
           { method: 'DELETE' },
         )
-        const payload = (await response.json()) as { error?: { message?: string }; ok?: boolean }
+        const payload = (await response.json()) as {
+          error?: { message?: string }
+          ok?: boolean
+        }
         if (!response.ok || !payload.ok) {
           throw new Error(payload.error?.message || 'Could not remove the import preview.')
         }
@@ -357,7 +362,9 @@ export default function useLogic(): TRet {
       setPreview(null)
       setPreviewRef('')
       setProcess(null)
-      commandId.current = createCommandHandle({ scope: 'content-import' }).commandId
+      commandId.current = createCommandHandle({
+        scope: 'content-import',
+      }).commandId
       setPhase(PHASE.REPO)
       const url = new URL(window.location.href)
       url.searchParams.delete('job')

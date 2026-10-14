@@ -97,7 +97,7 @@ const LoggedInAccount: FC<TProps> = ({ user }) => {
         noPadding
       >
         <Img
-          src={avatar}
+          src={avatar ?? ''}
           alt='Open account menu'
           fallback={<ImgFallback user={user} />}
           className={s.avatar}

@@ -167,7 +167,7 @@ export const normalizeWallpaperSettings = (settings: TWallpaperThemeState): TWal
     gradient: settings.gradient
       ? {
           ...settings.gradient,
-          angle: normalizePersistedAngle(settings.gradient.angle),
+          angle: normalizePersistedAngle(settings.gradient.angle ?? 0),
         }
       : null,
     pattern: { ...settings.pattern },

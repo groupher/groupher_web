@@ -21,19 +21,33 @@ afterEach(() => {
 
 describe('getStickyViewportHeight', () => {
   it('ends at the viewport bottom before the tree reaches its sticky threshold', () => {
-    expect(getStickyViewportHeight({ elementTop: 200, stickyTop: 36, viewportHeight: 720 })).toBe(
-      520,
-    )
+    expect(
+      getStickyViewportHeight({
+        elementTop: 200,
+        stickyTop: 36,
+        viewportHeight: 720,
+      }),
+    ).toBe(520)
   })
 
   it('fills the remaining viewport after the tree becomes sticky', () => {
-    expect(getStickyViewportHeight({ elementTop: 36, stickyTop: 36, viewportHeight: 720 })).toBe(
-      684,
-    )
+    expect(
+      getStickyViewportHeight({
+        elementTop: 36,
+        stickyTop: 36,
+        viewportHeight: 720,
+      }),
+    ).toBe(684)
   })
 
   it('clamps the height when the viewport is shorter than the effective top', () => {
-    expect(getStickyViewportHeight({ elementTop: 200, stickyTop: 36, viewportHeight: 160 })).toBe(0)
+    expect(
+      getStickyViewportHeight({
+        elementTop: 200,
+        stickyTop: 36,
+        viewportHeight: 160,
+      }),
+    ).toBe(0)
   })
 })
 

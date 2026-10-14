@@ -50,7 +50,10 @@ export default function PresetList({
           { type: 'preset', preset: basePreset },
         ]
       : [{ type: 'preset', preset: customPreset }]
-    : displayPresetOptions.map((preset) => ({ type: 'preset' as const, preset }))
+    : displayPresetOptions.map((preset) => ({
+        type: 'preset' as const,
+        preset,
+      }))
 
   return (
     <LazyMotion features={domAnimation}>
@@ -74,7 +77,10 @@ export default function PresetList({
                   initial='hidden'
                   animate='visible'
                   exit='exit'
-                  transition={{ ...CARD_LAYOUT_TRANSITION, layout: CARD_LAYOUT_TRANSITION }}
+                  transition={{
+                    ...CARD_LAYOUT_TRANSITION,
+                    layout: CARD_LAYOUT_TRANSITION,
+                  }}
                   className={s.forkedFrom}
                 >
                   <span className={s.forkedFromIconFx}>
@@ -118,7 +124,10 @@ export default function PresetList({
                 initial='hidden'
                 animate='visible'
                 exit='exit'
-                transition={{ ...CARD_LAYOUT_TRANSITION, layout: CARD_LAYOUT_TRANSITION }}
+                transition={{
+                  ...CARD_LAYOUT_TRANSITION,
+                  layout: CARD_LAYOUT_TRANSITION,
+                }}
                 className={showForkRelation ? (index === 0 ? s.customCard : s.baseCard) : undefined}
               >
                 <PresetCard

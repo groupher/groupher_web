@@ -10,7 +10,7 @@ import Tooltip from '~/ui/Tooltip'
 import type { TProps as TArticleStatusBadgeProps } from '.'
 import useSalon, { Icon } from './salon/status'
 
-type TProps = Pick<TArticleStatusBadgeProps, 'cat' | 'status' | 'smaller'>
+type TProps = Required<Pick<TArticleStatusBadgeProps, 'cat' | 'status' | 'smaller'>>
 
 const tipConfig = {
   placement: 'right' as TTooltipPlacement,

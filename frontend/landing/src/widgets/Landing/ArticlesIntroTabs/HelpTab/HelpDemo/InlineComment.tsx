@@ -11,7 +11,7 @@ export default function InlineComment() {
   return (
     <div className={s.wrapper}>
       <div className={s.user}>
-        <Img className={s.avatar} src={user[0].avatar} />
+        <Img className={s.avatar} src={user[0]?.avatar ?? ''} />
         <div className={s.nickname}>{user[0].nickname}</div>
       </div>
       <div>可以在行内评论里支持富文本内容吗？</div>

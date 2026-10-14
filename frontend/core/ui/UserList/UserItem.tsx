@@ -15,7 +15,7 @@ const UserItem: FC<TProps> = ({ user }) => {
 
   return (
     <div className={s.wrapper}>
-      <Img src={assetSrc(user.avatar)} className={s.avatar} />
+      <Img src={assetSrc(user.avatar ?? '')} className={s.avatar} />
       <div className={s.main}>
         <div className={s.header}>
           <div className={s.title}>{user.nickname}</div>

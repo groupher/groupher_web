@@ -26,20 +26,21 @@ type TProps = {
 
 const SimpleLayout: FC<TProps> = ({ viewModel }) => {
   const { content: article, stats } = viewModel
-  const isActive = usePreviewItemActive(article.innerId, THREAD_PATH.CHANGELOG)
+  const innerId = String(article.innerId ?? '')
+  const isActive = usePreviewItemActive(innerId, THREAD_PATH.CHANGELOG)
   const s = useSalon({ active: isActive })
   const { slug } = useCommunity()
 
   return (
     <div className={s.wrapper}>
       <div className={s.dateTime}>
-        <ReadableDate date={article.insertedAt} withTime={false} />
+        <ReadableDate date={article.insertedAt ?? ''} withTime={false} />
       </div>
       <div className={s.main}>
         <CommunityPreviewLink
-          href={`/${slug}/${THREAD_PATH.CHANGELOG}/${article.innerId}`}
+          href={`/${slug}/${THREAD_PATH.CHANGELOG}/${innerId}`}
           className={s.title}
-          previewId={article.innerId}
+          previewId={innerId}
         >
           {article.title}
           <div className={s.version}>v3.21</div>
@@ -55,7 +56,7 @@ const SimpleLayout: FC<TProps> = ({ viewModel }) => {
         <div className={s.footer}>
           <EmotionSelector emotions={demoEmotion} isLegal />
           <div className='grow' />
-          <CommentsCount count={stats?.commentsCount} size='medium' right={15} />
+          <CommentsCount count={stats?.commentsCount ?? 0} size='medium' right={15} />
           <ShareSVG className={s.shareIcon} />
         </div>
       </div>

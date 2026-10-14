@@ -18,8 +18,12 @@ vi.mock('~/hooks/useTrans', () => ({
 vi.mock('../logic/useHelper', () => ({
   default: () => ({ onSave: vi.fn(), rollbackEdit: vi.fn(), isPending: false }),
 }))
-vi.mock('~/icons/Back', () => ({ default: () => <span data-testid='revert-icon' /> }))
-vi.mock('~/icons/Save', () => ({ default: () => <span data-testid='save-icon' /> }))
+vi.mock('~/icons/Back', () => ({
+  default: () => <span data-testid='revert-icon' />,
+}))
+vi.mock('~/icons/Save', () => ({
+  default: () => <span data-testid='save-icon' />,
+}))
 vi.mock('~/ui/Buttons/Button', () => ({
   default: ({
     ariaLabel,

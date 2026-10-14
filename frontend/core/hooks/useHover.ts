@@ -1,4 +1,4 @@
-import { type MutableRefObject, useEffect, useRef, useState } from 'react'
+import { type RefObject, useEffect, useRef, useState } from 'react'
 
 type HoverableNode = HTMLElement & {
   _hoverListenersAdded?: boolean
@@ -7,7 +7,7 @@ type HoverableNode = HTMLElement & {
 // Hook
 // T - could be any type of HTML element like: HTMLDivElement, HTMLParagraphElement and etc.
 // hook returns tuple(array) with type [any, boolean]
-function useHover<T>(): [MutableRefObject<T>, boolean] {
+function useHover<T>(): [RefObject<T | null>, boolean] {
   const [value, setValue] = useState<boolean>(false)
   const ref = useRef<T | null>(null)
   const handleMouseOver = (): void => setValue(true)

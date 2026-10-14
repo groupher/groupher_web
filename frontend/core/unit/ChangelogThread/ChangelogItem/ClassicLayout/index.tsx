@@ -28,7 +28,8 @@ type TProps = {
 
 const ClassicLayout: FC<TProps> = ({ viewModel }) => {
   const { content: article, stats } = viewModel
-  const isActive = usePreviewItemActive(article.innerId, THREAD_PATH.CHANGELOG)
+  const innerId = String(article.innerId ?? '')
+  const isActive = usePreviewItemActive(innerId, THREAD_PATH.CHANGELOG)
   const s = useSalon({ active: isActive })
   const { slug } = useCommunity()
 
@@ -38,8 +39,8 @@ const ClassicLayout: FC<TProps> = ({ viewModel }) => {
         <CoverImage />
         <CommunityPreviewLink
           className={s.title}
-          href={`/${slug}/${THREAD_PATH.CHANGELOG}/${article.innerId}`}
-          previewId={article.innerId}
+          href={`/${slug}/${THREAD_PATH.CHANGELOG}/${innerId}`}
+          previewId={innerId}
         >
           {article.title}
           <div className={s.version}>v3.21</div>
@@ -47,7 +48,7 @@ const ClassicLayout: FC<TProps> = ({ viewModel }) => {
         <div className={s.tags}>
           <SolidTagList tags={demoTags} />
           <div className={s.dateTime}>
-            <ReadableDate date={article.insertedAt} withTime={false} />
+            <ReadableDate date={article.insertedAt ?? ''} withTime={false} />
           </div>
         </div>
         <div className={s.body}>
@@ -55,11 +56,11 @@ const ClassicLayout: FC<TProps> = ({ viewModel }) => {
           这种行为十分危险，战争期间各种武装组织骚动，随时对我国在乌克兰撤侨的6000人直接造成生命威胁。前段时间，刘学州那个找爸妈的孩子，也是被1450它们网暴死的。
           （1450罪恶滔天啊！1450是九世恶人下凡！连孩子都不放过。
         </div>
-        <Author user={article.author} />
+        {article.author && <Author user={article.author} />}
         <div className={s.footer}>
           <EmotionSelector emotions={demoEmotion} isLegal />
           <div className='grow' />
-          <CommentsCount count={stats?.commentsCount} size='medium' right={15} />
+          <CommentsCount count={stats?.commentsCount ?? 0} size='medium' right={15} />
           <ShareSVG className={s.shareIcon} />
         </div>
       </div>

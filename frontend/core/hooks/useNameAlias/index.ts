@@ -7,8 +7,8 @@ import useDsb from '~/stores/dsbConfig/hooks'
 const useNameAlias = (group = 'kanban'): Record<string, TNameAlias> => {
   const { nameAlias } = useDsb()
 
-  const alias = {}
-  let aliasList = []
+  const alias: Record<string, TNameAlias> = {}
+  let aliasList: TNameAlias[] = []
 
   const curAlias = useMemo(() => nameAlias, [nameAlias])
 

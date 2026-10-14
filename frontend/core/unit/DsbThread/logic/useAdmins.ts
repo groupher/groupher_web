@@ -116,7 +116,9 @@ export default function useAdmins(): TRet {
         )
 
         dsb$.editMany({ moderators: hydratedModerators })
-        patchCommunityConfig(queryClient, slug, { moderators: hydratedModerators })
+        patchCommunityConfig(queryClient, slug, {
+          moderators: hydratedModerators,
+        })
       } catch (error) {
         console.error('## hydrate moderators passport error: ', error)
       }
@@ -167,14 +169,21 @@ export default function useAdmins(): TRet {
       })
 
       const pendingLogins = new Set(validUsers.map((user) => user.login))
-      const remoteModerators = data.addModerators.moderators ?? []
+      const remoteModerators = data.addModerators?.moderators ?? []
       const nextModerators = remoteModerators.flatMap((moderator) => {
-        const login = moderator.user?.login
+        const login = moderator?.user?.login
         if (!login) return []
 
         return [
           {
-            ...moderator,
+            isRoot: moderator.isRoot ?? undefined,
+            passportItemCount: moderator.passportItemCount ?? 0,
+            user: {
+              login,
+              avatar: moderator.user?.avatar ?? undefined,
+              nickname: moderator.user?.nickname ?? undefined,
+              bio: moderator.user?.bio ?? undefined,
+            },
             pending: pendingLogins.has(login),
           },
         ]
@@ -193,7 +202,9 @@ export default function useAdmins(): TRet {
       const resolvedModerators = nextModerators.length ? nextModerators : fallbackModerators
 
       dsb$.editMany({ moderators: resolvedModerators })
-      patchCommunityConfig(queryClient, community$.slug, { moderators: resolvedModerators })
+      patchCommunityConfig(queryClient, community$.slug, {
+        moderators: resolvedModerators,
+      })
     },
     [community$, dsb$, moderatorLoginSet, originalModerators, queryClient],
   )

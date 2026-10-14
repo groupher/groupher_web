@@ -18,7 +18,7 @@ const UserList: FC<TProps> = ({ users }) => {
       {users.map((user) => (
         <Img
           key={user.login}
-          src={user.avatar}
+          src={user.avatar ?? ''}
           className={s.avatar}
           fallback={<ImgFallback user={user} />}
         />

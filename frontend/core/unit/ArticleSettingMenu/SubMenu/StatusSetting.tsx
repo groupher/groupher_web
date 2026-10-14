@@ -13,7 +13,7 @@ import { updateViewingArticle } from '~/signal'
 import { toast } from '~/ui/Toaster'
 
 import { ICON } from '../constant'
-import { getGTDColor } from '../helper'
+import { getArticlePath, getGTDColor } from '../helper'
 import S from '../schema'
 import useTouched from '../useTouched'
 import Footer from './Footer'
@@ -47,12 +47,13 @@ const StatusSetting: FC<TProps> = ({ onBack }) => {
         : status === ARTICLE_STATUS.SOLVED
           ? ARTICLE_STATUS.RESOLVED
           : status
+    const articlePath = getArticlePath(article)
+    if (!articlePath || !graphQLStatus) {
+      toast('文章信息不完整', 'error')
+      return
+    }
     const params = {
-      article: {
-        innerId: article.innerId,
-        community: article.community?.slug,
-        thread: article.meta.thread,
-      },
+      article: articlePath,
       status: graphQLStatus as
         | 'BACKLOG'
         | 'DEFAULT'
@@ -70,11 +71,11 @@ const StatusSetting: FC<TProps> = ({ onBack }) => {
     setPostStatus(params).then((result) => {
       if (result.error) {
         toast('修改失败', 'error')
-      } else {
+      } else if (result.data?.setPostStatus?.status) {
         toast('修改完成')
         const newStatus = result.data.setPostStatus.status
         setStatus(newStatus)
-        updateViewingArticle({ id: article.id, status: newStatus })
+        if (article.id) updateViewingArticle({ id: article.id, status: newStatus })
 
         resetTouched()
       }
@@ -113,7 +114,7 @@ const StatusSetting: FC<TProps> = ({ onBack }) => {
             />
             <div className={cn(s.title, active && s.titleActive)}>
               {item.key === ARTICLE_STATUS.DONE
-                ? t(aliasGTDDoneStatus(article.cat, item.key))
+                ? t(aliasGTDDoneStatus(article.cat ?? 'DISCUSSION', item.key))
                 : kanbanAlias[item.key]?.name || t(toGTDLabelKey(item.key))}
             </div>
             {active && <CheckSVG className={s.checkIcon} />}

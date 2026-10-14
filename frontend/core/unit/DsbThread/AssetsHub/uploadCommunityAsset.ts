@@ -93,7 +93,9 @@ export const uploadCommunityAsset = async ({
       ),
     onStage,
   )
-  const { capability, uploadRef, assetPublicRef } = intent.createCommunityAssetUploadIntent
+  const uploadIntent = intent.createCommunityAssetUploadIntent
+  if (!uploadIntent) throw new Error('Asset upload intent was not created')
+  const { capability, uploadRef, assetPublicRef } = uploadIntent
   const presignJson = await runStage(
     'presign',
     async () => {

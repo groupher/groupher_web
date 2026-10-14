@@ -54,7 +54,7 @@ const TabItem: FC<TTabItemProps> = ({
   useEffect(() => {
     if (key === activeKey && !wrapMode) {
       const curEl = activeRef?.current
-      const inViewport = isElementInViewport(curEl)
+      const inViewport = curEl ? isElementInViewport(curEl) : false
 
       if (curEl && inViewport && getComputedStyle(curEl).width !== 'auto') {
         curEl.scrollIntoView({

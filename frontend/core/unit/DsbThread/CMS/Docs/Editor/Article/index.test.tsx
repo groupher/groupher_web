@@ -39,7 +39,9 @@ const mocks = vi.hoisted(() => ({
 }))
 
 vi.mock('~/hooks/useEvent', () => ({ default: vi.fn() }))
-vi.mock('../store/hooks', () => ({ default: () => ({ mode: DOC_EDITOR_MODE.EDIT }) }))
+vi.mock('../store/hooks', () => ({
+  default: () => ({ mode: DOC_EDITOR_MODE.EDIT }),
+}))
 vi.mock('../Import/useImport', () => ({
   default: () => ({
     close: vi.fn(),
@@ -62,8 +64,12 @@ vi.mock('./Title', () => ({
 }))
 vi.mock('./Title/Subtitle', () => ({ default: () => <div>subtitle</div> }))
 vi.mock('./TitleActions', () => ({ default: () => <div>title-actions</div> }))
-vi.mock('./WorkspaceActions', () => ({ default: () => <div>workspace-actions</div> }))
-vi.mock('./salon', () => ({ default: () => ({ wrapper: 'wrapper', error: 'error' }) }))
+vi.mock('./WorkspaceActions', () => ({
+  default: () => <div>workspace-actions</div>,
+}))
+vi.mock('./salon', () => ({
+  default: () => ({ wrapper: 'wrapper', error: 'error' }),
+}))
 vi.mock('../Import/Drawer', () => ({ default: () => null }))
 
 const groups: TSideTreeGroup[] = [
@@ -73,14 +79,29 @@ const groups: TSideTreeGroup[] = [
     parentNodeId: 'tab-demo',
     title: 'Group',
     pages: [
-      { id: 'page-a', type: SIDE_TREE_NODE_TYPE.PAGE, docId: 'doc-a', title: 'A' },
-      { id: 'page-b', type: SIDE_TREE_NODE_TYPE.PAGE, docId: 'doc-b', title: 'B' },
+      {
+        id: 'page-a',
+        type: SIDE_TREE_NODE_TYPE.PAGE,
+        docId: 'doc-a',
+        title: 'A',
+      },
+      {
+        id: 'page-b',
+        type: SIDE_TREE_NODE_TYPE.PAGE,
+        docId: 'doc-b',
+        title: 'B',
+      },
     ],
   },
 ]
 
 const createController = (activeId: string | null): TSideTreeController =>
-  ({ activeId, groups, addGroup: vi.fn(), patchChild: vi.fn() }) as unknown as TSideTreeController
+  ({
+    activeId,
+    groups,
+    addGroup: vi.fn(),
+    patchChild: vi.fn(),
+  }) as unknown as TSideTreeController
 
 describe('Docs Article', () => {
   it('renders only the currently active document editor', () => {

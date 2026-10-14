@@ -11,11 +11,11 @@ import useSalon, { cn } from './salon'
 type TProps = Pick<TPagiProps, 'onChange'> & TPagi & TSpace
 
 const RealPagi: FC<TProps> = ({
-  pageNumber,
-  totalCount,
-  pageSize,
-  totalPages,
-  onChange,
+  pageNumber = 1,
+  totalCount = 0,
+  pageSize = 1,
+  totalPages = 1,
+  onChange = () => undefined,
   ...spacing
 }) => {
   const s = useSalon({ ...spacing })

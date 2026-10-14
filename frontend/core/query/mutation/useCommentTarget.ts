@@ -11,12 +11,15 @@ import type { TCommentTarget } from './comment'
 /** Builds the article-scoped target shared by Comment reaction Hooks. */
 export default function useCommentTarget(comment: TComment): TCommentTarget {
   const { article } = useViewingArticle()
-  const community = article.community.slug
-  const thread = article.meta.thread
+  const community = article.community?.slug
+  const thread = article.meta?.thread
   const articleInnerId = String(article.innerId)
   const commentInnerId = String(comment.innerId)
 
   return useMemo(() => {
+    if (!community || !thread || article.innerId === undefined) {
+      throw new Error('Comment reactions require a complete article path')
+    }
     const articlePath = articlePathOf(article)
     return {
       comment,

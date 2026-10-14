@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { useMemo, useRef } from 'react'
+import { useMemo, useState } from 'react'
 import { proxy } from 'valtio'
 
 import { DsbEditorUiContext } from './context'
@@ -23,16 +23,17 @@ const makeInitialState = (): TDsbEditorUiState => ({
 
 /** Owns editor-only selections and drafts outside the confirmed Dsb config store. */
 export default function DsbEditorUiProvider({ children }: TProps) {
-  const storeRef = useRef<TDsbEditorUiStore | null>(null)
-
-  storeRef.current ??= proxy({
-    ...makeInitialState(),
-    patch(patch: Partial<TDsbEditorUiState>): void {
-      Object.assign(storeRef.current!, patch)
-    },
+  const [store] = useState<TDsbEditorUiStore>(() => {
+    const editorStore = proxy({
+      ...makeInitialState(),
+      patch(patch: Partial<TDsbEditorUiState>): void {
+        Object.assign(editorStore, patch)
+      },
+    })
+    return editorStore
   })
 
-  const contextValue = useMemo(() => ({ store: storeRef.current! }), [])
+  const contextValue = useMemo(() => ({ store }), [store])
 
   return <DsbEditorUiContext.Provider value={contextValue}>{children}</DsbEditorUiContext.Provider>
 }

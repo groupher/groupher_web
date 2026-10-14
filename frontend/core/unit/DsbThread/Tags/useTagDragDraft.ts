@@ -66,7 +66,7 @@ const buildTagGroupIdMap = (groups: readonly TGroupListItem[]): Map<string, stri
 
   for (const group of groups) {
     for (const tag of group.tags) {
-      tagGroupIdMap.set(tag.id, group.id)
+      if (tag.id !== undefined) tagGroupIdMap.set(String(tag.id), group.id)
     }
   }
 
@@ -273,12 +273,10 @@ export default function useTagDragDraft({
   const [groups, setGroups] = useState<TGroupListItem[]>(sourceGroups)
   const latestGroupsRef = useRef(groups)
   const baselineGroupsRef = useRef(groups)
-  const tagGroupIdRef = useRef<Map<string, string> | null>(null)
+  const [tagGroupIdRef] = useState(() => ({ current: buildTagGroupIdMap(groups) }))
   const activeIdRef = useRef<string | null>(null)
   const draggingRef = useRef(false)
   const commitFrameRef = useRef<number | null>(null)
-
-  if (tagGroupIdRef.current === null) tagGroupIdRef.current = buildTagGroupIdMap(groups)
 
   useEffect(() => {
     if (draggingRef.current) return
@@ -286,7 +284,7 @@ export default function useTagDragDraft({
     latestGroupsRef.current = sourceGroups
     tagGroupIdRef.current = buildTagGroupIdMap(sourceGroups)
     setGroups(sourceGroups)
-  }, [sourceGroups])
+  }, [sourceGroups, tagGroupIdRef])
 
   useEffect(() => {
     return () => {
@@ -294,17 +292,16 @@ export default function useTagDragDraft({
     }
   }, [])
 
-  const groupNameKey = groups.map((group) => group.title).join('\n')
-  const groupNames = useMemo(
-    () => groups.map((group) => group.title).filter(Boolean),
-    [groupNameKey],
-  )
+  const groupNames = useMemo(() => groups.map((group) => group.title).filter(Boolean), [groups])
 
-  const startDrag = useCallback((id: string): void => {
-    activeIdRef.current = id
-    draggingRef.current = true
-    baselineGroupsRef.current = latestGroupsRef.current
-  }, [])
+  const startDrag = useCallback(
+    (id: string): void => {
+      activeIdRef.current = id
+      draggingRef.current = true
+      baselineGroupsRef.current = latestGroupsRef.current
+    },
+    [tagGroupIdRef],
+  )
 
   const moveTagDrag = useCallback((target?: TTagDragTarget | null): void => {
     const activeId = activeIdRef.current
@@ -361,7 +358,7 @@ export default function useTagDragDraft({
 
       commitDraft(nextGroups)
     },
-    [commitDraft],
+    [commitDraft, tagGroupIdRef],
   )
 
   const commitGroupDrag = useCallback(
@@ -390,7 +387,7 @@ export default function useTagDragDraft({
     latestGroupsRef.current = baselineGroupsRef.current
     tagGroupIdRef.current = buildTagGroupIdMap(baselineGroupsRef.current)
     setGroups(baselineGroupsRef.current)
-  }, [])
+  }, [tagGroupIdRef])
 
   return {
     groups,

@@ -14,9 +14,13 @@ const mocks = vi.hoisted(() => ({
   setSaving: vi.fn(),
 }))
 
-vi.mock('~/lib/artimentPublisher', () => ({ saveDocDraft: mocks.saveDocDraft }))
+vi.mock('~/lib/artimentPublisher', () => ({
+  saveDocDraft: mocks.saveDocDraft,
+}))
 vi.mock('~/lib/slug', () => ({ slugify: vi.fn(async () => 'guide') }))
-vi.mock('~/stores/community/hooks', () => ({ default: () => ({ slug: 'home' }) }))
+vi.mock('~/stores/community/hooks', () => ({
+  default: () => ({ slug: 'home' }),
+}))
 vi.mock('~/ui/Toaster', () => ({ toast: vi.fn() }))
 vi.mock('../../helper', () => ({ reloadDocPublishChecklist: vi.fn() }))
 vi.mock('../../store/hooks', () => ({
@@ -53,7 +57,11 @@ const createDraftState = (): TDraftEditorState =>
 describe('useDraftAutoSave', () => {
   beforeEach(() => {
     for (const mock of Object.values(mocks)) mock.mockReset()
-    mocks.saveDocDraft.mockResolvedValue({ docId: 'doc-a', slug: 'guide', version: 4 })
+    mocks.saveDocDraft.mockResolvedValue({
+      docId: 'doc-a',
+      slug: 'guide',
+      version: 4,
+    })
   })
 
   afterEach(() => vi.useRealTimers())
@@ -61,7 +69,9 @@ describe('useDraftAutoSave', () => {
   it('saves the current document through the attached draft handler', async () => {
     const draftState = createDraftState()
     const view = renderHook(() =>
-      useDraftAutoSave(draftState, { patchSideTreeChild: mocks.patchSideTreeChild }),
+      useDraftAutoSave(draftState, {
+        patchSideTreeChild: mocks.patchSideTreeChild,
+      }),
     )
 
     await act(async () => view.result.current.save())
@@ -69,7 +79,11 @@ describe('useDraftAutoSave', () => {
     expect(mocks.attachSaveDocDraft).toHaveBeenCalledWith(expect.any(Function))
     expect(mocks.saveDocDraft).toHaveBeenCalledOnce()
     expect(mocks.saveDocDraft).toHaveBeenCalledWith(
-      expect.objectContaining({ expectedVersion: 3, id: 'doc-a', title: 'Guide' }),
+      expect.objectContaining({
+        expectedVersion: 3,
+        id: 'doc-a',
+        title: 'Guide',
+      }),
     )
   })
 
@@ -78,7 +92,10 @@ describe('useDraftAutoSave', () => {
     mocks.saveDocDraft.mockRejectedValue(new Error('Slug: has already been taken'))
     const draftState = createDraftState()
     const view = renderHook(
-      ({ state }) => useDraftAutoSave(state, { patchSideTreeChild: mocks.patchSideTreeChild }),
+      ({ state }) =>
+        useDraftAutoSave(state, {
+          patchSideTreeChild: mocks.patchSideTreeChild,
+        }),
       { initialProps: { state: draftState } },
     )
 
@@ -86,7 +103,10 @@ describe('useDraftAutoSave', () => {
     expect(mocks.saveDocDraft).toHaveBeenCalledOnce()
 
     view.rerender({
-      state: { ...draftState, saveStatus: { ...draftState.saveStatus, saving: true } },
+      state: {
+        ...draftState,
+        saveStatus: { ...draftState.saveStatus, saving: true },
+      },
     })
     view.rerender({
       state: {

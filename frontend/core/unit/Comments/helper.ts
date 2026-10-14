@@ -56,7 +56,7 @@ export const passedDate = (
   nextComment: TComment | undefined,
   locales?: string | string[],
 ): string | null => {
-  if (!curComment || !nextComment) return null
+  if (!curComment?.insertedAt || !nextComment?.insertedAt) return null
 
   const from = new Date(curComment.insertedAt)
   const to = new Date(nextComment.insertedAt)

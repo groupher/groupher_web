@@ -19,7 +19,7 @@ export default function SideInfo() {
   }
 
   const { insertedAt, communityTags, meta, cat, status } = article
-  const { latestUpvotedUsers } = meta
+  const latestUpvotedUsers = meta?.latestUpvotedUsers ?? []
 
   return (
     <div className={s.wrapper}>
@@ -38,20 +38,20 @@ export default function SideInfo() {
         <div className={s.userList}>
           {latestUpvotedUsers.map((user) => (
             <div key={user.login} className={s.user}>
-              <Img src={user.avatar} className={s.avatar} />
+              <Img src={user.avatar ?? ''} className={s.avatar} />
             </div>
           ))}
         </div>
         <div className='mb-6' />
         <div className={s.label}>标签</div>
-        <TagsList items={communityTags} size='medium' left={1} max={20} bottom={2} />
+        <TagsList items={communityTags ?? []} size='medium' left={1} max={20} bottom={2} />
         <div className='mb-6' />
         <div className={s.label}>分类</div>
         <ArticleCatStatus cat={cat} status={status} smaller={false} />
         <div className='mb-6' />
         <div className={s.label}>发布时间</div>
         <div className={s.value}>
-          <ReadableDate date={insertedAt} withTime={false} />
+          <ReadableDate date={insertedAt ?? ''} withTime={false} />
         </div>
       </div>
 

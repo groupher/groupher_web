@@ -137,7 +137,10 @@ export default function useDashboardLinkEditorActions({
     (title: string, groupIndex: number): void => {
       const groupId = makeId('group')
       const child = makeDashboardLinkChild(makeId('child'))
-      const group = { ...makeDashboardLinkGroup(groupId, title), links: [child] }
+      const group = {
+        ...makeDashboardLinkGroup(groupId, title),
+        links: [child],
+      }
 
       editLinks([...links, group])
       setActiveEditingLink(toDraftLink(child, groupId, groupIndex, 0), CHANGE_MODE.CREATE)
@@ -199,7 +202,12 @@ export default function useDashboardLinkEditorActions({
           if (isDashboardSingleLink(item)) return []
           if (!isDashboardGroupLink(item)) return [item]
 
-          return [{ ...item, links: item.links.filter((_, index) => index !== linkItem.index) }]
+          return [
+            {
+              ...item,
+              links: item.links.filter((_, index) => index !== linkItem.index),
+            },
+          ]
         }),
       )
 

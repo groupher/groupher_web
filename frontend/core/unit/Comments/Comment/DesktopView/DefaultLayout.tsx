@@ -27,7 +27,7 @@ const DefaultLayout: FC<TProps> = ({ data, isReply = false, showInnerRef = false
   const { t } = useTrans()
 
   const { isPinned, meta } = data
-  const { isLegal, illegalReason, illegalWords } = meta
+  const { isLegal = false, illegalReason = [], illegalWords = [] } = meta ?? {}
 
   return (
     <div className={cn(s.wrapper, isPinned && 'pt-6')}>

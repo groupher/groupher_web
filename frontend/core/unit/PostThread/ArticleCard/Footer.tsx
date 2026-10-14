@@ -25,20 +25,20 @@ const Footer: FC<TProps> = ({ article, stats, viewerState }) => {
   return (
     <div className={s.wrapper}>
       <div className={s.publish}>
-        {author.nickname} <DotDivider className='mx-1.5' />
-        <TimeAgo datetime={insertedAt} />
+        {author?.nickname} <DotDivider className='mx-1.5' />
+        {insertedAt && <TimeAgo datetime={insertedAt} />}
       </div>
       <div className={s.bottom}>
         <Upvote
           type={UPVOTE_LAYOUT.GENERAL}
           count={count}
-          avatarList={meta.latestUpvotedUsers}
+          avatarList={meta?.latestUpvotedUsers}
           viewerHasUpvoted={isUpvoted}
           onAction={() => toggle()}
         />
 
         {(stats?.commentsCount ?? 0) !== 0 && (
-          <CommentsCount count={stats?.commentsCount} size={SIZE.MEDIUM} />
+          <CommentsCount count={stats?.commentsCount ?? 0} size={SIZE.MEDIUM} />
         )}
       </div>
     </div>

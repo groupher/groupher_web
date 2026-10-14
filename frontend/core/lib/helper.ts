@@ -65,17 +65,22 @@ export const num2Percent = (decimal: number): string => {
 /**
  * get radom backgrounds from COLOR_NAMEs
  */
-export const randomBgNames = (count, excepts = [COLOR.CYAN, COLOR.GREEN]): TColorName[] => {
+export const randomBgNames = (
+  count: number,
+  excepts: readonly TColorName[] = [COLOR.CYAN, COLOR.GREEN],
+): TColorName[] => {
   let colorKeys = isEmpty(excepts) ? keys(COLOR) : keys(COLOR).filter((k) => !includes(k, excepts))
 
   let randomIdx: number
-  const ret = []
+  const ret: TColorName[] = []
 
   for (let idx = 0; idx < count; idx += 1) {
     if (isEmpty(colorKeys)) break
 
     randomIdx = getRandomInt(0, colorKeys.length - 1)
-    ret.push(colorKeys[randomIdx])
+    const color = colorKeys[randomIdx]
+    if (!color) break
+    ret.push(color)
     colorKeys = remove(randomIdx, 1, colorKeys)
   }
 
@@ -145,7 +150,7 @@ type TShareParam = {
 }
 /** Runs the open share window operation at the frontend shared boundary. */
 export const openShareWindow = (platformUrl: string, param: TShareParam): void => {
-  const safeParam = []
+  const safeParam: string[] = []
 
   for (const i in param) {
     safeParam.push(`${i}=${encodeURIComponent(param[i] || '')}`)
@@ -153,7 +158,7 @@ export const openShareWindow = (platformUrl: string, param: TShareParam): void =
   /* eslint-enable */
   const targetUrl = `${platformUrl}?${safeParam.join('&')}`
 
-  Global.open(targetUrl, '_blank', 'height=500, width=600')
+  Global?.open(targetUrl, '_blank', 'height=500, width=600')
 }
 
 /**

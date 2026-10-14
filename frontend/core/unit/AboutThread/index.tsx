@@ -60,7 +60,7 @@ const AboutThreadContainer: FC<TProps> = ({ isSidebarLayout = false }) => {
         </div>
 
         <div className={cn(s.intro, s.members)}>
-          <Members moderators={moderators} />
+          <Members moderators={moderators ?? []} />
         </div>
       </div>
       {(communityLayout === COMMUNITY_LAYOUT.CLASSIC ||

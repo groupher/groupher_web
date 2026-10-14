@@ -74,16 +74,14 @@ export default function WidgetPreviewLoader({ community, sources = DEFAULT_SOURC
   }, [])
 
   const handleScriptError = useCallback(() => {
-    setSourceIndex((currentIndex) => {
-      if (currentIndex + 1 < scriptSources.length) {
-        setLoadError(null)
-        return currentIndex + 1
-      }
+    if (sourceIndex + 1 < scriptSources.length) {
+      setLoadError(null)
+      setSourceIndex(sourceIndex + 1)
+      return
+    }
 
-      setLoadError('Widget script failed to load from every configured source.')
-      return currentIndex
-    })
-  }, [scriptSources.length])
+    setLoadError('Widget script failed to load from every configured source.')
+  }, [scriptSources.length, sourceIndex])
 
   return (
     <>

@@ -1,12 +1,11 @@
 import MarkdownRender from 'markdown-to-jsx/react'
-import type { ReactNode } from 'react'
 
 import type { TSpace } from '~/spec'
 
 import useSalon from './salon'
 
 type TProps = {
-  children: ReactNode
+  children: string
   className?: string
 } & TSpace
 

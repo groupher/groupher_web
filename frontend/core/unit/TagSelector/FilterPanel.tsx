@@ -8,7 +8,7 @@ import TagNode from '~/ui/TagNode'
 import useSalon from './salon/filter_panel'
 
 type TProps = {
-  activeTag: TTag
+  activeTag: TTag | null
   groupedTags: TGroupedTags
   onSelect: (tag: TTag) => void
 }

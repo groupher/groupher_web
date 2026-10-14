@@ -9,7 +9,7 @@ import type { TActiveCondition, TMenuItem } from './spec'
 
 type TProps = {
   condition: TActiveCondition
-  activeItem: TMenuItem
+  activeItem?: TMenuItem
 } & TActive
 
 const ActiveLabel: FC<TProps> = ({ condition, activeItem }) => {
@@ -19,7 +19,7 @@ const ActiveLabel: FC<TProps> = ({ condition, activeItem }) => {
 
   return (
     <div className={s.label}>
-      {activeItem && <Icon type={activeItem.icon} $active={$active} />}
+      {activeItem?.icon && <Icon type={activeItem.icon} $active={$active} />}
       <div className={s.stateTitle}>{t(activeItem?.title || condition)}</div>
     </div>
   )

@@ -25,7 +25,7 @@ const UsersPanel: FC<TProps> = ({ name, count, users }) => {
       <div className={s.users}>
         {users.slice(0, 5).map((u, index) => (
           <div className={s.username} key={u.login}>
-            {cutRest(u.nickname, 12)}
+            {cutRest(u.nickname ?? '', 12)}
             {users.length - 1 !== index ? ',' : ''}
           </div>
         ))}

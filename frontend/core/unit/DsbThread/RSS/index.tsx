@@ -10,14 +10,26 @@ import SectionLabel from '../SectionLabel'
 import useSalon from './salon'
 
 const FEED_THREADS = [
-  { id: 'post', title: 'dsb.press.thread.post.title', desc: 'dsb.press.thread.post.desc' },
-  { id: 'blog', title: 'dsb.press.thread.blog.title', desc: 'dsb.press.thread.blog.desc' },
+  {
+    id: 'post',
+    title: 'dsb.press.thread.post.title',
+    desc: 'dsb.press.thread.post.desc',
+  },
+  {
+    id: 'blog',
+    title: 'dsb.press.thread.blog.title',
+    desc: 'dsb.press.thread.blog.desc',
+  },
   {
     id: 'changelog',
     title: 'dsb.press.thread.changelog.title',
     desc: 'dsb.press.thread.changelog.desc',
   },
-  { id: 'doc', title: 'dsb.press.thread.doc.title', desc: 'dsb.press.thread.doc.desc' },
+  {
+    id: 'doc',
+    title: 'dsb.press.thread.doc.title',
+    desc: 'dsb.press.thread.doc.desc',
+  },
 ] as const
 
 export default function RSS() {
