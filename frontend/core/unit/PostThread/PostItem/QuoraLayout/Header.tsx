@@ -1,4 +1,4 @@
-import { type FC, lazy, Suspense } from 'react'
+import type { FC } from 'react'
 
 import { COMMUNITY_LAYOUT } from '~/const/layout'
 import SIZE from '~/const/size'
@@ -6,8 +6,8 @@ import { THREAD_PATH } from '~/const/thread'
 import useLayout from '~/hooks/useLayout'
 import type { TArticleStats, TArticleViewerState, TPost } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
+import UserCard from '~/ui/Cards/UserCard'
 import CommunityPreviewLink from '~/ui/CommunityPreviewLink'
-import LavaLampLoading from '~/ui/Loading/LavaLampLoading'
 import TimeAgo from '~/ui/TimeAgo'
 import Tooltip from '~/ui/Tooltip'
 import CommentsCount from '~/unit/CommentsCount'
@@ -15,8 +15,6 @@ import TagsList from '~/unit/TagsList'
 
 import ArticleReadLabel from '../../ArticleReadLabel'
 import useSalon from '../salon/quora_layout/header'
-
-const UserCard = lazy(() => import('~/ui/Cards/UserCard'))
 
 type TProps = {
   article: TPost
@@ -38,11 +36,7 @@ const Header: FC<TProps> = ({ article, stats, viewerState }) => {
       <div className={s.topping}>
         <Tooltip
           key={article.title}
-          content={
-            <Suspense fallback={<LavaLampLoading />}>
-              <UserCard user={author} />
-            </Suspense>
-          }
+          content={<UserCard user={author} />}
           placement='bottom-start'
           offset={[-5, 0]}
           delay={500}

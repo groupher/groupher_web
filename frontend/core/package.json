@@ -79,7 +79,7 @@
   },
   "devDependencies": {
     "@tanstack/react-query": "^5.104.0",
-    "@tanstack/react-router": "1.170.40",
+    "@tanstack/react-router": "1.170.44",
     "@testing-library/react": "^16.3.2",
     "@types/node": "24.13.3",
     "@types/ramda": "^0.31.1",
@@ -97,7 +97,7 @@
   },
   "peerDependencies": {
     "@tanstack/react-query": "^5.104.0",
-    "@tanstack/react-router": "1.170.40",
+    "@tanstack/react-router": "1.170.44",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   }
