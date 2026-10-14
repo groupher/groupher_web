@@ -61,8 +61,9 @@ defmodule GroupherServer.Analysis.Web.Provision do
 
   defp ensure_persisted_community(%Community{id: id}) when is_integer(id), do: {:ok, :pass}
 
-  defp ensure_persisted_community(%Community{}),
-    do: {:error, GroupherServer.CMS.error_cat_community_not_persisted()}
+  defp ensure_persisted_community(%Community{}) do
+    {:error, GroupherServer.CMS.error_cat_community_not_persisted()}
+  end
 
   defp ensure_umami_website_id(
          %Community{} = community,
@@ -81,17 +82,17 @@ defmodule GroupherServer.Analysis.Web.Provision do
          %CommunityDashboard{umami_website_id: website_id},
          _provider
        )
-       when is_binary(website_id),
-       do: {:ok, website_id}
+       when is_binary(website_id) do
+    {:ok, website_id}
+  end
 
   defp ensure_umami_website_id_locked(
          %Community{} = community,
          %CommunityDashboard{umami_website_id: nil},
          provider
        ) do
-    with {:ok, website_id} <- provider.create_website(AnalysisCommunity.from_community(community)),
-         {:ok, persisted_website_id} <- persist_website_id(community, website_id) do
-      {:ok, persisted_website_id}
+    with {:ok, website_id} <- provider.create_website(AnalysisCommunity.from_community(community)) do
+      persist_website_id(community, website_id)
     end
   end
 
@@ -100,24 +101,27 @@ defmodule GroupherServer.Analysis.Web.Provision do
          %CommunityDashboard{umami_website_id: website_id},
          _provider
        )
-       when is_binary(website_id),
-       do: {:ok, website_id}
+       when is_binary(website_id) do
+    {:ok, website_id}
+  end
 
   defp persist_website_id(%Community{} = community, website_id) do
     Transaction.lock_global("community_dashboard:umami_website:#{community.id}", fn ->
-      with {:ok, dashboard} <- GroupherServer.CMS.dashboard_persist_get_dashboard(community) do
-        case dashboard.umami_website_id do
-          existing_website_id when is_binary(existing_website_id) ->
-            {:ok, existing_website_id}
+      case GroupherServer.CMS.dashboard_persist_get_dashboard(community) do
+        {:ok, dashboard} ->
+          case dashboard.umami_website_id do
+            existing_website_id when is_binary(existing_website_id) ->
+              {:ok, existing_website_id}
 
-          nil ->
-            with {:ok, _dashboard} <-
-                   GroupherServer.CMS.dashboard_persist_update_website_id(dashboard, website_id) do
-              {:ok, website_id}
-            end
-        end
-      else
-        {:error, _reason} -> {:error, GroupherServer.CMS.error_cat_dashboard_not_found()}
+            nil ->
+              with {:ok, _dashboard} <-
+                     GroupherServer.CMS.dashboard_persist_update_website_id(dashboard, website_id) do
+                {:ok, website_id}
+              end
+          end
+
+        {:error, _reason} ->
+          {:error, GroupherServer.CMS.error_cat_dashboard_not_found()}
       end
     end)
   end

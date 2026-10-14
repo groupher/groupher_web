@@ -41,9 +41,8 @@ defmodule GroupherServer.CMS.Communities.Moderators.Setup do
          {:ok, _community} <-
            Communities.Count.update(community, target_user, :moderators_count, :inc),
          {:ok, rules} <- PermissionConfig.default_root_passport(community.slug),
-         {:ok, _} <- Passport.stamp_passport(rules, target_user),
-         {:ok, moderator} <- update_passport_item_count(moderator, community, rules) do
-      {:ok, moderator}
+         {:ok, _} <- Passport.stamp_passport(rules, target_user) do
+      update_passport_item_count(moderator, community, rules)
     end
   end
 

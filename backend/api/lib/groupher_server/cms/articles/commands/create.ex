@@ -12,14 +12,14 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
   canonical public result; it never guesses an old Draft/Public physical row.
   """
 
-  alias GroupherServer.{Accounts, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.{Articles, Communities, Command, Docs}
-  alias CMS.Articles.{Tags.Assignment, Effects, RevisionResult}
+  alias CMS.Articles.{Tags.Assignment, Effects, Query, RevisionResult}
   alias CMS.FrontDesk
   alias CMS.Model.{Article, ArticleBinding, Community}
   alias CMS.Articles.Commands.RevisionConfirmation, as: Confirmation
-  alias Helper.T
+  alias Helper.{T, Transaction}
 
   @doc "Creates and publishes one stable Article under an idempotent command id."
   @spec execute(Community.t(), T.thread(), map(), User.t(), keyword() | map()) ::
@@ -67,7 +67,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
   defp confirmation_from_public(public, community, command_id) do
     with {:ok, %Article{} = article} <- FrontDesk.article(public.article_id, mode: :internal),
          %ArticleBinding{inner_id: inner_id} when is_integer(inner_id) <-
-           Repo.get_by(ArticleBinding, article_id: article.id, community_id: community.id),
+           Query.binding(article.id, community.id),
          published_at when is_struct(published_at, DateTime) <- Map.get(public, :inserted_at),
          publication_version when is_integer(publication_version) <-
            Map.get(public, :publication_version, Map.get(public, :version, 1)) do
@@ -93,7 +93,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
          {:ok, %{article: article, draft: draft}} <-
            Articles.create_stable_draft(community, :doc, attrs, user, branch_id: branch.id),
          {:ok, _} <-
-           Repo.transact(fn -> sync_community_tags(community, article, attrs, command_id) end),
+           Transaction.run(fn -> sync_community_tags(community, article, attrs, command_id) end),
          {:ok, _published} <-
            Docs.publish_branch(article.id, branch.id, user,
              expected_draft_version: draft.version,
@@ -135,7 +135,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
   end
 
   defp public_projection(%Article{thread: thread, id: article_id}, community) do
-    case Repo.get_by(ArticleBinding, article_id: article_id, community_id: community.id) do
+    case Query.binding(article_id, community.id) do
       %ArticleBinding{inner_id: inner_id} when is_integer(inner_id) ->
         FrontDesk.article(%{
           community: community.slug,

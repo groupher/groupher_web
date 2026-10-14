@@ -203,31 +203,32 @@ defmodule GroupherServer.CMS.Wallpaper.Settings do
   end
 
   defp valid_radial_recipe?(value) do
-    has_only_keys?(value, @radial_recipe_required, @radial_recipe_optional) and
-      get(value, :version) == 2 and
-      is_binary(get(value, :preset)) and
-      valid_string_list?(get(value, :colors)) and
-      valid_gradient_center?(get(value, :center)) and
-      is_number_value?(get(value, :radius)) and
-      valid_gradient_shape?(get(value, :shape)) and
-      is_number_value?(get(value, :spread)) and
-      optional_number?(value, :angle) and
-      optional_number_list?(value, :stops)
+    valid_recipe_base?(value, @radial_recipe_required, @radial_recipe_optional) and
+      radial_geometry_valid?(value) and
+      optional_number?(value, :angle) and optional_number_list?(value, :stops)
   end
 
   defp valid_mesh_recipe?(value) do
-    has_only_keys?(value, @mesh_recipe_required) and
-      get(value, :version) == 2 and
+    valid_recipe_base?(value, @mesh_recipe_required) and
       normalize_gradient_renderer(get(value, :renderer)) in [:flow, :liquid] and
-      is_binary(get(value, :preset)) and
       is_number_value?(get(value, :seed)) and
-      valid_string_list?(get(value, :colors)) and
-      is_number_value?(get(value, :angle)) and
-      is_number_value?(get(value, :softness)) and
-      is_number_value?(get(value, :warp)) and
-      is_number_value?(get(value, :scale)) and
-      is_number_value?(get(value, :contrast)) and
-      is_number_value?(get(value, :brightness))
+      mesh_numbers_valid?(value)
+  end
+
+  defp valid_recipe_base?(value, required, optional \\ []) do
+    has_only_keys?(value, required, optional) and get(value, :version) == 2 and
+      is_binary(get(value, :preset)) and valid_string_list?(get(value, :colors))
+  end
+
+  defp radial_geometry_valid?(value) do
+    valid_gradient_center?(get(value, :center)) and is_number_value?(get(value, :radius)) and
+      valid_gradient_shape?(get(value, :shape)) and is_number_value?(get(value, :spread))
+  end
+
+  defp mesh_numbers_valid?(value) do
+    Enum.all?(~w(angle softness warp scale contrast brightness)a, fn key ->
+      is_number_value?(get(value, key))
+    end)
   end
 
   defp valid_gradient_center?(value) when is_map(value) do

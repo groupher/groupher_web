@@ -12,6 +12,7 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Query do
   alias CMS.Communities.Subscriptions.Persist
 
   @spec subscribed?(Community.t(), User.t()) :: boolean()
-  def subscribed?(%Community{} = community, %User{} = user),
-    do: Persist.subscribed?(community, user)
+  def subscribed?(%Community{} = community, %User{} = user) do
+    Persist.subscribed?(community, user)
+  end
 end

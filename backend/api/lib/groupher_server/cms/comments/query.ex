@@ -449,4 +449,12 @@ defmodule GroupherServer.CMS.Comments.Query do
 
   defp stats_value(nil, _field), do: 0
   defp stats_value(stats, field), do: Map.fetch!(stats, field)
+
+  @doc "Returns a Comment by its database identifier, or `nil` when it does not exist."
+  def comment(id), do: Repo.get(Comment, id)
+
+  @doc "Preloads the author of the parent Comment referenced by a reply."
+  def comment_with_reply_author(%Comment{} = comment) do
+    Repo.preload(comment, reply_to_comment: :author)
+  end
 end

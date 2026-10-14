@@ -53,15 +53,15 @@ defmodule GroupherServer.CMS.Comments.States do
   end
 
   def pin(comment_id, %User{} = user, opts) do
-    with {:ok, comment} <- FrontDesk.comment(comment_id, mode: :internal),
-         {:ok, result} <- pin(comment, user, opts) do
-      {:ok, result}
+    with {:ok, comment} <- FrontDesk.comment(comment_id, mode: :internal) do
+      pin(comment, user, opts)
     end
   end
 
   @spec undo_pin(T.id()) :: T.domain_res(Comment.t())
-  def undo_pin(_comment_id),
-    do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
+  def undo_pin(_comment_id) do
+    {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
+  end
 
   @spec undo_pin(Comment.t(), User.t()) :: T.domain_res(Comment.t())
   def undo_pin(%Comment{}, %User{}), do: {:error, CMS.ErrorCat.command_id_required()}
@@ -77,9 +77,8 @@ defmodule GroupherServer.CMS.Comments.States do
   end
 
   def undo_pin(comment_id, %User{} = user, opts) do
-    with {:ok, comment} <- FrontDesk.comment(comment_id, mode: :internal),
-         {:ok, result} <- undo_pin(comment, user, opts) do
-      {:ok, result}
+    with {:ok, comment} <- FrontDesk.comment(comment_id, mode: :internal) do
+      undo_pin(comment, user, opts)
     end
   end
 

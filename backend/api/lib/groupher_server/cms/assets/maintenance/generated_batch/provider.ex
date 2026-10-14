@@ -11,7 +11,7 @@ defmodule GroupherServer.CMS.Assets.Maintenance.GeneratedBatch.Provider do
     -> frozen generated Batch result
   """
 
-  alias GroupherServer.{CMS}
+  alias GroupherServer.CMS
 
   alias CMS.Wallpaper.ErrorCat
 

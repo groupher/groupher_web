@@ -19,6 +19,7 @@ defmodule GroupherServer.Test.CMS.Gate.ScopeTest do
   alias CMS.Gate.Context.Scope.Doc, as: DocContext
 
   test "Comment all-thread scope is constructed only by all_public" do
+    # credo:disable-for-next-line Credo.Check.Refactor.Apply
     assert_raise FunctionClauseError, fn -> apply(CommentContext, :for_thread, [:all]) end
 
     assert %CommentContext{thread: :all, policy_mode: :public} = CommentContext.all_public()
@@ -220,7 +221,14 @@ defmodule GroupherServer.Test.CMS.Gate.ScopeTest do
     {community, post, _attrs, author} = mock_article(:post, preload: [author: :user])
 
     {:ok, comment} =
-      CMS.Comments.create_comment(community, :post, article_inner_id(post, community), mock_comment(), author, Ecto.UUID.generate())
+      CMS.Comments.create_comment(
+        community,
+        :post,
+        article_inner_id(post, community),
+        mock_comment(),
+        author,
+        Ecto.UUID.generate()
+      )
 
     assert comment.community_id == community.id
 

@@ -121,8 +121,9 @@ defmodule GroupherServer.Messaging.Notifications.Persist do
     end)
   end
 
-  defp find_existing(%{action: :follow} = attrs, opt),
-    do: do_find_existing(Notification, attrs, opt)
+  defp find_existing(%{action: :follow} = attrs, opt) do
+    do_find_existing(Notification, attrs, opt)
+  end
 
   defp find_existing(%{comment_id: comment_id} = attrs, opt) when not is_nil(comment_id) do
     %{thread: thread, article_id: article_id, comment_id: comment_id} = attrs
@@ -171,8 +172,9 @@ defmodule GroupherServer.Messaging.Notifications.Persist do
   defp done_result(nil), do: {:error, nil}
   defp done_result(result), do: {:ok, result}
 
-  defp interval_threshold_time,
-    do: Datetime.now() |> Datetime.shift(hours: -@notify_group_interval_hour)
+  defp interval_threshold_time do
+    Datetime.now() |> Datetime.shift(hours: -@notify_group_interval_hour)
+  end
 
   defp normalize_action_attr(%{action: action} = attrs) when is_atom(action) do
     Map.put(attrs, :action, action |> to_string() |> String.upcase())
@@ -191,17 +193,21 @@ defmodule GroupherServer.Messaging.Notifications.Persist do
 
   defp valid_attrs?(%{action: :follow} = attrs), do: all_exist?(attrs, [:user_id])
 
-  defp valid_attrs?(%{action: :upvote} = attrs),
-    do: all_exist?(attrs, [:article_id, :thread, :title, :user_id])
+  defp valid_attrs?(%{action: :upvote} = attrs) do
+    all_exist?(attrs, [:article_id, :thread, :title, :user_id])
+  end
 
-  defp valid_attrs?(%{action: :collect} = attrs),
-    do: all_exist?(attrs, [:article_id, :thread, :title, :user_id])
+  defp valid_attrs?(%{action: :collect} = attrs) do
+    all_exist?(attrs, [:article_id, :thread, :title, :user_id])
+  end
 
-  defp valid_attrs?(%{action: :comment} = attrs),
-    do: all_exist?(attrs, [:article_id, :thread, :title, :comment_id, :user_id])
+  defp valid_attrs?(%{action: :comment} = attrs) do
+    all_exist?(attrs, [:article_id, :thread, :title, :comment_id, :user_id])
+  end
 
-  defp valid_attrs?(%{action: :reply} = attrs),
-    do: all_exist?(attrs, [:article_id, :thread, :title, :comment_id, :user_id])
+  defp valid_attrs?(%{action: :reply} = attrs) do
+    all_exist?(attrs, [:article_id, :thread, :title, :comment_id, :user_id])
+  end
 
   defp valid_attrs?(_attrs), do: false
 

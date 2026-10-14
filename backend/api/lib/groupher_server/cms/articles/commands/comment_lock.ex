@@ -5,12 +5,12 @@ defmodule GroupherServer.CMS.Articles.Commands.CommentLock do
       comment command -> Gate admission -> lock transition -> tagged result
   """
 
-  alias GroupherServer.{CMS, Repo}
-  alias CMS.Articles.{Bindings, States}
+  alias GroupherServer.CMS
+  alias CMS.Articles.{Bindings, Query, States}
   alias CMS.Docs.Store, as: DocStore
   alias CMS.FrontDesk
   alias CMS.Gate.ErrorCat, as: GateErrorCat
-  alias CMS.Model.{Article, Community, DocBranch}
+  alias CMS.Model.{Article, Community}
 
   @spec execute(Ecto.UUID.t(), struct(), atom(), keyword()) :: {:ok, term()} | {:error, term()}
   def execute(article_id, actor, action, opts) do
@@ -57,7 +57,7 @@ defmodule GroupherServer.CMS.Articles.Commands.CommentLock do
       _ ->
         case Keyword.get(opts, :community_id) do
           community_id when is_integer(community_id) ->
-            case Repo.get(Community, community_id) do
+            case Query.community(community_id) do
               %Community{} = community -> {:ok, community}
               _ -> {:error, :article_binding_not_found}
             end
@@ -71,12 +71,7 @@ defmodule GroupherServer.CMS.Articles.Commands.CommentLock do
   defp resolve_branch_community(opts, article) do
     case Keyword.get(opts, :branch_id) do
       branch_id when is_integer(branch_id) ->
-        with %DocBranch{community_id: community_id} <- Repo.get(DocBranch, branch_id),
-             %Community{} = community <- Repo.get(Community, community_id) do
-          {:ok, community}
-        else
-          _ -> {:error, :article_binding_not_found}
-        end
+        Query.branch_community(branch_id)
 
       _ ->
         case Bindings.get(article, Map.get(article, :community)) do

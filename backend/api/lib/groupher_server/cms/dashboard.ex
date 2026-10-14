@@ -37,22 +37,26 @@ defmodule GroupherServer.CMS.Dashboard do
       #=> {:ok, %CommunityDashboard{}}
   """
   @spec update(Community.t(), map(), term()) :: T.domain_res(CommunityDashboard.t())
-  def update(%Community{}, %{dsb_section: _key}, _actor),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def update(%Community{}, %{dsb_section: _key}, _actor) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
-  def update(%Community{}, args, _actor) when is_map(args),
-    do: {:error, ErrorCat.invalid_dsb_section()}
+  def update(%Community{}, args, _actor) when is_map(args) do
+    {:error, ErrorCat.invalid_dsb_section()}
+  end
 
   @spec update(Community.t(), atom(), map() | list() | boolean()) ::
           T.domain_res(CommunityDashboard.t())
-  def update(%Community{}, key, _args) when is_atom(key),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def update(%Community{}, key, _args) when is_atom(key) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @doc "Updates one dashboard section with the caller-provided command identity."
   @spec update(Community.t(), map(), term(), Ecto.UUID.t()) ::
           T.domain_res(CommunityDashboard.t())
-  def update(%Community{} = community, %{dsb_section: _key} = args, actor, command_id),
-    do: UpdateSection.execute(community, Map.get(args, :dsb_section), args, actor, command_id)
+  def update(%Community{} = community, %{dsb_section: _key} = args, actor, command_id) do
+    UpdateSection.execute(community, Map.get(args, :dsb_section), args, actor, command_id)
+  end
 
   @doc false
   @spec update(Community.t(), atom(), map() | list() | boolean(), term()) ::
@@ -62,8 +66,9 @@ defmodule GroupherServer.CMS.Dashboard do
   @doc false
   @spec update(Community.t(), atom(), map() | list() | boolean(), term(), Ecto.UUID.t()) ::
           T.domain_res(CommunityDashboard.t())
-  def update(%Community{} = community, key, args, actor, command_id),
-    do: UpdateSection.execute(community, key, args, actor, command_id)
+  def update(%Community{} = community, key, args, actor, command_id) do
+    UpdateSection.execute(community, key, args, actor, command_id)
+  end
 
   @doc """
   Saves a custom theme using the internal operations actor.
@@ -74,8 +79,9 @@ defmodule GroupherServer.CMS.Dashboard do
       #=> {:ok, %CommunityDashboard{}}
   """
   @spec save_custom_theme_preset(Community.t(), map()) :: T.domain_res(CommunityDashboard.t())
-  def save_custom_theme_preset(%Community{}, _args),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def save_custom_theme_preset(%Community{}, _args) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @doc """
   Saves a custom theme preset after actor admission.
@@ -87,14 +93,16 @@ defmodule GroupherServer.CMS.Dashboard do
   """
   @spec save_custom_theme_preset(Community.t(), map(), term()) ::
           T.domain_res(CommunityDashboard.t())
-  def save_custom_theme_preset(%Community{}, _args, _actor),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def save_custom_theme_preset(%Community{}, _args, _actor) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @doc "Saves a custom theme preset with the caller-provided command identity."
   @spec save_custom_theme_preset(Community.t(), map(), term(), Ecto.UUID.t()) ::
           T.domain_res(CommunityDashboard.t())
-  def save_custom_theme_preset(%Community{} = community, args, actor, command_id),
-    do: SaveCustomThemePreset.execute(community, args, actor, command_id)
+  def save_custom_theme_preset(%Community{} = community, args, actor, command_id) do
+    SaveCustomThemePreset.execute(community, args, actor, command_id)
+  end
 
   @doc """
   Selects a theme preset using the internal operations actor.
@@ -105,8 +113,9 @@ defmodule GroupherServer.CMS.Dashboard do
       #=> {:ok, %CommunityDashboard{}}
   """
   @spec select_theme_preset(Community.t(), map()) :: T.domain_res(CommunityDashboard.t())
-  def select_theme_preset(%Community{}, _args),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def select_theme_preset(%Community{}, _args) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @doc """
   Selects a theme preset after actor admission.
@@ -118,12 +127,14 @@ defmodule GroupherServer.CMS.Dashboard do
   """
   @spec select_theme_preset(Community.t(), map(), term()) ::
           T.domain_res(CommunityDashboard.t())
-  def select_theme_preset(%Community{}, _args, _actor),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def select_theme_preset(%Community{}, _args, _actor) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @doc "Selects a theme preset with the caller-provided command identity."
   @spec select_theme_preset(Community.t(), map(), term(), Ecto.UUID.t()) ::
           T.domain_res(CommunityDashboard.t())
-  def select_theme_preset(%Community{} = community, args, actor, command_id),
-    do: SelectThemePreset.execute(community, args, actor, command_id)
+  def select_theme_preset(%Community{} = community, args, actor, command_id) do
+    SelectThemePreset.execute(community, args, actor, command_id)
+  end
 end

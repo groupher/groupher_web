@@ -31,27 +31,24 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Asset do
   end
 
   defp delete_provider_object(event) do
-    case event.resource_type do
-      "community_asset" ->
-        case Repo.get(CommunityAsset, event.resource_id) do
-          %CommunityAsset{} = asset ->
-            case Effects.deliver_provider_delete(asset) do
-              {:ok, _} -> {:ok, :deleted}
-              {:error, reason} -> {:error, reason}
-            end
+    deliver_provider_object(event.resource_type, event)
+  end
 
-          nil ->
-            {:ok, :already_deleted}
-        end
-
-      "application_logo_upload" ->
-        case Effects.deliver_application_upload_delete(event.data) do
-          {:ok, _} -> {:ok, :deleted}
-          {:error, reason} -> {:error, reason}
-        end
-
-      _ ->
-        {:error, {:unsupported_asset_cleanup_resource, event.resource_type}}
+  defp deliver_provider_object("community_asset", event) do
+    case Repo.get(CommunityAsset, event.resource_id) do
+      %CommunityAsset{} = asset -> normalize_delete_result(Effects.deliver_provider_delete(asset))
+      nil -> {:ok, :already_deleted}
     end
   end
+
+  defp deliver_provider_object("application_logo_upload", event) do
+    normalize_delete_result(Effects.deliver_application_upload_delete(event.data))
+  end
+
+  defp deliver_provider_object(resource_type, _event) do
+    {:error, {:unsupported_asset_cleanup_resource, resource_type}}
+  end
+
+  defp normalize_delete_result({:ok, _result}), do: {:ok, :deleted}
+  defp normalize_delete_result({:error, reason}), do: {:error, reason}
 end

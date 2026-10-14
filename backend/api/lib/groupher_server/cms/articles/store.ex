@@ -38,12 +38,14 @@ defmodule GroupherServer.CMS.Articles.Store do
   def author(id), do: ORM.find(Author, id)
 
   @doc "Loads the public Article data required to build a notification."
-  def load_article_for_notification(article_id, %Community{} = community),
-    do: load_public_article(article_id, community)
+  def load_article_for_notification(article_id, %Community{} = community) do
+    load_public_article(article_id, community)
+  end
 
   @doc "Loads the public Article data required to rebuild Article mentions."
-  def load_article_for_mentions(article_id, %Community{} = community),
-    do: load_public_article(article_id, community)
+  def load_article_for_mentions(article_id, %Community{} = community) do
+    load_public_article(article_id, community)
+  end
 
   @doc "Loads one ArticleLifecycle row by stable Article id."
   def lifecycle(article_id), do: ORM.find_by(ArticleLifecycle, article_id: article_id)
@@ -70,8 +72,9 @@ defmodule GroupherServer.CMS.Articles.Store do
 
   def with_community(%ArticleView{community: %Community{}} = article), do: {:ok, article}
 
-  def with_community(%ArticleView{} = _article),
-    do: {:error, :article_binding_context_required}
+  def with_community(%ArticleView{} = _article) do
+    {:error, :article_binding_context_required}
+  end
 
   @doc "Loads one Draft cover edit projection."
   def draft_cover_edit(id), do: ORM.find(DraftCoverEdit, id)

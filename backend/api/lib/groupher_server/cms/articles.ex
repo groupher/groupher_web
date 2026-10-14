@@ -341,10 +341,12 @@ defmodule GroupherServer.CMS.Articles do
   @spec set_cat(Ecto.UUID.t(), Const.cat_enum() | nil, User.t(), integer()) ::
           T.domain_res(Article.t())
   def set_cat(article_id, cat, %User{} = actor, community_id) when is_integer(community_id) do
-    with {:ok, %Community{} = community} <- FrontDesk.community(community_id, mode: :internal) do
-      Commands.StateChange.set_category(article_id, cat, actor, community)
-    else
-      {:error, _reason} -> {:error, GateErrorCat.resource_not_found()}
+    case FrontDesk.community(community_id, mode: :internal) do
+      {:ok, %Community{} = community} ->
+        Commands.StateChange.set_category(article_id, cat, actor, community)
+
+      {:error, _reason} ->
+        {:error, GateErrorCat.resource_not_found()}
     end
   end
 
@@ -352,10 +354,12 @@ defmodule GroupherServer.CMS.Articles do
           T.domain_res(Article.t())
   def set_cat(article_id, cat, %User{} = actor, community_id, command_id)
       when is_integer(community_id) and is_binary(command_id) do
-    with {:ok, %Community{} = community} <- FrontDesk.community(community_id, mode: :internal) do
-      Commands.SetCategory.execute(article_id, cat, actor, community, command_id)
-    else
-      {:error, _reason} -> {:error, GateErrorCat.resource_not_found()}
+    case FrontDesk.community(community_id, mode: :internal) do
+      {:ok, %Community{} = community} ->
+        Commands.SetCategory.execute(article_id, cat, actor, community, command_id)
+
+      {:error, _reason} ->
+        {:error, GateErrorCat.resource_not_found()}
     end
   end
 
@@ -406,9 +410,8 @@ defmodule GroupherServer.CMS.Articles do
   @doc "Updates Post status and returns the caller-facing canonical projection shape."
   def set_status_result(article, status, %User{} = actor) do
     result =
-      with %Community{} = community <- Map.get(article, :community) do
-        set_status_in_community(article, status, actor, community)
-      else
+      case Map.get(article, :community) do
+        %Community{} = community -> set_status_in_community(article, status, actor, community)
         _ -> {:error, :article_binding_context_required}
       end
 
@@ -419,10 +422,12 @@ defmodule GroupherServer.CMS.Articles do
 
   def set_status_result(article, status, %User{} = actor, command_id) do
     result =
-      with %Community{} = community <- Map.get(article, :community) do
-        Commands.SetStatus.execute(article, status, actor, community, command_id)
-      else
-        _ -> {:error, :article_binding_context_required}
+      case Map.get(article, :community) do
+        %Community{} = community ->
+          Commands.SetStatus.execute(article, status, actor, community, command_id)
+
+        _ ->
+          {:error, :article_binding_context_required}
       end
 
     with {:ok, updated} <- result do

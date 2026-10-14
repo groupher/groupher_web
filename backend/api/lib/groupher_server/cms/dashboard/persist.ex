@@ -51,9 +51,8 @@ defmodule GroupherServer.CMS.Dashboard.Persist do
   @spec replace_section(CommunityDashboard.t(), atom(), map() | list() | boolean()) ::
           T.domain_res(CommunityDashboard.t())
   def replace_section(%CommunityDashboard{} = dashboard, key, args) do
-    with {:ok, payload} <- SectionPayload.prepare(dashboard, key, args),
-         {:ok, updated} <- ORM.replace_dsb_section(dashboard, key, payload) do
-      {:ok, updated}
+    with {:ok, payload} <- SectionPayload.prepare(dashboard, key, args) do
+      ORM.replace_dsb_section(dashboard, key, payload)
     end
   end
 
@@ -66,8 +65,9 @@ defmodule GroupherServer.CMS.Dashboard.Persist do
       #=> {:ok, value}
   """
   @spec get_dashboard(Community.t()) :: T.domain_res(CommunityDashboard.t())
-  def get_dashboard(%Community{} = community),
-    do: ORM.find_by(CommunityDashboard, community_id: community.id)
+  def get_dashboard(%Community{} = community) do
+    ORM.find_by(CommunityDashboard, community_id: community.id)
+  end
 
   @doc """
   Updates the scalar dashboard content-shadow flag in the caller transaction.

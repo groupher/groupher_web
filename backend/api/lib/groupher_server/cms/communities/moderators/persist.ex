@@ -94,9 +94,8 @@ defmodule GroupherServer.CMS.Communities.Moderators.Persist do
              community_id: community.id
            }),
          {:ok, rules} <- default_passport(type, community.slug),
-         {:ok, _} <- Passport.stamp_passport(rules, target_user),
-         {:ok, moderator} <- update_passport_item_count(moderator, community, rules) do
-      {:ok, moderator}
+         {:ok, _} <- Passport.stamp_passport(rules, target_user) do
+      update_passport_item_count(moderator, community, rules)
     end
   end
 
@@ -104,8 +103,9 @@ defmodule GroupherServer.CMS.Communities.Moderators.Persist do
     Count.update(community, user, :moderators_count, direction)
   end
 
-  defp default_passport(:moderator, community_slug),
-    do: PermissionConfig.default_moderator_passport(community_slug)
+  defp default_passport(:moderator, community_slug) do
+    PermissionConfig.default_moderator_passport(community_slug)
+  end
 
   defp update_passport_item_count(%Community{} = community, %User{} = user, rules) do
     with {:ok, moderator} <-

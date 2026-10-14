@@ -30,24 +30,29 @@ defmodule GroupherServer.CMS do
   end
 
   @doc "Expands the registered CMS Article thread values at compile time."
-  defmacro artiment_threads_values,
-    do: GroupherServer.CMS.Artiment.Threads.values()
+  defmacro artiment_threads_values do
+    GroupherServer.CMS.Artiment.Threads.values()
+  end
 
   @doc "Expands the Article ordering values at compile time."
-  defmacro articles_const_order_values_ast,
-    do: GroupherServer.CMS.Articles.Const.order_values_ast()
+  defmacro articles_const_order_values_ast do
+    GroupherServer.CMS.Articles.Const.order_values_ast()
+  end
 
   @doc "Expands the Artiment category values at compile time."
-  defmacro artiment_const_cat_values_ast,
-    do: GroupherServer.CMS.Artiment.Const.cat_values_ast()
+  defmacro artiment_const_cat_values_ast do
+    GroupherServer.CMS.Artiment.Const.cat_values_ast()
+  end
 
   @doc "Expands the Artiment status values at compile time."
-  defmacro artiment_const_status_values_ast,
-    do: GroupherServer.CMS.Artiment.Const.status_values_ast()
+  defmacro artiment_const_status_values_ast do
+    GroupherServer.CMS.Artiment.Const.status_values_ast()
+  end
 
   @doc "Expands the Dashboard Kanban board values at compile time."
-  defmacro dashboard_kanban_boards_values,
-    do: GroupherServer.CMS.Dashboard.KanbanBoards.values()
+  defmacro dashboard_kanban_boards_values do
+    GroupherServer.CMS.Dashboard.KanbanBoards.values()
+  end
 
   @doc "Returns the CMS Dataloader source used by the GraphQL adapter."
   @spec dataloader_source() :: Dataloader.Ecto.t()

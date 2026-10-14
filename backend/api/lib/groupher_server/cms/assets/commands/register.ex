@@ -5,13 +5,12 @@ defmodule GroupherServer.CMS.Assets.Commands.Register do
       upload callback / GraphQL -> Register -> CMS.Command -> Gate -> Persist -> Confirmation
   """
 
-  alias GroupherServer.Accounts
-
-  alias GroupherServer.{CMS, Repo}
-  alias CMS.Assets.Commands.RegisterAssetConfirmation, as: Confirmation
-  alias CMS.{Command, Assets.Persist, ErrorCat}
-  alias CMS.Model.{Community, CommunityAsset}
+  alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
+  alias CMS.Assets.Commands.RegisterAssetConfirmation, as: Confirmation
+  alias CMS.{Command, ErrorCat}
+  alias CMS.Assets.{Persist, Query}
+  alias CMS.Model.{Community, CommunityAsset}
 
   @spec execute(Community.t(), map(), User.t() | nil, String.t() | nil) ::
           {:ok, CommunityAsset.t()} | {:error, term()}
@@ -52,7 +51,7 @@ defmodule GroupherServer.CMS.Assets.Commands.Register do
   end
 
   defp present(%Confirmation{data: %{"asset_id" => asset_id, "command_id" => command_id}}) do
-    case Repo.get(CommunityAsset, asset_id) do
+    case Query.asset(asset_id) do
       %CommunityAsset{} = asset -> {:ok, Map.put(asset, :command_id, command_id)}
       nil -> {:error, ErrorCat.custom("asset result unavailable")}
     end
@@ -64,9 +63,11 @@ defmodule GroupherServer.CMS.Assets.Commands.Register do
         {:ok, command_id}
 
       :error ->
-        if is_nil(command_id),
-          do: {:error, ErrorCat.command_id_required()},
-          else: {:error, ErrorCat.command_id_invalid()}
+        if is_nil(command_id) do
+          {:error, ErrorCat.command_id_required()}
+        else
+          {:error, ErrorCat.command_id_invalid()}
+        end
     end
   end
 end

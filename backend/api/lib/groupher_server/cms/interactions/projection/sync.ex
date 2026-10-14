@@ -19,6 +19,30 @@ defmodule GroupherServer.CMS.Interactions.Projection.Sync do
   alias CMS.Model.{Comment, Embeds}
   alias CMS.Model.Interaction.RoaringBitmap
 
+  defmodule ProjectionSpec do
+    @moduledoc """
+    Describes the storage fields updated for one interaction projection.
+
+        interaction kind
+          -> ProjectionSpec
+          -> projection row update
+    """
+    @enforce_keys [:schema, :bitmap_field]
+    defstruct [:count_field, :latest_field | @enforce_keys]
+  end
+
+  defmodule ProjectionChange do
+    @moduledoc """
+    Describes the actor and operation applied to an interaction projection.
+
+        actor operation
+          -> ProjectionChange
+          -> projection row update
+    """
+    @enforce_keys [:user_id, :operation, :increment_revision?]
+    defstruct [:latest_users | @enforce_keys]
+  end
+
   @doc """
   Applies an already-created upvote fact.
 
@@ -190,15 +214,19 @@ defmodule GroupherServer.CMS.Interactions.Projection.Sync do
 
     with {:ok, _} <-
            update_projection!(
-             info.reaction_info_model,
              reaction_info.id,
-             bitmap_field,
-             user.id,
-             operation,
-             count_field,
-             latest_field,
-             latest_users,
-             reaction in [:upvote, :collect]
+             %ProjectionSpec{
+               schema: info.reaction_info_model,
+               bitmap_field: bitmap_field,
+               count_field: count_field,
+               latest_field: latest_field
+             },
+             %ProjectionChange{
+               user_id: user.id,
+               operation: operation,
+               latest_users: latest_users,
+               increment_revision?: reaction in [:upvote, :collect]
+             }
            ) do
       {:ok, reaction_info}
     end
@@ -210,15 +238,19 @@ defmodule GroupherServer.CMS.Interactions.Projection.Sync do
 
     with {:ok, _} <-
            update_projection!(
-             info.emotion_info_model,
              emotion_info.id,
-             :user_ids,
-             user.id,
-             operation,
-             :users_count,
-             :latest_users,
-             latest_users,
-             false
+             %ProjectionSpec{
+               schema: info.emotion_info_model,
+               bitmap_field: :user_ids,
+               count_field: :users_count,
+               latest_field: :latest_users
+             },
+             %ProjectionChange{
+               user_id: user.id,
+               operation: operation,
+               latest_users: latest_users,
+               increment_revision?: false
+             }
            ),
          {:ok, _} <- bump_interaction_revision(info, target_id) do
       {:ok, emotion_info}
@@ -307,35 +339,41 @@ defmodule GroupherServer.CMS.Interactions.Projection.Sync do
   end
 
   defp update_projection!(
-         schema,
          info_id,
-         bitmap_field,
-         user_id,
-         operation,
-         count_field,
-         latest_field,
-         latest_users,
-         increment_revision?
+         %ProjectionSpec{} = spec,
+         %ProjectionChange{} = change
        ) do
     bitmap =
-      case operation do
-        :add -> dynamic([info], RoaringBitmap.add(field(info, ^bitmap_field), ^user_id))
-        :remove -> dynamic([info], RoaringBitmap.remove(field(info, ^bitmap_field), ^user_id))
+      case change.operation do
+        :add ->
+          dynamic([info], RoaringBitmap.add(field(info, ^spec.bitmap_field), ^change.user_id))
+
+        :remove ->
+          dynamic([info], RoaringBitmap.remove(field(info, ^spec.bitmap_field), ^change.user_id))
       end
 
-    set = [{bitmap_field, bitmap}, {:updated_at, DateTime.utc_now(:second)}]
-    set = maybe_put_latest(set, latest_field, latest_users)
+    set = [{spec.bitmap_field, bitmap}, {:updated_at, DateTime.utc_now(:second)}]
+    set = maybe_put_latest(set, spec.latest_field, change.latest_users)
     updates = [set: set]
 
     updates =
-      case count_field do
-        nil -> updates
-        field -> Keyword.put(updates, :inc, [{field, if(operation == :add, do: 1, else: -1)}])
+      case spec.count_field do
+        nil ->
+          updates
+
+        field ->
+          delta = if change.operation == :add, do: 1, else: -1
+          Keyword.put(updates, :inc, [{field, delta}])
       end
 
-    updates = if increment_revision?, do: maybe_increment_revision(updates, schema), else: updates
+    updates =
+      if change.increment_revision? do
+        maybe_increment_revision(updates, spec.schema)
+      else
+        updates
+      end
 
-    case from(info in schema, where: info.id == ^info_id) |> Repo.update_all(updates) do
+    case from(info in spec.schema, where: info.id == ^info_id) |> Repo.update_all(updates) do
       {1, _} -> {:ok, :pass}
       {0, _} -> {:error, ErrorCat.projection_not_updated()}
     end

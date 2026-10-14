@@ -12,10 +12,10 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
   the current canonical public DTO instead of retaining a physical content row.
   """
 
-  alias GroupherServer.{Accounts, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.Draft.Store, as: DraftStore
-  alias CMS.Articles.{Bindings, RevisionResult}
+  alias CMS.Articles.{Bindings, Query, RevisionResult}
   alias CMS.Articles.Store, as: ArticleStore
   alias CMS.{Command, FrontDesk}
   alias CMS.Model.{Article, ArticleBinding, ArticleLifecycle, Community}
@@ -57,7 +57,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
          {:ok, %{public: public}} <-
            update_and_publish(article, attrs, author, user, community, command_id),
          %ArticleBinding{inner_id: inner_id} when is_integer(inner_id) <-
-           Repo.get_by(ArticleBinding, article_id: article.id, community_id: community.id) do
+           Query.binding(article.id, community.id) do
       with {:ok, revision_id} <- required_revision_id(public),
            {:ok, publication_version} <- required_publication_version(public),
            {:ok, published_at} <- required_published_at(public) do
@@ -145,13 +145,14 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
     Bindings.get(article, community)
   end
 
-  defp binding_context(article, _article_or_projection),
-    do: Bindings.get(article, Map.get(article, :community))
+  defp binding_context(article, _article_or_projection) do
+    Bindings.get(article, Map.get(article, :community))
+  end
 
   defp public_projection(article_id, community) do
     case FrontDesk.article(article_id, mode: :internal) do
       {:ok, %Article{thread: thread}} ->
-        case Repo.get_by(ArticleBinding, article_id: article_id, community_id: community.id) do
+        case Query.binding(article_id, community.id) do
           %ArticleBinding{inner_id: inner_id} when is_integer(inner_id) ->
             FrontDesk.article(%{
               community: community.slug,

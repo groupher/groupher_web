@@ -15,7 +15,7 @@ defmodule GroupherServerWeb.Middleware.PublishThrottle do
 
   @behaviour Absinthe.Middleware
   import Helper.Utils, only: [handle_absinthe_error: 3]
-  alias GroupherServer.{ErrorCat}
+  alias GroupherServer.ErrorCat
 
   alias ErrorCat.Error
 

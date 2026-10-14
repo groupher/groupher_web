@@ -147,11 +147,9 @@ defmodule GroupherServer.CMS.DocTree.CommandReplay do
   defp decode_tree_key(key) when is_atom(key), do: key
 
   defp decode_tree_key(key) when is_binary(key) do
-    try do
-      String.to_existing_atom(key)
-    rescue
-      ArgumentError -> key
-    end
+    String.to_existing_atom(key)
+  rescue
+    ArgumentError -> key
   end
 
   defp decode_tree_key(key), do: key

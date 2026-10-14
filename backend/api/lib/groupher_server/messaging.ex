@@ -22,8 +22,9 @@ defmodule GroupherServer.Messaging do
 
       Messaging.send_mention(comment, mentions, user)
   """
-  def send_mention(artiment, mentions, from_user),
-    do: Commands.SendMention.run(artiment, mentions, from_user)
+  def send_mention(artiment, mentions, from_user) do
+    Commands.SendMention.run(artiment, mentions, from_user)
+  end
 
   @doc """
   Stores a grouped activity notification for its recipient.

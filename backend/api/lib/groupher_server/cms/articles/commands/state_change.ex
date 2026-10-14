@@ -5,40 +5,35 @@ defmodule GroupherServer.CMS.Articles.Commands.StateChange do
       state command -> canonical Article -> Gate -> aggregate transition
   """
 
-  alias GroupherServer.Accounts
-
-  alias GroupherServer.{CMS, Repo}
-  alias CMS.Articles.States
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.Model.User
+  alias CMS.Articles.{Query, States}
   alias CMS.Docs.Store, as: DocStore
   alias CMS.FrontDesk
   alias CMS.Gate.ErrorCat, as: GateErrorCat
-  alias CMS.Model.{Article, Community, DocBranch}
-  alias Accounts.Model.User
+  alias CMS.Model.{Article, Community}
 
   @spec execute(atom(), Ecto.UUID.t(), User.t(), keyword()) :: {:ok, term()} | {:error, term()}
   def execute(action, article_id, %User{} = actor, opts \\ [])
       when action in [:sink, :undo_sink, :set_category, :set_status] do
-    with {:ok, %Article{} = article} <- load_article(article_id),
-         {:ok, result} <- admit_and_change(action, article, actor, opts) do
-      {:ok, result}
+    with {:ok, %Article{} = article} <- load_article(article_id) do
+      admit_and_change(action, article, actor, opts)
     end
   end
 
   @spec set_category(Ecto.UUID.t(), atom() | nil, User.t(), Community.t()) ::
           {:ok, Article.t()} | {:error, term()}
   def set_category(article_id, category, %User{} = actor, %Community{} = community) do
-    with {:ok, %Article{} = article} <- load_article(article_id),
-         {:ok, canonical} <-
-           CMS.Gate.with_community_check(
-             actor,
-             :set_category,
-             community,
-             article,
-             fn canonical ->
-               States.set_cat(canonical, category)
-             end
-           ) do
-      {:ok, canonical}
+    with {:ok, %Article{} = article} <- load_article(article_id) do
+      CMS.Gate.with_community_check(
+        actor,
+        :set_category,
+        community,
+        article,
+        fn canonical ->
+          States.set_cat(canonical, category)
+        end
+      )
     end
   end
 
@@ -60,16 +55,16 @@ defmodule GroupherServer.CMS.Articles.Commands.StateChange do
         %Community{} = community
       )
       when is_binary(article_id) do
-    with {:ok, %Article{} = article} <- FrontDesk.article(article_id, mode: :internal) do
-      set_status_in_community(article, status, actor, community)
-    else
+    case FrontDesk.article(article_id, mode: :internal) do
+      {:ok, %Article{} = article} -> set_status_in_community(article, status, actor, community)
       {:error, _reason} -> {:error, GateErrorCat.resource_not_found()}
     end
   end
 
   @spec update_active_timestamp(atom(), Article.t()) :: {:ok, Article.t()} | {:error, term()}
-  def update_active_timestamp(thread, %Article{} = article),
-    do: States.update_active_timestamp(thread, article)
+  def update_active_timestamp(thread, %Article{} = article) do
+    States.update_active_timestamp(thread, article)
+  end
 
   defp admit_and_change(:set_category, article, actor, opts) do
     with {:ok, community} <- resolve_community(opts, article) do
@@ -118,7 +113,7 @@ defmodule GroupherServer.CMS.Articles.Commands.StateChange do
       _ ->
         case Keyword.get(opts, :community_id) do
           community_id when is_integer(community_id) ->
-            case Repo.get(Community, community_id) do
+            case Query.community(community_id) do
               %Community{} = community -> {:ok, community}
               _ -> {:error, :article_binding_not_found}
             end
@@ -132,12 +127,7 @@ defmodule GroupherServer.CMS.Articles.Commands.StateChange do
   defp resolve_branch_community(opts, _article) do
     case Keyword.get(opts, :branch_id) do
       branch_id when is_integer(branch_id) ->
-        with %DocBranch{community_id: community_id} <- Repo.get(DocBranch, branch_id),
-             %Community{} = community <- Repo.get(Community, community_id) do
-          {:ok, community}
-        else
-          _ -> {:error, :article_binding_not_found}
-        end
+        Query.branch_community(branch_id)
 
       _ ->
         {:error, :article_binding_context_required}

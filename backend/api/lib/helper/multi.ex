@@ -28,10 +28,12 @@ defmodule Helper.Multi do
 
   @spec new() :: t()
   @doc "Runs `new` through the public `Multi` boundary."
+  # credo:disable-for-next-line Credo.Check.Refactor.Apply
   def new, do: apply(Ecto.Multi, :new, [])
 
   @spec run(t(), Ecto.Multi.name(), Ecto.Multi.run()) :: t()
   @doc "Runs `run` through the public `Multi` boundary."
+  # credo:disable-for-next-line Credo.Check.Refactor.Apply
   def run(multi, name, run), do: apply(Ecto.Multi, :run, [multi, name, run])
 
   @spec insert(
@@ -44,6 +46,7 @@ defmodule Helper.Multi do
         ) :: t()
   @doc "Runs `insert` through the public `Multi` boundary."
   def insert(multi, name, changeset_or_struct_or_fun, opts \\ []) do
+    # credo:disable-for-next-line Credo.Check.Refactor.Apply
     apply(Ecto.Multi, :insert, [multi, name, changeset_or_struct_or_fun, opts])
   end
 end

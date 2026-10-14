@@ -108,8 +108,9 @@ defmodule GroupherServer.CMS.Articles.Tags.Assignment do
     end
   end
 
-  defp update_stable_tags(_article, _article_id, _tags, _opt, _community_id, _opts),
-    do: {:error, :article_binding_context_required}
+  defp update_stable_tags(_article, _article_id, _tags, _opt, _community_id, _opts) do
+    {:error, :article_binding_context_required}
+  end
 
   defp maybe_invalidate_taxonomy(old_tags, new_tags, community, thread, effect_key, opts) do
     old_ids = MapSet.new(old_tags, & &1.id)
@@ -177,21 +178,21 @@ defmodule GroupherServer.CMS.Articles.Tags.Assignment do
         {:ok, {:workflow, workflow_ref}}
 
       nil ->
-        case Keyword.get(opts, :command_id) do
-          command_id when is_binary(command_id) ->
-            case Ecto.UUID.cast(command_id) do
-              {:ok, command_id} -> {:ok, {:command, command_id}}
-              :error -> {:error, :invalid_taxonomy_identity}
-            end
-
-          _ ->
-            {:error, :taxonomy_identity_required}
-        end
+        command_identity(Keyword.get(opts, :command_id))
 
       _ ->
         {:error, :invalid_taxonomy_identity}
     end
   end
+
+  defp command_identity(command_id) when is_binary(command_id) do
+    case Ecto.UUID.cast(command_id) do
+      {:ok, command_id} -> {:ok, {:command, command_id}}
+      :error -> {:error, :invalid_taxonomy_identity}
+    end
+  end
+
+  defp command_identity(_command_id), do: {:error, :taxonomy_identity_required}
 
   defp in_caller_transaction(fun) when is_function(fun, 0) do
     if Repo.in_transaction?(), do: fun.(), else: {:error, :article_tag_transaction_required}

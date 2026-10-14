@@ -61,4 +61,23 @@ defmodule GroupherServer.CMS.Communities.Tags.Query do
     end)
     |> Map.new()
   end
+
+  @doc false
+  def tag(id) do
+    case Repo.get(CommunityTag, id) do
+      %CommunityTag{} = tag -> {:ok, Repo.preload(tag, [:community, :tag_group])}
+      nil -> {:ok, %CommunityTag{id: id}}
+    end
+  end
+
+  @doc false
+  def group(id) do
+    case Repo.get(CommunityTagGroup, id) do
+      %CommunityTagGroup{} = group ->
+        {:ok, Repo.preload(group, tags: [:community, :tag_group])}
+
+      nil ->
+        {:ok, %CommunityTagGroup{id: id}}
+    end
+  end
 end

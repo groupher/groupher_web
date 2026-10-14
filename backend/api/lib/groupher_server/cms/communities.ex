@@ -190,8 +190,9 @@ defmodule GroupherServer.CMS.Communities do
 
   @doc "Runs `retry_setup` through the public `Communities` boundary."
   @spec retry_setup(String.t(), User.t(), integer()) :: T.domain_res(term())
-  def retry_setup(_application_ref, %User{} = _reviewer, _expected_version),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def retry_setup(_application_ref, %User{} = _reviewer, _expected_version) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @doc "Runs setup retry through the receipt-backed Application Command."
   @spec retry_setup(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
@@ -250,11 +251,13 @@ defmodule GroupherServer.CMS.Communities do
   # Members
   @doc "Runs `members` through the public `Communities` boundary."
   @spec members(atom(), Community.t(), map()) :: T.domain_res(T.paged_data())
-  def members(:moderators, %Community{} = community, filters),
-    do: ModeratorsQuery.page(community, filters)
+  def members(:moderators, %Community{} = community, filters) do
+    ModeratorsQuery.page(community, filters)
+  end
 
-  def members(:subscribers, %Community{} = community, filters),
-    do: SubscribersQuery.page(community, filters)
+  def members(:subscribers, %Community{} = community, filters) do
+    SubscribersQuery.page(community, filters)
+  end
 
   def members(type, community_ref, filters) when type in [:moderators, :subscribers] do
     with {:ok, community} <- FrontDesk.community(community_ref, mode: :internal) do
@@ -263,8 +266,9 @@ defmodule GroupherServer.CMS.Communities do
   end
 
   @spec members(atom(), Community.t(), map(), User.t()) :: T.domain_res(T.paged_data())
-  def members(:subscribers, %Community{} = community, filters, %User{} = user),
-    do: SubscribersQuery.page(community, filters, user)
+  def members(:subscribers, %Community{} = community, filters, %User{} = user) do
+    SubscribersQuery.page(community, filters, user)
+  end
 
   def members(:subscribers, community_ref, filters, %User{} = user) do
     with {:ok, community} <- FrontDesk.community(community_ref, mode: :internal) do
@@ -278,8 +282,9 @@ defmodule GroupherServer.CMS.Communities do
   def create_category(_attrs, %User{}), do: {:error, CMS.ErrorCat.command_id_required()}
 
   @spec create_category(map(), User.t(), Ecto.UUID.t()) :: T.domain_res(Category.t())
-  def create_category(%{community: community} = attrs, %User{} = user, command_id),
-    do: CreateCategoryCommand.execute(community, attrs, user, command_id)
+  def create_category(%{community: community} = attrs, %User{} = user, command_id) do
+    CreateCategoryCommand.execute(community, attrs, user, command_id)
+  end
 
   @doc "Returns paged categories through the Communities read boundary."
   @spec paged_categories(map()) :: T.domain_res(T.paged_data())
@@ -290,16 +295,18 @@ defmodule GroupherServer.CMS.Communities do
   def update_category(_community, _attrs), do: {:error, CMS.ErrorCat.command_id_required()}
 
   @spec update_category(String.t(), map(), User.t(), Ecto.UUID.t()) :: T.domain_res(Category.t())
-  def update_category(community, attrs, %User{} = user, command_id),
-    do: UpdateCategoryCommand.execute(community, attrs, user, command_id)
+  def update_category(community, attrs, %User{} = user, command_id) do
+    UpdateCategoryCommand.execute(community, attrs, user, command_id)
+  end
 
   @doc "Removes category through the receipt-backed Category Command boundary."
   @spec delete_category(String.t(), T.id()) :: T.domain_res(Category.t())
   def delete_category(_community, _id), do: {:error, CMS.ErrorCat.command_id_required()}
 
   @spec delete_category(String.t(), T.id(), User.t(), Ecto.UUID.t()) :: T.domain_res(Category.t())
-  def delete_category(community, id, %User{} = user, command_id),
-    do: DeleteCategoryCommand.execute(community, id, user, command_id)
+  def delete_category(community, id, %User{} = user, command_id) do
+    DeleteCategoryCommand.execute(community, id, user, command_id)
+  end
 
   @doc "Runs `set_category` through the receipt-backed Category Command boundary."
   @spec set_category(Community.t(), T.id()) :: T.domain_res(Community.t())
@@ -307,8 +314,9 @@ defmodule GroupherServer.CMS.Communities do
 
   @spec set_category(Community.t(), T.id(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Community.t())
-  def set_category(%Community{} = community, category_id, %User{} = user, command_id),
-    do: SetCategoryCommand.execute(community, category_id, user, command_id)
+  def set_category(%Community{} = community, category_id, %User{} = user, command_id) do
+    SetCategoryCommand.execute(community, category_id, user, command_id)
+  end
 
   @doc "Runs `unset_category` through the receipt-backed Category Command boundary."
   @spec unset_category(Community.t(), T.id()) :: T.domain_res(Community.t())
@@ -316,8 +324,9 @@ defmodule GroupherServer.CMS.Communities do
 
   @spec unset_category(Community.t(), T.id(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Community.t())
-  def unset_category(%Community{} = community, category_id, %User{} = user, command_id),
-    do: UnsetCategoryCommand.execute(community, category_id, user, command_id)
+  def unset_category(%Community{} = community, category_id, %User{} = user, command_id) do
+    UnsetCategoryCommand.execute(community, category_id, user, command_id)
+  end
 
   # Passport
   @doc "Returns passport through the `Communities` boundary."
@@ -351,8 +360,9 @@ defmodule GroupherServer.CMS.Communities do
   # Moderator
   @doc "Runs `add_moderator` through the public `Communities` boundary."
   @spec add_moderator(Community.t(), User.t(), User.t()) :: T.domain_res(Community.t())
-  def add_moderator(%Community{}, %User{}, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def add_moderator(%Community{}, %User{}, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @spec add_moderator(Community.t(), User.t(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Community.t())
@@ -367,14 +377,16 @@ defmodule GroupherServer.CMS.Communities do
 
   @doc "Runs `add_moderators` through the public `Communities` boundary."
   @spec add_moderators(Community.t(), list(User.t()), User.t()) :: T.domain_res(Community.t())
-  def add_moderators(%Community{}, _target_users, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def add_moderators(%Community{}, _target_users, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @spec add_moderators(Community.t(), list(User.t()), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Community.t())
   def add_moderators(%Community{} = community, target_users, %User{} = cur_user, command_id)
-      when is_list(target_users),
-      do: AddManyModeratorsCommand.execute(community, target_users, cur_user, command_id)
+      when is_list(target_users) do
+    AddManyModeratorsCommand.execute(community, target_users, cur_user, command_id)
+  end
 
   @doc "Removes moderator through the `Communities` boundary."
   @spec remove_moderator(String.t() | Community.t(), User.t(), User.t()) ::
@@ -389,8 +401,9 @@ defmodule GroupherServer.CMS.Communities do
         %User{} = target_user,
         %User{} = cur_user,
         command_id
-      ),
-      do: RemoveModeratorCommand.execute(community, target_user, cur_user, command_id)
+      ) do
+    RemoveModeratorCommand.execute(community, target_user, cur_user, command_id)
+  end
 
   @doc "Updates moderator passport through the `Communities` write boundary."
   @spec update_moderator_passport(String.t() | Community.t(), map(), User.t(), User.t()) ::
@@ -406,15 +419,15 @@ defmodule GroupherServer.CMS.Communities do
         %User{} = target_user,
         %User{} = cur_user,
         command_id
-      ),
-      do:
-        UpdateModeratorPassportCommand.execute(
-          community,
-          rules,
-          target_user,
-          cur_user,
-          command_id
-        )
+      ) do
+    UpdateModeratorPassportCommand.execute(
+      community,
+      rules,
+      target_user,
+      cur_user,
+      command_id
+    )
+  end
 
   # Subscribe
   @doc "Rejects the legacy user-mutation arity; callers must provide command_id."
@@ -424,19 +437,22 @@ defmodule GroupherServer.CMS.Communities do
   @doc "Runs the receipt-backed user subscription Command."
   @spec subscribe(Community.t() | String.t(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Community.t())
-  def subscribe(community, %User{} = user, command_id),
-    do: SubscribeCommand.execute(community, user, command_id)
+  def subscribe(community, %User{} = user, command_id) do
+    SubscribeCommand.execute(community, user, command_id)
+  end
 
   @doc "Rejects the legacy user-mutation arity; callers must provide command_id."
   @spec unsubscribe(Community.t(), User.t()) :: T.domain_res(Community.t())
-  def unsubscribe(%Community{} = community, %User{} = user),
-    do: reject_command_id(community, user)
+  def unsubscribe(%Community{} = community, %User{} = user) do
+    reject_command_id(community, user)
+  end
 
   @doc "Runs the receipt-backed user unsubscribe Command."
   @spec unsubscribe(Community.t() | String.t(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Community.t())
-  def unsubscribe(community, %User{} = user, command_id),
-    do: UnsubscribeCommand.execute(community, user, command_id)
+  def unsubscribe(community, %User{} = user, command_id) do
+    UnsubscribeCommand.execute(community, user, command_id)
+  end
 
   @doc "Runs `subscribe_ifnot` through the public `Communities` boundary."
   @spec subscribe_ifnot(Community.t(), User.t()) :: T.domain_res(Community.t())
@@ -446,8 +462,9 @@ defmodule GroupherServer.CMS.Communities do
 
   @doc "Runs `subscribe_default_ifnot` through the public `Communities` boundary."
   @spec subscribe_default_ifnot(User.t()) :: T.domain_res(atom() | Community.t())
-  def subscribe_default_ifnot(%User{} = user),
-    do: SubscriptionsSetup.subscribe_default_ifnot(user)
+  def subscribe_default_ifnot(%User{} = user) do
+    SubscriptionsSetup.subscribe_default_ifnot(user)
+  end
 
   defp reject_command_id(_community, _user), do: {:error, CMS.ErrorCat.command_id_required()}
 
@@ -474,11 +491,13 @@ defmodule GroupherServer.CMS.Communities do
   @doc "Creates tag through the `Communities` write boundary."
   @spec create_tag(Community.t(), atom(), map(), User.t()) ::
           T.domain_res(CommunityTag.t())
-  def create_tag(%Community{}, _thread, _attrs, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def create_tag(%Community{}, _thread, _attrs, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
-  def create_tag(_community_ref, _thread, _attrs, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def create_tag(_community_ref, _thread, _attrs, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   def create_tag(%Community{} = community, thread, attrs, %User{} = user, command_id) do
     Create.execute(community, thread, attrs, user, command_id)
@@ -496,22 +515,28 @@ defmodule GroupherServer.CMS.Communities do
 
   def update_tag(_id, _attrs, _command_id), do: {:error, :command_actor_required}
 
-  def update_tag(id, attrs, %User{} = user, command_id),
-    do: Update.execute(id, attrs, user, command_id)
+  def update_tag(id, attrs, %User{} = user, command_id) do
+    Update.execute(id, attrs, user, command_id)
+  end
 
   @doc "Creates tag group through the `Communities` write boundary."
   @spec create_tag_group(Community.t(), atom(), map()) :: T.domain_res(CommunityTagGroup.t())
-  def create_tag_group(%Community{}, _thread, _attrs),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def create_tag_group(%Community{}, _thread, _attrs) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
-  def create_tag_group(_community_ref, _thread, _attrs),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def create_tag_group(_community_ref, _thread, _attrs) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
-  def create_tag_group(%Community{}, _thread, _attrs, _command_id),
-    do: {:error, :command_actor_required}
+  def create_tag_group(%Community{}, _thread, _attrs, _command_id) do
+    {:error, :command_actor_required}
+  end
 
-  def create_tag_group(community_ref, _thread, _attrs, _command_id) when is_binary(community_ref),
-    do: {:error, :command_actor_required}
+  def create_tag_group(community_ref, _thread, _attrs, _command_id)
+      when is_binary(community_ref) do
+    {:error, :command_actor_required}
+  end
 
   def create_tag_group(%Community{} = community, thread, attrs, %User{} = user, command_id) do
     CreateTagGroup.execute(community, thread, attrs, user, command_id)
@@ -526,18 +551,22 @@ defmodule GroupherServer.CMS.Communities do
   @doc "Updates tag group through the `Communities` write boundary."
   @spec update_tag_group(Community.t(), atom(), T.id(), map()) ::
           T.domain_res(CommunityTagGroup.t())
-  def update_tag_group(%Community{}, _thread, _id, _attrs),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def update_tag_group(%Community{}, _thread, _id, _attrs) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
-  def update_tag_group(_community_ref, _thread, _id, _attrs),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def update_tag_group(_community_ref, _thread, _id, _attrs) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
-  def update_tag_group(%Community{}, _thread, _id, _attrs, _command_id),
-    do: {:error, :command_actor_required}
+  def update_tag_group(%Community{}, _thread, _id, _attrs, _command_id) do
+    {:error, :command_actor_required}
+  end
 
   def update_tag_group(community_ref, _thread, _id, _attrs, _command_id)
-      when is_binary(community_ref),
-      do: {:error, :command_actor_required}
+      when is_binary(community_ref) do
+    {:error, :command_actor_required}
+  end
 
   def update_tag_group(%Community{} = community, thread, id, attrs, %User{} = user, command_id) do
     UpdateTagGroup.execute(community, thread, id, attrs, user, command_id)
@@ -551,17 +580,21 @@ defmodule GroupherServer.CMS.Communities do
 
   @doc "Removes tag group through the `Communities` boundary."
   @spec delete_tag_group(Community.t(), atom(), T.id()) :: T.domain_res(CommunityTagGroup.t())
-  def delete_tag_group(%Community{}, _thread, _id),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def delete_tag_group(%Community{}, _thread, _id) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
-  def delete_tag_group(_community_ref, _thread, _id),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def delete_tag_group(_community_ref, _thread, _id) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
-  def delete_tag_group(%Community{}, _thread, _id, _command_id),
-    do: {:error, :command_actor_required}
+  def delete_tag_group(%Community{}, _thread, _id, _command_id) do
+    {:error, :command_actor_required}
+  end
 
-  def delete_tag_group(community_ref, _thread, _id, _command_id) when is_binary(community_ref),
-    do: {:error, :command_actor_required}
+  def delete_tag_group(community_ref, _thread, _id, _command_id) when is_binary(community_ref) do
+    {:error, :command_actor_required}
+  end
 
   def delete_tag_group(%Community{} = community, thread, id, %User{} = user, command_id) do
     DeleteTagGroup.execute(community, thread, id, user, command_id)
@@ -603,8 +636,9 @@ defmodule GroupherServer.CMS.Communities do
 
   def set_tag(_article, _id, _command_id), do: {:error, :command_actor_required}
 
-  def set_tag(article, id, %User{} = user, command_id),
-    do: CMS.Communities.Tags.Commands.Set.execute(article, id, user, command_id)
+  def set_tag(article, id, %User{} = user, command_id) do
+    CMS.Communities.Tags.Commands.Set.execute(article, id, user, command_id)
+  end
 
   @doc "Runs `unset_tag` through the public `Communities` boundary."
   @spec unset_tag(Ecto.Schema.t(), T.id()) :: T.domain_res(Ecto.Schema.t())
@@ -612,8 +646,9 @@ defmodule GroupherServer.CMS.Communities do
 
   def unset_tag(_article, _id, _command_id), do: {:error, :command_actor_required}
 
-  def unset_tag(article, id, %User{} = user, command_id),
-    do: CMS.Communities.Tags.Commands.Unset.execute(article, id, user, command_id)
+  def unset_tag(article, id, %User{} = user, command_id) do
+    CMS.Communities.Tags.Commands.Unset.execute(article, id, user, command_id)
+  end
 
   @doc "Runs `tag_groups` through the public `Communities` boundary."
   @spec tag_groups(map()) :: T.domain_res(list(CommunityTagGroup.t()))
@@ -621,59 +656,65 @@ defmodule GroupherServer.CMS.Communities do
 
   @doc "Runs `reindex_tags` through the public `Communities` boundary."
   @spec reindex_tags(Community.t() | String.t(), atom(), atom(), list()) :: T.domain_res(atom())
-  def reindex_tags(_community, _thread, _group, _tags),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def reindex_tags(_community, _thread, _group, _tags) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @doc "Rejects command-id-only tag reindex calls without a Gate actor."
-  def reindex_tags_in_group(_community, _thread, _group, _tags, _command_id),
-    do: {:error, :command_actor_required}
+  def reindex_tags_in_group(_community, _thread, _group, _tags, _command_id) do
+    {:error, :command_actor_required}
+  end
 
-  def reindex_tags_in_group(community, thread, group, tags, %User{} = user, command_id),
-    do:
-      CMS.Communities.Tags.Commands.ReindexTagsInGroup.execute(
-        community,
-        thread,
-        group,
-        tags,
-        user,
-        command_id
-      )
+  def reindex_tags_in_group(community, thread, group, tags, %User{} = user, command_id) do
+    CMS.Communities.Tags.Commands.ReindexTagsInGroup.execute(
+      community,
+      thread,
+      group,
+      tags,
+      user,
+      command_id
+    )
+  end
 
   @spec reindex_tags(Community.t() | String.t(), atom(), list()) :: T.domain_res(atom())
-  def reindex_tags(_community, _thread, _tags),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def reindex_tags(_community, _thread, _tags) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @doc "Rejects command-id-only cross-group reindex calls without a Gate actor."
-  def reindex_tags_across_groups(_community, _thread, _tags, _command_id),
-    do: {:error, :command_actor_required}
+  def reindex_tags_across_groups(_community, _thread, _tags, _command_id) do
+    {:error, :command_actor_required}
+  end
 
-  def reindex_tags_across_groups(community, thread, tags, %User{} = user, command_id),
-    do:
-      CMS.Communities.Tags.Commands.ReindexTagsAcrossGroups.execute(
-        community,
-        thread,
-        tags,
-        user,
-        command_id
-      )
+  def reindex_tags_across_groups(community, thread, tags, %User{} = user, command_id) do
+    CMS.Communities.Tags.Commands.ReindexTagsAcrossGroups.execute(
+      community,
+      thread,
+      tags,
+      user,
+      command_id
+    )
+  end
 
   @doc "Runs `reindex_tag_groups` through the public `Communities` boundary."
   @spec reindex_tag_groups(Community.t() | String.t(), atom(), list()) :: T.domain_res(atom())
-  def reindex_tag_groups(_community, _thread, _groups),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def reindex_tag_groups(_community, _thread, _groups) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
-  def reindex_tag_groups(_community, _thread, _groups, _command_id),
-    do: {:error, :command_actor_required}
+  def reindex_tag_groups(_community, _thread, _groups, _command_id) do
+    {:error, :command_actor_required}
+  end
 
-  def reindex_tag_groups(community, thread, groups, %User{} = user, command_id),
-    do:
-      CMS.Communities.Tags.Commands.ReindexTagGroups.execute(
-        community,
-        thread,
-        groups,
-        user,
-        command_id
-      )
+  def reindex_tag_groups(community, thread, groups, %User{} = user, command_id) do
+    CMS.Communities.Tags.Commands.ReindexTagGroups.execute(
+      community,
+      thread,
+      groups,
+      user,
+      command_id
+    )
+  end
 
   @doc "Runs `tag_stats` through the public `Communities` boundary."
   @spec tag_stats(CommunityTag.t() | T.id()) :: T.domain_res(term())

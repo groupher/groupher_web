@@ -69,15 +69,11 @@ defmodule Helper.ORMAtom do
     if is_nil(queryable.meta) do
       update_error("meta field is not initialized")
     else
-      if not function_exported?(queryable.meta.__struct__, :__schema__, 1) do
-        update_error("meta field must be an embedded schema")
-      else
+      if function_exported?(queryable.meta.__struct__, :__schema__, 1) do
         meta_schema = queryable.meta.__struct__
         meta_fields = meta_schema.__schema__(:fields)
 
-        if not Enum.member?(meta_fields, field) do
-          update_error("meta field #{field} does not exist")
-        else
+        if Enum.member?(meta_fields, field) do
           if meta_schema.__schema__(:type, field) != :integer do
             update_error("meta field #{field} must be integer")
           else
@@ -101,7 +97,11 @@ defmodule Helper.ORMAtom do
             # 执行更新并获取返回的新值
             update_meta_value(queryable, update_query, field)
           end
+        else
+          update_error("meta field #{field} does not exist")
         end
+      else
+        update_error("meta field must be an embedded schema")
       end
     end
   end

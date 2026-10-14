@@ -68,8 +68,9 @@ defmodule GroupherServer.CMS.Articles.Bindings.Persist do
     end
   end
 
-  def get_by_id(_article, _binding_id, _community_id),
-    do: {:error, :invalid_article_binding}
+  def get_by_id(_article, _binding_id, _community_id) do
+    {:error, :invalid_article_binding}
+  end
 
   @doc "Lists every ArticleBinding for one stable Article."
   @spec all(Article.t() | ArticleView.t() | map()) ::

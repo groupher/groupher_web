@@ -75,10 +75,10 @@ defmodule GroupherServer.CMS.Articles.Moderation do
           _ -> nil
         end
 
-    if not match?(%Community{}, community) do
-      {:error, :article_binding_context_required}
-    else
+    if match?(%Community{}, community) do
       update_doc_moderation_with_community(article, state, audit_state, opts, community)
+    else
+      {:error, :article_binding_context_required}
     end
   end
 

@@ -218,9 +218,7 @@ defmodule GroupherServer.CMS.DocTree.Publish.Workflow do
       community,
       branch,
       current_checklist,
-      selection.doc_checklist_item_ids,
-      selection.tree_checklist_item_ids,
-      selection.restore_tree_checklist_item_ids,
+      selection,
       user,
       sync_cover?,
       opts
@@ -328,21 +326,32 @@ defmodule GroupherServer.CMS.DocTree.Publish.Workflow do
          %Community{} = community,
          branch,
          current_checklist,
-         doc_checklist_item_ids,
-         tree_checklist_item_ids,
-         restore_tree_checklist_item_ids,
+         %{
+           doc_checklist_item_ids: _,
+           tree_checklist_item_ids: _,
+           restore_tree_checklist_item_ids: _
+         } = selection,
          %User{} = user,
          sync_cover?,
          opts
        ) do
     with {:ok, _restored_events} <-
-           restore_tree_checklist_items(community, branch, restore_tree_checklist_item_ids, user),
+           restore_tree_checklist_items(
+             community,
+             branch,
+             selection.restore_tree_checklist_item_ids,
+             user
+           ),
          {:ok, tree_result} <-
-           prepare_tree_checklist_items(community, branch, tree_checklist_item_ids),
+           prepare_tree_checklist_items(
+             community,
+             branch,
+             selection.tree_checklist_item_ids
+           ),
          {:ok, _} <-
            reject_doc_tree_delete_overlaps(
              current_checklist.doc_changes,
-             doc_checklist_item_ids,
+             selection.doc_checklist_item_ids,
              tree_result.events
            ),
          {:ok, _} <-
@@ -352,7 +361,7 @@ defmodule GroupherServer.CMS.DocTree.Publish.Workflow do
              community,
              branch,
              current_checklist.doc_changes,
-             doc_checklist_item_ids,
+             selection.doc_checklist_item_ids,
              user,
              sync_cover?,
              opts

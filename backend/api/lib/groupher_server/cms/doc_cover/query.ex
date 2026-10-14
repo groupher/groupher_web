@@ -128,8 +128,9 @@ defmodule GroupherServer.CMS.DocCover.Query do
     end
   end
 
-  defp authorize_view(_community, :dashboard, _actor),
-    do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
+  defp authorize_view(_community, :dashboard, _actor) do
+    {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
+  end
 
   defp card_item(
          _community,

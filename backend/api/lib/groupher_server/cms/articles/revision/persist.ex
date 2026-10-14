@@ -86,8 +86,9 @@ defmodule GroupherServer.CMS.Articles.Revision.Persist do
     {:ok, :pass}
   end
 
-  defp validate_draft_owner(%Article{id: id, thread: :doc}, %DocDraft{article_id: id}),
-    do: {:ok, :pass}
+  defp validate_draft_owner(%Article{id: id, thread: :doc}, %DocDraft{article_id: id}) do
+    {:ok, :pass}
+  end
 
   defp validate_draft_owner(_article, _draft), do: {:error, :revision_owner_mismatch}
 

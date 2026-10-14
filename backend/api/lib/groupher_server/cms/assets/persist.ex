@@ -56,18 +56,14 @@ defmodule GroupherServer.CMS.Assets.Persist do
   end
 
   def archive(%Community{id: community_id}, asset_id) do
-    with {:ok, asset} <- find_active_asset_for_update(community_id, asset_id),
-         {:ok, archived} <-
-           ORM.update(asset, %{status: :archived, archived_at: DateTime.utc_now(:second)}) do
-      {:ok, archived}
+    with {:ok, asset} <- find_active_asset_for_update(community_id, asset_id) do
+      ORM.update(asset, %{status: :archived, archived_at: DateTime.utc_now(:second)})
     end
   end
 
   def restore(%Community{id: community_id}, asset_id) do
-    with {:ok, asset} <- find_asset_for_update(community_id, asset_id),
-         {:ok, restored} <-
-           ORM.update(asset, %{status: :active, archived_at: nil, deleted_at: nil}) do
-      {:ok, restored}
+    with {:ok, asset} <- find_asset_for_update(community_id, asset_id) do
+      ORM.update(asset, %{status: :active, archived_at: nil, deleted_at: nil})
     end
   end
 
@@ -138,8 +134,9 @@ defmodule GroupherServer.CMS.Assets.Persist do
 
   defp upsert_identity(attrs), do: if(storage_identity?(attrs), do: :storage_key, else: :url_hash)
 
-  defp storage_identity?(attrs),
-    do: is_binary(get_attr(attrs, :storage)) and is_binary(get_attr(attrs, :storage_key))
+  defp storage_identity?(attrs) do
+    is_binary(get_attr(attrs, :storage)) and is_binary(get_attr(attrs, :storage_key))
+  end
 
   defp conflict_target(:storage_key), do: @asset_storage_conflict_target
   defp conflict_target(:url_hash), do: @asset_url_conflict_target
@@ -161,15 +158,17 @@ defmodule GroupherServer.CMS.Assets.Persist do
   defp put_uploader(attrs, %User{id: user_id}), do: Map.put(attrs, :uploader_id, user_id)
   defp put_uploader(attrs, _), do: attrs
 
-  defp put_default_status(attrs),
-    do: if(has_attr?(attrs, :status), do: attrs, else: Map.put(attrs, :status, :active))
+  defp put_default_status(attrs) do
+    if(has_attr?(attrs, :status), do: attrs, else: Map.put(attrs, :status, :active))
+  end
 
-  defp put_default_asset_type(attrs),
-    do:
-      if(has_attr?(attrs, :asset_type),
-        do: attrs,
-        else: Map.put(attrs, :asset_type, guessed_asset_type(get_attr(attrs, :mime_type)))
-      )
+  defp put_default_asset_type(attrs) do
+    if has_attr?(attrs, :asset_type) do
+      attrs
+    else
+      Map.put(attrs, :asset_type, guessed_asset_type(get_attr(attrs, :mime_type)))
+    end
+  end
 
   defp guessed_asset_type("image/" <> _), do: :image
   defp guessed_asset_type("video/" <> _), do: :video
@@ -177,6 +176,7 @@ defmodule GroupherServer.CMS.Assets.Persist do
   defp guessed_asset_type(_), do: :file
   defp get_attr(attrs, key), do: Map.get(attrs, key) || Map.get(attrs, Atom.to_string(key))
 
-  defp has_attr?(attrs, key),
-    do: Map.has_key?(attrs, key) or Map.has_key?(attrs, Atom.to_string(key))
+  defp has_attr?(attrs, key) do
+    Map.has_key?(attrs, key) or Map.has_key?(attrs, Atom.to_string(key))
+  end
 end

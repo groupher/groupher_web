@@ -7,7 +7,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.ReindexTagsInGroup do
 
   alias GroupherServer.{Accounts, CMS}
 
-  alias CMS.{Gate}
+  alias CMS.Gate
   alias CMS.Communities.Tags.Commands.TagSupport
   alias CMS.Communities.Tags.Mutation
   alias CMS.Model.Community

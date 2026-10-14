@@ -29,6 +29,42 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
     CommunityAsset
   }
 
+  defmodule PlanContext do
+    @moduledoc """
+    Carries the plan-level state shared while applying replacement items.
+
+        ReplacementPlan.apply
+          -> PlanContext
+          -> per-article replacement steps
+    """
+    @enforce_keys [:plan, :community, :actor, :apply_run_ref, :owner]
+    defstruct @enforce_keys
+  end
+
+  defmodule ArticleContext do
+    @moduledoc """
+    Carries the article snapshot used to validate one replacement item.
+
+        replacement plan item
+          -> ArticleContext
+          -> ReplaceUse command
+    """
+    @enforce_keys [:item, :article_id, :body_bag, :version]
+    defstruct @enforce_keys
+  end
+
+  defmodule StepContext do
+    @moduledoc """
+    Carries the claimed workflow step used to apply one replacement locator.
+
+        workflow claim
+          -> StepContext
+          -> replacement step completion
+    """
+    @enforce_keys [:locator, :step_ref, :claimed_step]
+    defstruct @enforce_keys
+  end
+
   @doc "Creates a reviewable plan from current usage facts."
   def create(%Community{id: community_id} = community, attrs, %User{id: user_id} = user)
       when is_map(attrs) do
@@ -65,43 +101,55 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
          {:ok, run} <- ensure_apply_run(plan, apply_run_ref),
          owner <- "asset-replacement:#{apply_run_ref}:#{Ecto.UUID.generate()}",
          run_claim <- Workflow.claim_run(run, owner) do
-      case run_claim do
-        {:completed, _run} ->
-          {:ok, plan}
-
-        {:busy, seconds} ->
-          {:error, {:workflow_busy, seconds}}
-
-        {:ok, run_state} ->
-          with {:ok, steps} <- ensure_apply_steps(run_state, plan),
-               {items, applied_count, skipped_count, conflict_count} <-
-                 apply_items(plan, user, body_bags, selected, apply_run_ref, steps, owner),
-               {:ok, _finished} <- Workflow.finish_run(run_state, owner) do
-            status =
-              cond do
-                conflict_count > 0 ->
-                  :partially_applied
-
-                applied_count + skipped_count > 0 and all_selected_finished?(items, selected) ->
-                  :completed
-
-                true ->
-                  :pending
-              end
-
-            plan
-            |> AssetReplacementPlan.changeset(%{
-              items: items,
-              status: status,
-              apply_run_ref: apply_run_ref,
-              applied_at:
-                if(applied_count > 0, do: DateTime.utc_now(:second), else: plan.applied_at)
-            })
-            |> Repo.update()
-          end
-      end
+      handle_apply_claim(run_claim, plan, user, body_bags, selected, apply_run_ref, owner)
     else
       {:error, _reason} = error -> error
+    end
+  end
+
+  defp handle_apply_claim({:completed, _run}, plan, _user, _bags, _selected, _ref, _owner) do
+    {:ok, plan}
+  end
+
+  defp handle_apply_claim({:busy, seconds}, _plan, _user, _bags, _selected, _ref, _owner) do
+    {:error, {:workflow_busy, seconds}}
+  end
+
+  defp handle_apply_claim({:ok, run_state}, plan, user, body_bags, selected, apply_run_ref, owner) do
+    with {:ok, steps} <- ensure_apply_steps(run_state, plan),
+         {items, applied_count, skipped_count, conflict_count} <-
+           apply_items(plan, user, body_bags, selected, apply_run_ref, steps, owner),
+         {:ok, _finished} <- Workflow.finish_run(run_state, owner) do
+      update_applied_plan(plan, items, selected, apply_run_ref, {
+        applied_count,
+        skipped_count,
+        conflict_count
+      })
+    end
+  end
+
+  defp update_applied_plan(plan, items, selected, apply_run_ref, counts) do
+    {applied_count, _skipped_count, _conflict_count} = counts
+
+    plan
+    |> AssetReplacementPlan.changeset(%{
+      items: items,
+      status: apply_status(items, selected, counts),
+      apply_run_ref: apply_run_ref,
+      applied_at: if(applied_count > 0, do: DateTime.utc_now(:second), else: plan.applied_at)
+    })
+    |> Repo.update()
+  end
+
+  defp apply_status(_items, _selected, {_applied, _skipped, conflict}) when conflict > 0 do
+    :partially_applied
+  end
+
+  defp apply_status(items, selected, {applied, skipped, _conflict}) do
+    if applied + skipped > 0 and all_selected_finished?(items, selected) do
+      :completed
+    else
+      :pending
     end
   end
 
@@ -193,10 +241,8 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
         end
 
       _decision ->
-        with {:ok, _} <- live_revision_matches?(item, article_id),
-             {:ok, updated_item, result} <-
-               apply_locators(plan, item, article_id, body_bag, user, apply_run_ref, steps, owner) do
-          {:ok, updated_item, result}
+        with {:ok, _} <- live_revision_matches?(item, article_id) do
+          apply_locators(plan, item, article_id, body_bag, user, apply_run_ref, steps, owner)
         end
     end
   end
@@ -232,6 +278,14 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
 
     community = Repo.get!(Community, plan.community_id)
 
+    plan_context = %PlanContext{
+      plan: plan,
+      community: community,
+      actor: user,
+      apply_run_ref: apply_run_ref,
+      owner: owner
+    }
+
     (item_value(item, :usage_locators) || [])
     |> Enum.reduce_while({:ok, item, nil, draft_version}, fn locator,
                                                              {:ok, current_item, _last, version} ->
@@ -241,18 +295,14 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
       case Workflow.claim_step(workflow_step, owner) do
         {:completed, _step} ->
           apply_claimed_locator(
-            plan,
-            current_item,
-            locator,
-            article_id,
-            body_bag,
-            version,
-            community,
-            user,
-            apply_run_ref,
-            step_ref,
-            nil,
-            owner
+            plan_context,
+            %ArticleContext{
+              item: current_item,
+              article_id: article_id,
+              body_bag: body_bag,
+              version: version
+            },
+            %StepContext{locator: locator, step_ref: step_ref, claimed_step: nil}
           )
 
         {:busy, seconds} ->
@@ -260,18 +310,14 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
 
         {:ok, claimed_step} ->
           apply_claimed_locator(
-            plan,
-            current_item,
-            locator,
-            article_id,
-            body_bag,
-            version,
-            community,
-            user,
-            apply_run_ref,
-            step_ref,
-            claimed_step,
-            owner
+            plan_context,
+            %ArticleContext{
+              item: current_item,
+              article_id: article_id,
+              body_bag: body_bag,
+              version: version
+            },
+            %StepContext{locator: locator, step_ref: step_ref, claimed_step: claimed_step}
           )
       end
     end)
@@ -282,100 +328,104 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
   end
 
   defp apply_claimed_locator(
-         plan,
-         current_item,
-         locator,
-         article_id,
-         body_bag,
-         version,
-         community,
-         user,
-         apply_run_ref,
-         step_ref,
-         claimed_step,
-         owner
+         %PlanContext{} = plan_context,
+         %ArticleContext{} = article_context,
+         %StepContext{} = step_context
        ) do
-    case apply_locator_step(
-           plan,
-           current_item,
-           locator,
-           article_id,
-           body_bag,
-           version,
-           community,
-           user,
-           apply_run_ref,
-           step_ref
-         ) do
+    case apply_locator_step(plan_context, article_context, step_context) do
       {:ok, updated_item, result, next_version} ->
-        if claimed_step, do: Workflow.complete_step(claimed_step, owner, json_safe(result))
+        if step_context.claimed_step do
+          Workflow.complete_step(
+            step_context.claimed_step,
+            plan_context.owner,
+            json_safe(result)
+          )
+        end
+
         {:cont, {:ok, updated_item, result, next_version}}
 
       {:error, reason} ->
-        if claimed_step do
-          _ = Workflow.fail_step(claimed_step, owner, reason, conflict_status(reason))
+        if step_context.claimed_step do
+          _ =
+            Workflow.fail_step(
+              step_context.claimed_step,
+              plan_context.owner,
+              reason,
+              conflict_status(reason)
+            )
         end
 
-        _ = mark_locator_failed(plan.id, article_id, step_ref, reason)
+        _ =
+          mark_locator_failed(
+            plan_context.plan.id,
+            article_context.article_id,
+            step_context.step_ref,
+            reason
+          )
+
         {:halt, {:error, reason}}
     end
   end
 
   defp apply_locator_step(
-         plan,
-         item,
-         locator,
-         article_id,
-         body_bag,
-         version,
-         community,
-         user,
-         apply_run_ref,
-         step_ref
+         %PlanContext{} = plan_context,
+         %ArticleContext{} = article_context,
+         %StepContext{} = step_context
        ) do
     Repo.transaction(fn ->
-      locked_plan = lock_plan(plan.id)
-      persisted_item = plan_item(locked_plan.items, article_id) || item
-      persisted_locator = plan_locator(persisted_item, step_ref) || locator
+      locked_plan = lock_plan(plan_context.plan.id)
+
+      persisted_item =
+        plan_item(locked_plan.items, article_context.article_id) || article_context.item
+
+      persisted_locator =
+        plan_locator(persisted_item, step_context.step_ref) || step_context.locator
 
       case item_value(persisted_locator, :status) do
         status when status in [:succeeded, "succeeded"] ->
           result = item_value(persisted_locator, :result)
-          next_version = item_value(persisted_item, :current_draft_version) || version
+
+          next_version =
+            item_value(persisted_item, :current_draft_version) || article_context.version
+
           {:ok, persisted_item, result, next_version}
 
         _ ->
-          workflow_ref = "asset-replacement:#{plan.id}:#{article_id}:#{step_ref}"
+          workflow_ref =
+            "asset-replacement:#{plan_context.plan.id}:#{article_context.article_id}:#{step_context.step_ref}"
 
           attrs =
             %{
-              expected_draft_version: version,
+              expected_draft_version: article_context.version,
               usage: item_value(persisted_locator, :usage),
               block_id: item_value(persisted_locator, :block_id),
               position: item_value(persisted_locator, :position),
-              from_asset_id: plan.from_asset_id,
-              to_asset_id: plan.to_asset_id,
-              step_ref: step_ref
+              from_asset_id: plan_context.plan.from_asset_id,
+              to_asset_id: plan_context.plan.to_asset_id,
+              step_ref: step_context.step_ref
             }
-            |> maybe_put_body_bag(body_bag)
+            |> maybe_put_body_bag(article_context.body_bag)
 
           with {:ok, result} <-
                  ReplaceUse.execute(
-                   %{article_id: article_id, community: community},
+                   %{
+                     article_id: article_context.article_id,
+                     community: plan_context.community
+                   },
                    attrs,
-                   user,
+                   plan_context.actor,
                    {:workflow, workflow_ref}
                  ),
-               next_version <- Map.get(result, :draft_version, version),
+               next_version <- Map.get(result, :draft_version, article_context.version),
                updated_item <-
                  persist_locator_success(
                    locked_plan,
                    persisted_item,
                    persisted_locator,
-                   step_ref,
+                   step_context.step_ref,
                    result,
                    next_version,
-                   apply_run_ref
+                   plan_context.apply_run_ref
                  ) do
             {:ok, updated_item, result, next_version}
           else
@@ -466,18 +516,19 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
     |> Repo.one!()
   end
 
-  defp plan_item(items, article_id),
-    do: Enum.find(items, &(item_value(&1, :article_id) == article_id))
+  defp plan_item(items, article_id) do
+    Enum.find(items, &(item_value(&1, :article_id) == article_id))
+  end
 
-  defp plan_locator(item, step_ref),
-    do:
-      Enum.find(item_value(item, :usage_locators) || [], &(item_value(&1, :step_ref) == step_ref))
+  defp plan_locator(item, step_ref) do
+    Enum.find(item_value(item, :usage_locators) || [], &(item_value(&1, :step_ref) == step_ref))
+  end
 
-  defp replace_plan_item(items, article_id, updated_item),
-    do:
-      Enum.map(items, fn item ->
-        if item_value(item, :article_id) == article_id, do: updated_item, else: item
-      end)
+  defp replace_plan_item(items, article_id, updated_item) do
+    Enum.map(items, fn item ->
+      if item_value(item, :article_id) == article_id, do: updated_item, else: item
+    end)
+  end
 
   defp replace_locator(item, step_ref, updated_locator) do
     locators =
@@ -494,13 +545,15 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
   defp step_key(article_id, step_ref), do: "article:#{article_id}:#{step_ref}"
 
   defp conflict_status(reason)
-       when reason in [:live_revision_conflict, :draft_version_conflict],
-       do: :conflict
+       when reason in [:live_revision_conflict, :draft_version_conflict] do
+    :conflict
+  end
 
   defp conflict_status(_reason), do: :failed
 
-  defp all_selected_finished?(items, nil),
-    do: items != [] and Enum.all?(items, &item_finished?/1)
+  defp all_selected_finished?(items, nil) do
+    items != [] and Enum.all?(items, &item_finished?/1)
+  end
 
   defp all_selected_finished?(items, selected) do
     selected = MapSet.new(selected)
@@ -531,8 +584,9 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
     end
   end
 
-  defp json_safe(value) when is_map(value),
-    do: Map.new(value, fn {key, value} -> {to_string(key), json_safe(value)} end)
+  defp json_safe(value) when is_map(value) do
+    Map.new(value, fn {key, value} -> {to_string(key), json_safe(value)} end)
+  end
 
   defp json_safe(value) when is_list(value), do: Enum.map(value, &json_safe/1)
   defp json_safe(value) when is_atom(value), do: Atom.to_string(value)

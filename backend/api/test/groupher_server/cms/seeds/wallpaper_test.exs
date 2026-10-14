@@ -68,7 +68,8 @@ defmodule GroupherServer.Test.CMS.Seeds.WallpaperTest do
   end
 
   defmodule FakeBatchClient do
-    alias GroupherServer.CMS.Assets.{Capability, Maintenance.GeneratedBatch.PublishCapability}
+    alias GroupherServer.CMS
+    alias CMS.Assets.{Capability, Maintenance.GeneratedBatch.PublishCapability}
 
     def claim_for_publish(batch_ref, command_id) do
       batch = Process.get(:wallpaper_seed_batch_payload)

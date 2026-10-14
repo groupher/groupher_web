@@ -16,21 +16,23 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Update do
 
   @spec execute(String.t(), map(), User.t(), Ecto.UUID.t()) :: T.domain_res(Category.t())
   def execute(community_ref, %{id: id} = attrs, %User{} = actor, command_id) do
-    with {:ok, community} <- Support.community(community_ref) do
-      command = %Command{
-        actor: actor,
-        command_id: command_id,
-        operation: :category_update,
-        target: {:category, id},
-        params: %{community_id: community.id, attrs: Map.drop(attrs, [:id, "id"])}
-      }
+    case Support.community(community_ref) do
+      {:ok, community} ->
+        command = %Command{
+          actor: actor,
+          command_id: command_id,
+          operation: :category_update,
+          target: {:category, id},
+          params: %{community_id: community.id, attrs: Map.drop(attrs, [:id, "id"])}
+        }
 
-      with {:ok, confirmation} <-
-             Command.execute(command, action: &action/1, confirmation: Confirmation) do
-        Support.category_result(confirmation)
-      end
-    else
-      {:error, _reason} = error -> error
+        with {:ok, confirmation} <-
+               Command.execute(command, action: &action/1, confirmation: Confirmation) do
+          Support.category_result(confirmation)
+        end
+
+      {:error, _reason} = error ->
+        error
     end
   end
 

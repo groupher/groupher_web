@@ -108,28 +108,35 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
         {:ok, community}
 
       _ ->
-        case Keyword.get(opts, :community_id) do
-          community_id when is_integer(community_id) ->
-            case Repo.get(GroupherServer.CMS.Model.Community, community_id) do
-              %GroupherServer.CMS.Model.Community{} = community -> {:ok, community}
-              _ -> {:error, :article_binding_not_found}
-            end
+        binding_community_by_id_or_branch(opts, article, branch_id)
+    end
+  end
 
-          _ ->
-            case Repo.get(DocBranch, branch_id) do
-              %DocBranch{community_id: community_id} ->
-                case Repo.get(GroupherServer.CMS.Model.Community, community_id) do
-                  %GroupherServer.CMS.Model.Community{} = community -> {:ok, community}
-                  _ -> {:error, :article_binding_not_found}
-                end
+  defp binding_community_by_id_or_branch(opts, article, branch_id) do
+    case Keyword.get(opts, :community_id) do
+      community_id when is_integer(community_id) -> load_community(community_id)
+      _community_id -> binding_community_by_branch(article, branch_id)
+    end
+  end
 
-              _ ->
-                case Bindings.get(article, Map.get(article, :community)) do
-                  {:ok, %{community: community}} -> {:ok, community}
-                  {:error, reason} -> {:error, reason}
-                end
-            end
-        end
+  defp binding_community_by_branch(article, branch_id) do
+    case Repo.get(DocBranch, branch_id) do
+      %DocBranch{community_id: community_id} -> load_community(community_id)
+      _branch -> binding_community_by_article(article)
+    end
+  end
+
+  defp load_community(community_id) do
+    case Repo.get(GroupherServer.CMS.Model.Community, community_id) do
+      %GroupherServer.CMS.Model.Community{} = community -> {:ok, community}
+      _community -> {:error, :article_binding_not_found}
+    end
+  end
+
+  defp binding_community_by_article(article) do
+    case Bindings.get(article, Map.get(article, :community)) do
+      {:ok, %{community: community}} -> {:ok, community}
+      {:error, reason} -> {:error, reason}
     end
   end
 
@@ -280,8 +287,9 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
   defp present(nil, error), do: {:error, error}
   defp present(value, _error), do: {:ok, value}
 
-  defp valid_slug(slug),
-    do: if(Slug.valid?(slug), do: {:ok, :pass}, else: {:error, :invalid_slug})
+  defp valid_slug(slug) do
+    if(Slug.valid?(slug), do: {:ok, :pass}, else: {:error, :invalid_slug})
+  end
 
   defp invalidate_public_cache(_article, _branch, nil, _community, _first?, _opts) do
     {:ok, :not_public_path}

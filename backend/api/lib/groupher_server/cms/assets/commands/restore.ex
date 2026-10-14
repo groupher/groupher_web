@@ -5,20 +5,20 @@ defmodule GroupherServer.CMS.Assets.Commands.Restore do
       GraphQL / facade -> Restore -> CMS.Command -> Gate -> Persist -> Confirmation
   """
 
-  alias GroupherServer.Accounts
-
-  alias GroupherServer.{CMS, Repo}
-  alias CMS.Assets.Commands.RestoreAssetConfirmation, as: Confirmation
-  alias CMS.{Command, Assets.Persist, ErrorCat}
-  alias CMS.Model.{Community, CommunityAsset}
+  alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
+  alias CMS.Assets.Commands.RestoreAssetConfirmation, as: Confirmation
+  alias CMS.{Command, ErrorCat}
+  alias CMS.Assets.{Persist, Query}
+  alias CMS.Communities.Query, as: CommunitiesQuery
+  alias CMS.Model.{Community, CommunityAsset}
 
   @spec execute(Community.t(), term(), User.t(), String.t() | nil) ::
           {:ok, CommunityAsset.t()} | {:error, term()}
   def execute(%Community{} = community, asset_id, %User{} = user, command_id) do
     with {:ok, command_id} <- command_identity(command_id),
          %CommunityAsset{} = asset <-
-           Repo.get_by(CommunityAsset, id: asset_id, community_id: community.id),
+           Query.asset(community.id, asset_id),
          {:ok, %Confirmation{} = confirmation} <-
            Command.execute(
              %Command{
@@ -41,7 +41,7 @@ defmodule GroupherServer.CMS.Assets.Commands.Restore do
   def execute(%Community{}, _asset_id, _user, _command_id), do: {:error, :asset_actor_required}
 
   defp restore_action(%{actor: actor, target: %CommunityAsset{} = asset, command_id: command_id}) do
-    community = Repo.get!(Community, asset.community_id)
+    community = CommunitiesQuery.get(asset.community_id)
 
     CMS.Gate.with_community_check(actor, :update, community, fn canonical ->
       with {:ok, restored} <- Persist.restore(canonical, asset.id) do
@@ -51,7 +51,7 @@ defmodule GroupherServer.CMS.Assets.Commands.Restore do
   end
 
   defp present(%Confirmation{data: %{"asset_id" => asset_id, "command_id" => command_id}}) do
-    case Repo.get(CommunityAsset, asset_id) do
+    case Query.asset(asset_id) do
       %CommunityAsset{} = asset -> {:ok, Map.put(asset, :command_id, command_id)}
       nil -> {:error, ErrorCat.custom("asset result unavailable")}
     end
@@ -63,9 +63,11 @@ defmodule GroupherServer.CMS.Assets.Commands.Restore do
         {:ok, command_id}
 
       :error ->
-        if is_nil(command_id),
-          do: {:error, ErrorCat.command_id_required()},
-          else: {:error, ErrorCat.command_id_invalid()}
+        if is_nil(command_id) do
+          {:error, ErrorCat.command_id_required()}
+        else
+          {:error, ErrorCat.command_id_invalid()}
+        end
     end
   end
 end

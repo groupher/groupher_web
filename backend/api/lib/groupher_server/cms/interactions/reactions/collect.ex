@@ -32,8 +32,9 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
 
   """
   @spec add(struct(), User.t(), Ecto.UUID.t()) :: T.domain_res(struct())
-  def add(article, %User{} = actor, command_id),
-    do: mutate(article, actor, :add, command_id)
+  def add(article, %User{} = actor, command_id) do
+    mutate(article, actor, :add, command_id)
+  end
 
   @doc """
   Removes an Article collect as an idempotent set-state command.
@@ -44,8 +45,9 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
 
   """
   @spec remove(struct(), User.t(), Ecto.UUID.t()) :: T.domain_res(struct())
-  def remove(article, %User{} = actor, command_id),
-    do: mutate(article, actor, :remove, command_id)
+  def remove(article, %User{} = actor, command_id) do
+    mutate(article, actor, :remove, command_id)
+  end
 
   defp mutate(input, actor, operation, command_id) do
     with {:ok, command_id} <- require_command_id(command_id),

@@ -19,7 +19,7 @@ defmodule GroupherServer.Messaging.Model.Mention do
   import Ecto.Changeset
 
   alias __MODULE__
-  alias GroupherServer.{Accounts}
+  alias GroupherServer.Accounts
   alias Accounts.Model.User
 
   alias Helper.Constant.DBPrefix

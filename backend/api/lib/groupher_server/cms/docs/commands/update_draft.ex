@@ -5,12 +5,11 @@ defmodule GroupherServer.CMS.Docs.Commands.UpdateDraft do
       Doc draft -> Gate/version checks -> draft write -> tagged result
   """
 
-  alias GroupherServer.Accounts
-
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Docs.Editor
-  alias CMS.Model.{Author, Community, DocBranch}
+  alias CMS.Articles.Query
+  alias CMS.Model.Author
 
   @spec execute(Ecto.UUID.t(), pos_integer(), map(), User.t() | Author.t()) ::
           {:ok, map()} | {:error, term()}
@@ -42,15 +41,6 @@ defmodule GroupherServer.CMS.Docs.Commands.UpdateDraft do
   end
 
   defp branch_community(branch_id) do
-    case Repo.get(DocBranch, branch_id) do
-      %DocBranch{community_id: community_id} ->
-        case Repo.get(Community, community_id) do
-          %Community{} = community -> {:ok, community}
-          _ -> {:error, :article_binding_not_found}
-        end
-
-      _ ->
-        {:error, :article_binding_not_found}
-    end
+    Query.branch_community(branch_id)
   end
 end

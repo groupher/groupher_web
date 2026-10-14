@@ -254,24 +254,28 @@ defmodule GroupherServer.PublicCache.Persist do
   defp payload(%{} = aggregate), do: normalize_payload(aggregate)
 
   defp normalize_payload(aggregate) do
-    community = Map.get(aggregate, :community) || Map.get(aggregate, "community")
-
-    community =
-      if is_map(community),
-        do: Map.get(community, :slug) || Map.get(community, "slug"),
-        else: community
-
-    meta = Map.get(aggregate, :meta) || Map.get(aggregate, "meta") || %{}
-    thread = Map.get(aggregate, :thread) || Map.get(meta, :thread) || Map.get(meta, "thread")
+    community = aggregate |> get_either(:community, "community") |> community_slug()
+    meta = get_either(aggregate, :meta, "meta") || %{}
+    thread = Map.get(aggregate, :thread) || get_either(meta, :thread, "thread")
 
     %{
       community: community,
-      community_id: Map.get(aggregate, :community_id) || Map.get(aggregate, "community_id"),
+      community_id: get_either(aggregate, :community_id, "community_id"),
       thread: thread,
-      inner_id: Map.get(aggregate, :inner_id) || Map.get(aggregate, "inner_id"),
-      article_id: Map.get(aggregate, :id) || Map.get(aggregate, "id")
+      inner_id: get_either(aggregate, :inner_id, "inner_id"),
+      article_id: get_either(aggregate, :id, "id")
     }
   end
+
+  defp get_either(map, atom_key, string_key) do
+    Map.get(map, atom_key) || Map.get(map, string_key)
+  end
+
+  defp community_slug(community) when is_map(community) do
+    get_either(community, :slug, "slug")
+  end
+
+  defp community_slug(community), do: community
 
   defp aggregate_type(%struct{}) do
     struct |> Module.split() |> List.last() |> Macro.underscore()

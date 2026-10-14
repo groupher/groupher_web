@@ -62,18 +62,20 @@ defmodule GroupherServer.Analysis.ArticleInsights.Query do
   def trend_by_path(article_path, viewer, opts \\ [])
 
   def trend_by_path(article_path, viewer, opts) when is_list(opts) do
-    with {:ok, article} <- CMS.resolve_article_for_insights(article_path, viewer, opts) do
-      opts =
-        opts
-        |> Keyword.put(:skip_authorize, true)
-        |> Keyword.put(
-          :community,
-          Map.get(article_path, :community) || Map.get(article_path, "community")
-        )
+    case CMS.resolve_article_for_insights(article_path, viewer, opts) do
+      {:ok, article} ->
+        opts =
+          opts
+          |> Keyword.put(:skip_authorize, true)
+          |> Keyword.put(
+            :community,
+            Map.get(article_path, :community) || Map.get(article_path, "community")
+          )
 
-      trend(article, viewer, opts)
-    else
-      {:error, _reason} = error -> error
+        trend(article, viewer, opts)
+
+      {:error, _reason} = error ->
+        error
     end
   end
 
@@ -251,31 +253,29 @@ defmodule GroupherServer.Analysis.ArticleInsights.Query do
         }
       )
 
-    view_dimension_filter =
-      case {actor_types, is_authenticated} do
-        {nil, nil} ->
-          dynamic([row], true)
-
-        {types, auth} ->
-          actor_filter =
-            case types do
-              nil -> dynamic([row], true)
-              types -> dynamic([row], row.actor_type in ^types)
-            end
-
-          auth_filter =
-            case auth do
-              nil -> dynamic([row], true)
-              auth -> dynamic([row], row.is_authenticated == ^auth)
-            end
-
-          dynamic([row], ^actor_filter and ^auth_filter)
-      end
+    view_dimension_filter = view_dimension_filter(actor_types, is_authenticated)
 
     metric_filter = dynamic([row], row.metric != ^:article_view or ^view_dimension_filter)
 
     from(row in query, where: ^metric_filter)
     |> Repo.all()
+  end
+
+  defp view_dimension_filter(nil, nil), do: dynamic([row], true)
+
+  defp view_dimension_filter(actor_types, is_authenticated) do
+    actor_filter = actor_dimension_filter(actor_types)
+    auth_filter = authentication_dimension_filter(is_authenticated)
+    dynamic([row], ^actor_filter and ^auth_filter)
+  end
+
+  defp actor_dimension_filter(nil), do: dynamic([row], true)
+  defp actor_dimension_filter(types), do: dynamic([row], row.actor_type in ^types)
+
+  defp authentication_dimension_filter(nil), do: dynamic([row], true)
+
+  defp authentication_dimension_filter(is_authenticated) do
+    dynamic([row], row.is_authenticated == ^is_authenticated)
   end
 
   defp resolve_binding(article, opts) do

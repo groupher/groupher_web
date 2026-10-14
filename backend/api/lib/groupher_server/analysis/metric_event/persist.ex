@@ -50,8 +50,9 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
     end
   end
 
-  def append_article_action(_article, _operation_id, _metric, _opts),
-    do: {:error, :invalid_article_metric}
+  def append_article_action(_article, _operation_id, _metric, _opts) do
+    {:error, :invalid_article_metric}
+  end
 
   @doc """
   Appends one metric fact; duplicate producer retries are successful no-ops.
@@ -254,16 +255,20 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
          actor_type: actor_type,
          is_authenticated: is_authenticated
        }) do
-    cond do
-      Ecto.UUID.cast(operation_id) == :error -> {:error, :invalid_operation_id}
-      not (is_integer(community_id) and community_id > 0) -> {:error, :invalid_community_id}
-      not (is_integer(binding_id) and binding_id > 0) -> {:error, :invalid_binding_id}
-      cast_article_id(article_id) == :error -> {:error, :invalid_article_id}
-      article_type not in CMS.artiment_threads_article_enums() -> {:error, :invalid_article_type}
-      metric not in Const.metrics() -> {:error, :invalid_metric}
-      actor_type not in Const.actor_dimensions() -> {:error, :invalid_actor_type}
-      not is_boolean(is_authenticated) -> {:error, :invalid_authentication_flag}
-      true -> {:ok, :pass}
+    checks = [
+      {Ecto.UUID.cast(operation_id) != :error, :invalid_operation_id},
+      {positive_integer?(community_id), :invalid_community_id},
+      {positive_integer?(binding_id), :invalid_binding_id},
+      {cast_article_id(article_id) != :error, :invalid_article_id},
+      {article_type in CMS.artiment_threads_article_enums(), :invalid_article_type},
+      {metric in Const.metrics(), :invalid_metric},
+      {actor_type in Const.actor_dimensions(), :invalid_actor_type},
+      {is_boolean(is_authenticated), :invalid_authentication_flag}
+    ]
+
+    case Enum.find(checks, fn {valid?, _reason} -> not valid? end) do
+      nil -> {:ok, :pass}
+      {_valid?, reason} -> {:error, reason}
     end
   end
 
@@ -272,4 +277,6 @@ defmodule GroupherServer.Analysis.MetricEvent.Persist do
   defp cast_article_id(id) when is_integer(id) and id > 0, do: {:ok, id}
   defp cast_article_id(id) when is_binary(id), do: Ecto.UUID.cast(id)
   defp cast_article_id(_id), do: :error
+
+  defp positive_integer?(value), do: is_integer(value) and value > 0
 end

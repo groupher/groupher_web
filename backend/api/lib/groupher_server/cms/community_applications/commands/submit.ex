@@ -7,17 +7,16 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
 
   require GroupherServer.CMS.Communities.ErrorCat
 
-  alias GroupherServer.Accounts
-
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.Model.User
   alias CMS.{Command, Gate}
   alias Ecto.Multi
   alias CMS.Communities.{ErrorCat, NamePolicy, SlugClaims}
   alias CMS.CommunityApplications.{Config, Lifecycle, LogoUploads, Persist, Policy}
+  alias CMS.CommunityApplications.Query
   alias CMS.CommunityApplications.Commands.{Support, Confirmation}
   alias CMS.Model.CommunityApplication
-  alias Accounts.Model.User
-  alias Helper.{Utils, T}
+  alias Helper.{Utils, T, Transaction}
 
   @categories %{
     "PRODUCT" => :PRODUCT,
@@ -97,7 +96,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
         })
         |> Persist.insert_event()
       end)
-      |> Repo.transact()
+      |> Transaction.run()
       |> normalize_submit_result(user.id, submit_command_id, fingerprint)
     else
       {:hit, application} -> {:ok, application}
@@ -137,15 +136,16 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
   end
 
   defp submit_command_lookup(user_id, key, fingerprint) do
-    case Repo.get_by(CommunityApplication, user_id: user_id, submit_command_id: key) do
+    case Query.by_submit_command(user_id, key) do
       nil -> :miss
       %{input_fingerprint: ^fingerprint} = application -> {:hit, application}
       _ -> {:error, ErrorCat.command_identity_conflict()}
     end
   end
 
-  defp normalize_submit_result({:ok, %{application: application}}, _user_id, _key, _fingerprint),
-    do: {:ok, application}
+  defp normalize_submit_result({:ok, %{application: application}}, _user_id, _key, _fingerprint) do
+    {:ok, application}
+  end
 
   defp normalize_submit_result(
          {:error, :application, %Ecto.Changeset{}, _changes},
@@ -165,8 +165,9 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
     end
   end
 
-  defp normalize_submit_result({:error, :slug_claim, _changeset, _changes}, _, _, _),
-    do: {:error, ErrorCat.slug_claimed()}
+  defp normalize_submit_result({:error, :slug_claim, _changeset, _changes}, _, _, _) do
+    {:error, ErrorCat.slug_claimed()}
+  end
 
   defp normalize_submit_result({:error, _step, reason, _changes}, _, _, _), do: {:error, reason}
 
@@ -178,16 +179,19 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
     |> Base.encode16(case: :lower)
   end
 
-  defp normalize_category(value) when is_atom(value),
-    do: value |> Atom.to_string() |> normalize_category()
+  defp normalize_category(value) when is_atom(value) do
+    value |> Atom.to_string() |> normalize_category()
+  end
 
-  defp normalize_category(value) when is_binary(value),
-    do: Map.get(@categories, String.upcase(String.trim(value)))
+  defp normalize_category(value) when is_binary(value) do
+    Map.get(@categories, String.upcase(String.trim(value)))
+  end
 
   defp normalize_category(_), do: nil
 
-  defp get(map, key, default \\ nil),
-    do: Map.get(map, key, Map.get(map, Atom.to_string(key), default))
+  defp get(map, key, default \\ nil) do
+    Map.get(map, key, Map.get(map, Atom.to_string(key), default))
+  end
 
   defp normalize_string(value) when is_binary(value) do
     value = String.trim(value)

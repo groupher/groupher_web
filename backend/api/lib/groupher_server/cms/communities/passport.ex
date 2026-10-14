@@ -191,10 +191,7 @@ defmodule GroupherServer.CMS.Communities.Passport do
     map
     |> Enum.reduce(%{}, fn {k, v}, acc ->
       value =
-        cond do
-          is_map(v) -> reject_empty_values(v)
-          true -> v
-        end
+        if is_map(v), do: reject_empty_values(v), else: v
 
       if value == %{}, do: acc, else: Map.put(acc, k, value)
     end)

@@ -11,10 +11,10 @@ defmodule GroupherServer.CMS.Comments.Commands.SolutionChange do
   UUID is created inside the aggregate callback.
   """
 
-  alias GroupherServer.{Accounts, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.{Command, FrontDesk}
-  alias CMS.Comments.Solution
+  alias CMS.Comments.{Query, Solution}
   alias CMS.Comments.Commands.SolutionConfirmation, as: Confirmation
   alias CMS.Model.Comment
 
@@ -73,9 +73,8 @@ defmodule GroupherServer.CMS.Comments.Commands.SolutionChange do
   end
 
   defp present(%Confirmation{data: %{"comment_id" => comment_id, "state" => state}}) do
-    with %Comment{} = comment <- Repo.get(Comment, comment_id) do
-      {:ok, %{comment | is_solution: state == "accepted"}}
-    else
+    case Query.comment(comment_id) do
+      %Comment{} = comment -> {:ok, %{comment | is_solution: state == "accepted"}}
       nil -> {:error, CMS.Gate.ErrorCat.resource_not_found()}
     end
   end

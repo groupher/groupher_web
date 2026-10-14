@@ -5,14 +5,12 @@ defmodule GroupherServer.CMS.Comments.Commands.StateChange do
       state command -> canonical Comment -> state transition -> tagged result
   """
 
-  alias GroupherServer.Accounts
-
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.Model.User
   alias CMS.{Command, FrontDesk}
-  alias CMS.Comments.States
+  alias CMS.Comments.{Query, States}
   alias CMS.Comments.Commands.StateConfirmation, as: Confirmation
   alias CMS.Model.Comment
-  alias Accounts.Model.User
 
   @spec execute(atom(), Comment.t(), User.t()) :: {:ok, term()} | {:error, term()}
   def execute(action, %Comment{} = _comment, %User{} = _user)
@@ -81,10 +79,13 @@ defmodule GroupherServer.CMS.Comments.Commands.StateChange do
   defp present(%Confirmation{
          data: %{"comment_id" => comment_id, "command_id" => command_id, "state" => state}
        }) do
-    with %Comment{} = comment <- Repo.get(Comment, comment_id) do
-      {:ok, comment |> Map.put(:is_pinned, state == "pinned") |> Map.put(:command_id, command_id)}
-    else
-      nil -> {:error, CMS.Gate.ErrorCat.resource_not_found()}
+    case Query.comment(comment_id) do
+      %Comment{} = comment ->
+        {:ok,
+         comment |> Map.put(:is_pinned, state == "pinned") |> Map.put(:command_id, command_id)}
+
+      nil ->
+        {:error, CMS.Gate.ErrorCat.resource_not_found()}
     end
   end
 

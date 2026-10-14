@@ -20,9 +20,8 @@ defmodule GroupherServer.PublicCache.Effects do
   """
   @spec deliver(Invalidation.t()) :: {:ok, :pass} | {:error, term()}
   def deliver(%Invalidation{} = invalidation) do
-    with {:ok, tags} <- Scope.tags(invalidation.type, invalidation.payload),
-         {:ok, :pass} <- Cloudflare.purge(tags) do
-      {:ok, :pass}
+    with {:ok, tags} <- Scope.tags(invalidation.type, invalidation.payload) do
+      Cloudflare.purge(tags)
     end
   end
 end

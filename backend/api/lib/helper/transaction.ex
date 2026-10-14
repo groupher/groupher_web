@@ -13,6 +13,18 @@ defmodule Helper.Transaction do
         -> normalized value / infrastructure
   """
 
+  import Ecto.Query, warn: false
+  alias GroupherServer.{ErrorCat, Repo}
+  alias Helper.ORM.AdvisoryLock
+
+  @doc "Runs a caller-owned business transaction and preserves tagged-tuple semantics."
+  @spec run((-> {:ok, value} | {:error, reason})) :: {:ok, value} | {:error, reason}
+        when value: term(), reason: term()
+  def run(fun) when is_function(fun, 0), do: Repo.transact(fun)
+
+  @doc false
+  def run(%Ecto.Multi{} = multi), do: Repo.transact(multi)
+
   @doc """
   Lock one or more existing rows with `FOR UPDATE` and execute transaction.
 
@@ -26,11 +38,6 @@ defmodule Helper.Transaction do
         # - raw value
       end)
   """
-
-  import Ecto.Query, warn: false
-  alias GroupherServer.{ErrorCat, Repo}
-  alias Helper.ORM.AdvisoryLock
-
   @spec lock_row(any() | [any()], (any() -> any())) :: {:ok, any()} | {:error, any()}
   def lock_row(queryable, fun) when not is_list(queryable) do
     Repo.transaction(fn ->

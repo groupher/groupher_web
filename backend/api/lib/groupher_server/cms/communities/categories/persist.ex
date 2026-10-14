@@ -24,8 +24,9 @@ defmodule GroupherServer.CMS.Communities.Categories.Persist do
 
   @doc "Updates one Category after the caller has checked its Community scope."
   @spec update_category(Category.t(), map()) :: T.domain_res(Category.t())
-  def update_category(%Category{} = category, attrs) when is_map(attrs),
-    do: ORM.update(category, attrs)
+  def update_category(%Category{} = category, attrs) when is_map(attrs) do
+    ORM.update(category, attrs)
+  end
 
   @doc "Deletes one Category after the caller has checked its Community scope."
   @spec delete_category(Category.t()) :: T.domain_res(Category.t())
@@ -49,8 +50,9 @@ defmodule GroupherServer.CMS.Communities.Categories.Persist do
 
   @doc "Returns whether a Category belongs to the admitted Community."
   @spec category_in_community?(Community.t(), Category.t() | integer()) :: boolean()
-  def category_in_community?(%Community{id: community_id}, %Category{id: category_id}),
-    do: category_in_community?(%Community{id: community_id}, category_id)
+  def category_in_community?(%Community{id: community_id}, %Category{id: category_id}) do
+    category_in_community?(%Community{id: community_id}, category_id)
+  end
 
   def category_in_community?(%Community{id: community_id}, category_id) do
     match?(

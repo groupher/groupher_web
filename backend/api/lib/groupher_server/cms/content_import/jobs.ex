@@ -194,21 +194,23 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
 
     %{
       bad_smells: job.bad_smells || [],
-      counts: project_counts(result["counts"] || job.counts || %{}),
+      counts: project_counts(result_or(result, "counts", job.counts || %{})),
       error_code: job.error_code,
       error_message: job.error_message,
-      failed_items: result["failedItems"] || [],
+      failed_items: result_or(result, "failedItems", []),
       first_imported_doc_id: result["firstImportedDocId"],
       job_ref: job.hash_id,
       process: Process.project(job),
-      target_branch: result["targetBranch"] || Branch.main_slug(),
+      target_branch: result_or(result, "targetBranch", Branch.main_slug()),
       progress: job.progress || %{},
-      skipped: result["skipped"] || [],
+      skipped: result_or(result, "skipped", []),
       source_info: project_source_info(job.source_info),
       status: job.status,
-      tree: result["tree"] || job.target_tree
+      tree: result_or(result, "tree", job.target_tree)
     }
   end
+
+  defp result_or(result, key, fallback), do: Map.get(result, key) || fallback
 
   defp project_source_info(source_info) do
     %{
@@ -241,40 +243,13 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
       target = Map.get(targets, external_ref)
       source_hash = value(document, "content_hash")
 
-      cond do
-        not is_binary(external_ref) or external_ref == "" ->
-          {:halt, {:error, ErrorCat.custom("sourceRef is required")}}
-
-        MapSet.member?(refs, external_ref) ->
-          {:halt, {:error, ErrorCat.custom("source documents contain a duplicate sourceRef")}}
-
-        not is_map(target) ->
-          {:halt,
-           {:error, ErrorCat.custom("source document is missing from confirmed TargetTree")}}
-
-        not is_binary(source_hash) or
-            not String.match?(source_hash, ~r/\Asource-md-v1:[0-9a-f]{64}\z/) ->
-          {:halt, {:error, ErrorCat.custom("source document hash contract is invalid")}}
-
-        true ->
-          item = %{
-            content_status: :pending,
-            external_ref: external_ref,
-            metadata: %{
-              "sizeBytes" => value(document, "size_bytes"),
-              "sourcePath" => value(document, "source_path")
-            },
-            route: value(document, "route"),
-            selected: true,
-            slug: target["slug"],
-            source_hash: source_hash,
-            source_revision: value(source_info, "commit"),
-            source_version: "source-md-v1",
-            target_ref: target["docId"],
-            title: value(document, "title")
-          }
-
+      case validate_item_source(external_ref, refs, target, source_hash) do
+        {:ok, :pass} ->
+          item = build_item(document, target, external_ref, source_hash, source_info)
           {:cont, {:ok, [item | items], MapSet.put(refs, external_ref)}}
+
+        {:error, _reason} = error ->
+          {:halt, error}
       end
     end)
     |> case do
@@ -291,6 +266,48 @@ defmodule GroupherServer.CMS.ContentImport.Jobs do
 
   defp build_item_attrs(_documents, _target_tree, _source_info) do
     {:error, ErrorCat.custom("source documents must be a list")}
+  end
+
+  defp validate_item_source(external_ref, refs, target, source_hash) do
+    cond do
+      not is_binary(external_ref) or external_ref == "" ->
+        {:error, ErrorCat.custom("sourceRef is required")}
+
+      MapSet.member?(refs, external_ref) ->
+        {:error, ErrorCat.custom("source documents contain a duplicate sourceRef")}
+
+      not is_map(target) ->
+        {:error, ErrorCat.custom("source document is missing from confirmed TargetTree")}
+
+      not valid_source_hash?(source_hash) ->
+        {:error, ErrorCat.custom("source document hash contract is invalid")}
+
+      true ->
+        {:ok, :pass}
+    end
+  end
+
+  defp valid_source_hash?(source_hash) do
+    is_binary(source_hash) and String.match?(source_hash, ~r/\Asource-md-v1:[0-9a-f]{64}\z/)
+  end
+
+  defp build_item(document, target, external_ref, source_hash, source_info) do
+    %{
+      content_status: :pending,
+      external_ref: external_ref,
+      metadata: %{
+        "sizeBytes" => value(document, "size_bytes"),
+        "sourcePath" => value(document, "source_path")
+      },
+      route: value(document, "route"),
+      selected: true,
+      slug: target["slug"],
+      source_hash: source_hash,
+      source_revision: value(source_info, "commit"),
+      source_version: "source-md-v1",
+      target_ref: target["docId"],
+      title: value(document, "title")
+    }
   end
 
   defp insert_items(job, attrs) do

@@ -20,12 +20,12 @@ defmodule GroupherServer.CMS.DocCover.Commands.UpdateCardAppearance do
       #=> {:ok, cover_card}
   """
   @spec execute(Community.t(), term(), map(), term(), Ecto.UUID.t()) :: term()
-  def execute(community, card_id, appearance, actor, _command_id),
-    do:
-      Support.run(
-        actor,
-        :manage_docs,
-        community,
-        &Persist.update_card_appearance(&1, card_id, appearance)
-      )
+  def execute(community, card_id, appearance, actor, _command_id) do
+    Support.run(
+      actor,
+      :manage_docs,
+      community,
+      &Persist.update_card_appearance(&1, card_id, appearance)
+    )
+  end
 end

@@ -118,22 +118,33 @@ defmodule GroupherServer.PublicCache.Workflow do
   defp deliver_claimed(invalidation, lock_ref, attempt, max_attempts) do
     case Effects.deliver(invalidation) do
       {:ok, :pass} ->
-        case mark_delivered(invalidation.id, lock_ref, invalidation.type) do
-          {:ok, _} -> {:ok, :pass}
-          {:error, :stale_lock} -> {:ok, :pass}
-          {:error, reason} -> {:error, reason}
-        end
+        finalize_delivery(invalidation, lock_ref)
 
       {:error, reason} = error ->
-        dead? = terminal_failure?(reason) or attempt >= max_attempts
-
-        case mark_failed(invalidation.id, lock_ref, invalidation.type, reason, dead?) do
-          {:ok, _} -> if(dead?, do: {:ok, :pass}, else: error)
-          {:error, :stale_lock} -> {:ok, :pass}
-          {:error, finalize_reason} -> {:error, finalize_reason}
-        end
+        finalize_delivery_error(invalidation, lock_ref, error, reason, attempt, max_attempts)
     end
   end
+
+  defp finalize_delivery(invalidation, lock_ref) do
+    case mark_delivered(invalidation.id, lock_ref, invalidation.type) do
+      {:ok, _} -> {:ok, :pass}
+      {:error, :stale_lock} -> {:ok, :pass}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp finalize_delivery_error(invalidation, lock_ref, error, reason, attempt, max_attempts) do
+    dead? = terminal_failure?(reason) or attempt >= max_attempts
+
+    case mark_failed(invalidation.id, lock_ref, invalidation.type, reason, dead?) do
+      {:ok, _} -> retry_or_complete(error, dead?)
+      {:error, :stale_lock} -> {:ok, :pass}
+      {:error, finalize_reason} -> {:error, finalize_reason}
+    end
+  end
+
+  defp retry_or_complete(_error, true), do: {:ok, :pass}
+  defp retry_or_complete(error, false), do: error
 
   defp finalize_failure(invalidation, lock_ref, reason, dead?) do
     case mark_failed(invalidation.id, lock_ref, invalidation.type, reason, dead?) do
@@ -145,8 +156,9 @@ defmodule GroupherServer.PublicCache.Workflow do
 
   defp terminal_failure?({:error, reason}), do: terminal_failure?(reason)
 
-  defp terminal_failure?({:cloudflare_rejected, status}) when status in [400, 401, 403, 422],
-    do: true
+  defp terminal_failure?({:cloudflare_rejected, status}) when status in [400, 401, 403, 422] do
+    true
+  end
 
   defp terminal_failure?(reason)
        when reason in [
@@ -155,8 +167,9 @@ defmodule GroupherServer.PublicCache.Workflow do
               :invalid_cache_scope,
               :invalid_cache_tag,
               :too_many_cache_tags
-            ],
-       do: true
+            ] do
+    true
+  end
 
   defp terminal_failure?({:invalid_contract, _}), do: true
   defp terminal_failure?(_reason), do: false

@@ -16,6 +16,17 @@
 - 纯粹的数据契约引用可以直接使用上游 canonical Config，不为了形式增加无意义的 facade。
 - facade 只能表达本模块的语义边界；例如 Gate 的 `ordinary_article_threads` 可以在 Gate Config 中排除 `:doc`，而不能把这个排除规则塞回 Article Config。
 
+## 模块 directive 与 alias
+
+- 模块 directive 按 `use`、`require`、`import`、`alias` 的语义块组织；生产模块的 directive 位于 `@moduledoc` 之后。
+- `alias __MODULE__` 必须是 alias 列表中的第一项。
+- 先 alias `GroupherServer` 的 Context 根模块，再通过缩短后的根模块 alias 子模块；例如先写 `alias GroupherServer.CMS`，再写 `alias CMS.Articles.Query`。
+- 同一 parent 下的 sibling alias 使用 grouped alias；语义组内部不强制全局字母排序。
+- `Model` 模块保留 canonical 名称；发生尾名冲突时，应重命名承担业务角色的一方，而不是给 Model 添加任意 `as:` 名称。
+- Gate Context 的显式 alias 保留 `*Context` 后缀。ErrorCat alias 继续遵守下文的领域边界规则。
+- GraphQL schema 通过 `Helper.GqlSchemaSuite` 使用 `M.*` middleware 和 `R.*` resolver namespace；不要为了缩短一次调用而拆散这两个语义 namespace。
+- 这些规则由 `scripts/check-elixir-module-style.mjs` 统一执行。Credo 的通用 `AliasUsage`、`AliasOrder` 和 `StrictModuleLayout` 不拥有本项目的 alias 规范。
+
 ## Const
 
 - `GroupherServer.Const` 只封装项目使用的常量机制，不承载跨 Context 的业务枚举。

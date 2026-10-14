@@ -201,30 +201,32 @@ defmodule GroupherServer.CMS.SearchArtiments.Indexer do
   end
 
   defp public_article(thread, article_id) do
-    with %Article{thread: ^thread} <- Repo.get(Article, article_id) do
-      bindings =
-        ArticleBinding
-        |> join(:inner, [binding], community in Community,
-          on: community.id == binding.community_id
-        )
-        |> where(
-          [binding, _community],
-          binding.article_id == ^article_id and binding.visible == true
-        )
-        |> select([binding, community], {binding.inner_id, community.slug})
-        |> Repo.all()
+    case Repo.get(Article, article_id) do
+      %Article{thread: ^thread} ->
+        bindings =
+          ArticleBinding
+          |> join(:inner, [binding], community in Community,
+            on: community.id == binding.community_id
+          )
+          |> where(
+            [binding, _community],
+            binding.article_id == ^article_id and binding.visible == true
+          )
+          |> select([binding, community], {binding.inner_id, community.slug})
+          |> Repo.all()
 
-      articles =
-        Enum.reduce(bindings, [], fn {inner_id, community}, acc ->
-          case FrontDesk.article(%{community: community, thread: thread, inner_id: inner_id}) do
-            {:ok, public} -> [public | acc]
-            {:error, _reason} -> acc
-          end
-        end)
+        articles =
+          Enum.reduce(bindings, [], fn {inner_id, community}, acc ->
+            case FrontDesk.article(%{community: community, thread: thread, inner_id: inner_id}) do
+              {:ok, public} -> [public | acc]
+              {:error, _reason} -> acc
+            end
+          end)
 
-      if articles == [], do: {:error, :not_found}, else: {:ok, Enum.reverse(articles)}
-    else
-      _ -> {:error, :not_found}
+        if articles == [], do: {:error, :not_found}, else: {:ok, Enum.reverse(articles)}
+
+      _ ->
+        {:error, :not_found}
     end
   end
 

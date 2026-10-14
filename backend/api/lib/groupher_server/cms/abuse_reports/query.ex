@@ -230,8 +230,9 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
     end
   end
 
-  defp public_article(%CMS.Model.Article{}, _community_id),
-    do: {:error, :article_binding_context_required}
+  defp public_article(%CMS.Model.Article{}, _community_id) do
+    {:error, :article_binding_context_required}
+  end
 
   defp public_article(article, _community_id), do: {:ok, article}
 

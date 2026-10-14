@@ -151,11 +151,13 @@ defmodule GroupherServer.CMS.FrontDesk.Article do
       on: state.article_id == article.id and state.branch_id == branch.id,
       join: public in DocPublic,
       on: public.article_id == article.id and public.branch_id == branch.id,
-      where:
-        binding.community_id == ^community_id and binding.visible == true and
-          article.thread == :doc and binding.inner_id in ^inner_ids and
-          lifecycle.state in [:published, :archived] and state.moderation_state == :legal and
-          public.visible == true,
+      where: binding.community_id == ^community_id,
+      where: binding.visible == true,
+      where: article.thread == :doc,
+      where: binding.inner_id in ^inner_ids,
+      where: lifecycle.state in [:published, :archived],
+      where: state.moderation_state == :legal,
+      where: public.visible == true,
       select: %{
         article: article,
         binding: binding,
@@ -174,11 +176,13 @@ defmodule GroupherServer.CMS.FrontDesk.Article do
       on: lifecycle.article_id == article.id,
       join: public in ArticlePublic,
       on: public.article_id == article.id,
-      where:
-        binding.community_id == ^community_id and binding.visible == true and
-          article.thread == ^thread and binding.inner_id in ^inner_ids and
-          lifecycle.state in [:published, :archived] and article.moderation_state == :legal and
-          public.visible == true,
+      where: binding.community_id == ^community_id,
+      where: binding.visible == true,
+      where: article.thread == ^thread,
+      where: binding.inner_id in ^inner_ids,
+      where: lifecycle.state in [:published, :archived],
+      where: article.moderation_state == :legal,
+      where: public.visible == true,
       select: %{article: article, binding: binding, inner_id: binding.inner_id}
     )
     |> Repo.all()

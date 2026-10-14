@@ -2,12 +2,14 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.TagSupport do
   @moduledoc """
   Provides shared target loading and terminal result building for tag Commands.
 
-      Tag Command -> TagSupport -> FrontDesk / Repo -> canonical or terminal projection
+      Tag Command -> TagSupport -> FrontDesk / Query -> canonical or terminal projection
   """
 
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.CMS
   alias CMS.{Communities.ErrorCat, FrontDesk, Marker}
-  alias CMS.Model.{Community, CommunityTag, CommunityTagGroup}
+  alias CMS.Communities.Query, as: CommunitiesQuery
+  alias CMS.Communities.Tags.Query
+  alias CMS.Model.{Community, CommunityTag}
 
   @doc false
   def tag(id), do: FrontDesk.community_tag(id)
@@ -21,7 +23,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.TagSupport do
   def community(ref) when is_binary(ref), do: FrontDesk.community(ref, mode: :internal)
 
   def community(id) do
-    case Repo.get(Community, id) do
+    case CommunitiesQuery.get(id) do
       %Community{} = community -> {:ok, community}
       nil -> {:error, ErrorCat.not_exist("Community")}
     end
@@ -39,13 +41,8 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.TagSupport do
 
   @doc false
   def present_tag(id) do
-    case Repo.get(CommunityTag, id) do
-      %CommunityTag{} = tag ->
-        tag = normalize_marker(tag)
-        {:ok, Repo.preload(tag, [:community, :tag_group])}
-
-      nil ->
-        {:ok, %CommunityTag{id: id}}
+    case Query.tag(id) do
+      {:ok, %CommunityTag{id: ^id} = tag} -> {:ok, normalize_marker(tag)}
     end
   end
 
@@ -60,10 +57,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.TagSupport do
 
   @doc false
   def present_group(id) do
-    case Repo.get(CommunityTagGroup, id) do
-      %CommunityTagGroup{} = group -> {:ok, Repo.preload(group, tags: [:community, :tag_group])}
-      nil -> {:ok, %CommunityTagGroup{id: id}}
-    end
+    Query.group(id)
   end
 
   @doc false

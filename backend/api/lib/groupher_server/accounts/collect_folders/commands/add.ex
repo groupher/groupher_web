@@ -61,10 +61,8 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
       multi =
         Multi.new()
         |> Multi.run(:add_article_collect, fn _, _ ->
-          with {:ok, _canonical} <- CMS.interactions_collect(article, user, command_id),
-               {:ok, article_collect} <-
-                 GroupherServer.CMS.interactions_persist_find_collect(article, user) do
-            {:ok, article_collect}
+          with {:ok, _canonical} <- CMS.interactions_collect(article, user, command_id) do
+            GroupherServer.CMS.interactions_persist_find_collect(article, user)
           end
         end)
         |> Multi.merge(fn %{add_article_collect: article_collect} ->

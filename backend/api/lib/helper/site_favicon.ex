@@ -110,32 +110,18 @@ defmodule Helper.SiteFavicon do
       |> Enum.flat_map(&Floki.attribute(&1, "href"))
       |> List.first()
 
-    case favicon_url_or_path do
-      "" ->
-        {:error, "blank"}
+    normalize_favicon_url(favicon_url_or_path, url)
+  end
 
-      nil ->
-        {:error, "blank"}
+  defp normalize_favicon_url(value, _url) when value in [nil, ""], do: {:error, "blank"}
 
-      _ ->
-        case Regex.match?(~r/^https?/, favicon_url_or_path) do
-          true ->
-            {:ok, favicon_url_or_path}
+  defp normalize_favicon_url("http" <> _rest = value, _url), do: {:ok, value}
 
-          false ->
-            uri = URI.parse(favicon_url_or_path)
-
-            case uri do
-              %URI{host: nil} ->
-                {:ok, %{URI.parse(url) | path: uri.path} |> URI.to_string()}
-
-              %URI{scheme: nil} ->
-                {:ok, %{uri | scheme: "http"} |> URI.to_string()}
-
-              _ ->
-                {:error, "unknown uri"}
-            end
-        end
+  defp normalize_favicon_url(value, url) do
+    case URI.parse(value) do
+      %URI{host: nil} = uri -> {:ok, %{URI.parse(url) | path: uri.path} |> URI.to_string()}
+      %URI{scheme: nil} = uri -> {:ok, %{uri | scheme: "http"} |> URI.to_string()}
+      _uri -> {:error, "unknown uri"}
     end
   end
 

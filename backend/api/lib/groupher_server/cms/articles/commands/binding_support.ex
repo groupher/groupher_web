@@ -4,13 +4,11 @@ defmodule GroupherServer.CMS.Articles.Commands.BindingSupport do
 
       Commands.Mirror/Move/Unmirror/Pin/Unpin
         -> BindingSupport
-        -> FrontDesk / Repo / Outbox
+        -> FrontDesk / Query / Outbox
   """
 
-  import Ecto.Query
-
-  alias GroupherServer.{CMS, Repo}
-  alias CMS.Articles.{Commands.BindingConfirmation, Effects}
+  alias GroupherServer.CMS
+  alias CMS.Articles.{Commands.BindingConfirmation, Effects, Query}
   alias CMS.FrontDesk
   alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CMS.Model.{Article, ArticleBinding, Community, PinnedArticle}
@@ -36,10 +34,7 @@ defmodule GroupherServer.CMS.Articles.Commands.BindingSupport do
   end
 
   def present_binding({:ok, %BindingConfirmation{data: data}}) do
-    case Repo.get_by(ArticleBinding,
-           article_id: data["article_id"],
-           community_id: data["community_id"]
-         ) do
+    case Query.binding(data["article_id"], data["community_id"]) do
       %ArticleBinding{} = binding -> {:ok, Map.put(binding, :command_id, data["command_id"])}
       nil -> {:error, CMS.ErrorCat.command_result_unavailable()}
     end
@@ -57,16 +52,7 @@ defmodule GroupherServer.CMS.Articles.Commands.BindingSupport do
   def present_article(error), do: error
 
   def present_pin({:ok, %BindingConfirmation{data: data}}) do
-    query =
-      from(pin in PinnedArticle,
-        join: binding in ArticleBinding,
-        on: binding.id == pin.article_binding_id,
-        where:
-          binding.article_id == ^data["article_id"] and
-            binding.community_id == ^data["community_id"]
-      )
-
-    case Repo.one(query) do
+    case Query.pinned_binding(data["article_id"], data["community_id"]) do
       %PinnedArticle{} = pin -> {:ok, Map.put(pin, :command_id, data["command_id"])}
       nil -> {:error, CMS.ErrorCat.command_result_unavailable()}
     end
@@ -78,8 +64,9 @@ defmodule GroupherServer.CMS.Articles.Commands.BindingSupport do
   def present_done(error), do: error
 
   def invalidate_scope(_community, %{inner_id: inner_id}, _thread, _command_id)
-      when not is_integer(inner_id),
-      do: {:ok, :pass}
+      when not is_integer(inner_id) do
+    {:ok, :pass}
+  end
 
   def invalidate_scope(community, binding, thread, command_id) do
     invalidate_scope(community, binding, thread, command_id, scope_key(community, binding))

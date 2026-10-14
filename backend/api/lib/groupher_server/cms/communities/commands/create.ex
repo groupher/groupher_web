@@ -11,9 +11,9 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
         -> Confirmation / canonical Community recovery
   """
 
-  alias GroupherServer.{Accounts, CMS, FrontDesk, Repo}
+  alias GroupherServer.{Accounts, CMS, FrontDesk}
   alias Accounts.Model.User
-  alias CMS.Communities.{CreationPersist, Lifecycle}
+  alias CMS.Communities.{CreationPersist, Lifecycle, Query}
   alias CMS.Communities.Moderators.Setup, as: ModeratorSetup
   alias CMS.Communities.Commands.CreateConfirmation
   alias CMS.Model.{Community, CommunityDashboard, Embeds}
@@ -63,7 +63,7 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
   end
 
   defp present_create({:ok, %CreateConfirmation{data: %{"community_id" => id}}}) do
-    case Repo.get(Community, id) do
+    case Query.get(id) do
       %Community{} = community -> {:ok, community}
       nil -> {:error, CMS.ErrorCat.command_result_unavailable()}
     end

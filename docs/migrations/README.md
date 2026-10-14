@@ -34,3 +34,9 @@
   [`feature/view-tracker/profile-view-counting.md`](../feature/view-tracker/profile-view-counting.md)。
 - [PR 594 review remediation](./pr-594-review-remediation.md)：本次架构重构 review 问题的核实、
   长期修复方式、验证证据与远端收敛状态。
+- [Alias 与 Strict Null 修复记录](./alias-and-strict-null-remediation.md)：记录后端 alias 规则归属修正、
+  前端 `strictNullChecks` 启用与清零结果，以及 React Doctor、Credo 和 GraphQL 合同的后续批次。
+- [Backend Direct Repo Boundary](./backend-direct-repo-boundary.md)：盘点 96 个受保护边界中的直接 Repo finding，
+  并按 Support、resource resolution、Persist ownership 与 Comments replay 拆分迁移。
+- [Backend Cyclomatic Complexity](./backend-cyclomatic-complexity.md)：26 个复杂函数已按一致性/副作用、
+  查询、校验与 seed 分批完成具名拆分；22 个文件的 `CyclomaticComplexity` finding 已从 26 个降至 0。

@@ -14,9 +14,9 @@ defmodule GroupherServer.CMS.Communities.Moderators.Commands.Support do
 
   require GroupherServer.CMS.Gate.ErrorCat
 
-  alias GroupherServer.{Accounts, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.Communities.ErrorCat, as: CommunityErrorCat
+  alias CMS.Communities.{ErrorCat, Query}
   alias CMS.Communities.Moderators.Commands.Confirmation
   alias CMS.FrontDesk
   alias CMS.Gate.ErrorCat, as: GateErrorCat
@@ -60,9 +60,7 @@ defmodule GroupherServer.CMS.Communities.Moderators.Commands.Support do
 
                  {:error, GateErrorCat.error_pattern(reason: :permission_denied)} ->
                    {:error,
-                    CommunityErrorCat.community_root_only(
-                      "only community root can manage moderators"
-                    )}
+                    ErrorCat.community_root_only("only community root can manage moderators")}
 
                  {:error, reason} ->
                    {:error, reason}
@@ -76,25 +74,30 @@ defmodule GroupherServer.CMS.Communities.Moderators.Commands.Support do
 
   defp normalize_results(results, _params) when is_list(results), do: {:ok, results}
 
-  defp normalize_results(_result, %{target_user_id: user_id}),
-    do: {:ok, [%{"user_id" => user_id, "ok" => true, "error" => nil}]}
+  defp normalize_results(_result, %{target_user_id: user_id}) do
+    {:ok, [%{"user_id" => user_id, "ok" => true, "error" => nil}]}
+  end
 
-  defp command_params(:moderator_add, community, %{target_user_id: id}),
-    do: %{community_id: community.id, target_user_id: id}
+  defp command_params(:moderator_add, community, %{target_user_id: id}) do
+    %{community_id: community.id, target_user_id: id}
+  end
 
-  defp command_params(:moderator_remove, community, %{target_user_id: id}),
-    do: %{community_id: community.id, target_user_id: id}
+  defp command_params(:moderator_remove, community, %{target_user_id: id}) do
+    %{community_id: community.id, target_user_id: id}
+  end
 
-  defp command_params(:moderator_update, community, %{target_user_id: id, rules: rules}),
-    do: %{community_id: community.id, target_user_id: id, rules: rules}
+  defp command_params(:moderator_update, community, %{target_user_id: id, rules: rules}) do
+    %{community_id: community.id, target_user_id: id, rules: rules}
+  end
 
-  defp command_params(:moderator_add_many, community, %{target_user_ids: ids}),
-    do: %{community_id: community.id, target_user_ids: ids}
+  defp command_params(:moderator_add_many, community, %{target_user_ids: ids}) do
+    %{community_id: community.id, target_user_ids: ids}
+  end
 
   defp present(%Confirmation{
          data: %{"community_id" => id, "command_id" => command_id, "results" => results}
        }) do
-    case Repo.get(Community, id) do
+    case Query.get(id) do
       %Community{slug: slug} ->
         with {:ok, community} <- FrontDesk.community(slug, mode: :internal) do
           {:ok, %{community | command_id: command_id, moderator_results: results}}

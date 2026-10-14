@@ -693,11 +693,9 @@ defmodule GroupherServer.Activity.Event do
   defp normalize_type(value) when is_atom(value), do: value
 
   defp normalize_type(value) when is_binary(value) do
-    try do
-      String.to_existing_atom(value)
-    rescue
-      ArgumentError -> value
-    end
+    String.to_existing_atom(value)
+  rescue
+    ArgumentError -> value
   end
 
   defp atomize_known(map, keys) do

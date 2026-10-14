@@ -5,19 +5,20 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Commands.Support do
       Command -> Support target/confirmation -> Receipt recovery -> Query result
   """
 
-  alias GroupherServer.{CMS, Repo}
-  alias CMS.Communities.ErrorCat
+  alias GroupherServer.CMS
+  alias CMS.Communities.{ErrorCat, Query}
   alias CMS.FrontDesk
-  alias CMS.Model.{Community}
+  alias CMS.Model.Community
 
   def community(%Community{} = community), do: {:ok, community}
   def community(ref), do: FrontDesk.community(ref, mode: :internal)
 
-  def confirmation(module, community_id, command_id),
-    do: struct(module, data: %{"community_id" => community_id, "command_id" => command_id})
+  def confirmation(module, community_id, command_id) do
+    struct(module, data: %{"community_id" => community_id, "command_id" => command_id})
+  end
 
   def community_result(%{data: %{"community_id" => id}}) do
-    case Repo.get(Community, id) do
+    case Query.get(id) do
       %Community{slug: slug} -> FrontDesk.community(slug, mode: :internal)
       nil -> {:error, ErrorCat.not_exist("Community")}
     end
