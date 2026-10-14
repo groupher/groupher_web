@@ -155,7 +155,7 @@ pnpm --filter @groupher/inspire-me type-check
 
 构建通过不等于运行时验收完成，还需要检查实际 Worker/SSR 行为。
 
-### Batch 4：运行时 Smoke Test（已完成）
+### Batch 4：运行时 Smoke Test（部分完成）
 
 至少验证：
 
@@ -172,18 +172,24 @@ pnpm --filter @groupher/inspire-me type-check
 7. Apply 的 `/apply` basepath、直达和刷新保持正常。
 8. Landing 的静态页面、404 和生产资源路径保持正常。
 
-实际结果：五个宿主 route generation、type-check、production build、lint 和 format
-check 均通过；Community contract、Router runtime guard 通过；Core type-check 及
-222 个测试文件（919 条测试）通过。五个本地服务的 `/health` 均返回 200，Community
+已确认的结果：五个宿主 route generation、type-check、production build、lint 和
+format check 均通过；Community contract、Router runtime guard 通过；Core type-check
+及 222 个测试文件（919 条测试）通过。五个本地服务的 `/health` 均返回 200，Community
 实际验证了 `/$community`、`/$community/post/$id` 和 `/$community/changelog/$id` 的
 SSR 直达响应。
+
+本批文档尚未记录以下运行时结果：五个宿主的 hydration，以及 Community 数据路由的
+客户端导航和刷新；Community、Dash、Apply 的 GraphQL server route 代理；`createServerFn`
+成功请求；未捕获异常的标准 500 响应；Apply `/apply` basepath 直达和刷新；Landing
+静态页面、404 和生产资源路径。因此 Batch 4 只标记为部分完成，不能将上述项目视为
+已完成的运行时验收。
 
 ### 构建告警收敛（已完成）
 
 升级后的第二轮检查还处理了几项不会阻断构建、但会影响产物质量的告警：
 
-- `UserCard` 不再同时被静态导入和动态导入；Quora layout 保持静态依赖，移除无效的
-  `lazy()` 包装。
+- Quora layout 的 `UserCard` 保持动态导入并保留 `Suspense` fallback，避免每个 post
+  header 将用户卡片模块拉入初始依赖图。
 - Landing 的 SSR 元数据移到独立的 `landing-meta` 模块，完整 Landing 文案继续由
   i18n loader 动态加载；首屏以下的 Battery、Dashboard、Compare 和 Users Wall 组件
   改为按需 chunk。Landing 客户端最大 chunk 从约 510 kB 降到约 364 kB。
