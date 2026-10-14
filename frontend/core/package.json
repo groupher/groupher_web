@@ -80,6 +80,7 @@
   "devDependencies": {
     "@tanstack/react-query": "^5.104.2",
     "@tanstack/react-router": "1.170.44",
+    "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.3.2",
     "@types/node": "24.13.3",
     "@types/ramda": "^0.31.1",
