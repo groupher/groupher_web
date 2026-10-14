@@ -5,6 +5,12 @@ import type { TDocBranchRevisionAuthor } from './spec'
 
 type TTranslate = (key: TTransKey) => string
 
+const revisionDateFormat = new Intl.DateTimeFormat(undefined, {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+})
+
 /** Returns revision author name for the frontend shared workflow. */
 export const getRevisionAuthorName = (
   t: TTranslate,
@@ -34,9 +40,5 @@ export const formatRelativeRevisionTime = (t: TTranslate, datetime?: string | nu
   const days = Math.floor(hours / 24)
   if (days < 7) return `${days} ${t(REVISION_LABEL_KEY.DAY_AGO)}`
 
-  return new Intl.DateTimeFormat(undefined, {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  }).format(new Date(timestamp))
+  return revisionDateFormat.format(new Date(timestamp))
 }

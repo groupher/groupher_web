@@ -88,41 +88,6 @@ export const randomBgNames = (
 }
 
 /**
- * find key=value in array or object
- *
- * see original version:
- * https://stackoverflow.com/a/15524326
- * @param {object or Array} data
- * @param {String} key
- * @param {String} value
- * @returns
- */
-const findDeepMatch = (data, key, value) => {
-  let result = null
-  if (Array.isArray(data)) {
-    for (let i = 0; i < data.length; i += 1) {
-      // console.log('## > the data[i]', data[i])
-      result = findDeepMatch(data[i], key, value)
-      // end the recursive function
-      if (result) return result
-    }
-  } else {
-    const theKeys = keys(data)
-    for (let index = 0; index < theKeys.length; index += 1) {
-      const prop = theKeys[index]
-      if (prop === key && data[prop] === value) {
-        return data
-      }
-      if (data[prop] instanceof Object || Array.isArray(data[prop])) {
-        result = findDeepMatch(data[prop], key, value)
-      }
-    }
-  }
-
-  return result
-}
-
-/**
  * groupByKey
  * see @link: https://stackoverflow.com/a/47385953/4050784
  * @param {Array} - array

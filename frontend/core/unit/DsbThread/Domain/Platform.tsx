@@ -26,7 +26,10 @@ const Domain: FC = () => {
       <div className={s.inputWrapper}>
         <Input value='www' disableEnter focusOnMount className='w-44' />
         <div className={s.domainText}>
-          .groupher.com<span className={s.domainSlug}>/{community.slug}/*</span>
+          .groupher.com
+          <span className={s.domainSlug}>
+            /{community.slug}/{'*'}
+          </span>
         </div>
       </div>
 

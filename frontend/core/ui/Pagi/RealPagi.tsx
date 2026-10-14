@@ -23,6 +23,10 @@ const RealPagi: FC<TProps> = ({
 
   const leftDisabled = pageNumber === 1
   const rightDisabled = pageNumber >= roundUpNumber(totalCount / pageSize)
+  const changePageFromInput = (value: number): void => {
+    if (!Number.isFinite(value)) return
+    onChange(value)
+  }
 
   return (
     <div className={s.wrapper}>
@@ -45,11 +49,10 @@ const RealPagi: FC<TProps> = ({
             max={999}
             value={pageNumber}
             aria-label={t('common.page_number')}
-            onChange={(e) => onChange(Number(e.target.value))}
+            onChange={(event) => changePageFromInput(event.currentTarget.valueAsNumber)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                // @ts-expect-error
-                onChange(Number(e.target.value))
+                changePageFromInput(e.currentTarget.valueAsNumber)
               }
             }}
           />

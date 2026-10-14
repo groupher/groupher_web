@@ -38,9 +38,9 @@ export default function useLogic(): TRet {
     const groupedTags = {} as TGroupedTags
     const groupKeys = tagGroups.map((group) => group.title)
 
-    tagGroups.forEach((group) => {
+    for (const group of tagGroups) {
       groupedTags[group.title] = [...group.tags]
-    })
+    }
 
     return { tags, groupedTags, groupKeys }
   }, [tagGroups])

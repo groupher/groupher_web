@@ -109,6 +109,7 @@ export default function PinnedDocAppearancePanel({ doc, saving = false, onSave }
         <span className='text-sm font-medium'>Solid color</span>
         <input
           type='color'
+          aria-label='Solid background color'
           className='h-10 w-full rounded-lg'
           defaultValue='#d8b9e3'
           onChange={(event) => updateTheme(solidBg(event.target.value))}

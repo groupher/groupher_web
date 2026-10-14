@@ -1,6 +1,15 @@
 import type { TDocDraftAuthor } from '../../Editor/store/spec'
 import { DOC_INFO_EMPTY } from '../constant'
 
+const docInfoDateFormat = new Intl.DateTimeFormat('en', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  hourCycle: 'h23',
+})
+
 /** Runs the format doc info date operation at the frontend shared boundary. */
 export const formatDocInfoDate = (value?: string | null): string => {
   if (!value) return DOC_INFO_EMPTY
@@ -8,16 +17,7 @@ export const formatDocInfoDate = (value?: string | null): string => {
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return DOC_INFO_EMPTY
 
-  return new Intl.DateTimeFormat('en', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hourCycle: 'h23',
-  })
-    .format(date)
-    .replace(',', '')
+  return docInfoDateFormat.format(date).replace(',', '')
 }
 
 /** Returns doc info author name for the frontend shared workflow. */

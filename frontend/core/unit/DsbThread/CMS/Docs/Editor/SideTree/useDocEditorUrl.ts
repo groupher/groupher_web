@@ -10,9 +10,9 @@ import { DOC_EDITOR_QUERY_PARAM } from '../constant'
 const buildSearchObject = (searchParams: URLSearchParams): Record<string, string> => {
   const search: Record<string, string> = {}
 
-  searchParams.forEach((value, key) => {
+  for (const [key, value] of searchParams) {
     search[key] = value
-  })
+  }
 
   return search
 }

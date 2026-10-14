@@ -48,13 +48,13 @@ const getRuleKeys = (rules: string): string[] => {
 }
 
 const getThreadRules = (rules: string[]): Record<string, string[]> => {
-  return PASSPORT_THREADS.reduce(
-    (acc, thread) => ({
-      ...acc,
-      [thread]: rules.filter((rule) => rule.startsWith(`${thread}.`)),
-    }),
-    {} as Record<string, string[]>,
-  )
+  const groupedRules: Record<string, string[]> = {}
+
+  for (const thread of PASSPORT_THREADS) {
+    groupedRules[thread] = rules.filter((rule) => rule.startsWith(`${thread}.`))
+  }
+
+  return groupedRules
 }
 
 const getContextRules = (rules: string[]): string[] => {
