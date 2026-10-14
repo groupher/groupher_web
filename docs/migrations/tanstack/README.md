@@ -5,6 +5,11 @@
 本目录集中记录 Community、Landing、Inspire Me 等应用迁移到 TanStack
 Router/Start 期间的基线、方案、评审和后续优化。
 
+## 当前升级
+
+- [`start-stable-upgrade.md`](./start-stable-upgrade.md)：TanStack Start 1.0 Stable
+  升级范围、兼容点、验证与回滚计划。
+
 ## Dash
 
 - [`dash/v1.md`](./dash/v1.md)：首次 Dashboard spike，已完成。

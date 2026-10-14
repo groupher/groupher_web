@@ -1,6 +1,7 @@
+import landingMeta from './landing-meta'
+
 export default {
-  'landing.meta.title': 'Groupher | 连接团队与用户的沟通平台',
-  'landing.meta.description': '整合反馈、路线图、更新日志、文档与博客，让团队与用户始终保持同频。',
+  ...landingMeta,
   'landing.hero.title': '连接团队与用户的沟通平台',
   'landing.hero.desc.prefix': '整合讨论区、路线图、更新日志、文档与博客，收集',
   'landing.hero.desc.feedback': '反馈',

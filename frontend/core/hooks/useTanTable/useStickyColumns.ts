@@ -1,7 +1,7 @@
 // ~/hooks/useStickyColumns.ts
 'use client'
 
-import type { Table } from '@tanstack/react-table'
+import type { LegacyTable as Table } from '@tanstack/react-table/legacy'
 import { useMemo } from 'react'
 
 import useTwBelt from '~/hooks/useTwBelt'

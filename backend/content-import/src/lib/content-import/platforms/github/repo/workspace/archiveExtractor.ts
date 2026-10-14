@@ -14,7 +14,7 @@ import { Readable, Transform, Writable } from 'node:stream'
 import { pipeline } from 'node:stream/promises'
 import { createGunzip } from 'node:zlib'
 
-import tar from 'tar-stream'
+import tar, { type Header } from 'tar-stream'
 
 import { DocsImportError } from '../../../../core/errors'
 import type { TSourceWorkspace } from '../../../../threads/docs/contracts'
@@ -50,7 +50,9 @@ export type TExtractedWorkspace = {
 const extractionError = (code: string, message: string): DocsImportError =>
   new DocsImportError(code, 'extracting', message)
 
-const isArchiveLink = (type: tar.Headers['type']): boolean => type === 'symlink' || type === 'link'
+type TArchiveEntryType = Header['type'] | 'pax-header' | 'pax-global-header'
+
+const isArchiveLink = (type: TArchiveEntryType): boolean => type === 'symlink' || type === 'link'
 
 const archivePath = (value: string): string | null => {
   const portable = value.replace(/\\/g, '/')
@@ -135,19 +137,20 @@ export const extractArchiveToWorkspace = async (
 
   extract.on('entry', (header, entry, next) => {
     const processEntry = async (): Promise<void> => {
-      if (header.type === 'pax-header' || header.type === 'pax-global-header') {
+      const entryType = header.type as TArchiveEntryType
+      if (entryType === 'pax-header' || entryType === 'pax-global-header') {
         entry.resume()
         return
       }
       // GitHub repositories may contain legitimate symlinks. The importer only
       // needs regular source files, so links are ignored without resolving or
       // materializing their targets inside the temporary workspace.
-      if (isArchiveLink(header.type)) {
+      if (isArchiveLink(entryType)) {
         countFileEntry()
         entry.resume()
         return
       }
-      if (header.type !== 'file' && header.type !== 'directory') {
+      if (entryType !== 'file' && entryType !== 'directory') {
         throw extractionError(
           'unsafe_archive_entry',
           'The repository archive contains a device or unsupported entry.',
@@ -155,7 +158,7 @@ export const extractArchiveToWorkspace = async (
       }
 
       const sourcePath = archivePath(header.name)
-      if (header.type === 'directory' || !sourcePath) {
+      if (entryType === 'directory' || !sourcePath) {
         entry.resume()
         return
       }
@@ -215,7 +218,10 @@ export const extractArchiveToWorkspace = async (
       stats.retainedFiles += 1
     }
 
-    void processEntry().then(next, (error) => extract.destroy(error as Error))
+    void processEntry().then(
+      () => next(),
+      (error) => extract.destroy(error as Error),
+    )
   })
 
   try {

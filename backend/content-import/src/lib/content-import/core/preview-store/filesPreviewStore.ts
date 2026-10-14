@@ -11,7 +11,7 @@
  *
  * @see docs/content-import/import-file-sdk.md
  */
-import { Files, FilesError, type StoredFile } from 'files-sdk'
+import { Files, FilesError, type FileInfo } from 'files-sdk'
 
 import {
   decodeDocsDataset,
@@ -172,14 +172,15 @@ export default class FilesPreviewStore implements PreviewStore {
   async listRecords(): Promise<TPreviewRecord[]> {
     await this.ensureLegacyRecordIndex()
 
-    const files: StoredFile[] = []
+    const files: FileInfo[] = []
     for await (const file of this.files.listAll({ prefix: `${RECORD_INDEX_PREFIX}/` })) {
       files.push(file)
     }
 
-    return mapWithConcurrency(files, RECORD_READ_CONCURRENCY, async (file) =>
-      decodePreviewRecord(JSON.parse(await file.text()) as unknown),
-    )
+    return mapWithConcurrency(files, RECORD_READ_CONCURRENCY, async (file) => {
+      const stored = await this.files.download(file.key)
+      return decodePreviewRecord(JSON.parse(await stored.text()) as unknown)
+    })
   }
 
   /** Lists sourceRefs from body object keys without downloading their contents. */
@@ -323,14 +324,15 @@ export default class FilesPreviewStore implements PreviewStore {
   private async ensureLegacyRecordIndex(): Promise<void> {
     if (await this.files.exists(RECORD_INDEX_READY_KEY)) return
 
-    const legacyFiles: StoredFile[] = []
+    const legacyFiles: FileInfo[] = []
     for await (const file of this.files.listAll()) {
       if (file.key.endsWith('/preview-record.json')) legacyFiles.push(file)
     }
 
-    const records = await mapWithConcurrency(legacyFiles, RECORD_READ_CONCURRENCY, async (file) =>
-      decodePreviewRecord(JSON.parse(await file.text()) as unknown),
-    )
+    const records = await mapWithConcurrency(legacyFiles, RECORD_READ_CONCURRENCY, async (file) => {
+      const stored = await this.files.download(file.key)
+      return decodePreviewRecord(JSON.parse(await stored.text()) as unknown)
+    })
     await mapWithConcurrency(records, RECORD_READ_CONCURRENCY, async (record) => {
       await this.putImmutable(this.recordIndexKey(record.previewRef), record)
     })

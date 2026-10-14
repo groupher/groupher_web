@@ -1,4 +1,5 @@
-import type { ColumnDef, OnChangeFn, SortingState } from '@tanstack/react-table'
+import type { OnChangeFn, SortingState } from '@tanstack/react-table'
+import type { LegacyColumnDef as ColumnDef } from '@tanstack/react-table/legacy'
 import type { MutableRefObject, ReactNode } from 'react'
 
 import type { MultiSelectionTableMeta } from '~/hooks/useTanTable'
