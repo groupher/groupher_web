@@ -131,7 +131,6 @@ export default function Drawer({
       <div
         role='presentation'
         aria-hidden='true'
-        aria-label='drawer mask'
         className={cn(s.overlay, ANCHOR.GLOBAL_BLUR_CLASS)}
         style={s.overlayStyle}
         onClick={dismissible ? requestClose : undefined}

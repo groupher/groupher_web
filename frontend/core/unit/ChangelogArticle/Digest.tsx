@@ -9,7 +9,6 @@ import { THREAD_PATH } from '~/const/thread'
 import ArrowSVG from '~/icons/Arrow'
 import Img from '~/Img'
 import { Link } from '~/platform'
-import type { TChangelog } from '~/spec'
 // import ArchivedSign from '~/ui/ArchivedSign'
 import useArticle from '~/stores/article/hooks'
 import ImgFallback from '~/ui/ImgFallback'
@@ -71,7 +70,7 @@ export default function Digest() {
               {author.nickname}
             </Link>
           )}
-          <ArticleBaseStats article={changelog as TChangelog} stats={stats} right={2} />
+          <ArticleBaseStats stats={stats} right={2} />
         </div>
       </div>
     </div>

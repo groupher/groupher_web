@@ -1,8 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-import type { TArticle } from '~/spec'
-
 import ArticleBaseStats from '.'
 
 vi.mock('~/dom', () => ({ scrollToComments: vi.fn() }))
@@ -26,9 +24,7 @@ vi.mock('./salon', () => ({
 
 describe('ArticleBaseStats', () => {
   it('reserves the detail slot while the Summary is loading', () => {
-    const article = {} as unknown as TArticle
-
-    render(<ArticleBaseStats article={article} stats={null} />)
+    render(<ArticleBaseStats stats={null} />)
 
     const count = screen.getByLabelText('views')
     expect(count).toHaveClass('view-count-slot-detail')

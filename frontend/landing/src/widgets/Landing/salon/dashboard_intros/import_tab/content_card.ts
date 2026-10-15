@@ -10,7 +10,7 @@ export default function useSalon() {
     wrapper: cn('align-both w-[460px] h-[500px] z-20', 'absolute bottom-10 -left-5'),
     BgBubble: cn(
       'size-44 absolute top-40 left-36 rounded-3xl',
-      'animate-spin animate-infinite animate-duration-[10000ms]',
+      'animate-spin animate-infinite animate-duration-[10000ms] motion-reduce:animate-none',
       'gradient-green',
     ),
     //

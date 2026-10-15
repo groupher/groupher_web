@@ -12,7 +12,7 @@ export default function useSalon() {
       fg('digest'),
       bg('card'),
     ),
-    plugIcon: cn('size-4 mr-2 animate-pulse', fill('digest')),
+    plugIcon: cn('size-4 mr-2 animate-pulse motion-reduce:animate-none', fill('digest')),
     pointIcon: cn('size-6 inline-block rotate-180', rainbow(COLOR.ORANGE, 'fill')),
   }
 }

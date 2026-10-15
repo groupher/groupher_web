@@ -1,19 +1,22 @@
 import { Dialog } from '@base-ui/react/dialog'
 import type {
   TBrowserMetricSample,
-  TMetricHistoryPayload,
   TMetricRange,
   TPublicService,
   TServerMetricSample,
   TServiceMetricsSnapshot,
 } from '@shared/contracts'
 import { ChartNoAxesCombined, X } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense } from 'react'
 
-import { fetchMetricHistory } from '@/lib/hub-client'
+import { useMetricHistory } from '@/hooks/useMetricHistory'
 
 import { CurrentMetric } from './CurrentMetric'
-import { MetricTrendChart, type TMetricTrendPoint } from './MetricTrendChart'
+import type { TMetricTrendPoint } from './MetricTrendChart'
+
+const MetricTrendChart = lazy(() =>
+  import('./MetricTrendChart').then((module) => ({ default: module.MetricTrendChart })),
+)
 
 type TProps = {
   service: TPublicService
@@ -32,49 +35,9 @@ const RANGES = Object.keys(RANGE_LABELS) as TMetricRange[]
 const MB = 1024 * 1024
 
 export function MetricsDrawer({ service, current, onClose }: TProps) {
-  const [range, setRange] = useState<TMetricRange>('1h')
-  const [history, setHistory] = useState<TMetricHistoryPayload | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [requestVersion, setRequestVersion] = useState(0)
-  const [selectedPageId, setSelectedPageId] = useState<string | null>(null)
-
-  useEffect(() => {
-    const controller = new AbortController()
-    setLoading(true)
-    setError(null)
-
-    void fetchMetricHistory(service.id, range, controller.signal)
-      .then(setHistory)
-      .catch((cause: unknown) => {
-        if (!controller.signal.aborted) {
-          setError(cause instanceof Error ? cause.message : 'Could not load metric history.')
-        }
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setLoading(false)
-      })
-
-    return () => controller.abort()
-  }, [range, requestVersion, service.id])
-
-  const serverSamples = useMemo(() => history?.samples.filter(isServerSample) || [], [history])
-  const browserSamples = useMemo(() => history?.samples.filter(isBrowserSample) || [], [history])
-  const pageIds = useMemo(
-    () => Array.from(new Set(browserSamples.map((sample) => sample.pageId))),
-    [browserSamples],
-  )
-  const activePageId =
-    (selectedPageId && pageIds.includes(selectedPageId) ? selectedPageId : null) ||
-    (current?.browser && pageIds.includes(current.browser.pageId)
-      ? current.browser.pageId
-      : null) ||
-    pageIds[0] ||
-    null
-  const activeBrowserSamples = activePageId
-    ? browserSamples.filter((sample) => sample.pageId === activePageId)
-    : []
-  const bucketMs = history?.bucketMs || 1_000
+  const metricHistory = useMetricHistory(service.id, current)
+  const { activeBrowserSamples, activePageId, bucketMs, pageIds, range, serverSamples } =
+    metricHistory
   const thresholds = service.metricThresholds
 
   return (
@@ -105,7 +68,7 @@ export function MetricsDrawer({ service, current, onClose }: TProps) {
                     aria-selected={range === item}
                     className={range === item ? 'is-active' : ''}
                     key={item}
-                    onClick={() => setRange(item)}
+                    onClick={() => metricHistory.setRange(item)}
                   >
                     {RANGE_LABELS[item]}
                   </button>
@@ -117,7 +80,7 @@ export function MetricsDrawer({ service, current, onClose }: TProps) {
                   <span>Browser page</span>
                   <select
                     value={activePageId || ''}
-                    onChange={(event) => setSelectedPageId(event.target.value)}
+                    onChange={(event) => metricHistory.setSelectedPageId(event.target.value)}
                   >
                     {pageIds.map((pageId, index) => (
                       <option key={pageId} value={pageId}>
@@ -157,50 +120,52 @@ export function MetricsDrawer({ service, current, onClose }: TProps) {
             </div>
 
             <div className='metrics-drawer-content'>
-              {loading ? (
+              {metricHistory.loading ? (
                 <div className='metrics-drawer-state'>Loading metric history…</div>
-              ) : error ? (
+              ) : metricHistory.error ? (
                 <div className='metrics-drawer-state is-error'>
-                  <span>{error}</span>
-                  <button type='button' onClick={() => setRequestVersion((value) => value + 1)}>
+                  <span>{metricHistory.error}</span>
+                  <button type='button' onClick={metricHistory.retry}>
                     Try again
                   </button>
                 </div>
               ) : (
-                <div className='metrics-chart-grid'>
-                  {service.group === 'frontend' ? (
-                    <>
-                      <MetricTrendChart
-                        title='Page heap'
-                        unit='MB'
-                        points={toBrowserPoints(activeBrowserSamples, 'heapBytes', MB)}
-                        threshold={thresholds.browserHeapBytes / MB}
-                        bucketMs={bucketMs}
-                      />
-                      <MetricTrendChart
-                        title='Main-thread busy'
-                        unit='%'
-                        points={toBrowserPoints(activeBrowserSamples, 'busyPercent')}
-                        threshold={thresholds.browserBusyPercent}
-                        bucketMs={bucketMs}
-                      />
-                    </>
-                  ) : null}
-                  <MetricTrendChart
-                    title='Server CPU'
-                    unit='%'
-                    points={toServerPoints(serverSamples, 'cpuPercent')}
-                    threshold={thresholds.serverCpuPercent}
-                    bucketMs={bucketMs}
-                  />
-                  <MetricTrendChart
-                    title='Server memory'
-                    unit='MB'
-                    points={toServerPoints(serverSamples, 'rssBytes', MB)}
-                    threshold={thresholds.serverRssBytes / MB}
-                    bucketMs={bucketMs}
-                  />
-                </div>
+                <Suspense fallback={<div className='metrics-drawer-state'>Loading charts…</div>}>
+                  <div className='metrics-chart-grid'>
+                    {service.group === 'frontend' ? (
+                      <>
+                        <MetricTrendChart
+                          title='Page heap'
+                          unit='MB'
+                          points={toBrowserPoints(activeBrowserSamples, 'heapBytes', MB)}
+                          threshold={thresholds.browserHeapBytes / MB}
+                          bucketMs={bucketMs}
+                        />
+                        <MetricTrendChart
+                          title='Main-thread busy'
+                          unit='%'
+                          points={toBrowserPoints(activeBrowserSamples, 'busyPercent')}
+                          threshold={thresholds.browserBusyPercent}
+                          bucketMs={bucketMs}
+                        />
+                      </>
+                    ) : null}
+                    <MetricTrendChart
+                      title='Server CPU'
+                      unit='%'
+                      points={toServerPoints(serverSamples, 'cpuPercent')}
+                      threshold={thresholds.serverCpuPercent}
+                      bucketMs={bucketMs}
+                    />
+                    <MetricTrendChart
+                      title='Server memory'
+                      unit='MB'
+                      points={toServerPoints(serverSamples, 'rssBytes', MB)}
+                      threshold={thresholds.serverRssBytes / MB}
+                      bucketMs={bucketMs}
+                    />
+                  </div>
+                </Suspense>
               )}
             </div>
           </Dialog.Popup>
@@ -208,18 +173,6 @@ export function MetricsDrawer({ service, current, onClose }: TProps) {
       </Dialog.Portal>
     </Dialog.Root>
   )
-}
-
-function isServerSample(
-  sample: TMetricHistoryPayload['samples'][number],
-): sample is TServerMetricSample {
-  return sample.source === 'server'
-}
-
-function isBrowserSample(
-  sample: TMetricHistoryPayload['samples'][number],
-): sample is TBrowserMetricSample {
-  return sample.source === 'browser'
 }
 
 function toServerPoints(

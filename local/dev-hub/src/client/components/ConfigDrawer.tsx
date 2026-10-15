@@ -1,17 +1,10 @@
 import { Dialog } from '@base-ui/react/dialog'
-import type {
-  TPublicService,
-  TServiceConfigContent,
-  TServiceConfigKind,
-  TServiceConfigManifest,
-} from '@shared/contracts'
-import { AlertCircle, FileBraces, RefreshCw, X } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
+import type { TPublicService, TServiceConfigKind } from '@shared/contracts'
+import { FileBraces, RefreshCw, X } from 'lucide-react'
 
-import { fetchServiceConfig, fetchServiceConfigContent } from '@/lib/hub-client'
+import { useServiceConfig } from '@/hooks/useServiceConfig'
 
-import { ConfigFileList } from './ConfigFileList'
-import { ConfigFileView } from './ConfigFileView'
+import { ConfigDrawerBody } from './ConfigDrawerBody'
 
 type TProps = {
   service: TPublicService
@@ -26,80 +19,8 @@ const KIND_LABEL: Record<TServiceConfigKind, string> = {
 }
 
 export function ConfigDrawer({ service, onClose }: TProps) {
-  const [manifest, setManifest] = useState<TServiceConfigManifest | null>(null)
-  const [selectedFileId, setSelectedFileId] = useState<string | null>(null)
-  const [revealedFileIds, setRevealedFileIds] = useState(() => new Set<string>())
-  const [content, setContent] = useState<TServiceConfigContent | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [contentLoading, setContentLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [contentError, setContentError] = useState<string | null>(null)
-  const [requestVersion, setRequestVersion] = useState(0)
-  const [contentRequestVersion, setContentRequestVersion] = useState(0)
-  const selectedFile = manifest?.files.find((file) => file.id === selectedFileId) || null
-  const selectedRevealed = selectedFileId ? revealedFileIds.has(selectedFileId) : false
-
-  useEffect(() => {
-    const controller = new AbortController()
-    setLoading(true)
-    setError(null)
-
-    void fetchServiceConfig(service.id, controller.signal)
-      .then((nextManifest) => {
-        setManifest(nextManifest)
-        setSelectedFileId(nextManifest.files[0]?.id || null)
-        setRevealedFileIds(new Set())
-      })
-      .catch((cause: unknown) => {
-        if (!controller.signal.aborted) {
-          setError(cause instanceof Error ? cause.message : 'Could not load service configuration.')
-        }
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setLoading(false)
-      })
-
-    return () => controller.abort()
-  }, [requestVersion, service.id])
-
-  useEffect(() => {
-    if (!selectedFileId) {
-      setContent(null)
-      setContentLoading(false)
-      setContentError(null)
-      return
-    }
-
-    const controller = new AbortController()
-    setContent(null)
-    setContentLoading(true)
-    setContentError(null)
-
-    void fetchServiceConfigContent(service.id, selectedFileId, selectedRevealed, controller.signal)
-      .then(setContent)
-      .catch((cause: unknown) => {
-        if (!controller.signal.aborted) {
-          setContentError(
-            cause instanceof Error ? cause.message : 'Could not load configuration file.',
-          )
-        }
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setContentLoading(false)
-      })
-
-    return () => controller.abort()
-  }, [contentRequestVersion, selectedFileId, selectedRevealed, service.id])
-
-  const toggleSelectedReveal = useCallback(() => {
-    if (!selectedFileId) return
-    setRevealedFileIds((current) => {
-      const next = new Set(current)
-      if (next.has(selectedFileId)) next.delete(selectedFileId)
-      else next.add(selectedFileId)
-      return next
-    })
-  }, [selectedFileId])
+  const config = useServiceConfig(service.id)
+  const { manifest } = config
 
   return (
     <Dialog.Root open onOpenChange={(open) => !open && onClose()}>
@@ -132,66 +53,14 @@ export function ConfigDrawer({ service, onClose }: TProps) {
                 <span>
                   {manifest?.files.length || 0} {manifest?.files.length === 1 ? 'file' : 'files'}
                 </span>
-                <button
-                  type='button'
-                  disabled={loading}
-                  onClick={() => setRequestVersion((value) => value + 1)}
-                >
-                  <RefreshCw className={loading ? 'spin' : ''} aria-hidden='true' />
+                <button type='button' disabled={config.loading} onClick={config.refresh}>
+                  <RefreshCw className={config.loading ? 'spin' : ''} aria-hidden='true' />
                   Refresh
                 </button>
               </div>
             </div>
 
-            {loading ? (
-              <div className='config-drawer-state'>Discovering configuration files…</div>
-            ) : error ? (
-              <div className='config-drawer-state is-error'>
-                <AlertCircle aria-hidden='true' />
-                <span>{error}</span>
-                <button type='button' onClick={() => setRequestVersion((value) => value + 1)}>
-                  Try again
-                </button>
-              </div>
-            ) : manifest && manifest.files.length > 0 ? (
-              <div className='config-drawer-content'>
-                <aside className='config-drawer-sidebar'>
-                  <ConfigFileList
-                    files={manifest.files}
-                    selectedFileId={selectedFileId}
-                    onSelect={setSelectedFileId}
-                  />
-                  {manifest.environmentKeys.length > 0 ? (
-                    <section className='config-environment-keys'>
-                      <span>Environment keys</span>
-                      <ul>
-                        {manifest.environmentKeys.map((key) => (
-                          <li key={key}>{key}</li>
-                        ))}
-                      </ul>
-                    </section>
-                  ) : null}
-                </aside>
-                {selectedFile ? (
-                  <ConfigFileView
-                    file={selectedFile}
-                    content={content}
-                    loading={contentLoading}
-                    error={contentError}
-                    revealed={selectedRevealed}
-                    onRetry={() => setContentRequestVersion((value) => value + 1)}
-                    onToggleReveal={toggleSelectedReveal}
-                  />
-                ) : null}
-              </div>
-            ) : (
-              <div className='config-drawer-state'>
-                <div>
-                  <strong>No configuration files</strong>
-                  <span>This service does not currently declare any matching local files.</span>
-                </div>
-              </div>
-            )}
+            <ConfigDrawerBody manifest={manifest} config={config} />
           </Dialog.Popup>
         </Dialog.Viewport>
       </Dialog.Portal>

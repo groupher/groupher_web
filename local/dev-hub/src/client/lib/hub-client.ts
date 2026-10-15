@@ -28,6 +28,11 @@ type THubConnectionOptions = {
 
 const logListeners = new Map<string, Set<TLogListener>>()
 
+const readResponseError = async (response: Response, fallback: string): Promise<Error> => {
+  const payload = (await response.json().catch(() => null)) as { error?: string } | null
+  return new Error(payload?.error || `${fallback} (HTTP ${response.status})`)
+}
+
 export async function fetchSnapshot(signal?: AbortSignal): Promise<THubSnapshot> {
   const response = await fetch('/api/services', { signal })
   if (!response.ok) throw new Error('Could not load local services.')
@@ -39,9 +44,8 @@ export async function fetchGitDiff(
   signal?: AbortSignal,
 ): Promise<TGitDiffPayload> {
   const response = await fetch(`/api/git/diff?scope=${scope}`, { signal })
-  const payload = (await response.json()) as TGitDiffPayload & { error?: string }
-  if (!response.ok) throw new Error(payload.error || 'Could not load the Git diff.')
-  return payload
+  if (!response.ok) throw await readResponseError(response, 'Could not load the Git diff.')
+  return (await response.json()) as TGitDiffPayload
 }
 
 export async function fetchServiceLogs(id: string, signal?: AbortSignal): Promise<TServiceLog[]> {
@@ -56,12 +60,10 @@ export async function fetchServiceConfig(
   signal?: AbortSignal,
 ): Promise<TServiceConfigManifest> {
   const response = await fetch(`/api/services/${encodeURIComponent(id)}/config`, { signal })
-  const payload = (await response.json().catch(() => null)) as
-    | (TServiceConfigManifest & { error?: string })
-    | null
-  if (!response.ok || !payload) {
-    throw new Error(payload?.error || `Could not load configuration for ${id}.`)
-  }
+  if (!response.ok)
+    throw await readResponseError(response, `Could not load configuration for ${id}.`)
+  const payload = (await response.json().catch(() => null)) as TServiceConfigManifest | null
+  if (!payload) throw new Error(`Could not load configuration for ${id}.`)
   return payload
 }
 
@@ -78,12 +80,10 @@ export async function fetchServiceConfigContent(
     `/api/services/${encodeURIComponent(id)}/config/${encodeURIComponent(fileId)}${query}`,
     { signal },
   )
-  const payload = (await response.json().catch(() => null)) as
-    | (TServiceConfigContent & { error?: string })
-    | null
-  if (!response.ok || !payload) {
-    throw new Error(payload?.error || `Could not load configuration file for ${id}.`)
-  }
+  if (!response.ok)
+    throw await readResponseError(response, `Could not load configuration file for ${id}.`)
+  const payload = (await response.json().catch(() => null)) as TServiceConfigContent | null
+  if (!payload) throw new Error(`Could not load configuration file for ${id}.`)
   return payload
 }
 
@@ -97,9 +97,8 @@ export async function fetchMetricHistory(
     `/api/services/${encodeURIComponent(id)}/metrics?${params.toString()}`,
     { signal },
   )
-  const payload = (await response.json()) as TMetricHistoryPayload & { error?: string }
-  if (!response.ok) throw new Error(payload.error || `Could not load metrics for ${id}.`)
-  return payload
+  if (!response.ok) throw await readResponseError(response, `Could not load metrics for ${id}.`)
+  return (await response.json()) as TMetricHistoryPayload
 }
 
 export async function controlService(
@@ -116,15 +115,12 @@ export async function controlService(
         }
       : {}),
   })
+  if (!response.ok) throw await readResponseError(response, `Could not ${action} ${id}.`)
   const payload = (await response.json().catch(() => null)) as {
     service?: TPublicService
     services?: TPublicService[]
-    error?: string
   } | null
-
-  if (!response.ok || !payload?.service) {
-    throw new Error(payload?.error || `Could not ${action} ${id}.`)
-  }
+  if (!payload?.service) throw new Error(`Could not ${action} ${id}.`)
 
   return payload.services || [payload.service]
 }

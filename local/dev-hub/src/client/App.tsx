@@ -1,14 +1,12 @@
-import type { TPublicService, TServiceStartMode } from '@shared/contracts'
 import { AlertCircle, X } from 'lucide-react'
-import { lazy, startTransition, Suspense, useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense } from 'react'
 
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { GitDiffDrawer } from '@/components/GitDiffDrawer'
 import { MetricsNoticeBar } from '@/components/MetricsNoticeBar'
 import { PageHeader } from '@/components/PageHeader'
 import { ServiceSection } from '@/components/ServiceSection'
-import { useServiceHub } from '@/hooks/useServiceHub'
-import type { THubDrawer, THubViewMode } from '@/spec'
+import { useAppController } from '@/hooks/useAppController'
 
 const ConfigDrawer = lazy(() =>
   import('@/components/ConfigDrawer').then((module) => ({ default: module.ConfigDrawer })),
@@ -31,9 +29,6 @@ const FlowView = lazy(() =>
   import('@/components/FlowView').then((module) => ({ default: module.FlowView })),
 )
 
-const getInitialViewMode = (): THubViewMode =>
-  new URLSearchParams(window.location.search).get('view') === 'flow' ? 'flow' : 'list'
-
 export function App() {
   const {
     services,
@@ -45,106 +40,28 @@ export function App() {
     connected,
     loading,
     error,
-    toggleService,
-    startService,
-    stopService,
-    restartService,
     dismissError,
-  } = useServiceHub()
-  const [expandedIds, setExpandedIds] = useState(() => new Set<string>())
-  const [activeDrawer, setActiveDrawer] = useState<THubDrawer>(null)
-  const [viewMode, setViewMode] = useState<THubViewMode>(getInitialViewMode)
-  const metricsService =
-    activeDrawer?.kind === 'metrics'
-      ? services.find((service) => service.id === activeDrawer.serviceId) || null
-      : null
-  const configService =
-    activeDrawer?.kind === 'config'
-      ? services.find((service) => service.id === activeDrawer.serviceId) || null
-      : null
-  const dependencyService =
-    activeDrawer?.kind === 'dependencies'
-      ? services.find((service) => service.id === activeDrawer.serviceId) || null
-      : null
-  const externalService =
-    activeDrawer?.kind === 'external'
-      ? services.find((service) => service.id === activeDrawer.serviceId) || null
-      : null
-  const diffScope = activeDrawer?.kind === 'git' ? activeDrawer.scope : null
-
-  useEffect(() => {
-    const compactIds = new Set(
-      services
-        .filter((service) => service.status === 'stopped' || service.status === 'unavailable')
-        .map((service) => service.id),
-    )
-
-    setExpandedIds((current) => {
-      const next = new Set(current)
-      for (const id of compactIds) next.delete(id)
-      return next.size === current.size ? current : next
-    })
-  }, [services])
-
-  const toggleTerminal = useCallback((id: string) => {
-    setExpandedIds((current) => {
-      const next = new Set(current)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
-    })
-  }, [])
-
-  const handleToggleService = useCallback(
-    (service: TPublicService) => {
-      void toggleService(service)
-    },
-    [toggleService],
-  )
-  const handleRestartService = useCallback(
-    (service: TPublicService) => {
-      void restartService(service)
-    },
-    [restartService],
-  )
-  const handleStartService = useCallback(
-    (service: TPublicService, mode: TServiceStartMode | 'default') => {
-      void startService(service, mode)
-    },
-    [startService],
-  )
-  const openMetrics = useCallback(
-    (serviceId: string) => setActiveDrawer({ kind: 'metrics', serviceId }),
-    [],
-  )
-  const openConfig = useCallback(
-    (serviceId: string) => setActiveDrawer({ kind: 'config', serviceId }),
-    [],
-  )
-  const openDependencies = useCallback(
-    (serviceId: string) => setActiveDrawer({ kind: 'dependencies', serviceId }),
-    [],
-  )
-  const openExternal = useCallback(
-    (serviceId: string) => setActiveDrawer({ kind: 'external', serviceId }),
-    [],
-  )
-  const handleStopExternal = useCallback(
-    (service: TPublicService) => {
-      void stopService(service)
-    },
-    [stopService],
-  )
-  const closeDrawer = useCallback(() => setActiveDrawer(null), [])
-
-  const handleViewModeChange = useCallback((mode: THubViewMode) => {
-    const url = new URL(window.location.href)
-    if (mode === 'flow') url.searchParams.set('view', 'flow')
-    else url.searchParams.delete('view')
-    window.history.replaceState(null, '', url)
-
-    startTransition(() => setViewMode(mode))
-  }, [])
+    expandedIds,
+    activeDrawer,
+    viewMode,
+    metricsService,
+    configService,
+    dependencyService,
+    externalService,
+    diffScope,
+    setActiveDrawer,
+    toggleTerminal,
+    handleToggleService,
+    handleRestartService,
+    handleStartService,
+    openMetrics,
+    openConfig,
+    openDependencies,
+    openExternal,
+    handleStopExternal,
+    closeDrawer,
+    handleViewModeChange,
+  } = useAppController()
 
   return (
     <div className='window-frame'>

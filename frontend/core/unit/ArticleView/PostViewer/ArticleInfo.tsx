@@ -31,7 +31,7 @@ const ArticleInfo: FC<TProps> = ({ article, stats, viewerState }) => {
           onAction={() => toggle()}
         />
         <div className='grow' />
-        <ArticleBaseStats article={article} stats={stats} container='drawer' />
+        <ArticleBaseStats stats={stats} container='drawer' />
       </div>
     </div>
   )

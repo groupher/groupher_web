@@ -1,5 +1,7 @@
 export const ARTIMENT_DIGEST_LENGTH = 150
 
+const GRAPHEME_SEGMENTER = new Intl.Segmenter(undefined, { granularity: 'grapheme' })
+
 type TJsonPrimitive = boolean | null | number | string
 type TJsonValue = TJsonPrimitive | TJsonValue[] | { [key: string]: TJsonValue }
 
@@ -28,7 +30,7 @@ export const serializePlateJson = (value: unknown): string => JSON.stringify(sor
 
 /** Truncates plain text to the shared grapheme-safe Article digest limit. */
 export const createDigest = (plainText: string): string => {
-  const segments = new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(plainText)
+  const segments = GRAPHEME_SEGMENTER.segment(plainText)
 
   return Array.from(segments, ({ segment }) => segment)
     .slice(0, ARTIMENT_DIGEST_LENGTH)

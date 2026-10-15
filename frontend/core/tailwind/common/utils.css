@@ -242,6 +242,13 @@
     @apply animate-fade-down animate-once animate-duration-200;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .animation-fade-up,
+    .animation-fade-down {
+      animation: none;
+    }
+  }
+
   .button-reset {
     @apply cursor-pointer text-left leading-none;
   }

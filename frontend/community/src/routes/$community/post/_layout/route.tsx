@@ -7,9 +7,6 @@ import ArticleListStoreProvider from '~/stores/articleList/provider'
 import PostThread from '~/unit/PostThread'
 
 export const Route = createFileRoute('/$community/post/_layout')({
-  head: ({ params, matches }) => ({
-    links: [{ rel: 'canonical', href: communityPublicPath(params.community, '/post', matches) }],
-  }),
   loader: async ({ context, params }) => {
     const posts = await context.queryClient.ensureQueryData(
       communityQueries.posts(params.community),
@@ -26,6 +23,9 @@ export const Route = createFileRoute('/$community/post/_layout')({
     )
     return { posts }
   },
+  head: ({ params, matches }) => ({
+    links: [{ rel: 'canonical', href: communityPublicPath(params.community, '/post', matches) }],
+  }),
   component: PostListLayout,
 })
 

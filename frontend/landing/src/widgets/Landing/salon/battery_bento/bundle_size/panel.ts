@@ -25,6 +25,6 @@ export default function useSalon() {
     barGreen: rainbow(COLOR.GREEN, 'bg'),
     barRed: rainbow(COLOR.RED, 'bg'),
     //
-    loading: cn('size-3.5 ml-1.5 animate-spin', fill('title')),
+    loading: cn('size-3.5 ml-1.5 animate-spin motion-reduce:animate-none', fill('title')),
   }
 }

@@ -29,6 +29,16 @@ type TChartDatum = {
   criticalValue: number | null
 }
 
+const TIME_FORMATTER = new Intl.DateTimeFormat(undefined, {
+  hour: '2-digit',
+  minute: '2-digit',
+})
+const TIMESTAMP_FORMATTER = new Intl.DateTimeFormat(undefined, {
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+})
+
 export function MetricTrendChart({ title, unit, points, threshold, bucketMs }: TProps) {
   const data = buildChartData(points, threshold, bucketMs)
   const values = points.flatMap((point) => (point.value === null ? [] : [point.value]))
@@ -164,18 +174,11 @@ function buildChartData(
 }
 
 function formatTime(value: number): string {
-  return new Intl.DateTimeFormat(undefined, {
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(value)
+  return TIME_FORMATTER.format(value)
 }
 
 function formatTimestamp(value: number): string {
-  return new Intl.DateTimeFormat(undefined, {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  }).format(value)
+  return TIMESTAMP_FORMATTER.format(value)
 }
 
 function formatAxisValue(value: number, unit: TProps['unit']): string {

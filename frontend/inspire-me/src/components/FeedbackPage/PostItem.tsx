@@ -10,12 +10,15 @@ export default function PostItem({ post, rank }: Props) {
           <span className='text-digest shrink-0 text-[13px] leading-[1.35] font-semibold tabular-nums max-md:text-[12px]'>
             No.{rank}
           </span>
-          <span className='group relative min-w-0 cursor-default outline-none' tabIndex={0}>
+          <button
+            type='button'
+            className='group font-inherit relative min-w-0 cursor-default border-0 bg-transparent p-0 text-left outline-none'
+          >
             {post.titleZh}
             <span className='text-title pointer-events-none absolute bottom-[calc(100%+8px)] left-0 z-10 w-max max-w-[min(520px,70vw)] translate-y-1 rounded-md border border-[#e5e5e5] bg-white px-2.5 py-1.5 text-[13px] leading-[1.45] font-medium opacity-0 shadow-[0_10px_30px_rgb(0_0_0/10%)] transition duration-150 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100'>
               {post.titleEn}
             </span>
-          </span>
+          </button>
           <a
             className='text-link inline-flex size-4 shrink-0 items-center justify-center'
             href={post.sourceUrl}

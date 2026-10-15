@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, domAnimation, LazyMotion, m } from 'motion/react'
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -106,41 +106,43 @@ export function ServiceActionButton({
       </button>
       {typeof document !== 'undefined'
         ? createPortal(
-            <AnimatePresence initial={false}>
-              {open && position ? (
-                <motion.div
-                  ref={tooltipRef}
-                  id={tooltipId}
-                  className={`service-action-tooltip ${
-                    tooltipAlign === 'end' ? 'is-end-aligned' : ''
-                  } ${tooltipClassName ?? ''}`}
-                  role='tooltip'
-                  style={position}
-                  onBlur={(event) => {
-                    const nextTarget = event.relatedTarget as Node | null
-                    if (
-                      tooltipRef.current?.contains(nextTarget) ||
-                      buttonRef.current?.contains(nextTarget)
-                    ) {
-                      return
-                    }
+            <LazyMotion features={domAnimation}>
+              <AnimatePresence initial={false}>
+                {open && position ? (
+                  <m.div
+                    ref={tooltipRef}
+                    id={tooltipId}
+                    className={`service-action-tooltip ${
+                      tooltipAlign === 'end' ? 'is-end-aligned' : ''
+                    } ${tooltipClassName ?? ''}`}
+                    role='tooltip'
+                    style={position}
+                    onBlur={(event) => {
+                      const nextTarget = event.relatedTarget as Node | null
+                      if (
+                        tooltipRef.current?.contains(nextTarget) ||
+                        buttonRef.current?.contains(nextTarget)
+                      ) {
+                        return
+                      }
 
-                    closeTooltip()
-                  }}
-                  onMouseEnter={() => {
-                    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
-                    closeTimerRef.current = null
-                  }}
-                  onMouseLeave={scheduleCloseTooltip}
-                  initial={{ opacity: 0, scale: 0.98, y: -2 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.98, y: -1 }}
-                  transition={{ duration: 0.12, ease: [0.2, 0, 0, 1] }}
-                >
-                  {tooltip}
-                </motion.div>
-              ) : null}
-            </AnimatePresence>,
+                      closeTooltip()
+                    }}
+                    onMouseEnter={() => {
+                      if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+                      closeTimerRef.current = null
+                    }}
+                    onMouseLeave={scheduleCloseTooltip}
+                    initial={{ opacity: 0, scale: 0.98, y: -2 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.98, y: -1 }}
+                    transition={{ duration: 0.12, ease: [0.2, 0, 0, 1] }}
+                  >
+                    {tooltip}
+                  </m.div>
+                ) : null}
+              </AnimatePresence>
+            </LazyMotion>,
             document.body,
           )
         : null}

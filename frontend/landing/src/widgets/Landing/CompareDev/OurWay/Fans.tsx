@@ -24,7 +24,10 @@ export default function Fans() {
       </div>
 
       <div className={cn(s.commentsGroup, s.wingleAnimation, 'bottom-20 left-14 ml-10')}>
-        <Img src='icons/emotion/heart.png' className={cn(s.emoji, 'animate-pulse')} />
+        <Img
+          src='icons/emotion/heart.png'
+          className={cn(s.emoji, 'animate-pulse motion-reduce:animate-none')}
+        />
         <Facepile users={users.slice(2, 5)} left={2} className='scale-90 gap-x-1' />
       </div>
 

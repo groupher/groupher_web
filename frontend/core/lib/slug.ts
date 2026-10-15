@@ -18,11 +18,16 @@ export const slugify = async (value: string): Promise<string> => {
     body: JSON.stringify({ value }),
   })
 
+  if (!response.ok) {
+    const error = (await response.json().catch(() => ({}))) as TSlugifyResponse
+    throw new Error(error.error || `Failed to slugify value (${response.status})`)
+  }
+
   const result = (await response.json().catch(() => ({}))) as TSlugifyResponse
 
   const validation = validateSlug(result.slug)
 
-  if (!response.ok || !result.ok || !validation.valid) {
+  if (!result.ok || !validation.valid) {
     throw new Error(result.error || 'Failed to slugify value')
   }
 

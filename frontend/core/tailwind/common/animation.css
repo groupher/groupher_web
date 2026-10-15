@@ -171,6 +171,32 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .animate-loading-grow,
+    .animate-loading-move,
+    .animate-section-label-touched-in,
+    .animate-save-status-marquee,
+    .group-hover-arrow-right,
+    .group-hover-arrow-left,
+    .group-hover-arrow-up,
+    .group-hover-arrow-down {
+      animation: none;
+    }
+
+    .overflow-marquee-ready:hover .overflow-marquee-base,
+    .overflow-marquee-ready:focus-within .overflow-marquee-base,
+    .group:hover .overflow-marquee-ready .overflow-marquee-base,
+    .group:focus-within .overflow-marquee-ready .overflow-marquee-base {
+      opacity: 1;
+    }
+
+    .overflow-marquee-ready:hover .overflow-marquee-track,
+    .overflow-marquee-ready:focus-within .overflow-marquee-track,
+    .group:hover .overflow-marquee-ready .overflow-marquee-track,
+    .group:focus-within .overflow-marquee-ready .overflow-marquee-track {
+      display: none;
+      animation: none;
+    }
+
     .shimmer-text {
       color: var(--color-title);
       background: none;

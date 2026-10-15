@@ -100,4 +100,20 @@ describe('useTrackArticleView', () => {
 
     expect(trackArticleView).not.toHaveBeenCalled()
   })
+
+  it('disconnects the observer and cancels a pending dwell timer on unmount', () => {
+    const ref = createRef<HTMLDivElement>()
+    Object.defineProperty(ref, 'current', { value: document.createElement('div') })
+    const article = { community: 'home', innerId: 42, thread: THREAD.POST }
+    const removeEventListener = vi.spyOn(document, 'removeEventListener')
+
+    const { unmount } = renderHook(() => useTrackArticleView(ref, article, true))
+    act(() => callback([{ isIntersecting: true } as IntersectionObserverEntry], {} as never))
+    unmount()
+    act(() => vi.advanceTimersByTime(1_000))
+
+    expect(disconnect).toHaveBeenCalledOnce()
+    expect(removeEventListener).toHaveBeenCalledWith('visibilitychange', expect.any(Function))
+    expect(trackArticleView).not.toHaveBeenCalled()
+  })
 })
