@@ -67,10 +67,7 @@ export default function useWallpaper(): TRet {
         }),
   )
 
-  return useMemo(
-    () => composeWallpaperBgCss(state),
-    [state.source, state.pattern, state.effect, state.gradient, state.customWallpaper, state.type],
-  )
+  return composeWallpaperBgCss(state)
 }
 
 /** Exposes wallpaper bg render spec state and actions through the shared React hook boundary. */

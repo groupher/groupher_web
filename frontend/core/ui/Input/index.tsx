@@ -115,7 +115,7 @@ const Input: FC<TProps> = ({
     <Textarea
       testid={testid}
       className={className}
-      onChange={onChange}
+      onChange={onChange ?? undefined}
       focusOnMount={shouldFocusOnMount}
       disableEnter={disableEnter}
       fgColor={fgColor}

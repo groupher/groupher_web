@@ -41,6 +41,7 @@ export default function FilePicker({ pending, onSelect }: TProps) {
         ref={inputRef}
         className={s.input}
         type='file'
+        aria-label='Select a document file'
         accept={DOCUMENT_IMPORT_ACCEPT}
         onChange={handleFileChange}
       />

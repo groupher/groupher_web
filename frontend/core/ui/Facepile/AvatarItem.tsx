@@ -23,7 +23,7 @@ const AvatarItem: FC<TProps> = ({
   isFirst,
   isLast,
   user,
-  size,
+  size = SIZE.SMALL,
   noLazyLoad,
   onUserSelect,
   popCardPlacement,
@@ -59,7 +59,7 @@ const AvatarItem: FC<TProps> = ({
   return (
     <li className={s.wrapper}>
       <Tooltip
-        content={<UserCard user={user} />}
+        content={user ? <UserCard user={user} /> : null}
         offset={[5, 25]}
         delay={0}
         placement={popCardPlacement}

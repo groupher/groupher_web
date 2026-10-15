@@ -24,7 +24,9 @@ defmodule GroupherServer.Test.Query.Accounts.Publish.Posts do
       variables = %{login: user.login, filter: %{page: 1, size: 20}}
       results = guest_conn |> gq_query(S.Article.q(:paged_published_articles, :post), variables)
 
-      assert results["entries"] |> Enum.any?(&(&1["innerId"] == to_string(article_inner_id(post, community))))
+      assert results["entries"]
+             |> Enum.any?(&(&1["innerId"] == to_string(article_inner_id(post, community))))
+
       assert results["entries"] |> Enum.any?(&(&1["innerId"] == to_string(post2.inner_id)))
     end
   end
@@ -34,7 +36,14 @@ defmodule GroupherServer.Test.Query.Accounts.Publish.Posts do
       pub_comments =
         Enum.reduce(1..@publish_count, [], fn _, acc ->
           {:ok, comment} =
-            CMS.Comments.create_comment(community, :post, article_inner_id(post, community), mock_comment(), user, Ecto.UUID.generate())
+            CMS.Comments.create_comment(
+              community,
+              :post,
+              article_inner_id(post, community),
+              mock_comment(),
+              user,
+              Ecto.UUID.generate()
+            )
 
           acc ++ [comment]
         end)
@@ -51,7 +60,11 @@ defmodule GroupherServer.Test.Query.Accounts.Publish.Posts do
 
       assert entries |> Enum.all?(&(not is_nil(&1["article"]["author"])))
 
-      assert entries |> Enum.all?(&(&1["article"]["innerId"] == to_string(article_inner_id(post, community))))
+      assert entries
+             |> Enum.all?(
+               &(&1["article"]["innerId"] == to_string(article_inner_id(post, community)))
+             )
+
       assert entries |> Enum.all?(&(&1["author"]["login"] == user.login))
       assert entries |> Enum.any?(&(&1["innerId"] == random_comment_id))
     end

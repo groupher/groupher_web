@@ -18,7 +18,7 @@ const FileItem: FC<TProps> = ({ tag, active, onSelect }) => {
       <button
         type='button'
         className={cn(s.file, active && 'py-0.5')}
-        onClick={() => onSelect(tag)}
+        onClick={() => onSelect?.(tag)}
       >
         <div className={cn(s.title, active && s.primary)}>{tag.title}</div>
       </button>

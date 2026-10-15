@@ -18,7 +18,8 @@ const CommentHeader: FC<TProps> = ({ data, showInnerRef, isReply }) => {
   const s = useSalon()
   const { t } = useTrans()
 
-  const { author, meta } = data
+  const author = data.author ?? {}
+  const meta = data.meta ?? {}
 
   return (
     <div className={s.wrapper}>
@@ -29,8 +30,8 @@ const CommentHeader: FC<TProps> = ({ data, showInnerRef, isReply }) => {
       )}
       <Img
         className={s.avatar}
-        src={data.author.avatar}
-        fallback={<ImgFallback user={data.author} right={2.5} />}
+        src={author.avatar ?? ''}
+        fallback={<ImgFallback user={author} right={2.5} />}
       />
       <div className={s.headerInfo}>
         <div className={s.baseInfo}>
@@ -46,7 +47,7 @@ const CommentHeader: FC<TProps> = ({ data, showInnerRef, isReply }) => {
               </div>
             )}
             <div className={s.createDate}>
-              <TimeAgo datetime={data.insertedAt} />
+              {data.insertedAt && <TimeAgo datetime={data.insertedAt} />}
             </div>
           </div>
 

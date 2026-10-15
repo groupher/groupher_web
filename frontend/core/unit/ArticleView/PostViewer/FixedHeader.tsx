@@ -23,7 +23,7 @@ const FixedHeader: FC<TProps> = ({
   visible,
   footerVisible: _footerVisible,
 }) => {
-  const s = useSalon({ visible })
+  const s = useSalon({ visible: Boolean(visible) })
   const { cat, status } = article
 
   return (
@@ -31,7 +31,7 @@ const FixedHeader: FC<TProps> = ({
       <div className={s.left}>
         <Upvote
           count={stats?.upvotesCount}
-          viewerHasUpvoted={viewerState.viewerHasUpvoted}
+          viewerHasUpvoted={Boolean(viewerState.viewerHasUpvoted)}
           type={UPVOTE_LAYOUT.FIXED_HEADER}
           right={6}
         />

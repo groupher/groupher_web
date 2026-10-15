@@ -1,6 +1,8 @@
 import useSalon from './global_preview'
 
-const wallpaperState = vi.hoisted(() => ({ type: 'none' as 'none' | 'gradient' }))
+const wallpaperState = vi.hoisted(() => ({
+  type: 'none' as 'none' | 'gradient',
+}))
 
 vi.mock('~/hooks/useTheme', () => ({
   default: () => ({ isDarkTheme: false }),

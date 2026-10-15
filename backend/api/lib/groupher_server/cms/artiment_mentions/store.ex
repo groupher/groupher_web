@@ -617,8 +617,9 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
   defp community_id(%{artiment: %Comment{}}), do: nil
 
   defp community_id(%{artiment: %{community_id: community_id}})
-       when is_integer(community_id),
-       do: community_id
+       when is_integer(community_id) do
+    community_id
+  end
 
   defp community_id(%{artiment: article}) when is_map(article) do
     case explicit_community_id(article) do

@@ -90,8 +90,9 @@ defmodule GroupherServer.CMS.Press.Commands.UpdateConfig do
     end
   end
 
-  defp present(%Confirmation{data: %{"community" => community}}),
-    do: Query.config(community)
+  defp present(%Confirmation{data: %{"community" => community}}) do
+    Query.config(community)
+  end
 
   defp present(_confirmation), do: {:error, CMS.ErrorCat.command_result_unavailable()}
 

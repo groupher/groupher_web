@@ -17,7 +17,10 @@ type TGroupedKanbanPosts = {
 
 export default function Kanban({ initialData }: { initialData?: TGroupedKanbanPosts | null }) {
   const { slug: community } = useCommunity()
-  useQuery({ ...Q.article.kanban(community), initialData: initialData || undefined })
+  useQuery({
+    ...Q.article.kanban(community),
+    initialData: initialData || undefined,
+  })
 
   return <KanbanThread />
 }

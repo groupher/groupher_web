@@ -5,6 +5,7 @@ import { updateViewingArticle } from '~/signal'
 import Input from '~/ui/Input'
 import { toast } from '~/ui/Toaster'
 
+import { getArticlePath } from '../helper'
 import S from '../schema'
 import useTouched from '../useTouched'
 import Footer from './Footer'
@@ -18,17 +19,19 @@ const TitleSetting: FC<TProps> = ({ onBack }) => {
   const s = useSalon()
 
   const { article } = useViewingArticle()
-  const [title, setTitle] = useState(article.title)
+  const [title, setTitle] = useState(article.title ?? '')
   const { touched, setTouched, resetTouched } = useTouched()
   const [result, updatePost] = useArticleSettingMutation(S.updatePost)
 
   const handleUpdate = () => {
+    const articlePath = getArticlePath(article)
+    if (!articlePath || article.version === undefined) {
+      toast('文章信息不完整', 'error')
+      return
+    }
+
     const params = {
-      article: {
-        innerId: article.innerId,
-        community: article.community?.slug,
-        thread: article.meta.thread,
-      },
+      article: articlePath,
       expectedVersion: article.version,
       title,
     }
@@ -36,11 +39,11 @@ const TitleSetting: FC<TProps> = ({ onBack }) => {
     updatePost(params).then((result) => {
       if (result.error) {
         toast('修改失败', 'error')
-      } else {
+      } else if (result.data?.updatePost?.title) {
         toast('修改完成')
         const newTitle = result.data.updatePost.title
         setTitle(newTitle)
-        updateViewingArticle({ id: article.id, title: newTitle })
+        if (article.id) updateViewingArticle({ id: article.id, title: newTitle })
         resetTouched()
       }
     })

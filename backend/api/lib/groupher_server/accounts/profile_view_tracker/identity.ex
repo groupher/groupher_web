@@ -40,8 +40,9 @@ defmodule GroupherServer.Accounts.ProfileViewTracker.Identity do
   def resolve(_viewer, _classification, _opts), do: {:error, ErrorCat.invalid_actor_type()}
 
   defp tracking_key(%Classification{type: type}, _viewer, _opts)
-       when type in [:crawler, :unknown],
-       do: {:ok, nil}
+       when type in [:crawler, :unknown] do
+    {:ok, nil}
+  end
 
   defp tracking_key(
          %Classification{type: :human, is_authenticated: true},

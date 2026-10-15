@@ -5,14 +5,12 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Set do
       GraphQL -> Set -> Article Gate -> Tags association + stats/effects
   """
 
-  alias GroupherServer.Accounts
-
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.Model.User
+  alias CMS.Articles.{Query, Tags.Assignment}
   alias CMS.{FrontDesk, Gate}
   alias CMS.Communities.Tags.Commands.TagSupport
-  alias CMS.Articles.Tags.Assignment
   alias CMS.Model.{Article, Community}
-  alias Accounts.Model.User
   alias Helper.T
 
   @spec execute(Article.t() | map(), T.id(), User.t(), Ecto.UUID.t()) :: T.domain_res(Article.t())
@@ -34,7 +32,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Set do
   end
 
   defp article_resource(%{article_id: article_id} = resource) do
-    case Repo.get(Article, article_id) do
+    case Query.article(article_id) do
       %Article{} = article -> {:ok, article, Map.get(resource, :branch_id)}
       nil -> {:error, CMS.Gate.ErrorCat.resource_not_found()}
     end

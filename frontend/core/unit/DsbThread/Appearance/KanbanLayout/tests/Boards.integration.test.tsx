@@ -34,7 +34,11 @@ function Probe() {
 
   return (
     <pre data-testid='probe'>
-      {JSON.stringify({ kanbanBoards, original: original.kanbanBoards, isKanbanBoardsTouched })}
+      {JSON.stringify({
+        kanbanBoards,
+        original: original.kanbanBoards,
+        isKanbanBoardsTouched,
+      })}
     </pre>
   )
 }

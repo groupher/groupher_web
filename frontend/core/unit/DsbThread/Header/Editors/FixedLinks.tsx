@@ -23,7 +23,7 @@ const FixedLinks: FC<TProps> = ({ isAboutLinkFold }) => {
       <h3 className={s.note}>{t('dsb.header.fixed_links.title')}</h3>
 
       <div className={s.items}>
-        {reject((t: TCommunityThread) => t.slug === ROUTE.ABOUT, threads).map(
+        {reject((t: TCommunityThread) => t.slug === ROUTE.ABOUT, threads ?? []).map(
           (item: TCommunityThread) => (
             <div key={item.slug} className={s.item}>
               <h4 className={s.title}>{item.title}</h4>

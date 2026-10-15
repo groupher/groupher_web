@@ -111,14 +111,28 @@ vi.mock('./salon/source_card', () => ({
     ),
 }))
 
-vi.mock('~/icons/CloseLight', () => ({ default: () => <svg aria-hidden='true' /> }))
-vi.mock('~/icons/ArrowSimple', () => ({ default: () => <svg aria-hidden='true' /> }))
-vi.mock('~/icons/ChevronDown', () => ({ default: () => <svg aria-hidden='true' /> }))
-vi.mock('~/icons/DownloadSimple', () => ({ default: () => <svg aria-hidden='true' /> }))
-vi.mock('~/icons/FileText', () => ({ default: () => <svg aria-hidden='true' /> }))
+vi.mock('~/icons/CloseLight', () => ({
+  default: () => <svg aria-hidden='true' />,
+}))
+vi.mock('~/icons/ArrowSimple', () => ({
+  default: () => <svg aria-hidden='true' />,
+}))
+vi.mock('~/icons/ChevronDown', () => ({
+  default: () => <svg aria-hidden='true' />,
+}))
+vi.mock('~/icons/DownloadSimple', () => ({
+  default: () => <svg aria-hidden='true' />,
+}))
+vi.mock('~/icons/FileText', () => ({
+  default: () => <svg aria-hidden='true' />,
+}))
 vi.mock('~/icons/Link', () => ({ default: () => <svg aria-hidden='true' /> }))
-vi.mock('~/icons/social/Google', () => ({ default: () => <svg aria-hidden='true' /> }))
-vi.mock('~/icons/social/Notion', () => ({ default: () => <svg aria-hidden='true' /> }))
+vi.mock('~/icons/social/Google', () => ({
+  default: () => <svg aria-hidden='true' />,
+}))
+vi.mock('~/icons/social/Notion', () => ({
+  default: () => <svg aria-hidden='true' />,
+}))
 
 const importedValue: TRichEditorValue = [{ type: 'p', children: [{ text: 'Imported' }] }]
 
@@ -134,7 +148,9 @@ const createHandle = (
 const importLocalFile = async (): Promise<void> => {
   fireEvent.click(screen.getByRole('button', { name: /dsb.doc.import.source.local/ }))
   const input = document.querySelector<HTMLInputElement>('input[type="file"]')
-  const file = new File(['<p>Imported</p>'], 'guide.html', { type: 'text/html' })
+  const file = new File(['<p>Imported</p>'], 'guide.html', {
+    type: 'text/html',
+  })
   fireEvent.change(input!, { target: { files: [file] } })
   await screen.findByText('import-review')
 }
@@ -231,8 +247,12 @@ describe('ImportDrawer', () => {
       />,
     )
 
-    const localButton = screen.getByRole('button', { name: /dsb.doc.import.source.local/ })
-    const platformButton = screen.getByRole('button', { name: /dsb.doc.import.source.platform/ })
+    const localButton = screen.getByRole('button', {
+      name: /dsb.doc.import.source.local/,
+    })
+    const platformButton = screen.getByRole('button', {
+      name: /dsb.doc.import.source.platform/,
+    })
 
     fireEvent.click(localButton)
     expect(localButton).toHaveAttribute('aria-expanded', 'true')
@@ -344,7 +364,11 @@ describe('ImportDrawer', () => {
 
     await importLocalFile()
     fireEvent.click(screen.getByRole('button', { name: 'dsb.doc.import.target.title' }))
-    fireEvent.click(screen.getByRole('menuitemradio', { name: 'dsb.doc.import.target.cursor' }))
+    fireEvent.click(
+      screen.getByRole('menuitemradio', {
+        name: 'dsb.doc.import.target.cursor',
+      }),
+    )
     fireEvent.click(screen.getByRole('button', { name: 'dsb.doc.import.insert.cursor' }))
 
     expect(editor.insertContent).toHaveBeenCalledWith(importedValue, {

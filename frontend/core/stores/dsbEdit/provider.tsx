@@ -1,6 +1,6 @@
 'use client'
 
-import { type ReactNode, useEffect, useMemo, useRef } from 'react'
+import { type ReactNode, useEffect, useMemo, useState } from 'react'
 
 import type { TParseDashboard } from '~/spec'
 
@@ -14,19 +14,17 @@ type TProps = {
 }
 
 export default function DsbEditProvider({ children, initialData }: TProps) {
-  const editStoreRef = useRef<ReturnType<typeof createDsbEditStore> | null>(null)
-
-  editStoreRef.current ??= createDsbEditStore(initialData.original)
+  const [editStore] = useState(() => createDsbEditStore(initialData.original))
 
   useEffect(() => {
-    editStoreRef.current?.reconcileConfirmed(initialData.original)
-  }, [initialData.original])
+    editStore.reconcileConfirmed(initialData.original)
+  }, [editStore, initialData.original])
 
   const value = useMemo<TDsbEditContextValue>(
     () => ({
-      editStore: editStoreRef.current!,
+      editStore,
     }),
-    [],
+    [editStore],
   )
 
   return <DsbEditContext.Provider value={value}>{children}</DsbEditContext.Provider>

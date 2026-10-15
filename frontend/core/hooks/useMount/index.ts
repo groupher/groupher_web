@@ -1,14 +1,13 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useEffectEvent } from 'react'
 
 type Cleanup = () => void
 type MountEffect = (...args: never[]) => unknown
 
 const useMount = (effect: MountEffect): void => {
-  const effectRef = useRef(effect)
-  effectRef.current = effect
+  const runMountEffect = useEffectEvent(effect)
 
   useEffect(() => {
-    const result = effectRef.current()
+    const result = runMountEffect()
     if (typeof result === 'function') {
       return result as Cleanup
     }

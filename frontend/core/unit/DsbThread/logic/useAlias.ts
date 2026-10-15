@@ -8,7 +8,7 @@ import useHelper from './useHelper'
 type TRet = {
   saving: boolean
   nameAlias: readonly TNameAlias[]
-  editingAlias: TNameAlias
+  editingAlias: TNameAlias | null
 
   updateEditingAlias: (alias: TNameAlias) => void
   edit: TEditFunc

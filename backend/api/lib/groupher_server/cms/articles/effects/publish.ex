@@ -23,11 +23,13 @@ defmodule GroupherServer.CMS.Articles.Effects.Publish do
       Effects.run(%{article: article, branch_type: :main, revision: revision})
   """
   @spec run(%{required(:article) => Article.t()}) :: {:ok, map()} | {:error, term()}
-  def run(%{article: %Article{thread: :doc}, branch_type: :main} = result),
-    do: run_public_effects(result)
+  def run(%{article: %Article{thread: :doc}, branch_type: :main} = result) do
+    run_public_effects(result)
+  end
 
-  def run(%{article: %Article{thread: :doc}, branch_type: _branch_type} = result),
-    do: {:ok, result}
+  def run(%{article: %Article{thread: :doc}, branch_type: _branch_type} = result) do
+    {:ok, result}
+  end
 
   def run(%{article: %Article{}} = result), do: run_public_effects(result)
 

@@ -90,26 +90,29 @@ class StickyBox extends React.Component<TStickyBoxProps, TStickyBoxState> {
     if (!stickyProp) return
     this.node = n
     if (n) {
-      this.scrollPane = getScrollParent(this.node)
+      const parentNode = n.parentElement
+      if (!parentNode) return
+      const scrollPane = getScrollParent(n)
+      this.scrollPane = scrollPane
       this.latestScrollY =
-        this.scrollPane === Global ? window.scrollY : (this.scrollPane as HTMLElement).scrollTop
+        scrollPane === Global ? window.scrollY : (scrollPane as HTMLElement).scrollTop
 
-      this.addListener(this.scrollPane, 'scroll', this.handleScroll, passiveArg)
-      this.addListener(this.scrollPane, 'mousewheel', this.handleScroll, passiveArg)
-      if (this.scrollPane === Global) {
+      this.addListener(scrollPane, 'scroll', this.handleScroll, passiveArg)
+      this.addListener(scrollPane, 'mousewheel', this.handleScroll, passiveArg)
+      if (scrollPane === Global && Global) {
         this.addListener(Global, 'resize', this.handleWindowResize)
         this.handleWindowResize()
       } else {
-        this.addResizeObserver(this.scrollPane as HTMLElement, this.handleScrollPaneResize)
+        this.addResizeObserver(scrollPane as HTMLElement, this.handleScrollPaneResize)
         this.handleScrollPaneResize()
       }
-      this.addResizeObserver(this.node.parentNode as HTMLElement, this.handleParentNodeResize)
+      this.addResizeObserver(parentNode, this.handleParentNodeResize)
       this.handleParentNodeResize()
 
-      this.addResizeObserver(this.node, this.handleNodeResize)
+      this.addResizeObserver(n, this.handleNodeResize)
 
       // 手动调用一次 updateNodeHeight 来初始化节点高度
-      const initialHeight = this.node.getBoundingClientRect().height
+      const initialHeight = n.getBoundingClientRect().height
       this.updateNodeHeight(initialHeight)
 
       this.initial()
@@ -134,7 +137,7 @@ class StickyBox extends React.Component<TStickyBoxProps, TStickyBoxState> {
     this.nodeHeight = height
 
     if (height !== prevHeight) {
-      const { offsetTop, offsetBottom, bottom } = this.props
+      const { bottom = false, offsetBottom = 0, offsetTop = 0 } = this.props
       if (this.nodeHeight + offsetTop + offsetBottom <= this.viewPortHeight) {
         // Just make it sticky if node smaller than viewport
         this.mode = undefined
@@ -150,36 +153,40 @@ class StickyBox extends React.Component<TStickyBoxProps, TStickyBoxState> {
   }
 
   handleNodeResize = (entries: ResizeObserverEntry[]) => {
-    const height = entries[0].contentRect.height
+    const entry = entries[0]
+    if (!entry) return
+    const height = entry.contentRect.height
     this.updateNodeHeight(height)
   }
 
   changeMode = (newMode: string) => {
-    const { onChangeMode, offsetTop, offsetBottom, bottom } = this.props
-    if (this.mode !== newMode) onChangeMode(this.mode, newMode)
+    const node = this.node
+    if (!node || !stickyProp) return
+    const { onChangeMode, offsetTop = 0, offsetBottom = 0, bottom = false } = this.props
+    if (this.mode !== newMode) onChangeMode?.(this.mode ?? '', newMode)
     this.mode = newMode
     if (newMode === 'relative') {
-      this.node.style.position = 'relative'
+      node.style.position = 'relative'
       if (bottom) {
         const nextBottom = Math.max(0, this.parentHeight - this.nodeHeight - this.offset)
-        this.node.style.bottom = `${nextBottom}px`
+        node.style.bottom = `${nextBottom}px`
       } else {
-        this.node.style.top = `${this.offset}px`
+        node.style.top = `${this.offset}px`
       }
     } else {
-      this.node.style.position = stickyProp
+      node.style.position = stickyProp
       if (newMode === 'stickyBottom') {
         if (bottom) {
-          this.node.style.bottom = `${offsetBottom}px`
+          node.style.bottom = `${offsetBottom}px`
         } else {
-          this.node.style.top = `${this.viewPortHeight - this.nodeHeight - offsetBottom}px`
+          node.style.top = `${this.viewPortHeight - this.nodeHeight - offsetBottom}px`
         }
       } else {
         // stickyTop
         if (bottom) {
-          this.node.style.bottom = `${this.viewPortHeight - this.nodeHeight - offsetBottom}px`
+          node.style.bottom = `${this.viewPortHeight - this.nodeHeight - offsetBottom}px`
         } else {
-          this.node.style.top = `${offsetTop}px`
+          node.style.top = `${offsetTop}px`
         }
       }
     }
@@ -197,7 +204,7 @@ class StickyBox extends React.Component<TStickyBoxProps, TStickyBoxState> {
 
   getCurrentOffset = () => {
     if (this.mode === 'relative') return this.offset
-    const { offsetTop, offsetBottom } = this.props
+    const { offsetTop = 0, offsetBottom = 0 } = this.props
     if (this.mode === 'stickyTop') {
       return Math.max(0, this.scrollPaneOffset + this.latestScrollY - this.naturalTop + offsetTop)
     }
@@ -214,7 +221,7 @@ class StickyBox extends React.Component<TStickyBoxProps, TStickyBoxState> {
   }
 
   changeToStickyBottomIfBoxTooLow = (scrollY: number) => {
-    const { offsetBottom } = this.props
+    const { offsetBottom = 0 } = this.props
     if (
       scrollY + this.scrollPaneOffset + this.viewPortHeight >=
       this.naturalTop + this.nodeHeight + this.offset + offsetBottom
@@ -230,7 +237,8 @@ class StickyBox extends React.Component<TStickyBoxProps, TStickyBoxState> {
   }
 
   handleScrollPaneResize = () => {
-    this.viewPortHeight = (this.scrollPane as HTMLElement).offsetHeight
+    if (!(this.scrollPane instanceof HTMLElement)) return
+    this.viewPortHeight = this.scrollPane.offsetHeight
     if (process.env.NODE_ENV !== 'production' && this.viewPortHeight === 0) {
       console.log(
         'react-sticky-box scroll pane has a height of 0. This seems odd. Please check this node:',
@@ -239,11 +247,10 @@ class StickyBox extends React.Component<TStickyBoxProps, TStickyBoxState> {
     }
     // Only applicable if scrollPane is an offsetParent
     if (
-      (this.scrollPane as HTMLElement).firstChild instanceof HTMLElement &&
-      // @ts-expect-error
-      (this.scrollPane as HTMLElement).firstChild.offsetParent === this.scrollPane
+      this.scrollPane.firstChild instanceof HTMLElement &&
+      this.scrollPane.firstChild.offsetParent === this.scrollPane
     ) {
-      this.scrollPaneOffset = (this.scrollPane as HTMLElement).getBoundingClientRect().top
+      this.scrollPaneOffset = this.scrollPane.getBoundingClientRect().top
     } else {
       this.scrollPaneOffset = 0
     }
@@ -251,7 +258,8 @@ class StickyBox extends React.Component<TStickyBoxProps, TStickyBoxState> {
   }
 
   handleParentNodeResize = () => {
-    const parentNode = this.node?.parentNode as HTMLElement
+    const parentNode = this.node?.parentElement
+    if (!parentNode || !this.scrollPane) return
     const computedParentStyle = getComputedStyle(parentNode, null)
     const parentPaddingTop = Number.parseInt(
       computedParentStyle.getPropertyValue('padding-top'),
@@ -263,9 +271,7 @@ class StickyBox extends React.Component<TStickyBoxProps, TStickyBoxState> {
     )
     const verticalParentPadding = parentPaddingTop + parentPaddingBottom
     this.naturalTop =
-      offsetTill(parentNode, this.scrollPane as HTMLElement) +
-      parentPaddingTop +
-      this.scrollPaneOffset
+      offsetTill(parentNode, this.scrollPane) + parentPaddingTop + this.scrollPaneOffset
     const oldParentHeight = this.parentHeight
     this.parentHeight = parentNode.getBoundingClientRect().height - verticalParentPadding
 
@@ -285,7 +291,8 @@ class StickyBox extends React.Component<TStickyBoxProps, TStickyBoxState> {
   }
 
   handleScroll = () => {
-    const { offsetTop, offsetBottom } = this.props
+    const { offsetTop = 0, offsetBottom = 0 } = this.props
+    if (!this.scrollPane) return
     const scrollY =
       this.scrollPane === Global ? window.scrollY : (this.scrollPane as HTMLElement).scrollTop
     if (scrollY === this.latestScrollY) return
@@ -333,7 +340,7 @@ class StickyBox extends React.Component<TStickyBoxProps, TStickyBoxState> {
   }
 
   render() {
-    const { children, className } = this.props
+    const { children, className = '' } = this.props
     return (
       <div className={className} ref={this.registerContainerRef}>
         {children}
@@ -346,7 +353,7 @@ export default StickyBox
 
 // Helper functions
 const getScrollParent = (node: HTMLElement): HTMLElement | Window => {
-  let parent = node
+  let parent: HTMLElement | null = node
   while ((parent = parent.parentElement)) {
     const overflowYVal = getComputedStyle(parent, null).getPropertyValue('overflow-y')
     if (parent === document.body) return window
@@ -390,14 +397,15 @@ if (typeof CSS !== 'undefined' && CSS.supports) {
 // Inspired by https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection
 let passiveArg: boolean | AddEventListenerOptions = false
 try {
+  const passiveTestListener = () => undefined
   const opts = Object.defineProperty({}, 'passive', {
     get() {
       passiveArg = { passive: true }
     },
   })
   if (Global?.addEventListener) {
-    Global.addEventListener('testPassive', null, opts)
-    Global.removeEventListener('testPassive', null, opts)
+    Global.addEventListener('testPassive', passiveTestListener, opts)
+    Global.removeEventListener('testPassive', passiveTestListener, opts)
   }
 } catch (e) {
   console.log(e)

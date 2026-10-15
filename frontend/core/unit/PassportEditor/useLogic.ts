@@ -85,6 +85,53 @@ const hasCommunityRoot = (user: TUser | null, community: string): boolean => {
   return isCommunityRootPassport(user.passport, community)
 }
 
+const normalizeSocial = (
+  social: {
+    github: string | null
+    twitter: string | null
+    zhihu: string | null
+  } | null,
+): TUser['social'] =>
+  social
+    ? {
+        github: social.github ?? undefined,
+        twitter: social.twitter ?? undefined,
+        zhihu: social.zhihu ?? undefined,
+      }
+    : undefined
+
+const normalizeModerators = (
+  moderators:
+    | readonly ({
+        isRoot?: boolean | null
+        passportItemCount?: number | null
+        user?: {
+          login?: string | null
+          avatar?: string | null
+          nickname?: string | null
+          bio?: string | null
+        } | null
+      } | null)[]
+    | null
+    | undefined,
+): TModerator[] =>
+  (moderators ?? []).flatMap((moderator) => {
+    if (!moderator?.user?.login) return []
+
+    return [
+      {
+        isRoot: moderator.isRoot ?? undefined,
+        passportItemCount: moderator.passportItemCount ?? 0,
+        user: {
+          login: moderator.user.login,
+          avatar: moderator.user.avatar ?? undefined,
+          nickname: moderator.user.nickname ?? undefined,
+          bio: moderator.user.bio ?? undefined,
+        },
+      },
+    ]
+  })
+
 const mergeModerator = (
   moderators: readonly TModerator[],
   login: string,
@@ -99,6 +146,7 @@ const mergeHydratedModerator = (
   activeModerator: TUser,
   patch: Partial<TModerator>,
 ): TModerator[] => {
+  if (!activeModerator.login) return [...moderators]
   const merged = mergeModerator(moderators, activeModerator.login, patch)
   if (merged.some((moderator) => moderator.user?.login === activeModerator.login)) return merged
 
@@ -193,7 +241,7 @@ export default function useLogic(): TRet {
   }
 
   const loadUserPassport = async (): Promise<void> => {
-    if (!activeModerator) {
+    if (!activeModerator?.login) {
       setLoading(false)
       return
     }
@@ -210,9 +258,12 @@ export default function useLogic(): TRet {
     }
 
     try {
-      const res = await browserGraphQLRequest(S.userPassport, { login: activeModerator.login })
-      const { passportString = '{}', social = null } = res?.user ?? {}
-      const passportJson = safeParsePassport(passportString)
+      const res = await browserGraphQLRequest(S.userPassport, {
+        login: activeModerator.login,
+      })
+      const { passportString, social = null } = res?.user ?? {}
+      const passportJson = safeParsePassport(passportString ?? '{}')
+      const normalizedSocial = normalizeSocial(social)
       const globalRules = ruleMapFrom(passportJson.global)
       const communityPassport = communityPassportFrom(passportJson, community$.slug)
       const communityRules = ruleMapFrom(communityPassport.cms)
@@ -225,11 +276,13 @@ export default function useLogic(): TRet {
       }
       const moderators = mergeHydratedModerator(
         dsb$.moderators,
-        { ...activeModerator, social },
+        { ...activeModerator, social: normalizedSocial },
         nextModeratorPatch,
       )
 
-      moderatorUi$.patch({ activeModerator: { ...activeModerator, social } })
+      moderatorUi$.patch({
+        activeModerator: { ...activeModerator, social: normalizedSocial },
+      })
       dsb$.editMany({ moderators })
       patchCommunityConfig(queryClient, community$.slug, { moderators })
 
@@ -239,7 +292,9 @@ export default function useLogic(): TRet {
       console.error('## load user passport error: ', error)
       setSelectedGlobalRules([])
       setSelectedRules([])
-      moderatorUi$.patch({ activeModerator: { ...activeModerator, social: null } })
+      moderatorUi$.patch({
+        activeModerator: { ...activeModerator, social: undefined },
+      })
     } finally {
       setLoading(false)
     }
@@ -272,6 +327,7 @@ export default function useLogic(): TRet {
   const updatePassport = (): void => {
     const community = community$.slug
     if (!community || !activeModerator?.login) return
+    const activeModeratorLogin = activeModerator.login
 
     const innerRules: Record<string, boolean> = {}
     const globalRules: Record<string, boolean> = {}
@@ -310,9 +366,7 @@ export default function useLogic(): TRet {
       },
     })
       .then((res) => {
-        const remoteModerators = (res.updateModeratorPassport?.moderators ?? []).filter(
-          (moderator) => Boolean(moderator.user?.login),
-        ) as TModerator[]
+        const remoteModerators = normalizeModerators(res.updateModeratorPassport?.moderators)
         const savedModeratorPatch = {
           passportItemCount: enabledRuleCount(innerRules),
           rules: innerRules,
@@ -320,7 +374,7 @@ export default function useLogic(): TRet {
         }
         const moderators = mergeModerator(
           mergeModeratorSnapshots(remoteModerators, dsb$.moderators),
-          activeModerator.login,
+          activeModeratorLogin,
           savedModeratorPatch,
         )
 
@@ -343,9 +397,7 @@ export default function useLogic(): TRet {
         user: activeModerator.login,
       },
     }).then((res) => {
-      const moderators = (res.removeModerator?.moderators ?? []).filter(
-        (moderator) => moderator.user?.login,
-      )
+      const moderators = normalizeModerators(res.removeModerator?.moderators)
 
       dsb$.editMany({ moderators })
       moderatorUi$.patch({ activeModerator: null })
@@ -364,7 +416,7 @@ export default function useLogic(): TRet {
     if (hasGlobalGod(account$.user)) return true
     if (hasCommunityRoot(account$.user, community$.slug)) return true
 
-    const curRoot = find((moderator) => moderator.isRoot, community$.moderators)
+    const curRoot = (community$.moderators ?? []).find((moderator) => moderator.isRoot)
     return curRoot?.user?.login === account$.user?.login
   }, [account$.user, community$.moderators, community$.slug])
 

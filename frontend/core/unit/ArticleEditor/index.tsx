@@ -46,11 +46,11 @@ const ArticleEditor: FC<TProps> = ({ metric: _metric = METRIC.ARTICLE_EDITOR }) 
 
   useEffect(() => {
     loadCommunity()
-  }, [])
+  }, [loadCommunity])
 
   useEffect(() => {
     if (mode === 'update') loadArticle()
-  }, [mode])
+  }, [loadArticle, mode])
 
   const groupedTags = getGroupedTags()
   const editData = getEditData()
@@ -61,7 +61,7 @@ const ArticleEditor: FC<TProps> = ({ metric: _metric = METRIC.ARTICLE_EDITOR }) 
     <div className={s.wrapper}>
       <div className={s.inner}>
         {!allowEdit && <NoticeBar type='notice' content='只有作者可以编辑本内容。' left={5} />}
-        {isArchived && <ArchiveAlert date={archivedAt} top={3} bottom={4} left={5} />}
+        {isArchived && <ArchiveAlert date={archivedAt ?? undefined} top={3} bottom={4} left={5} />}
 
         <ArticleCover />
         <TitleInput title={title} placeholder={TEXTS.holder.title} />

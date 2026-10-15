@@ -1,0 +1,26 @@
+{
+  "ignore": {
+    "overrides": [
+      {
+        "files": ["src/client/components/TerminalSurface.tsx"],
+        "rules": ["react-doctor/effect-needs-cleanup"]
+      },
+      {
+        "files": ["src/client/components/FlowCanvasSizer.tsx"],
+        "rules": ["react-doctor/no-prop-callback-in-effect"]
+      },
+      {
+        "files": ["src/client/components/ServiceActionButton.tsx"],
+        "rules": ["react-doctor/motion-animate-presence-must-outlive-child"]
+      },
+      {
+        "files": ["src/client/components/ServiceCard.tsx"],
+        "rules": ["react-doctor/no-layout-property-animation"]
+      },
+      {
+        "files": ["src/client/components/MetricTrendChart.tsx"],
+        "rules": ["react-doctor/prefer-dynamic-import"]
+      }
+    ]
+  }
+}

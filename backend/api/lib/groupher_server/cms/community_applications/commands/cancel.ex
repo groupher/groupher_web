@@ -5,15 +5,13 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Cancel do
       GraphQL -> Cancel Command -> Application Gate -> Persist / Lifecycle -> Receipt result
   """
 
-  alias GroupherServer.Accounts
-
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.Model.User
   alias CMS.{Command, Gate}
   alias Ecto.Multi
   alias CMS.Communities.{ErrorCat, SlugClaims}
   alias CMS.CommunityApplications.{Commands.Confirmation, Commands.Support, Lifecycle}
-  alias Accounts.Model.User
-  alias Helper.T
+  alias Helper.{T, Transaction}
 
   @spec execute(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
   def execute(public_ref, %User{} = actor, expected_version, command_id) do
@@ -62,7 +60,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Cancel do
              %{type: :applicant, id: actor.id, occurred_at: now}
            )
            |> SlugClaims.release_application(:claim, application, now)
-           |> Repo.transact() do
+           |> Transaction.run() do
       {:ok, updated}
     end
   end

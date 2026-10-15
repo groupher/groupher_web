@@ -26,8 +26,9 @@ defmodule GroupherServer.CMS.Gate.Access.Policy.Application do
   @doc "Checks a user or reviewer action against a canonical application."
   def check_access(%User{id: user_id}, :application_cancel, %CommunityApplication{
         user_id: user_id
-      }),
-      do: {:ok, :pass}
+      }) do
+    {:ok, :pass}
+  end
 
   def check_access(actor, action, %CommunityApplication{})
       when action in [
@@ -45,21 +46,27 @@ defmodule GroupherServer.CMS.Gate.Access.Policy.Application do
     end
   end
 
-  def check_access(_actor, _action, _application),
-    do: {:error, ErrorCat.application_not_found()}
+  def check_access(_actor, _action, _application) do
+    {:error, ErrorCat.application_not_found()}
+  end
 
-  defp passport_action(:application_review),
-    do: Const.passport_action(:community_application_review)
+  defp passport_action(:application_review) do
+    Const.passport_action(:community_application_review)
+  end
 
-  defp passport_action(:application_approve),
-    do: Const.passport_action(:community_application_approve)
+  defp passport_action(:application_approve) do
+    Const.passport_action(:community_application_approve)
+  end
 
-  defp passport_action(:application_reject),
-    do: Const.passport_action(:community_application_reject)
+  defp passport_action(:application_reject) do
+    Const.passport_action(:community_application_reject)
+  end
 
-  defp passport_action(:application_retry_creation),
-    do: Const.passport_action(:community_application_retry_creation)
+  defp passport_action(:application_retry_creation) do
+    Const.passport_action(:community_application_retry_creation)
+  end
 
-  defp passport_action(:application_retry_setup),
-    do: Const.passport_action(:community_application_retry_setup)
+  defp passport_action(:application_retry_setup) do
+    Const.passport_action(:community_application_retry_setup)
+  end
 end

@@ -82,7 +82,7 @@ export function useColumnsData() {
     [KANBAN_BOARD.BACKLOG]: {
       key: 'backlog',
       title: resolveTitle('backlog', t('article.status.backlog')),
-      count: backlogPosts.totalCount,
+      count: backlogPosts.totalCount ?? 0,
       icon: <GtdTodoSVG className={s.backlogIcon} />,
       bodyClassName: s.backlogBody,
       posts: backlogPosts,
@@ -90,7 +90,7 @@ export function useColumnsData() {
     [KANBAN_BOARD.TODO]: {
       key: 'todo',
       title: resolveTitle('todo', t('article.status.todo')),
-      count: todoPosts.totalCount,
+      count: todoPosts.totalCount ?? 0,
       icon: <GtdTodoSVG className={s.todoIcon} />,
       bodyClassName: s.todoBody,
       posts: todoPosts,
@@ -98,7 +98,7 @@ export function useColumnsData() {
     [KANBAN_BOARD.WIP]: {
       key: 'wip',
       title: resolveTitle('wip', t('article.status.wip')),
-      count: wipPosts.totalCount,
+      count: wipPosts.totalCount ?? 0,
       icon: <GtdWipSVG className={s.wipIcon} />,
       bodyClassName: s.wipBody,
       posts: wipPosts,
@@ -106,7 +106,7 @@ export function useColumnsData() {
     [KANBAN_BOARD.DONE]: {
       key: 'done',
       title: resolveTitle('done', t('article.status.done')),
-      count: donePosts.totalCount,
+      count: donePosts.totalCount ?? 0,
       icon: <GtdDoneSVG className={s.doneIcon} />,
       bodyClassName: s.doneBody,
       posts: donePosts,
@@ -114,7 +114,7 @@ export function useColumnsData() {
     [KANBAN_BOARD.REJECTED]: {
       key: 'rejected',
       title: resolveTitle('rejected', t('article.status.reject')),
-      count: rejectedPosts.totalCount,
+      count: rejectedPosts.totalCount ?? 0,
       icon: <RejectSVG className={s.rejectedIcon} />,
       bodyClassName: s.rejectedBody,
       posts: rejectedPosts,

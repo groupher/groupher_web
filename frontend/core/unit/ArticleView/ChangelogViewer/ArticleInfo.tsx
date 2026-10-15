@@ -11,13 +11,13 @@ type TProps = {
   viewerState: TArticleViewerState
 }
 
-const ArticleInfo: FC<TProps> = ({ article, stats }) => {
+const ArticleInfo: FC<TProps> = ({ stats }) => {
   const s = useSalon()
 
   return (
     <div className={s.wrapper}>
       <div className={s.baseWrapper}>
-        <ArticleBaseStats article={article} stats={stats} container='drawer' />
+        <ArticleBaseStats stats={stats} container='drawer' />
       </div>
     </div>
   )

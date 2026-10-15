@@ -19,7 +19,8 @@ const ReplyToBar: FC<TProps> = ({ comment }) => {
   return (
     <div className={s.replyBar}>
       {t('comment.reply.to')}&nbsp;
-      {cutRest(comment.author.nickname, 10)}:<div className={s.replyToBody}>{comment.bodyHtml}</div>
+      {cutRest(comment.author?.nickname ?? '', 10)}:
+      <div className={s.replyToBody}>{comment.bodyHtml}</div>
       <div className={s.replyToFloor}>#{comment.floor}</div>
     </div>
   )

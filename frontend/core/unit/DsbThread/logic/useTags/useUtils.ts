@@ -75,7 +75,7 @@ export default function useUtils(): TRet {
   const updateTagMutation = useMutation({
     mutationKey: ['dsb', 'tag-update', community$.slug],
     mutationFn: async ({ tag, thread }: { tag: TTag; thread: TThread }) => {
-      const title = tag.title.trim()
+      const title = (tag.title ?? '').trim()
       const slug = await slugify(title)
       const nextTag = { ...tag, title, slug }
       await executeCommand<TUpdateCommunityTagVariables, unknown>({
@@ -177,7 +177,10 @@ export default function useUtils(): TRet {
 
     if (!tag.id || !title) return
 
-    await updateTagMutation.mutateAsync({ tag, thread: dsb$.activeTagThread || THREAD.POST })
+    await updateTagMutation.mutateAsync({
+      tag,
+      thread: dsb$.activeTagThread || THREAD.POST,
+    })
   }
 
   const commitTagSorting = (tagGroups: TTagGroup[]): void => {

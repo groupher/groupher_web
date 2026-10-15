@@ -10,13 +10,12 @@ import { cn } from '~/css'
 import { scrollToComments } from '~/dom'
 import ViewSVG from '~/icons/article/Viewed'
 import CommentSVG from '~/icons/Comment'
-import type { TArticle, TArticleStats, TContainer, TSpace } from '~/spec'
+import type { TArticleStats, TContainer, TSpace } from '~/spec'
 
 import useSalon from './salon'
 
 type TProps = {
   testid?: string
-  article: TArticle
   stats: TArticleStats | null
   container?: TContainer
 } & TSpace
@@ -24,7 +23,6 @@ type TProps = {
 const ArticleBaseStats: FC<TProps> = ({
   testid: _testid = 'article-base-stats',
   container = 'body',
-  article,
   stats,
   ...spacing
 }) => {

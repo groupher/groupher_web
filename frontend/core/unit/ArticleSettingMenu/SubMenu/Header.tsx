@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+import type { FC, ReactNode } from 'react'
 
 import CategorySVG from '~/icons/Category'
 import EditSVG from '~/icons/EditPen'
@@ -18,7 +18,7 @@ type TProps = {
 const Header: FC<TProps> = ({ type }) => {
   const s = useSalon()
 
-  let Content = null
+  let Content: ReactNode = null
   let showDivider = true
 
   switch (type) {

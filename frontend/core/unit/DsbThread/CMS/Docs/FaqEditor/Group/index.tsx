@@ -80,7 +80,10 @@ export default function Group({
                     onChange={(title) => renameGroup(group.id, title)}
                     onDone={clearSaveZone}
                     onStart={() =>
-                      setSaveZone({ type: FAQ_SAVE_ZONE.GROUP_TITLE, groupId: group.id })
+                      setSaveZone({
+                        type: FAQ_SAVE_ZONE.GROUP_TITLE,
+                        groupId: group.id,
+                      })
                     }
                   />
                 ) : (
@@ -98,7 +101,10 @@ export default function Group({
                       className={s.editButton}
                       aria-label={FAQ_EDITOR_COPY.EDIT_GROUP_TITLE_ARIA_LABEL}
                       onClick={() =>
-                        setSaveZone({ type: FAQ_SAVE_ZONE.GROUP_TITLE, groupId: group.id })
+                        setSaveZone({
+                          type: FAQ_SAVE_ZONE.GROUP_TITLE,
+                          groupId: group.id,
+                        })
                       }
                     >
                       <EditSVG className={s.editIcon} />
@@ -116,7 +122,10 @@ export default function Group({
                         }
 
                         if (action === FAQ_GROUP_MENU_ACTION.RENAME) {
-                          setSaveZone({ type: FAQ_SAVE_ZONE.GROUP_TITLE, groupId: group.id })
+                          setSaveZone({
+                            type: FAQ_SAVE_ZONE.GROUP_TITLE,
+                            groupId: group.id,
+                          })
                           return
                         }
 

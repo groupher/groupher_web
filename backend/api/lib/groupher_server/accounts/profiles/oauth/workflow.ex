@@ -48,19 +48,22 @@ defmodule GroupherServer.Accounts.Profiles.Oauth.Workflow do
           {:error, oauth_identity_already_linked_error()}
 
         {:error, _} ->
-          case find_user_provider(user, provider.provider) do
-            {:ok, _existing} ->
-              {:error, oauth_provider_already_linked_error()}
-
-            {:error, _} ->
-              with {:ok, _binding} <- OauthPersist.create_profile(user, provider) do
-                {:ok, user}
-              else
-                {:error, changeset} ->
-                  {:error, classify_link_insert_error(changeset, provider, user)}
-              end
-          end
+          link_missing_identity(user, provider)
       end
+    end
+  end
+
+  defp link_missing_identity(user, provider) do
+    case find_user_provider(user, provider.provider) do
+      {:ok, _existing} -> {:error, oauth_provider_already_linked_error()}
+      {:error, _} -> create_provider_binding(user, provider)
+    end
+  end
+
+  defp create_provider_binding(user, provider) do
+    case OauthPersist.create_profile(user, provider) do
+      {:ok, _binding} -> {:ok, user}
+      {:error, changeset} -> {:error, classify_link_insert_error(changeset, provider, user)}
     end
   end
 
@@ -196,17 +199,21 @@ defmodule GroupherServer.Accounts.Profiles.Oauth.Workflow do
     ORM.find_by(User, [login: create_user.login], preload: :oauth_providers)
   end
 
-  def registration_result({:error, :create_user, %Ecto.Changeset{} = result, _steps}),
-    do: {:error, result}
+  def registration_result({:error, :create_user, %Ecto.Changeset{} = result, _steps}) do
+    {:error, result}
+  end
 
-  def registration_result({:error, :create_user, _result, _steps}),
-    do: {:error, "Accounts create_user internal error"}
+  def registration_result({:error, :create_user, _result, _steps}) do
+    {:error, "Accounts create_user internal error"}
+  end
 
-  def registration_result({:error, :create_profile, _result, _steps}),
-    do: {:error, "Accounts create_profile internal error"}
+  def registration_result({:error, :create_profile, _result, _steps}) do
+    {:error, "Accounts create_profile internal error"}
+  end
 
-  def registration_result({:error, :update_profile_social, _result, _steps}),
-    do: {:error, "Accounts update_profile_social error"}
+  def registration_result({:error, :update_profile_social, _result, _steps}) do
+    {:error, "Accounts update_profile_social error"}
+  end
 
   @doc """
   Updates derived social fields for an OAuth profile inside a caller transaction.
@@ -244,9 +251,11 @@ defmodule GroupherServer.Accounts.Profiles.Oauth.Workflow do
       from(o in OauthProvider, where: o.user_id == ^user.id)
       |> Repo.aggregate(:count, :id)
 
-    if provider_count <= 1,
-      do: {:error, oauth_last_login_method_error()},
-      else: {:ok, :pass}
+    if provider_count <= 1 do
+      {:error, oauth_last_login_method_error()}
+    else
+      {:ok, :pass}
+    end
   end
 
   defp classify_link_insert_error(%Ecto.Changeset{} = changeset, provider, user) do

@@ -50,7 +50,9 @@ export default function DocFaqLayout() {
           onClick={() => edit(DOC_FAQ_LAYOUT.FLAT, FIELD.DOC_FAQ_LAYOUT)}
         >
           <div
-            className={s.block({ state: docFaqLayout === DOC_FAQ_LAYOUT.FLAT ? 'active' : 'idle' })}
+            className={s.block({
+              state: docFaqLayout === DOC_FAQ_LAYOUT.FLAT ? 'active' : 'idle',
+            })}
           >
             <FaqTemplate layout={DOC_FAQ_LAYOUT.FLAT} />
           </div>

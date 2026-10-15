@@ -13,7 +13,7 @@ import { requestGraphQL } from './graphql'
 export const loadApplyState = createServerFn({ method: 'GET', strict: false }).handler(
   async (): Promise<ApplyInitialData> => {
     const accountData = await requestGraphQL(ApplyAccountDocument, {})
-    if (!accountData.me) {
+    if (!accountData.me?.login) {
       return {
         account: null,
         canApply: { allowed: false, reasonCode: 'login_required', retryAt: null },

@@ -5,7 +5,7 @@ import useTrans from '~/hooks/useTrans'
 import MoreSVG from '~/icons/menu/More'
 import useCommentModeration from '~/query/mutation/useCommentModeration'
 import { authWarn } from '~/signal'
-import type { TComment } from '~/spec'
+import type { TComment, TMenuOption } from '~/spec'
 import useAccount from '~/stores/account/hooks'
 import MenuButton from '~/ui/Buttons/MenuButton'
 
@@ -24,7 +24,7 @@ const Actions: FC<TProps> = ({ data }) => {
   const { openUpdateEditor, openReplyEditor } = useActions()
   const { deleteComment, reportComment } = useCommentModeration(data)
 
-  const menuOptions = [
+  const menuOptions: TMenuOption[] = [
     // {
     //   key: 'quote',
     //   icon: `${ICON}/shape/quote.svg`,
@@ -42,7 +42,7 @@ const Actions: FC<TProps> = ({ data }) => {
     },
   ]
 
-  let extraOptions = []
+  let extraOptions: TMenuOption[] = []
 
   if (data.author?.login === accountInfo?.user?.login) {
     extraOptions = [
@@ -60,7 +60,7 @@ const Actions: FC<TProps> = ({ data }) => {
   }
 
   const handleAction = useCallback(
-    (key) => {
+    (key?: string) => {
       if (!accountInfo.isLogin) return authWarn()
 
       switch (key) {
@@ -89,7 +89,7 @@ const Actions: FC<TProps> = ({ data }) => {
 
   return (
     <div className={s.wrapper}>
-      {data.meta.isLegal && (
+      {data.meta?.isLegal && (
         <button
           type='button'
           className={s.replyAction}

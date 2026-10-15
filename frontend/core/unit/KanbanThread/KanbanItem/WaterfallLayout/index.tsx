@@ -25,7 +25,8 @@ type TProps = {
 
 const KanbanItem: FC<TProps> = ({ viewModel }) => {
   const { content: article, stats } = viewModel
-  const isActive = usePreviewItemActive(article.innerId, THREAD_PATH.POST)
+  const innerId = String(article.innerId ?? '')
+  const isActive = usePreviewItemActive(innerId, THREAD_PATH.POST)
   const s = useSalon({ active: isActive })
   const { slug } = useCommunity()
 
@@ -36,13 +37,13 @@ const KanbanItem: FC<TProps> = ({ viewModel }) => {
       <h4 className={s.title}>
         <CommunityPreviewLink
           href={`/${slug}/${THREAD_PATH.POST}/${article.innerId}`}
-          previewId={article.innerId}
+          previewId={innerId}
         >
           {title}
         </CommunityPreviewLink>
       </h4>
       <div className='grow' />
-      <TagsList items={communityTags} right={1} />
+      <TagsList items={communityTags ?? []} right={1} />
       <ArticleCatStatus cat={cat} right={10} top={-1} />
       <div className={s.upvotes}>
         <Upvote

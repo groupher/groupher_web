@@ -16,10 +16,11 @@ type TProps = {
 
 const CommentItem: FC<TProps> = ({ user, className = '' }) => {
   const s = useSalon()
+  if (!user) return null
 
   return (
     <div className={cn(s.wrapper, className)}>
-      <Img src={user.avatar} className={s.avatar} fallback={<ImgFallback user={user} />} />
+      <Img src={user.avatar ?? ''} className={s.avatar} fallback={<ImgFallback user={user} />} />
       <div className={s.rightPart}>
         <div className={s.nickname}>{user.nickname}</div>
         <div className={s.bar} />

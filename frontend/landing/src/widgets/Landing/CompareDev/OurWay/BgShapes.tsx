@@ -19,7 +19,7 @@ export default function BgShapes() {
   return (
     <div className={s.wrapper}>
       <div className={s.wipItem}>
-        <GtdWipSVG className={cn(s.wipIcon, 'animate-spin')} />
+        <GtdWipSVG className={cn(s.wipIcon, 'animate-spin motion-reduce:animate-none')} />
         <div className={s.wipText}>{t('landing.compare.shape.wip')}</div>
 
         <TwoLineSVG className={s.waweLine} />

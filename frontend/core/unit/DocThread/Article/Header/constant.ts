@@ -49,7 +49,12 @@ export const COPY_ACTIONS = [
 ] as const
 
 export const SHARE_ACTIONS = [
-  { key: 'wechat', title: 'WeChat QR', desc: 'Share this page by QR code', Icon: WeChatSVG },
+  {
+    key: 'wechat',
+    title: 'WeChat QR',
+    desc: 'Share this page by QR code',
+    Icon: WeChatSVG,
+  },
   {
     key: 'weibo',
     title: 'Share to Weibo',

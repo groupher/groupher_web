@@ -25,7 +25,7 @@ const EditorHeader: FC<TProps> = ({ accountInfo, showEditor }) => {
     return (
       <div className={s.expandWrapper}>
         <div className={s.hintText}>{t('comment.editor.create')}</div>
-        <Img className={s.avatar} src={accountInfo.avatar} />
+        <Img className={s.avatar} src={accountInfo.avatar ?? ''} />
         <div className={s.leaveResUsername}>{accountInfo.nickname}</div>
       </div>
     )

@@ -72,12 +72,12 @@ export const filterTreeNodes = (
 
   const filteredNodes: TDocPublicTreeNavigationNode[] = []
 
-  nodes.forEach((node) => {
+  for (const node of nodes) {
     const matched = (node.title || '').toLowerCase().includes(normalizedQuery)
     const group = normalizeNodeType(node.type) === 'group' ? (node as TDocPublicTreeGroup) : null
     const matchedChildren = group ? filterTreeNodes(group.pages ?? [], query) : []
 
-    if (!matched && matchedChildren.length === 0) return
+    if (!matched && matchedChildren.length === 0) continue
 
     filteredNodes.push(
       group
@@ -87,7 +87,7 @@ export const filterTreeNodes = (
           }
         : node,
     )
-  })
+  }
 
   return filteredNodes
 }

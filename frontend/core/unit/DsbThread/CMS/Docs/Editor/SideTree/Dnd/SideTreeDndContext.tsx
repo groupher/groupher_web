@@ -117,7 +117,9 @@ export default function SideTreeDndContext({
   const columns = useMemo(() => [...groups], [groups])
   const sensors = useSensors(
     useSensor(PointerSensor),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
   )
 
   const collisionDetection: CollisionDetection = (args) => {
@@ -152,7 +154,10 @@ export default function SideTreeDndContext({
 
       return true
     })
-    const pointerCollisions = pointerWithin({ ...args, droppableContainers: candidates })
+    const pointerCollisions = pointerWithin({
+      ...args,
+      droppableContainers: candidates,
+    })
 
     if (pointerCollisions.length > 0) {
       return pointerCollisions.toSorted((left, right) => {

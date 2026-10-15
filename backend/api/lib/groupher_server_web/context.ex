@@ -133,8 +133,9 @@ defmodule GroupherServerWeb.Context do
     GroupherServer.Auth.contract_service_jwks_unavailable()
   end
 
-  defp service_auth_failure_code(_reason),
-    do: GroupherServer.Auth.contract_service_token_invalid()
+  defp service_auth_failure_code(_reason) do
+    GroupherServer.Auth.contract_service_token_invalid()
+  end
 
   defp maybe_put_test_service_actor(context, conn) do
     if @allow_test_service_auth and
@@ -209,8 +210,9 @@ defmodule GroupherServerWeb.Context do
 
   defp maybe_put_browser_auth_failure(context, _token, _reason), do: context
 
-  defp delegation_auth_failure_code(:token_expired),
-    do: GroupherServer.Auth.contract_token_expired()
+  defp delegation_auth_failure_code(:token_expired) do
+    GroupherServer.Auth.contract_token_expired()
+  end
 
   defp delegation_auth_failure_code(ProfileErrorCat.error_pattern(reason: :session_revoked)) do
     GroupherServer.Auth.contract_session_revoked()

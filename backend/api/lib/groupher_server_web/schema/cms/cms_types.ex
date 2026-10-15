@@ -2145,8 +2145,9 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     {:ok, user_id}
   end
 
-  defp moderator_user_id(_),
-    do: {:error, GroupherServer.Accounts.profiles_error_cat_not_exist("user not found")}
+  defp moderator_user_id(_) do
+    {:error, GroupherServer.Accounts.profiles_error_cat_not_exist("user not found")}
+  end
 
   defp moderator_root?(passport, community_slug) do
     get_in(passport, [community_slug, "root"]) == true
@@ -2165,9 +2166,11 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   defp fallback_moderator_passport_item_count(moderator) do
     count = moderator.passport_item_count || 0
 
-    if count >= GroupherServer.CMS.passport_registry_root_passport_item_count(),
-      do: 0,
-      else: count
+    if count >= GroupherServer.CMS.passport_registry_root_passport_item_count() do
+      0
+    else
+      count
+    end
   end
 
   defp count_enabled_rules(rules) when is_map(rules) do

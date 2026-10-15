@@ -16,7 +16,8 @@ type TProps = {
 
 const PostItem: FC<TProps> = ({ viewModel }) => {
   const { content: article, stats, viewerState } = viewModel
-  const isActive = usePreviewItemActive(article.innerId, THREAD_PATH.POST)
+  const innerId = String(article.innerId ?? '')
+  const isActive = usePreviewItemActive(innerId, THREAD_PATH.POST)
   const s = useSalon({ active: isActive })
   const { slug } = useCommunity()
 
@@ -25,8 +26,8 @@ const PostItem: FC<TProps> = ({ viewModel }) => {
       <Header article={article} stats={stats} viewerState={viewerState} />
       <CommunityPreviewLink
         className={s.digest}
-        href={`/${slug}/${THREAD_PATH.POST}/${article.innerId}`}
-        previewId={article.innerId}
+        href={`/${slug}/${THREAD_PATH.POST}/${innerId}`}
+        previewId={innerId}
       >
         {article.digest}
       </CommunityPreviewLink>

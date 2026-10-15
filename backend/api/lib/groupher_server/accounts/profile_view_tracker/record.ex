@@ -34,9 +34,8 @@ defmodule GroupherServer.Accounts.ProfileViewTracker.Record do
     with {:ok, read_purpose} <- read_purpose(opts),
          {:ok, identity} <- Identity.resolve(viewer, classification, opts) do
       Repo.transaction(fn ->
-        with {:ok, locked} <- lock_profile(profile.id) do
-          process(locked, identity, read_purpose)
-        else
+        case lock_profile(profile.id) do
+          {:ok, locked} -> process(locked, identity, read_purpose)
           {:error, reason} -> Repo.rollback(reason)
         end
       end)

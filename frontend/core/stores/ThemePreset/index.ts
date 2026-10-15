@@ -4,7 +4,8 @@ import { DEFAULT_THEME_PRESET } from '~/const/theme_preset'
 
 import type { TInit, TStore } from './spec'
 
-export default function ThemePresetStore(init: TInit = {}): TStore {
+/** Creates an isolated reactive store for theme presets, resolved tokens, and hydration. */
+export default function createThemePresetStore(init: TInit = {}): TStore {
   const store = proxy({
     themePreset: init.themePreset ?? DEFAULT_THEME_PRESET,
     themePresetBase: init.themePresetBase ?? DEFAULT_THEME_PRESET,

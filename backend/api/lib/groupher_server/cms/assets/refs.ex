@@ -283,15 +283,12 @@ defmodule GroupherServer.CMS.Assets.Refs do
   end
 
   defp cover_ref_specs(attrs) do
-    cond do
-      removed_cover?(attrs) ->
-        Enum.map(@cover_specs, &{&1.usage, []})
-
-      true ->
-        @cover_specs
-        |> Enum.flat_map(fn spec ->
-          cover_ref_spec(attrs, spec)
-        end)
+    if removed_cover?(attrs) do
+      Enum.map(@cover_specs, &{&1.usage, []})
+    else
+      Enum.flat_map(@cover_specs, fn spec ->
+        cover_ref_spec(attrs, spec)
+      end)
     end
   end
 
@@ -399,10 +396,8 @@ defmodule GroupherServer.CMS.Assets.Refs do
 
       is_map(asset_attrs) ->
         with {:ok, asset} <-
-               Persist.register(%Community{id: community_id}, asset_attrs, user),
-             {:ok, asset} <-
-               load_active_asset_for_update(community_id, asset.id) do
-          {:ok, asset}
+               Persist.register(%Community{id: community_id}, asset_attrs, user) do
+          load_active_asset_for_update(community_id, asset.id)
         end
 
       true ->

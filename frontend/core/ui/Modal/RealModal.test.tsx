@@ -45,6 +45,34 @@ afterEach(() => {
 })
 
 describe('RealModal page lock ownership', () => {
+  it('exposes visible content through dialog semantics', () => {
+    render(
+      <RealModal show showCloseBtn handleCloseModal={vi.fn()}>
+        content
+      </RealModal>,
+    )
+
+    expect(screen.getByRole('dialog', { name: 'Modal' })).not.toHaveAttribute('aria-hidden')
+    expect(screen.getByRole('button', { name: 'Close modal' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Close modal backdrop' })).toBeInTheDocument()
+  })
+
+  it('closes through the native dialog cancel event', () => {
+    const handleCloseModal = vi.fn()
+    render(
+      <RealModal show handleCloseModal={handleCloseModal}>
+        content
+      </RealModal>,
+    )
+
+    fireEvent(
+      screen.getByRole('dialog', { name: 'Modal' }),
+      new Event('cancel', { bubbles: false, cancelable: true }),
+    )
+
+    expect(handleCloseModal).toHaveBeenCalledOnce()
+  })
+
   it('does not release a page lock it never acquired', () => {
     const { unmount } = render(
       <RealModal show={false} handleCloseModal={vi.fn()}>

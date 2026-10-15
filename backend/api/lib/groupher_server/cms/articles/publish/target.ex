@@ -92,8 +92,9 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
     end
   end
 
-  defp binding_context_by_id(article, nil),
-    do: Bindings.get(article, Map.get(article, :community))
+  defp binding_context_by_id(article, nil) do
+    Bindings.get(article, Map.get(article, :community))
+  end
 
   defp binding_context_by_id(article, community_id) when is_integer(community_id) do
     case Repo.get(Community, community_id) do
@@ -102,8 +103,9 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
     end
   end
 
-  defp binding_context_by_id(_article, _community_id),
-    do: {:error, :article_binding_context_required}
+  defp binding_context_by_id(_article, _community_id) do
+    {:error, :article_binding_context_required}
+  end
 
   defp ensure_binding(%Article{} = article, %Community{id: community_id}) do
     case Repo.get_by(ArticleBinding, article_id: article.id, community_id: community_id) do

@@ -1,5 +1,6 @@
 import type { FC } from 'react'
 
+import { COLOR } from '~/const/colors'
 import CheckSVG from '~/icons/Check'
 import type { TColor } from '~/spec'
 
@@ -9,7 +10,7 @@ type TProps = {
   title: string
 } & TColor
 
-const Feature: FC<TProps> = ({ title, color }) => {
+const Feature: FC<TProps> = ({ title, color = COLOR.BLACK }) => {
   const s = useSalon({ color })
 
   return (

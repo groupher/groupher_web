@@ -114,8 +114,9 @@ defmodule GroupherServer.CMS.Comments.Persist do
     ORM.update_embed(parent_comment, :replies, new_replies)
   end
 
-  def update_replies_embed(%Comment{} = parent_comment, _replied_comment),
-    do: {:ok, parent_comment}
+  def update_replies_embed(%Comment{} = parent_comment, _replied_comment) do
+    {:ok, parent_comment}
+  end
 
   @doc "Updates the reply-to-others metadata derived from the parent authors."
   @spec update_reply_to_others_state(Comment.t(), Comment.t(), Comment.t()) ::
@@ -141,13 +142,15 @@ defmodule GroupherServer.CMS.Comments.Persist do
 
   @doc "Increments the reply count on a parent Comment."
   @spec increment_replies_count(Comment.t()) :: T.domain_res(Comment.t())
-  def increment_replies_count(%Comment{} = parent_comment),
-    do: ORM.inc(parent_comment, :replies_count)
+  def increment_replies_count(%Comment{} = parent_comment) do
+    ORM.inc(parent_comment, :replies_count)
+  end
 
   @doc "Updates the canonical Comment body fields."
   @spec update_content(Comment.t(), map()) :: T.domain_res(Comment.t())
-  def update_content(%Comment{} = comment, attrs) when is_map(attrs),
-    do: ORM.update(comment, attrs)
+  def update_content(%Comment{} = comment, attrs) when is_map(attrs) do
+    ORM.update(comment, attrs)
+  end
 
   @doc "Tombstones a Comment body through the row persistence owner."
   @spec tombstone(Comment.t(), String.t()) :: T.domain_res(Comment.t())
@@ -179,8 +182,9 @@ defmodule GroupherServer.CMS.Comments.Persist do
     end
   end
 
-  defp article_inner_id(_article, _community),
-    do: {:error, CMS.ErrorCat.custom("article binding context required")}
+  defp article_inner_id(_article, _community) do
+    {:error, CMS.ErrorCat.custom("article binding context required")}
+  end
 
   defp root_comment_id(nil), do: nil
   defp root_comment_id(%{root_comment_id: root_id}) when not is_nil(root_id), do: root_id

@@ -35,7 +35,7 @@ const EmotionUnit: FC<TProps> = ({ item, onAction }) => {
       <button
         type='button'
         className={s.wrapper}
-        onClick={() => onAction(name as TEmotionType, hasReacted)}
+        onClick={() => onAction?.(name as TEmotionType, hasReacted)}
       >
         <EmotionIcon name={name} />
         <div className={s.count}>

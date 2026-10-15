@@ -26,14 +26,19 @@ export const uploadGeneratedImage = async ({
     headers: { 'content-type': 'application/json' },
     method: 'POST',
   })
-  const presignPayload = (await presignResponse.json().catch(() => null)) as THubUploadResult | null
-  if (!presignResponse.ok || !presignPayload?.result?.upload) {
+  if (!presignResponse.ok) {
+    const errorPayload = (await presignResponse.json().catch(() => null)) as THubUploadResult | null
     throw new Error(
-      `GENERATED_IMAGE_PRESIGN_FAILED: ${extractErrorMessage(presignPayload ?? presignResponse.status)}`,
+      `GENERATED_IMAGE_PRESIGN_FAILED: ${extractErrorMessage(errorPayload ?? presignResponse.status)}`,
     )
   }
+  const presignPayload = (await presignResponse.json().catch(() => null)) as THubUploadResult | null
+  if (!presignPayload?.result?.upload)
+    throw new Error('GENERATED_IMAGE_PRESIGN_FAILED: Invalid upload response')
 
-  const uploadFile = new File([file], `${uploadRef}.webp`, { type: 'image/webp' })
+  const uploadFile = new File([file], `${uploadRef}.webp`, {
+    type: 'image/webp',
+  })
   await putFileWithProgress({
     file: uploadFile,
     headers: presignPayload.result.upload.headers,
@@ -47,12 +52,15 @@ export const uploadGeneratedImage = async ({
     headers: { 'content-type': 'application/json' },
     method: 'POST',
   })
+  if (!finalizeResponse.ok) {
+    const errorPayload = (await finalizeResponse.json().catch(() => null)) as TFinalizeResult | null
+    throw new Error(
+      `GENERATED_IMAGE_FINALIZE_FAILED: ${extractErrorMessage(errorPayload ?? finalizeResponse.status)}`,
+    )
+  }
   const finalizePayload = (await finalizeResponse
     .json()
     .catch(() => null)) as TFinalizeResult | null
-  if (!finalizeResponse.ok || !finalizePayload?.result) {
-    throw new Error(
-      `GENERATED_IMAGE_FINALIZE_FAILED: ${extractErrorMessage(finalizePayload ?? finalizeResponse.status)}`,
-    )
-  }
+  if (!finalizePayload?.result)
+    throw new Error('GENERATED_IMAGE_FINALIZE_FAILED: Invalid finalize response')
 }

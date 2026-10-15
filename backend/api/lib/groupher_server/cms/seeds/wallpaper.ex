@@ -175,41 +175,57 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
     image_by_profile = Map.new(images, &{&1.profile, &1})
     refs = Enum.map(images, & &1.asset_public_ref)
 
-    assets =
-      Repo.all(
-        from(asset in CommunityAsset,
-          where:
-            asset.community_id == ^community_id and asset.status == :active and
-              asset.public_ref in ^refs
-        )
-      )
+    assets = Repo.all(active_assets_query(community_id, refs))
 
     asset_by_ref = Map.new(assets, &{&1.public_ref, &1})
 
     fixture.entries
     |> Enum.filter(&(&1.theme == theme))
     |> Enum.reduce_while({:ok, true}, fn entry, {:ok, true} ->
-      image = Map.get(image_by_profile, entry.profile)
-      asset = image && Map.get(asset_by_ref, image.asset_public_ref)
-
-      case {image, asset} do
-        {%WallpaperSnapshotImage{} = image, %CommunityAsset{} = asset} ->
-          if image.format == :webp and image.width == entry.width and
-               image.height == entry.height and image.checksum == entry.checksum and
-               asset.content_hash == entry.checksum do
-            case asset_object_available?(asset, opts) do
-              {:ok, true} -> {:cont, {:ok, true}}
-              {:ok, false} -> {:halt, {:ok, false}}
-              {:error, reason} -> {:halt, {:error, {:wallpaper_asset_unavailable, reason}}}
-            end
-          else
-            {:halt, {:ok, false}}
-          end
-
-        _missing_image_or_asset ->
-          {:halt, {:ok, false}}
-      end
+      compare_fixture_entry(entry, image_by_profile, asset_by_ref, opts)
     end)
+  end
+
+  defp active_assets_query(community_id, refs) do
+    from(asset in CommunityAsset,
+      where: asset.community_id == ^community_id,
+      where: asset.status == :active,
+      where: asset.public_ref in ^refs
+    )
+  end
+
+  defp compare_fixture_entry(entry, image_by_profile, asset_by_ref, opts) do
+    image = Map.get(image_by_profile, entry.profile)
+    asset = image && Map.get(asset_by_ref, image.asset_public_ref)
+
+    case {image, asset} do
+      {%WallpaperSnapshotImage{} = image, %CommunityAsset{} = asset} ->
+        compare_fixture_asset(entry, image, asset, opts)
+
+      _missing_image_or_asset ->
+        {:halt, {:ok, false}}
+    end
+  end
+
+  defp compare_fixture_asset(entry, image, asset, opts) do
+    if fixture_asset_matches?(entry, image, asset) do
+      compare_asset_availability(asset, opts)
+    else
+      {:halt, {:ok, false}}
+    end
+  end
+
+  defp fixture_asset_matches?(entry, image, asset) do
+    image.format == :webp and image.width == entry.width and image.height == entry.height and
+      image.checksum == entry.checksum and asset.content_hash == entry.checksum
+  end
+
+  defp compare_asset_availability(asset, opts) do
+    case asset_object_available?(asset, opts) do
+      {:ok, true} -> {:cont, {:ok, true}}
+      {:ok, false} -> {:halt, {:ok, false}}
+      {:error, reason} -> {:halt, {:error, {:wallpaper_asset_unavailable, reason}}}
+    end
   end
 
   defp asset_object_available?(asset, opts) do
@@ -303,9 +319,11 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
 
     actual = Enum.map(entries, &{&1.theme, &1.profile})
 
-    if Enum.sort(actual) == Enum.sort(expected),
-      do: {:ok, :pass},
-      else: {:error, :profile_matrix_invalid}
+    if Enum.sort(actual) == Enum.sort(expected) do
+      {:ok, :pass}
+    else
+      {:error, :profile_matrix_invalid}
+    end
   end
 
   defp upload_image_input(entry) do
@@ -323,8 +341,9 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
     "sha256:" <> (:crypto.hash(:sha256, bytes) |> Base.encode16(case: :lower))
   end
 
-  defp parse_theme(theme) when theme in ["light", "dark"],
-    do: {:ok, String.to_existing_atom(theme)}
+  defp parse_theme(theme) when theme in ["light", "dark"] do
+    {:ok, String.to_existing_atom(theme)}
+  end
 
   defp parse_theme(_theme), do: {:error, :theme_invalid}
 
@@ -369,7 +388,8 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
       -> current-community asset
     """
 
-    alias GroupherServer.CMS.Assets.Endpoints
+    alias GroupherServer.CMS
+    alias CMS.Assets.Endpoints
 
     @timeout 30_000
 
@@ -384,9 +404,8 @@ defmodule GroupherServer.CMS.Seeds.Wallpaper do
     def upload(capability, upload_ref, bytes)
         when is_binary(capability) and is_binary(upload_ref) and is_binary(bytes) do
       with {:ok, upload} <- presign(capability),
-           {:ok, :pass} <- put(upload, bytes),
-           {:ok, result} <- finalize(upload_ref, capability) do
-        {:ok, result}
+           {:ok, :pass} <- put(upload, bytes) do
+        finalize(upload_ref, capability)
       end
     end
 

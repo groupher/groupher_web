@@ -34,6 +34,120 @@ import type {
   TUnderlineOptions,
 } from './spec'
 
+const pageClass = 'page-custom'
+
+const fg = (key: TTextKey | `${string}.${string}`) => keyToClass('text', key)
+const bg = (key: TBgKey | `${string}.${string}`) => keyToClass('bg', key)
+const fill = (key: TFillKey | `${string}.${string}`) => keyToClass('fill', key)
+const br = (key: TBorderKey | `${string}.${string}`) => keyToClass('border', key)
+
+const rainbow = (color: TColorName, prefix: TColorPrefix = 'fg'): string => {
+  const prefix$ = RAINBOW_ALIAS[prefix]
+  const color$ = camelize(color)
+
+  if (prefix === 'bgLite') return `${prefix$}-${color$}Lite`
+  if (prefix === 'borderLite') return `${prefix$}-${color$}/50`
+
+  return `${prefix$}-${color$}`
+}
+
+const rainbowLite = (color: TColorName | string): string => {
+  const color$ = camelize(color)
+  return `bg-rainbow-${color$}Lite`
+}
+
+const resolveCustomRainbowToken = (
+  color: TColorName,
+  customKey: 'custom' | 'subCustom',
+  prefix: TColorPrefix,
+): string => {
+  if (color !== COLOR.CUSTOM) return rainbow(color, prefix)
+
+  const prefix$ = RAINBOW_ALIAS[prefix]
+
+  if (prefix === 'bgLite') return `${prefix$}-${customKey}Lite`
+  if (prefix === 'borderLite') return `${prefix$}-${customKey}/50`
+
+  return `${prefix$}-${customKey}`
+}
+
+const linkable = () => STATIC_CLS.linkable
+const underline = ({ always = false, groupHoverClass = 'group-hover' }: TUnderlineOptions = {}) =>
+  cn(
+    STATIC_CLS.underlineBase,
+    always ? 'underline' : 'no-underline hover:underline',
+    !always && groupHoverClass === 'group-hover' && STATIC_CLS.underlineGroupHover,
+  )
+const hoverLinkIcon = (size = 'size-3.5') =>
+  cn(size, 'mr-1 group-smoky-65', `group-hover:${fill('title')}`, fill('digest'))
+
+/** Preserves the existing `zise` API, whose argument is the element size. */
+const zise = (unit: number): string => clsx(`size-${unit}`)
+
+const divider = () => cn(STATIC_CLS.divider, bg('divider'))
+const VDivider = () => cn(STATIC_CLS.vDivider, fg('digest'))
+const sexyBorder = (turn = 35, classNames?: string) =>
+  cn(STATIC_CLS.sexyBorderBase, `sexy-border-${turn}`, classNames)
+const sexyVBorder = (turn: number, classNames = '') =>
+  cn(STATIC_CLS.sexyVBorderBase, `sexy-border-${turn}`, classNames)
+const gradientBar = (color: TColorName): string =>
+  `bg-gradient-to-r from-rainbow-${(color === COLOR.CUSTOM ? COLOR.BLACK : color).toLocaleLowerCase()}Bg to-transparent`
+const vividDark = (): string => STATIC_CLS.vividDarkWhenDark
+const dimDark = (level: TDimLevel = 'md'): string => {
+  switch (level) {
+    case 'sm':
+      return 'dark:brightness-90'
+    case 'lg':
+      return 'dark:brightness-50'
+    default:
+      return 'dark:brightness-75'
+  }
+}
+const shadow = (size: TShadowType): string => `shadow-${size}`
+const scrollbar = (type: TScrollbarType = 'thin'): string => {
+  switch (type) {
+    case 'thin':
+      return STATIC_CLS.scrollbarThin
+    default:
+      return ''
+  }
+}
+const cut = (w: TCutWWidth = 'w-12'): string => {
+  const maxWidth = w.replace('w-', 'max-w-')
+  return cn(STATIC_CLS.cutBase, maxWidth)
+}
+const landingTitle = (): string => cn(STATIC_CLS.landingTitleBase, fg('title'))
+const panel = (classNames?: string): string =>
+  cn(STATIC_CLS.panelBase, bg('card'), br('divider'), classNames)
+const hover = (part: THoverPart): string => {
+  switch (part) {
+    case 'bg':
+    case 'box':
+      return cn(STATIC_CLS.hoverBgBase, `hover:${bg('hoverBg')}`)
+    case 'bg-red':
+      return cn(STATIC_CLS.hoverBgBase, `hover:${rainbowLite(COLOR.RED)}`)
+    case 'icon':
+      return cn(STATIC_CLS.hoverIconBase, fill('digest'), `group-hover:${fill('title')}`)
+    case 'fg':
+      return cn(STATIC_CLS.hoverIconBase, fg('digest'), `group-hover:${fg('title')}`)
+    case 'fg-red':
+      return cn(STATIC_CLS.hoverIconBase, fg('digest'), `group-hover:${rainbow(COLOR.RED, 'fg')}`)
+    case 'icon-red':
+      return cn(
+        STATIC_CLS.hoverIconBase,
+        fill('digest'),
+        `group-hover:${rainbow(COLOR.RED, 'fill')}`,
+      )
+    default:
+      return 'debug'
+  }
+}
+const zIndex = (type: TZIndexType, visible?: boolean): string => {
+  if (visible === false) return '-z-10'
+  return `z-${type}`
+}
+const page = () => pageClass
+
 /** Exposes tw belt state and actions through the shared React hook boundary. */
 export default function useTwBelt(): TRet {
   const metric = useMetric()
@@ -41,296 +155,132 @@ export default function useTwBelt(): TRet {
   const primaryColor = usePrimaryColor()
   const accentColor = useAccentColor()
 
-  const metricLower = metric.toLowerCase()
-  const containerClass = `container-${metricLower}`
-  const container = (metricOverride?: TContainerMetric): string =>
-    metricOverride ? `container-${metricOverride}` : containerClass
-  const containerWrapper = (metricOverride?: TContainerMetric): string =>
-    `${container(metricOverride)}-wrapper`
+  return useMemo<TRet>(() => {
+    const containerClass = `container-${metric.toLowerCase()}`
+    const container = (metricOverride?: TContainerMetric): string =>
+      metricOverride ? `container-${metricOverride}` : containerClass
+    const containerWrapper = (metricOverride?: TContainerMetric): string =>
+      `${container(metricOverride)}-wrapper`
+    const primary = (prefix: TColorPrefix = 'fg'): string => rainbow(primaryColor, prefix)
+    const accent = (prefix: TColorPrefix = 'fg'): string =>
+      resolveCustomRainbowToken(accentColor, 'subCustom', prefix)
+    const linker = (prefix: TLinkColorPrefix = 'fg'): string =>
+      resolveCustomRainbowToken(accentColor, 'subCustom', prefix as unknown as TColorPrefix)
+    const hoverBr = () =>
+      cn(STATIC_CLS.hoverBrBase, br('divider'), `hover:${primary('borderLite')}`)
+    const hoverLink = (textSize = 'text-base') =>
+      cn(
+        STATIC_CLS.hoverLinkBase,
+        textSize,
+        `hover:${bg('hoverBg')}`,
+        `hover:${fg('title')}`,
+        primary('decoration'),
+        fg('digest'),
+      )
+    const avatar = (level: 'md' | 'sm' | '' = 'md') => {
+      if (isAvatarSquare) return level === '' ? 'rounded' : `rounded-${level}`
+      return 'circle'
+    }
+    const selectable = (part: TSelectablePart, options: TSelectableOptions = {}): string => {
+      const {
+        active = false,
+        border = true,
+        disabled = false,
+        isCircle = false,
+        size = 'md',
+      } = options
+      const resolvedSize = isCircle ? 'sm' : size
+      const sizeClass =
+        resolvedSize === 'xs' ? 'size-3' : resolvedSize === 'sm' ? 'size-4' : 'size-5'
+      const checkSizeClass =
+        resolvedSize === 'xs' ? 'size-2' : resolvedSize === 'sm' ? 'size-2.5' : 'size-3'
+      const positionClass =
+        resolvedSize === 'xs'
+          ? '-top-1 -right-1'
+          : isCircle
+            ? '-top-1 -right-0.5 scale-90'
+            : '-top-2 -right-2'
 
-  const pageClass = 'page-custom'
-
-  /**
-   * ✅ New token scheme:
-   * - fg('digest') -> text-digest
-   * - bg('modal.mask') -> bg-modal-mask
-   * - br('table.border') -> border-table-border
-   */
-  const fg = (key: TTextKey | `${string}.${string}`) => keyToClass('text', key)
-  const bg = (key: TBgKey | `${string}.${string}`) => keyToClass('bg', key)
-  const fill = (key: TFillKey | `${string}.${string}`) => keyToClass('fill', key)
-  const br = (key: TBorderKey | `${string}.${string}`) => keyToClass('border', key)
-
-  const rainbow = (color: TColorName, prefix: TColorPrefix = 'fg'): string => {
-    const prefix$ = RAINBOW_ALIAS[prefix]
-    const color$ = camelize(color)
-
-    if (prefix === 'bgLite') {
-      return `${prefix$}-${color$}Lite`
+      switch (part) {
+        case 'box':
+          return cn(
+            border && 'border border-transparent',
+            disabled ? 'cursor-default' : 'pointer',
+            active ? primary('border') : !disabled && `hover:${br('digest')}`,
+            active && `hover:${primary('border')}`,
+            active && bg('cardAlpha'),
+          )
+        case 'badge':
+          return cn(
+            'absolute z-20 circle border',
+            positionClass,
+            sizeClass,
+            primary('bg'),
+            primary('border'),
+          )
+        case 'check':
+          return cn(
+            'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+            checkSizeClass,
+            fill('button.fg'),
+          )
+        default:
+          return ''
+      }
+    }
+    const menu = (part: TMenuPart): string => {
+      switch (part) {
+        case 'bg':
+          return bg('popover.bg')
+        case 'bar':
+          return cn(
+            STATIC_CLS.menuBarBase,
+            `hover:${primary('fg')}`,
+            `hover:${bg('menuHoverBg')}`,
+            fg('digest'),
+          )
+        case 'title':
+          return cn(STATIC_CLS.menuTitleBase, `group-hover/menubar:${fg('title')}`)
+        case 'icon':
+          return cn(
+            STATIC_CLS.menuIconBase,
+            fill('digest'),
+            `group-hover/menubar:${primary('fill')}`,
+          )
+        case 'dangerBar':
+          return cn(
+            STATIC_CLS.menuBarBase,
+            `hover:${fg('rainbow.red')}`,
+            `hover:${bg('rainbow.redLite')}`,
+            fg('digest'),
+          )
+        case 'dangerTitle':
+          return cn(STATIC_CLS.menuTitleBase, `group-hover/menubar:${fg('rainbow.red')}`)
+        case 'dangerIcon':
+          return cn(
+            STATIC_CLS.menuIconBase,
+            fill('digest'),
+            `group-hover/menubar:${fill('rainbow.red')}`,
+          )
+        case 'activeBox':
+          return cn(
+            'opacity-100 scale-100',
+            fg('title'),
+            fill('title'),
+            bg('menuHoverBg'),
+            br('divider'),
+            shadow('sm'),
+          )
+        case 'activeIcon':
+          return fill('title')
+        case 'link':
+          return cn(STATIC_CLS.menuLinkBase, fill('digest'))
+        default:
+          return ''
+      }
     }
 
-    if (prefix === 'borderLite') {
-      return `${prefix$}-${color$}/50`
-    }
-
-    return `${prefix$}-${color$}`
-  }
-
-  const rainbowLite = (color: TColorName | string): string => {
-    const color$ = camelize(color)
-    return `bg-rainbow-${color$}Lite`
-  }
-
-  const resolveCustomRainbowToken = (
-    color: TColorName,
-    customKey: 'custom' | 'subCustom',
-    prefix: TColorPrefix,
-  ): string => {
-    if (color !== COLOR.CUSTOM) {
-      return rainbow(color, prefix)
-    }
-
-    const prefix$ = RAINBOW_ALIAS[prefix]
-
-    if (prefix === 'bgLite') {
-      return `${prefix$}-${customKey}Lite`
-    }
-
-    if (prefix === 'borderLite') {
-      return `${prefix$}-${customKey}/50`
-    }
-
-    return `${prefix$}-${customKey}`
-  }
-
-  const primary = (prefix: TColorPrefix = 'fg'): string => rainbow(primaryColor, prefix)
-  const accent = (prefix: TColorPrefix = 'fg'): string =>
-    resolveCustomRainbowToken(accentColor, 'subCustom', prefix)
-
-  const linker = (prefix: TLinkColorPrefix = 'fg'): string => {
-    return resolveCustomRainbowToken(accentColor, 'subCustom', prefix as unknown as TColorPrefix)
-  }
-
-  const linkable = () => STATIC_CLS.linkable
-  const underline = ({ always = false, groupHoverClass = 'group-hover' }: TUnderlineOptions = {}) =>
-    cn(
-      STATIC_CLS.underlineBase,
-      always ? 'underline' : 'no-underline hover:underline',
-      !always && groupHoverClass === 'group-hover' && STATIC_CLS.underlineGroupHover,
-    )
-
-  const hoverBr = () => cn(STATIC_CLS.hoverBrBase, br('divider'), `hover:${primary('borderLite')}`)
-
-  const hoverLink = (textSize = 'text-base') =>
-    cn(
-      STATIC_CLS.hoverLinkBase,
-      textSize,
-      `hover:${bg('hoverBg')}`,
-      `hover:${fg('title')}`,
-      primary('decoration'),
-      fg('digest'),
-    )
-
-  const hoverLinkIcon = (size = 'size-3.5') =>
-    cn(size, 'mr-1 group-smoky-65', `group-hover:${fill('title')}`, fill('digest'))
-
-  /**
-   * this is not typo, cause the existing param is `size`
-   */
-  const zise = (unit: number): string => clsx(`size-${unit}`)
-
-  const divider = () => cn(STATIC_CLS.divider, bg('divider'))
-  const VDivider = () => cn(STATIC_CLS.vDivider, fg('digest'))
-
-  const sexyBorder = (turn = 35, classNames?: string) =>
-    cn(STATIC_CLS.sexyBorderBase, `sexy-border-${turn}`, classNames)
-
-  const sexyVBorder = (turn: number, classNames = '') =>
-    cn(STATIC_CLS.sexyVBorderBase, `sexy-border-${turn}`, classNames)
-
-  const avatar = (level: 'md' | 'sm' | '' = 'md') => {
-    if (isAvatarSquare) return level === '' ? 'rounded' : `rounded-${level}`
-    return 'circle'
-  }
-
-  const gradientBar = (color: TColorName): string =>
-    `bg-gradient-to-r from-rainbow-${(color === COLOR.CUSTOM ? COLOR.BLACK : color).toLocaleLowerCase()}Bg to-transparent`
-
-  const vividDark = (): string => STATIC_CLS.vividDarkWhenDark
-
-  const dimDark = (level: TDimLevel = 'md'): string => {
-    switch (level) {
-      case 'sm':
-        return 'dark:brightness-90'
-      case 'lg':
-        return 'dark:brightness-50'
-      default:
-        return 'dark:brightness-75'
-    }
-  }
-
-  const shadow = (size: TShadowType): string => `shadow-${size}`
-  const scrollbar = (type: TScrollbarType = 'thin'): string => {
-    switch (type) {
-      case 'thin':
-        return STATIC_CLS.scrollbarThin
-      default:
-        return ''
-    }
-  }
-
-  const cut = (w: TCutWWidth = 'w-12'): string => {
-    const maxWidth = w.replace('w-', 'max-w-')
-    return cn(STATIC_CLS.cutBase, maxWidth)
-  }
-
-  const landingTitle = (): string => cn(STATIC_CLS.landingTitleBase, fg('title'))
-  const panel = (classNames?: string): string =>
-    cn(STATIC_CLS.panelBase, bg('card'), br('divider'), classNames)
-
-  const hover = (part: THoverPart): string => {
-    switch (part) {
-      case 'bg':
-      case 'box':
-        return cn(STATIC_CLS.hoverBgBase, `hover:${bg('hoverBg')}`)
-      case 'bg-red':
-        return cn(STATIC_CLS.hoverBgBase, `hover:${rainbowLite(COLOR.RED)}`)
-      case 'icon':
-        return cn(STATIC_CLS.hoverIconBase, fill('digest'), `group-hover:${fill('title')}`)
-      case 'fg':
-        return cn(STATIC_CLS.hoverIconBase, fg('digest'), `group-hover:${fg('title')}`)
-      case 'fg-red':
-        return cn(STATIC_CLS.hoverIconBase, fg('digest'), `group-hover:${rainbow(COLOR.RED, 'fg')}`)
-      case 'icon-red':
-        return cn(
-          STATIC_CLS.hoverIconBase,
-          fill('digest'),
-          `group-hover:${rainbow(COLOR.RED, 'fill')}`,
-        )
-      default:
-        return 'debug'
-    }
-  }
-
-  const selectable = (part: TSelectablePart, options: TSelectableOptions = {}): string => {
-    const {
-      active = false,
-      border = true,
-      disabled = false,
-      isCircle = false,
-      size = 'md',
-    } = options
-    const resolvedSize = isCircle ? 'sm' : size
-    const sizeClass = resolvedSize === 'xs' ? 'size-3' : resolvedSize === 'sm' ? 'size-4' : 'size-5'
-    const checkSizeClass =
-      resolvedSize === 'xs' ? 'size-2' : resolvedSize === 'sm' ? 'size-2.5' : 'size-3'
-    const positionClass =
-      resolvedSize === 'xs'
-        ? '-top-1 -right-1'
-        : isCircle
-          ? '-top-1 -right-0.5 scale-90'
-          : '-top-2 -right-2'
-
-    switch (part) {
-      case 'box':
-        return cn(
-          border && 'border border-transparent',
-          disabled ? 'cursor-default' : 'pointer',
-          active ? primary('border') : !disabled && `hover:${br('digest')}`,
-          active && `hover:${primary('border')}`,
-          active && bg('cardAlpha'),
-        )
-
-      case 'badge':
-        return cn(
-          'absolute z-20 circle border',
-          positionClass,
-          sizeClass,
-          primary('bg'),
-          primary('border'),
-        )
-
-      case 'check':
-        return cn(
-          'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
-          checkSizeClass,
-          fill('button.fg'),
-        )
-
-      default:
-        return ''
-    }
-  }
-
-  const zIndex = (type: TZIndexType, visible?: boolean): string => {
-    if (visible === false) return '-z-10'
-    return `z-${type}`
-  }
-
-  const menu = (part: TMenuPart): string => {
-    switch (part) {
-      case 'bg':
-        return bg('popover.bg')
-
-      case 'bar':
-        return cn(
-          STATIC_CLS.menuBarBase,
-          `hover:${primary('fg')}`,
-          `hover:${bg('menuHoverBg')}`,
-          fg('digest'),
-        )
-
-      case 'title':
-        return cn(STATIC_CLS.menuTitleBase, `group-hover/menubar:${fg('title')}`)
-
-      case 'icon':
-        return cn(STATIC_CLS.menuIconBase, fill('digest'), `group-hover/menubar:${primary('fill')}`)
-
-      case 'dangerBar':
-        // Danger rows keep the regular menu geometry but use rainbow red hover tokens
-        // from the active menu theme instead of a page-level ad-hoc class bundle.
-        return cn(
-          STATIC_CLS.menuBarBase,
-          `hover:${fg('rainbow.red')}`,
-          `hover:${bg('rainbow.redLite')}`,
-          fg('digest'),
-        )
-
-      case 'dangerTitle':
-        return cn(STATIC_CLS.menuTitleBase, `group-hover/menubar:${fg('rainbow.red')}`)
-
-      case 'dangerIcon':
-        return cn(
-          STATIC_CLS.menuIconBase,
-          fill('digest'),
-          `group-hover/menubar:${fill('rainbow.red')}`,
-        )
-
-      case 'activeBox':
-        return cn(
-          'opacity-100 scale-100',
-          fg('title'),
-          fill('title'),
-          bg('menuHoverBg'),
-          br('divider'),
-          shadow('sm'),
-        )
-
-      case 'activeIcon':
-        return fill('title')
-
-      case 'link':
-        return cn(STATIC_CLS.menuLinkBase, fill('digest'))
-
-      default:
-        return ''
-    }
-  }
-
-  const page = () => pageClass
-
-  return useMemo<TRet>(
-    () => ({
+    return {
       cn,
 
       container,
@@ -382,8 +332,6 @@ export default function useTwBelt(): TRet {
       zIndex,
 
       page,
-    }),
-    // deps: only those that can affect returned behaviors/strings
-    [containerClass, pageClass, isAvatarSquare, primaryColor, accentColor],
-  )
+    }
+  }, [metric, isAvatarSquare, primaryColor, accentColor])
 }

@@ -95,7 +95,9 @@ describe('useTrashedPosts', () => {
   })
 
   it('permanently deletes a row and reloads the current page', async () => {
-    mocks.mutate.mockResolvedValue({ permanentlyDeleteTrashedArticle: { done: true } })
+    mocks.mutate.mockResolvedValue({
+      permanentlyDeleteTrashedArticle: { done: true },
+    })
     const { result } = renderHook(() => useTrashedPosts())
 
     await waitFor(() => expect(result.current.loading).toBe(false))

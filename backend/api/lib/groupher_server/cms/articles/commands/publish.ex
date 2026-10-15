@@ -11,7 +11,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Publish do
   alias GroupherServer.{Accounts, CMS}
   alias Helper.T
   alias CMS.{Articles, Command, FrontDesk}
-  alias CMS.Articles.Bindings
+  alias CMS.Articles.{Bindings, Query}
   alias Accounts.Model.User
   alias Articles.RevisionResult
   alias Articles.Commands.PublishConfirmation
@@ -103,9 +103,8 @@ defmodule GroupherServer.CMS.Articles.Commands.Publish do
   defp publish_now(article_id, actor, opts) do
     with {:ok, article} <- stable_article(article_id),
          {:ok, author} <- target_author(actor),
-         {:ok, result} <- publish_with_gate(article, actor, author, opts),
-         {:ok, result} <- maybe_publish_effects(result, opts) do
-      {:ok, result}
+         {:ok, result} <- publish_with_gate(article, actor, author, opts) do
+      maybe_publish_effects(result, opts)
     end
   end
 
@@ -117,7 +116,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Publish do
       nil ->
         case Keyword.get(opts, :community_id) do
           community_id when is_integer(community_id) ->
-            case GroupherServer.Repo.get(Community, community_id) do
+            case Query.community(community_id) do
               %Community{} = community -> Bindings.get(article, community)
               _ -> {:error, :article_binding_not_found}
             end

@@ -5,13 +5,11 @@ defmodule GroupherServer.CMS.Docs.Commands.PublishBranch do
       Doc branch -> atomic publish -> public projection -> effects
   """
 
-  alias GroupherServer.Accounts
-
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.Articles.Publish.Doc
+  alias CMS.Articles.{Publish.Doc, Query}
   alias CMS.Docs.Editor
-  alias CMS.Model.{Author, Community, DocBranch}
+  alias CMS.Model.{Author, Community}
 
   @spec execute(Ecto.UUID.t(), pos_integer(), User.t() | Author.t(), keyword()) ::
           {:ok, map()} | {:error, term()}
@@ -26,17 +24,15 @@ defmodule GroupherServer.CMS.Docs.Commands.PublishBranch do
     with {:ok, article} <- Editor.stable_doc(doc_id),
          {:ok, author} <- Editor.target_author(actor),
          {:ok, user} <- Editor.actor_user(actor),
-         {:ok, community} <- branch_community(branch_id, opts),
-         {:ok, result} <-
-           CMS.Gate.with_branch_check(
-             user,
-             :publish,
-             community,
-             article,
-             branch_id,
-             fn canonical -> Doc.publish(canonical, branch_id, author, opts) end
-           ) do
-      {:ok, result}
+         {:ok, community} <- branch_community(branch_id, opts) do
+      CMS.Gate.with_branch_check(
+        user,
+        :publish,
+        community,
+        article,
+        branch_id,
+        fn canonical -> Doc.publish(canonical, branch_id, author, opts) end
+      )
     end
   end
 
@@ -46,12 +42,7 @@ defmodule GroupherServer.CMS.Docs.Commands.PublishBranch do
         {:ok, community}
 
       _ ->
-        with %DocBranch{community_id: community_id} <- Repo.get(DocBranch, branch_id),
-             %Community{} = community <- Repo.get(Community, community_id) do
-          {:ok, community}
-        else
-          _ -> {:error, :article_binding_not_found}
-        end
+        Query.branch_community(branch_id)
     end
   end
 end

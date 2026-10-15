@@ -134,25 +134,23 @@ defmodule GroupherServer.CMS.Gate.Access.Check do
   end
 
   defp article_with_community(actor, action, %Article{} = resource, %Community{} = community) do
-    with {:ok, thread} <- article_thread(resource),
-         {:ok, result} <-
-           Articles.MutationLock.with_article(community, resource, fn ->
-             with {:ok, context} <- Load.article(community, thread, resource),
-                  %Decision{allowed: true} <-
-                    Decision.from_result(
-                      Policy.article(actor, action, resource, context),
-                      context
-                    ) do
-               {:ok, canonical_resource(context_resource(context), context.community)}
-             else
-               %Decision{} = decision ->
-                 {:error, decision}
+    with {:ok, thread} <- article_thread(resource) do
+      Articles.MutationLock.with_article(community, resource, fn ->
+        with {:ok, context} <- Load.article(community, thread, resource),
+             %Decision{allowed: true} <-
+               Decision.from_result(
+                 Policy.article(actor, action, resource, context),
+                 context
+               ) do
+          {:ok, canonical_resource(context_resource(context), context.community)}
+        else
+          %Decision{} = decision ->
+            {:error, decision}
 
-               {:error, ErrorCat.error_pattern() = error} ->
-                 {:error, Decision.deny(error)}
-             end
-           end) do
-      {:ok, result}
+          {:error, ErrorCat.error_pattern() = error} ->
+            {:error, Decision.deny(error)}
+        end
+      end)
     end
   end
 

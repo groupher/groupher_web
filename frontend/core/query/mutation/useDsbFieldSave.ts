@@ -123,12 +123,11 @@ export default function useDsbFieldSave(): TRet {
       submitted[field] = clone(current[field]) as never
     }
 
-    if (tagUiRef.current.editingTag && fields.includes(FIELD.TAGS)) {
+    const editingTag = tagUiRef.current.editingTag
+    if (editingTag && fields.includes(FIELD.TAGS)) {
       submitted.tagGroups = current.tagGroups.map((group) => ({
         ...group,
-        tags: group.tags.map((tag) =>
-          tag.id === tagUiRef.current.editingTag?.id ? clone(tagUiRef.current.editingTag) : tag,
-        ),
+        tags: group.tags.map((tag) => (tag.id === editingTag.id ? clone(editingTag) : tag)),
       }))
     }
 
@@ -203,6 +202,7 @@ export default function useDsbFieldSave(): TRet {
     }
 
     if (field === FIELD.BASE_INFO) {
+      if (!subTab) return
       const request = buildBaseInfoSave({ ...saveContext(), subTab })
       const savedFields = Object.keys(request.params).filter(
         (key): key is TDsbEditableFieldKey => key !== 'community',
@@ -260,7 +260,7 @@ export default function useDsbFieldSave(): TRet {
 
     if (field === FIELD.TAG) {
       const { editingTag } = tagUiRef.current
-      if (!editingTag) return
+      if (!editingTag?.title) return
       slugify(editingTag.title)
         .then((slug) => {
           tagUiRef.current.patch({ editingTag: { ...editingTag, slug } })

@@ -6,7 +6,7 @@ import { scrollIntoEle } from '~/dom'
 import { browserGraphQLRequest } from '~/graphql/client'
 import useViewingArticle from '~/hooks/useViewingArticle'
 import { Q } from '~/query'
-import { articlePathKey, articlePathOf } from '~/query/articlePath'
+import { articlePathKey } from '~/query/articlePath'
 import {
   createCommentOperation,
   replyCommentOperation,
@@ -43,7 +43,7 @@ export default function useQuery(): TRet {
   if (!commentsStore) {
     throw new Error('useQuery must be used within a Comments store provider')
   }
-  const { article } = useViewingArticle()
+  const { articlePath } = useViewingArticle()
   const account = useAccount()
   const { addToReplies, published, resetPublish } = useHelper()
   const { replyToComment } = commentsStore
@@ -54,11 +54,11 @@ export default function useQuery(): TRet {
   const commentsRequestRef = useRef(0)
   const repliesRequestRef = useRef(0)
 
-  const articleKey = articlePathKey(articlePathOf(article))
+  const articleKey = articlePathKey(articlePath)
   const commentScope = {
-    community: article.community.slug,
-    thread: article.meta.thread,
-    articleInnerId: article.innerId,
+    community: articlePath.community,
+    thread: articlePath.thread,
+    articleInnerId: articlePath.innerId,
   }
   const latestArticlePathRef = useRef(articleKey)
 
@@ -88,7 +88,7 @@ export default function useQuery(): TRet {
     )
   }
 
-  const buildArticlePath = () => articlePathOf(article)
+  const buildArticlePath = () => articlePath
 
   const buildCommentPath = (commentOrInnerId: TComment | TID) => ({
     article: buildArticlePath(),
@@ -133,9 +133,9 @@ export default function useQuery(): TRet {
     repliesPagiNo = {}
     void queryClient.fetchQuery(
       Q.comment.list(
-        article.community.slug,
-        article.meta.thread,
-        article.innerId,
+        articlePath.community,
+        articlePath.thread,
+        articlePath.innerId,
         page,
         commentsStore.mode,
       ),
@@ -144,11 +144,15 @@ export default function useQuery(): TRet {
 
   const openUpdateEditor = (comment: TComment): void => {
     commentsStore.commit({ showUpdateEditor: true })
-    browserGraphQLRequest(S.oneComment, { comment: buildCommentPath(comment) }).then(
-      ({ oneComment }) => {
-        commentsStore.commit({ updateInnerId: oneComment.innerId, updateBody: oneComment.body })
-      },
-    )
+    browserGraphQLRequest(S.oneComment, {
+      comment: buildCommentPath(comment),
+    }).then(({ oneComment }) => {
+      if (!oneComment?.innerId) return
+      commentsStore.commit({
+        updateInnerId: oneComment.innerId,
+        updateBody: oneComment.body ?? '',
+      })
+    })
   }
 
   const _getRepliesPagiNo = (parentId: TID): number => {
@@ -176,10 +180,11 @@ export default function useQuery(): TRet {
     console.log('## loadCommentReplies args: ', params)
     browserGraphQLRequest(S.pagedCommentReplies, params).then(({ pagedCommentReplies }) => {
       if (shouldIgnoreResult(requestId, repliesRequestRef, requestArticlePath)) return
+      if (!pagedCommentReplies) return
 
       addToReplies(innerId, pagedCommentReplies.entries as unknown as TComment[])
 
-      repliesPagiNo[innerId] = pagedCommentReplies.pageNumber
+      repliesPagiNo[innerId] = pagedCommentReplies.pageNumber ?? 1
       commentsStore.commit({
         repliesParentId: null,
         repliesLoading: false,

@@ -145,7 +145,7 @@ export default function useDraftAutoSave(
     }, DOC_AUTO_SAVE_DELAY)
 
     return () => window.clearTimeout(timer)
-  }, [dirty, editable, invalid, loadStatus.loading, save, saveStatus.saving])
+  }, [dirty, draft, editable, invalid, loadStatus.loading, save, saveStatus.saving])
 
   return { save }
 }

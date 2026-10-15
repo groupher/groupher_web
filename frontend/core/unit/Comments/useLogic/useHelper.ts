@@ -25,11 +25,11 @@ export default function useHelper(): TRet {
   }
   const comments = commentsStore
   const queryClient = useQueryClient()
-  const { article } = useViewingArticle()
+  const { articlePath } = useViewingArticle()
   const commentScope = {
-    community: article.community.slug,
-    thread: article.meta.thread,
-    articleInnerId: article.innerId,
+    community: articlePath.community,
+    thread: articlePath.thread,
+    articleInnerId: articlePath.innerId,
   }
   const patchComments = (updater: (entries: TComment[]) => TComment[]) => {
     queryClient.setQueriesData(
@@ -86,7 +86,11 @@ export default function useHelper(): TRet {
         return
       }
       default: {
-        commentsStore.commit({ showEditor: false, commentBody: '{}', publishDone: false })
+        commentsStore.commit({
+          showEditor: false,
+          commentBody: '{}',
+          publishDone: false,
+        })
       }
     }
   }

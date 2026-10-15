@@ -43,9 +43,8 @@ defmodule GroupherServer.CMS.Articles.Draft.Tags do
   @spec replace(Article.t(), ArticleDraft.t() | DocDraft.t(), [term()]) ::
           {:ok, :pass} | {:error, term()}
   def replace(%Article{} = article, draft, tag_ids) do
-    with {:ok, :pass} <- delete_draft(article, draft),
-         {:ok, :pass} <- insert_draft(article, draft, tag_ids) do
-      {:ok, :pass}
+    with {:ok, :pass} <- delete_draft(article, draft) do
+      insert_draft(article, draft, tag_ids)
     end
   end
 

@@ -44,6 +44,7 @@ defmodule GroupherServer.CMS.Interactions.Effects do
     end
   end
 
-  def enqueue_reaction_changed(_event, _resource_type, _resource_id, _command_id, _data, _opts),
-    do: {:error, :interaction_effect_identity_required}
+  def enqueue_reaction_changed(_event, _resource_type, _resource_id, _command_id, _data, _opts) do
+    {:error, :interaction_effect_identity_required}
+  end
 end

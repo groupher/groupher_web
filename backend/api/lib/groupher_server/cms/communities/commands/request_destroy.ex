@@ -12,7 +12,7 @@ defmodule GroupherServer.CMS.Communities.Commands.RequestDestroy do
 
   alias CMS.{Command, FrontDesk, Gate}
   alias CMS.Communities.{ErrorCat, Lifecycle, RequestDestroyConfirmation}
-  alias CMS.Model.{Community}
+  alias CMS.Model.Community
   alias Accounts.Model.User
   alias Helper.T
 

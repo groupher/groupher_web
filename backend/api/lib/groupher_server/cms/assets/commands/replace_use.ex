@@ -310,8 +310,9 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
     Bindings.get(article, community)
   end
 
-  defp binding_context(article, _article_or_projection),
-    do: Bindings.get(article, Map.get(article, :community))
+  defp binding_context(article, _article_or_projection) do
+    Bindings.get(article, Map.get(article, :community))
+  end
 
   defp usage(attrs) do
     case value(attrs, :usage) do

@@ -51,7 +51,13 @@ export default function Item({
           titleClassName={s.title}
           onChange={(title) => renameItem(groupId, item.id, title)}
           onDone={clearSaveZone}
-          onStart={() => setSaveZone({ type: FAQ_SAVE_ZONE.ITEM_TITLE, groupId, itemId: item.id })}
+          onStart={() =>
+            setSaveZone({
+              type: FAQ_SAVE_ZONE.ITEM_TITLE,
+              groupId,
+              itemId: item.id,
+            })
+          }
         />
 
         {!editLocked && (
@@ -62,7 +68,11 @@ export default function Item({
               onOpenChange={setMenuOpen}
               onSelect={(action) => {
                 if (action === FAQ_ITEM_MENU_ACTION.RENAME) {
-                  setSaveZone({ type: FAQ_SAVE_ZONE.ITEM_TITLE, groupId, itemId: item.id })
+                  setSaveZone({
+                    type: FAQ_SAVE_ZONE.ITEM_TITLE,
+                    groupId,
+                    itemId: item.id,
+                  })
                   return
                 }
 

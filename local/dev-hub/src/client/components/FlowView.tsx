@@ -8,6 +8,7 @@ import type {
 import { Background, BackgroundVariant, MarkerType, ReactFlow } from '@xyflow/react'
 import { type CSSProperties, useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useFlowRelations } from '@/hooks/useFlowRelations'
 import { layoutServiceFlow } from '@/lib/flow-layout'
 import { FLOW_NODE_WIDTH, FLOW_USERS_TO_GATEWAY_OFFSET } from '@/lib/flow-metrics'
 import { isServiceDisconnected } from '@/lib/service-connection-state'
@@ -18,7 +19,8 @@ import { FlowCanvasSizer } from './FlowCanvasSizer'
 import { FlowInitialViewport } from './FlowInitialViewport'
 import { FlowLaneNote } from './FlowLaneNote'
 import { FlowNavigator } from './FlowNavigator'
-import { FLOW_EDGE_COLOR, FlowRelationEdge } from './FlowRelationEdge'
+import { FlowRelationEdge } from './FlowRelationEdge'
+import { FLOW_EDGE_COLOR } from './FlowRelationEdge.constants'
 import { FlowServiceNode } from './FlowServiceNode'
 import { FlowUsersNode } from './FlowUsersNode'
 import { TerminalPanel } from './TerminalPanel'
@@ -47,7 +49,6 @@ const NODE_TYPES = {
 const EDGE_TYPES = {
   relation: FlowRelationEdge,
 }
-const EDGE_LANE_GAP = 34
 const USERS_GATEWAY_RELATION_ID = 'users-gateway'
 const FLOW_LAYOUT_CACHE = new Map<string, TFlowLayout>()
 const FLOW_LAYOUT_REQUEST_CACHE = new Map<string, Promise<TFlowLayout>>()
@@ -141,94 +142,7 @@ export function FlowView({
 
   const serviceViewModel = useMemo(() => buildServiceViewModel(services), [services])
   const { dependencyStateByServiceId, serviceById } = serviceViewModel
-  const relationIdsByService = useMemo(() => {
-    const incoming = new Map<string, string[]>()
-    const outgoing = new Map<string, string[]>()
-
-    for (const relation of relations) {
-      incoming.set(relation.target, [...(incoming.get(relation.target) || []), relation.id])
-      outgoing.set(relation.source, [...(outgoing.get(relation.source) || []), relation.id])
-    }
-
-    if (layout) {
-      const relationById = new Map(relations.map((relation) => [relation.id, relation]))
-      const sortByConnectedX = (
-        relationIds: string[],
-        getConnectedServiceId: (relation: TServiceRelation) => string,
-      ) => {
-        relationIds.sort((leftId, rightId) => {
-          const leftRelation = relationById.get(leftId)
-          const rightRelation = relationById.get(rightId)
-          if (!leftRelation || !rightRelation) return leftId.localeCompare(rightId)
-
-          const leftX = layout.positions[getConnectedServiceId(leftRelation)]?.x || 0
-          const rightX = layout.positions[getConnectedServiceId(rightRelation)]?.x || 0
-          return leftX - rightX || leftId.localeCompare(rightId)
-        })
-      }
-
-      for (const relationIds of incoming.values()) {
-        sortByConnectedX(relationIds, (relation) => relation.source)
-      }
-      for (const relationIds of outgoing.values()) {
-        sortByConnectedX(relationIds, (relation) => relation.target)
-      }
-    }
-
-    return { incoming, outgoing }
-  }, [layout, relations])
-  const laneOffsetByRelation = useMemo(() => {
-    const offsets = new Map<string, number>()
-    if (!layout) return offsets
-
-    const relationById = new Map(relations.map((relation) => [relation.id, relation]))
-    const assignLanes = (
-      anchorServiceId: string,
-      relationIds: string[],
-      getConnectedServiceId: (relation: TServiceRelation) => string,
-    ) => {
-      if (relationIds.length < 2) return
-
-      const anchorPosition = layout.positions[anchorServiceId]
-      if (!anchorPosition) return
-
-      const left: Array<{ id: string; x: number }> = []
-      const center: Array<{ id: string; x: number }> = []
-      const right: Array<{ id: string; x: number }> = []
-      for (const relationId of relationIds) {
-        const relation = relationById.get(relationId)
-        if (!relation) continue
-
-        const connectedPosition = layout.positions[getConnectedServiceId(relation)]
-        if (!connectedPosition) continue
-
-        const item = { id: relationId, x: connectedPosition.x }
-        const delta = connectedPosition.x - anchorPosition.x
-        if (Math.abs(delta) < 1) center.push(item)
-        else if (delta < 0) left.push(item)
-        else right.push(item)
-      }
-
-      left.sort((a, b) => b.x - a.x || a.id.localeCompare(b.id))
-      right.sort((a, b) => a.x - b.x || a.id.localeCompare(b.id))
-      center.sort((a, b) => a.id.localeCompare(b.id))
-
-      for (const side of [left, right, center]) {
-        side.forEach(({ id }, index) => {
-          if (!offsets.has(id)) offsets.set(id, index * EDGE_LANE_GAP)
-        })
-      }
-    }
-
-    for (const [sourceId, relationIds] of relationIdsByService.outgoing) {
-      assignLanes(sourceId, relationIds, (relation) => relation.target)
-    }
-    for (const [targetId, relationIds] of relationIdsByService.incoming) {
-      assignLanes(targetId, relationIds, (relation) => relation.source)
-    }
-
-    return offsets
-  }, [layout, relationIdsByService, relations])
+  const { relationIdsByService, laneOffsetByRelation } = useFlowRelations(layout, relations)
   const coreNodes = useMemo(
     () =>
       Array.from(new Set(relations.flatMap((relation) => [relation.source, relation.target]))).map(

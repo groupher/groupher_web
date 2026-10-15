@@ -25,7 +25,7 @@ const Item: FC<TProps> = ({ item, withDesc = false, active, onClick }) => {
           <Icon type={item.icon as TMenu} />
         </div>
         <div className={s.main}>
-          <div className={cn(s.title, s.fullTitle)}>{t(item.title)}</div>
+          <div className={cn(s.title, s.fullTitle)}>{item.title ? t(item.title) : ''}</div>
           <div className={s.desc}>{item.desc || '--'}</div>
         </div>
       </button>
@@ -35,7 +35,7 @@ const Item: FC<TProps> = ({ item, withDesc = false, active, onClick }) => {
   return (
     <button type='button' className={s.wrapper} onClick={onClick}>
       <Icon type={item.icon as TMenu} />
-      <div className={s.title}>{t(item.title)}</div>
+      <div className={s.title}>{item.title ? t(item.title) : ''}</div>
     </button>
   )
 }

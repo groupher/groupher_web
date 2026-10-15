@@ -27,7 +27,7 @@ export default function Content() {
       <div className={s.inner}>
         <div ref={ref} className={s.article}>
           {/* {!!article.linkAddr && <Linker src={article.linkAddr} bottom={22} />} */}
-          <ArtimentBody document={article.document} />
+          <ArtimentBody document={article.document ?? {}} />
         </div>
         <div className={s.comments}>
           <Comments />

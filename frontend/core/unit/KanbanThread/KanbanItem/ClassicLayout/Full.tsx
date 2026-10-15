@@ -26,7 +26,8 @@ type TProps = {
 
 const KanbanItem: FC<TProps> = ({ viewModel }) => {
   const { content: article, stats } = viewModel
-  const isActive = usePreviewItemActive(article.innerId, THREAD_PATH.POST)
+  const innerId = String(article.innerId ?? '')
+  const isActive = usePreviewItemActive(innerId, THREAD_PATH.POST)
   const s = useSalon({ active: isActive })
   const { slug } = useCommunity()
 
@@ -42,7 +43,7 @@ const KanbanItem: FC<TProps> = ({ viewModel }) => {
       <CommunityPreviewLink
         href={`/${slug}/${THREAD_PATH.POST}/${article.innerId}`}
         className={s.title}
-        previewId={article.innerId}
+        previewId={innerId}
       >
         {article.title}
       </CommunityPreviewLink>

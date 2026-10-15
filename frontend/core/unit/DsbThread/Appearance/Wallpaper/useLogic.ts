@@ -412,7 +412,11 @@ export function useLogicValue(): TWallpaperLogic {
   const changeGradientWallpaper = (source: string): void =>
     commitWallpaperPatch(composeGradientWallpaperPatch(wallpaperState, source))
   const changeGradientRecipe = (gradient: TGradientRecipe): void =>
-    commitWallpaperPatch({ source: gradient.preset, type: WALLPAPER_TYPE.GRADIENT, gradient })
+    commitWallpaperPatch({
+      source: gradient.preset,
+      type: WALLPAPER_TYPE.GRADIENT,
+      gradient,
+    })
   const changeGradientRenderer = (renderer: TGradientRenderer): void => {
     const gradient = wallpaperState.gradient ?? GRADIENT_WALLPAPER.amber_mauve
 
@@ -423,9 +427,13 @@ export function useLogicValue(): TWallpaperLogic {
     })
   }
   const changePatternId = (patternId: string): void =>
-    commitWallpaperPatch({ pattern: { ...wallpaperState.pattern, id: patternId, enabled: true } })
+    commitWallpaperPatch({
+      pattern: { ...wallpaperState.pattern, id: patternId, enabled: true },
+    })
   const changePatternTone = (patternTone: TWallpaperThemeState['pattern']['tone']): void =>
-    commitWallpaperPatch({ pattern: { ...wallpaperState.pattern, tone: patternTone } })
+    commitWallpaperPatch({
+      pattern: { ...wallpaperState.pattern, tone: patternTone },
+    })
   const changePatternWallpaper = (source: string): void =>
     commitWallpaperPatch({ source, type: WALLPAPER_TYPE.PATTERN })
 
@@ -438,7 +446,10 @@ export function useLogicValue(): TWallpaperLogic {
   const toggleTexture = (enabled: boolean): void => {
     const texture =
       enabled && wallpaperState.texture.intensity === 0
-        ? { ...wallpaperState.texture, intensity: DEFAULT_WALLPAPER_TEXTURE_INTENSITY }
+        ? {
+            ...wallpaperState.texture,
+            intensity: DEFAULT_WALLPAPER_TEXTURE_INTENSITY,
+          }
         : wallpaperState.texture
 
     commitWallpaperPatch({ texture: { ...texture, enabled } })

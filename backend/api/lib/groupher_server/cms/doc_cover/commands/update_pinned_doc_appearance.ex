@@ -20,12 +20,12 @@ defmodule GroupherServer.CMS.DocCover.Commands.UpdatePinnedDocAppearance do
       #=> {:ok, pinned_doc}
   """
   @spec execute(Community.t(), term(), map(), term(), Ecto.UUID.t()) :: term()
-  def execute(community, node_id, appearance, actor, _command_id),
-    do:
-      Support.run(
-        actor,
-        :manage_docs,
-        community,
-        &Persist.update_pinned_doc_appearance(&1, node_id, appearance)
-      )
+  def execute(community, node_id, appearance, actor, _command_id) do
+    Support.run(
+      actor,
+      :manage_docs,
+      community,
+      &Persist.update_pinned_doc_appearance(&1, node_id, appearance)
+    )
+  end
 end

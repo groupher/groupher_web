@@ -36,8 +36,9 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Update do
     end
   end
 
-  defp action(%{target: {:community_tag, _id}}),
-    do: {:error, CMS.Communities.ErrorCat.not_exist("CommunityTag")}
+  defp action(%{target: {:community_tag, _id}}) do
+    {:error, CMS.Communities.ErrorCat.not_exist("CommunityTag")}
+  end
 
   defp action(%{actor: actor, target: tag, params: attrs, command_id: command_id}) do
     with {:ok, community} <- TagSupport.community(tag.community_id),

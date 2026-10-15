@@ -37,19 +37,21 @@ export default function usePublishChecklist() {
   const totalChanges = publishChecklist?.totalCount ?? 0
   const publishChecklistLoaded = publishChecklist !== null
   const hasSelectableChanges = checklistItems.some((item) => item.selectable)
+  const selectedDocIdSet = useMemo(() => new Set(selectedDocIds), [selectedDocIds])
+  const selectedTreeIdSet = useMemo(() => new Set(selectedTreeIds), [selectedTreeIds])
   const selectedDocChangeIds = useMemo(
     () =>
       publishChecklist?.docChanges
-        .filter((item) => item.selectable && selectedDocIds.includes(item.id))
+        .filter((item) => item.selectable && selectedDocIdSet.has(item.id))
         .map((item) => item.id) ?? [],
-    [publishChecklist, selectedDocIds],
+    [publishChecklist, selectedDocIdSet],
   )
   const selectedTreeChangeIds = useMemo(
     () =>
       publishChecklist?.treeChanges
-        .filter((item) => item.selectable && selectedTreeIds.includes(item.id))
+        .filter((item) => item.selectable && selectedTreeIdSet.has(item.id))
         .map((item) => item.id) ?? [],
-    [publishChecklist, selectedTreeIds],
+    [publishChecklist, selectedTreeIdSet],
   )
   const restoreTreeChangeIds = useMemo(
     () => getRestoreTreeChangeIds(publishChecklist, selectedTreeIds),

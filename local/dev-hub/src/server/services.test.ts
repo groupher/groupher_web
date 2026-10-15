@@ -136,8 +136,8 @@ test('frontend app start chains match their local routing boundaries', () => {
 
   assert.deepEqual(startPolicies.dash, {
     defaultMode: 'chain',
-    requiredDependencies: ['dev-gateway', 'auth', 'phoenix'],
-    optionalDependencies: ['assets-hub', 'content-import', 'document-converter'],
+    requiredDependencies: ['dev-gateway', 'auth', 'phoenix', 'assets-hub'],
+    optionalDependencies: ['content-import', 'document-converter'],
   })
   assert.deepEqual(startPolicies.landing, {
     defaultMode: 'chain',
@@ -146,7 +146,7 @@ test('frontend app start chains match their local routing boundaries', () => {
   })
   assert.deepEqual(startPolicies.community, {
     defaultMode: 'chain',
-    requiredDependencies: ['phoenix'],
+    requiredDependencies: ['auth', 'phoenix', 'assets-hub'],
     optionalDependencies: [],
   })
 

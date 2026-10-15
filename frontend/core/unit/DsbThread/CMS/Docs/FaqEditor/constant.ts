@@ -50,8 +50,16 @@ export const FAQ_EDITOR_COPY = {
 } as const
 
 export const FAQ_MODE_ITEMS = [
-  { key: FAQ_MODE.GROUPED, label: FAQ_EDITOR_COPY.MODE_GROUPED, icon: CategorySVG },
-  { key: FAQ_MODE.FLAT, label: FAQ_EDITOR_COPY.MODE_FLAT, icon: ListBulletsSVG },
+  {
+    key: FAQ_MODE.GROUPED,
+    label: FAQ_EDITOR_COPY.MODE_GROUPED,
+    icon: CategorySVG,
+  },
+  {
+    key: FAQ_MODE.FLAT,
+    label: FAQ_EDITOR_COPY.MODE_FLAT,
+    icon: ListBulletsSVG,
+  },
 ] as const
 
 export const FAQ_DND_TYPE = {

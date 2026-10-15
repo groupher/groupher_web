@@ -25,7 +25,7 @@ export type TStore = {
 
   // selectors
   activeCat: TArticleCat
-  activeTag: TTag
+  activeTag: TTag | null
 
   // derived
   allowEdit: boolean

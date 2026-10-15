@@ -2,6 +2,7 @@
 
 import { flexRender } from '@tanstack/react-table'
 import { getCoreRowModel, getSortedRowModel, useLegacyTable } from '@tanstack/react-table/legacy'
+import type { RowData } from '@tanstack/table-core'
 import { useMemo } from 'react'
 
 import { SELECT_COL_ID, useScrollStuck, useStickyColumns } from '~/hooks/useTanTable'
@@ -22,7 +23,7 @@ const alignClassName = (align?: 'left' | 'center' | 'right') => {
   return ''
 }
 
-export default function CmsDataTable<TData>({
+export default function CmsDataTable<TData extends RowData>({
   columns,
   data,
   emptyState = null,
@@ -53,7 +54,9 @@ export default function CmsDataTable<TData>({
   })
 
   const rows = table.getRowModel().rows
-  const sticky = useStickyColumns(table, { showSelectColumn: multiSelect?.enabled })
+  const sticky = useStickyColumns(table, {
+    showSelectColumn: multiSelect?.enabled,
+  })
 
   return (
     <div

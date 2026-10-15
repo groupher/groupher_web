@@ -56,7 +56,11 @@ export default function useLogic({ initialGroup = '', onDone }: TArgs = {}): TRe
       setMode(mode)
       if (mode === CHANGE_MODE.CREATE) {
         const defaultGroup = initialGroup || tagGroups[0]?.id || ''
-        setEditingTag({ ...DEFAULT_CREATE_TAG, groupId: defaultGroup, thread: activeTagThread })
+        setEditingTag({
+          ...DEFAULT_CREATE_TAG,
+          groupId: defaultGroup,
+          thread: activeTagThread ?? undefined,
+        })
       } else {
         setEditingTag(settingTag)
       }
@@ -112,7 +116,7 @@ export default function useLogic({ initialGroup = '', onDone }: TArgs = {}): TRe
   }
 
   const onDelete = (tag: TTag): void => {
-    if (!tag) return
+    if (!tag?.community) return
     setProcessing(true)
     const { id, thread, community } = tag
 

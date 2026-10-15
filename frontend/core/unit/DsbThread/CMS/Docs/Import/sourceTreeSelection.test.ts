@@ -62,8 +62,22 @@ describe('docs import source tree selection', () => {
 
   it('totals directory file sizes only when every page has size metadata', () => {
     const complete = new Map([
-      ['docs/a.md', { draft: false, navigationStatus: 'in_navigation' as const, sizeBytes: 1024 }],
-      ['docs/b.md', { draft: false, navigationStatus: 'in_navigation' as const, sizeBytes: 512 }],
+      [
+        'docs/a.md',
+        {
+          draft: false,
+          navigationStatus: 'in_navigation' as const,
+          sizeBytes: 1024,
+        },
+      ],
+      [
+        'docs/b.md',
+        {
+          draft: false,
+          navigationStatus: 'in_navigation' as const,
+          sizeBytes: 512,
+        },
+      ],
     ])
 
     expect(totalPageSize(['docs/a.md', 'docs/b.md'], complete)).toBe(1536)

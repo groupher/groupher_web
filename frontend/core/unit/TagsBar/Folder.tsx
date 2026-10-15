@@ -76,7 +76,7 @@ const Folder: FC<TProps> = ({
           {!isFolderOpen && <div className={s.count}>({sortedTags.length})</div>}
         </div>
 
-        {!isFolderOpen && isActiveTagInFolder && <TagItem tag={activeTag} active />}
+        {!isFolderOpen && isActiveTagInFolder && activeTag && <TagItem tag={activeTag} active />}
 
         <div className={s.arrowBox}>
           <ArrowSVG className={s.arrow} />

@@ -25,13 +25,13 @@ const ArticleInfo: FC<TProps> = ({ article, stats, viewerState }) => {
         <Upvote
           type={UPVOTE_LAYOUT.DEFAULT}
           count={count}
-          avatarList={meta.latestUpvotedUsers}
+          avatarList={meta?.latestUpvotedUsers}
           noLazyLoad
           viewerHasUpvoted={isUpvoted}
           onAction={() => toggle()}
         />
         <div className='grow' />
-        <ArticleBaseStats article={article} stats={stats} container='drawer' />
+        <ArticleBaseStats stats={stats} container='drawer' />
       </div>
     </div>
   )

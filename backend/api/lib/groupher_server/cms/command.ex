@@ -116,20 +116,18 @@ defmodule GroupherServer.CMS.Command do
   end
 
   defp validate_confirmation(operation, module) when is_atom(module) do
-    try do
-      with true <- Code.ensure_loaded?(module),
-           true <- function_exported?(module, :operations, 0),
-           true <- function_exported?(module, :encode, 2),
-           true <- function_exported?(module, :decode, 2),
-           operations when is_list(operations) <- module.operations(),
-           true <- operation in operations do
-        {:ok, :pass}
-      else
-        _ -> {:error, {:invalid_command_result, :confirmation_contract_unavailable}}
-      end
-    rescue
+    with true <- Code.ensure_loaded?(module),
+         true <- function_exported?(module, :operations, 0),
+         true <- function_exported?(module, :encode, 2),
+         true <- function_exported?(module, :decode, 2),
+         operations when is_list(operations) <- module.operations(),
+         true <- operation in operations do
+      {:ok, :pass}
+    else
       _ -> {:error, {:invalid_command_result, :confirmation_contract_unavailable}}
     end
+  rescue
+    _ -> {:error, {:invalid_command_result, :confirmation_contract_unavailable}}
   end
 
   defp normalize_command_result({:error, {:invalid_command_result, _reason}}) do

@@ -1,8 +1,8 @@
-import { type FC, useEffect, useState } from 'react'
+import { type FC, useCallback, useEffect, useRef, useState } from 'react'
 
 import { SOCIAL } from '~/const/oauth'
-import { lockPage, unlockPage } from '~/dom'
 import { titleCase } from '~/fmt'
+import usePageLock from '~/hooks/usePageLock'
 import useTrans from '~/hooks/useTrans'
 import CloseCrossSVG from '~/icons/CloseLight'
 import { signIn } from '~/oauth'
@@ -20,45 +20,61 @@ type TProps = {
 
 const Panel: FC<TProps> = ({ show, returnTo, onClose }) => {
   const s = useSalon()
+  const dialogRef = useRef<HTMLDialogElement | null>(null)
+  const { lockPageOnce, unlockPageOnce } = usePageLock()
 
-  const [loadingProvider, setLoadingProvider] = useState(null)
+  const [loadingProvider, setLoadingProvider] = useState<string | null>(null)
   const { t } = useTrans()
 
-  useEffect(() => {
-    if (!show) return
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
-    }
+  const handleClose = useCallback(() => {
+    unlockPageOnce()
+    onClose()
+  }, [onClose, unlockPageOnce])
 
-    lockPage()
-    window.addEventListener('keydown', handleKeyDown)
+  useEffect(() => {
+    const dialog = dialogRef.current
+    if (!dialog || !show || dialog.open) return
+
+    if (typeof dialog.showModal === 'function') dialog.showModal()
+    else dialog.setAttribute('open', '')
+    lockPageOnce()
+
     return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-      unlockPage()
+      if (dialog.open) {
+        if (typeof dialog.close === 'function') dialog.close()
+        else dialog.removeAttribute('open')
+      }
+      unlockPageOnce()
     }
-  }, [onClose, show])
+  }, [lockPageOnce, show, unlockPageOnce])
 
   if (!show) return null
 
   return (
-    <div className='bg-modal-mask fixed inset-0 z-50 overflow-auto px-4 pt-24'>
+    <dialog
+      ref={dialogRef}
+      aria-label='Sign in'
+      className='bg-modal-mask fixed inset-0 z-50 m-0 h-full max-h-none w-full max-w-none overflow-auto border-0 px-4 pt-24'
+      onCancel={(event) => {
+        event.preventDefault()
+        handleClose()
+      }}
+    >
       <button
         type='button'
         aria-label='Close sign in'
         className='absolute inset-0 size-full cursor-default'
-        onClick={onClose}
+        onClick={handleClose}
       />
       <section
         aria-label='Sign in'
-        aria-modal='true'
         className='border-divider bg-modal-bg shadow-modal relative z-1 mx-auto w-full max-w-md rounded-md border'
-        role='dialog'
       >
         <button
           type='button'
           aria-label='Close sign in'
           className='align-both hover:bg-hoverBg absolute top-3.5 right-4 z-10 size-7 rounded-md'
-          onClick={onClose}
+          onClick={handleClose}
         >
           <CloseCrossSVG className='size-5' />
         </button>
@@ -105,7 +121,7 @@ const Panel: FC<TProps> = ({ show, returnTo, onClose }) => {
           </div>
         </div>
       </section>
-    </div>
+    </dialog>
   )
 }
 

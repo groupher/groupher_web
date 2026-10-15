@@ -1,3 +1,4 @@
+import { useReducedMotion } from 'motion/react'
 import { range } from 'ramda'
 import { useRef, useState } from 'react'
 import { Carousel, Slide, Slider, SliderBarDotGroup } from 'react-scroll-snap-anime-slider'
@@ -31,6 +32,7 @@ const SLIDE_STEP = 3
 const LOOP_TIMER = 5000
 
 export default function ImageSlider() {
+  const shouldReduceMotion = useReducedMotion()
   const { loaded } = useLoaded()
   const { changeWallpaper, changePatternWallpaper } = useFullWallpaper()
   const [loopTimer, toggleLoop] = useState(true)
@@ -57,7 +59,7 @@ export default function ImageSlider() {
         slider.slideTo(nextSlideIndex)
       }
     },
-    loopTimer ? LOOP_TIMER : null,
+    loopTimer && !shouldReduceMotion ? LOOP_TIMER : null,
   )
 
   const lightImgSrc = `/${APP.LANDING}/intro/home.webp`
@@ -99,11 +101,11 @@ export default function ImageSlider() {
 
   return (
     <div
-      role='presentation'
-      aria-hidden='true'
+      role='group'
       aria-label='current cover'
       className={s.slideBox}
-      onClick={() => toggleLoop(false)}
+      onFocusCapture={() => toggleLoop(false)}
+      onPointerDownCapture={() => toggleLoop(false)}
     >
       {loaded && (
         <Carousel
@@ -148,7 +150,7 @@ export default function ImageSlider() {
                   curImageIndex <= 0 ? MAX_INTRO_IMAGES_COUNT - 1 : curImageIndex - 1
               }
 
-              sliderRef.current.slideTo(targetSlideIndex)
+              sliderRef.current?.slideTo(targetSlideIndex)
               setCurImageIndex(targetSlideIndex)
             }}
           >
@@ -168,7 +170,7 @@ export default function ImageSlider() {
                   curImageIndex >= MAX_INTRO_IMAGES_COUNT - 1 ? 0 : curImageIndex + 1
               }
 
-              sliderRef.current.slideTo(targetSlideIndex)
+              sliderRef.current?.slideTo(targetSlideIndex)
               setCurImageIndex(targetSlideIndex)
             }}
           >

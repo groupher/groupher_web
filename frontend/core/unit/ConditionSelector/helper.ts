@@ -28,7 +28,10 @@ export const getMenuItems = (mode: TConditionMode): TMenuItem[] => {
 }
 
 /** Returns active menu item for the frontend shared workflow. */
-export const getActiveMenuItem = (items: TMenuItem[], active: TActiveCondition): TMenuItem => {
+export const getActiveMenuItem = (
+  items: TMenuItem[],
+  active: TActiveCondition,
+): TMenuItem | undefined => {
   return find((item) => item.key === active, items)
 }
 

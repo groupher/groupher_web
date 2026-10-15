@@ -207,8 +207,9 @@ defmodule GroupherServer.CMS.DocTree.Publish.PublicProjection do
     end
   end
 
-  defp ensure_public_parent(_community, _branch, %{"type" => @tree_node_type_tab_key}),
-    do: {:ok, :pass}
+  defp ensure_public_parent(_community, _branch, %{"type" => @tree_node_type_tab_key}) do
+    {:ok, :pass}
+  end
 
   defp ensure_public_parent(%Community{} = community, branch, %{
          "parentNodeId" => parent_node_id

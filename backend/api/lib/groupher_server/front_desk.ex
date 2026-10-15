@@ -21,8 +21,9 @@ defmodule GroupherServer.FrontDesk do
   def community(slug) when is_binary(slug), do: GroupherServer.CMS.front_desk_community(slug)
 
   @doc "Loads a Community with an explicit mode and optional named view."
-  def community(ref, opts) when is_list(opts),
-    do: GroupherServer.CMS.front_desk_community(ref, opts)
+  def community(ref, opts) when is_list(opts) do
+    GroupherServer.CMS.front_desk_community(ref, opts)
+  end
 
   def community(ref, actor, opts), do: GroupherServer.CMS.front_desk_community(ref, actor, opts)
 
@@ -52,14 +53,16 @@ defmodule GroupherServer.FrontDesk do
   defdelegate revalidate_users(refs), to: Accounts, as: :front_desk_revalidate_users
 
   @doc "Loads a comment from its public comment path."
-  def comment(comment_path) when is_map(comment_path),
-    do: GroupherServer.CMS.front_desk_comment(comment_path)
+  def comment(comment_path) when is_map(comment_path) do
+    GroupherServer.CMS.front_desk_comment(comment_path)
+  end
 
   def comment(comment_ref), do: GroupherServer.CMS.front_desk_comment(comment_ref)
 
   @doc "Loads a comment with an explicit mode/view or Article path and inner id."
-  def comment(comment_ref, opts) when is_list(opts),
-    do: GroupherServer.CMS.front_desk_comment(comment_ref, opts)
+  def comment(comment_ref, opts) when is_list(opts) do
+    GroupherServer.CMS.front_desk_comment(comment_ref, opts)
+  end
 
   def comment(comment_path, actor) when is_map(comment_path) and is_map(actor) do
     GroupherServer.CMS.front_desk_comment(comment_path, actor)
@@ -70,21 +73,25 @@ defmodule GroupherServer.FrontDesk do
   end
 
   @doc "Loads an Article from a public ArticlePath or internal id."
-  def article(article_path) when is_map(article_path),
-    do: GroupherServer.CMS.front_desk_article(article_path)
+  def article(article_path) when is_map(article_path) do
+    GroupherServer.CMS.front_desk_article(article_path)
+  end
 
-  def article(article_id) when is_binary(article_id),
-    do: GroupherServer.CMS.front_desk_article(article_id)
+  def article(article_id) when is_binary(article_id) do
+    GroupherServer.CMS.front_desk_article(article_id)
+  end
 
-  def article(article_ref, opts) when is_list(opts),
-    do: GroupherServer.CMS.front_desk_article(article_ref, opts)
+  def article(article_ref, opts) when is_list(opts) do
+    GroupherServer.CMS.front_desk_article(article_ref, opts)
+  end
 
   def article(article_path, actor) when is_map(article_path) do
     GroupherServer.CMS.front_desk_article(article_path, actor)
   end
 
-  def article(article_path, actor, opts),
-    do: GroupherServer.CMS.front_desk_article(article_path, actor, opts)
+  def article(article_path, actor, opts) do
+    GroupherServer.CMS.front_desk_article(article_path, actor, opts)
+  end
 
   @doc "Loads a bounded batch of visible public Articles from ArticlePaths."
   def articles(article_paths) when is_list(article_paths) do

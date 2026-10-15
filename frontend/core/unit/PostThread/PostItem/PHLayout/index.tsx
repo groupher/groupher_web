@@ -20,7 +20,7 @@ type TProps = {
 
 const DigestView: FC<TProps> = ({ viewModel }) => {
   const { content: article, stats, viewerState } = viewModel
-  const isActive = usePreviewItemActive(article.innerId, THREAD_PATH.POST)
+  const isActive = usePreviewItemActive(String(article.innerId ?? ''), THREAD_PATH.POST)
   const s = useSalon({ active: isActive })
   const { author } = article
   const { count, isUpvoted, toggle } = useArticleUpvote(article, stats, viewerState)
@@ -30,7 +30,13 @@ const DigestView: FC<TProps> = ({ viewModel }) => {
       <ArticlePinLabel isPinned={article.isPinned} className='top-6' />
 
       <div className={s.avatarWrapper}>
-        <Img src={author.avatar} className={s.avatar} fallback={<ImgFallback user={author} />} />
+        {author && (
+          <Img
+            src={author.avatar ?? ''}
+            className={s.avatar}
+            fallback={<ImgFallback user={author} />}
+          />
+        )}
       </div>
       <div className={s.main}>
         <Header article={article} viewerState={viewerState} />

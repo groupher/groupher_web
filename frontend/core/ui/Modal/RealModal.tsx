@@ -2,7 +2,6 @@ import { type FC, useCallback, useEffect, useRef } from 'react'
 
 import { toggleGlobalBlur } from '~/dom'
 import usePageLock from '~/hooks/usePageLock'
-import useShortcut from '~/hooks/useShortcut'
 import useTheme from '~/hooks/useTheme'
 import useTopGlow from '~/hooks/useTopGlow'
 import CloseCrossSVG from '~/icons/CloseLight'
@@ -36,6 +35,7 @@ const RealModal: FC<TProps> = ({
   const { theme } = useTheme()
   const { lockPageOnce, unlockPageOnce } = usePageLock()
 
+  const dialogRef = useRef<HTMLDialogElement | null>(null)
   const visibleOnPageRef = useRef(false)
 
   const handleClose = useCallback(() => {
@@ -45,8 +45,6 @@ const RealModal: FC<TProps> = ({
     unlockPageOnce()
   }, [handleCloseModal, unlockPageOnce])
 
-  useShortcut('Escape', handleClose)
-
   const handleEnterPage = useCallback(() => {
     visibleOnPageRef.current = true
     if (!show) return
@@ -54,6 +52,20 @@ const RealModal: FC<TProps> = ({
     toggleGlobalBlur(true)
     lockPageOnce()
   }, [show, lockPageOnce])
+
+  useEffect(() => {
+    const dialog = dialogRef.current
+    if (!dialog || !show || dialog.open) return
+
+    if (typeof dialog.showModal === 'function') dialog.showModal()
+    else dialog.setAttribute('open', '')
+
+    return () => {
+      if (!dialog.open) return
+      if (typeof dialog.close === 'function') dialog.close()
+      else dialog.removeAttribute('open')
+    }
+  }, [show])
 
   useEffect(() => {
     if (show || !visibleOnPageRef.current) return
@@ -75,13 +87,21 @@ const RealModal: FC<TProps> = ({
 
   return (
     <Portal>
-      <div
-        role='presentation'
-        aria-hidden='true'
-        aria-label='Close modal'
+      <dialog
+        ref={dialogRef}
+        aria-label='Modal'
         className={cn(s.mask, !show && 'opacity-0')}
-        onClick={handleClose}
+        onCancel={(event) => {
+          event.preventDefault()
+          handleClose()
+        }}
       >
+        <button
+          type='button'
+          aria-label='Close modal backdrop'
+          className={s.backdrop}
+          onClick={handleClose}
+        />
         <div
           className={cn(s.wrapper, show && 'animate-fade-up animate-duration-300')}
           style={{
@@ -101,24 +121,19 @@ const RealModal: FC<TProps> = ({
           {showCloseBtn && (
             <button
               type='button'
+              aria-label='Close modal'
               className={s.closeBox}
               onClick={handleClose}
-              onKeyUp={handleClose}
             >
               <CloseCrossSVG className={s.closeIcon} />
             </button>
           )}
           {/* {showCloseBtn && <EscHint mode={mode}>Esc</EscHint>} */}
-          <div
-            role='presentation'
-            aria-hidden='true'
-            className={s.children}
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div role='presentation' className={s.children} onClick={(e) => e.stopPropagation()}>
             {children}
           </div>
         </div>
-      </div>
+      </dialog>
     </Portal>
   )
 }

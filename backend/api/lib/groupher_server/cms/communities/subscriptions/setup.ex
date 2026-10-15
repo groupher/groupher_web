@@ -37,7 +37,7 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Setup do
 
   @spec unsubscribe(Community.t(), User.t()) :: T.domain_res(Community.t())
   def unsubscribe(%Community{} = community, %User{} = user) do
-    with true <- community.slug != "home" do
+    if community.slug != "home" do
       result =
         Repo.transact(fn ->
           with %Community{} = locked_community <- lock_community(community.id),
@@ -52,7 +52,7 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Setup do
 
       revalidate_user(result, user)
     else
-      false -> {:error, CommunityErrorCat.custom("can not unsubscribe home community")}
+      {:error, CommunityErrorCat.custom("can not unsubscribe home community")}
     end
   end
 
@@ -78,9 +78,11 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Setup do
   @spec subscribe_default_ifnot(User.t()) :: T.domain_res(atom() | Community.t())
   def subscribe_default_ifnot(%User{} = user) do
     with {:ok, community} <- ORM.find_by(Community, slug: "home") do
-      if Persist.subscribed?(community, user),
-        do: {:ok, :pass},
-        else: subscribe(community, user)
+      if Persist.subscribed?(community, user) do
+        {:ok, :pass}
+      else
+        subscribe(community, user)
+      end
     end
   end
 end

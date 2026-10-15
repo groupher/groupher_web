@@ -43,7 +43,9 @@ export default function SortableDndContext<
   const lastColumnTargetIdRef = useRef<string | null>(null)
   const sensors = useSensors(
     useSensor(PointerSensor),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
   )
 
   const [activeDragColumnId, setActiveDragColumnId] = useState<string | null>(null)
@@ -80,14 +82,16 @@ export default function SortableDndContext<
   }
 
   const getColumnDragTargetId = ({ over }: DragOverEvent | DragEndEvent): string | undefined => {
-    if (!over || over.data.current?.type !== dndType.sortableColumn) return
+    const overData = over?.data.current
+    if (overData?.type !== dndType.sortableColumn) return
 
-    return over.data.current.columnId
+    return over?.data.current?.columnId
   }
 
   const handleDragStart = ({ active }: DragStartEvent): void => {
-    if (active.data.current?.type === dndType.sortableColumn) {
-      const columnId = active.data.current.columnId || String(active.id)
+    const activeData = active.data.current
+    if (activeData?.type === dndType.sortableColumn) {
+      const columnId = active.data.current?.columnId || String(active.id)
       lastDragTargetRef.current = null
       lastColumnTargetIdRef.current = null
       setActiveDragColumnId(columnId)
@@ -167,7 +171,10 @@ export default function SortableDndContext<
           container.data.current?.type === dndType.sortableColumn,
       )
 
-      return closestCorners({ ...args, droppableContainers: columnSortContainers })
+      return closestCorners({
+        ...args,
+        droppableContainers: columnSortContainers,
+      })
     }
 
     const linkContainers = args.droppableContainers.filter(

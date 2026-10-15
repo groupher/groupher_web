@@ -83,7 +83,13 @@ export type TContentImportJob = {
   id: string
   status: 'ready' | 'applying' | 'completed' | 'failed' | string
   progress: {
-    bodies?: { failed?: number; pending?: number; ready?: number; skipped?: number; total?: number }
+    bodies?: {
+      failed?: number
+      pending?: number
+      ready?: number
+      skipped?: number
+      total?: number
+    }
   }
   process: TImportProcess
   errorCode?: string | null
@@ -97,7 +103,13 @@ export type TContentImportJob = {
     repo: string
     repoUrl: string
   }
-  counts: { assets: number; groups: number; links: number; pages: number; tabs: number }
+  counts: {
+    assets: number
+    groups: number
+    links: number
+    pages: number
+    tabs: number
+  }
   tree: { tabs: TImportTreeTab[] }
   badSmells: Array<{ code?: string; level?: string; message?: string }>
   targetBranch: string

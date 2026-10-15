@@ -15,7 +15,7 @@ const Author: FC<TProps> = ({ user }) => {
 
   return (
     <div className={s.wrapper}>
-      <Img src={avatar} className={s.avatar} />
+      <Img src={avatar ?? ''} className={s.avatar} />
       <div className={s.name}>{nickname}</div>
     </div>
   )

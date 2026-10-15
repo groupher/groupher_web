@@ -430,10 +430,12 @@ export class ServiceManager {
     const policy = normalizeStartPolicy(this.getRuntime(id).definition.startPolicy)
     const required = new Set(requiredIds)
     const optionalIds: string[] = []
+    const optional = new Set<string>()
 
     for (const optionalId of policy.optionalDependencies) {
       for (const serviceId of this.resolveStartPlan(optionalId, 'related')) {
-        if (serviceId === id || required.has(serviceId) || optionalIds.includes(serviceId)) continue
+        if (serviceId === id || required.has(serviceId) || optional.has(serviceId)) continue
+        optional.add(serviceId)
         optionalIds.push(serviceId)
       }
     }
@@ -854,6 +856,11 @@ async function runHttpStartupCheck(check: TServiceStartupCheck): Promise<void> {
     throw new Error(`could not reach ${check.url}`)
   }
 
+  if (!response.ok) {
+    const detail = await response.text().catch(() => '')
+    throw new Error(`returned HTTP ${response.status}${detail ? ` (${detail})` : ''}`)
+  }
+
   const payload = (await response.json().catch(() => null)) as {
     schemaVersion?: unknown
     status?: unknown
@@ -862,7 +869,6 @@ async function runHttpStartupCheck(check: TServiceStartupCheck): Promise<void> {
   const contractCheck = payload?.checks?.find((item) => item.name === check.healthCheckName)
 
   if (
-    response.ok &&
     payload?.schemaVersion === 'health.v1' &&
     payload.status === 'ok' &&
     contractCheck?.status === 'ok'

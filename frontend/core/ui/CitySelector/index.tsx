@@ -59,8 +59,8 @@ const CitySelectorContent: FC<TProps> = ({ value = '', onChange = console.log, .
       : selectedCityValue
   }, [])
 
-  const cityOnChange = (option) => {
-    let selectedAfter = []
+  const cityOnChange = (option: TCityOption) => {
+    let selectedAfter: string[] = []
     if (!find((item) => item === option.value, selected)) {
       selectedAfter = [...selected, option.value]
     } else {
@@ -85,7 +85,7 @@ const CitySelectorContent: FC<TProps> = ({ value = '', onChange = console.log, .
   return (
     <div className={s.wrapper}>
       {options.map((option: TCityOption) => {
-        const NationFlag = FLAGS[option.flag] || null
+        const NationFlag = option.flag ? FLAGS[option.flag] || null : null
 
         const active = includes(option.value, selected)
 

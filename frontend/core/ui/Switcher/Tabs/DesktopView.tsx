@@ -117,16 +117,13 @@ const Tabs: FC<TViewProps> = ({
     }
   }, [defaultActiveTabIndex, itemKeys, measureTabs])
 
-  const handleItemClick = useCallback(
-    (index: number) => {
-      const item = items[index]
-      if (!item) return
+  const handleItemClick = (index: number) => {
+    const item = items[index]
+    if (!item) return
 
-      const key = getItemKey(item)
-      onChange(key, item, index)
-    },
-    [onChange, items],
-  )
+    const key = getItemKey(item)
+    onChange(key, item, index)
+  }
 
   const translateX = `${metrics.offsets[defaultActiveTabIndex] ?? 0}px`
 

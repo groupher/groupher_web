@@ -57,7 +57,8 @@ export default function useCommentReceiptReconcile(article: TArticle | null | un
   const accountRef = account.accountRef || getAccountRef(account.user)
 
   const scope = useMemo<TCommentScope | null>(() => {
-    if (!article) return null
+    if (!article?.community?.slug || !article.meta?.thread || article.innerId === undefined)
+      return null
     return {
       community: article.community.slug,
       thread: article.meta.thread,

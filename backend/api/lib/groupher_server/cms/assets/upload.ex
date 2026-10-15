@@ -379,40 +379,48 @@ defmodule GroupherServer.CMS.Assets.Upload do
     end
   end
 
-  defp validate_bound_fact(%AssetUpload{asset_public_ref: expected}, :asset_public_ref, actual),
-    do: compare_bound(expected, actual, "asset public ref does not match upload intent")
+  defp validate_bound_fact(%AssetUpload{asset_public_ref: expected}, :asset_public_ref, actual) do
+    compare_bound(expected, actual, "asset public ref does not match upload intent")
+  end
 
-  defp validate_bound_fact(%AssetUpload{community_id: expected}, :community_id, actual),
-    do: compare_bound(expected, actual, "community does not match upload intent")
+  defp validate_bound_fact(%AssetUpload{community_id: expected}, :community_id, actual) do
+    compare_bound(expected, actual, "community does not match upload intent")
+  end
 
-  defp validate_bound_fact(%AssetUpload{object_key: expected}, :storage_key, actual),
-    do: compare_bound(expected, actual, "storage key does not match upload intent")
+  defp validate_bound_fact(%AssetUpload{object_key: expected}, :storage_key, actual) do
+    compare_bound(expected, actual, "storage key does not match upload intent")
+  end
 
-  defp validate_bound_fact(%AssetUpload{canonical_url: expected}, :url, actual),
-    do: compare_bound(expected, actual, "asset URL does not match upload intent")
+  defp validate_bound_fact(%AssetUpload{canonical_url: expected}, :url, actual) do
+    compare_bound(expected, actual, "asset URL does not match upload intent")
+  end
 
   defp compare_bound(expected, actual, _message) when expected == actual, do: {:ok, :pass}
   defp compare_bound(_expected, _actual, message), do: {:error, ErrorCat.custom(message)}
 
-  defp validate_declared_size(%AssetUpload{declared_size_bytes: expected}, actual),
-    do: compare_bound(expected, actual, "asset size does not match upload intent")
+  defp validate_declared_size(%AssetUpload{declared_size_bytes: expected}, actual) do
+    compare_bound(expected, actual, "asset size does not match upload intent")
+  end
 
   defp validate_declared_mime(%AssetUpload{declared_mime_type: nil}, _actual), do: {:ok, :pass}
 
-  defp validate_declared_mime(%AssetUpload{declared_mime_type: expected}, actual),
-    do: compare_bound(expected, actual, "asset MIME type does not match upload intent")
+  defp validate_declared_mime(%AssetUpload{declared_mime_type: expected}, actual) do
+    compare_bound(expected, actual, "asset MIME type does not match upload intent")
+  end
 
-  defp validate_declared_asset_type(%AssetUpload{declared_asset_type: expected}, actual),
-    do: compare_bound(expected, to_string(actual), "asset type does not match upload intent")
+  defp validate_declared_asset_type(%AssetUpload{declared_asset_type: expected}, actual) do
+    compare_bound(expected, to_string(actual), "asset type does not match upload intent")
+  end
 
-  defp validate_declared_thread(%AssetUpload{declared_thread: expected}, actual),
-    do: compare_bound(expected, to_string(actual), "asset thread does not match upload intent")
+  defp validate_declared_thread(%AssetUpload{declared_thread: expected}, actual) do
+    compare_bound(expected, to_string(actual), "asset thread does not match upload intent")
+  end
 
   defp validate_declared_uploader(%AssetUpload{uploader_id: nil}, _actual), do: {:ok, :pass}
 
-  defp validate_declared_uploader(%AssetUpload{uploader_id: expected}, actual),
-    do:
-      compare_bound(expected, normalize_id(actual), "asset uploader does not match upload intent")
+  defp validate_declared_uploader(%AssetUpload{uploader_id: expected}, actual) do
+    compare_bound(expected, normalize_id(actual), "asset uploader does not match upload intent")
+  end
 
   defp completion_payload(%CommunityAsset{} = asset) do
     %{
@@ -424,42 +432,64 @@ defmodule GroupherServer.CMS.Assets.Upload do
   end
 
   defp validate_file(file) do
-    filename = file |> get(:filename) |> normalize_string()
+    attrs = normalize_file(file)
+
+    with {:ok, :pass} <- validate_filename(attrs.filename),
+         {:ok, :pass} <- validate_mime_type(attrs.mime_type),
+         {:ok, :pass} <- validate_size(attrs.size_bytes),
+         {:ok, :pass} <- validate_checksum(attrs.checksum_sha256),
+         {:ok, :pass} <- validate_thread(attrs.thread) do
+      {:ok, %{attrs | thread: normalize_thread(attrs.thread)}}
+    end
+  end
+
+  defp normalize_file(file) do
     mime_type = file |> get(:mime_type) |> normalize_string()
-    size_bytes = get(file, :size_bytes)
-    checksum_sha256 = file |> get(:checksum_sha256) |> normalize_string()
-    asset_type = get(file, :asset_type) || asset_type_from_mime(mime_type)
-    thread = get(file, :thread) || :post
 
-    cond do
-      filename == nil ->
-        {:error, ErrorCat.custom("filename is required")}
+    %{
+      filename: file |> get(:filename) |> normalize_string(),
+      mime_type: mime_type,
+      size_bytes: get(file, :size_bytes),
+      checksum_sha256: file |> get(:checksum_sha256) |> normalize_string(),
+      asset_type: get(file, :asset_type) || asset_type_from_mime(mime_type),
+      thread: get(file, :thread) || :post
+    }
+  end
 
-      mime_type not in @allowed_mime_types ->
-        {:error, ErrorCat.custom("unsupported asset MIME type")}
+  defp validate_filename(nil), do: {:error, ErrorCat.custom("filename is required")}
+  defp validate_filename(_filename), do: {:ok, :pass}
 
-      not is_integer(size_bytes) or size_bytes <= 0 ->
-        {:error, ErrorCat.custom("size_bytes must be positive")}
+  defp validate_mime_type(mime_type) when mime_type in @allowed_mime_types, do: {:ok, :pass}
 
-      size_bytes > @max_size_bytes ->
-        {:error, ErrorCat.custom("asset is larger than v1 upload limit")}
+  defp validate_mime_type(_mime_type) do
+    {:error, ErrorCat.custom("unsupported asset MIME type")}
+  end
 
-      checksum_sha256 != nil and not base64_sha256?(checksum_sha256) ->
-        {:error, ErrorCat.custom("checksum_sha256 must be a base64 SHA-256 digest")}
+  defp validate_size(size_bytes) when not is_integer(size_bytes) or size_bytes <= 0 do
+    {:error, ErrorCat.custom("size_bytes must be positive")}
+  end
 
-      not valid_thread?(thread) ->
-        {:error, ErrorCat.custom("asset thread is invalid")}
+  defp validate_size(size_bytes) when size_bytes > @max_size_bytes do
+    {:error, ErrorCat.custom("asset is larger than v1 upload limit")}
+  end
 
-      true ->
-        {:ok,
-         %{
-           filename: filename,
-           mime_type: mime_type,
-           size_bytes: size_bytes,
-           checksum_sha256: checksum_sha256,
-           asset_type: asset_type,
-           thread: normalize_thread(thread)
-         }}
+  defp validate_size(_size_bytes), do: {:ok, :pass}
+
+  defp validate_checksum(nil), do: {:ok, :pass}
+
+  defp validate_checksum(checksum) when is_binary(checksum) do
+    if base64_sha256?(checksum) do
+      {:ok, :pass}
+    else
+      {:error, ErrorCat.custom("checksum_sha256 must be a base64 SHA-256 digest")}
+    end
+  end
+
+  defp validate_thread(thread) do
+    if valid_thread?(thread) do
+      {:ok, :pass}
+    else
+      {:error, ErrorCat.custom("asset thread is invalid")}
     end
   end
 
@@ -471,26 +501,42 @@ defmodule GroupherServer.CMS.Assets.Upload do
     height = get(file, :height)
     mime_type = file |> get(:mime_type) |> normalize_string()
 
-    cond do
-      mime_type != "image/webp" ->
-        {:error, ErrorCat.custom("generated image MIME type must be image/webp")}
-
-      not is_integer(width) or width <= 0 or not is_integer(height) or height <= 0 ->
-        {:error, ErrorCat.custom("generated image dimensions are invalid")}
-
-      batch_ref == nil or candidate_owner_ref == nil or variant_key == nil ->
-        {:error, ErrorCat.custom("generated image batch metadata is required")}
-
-      true ->
-        {:ok,
-         %{
-           batch_ref: batch_ref,
-           candidate_owner_ref: candidate_owner_ref,
-           height: height,
-           variant_key: variant_key,
-           width: width
-         }}
+    with {:ok, :pass} <- validate_generated_mime(mime_type),
+         {:ok, :pass} <- validate_generated_dimensions(width, height),
+         {:ok, :pass} <- validate_generated_metadata(batch_ref, candidate_owner_ref, variant_key) do
+      {:ok,
+       %{
+         batch_ref: batch_ref,
+         candidate_owner_ref: candidate_owner_ref,
+         height: height,
+         variant_key: variant_key,
+         width: width
+       }}
     end
+  end
+
+  defp validate_generated_mime("image/webp"), do: {:ok, :pass}
+
+  defp validate_generated_mime(_mime_type) do
+    {:error, ErrorCat.custom("generated image MIME type must be image/webp")}
+  end
+
+  defp validate_generated_dimensions(width, height)
+       when is_integer(width) and width > 0 and is_integer(height) and height > 0 do
+    {:ok, :pass}
+  end
+
+  defp validate_generated_dimensions(_width, _height) do
+    {:error, ErrorCat.custom("generated image dimensions are invalid")}
+  end
+
+  defp validate_generated_metadata(batch_ref, candidate_owner_ref, variant_key)
+       when is_binary(batch_ref) and is_binary(candidate_owner_ref) and is_binary(variant_key) do
+    {:ok, :pass}
+  end
+
+  defp validate_generated_metadata(_batch_ref, _candidate_owner_ref, _variant_key) do
+    {:error, ErrorCat.custom("generated image batch metadata is required")}
   end
 
   defp validate_completion(attrs) do

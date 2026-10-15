@@ -1,9 +1,10 @@
+import { COLOR } from '~/const/colors'
 import useTwBelt from '~/hooks/useTwBelt'
 import type { TActive, TColor } from '~/spec'
 
 type TProps = TActive & TColor
 
-export default function useSalon({ active, color }: TProps) {
+export default function useSalon({ active, color = COLOR.BLACK }: TProps) {
   const { cn, fg, bg, fill, rainbow } = useTwBelt()
 
   return {

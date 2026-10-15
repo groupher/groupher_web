@@ -43,7 +43,10 @@ export type TRevisionDiffModel = {
   stagedEntries: TRevisionDiffEntry[]
 }
 
-export const EMPTY_DIFF_STATS: TRichEditorDiffStats = { additions: 0, deletions: 0 }
+export const EMPTY_DIFF_STATS: TRichEditorDiffStats = {
+  additions: 0,
+  deletions: 0,
+}
 
 export const EMPTY_REVISION_VALUE: TRichEditorValue = [
   {

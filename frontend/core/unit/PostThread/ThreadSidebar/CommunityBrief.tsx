@@ -22,7 +22,7 @@ export default function CommunityBrief() {
     <div className={s.wrapper}>
       <Img
         className={s.logo}
-        src={assetSrc(logo)}
+        src={assetSrc(logo ?? '')}
         fallback={<ImgFallback top={-1.5} title={title} />}
         noLazy
       />

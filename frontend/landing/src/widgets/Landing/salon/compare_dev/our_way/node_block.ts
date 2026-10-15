@@ -43,7 +43,7 @@ export default function useSalon({ bgColor }: TProps) {
     //
     commentsGroup: cn(
       'absolute align-both rounded-xl h-9 w-auto py-1.5 px-2 border',
-      'animate-bounce animate-infinite animate-duration-[5000ms] opacity-65',
+      'animate-bounce animate-infinite animate-duration-[5000ms] opacity-65 motion-reduce:animate-none',
       bg('alphaBg'),
       br('divider'),
     ),

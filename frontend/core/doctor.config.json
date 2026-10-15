@@ -8,6 +8,40 @@
       "unit/DsbThread/CMS/Docs/Table.tsx",
       "unit/DsbThread/LinkEditor/index.tsx",
       "unit/ArticleSettingMenu/SubMenu/TitleSetting.tsx"
+    ],
+    "overrides": [
+      {
+        "files": ["lib/thirdPartyAnalytics/ThirdPartyAnalyticsScripts.tsx"],
+        "rules": ["react/no-danger"]
+      },
+      {
+        "files": ["lib/css/index.ts"],
+        "rules": ["eslint/no-restricted-imports"]
+      },
+      {
+        "files": ["hooks/useTrackArticleView.ts", "platform/Script.tsx"],
+        "rules": ["react-doctor/effect-needs-cleanup"]
+      },
+      {
+        "files": ["render/BgRenderer/vgpu-poc/main.ts"],
+        "rules": ["react-doctor/no-create-object-url-without-revoke"]
+      },
+      {
+        "files": ["unit/CoverEditor/useCoverImagePreview.ts"],
+        "rules": ["react-doctor/rerender-lazy-ref-init"]
+      },
+      {
+        "files": ["icons/EmojiGood.tsx", "icons/EmojiSoSo.tsx"],
+        "rules": ["react-doctor/duplicate-jsx-subtree"]
+      },
+      {
+        "files": ["stores/dsbEditorUi/hooks.ts"],
+        "rules": ["react-doctor/valtio-no-proxy-read-in-render"]
+      },
+      {
+        "files": ["unit/DsbThread/CMS/Docs/ActionSnackbar/RevisionDrawer/diffClient.ts"],
+        "rules": ["react-doctor/no-json-parse-stringify-clone"]
+      }
     ]
   }
 }

@@ -32,7 +32,9 @@ vi.mock('~/query', () => ({
   Q: {
     article: {
       posts: (filter: unknown) => ({ queryKey: ['article', 'posts', filter] }),
-      changelogs: (filter: unknown) => ({ queryKey: ['article', 'changelogs', filter] }),
+      changelogs: (filter: unknown) => ({
+        queryKey: ['article', 'changelogs', filter],
+      }),
       statsBatch: (_queryClient: unknown, community: string, thread: string, ids: string[]) => ({
         queryKey: ['article', 'article-stats', community, thread, ids],
       }),

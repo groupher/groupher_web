@@ -1,6 +1,6 @@
 import type { TServiceConfigContent, TServiceConfigFile } from '@shared/contracts'
 import { Check, Copy, Eye, EyeOff, RefreshCw } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 type TProps = {
   file: TServiceConfigFile
@@ -21,14 +21,14 @@ export function ConfigFileView({
   onRetry,
   onToggleReveal,
 }: TProps) {
-  const [copied, setCopied] = useState(false)
-
-  useEffect(() => setCopied(false), [content?.content, file.id])
+  const [copiedContentKey, setCopiedContentKey] = useState<string | null>(null)
+  const contentKey = getContentKey(file.id, content)
+  const copied = isCopiedContent(copiedContentKey, contentKey)
 
   const copyContent = async () => {
     if (!content) return
     await navigator.clipboard.writeText(content.content)
-    setCopied(true)
+    setCopiedContentKey(contentKey)
   }
 
   return (
@@ -86,6 +86,15 @@ export function ConfigFileView({
       </div>
     </section>
   )
+}
+
+function getContentKey(fileId: string, content: TServiceConfigContent | null): string | null {
+  return content ? `${fileId}:${content.content}` : null
+}
+
+function isCopiedContent(copiedContentKey: string | null, contentKey: string | null): boolean {
+  if (contentKey === null) return false
+  return copiedContentKey === contentKey
 }
 
 function formatBytes(value: number): string {

@@ -65,7 +65,7 @@ const PassportEditor: FC = () => {
       <div className={s.profile}>
         <Img
           className={s.avatar}
-          src={activeModerator.avatar}
+          src={activeModerator.avatar ?? ''}
           fallback={<ImgFallback user={activeModerator} className={s.avatar} size={SIZE.MEDIUM} />}
           noLazy
         />

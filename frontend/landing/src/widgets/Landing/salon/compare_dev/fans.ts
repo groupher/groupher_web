@@ -12,8 +12,10 @@ export default function useSalon() {
       bg('alphaBg'),
       br('divider'),
     ),
-    bounceAnimation: 'animate-bounce animate-infinite animate-duration-[4000ms]',
-    wingleAnimation: 'animate-wiggle animate-infinite animate-duration-[3000ms]',
+    bounceAnimation:
+      'animate-bounce animate-infinite animate-duration-[4000ms] motion-reduce:animate-none',
+    wingleAnimation:
+      'animate-wiggle animate-infinite animate-duration-[3000ms] motion-reduce:animate-none',
     avatarGroup: 'absolute align-both rounded-xl h-9 w-auto',
     emoji: 'size-4',
     discussIcon: cn('size-5 opacity-65', rainbow(COLOR.GREEN, 'fill')),

@@ -26,10 +26,10 @@ defmodule GroupherServer.CMS.Assets.ProviderReconciliation do
   def enqueue_missing(%Community{id: community_id}, opts \\ []) do
     workflow_ref = Keyword.get(opts, :workflow_ref)
 
-    if not (is_binary(workflow_ref) and workflow_ref != "") do
-      {:error, :workflow_ref_required}
-    else
+    if is_binary(workflow_ref) and workflow_ref != "" do
       enqueue_missing_for_workflow(community_id, opts, workflow_ref)
+    else
+      {:error, :workflow_ref_required}
     end
   end
 
@@ -62,37 +62,39 @@ defmodule GroupherServer.CMS.Assets.ProviderReconciliation do
            }),
          owner <- workflow_owner(workflow_ref),
          run_claim <- Workflow.claim_run(run, owner) do
-      case run_claim do
-        {:ok, run_state} ->
-          result =
-            with {:ok, steps} <- ensure_steps(run_state, assets),
-                 {:ok, result} <- process_steps(steps, workflow_ref, owner),
-                 {:ok, finished} <- Workflow.finish_run(run_state, owner) do
-              {:ok, Map.merge(result, %{run_ref: workflow_ref, status: finished.status})}
-            end
-
-          case result do
-            {:ok, _result} = success ->
-              success
-
-            {:error, reason} ->
-              _ = Workflow.fail_run(run_state, owner, reason)
-              {:error, reason}
-          end
-
-        {:completed, run} ->
-          {:ok, %{run_ref: workflow_ref, status: run.status, enqueued: 0, skipped: 0}}
-
-        {:busy, seconds} ->
-          {:error, {:workflow_busy, seconds}}
-
-        {:error, reason} ->
-          {:error, reason}
-      end
+      handle_run_claim(run_claim, assets, workflow_ref, owner)
     else
       {:error, reason} ->
         {:error, reason}
     end
+  end
+
+  defp handle_run_claim({:ok, run_state}, assets, workflow_ref, owner) do
+    result =
+      with {:ok, steps} <- ensure_steps(run_state, assets),
+           {:ok, result} <- process_steps(steps, workflow_ref, owner),
+           {:ok, finished} <- Workflow.finish_run(run_state, owner) do
+        {:ok, Map.merge(result, %{run_ref: workflow_ref, status: finished.status})}
+      end
+
+    finalize_claim_result(result, run_state, owner)
+  end
+
+  defp handle_run_claim({:completed, run}, _assets, workflow_ref, _owner) do
+    {:ok, %{run_ref: workflow_ref, status: run.status, enqueued: 0, skipped: 0}}
+  end
+
+  defp handle_run_claim({:busy, seconds}, _assets, _workflow_ref, _owner) do
+    {:error, {:workflow_busy, seconds}}
+  end
+
+  defp handle_run_claim({:error, reason}, _assets, _workflow_ref, _owner), do: {:error, reason}
+
+  defp finalize_claim_result({:ok, _result} = success, _run_state, _owner), do: success
+
+  defp finalize_claim_result({:error, reason}, run_state, owner) do
+    _ = Workflow.fail_run(run_state, owner, reason)
+    {:error, reason}
   end
 
   defp ensure_steps(%AssetWorkflowRun{} = run, assets) do
@@ -126,22 +128,30 @@ defmodule GroupherServer.CMS.Assets.ProviderReconciliation do
           {:halt, {:error, {:workflow_step_busy, seconds}}}
 
         {:ok, claimed} ->
-          if pending_intent?(claimed.resource_id) do
-            _ = Workflow.complete_step(claimed, owner, %{"outbox" => "present"})
-            {:cont, {:ok, %{result | skipped: result.skipped + 1}}}
-          else
-            case enqueue_provider_delete(claimed, workflow_ref) do
-              {:ok, _event} ->
-                _ = Workflow.complete_step(claimed, owner, %{"outbox" => "created"})
-                {:cont, {:ok, %{result | enqueued: result.enqueued + 1}}}
-
-              {:error, reason} = error ->
-                _ = Workflow.fail_step(claimed, owner, reason)
-                {:halt, error}
-            end
-          end
+          process_claimed_step(claimed, workflow_ref, owner, result)
       end
     end)
+  end
+
+  defp process_claimed_step(claimed, workflow_ref, owner, result) do
+    if pending_intent?(claimed.resource_id) do
+      _ = Workflow.complete_step(claimed, owner, %{"outbox" => "present"})
+      {:cont, {:ok, %{result | skipped: result.skipped + 1}}}
+    else
+      enqueue_claimed_step(claimed, workflow_ref, owner, result)
+    end
+  end
+
+  defp enqueue_claimed_step(claimed, workflow_ref, owner, result) do
+    case enqueue_provider_delete(claimed, workflow_ref) do
+      {:ok, _event} ->
+        _ = Workflow.complete_step(claimed, owner, %{"outbox" => "created"})
+        {:cont, {:ok, %{result | enqueued: result.enqueued + 1}}}
+
+      {:error, reason} = error ->
+        _ = Workflow.fail_step(claimed, owner, reason)
+        {:halt, error}
+    end
   end
 
   defp enqueue_provider_delete(%AssetWorkflowStep{} = step, workflow_ref) do
@@ -161,8 +171,9 @@ defmodule GroupherServer.CMS.Assets.ProviderReconciliation do
     end
   end
 
-  defp workflow_owner(workflow_ref),
-    do: "provider-reconciliation:#{workflow_ref}:#{Ecto.UUID.generate()}"
+  defp workflow_owner(workflow_ref) do
+    "provider-reconciliation:#{workflow_ref}:#{Ecto.UUID.generate()}"
+  end
 
   @doc "Returns provider objects that have no Phoenix asset authority row."
   def scan_provider_orphans(community, provider_objects, opts \\ [])

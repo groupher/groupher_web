@@ -142,8 +142,9 @@ defmodule GroupherServer.CMS.Assets do
   """
   @spec register_to_community(Community.t(), map(), User.t() | nil) ::
           T.domain_res(CommunityAsset.t())
-  def register_to_community(%Community{}, _attrs, _user),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def register_to_community(%Community{}, _attrs, _user) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @doc "Registers an asset with the caller-provided command identity."
   @spec register_to_community(Community.t(), map(), User.t() | nil, Ecto.UUID.t()) ::
@@ -154,8 +155,9 @@ defmodule GroupherServer.CMS.Assets do
 
   @doc "Deprecated alias for register_to_community/3."
   @spec register(Community.t(), map(), User.t() | nil) :: T.domain_res(CommunityAsset.t())
-  def register(%Community{}, _attrs, _user),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def register(%Community{}, _attrs, _user) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @spec register(Community.t(), map(), User.t() | nil, Ecto.UUID.t()) ::
           T.domain_res(CommunityAsset.t())

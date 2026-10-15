@@ -37,6 +37,28 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
     Upload
   }
 
+  defmodule PublishContext do
+    @moduledoc """
+    Carries the validated inputs required by one Wallpaper publish transaction.
+
+        validated publish request
+          -> PublishContext
+          -> publish transaction
+    """
+    @enforce_keys [
+      :community,
+      :actor_id,
+      :theme,
+      :settings,
+      :base_version,
+      :command_id,
+      :batch_ref,
+      :fixture_version,
+      :digest
+    ]
+    defstruct @enforce_keys
+  end
+
   @request_digest_version RequestDigest.active_version()
   @profile_version 1
   @database_transaction_timeout_ms 5_000
@@ -84,17 +106,17 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
           {:error, reason}
 
         :miss ->
-          publish_once(
-            community,
-            user,
-            theme,
-            settings,
-            base_version,
-            command_id,
-            batch_ref,
-            fixture_version,
-            digest
-          )
+          publish_once(%PublishContext{
+            community: community,
+            actor_id: user.id,
+            theme: theme,
+            settings: settings,
+            base_version: base_version,
+            command_id: command_id,
+            batch_ref: batch_ref,
+            fixture_version: fixture_version,
+            digest: digest
+          })
       end
     end
   end
@@ -140,103 +162,72 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
     end)
   end
 
-  defp publish_once(
-         community,
-         user,
-         theme,
-         settings,
-         base_version,
-         command_id,
-         batch_ref,
-         fixture_version,
-         digest
-       ) do
+  defp publish_once(%PublishContext{} = context) do
     with {:ok, capability} <-
            prepare_publish_capability(
-             community,
-             theme,
-             batch_ref,
-             command_id,
-             digest,
-             settings
+             context.community,
+             context.theme,
+             context.batch_ref,
+             context.command_id,
+             context.digest,
+             context.settings
            ),
          {:ok, _} <- ensure_publish_lease(capability) do
       case run_publish_transaction(fn ->
              configure_publish_transaction!()
              ensure_publish_lease!(capability)
 
-             publish_transaction(
-               community,
-               user,
-               theme,
-               settings,
-               base_version,
-               command_id,
-               batch_ref,
-               fixture_version,
-               capability,
-               digest
-             )
+             publish_transaction(context, capability)
            end) do
         {:ok, response} ->
           {:ok, response}
 
         {:error, reason} ->
-          cleanup_publish_capability(community, batch_ref, capability)
+          cleanup_publish_capability(context.community, context.batch_ref, capability)
           {:error, reason}
       end
     end
   end
 
-  defp publish_transaction(
-         community,
-         user,
-         theme,
-         settings,
-         base_version,
-         command_id,
-         batch_ref,
-         fixture_version,
-         capability,
-         digest
-       ) do
-    case Persist.get_publish_receipt(community.id, command_id) do
+  defp publish_transaction(%PublishContext{} = context, capability) do
+    case Persist.get_publish_receipt(context.community.id, context.command_id) do
       %WallpaperPublishReceipt{
-        request_digest: ^digest,
+        request_digest: request_digest,
         request_digest_version: @request_digest_version
-      } = receipt ->
-        recovered_receipt_response(community.id, receipt.response_payload)
+      } = receipt
+      when request_digest == context.digest ->
+        recovered_receipt_response(context.community.id, receipt.response_payload)
 
       %WallpaperPublishReceipt{} ->
         Repo.rollback(ErrorCat.wallpaper_publish_command_conflict())
 
       nil ->
-        {:ok, state} = Persist.lock_or_create_wallpaper(community.id)
+        {:ok, state} = Persist.lock_or_create_wallpaper(context.community.id)
 
-        if state.version != base_version do
+        if state.version != context.base_version do
           Repo.rollback(ErrorCat.wallpaper_publish_version_conflict())
         end
 
         now = DateTime.utc_now(:second)
         snapshot_ref = (capability && capability.snapshot_ref) || new_snapshot_ref!()
 
-        {:ok, _} = Settings.assert_current_version!(settings)
+        {:ok, _} = Settings.assert_current_version!(context.settings)
 
         image_rows =
           capability && snapshot_images_from_manifest(capability.manifest, snapshot_ref)
 
         attrs = %{
           activated_at: now,
-          community_id: community.id,
-          created_by_id: to_string(user.id),
-          fixture_version: fixture_version,
+          community_id: context.community.id,
+          created_by_id: to_string(context.actor_id),
+          fixture_version: context.fixture_version,
           history_used_at: now,
           profile_version: @profile_version,
           public_ref: snapshot_ref,
-          settings: settings,
-          settings_schema_version: settings["settingsSchemaVersion"],
-          source_batch_ref: batch_ref,
-          theme: theme
+          settings: context.settings,
+          settings_schema_version: context.settings["settingsSchemaVersion"],
+          source_batch_ref: context.batch_ref,
+          theme: context.theme
         }
 
         {:ok, _snapshot} = Persist.insert_snapshot(attrs)
@@ -247,19 +238,19 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
 
         {:ok, state} =
           Persist.update_state(state, %{
-            active_field(theme) => snapshot_ref,
+            active_field(context.theme) => snapshot_ref,
             version: state.version + 1
           })
 
-        Retention.retain_latest_snapshots(community.id, state, now)
+        Retention.retain_latest_snapshots(context.community.id, state, now)
 
         response = %{version: state.version}
 
         receipt_attrs = %{
-          community_id: community.id,
+          community_id: context.community.id,
           expires_at: DateTime.add(now, Retention.publish_receipt_retention_seconds(), :second),
-          command_id: command_id,
-          request_digest: digest,
+          command_id: context.command_id,
+          request_digest: context.digest,
           request_digest_version: @request_digest_version,
           response_payload: %{"version" => state.version}
         }

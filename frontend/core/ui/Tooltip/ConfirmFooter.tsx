@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+import type { FC, ReactNode } from 'react'
 
 import Button from '~/ui/Buttons/Button'
 
@@ -14,7 +14,7 @@ type TProps = {
 
 const ConfirmFooter: FC<TProps> = ({ onConfirm, onCancel, behavior }) => {
   const s = useSalon()
-  let content = null
+  let content: ReactNode = null
 
   switch (behavior) {
     case FOOTER_BEHAVIOR.DELETE_CONFIRM: {

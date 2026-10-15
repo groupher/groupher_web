@@ -1,14 +1,13 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useEffectEvent } from 'react'
 
 import { THEME_MODE } from '~/const/theme'
 import useTheme from '~/hooks/useTheme'
 
 export default function ThemeMonitor() {
   const { themeMode, changeMode } = useTheme()
-  const changeModeRef = useRef(changeMode)
-  changeModeRef.current = changeMode
+  const applySystemMode = useEffectEvent(() => changeMode(THEME_MODE.SYSTEM))
 
   useEffect(() => {
     if (themeMode !== THEME_MODE.SYSTEM) return
@@ -16,7 +15,7 @@ export default function ThemeMonitor() {
     const media = window.matchMedia('(prefers-color-scheme: dark)')
     const listener = () => {
       if (document.documentElement.dataset.themeMode === THEME_MODE.SYSTEM) {
-        changeModeRef.current(THEME_MODE.SYSTEM)
+        applySystemMode()
       }
     }
     media.addEventListener('change', listener)

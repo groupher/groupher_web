@@ -56,30 +56,32 @@ defmodule GroupherServer.Accounts.CollectFolders.Articles do
   end
 
   defp do_paged(folder, filter) do
-    entries =
-      Enum.flat_map(folder.collects, fn collect ->
-        case Repo.get(CMS.Model.Article, collect.article_id) do
-          %CMS.Model.Article{} = article ->
-            {:ok, bindings} = GroupherServer.CMS.articles_bindings_all(article)
-
-            Enum.flat_map(bindings, fn binding ->
-              case FrontDesk.article(%{
-                     community: binding.community.slug,
-                     thread: article.thread,
-                     inner_id: binding.inner_id
-                   }) do
-                {:ok, projection} -> [projection]
-                {:error, _reason} -> []
-              end
-            end)
-
-          nil ->
-            []
-        end
-      end)
+    entries = Enum.flat_map(folder.collects, &collect_projections/1)
 
     entries
     |> ORM.embeds_paginator(filter)
     |> done()
+  end
+
+  defp collect_projections(collect) do
+    case Repo.get(CMS.Model.Article, collect.article_id) do
+      %CMS.Model.Article{} = article ->
+        {:ok, bindings} = GroupherServer.CMS.articles_bindings_all(article)
+        Enum.flat_map(bindings, &binding_projection(&1, article.thread))
+
+      nil ->
+        []
+    end
+  end
+
+  defp binding_projection(binding, thread) do
+    case FrontDesk.article(%{
+           community: binding.community.slug,
+           thread: thread,
+           inner_id: binding.inner_id
+         }) do
+      {:ok, projection} -> [projection]
+      {:error, _reason} -> []
+    end
   end
 end

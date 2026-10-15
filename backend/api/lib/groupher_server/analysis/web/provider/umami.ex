@@ -290,8 +290,9 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
     end
   end
 
-  def normalize_active(body),
-    do: {:error, GroupherServer.CMS.error_cat_unexpected_external_response(body_kind(body))}
+  def normalize_active(body) do
+    {:error, GroupherServer.CMS.error_cat_unexpected_external_response(body_kind(body))}
+  end
 
   defp aggregate_normalized_path_metrics(scoped_pages) do
     summary =
@@ -363,15 +364,13 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
   end
 
   defp run_section(fun) do
-    try do
-      fun.()
-    rescue
-      error ->
-        {:error, GroupherServer.CMS.error_cat_external_unavailable(Exception.message(error))}
-    catch
-      :exit, reason -> {:error, GroupherServer.CMS.error_cat_external_unavailable(reason)}
-      _kind, reason -> {:error, GroupherServer.CMS.error_cat_external_unavailable(reason)}
-    end
+    fun.()
+  rescue
+    error ->
+      {:error, GroupherServer.CMS.error_cat_external_unavailable(Exception.message(error))}
+  catch
+    :exit, reason -> {:error, GroupherServer.CMS.error_cat_external_unavailable(reason)}
+    _kind, reason -> {:error, GroupherServer.CMS.error_cat_external_unavailable(reason)}
   end
 
   defp stats(%{client: client, website_id: website_id}, range) do
@@ -711,29 +710,8 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
 
   defp normalize_visitor_region_row(row) do
     raw_region = row |> dimension_name() |> String.trim() |> String.upcase()
-
-    explicit_country =
-      ["country", :country, "countryCode", :country_code]
-      |> Enum.find_value(fn key -> read_string(row, key) end)
-      |> case do
-        value when is_binary(value) -> value |> String.trim() |> String.upcase()
-        _ -> nil
-      end
-
-    normalized = String.replace(raw_region, "_", "-")
-
-    code =
-      cond do
-        String.match?(normalized, ~r/^[A-Z]{2}-[A-Z0-9]{1,3}$/) ->
-          normalized
-
-        String.match?(explicit_country || "", ~r/^[A-Z]{2}$/) and
-            String.match?(normalized, ~r/^[A-Z0-9]{1,3}$/) ->
-          "#{explicit_country}-#{normalized}"
-
-        true ->
-          nil
-      end
+    explicit_country = explicit_country(row)
+    code = normalize_region_code(raw_region, explicit_country)
 
     case code do
       <<country_code::binary-size(2), "-", _::binary>> ->
@@ -743,6 +721,30 @@ defmodule GroupherServer.Analysis.Web.Provider.Umami do
       _ ->
         nil
     end
+  end
+
+  defp explicit_country(row) do
+    ["country", :country, "countryCode", :country_code]
+    |> Enum.find_value(fn key -> read_string(row, key) end)
+    |> case do
+      value when is_binary(value) -> value |> String.trim() |> String.upcase()
+      _ -> nil
+    end
+  end
+
+  defp normalize_region_code(raw_region, explicit_country) do
+    normalized = String.replace(raw_region, "_", "-")
+
+    cond do
+      String.match?(normalized, ~r/^[A-Z]{2}-[A-Z0-9]{1,3}$/) -> normalized
+      valid_country_region?(explicit_country, normalized) -> "#{explicit_country}-#{normalized}"
+      true -> nil
+    end
+  end
+
+  defp valid_country_region?(country, region) do
+    String.match?(country || "", ~r/^[A-Z]{2}$/) and
+      String.match?(region, ~r/^[A-Z0-9]{1,3}$/)
   end
 
   defp dimension_name(row), do: read_string(row, "name") || read_string(row, :name) || ""

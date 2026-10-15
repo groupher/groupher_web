@@ -57,7 +57,7 @@ export const buildFooterColumns = (links: readonly TLinkItem[]): TFooterColumn[]
       id: group.id,
       title: group.title,
       sourceIndex,
-      links: group.links.map((link): TFooterDraftLink => ({
+      links: (group.links ?? []).map((link): TFooterDraftLink => ({
         ...link,
         dndId: toDndId(group.id, link),
       })),

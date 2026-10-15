@@ -21,7 +21,7 @@ export default function useSalon() {
     iconBox: cn(
       'size-9 circle align-both',
       'absolute top-24 left-1/2 -ml-7 z-20',
-      'animate-bounce animate-infinite animate-duration-[4000ms] animate-ease-in-out',
+      'animate-bounce animate-infinite animate-duration-[4000ms] animate-ease-in-out motion-reduce:animate-none',
       shadow('sm'),
       'gradient-cyan',
     ),

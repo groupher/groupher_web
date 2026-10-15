@@ -95,7 +95,7 @@ describe('useRevisionDiffModel', () => {
     await act(async () => {})
     expect(mocks.getOrCompute).not.toHaveBeenCalled()
 
-    let stop = () => undefined
+    let stop: () => void = () => undefined
     await act(async () => {
       stop = result.current.startHistoryDiff('staged')
     })
@@ -113,7 +113,7 @@ describe('useRevisionDiffModel', () => {
     )
 
     await act(async () => {})
-    let stop = () => undefined
+    let stop: () => void = () => undefined
     await act(async () => {
       stop = result.current.startHistoryDiff('staged')
     })

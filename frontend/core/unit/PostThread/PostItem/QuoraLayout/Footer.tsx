@@ -25,13 +25,13 @@ const Footer: FC<TProps> = ({ article, stats, viewerState }) => {
     <div className={s.wrapper}>
       <Upvote
         count={count}
-        avatarList={meta.latestUpvotedUsers}
+        avatarList={meta?.latestUpvotedUsers}
         onAction={() => toggle()}
         viewerHasUpvoted={isUpvoted}
         type={UPVOTE_LAYOUT.GENERAL}
       />
       {article.cat && <ArticleCatStatus left={2} cat={article.cat} status={article.status} />}
-      <ViewsCount count={stats?.views} left={3} />
+      <ViewsCount count={stats?.views ?? 0} left={3} />
     </div>
   )
 }

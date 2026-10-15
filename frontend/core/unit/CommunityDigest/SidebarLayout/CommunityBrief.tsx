@@ -25,7 +25,11 @@ export default function CommunityBrief() {
     <div className={s.wrapper}>
       {brandLayout !== BRAND_LAYOUT.TEXT && (
         <div className={s.logoBox}>
-          <Img src={assetSrc(logo)} className={s.logo} fallback={<ImgFallback title={title} />} />
+          <Img
+            src={assetSrc(logo ?? '')}
+            className={s.logo}
+            fallback={<ImgFallback title={title} />}
+          />
         </div>
       )}
 

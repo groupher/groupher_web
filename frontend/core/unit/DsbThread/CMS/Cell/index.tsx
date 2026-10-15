@@ -34,6 +34,8 @@ export const ArticleCell = React.memo(function ArticleCell({ rowData }: { rowDat
   const s = useSalon()
   const { slug } = useCommunity()
 
+  if (!rowData.meta?.thread) return <div />
+
   return (
     <div className='w-full overflow-hidden'>
       <PlatformLink
@@ -74,7 +76,7 @@ export const AuthorCell = React.memo(function AuthorCell({ rowData }: { rowData:
 
   return (
     <div className={s.author}>
-      <Img className={s.authorAvatar} src={author.avatar} />
+      <Img className={s.authorAvatar} src={author.avatar ?? ''} />
       <div className={s.nickname}>{author.nickname}</div>
     </div>
   )
@@ -86,12 +88,10 @@ export const DateCell = React.memo(function DateCell({ rowData }: { rowData: TAr
 
   return (
     <div className={s.dateCell}>
-      <div className={s.dateItem}>
-        <TimeAgo datetime={insertedAt} />
-      </div>
+      <div className={s.dateItem}>{insertedAt && <TimeAgo datetime={insertedAt} />}</div>
       <div className={s.dateItem}>
         <PulseSVG className={s.pulseIcon} />
-        <TimeAgo datetime={activeAt} />
+        {activeAt && <TimeAgo datetime={activeAt} />}
       </div>
     </div>
   )

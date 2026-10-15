@@ -25,9 +25,8 @@ defmodule GroupherServer.Accounts.Profiles.Query do
   """
   @spec profile(User.t()) :: {:ok, User.t()} | {:error, term()}
   def profile(%User{} = user) do
-    with {:ok, user} <- assign_meta(user),
-         {:ok, user} <- assign_contributes(user) do
-      {:ok, user}
+    with {:ok, user} <- assign_meta(user) do
+      assign_contributes(user)
     end
   end
 
@@ -89,8 +88,9 @@ defmodule GroupherServer.Accounts.Profiles.Query do
       Accounts.Profiles.Query.subscribed_communities(user, %{page: 1, size: 20})
   """
   @spec subscribed_communities(User.t(), map()) :: term()
-  def subscribed_communities(%User{} = user, filter),
-    do: List.subscribed_communities(user, filter)
+  def subscribed_communities(%User{} = user, filter) do
+    List.subscribed_communities(user, filter)
+  end
 
   @doc """
   Returns the canonical linked OAuth-account projection for an active user.

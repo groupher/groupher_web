@@ -96,7 +96,7 @@ const loadPosts = createServerFn({ method: 'GET', strict: false })
         typeof pagedPosts
       >['filter'],
     })
-    return result.data.pagedPosts as unknown as TPagedPosts | null
+    return result.data?.pagedPosts as unknown as TPagedPosts | null
   })
 
 const loadPost = createServerFn({ method: 'GET', strict: false })

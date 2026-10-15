@@ -28,9 +28,8 @@ defmodule GroupherServer.Accounts.Profiles.Persist do
     user_attrs = Map.drop(attrs, [:social])
     changeset = Ecto.Changeset.change(user, user_attrs)
 
-    with {:ok, changeset} <- update_social_if_needed(changeset, user, attrs),
-         {:ok, user} <- changeset |> User.update_changeset(user_attrs) |> Repo.update() do
-      {:ok, user}
+    with {:ok, changeset} <- update_social_if_needed(changeset, user, attrs) do
+      changeset |> User.update_changeset(user_attrs) |> Repo.update()
     end
   end
 
@@ -63,12 +62,10 @@ defmodule GroupherServer.Accounts.Profiles.Persist do
         with {:ok, updated_user} <-
                ORM.update(locked_user, %{
                  subscribed_communities_count: length(subscribed_communities_ids)
-               }),
-             {:ok, updated_user} <-
-               ORM.update_meta(updated_user, %{
-                 subscribed_communities_ids: subscribed_communities_ids
                }) do
-          {:ok, updated_user}
+          ORM.update_meta(updated_user, %{
+            subscribed_communities_ids: subscribed_communities_ids
+          })
         end
 
       nil ->

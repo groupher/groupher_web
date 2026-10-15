@@ -33,7 +33,7 @@ const StatusItem: FC<TProps> = ({ onClick }) => {
     <button type='button' className={s.menuItem} onClick={onClick}>
       <TheIcon className={cn(s.icon, s.rainbowFill)} />
       {article.status === ARTICLE_STATUS.DONE
-        ? t(aliasGTDDoneStatus(article.cat, article.status))
+        ? t(aliasGTDDoneStatus(article.cat ?? 'DISCUSSION', article.status))
         : kanbanAlias[article.status]?.name || t(toGTDLabelKey(article.status))}
       <div className='grow' />
       <ArrowSVG className={cn(s.icon, 'rotate-180')} />

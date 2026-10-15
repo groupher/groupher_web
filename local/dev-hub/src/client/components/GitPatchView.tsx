@@ -8,16 +8,23 @@ type TProps = {
 }
 
 export function GitPatchView({ patch, revision }: TProps) {
-  const files = useMemo(
-    () => parsePatchFiles(patch, `dev-hub-${revision}`, true).flatMap((item) => item.files),
-    [patch, revision],
-  )
+  const files = useMemo(() => {
+    const occurrences = new Map<string, number>()
+    return parsePatchFiles(patch, `dev-hub-${revision}`, true)
+      .flatMap((item) => item.files)
+      .map((file) => {
+        const identity = `${file.prevName || ''}-${file.name}`
+        const occurrence = occurrences.get(identity) ?? 0
+        occurrences.set(identity, occurrence + 1)
+        return { file, key: `${identity}-${occurrence}` }
+      })
+  }, [patch, revision])
 
   return (
     <div className='git-patch-files'>
-      {files.map((file, index) => (
+      {files.map(({ file, key }) => (
         <FileDiff
-          key={`${file.prevName || ''}-${file.name}-${index}`}
+          key={key}
           fileDiff={file}
           options={{
             diffStyle: 'unified',

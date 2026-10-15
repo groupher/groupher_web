@@ -101,8 +101,8 @@ const BACKEND_METRICS: TMetricThresholds = {
 
 const DASH_CHAIN_POLICY = {
   defaultMode: 'chain',
-  requiredDependencies: ['dev-gateway', 'auth', 'phoenix'],
-  optionalDependencies: ['assets-hub', 'content-import', 'document-converter'],
+  requiredDependencies: ['dev-gateway', 'auth', 'phoenix', 'assets-hub'],
+  optionalDependencies: ['content-import', 'document-converter'],
 } satisfies TServiceStartPolicy
 
 const APPLY_CHAIN_POLICY = {
@@ -119,7 +119,7 @@ const LANDING_CHAIN_POLICY = {
 
 const COMMUNITY_CHAIN_POLICY = {
   defaultMode: 'chain',
-  requiredDependencies: ['phoenix'],
+  requiredDependencies: ['auth', 'phoenix', 'assets-hub'],
   optionalDependencies: [],
 } satisfies TServiceStartPolicy
 

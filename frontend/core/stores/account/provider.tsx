@@ -71,10 +71,13 @@ export default function Provider({ children, initData }: TProps) {
     placeholderData: hasResolvedUserSeed ? undefined : sessionSeed,
   })
   const session = query.data?.sessionState
-  const user =
-    session?.isValid && session.user
-      ? ({ ...session.user, passport: session.user.passport as TUser['passport'] } as TUser)
-      : null
+  const user = useMemo(
+    () =>
+      session?.isValid && session.user
+        ? ({ ...session.user, passport: session.user.passport as TUser['passport'] } as TUser)
+        : null,
+    [session],
+  )
   const accountRef = getAccountRef(user)
 
   const clearSession = useCallback(() => {

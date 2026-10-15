@@ -18,13 +18,16 @@ type TProps = {
   onClose: () => void
 }
 
+const timestampFormat = new Intl.DateTimeFormat(undefined, {
+  dateStyle: 'medium',
+  timeStyle: 'short',
+})
+
 const formatTimestamp = (value?: string | null): string | null => {
   if (!value) return null
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return null
-  return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(
-    date,
-  )
+  return timestampFormat.format(date)
 }
 
 export default function AccountSessionDrawer({ show, onClose }: TProps) {

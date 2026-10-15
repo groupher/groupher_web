@@ -24,7 +24,7 @@ const CommentHeader: FC<TProps> = ({
 
   return (
     <div className={s.wrapper}>
-      <ArticleHeader data={data} showInnerRef={showInnerRef} isReply={isReply} />
+      <ArticleHeader data={data} showInnerRef={showInnerRef} isReply={Boolean(isReply)} />
     </div>
   )
 }

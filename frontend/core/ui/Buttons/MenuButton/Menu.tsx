@@ -16,7 +16,13 @@ type TProps = {
   onClick?: (key?: string) => void
 }
 
-const Menu: FC<TProps> = ({ options, extraOptions, onClick, panelMinWidth, active }) => {
+const Menu: FC<TProps> = ({
+  options,
+  extraOptions,
+  onClick = () => undefined,
+  panelMinWidth,
+  active,
+}) => {
   const s = useSalon()
 
   return (

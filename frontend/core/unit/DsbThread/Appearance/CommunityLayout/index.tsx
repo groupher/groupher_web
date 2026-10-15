@@ -61,7 +61,7 @@ export default function CommunityLayout() {
               aria-pressed={isActive}
               onClick={() => edit(value, FIELD.COMMUNITY_LAYOUT)}
             >
-              <LayoutPreview isActive={isActive} title={title} layout={value} />
+              <LayoutPreview isActive={isActive} title={title ?? ''} layout={value} />
               <CheckLabel title={t(titleKey)} active={isActive} top={4} />
             </button>
           )

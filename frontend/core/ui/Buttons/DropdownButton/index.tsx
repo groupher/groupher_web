@@ -1,4 +1,4 @@
-import type { FC, KeyboardEvent, ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 
 import SIZE from '~/const/size'
 import ArrowSVG from '~/icons/ArrowSimple'
@@ -35,41 +35,21 @@ const DropdownButton: FC<TProps> = ({
   ...spacing
 }) => {
   const s = useSalon({ size, selected, active: $active, ...spacing })
-  const handleWrapperKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      onClick()
-    }
-  }
 
   return (
-    <div
-      className={s.wrapper}
-      role='button'
-      tabIndex={0}
-      onClick={onClick}
-      onKeyDown={handleWrapperKeyDown}
-    >
-      <div className={s.button}>
+    <div className={s.wrapper}>
+      <button type='button' className={s.button} onClick={onClick}>
         <div className={s.inner}>
           <PrefixIcon type={prefixIcon} />
           {children}
           {!noArrow && !(closable && selected) && <ArrowSVG className={s.arrowIcon} />}
-          {closable && selected && (
-            <button
-              type='button'
-              className={s.closeBox}
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                onClear()
-              }}
-            >
-              <CloseSVG className={s.closeIcon} />
-            </button>
-          )}
         </div>
-      </div>
+      </button>
+      {closable && selected && (
+        <button type='button' aria-label='Clear selection' className={s.closeBox} onClick={onClear}>
+          <CloseSVG className={s.closeIcon} />
+        </button>
+      )}
     </div>
   )
 }

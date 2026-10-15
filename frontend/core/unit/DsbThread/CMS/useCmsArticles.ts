@@ -15,7 +15,10 @@ export default function useCmsArticles(kind: TArticleKind) {
   const queryClient = useQueryClient()
   const { slug: community } = useCommunity()
   const filter = { page: 1, size: 20, community }
-  const postsQuery = useQuery({ ...Q.article.posts(filter), enabled: kind === 'post' })
+  const postsQuery = useQuery({
+    ...Q.article.posts(filter),
+    enabled: kind === 'post',
+  })
   const changelogsQuery = useQuery({
     ...Q.article.changelogs(filter),
     enabled: kind === 'changelog',
@@ -27,7 +30,9 @@ export default function useCmsArticles(kind: TArticleKind) {
       queryClient,
       community,
       thread,
-      (query.data?.entries || []).map((article) => article.innerId),
+      (query.data?.entries || []).flatMap((article) =>
+        article.innerId === undefined ? [] : [article.innerId],
+      ),
     ),
   )
   const pagedArticles = useMemo(() => {
@@ -40,7 +45,11 @@ export default function useCmsArticles(kind: TArticleKind) {
       ...page,
       entries: page.entries.map((article) => {
         const stat = stats.get(String(article.innerId))
-        const articleKey = articlePathKey({ community, thread, innerId: String(article.innerId) })
+        const articleKey = articlePathKey({
+          community,
+          thread,
+          innerId: String(article.innerId),
+        })
         const viewerState: TArticleViewerState = { articleKey }
         return { content: article, stats: stat || null, viewerState }
       }),

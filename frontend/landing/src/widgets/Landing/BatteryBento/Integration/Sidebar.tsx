@@ -15,9 +15,9 @@ const Sidebar: FC<TProps> = ({ hovering }) => {
 
   return (
     <div className={cn(s.wrapper, hovering ? 'right-2.5 opacity-100' : '-right-5')}>
-      <Img className={cn(s.avatar, 'top-8 -left-5')} src={users[0].avatar} />
-      <Img className={cn(s.avatar, 'top-20 left-3')} src={users[1].avatar} />
-      <Img className={cn(s.avatar, 'top-16 -left-6')} src={users[2].avatar} />
+      <Img className={cn(s.avatar, 'top-8 -left-5')} src={users[0]?.avatar ?? ''} />
+      <Img className={cn(s.avatar, 'top-20 left-3')} src={users[1]?.avatar ?? ''} />
+      <Img className={cn(s.avatar, 'top-16 -left-6')} src={users[2]?.avatar ?? ''} />
 
       <div className={cn(s.bar, 'top-2')} />
       <div className={cn(s.bar, 'top-5 h-1 w-14 opacity-20')} />

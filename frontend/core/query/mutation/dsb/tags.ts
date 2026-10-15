@@ -23,7 +23,11 @@ export const buildTagReindexSave = ({
   tags: { id: string; groupId: string; index: number }[]
 } => {
   const tags = dashboard.tagGroups.flatMap((group) =>
-    group.tags.map((tag) => ({ id: tag.id, groupId: group.id, index: tag.index })),
+    group.tags.flatMap((tag) =>
+      tag.id && tag.index !== undefined
+        ? [{ id: tag.id, groupId: group.id, index: tag.index }]
+        : [],
+    ),
   )
   const groups = dashboard.tagGroups.map((group) => ({ id: group.id, index: group.index }))
 

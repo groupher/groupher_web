@@ -176,26 +176,24 @@ defmodule GroupherServer.CMS.DocTree.Persist.Node do
   end
 
   defp walk_ancestor_depth(parents, current, depth, seen) do
-    cond do
-      MapSet.member?(seen, current) ->
-        {:error, ErrorCat.custom("Docs Tree contains a parent cycle")}
+    if MapSet.member?(seen, current) do
+      {:error, ErrorCat.custom("Docs Tree contains a parent cycle")}
+    else
+      case Map.fetch(parents, current) do
+        {:ok, nil} ->
+          {:ok, depth}
 
-      true ->
-        case Map.fetch(parents, current) do
-          {:ok, nil} ->
-            {:ok, depth}
+        {:ok, parent_node_id} ->
+          walk_ancestor_depth(
+            parents,
+            parent_node_id,
+            depth + 1,
+            MapSet.put(seen, current)
+          )
 
-          {:ok, parent_node_id} ->
-            walk_ancestor_depth(
-              parents,
-              parent_node_id,
-              depth + 1,
-              MapSet.put(seen, current)
-            )
-
-          :error ->
-            {:error, ErrorCat.custom("Docs Tree parent chain is incomplete")}
-        end
+        :error ->
+          {:error, ErrorCat.custom("Docs Tree parent chain is incomplete")}
+      end
     end
   end
 

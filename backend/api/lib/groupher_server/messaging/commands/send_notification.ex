@@ -68,6 +68,7 @@ defmodule GroupherServer.Messaging.Commands.SendNotification do
 
   defp maybe_attach_delivery(nil, _notification), do: {:ok, :pass}
 
-  defp maybe_attach_delivery(delivery_key, notification),
-    do: Delivery.attach(delivery_key, notification)
+  defp maybe_attach_delivery(delivery_key, notification) do
+    Delivery.attach(delivery_key, notification)
+  end
 end

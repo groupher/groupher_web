@@ -26,7 +26,10 @@ type TState = {
   visitors: number | null
 }
 
-const unavailableState = (): TState => ({ status: 'unavailable', visitors: null })
+const unavailableState = (): TState => ({
+  status: 'unavailable',
+  visitors: null,
+})
 
 export default function RealtimeOnline({ community }: TProps) {
   const s = useSalon()
@@ -34,7 +37,9 @@ export default function RealtimeOnline({ community }: TProps) {
   const [visible, setVisible] = useState(true)
   const [state, setState] = useState<TState>(unavailableState)
   const result = useQuery({
-    ...graphqlQueryOptions<TData>(ANALYSIS_ACTIVE_VISITORS_QUERY, { community }),
+    ...graphqlQueryOptions<TData>(ANALYSIS_ACTIVE_VISITORS_QUERY, {
+      community,
+    }),
     enabled: visible,
     refetchOnMount: 'always',
   })

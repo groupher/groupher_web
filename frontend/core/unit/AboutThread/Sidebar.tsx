@@ -19,7 +19,7 @@ export default function Sidebar() {
       <div className={cn(s.block, isEmpty(homepage) && 'hidden')}>
         <h3 className={s.title}>官方主页</h3>
         <div className={s.desc}>
-          <Linker src={homepage} left={-2} />
+          <Linker src={homepage ?? ''} left={-2} />
         </div>
       </div>
       <div className={cn(s.block, isEmpty(socialLinks) && 'hidden')}>

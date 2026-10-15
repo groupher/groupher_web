@@ -11,7 +11,7 @@ defmodule GroupherServer.CMS.Communities.Commands.Update do
 
   alias GroupherServer.CMS
   alias CMS.Command
-  alias CMS.Communities.{Commands.UpdateConfirmation, Persist}
+  alias CMS.Communities.{Commands.UpdateConfirmation, Persist, Query}
   alias CMS.Dashboard.Effects
   alias CMS.Model.Community
   alias Helper.T
@@ -74,7 +74,7 @@ defmodule GroupherServer.CMS.Communities.Commands.Update do
   end
 
   defp present(%UpdateConfirmation{data: %{"community_id" => community_id}} = confirmation) do
-    case GroupherServer.Repo.get(Community, community_id) do
+    case Query.get(community_id) do
       %Community{} = community ->
         {:ok, Map.put(community, :command_id, confirmation.data["command_id"])}
 

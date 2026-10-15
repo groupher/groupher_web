@@ -19,9 +19,10 @@ export default function useSalon() {
     ),
     tabActive: 'saturate-100 opacity-100',
 
-    arrowIcon: 'size-12 absolute -top-0.5 -left-16 opacity-40 scale-y-75 animate-pulse',
+    arrowIcon:
+      'size-12 absolute -top-0.5 -left-16 opacity-40 scale-y-75 animate-pulse motion-reduce:animate-none',
     spinIcon:
-      'size-7 absolute top-2 -left-14 animate-spin animate-infinite animate-duration-[10000ms]',
+      'size-7 absolute top-2 -left-14 animate-spin animate-infinite animate-duration-[10000ms] motion-reduce:animate-none',
 
     fillBlue: rainbow(COLOR.BLUE, 'fill'),
     fillOrange: rainbow(COLOR.ORANGE, 'fill'),

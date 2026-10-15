@@ -19,7 +19,7 @@ const PublishBar: FC<TProps> = ({ closeEditor }) => {
   return (
     <div className={s.wrapper}>
       <div className={s.account}>
-        <Img src={mockUsers(3)[0].avatar} className={s.avatar} />
+        <Img src={mockUsers(3)[0]?.avatar ?? ''} className={s.avatar} />
         <div className={s.username}>mydearxym</div>
       </div>
       <div className={s.actions}>

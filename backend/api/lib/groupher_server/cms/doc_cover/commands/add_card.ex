@@ -20,14 +20,14 @@ defmodule GroupherServer.CMS.DocCover.Commands.AddCard do
       #=> {:ok, cover_card}
   """
   @spec execute(Community.t(), term(), term(), Ecto.UUID.t()) :: term()
-  def execute(community, group_node_id, actor, command_id),
-    do:
-      Support.execute_receipted(
-        community,
-        actor,
-        command_id,
-        :doc_cover_add_card,
-        %{group_node_id: group_node_id},
-        &Persist.add_card(&1, group_node_id)
-      )
+  def execute(community, group_node_id, actor, command_id) do
+    Support.execute_receipted(
+      community,
+      actor,
+      command_id,
+      :doc_cover_add_card,
+      %{group_node_id: group_node_id},
+      &Persist.add_card(&1, group_node_id)
+    )
+  end
 end

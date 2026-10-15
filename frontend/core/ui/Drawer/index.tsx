@@ -158,7 +158,6 @@ export default function Drawer({
       <div
         role='presentation'
         aria-hidden='true'
-        aria-label='drawer mask'
         className={cn(s.overlay, ANCHOR.GLOBAL_BLUR_CLASS)}
         style={s.overlayStyle}
         // State drawer close is caller controlled

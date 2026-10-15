@@ -12,7 +12,7 @@ export default function useSalon() {
     topDivider: cn('h-px flex-1 border-b opacity-55', br('divider')),
     content: 'row-center row-between w-full gap-8 py-4',
     actions: 'row-center gap-4.5 shrink-0 mb-0.5',
-    feedbackTagsMotion: 'w-full overflow-hidden',
+    feedbackTagsMotion: 'w-full overflow-hidden pt-1',
     bottomDivider: cn(styles.receiptDivider, br('divider')),
   }
 }

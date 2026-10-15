@@ -34,11 +34,11 @@ const OSSUploader: FC<TProps> = ({
 }) => {
   const s = useSalon()
 
-  const [uniqueId, setUniqueId] = useState(null)
+  const [uniqueId, setUniqueId] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const ossClientRef = useRef<ReturnType<typeof initOSSClient> | null>(null)
 
-  const labelRef = useRef(null)
+  const labelRef = useRef<HTMLLabelElement | null>(null)
 
   const handleScriptLoad = useCallback(() => {
     const ossClient = initOSSClient()
@@ -94,7 +94,7 @@ const OSSUploader: FC<TProps> = ({
         </label>
 
         {!loading && (
-          <UploadSVG onClick={() => labelRef.current.click()} className={s.uploadIcon} />
+          <UploadSVG onClick={() => labelRef.current?.click()} className={s.uploadIcon} />
         )}
         {loading && <TurboSVG className={s.turboIcon} />}
       </div>

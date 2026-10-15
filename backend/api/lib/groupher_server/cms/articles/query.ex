@@ -210,43 +210,43 @@ defmodule GroupherServer.CMS.Articles.Query do
 
   defp stable_order(query, filter, thread) do
     query = exclude(query, :order_by)
+    apply_stable_order(query, order_mode(filter), thread)
+  end
 
-    case {Map.get(filter, :order), Map.get(filter, :sort)} do
-      {:upvotes, _} ->
-        stable_stats_order(query, :upvotes_count, :desc)
+  defp order_mode(%{order: :upvotes}), do: {:stats, :upvotes_count, :desc}
+  defp order_mode(%{order: :comments}), do: {:stats, :comments_count, :desc}
+  defp order_mode(%{order: :views}), do: {:stats, :views, :desc}
+  defp order_mode(%{sort: :most_views}), do: {:stats, :views, :desc}
+  defp order_mode(%{sort: :least_views}), do: {:stats, :views, :asc}
+  defp order_mode(%{order: :publish}), do: :publish
+  defp order_mode(%{sort: :asc_active}), do: {:active, :asc}
+  defp order_mode(%{sort: :asc_inserted}), do: {:inserted, :asc}
+  defp order_mode(%{sort: :desc_inserted}), do: {:inserted, :desc}
+  defp order_mode(_filter), do: {:active, :desc}
 
-      {:comments, _} ->
-        stable_stats_order(query, :comments_count, :desc)
+  defp apply_stable_order(query, {:stats, field, direction}, _thread) do
+    stable_stats_order(query, field, direction)
+  end
 
-      {:views, _} ->
-        stable_stats_order(query, :views, :desc)
+  defp apply_stable_order(query, :publish, _thread) do
+    order_by(query, [article, ...],
+      desc: as(:stable_public).published_at,
+      desc: article.inserted_at,
+      desc: as(:article_binding).inner_id,
+      desc: article.id
+    )
+  end
 
-      {_, :most_views} ->
-        stable_stats_order(query, :views, :desc)
+  defp apply_stable_order(query, {:active, direction}, thread) do
+    stable_active_order(query, thread, direction)
+  end
 
-      {_, :least_views} ->
-        stable_stats_order(query, :views, :asc)
+  defp apply_stable_order(query, {:inserted, :asc}, _thread) do
+    order_by(query, [article, ...], asc: article.inserted_at)
+  end
 
-      {:publish, _} ->
-        order_by(query, [article, ...],
-          desc: as(:stable_public).published_at,
-          desc: article.inserted_at,
-          desc: as(:article_binding).inner_id,
-          desc: article.id
-        )
-
-      {_, :asc_active} ->
-        stable_active_order(query, thread, :asc)
-
-      {_, :asc_inserted} ->
-        order_by(query, [article, ...], asc: article.inserted_at)
-
-      {_, :desc_inserted} ->
-        order_by(query, [article, ...], desc: article.inserted_at)
-
-      _ ->
-        stable_active_order(query, thread, :desc)
-    end
+  defp apply_stable_order(query, {:inserted, :desc}, _thread) do
+    order_by(query, [article, ...], desc: article.inserted_at)
   end
 
   defp stable_pin_order(query, 1, community_ref) when is_binary(community_ref) do
@@ -521,6 +521,48 @@ defmodule GroupherServer.CMS.Articles.Query do
          }) do
       {:ok, article} -> [article]
       {:error, _reason} -> []
+    end
+  end
+
+  @doc false
+  def binding(article_id, community_id) do
+    Repo.get_by(ArticleBinding, article_id: article_id, community_id: community_id)
+  end
+
+  @doc false
+  def pinned_binding(article_id, community_id) do
+    from(pin in PinnedArticle,
+      join: binding in ArticleBinding,
+      on: pin.article_binding_id == binding.id,
+      where: binding.article_id == ^article_id and binding.community_id == ^community_id
+    )
+    |> Repo.one()
+  end
+
+  @doc false
+  def community(id), do: Repo.get(Community, id)
+
+  @doc false
+  def branch_community(branch_id) do
+    with %DocBranch{community_id: community_id} <- Repo.get(DocBranch, branch_id),
+         %Community{} = community <- Repo.get(Community, community_id) do
+      {:ok, community}
+    else
+      _ -> {:error, :article_binding_not_found}
+    end
+  end
+
+  @doc false
+  def article(id), do: Repo.get(Article, id)
+
+  @doc false
+  def article_with_author(%Article{} = article), do: Repo.preload(article, author: :user)
+
+  @doc false
+  def reload_with_author(%{__struct__: schema, id: id}) do
+    case Repo.get(schema, id) do
+      nil -> {:error, CMS.ErrorCat.command_result_unavailable()}
+      canonical -> {:ok, Repo.preload(canonical, author: :user)}
     end
   end
 end

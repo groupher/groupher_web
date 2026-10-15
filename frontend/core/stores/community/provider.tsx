@@ -1,6 +1,6 @@
 'use client'
 
-import { type ReactNode, useLayoutEffect, useRef } from 'react'
+import { type ReactNode, useLayoutEffect, useState } from 'react'
 
 import setupStore from '.'
 import CommunityViewportProvider from '../communityViewport/provider'
@@ -13,16 +13,14 @@ type TProps = {
 }
 
 export default function Provider({ children, initData }: TProps) {
-  const storeRef = useRef<TStore | null>(null)
-
-  storeRef.current ??= setupStore(initData)
+  const [store] = useState<TStore>(() => setupStore(initData))
 
   useLayoutEffect(() => {
-    storeRef.current?.hydrate(initData)
-  }, [initData])
+    store.hydrate(initData)
+  }, [initData, store])
 
   return (
-    <StoreContext.Provider value={storeRef.current}>
+    <StoreContext.Provider value={store}>
       <CommunityViewportProvider>{children}</CommunityViewportProvider>
     </StoreContext.Provider>
   )

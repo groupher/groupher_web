@@ -121,7 +121,11 @@ const File: FC<TProps> = ({
               onOpenChange={setMenuOpen}
               onSelect={(action) => {
                 if (action === SIDE_TREE_NODE_MENU_ACTION.RENAME) {
-                  onEdit({ type: SIDE_TREE_NODE_TYPE.PAGE, groupId, childId: item.id })
+                  onEdit({
+                    type: SIDE_TREE_NODE_TYPE.PAGE,
+                    groupId,
+                    childId: item.id,
+                  })
                   return
                 }
                 onAction(groupId, item.id, action)

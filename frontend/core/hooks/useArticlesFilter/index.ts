@@ -4,9 +4,9 @@ import useURLSearchParams from '~/hooks/useURLSearchParams'
 import type { TArticleCat, TArticleFilter, TArticleOrder, TArticleStatus } from '~/spec'
 
 type TRes = {
-  cat: TArticleCat
-  status: TArticleStatus
-  order: TArticleOrder
+  cat: TArticleCat | null
+  status: TArticleStatus | null
+  order: TArticleOrder | null
   updateActiveFilter: (filter: TArticleFilter) => void
 }
 

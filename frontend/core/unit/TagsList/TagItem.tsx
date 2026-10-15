@@ -1,3 +1,4 @@
+import SIZE from '~/const/size'
 import type { TColorName, TSizeTSM, TTag } from '~/spec'
 import TagNode from '~/ui/TagNode'
 
@@ -6,7 +7,7 @@ import useSalon from './salon/tag_item'
 
 type TProps = { tag: TTag } & { withTitle?: boolean; size?: TSizeTSM }
 
-export default function TagItem({ tag, size, withTitle }: TProps) {
+export default function TagItem({ tag, size = SIZE.SMALL, withTitle }: TProps) {
   const s = useSalon({ color: tag.color as TColorName })
 
   const dotSize = getDotSize(size)

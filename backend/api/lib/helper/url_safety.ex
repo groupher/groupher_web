@@ -135,17 +135,15 @@ defmodule Helper.UrlSafety do
   end
 
   defp resolve_host_ips(host, timeout) do
-    try do
-      case :inet.gethostbyname(String.to_charlist(host), :inet, timeout) do
-        {:ok, hostent} -> {:ok, extract_ips(hostent)}
-        {:error, reason} -> {:error, reason}
-      end
-    rescue
-      _ -> {:error, ErrorCat.resolve_failed()}
-    catch
-      :exit, _ -> {:error, ErrorCat.resolve_failed()}
-      _ -> {:error, ErrorCat.resolve_failed()}
+    case :inet.gethostbyname(String.to_charlist(host), :inet, timeout) do
+      {:ok, hostent} -> {:ok, extract_ips(hostent)}
+      {:error, reason} -> {:error, reason}
     end
+  rescue
+    _ -> {:error, ErrorCat.resolve_failed()}
+  catch
+    :exit, _ -> {:error, ErrorCat.resolve_failed()}
+    _ -> {:error, ErrorCat.resolve_failed()}
   end
 
   defp extract_ips({:hostent, _, _, _, _, ips}) do

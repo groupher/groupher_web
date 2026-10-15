@@ -209,23 +209,21 @@ defmodule GroupherServer.Support.Factory do
   end
 
   defp db_insert_with_retry(factory_name, attributes, attempts_left) do
-    try do
-      factory_name
-      |> mock(attributes)
-      |> maybe_put_default_article_binding()
-      |> maybe_put_default_doc_branch()
-      |> maybe_put_default_tag_group()
-      |> GroupherServer.Repo.insert()
-      |> ensure_community_lifecycle()
-      |> ensure_article_lifecycle()
-    rescue
-      e in Ecto.ConstraintError ->
-        if retryable_constraint?(e) and attempts_left > 1 do
-          db_insert_with_retry(factory_name, attributes, attempts_left - 1)
-        else
-          reraise e, __STACKTRACE__
-        end
-    end
+    factory_name
+    |> mock(attributes)
+    |> maybe_put_default_article_binding()
+    |> maybe_put_default_doc_branch()
+    |> maybe_put_default_tag_group()
+    |> GroupherServer.Repo.insert()
+    |> ensure_community_lifecycle()
+    |> ensure_article_lifecycle()
+  rescue
+    e in Ecto.ConstraintError ->
+      if retryable_constraint?(e) and attempts_left > 1 do
+        db_insert_with_retry(factory_name, attributes, attempts_left - 1)
+      else
+        reraise e, __STACKTRACE__
+      end
   end
 
   defp maybe_put_default_tag_group(%CommunityTag{group_id: nil, thread: thread} = tag)

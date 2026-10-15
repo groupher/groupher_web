@@ -1,10 +1,11 @@
+import { COLOR } from '~/const/colors'
 import useInlineTagSalon from '~/hooks/useInlineTagSalon'
 import useTwBelt from '~/hooks/useTwBelt'
 import type { TColor } from '~/spec'
 
 type TProps = TColor
 
-export default function useSalon({ color }: TProps) {
+export default function useSalon({ color = COLOR.BLACK }: TProps) {
   const { cn, fg } = useTwBelt()
   const inlineTagSalon = useInlineTagSalon({ color })
 

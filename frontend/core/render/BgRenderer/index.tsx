@@ -97,7 +97,7 @@ export default function BgRenderer({
       previewSpecRef.current = frame.renderSpec
       activeLayerRef.current?.updatePreviewFrame(frame.renderSpec ?? committedSpecRef.current)
     })
-  }, [applySpec, previewSubscriber])
+  }, [previewSubscriber])
 
   return (
     <div className={cn(positioned && s.wrapperPositioned, s.wrapper, className)} aria-hidden='true'>

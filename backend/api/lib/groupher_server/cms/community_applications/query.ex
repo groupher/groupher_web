@@ -286,4 +286,17 @@ defmodule GroupherServer.CMS.CommunityApplications.Query do
   defp get(map, key, default \\ nil) do
     Map.get(map, key, Map.get(map, Atom.to_string(key), default))
   end
+
+  @doc false
+  def application(public_ref) when is_binary(public_ref) do
+    Repo.get_by(CommunityApplication, public_ref: public_ref)
+  end
+
+  @doc false
+  def application(id), do: Repo.get(CommunityApplication, id)
+
+  @doc false
+  def by_submit_command(user_id, key) do
+    Repo.get_by(CommunityApplication, user_id: user_id, submit_command_id: key)
+  end
 end

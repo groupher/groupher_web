@@ -33,7 +33,9 @@ export default function ColorItem({ detail, selectedTokens, onThemePresetCommit 
   const handlePresetChange = (selectedColor: TColorName) => {
     if (selectedColor === COLOR.CUSTOM) return
 
-    onThemePresetCommit({ [theme]: { [detail.key]: mapToPresetColorHex(selectedColor, theme) } })
+    onThemePresetCommit({
+      [theme]: { [detail.key]: mapToPresetColorHex(selectedColor, theme) },
+    })
   }
 
   const handleCustomChange = (customColor: string) => {

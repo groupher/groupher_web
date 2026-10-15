@@ -30,12 +30,12 @@ const ConditionSelector: FC<TProps> = ({
   selected = false,
   placement = 'bottom',
   closable = true,
-  prefixIcon = null,
+  prefixIcon,
   ...spacing
 }) => {
   const [offset, setOffset] = useState([28, 5])
   const [menuOpen, setMenuOpen] = useState(false)
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement>(null)
 
   const s = useSalon({ menuOpen, selected, ...spacing })
   const { t } = useTrans()
@@ -75,7 +75,7 @@ const ConditionSelector: FC<TProps> = ({
           closable={closable}
           onClear={() => {
             // simulate click to avoid menu pop again
-            ref.current.click()
+            ref.current?.click()
             onSelect(null)
           }}
           prefixIcon={prefixIcon}

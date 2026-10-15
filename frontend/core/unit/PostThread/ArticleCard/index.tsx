@@ -19,11 +19,12 @@ type TProps = {
 
 const ArticleCard: FC<TProps> = ({ viewModel }) => {
   const { content: data, stats, viewerState } = viewModel
-  const isActive = usePreviewItemActive(data.innerId, THREAD_PATH.POST)
+  const innerId = String(data.innerId ?? '')
+  const isActive = usePreviewItemActive(innerId, THREAD_PATH.POST)
   const s = useSalon({ active: isActive })
 
   const { slug } = useCommunity()
-  const { innerId, title, digest, isPinned } = data
+  const { title, digest, isPinned } = data
 
   return (
     <div className={s.wrapper}>
@@ -45,7 +46,7 @@ const ArticleCard: FC<TProps> = ({ viewModel }) => {
       </CommunityPreviewLink>
 
       <CommunityPreviewLink href={`/${slug}/${THREAD_PATH.POST}/${innerId}`} previewId={innerId}>
-        {cutRest(digest, 150)}
+        {cutRest(digest ?? '', 150)}
       </CommunityPreviewLink>
 
       <div className='mt-1' />

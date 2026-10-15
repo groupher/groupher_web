@@ -202,13 +202,23 @@ const requestPhoenixGraphQL = async <TData>({
     method: 'POST',
   })
 
-  const responseText = await response.text()
-  const result = parseGraphQLResponse(responseText) as TGraphQLPayload<TData> | null
-
-  if (!response.ok || result?.errors?.length) {
+  if (!response.ok) {
+    const responseText = await response.text()
+    const result = parseGraphQLResponse(responseText) as TGraphQLPayload<TData> | null
     const message =
       result?.errors?.[0]?.message || `Phoenix GraphQL failed: ${response.status}: ${responseText}`
     throw new PhoenixGraphQLError(message, response.status || 502, result?.errors ?? [])
+  }
+
+  const responseText = await response.text()
+  const result = parseGraphQLResponse(responseText) as TGraphQLPayload<TData> | null
+
+  if (result?.errors?.length) {
+    throw new PhoenixGraphQLError(
+      result.errors[0]?.message || 'Phoenix GraphQL returned an error.',
+      response.status || 502,
+      result.errors,
+    )
   }
 
   if (!result?.data) {
@@ -322,15 +332,17 @@ export const registerGeneratedAsset = async ({
     },
   )
 
-  const payload = (await response.json().catch(() => null)) as {
-    error?: { message?: string }
-  } | null
   if (!response.ok) {
+    const payload = (await response.json().catch(() => null)) as {
+      error?: { message?: string }
+    } | null
     throw new Error(
       payload?.error?.message || `Assets Hub batch registration failed: ${response.status}`,
     )
   }
-  return payload
+  return (await response.json().catch(() => null)) as {
+    error?: { message?: string }
+  } | null
 }
 
 /** Runs the fetch community asset origin info operation at the assets hub boundary. */

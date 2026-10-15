@@ -135,19 +135,17 @@ defmodule Helper.Cache do
   end
 
   defp safe_load(loader) do
-    try do
-      case loader.() do
-        {:ok, _value} = result -> result
-        {:error, %ErrorCat.Error{} = error} -> {:error, error}
-        {:error, reason} -> {:error, ErrorCat.custom(%{reason: :loader_failed, details: reason})}
-        value -> {:error, ErrorCat.custom(%{reason: :invalid_loader_result, details: value})}
-      end
-    rescue
-      error -> {:error, ErrorCat.custom(%{reason: :exception, message: Exception.message(error)})}
-    catch
-      :exit, reason -> {:error, ErrorCat.custom(%{reason: :exit, details: reason})}
-      kind, reason -> {:error, ErrorCat.custom(%{reason: kind, details: reason})}
+    case loader.() do
+      {:ok, _value} = result -> result
+      {:error, %ErrorCat.Error{} = error} -> {:error, error}
+      {:error, reason} -> {:error, ErrorCat.custom(%{reason: :loader_failed, details: reason})}
+      value -> {:error, ErrorCat.custom(%{reason: :invalid_loader_result, details: value})}
     end
+  rescue
+    error -> {:error, ErrorCat.custom(%{reason: :exception, message: Exception.message(error)})}
+  catch
+    :exit, reason -> {:error, ErrorCat.custom(%{reason: :exit, details: reason})}
+    kind, reason -> {:error, ErrorCat.custom(%{reason: kind, details: reason})}
   end
 
   @doc """

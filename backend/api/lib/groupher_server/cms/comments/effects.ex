@@ -36,25 +36,24 @@ defmodule GroupherServer.CMS.Comments.Effects do
     |> CMS.Outbox.send()
   end
 
-  def enqueue(_event, _resource_type, _resource_id, _command_id, _data, _opts),
-    do: {:error, :comment_effect_identity_required}
+  def enqueue(_event, _resource_type, _resource_id, _command_id, _data, _opts) do
+    {:error, :comment_effect_identity_required}
+  end
 
   @doc "Records one Comment activity in the caller-owned transaction."
   def activity(resource, event, opts), do: Activity.log(resource, event, opts)
 
   @doc "Reloads canonical resources and delivers one typed Comment effect."
   def deliver(:sync_mentions, %{"comment_id" => id}) do
-    with {:ok, %Comment{} = comment} <- comment(id) do
-      CMS.Events.emit(:sync_mentions, %{artiment: comment})
-    else
+    case comment(id) do
+      {:ok, %Comment{} = comment} -> CMS.Events.emit(:sync_mentions, %{artiment: comment})
       {:ok, :deleted} -> {:ok, :pass}
     end
   end
 
   def deliver(:audition, %{"comment_id" => id}) do
-    with {:ok, %Comment{} = comment} <- comment(id) do
-      CMS.Events.emit(:audition, %{artiment: comment})
-    else
+    case comment(id) do
+      {:ok, %Comment{} = comment} -> CMS.Events.emit(:audition, %{artiment: comment})
       {:ok, :deleted} -> {:ok, :pass}
     end
   end

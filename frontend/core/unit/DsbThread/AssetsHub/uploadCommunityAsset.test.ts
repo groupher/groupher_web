@@ -56,12 +56,20 @@ describe('uploadCommunityAsset', () => {
         }),
       )
       .mockResolvedValueOnce(
-        createResponse({ result: { timings: [{ duration: 12, label: 'r2' }] } }),
+        createResponse({
+          result: { timings: [{ duration: 12, label: 'r2' }] },
+        }),
       )
 
-    const file = new File(['wallpaper'], 'wallpaper.webp', { type: 'image/webp' })
+    const file = new File(['wallpaper'], 'wallpaper.webp', {
+      type: 'image/webp',
+    })
     const onStage = vi.fn()
-    const result = await uploadCommunityAsset({ community: 'demo', file, onStage })
+    const result = await uploadCommunityAsset({
+      community: 'demo',
+      file,
+      onStage,
+    })
 
     expect(result).toEqual({
       assetPublicRef: 'asset-public-ref',
@@ -79,7 +87,11 @@ describe('uploadCommunityAsset', () => {
       },
     })
     expect(mocks.putFileWithProgress).toHaveBeenCalledWith(
-      expect.objectContaining({ file, method: 'PUT', url: 'https://upload.example.test/object' }),
+      expect.objectContaining({
+        file,
+        method: 'PUT',
+        url: 'https://upload.example.test/object',
+      }),
     )
     expect(onStage.mock.calls.map(([stage, state]) => `${stage}:${state}`)).toEqual([
       'checksum:running',
@@ -101,13 +113,19 @@ describe('uploadCommunityAsset', () => {
       .mockResolvedValueOnce(
         createResponse({
           result: {
-            upload: { headers: {}, method: 'PUT', url: 'https://upload.example.test/object' },
+            upload: {
+              headers: {},
+              method: 'PUT',
+              url: 'https://upload.example.test/object',
+            },
           },
         }),
       )
       .mockResolvedValueOnce(createResponse({ error: 'checksum mismatch' }, false))
 
-    const file = new File(['wallpaper'], 'wallpaper.webp', { type: 'image/webp' })
+    const file = new File(['wallpaper'], 'wallpaper.webp', {
+      type: 'image/webp',
+    })
     const error = await uploadCommunityAsset({ community: 'demo', file }).catch((caught) => caught)
 
     expect(error).toMatchObject({

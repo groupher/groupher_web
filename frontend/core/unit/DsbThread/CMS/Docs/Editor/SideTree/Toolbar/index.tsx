@@ -20,8 +20,16 @@ type TToolbarAction = {
 }
 
 const ACTIONS: TToolbarAction[] = [
-  { key: 'pin', label: 'dsb.cms.docs.side_tree.action.pin', Icon: MapPinPlusSVG },
-  { key: 'group', label: 'dsb.cms.docs.side_tree.action.group', Icon: FolderPlusSVG },
+  {
+    key: 'pin',
+    label: 'dsb.cms.docs.side_tree.action.pin',
+    Icon: MapPinPlusSVG,
+  },
+  {
+    key: 'group',
+    label: 'dsb.cms.docs.side_tree.action.group',
+    Icon: FolderPlusSVG,
+  },
   { key: 'doc', label: 'dsb.cms.docs.side_tree.action.doc', Icon: FilePlusSVG },
 ]
 

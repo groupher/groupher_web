@@ -478,21 +478,21 @@ defmodule GroupherServer.CMS.Communities.Tags.Mutation do
         {:ok, {:workflow, workflow_ref}}
 
       nil ->
-        case Keyword.get(opts, :command_id) do
-          command_id when is_binary(command_id) ->
-            case Ecto.UUID.cast(command_id) do
-              {:ok, command_id} -> {:ok, {:command, command_id}}
-              :error -> {:error, :invalid_taxonomy_identity}
-            end
-
-          _ ->
-            {:error, :taxonomy_identity_required}
-        end
+        command_identity(Keyword.get(opts, :command_id))
 
       _ ->
         {:error, :invalid_taxonomy_identity}
     end
   end
+
+  defp command_identity(command_id) when is_binary(command_id) do
+    case Ecto.UUID.cast(command_id) do
+      {:ok, command_id} -> {:ok, {:command, command_id}}
+      :error -> {:error, :invalid_taxonomy_identity}
+    end
+  end
+
+  defp command_identity(_command_id), do: {:error, :taxonomy_identity_required}
 
   defp split_identity(attrs, opts) when is_map(attrs) do
     command_id = Map.get(attrs, :command_id) || Map.get(attrs, "command_id")

@@ -1,3 +1,4 @@
+import { useReducedMotion } from 'motion/react'
 import { includes, keys } from 'ramda'
 import { type FC, useState } from 'react'
 
@@ -20,13 +21,16 @@ import { SHINE_DOTS } from './constant'
 import Slogan from './Slogan'
 
 const GridBlocks: FC = () => {
+  const shouldReduceMotion = useReducedMotion()
   const s = useSalon()
   const [shineIdx, setShineIdx] = useState(0)
 
-  useInterval(() => {
-    const nextIdx = shineIdx >= keys(SHINE_DOTS).length - 1 ? 0 : shineIdx + 1
-    setShineIdx(nextIdx)
-  }, 2000)
+  useInterval(
+    () => {
+      setShineIdx((current) => (current >= keys(SHINE_DOTS).length - 1 ? 0 : current + 1))
+    },
+    shouldReduceMotion ? null : 2000,
+  )
 
   return (
     <div className={s.wrapper}>

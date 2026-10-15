@@ -33,7 +33,7 @@ const IconButton: FC<TProps> = ({
 }) => {
   const s = useSalon({ size, active, dimWhenIdle, ...spacing })
 
-  let realIcon = null
+  let realIcon: ReactNode = null
 
   if (path) {
     // icon from OSS

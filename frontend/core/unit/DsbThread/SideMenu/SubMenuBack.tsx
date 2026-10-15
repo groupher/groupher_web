@@ -32,8 +32,10 @@ export default function SubMenuBack({
   const community = meta?.community ?? ''
   const s = useSalon()
   const navigating = useRef(false)
-  const isValidReturn = returnTo?.startsWith(dashboardBase) && !returnTo.startsWith(currentBase)
-  const backHref = isValidReturn ? returnTo : fallbackHref
+  const isValidReturn = Boolean(
+    returnTo?.startsWith(dashboardBase) && !returnTo.startsWith(currentBase),
+  )
+  const backHref = isValidReturn ? (returnTo ?? fallbackHref) : fallbackHref
 
   const switchToMainMenu = (): void => {
     dispatchMenuView({
@@ -57,7 +59,9 @@ export default function SubMenuBack({
     const target = toDsbTargetFromPath(backHref)
     if (target) {
       void navigate({
-        to: resolveDsbRoute(target, { currentSearch: new URLSearchParams(searchStr) }) as never,
+        to: resolveDsbRoute(target, {
+          currentSearch: new URLSearchParams(searchStr),
+        }) as never,
       })
     } else if (community) {
       void navigate({

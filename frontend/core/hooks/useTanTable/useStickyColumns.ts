@@ -2,6 +2,7 @@
 'use client'
 
 import type { LegacyTable as Table } from '@tanstack/react-table/legacy'
+import type { RowData } from '@tanstack/table-core'
 import { useMemo } from 'react'
 
 import useTwBelt from '~/hooks/useTwBelt'
@@ -22,7 +23,10 @@ type TStickyOptions = {
 }
 
 /** Exposes sticky columns state and actions through the shared React hook boundary. */
-export function useStickyColumns<TData>(table: Table<TData>, options?: TStickyOptions) {
+export function useStickyColumns<TData extends RowData>(
+  table: Table<TData>,
+  options?: TStickyOptions,
+) {
   const { bg, zIndex } = useTwBelt()
   const showSelectColumn = options?.showSelectColumn ?? true
 

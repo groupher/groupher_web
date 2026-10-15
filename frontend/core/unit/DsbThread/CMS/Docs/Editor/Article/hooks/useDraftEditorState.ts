@@ -142,7 +142,11 @@ export default function useDraftEditorState(
     )
     setDraftSource(session.source)
     setMeta(composeEditorDraftMeta(session.info))
-    setLoadStatus({ error: null, loadedDocId: nextDraft.docId || null, loading: false })
+    setLoadStatus({
+      error: null,
+      loadedDocId: nextDraft.docId || null,
+      loading: false,
+    })
     setSaveStatus({ error: null, lastSavedAt: null, saving: false })
   }, [])
 

@@ -93,7 +93,9 @@ export default function TagList({
   const [indicatorRoot, setIndicatorRoot] = useState<HTMLElement | null>(null)
   const sensors = useSensors(
     useSensor(PointerSensor),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
   )
 
   const handleDragStart = ({ active }: DragStartEvent): void => {
@@ -116,7 +118,7 @@ export default function TagList({
 
     if (indicatorFrameRef.current) cancelAnimationFrame(indicatorFrameRef.current)
     indicatorFrameRef.current = requestAnimationFrame(() => {
-      updateDropIndicator(event.over, target)
+      updateDropIndicator(event.over, target ?? undefined)
       indicatorFrameRef.current = null
     })
     moveTagDrag(target)

@@ -18,9 +18,9 @@ const Header: FC<TProps> = ({ article }) => {
   return (
     <div className={s.wrapper}>
       <ArticleCatStatus cat={cat} status={status} smaller={false} right={4} />
-      <TagsList items={communityTags} size='medium' />
+      <TagsList items={communityTags ?? []} size='medium' />
       <div className={s.publishWrapper}>
-        {meta.isEdited && (
+        {meta?.isEdited && (
           <Fragment>
             <DotDivider className='mx-2' />
             <div className={s.editedHint}>修改过</div>

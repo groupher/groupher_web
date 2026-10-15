@@ -5,7 +5,7 @@ import { useSnapshot } from 'valtio'
 import useViewingArticle from '~/hooks/useViewingArticle'
 import { gatherCommentViewerIds, mergeCommentViewerState } from '~/lib/commentViewerState'
 import { Q } from '~/query'
-import { articlePathKey, articlePathOf } from '~/query/articlePath'
+import { articlePathKey } from '~/query/articlePath'
 import {
   overlayCommentReactionReceipt,
   readCommentReactionReceipts,
@@ -25,12 +25,13 @@ export default function useCommentQueryState() {
     throw new Error('comments query must be used within a Comments store provider')
   const comments = useSnapshot(commentsStore)
   const account = useAccount()
-  const { article, stats } = useViewingArticle()
+  const { article, articlePath, stats } = useViewingArticle()
+  const articleKey = articlePathKey(articlePath)
   const query = useQuery(
     Q.comment.list(
-      article.community.slug,
-      article.meta.thread,
-      article.innerId,
+      articlePath.community,
+      articlePath.thread,
+      articlePath.innerId,
       comments.page,
       comments.mode,
     ),
@@ -38,22 +39,21 @@ export default function useCommentQueryState() {
   const viewerQuery = useQuery(
     Q.viewer.commentStates(
       account.accountRef || getAccountRef(account.user) || '',
-      articlePathOf(article),
+      articlePath,
       query.data ? gatherCommentViewerIds(query.data as TPagedComments) : [],
     ),
   )
   const summaryQuery = useQuery(
     Q.viewer.commentSummary(
       account.accountRef || getAccountRef(account.user) || '',
-      article.community.slug,
-      article.meta.thread,
-      article.innerId,
+      articlePath.community,
+      articlePath.thread,
+      articlePath.innerId,
     ),
   )
   useCommentReceiptReconcile(article)
   const data = useMemo(() => {
     if (!query.data) return query.data
-    const articleKey = articlePathKey(articlePathOf(article))
     const reactionReceipts = new Map(
       readCommentReactionReceipts(
         account.accountRef || getAccountRef(account.user),
@@ -155,13 +155,11 @@ export default function useCommentQueryState() {
   }, [
     account.accountRef,
     account.user,
-    article.community.slug,
-    article.innerId,
+    articleKey,
     stats?.snapshotAt,
-    article.meta.thread,
     query.data,
     viewerQuery.data,
   ])
 
-  return { comments, commentsStore, data, query, summaryQuery }
+  return { comments, data, query, summaryQuery }
 }

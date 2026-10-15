@@ -16,11 +16,13 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
 
   require GroupherServer.CMS.Comments.ErrorCat
 
-  alias GroupherServer.{Accounts, CMS, Repo}
+  alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.{Comments.ErrorCat, Command, FrontDesk}
   alias CMS.Comments.Commands.CommentConfirmation, as: Confirmation
-  alias CMS.Comments.{Effects, Persist}
+  alias CMS.Articles.Query, as: ArticleQuery
+  alias CMS.Comments.{Effects, Persist, Query}
+  alias CMS.Communities.Query, as: CommunityQuery
   alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CMS.ErrorCat, as: CmsErrorCat
 
@@ -87,9 +89,9 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
     end
   end
 
-  def create(thread, %{id: article_id} = projection, body, %User{} = user, command_id)
-      when is_binary(article_id) do
-    with %Article{thread: ^thread} = article <- Repo.get(Article, article_id),
+  def create(thread, projection, body, %User{} = user, command_id) when is_map(projection) do
+    with {:ok, article_id} <- projection_article_id(projection),
+         %Article{thread: ^thread} = article <- ArticleQuery.article(article_id),
          {:ok, info} <- CMS.Artiment.Matcher.match_interaction(article) do
       do_create(
         thread,
@@ -107,25 +109,15 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
     end
   end
 
-  def create(thread, %{article_id: article_id} = projection, body, %User{} = user, command_id)
-      when is_binary(article_id) do
-    with %Article{thread: ^thread} = article <- Repo.get(Article, article_id),
-         {:ok, info} <- CMS.Artiment.Matcher.match_interaction(article) do
-      do_create(
-        thread,
-        article,
-        body,
-        user,
-        info,
-        command_id,
-        Map.get(projection, :branch_id),
-        Map.get(projection, :community)
-      )
-    else
-      nil -> {:error, CmsErrorCat.custom("article not found")}
-      {:error, _reason} = error -> error
-    end
+  defp projection_article_id(%{id: article_id}) when is_binary(article_id) do
+    {:ok, article_id}
   end
+
+  defp projection_article_id(%{article_id: article_id}) when is_binary(article_id) do
+    {:ok, article_id}
+  end
+
+  defp projection_article_id(_projection), do: {:error, CmsErrorCat.custom("article not found")}
 
   defp do_create(
          thread,
@@ -137,7 +129,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
          branch_id,
          community
        ) do
-    article = Repo.preload(article, author: :user)
+    article = ArticleQuery.article_with_author(article)
 
     if is_nil(command_id) do
       {:error, CmsErrorCat.command_id_required()}
@@ -195,37 +187,41 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
 
   defp create_with_access(:doc, article, branch_id, body, user, info, command_id, community)
        when is_integer(branch_id) do
-    with %Community{} = community <- community do
-      CMS.Gate.with_branch_check(
-        user,
-        :create_comment,
-        community,
-        article,
-        branch_id,
-        fn canonical ->
-          create_new(
-            :doc,
-            Map.put(canonical, :branch_id, branch_id),
-            body,
-            user,
-            info,
-            command_id,
-            community
-          )
-        end
-      )
-    else
-      _ -> {:error, :article_binding_context_required}
+    case community do
+      %Community{} = community ->
+        CMS.Gate.with_branch_check(
+          user,
+          :create_comment,
+          community,
+          article,
+          branch_id,
+          fn canonical ->
+            create_new(
+              :doc,
+              Map.put(canonical, :branch_id, branch_id),
+              body,
+              user,
+              info,
+              command_id,
+              community
+            )
+          end
+        )
+
+      _ ->
+        {:error, :article_binding_context_required}
     end
   end
 
   defp create_with_access(thread, article, _branch_id, body, user, info, command_id, community) do
-    with %Community{} = community <- community do
-      CMS.Gate.with_community_check(user, :create_comment, community, article, fn canonical ->
-        create_new(thread, canonical, body, user, info, command_id, community)
-      end)
-    else
-      _ -> {:error, :article_binding_context_required}
+    case community do
+      %Community{} = community ->
+        CMS.Gate.with_community_check(user, :create_comment, community, article, fn canonical ->
+          create_new(thread, canonical, body, user, info, command_id, community)
+        end)
+
+      _ ->
+        {:error, :article_binding_context_required}
     end
   end
 
@@ -273,12 +269,12 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
        )
        when is_binary(result_key) do
     with {result_id, ""} <- Integer.parse(result_key),
-         %Comment{} = comment <- Repo.get(Comment, result_id),
-         %Community{} = community <- Repo.get(Community, comment.community_id),
+         %Comment{} = comment <- Query.comment(result_id),
+         %Community{} = community <- CommunityQuery.get(comment.community_id),
          {:ok, canonical_article} <- replay_article(article) do
       {:ok,
        %{
-         comment: Repo.preload(comment, reply_to_comment: :author),
+         comment: Query.comment_with_reply_author(comment),
          article: canonical_article,
          community: community,
          command_id: command_id
@@ -310,10 +306,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
   end
 
   defp replay_article(article) when is_struct(article) do
-    case Repo.get(article.__struct__, article.id) do
-      nil -> {:error, CmsErrorCat.command_result_unavailable()}
-      canonical -> {:ok, Repo.preload(canonical, author: :user)}
-    end
+    ArticleQuery.reload_with_author(article)
   end
 
   defp replay_article(%{id: article_id}) when is_binary(article_id) do
@@ -390,23 +383,21 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
   end
 
   defp reply_new_from_canonical(canonical, article, body, %User{} = user, command_id) do
-    with replying_comment <- Repo.preload(canonical, reply_to_comment: :author),
+    with replying_comment <- Query.comment_with_reply_author(canonical),
          {:ok, thread} <- FrontDesk.thread_of(replying_comment),
-         %Community{} = community <- Repo.get(Community, replying_comment.community_id),
-         article <- Repo.preload(article, author: :user),
-         {:ok, info} <- CMS.Artiment.Matcher.match_interaction(article),
-         {:ok, result} <-
-           reply_new(
-             replying_comment,
-             body,
-             user,
-             thread,
-             info,
-             article,
-             community,
-             command_id
-           ) do
-      {:ok, result}
+         %Community{} = community <- CommunityQuery.get(replying_comment.community_id),
+         article <- ArticleQuery.article_with_author(article),
+         {:ok, info} <- CMS.Artiment.Matcher.match_interaction(article) do
+      reply_new(
+        replying_comment,
+        body,
+        user,
+        thread,
+        info,
+        article,
+        community,
+        command_id
+      )
     end
   end
 
@@ -541,8 +532,9 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
     end
   end
 
-  defp article_inner_id(_article, _community),
-    do: {:error, CmsErrorCat.custom("article binding context required")}
+  defp article_inner_id(_article, _community) do
+    {:error, CmsErrorCat.custom("article binding context required")}
+  end
 
   defp article_comments_locked(details) do
     {:error, GateErrorCat.article_comments_locked(details)}

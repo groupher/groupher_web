@@ -6,7 +6,7 @@ export default function useSalon() {
 
   return {
     wrapper: 'row align-start flex-wrap justify-between gap-y-8',
-    moreColorsClip: 'w-full overflow-hidden',
+    moreColorsClip: 'w-full overflow-hidden pt-8',
     moreColors: 'row align-start flex-wrap justify-between',
     dividerRow: cn('relative flex justify-center mt-6 mb-4', sexyBorder()),
     toggleMask: cn(

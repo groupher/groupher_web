@@ -98,8 +98,9 @@ defmodule GroupherServer.CMS.ArticlePath do
 
   defp validate_community(_), do: :error
 
-  defp validate_inner_id(inner_id) when is_binary(inner_id) or is_integer(inner_id),
-    do: {:ok, :pass}
+  defp validate_inner_id(inner_id) when is_binary(inner_id) or is_integer(inner_id) do
+    {:ok, :pass}
+  end
 
   defp validate_inner_id(_), do: :error
 

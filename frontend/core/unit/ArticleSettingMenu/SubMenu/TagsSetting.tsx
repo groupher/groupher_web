@@ -14,6 +14,7 @@ import Checker from '~/ui/Checker'
 import TagNode from '~/ui/TagNode'
 import { toast } from '~/ui/Toaster'
 
+import { getArticlePath } from '../helper'
 import S from '../schema'
 import useTouched from '../useTouched'
 import Footer from './Footer'
@@ -26,7 +27,7 @@ type TProps = {
 const TagSetting: FC<TProps> = ({ onBack }) => {
   const s = useSalon()
 
-  const [checked, setChecked] = useState([])
+  const [checked, setChecked] = useState<TID[]>([])
   const { touched, setTouched, resetTouched } = useTouched()
 
   const { slug: community } = useCommunity()
@@ -39,7 +40,7 @@ const TagSetting: FC<TProps> = ({ onBack }) => {
 
   useEffect(() => {
     const originTags = article.communityTags || []
-    setChecked(originTags.map((item) => item.id))
+    setChecked(originTags.flatMap((item) => (item.id === undefined ? [] : [item.id])))
   }, [article.communityTags])
 
   const handleCheck = (id: TID, toggle: boolean): void => {
@@ -53,12 +54,14 @@ const TagSetting: FC<TProps> = ({ onBack }) => {
   }
 
   const handleUpdate = () => {
+    const articlePath = getArticlePath(article)
+    if (!articlePath || article.version === undefined) {
+      toast('文章信息不完整', 'error')
+      return
+    }
+
     const params = {
-      article: {
-        innerId: article.innerId,
-        community: article.community?.slug,
-        thread: article.meta.thread,
-      },
+      article: articlePath,
       expectedVersion: article.version,
       communityTags: checked,
     }
@@ -66,11 +69,11 @@ const TagSetting: FC<TProps> = ({ onBack }) => {
     updatePost(params).then((res) => {
       if (res.error) {
         toast('修改失败', 'error')
-      } else {
+      } else if (res.data?.updatePost) {
         toast('修改完成')
         const newTags = res.data.updatePost.communityTags as unknown as TTag[]
-        setChecked(newTags.map((item) => item.id))
-        updateViewingArticle({ id: article.id, communityTags: newTags })
+        setChecked(newTags.flatMap((item) => (item.id === undefined ? [] : [item.id])))
+        if (article.id) updateViewingArticle({ id: article.id, communityTags: newTags })
         resetTouched()
       }
     })
@@ -83,7 +86,7 @@ const TagSetting: FC<TProps> = ({ onBack }) => {
           type='button'
           className={s.item}
           key={item.id}
-          onClick={() => handleCheck(item.id, !includes(String(item.id), checked))}
+          onClick={() => item.id !== undefined && handleCheck(item.id, !includes(item.id, checked))}
         >
           <TagNode
             dotSize={2.5}

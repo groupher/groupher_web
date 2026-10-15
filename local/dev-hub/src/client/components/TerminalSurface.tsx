@@ -18,7 +18,7 @@ export function TerminalSurface({ serviceId, mode, emptyText }: TProps) {
 
     const controller = new AbortController()
     let disposed = false
-    let disposeTerminal = () => undefined
+    let terminalCleanup: (() => void) | null = null
 
     void Promise.all([
       import('@xterm/xterm'),
@@ -94,7 +94,7 @@ export function TerminalSurface({ serviceId, mode, emptyText }: TProps) {
         observer.observe(host)
         requestAnimationFrame(fit)
 
-        disposeTerminal = () => {
+        terminalCleanup = () => {
           unsubscribe()
           observer.disconnect()
           terminal.dispose()
@@ -123,7 +123,7 @@ export function TerminalSurface({ serviceId, mode, emptyText }: TProps) {
     return () => {
       disposed = true
       controller.abort()
-      disposeTerminal()
+      terminalCleanup?.()
     }
   }, [emptyText, mode, serviceId])
 

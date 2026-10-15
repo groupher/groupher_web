@@ -744,8 +744,9 @@ defmodule GroupherServer.CMS.DocCover.Persist do
   # that the validated collection changed or escaped its tenant/group scope.
   defp expect_reindexed_rows({expected, _result}, expected, _message), do: {:ok, :pass}
 
-  defp expect_reindexed_rows({_actual, _result}, _expected, message),
-    do: {:error, ErrorCat.custom(message)}
+  defp expect_reindexed_rows({_actual, _result}, _expected, message) do
+    {:error, ErrorCat.custom(message)}
+  end
 
   # The validation reducers prepend for linear accumulation; restore request order
   # before the records are converted into reindex columns.

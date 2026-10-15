@@ -25,12 +25,11 @@ export default function Script({
   strategy = 'mount',
   ...attributes
 }: TScriptProps) {
-  const attributeEntries = Object.entries(attributes).filter(
-    ([, value]) => value !== undefined && value !== null && typeof value !== 'function',
+  const serializedAttributes = JSON.stringify(
+    Object.entries(attributes)
+      .filter(([, value]) => value !== undefined && value !== null && typeof value !== 'function')
+      .map(([key, value]) => [key, value === true ? '' : String(value)]),
   )
-  const attributeKey = attributeEntries
-    .map(([key, value]) => `${key}:${String(value)}`)
-    .join('\u0000')
 
   useEffect(() => {
     let cancelled = false
@@ -39,6 +38,7 @@ export default function Script({
     let loadListener: (() => void) | null = null
     let scriptElement: HTMLScriptElement | null = null
     let ownsScript = false
+    const attributeEntries = JSON.parse(serializedAttributes) as [string, string][]
 
     const handleLoad = (event: Event) => {
       const script = event.currentTarget as HTMLScriptElement
@@ -71,7 +71,7 @@ export default function Script({
       if (src) script.src = src
       script.async = true
       for (const [key, value] of attributeEntries) {
-        script.setAttribute(key, value === true ? '' : String(value))
+        script.setAttribute(key, value)
       }
       if (dangerouslySetInnerHTML?.__html) script.text = String(dangerouslySetInnerHTML.__html)
       script.addEventListener('load', handleLoad, { once: true })
@@ -104,7 +104,7 @@ export default function Script({
       scriptElement?.removeEventListener('error', handleError)
       if (ownsScript && !scriptElement?.hasAttribute(LOADED)) scriptElement?.remove()
     }
-  }, [attributeKey, dangerouslySetInnerHTML, id, onError, onLoad, src, strategy])
+  }, [dangerouslySetInnerHTML, id, onError, onLoad, serializedAttributes, src, strategy])
 
   return null
 }

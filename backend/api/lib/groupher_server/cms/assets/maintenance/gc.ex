@@ -28,62 +28,66 @@ defmodule GroupherServer.CMS.Assets.GC do
   @doc "Returns active assets older than the safety window with no authoritative refs."
   def candidates(%Community{id: community_id}, opts \\ []) do
     with {:ok, _} <- Completeness.guard(community_id) do
-      cutoff =
-        DateTime.add(
-          DateTime.utc_now(:second),
-          -Keyword.get(opts, :safety_window_seconds, @default_safety_window_seconds),
-          :second
-        )
-
-      refs = from(ref in ArticleAssetRef, where: ref.asset_id == parent_as(:asset).id, select: 1)
-
-      pending_upload =
-        from(upload in CommunityApplicationLogoUpload,
-          where:
-            upload.community_asset_id == parent_as(:asset).id and
-              upload.status in [:pending, :finalized],
-          select: 1
-        )
-
-      active_import_community_ids = CMS.ContentImport.active_community_ids()
-
-      pending_replacement =
-        from(plan in AssetReplacementPlan,
-          where:
-            plan.community_id == parent_as(:asset).community_id and
-              plan.status in [:pending, :partially_applied] and
-              (plan.from_asset_id == parent_as(:asset).id or
-                 plan.to_asset_id == parent_as(:asset).id),
-          select: 1
-        )
-
-      legal_hold =
-        from(blocker in CommunityLifecycleBlocker,
-          where:
-            blocker.community_id == parent_as(:asset).community_id and
-              blocker.blocker_type == :ops_legal_hold and is_nil(blocker.ended_at),
-          select: 1
-        )
-
-      {:ok,
-       Repo.all(
-         from(asset in CommunityAsset,
-           as: :asset,
-           where:
-             asset.community_id == ^community_id and asset.status == :active and
-               is_nil(asset.deleted_at) and is_nil(asset.archived_at) and
-               asset.inserted_at <= ^cutoff,
-           where: not exists(refs),
-           where: not exists(pending_upload),
-           where: asset.community_id not in subquery(active_import_community_ids),
-           where: not exists(pending_replacement),
-           where: not exists(legal_hold),
-           select: asset
-         )
-       )
-       |> Enum.map(
-         &%{asset: &1, reason: "no_authoritative_refs", observed_at: DateTime.utc_now(:second)}
-       )}
+      cutoff = cutoff(opts)
+      {:ok, community_id |> candidate_query(cutoff) |> Repo.all() |> describe_candidates()}
     end
+  end
+
+  defp cutoff(opts) do
+    seconds = Keyword.get(opts, :safety_window_seconds, @default_safety_window_seconds)
+    DateTime.add(DateTime.utc_now(:second), -seconds, :second)
+  end
+
+  defp candidate_query(community_id, cutoff) do
+    from(asset in CommunityAsset,
+      as: :asset,
+      where:
+        asset.community_id == ^community_id and asset.status == :active and
+          is_nil(asset.deleted_at) and is_nil(asset.archived_at) and asset.inserted_at <= ^cutoff,
+      where: not exists(authoritative_refs_query()),
+      where: not exists(pending_upload_query()),
+      where: asset.community_id not in subquery(CMS.ContentImport.active_community_ids()),
+      where: not exists(pending_replacement_query()),
+      where: not exists(legal_hold_query()),
+      select: asset
+    )
+  end
+
+  defp authoritative_refs_query do
+    from(ref in ArticleAssetRef, where: ref.asset_id == parent_as(:asset).id, select: 1)
+  end
+
+  defp pending_upload_query do
+    from(upload in CommunityApplicationLogoUpload,
+      where: upload.community_asset_id == parent_as(:asset).id,
+      where: upload.status in [:pending, :finalized],
+      select: 1
+    )
+  end
+
+  defp pending_replacement_query do
+    from(plan in AssetReplacementPlan,
+      where: plan.community_id == parent_as(:asset).community_id,
+      where: plan.status in [:pending, :partially_applied],
+      where:
+        plan.from_asset_id == parent_as(:asset).id or plan.to_asset_id == parent_as(:asset).id,
+      select: 1
+    )
+  end
+
+  defp legal_hold_query do
+    from(blocker in CommunityLifecycleBlocker,
+      where: blocker.community_id == parent_as(:asset).community_id,
+      where: blocker.blocker_type == :ops_legal_hold,
+      where: is_nil(blocker.ended_at),
+      select: 1
+    )
+  end
+
+  defp describe_candidates(assets) do
+    Enum.map(
+      assets,
+      &%{asset: &1, reason: "no_authoritative_refs", observed_at: DateTime.utc_now(:second)}
+    )
   end
 end

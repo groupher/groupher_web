@@ -7,11 +7,6 @@ import ArticleListStoreProvider from '~/stores/articleList/provider'
 import ChangelogThread from '~/unit/ChangelogThread'
 
 export const Route = createFileRoute('/$community/changelog/_layout')({
-  head: ({ params, matches }) => ({
-    links: [
-      { rel: 'canonical', href: communityPublicPath(params.community, '/changelog', matches) },
-    ],
-  }),
   loader: async ({ context, params }) => {
     const changelogs = await context.queryClient.ensureQueryData(
       communityQueries.changelogs(params.community),
@@ -21,11 +16,18 @@ export const Route = createFileRoute('/$community/changelog/_layout')({
         context.queryClient,
         params.community,
         THREAD.CHANGELOG,
-        (changelogs.entries || []).map((article) => article.innerId),
+        (changelogs?.entries || []).flatMap((article) =>
+          article.innerId === undefined ? [] : [article.innerId],
+        ),
       ),
     )
     return { changelogs }
   },
+  head: ({ params, matches }) => ({
+    links: [
+      { rel: 'canonical', href: communityPublicPath(params.community, '/changelog', matches) },
+    ],
+  }),
   component: ChangelogListLayout,
 })
 

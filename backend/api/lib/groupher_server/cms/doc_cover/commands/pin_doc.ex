@@ -20,14 +20,14 @@ defmodule GroupherServer.CMS.DocCover.Commands.PinDoc do
       #=> {:ok, pinned_doc}
   """
   @spec execute(Community.t(), term(), term(), Ecto.UUID.t()) :: term()
-  def execute(community, node_id, actor, command_id),
-    do:
-      Support.execute_receipted(
-        community,
-        actor,
-        command_id,
-        :doc_cover_pin_doc,
-        %{node_id: node_id},
-        &Persist.pin_doc(&1, node_id)
-      )
+  def execute(community, node_id, actor, command_id) do
+    Support.execute_receipted(
+      community,
+      actor,
+      command_id,
+      :doc_cover_pin_doc,
+      %{node_id: node_id},
+      &Persist.pin_doc(&1, node_id)
+    )
+  end
 end

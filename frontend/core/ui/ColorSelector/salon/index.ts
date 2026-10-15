@@ -16,7 +16,7 @@ export default function useSalon() {
       shadow('md'),
     ),
     checkIcon: cn('size-3', fill('button.fg')),
-    customBlockMotion: 'overflow-hidden',
+    customBlockMotion: 'overflow-hidden pt-1.5',
     customBlock: 'max-w-full px-1.5 pb-1.5',
   }
 }

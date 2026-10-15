@@ -36,40 +36,40 @@ const Header: FC<TProps> = ({ article, stats, viewerState }) => {
   return (
     <section className={s.wrapper}>
       <div className={s.topping}>
-        <Tooltip
-          key={article.title}
-          content={
-            <Suspense fallback={<LavaLampLoading />}>
-              <UserCard user={author} />
-            </Suspense>
-          }
-          placement='bottom-start'
-          offset={[-5, 0]}
-          delay={500}
-        >
-          <div className={s.author}>{author.nickname}</div>
-        </Tooltip>
+        {author && (
+          <Tooltip
+            key={article.title}
+            content={
+              <Suspense fallback={<LavaLampLoading />}>
+                <UserCard user={author} />
+              </Suspense>
+            }
+            placement='bottom-start'
+            offset={[-5, 0]}
+            delay={500}
+          >
+            <div className={s.author}>{author.nickname}</div>
+          </Tooltip>
+        )}
         <div className={s.dot} />
         <div className='mr-0.5' />
-        <div className={s.publish}>
-          <TimeAgo datetime={insertedAt} />
-        </div>
+        <div className={s.publish}>{insertedAt && <TimeAgo datetime={insertedAt} />}</div>
       </div>
       <div className={s.main}>
         <CommunityPreviewLink
           className={s.title}
           href={`/${slug}/${THREAD_PATH.POST}/${innerId}`}
-          previewId={innerId}
+          previewId={String(innerId ?? '')}
         >
           <ArticleReadLabel viewed={viewerState.viewerHasViewed} />
           {title}
         </CommunityPreviewLink>
 
-        <TagsList items={communityTags} left={2} top='px' />
+        <TagsList items={communityTags ?? []} left={2} top='px' />
         <div className='grow' />
         {(stats?.commentsCount ?? 0) !== 0 && (
           <CommentsCount
-            count={stats?.commentsCount}
+            count={stats?.commentsCount ?? 0}
             size={SIZE.MEDIUM}
             right={communityLayout === COMMUNITY_LAYOUT.SIDEBAR ? 4 : 0}
           />

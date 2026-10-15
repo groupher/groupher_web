@@ -149,8 +149,9 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
 
   defp target_type(%Comment{}), do: {:ok, "comment"}
 
-  defp target_type(%{__struct__: module}),
-    do: {:ok, module |> Module.split() |> List.last() |> Macro.underscore()}
+  defp target_type(%{__struct__: module}) do
+    {:ok, module |> Module.split() |> List.last() |> Macro.underscore()}
+  end
 
   defp target_type(_target), do: {:error, ErrorCat.unsupported_artiment("report target")}
 

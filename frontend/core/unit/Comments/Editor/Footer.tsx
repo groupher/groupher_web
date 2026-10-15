@@ -20,7 +20,10 @@ const EditorFooter: FC<TProps> = ({ body, label, submitState, onPublish, onCance
   const s = useSalon()
   const { t } = useTrans()
   const resolvedLabel = label ?? t('comment.submit.publish')
-  const resolvedSubmitState = { ...submitState, isReady: isWordsCountValid(body, 10, 1000) }
+  const resolvedSubmitState = {
+    ...submitState,
+    isReady: isWordsCountValid(body, 10, 1000),
+  }
 
   return (
     <div className={s.wrapper}>

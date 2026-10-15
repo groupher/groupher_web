@@ -22,7 +22,7 @@ const useUpvote = ({ viewerHasUpvoted, onAction }: TProps): TRet => {
     setStartAnimate(true)
     setTimeout(() => setStartAnimate(false), 500)
 
-    onAction(!viewerHasUpvoted)
+    onAction?.(!viewerHasUpvoted)
   }, [viewerHasUpvoted, onAction, isLogin])
 
   return {

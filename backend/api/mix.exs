@@ -144,9 +144,13 @@ defmodule GroupherServer.Mixfile do
         "cmd node --test ../../scripts/check-backend-context-v2.test.mjs",
         "cmd node ../../scripts/check-backend-context-v2.mjs --fully-strict"
       ],
-      lint: [
-        "lint.context",
+      "lint.style": [
         "cmd node ../../scripts/check-elixir-module-style.mjs",
+        "cmd elixir scripts/rewrite_wrapped_inline_do.exs --check lib test"
+      ],
+      lint: [
+        "lint.style",
+        "lint.context",
         "credo --strict"
       ],
       "lint.static": ["dialyzer --format dialyxir"],

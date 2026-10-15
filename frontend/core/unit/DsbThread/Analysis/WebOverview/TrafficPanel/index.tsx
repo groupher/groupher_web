@@ -26,6 +26,8 @@ type TData = {
   analysisTrendTraffic: TAnalysisTrendTrafficSection | null
 }
 
+const EMPTY_TRAFFIC_CELLS: TAnalysisTrendTrafficSection['cells'] = []
+
 const demoTrafficSection = (
   demoData: TAnalysisTrendsOverviewDemo,
 ): TAnalysisTrendTrafficSection => ({
@@ -42,12 +44,15 @@ export default function TrafficPanel({ community, days, demoData }: TProps) {
   const isDemo = Boolean(demoData)
 
   const result = useQuery({
-    ...graphqlQueryOptions<TData>(ANALYSIS_TREND_TRAFFIC_QUERY, { community, days }),
+    ...graphqlQueryOptions<TData>(ANALYSIS_TREND_TRAFFIC_QUERY, {
+      community,
+      days,
+    }),
     enabled: visible && !isDemo,
   })
   const section =
     isDemo && demoData ? demoTrafficSection(demoData) : result.data?.analysisTrendTraffic
-  const cells = section?.cells ?? []
+  const cells = section?.cells ?? EMPTY_TRAFFIC_CELLS
   const max = Math.max(...cells.map((cell) => cell.visitors), 1)
   const cellsByKey = useMemo(
     () => new Map(cells.map((cell) => [`${cell.weekday}:${cell.hour}`, cell])),

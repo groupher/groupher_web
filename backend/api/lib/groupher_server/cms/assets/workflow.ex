@@ -219,8 +219,9 @@ defmodule GroupherServer.CMS.Assets.Workflow do
   end
 
   @doc "Completes or releases a run after its current steps have reached a terminal state."
-  def finish_run(%AssetWorkflowRun{locked_by: owner} = run, owner),
-    do: finish_run_locked(run)
+  def finish_run(%AssetWorkflowRun{locked_by: owner} = run, owner) do
+    finish_run_locked(run)
+  end
 
   def finish_run(%AssetWorkflowRun{}, _owner), do: {:error, :workflow_run_stale_lease}
 
@@ -257,8 +258,9 @@ defmodule GroupherServer.CMS.Assets.Workflow do
 
   defp lease_expired?(%AssetWorkflowStep{lease_expires_at: nil}, _now), do: true
 
-  defp lease_expired?(%AssetWorkflowStep{lease_expires_at: expires_at}, now),
-    do: DateTime.compare(expires_at, now) != :gt
+  defp lease_expired?(%AssetWorkflowStep{lease_expires_at: expires_at}, now) do
+    DateTime.compare(expires_at, now) != :gt
+  end
 
   defp unwrap_transaction({:ok, result}), do: result
   defp unwrap_transaction({:error, reason}), do: {:error, reason}

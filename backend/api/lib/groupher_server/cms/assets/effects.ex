@@ -56,8 +56,9 @@ defmodule GroupherServer.CMS.Assets.Effects do
     })
   end
 
-  def enqueue_application_upload_delete(_upload, _workflow_ref),
-    do: {:error, :asset_workflow_ref_required}
+  def enqueue_application_upload_delete(_upload, _workflow_ref) do
+    {:error, :asset_workflow_ref_required}
+  end
 
   @doc "Delivers a community-asset provider-delete intent after commit."
   @spec deliver_provider_delete(CommunityAsset.t()) :: {:ok, term()} | {:error, term()}

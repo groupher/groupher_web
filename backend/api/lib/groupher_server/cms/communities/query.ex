@@ -13,7 +13,7 @@ defmodule GroupherServer.CMS.Communities.Query do
   import Ecto.Query, only: [order_by: 3]
   import Helper.Utils, only: [done: 1]
 
-  alias GroupherServer.{Accounts, CMS}
+  alias GroupherServer.{Accounts, CMS, Repo}
 
   alias CMS.Gate.Context.Scope.Community, as: CommunityContext
   alias CMS.QueryBuilder
@@ -73,4 +73,7 @@ defmodule GroupherServer.CMS.Communities.Query do
   end
 
   defp order_by_views(queryable, _sort), do: queryable
+
+  @doc false
+  def get(id), do: Repo.get(Community, id)
 end

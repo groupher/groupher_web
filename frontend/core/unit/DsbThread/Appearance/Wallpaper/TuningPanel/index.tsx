@@ -105,7 +105,7 @@ export default function TuningPanel() {
         {!expanded && (
           <HudPanel
             wallpaper={wallpaper}
-            angle={angle}
+            angle={angle ?? 0}
             isGradient={isGradient}
             canUseAngle={canUseAngle}
             canUseTexture={canUseTexture}

@@ -77,8 +77,9 @@ defmodule GroupherServer.CMS.Gate do
           (struct(), struct() -> {:ok, term()} | {:error, term()})
           | (struct() -> {:ok, term()} | {:error, term()})
         ) :: {:ok, term()} | {:error, term()}
-  def with_check(actor, action, resource, callback),
-    do: Access.with_check(actor, action, resource, callback)
+  def with_check(actor, action, resource, callback) do
+    Access.with_check(actor, action, resource, callback)
+  end
 
   @doc """
   Runs a Community mutation callback inside the Community row lock.
@@ -95,16 +96,19 @@ defmodule GroupherServer.CMS.Gate do
           GroupherServer.CMS.Model.Community.t(),
           (GroupherServer.CMS.Model.Community.t() -> {:ok, term()} | {:error, term()})
         ) :: {:ok, term()} | {:error, term()}
-  def with_community_check(actor, action, community, callback),
-    do: Access.with_community_check(actor, action, community, callback)
+  def with_community_check(actor, action, community, callback) do
+    Access.with_community_check(actor, action, community, callback)
+  end
 
   @doc "Runs Community Application admission inside its canonical row lock."
-  def with_application_check(actor, action, application, callback),
-    do: Access.with_application_check(actor, action, application, callback)
+  def with_application_check(actor, action, application, callback) do
+    Access.with_application_check(actor, action, application, callback)
+  end
 
   @doc "Runs admission for creating a new Community Application."
-  def with_application_create_check(actor, callback),
-    do: Access.with_application_create_check(actor, callback)
+  def with_application_create_check(actor, callback) do
+    Access.with_application_create_check(actor, callback)
+  end
 
   @doc """
   Runs an ordinary Article command against an explicit Community binding.
@@ -122,8 +126,9 @@ defmodule GroupherServer.CMS.Gate do
           GroupherServer.CMS.Model.Article.t(),
           (GroupherServer.CMS.Model.Article.t() -> {:ok, term()} | {:error, term()})
         ) :: {:ok, term()} | {:error, term()}
-  def with_community_check(actor, action, community, article, callback),
-    do: Access.with_community_check(actor, action, community, article, callback)
+  def with_community_check(actor, action, community, article, callback) do
+    Access.with_community_check(actor, action, community, article, callback)
+  end
 
   @doc """
   Runs a branch-scoped Doc command with an explicit Community and branch.
@@ -142,6 +147,7 @@ defmodule GroupherServer.CMS.Gate do
           pos_integer(),
           (GroupherServer.CMS.Model.Article.t() -> {:ok, term()} | {:error, term()})
         ) :: {:ok, term()} | {:error, term()}
-  def with_branch_check(actor, action, community, article, branch_id, callback),
-    do: Access.with_branch_check(actor, action, community, article, branch_id, callback)
+  def with_branch_check(actor, action, community, article, branch_id, callback) do
+    Access.with_branch_check(actor, action, community, article, branch_id, callback)
+  end
 end

@@ -14,7 +14,7 @@ const cloneItems = (): TToastItem[] => items.map((item) => ({ ...item }))
 
 const notify = (): void => {
   const nextItems = cloneItems()
-  subscribers.forEach((subscriber) => subscriber(nextItems))
+  for (const subscriber of subscribers) subscriber(nextItems)
 }
 
 const clearTimer = (id: string): void => {

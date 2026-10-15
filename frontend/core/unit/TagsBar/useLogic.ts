@@ -7,7 +7,7 @@ import useActiveTag from '~/hooks/useActiveTag'
 import useURLSearchParams from '~/hooks/useURLSearchParams'
 import useViewingThread from '~/hooks/useViewingThread'
 import { Q } from '~/query'
-import type { TGroupedTags, TTag } from '~/spec'
+import type { TGroupedTags, TTag, TTagGroup } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
 
 type TRet = {
@@ -22,6 +22,8 @@ type TRet = {
   totalCountThreshold: number
 }
 
+const EMPTY_TAG_GROUPS: readonly TTagGroup[] = []
+
 /** Exposes logic state and actions through the shared React hook boundary. */
 export default function useLogic(): TRet {
   const { pathname } = useLocation()
@@ -29,7 +31,7 @@ export default function useLogic(): TRet {
   const searchParams = useURLSearchParams()
   const { slug: community } = useCommunity()
   const thread = useViewingThread()
-  const tagGroups = useQuery(Q.article.tagGroups(community, thread)).data || []
+  const tagGroups = useQuery(Q.article.tagGroups(community, thread)).data || EMPTY_TAG_GROUPS
   const activeTag = useActiveTag()
 
   // derived data
@@ -38,9 +40,9 @@ export default function useLogic(): TRet {
     const groupedTags = {} as TGroupedTags
     const groupKeys = tagGroups.map((group) => group.title)
 
-    tagGroups.forEach((group) => {
+    for (const group of tagGroups) {
       groupedTags[group.title] = [...group.tags]
-    })
+    }
 
     return { tags, groupedTags, groupKeys }
   }, [tagGroups])

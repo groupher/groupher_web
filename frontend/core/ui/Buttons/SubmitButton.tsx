@@ -24,8 +24,15 @@ const TheButton: FC<TProps> = ({
   cancelText,
   withCancel,
   onCancel,
-  onPublish,
-  submitState,
+  onPublish = () => undefined,
+  submitState = {
+    publishing: false,
+    publishDone: false,
+    isReady: false,
+    isArchived: false,
+    mode: 'publish',
+    isArticleAuthor: false,
+  },
 }) => {
   const { publishing, isReady } = submitState
 

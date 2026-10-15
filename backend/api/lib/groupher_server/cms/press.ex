@@ -31,8 +31,9 @@ defmodule GroupherServer.CMS.Press do
   @doc "Updates Press config through the receipt-backed command boundary."
   @spec update_config(Community.t() | String.t(), map(), User.t(), Ecto.UUID.t()) ::
           {:ok, PressConfig.t()} | {:error, term()}
-  def update_config(community, attrs, %User{} = actor, command_id),
-    do: Commands.UpdateConfig.execute(community, attrs, actor, command_id)
+  def update_config(community, attrs, %User{} = actor, command_id) do
+    Commands.UpdateConfig.execute(community, attrs, actor, command_id)
+  end
 
   @doc "Delivers Press cache invalidation for an already-committed effect."
   @spec invalidate(Community.t() | String.t() | integer()) ::

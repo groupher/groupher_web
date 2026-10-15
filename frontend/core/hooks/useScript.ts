@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const cachedScripts = []
+const cachedScripts: string[] = []
 
 type TLoadState = boolean
 

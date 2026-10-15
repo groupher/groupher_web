@@ -18,7 +18,7 @@ type TProps = {
 
 const DigestView: FC<TProps> = ({ viewModel }) => {
   const { content: article, stats, viewerState } = viewModel
-  const isActive = usePreviewItemActive(article.innerId, THREAD_PATH.POST)
+  const isActive = usePreviewItemActive(String(article.innerId ?? ''), THREAD_PATH.POST)
   const s = useSalon({ active: isActive })
   const { meta } = article
   const { count, isUpvoted, toggle } = useArticleUpvote(article, stats, viewerState)
@@ -29,7 +29,7 @@ const DigestView: FC<TProps> = ({ viewModel }) => {
       <div className={s.upvoteWrapper}>
         <Upvote
           count={count}
-          avatarList={meta.latestUpvotedUsers}
+          avatarList={meta?.latestUpvotedUsers}
           viewerHasUpvoted={isUpvoted}
           type={UPVOTE_LAYOUT.POST_MINIMAL}
           onAction={() => toggle()}

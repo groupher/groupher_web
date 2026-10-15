@@ -53,7 +53,7 @@ export default function TopbarLayout() {
               {value && <div className={s.topBar} />}
               <div className={s.block({ state: isActive ? 'active' : 'idle' })}>
                 <div className='mb-2' />
-                <CommunityLayoutPreviewContent layout={communityLayout} title={title} />
+                <CommunityLayoutPreviewContent layout={communityLayout} title={title ?? ''} />
               </div>
               <CheckLabel title={t(titleKey)} active={isActive} top={4} />
             </button>

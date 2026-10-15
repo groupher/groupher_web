@@ -6,7 +6,7 @@ import TagNode from '~/ui/TagNode'
 import useSalon from './salon/active_tag'
 
 type TProps = {
-  activeTag: TTag
+  activeTag: TTag | null
   mode: 'mobile' | 'modeline' | 'default'
 }
 

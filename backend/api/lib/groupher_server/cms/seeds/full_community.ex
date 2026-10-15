@@ -118,92 +118,95 @@ defmodule GroupherServer.CMS.Seeds.FullCommunity do
     article_count_per_thread =
       Keyword.get(opts, :article_count_per_thread, @article_count_per_thread)
 
-    comment_count_range =
-      case Keyword.get(opts, :comment_count_range) do
-        {min, max} when is_integer(min) and is_integer(max) and min <= max ->
-          {min, max}
-
-        _ ->
-          comment_count_per_article = Keyword.get(opts, :comment_count_per_article)
-
-          case comment_count_per_article do
-            count when is_integer(count) and count >= 0 -> {count, count}
-            _ -> @comment_count_range
-          end
-      end
-
+    comment_count_range = comment_count_range(opts)
     article_upvotes_range = Keyword.get(opts, :article_upvotes_range, @article_upvotes_range)
     comment_upvotes_range = Keyword.get(opts, :comment_upvotes_range, @comment_upvotes_range)
     comment_replies_range = Keyword.get(opts, :comment_replies_range, @comment_replies_range)
 
-    tags_by_thread =
-      Enum.reduce(@tag_threads, %{}, fn thread, acc ->
-        {:ok, tag_ids} = Tags.mock(community, thread, count: random_range(tag_count_range))
-        Map.put(acc, thread, tag_ids)
-      end)
+    tags_by_thread = seed_tags_by_thread(community, tag_count_range)
 
-    posts =
-      Enum.reduce(@content_threads, [], fn thread, acc ->
-        {:ok, articles} =
-          Articles.mock(
-            community,
-            thread,
-            count_range: {article_count_per_thread, article_count_per_thread},
-            upvotes_range: article_upvotes_range,
-            comment_range: comment_count_range,
-            comment_upvotes_range: comment_upvotes_range,
-            replies_range: comment_replies_range,
-            tag_ids: Map.get(tags_by_thread, thread, [])
-          )
+    article_opts = [
+      count_range: {article_count_per_thread, article_count_per_thread},
+      upvotes_range: article_upvotes_range,
+      comment_range: comment_count_range,
+      comment_upvotes_range: comment_upvotes_range,
+      replies_range: comment_replies_range
+    ]
 
-        case thread do
-          :post -> acc ++ articles
-          _ -> acc
-        end
-      end)
+    posts = seed_content_threads(community, tags_by_thread, article_opts)
 
     {:ok, posts}
   end
+
+  defp comment_count_range(opts) do
+    case Keyword.get(opts, :comment_count_range) do
+      {min, max} when is_integer(min) and is_integer(max) and min <= max -> {min, max}
+      _range -> fixed_or_default_comment_count(Keyword.get(opts, :comment_count_per_article))
+    end
+  end
+
+  defp fixed_or_default_comment_count(count) when is_integer(count) and count >= 0 do
+    {count, count}
+  end
+
+  defp fixed_or_default_comment_count(_count), do: @comment_count_range
+
+  defp seed_tags_by_thread(community, tag_count_range) do
+    Enum.reduce(@tag_threads, %{}, fn thread, acc ->
+      {:ok, tag_ids} = Tags.mock(community, thread, count: random_range(tag_count_range))
+      Map.put(acc, thread, tag_ids)
+    end)
+  end
+
+  defp seed_content_threads(community, tags_by_thread, article_opts) do
+    Enum.reduce(@content_threads, [], fn thread, posts ->
+      opts = Keyword.put(article_opts, :tag_ids, Map.get(tags_by_thread, thread, []))
+      {:ok, articles} = Articles.mock(community, thread, opts)
+      collect_seed_posts(posts, thread, articles)
+    end)
+  end
+
+  defp collect_seed_posts(posts, :post, articles), do: posts ++ articles
+  defp collect_seed_posts(posts, _thread, _articles), do: posts
 
   defp seed_post_states_and_cats(%Community{} = community, posts) when is_list(posts) do
     post_modes =
       posts
       |> Enum.shuffle()
       |> Enum.with_index()
-      |> Enum.map(fn {_post, idx} ->
-        case idx do
-          0 -> :none
-          1 -> :cat_only
-          2 -> :cat_and_state
-          _ -> Enum.random([:none, :cat_and_state, :cat_and_state, :cat_only])
-        end
-      end)
+      |> Enum.map(fn {_post, idx} -> post_seed_mode(idx) end)
 
     posts
     |> Enum.zip(post_modes)
     |> Enum.reduce_while({:ok, :ok}, fn {post, mode}, _acc ->
       post = Repo.get!(Article, post.id)
 
-      case mode do
-        :none ->
-          {:cont, {:ok, :ok}}
-
-        :cat_only ->
-          case CMS.Articles.States.set_cat(post, Enum.random(@post_cats)) do
-            {:ok, _} -> {:cont, {:ok, :ok}}
-            {:error, reason} -> {:halt, {:error, reason}}
-          end
-
-        :cat_and_state ->
-          with {:ok, post} <- CMS.Articles.States.set_cat(post, Enum.random(@post_cats)),
-               {:ok, _post} <-
-                 CMS.Articles.States.set_status(post, Enum.random(@post_statuses), community.id) do
-            {:cont, {:ok, :ok}}
-          else
-            {:error, reason} -> {:halt, {:error, reason}}
-          end
-      end
+      seed_post_state(post, mode, community)
     end)
+  end
+
+  defp post_seed_mode(0), do: :none
+  defp post_seed_mode(1), do: :cat_only
+  defp post_seed_mode(2), do: :cat_and_state
+  defp post_seed_mode(_idx), do: Enum.random([:none, :cat_and_state, :cat_and_state, :cat_only])
+
+  defp seed_post_state(_post, :none, _community), do: {:cont, {:ok, :ok}}
+
+  defp seed_post_state(post, :cat_only, _community) do
+    case CMS.Articles.States.set_cat(post, Enum.random(@post_cats)) do
+      {:ok, _post} -> {:cont, {:ok, :ok}}
+      {:error, reason} -> {:halt, {:error, reason}}
+    end
+  end
+
+  defp seed_post_state(post, :cat_and_state, community) do
+    with {:ok, post} <- CMS.Articles.States.set_cat(post, Enum.random(@post_cats)),
+         {:ok, _post} <-
+           CMS.Articles.States.set_status(post, Enum.random(@post_statuses), community.id) do
+      {:cont, {:ok, :ok}}
+    else
+      {:error, reason} -> {:halt, {:error, reason}}
+    end
   end
 
   defp seed_about_dashboard(community, slug) do

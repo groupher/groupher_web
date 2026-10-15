@@ -10,9 +10,9 @@ import { DOC_EDITOR_QUERY_PARAM } from '../constant'
 const buildSearchObject = (searchParams: URLSearchParams): Record<string, string> => {
   const search: Record<string, string> = {}
 
-  searchParams.forEach((value, key) => {
+  for (const [key, value] of searchParams) {
     search[key] = value
-  })
+  }
 
   return search
 }
@@ -25,8 +25,10 @@ export default function useDocEditorUrl(): {
   const { pathname, searchStr } = useLocation()
   const navigate = useNavigate()
   const routeMeta = useMemo(() => parseDsbPathname(pathname), [pathname])
-  const currentSearch = new URLSearchParams(searchStr)
-  const currentDocId = currentSearch.get(DOC_EDITOR_QUERY_PARAM.DOC_ID)
+  const currentDocId = useMemo(
+    () => new URLSearchParams(searchStr).get(DOC_EDITOR_QUERY_PARAM.DOC_ID),
+    [searchStr],
+  )
 
   const syncDocIdToUrl = useCallback(
     (docId: string | null): void => {
@@ -41,7 +43,7 @@ export default function useDocEditorUrl(): {
         {},
       )
 
-      const nextSearch = buildSearchObject(new URLSearchParams(currentSearch.toString()))
+      const nextSearch = buildSearchObject(new URLSearchParams(searchStr))
 
       if (docId) {
         nextSearch[DOC_EDITOR_QUERY_PARAM.DOC_ID] = docId
@@ -58,7 +60,7 @@ export default function useDocEditorUrl(): {
 
       void navigate({ to: nextUrl as never, replace: true })
     },
-    [currentSearch, navigate, pathname, routeMeta, searchStr],
+    [navigate, pathname, routeMeta, searchStr],
   )
 
   return { currentDocId, syncDocIdToUrl }

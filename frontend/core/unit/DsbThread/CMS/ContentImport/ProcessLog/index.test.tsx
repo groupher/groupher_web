@@ -80,7 +80,9 @@ describe('ImportProcessLog', () => {
     expect(screen.getByText('docs/guide/large.md')).toBeInTheDocument()
     expect(screen.getByText('dsb.content_import.process.skipped')).toBeInTheDocument()
     expect(
-      screen.getByText('dsb.content_import.process.preparing', { selector: '.active-label' }),
+      screen.getByText('dsb.content_import.process.preparing', {
+        selector: '.active-label',
+      }),
     ).toBeInTheDocument()
     expect(screen.getByText('dsb.content_import.process.preparing_convert')).toHaveClass(
       'active-detail-text',

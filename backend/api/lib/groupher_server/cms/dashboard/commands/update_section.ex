@@ -62,8 +62,9 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
     Persist.replace_section(dashboard, :base_info, args)
   end
 
-  defp update_dashboard(dashboard, :content_shadow, enabled),
-    do: Persist.update_content_shadow(dashboard, enabled)
+  defp update_dashboard(dashboard, :content_shadow, enabled) do
+    Persist.update_content_shadow(dashboard, enabled)
+  end
 
   defp update_dashboard(dashboard, key, args), do: Persist.replace_section(dashboard, key, args)
 end

@@ -70,6 +70,7 @@ const LinkInlineEditor: FC<TProps> = ({ href, title, onCancel, onConfirm }) => {
         className={s.input}
         value={draftTitle}
         spellCheck={false}
+        aria-label={t(UNTITLED_TITLE_I18N_KEY)}
         placeholder={t(UNTITLED_TITLE_I18N_KEY)}
         onChange={(event) => setDraftTitle(event.target.value)}
       />
@@ -79,6 +80,7 @@ const LinkInlineEditor: FC<TProps> = ({ href, title, onCancel, onConfirm }) => {
         className={s.input}
         value={draftHref}
         spellCheck={false}
+        aria-label='URL'
         placeholder='https://'
         onChange={(event) => {
           setDraftHref(event.target.value)

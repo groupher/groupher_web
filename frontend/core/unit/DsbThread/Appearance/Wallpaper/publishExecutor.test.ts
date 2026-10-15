@@ -143,7 +143,9 @@ describe('executeWallpaperPublish', () => {
     const deps = makeDeps({
       uploadImage: vi.fn().mockRejectedValue(new Error('upload failed')),
     })
-    deps.graphqlRequest.mockResolvedValue({ prepareWallpaperUpload: preparedBatch })
+    deps.graphqlRequest.mockResolvedValue({
+      prepareWallpaperUpload: preparedBatch,
+    })
 
     await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toThrow(
       'upload failed',
@@ -155,7 +157,9 @@ describe('executeWallpaperPublish', () => {
     const deps = makeDeps({
       createBatch: vi.fn().mockRejectedValue(new Error('create failed')),
     })
-    deps.graphqlRequest.mockResolvedValue({ prepareWallpaperUpload: preparedBatch })
+    deps.graphqlRequest.mockResolvedValue({
+      prepareWallpaperUpload: preparedBatch,
+    })
 
     await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toThrow(
       'create failed',

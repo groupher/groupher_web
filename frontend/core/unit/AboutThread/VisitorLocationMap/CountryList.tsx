@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+import { useMemo, type FC } from 'react'
 
 import useTrans from '~/hooks/useTrans'
 import type { TVisitorLocationCountry } from '~/spec'
@@ -13,7 +13,7 @@ type TProps = {
 const CountryList: FC<TProps> = ({ countries, fullWidth = false }) => {
   const s = useSalon()
   const { t, locale } = useTrans()
-  const numberFormat = new Intl.NumberFormat(locale)
+  const numberFormat = useMemo(() => new Intl.NumberFormat(locale), [locale])
 
   return (
     <div className={fullWidth ? s.listFull : s.list}>

@@ -100,14 +100,16 @@ describe('DocumentImport importing state', () => {
   it('shows persisted job progress once polling returns the job', () => {
     mocks.logic = {
       ...mocks.logic,
-      job: { failedItems: [], skipped: [] } as TContentImportJob,
+      job: { failedItems: [], skipped: [] } as unknown as TContentImportJob,
       process: runningProcess,
     }
 
     render(<DocumentImport />)
 
     expect(
-      screen.getByRole('heading', { name: 'dsb.doc.bulk_import.importing.title' }),
+      screen.getByRole('heading', {
+        name: 'dsb.doc.bulk_import.importing.title',
+      }),
     ).toBeInTheDocument()
     expect(screen.getByText('3 / 5')).toBeInTheDocument()
   })

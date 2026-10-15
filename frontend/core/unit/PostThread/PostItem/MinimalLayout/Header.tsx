@@ -29,15 +29,15 @@ const Header: FC<TProps> = ({ article, stats, viewerState }) => {
         <CommunityPreviewLink
           className={s.title}
           href={`/${slug}/${THREAD_PATH.POST}/${article.innerId}`}
-          previewId={article.innerId}
+          previewId={String(article.innerId ?? '')}
         >
           {title}
         </CommunityPreviewLink>
         {/*  @ts-ignore */}
-        <TagsList items={communityTags} left={1} />
+        <TagsList items={communityTags ?? []} left={1} />
         <div className='grow' />
         {(stats?.commentsCount ?? 0) !== 0 && (
-          <CommentsCount count={stats?.commentsCount} size={SIZE.MEDIUM} />
+          <CommentsCount count={stats?.commentsCount ?? 0} size={SIZE.MEDIUM} />
         )}
       </div>
     </article>

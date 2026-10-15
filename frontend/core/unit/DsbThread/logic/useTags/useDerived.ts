@@ -37,7 +37,7 @@ export default function useDerived(): TRet {
   const groups = useMemo(() => tagGroups.map((group) => group.title), [tagGroups])
 
   const threads = useMemo(() => {
-    const mappedThreads = community$.threads.map((pThread) => {
+    const mappedThreads = (community$.threads ?? []).map((pThread) => {
       const aliasItem = find((item: TNameAlias) => item.slug === pThread.slug, nameAlias) as
         | TNameAlias
         | undefined

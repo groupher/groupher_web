@@ -21,9 +21,8 @@ defmodule GroupherServer.Accounts.Publish.Projection do
   """
   @spec update_states(User.t(), atom()) :: {:ok, User.t()} | {:error, term()}
   def update_states(%User{} = user, thread) do
-    with {:ok, published_count} <- CMS.articles_count_published(thread, user),
-         {:ok, updated_user} <- Persist.update_published_count(user, thread, published_count) do
-      {:ok, updated_user}
+    with {:ok, published_count} <- CMS.articles_count_published(thread, user) do
+      Persist.update_published_count(user, thread, published_count)
     end
   end
 end

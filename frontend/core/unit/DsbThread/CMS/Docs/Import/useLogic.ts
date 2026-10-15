@@ -112,7 +112,9 @@ export default function useLogic(): TRet {
   const loadJob = useCallback(
     async (jobRef: string): Promise<TContentImportJob> => {
       const data = await browserGraphQLRequest<{
-        contentImportJob: Omit<TContentImportJob, 'process'> & { process: unknown }
+        contentImportJob: Omit<TContentImportJob, 'process'> & {
+          process: unknown
+        }
       }>(S.job, { community, jobRef })
       const latest = {
         ...data.contentImportJob,
@@ -138,12 +140,17 @@ export default function useLogic(): TRet {
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })
+      if (!response.ok) {
+        const errorPayload = (await response.json().catch(() => null)) as {
+          error?: { message?: string }
+        } | null
+        throw new Error(errorPayload?.error?.message || `Analyze failed (${response.status}).`)
+      }
       const payload = (await response.json()) as {
         error?: { message?: string }
         previewRef?: string
       }
-      if (!response.ok || !payload.previewRef)
-        throw new Error(payload.error?.message || 'Analyze failed.')
+      if (!payload.previewRef) throw new Error(payload.error?.message || 'Analyze failed.')
       setPreviewRef(payload.previewRef)
       const url = new URL(window.location.href)
       url.searchParams.set('preview', payload.previewRef)
@@ -178,6 +185,22 @@ export default function useLogic(): TRet {
           `${DOCS_IMPORT_ROUTE.preview(previewRef)}?community=${encodeURIComponent(community)}`,
           { cache: 'no-store' },
         )
+        if (!response.ok) {
+          const errorPayload = (await response.json().catch(() => null)) as {
+            error?: { code?: string; message?: string }
+          } | null
+          const previewUnavailable =
+            errorPayload?.error?.code === 'preview_not_found' ||
+            errorPayload?.error?.code === 'preview_expired'
+          setError(
+            previewUnavailable
+              ? t('dsb.doc.bulk_import.preview_unavailable')
+              : errorPayload?.error?.message || `Analyze failed (${response.status}).`,
+          )
+          setPhase(PHASE.FAILED)
+          terminal = true
+          return
+        }
         const payload = (await response.json()) as {
           error?: { code?: string; message?: string }
           preview?: TDocImportPreview
@@ -187,7 +210,7 @@ export default function useLogic(): TRet {
         if (disposed) return
         if (payload.process) commitProcess(decodeImportProcess(payload.process))
 
-        if (!response.ok || payload.status === 'failed') {
+        if (payload.status === 'failed') {
           const previewUnavailable =
             payload.error?.code === 'preview_not_found' || payload.error?.code === 'preview_expired'
           setError(
@@ -246,10 +269,23 @@ export default function useLogic(): TRet {
             headers: { 'Content-Type': 'application/json' },
             method: 'POST',
           })
+          if (!response.ok) {
+            const errorPayload = (await response.json().catch(() => null)) as {
+              error?: { code?: string; message?: string }
+            } | null
+            const previewUnavailable =
+              errorPayload?.error?.code === 'preview_not_found' ||
+              errorPayload?.error?.code === 'preview_expired'
+            throw new Error(
+              previewUnavailable
+                ? t('dsb.doc.bulk_import.preview_unavailable')
+                : errorPayload?.error?.message || `Import failed (${response.status}).`,
+            )
+          }
           const payload = (await response.json()) as TImportApplyResult & {
             error?: { code?: string; message?: string }
           }
-          if (!response.ok || !payload.jobRef) {
+          if (!payload.jobRef) {
             const previewUnavailable =
               payload.error?.code === 'preview_not_found' ||
               payload.error?.code === 'preview_expired'
@@ -346,8 +382,20 @@ export default function useLogic(): TRet {
           `${DOCS_IMPORT_ROUTE.preview(previewRef)}?community=${encodeURIComponent(community)}`,
           { method: 'DELETE' },
         )
-        const payload = (await response.json()) as { error?: { message?: string }; ok?: boolean }
-        if (!response.ok || !payload.ok) {
+        if (!response.ok) {
+          const errorPayload = (await response.json().catch(() => null)) as {
+            error?: { message?: string }
+          } | null
+          throw new Error(
+            errorPayload?.error?.message ||
+              `Could not remove the import preview (${response.status}).`,
+          )
+        }
+        const payload = (await response.json()) as {
+          error?: { message?: string }
+          ok?: boolean
+        }
+        if (!payload.ok) {
           throw new Error(payload.error?.message || 'Could not remove the import preview.')
         }
       }
@@ -357,7 +405,9 @@ export default function useLogic(): TRet {
       setPreview(null)
       setPreviewRef('')
       setProcess(null)
-      commandId.current = createCommandHandle({ scope: 'content-import' }).commandId
+      commandId.current = createCommandHandle({
+        scope: 'content-import',
+      }).commandId
       setPhase(PHASE.REPO)
       const url = new URL(window.location.href)
       url.searchParams.delete('job')

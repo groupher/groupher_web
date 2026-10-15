@@ -53,7 +53,7 @@ export default function useLogic(): TRet {
   }
 
   return {
-    isFAQArticleLayout: article$.isFAQArticleLayout,
+    isFAQArticleLayout: Boolean(article$.isFAQArticleLayout),
     layout: dashboard.docCoverLayout,
     faqLayout: dashboard.docFaqLayout,
     docFaq: dashboard.docFaq,

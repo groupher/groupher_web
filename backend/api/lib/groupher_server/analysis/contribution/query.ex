@@ -91,8 +91,9 @@ defmodule GroupherServer.Analysis.Contribution.Query do
       Analysis.Contribution.Query.digest_from_records(records)
   """
   @spec digest_from_records(list()) :: list()
-  def digest_from_records(records),
-    do: to_counts_digest(records, days: @community_contribute_days)
+  def digest_from_records(records) do
+    to_counts_digest(records, days: @community_contribute_days)
+  end
 
   defp to_user_digest(data) do
     end_date = Datetime.today()

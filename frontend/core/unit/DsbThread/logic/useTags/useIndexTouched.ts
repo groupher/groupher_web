@@ -16,6 +16,8 @@ type TPlacementIndex = {
   count: number
 }
 
+const EMPTY_TAG_GROUPS: readonly TTagGroup[] = []
+
 const addPlacement = (byId: Map<string, TPlacement[]>, id: string, placement: TPlacement): void => {
   const key = String(id)
   const placements = byId.get(key)
@@ -99,7 +101,7 @@ export const hasTagPlacementChanged = (
 export default function useIndexTouched(): boolean {
   const dsb$ = useDsbEdit()
   const tagGroups = dsb$.tagGroups
-  const originalTagGroups = dsb$.original.tagGroups || []
+  const originalTagGroups = dsb$.original.tagGroups || EMPTY_TAG_GROUPS
 
   const baseline = useMemo(() => buildTagPlacementIndex(originalTagGroups), [originalTagGroups])
 

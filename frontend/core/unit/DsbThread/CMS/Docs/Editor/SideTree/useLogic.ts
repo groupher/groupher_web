@@ -1034,7 +1034,9 @@ export default function useLogic(initialData?: TDocTreeInitialData): TSideTreeCo
 
     persist(
       S.createDocTreeNode,
-      { input: { type: DOC_TREE_NODE_TYPE_WIRE.TAB, title, index: tabs.length } },
+      {
+        input: { type: DOC_TREE_NODE_TYPE_WIRE.TAB, title, index: tabs.length },
+      },
       (data) => data?.createDocTreeNode,
     )
       .then((payload) => {

@@ -178,7 +178,7 @@ export const resolveHeaderLinks = (
   }
 
   if (!customMore && moreTabLinks.length === 0) return customLinks
-  if ((customMore?.links.length || 0) === 0 && moreTabLinks.length === 0) return visibleCustomLinks
+  if ((customMore?.links?.length || 0) === 0 && moreTabLinks.length === 0) return visibleCustomLinks
 
   return [
     ...visibleCustomLinks,

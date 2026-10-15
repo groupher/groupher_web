@@ -20,7 +20,7 @@ type TProps = {
 const Viewer: FC<TProps> = ({ article, isFullView = true }) => {
   const { meta } = article
 
-  switch (meta.thread) {
+  switch (meta?.thread) {
     case THREAD.CHANGELOG: {
       return <ChangelogViewer isFullView={isFullView} />
     }

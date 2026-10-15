@@ -4,11 +4,6 @@ import { getCoreRelationSpec } from '@/lib/core-flow-topology'
 
 import type { TFlowEdge } from './flow-spec'
 
-export const FLOW_EDGE_COLOR = {
-  inactive: '#b8b8b3',
-  active: '#4c9a67',
-} as const
-
 const LABEL_OFFSET_Y = 11
 const EDGE_SAFE_LANE_GAP = 38
 

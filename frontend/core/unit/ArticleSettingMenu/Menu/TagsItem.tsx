@@ -16,7 +16,7 @@ const TagsItem: FC<TProps> = ({ onClick }) => {
   const s = useSalon()
 
   const { article } = useArticle()
-  const tags = article.communityTags
+  const tags = article?.communityTags ?? []
 
   if (!isEmpty(tags)) {
     const tag = tags[0]

@@ -13,56 +13,56 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Review do
   alias Helper.T
 
   @spec start(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
-  def start(ref, actor, version, command_id),
-    do:
-      execute(
-        :community_application_review,
-        ref,
-        actor,
-        %{expected_version: version},
-        command_id,
-        fn canonical -> Review.start(canonical.public_ref, actor, version) end
-      )
+  def start(ref, actor, version, command_id) do
+    execute(
+      :community_application_review,
+      ref,
+      actor,
+      %{expected_version: version},
+      command_id,
+      fn canonical -> Review.start(canonical.public_ref, actor, version) end
+    )
+  end
 
   @spec approve(String.t(), User.t(), integer(), map(), Ecto.UUID.t()) :: T.domain_res(term())
-  def approve(ref, actor, version, metadata, command_id),
-    do:
-      execute(
-        :community_application_approve,
-        ref,
-        actor,
-        %{expected_version: version, metadata: metadata},
-        command_id,
-        fn canonical ->
-          Review.approve(canonical.public_ref, actor, version, metadata, command_id)
-        end
-      )
+  def approve(ref, actor, version, metadata, command_id) do
+    execute(
+      :community_application_approve,
+      ref,
+      actor,
+      %{expected_version: version, metadata: metadata},
+      command_id,
+      fn canonical ->
+        Review.approve(canonical.public_ref, actor, version, metadata, command_id)
+      end
+    )
+  end
 
   @spec reject(String.t(), User.t(), integer(), map(), Ecto.UUID.t()) :: T.domain_res(term())
-  def reject(ref, actor, version, reason, command_id),
-    do:
-      execute(
-        :community_application_reject,
-        ref,
-        actor,
-        %{expected_version: version, reason: reason},
-        command_id,
-        fn canonical -> Review.reject(canonical.public_ref, actor, version, reason) end
-      )
+  def reject(ref, actor, version, reason, command_id) do
+    execute(
+      :community_application_reject,
+      ref,
+      actor,
+      %{expected_version: version, reason: reason},
+      command_id,
+      fn canonical -> Review.reject(canonical.public_ref, actor, version, reason) end
+    )
+  end
 
   @spec retry_creation(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
-  def retry_creation(ref, actor, version, command_id),
-    do:
-      execute(
-        :community_application_retry_creation,
-        ref,
-        actor,
-        %{expected_version: version},
-        command_id,
-        fn canonical ->
-          Review.retry_creation(canonical.public_ref, actor, version, command_id)
-        end
-      )
+  def retry_creation(ref, actor, version, command_id) do
+    execute(
+      :community_application_retry_creation,
+      ref,
+      actor,
+      %{expected_version: version},
+      command_id,
+      fn canonical ->
+        Review.retry_creation(canonical.public_ref, actor, version, command_id)
+      end
+    )
+  end
 
   defp execute(operation, ref, actor, params, command_id, callback) do
     with {:ok, application} <- Support.application(ref) do

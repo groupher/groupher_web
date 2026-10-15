@@ -13,17 +13,18 @@ type TProps = {
 
 const CommentReplyBar: FC<TProps> = ({ data }) => {
   const s = useSalon()
+  const author = data.author ?? {}
 
   return (
     <div className={s.wrapper}>
       <ReplySVG className={s.replyIcon} />
-      <Img src={data.author.avatar} className={s.avatar} noLazy />
-      {cutRest(data.author.nickname, 20)}:
+      <Img src={author.avatar ?? ''} className={s.avatar} noLazy />
+      {cutRest(author.nickname ?? '', 20)}:
       <div
         className={s.replyToBody}
         // oxlint-disable-next-line react/no-danger -- Reply snippets are rendered from sanitized backend HTML.
         dangerouslySetInnerHTML={{
-          __html: data.bodyHtml,
+          __html: data.bodyHtml ?? '',
         }}
       />
       <div className='grow' />

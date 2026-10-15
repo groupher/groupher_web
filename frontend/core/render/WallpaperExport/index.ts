@@ -76,7 +76,7 @@ export const exportWallpaperBatch = async ({
 }: TRenderWallpaperBatchInput): Promise<TExportedImageVariant[]> => {
   const runtime = await loadExportRuntime()
   const targetByKey = new Map(targets.map((target) => [target.key, target]))
-  const jobs: TVgpuWallpaperExportJob[] = []
+  const jobs: Array<TVgpuWallpaperExportJob & { targetKey: string }> = []
 
   for (const theme of themes) {
     for (const target of targets) {

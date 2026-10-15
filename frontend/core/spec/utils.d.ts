@@ -126,7 +126,14 @@ export type TGQError = {
 }
 
 export type TInput = (Event & { target: HTMLInputElement }) | ChangeEvent<HTMLInputElement>
-export type TEditValue = TInput | string | boolean | string[] | number | Record<string, unknown>
+export type TEditValue =
+  | TInput
+  | string
+  | boolean
+  | string[]
+  | number
+  | Record<string, unknown>
+  | null
 
 export type TEditMode = 'publish' | 'update'
 

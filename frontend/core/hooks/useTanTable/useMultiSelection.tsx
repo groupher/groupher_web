@@ -6,6 +6,7 @@ import type {
   LegacyRow as Row,
   LegacyTable as Table,
 } from '@tanstack/react-table/legacy'
+import type { RowData } from '@tanstack/table-core'
 import { useCallback, useRef, useState } from 'react'
 
 import Checker from '~/ui/Checker'
@@ -109,7 +110,7 @@ export function useMultiSelection() {
    * ✅ IMPORTANT: this callback is stable (no deps),
    * so the ColumnDef identity stays stable across show/hide toggles.
    */
-  const selectColumn = useCallback(<TData,>(): ColumnDef<TData, unknown> => {
+  const selectColumn = useCallback(<TData extends RowData>(): ColumnDef<TData, unknown> => {
     const getId = (row: Row<TData>) => row.id
 
     return {

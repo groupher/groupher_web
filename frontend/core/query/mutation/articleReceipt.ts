@@ -137,6 +137,8 @@ export const overlayArticleUpvoteReceiptOnViewerState = (
     ? {
         ...viewerState,
         ...receipt?.viewerState,
+        viewerHasCollected:
+          receipt?.viewerState.viewerHasCollected ?? viewerState.viewerHasCollected,
         interactionRevision: receipt?.interactionRevision,
       }
     : viewerState

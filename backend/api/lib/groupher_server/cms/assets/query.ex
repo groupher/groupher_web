@@ -507,4 +507,15 @@ defmodule GroupherServer.CMS.Assets.Query do
       asset -> {:ok, asset}
     end
   end
+
+  @doc false
+  def asset(community_id, asset_id) do
+    Repo.get_by(CommunityAsset, id: asset_id, community_id: community_id)
+  end
+
+  @doc false
+  def asset(asset_id), do: Repo.get(CommunityAsset, asset_id)
+
+  @doc false
+  def community(id), do: Repo.get(Community, id)
 end

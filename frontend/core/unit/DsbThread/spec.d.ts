@@ -16,7 +16,12 @@ export type TDsbMenuGroup = {
   children: TDsbMenuItem[]
 }
 
-type TDsbMenuItem = { title: TTransKey; slug: TDsbPath; icon: TDsbMenuIcon; alias?: string }
+type TDsbMenuItem = {
+  title: TTransKey
+  slug: TDsbPath
+  icon: TDsbMenuIcon
+  alias?: string
+}
 
 export type TDsbMenu = {
   [k: TMenuGroupName]: TDsbMenuGroup

@@ -1,6 +1,6 @@
 'use client'
 
-import { type ReactNode, useLayoutEffect, useMemo, useRef } from 'react'
+import { type ReactNode, useLayoutEffect, useMemo, useState } from 'react'
 import { useSnapshot } from 'valtio'
 
 import { serializeCommunityThemePresetCss } from '~/lib/theme'
@@ -46,17 +46,15 @@ const ThemePresetScope = ({ children, store }: TScopeProps) => {
 }
 
 export default function Provider({ children, initData = EMPTY_INIT_DATA }: TProps) {
-  const storeRef = useRef<TStore | null>(null)
-
-  storeRef.current ??= setupStore(initData)
+  const [store] = useState<TStore>(() => setupStore(initData))
 
   useLayoutEffect(() => {
-    storeRef.current?.hydrate(initData)
-  }, [initData])
+    store.hydrate(initData)
+  }, [initData, store])
 
   return (
-    <StoreContext.Provider value={storeRef.current}>
-      <ThemePresetScope store={storeRef.current}>{children}</ThemePresetScope>
+    <StoreContext.Provider value={store}>
+      <ThemePresetScope store={store}>{children}</ThemePresetScope>
     </StoreContext.Provider>
   )
 }

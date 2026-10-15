@@ -25,7 +25,7 @@ const Admins: FC<TProps> = ({ onHover, userHover }) => {
           onPointerEnter={() => onHover([true, false, false])}
           onPointerLeave={handleLeave}
         >
-          <Img src={users[0].avatar} className={s.avatar} />
+          <Img src={users[0]?.avatar ?? ''} className={s.avatar} />
           <div className={s.intro}>
             <div className={s.nickname}>{users[0].nickname}</div>
             <div className={s.rootLabel}>Root</div>
@@ -37,7 +37,7 @@ const Admins: FC<TProps> = ({ onHover, userHover }) => {
           onPointerEnter={() => onHover([false, true, false])}
           onPointerLeave={handleLeave}
         >
-          <Img src={users[1].avatar} className={s.avatar} />
+          <Img src={users[1]?.avatar ?? ''} className={s.avatar} />
           <div className={s.intro}>
             <div className={s.nickname}>{users[1].nickname}</div>
             <div className={s.desc}>
@@ -51,7 +51,7 @@ const Admins: FC<TProps> = ({ onHover, userHover }) => {
           onPointerEnter={() => onHover([false, false, true])}
           onPointerLeave={handleLeave}
         >
-          <Img src={users[2].avatar} className={s.avatar} />
+          <Img src={users[2]?.avatar ?? ''} className={s.avatar} />
           <div className={s.intro}>
             <div className={s.nickname}>{users[2].nickname}</div>
             <div className={s.desc}>

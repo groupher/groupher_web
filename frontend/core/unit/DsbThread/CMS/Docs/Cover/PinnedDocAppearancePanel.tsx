@@ -24,10 +24,20 @@ const BASE_BG: TBgConfig = {
   customWallpaper: null,
   source: '',
   type: WALLPAPER_TYPE.NONE,
-  pattern: { enabled: false, id: '01', intensity: 0, tone: WALLPAPER_PATTERN_TONE.DARK },
+  pattern: {
+    enabled: false,
+    id: '01',
+    intensity: 0,
+    tone: WALLPAPER_PATTERN_TONE.DARK,
+  },
   gradient: null,
   effect: { blurIntensity: 0, brightness: 100, saturation: 100 },
-  texture: { enabled: false, type: WALLPAPER_TEXTURE.NOISE, intensity: 0, params: {} },
+  texture: {
+    enabled: false,
+    type: WALLPAPER_TEXTURE.NOISE,
+    intensity: 0,
+    params: {},
+  },
 }
 
 const PRESETS = [
@@ -99,6 +109,7 @@ export default function PinnedDocAppearancePanel({ doc, saving = false, onSave }
         <span className='text-sm font-medium'>Solid color</span>
         <input
           type='color'
+          aria-label='Solid background color'
           className='h-10 w-full rounded-lg'
           defaultValue='#d8b9e3'
           onChange={(event) => updateTheme(solidBg(event.target.value))}

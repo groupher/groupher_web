@@ -1,5 +1,5 @@
 import { equals, mergeDeepRight } from 'ramda'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import useDebouncedPreviewCommit from '~/hooks/useDebouncedPreviewCommit'
 
@@ -77,7 +77,9 @@ export default function useCoverImagePreview(): TCoverImageDraftContext {
   const clearFrameRef = useRef<number | null>(null)
   const isPreviewingRef = useRef(false)
 
-  committedStateRef.current = committedState
+  useLayoutEffect(() => {
+    committedStateRef.current = committedState
+  }, [committedState])
 
   useEffect(() => {
     imagePatchOnChangeRef.current = imagePatchOnChange

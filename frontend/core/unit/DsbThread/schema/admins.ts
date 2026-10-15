@@ -77,4 +77,10 @@ export const addModerators = graphql(`
   }
 `)
 
-export default { updateModerators, userPassport, searchUsers, addModerator, addModerators }
+export default {
+  updateModerators,
+  userPassport,
+  searchUsers,
+  addModerator,
+  addModerators,
+}

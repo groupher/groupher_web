@@ -18,7 +18,7 @@ type TProps = {
 
 const DigestView: FC<TProps> = ({ viewModel }) => {
   const { content: article, stats, viewerState } = viewModel
-  const isActive = usePreviewItemActive(article.innerId, THREAD_PATH.POST)
+  const isActive = usePreviewItemActive(String(article.innerId ?? ''), THREAD_PATH.POST)
   const s = useSalon({ active: isActive })
 
   const [coverImg] = useState(() => mockImage())

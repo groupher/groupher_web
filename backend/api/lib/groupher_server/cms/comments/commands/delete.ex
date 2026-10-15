@@ -78,9 +78,8 @@ defmodule GroupherServer.CMS.Comments.Commands.Delete do
   defp delete_new(%Comment{} = comment, article, actor, command_id) do
     occurred_at = DateTime.utc_now(:second)
 
-    with {:ok, _} <- ensure_not_archived(comment),
-         {:ok, result} <- delete_new(comment, actor, article, command_id, occurred_at) do
-      {:ok, result}
+    with {:ok, _} <- ensure_not_archived(comment) do
+      delete_new(comment, actor, article, command_id, occurred_at)
     end
   end
 

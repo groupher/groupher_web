@@ -32,7 +32,11 @@ const FeedbackTags: FC<TProps> = ({ score }) => {
   }
 
   return (
-    <div className={s.wrapper}>
+    <m.div
+      layout
+      transition={{ layout: { duration: 0.16, ease: 'easeInOut' } }}
+      className={s.wrapper}
+    >
       <div className={s.title}>{t(FEEDBACK_TAGS_TITLE_I18N_KEY)}</div>
 
       <div className={s.tags}>
@@ -50,9 +54,10 @@ const FeedbackTags: FC<TProps> = ({ score }) => {
         {hasSelectedTag && (
           <m.div
             key='feedback-note'
-            initial={{ height: 0, opacity: 0, marginTop: 0 }}
-            animate={{ height: 'auto', opacity: 1, marginTop: 10 }}
-            exit={{ height: 0, opacity: 0, marginTop: 0 }}
+            layout
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.16, ease: 'easeInOut' }}
             className={s.inputMotion}
           >
@@ -64,7 +69,7 @@ const FeedbackTags: FC<TProps> = ({ score }) => {
           </m.div>
         )}
       </AnimatePresence>
-    </div>
+    </m.div>
   )
 }
 

@@ -10,6 +10,12 @@ defmodule GroupherServer.Test.Accounts.Fans do
   end
 
   describe "[user fans]" do
+    test "delivers a typed follow event through the root FrontDesk", ~m(user)a do
+      {:ok, follower} = db_insert(:user)
+
+      assert {:ok, _event} = Accounts.Fans.Effects.deliver_event(:follow, user.id, follower.id)
+    end
+
     test "user can follow other user", ~m(user)a do
       {:ok, user2} = db_insert(:user)
 

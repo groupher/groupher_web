@@ -1,6 +1,7 @@
 import { NAV_ACTIVE_LAYOUT } from '~/const/layout'
 import useLayout from '~/hooks/useLayout'
 import useTwBelt from '~/hooks/useTwBelt'
+import type { TRet as TTwBelt } from '~/hooks/useTwBelt/spec'
 import type { TNavActiveLayout } from '~/spec'
 
 type TActiveLayoutStyle = {
@@ -14,9 +15,9 @@ type TProps = {
 }
 
 type TNavActiveStyleHelpers = {
-  cn: (className: string, ...rest: Array<string | false | null | undefined>) => string
-  bg: (key: string) => string
-  primary: (key: string) => string
+  cn: TTwBelt['cn']
+  bg: TTwBelt['bg']
+  primary: TTwBelt['primary']
 }
 
 /** Returns nav active layout styles for the frontend shared workflow. */

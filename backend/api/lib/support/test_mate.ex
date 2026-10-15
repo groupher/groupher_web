@@ -16,6 +16,8 @@ defmodule GroupherServer.TestMate do
   using opts do
     conn_case_opts = [async: Keyword.get(opts, :async, true)]
 
+    # CaseTemplate imports, aliases, attributes, and helpers must expand in each test module.
+    # credo:disable-for-next-line Credo.Check.Refactor.LongQuoteBlocks
     quote bind_quoted: [conn_case_opts: conn_case_opts] do
       use GroupherServerWeb.ConnCase, conn_case_opts
 

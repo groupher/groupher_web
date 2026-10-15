@@ -46,6 +46,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Delete do
     end
   end
 
-  defp action(%{target: {:community_tag, _id}}),
-    do: {:error, CMS.Communities.ErrorCat.not_exist("CommunityTag")}
+  defp action(%{target: {:community_tag, _id}}) do
+    {:error, CMS.Communities.ErrorCat.not_exist("CommunityTag")}
+  end
 end

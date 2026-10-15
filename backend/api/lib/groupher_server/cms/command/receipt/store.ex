@@ -159,31 +159,39 @@ defmodule GroupherServer.CMS.Command.Receipt.Store do
            )
          ) do
       %CommandReceipt{} = receipt ->
-        cond do
-          identity_expired?(receipt) ->
-            Repo.delete!(receipt)
-            insert_claim(attrs, attempts + 1)
-
-          result_expired?(receipt.expires_at) ->
-            {:error, conflict_or_expired(receipt, attrs)}
-
-          is_nil(receipt.confirmation) ->
-            {:error, ErrorCat.command_result_unavailable()}
-
-          same_intent?(receipt, attrs) ->
-            {:ok, :recovery, receipt}
-
-          true ->
-            {:error, conflict_error(receipt, attrs)}
-        end
+        resolve_existing_receipt(receipt, attrs, attempts)
 
       nil ->
-        if attempts < 1 do
-          insert_claim(attrs, attempts + 1)
-        else
-          {:error, ErrorCat.command_resolution_pending()}
-        end
+        resolve_missing_receipt(attrs, attempts)
     end
+  end
+
+  defp resolve_existing_receipt(receipt, attrs, attempts) do
+    cond do
+      identity_expired?(receipt) ->
+        Repo.delete!(receipt)
+        insert_claim(attrs, attempts + 1)
+
+      result_expired?(receipt.expires_at) ->
+        {:error, conflict_or_expired(receipt, attrs)}
+
+      is_nil(receipt.confirmation) ->
+        {:error, ErrorCat.command_result_unavailable()}
+
+      same_intent?(receipt, attrs) ->
+        {:ok, :recovery, receipt}
+
+      true ->
+        {:error, conflict_error(receipt, attrs)}
+    end
+  end
+
+  defp resolve_missing_receipt(attrs, attempts) when attempts < 1 do
+    insert_claim(attrs, attempts + 1)
+  end
+
+  defp resolve_missing_receipt(_attrs, _attempts) do
+    {:error, ErrorCat.command_resolution_pending()}
   end
 
   # Actor context is resolved from authentication and must not make a retry

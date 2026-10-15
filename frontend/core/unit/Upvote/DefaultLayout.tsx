@@ -23,13 +23,15 @@ type TProps = {
   onAction?: (viewerHasUpvoted: boolean) => void
 }
 
+const EMPTY_AVATAR_LIST: TUser[] = []
+
 const Upvote: FC<TProps> = ({
   testid = 'upvote',
   count = 4,
   alias = '参与了投票',
   viewerHasUpvoted = false,
   onAction = console.log,
-  avatarList,
+  avatarList = EMPTY_AVATAR_LIST,
   noLazyLoad = false,
 }) => {
   const s = useSalon({ viewerHasUpvoted })

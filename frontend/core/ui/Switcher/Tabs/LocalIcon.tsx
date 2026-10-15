@@ -16,7 +16,7 @@ type TProps = {
   small?: boolean
 }
 
-const TabIcon: FC<TProps> = ({ slug, active, small }) => {
+const TabIcon: FC<TProps> = ({ slug, active, small = false }) => {
   const s = useSalon({ small })
 
   const className = cn(s.icon, active && s.active)

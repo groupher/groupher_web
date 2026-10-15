@@ -297,8 +297,9 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.create_comment(:post, post, body, actor, command_id)
   """
   @spec create_comment(T.thread(), T.article(), String.t(), User.t()) :: T.domain_res(Comment.t())
-  def create_comment(_thread, _article, _body, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def create_comment(_thread, _article, _body, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @spec create_comment(T.thread(), T.article(), String.t(), User.t(), String.t()) ::
           T.domain_res(Comment.t())
@@ -318,8 +319,9 @@ defmodule GroupherServer.CMS.Comments do
   """
   @spec create_comment(Community.t(), T.thread(), T.id(), String.t(), User.t()) ::
           T.domain_res(Comment.t())
-  def create_comment(%Community{}, _thread, _article_id, _body, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def create_comment(%Community{}, _thread, _article_id, _body, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @spec create_comment(Community.t(), T.thread(), T.id(), String.t(), User.t(), String.t()) ::
           T.domain_res(Comment.t())
@@ -351,8 +353,9 @@ defmodule GroupherServer.CMS.Comments do
   """
   @spec create_comment_payload(T.thread(), T.article(), String.t(), User.t()) ::
           T.domain_res(map())
-  def create_comment_payload(_thread, _article, _body, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def create_comment_payload(_thread, _article, _body, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @spec create_comment_payload(T.thread(), T.article(), String.t(), User.t(), String.t()) ::
           T.domain_res(map())
@@ -363,8 +366,9 @@ defmodule GroupherServer.CMS.Comments do
   @doc "Creates a Comment and returns its stable post-commit mutation result."
   @spec create_comment_result(T.thread(), T.article(), String.t(), User.t()) ::
           T.domain_res(map())
-  def create_comment_result(_thread, _article, _body, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def create_comment_result(_thread, _article, _body, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @spec create_comment_result(T.thread(), T.article(), String.t(), User.t(), String.t()) ::
           T.domain_res(map())
@@ -381,8 +385,9 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.update_comment(comment, body)
   """
   @spec update_comment(Comment.t(), String.t()) :: T.domain_res(Comment.t())
-  def update_comment(%Comment{}, _body),
-    do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
+  def update_comment(%Comment{}, _body) do
+    {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
+  end
 
   @doc """
   Updates one authorized Comment in its canonical aggregate transaction.
@@ -393,8 +398,9 @@ defmodule GroupherServer.CMS.Comments do
   """
   @spec update_comment(Comment.t(), String.t(), User.t(), String.t() | nil) ::
           T.domain_res(Update.result())
-  def update_comment(%Comment{}, _body, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def update_comment(%Comment{}, _body, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @spec update_comment(Comment.t(), String.t(), User.t(), String.t()) ::
           T.domain_res(Update.result())
@@ -404,8 +410,9 @@ defmodule GroupherServer.CMS.Comments do
 
   @doc "Updates a Comment and returns its stable post-commit mutation result."
   @spec update_comment_result(Comment.t(), String.t(), User.t()) :: T.domain_res(map())
-  def update_comment_result(%Comment{}, _body, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def update_comment_result(%Comment{}, _body, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @spec update_comment_result(Comment.t(), String.t(), User.t(), String.t()) ::
           T.domain_res(map())
@@ -423,8 +430,9 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.delete_comment(comment)
   """
   @spec delete_comment(Comment.t()) :: T.domain_res(Comment.t())
-  def delete_comment(%Comment{}),
-    do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
+  def delete_comment(%Comment{}) do
+    {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
+  end
 
   @doc """
   Soft-deletes one authorized Comment and reconciles its parent aggregate.
@@ -444,8 +452,9 @@ defmodule GroupherServer.CMS.Comments do
 
   @doc "Deletes a Comment and returns its stable post-commit mutation result."
   @spec delete_comment_result(Comment.t(), User.t()) :: T.domain_res(map())
-  def delete_comment_result(%Comment{}, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def delete_comment_result(%Comment{}, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @spec delete_comment_result(Comment.t(), User.t(), String.t()) :: T.domain_res(map())
   def delete_comment_result(%Comment{} = comment, %User{} = user, command_id) do
@@ -466,8 +475,9 @@ defmodule GroupherServer.CMS.Comments do
 
   @spec accept_solution(Comment.t() | T.id(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Comment.t())
-  def accept_solution(%Comment{} = comment, %User{} = user, command_id),
-    do: Solution.accept(comment, user, command_id)
+  def accept_solution(%Comment{} = comment, %User{} = user, command_id) do
+    Solution.accept(comment, user, command_id)
+  end
 
   def accept_solution(comment_id, %User{} = user, command_id) do
     with {:ok, comment} <- FrontDesk.comment(comment_id, mode: :internal) do
@@ -487,8 +497,9 @@ defmodule GroupherServer.CMS.Comments do
 
   @spec revoke_solution(Comment.t() | T.id(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Comment.t())
-  def revoke_solution(%Comment{} = comment, %User{} = user, command_id),
-    do: Solution.revoke(comment, user, command_id)
+  def revoke_solution(%Comment{} = comment, %User{} = user, command_id) do
+    Solution.revoke(comment, user, command_id)
+  end
 
   def revoke_solution(comment_id, %User{} = user, command_id) do
     with {:ok, comment} <- FrontDesk.comment(comment_id, mode: :internal) do
@@ -504,8 +515,9 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.reply_comment(parent_comment, body, actor)
   """
   @spec reply_comment(Comment.t() | T.id(), String.t(), User.t()) :: T.domain_res(Comment.t())
-  def reply_comment(_comment_or_id, _body, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def reply_comment(_comment_or_id, _body, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @spec reply_comment(Comment.t() | T.id(), String.t(), User.t(), String.t()) ::
           T.domain_res(Comment.t())
@@ -524,8 +536,9 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.reply_comment_payload(parent_id, body, actor, command_id)
   """
   @spec reply_comment_payload(Comment.t() | T.id(), String.t(), User.t()) :: T.domain_res(map())
-  def reply_comment_payload(_comment_or_id, _body, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def reply_comment_payload(_comment_or_id, _body, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @spec reply_comment_payload(Comment.t() | T.id(), String.t(), User.t(), String.t()) ::
           T.domain_res(map())
@@ -542,8 +555,9 @@ defmodule GroupherServer.CMS.Comments do
 
   @doc "Replies to a Comment and returns its stable post-commit mutation result."
   @spec reply_comment_result(Comment.t() | T.id(), String.t(), User.t()) :: T.domain_res(map())
-  def reply_comment_result(_comment_or_id, _body, %User{}),
-    do: {:error, CMS.ErrorCat.command_id_required()}
+  def reply_comment_result(_comment_or_id, _body, %User{}) do
+    {:error, CMS.ErrorCat.command_id_required()}
+  end
 
   @spec reply_comment_result(Comment.t() | T.id(), String.t(), User.t(), String.t()) ::
           T.domain_res(map())
@@ -568,8 +582,9 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.pin_comment(comment_id)
   """
   @spec pin_comment(T.id()) :: T.domain_res(Comment.t())
-  def pin_comment(_comment_id),
-    do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
+  def pin_comment(_comment_id) do
+    {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
+  end
 
   @doc """
   Pins one Comment independently of its solution state.
@@ -583,8 +598,9 @@ defmodule GroupherServer.CMS.Comments do
 
   @spec pin_comment(Comment.t() | T.id(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Comment.t())
-  def pin_comment(%Comment{} = comment, %User{} = user, command_id),
-    do: StateChange.execute(:pin, comment, user, command_id)
+  def pin_comment(%Comment{} = comment, %User{} = user, command_id) do
+    StateChange.execute(:pin, comment, user, command_id)
+  end
 
   def pin_comment(comment_id, %User{} = user, command_id) do
     with {:ok, comment} <- FrontDesk.comment(comment_id, mode: :internal) do
@@ -600,8 +616,9 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.undo_pin_comment(comment_id)
   """
   @spec undo_pin_comment(T.id()) :: T.domain_res(Comment.t())
-  def undo_pin_comment(_comment_id),
-    do: {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
+  def undo_pin_comment(_comment_id) do
+    {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
+  end
 
   @doc """
   Removes one Comment's independent pin binding.
@@ -615,8 +632,9 @@ defmodule GroupherServer.CMS.Comments do
 
   @spec undo_pin_comment(Comment.t() | T.id(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Comment.t())
-  def undo_pin_comment(%Comment{} = comment, %User{} = user, command_id),
-    do: StateChange.execute(:undo_pin, comment, user, command_id)
+  def undo_pin_comment(%Comment{} = comment, %User{} = user, command_id) do
+    StateChange.execute(:undo_pin, comment, user, command_id)
+  end
 
   def undo_pin_comment(comment_id, %User{} = user, command_id) do
     with {:ok, comment} <- FrontDesk.comment(comment_id, mode: :internal) do
@@ -632,8 +650,9 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.fold_comment(comment, actor)
   """
   @spec fold_comment(Comment.t() | T.id(), User.t()) :: T.domain_res(Comment.t())
-  def fold_comment(%Comment{} = comment, %User{} = user),
-    do: StateChange.execute(:fold, comment, user)
+  def fold_comment(%Comment{} = comment, %User{} = user) do
+    StateChange.execute(:fold, comment, user)
+  end
 
   def fold_comment(comment_id, %User{} = user) do
     with {:ok, comment} <- FrontDesk.comment(comment_id, mode: :internal) do
@@ -649,8 +668,9 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.unfold_comment(comment, actor)
   """
   @spec unfold_comment(Comment.t() | T.id(), User.t()) :: T.domain_res(Comment.t())
-  def unfold_comment(%Comment{} = comment, %User{} = user),
-    do: StateChange.execute(:unfold, comment, user)
+  def unfold_comment(%Comment{} = comment, %User{} = user) do
+    StateChange.execute(:unfold, comment, user)
+  end
 
   def unfold_comment(comment_id, %User{} = user) do
     with {:ok, comment} <- FrontDesk.comment(comment_id, mode: :internal) do

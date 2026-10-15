@@ -5,7 +5,7 @@ defmodule GroupherServer.Activity.Artiment do
       Activity facade -> CMS Artiment matcher -> thread handler
   """
 
-  alias GroupherServer.{Activity}
+  alias GroupherServer.Activity
   alias Activity.ErrorCat
 
   @handlers %{
@@ -34,18 +34,16 @@ defmodule GroupherServer.Activity.Artiment do
   """
   @spec handler(map()) :: {:ok, module()} | {:error, term()}
   def handler(resource) do
-    try do
-      with {:ok, %{thread: thread}} <- GroupherServer.CMS.artiment_matcher_match(resource),
-           {:ok, handler} <- Map.fetch(@handlers, thread) do
-        {:ok, handler}
-      else
-        :error -> {:error, ErrorCat.unsupported_resource("unsupported Activity thread")}
-        {:error, _reason} = error -> error
-      end
-    rescue
-      FunctionClauseError ->
-        {:error, ErrorCat.unsupported_resource("unsupported Activity thread")}
+    with {:ok, %{thread: thread}} <- GroupherServer.CMS.artiment_matcher_match(resource),
+         {:ok, handler} <- Map.fetch(@handlers, thread) do
+      {:ok, handler}
+    else
+      :error -> {:error, ErrorCat.unsupported_resource("unsupported Activity thread")}
+      {:error, _reason} = error -> error
     end
+  rescue
+    FunctionClauseError ->
+      {:error, ErrorCat.unsupported_resource("unsupported Activity thread")}
   end
 
   @doc """

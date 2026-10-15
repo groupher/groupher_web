@@ -21,6 +21,7 @@ import {
 import useTrans from '~/hooks/useTrans'
 import ArrowSVG from '~/icons/Arrow'
 import FilterSVG from '~/icons/Filter'
+import type { PagePagedCommunitiesQuery } from '~/lib/graphql/generated/graphql'
 import { graphqlQueryOptions } from '~/query'
 import { pagedCommunities as pagedCommunitiesDocument } from '~/schemas/pages/community'
 import type { TCommunity } from '~/spec'
@@ -35,7 +36,7 @@ const CLASSIC_ALIGN_RIGHT = ['timestamps']
 
 export default function Communities() {
   const query = useQuery(
-    graphqlQueryOptions(pagedCommunitiesDocument, {
+    graphqlQueryOptions<PagePagedCommunitiesQuery>(pagedCommunitiesDocument, {
       filter: { page: 1, size: 20 },
       userHasLogin: false,
     }),

@@ -194,8 +194,9 @@ defmodule GroupherServer.CMS.Press.Query do
     end
   end
 
-  defp stable_public_doc?(article, community),
-    do: match?({:ok, _}, validate_stable_public_doc(article, community))
+  defp stable_public_doc?(article, community) do
+    match?({:ok, _}, validate_stable_public_doc(article, community))
+  end
 
   defp public_community(%Community{id: id}), do: public_community_by_id(id)
 

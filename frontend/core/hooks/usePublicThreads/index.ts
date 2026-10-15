@@ -18,7 +18,7 @@ export default function usePublicThreads(): TCommunityThread[] {
   const dsb$ = useDsb()
   const { slug, threads } = useCommunity()
 
-  const enabledThreads = sortByIndex(threads.filter((thread) => dsb$.enable[thread.slug]))
+  const enabledThreads = sortByIndex((threads ?? []).filter((thread) => dsb$.enable[thread.slug]))
 
   const mappedThreads = enabledThreads.map((pThread) => {
     const aliasItem = find(propEq(pThread.slug, 'slug'))(dsb$.nameAlias) as TNameAlias

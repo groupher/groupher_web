@@ -40,9 +40,8 @@ defmodule GroupherServer.CMS.FrontDesk.Community do
          %Ecto.Query{} = query <- Gate.scope(Community, actor, :read, context),
          %Ecto.Query{} = query <- where_ref(query, ref),
          query <- preload(query, [:dashboard, :lifecycle, moderators: [:community, :user]]),
-         {:ok, community} <- query |> Repo.one() |> done(),
-         {:ok, community} <- ORM.fill_meta(community) do
-      {:ok, community}
+         {:ok, community} <- query |> Repo.one() |> done() do
+      ORM.fill_meta(community)
     end
   end
 

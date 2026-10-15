@@ -65,56 +65,26 @@ export const num2Percent = (decimal: number): string => {
 /**
  * get radom backgrounds from COLOR_NAMEs
  */
-export const randomBgNames = (count, excepts = [COLOR.CYAN, COLOR.GREEN]): TColorName[] => {
+export const randomBgNames = (
+  count: number,
+  excepts: readonly TColorName[] = [COLOR.CYAN, COLOR.GREEN],
+): TColorName[] => {
   let colorKeys = isEmpty(excepts) ? keys(COLOR) : keys(COLOR).filter((k) => !includes(k, excepts))
 
   let randomIdx: number
-  const ret = []
+  const ret: TColorName[] = []
 
   for (let idx = 0; idx < count; idx += 1) {
     if (isEmpty(colorKeys)) break
 
     randomIdx = getRandomInt(0, colorKeys.length - 1)
-    ret.push(colorKeys[randomIdx])
+    const color = colorKeys[randomIdx]
+    if (!color) break
+    ret.push(color)
     colorKeys = remove(randomIdx, 1, colorKeys)
   }
 
   return ret
-}
-
-/**
- * find key=value in array or object
- *
- * see original version:
- * https://stackoverflow.com/a/15524326
- * @param {object or Array} data
- * @param {String} key
- * @param {String} value
- * @returns
- */
-const findDeepMatch = (data, key, value) => {
-  let result = null
-  if (Array.isArray(data)) {
-    for (let i = 0; i < data.length; i += 1) {
-      // console.log('## > the data[i]', data[i])
-      result = findDeepMatch(data[i], key, value)
-      // end the recursive function
-      if (result) return result
-    }
-  } else {
-    const theKeys = keys(data)
-    for (let index = 0; index < theKeys.length; index += 1) {
-      const prop = theKeys[index]
-      if (prop === key && data[prop] === value) {
-        return data
-      }
-      if (data[prop] instanceof Object || Array.isArray(data[prop])) {
-        result = findDeepMatch(data[prop], key, value)
-      }
-    }
-  }
-
-  return result
 }
 
 /**
@@ -145,7 +115,7 @@ type TShareParam = {
 }
 /** Runs the open share window operation at the frontend shared boundary. */
 export const openShareWindow = (platformUrl: string, param: TShareParam): void => {
-  const safeParam = []
+  const safeParam: string[] = []
 
   for (const i in param) {
     safeParam.push(`${i}=${encodeURIComponent(param[i] || '')}`)
@@ -153,7 +123,7 @@ export const openShareWindow = (platformUrl: string, param: TShareParam): void =
   /* eslint-enable */
   const targetUrl = `${platformUrl}?${safeParam.join('&')}`
 
-  Global.open(targetUrl, '_blank', 'height=500, width=600')
+  Global?.open(targetUrl, '_blank', 'height=500, width=600')
 }
 
 /**

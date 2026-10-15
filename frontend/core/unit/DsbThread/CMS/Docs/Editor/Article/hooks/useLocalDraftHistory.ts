@@ -49,7 +49,7 @@ export default function useLocalDraftHistory(
   )
   const [inspection, setInspection] = useState<TLocalDraftInspection>(emptyInspection)
   const [recoveryPoints, setRecoveryPoints] = useState<TLocalDraftRecoveryPoint[]>([])
-  const [availability, setAvailability] = useState<TLocalDraftAvailability>(
+  const [availability, setAvailability] = useState<TLocalDraftAvailability>(() =>
     repository.getAvailability(),
   )
 

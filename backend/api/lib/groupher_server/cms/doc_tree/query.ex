@@ -219,9 +219,7 @@ defmodule GroupherServer.CMS.DocTree.Query do
 
     Article
     |> join(:inner, [article], binding in ArticleBinding, on: binding.article_id == article.id)
-    |> join(:inner, [article, _binding], public in DocPublic,
-      on: public.article_id == article.id
-    )
+    |> join(:inner, [article, _binding], public in DocPublic, on: public.article_id == article.id)
     |> join(:inner, [article, _binding, public], lifecycle in CMS.Model.DocLifecycle,
       on: lifecycle.article_id == article.id and lifecycle.branch_id == public.branch_id
     )
@@ -570,31 +568,37 @@ defmodule GroupherServer.CMS.DocTree.Query do
 
   defp publish_state(%DocTreeNode{} = node, context) do
     public_node = Map.get(context.public_nodes, node.node_id)
-
-    draft_version =
-      node.doc_id && Map.get(context.draft_versions, node.doc_id)
-
-    public_version =
-      draft_version && Map.get(context.public_versions, node.doc_id)
-
-    public_row_id = public_node && public_node.id
-    cover_card = public_row_id && Map.get(context.cover_cards, public_row_id)
-    cover_item = public_row_id && Map.get(context.cover_items, public_row_id)
+    draft_version = get_when_present(context.draft_versions, node.doc_id)
+    public_version = get_when_present(context.public_versions, draft_version && node.doc_id)
+    public_row_id = field_when_present(public_node, :id)
+    cover_card = get_when_present(context.cover_cards, public_row_id)
+    cover_item = get_when_present(context.cover_items, public_row_id)
 
     %{
       status: if(public_node, do: :public, else: :draft),
       published: not is_nil(public_node),
       published_before: not is_nil(public_node),
       has_draft: not is_nil(draft_version),
-      public_node_id: public_node && public_node.node_id,
-      public_doc_id: public_node && public_node.doc_id,
+      public_node_id: field_when_present(public_node, :node_id),
+      public_doc_id: field_when_present(public_node, :doc_id),
       has_unpublished_changes: article_changed?(draft_version, public_version),
-      last_published_at: public_node && public_node.updated_at,
-      in_cover: not is_nil(cover_card) or not is_nil(cover_item),
-      hidden_from_cover: not is_nil(cover_item) and cover_item.hidden,
-      pinned_to_cover: public_row_id && MapSet.member?(context.pinned_docs, public_row_id)
+      last_published_at: field_when_present(public_node, :updated_at),
+      in_cover: present_either?(cover_card, cover_item),
+      hidden_from_cover: field_when_present(cover_item, :hidden) || false,
+      pinned_to_cover: member_when_present?(context.pinned_docs, public_row_id)
     }
   end
+
+  defp get_when_present(_map, nil), do: nil
+  defp get_when_present(map, key), do: Map.get(map, key)
+
+  defp field_when_present(nil, _field), do: nil
+  defp field_when_present(value, field), do: Map.get(value, field)
+
+  defp present_either?(left, right), do: not is_nil(left) or not is_nil(right)
+
+  defp member_when_present?(_set, nil), do: nil
+  defp member_when_present?(set, value), do: MapSet.member?(set, value)
 
   defp article_changed?(draft, public) do
     ChangeDetection.draft_content_changed?(draft, public)

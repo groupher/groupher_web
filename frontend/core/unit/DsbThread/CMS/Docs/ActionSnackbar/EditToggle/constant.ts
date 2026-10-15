@@ -15,5 +15,9 @@ type TModeItem = {
 
 export const MODE_ITEMS: readonly TModeItem[] = [
   { key: DOC_EDITOR_MODE.EDIT, label: 'dsb.doc.action.edit', Icon: EditPenSVG },
-  { key: DOC_EDITOR_MODE.PREVIEW, label: 'dsb.doc.action.preview', Icon: JoinEyeSVG },
+  {
+    key: DOC_EDITOR_MODE.PREVIEW,
+    label: 'dsb.doc.action.preview',
+    Icon: JoinEyeSVG,
+  },
 ]

@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import useViewingArticle from '~/hooks/useViewingArticle'
 import PinSVG from '~/icons/Pin'
 import SpinSVG from '~/icons/Spin'
 import UnPinSVG from '~/icons/UnPin'
 import { updateViewingArticle } from '~/signal'
-import useArticle from '~/stores/article/hooks'
 import { toast } from '~/ui/Toaster'
 
 import S from '../schema'
@@ -13,7 +13,7 @@ import useSalon from './salon'
 export default function PinItem() {
   const s = useSalon()
 
-  const { article } = useArticle()
+  const { article } = useViewingArticle()
   const [result, pinPost] = useArticleSettingMutation(S.pinPost)
   const [_result2, undoPinPost] = useArticleSettingMutation(S.undoPinPost)
 
@@ -24,21 +24,29 @@ export default function PinItem() {
   }, [article.isPinned])
 
   const handlePin = useCallback(() => {
+    if (!article.innerId || !article.community?.slug || !article.meta?.thread) {
+      toast('文章路径不完整', 'error')
+      return
+    }
+
     const articlePath = {
       innerId: article.innerId,
-      community: article.community?.slug,
+      community: article.community.slug,
       thread: article.meta.thread,
     }
 
-    const action = !pin ? pinPost({ article: articlePath }) : undoPinPost({ article: articlePath })
+    const nextPin = !pin
+    const action = nextPin
+      ? pinPost({ article: articlePath })
+      : undoPinPost({ article: articlePath })
 
     action.then((result) => {
       if (result.error) {
         toast('设置失败', 'error')
       } else {
         toast('设置完成')
-        setPin(!pin)
-        updateViewingArticle({ id: article.id, isPinned: !pin })
+        setPin(nextPin)
+        if (article.id) updateViewingArticle({ id: article.id, isPinned: nextPin })
       }
     })
   }, [pin, article, pinPost, undoPinPost])

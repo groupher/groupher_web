@@ -3,6 +3,12 @@ import { ASSETS_HUB_READ_ENDPOINT } from '~/config'
 import { ASSETS_HUB_EMPTY_VALUE, ASSETS_HUB_LABEL } from './constant'
 import type { TAsset, TAssetRef, TAssetType, TReferencesState, TUploadProgress } from './spec'
 
+const assetDateFormat = new Intl.DateTimeFormat('en', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+})
+
 /** Runs the checksum sha256 operation at the frontend shared boundary. */
 export const checksumSha256 = async (file: File): Promise<string> => {
   const buffer = await file.arrayBuffer()
@@ -35,11 +41,7 @@ export const formatAssetSize = (value?: number): string => {
 export const formatAssetDate = (value?: string): string => {
   if (!value) return ASSETS_HUB_EMPTY_VALUE
 
-  return new Intl.DateTimeFormat('en', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  }).format(new Date(value))
+  return assetDateFormat.format(new Date(value))
 }
 
 /** Runs the format upload duration operation at the frontend shared boundary. */

@@ -72,7 +72,10 @@ describe('tag placement dirty-check', () => {
     const baseline = buildTagPlacementIndex(original)
     const withDraftTag = original.map((group) =>
       group.id === 'group-a'
-        ? { ...group, tags: [...group.tags, { title: 'Unsaved tag', index: 99 }] }
+        ? {
+            ...group,
+            tags: [...group.tags, { title: 'Unsaved tag', index: 99 }],
+          }
         : group,
     )
     const withoutPersistedTag = original.map((group) =>

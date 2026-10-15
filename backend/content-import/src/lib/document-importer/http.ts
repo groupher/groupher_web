@@ -243,6 +243,19 @@ const convertFile = async (file: File): Promise<TDocumentImportResult> => {
     )
   }
 
+  if (!response.ok) {
+    const payload = (await response.json().catch(() => null)) as Record<string, unknown> | null
+    const diagnostics = readDiagnostics(payload?.diagnostics)
+    throw new DocumentImporterError(
+      diagnostics[0]?.code ?? 'conversion_failed',
+      diagnostics[0]?.message ?? 'Document conversion failed.',
+      {
+        diagnostics,
+        status: response.status >= 400 && response.status < 500 ? response.status : 502,
+      },
+    )
+  }
+
   let payload: unknown
   try {
     payload = await response.json()
@@ -264,17 +277,6 @@ const convertFile = async (file: File): Promise<TDocumentImportResult> => {
 
   const converterPayload = payload as Record<string, unknown>
   const diagnostics = readDiagnostics(converterPayload.diagnostics)
-  if (!response.ok) {
-    throw new DocumentImporterError(
-      diagnostics[0]?.code ?? 'conversion_failed',
-      diagnostics[0]?.message ?? 'Document conversion failed.',
-      {
-        diagnostics,
-        status: response.status >= 400 && response.status < 500 ? response.status : 502,
-      },
-    )
-  }
-
   const markdown = converterPayload.markdown
   const value = deserializeMarkdown(markdown)
 
