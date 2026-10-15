@@ -3,6 +3,7 @@
 import { flexRender } from '@tanstack/react-table'
 import { getCoreRowModel, getSortedRowModel, useLegacyTable } from '@tanstack/react-table/legacy'
 import { useMemo } from 'react'
+import type { RowData } from '@tanstack/table-core'
 
 import { SELECT_COL_ID, useScrollStuck, useStickyColumns } from '~/hooks/useTanTable'
 import useTrans from '~/hooks/useTrans'
@@ -22,7 +23,7 @@ const alignClassName = (align?: 'left' | 'center' | 'right') => {
   return ''
 }
 
-export default function CmsDataTable<TData>({
+export default function CmsDataTable<TData extends RowData>({
   columns,
   data,
   emptyState = null,

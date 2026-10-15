@@ -1,6 +1,6 @@
 'use client'
 
-import { use } from 'react'
+import { use, useMemo } from 'react'
 import { useSnapshot } from 'valtio'
 
 import useTheme from '~/hooks/useTheme'
@@ -82,5 +82,16 @@ export function useWallpaperBgRenderSpec(): TBgRenderSpec {
   const { isDarkTheme } = useTheme()
   const state = pickWallpaperThemeState(snapshot, isDarkTheme)
 
-  return adaptWallpaperBgRenderSpec(state)
+  return useMemo(
+    () => adaptWallpaperBgRenderSpec(state),
+    [
+      state.source,
+      state.pattern,
+      state.effect,
+      state.texture,
+      state.gradient,
+      state.customWallpaper,
+      state.type,
+    ],
+  )
 }

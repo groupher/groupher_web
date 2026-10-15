@@ -1,6 +1,7 @@
 import type { OnChangeFn, SortingState } from '@tanstack/react-table'
 import type { LegacyColumnDef as ColumnDef } from '@tanstack/react-table/legacy'
 import type { MutableRefObject, ReactNode } from 'react'
+import type { RowData } from '@tanstack/table-core'
 
 import type { MultiSelectionTableMeta } from '~/hooks/useTanTable'
 
@@ -33,7 +34,7 @@ export type TCmsTableToolbarProps = {
   withTags?: boolean
 }
 
-type TCmsSelectColumnFactory = <TRowData>() => ColumnDef<TRowData, unknown>
+type TCmsSelectColumnFactory = <TRowData extends RowData>() => ColumnDef<TRowData, unknown>
 
 type TCmsTableMultiSelect = {
   enabled: boolean
@@ -41,7 +42,7 @@ type TCmsTableMultiSelect = {
   selectColumn: TCmsSelectColumnFactory
 }
 
-export type TCmsDataTableProps<TData> = {
+export type TCmsDataTableProps<TData extends RowData> = {
   columns: ColumnDef<TData, unknown>[]
   data: TData[]
   emptyState?: ReactNode

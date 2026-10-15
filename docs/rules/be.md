@@ -25,7 +25,7 @@
 - `Model` 模块保留 canonical 名称；发生尾名冲突时，应重命名承担业务角色的一方，而不是给 Model 添加任意 `as:` 名称。
 - Gate Context 的显式 alias 保留 `*Context` 后缀。ErrorCat alias 继续遵守下文的领域边界规则。
 - GraphQL schema 通过 `Helper.GqlSchemaSuite` 使用 `M.*` middleware 和 `R.*` resolver namespace；不要为了缩短一次调用而拆散这两个语义 namespace。
-- 这些规则由 `scripts/check-elixir-module-style.mjs` 统一执行。Credo 的通用 `AliasUsage`、`AliasOrder` 和 `StrictModuleLayout` 不拥有本项目的 alias 规范。
+- `scripts/check-elixir-module-style.mjs` 执行其中已覆盖的 directive 与 alias 检查；GraphQL schema 的 `M.*` middleware 和 `R.*` resolver namespace 约定需另行验证。Credo 的通用 `AliasUsage`、`AliasOrder` 和 `StrictModuleLayout` 不拥有本项目的 alias 规范。
 
 ## Const
 

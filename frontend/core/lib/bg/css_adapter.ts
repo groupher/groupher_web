@@ -9,6 +9,7 @@ import type {
   TWallpaperGradient,
   TWallpaperPic,
 } from '~/spec'
+import { DEFAULT_RENDER_COLORS } from './constant'
 
 const DEFAULT_BRIGHTNESS = 100
 const DEFAULT_SATURATION = 100
@@ -154,7 +155,7 @@ const parseBgGradientBackground = (gradient: TWallpaperGradient): TWallpaperFmt 
   const DIR = '/wallpaper'
   const { direction, hasPattern, blurIntensity, brightness, saturation } = gradient
   const patternId = (gradient as { patternId?: string }).patternId
-  const colors = (gradient.colors ?? []).join(',')
+  const colors = (gradient.colors?.length ? gradient.colors : DEFAULT_RENDER_COLORS).join(',')
   let background = `linear-gradient(${formatGradientDirection(direction)}, ${colors})`
 
   const patternPic = `${DIR}/pattern/${patternId || DEFAULT_WALLPAPER_PATTERN_ID}.png`
