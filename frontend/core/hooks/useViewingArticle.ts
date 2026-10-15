@@ -26,12 +26,13 @@ export default function useViewingArticle(): TRet {
   const article$ = useArticle()
   const { article, stats, viewerState } = article$
 
-  if (!article) {
-    throw new Error('useViewingArticle requires a loaded article')
-  }
+  // Consumers of this hook are mounted behind the article viewer's loaded boundary.
+  // Keep the provider's nullable state intact without throwing during its loading render.
+  if (!article)
+    return { ...article$, articleLink: '', articlePath: null as unknown as TArticlePath } as TRet
   const articlePath = articlePathOf(article)
   if (!articlePath.community || !articlePath.innerId || !isArticleThread(articlePath.thread)) {
-    throw new Error('useViewingArticle requires a complete article path')
+    return { ...article$, articleLink: '', articlePath } as TRet
   }
 
   return {
