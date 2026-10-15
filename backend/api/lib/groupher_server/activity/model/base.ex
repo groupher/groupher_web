@@ -11,6 +11,8 @@ defmodule GroupherServer.Activity.Model.Base do
     actions = Keyword.fetch!(opts, :actions)
     extra_fields = Keyword.get(opts, :extra_fields, [])
 
+    # The complete Ecto schema DSL must expand in each Activity log module at compile time.
+    # credo:disable-for-next-line Credo.Check.Refactor.LongQuoteBlocks
     quote bind_quoted: [
             table: table,
             stream_field: stream_field,

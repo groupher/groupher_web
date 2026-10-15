@@ -547,28 +547,27 @@ defmodule GroupherServer.CMS.Articles.Draft.Store do
   end
 
   defp save_cover_edit(body_draft_id, attrs) do
-    if has_value?(attrs, :cover_edit_info) do
-      case value(attrs, :cover_edit_info) do
-        nil ->
-          Repo.delete_all(
-            from(edit in DraftCoverEdit, where: edit.body_draft_id == ^body_draft_id)
-          )
+    case {has_value?(attrs, :cover_edit_info), value(attrs, :cover_edit_info)} do
+      {false, _cover} -> {:ok, :pass}
+      {true, nil} -> delete_cover_edit(body_draft_id)
+      {true, cover} when is_map(cover) -> upsert_cover_edit(body_draft_id, cover)
+    end
+  end
 
-          {:ok, :pass}
+  defp delete_cover_edit(body_draft_id) do
+    Repo.delete_all(from(edit in DraftCoverEdit, where: edit.body_draft_id == ^body_draft_id))
+    {:ok, :pass}
+  end
 
-        cover when is_map(cover) ->
-          with {:ok, attrs} <- cover_attrs(cover) do
-            attrs = Map.put(attrs, :body_draft_id, body_draft_id)
-            edit = Repo.get(DraftCoverEdit, body_draft_id) || %DraftCoverEdit{}
+  defp upsert_cover_edit(body_draft_id, cover) do
+    with {:ok, attrs} <- cover_attrs(cover) do
+      attrs = Map.put(attrs, :body_draft_id, body_draft_id)
+      edit = Repo.get(DraftCoverEdit, body_draft_id) || %DraftCoverEdit{}
 
-            case edit |> DraftCoverEdit.changeset(attrs) |> Repo.insert_or_update() do
-              {:ok, _edit} -> {:ok, :pass}
-              {:error, reason} -> {:error, reason}
-            end
-          end
+      case edit |> DraftCoverEdit.changeset(attrs) |> Repo.insert_or_update() do
+        {:ok, _edit} -> {:ok, :pass}
+        {:error, reason} -> {:error, reason}
       end
-    else
-      {:ok, :pass}
     end
   end
 

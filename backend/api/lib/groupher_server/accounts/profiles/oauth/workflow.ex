@@ -48,20 +48,22 @@ defmodule GroupherServer.Accounts.Profiles.Oauth.Workflow do
           {:error, oauth_identity_already_linked_error()}
 
         {:error, _} ->
-          case find_user_provider(user, provider.provider) do
-            {:ok, _existing} ->
-              {:error, oauth_provider_already_linked_error()}
-
-            {:error, _} ->
-              case OauthPersist.create_profile(user, provider) do
-                {:ok, _binding} ->
-                  {:ok, user}
-
-                {:error, changeset} ->
-                  {:error, classify_link_insert_error(changeset, provider, user)}
-              end
-          end
+          link_missing_identity(user, provider)
       end
+    end
+  end
+
+  defp link_missing_identity(user, provider) do
+    case find_user_provider(user, provider.provider) do
+      {:ok, _existing} -> {:error, oauth_provider_already_linked_error()}
+      {:error, _} -> create_provider_binding(user, provider)
+    end
+  end
+
+  defp create_provider_binding(user, provider) do
+    case OauthPersist.create_profile(user, provider) do
+      {:ok, _binding} -> {:ok, user}
+      {:error, changeset} -> {:error, classify_link_insert_error(changeset, provider, user)}
     end
   end
 

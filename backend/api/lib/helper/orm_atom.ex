@@ -65,44 +65,50 @@ defmodule Helper.ORMAtom do
     id = queryable.id
     field_name = to_string(field)
 
-    # 检查 meta 是否为 nil
-    if is_nil(queryable.meta) do
-      update_error("meta field is not initialized")
+    with {:ok, meta_schema} <- meta_schema(queryable.meta),
+         {:ok, :integer} <- integer_meta_field(meta_schema, field) do
+      update_query =
+        from(q in schema_module,
+          where: q.id == ^id,
+          update: [
+            set: [
+              meta:
+                fragment(
+                  "jsonb_set(meta, ARRAY[?], (COALESCE(meta->>?, '0')::int + 1)::text::jsonb)",
+                  ^field_name,
+                  ^field_name
+                )
+            ]
+          ],
+          select: fragment("(meta->>?)::int", ^field_name)
+        )
+
+      update_meta_value(queryable, update_query, field)
+    end
+  end
+
+  defp meta_schema(nil), do: update_error("meta field is not initialized")
+
+  defp meta_schema(meta) do
+    schema = meta.__struct__
+
+    if function_exported?(schema, :__schema__, 1) do
+      {:ok, schema}
     else
-      if function_exported?(queryable.meta.__struct__, :__schema__, 1) do
-        meta_schema = queryable.meta.__struct__
-        meta_fields = meta_schema.__schema__(:fields)
+      update_error("meta field must be an embedded schema")
+    end
+  end
 
-        if Enum.member?(meta_fields, field) do
-          if meta_schema.__schema__(:type, field) != :integer do
-            update_error("meta field #{field} must be integer")
-          else
-            # 构建更新查询，使用 RETURNING 子句直接返回新值
-            update_query =
-              from(q in schema_module,
-                where: q.id == ^id,
-                update: [
-                  set: [
-                    meta:
-                      fragment(
-                        "jsonb_set(meta, ARRAY[?], (COALESCE(meta->>?, '0')::int + 1)::text::jsonb)",
-                        ^field_name,
-                        ^field_name
-                      )
-                  ]
-                ],
-                select: fragment("(meta->>?)::int", ^field_name)
-              )
+  defp integer_meta_field(meta_schema, field) do
+    cond do
+      field not in meta_schema.__schema__(:fields) ->
+        update_error("meta field #{field} does not exist")
 
-            # 执行更新并获取返回的新值
-            update_meta_value(queryable, update_query, field)
-          end
-        else
-          update_error("meta field #{field} does not exist")
-        end
-      else
-        update_error("meta field must be an embedded schema")
-      end
+      meta_schema.__schema__(:type, field) != :integer ->
+        update_error("meta field #{field} must be integer")
+
+      true ->
+        {:ok, :integer}
     end
   end
 

@@ -109,20 +109,23 @@ defmodule GroupherServer.Analysis.Web.Provision do
     Transaction.lock_global("community_dashboard:umami_website:#{community.id}", fn ->
       case GroupherServer.CMS.dashboard_persist_get_dashboard(community) do
         {:ok, dashboard} ->
-          case dashboard.umami_website_id do
-            existing_website_id when is_binary(existing_website_id) ->
-              {:ok, existing_website_id}
-
-            nil ->
-              with {:ok, _dashboard} <-
-                     GroupherServer.CMS.dashboard_persist_update_website_id(dashboard, website_id) do
-                {:ok, website_id}
-              end
-          end
+          persist_dashboard_website_id(dashboard, website_id)
 
         {:error, _reason} ->
           {:error, GroupherServer.CMS.error_cat_dashboard_not_found()}
       end
     end)
+  end
+
+  defp persist_dashboard_website_id(%{umami_website_id: existing}, _website_id)
+       when is_binary(existing) do
+    {:ok, existing}
+  end
+
+  defp persist_dashboard_website_id(dashboard, website_id) do
+    with {:ok, _dashboard} <-
+           GroupherServer.CMS.dashboard_persist_update_website_id(dashboard, website_id) do
+      {:ok, website_id}
+    end
   end
 end

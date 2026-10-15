@@ -155,13 +155,11 @@ defmodule GroupherServer.CMS.Articles.Trash do
              {:ok, _} <- update_tag_stats(canonical, 1),
              {:ok, _} <- update_community_count(canonical, community),
              {:ok, _} <- delete_empty_action(item.trash_action_id),
-             {:ok, _mentions} <- CMS.ArtimentMentions.mark_target_state(canonical, :active) do
+             {:ok, _mentions} <- CMS.ArtimentMentions.mark_target_state(canonical, :active),
+             {:ok, %{inner_id: inner_id}} <-
+               Bindings.get(%{article_id: canonical.id}, community) do
           _ = CMS.SearchArtiments.Indexer.enqueue_upsert(canonical)
-
-          with {:ok, %{inner_id: inner_id}} <-
-                 Bindings.get(%{article_id: canonical.id}, community) do
-            {:ok, Map.put(canonical, :inner_id, inner_id)}
-          end
+          {:ok, Map.put(canonical, :inner_id, inner_id)}
         end
       end)
     else

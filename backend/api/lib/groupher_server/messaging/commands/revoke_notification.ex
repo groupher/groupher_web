@@ -26,17 +26,7 @@ defmodule GroupherServer.Messaging.Commands.RevokeNotification do
         {:ok, :pass}
 
       {:ok, notifications} ->
-        case Repo.transaction(fn ->
-               with {:ok, :pass} <- Persist.revoke_rows(notifications, from_user),
-                    {:ok, users} <-
-                      notifications
-                      |> Enum.map(& &1.user_id)
-                      |> Accounts.mailbox_update_status_many_in_transaction() do
-                 %{users: users}
-               else
-                 {:error, reason} -> Repo.rollback(reason)
-               end
-             end) do
+        case Repo.transaction(fn -> revoke_in_transaction(notifications, from_user) end) do
           {:ok, %{users: users}} ->
             Accounts.mailbox_invalidate_users(users)
             {:ok, :pass}
@@ -44,6 +34,18 @@ defmodule GroupherServer.Messaging.Commands.RevokeNotification do
           {:error, reason} ->
             {:error, reason}
         end
+    end
+  end
+
+  defp revoke_in_transaction(notifications, from_user) do
+    with {:ok, :pass} <- Persist.revoke_rows(notifications, from_user),
+         {:ok, users} <-
+           notifications
+           |> Enum.map(& &1.user_id)
+           |> Accounts.mailbox_update_status_many_in_transaction() do
+      %{users: users}
+    else
+      {:error, reason} -> Repo.rollback(reason)
     end
   end
 end

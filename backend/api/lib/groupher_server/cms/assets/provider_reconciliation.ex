@@ -128,22 +128,30 @@ defmodule GroupherServer.CMS.Assets.ProviderReconciliation do
           {:halt, {:error, {:workflow_step_busy, seconds}}}
 
         {:ok, claimed} ->
-          if pending_intent?(claimed.resource_id) do
-            _ = Workflow.complete_step(claimed, owner, %{"outbox" => "present"})
-            {:cont, {:ok, %{result | skipped: result.skipped + 1}}}
-          else
-            case enqueue_provider_delete(claimed, workflow_ref) do
-              {:ok, _event} ->
-                _ = Workflow.complete_step(claimed, owner, %{"outbox" => "created"})
-                {:cont, {:ok, %{result | enqueued: result.enqueued + 1}}}
-
-              {:error, reason} = error ->
-                _ = Workflow.fail_step(claimed, owner, reason)
-                {:halt, error}
-            end
-          end
+          process_claimed_step(claimed, workflow_ref, owner, result)
       end
     end)
+  end
+
+  defp process_claimed_step(claimed, workflow_ref, owner, result) do
+    if pending_intent?(claimed.resource_id) do
+      _ = Workflow.complete_step(claimed, owner, %{"outbox" => "present"})
+      {:cont, {:ok, %{result | skipped: result.skipped + 1}}}
+    else
+      enqueue_claimed_step(claimed, workflow_ref, owner, result)
+    end
+  end
+
+  defp enqueue_claimed_step(claimed, workflow_ref, owner, result) do
+    case enqueue_provider_delete(claimed, workflow_ref) do
+      {:ok, _event} ->
+        _ = Workflow.complete_step(claimed, owner, %{"outbox" => "created"})
+        {:cont, {:ok, %{result | enqueued: result.enqueued + 1}}}
+
+      {:error, reason} = error ->
+        _ = Workflow.fail_step(claimed, owner, reason)
+        {:halt, error}
+    end
   end
 
   defp enqueue_provider_delete(%AssetWorkflowStep{} = step, workflow_ref) do

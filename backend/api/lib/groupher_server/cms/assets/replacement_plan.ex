@@ -474,33 +474,38 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
 
   defp mark_locator_failed(plan_id, article_id, step_ref, reason) do
     Repo.transaction(fn ->
-      plan = lock_plan(plan_id)
-
-      case plan_item(plan.items, article_id) do
-        nil ->
-          :pass
-
-        item ->
-          locator = plan_locator(item, step_ref)
-
-          if locator do
-            updated_locator =
-              locator
-              |> put_value(:status, "failed")
-              |> put_value(:result, %{"reason" => inspect(reason)})
-
-            updated_item = replace_locator(item, step_ref, updated_locator)
-            items = replace_plan_item(plan.items, article_id, updated_item)
-
-            case plan |> AssetReplacementPlan.changeset(%{items: items}) |> Repo.update() do
-              {:ok, _} -> :pass
-              {:error, update_reason} -> Repo.rollback(update_reason)
-            end
-          else
-            :pass
-          end
-      end
+      plan_id
+      |> lock_plan()
+      |> mark_locator_failed_locked(article_id, step_ref, reason)
     end)
+  end
+
+  defp mark_locator_failed_locked(plan, article_id, step_ref, reason) do
+    case plan_item(plan.items, article_id) do
+      nil -> :pass
+      item -> persist_failed_locator(plan, item, article_id, step_ref, reason)
+    end
+  end
+
+  defp persist_failed_locator(plan, item, article_id, step_ref, reason) do
+    case plan_locator(item, step_ref) do
+      nil ->
+        :pass
+
+      locator ->
+        updated_locator =
+          locator
+          |> put_value(:status, "failed")
+          |> put_value(:result, %{"reason" => inspect(reason)})
+
+        updated_item = replace_locator(item, step_ref, updated_locator)
+        items = replace_plan_item(plan.items, article_id, updated_item)
+
+        case plan |> AssetReplacementPlan.changeset(%{items: items}) |> Repo.update() do
+          {:ok, _} -> :pass
+          {:error, update_reason} -> Repo.rollback(update_reason)
+        end
+    end
   end
 
   defp persist_apply_run_ref(%{apply_run_ref: ref} = plan, ref), do: {:ok, plan}

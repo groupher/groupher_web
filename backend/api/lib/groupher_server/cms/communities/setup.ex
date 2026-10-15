@@ -242,26 +242,34 @@ defmodule GroupherServer.CMS.Communities.Setup do
   end
 
   defp ensure_root(community, user) do
-    case Repo.transaction(fn ->
-           community = lock_community(community.id)
-
-           if Repo.exists?(
-                from(moderator in CommunityModerator,
-                  where:
-                    moderator.community_id == ^community.id and
-                      moderator.user_id == ^user.id
-                )
-              ) do
-             :pass
-           else
-             case ModeratorSetup.add_root(community, user) do
-               {:ok, _} -> :pass
-               {:error, reason} -> Repo.rollback(reason)
-             end
-           end
-         end) do
+    case Repo.transaction(fn -> ensure_root_locked(community, user) end) do
       {:ok, :pass} -> {:ok, :pass}
       {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp ensure_root_locked(community, user) do
+    community = lock_community(community.id)
+
+    if root_moderator?(community, user) do
+      :pass
+    else
+      add_root_moderator(community, user)
+    end
+  end
+
+  defp root_moderator?(community, user) do
+    Repo.exists?(
+      from(moderator in CommunityModerator,
+        where: moderator.community_id == ^community.id and moderator.user_id == ^user.id
+      )
+    )
+  end
+
+  defp add_root_moderator(community, user) do
+    case ModeratorSetup.add_root(community, user) do
+      {:ok, _} -> :pass
+      {:error, reason} -> Repo.rollback(reason)
     end
   end
 
