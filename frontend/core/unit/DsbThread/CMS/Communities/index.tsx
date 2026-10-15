@@ -1,14 +1,13 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
+import { flexRender, type SortingState } from '@tanstack/react-table'
 import {
-  type ColumnDef,
-  flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  type SortingState,
-  useReactTable,
-} from '@tanstack/react-table'
+  type LegacyColumnDef as ColumnDef,
+  useLegacyTable,
+} from '@tanstack/react-table/legacy'
 import { includes } from 'ramda'
 import { startTransition, useMemo, useState } from 'react'
 
@@ -137,7 +136,7 @@ export default function Communities() {
     ]
   }, [selectColumn, s.title, s.cell])
 
-  const table = useReactTable({
+  const table = useLegacyTable({
     data,
     columns,
     state: { sorting },

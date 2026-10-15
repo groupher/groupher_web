@@ -1,11 +1,7 @@
 'use client'
 
-import {
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
+import { flexRender } from '@tanstack/react-table'
+import { getCoreRowModel, getSortedRowModel, useLegacyTable } from '@tanstack/react-table/legacy'
 import { useMemo } from 'react'
 
 import { SELECT_COL_ID, useScrollStuck, useStickyColumns } from '~/hooks/useTanTable'
@@ -45,7 +41,7 @@ export default function CmsDataTable<TData>({
     [columns, multiSelect],
   )
 
-  const table = useReactTable<TData>({
+  const table = useLegacyTable<TData>({
     data,
     columns: columnsWithSelection,
     state: { sorting },

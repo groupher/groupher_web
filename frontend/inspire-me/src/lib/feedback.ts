@@ -1,6 +1,3 @@
-/// <reference path="../../cloudflare-workers.d.ts" />
-/// <reference path="../vite-env.d.ts" />
-
 export type FeedbackPost = {
   id: string
   titleEn: string

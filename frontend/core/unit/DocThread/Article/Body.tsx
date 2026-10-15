@@ -1,10 +1,11 @@
-import { useMemo } from 'react'
+import { lazy, Suspense, useMemo } from 'react'
 
 import useArticle from '~/stores/article/hooks'
-import RichEditorStatic from '~/unit/RichEditor/Static'
 
 import { parseDocValue } from './helper'
 import useSalon from './salon/body'
+
+const RichEditorStatic = lazy(() => import('~/unit/RichEditor/Static'))
 
 export default function Body() {
   const { doc } = useArticle()
@@ -19,7 +20,9 @@ export default function Body() {
 
   return (
     <div className={s.wrapper}>
-      <RichEditorStatic value={value} />
+      <Suspense fallback={null}>
+        <RichEditorStatic value={value} />
+      </Suspense>
     </div>
   )
 }

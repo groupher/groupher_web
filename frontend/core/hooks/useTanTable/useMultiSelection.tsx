@@ -1,7 +1,11 @@
 // ~/hooks/useMultiSelection.ts
 'use client'
 
-import type { ColumnDef, Row, Table } from '@tanstack/react-table'
+import type {
+  LegacyColumnDef as ColumnDef,
+  LegacyRow as Row,
+  LegacyTable as Table,
+} from '@tanstack/react-table/legacy'
 import { useCallback, useRef, useState } from 'react'
 
 import Checker from '~/ui/Checker'

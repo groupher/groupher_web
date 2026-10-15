@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
-const REQUIRED_VERSION = '1.170.21'
+const REQUIRED_VERSION = '1.170.44'
 const packages = [
   ['frontend/core/package.json', ['peerDependencies', 'devDependencies']],
   ['frontend/landing/package.json', ['dependencies']],
