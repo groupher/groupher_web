@@ -9,6 +9,7 @@ import type {
   TWallpaperGradient,
   TWallpaperPic,
 } from '~/spec'
+
 import { DEFAULT_RENDER_COLORS } from './constant'
 
 const DEFAULT_BRIGHTNESS = 100

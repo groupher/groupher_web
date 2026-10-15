@@ -2,8 +2,8 @@
 
 import { flexRender } from '@tanstack/react-table'
 import { getCoreRowModel, getSortedRowModel, useLegacyTable } from '@tanstack/react-table/legacy'
-import { useMemo } from 'react'
 import type { RowData } from '@tanstack/table-core'
+import { useMemo } from 'react'
 
 import { SELECT_COL_ID, useScrollStuck, useStickyColumns } from '~/hooks/useTanTable'
 import useTrans from '~/hooks/useTrans'
