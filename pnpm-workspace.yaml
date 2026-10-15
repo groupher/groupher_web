@@ -83,5 +83,7 @@ minimumReleaseAgeExclude:
   - '@cloudflare/workers-types@5.20260929.1'
   - cf@1.0.0-beta.5
   - wrangler@4.143.0
+  # Reviewed security update for sanitize-html XSS/allowlist bypasses.
+  - sanitize-html@2.18.1
 patchedDependencies:
   pinyin-pro@3.29.3: patches/pinyin-pro@3.29.3.patch

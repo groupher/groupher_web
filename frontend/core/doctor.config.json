@@ -29,6 +29,18 @@
       {
         "files": ["unit/CoverEditor/useCoverImagePreview.ts"],
         "rules": ["react-doctor/rerender-lazy-ref-init"]
+      },
+      {
+        "files": ["icons/EmojiGood.tsx", "icons/EmojiSoSo.tsx"],
+        "rules": ["react-doctor/duplicate-jsx-subtree"]
+      },
+      {
+        "files": ["stores/dsbEditorUi/hooks.ts"],
+        "rules": ["react-doctor/valtio-no-proxy-read-in-render"]
+      },
+      {
+        "files": ["unit/DsbThread/CMS/Docs/ActionSnackbar/RevisionDrawer/diffClient.ts"],
+        "rules": ["react-doctor/no-json-parse-stringify-clone"]
       }
     ]
   }

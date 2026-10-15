@@ -87,6 +87,8 @@ const store = proxy<TStore>({
 export default function useLogic(): TRet {
   const snap = useSnapshot(store)
   const community$ = useCommunity()
+  const mode = snap.mode
+  const communitySlug = community$.slug
 
   const onPublish = (): void => {
     console.log('## onPublish')
@@ -127,26 +129,24 @@ export default function useLogic(): TRet {
   }
 
   // why need this?
-  const loadCommunity = (): void => {
-    const { mode } = snap
+  const loadCommunity = useCallback((): void => {
     if (mode !== 'publish') return
 
-    const { slug } = community$
-    const params = { slug }
+    const params = { slug: communitySlug }
     // console.log('## loadCommunity: ', params)
 
     browserGraphQLRequest(S.community, params).then((res) => {
       console.log('## loadCommunity: ', res)
     })
-  }
+  }, [communitySlug, mode])
 
-  const loadArticle = (): void => {
+  const loadArticle = useCallback((): void => {
     console.log('## loadArticle')
     // const { thread, viewingArticle } = store
     // const { id } = viewingArticle
 
     // sr71$.browserGraphQLRequest(S[thread], { id })
-  }
+  }, [])
 
   const reset = (): void => {
     snap.commit({

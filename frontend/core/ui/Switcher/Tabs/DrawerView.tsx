@@ -1,4 +1,4 @@
-import { type FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { type FC, useEffect, useMemo, useRef, useState } from 'react'
 
 import { isString } from '~/validator'
 
@@ -46,12 +46,9 @@ const Tabs: FC<TViewProps> = ({
     }
   }, [activeIndex])
 
-  const handleItemClick = useCallback(
-    (item: TTabItem, index: number) => {
-      onChange(isString(item) ? item : item.slug || item.title || '', item, index)
-    },
-    [onChange],
-  )
+  const handleItemClick = (item: TTabItem, index: number) => {
+    onChange(isString(item) ? item : item.slug || item.title || '', item, index)
+  }
 
   return (
     <div className={s.wrapper} data-testid='tabs'>

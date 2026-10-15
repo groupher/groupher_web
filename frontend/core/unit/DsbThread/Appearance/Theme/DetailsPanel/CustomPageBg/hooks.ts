@@ -122,7 +122,7 @@ export const useCustomPageBgControls = ({
 
   const handleToggleChange = useCallback(() => {
     onDraftChange({ pageBg: color })
-  }, [color, onDraftChange, theme])
+  }, [color, onDraftChange])
 
   return {
     checked: true,

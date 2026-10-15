@@ -1,4 +1,4 @@
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'motion/react'
+import { AnimatePresence, domAnimation, LazyMotion, m, MotionConfig } from 'motion/react'
 import { useState } from 'react'
 
 import { SAVING_BAR_LAYOUT_TRANSITION } from '../../../../SavingBar/constant'
@@ -19,55 +19,58 @@ export default function Colors({ details }: TProps) {
   const toggleLabel = expanded ? 'show less' : `${EXTRA_COLOR_DETAILS.length} more`
 
   return (
-    <LazyMotion features={domAnimation}>
-      <div className={s.wrapper}>
-        {MAIN_COLOR_DETAILS.map((detail) => (
-          <ColorItem
-            key={detail.key}
-            detail={detail}
-            selectedTokens={selectedTokens}
-            onThemePresetCommit={onThemePresetCommit}
-          />
-        ))}
-      </div>
+    <MotionConfig reducedMotion='user'>
+      <LazyMotion features={domAnimation}>
+        <m.div layout transition={{ layout: SAVING_BAR_LAYOUT_TRANSITION }} className={s.wrapper}>
+          {MAIN_COLOR_DETAILS.map((detail) => (
+            <ColorItem
+              key={detail.key}
+              detail={detail}
+              selectedTokens={selectedTokens}
+              onThemePresetCommit={onThemePresetCommit}
+            />
+          ))}
 
-      <AnimatePresence initial={false}>
-        {expanded && (
-          <m.div
-            key='more-colors'
-            initial={{ height: 0, marginTop: 0, opacity: 0 }}
-            animate={{ height: 'auto', marginTop: 32, opacity: 1 }}
-            exit={{ height: 0, marginTop: 0, opacity: 0 }}
-            transition={SAVING_BAR_LAYOUT_TRANSITION}
-            className={s.moreColorsClip}
-          >
-            <div className={s.moreColors}>
-              {EXTRA_COLOR_DETAILS.map((detail) => (
-                <ColorItem
-                  key={detail.key}
-                  detail={detail}
-                  selectedTokens={selectedTokens}
-                  onThemePresetCommit={onThemePresetCommit}
-                />
-              ))}
+          <AnimatePresence initial={false}>
+            {expanded && (
+              <m.div
+                key='more-colors'
+                layout
+                initial={{ opacity: 0, y: -12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={SAVING_BAR_LAYOUT_TRANSITION}
+                className={s.moreColorsClip}
+              >
+                <div className={s.moreColors}>
+                  {EXTRA_COLOR_DETAILS.map((detail) => (
+                    <ColorItem
+                      key={detail.key}
+                      detail={detail}
+                      selectedTokens={selectedTokens}
+                      onThemePresetCommit={onThemePresetCommit}
+                    />
+                  ))}
+                </div>
+              </m.div>
+            )}
+          </AnimatePresence>
+
+          <div className={s.dividerRow}>
+            <div className={s.toggleMask} aria-hidden>
+              {toggleLabel}
             </div>
-          </m.div>
-        )}
-      </AnimatePresence>
-
-      <div className={s.dividerRow}>
-        <div className={s.toggleMask} aria-hidden>
-          {toggleLabel}
-        </div>
-        <button
-          type='button'
-          className={s.toggle}
-          aria-expanded={expanded}
-          onClick={() => setExpanded((value) => !value)}
-        >
-          <span className={s.toggleText}>{toggleLabel}</span>
-        </button>
-      </div>
-    </LazyMotion>
+            <button
+              type='button'
+              className={s.toggle}
+              aria-expanded={expanded}
+              onClick={() => setExpanded((value) => !value)}
+            >
+              <span className={s.toggleText}>{toggleLabel}</span>
+            </button>
+          </div>
+        </m.div>
+      </LazyMotion>
+    </MotionConfig>
   )
 }

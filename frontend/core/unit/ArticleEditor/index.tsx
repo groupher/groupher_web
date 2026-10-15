@@ -46,11 +46,11 @@ const ArticleEditor: FC<TProps> = ({ metric: _metric = METRIC.ARTICLE_EDITOR }) 
 
   useEffect(() => {
     loadCommunity()
-  }, [])
+  }, [loadCommunity])
 
   useEffect(() => {
     if (mode === 'update') loadArticle()
-  }, [mode])
+  }, [loadArticle, mode])
 
   const groupedTags = getGroupedTags()
   const editData = getEditData()

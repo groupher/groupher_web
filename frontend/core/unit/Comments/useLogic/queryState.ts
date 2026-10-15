@@ -26,6 +26,7 @@ export default function useCommentQueryState() {
   const comments = useSnapshot(commentsStore)
   const account = useAccount()
   const { article, articlePath, stats } = useViewingArticle()
+  const articleKey = articlePathKey(articlePath)
   const query = useQuery(
     Q.comment.list(
       articlePath.community,
@@ -53,7 +54,6 @@ export default function useCommentQueryState() {
   useCommentReceiptReconcile(article)
   const data = useMemo(() => {
     if (!query.data) return query.data
-    const articleKey = articlePathKey(articlePath)
     const reactionReceipts = new Map(
       readCommentReactionReceipts(
         account.accountRef || getAccountRef(account.user),
@@ -155,13 +155,11 @@ export default function useCommentQueryState() {
   }, [
     account.accountRef,
     account.user,
-    articlePath.community,
-    articlePath.innerId,
+    articleKey,
     stats?.snapshotAt,
-    articlePath.thread,
     query.data,
     viewerQuery.data,
   ])
 
-  return { comments, commentsStore, data, query, summaryQuery }
+  return { comments, data, query, summaryQuery }
 }

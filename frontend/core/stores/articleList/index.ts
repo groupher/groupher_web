@@ -6,7 +6,8 @@ import type { TArticleFilter } from '~/spec'
 
 import type { TInit, TStore } from './spec'
 
-export default function ArticleListStore(init: TInit = {}): TStore {
+/** Creates an isolated reactive store for the active Article-list thread and filters. */
+export default function createArticleListStore(init: TInit = {}): TStore {
   const initialStore: TStore = {
     thread: null,
     activeOrder: null,

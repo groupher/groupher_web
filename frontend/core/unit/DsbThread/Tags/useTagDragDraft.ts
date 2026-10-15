@@ -294,31 +294,31 @@ export default function useTagDragDraft({
 
   const groupNames = useMemo(() => groups.map((group) => group.title).filter(Boolean), [groups])
 
-  const startDrag = useCallback(
-    (id: string): void => {
-      activeIdRef.current = id
-      draggingRef.current = true
-      baselineGroupsRef.current = latestGroupsRef.current
+  const startDrag = useCallback((id: string): void => {
+    activeIdRef.current = id
+    draggingRef.current = true
+    baselineGroupsRef.current = latestGroupsRef.current
+  }, [])
+
+  const moveTagDrag = useCallback(
+    (target?: TTagDragTarget | null): void => {
+      const activeId = activeIdRef.current
+      if (!activeId || !target?.groupId) return
+
+      const currentGroups = latestGroupsRef.current
+      const sourceGroupId = tagGroupIdRef.current?.get(activeId)
+
+      if (!sourceGroupId) return
+
+      const nextGroups = moveTagInGroups(currentGroups, activeId, target, sourceGroupId)
+      if (nextGroups === currentGroups) return
+
+      latestGroupsRef.current = nextGroups
+      if (sourceGroupId !== target.groupId) tagGroupIdRef.current?.set(activeId, target.groupId)
+      setGroups(nextGroups)
     },
     [tagGroupIdRef],
   )
-
-  const moveTagDrag = useCallback((target?: TTagDragTarget | null): void => {
-    const activeId = activeIdRef.current
-    if (!activeId || !target?.groupId) return
-
-    const currentGroups = latestGroupsRef.current
-    const sourceGroupId = tagGroupIdRef.current?.get(activeId)
-
-    if (!sourceGroupId) return
-
-    const nextGroups = moveTagInGroups(currentGroups, activeId, target, sourceGroupId)
-    if (nextGroups === currentGroups) return
-
-    latestGroupsRef.current = nextGroups
-    if (sourceGroupId !== target.groupId) tagGroupIdRef.current?.set(activeId, target.groupId)
-    setGroups(nextGroups)
-  }, [])
 
   // Commit is delayed to the next animation frame so the final local drag state
   // can paint before the parent dashboard store updates and re-renders.

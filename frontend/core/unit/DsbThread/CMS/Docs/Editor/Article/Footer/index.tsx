@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'motion/react'
+import { AnimatePresence, domAnimation, LazyMotion, m, MotionConfig } from 'motion/react'
 import { type FC, useCallback, useState } from 'react'
 
 import useTrans from '~/hooks/useTrans'
@@ -23,41 +23,48 @@ const Footer: FC = () => {
   }, [])
 
   return (
-    <footer className={s.wrapper}>
-      <div className={s.heading}>
-        <span className={s.title}>{t(FOOTER_TITLE_I18N_KEY)}</span>
-        <span className={s.topDivider} />
-      </div>
-
-      <div className={s.content}>
-        <FeedbackSpectrum onDragEnd={handleSpectrumDragEnd} />
-
-        <div className={s.actions}>
-          {FOOTER_ACTIONS.map((action) => (
-            <ActionButton key={action.key} action={action} />
-          ))}
-        </div>
-      </div>
-
+    <MotionConfig reducedMotion='user'>
       <LazyMotion features={domAnimation}>
-        <AnimatePresence initial={false}>
-          {showFeedbackTags && (
-            <m.div
-              key='feedback-tags'
-              initial={{ height: 0, opacity: 0, marginTop: 0 }}
-              animate={{ height: 'auto', opacity: 1, marginTop: 4 }}
-              exit={{ height: 0, opacity: 0, marginTop: 0 }}
-              transition={{ duration: 0.18, ease: 'easeInOut' }}
-              className={s.feedbackTagsMotion}
-            >
-              <FeedbackTags key={feedbackScore} score={feedbackScore} />
-            </m.div>
-          )}
-        </AnimatePresence>
-      </LazyMotion>
+        <m.footer
+          layout
+          transition={{ layout: { duration: 0.18, ease: 'easeInOut' } }}
+          className={s.wrapper}
+        >
+          <div className={s.heading}>
+            <span className={s.title}>{t(FOOTER_TITLE_I18N_KEY)}</span>
+            <span className={s.topDivider} />
+          </div>
 
-      <div className={s.bottomDivider} />
-    </footer>
+          <div className={s.content}>
+            <FeedbackSpectrum onDragEnd={handleSpectrumDragEnd} />
+
+            <div className={s.actions}>
+              {FOOTER_ACTIONS.map((action) => (
+                <ActionButton key={action.key} action={action} />
+              ))}
+            </div>
+          </div>
+
+          <AnimatePresence initial={false}>
+            {showFeedbackTags && (
+              <m.div
+                key='feedback-tags'
+                layout
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.18, ease: 'easeInOut' }}
+                className={s.feedbackTagsMotion}
+              >
+                <FeedbackTags key={feedbackScore} score={feedbackScore} />
+              </m.div>
+            )}
+          </AnimatePresence>
+
+          <div className={s.bottomDivider} />
+        </m.footer>
+      </LazyMotion>
+    </MotionConfig>
   )
 }
 

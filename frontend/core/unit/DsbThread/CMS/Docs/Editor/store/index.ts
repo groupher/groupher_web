@@ -122,7 +122,8 @@ export const buildPublishView = (
   }
 }
 
-export default function DocsEditorStore(init: TInit): TStore {
+/** Creates the Docs Editor store that coordinates draft sessions, SideTree actions, and publishing. */
+export default function createDocsEditorStore(init: TInit): TStore {
   // Docs editor actions are split across the tree, article, snackbar, and future drawers.
   // Keep cross-region session commands here so toolbar actions do not reach into SideTree props.
   let sideTree = init.sideTree

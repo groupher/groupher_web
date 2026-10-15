@@ -1,7 +1,7 @@
 'use client'
 
 import { getLocalTimeZone, today } from '@internationalized/date'
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'motion/react'
+import { AnimatePresence, domAnimation, LazyMotion, m, MotionConfig } from 'motion/react'
 import {
   Button as AriaButton,
   CalendarCell,
@@ -60,106 +60,112 @@ export default function CmsTableToolbar({
   const showBatchActions = !!batchActions && multiSelectEnabled && selectedCount > 0
 
   return (
-    <div className={s.wrapper}>
-      <div className={s.main}>
-        <Button
-          ariaLabel='Toggle multi-select'
-          size='tiny'
-          onClick={() => onToggleMultiSelectAction(!multiSelectEnabled)}
-          iconOnly
-          ghost={!multiSelectEnabled}
-        >
-          <DabbleCheckSVG className={cn(s.icon, multiSelectEnabled && s.checkActive)} />
-        </Button>
-
-        {search && (
-          <div className={s.inputWrapper}>
-            <SearchSVG className={cn(s.icon, 'absolute left-2 top-2')} />
-            <Input
-              value={search.value}
-              placeholder={search.placeholder ?? t('dsb.cms.filter.search_placeholder')}
-              className={s.input}
-              onChange={(e) => search.onChangeAction(e.currentTarget.value)}
-            />
-          </div>
-        )}
-
-        {withCategory && <ConditionSelector mode={CONDITION_MODE.CAT} selected={false} />}
-        {withStatus && <ConditionSelector mode={CONDITION_MODE.STATUS} selected={false} />}
-        {withTags && <ConditionSelector mode={CONDITION_MODE.TAG} selected={false} />}
-
-        {withDateRange && <CmsDateRangePicker label={t('dsb.cms.filter.date_range')} />}
-
-        <div className={s.grow} />
-
-        {withReset && (
-          <Button size='small' ghost noBorder onClick={onResetAction ?? undefined}>
-            <ResetSVG className={cn(s.icon, 'mr-1')} />
-            {t('dsb.cms.filter.reset')}
-          </Button>
-        )}
-      </div>
-
+    <MotionConfig reducedMotion='user'>
       <LazyMotion features={domAnimation}>
-        <AnimatePresence initial={false}>
-          {showBatchActions && batchActions && (
-            <m.div
-              key='cms-table-action-bar'
-              initial={{ height: 0, marginTop: 0, opacity: 0, y: -6 }}
-              animate={{ height: 'auto', marginTop: 16, opacity: 1, y: 0 }}
-              exit={{ height: 0, marginTop: 0, opacity: 0, y: -6 }}
-              transition={{
-                height: { duration: 0.22, ease: 'easeOut' },
-                marginTop: { duration: 0.22, ease: 'easeOut' },
-                opacity: { duration: 0.16, ease: 'easeOut' },
-                y: { duration: 0.18, ease: 'easeOut' },
-              }}
-              className={s.actionBarPanel}
+        <m.div
+          layout
+          transition={{ layout: { duration: 0.22, ease: 'easeOut' } }}
+          className={s.wrapper}
+        >
+          <div className={s.main}>
+            <Button
+              ariaLabel='Toggle multi-select'
+              size='tiny'
+              onClick={() => onToggleMultiSelectAction(!multiSelectEnabled)}
+              iconOnly
+              ghost={!multiSelectEnabled}
             >
-              <div className={s.actionBarWrapper}>
-                <div className={s.actionBarMain}>
-                  <div className={s.actionBarNote}>
-                    {t('dsb.cms.action.selected_prefix')}
-                    <div className={s.actionBarFocus}>{selectedCount}</div>
-                    {t('dsb.cms.action.selected_suffix')}
-                  </div>
+              <DabbleCheckSVG className={cn(s.icon, multiSelectEnabled && s.checkActive)} />
+            </Button>
 
-                  {(batchActions.withCategory ||
-                    batchActions.withStatus ||
-                    batchActions.withTags ||
-                    batchActions.withDelete) && (
-                    <div className={s.actionBarActionNotes}>
-                      <div className={s.actionBarNote}>{t('dsb.cms.action.label')}</div>
-                      {batchActions.withCategory && (
-                        <div className={s.actionBarNote}>{t('dsb.cms.table.category')}</div>
-                      )}
-                      {batchActions.withStatus && (
-                        <div className={s.actionBarNote}>{t('dsb.cms.table.status')}</div>
-                      )}
-                      {batchActions.withTags && (
-                        <div className={s.actionBarNote}>{t('dsb.cms.table.tags')}</div>
-                      )}
-                      {batchActions.withDelete && (
-                        <div className={s.actionBarDeleteNote}>{t('dsb.cms.action.delete')}</div>
-                      )}
-                    </div>
-                  )}
-
-                  <div className={s.grow} />
-                  <Button size='small' ghost noBorder onClick={batchActions.onCancelAction}>
-                    {t('dsb.cms.action.cancel')}
-                  </Button>
-                  <div className={s.actionBarSpacer} />
-                  <Button size='small' space={2} onClick={batchActions.onConfirmAction}>
-                    {t('dsb.cms.action.confirm')}
-                  </Button>
-                </div>
+            {search && (
+              <div className={s.inputWrapper}>
+                <SearchSVG className={cn(s.icon, 'absolute left-2 top-2')} />
+                <Input
+                  value={search.value}
+                  placeholder={search.placeholder ?? t('dsb.cms.filter.search_placeholder')}
+                  className={s.input}
+                  onChange={(e) => search.onChangeAction(e.currentTarget.value)}
+                />
               </div>
-            </m.div>
-          )}
-        </AnimatePresence>
+            )}
+
+            {withCategory && <ConditionSelector mode={CONDITION_MODE.CAT} selected={false} />}
+            {withStatus && <ConditionSelector mode={CONDITION_MODE.STATUS} selected={false} />}
+            {withTags && <ConditionSelector mode={CONDITION_MODE.TAG} selected={false} />}
+
+            {withDateRange && <CmsDateRangePicker label={t('dsb.cms.filter.date_range')} />}
+
+            <div className={s.grow} />
+
+            {withReset && (
+              <Button size='small' ghost noBorder onClick={onResetAction ?? undefined}>
+                <ResetSVG className={cn(s.icon, 'mr-1')} />
+                {t('dsb.cms.filter.reset')}
+              </Button>
+            )}
+          </div>
+
+          <AnimatePresence initial={false}>
+            {showBatchActions && batchActions && (
+              <m.div
+                key='cms-table-action-bar'
+                layout
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{
+                  layout: { duration: 0.22, ease: 'easeOut' },
+                  opacity: { duration: 0.16, ease: 'easeOut' },
+                  y: { duration: 0.18, ease: 'easeOut' },
+                }}
+                className={s.actionBarPanel}
+              >
+                <div className={s.actionBarWrapper}>
+                  <div className={s.actionBarMain}>
+                    <div className={s.actionBarNote}>
+                      {t('dsb.cms.action.selected_prefix')}
+                      <div className={s.actionBarFocus}>{selectedCount}</div>
+                      {t('dsb.cms.action.selected_suffix')}
+                    </div>
+
+                    {(batchActions.withCategory ||
+                      batchActions.withStatus ||
+                      batchActions.withTags ||
+                      batchActions.withDelete) && (
+                      <div className={s.actionBarActionNotes}>
+                        <div className={s.actionBarNote}>{t('dsb.cms.action.label')}</div>
+                        {batchActions.withCategory && (
+                          <div className={s.actionBarNote}>{t('dsb.cms.table.category')}</div>
+                        )}
+                        {batchActions.withStatus && (
+                          <div className={s.actionBarNote}>{t('dsb.cms.table.status')}</div>
+                        )}
+                        {batchActions.withTags && (
+                          <div className={s.actionBarNote}>{t('dsb.cms.table.tags')}</div>
+                        )}
+                        {batchActions.withDelete && (
+                          <div className={s.actionBarDeleteNote}>{t('dsb.cms.action.delete')}</div>
+                        )}
+                      </div>
+                    )}
+
+                    <div className={s.grow} />
+                    <Button size='small' ghost noBorder onClick={batchActions.onCancelAction}>
+                      {t('dsb.cms.action.cancel')}
+                    </Button>
+                    <div className={s.actionBarSpacer} />
+                    <Button size='small' space={2} onClick={batchActions.onConfirmAction}>
+                      {t('dsb.cms.action.confirm')}
+                    </Button>
+                  </div>
+                </div>
+              </m.div>
+            )}
+          </AnimatePresence>
+        </m.div>
       </LazyMotion>
-    </div>
+    </MotionConfig>
   )
 }
 

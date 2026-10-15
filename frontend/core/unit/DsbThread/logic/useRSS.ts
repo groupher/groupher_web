@@ -48,6 +48,7 @@ const DEFAULT_OPTIONS: TOptions = {
 /** Exposes rss state and actions through the shared React hook boundary. */
 export default function useRSS(): TRet {
   const dsb$ = useDsbEdit()
+  const reconcile = dsb$.reconcile
   const { slug: community } = useCommunity()
   const { edit, isChanged } = useHelper()
   const pressConfigQuery = graphqlQueryOptions(
@@ -92,12 +93,12 @@ export default function useRSS(): TRet {
       rssFeedType: config.feedType.toLowerCase() as TRSSType,
       rssFeedCount: config.feedCount,
     }
-    dsb$.reconcile({
+    reconcile({
       fields: [FIELD.RSS_FEED_TYPE, FIELD.RSS_FEED_COUNT],
       submitted: confirmed,
       confirmed,
     })
-  }, [data?.pressConfig])
+  }, [data?.pressConfig, reconcile])
 
   const isTouched =
     isChanged(FIELD.RSS_FEED_TYPE) ||

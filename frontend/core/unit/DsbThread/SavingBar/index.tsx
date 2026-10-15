@@ -1,4 +1,4 @@
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'motion/react'
+import { AnimatePresence, domAnimation, LazyMotion, m, MotionConfig } from 'motion/react'
 import type { ComponentType, FC, ReactNode, SVGProps } from 'react'
 
 import useTrans from '~/hooks/useTrans'
@@ -120,65 +120,64 @@ const SavingBar: FC<TProps> = ({
   if (children !== null) {
     if (isTouched) {
       return (
-        <LazyMotion features={domAnimation}>
-          <m.div
-            layout
-            initial={SAVING_BAR_ANIMATION.initial}
-            animate={SAVING_BAR_ANIMATION.animate}
-            exit={SAVING_BAR_ANIMATION.exit}
-            transition={SAVING_BAR_TRANSITION}
-            className={s.container}
-          >
-            <div className={cn(s.wrapper, 'saving-bar-right-linear')}>
-              {children}
-              <div className='grow' />
-              {actions}
-            </div>
-          </m.div>
-        </LazyMotion>
+        <MotionConfig reducedMotion='user'>
+          <LazyMotion features={domAnimation}>
+            <m.div
+              layout
+              initial={SAVING_BAR_ANIMATION.initial}
+              animate={SAVING_BAR_ANIMATION.animate}
+              exit={SAVING_BAR_ANIMATION.exit}
+              transition={SAVING_BAR_TRANSITION}
+              className={s.container}
+            >
+              <div className={cn(s.wrapper, 'saving-bar-right-linear')}>
+                {children}
+                <div className='grow' />
+                {actions}
+              </div>
+            </m.div>
+          </LazyMotion>
+        </MotionConfig>
       )
     }
     return children
   }
 
   return (
-    <LazyMotion features={domAnimation}>
-      <AnimatePresence initial={false}>
-        {isTouched && (
-          <m.div
-            key='saving-bar'
-            initial={{ height: 0 }}
-            animate={{ height: 'auto' }}
-            exit={{ height: 0 }}
-            transition={SAVING_BAR_LAYOUT_TRANSITION}
-            className='overflow-hidden'
-          >
-            {/* Keep caller spacing/borders inside the measured height so they collapse smoothly. */}
+    <MotionConfig reducedMotion='user'>
+      <LazyMotion features={domAnimation}>
+        <AnimatePresence initial={false}>
+          {isTouched && (
             <m.div
+              key='saving-bar'
+              layout
               initial={SAVING_BAR_ANIMATION.initial}
               animate={SAVING_BAR_ANIMATION.animate}
               exit={SAVING_BAR_ANIMATION.exit}
-              transition={SAVING_BAR_TRANSITION}
-              className={wrapperClassName}
+              transition={SAVING_BAR_LAYOUT_TRANSITION}
+              className='overflow-hidden'
             >
-              <div className={s.container}>
-                <div className={cn(s.wrapper, 'pl-2.5', 'saving-bar-right-linear')}>
-                  <div className={s.message}>
-                    <SaveSVG className={s.infoIcon} />
-                    <div className={s.hintText}>
-                      <span>{resolvedPrefix}</span>
-                      {hint && <span className={s.hint}>{hint}</span>}
+              {/* Keep caller spacing/borders inside the measured height so they collapse smoothly. */}
+              <div className={wrapperClassName}>
+                <div className={s.container}>
+                  <div className={cn(s.wrapper, 'pl-2.5', 'saving-bar-right-linear')}>
+                    <div className={s.message}>
+                      <SaveSVG className={s.infoIcon} />
+                      <div className={s.hintText}>
+                        <span>{resolvedPrefix}</span>
+                        {hint && <span className={s.hint}>{hint}</span>}
+                      </div>
                     </div>
+                    <div className='grow' />
+                    {actions}
                   </div>
-                  <div className='grow' />
-                  {actions}
                 </div>
               </div>
             </m.div>
-          </m.div>
-        )}
-      </AnimatePresence>
-    </LazyMotion>
+          )}
+        </AnimatePresence>
+      </LazyMotion>
+    </MotionConfig>
   )
 }
 

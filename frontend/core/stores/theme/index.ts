@@ -5,7 +5,8 @@ import type { TThemeMode, TThemeName } from '~/spec'
 
 import type { TInit, TStore } from './spec'
 
-export default function ThemeStore(
+/** Creates an isolated reactive store for the resolved theme and user-selected theme mode. */
+export default function createThemeStore(
   initOrMode: TInit | TThemeMode = THEME_MODE.SYSTEM,
   legacyTheme: TThemeName = THEME.LIGHT,
 ): TStore {

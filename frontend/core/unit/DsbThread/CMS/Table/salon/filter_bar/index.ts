@@ -55,7 +55,7 @@ export default function useSalon() {
     actionBarActionNotes: 'row-center ml-1',
     actionBarDeleteNote: cn('text-xs bold ml-2', rainbow(COLOR.RED, 'fg')),
     actionBarSpacer: 'mr-1',
-    actionBarPanel: 'overflow-hidden',
+    actionBarPanel: 'mt-4 overflow-hidden',
     grow: 'grow',
   }
 }

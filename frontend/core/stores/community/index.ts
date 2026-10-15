@@ -4,7 +4,8 @@ import { COMMUNITY_THREADS } from '~/const/thread'
 
 import type { TInit, TStore } from './spec'
 
-export default function CommunityStore(init: TInit = { slug: 'home' }): TStore {
+/** Creates an isolated reactive store for one Community's identity and aggregate metadata. */
+export default function createCommunityStore(init: TInit = { slug: 'home' }): TStore {
   const store = proxy({
     ...init,
     title: init.title || '',

@@ -1,6 +1,6 @@
 'use client'
 
-import { use, useMemo } from 'react'
+import { use } from 'react'
 import { useSnapshot } from 'valtio'
 
 import useTheme from '~/hooks/useTheme'
@@ -67,10 +67,7 @@ export default function useWallpaper(): TRet {
         }),
   )
 
-  return useMemo(
-    () => composeWallpaperBgCss(state),
-    [state.source, state.pattern, state.effect, state.gradient, state.customWallpaper, state.type],
-  )
+  return composeWallpaperBgCss(state)
 }
 
 /** Exposes wallpaper bg render spec state and actions through the shared React hook boundary. */
@@ -85,16 +82,5 @@ export function useWallpaperBgRenderSpec(): TBgRenderSpec {
   const { isDarkTheme } = useTheme()
   const state = pickWallpaperThemeState(snapshot, isDarkTheme)
 
-  return useMemo(
-    () => adaptWallpaperBgRenderSpec(state),
-    [
-      state.source,
-      state.pattern,
-      state.effect,
-      state.texture,
-      state.gradient,
-      state.customWallpaper,
-      state.type,
-    ],
-  )
+  return adaptWallpaperBgRenderSpec(state)
 }

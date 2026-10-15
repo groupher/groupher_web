@@ -4,5 +4,9 @@ import type { TComment, TID } from '~/spec'
 export const areAllCommentsFolded = (
   entries: readonly TComment[],
   foldedCommentIds: readonly TID[],
-): boolean =>
-  entries.length > 0 && entries.every((comment) => foldedCommentIds.includes(comment.innerId))
+): boolean => {
+  if (entries.length === 0) return false
+
+  const foldedCommentIdSet = new Set(foldedCommentIds)
+  return entries.every((comment) => foldedCommentIdSet.has(comment.innerId))
+}

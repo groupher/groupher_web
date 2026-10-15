@@ -3,7 +3,8 @@ import { proxy } from 'valtio'
 import { API_MODE, MODE } from './constant'
 import type { TInit, TStore } from './spec'
 
-export default function CommentsStore(init: TInit = {}): TStore {
+/** Creates an isolated reactive Comments store with resettable editor and list state. */
+export default function createCommentsStore(init: TInit = {}): TStore {
   const createInitialState = () => ({
     mode: MODE.REPLIES,
     apiMode: API_MODE.ARTICLE,
