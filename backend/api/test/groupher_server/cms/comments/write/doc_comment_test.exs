@@ -300,11 +300,12 @@ defmodule GroupherServer.Test.CMS.Comments.DocComment do
         CMS.Comments.update_comment(
           comment,
           mock_comment("updated content"),
+          1,
           user,
           Ecto.UUID.generate()
         )
 
-      assert updated_comment.body_html |> String.contains?(~s(updated content</p>))
+      assert updated_comment.body.html |> String.contains?(~s(updated content</p>))
     end
   end
 
@@ -777,10 +778,10 @@ defmodule GroupherServer.Test.CMS.Comments.DocComment do
         )
 
       {:ok, _} =
-        CMS.AbuseReports.comment(comment, mock_comment(), "attr", user, Ecto.UUID.generate())
+        CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
 
       {:ok, _} =
-        CMS.AbuseReports.comment(comment, mock_comment(), "attr", user2, Ecto.UUID.generate())
+        CMS.AbuseReports.comment(comment, "comment reason", "attr", user2, Ecto.UUID.generate())
 
       filter = %{content_type: :comment, content_id: comment.id, page: 1, size: 20}
       {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
@@ -821,7 +822,7 @@ defmodule GroupherServer.Test.CMS.Comments.DocComment do
         {:ok, user} = db_insert(:user)
 
         {:ok, _} =
-          CMS.AbuseReports.comment(comment, mock_comment(), "attr", user, Ecto.UUID.generate())
+          CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
       end)
 
       {:ok, comment} = ORM.find(Comment, comment.id)
@@ -846,7 +847,7 @@ defmodule GroupherServer.Test.CMS.Comments.DocComment do
         {:ok, user} = db_insert(:user)
 
         {:ok, _} =
-          CMS.AbuseReports.comment(comment, mock_comment(), "attr", user, Ecto.UUID.generate())
+          CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
       end)
 
       {:ok, comment} = ORM.find(Comment, comment.id)
@@ -1182,7 +1183,7 @@ defmodule GroupherServer.Test.CMS.Comments.DocComment do
 
       assert exist_in?(deleted_comment, paged_comments.entries)
       assert {:ok, :deleted} = Lifecycle.state(deleted_comment.id)
-      assert deleted_comment.body_html == @delete_hint
+      assert deleted_comment.body.plain_text == @delete_hint
     end
 
     test "delete comment still update article's comments_count field",

@@ -96,25 +96,31 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
   defp required_published_at(_), do: {:error, :missing_published_at}
 
   defp update_and_publish(article, attrs, author, user, community, command_id) do
-    CMS.Gate.with_community_check(user, :edit, community, article, fn canonical ->
-      with {:ok, lifecycle} <- lifecycle(canonical.id),
-           {:ok, draft} <- DraftStore.ensure_from_public(canonical, author),
-           {:ok, _} <- expected_version(attrs, draft.version),
-           {:ok, updated} <-
-             DraftStore.update(canonical, attrs, author, expected_version: draft.version),
-           publish_opts =
-             [
-               expected_draft_version: updated.version,
-               expected_lifecycle_version: lifecycle.version,
-               community: community
-             ] ++
-               community_tag_opts(attrs) ++ [outbox_command_id: command_id],
-           {:ok, %{article: published}} <-
-             CMS.Articles.Workflow.publish(canonical, author, user, publish_opts),
-           {:ok, public} <- public_projection(published.id, community) do
-        {:ok, %{public: public}}
-      end
-    end)
+    result =
+      CMS.Gate.with_community_check(user, :edit, community, article, fn canonical ->
+        with {:ok, lifecycle} <- lifecycle(canonical.id),
+             {:ok, draft} <- DraftStore.ensure_from_public(canonical, author),
+             {:ok, _} <- expected_version(attrs, draft.version),
+             {:ok, updated} <-
+               DraftStore.update(canonical, attrs, author, expected_version: draft.version),
+             publish_opts =
+               [
+                 expected_draft_version: updated.version,
+                 expected_lifecycle_version: lifecycle.version,
+                 community: community
+               ] ++
+                 community_tag_opts(attrs) ++ [outbox_command_id: command_id],
+             {:ok, %{article: published}} <-
+               CMS.Articles.Workflow.publish(canonical, author, user, publish_opts),
+             {:ok, public} <- public_projection(published.id, community) do
+          {:ok, %{public: public}}
+        end
+      end)
+
+    case result do
+      {:error, :draft_version_conflict} -> {:error, CMS.ErrorCat.draft_version_conflict()}
+      other -> other
+    end
   end
 
   defp expected_version(attrs, version) do

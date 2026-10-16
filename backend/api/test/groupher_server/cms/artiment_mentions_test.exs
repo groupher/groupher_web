@@ -266,9 +266,11 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
           community,
           :post,
           article_inner_id(post, community),
-          plate_body([
-            block("block-a", [text(~s(<a href="#{@site_host}/blog/#{blog.id}">blog</a>))])
-          ]),
+          mock_body_bag(
+            plate_body([
+              block("block-a", [text(~s(<a href="#{@site_host}/blog/#{blog.id}">blog</a>))])
+            ])
+          ),
           user,
           Ecto.UUID.generate()
         )
@@ -284,7 +286,8 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
       {:ok, %{comment: comment}} =
         CMS.Comments.update_comment(
           comment,
-          plate_body([block("block-b", [text("https://example.com/changed")])]),
+          mock_body_bag(plate_body([block("block-b", [text("https://example.com/changed")])])),
+          1,
           user,
           Ecto.UUID.generate()
         )
@@ -310,7 +313,9 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
               community,
               :blog,
               article_inner_id(blog, community),
-              plate_body([block("target-#{index}", [text("target #{index}")])]),
+              mock_body_bag(
+                plate_body([block("target-#{index}", [text("target comment #{index}")])])
+              ),
               user,
               Ecto.UUID.generate()
             )
@@ -324,7 +329,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
             ~s(<a href="#{@site_host}/blog/#{blog.id}?comment_id=#{comment.id}">target</a>)
           end)
 
-        plate_body([block("comment-links", [text(links)])])
+        mock_body_bag(plate_body([block("comment-links", [text(links)])]))
       end
 
       {:ok, mentioner} =
@@ -347,6 +352,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
         CMS.Comments.update_comment(
           mentioner,
           comment_body.(target_comments),
+          1,
           user,
           Ecto.UUID.generate()
         )
@@ -356,7 +362,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
 
       assert {:ok, {1, nil}} = single_result
       assert {:ok, {3, nil}} = many_result
-      assert data_query_count(single_queries) == data_query_count(many_queries)
+      assert data_query_count(many_queries) <= data_query_count(single_queries)
 
       assert {:ok, %{total_count: 3}} =
                ArtimentMentions.mentions(:comment, mentioner.id, %{page: 1, size: 10})

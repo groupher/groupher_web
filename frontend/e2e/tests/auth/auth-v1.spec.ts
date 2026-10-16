@@ -35,6 +35,13 @@ type TAuthState = {
   }
 }
 
+type TDocDraftState = {
+  calls: number
+  draft: { title: string; version: number }
+  receiptCount: number
+  scenario: string
+}
+
 const resetStack = async (request: APIRequestContext): Promise<void> => {
   const responses = await Promise.all([
     request.post(`${MOCK_ORIGIN}/__e2e/auth/reset`),
@@ -47,6 +54,22 @@ const readState = async (request: APIRequestContext): Promise<TAuthState> => {
   const response = await request.get(`${MOCK_ORIGIN}/__e2e/auth/state`)
   expect(response.ok()).toBe(true)
   return (await response.json()) as TAuthState
+}
+
+const setDocDraftScenario = async (
+  request: APIRequestContext,
+  scenario: 'success' | 'conflict' | 'rate_limit_then_success',
+): Promise<void> => {
+  const response = await request.post(`${MOCK_ORIGIN}/__e2e/doc-draft/scenario`, {
+    data: { scenario },
+  })
+  expect(response.ok()).toBe(true)
+}
+
+const readDocDraftState = async (request: APIRequestContext): Promise<TDocDraftState> => {
+  const response = await request.get(`${MOCK_ORIGIN}/__e2e/doc-draft/state`)
+  expect(response.ok()).toBe(true)
+  return (await response.json()) as TDocDraftState
 }
 
 const testLogin = async (page: Page, appOrigin = DASH_ORIGIN, login = 'e2e'): Promise<void> => {
@@ -117,6 +140,104 @@ const openAccountMenu = async (page: Page): Promise<void> => {
 
 test.describe('Auth V1 browser protocol', () => {
   test.beforeEach(async ({ request }) => resetStack(request))
+
+  test('P0 reconciles a stale Docs autosave while preserving local edits', async ({ page }) => {
+    await testLogin(page)
+    await page.goto(`${DASH_ORIGIN}/home/overview`)
+    await expect(page.getByTestId('dashboard-overview-title')).toBeVisible()
+    expect((await runProtectedOperation(page)).data?.me?.login).toBe('e2e')
+
+    await page.goto(`${DASH_ORIGIN}/home/doc/editor?docId=e2e-doc`)
+
+    const title = page.getByPlaceholder('Title', { exact: true })
+    await expect(title).toHaveValue('Canonical title')
+    await page.waitForFunction(() => {
+      const input = document.querySelector('textarea[placeholder="Title"]')
+      return Boolean(input && Object.keys(input).some((key) => key.startsWith('__reactProps$')))
+    })
+    await title.fill('Local title survives conflict')
+
+    await expect(
+      page.getByText('The server draft changed. Your local edits were preserved.'),
+    ).toBeVisible({ timeout: 15_000 })
+    await expect(title).toHaveValue('Local title survives conflict')
+  })
+
+  test('P0 persists a successful Docs autosave', async ({ page, request }) => {
+    await setDocDraftScenario(request, 'success')
+    await testLogin(page)
+    await page.goto(`${DASH_ORIGIN}/home/doc/editor?docId=e2e-doc`)
+
+    const title = page.getByPlaceholder('Title', { exact: true })
+    await expect(title).toHaveValue('Canonical title')
+    await title.fill('Saved through Publisher')
+
+    await expect
+      .poll(async () => readDocDraftState(request), { timeout: 15_000 })
+      .toMatchObject({
+        calls: 1,
+        draft: { title: 'Saved through Publisher', version: 5 },
+        receiptCount: 1,
+      })
+  })
+
+  test('P0 replays a committed Docs autosave with the same command identity', async ({
+    page,
+    request,
+  }) => {
+    await setDocDraftScenario(request, 'success')
+    await testLogin(page)
+    await page.goto(`${DASH_ORIGIN}/home/doc/editor?docId=e2e-doc`)
+
+    let publishRequests = 0
+    await page.route('**/api/content/publish', async (route) => {
+      publishRequests += 1
+      if (publishRequests === 1) {
+        await route.fetch()
+        await route.abort('failed')
+        return
+      }
+      await route.continue()
+    })
+
+    await page.getByPlaceholder('Title', { exact: true }).fill('Replay-safe title')
+
+    await expect
+      .poll(async () => readDocDraftState(request), { timeout: 15_000 })
+      .toMatchObject({
+        calls: 2,
+        draft: { title: 'Replay-safe title', version: 5 },
+        receiptCount: 1,
+      })
+  })
+
+  test('P0 retries the latest Docs autosave after rate limiting', async ({ page, request }) => {
+    await setDocDraftScenario(request, 'rate_limit_then_success')
+    await testLogin(page)
+    await page.goto(`${DASH_ORIGIN}/home/doc/editor?docId=e2e-doc`)
+
+    const title = page.getByPlaceholder('Title', { exact: true })
+    await expect(title).toHaveValue('Canonical title')
+    await page.waitForFunction(() => {
+      const input = document.querySelector('textarea[placeholder="Title"]')
+      return Boolean(input && Object.keys(input).some((key) => key.startsWith('__reactProps$')))
+    })
+    await title.fill('Rate-limited title')
+
+    await expect
+      .poll(async () => (await readDocDraftState(request)).calls, { timeout: 10_000 })
+      .toBe(1)
+    await page.waitForTimeout(1_200)
+    expect((await readDocDraftState(request)).calls).toBe(1)
+
+    await expect
+      .poll(async () => readDocDraftState(request), { timeout: 15_000 })
+      .toMatchObject({
+        calls: 2,
+        draft: { title: 'Rate-limited title', version: 5 },
+        receiptCount: 1,
+      })
+  })
 
   test('P0 refreshes a missing access cookie exactly once and retries the operation', async ({
     context,

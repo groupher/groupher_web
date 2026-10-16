@@ -87,10 +87,16 @@ export const docDraft = graphql(`
         nickname
         avatar
       }
-      document {
+      body {
         json
         markdown
-        markdownToc
+        toc {
+          id
+
+          level
+
+          title
+        }
         html
       }
     }
@@ -110,7 +116,9 @@ export const docBranchVersions = graphql(`
         slug
         subtitle
         digest
-        documentJson
+        body {
+          json
+        }
         bodyHash
         schemaVersion
       }
@@ -140,7 +148,7 @@ export const restoreDocRevisionToDraft = graphql(`
       title
       subtitle
       slug
-      document {
+      body {
         json
       }
     }
@@ -222,10 +230,16 @@ export const updateDocDraft = graphql(`
         nickname
         avatar
       }
-      document {
+      body {
         json
         markdown
-        markdownToc
+        toc {
+          id
+
+          level
+
+          title
+        }
         html
       }
     }

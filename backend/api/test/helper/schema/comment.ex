@@ -3,12 +3,12 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
 
   def m(:create_comment_2) do
     """
-    mutation($article: ArticlePathInput!, $body: String!, $commandId: ID!) {
-          createComment(article: $article, body: $body, commandId: $commandId) {
+    mutation($article: ArticlePathInput!, $body: ArtimentBodyBagInput!, $commandId: ID!) {
+          createComment(article: $article, bodyBag: $body, commandId: $commandId) {
             commandId
             comment {
               innerId
-              bodyHtml
+              body { html }
             }
             articleStats {
               innerId
@@ -21,12 +21,12 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
 
   def m(:create_comment) do
     """
-    mutation($article: ArticlePathInput!, $body: String!, $commandId: ID!) {
-      createComment(article: $article, body: $body, commandId: $commandId) {
+    mutation($article: ArticlePathInput!, $body: ArtimentBodyBagInput!, $commandId: ID!) {
+      createComment(article: $article, bodyBag: $body, commandId: $commandId) {
         commandId
         comment {
           innerId
-          bodyHtml
+          body { html }
         }
         articleStats {
           innerId
@@ -39,12 +39,12 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
 
   def m(:create_comment_with_command_id) do
     """
-    mutation($article: ArticlePathInput!, $body: String!, $commandId: ID!) {
-      createComment(article: $article, body: $body, commandId: $commandId) {
+    mutation($article: ArticlePathInput!, $body: ArtimentBodyBagInput!, $commandId: ID!) {
+      createComment(article: $article, bodyBag: $body, commandId: $commandId) {
         commandId
         comment {
           innerId
-          bodyHtml
+          body { html }
         }
         articleStats {
           innerId
@@ -57,12 +57,12 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
 
   def m(:update_comment) do
     """
-    mutation($comment: CommentPathInput!, $body: String!, $commandId: ID!) {
-      updateComment(comment: $comment, body: $body, commandId: $commandId) {
+    mutation($comment: CommentPathInput!, $body: ArtimentBodyBagInput!, $expectedVersion: Int! = 1, $commandId: ID!) {
+      updateComment(comment: $comment, bodyBag: $body, expectedVersion: $expectedVersion, commandId: $commandId) {
         commandId
         comment {
           innerId
-          bodyHtml
+          body { html }
         }
         articleStats {
           innerId
@@ -75,12 +75,12 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
 
   def m(:update_comment_with_command_id) do
     """
-    mutation($comment: CommentPathInput!, $body: String!, $commandId: ID!) {
-      updateComment(comment: $comment, body: $body, commandId: $commandId) {
+    mutation($comment: CommentPathInput!, $body: ArtimentBodyBagInput!, $expectedVersion: Int! = 1, $commandId: ID!) {
+      updateComment(comment: $comment, bodyBag: $body, expectedVersion: $expectedVersion, commandId: $commandId) {
         commandId
         comment {
           innerId
-          bodyHtml
+          body { html }
         }
         articleStats {
           innerId
@@ -129,12 +129,12 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
 
   def m(:reply_comment) do
     """
-    mutation($comment: CommentPathInput!, $body: String!, $commandId: ID!) {
-      replyComment(comment: $comment, body: $body, commandId: $commandId) {
+    mutation($comment: CommentPathInput!, $body: ArtimentBodyBagInput!, $commandId: ID!) {
+      replyComment(comment: $comment, bodyBag: $body, commandId: $commandId) {
         commandId
         comment {
           innerId
-          bodyHtml
+          body { html }
         }
         articleStats {
           innerId
@@ -147,12 +147,12 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
 
   def m(:reply_comment_with_command_id) do
     """
-    mutation($comment: CommentPathInput!, $body: String!, $commandId: ID!) {
-      replyComment(comment: $comment, body: $body, commandId: $commandId) {
+    mutation($comment: CommentPathInput!, $body: ArtimentBodyBagInput!, $commandId: ID!) {
+      replyComment(comment: $comment, bodyBag: $body, commandId: $commandId) {
         commandId
         comment {
           innerId
-          bodyHtml
+          body { html }
         }
         articleStats {
           innerId
@@ -305,7 +305,7 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
       pagedPublishedComments(login: $login, thread: $thread, filter: $filter) {
         entries {
           innerId
-          bodyHtml
+          body { html }
           author {
             login
           }
@@ -369,7 +369,7 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
     query($comment: CommentPathInput!) {
         oneComment(comment: $comment) {
           innerId
-          body
+          body { html }
           viewerHasUpvoted
           emotions {
             type
@@ -387,7 +387,7 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
             pagedComments(article: $article, mode: $mode, filter: $filter) {
               entries {
                 innerId
-                bodyHtml
+                body { html }
                 author {
                   login
                   nickname
@@ -414,7 +414,7 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
                 }
                 replyToComment {
                   innerId
-                  bodyHtml
+                  body { html }
                   floor
                   isArticleAuthor
                   author {
@@ -425,7 +425,7 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
                 viewerHasUpvoted
                 replies {
                   innerId
-                  bodyHtml
+                  body { html }
                   replyToComment {
                     innerId
                     author {
@@ -473,7 +473,7 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
             pagedCommentReplies(comment: $comment, filter: $filter) {
               entries {
                 innerId
-                bodyHtml
+                body { html }
                 author {
                   login
                   nickname
@@ -510,7 +510,7 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
         oneComment(comment: $comment) {
           innerId
           floor
-          body
+          body { html }
           viewerHasUpvoted
           emotions {
             type

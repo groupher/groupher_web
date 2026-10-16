@@ -51,6 +51,14 @@ defmodule GroupherServer.CMS.Assets.Refs do
   end
 
   @doc false
+  def revision_refs(revision_id) when is_binary(revision_id) do
+    ArticleAssetRef
+    |> where([ref], ref.revision_id == ^revision_id)
+    |> order_by([ref], asc: ref.position, asc: ref.inserted_at, asc: ref.id)
+    |> Repo.all()
+  end
+
+  @doc false
   def lock_draft_refs(body_draft_id, usage) when is_binary(body_draft_id) do
     ArticleAssetRef
     |> where([ref], ref.body_draft_id == ^body_draft_id and ref.usage == ^usage)

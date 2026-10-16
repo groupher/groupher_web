@@ -150,7 +150,7 @@ export default function useQuery(): TRet {
       if (!oneComment?.innerId) return
       commentsStore.commit({
         updateInnerId: oneComment.innerId,
-        updateBody: oneComment.body ?? '',
+        updateBody: oneComment.body?.json ?? '',
       })
     })
   }

@@ -63,10 +63,9 @@ defmodule GroupherServer.Test.Mutation.Articles.Blog do
 
       result = user_conn |> gq_mutation(S.Article.m(:create_article, :blog), variables)
 
-      {:ok, blog} =
-        read_article(community, :blog, result["innerId"], preload: :document)
+      {:ok, blog} = read_article(community, :blog, result["innerId"])
 
-      body_html = blog |> get_in([:document, :html])
+      body_html = blog |> get_in([:body, :html])
 
       assert not String.contains?(body_html, "<script")
     end
@@ -77,10 +76,9 @@ defmodule GroupherServer.Test.Mutation.Articles.Blog do
 
       result = user_conn |> gq_mutation(S.Article.m(:create_article, :blog), variables)
 
-      {:ok, blog} =
-        read_article(community, :blog, result["innerId"], preload: :document)
+      {:ok, blog} = read_article(community, :blog, result["innerId"])
 
-      body_html = blog |> get_in([:document, :html])
+      body_html = blog |> get_in([:body, :html])
 
       assert String.contains?(body_html, "&amp;lt;script&amp;gt;blackmail&amp;lt;/script&amp;gt;")
     end
@@ -150,7 +148,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Blog do
                to_string(community_tag.id)
 
       assert result
-             |> get_in(["document", "html"])
+             |> get_in(["body", "html"])
              |> String.contains?(~s(updated body #{unique_num}))
     end
 

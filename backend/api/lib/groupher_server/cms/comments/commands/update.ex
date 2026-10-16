@@ -19,7 +19,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Update do
   alias CMS.Articles.Bindings
   alias CMS.Comments.Commands.CommentConfirmation, as: Confirmation
   alias CMS.Comments.Effects
-  alias Comments.{BodyCodec, JobPolicy, Persist}
+  alias Comments.{JobPolicy, Persist}
   alias CMS.Model.Comment
   alias Helper.{ORM, T}
 
@@ -38,14 +38,15 @@ defmodule GroupherServer.CMS.Comments.Commands.Update do
   def execute(%Comment{}, _body, %User{}), do: {:error, CMS.ErrorCat.command_id_required()}
 
   @doc "Updates a Comment while binding retries to the supplied command id."
-  @spec execute(Comment.t(), String.t(), User.t(), String.t()) :: T.domain_res(result())
-  def execute(%Comment{} = comment, body, %User{} = actor, command_id) do
+  @spec execute(Comment.t(), map(), non_neg_integer(), User.t(), String.t()) ::
+          T.domain_res(result())
+  def execute(%Comment{} = comment, body_bag, expected_version, %User{} = actor, command_id) do
     command = %Command{
       actor: actor,
       command_id: command_id,
       operation: :comment_update,
       target: comment,
-      params: body
+      params: %{body_bag: body_bag, expected_version: expected_version}
     }
 
     with {:ok, confirmation} <-
@@ -57,12 +58,20 @@ defmodule GroupherServer.CMS.Comments.Commands.Update do
   defp update_action(%{
          actor: actor,
          target: comment,
-         params: body,
+         params: %{body_bag: body_bag, expected_version: expected_version},
          command_id: command_id
        }) do
     CMS.Gate.with_check(actor, :edit, comment, fn canonical, article ->
       with {:ok, result} <-
-             update_new(canonical, article, body, actor, command_id, comment.community_id) do
+             update_new(
+               canonical,
+               article,
+               body_bag,
+               expected_version,
+               actor,
+               command_id,
+               comment.community_id
+             ) do
         {:ok, confirmation(result)}
       end
     end)
@@ -75,14 +84,17 @@ defmodule GroupherServer.CMS.Comments.Commands.Update do
   defp update_result(receipt, comment_id) do
     with {:ok, current} <- ORM.find(Comment, comment_id),
          {:ok, article} <- FrontDesk.article_of(current) do
-      {:ok, %{comment: current, article: article, command_id: receipt.command_id}}
+      {:ok,
+       %{
+         comment: GroupherServer.Repo.preload(current, :body),
+         article: article,
+         command_id: receipt.command_id
+       }}
     end
   end
 
-  defp update_new(canonical, article, body, actor, command_id, community_id) do
-    with {:ok, payload} <- BodyCodec.parse(body),
-         {:ok, updated} <-
-           Persist.update_content(canonical, %{body: payload.json, body_html: payload.html}),
+  defp update_new(canonical, article, body_bag, expected_version, actor, command_id, community_id) do
+    with {:ok, updated} <- Persist.update_content(canonical, body_bag, expected_version),
          {:ok, _} <- CMS.ArticleStats.record_comment_change(article),
          {:ok, synced} <- CMS.Comments.Replies.sync_embed_replies(updated),
          {:ok, _} <- JobPolicy.audition(synced),

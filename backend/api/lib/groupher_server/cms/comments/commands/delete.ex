@@ -71,7 +71,12 @@ defmodule GroupherServer.CMS.Comments.Commands.Delete do
   defp delete_result(receipt, comment_id) do
     with {:ok, current} <- ORM.find(Comment, comment_id),
          {:ok, article} <- FrontDesk.article_of(current) do
-      {:ok, %{comment: current, article: article, command_id: receipt.command_id}}
+      {:ok,
+       %{
+         comment: GroupherServer.Repo.preload(current, :body),
+         article: article,
+         command_id: receipt.command_id
+       }}
     end
   end
 

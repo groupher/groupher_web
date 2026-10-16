@@ -659,7 +659,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
 
       assert draft.title == "Updated Install"
       assert draft.slug == "updated-install"
-      assert draft.document.json == @plate_body
+      assert draft.body.json == @plate_body
       assert draft.digest =~ "Updated Draft"
 
       {:ok, page_node} =

@@ -102,19 +102,18 @@ defmodule GroupherServer.CMS.Articles.RevisionProjection do
       published_at = Keyword.get(opts, :published_at, revision.inserted_at)
       publication_version = Keyword.get(opts, :publication_version, 1)
 
-      {:ok,
-       build_article_projection(article, community, revision, body, %{
-         branch_id: Keyword.get(opts, :branch_id),
-         title: revision.title,
-         digest: revision.digest,
-         slug: revision.slug,
-         body_hash: revision.content_hash,
-         active_at: nil,
-         inserted_at: published_at,
-         updated_at: published_at,
-         publication_version: publication_version,
-         meta: meta
-       })}
+      build_article_projection(article, community, revision, body, %{
+        branch_id: Keyword.get(opts, :branch_id),
+        title: revision.title,
+        digest: revision.digest,
+        slug: revision.slug,
+        body_hash: revision.content_hash,
+        active_at: nil,
+        inserted_at: published_at,
+        updated_at: published_at,
+        publication_version: publication_version,
+        meta: meta
+      })
     else
       nil -> {:error, ArticleErrorCat.article_not_found("article revision body not found")}
       {:error, _reason} = error -> error
@@ -124,19 +123,18 @@ defmodule GroupherServer.CMS.Articles.RevisionProjection do
   defp build_stable_projection(article, community, public, revision, branch_id) do
     case Repo.get(ArticleBodySnapshot, revision.body_snapshot_id) do
       %ArticleBodySnapshot{} = body ->
-        {:ok,
-         build_article_projection(article, community, revision, body, %{
-           branch_id: branch_id,
-           title: public.title,
-           digest: public.digest,
-           slug: public.slug,
-           body_hash: public.body_hash,
-           active_at: article.active_at || Map.get(public, :active_at),
-           inserted_at: public.published_at,
-           updated_at: public.updated_at,
-           publication_version: public.publication_version,
-           meta: stable_meta(article, branch_id)
-         })}
+        build_article_projection(article, community, revision, body, %{
+          branch_id: branch_id,
+          title: public.title,
+          digest: public.digest,
+          slug: public.slug,
+          body_hash: public.body_hash,
+          active_at: article.active_at || Map.get(public, :active_at),
+          inserted_at: public.published_at,
+          updated_at: public.updated_at,
+          publication_version: public.publication_version,
+          meta: stable_meta(article, branch_id)
+        })
 
       nil ->
         {:error, ArticleErrorCat.article_not_found("article body snapshot not found")}
@@ -147,43 +145,47 @@ defmodule GroupherServer.CMS.Articles.RevisionProjection do
     tags = stable_community_tags(article.id, community.id)
     lifecycle = stable_lifecycle(article, Map.get(anchor, :branch_id))
 
-    %{
-      id: article.id,
-      article_id: article.id,
-      branch_id: Map.get(anchor, :branch_id),
-      inner_id: binding_inner_id(article.id, community.id),
-      thread: article.thread,
-      stage: :public,
-      title: Map.fetch!(anchor, :title),
-      digest: Map.fetch!(anchor, :digest),
-      slug: Map.fetch!(anchor, :slug),
-      body_hash: Map.fetch!(anchor, :body_hash),
-      document: body,
-      author_id: article.author_id,
-      author: article.author.user,
-      community: community,
-      communities: [community],
-      community_tags: tags,
-      comments_participants: stable_comment_participants(article.id),
-      moderation_state: article.moderation_state,
-      active_at: Map.get(anchor, :active_at),
-      inserted_at: Map.fetch!(anchor, :inserted_at),
-      updated_at: Map.fetch!(anchor, :updated_at),
-      revision_id: revision.id,
-      publication_version: Map.fetch!(anchor, :publication_version),
-      version: Map.fetch!(anchor, :publication_version),
-      lifecycle: lifecycle,
-      is_pinned: stable_pinned?(article.id, community.id),
-      pending: 0,
-      viewer_has_collected: false,
-      viewer_has_upvoted: false,
-      viewer_has_reported: false,
-      viewer_has_viewed: false,
-      meta: Map.fetch!(anchor, :meta)
-    }
-    |> Map.merge(stable_revision_extension(article.thread, revision.id))
-    |> Map.merge(stable_operational_extension(article, community.id))
-    |> ArticleView.from_map()
+    with {:ok, asset_refs} <- CMS.Assets.content_refs(:revision, revision.id) do
+      {:ok,
+       %{
+         id: article.id,
+         article_id: article.id,
+         branch_id: Map.get(anchor, :branch_id),
+         inner_id: binding_inner_id(article.id, community.id),
+         thread: article.thread,
+         stage: :public,
+         title: Map.fetch!(anchor, :title),
+         digest: Map.fetch!(anchor, :digest),
+         slug: Map.fetch!(anchor, :slug),
+         body_hash: Map.fetch!(anchor, :body_hash),
+         body: body,
+         asset_refs: asset_refs,
+         author_id: article.author_id,
+         author: article.author.user,
+         community: community,
+         communities: [community],
+         community_tags: tags,
+         comments_participants: stable_comment_participants(article.id),
+         moderation_state: article.moderation_state,
+         active_at: Map.get(anchor, :active_at),
+         inserted_at: Map.fetch!(anchor, :inserted_at),
+         updated_at: Map.fetch!(anchor, :updated_at),
+         revision_id: revision.id,
+         publication_version: Map.fetch!(anchor, :publication_version),
+         version: Map.fetch!(anchor, :publication_version),
+         lifecycle: lifecycle,
+         is_pinned: stable_pinned?(article.id, community.id),
+         pending: 0,
+         viewer_has_collected: false,
+         viewer_has_upvoted: false,
+         viewer_has_reported: false,
+         viewer_has_viewed: false,
+         meta: Map.fetch!(anchor, :meta)
+       }
+       |> Map.merge(stable_revision_extension(article.thread, revision.id))
+       |> Map.merge(stable_operational_extension(article, community.id))
+       |> ArticleView.from_map()}
+    end
   end
 
   defp binding_inner_id(article_id, community_id) do

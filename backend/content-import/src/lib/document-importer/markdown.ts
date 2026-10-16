@@ -9,7 +9,7 @@
  * @see docs/content-import/markdown-title-normalization.md
  * @see docs/content-import/article-publish-import-refactor.md
  */
-import { ArtimentPublisherError, assertValidArtimentValue } from '@groupher/artiment-publisher'
+import { ArtimentPublisherError, assertValidArtimentValue } from '@groupher/content-publisher'
 import {
   deserializeMarkdown as deserializeRichEditorMarkdown,
   type TRichEditorMarkdownImportDiagnostic,

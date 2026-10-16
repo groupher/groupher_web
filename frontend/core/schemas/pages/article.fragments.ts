@@ -95,11 +95,17 @@ export const PagePostDetailFields = graphql(`
         ...PageCommonUserFields
       }
     }
-    document {
+    body {
       json
       html
       markdown
-      markdownToc
+      toc {
+        id
+
+        level
+
+        title
+      }
     }
     commentsParticipants {
       ...PageAuthorFields
@@ -145,11 +151,17 @@ export const PageChangelogDetailFields = graphql(`
         ...PageCommonUserFields
       }
     }
-    document {
+    body {
       json
       html
       markdown
-      markdownToc
+      toc {
+        id
+
+        level
+
+        title
+      }
     }
     commentsParticipants {
       ...PageAuthorFields
@@ -212,11 +224,17 @@ export const PageDocDetailFields = graphql(`
         ...PageCommonUserFields
       }
     }
-    document {
+    body {
       json
       html
       markdown
-      markdownToc
+      toc {
+        id
+
+        level
+
+        title
+      }
     }
     commentsParticipants {
       ...PageAuthorFields

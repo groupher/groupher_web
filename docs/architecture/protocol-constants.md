@@ -31,6 +31,7 @@ UI 文案通常应保持原样；跨文件、跨 package、跨前后端共享的
 | -------------------------------------- | -------- | --------------------------------------------------------- |
 | Auth channel / event                   | ✓ 已收口 | `frontend/core/lib/auth/constant.ts`                      |
 | Auth 错误码 / JWT claims               | ✓ 已收口 | `packages/contracts/auth.contract.json`                   |
+| Content Publisher 冲突错误码           | ✓ 已收口 | `packages/contracts/content-publish.contract.json`        |
 | Auth recovery action                   | ✓ 已收口 | `frontend/core/lib/auth/constant.ts`                      |
 | Auth / 公共 API path                   | ✓ 已收口 | `packages/route-contract/src/index.ts`                    |
 | Query key                              | ✓ 已收口 | 各 query domain 的 key factory；matcher 由 key owner 导出 |
@@ -99,7 +100,7 @@ cache key，从而保证 invalidate、remove 和 refetch 使用相同 identity�
 ### 4. 公共 API 路径｜✓ 已收口
 
 修复前重复或分散的路径包括 `/api/graphql`、`/api/artiment/import`、
-`/api/artiment/publish`、`/api/docs/import/*`、`/api/utils/slugify` 和 `/api/auth/*`。
+`/api/content/publish`、`/api/docs/import/*`、`/api/utils/slugify` 和 `/api/auth/*`。
 
 当前由 `packages/route-contract/src/index.ts` 按边界导出：
 

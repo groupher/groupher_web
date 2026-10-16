@@ -75,6 +75,9 @@ defmodule GroupherServer.CMS.SearchArtiments.Capacity do
   defp comment_counts do
     base =
       Comment
+      |> join(:inner, [comment], body in GroupherServer.CMS.Model.CommentBody,
+        on: body.comment_id == comment.id
+      )
       |> join(:inner, [comment], lifecycle in CommentLifecycle,
         on: lifecycle.comment_id == comment.id
       )
@@ -87,12 +90,12 @@ defmodule GroupherServer.CMS.SearchArtiments.Capacity do
       total: Repo.aggregate(Comment, :count, :id),
       average_body_bytes:
         base
-        |> select([comment], avg(fragment("octet_length(?)", comment.body)))
+        |> select([_comment, body], avg(fragment("octet_length(?)", body.json)))
         |> Repo.one()
         |> decimal_to_number(),
       maximum_body_bytes:
         base
-        |> select([comment], max(fragment("octet_length(?)", comment.body)))
+        |> select([_comment, body], max(fragment("octet_length(?)", body.json)))
         |> Repo.one()
         |> default_zero(),
       body_bytes_p50: default_zero(p50),
@@ -103,10 +106,10 @@ defmodule GroupherServer.CMS.SearchArtiments.Capacity do
 
   defp comment_body_percentiles(query) do
     query
-    |> select([comment], {
-      fragment("percentile_cont(0.50) WITHIN GROUP (ORDER BY octet_length(?))", comment.body),
-      fragment("percentile_cont(0.95) WITHIN GROUP (ORDER BY octet_length(?))", comment.body),
-      fragment("percentile_cont(0.99) WITHIN GROUP (ORDER BY octet_length(?))", comment.body)
+    |> select([_comment, body], {
+      fragment("percentile_cont(0.50) WITHIN GROUP (ORDER BY octet_length(?))", body.json),
+      fragment("percentile_cont(0.95) WITHIN GROUP (ORDER BY octet_length(?))", body.json),
+      fragment("percentile_cont(0.99) WITHIN GROUP (ORDER BY octet_length(?))", body.json)
     })
     |> Repo.one()
   end

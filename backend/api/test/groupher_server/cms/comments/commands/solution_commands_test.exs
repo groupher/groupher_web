@@ -177,7 +177,7 @@ defmodule GroupherServer.Test.CMS.Comments.Commands.SolutionCommands do
     assert {:ok, %{comment: deleted}} =
              CMS.Comments.delete_comment(first, actor, Ecto.UUID.generate())
 
-    assert deleted.body_html == Comment.delete_hint()
+    assert deleted.body.plain_text == Comment.delete_hint()
     refute Repo.get_by(PostSolution, article_id: post.article_id)
     assert Repo.get_by!(CommentLifecycle, comment_id: first.id).state == :deleted
     assert Repo.get_by!(PostLog, article_id: post.article_id, action: :solution_revoked)
@@ -218,7 +218,7 @@ defmodule GroupherServer.Test.CMS.Comments.Commands.SolutionCommands do
     assert post.solution_digest == "first"
 
     {:ok, _} =
-      CMS.Comments.update_comment(first, mock_comment("changed"), actor, Ecto.UUID.generate())
+      CMS.Comments.update_comment(first, mock_comment("changed"), 1, actor, Ecto.UUID.generate())
 
     {:ok, post} = CMS.Articles.Response.one(Repo.get!(Article, post.id), nil)
     assert post.solution_digest == "changed"
@@ -293,7 +293,13 @@ defmodule GroupherServer.Test.CMS.Comments.Commands.SolutionCommands do
     [update_result, replace_result] =
       [
         Task.async(fn ->
-          CMS.Comments.update_comment(first, mock_comment("updated"), actor, Ecto.UUID.generate())
+          CMS.Comments.update_comment(
+            first,
+            mock_comment("updated"),
+            1,
+            actor,
+            Ecto.UUID.generate()
+          )
         end),
         Task.async(fn -> CMS.Comments.accept_solution(second.id, actor, Ecto.UUID.generate()) end)
       ]

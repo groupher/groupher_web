@@ -1,4 +1,3 @@
-import type { VariablesOf } from '@graphql-typed-document-node/core'
 import { queryOptions } from '@tanstack/react-query'
 
 import { THREAD } from '~/const/thread'
@@ -18,7 +17,8 @@ import type {
 } from '~/spec'
 
 import { articleStats, articleStatsBatch } from './articleStats'
-import { articleQueryKeys, normalizeArticleFilter } from './key'
+import { toArticleListFilter } from './filter'
+import { articleQueryKeys } from './key'
 
 type TGroupedKanbanPosts = {
   backlog: TPagedPosts
@@ -28,29 +28,13 @@ type TGroupedKanbanPosts = {
   rejected: TPagedPosts
 }
 
-const toPostsFilter = (filter: TPagedArticlesParams): VariablesOf<typeof pagedPosts>['filter'] => {
-  const normalized = normalizeArticleFilter(filter)
-  return {
-    community: normalized.community,
-    page: normalized.page,
-    size: normalized.size,
-    communityTag: normalized.communityTag,
-    communityTags: normalized.communityTags,
-    cat: normalized.cat as VariablesOf<typeof pagedPosts>['filter']['cat'],
-    status: normalized.status as VariablesOf<typeof pagedPosts>['filter']['status'],
-    order: normalized.order as VariablesOf<typeof pagedPosts>['filter']['order'],
-    when: normalized.when as VariablesOf<typeof pagedPosts>['filter']['when'],
-    sort: normalized.sort as VariablesOf<typeof pagedPosts>['filter']['sort'],
-  }
-}
-
 const posts = (filter: TPagedArticlesParams) =>
   queryOptions({
     queryKey: articleQueryKeys.posts(filter),
     meta: { hydration: 'public' },
     queryFn: async () => {
       const data = await browserGraphQLRequest(pagedPosts, {
-        filter: toPostsFilter(filter),
+        filter: toArticleListFilter(filter),
       })
       return data.pagedPosts as unknown as TPagedPosts
     },
@@ -62,7 +46,7 @@ const changelogs = (filter: TPagedArticlesParams) =>
     meta: { hydration: 'public' },
     queryFn: async () => {
       const data = await browserGraphQLRequest(pagedChangelogs, {
-        filter: toPostsFilter(filter) as VariablesOf<typeof pagedChangelogs>['filter'],
+        filter: toArticleListFilter(filter),
       })
       return data.pagedChangelogs as unknown as TPagedChangelogs
     },

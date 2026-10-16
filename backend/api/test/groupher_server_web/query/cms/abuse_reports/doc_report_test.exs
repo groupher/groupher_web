@@ -67,7 +67,7 @@ defmodule GroupherServer.Test.Query.AbuseReports.DocReport do
         )
 
       {:ok, _} =
-        CMS.AbuseReports.comment(comment, mock_comment(), "attr", user, Ecto.UUID.generate())
+        CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
 
       variables = %{filter: %{content_type: "COMMENT", page: 1, size: 10}}
       results = guest_conn |> gq_query(@query, variables)
@@ -82,7 +82,7 @@ defmodule GroupherServer.Test.Query.AbuseReports.DocReport do
       report_case = get_in(report, ["reportCases"])
       assert is_list(report_case)
 
-      assert get_in(report, ["comment", "bodyHtml"]) |> String.contains?(~s(comment</p>))
+      assert get_in(report, ["comment", "body", "html"]) |> String.contains?(~s(comment</p>))
       assert get_in(report, ["comment", "innerId"]) == to_string(comment.inner_id)
       assert not is_nil(get_in(report, ["comment", "author", "login"]))
     end

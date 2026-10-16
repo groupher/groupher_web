@@ -447,8 +447,8 @@ defmodule GroupherServer.CMS.DocTree.Persist do
       %User{} = actor ->
         with {:ok, source} <-
                CMS.Docs.read_editor_head(community, node.doc_id, branch_id: branch.id),
-             %{json: json} = document when is_binary(json) <- source.document,
-             {:ok, body_bag} <- BodyBag.from_document(document),
+             %{json: json} = body when is_binary(json) <- source.body,
+             {:ok, body_bag} <- BodyBag.from_document(body),
              title <-
                Map.get(args, :duplicate_title) ||
                  Identity.unique_copy_title(

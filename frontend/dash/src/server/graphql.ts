@@ -9,37 +9,32 @@ import { LOCAL_PHOENIX_GRAPHQL_ENDPOINT } from '@groupher/contracts/endpoint'
 import { getRequest, setResponseHeader } from '@tanstack/react-start/server'
 import { print, type DocumentNode } from 'graphql'
 
+import { getPhoenixToken } from '~/app/phoenix-token'
+
 export type TGraphQLResponse<TData> = {
   data?: TData
   errors?: Array<{ extensions?: { code?: unknown }; message?: string }>
 }
 
 export class GraphQLRequestError extends Error {
+  readonly backendCode?: number
   readonly code?: string
   readonly status?: number
 
-  constructor(message: string, options: { code?: string; status?: number } = {}) {
+  constructor(
+    message: string,
+    options: { backendCode?: number; code?: string; status?: number } = {},
+  ) {
     super(message)
     this.name = 'GraphQLRequestError'
+    this.backendCode = options.backendCode
     this.code = options.code
     this.status = options.status
   }
 }
 
-/** Reads auth token through the bounded frontend shared interface. */
-export const readAuthToken = (cookieHeader: string | null): string | null => {
-  if (!cookieHeader) return null
-
-  for (const cookie of cookieHeader.split(';')) {
-    const [name, ...value] = cookie.trim().split('=')
-    if (name === GROUPHER_AUTH_TOKEN_COOKIE) return value.join('=')
-  }
-
-  return null
-}
-
 /** Returns auth token for the frontend shared workflow. */
-export const getAuthToken = (): string | null => readAuthToken(getRequest().headers.get('cookie'))
+export const getAuthToken = (): string | null => getPhoenixToken(getRequest())
 
 /** Returns whether the active request carries the non-sensitive login hint. */
 export const hasSignedInHint = (cookieHeader = getRequest().headers.get('cookie')): boolean => {
@@ -99,12 +94,13 @@ export async function fetchGraphQL<TData>(
         : rawCode === 4301 && hasSignedInHint()
           ? AUTH_ERROR.TOKEN_MISSING
           : undefined
+    const backendCode = typeof rawCode === 'number' ? rawCode : undefined
     throw new GraphQLRequestError(
       serializeGraphQLError(
         payload.errors.map(({ message }) => message || 'GraphQL request failed.').join('; '),
         code,
       ),
-      { code, status: response.status },
+      { backendCode, code, status: response.status },
     )
   }
 

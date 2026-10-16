@@ -5,9 +5,14 @@ import type { TDocTreeInitialData } from '~/unit/DsbThread/CMS/Docs/Editor/SideT
 import type { TDocTreeNodeDTO } from '~/unit/DsbThread/CMS/Docs/Editor/SideTree/spec'
 import DashboardDocsSchema from '~/unit/DsbThread/schema/docs'
 
-import { fetchGraphQL, getAuthToken, setPrivateCacheHeader } from './graphql'
+import { fetchGraphQL, getAuthToken, GraphQLRequestError, setPrivateCacheHeader } from './graphql'
+
+// CMS deliberately returns Community not-found when a caller cannot see the
+// moderator-scoped resource, preventing membership enumeration.
+const COMMUNITY_NOT_ACCESSIBLE_CODE = 5504
 
 export type TDocEditorInitialData = {
+  accessDenied: boolean
   activeDocId: string | null
   authRequired: boolean
   docDraft?: TDocDraftInitialData | null
@@ -37,21 +42,52 @@ export const loadDocEditorData = createServerFn({ method: 'GET', strict: false }
     setPrivateCacheHeader()
 
     if (!token) {
-      return { activeDocId: null, authRequired: true, docDraft: null, docTree: null }
+      return {
+        accessDenied: false,
+        activeDocId: null,
+        authRequired: true,
+        docDraft: null,
+        docTree: null,
+      }
     }
 
     const treeResult = await fetchGraphQL(
       DashboardDocsSchema.docTree,
       { community: data.community },
       token,
-    )
+    ).catch((error: unknown) => {
+      if (
+        error instanceof GraphQLRequestError &&
+        error.backendCode === COMMUNITY_NOT_ACCESSIBLE_CODE
+      ) {
+        return null
+      }
+
+      throw error
+    })
+
+    if (!treeResult) {
+      return {
+        accessDenied: true,
+        activeDocId: null,
+        authRequired: false,
+        docDraft: null,
+        docTree: null,
+      }
+    }
     const docTree = (treeResult.data?.docTree as unknown as TDocTreeInitialData | null) || null
     const nodes = docTree?.tabs?.flatMap((tab) => tab.groups ?? []) ?? []
     const activePage = findDocPage(nodes, data.docId) || findDocPage(nodes, null)
     const activeDocId = activePage?.docId ? String(activePage.docId) : null
 
     if (!activeDocId) {
-      return { activeDocId: null, authRequired: false, docDraft: null, docTree }
+      return {
+        accessDenied: false,
+        activeDocId: null,
+        authRequired: false,
+        docDraft: null,
+        docTree,
+      }
     }
 
     const draftResult = await fetchGraphQL(
@@ -62,6 +98,7 @@ export const loadDocEditorData = createServerFn({ method: 'GET', strict: false }
     const docDraft = (draftResult.data?.docDraft as unknown as TDocDraftInitialData | null) || null
 
     return {
+      accessDenied: false,
       activeDocId,
       authRequired: false,
       docDraft,

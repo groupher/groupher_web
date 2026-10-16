@@ -103,9 +103,11 @@ defmodule GroupherServer.CMS.Snapshot.Query do
   end
 
   defp comment_summary(thread, %Comment{} = comment, _state) do
+    comment = Repo.preload(comment, :body)
+
     %{
       id: comment.id,
-      body_digest: digest(comment.body),
+      body_digest: String.slice(comment.body.digest, 0, 120),
       article_id: comment.article_id,
       thread: thread,
       updated_at: comment.updated_at
@@ -129,12 +131,6 @@ defmodule GroupherServer.CMS.Snapshot.Query do
 
   defp unavailable_comment(thread, id) do
     %{id: id, body_digest: "Unavailable comment", thread: thread, unavailable: true}
-  end
-
-  defp digest(nil), do: nil
-
-  defp digest(body) do
-    if(String.length(body) <= 120, do: body, else: String.slice(body, 0, 120))
   end
 
   defp scope_context(:doc), do: DocContext.public_main()

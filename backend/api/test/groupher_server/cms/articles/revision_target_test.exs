@@ -886,7 +886,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
     assert public.id == article.id
     assert public.article_id == article.id
     assert public.title == "Stable public title"
-    assert public.document.plain_text =~ "stable public body"
+    assert public.body.plain_text =~ "stable public body"
 
     assert {:ok, [%{article: batch_article, binding: batch_binding}]} =
              CMS.FrontDesk.articles([

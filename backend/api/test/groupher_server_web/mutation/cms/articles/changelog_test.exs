@@ -64,10 +64,9 @@ defmodule GroupherServer.Test.Mutation.Articles.Changelog do
 
       result = user_conn |> gq_mutation(S.Article.m(:create_article, :changelog), variables)
 
-      {:ok, changelog} =
-        read_article(community, :changelog, result["innerId"], preload: :document)
+      {:ok, changelog} = read_article(community, :changelog, result["innerId"])
 
-      body_html = changelog |> get_in([:document, :html])
+      body_html = changelog |> get_in([:body, :html])
 
       assert not String.contains?(body_html, "<script")
     end
@@ -78,10 +77,9 @@ defmodule GroupherServer.Test.Mutation.Articles.Changelog do
 
       result = user_conn |> gq_mutation(S.Article.m(:create_article, :changelog), variables)
 
-      {:ok, changelog} =
-        read_article(community, :changelog, result["innerId"], preload: :document)
+      {:ok, changelog} = read_article(community, :changelog, result["innerId"])
 
-      body_html = changelog |> get_in([:document, :html])
+      body_html = changelog |> get_in([:body, :html])
 
       assert String.contains?(body_html, "&amp;lt;script&amp;gt;blackmail&amp;lt;/script&amp;gt;")
     end
@@ -152,7 +150,7 @@ defmodule GroupherServer.Test.Mutation.Articles.Changelog do
                to_string(community_tag.id)
 
       assert result
-             |> get_in(["document", "html"])
+             |> get_in(["body", "html"])
              |> String.contains?(~s(updated body #{unique_num}))
     end
 

@@ -138,7 +138,7 @@ export const makePendingComment = (
 ): TComment =>
   ({
     innerId: `pending:${context.commandId}`,
-    bodyHtml: body,
+    body: { html: '', json: body },
     author: target.author || undefined,
     insertedAt: new Date().toISOString(),
     upvotesCount: 0,

@@ -15,10 +15,11 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Comment do
     @desc "write a comment"
     field :create_comment, :article_comment_result do
       arg(:article, non_null(:article_path_input))
-      arg(:body, non_null(:string))
+      arg(:body_bag, non_null(:artiment_body_bag_input))
       arg(:command_id, non_null(:id))
 
       middleware(M.Authorize, :login)
+      middleware(M.BodyBagTrust, scope: "content:comment:write")
       middleware(M.FrontDesk, {:article, preload: [[author: :user], :community]})
       resolve(&R.CMS.Comments.create_comment/3)
       middleware(M.Analysis.MakeContribution, for: :user)
@@ -27,10 +28,12 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Comment do
     @desc "update a comment"
     field :update_comment, :article_comment_result do
       arg(:comment, non_null(:comment_path_input))
-      arg(:body, non_null(:string))
+      arg(:body_bag, non_null(:artiment_body_bag_input))
+      arg(:expected_version, non_null(:integer))
       arg(:command_id, non_null(:id))
 
       middleware(M.Authorize, :login)
+      middleware(M.BodyBagTrust, scope: "content:comment:write")
       middleware(M.FrontDesk, :comment)
       middleware(M.Passport, action: "comment.update")
 
@@ -52,10 +55,11 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Comment do
     @desc "reply to a comment"
     field :reply_comment, :article_comment_result do
       arg(:comment, non_null(:comment_path_input))
-      arg(:body, non_null(:string))
+      arg(:body_bag, non_null(:artiment_body_bag_input))
       arg(:command_id, non_null(:id))
 
       middleware(M.Authorize, :login)
+      middleware(M.BodyBagTrust, scope: "content:comment:write")
       middleware(M.FrontDesk, :comment)
       resolve(&R.CMS.Comments.reply_comment/3)
       middleware(M.Analysis.MakeContribution, for: :user)

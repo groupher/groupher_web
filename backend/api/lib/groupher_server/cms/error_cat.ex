@@ -7,6 +7,9 @@ defmodule GroupherServer.CMS.ErrorCat do
 
   use GroupherServer.ErrorCat, namespace: {:cms}
 
+  require GroupherServer.CMS.ContentPublishContract
+  alias GroupherServer.CMS.ContentPublishContract
+
   error(:invalid_article_path, code: 4501)
   error(:invalid_requirement, code: 4502)
   error(:missing_thread, code: 4503)
@@ -51,4 +54,8 @@ defmodule GroupherServer.CMS.ErrorCat do
   error(:command_result_expired, code: 4536, actions: [:reconcile])
   error(:command_invalid_result, code: 4537)
   error(:invalid_command_intent, code: 4538)
+
+  ContentPublishContract.define_errors()
+
+  error(:comment_body_not_found, code: 4541)
 end

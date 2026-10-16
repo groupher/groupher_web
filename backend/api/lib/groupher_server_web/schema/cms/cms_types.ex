@@ -931,14 +931,29 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:author, :user)
     timestamp_fields()
 
-    field(:document, :article_document,
+    field(:body, non_null(:artiment_body),
       resolve: fn draft, _, _ ->
-        case Map.get(draft, :document) do
-          nil ->
-            CMS.articles_store_body_draft(draft.body_draft_id)
+        case Map.fetch(draft, :body) do
+          {:ok, body} -> {:ok, body}
+          :error -> {:error, CMS.error_cat_invalid_body("Doc Draft body is missing")}
+        end
+      end
+    )
 
-          document ->
-            {:ok, document}
+    field(:thumbnail, :json,
+      resolve: fn draft, _, _ ->
+        case Map.fetch(draft, :body) do
+          {:ok, body} -> {:ok, Map.get(body, :thumbnail)}
+          :error -> {:error, CMS.error_cat_invalid_body("Doc Draft body is missing")}
+        end
+      end
+    )
+
+    field(:asset_refs, non_null(list_of(non_null(:article_asset_ref))),
+      resolve: fn draft, _, _ ->
+        case Map.fetch(draft, :asset_refs) do
+          {:ok, asset_refs} -> {:ok, asset_refs}
+          :error -> {:error, CMS.error_cat_invalid_body("Doc Draft asset refs are missing")}
         end
       end
     )
@@ -973,11 +988,11 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:subtitle, :string)
     field(:command_id, :id, resolve: &GroupherServerWeb.Resolvers.CMS.CommandPayload.command_id/3)
 
-    field(:document, :article_document,
+    field(:body, non_null(:artiment_body),
       resolve: fn draft, _, _ ->
         case CMS.articles_store_body_draft(draft.body_draft_id) do
           {:ok, body_draft} -> {:ok, body_draft}
-          {:error, _reason} -> {:ok, nil}
+          {:error, reason} -> {:error, reason}
         end
       end
     )
@@ -1039,7 +1054,6 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   object :common_article do
     field(:thread, :thread)
     field(:inner_id, :id)
-    # field(:body_html, :string)
     field(:title, :string)
     field(:comments_revision, :integer)
     field(:article_stats, :article_stats)
@@ -1048,7 +1062,11 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
 
   object :common_comment do
     field(:inner_id, :id, resolve: &R.CMS.Comments.comment_inner_id/3)
-    field(:body_html, :string)
+
+    field(:body, non_null(:artiment_body),
+      resolve: &GroupherServerWeb.Schema.Helper.Fields.comment_body/3
+    )
+
     field(:upvotes_count, :integer)
     field(:author, :common_user)
     field(:article, :common_article)
@@ -1228,6 +1246,12 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:title, non_null(:string))
   end
 
+  object :artiment_toc_item do
+    field(:id, non_null(:string))
+    field(:level, non_null(:integer))
+    field(:title, non_null(:string))
+  end
+
   input_object :artiment_body_bag_input do
     field(:json, non_null(:string))
     field(:markdown, non_null(:string))
@@ -1239,18 +1263,26 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:schema_version, non_null(:integer))
   end
 
-  object :article_document do
-    field(:json, :string)
-    field(:markdown, :string)
-    field(:markdown_toc, :json)
-    field(:thumbnail, :json)
-    field(:html, :string)
-    field(:plain_text, :string)
-    field(:digest, :string)
-    field(:body_hash, :string)
-    field(:schema_version, :integer)
+  object :artiment_body do
+    field(:json, non_null(:string))
+    field(:markdown, non_null(:string))
 
-    field(:asset_refs, list_of(:article_asset_ref), resolve: dataloader(CMS, :asset_refs))
+    field(:toc, non_null(list_of(non_null(:artiment_toc_item))),
+      resolve: fn body, _, _ ->
+        case body.markdown_toc do
+          %{items: items} when is_list(items) -> {:ok, items}
+          %{"items" => items} when is_list(items) -> {:ok, items}
+          items when is_list(items) -> {:ok, items}
+          _ -> {:ok, []}
+        end
+      end
+    )
+
+    field(:html, non_null(:string))
+    field(:plain_text, non_null(:string))
+    field(:digest, non_null(:string))
+    field(:body_hash, non_null(:string))
+    field(:schema_version, non_null(:integer))
   end
 
   object :doc_branch_version_content do
@@ -1261,7 +1293,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:link_addr, :string)
     field(:template_key, :string)
     field(:body_hash, :string)
-    field(:document_json, :string)
+    field(:body, non_null(:artiment_body))
     field(:plain_text, :string)
     field(:schema_version, :integer)
   end

@@ -24,7 +24,7 @@ const snapshot = (
 ): TDocBranchRevision => ({
   branchVersionId: id,
   id,
-  documentJson: JSON.stringify(documentValue),
+  body: { json: JSON.stringify(documentValue) },
   insertedAt: '2026-06-29T10:00:00Z',
 })
 

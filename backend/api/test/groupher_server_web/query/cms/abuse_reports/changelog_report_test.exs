@@ -19,8 +19,11 @@ defmodule GroupherServer.Test.Query.AbuseReports.ChangelogReport do
       {:ok, changelog} = CMS.Articles.create(community, :changelog, changelog_attrs, user)
       {:ok, changelog2} = CMS.Articles.create(community, :changelog, changelog_attrs, user)
 
-      {:ok, _} = CMS.AbuseReports.article(changelog, "reason", "attr_info", user, Ecto.UUID.generate())
-      {:ok, _} = CMS.AbuseReports.article(changelog2, "reason", "attr_info", user2, Ecto.UUID.generate())
+      {:ok, _} =
+        CMS.AbuseReports.article(changelog, "reason", "attr_info", user, Ecto.UUID.generate())
+
+      {:ok, _} =
+        CMS.AbuseReports.article(changelog2, "reason", "attr_info", user2, Ecto.UUID.generate())
 
       variables = %{filter: %{content_type: "CHANGELOG", page: 1, size: 10}}
       results = guest_conn |> gq_query(@query, variables)
@@ -33,8 +36,11 @@ defmodule GroupherServer.Test.Query.AbuseReports.ChangelogReport do
       {:ok, changelog} = CMS.Articles.create(community, :changelog, changelog_attrs, user)
       {:ok, changelog2} = CMS.Articles.create(community, :changelog, changelog_attrs, user)
 
-      {:ok, _} = CMS.AbuseReports.article(changelog, "reason", "attr_info", user, Ecto.UUID.generate())
-      {:ok, _} = CMS.AbuseReports.article(changelog2, "reason", "attr_info", user2, Ecto.UUID.generate())
+      {:ok, _} =
+        CMS.AbuseReports.article(changelog, "reason", "attr_info", user, Ecto.UUID.generate())
+
+      {:ok, _} =
+        CMS.AbuseReports.article(changelog2, "reason", "attr_info", user2, Ecto.UUID.generate())
 
       variables = %{
         filter: %{content_type: "CHANGELOG", content_id: changelog.id, page: 1, size: 10}
@@ -45,7 +51,9 @@ defmodule GroupherServer.Test.Query.AbuseReports.ChangelogReport do
       report = results["entries"] |> List.first()
 
       assert get_in(report, ["article", "thread"]) == "CHANGELOG"
-      assert get_in(report, ["article", "innerId"]) == to_string(article_inner_id(changelog, community))
+
+      assert get_in(report, ["article", "innerId"]) ==
+               to_string(article_inner_id(changelog, community))
 
       assert results |> is_valid_pagination?
       assert results["totalCount"] == 1
@@ -58,10 +66,12 @@ defmodule GroupherServer.Test.Query.AbuseReports.ChangelogReport do
           :changelog,
           article_inner_id(changelog, community),
           mock_comment(),
-          user, Ecto.UUID.generate()
+          user,
+          Ecto.UUID.generate()
         )
 
-      {:ok, _} = CMS.AbuseReports.comment(comment, mock_comment(), "attr", user, Ecto.UUID.generate())
+      {:ok, _} =
+        CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
 
       variables = %{filter: %{content_type: "COMMENT", page: 1, size: 10}}
       results = guest_conn |> gq_query(@query, variables)
@@ -76,7 +86,7 @@ defmodule GroupherServer.Test.Query.AbuseReports.ChangelogReport do
       report_case = get_in(report, ["reportCases"])
       assert is_list(report_case)
 
-      assert get_in(report, ["comment", "bodyHtml"]) |> String.contains?(~s(comment</p>))
+      assert get_in(report, ["comment", "body", "html"]) |> String.contains?(~s(comment</p>))
       assert get_in(report, ["comment", "innerId"]) == to_string(comment.inner_id)
       assert not is_nil(get_in(report, ["comment", "author", "login"]))
     end

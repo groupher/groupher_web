@@ -28,7 +28,7 @@ export default defineConfig({
       AUTH_COOKIE_DOMAIN: bindings.text('.groupher.com'),
       SERVICE_AUTH_ISSUER: bindings.text('https://auth.groupher.com'),
       SERVICE_AUTH_RESOURCES_JSON: bindings.text(
-        '{"https://api.groupher.com/assets":"phoenix:assets-api","https://api.groupher.com/auth":"phoenix:auth-api","https://api.groupher.com/content-import":"phoenix:content-import-api","https://api.groupher.com/press":"phoenix:press-api","https://assets.groupher.com/internal":"assets-hub:internal-api","https://content-import.groupher.com/internal":"content-import:internal-api","https://press.groupher.com/internal":"press:internal-api"}',
+        '{"https://api.groupher.com/assets":"phoenix:assets-api","https://api.groupher.com/auth":"phoenix:auth-api","https://api.groupher.com/content-import":"phoenix:content-import-api","https://api.groupher.com/content-publisher":"phoenix:content-publisher-api","https://api.groupher.com/press":"phoenix:press-api","https://assets.groupher.com/internal":"assets-hub:internal-api","https://content-import.groupher.com/internal":"content-import:internal-api","https://press.groupher.com/internal":"press:internal-api"}',
       ),
       SERVICE_AUTH_TOKEN_TTL_SECONDS: bindings.text('600'),
       SERVICE_AUTH_TOKEN_ENDPOINT: bindings.text('https://auth.groupher.com/oauth2/token'),

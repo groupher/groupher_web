@@ -19,11 +19,17 @@ defmodule GroupherServer.Test.Helper.Schema.Doc do
           nickname
           avatar
         }
-        document {
+        body {
           json
           markdown
-          markdownToc
+          toc { id level title }
           html
+        }
+        assetRefs {
+          id
+          usage
+          blockId
+          asset { id }
         }
       }
     }
@@ -65,11 +71,17 @@ defmodule GroupherServer.Test.Helper.Schema.Doc do
           nickname
           avatar
         }
-        document {
+        body {
           json
           markdown
-          markdownToc
+          toc { id level title }
           html
+        }
+        assetRefs {
+          id
+          usage
+          blockId
+          asset { id }
         }
       }
     }

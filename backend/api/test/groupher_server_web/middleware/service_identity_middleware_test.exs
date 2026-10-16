@@ -47,7 +47,7 @@ defmodule GroupherServerWeb.Middleware.ServiceIdentityMiddlewareTest do
           arguments: %{body_bag: %{}},
           context: %{service_auth_failure: AuthContract.service_jwks_unavailable()}
         },
-        []
+        scope: "content:comment:write"
       )
 
     assert error_code(verifier_failure) == AuthContract.service_jwks_unavailable()
@@ -56,9 +56,9 @@ defmodule GroupherServerWeb.Middleware.ServiceIdentityMiddlewareTest do
       BodyBagTrust.call(
         %Absinthe.Resolution{
           arguments: %{body_bag: %{}},
-          context: %{service_actor: actor("content-import:read")}
+          context: %{service_actor: actor("content:article:write")}
         },
-        []
+        scope: "content:comment:write"
       )
 
     assert error_code(under_scoped) == AuthContract.service_scope_forbidden()
@@ -66,11 +66,7 @@ defmodule GroupherServerWeb.Middleware.ServiceIdentityMiddlewareTest do
 
   defp actor(scope) do
     %{
-      audience:
-        if(String.starts_with?(scope, "content-import:"),
-          do: "phoenix:content-import-api",
-          else: "phoenix:auth-api"
-        ),
+      audience: "phoenix:content-publisher-api",
       scopes: MapSet.new([scope]),
       subject: "service:test"
     }

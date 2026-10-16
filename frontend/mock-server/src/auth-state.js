@@ -1,9 +1,12 @@
+import { createHmac } from 'node:crypto'
+
 import { GROUPHER_AUTH_TOKEN_COOKIE } from '@groupher/contracts/auth-cookie'
-import { AUTH_ERROR } from '@groupher/contracts/auth-generated'
+import { AUTH_ERROR, PHOENIX_BROWSER_TOKEN_CLAIMS } from '@groupher/contracts/auth-generated'
 import { GraphQLError } from 'graphql'
 
 const ACCESS_TTL_SECONDS = Number(process.env.E2E_AUTH_ACCESS_TTL_SECONDS ?? 60)
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 90
+const PHOENIX_E2E_SECRET = process.env.PHX_JWT_SECRET || 'e2e-phoenix-browser-secret'
 
 let sessionSequence = 0
 let tokenSequence = 0
@@ -31,6 +34,24 @@ resetAuthState()
 
 const expiresAt = (seconds) => new Date(Date.now() + seconds * 1000).toISOString()
 
+const issuePhoenixToken = (session, sequence) => {
+  const encode = (value) => Buffer.from(JSON.stringify(value)).toString('base64url')
+  const header = encode({ alg: 'HS256', typ: 'JWT' })
+  const payload = encode({
+    aud: PHOENIX_BROWSER_TOKEN_CLAIMS.audience,
+    exp: Math.floor(Date.now() / 1000) + ACCESS_TTL_SECONDS,
+    iss: PHOENIX_BROWSER_TOKEN_CLAIMS.issuer,
+    jti: `e2e-${sequence}`,
+    sub: session.login,
+    typ: PHOENIX_BROWSER_TOKEN_CLAIMS.type,
+  })
+  const signature = createHmac('sha256', PHOENIX_E2E_SECRET)
+    .update(`${header}.${payload}`)
+    .digest('base64url')
+
+  return `${header}.${payload}.${signature}`
+}
+
 const sessionFailure = (code) => {
   throw new GraphQLError(
     code === AUTH_ERROR.SESSION_REVOKED ? 'Browser Session was revoked.' : 'Session failed.',
@@ -48,7 +69,7 @@ const activeSession = (ref) => {
 }
 
 const issueAccess = (session) => {
-  const token = `e2e-access-${session.ref}-${++tokenSequence}`
+  const token = issuePhoenixToken(session, ++tokenSequence)
   const accessExpiresAt = expiresAt(ACCESS_TTL_SECONDS)
   accessTokens.set(token, { expiresAt: accessExpiresAt, sessionRef: session.ref })
   session.lastSeenAt = new Date().toISOString()

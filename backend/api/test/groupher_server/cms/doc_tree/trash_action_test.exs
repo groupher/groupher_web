@@ -334,7 +334,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     {:ok, original_doc} = CMS.Docs.read_editor_head(community, page.node.doc_id)
     {:ok, copied_doc} = CMS.Docs.read_editor_head(community, duplicate.node.doc_id)
 
-    assert original_doc.document.json == copied_doc.document.json
+    assert original_doc.body.json == copied_doc.body.json
 
     assert Repo.get_by(CMS.Model.ArtimentMention,
              mentioner_type: :doc,

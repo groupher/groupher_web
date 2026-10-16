@@ -50,6 +50,7 @@ export type TDraftEditorState = {
   saveStatus: TDraftSaveStatus
   applyDraftPatch: (patch: Partial<TEditorDraftMeta>) => void
   applyLoaded: (session: TDocDraftSession) => void
+  reconcileConflict: (session: TDocDraftSession) => void
   applySaved: (params: TApplySavedParams) => void
   clearSaveError: () => void
   editBodyValue: (value: TRichEditorValue) => void
@@ -148,6 +149,24 @@ export default function useDraftEditorState(
       loading: false,
     })
     setSaveStatus({ error: null, lastSavedAt: null, saving: false })
+  }, [])
+
+  const reconcileConflict = useCallback((session: TDocDraftSession): void => {
+    const canonical = composeEditorDraftFromSession(session)
+    setSavedDraft(
+      composeSavedDraft(canonical, {
+        contentHash: session.serverContentHash,
+        baseRevisionId: session.baseRevisionId,
+      }),
+    )
+    setDraft((current) => composeEditorDraft({ ...current, version: session.version }))
+    setDraftSource(session.source)
+    setMeta(composeEditorDraftMeta(session.info))
+    setSaveStatus({
+      error: 'The server draft changed. Your local edits were preserved for reconciliation.',
+      lastSavedAt: null,
+      saving: false,
+    })
   }, [])
 
   const applySaved = useCallback(
@@ -274,6 +293,7 @@ export default function useDraftEditorState(
     saveStatus,
     applyDraftPatch,
     applyLoaded,
+    reconcileConflict,
     applySaved,
     clearSaveError,
     editBodyValue,

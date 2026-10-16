@@ -335,8 +335,6 @@
 //     match: asyncRes('updateComment'),
 //     action: ({ updateComment }) => {
 //       store.published()
-//       const { bodyHtml } = updateComment
-//       store.updateOneComment(updateComment, { bodyHtml })
 
 //       setTimeout(() => store.resetPublish(EDIT_MODE.UPDATE), 500)
 //     },

@@ -357,36 +357,24 @@ defmodule GroupherServer.CMS.Comments do
     {:error, CMS.ErrorCat.command_id_required()}
   end
 
-  @spec create_comment_payload(T.thread(), T.article(), String.t(), User.t(), String.t()) ::
+  @spec create_comment_payload(T.thread(), T.article(), map(), User.t(), String.t()) ::
           T.domain_res(map())
   def create_comment_payload(thread, article, body, %User{} = user, command_id) do
     Create.execute(thread, article, body, user, command_id)
   end
 
   @doc "Creates a Comment and returns its stable post-commit mutation result."
-  @spec create_comment_result(T.thread(), T.article(), String.t(), User.t()) ::
+  @spec create_comment_result(T.thread(), T.article(), map(), User.t()) ::
           T.domain_res(map())
   def create_comment_result(_thread, _article, _body, %User{}) do
     {:error, CMS.ErrorCat.command_id_required()}
   end
 
-  @spec create_comment_result(T.thread(), T.article(), String.t(), User.t(), String.t()) ::
+  @spec create_comment_result(T.thread(), T.article(), map(), User.t(), String.t()) ::
           T.domain_res(map())
   def create_comment_result(thread, article, body, %User{} = user, command_id) do
     Create.execute(thread, article, body, user, command_id)
     |> CommandResult.build()
-  end
-
-  @doc """
-  Rejects an unauthenticated Comment update.
-
-  ## Examples
-
-      CMS.Comments.update_comment(comment, body)
-  """
-  @spec update_comment(Comment.t(), String.t()) :: T.domain_res(Comment.t())
-  def update_comment(%Comment{}, _body) do
-    {:error, GroupherServer.Accounts.profiles_error_cat_account_login()}
   end
 
   @doc """
@@ -396,29 +384,24 @@ defmodule GroupherServer.CMS.Comments do
 
       CMS.Comments.update_comment(comment, body, actor)
   """
-  @spec update_comment(Comment.t(), String.t(), User.t(), String.t() | nil) ::
+  @spec update_comment(Comment.t(), map(), non_neg_integer(), User.t(), String.t()) ::
           T.domain_res(Update.result())
-  def update_comment(%Comment{}, _body, %User{}) do
-    {:error, CMS.ErrorCat.command_id_required()}
-  end
-
-  @spec update_comment(Comment.t(), String.t(), User.t(), String.t()) ::
-          T.domain_res(Update.result())
-  def update_comment(%Comment{} = comment, body, %User{} = user, command_id) do
-    Update.execute(comment, body, user, command_id)
+  def update_comment(%Comment{} = comment, body_bag, expected_version, %User{} = user, command_id) do
+    Update.execute(comment, body_bag, expected_version, user, command_id)
   end
 
   @doc "Updates a Comment and returns its stable post-commit mutation result."
-  @spec update_comment_result(Comment.t(), String.t(), User.t()) :: T.domain_res(map())
-  def update_comment_result(%Comment{}, _body, %User{}) do
-    {:error, CMS.ErrorCat.command_id_required()}
-  end
-
-  @spec update_comment_result(Comment.t(), String.t(), User.t(), String.t()) ::
+  @spec update_comment_result(Comment.t(), map(), non_neg_integer(), User.t(), String.t()) ::
           T.domain_res(map())
-  def update_comment_result(%Comment{} = comment, body, %User{} = user, command_id) do
+  def update_comment_result(
+        %Comment{} = comment,
+        body_bag,
+        expected_version,
+        %User{} = user,
+        command_id
+      ) do
     comment
-    |> Update.execute(body, user, command_id)
+    |> Update.execute(body_bag, expected_version, user, command_id)
     |> CommandResult.build()
   end
 

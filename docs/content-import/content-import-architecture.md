@@ -351,7 +351,7 @@ Source content
   -> safe Markdown/MDX
   -> shared Import Content
   -> Rich Editor AST
-  -> artiment-publisher
+  -> content-publisher
   -> BodyBag
 ```
 

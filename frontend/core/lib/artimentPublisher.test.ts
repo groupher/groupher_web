@@ -18,7 +18,7 @@ describe('saveDocDraft', () => {
 
   it('sends Plate value to the same-origin publisher route', async () => {
     const fetchMock = vi.fn(async (_input: RequestInfo | URL, _init?: RequestInit) =>
-      Response.json({ draft: { docId: 'doc-id', title: 'Introduction' }, ok: true }),
+      Response.json({ result: { docId: 'doc-id', title: 'Introduction' }, ok: true }),
     )
     vi.stubGlobal('fetch', fetchMock)
 
@@ -28,22 +28,21 @@ describe('saveDocDraft', () => {
     })
 
     expect(fetchMock).toHaveBeenCalledWith(
-      '/api/artiment/publish',
+      '/api/content/publish',
       expect.objectContaining({ method: 'POST' }),
     )
     const request = fetchMock.mock.calls[0][1] as RequestInit
     expect(JSON.parse(String(request.body))).toEqual({
-      action: 'updateDocDraft',
-      value: input.value,
-      variables: expect.objectContaining({
-        community: 'home',
-        id: 'doc-id',
+      action: 'docDraft.update',
+      target: { community: 'home', documentId: 'doc-id' },
+      payload: {
+        content: { format: 'plate', value: input.value },
         slug: 'introduction',
         subtitle: 'Intro',
         title: 'Introduction',
-        expectedVersion: 3,
-        commandId: expect.any(String),
-      }),
+      },
+      expectedVersion: 3,
+      commandId: expect.any(String),
     })
   })
 
@@ -58,8 +57,10 @@ describe('saveDocDraft', () => {
       ),
     )
 
-    await expect(saveDocDraft(input)).rejects.toThrow(
-      'Artiment BodyBag requires a verified publisher',
-    )
+    await expect(saveDocDraft(input)).rejects.toMatchObject({
+      code: 'publisher_failure',
+      message: 'Artiment BodyBag requires a verified publisher',
+      status: 422,
+    })
   })
 })

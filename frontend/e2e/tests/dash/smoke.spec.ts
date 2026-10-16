@@ -1,5 +1,33 @@
 import { expect, test } from '@playwright/test'
 
+test('content publish API is owned by Dash and rejects unauthenticated JSON', async ({
+  request,
+}) => {
+  const response = await request.post('/api/content/publish', {
+    data: {},
+  })
+
+  expect(response.status()).toBe(401)
+  expect(response.headers()['content-type']).toContain('application/json')
+  await expect(response.json()).resolves.toMatchObject({
+    error: { code: 'unauthorized' },
+    ok: false,
+  })
+})
+
+test('slugify API is owned by the Dash host', async ({ request }) => {
+  const response = await request.post('/api/utils/slugify', {
+    data: { value: 'Page 1 中文' },
+  })
+
+  expect(response.status()).toBe(200)
+  expect(response.headers()['content-type']).toContain('application/json')
+  await expect(response.json()).resolves.toEqual({
+    ok: true,
+    slug: 'page-1-zhong-wen',
+  })
+})
+
 test('tanstack dashboard overview renders', async ({ page }) => {
   await page.goto('/home/overview')
   await expect(page).toHaveURL(/\/home\/overview/)

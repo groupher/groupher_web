@@ -13,7 +13,8 @@
     "./dev-hub-reporter": "./lib/devHubReporter/index.ts",
     "./dev-hub-reporter/react": "./ui/DevHubReporter/index.tsx",
     "./graphql/authoring": "./lib/graphql/authoring.ts",
-    "./graphql/generated": "./lib/graphql/generated/graphql.ts"
+    "./graphql/generated": "./lib/graphql/generated/graphql.ts",
+    "./graphql/server-operations": "./lib/graphql/server-operations.ts"
   },
   "scripts": {
     "type-check": "pnpm exec tsc --noEmit --project ./tsconfig.app.json",

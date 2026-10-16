@@ -163,7 +163,9 @@ defmodule GroupherServer.CMS.Articles.Query do
   end
 
   defp stable_filter(query, filter) do
-    Enum.reduce(filter, query, fn
+    filter
+    |> Enum.reject(fn {_key, value} -> is_nil(value) end)
+    |> Enum.reduce(query, fn
       {:community_tag, tag}, query when is_binary(tag) and tag != "" ->
         stable_tag_filter(query, [tag])
 

@@ -321,13 +321,13 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogCommentReplies do
       reply_comment = Enum.find(paged_comments.entries, &(&1.id == reply_comment.id))
 
       assert reply_comment.reply_to_comment.id == parent_comment.id
-      assert reply_comment.reply_to_comment.body_html == parent_comment.body_html
+      assert Repo.get_by!(CMS.Model.CommentBody, comment_id: reply_comment.reply_to_comment.id).html == Repo.get_by!(CMS.Model.CommentBody, comment_id: parent_comment.id).html
       assert reply_comment.reply_to_comment.author.id == parent_comment.author_id
 
       reply_comment2 = Enum.find(paged_comments.entries, &(&1.id == reply_comment2.id))
 
       assert reply_comment2.reply_to_comment.id == parent_comment.id
-      assert reply_comment2.reply_to_comment.body_html == parent_comment.body_html
+      assert Repo.get_by!(CMS.Model.CommentBody, comment_id: reply_comment2.reply_to_comment.id).html == Repo.get_by!(CMS.Model.CommentBody, comment_id: parent_comment.id).html
       assert reply_comment2.reply_to_comment.author.id == parent_comment.author_id
     end
   end

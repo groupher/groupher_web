@@ -23,11 +23,12 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Post do
       arg(:copy_right, :string)
       arg(:community, non_null(:string))
       arg(:community_tags, list_of(:id))
+      arg(:cat, :article_cat_enum)
       article_cover_args()
       article_asset_args()
 
       middleware(M.Authorize, :login)
-      middleware(M.BodyBagTrust)
+      middleware(M.BodyBagTrust, scope: "content:article:write")
       middleware(M.PublishThrottle, interval: 3, hour_limit: 15, day_limit: 30)
       middleware(M.FrontDesk, :community)
       resolve(&R.CMS.Articles.create_post/3)
@@ -43,11 +44,12 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Post do
       arg(:copy_right, :string)
       arg(:community, non_null(:string))
       arg(:community_tags, list_of(:id))
+      arg(:cat, :article_cat_enum)
       article_cover_args()
       article_asset_args()
 
       middleware(M.Authorize, :login)
-      middleware(M.BodyBagTrust)
+      middleware(M.BodyBagTrust, scope: "content:article:write")
       middleware(M.FrontDesk, :community)
       resolve(&R.CMS.Articles.create_post_draft/3)
     end
@@ -63,11 +65,12 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Post do
       arg(:copy_right, :string)
       arg(:link_addr, :string)
       arg(:community_tags, list_of(:id))
+      arg(:cat, :article_cat_enum)
       article_cover_args()
       article_asset_args()
 
       middleware(M.Authorize, :login)
-      middleware(M.BodyBagTrust)
+      middleware(M.BodyBagTrust, scope: "content:article:write")
       middleware(M.Passport, action: "post.update", thread: :post)
       middleware(M.FrontDesk, {:article, thread: :post})
 
@@ -90,7 +93,7 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Post do
       article_asset_args()
 
       middleware(M.Authorize, :login)
-      middleware(M.BodyBagTrust)
+      middleware(M.BodyBagTrust, scope: "content:article:write")
       middleware(M.FrontDesk, :community)
       middleware(M.FrontDesk, {:article_editor, thread: :post})
       middleware(M.Passport, action: "post.draft.update")

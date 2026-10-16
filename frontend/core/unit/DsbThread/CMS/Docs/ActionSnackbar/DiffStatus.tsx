@@ -51,7 +51,7 @@ const DiffStatus: FC = () => {
         (data?.docBranchVersions || []).map((version) => ({
           id: version.revisionId,
           branchVersionId: version.id,
-          documentJson: version.content.documentJson,
+          body: version.content.body,
           insertedAt: version.publishedAt,
           revisionNumber: version.versionNumber,
           title: version.content.title,

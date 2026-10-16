@@ -593,13 +593,8 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Comments,
     as: :undo_pin_comment
 
-  @doc "Delegates GroupherServer.CMS.Comments.update_comment_result/3 through the CMS Context boundary."
-  defdelegate comments_update_comment_result(arg1, arg2, arg3),
-    to: GroupherServer.CMS.Comments,
-    as: :update_comment_result
-
-  @doc "Delegates GroupherServer.CMS.Comments.update_comment_result/4 through the CMS Context boundary."
-  defdelegate comments_update_comment_result(arg1, arg2, arg3, arg4),
+  @doc "Delegates GroupherServer.CMS.Comments.update_comment_result/5 through the CMS Context boundary."
+  defdelegate comments_update_comment_result(arg1, arg2, arg3, arg4, arg5),
     to: GroupherServer.CMS.Comments,
     as: :update_comment_result
 
@@ -1929,6 +1924,12 @@ defmodule GroupherServer.CMS do
   defdelegate error_cat_invalid_notify_payload(arg1),
     to: GroupherServer.CMS.ErrorCat,
     as: :invalid_notify_payload
+
+  @doc "Delegates CMS.ErrorCat.invalid_body/0 through the CMS Context boundary."
+  defdelegate error_cat_invalid_body(), to: GroupherServer.CMS.ErrorCat, as: :invalid_body
+
+  @doc "Delegates CMS.ErrorCat.invalid_body/1 through the CMS Context boundary."
+  defdelegate error_cat_invalid_body(arg1), to: GroupherServer.CMS.ErrorCat, as: :invalid_body
 
   @doc "Delegates CMS.ViewTracker.AnonymousSession.ensure/1 through the CMS Context boundary."
   defdelegate view_tracker_anonymous_session_ensure(arg1),

@@ -24,9 +24,7 @@ const docCover = graphql(`
             avatar
             nickname
           }
-          document {
-            thumbnail
-          }
+          thumbnail
         }
       }
     }

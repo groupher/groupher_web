@@ -42,6 +42,8 @@
   recovery 与 retention 子协议。
 - [`cms-command-v3.md`](./cms-command-v3.md)：Confirmation 与提交后 result builder 的历史实施记录；
   当前合同已合并到前两篇。
+- [`content-publisher.md`](./content-publisher.md)：Plate/Markdown 到 canonical BodyBag、可信 Node
+  Publisher、delegated user、service capability，以及 Docs、Article、Comment 原子写入的当前合同。
 - [`ci-contract-gaps.md`](./ci-contract-gaps.md)：GraphQL operation、Command Receipt、Outbox、scope、并发与分页的 CI/测试覆盖缺口及门禁计划。
 - [`error-cat.md`](./error-cat.md)：领域错误目录、全局注册和协议边界。
 - [`orm-raw-sql-inventory.md`](./orm-raw-sql-inventory.md)：仍需保留或收口的裸 SQL 清单与 owner 判断。

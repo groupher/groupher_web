@@ -73,7 +73,7 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
     FrontDesk
   }
 
-  alias CMS.Model.{Article, ArtimentMention, Comment}
+  alias CMS.Model.{Article, ArtimentMention, Comment, CommentBody}
   alias Helper.{ORM, T}
 
   @threads Config.threads()
@@ -105,9 +105,21 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
   context; snapshot construction must not perform queries per occurrence.
   """
   @spec sync(Comment.t() | T.article() | map()) :: sync_result()
-  def sync(%Comment{body: body} = comment) when is_binary(body) do
+  def sync(%Comment{body: %CommentBody{json: body}} = comment) when is_binary(body) do
     with {:ok, ast} <- PlateJSON.decode(body) do
       do_sync(comment, ast)
+    end
+  end
+
+  def sync(%Comment{id: comment_id} = comment) do
+    case Repo.get_by(CommentBody, comment_id: comment_id) do
+      %CommentBody{json: body} when is_binary(body) ->
+        with {:ok, ast} <- PlateJSON.decode(body) do
+          do_sync(comment, ast)
+        end
+
+      _ ->
+        {:ok, :pass}
     end
   end
 
@@ -118,8 +130,8 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
     end
   end
 
-  def sync(%{document: _document} = article) do
-    with {:ok, ast} <- load_document_ast(article),
+  def sync(%{body: _body} = article) do
+    with {:ok, ast} <- load_body_ast(article),
          {:ok, article} <- load_article_for_mentions(article) do
       do_sync(article, ast)
     end
@@ -356,6 +368,7 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
       ast
       |> Parser.parse(community_id: community_id)
       |> Enum.reject(&mentioning_itself?(artiment, &1))
+      |> hydrate_comment_bodies()
       |> Enum.map(&shape(mentioner_context, &1))
       |> merge_occurrences()
 
@@ -535,16 +548,8 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
     ]
   end
 
-  defp load_document_ast(%{document: %{json: json}}) when is_binary(json) do
+  defp load_body_ast(%{body: %{json: json}}) when is_binary(json) do
     PlateJSON.decode(json)
-  end
-
-  defp load_document_ast(article) when is_struct(article) do
-    case Repo.preload(article, :document, force: true) |> get_in([:document, :json]) do
-      nil -> {:ok, []}
-      json when is_binary(json) -> PlateJSON.decode(json)
-      _ -> {:error, ErrorCat.custom("invalid json body")}
-    end
   end
 
   defp load_article_for_mentions(%{id: article_id} = article) when is_binary(article_id) do
@@ -658,7 +663,7 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
       id: comment.id,
       type: :comment,
       title: article && Map.get(article, :title),
-      digest: comment.body_html || comment.body,
+      digest: comment_digest(comment),
       url: artiment_url(context)
     }
   end
@@ -681,6 +686,39 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
       digest: Map.get(article, :digest),
       url: artiment_url(context)
     }
+  end
+
+  defp hydrate_comment_bodies(mentions) do
+    comment_ids =
+      mentions
+      |> Enum.flat_map(fn
+        %{artiment: %Comment{id: id}} -> [id]
+        _ -> []
+      end)
+      |> Enum.uniq()
+
+    bodies =
+      CommentBody
+      |> where([body], body.comment_id in ^comment_ids)
+      |> Repo.all()
+      |> Map.new(&{&1.comment_id, &1})
+
+    Enum.map(mentions, fn
+      %{artiment: %Comment{id: id} = comment} = mention ->
+        Map.put(mention, :artiment, %{comment | body: Map.get(bodies, id)})
+
+      mention ->
+        mention
+    end)
+  end
+
+  defp comment_digest(%Comment{body: %CommentBody{digest: digest}}), do: digest
+
+  defp comment_digest(%Comment{id: comment_id}) do
+    case Repo.get_by(CommentBody, comment_id: comment_id) do
+      %CommentBody{digest: digest} -> digest
+      nil -> ""
+    end
   end
 
   defp article_type(article) do

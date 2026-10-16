@@ -72,7 +72,7 @@ Workflow Step B 读取 SourceTree，调用 Phoenix Validator 并保存 Target Pr
 
 Bulk v1 的 Review 只检查结构、目标映射、数量和 warning，不在确认前转换或展示单篇正文。用户确认后的“逐篇转换”只是一个 Bulk Import Job 内部的 item 执行单位；完成后进入 Docs 编辑器检查正文。
 
-两条产品流程不共享页面状态和 Review 状态，但共享现有 Import Content、artiment-publisher、BodyBag contract、PostgreSQL staging 和 Docs Writer。Bulk 只是把多个 source item 组织成 `DocsDataset` 并在最终阶段使用树级原子 apply；后续单篇来源同步使用同一写入链的 single-item mode。单篇导入的详细边界见 [`article_publish_import_refactor.md`](./article-publish-import-refactor.md)。
+两条产品流程不共享页面状态和 Review 状态，但共享现有 Import Content、content-publisher、BodyBag contract、PostgreSQL staging 和 Docs Writer。Bulk 只是把多个 source item 组织成 `DocsDataset` 并在最终阶段使用树级原子 apply；后续单篇来源同步使用同一写入链的 single-item mode。单篇导入的详细边界见 [`article_publish_import_refactor.md`](./article-publish-import-refactor.md)。
 
 ## 3. 目标和非目标
 
@@ -812,7 +812,7 @@ Dashboard 只接收可展示的安全 DTO：
 2. Vercel Workflow 固定为 `analyzeSource` 与 `validateTarget` 两个 durable Step；安全 archive workspace 只活在前一个 Step，后一个 Step 从 PreviewStore 读取 SourceTree。
 3. Docusaurus、Fumadocs、MkDocs、Nextra、Rspress、Starlight、VitePress 七类 Node/TS analyzer 继续使用真实仓库形态 fixture；生产路径不再保留 Elixir analyzer fallback。
 4. Files SDK 后的 `PreviewStore` 保存不可变 `PreviewRecord + DocsDataset + Review artifact`，使用固定 `attemptRef`、write-once run association 和 attempt-local ready receipt。
-5. Dashboard Node 复用 document-importer/artiment-publisher，把 Markdown 转换为 BodyBag；固定容量为 2 MiB Plate input、每批最多 4 篇、完整 GraphQL request JSON 最多 6 MiB。
+5. Dashboard Node 复用 document-importer/content-publisher，把 Markdown 转换为 BodyBag；固定容量为 2 MiB Plate input、每批最多 4 篇、完整 GraphQL request JSON 最多 6 MiB。
 6. Phoenix 只保留 ImportJob、JobItem、PostgreSQL BodyBag staging、Docs Validator/Writer 和 ImportSourceMapping。单篇 canonical BodyBag 最多 5 MiB，由 Phoenix 编码并记录权威 `body_size_bytes`。
 7. Writer 在一个数据库事务和 main Doc Tree advisory lock 内验证 `targetRevision`、过滤 skipped Page、写 Draft/Tree/Mapping、完成 Job 并删除 staging。same-hash stage、completed stage/apply 重放均幂等。
 8. 旧 Snapshot/Preparation/Plan/Checkpoints/PayloadStore、Phoenix GitHub/archive/framework 路径、Changelog/AssetStager 半成品和相关旧表已直接移除，不保留兼容读写或数据迁移。

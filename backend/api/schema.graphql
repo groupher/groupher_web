@@ -519,17 +519,17 @@ type RootMutationType {
 
   "create a post"
   createPost(
-    commandId: ID!, title: String!, bodyBag: ArtimentBodyBagInput!, linkAddr: String, copyRight: String, community: String!, communityTags: [ID], coverUrl: String, coverUrlDark: String, coverEditInfo: CoverEditInfoInput, coverAssetId: ID, coverAsset: CommunityAssetInput, coverAssetDarkId: ID, coverAssetDark: CommunityAssetInput, assetRefs: [ArticleAssetRefInput]
+    commandId: ID!, title: String!, bodyBag: ArtimentBodyBagInput!, linkAddr: String, copyRight: String, community: String!, communityTags: [ID], cat: ArticleCatEnum, coverUrl: String, coverUrlDark: String, coverEditInfo: CoverEditInfoInput, coverAssetId: ID, coverAsset: CommunityAssetInput, coverAssetDarkId: ID, coverAssetDark: CommunityAssetInput, assetRefs: [ArticleAssetRefInput]
   ): Post
 
   "save a new post as a draft"
   createPostDraft(
-    commandId: ID!, title: String!, bodyBag: ArtimentBodyBagInput!, linkAddr: String, copyRight: String, community: String!, communityTags: [ID], coverUrl: String, coverUrlDark: String, coverEditInfo: CoverEditInfoInput, coverAssetId: ID, coverAsset: CommunityAssetInput, coverAssetDarkId: ID, coverAssetDark: CommunityAssetInput, assetRefs: [ArticleAssetRefInput]
+    commandId: ID!, title: String!, bodyBag: ArtimentBodyBagInput!, linkAddr: String, copyRight: String, community: String!, communityTags: [ID], cat: ArticleCatEnum, coverUrl: String, coverUrlDark: String, coverEditInfo: CoverEditInfoInput, coverAssetId: ID, coverAsset: CommunityAssetInput, coverAssetDarkId: ID, coverAssetDark: CommunityAssetInput, assetRefs: [ArticleAssetRefInput]
   ): ArticleDraft
 
   "update a cms\/post"
   updatePost(
-    commandId: ID!, article: ArticlePathInput!, expectedVersion: Int!, title: String, bodyBag: ArtimentBodyBagInput, digest: String, copyRight: String, linkAddr: String, communityTags: [ID], coverUrl: String, coverUrlDark: String, coverEditInfo: CoverEditInfoInput, coverAssetId: ID, coverAsset: CommunityAssetInput, coverAssetDarkId: ID, coverAssetDark: CommunityAssetInput, assetRefs: [ArticleAssetRefInput]
+    commandId: ID!, article: ArticlePathInput!, expectedVersion: Int!, title: String, bodyBag: ArtimentBodyBagInput, digest: String, copyRight: String, linkAddr: String, communityTags: [ID], cat: ArticleCatEnum, coverUrl: String, coverUrlDark: String, coverEditInfo: CoverEditInfoInput, coverAssetId: ID, coverAsset: CommunityAssetInput, coverAssetDarkId: ID, coverAssetDark: CommunityAssetInput, assetRefs: [ArticleAssetRefInput]
   ): Post
 
   "save changes to a post draft without publishing"
@@ -733,16 +733,16 @@ type RootMutationType {
   undoLockDocComment(article: ArticlePathInput!, commandId: ID!): Article
 
   "write a comment"
-  createComment(article: ArticlePathInput!, body: String!, commandId: ID!): ArticleCommentResult
+  createComment(article: ArticlePathInput!, bodyBag: ArtimentBodyBagInput!, commandId: ID!): ArticleCommentResult
 
   "update a comment"
-  updateComment(comment: CommentPathInput!, body: String!, commandId: ID!): ArticleCommentResult
+  updateComment(comment: CommentPathInput!, bodyBag: ArtimentBodyBagInput!, expectedVersion: Int!, commandId: ID!): ArticleCommentResult
 
   "delete a comment"
   deleteComment(comment: CommentPathInput!, commandId: ID!): ArticleCommentResult
 
   "reply to a comment"
-  replyComment(comment: CommentPathInput!, body: String!, commandId: ID!): ArticleCommentResult
+  replyComment(comment: CommentPathInput!, bodyBag: ArtimentBodyBagInput!, commandId: ID!): ArticleCommentResult
 
   "upvote to a comment"
   upvoteComment(comment: CommentPathInput!, commandId: ID!): Comment
@@ -2296,7 +2296,9 @@ type DocDraft {
   author: User
   insertedAt: DateTime
   updatedAt: DateTime
-  document: ArticleDocument
+  body: ArtimentBody!
+  thumbnail: Json
+  assetRefs: [ArticleAssetRef!]!
 }
 
 type ArticleDraft {
@@ -2311,7 +2313,7 @@ type ArticleDraft {
   slug: String
   subtitle: String
   commandId: ID
-  document: ArticleDocument
+  body: ArtimentBody!
   insertedAt: DateTime
   updatedAt: DateTime
 }
@@ -2375,7 +2377,7 @@ type CommonArticle {
 
 type CommonComment {
   innerId: ID
-  bodyHtml: String
+  body: ArtimentBody!
   upvotesCount: Int
   author: CommonUser
   article: CommonArticle
@@ -2549,6 +2551,12 @@ input ArtimentTocItemInput {
   title: String!
 }
 
+type ArtimentTocItem {
+  id: String!
+  level: Int!
+  title: String!
+}
+
 input ArtimentBodyBagInput {
   json: String!
   markdown: String!
@@ -2560,17 +2568,15 @@ input ArtimentBodyBagInput {
   schemaVersion: Int!
 }
 
-type ArticleDocument {
-  json: String
-  markdown: String
-  markdownToc: Json
-  thumbnail: Json
-  html: String
-  plainText: String
-  digest: String
-  bodyHash: String
-  schemaVersion: Int
-  assetRefs: [ArticleAssetRef]
+type ArtimentBody {
+  json: String!
+  markdown: String!
+  toc: [ArtimentTocItem!]!
+  html: String!
+  plainText: String!
+  digest: String!
+  bodyHash: String!
+  schemaVersion: Int!
 }
 
 type DocBranchVersionContent {
@@ -2581,7 +2587,7 @@ type DocBranchVersionContent {
   linkAddr: String
   templateKey: String
   bodyHash: String
-  documentJson: String
+  body: ArtimentBody!
   plainText: String
   schemaVersion: Int
 }
@@ -2599,7 +2605,9 @@ type Post implements Article {
   innerId: ID
   version: Int!
   title: String
-  document: ArticleDocument
+  body: ArtimentBody!
+  thumbnail: Json
+  assetRefs: [ArticleAssetRef!]!
   digest: String
   articleStats: ArticleStats
   isPinned: Boolean
@@ -2631,7 +2639,9 @@ type Changelog implements Article {
   innerId: ID
   version: Int!
   title: String
-  document: ArticleDocument
+  body: ArtimentBody!
+  thumbnail: Json
+  assetRefs: [ArticleAssetRef!]!
   digest: String
   articleStats: ArticleStats
   isPinned: Boolean
@@ -2658,7 +2668,9 @@ type Doc implements Article {
   innerId: ID
   version: Int!
   title: String
-  document: ArticleDocument
+  body: ArtimentBody!
+  thumbnail: Json
+  assetRefs: [ArticleAssetRef!]!
   digest: String
   articleStats: ArticleStats
   isPinned: Boolean
@@ -2686,7 +2698,9 @@ type Blog implements Article {
   innerId: ID
   version: Int!
   title: String
-  document: ArticleDocument
+  body: ArtimentBody!
+  thumbnail: Json
+  assetRefs: [ArticleAssetRef!]!
   digest: String
   articleStats: ArticleStats
   isPinned: Boolean
@@ -3288,8 +3302,8 @@ type CommentMeta {
 
 type CommentReply {
   innerId: ID
-  body: String
-  bodyHtml: String
+  body: ArtimentBody!
+  bodyVersion: Int!
   author: User
   isPinned: Boolean
   floor: Int
@@ -3313,8 +3327,8 @@ type CommentReply {
 
 type Comment {
   innerId: ID
-  body: String
-  bodyHtml: String
+  body: ArtimentBody!
+  bodyVersion: Int!
   author: User
   isPinned: Boolean
   floor: Int

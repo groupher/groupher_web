@@ -31,7 +31,7 @@ export type TDocCoverPinnedDoc = {
   doc: {
     title: string
     author?: { avatar?: string | null; nickname?: string | null } | null
-    document?: { thumbnail?: TArticleThumbnail | null } | null
+    thumbnail?: TArticleThumbnail | null
   }
 }
 

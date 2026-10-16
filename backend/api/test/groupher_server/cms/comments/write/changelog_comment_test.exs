@@ -279,11 +279,12 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogComment do
         CMS.Comments.update_comment(
           comment,
           mock_comment("updated content"),
+          1,
           user,
           Ecto.UUID.generate()
         )
 
-      assert updated_comment.body_html |> String.contains?(~s(updated content</p>))
+      assert updated_comment.body.html |> String.contains?(~s(updated content</p>))
     end
   end
 
@@ -759,14 +760,14 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogComment do
     #   {:ok, comment} = CMS.Comments.create_comment(:changelog, changelog.id, mock_comment(), user, Ecto.UUID.generate())
     #   {:ok, comment} = ORM.find(Comment, comment.id)
 
-    #   {:ok, comment} = CMS.AbuseReports.comment(comment, mock_comment(), "attr", user, Ecto.UUID.generate())
+    #   {:ok, comment} = CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
     #   {:ok, comment} = ORM.find(Comment, comment.id)
     # end
 
     #
     # test "user can unreport a comment", ~m(user changelog)a do
     #   {:ok, comment} = CMS.Comments.create_comment(:changelog, changelog.id, mock_comment(), user, Ecto.UUID.generate())
-    #   {:ok, _} = CMS.AbuseReports.comment(comment, mock_comment(), "attr", user, Ecto.UUID.generate())
+    #   {:ok, _} = CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
     #   {:ok, comment} = ORM.find(Comment, comment.id)
 
     #   {:ok, _} = CMS.AbuseReports.undo_comment(comment, user, Ecto.UUID.generate())
@@ -826,7 +827,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogComment do
         {:ok, user} = db_insert(:user)
 
         {:ok, _} =
-          CMS.AbuseReports.comment(comment, mock_comment(), "attr", user, Ecto.UUID.generate())
+          CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
       end)
 
       {:ok, comment} = ORM.find(Comment, comment.id)
@@ -851,7 +852,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogComment do
         {:ok, user} = db_insert(:user)
 
         {:ok, _} =
-          CMS.AbuseReports.comment(comment, mock_comment(), "attr", user, Ecto.UUID.generate())
+          CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
       end)
 
       {:ok, comment} = ORM.find(Comment, comment.id)
@@ -1190,7 +1191,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogComment do
 
       assert exist_in?(deleted_comment, paged_comments.entries)
       assert {:ok, :deleted} = Lifecycle.state(deleted_comment.id)
-      assert deleted_comment.body_html == @delete_hint
+      assert deleted_comment.body.plain_text == @delete_hint
     end
 
     test "delete comment still update article's comments_count field",

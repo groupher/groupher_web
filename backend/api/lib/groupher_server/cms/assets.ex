@@ -97,6 +97,11 @@ defmodule GroupherServer.CMS.Assets do
     Query.refs(community, asset_id, filter)
   end
 
+  @doc "Returns the version-owned asset relations for one Draft or Revision body owner."
+  @spec content_refs(:draft | :revision, Ecto.UUID.t()) :: T.domain_res([struct()])
+  def content_refs(:draft, body_draft_id), do: {:ok, Refs.draft_refs(body_draft_id)}
+  def content_refs(:revision, revision_id), do: {:ok, Refs.revision_refs(revision_id)}
+
   @doc """
   Returns the active public-read origin metadata for one asset public ref.
 

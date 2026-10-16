@@ -150,7 +150,7 @@ export default function useCommentReceiptReconcile(article: TArticle | null | un
         // A private read that still returns a live Comment means the feed has
         // not converged yet; leave the tombstone active.
         const lifecycle = (comment as TComment & { lifecycle?: { state?: string } }).lifecycle
-        if (lifecycle?.state === 'DELETED' || comment.bodyHtml === undefined) {
+        if (lifecycle?.state === 'DELETED' || comment.body === undefined) {
           clearCommentFeedReceipt(accountRef, articleKey, commentRef)
         }
         continue

@@ -1,4 +1,4 @@
-# @groupher/artiment-publisher
+# @groupher/content-publisher
 
 Private workspace package for the canonical Plate value to BodyBag pipeline.
 

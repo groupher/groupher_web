@@ -1,3 +1,4 @@
+import type { TContentSource } from '@groupher/contracts/content-publish'
 /**
  * Shared Node publisher for every Article and Content Import consumer.
  *
@@ -24,7 +25,9 @@ import {
   serializeMarkdown,
 } from '@groupher/rich-editor/node'
 
+import { ArtimentPublisherError } from './error'
 import { createBodyHash } from './hash'
+import { normalizeContentSource } from './normalize'
 import { sanitizeArtimentHtml } from './sanitize'
 import { createDigest, serializePlateJson } from './serialize'
 import type { TArtimentBodyBag } from './types'
@@ -54,6 +57,23 @@ export const publishArtiment = async (value: unknown): Promise<TArtimentBodyBag>
   }
 }
 
+/** Normalizes a typed source and derives its canonical BodyBag. */
+export const publishContent = async (source: TContentSource): Promise<TArtimentBodyBag> => {
+  try {
+    const { value } = normalizeContentSource(source)
+    return publishArtiment(value)
+  } catch (error) {
+    if (error instanceof ArtimentPublisherError) throw error
+    const diagnostics =
+      error && typeof error === 'object' && 'diagnostics' in error
+        ? (error.diagnostics as ArtimentPublisherError['diagnostics'])
+        : undefined
+    throw new ArtimentPublisherError('invalid_value', 'Content source could not be normalized.', {
+      diagnostics,
+    })
+  }
+}
+
 export { ArtimentPublisherError } from './error'
 export type {
   TArtimentBodyBag,
@@ -66,3 +86,6 @@ export {
   ARTIMENT_MAX_VALUE_DEPTH,
   assertValidArtimentValue,
 } from './validate'
+export { normalizeContentSource } from './normalize'
+export * from './constants'
+export type { TContentSource } from '@groupher/contracts/content-publish'

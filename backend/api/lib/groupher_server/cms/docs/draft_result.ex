@@ -42,7 +42,7 @@ defmodule GroupherServer.CMS.Docs.DraftResult do
          slug: data["slug"],
          digest: data["digest"],
          content_hash: data["content_hash"],
-         document: Map.get(draft, :document),
+         body: Map.fetch!(draft, :body),
          updated_at: updated_at,
          command_id: data["command_id"]
        })}

@@ -22,17 +22,26 @@ defmodule GroupherServer.CMS.Model.Comment do
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Artiment.Threads
-  alias CMS.Model.{Article, CommentLifecycle, CommentUpvote, Community, DocBranch, Embeds}
+
+  alias CMS.Model.{
+    Article,
+    CommentBody,
+    CommentLifecycle,
+    CommentUpvote,
+    Community,
+    DocBranch,
+    Embeds
+  }
+
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.cms()
   @type t :: %__MODULE__{}
 
   # alias Helper.HTML
-  @required_fields ~w(body author_id community_id)a
-  @optional_fields ~w(body_html reply_to_comment_id root_comment_id replies_count is_folded inner_id floor is_article_author thread is_for_question pending)a
+  @required_fields ~w(author_id community_id)a
+  @optional_fields ~w(reply_to_comment_id root_comment_id replies_count is_folded inner_id floor is_article_author thread is_for_question pending)a
   @updatable_fields ~w(
-    body_html
     is_folded
     floor
     is_pinned
@@ -82,8 +91,7 @@ defmodule GroupherServer.CMS.Model.Comment do
     belongs_to(:branch, DocBranch)
 
     field(:thread, Ecto.Enum, values: Threads.article_enums())
-    field(:body, :string)
-    field(:body_html, :string)
+    has_one(:body, CommentBody)
     # 是否被折叠
     field(:is_folded, :boolean, default: false)
     # Public comment locator within its article.
@@ -151,7 +159,5 @@ defmodule GroupherServer.CMS.Model.Comment do
     |> foreign_key_constraint(:branch_id)
     |> check_constraint(:community_id, name: :comments_community_matches_article)
 
-    # |> validate_length(:body_html, min: 3, max: 2000)
-    # |> HTML.safe_string(:body_html)
   end
 end

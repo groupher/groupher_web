@@ -149,7 +149,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
 
       blog = results["entries"] |> List.first()
 
-      assert not is_nil(get_in(blog, ["document", "html"]))
+      assert not is_nil(get_in(blog, ["body", "html"]))
     end
 
     test "support community_tag filter", ~m(guest_conn community user)a do

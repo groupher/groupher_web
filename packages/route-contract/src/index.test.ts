@@ -86,6 +86,7 @@ describe('platform root routes', () => {
     '/apply',
     '/apply/start',
     '/api/artiment/post',
+    '/api/content/publish',
     '/api/docs/import/start',
     '/api/internal/docs-import/status',
     '/api/revalidate/community',

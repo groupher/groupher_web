@@ -1,5 +1,7 @@
+import { CONTENT_PUBLISH_ACTION, CONTENT_SOURCE_FORMAT } from '@groupher/contracts/content-publish'
 import type { TRichEditorValue } from '@groupher/rich-editor'
-import { API_ROUTE } from '@groupher/route-contract'
+
+import { publishContentCommand } from './contentPublisher'
 
 export type TSaveDocDraftInput = {
   value: TRichEditorValue
@@ -11,16 +13,6 @@ export type TSaveDocDraftInput = {
   expectedVersion: number
   /** Stable identity for this save attempt; retries must reuse it. */
   commandId: string
-}
-
-type TPublisherError = {
-  message?: string
-}
-
-type TPublisherResponse<TDraft> = {
-  draft?: TDraft
-  error?: TPublisherError
-  ok?: boolean
 }
 
 /**
@@ -39,21 +31,11 @@ export const saveDocDraft = async <TDraft>({
   expectedVersion,
   commandId,
 }: TSaveDocDraftInput): Promise<TDraft> => {
-  const response = await fetch(API_ROUTE.ARTIMENT_PUBLISH, {
-    method: 'POST',
-    cache: 'no-store',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      action: 'updateDocDraft',
-      value,
-      variables: { community, id, slug, subtitle, title, expectedVersion, commandId },
-    }),
+  return publishContentCommand<TDraft>({
+    action: CONTENT_PUBLISH_ACTION.UPDATE_DOC_DRAFT,
+    target: { community, documentId: id },
+    payload: { content: { format: CONTENT_SOURCE_FORMAT.PLATE, value }, slug, subtitle, title },
+    expectedVersion,
+    commandId,
   })
-
-  const payload = (await response.json()) as TPublisherResponse<TDraft>
-  if (!response.ok || !payload.ok || !payload.draft) {
-    throw new Error(payload.error?.message || 'Failed to save the document draft.')
-  }
-
-  return payload.draft
 }

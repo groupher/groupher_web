@@ -1,4 +1,5 @@
 import AuthRequired from '@dash/components/AuthRequired'
+import CommunityAccessDenied from '@dash/components/CommunityAccessDenied'
 import DocEditorRoutePage from '@dash/components/DocEditorRoutePage'
 import EditorLayout from '@dash/components/layouts/doc.editor'
 import { loadDocEditorData } from '@dash/server/doc-editor'
@@ -28,6 +29,14 @@ function DocEditorPage() {
     return (
       <EditorLayout>
         <AuthRequired action='edit documentation' />
+      </EditorLayout>
+    )
+  }
+
+  if (initialData.accessDenied) {
+    return (
+      <EditorLayout>
+        <CommunityAccessDenied />
       </EditorLayout>
     )
   }

@@ -39,10 +39,10 @@ export type TDocument = {
   json?: string
   html?: string
   markdown?: string
-  markdownToc?: Record<string, unknown>
+  toc?: Record<string, unknown>
   rss?: string
-  bodyHtml?: string
-  body?: string
+  body?: TDocument
+  bodyVersion?: number
 }
 
 export type TViewingInfo = {
@@ -81,7 +81,7 @@ type TBaseArticle = {
   version?: number
   title?: string
   digest?: string
-  body?: string
+  body?: TDocument
   copyRight?: string
   isQuestion?: boolean
   isPinned?: boolean
@@ -95,7 +95,6 @@ type TBaseArticle = {
   commentsCount?: never
   communityTags?: readonly TTag[]
   meta?: TArticleMeta
-  document?: TDocument
   linkAddr?: string
   isArchived?: boolean
   archivedAt?: string
@@ -177,7 +176,8 @@ export type TComment = {
   isPinned?: boolean
   isSolution?: boolean
   floor?: number
-  bodyHtml?: string
+  body?: TDocument
+  bodyVersion?: number
   insertedAt?: string
   updatedAt?: string
   author?: TUser

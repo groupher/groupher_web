@@ -22,7 +22,7 @@ defmodule GroupherServer.CMS.Events.Audition do
   alias CMS.ErrorCat
 
   alias CMS.Events.Event
-  alias CMS.Model.Comment
+  alias CMS.Model.{Comment, CommentBody}
   alias Helper.AuditBot
 
   @behaviour CMS.Events.Handler
@@ -43,27 +43,30 @@ defmodule GroupherServer.CMS.Events.Audition do
   end
 
   @spec handle(Comment.t() | map()) :: audition_result()
-  def handle(%{body_html: body_html} = comment) do
-    AuditBot.analysis(:text, body_html) |> handle_audition_result(comment)
+  def handle(%Comment{} = comment) do
+    body = Repo.get_by!(CommentBody, comment_id: comment.id)
+    AuditBot.analysis(:text, body.html) |> handle_audition_result(comment)
   end
 
   @spec handle(map()) :: audition_result()
-  def handle(%{title: title, document: _document} = article) do
-    plain_text = Repo.preload(article, :document) |> get_in([:document, :plain_text])
+  def handle(%{title: title, body: body} = article) do
+    plain_text = Map.get(body, :plain_text)
     audit_text = title <> (plain_text || "")
 
     AuditBot.analysis(:text, audit_text) |> handle_audition_result(article)
   end
 
   @spec handle_edge(Comment.t() | map()) :: audition_result()
-  def handle_edge(%{body_html: body_html} = comment) do
-    AuditBot.analysis_wrong(:text, body_html)
+  def handle_edge(%Comment{} = comment) do
+    body = Repo.get_by!(CommentBody, comment_id: comment.id)
+
+    AuditBot.analysis_wrong(:text, body.html)
     |> handle_audition_result(comment)
   end
 
   @spec handle_edge(map()) :: audition_result()
-  def handle_edge(%{title: title, document: _document} = article) do
-    plain_text = Repo.preload(article, :document) |> get_in([:document, :plain_text])
+  def handle_edge(%{title: title, body: body} = article) do
+    plain_text = Map.get(body, :plain_text)
     audit_text = title <> (plain_text || "")
 
     AuditBot.analysis_wrong(:text, audit_text)
@@ -71,7 +74,7 @@ defmodule GroupherServer.CMS.Events.Audition do
   end
 
   @spec handle_audition_result(audition_result(), Comment.t() | map()) :: audition_result()
-  def handle_audition_result({:ok, audit_res}, %{body_html: _} = comment) do
+  def handle_audition_result({:ok, audit_res}, %Comment{} = comment) do
     audit_res = Map.merge(audit_res, %{illegal_comments: []})
 
     apply_moderation(fn ->
@@ -89,7 +92,7 @@ defmodule GroupherServer.CMS.Events.Audition do
 
   def handle_audition_result(
         {:error, %{audit_failed: true} = audit_res},
-        %{body_html: _} = comment
+        %Comment{} = comment
       ) do
     apply_moderation(fn ->
       CMS.Comments.set_comment_audit_failed(comment, audit_res)
@@ -102,7 +105,7 @@ defmodule GroupherServer.CMS.Events.Audition do
     end)
   end
 
-  def handle_audition_result({:error, audit_res}, %{body_html: _} = comment) do
+  def handle_audition_result({:error, audit_res}, %Comment{} = comment) do
     comment_addr = "/#{comment.thread}/#{comment.id}"
     illegal_comments = [comment_addr]
 

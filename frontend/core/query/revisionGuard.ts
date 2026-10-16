@@ -9,7 +9,7 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 
 const isComment = (value: unknown): value is TComment & TRevisioned => {
   if (!isRecord(value)) return false
-  return 'innerId' in value && !('community' in value) && ('bodyHtml' in value || 'body' in value)
+  return 'innerId' in value && !('community' in value) && 'body' in value
 }
 
 const copyIfOlder = <T extends TRevisioned>(

@@ -24,7 +24,7 @@ export type TDocDraftDTO = {
     nickname?: string | null
     avatar?: string | null
   } | null
-  document?: {
+  body?: {
     json?: string | null
   } | null
 }

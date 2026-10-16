@@ -1,5 +1,8 @@
+import { CONTENT_PUBLISH_ACTION } from '@groupher/contracts/content-publish'
+
 import { browserGraphQLRequest } from '~/graphql/client'
 import { stripCommentViewerState } from '~/lib/commentViewerState'
+import { plateSourceFromJson, publishContentCommand } from '~/lib/contentPublisher'
 import type { TComment } from '~/spec'
 import commentsSchema from '~/unit/Comments/schema'
 
@@ -91,13 +94,13 @@ export const createCommentOperation = {
     target: TCommentLifecycleTarget,
     body: string,
   ): Promise<TCreatedCommentResult> => {
-    const result = await browserGraphQLRequest(commentsSchema.createComment, {
-      article: target.articlePath,
-      body,
+    const result = await publishContentCommand<TCreatedCommentResult>({
+      action: CONTENT_PUBLISH_ACTION.CREATE_COMMENT,
+      target: { article: target.articlePath },
+      payload: { content: plateSourceFromJson(body) },
       commandId: _context.commandId,
     })
-    if (!result.createComment) throw new Error('Create comment response is empty')
-    return result.createComment as unknown as TCreatedCommentResult
+    return result
   },
   reconcile: reconcileCreated,
 }
@@ -115,13 +118,13 @@ export const replyCommentOperation = {
     body: string,
   ): Promise<TCreatedCommentResult> => {
     if (!target.parentId) throw new Error('Reply parent is missing')
-    const result = await browserGraphQLRequest(commentsSchema.replyComment, {
-      comment: { article: target.articlePath, innerId: target.parentId },
-      body,
+    const result = await publishContentCommand<TCreatedCommentResult>({
+      action: CONTENT_PUBLISH_ACTION.CREATE_COMMENT,
+      target: { article: target.articlePath, parentId: target.parentId },
+      payload: { content: plateSourceFromJson(body) },
       commandId: _context.commandId,
     })
-    if (!result.replyComment) throw new Error('Reply comment response is empty')
-    return result.replyComment as unknown as TCreatedCommentResult
+    return result
   },
   reconcile: reconcileCreated,
 }
@@ -147,8 +150,8 @@ export const updateCommentOperation = {
     const changes = patchCommentChanges(
       context.queryClient,
       target,
-      'bodyHtml',
-      (comment) => ({ ...comment, bodyHtml: body }),
+      'body',
+      (comment) => ({ ...comment, body: { ...(comment.body || {}), json: body } }),
       context,
     )
     return { changes, refetchOnFailure: authorityQueries(changes) }
@@ -158,13 +161,14 @@ export const updateCommentOperation = {
     target: TCommentTarget,
     body: string,
   ): Promise<TUpdatedCommentResult> => {
-    const result = await browserGraphQLRequest(commentsSchema.updateComment, {
-      comment: target.commentPath,
-      body,
+    const result = await publishContentCommand<TUpdatedCommentResult>({
+      action: CONTENT_PUBLISH_ACTION.UPDATE_COMMENT,
+      target: { comment: target.commentPath },
+      payload: { content: plateSourceFromJson(body) },
+      expectedVersion: target.comment.bodyVersion ?? 0,
       commandId: _context.commandId,
     })
-    if (!result.updateComment) throw new Error('Update comment response is empty')
-    return result.updateComment as unknown as TUpdatedCommentResult
+    return result
   },
   reconcile: (
     context: TOperationContext,

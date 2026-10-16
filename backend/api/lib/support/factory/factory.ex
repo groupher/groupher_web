@@ -46,7 +46,19 @@ defmodule GroupherServer.Support.Factory do
   end
 
   def mock_comment(text \\ "comment") do
-    GroupherServer.Support.Factory.Articles.comment_rich_text(text)
+    json = GroupherServer.Support.Factory.Articles.comment_rich_text(text)
+    plain_text = String.pad_trailing(text, 10)
+
+    %{
+      json: json,
+      markdown: "#{text}\n",
+      html: "<p>#{text |> Plug.HTML.html_escape_to_iodata() |> IO.iodata_to_binary()}</p>",
+      toc: [],
+      plain_text: plain_text,
+      digest: String.slice(text, 0, 500),
+      body_hash: :crypto.hash(:sha256, json) |> Base.encode16(case: :lower),
+      schema_version: CMS.Artiment.BodyBag.schema_version()
+    }
   end
 
   defp mock_meta(:comment) do

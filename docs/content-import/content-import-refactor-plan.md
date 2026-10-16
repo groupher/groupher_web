@@ -49,7 +49,7 @@ backend/content-import/src/
 - `core/contracts` 首期只落地 `ThreadDataset` header、`DocsDataset`、`ArtifactRef` 和 `TBadSmell`。
 - `platforms/github/repo` 只负责 GitHub client、archive 和 source workspace，不理解 Groupher Docs 写入。
 - `threads/docs` 负责 framework、tree、selection 和 Dataset，不生成第二套 BodyBag。
-- BodyBag 生成直接复用现有 Import Content/document-importer/artiment-publisher。
+- BodyBag 生成直接复用现有 Import Content/document-importer/content-publisher。
 - `transport/phoenix/docsImport.ts` 首期同时封装 trusted request 和 create/stage/apply/get operations，不提前拆只有一个消费者的通用 client。
 - 不创建尚未实现的 Platform、Thread、comments、reactions 或 actors 空目录。
 
@@ -1047,7 +1047,7 @@ source_deleted
 - [x] Changelog Plan 使用同一 deferred 语义。
 - [x] generated Plan 不创建依赖旧 normalized body 的 asset work item。
 - [x] 删除 `CMS.ContentImport.MarkdownNormalizer`、`Threads.Doc.ContentNormalizer`、Earmark 与对应测试。
-- [ ] 将来源 Markdown/MDX 直接接入 Node [`artiment-publisher`](../../frontend/core/lib/artimentPublisher.ts)，生成完整 BodyBag。PDF/Office 等非 Markdown 文件才先经过 `document-converter`；GitHub Docs 不依赖它。Publisher 是 Node 发布边界：校验并 canonicalize Plate AST，生成 JSON、Markdown、安全 HTML、TOC、纯文本、digest、`body_hash` 和 schema version；它不是独立网络服务。
+- [ ] 将来源 Markdown/MDX 直接接入 Node [`content-publisher`](../../frontend/core/lib/artimentPublisher.ts)，生成完整 BodyBag。PDF/Office 等非 Markdown 文件才先经过 `document-converter`；GitHub Docs 不依赖它。Publisher 是 Node 发布边界：校验并 canonicalize Plate AST，生成 JSON、Markdown、安全 HTML、TOC、纯文本、digest、`body_hash` 和 schema version；它不是独立网络服务。
 - [ ] 基于 publisher 输出重新定义图片/附件发现、asset key、最终 URL 替换和 golden fixtures。
 - [ ] Editor 增加 table/code-block 等 persisted plugins 后，再扩展对应 Markdown 支持矩阵。
 

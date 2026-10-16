@@ -754,7 +754,7 @@ backend/content-import/src/
 
 `PreviewStore` 继续作为业务入口；Analyze/Review/Publisher 不直接调用 `files.upload()`，避免 provider key 和生命周期规则散落。`transport/phoenix/docsImport.ts` 首期同时包含 trusted request 和 Docs import operations，不为单一消费者提前拆 `client.ts`。
 
-正文转换继续复用现有 Import Content/document-importer/artiment-publisher，不在 `threads/docs` 下新增 `publishBodyBags.ts`。Notion、Google、Linear、Changelog、Post、comments、reactions、actors 等尚未实现的能力也不创建空目录。
+正文转换继续复用现有 Import Content/document-importer/content-publisher，不在 `threads/docs` 下新增 `publishBodyBags.ts`。Notion、Google、Linear、Changelog、Post、comments、reactions、actors 等尚未实现的能力也不创建空目录。
 
 ## 12. 配置
 

@@ -1,8 +1,9 @@
 import { RICH_EDITOR_SCHEMA_VERSION } from '@groupher/rich-editor/node'
 import { describe, expect, it } from 'vitest'
 
+import { CONTENT_SOURCE_FORMAT } from './constants'
 import { ArtimentPublisherError } from './error'
-import { publishArtiment } from './index'
+import { publishArtiment, publishContent } from './index'
 import { sanitizeArtimentHtml } from './sanitize'
 import { ARTIMENT_DIGEST_LENGTH } from './serialize'
 import { ARTIMENT_MAX_NODE_COUNT, ARTIMENT_MAX_VALUE_DEPTH } from './validate'
@@ -226,6 +227,39 @@ describe('publishArtiment', () => {
 
     expect(Array.from(bodyBag.digest)).toHaveLength(ARTIMENT_DIGEST_LENGTH)
     expect(bodyBag.digest.endsWith('😀')).toBe(true)
+  })
+})
+
+describe('publishContent', () => {
+  it('normalizes Markdown to the same canonical BodyBag as Plate', async () => {
+    const markdown = '## Guide\n\nHello **world**.'
+    const fromMarkdown = await publishContent({
+      format: CONTENT_SOURCE_FORMAT.MARKDOWN,
+      markdown,
+    })
+    const fromPlate = await publishContent({
+      format: CONTENT_SOURCE_FORMAT.PLATE,
+      value: [
+        { children: [{ text: 'Guide' }], type: 'h2' },
+        { children: [{ text: 'Hello ' }, { bold: true, text: 'world' }, { text: '.' }], type: 'p' },
+      ],
+    })
+
+    expect(fromMarkdown).toEqual(fromPlate)
+    expect(fromMarkdown).toMatchObject({
+      digest: 'Guide\nHello world.',
+      markdown: `${markdown}\n`,
+      toc: [{ id: 'guide', level: 2, title: 'Guide' }],
+    })
+  })
+
+  it('rejects Markdown when deserialization reports diagnostics', async () => {
+    await expect(
+      publishContent({
+        format: CONTENT_SOURCE_FORMAT.MARKDOWN,
+        markdown: '# Guide\n\n![image](https://example.com/image.png)',
+      }),
+    ).rejects.toMatchObject({ code: 'invalid_value', diagnostics: expect.any(Array) })
   })
 })
 
