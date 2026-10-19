@@ -6,6 +6,7 @@ const app = process.env.E2E_APP ?? 'dash'
 const useSystemChrome = process.env.PLAYWRIGHT_USE_SYSTEM_CHROME === '1'
 const browserChannel = useSystemChrome ? 'chrome' : 'chromium'
 const mockGraphQLEndpoint = `http://localhost:${process.env.MOCK_GRAPHQL_PORT ?? '4001'}/graphiql`
+const dashPort = process.env.DASH_E2E_PORT ?? '3103'
 const repoRoot = path.resolve(__dirname, '../..')
 
 type TWebServer = {
@@ -37,8 +38,8 @@ const webServerCommand = (command: string) =>
 
 const appConfig = {
   dash: {
-    cmd: `pnpm exec cross-env PORT=3103 GRAPHQL_ENDPOINT=${mockGraphQLEndpoint} pnpm --filter @groupher/frontend-dash run dev`,
-    url: 'http://dash.groupher.localhost:3103',
+    cmd: `pnpm exec cross-env E2E_AUTH_STACK=1 PORT=${dashPort} GRAPHQL_ENDPOINT=${mockGraphQLEndpoint} PHOENIX_GRAPHQL_ENDPOINT=${mockGraphQLEndpoint} pnpm --filter @groupher/frontend-dash run dev`,
+    url: `http://dash.groupher.localhost:${dashPort}`,
     testDir: path.join(repoRoot, 'frontend/e2e/tests/dash'),
   },
   landing: {

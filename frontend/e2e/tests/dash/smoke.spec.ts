@@ -1,4 +1,18 @@
-import { expect, test } from '@playwright/test'
+import { type Page, expect, test } from '@playwright/test'
+
+const authenticateDash = async (page: Page): Promise<void> => {
+  const dashOrigin =
+    process.env.E2E_BASE_URL ??
+    `http://dash.groupher.localhost:${process.env.DASH_E2E_PORT ?? '3103'}`
+
+  await page.context().addCookies([
+    {
+      name: 'groupher-auth.token',
+      value: 'dash-smoke-token',
+      url: dashOrigin,
+    },
+  ])
+}
 
 test('content publish API is owned by Dash and rejects unauthenticated JSON', async ({
   request,
@@ -29,12 +43,14 @@ test('slugify API is owned by the Dash host', async ({ request }) => {
 })
 
 test('tanstack dashboard overview renders', async ({ page }) => {
+  await authenticateDash(page)
   await page.goto('/home/overview')
   await expect(page).toHaveURL(/\/home\/overview/)
   await expect(page.getByTestId('dashboard-overview-title')).toBeVisible()
 })
 
 test('dark wallpaper editor selects the dark SSR draft before hydration', async ({ page }) => {
+  await authenticateDash(page)
   await page.emulateMedia({ colorScheme: 'dark' })
   await page.route('**/*', async (route) => {
     if (route.request().resourceType() === 'script') await route.abort()
