@@ -5,15 +5,15 @@ defmodule GroupherServer.CMS.Docs.Commands.RestoreRevisionToDraft do
       published revision -> branch workspace -> tagged Draft result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Model.User
   alias CMS.Docs.{BranchVersions, Editor}
   alias CMS.Model.{Author, Community}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Ecto.UUID.t(), pos_integer(), Ecto.UUID.t(), User.t() | Author.t(), keyword()) ::
           {:ok, CMS.Model.DocDraft.t()} | {:error, term()}
   def execute(doc_id, branch_id, revision_id, actor, opts)

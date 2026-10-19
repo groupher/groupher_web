@@ -5,6 +5,8 @@ defmodule GroupherServer.Accounts.Achievements.Commands.Achieve do
       achievement command -> advisory transaction lock -> Persist -> row update
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Accounts
   alias Accounts.Model.{Achievement, User}
   alias Accounts.Achievements.Persist
@@ -15,9 +17,9 @@ defmodule GroupherServer.Accounts.Achievements.Commands.Achieve do
   @upvote_weight Config.achieve_upvote_weight()
   @follow_weight Config.achieve_follow_weight()
 
-  use GroupherServer.CommandPipeline
-
-  @pipeline operation: :accounts_achievements_achieve, access: :open, target: :user,
+  @pipeline operation: :accounts_achievements_achieve,
+            access: :open,
+            target: :user,
             params: [:operation, :key]
 
   direct_pipeline execute_pipeline(user, operation, key) do
@@ -65,7 +67,9 @@ defmodule GroupherServer.Accounts.Achievements.Commands.Achieve do
     execute_downgrade_pipeline(%User{id: user_id}, count)
   end
 
-  @pipeline operation: :accounts_achievements_downgrade, access: :open, target: :user,
+  @pipeline operation: :accounts_achievements_downgrade,
+            access: :open,
+            target: :user,
             params: [:count]
 
   direct_pipeline execute_downgrade_pipeline(user, count) do

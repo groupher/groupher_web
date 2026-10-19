@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Create do
       GraphQL -> Categories.Commands.Create -> Gate -> Persist -> Receipt
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias CMS.Gate
@@ -15,9 +18,6 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Create do
   alias Helper.T
   alias Helper.Validator.Slug
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Community.t() | String.t(), map(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Category.t())
   def execute(community_ref, attrs, %User{} = actor, command_id) when is_map(attrs) do

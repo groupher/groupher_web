@@ -29,6 +29,11 @@ defmodule GroupherServer.Test.Mutation.Articles.DocBoundary do
              }
            })
 
-    assert {:ok, _} = read_article(context.community, :doc, article_inner_id(context.doc, context.community))
+    assert {:ok, _} =
+             read_article(
+               context.community,
+               :doc,
+               article_inner_id(context.doc, context.community)
+             )
   end
 end

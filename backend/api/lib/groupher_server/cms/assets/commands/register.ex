@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Assets.Commands.Register do
       upload callback / GraphQL -> Register -> CMS.Command -> Gate -> Persist -> Confirmation
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Assets.Commands.RegisterAssetConfirmation, as: Confirmation
@@ -12,9 +15,6 @@ defmodule GroupherServer.CMS.Assets.Commands.Register do
   alias CMS.Assets.{Persist, Query}
   alias CMS.Model.{Community, CommunityAsset}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Community.t(), map(), User.t() | nil, String.t() | nil) ::
           {:ok, CommunityAsset.t()} | {:error, term()}
   def execute(%Community{} = community, attrs, %User{} = user, command_id) when is_map(attrs) do

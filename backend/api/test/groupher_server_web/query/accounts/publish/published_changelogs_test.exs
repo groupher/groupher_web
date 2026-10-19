@@ -26,7 +26,9 @@ defmodule GroupherServer.Test.Query.Accounts.Publish.Changelogs do
       results =
         guest_conn |> gq_query(S.Article.q(:paged_published_articles, :changelog), variables)
 
-      assert results["entries"] |> Enum.any?(&(&1["innerId"] == to_string(article_inner_id(changelog, community))))
+      assert results["entries"]
+             |> Enum.any?(&(&1["innerId"] == to_string(article_inner_id(changelog, community))))
+
       assert results["entries"] |> Enum.any?(&(&1["innerId"] == to_string(changelog2.inner_id)))
     end
   end
@@ -42,7 +44,8 @@ defmodule GroupherServer.Test.Query.Accounts.Publish.Changelogs do
               :changelog,
               article_inner_id(changelog, community),
               mock_comment(),
-              user, Ecto.UUID.generate()
+              user,
+              Ecto.UUID.generate()
             )
 
           acc ++ [comment]
@@ -59,7 +62,11 @@ defmodule GroupherServer.Test.Query.Accounts.Publish.Changelogs do
 
       assert entries |> Enum.all?(&(not is_nil(&1["article"]["author"])))
 
-      assert entries |> Enum.all?(&(&1["article"]["innerId"] == to_string(article_inner_id(changelog, community))))
+      assert entries
+             |> Enum.all?(
+               &(&1["article"]["innerId"] == to_string(article_inner_id(changelog, community)))
+             )
+
       assert entries |> Enum.all?(&(&1["author"]["login"] == user.login))
       assert entries |> Enum.any?(&(&1["innerId"] == random_comment_id))
     end

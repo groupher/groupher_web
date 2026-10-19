@@ -85,41 +85,53 @@ defmodule GroupherServer.CMS.DocTree do
     dispatch_create_node(community, with_actor(args, user), user)
   end
 
-  defp dispatch_create_node_internal(community, %{type: :tab} = args, user),
-    do: Commands.CreateTab.execute_internal(community, args, user)
+  defp dispatch_create_node_internal(community, %{type: :tab} = args, user) do
+    Commands.CreateTab.execute_internal(community, args, user)
+  end
 
-  defp dispatch_create_node_internal(community, %{type: :group} = args, user),
-    do: Commands.CreateGroup.execute_internal(community, args, user)
+  defp dispatch_create_node_internal(community, %{type: :group} = args, user) do
+    Commands.CreateGroup.execute_internal(community, args, user)
+  end
 
-  defp dispatch_create_node_internal(community, %{type: :page} = args, user),
-    do: Commands.CreatePage.execute_internal(community, args, user)
+  defp dispatch_create_node_internal(community, %{type: :page} = args, user) do
+    Commands.CreatePage.execute_internal(community, args, user)
+  end
 
-  defp dispatch_create_node_internal(community, %{type: :link} = args, user),
-    do: Commands.CreateLink.execute_internal(community, args, user)
+  defp dispatch_create_node_internal(community, %{type: :link} = args, user) do
+    Commands.CreateLink.execute_internal(community, args, user)
+  end
 
-  defp dispatch_create_node_internal(community, %{type: :pin} = args, user),
-    do: Commands.CreatePin.execute_internal(community, args, user)
+  defp dispatch_create_node_internal(community, %{type: :pin} = args, user) do
+    Commands.CreatePin.execute_internal(community, args, user)
+  end
 
-  defp dispatch_create_node_internal(_community, _args, _user),
-    do: {:error, CMS.ErrorCat.custom("unsupported docs tree node type")}
+  defp dispatch_create_node_internal(_community, _args, _user) do
+    {:error, CMS.ErrorCat.custom("unsupported docs tree node type")}
+  end
 
-  defp dispatch_create_node(community, %{type: :tab} = args, user),
-    do: Commands.CreateTab.execute(community, args, user)
+  defp dispatch_create_node(community, %{type: :tab} = args, user) do
+    Commands.CreateTab.execute(community, args, user)
+  end
 
-  defp dispatch_create_node(community, %{type: :group} = args, user),
-    do: Commands.CreateGroup.execute(community, args, user)
+  defp dispatch_create_node(community, %{type: :group} = args, user) do
+    Commands.CreateGroup.execute(community, args, user)
+  end
 
-  defp dispatch_create_node(community, %{type: :page} = args, user),
-    do: Commands.CreatePage.execute(community, args, user)
+  defp dispatch_create_node(community, %{type: :page} = args, user) do
+    Commands.CreatePage.execute(community, args, user)
+  end
 
-  defp dispatch_create_node(community, %{type: :link} = args, user),
-    do: Commands.CreateLink.execute(community, args, user)
+  defp dispatch_create_node(community, %{type: :link} = args, user) do
+    Commands.CreateLink.execute(community, args, user)
+  end
 
-  defp dispatch_create_node(community, %{type: :pin} = args, user),
-    do: Commands.CreatePin.execute(community, args, user)
+  defp dispatch_create_node(community, %{type: :pin} = args, user) do
+    Commands.CreatePin.execute(community, args, user)
+  end
 
-  defp dispatch_create_node(_community, _args, _user),
-    do: {:error, CMS.ErrorCat.custom("unsupported docs tree node type")}
+  defp dispatch_create_node(_community, _args, _user) do
+    {:error, CMS.ErrorCat.custom("unsupported docs tree node type")}
+  end
 
   @doc """
   Builds the unified docs publish checklist.

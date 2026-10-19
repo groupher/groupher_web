@@ -12,6 +12,9 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
   canonical public result; it never guesses an old Draft/Public physical row.
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.{Articles, Communities, Docs}
@@ -21,9 +24,6 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
   alias CMS.Articles.Commands.RevisionConfirmation, as: Confirmation
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :article_create,
             confirmation: Confirmation,
             target: :command_target,

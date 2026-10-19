@@ -8,6 +8,9 @@ defmodule GroupherServer.CMS.Communities.Commands.RequestDestroy do
         -> Gate / Lifecycle / Confirmation
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias CMS.{FrontDesk, Gate}
@@ -16,9 +19,6 @@ defmodule GroupherServer.CMS.Communities.Commands.RequestDestroy do
   alias Accounts.Model.User
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Community.t(), User.t(), keyword()) :: T.domain_res(Community.t())
   def execute(%Community{} = community, %User{} = actor, opts) do
     execute_pipeline(community, actor, opts, Keyword.fetch!(opts, :command_id))

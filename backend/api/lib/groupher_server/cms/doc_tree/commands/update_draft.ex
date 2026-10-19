@@ -7,14 +7,14 @@ defmodule GroupherServer.CMS.DocTree.Commands.UpdateDraft do
         -> command support -> Persist.update_draft -> DraftResult
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
   alias CMS.DocTree.{Commands.Support, Persist}
   alias CMS.DocTree.Commands.NodeDraftConfirmation, as: Confirmation
   alias CMS.Model.Article
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :doc_update_draft,
             confirmation: Confirmation,
             target: :command_target,

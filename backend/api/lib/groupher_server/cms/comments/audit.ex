@@ -11,11 +11,13 @@ defmodule GroupherServer.CMS.Comments.Audit do
         -> Comment audit state
   """
 
-  alias GroupherServer.CMS.Comments.Commands.Moderate
+  alias GroupherServer.CMS
+  alias CMS.Comments.Commands.Moderate
 
   def set_illegal(comment_id, attrs), do: Moderate.execute(:set_illegal, comment_id, attrs)
   def unset_illegal(comment_id, attrs), do: Moderate.execute(:unset_illegal, comment_id, attrs)
 
-  def set_audit_failed(comment, state),
-    do: Moderate.execute(:set_audit_failed, comment, state)
+  def set_audit_failed(comment, state) do
+    Moderate.execute(:set_audit_failed, comment, state)
+  end
 end

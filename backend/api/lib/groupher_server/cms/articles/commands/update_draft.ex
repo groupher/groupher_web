@@ -7,6 +7,9 @@ defmodule GroupherServer.CMS.Articles.Commands.UpdateDraft do
         -> Gate -> Draft.Store.update
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Model.User
@@ -15,9 +18,6 @@ defmodule GroupherServer.CMS.Articles.Commands.UpdateDraft do
   alias CMS.Model.{Article, Author, Community}
   alias GroupherServer.FrontDesk, as: RootFrontDesk
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :article_update_draft,
             target: :article_id,
             params: [:attrs, :opts]

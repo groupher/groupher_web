@@ -13,7 +13,8 @@ defmodule GroupherServer.CommandPipeline do
         -> Gate / Lifecycle / Persist contract
   """
 
-  alias GroupherServer.CommandPipeline.Runner
+  alias GroupherServer.CommandPipeline
+  alias CommandPipeline.Runner
 
   @stage_order [
     :prepare,
@@ -253,8 +254,9 @@ defmodule GroupherServer.CommandPipeline do
 
   defp command_id_argument!(:direct_pipeline, _arguments, _module), do: nil
 
-  defp arg_name!({name, _meta, context}) when is_atom(name) and is_atom(context) and name != :_,
-    do: name
+  defp arg_name!({name, _meta, context}) when is_atom(name) and is_atom(context) and name != :_ do
+    name
+  end
 
   defp body_forms({:__block__, _meta, forms}), do: forms
   defp body_forms(form), do: [form]
@@ -295,16 +297,19 @@ defmodule GroupherServer.CommandPipeline do
 
     if steps == [], do: raise(ArgumentError, "workflow_pipeline needs at least one step")
 
-    if length(returns) != 1,
-      do: raise(ArgumentError, "workflow_pipeline needs exactly one return")
+    if length(returns) != 1 do
+      raise(ArgumentError, "workflow_pipeline needs exactly one return")
+    end
 
     return_name = List.first(returns)
 
-    if return_name not in Enum.map(steps, &elem(&1, 0)),
-      do: raise(ArgumentError, "workflow return references unknown step #{inspect(return_name)}")
+    if return_name not in Enum.map(steps, &elem(&1, 0)) do
+      raise(ArgumentError, "workflow return references unknown step #{inspect(return_name)}")
+    end
 
-    if length(Enum.uniq(Enum.map(steps, &elem(&1, 0)))) != length(steps),
-      do: raise(ArgumentError, "workflow step names must be unique")
+    if length(Enum.uniq(Enum.map(steps, &elem(&1, 0)))) != length(steps) do
+      raise(ArgumentError, "workflow step names must be unique")
+    end
 
     {steps, return_name}
   end
@@ -312,22 +317,27 @@ defmodule GroupherServer.CommandPipeline do
   defp validate_pipeline_structure!(pipeline_type, stages) do
     names = Enum.map(stages, &elem(&1, 0))
 
-    if length(names) != length(Enum.uniq(names)),
-      do: raise(ArgumentError, "pipeline stages must be unique")
+    if length(names) != length(Enum.uniq(names)) do
+      raise(ArgumentError, "pipeline stages must be unique")
+    end
 
     indexes = Enum.map(names, &Enum.find_index(@stage_order, fn stage -> stage == &1 end))
 
-    unless indexes == Enum.sort(indexes),
-      do: raise(ArgumentError, "pipeline stages must be declared in execution order")
+    unless indexes == Enum.sort(indexes) do
+      raise(ArgumentError, "pipeline stages must be declared in execution order")
+    end
 
-    if :change in names and :workflow in names,
-      do: raise(ArgumentError, "pipeline cannot declare both change and workflow")
+    if :change in names and :workflow in names do
+      raise(ArgumentError, "pipeline cannot declare both change and workflow")
+    end
 
-    if pipeline_type == :receipt_pipeline and :confirm not in names,
-      do: raise(ArgumentError, "receipt_pipeline requires confirm")
+    if pipeline_type == :receipt_pipeline and :confirm not in names do
+      raise(ArgumentError, "receipt_pipeline requires confirm")
+    end
 
-    if :load in names and :gate in names,
-      do: raise(ArgumentError, "load and gate are mutually exclusive")
+    if :load in names and :gate in names do
+      raise(ArgumentError, "load and gate are mutually exclusive")
+    end
   end
 
   defp rejection_builder!(stages, caller) do
@@ -348,68 +358,74 @@ defmodule GroupherServer.CommandPipeline do
   end
 
   defp local_capture({:&, _meta, [{:/, _capture_meta, [{name, _name_meta, context}, 1]}]})
-       when is_atom(name) and (is_atom(context) or is_nil(context)),
-       do: {name, 1}
+       when is_atom(name) and (is_atom(context) or is_nil(context)) do
+    {name, 1}
+  end
 
   defp local_capture(_callback), do: nil
 
   defp validate_compiled_contracts!(contracts, module) do
     Enum.each(contracts, fn contract ->
       unless contract.pipeline == :workflow_pipeline do
-        unless is_atom(contract.operation),
-          do:
-            raise(
-              ArgumentError,
-              "#{inspect(module)} #{contract.pipeline} requires @pipeline operation"
-            )
+        unless is_atom(contract.operation) do
+          raise(
+            ArgumentError,
+            "#{inspect(module)} #{contract.pipeline} requires @pipeline operation"
+          )
+        end
 
-        unless contract.access in [:user, :internal, :open],
-          do:
-            raise(
-              ArgumentError,
-              "#{inspect(module)} @pipeline access must be :user, :internal, or :open"
-            )
+        unless contract.access in [:user, :internal, :open] do
+          raise(
+            ArgumentError,
+            "#{inspect(module)} @pipeline access must be :user, :internal, or :open"
+          )
+        end
 
         validate_target!(contract, module)
         validate_argument_reference!(contract, module, :operation_ref)
 
-        if contract.pipeline == :receipt_pipeline and is_nil(contract.params),
-          do: raise(ArgumentError, "#{inspect(module)} receipt_pipeline requires params")
+        if contract.pipeline == :receipt_pipeline and is_nil(contract.params) do
+          raise(ArgumentError, "#{inspect(module)} receipt_pipeline requires params")
+        end
 
-        if contract.access == :user and :gate not in contract.stages,
-          do: raise(ArgumentError, "#{inspect(module)} user pipeline requires gate")
+        if contract.access == :user and :gate not in contract.stages do
+          raise(ArgumentError, "#{inspect(module)} user pipeline requires gate")
+        end
 
-        if contract.access == :user and is_nil(contract.actor),
-          do:
-            raise(
-              ArgumentError,
-              "#{inspect(module)} user pipeline requires actor/user/author argument"
-            )
+        if contract.access == :user and is_nil(contract.actor) do
+          raise(
+            ArgumentError,
+            "#{inspect(module)} user pipeline requires actor/user/author argument"
+          )
+        end
 
-        if contract.access == :open and :gate in contract.stages,
-          do: raise(ArgumentError, "#{inspect(module)} open pipeline cannot declare gate")
+        if contract.access == :open and :gate in contract.stages do
+          raise(ArgumentError, "#{inspect(module)} open pipeline cannot declare gate")
+        end
 
         if contract.access == :open and :on_rejection in contract.stages and
-             is_nil(contract.actor),
-           do:
-             raise(
-               ArgumentError,
-               "#{inspect(module)} open pipeline with on_rejection requires actor/user/author argument"
-             )
+             is_nil(contract.actor) do
+          raise(
+            ArgumentError,
+            "#{inspect(module)} open pipeline with on_rejection requires actor/user/author argument"
+          )
+        end
 
-        if not (:change in contract.stages or :workflow in contract.stages),
-          do: raise(ArgumentError, "#{inspect(module)} pipeline requires change or workflow")
+        if not (:change in contract.stages or :workflow in contract.stages) do
+          raise(ArgumentError, "#{inspect(module)} pipeline requires change or workflow")
+        end
 
-        if contract.pipeline == :receipt_pipeline and not is_atom(contract.confirmation),
-          do: raise(ArgumentError, "#{inspect(module)} receipt_pipeline requires confirmation")
+        if contract.pipeline == :receipt_pipeline and not is_atom(contract.confirmation) do
+          raise(ArgumentError, "#{inspect(module)} receipt_pipeline requires confirmation")
+        end
 
         if contract.pipeline == :direct_pipeline and
-             (:confirm in contract.stages or not is_nil(contract.confirmation)),
-           do:
-             raise(
-               ArgumentError,
-               "#{inspect(module)} direct_pipeline cannot declare confirmation or confirm"
-             )
+             (:confirm in contract.stages or not is_nil(contract.confirmation)) do
+          raise(
+            ArgumentError,
+            "#{inspect(module)} direct_pipeline cannot declare confirmation or confirm"
+          )
+        end
 
         validate_adapter!(contract, module)
 
@@ -422,20 +438,34 @@ defmodule GroupherServer.CommandPipeline do
     adapter = contract.adapter
 
     unless is_atom(adapter) do
-      raise ArgumentError, "#{inspect(module)} pipeline adapter is not available: #{inspect(adapter)}"
+      raise ArgumentError,
+            "#{inspect(module)} pipeline adapter is not available: #{inspect(adapter)}"
     end
 
     case Code.ensure_compiled(adapter) do
-      {:module, _adapter} -> {:ok, :pass}
+      {:module, _adapter} ->
+        {:ok, :pass}
+
       {:error, reason} ->
         raise ArgumentError,
               "#{inspect(module)} pipeline adapter is not available: #{inspect(adapter)} (#{inspect(reason)})"
     end
 
     required =
-      [:validate_contract, :normalize_gate_result, :normalize_transaction_error, :normalize_source,
-       :valid_source?, :record_rejection]
-      |> Kernel.++(if(contract.pipeline == :receipt_pipeline, do: [:validate_command_id, :execute_receipt], else: []))
+      [
+        :validate_contract,
+        :normalize_gate_result,
+        :normalize_transaction_error,
+        :normalize_source,
+        :valid_source?,
+        :record_rejection
+      ]
+      |> Kernel.++(
+        if(contract.pipeline == :receipt_pipeline,
+          do: [:validate_command_id, :execute_receipt],
+          else: []
+        )
+      )
 
     missing = Enum.reject(required, &function_exported?(adapter, &1, adapter_arity(&1)))
 
@@ -445,7 +475,9 @@ defmodule GroupherServer.CommandPipeline do
     end
 
     case adapter.validate_contract(contract) do
-      {:ok, :pass} -> {:ok, :pass}
+      {:ok, :pass} ->
+        {:ok, :pass}
+
       {:error, reason} ->
         raise ArgumentError,
               "#{inspect(module)} pipeline contract rejected by #{inspect(adapter)}: #{inspect(reason)}"
@@ -466,8 +498,9 @@ defmodule GroupherServer.CommandPipeline do
   defp adapter_arity(:record_rejection), do: 1
 
   defp validate_rejection_builder!(%{stages: stages, rejection_builder: nil}, _module) do
-    if :on_rejection in stages,
-      do: raise(ArgumentError, "on_rejection requires a local builder")
+    if :on_rejection in stages do
+      raise(ArgumentError, "on_rejection requires a local builder")
+    end
   end
 
   defp validate_rejection_builder!(
@@ -548,8 +581,9 @@ defmodule GroupherServer.CommandPipeline do
   end
 
   defp callback_arity({:&, _meta, [{:/, _capture_meta, [_function, arity]}]})
-       when is_integer(arity),
-       do: arity
+       when is_integer(arity) do
+    arity
+  end
 
   defp callback_arity(_), do: :unknown
 
@@ -573,7 +607,7 @@ defmodule GroupherServer.CommandPipeline do
       {:gate, callback} ->
         {:gate,
          quote do
-             fn value ->
+           fn value ->
              unquote(callback).(value)
              |> unquote(adapter).normalize_gate_result()
            end

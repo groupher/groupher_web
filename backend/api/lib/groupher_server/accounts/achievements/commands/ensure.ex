@@ -5,11 +5,11 @@ defmodule GroupherServer.Accounts.Achievements.Commands.Ensure do
       Accounts registration -> Achievements facade -> Ensure -> Persist
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Accounts
   alias Accounts.Achievements.Persist
   alias Accounts.Model.Achievement
-
-  use GroupherServer.CommandPipeline
 
   @pipeline operation: :accounts_achievements_ensure, access: :open, target: :user_id
 

@@ -9,7 +9,8 @@ defmodule GroupherServerWeb.Resolvers.Accounts.ProfileViewTracker do
   alias Accounts.Model.User
 
   @doc "Tracks one visible public Profile using the request-scoped actor identity."
-  @spec track_profile_view(term(), map(), Absinthe.Resolution.t()) :: {:ok, map()} | {:error, term()}
+  @spec track_profile_view(term(), map(), Absinthe.Resolution.t()) ::
+          {:ok, map()} | {:error, term()}
   def track_profile_view(_root, %{user: %User{} = profile}, info) do
     {viewer, actor_opts} = view_actor(info.context)
 

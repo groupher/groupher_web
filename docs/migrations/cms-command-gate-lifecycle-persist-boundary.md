@@ -805,7 +805,7 @@ Facade、Resolver 和 Command identity 检查都是阻断式 architecture gates�
 4. `mix cms.pipeline.coverage` 另行扫描 `cms/**/commands` 下导出 `execute/*` 的 concrete Command，生成
    `backend/api/priv/pipeline_coverage.json`，用于 fail-closed 覆盖检查；它不分析调用边，也不替代 pipeline checker；
 5. `mix cms.command.pipeline` 从 resolver/facade public root 追踪路由函数和普通 helper，并读取编译后的 Elixir
-   debug definitions 看穿 `use`/import/macro 生成函数，输出 `backend/api/priv/pipeline_graph.json`；任务始终对
+   debug definitions 看穿 `use`/import/macro 生成函数；任务始终对
    unresolved/dynamic/unexpanded macro、uncovered、unreached user pipeline、internal reachability、顶层 pipeline
    互调、workflow caller、非 gate 阶段 Gate、mixed protocol entry 与 unpipelined Command write fail closed；
 6. 只有 `receipt_pipeline` runner 可以调用 `CMS.Command`，业务 Command、shared Support 和 routing function

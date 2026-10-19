@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Articles.Commands.Moderate do
       moderation command -> canonical Article -> Gate -> moderation write
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
   alias CMS.Articles.{Bindings, Moderation, Query}
   alias CMS.Docs.Store, as: DocStore
@@ -12,9 +15,6 @@ defmodule GroupherServer.CMS.Articles.Commands.Moderate do
   alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CMS.Model.{Article, Community}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Ecto.UUID.t(), atom(), map(), struct() | :operations, keyword()) ::
           {:ok, term()} | {:error, term()}
   @pipeline operation: :article_moderate, target: :article_id

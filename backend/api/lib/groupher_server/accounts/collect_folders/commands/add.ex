@@ -8,13 +8,13 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
       collect add -> pipeline runner -> CMS Receipt -> Accounts writes
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.CollectFolders.{MembershipConfirmation, Persist}
   alias Accounts.Model.User
   alias Helper.ORM
-
-  use GroupherServer.CommandPipeline,
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
 
   @pipeline operation: :collect_add,
             access: :open,
@@ -49,8 +49,9 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
       Accounts.CollectFolders.Commands.Add.run_direct(article, folder_id, user)
   """
   @spec run_direct(struct(), term(), User.t()) :: {:ok, map()} | {:error, term()}
-  def run_direct(article, folder_id, %User{} = user),
-    do: execute_direct(article, folder_id, user)
+  def run_direct(article, folder_id, %User{} = user) do
+    execute_direct(article, folder_id, user)
+  end
 
   @doc """
   Runs the retry-safe Receipt facade path.
@@ -60,8 +61,9 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
       Accounts.CollectFolders.Commands.Add.run_receipt(article, folder_id, user, command_id)
   """
   @spec run_receipt(struct(), term(), User.t(), String.t()) :: {:ok, map()} | {:error, term()}
-  def run_receipt(article, folder_id, %User{} = user, command_id),
-    do: execute_receipt(article, folder_id, user, command_id)
+  def run_receipt(article, folder_id, %User{} = user, command_id) do
+    execute_receipt(article, folder_id, user, command_id)
+  end
 
   defp prepare_add(article, folder_id, user, command_id) do
     with {:ok, prepared} <- Persist.prepare_add(article, folder_id, user) do

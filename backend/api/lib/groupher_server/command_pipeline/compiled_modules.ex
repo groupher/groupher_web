@@ -13,7 +13,8 @@ defmodule GroupherServer.CommandPipeline.CompiledModules do
   definition of production code.
   """
 
-  alias GroupherServer.CommandPipeline.ProjectPaths
+  alias GroupherServer.CommandPipeline
+  alias CommandPipeline.ProjectPaths
 
   @doc "Returns compiled modules whose compiler source belongs to `lib/`."
   def production do

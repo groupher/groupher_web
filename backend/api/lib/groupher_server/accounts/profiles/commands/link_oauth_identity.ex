@@ -5,17 +5,20 @@ defmodule GroupherServer.Accounts.Profiles.Commands.LinkOauthIdentity do
       LinkOauthIdentity -> LinkOauth transaction -> Query projection
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Accounts
 
   alias Accounts.Profiles.{Effects, Oauth, Query}
 
-  use GroupherServer.CommandPipeline
-
-  @pipeline operation: :accounts_profile_link_oauth_identity, access: :open, target: :login,
+  @pipeline operation: :accounts_profile_link_oauth_identity,
+            access: :open,
+            target: :login,
             params: [:provider]
 
   direct_pipeline execute_pipeline(login, provider) do
     change(fn _login -> Oauth.link_in_transaction(login, provider) end)
+
     present(fn user ->
       _ = Effects.revalidate_user(user)
       Query.linked_oauth_accounts(login)

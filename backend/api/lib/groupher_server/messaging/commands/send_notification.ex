@@ -8,14 +8,16 @@ defmodule GroupherServer.Messaging.Commands.SendNotification do
           -> commit -> Accounts.mailbox_invalidate_users/1
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.{Accounts, Messaging}
   alias Accounts.Model.User
   alias Messaging.ErrorCat
   alias Messaging.Notifications.{Delivery, Persist}
 
-  use GroupherServer.CommandPipeline
-
-  @pipeline operation: :messaging_send_notification, access: :open, target: :from_user,
+  @pipeline operation: :messaging_send_notification,
+            access: :open,
+            target: :from_user,
             params: [:attrs]
 
   direct_pipeline execute_pipeline(attrs, from_user) do
@@ -50,8 +52,9 @@ defmodule GroupherServer.Messaging.Commands.SendNotification do
       Messaging.Commands.SendNotification.run(attrs, user)
   """
   @spec run(map(), User.t()) :: {:ok, struct() | :already_delivered} | {:error, term()}
-  def run(%{action: _action} = attrs, %User{} = from_user),
-    do: execute_pipeline(attrs, from_user)
+  def run(%{action: _action} = attrs, %User{} = from_user) do
+    execute_pipeline(attrs, from_user)
+  end
 
   def run(_attrs, _from_user), do: {:error, ErrorCat.invalid_notification_args()}
 

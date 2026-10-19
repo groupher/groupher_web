@@ -330,8 +330,9 @@ defmodule GroupherServer.CMS.Articles do
   end
 
   @doc "Restores one trashed Article through the retry-safe Receipt pipeline."
-  def restore_trashed_receipt(trash_item_id, actor, opts) when is_binary(trash_item_id),
-    do: Commands.RestoreTrashed.execute(trash_item_id, actor, opts)
+  def restore_trashed_receipt(trash_item_id, actor, opts) when is_binary(trash_item_id) do
+    Commands.RestoreTrashed.execute(trash_item_id, actor, opts)
+  end
 
   @doc "Permanently removes one standalone trashed Article aggregate."
   @spec permanently_delete_trashed(
@@ -346,8 +347,9 @@ defmodule GroupherServer.CMS.Articles do
 
   @doc "Permanently deletes one trashed Article through the retry-safe Receipt pipeline."
   def permanently_delete_trashed_receipt(trash_item_id, actor, opts)
-      when is_binary(trash_item_id),
-      do: Commands.PermanentlyDeleteTrashed.execute(trash_item_id, actor, opts)
+      when is_binary(trash_item_id) do
+    Commands.PermanentlyDeleteTrashed.execute(trash_item_id, actor, opts)
+  end
 
   @doc "Lists current Article Trash memberships for a Community."
   @spec list_trashed(Community.t(), map()) :: T.domain_res(map())

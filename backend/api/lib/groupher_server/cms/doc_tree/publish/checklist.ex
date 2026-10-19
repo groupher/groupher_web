@@ -366,9 +366,7 @@ defmodule GroupherServer.CMS.DocTree.Publish.Checklist do
   defp draft_or_public_doc(%Community{} = community, branch, doc_id) do
     article =
       Article
-      |> join(:inner, [article], binding in ArticleBinding,
-        on: binding.article_id == article.id
-      )
+      |> join(:inner, [article], binding in ArticleBinding, on: binding.article_id == article.id)
       |> where(
         [article, binding],
         article.id == ^doc_id and binding.community_id == ^community.id

@@ -7,13 +7,13 @@ defmodule GroupherServer.CMS.DocCover.Commands.RemoveCard do
         -> CMS.Gate
         -> DocCover.Persist
   """
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
   alias CMS.DocCover.{Commands.ConfirmationSupport, Commands.DocCoverConfirmation, Persist}
   alias CMS.Model.Community
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc """
   Executes the remove-card command.
 

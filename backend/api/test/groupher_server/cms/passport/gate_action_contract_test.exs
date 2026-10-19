@@ -3,7 +3,8 @@ defmodule GroupherServer.Test.CMS.Passport.GateActionContract do
 
   use GroupherServer.TestMate
 
-  alias GroupherServer.CMS.GateAction
+  alias GroupherServer.CMS
+  alias CMS.GateAction
   alias Helper.PermissionConfig
 
   test "the cross-runtime Gate contract matches the complete Passport action registry" do

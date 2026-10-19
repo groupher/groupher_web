@@ -5,14 +5,14 @@ defmodule GroupherServer.CMS.Articles.Commands.Unpin do
       CMS.Articles.undo_pin -> CMS.Command -> Gate -> delete PinnedArticle -> done
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.Commands.{BindingConfirmation, BindingSupport}
   alias CMS.Articles.PinPersist
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc "Executes or replays one authorized Community-local unpin command."
   def execute(community, article_id, %User{} = actor, command_id) do
     with {:ok, article} <- BindingSupport.load_article(article_id),

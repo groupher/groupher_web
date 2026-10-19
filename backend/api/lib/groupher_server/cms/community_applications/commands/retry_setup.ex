@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.RetrySetup do
       GraphQL -> RetrySetup -> Application Gate -> Setup workflow -> Receipt result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias CMS.Gate
@@ -13,9 +16,6 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.RetrySetup do
   alias Accounts.Model.User
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
   def execute(ref, %User{} = actor, expected_version, command_id) do
     with {:ok, application} <- Support.application(ref) do

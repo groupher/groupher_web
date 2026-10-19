@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.ReindexTagsAcrossGroups d
       GraphQL -> ReindexTagsAcrossGroups -> Gate -> Tags batch update + taxonomy Outbox
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias CMS.Gate
@@ -14,9 +17,6 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.ReindexTagsAcrossGroups d
   alias Accounts.Model.User
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Community.t() | String.t(), atom(), list(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(atom())
   def execute(community_ref, thread, tags, %User{} = actor, command_id) do

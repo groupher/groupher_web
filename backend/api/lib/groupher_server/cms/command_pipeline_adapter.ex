@@ -11,10 +11,11 @@ defmodule GroupherServer.CMS.CommandPipelineAdapter do
   @behaviour GroupherServer.CommandPipeline.Adapter
 
   alias GroupherServer.{Activity, CMS, Repo}
-  alias GroupherServer.CMS.Command
-  alias GroupherServer.CMS.Command.Receipt, as: CommandReceipt
-  alias GroupherServer.CMS.Gate.Decision
-  alias GroupherServer.CommandPipeline.{Rejected, RejectionLog}
+  alias GroupherServer.CommandPipeline
+  alias CMS.Command
+  alias CMS.Command.Receipt, as: CommandReceipt
+  alias CMS.Gate.Decision
+  alias CommandPipeline.{Rejected, RejectionLog}
 
   @impl true
   def validate_contract(%{module: module, access: :open}) do
@@ -55,11 +56,13 @@ defmodule GroupherServer.CMS.CommandPipelineAdapter do
 
   @impl true
   def normalize_transaction_error(%Postgrex.Error{postgres: %{code: code}} = reason)
-      when code in [:lock_not_available, :query_canceled],
-      do: normalize_pending(reason)
+      when code in [:lock_not_available, :query_canceled] do
+    normalize_pending(reason)
+  end
 
-  def normalize_transaction_error(%DBConnection.ConnectionError{} = reason),
-    do: normalize_pending(reason)
+  def normalize_transaction_error(%DBConnection.ConnectionError{} = reason) do
+    normalize_pending(reason)
+  end
 
   def normalize_transaction_error(reason), do: reason
 

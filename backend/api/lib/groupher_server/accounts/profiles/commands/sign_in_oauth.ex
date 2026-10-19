@@ -9,11 +9,11 @@ defmodule GroupherServer.Accounts.Profiles.Commands.SignInOauth do
       OAuth provider -> prepare -> identity lock -> registration -> browser session
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Accounts
   alias Accounts.Profiles.{BrowserSessions, Effects, Oauth}
   alias Helper.ORM.AdvisoryLock
-
-  use GroupherServer.CommandPipeline
 
   @pipeline operation: :accounts_profile_sign_in_oauth,
             access: :open,
@@ -85,6 +85,7 @@ defmodule GroupherServer.Accounts.Profiles.Commands.SignInOauth do
 
       Accounts.Profiles.Commands.SignInOauth.run(provider, %{user_agent: "browser"})
   """
-  def run(provider, browser_session_metadata \\ %{}),
-    do: execute_pipeline(provider, browser_session_metadata)
+  def run(provider, browser_session_metadata \\ %{}) do
+    execute_pipeline(provider, browser_session_metadata)
+  end
 end

@@ -5,17 +5,17 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UpdateProfile do
       UpdateProfile -> Persist -> commit -> Effects
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Accounts
   alias Accounts.Model.User
   alias Accounts.Profiles.{Effects, Persist}
 
-  use GroupherServer.CommandPipeline
-
-  @pipeline operation: :accounts_profile_update, access: :open, target: :user,
-            params: [:attrs]
+  @pipeline operation: :accounts_profile_update, access: :open, target: :user, params: [:attrs]
 
   direct_pipeline execute_pipeline(user, attrs) do
     change(fn _user -> Persist.update_profile(user, attrs) end)
+
     present(fn user ->
       _ = Effects.revalidate_user(user)
       Effects.maybe_preload_social({:ok, user}, attrs)

@@ -20,8 +20,9 @@ defmodule GroupherServer.CMS.Gate.Access.Query do
 
   import Ecto.Query
 
+  alias GroupherServer.CommandPipeline
   alias GroupherServer.{CMS, Repo}
-  alias GroupherServer.CommandPipeline.StageContext
+  alias CommandPipeline.StageContext
 
   alias CMS.Gate.Access.Check
   alias CMS.Gate.Access.Policy.Application, as: ApplicationPolicy
@@ -156,8 +157,9 @@ defmodule GroupherServer.CMS.Gate.Access.Query do
     end
   end
 
-  def check_in_transaction(_actor, _action, _resource),
-    do: {:error, ErrorCat.unsupported_resource()}
+  def check_in_transaction(_actor, _action, _resource) do
+    {:error, ErrorCat.unsupported_resource()}
+  end
 
   @doc "Returns the canonical Comment together with its canonical parent Article."
   def check_comment_in_transaction(actor, action, %Comment{} = comment) do

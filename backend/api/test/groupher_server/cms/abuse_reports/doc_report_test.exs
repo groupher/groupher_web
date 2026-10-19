@@ -96,7 +96,9 @@ defmodule GroupherServer.Test.CMS.AbuseReports.DocReport do
     test "different user report a comment should have same report with different report cases",
          ~m(user user2 doc)a do
       {:ok, _} = CMS.AbuseReports.article(doc, "reason", "attr_info", user, Ecto.UUID.generate())
-      {:ok, _} = CMS.AbuseReports.article(doc, "reason2", "attr_info 2", user2, Ecto.UUID.generate())
+
+      {:ok, _} =
+        CMS.AbuseReports.article(doc, "reason2", "attr_info 2", user2, Ecto.UUID.generate())
 
       filter = %{content_type: :doc, content_id: doc.id, page: 1, size: 20}
       {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
@@ -115,7 +117,8 @@ defmodule GroupherServer.Test.CMS.AbuseReports.DocReport do
     test "same user can not report a comment twice", ~m(doc user)a do
       {:ok, _} = CMS.AbuseReports.article(doc, "reason", "attr_info", user, Ecto.UUID.generate())
 
-      assert {:error, _report} = CMS.AbuseReports.article(doc, "reason", "attr_info", user, Ecto.UUID.generate())
+      assert {:error, _report} =
+               CMS.AbuseReports.article(doc, "reason", "attr_info", user, Ecto.UUID.generate())
     end
   end
 end

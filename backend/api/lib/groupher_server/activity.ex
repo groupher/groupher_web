@@ -147,8 +147,9 @@ defmodule GroupherServer.Activity do
     end
   end
 
-  def log_rejection(_resource, _action, _opts),
-    do: {:error, GroupherServer.Activity.ErrorCat.invalid_payload()}
+  def log_rejection(_resource, _action, _opts) do
+    {:error, GroupherServer.Activity.ErrorCat.invalid_payload()}
+  end
 
   @doc """
   Delegates Activity.EventRef.derive/1 through the Activity Context boundary.

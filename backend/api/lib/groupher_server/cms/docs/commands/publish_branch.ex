@@ -5,15 +5,15 @@ defmodule GroupherServer.CMS.Docs.Commands.PublishBranch do
       Doc branch -> atomic publish -> public projection -> effects
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.{Publish.Doc, Query}
   alias CMS.Docs.Editor
   alias CMS.Model.{Author, Community}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Ecto.UUID.t(), pos_integer(), User.t() | Author.t(), keyword()) ::
           {:ok, map()} | {:error, term()}
   def execute(doc_id, branch_id, actor, opts) when is_binary(doc_id) do

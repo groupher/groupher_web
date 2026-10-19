@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Cancel do
       GraphQL -> Cancel Command -> Application Gate -> Persist / Lifecycle -> Receipt result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Gate
@@ -13,9 +16,6 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Cancel do
   alias CMS.CommunityApplications.{Commands.Confirmation, Commands.Support, Lifecycle}
   alias Helper.{T, Transaction}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
   def execute(public_ref, %User{} = actor, expected_version, command_id) do
     with {:ok, application} <- Support.application(public_ref) do

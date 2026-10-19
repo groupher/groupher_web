@@ -8,11 +8,11 @@ defmodule GroupherServer.Messaging.Commands.MarkRead do
           -> typed update result
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Messaging
 
   alias Messaging.Inbox.Persist
-
-  use GroupherServer.CommandPipeline
 
   @pipeline operation: :messaging_mark_read, access: :open, target: :user, params: [:type, :ids]
 

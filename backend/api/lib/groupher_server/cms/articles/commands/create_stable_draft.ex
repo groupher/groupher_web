@@ -7,6 +7,9 @@ defmodule GroupherServer.CMS.Articles.Commands.CreateStableDraft do
         -> Draft.Store.create
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Model.User
@@ -14,9 +17,6 @@ defmodule GroupherServer.CMS.Articles.Commands.CreateStableDraft do
   alias CMS.Model.{Author, Community}
   alias CMS.Articles.Commands.CreateStableDraftConfirmation, as: Confirmation
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :article_create_draft,
             confirmation: Confirmation,
             target: :command_target,
@@ -65,8 +65,9 @@ defmodule GroupherServer.CMS.Articles.Commands.CreateStableDraft do
     execute_receipt(community, thread, attrs, actor, opts)
   end
 
-  def execute(%Community{}, _thread, _attrs, %Author{}, _opts),
-    do: {:error, :command_actor_required}
+  def execute(%Community{}, _thread, _attrs, %Author{}, _opts) do
+    {:error, :command_actor_required}
+  end
 
   def execute(_community, _thread, _attrs, _actor, _opts), do: {:error, :invalid_actor}
 
@@ -109,8 +110,9 @@ defmodule GroupherServer.CMS.Articles.Commands.CreateStableDraft do
     end
   end
 
-  defp present_confirmation(_confirmation),
-    do: {:error, CMS.ErrorCat.command_result_unavailable()}
+  defp present_confirmation(_confirmation) do
+    {:error, CMS.ErrorCat.command_result_unavailable()}
+  end
 
   defp draft_opts(branch_id) when is_integer(branch_id) and branch_id > 0 do
     [branch_id: branch_id]

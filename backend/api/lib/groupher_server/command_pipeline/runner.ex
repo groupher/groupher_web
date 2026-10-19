@@ -14,17 +14,17 @@ defmodule GroupherServer.CommandPipeline.Runner do
         -> canonical domain result
   """
 
-  alias GroupherServer.Repo
+  require Logger
 
-  alias GroupherServer.CommandPipeline.{
+  alias GroupherServer.{CommandPipeline, Repo}
+
+  alias CommandPipeline.{
     Rejected,
     RejectionContext,
     RejectionData,
     RejectionLog,
     StageContext
   }
-
-  require Logger
 
   @runner_key {__MODULE__, :active}
 
@@ -441,7 +441,9 @@ defmodule GroupherServer.CommandPipeline.Runner do
                clear_active()
              end
            end) do
-        {:ok, result} -> {:ok, result}
+        {:ok, result} ->
+          {:ok, result}
+
         {:error, reason} ->
           {:error, adapter_for(contract).normalize_transaction_error(reason)}
       end

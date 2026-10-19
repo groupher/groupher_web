@@ -13,6 +13,9 @@ defmodule GroupherServer.CMS.Comments.Commands.Update do
   authority.
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.{FrontDesk, Comments}
@@ -25,9 +28,6 @@ defmodule GroupherServer.CMS.Comments.Commands.Update do
 
   @type result :: %{comment: Comment.t(), article: struct(), command_id: String.t() | nil}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc """
   Updates the authorized canonical Comment, requires audition enqueue before
   commit, then schedules mention reconciliation without changing the result.

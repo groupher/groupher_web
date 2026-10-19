@@ -8,14 +8,14 @@ defmodule GroupherServer.CMS.Dashboard.Commands.SelectThemePreset do
         -> ThemePresets + Dashboard.Persist
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
   alias CMS.Dashboard.{Effects, Persist, ThemePresets}
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc """
   Selects a built-in or previously saved custom theme preset.
 

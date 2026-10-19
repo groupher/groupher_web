@@ -7,13 +7,13 @@ defmodule GroupherServer.CMS.DocCover.Commands.AddCard do
         -> CMS.Gate
         -> DocCover.Persist
   """
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
   alias CMS.DocCover.{Commands.ConfirmationSupport, Commands.DocCoverConfirmation, Persist}
   alias CMS.Model.Community
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc """
   Executes the add-card command; `command_id` is the caller's identity.
 

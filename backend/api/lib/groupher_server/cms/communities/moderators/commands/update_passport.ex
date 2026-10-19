@@ -8,6 +8,9 @@ defmodule GroupherServer.CMS.Communities.Moderators.Commands.UpdatePassport do
         -> Confirmation
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{CMS, Accounts}
 
   alias Accounts.Model.User
@@ -15,9 +18,6 @@ defmodule GroupherServer.CMS.Communities.Moderators.Commands.UpdatePassport do
   alias CMS.Model.Community
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Community.t(), map(), User.t(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Community.t())
   def execute(

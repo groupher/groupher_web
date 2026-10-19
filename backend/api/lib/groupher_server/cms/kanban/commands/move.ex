@@ -7,6 +7,9 @@ defmodule GroupherServer.CMS.Kanban.Commands.Move do
           -> KanbanState status update
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias CMS.Articles.States
@@ -15,9 +18,6 @@ defmodule GroupherServer.CMS.Kanban.Commands.Move do
   alias Accounts.Model.User
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :kanban_move, target: :article
   direct_pipeline execute_pipeline(community, article, status, actor) do
     prepare(fn ->

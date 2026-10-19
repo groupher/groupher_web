@@ -8,6 +8,9 @@ defmodule GroupherServer.CMS.Articles.Commands.Publish do
         -> Receipt encode/decode on retry
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Helper.T
   alias CMS.{Articles, FrontDesk}
@@ -18,9 +21,6 @@ defmodule GroupherServer.CMS.Articles.Commands.Publish do
   alias CMS.Model.{Article, Author, Community}
   alias GroupherServer.FrontDesk, as: RootFrontDesk
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :article_publish,
             confirmation: PublishConfirmation,
             target: :article,

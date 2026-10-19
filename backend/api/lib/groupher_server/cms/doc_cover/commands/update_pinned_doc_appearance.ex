@@ -7,13 +7,13 @@ defmodule GroupherServer.CMS.DocCover.Commands.UpdatePinnedDocAppearance do
         -> CMS.Gate
         -> DocCover.Persist
   """
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
   alias CMS.DocCover.Persist
   alias CMS.Model.Community
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc """
   Executes the pinned appearance command.
 

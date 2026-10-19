@@ -5,14 +5,14 @@ defmodule GroupherServer.CMS.Comments.Commands.Moderate do
       Comment command -> canonical Comment -> moderation write
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
   alias CMS.Comments.Moderation
   alias CMS.FrontDesk
   alias CMS.Model.Comment
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :comment_set_illegal, access: :internal, target: :comment_id
   direct_pipeline set_illegal(comment_id, attrs) do
     load(fn -> FrontDesk.comment(comment_id, mode: :internal) end)

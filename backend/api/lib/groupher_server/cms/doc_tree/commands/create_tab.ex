@@ -4,10 +4,10 @@ defmodule GroupherServer.CMS.DocTree.Commands.CreateTab do
 
       CMS.DocTree.create_tab -> CreateTab.execute -> command support -> Persist.create_tab
   """
+  use GroupherServer.CMS.DocTree.Commands.TreePipeline, operation: :doc_tree_create_tab
+
   alias GroupherServer.CMS
   alias CMS.DocTree.{Commands.Support, Persist}
-
-  use CMS.DocTree.Commands.TreePipeline, operation: :doc_tree_create_tab
 
   def execute(community, args, user) do
     execute_tree_receipt(
@@ -18,14 +18,14 @@ defmodule GroupherServer.CMS.DocTree.Commands.CreateTab do
     )
   end
 
-  def execute_internal(community, args, internal_actor \\ :operations),
-    do:
-      execute_tree_internal(
-        community,
-        Map.get(args, :parent_node_id, "root"),
-        args,
-        internal_actor
-      )
+  def execute_internal(community, args, internal_actor \\ :operations) do
+    execute_tree_internal(
+      community,
+      Map.get(args, :parent_node_id, "root"),
+      args,
+      internal_actor
+    )
+  end
 
   defp tree_change(community, _target_id, args, _actor), do: Persist.create_tab(community, args)
 end

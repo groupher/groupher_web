@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
       GraphQL -> Submit Command -> Application Gate -> Persist / Lifecycle -> Receipt result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   require GroupherServer.CMS.Communities.ErrorCat
 
   alias GroupherServer.{Accounts, CMS}
@@ -18,9 +21,6 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
   alias CMS.Model.CommunityApplication
   alias Helper.{Utils, T, Transaction}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @categories %{
     "PRODUCT" => :PRODUCT,
     "GAMING" => :GAMING,

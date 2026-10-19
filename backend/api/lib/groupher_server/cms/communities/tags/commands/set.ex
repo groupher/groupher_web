@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Set do
       GraphQL -> Set -> Article Gate -> Tags association + stats/effects
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.{Query, Tags.Assignment}
@@ -13,9 +16,6 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Set do
   alias CMS.Model.{Article, Community}
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Article.t() | map(), T.id(), User.t(), Ecto.UUID.t()) :: T.domain_res(Article.t())
   def execute(article, tag_id, %User{} = actor, command_id) do
     with {:ok, command_id} <- TagSupport.command_id(command_id),
@@ -47,9 +47,11 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Set do
 
   defp article_resource(_article), do: {:error, CMS.Gate.ErrorCat.resource_not_found()}
 
-  defp check_article_gate(actor, community, article, branch_id) when is_integer(branch_id),
-    do: Gate.check_in_transaction(actor, :edit, article, community, branch_id)
+  defp check_article_gate(actor, community, article, branch_id) when is_integer(branch_id) do
+    Gate.check_in_transaction(actor, :edit, article, community, branch_id)
+  end
 
-  defp check_article_gate(actor, community, article, _branch_id),
-    do: Gate.check_in_transaction(actor, :edit, article, community)
+  defp check_article_gate(actor, community, article, _branch_id) do
+    Gate.check_in_transaction(actor, :edit, article, community)
+  end
 end

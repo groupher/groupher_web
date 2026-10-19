@@ -8,13 +8,15 @@ defmodule GroupherServer.Messaging.Commands.RevokeNotification do
           -> commit -> Accounts.mailbox_invalidate_users/1
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.{Accounts, Messaging}
   alias Accounts.Model.User
   alias Messaging.Notifications.Persist
 
-  use GroupherServer.CommandPipeline
-
-  @pipeline operation: :messaging_revoke_notification, access: :open, target: :from_user,
+  @pipeline operation: :messaging_revoke_notification,
+            access: :open,
+            target: :from_user,
             params: [:attrs]
 
   direct_pipeline execute_pipeline(attrs, from_user) do

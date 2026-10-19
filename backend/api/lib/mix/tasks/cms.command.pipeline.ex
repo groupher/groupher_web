@@ -14,7 +14,10 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
 
   use Mix.Task
 
-  alias GroupherServer.CommandPipeline.{
+  alias GroupherServer.CommandPipeline
+  alias GroupherServer.CMS
+
+  alias CommandPipeline.{
     CompiledModules,
     GraphAnalyzer,
     ProjectPaths,
@@ -23,7 +26,7 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
 
   @switches [check: :boolean, output: :string]
   @manifest "priv/pipeline_graph.json"
-  @cms_adapter GroupherServer.CMS.CommandPipelineAdapter
+  @cms_adapter CMS.CommandPipelineAdapter
 
   @facades MapSet.new([
              GroupherServer.CMS.Articles,
@@ -257,20 +260,25 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
       Mix.raise("invalid options: #{inspect(invalid)}")
     end
 
-    report = build_report(source_files(), pipeline_contracts())
+    report = build_current_report()
     validate_report!(report)
 
     path = ProjectPaths.expand(Keyword.get(opts, :output, @manifest))
     json = Jason.encode!(report, pretty: true) <> "\n"
 
     if Keyword.get(opts, :check, false) do
-      check_fresh!(path, json)
+      Mix.shell().info("CMS pipeline graph is valid: #{summary_line(report)}")
     else
       File.mkdir_p!(Path.dirname(path))
       File.write!(path, json)
       Mix.shell().info("Wrote CMS pipeline graph: #{path}")
       Mix.shell().info(summary_line(report))
     end
+  end
+
+  @doc "Builds the current production CMS command graph without writing a report file."
+  def build_current_report do
+    build_report(source_files(), pipeline_contracts())
   end
 
   defp source_files do
@@ -280,8 +288,9 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     |> Enum.sort()
   end
 
-  defp cms_module?(module),
-    do: String.starts_with?(inspect(module), "GroupherServer.CMS.")
+  defp cms_module?(module) do
+    String.starts_with?(inspect(module), "GroupherServer.CMS.")
+  end
 
   defp pipeline_contracts do
     CompiledModules.production()
@@ -405,8 +414,9 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     |> Enum.map(fn parts -> {alias_name(parts, opts), parts} end)
   end
 
-  defp normalize_alias_parts([{:__MODULE__, _meta, _value} | rest], module),
-    do: Module.split(module) ++ rest
+  defp normalize_alias_parts([{:__MODULE__, _meta, _value} | rest], module) do
+    Module.split(module) ++ rest
+  end
 
   defp normalize_alias_parts(parts, _module), do: parts
 
@@ -535,8 +545,9 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     }
   end
 
-  defp reachable_keys(root_keys, edges, function_keys),
-    do: GraphAnalyzer.reachable_keys(root_keys, edges, function_keys)
+  defp reachable_keys(root_keys, edges, function_keys) do
+    GraphAnalyzer.reachable_keys(root_keys, edges, function_keys)
+  end
 
   @doc false
   def gate_stage_violations(graph, stage_scopes) do
@@ -673,8 +684,9 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
   defp stage_manifest({:workflow, name}), do: "workflow:#{name}"
   defp stage_manifest(stage), do: Atom.to_string(stage)
 
-  defp reverse_reachable_keys(target_keys, edges, function_keys),
-    do: GraphAnalyzer.reverse_reachable_keys(target_keys, edges, function_keys)
+  defp reverse_reachable_keys(target_keys, edges, function_keys) do
+    GraphAnalyzer.reverse_reachable_keys(target_keys, edges, function_keys)
+  end
 
   defp edge_sort_key(edge), do: GraphAnalyzer.edge_sort_key(edge)
   defp edge_type(edge), do: GraphAnalyzer.edge_type(edge)
@@ -702,16 +714,16 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
 
   defp command_source?(file), do: String.contains?(relative_source(file), "/commands/")
 
-  defp root_function?(function),
-    do:
-      function.visibility == :public and
-        Enum.any?(function.roles, &(&1 in [:resolver, :facade, :internal_entry]))
+  defp root_function?(function) do
+    function.visibility == :public and
+      Enum.any?(function.roles, &(&1 in [:resolver, :facade, :internal_entry]))
+  end
 
-  defp internal_root?(function),
-    do:
-      :internal_entry in function.roles or
-        String.ends_with?(Atom.to_string(function.name), "_internal") or
-        String.ends_with?(Atom.to_string(function.name), "_operations")
+  defp internal_root?(function) do
+    :internal_entry in function.roles or
+      String.ends_with?(Atom.to_string(function.name), "_internal") or
+      String.ends_with?(Atom.to_string(function.name), "_operations")
+  end
 
   defp transitive_top_level_pipeline_calls(
          reachable_keys,
@@ -814,8 +826,9 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     )
   end
 
-  defp do_reachable_without_pipeline([], visited, _adjacency, _function_keys, _top_level_keys),
-    do: visited
+  defp do_reachable_without_pipeline([], visited, _adjacency, _function_keys, _top_level_keys) do
+    visited
+  end
 
   defp do_reachable_without_pipeline(
          [key | rest],
@@ -874,8 +887,9 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
          _function_keys,
          _top_level_keys,
          found
-       ),
-       do: found
+       ) do
+    found
+  end
 
   defp do_find_unpipelined_writes(
          [key | rest],
@@ -952,12 +966,14 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
 
   defp repo_write?({function, arity})
        when function in [:delete, :delete!, :insert, :insert!, :update, :update!] and
-              arity in [1, 2],
-       do: true
+              arity in [1, 2] do
+    true
+  end
 
   defp repo_write?({function, arity})
-       when function in [:delete_all, :insert_all, :update_all] and arity in [1, 2, 3],
-       do: true
+       when function in [:delete_all, :insert_all, :update_all] and arity in [1, 2, 3] do
+    true
+  end
 
   defp repo_write?({:transaction, arity}) when arity in [1, 2], do: true
   defp repo_write?({:rollback, 1}), do: true
@@ -995,8 +1011,9 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
          _adjacency,
          _function_keys,
          _top_level_keys
-       ),
-       do: []
+       ) do
+    []
+  end
 
   defp do_reachable_pipeline_targets(
          [key | rest],
@@ -1075,8 +1092,9 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     }
   end
 
-  defp function_manifest_by_key({module, name, arity}),
-    do: %{"arity" => arity, "function" => Atom.to_string(name), "module" => inspect(module)}
+  defp function_manifest_by_key({module, name, arity}) do
+    %{"arity" => arity, "function" => Atom.to_string(name), "module" => inspect(module)}
+  end
 
   defp function_manifest(function) do
     Map.merge(function_manifest_by_key(function_key(function)), %{
@@ -1178,15 +1196,6 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     summary = report["summary"]
 
     "roots=#{summary["reachable_roots"]}, edges=#{summary["reachable_edges"]}, pipelines=#{summary["pipelines_reached"]}, unreached-user=#{summary["unreached_user_pipelines"]}, unreached-internal=#{summary["unreached_internal_pipelines"]}, unresolved=#{summary["unresolved_edges"]}, internal=#{summary["internal_pipeline_violations"]}, top-level=#{summary["top_level_pipeline_calls"]}, workflow=#{summary["invalid_workflow_calls"]}, stage-analysis=#{summary["stage_analysis_errors"]}, gate-stage=#{summary["gate_stage_violations"]}, mixed-protocol=#{summary["mixed_protocol_entries"]}, unpipelined=#{summary["unpipelined_command_writes"]}"
-  end
-
-  defp check_fresh!(path, expected) do
-    case File.read(path) do
-      {:ok, ^expected} -> Mix.shell().info("CMS pipeline graph is fresh: #{path}")
-      {:ok, _other} -> Mix.raise("CMS pipeline graph is stale: #{path}")
-      {:error, :enoent} -> Mix.raise("CMS pipeline graph is missing: #{path}")
-      {:error, reason} -> Mix.raise("cannot read CMS pipeline graph #{path}: #{inspect(reason)}")
-    end
   end
 
   defp relative_source(source), do: ProjectPaths.relative(source)

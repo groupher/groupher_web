@@ -8,7 +8,8 @@ defmodule GroupherServer.CMS.ErrorCat do
   use GroupherServer.ErrorCat, namespace: {:cms}
 
   require GroupherServer.CMS.ContentPublishContract
-  alias GroupherServer.CMS.ContentPublishContract
+  alias GroupherServer.CMS
+  alias CMS.ContentPublishContract
 
   error(:invalid_article_path, code: 4501)
   error(:invalid_requirement, code: 4502)

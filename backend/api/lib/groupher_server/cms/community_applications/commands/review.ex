@@ -12,14 +12,14 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Review do
   presenter as the first execution.
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.CommunityApplications.{Commands.Confirmation, Commands.Support, Review}
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :community_application_review,
             confirmation: Confirmation,
             target: :application,

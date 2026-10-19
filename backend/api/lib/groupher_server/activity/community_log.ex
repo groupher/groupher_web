@@ -516,7 +516,10 @@ defmodule GroupherServer.Activity.CommunityLog do
          {:ok, actor_types} <-
            normalize_enum_list(Map.get(filter, :actor_types), Activity.Const.actor_type_values()),
          {:ok, rejection_codes} <-
-           normalize_declared_text_list(Map.get(filter, :rejection_codes), declared_rejection_codes()),
+           normalize_declared_text_list(
+             Map.get(filter, :rejection_codes),
+             declared_rejection_codes()
+           ),
          {:ok, changed_fields} <-
            normalize_declared_text_list(
              Map.get(filter, :changed_fields),

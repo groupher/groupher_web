@@ -16,7 +16,10 @@ defmodule Mix.Tasks.Cms.Pipeline.Check do
 
   use Mix.Task
 
-  alias GroupherServer.CommandPipeline.{
+  alias GroupherServer.CommandPipeline
+  alias GroupherServer.CMS
+
+  alias CommandPipeline.{
     CompiledModules,
     GraphAnalyzer,
     ProjectPaths,
@@ -25,7 +28,7 @@ defmodule Mix.Tasks.Cms.Pipeline.Check do
 
   @switches [check: :boolean]
   @manifest "priv/pipeline_contracts.json"
-  @cms_adapter GroupherServer.CMS.CommandPipelineAdapter
+  @cms_adapter CMS.CommandPipelineAdapter
 
   @impl true
   def run(args) do
@@ -113,8 +116,9 @@ defmodule Mix.Tasks.Cms.Pipeline.Check do
     {:ok, :pass}
   end
 
-  defp cms_module?(module),
-    do: String.starts_with?(inspect(module), "GroupherServer.CMS.")
+  defp cms_module?(module) do
+    String.starts_with?(inspect(module), "GroupherServer.CMS.")
+  end
 
   defp validate!(contracts) do
     duplicate_operations =

@@ -1,10 +1,13 @@
 defmodule GroupherServer.CMS.PipelineStaticCheckTest do
   use ExUnit.Case, async: false
 
+  alias GroupherServer.CommandPipeline
+  alias GroupherServer.Test
   alias Mix.Tasks.Cms.Pipeline.Check
-  alias GroupherServer.CommandPipeline.{CompiledModules, ProjectPaths}
+  alias Mix.Tasks.Cms.Command.Pipeline, as: CommandPipeline
+  alias CommandPipeline.{CompiledModules, ProjectPaths}
 
-  alias GroupherServer.Test.PipelinePurityFixtures.{
+  alias Test.PipelinePurityFixtures.{
     CrossModuleBuilder,
     DynamicBuilder,
     MacroWriteBuilder,
@@ -72,7 +75,7 @@ defmodule GroupherServer.CMS.PipelineStaticCheckTest do
   test "checked pipeline artifacts describe the same production pipelines" do
     contracts = read_manifest("pipeline_contracts.json")
     coverage = read_manifest("pipeline_coverage.json")
-    graph = read_manifest("pipeline_graph.json")
+    graph = CommandPipeline.build_current_report()
 
     contract_rows =
       Enum.map(

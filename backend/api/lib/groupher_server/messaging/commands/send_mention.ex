@@ -8,13 +8,15 @@ defmodule GroupherServer.Messaging.Commands.SendMention do
           -> commit -> Accounts.mailbox_invalidate_users/1
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.{Accounts, Messaging}
   alias Accounts.Model.User
   alias Messaging.Mentions.Persist
 
-  use GroupherServer.CommandPipeline
-
-  @pipeline operation: :messaging_send_mention, access: :open, target: :content,
+  @pipeline operation: :messaging_send_mention,
+            access: :open,
+            target: :content,
             params: [:mentions, :from_user]
 
   direct_pipeline execute_pipeline(content, mentions, from_user) do
@@ -48,6 +50,7 @@ defmodule GroupherServer.Messaging.Commands.SendMention do
       Messaging.Commands.SendMention.run(comment, mentions, user)
   """
   @spec run(struct(), list(), User.t()) :: {:ok, :pass} | {:error, term()}
-  def run(content, mentions, %User{} = from_user),
-    do: execute_pipeline(content, mentions, from_user)
+  def run(content, mentions, %User{} = from_user) do
+    execute_pipeline(content, mentions, from_user)
+  end
 end

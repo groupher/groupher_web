@@ -5,12 +5,14 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Update do
       Facade -> Commands.Update -> Persist
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Accounts
   alias Accounts.CollectFolders.Persist
 
-  use GroupherServer.CommandPipeline
-
-  @pipeline operation: :accounts_collect_folder_update, access: :open, target: :folder_id,
+  @pipeline operation: :accounts_collect_folder_update,
+            access: :open,
+            target: :folder_id,
             params: [:attrs]
 
   direct_pipeline execute_pipeline(folder_id, attrs) do

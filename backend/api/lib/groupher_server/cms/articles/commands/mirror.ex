@@ -5,14 +5,14 @@ defmodule GroupherServer.CMS.Articles.Commands.Mirror do
       CMS.Articles.mirror -> CMS.Command -> Gate -> BindingPersist -> binding result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.{BindingPersist, Bindings.Tags}
   alias CMS.Articles.Commands.{BindingConfirmation, BindingSupport}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc "Executes or replays one authorized mirror command."
   def execute(destination, article_id, tag_ids, %User{} = actor, source, command_id) do
     with {:ok, article} <- BindingSupport.load_article(article_id),

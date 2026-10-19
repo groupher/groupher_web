@@ -5,13 +5,15 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Create do
       Facade -> Commands.Create -> Persist
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Accounts
   alias Accounts.CollectFolders.Persist
   alias Accounts.Model.User
 
-  use GroupherServer.CommandPipeline
-
-  @pipeline operation: :accounts_collect_folder_create, access: :open, target: :user,
+  @pipeline operation: :accounts_collect_folder_create,
+            access: :open,
+            target: :user,
             params: [:attrs]
 
   direct_pipeline execute_pipeline(attrs, user) do

@@ -7,6 +7,9 @@ defmodule GroupherServer.CMS.Articles.Commands.RestoreTrashed do
         -> CMS.Command when command_id exists -> Articles.Trash aggregate
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.ErrorCat, as: ArticlesErrorCat
@@ -16,9 +19,6 @@ defmodule GroupherServer.CMS.Articles.Commands.RestoreTrashed do
   alias CMS.Model.{Article, TrashedArticle, TrashedDocArticle}
   alias CMS.Articles.Commands.TrashRestoreConfirmation, as: Confirmation
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :article_restore,
             confirmation: Confirmation,
             target: :command_target,
@@ -198,8 +198,9 @@ defmodule GroupherServer.CMS.Articles.Commands.RestoreTrashed do
     end
   end
 
-  defp present_confirmation(_confirmation),
-    do: {:error, CMS.ErrorCat.command_result_unavailable()}
+  defp present_confirmation(_confirmation) do
+    {:error, CMS.ErrorCat.command_result_unavailable()}
+  end
 
   defp canonical_opts(opts), do: opts |> Keyword.delete(:command_id) |> Map.new()
   defp item_id(%TrashedArticle{hash_id: hash_id}), do: hash_id

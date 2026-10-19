@@ -5,15 +5,15 @@ defmodule GroupherServer.CMS.Articles.Commands.Pin do
       CMS.Articles.pin -> CMS.Command -> Gate -> capacity check -> PinnedArticle
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.Commands.{BindingConfirmation, BindingSupport}
   alias CMS.Articles.PinPersist
   alias CMS.Model.Community
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc "Executes or replays one authorized Community-local pin command."
   def execute(community, article_id, %User{} = actor, command_id) do
     with {:ok, article} <- BindingSupport.load_article(article_id),

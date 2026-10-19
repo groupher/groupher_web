@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Articles.Commands.StateChange do
       state command -> canonical Article -> Gate -> aggregate transition
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.{Query, States}
@@ -13,9 +16,6 @@ defmodule GroupherServer.CMS.Articles.Commands.StateChange do
   alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CMS.Model.{Article, Community}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(atom(), Ecto.UUID.t(), User.t(), keyword()) :: {:ok, term()} | {:error, term()}
   def execute(action, article_id, %User{} = actor, opts \\ [])
       when action in [:sink, :undo_sink, :set_category, :set_status] do

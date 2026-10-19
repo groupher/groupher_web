@@ -14,7 +14,8 @@ defmodule Mix.Tasks.Cms.Pipeline.Coverage do
 
   use Mix.Task
 
-  alias GroupherServer.CommandPipeline.{CompiledModules, ProjectPaths}
+  alias GroupherServer.CommandPipeline
+  alias CommandPipeline.{CompiledModules, ProjectPaths}
   alias Mix.Tasks.Cms.Pipeline.Check
 
   @switches [check: :boolean, output: :string]
@@ -75,10 +76,10 @@ defmodule Mix.Tasks.Cms.Pipeline.Coverage do
     is_binary(source) and command_source?(source) and pipeline_module?(module)
   end
 
-  defp pipeline_module?(module),
-    do:
-      function_exported?(module, :__pipeline_contracts__, 0) and
-        module.__pipeline_contracts__() != []
+  defp pipeline_module?(module) do
+    function_exported?(module, :__pipeline_contracts__, 0) and
+      module.__pipeline_contracts__() != []
+  end
 
   defp command_source?(source) do
     parts = source |> Path.expand() |> Path.split()

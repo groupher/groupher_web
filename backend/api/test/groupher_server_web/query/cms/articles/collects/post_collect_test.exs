@@ -21,7 +21,11 @@ defmodule GroupherServer.Test.Query.Collects.PostCollect do
       {:ok, _} = CMS.Interactions.collect(post, user2, Ecto.UUID.generate())
 
       variables = %{
-        article: %{inner_id: article_inner_id(post, community), community: community.slug, thread: "POST"},
+        article: %{
+          inner_id: article_inner_id(post, community),
+          community: community.slug,
+          thread: "POST"
+        },
         filter: %{page: 1, size: 20}
       }
 

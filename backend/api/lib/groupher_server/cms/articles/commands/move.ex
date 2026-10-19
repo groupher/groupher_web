@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Articles.Commands.Move do
       CMS.Articles.move -> CMS.Command -> Gate -> BindingPersist -> Article result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.{BindingPersist, Store}
@@ -13,9 +16,6 @@ defmodule GroupherServer.CMS.Articles.Commands.Move do
   alias CMS.Communities, as: CommunityFacade
   alias CMS.Gate.ErrorCat, as: GateErrorCat
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc "Executes or replays one authorized move command."
   def execute(source, destination, article_id, tag_ids, %User{} = actor, command_id) do
     with {:ok, article} <- BindingSupport.load_article(article_id),

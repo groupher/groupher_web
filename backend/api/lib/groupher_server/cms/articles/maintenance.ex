@@ -11,7 +11,8 @@ defmodule GroupherServer.CMS.Articles.Maintenance do
   operations actor while preserving the same pipeline transaction boundary.
   """
 
-  alias GroupherServer.CMS.Articles.Commands.{Archive, Trash}
+  alias GroupherServer.CMS
+  alias CMS.Articles.Commands.{Archive, Trash}
 
   def archive(thread), do: Archive.execute(thread)
   def trash(article, opts \\ []), do: Trash.execute_direct(article, :operations, opts)

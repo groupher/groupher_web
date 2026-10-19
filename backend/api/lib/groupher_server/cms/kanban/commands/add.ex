@@ -7,6 +7,9 @@ defmodule GroupherServer.CMS.Kanban.Commands.Add do
           -> KanbanState
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias CMS.Articles.States
@@ -14,9 +17,6 @@ defmodule GroupherServer.CMS.Kanban.Commands.Add do
   alias Accounts.Model.User
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :kanban_add, target: :article
   direct_pipeline execute_pipeline(community, article, status, actor) do
     gate(fn canonical ->

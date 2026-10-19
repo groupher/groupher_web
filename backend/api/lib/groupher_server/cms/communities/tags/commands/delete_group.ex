@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.DeleteTagGroup do
       GraphQL -> Communities facade -> DeleteTagGroup -> Command + Gate -> Tags + Outbox
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias CMS.{Gate, FrontDesk}
@@ -14,9 +17,6 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.DeleteTagGroup do
   alias Accounts.Model.User
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Community.t(), atom(), T.id(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(CommunityTagGroup.t())
   def execute(community, thread, id, %User{} = actor, command_id) do

@@ -9,14 +9,14 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
         -> presentation Outbox intent
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
   alias CMS.Dashboard.{BaseInfo, Effects, SectionPayload, Persist}
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc """
   Updates one dashboard section as an authenticated domain command.
 

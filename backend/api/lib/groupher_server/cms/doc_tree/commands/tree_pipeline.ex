@@ -23,8 +23,8 @@ defmodule GroupherServer.CMS.DocTree.Commands.TreePipeline do
       alias CMS.DocTree.Commands.{Support, TreeConfirmation}
 
       use GroupherServer.CommandPipeline,
-
         adapter: GroupherServer.CMS.CommandPipelineAdapter
+
       @pipeline operation: operation,
                 confirmation: TreeConfirmation,
                 target: :command_target,

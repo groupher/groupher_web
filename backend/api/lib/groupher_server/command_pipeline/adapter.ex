@@ -10,7 +10,8 @@ defmodule GroupherServer.CommandPipeline.Adapter do
       Command -> generic runner -> context adapter -> context-owned boundary
   """
 
-  alias GroupherServer.CommandPipeline.{RejectionLog, Rejected}
+  alias GroupherServer.CommandPipeline
+  alias CommandPipeline.{RejectionLog, Rejected}
 
   @callback validate_contract(map()) :: {:ok, :pass} | {:error, term()}
   @callback validate_command_id(term()) :: {:ok, term()} | {:error, term()}

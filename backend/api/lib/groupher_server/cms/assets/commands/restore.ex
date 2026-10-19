@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Assets.Commands.Restore do
       GraphQL / facade -> Restore -> CMS.Command -> Gate -> Persist -> Confirmation
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Assets.Commands.RestoreAssetConfirmation, as: Confirmation
@@ -12,9 +15,6 @@ defmodule GroupherServer.CMS.Assets.Commands.Restore do
   alias CMS.Assets.{Persist, Query}
   alias CMS.Model.{Community, CommunityAsset}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Community.t(), term(), User.t(), String.t() | nil) ::
           {:ok, CommunityAsset.t()} | {:error, term()}
   def execute(%Community{} = community, asset_id, %User{} = user, command_id) do

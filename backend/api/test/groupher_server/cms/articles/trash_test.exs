@@ -191,6 +191,7 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
 
     assert {:ok, replayed} =
              CMS.Articles.permanently_delete_trashed_receipt(item.hash_id, user, opts)
+
     assert replayed == first
   end
 

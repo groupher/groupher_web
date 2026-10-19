@@ -14,7 +14,9 @@ end
 defmodule GroupherServer.Test.PipelinePurityFixtures.CrossModuleBuilder do
   @moduledoc false
 
-  alias GroupherServer.Test.PipelinePurityFixtures.RemoteHelper
+  alias GroupherServer.CommandPipeline
+  alias GroupherServer.Test
+  alias Test.PipelinePurityFixtures.RemoteHelper
 
   def build(context), do: RemoteHelper.value(context)
 end
@@ -65,7 +67,7 @@ end
 defmodule GroupherServer.Test.PipelineGraphFixtures.UnattributedStages do
   @moduledoc false
 
-  alias GroupherServer.CommandPipeline.Runner
+  alias CommandPipeline.Runner
 
   @contract %{
     access: :internal,

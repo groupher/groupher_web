@@ -11,6 +11,9 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
         -> Confirmation / canonical Community recovery
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS, FrontDesk}
   alias Accounts.Model.User
   alias CMS.Communities.{CreationPersist, Lifecycle, Query}
@@ -19,9 +22,6 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
   alias CMS.Model.{Community, CommunityDashboard, Embeds}
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @default_meta Embeds.CommunityMeta.default_meta()
   @default_dashboard CommunityDashboard.default()
 

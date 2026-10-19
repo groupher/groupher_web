@@ -9,6 +9,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
   import GroupherServer.DataCase, only: [errors_on: 1]
 
   alias GroupherServer.{CMS, Repo}
+  alias ErrorCat.Error
   alias CMS.DocTree.Persist.Index
 
   alias CMS.Communities.Lifecycle
@@ -38,7 +39,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
           operation_ref: Ecto.UUID.generate()
         )
 
-      assert {:error, %GroupherServer.ErrorCat.Error{reason: :ancestor_community_not_writable}} =
+      assert {:error, %Error{reason: :ancestor_community_not_writable}} =
                CMS.DocTree.create_group_internal(community, %{
                  parent_node_id: root_doc_tab_node_id(community),
                  title: "Blocked guides",

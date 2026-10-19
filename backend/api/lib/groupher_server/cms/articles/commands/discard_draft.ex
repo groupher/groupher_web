@@ -7,15 +7,15 @@ defmodule GroupherServer.CMS.Articles.Commands.DiscardDraft do
         -> Gate -> Draft.Store.discard
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Model.User
   alias CMS.Articles.Draft.Store
   alias CMS.Model.{Article, Community}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :article_discard_draft, target: :article_id, params: :opts
   direct_pipeline execute_pipeline(article_id, actor, opts) do
     prepare(fn ->

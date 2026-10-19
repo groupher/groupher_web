@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Update do
       Category Command -> Gate(:update) -> Categories.Persist -> Receipt
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias CMS.Gate
@@ -14,9 +17,6 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Update do
   alias Accounts.Model.User
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(String.t(), map(), User.t(), Ecto.UUID.t()) :: T.domain_res(Category.t())
   def execute(community_ref, %{id: id} = attrs, %User{} = actor, command_id) do
     case Support.community(community_ref) do

@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Press.Commands.UpdateConfig do
       commandId -> UpdateConfig -> Receipt -> Gate -> Persist -> Activity -> Effects
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS, Activity}
 
   alias CMS.Gate
@@ -14,9 +17,6 @@ defmodule GroupherServer.CMS.Press.Commands.UpdateConfig do
   alias Accounts.Model.User
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   defmodule Confirmation do
     @moduledoc """
     Recovers the stable Press config community and revision after a lost response.

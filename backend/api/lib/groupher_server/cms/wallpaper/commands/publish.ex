@@ -5,15 +5,15 @@ defmodule GroupherServer.CMS.Wallpaper.Commands.Publish do
       GraphQL -> Wallpaper.Commands.Publish -> Gate -> Wallpaper.Workflow
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Model.Community
   alias CMS.Wallpaper.{Workflow, Commands.Confirmation}
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :wallpaper_publish,
             confirmation: Confirmation,
             target: :community,

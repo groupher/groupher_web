@@ -7,14 +7,14 @@ defmodule GroupherServer.CMS.DocTree.Commands.MoveSubtreeToDraft do
         -> command support -> DocTree.Publish -> replay result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
 
   alias CMS.DocTree.{CommandReplay, Commands.Support, Publish}
   alias CMS.DocTree.Commands.MoveSubtreeToDraftConfirmation, as: Confirmation
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :doc_move_subtree_to_draft,
             confirmation: Confirmation,
             target: :command_target,

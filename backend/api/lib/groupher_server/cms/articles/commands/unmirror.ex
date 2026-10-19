@@ -5,14 +5,14 @@ defmodule GroupherServer.CMS.Articles.Commands.Unmirror do
       CMS.Articles.unmirror -> CMS.Command -> Gate -> BindingPersist -> done
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.{BindingPersist, Store}
   alias CMS.Articles.Commands.{BindingConfirmation, BindingSupport}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc "Executes or replays one authorized unmirror command."
   def execute(community, article_id, %User{} = actor, command_id) do
     with {:ok, article} <- BindingSupport.load_article(article_id),

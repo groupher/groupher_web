@@ -8,14 +8,14 @@ defmodule GroupherServer.CMS.Dashboard.Commands.SaveCustomThemePreset do
         -> ThemePresets + Dashboard.Persist
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
   alias CMS.Dashboard.{Effects, Persist, ThemePresets}
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc """
   Saves a custom theme preset as one authenticated dashboard command.
 

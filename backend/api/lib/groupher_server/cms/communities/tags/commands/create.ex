@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Create do
       GraphQL -> Communities facade -> Create -> Command + Gate -> Tags + Outbox
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias CMS.Gate
@@ -14,9 +17,6 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Create do
   alias Accounts.Model.User
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Community.t(), atom(), map(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(CommunityTag.t())
   def execute(%Community{} = community, thread, attrs, %User{} = actor, command_id) do

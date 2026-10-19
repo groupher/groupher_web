@@ -4,10 +4,10 @@ defmodule GroupherServer.CMS.DocTree.Commands.CreatePage do
 
       CMS.DocTree.create_page -> CreatePage.execute -> command support -> Persist.create_page
   """
+  use GroupherServer.CMS.DocTree.Commands.TreePipeline, operation: :doc_tree_create_page
+
   alias GroupherServer.CMS
   alias CMS.DocTree.{Commands.Support, Persist}
-
-  use CMS.DocTree.Commands.TreePipeline, operation: :doc_tree_create_page
 
   def execute(community, args, user) do
     execute_tree_receipt(
@@ -18,15 +18,16 @@ defmodule GroupherServer.CMS.DocTree.Commands.CreatePage do
     )
   end
 
-  def execute_internal(community, args, internal_actor \\ :operations),
-    do:
-      execute_tree_internal(
-        community,
-        Map.get(args, :parent_node_id, "root"),
-        args,
-        internal_actor
-      )
+  def execute_internal(community, args, internal_actor \\ :operations) do
+    execute_tree_internal(
+      community,
+      Map.get(args, :parent_node_id, "root"),
+      args,
+      internal_actor
+    )
+  end
 
-  defp tree_change(community, _target_id, args, actor),
-    do: Persist.create_page(community, args, actor)
+  defp tree_change(community, _target_id, args, actor) do
+    Persist.create_page(community, args, actor)
+  end
 end

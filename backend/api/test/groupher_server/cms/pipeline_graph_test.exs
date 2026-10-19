@@ -1,8 +1,9 @@
 defmodule GroupherServer.CMS.PipelineGraphTest do
   use ExUnit.Case, async: false
 
+  alias GroupherServer.CommandPipeline
   alias Mix.Tasks.Cms.Command.Pipeline, as: Graph
-  alias GroupherServer.CommandPipeline.GraphAnalyzer
+  alias CommandPipeline.GraphAnalyzer
 
   test "traces a facade to migrated pipelines and rejects internal reachability" do
     files =
@@ -34,9 +35,11 @@ defmodule GroupherServer.CMS.PipelineGraphTest do
         GroupherServer.CMS.Articles.Commands.Trash,
         fn contracts ->
           Enum.map(contracts, fn contract ->
-            if contract.name == :execute_receipt,
-              do: Map.put(contract, :access, :internal),
-              else: contract
+            if contract.name == :execute_receipt do
+              Map.put(contract, :access, :internal)
+            else
+              contract
+            end
           end)
         end
       )

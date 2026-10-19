@@ -26,10 +26,14 @@ defmodule GroupherServer.Test.CMS.DocTree.Tabs do
       assert [%{title: "API"}] = tree.tabs
 
       assert {:ok, _payload} =
-               CMS.DocTree.delete_node_internal(community, tree.tabs |> hd() |> Map.fetch!(:id), %{
-                 base_revision: tree.revision,
-                 actor_id: user.id
-               })
+               CMS.DocTree.delete_node_internal(
+                 community,
+                 tree.tabs |> hd() |> Map.fetch!(:id),
+                 %{
+                   base_revision: tree.revision,
+                   actor_id: user.id
+                 }
+               )
 
       assert {:ok, %{tabs: []}} = CMS.DocTree.read(community)
     end

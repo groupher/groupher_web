@@ -5,15 +5,15 @@ defmodule GroupherServer.CMS.Docs.Commands.UpdateDraft do
       Doc draft -> Gate/version checks -> draft write -> tagged result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Docs.Editor
   alias CMS.Articles.Query
   alias CMS.Model.Author
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Ecto.UUID.t(), pos_integer(), map(), User.t() | Author.t()) ::
           {:ok, map()} | {:error, term()}
   def execute(doc_id, branch_id, attrs, actor)

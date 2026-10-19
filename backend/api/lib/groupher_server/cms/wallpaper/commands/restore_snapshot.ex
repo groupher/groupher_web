@@ -5,15 +5,15 @@ defmodule GroupherServer.CMS.Wallpaper.Commands.RestoreSnapshot do
       GraphQL -> Wallpaper.Commands.RestoreSnapshot -> Gate -> Wallpaper.Workflow
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Model.Community
   alias CMS.Wallpaper.{Workflow, Commands.Confirmation}
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :wallpaper_restore_snapshot,
             confirmation: Confirmation,
             target: :community,

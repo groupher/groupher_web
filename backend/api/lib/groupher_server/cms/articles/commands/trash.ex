@@ -7,17 +7,17 @@ defmodule GroupherServer.CMS.Articles.Commands.Trash do
         -> CMS.Command when command_id exists -> Articles.Trash aggregate
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
+  alias GroupherServer.CommandPipeline
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.Trash, as: TrashAgg
   alias CMS.Articles.{Bindings, Commands.TrashConfirmation}
-  alias CMS.Model.TrashedArticle
-  alias CMS.Model.Community
-  alias GroupherServer.CommandPipeline.{RejectionContext, RejectionData}
+  alias CMS.Model.{Community, TrashedArticle}
+  alias CommandPipeline.{RejectionContext, RejectionData}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :article_trash,
             confirmation: TrashConfirmation,
             target: :article,

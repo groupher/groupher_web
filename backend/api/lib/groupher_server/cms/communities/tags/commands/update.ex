@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Update do
       GraphQL -> Communities facade -> Update -> Command + Gate -> Tags + Outbox
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias CMS.{Gate, FrontDesk}
@@ -14,9 +17,6 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Update do
   alias Accounts.Model.User
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(T.id(), map(), User.t(), Ecto.UUID.t()) :: T.domain_res(CommunityTag.t())
   def execute(id, attrs, %User{} = actor, command_id) do
     target =

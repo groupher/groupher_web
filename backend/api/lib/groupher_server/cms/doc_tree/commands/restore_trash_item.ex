@@ -7,6 +7,9 @@ defmodule GroupherServer.CMS.DocTree.Commands.RestoreTrashItem do
         -> CMS.Command when actor exists -> DocTree.Trash -> replay result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{CMS, Accounts}
 
   alias Accounts.Model.User
@@ -14,9 +17,6 @@ defmodule GroupherServer.CMS.DocTree.Commands.RestoreTrashItem do
   alias CMS.DocTree.{CommandReplay, Commands.Support, Trash}
   alias CMS.DocTree.Commands.TreeConfirmation, as: Confirmation
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :doc_tree_restore_trash_item,
             confirmation: Confirmation,
             target: :command_target,

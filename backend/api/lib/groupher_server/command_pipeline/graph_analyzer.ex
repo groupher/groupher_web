@@ -14,7 +14,8 @@ defmodule GroupherServer.CommandPipeline.GraphAnalyzer do
         -> topology and rejection-purity policies
   """
 
-  alias GroupherServer.CommandPipeline.ProjectPaths
+  alias GroupherServer.CommandPipeline
+  alias CommandPipeline.ProjectPaths
 
   @special_forms MapSet.new([
                    :__block__,
@@ -157,8 +158,9 @@ defmodule GroupherServer.CommandPipeline.GraphAnalyzer do
 
   @doc false
   def edge_type(%{kind: kind, to: _to})
-      when kind in [:remote_call, :local_call, :defdelegate, :function_capture],
-      do: {:static, kind}
+      when kind in [:remote_call, :local_call, :defdelegate, :function_capture] do
+    {:static, kind}
+  end
 
   def edge_type(_edge), do: :unresolved
 
@@ -366,7 +368,11 @@ defmodule GroupherServer.CommandPipeline.GraphAnalyzer do
 
   defp callback_pair?(_pair), do: false
 
-  defp call_edge({{:., call_meta, [module_ast, name]}, meta, args} = node, function, macro_registry)
+  defp call_edge(
+         {{:., call_meta, [module_ast, name]}, meta, args} = node,
+         function,
+         macro_registry
+       )
        when is_atom(name) and is_list(args) do
     if (Keyword.get(meta, :no_parens, false) or Keyword.get(call_meta, :no_parens, false)) and
          args == [] and is_nil(resolve_module(module_ast, function.aliases || %{})) do
@@ -395,8 +401,9 @@ defmodule GroupherServer.CommandPipeline.GraphAnalyzer do
     end
   end
 
-  defp call_edge({:&, _meta, [index]}, _function, _macro_registry) when is_integer(index),
-    do: nil
+  defp call_edge({:&, _meta, [index]}, _function, _macro_registry) when is_integer(index) do
+    nil
+  end
 
   defp call_edge({:&, meta, [capture]}, function, macro_registry) do
     case capture_target(capture, function) do
@@ -456,8 +463,13 @@ defmodule GroupherServer.CommandPipeline.GraphAnalyzer do
   # dynamic call in the runner remains fail-closed.
   defp adapter_dispatch?({{:., _, [{:adapter_for, _, _}, _name]}, _, _args}, function) do
     function.module == GroupherServer.CommandPipeline.Runner and
-      function.name in [:run_receipt, :run_receipt_command, :run_direct_transaction,
-                        :rejection_log, :write_rejection]
+      function.name in [
+        :run_receipt,
+        :run_receipt_command,
+        :run_direct_transaction,
+        :rejection_log,
+        :write_rejection
+      ]
   end
 
   defp adapter_dispatch?({{:., _, [{:adapter, _, _}, _name]}, _, _args}, function) do
@@ -487,8 +499,9 @@ defmodule GroupherServer.CommandPipeline.GraphAnalyzer do
   end
 
   defp capture_target({:/, _meta, [{name, _name_meta, context}, arity]}, function)
-       when is_atom(name) and is_atom(context) and is_integer(arity),
-       do: {function.module, name, arity}
+       when is_atom(name) and is_atom(context) and is_integer(arity) do
+    {function.module, name, arity}
+  end
 
   defp capture_target(_capture, _function), do: nil
 
@@ -554,8 +567,9 @@ defmodule GroupherServer.CommandPipeline.GraphAnalyzer do
     end
   end
 
-  def resolve_module(module, _aliases) when is_atom(module) and module not in [:__MODULE__],
-    do: module
+  def resolve_module(module, _aliases) when is_atom(module) and module not in [:__MODULE__] do
+    module
+  end
 
   def resolve_module(_module, _aliases), do: nil
 

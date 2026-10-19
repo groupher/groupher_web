@@ -12,6 +12,9 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
   the current canonical public DTO instead of retaining a physical content row.
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.Draft.Store, as: DraftStore
@@ -21,9 +24,6 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
   alias CMS.Model.{Article, ArticleBinding, ArticleLifecycle, Community}
   alias CMS.Articles.Commands.RevisionConfirmation, as: Confirmation
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc "Updates and republishes one stable Article using optimistic content versioning."
   @spec execute(map() | Article.t(), map(), User.t(), Ecto.UUID.t()) ::
           {:ok, map()} | {:error, term()}

@@ -12,6 +12,9 @@ defmodule GroupherServer.CMS.Comments.Commands.Delete do
   foreign-key cascade semantics are not simulated here.
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Model.User
@@ -26,9 +29,6 @@ defmodule GroupherServer.CMS.Comments.Commands.Delete do
 
   @delete_hint Comment.delete_hint()
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @type result :: %{comment: Comment.t(), article: struct(), command_id: String.t()}
 
   @doc """

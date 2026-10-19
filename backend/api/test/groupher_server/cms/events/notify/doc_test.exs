@@ -18,7 +18,8 @@ defmodule GroupherServer.Test.CMS.Events.Notify.DocTest do
         :doc,
         article_inner_id(doc, community),
         mock_comment(),
-        user, Ecto.UUID.generate()
+        user,
+        Ecto.UUID.generate()
       )
 
     {:ok, ~m(user2 user3 community doc comment)a}
@@ -145,7 +146,8 @@ defmodule GroupherServer.Test.CMS.Events.Notify.DocTest do
           :doc,
           article_inner_id(doc, community),
           mock_comment(),
-          user2, Ecto.UUID.generate()
+          user2,
+          Ecto.UUID.generate()
         )
 
       Events.emit(:notify_comment, %{comment: comment, from_user: user2})
@@ -173,10 +175,12 @@ defmodule GroupherServer.Test.CMS.Events.Notify.DocTest do
           :doc,
           article_inner_id(doc, community),
           mock_comment(),
-          user2, Ecto.UUID.generate()
+          user2,
+          Ecto.UUID.generate()
         )
 
-      {:ok, replied_comment} = CMS.Comments.reply_comment(comment.id, mock_comment(), user3, Ecto.UUID.generate())
+      {:ok, replied_comment} =
+        CMS.Comments.reply_comment(comment.id, mock_comment(), user3, Ecto.UUID.generate())
 
       Events.emit(:notify_reply, %{reply_comment: replied_comment, from_user: user3})
 

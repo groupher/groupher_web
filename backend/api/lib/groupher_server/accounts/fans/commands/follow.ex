@@ -5,11 +5,11 @@ defmodule GroupherServer.Accounts.Fans.Commands.Follow do
       Facade -> Follow command -> Persist + Effects -> commit -> delivery
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Accounts
   alias Accounts.Fans.{Effects, ErrorCat, Persist}
   alias Accounts.Model.User
-
-  use GroupherServer.CommandPipeline
 
   @pipeline operation: :accounts_fans_follow, access: :open, target: :user
 

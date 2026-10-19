@@ -398,12 +398,13 @@ defmodule GroupherServer.CMS.Interactions.Projection.Sync do
   end
 
   defp maybe_increment_revision(updates, schema) do
-    if schema in @interaction_revision_schemas,
-      do:
-        Keyword.update(updates, :inc, [], fn existing ->
-          [{:interaction_revision, 1} | existing]
-        end),
-      else: updates
+    if schema in @interaction_revision_schemas do
+      Keyword.update(updates, :inc, [], fn existing ->
+        [{:interaction_revision, 1} | existing]
+      end)
+    else
+      updates
+    end
   end
 
   defp next_latest_users(users, %User{} = user, :add) do

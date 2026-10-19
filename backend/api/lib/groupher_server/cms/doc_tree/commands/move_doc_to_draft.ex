@@ -7,13 +7,13 @@ defmodule GroupherServer.CMS.DocTree.Commands.MoveDocToDraft do
         -> command support -> DocTree.Publish -> Docs editor head
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
   alias CMS.DocTree.{Commands.Support, Publish}
   alias CMS.DocTree.Commands.MoveDocToDraftConfirmation, as: Confirmation
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :doc_move_to_draft,
             confirmation: Confirmation,
             target: :command_target,

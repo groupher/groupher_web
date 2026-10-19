@@ -11,8 +11,9 @@ defmodule GroupherServer.CommandPipeline.DefaultAdapter do
   @behaviour GroupherServer.CommandPipeline.Adapter
 
   @impl true
-  def validate_contract(%{pipeline: :receipt_pipeline}),
-    do: {:error, :default_adapter_does_not_support_receipt_pipeline}
+  def validate_contract(%{pipeline: :receipt_pipeline}) do
+    {:error, :default_adapter_does_not_support_receipt_pipeline}
+  end
 
   def validate_contract(%{stages: stages}) do
     if :on_rejection in stages do
@@ -26,8 +27,9 @@ defmodule GroupherServer.CommandPipeline.DefaultAdapter do
   def validate_command_id(_command_id), do: {:error, :receipt_adapter_unconfigured}
 
   @impl true
-  def execute_receipt(_module, _contract, _input, _command_id, _callback),
-    do: {:error, :receipt_adapter_unconfigured}
+  def execute_receipt(_module, _contract, _input, _command_id, _callback) do
+    {:error, :receipt_adapter_unconfigured}
+  end
 
   @impl true
   def normalize_gate_result(result), do: result

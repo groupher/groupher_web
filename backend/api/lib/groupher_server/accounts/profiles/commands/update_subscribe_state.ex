@@ -5,11 +5,11 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UpdateSubscribeState do
       subscription rows -> command transaction -> profile projection -> Effects
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Accounts
   alias Accounts.Model.User
   alias Accounts.Profiles.Persist
-
-  use GroupherServer.CommandPipeline
 
   @pipeline operation: :accounts_profile_update_subscribe_state, access: :open, target: :user
 

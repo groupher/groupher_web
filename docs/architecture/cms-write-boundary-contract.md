@@ -577,7 +577,7 @@ pipeline 的事务内步骤，不能由 routing function、facade 或 resolver �
 
 本节记录 pipeline 迁移开始前用于确定范围的审计快照，不代表当前覆盖状态。当前 Command、pipeline 和
 调用图状态以 §9 所列的 `pipeline_coverage.json`、`pipeline_contracts.json` 和
-`pipeline_graph.json` 生成产物为准；文档不复制这些会持续变化的当前数字。
+`mix cms.command.pipeline --check` 的内存分析结果为准；文档不复制这些会持续变化的当前数字。
 
 审计范围是 `backend/api/lib/groupher_server/cms/**/commands/*.ex` 的 139 个 Elixir 文件。其中 102 个
 文件包含 public write entry；其余是 Support、Confirmation、codec 等辅助模块。文件数不是 action 数：
@@ -745,7 +745,7 @@ fail-closed 校验，CI 使用 `--check` 同时证明 freshness 与拓扑。
 - 编译后图中的 `apply/3`、未知本地目标、动态边、缺少 debug definitions 与无法完整展开直接失败；
 - `on_rejection` builder 及其同模块 helper 的副作用调用必须失败；Activity 写入只能经 runner 的 adapter 发起；
 - 同一 operation 的重复登记必须失败。
-- `mix cms.command.pipeline` 生成 `backend/api/priv/pipeline_graph.json`，记录 root、静态边、pipeline、
+- `mix cms.command.pipeline` 可生成本地 `backend/api/priv/pipeline_graph.json` 报告，记录 root、静态边、pipeline、
   unresolved/dynamic/custom-macro 边、internal 可达性、顶层 pipeline 传递互调、workflow 入口和绕过
   pipeline 的 Command 写边，以及非 `gate` 阶段可达 Gate、单一 Command entry 同时可达 receipt/direct 的违规；
 - graph task 在 parse/unresolved、uncovered Command、unreached user pipeline、internal reachability、top-level
@@ -864,8 +864,8 @@ mix test ...
 ```
 
 `mix cms.pipeline.check` 生成 `pipeline_contracts.json`，`mix cms.pipeline.coverage` 生成
-`pipeline_coverage.json`，`mix cms.command.pipeline` 生成 `pipeline_graph.json`；三个 `--check` 都校验对应
-产物没有相对当前编译产物过期。CI 应把三个 JSON 作为生成产物提交或在专门的 freshness job 中比较。Mix 负责判断
+`pipeline_coverage.json`；`mix cms.command.pipeline --check` 在内存中构建并校验完整 graph，不要求提交完整图文件。
+contracts 与 coverage 的 `--check` 校验对应产物没有相对当前编译产物过期。Mix 负责判断
 增量编译的 stale module，各 task 负责自己的 BEAM metadata、覆盖清单或拓扑产物一致性。
 
 ## 9. 当前自动化覆盖
@@ -909,11 +909,11 @@ mix test ...
 `__pipeline_contracts__/0` 的模块标为 `covered`。任何 `uncovered` concrete Command 都直接使任务失败；
 数字以 JSON 产物为准。
 
-跨模块调用图由 `mix cms.command.pipeline` 生成到 `backend/api/priv/pipeline_graph.json`。root、边和 pipeline
-数量只以生成产物为准，不在文档复制快照；uncovered、unreached user pipeline、unresolved、internal
+跨模块调用图由 `mix cms.command.pipeline --check` 在内存中构建和校验；需要调试时可运行不带 `--check` 的
+命令生成本地 `backend/api/priv/pipeline_graph.json`。root、边和 pipeline 数量不在文档复制快照；uncovered、unreached user pipeline、unresolved、internal
 violation、top-level mutual call、invalid workflow call、gate-stage violation、mixed-protocol entry 和
 unpipelined Command write 必须均为 0。CI 的
-`--check` 同时验证内容与新鲜度，所有数组在编码前按稳定 key 排序。
+`--check` 验证当前源码的完整拓扑，所有数组在编码前按稳定 key 排序。
 
 当前相关脚本：
 

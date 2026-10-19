@@ -12,18 +12,17 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
         -> ArticleAssetRef synchronization
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.{Draft.Store, Bindings}
   alias CMS.Assets.{Query, Refs}
-  alias CMS.ErrorCat
-  alias CMS.FrontDesk
+  alias CMS.{ErrorCat, FrontDesk}
   alias CMS.Model.{Article, ArticleAssetRef, ArticleDraft, Community, CommunityAsset}
   alias CMS.Assets.Commands.ReplaceUseConfirmation, as: Confirmation
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc "Replaces one Draft-owned asset use without mutating an immutable Revision.
 
   User retries use a UUID command identity and the Receipt path. ReplacementPlan

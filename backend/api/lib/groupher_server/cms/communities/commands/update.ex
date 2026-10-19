@@ -9,14 +9,14 @@ defmodule GroupherServer.CMS.Communities.Commands.Update do
         -> presentation Outbox intent
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
   alias CMS.Communities.{Commands.UpdateConfirmation, Persist, Query}
   alias CMS.Dashboard.Effects
   alias CMS.Model.Community
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc """
   Updates one Community as an authenticated domain command.
 

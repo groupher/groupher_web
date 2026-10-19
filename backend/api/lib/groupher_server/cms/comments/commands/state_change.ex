@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Comments.Commands.StateChange do
       state command -> canonical Comment -> state transition -> tagged result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.FrontDesk
@@ -12,9 +15,6 @@ defmodule GroupherServer.CMS.Comments.Commands.StateChange do
   alias CMS.Comments.Commands.StateConfirmation, as: Confirmation
   alias CMS.Model.Comment
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(atom(), Comment.t(), User.t()) :: {:ok, term()} | {:error, term()}
   def execute(action, %Comment{} = _comment, %User{} = _user)
       when action in [:pin, :undo_pin] do

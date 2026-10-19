@@ -5,10 +5,10 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Delete do
       Facade -> Commands.Delete -> Persist
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Accounts
   alias Accounts.CollectFolders.Persist
-
-  use GroupherServer.CommandPipeline
 
   @pipeline operation: :accounts_collect_folder_delete, access: :open, target: :folder_id
 

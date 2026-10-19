@@ -1,10 +1,12 @@
 defmodule GroupherServer.CommandPipelineRunnerTest do
   use GroupherServer.TestMate, async: false
 
-  alias GroupherServer.Activity.Model.PostLog
-  alias GroupherServer.ErrorCat.Error
-  alias GroupherServer.CMS.Gate.{Decision, ErrorCat}
-  alias GroupherServer.CommandPipeline.{Rejected, RejectionContext, RejectionData}
+  alias GroupherServer.Activity
+  alias GroupherServer.CMS
+  alias GroupherServer.CommandPipeline
+  alias Activity.Model.PostLog
+  alias CMS.Gate.{Decision, ErrorCat}
+  alias CommandPipeline.{Rejected, RejectionContext, RejectionData}
 
   defmodule GenericFixture do
     use GroupherServer.CommandPipeline

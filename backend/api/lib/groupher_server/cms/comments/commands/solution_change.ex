@@ -11,6 +11,9 @@ defmodule GroupherServer.CMS.Comments.Commands.SolutionChange do
   UUID is created inside the aggregate callback.
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.FrontDesk
@@ -20,9 +23,6 @@ defmodule GroupherServer.CMS.Comments.Commands.SolutionChange do
 
   @actions [:accept_solution, :revoke_solution]
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(atom(), Comment.t(), User.t(), Ecto.UUID.t()) ::
           {:ok, Comment.t()} | {:error, term()}
   def execute(action, %Comment{} = comment, %User{} = actor, command_id)

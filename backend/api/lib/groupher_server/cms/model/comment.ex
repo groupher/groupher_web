@@ -158,6 +158,5 @@ defmodule GroupherServer.CMS.Model.Comment do
     |> foreign_key_constraint(:article_id)
     |> foreign_key_constraint(:branch_id)
     |> check_constraint(:community_id, name: :comments_community_matches_article)
-
   end
 end

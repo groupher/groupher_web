@@ -5,13 +5,13 @@ defmodule GroupherServer.CMS.Articles.Commands.Archive do
       Article archive command -> Gate/state transition -> tagged result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
 
   alias CMS.Articles.States
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(atom()) :: {:ok, term()} | {:error, term()}
   @pipeline operation: :article_archive, target: :thread, access: :internal
   direct_pipeline execute(thread) do

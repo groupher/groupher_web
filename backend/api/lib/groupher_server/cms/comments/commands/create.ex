@@ -14,6 +14,9 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
         -> best-effort mention / notification / subscription jobs
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   require GroupherServer.CMS.Comments.ErrorCat
 
   alias GroupherServer.{Accounts, CMS}
@@ -40,9 +43,6 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
 
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :comment_create,
             confirmation: Confirmation,
             target: :command_target,

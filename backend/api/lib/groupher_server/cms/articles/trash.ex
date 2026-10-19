@@ -141,8 +141,9 @@ defmodule GroupherServer.CMS.Articles.Trash do
     end
   end
 
-  def trash_loaded(_article, _actor, _opts),
-    do: {:error, CMS.Articles.ErrorCat.article_not_found()}
+  def trash_loaded(_article, _actor, _opts) do
+    {:error, CMS.Articles.ErrorCat.article_not_found()}
+  end
 
   @doc "Restores one ordinary Article membership or delegates branch-local Doc restore."
   @spec restore(Ecto.UUID.t() | TrashedArticle.t() | TrashedDocArticle.t(), term(), keyword()) ::

@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Articles.Commands.CommentLock do
       comment command -> Gate admission -> lock transition -> tagged result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
   alias CMS.Articles.{Bindings, Query, States}
   alias CMS.Docs.Store, as: DocStore
@@ -12,15 +15,14 @@ defmodule GroupherServer.CMS.Articles.Commands.CommentLock do
   alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CMS.Model.{Article, Community}
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Ecto.UUID.t(), struct(), atom(), keyword()) :: {:ok, term()} | {:error, term()}
-  def execute(article_id, actor, :lock_comments, opts),
-    do: lock_comments(article_id, actor, opts)
+  def execute(article_id, actor, :lock_comments, opts) do
+    lock_comments(article_id, actor, opts)
+  end
 
-  def execute(article_id, actor, :undo_lock_comments, opts),
-    do: unlock_comments(article_id, actor, opts)
+  def execute(article_id, actor, :undo_lock_comments, opts) do
+    unlock_comments(article_id, actor, opts)
+  end
 
   @pipeline operation: :article_lock_comments, target: :article_id
   direct_pipeline lock_comments(article_id, actor, opts) do

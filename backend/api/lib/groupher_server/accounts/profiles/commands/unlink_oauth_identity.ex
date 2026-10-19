@@ -5,16 +5,19 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UnlinkOauthIdentity do
       UnlinkOauthIdentity -> transaction -> Query projection
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Accounts
   alias Accounts.Profiles.{Effects, Oauth, Query}
 
-  use GroupherServer.CommandPipeline
-
-  @pipeline operation: :accounts_profile_unlink_oauth_identity, access: :open, target: :login,
+  @pipeline operation: :accounts_profile_unlink_oauth_identity,
+            access: :open,
+            target: :login,
             params: [:public_ref]
 
   direct_pipeline execute_pipeline(login, public_ref) do
     change(fn _login -> Oauth.unlink_identity_in_transaction(login, public_ref) end)
+
     present(fn user ->
       _ = Effects.revalidate_user(user)
       Query.linked_oauth_accounts(login)

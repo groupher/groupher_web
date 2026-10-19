@@ -7,14 +7,14 @@ defmodule GroupherServer.CMS.DocTree.Commands.PublishChanges do
         -> CMS.Command when command_id exists -> DocTree.Publish
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
   alias CMS.Command.Receipt.Key, as: CommandKey
   alias CMS.DocTree.{Commands.Support, Publish}
   alias CMS.DocTree.Commands.PublishChangesConfirmation, as: Confirmation
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :doc_publish_changes,
             confirmation: Confirmation,
             target: :command_target,

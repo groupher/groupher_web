@@ -176,7 +176,10 @@ defmodule GroupherServer.Accounts.Profiles.Oauth.Workflow do
          {:ok, _binding} <-
            tag_registration(:create_profile, OauthPersist.create_profile(user, oauth_profile)),
          {:ok, _social} <-
-           tag_registration(:update_profile_social, OauthPersist.update_profile_social(user, oauth_profile)),
+           tag_registration(
+             :update_profile_social,
+             OauthPersist.update_profile_social(user, oauth_profile)
+           ),
          {:ok, _achievement} <-
            tag_registration(:init_achievement, Accounts.Achievements.Persist.ensure(user.id)) do
       {:ok, user}

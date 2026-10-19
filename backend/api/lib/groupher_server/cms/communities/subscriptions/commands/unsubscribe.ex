@@ -5,18 +5,17 @@ defmodule GroupherServer.CMS.Communities.Subscriptions.Commands.Unsubscribe do
       GraphQL -> Unsubscribe -> Gate -> Persist -> Receipt -> Community result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.Gate
-  alias CMS.Communities
+  alias CMS.{Communities, Gate}
   alias CMS.Communities.{ErrorCat, Subscriptions.Commands.Support}
   alias CMS.Communities.Subscriptions.{Confirmation, Persist}
   alias CMS.Model.Community
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Community.t() | String.t(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Community.t())
   def execute(community_ref, %User{} = actor, command_id) do

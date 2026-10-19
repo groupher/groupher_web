@@ -7,6 +7,9 @@ defmodule GroupherServer.CMS.Kanban.Commands.Remove do
           -> delete KanbanState
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias CMS.Articles.States
@@ -14,9 +17,6 @@ defmodule GroupherServer.CMS.Kanban.Commands.Remove do
   alias Accounts.Model.User
   alias Helper.T
 
-  use GroupherServer.CommandPipeline,
-
-    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @pipeline operation: :kanban_remove, target: :article
   direct_pipeline execute_pipeline(community, article, actor) do
     gate(fn canonical ->
