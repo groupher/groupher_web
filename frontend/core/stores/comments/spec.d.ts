@@ -20,6 +20,7 @@ export type TInit = Partial<
     | 'commentBody'
     | 'updateInnerId'
     | 'updateBody'
+    | 'updateBodyVersion'
     | 'replyToComment'
     | 'replyBody'
     | 'wordsCountReady'
@@ -44,6 +45,7 @@ export type TStore = {
   commentBody: string
   updateInnerId: string | null
   updateBody: string
+  updateBodyVersion: number | null
   replyToComment: TComment | null
   replyBody: string
   wordsCountReady: boolean

@@ -10,8 +10,9 @@
 
 - `packages/content-publisher`：Plate/Markdown normalization 与唯一 BodyBag 生成权威；
 - `packages/contracts/src/content-publish.ts`：action、type、scope、command 与 runtime parser；
-- `frontend/dash/src/routes/api/content/publish.ts`：同源认证 route；
-- `frontend/dash/src/server/content-publisher.ts`：固定 generated operation adapter、service capability、
+- `frontend/dash/src/routes/api/content/publish.ts` 与
+  `frontend/community/src/routes/api/content/publish.ts`：产品 host 的同源认证 route；
+- `frontend/core/lib/server/content-publisher.ts`：共享的固定 generated operation adapter、service capability、
   delegated user proof 与无正文审计日志；
 - `backend/api/lib/groupher_server_web/middleware/body_bag_trust.ex`：mutation-specific scope；
 - `backend/api/lib/groupher_server/cms/model/comment_body.ex`：Comment canonical versioned body；

@@ -29,6 +29,24 @@ const request = (body: unknown = command, headers: HeadersInit = {}) =>
 const serviceAuthClient = { getToken: vi.fn(async () => 'service-token') }
 
 describe('handleContentPublishRequest', () => {
+  it('uses the deployed GraphQL binding before legacy endpoint names', async () => {
+    const fetcher = vi.fn(async () =>
+      Response.json({ data: { updateDocDraft: { docId: 'doc-id', version: 4 } } }),
+    )
+
+    await handleContentPublishRequest(request(), {
+      backendToken: 'user-token',
+      environment: {
+        GRAPHQL_ENDPOINT: 'https://api.groupher.com/graphiql',
+        PHOENIX_GRAPHQL_ENDPOINT: 'http://127.0.0.1:4001/graphiql',
+      },
+      fetcher: fetcher as typeof fetch,
+      serviceAuthClient,
+    })
+
+    expect(fetcher).toHaveBeenCalledWith('https://api.groupher.com/graphiql', expect.any(Object))
+  })
+
   it('uses a fixed operation and separates service and user credentials', async () => {
     const fetcher = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
       const upstream = JSON.parse(String(init?.body))

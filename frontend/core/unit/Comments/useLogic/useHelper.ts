@@ -81,6 +81,7 @@ export default function useHelper(): TRet {
           showUpdateEditor: false,
           updateInnerId: null,
           updateBody: '{}',
+          updateBodyVersion: null,
           publishDone: false,
         })
         return

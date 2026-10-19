@@ -14,7 +14,8 @@
     "./dev-hub-reporter/react": "./ui/DevHubReporter/index.tsx",
     "./graphql/authoring": "./lib/graphql/authoring.ts",
     "./graphql/generated": "./lib/graphql/generated/graphql.ts",
-    "./graphql/server-operations": "./lib/graphql/server-operations.ts"
+    "./graphql/server-operations": "./lib/graphql/server-operations.ts",
+    "./server/content-publisher": "./lib/server/content-publisher.ts"
   },
   "scripts": {
     "type-check": "pnpm exec tsc --noEmit --project ./tsconfig.app.json",
@@ -31,9 +32,11 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@formkit/auto-animate": "^0.9.0",
     "@graphql-typed-document-node/core": "3.2.0",
+    "@groupher/content-publisher": "workspace:*",
     "@groupher/contracts": "workspace:*",
     "@groupher/rich-editor": "0.0.35",
     "@groupher/route-contract": "workspace:*",
+    "@groupher/service": "workspace:*",
     "@groupher/tooltip": "4.2.7",
     "@groupher/use-mobile-detect-hook": "^2.0.2",
     "@internationalized/date": "3.12.4",

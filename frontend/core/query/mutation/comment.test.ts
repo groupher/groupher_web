@@ -2,6 +2,7 @@ import { QueryClient } from '@tanstack/react-query'
 
 import { THREAD } from '~/const/thread'
 import type { TCommentViewerStates } from '~/lib/commentViewerState'
+import { publishContentCommand } from '~/lib/contentPublisher'
 import type { TComment } from '~/spec'
 
 import { articleQueryKeys, commentKeys, viewerQueryKeys } from '../key'
@@ -15,6 +16,11 @@ import {
   updateCommentEmotion,
 } from './comment'
 import { markChange, rollbackChanges } from './optimistic/effects'
+
+vi.mock('~/lib/contentPublisher', () => ({
+  plateSourceFromJson: vi.fn(() => ({ format: 'plate', value: [] })),
+  publishContentCommand: vi.fn(),
+}))
 
 const root = {
   innerId: '1',
@@ -183,6 +189,35 @@ describe('comment query mutation helpers', () => {
 
     expect(queryClient.getQueryData<typeof articleStats>(articleStatsKey)?.commentsRevision).toBe(3)
     expect(queryClient.getQueryState(articleStatsKey)?.isInvalidated).toBe(false)
+  })
+
+  it('publishes the loaded comment body version when updating', async () => {
+    vi.mocked(publishContentCommand).mockResolvedValueOnce({
+      articleStats,
+      commandId: 'op-update',
+      comment: root,
+    })
+    const target = {
+      comment: { ...root, bodyVersion: 7 },
+      scope,
+      articlePath: { community: 'home', thread: THREAD.POST, innerId: '42' },
+      articleKey: 'home:POST:42',
+      commentInnerId: '1',
+      commentPath: {
+        article: { community: 'home', thread: THREAD.POST, innerId: '42' },
+        innerId: '1',
+      },
+    }
+
+    await updateCommentOperation.execute(
+      { queryClient: new QueryClient(), accountRef: 'alice', commandId: 'op-update' },
+      target,
+      '[]',
+    )
+
+    expect(publishContentCommand).toHaveBeenCalledWith(
+      expect.objectContaining({ commandId: 'op-update', expectedVersion: 7 }),
+    )
   })
 
   it('applies returned ArticleStats after delete without invalidation', () => {

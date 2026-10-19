@@ -118,7 +118,10 @@ export default function useQuery(): TRet {
     updateCommentOperation,
     commentsStore.updateInnerId
       ? {
-          comment: { innerId: String(commentsStore.updateInnerId) } as TComment,
+          comment: {
+            bodyVersion: commentsStore.updateBodyVersion ?? undefined,
+            innerId: String(commentsStore.updateInnerId),
+          } as TComment,
           scope: commentScope,
           articlePath: buildArticlePath(),
           articleKey,
@@ -151,6 +154,7 @@ export default function useQuery(): TRet {
       commentsStore.commit({
         updateInnerId: oneComment.innerId,
         updateBody: oneComment.body?.json ?? '',
+        updateBodyVersion: oneComment.bodyVersion ?? null,
       })
     })
   }

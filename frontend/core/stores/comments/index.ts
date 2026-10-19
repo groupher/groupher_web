@@ -20,6 +20,7 @@ export default function createCommentsStore(init: TInit = {}): TStore {
     commentBody: '{}',
     updateInnerId: null,
     updateBody: '{}',
+    updateBodyVersion: null,
     replyToComment: null,
     replyBody: '{}',
     wordsCountReady: false,
