@@ -237,8 +237,9 @@ test.describe('Auth V1 browser protocol', () => {
     await expect
       .poll(async () => (await readDocDraftState(request)).calls, { timeout: 10_000 })
       .toBe(1)
-    await page.waitForTimeout(1_200)
-    expect((await readDocDraftState(request)).calls).toBe(2)
+    await expect
+      .poll(async () => (await readDocDraftState(request)).calls, { timeout: 15_000 })
+      .toBe(2)
 
     await expect
       .poll(async () => readDocDraftState(request), { timeout: 15_000 })

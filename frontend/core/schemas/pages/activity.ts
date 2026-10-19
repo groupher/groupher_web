@@ -68,7 +68,7 @@ export const communityActivityEvent = graphql(`
       category
       highRisk
       outcome
-      denialCode
+      rejectionCode
       changedFields
       resource {
         type
@@ -119,7 +119,7 @@ export const communityActivityEvent = graphql(`
         category
         highRisk
         outcome
-        denialCode
+        rejectionCode
         changedFields
         resource {
           type
@@ -164,7 +164,7 @@ export const communityActivityEvent = graphql(`
         category
         highRisk
         outcome
-        denialCode
+        rejectionCode
         changedFields
         resource {
           type
@@ -220,7 +220,7 @@ export const communityActivity = graphql(`
         category
         highRisk
         outcome
-        denialCode
+        rejectionCode
         changedFields
         resource {
           type

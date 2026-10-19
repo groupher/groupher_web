@@ -118,12 +118,12 @@ export type CommunityActivityFilterInput = {
   actorTypes?: Array<string> | null | undefined
   categories?: Array<string> | null | undefined
   changedFields?: Array<string> | null | undefined
-  denialCodes?: Array<string> | null | undefined
   occurredAfter?: string | null | undefined
   occurredBefore?: string | null | undefined
   onBehalfOfRef?: string | number | null | undefined
   operationRef?: string | number | null | undefined
   outcomes?: Array<string> | null | undefined
+  rejectionCodes?: Array<string> | null | undefined
   resourceTypes?: Array<string> | null | undefined
   source?: string | null | undefined
   subjectRef?: string | number | null | undefined
@@ -1758,7 +1758,7 @@ export type CommunityActivityEventQuery = {
     category: string
     highRisk: boolean
     outcome: string
-    denialCode: string | null
+    rejectionCode: string | null
     changedFields: Array<string>
     source: string
     payload: unknown
@@ -1794,7 +1794,7 @@ export type CommunityActivityEventQuery = {
       category: string
       highRisk: boolean
       outcome: string
-      denialCode: string | null
+      rejectionCode: string | null
       changedFields: Array<string>
       source: string
       payload: unknown
@@ -1824,7 +1824,7 @@ export type CommunityActivityEventQuery = {
       category: string
       highRisk: boolean
       outcome: string
-      denialCode: string | null
+      rejectionCode: string | null
       changedFields: Array<string>
       source: string
       payload: unknown
@@ -1869,7 +1869,7 @@ export type CommunityActivityQuery = {
       category: string
       highRisk: boolean
       outcome: string
-      denialCode: string | null
+      rejectionCode: string | null
       changedFields: Array<string>
       source: string
       payload: unknown
@@ -16461,7 +16461,7 @@ export const CommunityActivityEventDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'category' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'highRisk' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'outcome' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'denialCode' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'rejectionCode' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'changedFields' } },
                 {
                   kind: 'Field',
@@ -16552,7 +16552,7 @@ export const CommunityActivityEventDocument = {
                       { kind: 'Field', name: { kind: 'Name', value: 'category' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'highRisk' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'outcome' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'denialCode' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'rejectionCode' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'changedFields' } },
                       {
                         kind: 'Field',
@@ -16632,7 +16632,7 @@ export const CommunityActivityEventDocument = {
                       { kind: 'Field', name: { kind: 'Name', value: 'category' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'highRisk' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'outcome' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'denialCode' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'rejectionCode' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'changedFields' } },
                       {
                         kind: 'Field',
@@ -16780,7 +16780,7 @@ export const CommunityActivityDocument = {
                       { kind: 'Field', name: { kind: 'Name', value: 'category' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'highRisk' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'outcome' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'denialCode' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'rejectionCode' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'changedFields' } },
                       {
                         kind: 'Field',

@@ -1871,7 +1871,7 @@ type CommunityActivityEvent {
   category: String!
   highRisk: Boolean!
   outcome: String!
-  denialCode: String
+  rejectionCode: String
   changedFields: [String!]!
   operationIndex: Int!
   recordSequence: Int!
@@ -3886,7 +3886,7 @@ input CommunityActivityFilterInput {
   actions: [String!]
   categories: [String!]
   outcomes: [String!]
-  denialCodes: [String!]
+  rejectionCodes: [String!]
   actorTypes: [String!]
   actorRef: ID
   onBehalfOfRef: ID
