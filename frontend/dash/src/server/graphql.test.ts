@@ -1,7 +1,7 @@
 import { getRequest } from '@tanstack/react-start/server'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { getPhoenixToken } from '~/app/phoenix-token'
+import { readPhoenixTokenCookie } from '~/app/phoenix-token'
 
 import { fetchGraphQL, getAuthToken } from './graphql'
 
@@ -10,22 +10,25 @@ vi.mock('@tanstack/react-start/server', () => ({
   setResponseHeader: vi.fn(),
 }))
 
-vi.mock('~/app/phoenix-token', () => ({
-  getPhoenixToken: vi.fn(),
-}))
-
 describe('getAuthToken', () => {
   afterEach(() => {
     vi.clearAllMocks()
   })
 
-  it('uses the shared verified Phoenix token boundary', () => {
-    const request = new Request('https://dash.groupher.localhost/home')
+  it('forwards the opaque Phoenix cookie without requiring the signing secret in Dash', () => {
+    const request = new Request('https://dash.groupher.localhost/home', {
+      headers: { cookie: 'theme=dark; groupher-auth.token=local.phoenix.token' },
+    })
     vi.mocked(getRequest).mockReturnValue(request)
-    vi.mocked(getPhoenixToken).mockReturnValue('verified-token')
 
-    expect(getAuthToken()).toBe('verified-token')
-    expect(getPhoenixToken).toHaveBeenCalledWith(request)
+    expect(getAuthToken()).toBe('local.phoenix.token')
+  })
+
+  it('preserves encoded and padded cookie values', () => {
+    const request = new Request('https://dash.groupher.localhost/home', {
+      headers: { cookie: 'groupher-auth.token=part.one%3D%3D; theme=dark' },
+    })
+    expect(readPhoenixTokenCookie(request)).toBe('part.one==')
   })
 })
 

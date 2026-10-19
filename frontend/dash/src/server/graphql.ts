@@ -9,7 +9,7 @@ import { LOCAL_PHOENIX_GRAPHQL_ENDPOINT } from '@groupher/contracts/endpoint'
 import { getRequest, setResponseHeader } from '@tanstack/react-start/server'
 import { print, type DocumentNode } from 'graphql'
 
-import { getPhoenixToken } from '~/app/phoenix-token'
+import { readPhoenixTokenCookie } from '~/app/phoenix-token'
 
 export type TGraphQLResponse<TData> = {
   data?: TData
@@ -33,8 +33,8 @@ export class GraphQLRequestError extends Error {
   }
 }
 
-/** Returns auth token for the frontend shared workflow. */
-export const getAuthToken = (): string | null => getPhoenixToken(getRequest())
+/** Returns the request's opaque Phoenix token for the server-to-Phoenix GraphQL hop. */
+export const getAuthToken = (): string | null => readPhoenixTokenCookie(getRequest())
 
 /** Returns whether the active request carries the non-sensitive login hint. */
 export const hasSignedInHint = (cookieHeader = getRequest().headers.get('cookie')): boolean => {

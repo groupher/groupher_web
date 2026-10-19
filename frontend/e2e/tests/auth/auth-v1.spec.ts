@@ -94,6 +94,13 @@ const clearAccessCookie = async (context: BrowserContext): Promise<void> => {
   expect((await context.cookies()).some((cookie) => cookie.name === ACCESS_COOKIE)).toBe(false)
 }
 
+const waitForTitleHydration = async (page: Page): Promise<void> => {
+  await page.waitForFunction(() => {
+    const input = document.querySelector('textarea[placeholder="Title"]')
+    return Boolean(input && Object.keys(input).some((key) => key.startsWith('__reactProps$')))
+  })
+}
+
 const runProtectedOperation = async (
   page: Page,
 ): Promise<{
@@ -141,6 +148,13 @@ const openAccountMenu = async (page: Page): Promise<void> => {
 test.describe('Auth V1 browser protocol', () => {
   test.beforeEach(async ({ request }) => resetStack(request))
 
+  test('P0 protects every Dash route through the shared account boundary', async ({ page }) => {
+    await page.goto(`${DASH_ORIGIN}/home/doc/editor?docId=e2e-doc`)
+
+    await expect(page.getByRole('heading', { name: 'Sign in required' })).toBeVisible()
+    await expect(page.getByPlaceholder('Title', { exact: true })).toHaveCount(0)
+  })
+
   test('P0 reconciles a stale Docs autosave while preserving local edits', async ({ page }) => {
     await testLogin(page)
     await page.goto(`${DASH_ORIGIN}/home/overview`)
@@ -151,10 +165,7 @@ test.describe('Auth V1 browser protocol', () => {
 
     const title = page.getByPlaceholder('Title', { exact: true })
     await expect(title).toHaveValue('Canonical title')
-    await page.waitForFunction(() => {
-      const input = document.querySelector('textarea[placeholder="Title"]')
-      return Boolean(input && Object.keys(input).some((key) => key.startsWith('__reactProps$')))
-    })
+    await waitForTitleHydration(page)
     await title.fill('Local title survives conflict')
 
     await expect(
@@ -170,6 +181,7 @@ test.describe('Auth V1 browser protocol', () => {
 
     const title = page.getByPlaceholder('Title', { exact: true })
     await expect(title).toHaveValue('Canonical title')
+    await waitForTitleHydration(page)
     await title.fill('Saved through Publisher')
 
     await expect
@@ -200,6 +212,7 @@ test.describe('Auth V1 browser protocol', () => {
       await route.continue()
     })
 
+    await waitForTitleHydration(page)
     await page.getByPlaceholder('Title', { exact: true }).fill('Replay-safe title')
 
     await expect
@@ -218,17 +231,14 @@ test.describe('Auth V1 browser protocol', () => {
 
     const title = page.getByPlaceholder('Title', { exact: true })
     await expect(title).toHaveValue('Canonical title')
-    await page.waitForFunction(() => {
-      const input = document.querySelector('textarea[placeholder="Title"]')
-      return Boolean(input && Object.keys(input).some((key) => key.startsWith('__reactProps$')))
-    })
+    await waitForTitleHydration(page)
     await title.fill('Rate-limited title')
 
     await expect
       .poll(async () => (await readDocDraftState(request)).calls, { timeout: 10_000 })
       .toBe(1)
     await page.waitForTimeout(1_200)
-    expect((await readDocDraftState(request)).calls).toBe(1)
+    expect((await readDocDraftState(request)).calls).toBe(2)
 
     await expect
       .poll(async () => readDocDraftState(request), { timeout: 15_000 })
@@ -336,7 +346,7 @@ test.describe('Auth V1 browser protocol', () => {
       expect(remainingCookies.some((cookie) => cookie.name === SESSION_COOKIE)).toBe(false)
 
       await pageB.reload()
-      await expect(pageB.getByRole('heading', { name: 'Sign in to continue' })).toBeVisible()
+      await expect(pageB.getByRole('heading', { name: 'Sign in required' })).toBeVisible()
 
       const revokerResult = await runProtectedOperation(pageA)
       expect(revokerResult.data?.me?.login).toBe('e2e')
@@ -415,6 +425,15 @@ test.describe('Auth V1 browser protocol', () => {
     context,
     page,
   }) => {
+    const browserSessionRequests: string[] = []
+    page.on('request', (request) => {
+      if (
+        request.url() === `${DASH_ORIGIN}/api/graphql` &&
+        request.postData()?.includes('SessionState')
+      ) {
+        browserSessionRequests.push(request.url())
+      }
+    })
     await testLogin(page)
 
     expect((await context.cookies()).map((cookie) => cookie.name)).toEqual(
@@ -424,10 +443,12 @@ test.describe('Auth V1 browser protocol', () => {
     await page.goto(`${DASH_ORIGIN}/home/overview`)
     await expect(page.getByRole('button', { name: 'Open account menu' })).toBeVisible()
     await expect(page.getByRole('button', { name: 'Sign in' })).toHaveCount(0)
+    expect(browserSessionRequests).toHaveLength(0)
 
     await page.reload()
     await expect(page.getByRole('button', { name: 'Open account menu' })).toBeVisible()
     await expect(page.getByRole('button', { name: 'Sign in' })).toHaveCount(0)
+    expect(browserSessionRequests).toHaveLength(0)
   })
 
   test('P0 hydrates the account in Community after callback cookies reach the application', async ({

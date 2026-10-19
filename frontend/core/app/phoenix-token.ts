@@ -87,8 +87,8 @@ const isVerifiedPhoenixToken = (token: string, now = new Date()): boolean => {
   )
 }
 
-/** Returns phoenix token for the frontend shared workflow. */
-export const getPhoenixToken = (request: Request): string | null => {
+/** Reads and decodes the opaque Phoenix access-token cookie without asserting its claims. */
+export const readPhoenixTokenCookie = (request: Request): string | null => {
   const cookieHeader = request.headers.get('cookie')
   if (!cookieHeader) return null
 
@@ -101,9 +101,14 @@ export const getPhoenixToken = (request: Request): string | null => {
   const value = cookie.slice(`${GROUPHER_AUTH_TOKEN_COOKIE}=`.length)
 
   try {
-    const token = decodeURIComponent(value)
-    return isVerifiedPhoenixToken(token) ? token : null
+    return decodeURIComponent(value)
   } catch {
-    return isVerifiedPhoenixToken(value) ? value : null
+    return value
   }
+}
+
+/** Returns a locally verified Phoenix token for boundaries that require preflight verification. */
+export const getPhoenixToken = (request: Request): string | null => {
+  const token = readPhoenixTokenCookie(request)
+  return token && isVerifiedPhoenixToken(token) ? token : null
 }
