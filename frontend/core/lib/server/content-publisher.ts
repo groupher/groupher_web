@@ -1,4 +1,5 @@
 import { ArtimentPublisherError, publishContent } from '@groupher/content-publisher'
+import { AUTH_ERROR } from '@groupher/contracts/auth'
 import {
   CONTENT_PUBLISH_ERROR_CODE,
   CONTENT_PUBLISH_ACTION,
@@ -37,6 +38,14 @@ type TGraphQLPayload = {
 
 const graphQLErrorProjection = (errors: NonNullable<TGraphQLPayload['errors']>) => {
   const codes = new Set(errors.map(({ extensions }) => String(extensions?.code || '')))
+  const authCode = [
+    AUTH_ERROR.TOKEN_EXPIRED,
+    AUTH_ERROR.TOKEN_INVALID,
+    AUTH_ERROR.TOKEN_MISSING,
+    AUTH_ERROR.SESSION_EXPIRED,
+    AUTH_ERROR.SESSION_REVOKED,
+  ].find((code) => codes.has(code))
+  if (authCode) return { code: authCode, status: 401 }
   if (codes.has('SERVICE_SCOPE_FORBIDDEN')) return { code: 'forbidden', status: 403 }
   if (codes.has('RATE_LIMITED') || codes.has('429')) return { code: 'rate_limited', status: 429 }
   if (

@@ -22,22 +22,32 @@ const AUTH_FAILURE_CODES = new Set([
   'TOKEN_INVALID',
 ])
 
+const resolveApplyAccount = async (): Promise<TAccountInit> => {
+  try {
+    const data = await requestGraphQL(sessionStateDocument, {})
+    const session = data.sessionState
+    return {
+      loading: false,
+      user: session?.isValid && session.user ? (session.user as TUser) : null,
+    }
+  } catch (error) {
+    if (error instanceof GraphQLRequestError && AUTH_FAILURE_CODES.has(error.reasonCode || '')) {
+      return { loading: false, user: null }
+    }
+    throw error
+  }
+}
+
 /** Loads the request user once for the Apply root AccountStore seed. */
 export const loadApplyAccount = createServerFn({ method: 'GET', strict: false }).handler(
-  async (): Promise<TAccountInit> => {
-    try {
-      const data = await requestGraphQL(sessionStateDocument, {})
-      const session = data.sessionState
-      return {
-        loading: false,
-        user: session?.isValid && session.user ? (session.user as TUser) : null,
-      }
-    } catch (error) {
-      if (error instanceof GraphQLRequestError && AUTH_FAILURE_CODES.has(error.reasonCode || '')) {
-        return { loading: false, user: null }
-      }
-      throw error
-    }
+  resolveApplyAccount,
+)
+
+/** Resolves reviewer admission before protected child route loaders run. */
+export const loadReviewAdmission = createServerFn({ method: 'GET', strict: false }).handler(
+  async (): Promise<boolean> => {
+    const account = await resolveApplyAccount()
+    return Boolean(account.user?.passport?.global?.['community.application.review'])
   },
 )
 

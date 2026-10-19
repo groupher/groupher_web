@@ -68,6 +68,24 @@ describe('createAuthFetch', () => {
     expect(fetcher).toHaveBeenCalledTimes(2)
   })
 
+  it('refreshes and replays an expired authenticated publisher operation', async () => {
+    const fetcher = vi
+      .fn<typeof fetch>()
+      .mockResolvedValueOnce(
+        Response.json(
+          { error: { code: AUTH_ERROR.TOKEN_EXPIRED, message: 'expired' }, ok: false },
+          { status: 401 },
+        ),
+      )
+      .mockResolvedValueOnce(Response.json({ ok: true, result: { id: '42' } }))
+
+    const response = await createAuthFetch(fetcher)('/api/content/publish', { method: 'POST' })
+
+    await expect(response.json()).resolves.toEqual({ ok: true, result: { id: '42' } })
+    expect(refreshSession).toHaveBeenCalledTimes(1)
+    expect(fetcher).toHaveBeenCalledTimes(2)
+  })
+
   it('does not refresh permission failures', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(
       Response.json({

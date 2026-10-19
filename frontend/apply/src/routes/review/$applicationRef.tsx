@@ -8,7 +8,8 @@ import { mutateReviewApplication } from '../../lib/application'
 import { loadReviewApplication } from '../../server/application'
 
 export const Route = createFileRoute('/review/$applicationRef')({
-  loader: async ({ params }) => {
+  loader: async ({ context, params }) => {
+    if (!context.reviewAllowed) return null
     const application = await loadReviewApplication({ data: { ref: params.applicationRef } })
     if (!application) throw notFound()
     return application
@@ -24,6 +25,8 @@ function ReviewDetail() {
   const [reasonCode, setReasonCode] = useState('not_a_fit')
   const [working, setWorking] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  if (!application) return null
 
   const run = async (action: Parameters<typeof mutateReviewApplication>[0]) => {
     setWorking(true)

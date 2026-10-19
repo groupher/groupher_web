@@ -5,6 +5,8 @@ import {
 } from '@groupher/contracts/content-publish'
 import { API_ROUTE } from '@groupher/route-contract'
 
+import { createAuthFetch } from './graphql/client'
+
 export class ContentPublishError extends Error {
   readonly code: string
   readonly details?: unknown
@@ -66,9 +68,10 @@ export const publishContentCommand = async <TResult>(
 ): Promise<TResult> => {
   let response: Response
   try {
-    response = await fetch(API_ROUTE.CONTENT_PUBLISH, {
+    response = await createAuthFetch()(API_ROUTE.CONTENT_PUBLISH, {
       body: JSON.stringify(command),
       cache: 'no-store',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
     })

@@ -33,6 +33,12 @@ defmodule GroupherServer.Repo.Migrations.RenameActivityDenialCodeToRejectionCode
       execute("ALTER TABLE #{@prefix}.#{table} RENAME COLUMN rejection_code TO denial_code")
 
       execute("""
+      UPDATE #{@prefix}.#{table}
+      SET source = 'maintenance'
+      WHERE source = 'operations'
+      """)
+
+      execute("""
       ALTER TABLE #{@prefix}.#{table}
       ADD CONSTRAINT #{table}_outcome_denial_check
       CHECK ((outcome = 'allowed' AND denial_code IS NULL) OR
