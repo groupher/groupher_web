@@ -67,6 +67,7 @@ end
 defmodule GroupherServer.Test.PipelineGraphFixtures.UnattributedStages do
   @moduledoc false
 
+  alias GroupherServer.CommandPipeline
   alias CommandPipeline.Runner
 
   @contract %{

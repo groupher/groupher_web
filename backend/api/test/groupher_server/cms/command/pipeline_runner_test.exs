@@ -1,12 +1,12 @@
 defmodule GroupherServer.CommandPipelineRunnerTest do
   use GroupherServer.TestMate, async: false
 
-  alias GroupherServer.Activity
-  alias GroupherServer.CMS
-  alias GroupherServer.CommandPipeline
+  alias GroupherServer.{Activity, CMS, CommandPipeline, ErrorCat}
   alias Activity.Model.PostLog
-  alias CMS.Gate.{Decision, ErrorCat}
+  alias CMS.Gate.Decision
+  alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CommandPipeline.{Rejected, RejectionContext, RejectionData}
+  alias ErrorCat.Error
 
   defmodule GenericFixture do
     use GroupherServer.CommandPipeline
@@ -50,7 +50,7 @@ defmodule GroupherServer.CommandPipelineRunnerTest do
           {:error, Rejected.new(:callback_raise, :callback_raise)}
 
         {:prepared, %{mode: :decision_error}} ->
-          {:error, Decision.deny(ErrorCat.article_archived())}
+          {:error, Decision.deny(GateErrorCat.article_archived())}
 
         {:prepared, ^resource} = value ->
           send(self(), {:pipeline_stage, :gate, Repo.in_transaction?()})
