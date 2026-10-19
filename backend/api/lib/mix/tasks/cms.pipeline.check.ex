@@ -51,11 +51,12 @@ defmodule Mix.Tasks.Cms.Pipeline.Check do
 
     if check? do
       case File.read(path) do
-        {:ok, ^json} ->
-          Mix.shell().info("CMS pipeline contracts are fresh: #{path}")
-
-        {:ok, _other} ->
-          Mix.raise("CMS pipeline contracts are stale: #{path}")
+        {:ok, current} ->
+          if Jason.decode(current) == {:ok, manifest} do
+            Mix.shell().info("CMS pipeline contracts are fresh: #{path}")
+          else
+            Mix.raise("CMS pipeline contracts are stale: #{path}")
+          end
 
         {:error, :enoent} ->
           Mix.raise("CMS pipeline contracts are missing: #{path}")

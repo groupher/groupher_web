@@ -62,7 +62,7 @@ defmodule Mix.Tasks.Cms.Pipeline.Coverage do
     json = Jason.encode!(manifest, pretty: true) <> "\n"
 
     if check? do
-      check_fresh!(path, json)
+      check_fresh!(path, manifest)
     else
       File.mkdir_p!(Path.dirname(path))
       File.write!(path, json)
@@ -130,11 +130,12 @@ defmodule Mix.Tasks.Cms.Pipeline.Coverage do
 
   defp check_fresh!(path, expected) do
     case File.read(path) do
-      {:ok, ^expected} ->
-        Mix.shell().info("CMS pipeline coverage is fresh: #{path}")
-
-      {:ok, _other} ->
-        Mix.raise("CMS pipeline coverage is stale: #{path}")
+      {:ok, current} ->
+        if Jason.decode(current) == {:ok, expected} do
+          Mix.shell().info("CMS pipeline coverage is fresh: #{path}")
+        else
+          Mix.raise("CMS pipeline coverage is stale: #{path}")
+        end
 
       {:error, :enoent} ->
         Mix.raise("CMS pipeline coverage is missing: #{path}")
