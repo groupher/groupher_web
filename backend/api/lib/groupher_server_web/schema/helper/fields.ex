@@ -272,14 +272,7 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
       )
 
       field(:body_version, non_null(:integer),
-        resolve: fn comment, _, _ ->
-          case GroupherServer.Repo.get_by(GroupherServer.CMS.Model.CommentBody,
-                 comment_id: comment.id
-               ) do
-            nil -> {:error, "comment body not found"}
-            body -> {:ok, body.version}
-          end
-        end
+        resolve: &GroupherServerWeb.Schema.Helper.Fields.comment_body_version/3
       )
 
       field(:author, :user, resolve: dataloader(CMS, :author))
@@ -319,6 +312,22 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
     case GroupherServer.Repo.get_by(GroupherServer.CMS.Model.CommentBody, comment_id: comment_id) do
       nil -> {:error, "comment body not found"}
       body -> {:ok, body}
+    end
+  end
+
+  @doc "Resolves a Comment body version from a preloaded projection or canonical body row."
+  def comment_body_version(
+        %{body: %GroupherServer.CMS.Model.CommentBody{version: version}},
+        _,
+        _
+      ) do
+    {:ok, version}
+  end
+
+  def comment_body_version(%{id: comment_id}, _, _) do
+    case GroupherServer.Repo.get_by(GroupherServer.CMS.Model.CommentBody, comment_id: comment_id) do
+      nil -> {:error, "comment body not found"}
+      body -> {:ok, body.version}
     end
   end
 

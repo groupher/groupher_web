@@ -12,16 +12,31 @@ import type { TUser } from '~/spec'
 import type { TInit as TAccountInit } from '~/stores/account/spec'
 
 import type { ApplyInitialData, CommunityApplication, ReviewApplication } from '../spec'
-import { requestGraphQL } from './graphql'
+import { GraphQLRequestError, requestGraphQL } from './graphql'
+
+const AUTH_FAILURE_CODES = new Set([
+  'ACCOUNT_BLOCKED',
+  'SESSION_EXPIRED',
+  'SESSION_REVOKED',
+  'TOKEN_EXPIRED',
+  'TOKEN_INVALID',
+])
 
 /** Loads the request user once for the Apply root AccountStore seed. */
 export const loadApplyAccount = createServerFn({ method: 'GET', strict: false }).handler(
   async (): Promise<TAccountInit> => {
-    const data = await requestGraphQL(sessionStateDocument, {})
-    const session = data.sessionState
-    return {
-      loading: false,
-      user: session?.isValid && session.user ? (session.user as TUser) : null,
+    try {
+      const data = await requestGraphQL(sessionStateDocument, {})
+      const session = data.sessionState
+      return {
+        loading: false,
+        user: session?.isValid && session.user ? (session.user as TUser) : null,
+      }
+    } catch (error) {
+      if (error instanceof GraphQLRequestError && AUTH_FAILURE_CODES.has(error.reasonCode || '')) {
+        return { loading: false, user: null }
+      }
+      throw error
     }
   },
 )

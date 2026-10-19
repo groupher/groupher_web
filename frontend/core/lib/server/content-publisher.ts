@@ -320,17 +320,17 @@ export const handleContentPublishRequest = async (
 
   const environment = options.environment ?? process.env
   const fetcher = options.fetcher ?? fetch
-  const client =
-    options.serviceAuthClient ||
-    (serviceAuthClient ??= createServiceAuthClientFromEnv(environment, fetcher))
-  ;(options.logger ?? console).info('content_publish_command', {
-    action: parsed.value.action,
-    commandId: parsed.value.commandId,
-    delegatedUser: true,
-    serviceClient: environment.CONTENT_PUBLISHER_SERVICE_CLIENT_ID || 'configured-service-client',
-    target: parsed.value.target,
-  })
   try {
+    const client =
+      options.serviceAuthClient ||
+      (serviceAuthClient ??= createServiceAuthClientFromEnv(environment, fetcher))
+    ;(options.logger ?? console).info('content_publish_command', {
+      action: parsed.value.action,
+      commandId: parsed.value.commandId,
+      delegatedUser: true,
+      serviceClient: environment.SERVICE_AUTH_CLIENT_ID || 'configured-service-client',
+      target: parsed.value.target,
+    })
     switch (parsed.value.action) {
       case CONTENT_PUBLISH_ACTION.UPDATE_DOC_DRAFT:
         return await updateDocDraft(parsed.value, {

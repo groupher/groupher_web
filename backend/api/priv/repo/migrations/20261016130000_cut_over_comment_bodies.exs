@@ -40,6 +40,14 @@ defmodule GroupherServer.Repo.Migrations.CutOverCommentBodies do
       add(:body_html, :text)
     end
 
+    execute("""
+    UPDATE cms.comments AS comments
+    SET body = bodies.markdown,
+        body_html = bodies.html
+    FROM cms.comment_bodies AS bodies
+    WHERE bodies.comment_id = comments.id
+    """)
+
     drop(table(:comment_bodies, prefix: "cms"))
   end
 end
