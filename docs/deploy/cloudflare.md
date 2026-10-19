@@ -111,7 +111,7 @@ Service Binding 只适用于 Worker-to-Worker 调用的边界，不是例外 fal
 11. 符合 `^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$` 且不超过 30 字节的 `/:community` 和
     `/:community/*` 交给 Community；社区是否真实存在由 Community 判断。显式平台路径和
     namespace 已由更高优先级规则排除，不再额外使用会误伤现有社区的通用 reserved list。
-    Regex 和长度限制与 Phoenix `CMS.Communities.NamePolicy` 的语法约束一致；Phoenix 的
+    Regex 和长度限制与 Phoenix `CMS.Communities.NameRules` 的语法约束一致；Phoenix 的
     reserved/occupancy 规则不复制到 Router。
 12. 其他未匹配路径返回 `404`，不存在旧 Main 或 Dashboard fallback。
 

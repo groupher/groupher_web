@@ -1,5 +1,8 @@
 # Auth
 
+前端当前用户、Passport、Gate 以及 Dash、Community、Apply 的不同首屏认证策略见
+[`前端 Account、Passport 与 Gate`](../architecture/frontend-account-passport-gate.md)。
+
 > 运行形态：生产为 Cloudflare Worker；本地为独立 Node/Hono + `@auth/core` 应用
 >
 > UI：独立的系统级登录 UI

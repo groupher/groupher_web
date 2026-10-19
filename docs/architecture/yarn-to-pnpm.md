@@ -449,7 +449,7 @@ pnpm run build:ci
 ```bash
 pnpm --filter @groupher/contracts test
 pnpm --filter @groupher/route-contract test
-pnpm --filter @groupher/artiment-publisher test
+pnpm --filter @groupher/content-publisher test
 pnpm --filter @groupher/backend-auth test
 pnpm --filter @groupher/backend-content-import test
 pnpm --filter @groupher/press test
