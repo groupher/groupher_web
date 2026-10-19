@@ -37,7 +37,7 @@ type TContributes = {
   totalCount?: number
 }
 
-type TPassport = {
+export type TPassport = {
   global?: Record<string, boolean>
   [community: string]:
     | Record<string, boolean>

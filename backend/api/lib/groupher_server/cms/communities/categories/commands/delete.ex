@@ -1,13 +1,16 @@
 defmodule GroupherServer.CMS.Communities.Categories.Commands.Delete do
   @moduledoc """
-  Deletes a Category through the receipt-backed Community scope.
+  Deletes a Category through a `receipt_pipeline` in Community scope.
 
       Category Command -> Gate(:update) -> Categories.Persist.delete -> Receipt
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
-  alias CMS.{Command, Gate}
+  alias CMS.Gate
   alias CMS.Communities.Categories.{Confirmation, Persist}
   alias CMS.Communities.Categories.Commands.Support
   alias CMS.Model.Category
@@ -18,42 +21,41 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Delete do
   def execute(community_ref, id, %User{} = actor, command_id) do
     case Support.community(community_ref) do
       {:ok, community} ->
-        command = %Command{
-          actor: actor,
-          command_id: command_id,
-          operation: :category_delete,
-          target: {:category, id},
-          params: %{community_id: community.id}
-        }
-
-        with {:ok, confirmation} <-
-               Command.execute(command, action: &action/1, confirmation: Confirmation) do
-          Support.category_result(confirmation)
-        end
+        execute_pipeline({:category, id}, community, community.id, actor, command_id)
 
       {:error, _reason} = error ->
         error
     end
   end
 
-  defp action(%{
-         actor: actor,
-         target: {:category, category_id},
-         params: %{community_id: community_id},
-         command_id: command_id
-       }) do
-    with {:ok, community} <- Support.community(community_id),
-         {:ok, category} <- Support.category(category_id),
-         {:ok, _deleted} <-
-           Gate.with_community_check(actor, :category_delete, community, fn canonical ->
-             with true <- Persist.category_in_community?(canonical, category),
-                  {:ok, deleted} <- Persist.delete_category(category) do
-               {:ok, deleted}
-             else
-               false -> {:error, CMS.Communities.ErrorCat.forbidden()}
-             end
-           end) do
+  @pipeline operation: :category_delete,
+            confirmation: Confirmation,
+            target: :category_target,
+            params: [:community_id]
+
+  receipt_pipeline execute_pipeline(category_target, community, community_id, actor, command_id) do
+    gate(fn _candidate ->
+      {:category, category_id} = category_target
+
+      with {:ok, category} <- Support.category(category_id),
+           {:ok, canonical} <- Gate.check_in_transaction(actor, :category_delete, community) do
+        {:ok, {canonical, category}}
+      end
+    end)
+
+    change(fn {canonical, category} ->
+      with true <- Persist.category_in_community?(canonical, category),
+           {:ok, deleted} <- Persist.delete_category(category) do
+        {:ok, deleted}
+      else
+        false -> {:error, CMS.Communities.ErrorCat.forbidden()}
+      end
+    end)
+
+    confirm(fn category ->
       {:ok, Support.confirmation(Confirmation, "category_id", category.id, command_id)}
-    end
+    end)
+
+    present(fn confirmation -> Support.category_result(confirmation) end)
   end
 end

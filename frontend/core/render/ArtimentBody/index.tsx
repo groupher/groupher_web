@@ -58,7 +58,7 @@ const ArtimentBody: FC<TProps> = ({
       needFold: shouldFold,
       lineClamp: initLineClamp,
     })
-  }, [doc.bodyHtml, doc.html, initLineClamp, isRichReadonly])
+  }, [doc.html, initLineClamp, isRichReadonly])
 
   return (
     <div className={s.wrapper}>
@@ -79,7 +79,7 @@ const ArtimentBody: FC<TProps> = ({
             className={s.html}
             // oxlint-disable-next-line react/no-danger -- Article HTML is rendered from sanitized rich-text output.
             dangerouslySetInnerHTML={{
-              __html: doc.html || doc.bodyHtml || '',
+              __html: doc.html || '',
             }}
           />
         )}

@@ -118,7 +118,7 @@ defmodule GroupherServer.CMS.CommunityApplications do
     Commands.Submit.execute(attrs, user, submit_command_id)
   end
 
-  @doc "Runs the receipt-backed cancellation Command."
+  @doc "Runs the cancellation `receipt_pipeline`."
   @spec cancel(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
   def cancel(public_ref, %User{} = user, expected_version, command_id) do
     Commands.Cancel.execute(public_ref, user, expected_version, command_id)
@@ -136,7 +136,7 @@ defmodule GroupherServer.CMS.CommunityApplications do
     {:error, CMS.ErrorCat.command_id_required()}
   end
 
-  @doc "Runs the receipt-backed review-start Command."
+  @doc "Runs the review-start `receipt_pipeline`."
   @spec start_review(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
   def start_review(public_ref, %User{} = reviewer, expected_version, command_id) do
     Commands.Review.start(public_ref, reviewer, expected_version, command_id)
@@ -148,7 +148,7 @@ defmodule GroupherServer.CMS.CommunityApplications do
     {:error, CMS.ErrorCat.command_id_required()}
   end
 
-  @doc "Runs the receipt-backed approval Command."
+  @doc "Runs the approval `receipt_pipeline`."
   @spec approve(String.t(), User.t(), integer(), map(), Ecto.UUID.t()) :: T.domain_res(term())
   def approve(public_ref, %User{} = reviewer, expected_version, metadata, command_id) do
     Commands.Review.approve(public_ref, reviewer, expected_version, metadata, command_id)
@@ -160,7 +160,7 @@ defmodule GroupherServer.CMS.CommunityApplications do
     {:error, CMS.ErrorCat.command_id_required()}
   end
 
-  @doc "Runs the receipt-backed rejection Command."
+  @doc "Runs the rejection `receipt_pipeline`."
   @spec reject(String.t(), User.t(), integer(), map(), Ecto.UUID.t()) :: T.domain_res(term())
   def reject(public_ref, %User{} = reviewer, expected_version, reason, command_id) do
     Commands.Review.reject(public_ref, reviewer, expected_version, reason, command_id)
@@ -172,13 +172,13 @@ defmodule GroupherServer.CMS.CommunityApplications do
     {:error, CMS.ErrorCat.command_id_required()}
   end
 
-  @doc "Runs the receipt-backed creation retry Command."
+  @doc "Runs the creation-retry `receipt_pipeline`."
   @spec retry_creation(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
   def retry_creation(public_ref, %User{} = reviewer, expected_version, command_id) do
     Commands.Review.retry_creation(public_ref, reviewer, expected_version, command_id)
   end
 
-  @doc "Runs setup retry through the receipt-backed Application Command."
+  @doc "Runs setup retry through the Application `receipt_pipeline`."
   @spec retry_setup(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
   def retry_setup(public_ref, %User{} = reviewer, expected_version, command_id) do
     Commands.RetrySetup.execute(public_ref, reviewer, expected_version, command_id)

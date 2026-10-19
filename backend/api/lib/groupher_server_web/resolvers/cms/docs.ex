@@ -127,7 +127,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
         %{community: community, input: input} = args,
         %{context: %{cur_user: user}}
       ) do
-    CMS.doc_tree_create_node(
+    CMS.doc_tree_create_node_receipt(
       community,
       input
       |> Map.put(:parent_node_id, args[:parent_node_id])
@@ -168,7 +168,8 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
       args
       |> Map.take([:title, :subtitle, :slug, :body_bag, :expected_version, :command_id])
       |> Map.put(:branch_id, branch_id),
-      user
+      user,
+      args[:command_id]
     )
   end
 

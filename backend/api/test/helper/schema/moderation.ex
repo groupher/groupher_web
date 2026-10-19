@@ -67,7 +67,7 @@ defmodule GroupherServer.Test.Helper.Schema.Moderation do
               }
               comment {
                 innerId
-                bodyHtml
+                body { html }
                 author {
                   login
                 }
@@ -146,7 +146,7 @@ defmodule GroupherServer.Test.Helper.Schema.Moderation do
               }
               comment {
                 innerId
-                bodyHtml
+                body { html }
                 author {
                   login
                 }

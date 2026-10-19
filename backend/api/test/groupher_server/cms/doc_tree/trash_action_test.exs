@@ -23,7 +23,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
     {:ok, group} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: root_doc_tab_node_id(community),
         title: "Guides",
         slug: "guides",
@@ -31,7 +31,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
       })
 
     {:ok, page} =
-      CMS.DocTree.create_page(
+      CMS.DocTree.create_page_internal(
         community,
         %{
           parent_node_id: group.node.id,
@@ -48,7 +48,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     {:ok, tree} = CMS.DocTree.read(community)
 
     assert {:ok, deleted} =
-             CMS.DocTree.delete_node(community, page.node.id, %{
+             CMS.DocTree.delete_node_internal(community, page.node.id, %{
                base_revision: tree.revision,
                actor_id: user.id
              })
@@ -75,7 +75,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
              CMS.Articles.restore_trashed(membership.hash_id, user)
 
     assert {:ok, restored} =
-             CMS.DocTree.restore_trash_item(community, trash_item.id, %{
+             CMS.DocTree.restore_trash_item_internal(community, trash_item.id, %{
                base_revision: deleted.revision,
                actor_id: user.id,
                actor: user
@@ -94,7 +94,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
     {:ok, group} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: root_doc_tab_node_id(community),
         title: "Drafts",
         slug: "drafts",
@@ -102,7 +102,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
       })
 
     {:ok, page} =
-      CMS.DocTree.create_page(
+      CMS.DocTree.create_page_internal(
         community,
         %{
           parent_node_id: group.node.id,
@@ -114,7 +114,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
       )
 
     assert {:ok, deleted} =
-             CMS.DocTree.delete_node(community, page.node.id, %{
+             CMS.DocTree.delete_node_internal(community, page.node.id, %{
                base_revision: page.revision,
                actor_id: user.id
              })
@@ -126,7 +126,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     refute item.public_snapshot
 
     assert {:ok, _restored} =
-             CMS.DocTree.restore_trash_item(community, trash_item.id, %{
+             CMS.DocTree.restore_trash_item_internal(community, trash_item.id, %{
                base_revision: deleted.revision,
                actor_id: user.id
              })
@@ -141,7 +141,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
     {:ok, group} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: root_doc_tab_node_id(community),
         title: "Guides",
         slug: "guides",
@@ -149,7 +149,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
       })
 
     {:ok, first} =
-      CMS.DocTree.create_page(
+      CMS.DocTree.create_page_internal(
         community,
         %{
           parent_node_id: group.node.id,
@@ -161,7 +161,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
       )
 
     {:ok, second} =
-      CMS.DocTree.create_page(
+      CMS.DocTree.create_page_internal(
         community,
         %{
           parent_node_id: group.node.id,
@@ -174,7 +174,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
 
     {{:ok, deleted}, queries} =
       capture_repo_queries(fn ->
-        CMS.DocTree.delete_node(community, group.node.id, %{
+        CMS.DocTree.delete_node_internal(community, group.node.id, %{
           base_revision: second.revision,
           actor_id: user.id
         })
@@ -204,7 +204,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     assert Repo.get_by!(DocTreeLog, operation_ref: action.hash_id).action == :trashed
 
     assert {:ok, _} =
-             CMS.DocTree.restore_trash_item(community, trash_item.id, %{
+             CMS.DocTree.restore_trash_item_internal(community, trash_item.id, %{
                base_revision: deleted.revision,
                actor_id: user.id
              })
@@ -223,7 +223,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
     {:ok, group} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: root_doc_tab_node_id(community),
         title: "Links",
         slug: "links",
@@ -231,7 +231,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
       })
 
     {:ok, link} =
-      CMS.DocTree.create_link(community, %{
+      CMS.DocTree.create_link_internal(community, %{
         parent_node_id: group.node.id,
         title: "Reference",
         slug: "reference",
@@ -240,7 +240,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
       })
 
     assert {:ok, _deleted} =
-             CMS.DocTree.delete_node(community, link.node.id, %{
+             CMS.DocTree.delete_node_internal(community, link.node.id, %{
                base_revision: link.revision,
                actor_id: user.id
              })
@@ -278,7 +278,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
     {:ok, group} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: root_doc_tab_node_id(community),
         title: "Guides",
         slug: "guides",
@@ -286,7 +286,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
       })
 
     {:ok, page} =
-      CMS.DocTree.create_page(
+      CMS.DocTree.create_page_internal(
         community,
         %{
           parent_node_id: group.node.id,
@@ -323,7 +323,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     assert {:ok, {1, nil}} = CMS.ArtimentMentions.sync(original_draft)
 
     {:ok, duplicate} =
-      CMS.DocTree.duplicate_node(community, page.node.id, %{
+      CMS.DocTree.duplicate_node_internal(community, page.node.id, %{
         base_revision: page.revision,
         actor_id: user.id
       })
@@ -334,7 +334,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     {:ok, original_doc} = CMS.Docs.read_editor_head(community, page.node.doc_id)
     {:ok, copied_doc} = CMS.Docs.read_editor_head(community, duplicate.node.doc_id)
 
-    assert original_doc.document.json == copied_doc.document.json
+    assert original_doc.body.json == copied_doc.body.json
 
     assert Repo.get_by(CMS.Model.ArtimentMention,
              mentioner_type: :doc,
@@ -359,28 +359,28 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
     {:ok, original_parent} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: root_doc_tab_node_id(community),
         title: "Original",
         base_revision: state.tree_lock_version
       })
 
     {:ok, child} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: original_parent.node.id,
         title: "Nested",
         base_revision: original_parent.revision
       })
 
     {:ok, target_parent} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: root_doc_tab_node_id(community),
         title: "Target",
         base_revision: child.revision
       })
 
     {:ok, child_deleted} =
-      CMS.DocTree.delete_node(community, child.node.id, %{
+      CMS.DocTree.delete_node_internal(community, child.node.id, %{
         base_revision: target_parent.revision,
         actor_id: user.id
       })
@@ -388,7 +388,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     {:ok, [child_trash_item]} = CMS.DocTree.trash_items(community, actor: user)
 
     {:ok, parent_deleted} =
-      CMS.DocTree.delete_node(community, original_parent.node.id, %{
+      CMS.DocTree.delete_node_internal(community, original_parent.node.id, %{
         base_revision: child_deleted.revision,
         actor_id: user.id
       })
@@ -399,13 +399,13 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
               details:
                 "The original Docs Tree parent no longer exists; select a new parent before restoring."
             }} =
-             CMS.DocTree.restore_trash_item(community, child_trash_item.id, %{
+             CMS.DocTree.restore_trash_item_internal(community, child_trash_item.id, %{
                base_revision: parent_deleted.revision,
                actor_id: user.id
              })
 
     assert {:ok, restored} =
-             CMS.DocTree.restore_trash_item(community, child_trash_item.id, %{
+             CMS.DocTree.restore_trash_item_internal(community, child_trash_item.id, %{
                base_revision: parent_deleted.revision,
                actor_id: user.id,
                target_parent_node_id: target_parent.node.id,

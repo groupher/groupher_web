@@ -9,14 +9,14 @@ defmodule GroupherServer.Test.CMS.DocTree.Cover do
     {:ok, tree_state} = ORM.find_by(CMS.Model.DocsSiteState, community_id: community.id)
 
     {:ok, group} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: root_doc_tab_node_id(community),
         title: "Guides",
         base_revision: tree_state.tree_lock_version
       })
 
     {:ok, page} =
-      CMS.DocTree.create_page(
+      CMS.DocTree.create_page_internal(
         community,
         %{
           parent_node_id: group.node.id,
@@ -39,7 +39,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Cover do
   test "a Group Card projects direct Page, Link, and nested Group items",
        ~m(user community group page)a do
     {:ok, link} =
-      CMS.DocTree.create_link(community, %{
+      CMS.DocTree.create_link_internal(community, %{
         parent_node_id: group.node.id,
         title: "GitHub",
         href: "https://github.com/groupher",
@@ -47,14 +47,14 @@ defmodule GroupherServer.Test.CMS.DocTree.Cover do
       })
 
     {:ok, nested_group} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: group.node.id,
         title: "Advanced",
         base_revision: link.revision
       })
 
     {:ok, nested_page} =
-      CMS.DocTree.create_page(
+      CMS.DocTree.create_page_internal(
         community,
         %{
           parent_node_id: nested_group.node.id,
@@ -66,14 +66,14 @@ defmodule GroupherServer.Test.CMS.DocTree.Cover do
       )
 
     {:ok, deep_group} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: nested_group.node.id,
         title: "Runtime",
         base_revision: nested_page.revision
       })
 
     {:ok, _deep_link} =
-      CMS.DocTree.create_link(community, %{
+      CMS.DocTree.create_link_internal(community, %{
         parent_node_id: deep_group.node.id,
         title: "Runtime API",
         href: "https://example.com/runtime",
@@ -122,14 +122,14 @@ defmodule GroupherServer.Test.CMS.DocTree.Cover do
   test "adding a parent Card atomically replaces selected descendant Cards",
        ~m(user community group page)a do
     {:ok, nested_group} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: group.node.id,
         title: "Advanced",
         base_revision: page.revision
       })
 
     {:ok, _nested_page} =
-      CMS.DocTree.create_page(
+      CMS.DocTree.create_page_internal(
         community,
         %{
           parent_node_id: nested_group.node.id,
@@ -159,14 +159,14 @@ defmodule GroupherServer.Test.CMS.DocTree.Cover do
   test "an existing ancestor Card blocks adding a descendant Card",
        ~m(user community group page)a do
     {:ok, nested_group} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: group.node.id,
         title: "Advanced",
         base_revision: page.revision
       })
 
     {:ok, _nested_page} =
-      CMS.DocTree.create_page(
+      CMS.DocTree.create_page_internal(
         community,
         %{
           parent_node_id: nested_group.node.id,

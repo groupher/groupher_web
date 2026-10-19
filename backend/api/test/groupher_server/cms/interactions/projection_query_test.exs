@@ -89,7 +89,8 @@ defmodule GroupherServer.Test.CMS.Interactions.ProjectionQueryTest do
         :post,
         article_inner_id(post, community),
         mock_comment(),
-        user, Ecto.UUID.generate()
+        user,
+        Ecto.UUID.generate()
       )
 
     {:ok, second} =
@@ -98,7 +99,8 @@ defmodule GroupherServer.Test.CMS.Interactions.ProjectionQueryTest do
         :post,
         article_inner_id(post, community),
         mock_comment(),
-        user, Ecto.UUID.generate()
+        user,
+        Ecto.UUID.generate()
       )
 
     article = %{
@@ -143,7 +145,8 @@ defmodule GroupherServer.Test.CMS.Interactions.ProjectionQueryTest do
         :post,
         article_inner_id(post, community),
         mock_comment(),
-        user, Ecto.UUID.generate()
+        user,
+        Ecto.UUID.generate()
       )
 
     assert {:ok,
@@ -258,7 +261,8 @@ defmodule GroupherServer.Test.CMS.Interactions.ProjectionQueryTest do
         :post,
         article_inner_id(post, community),
         mock_comment(),
-        user, Ecto.UUID.generate()
+        user,
+        Ecto.UUID.generate()
       )
 
     states = CMS.Interactions.viewer_states([post, comment], user)
@@ -278,7 +282,8 @@ defmodule GroupherServer.Test.CMS.Interactions.ProjectionQueryTest do
         :post,
         article_inner_id(post, community),
         mock_comment(),
-        user, Ecto.UUID.generate()
+        user,
+        Ecto.UUID.generate()
       )
 
     assert {:ok, _} = CMS.Interactions.upvote(post, user, Ecto.UUID.generate())

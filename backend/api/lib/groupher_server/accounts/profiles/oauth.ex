@@ -52,6 +52,16 @@ defmodule GroupherServer.Accounts.Profiles.Oauth do
   defdelegate registration_multi(arg1), to: GroupherServer.Accounts.Profiles.Oauth.Workflow
 
   @doc """
+  Delegates register_in_transaction/1 to the owning implementation.
+
+  ## Examples
+
+      Accounts.Profiles.Oauth.register_in_transaction(provider_payload)
+  """
+  defdelegate register_in_transaction(arg1),
+    to: GroupherServer.Accounts.Profiles.Oauth.Workflow
+
+  @doc """
   Delegates registration_result/1 to the owning implementation.
 
   ## Examples

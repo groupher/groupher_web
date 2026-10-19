@@ -1,6 +1,6 @@
 defmodule GroupherServer.CMS.Comments.Commands.Create do
   @moduledoc """
-  Creates top-level Comments and replies as receipt-backed Commands.
+  Creates top-level Comments and replies through `receipt_pipeline` entries.
 
   Business position:
 
@@ -8,17 +8,20 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
         -> GraphQL
         -> CMS.Comments
         -> Comments.Commands.Create create/reply
-        -> CMS.Gate.with_check
+        -> runner transaction + CMS.Gate.check_*_in_transaction
         -> canonical aggregate transaction + required audition job
         -> commit
         -> best-effort mention / notification / subscription jobs
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   require GroupherServer.CMS.Comments.ErrorCat
 
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.{Comments.ErrorCat, Command, FrontDesk}
+  alias CMS.{Comments.ErrorCat, FrontDesk}
   alias CMS.Comments.Commands.CommentConfirmation, as: Confirmation
   alias CMS.Articles.Query, as: ArticleQuery
   alias CMS.Comments.{Effects, Persist, Query}
@@ -40,7 +43,70 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
 
   alias Helper.T
 
-  @doc "Executes the receipt-backed top-level Comment Command."
+  @pipeline operation: :comment_create,
+            confirmation: Confirmation,
+            target: :command_target,
+            params: :body
+  receipt_pipeline run_create(
+                     thread,
+                     article,
+                     body,
+                     user,
+                     command_id,
+                     branch_id,
+                     community,
+                     info,
+                     command_target
+                   ) do
+    gate(fn _target -> authorize_create(thread, article, branch_id, user, community, info) end)
+
+    change(fn context ->
+      create_new(
+        thread,
+        context.article,
+        body,
+        user,
+        context.info,
+        command_id,
+        context.community
+      )
+    end)
+
+    confirm(fn result -> created_confirmation(result, article) end)
+    present(fn confirmation -> replay_created(confirmation, article, command_id) end)
+  end
+
+  @pipeline operation: :comment_reply,
+            confirmation: Confirmation,
+            target: :target_comment,
+            params: :body
+  receipt_pipeline run_reply(target_comment, body, user, command_id) do
+    gate(fn _target ->
+      with {:ok, {canonical, article}} <-
+             CMS.Gate.check_comment_in_transaction(user, :reply_comment, target_comment) do
+        {:ok, %{comment: canonical, article: article}}
+      end
+    end)
+
+    change(fn %{comment: canonical, article: article} ->
+      reply_new_from_canonical(canonical, article, body, user, command_id)
+    end)
+
+    confirm(fn result ->
+      {:ok,
+       %Confirmation{
+         data: %{
+           "comment_id" => to_string(result.comment.id),
+           "article_id" => result.article.id,
+           "command_id" => command_id
+         }
+       }}
+    end)
+
+    present(fn confirmation -> reply_result(confirmation, target_comment) end)
+  end
+
+  @doc "Executes the top-level Comment `receipt_pipeline`."
   @spec execute(T.thread(), map(), String.t(), User.t(), String.t() | nil) :: T.domain_res(map())
   def execute(thread, article, body, %User{} = user, command_id) when is_map(article) do
     create(thread, article, body, user, command_id)
@@ -134,35 +200,17 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
     if is_nil(command_id) do
       {:error, CmsErrorCat.command_id_required()}
     else
-      %Command{
-        actor: user,
-        command_id: command_id,
-        operation: :comment_create,
-        target: {:comment, article.id},
-        params: body
-      }
-      |> Command.execute(
-        action: fn %{params: body, command_id: command_id} ->
-          with {:ok, result} <-
-                 create_with_access(
-                   thread,
-                   article,
-                   branch_id,
-                   body,
-                   user,
-                   info,
-                   command_id,
-                   community
-                 ) do
-            created_confirmation(result, article)
-          end
-        end,
-        confirmation: Confirmation
+      run_create(
+        thread,
+        article,
+        body,
+        user,
+        command_id,
+        branch_id,
+        community,
+        info,
+        {:comment, article.id}
       )
-      |> then(fn
-        {:ok, confirmation} -> replay_created(confirmation, article, command_id)
-        error -> error
-      end)
       |> normalize_comments_locked()
     end
   end
@@ -185,40 +233,28 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
     {:error, CmsErrorCat.command_result_unavailable()}
   end
 
-  defp create_with_access(:doc, article, branch_id, body, user, info, command_id, community)
+  defp authorize_create(:doc, article, branch_id, user, community, info)
        when is_integer(branch_id) do
     case community do
       %Community{} = community ->
-        CMS.Gate.with_branch_check(
-          user,
-          :create_comment,
-          community,
-          article,
-          branch_id,
-          fn canonical ->
-            create_new(
-              :doc,
-              Map.put(canonical, :branch_id, branch_id),
-              body,
-              user,
-              info,
-              command_id,
-              community
-            )
-          end
-        )
+        with {:ok, canonical} <-
+               CMS.Gate.check_in_transaction(user, :create_comment, article, community, branch_id) do
+          {:ok,
+           %{article: Map.put(canonical, :branch_id, branch_id), community: community, info: info}}
+        end
 
       _ ->
         {:error, :article_binding_context_required}
     end
   end
 
-  defp create_with_access(thread, article, _branch_id, body, user, info, command_id, community) do
+  defp authorize_create(_thread, article, _branch_id, user, community, info) do
     case community do
       %Community{} = community ->
-        CMS.Gate.with_community_check(user, :create_comment, community, article, fn canonical ->
-          create_new(thread, canonical, body, user, info, command_id, community)
-        end)
+        with {:ok, canonical} <-
+               CMS.Gate.check_in_transaction(user, :create_comment, article, community) do
+          {:ok, %{article: canonical, community: community, info: info}}
+        end
 
       _ ->
         {:error, :article_binding_context_required}
@@ -330,21 +366,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
     if is_nil(command_id) do
       {:error, CmsErrorCat.command_id_required()}
     else
-      %Command{
-        actor: user,
-        command_id: command_id,
-        operation: :comment_reply,
-        target: target_comment,
-        params: body
-      }
-      |> Command.execute(
-        action: &reply_action(&1, target_comment),
-        confirmation: Confirmation
-      )
-      |> then(fn
-        {:ok, confirmation} -> reply_result(confirmation, target_comment)
-        error -> error
-      end)
+      run_reply(target_comment, body, user, command_id)
       |> normalize_comments_locked()
     end
   end
@@ -352,22 +374,6 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
   def reply(comment_id, body, %User{} = user, command_id) do
     with {:ok, target_comment} <- FrontDesk.comment(comment_id, mode: :internal) do
       reply(target_comment, body, user, command_id)
-    end
-  end
-
-  defp reply_action(%{actor: user, params: body, command_id: command_id}, target_comment) do
-    with {:ok, result} <-
-           CMS.Gate.with_check(user, :reply_comment, target_comment, fn canonical, article ->
-             reply_new_from_canonical(canonical, article, body, user, command_id)
-           end) do
-      {:ok,
-       %Confirmation{
-         data: %{
-           "comment_id" => to_string(result.comment.id),
-           "article_id" => result.article.id,
-           "command_id" => command_id
-         }
-       }}
     end
   end
 

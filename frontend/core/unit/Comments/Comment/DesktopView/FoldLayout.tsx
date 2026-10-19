@@ -44,7 +44,7 @@ const FoldLayout: FC<TProps> = ({ data, isReply = false }) => {
           className={s.commentBody}
           // oxlint-disable-next-line react/no-danger -- Folded comment bodies use sanitized HTML from the backend renderer.
           dangerouslySetInnerHTML={{
-            __html: data.bodyHtml ?? '',
+            __html: data.body?.html ?? '',
           }}
         />
       ) : (

@@ -3,7 +3,7 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { loadReviewQueue } from '../../server/application'
 
 export const Route = createFileRoute('/review/')({
-  loader: () => loadReviewQueue(),
+  loader: ({ context }) => (context.reviewAllowed ? loadReviewQueue() : []),
   component: ReviewQueue,
 })
 

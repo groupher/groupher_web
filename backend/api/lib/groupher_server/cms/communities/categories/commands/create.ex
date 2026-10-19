@@ -1,13 +1,16 @@
 defmodule GroupherServer.CMS.Communities.Categories.Commands.Create do
   @moduledoc """
-  Creates a Category through the receipt-backed Command boundary.
+  Creates a Category through a `receipt_pipeline`.
 
       GraphQL -> Categories.Commands.Create -> Gate -> Persist -> Receipt
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
-  alias CMS.{Command, Gate}
+  alias CMS.Gate
   alias CMS.Communities.Categories.{Confirmation, Persist}
   alias CMS.Communities.Categories.Commands.Support
   alias CMS.Model.{Category, Community}
@@ -19,31 +22,33 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Create do
           T.domain_res(Category.t())
   def execute(community_ref, attrs, %User{} = actor, command_id) when is_map(attrs) do
     with {:ok, community} <- Support.community(community_ref) do
-      command = %Command{
-        actor: actor,
-        command_id: command_id,
-        operation: :category_create,
-        target: community,
-        params: %{attrs: attrs}
-      }
-
-      with {:ok, confirmation} <-
-             Command.execute(command, action: &action/1, confirmation: Confirmation) do
-        Support.category_result(confirmation)
-      end
+      execute_pipeline(community, attrs, actor, command_id)
     end
   end
 
-  defp action(%{actor: actor, target: community, params: %{attrs: attrs}, command_id: command_id}) do
-    Gate.with_community_check(actor, :category_create, community, fn canonical ->
+  @pipeline operation: :category_create,
+            confirmation: Confirmation,
+            target: :community,
+            params: [:attrs]
+
+  receipt_pipeline execute_pipeline(community, attrs, actor, command_id) do
+    gate(fn candidate -> Gate.check_in_transaction(actor, :category_create, candidate) end)
+
+    change(fn canonical ->
       with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(actor),
            attrs <-
              attrs
              |> Map.drop([:community, "community"])
              |> Map.update(:slug, nil, &Slug.normalize/1),
            {:ok, %Category{} = category} <- Persist.insert_category(attrs, canonical, author.id) do
-        {:ok, Support.confirmation(Confirmation, "category_id", category.id, command_id)}
+        {:ok, category}
       end
     end)
+
+    confirm(fn category ->
+      {:ok, Support.confirmation(Confirmation, "category_id", category.id, command_id)}
+    end)
+
+    present(fn confirmation -> Support.category_result(confirmation) end)
   end
 end

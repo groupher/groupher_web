@@ -118,12 +118,12 @@ export type CommunityActivityFilterInput = {
   actorTypes?: Array<string> | null | undefined
   categories?: Array<string> | null | undefined
   changedFields?: Array<string> | null | undefined
-  denialCodes?: Array<string> | null | undefined
   occurredAfter?: string | null | undefined
   occurredBefore?: string | null | undefined
   onBehalfOfRef?: string | number | null | undefined
   operationRef?: string | number | null | undefined
   outcomes?: Array<string> | null | undefined
+  rejectionCodes?: Array<string> | null | undefined
   resourceTypes?: Array<string> | null | undefined
   source?: string | null | undefined
   subjectRef?: string | number | null | undefined
@@ -1758,7 +1758,7 @@ export type CommunityActivityEventQuery = {
     category: string
     highRisk: boolean
     outcome: string
-    denialCode: string | null
+    rejectionCode: string | null
     changedFields: Array<string>
     source: string
     payload: unknown
@@ -1794,7 +1794,7 @@ export type CommunityActivityEventQuery = {
       category: string
       highRisk: boolean
       outcome: string
-      denialCode: string | null
+      rejectionCode: string | null
       changedFields: Array<string>
       source: string
       payload: unknown
@@ -1824,7 +1824,7 @@ export type CommunityActivityEventQuery = {
       category: string
       highRisk: boolean
       outcome: string
-      denialCode: string | null
+      rejectionCode: string | null
       changedFields: Array<string>
       source: string
       payload: unknown
@@ -1869,7 +1869,7 @@ export type CommunityActivityQuery = {
       category: string
       highRisk: boolean
       outcome: string
-      denialCode: string | null
+      rejectionCode: string | null
       changedFields: Array<string>
       source: string
       payload: unknown
@@ -2052,12 +2052,12 @@ export type PagePostDetailFieldsFragment = {
       shortbio: string | null
     } | null> | null
   } | null
-  document: {
-    json: string | null
-    html: string | null
-    markdown: string | null
-    markdownToc: unknown
-  } | null
+  body: {
+    json: string
+    html: string
+    markdown: string
+    toc: Array<{ id: string; level: number; title: string }>
+  }
   commentsParticipants: Array<{
     login: string | null
     nickname: string | null
@@ -2145,12 +2145,12 @@ export type PageChangelogDetailFieldsFragment = {
       shortbio: string | null
     } | null> | null
   } | null
-  document: {
-    json: string | null
-    html: string | null
-    markdown: string | null
-    markdownToc: unknown
-  } | null
+  body: {
+    json: string
+    html: string
+    markdown: string
+    toc: Array<{ id: string; level: number; title: string }>
+  }
   commentsParticipants: Array<{
     login: string | null
     nickname: string | null
@@ -2251,12 +2251,12 @@ export type PageDocDetailFieldsFragment = {
       shortbio: string | null
     } | null> | null
   } | null
-  document: {
-    json: string | null
-    html: string | null
-    markdown: string | null
-    markdownToc: unknown
-  } | null
+  body: {
+    json: string
+    html: string
+    markdown: string
+    toc: Array<{ id: string; level: number; title: string }>
+  }
   commentsParticipants: Array<{
     login: string | null
     nickname: string | null
@@ -2410,12 +2410,12 @@ export type ChangelogQuery = {
         shortbio: string | null
       } | null> | null
     } | null
-    document: {
-      json: string | null
-      html: string | null
-      markdown: string | null
-      markdownToc: unknown
-    } | null
+    body: {
+      json: string
+      html: string
+      markdown: string
+      toc: Array<{ id: string; level: number; title: string }>
+    }
     commentsParticipants: Array<{
       login: string | null
       nickname: string | null
@@ -2995,12 +2995,12 @@ export type PageDocQuery = {
         shortbio: string | null
       } | null> | null
     } | null
-    document: {
-      json: string | null
-      html: string | null
-      markdown: string | null
-      markdownToc: unknown
-    } | null
+    body: {
+      json: string
+      html: string
+      markdown: string
+      toc: Array<{ id: string; level: number; title: string }>
+    }
     commentsParticipants: Array<{
       login: string | null
       nickname: string | null
@@ -3371,12 +3371,12 @@ export type PostQuery = {
         shortbio: string | null
       } | null> | null
     } | null
-    document: {
-      json: string | null
-      html: string | null
-      markdown: string | null
-      markdownToc: unknown
-    } | null
+    body: {
+      json: string
+      html: string
+      markdown: string
+      toc: Array<{ id: string; level: number; title: string }>
+    }
     commentsParticipants: Array<{
       login: string | null
       nickname: string | null
@@ -3860,6 +3860,7 @@ export type CreatePostMutationVariables = Exact<{
   community: string
   commandId: string | number
   communityTags?: Array<string | number | null | undefined> | string | number | null | undefined
+  cat?: ArticleCatEnum | null | undefined
   linkAddr?: string | null | undefined
   copyRight?: string | null | undefined
 }>
@@ -3881,6 +3882,7 @@ export type UpdatePostFromEditorMutationVariables = Exact<{
   linkAddr?: string | null | undefined
   copyRight?: string | null | undefined
   communityTags?: Array<string | number | null | undefined> | string | number | null | undefined
+  cat?: ArticleCatEnum | null | undefined
 }>
 
 export type UpdatePostFromEditorMutation = {
@@ -3901,6 +3903,56 @@ export type UpdatePostFromEditorMutation = {
       illegalWords: Array<string | null> | null
     } | null
   } | null
+}
+
+export type CreateBlogFromPublisherMutationVariables = Exact<{
+  title: string
+  bodyBag: ArtimentBodyBagInput
+  community: string
+  commandId: string | number
+  communityTags?: Array<string | number | null | undefined> | string | number | null | undefined
+}>
+
+export type CreateBlogFromPublisherMutation = {
+  createBlog: { innerId: string | null; title: string | null } | null
+}
+
+export type UpdateBlogFromPublisherMutationVariables = Exact<{
+  article: ArticlePathInput
+  commandId: string | number
+  expectedVersion: number
+  title?: string | null | undefined
+  bodyBag?: ArtimentBodyBagInput | null | undefined
+  communityTags?: Array<string | number | null | undefined> | string | number | null | undefined
+}>
+
+export type UpdateBlogFromPublisherMutation = {
+  updateBlog: { innerId: string | null; title: string | null } | null
+}
+
+export type CreateChangelogFromPublisherMutationVariables = Exact<{
+  title: string
+  bodyBag: ArtimentBodyBagInput
+  community: string
+  commandId: string | number
+  communityTags?: Array<string | number | null | undefined> | string | number | null | undefined
+}>
+
+export type CreateChangelogFromPublisherMutation = {
+  createChangelog: { innerId: string | null; title: string | null } | null
+}
+
+export type UpdateChangelogFromPublisherMutationVariables = Exact<{
+  article: ArticlePathInput
+  commandId: string | number
+  expectedVersion: number
+  title?: string | null | undefined
+  bodyBag?: ArtimentBodyBagInput | null | undefined
+  communityTags?: Array<string | number | null | undefined> | string | number | null | undefined
+}>
+
+export type UpdateChangelogFromPublisherMutation = {
+  updateChangelog: { innerId: string | null; title: string | null } | null
 }
 
 export type ArticleEditorCommunityQueryVariables = Exact<{
@@ -3976,7 +4028,7 @@ export type ArticleEditorPostQuery = {
       illegalReason: Array<string | null> | null
       illegalWords: Array<string | null> | null
     } | null
-    document: { json: string | null } | null
+    body: { json: string }
   }
 }
 
@@ -4140,7 +4192,7 @@ export type CommentMetaFieldsFragment = {
 
 export type CommentFieldsFragment = {
   innerId: string | null
-  bodyHtml: string | null
+  bodyVersion: number
   isPinned: boolean | null
   isSolution: boolean | null
   floor: number | null
@@ -4152,6 +4204,7 @@ export type CommentFieldsFragment = {
   repliesCount: number | null
   insertedAt: string | null
   updatedAt: string | null
+  body: { html: string; json: string }
   author: {
     login: string | null
     nickname: string | null
@@ -4180,7 +4233,7 @@ export type CommentFieldsFragment = {
 
 export type CommentReplyFieldsFragment = {
   innerId: string | null
-  bodyHtml: string | null
+  bodyVersion: number
   isPinned: boolean | null
   isSolution: boolean | null
   floor: number | null
@@ -4192,6 +4245,7 @@ export type CommentReplyFieldsFragment = {
   repliesCount: number | null
   insertedAt: string | null
   updatedAt: string | null
+  body: { html: string; json: string }
   author: {
     login: string | null
     nickname: string | null
@@ -4218,7 +4272,7 @@ export type CommentReplyFieldsFragment = {
   } | null> | null
   replyToComment: {
     innerId: string | null
-    bodyHtml: string | null
+    bodyVersion: number
     isPinned: boolean | null
     isSolution: boolean | null
     floor: number | null
@@ -4230,6 +4284,7 @@ export type CommentReplyFieldsFragment = {
     repliesCount: number | null
     insertedAt: string | null
     updatedAt: string | null
+    body: { html: string; json: string }
     author: {
       login: string | null
       nickname: string | null
@@ -4269,7 +4324,7 @@ export type CommentPublicEmotionFieldsFragment = {
 
 export type CommentPublicFieldsFragment = {
   innerId: string | null
-  bodyHtml: string | null
+  bodyVersion: number
   isPinned: boolean | null
   isSolution: boolean | null
   floor: number | null
@@ -4279,6 +4334,7 @@ export type CommentPublicFieldsFragment = {
   repliesCount: number | null
   insertedAt: string | null
   updatedAt: string | null
+  body: { html: string; json: string }
   author: {
     login: string | null
     nickname: string | null
@@ -4306,7 +4362,7 @@ export type CommentPublicFieldsFragment = {
 
 export type CommentPublicReplyFieldsFragment = {
   innerId: string | null
-  bodyHtml: string | null
+  bodyVersion: number
   isPinned: boolean | null
   isSolution: boolean | null
   floor: number | null
@@ -4316,6 +4372,7 @@ export type CommentPublicReplyFieldsFragment = {
   repliesCount: number | null
   insertedAt: string | null
   updatedAt: string | null
+  body: { html: string; json: string }
   author: {
     login: string | null
     nickname: string | null
@@ -4341,7 +4398,7 @@ export type CommentPublicReplyFieldsFragment = {
   } | null> | null
   replyToComment: {
     innerId: string | null
-    bodyHtml: string | null
+    bodyVersion: number
     isPinned: boolean | null
     isSolution: boolean | null
     floor: number | null
@@ -4351,6 +4408,7 @@ export type CommentPublicReplyFieldsFragment = {
     repliesCount: number | null
     insertedAt: string | null
     updatedAt: string | null
+    body: { html: string; json: string }
     author: {
       login: string | null
       nickname: string | null
@@ -4398,7 +4456,7 @@ export type PagedCommentsQuery = {
     pageNumber: number | null
     entries: Array<{
       innerId: string | null
-      bodyHtml: string | null
+      bodyVersion: number
       isPinned: boolean | null
       isSolution: boolean | null
       floor: number | null
@@ -4412,7 +4470,7 @@ export type PagedCommentsQuery = {
       updatedAt: string | null
       replyToComment: {
         innerId: string | null
-        bodyHtml: string | null
+        bodyVersion: number
         isPinned: boolean | null
         isSolution: boolean | null
         floor: number | null
@@ -4424,6 +4482,7 @@ export type PagedCommentsQuery = {
         repliesCount: number | null
         insertedAt: string | null
         updatedAt: string | null
+        body: { html: string; json: string }
         author: {
           login: string | null
           nickname: string | null
@@ -4451,7 +4510,7 @@ export type PagedCommentsQuery = {
       } | null
       replies: Array<{
         innerId: string | null
-        bodyHtml: string | null
+        bodyVersion: number
         isPinned: boolean | null
         isSolution: boolean | null
         floor: number | null
@@ -4463,6 +4522,7 @@ export type PagedCommentsQuery = {
         repliesCount: number | null
         insertedAt: string | null
         updatedAt: string | null
+        body: { html: string; json: string }
         author: {
           login: string | null
           nickname: string | null
@@ -4489,7 +4549,7 @@ export type PagedCommentsQuery = {
         } | null> | null
         replyToComment: {
           innerId: string | null
-          bodyHtml: string | null
+          bodyVersion: number
           isPinned: boolean | null
           isSolution: boolean | null
           floor: number | null
@@ -4501,6 +4561,7 @@ export type PagedCommentsQuery = {
           repliesCount: number | null
           insertedAt: string | null
           updatedAt: string | null
+          body: { html: string; json: string }
           author: {
             login: string | null
             nickname: string | null
@@ -4527,6 +4588,7 @@ export type PagedCommentsQuery = {
           } | null> | null
         } | null
       } | null> | null
+      body: { html: string; json: string }
       author: {
         login: string | null
         nickname: string | null
@@ -4569,7 +4631,7 @@ export type PublicPagedCommentsQuery = {
     pageNumber: number | null
     entries: Array<{
       innerId: string | null
-      bodyHtml: string | null
+      bodyVersion: number
       isPinned: boolean | null
       isSolution: boolean | null
       floor: number | null
@@ -4581,7 +4643,7 @@ export type PublicPagedCommentsQuery = {
       updatedAt: string | null
       replyToComment: {
         innerId: string | null
-        bodyHtml: string | null
+        bodyVersion: number
         isPinned: boolean | null
         isSolution: boolean | null
         floor: number | null
@@ -4591,6 +4653,7 @@ export type PublicPagedCommentsQuery = {
         repliesCount: number | null
         insertedAt: string | null
         updatedAt: string | null
+        body: { html: string; json: string }
         author: {
           login: string | null
           nickname: string | null
@@ -4617,7 +4680,7 @@ export type PublicPagedCommentsQuery = {
       } | null
       replies: Array<{
         innerId: string | null
-        bodyHtml: string | null
+        bodyVersion: number
         isPinned: boolean | null
         isSolution: boolean | null
         floor: number | null
@@ -4627,6 +4690,7 @@ export type PublicPagedCommentsQuery = {
         repliesCount: number | null
         insertedAt: string | null
         updatedAt: string | null
+        body: { html: string; json: string }
         author: {
           login: string | null
           nickname: string | null
@@ -4652,7 +4716,7 @@ export type PublicPagedCommentsQuery = {
         } | null> | null
         replyToComment: {
           innerId: string | null
-          bodyHtml: string | null
+          bodyVersion: number
           isPinned: boolean | null
           isSolution: boolean | null
           floor: number | null
@@ -4662,6 +4726,7 @@ export type PublicPagedCommentsQuery = {
           repliesCount: number | null
           insertedAt: string | null
           updatedAt: string | null
+          body: { html: string; json: string }
           author: {
             login: string | null
             nickname: string | null
@@ -4687,6 +4752,7 @@ export type PublicPagedCommentsQuery = {
           } | null> | null
         } | null
       } | null> | null
+      body: { html: string; json: string }
       author: {
         login: string | null
         nickname: string | null
@@ -4727,7 +4793,7 @@ export type PagedCommentRepliesQuery = {
     pageNumber: number | null
     entries: Array<{
       innerId: string | null
-      bodyHtml: string | null
+      bodyVersion: number
       isPinned: boolean | null
       isSolution: boolean | null
       floor: number | null
@@ -4739,6 +4805,7 @@ export type PagedCommentRepliesQuery = {
       repliesCount: number | null
       insertedAt: string | null
       updatedAt: string | null
+      body: { html: string; json: string }
       author: {
         login: string | null
         nickname: string | null
@@ -4765,7 +4832,7 @@ export type PagedCommentRepliesQuery = {
       } | null> | null
       replyToComment: {
         innerId: string | null
-        bodyHtml: string | null
+        bodyVersion: number
         isPinned: boolean | null
         isSolution: boolean | null
         floor: number | null
@@ -4777,6 +4844,7 @@ export type PagedCommentRepliesQuery = {
         repliesCount: number | null
         insertedAt: string | null
         updatedAt: string | null
+        body: { html: string; json: string }
         author: {
           login: string | null
           nickname: string | null
@@ -4808,7 +4876,7 @@ export type PagedCommentRepliesQuery = {
 
 export type CreateCommentMutationVariables = Exact<{
   article: ArticlePathInput
-  body: string
+  bodyBag: ArtimentBodyBagInput
   commandId: string | number
 }>
 
@@ -4817,7 +4885,7 @@ export type CreateCommentMutation = {
     commandId: string
     comment: {
       innerId: string | null
-      bodyHtml: string | null
+      bodyVersion: number
       isPinned: boolean | null
       isSolution: boolean | null
       floor: number | null
@@ -4829,6 +4897,7 @@ export type CreateCommentMutation = {
       repliesCount: number | null
       insertedAt: string | null
       updatedAt: string | null
+      body: { html: string; json: string }
       author: {
         login: string | null
         nickname: string | null
@@ -4874,7 +4943,8 @@ export type CreateCommentMutation = {
 
 export type UpdateCommentMutationVariables = Exact<{
   comment: CommentPathInput
-  body: string
+  bodyBag: ArtimentBodyBagInput
+  expectedVersion: number
   commandId: string | number
 }>
 
@@ -4883,7 +4953,8 @@ export type UpdateCommentMutation = {
     commandId: string
     comment: {
       innerId: string | null
-      bodyHtml: string | null
+      bodyVersion: number
+      body: { html: string }
       replyToComment: { innerId: string | null } | null
     } | null
     articleStats: {
@@ -4928,9 +4999,8 @@ export type OneCommentQueryVariables = Exact<{
 
 export type OneCommentQuery = {
   oneComment: {
-    body: string | null
     innerId: string | null
-    bodyHtml: string | null
+    bodyVersion: number
     isPinned: boolean | null
     isSolution: boolean | null
     floor: number | null
@@ -4943,6 +5013,7 @@ export type OneCommentQuery = {
     insertedAt: string | null
     updatedAt: string | null
     article: { innerId: string | null; commentsRevision: number | null } | null
+    body: { html: string; json: string }
     author: {
       login: string | null
       nickname: string | null
@@ -4981,9 +5052,8 @@ export type ReconcileCommentsQuery = {
     entries: Array<{
       commentInnerId: string
       comment: {
-        body: string | null
         innerId: string | null
-        bodyHtml: string | null
+        bodyVersion: number
         isPinned: boolean | null
         isSolution: boolean | null
         floor: number | null
@@ -4996,6 +5066,7 @@ export type ReconcileCommentsQuery = {
         insertedAt: string | null
         updatedAt: string | null
         article: { innerId: string | null; commentsRevision: number | null } | null
+        body: { html: string; json: string }
         author: {
           login: string | null
           nickname: string | null
@@ -5027,7 +5098,7 @@ export type ReconcileCommentsQuery = {
 
 export type ReplyCommentMutationVariables = Exact<{
   comment: CommentPathInput
-  body: string
+  bodyBag: ArtimentBodyBagInput
   commandId: string | number
 }>
 
@@ -5036,7 +5107,7 @@ export type ReplyCommentMutation = {
     commandId: string
     comment: {
       innerId: string | null
-      bodyHtml: string | null
+      bodyVersion: number
       isPinned: boolean | null
       isSolution: boolean | null
       floor: number | null
@@ -5050,7 +5121,7 @@ export type ReplyCommentMutation = {
       updatedAt: string | null
       replyToComment: {
         innerId: string | null
-        bodyHtml: string | null
+        bodyVersion: number
         isPinned: boolean | null
         isSolution: boolean | null
         floor: number | null
@@ -5062,6 +5133,7 @@ export type ReplyCommentMutation = {
         repliesCount: number | null
         insertedAt: string | null
         updatedAt: string | null
+        body: { html: string; json: string }
         author: {
           login: string | null
           nickname: string | null
@@ -5087,6 +5159,7 @@ export type ReplyCommentMutation = {
           } | null> | null
         } | null> | null
       } | null
+      body: { html: string; json: string }
       author: {
         login: string | null
         nickname: string | null
@@ -5323,7 +5396,7 @@ export type PagedPublishedCommentsQuery = {
     pageNumber: number | null
     entries: Array<{
       innerId: string | null
-      bodyHtml: string | null
+      bodyVersion: number
       isPinned: boolean | null
       isSolution: boolean | null
       floor: number | null
@@ -5341,6 +5414,7 @@ export type PagedPublishedCommentsQuery = {
         thread: Thread | null
         author: { nickname: string | null; login: string | null } | null
       } | null
+      body: { html: string; json: string }
       author: {
         login: string | null
         nickname: string | null
@@ -5453,8 +5527,8 @@ export type DocCoverQuery = {
       href: string
       doc: {
         title: string | null
+        thumbnail: unknown
         author: { avatar: string | null; nickname: string | null } | null
-        document: { thumbnail: unknown } | null
       }
     }>
   } | null
@@ -6842,12 +6916,12 @@ export type DocDraftQuery = {
     insertedAt: string | null
     updatedAt: string | null
     author: { login: string | null; nickname: string | null; avatar: string | null } | null
-    document: {
-      json: string | null
-      markdown: string | null
-      markdownToc: unknown
-      html: string | null
-    } | null
+    body: {
+      json: string
+      markdown: string
+      html: string
+      toc: Array<{ id: string; level: number; title: string }>
+    }
   } | null
 }
 
@@ -6868,9 +6942,9 @@ export type DocBranchVersionsQuery = {
       slug: string | null
       subtitle: string | null
       digest: string | null
-      documentJson: string | null
       bodyHash: string | null
       schemaVersion: number | null
+      body: { json: string }
     }
   } | null> | null
 }
@@ -6892,7 +6966,7 @@ export type RestoreDocRevisionToDraftMutation = {
     title: string | null
     subtitle: string | null
     slug: string | null
-    document: { json: string | null } | null
+    body: { json: string }
   } | null
 }
 
@@ -7107,12 +7181,12 @@ export type UpdateDocDraftMutation = {
     insertedAt: string | null
     updatedAt: string | null
     author: { login: string | null; nickname: string | null; avatar: string | null } | null
-    document: {
-      json: string | null
-      markdown: string | null
-      markdownToc: unknown
-      html: string | null
-    } | null
+    body: {
+      json: string
+      markdown: string
+      html: string
+      toc: Array<{ id: string; level: number; title: string }>
+    }
   } | null
 }
 
@@ -8849,14 +8923,25 @@ export const PagePostDetailFieldsFragmentDoc = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'document' },
+            name: { kind: 'Name', value: 'body' },
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'json' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'html' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'markdown' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'markdownToc' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'toc' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'level' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -9094,14 +9179,25 @@ export const PageChangelogDetailFieldsFragmentDoc = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'document' },
+            name: { kind: 'Name', value: 'body' },
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'json' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'html' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'markdown' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'markdownToc' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'toc' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'level' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -9376,14 +9472,25 @@ export const PageDocDetailFieldsFragmentDoc = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'document' },
+            name: { kind: 'Name', value: 'body' },
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'json' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'html' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'markdown' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'markdownToc' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'toc' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'level' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -10120,7 +10227,18 @@ export const CommentFieldsFragmentDoc = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -10233,7 +10351,18 @@ export const CommentReplyFieldsFragmentDoc = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -10351,7 +10480,18 @@ export const CommentReplyFieldsFragmentDoc = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -10438,7 +10578,18 @@ export const CommentPublicFieldsFragmentDoc = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -10551,7 +10702,18 @@ export const CommentPublicReplyFieldsFragmentDoc = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -10669,7 +10831,18 @@ export const CommentPublicReplyFieldsFragmentDoc = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -16288,7 +16461,7 @@ export const CommunityActivityEventDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'category' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'highRisk' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'outcome' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'denialCode' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'rejectionCode' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'changedFields' } },
                 {
                   kind: 'Field',
@@ -16379,7 +16552,7 @@ export const CommunityActivityEventDocument = {
                       { kind: 'Field', name: { kind: 'Name', value: 'category' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'highRisk' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'outcome' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'denialCode' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'rejectionCode' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'changedFields' } },
                       {
                         kind: 'Field',
@@ -16459,7 +16632,7 @@ export const CommunityActivityEventDocument = {
                       { kind: 'Field', name: { kind: 'Name', value: 'category' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'highRisk' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'outcome' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'denialCode' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'rejectionCode' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'changedFields' } },
                       {
                         kind: 'Field',
@@ -16607,7 +16780,7 @@ export const CommunityActivityDocument = {
                       { kind: 'Field', name: { kind: 'Name', value: 'category' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'highRisk' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'outcome' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'denialCode' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'rejectionCode' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'changedFields' } },
                       {
                         kind: 'Field',
@@ -17149,14 +17322,25 @@ export const ChangelogDocument = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'document' },
+            name: { kind: 'Name', value: 'body' },
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'json' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'html' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'markdown' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'markdownToc' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'toc' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'level' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -18457,14 +18641,25 @@ export const PageDocDocument = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'document' },
+            name: { kind: 'Name', value: 'body' },
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'json' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'html' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'markdown' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'markdownToc' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'toc' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'level' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -19433,14 +19628,25 @@ export const PostDocument = {
           },
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'document' },
+            name: { kind: 'Name', value: 'body' },
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'json' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'html' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'markdown' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'markdownToc' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'toc' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'level' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -20766,6 +20972,11 @@ export const CreatePostDocument = {
         },
         {
           kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'cat' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ArticleCatEnum' } },
+        },
+        {
+          kind: 'VariableDefinition',
           variable: { kind: 'Variable', name: { kind: 'Name', value: 'linkAddr' } },
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
         },
@@ -20806,6 +21017,11 @@ export const CreatePostDocument = {
                 kind: 'Argument',
                 name: { kind: 'Name', value: 'communityTags' },
                 value: { kind: 'Variable', name: { kind: 'Name', value: 'communityTags' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'cat' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'cat' } },
               },
               {
                 kind: 'Argument',
@@ -20899,6 +21115,11 @@ export const UpdatePostFromEditorDocument = {
             type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
           },
         },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'cat' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ArticleCatEnum' } },
+        },
       ],
       selectionSet: {
         kind: 'SelectionSet',
@@ -20946,6 +21167,11 @@ export const UpdatePostFromEditorDocument = {
                 kind: 'Argument',
                 name: { kind: 'Name', value: 'communityTags' },
                 value: { kind: 'Variable', name: { kind: 'Name', value: 'communityTags' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'cat' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'cat' } },
               },
             ],
             selectionSet: {
@@ -21002,6 +21228,412 @@ export const UpdatePostFromEditorDocument = {
     },
   ],
 } as unknown as DocumentNode<UpdatePostFromEditorMutation, UpdatePostFromEditorMutationVariables>
+export const CreateBlogFromPublisherDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateBlogFromPublisher' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'title' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ArtimentBodyBagInput' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'community' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'commandId' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'communityTags' } },
+          type: {
+            kind: 'ListType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createBlog' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'title' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'bodyBag' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'community' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'community' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'commandId' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'commandId' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'communityTags' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'communityTags' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateBlogFromPublisherMutation,
+  CreateBlogFromPublisherMutationVariables
+>
+export const UpdateBlogFromPublisherDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UpdateBlogFromPublisher' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'article' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ArticlePathInput' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'commandId' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'expectedVersion' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'title' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ArtimentBodyBagInput' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'communityTags' } },
+          type: {
+            kind: 'ListType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateBlog' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'article' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'article' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'commandId' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'commandId' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'expectedVersion' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'expectedVersion' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'title' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'bodyBag' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'communityTags' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'communityTags' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateBlogFromPublisherMutation,
+  UpdateBlogFromPublisherMutationVariables
+>
+export const CreateChangelogFromPublisherDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateChangelogFromPublisher' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'title' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ArtimentBodyBagInput' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'community' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'commandId' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'communityTags' } },
+          type: {
+            kind: 'ListType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createChangelog' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'title' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'bodyBag' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'community' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'community' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'commandId' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'commandId' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'communityTags' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'communityTags' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateChangelogFromPublisherMutation,
+  CreateChangelogFromPublisherMutationVariables
+>
+export const UpdateChangelogFromPublisherDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'UpdateChangelogFromPublisher' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'article' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ArticlePathInput' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'commandId' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'expectedVersion' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'title' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ArtimentBodyBagInput' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'communityTags' } },
+          type: {
+            kind: 'ListType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateChangelog' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'article' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'article' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'commandId' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'commandId' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'expectedVersion' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'expectedVersion' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'title' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'title' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'bodyBag' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'communityTags' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'communityTags' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateChangelogFromPublisherMutation,
+  UpdateChangelogFromPublisherMutationVariables
+>
 export const ArticleEditorCommunityDocument = {
   kind: 'Document',
   definitions: [
@@ -21152,7 +21784,7 @@ export const ArticleEditorPostDocument = {
                 },
                 {
                   kind: 'Field',
-                  name: { kind: 'Name', value: 'document' },
+                  name: { kind: 'Name', value: 'body' },
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [{ kind: 'Field', name: { kind: 'Name', value: 'json' } }],
@@ -21953,7 +22585,18 @@ export const PagedCommentsDocument = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -22006,7 +22649,18 @@ export const PagedCommentsDocument = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -22241,7 +22895,18 @@ export const PublicPagedCommentsDocument = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -22295,7 +22960,18 @@ export const PublicPagedCommentsDocument = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -22499,7 +23175,18 @@ export const PagedCommentRepliesDocument = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -22552,7 +23239,18 @@ export const PagedCommentRepliesDocument = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -22627,10 +23325,10 @@ export const CreateCommentDocument = {
         },
         {
           kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'body' } },
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
           type: {
             kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ArtimentBodyBagInput' } },
           },
         },
         {
@@ -22656,8 +23354,8 @@ export const CreateCommentDocument = {
               },
               {
                 kind: 'Argument',
-                name: { kind: 'Name', value: 'body' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'body' } },
+                name: { kind: 'Name', value: 'bodyBag' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
               },
               {
                 kind: 'Argument',
@@ -22761,7 +23459,18 @@ export const CreateCommentDocument = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -22859,10 +23568,18 @@ export const UpdateCommentDocument = {
         },
         {
           kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'body' } },
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
           type: {
             kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ArtimentBodyBagInput' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'expectedVersion' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
           },
         },
         {
@@ -22888,8 +23605,13 @@ export const UpdateCommentDocument = {
               },
               {
                 kind: 'Argument',
-                name: { kind: 'Name', value: 'body' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'body' } },
+                name: { kind: 'Name', value: 'bodyBag' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'expectedVersion' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'expectedVersion' } },
               },
               {
                 kind: 'Argument',
@@ -22908,7 +23630,15 @@ export const UpdateCommentDocument = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'body' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [{ kind: 'Field', name: { kind: 'Name', value: 'html' } }],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'replyToComment' },
@@ -23073,7 +23803,6 @@ export const OneCommentDocument = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'body' } },
                 { kind: 'FragmentSpread', name: { kind: 'Name', value: 'CommentFields' } },
                 {
                   kind: 'Field',
@@ -23155,7 +23884,18 @@ export const OneCommentDocument = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -23278,7 +24018,6 @@ export const ReconcileCommentsDocument = {
                         selectionSet: {
                           kind: 'SelectionSet',
                           selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'body' } },
                             {
                               kind: 'FragmentSpread',
                               name: { kind: 'Name', value: 'CommentFields' },
@@ -23372,7 +24111,18 @@ export const ReconcileCommentsDocument = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -23437,10 +24187,10 @@ export const ReplyCommentDocument = {
         },
         {
           kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'body' } },
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
           type: {
             kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ArtimentBodyBagInput' } },
           },
         },
         {
@@ -23466,8 +24216,8 @@ export const ReplyCommentDocument = {
               },
               {
                 kind: 'Argument',
-                name: { kind: 'Name', value: 'body' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'body' } },
+                name: { kind: 'Name', value: 'bodyBag' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'bodyBag' } },
               },
               {
                 kind: 'Argument',
@@ -23584,7 +24334,18 @@ export const ReplyCommentDocument = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -24618,7 +25379,18 @@ export const PagedPublishedCommentsDocument = {
         kind: 'SelectionSet',
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'bodyHtml' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'body' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'html' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'json' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'bodyVersion' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'author' },
@@ -24818,16 +25590,7 @@ export const DocCoverDocument = {
                                 ],
                               },
                             },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'document' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'thumbnail' } },
-                                ],
-                              },
-                            },
+                            { kind: 'Field', name: { kind: 'Name', value: 'thumbnail' } },
                           ],
                         },
                       },
@@ -28492,13 +29255,24 @@ export const DocDraftDocument = {
                 },
                 {
                   kind: 'Field',
-                  name: { kind: 'Name', value: 'document' },
+                  name: { kind: 'Name', value: 'body' },
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'json' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'markdown' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'markdownToc' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'toc' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'level' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                          ],
+                        },
+                      },
                       { kind: 'Field', name: { kind: 'Name', value: 'html' } },
                     ],
                   },
@@ -28572,7 +29346,14 @@ export const DocBranchVersionsDocument = {
                       { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'subtitle' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'digest' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'documentJson' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'body' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [{ kind: 'Field', name: { kind: 'Name', value: 'json' } }],
+                        },
+                      },
                       { kind: 'Field', name: { kind: 'Name', value: 'bodyHash' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'schemaVersion' } },
                     ],
@@ -28677,7 +29458,7 @@ export const RestoreDocRevisionToDraftDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
                 {
                   kind: 'Field',
-                  name: { kind: 'Name', value: 'document' },
+                  name: { kind: 'Name', value: 'body' },
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [{ kind: 'Field', name: { kind: 'Name', value: 'json' } }],
@@ -29296,13 +30077,24 @@ export const UpdateDocDraftDocument = {
                 },
                 {
                   kind: 'Field',
-                  name: { kind: 'Name', value: 'document' },
+                  name: { kind: 'Name', value: 'body' },
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'json' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'markdown' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'markdownToc' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'toc' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'level' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                          ],
+                        },
+                      },
                       { kind: 'Field', name: { kind: 'Name', value: 'html' } },
                     ],
                   },

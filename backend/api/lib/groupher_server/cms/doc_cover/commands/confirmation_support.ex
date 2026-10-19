@@ -1,7 +1,7 @@
 defmodule GroupherServer.CMS.DocCover.Commands.ConfirmationSupport do
   @moduledoc """
   Builds and presents the small JSON-safe result envelope used by DocCover
-  receipt-backed commands.
+  `receipt_pipeline` commands.
 
       Persist result
         -> normalized result map

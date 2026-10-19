@@ -33,6 +33,10 @@ bundle。
 具体业务字段和审批模型由 Phoenix 的 `CMS.CommunityApplications` Context 定义，
 `Apply` 不建立独立业务后端。
 
+Apply 页面允许匿名访问和阅读；申请、查看或取消自己的申请必须登录，审核操作还必须具备对应
+Passport。当前用户由应用根节点的 AccountStore 统一提供，具体边界见
+[`前端 Account、Passport 与 Gate`](../architecture/frontend-account-passport-gate.md#apply)。
+
 ## URL 与部署
 
 推荐继续使用主站路径：

@@ -8,10 +8,17 @@ defmodule GroupherServer.Messaging.Commands.MarkReadAll do
           -> typed update result
   """
 
-  alias GroupherServer.{Messaging, Accounts}
+  use GroupherServer.CommandPipeline
 
-  alias Accounts.Model.User
+  alias GroupherServer.Messaging
+
   alias Messaging.Inbox.Persist
+
+  @pipeline operation: :messaging_mark_read_all, access: :open, target: :user, params: [:type]
+
+  direct_pipeline run(type, user) do
+    change(fn _user -> Persist.mark_read_all(type, user) end)
+  end
 
   @doc """
   Marks every mention or notification row as read for the user.
@@ -20,6 +27,4 @@ defmodule GroupherServer.Messaging.Commands.MarkReadAll do
 
       Messaging.Commands.MarkReadAll.run(:notification, user)
   """
-  @spec run(:mention | :notification, User.t()) :: term()
-  def run(type, %User{} = user), do: Persist.mark_read_all(type, user)
 end

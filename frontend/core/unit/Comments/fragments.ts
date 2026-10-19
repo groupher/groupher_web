@@ -36,7 +36,11 @@ export const CommentMetaFields = graphql(`
 export const CommentFields = graphql(`
   fragment CommentFields on Comment {
     innerId
-    bodyHtml
+    body {
+      html
+      json
+    }
+    bodyVersion
     author {
       ...CommentAuthorFields
     }
@@ -63,7 +67,11 @@ export const CommentFields = graphql(`
 export const CommentReplyFields = graphql(`
   fragment CommentReplyFields on CommentReply {
     innerId
-    bodyHtml
+    body {
+      html
+      json
+    }
+    bodyVersion
     author {
       ...CommentAuthorFields
     }
@@ -107,7 +115,11 @@ export const CommentPublicEmotionFields = graphql(`
 export const CommentPublicFields = graphql(`
   fragment CommentPublicFields on Comment {
     innerId
-    bodyHtml
+    body {
+      html
+      json
+    }
+    bodyVersion
     author {
       ...CommentAuthorFields
     }
@@ -132,7 +144,11 @@ export const CommentPublicFields = graphql(`
 export const CommentPublicReplyFields = graphql(`
   fragment CommentPublicReplyFields on CommentReply {
     innerId
-    bodyHtml
+    body {
+      html
+      json
+    }
+    bodyVersion
     author {
       ...CommentAuthorFields
     }

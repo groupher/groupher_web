@@ -139,6 +139,7 @@ defmodule GroupherServer.CMS.Comments.Query do
 
     Comment
     |> CMS.Gate.scope(actor, :list, CommentContext.all_public())
+    |> preload(:body)
     |> join(:inner, [comment, ...], author in assoc(comment, :author),
       as: :published_comment_author
     )
@@ -163,6 +164,7 @@ defmodule GroupherServer.CMS.Comments.Query do
 
     Comment
     |> CMS.Gate.scope(actor, :list, comment_scope(thread))
+    |> preload(:body)
     |> join(:inner, [comment, ...], author in assoc(comment, :author),
       as: :published_comment_author
     )
@@ -303,7 +305,7 @@ defmodule GroupherServer.CMS.Comments.Query do
     with {:ok, article} <- stable_article(thread, article_id) do
       thread_query = article_comments(article.id)
       article_author_id = article_author_id(thread, article_id)
-      query = from(c in Comment, preload: [reply_to_comment: :author])
+      query = from(c in Comment, preload: [:body, reply_to_comment: :author])
 
       query
       |> CMS.Gate.scope(user, :list, comment_scope(thread))
@@ -351,7 +353,7 @@ defmodule GroupherServer.CMS.Comments.Query do
     sort = Map.get(filters, :sort, :asc_inserted)
 
     with {:ok, root_comment} <- Replies.root(comment_id) do
-      query = from(c in Comment, preload: [reply_to_comment: :author])
+      query = from(c in Comment, preload: [:body, reply_to_comment: :author])
       root_comment_id = root_comment.id
 
       where_query =
@@ -390,7 +392,7 @@ defmodule GroupherServer.CMS.Comments.Query do
           pinned_comments =
             pinned_comments
             |> Enum.slice(0, @pinned_comment_limit)
-            |> Repo.preload(reply_to_comment: :author)
+            |> Repo.preload([:body, reply_to_comment: :author])
 
           entries = pinned_comments ++ paged_comments.entries
           pinned_comment_count = length(pinned_comments)

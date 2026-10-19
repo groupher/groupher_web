@@ -7,6 +7,7 @@ const createPost = graphql(`
     $community: String!
     $commandId: ID!
     $communityTags: [ID]
+    $cat: ArticleCatEnum
     $linkAddr: String
     $copyRight: String
   ) {
@@ -16,6 +17,7 @@ const createPost = graphql(`
       community: $community
       commandId: $commandId
       communityTags: $communityTags
+      cat: $cat
       linkAddr: $linkAddr
       copyRight: $copyRight
     ) {
@@ -38,6 +40,7 @@ const updatePost = graphql(`
     $linkAddr: String
     $copyRight: String
     $communityTags: [ID]
+    $cat: ArticleCatEnum
   ) {
     updatePost(
       article: $article
@@ -48,6 +51,7 @@ const updatePost = graphql(`
       linkAddr: $linkAddr
       copyRight: $copyRight
       communityTags: $communityTags
+      cat: $cat
     ) {
       innerId
       title
@@ -60,6 +64,94 @@ const updatePost = graphql(`
         illegalReason
         illegalWords
       }
+    }
+  }
+`)
+
+const createBlog = graphql(`
+  mutation CreateBlogFromPublisher(
+    $title: String!
+    $bodyBag: ArtimentBodyBagInput!
+    $community: String!
+    $commandId: ID!
+    $communityTags: [ID]
+  ) {
+    createBlog(
+      title: $title
+      bodyBag: $bodyBag
+      community: $community
+      commandId: $commandId
+      communityTags: $communityTags
+    ) {
+      innerId
+      title
+    }
+  }
+`)
+
+const updateBlog = graphql(`
+  mutation UpdateBlogFromPublisher(
+    $article: ArticlePathInput!
+    $commandId: ID!
+    $expectedVersion: Int!
+    $title: String
+    $bodyBag: ArtimentBodyBagInput
+    $communityTags: [ID]
+  ) {
+    updateBlog(
+      article: $article
+      commandId: $commandId
+      expectedVersion: $expectedVersion
+      title: $title
+      bodyBag: $bodyBag
+      communityTags: $communityTags
+    ) {
+      innerId
+      title
+    }
+  }
+`)
+
+const createChangelog = graphql(`
+  mutation CreateChangelogFromPublisher(
+    $title: String!
+    $bodyBag: ArtimentBodyBagInput!
+    $community: String!
+    $commandId: ID!
+    $communityTags: [ID]
+  ) {
+    createChangelog(
+      title: $title
+      bodyBag: $bodyBag
+      community: $community
+      commandId: $commandId
+      communityTags: $communityTags
+    ) {
+      innerId
+      title
+    }
+  }
+`)
+
+const updateChangelog = graphql(`
+  mutation UpdateChangelogFromPublisher(
+    $article: ArticlePathInput!
+    $commandId: ID!
+    $expectedVersion: Int!
+    $title: String
+    $bodyBag: ArtimentBodyBagInput
+    $communityTags: [ID]
+  ) {
+    updateChangelog(
+      article: $article
+      commandId: $commandId
+      expectedVersion: $expectedVersion
+      title: $title
+      bodyBag: $bodyBag
+      communityTags: $communityTags
+    ) {
+      innerId
+      title
     }
   }
 `)
@@ -104,7 +196,7 @@ const post = graphql(`
         illegalReason
         illegalWords
       }
-      document {
+      body {
         json
       }
     }
@@ -113,7 +205,11 @@ const post = graphql(`
 
 export default {
   post,
+  createBlog,
+  createChangelog,
   updatePost,
+  updateBlog,
+  updateChangelog,
   createPost,
   community,
 }

@@ -23,7 +23,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.CommentReport do
         )
 
       {:ok, _} =
-        CMS.AbuseReports.comment(comment, mock_comment(), "attr", user, Ecto.UUID.generate())
+        CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
 
       filter = %{content_type: :comment, content_id: comment.id, page: 1, size: 20}
       {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
@@ -50,10 +50,10 @@ defmodule GroupherServer.Test.CMS.AbuseReports.CommentReport do
         )
 
       {:ok, _} =
-        CMS.AbuseReports.comment(comment, mock_comment(), "attr", user, Ecto.UUID.generate())
+        CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
 
       {:ok, _} =
-        CMS.AbuseReports.comment(comment, mock_comment(), "attr", user2, Ecto.UUID.generate())
+        CMS.AbuseReports.comment(comment, "comment reason", "attr", user2, Ecto.UUID.generate())
 
       filter = %{content_type: :comment, content_id: comment.id, page: 1, size: 20}
       {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
@@ -81,12 +81,12 @@ defmodule GroupherServer.Test.CMS.AbuseReports.CommentReport do
         )
 
       {:ok, comment} =
-        CMS.AbuseReports.comment(comment, mock_comment(), "attr", user, Ecto.UUID.generate())
+        CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
 
       assert {:error, _} =
                CMS.AbuseReports.comment(
                  comment,
-                 mock_comment(),
+                 "comment reason",
                  "attr",
                  user,
                  Ecto.UUID.generate()

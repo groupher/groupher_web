@@ -11,7 +11,7 @@ const mocks = vi.hoisted(() => ({
   stageDocImportRequestBytes: vi.fn(),
 }))
 
-vi.mock('@groupher/artiment-publisher', () => ({
+vi.mock('@groupher/content-publisher', () => ({
   ArtimentPublisherError: class ArtimentPublisherError extends Error {},
   publishArtiment: mocks.publishArtiment,
 }))

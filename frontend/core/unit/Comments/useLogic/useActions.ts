@@ -60,7 +60,11 @@ export default function useActions(): TActions {
   }
 
   const closeUpdateEditor = (): void => {
-    commentsStore.commit({ showUpdateEditor: false, updateInnerId: null })
+    commentsStore.commit({
+      showUpdateEditor: false,
+      updateBodyVersion: null,
+      updateInnerId: null,
+    })
   }
 
   const setWordsCountState = (wordsCountReady: boolean): void => {

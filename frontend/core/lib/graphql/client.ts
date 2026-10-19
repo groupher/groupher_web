@@ -148,11 +148,12 @@ const responseAuthFailure = async (
   try {
     const payload = (await response.clone().json()) as {
       data?: { sessionState?: { isValid?: unknown } }
+      error?: { code?: unknown }
       errors?: Array<{ extensions?: { code?: unknown } }>
     }
-    const rawCode = payload.errors
-      ?.map((error) => error.extensions?.code)
-      .find((value) => value !== undefined)
+    const rawCode =
+      payload.error?.code ??
+      payload.errors?.map((error) => error.extensions?.code).find((value) => value !== undefined)
     const code = normalizeAuthCode(rawCode)
     // `sessionState` is the explicit authenticated probe. The public nullable
     // `me` field must never be used as a refresh signal.

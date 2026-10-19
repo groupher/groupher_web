@@ -176,4 +176,17 @@ defmodule GroupherServer.Activity.Workflow do
   defdelegate const_normalize_source(arg1),
     to: GroupherServer.Activity.Const,
     as: :normalize_source
+
+  @doc """
+  Checks an Activity source through the Context-owned constant boundary.
+
+      Activity -> Activity.Workflow -> Activity.Const
+
+  ## Examples
+
+      Activity.Workflow.const_valid_source?(:api)
+  """
+  defdelegate const_valid_source?(arg1),
+    to: GroupherServer.Activity.Const,
+    as: :valid_source?
 end

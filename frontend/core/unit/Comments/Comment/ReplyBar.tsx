@@ -24,7 +24,7 @@ const CommentReplyBar: FC<TProps> = ({ data }) => {
         className={s.replyToBody}
         // oxlint-disable-next-line react/no-danger -- Reply snippets are rendered from sanitized backend HTML.
         dangerouslySetInnerHTML={{
-          __html: data.bodyHtml ?? '',
+          __html: data.body?.html ?? '',
         }}
       />
       <div className='grow' />

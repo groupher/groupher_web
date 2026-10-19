@@ -8,9 +8,44 @@ defmodule GroupherServer.Messaging.Commands.RevokeNotification do
           -> commit -> Accounts.mailbox_invalidate_users/1
   """
 
-  alias GroupherServer.{Accounts, Messaging, Repo}
+  use GroupherServer.CommandPipeline
+
+  alias GroupherServer.{Accounts, Messaging}
   alias Accounts.Model.User
   alias Messaging.Notifications.Persist
+
+  @pipeline operation: :messaging_revoke_notification,
+            access: :open,
+            target: :from_user,
+            params: [:attrs]
+
+  direct_pipeline execute_pipeline(attrs, from_user) do
+    prepare(fn ->
+      case Persist.find_for_revoke(attrs, from_user) do
+        {:error, _reason} -> {:ok, %{notifications: []}}
+        {:ok, notifications} -> {:ok, %{notifications: notifications}}
+      end
+    end)
+
+    change(fn %{notifications: notifications} ->
+      if notifications == [] do
+        {:ok, %{users: []}}
+      else
+        with {:ok, :pass} <- Persist.revoke_rows(notifications, from_user),
+             {:ok, users} <-
+               notifications
+               |> Enum.map(& &1.user_id)
+               |> Accounts.mailbox_update_status_many_in_transaction() do
+          {:ok, %{users: users}}
+        end
+      end
+    end)
+
+    present(fn %{users: users} ->
+      _ = Accounts.mailbox_invalidate_users(users)
+      {:ok, :pass}
+    end)
+  end
 
   @doc """
   Revokes one actor's contribution from matching grouped notifications.
@@ -20,32 +55,5 @@ defmodule GroupherServer.Messaging.Commands.RevokeNotification do
       Messaging.Commands.RevokeNotification.run(attrs, user)
   """
   @spec run(map(), User.t()) :: {:ok, :pass} | {:error, term()}
-  def run(attrs, %User{} = from_user) do
-    case Persist.find_for_revoke(attrs, from_user) do
-      {:error, _reason} ->
-        {:ok, :pass}
-
-      {:ok, notifications} ->
-        case Repo.transaction(fn -> revoke_in_transaction(notifications, from_user) end) do
-          {:ok, %{users: users}} ->
-            Accounts.mailbox_invalidate_users(users)
-            {:ok, :pass}
-
-          {:error, reason} ->
-            {:error, reason}
-        end
-    end
-  end
-
-  defp revoke_in_transaction(notifications, from_user) do
-    with {:ok, :pass} <- Persist.revoke_rows(notifications, from_user),
-         {:ok, users} <-
-           notifications
-           |> Enum.map(& &1.user_id)
-           |> Accounts.mailbox_update_status_many_in_transaction() do
-      %{users: users}
-    else
-      {:error, reason} -> Repo.rollback(reason)
-    end
-  end
+  def run(attrs, %User{} = from_user), do: execute_pipeline(attrs, from_user)
 end

@@ -1,0 +1,6 @@
+{
+  "errorCodes": {
+    "DRAFT_VERSION_CONFLICT": 4539,
+    "COMMENT_BODY_VERSION_CONFLICT": 4540
+  }
+}

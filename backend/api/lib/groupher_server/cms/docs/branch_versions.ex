@@ -142,7 +142,7 @@ defmodule GroupherServer.CMS.Docs.BranchVersions do
         link_addr: extension.link_addr,
         template_key: extension.template_key,
         body_hash: body.body_hash,
-        document_json: body.json,
+        body: body,
         plain_text: body.plain_text,
         schema_version: body.schema_version
       }

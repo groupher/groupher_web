@@ -1,84 +1,84 @@
 defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
   @moduledoc """
-  Owns the collect-folder add command and its Receipt confirmation.
+  Adds an article to a collection folder through the shared pipeline runner.
 
-      Add command
-          -> CMS.Interactions command
-          -> Persist
-          -> folder membership transaction
-          -> CMS collect Confirmation
+  The CMS adapter is used only for the existing Receipt/Confirmation boundary;
+  folder and interaction writes remain Accounts-owned persistence steps.
+
+      collect add -> pipeline runner -> CMS Receipt -> Accounts writes
   """
 
-  alias Ecto.Multi
-  alias GroupherServer.{Accounts, CMS, Repo}
-  alias Accounts.CollectFolders.{Persist, MembershipConfirmation}
-  alias Accounts.Model.User
-  alias CMS.Command
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
 
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.CollectFolders.{MembershipConfirmation, Persist}
+  alias Accounts.Model.User
   alias Helper.ORM
 
+  @pipeline operation: :collect_add,
+            access: :open,
+            target: :article,
+            params: [:folder_id],
+            confirmation: MembershipConfirmation
+
+  receipt_pipeline execute_receipt(article, folder_id, user, command_id) do
+    change(fn _article ->
+      with {:ok, prepared} <- Persist.prepare_add(article, folder_id, user) do
+        apply_add(prepared, article, user, command_id)
+      end
+    end)
+
+    confirm(fn folder -> confirmation(folder, article, folder_id, :add) end)
+    present(fn confirmation -> present_confirmation(confirmation, command_id) end)
+  end
+
+  @pipeline operation: :collect_add_direct, access: :open, target: :article, params: [:folder_id]
+
+  direct_pipeline execute_direct(article, folder_id, user) do
+    prepare(fn -> prepare_add(article, folder_id, user, Ecto.UUID.generate()) end)
+    change(fn prepared -> apply_add(prepared, article, user, prepared.command_id) end)
+    present(fn folder -> {:ok, %{folder: folder, command_id: nil}} end)
+  end
+
   @doc """
-  Adds an Article to a folder and returns the mutation payload.
+  Runs the non-replayable Accounts facade path.
 
   ## Examples
 
-      Accounts.CollectFolders.Commands.Add.run(article, folder_id, user, command_id)
+      Accounts.CollectFolders.Commands.Add.run_direct(article, folder_id, user)
   """
-  @spec run(struct(), term(), User.t(), String.t() | nil) :: {:ok, map()} | {:error, term()}
-  def run(article, folder_id, %User{} = user, nil) do
-    generated_command_id = Ecto.UUID.generate()
+  @spec run_direct(struct(), term(), User.t()) :: {:ok, map()} | {:error, term()}
+  def run_direct(article, folder_id, %User{} = user) do
+    execute_direct(article, folder_id, user)
+  end
 
-    with {:ok, folder} <- transaction(article, folder_id, user, generated_command_id) do
-      {:ok, %{folder: folder, command_id: nil}}
+  @doc """
+  Runs the retry-safe Receipt facade path.
+
+  ## Examples
+
+      Accounts.CollectFolders.Commands.Add.run_receipt(article, folder_id, user, command_id)
+  """
+  @spec run_receipt(struct(), term(), User.t(), String.t()) :: {:ok, map()} | {:error, term()}
+  def run_receipt(article, folder_id, %User{} = user, command_id) do
+    execute_receipt(article, folder_id, user, command_id)
+  end
+
+  defp prepare_add(article, folder_id, user, command_id) do
+    with {:ok, prepared} <- Persist.prepare_add(article, folder_id, user) do
+      {:ok, Map.put(prepared, :command_id, command_id)}
     end
   end
 
-  def run(article, folder_id, %User{} = user, command_id) do
-    command = %Command{
-      actor: user,
-      command_id: command_id,
-      operation: :collect_add,
-      target: article,
-      params: %{folder_id: folder_id}
-    }
-
-    with {:ok, %MembershipConfirmation{data: data}} <-
-           GroupherServer.CMS.command_execute(command,
-             action: fn context ->
-               with {:ok, folder} <- transaction(article, folder_id, user, context.command_id) do
-                 confirmation(folder, article, folder_id, :add)
-               end
-             end,
-             confirmation: MembershipConfirmation
-           ),
-         {:ok, folder} <- ORM.find(Accounts.Model.CollectFolder, data["folder_id"]) do
-      {:ok, %{folder: folder, command_id: command_id}}
-    end
-  end
-
-  defp transaction(article, folder_id, user, command_id) do
-    with {:ok, %{thread: thread, folder: folder}} <- Persist.prepare_add(article, folder_id, user) do
-      multi =
-        Multi.new()
-        |> Multi.run(:add_article_collect, fn _, _ ->
-          with {:ok, _canonical} <- CMS.interactions_collect(article, user, command_id) do
-            GroupherServer.CMS.interactions_persist_find_collect(article, user)
-          end
-        end)
-        |> Multi.merge(fn %{add_article_collect: article_collect} ->
-          Persist.add_multi(article_collect, folder, thread)
-        end)
-        |> Multi.run(
-          :attach_article_collect_folder,
-          fn _, %{add_article_collect: article_collect, add_to_collect_folder: folder} ->
-            GroupherServer.CMS.interactions_persist_attach_collect_folder(article_collect, folder)
-          end
-        )
-
-      case Repo.transaction(multi) do
-        {:ok, %{add_to_collect_folder: folder}} -> {:ok, folder}
-        {:error, _step, reason, _steps} -> {:error, reason}
-      end
+  defp apply_add(prepared, article, user, command_id) do
+    with {:ok, _canonical} <- CMS.interactions_collect(article, user, command_id),
+         {:ok, article_collect} <- CMS.interactions_persist_find_collect(article, user),
+         {:ok, folder} <-
+           Persist.add_in_transaction(article_collect, prepared.folder, prepared.thread),
+         {:ok, _attached} <-
+           CMS.interactions_persist_attach_collect_folder(article_collect, folder) do
+      {:ok, folder}
     end
   end
 
@@ -92,5 +92,11 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
          "total_count" => folder.total_count
        }
      }}
+  end
+
+  defp present_confirmation(%MembershipConfirmation{data: data}, command_id) do
+    with {:ok, folder} <- ORM.find(Accounts.Model.CollectFolder, data["folder_id"]) do
+      {:ok, %{folder: folder, command_id: command_id}}
+    end
   end
 end

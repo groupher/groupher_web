@@ -247,7 +247,7 @@ defmodule GroupherServer.Test.CMS.SnapshotTest do
 
       assert [%{body_digest: "old digest"}] = Snapshot.comments(:post, [snapshot])
       assert [fresh] = Snapshot.comments(:post, [snapshot], mode: :blocking)
-      assert fresh.body_digest == comment.body
+      assert fresh.body_digest == "fresh"
       assert fresh.article_id == post.article_id
     end
 

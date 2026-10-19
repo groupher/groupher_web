@@ -14,7 +14,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Tabs do
       {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, payload} =
-        CMS.DocTree.create_tab(community, %{
+        CMS.DocTree.create_tab_internal(community, %{
           title: "API",
           base_revision: state.tree_lock_version
         })
@@ -26,10 +26,14 @@ defmodule GroupherServer.Test.CMS.DocTree.Tabs do
       assert [%{title: "API"}] = tree.tabs
 
       assert {:ok, _payload} =
-               CMS.DocTree.delete_node(community, tree.tabs |> hd() |> Map.fetch!(:id), %{
-                 base_revision: tree.revision,
-                 actor_id: user.id
-               })
+               CMS.DocTree.delete_node_internal(
+                 community,
+                 tree.tabs |> hd() |> Map.fetch!(:id),
+                 %{
+                   base_revision: tree.revision,
+                   actor_id: user.id
+                 }
+               )
 
       assert {:ok, %{tabs: []}} = CMS.DocTree.read(community)
     end
@@ -40,7 +44,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Tabs do
       {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, payload} =
-        CMS.DocTree.create_tab(community, %{
+        CMS.DocTree.create_tab_internal(community, %{
           title: "API",
           base_revision: state.tree_lock_version
         })
@@ -78,25 +82,25 @@ defmodule GroupherServer.Test.CMS.DocTree.Tabs do
       {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, first} =
-        CMS.DocTree.create_tab(community, %{
+        CMS.DocTree.create_tab_internal(community, %{
           title: "Introduction",
           base_revision: state.tree_lock_version
         })
 
       {:ok, created} =
-        CMS.DocTree.create_tab(community, %{
+        CMS.DocTree.create_tab_internal(community, %{
           title: "API",
           base_revision: first.revision
         })
 
       {:ok, renamed} =
-        CMS.DocTree.update_node(community, created.node.id, %{
+        CMS.DocTree.update_node_internal(community, created.node.id, %{
           title: "Guides",
           base_revision: created.revision
         })
 
       {:ok, moved} =
-        CMS.DocTree.move_node(community, created.node.id, %{
+        CMS.DocTree.move_node_internal(community, created.node.id, %{
           target_index: 0,
           base_revision: renamed.revision
         })

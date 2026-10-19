@@ -28,7 +28,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Projection.Article do
   @spec project(Artiment.thread(), struct()) :: {:ok, Artiment.t()} | {:error, term()}
   def project(thread, article) do
     with %{slug: community_ref} <- article.community,
-         %{plain_text: plain_text, body_hash: body_hash} = document <- article.document,
+         %{plain_text: plain_text, body_hash: body_hash} = body <- article.body,
          true <- is_binary(plain_text) and is_binary(body_hash),
          true <- is_binary(article.id),
          true <- is_binary(article.revision_id),
@@ -46,7 +46,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Projection.Article do
          indexed_revision_id: article.revision_id,
          title: article.title,
          plain_text: plain_text,
-         digest: article.digest || document.digest,
+         digest: article.digest || body.digest,
          locator: %{
            community: community_ref,
            thread: thread,
@@ -60,7 +60,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Projection.Article do
          inserted_at: article.inserted_at,
          updated_at: article.updated_at,
          content_hash: body_hash,
-         schema_version: document.schema_version || article.schema_version || 1
+         schema_version: body.schema_version || article.schema_version || 1
        }}
     else
       {:error, _} = error -> error

@@ -51,10 +51,10 @@ defmodule GroupherServer.Test.Mutation.Articles.DocumentFlow do
         created =
           user_conn |> gq_mutation(S.Article.m(:create_document, unquote(create_op)), create_vars)
 
-        assert created["document"]["json"] == @plate_body
-        assert is_binary(created["document"]["html"])
-        assert is_binary(created["document"]["markdown"])
-        assert is_map(created["document"]["markdownToc"])
+        assert created["body"]["json"] == @plate_body
+        assert is_binary(created["body"]["html"])
+        assert is_binary(created["body"]["markdown"])
+        assert is_list(created["body"]["toc"])
 
         update_vars = %{
           article: %{
@@ -74,7 +74,7 @@ defmodule GroupherServer.Test.Mutation.Articles.DocumentFlow do
             update_vars
           )
 
-        assert updated["document"]["json"] == @plate_body_updated
+        assert updated["body"]["json"] == @plate_body_updated
         assert updated["title"] == update_vars.title
 
         query_vars = %{
@@ -88,8 +88,8 @@ defmodule GroupherServer.Test.Mutation.Articles.DocumentFlow do
         queried =
           user_conn |> gq_query(S.Article.q(:document, unquote(query_field), nil), query_vars)
 
-        assert queried["document"]["json"] == @plate_body_updated
-        assert is_binary(queried["document"]["html"])
+        assert queried["body"]["json"] == @plate_body_updated
+        assert is_binary(queried["body"]["html"])
       end
     end
   end

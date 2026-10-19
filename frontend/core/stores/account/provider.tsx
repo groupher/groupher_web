@@ -79,6 +79,9 @@ export default function Provider({ children, initData }: TProps) {
     [session],
   )
   const accountRef = getAccountRef(user)
+  const refreshSession = useCallback(async (): Promise<void> => {
+    await query.refetch()
+  }, [query.refetch])
 
   const clearSession = useCallback(() => {
     clearArticleUpvoteReceipts(accountRef)
@@ -126,6 +129,7 @@ export default function Provider({ children, initData }: TProps) {
     () => ({
       user,
       accountRef,
+      refreshSession,
       // Anonymous initial data is renderable. Background Session recovery must
       // not block optional-auth products behind an account skeleton.
       loading: query.isPending,
@@ -137,7 +141,7 @@ export default function Provider({ children, initData }: TProps) {
         isModerator: false,
       },
     }),
-    [accountRef, query.isPending, session, user],
+    [accountRef, query.isPending, refreshSession, session, user],
   )
 
   return (

@@ -10,7 +10,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Publish.Concurrency do
       {:ok, tree_state} = ORM.find_by(CMS.Model.DocsSiteState, community_id: community.id)
 
       {:ok, group_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           slug: "guides",
@@ -18,7 +18,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Publish.Concurrency do
         })
 
       {:ok, _page_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: group_payload.node.id,

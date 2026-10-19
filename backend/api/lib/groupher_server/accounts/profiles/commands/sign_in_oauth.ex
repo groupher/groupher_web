@@ -1,50 +1,91 @@
 defmodule GroupherServer.Accounts.Profiles.Commands.SignInOauth do
   @moduledoc """
-  Owns the OAuth sign-in or first-registration command.
+  Signs in through an existing OAuth identity or registers its account.
 
-      provider -> existing binding / registration transaction
-               -> profile effects -> BrowserSession
+  Registration row writes run in the generic pipeline transaction. Browser
+  session creation and welcome notifications are present-stage effects after
+  the transaction commits.
+
+      OAuth provider -> prepare -> identity lock -> registration -> browser session
   """
 
-  alias GroupherServer.{Accounts, Repo}
+  use GroupherServer.CommandPipeline
+
+  alias GroupherServer.Accounts
   alias Accounts.Profiles.{BrowserSessions, Effects, Oauth}
+  alias Helper.ORM.AdvisoryLock
+
+  @pipeline operation: :accounts_profile_sign_in_oauth,
+            access: :open,
+            target: :provider,
+            params: [:browser_session_metadata]
+
+  direct_pipeline execute_pipeline(provider, browser_session_metadata) do
+    prepare(fn ->
+      provider = Oauth.normalize_oauth_provider(provider)
+
+      case Oauth.find_oauth_provider(provider) do
+        {:ok, %{user: user}} ->
+          {:ok, %{provider: provider, user: user, newly_registered: false}}
+
+        {:error, _reason} ->
+          {:ok, %{provider: provider}}
+      end
+    end)
+
+    lifecycle(fn %{provider: provider} = state ->
+      with {:ok, :acquired} <-
+             AdvisoryLock.acquire!("oauth:#{provider.provider}:#{provider.provider_id}") do
+        case Oauth.find_oauth_provider(provider) do
+          {:ok, %{user: user}} ->
+            {:ok, Map.merge(state, %{user: user, newly_registered: false})}
+
+          {:error, _reason} ->
+            {:ok, state}
+        end
+      end
+    end)
+
+    change(fn
+      %{user: _user, newly_registered: false} = state ->
+        {:ok, state}
+
+      %{provider: provider} ->
+        case Oauth.register_in_transaction(provider) do
+          {:ok, user} ->
+            {:ok, %{provider: provider, user: user, newly_registered: true}}
+
+          {:error, {step, reason}} when step in [:create_user, :create_profile] ->
+            case Oauth.find_oauth_provider(provider) do
+              {:ok, %{user: user}} ->
+                {:ok, %{provider: provider, user: user, newly_registered: false}}
+
+              {:error, _lookup_reason} ->
+                {:error, reason}
+            end
+
+          {:error, {_step, reason}} ->
+            {:error, reason}
+        end
+    end)
+
+    present(fn %{user: user, newly_registered: newly_registered} ->
+      if newly_registered do
+        _ = Effects.oauth_registration_completed(user)
+      end
+
+      BrowserSessions.create(user, browser_session_metadata)
+    end)
+  end
 
   @doc """
-  Signs in through an existing OAuth identity or registers its account.
+  Signs in an OAuth identity and creates a browser session.
 
   ## Examples
 
-      Accounts.Profiles.Commands.SignInOauth.run(provider_payload, %{})
+      Accounts.Profiles.Commands.SignInOauth.run(provider, %{user_agent: "browser"})
   """
-  @spec run(map(), map()) :: {:ok, map()} | {:error, term()}
   def run(provider, browser_session_metadata \\ %{}) do
-    provider = Oauth.normalize_oauth_provider(provider)
-
-    case Oauth.find_oauth_provider(provider) do
-      {:ok, oauth_provider} ->
-        BrowserSessions.create(oauth_provider.user, browser_session_metadata)
-
-      {:error, _} ->
-        register(provider, browser_session_metadata)
-    end
-  end
-
-  defp register(provider, browser_session_metadata) do
-    transaction_result =
-      provider
-      |> Oauth.registration_multi()
-      |> Repo.transaction()
-      |> Oauth.recover_registration_race(provider)
-
-    case transaction_result do
-      {:ok, %{create_user: user}, :reused} ->
-        BrowserSessions.create(user, browser_session_metadata)
-
-      result ->
-        with {:ok, user} <- Oauth.registration_result(result),
-             {:ok, :pass} <- Effects.oauth_registration_completed(user) do
-          BrowserSessions.create(user, browser_session_metadata)
-        end
-    end
+    execute_pipeline(provider, browser_session_metadata)
   end
 end

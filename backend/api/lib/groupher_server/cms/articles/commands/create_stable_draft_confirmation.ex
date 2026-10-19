@@ -7,6 +7,10 @@ defmodule GroupherServer.CMS.Articles.Commands.CreateStableDraftConfirmation do
 
   use GroupherServer.CMS.Command.ConfirmationDefinition,
     operation: :article_create_draft,
-    data_keys: ["article_id", "branch_id"],
-    field_types: %{"article_id" => :string, "branch_id" => :integer}
+    data_keys: ["article_id", "branch_id", "command_id"],
+    field_types: %{
+      "article_id" => :string,
+      "branch_id" => :integer,
+      "command_id" => :string
+    }
 end

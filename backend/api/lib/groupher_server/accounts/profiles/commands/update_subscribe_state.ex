@@ -5,9 +5,17 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UpdateSubscribeState do
       subscription rows -> command transaction -> profile projection -> Effects
   """
 
-  alias GroupherServer.{Accounts, Repo}
+  use GroupherServer.CommandPipeline
+
+  alias GroupherServer.Accounts
   alias Accounts.Model.User
   alias Accounts.Profiles.Persist
+
+  @pipeline operation: :accounts_profile_update_subscribe_state, access: :open, target: :user
+
+  direct_pipeline execute_pipeline(user) do
+    change(fn _user -> Persist.rebuild_subscribe_state(user) end)
+  end
 
   @doc """
   Rebuilds one user's subscribed-community count and ID projection.
@@ -18,15 +26,6 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UpdateSubscribeState do
   """
   @spec run(User.t()) :: {:ok, User.t()} | {:error, term()}
   def run(%User{} = user) do
-    case Repo.transaction(fn -> Persist.rebuild_subscribe_state(user) end) do
-      {:ok, {:ok, updated_user}} ->
-        {:ok, updated_user}
-
-      {:ok, {:error, reason}} ->
-        {:error, reason}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
+    execute_pipeline(user)
   end
 end

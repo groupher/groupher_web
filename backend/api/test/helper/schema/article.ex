@@ -310,7 +310,7 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
         innerId
         title
         linkAddr
-        document {
+        body {
           html
         }
         community {
@@ -353,7 +353,7 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
         innerId
         version
         title
-        document {
+        body {
           html
         }
         copyRight
@@ -423,10 +423,10 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
         innerId
         version
         title
-        document {
+        body {
           json
           markdown
-          markdownToc
+          toc { id level title }
           html
         }
       }
@@ -440,10 +440,10 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
       #{operation}(article: $article, expectedVersion: $expectedVersion, title: $title, bodyBag: $bodyBag, commandId: $commandId) {
         innerId
         title
-        document {
+        body {
           json
           markdown
-          markdownToc
+          toc { id level title }
           html
         }
       }
@@ -458,10 +458,10 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
         id
         version
         title
-        document {
+        body {
           json
           markdown
-          markdownToc
+          toc { id level title }
           html
         }
       }
@@ -816,7 +816,7 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
             nickname
             avatar
           }
-          document {
+          body {
             html
           }
           communities {
@@ -844,10 +844,10 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
       #{field_name}(article: $article) {
         innerId
         title
-        document {
+        body {
           json
           markdown
-          markdownToc
+          toc { id level title }
           html
         }
       }

@@ -80,7 +80,7 @@ defmodule GroupherServer.CMS.DocTree.Trash do
   @doc "Restores one complete Docs Trash action."
   @spec restore(Community.t(), T.id(), map()) :: T.domain_res(map())
   def restore(%Community{} = community, action_ref, args) do
-    TreeMutation.run(community, args, fn branch, state ->
+    TreeMutation.run_after_gate(community, args, fn branch, state ->
       with {:ok, actor} <- load_actor(args),
            {:ok, action} <- find_action(community, branch, action_ref),
            items <- action_nodes(action, branch),

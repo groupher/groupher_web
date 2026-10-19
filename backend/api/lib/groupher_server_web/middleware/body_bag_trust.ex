@@ -23,19 +23,20 @@ defmodule GroupherServerWeb.Middleware.BodyBagTrust do
   @impl Absinthe.Middleware
   def call(
         %{arguments: %{body_bag: _}, context: %{service_actor: actor}} = resolution,
-        _opts
+        opts
       ) do
+    scope = Keyword.fetch!(opts, :scope)
+
     allowed =
       (actor.subject == "service:test-suite" and MapSet.member?(actor.scopes, "*")) or
-        (actor.audience == "phoenix:content-import-api" and
-           MapSet.member?(actor.scopes, "content-import:write"))
+        (actor.audience == "phoenix:content-publisher-api" and MapSet.member?(actor.scopes, scope))
 
     if allowed do
       resolution
     else
       reject(
         resolution,
-        "BodyBag requires the content-import audience and write scope",
+        "BodyBag requires the Content Publisher audience and mutation capability",
         GroupherServer.Auth.contract_service_scope_forbidden()
       )
     end

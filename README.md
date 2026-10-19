@@ -56,7 +56,7 @@ Groupher 由公开 Community、内容管理 Dashboard、社区申请 Apply、统
 [`frontend/mock-server`](frontend/mock-server)、[`local/dev-hub`](local/dev-hub)、
 [`packages/contracts`](packages/contracts)、[`packages/service`](packages/service)、
 [`packages/route-contract`](packages/route-contract) 和
-[`packages/artiment-publisher`](packages/artiment-publisher)。
+[`packages/content-publisher`](packages/content-publisher)。
 
 ## 技术与部署
 

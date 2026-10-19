@@ -70,7 +70,7 @@ export default function PinnedDocCard({
           {doc.doc.author?.nickname && <span className={s.author}>{doc.doc.author.nickname}</span>}
         </div>
         <div className={s.thumbnail}>
-          <ContentThumbnail thumbnail={doc.doc.document?.thumbnail} />
+          <ContentThumbnail thumbnail={doc.doc.thumbnail} />
         </div>
       </Link>
     </article>

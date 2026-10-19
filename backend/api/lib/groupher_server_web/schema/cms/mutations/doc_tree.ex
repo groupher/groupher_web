@@ -53,7 +53,7 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.DocTree do
       arg(:body_bag, :artiment_body_bag_input)
 
       middleware(M.Authorize, :login)
-      middleware(M.BodyBagTrust)
+      middleware(M.BodyBagTrust, scope: "content:doc:write")
       middleware(M.FrontDesk, :community)
       middleware(M.FrontDesk, {:article_editor, thread: :doc})
       middleware(M.PutCurrentUser)

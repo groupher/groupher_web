@@ -785,7 +785,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
     {:ok, branch} = CMS.Docs.Branch.resolve(source, CMS.Docs.Branch.main_slug())
 
     {:ok, %{article: doc}} =
-      CMS.Articles.create_stable_draft(
+      CMS.Articles.create_stable_draft_write(
         source,
         :doc,
         %{title: "Doc", digest: "doc", body_bag: mock_body_bag(mock_rich_text("doc"))},
@@ -886,7 +886,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
     assert public.id == article.id
     assert public.article_id == article.id
     assert public.title == "Stable public title"
-    assert public.document.plain_text =~ "stable public body"
+    assert public.body.plain_text =~ "stable public body"
 
     assert {:ok, [%{article: batch_article, binding: batch_binding}]} =
              CMS.FrontDesk.articles([

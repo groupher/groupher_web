@@ -44,7 +44,7 @@ export const API_ROUTE = {
   AUTH: '/api/auth',
   GRAPHQL: '/api/graphql',
   ARTIMENT_IMPORT: '/api/artiment/import',
-  ARTIMENT_PUBLISH: '/api/artiment/publish',
+  CONTENT_PUBLISH: '/api/content/publish',
   SLUGIFY: '/api/utils/slugify',
 } as const
 
@@ -88,7 +88,7 @@ const LANDING_STATIC_ASSET_PREFIXES = [
   '/pwa/',
 ]
 const LANDING_ROOT_STATIC_ASSET_RE = /^\/[^/]+\.(?:ico|json|png|txt|webp|xml)$/
-const DASHBOARD_API_PREFIXES = ['/api/artiment/', '/api/docs/import/', '/api/internal/docs-import/']
+const DASHBOARD_API_PREFIXES = ['/api/content/', '/api/docs/import/', '/api/internal/docs-import/']
 const DELETED_DASHBOARD_API_PATHS = new Set(['/api/revalidate/community'])
 
 const normalizeHostname = (hostname: string): string =>

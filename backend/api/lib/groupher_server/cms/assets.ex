@@ -97,6 +97,11 @@ defmodule GroupherServer.CMS.Assets do
     Query.refs(community, asset_id, filter)
   end
 
+  @doc "Returns the version-owned asset relations for one Draft or Revision body owner."
+  @spec content_refs(:draft | :revision, Ecto.UUID.t()) :: T.domain_res([struct()])
+  def content_refs(:draft, body_draft_id), do: {:ok, Refs.draft_refs(body_draft_id)}
+  def content_refs(:revision, revision_id), do: {:ok, Refs.revision_refs(revision_id)}
+
   @doc """
   Returns the active public-read origin metadata for one asset public ref.
 
@@ -239,10 +244,15 @@ defmodule GroupherServer.CMS.Assets do
           map(),
           map(),
           User.t(),
-          Ecto.UUID.t() | {:workflow, String.t()} | nil
+          Ecto.UUID.t()
         ) :: T.domain_res(map())
   def replace_use(article, attrs, %User{} = user, command_id) do
     Commands.ReplaceUse.execute(article, attrs, user, command_id)
+  end
+
+  @doc "Replaces one Draft asset use through the explicit replacement workflow entry."
+  def replace_use_workflow(article, attrs, %User{} = user, workflow_ref) do
+    Commands.ReplaceUse.execute_for_workflow(article, attrs, user, workflow_ref)
   end
 
   @doc "Lists old, unreferenced assets eligible for a later GC decision."

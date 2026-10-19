@@ -7,62 +7,90 @@ defmodule GroupherServer.CMS.DocTree.Commands.PublishChanges do
         -> CMS.Command when command_id exists -> DocTree.Publish
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
-  alias CMS.{Command, ErrorCat}
   alias CMS.Command.Receipt.Key, as: CommandKey
   alias CMS.DocTree.{Commands.Support, Publish}
   alias CMS.DocTree.Commands.PublishChangesConfirmation, as: Confirmation
+
+  @pipeline operation: :doc_publish_changes,
+            confirmation: Confirmation,
+            target: :command_target,
+            params: :params
+  receipt_pipeline run_receipt(
+                     community,
+                     params,
+                     user,
+                     publish_opts,
+                     command_id,
+                     command_target
+                   ) do
+    gate(fn _target -> CMS.Gate.check_in_transaction(user, :manage_docs, community) end)
+
+    change(fn canonical_community ->
+      Publish.publish_after_gate(
+        canonical_community,
+        params,
+        user,
+        Keyword.put(publish_opts, :causation_id, command_id)
+      )
+    end)
+
+    confirm(fn result ->
+      {:ok,
+       %Confirmation{
+         data: %{
+           "release_id" => if(result.release, do: to_string(result.release.id), else: nil),
+           "done" => true
+         }
+       }}
+    end)
+
+    present(fn confirmation -> present(confirmation, community, params) end)
+  end
+
+  @pipeline operation: :doc_publish_changes_write,
+            target: :community,
+            params: [:params, :publish_opts]
+  direct_pipeline run_direct(community, params, user, publish_opts) do
+    gate(fn candidate ->
+      CMS.Gate.check_in_transaction(user, :manage_docs, candidate)
+    end)
+
+    change(fn canonical_community ->
+      Publish.publish_after_gate(canonical_community, params, user, publish_opts)
+    end)
+  end
 
   def execute(community, args, user, opts) do
     params = Support.drop_command_id(args)
     publish_opts = Support.drop_command_id(opts)
 
-    case {Support.option(opts, :command_id), Support.has_option?(opts, :command_id), user} do
-      {nil, true, _} ->
-        {:error, ErrorCat.command_id_required()}
-
-      {_, true, user} when not is_struct(user, GroupherServer.Accounts.Model.User) ->
-        {:error, :command_actor_required}
-
-      {command_id, true, _user} ->
-        with {:ok, command_id} <- CommandKey.validate(command_id) do
-          execute_command(community, params, user, publish_opts, command_id)
-        end
-
-      _ ->
-        Publish.publish_changes(community, params, user, publish_opts)
+    with {:ok, command_id} <- CommandKey.validate(Support.option(opts, :command_id)),
+         %GroupherServer.Accounts.Model.User{} <- user do
+      execute_command(community, params, user, publish_opts, command_id)
+    else
+      {:error, _reason} = error -> error
+      _ -> {:error, :command_actor_required}
     end
   end
 
-  defp execute_command(community, params, user, publish_opts, command_id) do
-    publish_opts = Keyword.put(publish_opts, :causation_id, command_id)
+  @doc false
+  def execute_direct(community, args, %GroupherServer.Accounts.Model.User{} = user, opts) do
+    run_direct(community, Support.drop_command_id(args), user, Support.drop_command_id(opts))
+  end
 
-    %Command{
-      actor: user,
-      command_id: command_id,
-      operation: :doc_publish_changes,
-      target: {:doc_branch, community.id},
-      params: params
-    }
-    |> Command.execute(
-      action: fn %{params: command_params} ->
-        with {:ok, result} <-
-               Publish.publish_changes(community, command_params, user, publish_opts) do
-          {:ok,
-           %Confirmation{
-             data: %{
-               "release_id" => if(result.release, do: to_string(result.release.id), else: nil),
-               "done" => true
-             }
-           }}
-        end
-      end,
-      confirmation: Confirmation
+  defp execute_command(community, params, user, publish_opts, command_id) do
+    run_receipt(
+      community,
+      params,
+      user,
+      publish_opts,
+      command_id,
+      {:doc_branch, community.id}
     )
-    |> then(fn
-      {:ok, confirmation} -> present(confirmation, community, params)
-      error -> error
-    end)
   end
 
   defp present(%Confirmation{data: data}, community, args) do

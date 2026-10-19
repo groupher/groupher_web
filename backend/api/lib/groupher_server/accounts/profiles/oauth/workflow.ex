@@ -159,9 +159,35 @@ defmodule GroupherServer.Accounts.Profiles.Oauth.Workflow do
       OauthPersist.update_profile_social(user, oauth_profile)
     end)
     |> Multi.run(:init_achievement, fn _, %{create_user: user} ->
-      Accounts.Achievements.ensure(user.id)
+      Accounts.Achievements.Persist.ensure(user.id)
     end)
   end
+
+  @doc """
+  Registers an OAuth account in the caller's current transaction.
+
+  The command pipeline owns the transaction; this function only performs the
+  ordered row writes and tags the failing step so a caller can recover a
+  concurrent first-registration race without opening a nested transaction.
+  """
+  @spec register_in_transaction(map()) :: {:ok, User.t()} | {:error, {atom(), term()}}
+  def register_in_transaction(oauth_profile) do
+    with {:ok, user} <- tag_registration(:create_user, OauthPersist.create_user(oauth_profile)),
+         {:ok, _binding} <-
+           tag_registration(:create_profile, OauthPersist.create_profile(user, oauth_profile)),
+         {:ok, _social} <-
+           tag_registration(
+             :update_profile_social,
+             OauthPersist.update_profile_social(user, oauth_profile)
+           ),
+         {:ok, _achievement} <-
+           tag_registration(:init_achievement, Accounts.Achievements.Persist.ensure(user.id)) do
+      {:ok, user}
+    end
+  end
+
+  defp tag_registration(_step, {:ok, value}), do: {:ok, value}
+  defp tag_registration(step, {:error, reason}), do: {:error, {step, reason}}
 
   @doc """
   Reuses a committed OAuth identity when concurrent registration raced.

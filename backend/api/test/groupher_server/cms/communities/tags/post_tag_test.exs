@@ -820,10 +820,16 @@ defmodule GroupherServer.Test.CMS.Communities.Tags.PostTagTest do
       command_id = Ecto.UUID.generate()
 
       {:ok, _} =
-        CMS.Articles.trash(post, user, community_id: community.id, command_id: command_id)
+        CMS.Articles.trash_receipt(post, user,
+          community_id: community.id,
+          command_id: command_id
+        )
 
       {:ok, _} =
-        CMS.Articles.trash(post, user, community_id: community.id, command_id: command_id)
+        CMS.Articles.trash_receipt(post, user,
+          community_id: community.id,
+          command_id: command_id
+        )
 
       {:ok, stat} = CMS.Communities.tag_stats(article_tag)
       assert stat.contents_count == 0

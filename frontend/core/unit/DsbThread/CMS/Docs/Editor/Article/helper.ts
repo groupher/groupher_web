@@ -263,7 +263,7 @@ export const composeLoadedDraftSession = (
 ): TDocDraftSession => {
   const title = draft?.title || activePage?.title || ''
   const subtitle = draft?.subtitle || ''
-  const body = parseEditorValue(draft?.document?.json)
+  const body = parseEditorValue(draft?.body?.json)
 
   return {
     body,

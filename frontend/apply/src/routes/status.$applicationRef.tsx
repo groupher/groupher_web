@@ -1,6 +1,9 @@
 import { Link, createFileRoute, notFound, useRouter } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
+import useAccount from '~/stores/account/hooks'
+
+import LoginRequired from '../components/LoginRequired'
 import { mutateReviewApplication } from '../lib/application'
 import { loadOwnedApplication } from '../server/application'
 
@@ -28,6 +31,7 @@ export const Route = createFileRoute('/status/$applicationRef')({
 
 function ApplicationStatusPage() {
   const application = Route.useLoaderData()
+  const account = useAccount()
   const router = useRouter()
   const [working, setWorking] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -40,10 +44,12 @@ function ApplicationStatusPage() {
     : 'https://groupher.localhost'
 
   useEffect(() => {
-    if (!isBlocking) return
+    if (!account.isLogin || !isBlocking) return
     const timer = window.setInterval(() => void router.invalidate(), 5_000)
     return () => window.clearInterval(timer)
-  }, [isBlocking, router])
+  }, [account.isLogin, isBlocking, router])
+
+  if (!account.isLogin) return <LoginRequired />
 
   return (
     <section className='apply-card'>

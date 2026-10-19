@@ -27,10 +27,10 @@ defmodule GroupherServer.CMS.Press.Projection do
       canonical_url: @site_host <> path,
       title: article.title,
       subtitle: Map.get(article, :subtitle),
-      markdown: article.document.markdown,
-      html: article.document.html,
-      digest: article.digest || article.document.digest,
-      body_hash: article.body_hash || article.document.body_hash,
+      markdown: article.body.markdown,
+      html: article.body.html,
+      digest: article.digest || article.body.digest,
+      body_hash: article.body_hash || article.body.body_hash,
       published_at: article.inserted_at,
       updated_at: article.updated_at,
       author: author(article.author),
@@ -158,7 +158,7 @@ defmodule GroupherServer.CMS.Press.Projection do
   end
 
   defp article_revision(article) do
-    body_revision = article.body_hash || article.document.body_hash || "no-body-hash"
+    body_revision = article.body_hash || article.body.body_hash || "no-body-hash"
     "#{body_revision}:#{DateTime.to_iso8601(article.updated_at)}"
   end
 end

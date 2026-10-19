@@ -136,9 +136,6 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.ArticleStats,
     as: :read_public
 
-  @doc "Delegates GroupherServer.CMS.Articles.archive/1 through the CMS Context boundary."
-  defdelegate articles_archive(arg1), to: GroupherServer.CMS.Articles, as: :archive
-
   @doc "Delegates GroupherServer.CMS.Articles.Bindings.all/1 through the CMS Context boundary."
   defdelegate articles_bindings_all(arg1), to: GroupherServer.CMS.Articles.Bindings, as: :all
 
@@ -257,6 +254,10 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Articles,
     as: :permanently_delete_trashed
 
+  defdelegate articles_permanently_delete_trashed_receipt(arg1, arg2, arg3),
+    to: GroupherServer.CMS.Articles,
+    as: :permanently_delete_trashed_receipt
+
   @doc "Delegates GroupherServer.CMS.Articles.pin/4 through the CMS Context boundary."
   defdelegate articles_pin(arg1, arg2, arg3, arg4), to: GroupherServer.CMS.Articles, as: :pin
 
@@ -272,6 +273,10 @@ defmodule GroupherServer.CMS do
   defdelegate articles_restore_trashed(arg1, arg2, arg3),
     to: GroupherServer.CMS.Articles,
     as: :restore_trashed
+
+  defdelegate articles_restore_trashed_receipt(arg1, arg2, arg3),
+    to: GroupherServer.CMS.Articles,
+    as: :restore_trashed_receipt
 
   @doc "Delegates GroupherServer.CMS.Articles.set_cat_result/3 through the CMS Context boundary."
   defdelegate articles_set_cat_result(arg1, arg2, arg3),
@@ -311,6 +316,10 @@ defmodule GroupherServer.CMS do
 
   @doc "Delegates GroupherServer.CMS.Articles.trash/3 through the CMS Context boundary."
   defdelegate articles_trash(arg1, arg2, arg3), to: GroupherServer.CMS.Articles, as: :trash
+
+  defdelegate articles_trash_receipt(arg1, arg2, arg3),
+    to: GroupherServer.CMS.Articles,
+    as: :trash_receipt
 
   @doc "Delegates GroupherServer.CMS.Articles.undo_lock_comments_result/2 through the CMS Context boundary."
   defdelegate articles_undo_lock_comments_result(arg1, arg2),
@@ -593,13 +602,8 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Comments,
     as: :undo_pin_comment
 
-  @doc "Delegates GroupherServer.CMS.Comments.update_comment_result/3 through the CMS Context boundary."
-  defdelegate comments_update_comment_result(arg1, arg2, arg3),
-    to: GroupherServer.CMS.Comments,
-    as: :update_comment_result
-
-  @doc "Delegates GroupherServer.CMS.Comments.update_comment_result/4 through the CMS Context boundary."
-  defdelegate comments_update_comment_result(arg1, arg2, arg3, arg4),
+  @doc "Delegates GroupherServer.CMS.Comments.update_comment_result/5 through the CMS Context boundary."
+  defdelegate comments_update_comment_result(arg1, arg2, arg3, arg4, arg5),
     to: GroupherServer.CMS.Comments,
     as: :update_comment_result
 
@@ -1244,28 +1248,33 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.DocCover,
     as: :update_pinned_doc_appearance
 
-  @doc "Delegates GroupherServer.CMS.DocTree.create_node/2 through the CMS Context boundary."
-  defdelegate doc_tree_create_node(arg1, arg2), to: GroupherServer.CMS.DocTree, as: :create_node
-
-  @doc "Delegates GroupherServer.CMS.DocTree.create_node/3 through the CMS Context boundary."
-  defdelegate doc_tree_create_node(arg1, arg2, arg3),
+  @doc "Delegates the explicit internal DocTree create-node entry."
+  defdelegate doc_tree_create_node_internal(arg1, arg2),
     to: GroupherServer.CMS.DocTree,
-    as: :create_node
+    as: :create_node_internal
 
-  @doc "Delegates GroupherServer.CMS.DocTree.delete_node/3 through the CMS Context boundary."
-  defdelegate doc_tree_delete_node(arg1, arg2, arg3),
+  defdelegate doc_tree_create_node_internal(arg1, arg2, arg3),
     to: GroupherServer.CMS.DocTree,
-    as: :delete_node
+    as: :create_node_internal
+
+  defdelegate doc_tree_create_node_receipt(arg1, arg2, arg3),
+    to: GroupherServer.CMS.DocTree,
+    as: :create_node_receipt
+
+  @doc "Delegates the explicit internal DocTree delete-node entry."
+  defdelegate doc_tree_delete_node_internal(arg1, arg2, arg3),
+    to: GroupherServer.CMS.DocTree,
+    as: :delete_node_internal
 
   @doc "Delegates GroupherServer.CMS.DocTree.delete_node/4 through the CMS Context boundary."
   defdelegate doc_tree_delete_node(arg1, arg2, arg3, arg4),
     to: GroupherServer.CMS.DocTree,
     as: :delete_node
 
-  @doc "Delegates GroupherServer.CMS.DocTree.duplicate_node/3 through the CMS Context boundary."
-  defdelegate doc_tree_duplicate_node(arg1, arg2, arg3),
+  @doc "Delegates the explicit internal DocTree duplicate-node entry."
+  defdelegate doc_tree_duplicate_node_internal(arg1, arg2, arg3),
     to: GroupherServer.CMS.DocTree,
-    as: :duplicate_node
+    as: :duplicate_node_internal
 
   @doc "Delegates GroupherServer.CMS.DocTree.duplicate_node/4 through the CMS Context boundary."
   defdelegate doc_tree_duplicate_node(arg1, arg2, arg3, arg4),
@@ -1282,8 +1291,10 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.DocTree,
     as: :move_doc_to_draft_result
 
-  @doc "Delegates GroupherServer.CMS.DocTree.move_node/3 through the CMS Context boundary."
-  defdelegate doc_tree_move_node(arg1, arg2, arg3), to: GroupherServer.CMS.DocTree, as: :move_node
+  @doc "Delegates the explicit internal DocTree move-node entry."
+  defdelegate doc_tree_move_node_internal(arg1, arg2, arg3),
+    to: GroupherServer.CMS.DocTree,
+    as: :move_node_internal
 
   @doc "Delegates GroupherServer.CMS.DocTree.move_node/4 through the CMS Context boundary."
   defdelegate doc_tree_move_node(arg1, arg2, arg3, arg4),
@@ -1332,10 +1343,10 @@ defmodule GroupherServer.CMS do
   @doc "Delegates GroupherServer.CMS.DocTree.read/2 through the CMS Context boundary."
   defdelegate doc_tree_read(arg1, arg2), to: GroupherServer.CMS.DocTree, as: :read
 
-  @doc "Delegates GroupherServer.CMS.DocTree.restore_trash_item/3 through the CMS Context boundary."
-  defdelegate doc_tree_restore_trash_item(arg1, arg2, arg3),
+  @doc "Delegates the explicit internal DocTree restore-trash entry."
+  defdelegate doc_tree_restore_trash_item_internal(arg1, arg2, arg3),
     to: GroupherServer.CMS.DocTree,
-    as: :restore_trash_item
+    as: :restore_trash_item_internal
 
   @doc "Delegates GroupherServer.CMS.DocTree.restore_trash_item/4 through the CMS Context boundary."
   defdelegate doc_tree_restore_trash_item(arg1, arg2, arg3, arg4),
@@ -1353,10 +1364,14 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.DocTree,
     as: :update_draft
 
-  @doc "Delegates GroupherServer.CMS.DocTree.update_node/3 through the CMS Context boundary."
-  defdelegate doc_tree_update_node(arg1, arg2, arg3),
+  defdelegate doc_tree_update_draft(arg1, arg2, arg3, arg4, arg5),
     to: GroupherServer.CMS.DocTree,
-    as: :update_node
+    as: :update_draft
+
+  @doc "Delegates the explicit internal DocTree update-node entry."
+  defdelegate doc_tree_update_node_internal(arg1, arg2, arg3),
+    to: GroupherServer.CMS.DocTree,
+    as: :update_node_internal
 
   @doc "Delegates GroupherServer.CMS.DocTree.update_node/4 through the CMS Context boundary."
   defdelegate doc_tree_update_node(arg1, arg2, arg3, arg4),
@@ -1929,6 +1944,12 @@ defmodule GroupherServer.CMS do
   defdelegate error_cat_invalid_notify_payload(arg1),
     to: GroupherServer.CMS.ErrorCat,
     as: :invalid_notify_payload
+
+  @doc "Delegates CMS.ErrorCat.invalid_body/0 through the CMS Context boundary."
+  defdelegate error_cat_invalid_body(), to: GroupherServer.CMS.ErrorCat, as: :invalid_body
+
+  @doc "Delegates CMS.ErrorCat.invalid_body/1 through the CMS Context boundary."
+  defdelegate error_cat_invalid_body(arg1), to: GroupherServer.CMS.ErrorCat, as: :invalid_body
 
   @doc "Delegates CMS.ViewTracker.AnonymousSession.ensure/1 through the CMS Context boundary."
   defdelegate view_tracker_anonymous_session_ensure(arg1),

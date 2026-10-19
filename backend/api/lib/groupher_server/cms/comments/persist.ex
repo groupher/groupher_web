@@ -12,8 +12,9 @@ defmodule GroupherServer.CMS.Comments.Persist do
   alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
-  alias CMS.Comments.{BodyCodec, Numbering}
-  alias CMS.Model.{Article, Comment, CommentReply, Community, Embeds, PostState}
+  alias CMS.Artiment.BodyBag
+  alias CMS.Comments.Numbering
+  alias CMS.Model.{Article, Comment, CommentBody, CommentReply, Community, Embeds, PostState}
   alias Helper.{ORM, T}
 
   @max_parent_replies_count Comment.max_parent_replies_count()
@@ -42,15 +43,13 @@ defmodule GroupherServer.CMS.Comments.Persist do
       ) do
     stable_article = struct(Article, Map.from_struct(article))
 
-    with {:ok, payload} <- BodyCodec.parse(body),
+    with {:ok, payload} <- BodyBag.cast(body, thread: :comment),
          {:ok, _article_inner_id} <- article_inner_id(article, community),
          {:ok, inner_id} <- Numbering.next_inner_id(stable_article, foreign_key),
          {:ok, floor} <- Numbering.next_floor(stable_article, foreign_key) do
       attrs = %{
         author_id: user_id,
         community_id: community.id,
-        body: payload.json,
-        body_html: payload.html,
         emotions: @default_emotions,
         inner_id: inner_id,
         floor: floor,
@@ -61,7 +60,11 @@ defmodule GroupherServer.CMS.Comments.Persist do
       }
 
       attrs = put_comment_identity(attrs, article, foreign_key)
-      Comment |> ORM.create(attrs)
+
+      with {:ok, comment} <- ORM.create(Comment, attrs),
+           {:ok, _body} <- insert_body(comment, payload) do
+        {:ok, Repo.preload(comment, :body)}
+      end
     end
   end
 
@@ -146,15 +149,76 @@ defmodule GroupherServer.CMS.Comments.Persist do
     ORM.inc(parent_comment, :replies_count)
   end
 
-  @doc "Updates the canonical Comment body fields."
-  @spec update_content(Comment.t(), map()) :: T.domain_res(Comment.t())
-  def update_content(%Comment{} = comment, attrs) when is_map(attrs) do
-    ORM.update(comment, attrs)
+  @doc "Updates the canonical Comment body using optimistic body versioning."
+  @spec update_content(Comment.t(), map(), non_neg_integer()) :: T.domain_res(Comment.t())
+  def update_content(%Comment{} = comment, attrs, expected_version) when is_map(attrs) do
+    with {:ok, payload} <- BodyBag.cast(attrs, thread: :comment) do
+      updates = body_attrs(payload, expected_version + 1) |> Map.to_list()
+
+      case from(body in CommentBody,
+             where: body.comment_id == ^comment.id and body.version == ^expected_version
+           )
+           |> Repo.update_all(set: updates) do
+        {1, _} -> {:ok, Repo.preload(comment, :body, force: true)}
+        {0, _} -> body_update_error(comment.id)
+      end
+    end
   end
 
   @doc "Tombstones a Comment body through the row persistence owner."
   @spec tombstone(Comment.t(), String.t()) :: T.domain_res(Comment.t())
-  def tombstone(%Comment{} = comment, body_html), do: ORM.update(comment, %{body_html: body_html})
+  def tombstone(%Comment{} = comment, delete_hint) do
+    json = Jason.encode!([%{"children" => [%{"text" => delete_hint}], "type" => "p"}])
+
+    case Repo.get_by(CommentBody, comment_id: comment.id) do
+      %CommentBody{} = body ->
+        attrs = %{
+          json: json,
+          markdown: "#{delete_hint}\n",
+          markdown_toc: [],
+          html: "<p>#{delete_hint}</p>",
+          plain_text: delete_hint,
+          digest: delete_hint,
+          body_hash: :crypto.hash(:sha256, json) |> Base.encode16(case: :lower),
+          schema_version: BodyBag.schema_version(),
+          version: body.version + 1
+        }
+
+        with {:ok, _body} <- body |> CommentBody.changeset(attrs) |> Repo.update() do
+          {:ok, Repo.preload(comment, :body, force: true)}
+        end
+
+      nil ->
+        {:error, CMS.ErrorCat.comment_body_not_found()}
+    end
+  end
+
+  defp insert_body(%Comment{} = comment, payload) do
+    %CommentBody{}
+    |> CommentBody.changeset(body_attrs(payload, 1) |> Map.put(:comment_id, comment.id))
+    |> Repo.insert()
+  end
+
+  defp body_attrs(payload, version) do
+    %{
+      json: payload.json,
+      markdown: payload.markdown,
+      markdown_toc: payload.toc,
+      html: payload.html,
+      plain_text: payload.plain_text,
+      digest: payload.digest,
+      body_hash: payload.body_hash,
+      schema_version: payload.schema_version,
+      version: version
+    }
+  end
+
+  defp body_update_error(comment_id) do
+    case Repo.exists?(from(body in CommentBody, where: body.comment_id == ^comment_id)) do
+      true -> {:error, CMS.ErrorCat.comment_body_version_conflict()}
+      false -> {:error, CMS.ErrorCat.comment_body_not_found()}
+    end
+  end
 
   @doc "Updates the question flag for every Comment under one Post."
   @spec batch_update_question_flag(Article.t(), boolean()) :: {:ok, non_neg_integer()}

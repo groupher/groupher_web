@@ -12,12 +12,14 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
         -> ArticleAssetRef synchronization
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.{Draft.Store, Bindings}
   alias CMS.Assets.{Query, Refs}
-  alias CMS.{Command, ErrorCat}
-  alias CMS.FrontDesk
+  alias CMS.{ErrorCat, FrontDesk}
   alias CMS.Model.{Article, ArticleAssetRef, ArticleDraft, Community, CommunityAsset}
   alias CMS.Assets.Commands.ReplaceUseConfirmation, as: Confirmation
 
@@ -25,13 +27,12 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
 
   User retries use a UUID command identity and the Receipt path. ReplacementPlan
   applies use a stable `{:workflow, step_ref}` identity; it never manufactures a
-  user command id for a locator. A nil identity remains only for the legacy direct
-  service helper and is not a GraphQL mutation path."
+  user command id for a locator."
   @spec execute(
           map() | Article.t(),
           map(),
           User.t(),
-          Ecto.UUID.t() | {:workflow, String.t()} | nil
+          Ecto.UUID.t()
         ) ::
           {:ok, map()} | {:error, term()}
   def execute(article_or_projection, attrs, %User{} = user, command_id) when is_map(attrs) do
@@ -40,27 +41,20 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
            binding_context(article, article_or_projection) do
       params = Map.drop(attrs, [:command_id, :cur_user, :step_ref])
 
-      if is_nil(command_id) do
-        with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user) do
-          replace_in_draft(article, community, params, author, user)
-        end
-      else
-        case command_id do
-          {:workflow, workflow_ref} when is_binary(workflow_ref) and workflow_ref != "" ->
-            replace_with_workflow_recovery(
-              article,
-              community,
-              params,
-              user,
-              workflow_ref
-            )
-
-          _ ->
-            execute_command(article, community, params, user, command_id)
-        end
-      end
+      execute_receipt(article, community, params, user, command_id)
     else
       {:error, _reason} = error -> error
+    end
+  end
+
+  @doc false
+  def execute_for_workflow(article_or_projection, attrs, %User{} = user, workflow_ref)
+      when is_map(attrs) and is_binary(workflow_ref) and workflow_ref != "" do
+    with {:ok, article} <- load_article(article_or_projection),
+         {:ok, %{community: %Community{} = community}} <-
+           binding_context(article, article_or_projection) do
+      params = Map.drop(attrs, [:command_id, :cur_user, :step_ref])
+      execute_workflow(article, community, params, user, workflow_ref)
     end
   end
 
@@ -71,7 +65,7 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
 
       :not_applied ->
         with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user),
-             {:ok, result} <- replace_in_draft(article, community, params, author, user) do
+             {:ok, result} <- replace_loaded(article, community, params, author) do
           {:ok, Map.put(result, :workflow_ref, workflow_ref)}
         end
     end
@@ -113,30 +107,21 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
     end
   end
 
-  defp execute_command(article, community, params, user, command_id) do
-    command = %Command{
-      actor: user,
-      command_id: command_id,
-      operation: :article_replace_asset,
-      target: article,
-      params: params
-    }
+  @pipeline operation: :article_replace_asset,
+            confirmation: Confirmation,
+            target: :article,
+            params: :params
 
-    with {:ok, confirmation} <-
-           Command.execute(command,
-             action: &replace_action(&1, community),
-             confirmation: Confirmation
-           ) do
-      present_confirmation(confirmation)
-    end
-  end
+  receipt_pipeline execute_receipt(article, community, params, user, command_id) do
+    gate(fn candidate -> CMS.Gate.check_in_transaction(user, :edit, candidate, community) end)
 
-  defp replace_action(
-         %{actor: user, target: article, params: params, command_id: command_id},
-         community
-       ) do
-    with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user),
-         {:ok, result} <- replace_in_draft(article, community, params, author, user) do
+    change(fn canonical ->
+      with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user) do
+        replace_loaded(canonical, community, params, author)
+      end
+    end)
+
+    confirm(fn result ->
       {:ok,
        %Confirmation{
          data:
@@ -154,41 +139,52 @@ defmodule GroupherServer.CMS.Assets.Commands.ReplaceUse do
              {to_string(key), if(is_atom(value), do: Atom.to_string(value), else: value)}
            end)
        }}
-    end
+    end)
+
+    present(fn confirmation -> present_confirmation(confirmation) end)
   end
 
-  defp replace_in_draft(article, community, attrs, author, user) do
-    CMS.Gate.with_community_check(user, :edit, community, article, fn canonical ->
-      with {:ok, draft} <- Store.ensure_from_public(canonical, author),
-           {:ok, _} <- expected_version(attrs, draft.version),
-           {:ok, ref} <- locate_ref(draft, attrs),
-           {:ok, target_asset} <- active_asset(community.id, value(attrs, :to_asset_id)),
-           {:ok, _} <- same_asset(ref, value(attrs, :from_asset_id)),
-           {:ok, _} <- replacement_body_bag_required(ref, attrs),
-           {:ok, updated_draft} <-
-             Store.update(
-               canonical,
-               draft_attrs(attrs, draft),
-               author,
-               expected_version: draft.version
-             ),
-           {:ok, _refs} <-
-             Refs.sync_refs(
-               community,
-               canonical,
-               replacement_refs(draft, ref, target_asset)
-             ) do
-        {:ok,
-         %{
-           article_id: canonical.id,
-           draft_version: updated_draft.version,
-           ref_id: ref.id,
-           usage: ref.usage,
-           from_asset_id: ref.asset_id,
-           to_asset_id: target_asset.id
-         }}
-      end
+  @pipeline operation: :article_replace_asset_workflow,
+            target: :article,
+            params: :params
+  direct_pipeline execute_workflow(article, community, params, user, workflow_ref) do
+    gate(fn candidate -> CMS.Gate.check_in_transaction(user, :edit, candidate, community) end)
+
+    change(fn canonical ->
+      replace_with_workflow_recovery(canonical, community, params, user, workflow_ref)
     end)
+  end
+
+  defp replace_loaded(canonical, community, attrs, author) do
+    with {:ok, draft} <- Store.ensure_from_public(canonical, author),
+         {:ok, _} <- expected_version(attrs, draft.version),
+         {:ok, ref} <- locate_ref(draft, attrs),
+         {:ok, target_asset} <- active_asset(community.id, value(attrs, :to_asset_id)),
+         {:ok, _} <- same_asset(ref, value(attrs, :from_asset_id)),
+         {:ok, _} <- replacement_body_bag_required(ref, attrs),
+         {:ok, updated_draft} <-
+           Store.update_loaded(
+             canonical,
+             draft_attrs(attrs, draft),
+             author,
+             expected_version: draft.version
+           ),
+         {:ok, _refs} <-
+           Refs.sync_refs(
+             community,
+             canonical,
+             replacement_refs(draft, ref, target_asset)
+           ) do
+      {:ok,
+       %{
+         article_id: canonical.id,
+         draft_version: updated_draft.version,
+         ref_id: ref.id,
+         usage: ref.usage,
+         from_asset_id: ref.asset_id,
+         to_asset_id: target_asset.id
+       }}
+    end
   end
 
   defp draft_attrs(attrs, _draft) do

@@ -245,7 +245,7 @@ defmodule GroupherServerWeb.Schema.CMS.Metrics do
     field(:actions, list_of(non_null(:string)))
     field(:categories, list_of(non_null(:string)))
     field(:outcomes, list_of(non_null(:string)))
-    field(:denial_codes, list_of(non_null(:string)))
+    field(:rejection_codes, list_of(non_null(:string)))
     field(:actor_types, list_of(non_null(:string)))
     field(:actor_ref, :id)
     field(:on_behalf_of_ref, :id)

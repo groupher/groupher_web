@@ -1,5 +1,7 @@
 import { Link, createFileRoute, redirect } from '@tanstack/react-router'
 
+import useAccount from '~/stores/account/hooks'
+
 import ApplyFlow from '../components/ApplyFlow'
 import LoginRequired from '../components/LoginRequired'
 import ApplyFlowProvider from '../flow/provider'
@@ -20,7 +22,8 @@ export const Route = createFileRoute('/')({
 
 function ApplyIndex() {
   const state = Route.useLoaderData()
-  if (!state.account) return <LoginRequired />
+  const account = useAccount()
+  if (!account.isLogin || !account.user?.login) return <LoginRequired />
 
   if (!state.canApply.allowed) {
     return (
@@ -41,8 +44,8 @@ function ApplyIndex() {
           </Link>
         </div>
       ) : null}
-      <ApplyFlowProvider accountRef={state.account.publicRef}>
-        <ApplyFlow accountRef={state.account.publicRef} />
+      <ApplyFlowProvider accountRef={account.user.login}>
+        <ApplyFlow accountRef={account.user.login} />
       </ApplyFlowProvider>
     </>
   )

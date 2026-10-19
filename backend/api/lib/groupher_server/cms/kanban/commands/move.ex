@@ -7,6 +7,9 @@ defmodule GroupherServer.CMS.Kanban.Commands.Move do
           -> KanbanState status update
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias CMS.Articles.States
@@ -15,13 +18,25 @@ defmodule GroupherServer.CMS.Kanban.Commands.Move do
   alias Accounts.Model.User
   alias Helper.T
 
+  @pipeline operation: :kanban_move, target: :article
+  direct_pipeline execute_pipeline(community, article, status, actor) do
+    prepare(fn ->
+      case Query.ensure_membership(article, community) do
+        {:ok, _state} -> {:ok, article}
+        {:error, reason} -> {:error, reason}
+      end
+    end)
+
+    gate(fn canonical ->
+      CMS.Gate.check_in_transaction(actor, :set_status, canonical, community)
+    end)
+
+    change(fn canonical -> States.set_status(canonical, status, community.id) end)
+  end
+
   @spec execute(Community.t(), Article.t(), atom(), User.t()) :: T.domain_res(Article.t())
   def execute(%Community{} = community, %Article{} = article, status, %User{} = actor)
       when is_atom(status) do
-    with {:ok, _state} <- Query.ensure_membership(article, community) do
-      CMS.Gate.with_community_check(actor, :set_status, community, article, fn canonical ->
-        States.set_status(canonical, status, community.id)
-      end)
-    end
+    execute_pipeline(community, article, status, actor)
   end
 end

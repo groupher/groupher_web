@@ -5,15 +5,34 @@ defmodule GroupherServer.Accounts.Achievements.Commands.Achieve do
       achievement command -> advisory transaction lock -> Persist -> row update
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Accounts
   alias Accounts.Model.{Achievement, User}
   alias Accounts.Achievements.Persist
   alias Accounts.Config
-  alias Helper.Transaction
+  alias Helper.ORM.AdvisoryLock
 
   @collect_weight Config.achieve_collect_weight()
   @upvote_weight Config.achieve_upvote_weight()
   @follow_weight Config.achieve_follow_weight()
+
+  @pipeline operation: :accounts_achievements_achieve,
+            access: :open,
+            target: :user,
+            params: [:operation, :key]
+
+  direct_pipeline execute_pipeline(user, operation, key) do
+    lifecycle(fn user ->
+      with {:ok, :acquired} <- AdvisoryLock.acquire!("achievement:user:#{user.id}") do
+        {:ok, user}
+      end
+    end)
+
+    change(fn %User{id: user_id} ->
+      apply_in_transaction(%User{id: user_id}, operation, key)
+    end)
+  end
 
   @doc """
   Applies one increment or decrement to a supported achievement counter.
@@ -24,14 +43,15 @@ defmodule GroupherServer.Accounts.Achievements.Commands.Achieve do
   """
   @spec run(User.t(), :inc | :dec, :follow | :upvote | :collect) ::
           {:ok, Achievement.t()} | {:error, term()}
-  def run(%User{id: user_id}, operation, key) do
-    Transaction.lock_global("achievement:user:#{user_id}", fn ->
-      with {:ok, _} <- Persist.ensure(user_id),
-           {:ok, achievement} <- Persist.find(user_id),
-           {:ok, attrs} <- counter_attrs(achievement, operation, key) do
-        Persist.update(achievement, attrs)
-      end
-    end)
+  def run(%User{} = user, operation, key), do: execute_pipeline(user, operation, key)
+
+  @doc false
+  def apply_in_transaction(%User{id: user_id}, operation, key) do
+    with {:ok, _} <- Persist.ensure(user_id),
+         {:ok, achievement} <- Persist.find(user_id),
+         {:ok, attrs} <- counter_attrs(achievement, operation, key) do
+      Persist.update(achievement, attrs)
+    end
   end
 
   @doc """
@@ -44,7 +64,22 @@ defmodule GroupherServer.Accounts.Achievements.Commands.Achieve do
   @spec downgrade(User.t(), :collect, non_neg_integer()) ::
           {:ok, Achievement.t()} | {:error, term()}
   def downgrade(%User{id: user_id}, :collect, count) do
-    Transaction.lock_global("achievement:user:#{user_id}", fn ->
+    execute_downgrade_pipeline(%User{id: user_id}, count)
+  end
+
+  @pipeline operation: :accounts_achievements_downgrade,
+            access: :open,
+            target: :user,
+            params: [:count]
+
+  direct_pipeline execute_downgrade_pipeline(user, count) do
+    lifecycle(fn user ->
+      with {:ok, :acquired} <- AdvisoryLock.acquire!("achievement:user:#{user.id}") do
+        {:ok, user}
+      end
+    end)
+
+    change(fn %User{id: user_id} ->
       with {:ok, achievement} <- Persist.find(user_id) do
         attrs = %{
           articles_collects_count: max(achievement.articles_collects_count - count, 0),

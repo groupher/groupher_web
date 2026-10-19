@@ -28,7 +28,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogPendingFlag do
         )
 
       {:ok, _} =
-        CMS.Comments.set_comment_illegal(comment.id, %{
+        CMS.Comments.Audit.set_illegal(comment.id, %{
           is_legal: false,
           illegal_reason: ["some-reason"],
           illegal_words: ["some-word"]
@@ -38,7 +38,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogPendingFlag do
       assert comment.pending == @audit_illegal
 
       {:ok, _} =
-        CMS.Comments.unset_comment_illegal(comment.id, %{
+        CMS.Comments.Audit.unset_illegal(comment.id, %{
           is_legal: true,
           illegal_reason: [],
           illegal_words: []
@@ -60,7 +60,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogPendingFlag do
         )
 
       {:ok, _} =
-        CMS.Comments.set_comment_illegal(comment.id, %{
+        CMS.Comments.Audit.set_illegal(comment.id, %{
           is_legal: false,
           illegal_reason: ["some-reason"],
           illegal_words: ["some-word"],
@@ -79,7 +79,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogPendingFlag do
       assert user.meta.illegal_comments == ["/changelog/#{changelog.id}/comment/#{comment.id}"]
 
       {:ok, _} =
-        CMS.Comments.unset_comment_illegal(comment.id, %{
+        CMS.Comments.Audit.unset_illegal(comment.id, %{
           is_legal: true,
           illegal_reason: [],
           illegal_words: [],

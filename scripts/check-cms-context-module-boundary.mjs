@@ -188,6 +188,10 @@ const ownerForPath = (relativePath) => {
   const contextPath = parts.slice(0, -1)
   const context = contextPath[contextPath.indexOf('cms') + 1] ?? 'cms'
 
+  // The generic pipeline adapter is infrastructure glue. It may own the
+  // independent rejection-audit transaction on behalf of the runner, but it
+  // is not a CMS business facade or Command implementation.
+  if (file === 'command_pipeline_adapter.ex') return 'pipeline_adapter'
   if (parts.length === 6 && sharedFacadeFiles.has(file)) return 'shared'
   if (parts.length === 6 && file.endsWith('.ex')) return 'facade'
   if (contextPath.includes('commands')) return 'commands'

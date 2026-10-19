@@ -18,6 +18,17 @@ defmodule GroupherServer.Activity do
   defdelegate const_normalize_source(arg1), to: GroupherServer.Activity.Workflow
 
   @doc """
+  Checks whether a source belongs to the Activity vocabulary.
+
+      pipeline runner -> Activity -> Activity workflow/const boundary
+
+  ## Examples
+
+      GroupherServer.Activity.const_valid_source?(:api)
+  """
+  defdelegate const_valid_source?(arg1), to: GroupherServer.Activity.Workflow
+
+  @doc """
   Delegates export_community_logs/4 to the Context workflow owner.
 
   ## Examples
@@ -106,6 +117,39 @@ defmodule GroupherServer.Activity do
       iex> GroupherServer.Activity.log(...)
   """
   defdelegate log(arg1, arg2, arg3), to: GroupherServer.Activity.Workflow
+
+  @doc """
+  Appends one rejected Activity event through the narrow audit boundary.
+
+  ## Examples
+
+      Activity.log_rejection(article, :trashed,
+        actor: actor,
+        rejection_code: :forbidden,
+        operation_ref: command_id
+      )
+  """
+  @spec log_rejection(struct() | map(), atom(), keyword()) :: {:ok, struct()} | {:error, term()}
+  def log_rejection(resource, action, opts) when is_list(opts) do
+    cond do
+      not Keyword.has_key?(opts, :actor) ->
+        {:error, GroupherServer.Activity.ErrorCat.invalid_actor()}
+
+      not Keyword.has_key?(opts, :rejection_code) ->
+        {:error, GroupherServer.Activity.ErrorCat.invalid_payload()}
+
+      not Keyword.has_key?(opts, :operation_ref) ->
+        {:error, GroupherServer.Activity.ErrorCat.invalid_operation_ref()}
+
+      true ->
+        opts = opts |> Keyword.delete(:outcome) |> Keyword.put(:outcome, :denied)
+        GroupherServer.Activity.Workflow.log(resource, action, opts)
+    end
+  end
+
+  def log_rejection(_resource, _action, _opts) do
+    {:error, GroupherServer.Activity.ErrorCat.invalid_payload()}
+  end
 
   @doc """
   Delegates Activity.EventRef.derive/1 through the Activity Context boundary.

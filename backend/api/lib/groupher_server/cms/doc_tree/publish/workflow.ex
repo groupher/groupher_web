@@ -57,7 +57,7 @@ defmodule GroupherServer.CMS.DocTree.Publish.Workflow do
     DocTreeNode
   }
 
-  alias Helper.{T, Transaction}
+  alias Helper.T
 
   @publish_flow_noop CMS.DocTree.Const.doc_publish_flow(:noop)
   @publish_flow_publish CMS.DocTree.Const.doc_publish_flow(:publish)
@@ -96,30 +96,29 @@ defmodule GroupherServer.CMS.DocTree.Publish.Workflow do
 
   ## Examples
 
-      iex> Publish.publish_changes(community, %{doc_change_ids: ["doc:12"]}, user)
+      iex> Publish.publish_after_gate(community, %{doc_change_ids: ["doc:12"]}, user)
       {:ok, %{done: true, release: %CMS.Model.DocPublishRelease{}}}
   """
-  @spec publish_changes(Community.t(), map(), User.t(), keyword()) :: T.domain_res(map())
-  def publish_changes(%Community{} = community, args, %User{} = user, opts \\ []) do
+  @spec publish_after_gate(Community.t(), map(), User.t(), keyword()) :: T.domain_res(map())
+  def publish_after_gate(%Community{} = community, args, %User{} = user, opts \\ []) do
     sync_cover? = Keyword.get(opts, :sync_cover, true)
 
-    with {:ok, branch} <- Branch.resolve(community, args) do
+    with true <- Repo.in_transaction?() || {:error, :pipeline_transaction_required},
+         {:ok, branch} <- Branch.resolve(community, args) do
       publish_changes_for_branch(community, branch, args, user, sync_cover?, opts)
     end
   end
 
   defp publish_changes_for_branch(community, branch, args, user, sync_cover?, opts) do
-    Transaction.lock_global("doc_tree:#{community.id}:#{branch.id}", fn ->
-      Repo.transaction(fn ->
-        publish_changes_locked(community, branch, args, user, sync_cover?, opts)
-      end)
-      |> normalize_transaction_result()
-    end)
+    with {:ok, :acquired} <-
+           Helper.ORM.AdvisoryLock.acquire!("doc_tree:#{community.id}:#{branch.id}") do
+      publish_changes_locked(community, branch, args, user, sync_cover?, opts)
+      |> normalize_joined_result()
+    end
   end
 
   defp publish_changes_locked(community, branch, args, user, sync_cover?, opts) do
-    with {:ok, _canonical} <- CMS.Gate.access_check(user, :manage_docs, community),
-         {:ok, state} <- State.ensure_draft_state(community, branch_id: branch.id),
+    with {:ok, state} <- State.ensure_draft_state(community, branch_id: branch.id),
          {:ok, _} <- verify_checklist_revision(state, args) do
       prepare_publish_flow(community, branch, args, user, sync_cover?, opts)
     else
@@ -230,8 +229,9 @@ defmodule GroupherServer.CMS.DocTree.Publish.Workflow do
   defp rollback_unless_ok({:error, reason}), do: Repo.rollback(reason)
   defp rollback_unless_ok(reason), do: Repo.rollback(reason)
 
-  defp normalize_transaction_result({:ok, result}), do: {:ok, result}
-  defp normalize_transaction_result({:error, reason}), do: {:error, reason}
+  defp normalize_joined_result({:ok, _value} = result), do: result
+  defp normalize_joined_result({:error, _reason} = result), do: result
+  defp normalize_joined_result(value), do: {:ok, value}
 
   @doc """
   Moves a published doc page back to draft by creating a new draft row sharing

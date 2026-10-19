@@ -130,6 +130,21 @@ defmodule GroupherServer.CMS.Articles.Trash do
     {:error, CMS.Articles.ErrorCat.article_not_found("article not found")}
   end
 
+  @doc "Creates Trash membership from a Gate-canonical Article in the caller's transaction."
+  @spec trash_loaded(map(), term(), keyword()) ::
+          {:ok, TrashedArticle.t()} | {:error, term()}
+  def trash_loaded(%{community: %Community{}, thread: thread} = article, actor, opts)
+      when thread in [:post, :blog, :changelog] and is_list(opts) do
+    case Repo.get_by(TrashedArticle, article_id: article.id) do
+      %TrashedArticle{} = item -> {:ok, item}
+      nil -> create_trash_membership(article, actor, opts)
+    end
+  end
+
+  def trash_loaded(_article, _actor, _opts) do
+    {:error, CMS.Articles.ErrorCat.article_not_found()}
+  end
+
   @doc "Restores one ordinary Article membership or delegates branch-local Doc restore."
   @spec restore(Ecto.UUID.t() | TrashedArticle.t() | TrashedDocArticle.t(), term(), keyword()) ::
           {:ok, Article.t()} | {:error, term()}
@@ -162,6 +177,27 @@ defmodule GroupherServer.CMS.Articles.Trash do
           {:ok, Map.put(canonical, :inner_id, inner_id)}
         end
       end)
+    else
+      nil -> {:error, CMS.Articles.ErrorCat.article_not_found("article not found")}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @doc "Restores an ordinary Trash membership from a Gate-canonical Article in the caller's transaction."
+  @spec restore_loaded(TrashedArticle.t(), map(), term()) ::
+          {:ok, Article.t()} | {:error, term()}
+  def restore_loaded(%TrashedArticle{} = item, canonical, _actor) do
+    with %Community{} = community <- Repo.get(Community, item.community_id),
+         {:ok, lifecycle} <- Lifecycle.lock(canonical),
+         {:ok, _lifecycle} <- Lifecycle.transition(lifecycle, item.restore_state),
+         {:ok, _deleted} <- Repo.delete(item),
+         {:ok, _} <- update_tag_stats(canonical, 1),
+         {:ok, _} <- update_community_count(canonical, community),
+         {:ok, _} <- delete_empty_action(item.trash_action_id),
+         {:ok, _mentions} <- CMS.ArtimentMentions.mark_target_state(canonical, :active),
+         {:ok, %{inner_id: inner_id}} <- Bindings.get(%{article_id: canonical.id}, community) do
+      _ = CMS.SearchArtiments.Indexer.enqueue_upsert(canonical)
+      {:ok, Map.put(canonical, :inner_id, inner_id)}
     else
       nil -> {:error, CMS.Articles.ErrorCat.article_not_found("article not found")}
       {:error, reason} -> {:error, reason}
@@ -218,6 +254,28 @@ defmodule GroupherServer.CMS.Articles.Trash do
     else
       nil -> {:error, CMS.Articles.ErrorCat.article_not_found("article not found")}
       {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @doc "Permanently deletes a Gate-canonical trashed Article in the caller's transaction."
+  @spec permanently_delete_loaded(TrashedArticle.t(), map(), term(), keyword()) ::
+          {:ok, map()} | {:error, term()}
+  def permanently_delete_loaded(%TrashedArticle{} = item, canonical, actor, opts) do
+    action_id = item.trash_action_id
+
+    with {:ok, lifecycle} <- Lifecycle.lock(canonical),
+         {:ok, _lifecycle} <- Lifecycle.transition(lifecycle, :destroy),
+         {:ok, _event} <-
+           activity(canonical, :permanently_deleted, actor, item.trash_action,
+             source: activity_source(opts)
+           ),
+         {:ok, _comment_mentions} <- CMS.ArtimentMentions.purge_article_comments(canonical),
+         {:ok, _article_mentions} <- CMS.ArtimentMentions.purge(canonical),
+         {:ok, _asset_refs} <- CMS.Assets.cleanup_refs(canonical.thread, canonical.id),
+         {:ok, _deleted} <- Repo.delete(canonical),
+         {:ok, _} <- delete_empty_action(action_id) do
+      _ = CMS.SearchArtiments.Indexer.enqueue_delete(canonical)
+      {:ok, %{done: true, article_id: canonical.id}}
     end
   end
 

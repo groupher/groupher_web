@@ -7,80 +7,150 @@ defmodule GroupherServer.CMS.Articles.Commands.PermanentlyDeleteTrashed do
         -> CMS.Command when command_id exists -> Articles.Trash aggregate
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.ErrorCat, as: ArticlesErrorCat
   alias CMS.Articles.Trash, as: TrashAgg
-  alias CMS.Command
-  alias CMS.Model.{TrashedArticle, TrashedDocArticle}
+  alias CMS.Docs.Trash, as: DocTrash
+  alias CMS.Model.{Article, TrashedArticle, TrashedDocArticle}
   alias CMS.Articles.Commands.TrashPermanentDeleteConfirmation, as: Confirmation
+
+  @pipeline operation: :article_permanently_delete,
+            confirmation: Confirmation,
+            target: :command_target,
+            params: :command_params
+  receipt_pipeline run_receipt(
+                     item_or_id,
+                     actor,
+                     opts,
+                     command_id,
+                     command_target,
+                     command_params
+                   ) do
+    gate(fn _target ->
+      with {:ok, %{article: article, community: community} = loaded} <-
+             load_delete(item_or_id, opts),
+           {:ok, canonical} <-
+             CMS.Gate.check_in_transaction(actor, :permanently_delete, article, community) do
+        {:ok, Map.put(loaded, :article, canonical)}
+      end
+    end)
+
+    change(fn %{item: item, article: article} ->
+      TrashAgg.permanently_delete_loaded(item, article, actor, opts)
+    end)
+
+    confirm(fn _result ->
+      {:ok,
+       %Confirmation{
+         data: %{"done" => true, "command_id" => to_string(command_id)}
+       }}
+    end)
+
+    present(fn confirmation -> present_confirmation(confirmation) end)
+  end
+
+  @pipeline operation: :article_permanently_delete_write,
+            target: :item_or_id,
+            params: :opts
+  direct_pipeline run_direct(item_or_id, actor, opts) do
+    gate(fn _target ->
+      with {:ok, loaded} <- load_delete_write(item_or_id, opts) do
+        authorize_delete(loaded, actor)
+      end
+    end)
+
+    change(fn loaded -> delete_loaded(loaded, actor, opts) end)
+  end
 
   @spec execute(
           Ecto.UUID.t() | TrashedArticle.t() | TrashedDocArticle.t(),
           User.t() | nil,
           keyword()
         ) :: {:ok, term()} | {:error, term()}
-  def execute(%TrashedDocArticle{} = item, actor, opts) do
-    TrashAgg.permanently_delete(item, actor, opts)
-  end
-
   def execute(item_or_id, %User{} = actor, opts) do
-    case Keyword.get(opts, :command_id) do
-      nil -> delete_now(item_or_id, actor, opts)
-      command_id -> execute_command(item_or_id, actor, command_id, opts)
-    end
-  end
-
-  def execute(item_or_id, actor, opts), do: TrashAgg.permanently_delete(item_or_id, actor, opts)
-
-  defp delete_now(item_or_id, actor, opts) do
-    with {:ok, item} <- resolve_item(item_or_id, opts) do
-      TrashAgg.permanently_delete(item, actor, opts)
-    end
-  end
-
-  defp execute_command(item_or_id, actor, command_id, opts) do
     with {:ok, community_id} <- command_community_id(opts) do
-      case resolve_item(item_or_id, opts) do
-        {:ok, item} ->
-          delete_command(item, actor, command_id, community_id, opts)
-          |> present_confirmation()
-
-        {:error, _reason} ->
-          %Command{
-            actor: actor,
-            command_id: command_id,
-            operation: :article_permanently_delete,
-            target: {:article_trash, community_id},
-            params: %{item_id: item_or_id, opts: canonical_opts(opts)}
-          }
-          |> Command.execute(
-            action: fn _command ->
-              {:error, ArticlesErrorCat.article_not_found("trash item not found")}
-            end,
-            confirmation: Confirmation
-          )
-          |> present_confirmation()
-      end
+      run_receipt(
+        item_or_id,
+        actor,
+        opts,
+        Keyword.get(opts, :command_id),
+        {:article_trash, community_id},
+        %{item_id: item_id(item_or_id), opts: canonical_opts(opts)}
+      )
     end
   end
 
-  defp delete_command(item, actor, command_id, community_id, opts) do
-    %Command{
-      actor: actor,
-      command_id: command_id,
-      operation: :article_permanently_delete,
-      target: {:article_trash, community_id},
-      params: %{item_id: item.hash_id, opts: canonical_opts(opts)}
-    }
-    |> Command.execute(
-      action: fn %{params: %{opts: input}} ->
-        with {:ok, _result} <- TrashAgg.permanently_delete(item, actor, Map.to_list(input)) do
-          {:ok, %Confirmation{data: %{"done" => true, "command_id" => command_id}}}
+  def execute(_item_or_id, _actor, _opts), do: {:error, :invalid_actor}
+
+  @doc false
+  def execute_direct(item_or_id, actor, opts), do: run_direct(item_or_id, actor, opts)
+
+  defp load_delete(item_or_id, opts) do
+    with {:ok, community_id} <- command_community_id(opts),
+         {:ok, %TrashedArticle{} = item} <- resolve_item(item_or_id, opts),
+         %Article{} = article <- GroupherServer.Repo.get(Article, item.article_id),
+         %CMS.Model.Community{} = community <-
+           GroupherServer.Repo.get(CMS.Model.Community, community_id) do
+      {:ok, %{item: item, article: article, community: community}}
+    else
+      nil -> {:error, ArticlesErrorCat.article_not_found("article not found")}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp load_delete_write(item_or_id, opts) do
+    case resolve_item(item_or_id, opts) do
+      {:ok, %TrashedArticle{} = item} ->
+        with %Article{} = article <- GroupherServer.Repo.get(Article, item.article_id),
+             %CMS.Model.Community{} = community <-
+               GroupherServer.Repo.get(CMS.Model.Community, item.community_id) do
+          {:ok, %{item: item, article: article, community: community}}
+        else
+          nil -> {:error, ArticlesErrorCat.article_not_found("article not found")}
         end
-      end,
-      confirmation: Confirmation
-    )
+
+      {:ok, %TrashedDocArticle{} = item} ->
+        DocTrash.load_context(item)
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  defp authorize_delete(%{article: article, community: community, branch: branch} = loaded, actor) do
+    with {:ok, canonical} <-
+           CMS.Gate.check_in_transaction(
+             actor,
+             :permanently_delete,
+             article,
+             community,
+             branch.id
+           ) do
+      {:ok, Map.put(loaded, :article, canonical)}
+    end
+  end
+
+  defp authorize_delete(%{article: article, community: community} = loaded, actor) do
+    with {:ok, canonical} <-
+           CMS.Gate.check_in_transaction(actor, :permanently_delete, article, community) do
+      {:ok, Map.put(loaded, :article, canonical)}
+    end
+  end
+
+  defp delete_loaded(
+         %{item: %TrashedDocArticle{} = item, article: article, branch: branch},
+         actor,
+         opts
+       ) do
+    DocTrash.permanently_delete_loaded(item, article, branch, actor, opts)
+  end
+
+  defp delete_loaded(%{item: item, article: article}, actor, opts) do
+    TrashAgg.permanently_delete_loaded(item, article, actor, opts)
   end
 
   defp resolve_item(%TrashedArticle{} = item, opts) do
@@ -110,12 +180,17 @@ defmodule GroupherServer.CMS.Articles.Commands.PermanentlyDeleteTrashed do
     end
   end
 
-  defp present_confirmation({:ok, %Confirmation{data: %{"command_id" => command_id}}}) do
+  defp present_confirmation(%Confirmation{data: %{"command_id" => command_id}}) do
     {:ok, %{done: true, command_id: command_id}}
   end
 
-  defp present_confirmation(error), do: error
+  defp present_confirmation(_confirmation) do
+    {:error, CMS.ErrorCat.command_result_unavailable()}
+  end
+
   defp canonical_opts(opts), do: opts |> Keyword.delete(:command_id) |> Map.new()
+  defp item_id(%TrashedArticle{hash_id: hash_id}), do: hash_id
+  defp item_id(item_id), do: item_id
 
   defp command_community_id(opts) do
     case Keyword.get(opts, :community_id) do

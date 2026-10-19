@@ -143,7 +143,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedChangelogs do
 
       changelog = results["entries"] |> List.first()
 
-      assert not is_nil(get_in(changelog, ["document", "html"]))
+      assert not is_nil(get_in(changelog, ["body", "html"]))
     end
 
     test "support community_tag filter", ~m(guest_conn community user)a do

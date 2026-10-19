@@ -5,7 +5,7 @@ defmodule GroupherServer.Test.CMS.Comments.JobPolicy do
   import ExUnit.CaptureLog
 
   alias GroupherServer.{CMS, Jobs}
-  alias CMS.Model.{ArticleStats, Comment}
+  alias CMS.Model.{ArticleStats, Comment, CommentBody}
   alias CMS.Comments.JobPolicy
   alias CMS.Gate.Access
   alias Jobs.Comments, as: CommentsJob
@@ -94,12 +94,12 @@ defmodule GroupherServer.Test.CMS.Comments.JobPolicy do
     reject_job_type(:audition)
 
     assert_raise Ecto.ConstraintError, fn ->
-      CMS.Comments.update_comment(comment, mock_comment("after"), actor, Ecto.UUID.generate())
+      CMS.Comments.update_comment(comment, mock_comment("after"), 1, actor, Ecto.UUID.generate())
     end
 
-    persisted = Repo.get!(Comment, comment.id)
-    assert persisted.body_html =~ "before"
-    refute persisted.body_html =~ "after"
+    persisted = comment_body(comment)
+    assert persisted.html =~ "before"
+    refute persisted.html =~ "after"
   end
 
   test "application-level Oban changeset errors become a stable domain error and roll back" do
@@ -130,13 +130,18 @@ defmodule GroupherServer.Test.CMS.Comments.JobPolicy do
               details: %{job: :audition, failure: :validation}
             }} =
              Access.with_check(actor, :edit, comment, fn canonical ->
-               with {:ok, updated} <- ORM.update(canonical, %{body_html: "must rollback"}),
-                    {:ok, _job} <- JobPolicy.audition(updated, invalid_enqueue) do
-                 {:ok, updated}
+               with {:ok, updated_body} <-
+                      canonical |> comment_body() |> ORM.update(%{html: "must rollback"}),
+                    {:ok, _job} <- JobPolicy.audition(canonical, invalid_enqueue) do
+                 {:ok, updated_body}
                end
              end)
 
-    assert Repo.get!(Comment, comment.id).body_html =~ "before"
+    assert comment_body(comment).html =~ "before"
+  end
+
+  defp comment_body(%Comment{id: comment_id}) do
+    Repo.get_by!(CommentBody, comment_id: comment_id)
   end
 
   test "comment effects are durably recorded after the comment commits" do

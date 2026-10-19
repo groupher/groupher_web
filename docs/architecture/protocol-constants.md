@@ -31,6 +31,7 @@ UI 文案通常应保持原样；跨文件、跨 package、跨前后端共享的
 | -------------------------------------- | -------- | --------------------------------------------------------- |
 | Auth channel / event                   | ✓ 已收口 | `frontend/core/lib/auth/constant.ts`                      |
 | Auth 错误码 / JWT claims               | ✓ 已收口 | `packages/contracts/auth.contract.json`                   |
+| Content Publisher 冲突错误码           | ✓ 已收口 | `packages/contracts/content-publish.contract.json`        |
 | Auth recovery action                   | ✓ 已收口 | `frontend/core/lib/auth/constant.ts`                      |
 | Auth / 公共 API path                   | ✓ 已收口 | `packages/route-contract/src/index.ts`                    |
 | Query key                              | ✓ 已收口 | 各 query domain 的 key factory；matcher 由 key owner 导出 |
@@ -42,6 +43,7 @@ UI 文案通常应保持原样；跨文件、跨 package、跨前后端共享的
 | Docs Import path family                | ✓ 已收口 | `packages/route-contract/src/index.ts`                    |
 | Public cache tag grammar               | ✓ 已收口 | `packages/contracts/public-cache.contract.json`           |
 | ViewTracker human visibility threshold | ✓ 已收口 | `packages/contracts/view-counting.contract.json`          |
+| Gate Action                            | ✓ 已收口 | `packages/contracts/gate.contract.json`                   |
 | 测试协议字符串                         | ✓ 已审计 | 消费测试引用 contract；稳定值断言保留字面值               |
 | Constant / spec 文件职责               | ✓ 已整理 | 公开类型位于各目录 `spec.d.ts`                            |
 
@@ -99,7 +101,7 @@ cache key，从而保证 invalidate、remove 和 refetch 使用相同 identity�
 ### 4. 公共 API 路径｜✓ 已收口
 
 修复前重复或分散的路径包括 `/api/graphql`、`/api/artiment/import`、
-`/api/artiment/publish`、`/api/docs/import/*`、`/api/utils/slugify` 和 `/api/auth/*`。
+`/api/content/publish`、`/api/docs/import/*`、`/api/utils/slugify` 和 `/api/auth/*`。
 
 当前由 `packages/route-contract/src/index.ts` 按边界导出：
 
@@ -191,6 +193,14 @@ packages/contracts/auth.contract.json
 `packages/contracts/scripts/generate-auth-contract.mjs` 负责生成两侧产物；
 `generate:auth:check` 和 Contracts 测试会检查生成结果是否过期。parity test 继续验证 TS 与 Elixir
 结果一致。
+
+## 跨语言 Gate Action contract｜✓ 已收口
+
+前端 Gate、Phoenix Gate 和 Passport Registry 使用的 action 名称已进入同一生成和 freshness
+机制，不再由 TypeScript 与 Elixir 分别手写。完整 action 目录位于
+`packages/contracts/gate.contract.json`，生成 TypeScript `GATE_ACTION` 和 Phoenix
+`CMS.GateAction`；后端完整性测试保证 contract 与 Passport Registry action 集合相等。职责、
+文件结构和导入规则见 [`contracts.md`](./contracts.md#gate-action-contract)。
 
 ## 跨语言 Public Cache tag contract｜目标
 

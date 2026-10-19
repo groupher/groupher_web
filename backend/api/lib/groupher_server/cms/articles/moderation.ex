@@ -251,7 +251,7 @@ defmodule GroupherServer.CMS.Articles.Moderation do
       command_id when is_binary(command_id) ->
         case Ecto.UUID.cast(command_id) do
           {:ok, command_id} -> {:ok, {:command, command_id}}
-          :error -> workflow_moderation_identity(article, opts)
+          :error -> {:error, :invalid_moderation_command_id}
         end
 
       _ ->
@@ -259,6 +259,8 @@ defmodule GroupherServer.CMS.Articles.Moderation do
     end
   end
 
+  # This deterministic value correlates moderation effects only; it never
+  # chooses between receipt and direct pipeline entry points.
   defp workflow_moderation_identity(article, opts) do
     case Keyword.get(opts, :workflow_ref) do
       workflow_ref when is_binary(workflow_ref) and workflow_ref != "" ->

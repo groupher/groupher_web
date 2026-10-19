@@ -194,7 +194,7 @@ type TRet = {
 
   toggleCheck: TTogglePassportRule
   loadAllPassportRules: () => void
-  updatePassport: () => void
+  updatePassport: () => Promise<void>
   deleteModerator: () => void
 
   rules: string
@@ -324,7 +324,7 @@ export default function useLogic(): TRet {
       })
   }
 
-  const updatePassport = (): void => {
+  const updatePassport = async (): Promise<void> => {
     const community = community$.slug
     if (!community || !activeModerator?.login) return
     const activeModeratorLogin = activeModerator.login
@@ -354,7 +354,7 @@ export default function useLogic(): TRet {
 
     const rules = { global: globalRules, [community]: { cms: innerRules } }
 
-    executeCommand<
+    await executeCommand<
       VariablesOf<typeof S.updateModeratorPassport>,
       ResultOf<typeof S.updateModeratorPassport>
     >({
@@ -365,7 +365,7 @@ export default function useLogic(): TRet {
         rules: JSON.stringify(rules),
       },
     })
-      .then((res) => {
+      .then(async (res) => {
         const remoteModerators = normalizeModerators(res.updateModeratorPassport?.moderators)
         const savedModeratorPatch = {
           passportItemCount: enabledRuleCount(innerRules),
@@ -380,6 +380,7 @@ export default function useLogic(): TRet {
 
         dsb$.editMany({ moderators })
         patchCommunityConfig(queryClient, community, { moderators })
+        if (activeModeratorLogin === account$.user?.login) await account$.refreshSession()
         closeDrawer()
       })
       .catch((error) => {
@@ -396,12 +397,13 @@ export default function useLogic(): TRet {
         community: community$.slug,
         user: activeModerator.login,
       },
-    }).then((res) => {
+    }).then(async (res) => {
       const moderators = normalizeModerators(res.removeModerator?.moderators)
 
       dsb$.editMany({ moderators })
       moderatorUi$.patch({ activeModerator: null })
       patchCommunityConfig(queryClient, community$.slug, { moderators })
+      if (activeModerator.login === account$.user?.login) await account$.refreshSession()
 
       closeDrawer()
       send(EVENT.REFRESH_MODERATORS)

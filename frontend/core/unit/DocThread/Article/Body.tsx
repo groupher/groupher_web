@@ -12,8 +12,8 @@ export default function Body() {
   const s = useSalon()
 
   const value = useMemo(() => {
-    const fallback = doc?.document?.markdown || doc?.body || doc?.digest || ''
-    return parseDocValue(doc?.document?.json, fallback)
+    const fallback = doc?.body?.markdown || doc?.digest || ''
+    return parseDocValue(doc?.body?.json, fallback)
   }, [doc])
 
   if (!doc) return null

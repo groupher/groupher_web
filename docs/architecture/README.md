@@ -16,7 +16,12 @@
 - [`performance/`](./performance)：复杂度与性能审计。
 - [`query-store-boundary.md`](./query-store-boundary.md)：Query、Store、Draft 与缓存边界。
 - [`query-invalidation.md`](./query-invalidation.md)：TanStack Query typed target、领域 key resolver 与通用失效 executor。
+- [`frontend-account-passport-gate.md`](./frontend-account-passport-gate.md)：AccountStore、Passport、前端 Gate 与各应用的认证策略。
+- [`contracts.md`](./contracts.md)：跨运行时 contract 的归属、生成、freshness 与 Gate Action 目标合同。
+- [`protocol-constants.md`](./protocol-constants.md)：前端裸写协议字符串的历史审计和现有归属记录。
+- [`policy.md`](./policy.md)：后端 Policy 的准入决策职责，以及与 Gate、Lifecycle、Config、Workflow 和 Persist 的边界。
 - [`orm.md`](./orm.md)：`Helper.ORM` namespace、Ecto 默认写入、AdvisoryLock API 与裸 SQL 边界。
+- [`pagination.md`](./pagination.md)：统一 offset/cursor 分页、Flop adapter、Lite read model、领域 Query 目录与 N+1 门禁。
 - [`article-stats-and-public-cache.md`](./article-stats-and-public-cache.md)：ArticleStats 公共计数、SSR hydration、HTML/CDN 缓存和 tracking 判断。
 - [`article-stats-target.md`](./article-stats-target.md)：ArticleStats 模型 direct-cutover 的历史设计记录；
   当前合同以 `article-stats-and-public-cache.md` 为准。
@@ -38,10 +43,14 @@
 - [`cms-outbox.md`](./cms-outbox.md)：当前 CMS Domain Outbox、typed event、Jobs Worker、Workflow 和
   provider effect 边界；不建立 Dispatcher 或动态 handler registry。
 - [`cms-command.md`](./cms-command.md)：CMS 用户写命令、Receipt 幂等与 Confirmation 边界。
+- [`cms-write-boundary-contract.md`](./cms-write-boundary-contract.md)：CMS Command 的 receipt/write/workflow
+  pipeline 目标合同、Gate/事务边界、编译后 contracts、coverage 与纯 Elixir 全局检查，以及当前实现与自动化缺口。
 - [`cms-command-confirmation.md`](./cms-command-confirmation.md)：Confirmation codec、Receipt JSON、
   recovery 与 retention 子协议。
 - [`cms-command-v3.md`](./cms-command-v3.md)：Confirmation 与提交后 result builder 的历史实施记录；
   当前合同已合并到前两篇。
+- [`content-publisher.md`](./content-publisher.md)：Plate/Markdown 到 canonical BodyBag、可信 Node
+  Publisher、delegated user、service capability，以及 Docs、Article、Comment 原子写入的当前合同。
 - [`ci-contract-gaps.md`](./ci-contract-gaps.md)：GraphQL operation、Command Receipt、Outbox、scope、并发与分页的 CI/测试覆盖缺口及门禁计划。
 - [`error-cat.md`](./error-cat.md)：领域错误目录、全局注册和协议边界。
 - [`orm-raw-sql-inventory.md`](./orm-raw-sql-inventory.md)：仍需保留或收口的裸 SQL 清单与 owner 判断。

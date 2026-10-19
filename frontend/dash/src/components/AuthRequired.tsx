@@ -12,7 +12,7 @@ export default function AuthRequired({ action }: TProps) {
           Sign in required
         </h1>
         <p className='mt-2 text-sm leading-6 text-neutral-500 dark:text-neutral-400'>
-          Sign in to {action}. Public dashboard information remains available without an account.
+          Sign in to {action}.
         </p>
         <button
           type='button'

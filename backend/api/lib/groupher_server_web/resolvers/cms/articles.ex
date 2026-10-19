@@ -127,7 +127,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
   end
 
   def trash_article(_root, %{article: article} = args, %{context: %{cur_user: user}}) do
-    CMS.articles_trash(article, user, command_id: args[:command_id])
+    CMS.articles_trash_receipt(article, user, command_id: args[:command_id])
   end
 
   def restore_trashed_article(
@@ -137,7 +137,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
       ) do
     command_id = args[:command_id]
     opts = [command_id: command_id, community_id: community.id, thread: thread]
-    CMS.articles_restore_trashed(id, user, opts)
+    CMS.articles_restore_trashed_receipt(id, user, opts)
   end
 
   def permanently_delete_trashed_article(
@@ -147,7 +147,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
       ) do
     command_id = args[:command_id]
     opts = [command_id: command_id, community_id: community.id, thread: thread]
-    CMS.articles_permanently_delete_trashed(id, user, opts)
+    CMS.articles_permanently_delete_trashed_receipt(id, user, opts)
   end
 
   def permanently_delete_trash_action(

@@ -7,8 +7,11 @@ defmodule GroupherServer.CMS.DocCover.Commands.ReorderCards do
         -> CMS.Gate
         -> DocCover.Persist
   """
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
-  alias CMS.DocCover.{Commands.Support, Persist}
+  alias CMS.DocCover.{Commands.ConfirmationSupport, Commands.DocCoverConfirmation, Persist}
   alias CMS.Model.Community
 
   @doc """
@@ -20,14 +23,14 @@ defmodule GroupherServer.CMS.DocCover.Commands.ReorderCards do
       #=> {:ok, %{done: true}}
   """
   @spec execute(Community.t(), list(), term(), Ecto.UUID.t()) :: term()
-  def execute(community, ids, actor, command_id) do
-    Support.execute_receipted(
-      community,
-      actor,
-      command_id,
-      :doc_cover_reorder_cards,
-      %{ids: ids},
-      &Persist.reorder_cards(&1, ids)
-    )
+  @pipeline operation: :doc_cover_reorder_cards,
+            confirmation: DocCoverConfirmation,
+            target: :community,
+            params: [:ids]
+  receipt_pipeline execute(community, ids, actor, command_id) do
+    gate(fn candidate -> CMS.Gate.check_in_transaction(actor, :manage_docs, candidate) end)
+    change(fn canonical -> Persist.reorder_cards(canonical, ids) end)
+    confirm(fn result -> {:ok, ConfirmationSupport.confirmation(result, command_id)} end)
+    present(fn confirmation -> ConfirmationSupport.present({:ok, confirmation}) end)
   end
 end

@@ -28,14 +28,28 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
       field(:version, non_null(:integer))
       field(:title, :string)
 
-      field(:document, :article_document,
-        resolve: fn source, args, resolution ->
-          GroupherServerWeb.Schema.Helper.Fields.article_relation(
-            source,
-            args,
-            resolution,
-            :document
-          )
+      field(:body, non_null(:artiment_body),
+        resolve: fn source, _args, _resolution ->
+          GroupherServerWeb.Schema.Helper.Fields.article_body(source)
+        end
+      )
+
+      field(:thumbnail, :json,
+        resolve: fn source, _args, _resolution ->
+          case GroupherServerWeb.Schema.Helper.Fields.article_body(source) do
+            {:ok, nil} -> {:ok, nil}
+            {:ok, document} -> {:ok, Map.get(document, :thumbnail)}
+            error -> error
+          end
+        end
+      )
+
+      field(:asset_refs, non_null(list_of(non_null(:article_asset_ref))),
+        resolve: fn source, _args, _resolution ->
+          case Map.fetch(source, :asset_refs) do
+            {:ok, asset_refs} -> {:ok, asset_refs}
+            :error -> {:error, CMS.error_cat_invalid_body("Article asset refs are missing")}
+          end
         end
       )
 
@@ -124,6 +138,15 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
       {:ok, %Ecto.Association.NotLoaded{}} -> load_relation(source, args, resolution, relation)
       {:ok, value} -> {:ok, value}
       :error -> load_relation(source, args, resolution, relation)
+    end
+  end
+
+  @doc "Returns the canonical Article body from the assembled projection without a legacy fallback."
+  @spec article_body(map()) :: {:ok, term()} | {:error, term()}
+  def article_body(source) do
+    case Map.fetch(source, :body) do
+      {:ok, body} -> {:ok, body}
+      :error -> {:error, CMS.error_cat_invalid_body("Article body projection is missing")}
     end
   end
 
@@ -243,8 +266,15 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
   defmacro comment_general_fields do
     quote do
       field(:inner_id, :id, resolve: &GroupherServerWeb.Resolvers.CMS.Comments.comment_inner_id/3)
-      field(:body, :string)
-      field(:body_html, :string)
+
+      field(:body, non_null(:artiment_body),
+        resolve: &GroupherServerWeb.Schema.Helper.Fields.comment_body/3
+      )
+
+      field(:body_version, non_null(:integer),
+        resolve: &GroupherServerWeb.Schema.Helper.Fields.comment_body_version/3
+      )
+
       field(:author, :user, resolve: dataloader(CMS, :author))
       field(:is_pinned, :boolean)
       field(:floor, :integer)
@@ -272,6 +302,32 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
       field(:lifecycle, :comment_lifecycle, resolve: dataloader(CMS, :lifecycle))
 
       timestamp_fields()
+    end
+  end
+
+  @doc "Resolves a Comment body from a preloaded projection or canonical body row."
+  def comment_body(%{body: %GroupherServer.CMS.Model.CommentBody{} = body}, _, _), do: {:ok, body}
+
+  def comment_body(%{id: comment_id}, _, _) do
+    case GroupherServer.Repo.get_by(GroupherServer.CMS.Model.CommentBody, comment_id: comment_id) do
+      nil -> {:error, "comment body not found"}
+      body -> {:ok, body}
+    end
+  end
+
+  @doc "Resolves a Comment body version from a preloaded projection or canonical body row."
+  def comment_body_version(
+        %{body: %GroupherServer.CMS.Model.CommentBody{version: version}},
+        _,
+        _
+      ) do
+    {:ok, version}
+  end
+
+  def comment_body_version(%{id: comment_id}, _, _) do
+    case GroupherServer.Repo.get_by(GroupherServer.CMS.Model.CommentBody, comment_id: comment_id) do
+      nil -> {:error, "comment body not found"}
+      body -> {:ok, body.version}
     end
   end
 

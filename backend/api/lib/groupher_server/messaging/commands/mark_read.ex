@@ -8,10 +8,17 @@ defmodule GroupherServer.Messaging.Commands.MarkRead do
           -> typed update result
   """
 
-  alias GroupherServer.{Messaging, Accounts}
+  use GroupherServer.CommandPipeline
 
-  alias Accounts.Model.User
+  alias GroupherServer.Messaging
+
   alias Messaging.Inbox.Persist
+
+  @pipeline operation: :messaging_mark_read, access: :open, target: :user, params: [:type, :ids]
+
+  direct_pipeline run(type, ids, user) do
+    change(fn _user -> Persist.mark_read(type, ids, user) end)
+  end
 
   @doc """
   Marks selected mention or notification rows as read.
@@ -20,6 +27,4 @@ defmodule GroupherServer.Messaging.Commands.MarkRead do
 
       Messaging.Commands.MarkRead.run(:mention, ids, user)
   """
-  @spec run(:mention | :notification, [term()], User.t()) :: term()
-  def run(type, ids, %User{} = user), do: Persist.mark_read(type, ids, user)
 end

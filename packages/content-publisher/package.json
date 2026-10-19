@@ -1,0 +1,29 @@
+{
+  "name": "@groupher/content-publisher",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "type-check": "pnpm exec tsc --noEmit --project ./tsconfig.json",
+    "test": "pnpm exec vitest --config vitest.config.mts run",
+    "lint": "pnpm exec oxlint . --threads=1",
+    "format": "pnpm exec oxfmt -c ../../frontend/core/config/oxfmt.json *.ts *.json *.md *.mts",
+    "format:check": "pnpm exec oxfmt -c ../../frontend/core/config/oxfmt.json --check *.ts *.json *.md *.mts",
+    "build": "echo 'skip build'"
+  },
+  "dependencies": {
+    "@groupher/contracts": "workspace:*",
+    "@groupher/rich-editor": "0.0.35",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "sanitize-html": "2.18.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/sanitize-html": "^2.16.1",
+    "vitest": "^5.0.4"
+  }
+}

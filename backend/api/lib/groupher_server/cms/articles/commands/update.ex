@@ -12,12 +12,15 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
   the current canonical public DTO instead of retaining a physical content row.
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.Draft.Store, as: DraftStore
   alias CMS.Articles.{Bindings, Query, RevisionResult}
   alias CMS.Articles.Store, as: ArticleStore
-  alias CMS.{Command, FrontDesk}
+  alias CMS.FrontDesk
   alias CMS.Model.{Article, ArticleBinding, ArticleLifecycle, Community}
   alias CMS.Articles.Commands.RevisionConfirmation, as: Confirmation
 
@@ -28,55 +31,55 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
     with {:ok, article} <- load_article(article_or_projection),
          {:ok, %{community: %Community{} = community}} <-
            binding_context(article, article_or_projection) do
-      command = %Command{
-        actor: user,
-        command_id: command_id,
-        operation: :article_update,
-        target: article,
-        params: Map.drop(attrs, [:command_id, :cur_user])
-      }
-
-      with {:ok, %Confirmation{} = confirmation} <-
-             Command.execute(
-               command,
-               action: &update_action(&1, community),
-               confirmation: Confirmation
-             ) do
-        RevisionResult.build(confirmation, community)
-      end
+      execute_pipeline(
+        article,
+        community,
+        Map.drop(attrs, [:command_id, :cur_user]),
+        user,
+        command_id
+      )
     else
       {:error, _reason} = error -> error
     end
   end
 
-  defp update_action(
-         %{actor: user, target: article, params: attrs, command_id: command_id},
-         community
-       ) do
-    with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user),
-         {:ok, %{public: public}} <-
-           update_and_publish(article, attrs, author, user, community, command_id),
-         %ArticleBinding{inner_id: inner_id} when is_integer(inner_id) <-
-           Query.binding(article.id, community.id) do
-      with {:ok, revision_id} <- required_revision_id(public),
-           {:ok, publication_version} <- required_publication_version(public),
-           {:ok, published_at} <- required_published_at(public) do
-        {:ok,
-         %Confirmation{
-           article_id: article.id,
-           revision_id: revision_id,
-           community_id: community.id,
-           author_id: article.author_id,
-           inner_id: inner_id,
-           thread: article.thread,
-           publication_version: publication_version,
-           published_at: published_at,
-           command_id: command_id
-         }}
-      else
-        _ -> {:error, CMS.ErrorCat.command_result_unavailable()}
+  @pipeline operation: :article_update,
+            confirmation: Confirmation,
+            target: :article,
+            params: [:attrs]
+
+  receipt_pipeline execute_pipeline(article, community, attrs, user, command_id) do
+    gate(fn candidate -> CMS.Gate.check_in_transaction(user, :edit, candidate, community) end)
+
+    change(fn canonical ->
+      with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user),
+           {:ok, %{public: public}} <-
+             update_and_publish(canonical, attrs, author, user, community, command_id),
+           %ArticleBinding{inner_id: inner_id} when is_integer(inner_id) <-
+             Query.binding(canonical.id, community.id) do
+        with {:ok, revision_id} <- required_revision_id(public),
+             {:ok, publication_version} <- required_publication_version(public),
+             {:ok, published_at} <- required_published_at(public) do
+          {:ok,
+           %Confirmation{
+             article_id: canonical.id,
+             revision_id: revision_id,
+             community_id: community.id,
+             author_id: canonical.author_id,
+             inner_id: inner_id,
+             thread: canonical.thread,
+             publication_version: publication_version,
+             published_at: published_at,
+             command_id: command_id
+           }}
+        else
+          _ -> {:error, CMS.ErrorCat.command_result_unavailable()}
+        end
       end
-    end
+    end)
+
+    confirm(fn confirmation -> {:ok, confirmation} end)
+    present(fn confirmation -> RevisionResult.build(confirmation, community) end)
   end
 
   defp required_revision_id(%{revision_id: revision_id})
@@ -96,12 +99,12 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
   defp required_published_at(_), do: {:error, :missing_published_at}
 
   defp update_and_publish(article, attrs, author, user, community, command_id) do
-    CMS.Gate.with_community_check(user, :edit, community, article, fn canonical ->
-      with {:ok, lifecycle} <- lifecycle(canonical.id),
-           {:ok, draft} <- DraftStore.ensure_from_public(canonical, author),
+    result =
+      with {:ok, lifecycle} <- load_lifecycle(article.id),
+           {:ok, draft} <- DraftStore.ensure_from_public(article, author),
            {:ok, _} <- expected_version(attrs, draft.version),
            {:ok, updated} <-
-             DraftStore.update(canonical, attrs, author, expected_version: draft.version),
+             DraftStore.update_loaded(article, attrs, author, expected_version: draft.version),
            publish_opts =
              [
                expected_draft_version: updated.version,
@@ -110,11 +113,15 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
              ] ++
                community_tag_opts(attrs) ++ [outbox_command_id: command_id],
            {:ok, %{article: published}} <-
-             CMS.Articles.Workflow.publish(canonical, author, user, publish_opts),
+             CMS.Articles.Workflow.publish(article, author, user, publish_opts),
            {:ok, public} <- public_projection(published.id, community) do
         {:ok, %{public: public}}
       end
-    end)
+
+    case result do
+      {:error, :draft_version_conflict} -> {:error, CMS.ErrorCat.draft_version_conflict()}
+      other -> other
+    end
   end
 
   defp expected_version(attrs, version) do
@@ -125,7 +132,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Update do
     end
   end
 
-  defp lifecycle(article_id) do
+  defp load_lifecycle(article_id) do
     case ArticleStore.lifecycle(article_id) do
       {:ok, %ArticleLifecycle{} = lifecycle} -> {:ok, lifecycle}
       {:error, _reason} -> {:error, CMS.Articles.ErrorCat.lifecycle_not_found()}

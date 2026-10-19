@@ -7,75 +7,136 @@ defmodule GroupherServer.CMS.Articles.Commands.Trash do
         -> CMS.Command when command_id exists -> Articles.Trash aggregate
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
+  alias GroupherServer.CommandPipeline
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.Trash, as: TrashAgg
-  alias CMS.Articles.{Effects, Commands.TrashConfirmation}
-  alias CMS.Command
-  alias CMS.Model.TrashedArticle
+  alias CMS.Articles.{Bindings, Commands.TrashConfirmation}
+  alias CMS.Model.{Community, TrashedArticle}
+  alias CommandPipeline.{RejectionContext, RejectionData}
 
-  @spec execute(map(), User.t() | nil, keyword()) ::
-          {:ok, TrashedArticle.t()} | {:error, term()}
-  def execute(article, %User{} = actor, opts) do
-    command_id = Keyword.get(opts, :command_id)
+  @pipeline operation: :article_trash,
+            confirmation: TrashConfirmation,
+            target: :article,
+            params: :opts
+  receipt_pipeline execute_receipt(article, actor, opts, command_id) do
+    prepare(fn -> prepare_article(article) end)
 
-    if is_nil(command_id) do
-      TrashAgg.trash(article, actor, opts)
-    else
-      result =
-        %Command{
-          actor: actor,
-          command_id: command_id,
-          operation: :article_trash,
-          target: article,
-          params: canonical_opts(opts)
-        }
-        |> Command.execute(action: &trash_action/1, confirmation: TrashConfirmation)
-        |> present_confirmation()
+    gate(fn candidate ->
+      with {:ok, %Community{} = community} <- community_context(candidate, opts) do
+        CMS.Gate.check_in_transaction(actor, :delete, candidate, community)
+      end
+    end)
 
-      audit_denial(result, article, actor, command_id, opts)
-    end
-  end
+    change(fn canonical -> TrashAgg.trash_loaded(canonical, actor, opts) end)
 
-  def execute(article, actor, opts), do: TrashAgg.trash(article, actor, opts)
-
-  defp trash_action(%{actor: actor, target: article, params: params, command_id: command_id}) do
-    with {:ok, item} <- TrashAgg.trash(article, actor, Map.to_list(params)) do
+    confirm(fn item ->
       {:ok,
        %TrashConfirmation{
          data: %{
            "trash_id" => item.hash_id,
            "article_id" => to_string(item.article_id),
-           "command_id" => command_id
+           "command_id" => to_string(command_id)
          }
        }}
-    end
+    end)
+
+    present(fn confirmation -> present_confirmation(confirmation) end)
+
+    on_rejection(&build_rejection/1)
   end
 
-  defp audit_denial({:error, %{reason: reason}} = result, article, actor, command_id, opts) do
-    case Effects.activity(article, :trashed,
-           actor: actor,
-           source: Keyword.get(opts, :source, :api),
-           outcome: :denied,
-           denial_code: reason,
-           operation_ref: command_id
-         ) do
-      {:ok, _event} -> result
-      {:error, %{reason: :duplicate_event}} -> result
-      {:error, _audit_reason} -> result
-    end
+  @pipeline operation: :article_trash_write, target: :article, params: :opts
+  direct_pipeline execute_direct(article, actor, opts) do
+    prepare(fn -> prepare_article(article) end)
+
+    gate(fn candidate ->
+      with {:ok, %Community{} = community} <- community_context(candidate, opts) do
+        CMS.Gate.check_in_transaction(actor, :delete, candidate, community)
+      end
+    end)
+
+    change(fn canonical -> TrashAgg.trash_loaded(canonical, actor, opts) end)
+
+    on_rejection(&build_rejection/1)
   end
 
-  defp audit_denial(result, _article, _actor, _command_id, _opts), do: result
+  @spec execute(map(), User.t() | nil, keyword()) ::
+          {:ok, TrashedArticle.t()} | {:error, term()}
+  def execute(article, %User{} = actor, opts) do
+    command_id = Keyword.get(opts, :command_id)
+    execute_receipt(article, actor, opts, command_id)
+  end
 
-  defp present_confirmation(
-         {:ok, %TrashConfirmation{data: %{"trash_id" => trash_id, "command_id" => command_id}}}
-       ) do
+  def execute(_article, _actor, _opts), do: {:error, :invalid_actor}
+
+  defp prepare_article(%{thread: :doc}) do
+    {:error,
+     CMS.Articles.ErrorCat.custom("Doc Trash is owned by the branch-scoped Docs Tree lifecycle")}
+  end
+
+  defp prepare_article(article), do: {:ok, article}
+
+  defp present_confirmation(%TrashConfirmation{
+         data: %{"trash_id" => trash_id, "command_id" => command_id}
+       }) do
     with {:ok, item} <- TrashAgg.get(trash_id) do
       {:ok, Map.put(item, :command_id, command_id)}
     end
   end
 
   defp present_confirmation(error), do: error
-  defp canonical_opts(opts), do: opts |> Keyword.delete(:command_id) |> Map.new()
+
+  defp community_context(article, opts) do
+    case Keyword.get(opts, :community) do
+      %Community{} = community ->
+        Bindings.get(article, community) |> normalize_binding()
+
+      nil ->
+        if Keyword.has_key?(opts, :community_id) do
+          case Keyword.get(opts, :community_id) do
+            community_id when is_integer(community_id) ->
+              case GroupherServer.Repo.get(Community, community_id) do
+                %Community{} = community ->
+                  Bindings.get(article, community) |> normalize_binding()
+
+                nil ->
+                  {:error, :article_binding_not_found}
+              end
+
+            _ ->
+              {:error, :article_binding_context_required}
+          end
+        else
+          Bindings.get(article, Map.get(article, :community)) |> normalize_binding()
+        end
+
+      _ ->
+        {:error, :article_binding_context_required}
+    end
+  end
+
+  defp normalize_binding({:ok, %{community: %Community{} = community}}), do: {:ok, community}
+  defp normalize_binding({:error, reason}), do: {:error, reason}
+  defp normalize_binding(_), do: {:error, :article_binding_not_found}
+
+  defp build_rejection(%RejectionContext{
+         arguments: %{article: article, opts: opts},
+         error: error
+       }) do
+    %RejectionData{
+      resource: article,
+      action: :trashed,
+      rejection_code: rejection_code(error),
+      source: Keyword.get(opts, :source)
+    }
+  end
+
+  defp rejection_code(%{reason: reason}), do: reason
+  defp rejection_code(%{primary: %{reason: reason}}), do: reason
+  defp rejection_code(reason) when is_atom(reason), do: reason
+  defp rejection_code(_reason), do: :unknown
 end

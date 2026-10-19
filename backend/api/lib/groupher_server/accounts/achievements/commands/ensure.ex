@@ -5,9 +5,17 @@ defmodule GroupherServer.Accounts.Achievements.Commands.Ensure do
       Accounts registration -> Achievements facade -> Ensure -> Persist
   """
 
+  use GroupherServer.CommandPipeline
+
   alias GroupherServer.Accounts
   alias Accounts.Achievements.Persist
   alias Accounts.Model.Achievement
+
+  @pipeline operation: :accounts_achievements_ensure, access: :open, target: :user_id
+
+  direct_pipeline execute_pipeline(user_id) do
+    change(fn _user_id -> Persist.ensure(user_id) end)
+  end
 
   @doc """
   Ensures one user's achievement projection exists.
@@ -17,5 +25,5 @@ defmodule GroupherServer.Accounts.Achievements.Commands.Ensure do
       Accounts.Achievements.Commands.Ensure.run(user_id)
   """
   @spec run(integer()) :: {:ok, Achievement.t()} | {:error, term()}
-  def run(user_id) when is_integer(user_id), do: Persist.ensure(user_id)
+  def run(user_id) when is_integer(user_id), do: execute_pipeline(user_id)
 end

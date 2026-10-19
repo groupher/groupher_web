@@ -2,9 +2,13 @@
 
 > 状态：Phase 1 代码与格式转换测试已完成，待完整依赖/线上部署 smoke；Phase 2、Phase 3、Phase 4 已完成；Phase 5 为满足拆分条件后的独立演进项
 >
+> 本文是 Import Content/Publisher 的实施历史与拆分条件记录。当前跨 Dash、Content Import、API 与
+> Agent 的正文写入合同以 [`../architecture/content-publisher.md`](../architecture/content-publisher.md)
+> 为准；两者冲突时不得从本文恢复旧 package、route 或 BodyBag 边界。
+>
 > 范围：单文档导入、Article 正文发布链路、Elixir 内容转换清理
 >
-> Source of truth：本文负责共享 Import Content、Rich Editor codec、artiment-publisher 和 BodyBag。批量/多来源编排以 [`content_import_architecture.md`](./content-import-architecture.md) 为准；GitHub Docs 产品流程以 [`bulk_import.md`](./bulk-import.md) 为准；Files SDK/staging 以 [`import_file_sdk.md`](./import-file-sdk.md) 为准；实施清单以 [`content_import_refactor_plan.md`](./content-import-refactor-plan.md) 为准；联调错误和恢复边界见 [`import_error_handling.md`](./import-error-handling.md)。
+> Source of truth：本文负责共享 Import Content、Rich Editor codec、content-publisher 和 BodyBag。批量/多来源编排以 [`content_import_architecture.md`](./content-import-architecture.md) 为准；GitHub Docs 产品流程以 [`bulk_import.md`](./bulk-import.md) 为准；Files SDK/staging 以 [`import_file_sdk.md`](./import-file-sdk.md) 为准；实施清单以 [`content_import_refactor_plan.md`](./content-import-refactor-plan.md) 为准；联调错误和恢复边界见 [`import_error_handling.md`](./import-error-handling.md)。
 >
 > 更新：2026-07-22（补充 Content Import 复用边界）
 
@@ -13,7 +17,7 @@
 | Phase                                 | 状态     | 结论                                                                                                                               |
 | ------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | Phase 1：`document-converter`         | 部分完成 | 实现、本地格式转换与 HTTP contract 测试已完成；Vercel 实际部署和线上 smoke 未执行                                                  |
-| Phase 2：DSB `artiment-publisher`     | 已完成   | Node codec、BodyBag、sanitize、Docs Draft Route Handler、单文档 import 与 Editor 初始化已落地                                      |
+| Phase 2：DSB `content-publisher`      | 已完成   | Node codec、BodyBag、sanitize、Docs Draft Route Handler、单文档 import 与 Editor 初始化已落地                                      |
 | Phase 3：GraphQL/Article 单向切换     | 已完成   | 后端 Article mutation、Draft、Snapshot、Publish、Restore、Preview 全部使用 BodyBag；DSB HTTP transport 当前仅接入 `updateDocDraft` |
 | Phase 4：Elixir parser/converter 清理 | 已完成   | 旧 converter、`ContentPipeline`、`MarkdownNormalizer`、Earmark 已删除；Comment/Mention 边界已拆分                                  |
 | Phase 5：独立拆分 publisher           | 后续演进 | 当前不阻塞本轮完成；满足拆分条件后再迁出 DSB                                                                                       |
@@ -31,7 +35,7 @@
    - 使用 Microsoft MarkItDown 转换为 Markdown。
    - Markdown 返回前端，由前端初始化或更新 Plate Editor。
    - 现在就作为独立 Python 子项目开发、测试和部署。
-2. `artiment-publisher`
+2. `content-publisher`
    - 输入 Plate JSON。
    - 在 Node.js 中使用与 Plate Editor 一致的插件和 serializer，生成 JSON、Markdown、HTML、TOC、纯文本等正文派生数据。
    - HTML 在 Node 端完成最终 sanitize。
@@ -56,7 +60,7 @@ DSB Browser / Plate Editor
    |
    | Plate JSON
    v
-artiment-publisher (DSB Node.js)
+content-publisher (DSB Node.js)
    |
    | TArtimentBodyBag
    v
@@ -70,7 +74,7 @@ Article Draft / ArticleDocument / Snapshot / Publish
 
 - `document-converter` 只解决“外部文档 → Markdown”。
 - DSB 负责编辑状态和“Markdown → Plate JSON”；第一版由 DSB Node import adapter 调用与浏览器 Editor 同包发布的 MarkdownKit codec，浏览器只接收 Plate value。
-- `artiment-publisher` 负责“Plate JSON → 可持久化的正文格式集合”。
+- `content-publisher` 负责“Plate JSON → 可持久化的正文格式集合”。
 - Elixir 不再模拟 Plate，也不再负责 Markdown parser/serializer。
 
 ### 1.1 2026-07-15 实施基线
@@ -80,7 +84,7 @@ Article Draft / ArticleDocument / Snapshot / Publish
 - `backend/document-converter` 已有 FastAPI/Vercel 骨架，但 `/convert` 仍是空响应。
 - `@groupher/rich-editor@0.0.19` 已导出带 types 的 Node-safe `./node` entrypoint，包含校验、
   canonicalization、Markdown/HTML serializer、TOC 和 plain text extractor。
-- 根 workspace 仍同时存在旧 Plate 49 和 Plate 53；`artiment-publisher` 不直接导入根 Plate，
+- 根 workspace 仍同时存在旧 Plate 49 和 Plate 53；`content-publisher` 不直接导入根 Plate，
   只通过 `@groupher/rich-editor/node` 使用与浏览器 Editor 同包发布的 Plate 53 codec。
 - 当前工作区还有独立的 Docs cover/pinned-docs 未提交改动，覆盖了 `articles/publish.ex`、
   `article_document.ex` 和 `content_import/markdown_normalizer.ex`；Article cutover 实施时必须保留这些改动。
@@ -101,7 +105,7 @@ Article Draft / ArticleDocument / Snapshot / Publish
 1. 完善独立的 `backend/document-converter` 子项目。
 2. 在本地用真实文档验证 MarkItDown 转换质量。
 3. 把 `document-converter` 独立部署到 Vercel Python Runtime。
-4. 在 DSB 内建立 `artiment-publisher` 的 Node-only 实现和 Route Handler。
+4. 在 DSB 内建立 `content-publisher` 的 Node-only 实现和 Route Handler。
 5. 定义 `TArtimentBodyBag` 以及对应的 Elixir GraphQL input contract。
 6. 将 Article create/update/draft 保存链路从 raw Plate `body` 切换为 `bodyBag`。
 7. 删除 Article 链路中已经被 Node publisher 取代的 Elixir converter/parser。
@@ -112,7 +116,7 @@ Article Draft / ArticleDocument / Snapshot / Publish
 - Docs 批量导入。
 - 仓库、ZIP、文档站点批量生成多篇 Markdown。
 - 在浏览器中批量创建 Plate Editor 并逐篇转换。
-- 第一阶段把 `artiment-publisher` 部署成独立服务。
+- 第一阶段把 `content-publisher` 部署成独立服务。
 - 高保真排版还原。
 - 扫描 PDF、复杂表格等场景的 Azure Content Understanding 集成。
 - Comment 正文链路的立即迁移。
@@ -121,7 +125,7 @@ Article Draft / ArticleDocument / Snapshot / Publish
 
 - `document-converter` 不解析 Plate JSON。
 - `document-converter` 不调用 Groupher GraphQL，不知道 Community、Thread、Article 或 Draft。
-- `artiment-publisher` 不直接访问 Groupher 数据库。
+- `content-publisher` 不直接访问 Groupher 数据库。
 - Elixir 不再次生成 Markdown/HTML 来和 Node 结果做双写或 fallback。
 
 该正文链同时是 Content Import 的唯一单 item 转换能力。编辑器单篇 Import Content、GitHub Docs Bulk Import 和后续单篇来源同步共享 `Markdown/MDX → Plate JSON → TArtimentBodyBag`；它们只在 Dataset、Review、Job 数量和最终事务范围上不同，不能分别实现 converter/publisher。
@@ -287,12 +291,12 @@ type TDocumentConversionResult = {
 
 本地与部署环境统一使用 Python 3.12。系统 Python 版本不能代替目标 runtime 验证。
 
-### 4.2 `artiment-publisher`
+### 4.2 `content-publisher`
 
 当前物理位置：独立共享 package。
 
 ```text
-packages/artiment-publisher/
+packages/content-publisher/
 ├── index.ts
 ├── serialize.ts
 ├── sanitize.ts
@@ -308,7 +312,7 @@ Node runtime，不建立 Edge 兼容假设。
 核心实现必须避免依赖 Next.js request/response 类型，保证后续可以移动到：
 
 ```text
-services/artiment-publisher/
+services/content-publisher/
 ```
 
 后续独立部署时，只替换 HTTP adapter 和配置加载，不重写 serializer。
@@ -317,7 +321,7 @@ services/artiment-publisher/
 
 ## 五、`TArtimentBodyBag`
 
-`TArtimentBodyBag` 是 `artiment-publisher` 交给 Elixir 的正文格式集合。它不是数据库模型，也不包含 Article title、Community、Thread、作者或发布状态。
+`TArtimentBodyBag` 是 `content-publisher` 交给 Elixir 的正文格式集合。它不是数据库模型，也不包含 Article title、Community、Thread、作者或发布状态。
 
 ### 5.1 Hash 讨论背景
 
@@ -328,7 +332,7 @@ services/artiment-publisher/
 
 因此目标模型明确拆成两层：
 
-- `bodyHash`：正文 hash，由 Node `artiment-publisher` 生成。
+- `bodyHash`：正文 hash，由 Node `content-publisher` 生成。
 - `versionHash`：完整 Article 版本 hash，由 Elixir 生成。
 
 两者的关系：
@@ -337,7 +341,7 @@ services/artiment-publisher/
 Plate JSON
    |
    v
-artiment-publisher
+content-publisher
    |
    `-- bodyHash
           |
@@ -415,7 +419,7 @@ type TArtimentBodyBag = {
 
 ### 6.1 浏览器与 Node 必须使用同一规则
 
-`artiment-publisher` 不能重新手写 Plate JSON 遍历器。它必须使用与编辑器一致的：
+`content-publisher` 不能重新手写 Plate JSON 遍历器。它必须使用与编辑器一致的：
 
 - Plate 版本。
 - 插件集合。
@@ -530,7 +534,7 @@ bodyBag: ArtimentBodyBagInput
 
 ### 7.2 服务认证与用户授权
 
-`artiment-publisher` 是派生字段的可信生成者，但用户权限仍由 Elixir 决定。
+`content-publisher` 是派生字段的可信生成者，但用户权限仍由 Elixir 决定。
 
 调用 GraphQL 时需要同时携带：
 
@@ -623,7 +627,7 @@ Comment 暂不迁移，因此 Article cutover 后采用以下边界：
 - `CMS.Comments.Write` 已临时改用缩小后的 `CMS.Comments.BodyCodec`。
 - 不应为了 Comment 保留 Article Markdown、TOC、XML、RSS 生成逻辑。
 - Mention 已改用最小的 `CMS.Artiment.PlateJSON` JSON decode/shape validator。
-- `artiment-publisher` 稳定后可作为 Comment 的第二个 consumer，再删除剩余 Comment converter。
+- `content-publisher` 稳定后可作为 Comment 的第二个 consumer，再删除剩余 Comment converter。
 
 ### 8.5 Earmark 依赖删除
 
@@ -655,7 +659,7 @@ Comment 暂不迁移，因此 Article cutover 后采用以下边界：
 - Python 3.12 下的 DOCX/PDF/PPTX/XLSX/HTML converter 与 HTTP contract 测试已通过。
 - 完整生产依赖安装、Vercel 部署和线上 smoke test 尚未执行。
 
-### Phase 2：在 DSB 建立 `artiment-publisher`（已完成）
+### Phase 2：在 DSB 建立 `content-publisher`（已完成）
 
 1. 为 `@groupher/rich-editor` 增加 Node-safe server subpath，或抽出共享 codec package。
 2. 统一 DSB、browser editor 和 Plate server codec 版本。
@@ -670,11 +674,11 @@ Comment 暂不迁移，因此 Article cutover 后采用以下边界：
 当前进度（2026-07-16）：
 
 - Groupher 已升级到 `@groupher/rich-editor@0.0.19`，纯 Node import、server editor、MarkdownKit deserialize、校验和全部导出能力 smoke 通过。
-- 已实现 `artiment-publisher` 核心：稳定 Plate JSON、Markdown、sanitized HTML、TOC、plain text、digest、`bodyHash` 和 `schemaVersion`。
+- 已实现 `content-publisher` 核心：稳定 Plate JSON、Markdown、sanitized HTML、TOC、plain text、digest、`bodyHash` 和 `schemaVersion`。
 - 持久化 JSON 保留节点 `id/_id`；`bodyHash` 单独使用 `canonicalizeValue()`，忽略临时身份字段。
 - 已实现 2 MiB、20,000 nodes、64 层深度限制，以及未知/transient node 的结构化拒绝。
 - 2 MiB 指序列化 Plate value 的未压缩 UTF-8 bytes，是共享 Import Content/publisher 的固定输入上限。Bulk Docs 复用同一 publisher，因此单篇在这里触发 `payload_too_large` 时由 Bulk 编排映射为可展示的 `content_too_large` 并跳过；Bulk 另有 5 MiB canonical BodyBag 和 6 MiB 完整 GraphQL request JSON 上限，详见 [`import_file_sdk.md`](./import-file-sdk.md)。
-- 已建立需要 Groupher session 的 `POST /api/artiment/publish`；Phase 2 初始只返回 BodyBag，Phase 3 已扩展为携带用户 token 与 publisher proof 调用 GraphQL。
+- 已建立需要 Groupher session 的 `POST /api/content/publish`；Phase 2 初始只返回 BodyBag，Phase 3 已扩展为携带用户 token 与 publisher proof 调用 GraphQL。
 - 当前 Route Handler 的 action allowlist 仅包含 `updateDocDraft`，服务于 Docs autosave；Post/Blog/Changelog 后端 mutation 已完成 BodyBag cutover，但尚无对应 DSB publisher transport action。
 - 15 项 focused tests、Dashboard lint、type-check 和带 mock GraphQL 的 Turbopack production build 通过。
 - 已建立需要 Groupher session 的 `POST /api/artiment/import`：只向环境变量配置的 converter 转发单文件，
@@ -687,7 +691,7 @@ Comment 暂不迁移，因此 Article cutover 后采用以下边界：
 ### Phase 3：GraphQL/Article 单向切换（已完成）
 
 1. 增加 Elixir `BodyBag` contract 和 GraphQL input。
-2. DSB 保存动作改走 `artiment-publisher` Route Handler。
+2. DSB 保存动作改走 `content-publisher` Route Handler。
 3. publisher 生成 BodyBag 后调用 Elixir GraphQL。
 4. Article Draft create/update 改为直接持久化 BodyBag。
 5. Elixir 使用 `bodyHash + versioned fields` 生成并持久化 `versionHash`。
@@ -698,7 +702,7 @@ Comment 暂不迁移，因此 Article cutover 后采用以下边界：
 
 - 已增加 `CMS.Artiment.BodyBag` typed contract，校验 schema、字段大小、Plate JSON root、节点数、深度和正文长度；Elixir 不重新生成任何派生格式。
 - Post、Blog、Changelog、Doc 的 Article mutation 已从 raw `body` 一次性切换到 `bodyBag`；Comment mutation 保持原样。
-- DSB Docs autosave 已改走同源 `POST /api/artiment/publish`：Node 生成 BodyBag 后携带 Dashboard 的 scoped service token，并通过 `X-Groupher-User-Authorization` 转发当前用户 access credential。
+- DSB Docs autosave 已改走同源 `POST /api/content/publish`：Node 生成 BodyBag 后携带 Dashboard 的 scoped service token，并通过 `X-Groupher-User-Authorization` 转发当前用户 access credential。
 - Next server → Phoenix 使用 `sub=service:dashboard`、`aud=phoenix:dashboard-api`、`scope=dashboard:body-bag:write`；Phoenix 将验证后的 service/user actor 绑定为 `delegated_actor`，BodyBag 与 OAuth 分别保留自己的 operation middleware。
 - Phase 3 的“全量切换”指后端 Article/GraphQL contract；当前 DSB HTTP consumer 只覆盖 Docs Draft。未来启用 Post/Blog/Changelog 正文编辑时，应增加显式服务端 action/adapter，不开放浏览器可指定任意 mutation 的通用 GraphQL 代理。
 - metadata-only Article update 不要求 publisher proof；任何携带 BodyBag 的 GraphQL mutation 都要求内部服务证明。
@@ -726,7 +730,7 @@ Comment 暂不迁移，因此 Article cutover 后采用以下边界：
 - Article/DocTree 扩展回归为 `224 tests, 0 failures`；Article GraphQL、Doc Draft 与 Comment 组合回归为 `498 tests, 0 failures`。
 - backend 全量为 `1961 tests, 3 failures, 1 excluded`；3 个失败均来自既有 Search 测试继续调用已不存在的 `CMS.Search.article/2`，与本重构路径无关。
 
-### Phase 5：拆出 `artiment-publisher`（后续演进）
+### Phase 5：拆出 `content-publisher`（后续演进）
 
 满足以下条件后再拆：
 
@@ -757,7 +761,7 @@ Comment 暂不迁移，因此 Article cutover 后采用以下边界：
 - 本地 CLI/API 输出一致性。
 - Vercel `/health` 和小文件 `/convert` smoke test。
 
-### 10.2 `artiment-publisher`
+### 10.2 `content-publisher`
 
 - 每一种已注册 Plate block/inline node 的 golden fixture。
 - Browser 与 Node 使用相同 fixture 时输出一致。
@@ -794,7 +798,7 @@ Comment 暂不迁移，因此 Article cutover 后采用以下边界：
 
 ### HTML 安全
 
-Plate server serializer 输出不能直接视为安全 HTML。最终 sanitize 是 `artiment-publisher` 的强制步骤，Elixir 仍保留字段大小和服务来源校验。
+Plate server serializer 输出不能直接视为安全 HTML。最终 sanitize 是 `content-publisher` 的强制步骤，Elixir 仍保留字段大小和服务来源校验。
 
 ### Serverless 文件限制
 
@@ -818,7 +822,7 @@ converter/publisher，不恢复双实现。
 
 1. `document-converter` 可以独立本地测试和独立部署。
 2. 单个外部文档可以转换为 Markdown，并在前端初始化 Plate Editor。
-3. Article 正文保存全部经过 Node `artiment-publisher`。
+3. Article 正文保存全部经过 Node `content-publisher`。
 4. Node 输出稳定、经过 sanitize 的 `TArtimentBodyBag`。
 5. Elixir 只做安全边界、权限、业务生命周期、事务和持久化。
 6. Article 链路不再调用 Elixir Plate/Markdown serializer。

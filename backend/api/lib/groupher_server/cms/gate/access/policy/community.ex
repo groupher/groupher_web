@@ -62,6 +62,11 @@ defmodule GroupherServer.CMS.Gate.Access.Policy.Community do
     })
   end
 
+  @doc "Allows Community creation only for an authenticated user."
+  @spec check_create(User.t() | term()) :: {:ok, :pass} | {:error, ErrorCat.error()}
+  def check_create(%User{}), do: {:ok, :pass}
+  def check_create(_actor), do: {:error, ErrorCat.permission_denied()}
+
   @doc "Checks Community admission against an explicitly typed Access Context."
   @spec check_access(User.t() | nil, atom(), Community.t(), CommunityContext.t()) ::
           {:ok, :pass} | {:error, ErrorCat.error()}
@@ -91,6 +96,19 @@ defmodule GroupherServer.CMS.Gate.Access.Policy.Community do
   def check_access(user, :manage_docs, %Community{} = community, %CommunityContext{} = context) do
     case Lifecycle.can_write(community, context) do
       {:ok, true} -> relation_allowed(management_binding_allowed?(user, community))
+      {:ok, false} -> {:error, ErrorCat.ancestor_community_not_writable()}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  def check_access(
+        %User{},
+        :create_article,
+        %Community{} = community,
+        %CommunityContext{} = context
+      ) do
+    case Lifecycle.can_write(community, context) do
+      {:ok, true} -> {:ok, :pass}
       {:ok, false} -> {:error, ErrorCat.ancestor_community_not_writable()}
       {:error, reason} -> {:error, reason}
     end

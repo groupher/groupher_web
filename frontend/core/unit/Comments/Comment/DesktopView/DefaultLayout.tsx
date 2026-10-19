@@ -57,7 +57,7 @@ const DefaultLayout: FC<TProps> = ({ data, isReply = false, showInnerRef = false
               <Fragment>
                 {!isReply && data.replyToComment && <ReplyBar data={data.replyToComment} />}
                 <ArtimentBody
-                  document={{ bodyHtml: data.bodyHtml }}
+                  document={{ html: data.body?.html }}
                   initLineClamp={6}
                   mode='comment'
                 />

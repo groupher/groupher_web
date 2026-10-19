@@ -288,7 +288,7 @@ defmodule GroupherServer.Test.AssertHelper do
   # by adapting legacy raw Plate variables at the test boundary only; production
   # GraphQL never exposes or accepts this fallback.
   defp prepare_artiment_request(conn, query, variables) do
-    if String.contains?(query, "$bodyBag") do
+    if String.contains?(query, "$bodyBag") or String.contains?(query, "bodyBag:") do
       case pop_body(variables) do
         {body, variables} when is_binary(body) ->
           conn =
@@ -300,6 +300,17 @@ defmodule GroupherServer.Test.AssertHelper do
 
           body_bag = Articles.body_bag(body)
           {conn, Map.put(variables, :bodyBag, body_bag)}
+
+        {body_bag, variables} when is_map(body_bag) ->
+          conn =
+            Plug.Conn.put_req_header(
+              conn,
+              "x-groupher-test-service-auth",
+              "enabled"
+            )
+
+          variable_name = if String.contains?(query, "$bodyBag"), do: :bodyBag, else: :body
+          {conn, Map.put(variables, variable_name, body_bag)}
 
         {_body, variables} ->
           {conn, variables}

@@ -12,10 +12,13 @@ defmodule GroupherServer.CMS.Comments.Commands.Delete do
   foreign-key cascade semantics are not simulated here.
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Model.User
-  alias CMS.{Command, FrontDesk}
+  alias CMS.FrontDesk
   alias CMS.Articles.Bindings
   alias CMS.Comments.{Lifecycle, ErrorCat, Persist, Solution}
   alias CMS.Comments.Commands.CommentConfirmation, as: Confirmation
@@ -42,26 +45,19 @@ defmodule GroupherServer.CMS.Comments.Commands.Delete do
   @doc "Deletes a Comment while binding retries to the supplied command id."
   @spec execute(Comment.t(), User.t(), String.t()) :: T.domain_res(result())
   def execute(%Comment{} = comment, %User{} = actor, command_id) do
-    command = %Command{
-      actor: actor,
-      command_id: command_id,
-      operation: :comment_delete,
-      target: comment,
-      params: %{}
-    }
-
-    with {:ok, confirmation} <-
-           Command.execute(command, action: &delete_action/1, confirmation: Confirmation) do
-      delete_result(confirmation, comment.id)
-    end
+    execute_pipeline(comment, actor, command_id)
   end
 
-  defp delete_action(%{actor: actor, target: comment, command_id: command_id}) do
-    CMS.Gate.with_check(actor, :delete, comment, fn canonical, article ->
-      with {:ok, result} <- delete_new(canonical, article, actor, command_id) do
-        {:ok, confirmation(result)}
-      end
-    end)
+  @pipeline operation: :comment_delete,
+            confirmation: Confirmation,
+            target: :comment,
+            params: []
+
+  receipt_pipeline execute_pipeline(comment, actor, command_id) do
+    gate(fn candidate -> CMS.Gate.check_comment_in_transaction(actor, :delete, candidate) end)
+    change(fn {canonical, article} -> delete_new(canonical, article, actor, command_id) end)
+    confirm(fn result -> {:ok, confirmation(result)} end)
+    present(fn confirmation -> delete_result(confirmation, comment.id) end)
   end
 
   defp delete_result(%Confirmation{data: data}, comment_id) do
@@ -71,7 +67,12 @@ defmodule GroupherServer.CMS.Comments.Commands.Delete do
   defp delete_result(receipt, comment_id) do
     with {:ok, current} <- ORM.find(Comment, comment_id),
          {:ok, article} <- FrontDesk.article_of(current) do
-      {:ok, %{comment: current, article: article, command_id: receipt.command_id}}
+      {:ok,
+       %{
+         comment: GroupherServer.Repo.preload(current, :body),
+         article: article,
+         command_id: receipt.command_id
+       }}
     end
   end
 

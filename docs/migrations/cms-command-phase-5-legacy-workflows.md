@@ -1,5 +1,10 @@
 # CMS Command Phase 5：Legacy Mutation 分类与迁移
 
+> 历史快照：本文记录 pipeline runner 落地前的分类与迁移过程，其中 `Receipt-backed`、`one-shot`、
+> `domain workflow` 等词只描述当时的判断，不是当前执行合同。新代码和验收一律以
+> [CMS 写入 Pipeline 合同](../architecture/cms-write-boundary-contract.md) 中的
+> `receipt_pipeline`、`direct_pipeline`、`workflow_pipeline` 为准；不得从本文复制旧入口或运行时协议选择。
+
 > 状态：本阶段非 deferred mutation 已完成迁移并进入验证收口（typed identity、Tag/TagGroup、Asset row mutation、Moderator、Press config、Article sink/lock/category/status、Article binding、Article moderation/visibility、Report/solution/pin、Comments、Community Categories/Subscriptions 与 Community Application 用户 Command 入口均已有 concrete boundary；Assets Upload/Provider workflow 与 Asset ReplacementPlan 已由独立批次完成，DocTree/ContentImport 仍按范围 deferred）。后续只补回归证据，不再把已完成的 Asset workflow 误列为迁移债务。
 >
 > 范围：Tag / TagGroup、Assets 用户 Command、Community Categories/Subscriptions、CommunityApplications，以及尚未逐项确认写入合同的 CMS mutation。Assets Upload/Provider workflow、Asset ReplacementPlan 与 DocTree/ContentImport 不属于本阶段实现范围；前两者的当前实现和验收见 [CMS Assets 完成记录](./cms-assets-refactor.md)，DocTree/ContentImport 仍保留 deferred。

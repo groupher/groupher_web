@@ -39,7 +39,6 @@ defmodule GroupherServer.Test.Accounts.Profiles.User do
       assert persisted.contributes == updated.contributes
       assert persisted.contributes.total_count == 2
     end
-
   end
 
   describe "[update user]" do

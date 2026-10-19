@@ -1,13 +1,16 @@
 defmodule GroupherServer.CMS.Communities.Tags.Commands.DeleteTagGroup do
   @moduledoc """
-  Deletes a community tag group through the receipt-backed command boundary.
+  Deletes a community tag group through a `receipt_pipeline`.
 
       GraphQL -> Communities facade -> DeleteTagGroup -> Command + Gate -> Tags + Outbox
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
-  alias CMS.{Command, Gate, FrontDesk}
+  alias CMS.{Gate, FrontDesk}
   alias CMS.Communities.Tags.Commands.{TagGroupConfirmation, TagSupport}
   alias CMS.Communities.Tags.Mutation
   alias CMS.Model.{Community, CommunityTagGroup}
@@ -23,36 +26,33 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.DeleteTagGroup do
         {:error, _reason} -> {:community_tag_group, id}
       end
 
-    command = %Command{
-      actor: actor,
-      command_id: command_id,
-      operation: :tag_group_delete,
-      target: target,
-      params: %{community_id: community.id, thread: thread}
-    }
-
-    with {:ok, confirmation} <-
-           Command.execute(command, action: &action/1, confirmation: TagGroupConfirmation) do
-      TagSupport.group_confirmation(confirmation)
-    end
+    execute_pipeline(target, community, community.id, thread, actor, command_id)
   end
 
-  defp action(%{
-         actor: actor,
-         target: group,
-         params: %{community_id: community_id, thread: thread},
-         command_id: command_id
-       }) do
-    with {:ok, community} <- TagSupport.community(community_id),
-         {:ok, %CommunityTagGroup{} = deleted} <-
-           Gate.with_community_check(actor, :update, community, fn _canonical ->
-             Mutation.delete_group(community, thread, group.id, command_id: command_id)
-           end) do
+  @pipeline operation: :tag_group_delete,
+            confirmation: TagGroupConfirmation,
+            target: :group,
+            params: [:community_id, :thread]
+
+  receipt_pipeline execute_pipeline(group, community, community_id, thread, actor, command_id) do
+    gate(fn
+      %CommunityTagGroup{} = candidate ->
+        with {:ok, canonical} <- Gate.check_in_transaction(actor, :update, community) do
+          {:ok, {canonical, candidate}}
+        end
+
+      {:community_tag_group, _id} ->
+        {:error, CMS.Communities.ErrorCat.not_exist("CommunityTagGroup")}
+    end)
+
+    change(fn {canonical, candidate} ->
+      Mutation.delete_group(canonical, thread, candidate.id, command_id: command_id)
+    end)
+
+    confirm(fn deleted ->
       {:ok, TagSupport.confirmation(TagGroupConfirmation, "group_id", deleted.id, command_id)}
-    end
-  end
+    end)
 
-  defp action(%{target: {:community_tag_group, _id}}) do
-    {:error, CMS.Communities.ErrorCat.not_exist("CommunityTagGroup")}
+    present(fn confirmation -> TagSupport.group_confirmation(confirmation) end)
   end
 end

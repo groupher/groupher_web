@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@babel/parser": "8.0.4",
-    "@groupher/artiment-publisher": "workspace:*",
+    "@groupher/content-publisher": "workspace:*",
     "@groupher/contracts": "workspace:*",
     "@groupher/rich-editor": "0.0.35",
     "@groupher/route-contract": "workspace:*",

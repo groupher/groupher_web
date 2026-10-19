@@ -285,7 +285,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
     assert Repo.aggregate(DocTreeNode, :count) == 3
 
     assert {:ok, draft} = CMS.Docs.read_editor_head(community, first_doc_id)
-    assert draft.document.body_hash == String.duplicate("b", 64)
+    assert draft.body.body_hash == String.duplicate("b", 64)
 
     assert [mapping] = Repo.all(ImportSourceMapping)
     assert mapping.thread_ref == first_doc_id
@@ -317,7 +317,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
     assert {:ok, tree} = DocTree.read(community)
 
     assert {:ok, _deleted} =
-             DocTree.delete_node(community, page.node_id, %{
+             DocTree.delete_node_internal(community, page.node_id, %{
                actor_id: actor.id,
                base_revision: tree.revision
              })
@@ -376,7 +376,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
     assert Repo.aggregate(DocTreeNode, :count) == 3
 
     assert {:ok, draft} = CMS.Docs.read_editor_head(community, first_doc_id)
-    assert draft.document.body_hash == String.duplicate("b", 64)
+    assert draft.body.body_hash == String.duplicate("b", 64)
   end
 
   test "cancels an unfinished Job idempotently and deletes staged BodyBags" do

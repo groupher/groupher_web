@@ -6,6 +6,7 @@
 或 Architecture。
 
 - [`tanstack/`](./tanstack)：Community、Landing、Inspire Me 等应用的 TanStack rewrite。
+- [Policy Boundary 修复](./policy-boundary-fix.md)：清理 Policy 中的隐式加载、配置读取、重复决策和副作用，并收敛 Gate、Facts 与领域 capability 边界。
 - [CMS Command Receipt 重构](./cms-command-receipt-refactor.md)：从 `CommandReceipt.run_user_command/8`
   迁移到 `CMS.Command`、统一结果恢复并移除产品端 replay 状态。
 - [CMS Command 入口、用例命名与 Elixir block style 修复](./cms-command-entry-and-naming-fix.md)：纠正
@@ -24,6 +25,9 @@
   `commandId`，将创建、retry 复用和 unknown outcome 恢复统一收回 mutation executor。
 - [Backend Business Return Shape 收敛](./backend-business-return-shape.md)：统一业务层
   `{:ok, value}` / `{:error, reason}` 返回协议，扫描并分批清理裸 `:ok` 与混合 `with` 形状。
+- [Backend 非 Commands 写入口审计](./backend-non-command-write-entry-audit.md)：在已完成的
+  Accounts/Messaging 21 个显式 Command 之外，分批审计 job、maintenance、workflow、facade 与 transaction
+  owner，并区分业务 Command、领域 workflow、维护、投影投递和 leaf 写入。
 - [Article Binding 命名与存储重构](./article-binding-naming-and-storage.md)：统一
   `ArticleBinding`、`ArticleView`、`Articles.Bindings` 命名，收拢 FrontDesk 路径边界，并规划物理表重命名。
 - [Backend Read / Write Owner 命名与职责修复](./backend-read-write-owner-naming-fix.md)：已完成禁止含糊

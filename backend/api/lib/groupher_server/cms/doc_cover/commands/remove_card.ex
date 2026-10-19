@@ -7,8 +7,11 @@ defmodule GroupherServer.CMS.DocCover.Commands.RemoveCard do
         -> CMS.Gate
         -> DocCover.Persist
   """
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.CMS
-  alias CMS.DocCover.{Commands.Support, Persist}
+  alias CMS.DocCover.{Commands.ConfirmationSupport, Commands.DocCoverConfirmation, Persist}
   alias CMS.Model.Community
 
   @doc """
@@ -20,14 +23,14 @@ defmodule GroupherServer.CMS.DocCover.Commands.RemoveCard do
       #=> {:ok, cover_card}
   """
   @spec execute(Community.t(), term(), term(), Ecto.UUID.t()) :: term()
-  def execute(community, group_node_id, actor, command_id) do
-    Support.execute_receipted(
-      community,
-      actor,
-      command_id,
-      :doc_cover_remove_card,
-      %{group_node_id: group_node_id},
-      &Persist.remove_card(&1, group_node_id)
-    )
+  @pipeline operation: :doc_cover_remove_card,
+            confirmation: DocCoverConfirmation,
+            target: :community,
+            params: [:group_node_id]
+  receipt_pipeline execute(community, group_node_id, actor, command_id) do
+    gate(fn candidate -> CMS.Gate.check_in_transaction(actor, :manage_docs, candidate) end)
+    change(fn canonical -> Persist.remove_card(canonical, group_node_id) end)
+    confirm(fn result -> {:ok, ConfirmationSupport.confirmation(result, command_id)} end)
+    present(fn confirmation -> ConfirmationSupport.present({:ok, confirmation}) end)
   end
 end

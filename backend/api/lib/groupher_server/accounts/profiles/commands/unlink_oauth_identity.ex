@@ -5,8 +5,24 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UnlinkOauthIdentity do
       UnlinkOauthIdentity -> transaction -> Query projection
   """
 
-  alias GroupherServer.{Accounts, Repo}
+  use GroupherServer.CommandPipeline
+
+  alias GroupherServer.Accounts
   alias Accounts.Profiles.{Effects, Oauth, Query}
+
+  @pipeline operation: :accounts_profile_unlink_oauth_identity,
+            access: :open,
+            target: :login,
+            params: [:public_ref]
+
+  direct_pipeline execute_pipeline(login, public_ref) do
+    change(fn _login -> Oauth.unlink_identity_in_transaction(login, public_ref) end)
+
+    present(fn user ->
+      _ = Effects.revalidate_user(user)
+      Query.linked_oauth_accounts(login)
+    end)
+  end
 
   @doc """
   Unlinks one owned OAuth binding by its public reference.
@@ -17,21 +33,6 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UnlinkOauthIdentity do
   """
   @spec run(String.t(), String.t()) :: {:ok, map()} | {:error, term()}
   def run(login, public_ref) do
-    result =
-      Repo.transaction(fn ->
-        case Oauth.unlink_identity_in_transaction(login, public_ref) do
-          {:ok, user} -> user
-          {:error, reason} -> Repo.rollback(reason)
-        end
-      end)
-
-    case result do
-      {:ok, user} ->
-        Effects.revalidate_user(user)
-        Query.linked_oauth_accounts(login)
-
-      {:error, reason} ->
-        {:error, reason}
-    end
+    execute_pipeline(login, public_ref)
   end
 end

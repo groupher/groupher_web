@@ -27,7 +27,7 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Changelog do
       article_asset_args()
 
       middleware(M.Authorize, :login)
-      middleware(M.BodyBagTrust)
+      middleware(M.BodyBagTrust, scope: "content:article:write")
       middleware(M.PublishThrottle, interval: 3, hour_limit: 15, day_limit: 30)
       middleware(M.FrontDesk, :community)
       resolve(&R.CMS.Articles.create_changelog/3)
@@ -47,7 +47,7 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Changelog do
       article_asset_args()
 
       middleware(M.Authorize, :login)
-      middleware(M.BodyBagTrust)
+      middleware(M.BodyBagTrust, scope: "content:article:write")
       middleware(M.FrontDesk, :community)
       resolve(&R.CMS.Articles.create_changelog_draft/3)
     end
@@ -67,7 +67,7 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Changelog do
       article_asset_args()
 
       middleware(M.Authorize, :login)
-      middleware(M.BodyBagTrust)
+      middleware(M.BodyBagTrust, scope: "content:article:write")
       middleware(M.Passport, action: "changelog.update", thread: :changelog)
       middleware(M.FrontDesk, {:article, thread: :changelog})
 
@@ -90,7 +90,7 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Changelog do
       article_asset_args()
 
       middleware(M.Authorize, :login)
-      middleware(M.BodyBagTrust)
+      middleware(M.BodyBagTrust, scope: "content:article:write")
       middleware(M.FrontDesk, :community)
       middleware(M.FrontDesk, {:article_editor, thread: :changelog})
       middleware(M.Passport, action: "changelog.draft.update")

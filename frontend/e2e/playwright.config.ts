@@ -6,6 +6,7 @@ const app = process.env.E2E_APP ?? 'dash'
 const useSystemChrome = process.env.PLAYWRIGHT_USE_SYSTEM_CHROME === '1'
 const browserChannel = useSystemChrome ? 'chrome' : 'chromium'
 const mockGraphQLEndpoint = `http://localhost:${process.env.MOCK_GRAPHQL_PORT ?? '4001'}/graphiql`
+const dashPort = process.env.DASH_E2E_PORT ?? '3103'
 const repoRoot = path.resolve(__dirname, '../..')
 
 type TWebServer = {
@@ -37,8 +38,8 @@ const webServerCommand = (command: string) =>
 
 const appConfig = {
   dash: {
-    cmd: `pnpm exec cross-env PORT=3103 GRAPHQL_ENDPOINT=${mockGraphQLEndpoint} pnpm --filter @groupher/frontend-dash run dev`,
-    url: 'http://dash.groupher.localhost:3103',
+    cmd: `pnpm exec cross-env E2E_AUTH_STACK=1 PORT=${dashPort} GRAPHQL_ENDPOINT=${mockGraphQLEndpoint} PHOENIX_GRAPHQL_ENDPOINT=${mockGraphQLEndpoint} pnpm --filter @groupher/frontend-dash run dev`,
+    url: `http://dash.groupher.localhost:${dashPort}`,
     testDir: path.join(repoRoot, 'frontend/e2e/tests/dash'),
   },
   landing: {
@@ -88,7 +89,7 @@ const webServer: TWebServer[] = authStack
       },
       {
         ...webServerCommand(
-          'pnpm exec cross-env PORT=3103 GRAPHQL_ENDPOINT=http://127.0.0.1:4104/graphiql NEXT_PUBLIC_AUTH_ENDPOINT=http://auth.groupher.localhost:3104/api/auth E2E_AUTH_STACK=1 pnpm --filter @groupher/frontend-dash run dev',
+          'pnpm exec cross-env PORT=3103 GRAPHQL_ENDPOINT=http://127.0.0.1:4104/graphiql PHOENIX_GRAPHQL_ENDPOINT=http://127.0.0.1:4104/graphiql SERVICE_AUTH_CLIENT_ID=publisher-e2e SERVICE_AUTH_CLIENT_SECRET=e2e-secret SERVICE_AUTH_TOKEN_ENDPOINT=http://127.0.0.1:4104/oauth2/token NEXT_PUBLIC_AUTH_ENDPOINT=http://auth.groupher.localhost:3104/api/auth E2E_AUTH_STACK=1 pnpm --filter @groupher/frontend-dash run dev',
         ),
         cwd: repoRoot,
         gracefulShutdown,

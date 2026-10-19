@@ -12,7 +12,7 @@
  * @see docs/content-import/content-import-architecture.md
  * @see docs/content-import/article-publish-import-refactor.md
  */
-import type { TArtimentBodyBag } from '@groupher/artiment-publisher'
+import type { TArtimentBodyBag } from '@groupher/content-publisher'
 
 import {
   requestGroupherGraphQL,

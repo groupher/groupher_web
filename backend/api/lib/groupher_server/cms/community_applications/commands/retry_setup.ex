@@ -1,13 +1,16 @@
 defmodule GroupherServer.CMS.CommunityApplications.Commands.RetrySetup do
   @moduledoc """
-  Receipt-backed Command that starts the Community setup workflow again.
+  `receipt_pipeline` that starts the Community setup workflow again.
 
       GraphQL -> RetrySetup -> Application Gate -> Setup workflow -> Receipt result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
-  alias CMS.{Command, Gate}
+  alias CMS.Gate
   alias CMS.CommunityApplications.{Commands.Confirmation, Commands.Support}
   alias CMS.Communities.Setup
   alias Accounts.Model.User
@@ -16,33 +19,31 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.RetrySetup do
   @spec execute(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
   def execute(ref, %User{} = actor, expected_version, command_id) do
     with {:ok, application} <- Support.application(ref) do
-      command = %Command{
-        actor: actor,
-        command_id: command_id,
-        operation: :community_application_retry_setup,
-        target: application,
-        params: %{expected_version: expected_version}
-      }
-
-      with {:ok, confirmation} <-
-             Command.execute(command,
-               action: fn %{target: canonical, command_id: id} ->
-                 with {:ok, _} <-
-                        Gate.with_application_check(
-                          actor,
-                          :application_retry_setup,
-                          canonical,
-                          fn app ->
-                            Setup.retry(app.public_ref, actor, expected_version, command_id)
-                          end
-                        ) do
-                   {:ok, Support.confirmation(Confirmation, canonical.id, id)}
-                 end
-               end,
-               confirmation: Confirmation
-             ) do
-        Support.result(confirmation)
-      end
+      execute_pipeline(application, expected_version, actor, command_id)
     end
+  end
+
+  @pipeline operation: :community_application_retry_setup,
+            confirmation: Confirmation,
+            target: :application,
+            params: [:expected_version]
+
+  receipt_pipeline execute_pipeline(application, expected_version, actor, command_id) do
+    gate(fn candidate ->
+      Gate.check_application_in_transaction(actor, :application_retry_setup, candidate)
+    end)
+
+    change(fn canonical ->
+      with {:ok, _result} <-
+             Setup.retry(canonical.public_ref, actor, expected_version, command_id) do
+        {:ok, canonical}
+      end
+    end)
+
+    confirm(fn canonical ->
+      {:ok, Support.confirmation(Confirmation, canonical.id, command_id)}
+    end)
+
+    present(fn confirmation -> Support.result(confirmation) end)
   end
 end

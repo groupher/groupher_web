@@ -1,6 +1,6 @@
 defmodule GroupherServer.CMS.DocCover.Commands.DocCoverConfirmation do
   @moduledoc """
-  Encodes the final result of receipt-backed DocCover actions.
+  Encodes the final result of DocCover `receipt_pipeline` actions.
 
       DocCover Command
         -> DocCoverConfirmation

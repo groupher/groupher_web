@@ -70,7 +70,7 @@ defmodule GroupherServer.CMS.Docs.Editor do
         {:ok, draft.version}
 
       {:ok, _draft} ->
-        {:error, :draft_version_conflict}
+        {:error, CMS.ErrorCat.draft_version_conflict()}
 
       {:error, :not_found} ->
         case DocStore.public(article.id, branch_id, publication_version: expected_version) do
@@ -83,7 +83,7 @@ defmodule GroupherServer.CMS.Docs.Editor do
             end
 
           {:error, _} ->
-            {:error, :draft_version_conflict}
+            {:error, CMS.ErrorCat.draft_version_conflict()}
         end
     end
   end
@@ -92,6 +92,7 @@ defmodule GroupherServer.CMS.Docs.Editor do
   def materialize_draft(draft, %Article{} = article, %Community{} = community) do
     with {:ok, %{community: community}} <- Bindings.get(article, community),
          {:ok, body} <- DocStore.body_draft(draft.body_draft_id),
+         {:ok, asset_refs} <- CMS.Assets.content_refs(:draft, draft.body_draft_id),
          {:ok, author} <- DocStore.author(draft.updated_by_id) do
       {:ok,
        %{
@@ -111,7 +112,8 @@ defmodule GroupherServer.CMS.Docs.Editor do
          inserted_at: draft.inserted_at,
          updated_at: draft.updated_at,
          author: author.user,
-         document: body
+         body: body,
+         asset_refs: asset_refs
        }}
     end
   end
@@ -125,6 +127,7 @@ defmodule GroupherServer.CMS.Docs.Editor do
          {:ok, revision} <- DocStore.revision(version.revision_id),
          {:ok, extension} <- DocStore.revision_extension(revision.id),
          {:ok, body} <- DocStore.body_snapshot(revision.body_snapshot_id),
+         {:ok, asset_refs} <- CMS.Assets.content_refs(:revision, revision.id),
          {:ok, author} <- DocStore.author(public.published_by_id) do
       {:ok,
        %{
@@ -144,7 +147,8 @@ defmodule GroupherServer.CMS.Docs.Editor do
          inserted_at: public.inserted_at,
          updated_at: public.updated_at,
          author: author.user,
-         document: body
+         body: body,
+         asset_refs: asset_refs
        }}
     else
       _ -> {:error, :not_found}

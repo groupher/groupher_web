@@ -1,13 +1,16 @@
 defmodule GroupherServer.CMS.Communities.Tags.Commands.UpdateTagGroup do
   @moduledoc """
-  Updates a community tag group through the receipt-backed command boundary.
+  Updates a community tag group through a `receipt_pipeline`.
 
       GraphQL -> Communities facade -> UpdateTagGroup -> Command + Gate -> Tags + Outbox
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
-  alias CMS.{Command, Gate, FrontDesk}
+  alias CMS.{Gate, FrontDesk}
   alias CMS.Communities.Tags.Commands.{TagGroupConfirmation, TagSupport}
   alias CMS.Communities.Tags.Mutation
   alias CMS.Model.{Community, CommunityTagGroup}
@@ -23,40 +26,49 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.UpdateTagGroup do
         {:error, _reason} -> {:community_tag_group, id}
       end
 
-    command = %Command{
-      actor: actor,
-      command_id: command_id,
-      operation: :tag_group_update,
-      target: target,
-      params: %{
-        community_id: community.id,
-        thread: thread,
-        attrs: TagSupport.intent_attrs(attrs)
-      }
-    }
-
-    with {:ok, confirmation} <-
-           Command.execute(command, action: &action/1, confirmation: TagGroupConfirmation) do
-      TagSupport.group_confirmation(confirmation)
-    end
+    execute_pipeline(
+      target,
+      community,
+      community.id,
+      thread,
+      TagSupport.intent_attrs(attrs),
+      actor,
+      command_id
+    )
   end
 
-  defp action(%{target: {:community_tag_group, _id}}) do
-    {:error, CMS.Communities.ErrorCat.not_exist("CommunityTagGroup")}
-  end
+  @pipeline operation: :tag_group_update,
+            confirmation: TagGroupConfirmation,
+            target: :group,
+            params: [:community_id, :thread, :attrs]
 
-  defp action(%{
-         actor: actor,
-         target: group,
-         params: %{community_id: community_id, thread: thread, attrs: attrs},
-         command_id: command_id
-       }) do
-    with {:ok, community} <- TagSupport.community(community_id),
-         {:ok, %CommunityTagGroup{} = updated} <-
-           Gate.with_community_check(actor, :update, community, fn _canonical ->
-             Mutation.update_group(community, thread, group.id, attrs, command_id: command_id)
-           end) do
+  receipt_pipeline execute_pipeline(
+                     group,
+                     community,
+                     community_id,
+                     thread,
+                     attrs,
+                     actor,
+                     command_id
+                   ) do
+    gate(fn
+      %CommunityTagGroup{} = candidate ->
+        with {:ok, canonical} <- Gate.check_in_transaction(actor, :update, community) do
+          {:ok, {canonical, candidate}}
+        end
+
+      {:community_tag_group, _id} ->
+        {:error, CMS.Communities.ErrorCat.not_exist("CommunityTagGroup")}
+    end)
+
+    change(fn {canonical, candidate} ->
+      Mutation.update_group(canonical, thread, candidate.id, attrs, command_id: command_id)
+    end)
+
+    confirm(fn updated ->
       {:ok, TagSupport.confirmation(TagGroupConfirmation, "group_id", updated.id, command_id)}
-    end
+    end)
+
+    present(fn confirmation -> TagSupport.group_confirmation(confirmation) end)
   end
 end

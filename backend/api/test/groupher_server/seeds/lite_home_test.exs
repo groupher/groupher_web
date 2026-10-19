@@ -80,7 +80,9 @@ defmodule GroupherServer.Test.Seeds.LiteHomeTest do
 
       post = article_by_title!(community.id, "一次线上故障复盘记录")
 
-      assert {:ok, _trash_item} = CMS.Articles.trash(post, :operations, community: community)
+      assert {:ok, _trash_item} =
+               CMS.Articles.Maintenance.trash(post, community: community)
+
       assert count(:post, community.id) == 3
 
       {:ok, community} = LiteHome.seed(wallpaper: false)

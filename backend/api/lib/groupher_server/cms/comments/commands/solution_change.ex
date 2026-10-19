@@ -11,9 +11,12 @@ defmodule GroupherServer.CMS.Comments.Commands.SolutionChange do
   UUID is created inside the aggregate callback.
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.{Command, FrontDesk}
+  alias CMS.FrontDesk
   alias CMS.Comments.{Query, Solution}
   alias CMS.Comments.Commands.SolutionConfirmation, as: Confirmation
   alias CMS.Model.Comment
@@ -24,20 +27,9 @@ defmodule GroupherServer.CMS.Comments.Commands.SolutionChange do
           {:ok, Comment.t()} | {:error, term()}
   def execute(action, %Comment{} = comment, %User{} = actor, command_id)
       when action in @actions do
-    command = %Command{
-      actor: actor,
-      command_id: command_id,
-      operation: operation(action),
-      target: comment,
-      params: %{}
-    }
-
-    with {:ok, confirmation} <-
-           Command.execute(command,
-             action: &change_action(&1, action),
-             confirmation: Confirmation
-           ) do
-      present(confirmation)
+    case action do
+      :accept_solution -> accept_pipeline(comment, actor, command_id)
+      :revoke_solution -> revoke_pipeline(comment, actor, command_id)
     end
   end
 
@@ -49,16 +41,52 @@ defmodule GroupherServer.CMS.Comments.Commands.SolutionChange do
     end
   end
 
-  defp change_action(
-         %{actor: actor, target: comment, command_id: command_id},
-         action
-       ) do
-    CMS.Gate.with_check(actor, gate_action(action), comment, fn canonical, post ->
+  @pipeline operation: :comment_accept_solution,
+            confirmation: Confirmation,
+            target: :comment,
+            params: []
+
+  receipt_pipeline accept_pipeline(comment, actor, command_id) do
+    gate(fn candidate ->
+      CMS.Gate.check_comment_in_transaction(actor, :accept_solution, candidate)
+    end)
+
+    change(fn {canonical, post} ->
       with {:ok, changed} <-
-             Solution.apply_in_transaction(action, post, canonical, actor, command_id) do
-        {:ok, confirmation(changed, post, command_id, action)}
+             Solution.apply_in_transaction(:accept_solution, post, canonical, actor, command_id) do
+        {:ok, {changed, post}}
       end
     end)
+
+    confirm(fn {changed, post} ->
+      {:ok, confirmation(changed, post, command_id, :accept_solution)}
+    end)
+
+    present(fn confirmation -> present_result(confirmation) end)
+  end
+
+  @pipeline operation: :comment_revoke_solution,
+            confirmation: Confirmation,
+            target: :comment,
+            params: []
+
+  receipt_pipeline revoke_pipeline(comment, actor, command_id) do
+    gate(fn candidate ->
+      CMS.Gate.check_comment_in_transaction(actor, :revoke_solution, candidate)
+    end)
+
+    change(fn {canonical, post} ->
+      with {:ok, changed} <-
+             Solution.apply_in_transaction(:revoke_solution, post, canonical, actor, command_id) do
+        {:ok, {changed, post}}
+      end
+    end)
+
+    confirm(fn {changed, post} ->
+      {:ok, confirmation(changed, post, command_id, :revoke_solution)}
+    end)
+
+    present(fn confirmation -> present_result(confirmation) end)
   end
 
   defp confirmation(%{id: comment_id}, %{id: article_id}, command_id, action) do
@@ -72,18 +100,12 @@ defmodule GroupherServer.CMS.Comments.Commands.SolutionChange do
     }
   end
 
-  defp present(%Confirmation{data: %{"comment_id" => comment_id, "state" => state}}) do
+  defp present_result(%Confirmation{data: %{"comment_id" => comment_id, "state" => state}}) do
     case Query.comment(comment_id) do
       %Comment{} = comment -> {:ok, %{comment | is_solution: state == "accepted"}}
       nil -> {:error, CMS.Gate.ErrorCat.resource_not_found()}
     end
   end
-
-  defp operation(:accept_solution), do: :comment_accept_solution
-  defp operation(:revoke_solution), do: :comment_revoke_solution
-
-  defp gate_action(:accept_solution), do: :accept_solution
-  defp gate_action(:revoke_solution), do: :revoke_solution
 
   defp state(:accept_solution), do: "accepted"
   defp state(:revoke_solution), do: "revoked"

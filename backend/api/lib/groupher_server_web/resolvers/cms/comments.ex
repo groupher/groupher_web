@@ -94,7 +94,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Comments do
         %{
           article: article,
           article_path: %{community: community_slug, thread: thread},
-          body: body
+          body_bag: body_bag
         } = args,
         %{context: %{cur_user: user}}
       ) do
@@ -105,23 +105,33 @@ defmodule GroupherServerWeb.Resolvers.CMS.Comments do
       CMS.comments_create_comment_result(
         thread,
         article,
-        body,
+        body_bag,
         user,
         Map.get(args, :command_id)
       )
     end
   end
 
-  def update_comment(_root, ~m(body comment)a = args, %{context: %{cur_user: user}}) do
-    CMS.comments_update_comment_result(comment, body, user, Map.get(args, :command_id))
+  def update_comment(_root, ~m(body_bag comment expected_version)a = args, %{
+        context: %{cur_user: user}
+      }) do
+    CMS.comments_update_comment_result(
+      comment,
+      body_bag,
+      expected_version,
+      user,
+      Map.get(args, :command_id)
+    )
   end
 
   def delete_comment(_root, ~m(comment)a = args, %{context: %{cur_user: user}}) do
     CMS.comments_delete_comment_result(comment, user, Map.get(args, :command_id))
   end
 
-  def reply_comment(_root, %{comment: comment, body: body} = args, %{context: %{cur_user: user}}) do
-    CMS.comments_reply_comment_result(comment, body, user, Map.get(args, :command_id))
+  def reply_comment(_root, %{comment: comment, body_bag: body_bag} = args, %{
+        context: %{cur_user: user}
+      }) do
+    CMS.comments_reply_comment_result(comment, body_bag, user, Map.get(args, :command_id))
   end
 
   def upvote_comment(_root, %{comment: comment} = args, %{context: %{cur_user: user}}) do

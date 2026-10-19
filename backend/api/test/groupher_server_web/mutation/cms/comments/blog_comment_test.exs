@@ -26,8 +26,8 @@ defmodule GroupherServer.Test.Mutation.Comments.BlogComment do
 
       result = user_conn |> gq_mutation(S.Comment.m(:create_comment), variables)
 
-      assert result["comment"]["bodyHtml"] |> String.contains?(~s(<p))
-      assert result["comment"]["bodyHtml"] |> String.contains?(~s(comment))
+      assert result["comment"]["body"]["html"] |> String.contains?(~s(<p))
+      assert result["comment"]["body"]["html"] |> String.contains?(~s(comment))
       assert result["articleStats"]["innerId"] == to_string(article_inner_id(blog, community))
       assert result["articleStats"]["commentsRevision"] == 1
     end
@@ -50,8 +50,8 @@ defmodule GroupherServer.Test.Mutation.Comments.BlogComment do
 
       result = user_conn |> gq_mutation(S.Comment.m(:reply_comment), variables)
 
-      assert result["comment"]["bodyHtml"] |> String.contains?(~s(<p))
-      assert result["comment"]["bodyHtml"] |> String.contains?(~s(reply comment))
+      assert result["comment"]["body"]["html"] |> String.contains?(~s(<p))
+      assert result["comment"]["body"]["html"] |> String.contains?(~s(reply comment))
       assert result["articleStats"]["commentsRevision"] == 2
     end
 
@@ -88,8 +88,32 @@ defmodule GroupherServer.Test.Mutation.Comments.BlogComment do
 
       result = owner_conn |> gq_mutation(S.Comment.m(:update_comment), variables)
 
-      assert result["comment"]["bodyHtml"] |> String.contains?(~s(<p))
-      assert result["comment"]["bodyHtml"] |> String.contains?(~s(updated comment))
+      assert result["comment"]["body"]["html"] |> String.contains?(~s(<p))
+      assert result["comment"]["body"]["html"] |> String.contains?(~s(updated comment))
+    end
+
+    test "returns a stable error code for a stale comment body version",
+         ~m(community blog user owner_conn)a do
+      {:ok, comment} =
+        CMS.Comments.create_comment(
+          community,
+          :blog,
+          article_inner_id(blog, community),
+          mock_comment(),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      assert owner_conn
+             |> mutation_error?(
+               S.Comment.m(:update_comment),
+               %{
+                 comment: comment_path(community, blog, :blog, comment),
+                 body: mock_comment("stale updated comment"),
+                 expectedVersion: 0
+               },
+               ErrorCat.code(CMS.ErrorCat.comment_body_version_conflict())
+             )
     end
 
     test "only owner can delete a exist comment",

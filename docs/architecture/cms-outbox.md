@@ -201,7 +201,7 @@ done replay
 - 领域事务回滚时 Event 与 Job 一起回滚；
 - 达到最大尝试次数后标记 `failed`。
 
-每个 domain workflow 还必须覆盖自己的失败注入矩阵：资源缺失、payload version 不支持、认证失败、
+每个领域流程还必须覆盖自己的失败注入矩阵：资源缺失、payload version 不支持、认证失败、
 provider 网络失败、非成功响应和正常成功。不能只依赖公共状态机 happy-path 测试。
 
 ## 9. 门禁

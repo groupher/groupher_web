@@ -27,7 +27,7 @@ write command
 - [V2](./v2.md)：Gate/Lifecycle 基础合同的实施历史和通用 API 细节。
 - [V3](./v3.md)：Article Draft/Public 与 Doc 专属能力划分记录。
 - [V4](./v4.md)：typed Access/Scope context 的当前详细合同，已落地。
-- [V5](./v5.md)：下一阶段设计，待实施。
+- [V5](./v5.md)：当前 `Scope.Query` 命名、分发和 ErrorCat 收口合同，已落地。
 
 ## 补充与历史
 

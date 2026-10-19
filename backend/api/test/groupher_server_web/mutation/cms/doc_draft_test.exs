@@ -25,7 +25,7 @@ defmodule GroupherServer.Test.Mutation.CMS.DocDraft do
     {:ok, tree_state} = ORM.find_by(CMS.Model.DocsSiteState, community_id: community.id)
 
     {:ok, group_payload} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: root_doc_tab_node_id(community),
         title: "Guides",
         slug: "guides",
@@ -33,7 +33,7 @@ defmodule GroupherServer.Test.Mutation.CMS.DocDraft do
       })
 
     {:ok, page_payload} =
-      CMS.DocTree.create_page(
+      CMS.DocTree.create_page_internal(
         community,
         %{
           parent_node_id: group_payload.node.id,
@@ -44,7 +44,7 @@ defmodule GroupherServer.Test.Mutation.CMS.DocDraft do
         user
       )
 
-    {:ok, ~m(user_conn community page_payload)a}
+    {:ok, ~m(user user_conn community page_payload)a}
   end
 
   describe "[doc draft]" do
@@ -58,7 +58,7 @@ defmodule GroupherServer.Test.Mutation.CMS.DocDraft do
       assert queried["docId"] == to_string(doc_id)
       assert queried["title"] == "Install"
       assert queried["subtitle"] == nil
-      assert queried["document"]["json"] == ~s([{"children":[{"text":""}],"type":"p"}])
+      assert queried["body"]["json"] == ~s([{"children":[{"text":""}],"type":"p"}])
 
       updated =
         user_conn
@@ -77,7 +77,7 @@ defmodule GroupherServer.Test.Mutation.CMS.DocDraft do
       assert updated["subtitle"] == "这是页面副标题"
       assert updated["digest"] == "这是页面副标题"
       assert updated["slug"] == "ce-shi-yi-xia-zhong-wen"
-      assert updated["document"]["json"] == @plate_body
+      assert updated["body"]["json"] == @plate_body
     end
 
     test "requires slug when updating doc draft title", ~m(user_conn community page_payload)a do
@@ -90,6 +90,88 @@ defmodule GroupherServer.Test.Mutation.CMS.DocDraft do
                expectedVersion: expected_version(community, doc_id),
                title: "Needs Slug"
              })
+    end
+
+    test "returns version-owned asset refs for a doc draft",
+         ~m(user user_conn community page_payload)a do
+      doc_id = page_payload.node.doc_id
+      {:ok, branch} = Branch.resolve(community, nil)
+      draft = Repo.get_by!(CMS.Model.DocDraft, article_id: doc_id, branch_id: branch.id)
+
+      {:ok, asset} =
+        CMS.Assets.register_to_community(
+          community,
+          %{
+            url: "https://assets.groupher.test/doc-draft.png",
+            filename: "doc-draft.png",
+            mime_type: "image/png",
+            size_bytes: 128,
+            width: 1200,
+            height: 630
+          },
+          user,
+          Ecto.UUID.generate()
+        )
+
+      assert {:ok, _ref} =
+               ORM.create(CMS.Model.ArticleAssetRef, %{
+                 community_id: community.id,
+                 asset_id: asset.id,
+                 body_draft_id: draft.body_draft_id,
+                 usage: :inline,
+                 block_id: "doc-image"
+               })
+
+      queried =
+        user_conn
+        |> gq_query(S.Doc.q(:draft), %{community: community.slug, id: doc_id})
+
+      assert [ref] = queried["assetRefs"]
+      assert ref["blockId"] == "doc-image"
+      assert ref["usage"] == "INLINE"
+      assert ref["asset"]["id"] == to_string(asset.id)
+    end
+
+    test "returns a stable error code for a stale draft version",
+         ~m(user_conn community page_payload)a do
+      doc_id = page_payload.node.doc_id
+
+      assert user_conn
+             |> mutation_error?(
+               S.Doc.m(:update_draft),
+               %{
+                 community: community.slug,
+                 id: doc_id,
+                 expectedVersion: expected_version(community, doc_id) + 1,
+                 title: "Stale update",
+                 slug: "stale-update",
+                 bodyBag: body_bag(@plate_body, :base)
+               },
+               ErrorCat.code(CMS.ErrorCat.draft_version_conflict())
+             )
+    end
+
+    test "replays the same update command without applying it twice",
+         ~m(user_conn community page_payload)a do
+      doc_id = page_payload.node.doc_id
+      command_id = Ecto.UUID.generate()
+
+      variables = %{
+        community: community.slug,
+        id: doc_id,
+        commandId: command_id,
+        expectedVersion: expected_version(community, doc_id),
+        title: "Replay-safe update",
+        slug: "replay-safe-update",
+        bodyBag: body_bag(@plate_body, :base)
+      }
+
+      first = gq_mutation(user_conn, S.Doc.m(:update_draft), variables)
+      replay = gq_mutation(user_conn, S.Doc.m(:update_draft), variables)
+
+      assert replay == first
+      assert replay["version"] == variables.expectedVersion + 1
+      assert expected_version(community, doc_id) == replay["version"]
     end
 
     test "requires publisher proof for BodyBag but not metadata-only updates",

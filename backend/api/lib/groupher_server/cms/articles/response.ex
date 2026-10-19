@@ -14,9 +14,8 @@ defmodule GroupherServer.CMS.Articles.Response do
 
   alias Accounts.Model.User
   alias CMS.Artiment.Matcher
-  alias CMS.Comments.BodyCodec
   alias CMS.Articles.Bindings
-  alias CMS.Model.{ArticleBinding, Comment, PostSolution}
+  alias CMS.Model.{ArticleBinding, Comment, CommentBody, PostSolution}
 
   @doc """
   Assembles one Article with public Interaction presentation fields.
@@ -79,19 +78,14 @@ defmodule GroupherServer.CMS.Articles.Response do
   defp fetch_solutions(post_ids) do
     PostSolution
     |> join(:inner, [solution], comment in Comment, on: comment.id == solution.comment_id)
+    |> join(:inner, [_solution, comment], body in CommentBody, on: body.comment_id == comment.id)
     |> where([solution], solution.article_id in ^post_ids)
     |> select(
-      [solution, comment],
-      {solution.article_id, comment.inner_id, comment.body, comment.body_html}
+      [solution, comment, body],
+      {solution.article_id, comment.inner_id, body.digest}
     )
     |> Repo.all()
-    |> Map.new(fn {post_id, comment_ref, body, body_html} ->
-      digest =
-        case BodyCodec.parse(body) do
-          {:ok, payload} -> payload.digest
-          _ -> body_html
-        end
-
+    |> Map.new(fn {post_id, comment_ref, digest} ->
       {post_id, %{comment_ref: comment_ref, digest: digest}}
     end)
   end

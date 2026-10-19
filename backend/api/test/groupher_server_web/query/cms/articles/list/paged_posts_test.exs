@@ -152,6 +152,29 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedPosts do
       assert results["entries"] |> Enum.any?(&(&1["status"] == "WIP"))
     end
 
+    test "explicit null filters behave like omitted filters", ~m(guest_conn)a do
+      omitted = %{filter: %{page: 1, size: 20}}
+
+      explicit_nulls = %{
+        filter: %{
+          page: 1,
+          size: 20,
+          cat: nil,
+          status: nil,
+          order: nil,
+          when: nil,
+          sort: nil
+        }
+      }
+
+      omitted_result = guest_conn |> gq_query(S.Article.q(:paged_articles, :post), omitted)
+
+      explicit_nulls_result =
+        guest_conn |> gq_query(S.Article.q(:paged_articles, :post), explicit_nulls)
+
+      assert explicit_nulls_result == omitted_result
+    end
+
     test "should get valid cat & status by filter",
          ~m(guest_conn community post_last_week user)a do
       {:ok, _} = CMS.Articles.set_cat(post_last_week.id, @article_cat.idea, user, community.id)
@@ -201,7 +224,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedPosts do
 
       post = results["entries"] |> List.first()
 
-      assert not is_nil(get_in(post, ["document", "html"]))
+      assert not is_nil(get_in(post, ["body", "html"]))
     end
 
     test "support article_tag filter", ~m(guest_conn community user)a do

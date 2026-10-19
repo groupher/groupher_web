@@ -17,7 +17,7 @@
  * @see docs/content-import/markdown-title-normalization.md
  * @see docs/content-import/import-error-handling.md
  */
-import { ArtimentPublisherError, publishArtiment } from '@groupher/artiment-publisher'
+import { ArtimentPublisherError, publishArtiment } from '@groupher/content-publisher'
 
 import { DocumentImporterError } from '../../../document-importer/error'
 import { deserializeMarkdown, type TMarkdownSource } from '../../../document-importer/markdown'

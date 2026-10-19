@@ -53,8 +53,12 @@ const pagedCommentReplies = graphql(`
 `)
 
 const createComment = graphql(`
-  mutation CreateComment($article: ArticlePathInput!, $body: String!, $commandId: ID!) {
-    createComment(article: $article, body: $body, commandId: $commandId) {
+  mutation CreateComment(
+    $article: ArticlePathInput!
+    $bodyBag: ArtimentBodyBagInput!
+    $commandId: ID!
+  ) {
+    createComment(article: $article, bodyBag: $bodyBag, commandId: $commandId) {
       commandId
       comment {
         ...CommentFields
@@ -67,12 +71,25 @@ const createComment = graphql(`
 `)
 
 const updateComment = graphql(`
-  mutation UpdateComment($comment: CommentPathInput!, $body: String!, $commandId: ID!) {
-    updateComment(comment: $comment, body: $body, commandId: $commandId) {
+  mutation UpdateComment(
+    $comment: CommentPathInput!
+    $bodyBag: ArtimentBodyBagInput!
+    $expectedVersion: Int!
+    $commandId: ID!
+  ) {
+    updateComment(
+      comment: $comment
+      bodyBag: $bodyBag
+      expectedVersion: $expectedVersion
+      commandId: $commandId
+    ) {
       commandId
       comment {
         innerId
-        bodyHtml
+        body {
+          html
+        }
+        bodyVersion
         replyToComment {
           innerId
         }
@@ -102,7 +119,6 @@ const commentsState = graphql(`
 const oneComment = graphql(`
   query OneComment($comment: CommentPathInput!) {
     oneComment(comment: $comment) {
-      body
       ...CommentFields
       article {
         innerId
@@ -122,7 +138,6 @@ const reconcileComments = graphql(`
       entries {
         commentInnerId
         comment {
-          body
           ...CommentFields
           article {
             innerId
@@ -135,8 +150,12 @@ const reconcileComments = graphql(`
 `)
 
 const replyComment = graphql(`
-  mutation ReplyComment($comment: CommentPathInput!, $body: String!, $commandId: ID!) {
-    replyComment(comment: $comment, body: $body, commandId: $commandId) {
+  mutation ReplyComment(
+    $comment: CommentPathInput!
+    $bodyBag: ArtimentBodyBagInput!
+    $commandId: ID!
+  ) {
+    replyComment(comment: $comment, bodyBag: $bodyBag, commandId: $commandId) {
       commandId
       comment {
         ...CommentFields

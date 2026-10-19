@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Articles.Commands.StateChange do
       state command -> canonical Article -> Gate -> aggregate transition
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
   alias CMS.Articles.{Query, States}
@@ -16,25 +19,37 @@ defmodule GroupherServer.CMS.Articles.Commands.StateChange do
   @spec execute(atom(), Ecto.UUID.t(), User.t(), keyword()) :: {:ok, term()} | {:error, term()}
   def execute(action, article_id, %User{} = actor, opts \\ [])
       when action in [:sink, :undo_sink, :set_category, :set_status] do
-    with {:ok, %Article{} = article} <- load_article(article_id) do
-      admit_and_change(action, article, actor, opts)
+    case action do
+      :sink -> sink_pipeline(article_id, actor, opts)
+      :undo_sink -> undo_sink_pipeline(article_id, actor, opts)
+      :set_category -> set_category(article_id, nil, actor, Keyword.fetch!(opts, :community))
+      :set_status -> {:error, :article_status_community_required}
     end
   end
 
   @spec set_category(Ecto.UUID.t(), atom() | nil, User.t(), Community.t()) ::
           {:ok, Article.t()} | {:error, term()}
-  def set_category(article_id, category, %User{} = actor, %Community{} = community) do
-    with {:ok, %Article{} = article} <- load_article(article_id) do
-      CMS.Gate.with_community_check(
-        actor,
-        :set_category,
-        community,
-        article,
-        fn canonical ->
-          States.set_cat(canonical, category)
-        end
-      )
-    end
+  @pipeline operation: :article_set_category, target: :article_id
+  direct_pipeline set_category(article_id, category, actor, community) do
+    gate(fn _candidate ->
+      with {:ok, article} <- load_article(article_id) do
+        CMS.Gate.check_in_transaction(actor, :set_category, article, community)
+      end
+    end)
+
+    change(fn canonical -> States.set_cat(canonical, category) end)
+  end
+
+  @pipeline operation: :article_sink, target: :article_id
+  direct_pipeline sink_pipeline(article_id, actor, opts) do
+    gate(fn _candidate -> authorize_state_change(:sink, article_id, actor, opts) end)
+    change(fn {canonical, change_opts} -> States.sink(canonical, change_opts) end)
+  end
+
+  @pipeline operation: :article_undo_sink, target: :article_id
+  direct_pipeline undo_sink_pipeline(article_id, actor, opts) do
+    gate(fn _candidate -> authorize_state_change(:undo_sink, article_id, actor, opts) end)
+    change(fn {canonical, change_opts} -> States.undo_sink(canonical, change_opts) end)
   end
 
   @spec set_status_in_community(map(), atom() | nil, User.t(), Community.t()) ::
@@ -66,42 +81,31 @@ defmodule GroupherServer.CMS.Articles.Commands.StateChange do
     States.update_active_timestamp(thread, article)
   end
 
-  defp admit_and_change(:set_category, article, actor, opts) do
-    with {:ok, community} <- resolve_community(opts, article) do
-      CMS.Gate.with_community_check(
-        actor,
-        :set_category,
-        community,
-        article,
-        &States.set_cat(&1, nil)
-      )
+  defp authorize_state_change(action, article_id, actor, opts) do
+    with {:ok, article} <- load_article(article_id),
+         {:ok, community} <- resolve_community(opts, article) do
+      authorize_loaded_state_change(action, article, community, actor, opts)
     end
   end
 
-  defp admit_and_change(action, %Article{thread: :doc} = article, actor, opts)
-       when action in [:sink, :undo_sink] do
-    with {:ok, community} <- resolve_community(opts, article) do
-      branch_id = Keyword.get(opts, :branch_id) || main_branch_id(community.id)
+  defp authorize_loaded_state_change(
+         action,
+         %Article{thread: :doc} = article,
+         community,
+         actor,
+         opts
+       ) do
+    branch_id = Keyword.get(opts, :branch_id) || main_branch_id(community.id)
 
-      CMS.Gate.with_branch_check(
-        actor,
-        action,
-        community,
-        article,
-        branch_id,
-        fn canonical ->
-          apply(States, action, [canonical, [branch_id: branch_id]])
-        end
-      )
+    with {:ok, canonical} <-
+           CMS.Gate.check_in_transaction(actor, action, article, community, branch_id) do
+      {:ok, {canonical, [branch_id: branch_id]}}
     end
   end
 
-  defp admit_and_change(action, %Article{} = article, actor, opts)
-       when action in [:sink, :undo_sink] do
-    with {:ok, community} <- resolve_community(opts, article) do
-      CMS.Gate.with_community_check(actor, action, community, article, fn canonical ->
-        apply(States, action, [canonical, opts])
-      end)
+  defp authorize_loaded_state_change(action, %Article{} = article, community, actor, opts) do
+    with {:ok, canonical} <- CMS.Gate.check_in_transaction(actor, action, article, community) do
+      {:ok, {canonical, opts}}
     end
   end
 

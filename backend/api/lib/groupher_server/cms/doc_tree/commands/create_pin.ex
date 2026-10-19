@@ -4,21 +4,28 @@ defmodule GroupherServer.CMS.DocTree.Commands.CreatePin do
 
       CMS.DocTree.create_pin -> CreatePin.execute -> command support -> Persist.create_pin
   """
+  use GroupherServer.CMS.DocTree.Commands.TreePipeline, operation: :doc_tree_create_pin
+
   alias GroupherServer.CMS
   alias CMS.DocTree.{Commands.Support, Persist}
 
-  def execute(community, args, user \\ nil) do
-    if Support.has_option?(args, :command_id) do
-      Support.run_tree_command(
-        community,
-        Map.get(args, :parent_node_id, "root"),
-        args,
-        Support.actor(args, user),
-        :doc_tree_create_pin,
-        &Persist.create_pin(community, &1)
-      )
-    else
-      Support.run_tree_operation(community, args, &Persist.create_pin(community, &1))
-    end
+  def execute(community, args, user) do
+    execute_tree_receipt(
+      community,
+      Map.get(args, :parent_node_id, "root"),
+      args,
+      Support.actor(args, user)
+    )
   end
+
+  def execute_internal(community, args, internal_actor \\ :operations) do
+    execute_tree_internal(
+      community,
+      Map.get(args, :parent_node_id, "root"),
+      args,
+      internal_actor
+    )
+  end
+
+  defp tree_change(community, _target_id, args, _actor), do: Persist.create_pin(community, args)
 end

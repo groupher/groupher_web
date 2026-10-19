@@ -19,7 +19,11 @@ defmodule GroupherServer.Test.Query.Upvotes.ChangelogUpvote do
       {:ok, _} = CMS.Interactions.upvote(changelog, user2, Ecto.UUID.generate())
 
       variables = %{
-        article: %{inner_id: article_inner_id(changelog, community), community: community.slug, thread: "CHANGELOG"},
+        article: %{
+          inner_id: article_inner_id(changelog, community),
+          community: community.slug,
+          thread: "CHANGELOG"
+        },
         filter: %{page: 1, size: 20}
       }
 

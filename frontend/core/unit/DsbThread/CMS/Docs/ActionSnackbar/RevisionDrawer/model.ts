@@ -73,7 +73,7 @@ export const dedupeRevisionsBySnapshot = (revisions: TDocBranchRevision[]): TDed
   const deduped: TDocBranchRevision[] = []
 
   for (const revision of revisions) {
-    const key = revision.documentJson || revision.id
+    const key = revision.body?.json || revision.id
 
     if (seen.has(key)) continue
 
@@ -104,9 +104,9 @@ export const buildSnapshotDiffPairs = (
       (options.useLatestPublishedFallback ? options.latestPublishedRevision : undefined)
 
     return {
-      after: parseRevisionDocumentValue(revision.documentJson),
+      after: parseRevisionDocumentValue(revision.body?.json),
       before: previousRevision
-        ? parseRevisionDocumentValue(previousRevision.documentJson)
+        ? parseRevisionDocumentValue(previousRevision.body?.json)
         : EMPTY_REVISION_VALUE,
       key: `revision:${snapshotIdentity(revision)}:${snapshotIdentity(previousRevision)}`,
       revision,
@@ -122,10 +122,10 @@ export const buildRevisionHistory = (params: {
     dedupeRevisionsBySnapshot(params.draftRevisions)
   const latestPublishedRevision = params.publishedRevisions[0]
   const latestPublishedValue = latestPublishedRevision
-    ? parseRevisionDocumentValue(latestPublishedRevision.documentJson)
+    ? parseRevisionDocumentValue(latestPublishedRevision.body?.json)
     : EMPTY_REVISION_VALUE
   const currentBaselineValue = draftRevisions[0]
-    ? parseRevisionDocumentValue(draftRevisions[0].documentJson)
+    ? parseRevisionDocumentValue(draftRevisions[0].body?.json)
     : latestPublishedValue
 
   return {

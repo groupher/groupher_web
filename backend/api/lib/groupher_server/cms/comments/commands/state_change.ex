@@ -5,9 +5,12 @@ defmodule GroupherServer.CMS.Comments.Commands.StateChange do
       state command -> canonical Comment -> state transition -> tagged result
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.{Command, FrontDesk}
+  alias CMS.FrontDesk
   alias CMS.Comments.{Query, States}
   alias CMS.Comments.Commands.StateConfirmation, as: Confirmation
   alias CMS.Model.Comment
@@ -20,27 +23,31 @@ defmodule GroupherServer.CMS.Comments.Commands.StateChange do
 
   def execute(action, %Comment{} = comment, %User{} = user)
       when action in [:fold, :unfold] do
-    apply(States, action, [comment, user])
+    case action do
+      :fold -> fold_pipeline(comment, user)
+      :unfold -> unfold_pipeline(comment, user)
+    end
+  end
+
+  @pipeline operation: :comment_fold, target: :comment
+  direct_pipeline fold_pipeline(comment, actor) do
+    gate(fn candidate -> CMS.Gate.check_comment_in_transaction(actor, :edit, candidate) end)
+    change(fn {canonical, _article} -> States.fold(canonical, actor) end)
+  end
+
+  @pipeline operation: :comment_unfold, target: :comment
+  direct_pipeline unfold_pipeline(comment, actor) do
+    gate(fn candidate -> CMS.Gate.check_comment_in_transaction(actor, :edit, candidate) end)
+    change(fn {canonical, _article} -> States.unfold(canonical, actor) end)
   end
 
   @spec execute(atom(), Comment.t(), User.t(), Ecto.UUID.t()) ::
           {:ok, Comment.t()} | {:error, term()}
   def execute(action, %Comment{} = comment, %User{} = actor, command_id)
       when action in [:pin, :undo_pin] do
-    command = %Command{
-      actor: actor,
-      command_id: command_id,
-      operation: operation(action),
-      target: comment,
-      params: %{}
-    }
-
-    with {:ok, confirmation} <-
-           Command.execute(command,
-             action: &change_action(&1, action),
-             confirmation: Confirmation
-           ) do
-      present(confirmation)
+    case action do
+      :pin -> pin_pipeline(comment, actor, command_id)
+      :undo_pin -> unpin_pipeline(comment, actor, command_id)
     end
   end
 
@@ -53,16 +60,40 @@ defmodule GroupherServer.CMS.Comments.Commands.StateChange do
     end
   end
 
-  defp change_action(
-         %{actor: actor, target: comment, command_id: command_id},
-         action
-       ) do
-    CMS.Gate.with_check(actor, :pin, comment, fn canonical, article ->
+  @pipeline operation: :comment_pin, confirmation: Confirmation, target: :comment, params: []
+  receipt_pipeline pin_pipeline(comment, actor, command_id) do
+    gate(fn candidate -> CMS.Gate.check_comment_in_transaction(actor, :pin, candidate) end)
+
+    change(fn {canonical, article} ->
       with {:ok, changed} <-
-             States.apply_in_transaction(action, canonical, article, actor, command_id) do
-        {:ok, confirmation(changed, article, command_id, action)}
+             States.apply_in_transaction(:pin, canonical, article, actor, command_id) do
+        {:ok, {changed, article}}
       end
     end)
+
+    confirm(fn {changed, article} ->
+      {:ok, confirmation(changed, article, command_id, :pin)}
+    end)
+
+    present(fn confirmation -> present_result(confirmation) end)
+  end
+
+  @pipeline operation: :comment_unpin, confirmation: Confirmation, target: :comment, params: []
+  receipt_pipeline unpin_pipeline(comment, actor, command_id) do
+    gate(fn candidate -> CMS.Gate.check_comment_in_transaction(actor, :pin, candidate) end)
+
+    change(fn {canonical, article} ->
+      with {:ok, changed} <-
+             States.apply_in_transaction(:undo_pin, canonical, article, actor, command_id) do
+        {:ok, {changed, article}}
+      end
+    end)
+
+    confirm(fn {changed, article} ->
+      {:ok, confirmation(changed, article, command_id, :undo_pin)}
+    end)
+
+    present(fn confirmation -> present_result(confirmation) end)
   end
 
   defp confirmation(%{id: comment_id}, %{id: article_id}, command_id, action) do
@@ -76,7 +107,7 @@ defmodule GroupherServer.CMS.Comments.Commands.StateChange do
     }
   end
 
-  defp present(%Confirmation{
+  defp present_result(%Confirmation{
          data: %{"comment_id" => comment_id, "command_id" => command_id, "state" => state}
        }) do
     case Query.comment(comment_id) do
@@ -89,8 +120,6 @@ defmodule GroupherServer.CMS.Comments.Commands.StateChange do
     end
   end
 
-  defp operation(:pin), do: :comment_pin
-  defp operation(:undo_pin), do: :comment_unpin
   defp state(:pin), do: "pinned"
   defp state(:undo_pin), do: "unpinned"
 end

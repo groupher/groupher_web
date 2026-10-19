@@ -99,7 +99,7 @@ defmodule GroupherServer.CMS.Dashboard.SectionPayload do
       |> replace_merged_fields(key, args)
       |> strip_struct()
 
-    case embed_module.changeset(current_embed, merged_args) do
+    case embed_changeset(key, current_embed, merged_args) do
       %{valid?: true} = changeset ->
         normalized_payload =
           changeset
@@ -152,6 +152,34 @@ defmodule GroupherServer.CMS.Dashboard.SectionPayload do
 
   # Replace-style sections are already the final payload.
   def prepare(%CommunityDashboard{}, _key, args), do: {:ok, args}
+
+  defp embed_changeset(:base_info, current, attrs) do
+    Embeds.Dashboard.BaseInfo.changeset(current, attrs)
+  end
+
+  defp embed_changeset(:wallpaper, current, attrs) do
+    Embeds.Dashboard.Wallpaper.changeset(current, attrs)
+  end
+
+  defp embed_changeset(:seo, current, attrs), do: Embeds.Dashboard.SEO.changeset(current, attrs)
+
+  defp embed_changeset(:layout, current, attrs) do
+    Embeds.Dashboard.Layout.changeset(current, attrs)
+  end
+
+  defp embed_changeset(:enable, current, attrs) do
+    Embeds.Dashboard.Enable.changeset(current, attrs)
+  end
+
+  defp embed_changeset(:thread_emotions, current, attrs) do
+    Embeds.Dashboard.ThreadEmotions.changeset(current, attrs)
+  end
+
+  defp embed_changeset(:rss, current, attrs), do: Embeds.Dashboard.RSS.changeset(current, attrs)
+
+  defp embed_changeset(:doc_faq, current, attrs) do
+    Embeds.Dashboard.DocFAQ.changeset(current, attrs)
+  end
 
   defp replace_merged_fields(merged_args, key, args) do
     @replace_merged_fields

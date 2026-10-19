@@ -1,13 +1,16 @@
 defmodule GroupherServer.CMS.Communities.Tags.Commands.Create do
   @moduledoc """
-  Creates a community tag through the receipt-backed command boundary.
+  Creates a community tag through a `receipt_pipeline`.
 
       GraphQL -> Communities facade -> Create -> Command + Gate -> Tags + Outbox
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS}
 
-  alias CMS.{Command, Gate}
+  alias CMS.Gate
   alias CMS.Communities.Tags.Commands.{TagConfirmation, TagSupport}
   alias CMS.Communities.Tags.Mutation
   alias CMS.Model.{Community, CommunityTag}
@@ -17,31 +20,25 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.Create do
   @spec execute(Community.t(), atom(), map(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(CommunityTag.t())
   def execute(%Community{} = community, thread, attrs, %User{} = actor, command_id) do
-    command = %Command{
-      actor: actor,
-      command_id: command_id,
-      operation: :tag_create,
-      target: community,
-      params: %{thread: thread, attrs: TagSupport.intent_attrs(attrs)}
-    }
-
-    with {:ok, confirmation} <-
-           Command.execute(command, action: &action/1, confirmation: TagConfirmation) do
-      TagSupport.tag_confirmation(confirmation)
-    end
+    execute_pipeline(community, thread, TagSupport.intent_attrs(attrs), actor, command_id)
   end
 
-  defp action(%{
-         actor: actor,
-         target: community,
-         params: %{thread: thread, attrs: attrs},
-         command_id: command_id
-       }) do
-    Gate.with_community_check(actor, :update, community, fn canonical ->
-      with {:ok, %CommunityTag{} = tag} <-
-             Mutation.create(canonical, thread, attrs, actor, command_id: command_id) do
-        {:ok, TagSupport.confirmation(TagConfirmation, "tag_id", tag.id, command_id)}
-      end
+  @pipeline operation: :tag_create,
+            confirmation: TagConfirmation,
+            target: :community,
+            params: [:thread, :attrs]
+
+  receipt_pipeline execute_pipeline(community, thread, attrs, actor, command_id) do
+    gate(fn candidate -> Gate.check_in_transaction(actor, :update, candidate) end)
+
+    change(fn canonical ->
+      Mutation.create(canonical, thread, attrs, actor, command_id: command_id)
     end)
+
+    confirm(fn tag ->
+      {:ok, TagSupport.confirmation(TagConfirmation, "tag_id", tag.id, command_id)}
+    end)
+
+    present(fn confirmation -> TagSupport.tag_confirmation(confirmation) end)
   end
 end

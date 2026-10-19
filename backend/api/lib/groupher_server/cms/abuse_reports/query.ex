@@ -237,7 +237,7 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
   defp public_article(article, _community_id), do: {:ok, article}
 
   defp extract_article_comment_info(%AbuseReport{} = report) do
-    keys = [:id, :inner_id, :floor, :upvotes_count, :body_html]
+    keys = [:id, :inner_id, :floor, :upvotes_count]
     author = Map.take(report.comment.author, @export_author_keys)
 
     counts =
@@ -245,8 +245,10 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
 
     comment =
       report.comment
+      |> Repo.preload(:body)
       |> Map.put(:upvotes_count, Map.get(counts, :upvotes_count, 0))
       |> Map.take(keys)
+      |> Map.put(:body, report.comment |> Repo.preload(:body) |> Map.get(:body))
 
     comment = Map.merge(comment, %{author: author})
 
