@@ -193,13 +193,13 @@ aggregate lock。CMS 外部调用者必须先进入 `GroupherServer.CMS` 根 Fac
 一个业务动作只能有一个 transaction owner：
 
 ```text
-Receipt-backed:
+receipt_pipeline:
   Commands.Action
     -> CMS.Command.execute
        -> one transaction
           -> Gate / Lifecycle / Persist / Effects intent / Confirmation
 
-One-shot:
+direct_pipeline:
   Commands.Action
     -> one transaction
        -> Gate / Lifecycle / Persist / Effects intent

@@ -121,7 +121,11 @@ defmodule GroupherServer.CMS.Articles do
   @doc "Creates and immediately publishes an Article through the shared lifecycle."
   @spec create(Community.t(), T.thread(), map(), User.t(), keyword() | map()) ::
           T.domain_res(T.article())
-  def create(community, thread, attrs, %User{} = user, opts \\ []) do
+  def create(community, thread, attrs, %User{} = user) do
+    Commands.Create.execute_direct(community, thread, attrs, user, [])
+  end
+
+  def create(community, thread, attrs, %User{} = user, opts) do
     Commands.Create.execute(community, thread, attrs, user, opts)
   end
 
@@ -136,19 +140,44 @@ defmodule GroupherServer.CMS.Articles do
   @doc "Creates the stable Article aggregate and its first mutable Draft workspace."
   @spec create_stable_draft(Community.t(), T.thread(), map(), User.t() | Author.t(), keyword()) ::
           {:ok, map()} | {:error, term()}
-  def create_stable_draft(%Community{} = community, thread, attrs, actor, opts \\ []) do
-    Commands.CreateStableDraft.execute(community, thread, attrs, actor, opts)
+  def create_stable_draft(%Community{} = community, thread, attrs, actor) do
+    Commands.CreateStableDraft.execute_direct(community, thread, attrs, actor, [])
+  end
+
+  def create_stable_draft(%Community{} = community, thread, attrs, actor, opts) do
+    case actor do
+      %Author{} ->
+        Commands.CreateStableDraft.execute_direct(community, thread, attrs, actor, opts)
+
+      %User{} ->
+        Commands.CreateStableDraft.execute(community, thread, attrs, actor, opts)
+
+      _ ->
+        {:error, :invalid_actor}
+    end
+  end
+
+  @doc "Creates a stable Draft through the explicit direct-direct pipeline."
+  def create_stable_draft_write(%Community{} = community, thread, attrs, actor, opts) do
+    Commands.CreateStableDraft.execute_direct(community, thread, attrs, actor, opts)
   end
 
   @doc "Creates a stable Article Draft and returns the editor mutation payload."
   @spec create_stable_draft_result(Community.t(), T.thread(), map(), User.t(), keyword()) ::
           T.domain_res(map())
+  def create_stable_draft_result(%Community{} = community, thread, attrs, %User{} = actor) do
+    with {:ok, result} <-
+           Commands.CreateStableDraft.execute_direct(community, thread, attrs, actor, []) do
+      __MODULE__.DraftResult.build(result)
+    end
+  end
+
   def create_stable_draft_result(
         %Community{} = community,
         thread,
         attrs,
         %User{} = actor,
-        opts \\ []
+        opts
       ) do
     with {:ok, result} <- create_stable_draft(community, thread, attrs, actor, opts) do
       __MODULE__.DraftResult.build(result)
@@ -228,7 +257,11 @@ defmodule GroupherServer.CMS.Articles do
   @spec publish(Ecto.UUID.t() | Article.t(), User.t() | Author.t(), keyword()) ::
           {:ok, map()} | {:error, term()}
   def publish(%Article{} = article, actor, opts) do
-    Commands.Publish.execute(article, actor, opts)
+    case actor do
+      %Author{} -> Commands.Publish.execute_direct(article, actor, opts)
+      %User{} -> Commands.Publish.execute(article, actor, opts)
+      _ -> {:error, CMS.Articles.ErrorCat.invalid_publish_actor()}
+    end
   end
 
   def publish(article_id, actor, opts) when is_binary(article_id) do
@@ -284,14 +317,21 @@ defmodule GroupherServer.CMS.Articles do
   @doc "Moves one logical Article into Trash without deleting its aggregate."
   @spec trash(T.article(), User.t() | nil, keyword()) ::
           T.domain_res(CMS.Model.TrashedArticle.t())
-  def trash(article, actor, opts \\ []), do: Commands.Trash.execute(article, actor, opts)
+  def trash(article, actor, opts \\ []), do: Commands.Trash.execute_direct(article, actor, opts)
+
+  @doc "Moves one Article to Trash through the retry-safe Receipt pipeline."
+  def trash_receipt(article, actor, opts), do: Commands.Trash.execute(article, actor, opts)
 
   @doc "Restores one logical Article from Trash."
   @spec restore_trashed(Ecto.UUID.t(), User.t() | nil, keyword()) ::
           T.domain_res(T.article())
   def restore_trashed(trash_item_id, actor, opts \\ []) when is_binary(trash_item_id) do
-    Commands.RestoreTrashed.execute(trash_item_id, actor, opts)
+    Commands.RestoreTrashed.execute_direct(trash_item_id, actor, opts)
   end
+
+  @doc "Restores one trashed Article through the retry-safe Receipt pipeline."
+  def restore_trashed_receipt(trash_item_id, actor, opts) when is_binary(trash_item_id),
+    do: Commands.RestoreTrashed.execute(trash_item_id, actor, opts)
 
   @doc "Permanently removes one standalone trashed Article aggregate."
   @spec permanently_delete_trashed(
@@ -301,8 +341,13 @@ defmodule GroupherServer.CMS.Articles do
         ) :: T.domain_res(map())
   def permanently_delete_trashed(trash_item_id, actor, opts \\ [])
       when is_binary(trash_item_id) do
-    Commands.PermanentlyDeleteTrashed.execute(trash_item_id, actor, opts)
+    Commands.PermanentlyDeleteTrashed.execute_direct(trash_item_id, actor, opts)
   end
+
+  @doc "Permanently deletes one trashed Article through the retry-safe Receipt pipeline."
+  def permanently_delete_trashed_receipt(trash_item_id, actor, opts)
+      when is_binary(trash_item_id),
+      do: Commands.PermanentlyDeleteTrashed.execute(trash_item_id, actor, opts)
 
   @doc "Lists current Article Trash memberships for a Community."
   @spec list_trashed(Community.t(), map()) :: T.domain_res(map())
@@ -318,10 +363,6 @@ defmodule GroupherServer.CMS.Articles do
   def get_trashed(ref, %Community{id: community_id}, thread) do
     Trash.get_in_scope(ref, community_id, thread)
   end
-
-  @doc "Runs `archive` through the public `Articles` boundary."
-  @spec archive(T.thread()) :: T.domain_res(term())
-  def archive(thread), do: Commands.Archive.execute(thread)
 
   @doc "Sinks one stable Article through the shared Gate and aggregate lock."
   @spec sink(Ecto.UUID.t(), User.t(), keyword()) :: T.domain_res(term())
@@ -356,7 +397,9 @@ defmodule GroupherServer.CMS.Articles do
       when is_integer(community_id) and is_binary(command_id) do
     case FrontDesk.community(community_id, mode: :internal) do
       {:ok, %Community{} = community} ->
-        Commands.SetCategory.execute(article_id, cat, actor, community, command_id)
+        with {:ok, _command_id} <- CMS.Command.Receipt.validate_command_id(command_id) do
+          Commands.StateChange.set_category(article_id, cat, actor, community)
+        end
 
       {:error, _reason} ->
         {:error, GateErrorCat.resource_not_found()}
@@ -382,7 +425,9 @@ defmodule GroupherServer.CMS.Articles do
       when is_integer(community_id) and is_binary(command_id) do
     with {:ok, %Article{} = article} <- FrontDesk.article(article_id, mode: :internal),
          {:ok, %Community{} = community} <- FrontDesk.community(community_id, mode: :internal) do
-      Commands.SetStatus.execute(article, status, actor, community, command_id)
+      with {:ok, _command_id} <- CMS.Command.Receipt.validate_command_id(command_id) do
+        Commands.StateChange.set_status_in_community(article, status, actor, community)
+      end
     else
       {:error, _reason} -> {:error, GateErrorCat.resource_not_found()}
     end
@@ -424,7 +469,9 @@ defmodule GroupherServer.CMS.Articles do
     result =
       case Map.get(article, :community) do
         %Community{} = community ->
-          Commands.SetStatus.execute(article, status, actor, community, command_id)
+          with {:ok, _command_id} <- CMS.Command.Receipt.validate_command_id(command_id) do
+            Commands.StateChange.set_status_in_community(article, status, actor, community)
+          end
 
         _ ->
           {:error, :article_binding_context_required}
@@ -503,8 +550,15 @@ defmodule GroupherServer.CMS.Articles do
   end
 
   def lock_comments_result(article, %User{} = actor, command_id) do
-    with {:ok, updated} <-
-           Commands.LockComments.execute(article.id, actor, branch_opts(article), command_id) do
+    with {:ok, _command_id} <-
+           CMS.Command.Receipt.validate_command_id(command_id),
+         {:ok, updated} <-
+           Commands.CommentLock.execute(
+             article.id,
+             actor,
+             :lock_comments,
+             Keyword.put(branch_opts(article), :command_id, command_id)
+           ) do
       __MODULE__.ActionResult.merge(article, updated)
     end
   end
@@ -517,8 +571,15 @@ defmodule GroupherServer.CMS.Articles do
   end
 
   def undo_lock_comments_result(article, %User{} = actor, command_id) do
-    with {:ok, updated} <-
-           Commands.UnlockComments.execute(article.id, actor, branch_opts(article), command_id) do
+    with {:ok, _command_id} <-
+           CMS.Command.Receipt.validate_command_id(command_id),
+         {:ok, updated} <-
+           Commands.CommentLock.execute(
+             article.id,
+             actor,
+             :undo_lock_comments,
+             Keyword.put(branch_opts(article), :command_id, command_id)
+           ) do
       __MODULE__.ActionResult.merge(article, updated)
     end
   end
@@ -531,8 +592,15 @@ defmodule GroupherServer.CMS.Articles do
   end
 
   def sink_result(article, %User{} = actor, command_id) do
-    with {:ok, updated} <-
-           Commands.Sink.execute(article.id, actor, branch_opts(article), command_id) do
+    with {:ok, _command_id} <-
+           CMS.Command.Receipt.validate_command_id(command_id),
+         {:ok, updated} <-
+           Commands.StateChange.execute(
+             :sink,
+             article.id,
+             actor,
+             Keyword.put(branch_opts(article), :command_id, command_id)
+           ) do
       __MODULE__.ActionResult.merge(article, updated)
     end
   end
@@ -545,8 +613,15 @@ defmodule GroupherServer.CMS.Articles do
   end
 
   def undo_sink_result(article, %User{} = actor, command_id) do
-    with {:ok, updated} <-
-           Commands.UndoSink.execute(article.id, actor, branch_opts(article), command_id) do
+    with {:ok, _command_id} <-
+           CMS.Command.Receipt.validate_command_id(command_id),
+         {:ok, updated} <-
+           Commands.StateChange.execute(
+             :undo_sink,
+             article.id,
+             actor,
+             Keyword.put(branch_opts(article), :command_id, command_id)
+           ) do
       __MODULE__.ActionResult.merge(article, updated)
     end
   end

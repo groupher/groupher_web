@@ -104,26 +104,34 @@ defmodule GroupherServer.CMS.Articles.Draft.Store do
   @spec update(Article.t(), map(), Author.t(), keyword()) ::
           {:ok, ArticleDraft.t() | DocDraft.t()} | {:error, term()}
   def update(%Article{} = article, attrs, %Author{} = author, opts \\ []) do
-    expected_version = Keyword.fetch!(opts, :expected_version)
-
     Workflow.transaction(fn ->
-      with {:ok, _} <- validate_cover(attrs),
-           {:ok, article} <- lock_article(article.id),
-           {:ok, draft} <- lock_draft(article, opts),
-           {:ok, _} <- ensure_version(draft, expected_version),
-           {:ok, body_draft} <- update_body(draft, attrs, article.thread),
-           attrs <- maybe_put_body_digest(article, attrs, body_draft),
-           {:ok, _} <- save_cover_edit(body_draft.id, attrs),
-           content_hash <- content_hash(article, attrs, body_draft, draft),
-           {:ok, draft} <- update_draft_row(draft, attrs, author, content_hash),
-           {:ok, _typed} <- update_typed_draft(article, draft, attrs),
-           {:ok, _} <- maybe_replace_tags(article, draft, attrs),
-           {:ok, _article} <- mark_edited_if_published(article, opts) do
-        draft
-      else
+      case update_loaded(article, attrs, author, opts) do
+        {:ok, draft} -> draft
         {:error, reason} -> Repo.rollback(reason)
       end
     end)
+  end
+
+  @doc "Applies an autosave using the caller-owned transaction and an already canonical Article."
+  @spec update_loaded(Article.t(), map(), Author.t(), keyword()) ::
+          {:ok, ArticleDraft.t() | DocDraft.t()} | {:error, term()}
+  def update_loaded(%Article{} = article, attrs, %Author{} = author, opts) do
+    expected_version = Keyword.fetch!(opts, :expected_version)
+
+    with {:ok, _} <- validate_cover(attrs),
+         {:ok, article} <- lock_article(article.id),
+         {:ok, draft} <- lock_draft(article, opts),
+         {:ok, _} <- ensure_version(draft, expected_version),
+         {:ok, body_draft} <- update_body(draft, attrs, article.thread),
+         attrs <- maybe_put_body_digest(article, attrs, body_draft),
+         {:ok, _} <- save_cover_edit(body_draft.id, attrs),
+         content_hash <- content_hash(article, attrs, body_draft, draft),
+         {:ok, draft} <- update_draft_row(draft, attrs, author, content_hash),
+         {:ok, _typed} <- update_typed_draft(article, draft, attrs),
+         {:ok, _} <- maybe_replace_tags(article, draft, attrs),
+         {:ok, _article} <- mark_edited_if_published(article, opts) do
+      {:ok, draft}
+    end
   end
 
   defp maybe_put_body_digest(%Article{thread: :doc}, attrs, body) do
@@ -233,6 +241,19 @@ defmodule GroupherServer.CMS.Articles.Draft.Store do
     case result do
       {:ok, {:ok, _}} -> {:ok, :pass}
       {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @doc "Discards a Draft from a Gate-canonical Article in the caller's transaction."
+  @spec discard_loaded(Article.t(), keyword()) :: {:ok, :pass} | {:error, term()}
+  def discard_loaded(%Article{} = article, opts) when is_list(opts) do
+    expected_version = Keyword.fetch!(opts, :expected_version)
+
+    with {:ok, _public, _revision} <- public_revision(article, opts),
+         {:ok, draft} <- lock_draft(article, opts),
+         {:ok, _} <- ensure_version(draft, expected_version),
+         {:ok, _} <- delete_workspace(article, draft) do
+      {:ok, :pass}
     end
   end
 

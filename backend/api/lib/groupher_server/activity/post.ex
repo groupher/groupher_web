@@ -13,7 +13,7 @@ defmodule GroupherServer.Activity.Post do
   alias GroupherServer.Activity
   alias Activity.Event
 
-  @trash_denial_codes [
+  @trash_rejection_codes [
     :permission_denied,
     :article_not_mutable,
     :ancestor_community_not_writable,
@@ -35,7 +35,7 @@ defmodule GroupherServer.Activity.Post do
       Event.contract([], [], [:community_log], nil,
         outcomes: %{
           allowed: %{producer_status: :active},
-          denied: %{producer_status: :active, denial_codes: @trash_denial_codes}
+          denied: %{producer_status: :active, rejection_codes: @trash_rejection_codes}
         }
       ),
     restored: Event.contract([], [], [:article_log, :community_log]),

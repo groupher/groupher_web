@@ -2,12 +2,25 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UnlinkOauth do
   @moduledoc """
   Owns unlinking one verified OAuth identity from an existing account.
 
-      UnlinkOauth command -> Repo.transaction -> Oauth row primitives -> Effects
+      UnlinkOauth command -> direct_pipeline runner -> Oauth row primitives -> Effects
   """
 
-  alias GroupherServer.{Accounts, Repo}
+  alias GroupherServer.Accounts
   alias Accounts.Model.User
   alias Accounts.Profiles.{Effects, Oauth}
+
+  use GroupherServer.CommandPipeline
+
+  @pipeline operation: :accounts_profile_unlink_oauth, access: :open, target: :login,
+            params: [:provider]
+
+  direct_pipeline execute_pipeline(login, provider) do
+    change(fn _login -> Oauth.unlink_in_transaction(login, provider) end)
+    present(fn user ->
+      _ = Effects.revalidate_user(user)
+      {:ok, user}
+    end)
+  end
 
   @doc """
   Removes an OAuth provider while preserving at least one login method.
@@ -18,23 +31,6 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UnlinkOauth do
   """
   @spec run(String.t(), map()) :: {:ok, User.t()} | {:error, term()}
   def run(login, provider) do
-    transaction(fn -> Oauth.unlink_in_transaction(login, provider) end)
-    |> case do
-      {:ok, %User{} = user} = result ->
-        Effects.revalidate_user(user)
-        result
-
-      error ->
-        error
-    end
-  end
-
-  defp transaction(operation) do
-    Repo.transaction(fn ->
-      case operation.() do
-        {:ok, value} -> value
-        {:error, reason} -> Repo.rollback(reason)
-      end
-    end)
+    execute_pipeline(login, provider)
   end
 end

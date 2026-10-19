@@ -90,7 +90,7 @@ Cloudflare 官方流程：
 - [Purge Cached Content API](https://developers.cloudflare.com/api/resources/cache/methods/purge/)
 - [Purge cache availability and limits](https://developers.cloudflare.com/cache/how-to/purge-cache/#availability-and-limits)
 
-Cloudflare 当前约束必须进入 contract validation 和 `PublicCache.Policy`，不能只留在运维备注里：
+Cloudflare 当前约束必须进入 contract validation 和 `PublicCache.DeliveryConfig`，不能只留在运维备注里：
 
 - 单个 API request 最多 100 个 tag；`max_tags_per_request` 必须 `<= 100`；
 - 单个 purge API tag 最长 1,024 字符；response 上所有 `Cache-Tag` header 的总值最长 16 KB；
@@ -116,7 +116,7 @@ GroupherServer.PublicCache
 ├─ Const              invalidation type/status 封闭词表
 ├─ Tags               generated canonical tag constructors
 ├─ Scope              invalidation type 到 cache scopes 的穷举映射
-├─ Policy             timeout/retry/max-attempts/tag-count 参数
+├─ DeliveryConfig     timeout/retry/max-attempts/tag-count 参数
 └─ Cloudflare         唯一外部 API adapter
 
 GroupherServer.Jobs.PublicCachePurge
@@ -378,7 +378,7 @@ Oban Jobs.PublicCachePurge
   -> mark delivered or schedule retry/dead-letter
 ```
 
-默认策略集中在 `PublicCache.Policy`：
+当前 delivery 配置集中在 `PublicCache.DeliveryConfig`：
 
 ```text
 max_tags_per_request
@@ -433,7 +433,7 @@ Content-Type: application/json
 - token 使用最小 `Cache Purge` 权限，禁止 Global API Key；
 - token、完整 Authorization、Cookie、正文不进入日志；
 - validate HTTP status + Cloudflare body `success`；
-- 单次 tags 数量不得超过 `PublicCache.Policy.max_tags_per_request`，且该值不得超过 Cloudflare 当前上限 100；
+- 单次 tags 数量不得超过 `PublicCache.DeliveryConfig.max_tags_per_request`，且该值不得超过 Cloudflare 当前上限 100；
 - tag 必须通过共享 contract 的 ASCII、空格、长度和 canonical-case validation；
 - adapter 不解释领域 type，不访问 Article/Community 数据库；
 - Phoenix secret/config 缺失时启动或 readiness 失败，不能静默跳过。

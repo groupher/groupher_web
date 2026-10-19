@@ -7,18 +7,26 @@ defmodule GroupherServer.CMS.DocTree.Commands.CreatePage do
   alias GroupherServer.CMS
   alias CMS.DocTree.{Commands.Support, Persist}
 
-  def execute(community, args, user \\ nil) do
-    if Support.has_option?(args, :command_id) do
-      Support.run_tree_command(
+  use CMS.DocTree.Commands.TreePipeline, operation: :doc_tree_create_page
+
+  def execute(community, args, user) do
+    execute_tree_receipt(
+      community,
+      Map.get(args, :parent_node_id, "root"),
+      args,
+      Support.actor(args, user)
+    )
+  end
+
+  def execute_internal(community, args, internal_actor \\ :operations),
+    do:
+      execute_tree_internal(
         community,
         Map.get(args, :parent_node_id, "root"),
         args,
-        Support.actor(args, user),
-        :doc_tree_create_page,
-        &Persist.create_page(community, &1, user)
+        internal_actor
       )
-    else
-      Support.run_tree_operation(community, args, &Persist.create_page(community, &1, user))
-    end
-  end
+
+  defp tree_change(community, _target_id, args, actor),
+    do: Persist.create_page(community, args, actor)
 end

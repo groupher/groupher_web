@@ -21,6 +21,7 @@ defmodule GroupherServer.CMS.Gate.Access.Query do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.CommandPipeline.StageContext
 
   alias CMS.Gate.Access.Check
   alias CMS.Gate.Access.Policy.Application, as: ApplicationPolicy
@@ -28,6 +29,8 @@ defmodule GroupherServer.CMS.Gate.Access.Query do
   alias CMS.{Articles, FrontDesk}
   alias CMS.Model.{Article, Comment, Community}
   alias CMS.Model.CommunityApplication
+  alias CMS.Articles.MutationLock
+  alias Helper.ORM.AdvisoryLock
 
   @article_models [Article]
 
@@ -110,6 +113,156 @@ defmodule GroupherServer.CMS.Gate.Access.Query do
 
   def access_check(_actor, _action, _resource) do
     {:error, Decision.deny(ErrorCat.unsupported_resource())}
+  end
+
+  @doc """
+  Loads and authorizes a resource while joining the caller-owned transaction.
+
+  Unlike `with_check/4`, this API never starts or commits a transaction and
+  never accepts a business callback. It is the only Gate entry used by a
+  command pipeline runner, and it fails unless the runner is currently
+  executing the declared `gate` stage.
+  """
+  def check_in_transaction(actor, action, resource)
+
+  def check_in_transaction(actor, action, %Community{} = community) do
+    with {:ok, :pass} <- require_transaction() do
+      query = from(record in Community, where: record.id == ^community.id, lock: "FOR UPDATE")
+
+      case Repo.one(query) do
+        %Community{} = canonical ->
+          Check.with_authorized_community(actor, action, canonical, fn value -> {:ok, value} end)
+          |> normalize_join_decision()
+
+        nil ->
+          {:error, ErrorCat.resource_not_found()}
+      end
+    end
+  end
+
+  def check_in_transaction(actor, action, %Comment{} = comment) do
+    with {:ok, :pass} <- require_transaction(),
+         {:ok, thread} <- FrontDesk.thread_of(comment),
+         {:ok, article} <- parent_article(comment),
+         %Community{} = community <- Repo.get(Community, comment.community_id),
+         {:ok, :pass} <- acquire_comment_parent_lock(community, article, comment) do
+      Check.with_authorized(actor, action, {community, thread, article, comment}, fn value ->
+        {:ok, value}
+      end)
+      |> normalize_join_decision()
+    else
+      nil -> {:error, ErrorCat.resource_not_found()}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  def check_in_transaction(_actor, _action, _resource),
+    do: {:error, ErrorCat.unsupported_resource()}
+
+  @doc "Returns the canonical Comment together with its canonical parent Article."
+  def check_comment_in_transaction(actor, action, %Comment{} = comment) do
+    with {:ok, :pass} <- require_transaction(),
+         {:ok, thread} <- FrontDesk.thread_of(comment),
+         {:ok, article} <- parent_article(comment),
+         %Community{} = community <- Repo.get(Community, comment.community_id),
+         {:ok, :pass} <- acquire_comment_parent_lock(community, article, comment) do
+      Check.with_authorized(
+        actor,
+        action,
+        {community, thread, article, comment},
+        fn canonical, parent -> {:ok, {canonical, parent}} end
+      )
+      |> normalize_join_decision()
+    else
+      nil -> {:error, ErrorCat.resource_not_found()}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @doc "Joins the caller transaction for an Article binding check."
+  def check_in_transaction(actor, action, resource, community)
+
+  def check_in_transaction(actor, action, %Article{} = article, %Community{} = community) do
+    with {:ok, :pass} <- require_transaction(),
+         {:ok, :pass} <- acquire_article_lock(community, article) do
+      Check.with_authorized_article_binding(actor, action, {community, article}, fn value ->
+        {:ok, value}
+      end)
+      |> normalize_join_decision()
+    end
+  end
+
+  def check_in_transaction(
+        actor,
+        action,
+        %{id: article_id, thread: thread},
+        %Community{} = community
+      )
+      when is_binary(article_id) and thread in [:post, :blog, :changelog, :doc] do
+    case Repo.get(Article, article_id) do
+      %Article{thread: :doc} ->
+        {:error, ErrorCat.doc_branch_required()}
+
+      %Article{} = article ->
+        check_in_transaction(actor, action, article, community)
+
+      nil ->
+        {:error, ErrorCat.resource_not_found()}
+    end
+  end
+
+  @doc "Joins the caller transaction for a branch-scoped Doc check."
+  def check_in_transaction(actor, action, resource, community, branch_id)
+
+  def check_in_transaction(
+        actor,
+        action,
+        %Article{thread: :doc} = article,
+        %Community{} = community,
+        branch_id
+      )
+      when is_integer(branch_id) do
+    with {:ok, :pass} <- require_transaction(),
+         {:ok, :pass} <- acquire_doc_lock(community, article, branch_id) do
+      Check.with_authorized_doc(actor, action, {community, article, branch_id}, fn value ->
+        {:ok, value}
+      end)
+      |> normalize_join_decision()
+    end
+  end
+
+  defp require_transaction do
+    cond do
+      not Repo.in_transaction?() -> {:error, :gate_transaction_required}
+      StageContext.current() != :gate -> {:error, :gate_stage_required}
+      true -> {:ok, :pass}
+    end
+  end
+
+  defp acquire_article_lock(%Community{} = community, %Article{thread: thread, id: article_id})
+       when thread in [:post, :blog, :changelog] do
+    AdvisoryLock.acquire!(MutationLock.key(community, thread, article_id))
+    {:ok, :pass}
+  end
+
+  defp acquire_article_lock(_community, _article), do: {:error, ErrorCat.doc_branch_required()}
+
+  defp acquire_comment_parent_lock(
+         %Community{} = community,
+         %Article{thread: :doc} = article,
+         %Comment{branch_id: branch_id}
+       )
+       when is_integer(branch_id) do
+    acquire_doc_lock(community, article, branch_id)
+  end
+
+  defp acquire_comment_parent_lock(%Community{} = community, %Article{} = article, _comment) do
+    acquire_article_lock(community, article)
+  end
+
+  defp acquire_doc_lock(%Community{} = community, %Article{id: article_id}, branch_id) do
+    AdvisoryLock.acquire!(MutationLock.doc_key(community, branch_id, article_id))
+    {:ok, :pass}
   end
 
   @doc """
@@ -236,6 +389,44 @@ defmodule GroupherServer.CMS.Gate.Access.Query do
     end)
   end
 
+  @doc "Locks and authorizes a Community Application inside the pipeline transaction."
+  def check_application_in_transaction(
+        actor,
+        action,
+        %CommunityApplication{id: application_id}
+      ) do
+    query =
+      from(application in CommunityApplication,
+        where: application.id == ^application_id,
+        lock: "FOR UPDATE"
+      )
+
+    with {:ok, :pass} <- require_transaction(),
+         %CommunityApplication{} = canonical <- Repo.one(query),
+         {:ok, :pass} <- ApplicationPolicy.check_access(actor, action, canonical) do
+      {:ok, canonical}
+    else
+      nil -> {:error, ErrorCat.resource_not_found()}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @doc "Checks Community Application creation inside the pipeline transaction."
+  def check_application_create_in_transaction(actor) do
+    with {:ok, :pass} <- require_transaction(),
+         {:ok, :pass} <- ApplicationPolicy.check_create(actor) do
+      {:ok, actor}
+    end
+  end
+
+  @doc "Checks Community creation inside the pipeline transaction."
+  def check_community_create_in_transaction(actor, target) do
+    with {:ok, :pass} <- require_transaction(),
+         {:ok, :pass} <- CMS.Gate.Access.Policy.Community.check_create(actor) do
+      {:ok, target}
+    end
+  end
+
   @doc "Runs the create admission for a new Community Application."
   def with_application_create_check(actor, callback) when is_function(callback, 0) do
     Repo.transact(fn ->
@@ -296,6 +487,8 @@ defmodule GroupherServer.CMS.Gate.Access.Query do
   end
 
   defp normalize_decision(result), do: result
+
+  defp normalize_join_decision(result), do: result
 
   defp parent_article(%Comment{article_id: article_id}) when is_binary(article_id) do
     case Repo.get(Article, article_id) do

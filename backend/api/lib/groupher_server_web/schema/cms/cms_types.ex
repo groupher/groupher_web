@@ -461,7 +461,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
       resolve: fn event, _, _ -> {:ok, to_string(event.outcome)} end
     )
 
-    field(:denial_code, :string)
+    field(:rejection_code, :string)
     field(:changed_fields, non_null(list_of(non_null(:string))))
     field(:operation_index, non_null(:integer))
     field(:record_sequence, non_null(:integer))

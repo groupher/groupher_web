@@ -168,14 +168,14 @@ defmodule GroupherServer.CMS.Communities do
   @spec update(Community.t(), map(), User.t() | :operations, Ecto.UUID.t()) ::
           T.domain_res(Community.t())
   def update(%Community{} = community, args, actor, command_id) do
-    UpdateCommand.execute(community, args, actor, command_id)
+    UpdateCommand.execute_pipeline(community, args, actor, command_id)
   end
 
   @doc "Updates Community fields from an explicit maintenance workflow identity."
   @spec update_operations(Community.t(), map(), String.t()) :: T.domain_res(Community.t())
   def update_operations(%Community{} = community, args, workflow_ref)
       when is_binary(workflow_ref) and workflow_ref != "" do
-    UpdateCommand.execute(community, args, :operations, {:workflow, workflow_ref})
+    UpdateCommand.execute_workflow(community, args, :operations, {:workflow, workflow_ref})
   end
 
   @doc "Creates from application through the `Communities` write boundary."
@@ -194,7 +194,7 @@ defmodule GroupherServer.CMS.Communities do
     {:error, CMS.ErrorCat.command_id_required()}
   end
 
-  @doc "Runs setup retry through the receipt-backed Application Command."
+  @doc "Runs setup retry through the Application `receipt_pipeline`."
   @spec retry_setup(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
   def retry_setup(application_ref, %User{} = reviewer, expected_version, command_id) do
     CMS.CommunityApplications.Commands.RetrySetup.execute(
@@ -277,7 +277,7 @@ defmodule GroupherServer.CMS.Communities do
   end
 
   # Category
-  @doc "Creates category through the receipt-backed Category Command boundary."
+  @doc "Creates a category through its `receipt_pipeline`."
   @spec create_category(map(), User.t()) :: T.domain_res(Category.t())
   def create_category(_attrs, %User{}), do: {:error, CMS.ErrorCat.command_id_required()}
 
@@ -290,7 +290,7 @@ defmodule GroupherServer.CMS.Communities do
   @spec paged_categories(map()) :: T.domain_res(T.paged_data())
   def paged_categories(filter), do: Query.page_categories(filter)
 
-  @doc "Updates category through the receipt-backed Category Command boundary."
+  @doc "Updates a category through its `receipt_pipeline`."
   @spec update_category(String.t(), map()) :: T.domain_res(Category.t())
   def update_category(_community, _attrs), do: {:error, CMS.ErrorCat.command_id_required()}
 
@@ -299,7 +299,7 @@ defmodule GroupherServer.CMS.Communities do
     UpdateCategoryCommand.execute(community, attrs, user, command_id)
   end
 
-  @doc "Removes category through the receipt-backed Category Command boundary."
+  @doc "Removes a category through its `receipt_pipeline`."
   @spec delete_category(String.t(), T.id()) :: T.domain_res(Category.t())
   def delete_category(_community, _id), do: {:error, CMS.ErrorCat.command_id_required()}
 
@@ -308,7 +308,7 @@ defmodule GroupherServer.CMS.Communities do
     DeleteCategoryCommand.execute(community, id, user, command_id)
   end
 
-  @doc "Runs `set_category` through the receipt-backed Category Command boundary."
+  @doc "Runs `set_category` through its `receipt_pipeline`."
   @spec set_category(Community.t(), T.id()) :: T.domain_res(Community.t())
   def set_category(%Community{}, _category_id), do: {:error, CMS.ErrorCat.command_id_required()}
 
@@ -318,7 +318,7 @@ defmodule GroupherServer.CMS.Communities do
     SetCategoryCommand.execute(community, category_id, user, command_id)
   end
 
-  @doc "Runs `unset_category` through the receipt-backed Category Command boundary."
+  @doc "Runs `unset_category` through its `receipt_pipeline`."
   @spec unset_category(Community.t(), T.id()) :: T.domain_res(Community.t())
   def unset_category(%Community{}, _category_id), do: {:error, CMS.ErrorCat.command_id_required()}
 
@@ -434,7 +434,7 @@ defmodule GroupherServer.CMS.Communities do
   @spec subscribe(Community.t(), User.t()) :: T.domain_res(Community.t())
   def subscribe(%Community{} = community, %User{} = user), do: reject_command_id(community, user)
 
-  @doc "Runs the receipt-backed user subscription Command."
+  @doc "Runs the user subscription `receipt_pipeline`."
   @spec subscribe(Community.t() | String.t(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Community.t())
   def subscribe(community, %User{} = user, command_id) do
@@ -447,7 +447,7 @@ defmodule GroupherServer.CMS.Communities do
     reject_command_id(community, user)
   end
 
-  @doc "Runs the receipt-backed user unsubscribe Command."
+  @doc "Runs the user unsubscribe `receipt_pipeline`."
   @spec unsubscribe(Community.t() | String.t(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Community.t())
   def unsubscribe(community, %User{} = user, command_id) do

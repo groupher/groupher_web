@@ -43,14 +43,14 @@ defmodule GroupherServer.Test.CMS.DocArchive do
   end
 
   test "archives old stable Doc public heads per branch", ~m(branch article)a do
-    assert {:ok, 1} = CMS.Articles.archive(:doc)
+    assert {:ok, 1} = CMS.Articles.Maintenance.archive(:doc)
 
     assert Repo.get_by!(DocLifecycle, article_id: article.id, branch_id: branch.id).state ==
              :archived
   end
 
   test "an archived stable Doc cannot re-enter draft editing", ~m(user branch article)a do
-    assert {:ok, 1} = CMS.Articles.archive(:doc)
+    assert {:ok, 1} = CMS.Articles.Maintenance.archive(:doc)
 
     assert {:error, _reason} =
              CMS.Docs.update_draft(
@@ -62,7 +62,7 @@ defmodule GroupherServer.Test.CMS.DocArchive do
   end
 
   test "an archived stable Doc cannot enter branch Trash", ~m(user community branch article)a do
-    assert {:ok, 1} = CMS.Articles.archive(:doc)
+    assert {:ok, 1} = CMS.Articles.Maintenance.archive(:doc)
 
     {:ok, action} =
       CMS.Docs.Trash.create_action(community, user, %{

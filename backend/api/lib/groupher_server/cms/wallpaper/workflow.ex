@@ -82,8 +82,8 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
     Application.get_env(:groupher_server, :wallpaper_batch_client, GeneratedBatch)
   end
 
-  @doc "Publishes one current-theme Snapshot, or a canonical NONE Snapshot."
-  def run_publish(%Community{} = community, input, %User{} = user) when is_map(input) do
+  @doc "Validates a publish request and acquires any external capability before the DB transaction."
+  def prepare_publish(%Community{} = community, input, %User{} = user) when is_map(input) do
     assert_lease_policy!()
 
     theme = get(input, :theme)
@@ -100,13 +100,13 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
 
       case existing_publish_receipt(community.id, command_id, digest) do
         {:ok, response} ->
-          {:ok, response}
+          {:ok, {:existing, response}}
 
         {:error, reason} ->
           {:error, reason}
 
         :miss ->
-          publish_once(%PublishContext{
+          context = %PublishContext{
             community: community,
             actor_id: user.id,
             theme: theme,
@@ -116,10 +116,42 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
             batch_ref: batch_ref,
             fixture_version: fixture_version,
             digest: digest
-          })
+          }
+
+          with {:ok, capability} <-
+                 prepare_publish_capability(
+                   context.community,
+                   context.theme,
+                   context.batch_ref,
+                   context.command_id,
+                   context.digest,
+                   context.settings
+                 ),
+               {:ok, _} <- ensure_publish_lease(capability) do
+            {:ok, {:prepared, context, capability}}
+          end
       end
     end
   end
+
+  @doc "Commits a prepared publish inside the caller-owned transaction."
+  def commit_publish(%Community{}, {:existing, response}), do: {:ok, response}
+
+  def commit_publish(%Community{} = community, {:prepared, context, capability}) do
+    context = %{context | community: community}
+    configure_publish_transaction!()
+
+    with {:ok, :pass} <- ensure_publish_lease(capability) do
+      {:ok, publish_transaction(context, capability)}
+    end
+  end
+
+  @doc "Releases an external publish claim after a failed pipeline attempt."
+  def cleanup_publish({:prepared, context, capability}) do
+    cleanup_publish_capability(context.community, context.batch_ref, capability)
+  end
+
+  def cleanup_publish(_prepared), do: {:ok, :pass}
 
   @doc "Restores one retained public Snapshot ID for its original theme."
   def run_restore_snapshot(%Community{} = community, input, %User{}) when is_map(input) do
@@ -160,33 +192,6 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
       Retention.retain_latest_snapshots(community.id, state, now)
       %{version: state.version}
     end)
-  end
-
-  defp publish_once(%PublishContext{} = context) do
-    with {:ok, capability} <-
-           prepare_publish_capability(
-             context.community,
-             context.theme,
-             context.batch_ref,
-             context.command_id,
-             context.digest,
-             context.settings
-           ),
-         {:ok, _} <- ensure_publish_lease(capability) do
-      case run_publish_transaction(fn ->
-             configure_publish_transaction!()
-             ensure_publish_lease!(capability)
-
-             publish_transaction(context, capability)
-           end) do
-        {:ok, response} ->
-          {:ok, response}
-
-        {:error, reason} ->
-          cleanup_publish_capability(context.community, context.batch_ref, capability)
-          {:error, reason}
-      end
-    end
   end
 
   defp publish_transaction(%PublishContext{} = context, capability) do
@@ -434,24 +439,11 @@ defmodule GroupherServer.CMS.Wallpaper.Workflow do
     end
   end
 
-  defp ensure_publish_lease!(capability) do
-    case ensure_publish_lease(capability) do
-      {:ok, _} -> {:ok, :pass}
-      {:error, reason} -> Repo.rollback(reason)
-    end
-  end
-
   defp configure_publish_transaction! do
     TransactionSettings.configure!(
       @database_transaction_timeout_ms,
       @database_lock_timeout_ms
     )
-  end
-
-  defp run_publish_transaction(callback) do
-    transaction(callback, timeout: @database_transaction_timeout_ms)
-  rescue
-    DBConnection.ConnectionError -> {:error, ErrorCat.wallpaper_publish_transaction_timeout()}
   end
 
   defp cleanup_publish_claim(_community, batch_ref, result)

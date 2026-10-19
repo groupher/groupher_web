@@ -15,7 +15,7 @@ defmodule GroupherServer.Activity.Filter do
     :actions,
     :categories,
     :outcomes,
-    :denial_codes,
+    :rejection_codes,
     :actor_types,
     :changed_fields
   ]
@@ -25,7 +25,7 @@ defmodule GroupherServer.Activity.Filter do
     :actions,
     :categories,
     :outcomes,
-    :denial_codes,
+    :rejection_codes,
     :actor_types,
     :actor_ref,
     :on_behalf_of_ref,
@@ -197,7 +197,7 @@ defmodule GroupherServer.Activity.Filter do
       actions: Enum.map(active_actions, & &1.action),
       categories: Enum.map(active_actions, & &1.category),
       outcomes: Const.outcome_values(),
-      denial_codes: Enum.flat_map(active_actions, & &1.denial_codes),
+      rejection_codes: Enum.flat_map(active_actions, & &1.rejection_codes),
       actor_types: Const.actor_type_values(),
       changed_fields: Enum.flat_map(active_actions, & &1.changed_fields)
     }

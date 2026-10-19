@@ -8,9 +8,12 @@ defmodule GroupherServer.CMS.DocCover.Commands.UpdateCardAppearance do
         -> DocCover.Persist
   """
   alias GroupherServer.CMS
-  alias CMS.DocCover.{Commands.Support, Persist}
+  alias CMS.DocCover.Persist
   alias CMS.Model.Community
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc """
   Executes the card appearance command.
 
@@ -20,12 +23,9 @@ defmodule GroupherServer.CMS.DocCover.Commands.UpdateCardAppearance do
       #=> {:ok, cover_card}
   """
   @spec execute(Community.t(), term(), map(), term(), Ecto.UUID.t()) :: term()
-  def execute(community, card_id, appearance, actor, _command_id) do
-    Support.run(
-      actor,
-      :manage_docs,
-      community,
-      &Persist.update_card_appearance(&1, card_id, appearance)
-    )
+  @pipeline operation: :doc_cover_update_card_appearance, target: :community
+  direct_pipeline execute(community, card_id, appearance, actor, command_id) do
+    gate(fn candidate -> CMS.Gate.check_in_transaction(actor, :manage_docs, candidate) end)
+    change(fn canonical -> Persist.update_card_appearance(canonical, card_id, appearance) end)
   end
 end

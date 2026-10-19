@@ -5,9 +5,22 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UpdateProfile do
       UpdateProfile -> Persist -> commit -> Effects
   """
 
-  alias GroupherServer.{Accounts, Repo}
+  alias GroupherServer.Accounts
   alias Accounts.Model.User
   alias Accounts.Profiles.{Effects, Persist}
+
+  use GroupherServer.CommandPipeline
+
+  @pipeline operation: :accounts_profile_update, access: :open, target: :user,
+            params: [:attrs]
+
+  direct_pipeline execute_pipeline(user, attrs) do
+    change(fn _user -> Persist.update_profile(user, attrs) end)
+    present(fn user ->
+      _ = Effects.revalidate_user(user)
+      Effects.maybe_preload_social({:ok, user}, attrs)
+    end)
+  end
 
   @doc """
   Updates editable profile and optional social fields.
@@ -18,18 +31,6 @@ defmodule GroupherServer.Accounts.Profiles.Commands.UpdateProfile do
   """
   @spec run(User.t(), map()) :: {:ok, User.t()} | {:error, term()}
   def run(%User{} = user, attrs) do
-    case Repo.transaction(fn ->
-           case Persist.update_profile(user, attrs) do
-             {:ok, user} -> user
-             {:error, reason} -> Repo.rollback(reason)
-           end
-         end) do
-      {:ok, user} ->
-        Effects.revalidate_user(user)
-        Effects.maybe_preload_social({:ok, user}, attrs)
-
-      {:error, reason} ->
-        {:error, reason}
-    end
+    execute_pipeline(user, attrs)
   end
 end

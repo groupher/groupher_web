@@ -58,6 +58,32 @@ defmodule GroupherServer.CMS.Gate do
           {:ok, term()} | {:error, GroupherServer.CMS.Gate.Decision.t()}
   def access_check(actor, action, resource), do: Access.access_check(actor, action, resource)
 
+  @doc "Loads and authorizes a resource inside the caller-owned pipeline transaction."
+  def check_in_transaction(actor, action, resource),
+    do: Access.check_in_transaction(actor, action, resource)
+
+  def check_in_transaction(actor, action, resource, community),
+    do: Access.check_in_transaction(actor, action, resource, community)
+
+  def check_in_transaction(actor, action, resource, community, branch_id),
+    do: Access.check_in_transaction(actor, action, resource, community, branch_id)
+
+  @doc "Loads and authorizes a Comment and its canonical parent inside the pipeline transaction."
+  def check_comment_in_transaction(actor, action, comment),
+    do: Access.check_comment_in_transaction(actor, action, comment)
+
+  @doc "Checks a Community Application while joining the pipeline transaction."
+  def check_application_in_transaction(actor, action, application),
+    do: Access.check_application_in_transaction(actor, action, application)
+
+  @doc "Checks whether an actor may create a Community Application in the pipeline transaction."
+  def check_application_create_in_transaction(actor),
+    do: Access.check_application_create_in_transaction(actor)
+
+  @doc "Checks authenticated Community creation while joining the pipeline transaction."
+  def check_community_create_in_transaction(actor, target),
+    do: Access.check_community_create_in_transaction(actor, target)
+
   @doc """
   Runs resource authorization and a command callback in one aggregate transaction.
 

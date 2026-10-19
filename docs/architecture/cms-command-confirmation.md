@@ -8,7 +8,7 @@
 
 ## 1. 核心合同
 
-Receipt-backed mutation 只接受以下组合：
+`receipt_pipeline` 中的 Receipt mutation 只接受以下组合：
 
 ```elixir
 CMS.Command.execute(command,

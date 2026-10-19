@@ -17,7 +17,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Publish.Release do
       {:ok, tree_state} = ORM.find_by(CMS.Model.DocsSiteState, community_id: community.id)
 
       {:ok, group_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           slug: "guides",
@@ -25,7 +25,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Publish.Release do
         })
 
       {:ok, page_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: group_payload.node.id,
@@ -296,7 +296,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Publish.Release do
         })
 
       {:ok, group_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           branch_id: branch.id,
           parent_node_id: tab.node_id,
           title: "Preview Guides",
@@ -305,7 +305,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Publish.Release do
         })
 
       {:ok, _page_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             branch_id: branch.id,
@@ -397,7 +397,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Publish.Release do
     test "publishes multiple newly created pages from one checklist",
          ~m(user community group_payload page_payload)a do
       {:ok, second_page_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: group_payload.node.id,
@@ -436,7 +436,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Publish.Release do
     test "keeps canonical Doc slugs unique across navigation groups",
          ~m(user community page_payload)a do
       {:ok, second_group_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "API",
           slug: "api",
@@ -444,7 +444,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Publish.Release do
         })
 
       {:ok, second_page_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: second_group_payload.node.id,
@@ -481,14 +481,14 @@ defmodule GroupherServer.Test.CMS.DocTree.Publish.Release do
         CMS.DocTree.publish_changes(community, %{}, user, command_id: Ecto.UUID.generate())
 
       {:ok, rename_payload} =
-        CMS.DocTree.update_node(community, page_payload.node.id, %{
+        CMS.DocTree.update_node_internal(community, page_payload.node.id, %{
           title: "Install v2",
           slug: "install-v2",
           base_revision: page_payload.revision
         })
 
       {:ok, move_payload} =
-        CMS.DocTree.move_node(community, page_payload.node.id, %{
+        CMS.DocTree.move_node_internal(community, page_payload.node.id, %{
           target_parent_node_id: page_payload.node.parent_node_id,
           target_index: 0,
           base_revision: rename_payload.revision
@@ -524,7 +524,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Publish.Release do
         CMS.DocTree.publish_changes(community, %{}, user, command_id: Ecto.UUID.generate())
 
       {:ok, _rename_payload} =
-        CMS.DocTree.update_node(community, page_payload.node.id, %{
+        CMS.DocTree.update_node_internal(community, page_payload.node.id, %{
           title: "Install v2",
           slug: "install-v2",
           base_revision: page_payload.revision
@@ -563,7 +563,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Publish.Release do
       {:ok, tree} = CMS.DocTree.read(community)
 
       {:ok, group_payload_2} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "API",
           slug: "api",
@@ -585,7 +585,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Publish.Release do
         )
 
       {:ok, _move_payload} =
-        CMS.DocTree.move_node(community, page_payload.node.id, %{
+        CMS.DocTree.move_node_internal(community, page_payload.node.id, %{
           target_parent_node_id: group_payload_2.node.id,
           target_index: 0,
           base_revision: group_payload_2.revision

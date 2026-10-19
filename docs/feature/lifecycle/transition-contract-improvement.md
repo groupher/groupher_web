@@ -496,7 +496,7 @@ Community + DocBranch
 [autosave hook](../../../frontend/core/unit/DsbThread/CMS/Docs/Editor/Article/hooks/useDraftAutoSave.ts)
 从已确认 Draft 版本传入并在成功后更新本地 confirmed state。
 
-下游 `/api/artiment/publish` 必须原样转发该版本；如果改成在服务端临时读取最新 version 再提交，则两个编辑页签都可以
+下游 `/api/content/publish` 必须原样转发该版本；如果改成在服务端临时读取最新 version 再提交，则两个编辑页签都可以
 覆盖最新 Draft，实际上又绕过了用户所见版本的冲突保护。
 
 合理形态是编辑器保存 confirmed Draft version，并在 autosave 发起时一起传递。发生 `draft_conflict` 时保留本地 working copy，

@@ -14,7 +14,6 @@ defmodule GroupherServer.Accounts.CollectFolders.Persist do
   import GroupherServer.FrontDesk, only: [thread_of: 1]
   import ShortMaps
 
-  alias Ecto.Multi
   alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.CollectFolders.ErrorCat
   alias Accounts.Model.{CollectFolder, Embeds, User}
@@ -118,37 +117,32 @@ defmodule GroupherServer.Accounts.CollectFolders.Persist do
   end
 
   @doc """
-  Builds the add-membership persistence steps for a caller-owned transaction.
-
-  The ArticleCollect fact must already have been ensured by the command.
+  Adds an already persisted ArticleCollect to a folder in the caller's
+  current transaction. The command pipeline owns the transaction itself.
 
   ## Examples
 
-      Accounts.CollectFolders.Persist.add_multi(article_collect, folder, thread)
+      Accounts.CollectFolders.Persist.add_in_transaction(article_collect, folder, :post)
   """
-  @spec add_multi(ArticleCollect.t(), CollectFolder.t(), atom()) :: Ecto.Multi.t()
-  def add_multi(%ArticleCollect{} = article_collect, folder, thread) do
-    Multi.new()
-    |> Multi.run(:add_to_collect_folder, fn _, _ ->
-      collects = [article_collect | folder.collects]
-      update_folder_meta(thread, collects, folder)
-    end)
+  @spec add_in_transaction(ArticleCollect.t(), CollectFolder.t(), atom()) ::
+          T.domain_res(CollectFolder.t())
+  def add_in_transaction(%ArticleCollect{} = article_collect, folder, thread) do
+    update_folder_meta(thread, [article_collect | folder.collects], folder)
   end
 
   @doc """
-  Builds the remove-membership persistence steps for a caller-owned transaction.
+  Removes an already persisted ArticleCollect from a folder in the caller's
+  current transaction. The command pipeline owns the transaction itself.
 
   ## Examples
 
-      Accounts.CollectFolders.Persist.remove_multi(article_collect, folder, thread)
+      Accounts.CollectFolders.Persist.remove_in_transaction(article_collect, folder, :post)
   """
-  @spec remove_multi(ArticleCollect.t(), CollectFolder.t(), atom()) :: Ecto.Multi.t()
-  def remove_multi(%ArticleCollect{} = article_collect, folder, thread) do
-    Multi.new()
-    |> Multi.run(:rm_from_collect_folder, fn _, _ ->
-      collects = Enum.reject(folder.collects, &(&1.id == article_collect.id))
-      update_folder_meta(thread, collects, folder)
-    end)
+  @spec remove_in_transaction(ArticleCollect.t(), CollectFolder.t(), atom()) ::
+          T.domain_res(CollectFolder.t())
+  def remove_in_transaction(%ArticleCollect{} = article_collect, folder, thread) do
+    collects = Enum.reject(folder.collects, &(&1.id == article_collect.id))
+    update_folder_meta(thread, collects, folder)
   end
 
   defp article_not_in_folder(article, collects) do

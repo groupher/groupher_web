@@ -52,7 +52,6 @@ defmodule GroupherServer.CMS.DocCover.Sync do
         }
 
         create_or_find(
-          DocCoverCard,
           attrs,
           [community_id: community.id, group_node_id: group_node.id],
           :group_node_id
@@ -60,25 +59,23 @@ defmodule GroupherServer.CMS.DocCover.Sync do
     end
   end
 
-  defp create_or_find(schema, attrs, lookup, unique_field) do
-    case insert_with_savepoint(schema, attrs) do
+  defp create_or_find(attrs, lookup, unique_field) do
+    case insert_with_savepoint(attrs) do
       {:ok, row} ->
         {:ok, row}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         if unique_constraint_error?(changeset, unique_field) do
-          ORM.find_by(schema, lookup)
+          ORM.find_by(DocCoverCard, lookup)
         else
           {:error, changeset}
         end
     end
   end
 
-  defp insert_with_savepoint(schema, attrs) do
+  defp insert_with_savepoint(attrs) do
     changeset =
-      schema
-      |> struct()
-      |> schema.changeset(attrs)
+      DocCoverCard.changeset(%DocCoverCard{}, attrs)
 
     # Savepoints let a surrounding transaction recover from unique races, but
     # Ecto raises when `mode: :savepoint` is used outside a transaction.

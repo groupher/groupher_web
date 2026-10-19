@@ -10,47 +10,42 @@ defmodule GroupherServer.CMS.Communities.Commands.RequestDestroy do
 
   alias GroupherServer.{Accounts, CMS}
 
-  alias CMS.{Command, FrontDesk, Gate}
+  alias CMS.{FrontDesk, Gate}
   alias CMS.Communities.{ErrorCat, Lifecycle, RequestDestroyConfirmation}
   alias CMS.Model.Community
   alias Accounts.Model.User
   alias Helper.T
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Community.t(), User.t(), keyword()) :: T.domain_res(Community.t())
   def execute(%Community{} = community, %User{} = actor, opts) do
-    command = %Command{
-      actor: actor,
-      command_id: Keyword.get(opts, :command_id),
-      operation: :community_request_destroy,
-      target: community,
-      params: opts |> Keyword.delete(:command_id) |> Map.new()
-    }
-
-    with {:ok, confirmation} <-
-           Command.execute(command,
-             action: &request_destroy_action/1,
-             confirmation: RequestDestroyConfirmation
-           ) do
-      FrontDesk.community(confirmation.data["community_slug"], mode: :internal)
-    end
+    execute_pipeline(community, actor, opts, Keyword.fetch!(opts, :command_id))
   end
 
   def execute(_community, _actor, _opts), do: {:error, ErrorCat.not_exist("Community")}
 
-  defp request_destroy_action(%{
-         actor: actor,
-         target: community,
-         params: opts,
-         command_id: command_id
-       }) do
-    opts = Map.to_list(opts)
+  @pipeline operation: :community_request_destroy,
+            confirmation: RequestDestroyConfirmation,
+            target: :community,
+            params: :opts
 
-    with {:ok, canonical} <- Gate.access_check(actor, :request_destroy, community),
-         {:ok, _blocker} <-
-           Lifecycle.request_destroy(
-             canonical.id,
-             Keyword.put(opts, :operation_ref, command_id)
-           ) do
+  receipt_pipeline execute_pipeline(community, actor, opts, command_id) do
+    gate(fn candidate -> Gate.check_in_transaction(actor, :request_destroy, candidate) end)
+
+    change(fn canonical ->
+      Lifecycle.request_destroy(
+        canonical.id,
+        Keyword.put(opts, :operation_ref, command_id)
+      )
+      |> case do
+        {:ok, _blocker} -> {:ok, canonical}
+        error -> error
+      end
+    end)
+
+    confirm(fn canonical ->
       {:ok,
        %RequestDestroyConfirmation{
          data: %{
@@ -59,6 +54,10 @@ defmodule GroupherServer.CMS.Communities.Commands.RequestDestroy do
            "operation_ref" => command_id
          }
        }}
-    end
+    end)
+
+    present(fn confirmation ->
+      FrontDesk.community(confirmation.data["community_slug"], mode: :internal)
+    end)
   end
 end

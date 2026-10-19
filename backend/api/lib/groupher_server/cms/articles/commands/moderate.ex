@@ -12,45 +12,56 @@ defmodule GroupherServer.CMS.Articles.Commands.Moderate do
   alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CMS.Model.{Article, Community}
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Ecto.UUID.t(), atom(), map(), struct() | :operations, keyword()) ::
           {:ok, term()} | {:error, term()}
-  def execute(article_id, state, attrs, actor, opts) do
+  @pipeline operation: :article_moderate, target: :article_id
+  direct_pipeline execute(article_id, state, attrs, actor, opts) do
+    gate(fn _candidate -> authorize(article_id, actor, opts) end)
+
+    change(fn {canonical, community, branch_id} ->
+      if is_integer(branch_id) do
+        Moderation.set_state(canonical, state, attrs,
+          branch_id: branch_id,
+          community: community
+        )
+      else
+        Moderation.set_state(
+          canonical,
+          state,
+          attrs,
+          Keyword.put(opts, :community, community)
+        )
+      end
+    end)
+  end
+
+  defp authorize(article_id, actor, opts) do
     case FrontDesk.article(article_id, mode: :internal) do
       {:ok, %Article{thread: :doc} = article} ->
         with {:ok, community} <- resolve_community(opts, article) do
           branch_id = Keyword.get(opts, :branch_id) || main_branch_id(community.id)
 
-          CMS.Gate.with_branch_check(
-            actor,
-            :moderate,
-            community,
-            article,
-            branch_id,
-            fn canonical ->
-              Moderation.set_state(canonical, state, attrs,
-                branch_id: branch_id,
-                community: community
-              )
-            end
-          )
+          with {:ok, canonical} <-
+                 CMS.Gate.check_in_transaction(
+                   actor,
+                   :moderate,
+                   article,
+                   community,
+                   branch_id
+                 ) do
+            {:ok, {canonical, community, branch_id}}
+          end
         end
 
       {:ok, %Article{} = article} ->
         with {:ok, community} <- resolve_community(opts, article) do
-          CMS.Gate.with_community_check(
-            actor,
-            :moderate,
-            community,
-            article,
-            fn canonical ->
-              Moderation.set_state(
-                canonical,
-                state,
-                attrs,
-                Keyword.put(opts, :community, community)
-              )
-            end
-          )
+          with {:ok, canonical} <-
+                 CMS.Gate.check_in_transaction(actor, :moderate, article, community) do
+            {:ok, {canonical, community, nil}}
+          end
         end
 
       {:error, _} ->

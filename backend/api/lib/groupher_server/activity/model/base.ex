@@ -39,7 +39,7 @@ defmodule GroupherServer.Activity.Model.Base do
       @on_behalf_of_pair_constraint "#{table}_on_behalf_of_pair_check"
       @on_behalf_of_type_constraint "#{table}_on_behalf_of_type_check"
       @outcome_constraint "#{table}_outcome_check"
-      @outcome_denial_constraint "#{table}_outcome_denial_check"
+      @outcome_rejection_constraint "#{table}_outcome_rejection_check"
       @operation_index_constraint "#{table}_operation_index_check"
       @occurred_at_constraint "#{table}_occurred_at_check"
 
@@ -68,7 +68,7 @@ defmodule GroupherServer.Activity.Model.Base do
                          :on_behalf_of_type,
                          :on_behalf_of_ref,
                          :on_behalf_of_snapshot,
-                         :denial_code,
+                         :rejection_code,
                          :parent_event_ref,
                          :changed_fields,
                          :payload,
@@ -100,7 +100,7 @@ defmodule GroupherServer.Activity.Model.Base do
         field(:on_behalf_of_snapshot, :map, default: %{})
         field(:action, Ecto.Enum, values: @actions)
         field(:outcome, Ecto.Enum, values: Const.outcome_values())
-        field(:denial_code, :string)
+        field(:rejection_code, :string)
 
         field(
           :source,
@@ -137,7 +137,7 @@ defmodule GroupherServer.Activity.Model.Base do
         |> check_constraint(:source, name: @source_constraint)
         |> check_constraint(:actor_type, name: @actor_type_constraint)
         |> check_constraint(:outcome, name: @outcome_constraint)
-        |> check_constraint(:denial_code, name: @outcome_denial_constraint)
+        |> check_constraint(:rejection_code, name: @outcome_rejection_constraint)
         |> check_constraint(:target_ref, name: @target_pair_constraint)
         |> check_constraint(:on_behalf_of_ref, name: @on_behalf_of_pair_constraint)
         |> check_constraint(:on_behalf_of_type, name: @on_behalf_of_type_constraint)
@@ -164,7 +164,7 @@ defmodule GroupherServer.Activity.Model.Base do
       end
 
       defp validate_outcome_denial(changeset) do
-        case {get_field(changeset, :outcome), get_field(changeset, :denial_code)} do
+        case {get_field(changeset, :outcome), get_field(changeset, :rejection_code)} do
           {:allowed, nil} ->
             changeset
 
@@ -172,10 +172,10 @@ defmodule GroupherServer.Activity.Model.Base do
             changeset
 
           {:allowed, _code} ->
-            add_error(changeset, :denial_code, "must be empty for allowed events")
+            add_error(changeset, :rejection_code, "must be empty for allowed events")
 
           {:denied, _code} ->
-            add_error(changeset, :denial_code, "is required for denied events")
+            add_error(changeset, :rejection_code, "is required for denied events")
 
           _ ->
             changeset

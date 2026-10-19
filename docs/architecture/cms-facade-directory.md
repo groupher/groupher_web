@@ -7,6 +7,8 @@
 >
 > 范围：`backend/api/lib/groupher_server/cms` 下的公开 Context/facade 与同名实现目录。
 > 本文原始批次只调整内部文件职责；后续 Context v2 已迁移 GraphQL、Job 和跨 Context 调用方。
+> 其中“刻意保留 `CMS.Policy`”只代表 F1–F13 当时的审计结论，已被
+> [Policy Boundary](./policy.md) 取代；当前重构以 `CMS.Gate.RateLimit.Publish` 为 publish throttle owner。
 
 相关文档：
 

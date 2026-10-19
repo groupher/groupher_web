@@ -14,12 +14,59 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
 
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.{Articles, Communities, Command, Docs}
+  alias CMS.{Articles, Communities, Docs}
   alias CMS.Articles.{Tags.Assignment, Effects, Query, RevisionResult}
   alias CMS.FrontDesk
   alias CMS.Model.{Article, ArticleBinding, Community}
   alias CMS.Articles.Commands.RevisionConfirmation, as: Confirmation
-  alias Helper.{T, Transaction}
+  alias Helper.T
+
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+  @pipeline operation: :article_create,
+            confirmation: Confirmation,
+            target: :command_target,
+            params: :command_params
+  receipt_pipeline run_receipt(
+                     community,
+                     thread,
+                     attrs,
+                     user,
+                     opts,
+                     command_id,
+                     command_target,
+                     command_params
+                   ) do
+    gate(fn _target -> CMS.Gate.check_in_transaction(user, :create_article, community) end)
+
+    change(fn canonical_community ->
+      create_and_publish(canonical_community, thread, attrs, user, command_id)
+    end)
+
+    confirm(fn public ->
+      confirmation_from_public(public, community, command_id)
+    end)
+
+    present(fn confirmation -> RevisionResult.build(confirmation, community) end)
+  end
+
+  @pipeline operation: :article_create_write,
+            target: :community,
+            params: [:thread, :attrs],
+            operation_ref: :operation_ref
+  direct_pipeline run_direct(community, thread, attrs, user, opts, operation_ref) do
+    gate(fn candidate -> CMS.Gate.check_in_transaction(user, :create_article, candidate) end)
+
+    change(fn canonical_community ->
+      with {:ok, public} <-
+             create_and_publish(canonical_community, thread, attrs, user, operation_ref),
+           {:ok, confirmation} <-
+             confirmation_from_public(public, canonical_community, option(opts, :command_id)) do
+        RevisionResult.build(confirmation, canonical_community)
+      end
+    end)
+  end
 
   @doc "Creates and publishes one stable Article under an idempotent command id."
   @spec execute(Community.t(), T.thread(), map(), User.t(), keyword() | map()) ::
@@ -27,41 +74,22 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
   def execute(%Community{} = community, thread, attrs, %User{} = user, opts) do
     attrs = attrs |> drop_command_id() |> Map.drop([:author, :community, :communities])
 
-    case option(opts, :command_id) do
-      nil ->
-        with {:ok, public} <- create_and_publish(community, thread, attrs, user, nil),
-             {:ok, confirmation} <- confirmation_from_public(public, community, nil) do
-          RevisionResult.build(confirmation, community)
-        end
-
-      command_id ->
-        command = %Command{
-          actor: user,
-          command_id: command_id,
-          operation: :article_create,
-          target: {:article, community.id},
-          params: %{thread: thread, attrs: attrs}
-        }
-
-        with {:ok, %Confirmation{} = confirmation} <-
-               Command.execute(
-                 command,
-                 action: &create_action(&1, community, user),
-                 confirmation: Confirmation
-               ) do
-          RevisionResult.build(confirmation, community)
-        end
-    end
+    run_receipt(
+      community,
+      thread,
+      attrs,
+      user,
+      opts,
+      option(opts, :command_id),
+      {:article, community.id},
+      %{thread: thread, attrs: attrs}
+    )
   end
 
-  defp create_action(
-         %{command_id: command_id, params: %{thread: thread, attrs: attrs}},
-         community,
-         user
-       ) do
-    with {:ok, public} <- create_and_publish(community, thread, attrs, user, command_id) do
-      confirmation_from_public(public, community, command_id)
-    end
+  @doc false
+  def execute_direct(%Community{} = community, thread, attrs, %User{} = user, opts) do
+    attrs = attrs |> drop_command_id() |> Map.drop([:author, :community, :communities])
+    run_direct(community, thread, attrs, user, opts, Ecto.UUID.generate())
   end
 
   defp confirmation_from_public(public, community, command_id) do
@@ -91,11 +119,16 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
   defp create_and_publish(community, :doc, attrs, user, command_id) do
     with {:ok, branch} <- CMS.Docs.Branch.resolve(community, []),
          {:ok, %{article: article, draft: draft}} <-
-           Articles.create_stable_draft(community, :doc, attrs, user, branch_id: branch.id),
-         {:ok, _} <-
-           Transaction.run(fn -> sync_community_tags(community, article, attrs, command_id) end),
+           Articles.Commands.CreateStableDraft.create_in_transaction(
+             community,
+             :doc,
+             attrs,
+             user,
+             branch_id: branch.id
+           ),
+         {:ok, _} <- sync_community_tags(community, article, attrs, command_id),
          {:ok, _published} <-
-           Docs.publish_branch(article.id, branch.id, user,
+           Docs.Commands.PublishBranch.publish_after_gate(article.id, branch.id, user,
              expected_draft_version: draft.version,
              expected_lifecycle_version: 1,
              community: community,
@@ -115,7 +148,13 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
 
   defp create_and_publish(community, thread, attrs, user, command_id) do
     with {:ok, %{article: article, draft: draft}} <-
-           Articles.create_stable_draft(community, thread, attrs, user),
+           Articles.Commands.CreateStableDraft.create_in_transaction(
+             community,
+             thread,
+             attrs,
+             user,
+             []
+           ),
          publish_opts =
            [
              expected_draft_version: draft.version,
@@ -126,7 +165,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Create do
            ] ++
              community_tag_opts(attrs),
          {:ok, %{article: published}} <-
-           Articles.publish(article.id, user, publish_opts),
+           Articles.Commands.Publish.publish_after_gate(article, user, publish_opts),
          {:ok, public} <- public_projection(published, community),
          {:ok, _activity} <-
            Effects.activity(Map.put(public, :community_id, community.id), :created, actor: user) do

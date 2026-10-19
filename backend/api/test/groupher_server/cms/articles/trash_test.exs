@@ -52,9 +52,9 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     command_id = Ecto.UUID.generate()
     opts = [command_id: command_id, community_id: community.id, thread: :post]
 
-    assert {:ok, first} = CMS.Articles.restore_trashed(item.hash_id, user, opts)
+    assert {:ok, first} = CMS.Articles.restore_trashed_receipt(item.hash_id, user, opts)
     refute Repo.get_by(TrashedArticle, hash_id: item.hash_id)
-    assert {:ok, replayed} = CMS.Articles.restore_trashed(item.hash_id, user, opts)
+    assert {:ok, replayed} = CMS.Articles.restore_trashed_receipt(item.hash_id, user, opts)
     assert replayed == first
     assert replayed.command_id == command_id
   end
@@ -185,11 +185,12 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     opts = [command_id: command_id, community_id: community.id, thread: :post]
 
     assert {:ok, %{done: true, command_id: ^command_id} = first} =
-             CMS.Articles.permanently_delete_trashed(item.hash_id, user, opts)
+             CMS.Articles.permanently_delete_trashed_receipt(item.hash_id, user, opts)
 
     refute Repo.get(CMS.Model.Article, post.article_id)
 
-    assert {:ok, replayed} = CMS.Articles.permanently_delete_trashed(item.hash_id, user, opts)
+    assert {:ok, replayed} =
+             CMS.Articles.permanently_delete_trashed_receipt(item.hash_id, user, opts)
     assert replayed == first
   end
 

@@ -1,6 +1,6 @@
 defmodule GroupherServer.CMS.Communities.Tags.Commands.ReindexTagGroups do
   @moduledoc """
-  Reindexes tag groups as a one-shot, Gate-admitted mutation.
+  Reindexes tag groups through a Gate-admitted `direct_pipeline`.
 
       GraphQL -> ReindexTagGroups -> Gate -> Tags batch update + taxonomy Outbox
   """
@@ -14,14 +14,24 @@ defmodule GroupherServer.CMS.Communities.Tags.Commands.ReindexTagGroups do
   alias Accounts.Model.User
   alias Helper.T
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Community.t() | String.t(), atom(), list(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(atom())
   def execute(community_ref, thread, groups, %User{} = actor, command_id) do
     with {:ok, command_id} <- TagSupport.command_id(command_id),
          {:ok, community} <- TagSupport.community(community_ref) do
-      Gate.with_community_check(actor, :update, community, fn canonical ->
-        Mutation.reindex_groups(canonical, thread, groups, command_id: command_id)
-      end)
+      execute_pipeline(community, thread, groups, actor, command_id)
     end
+  end
+
+  @pipeline operation: :tag_groups_reindex, target: :community
+  direct_pipeline execute_pipeline(community, thread, groups, actor, command_id) do
+    gate(fn candidate -> Gate.check_in_transaction(actor, :update, candidate) end)
+
+    change(fn canonical ->
+      Mutation.reindex_groups(canonical, thread, groups, command_id: command_id)
+    end)
   end
 end

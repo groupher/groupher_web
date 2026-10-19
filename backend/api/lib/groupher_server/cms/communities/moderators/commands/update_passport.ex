@@ -15,6 +15,9 @@ defmodule GroupherServer.CMS.Communities.Moderators.Commands.UpdatePassport do
   alias CMS.Model.Community
   alias Helper.T
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Community.t(), map(), User.t(), User.t(), Ecto.UUID.t()) ::
           T.domain_res(Community.t())
   def execute(
@@ -24,19 +27,33 @@ defmodule GroupherServer.CMS.Communities.Moderators.Commands.UpdatePassport do
         %User{} = actor,
         command_id
       ) do
-    Support.execute(
-      :moderator_update,
-      community,
-      actor,
-      %{target_user_id: target.id, rules: rules},
-      command_id,
-      fn canonical ->
-        Persist.update_passport(
-          canonical,
-          rules,
-          target
-        )
-      end
-    )
+    execute_pipeline(community, community.id, rules, target, target.id, actor, command_id)
+  end
+
+  @pipeline operation: :moderator_update,
+            confirmation: CMS.Communities.Moderators.Commands.Confirmation,
+            target: :community,
+            params: [:community_id, :target_user_id, :rules]
+
+  receipt_pipeline execute_pipeline(
+                     community,
+                     community_id,
+                     rules,
+                     target,
+                     target_user_id,
+                     actor,
+                     command_id
+                   ) do
+    gate(fn candidate -> Support.check_in_transaction(actor, candidate) end)
+    change(fn canonical -> Persist.update_passport(canonical, rules, target) end)
+
+    confirm(fn result ->
+      Support.confirmation(community, command_id, result, %{
+        target_user_id: target_user_id,
+        rules: rules
+      })
+    end)
+
+    present(fn confirmation -> Support.present_confirmation(confirmation) end)
   end
 end

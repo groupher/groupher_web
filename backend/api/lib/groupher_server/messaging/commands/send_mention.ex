@@ -8,9 +8,37 @@ defmodule GroupherServer.Messaging.Commands.SendMention do
           -> commit -> Accounts.mailbox_invalidate_users/1
   """
 
-  alias GroupherServer.{Accounts, Messaging, Repo}
+  alias GroupherServer.{Accounts, Messaging}
   alias Accounts.Model.User
   alias Messaging.Mentions.Persist
+
+  use GroupherServer.CommandPipeline
+
+  @pipeline operation: :messaging_send_mention, access: :open, target: :content,
+            params: [:mentions, :from_user]
+
+  direct_pipeline execute_pipeline(content, mentions, from_user) do
+    change(fn _content ->
+      case mentions do
+        [] ->
+          {:ok, %{users: []}}
+
+        _ ->
+          with {:ok, mentions} <- Persist.replace(content, mentions, from_user),
+               {:ok, users} <-
+                 mentions
+                 |> Enum.map(& &1.to_user_id)
+                 |> Accounts.mailbox_update_status_many_in_transaction() do
+            {:ok, %{users: users}}
+          end
+      end
+    end)
+
+    present(fn %{users: users} ->
+      _ = Accounts.mailbox_invalidate_users(users)
+      {:ok, :pass}
+    end)
+  end
 
   @doc """
   Sends mentions for an article or comment.
@@ -20,28 +48,6 @@ defmodule GroupherServer.Messaging.Commands.SendMention do
       Messaging.Commands.SendMention.run(comment, mentions, user)
   """
   @spec run(struct(), list(), User.t()) :: {:ok, :pass} | {:error, term()}
-  def run(_content, [], _from_user), do: {:ok, :pass}
-
-  def run(content, mentions, %User{} = from_user) do
-    transaction = fn ->
-      with {:ok, mentions} <- Persist.replace(content, mentions, from_user),
-           {:ok, users} <-
-             mentions
-             |> Enum.map(& &1.to_user_id)
-             |> Accounts.mailbox_update_status_many_in_transaction() do
-        %{mentions: mentions, users: users}
-      else
-        {:error, reason} -> Repo.rollback(reason)
-      end
-    end
-
-    case Repo.transaction(transaction) do
-      {:ok, %{users: users}} ->
-        Accounts.mailbox_invalidate_users(users)
-        {:ok, :pass}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
-  end
+  def run(content, mentions, %User{} = from_user),
+    do: execute_pipeline(content, mentions, from_user)
 end

@@ -78,7 +78,7 @@ defmodule GroupherServer.CMS.Events.Audition do
     audit_res = Map.merge(audit_res, %{illegal_comments: []})
 
     apply_moderation(fn ->
-      CMS.Comments.unset_comment_illegal(comment.id, audit_res)
+      CMS.Comments.Audit.unset_illegal(comment.id, audit_res)
     end)
   end
 
@@ -95,7 +95,7 @@ defmodule GroupherServer.CMS.Events.Audition do
         %Comment{} = comment
       ) do
     apply_moderation(fn ->
-      CMS.Comments.set_comment_audit_failed(comment, audit_res)
+      CMS.Comments.Audit.set_audit_failed(comment, audit_res)
     end)
   end
 
@@ -112,7 +112,7 @@ defmodule GroupherServer.CMS.Events.Audition do
     audit_res = Map.merge(audit_res, %{illegal_comments: illegal_comments})
 
     apply_moderation(fn ->
-      CMS.Comments.set_comment_illegal(comment.id, audit_res)
+      CMS.Comments.Audit.set_illegal(comment.id, audit_res)
     end)
   end
 

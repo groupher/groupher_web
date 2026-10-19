@@ -105,7 +105,7 @@ defmodule GroupherServer.Test.ActivityTest do
     assert system_event.actor_type == :system
     assert system_event.actor_ref == "groupher"
     assert system_event.outcome == :allowed
-    assert system_event.denial_code == nil
+    assert system_event.rejection_code == nil
     assert system_event.operation_index == 0
     assert is_integer(system_event.record_sequence)
     assert %DateTime{} = system_event.recorded_at
@@ -150,14 +150,15 @@ defmodule GroupherServer.Test.ActivityTest do
              CMS.Articles.Lifecycle.transition(article, :archived, lifecycle.version)
 
     assert {:error, %ErrorCat.Error{reason: :article_archived}} =
-             CMS.Articles.trash(post, stranger, command_id: command_id)
+             CMS.Articles.trash_receipt(post, stranger, command_id: command_id)
 
     assert {:error, %ErrorCat.Error{reason: :article_archived}} =
-             CMS.Articles.trash(post, stranger, command_id: command_id)
+             CMS.Articles.trash_receipt(post, stranger, command_id: command_id)
 
     denied = Repo.get_by!(PostLog, article_id: post.article_id, action: :trashed)
     assert denied.outcome == :denied
-    assert denied.denial_code == "article_archived"
+    assert denied.rejection_code == "article_archived"
+    assert denied.operation_ref == command_id
     assert denied.actor_type == :user
     assert denied.actor_ref == stranger.login
 
@@ -165,6 +166,38 @@ defmodule GroupherServer.Test.ActivityTest do
              PostLog
              |> Repo.all()
              |> Enum.count(&(&1.article_id == post.article_id && &1.action == :trashed))
+  end
+
+  test "log_rejection owns the denied outcome" do
+    {_community, post, _attrs, user} = mock_article(:post)
+
+    assert {:ok, event} =
+             Activity.log_rejection(post, :trashed,
+               actor: user,
+               rejection_code: :permission_denied,
+               operation_ref: Ecto.UUID.generate(),
+               outcome: :allowed
+             )
+
+    assert event.outcome == :denied
+    assert event.rejection_code == "permission_denied"
+  end
+
+  test "article context errors do not append a rejection Activity" do
+    {_community, post, _attrs, user} = mock_article(:post)
+    command_id = Ecto.UUID.generate()
+
+    assert {:error, :article_binding_context_required} =
+             CMS.Articles.trash(post, user,
+               command_id: command_id,
+               community_id: "invalid-community-id"
+             )
+
+    refute Repo.exists?(
+             from(log in PostLog,
+               where: log.article_id == ^post.article_id and log.action == :trashed
+             )
+           )
   end
 
   test "handler registry, Comment routing and surface contracts fail closed" do

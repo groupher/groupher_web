@@ -36,18 +36,18 @@ PR [#593](https://github.com/groupher/groupher/pull/593) 的 `commandId` 迁移�
 
 ## 4. 哪些问题可以在 test/CI 阶段发现
 
-| 问题类别                                                | 适合的自动检查                                                                           | 当前缺口                                                                                                                      |
-| ------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| operation、字段、参数或 response field 与 schema 不一致 | 对所有 GraphQL 文档执行 `parse + validate`；最好同时生成 typed documents                 | Apply raw GraphQL 未纳入统一清单                                                                                              |
-| `commandId` 丢失、首次执行与 replay 结果不一致          | 同一 `commandId` 执行两次，断言第二次返回 canonical first result，且不依赖资源仍存在     | 已有 Receipt 单测和业务级 replay integration；仍缺统一 command contract suite，且尚未纳入除 `mix test` 外的专项 CI 门禁       |
-| replay 前 lookup 导致已删除资源时失败                   | 首次成功后删除/改变资源，再用同一 command replay                                         | `recovery_test.exs`、`trash_test.exs` 已覆盖；仍缺统一 command contract suite，且尚未纳入除 `mix test` 外的专项 CI 门禁       |
-| outbox 重复、失败后重试或 failed record 处理错误        | 相同 identity 重复提交、模拟 dispatch 失败并断言最终唯一性及重试状态                     | 公共状态机已有 lease、幂等、重试和最终失败测试；仍缺各 domain workflow 的统一 provider 失败矩阵，尤其是认证、网络和非成功响应 |
-| community/binding/visible/thread scope 串数据           | 建立跨 community、多 binding、隐藏 binding 和 thread fixture，断言结果集合与计数         | 现有测试覆盖分散，缺少统一 scope matrix                                                                                       |
-| `total_count`、分页和 projection 不一致                 | 一条 Article 多个 binding、多页数据的 integration test                                   | 缺少覆盖多入口组合的分页合同测试                                                                                              |
-| 并发订阅、置顶、容量或唯一约束问题                      | 并发 task/transaction test，断言唯一结果、锁和最终状态                                   | 普通串行测试无法发现这类问题                                                                                                  |
-| N+1 或隐式重复查询                                      | query count/telemetry assertion 或受控性能测试                                           | 普通业务断言不会发现查询数量回退                                                                                              |
-| error tuple 被吞掉、错误被当成功处理                    | failure injection、Repo/provider mock 或错误路径 integration test                        | 依赖具体失败条件，不能只靠 happy path                                                                                         |
-| Elixir 编译警告、格式和 lint 回退                       | `mix compile --warnings-as-errors`、`mix format --check-formatted`、`mix credo --strict` | backend workflow 当前不是完整质量门禁                                                                                         |
+| 问题类别                                                | 适合的自动检查                                                                           | 当前缺口                                                                                                                |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| operation、字段、参数或 response field 与 schema 不一致 | 对所有 GraphQL 文档执行 `parse + validate`；最好同时生成 typed documents                 | Apply raw GraphQL 未纳入统一清单                                                                                        |
+| `commandId` 丢失、首次执行与 replay 结果不一致          | 同一 `commandId` 执行两次，断言第二次返回 canonical first result，且不依赖资源仍存在     | 已有 Receipt 单测和业务级 replay integration；仍缺统一 command contract suite，且尚未纳入除 `mix test` 外的专项 CI 门禁 |
+| replay 前 lookup 导致已删除资源时失败                   | 首次成功后删除/改变资源，再用同一 command replay                                         | `recovery_test.exs`、`trash_test.exs` 已覆盖；仍缺统一 command contract suite，且尚未纳入除 `mix test` 外的专项 CI 门禁 |
+| outbox 重复、失败后重试或 failed record 处理错误        | 相同 identity 重复提交、模拟 dispatch 失败并断言最终唯一性及重试状态                     | 公共状态机已有 lease、幂等、重试和最终失败测试；仍缺各领域流程的统一 provider 失败矩阵，尤其是认证、网络和非成功响应    |
+| community/binding/visible/thread scope 串数据           | 建立跨 community、多 binding、隐藏 binding 和 thread fixture，断言结果集合与计数         | 现有测试覆盖分散，缺少统一 scope matrix                                                                                 |
+| `total_count`、分页和 projection 不一致                 | 一条 Article 多个 binding、多页数据的 integration test                                   | 缺少覆盖多入口组合的分页合同测试                                                                                        |
+| 并发订阅、置顶、容量或唯一约束问题                      | 并发 task/transaction test，断言唯一结果、锁和最终状态                                   | 普通串行测试无法发现这类问题                                                                                            |
+| N+1 或隐式重复查询                                      | query count/telemetry assertion 或受控性能测试                                           | 普通业务断言不会发现查询数量回退                                                                                        |
+| error tuple 被吞掉、错误被当成功处理                    | failure injection、Repo/provider mock 或错误路径 integration test                        | 依赖具体失败条件，不能只靠 happy path                                                                                   |
+| Elixir 编译警告、格式和 lint 回退                       | `mix compile --warnings-as-errors`、`mix format --check-formatted`、`mix credo --strict` | backend workflow 当前不是完整质量门禁                                                                                   |
 
 ## 5. 建议的门禁顺序
 

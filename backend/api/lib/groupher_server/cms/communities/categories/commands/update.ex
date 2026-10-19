@@ -7,53 +7,69 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Update do
 
   alias GroupherServer.{Accounts, CMS}
 
-  alias CMS.{Command, Gate}
+  alias CMS.Gate
   alias CMS.Communities.Categories.{Confirmation, Persist}
   alias CMS.Communities.Categories.Commands.Support
   alias CMS.Model.Category
   alias Accounts.Model.User
   alias Helper.T
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(String.t(), map(), User.t(), Ecto.UUID.t()) :: T.domain_res(Category.t())
   def execute(community_ref, %{id: id} = attrs, %User{} = actor, command_id) do
     case Support.community(community_ref) do
       {:ok, community} ->
-        command = %Command{
-          actor: actor,
-          command_id: command_id,
-          operation: :category_update,
-          target: {:category, id},
-          params: %{community_id: community.id, attrs: Map.drop(attrs, [:id, "id"])}
-        }
-
-        with {:ok, confirmation} <-
-               Command.execute(command, action: &action/1, confirmation: Confirmation) do
-          Support.category_result(confirmation)
-        end
+        execute_pipeline(
+          {:category, id},
+          community,
+          community.id,
+          Map.drop(attrs, [:id, "id"]),
+          actor,
+          command_id
+        )
 
       {:error, _reason} = error ->
         error
     end
   end
 
-  defp action(%{
-         actor: actor,
-         target: {:category, category_id},
-         params: %{community_id: community_id, attrs: attrs},
-         command_id: command_id
-       }) do
-    with {:ok, community} <- Support.community(community_id),
-         {:ok, category} <- Support.category(category_id),
-         {:ok, _} <-
-           Gate.with_community_check(actor, :category_update, community, fn canonical ->
-             with true <- Persist.category_in_community?(canonical, category),
-                  {:ok, _updated} <- Persist.update_category(category, attrs) do
-               {:ok, :pass}
-             else
-               false -> {:error, CMS.Communities.ErrorCat.forbidden()}
-             end
-           end) do
+  @pipeline operation: :category_update,
+            confirmation: Confirmation,
+            target: :category_target,
+            params: [:community_id, :attrs]
+
+  receipt_pipeline execute_pipeline(
+                     category_target,
+                     community,
+                     community_id,
+                     attrs,
+                     actor,
+                     command_id
+                   ) do
+    gate(fn _candidate ->
+      {:category, category_id} = category_target
+
+      with {:ok, category} <- Support.category(category_id),
+           {:ok, canonical} <- Gate.check_in_transaction(actor, :category_update, community) do
+        {:ok, {canonical, category}}
+      end
+    end)
+
+    change(fn {canonical, category} ->
+      with true <- Persist.category_in_community?(canonical, category),
+           {:ok, updated} <- Persist.update_category(category, attrs) do
+        {:ok, updated}
+      else
+        false -> {:error, CMS.Communities.ErrorCat.forbidden()}
+      end
+    end)
+
+    confirm(fn category ->
       {:ok, Support.confirmation(Confirmation, "category_id", category.id, command_id)}
-    end
+    end)
+
+    present(fn confirmation -> Support.category_result(confirmation) end)
   end
 end

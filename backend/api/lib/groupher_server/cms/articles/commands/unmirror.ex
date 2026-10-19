@@ -9,35 +9,41 @@ defmodule GroupherServer.CMS.Articles.Commands.Unmirror do
   alias Accounts.Model.User
   alias CMS.Articles.{BindingPersist, Store}
   alias CMS.Articles.Commands.{BindingConfirmation, BindingSupport}
-  alias CMS.Command
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc "Executes or replays one authorized unmirror command."
   def execute(community, article_id, %User{} = actor, command_id) do
     with {:ok, article} <- BindingSupport.load_article(article_id),
          {:ok, :supported} <- BindingSupport.ensure_ordinary(article) do
-      %Command{
-        actor: actor,
-        command_id: command_id,
-        operation: :article_unmirror,
-        target: article,
-        params: %{community_id: community.id}
-      }
-      |> Command.execute(
-        action: &unmirror_action(&1, community),
-        confirmation: BindingConfirmation
-      )
-      |> BindingSupport.present_done()
+      execute_pipeline(article, community, community.id, actor, command_id)
     end
   end
 
-  defp unmirror_action(%{actor: actor, target: article, command_id: command_id}, community) do
-    CMS.Gate.with_community_check(actor, :unmirror, community, article, fn canonical ->
+  @pipeline operation: :article_unmirror,
+            confirmation: BindingConfirmation,
+            target: :article,
+            params: [:community_id]
+
+  receipt_pipeline execute_pipeline(article, community, community_id, actor, command_id) do
+    gate(fn candidate ->
+      CMS.Gate.check_in_transaction(actor, :unmirror, candidate, community)
+    end)
+
+    change(fn canonical ->
       with {:ok, binding} <- Store.binding(canonical.id, community.id),
            {:ok, :done} <- BindingPersist.unmirror(canonical, community),
            {:ok, _} <-
              BindingSupport.invalidate_scope(community, binding, canonical.thread, command_id) do
-        {:ok, BindingSupport.confirmation(canonical, community, command_id)}
+        {:ok, canonical}
       end
     end)
+
+    confirm(fn canonical ->
+      {:ok, BindingSupport.confirmation(canonical, community, command_id)}
+    end)
+
+    present(fn confirmation -> BindingSupport.present_done({:ok, confirmation}) end)
   end
 end

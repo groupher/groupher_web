@@ -9,7 +9,8 @@ defmodule GroupherServer.Accounts.Fans.Effects do
   """
 
   alias GroupherServer.{Accounts, FrontDesk, Jobs}
-  alias Accounts.{Achievements, Events, Model}
+  alias Accounts.{Events, Model}
+  alias Accounts.Achievements.Commands.Achieve
   alias Model.User
 
   @doc """
@@ -21,7 +22,7 @@ defmodule GroupherServer.Accounts.Fans.Effects do
   """
   @spec record_achievement(User.t(), :inc | :dec) :: {:ok, term()} | {:error, term()}
   def record_achievement(%User{} = target_user, operation) do
-    Achievements.achieve(%User{id: target_user.id}, operation, :follow)
+    Achieve.apply_in_transaction(%User{id: target_user.id}, operation, :follow)
   end
 
   @doc """

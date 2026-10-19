@@ -106,6 +106,12 @@ jobs:
       - name: Compile without warnings
         run: mix compile --warnings-as-errors
 
+      - name: Check CMS pipeline and Command inventories
+        run: |
+          mix cms.pipeline.check --check
+          mix cms.pipeline.coverage --check
+          mix cms.command.pipeline --check
+
       - name: Start PostgreSQL with pg_roaringbitmap
         working-directory: ${{ github.workspace }}
         run: |

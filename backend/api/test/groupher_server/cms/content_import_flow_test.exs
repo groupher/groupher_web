@@ -317,7 +317,7 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
     assert {:ok, tree} = DocTree.read(community)
 
     assert {:ok, _deleted} =
-             DocTree.delete_node(community, page.node_id, %{
+             DocTree.delete_node_internal(community, page.node_id, %{
                actor_id: actor.id,
                base_revision: tree.revision
              })

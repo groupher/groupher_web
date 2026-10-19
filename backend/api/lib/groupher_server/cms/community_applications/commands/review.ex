@@ -1,97 +1,156 @@
 defmodule GroupherServer.CMS.CommunityApplications.Commands.Review do
   @moduledoc """
-  Receipt-backed reviewer transition Commands.
+  Receipt pipelines for reviewer transitions on Community Applications.
 
-      GraphQL -> Review Command -> Application Gate -> Lifecycle/Persist -> Receipt result
+      CommunityApplications facade
+        -> Review command
+        -> Gate + review transition + Confirmation
+        -> canonical application result
+
+  Each public action loads the application by public reference before entering
+  its operation-specific pipeline; retry recovery uses the same Confirmation
+  presenter as the first execution.
   """
 
   alias GroupherServer.{Accounts, CMS}
-
-  alias CMS.{Command, Gate}
-  alias CMS.CommunityApplications.{Commands.Confirmation, Commands.Support, Review}
   alias Accounts.Model.User
+  alias CMS.CommunityApplications.{Commands.Confirmation, Commands.Support, Review}
   alias Helper.T
+
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+  @pipeline operation: :community_application_review,
+            confirmation: Confirmation,
+            target: :application,
+            params: :params
+  receipt_pipeline start_pipeline(application, actor, params, command_id) do
+    gate(fn candidate ->
+      CMS.Gate.check_application_in_transaction(actor, :application_review, candidate)
+    end)
+
+    change(fn canonical ->
+      Review.start(canonical.public_ref, actor, Map.fetch!(params, :expected_version))
+    end)
+
+    confirm(fn canonical ->
+      {:ok, Support.confirmation(Confirmation, canonical.id, command_id)}
+    end)
+
+    present(fn confirmation -> Support.result(confirmation) end)
+  end
+
+  @pipeline operation: :community_application_approve,
+            confirmation: Confirmation,
+            target: :application,
+            params: :params
+  receipt_pipeline approve_pipeline(application, actor, params, command_id) do
+    gate(fn candidate ->
+      CMS.Gate.check_application_in_transaction(actor, :application_approve, candidate)
+    end)
+
+    change(fn canonical ->
+      Review.approve(
+        canonical.public_ref,
+        actor,
+        Map.fetch!(params, :expected_version),
+        Map.fetch!(params, :metadata),
+        command_id
+      )
+    end)
+
+    confirm(fn canonical ->
+      {:ok, Support.confirmation(Confirmation, canonical.id, command_id)}
+    end)
+
+    present(fn confirmation -> Support.result(confirmation) end)
+  end
+
+  @pipeline operation: :community_application_reject,
+            confirmation: Confirmation,
+            target: :application,
+            params: :params
+  receipt_pipeline reject_pipeline(application, actor, params, command_id) do
+    gate(fn candidate ->
+      CMS.Gate.check_application_in_transaction(actor, :application_reject, candidate)
+    end)
+
+    change(fn canonical ->
+      Review.reject(
+        canonical.public_ref,
+        actor,
+        Map.fetch!(params, :expected_version),
+        Map.fetch!(params, :reason)
+      )
+    end)
+
+    confirm(fn canonical ->
+      {:ok, Support.confirmation(Confirmation, canonical.id, command_id)}
+    end)
+
+    present(fn confirmation -> Support.result(confirmation) end)
+  end
+
+  @pipeline operation: :community_application_retry_creation,
+            confirmation: Confirmation,
+            target: :application,
+            params: :params
+  receipt_pipeline retry_creation_pipeline(application, actor, params, command_id) do
+    gate(fn candidate ->
+      CMS.Gate.check_application_in_transaction(actor, :application_retry_creation, candidate)
+    end)
+
+    change(fn canonical ->
+      Review.retry_creation(
+        canonical.public_ref,
+        actor,
+        Map.fetch!(params, :expected_version),
+        command_id
+      )
+    end)
+
+    confirm(fn canonical ->
+      {:ok, Support.confirmation(Confirmation, canonical.id, command_id)}
+    end)
+
+    present(fn confirmation -> Support.result(confirmation) end)
+  end
 
   @spec start(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
   def start(ref, actor, version, command_id) do
-    execute(
-      :community_application_review,
-      ref,
-      actor,
-      %{expected_version: version},
-      command_id,
-      fn canonical -> Review.start(canonical.public_ref, actor, version) end
-    )
+    with {:ok, application} <- Support.application(ref) do
+      start_pipeline(application, actor, %{expected_version: version}, command_id)
+    end
   end
 
   @spec approve(String.t(), User.t(), integer(), map(), Ecto.UUID.t()) :: T.domain_res(term())
   def approve(ref, actor, version, metadata, command_id) do
-    execute(
-      :community_application_approve,
-      ref,
-      actor,
-      %{expected_version: version, metadata: metadata},
-      command_id,
-      fn canonical ->
-        Review.approve(canonical.public_ref, actor, version, metadata, command_id)
-      end
-    )
+    with {:ok, application} <- Support.application(ref) do
+      approve_pipeline(
+        application,
+        actor,
+        %{expected_version: version, metadata: metadata},
+        command_id
+      )
+    end
   end
 
   @spec reject(String.t(), User.t(), integer(), map(), Ecto.UUID.t()) :: T.domain_res(term())
   def reject(ref, actor, version, reason, command_id) do
-    execute(
-      :community_application_reject,
-      ref,
-      actor,
-      %{expected_version: version, reason: reason},
-      command_id,
-      fn canonical -> Review.reject(canonical.public_ref, actor, version, reason) end
-    )
+    with {:ok, application} <- Support.application(ref) do
+      reject_pipeline(
+        application,
+        actor,
+        %{expected_version: version, reason: reason},
+        command_id
+      )
+    end
   end
 
   @spec retry_creation(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
   def retry_creation(ref, actor, version, command_id) do
-    execute(
-      :community_application_retry_creation,
-      ref,
-      actor,
-      %{expected_version: version},
-      command_id,
-      fn canonical ->
-        Review.retry_creation(canonical.public_ref, actor, version, command_id)
-      end
-    )
-  end
-
-  defp execute(operation, ref, actor, params, command_id, callback) do
     with {:ok, application} <- Support.application(ref) do
-      command = %Command{
-        actor: actor,
-        command_id: command_id,
-        operation: operation,
-        target: application,
-        params: params
-      }
-
-      with {:ok, confirmation} <-
-             Command.execute(command,
-               action: fn %{target: canonical, command_id: id} ->
-                 action = application_action(operation)
-
-                 with {:ok, _} <- Gate.with_application_check(actor, action, canonical, callback) do
-                   {:ok, Support.confirmation(Confirmation, canonical.id, id)}
-                 end
-               end,
-               confirmation: Confirmation
-             ) do
-        Support.result(confirmation)
-      end
+      retry_creation_pipeline(application, actor, %{expected_version: version}, command_id)
     end
   end
-
-  defp application_action(:community_application_review), do: :application_review
-  defp application_action(:community_application_approve), do: :application_approve
-  defp application_action(:community_application_reject), do: :application_reject
-  defp application_action(:community_application_retry_creation), do: :application_retry_creation
 end

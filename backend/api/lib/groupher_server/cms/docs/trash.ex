@@ -199,6 +199,19 @@ defmodule GroupherServer.CMS.Docs.Trash do
     end
   end
 
+  @doc false
+  def restore_loaded(%TrashedDocArticle{} = item, canonical, branch, actor, opts) do
+    with {:ok, _} <- ensure_group_action(item, opts),
+         {:ok, lifecycle} <-
+           Lifecycle.transition(item.article_id, branch.id, item.restore_state),
+         {:ok, _} <- Repo.delete(item),
+         {:ok, action} <- load_action(item.trash_action_id),
+         {:ok, _activity} <-
+           maybe_activity(:restored, canonical, actor, action, lifecycle.changed_at, opts) do
+      {:ok, canonical}
+    end
+  end
+
   @doc "Permanently deletes one branch-scoped Doc aggregate membership."
   @spec permanently_delete(
           TrashedDocArticle.t(),
@@ -234,6 +247,37 @@ defmodule GroupherServer.CMS.Docs.Trash do
           end
         end
       )
+    end
+  end
+
+  @doc false
+  def permanently_delete_loaded(%TrashedDocArticle{} = item, canonical, branch, actor, opts) do
+    with {:ok, _} <- ensure_group_action(item, opts),
+         {:ok, lifecycle} <- Lifecycle.transition(item.article_id, branch.id, :destroy),
+         {:ok, _} <- purge_branch(canonical, branch),
+         {:ok, _} <- Repo.delete(item),
+         {:ok, action} <- load_action(item.trash_action_id),
+         {:ok, _activity} <-
+           maybe_activity(
+             :permanently_deleted,
+             canonical,
+             actor,
+             action,
+             lifecycle.changed_at,
+             opts
+           ) do
+      {:ok, :done}
+    end
+  end
+
+  @doc false
+  def load_context(%TrashedDocArticle{} = item) do
+    with %Community{} = community <- Repo.get(Community, item.community_id),
+         %DocBranch{} = branch <- Repo.get(DocBranch, item.branch_id),
+         {:ok, article} <- representative_doc(community, branch, item.article_id) do
+      {:ok, %{article: article, community: community, branch: branch, item: item}}
+    else
+      _ -> {:error, CMS.Articles.ErrorCat.not_exist("TrashedDocArticle")}
     end
   end
 

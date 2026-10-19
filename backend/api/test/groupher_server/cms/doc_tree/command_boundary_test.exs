@@ -4,32 +4,21 @@ defmodule GroupherServer.Test.CMS.DocTree.CommandBoundary do
   use ExUnit.Case, async: true
 
   alias GroupherServer.{CMS, ErrorCat}
-  alias CMS.DocTree.Commands.{RestoreTrashItem, Support}
+  alias CMS.DocTree.Commands.{CreateTab, RestoreTrashItem, UpdateDraft}
   alias CMS.DocTree.Commands.PublishChanges
 
   test "an explicitly requested tree command cannot fall back to a direct write" do
     assert {:error, %ErrorCat.Error{reason: :command_id_required}} =
-             Support.run_tree_command(
-               nil,
-               "node-1",
-               %{command_id: nil},
-               nil,
-               :doc_tree_update_node,
-               fn _args -> flunk("direct tree execution must not be selected") end
-             )
+             CreateTab.execute(%CMS.Model.Community{id: 1}, %{command_id: nil}, nil)
   end
 
   test "an explicitly requested document command requires a command id" do
     assert {:error, %ErrorCat.Error{reason: :command_id_required}} =
-             Support.run_doc_command(
-               nil,
+             UpdateDraft.execute(
+               %CMS.Model.Community{id: 1},
                "doc-1",
-               nil,
-               :doc_update_draft,
-               [command_id: nil],
-               CMS.DocTree.Commands.NodeDraftConfirmation,
-               fn -> flunk("direct document execution must not be selected") end,
-               fn value -> value end
+               %{command_id: nil},
+               nil
              )
   end
 

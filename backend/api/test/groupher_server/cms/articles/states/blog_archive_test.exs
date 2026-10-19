@@ -26,7 +26,7 @@ defmodule GroupherServer.Test.CMS.BlogArchive do
 
   describe "[cms blog archive]" do
     test "can archive blogs", ~m(blog_long_ago)a do
-      {:ok, _} = CMS.Articles.archive(:blog)
+      {:ok, _} = CMS.Articles.Maintenance.archive(:blog)
 
       archived_blogs = archived_articles(:blog)
 
@@ -36,7 +36,7 @@ defmodule GroupherServer.Test.CMS.BlogArchive do
     end
 
     test "can not edit archived blog", ~m(community user)a do
-      {:ok, _} = CMS.Articles.archive(:blog)
+      {:ok, _} = CMS.Articles.Maintenance.archive(:blog)
 
       archived_blogs = archived_articles(:blog)
 
@@ -54,14 +54,14 @@ defmodule GroupherServer.Test.CMS.BlogArchive do
     end
 
     test "can not delete archived blog", ~m(community)a do
-      {:ok, _} = CMS.Articles.archive(:blog)
+      {:ok, _} = CMS.Articles.Maintenance.archive(:blog)
 
       archived_blogs = archived_articles(:blog)
 
       archived_blog = archived_blogs |> List.first()
 
       {:error, reason} =
-        CMS.Articles.trash(archived_blog, :operations, community: community)
+        CMS.Articles.Maintenance.trash(archived_blog, community: community)
 
       assert %ErrorCat.Error{reason: :article_archived} = reason
     end

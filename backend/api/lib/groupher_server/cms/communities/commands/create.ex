@@ -1,6 +1,6 @@
 defmodule GroupherServer.CMS.Communities.Commands.Create do
   @moduledoc """
-  Creates a Community through the receipt-backed Command boundary.
+  Creates a Community through a `receipt_pipeline`.
 
       createCommunity(commandId)
         -> CMS.Command receipt claim
@@ -19,6 +19,9 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
   alias CMS.Model.{Community, CommunityDashboard, Embeds}
   alias Helper.T
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @default_meta Embeds.CommunityMeta.default_meta()
   @default_dashboard CommunityDashboard.default()
 
@@ -33,19 +36,22 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
   @spec execute(map(), User.t(), Ecto.UUID.t()) :: T.domain_res(Community.t())
   def execute(args, %User{} = user, command_id) do
     command_params = Map.drop(args, [:author, :user, "author", "user"])
-
-    %CMS.Command{
-      actor: user,
-      command_id: command_id,
-      operation: :community_create,
-      target: {:community_create, user.id},
-      params: command_params
-    }
-    |> CMS.Command.execute(action: &create_action/1, confirmation: CreateConfirmation)
-    |> present_create()
+    execute_pipeline({:community_create, user.id}, command_params, user, command_id)
   end
 
-  defp create_action(%{actor: %User{} = user, params: args, command_id: command_id}) do
+  @pipeline operation: :community_create,
+            confirmation: CreateConfirmation,
+            target: :create_target,
+            params: :args
+
+  receipt_pipeline execute_pipeline(create_target, args, user, command_id) do
+    gate(fn target -> CMS.Gate.check_community_create_in_transaction(user, target) end)
+    change(fn _target -> create_community(args, user, command_id) end)
+    confirm(fn confirmation -> {:ok, confirmation} end)
+    present(fn confirmation -> present_create(confirmation) end)
+  end
+
+  defp create_community(args, %User{} = user, command_id) do
     with {:ok, community} <- CreationPersist.create_core(with_defaults(args), user),
          {:ok, _lifecycle} <- Lifecycle.ensure_created(community.id),
          {:ok, _moderator} <- ModeratorSetup.add_root(community, user),
@@ -62,14 +68,14 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
     end
   end
 
-  defp present_create({:ok, %CreateConfirmation{data: %{"community_id" => id}}}) do
+  defp present_create(%CreateConfirmation{data: %{"community_id" => id}}) do
     case Query.get(id) do
       %Community{} = community -> {:ok, community}
       nil -> {:error, CMS.ErrorCat.command_result_unavailable()}
     end
   end
 
-  defp present_create(error), do: error
+  defp present_create(_confirmation), do: {:error, CMS.ErrorCat.command_result_unavailable()}
 
   defp with_defaults(args) do
     Map.merge(args, %{meta: @default_meta, dashboard: @default_dashboard})

@@ -54,7 +54,7 @@ defmodule GroupherServer.Activity.CommunityLog do
     :on_behalf_of_ref,
     :on_behalf_of_snapshot,
     :outcome,
-    :denial_code,
+    :rejection_code,
     :operation_index,
     :record_sequence,
     :changed_fields,
@@ -72,7 +72,7 @@ defmodule GroupherServer.Activity.CommunityLog do
     :actions,
     :categories,
     :outcomes,
-    :denial_codes,
+    :rejection_codes,
     :actor_types,
     :actor_ref,
     :on_behalf_of_ref,
@@ -310,16 +310,16 @@ defmodule GroupherServer.Activity.CommunityLog do
           |> Enum.filter(fn {_outcome, config} -> config.producer_status == :active end)
           |> Enum.map(&elem(&1, 0))
 
-        denial_codes =
+        rejection_codes =
           contract.outcomes
           |> Map.get(:denied, %{})
-          |> Map.get(:denial_codes, [])
+          |> Map.get(:rejection_codes, [])
 
         Map.merge(Event.classification(action), %{
           action: action,
           resource_type: handler.resource_type(),
           outcomes: active_outcomes,
-          denial_codes: denial_codes,
+          rejection_codes: rejection_codes,
           changed_fields: contract.write.accepted_changed_fields
         })
       end)
@@ -423,7 +423,7 @@ defmodule GroupherServer.Activity.CommunityLog do
            on_behalf_of_ref,
            on_behalf_of_snapshot,
            outcome,
-           denial_code,
+           rejection_code,
            operation_index,
            record_sequence,
            changed_fields,
@@ -473,7 +473,7 @@ defmodule GroupherServer.Activity.CommunityLog do
       on_behalf_of_ref: attrs.on_behalf_of_ref,
       on_behalf_of_snapshot: attrs.on_behalf_of_snapshot,
       outcome: String.to_existing_atom(attrs.outcome),
-      denial_code: attrs.denial_code,
+      rejection_code: attrs.rejection_code,
       operation_index: attrs.operation_index,
       record_sequence: attrs.record_sequence,
       changed_fields: attrs.changed_fields,
@@ -515,8 +515,8 @@ defmodule GroupherServer.Activity.CommunityLog do
            normalize_enum_list(Map.get(filter, :outcomes), Activity.Const.outcome_values()),
          {:ok, actor_types} <-
            normalize_enum_list(Map.get(filter, :actor_types), Activity.Const.actor_type_values()),
-         {:ok, denial_codes} <-
-           normalize_declared_text_list(Map.get(filter, :denial_codes), declared_denial_codes()),
+         {:ok, rejection_codes} <-
+           normalize_declared_text_list(Map.get(filter, :rejection_codes), declared_rejection_codes()),
          {:ok, changed_fields} <-
            normalize_declared_text_list(
              Map.get(filter, :changed_fields),
@@ -539,7 +539,7 @@ defmodule GroupherServer.Activity.CommunityLog do
          actions: actions,
          categories: categories,
          outcomes: outcomes,
-         denial_codes: denial_codes,
+         rejection_codes: rejection_codes,
          actor_types: actor_types,
          actor_ref: normalize_text(Map.get(filter, :actor_ref)),
          on_behalf_of_ref: normalize_text(Map.get(filter, :on_behalf_of_ref)),
@@ -713,7 +713,7 @@ defmodule GroupherServer.Activity.CommunityLog do
       add_text_array_condition(conditions, params, next, filter.outcomes, "outcome")
 
     {conditions, params, next} =
-      add_text_array_condition(conditions, params, next, filter.denial_codes, "denial_code")
+      add_text_array_condition(conditions, params, next, filter.rejection_codes, "rejection_code")
 
     {conditions, params, next} =
       add_text_array_condition(conditions, params, next, filter.actor_types, "actor_type")
@@ -800,13 +800,13 @@ defmodule GroupherServer.Activity.CommunityLog do
     |> Enum.uniq()
   end
 
-  defp declared_denial_codes do
+  defp declared_rejection_codes do
     @handlers
     |> Enum.flat_map(fn handler ->
       Enum.flat_map(handler.contracts(), fn {_action, contract} ->
         contract.outcomes
         |> Map.get(:denied, %{})
-        |> Map.get(:denial_codes, [])
+        |> Map.get(:rejection_codes, [])
       end)
     end)
     |> Enum.map(&to_string/1)
@@ -882,7 +882,7 @@ defmodule GroupherServer.Activity.CommunityLog do
 
   defp encode_export(entries, :csv, _manifest) do
     header =
-      ~w(event_ref operation_ref parent_event_ref operation_index record_sequence action outcome denial_code changed_fields category high_risk resource_type resource_ref actor_type actor_ref subject_ref source occurred_at recorded_at)
+      ~w(event_ref operation_ref parent_event_ref operation_index record_sequence action outcome rejection_code changed_fields category high_risk resource_type resource_ref actor_type actor_ref subject_ref source occurred_at recorded_at)
 
     rows =
       Enum.map(entries, fn entry ->
@@ -894,7 +894,7 @@ defmodule GroupherServer.Activity.CommunityLog do
           entry.record_sequence,
           entry.action,
           entry.outcome,
-          entry.denial_code,
+          entry.rejection_code,
           Enum.join(entry.changed_fields, "|"),
           entry.category,
           entry.high_risk,

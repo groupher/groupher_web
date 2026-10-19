@@ -10,12 +10,13 @@ defmodule GroupherServer.CMS.Communities.Commands.Update do
   """
 
   alias GroupherServer.CMS
-  alias CMS.Command
   alias CMS.Communities.{Commands.UpdateConfirmation, Persist, Query}
   alias CMS.Dashboard.Effects
   alias CMS.Model.Community
-  alias Helper.T
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc """
   Updates one Community as an authenticated domain command.
 
@@ -24,47 +25,39 @@ defmodule GroupherServer.CMS.Communities.Commands.Update do
       execute(...)
       #=> {:ok, value}
   """
-  @spec execute(Community.t(), map(), term(), Ecto.UUID.t() | {:workflow, String.t()}) ::
-          T.domain_res(Community.t())
-  def execute(%Community{} = community, args, actor, {:workflow, workflow_ref} = identity)
-      when is_binary(workflow_ref) do
-    update_direct(community, args, actor, identity)
-  end
+  @pipeline operation: :community_update,
+            confirmation: UpdateConfirmation,
+            target: :community,
+            params: [:args]
 
-  def execute(%Community{} = community, args, actor, command_id) do
-    command = %Command{
-      actor: actor,
-      command_id: command_id,
-      operation: :community_update,
-      target: community,
-      params: args
-    }
+  receipt_pipeline execute_pipeline(community, args, actor, command_id) do
+    gate(fn candidate -> CMS.Gate.check_in_transaction(actor, :update, candidate) end)
 
-    with {:ok, confirmation} <-
-           Command.execute(command,
-             action: &update_action/1,
-             confirmation: UpdateConfirmation
-           ) do
-      present(confirmation)
-    end
-  end
+    change(fn canonical ->
+      with {:ok, canonical} <- Persist.update_fields(canonical, args),
+           {:ok, _event} <- Effects.enqueue_presentation_changed(canonical, command_id) do
+        {:ok, canonical}
+      end
+    end)
 
-  defp update_action(%{
-         actor: actor,
-         target: community,
-         params: args,
-         command_id: command_id
-       }) do
-    with {:ok, canonical} <- update_direct(community, args, actor, command_id) do
+    confirm(fn canonical ->
       {:ok,
        %UpdateConfirmation{
          data: %{"community_id" => canonical.id, "command_id" => command_id}
        }}
-    end
+    end)
+
+    present(fn confirmation -> present_result(confirmation) end)
   end
 
-  defp update_direct(%Community{} = community, args, actor, identity) do
-    CMS.Gate.with_community_check(actor, :update, community, fn canonical ->
+  @pipeline operation: :community_update_workflow,
+            access: :internal,
+            target: :community,
+            params: [:args]
+  direct_pipeline execute_workflow(community, args, actor, identity) do
+    gate(fn candidate -> CMS.Gate.check_in_transaction(actor, :update, candidate) end)
+
+    change(fn canonical ->
       with {:ok, canonical} <- Persist.update_fields(canonical, args),
            {:ok, _event} <-
              Effects.enqueue_presentation_changed(canonical, identity) do
@@ -73,7 +66,7 @@ defmodule GroupherServer.CMS.Communities.Commands.Update do
     end)
   end
 
-  defp present(%UpdateConfirmation{data: %{"community_id" => community_id}} = confirmation) do
+  defp present_result(%UpdateConfirmation{data: %{"community_id" => community_id}} = confirmation) do
     case Query.get(community_id) do
       %Community{} = community ->
         {:ok, Map.put(community, :command_id, confirmation.data["command_id"])}

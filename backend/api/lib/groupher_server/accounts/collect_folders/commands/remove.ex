@@ -1,106 +1,98 @@
 defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
   @moduledoc """
-  Owns the collect-folder remove command and its Receipt confirmation.
+  Removes an article from a collection folder through the shared pipeline
+  runner, with explicit direct and retry-safe Receipt entries.
 
-      Remove command
-          -> CMS.Interactions command
-          -> Persist
-          -> folder membership transaction
-          -> CMS collect Confirmation
+      collect remove -> pipeline runner -> CMS Receipt -> Accounts writes
   """
 
-  alias Ecto.Multi
-  alias GroupherServer.{Accounts, CMS, Repo}
-  alias Accounts.CollectFolders.{Persist, MembershipConfirmation}
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.CollectFolders.{MembershipConfirmation, Persist}
   alias Accounts.Model.User
-  alias CMS.Command
-
   alias Helper.ORM
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
+  @pipeline operation: :collect_remove,
+            access: :open,
+            target: :article,
+            params: [:folder_id],
+            confirmation: MembershipConfirmation
+
+  receipt_pipeline execute_receipt(article, folder_id, user, command_id) do
+    change(fn _article ->
+      with {:ok, prepared} <- Persist.prepare_remove(article, folder_id, user) do
+        apply_remove(prepared, article, user, command_id)
+      end
+    end)
+
+    confirm(fn folder -> confirmation(folder, article, folder_id, :remove) end)
+    present(fn confirmation -> present_confirmation(confirmation, command_id) end)
+  end
+
+  @pipeline operation: :collect_remove_direct,
+            access: :open,
+            target: :article,
+            params: [:folder_id]
+
+  direct_pipeline execute_direct(article, folder_id, user) do
+    prepare(fn -> prepare_remove(article, folder_id, user, Ecto.UUID.generate()) end)
+    change(fn prepared -> apply_remove(prepared, article, user, prepared.command_id) end)
+    present(fn folder -> {:ok, %{folder: folder, command_id: nil}} end)
+  end
+
   @doc """
-  Removes an Article from a folder and returns the mutation payload.
+  Runs the non-replayable Accounts facade path.
 
   ## Examples
 
-      Accounts.CollectFolders.Commands.Remove.run(article, folder_id, user, command_id)
+      Accounts.CollectFolders.Commands.Remove.run_direct(article, folder_id, user)
   """
-  @spec run(struct(), term(), User.t(), String.t() | nil) :: {:ok, map()} | {:error, term()}
-  def run(article, folder_id, %User{} = user, nil) do
-    generated_command_id = Ecto.UUID.generate()
+  @spec run_direct(struct(), term(), User.t()) :: {:ok, map()} | {:error, term()}
+  def run_direct(article, folder_id, %User{} = user),
+    do: execute_direct(article, folder_id, user)
 
-    with {:ok, folder} <- transaction(article, folder_id, user, generated_command_id) do
-      {:ok, %{folder: folder, command_id: nil}}
+  @doc """
+  Runs the retry-safe Receipt facade path.
+
+  ## Examples
+
+      Accounts.CollectFolders.Commands.Remove.run_receipt(article, folder_id, user, command_id)
+  """
+  @spec run_receipt(struct(), term(), User.t(), String.t()) :: {:ok, map()} | {:error, term()}
+  def run_receipt(article, folder_id, %User{} = user, command_id),
+    do: execute_receipt(article, folder_id, user, command_id)
+
+  defp prepare_remove(article, folder_id, user, command_id) do
+    with {:ok, prepared} <- Persist.prepare_remove(article, folder_id, user) do
+      {:ok, Map.put(prepared, :command_id, command_id)}
     end
   end
 
-  def run(article, folder_id, %User{} = user, command_id) do
-    command = %Command{
-      actor: user,
-      command_id: command_id,
-      operation: :collect_remove,
-      target: article,
-      params: %{folder_id: folder_id}
-    }
-
-    with {:ok, %MembershipConfirmation{data: data}} <-
-           GroupherServer.CMS.command_execute(command,
-             action: fn context ->
-               with {:ok, folder} <- transaction(article, folder_id, user, context.command_id) do
-                 confirmation(folder, article, folder_id, :remove)
-               end
-             end,
-             confirmation: MembershipConfirmation
-           ),
-         {:ok, folder} <- ORM.find(Accounts.Model.CollectFolder, data["folder_id"]) do
-      {:ok, %{folder: folder, command_id: command_id}}
+  defp apply_remove(prepared, article, user, command_id) do
+    with {:ok, article_collect} <- CMS.interactions_persist_find_collect(article, user),
+         {:ok, _canonical} <- maybe_undo_collect(article, user, command_id, article_collect),
+         {:ok, folder} <-
+           Persist.remove_in_transaction(article_collect, prepared.folder, prepared.thread),
+         {:ok, _detached} <- maybe_detach_collect(article_collect, folder) do
+      {:ok, folder}
     end
   end
 
-  defp transaction(article, folder_id, user, command_id) do
-    with {:ok, %{thread: thread, folder: folder}} <-
-           Persist.prepare_remove(article, folder_id, user) do
-      multi =
-        Multi.new()
-        |> Multi.run(:remove_article_collect, fn _, _ ->
-          with {:ok, article_collect} <-
-                 GroupherServer.CMS.interactions_persist_find_collect(article, user) do
-            remove_collect(article, user, command_id, article_collect)
-          end
-        end)
-        |> Multi.merge(fn %{remove_article_collect: %{article_collect: article_collect}} ->
-          Persist.remove_multi(article_collect, folder, thread)
-        end)
-        |> Multi.run(
-          :detach_article_collect_folder,
-          fn _,
-             %{
-               remove_article_collect: %{article_collect: article_collect, detach?: detach?}
-             } ->
-            if detach? do
-              GroupherServer.CMS.interactions_persist_detach_collect_folder(
-                article_collect,
-                folder
-              )
-            else
-              {:ok, :pass}
-            end
-          end
-        )
-
-      case Repo.transaction(multi) do
-        {:ok, %{rm_from_collect_folder: folder}} -> {:ok, folder}
-        {:error, _step, reason, _steps} -> {:error, reason}
-      end
-    end
-  end
-
-  defp remove_collect(article, user, command_id, article_collect) do
+  defp maybe_undo_collect(article, user, command_id, article_collect) do
     if length(article_collect.collect_folders) <= 1 do
-      with {:ok, _canonical} <- CMS.interactions_undo_collect(article, user, command_id) do
-        {:ok, %{article_collect: article_collect, detach?: false}}
-      end
+      CMS.interactions_undo_collect(article, user, command_id)
     else
-      {:ok, %{article_collect: article_collect, detach?: true}}
+      {:ok, :pass}
+    end
+  end
+
+  defp maybe_detach_collect(article_collect, folder) do
+    if length(article_collect.collect_folders) > 1 do
+      CMS.interactions_persist_detach_collect_folder(article_collect, folder)
+    else
+      {:ok, :pass}
     end
   end
 
@@ -114,5 +106,11 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
          "total_count" => folder.total_count
        }
      }}
+  end
+
+  defp present_confirmation(%MembershipConfirmation{data: data}, command_id) do
+    with {:ok, folder} <- ORM.find(Accounts.Model.CollectFolder, data["folder_id"]) do
+      {:ok, %{folder: folder, command_id: command_id}}
+    end
   end
 end

@@ -79,7 +79,12 @@ defmodule GroupherServer.CMS.DocTree.Publish.DocPublisher do
     with {:ok, page} <- find_publish_page(community, branch, doc_id, page_node_id),
          {:ok, ancestors} <- ancestor_chain(community, branch, page),
          {:ok, published} <-
-           CMS.Docs.publish_branch(doc_id, branch.id, user, publish_opts),
+           CMS.Docs.Commands.PublishBranch.publish_after_gate(
+             doc_id,
+             branch.id,
+             user,
+             publish_opts
+           ),
          {:ok, public_ancestors} <- upsert_public_ancestors(community, branch, ancestors),
          {:ok, public_page} <-
            upsert_public_node(community, branch, page, doc_id),

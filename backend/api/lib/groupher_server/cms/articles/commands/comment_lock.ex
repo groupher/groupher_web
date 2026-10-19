@@ -12,8 +12,37 @@ defmodule GroupherServer.CMS.Articles.Commands.CommentLock do
   alias CMS.Gate.ErrorCat, as: GateErrorCat
   alias CMS.Model.{Article, Community}
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(Ecto.UUID.t(), struct(), atom(), keyword()) :: {:ok, term()} | {:error, term()}
-  def execute(article_id, actor, action, opts) do
+  def execute(article_id, actor, :lock_comments, opts),
+    do: lock_comments(article_id, actor, opts)
+
+  def execute(article_id, actor, :undo_lock_comments, opts),
+    do: unlock_comments(article_id, actor, opts)
+
+  @pipeline operation: :article_lock_comments, target: :article_id
+  direct_pipeline lock_comments(article_id, actor, opts) do
+    gate(fn _candidate -> authorize(article_id, actor, :lock_comments, opts) end)
+
+    change(fn {canonical, branch_id} ->
+      change_opts = if is_integer(branch_id), do: [branch_id: branch_id], else: opts
+      States.lock_comments(canonical, change_opts)
+    end)
+  end
+
+  @pipeline operation: :article_unlock_comments, target: :article_id
+  direct_pipeline unlock_comments(article_id, actor, opts) do
+    gate(fn _candidate -> authorize(article_id, actor, :undo_lock_comments, opts) end)
+
+    change(fn {canonical, branch_id} ->
+      change_opts = if is_integer(branch_id), do: [branch_id: branch_id], else: opts
+      States.undo_lock_comments(canonical, change_opts)
+    end)
+  end
+
+  defp authorize(article_id, actor, action, opts) do
     gate_action = if action == :undo_lock_comments, do: :unlock_comments, else: action
 
     case FrontDesk.article(article_id, mode: :internal) do
@@ -21,27 +50,24 @@ defmodule GroupherServer.CMS.Articles.Commands.CommentLock do
         with {:ok, community} <- resolve_community(opts, article) do
           branch_id = Keyword.get(opts, :branch_id) || main_branch_id(community.id)
 
-          CMS.Gate.with_branch_check(
-            actor,
-            gate_action,
-            community,
-            article,
-            branch_id,
-            fn canonical -> apply(States, action, [canonical, [branch_id: branch_id]]) end
-          )
+          with {:ok, canonical} <-
+                 CMS.Gate.check_in_transaction(
+                   actor,
+                   gate_action,
+                   article,
+                   community,
+                   branch_id
+                 ) do
+            {:ok, {canonical, branch_id}}
+          end
         end
 
       {:ok, %Article{} = article} ->
         with {:ok, community} <- resolve_community(opts, article) do
-          CMS.Gate.with_community_check(
-            actor,
-            gate_action,
-            community,
-            article,
-            fn canonical ->
-              apply(States, action, [canonical, opts])
-            end
-          )
+          with {:ok, canonical} <-
+                 CMS.Gate.check_in_transaction(actor, gate_action, article, community) do
+            {:ok, {canonical, nil}}
+          end
         end
 
       {:error, _} ->

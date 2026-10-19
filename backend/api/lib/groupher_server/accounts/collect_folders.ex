@@ -101,7 +101,7 @@ defmodule GroupherServer.Accounts.CollectFolders do
   """
   @spec add(T.article(), T.id(), User.t()) :: T.domain_res(T.article())
   def add(article, folder_id, %User{} = user) do
-    with {:ok, %{folder: folder}} <- Commands.Add.run(article, folder_id, user, nil) do
+    with {:ok, %{folder: folder}} <- Commands.Add.run_direct(article, folder_id, user) do
       {:ok, folder}
     end
   end
@@ -114,7 +114,7 @@ defmodule GroupherServer.Accounts.CollectFolders do
       Accounts.CollectFolders.add_payload(article, folder_id, user, command_id)
   """
   def add_payload(article, folder_id, %User{} = user, command_id) do
-    Commands.Add.run(article, folder_id, user, command_id)
+    Commands.Add.run_receipt(article, folder_id, user, command_id)
   end
 
   @doc """
@@ -139,7 +139,7 @@ defmodule GroupherServer.Accounts.CollectFolders do
   """
   @spec remove(T.article(), T.id(), User.t()) :: T.domain_res(T.article())
   def remove(article, folder_id, %User{} = user) do
-    with {:ok, %{folder: folder}} <- Commands.Remove.run(article, folder_id, user, nil) do
+    with {:ok, %{folder: folder}} <- Commands.Remove.run_direct(article, folder_id, user) do
       {:ok, folder}
     end
   end
@@ -152,7 +152,7 @@ defmodule GroupherServer.Accounts.CollectFolders do
       Accounts.CollectFolders.remove_payload(article, folder_id, user, command_id)
   """
   def remove_payload(article, folder_id, %User{} = user, command_id) do
-    Commands.Remove.run(article, folder_id, user, command_id)
+    Commands.Remove.run_receipt(article, folder_id, user, command_id)
   end
 
   @doc """

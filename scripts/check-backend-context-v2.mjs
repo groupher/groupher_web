@@ -12,11 +12,13 @@ const modes = new Set(['strict', 'report_only'])
 const contextPattern = /^[a-z][a-z0-9_]*$/
 const fixedRootFiles = new Set([
   'application.ex',
+  'command_pipeline.ex',
   'const.ex',
   'front_desk.ex',
   'release.ex',
   'repo.ex',
 ])
+const fixedRootDirectories = new Set(['command_pipeline'])
 const collectionOwners = new Set(['commands', 'model', 'workflows'])
 const singularOwners = new Set([
   'cache',
@@ -272,7 +274,11 @@ export const backendContextV2LayoutFindings = ({
 
   for (const entry of rootEntries) {
     const absolute = path.join(root, entry.name)
-    if (entry.isDirectory() && !Object.hasOwn(contexts, entry.name)) {
+    if (
+      entry.isDirectory() &&
+      !fixedRootDirectories.has(entry.name) &&
+      !Object.hasOwn(contexts, entry.name)
+    ) {
       finding(findings, {
         category: 'unknown_root_directory',
         file: absolute,

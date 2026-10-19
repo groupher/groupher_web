@@ -339,7 +339,7 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
       workflow_ref = "asset-replacement:test:#{post.id}"
 
       assert {:ok, %{draft_version: version, workflow_ref: ^workflow_ref}} =
-               CMS.Assets.replace_use(
+             CMS.Assets.replace_use_workflow(
                  post,
                  %{
                    expected_draft_version: draft.version,
@@ -350,7 +350,7 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
                    body_bag: body_bag
                  },
                  user,
-                 {:workflow, workflow_ref}
+               workflow_ref
                )
 
       assert version == draft.version + 1
@@ -358,7 +358,7 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
       assert asset_id == to_asset.id
 
       assert {:ok, %{draft_version: ^version, workflow_ref: ^workflow_ref}} =
-               CMS.Assets.replace_use(
+             CMS.Assets.replace_use_workflow(
                  post,
                  %{
                    expected_draft_version: draft.version,
@@ -369,7 +369,7 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
                    body_bag: body_bag
                  },
                  user,
-                 {:workflow, workflow_ref}
+               workflow_ref
                )
     end
 

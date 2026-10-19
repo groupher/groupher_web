@@ -47,7 +47,7 @@ defmodule GroupherServer.Activity.Event do
       outcomes:
         Keyword.get(opts, :outcomes, %{
           allowed: %{producer_status: :active},
-          denied: %{producer_status: :contract_only, denial_codes: []}
+          denied: %{producer_status: :contract_only, rejection_codes: []}
         }),
       surfaces: Map.new(surfaces, surface_contract),
       subject_search:
@@ -75,7 +75,7 @@ defmodule GroupherServer.Activity.Event do
       :payload,
       :metadata,
       :outcome,
-      :denial_code,
+      :rejection_code,
       :changed_fields,
       :occurred_at,
       :recorded_at,
@@ -209,7 +209,7 @@ defmodule GroupherServer.Activity.Event do
           metadata: metadata,
           changed_fields: changed_fields,
           outcome: outcome.outcome,
-          denial_code: outcome.denial_code
+          rejection_code: outcome.rejection_code
         })
 
       schema = handler.schema()
@@ -257,7 +257,7 @@ defmodule GroupherServer.Activity.Event do
           :metadata in fields
         )
         |> maybe_put(:outcome, log.outcome, :outcome in fields)
-        |> maybe_put(:denial_code, log.denial_code, :denial_code in fields)
+        |> maybe_put(:rejection_code, log.rejection_code, :rejection_code in fields)
         |> maybe_put(:changed_fields, log.changed_fields, :changed_fields in fields)
         |> maybe_put(:occurred_at, log.occurred_at, :occurred_at in fields)
         |> maybe_put(:recorded_at, log.recorded_at, :recorded_at in fields)
@@ -479,19 +479,19 @@ defmodule GroupherServer.Activity.Event do
 
   defp validate_outcome(opts, contract) do
     outcome = Keyword.get(opts, :outcome, :allowed)
-    denial_code = Keyword.get(opts, :denial_code)
+    rejection_code = Keyword.get(opts, :rejection_code)
     outcome_contract = Map.get(contract.outcomes, outcome)
 
     cond do
       is_nil(outcome_contract) ->
         {:error, ErrorCat.invalid_payload()}
 
-      outcome == :allowed and is_nil(denial_code) ->
-        {:ok, %{outcome: :allowed, denial_code: nil}}
+      outcome == :allowed and is_nil(rejection_code) ->
+        {:ok, %{outcome: :allowed, rejection_code: nil}}
 
       outcome == :denied and outcome_contract.producer_status == :active and
-          denial_code in Map.get(outcome_contract, :denial_codes, []) ->
-        {:ok, %{outcome: :denied, denial_code: to_string(denial_code)}}
+          rejection_code in Map.get(outcome_contract, :rejection_codes, []) ->
+        {:ok, %{outcome: :denied, rejection_code: to_string(rejection_code)}}
 
       true ->
         {:error, ErrorCat.invalid_payload()}

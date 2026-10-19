@@ -7,18 +7,15 @@ defmodule GroupherServer.CMS.DocTree.Commands.MoveNode do
   alias GroupherServer.CMS
   alias CMS.DocTree.{Commands.Support, Persist}
 
+  use CMS.DocTree.Commands.TreePipeline, operation: :doc_tree_move_node
+
   def execute(community, id, args) do
-    if Support.has_option?(args, :command_id) do
-      Support.run_tree_command(
-        community,
-        id,
-        args,
-        Support.actor(args),
-        :doc_tree_move_node,
-        &Persist.move_node(community, id, &1)
-      )
-    else
-      Support.run_tree_operation(community, args, &Persist.move_node(community, id, &1))
-    end
+    execute_tree_receipt(community, id, args, Support.actor(args))
   end
+
+  def execute_internal(community, id, args, internal_actor \\ :operations),
+    do: execute_tree_internal(community, id, args, internal_actor)
+
+  defp tree_change(community, target_id, args, _actor),
+    do: Persist.move_node(community, target_id, args)
 end

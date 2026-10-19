@@ -10,7 +10,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Publish do
 
   alias GroupherServer.{Accounts, CMS}
   alias Helper.T
-  alias CMS.{Articles, Command, FrontDesk}
+  alias CMS.{Articles, FrontDesk}
   alias CMS.Articles.{Bindings, Query}
   alias Accounts.Model.User
   alias Articles.RevisionResult
@@ -18,20 +18,71 @@ defmodule GroupherServer.CMS.Articles.Commands.Publish do
   alias CMS.Model.{Article, Author, Community}
   alias GroupherServer.FrontDesk, as: RootFrontDesk
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+  @pipeline operation: :article_publish,
+            confirmation: PublishConfirmation,
+            target: :article,
+            params: :command_params
+  receipt_pipeline run_receipt(article, user, opts, command_id, community, command_params) do
+    gate(fn _article ->
+      with {:ok, stable} <- stable_article(article.id),
+           {:ok, author} <- target_author(user),
+           {:ok, canonical} <- CMS.Gate.check_in_transaction(user, :publish, stable, community) do
+        {:ok, %{article: canonical, author: author}}
+      end
+    end)
+
+    change(fn %{article: canonical, author: author} ->
+      publish_opts =
+        command_params
+        |> Map.to_list()
+        |> Keyword.put(:skip_effects, true)
+        |> Keyword.put(:outbox_command_id, command_id)
+
+      Articles.Workflow.publish(canonical, author, user, publish_opts)
+    end)
+
+    confirm(fn publish_result ->
+      {:ok,
+       %PublishConfirmation{
+         article_id: article.id,
+         revision_id: publish_result.public.revision_id,
+         publication_version: publish_result.public.publication_version,
+         first_publish?: Map.get(publish_result, :first_publish?, false),
+         changed_fields: Map.get(publish_result, :changed_fields, []),
+         published_by_id: Map.get(publish_result, :published_by_id),
+         published_at: publish_result.public.published_at
+       }}
+    end)
+
+    present(fn confirmation -> RevisionResult.build(confirmation, community) end)
+  end
+
+  @pipeline operation: :article_publish_write, target: :article, params: :opts
+  direct_pipeline run_direct(article, actor, opts) do
+    gate(fn _article -> load_and_authorize(article, actor, opts) end)
+
+    change(fn %{article: canonical, author: author} ->
+      Articles.Workflow.publish(canonical, author, actor, opts)
+    end)
+  end
+
   @doc "Publishes one ordinary Article Draft, using retry-safe recovery when command_id is present.
 
   The caller must provide `:community` (or `:community_id`) so the target
   ArticleBinding is always explicit."
   @spec execute(Article.t(), User.t() | Author.t(), keyword()) :: T.domain_res(map())
-  def execute(%Article{} = article, actor, opts) do
-    case Keyword.get(opts, :command_id) do
-      nil -> publish_now(article.id, actor, opts)
-      _command_id -> execute_command(article, actor, opts)
-    end
-  end
+  def execute(%Article{} = article, actor, opts), do: execute_command(article, actor, opts)
 
   def execute(_article, _actor, _opts) do
     {:error, Articles.ErrorCat.invalid_publish_actor()}
+  end
+
+  @doc false
+  def execute_direct(%Article{} = article, actor, opts) do
+    run_direct(article, actor, Keyword.delete(opts, :command_id))
   end
 
   defp execute_command(%Article{} = article, %User{} = user, opts) do
@@ -44,21 +95,14 @@ defmodule GroupherServer.CMS.Articles.Commands.Publish do
           |> Map.new()
           |> Map.put(:community_id, community.id)
 
-        command = %Command{
-          actor: user,
-          command_id: Keyword.get(opts, :command_id),
-          operation: :article_publish,
-          target: article,
-          params: command_params
-        }
-
-        with {:ok, %PublishConfirmation{} = confirmation} <-
-               Command.execute(command,
-                 action: &publish_action/1,
-                 confirmation: PublishConfirmation
-               ) do
-          RevisionResult.build(confirmation, community)
-        end
+        run_receipt(
+          article,
+          user,
+          opts,
+          Keyword.fetch!(opts, :command_id),
+          community,
+          command_params
+        )
 
       {:error, reason} ->
         {:error, reason}
@@ -69,42 +113,13 @@ defmodule GroupherServer.CMS.Articles.Commands.Publish do
     {:error, Articles.ErrorCat.invalid_publish_actor()}
   end
 
-  @spec publish_action(map()) :: Command.action_result(PublishConfirmation.t())
-  defp publish_action(%{
-         actor: user,
-         target: %Article{id: article_id},
-         params: params,
-         command_id: command_id
-       }) do
-    publish_opts =
-      params
-      |> Map.to_list()
-      |> Keyword.put(:skip_effects, true)
-      |> Keyword.put(:outbox_command_id, command_id)
-
-    case publish_now(article_id, user, publish_opts) do
-      {:ok, publish_result} ->
-        {:ok,
-         %PublishConfirmation{
-           article_id: article_id,
-           revision_id: publish_result.public.revision_id,
-           publication_version: publish_result.public.publication_version,
-           first_publish?: Map.get(publish_result, :first_publish?, false),
-           changed_fields: Map.get(publish_result, :changed_fields, []),
-           published_by_id: Map.get(publish_result, :published_by_id),
-           published_at: publish_result.public.published_at
-         }}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
-  end
-
-  defp publish_now(article_id, actor, opts) do
-    with {:ok, article} <- stable_article(article_id),
-         {:ok, author} <- target_author(actor),
-         {:ok, result} <- publish_with_gate(article, actor, author, opts) do
-      maybe_publish_effects(result, opts)
+  @doc "Publishes a newly-created Article after the enclosing create gate admitted the write."
+  def publish_after_gate(%Article{} = article, actor, opts) do
+    with true <-
+           GroupherServer.Repo.in_transaction?() ||
+             {:error, :pipeline_transaction_required},
+         {:ok, author} <- target_author(actor) do
+      Articles.Workflow.publish(article, author, actor, opts)
     end
   end
 
@@ -130,23 +145,20 @@ defmodule GroupherServer.CMS.Articles.Commands.Publish do
     end
   end
 
-  defp publish_with_gate(article, actor, author, opts) do
+  defp load_and_authorize(article, actor, opts) do
     case binding_context(article, opts) do
       {:ok, %{community: %Community{} = community}} ->
-        CMS.Gate.with_community_check(
-          actor_user(actor),
-          :publish,
-          community,
-          article,
-          fn canonical -> Articles.Workflow.publish(canonical, author, actor, opts) end
-        )
+        with {:ok, stable} <- stable_article(article.id),
+             {:ok, author} <- target_author(actor),
+             {:ok, canonical} <-
+               CMS.Gate.check_in_transaction(actor_user(actor), :publish, stable, community) do
+          {:ok, %{article: canonical, author: author}}
+        end
 
       {:error, reason} ->
         {:error, reason}
     end
   end
-
-  defp maybe_publish_effects(result, _opts), do: {:ok, result}
 
   defp target_author(%Author{} = author), do: {:ok, author}
   defp target_author(%User{} = user), do: Articles.Persist.ensure_author_exists(user)

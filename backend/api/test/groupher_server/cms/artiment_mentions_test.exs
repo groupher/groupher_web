@@ -39,8 +39,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
           community,
           :post,
           Map.merge(post_attrs, %{body_bag: mock_body_bag(body)}),
-          user,
-          Ecto.UUID.generate()
+          user
         )
 
       {:ok, {2, nil}} = ArtimentMentions.sync(post)

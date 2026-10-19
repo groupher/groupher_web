@@ -52,7 +52,7 @@ defmodule GroupherServer.CMS.DocTree.Persist do
   @doc "Creates a top-level docs tab."
   @spec create_tab(Community.t(), map()) :: T.domain_res(payload())
   def create_tab(%Community{} = community, args) do
-    TreeMutation.run(community, args, fn branch, state ->
+    TreeMutation.run_after_gate(community, args, fn branch, state ->
       attrs =
         args
         |> Map.merge(%{
@@ -88,7 +88,7 @@ defmodule GroupherServer.CMS.DocTree.Persist do
   """
   @spec create_group(Community.t(), map()) :: T.domain_res(payload())
   def create_group(%Community{} = community, args) do
-    TreeMutation.run(community, args, fn branch, state ->
+    TreeMutation.run_after_gate(community, args, fn branch, state ->
       with {:ok, parent} <-
              Node.navigation_parent(community, branch, Map.get(args, :parent_node_id)) do
         attrs =
@@ -130,7 +130,7 @@ defmodule GroupherServer.CMS.DocTree.Persist do
   """
   @spec create_page(Community.t(), map(), User.t() | nil) :: T.domain_res(payload())
   def create_page(%Community{} = community, args, user \\ nil) do
-    TreeMutation.run(community, args, fn branch, state ->
+    TreeMutation.run_after_gate(community, args, fn branch, state ->
       with {:ok, parent} <-
              Node.group_parent(community, branch, Map.get(args, :parent_node_id)),
            args <-
@@ -172,7 +172,7 @@ defmodule GroupherServer.CMS.DocTree.Persist do
   """
   @spec create_link(Community.t(), map()) :: T.domain_res(payload())
   def create_link(%Community{} = community, args) do
-    TreeMutation.run(community, args, fn branch, state ->
+    TreeMutation.run_after_gate(community, args, fn branch, state ->
       with {:ok, parent} <-
              Node.group_parent(community, branch, Map.get(args, :parent_node_id)) do
         attrs =
@@ -214,7 +214,7 @@ defmodule GroupherServer.CMS.DocTree.Persist do
   """
   @spec create_pin(Community.t(), map()) :: T.domain_res(payload())
   def create_pin(%Community{} = community, args) do
-    TreeMutation.run(community, args, fn branch, state ->
+    TreeMutation.run_after_gate(community, args, fn branch, state ->
       with {:ok, tab} <- Node.pin_parent(community, branch, Map.get(args, :parent_node_id)) do
         attrs =
           args
@@ -255,7 +255,7 @@ defmodule GroupherServer.CMS.DocTree.Persist do
   """
   @spec update_node(Community.t(), T.id(), map()) :: T.domain_res(payload())
   def update_node(%Community{} = community, node_id, args) do
-    TreeMutation.run(community, args, fn branch, state ->
+    TreeMutation.run_after_gate(community, args, fn branch, state ->
       with {:ok, node} <- Node.find(community, branch, node_id),
            {:ok, _} <- DraftDoc.validate(community, branch, Map.get(args, :doc_id)),
            attrs <- Identity.normalize_title_slug(args),
@@ -298,7 +298,7 @@ defmodule GroupherServer.CMS.DocTree.Persist do
   """
   @spec delete_node(Community.t(), T.id(), map()) :: T.domain_res(payload())
   def delete_node(%Community{} = community, node_id, args) do
-    TreeMutation.run(community, args, fn branch, state ->
+    TreeMutation.run_after_gate(community, args, fn branch, state ->
       with {:ok, node} <- Node.find(community, branch, node_id),
            {:ok, _} <- validate_delete_node(community, branch, node),
            {:ok, actor} <- load_actor(args, "Docs Trash requires an authenticated actor"),
@@ -330,7 +330,7 @@ defmodule GroupherServer.CMS.DocTree.Persist do
   """
   @spec duplicate_node(Community.t(), T.id(), map()) :: T.domain_res(payload())
   def duplicate_node(%Community{} = community, node_id, args) do
-    TreeMutation.run(community, args, fn branch, state ->
+    TreeMutation.run_after_gate(community, args, fn branch, state ->
       with {:ok, node} <- Node.find(community, branch, node_id),
            true <- node.type in [:group, :page, :link],
            {:ok, duplicated_nodes} <- duplicate_nodes(community, branch, node, args),
@@ -549,7 +549,7 @@ defmodule GroupherServer.CMS.DocTree.Persist do
   """
   @spec move_node(Community.t(), T.id(), map()) :: T.domain_res(payload())
   def move_node(%Community{} = community, node_id, args) do
-    TreeMutation.run(community, args, fn branch, state ->
+    TreeMutation.run_after_gate(community, args, fn branch, state ->
       target_parent_node_id = Map.get(args, :target_parent_node_id)
       target_index = Map.get(args, :target_index, 0)
 

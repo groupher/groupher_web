@@ -14,6 +14,9 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.T
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc """
   Updates one dashboard section as an authenticated domain command.
 
@@ -24,8 +27,11 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
   """
   @spec execute(Community.t(), atom(), map() | list() | boolean(), term(), Ecto.UUID.t()) ::
           T.domain_res(CommunityDashboard.t())
-  def execute(%Community{} = community, key, args, actor, command_id) do
-    CMS.Gate.with_community_check(actor, :update, community, fn canonical ->
+  @pipeline operation: :dashboard_update_section, target: :community
+  direct_pipeline execute(community, key, args, actor, command_id) do
+    gate(fn candidate -> CMS.Gate.check_in_transaction(actor, :update, candidate) end)
+
+    change(fn canonical ->
       args = if is_map(args), do: Map.delete(args, :command_id), else: args
       section_args = section_args(key, args)
 

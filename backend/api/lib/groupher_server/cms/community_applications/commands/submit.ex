@@ -1,6 +1,6 @@
 defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
   @moduledoc """
-  Receipt-backed submission Command for a Community Application.
+  Community Application submission implemented as a `receipt_pipeline`.
 
       GraphQL -> Submit Command -> Application Gate -> Persist / Lifecycle -> Receipt result
   """
@@ -9,7 +9,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
 
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.{Command, Gate}
+  alias CMS.Gate
   alias Ecto.Multi
   alias CMS.Communities.{ErrorCat, NamePolicy, SlugClaims}
   alias CMS.CommunityApplications.{Config, Lifecycle, LogoUploads, Persist, Policy}
@@ -18,6 +18,9 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
   alias CMS.Model.CommunityApplication
   alias Helper.{Utils, T, Transaction}
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @categories %{
     "PRODUCT" => :PRODUCT,
     "GAMING" => :GAMING,
@@ -27,82 +30,121 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
 
   @spec execute(map(), User.t(), Ecto.UUID.t()) :: T.domain_res(term())
   def execute(attrs, %User{} = actor, command_id) when is_map(attrs) do
-    command = %Command{
-      actor: actor,
-      command_id: command_id,
-      operation: :community_application_submit,
-      target: actor,
-      params: attrs
-    }
-
-    with {:ok, confirmation} <-
-           Command.execute(command, action: &action/1, confirmation: Confirmation) do
-      Support.result(confirmation)
-    end
+    execute_pipeline(actor, attrs, command_id)
   end
 
-  defp action(%{actor: actor, params: attrs, command_id: command_id}) do
-    with {:ok, application} <-
-           Gate.with_application_create_check(actor, fn ->
-             submit_application(attrs, actor, command_id)
-           end) do
+  @pipeline operation: :community_application_submit,
+            confirmation: Confirmation,
+            target: :actor,
+            params: :attrs
+
+  receipt_pipeline execute_pipeline(actor, attrs, command_id) do
+    gate(fn _candidate -> Gate.check_application_create_in_transaction(actor) end)
+    workflow(fn _actor -> submit_workflow(attrs, actor, command_id) end)
+
+    confirm(fn application ->
       {:ok, Support.confirmation(Confirmation, application.id, command_id)}
+    end)
+
+    present(fn confirmation -> Support.result(confirmation) end)
+  end
+
+  workflow_pipeline submit_workflow(attrs, user, submit_command_id) do
+    step(:normalize, fn _results -> normalize_input(attrs) end)
+
+    step(:prepare, fn %{normalize: normalized} ->
+      prepare_submission(normalized, user, submit_command_id)
+    end)
+
+    step(:persist, fn %{prepare: prepared} ->
+      persist_submission(prepared, user, submit_command_id)
+    end)
+
+    return(:persist)
+  end
+
+  defp prepare_submission(normalized, %User{} = user, submit_command_id) do
+    fingerprint = fingerprint(normalized)
+
+    case submit_command_lookup(user.id, submit_command_id, fingerprint) do
+      {:hit, application} ->
+        {:ok, %{existing: application}}
+
+      :miss ->
+        prepare_new_submission(normalized, user, fingerprint)
+
+      {:error, _reason} = error ->
+        error
     end
   end
 
-  defp submit_application(attrs, %User{} = user, submit_command_id) do
-    with {:ok, normalized} <- normalize_input(attrs),
-         fingerprint <- fingerprint(normalized),
-         :miss <- submit_command_lookup(user.id, submit_command_id, fingerprint),
-         {:ok, _slug} <- NamePolicy.check(normalized.slug),
+  defp prepare_new_submission(normalized, user, fingerprint) do
+    with {:ok, _slug} <- NamePolicy.check(normalized.slug),
          %{allowed: true} = policy <- Policy.can_apply(user),
          {:ok, upload} <- LogoUploads.fetch_finalized(normalized.logo_asset_ref, user) do
       now = DateTime.utc_now(:second)
       expires_at = DateTime.add(now, Config.submitted_ttl_days(), :day)
 
-      application_changeset =
-        CommunityApplication.changeset(%CommunityApplication{}, %{
-          public_ref: "capp_" <> Utils.uid(24),
-          user_id: user.id,
-          status: :submitted,
-          version: 1,
-          title: normalized.title,
-          slug: normalized.slug,
-          desc: normalized.desc,
-          logo_asset_ref: normalized.logo_asset_ref,
-          locale: normalized.locale,
-          apply_category: normalized.apply_category,
-          apply_message: normalized.apply_message,
-          submit_command_id: submit_command_id,
-          input_fingerprint: fingerprint,
-          policy_snapshot: policy,
-          submitted_at: now,
-          expires_at: expires_at
-        })
-
-      Multi.new()
-      |> Multi.run(:application, fn _repo, _changes ->
-        Persist.insert_application(application_changeset)
-      end)
-      |> SlugClaims.insert_application(:slug_claim, :application, expires_at)
-      |> LogoUploads.attach(:logo_upload, upload, :application)
-      |> Multi.run(:event, fn _repo, %{application: application} ->
-        application
-        |> Lifecycle.initial_event_changeset(%{
-          type: :applicant,
-          id: user.id,
-          operation_ref: submit_command_id,
-          occurred_at: now
-        })
-        |> Persist.insert_event()
-      end)
-      |> Transaction.run()
-      |> normalize_submit_result(user.id, submit_command_id, fingerprint)
+      {:ok,
+       %{
+         expires_at: expires_at,
+         fingerprint: fingerprint,
+         normalized: normalized,
+         now: now,
+         policy: policy,
+         upload: upload
+       }}
     else
-      {:hit, application} -> {:ok, application}
       {:error, _} = error -> error
       %{allowed: false} = policy -> {:error, Policy.denial_error(policy)}
     end
+  end
+
+  defp persist_submission(%{existing: application}, _user, _submit_command_id) do
+    {:ok, application}
+  end
+
+  defp persist_submission(prepared, user, submit_command_id) do
+    normalized = prepared.normalized
+
+    application_changeset =
+      CommunityApplication.changeset(%CommunityApplication{}, %{
+        public_ref: "capp_" <> Utils.uid(24),
+        user_id: user.id,
+        status: :submitted,
+        version: 1,
+        title: normalized.title,
+        slug: normalized.slug,
+        desc: normalized.desc,
+        logo_asset_ref: normalized.logo_asset_ref,
+        locale: normalized.locale,
+        apply_category: normalized.apply_category,
+        apply_message: normalized.apply_message,
+        submit_command_id: submit_command_id,
+        input_fingerprint: prepared.fingerprint,
+        policy_snapshot: prepared.policy,
+        submitted_at: prepared.now,
+        expires_at: prepared.expires_at
+      })
+
+    Multi.new()
+    |> Multi.run(:application, fn _repo, _changes ->
+      Persist.insert_application(application_changeset)
+    end)
+    |> SlugClaims.insert_application(:slug_claim, :application, prepared.expires_at)
+    |> LogoUploads.attach(:logo_upload, prepared.upload, :application)
+    |> Multi.run(:event, fn _repo, %{application: application} ->
+      application
+      |> Lifecycle.initial_event_changeset(%{
+        type: :applicant,
+        id: user.id,
+        operation_ref: submit_command_id,
+        occurred_at: prepared.now
+      })
+      |> Persist.insert_event()
+    end)
+    |> Transaction.run()
+    |> normalize_submit_result(user.id, submit_command_id, prepared.fingerprint)
   end
 
   defp normalize_input(attrs) do

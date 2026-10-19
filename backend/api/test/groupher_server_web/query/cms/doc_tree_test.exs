@@ -20,7 +20,7 @@ defmodule GroupherServer.Test.Query.CMS.DocTree do
     {:ok, tree_state} = ORM.find_by(CMS.Model.DocsSiteState, community_id: community.id)
 
     {:ok, group_payload} =
-      CMS.DocTree.create_group(community, %{
+      CMS.DocTree.create_group_internal(community, %{
         parent_node_id: root_doc_tab_node_id(community),
         title: "Guides",
         slug: "guides",
@@ -71,7 +71,7 @@ defmodule GroupherServer.Test.Query.CMS.DocTree do
     group_payload: group_payload
   } do
     {:ok, page_payload} =
-      CMS.DocTree.create_page(
+      CMS.DocTree.create_page_internal(
         community,
         %{
           parent_node_id: group_payload.node.id,
@@ -140,7 +140,7 @@ defmodule GroupherServer.Test.Query.CMS.DocTree do
     group_payload: group_payload
   } do
     {:ok, page_payload} =
-      CMS.DocTree.create_page(
+      CMS.DocTree.create_page_internal(
         community,
         %{
           parent_node_id: group_payload.node.id,

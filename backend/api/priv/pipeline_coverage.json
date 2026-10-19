@@ -1,0 +1,1989 @@
+{
+  "app": "groupher_server",
+  "commands": [
+    {
+      "execute_arities": [1],
+      "module": "GroupherServer.CMS.Articles.Commands.Archive",
+      "pipelines": [
+        {
+          "access": "internal",
+          "arity": 1,
+          "name": "execute",
+          "operation": "article_archive",
+          "pipeline": "direct_pipeline",
+          "stages": ["change"],
+          "target": "thread"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/archive.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Articles.Commands.CommentLock",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 3,
+          "name": "lock_comments",
+          "operation": "article_lock_comments",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "article_id"
+        },
+        {
+          "access": "user",
+          "arity": 3,
+          "name": "unlock_comments",
+          "operation": "article_unlock_comments",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "article_id"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/comment_lock.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.Articles.Commands.Create",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 8,
+          "confirmation": "GroupherServer.CMS.Articles.Commands.RevisionConfirmation",
+          "name": "run_receipt",
+          "operation": "article_create",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "user",
+          "arity": 6,
+          "name": "run_direct",
+          "operation": "article_create_write",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/create.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.Articles.Commands.CreateStableDraft",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 8,
+          "confirmation": "GroupherServer.CMS.Articles.Commands.CreateStableDraftConfirmation",
+          "name": "run_receipt",
+          "operation": "article_create_draft",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "user",
+          "arity": 5,
+          "name": "run_direct",
+          "operation": "article_create_draft_write",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/create_stable_draft.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Articles.Commands.DiscardDraft",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 3,
+          "name": "execute_pipeline",
+          "operation": "article_discard_draft",
+          "pipeline": "direct_pipeline",
+          "stages": ["prepare", "gate", "change"],
+          "target": "article_id"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/discard_draft.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [6],
+      "module": "GroupherServer.CMS.Articles.Commands.Mirror",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 8,
+          "confirmation": "GroupherServer.CMS.Articles.Commands.BindingConfirmation",
+          "name": "execute_pipeline",
+          "operation": "article_mirror",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/mirror.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.Articles.Commands.Moderate",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "name": "execute",
+          "operation": "article_moderate",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "article_id"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/moderate.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [6],
+      "module": "GroupherServer.CMS.Articles.Commands.Move",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 8,
+          "confirmation": "GroupherServer.CMS.Articles.Commands.BindingConfirmation",
+          "name": "execute_pipeline",
+          "operation": "article_move",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/move.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Articles.Commands.PermanentlyDeleteTrashed",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 6,
+          "confirmation": "GroupherServer.CMS.Articles.Commands.TrashPermanentDeleteConfirmation",
+          "name": "run_receipt",
+          "operation": "article_permanently_delete",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "user",
+          "arity": 3,
+          "name": "run_direct",
+          "operation": "article_permanently_delete_write",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "item_or_id"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/permanently_delete_trashed.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Articles.Commands.Pin",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "confirmation": "GroupherServer.CMS.Articles.Commands.BindingConfirmation",
+          "name": "execute_pipeline",
+          "operation": "article_pin",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/pin.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Articles.Commands.Publish",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 6,
+          "confirmation": "GroupherServer.CMS.Articles.Commands.PublishConfirmation",
+          "name": "run_receipt",
+          "operation": "article_publish",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "article"
+        },
+        {
+          "access": "user",
+          "arity": 3,
+          "name": "run_direct",
+          "operation": "article_publish_write",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/publish.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Articles.Commands.RestoreTrashed",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 6,
+          "confirmation": "GroupherServer.CMS.Articles.Commands.TrashRestoreConfirmation",
+          "name": "run_receipt",
+          "operation": "article_restore",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "user",
+          "arity": 3,
+          "name": "run_direct",
+          "operation": "article_restore_write",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "item_or_id"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/restore_trashed.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3, 4],
+      "module": "GroupherServer.CMS.Articles.Commands.StateChange",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "name": "set_category",
+          "operation": "article_set_category",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "article_id"
+        },
+        {
+          "access": "user",
+          "arity": 3,
+          "name": "sink_pipeline",
+          "operation": "article_sink",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "article_id"
+        },
+        {
+          "access": "user",
+          "arity": 3,
+          "name": "undo_sink_pipeline",
+          "operation": "article_undo_sink",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "article_id"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/state_change.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Articles.Commands.Trash",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Articles.Commands.TrashConfirmation",
+          "name": "execute_receipt",
+          "operation": "article_trash",
+          "pipeline": "receipt_pipeline",
+          "stages": ["prepare", "gate", "change", "confirm", "present", "on_rejection"],
+          "target": "article"
+        },
+        {
+          "access": "user",
+          "arity": 3,
+          "name": "execute_direct",
+          "operation": "article_trash_write",
+          "pipeline": "direct_pipeline",
+          "stages": ["prepare", "gate", "change", "on_rejection"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/trash.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Articles.Commands.Unmirror",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "confirmation": "GroupherServer.CMS.Articles.Commands.BindingConfirmation",
+          "name": "execute_pipeline",
+          "operation": "article_unmirror",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/unmirror.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Articles.Commands.Unpin",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "confirmation": "GroupherServer.CMS.Articles.Commands.BindingConfirmation",
+          "name": "execute_pipeline",
+          "operation": "article_unpin",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/unpin.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Articles.Commands.Update",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "confirmation": "GroupherServer.CMS.Articles.Commands.RevisionConfirmation",
+          "name": "execute_pipeline",
+          "operation": "article_update",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/update.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Articles.Commands.UpdateDraft",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "name": "execute_pipeline",
+          "operation": "article_update_draft",
+          "pipeline": "direct_pipeline",
+          "stages": ["prepare", "gate", "change"],
+          "target": "article_id"
+        }
+      ],
+      "source": "lib/groupher_server/cms/articles/commands/update_draft.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Assets.Commands.Archive",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "confirmation": "GroupherServer.CMS.Assets.Commands.ArchiveAssetConfirmation",
+          "name": "execute_pipeline",
+          "operation": "asset_archive",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "asset"
+        }
+      ],
+      "source": "lib/groupher_server/cms/assets/commands/archive.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Assets.Commands.Delete",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "confirmation": "GroupherServer.CMS.Assets.Commands.DeleteAssetConfirmation",
+          "name": "execute_pipeline",
+          "operation": "asset_delete",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "asset"
+        }
+      ],
+      "source": "lib/groupher_server/cms/assets/commands/delete.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Assets.Commands.Register",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Assets.Commands.RegisterAssetConfirmation",
+          "name": "execute_pipeline",
+          "operation": "asset_register",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/assets/commands/register.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Assets.Commands.ReplaceUse",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "confirmation": "GroupherServer.CMS.Assets.Commands.ReplaceUseConfirmation",
+          "name": "execute_receipt",
+          "operation": "article_replace_asset",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "article"
+        },
+        {
+          "access": "user",
+          "arity": 5,
+          "name": "execute_workflow",
+          "operation": "article_replace_asset_workflow",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/assets/commands/replace_use.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Assets.Commands.Restore",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "confirmation": "GroupherServer.CMS.Assets.Commands.RestoreAssetConfirmation",
+          "name": "execute_pipeline",
+          "operation": "asset_restore",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "asset"
+        }
+      ],
+      "source": "lib/groupher_server/cms/assets/commands/restore.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.Comments.Commands.Create",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 9,
+          "confirmation": "GroupherServer.CMS.Comments.Commands.CommentConfirmation",
+          "name": "run_create",
+          "operation": "comment_create",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Comments.Commands.CommentConfirmation",
+          "name": "run_reply",
+          "operation": "comment_reply",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "target_comment"
+        }
+      ],
+      "source": "lib/groupher_server/cms/comments/commands/create.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [2, 3],
+      "module": "GroupherServer.CMS.Comments.Commands.Delete",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 3,
+          "confirmation": "GroupherServer.CMS.Comments.Commands.CommentConfirmation",
+          "name": "execute_pipeline",
+          "operation": "comment_delete",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "comment"
+        }
+      ],
+      "source": "lib/groupher_server/cms/comments/commands/delete.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Comments.Commands.Moderate",
+      "pipelines": [
+        {
+          "access": "internal",
+          "arity": 2,
+          "name": "set_illegal",
+          "operation": "comment_set_illegal",
+          "pipeline": "direct_pipeline",
+          "stages": ["load", "change"],
+          "target": "comment_id"
+        },
+        {
+          "access": "internal",
+          "arity": 2,
+          "name": "unset_illegal",
+          "operation": "comment_unset_illegal",
+          "pipeline": "direct_pipeline",
+          "stages": ["load", "change"],
+          "target": "comment_id"
+        },
+        {
+          "access": "internal",
+          "arity": 2,
+          "name": "set_audit_failed",
+          "operation": "comment_set_audit_failed",
+          "pipeline": "direct_pipeline",
+          "stages": ["change"],
+          "target": "comment"
+        }
+      ],
+      "source": "lib/groupher_server/cms/comments/commands/moderate.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Comments.Commands.SolutionChange",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 3,
+          "confirmation": "GroupherServer.CMS.Comments.Commands.SolutionConfirmation",
+          "name": "accept_pipeline",
+          "operation": "comment_accept_solution",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "comment"
+        },
+        {
+          "access": "user",
+          "arity": 3,
+          "confirmation": "GroupherServer.CMS.Comments.Commands.SolutionConfirmation",
+          "name": "revoke_pipeline",
+          "operation": "comment_revoke_solution",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "comment"
+        }
+      ],
+      "source": "lib/groupher_server/cms/comments/commands/solution_change.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3, 4],
+      "module": "GroupherServer.CMS.Comments.Commands.StateChange",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 2,
+          "name": "fold_pipeline",
+          "operation": "comment_fold",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "comment"
+        },
+        {
+          "access": "user",
+          "arity": 2,
+          "name": "unfold_pipeline",
+          "operation": "comment_unfold",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "comment"
+        },
+        {
+          "access": "user",
+          "arity": 3,
+          "confirmation": "GroupherServer.CMS.Comments.Commands.StateConfirmation",
+          "name": "pin_pipeline",
+          "operation": "comment_pin",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "comment"
+        },
+        {
+          "access": "user",
+          "arity": 3,
+          "confirmation": "GroupherServer.CMS.Comments.Commands.StateConfirmation",
+          "name": "unpin_pipeline",
+          "operation": "comment_unpin",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "comment"
+        }
+      ],
+      "source": "lib/groupher_server/cms/comments/commands/state_change.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3, 5],
+      "module": "GroupherServer.CMS.Comments.Commands.Update",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "confirmation": "GroupherServer.CMS.Comments.Commands.CommentConfirmation",
+          "name": "execute_pipeline",
+          "operation": "comment_update",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "comment"
+        }
+      ],
+      "source": "lib/groupher_server/cms/comments/commands/update.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Communities.Categories.Commands.Create",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Communities.Categories.Confirmation",
+          "name": "execute_pipeline",
+          "operation": "category_create",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/categories/commands/create.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Communities.Categories.Commands.Delete",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "confirmation": "GroupherServer.CMS.Communities.Categories.Confirmation",
+          "name": "execute_pipeline",
+          "operation": "category_delete",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "category_target"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/categories/commands/delete.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Communities.Categories.Commands.Set",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Communities.Categories.BindingConfirmation",
+          "name": "execute_pipeline",
+          "operation": "category_set",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/categories/commands/set.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Communities.Categories.Commands.Unset",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Communities.Categories.BindingConfirmation",
+          "name": "execute_pipeline",
+          "operation": "category_unset",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/categories/commands/unset.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Communities.Categories.Commands.Update",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 6,
+          "confirmation": "GroupherServer.CMS.Communities.Categories.Confirmation",
+          "name": "execute_pipeline",
+          "operation": "category_update",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "category_target"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/categories/commands/update.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Communities.Commands.Create",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Communities.Commands.CreateConfirmation",
+          "name": "execute_pipeline",
+          "operation": "community_create",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "create_target"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/commands/create.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Communities.Commands.RequestDestroy",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Communities.RequestDestroyConfirmation",
+          "name": "execute_pipeline",
+          "operation": "community_request_destroy",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/commands/request_destroy.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [],
+      "module": "GroupherServer.CMS.Communities.Commands.Update",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Communities.Commands.UpdateConfirmation",
+          "name": "execute_pipeline",
+          "operation": "community_update",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        },
+        {
+          "access": "internal",
+          "arity": 4,
+          "name": "execute_workflow",
+          "operation": "community_update_workflow",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/commands/update.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Communities.Moderators.Commands.Add",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 6,
+          "confirmation": "GroupherServer.CMS.Communities.Moderators.Commands.Confirmation",
+          "name": "execute_pipeline",
+          "operation": "moderator_add",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/moderators/commands/add.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Communities.Moderators.Commands.AddMany",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 6,
+          "confirmation": "GroupherServer.CMS.Communities.Moderators.Commands.Confirmation",
+          "name": "execute_pipeline",
+          "operation": "moderator_add_many",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/moderators/commands/add_many.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Communities.Moderators.Commands.Remove",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 6,
+          "confirmation": "GroupherServer.CMS.Communities.Moderators.Commands.Confirmation",
+          "name": "execute_pipeline",
+          "operation": "moderator_remove",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/moderators/commands/remove.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.Communities.Moderators.Commands.UpdatePassport",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.Communities.Moderators.Commands.Confirmation",
+          "name": "execute_pipeline",
+          "operation": "moderator_update",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/moderators/commands/update_passport.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Communities.Subscriptions.Commands.Subscribe",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Communities.Subscriptions.Confirmation",
+          "name": "execute_pipeline",
+          "operation": "community_subscribe",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/subscriptions/commands/subscribe.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Communities.Subscriptions.Commands.Unsubscribe",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Communities.Subscriptions.Confirmation",
+          "name": "execute_pipeline",
+          "operation": "community_unsubscribe",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/subscriptions/commands/unsubscribe.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.Communities.Tags.Commands.Create",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "confirmation": "GroupherServer.CMS.Communities.Tags.Commands.TagConfirmation",
+          "name": "execute_pipeline",
+          "operation": "tag_create",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/tags/commands/create.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.Communities.Tags.Commands.CreateTagGroup",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "confirmation": "GroupherServer.CMS.Communities.Tags.Commands.TagGroupConfirmation",
+          "name": "execute_pipeline",
+          "operation": "tag_group_create",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/tags/commands/create_group.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Communities.Tags.Commands.Delete",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 3,
+          "confirmation": "GroupherServer.CMS.Communities.Tags.Commands.TagConfirmation",
+          "name": "execute_pipeline",
+          "operation": "tag_delete",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "tag"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/tags/commands/delete.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.Communities.Tags.Commands.DeleteTagGroup",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 6,
+          "confirmation": "GroupherServer.CMS.Communities.Tags.Commands.TagGroupConfirmation",
+          "name": "execute_pipeline",
+          "operation": "tag_group_delete",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "group"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/tags/commands/delete_group.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.Communities.Tags.Commands.ReindexTagGroups",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "name": "execute_pipeline",
+          "operation": "tag_groups_reindex",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/tags/commands/reindex_groups.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.Communities.Tags.Commands.ReindexTagsAcrossGroups",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "name": "execute_pipeline",
+          "operation": "tags_reindex_across_groups",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/tags/commands/reindex_across_groups.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [6],
+      "module": "GroupherServer.CMS.Communities.Tags.Commands.ReindexTagsInGroup",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 6,
+          "name": "execute_pipeline",
+          "operation": "tags_reindex_in_group",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/tags/commands/reindex_in_group.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Communities.Tags.Commands.Set",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 6,
+          "name": "execute_pipeline",
+          "operation": "article_tag_set",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/tags/commands/set.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Communities.Tags.Commands.Unset",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 6,
+          "name": "execute_pipeline",
+          "operation": "article_tag_unset",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/tags/commands/unset.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Communities.Tags.Commands.Update",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Communities.Tags.Commands.TagConfirmation",
+          "name": "execute_pipeline",
+          "operation": "tag_update",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "tag"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/tags/commands/update.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [6],
+      "module": "GroupherServer.CMS.Communities.Tags.Commands.UpdateTagGroup",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.Communities.Tags.Commands.TagGroupConfirmation",
+          "name": "execute_pipeline",
+          "operation": "tag_group_update",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "group"
+        }
+      ],
+      "source": "lib/groupher_server/cms/communities/tags/commands/update_group.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.CommunityApplications.Commands.Cancel",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.CommunityApplications.Commands.Confirmation",
+          "name": "execute_pipeline",
+          "operation": "community_application_cancel",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "application"
+        }
+      ],
+      "source": "lib/groupher_server/cms/community_applications/commands/cancel.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.CommunityApplications.Commands.RetrySetup",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.CommunityApplications.Commands.Confirmation",
+          "name": "execute_pipeline",
+          "operation": "community_application_retry_setup",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "application"
+        }
+      ],
+      "source": "lib/groupher_server/cms/community_applications/commands/retry_setup.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [],
+      "module": "GroupherServer.CMS.CommunityApplications.Commands.Review",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.CommunityApplications.Commands.Confirmation",
+          "name": "start_pipeline",
+          "operation": "community_application_review",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "application"
+        },
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.CommunityApplications.Commands.Confirmation",
+          "name": "approve_pipeline",
+          "operation": "community_application_approve",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "application"
+        },
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.CommunityApplications.Commands.Confirmation",
+          "name": "reject_pipeline",
+          "operation": "community_application_reject",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "application"
+        },
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.CommunityApplications.Commands.Confirmation",
+          "name": "retry_creation_pipeline",
+          "operation": "community_application_retry_creation",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "application"
+        }
+      ],
+      "source": "lib/groupher_server/cms/community_applications/commands/review.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.CommunityApplications.Commands.Submit",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 3,
+          "confirmation": "GroupherServer.CMS.CommunityApplications.Commands.Confirmation",
+          "name": "execute_pipeline",
+          "operation": "community_application_submit",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "workflow", "confirm", "present"],
+          "target": "actor"
+        },
+        {
+          "arity": 3,
+          "name": "submit_workflow",
+          "pipeline": "workflow_pipeline",
+          "stages": []
+        }
+      ],
+      "source": "lib/groupher_server/cms/community_applications/commands/submit.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Dashboard.Commands.SaveCustomThemePreset",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "name": "execute",
+          "operation": "dashboard_save_custom_theme_preset",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/dashboard/commands/save_custom_theme_preset.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Dashboard.Commands.SelectThemePreset",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "name": "execute",
+          "operation": "dashboard_select_theme_preset",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/dashboard/commands/select_theme_preset.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.Dashboard.Commands.UpdateSection",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "name": "execute",
+          "operation": "dashboard_update_section",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/dashboard/commands/update_section.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.DocCover.Commands.AddCard",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.DocCover.Commands.DocCoverConfirmation",
+          "name": "execute",
+          "operation": "doc_cover_add_card",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_cover/commands/add_card.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.DocCover.Commands.PinDoc",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.DocCover.Commands.DocCoverConfirmation",
+          "name": "execute",
+          "operation": "doc_cover_pin_doc",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_cover/commands/pin_doc.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.DocCover.Commands.RemoveCard",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.DocCover.Commands.DocCoverConfirmation",
+          "name": "execute",
+          "operation": "doc_cover_remove_card",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_cover/commands/remove_card.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.DocCover.Commands.ReorderCards",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.DocCover.Commands.DocCoverConfirmation",
+          "name": "execute",
+          "operation": "doc_cover_reorder_cards",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_cover/commands/reorder_cards.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.DocCover.Commands.ReorderPinnedDocs",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.DocCover.Commands.DocCoverConfirmation",
+          "name": "execute",
+          "operation": "doc_cover_reorder_pinned_docs",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_cover/commands/reorder_pinned_docs.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.DocCover.Commands.UnpinDoc",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.DocCover.Commands.DocCoverConfirmation",
+          "name": "execute",
+          "operation": "doc_cover_unpin_doc",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_cover/commands/unpin_doc.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.DocCover.Commands.UpdateCardAppearance",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "name": "execute",
+          "operation": "doc_cover_update_card_appearance",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_cover/commands/update_card_appearance.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.DocCover.Commands.UpdatePinnedDocAppearance",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "name": "execute",
+          "operation": "doc_cover_update_pinned_doc_appearance",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_cover/commands/update_pinned_doc_appearance.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.DocTree.Commands.CreateGroup",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.TreeConfirmation",
+          "name": "run_tree_receipt",
+          "operation": "doc_tree_create_group",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "internal",
+          "arity": 4,
+          "name": "run_tree_internal",
+          "operation": "doc_tree_create_group_internal",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/create_group.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.DocTree.Commands.CreateLink",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.TreeConfirmation",
+          "name": "run_tree_receipt",
+          "operation": "doc_tree_create_link",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "internal",
+          "arity": 4,
+          "name": "run_tree_internal",
+          "operation": "doc_tree_create_link_internal",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/create_link.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.DocTree.Commands.CreatePage",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.TreeConfirmation",
+          "name": "run_tree_receipt",
+          "operation": "doc_tree_create_page",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "internal",
+          "arity": 4,
+          "name": "run_tree_internal",
+          "operation": "doc_tree_create_page_internal",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/create_page.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.DocTree.Commands.CreatePin",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.TreeConfirmation",
+          "name": "run_tree_receipt",
+          "operation": "doc_tree_create_pin",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "internal",
+          "arity": 4,
+          "name": "run_tree_internal",
+          "operation": "doc_tree_create_pin_internal",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/create_pin.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.DocTree.Commands.CreateTab",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.TreeConfirmation",
+          "name": "run_tree_receipt",
+          "operation": "doc_tree_create_tab",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "internal",
+          "arity": 4,
+          "name": "run_tree_internal",
+          "operation": "doc_tree_create_tab_internal",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/create_tab.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.DocTree.Commands.DeleteNode",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.TreeConfirmation",
+          "name": "run_tree_receipt",
+          "operation": "doc_tree_delete_node",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "internal",
+          "arity": 4,
+          "name": "run_tree_internal",
+          "operation": "doc_tree_delete_node_internal",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/delete_node.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.DocTree.Commands.DuplicateNode",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.TreeConfirmation",
+          "name": "run_tree_receipt",
+          "operation": "doc_tree_duplicate_node",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "internal",
+          "arity": 4,
+          "name": "run_tree_internal",
+          "operation": "doc_tree_duplicate_node_internal",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/duplicate_node.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.DocTree.Commands.MoveDocToDraft",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.MoveDocToDraftConfirmation",
+          "name": "run_receipt",
+          "operation": "doc_move_to_draft",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "user",
+          "arity": 4,
+          "name": "run_direct",
+          "operation": "doc_move_to_draft_write",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/move_doc_to_draft.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.DocTree.Commands.MoveNode",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.TreeConfirmation",
+          "name": "run_tree_receipt",
+          "operation": "doc_tree_move_node",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "internal",
+          "arity": 4,
+          "name": "run_tree_internal",
+          "operation": "doc_tree_move_node_internal",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/move_node.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.DocTree.Commands.MoveSubtreeToDraft",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.MoveSubtreeToDraftConfirmation",
+          "name": "run_receipt",
+          "operation": "doc_move_subtree_to_draft",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "user",
+          "arity": 4,
+          "name": "run_direct",
+          "operation": "doc_move_subtree_to_draft_write",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/move_subtree_to_draft.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.DocTree.Commands.PublishChanges",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 6,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.PublishChangesConfirmation",
+          "name": "run_receipt",
+          "operation": "doc_publish_changes",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "user",
+          "arity": 4,
+          "name": "run_direct",
+          "operation": "doc_publish_changes_write",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/publish_changes.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.DocTree.Commands.RestoreTrashItem",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 8,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.TreeConfirmation",
+          "name": "run_receipt",
+          "operation": "doc_tree_restore_trash_item",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "internal",
+          "arity": 3,
+          "name": "run_internal",
+          "operation": "doc_tree_restore_trash_item_internal",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/restore_trash_item.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.DocTree.Commands.UpdateDraft",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.NodeDraftConfirmation",
+          "name": "run_receipt",
+          "operation": "doc_update_draft",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "user",
+          "arity": 4,
+          "name": "run_direct",
+          "operation": "doc_tree_update_draft_write",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/update_draft.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.DocTree.Commands.UpdateNode",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 7,
+          "confirmation": "GroupherServer.CMS.DocTree.Commands.TreeConfirmation",
+          "name": "run_tree_receipt",
+          "operation": "doc_tree_update_node",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "command_target"
+        },
+        {
+          "access": "internal",
+          "arity": 4,
+          "name": "run_tree_internal",
+          "operation": "doc_tree_update_node_internal",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/doc_tree/commands/update_node.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Docs.Commands.PublishBranch",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "name": "execute_pipeline",
+          "operation": "doc_publish_branch",
+          "pipeline": "direct_pipeline",
+          "stages": ["prepare", "gate", "change"],
+          "target": "doc_id"
+        }
+      ],
+      "source": "lib/groupher_server/cms/docs/commands/publish_branch.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [5],
+      "module": "GroupherServer.CMS.Docs.Commands.RestoreRevisionToDraft",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 5,
+          "name": "execute_pipeline",
+          "operation": "doc_restore_revision_to_draft",
+          "pipeline": "direct_pipeline",
+          "stages": ["prepare", "gate", "change"],
+          "target": "doc_id"
+        }
+      ],
+      "source": "lib/groupher_server/cms/docs/commands/restore_revision_to_draft.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Docs.Commands.UpdateDraft",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "name": "execute_pipeline",
+          "operation": "doc_update_draft_write",
+          "pipeline": "direct_pipeline",
+          "stages": ["prepare", "gate", "change"],
+          "target": "doc_id"
+        }
+      ],
+      "source": "lib/groupher_server/cms/docs/commands/update_draft.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Kanban.Commands.Add",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "name": "execute_pipeline",
+          "operation": "kanban_add",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/kanban/commands/add.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Kanban.Commands.Move",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "name": "execute_pipeline",
+          "operation": "kanban_move",
+          "pipeline": "direct_pipeline",
+          "stages": ["prepare", "gate", "change"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/kanban/commands/move.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Kanban.Commands.Remove",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 3,
+          "name": "execute_pipeline",
+          "operation": "kanban_remove",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/kanban/commands/remove.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Kanban.Commands.SetStatus",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "name": "execute_pipeline",
+          "operation": "kanban_set_status",
+          "pipeline": "direct_pipeline",
+          "stages": ["gate", "change"],
+          "target": "article"
+        }
+      ],
+      "source": "lib/groupher_server/cms/kanban/commands/set_status.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [4],
+      "module": "GroupherServer.CMS.Press.Commands.UpdateConfig",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Press.Commands.UpdateConfig.Confirmation",
+          "name": "execute_pipeline",
+          "operation": "press_config_update",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/press/commands/update_config.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Wallpaper.Commands.Publish",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Wallpaper.Commands.Confirmation",
+          "name": "run_receipt",
+          "operation": "wallpaper_publish",
+          "pipeline": "receipt_pipeline",
+          "stages": ["prepare", "gate", "change", "confirm", "present", "cleanup"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/wallpaper/commands/publish.ex",
+      "status": "covered"
+    },
+    {
+      "execute_arities": [3],
+      "module": "GroupherServer.CMS.Wallpaper.Commands.RestoreSnapshot",
+      "pipelines": [
+        {
+          "access": "user",
+          "arity": 4,
+          "confirmation": "GroupherServer.CMS.Wallpaper.Commands.Confirmation",
+          "name": "run_receipt",
+          "operation": "wallpaper_restore_snapshot",
+          "pipeline": "receipt_pipeline",
+          "stages": ["gate", "change", "confirm", "present"],
+          "target": "community"
+        }
+      ],
+      "source": "lib/groupher_server/cms/wallpaper/commands/restore_snapshot.ex",
+      "status": "covered"
+    }
+  ],
+  "schema_version": 3,
+  "scope": "cms/**/commands modules exporting execute/*",
+  "totals": {
+    "commands": 93,
+    "covered": 93,
+    "uncovered": 0
+  }
+}

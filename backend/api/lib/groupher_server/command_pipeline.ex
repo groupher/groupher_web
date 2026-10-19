@@ -1,0 +1,590 @@
+defmodule GroupherServer.CommandPipeline do
+  @moduledoc """
+  Compile-time declaration for Backend command pipelines.
+
+  The declaration is intentionally small: a command still owns the private
+  business functions, while this module owns the public execution order and
+  the protocol selected by the command (`receipt_pipeline`, `direct_pipeline`,
+  or `workflow_pipeline`).
+
+      Command declaration
+        -> pipeline macro
+        -> ordered runner stages
+        -> Gate / Lifecycle / Persist contract
+  """
+
+  alias GroupherServer.CommandPipeline.Runner
+
+  @stage_order [
+    :prepare,
+    :load,
+    :gate,
+    :lifecycle,
+    :change,
+    :workflow,
+    :confirm,
+    :present,
+    :on_rejection,
+    :cleanup
+  ]
+
+  defmacro __using__(opts) do
+    Module.register_attribute(__CALLER__.module, :pipeline, persist: false)
+
+    adapter = Keyword.get(opts, :adapter, GroupherServer.CommandPipeline.DefaultAdapter)
+    Module.register_attribute(__CALLER__.module, :pipeline_adapter, persist: true)
+    Module.put_attribute(__CALLER__.module, :pipeline_adapter, adapter)
+
+    Module.register_attribute(__CALLER__.module, :pipeline_contracts,
+      accumulate: true,
+      persist: true
+    )
+
+    quote do
+      import GroupherServer.CommandPipeline,
+        only: [
+          receipt_pipeline: 2,
+          direct_pipeline: 2,
+          workflow_pipeline: 2,
+          prepare: 1,
+          load: 1,
+          gate: 1,
+          lifecycle: 1,
+          change: 1,
+          workflow: 1,
+          confirm: 1,
+          present: 1,
+          on_rejection: 1,
+          cleanup: 1,
+          step: 2,
+          return: 1
+        ]
+
+      @before_compile GroupherServer.CommandPipeline
+    end
+  end
+
+  defmacro receipt_pipeline(head, do: body) do
+    build_pipeline(__CALLER__, :receipt_pipeline, head, body)
+  end
+
+  defmacro direct_pipeline(head, do: body) do
+    build_pipeline(__CALLER__, :direct_pipeline, head, body)
+  end
+
+  defmacro workflow_pipeline(head, do: body) do
+    build_workflow(__CALLER__, head, body)
+  end
+
+  defmacro __before_compile__(env) do
+    contracts = Module.get_attribute(env.module, :pipeline_contracts) || []
+    contracts = Enum.reverse(contracts)
+    validate_compiled_contracts!(contracts, env.module)
+
+    clauses =
+      Enum.map(contracts, fn contract ->
+        quote do
+          def __pipeline_contract__(unquote(contract.name)), do: unquote(Macro.escape(contract))
+        end
+      end)
+
+    quote do
+      @doc false
+      def __pipeline_contracts__, do: unquote(Macro.escape(contracts))
+      unquote_splicing(clauses)
+    end
+  end
+
+  # Stage macros exist only so the quoted body has a stable, readable shape if
+  # a caller accidentally expands it before the outer pipeline macro consumes
+  # it. The outer macro removes all stage calls from the generated function.
+  defmacro prepare(value), do: value
+  defmacro load(value), do: value
+  defmacro gate(value), do: value
+  defmacro lifecycle(value), do: value
+  defmacro change(value), do: value
+  defmacro workflow(value), do: value
+  defmacro confirm(value), do: value
+  defmacro present(value), do: value
+  defmacro on_rejection(value), do: value
+  defmacro cleanup(value), do: value
+  defmacro step(name, value), do: {name, value}
+  defmacro return(value), do: value
+
+  defp build_pipeline(caller, pipeline_type, head, body) do
+    {name, args} = function_head!(head, pipeline_type)
+    forms = body_forms(body)
+    stages = parse_stages!(forms, caller)
+    validate_pipeline_structure!(pipeline_type, stages)
+    rejection_builder = rejection_builder!(stages, caller)
+    args_map = args_map_ast(args)
+    adapter = pipeline_adapter(caller)
+    stage_ast = stage_functions_ast(stages, adapter)
+    arguments = Enum.map(args, &arg_name!/1)
+    actor = actor_argument!(arguments, caller.module)
+    command_id = command_id_argument!(pipeline_type, arguments, caller.module)
+
+    quote do
+      @pipeline_contracts %{
+        pipeline: unquote(pipeline_type),
+        module: __MODULE__,
+        adapter: unquote(adapter),
+        name: unquote(name),
+        arity: unquote(length(args)),
+        arguments: unquote(arguments),
+        operation: @pipeline[:operation],
+        confirmation: @pipeline[:confirmation],
+        access: @pipeline[:access] || :user,
+        actor: unquote(actor),
+        command_id: unquote(command_id),
+        operation_ref: @pipeline[:operation_ref],
+        target: @pipeline[:target],
+        params: @pipeline[:params],
+        rejection_builder: unquote(Macro.escape(rejection_builder)),
+        stages: unquote(Enum.map(stages, &elem(&1, 0)))
+      }
+
+      def unquote(name)(unquote_splicing(args)) do
+        contract = __pipeline_contract__(unquote(name))
+        input = Runner.build_input(unquote(args_map), contract)
+
+        Runner.unquote(run_function(pipeline_type))(
+          __MODULE__,
+          contract,
+          input,
+          unquote(stage_ast)
+        )
+      end
+
+      Module.delete_attribute(__MODULE__, :pipeline)
+    end
+  end
+
+  defp build_workflow(caller, head, body) do
+    {name, args} = function_head!(head, :workflow_pipeline)
+    forms = body_forms(body)
+    {steps, return_name} = parse_workflow!(forms, caller)
+
+    contract = %{
+      pipeline: :workflow_pipeline,
+      module: caller.module,
+      adapter: pipeline_adapter(caller),
+      name: name,
+      arity: length(args),
+      steps: Enum.map(steps, &elem(&1, 0)),
+      return: return_name
+    }
+
+    args_map = args_map_ast(args)
+    step_ast = workflow_steps_ast(steps)
+
+    quote do
+      @pipeline_contracts unquote(Macro.escape(contract))
+
+      def unquote(name)(unquote_splicing(args)) do
+        input = %{arguments: unquote(args_map)}
+
+        Runner.run_workflow(
+          __MODULE__,
+          unquote(Macro.escape(contract)),
+          input,
+          unquote(step_ast),
+          unquote(return_name)
+        )
+      end
+    end
+  end
+
+  defp run_function(:receipt_pipeline), do: :run_receipt
+  defp run_function(:direct_pipeline), do: :run_direct
+
+  defp pipeline_adapter(caller) do
+    caller.module
+    |> Module.get_attribute(:pipeline_adapter)
+    |> Macro.expand(caller)
+  end
+
+  defp function_head!({:when, _meta, [head | _guards]}, pipeline_type) do
+    raise ArgumentError,
+          "#{pipeline_type} does not support guards in pipeline function heads: #{Macro.to_string(head)}"
+  end
+
+  defp function_head!({name, _meta, args}, pipeline_type) when is_atom(name) and is_list(args) do
+    validate_function_args!(args, pipeline_type)
+    {name, args}
+  end
+
+  defp function_head!(other, pipeline_type) do
+    raise ArgumentError,
+          "#{pipeline_type} expects a function head, got: #{Macro.to_string(other)}"
+  end
+
+  defp validate_function_args!(args, pipeline_type) do
+    Enum.each(args, fn
+      {name, _meta, context} when is_atom(name) and is_atom(context) and name != :_ ->
+        {:ok, :pass}
+
+      arg ->
+        raise ArgumentError,
+              "#{pipeline_type} only supports simple arguments; guards, defaults, and patterns are not supported: #{Macro.to_string(arg)}"
+    end)
+  end
+
+  defp actor_argument!(arguments, module) do
+    case Enum.filter([:actor, :user, :author], &(&1 in arguments)) do
+      [actor] ->
+        actor
+
+      [] ->
+        nil
+
+      actors ->
+        raise ArgumentError, "#{inspect(module)} pipeline actor is ambiguous: #{inspect(actors)}"
+    end
+  end
+
+  defp command_id_argument!(:receipt_pipeline, arguments, module) do
+    if :command_id in arguments do
+      :command_id
+    else
+      raise ArgumentError, "#{inspect(module)} receipt_pipeline requires command_id argument"
+    end
+  end
+
+  defp command_id_argument!(:direct_pipeline, _arguments, _module), do: nil
+
+  defp arg_name!({name, _meta, context}) when is_atom(name) and is_atom(context) and name != :_,
+    do: name
+
+  defp body_forms({:__block__, _meta, forms}), do: forms
+  defp body_forms(form), do: [form]
+
+  defp parse_stages!(forms, caller) do
+    Enum.map(forms, fn
+      {stage, _meta, [callback]} when stage in @stage_order and stage not in [:step, :return] ->
+        validate_callback!(stage, callback, caller)
+        {stage, callback}
+
+      {stage, _meta, args} when is_atom(stage) ->
+        raise ArgumentError, "pipeline stage #{stage}/#{length(args)} has invalid syntax"
+
+      other ->
+        raise ArgumentError, "unknown pipeline form: #{Macro.to_string(other)}"
+    end)
+  end
+
+  defp parse_workflow!(forms, caller) do
+    {steps, returns} =
+      Enum.reduce(forms, {[], []}, fn
+        {:step, _meta, [name, callback]}, {steps, returns} when is_atom(name) ->
+          validate_callback!("step #{name}", callback, caller, 1)
+          {[{name, callback} | steps], returns}
+
+        {:return, _meta, [name]}, {steps, returns} when is_atom(name) ->
+          {steps, [name | returns]}
+
+        {stage, _meta, args}, _acc ->
+          raise ArgumentError, "workflow_pipeline does not support #{stage}/#{length(args)}"
+
+        other, _acc ->
+          raise ArgumentError, "unknown workflow form: #{Macro.to_string(other)}"
+      end)
+
+    steps = Enum.reverse(steps)
+    returns = Enum.reverse(returns)
+
+    if steps == [], do: raise(ArgumentError, "workflow_pipeline needs at least one step")
+
+    if length(returns) != 1,
+      do: raise(ArgumentError, "workflow_pipeline needs exactly one return")
+
+    return_name = List.first(returns)
+
+    if return_name not in Enum.map(steps, &elem(&1, 0)),
+      do: raise(ArgumentError, "workflow return references unknown step #{inspect(return_name)}")
+
+    if length(Enum.uniq(Enum.map(steps, &elem(&1, 0)))) != length(steps),
+      do: raise(ArgumentError, "workflow step names must be unique")
+
+    {steps, return_name}
+  end
+
+  defp validate_pipeline_structure!(pipeline_type, stages) do
+    names = Enum.map(stages, &elem(&1, 0))
+
+    if length(names) != length(Enum.uniq(names)),
+      do: raise(ArgumentError, "pipeline stages must be unique")
+
+    indexes = Enum.map(names, &Enum.find_index(@stage_order, fn stage -> stage == &1 end))
+
+    unless indexes == Enum.sort(indexes),
+      do: raise(ArgumentError, "pipeline stages must be declared in execution order")
+
+    if :change in names and :workflow in names,
+      do: raise(ArgumentError, "pipeline cannot declare both change and workflow")
+
+    if pipeline_type == :receipt_pipeline and :confirm not in names,
+      do: raise(ArgumentError, "receipt_pipeline requires confirm")
+
+    if :load in names and :gate in names,
+      do: raise(ArgumentError, "load and gate are mutually exclusive")
+  end
+
+  defp rejection_builder!(stages, caller) do
+    case Keyword.get(stages, :on_rejection) do
+      nil ->
+        nil
+
+      callback ->
+        case local_capture(callback) do
+          {name, 1} ->
+            {caller.module, name, 1}
+
+          _ ->
+            raise ArgumentError,
+                  "on_rejection must use a local function capture such as &build_rejection/1"
+        end
+    end
+  end
+
+  defp local_capture({:&, _meta, [{:/, _capture_meta, [{name, _name_meta, context}, 1]}]})
+       when is_atom(name) and (is_atom(context) or is_nil(context)),
+       do: {name, 1}
+
+  defp local_capture(_callback), do: nil
+
+  defp validate_compiled_contracts!(contracts, module) do
+    Enum.each(contracts, fn contract ->
+      unless contract.pipeline == :workflow_pipeline do
+        unless is_atom(contract.operation),
+          do:
+            raise(
+              ArgumentError,
+              "#{inspect(module)} #{contract.pipeline} requires @pipeline operation"
+            )
+
+        unless contract.access in [:user, :internal, :open],
+          do:
+            raise(
+              ArgumentError,
+              "#{inspect(module)} @pipeline access must be :user, :internal, or :open"
+            )
+
+        validate_target!(contract, module)
+        validate_argument_reference!(contract, module, :operation_ref)
+
+        if contract.pipeline == :receipt_pipeline and is_nil(contract.params),
+          do: raise(ArgumentError, "#{inspect(module)} receipt_pipeline requires params")
+
+        if contract.access == :user and :gate not in contract.stages,
+          do: raise(ArgumentError, "#{inspect(module)} user pipeline requires gate")
+
+        if contract.access == :user and is_nil(contract.actor),
+          do:
+            raise(
+              ArgumentError,
+              "#{inspect(module)} user pipeline requires actor/user/author argument"
+            )
+
+        if contract.access == :open and :gate in contract.stages,
+          do: raise(ArgumentError, "#{inspect(module)} open pipeline cannot declare gate")
+
+        if contract.access == :open and :on_rejection in contract.stages and
+             is_nil(contract.actor),
+           do:
+             raise(
+               ArgumentError,
+               "#{inspect(module)} open pipeline with on_rejection requires actor/user/author argument"
+             )
+
+        if not (:change in contract.stages or :workflow in contract.stages),
+          do: raise(ArgumentError, "#{inspect(module)} pipeline requires change or workflow")
+
+        if contract.pipeline == :receipt_pipeline and not is_atom(contract.confirmation),
+          do: raise(ArgumentError, "#{inspect(module)} receipt_pipeline requires confirmation")
+
+        if contract.pipeline == :direct_pipeline and
+             (:confirm in contract.stages or not is_nil(contract.confirmation)),
+           do:
+             raise(
+               ArgumentError,
+               "#{inspect(module)} direct_pipeline cannot declare confirmation or confirm"
+             )
+
+        validate_adapter!(contract, module)
+
+        validate_rejection_builder!(contract, module)
+      end
+    end)
+  end
+
+  defp validate_adapter!(contract, module) do
+    adapter = contract.adapter
+
+    unless is_atom(adapter) do
+      raise ArgumentError, "#{inspect(module)} pipeline adapter is not available: #{inspect(adapter)}"
+    end
+
+    case Code.ensure_compiled(adapter) do
+      {:module, _adapter} -> {:ok, :pass}
+      {:error, reason} ->
+        raise ArgumentError,
+              "#{inspect(module)} pipeline adapter is not available: #{inspect(adapter)} (#{inspect(reason)})"
+    end
+
+    required =
+      [:validate_contract, :normalize_gate_result, :normalize_transaction_error, :normalize_source,
+       :valid_source?, :record_rejection]
+      |> Kernel.++(if(contract.pipeline == :receipt_pipeline, do: [:validate_command_id, :execute_receipt], else: []))
+
+    missing = Enum.reject(required, &function_exported?(adapter, &1, adapter_arity(&1)))
+
+    if missing != [] do
+      raise ArgumentError,
+            "#{inspect(module)} pipeline adapter #{inspect(adapter)} is missing #{inspect(missing)}"
+    end
+
+    case adapter.validate_contract(contract) do
+      {:ok, :pass} -> {:ok, :pass}
+      {:error, reason} ->
+        raise ArgumentError,
+              "#{inspect(module)} pipeline contract rejected by #{inspect(adapter)}: #{inspect(reason)}"
+
+      other ->
+        raise ArgumentError,
+              "#{inspect(module)} pipeline adapter #{inspect(adapter)} returned invalid contract validation: #{inspect(other)}"
+    end
+  end
+
+  defp adapter_arity(:validate_contract), do: 1
+  defp adapter_arity(:validate_command_id), do: 1
+  defp adapter_arity(:execute_receipt), do: 5
+  defp adapter_arity(:normalize_gate_result), do: 1
+  defp adapter_arity(:normalize_transaction_error), do: 1
+  defp adapter_arity(:normalize_source), do: 1
+  defp adapter_arity(:valid_source?), do: 1
+  defp adapter_arity(:record_rejection), do: 1
+
+  defp validate_rejection_builder!(%{stages: stages, rejection_builder: nil}, _module) do
+    if :on_rejection in stages,
+      do: raise(ArgumentError, "on_rejection requires a local builder")
+  end
+
+  defp validate_rejection_builder!(
+         %{stages: stages, rejection_builder: {builder_module, name, arity}},
+         module
+       ) do
+    if :on_rejection not in stages do
+      raise ArgumentError, "rejection_builder metadata requires on_rejection"
+    end
+
+    unless builder_module == module and Module.defines?(module, {name, arity}, :defp) do
+      raise ArgumentError,
+            "#{inspect(module)} on_rejection builder must be a private defp #{name}/#{arity}"
+    end
+  end
+
+  defp validate_target!(contract, module) do
+    target = contract[:target]
+
+    cond do
+      is_nil(target) ->
+        raise ArgumentError, "#{inspect(module)} #{contract.pipeline} requires @pipeline target"
+
+      not is_atom(target) ->
+        raise ArgumentError, "#{inspect(module)} @pipeline target must be an argument name atom"
+
+      target not in Map.get(contract, :arguments, []) ->
+        raise ArgumentError,
+              "#{inspect(module)} @pipeline target #{inspect(target)} is not a function argument"
+
+      true ->
+        {:ok, :pass}
+    end
+  end
+
+  defp validate_argument_reference!(contract, module, key) do
+    case Map.get(contract, key) do
+      nil ->
+        {:ok, :pass}
+
+      argument when is_atom(argument) ->
+        if argument in contract.arguments do
+          {:ok, :pass}
+        else
+          raise ArgumentError,
+                "#{inspect(module)} @pipeline #{key} #{inspect(argument)} is not a function argument"
+        end
+
+      argument ->
+        raise ArgumentError,
+              "#{inspect(module)} @pipeline #{key} #{inspect(argument)} is not a function argument"
+    end
+  end
+
+  defp validate_callback!(stage, callback, caller, expected \\ nil) do
+    arity = callback_arity(callback)
+    expected = expected || if(stage in [:prepare, :load], do: 0, else: 1)
+
+    unless arity == expected do
+      raise ArgumentError, "#{stage} callback must have arity #{expected}, got #{inspect(arity)}"
+    end
+
+    _ = caller
+    {:ok, :pass}
+  end
+
+  defp callback_arity({:fn, _meta, clauses}) do
+    clauses
+    |> Enum.map(fn
+      {:->, _meta, [args, _body]} -> length(args)
+      _ -> -1
+    end)
+    |> Enum.uniq()
+    |> case do
+      [arity] -> arity
+      _ -> :multiple
+    end
+  end
+
+  defp callback_arity({:&, _meta, [{:/, _capture_meta, [_function, arity]}]})
+       when is_integer(arity),
+       do: arity
+
+  defp callback_arity(_), do: :unknown
+
+  defp args_map_ast(args) do
+    pairs =
+      args
+      |> Enum.with_index()
+      |> Enum.map(fn {arg, index} -> {arg_key(arg, index), arg} end)
+      |> Enum.reject(fn {_key, value} -> match?({:^, _, _}, value) end)
+
+    quote do
+      %{unquote_splicing(pairs)}
+    end
+  end
+
+  defp arg_key({name, _meta, context}, _index) when is_atom(name) and is_atom(context), do: name
+  defp arg_key(_arg, index), do: String.to_atom("arg#{index + 1}")
+
+  defp stage_functions_ast(stages, adapter) do
+    Enum.map(stages, fn
+      {:gate, callback} ->
+        {:gate,
+         quote do
+             fn value ->
+             unquote(callback).(value)
+             |> unquote(adapter).normalize_gate_result()
+           end
+         end}
+
+      stage ->
+        stage
+    end)
+  end
+
+  defp workflow_steps_ast(steps) do
+    Enum.map(steps, fn {name, callback} -> {name, callback} end)
+  end
+end

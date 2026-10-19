@@ -5,10 +5,37 @@ defmodule GroupherServer.Accounts.Fans.Commands.Unfollow do
       Facade -> Unfollow command -> Persist + Effects -> commit -> delivery
   """
 
-  alias GroupherServer.{Accounts, Repo}
+  alias GroupherServer.Accounts
   alias Accounts.Fans.{Effects, ErrorCat, Persist}
   alias Accounts.Model.User
-  alias Ecto.Multi
+
+  use GroupherServer.CommandPipeline
+
+  @pipeline operation: :accounts_fans_unfollow, access: :open, target: :user
+
+  direct_pipeline execute_pipeline(user, follower) do
+    prepare(fn -> Persist.prepare_pair(user, follower) end)
+
+    change(fn %{user: user, target_user: target_user} ->
+      with {:ok, _relationship} <- Persist.delete_relationships(target_user, user),
+           {:ok, target_user} <- Persist.update_follow_info(target_user, user, :remove),
+           {:ok, _achievement} <- record_achievement(target_user, :dec),
+           {:ok, _event} <- Effects.enqueue_event(:undo_follow, user, target_user) do
+        {:ok, %{user: user, target_user: target_user}}
+      else
+        {:error, {:delete_follower_failed, _reason}} ->
+          {:error, ErrorCat.already_did("already unfollowed")}
+
+        {:error, _reason} = error ->
+          error
+      end
+    end)
+
+    present(fn %{user: user, target_user: target_user} = result ->
+      _ = Effects.revalidate_users([user, target_user])
+      {:ok, result.target_user}
+    end)
+  end
 
   @doc """
   Removes the follower relationship and its account effects.
@@ -18,41 +45,12 @@ defmodule GroupherServer.Accounts.Fans.Commands.Unfollow do
       Accounts.Fans.Commands.Unfollow.run(follower, target_user)
   """
   @spec run(User.t(), User.t()) :: {:ok, User.t()} | {:error, term()}
-  def run(%User{} = user, %User{} = follower) do
-    with {:ok, %{user: user, target_user: target_user}} <- Persist.prepare_pair(user, follower) do
-      result =
-        Multi.new()
-        |> Multi.run(:delete_relationships, fn _, _ ->
-          Persist.delete_relationships(target_user, user)
-        end)
-        |> Multi.run(:update_user_follow_info, fn _, _ ->
-          Persist.update_follow_info(target_user, user, :remove)
-        end)
-        |> Multi.run(:minus_achievement, fn _, _ ->
-          Effects.record_achievement(target_user, :dec)
-        end)
-        |> Multi.run(:enqueue_event, fn _, _ ->
-          Effects.enqueue_event(:undo_follow, user, target_user)
-        end)
-        |> Repo.transaction()
+  def run(%User{} = user, %User{} = follower), do: execute_pipeline(user, follower)
 
-      case result do
-        {:ok, %{update_user_follow_info: target_user}} ->
-          Effects.revalidate_users([user, target_user])
-          {:ok, target_user}
-
-        {:error, :delete_relationships, {:delete_follower_failed, _reason}, _steps} ->
-          {:error, ErrorCat.already_did("already unfollowed")}
-
-        {:error, :delete_relationships, {_step, reason}, _steps} ->
-          {:error, reason}
-
-        {:error, :minus_achievement, _reason, _steps} ->
-          {:error, ErrorCat.react_fails("follow acieve fails")}
-
-        {:error, _step, reason, _steps} ->
-          {:error, reason}
-      end
+  defp record_achievement(target_user, operation) do
+    case Effects.record_achievement(target_user, operation) do
+      {:ok, value} -> {:ok, value}
+      {:error, _reason} -> {:error, ErrorCat.react_fails("follow achieve fails")}
     end
   end
 end

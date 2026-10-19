@@ -15,22 +15,35 @@ defmodule GroupherServer.CMS.Articles.Commands.UpdateDraft do
   alias CMS.Model.{Article, Author, Community}
   alias GroupherServer.FrontDesk, as: RootFrontDesk
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+  @pipeline operation: :article_update_draft,
+            target: :article_id,
+            params: [:attrs, :opts]
+  direct_pipeline execute_pipeline(article_id, attrs, actor, opts) do
+    prepare(fn ->
+      with {:ok, article} <- stable_article(article_id),
+           {:ok, author} <- target_author(actor),
+           {:ok, community} <- explicit_community(opts) do
+        {:ok, %{article: article, author: author, community: community}}
+      end
+    end)
+
+    gate(fn %{article: article, author: author, community: community} ->
+      with {:ok, canonical} <-
+             CMS.Gate.check_in_transaction(actor_user(actor), :edit, article, community) do
+        {:ok, {canonical, author}}
+      end
+    end)
+
+    change(fn {canonical, author} -> Store.update_loaded(canonical, attrs, author, opts) end)
+  end
+
   @spec execute(Ecto.UUID.t(), map(), User.t() | Author.t(), keyword()) ::
           {:ok, struct()} | {:error, term()}
   def execute(article_id, attrs, actor, opts) when is_binary(article_id) do
-    with {:ok, article} <- stable_article(article_id),
-         {:ok, author} <- target_author(actor),
-         {:ok, community} <- explicit_community(opts) do
-      CMS.Gate.with_community_check(
-        actor_user(actor),
-        :edit,
-        community,
-        article,
-        fn canonical ->
-          Store.update(canonical, attrs, author, opts)
-        end
-      )
-    end
+    execute_pipeline(article_id, attrs, actor, opts)
   end
 
   defp target_author(%Author{} = author), do: {:ok, author}

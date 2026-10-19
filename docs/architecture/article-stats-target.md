@@ -565,10 +565,10 @@ ArticleStats.CachePolicy
 Shared QueryClient defaults
   └─ Article content browser stale time
 
-PublicCache.Policy
+PublicCache.DeliveryConfig
   ├─ timeout / retry budget
   ├─ retry delay
-  └─ health and telemetry sink
+  └─ delivery lease / pending SLO
 
 Interactions.Config
   ├─ emotion vocabulary

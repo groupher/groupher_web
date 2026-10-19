@@ -49,7 +49,8 @@ defmodule GroupherServer.CMS.DocTree.Persist.DraftDoc do
   def update(%Community{} = community, branch, doc_id, args, %User{} = user) do
     with {:ok, _} <- validate_update_attrs(args),
          {:ok, site_state} <- State.ensure_site_state(community, branch_id: branch.id),
-         {:ok, draft} <- CMS.Docs.update_draft(doc_id, branch.id, args, user),
+         {:ok, draft} <-
+           CMS.Docs.Commands.UpdateDraft.execute_after_gate(doc_id, branch.id, args, user),
          {:ok, _state} <- Revision.bump_site_draft(community, site_state) do
       {:ok, draft}
     end

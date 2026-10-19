@@ -9,7 +9,7 @@ defmodule GroupherServer.Activity.Const do
       Activity producer -> Activity.Const -> Event/schema validation
   """
 
-  @sources [:api, :admin, :worker, :scheduler, :maintenance]
+  @sources [:api, :admin, :worker, :scheduler, :maintenance, :operations]
   @actor_types [:user, :system]
   @outcomes [:allowed, :denied]
   @surfaces [:article_log, :community_log]
@@ -78,6 +78,7 @@ defmodule GroupherServer.Activity.Const do
   def normalize_source("worker"), do: :worker
   def normalize_source("scheduler"), do: :scheduler
   def normalize_source("maintenance"), do: :maintenance
+  def normalize_source("operations"), do: :operations
   def normalize_source(source), do: source
 
   @doc """

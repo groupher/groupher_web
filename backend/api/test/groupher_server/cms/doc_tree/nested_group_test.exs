@@ -14,14 +14,14 @@ defmodule GroupherServer.Test.CMS.DocTree.NestedGroup do
       {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, tab} =
-        CMS.DocTree.create_node(community, %{
+        CMS.DocTree.create_node_internal(community, %{
           type: :tab,
           title: "Docs",
           base_revision: state.tree_lock_version
         })
 
       {:ok, guide} =
-        CMS.DocTree.create_node(community, %{
+        CMS.DocTree.create_node_internal(community, %{
           type: :group,
           parent_node_id: tab.node.id,
           title: "Guide",
@@ -29,7 +29,7 @@ defmodule GroupherServer.Test.CMS.DocTree.NestedGroup do
         })
 
       {:ok, advanced} =
-        CMS.DocTree.create_node(community, %{
+        CMS.DocTree.create_node_internal(community, %{
           type: :group,
           parent_node_id: guide.node.id,
           title: "Advanced",
@@ -37,7 +37,7 @@ defmodule GroupherServer.Test.CMS.DocTree.NestedGroup do
         })
 
       {:ok, page} =
-        CMS.DocTree.create_node(
+        CMS.DocTree.create_node_internal(
           community,
           %{
             type: :page,
@@ -67,7 +67,7 @@ defmodule GroupherServer.Test.CMS.DocTree.NestedGroup do
       assert page_node.type == :page
 
       assert {:error, %ErrorCat.Error{reason: :custom, details: message}} =
-               CMS.DocTree.move_node(community, guide.node.id, %{
+               CMS.DocTree.move_node_internal(community, guide.node.id, %{
                  target_parent_node_id: advanced.node.id,
                  target_index: 0,
                  base_revision: page.revision
@@ -76,7 +76,7 @@ defmodule GroupherServer.Test.CMS.DocTree.NestedGroup do
       assert message =~ "descendant"
 
       assert {:error, %ErrorCat.Error{reason: :custom, details: parent_message}} =
-               CMS.DocTree.create_node(
+               CMS.DocTree.create_node_internal(
                  community,
                  %{
                    type: :page,
@@ -94,7 +94,7 @@ defmodule GroupherServer.Test.CMS.DocTree.NestedGroup do
       ~m(user community guide page)a = context
 
       assert {:ok, duplicated} =
-               CMS.DocTree.duplicate_node(community, guide.node.id, %{
+               CMS.DocTree.duplicate_node_internal(community, guide.node.id, %{
                  actor_id: user.id,
                  base_revision: page.revision
                })
@@ -130,7 +130,7 @@ defmodule GroupherServer.Test.CMS.DocTree.NestedGroup do
                                                                              {parent_node_id,
                                                                               revision, nodes} ->
           assert {:ok, created} =
-                   CMS.DocTree.create_node(community, %{
+                   CMS.DocTree.create_node_internal(community, %{
                      type: :group,
                      parent_node_id: parent_node_id,
                      title: "Depth #{depth}",
@@ -141,7 +141,7 @@ defmodule GroupherServer.Test.CMS.DocTree.NestedGroup do
         end)
 
       assert {:error, %ErrorCat.Error{reason: :custom, details: create_message}} =
-               CMS.DocTree.create_node(community, %{
+               CMS.DocTree.create_node_internal(community, %{
                  type: :group,
                  parent_node_id: deepest_node_id,
                  title: "Too deep",
@@ -151,7 +151,7 @@ defmodule GroupherServer.Test.CMS.DocTree.NestedGroup do
       assert create_message =~ "maximum depth of #{max_depth}"
 
       assert {:ok, movable} =
-               CMS.DocTree.create_node(community, %{
+               CMS.DocTree.create_node_internal(community, %{
                  type: :group,
                  parent_node_id: tab.node.id,
                  title: "Movable",
@@ -159,7 +159,7 @@ defmodule GroupherServer.Test.CMS.DocTree.NestedGroup do
                })
 
       assert {:ok, movable_child} =
-               CMS.DocTree.create_node(community, %{
+               CMS.DocTree.create_node_internal(community, %{
                  type: :group,
                  parent_node_id: movable.node.id,
                  title: "Movable child",
@@ -167,7 +167,7 @@ defmodule GroupherServer.Test.CMS.DocTree.NestedGroup do
                })
 
       assert {:error, %ErrorCat.Error{reason: :custom, details: move_message}} =
-               CMS.DocTree.move_node(community, movable.node.id, %{
+               CMS.DocTree.move_node_internal(community, movable.node.id, %{
                  target_parent_node_id: Map.fetch!(nodes_by_depth, max_depth - 1),
                  target_index: 0,
                  base_revision: movable_child.revision

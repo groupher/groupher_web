@@ -71,10 +71,55 @@ defmodule GroupherServer.CMS.DocTree do
   end
 
   @doc "Creates one recursive navigation node using its declared node type."
-  @spec create_node(Community.t(), map(), User.t() | nil) :: T.domain_res(map())
-  def create_node(%Community{} = community, args, user \\ nil) do
-    Commands.CreateNode.execute(community, with_actor(args, user), user)
+  @spec create_node_internal(Community.t(), map(), User.t() | nil) :: T.domain_res(map())
+  def create_node_internal(%Community{} = community, args) do
+    dispatch_create_node_internal(community, args, nil)
   end
+
+  def create_node_internal(%Community{} = community, args, user) do
+    dispatch_create_node_internal(community, with_actor(args, user), user)
+  end
+
+  @doc "Creates one typed navigation node through the retry-safe Receipt pipeline."
+  def create_node_receipt(%Community{} = community, args, %User{} = user) do
+    dispatch_create_node(community, with_actor(args, user), user)
+  end
+
+  defp dispatch_create_node_internal(community, %{type: :tab} = args, user),
+    do: Commands.CreateTab.execute_internal(community, args, user)
+
+  defp dispatch_create_node_internal(community, %{type: :group} = args, user),
+    do: Commands.CreateGroup.execute_internal(community, args, user)
+
+  defp dispatch_create_node_internal(community, %{type: :page} = args, user),
+    do: Commands.CreatePage.execute_internal(community, args, user)
+
+  defp dispatch_create_node_internal(community, %{type: :link} = args, user),
+    do: Commands.CreateLink.execute_internal(community, args, user)
+
+  defp dispatch_create_node_internal(community, %{type: :pin} = args, user),
+    do: Commands.CreatePin.execute_internal(community, args, user)
+
+  defp dispatch_create_node_internal(_community, _args, _user),
+    do: {:error, CMS.ErrorCat.custom("unsupported docs tree node type")}
+
+  defp dispatch_create_node(community, %{type: :tab} = args, user),
+    do: Commands.CreateTab.execute(community, args, user)
+
+  defp dispatch_create_node(community, %{type: :group} = args, user),
+    do: Commands.CreateGroup.execute(community, args, user)
+
+  defp dispatch_create_node(community, %{type: :page} = args, user),
+    do: Commands.CreatePage.execute(community, args, user)
+
+  defp dispatch_create_node(community, %{type: :link} = args, user),
+    do: Commands.CreateLink.execute(community, args, user)
+
+  defp dispatch_create_node(community, %{type: :pin} = args, user),
+    do: Commands.CreatePin.execute(community, args, user)
+
+  defp dispatch_create_node(_community, _args, _user),
+    do: {:error, CMS.ErrorCat.custom("unsupported docs tree node type")}
 
   @doc """
   Builds the unified docs publish checklist.
@@ -98,7 +143,11 @@ defmodule GroupherServer.CMS.DocTree do
       {:ok, %{done: true}}
   """
   @spec publish_changes(Community.t(), map(), User.t(), keyword()) :: T.domain_res(map())
-  def publish_changes(%Community{} = community, args, %User{} = user, opts \\ []) do
+  def publish_changes(%Community{} = community, args, %User{} = user) do
+    Commands.PublishChanges.execute_direct(community, args, user, [])
+  end
+
+  def publish_changes(%Community{} = community, args, %User{} = user, opts) do
     Commands.PublishChanges.execute(community, args, user, opts)
   end
 
@@ -107,7 +156,11 @@ defmodule GroupherServer.CMS.DocTree do
   """
   @spec move_doc_to_draft(Community.t(), T.id(), User.t(), keyword() | map()) ::
           T.domain_res(CMS.Model.DocDraft.t())
-  def move_doc_to_draft(%Community{} = community, id, %User{} = user, opts \\ []) do
+  def move_doc_to_draft(%Community{} = community, id, %User{} = user) do
+    Commands.MoveDocToDraft.execute_direct(community, id, user, [])
+  end
+
+  def move_doc_to_draft(%Community{} = community, id, %User{} = user, opts) do
     Commands.MoveDocToDraft.execute(community, id, user, opts)
   end
 
@@ -141,58 +194,67 @@ defmodule GroupherServer.CMS.DocTree do
   """
   @spec move_subtree_to_draft(Community.t(), T.id(), User.t(), keyword() | map()) ::
           T.domain_res(map())
-  def move_subtree_to_draft(%Community{} = community, id, %User{} = user, opts \\ []) do
+  def move_subtree_to_draft(%Community{} = community, id, %User{} = user) do
+    Commands.MoveSubtreeToDraft.execute_direct(community, id, user, [])
+  end
+
+  def move_subtree_to_draft(%Community{} = community, id, %User{} = user, opts) do
     Commands.MoveSubtreeToDraft.execute(community, id, user, opts)
   end
 
   @doc """
   Creates a draft tab node.
   """
-  @spec create_tab(Community.t(), map()) :: T.domain_res(map())
-  def create_tab(%Community{} = community, args) do
-    Commands.CreateTab.execute(community, args)
+  @spec create_tab_internal(Community.t(), map()) :: T.domain_res(map())
+  def create_tab_internal(%Community{} = community, args) do
+    Commands.CreateTab.execute_internal(community, args)
   end
 
   @doc """
   Creates a draft group node.
   """
-  @spec create_group(Community.t(), map()) :: T.domain_res(map())
-  def create_group(%Community{} = community, args) do
-    Commands.CreateGroup.execute(community, args)
+  @spec create_group_internal(Community.t(), map()) :: T.domain_res(map())
+  def create_group_internal(%Community{} = community, args) do
+    Commands.CreateGroup.execute_internal(community, args)
   end
 
   @doc """
   Creates a draft page node and its draft doc when `doc_id` is absent.
   """
-  @spec create_page(Community.t(), map(), User.t() | nil) :: T.domain_res(map())
-  def create_page(%Community{} = community, args, user \\ nil) do
-    Commands.CreatePage.execute(community, args, user)
+  @spec create_page_internal(Community.t(), map(), User.t() | nil) :: T.domain_res(map())
+  def create_page_internal(%Community{} = community, args) do
+    Commands.CreatePage.execute_internal(community, args)
+  end
+
+  def create_page_internal(%Community{} = community, args, user) do
+    Commands.CreatePage.execute_internal(community, args, user)
   end
 
   @doc """
   Creates a draft external-link node.
   """
-  @spec create_link(Community.t(), map()) :: T.domain_res(map())
-  def create_link(%Community{} = community, args) do
-    Commands.CreateLink.execute(community, args)
+  @spec create_link_internal(Community.t(), map()) :: T.domain_res(map())
+  def create_link_internal(%Community{} = community, args) do
+    Commands.CreateLink.execute_internal(community, args)
   end
 
   @doc """
   Creates a draft pin node.
   """
-  @spec create_pin(Community.t(), map()) :: T.domain_res(map())
-  def create_pin(%Community{} = community, args) do
-    Commands.CreatePin.execute(community, args)
+  @spec create_pin_internal(Community.t(), map()) :: T.domain_res(map())
+  def create_pin_internal(%Community{} = community, args) do
+    Commands.CreatePin.execute_internal(community, args)
   end
 
   @doc """
   Updates mutable metadata for a draft tree node.
   """
-  @spec update_node(Community.t(), T.id(), map()) :: T.domain_res(map())
-  def update_node(%Community{} = community, id, args) do
-    Commands.UpdateNode.execute(community, id, args)
+  @spec update_node_internal(Community.t(), T.id(), map()) :: T.domain_res(map())
+  def update_node_internal(%Community{} = community, id, args) do
+    Commands.UpdateNode.execute_internal(community, id, args)
   end
 
+  @doc "Updates a draft tree node through the user Receipt entry."
   def update_node(%Community{} = community, id, args, %User{} = actor) do
     Commands.UpdateNode.execute(community, id, with_actor(args, actor))
   end
@@ -207,22 +269,27 @@ defmodule GroupherServer.CMS.DocTree do
         args,
         %User{} = user
       ) do
-    Commands.UpdateDraft.execute(community, article, args, user)
+    Commands.UpdateDraft.execute_direct(community, article.id, args, user)
   end
 
   @spec update_draft(Community.t(), T.id(), map(), User.t()) :: T.domain_res(map())
   def update_draft(%Community{} = community, id, args, %User{} = user) do
-    Commands.UpdateDraft.execute(community, id, args, user)
+    Commands.UpdateDraft.execute_direct(community, id, args, user)
+  end
+
+  def update_draft(%Community{} = community, id, args, %User{} = user, command_id) do
+    Commands.UpdateDraft.execute(community, id, Map.put(args, :command_id, command_id), user)
   end
 
   @doc """
   Deletes a draft tree node and writes recoverable trash snapshots.
   """
-  @spec delete_node(Community.t(), T.id(), map()) :: T.domain_res(map())
-  def delete_node(%Community{} = community, id, args) do
-    Commands.DeleteNode.execute(community, id, args)
+  @spec delete_node_internal(Community.t(), T.id(), map()) :: T.domain_res(map())
+  def delete_node_internal(%Community{} = community, id, args) do
+    Commands.DeleteNode.execute_internal(community, id, args)
   end
 
+  @doc "Deletes a draft tree node through the user Receipt entry."
   def delete_node(%Community{} = community, id, args, %User{} = actor) do
     Commands.DeleteNode.execute(community, id, with_actor(args, actor))
   end
@@ -230,11 +297,12 @@ defmodule GroupherServer.CMS.DocTree do
   @doc """
   Duplicates a Group subtree, Page, or Link in the draft tree.
   """
-  @spec duplicate_node(Community.t(), T.id(), map()) :: T.domain_res(map())
-  def duplicate_node(%Community{} = community, id, args) do
-    Commands.DuplicateNode.execute(community, id, args)
+  @spec duplicate_node_internal(Community.t(), T.id(), map()) :: T.domain_res(map())
+  def duplicate_node_internal(%Community{} = community, id, args) do
+    Commands.DuplicateNode.execute_internal(community, id, args)
   end
 
+  @doc "Duplicates a draft tree node through the user Receipt entry."
   def duplicate_node(%Community{} = community, id, args, %User{} = actor) do
     Commands.DuplicateNode.execute(community, id, with_actor(args, actor))
   end
@@ -242,11 +310,12 @@ defmodule GroupherServer.CMS.DocTree do
   @doc """
   Moves a draft tree node to a new parent/index.
   """
-  @spec move_node(Community.t(), T.id(), map()) :: T.domain_res(map())
-  def move_node(%Community{} = community, id, args) do
-    Commands.MoveNode.execute(community, id, args)
+  @spec move_node_internal(Community.t(), T.id(), map()) :: T.domain_res(map())
+  def move_node_internal(%Community{} = community, id, args) do
+    Commands.MoveNode.execute_internal(community, id, args)
   end
 
+  @doc "Moves a draft tree node through the user Receipt entry."
   def move_node(%Community{} = community, id, args, %User{} = actor) do
     Commands.MoveNode.execute(community, id, with_actor(args, actor))
   end
@@ -260,11 +329,12 @@ defmodule GroupherServer.CMS.DocTree do
   @doc """
   Restores one product Trash drawer item into the draft tree.
   """
-  @spec restore_trash_item(Community.t(), T.id(), map()) :: T.domain_res(map())
-  def restore_trash_item(%Community{} = community, id, args) do
-    Commands.RestoreTrashItem.execute(community, id, args)
+  @spec restore_trash_item_internal(Community.t(), T.id(), map()) :: T.domain_res(map())
+  def restore_trash_item_internal(%Community{} = community, id, args) do
+    Commands.RestoreTrashItem.execute_internal(community, id, args)
   end
 
+  @doc "Restores a Trash item through the user Receipt entry."
   def restore_trash_item(%Community{} = community, id, args, %User{} = actor) do
     Commands.RestoreTrashItem.execute(community, id, with_actor(args, actor))
   end

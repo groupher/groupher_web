@@ -7,7 +7,20 @@ defmodule GroupherServer.Accounts.Profiles.Commands.LinkOauthIdentity do
 
   alias GroupherServer.Accounts
 
-  alias Accounts.Profiles.{Commands, Query}
+  alias Accounts.Profiles.{Effects, Oauth, Query}
+
+  use GroupherServer.CommandPipeline
+
+  @pipeline operation: :accounts_profile_link_oauth_identity, access: :open, target: :login,
+            params: [:provider]
+
+  direct_pipeline execute_pipeline(login, provider) do
+    change(fn _login -> Oauth.link_in_transaction(login, provider) end)
+    present(fn user ->
+      _ = Effects.revalidate_user(user)
+      Query.linked_oauth_accounts(login)
+    end)
+  end
 
   @doc """
   Links a verified identity and returns linked-account projections.
@@ -18,8 +31,6 @@ defmodule GroupherServer.Accounts.Profiles.Commands.LinkOauthIdentity do
   """
   @spec run(String.t(), map()) :: {:ok, map()} | {:error, term()}
   def run(login, provider) do
-    with {:ok, _user} <- Commands.LinkOauth.run(login, provider) do
-      Query.linked_oauth_accounts(login)
-    end
+    execute_pipeline(login, provider)
   end
 end

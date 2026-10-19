@@ -24,8 +24,6 @@ defmodule GroupherServer.CMS.Comments do
   alias __MODULE__.Commands.{
     Create,
     Delete,
-    Moderate,
-    Reply,
     StateChange,
     Update
   }
@@ -527,12 +525,12 @@ defmodule GroupherServer.CMS.Comments do
           T.domain_res(map())
 
   def reply_comment_payload(%Comment{} = comment, body, %User{} = user, command_id) do
-    Reply.execute(comment, body, user, command_id)
+    Create.reply(comment, body, user, command_id)
   end
 
   def reply_comment_payload(comment_id, body, %User{} = user, command_id) do
     with {:ok, comment} <- FrontDesk.comment(comment_id, mode: :internal) do
-      Reply.execute(comment, body, user, command_id)
+      Create.reply(comment, body, user, command_id)
     end
   end
 
@@ -547,7 +545,7 @@ defmodule GroupherServer.CMS.Comments do
 
   def reply_comment_result(%Comment{} = comment, body, %User{} = user, command_id) do
     comment
-    |> Reply.execute(body, user, command_id)
+    |> Create.reply(body, user, command_id)
     |> CommandResult.build()
   end
 
@@ -662,30 +660,6 @@ defmodule GroupherServer.CMS.Comments do
   end
 
   @doc """
-  Applies an illegal-content moderation state to a Comment.
-
-  ## Examples
-
-      CMS.Comments.set_comment_illegal(comment_id, attrs)
-  """
-  @spec set_comment_illegal(T.id(), map()) :: T.domain_res(Comment.t())
-  def set_comment_illegal(comment_id, attrs) do
-    Moderate.execute(:set_illegal, comment_id, attrs)
-  end
-
-  @doc """
-  Removes an illegal-content moderation state from a Comment.
-
-  ## Examples
-
-      CMS.Comments.unset_comment_illegal(comment_id, attrs)
-  """
-  @spec unset_comment_illegal(T.id(), map()) :: T.domain_res(Comment.t())
-  def unset_comment_illegal(comment_id, attrs) do
-    Moderate.execute(:unset_illegal, comment_id, attrs)
-  end
-
-  @doc """
   Returns Comments whose automated audit failed.
 
   ## Examples
@@ -694,16 +668,4 @@ defmodule GroupherServer.CMS.Comments do
   """
   @spec paged_audit_failed_comments(map()) :: T.domain_res(T.paged_data())
   def paged_audit_failed_comments(filter), do: Moderation.page_audit_failed(filter)
-
-  @doc """
-  Updates the automated audit-failure state of one Comment.
-
-  ## Examples
-
-      CMS.Comments.set_comment_audit_failed(comment, state)
-  """
-  @spec set_comment_audit_failed(Comment.t(), term()) :: T.domain_res(Comment.t())
-  def set_comment_audit_failed(comment, state) do
-    Moderate.execute(:set_audit_failed, comment, state)
-  end
 end

@@ -9,6 +9,12 @@ defmodule GroupherServer.CMS.Articles.Commands.Archive do
 
   alias CMS.Articles.States
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(atom()) :: {:ok, term()} | {:error, term()}
-  def execute(thread), do: States.archive(thread)
+  @pipeline operation: :article_archive, target: :thread, access: :internal
+  direct_pipeline execute(thread) do
+    change(fn _target -> States.archive(thread) end)
+  end
 end

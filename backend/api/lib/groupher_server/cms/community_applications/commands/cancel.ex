@@ -1,48 +1,45 @@
 defmodule GroupherServer.CMS.CommunityApplications.Commands.Cancel do
   @moduledoc """
-  Receipt-backed applicant cancellation Command.
+  Applicant cancellation implemented as a `receipt_pipeline`.
 
       GraphQL -> Cancel Command -> Application Gate -> Persist / Lifecycle -> Receipt result
   """
 
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.{Command, Gate}
+  alias CMS.Gate
   alias Ecto.Multi
   alias CMS.Communities.{ErrorCat, SlugClaims}
   alias CMS.CommunityApplications.{Commands.Confirmation, Commands.Support, Lifecycle}
   alias Helper.{T, Transaction}
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @spec execute(String.t(), User.t(), integer(), Ecto.UUID.t()) :: T.domain_res(term())
   def execute(public_ref, %User{} = actor, expected_version, command_id) do
     with {:ok, application} <- Support.application(public_ref) do
-      command = %Command{
-        actor: actor,
-        command_id: command_id,
-        operation: :community_application_cancel,
-        target: application,
-        params: %{expected_version: expected_version}
-      }
-
-      with {:ok, confirmation} <-
-             Command.execute(command, action: &action/1, confirmation: Confirmation) do
-        Support.result(confirmation)
-      end
+      execute_pipeline(application, expected_version, actor, command_id)
     end
   end
 
-  defp action(%{
-         actor: actor,
-         target: application,
-         params: %{expected_version: version},
-         command_id: id
-       }) do
-    with {:ok, _} <-
-           Gate.with_application_check(actor, :application_cancel, application, fn canonical ->
-             cancel_application(canonical, actor, version)
-           end) do
-      {:ok, Support.confirmation(Confirmation, application.id, id)}
-    end
+  @pipeline operation: :community_application_cancel,
+            confirmation: Confirmation,
+            target: :application,
+            params: [:expected_version]
+
+  receipt_pipeline execute_pipeline(application, expected_version, actor, command_id) do
+    gate(fn candidate ->
+      Gate.check_application_in_transaction(actor, :application_cancel, candidate)
+    end)
+
+    change(fn canonical -> cancel_application(canonical, actor, expected_version) end)
+
+    confirm(fn canonical ->
+      {:ok, Support.confirmation(Confirmation, canonical.id, command_id)}
+    end)
+
+    present(fn confirmation -> Support.result(confirmation) end)
   end
 
   defp cancel_application(application, actor, expected_version) do

@@ -13,24 +13,31 @@ defmodule GroupherServer.CMS.Articles.Commands.DiscardDraft do
   alias CMS.Articles.Draft.Store
   alias CMS.Model.{Article, Community}
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+  @pipeline operation: :article_discard_draft, target: :article_id, params: :opts
+  direct_pipeline execute_pipeline(article_id, actor, opts) do
+    prepare(fn ->
+      with {:ok, article} <- stable_article(article_id),
+           {:ok, community} <- explicit_community(opts) do
+        {:ok, {article, community}}
+      end
+    end)
+
+    gate(fn {article, community} ->
+      CMS.Gate.check_in_transaction(actor, :discard_draft, article, community)
+    end)
+
+    change(fn canonical -> Store.discard_loaded(canonical, opts) end)
+  end
+
   @spec execute(Ecto.UUID.t(), User.t(), keyword()) :: {:ok, :done} | {:error, term()}
   def execute(article_id, %User{} = actor, opts) when is_binary(article_id) do
-    with {:ok, article} <- stable_article(article_id),
-         {:ok, community} <- explicit_community(opts) do
-      CMS.Gate.with_community_check(
-        actor,
-        :discard_draft,
-        community,
-        article,
-        fn canonical ->
-          case Store.discard(canonical, opts) do
-            {:ok, _} -> {:ok, :done}
-            {:error, reason} -> {:error, reason}
-          end
-        end
-      )
-    end
+    execute_pipeline(article_id, actor, opts)
   end
+
+  def execute(_article_id, _actor, _opts), do: {:error, :invalid_discard_draft_input}
 
   defp stable_article(article_id) do
     case CMS.FrontDesk.article(article_id, mode: :internal) do

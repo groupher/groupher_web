@@ -1,5 +1,9 @@
 # 后端模块重组
 
+> 状态：历史迁移记录。本文记录 publish throttle 从 `Statistics` 迁出时的 owner 决策；
+> 将其放入通用 `CMS.Policy` 的结论已被 [Policy Boundary](./policy.md) 取代。
+> 当前目标 owner 是 `CMS.Gate.RateLimit.Publish`，本文后续 `CMS.Policy` 名称只按历史理解。
+
 ## 背景
 
 后端之前同时存在 `GroupherServer.Statistics` 和 `GroupherServer.Analysis`。
@@ -138,7 +142,8 @@ countStatus
 - 产品侧指标和趋势 DTO 放在 `Analysis` 下。
 - Web 流量数据放在 `Analysis.Web` 下。
 - 贡献和活动聚合放在 `Analysis.Contribution` 下。
-- CMS 写策略状态放在 `CMS.Policy` 下。
+- 当时的 CMS 写策略状态放在 `CMS.Policy` 下；该规则现已 superseded，publish throttle 的
+  当前目标 owner 是 `CMS.Gate.RateLimit.Publish`。
 - append-only 责任事件放在 `CMS.Audit` 下。
 - 不要重建一个泛化的 `Statistics` 桶。
 - 不要把运营策略状态存进 `Analysis`。

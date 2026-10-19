@@ -785,7 +785,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
     {:ok, branch} = CMS.Docs.Branch.resolve(source, CMS.Docs.Branch.main_slug())
 
     {:ok, %{article: doc}} =
-      CMS.Articles.create_stable_draft(
+      CMS.Articles.create_stable_draft_write(
         source,
         :doc,
         %{title: "Doc", digest: "doc", body_bag: mock_body_bag(mock_rich_text("doc"))},

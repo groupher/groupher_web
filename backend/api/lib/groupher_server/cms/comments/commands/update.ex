@@ -15,7 +15,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Update do
 
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.{Command, FrontDesk, Comments}
+  alias CMS.{FrontDesk, Comments}
   alias CMS.Articles.Bindings
   alias CMS.Comments.Commands.CommentConfirmation, as: Confirmation
   alias CMS.Comments.Effects
@@ -25,6 +25,9 @@ defmodule GroupherServer.CMS.Comments.Commands.Update do
 
   @type result :: %{comment: Comment.t(), article: struct(), command_id: String.t() | nil}
 
+  use GroupherServer.CommandPipeline,
+
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
   @doc """
   Updates the authorized canonical Comment, requires audition enqueue before
   commit, then schedules mention reconciliation without changing the result.
@@ -41,40 +44,31 @@ defmodule GroupherServer.CMS.Comments.Commands.Update do
   @spec execute(Comment.t(), map(), non_neg_integer(), User.t(), String.t()) ::
           T.domain_res(result())
   def execute(%Comment{} = comment, body_bag, expected_version, %User{} = actor, command_id) do
-    command = %Command{
-      actor: actor,
-      command_id: command_id,
-      operation: :comment_update,
-      target: comment,
-      params: %{body_bag: body_bag, expected_version: expected_version}
-    }
-
-    with {:ok, confirmation} <-
-           Command.execute(command, action: &update_action/1, confirmation: Confirmation) do
-      update_result(confirmation, comment.id)
-    end
+    execute_pipeline(comment, body_bag, expected_version, actor, command_id)
   end
 
-  defp update_action(%{
-         actor: actor,
-         target: comment,
-         params: %{body_bag: body_bag, expected_version: expected_version},
-         command_id: command_id
-       }) do
-    CMS.Gate.with_check(actor, :edit, comment, fn canonical, article ->
-      with {:ok, result} <-
-             update_new(
-               canonical,
-               article,
-               body_bag,
-               expected_version,
-               actor,
-               command_id,
-               comment.community_id
-             ) do
-        {:ok, confirmation(result)}
-      end
+  @pipeline operation: :comment_update,
+            confirmation: Confirmation,
+            target: :comment,
+            params: [:body_bag, :expected_version]
+
+  receipt_pipeline execute_pipeline(comment, body_bag, expected_version, actor, command_id) do
+    gate(fn candidate -> CMS.Gate.check_comment_in_transaction(actor, :edit, candidate) end)
+
+    change(fn {canonical, article} ->
+      update_new(
+        canonical,
+        article,
+        body_bag,
+        expected_version,
+        actor,
+        command_id,
+        comment.community_id
+      )
     end)
+
+    confirm(fn result -> {:ok, confirmation(result)} end)
+    present(fn confirmation -> update_result(confirmation, comment.id) end)
   end
 
   defp update_result(%Confirmation{data: data}, comment_id) do

@@ -33,10 +33,7 @@ defmodule GroupherServer.CMS.DocTree.Publish do
   defdelegate public_node_for_draft(arg1, arg2, arg3),
     to: GroupherServer.CMS.DocTree.Publish.Workflow
 
-  @doc "Delegates publish_changes/3 to the owning implementation."
-  defdelegate publish_changes(arg1, arg2, arg3), to: GroupherServer.CMS.DocTree.Publish.Workflow
-
-  @doc "Delegates publish_changes/4 to the owning implementation."
-  defdelegate publish_changes(arg1, arg2, arg3, arg4),
+  @doc "Runs publish work after the Command gate stage admitted the Community."
+  defdelegate publish_after_gate(arg1, arg2, arg3, arg4),
     to: GroupherServer.CMS.DocTree.Publish.Workflow
 end

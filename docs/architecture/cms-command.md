@@ -112,7 +112,7 @@ Transport/UI 调用方、GraphQL 和前端业务代码不得感知服务端首�
 领域 Command owner 可以声明恢复投影或 codec，因为如何重建 canonical result 属于领域知识；
 但它不处理 replay 状态，也不直接操作 Receipt。正常公共返回保持领域原有形状：
 
-Receipt-backed 的 command-time 结果由领域 result builder 负责，例如
+`receipt_pipeline` 的 command-time 结果由领域 result builder 负责，例如
 `CMS.Articles.RevisionResult.build/2` 或 `CMS.Docs.DraftResult.build/1`。它们以 decoded
 Confirmation 中的 immutable revision/draft anchor 为根，不读取当前 `ArticlePublic` 或原始 transport
 args；FrontDesk 仍只负责查询时刻的 current projection。

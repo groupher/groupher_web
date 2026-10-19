@@ -244,10 +244,15 @@ defmodule GroupherServer.CMS.Assets do
           map(),
           map(),
           User.t(),
-          Ecto.UUID.t() | {:workflow, String.t()} | nil
+          Ecto.UUID.t()
         ) :: T.domain_res(map())
   def replace_use(article, attrs, %User{} = user, command_id) do
     Commands.ReplaceUse.execute(article, attrs, user, command_id)
+  end
+
+  @doc "Replaces one Draft asset use through the explicit replacement workflow entry."
+  def replace_use_workflow(article, attrs, %User{} = user, workflow_ref) do
+    Commands.ReplaceUse.execute_for_workflow(article, attrs, user, workflow_ref)
   end
 
   @doc "Lists old, unreferenced assets eligible for a later GC decision."

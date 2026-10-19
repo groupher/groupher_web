@@ -35,7 +35,7 @@ defmodule Helper.Scheduler do
   Archives eligible artiments for every configured thread.
   """
   def archive_artiments do
-    Enum.map(@threads, &CMS.articles_archive(&1))
+    Enum.map(@threads, &CMS.Articles.Maintenance.archive(&1))
     |> done
   end
 

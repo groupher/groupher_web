@@ -38,8 +38,8 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
           operation_ref: Ecto.UUID.generate()
         )
 
-      assert {:error, %CMS.Gate.Decision{primary: %{reason: :ancestor_community_not_writable}}} =
-               CMS.DocTree.create_group(community, %{
+      assert {:error, %GroupherServer.ErrorCat.Error{reason: :ancestor_community_not_writable}} =
+               CMS.DocTree.create_group_internal(community, %{
                  parent_node_id: root_doc_tab_node_id(community),
                  title: "Blocked guides",
                  slug: "blocked-guides",
@@ -54,7 +54,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, before_site_state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, group_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           slug: "guides",
@@ -62,7 +62,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, page_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: group_payload.node.id,
@@ -110,7 +110,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, before_tree_state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, group_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           slug: "guides",
@@ -118,7 +118,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, first_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: group_payload.node.id,
@@ -130,7 +130,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         )
 
       {:ok, duplicate_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: group_payload.node.id,
@@ -155,7 +155,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, before_tree_state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, group_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           slug: "guides",
@@ -168,13 +168,13 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, tree} = CMS.DocTree.read(community)
 
       {:ok, delete_payload} =
-        CMS.DocTree.delete_node(community, group_payload.node.id, %{
+        CMS.DocTree.delete_node_internal(community, group_payload.node.id, %{
           base_revision: tree.revision,
           actor_id: user.id
         })
 
       {:ok, rebuilt_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           slug: "guides",
@@ -190,7 +190,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, before_tree_state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, group_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           slug: "guides",
@@ -198,7 +198,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, page_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: group_payload.node.id,
@@ -215,13 +215,13 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, tree} = CMS.DocTree.read(community)
 
       {:ok, delete_payload} =
-        CMS.DocTree.delete_node(community, page_payload.node.id, %{
+        CMS.DocTree.delete_node_internal(community, page_payload.node.id, %{
           base_revision: tree.revision,
           actor_id: user.id
         })
 
       {:ok, rebuilt_page_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: group_payload.node.id,
@@ -245,7 +245,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, before_tree_state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, guides_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           slug: "guides",
@@ -253,7 +253,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, api_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "API",
           slug: "api",
@@ -266,7 +266,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, tree} = CMS.DocTree.read(community)
 
       {:ok, delete_payload} =
-        CMS.DocTree.delete_node(community, guides_payload.node.id, %{
+        CMS.DocTree.delete_node_internal(community, guides_payload.node.id, %{
           base_revision: tree.revision,
           actor_id: user.id
         })
@@ -276,7 +276,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
                 reason: :custom,
                 details: "A trashed tree item with this title is pending restore."
               }} =
-               CMS.DocTree.update_node(community, api_payload.node.id, %{
+               CMS.DocTree.update_node_internal(community, api_payload.node.id, %{
                  title: "Guides",
                  slug: "guides",
                  base_revision: delete_payload.revision
@@ -289,7 +289,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, before_tree_state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, guides_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           slug: "guides",
@@ -297,7 +297,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, api_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "API",
           slug: "api",
@@ -305,7 +305,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, install_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: guides_payload.node.id,
@@ -317,7 +317,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         )
 
       {:ok, upgrade_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: guides_payload.node.id,
@@ -329,7 +329,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         )
 
       {:ok, move_payload} =
-        CMS.DocTree.move_node(community, upgrade_payload.node.id, %{
+        CMS.DocTree.move_node_internal(community, upgrade_payload.node.id, %{
           target_parent_node_id: api_payload.node.id,
           target_index: 0,
           base_revision: upgrade_payload.revision
@@ -360,14 +360,14 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, parent} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           base_revision: state.tree_lock_version
         })
 
       {:ok, page} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: parent.node.id,
@@ -378,7 +378,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         )
 
       {:ok, link} =
-        CMS.DocTree.create_link(community, %{
+        CMS.DocTree.create_link_internal(community, %{
           parent_node_id: parent.node.id,
           title: "API",
           href: "https://example.com",
@@ -386,7 +386,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, nested} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: parent.node.id,
           title: "Advanced",
           index: 0,
@@ -417,7 +417,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, parent} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           base_revision: state.tree_lock_version
@@ -426,7 +426,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {links, _revision} =
         Enum.reduce(1..12, {[], parent.revision}, fn number, {links, revision} ->
           {:ok, payload} =
-            CMS.DocTree.create_link(community, %{
+            CMS.DocTree.create_link_internal(community, %{
               parent_node_id: parent.node.id,
               title: "Link #{number}",
               href: "https://example.com/#{number}",
@@ -465,7 +465,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, tree_state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, first_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "One",
           slug: "one",
@@ -473,7 +473,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, conflict_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Two",
           slug: "two",
@@ -501,7 +501,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
                 reason: :custom,
                 details: "base_revision is required"
               }} =
-               CMS.DocTree.create_group(community, %{
+               CMS.DocTree.create_group_internal(community, %{
                  parent_node_id: root_doc_tab_node_id(community),
                  title: "One",
                  slug: "one"
@@ -514,7 +514,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, before_tree_state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, pin_payload} =
-        CMS.DocTree.create_pin(community, %{
+        CMS.DocTree.create_pin_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "GitHub",
           slug: "github",
@@ -541,7 +541,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, first_group} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           slug: "guides",
@@ -549,7 +549,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, pin} =
-        CMS.DocTree.create_pin(community, %{
+        CMS.DocTree.create_pin_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "GitHub",
           slug: "github",
@@ -558,7 +558,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, second_group} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "API",
           slug: "api",
@@ -566,7 +566,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, _moved} =
-        CMS.DocTree.move_node(community, second_group.node.id, %{
+        CMS.DocTree.move_node_internal(community, second_group.node.id, %{
           target_parent_node_id: root_doc_tab_node_id(community),
           target_index: 0,
           base_revision: second_group.revision
@@ -584,7 +584,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, before_tree_state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, group_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           slug: "guides",
@@ -592,7 +592,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, page_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: group_payload.node.id,
@@ -604,7 +604,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         )
 
       assert {:error, changeset} =
-               CMS.DocTree.update_node(community, page_payload.node.id, %{
+               CMS.DocTree.update_node_internal(community, page_payload.node.id, %{
                  doc_id: nil,
                  base_revision: page_payload.revision
                })
@@ -620,7 +620,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, before_site_state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, group_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           slug: "guides",
@@ -628,7 +628,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, page_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: group_payload.node.id,
@@ -685,7 +685,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       {:ok, before_tree_state} = ORM.find_by(DocsSiteState, community_id: community.id)
 
       {:ok, group_payload} =
-        CMS.DocTree.create_group(community, %{
+        CMS.DocTree.create_group_internal(community, %{
           parent_node_id: root_doc_tab_node_id(community),
           title: "Guides",
           slug: "guides",
@@ -693,7 +693,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
         })
 
       {:ok, _page_payload} =
-        CMS.DocTree.create_page(
+        CMS.DocTree.create_page_internal(
           community,
           %{
             parent_node_id: group_payload.node.id,
@@ -711,7 +711,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       [group] = groups(tree)
 
       {:ok, link_payload} =
-        CMS.DocTree.create_link(community, %{
+        CMS.DocTree.create_link_internal(community, %{
           parent_node_id: group.id,
           title: "Draft Link",
           slug: "draft-link",
@@ -723,7 +723,7 @@ defmodule GroupherServer.Test.CMS.DocTree.Persist.Mutation do
       assert link_event.status == CMS.DocTree.Const.tree_event_status(:staged)
 
       assert {:ok, _delete_payload} =
-               CMS.DocTree.delete_node(community, group.id, %{
+               CMS.DocTree.delete_node_internal(community, group.id, %{
                  base_revision: link_payload.revision,
                  actor_id: user.id
                })

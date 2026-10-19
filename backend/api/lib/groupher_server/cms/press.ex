@@ -28,7 +28,7 @@ defmodule GroupherServer.CMS.Press do
           {:error, CMS.ErrorCat.Error.t()}
   def update_config(_community, _attrs, _actor), do: {:error, CMS.ErrorCat.command_id_required()}
 
-  @doc "Updates Press config through the receipt-backed command boundary."
+  @doc "Updates Press config through a `receipt_pipeline`."
   @spec update_config(Community.t() | String.t(), map(), User.t(), Ecto.UUID.t()) ::
           {:ok, PressConfig.t()} | {:error, term()}
   def update_config(community, attrs, %User{} = actor, command_id) do

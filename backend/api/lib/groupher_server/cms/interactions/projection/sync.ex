@@ -16,8 +16,26 @@ defmodule GroupherServer.CMS.Interactions.Projection.Sync do
   alias CMS.Artiment.Matcher
   alias CMS.FrontDesk
   alias CMS.Interactions.{Config, ErrorCat}
-  alias CMS.Model.{Comment, Embeds}
+
+  alias CMS.Model.{
+    BlogReactionInfo,
+    ChangelogReactionInfo,
+    Comment,
+    CommentReactionInfo,
+    DocReactionInfo,
+    Embeds,
+    PostReactionInfo
+  }
+
   alias CMS.Model.Interaction.RoaringBitmap
+
+  @interaction_revision_schemas [
+    BlogReactionInfo,
+    ChangelogReactionInfo,
+    CommentReactionInfo,
+    DocReactionInfo,
+    PostReactionInfo
+  ]
 
   defmodule ProjectionSpec do
     @moduledoc """
@@ -380,11 +398,12 @@ defmodule GroupherServer.CMS.Interactions.Projection.Sync do
   end
 
   defp maybe_increment_revision(updates, schema) do
-    if :interaction_revision in schema.__schema__(:fields) do
-      Keyword.update(updates, :inc, [], fn existing -> [{:interaction_revision, 1} | existing] end)
-    else
-      updates
-    end
+    if schema in @interaction_revision_schemas,
+      do:
+        Keyword.update(updates, :inc, [], fn existing ->
+          [{:interaction_revision, 1} | existing]
+        end),
+      else: updates
   end
 
   defp next_latest_users(users, %User{} = user, :add) do

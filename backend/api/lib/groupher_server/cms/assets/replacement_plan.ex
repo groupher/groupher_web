@@ -407,14 +407,14 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
             |> maybe_put_body_bag(article_context.body_bag)
 
           with {:ok, result} <-
-                 ReplaceUse.execute(
+                 ReplaceUse.execute_for_workflow(
                    %{
                      article_id: article_context.article_id,
                      community: plan_context.community
                    },
                    attrs,
                    plan_context.actor,
-                   {:workflow, workflow_ref}
+                   workflow_ref
                  ),
                next_version <- Map.get(result, :draft_version, article_context.version),
                updated_item <-

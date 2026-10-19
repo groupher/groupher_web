@@ -8,6 +8,14 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Delete do
   alias GroupherServer.Accounts
   alias Accounts.CollectFolders.Persist
 
+  use GroupherServer.CommandPipeline
+
+  @pipeline operation: :accounts_collect_folder_delete, access: :open, target: :folder_id
+
+  direct_pipeline execute_pipeline(folder_id) do
+    change(fn _folder_id -> Persist.delete(folder_id) end)
+  end
+
   @doc """
   Deletes an empty collection folder.
 
@@ -16,5 +24,5 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Delete do
       Accounts.CollectFolders.Commands.Delete.run(folder_id)
   """
   @spec run(term()) :: {:ok, struct()} | {:error, term()}
-  def run(folder_id), do: Persist.delete(folder_id)
+  def run(folder_id), do: execute_pipeline(folder_id)
 end
