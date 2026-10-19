@@ -7,8 +7,24 @@ import {
 } from '@groupher/frontend-core/graphql/generated'
 import { createServerFn } from '@tanstack/react-start'
 
+import { sessionState as sessionStateDocument } from '~/schemas/pages/user'
+import type { TUser } from '~/spec'
+import type { TInit as TAccountInit } from '~/stores/account/spec'
+
 import type { ApplyInitialData, CommunityApplication, ReviewApplication } from '../spec'
 import { requestGraphQL } from './graphql'
+
+/** Loads the request user once for the Apply root AccountStore seed. */
+export const loadApplyAccount = createServerFn({ method: 'GET', strict: false }).handler(
+  async (): Promise<TAccountInit> => {
+    const data = await requestGraphQL(sessionStateDocument, {})
+    const session = data.sessionState
+    return {
+      loading: false,
+      user: session?.isValid && session.user ? (session.user as TUser) : null,
+    }
+  },
+)
 
 export const loadApplyState = createServerFn({ method: 'GET', strict: false }).handler(
   async (): Promise<ApplyInitialData> => {

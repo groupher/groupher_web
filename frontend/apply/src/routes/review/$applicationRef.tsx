@@ -1,5 +1,8 @@
+import { GATE_ACTION } from '@groupher/contracts/gate'
 import { createFileRoute, notFound, useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
+
+import useGate from '~/hooks/useGate'
 
 import { mutateReviewApplication } from '../../lib/application'
 import { loadReviewApplication } from '../../server/application'
@@ -15,6 +18,7 @@ export const Route = createFileRoute('/review/$applicationRef')({
 
 function ReviewDetail() {
   const application = Route.useLoaderData()
+  const gate = useGate()
   const router = useRouter()
   const [note, setNote] = useState('')
   const [reasonCode, setReasonCode] = useState('not_a_fit')
@@ -74,7 +78,8 @@ function ReviewDetail() {
       ) : null}
       {error ? <p className='apply-error'>{error}</p> : null}
       <div className='apply-actions'>
-        {application.status === 'SUBMITTED' ? (
+        {application.status === 'SUBMITTED' &&
+        gate.can(GATE_ACTION.COMMUNITY_APPLICATION_REVIEW) ? (
           <button
             className='apply-button apply-primary'
             disabled={working}
@@ -86,25 +91,30 @@ function ReviewDetail() {
         ) : null}
         {application.status === 'REVIEWING' ? (
           <>
-            <button
-              className='apply-button apply-danger'
-              disabled={working}
-              type='button'
-              onClick={() => void run('reject')}
-            >
-              Reject
-            </button>
-            <button
-              className='apply-button apply-primary'
-              disabled={working}
-              type='button'
-              onClick={() => void run('approve')}
-            >
-              Approve
-            </button>
+            {gate.can(GATE_ACTION.COMMUNITY_APPLICATION_REJECT) ? (
+              <button
+                className='apply-button apply-danger'
+                disabled={working}
+                type='button'
+                onClick={() => void run('reject')}
+              >
+                Reject
+              </button>
+            ) : null}
+            {gate.can(GATE_ACTION.COMMUNITY_APPLICATION_APPROVE) ? (
+              <button
+                className='apply-button apply-primary'
+                disabled={working}
+                type='button'
+                onClick={() => void run('approve')}
+              >
+                Approve
+              </button>
+            ) : null}
           </>
         ) : null}
-        {application.status === 'CREATION_FAILED' ? (
+        {application.status === 'CREATION_FAILED' &&
+        gate.can(GATE_ACTION.COMMUNITY_APPLICATION_RETRY_CREATION) ? (
           <button
             className='apply-button apply-primary'
             disabled={working}
@@ -114,7 +124,8 @@ function ReviewDetail() {
             Retry creation
           </button>
         ) : null}
-        {application.status === 'SETUP_FAILED' ? (
+        {application.status === 'SETUP_FAILED' &&
+        gate.can(GATE_ACTION.COMMUNITY_APPLICATION_RETRY_SETUP) ? (
           <button
             className='apply-button apply-primary'
             disabled={working}

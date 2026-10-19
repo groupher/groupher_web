@@ -14,6 +14,7 @@ export type TAccountContext = {
   accountRef: string | null
   loading: boolean
   isLogin: boolean
+  refreshSession: () => Promise<void>
   accountInfo: Partial<TUser> & {
     isLogin: boolean
     isValidSession: boolean

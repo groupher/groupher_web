@@ -1,6 +1,6 @@
 import { GROUPHER_AUTH_SIGNED_IN_COOKIE } from '@groupher/contracts/auth'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook, waitFor } from '@testing-library/react'
+import { act, renderHook, waitFor } from '@testing-library/react'
 import type { ReactNode } from 'react'
 
 import type { TUser } from '~/spec'
@@ -65,6 +65,30 @@ describe('stores/account/provider', () => {
 
     await waitFor(() => expect(result.current.user?.login).toBe('e2e'))
     expect(request).not.toHaveBeenCalled()
+  })
+
+  it('refreshes the canonical session after the current Passport changes', async () => {
+    const refreshedUser = {
+      ...sessionUser,
+      passport: { global: { 'community.application.review': true } },
+    }
+    const request = vi
+      .fn()
+      .mockResolvedValue(
+        Response.json({ data: { sessionState: { isValid: true, user: refreshedUser } } }),
+      )
+    vi.stubGlobal('fetch', request)
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    })
+    const { result } = renderHook(() => useAccount(), {
+      wrapper: wrapperFor(queryClient, sessionUser),
+    })
+
+    await act(() => result.current.refreshSession())
+
+    await waitFor(() => expect(result.current.user?.passport).toEqual(refreshedUser.passport))
+    expect(request).toHaveBeenCalledOnce()
   })
 
   it('keeps an anonymous browser request-free when the signed-in hint is absent', async () => {

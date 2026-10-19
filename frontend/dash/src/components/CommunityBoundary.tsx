@@ -8,6 +8,8 @@ import type { TInit as TAccountInit } from '~/stores/account/spec'
 import CommunityStoreProvider from '~/stores/community/provider'
 import LocaleStoreProvider from '~/stores/locale/provider'
 
+import DashAccountBoundary from './DashAccountBoundary'
+
 type TProps = {
   children: ReactNode
   community: string
@@ -21,7 +23,9 @@ export default function CommunityBoundary({ children, account, community, locale
   return (
     <LocaleStoreProvider initData={locale}>
       <AccountStoreProvider initData={account}>
-        <CommunityStoreProvider initData={communityConfig}>{children}</CommunityStoreProvider>
+        <DashAccountBoundary>
+          <CommunityStoreProvider initData={communityConfig}>{children}</CommunityStoreProvider>
+        </DashAccountBoundary>
       </AccountStoreProvider>
     </LocaleStoreProvider>
   )

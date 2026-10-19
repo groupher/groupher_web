@@ -12,6 +12,7 @@ Next.js, filesystem code, or product business logic.
 - Service-to-service header names.
 - Health response schema names and TypeScript types.
 - Stable protocol-level error and endpoint names when they become shared.
+- Gate action names shared by frontend UI admission and Phoenix authorization.
 
 ## Does Not Belong Here
 

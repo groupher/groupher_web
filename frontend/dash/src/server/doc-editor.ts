@@ -14,7 +14,6 @@ const COMMUNITY_NOT_ACCESSIBLE_CODE = 5504
 export type TDocEditorInitialData = {
   accessDenied: boolean
   activeDocId: string | null
-  authRequired: boolean
   docDraft?: TDocDraftInitialData | null
   docTree?: TDocTreeInitialData | null
 }
@@ -45,7 +44,6 @@ export const loadDocEditorData = createServerFn({ method: 'GET', strict: false }
       return {
         accessDenied: false,
         activeDocId: null,
-        authRequired: true,
         docDraft: null,
         docTree: null,
       }
@@ -70,7 +68,6 @@ export const loadDocEditorData = createServerFn({ method: 'GET', strict: false }
       return {
         accessDenied: true,
         activeDocId: null,
-        authRequired: false,
         docDraft: null,
         docTree: null,
       }
@@ -84,7 +81,6 @@ export const loadDocEditorData = createServerFn({ method: 'GET', strict: false }
       return {
         accessDenied: false,
         activeDocId: null,
-        authRequired: false,
         docDraft: null,
         docTree,
       }
@@ -100,7 +96,6 @@ export const loadDocEditorData = createServerFn({ method: 'GET', strict: false }
     return {
       accessDenied: false,
       activeDocId,
-      authRequired: false,
       docDraft,
       docTree,
     }
