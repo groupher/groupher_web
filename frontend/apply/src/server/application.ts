@@ -47,7 +47,8 @@ export const loadApplyAccount = createServerFn({ method: 'GET', strict: false })
 export const loadReviewAdmission = createServerFn({ method: 'GET', strict: false }).handler(
   async (): Promise<boolean> => {
     const account = await resolveApplyAccount()
-    return Boolean(account.user?.passport?.global?.['community.application.review'])
+    const globalPassport = account.user?.passport?.global
+    return Boolean(globalPassport?.god || globalPassport?.['community.application.review'])
   },
 )
 
