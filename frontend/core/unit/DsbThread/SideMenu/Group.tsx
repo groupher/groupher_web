@@ -15,9 +15,9 @@ import useCommunity from '~/stores/community/hooks'
 import { DSB_MENU_ICON, MENU_VIEW } from '../constant'
 import type { TDsbMenuGroup } from '../spec'
 import ActiveMark from './ActiveMark'
-import { SUBMENU_CONFIG, SUBMENU_ROUTE_VIEW } from './constant'
 import { dispatchMenuView, type TMenuView } from './events'
 import useSalon, { cn } from './salon/group'
+import { THREAD_MENU_CONFIG, THREAD_MENU_ROUTE_VIEW } from './ThreadMenu/registry'
 
 type TProps = {
   activeMainTab: TDsbPath
@@ -72,8 +72,9 @@ const Group: FC<TProps> = ({ activeMainTab, group }) => {
         <div className={s.menu}>
           {group.children.map((item) => {
             const subPath = item.slug === DSB_ROUTE.OVERVIEW ? '' : item.slug
-            const submenuView = SUBMENU_ROUTE_VIEW[item.slug as keyof typeof SUBMENU_ROUTE_VIEW]
-            const submenuConfig = submenuView ? SUBMENU_CONFIG[submenuView] : null
+            const submenuView =
+              THREAD_MENU_ROUTE_VIEW[item.slug as keyof typeof THREAD_MENU_ROUTE_VIEW]
+            const submenuConfig = submenuView ? THREAD_MENU_CONFIG[submenuView] : null
             const itemPath = submenuConfig?.entryPath ?? subPath
             const isActive = item.slug === activeMainTab
             const itemRoute = dsbRoutes.section({

@@ -1,27 +1,21 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
 import { AnimatePresence, domAnimation, LazyMotion, m } from 'motion/react'
 import { keys } from 'ramda'
-import { useEffect, useMemo, useReducer } from 'react'
+import { useEffect, useReducer } from 'react'
 
-import { DSB_POST_ROUTE } from '~/const/route'
 import useDsbTab from '~/hooks/useDsbTab'
-import { Q } from '~/query'
 import type { TDsbPath } from '~/spec'
-import useCommunity from '~/stores/community/hooks'
 import { useDsbShellUi } from '~/stores/dsbShellUi'
 import Sticky from '~/ui/Sticky'
 
 import { DASHBOARD_SIDE_MENU_STICKY_OFFSET, MENU, MENU_VIEW } from '../constant'
 import { getMenuDirection, menuVariants, type TMenuDirection } from './animation'
-import Collapsed from './Collapsed'
-import { SUBMENU_CONFIG, SUBMENU_ROUTE_VIEW } from './constant'
 import { DASHBOARD_MENU_VIEW_EVENT, type TMenuView, type TMenuViewEvent } from './events'
 import Group from './Group'
-import MenuItemCount from './MenuItemCount'
 import useSalon from './salon'
-import SubMenu from './SubMenu'
+import ThreadMenu from './ThreadMenu'
+import { isThreadMenuView, THREAD_MENU_ROUTE_VIEW } from './ThreadMenu/registry'
 
 type TSideMenuState = {
   direction: TMenuDirection
@@ -30,8 +24,6 @@ type TSideMenuState = {
   optimisticSubTab: string | null
   returnToByView: Partial<Record<TMenuView, string>>
 }
-
-type TSubmenuView = Exclude<TMenuView, `${MENU_VIEW.MAIN}`>
 
 type TSideMenuAction =
   | {
@@ -43,7 +35,7 @@ type TSideMenuAction =
       type: 'applyMenuView'
     }
 
-const submenuViews = Object.values(SUBMENU_ROUTE_VIEW) as TMenuView[]
+const submenuViews = Object.values(THREAD_MENU_ROUTE_VIEW) as TMenuView[]
 
 const isMenuView = (view: TMenuView): boolean => {
   return view === MENU_VIEW.MAIN || submenuViews.includes(view)
@@ -95,25 +87,17 @@ const sideMenuReducer = (state: TSideMenuState, action: TSideMenuAction): TSideM
 export default function SideMenu() {
   const { mainTab } = useDsbTab()
   const { submenuCollapsed, setSubmenuCollapsed } = useDsbShellUi()
-  const { slug: community } = useCommunity()
-  const postsQuery = useQuery(Q.article.posts({ community, page: 1, size: 20 }))
   const groupKeys = keys(MENU)
   const resolvedMenuView =
-    SUBMENU_ROUTE_VIEW[mainTab as keyof typeof SUBMENU_ROUTE_VIEW] ?? MENU_VIEW.MAIN
+    THREAD_MENU_ROUTE_VIEW[mainTab as keyof typeof THREAD_MENU_ROUTE_VIEW] ?? MENU_VIEW.MAIN
   const [state, dispatch] = useReducer(sideMenuReducer, resolvedMenuView, createInitialState)
   const { direction, optimisticMainTab, optimisticMenuView, optimisticSubTab, returnToByView } =
     state
   const menuView = optimisticMenuView ?? resolvedMenuView
-  const submenuConfig = menuView in SUBMENU_CONFIG ? SUBMENU_CONFIG[menuView as TSubmenuView] : null
-  const collapsed = Boolean(submenuConfig && submenuCollapsed)
+  const threadMenuVisible = isThreadMenuView(menuView)
+  const collapsed = threadMenuVisible && submenuCollapsed
   const s = useSalon({ collapsed })
   const activeMainTab = (optimisticMainTab ?? mainTab) as TDsbPath
-  const postEndSlots = useMemo(
-    () => ({
-      [DSB_POST_ROUTE.CONTENT]: <MenuItemCount value={postsQuery.data?.totalCount ?? 0} />,
-    }),
-    [postsQuery.data?.totalCount],
-  )
 
   useEffect(() => {
     if (menuView === MENU_VIEW.MAIN) setSubmenuCollapsed(false)
@@ -154,24 +138,16 @@ export default function SideMenu() {
             exit='exit'
             transition={{ duration: 0.16, ease: 'easeOut' }}
           >
-            {submenuConfig ? (
-              submenuCollapsed ? (
-                <Collapsed
-                  activeSlug={optimisticSubTab}
-                  className={s.collapsedRail}
-                  onExpand={() => setSubmenuCollapsed(false)}
-                  view={menuView as TSubmenuView}
-                  {...submenuConfig}
-                />
-              ) : (
-                <SubMenu
-                  activeSlug={optimisticSubTab}
-                  endSlots={menuView === MENU_VIEW.POST ? postEndSlots : undefined}
-                  onCollapse={() => setSubmenuCollapsed(true)}
-                  returnTo={returnToByView[menuView] ?? null}
-                  {...submenuConfig}
-                />
-              )
+            {threadMenuVisible ? (
+              <ThreadMenu
+                activeSlug={optimisticSubTab}
+                collapsed={submenuCollapsed}
+                collapsedClassName={s.collapsedRail}
+                onCollapse={() => setSubmenuCollapsed(true)}
+                onExpand={() => setSubmenuCollapsed(false)}
+                returnTo={returnToByView[menuView] ?? null}
+                view={menuView}
+              />
             ) : (
               groupKeys.map((key) => (
                 <Group key={key} activeMainTab={activeMainTab} group={MENU[key]} />
