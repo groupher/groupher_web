@@ -413,29 +413,12 @@ defmodule GroupherServer.CMS.Gate.Access.Query do
     end
   end
 
-  @doc "Checks Community Application creation inside the pipeline transaction."
-  def check_application_create_in_transaction(actor) do
-    with {:ok, :pass} <- require_transaction(),
-         {:ok, :pass} <- ApplicationPolicy.check_create(actor) do
-      {:ok, actor}
-    end
-  end
-
   @doc "Checks Community creation inside the pipeline transaction."
   def check_community_create_in_transaction(actor, target) do
     with {:ok, :pass} <- require_transaction(),
          {:ok, :pass} <- CMS.Gate.Access.Policy.Community.check_create(actor) do
       {:ok, target}
     end
-  end
-
-  @doc "Runs the create admission for a new Community Application."
-  def with_application_create_check(actor, callback) when is_function(callback, 0) do
-    Repo.transact(fn ->
-      with {:ok, :pass} <- ApplicationPolicy.check_create(actor) do
-        callback.()
-      end
-    end)
   end
 
   @doc "Runs an ordinary Article command against an explicit ArticleBinding binding."

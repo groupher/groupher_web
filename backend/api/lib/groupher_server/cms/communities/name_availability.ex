@@ -1,58 +1,34 @@
-defmodule GroupherServer.CMS.Communities.NamePolicy do
+defmodule GroupherServer.CMS.Communities.NameAvailability do
   @moduledoc """
-  Canonical V1 policy for the shared community slug namespace.
+  Queries the shared community slug namespace for claims, communities, and cooldowns.
 
-  The list mirrors public top-level routes and service namespaces. Future brand
-  and dispute rules extend this module instead of adding resolver conditions.
+  Syntax and reserved-name validation is delegated to `NameRules`; this module
+  owns all database-backed availability checks.
 
-  Business position:
-
-      Client / reviewer
-        -> CMS.Communities
-        -> NamePolicy
-        -> Repo / Oban
+      raw name -> NameRules -> claim/community queries -> available or denial
   """
 
   import Ecto.Query, warn: false
 
   alias GroupherServer.{CMS, Repo}
-
-  alias CMS.Communities.ErrorCat
+  alias CMS.Communities.{ErrorCat, NameRules}
   alias CMS.Model.{Community, CommunitySlugClaim}
+  alias Helper.Datetime
 
-  @reserved ~w(
-    home dash dashboard apply api auth login logout pricing assets static _next
-    graphql health press docs admin settings
-  )
-  @slug_pattern ~r/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/
   @blocking_claim_statuses [:application, :community, :reserved, :disputed]
 
   @doc """
-  Normalizes a slug: trims whitespace, lowercases, and treats an empty
-  result as nil.
+  Checks whether a normalized name is available in the shared namespace.
 
   ## Examples
 
-      CMS.Communities.NamePolicy.normalize("  GroupHer ")
-      #=> "groupher"
-
-      CMS.Communities.NamePolicy.normalize("  ")
-      #=> nil
-
+      NameAvailability.check("new-community")
+      #=> {:ok, "new-community"}
   """
-  @spec normalize(term()) :: String.t() | nil
-  def normalize(slug) when is_binary(slug) do
-    slug = slug |> String.trim() |> String.downcase()
-    if slug == "", do: nil, else: slug
-  end
-
-  def normalize(_), do: nil
-
-  @doc "Checks whether a normalized name is available in the shared namespace."
   @spec check(term(), keyword()) ::
           {:ok, String.t()} | {:error, ErrorCat.error()}
   def check(slug, opts \\ []) do
-    with {:ok, slug} <- format_check(slug) do
+    with {:ok, slug} <- NameRules.format_check(slug) do
       cond do
         blocking_claim = blocking_claim(slug, opts) ->
           {:error, claim_error(blocking_claim)}
@@ -63,23 +39,6 @@ defmodule GroupherServer.CMS.Communities.NamePolicy do
         true ->
           {:ok, slug}
       end
-    end
-  end
-
-  @doc "Normalizes and validates syntax/reserved routes without checking occupancy."
-  @spec format_check(term()) :: {:ok, String.t()} | {:error, ErrorCat.error()}
-  def format_check(slug) do
-    slug = normalize(slug)
-
-    cond do
-      not is_binary(slug) or byte_size(slug) > 30 or not Regex.match?(@slug_pattern, slug) ->
-        {:error, ErrorCat.invalid_slug()}
-
-      slug in @reserved ->
-        {:error, ErrorCat.reserved_slug()}
-
-      true ->
-        {:ok, slug}
     end
   end
 
@@ -112,7 +71,7 @@ defmodule GroupherServer.CMS.Communities.NamePolicy do
   end
 
   defp cooldown_claim(slug) do
-    now = DateTime.utc_now(:second)
+    now = Datetime.now()
 
     Repo.one(
       from(claim in CommunitySlugClaim,
@@ -129,7 +88,4 @@ defmodule GroupherServer.CMS.Communities.NamePolicy do
   defp claim_error(%CommunitySlugClaim{status: :disputed}), do: ErrorCat.slug_disputed()
   defp claim_error(%CommunitySlugClaim{status: :cooldown}), do: ErrorCat.slug_in_cooldown()
   defp claim_error(%CommunitySlugClaim{}), do: ErrorCat.slug_claimed()
-
-  @spec reserved_slugs() :: [String.t()]
-  def reserved_slugs, do: @reserved
 end

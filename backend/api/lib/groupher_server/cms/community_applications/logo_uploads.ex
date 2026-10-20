@@ -18,7 +18,7 @@ defmodule GroupherServer.CMS.CommunityApplications.LogoUploads do
   alias Accounts.Model.User
   alias CMS.Assets.Capability
   alias CMS.Communities.ErrorCat
-  alias CMS.CommunityApplications.{Config, Policy, Transaction}
+  alias CMS.CommunityApplications.{Admission, Config, Transaction}
   alias CMS.Model.CommunityApplicationLogoUpload
   alias Helper.Utils
 
@@ -37,12 +37,12 @@ defmodule GroupherServer.CMS.CommunityApplications.LogoUploads do
         %{file_name: "logo.png", mime_type: "image/png", size_bytes: 1024},
         %User{id: 1}
       )
-      #=> {:ok, %{upload_ref: "app_logo_...", capability: "..."}}
+      # returns an intent map containing `upload_ref`, `object_key`, `capability`, and `expires_at`
 
   """
   @spec create_intent(map(), User.t()) :: {:ok, map()} | {:error, term()}
   def create_intent(file, %User{} = user) when is_map(file) do
-    with %{allowed: true} <- Policy.can_apply(user),
+    with {:ok, _decision} <- Admission.check(:application_logo_upload_create, user),
          {:ok, attrs} <- validate_file(file) do
       now = DateTime.utc_now(:second)
       upload_ref = "app_logo_" <> Utils.uid(24)
@@ -87,12 +87,15 @@ defmodule GroupherServer.CMS.CommunityApplications.LogoUploads do
            allowed_mime_types: @allowed_mime_types
          }}
       end
-    else
-      %{allowed: false} = policy -> {:error, Policy.denial_error(policy)}
-      error -> error
     end
   end
 
+  @doc """
+  Finalizes an application logo upload under a row lock.
+
+  A repeated completion for an already finalized or promoted upload is
+  idempotent; expired, missing, or malformed uploads return a domain error.
+  """
   @spec complete(map()) :: {:ok, CommunityApplicationLogoUpload.t()} | {:error, term()}
   def complete(input) when is_map(input) do
     upload_ref = get(input, :upload_ref)
@@ -138,6 +141,7 @@ defmodule GroupherServer.CMS.CommunityApplications.LogoUploads do
     end)
   end
 
+  @doc "Loads a finalized upload only when it still belongs to the caller."
   @spec fetch_finalized(String.t(), User.t()) ::
           {:ok, CommunityApplicationLogoUpload.t()} | {:error, ErrorCat.error()}
   def fetch_finalized(public_ref, %User{id: user_id}) when is_binary(public_ref) do
@@ -159,6 +163,7 @@ defmodule GroupherServer.CMS.CommunityApplications.LogoUploads do
     end
   end
 
+  @doc "Adds a Multi step that attaches a finalized upload to its application."
   @spec attach(Multi.t(), atom(), CommunityApplicationLogoUpload.t(), atom()) :: Multi.t()
   def attach(multi, name, %CommunityApplicationLogoUpload{} = upload, application_key) do
     Multi.update(multi, name, fn changes ->
@@ -167,7 +172,8 @@ defmodule GroupherServer.CMS.CommunityApplications.LogoUploads do
     end)
   end
 
-  @spec expire_due(DateTime.t()) :: {non_neg_integer(), nil}
+  @doc "Expires a bounded batch of unclaimed uploads and enqueues object cleanup."
+  @spec expire_due(DateTime.t()) :: {:ok, non_neg_integer()} | {:error, term()}
   def expire_due(%DateTime{} = now) do
     uploads =
       from(upload in CommunityApplicationLogoUpload,
@@ -180,12 +186,12 @@ defmodule GroupherServer.CMS.CommunityApplications.LogoUploads do
 
     ids = Enum.map(uploads, & &1.id)
 
-    result =
+    {count, _} =
       from(upload in CommunityApplicationLogoUpload, where: upload.id in ^ids)
       |> Repo.update_all(set: [status: :expired, updated_at: now])
 
     Enum.each(uploads, &CMS.Assets.delete_application_upload_object/1)
-    result
+    {:ok, count}
   end
 
   defp validate_file(file) do

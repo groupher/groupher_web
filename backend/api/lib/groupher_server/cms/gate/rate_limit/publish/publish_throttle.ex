@@ -1,4 +1,4 @@
-defmodule GroupherServer.CMS.Policy.Model.PublishThrottle do
+defmodule GroupherServer.CMS.Gate.RateLimit.Publish.Model.PublishThrottle do
   @moduledoc """
   Ecto schema for publish-rate throttle records.
 
@@ -8,7 +8,7 @@ defmodule GroupherServer.CMS.Policy.Model.PublishThrottle do
   Business position:
 
       GraphQL resolver / job
-        -> CMS facade
+        -> CMS.Gate.RateLimit.Publish
         -> PublishThrottle
         -> Repo / external boundary
   """

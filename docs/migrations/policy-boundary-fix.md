@@ -1,8 +1,14 @@
 # Policy Boundary Fix Plan
 
-> 状态：planned
+> 状态：implemented（2026-10-19）
 
-本文只记录当前实现中 `Policy` 命名或职责偏离 [`policy.md`](../architecture/policy.md) 的模块。它不是对所有包含“规则”的代码做机械改名。Gate Access/Scope 和 ViewTracker Policy 的模型保留，但 Gate Access 中已发现的隐式 loader 仍在本计划内清理。
+本批次已完成文档合同对应的 runtime 收口：Community passport facts 上移 Gate loader、
+Community Application 准入统一为 `Admission`、publish throttle 收回
+`Gate.RateLimit.Publish`、Comments required jobs 改名、NameRules/NameAvailability 拆分、
+PublicCache 改为 DeliveryConfig，并加入 legacy-owner report/check 脚本。下文保留问题、目标和
+迁移证据，供后续审计与回归使用。
+
+本文记录本批次迁移前 `Policy` 命名或职责偏离 [`policy.md`](../architecture/policy.md) 的模块、目标和验收证据。它不是对所有包含“规则”的代码做机械改名。Gate Access/Scope 和 ViewTracker Policy 的模型保留；Gate Access 中已发现的隐式 loader 已在本批次清理。
 
 ## 1. 目标
 
@@ -14,7 +20,7 @@
 
 ## 2. Inventory
 
-| 优先级 | 当前模块                                                                                               | 问题                                                                                  | 目标方向                                                                                       |
+| 优先级 | 迁移前模块                                                                                             | 问题                                                                                  | 目标方向                                                                                       |
 | ------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | P0     | `CMS.Gate.Access.Policy.Community` / `Communities.Passport`                                            | Community Policy 在 facts 缺失时通过 Passport 间接访问 ORM                            | Passport facts 上移 Gate Access Load，Policy 缺失 facts 时 fail closed                         |
 | P0     | `CMS.CommunityApplications.Policy` / `Gate.Access.Policy.Application` / Submit                         | Gate 和 Command 重复查询并决策，持久化 snapshot 不一定等于 Gate decision              | `CommunityApplications.Admission` 一次组织配置、具名查询和 Policy input，并返回可复用 decision |
@@ -22,11 +28,11 @@
 | P0     | `CMS.Comments.JobPolicy`                                                                               | 名为 Policy，但函数直接 enqueue required job 并转换错误                               | 改为 `RequiredJobs` 或 `JobContract`                                                           |
 | P1     | `CMS.Communities.NamePolicy`                                                                           | normalization、规则、claim/community 查询和 cooldown 查询混在一起                     | `NameRules` + `NameAvailability`                                                               |
 | P2     | `PublicCache.Policy`                                                                                   | 只返回 timeout/retry/tag-count 配置，不作 allow/deny                                  | 改为 `DeliveryConfig`                                                                          |
-| P2     | `CMS.Communities.Enable`                                                                               | 以 policy decision 描述 enablement，但通过 `FrontDesk.community` 隐式查询             | 保留领域能力名，后续抽离明确 loader，不机械改名                                                |
+| P2     | `CMS.Communities.Enable`                                                                               | 以 policy decision 描述 enablement，但通过 `FrontDesk.community` 隐式查询             | **deferred follow-up**：本批不改名；后续抽离明确 loader，不机械改名                            |
 
 ### 2.1 Gate Community Passport loader
 
-当前 `Gate.Access.Policy.Community.passport_rules/1` 优先读 user 上的 embedded passport；缺失时会调用 `Communities.Passport.get_passport/1`，后者执行 `ORM.find/2` 和 `ORM.find_by/2`。这使 Policy 拥有了一条不可见的查询分支。
+迁移前的 `Gate.Access.Policy.Community.passport_rules/1` 优先读 user 上的 embedded passport；缺失时会调用 `Communities.Passport.get_passport/1`，后者执行 `ORM.find/2` 和 `ORM.find_by/2`。这使 Policy 拥有了一条不可见的查询分支。
 
 目标链路：
 
@@ -53,18 +59,18 @@ Gate.Access.Policy.Community
 迁移必须显式包含：
 
 1. 扩展 `Gate.Context.Access.Community`，将 `passport_rules` 加入 struct、`@enforce_keys` 和 type；
-2. 将 `Load.Query.community/1` 改为接收 actor 的 loader；
+2. 将 `Load.Query.community/2` 改为接收 actor 的 loader；
 3. 更新 `Access.Check` 到 loader 的调用链；
 4. inventory 并迁移生产代码和测试中所有手动构造 `%Context.Access.Community{}` 的位置；
 5. 保留 embedded passport 优先级和 `PermissionRegistry.normalize_rules/1` 语义，但不在 Policy 中保留 fallback query。
 
-Community Policy 中对 `:lifecycle_not_loaded` 的 `community.pending == 0` fallback 也必须删除。Canonical loader 已在 lifecycle 缺失时返回 `lifecycle_not_found`；Policy 再根据 legacy `pending` 字段放行，会掩盖残缺 Context 和绕过 loader 的调用。这不登记为长期 exception：缺失 `community_lifecycle` 一律返回稳定 denial/error。
+迁移前 Community Policy 中对 `:lifecycle_not_loaded` 的 `community.pending == 0` fallback 也必须删除。Canonical loader 已在 lifecycle 缺失时返回 `lifecycle_not_found`；Policy 再根据 legacy `pending` 字段放行，会掩盖残缺 Context 和绕过 loader 的调用。这不登记为长期 exception：缺失 `community_lifecycle` 一律返回稳定 denial/error。
 
 验收需包含 embedded passport、DB passport、无 passport、passport loader 失败、lifecycle 缺失和手动残缺 Context 六类测试，并对 Gate 入口做 query-count 断言。
 
 ## 3. P0：Publish throttle 退出通用 CMS.Policy
 
-### 3.1 当前问题
+### 3.1 迁移前问题
 
 当前结构：
 
@@ -121,7 +127,7 @@ loaded throttle facts + configured limits
 
 ## 4. P0：Comments.JobPolicy 改为 required-job contract
 
-### 4.1 当前问题
+### 4.1 迁移前问题
 
 `CMS.Comments.JobPolicy.audition/1,2` 会直接调用 `Jobs.audition/1`，并把 enqueue 失败转换成 Comments ErrorCat：
 
@@ -281,16 +287,15 @@ Admission
   -> expose {:ok, decision} | {:error, ErrorCat.error()}
 ```
 
-CommandPipeline 的 gate stage 直接调用 Admission，结果通过 stage value 显式传递，不写入 `StageContext` 或 process state。冻结返回形状：
+CommandPipeline 的 gate stage 直接调用 Admission，再把 decision 与 actor 包装进 stage value
+显式传递，不写入 `StageContext` 或 process state。Admission 本身仍只返回 Decision：
 
 ```elixir
 CommunityApplications.Admission.check(:application_create, actor)
-# =>
-{:ok,
- %{
-   actor: actor,
-   application_decision: decision
- }}
+# => {:ok, %CommunityApplications.Decision{allowed: true}}
+
+# gate stage value
+%{actor: actor, application_decision: decision}
 ```
 
 Pipeline 传递链路：
@@ -310,7 +315,9 @@ gate callback
 
 - `LogoUploads.create_intent/2` 首期冻结为独立 domain admission facade：`CommunityApplications.Admission.check(:application_logo_upload_create, actor)` 完整执行 `Config.application_admission() -> Query.active_application_exists(actor.id) -> %Policy.Input{} -> Policy.check(actor, action, input)`；
 - `:application_logo_upload_create` 是 CommunityApplications 内部 domain admission action atom，不加入 `Gate.Const.gate_action`、生成的 `GateAction` 或 `packages/contracts`，也不对应 Passport grant；
-- `can_apply/1` 和 `state/1` 的只读 facade 同样复用 `Admission.check(:application_create, actor)`，不让 Query、`Policy.Input` 或 Policy 自己读 env。
+- `can_apply/1` 和 `state/1` 的只读 facade 同样复用 `Admission` 的
+  `Config -> Query -> Policy.Input -> Policy` 编排（读取 Decision 时使用
+  `Admission.evaluate/2`），不让 Query、`Policy.Input` 或 Policy 自己读 env。
 
 Pipeline create admission、Logo Admission 和只读 facade 的 config/query/policy 链路必须保持一致，并由 `CommunityApplications.Admission` 统一编排。Config/Query 的读取或校验错误与 `Policy.check/3` 的 intentional business denial 只在 Admission 边界区分和转换。
 
@@ -358,7 +365,7 @@ end
 
 ## 6. P1：Communities.NamePolicy 拆 Rules 与 Availability
 
-### 6.1 当前问题
+### 6.1 迁移前问题
 
 当前模块同时拥有：
 
@@ -397,7 +404,7 @@ Communities.NameAvailability
 
 ## 7. P2：PublicCache.Policy 改为 DeliveryConfig
 
-### 7.1 当前问题
+### 7.1 迁移前问题
 
 当前模块仅从 Application env 返回：
 
@@ -509,7 +516,7 @@ Phase F
 阻塞门禁只扫 active runtime、测试、配置和明确的 current contract 文档：
 
 ```bash
-rg 'CMS\.Policy|PublicCache\.Policy|Comments\.JobPolicy|\bNamePolicy' \
+rg 'CMS\.Policy|PublicCache\.Policy|Comments\.JobPolicy|\bNamePolicy(?:\b|Test\b)' \
   backend/api/lib \
   backend/api/test \
   backend/api/config \
@@ -520,7 +527,7 @@ rg 'CMS\.Policy|PublicCache\.Policy|Comments\.JobPolicy|\bNamePolicy' \
   docs/feature/interaction/v4.md
 ```
 
-该命令在迁移完成后必须零命中。`CMS\.Policy` 已覆盖 `CMS.Policy.Config` 和 `CMS.Policy.Model.PublishThrottle`，不再重复列出子 namespace；`\bNamePolicy` 同时覆盖完整 `Communities.NamePolicy`、alias 后的裸 `NamePolicy` 和 `NamePolicyTest`。
+该命令在迁移完成后必须零命中。`CMS\.Policy` 已覆盖 `CMS.Policy.Config` 和 `CMS.Policy.Model.PublishThrottle`，不再重复列出子 namespace；`\bNamePolicy(?:\b|Test\b)` 同时覆盖完整 `Communities.NamePolicy`、alias 后的裸 `NamePolicy` 和 `NamePolicyTest`。
 
 报告门禁复用同一组 legacy owner patterns，扫描整个 `docs` 和历史架构记录，输出 file + line + matched owner 供人工确认，不使用“命中即失败”。它必须：
 
@@ -528,7 +535,28 @@ rg 'CMS\.Policy|PublicCache\.Policy|Comments\.JobPolicy|\bNamePolicy' \
 - 仅在存在 superseded/current-owner 上下文时允许历史引用；
 - 将 `backend/api/priv/pipeline_graph.json` 等生成产物分类报告，不混入源码阻塞门禁。
 
-最终应将这两类检查落成脚本和可审计 allowlist，不长期依赖一条复杂 shell 命令。
+两类检查现已落成 `scripts/check-policy-boundary.mjs` 与对应测试：
+`pnpm check:policy-boundary` 阻塞 active runtime/current contract 命中，
+`pnpm report:policy-boundary` 同时输出历史文档和生成产物命中供审计，不长期依赖复杂 shell 命令。
+
+### 10.1 本次审计证据（2026-10-19）
+
+本批次的实现与合同检查结果如下：
+
+- `mix compile --warnings-as-errors`：通过；
+- 本批涉及的 Policy Elixir 文件执行 `mix format --check-formatted`：通过；当前混合工作树的全量
+  glob 检查仍会命中既有的非 Policy 未格式化文件，不作为本批回归结论；
+- `node scripts/check-documentation.mjs`：通过；
+- `node scripts/check-policy-boundary.mjs --check`：通过，active findings `0`；
+- Policy 相关定向测试：`73` 个通过；
+- `mix cms.command.pipeline`：通过并重新生成被 gitignore 的
+  `backend/api/priv/pipeline_graph.json`，当前报告无 unresolved、unreached 或 mixed-protocol
+  结果，生成物不作为源码阻塞门禁依据；
+- 完整 `mix test` 未作为本批次的通过结论：当前环境出现 Postgrex `too_many_connections`、超时和
+  非 Policy 的 command/analysis 失败，需在 CI 或降低 `--max-cases` 后重新跑完整套件。
+
+其中 `CMS.Communities.Enable` 仍是明确的 deferred follow-up，不属于本批 P0/P1 与 PublicCache
+收口范围；后续抽离 loader 时应单独补齐实现、测试和合同证据。
 
 ## 11. 文档同步清单
 

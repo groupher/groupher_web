@@ -9,19 +9,10 @@ defmodule GroupherServer.CMS.Gate.Access.Policy.Application do
 
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.CommunityApplications.Policy
   alias CMS.Communities.ErrorCat
   alias CMS.Gate.Const
   alias CMS.Model.CommunityApplication
   alias CMS.Passport
-
-  @doc "Checks an applicant starting a new application command."
-  def check_create(%User{} = actor) do
-    case Policy.can_apply(actor) do
-      %{allowed: true} -> {:ok, :pass}
-      %{allowed: false} = denial -> {:error, Policy.denial_error(denial)}
-    end
-  end
 
   @doc "Checks a user or reviewer action against a canonical application."
   def check_access(%User{id: user_id}, :application_cancel, %CommunityApplication{

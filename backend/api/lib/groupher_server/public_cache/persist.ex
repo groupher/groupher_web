@@ -15,7 +15,7 @@ defmodule GroupherServer.PublicCache.Persist do
   alias Ecto.Multi
   alias GroupherServer.{Jobs, Repo}
   alias GroupherServer.PublicCache
-  alias PublicCache.{Model.Invalidation, Policy}
+  alias PublicCache.{DeliveryConfig, Model.Invalidation}
 
   @doc """
   Adds an invalidation row and durable worker trigger to an Ecto.Multi.
@@ -203,8 +203,8 @@ defmodule GroupherServer.PublicCache.Persist do
     degraded? =
       dead > 0 or
         delivering_without_lease > 0 or
-        (oldest_pending_age_seconds || 0) > Policy.pending_slo_seconds() or
-        (oldest_delivering_age_seconds || 0) > Policy.delivery_lease_seconds()
+        (oldest_pending_age_seconds || 0) > DeliveryConfig.pending_slo_seconds() or
+        (oldest_delivering_age_seconds || 0) > DeliveryConfig.delivery_lease_seconds()
 
     %{
       status: if(degraded?, do: :degraded, else: :ok),
@@ -300,12 +300,12 @@ defmodule GroupherServer.PublicCache.Persist do
   defp lease_expired?(%Invalidation{locked_at: nil}, _now), do: true
 
   defp lease_expired?(%Invalidation{locked_at: locked_at}, now) do
-    DateTime.diff(now, locked_at, :second) >= Policy.delivery_lease_seconds()
+    DateTime.diff(now, locked_at, :second) >= DeliveryConfig.delivery_lease_seconds()
   end
 
   defp remaining_lease_seconds(%Invalidation{locked_at: locked_at}, now) do
     elapsed = max(DateTime.diff(now, locked_at, :second), 0)
-    max(Policy.delivery_lease_seconds() - elapsed, 1)
+    max(DeliveryConfig.delivery_lease_seconds() - elapsed, 1)
   end
 
   defp update_claim(row, lock_ref, now) do

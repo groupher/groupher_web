@@ -16,7 +16,8 @@ defmodule GroupherServer.CMS.Communities do
     Count,
     Creation,
     Query,
-    NamePolicy,
+    NameAvailability,
+    NameRules,
     Setup,
     SlugClaims,
     Commands,
@@ -125,14 +126,14 @@ defmodule GroupherServer.CMS.Communities do
 
   @spec check_name(term(), keyword()) :: T.domain_res(map())
   def check_name(slug, opts) do
-    case NamePolicy.check(slug, opts) do
+    case NameAvailability.check(slug, opts) do
       {:ok, normalized_slug} ->
         {:ok, %{normalized_slug: normalized_slug, available: true, reason_code: nil}}
 
       {:error, reason} ->
         {:ok,
          %{
-           normalized_slug: NamePolicy.normalize(slug),
+           normalized_slug: NameRules.normalize(slug),
            available: false,
            reason_code: reason_code(reason)
          }}

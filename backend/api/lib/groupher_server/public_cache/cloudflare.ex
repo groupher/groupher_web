@@ -27,7 +27,7 @@ defmodule GroupherServer.PublicCache.Cloudflare do
   """
 
   alias GroupherServer.PublicCache
-  alias PublicCache.{Policy, Tags}
+  alias PublicCache.{DeliveryConfig, Tags}
 
   @doc """
   Purges the supplied validated cache tags through Cloudflare.
@@ -75,7 +75,7 @@ defmodule GroupherServer.PublicCache.Cloudflare do
       "https://api.cloudflare.com/client/v4/zones/#{zone_id}/purge_cache",
       json: %{tags: tags},
       headers: [{"authorization", "Bearer #{token}"}],
-      receive_timeout: Policy.timeout_ms(),
+      receive_timeout: DeliveryConfig.timeout_ms(),
       retry: false
     )
   end

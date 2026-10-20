@@ -52,6 +52,28 @@ defmodule GroupherServer.CMS.CommunityApplications.Query do
     {:ok, application}
   end
 
+  @doc """
+  Checks whether one user has a blocking Application without loading the row.
+
+  ## Examples
+
+      Query.active_application_exists(user.id)
+      #=> {:ok, false}
+  """
+  @spec active_application_exists(integer()) :: {:ok, boolean()} | {:error, term()}
+  def active_application_exists(user_id) when is_integer(user_id) do
+    statuses = CommunityApplication.blocking_statuses()
+
+    {:ok,
+     Repo.exists?(
+       from(application in CommunityApplication,
+         where: application.user_id == ^user_id and application.status in ^statuses
+       )
+     )}
+  rescue
+    error -> {:error, error}
+  end
+
   @spec latest_failed(User.t()) :: {:ok, CommunityApplication.t() | nil}
   def latest_failed(%User{id: user_id}) do
     statuses = CommunityApplication.failed_statuses()

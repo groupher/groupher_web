@@ -7,7 +7,7 @@ defmodule GroupherServer.PublicCacheTest do
 
   alias GroupherServer.{PublicCache, Repo}
   alias Jobs.PublicCachePurge
-  alias PublicCache.{Model.Invalidation, Policy, Tags}
+  alias PublicCache.{DeliveryConfig, Model.Invalidation, Tags}
 
   @tag_fixture_path Path.expand(
                       "../../../../packages/contracts/fixtures/public-cache-tags-v1.json",
@@ -145,7 +145,7 @@ defmodule GroupherServer.PublicCacheTest do
     assert {:ok, {:busy, retry_after_seconds}} =
              PublicCache.claim(invalidation.id, "second-worker")
 
-    assert retry_after_seconds in 1..Policy.delivery_lease_seconds()
+    assert retry_after_seconds in 1..DeliveryConfig.delivery_lease_seconds()
 
     Repo.update_all(from(row in Invalidation, where: row.id == ^invalidation.id),
       set: [locked_at: DateTime.add(DateTime.utc_now(:second), -300, :second)]
@@ -190,11 +190,11 @@ defmodule GroupherServer.PublicCacheTest do
       id: 3,
       args: %{"invalidation_id" => invalidation.id},
       attempt: 1,
-      max_attempts: Policy.max_attempts()
+      max_attempts: DeliveryConfig.max_attempts()
     }
 
     assert {:snooze, retry_after_seconds} = PublicCachePurge.perform(job)
-    assert retry_after_seconds in 1..Policy.delivery_lease_seconds()
+    assert retry_after_seconds in 1..DeliveryConfig.delivery_lease_seconds()
 
     assert %Invalidation{status: :delivering, attempts: 1, locked_by: "crashed-worker"} =
              Repo.get!(Invalidation, invalidation.id)
@@ -211,10 +211,10 @@ defmodule GroupherServer.PublicCacheTest do
 
   test "uses second-based bounded retry backoff" do
     assert PublicCachePurge.backoff(%Oban.Job{attempt: 1}) ==
-             Policy.retry_base_delay_seconds()
+             DeliveryConfig.retry_base_delay_seconds()
 
     assert PublicCachePurge.backoff(%Oban.Job{attempt: 20}) ==
-             Policy.max_retry_delay_seconds()
+             DeliveryConfig.max_retry_delay_seconds()
   end
 
   test "keeps only incomplete delivery jobs unique and configures orphan rescue" do
@@ -233,7 +233,7 @@ defmodule GroupherServer.PublicCacheTest do
              List.keyfind(plugins, Oban.Plugins.Lifeline, 0)
 
     assert Keyword.fetch!(lifeline_opts, :rescue_after) >
-             :timer.seconds(Policy.delivery_lease_seconds())
+             :timer.seconds(DeliveryConfig.delivery_lease_seconds())
   end
 
   test "reports durable purge backlog health" do

@@ -4,7 +4,7 @@ defmodule GroupherServer.Test.CMS.Gate.RateLimit.Publish do
   use GroupherServer.TestMate
 
   alias GroupherServer.CMS
-  alias CMS.Policy.Model.PublishThrottle
+  alias CMS.Gate.RateLimit.Publish.Model.PublishThrottle
 
   setup do
     {:ok, user} = db_insert(:user)
@@ -37,5 +37,28 @@ defmodule GroupherServer.Test.CMS.Gate.RateLimit.Publish do
 
     assert pt_record.date_count == 2
     assert pt_record.hour_count == 2
+  end
+
+  test "load_and_reset clears both expired windows before checking limits", ~m(community user)a do
+    post_attrs = mock_attrs(:post, %{community_id: community.id})
+    {:ok, _} = CMS.Articles.create(community, :post, post_attrs, user)
+
+    CMS.Gate.RateLimit.Publish.mock_publish_throttle_attr(
+      :publish_hour,
+      %User{id: user.id},
+      hours: -1
+    )
+
+    CMS.Gate.RateLimit.Publish.mock_publish_throttle_attr(
+      :publish_date,
+      %User{id: user.id},
+      days: -2
+    )
+
+    assert {:ok, record} =
+             CMS.Gate.RateLimit.Publish.load_and_reset(%User{id: user.id})
+
+    assert record.hour_count == 0
+    assert record.date_count == 0
   end
 end

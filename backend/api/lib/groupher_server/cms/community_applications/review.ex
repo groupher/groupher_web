@@ -18,7 +18,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Review do
   alias GroupherServer.{Accounts, CMS, Repo}
   alias Ecto.Multi
   alias Accounts.Model.User
-  alias CMS.Communities.{ErrorCat, NamePolicy, SlugClaims}
+  alias CMS.Communities.{ErrorCat, NameAvailability, SlugClaims}
 
   alias CMS.CommunityApplications.Lifecycle, as: ApplicationLifecycle
   alias CMS.CommunityApplications.Transaction
@@ -119,7 +119,8 @@ defmodule GroupherServer.CMS.CommunityApplications.Review do
              Const.passport_action(:community_application_retry_creation)
            ),
          {:ok, application} <- fetch(public_ref),
-         {:ok, _slug} <- NamePolicy.check(application.slug, ignore_application_id: application.id) do
+         {:ok, _slug} <-
+           NameAvailability.check(application.slug, ignore_application_id: application.id) do
       operation_ref = workflow_ref("community_creation", command_id)
 
       transition(

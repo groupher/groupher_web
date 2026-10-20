@@ -63,7 +63,7 @@ Workflow  ErrorCat
 Persist -> Effects
 ```
 
-Gate 负责在明确的事务/锁边界内加载和锁定事实；Policy 只消费事实并作决定。写命令不得绕过 Gate，自己加载一套资源后直接拼权限条件。Policy 也不得在 facts 缺失时隐式调用 `Passport`、`FrontDesk`、Query facade 或 Repo 补查；必需事实缺失时应 fail closed。
+Gate 负责在明确的事务/锁边界内加载和锁定事实；Policy 只消费事实并作决定。写命令不得绕过 Gate，自己加载一套资源后直接拼权限条件；没有 canonical resource 的已登记 domain admission（例如 Application create）必须在其 pipeline gate stage 内显式组织准入。Policy 也不得在 facts 缺失时隐式调用 `Passport`、`FrontDesk`、Query facade 或 Repo 补查；必需事实缺失时应 fail closed。
 
 已有资源的标准入口是：
 
@@ -223,14 +223,17 @@ Policy 不应：
 
 局部算法可以使用小写术语 `policy` 描述封闭策略，例如 codec 的字段编码策略，但这不自动意味着需要创建领域 `Policy` 模块。
 
-## 6. 当前样本与已知偏差
+## 6. 当前样本（无未登记偏差）
 
 ### 6.1 Gate Access Policy
 
 `CMS.Gate.Access.Policy.Article` 消费已加载的 Article、Lifecycle、Community 和 typed context，判断 read、publish、edit、restore、
 interaction 等 action 是否允许。它不负责加载和写入，是资源准入 Policy 的标准样本。
 
-`CMS.Gate.Access.Policy.Community` 的总体位置正确，但当 user 未携带 embedded passport 时，当前会通过 `Communities.Passport.get_passport/1` 间接执行 ORM 查询。这是待清理的隐式 loader，不是可复制的 Policy 样本。目标是由 Gate Access Load 一次加载 passport facts，Community Policy 仅消费 typed context。
+`CMS.Gate.Access.Policy.Community` 现在只消费 `Context.Access.Community` 中的
+`community_lifecycle` 和 normalized `passport_rules`。`Gate.Access.Load.Query.community/2`
+负责在 Gate 的事务/锁边界内加载这些 facts；Policy 不再通过 `Communities.Passport` 或其他
+Query facade 隐式补查。缺失 lifecycle 或 passport facts 时保持 fail-closed。
 
 ### 6.2 Gate Scope Policy
 

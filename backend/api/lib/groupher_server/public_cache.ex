@@ -91,7 +91,7 @@ defmodule GroupherServer.PublicCache do
       iex> GroupherServer.PublicCache.max_delivery_attempts(...)
   """
   @spec max_delivery_attempts() :: pos_integer()
-  defdelegate max_delivery_attempts(), to: PublicCache.Policy, as: :max_attempts
+  defdelegate max_delivery_attempts(), to: PublicCache.DeliveryConfig, as: :max_attempts
 
   @doc """
   Returns durable purge backlog health for readiness and operations checks.

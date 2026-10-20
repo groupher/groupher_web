@@ -50,15 +50,15 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
   end
 
   test "feature policy denials stay typed across submit and logo intent", %{user: user} do
-    policy_module = CMS.CommunityApplications.Policy
-    previous = Application.get_env(:groupher_server, policy_module)
-    Application.put_env(:groupher_server, policy_module, enabled: false)
+    config_module = CMS.CommunityApplications.Config
+    previous = Application.get_env(:groupher_server, config_module)
+    Application.put_env(:groupher_server, config_module, enabled: false)
 
     on_exit(fn ->
       if previous == nil do
-        Application.delete_env(:groupher_server, policy_module)
+        Application.delete_env(:groupher_server, config_module)
       else
-        Application.put_env(:groupher_server, policy_module, previous)
+        Application.put_env(:groupher_server, config_module, previous)
       end
     end)
 
@@ -78,6 +78,31 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
              )
   end
 
+  test "invalid admission configuration stays an infrastructure error", %{user: user} do
+    config_module = CMS.CommunityApplications.Config
+    previous = Application.get_env(:groupher_server, config_module)
+    Application.put_env(:groupher_server, config_module, enabled: :invalid)
+
+    on_exit(fn ->
+      if previous == nil do
+        Application.delete_env(:groupher_server, config_module)
+      else
+        Application.put_env(:groupher_server, config_module, previous)
+      end
+    end)
+
+    assert {:error, :invalid_application_admission_config} =
+             CMS.CommunityApplications.Admission.evaluate(:application_create, user)
+
+    assert {:error, :invalid_application_admission_config} =
+             CMS.CommunityApplications.Admission.check(:application_create, user)
+
+    Application.put_env(:groupher_server, config_module, :invalid)
+
+    assert {:error, :invalid_application_admission_config} =
+             CMS.CommunityApplications.Admission.evaluate(:application_create, user)
+  end
+
   test "submits idempotently and enforces one blocking application", %{user: user} do
     upload = finalized_logo(user, "first")
     attrs = application_attrs(upload, "apply-first")
@@ -93,6 +118,13 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
 
     assert application.status == :submitted
     assert application.logo_asset_ref == upload.public_ref
+
+    assert application.policy_snapshot == %{
+             "allowed" => true,
+             "reason_code" => nil,
+             "retry_at" => nil,
+             "metadata" => %{}
+           }
 
     assert %CommunitySlugClaim{expires_at: claim_expiry} =
              Repo.one(
@@ -489,10 +521,7 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
     |> Repo.update_all(set: [status: :expired])
 
     assert {:error, %ErrorCat.Error{reason: :asset_not_ready}} =
-             CMS.Communities.create_from_application(
-               approved.public_ref,
-               "rollback_test"
-             )
+             CMS.communities_create_from_application(approved.public_ref, "rollback_test")
 
     assert Repo.get!(CommunityApplication, approved.id).status == :approved
     refute Repo.exists?(from(c in Community, where: c.slug == ^approved.slug))

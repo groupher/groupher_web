@@ -1,81 +1,68 @@
 defmodule GroupherServer.CMS.CommunityApplications.Policy do
   @moduledoc """
-  Composable admission policy for creating a community application.
+  Pure decision rules for Community Application admission.
 
-  Business position:
+  Config and blocking-application queries are owned by
+  `CommunityApplications.Admission`; this module only combines typed input
+  facts with the requested action.
 
-      Apply UI / reviewer
-        -> GraphQL resolver
-        -> CMS.CommunityApplications
-        -> Policy
-        -> Repo / Oban
+      actor + action + Policy.Input -> allow/deny Decision
   """
 
-  import Ecto.Query, warn: false
-
-  alias GroupherServer.{Accounts, CMS, Repo}
-
-  alias Accounts.Model.User
-  alias CMS.Communities.ErrorCat
-  alias CMS.Model.CommunityApplication
+  alias GroupherServer.Accounts.Model.User
+  alias GroupherServer.CMS.CommunityApplications.{Decision, Policy.Input}
 
   @doc """
-  Returns whether the user may create a community application.
+  Evaluates one known application action from already-loaded facts.
 
-  The decision combines the feature flag with the single-active-application
-  rule. `context` may force `feature_enabled`.
+  Policy is pure: configuration and blocking-application queries must already
+  have been resolved into `Policy.Input`.
 
   ## Examples
 
-      CMS.CommunityApplications.Policy.can_apply(%User{id: 1})
-      #=> %{allowed: true, reason_code: nil, retry_at: nil, metadata: %{}}
-
-      CMS.CommunityApplications.Policy.can_apply(%User{id: 1}, %{feature_enabled: false})
-      #=> %{allowed: false, reason_code: :apply_not_allowed, retry_at: nil, metadata: %{policy: "feature_flag"}}
-
+      Policy.check(%User{id: 1}, :application_create, %Policy.Input{
+        feature_enabled: true,
+        active_application_exists: false
+      })
+      #=> {:ok, %Decision{allowed: true, reason_code: nil, retry_at: nil, metadata: %{}}}
   """
-  @spec can_apply(User.t(), map()) :: map()
-  def can_apply(%User{id: user_id}, context \\ %{}) do
-    feature_enabled = Map.get(context, :feature_enabled, feature_enabled?())
-
-    cond do
-      not feature_enabled ->
-        result(false, :apply_not_allowed, %{policy: "feature_flag"})
-
-      blocking_application?(user_id) ->
-        result(false, :active_application_exists, %{policy: "single_active_application"})
-
-      true ->
-        result(true, nil, %{})
-    end
+  @spec check(User.t(), atom(), Input.t()) ::
+          {:ok, Decision.t()} | {:error, Decision.t()}
+  def check(%User{}, action, %Input{feature_enabled: false, active_application_exists: active?})
+      when action in [:application_create, :application_logo_upload_create] and
+             is_boolean(active?) do
+    {:error, decision(false, :apply_not_allowed, %{policy: "feature_flag"})}
   end
 
-  @doc "Converts a denied policy result into its declared Community ErrorCat value."
-  def denial_error(%{allowed: false, reason_code: :active_application_exists}) do
-    ErrorCat.active_application_exists()
+  def check(%User{}, action, %Input{feature_enabled: true, active_application_exists: true})
+      when action in [:application_create, :application_logo_upload_create] do
+    {:error, decision(false, :active_application_exists, %{policy: "single_active_application"})}
   end
 
-  def denial_error(%{allowed: false, reason_code: :apply_not_allowed}) do
-    ErrorCat.apply_not_allowed()
+  def check(%User{}, action, %Input{feature_enabled: true, active_application_exists: false})
+      when action in [:application_create, :application_logo_upload_create] do
+    {:ok, decision(true, nil, %{})}
   end
 
-  defp blocking_application?(user_id) do
-    statuses = CommunityApplication.blocking_statuses()
-
-    Repo.exists?(
-      from(application in CommunityApplication,
-        where: application.user_id == ^user_id and application.status in ^statuses
-      )
-    )
+  def check(%User{}, action, %Input{})
+      when action in [:application_create, :application_logo_upload_create] do
+    {:error, decision(false, :apply_not_allowed, %{policy: "invalid_input"})}
   end
 
-  defp feature_enabled? do
-    :groupher_server
-    |> Application.get_env(__MODULE__, [])
-    |> Keyword.get(:enabled, true)
+  def check(%User{}, _action, %Input{}) do
+    {:error, decision(false, :apply_not_allowed, %{policy: "unknown_action"})}
   end
 
-  defp result(allowed, reason_code, metadata) do
-    %{allowed: allowed, reason_code: reason_code, retry_at: nil, metadata: metadata}
+  def check(_actor, _action, _input) do
+    {:error, decision(false, :apply_not_allowed, %{policy: "invalid_actor_or_input"})}
+  end
+
+  defp decision(allowed, reason_code, metadata) do
+    %Decision{
+      allowed: allowed,
+      reason_code: reason_code,
+      retry_at: nil,
+      metadata: metadata
+    }
   end
 end

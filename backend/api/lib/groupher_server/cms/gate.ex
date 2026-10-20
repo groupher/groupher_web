@@ -81,11 +81,6 @@ defmodule GroupherServer.CMS.Gate do
     Access.check_application_in_transaction(actor, action, application)
   end
 
-  @doc "Checks whether an actor may create a Community Application in the pipeline transaction."
-  def check_application_create_in_transaction(actor) do
-    Access.check_application_create_in_transaction(actor)
-  end
-
   @doc "Checks authenticated Community creation while joining the pipeline transaction."
   def check_community_create_in_transaction(actor, target) do
     Access.check_community_create_in_transaction(actor, target)
@@ -136,11 +131,6 @@ defmodule GroupherServer.CMS.Gate do
   @doc "Runs Community Application admission inside its canonical row lock."
   def with_application_check(actor, action, application, callback) do
     Access.with_application_check(actor, action, application, callback)
-  end
-
-  @doc "Runs admission for creating a new Community Application."
-  def with_application_create_check(actor, callback) do
-    Access.with_application_create_check(actor, callback)
   end
 
   @doc """

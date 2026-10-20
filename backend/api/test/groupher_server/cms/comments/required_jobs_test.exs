@@ -1,4 +1,4 @@
-defmodule GroupherServer.Test.CMS.Comments.JobPolicy do
+defmodule GroupherServer.Test.CMS.Comments.RequiredJobs do
   use GroupherServer.TestMate, async: false
 
   import Ecto.Query, warn: false
@@ -6,7 +6,7 @@ defmodule GroupherServer.Test.CMS.Comments.JobPolicy do
 
   alias GroupherServer.{CMS, Jobs}
   alias CMS.Model.{ArticleStats, Comment, CommentBody}
-  alias CMS.Comments.JobPolicy
+  alias CMS.Comments.RequiredJobs
   alias CMS.Gate.Access
   alias Jobs.Comments, as: CommentsJob
   alias Helper.ORM
@@ -132,7 +132,7 @@ defmodule GroupherServer.Test.CMS.Comments.JobPolicy do
              Access.with_check(actor, :edit, comment, fn canonical ->
                with {:ok, updated_body} <-
                       canonical |> comment_body() |> ORM.update(%{html: "must rollback"}),
-                    {:ok, _job} <- JobPolicy.audition(canonical, invalid_enqueue) do
+                    {:ok, _job} <- RequiredJobs.audition(canonical, invalid_enqueue) do
                  {:ok, updated_body}
                end
              end)

@@ -1,6 +1,6 @@
-defmodule GroupherServer.CMS.Comments.JobPolicy do
+defmodule GroupherServer.CMS.Comments.RequiredJobs do
   @moduledoc """
-  Defines the required background-job contract shared by Comment mutations.
+  Required background-job contract shared by Comment mutations.
 
       create / reply / update transaction
         -> required audition enqueue
@@ -26,21 +26,21 @@ defmodule GroupherServer.CMS.Comments.JobPolicy do
 
   ## Examples
 
-      Comments.JobPolicy.audition(comment)
+      Comments.RequiredJobs.audition(comment)
       #=> {:ok, %Oban.Job{}} | {:error, domain_error}
   """
   @spec audition(Comment.t()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
   def audition(%Comment{} = comment), do: audition(comment, &Jobs.audition/1)
 
   @doc """
-  Applies the required audition policy with an explicit enqueue function.
+  Applies the required audition enqueue contract with an explicit enqueue function.
 
   This variant keeps the failure contract deterministic in tests without
   replacing Oban globally.
 
   ## Examples
 
-      Comments.JobPolicy.audition(comment, fn _comment -> {:error, changeset} end)
+      Comments.RequiredJobs.audition(comment, fn _comment -> {:error, changeset} end)
   """
   @spec audition(Comment.t(), (Comment.t() -> {:ok, term()} | {:error, term()})) ::
           {:ok, term()} | {:error, term()}

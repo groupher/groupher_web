@@ -298,7 +298,7 @@ config :groupher_server, Oban,
     community_setup: 5
   ]
 
-config :groupher_server, GroupherServer.PublicCache.Policy,
+config :groupher_server, GroupherServer.PublicCache.DeliveryConfig,
   timeout_ms: 5_000,
   max_attempts: 8,
   retry_base_delay_seconds: 1,

@@ -350,7 +350,8 @@ doc_tree.ex
 doc_tree/commands/
 ├── node.ex
 ├── publish.ex
-└── trash.ex
+├── restore_trash_item.ex
+└── permanently_delete_trash_item.ex
 ```
 
 ```text
@@ -362,8 +363,8 @@ Commands.Publish
   -> publish changes
   -> move doc/subtree to draft
 
-Commands.Trash
-  -> restore trash item
+Commands.RestoreTrashItem / Commands.PermanentlyDeleteTrashItem
+  -> restore trash item / permanently delete trash item
 ```
 
 现有 `DocTree.Writer`、`DocTree.Publish` 和 `DocTree.Trash` 继续拥有底层行为；Commands 负责
@@ -380,9 +381,10 @@ Commands.Trash
 - `trash_items/2` 是读取入口，继续由 facade 转发 `DocTree.Trash.list/2`，不属于 Command；
 - `restore_trash_item/3` 归入 `Commands.Trash`；
 - `delete_node/3` 归入 `Commands.Node`，它删除树节点并创建可恢复快照，但不是“永久删除 Trash item”；
-- 永久删除入口仍是 `CMS.Trash.permanently_delete_action/3`，并继续路由到
-  `CMS.DocTree.Trash.permanently_delete_action/3`。该路径当前不使用 receipt/replay，不在 F3
-  范围内，也不为此新增 `CMS.DocTree` 公开入口。
+- 永久删除用户入口由 `CMS.Trash.permanently_delete_action_in_scope/5` 按 Trash action 类型路由到 receipt
+  pipeline：Article 使用 `CMS.Articles.Commands.PermanentlyDeleteTrashed`，Docs Tree 使用
+  `CMS.DocTree.Commands.PermanentlyDeleteTrashItem`；底层事务分别仍由 Article/`CMS.DocTree.Trash` 拥有。
+  scheduler 使用各自 Command 的 internal direct pipeline，不从 user facade 暴露内部协议。
 
 ### 4.8 Press
 
@@ -536,7 +538,7 @@ F1  Assets 小范围下沉
 F2  Articles Commands
  |
  v
-F3  DocTree Commands              # 不包含 CMS.Trash 的永久删除入口
+F3  DocTree Commands              # 包含 Docs Tree Trash 的用户永久删除；scheduler 仍走 internal direct pipeline
 
 F4  Press                      # 与 F2/F3 无代码依赖，独立批次
 

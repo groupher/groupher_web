@@ -1,13 +1,13 @@
-defmodule GroupherServer.CMS.Policy.Config do
+defmodule GroupherServer.CMS.Gate.RateLimit.Publish.Config do
   @moduledoc """
-  Static configuration contract for CMS policy rules.
+  Static configuration contract for publish throttling.
 
   Business position:
 
       GraphQL resolver / job
-        -> CMS facade
+        -> CMS.Gate.RateLimit.Publish
         -> Config
-        -> Repo / external boundary
+        -> Workflow
   """
 
   @general_config Application.compile_env(:groupher_server, :general, [])
@@ -28,11 +28,25 @@ defmodule GroupherServer.CMS.Policy.Config do
               day_limit: Keyword.get(@general_config, :publish_throttle_day_limit)
             }
 
-  @doc "Returns the default policy configuration struct."
+  @doc """
+  Returns the default publish throttle configuration struct.
+
+  ## Examples
+
+      Config.base()
+      #=> %Config{}
+  """
   @spec base() :: t()
   def base, do: %__MODULE__{}
 
-  @doc "Returns the configured publish throttle limits."
+  @doc """
+  Returns the configured publish throttle limits.
+
+  ## Examples
+
+      Config.publish_throttle().hour_limit
+      #=> 20
+  """
   @spec publish_throttle() :: publish_throttle()
   def publish_throttle, do: base().publish_throttle
 end

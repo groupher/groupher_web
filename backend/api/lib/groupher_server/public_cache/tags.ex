@@ -13,7 +13,7 @@ defmodule GroupherServer.PublicCache.Tags do
   """
 
   alias GroupherServer.PublicCache
-  alias PublicCache.{Const, Policy}
+  alias PublicCache.{Const, DeliveryConfig}
 
   @tag_pattern ~r/^community\[[A-Za-z0-9][A-Za-z0-9-]*\](?:-[A-Za-z0-9\[\]-]+)?$/
 
@@ -151,7 +151,7 @@ defmodule GroupherServer.PublicCache.Tags do
       tags == [] ->
         {:error, :invalid_cache_tag}
 
-      length(tags) > Policy.max_tags_per_request() ->
+      length(tags) > DeliveryConfig.max_tags_per_request() ->
         {:error, :too_many_cache_tags}
 
       Enum.all?(
