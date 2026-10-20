@@ -182,6 +182,37 @@ defmodule GroupherServer.Test.CMS.Gate.Access do
              {:error, Decision.primary_error(decision)}
   end
 
+  test "article edit admission accepts state-only lifecycle facts and fails closed" do
+    {:ok, user} = db_insert(:user)
+    {:ok, community} = mock_community(user)
+
+    community = %{
+      community
+      | lifecycle: Repo.get_by!(CommunityLifecycle, community_id: community.id)
+    }
+
+    article = %{
+      community_id: community.id,
+      id: Ecto.UUID.generate(),
+      thread: :post,
+      meta: %{is_comment_locked: false}
+    }
+
+    state_only_context = %ArticleContext{
+      article: article,
+      community: community,
+      community_lifecycle: community.lifecycle,
+      article_lifecycle: %{state: :published}
+    }
+
+    assert {:ok, :pass} = ArticlePolicy.check_access(user, :edit, article, state_only_context)
+
+    invalid_context = %{state_only_context | article_lifecycle: %{state: :unknown}}
+
+    assert {:error, %ErrorCat.Error{reason: :lifecycle_not_found}} =
+             ArticlePolicy.check_access(user, :edit, article, invalid_context)
+  end
+
   test "article interactions use the same Article and Community admission matrix" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = mock_community(user)
