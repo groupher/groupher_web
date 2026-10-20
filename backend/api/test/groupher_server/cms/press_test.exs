@@ -7,8 +7,10 @@ defmodule GroupherServer.Test.CMS.Press do
 
   alias CMS.Model.{
     ArticleStats,
+    ArticlePublic,
     CommunityLifecycle,
     DocPublishRelease,
+    DocPublic,
     DocTreeNode,
     DocTreeSnapshot,
     PressConfig
@@ -109,6 +111,128 @@ defmodule GroupherServer.Test.CMS.Press do
     assert {:ok, %{article_id: article_id, markdown: markdown}} = CMS.Press.article(path)
     assert article_id == doc.id
     assert is_binary(markdown)
+  end
+
+  test "site manifest pages through the platform maximum instead of returning an empty list",
+       ~m(community post)a do
+    assert {:ok, %{items: items}} = CMS.Press.site_manifest(community)
+
+    assert Enum.any?(items, &(&1.item_id == post.id))
+  end
+
+  test "site manifest collects public Articles across more than one page",
+       ~m(community user)a do
+    for _ <- 1..100 do
+      mock_article(:post, community, user)
+    end
+
+    assert {:ok, %{items: items}} = CMS.Press.site_manifest(community)
+    assert length(items) == 101
+  end
+
+  test "Press uses public projection timestamps for feed items",
+       ~m(community post user)a do
+    published_at = DateTime.utc_now(:second) |> DateTime.add(-2, :day)
+    updated_at = DateTime.utc_now(:second) |> DateTime.add(-1, :hour)
+
+    Repo.update_all(
+      from(public in ArticlePublic, where: public.article_id == ^post.id),
+      set: [published_at: published_at, updated_at: updated_at]
+    )
+
+    assert {:ok, _config} =
+             CMS.Press.update_config(
+               community,
+               %{feed_enabled: true, feed_count: 5, feed_threads: [:post]},
+               user,
+               Ecto.UUID.generate()
+             )
+
+    assert {:ok, %{items: [item]}} = CMS.Press.thread_rss_feed(community, :post)
+    assert item.published_at == published_at
+    assert item.updated_at == updated_at
+  end
+
+  test "Press batch projection propagates a missing body error", ~m(community post)a do
+    missing_article = %{post | id: Ecto.UUID.generate()}
+
+    assert {:error,
+            %ErrorCat.Error{
+              reason: :invalid_body,
+              details: "Article body projection is missing"
+            }} =
+             CMS.Articles.Pagination.legacy_entries(
+               [%{resource: missing_article, community: community}],
+               include_public_projection: true
+             )
+  end
+
+  test "Press request boundaries propagate batch hydration errors", ~m(community user)a do
+    assert {:ok, _config} =
+             CMS.Press.update_config(
+               community,
+               %{feed_enabled: true, feed_count: 5, feed_threads: [:post]},
+               user,
+               Ecto.UUID.generate()
+             )
+
+    error = CMS.ErrorCat.invalid_body("Article body projection is missing")
+    hydrate = fn _paths -> {:error, error} end
+
+    assert {:error, ^error} = CMS.Press.site_manifest(community, hydrate_articles: hydrate)
+
+    assert {:error, ^error} =
+             CMS.Press.thread_rss_feed(community, :post, hydrate_articles: hydrate)
+  end
+
+  test "Doc manifest keeps the public slug in its canonical URL",
+       ~m(community user)a do
+    {_, doc, _, _} = mock_article(:doc, community, user)
+    doc_public = Repo.get_by!(DocPublic, article_id: doc.id, branch_id: doc.branch_id)
+
+    assert {:ok, _} =
+             doc_public
+             |> DocPublic.changeset(%{slug: "canonical-page"})
+             |> Repo.update()
+
+    for attrs <- [
+          %{node_id: "press-tab", type: :tab, title: "Docs", index: 0},
+          %{
+            node_id: "press-group",
+            parent_node_id: "press-tab",
+            type: :group,
+            title: "Guide",
+            index: 0
+          },
+          %{
+            node_id: "press-page",
+            parent_node_id: "press-group",
+            type: :page,
+            title: doc.title,
+            doc_id: doc.id,
+            index: 0
+          }
+        ] do
+      %DocTreeNode{}
+      |> DocTreeNode.changeset(
+        Map.merge(attrs, %{
+          community_id: community.id,
+          branch_id: doc.branch_id,
+          stage: :public
+        })
+      )
+      |> Repo.insert!()
+    end
+
+    assert {:ok, %{items: items}} = CMS.Press.site_manifest(community)
+    item = Enum.find(items, &(&1.item_id == doc.id))
+
+    assert item
+
+    assert String.ends_with?(
+             item.canonical_url,
+             "/doc/#{article_inner_id(doc, community)}/canonical-page"
+           )
   end
 
   test "GraphQL exposes the Press origin contract with the agreed RSS acronym",
@@ -265,6 +389,61 @@ defmodule GroupherServer.Test.CMS.Press do
     assert {:ok, thread_feed} = CMS.Press.thread_rss_feed(community, :post)
     assert thread_feed.thread == :post
     assert thread_feed.feed_revision == feed.feed_revision
+  end
+
+  test "feed keeps the configured 50-item bound across multiple threads",
+       ~m(community post user)a do
+    {_, blog, _attrs, _blog_user} = mock_article(:blog, community, user)
+
+    assert {:ok, _config} =
+             CMS.Press.update_config(
+               community,
+               %{feed_enabled: true, feed_count: 50, feed_threads: [:post, :blog]},
+               user,
+               Ecto.UUID.generate()
+             )
+
+    assert {:ok, %{items: items}} = CMS.Press.community_rss_feed(community)
+    assert Enum.map(items, & &1.item_id) |> Enum.sort() == Enum.sort([post.id, blog.id])
+  end
+
+  test "feed keeps pinned candidates in the pre-limit set before final sorting",
+       ~m(community post user)a do
+    assert {:ok, _pinned} =
+             CMS.Articles.pin(community, post.id, user, Ecto.UUID.generate())
+
+    newer_posts =
+      for index <- 1..5 do
+        {_, newer_post, _, _} = mock_article(:post, community, user)
+        newer_at = DateTime.utc_now(:second) |> DateTime.add(index, :second)
+
+        Repo.update_all(
+          from(public in ArticlePublic, where: public.article_id == ^newer_post.id),
+          set: [published_at: newer_at, updated_at: newer_at]
+        )
+
+        newer_post
+      end
+
+    old_at = DateTime.utc_now(:second) |> DateTime.add(-1, :day)
+
+    Repo.update_all(
+      from(public in ArticlePublic, where: public.article_id == ^post.id),
+      set: [published_at: old_at, updated_at: old_at]
+    )
+
+    assert {:ok, _config} =
+             CMS.Press.update_config(
+               community,
+               %{feed_enabled: true, feed_count: 5, feed_threads: [:post]},
+               user,
+               Ecto.UUID.generate()
+             )
+
+    assert {:ok, %{items: items}} = CMS.Press.thread_rss_feed(community, :post)
+
+    assert MapSet.new(Enum.map(items, & &1.item_id)) ==
+             MapSet.new(Enum.map(newer_posts, & &1.id))
   end
 
   test "Docs Feed exposes only the latest main-branch publish release", ~m(community user)a do

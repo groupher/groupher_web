@@ -1,6 +1,7 @@
 # Pagination 与列表读取合同
 
-> 状态：目标合同，待分阶段实施。
+> 状态：合同已落地；统一执行器、Articles 参考实现、清单内旧分页调用、GraphQL/Core/Community consumer、N+1 严格门禁和
+> CollectFolders entry cutover 已完成。本文保留实施决策、例外边界和验收证据。
 >
 > 本文定义 Groupher 后端统一的 offset/cursor 分页 API、列表 read model、领域 Query 目录、
 > GraphQL 契约和 N+1 防护。执行引擎暂定为 Flop；Flop 是内部依赖，不是对外协议。
@@ -10,7 +11,7 @@
 
 ## 1. 背景
 
-当前列表读取主要建立在 Scrivener 和 `Helper.ORM.paginator/2` 上，返回 page/size/total 形式的
+这次改造前，列表读取主要建立在 Scrivener 和 `Helper.ORM.paginator/2` 上，返回 page/size/total 形式的
 offset 分页。部分资源自行实现 count、offset、limit、排序、投影和 pinned 合并，形成了几类问题：
 
 - offset 是唯一稳定合同，feed、无限滚动或高频变化列表无法使用 cursor；
@@ -19,7 +20,7 @@ offset 分页。部分资源自行实现 count、offset、limit、排序、投�
 - 完整 Detail 模型被复用于列表，读取了不需要的数据和关系；
 - pinned entry 混入普通 entries 后，total、page 边界和 cursor 语义不稳定；
 - 各资源自行设计目录和返回结构；
-- Scrivener、手写分页和未来 Flop 容易长期并存。
+- Scrivener、手写分页和未来 Flop 曾经并存，导致迁移容易只替换分页库而不改变读取模型。
 
 已确认的高风险路径包括 Article 普通分页、Kanban、published 列表、用户 upvotes、收藏夹、
 trash、评论关联 Article 和 abuse report 格式化。收藏夹路径甚至会先 hydrate 整个集合，再内存分页。
@@ -47,11 +48,25 @@ trash、评论关联 Article 和 abuse report 格式化。收藏夹路径甚至�
 
 ### 2.1 当前实现状态
 
-本文是目标合同，不代表当前代码已经提供这些 API。当前 `lib` 中仍只有旧的
-`Helper.ORM.paginator/2`、`Helper.ORM.embeds_paginator/2` 和已有的各领域分页实现；
-`Pagi` 类型、`Helper.ORM.pagi/3`、`pagi.*` 稳定错误以及 Dashboard effective-config
-normalization 尚未落地。它们属于 Phase 1B 及后续迁移的交付物。实现完成前，不得在
-resolver、前端或领域 facade 中把本文的目标名称当成已经存在的模块或函数。
+已落地的核心包括：`Helper.ORM.Pagi.Params.*`、`Page.*`、`Order`、`Config`、
+`GroupherServer.Pagi.EffectiveConfig`、`CursorCodec`、Dashboard schema registry，以及
+`Helper.ORM.pagi/3` 的 Flop adapter；Pagi ErrorCat、严格 config/context 校验、签名 cursor、已有
+`ORDER BY` fail-fast 和 offset/cursor 集成测试也已加入。Flop 只在 `Helper.ORM.Pagi`
+内部使用，不能穿过领域 facade 或 GraphQL。尚未声明 `Flop.Schema` 的 legacy offset schema
+暂由同一入口 dispatch 到 `Helper.ORM.Pagi.Generic`；Generic 是 offset-only 的过渡 adapter，不能处理 cursor。
+
+资源 Query、Lite/pinned/read-model、Dashboard config、GraphQL 新字段/resolver、Core
+query/cache/SSR、Community consumer、CollectFolders 独立 entry 表和 N+1 strict gate
+均已接入。旧的 `Helper.ORM.paginator/2`、`Helper.ORM.embeds_paginator/2`、Scrivener
+依赖和 Repo adapter 已删除；当前旧调用清单为零，并由严格门禁固定：
+[`backend/api/priv/pagination_inventory.json`](../../backend/api/priv/pagination_inventory.json)，
+由 `pnpm check:pagination-inventory:strict` 校验 freshness。逐项完整正文读取只保留
+搜索重建的最多 500 roots；它登记在
+[`backend/api/priv/pagination_n_plus_one_inventory.json`](../../backend/api/priv/pagination_n_plus_one_inventory.json)
+并由 `pnpm check:pagination-n-plus-one:strict` 校验。Press 是 service-scoped
+request path，使用分页选择器和具名 batch hydrate，不是 background exception。
+普通 Article legacy response 的正文、asset refs、Post/Kanban operational state 已改为按页
+batch projection；cursor 起始页与 offset 首页共享 pinned loader，后续 cursor 页不重复返回 pinned。
 
 ## 3. 冻结决策
 
@@ -76,18 +91,29 @@ resolver、前端或领域 facade 中把本文的目标名称当成已经存在�
 `api` 表达后端合同 `offset | cursor`；`mode` 表达前端交互 `page | load_more | infinite_scroll`。Dashboard 在写入时校验产品组合；
 `mode` 只供 bootstrap/前端选择组件，不进入 ORM SQL 机制。
 
-产品组合是封闭矩阵，不允许把两个枚举任意笛卡尔积：
+产品组合是封闭矩阵，不允许把两个枚举任意笛卡尔积。首期矩阵明确属于
+`schema_version: 1`；`schema_version` 的类型是 `pos_integer()`，当前支持集合只有
+`[1]`：
 
-| `api`     | 合法 `mode`                      |
-| --------- | -------------------------------- |
-| `:offset` | `:page`                          |
-| `:cursor` | `:load_more`、`:infinite_scroll` |
+矩阵版本：`schema_version: 1`
+
+| api     | 合法 mode                    |
+| ------- | ---------------------------- |
+| :offset | :page                        |
+| :cursor | :load_more、:infinite_scroll |
+
+从 schema version 到产品矩阵只有一个来源：Dashboard normalization 使用的封闭
+schema registry（实现时由同一 registry/table 提供 `supported_schema_versions/0` 和
+`matrix_for/1`）。bootstrap、ORM、前端和测试不得各自复制一份 api/mode 矩阵；前端只消费
+normalizer 输出的有效配置。ORM 仍不读取 `schema_version`，也不解释矩阵。
 
 因此 `offset/load_more`、`offset/infinite_scroll`、`cursor/page` 都是非法组合，统一返回
-`pagi.invalid_config`；未知的 `api` 或 `mode` 也不能降级为默认值。未来若要增加组合，必须
+`pagi.invalid_config`；未知值也不能降级为默认值。缺失、`nil`、类型错误或未解析的字符串 API 返回
+`pagi.invalid_config`，类型正确但 Pagi 尚未支持的 atom API 返回 `pagi.unsupported_api`；未知 mode 返回
+`pagi.invalid_config`。未来若要增加组合，必须
 新增并递增 Dashboard config `schema_version`，同步更新 normalization、bootstrap/GraphQL
 合同、前端 adapter、query-key 和正反例测试；不能在旧 `schema_version` 下静默扩大矩阵。
-每个受支持的 `schema_version` 都有固定矩阵，normalizer 根据显式版本选择矩阵；`revision`
+每个受支持的 `schema_version` 都有固定矩阵，normalizer 根据显式版本从该 registry 选择矩阵；`revision`
 只表示该 surface 的内容变更和缓存失效，不携带矩阵版本。停止支持旧 schema 时，必须先执行
 显式配置迁移；迁移前的旧 schema 返回 `pagi.invalid_config`，不能靠 revision 猜测。
 
@@ -101,8 +127,8 @@ ORM.pagi(query, params.pagi,
 )
 ```
 
-其中 `effective_config` 是 Dashboard normalizer 输出的 `%Pagi.EffectiveConfig{}`，不是存储层的原始 map；
-传给 ORM 的只是其中的 `%Pagi.Config{}`。
+其中 `effective_config` 是 Dashboard normalizer 输出的 `%GroupherServer.Pagi.EffectiveConfig{}`，不是存储层的原始 map；
+传给 ORM 的只是其中的 `%Helper.ORM.Pagi.Config{}`。
 
 Dashboard config 是请求必须遵守的硬约束，不是可以被客户端覆盖的建议。静态平台默认固定为：
 
@@ -123,6 +149,17 @@ Dashboard config 是请求必须遵守的硬约束，不是可以被客户端覆
 独立的非负整数 `revision`；删除 fingerprint/string token 备选。矩阵扩展递增 `schema_version`，
 配置迁移同时递增 revision 以使旧 cache 失效。
 
+首次 adoption 也遵循显式版本规则。Dashboard 已提供 `pagination` surface 存储、normalizer、
+effective lookup 和 bootstrap 输出；当前仓库的 preflight 没有发现需要 backfill 的旧
+pagination surface config，因此默认值继续由 platform config 提供。现有旧分页字段、hooks
+和 paginator 调用不属于 Dashboard config；runtime 已迁移到新 contract，但 legacy GraphQL
+response 仍在兼容窗口内。
+
+如果以后发现存量配置缺少 `schema_version`，必须先暂停严格校验，执行一次性迁移（写入
+`schema_version: 1`、完成 v1 校验并递增该 surface 的 `revision`，随后失效对应 cache）；
+迁移完成前不能把缺失版本的配置隐式解释为 v1。正式合同下，存在但缺少
+`schema_version` 的 config 一律返回 `pagi.invalid_config`。
+
 Effective config 的字段级合并顺序固定为：
 
 ```text
@@ -138,8 +175,21 @@ Effective config 的字段级合并顺序固定为：
 ```
 
 这不是任意 map 的无条件 deep merge：必填的 `schema_version/api/mode/revision` 不得被平台默认值掩盖；只有 size 字段允许继承。
-Dashboard effective-config normalization 负责校验 `mode` 枚举及 api/mode 产品组合；非法 mode（例如 `:foo`）或非法组合统一返回
-`pagi.invalid_config`，不得进入 `ORM.pagi`。ORM 不读取或解释 mode/schema_version，只消费 `Pagi.Config`。
+Dashboard effective-config normalization 的内部检查顺序固定为：
+
+```text
+支持的 schema_version（类型与 registry 支持集合）
+  -> 封闭 key set
+  -> required/type
+  -> schema_version 对应的 api/mode 矩阵
+  -> 合并后的 size 约束
+  -> 注入服务端 platform_hard_max
+  -> 生成 %GroupherServer.Pagi.EffectiveConfig{}
+```
+
+其中 size 约束在校验时使用服务端的 `platform_hard_max`，但该字段只在最后注入输出，不能由输入
+config 提供。非法 mode（例如 `:foo`）或非法组合统一返回 `pagi.invalid_config`，不得进入
+`ORM.pagi`。ORM 不读取或解释 mode/schema_version，只消费 `%Helper.ORM.Pagi.Config{}`。
 
 Dashboard surface 的输入 key 也是封闭的：只允许 `api`、`mode`、`default_size`、`max_size`、
 `revision`、`schema_version`。`platform_hard_max` 是服务端常量，不是 Dashboard 可配置项；输入中
@@ -162,15 +212,15 @@ Resource Query。因此 Dashboard 配置缺失不等于运行时 config 缺失�
 只有不接 Dashboard 配置的内部/固定列表才可以省略 `config` option。此时 `ORM.pagi` 仍按平台默认 offset 执行，但外部请求不得携带
 `config_revision`；需要 cursor 的内部列表必须显式传 config。
 
-`ORM.pagi` 只接收 `%Pagi.Config{}`，读取 `api/default_size/max_size/revision/platform_hard_max`；`mode` 和 `schema_version` 继续只供
+`ORM.pagi` 只接收 `%Helper.ORM.Pagi.Config{}`，读取 `api/default_size/max_size/revision/platform_hard_max`；`mode` 和 `schema_version` 继续只供
 bootstrap/前端及 normalization 使用。客户端看到的整数 revision 放在
 `Pagi.Params.Offset/Cursor.config_revision` 中。修改 posts 配置只增加 posts revision，不得改变 changelogs/comments revision 或 key。
 
-Dashboard normalizer 的输出是已经校验过的 `%Pagi.EffectiveConfig{}`：
+Dashboard normalizer 的输出是已经校验过的 `%GroupherServer.Pagi.EffectiveConfig{}`：
 
 ```elixir
-%Pagi.EffectiveConfig{
-  config: %Pagi.Config{
+%GroupherServer.Pagi.EffectiveConfig{
+  config: %Helper.ORM.Pagi.Config{
     api: :cursor,
     default_size: 20,
     max_size: 100,
@@ -182,7 +232,7 @@ Dashboard normalizer 的输出是已经校验过的 `%Pagi.EffectiveConfig{}`：
 }
 ```
 
-`ORM.pagi` 的 `config` 入参只接受其中的 `%Pagi.Config{}`，通过 struct 模式匹配拒绝 Dashboard 原始 map。任何绕过 Dashboard、直接把原始 map 传给 ORM 的调用方，
+`ORM.pagi` 的 `config` 入参只接受其中的 `%Helper.ORM.Pagi.Config{}`，通过 struct 模式匹配拒绝 Dashboard 原始 map。任何绕过 Dashboard、直接把原始 map 传给 ORM 的调用方，
 必须先经过同一 normalizer；否则在请求参数校验之前返回 `pagi.invalid_config`。这样 ORM 可以做防御性
 检查，但不会重新解释 `mode/schema_version` 或猜测产品组合。
 
@@ -201,12 +251,24 @@ GraphQL / Job / internal caller
             └─ Helper.ORM.pagi
                   ├─ validate pagination input
                   ├─ apply the only ORDER BY
-                  ├─ invoke Flop
+                  ├─ invoke Flop for Flop.Schema-backed offset/cursor resources
+                  ├─ invoke the offset-only Generic adapter for legacy schemas
                   ├─ translate Flop.Meta
                   └─ return Pagi.Page.Offset or Pagi.Page.Cursor
 ```
 
 替换 Flop 时，只允许 `Helper.ORM.Pagi` 和 adapter/test 变化；领域 facade、GraphQL 和前端合同不变。
+
+### 3.2.1 Generic 是受控的 offset 过渡 adapter
+
+`Helper.ORM.Pagi.Generic` 不是第二个公共分页入口，而是 `Helper.ORM.pagi/3` 内部针对尚未声明
+`Flop.Schema` 的 legacy Ecto schema 的 offset-only fallback。当前 fallback 资源包括 account
+notifications/mentions、Communities、Upvotes、AbuseReports、CollectFolders，以及部分 moderation、
+Assets、ArticleLog 和 reaction-user 列表。完整使用面以 runtime `for:` 调用和 pagination inventory 为准。
+
+Generic 不支持 cursor；任何 cursor surface 必须使用 Flop-backed schema/adapter。退出条件是每个仍在
+使用 Generic 的资源补齐最小 Flop metadata、拥有 offset parity/query-budget 测试，并从 fallback inventory
+归零后删除 Generic。期间不得把 Generic 描述成已经完成的统一 Flop 执行。
 
 ### 3.3 公共入口叫 `ORM.pagi`
 
@@ -267,13 +329,13 @@ Elixir 模块不能写成 `ORM.Pagi(query, params)` 调用，因此 `ORM.pagi/3`
 - config 存在且调用方显式提供 `pagi` 时，请求必须携带 `config_revision`，且请求 api/revision 必须分别匹配
   `config.api/revision`；
 - config option 不存在时使用平台默认 offset；外部请求必须省略 `config_revision`，显式 cursor 不能覆盖默认 offset；
-- `config` 是已经由 Dashboard 配置层验证的 `%Pagi.Config{}`；其运行时字段为
+- `config` 是已经由 Dashboard 配置层验证的 `%Helper.ORM.Pagi.Config{}`；其运行时字段为
   `api/default_size/max_size/revision/platform_hard_max`，而 `mode` 与 `schema_version` 不进入 ORM；
 - filter/sort 白名单和领域转换先于 `ORM.pagi`。
 
 `params.pagi == nil` 是 `ORM.pagi` 的 trusted internal synthesis path：它先选择 effective config，再生成 Params，不参与“调用方是否携带
 revision”的 context 校验。只有调用方显式传入的 `Pagi.Params.*` 才执行 config/revision presence 与匹配校验。config option 省略且
-Params 为 nil 时，内部合法生成 `%Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}`。
+Params 为 nil 时，内部合法生成 `%Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}`。
 
 错误边界固定为（层级是返回该错误的最早责任层；ORM 仍可对已归一化 config 做防御性复核）：
 
@@ -282,6 +344,7 @@ Params 为 nil 时，内部合法生成 `%Pagi.Params.Offset{page: 1, size: 20, 
 | Dashboard | `schema_version/api/mode/revision` 缺失、nil 或类型错误   | `pagi.invalid_config`         |
 | Dashboard | `schema_version` 不受支持且未完成配置迁移                 | `pagi.invalid_config`         |
 | Dashboard | mode 枚举非法或 api/mode 产品组合非法                     | `pagi.invalid_config`         |
+| Dashboard | api 是类型正确、已解析但 Pagi 尚未支持的 atom             | `pagi.unsupported_api`        |
 | Dashboard | `platform_hard_max` 或未知 key 出现在输入 config          | `pagi.invalid_config`         |
 | Dashboard | config revision 或 schema version 为负数                  | `pagi.invalid_config`         |
 | Dashboard | config 违反 default/max/hard-max 约束                     | `pagi.invalid_config`         |
@@ -295,7 +358,7 @@ Params 为 nil 时，内部合法生成 `%Pagi.Params.Offset{page: 1, size: 20, 
 
 校验层级和优先级固定为：Dashboard normalization 先于 `ORM.pagi`；因此“非法 mode/组合 + 非法
 page”必须返回 `pagi.invalid_config`，不能返回 `pagi.page_out_of_range`。ORM 不读取 `mode`，
-所以不能为绕过 Dashboard 的调用方补做 mode/组合校验；这类调用方只能提交 `Pagi.Config`，
+所以不能为绕过 Dashboard 的调用方补做 mode/组合校验；这类调用方只能提交 `Helper.ORM.Pagi.Config`，
 不能把原始 config map 当作已验证值。
 
 平台默认 offset 下显式 cursor 属于有效 API 与当前硬约束不匹配，因此返回 `pagi.config_mismatch`，不是 `pagi.unsupported_api`。
@@ -313,7 +376,7 @@ page/size。公开错误仍为
 | config size      | `default_size/max_size` 为 `0`、负数、非整数、`default_size > max_size` | `pagi.invalid_config`                                                                |
 | config key       | 携带 `platform_hard_max`、未知 key                                      | `pagi.invalid_config`，不得忽略或剥离                                                |
 | config + request | 非法 mode/组合，同时 page 非法                                          | 先返回 `pagi.invalid_config`                                                         |
-| 合法 mode        | 同一 `api` 下的每个合法 mode                                            | 传给 ORM 的 `Pagi.Config` 和 SQL/Params 行为完全一致；mode 不进入 ORM                |
+| 合法 mode        | 同一 `api` 下的每个合法 mode                                            | 传给 ORM 的 `Helper.ORM.Pagi.Config` 和 SQL/Params 行为完全一致；mode 不进入 ORM     |
 | schema migration | 旧 schema 在新矩阵下的保留、迁移、停止支持                              | 只能按显式 schema 规则解释；停止支持后为 `pagi.invalid_config`，不能靠 revision 猜测 |
 
 其中 `size/first` 的非整数在 GraphQL 层由 input coercion 测试负责，在 ORM 单测中仍须用非法
@@ -365,7 +428,7 @@ views       -> views DESC, article_binding_id DESC
   directions: [:desc_nulls_last, :desc],
   cursor_fields: [:upvotes_count, :article_binding_id],
   bindings: [:article_stats],
-  projection: [:upvotes_count, :entry_id]
+  projection: [:upvotes_count, :binding_id]
 }
 ```
 
@@ -412,34 +475,34 @@ frontend dedupe key:   community/thread/inner_id
 同一 Article 可以绑定多个 Community，因此 `article.id` 不能统一作为列表 entry identity。所有 cursor fields 和 tie-breaker 必须被
 Lite select 返回；索引尾部使用相同 entry identity 和方向。
 
-### 4.5 Lite 的私有 pagination 元数据
+### 4.5 Lite 的私有 cursor projection
 
-`ArticleLite` 同时承担稳定列表 read model 和 Flop cursor-value source，但 GraphQL 只暴露内容字段。`ArticleLite.select(order)`
-根据 `Pagi.Order.bindings/projection` 只加入当前 sort 需要的 join 和 cursor 字段，避免 publish/active/inserted 排序也 join
+`ArticleLite` 同时承担稳定列表 read model 和 Flop cursor-value source，但 GraphQL 只暴露内容字段。最终 adapter 合同使用
+flat selected map + `cursor_value_func`，不定义嵌套 pagination struct。pipeline 中使用
+`ArticleLite.select(order, thread)`（完整函数签名为 `select(query, order, thread)`）根据
+`Pagi.Order.bindings/projection` 只加入当前 sort 需要的 join 和 cursor 字段，避免 publish/active/inserted 排序也 join
 ArticleStats。下面是 upvotes 排序的返回形状：
 
 ```elixir
-%ArticleLite{
-  id: article.id,
-  community: community.slug,
-  thread: article.thread,
+%{
+  article: article,
+  community: community,
   inner_id: binding.inner_id,
+  binding_id: binding.id,
   title: public.title,
-  author: author_lite,
-  pagination: %ArticleLite.Pagination{
-    entry_id: binding.id,
-    upvotes_count: coalesce(stats.upvotes_count, 0)
-  }
+  author: user,
+  upvotes_count: coalesce(stats.upvotes_count, 0)
 }
 ```
 
-这里的 `pagination` 只供 `ORM.pagi`/Flop 读取和生成 cursor：
+flat map 中的 `binding_id` 与当前 sort projection 只供 `ORM.pagi`/Flop 读取和生成 cursor：
 
-- GraphQL `ArticleLite` type 不定义 `pagination` 字段；
+- 调用方显式传入 `cursor_value_func: &ArticleLite.cursor_values/2`，由它从 selected map 提取完整 cursor fields；
+- GraphQL presentation 只映射公开内容字段，不暴露 `binding_id` 或 stats cursor projection；
 - 前端不会收到这些 stats 值，ArticleStats 仍由独立 batch/cache owner 提供；
 - 这不是第二个 Article read model，也不引入 `ArticlePageRow`；
 - SQL 可以一次选择轻量 cursor 数值，但不能把完整 ArticleStats/viewer state 混入 Lite；
-- Phase 1A 同时验证 Flop custom/join field 的 nested `path` 和显式 `cursor_value_func`；根据 spike 选择一种，不预设 alias field；
+- 不再支持或评估 nested `path`/嵌套 pagination projection，后续实现者不得再引入第二套 projection 合同；
 - alias field 明确不能用于 cursor；如 custom/join field 不能可靠生成 predicate/order，则完整切到 Groupher cursor adapter；
 - 所有开放 sort 的 cursor field 必须存在，缺失时测试和开发环境 fail fast，不能用 `nil` 静默编码错误 cursor。
 
@@ -452,6 +515,9 @@ Flop 原生 cursor 不直接出现在外部合同中。`Pagi.CursorCodec` 负责
 - 显式 HMAC key version；
 - 绑定 surface、sort、direction 和 filter/query fingerprint；
 - 可验证的 HMAC signature；
+- production 必须显式配置 `PAGINATION_CURSOR_CURRENT_KEY` 和正整数 key version；
+- `PAGINATION_CURSOR_PREVIOUS_KEYS` 使用 version -> key 的 JSON key ring，在轮换窗口继续验旧 cursor；
+- production 缺少专用 key 时启动失败，不回退到 `SECRET_KEY_BASE` 或固定开发 key；
 - 将合法 payload 转换为 Flop cursor/value，反向包装 Flop 输出；
 - 不记录完整 cursor 或 payload。
 
@@ -479,6 +545,8 @@ pagi.invalid_config_context
 pagi.invalid_config
 pagi.config_mismatch
 pagi.unsupported_api
+pagi.count_failed
+pagi.query_failed
 ```
 
 reason 进入现有 ErrorCat registry 后再分配 GraphQL code，不能在 resolver 临时拼字符串。
@@ -685,9 +753,13 @@ commentPage(..., pagi: PagiInput): CommentPage!
 旧字段只接受旧 filter，新字段只接受 `PagiInput`；不在同一 resolver 中定义隐式优先级。Pinned 只在第一页/起始 cursor 返回，
 后续 page 的 `pinnedEntries` 为空。
 
-### 9.1 当前前端现状
+`commentPage` 的 backend field、resolver 和 Lite/Pagi 执行路径已经落地；当前 Comments UI 仍依赖 reply tree、reaction 和 viewer
+projection，因此继续消费 rich `pagedComments` compatibility field。它不计入首期 Comment consumer cutover，不能把“schema field 已存在”
+描述成 Core/Community consumer 已迁移；后续迁移必须先扩展 CommentPage 的 bounded rich projection，再切 query key 和 UI。
 
-当前前端不是分页无关的：
+### 9.1 改造前前端基线（历史）
+
+以下记录改造前的前端基线，现已由 9.2–9.9 的合同替换：
 
 - `getPagedArticlesParams` 从 URL 读取 `page`，并固定补充 `size: 20`；
 - `Q.article.posts/changelogs` 使用普通 `useQuery`，query key 直接包含 page filter；
@@ -783,6 +855,12 @@ Dashboard 配置缺失时 bootstrap 必须返回平台默认 `{api: offset, mode
   不写入成功列表 cache，浏览器接管后必须重新读取 Dashboard/bootstrap，再按最新 revision 请求；
 - 返回列表页时恢复 scroll position 和已经加载的 infinite pages；失效 cursor 则回到集合起点并给出非阻塞提示。
 
+Community 当前实现按同一 filter/config/key builder 分流：SSR 的 offset 使用 finite query，cursor 使用
+`ensureInfiniteQueryData` 与 `{pages, pageParams}` hydration；Core 列表由 `PagedPostsProvider`/
+`PagedChangelogsProvider` 在渲染子树前选择独立的 Offset/Cursor provider，因此同一个 React hook
+不会同时注册两个 transport query。两者都把 `configRevision` 放入 GraphQL `pagi`，不会把不同
+filter 或 transport shape 写入同一缓存身份。
+
 ### 9.6 Stats 与 viewer state
 
 Article 当前已有 `useArticleStates`，会把传入的 Article path 按 community/thread 分组，并使用 batch query 获取 ArticleStats，
@@ -796,6 +874,9 @@ Articles 需要冻结以下选择，避免重复网络和数据库读取：
 - viewer/private state 继续走现有 owner-wise composition；
 - paged GraphQL 不再同时返回一份会立刻被 stats batch 覆盖的 stats；
 - SSR 可以预取本页 stats batch，但必须使用与浏览器相同的 stats key。
+
+当前 Core 的 infinite Article state composition 保留每个 loaded page 的 stats、viewer、interaction
+batch key；追加新页只创建新页/chunk 的请求，不把历史 IDs 合并成一个不断增长的 batch。
 
 Infinite surface 必须保留 page/chunk boundary，只对新增页或固定窗口建立稳定 query key：
 
@@ -869,20 +950,28 @@ Core 提供两套共享组件，而不是一个包含大量 nullable props 的�
 
 ### 10.1 已确认问题与处置
 
-| 路径                                    | 当前形态                                                  | 风险                                    | 目标处置                                                            |
-| --------------------------------------- | --------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------- |
-| `CMS.Articles.Query` 普通分页           | page path 后逐条 `FrontDesk.article/1`                    | `1 + N`，Detail 读取远重于列表需要      | `ArticleLite` query 直接选择一页所需字段                            |
-| `CMS.Articles.Query` Kanban             | inner id 后逐条 `FrontDesk.article/1`                     | `1 + N`                                 | Kanban scope 与 `ArticleLite` query 组合                            |
-| `CMS.Articles.Query` published          | `Enum.flat_map(&load_public_path/...)` 间接逐条读取       | helper 隐藏的 `1 + N`                   | 删除 per-item loader，复用 paged Lite query                         |
-| `Accounts.Upvotes`                      | 每项读取 Article，再读取 ArticleStats                     | 约 `1 + 2N`                             | 直接 join Lite/stats，或一次 entries + 一次 stats batch             |
-| `CollectFolders.Articles`               | hydrate 整个收藏夹后内存分页                              | 随收藏夹总量增长，不只随 page size 增长 | binding query 先数据库分页，再批量构建 Lite                         |
-| `CMS.Articles.Trash`                    | 每项读取 public、stats、community、binding、mention count | 至少 `1 + 5N`                           | trash-scoped Lite query 一次 join/select/aggregate                  |
-| `Comments.Query.assign_stable_articles` | 每项 `FrontDesk.article_of/1`                             | `1 + N`                                 | 页内 ArticleLite batch 或 join projection                           |
-| AbuseReports                            | 每项解析关联 Article/Community                            | `1 + N` 或更多                          | 页内一次 bounded batch，或在主 query 中 join projection             |
-| `Assets.Query.usages/3`                 | `Repo.all` 后内存做 visibility filter                     | 无界内存读取                            | Gate/lifecycle visibility 下推数据库并建立 paged/aggregate use case |
+| 路径                                    | 当前形态                                                         | 风险                                  | 目标处置                                                               |
+| --------------------------------------- | ---------------------------------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------- |
+| `CMS.Articles.Query` 普通分页           | `Pagination.page/4` 先取 ArticleLite，再做兼容 response 组装     | 旧 Detail N+1 已移除                  | 一页 Lite 查询；pinned 独立首屏查询；viewer state 由独立 owner 负责    |
+| `CMS.Articles.Query` Kanban             | binding identity 先分页，再一次 `FrontDesk.articles/1` batch     | 完整 legacy projection 的固定 batch   | 保留具名 composite；不把 joined Kanban sort 硬塞进通用 Pagi            |
+| `CMS.Articles.Query` published          | author/community/binding joined page，再一次 batch               | 完整 legacy projection 的固定 batch   | 保留具名 composite；page identity 是 binding path                      |
+| `Accounts.Upvotes`                      | 一页 ArticleLite/stats projection                                | 旧逐项读取已移除                      | direct query + bounded interaction projection                          |
+| `CollectFolders.Articles`               | `collect_folder_entries` 先数据库分页，再 Lite batch             | entry identity 稳定                   | 独立表、binding identity、无 embedded collection dual-write            |
+| `CMS.Articles.Trash`                    | trash-scoped page query + mention aggregate                      | 固定查询预算                          | 一次 page/count base，加一组页内 mention projection                    |
+| `Comments.Query.assign_stable_articles` | page paths 交给 `ArticleLite` bounded batch                      | 固定 batch                            | 按 `(community, thread, inner_id)` 建 identity map                     |
+| Comments public GraphQL                 | `commentPage` backend Lite/Pagi 已可用                           | rich `pagedComments` consumer 暂留    | reply tree/reaction/viewer projection 完成前不宣称 consumer cutover    |
+| AbuseReports                            | report page 后一次 ArticleLite/stats batch                       | 固定 batch                            | 线程目标和评论目标共用 page context                                    |
+| `Assets.Query.usages/3`                 | replacement snapshot + page-level draft visibility               | plan preview 固定预算；apply 逐项重验 | snapshot 携带 Draft/Public/Lifecycle facts；创建计划不逐项读库或加锁   |
+| Press feed / manifest                   | service-scoped request 先分页选 paths，再按 100 条 batch hydrate | 固定 batch；manifest 最多 5 页/thread | 复用 Articles Pagination；`FrontDesk.articles/1` batch；不进 allowlist |
+| Search reindex                          | 每批最多 500 roots，但 binding fan-out 不封顶                    | background fan-out exception          | 可保留唯一 background allowlist；不把 500 roots 当作完整 bounded 证明  |
 
-Press feed、搜索索引、资产替换计划等有界后台任务也可能存在逐项读取，但优先级低于用户请求路径。它们仍应进入审计清单，
-根据批次上限、频率和延迟决定是否批量化。
+Search reindex 和资产替换计划等后台或维护任务仍应进入审计清单；Press feed、manifest 是 service-scoped request path，
+不能按后台任务例外处理。资产 replacement plan 创建阶段复用 usage batch 中的 Draft/Public/Lifecycle snapshot，
+只执行 actor-independent Lifecycle capability；不得在 `build_items` 中逐项 `Repo.get*` 或开启 mutation
+transaction/lock。apply 阶段仍由 `ReplaceUse` 在每个真实写命令中事务内重载、Gate 授权并校验版本。
+snapshot 中的 `observed_draft_version` 来自 Article 当前 Draft，而不是恰好拥有该 usage ref 的版本；因此即使最新 usage row
+属于 live Revision，计划也不会丢失已经存在的 Draft version。
+首期 replacement apply 只支持普通 Article；Doc usage 在计划中显式标记 `unsupported`，不得伪装成可执行 item。
 
 Lifecycle 中逐项加行锁、逐项执行有顺序要求的领域写入，不属于普通列表 hydration。此类循环必须保留明确的 transaction/lock
 理由，不能被自动重写成一个无语义保证的 preload。
@@ -902,7 +991,7 @@ query =
   Article
   |> Gate.scope(actor, context)
   |> Filters.apply(params.filters)
-  |> ArticleLite.select(order)
+  |> ArticleLite.select(order, thread)
 
 ORM.pagi(query, params.pagi,
   for: ArticleLite,
@@ -911,8 +1000,8 @@ ORM.pagi(query, params.pagi,
 )
 ```
 
-`cursor_value_func` 是 Phase 1A 需要验证的候选合同；如果 nested `path` 足够可靠，可由 adapter 内部省略该 option，但调用方不感知
-差异。author、community、public binding 等稳定一对一关系可通过 join/select 获取；tags 等 1:N 摘要通过预聚合子查询、lateral
+`cursor_value_func` 是最终 adapter 合同；它从 `ArticleLite.select/3` 返回的 flat selected map 中提取 cursor fields，调用方必须显式传入。
+author、community、public binding 等稳定一对一关系可通过 join/select 获取；tags 等 1:N 摘要通过预聚合子查询、lateral
 join 或 PostgreSQL aggregate 获取，避免主资源行被放大。ArticleStats 继续由独立 batch/cache owner 负责，不在 ArticleLite
 重复返回。
 
@@ -985,16 +1074,26 @@ end-to-end request budget 与 telemetry，不能伪装成 entries SQL。
 
 ### 10.4 静态检查
 
-新增 `GroupherServer.Credo.Check.NoPerItemQuery`，检查
-`Enum.map/flat_map/reduce/reduce_while/each`、for comprehension、callback/MFA 及一层本地 helper 中的高风险调用：
+当前已落地 collection read inventory 和 strict gate：
+[`pagination_n_plus_one_inventory.json`](../../backend/api/priv/pagination_n_plus_one_inventory.json)，
+由 `pnpm check:pagination-n-plus-one:strict` 校验 freshness。它标出 list/page 函数中疑似逐项
+`FrontDesk`/`Repo.get*`/ORM read；当前仅允许一个明确标记为 `background` 的例外：search reindex。
+Press feed/manifest 是 service-scoped request path，已改为 batch hydrate，不再进入 allowlist。它不能替代
+query-budget 测试，但不再是迁移前的 report-only 状态。
 
-- `Repo.get/get!/get_by/get_by!/one/one!/all/preload/aggregate`；
-- `ORM.find/find_by/find_all` 等数据库 helper；
+当前 strict inventory 检查
+`Enum.map/flat_map/filter/reduce/reduce_while/each` 中的直接高风险调用，并追踪 collection callback 对 helper 的
+函数捕获和直接调用；helper 内的 `Gate.with_*`/`MutationLock.transact_*` 同样进入清单：
+
+- `Repo.get/get!/get_by/get_by!/one`；
+- `ORM.find/find_by` 等单条数据库 helper；
 - `FrontDesk.article/article_of` 等 canonical read；
 - 后续登记的 domain query function。
 
-初始严格范围为产品 read/query/list 模块。事务逐项加锁、逐项外部副作用和有界 maintenance workflow 允许带理由的局部豁免。
-实施顺序为 report-only 清单、分类、修复请求路径、建立有理由的 allowlist，最后升级为 CI strict gate。
+它仍不能静态覆盖任意跨模块 helper、动态 dispatch、for comprehension 或所有事务副作用。初始严格范围为产品
+read/query/list 模块；事务逐项加锁、逐项外部副作用和 maintenance workflow 必须另有 query-count/telemetry 或明确理由。
+实施顺序已完成：report-only 清单、分类、请求路径修复、有理由 allowlist 和 CI strict gate
+均已落地。后续新增例外必须同时补充 source/function/line/symbol、path classification、批次或 fan-out 说明、原因和测试。
 
 Credo 无法可靠覆盖 `apply/3`、多层跨模块 helper、自定义 wrapper 和动态 dispatch，因此它只是一层高信号门禁，不能替代
 query-count regression test 与 runtime telemetry。
@@ -1012,10 +1111,21 @@ lint 无法可靠识别所有跨模块调用，因此核心分页增加 Repo tel
 
 ### 10.6 CollectFolders 存储与 entry identity
 
-当前 `folder.collects` 是 embedded collection，只存 `article_id`，读取时再展开 Article 的全部 bindings。它无法定义稳定数据库分页，
+改造前 `folder.collects` 是 embedded collection，只存 `article_id`，读取时再展开 Article 的全部 bindings。它无法定义稳定数据库分页，
 也会让一个 collect 变成多条展示 entry。Lateral unnest 只能缓解查询，不能修复 identity 和 count 语义。
 
-目标直接规范化为独立表：
+当前已经规范化为独立表：
+
+- `account.collect_folder_entries` 以 `(folder_id, article_binding_id)` 为唯一 entry identity；
+- 初次迁移用安全 CTE 报告坏引用/不可见 binding，并只回填可解析且可见的 binding；
+- `account.collect_folder_entry_backfill_failures` 保留人工处理所需的失败明细；
+- expand migration 根据实际 entry 重算 `total_count` 和全部 thread counter；
+- 独立 cutover migration 在删列前强制校验失败清单、期望/实际 binding 集合、总数和 thread counter；
+- `collect_folders.collects` 已从运行数据库移除，runtime model/persist 不再 cast、读取或双写 embedded refs；
+- cutover rollback 会从 entry rows 重建 embedded refs，不丢失 binding-scoped 收藏；
+- `ArticleCollect.collect_folders` 仍是独立的 interaction projection，不是 folder entry 的第二权威。
+
+独立表合同为：
 
 ```text
 collect_folder_entries
@@ -1049,8 +1159,9 @@ article_binding_id   ON DELETE RESTRICT
 article_id           ON DELETE RESTRICT
 ```
 
-Binding 删除由领域命令先检查 folder usage，并显式迁移或删除 entry；数据库不得静默 cascade 用户收藏。切换顺序：create table ->
-backfill/report -> read verification -> command direct cutover -> read direct cutover -> count verification -> 删除 embedded arrays。
+Binding 删除由领域命令先检查 folder usage，并显式迁移或删除 entry；数据库不得静默 cascade 用户收藏。切换顺序由两个独立 migration
+固定：expand migration 执行 create table -> backfill/report -> counter rebuild；cutover migration 执行 read verification ->
+count/meta verification -> 删除 embedded arrays。command/read runtime 只使用 entry table，cutover 验证未通过时 migration fail closed。
 不保留长期 dual-write。
 
 ## 11. 迁移计划
@@ -1065,8 +1176,15 @@ rg -n 'ORM\.paginator|ORM\.embeds_paginator|embeds_paginator|Repo\.paginate' bac
 文本口径是 37 行、24 个文件；经 AST inventory 分类后的可执行领域调用是 33 处、23 个领域文件。Phase 0 scanner 必须把每个
 命中标记为 `executable_call`、`helper_definition`、`documentation_example` 或 `text_reference`，并输出文件、函数和分类。
 
-Phase 0 inventory 是迁移 manifest，不是附属报告；Phase 5 的硬门禁是 manifest 中 33 个可执行领域调用归零，而不是要求原始
-`rg` 文本行数等于零。Helper owner、定义和文档示例在领域调用归零后随旧 adapter 一起删除。
+当前 scanner 已落地为 `scripts/check-pagination-inventory.mjs`，测试和 freshness/strict
+命令分别是 `pnpm report:pagination-inventory` 与 `pnpm check:pagination-inventory:strict`。
+checked-in manifest 当前记录 0 个 executable call、0 个 helper definition；历史基线中的
+33 个可执行调用已经全部迁移或得到明确 disposition。原始 `rg` 仍可能命中文档中的历史
+术语，但不再构成 runtime 门禁缺口。
+
+Phase 0 inventory 是迁移 manifest，不是附属报告；Phase 5 的硬门禁已经通过。Helper owner、
+Scrivener 依赖和旧 adapter 已删除，当前只保留 Pagi API、legacy response adapter 和具名
+composite/bounded workflow。
 
 ### Phase 0A：全量 inventory 与基线
 
@@ -1080,8 +1198,9 @@ Phase 0 inventory 是迁移 manifest，不是附属报告；Phase 5 的硬门禁
 | aggregate abuse     | Community.Count 用 `size: 1` 取 total | 改为明确 aggregate query               |
 | embedded collection | CollectFolders                        | 先改存储和 entry identity              |
 
-Inventory 同时覆盖 GraphQL field、PageSizeProof 使用方、前端 consumer、内存分页、逐项 read 和无界 `Repo.all`。记录关键路径
-size 1/20/max 的 SQL 数量、网络 batch 数量和延迟；加入 report-only `NoPerItemQuery`。
+Inventory 同时覆盖 GraphQL field、PageSizeProof 使用方、前端 consumer、内存分页、逐项 read 和无界 `Repo.all`。关键路径
+已记录 size 1/20/max 的 SQL 数量、网络 batch 数量和延迟；`NoPerItemQuery` 的高信号实现
+由 checked-in allowlist + strict gate 执行，跨模块动态 helper 仍由 query-count/telemetry 测试兜底。
 
 ### Phase 0B：冻结跨层合同
 
@@ -1091,10 +1210,10 @@ size 1/20/max 的 SQL 数量、网络 batch 数量和延迟；加入 report-only
 - `Pagi.Order` 和 ORDER BY 唯一 owner；
 - 每个首批 surface 的 entry identity/tie-breaker；
 - `Pagi.CursorCodec`、error reasons 和 query fingerprint；
-- `ArticleLite.pagination` 私有 cursor metadata，不引入 `ArticlePageRow`；
+- `ArticleLite` flat selected map 的私有 cursor fields + `cursor_value_func`，不引入 `ArticlePageRow` 或嵌套 pagination projection；
 - entries/count/pinned 口径；
 - GraphQL `@oneOf`、PageInfo 和旧字段版本窗口；
-- Dashboard pagination config 到 `%Pagi.EffectiveConfig{}` / `%Pagi.Config{}` 和可选 `ORM.pagi(config: ...)` 的映射、硬约束语义、schema version、整数 revision、平台默认值及
+- Dashboard pagination config 到 `%GroupherServer.Pagi.EffectiveConfig{}` / `%Helper.ORM.Pagi.Config{}` 和可选 `ORM.pagi(config: ...)` 的映射、硬约束语义、schema version、整数 revision、平台默认值及
   SSR/bootstrap 路径；
 - 前端 offset/infinite query key 和 per-page state batch 合同。
 
@@ -1105,7 +1224,7 @@ size 1/20/max 的 SQL 数量、网络 batch 数量和延迟；加入 report-only
 - Flop schema 仅开放 `pagination_types: [:first, :page]`，不允许 `:last` 或裸 `:offset` 穿过公共合同；
 - 使用 `tiebreaker: false` 后，`Pagi.Order` 中的完整 cursor fields 和 entry identity 仍进入 ORDER BY 与 cursor；
 - Flop join/custom field/field path；
-- nested `path` 与 `cursor_value_func` 对私有 pagination projection 的读取至少有一种稳定通过；最终只选一种 adapter 合同；
+- flat selected map + `cursor_value_func` 能稳定读取私有 cursor projection，并作为唯一 adapter 合同；
 - alias field 不进入 cursor，custom/join field 无法可靠工作时切完整 Groupher cursor adapter；
 - nullable field ordering；
 - stats row 缺失时 `coalesce(..., 0)` 与真正 nullable field 的 NULLS 语义；
@@ -1122,43 +1241,48 @@ extraction/tie-breaker 不完整时，
 
 ### Phase 1B：Pagi 基础设施
 
-- 引入 Flop，不引入 Flop Phoenix；
-- 建立 `Helper.ORM.Pagi`、`Helper.ORM.pagi/3`、Params/Page/Order/CursorCodec；
-- 建立 count adapter、错误映射和 telemetry；
-- 测试 forward cursor、tie-breaker、NULL、空页、非法参数、fingerprint、signature、max size 和 deep offset；
-- 按 4.1 的矩阵测试合法 api/mode 组合、未知 config key、`platform_hard_max` 注入、负数/零值/非整数
-  config size，以及“配置错误先于请求错误”的优先级；同一 api 的不同合法 mode 必须证明 ORM 行为一致；
-- 测试 schema version 选择固定矩阵、矩阵扩展后的显式配置迁移，以及停止支持旧 schema 时返回 `pagi.invalid_config`；
-- 用 schema introspection 和 document validation 验证 Absinthe `@one_of` 最终生成并执行标准 `@oneOf` 合同；
-- base query 已带普通列表 order 时 fail fast。
+- 已完成：引入 Flop，不引入 Flop Phoenix；
+- 已完成：建立 `Helper.ORM.Pagi`、`Helper.ORM.pagi/3`、Params/Page/Order/CursorCodec；
+- 已完成：Count adapter、错误映射、分页 telemetry 和 resource-specific distinct entry identity；
+- 已完成基础回归：forward cursor、签名/fingerprint、非法参数、max size、deep offset、空页输出 shape、NULL/tie-breaker
+  的真实 Articles resource case；
+- 已完成：建立 schema registry，测试 `schema_version: 1` 的固定 api/mode 矩阵、支持集合和唯一 registry 来源；
+- 执行 Dashboard pagination config adoption preflight：首期确认无存量 config；若发现存量，则先完成
+  `schema_version: 1` backfill、revision 递增和 cache 失效，再启用严格校验；
+- 已完成：按 4.1 测试合法 api/mode 组合、未知 config key、normalization、`platform_hard_max` 注入、非法 size
+  和“配置错误先于请求错误”的优先级；mode 不进入 ORM 的行为由相同 execution config 覆盖；
+- 已完成 v1 支持集合与停止支持旧 schema 的 fail-closed 测试基线；schema 扩展迁移仍待实际 Dashboard 存储出现后落地；
+- 已完成：用 schema introspection 和 document validation 验证 Absinthe `@one_of` 生成标准 `@oneOf` 合同；
+- 已完成：base query 已带普通列表 order 时 fail fast。
 
 ### Phase 2：Articles 参考实现
 
-- 按统一目录拆分 `detail/paged/pinned/filters/sorts`；
-- 定义 `ArticleLite` 和 SQL 查询预算；
-- 迁移普通分页、published，以及 Kanban 的 per-board paged query；
-- grouped Kanban wrapper 保留具名 synthetic composite，由多个 `Pagi.Page` 组成，不提供整个 grouped result 的单一 cursor/pageInfo；
-- pinned 独立返回；
-- 修复 page 中逐条 `FrontDesk.article`；
-- 产出可复制到其他资源的 checklist。
+- 已按统一目录拆分 `detail/paged/pinned/filters/sorts` 责任；
+- 已定义 ArticleLite 和 SQL 查询预算；
+- 普通分页已接入共享 Pagi；published/Kanban 保留具名 joined composite，先分页 binding identity，再做一次有界完整 projection batch；
+- grouped Kanban wrapper 保留具名 synthetic composite，由多个 paged board 组成，不提供整个 grouped result 的单一 cursor/pageInfo；
+- pinned 已独立返回；
+- 普通 page 中逐条 `FrontDesk.article` 已删除；
+- checklist 已复制到 CollectFolders、Trash、Comments、AbuseReports、Assets 和 SearchArtiments background exception 清单。
 
 Articles 是第一个模板，不获得 Pagi 特权。
 
 ### Phase 3：按 inventory 迁移
 
-优先修复 CollectFolders、upvotes、trash、Comments stable Article、AbuseReports 和 Assets usages，但交付范围由 Phase 0 manifest
-决定，不限于文档点名资源。
+CollectFolders、upvotes、trash、Comments stable Article 与 `commentPage` backend、AbuseReports 和 Assets usages 已完成；Comments rich
+Core/Community consumer 明确留在 compatibility inventory；SearchArtiments 的后台 binding fan-out 保留为唯一
+具名 `background` exception，Press request path 已从 strict allowlist 移除。
 
-每个 manifest item 必须得到一种终态：迁移到 Pagi、改成 aggregate、保留具名 bounded batch、建立 synthetic collection contract，
-或带理由豁免。每个标准 paged resource 同时落 Lite、目录、entry identity、query-count test 和 consumer；禁止只换分页库。
+每个 manifest item 已得到一种终态：迁移到 Pagi、改成 aggregate、保留具名 bounded batch、建立 synthetic collection contract，
+或带理由豁免。标准 paged resource 同时落 Lite、目录、entry identity、query budget test 和 consumer；禁止只换分页库。
 
 ### Phase 4：前端与产品配置
 
-- 建立 Core offset/cursor types、Params adapter 和共享组件；
+- 已建立 Core offset/cursor types、Params adapter 和共享组件；
 - `mode: :page` surface 用 `useQuery` 接入 offset，`:load_more | :infinite_scroll` surface 用 `useInfiniteQuery` 接入 cursor；
-- 统一 browser/SSR query-key builder，删除 loader 中手写的固定 page 1 key；
-- 先完成 per-page/chunk stats、viewer、interaction batch 和 infinite SSR hydration；
-- 扩展 list invalidation、optimistic update、scroll restoration 和 next-page error，再切换 UI；
+- 已统一 browser/SSR query-key builder，删除 loader 中手写的固定 page 1 key；
+- 已完成 per-page/chunk stats、viewer、interaction batch 和 infinite SSR hydration；
+- 已接入 load-more、list invalidation、optimistic update、scroll restoration，以及显式的 initial/next-page error 与 retry 状态；
 - 保留 ArticleStats batch owner，避免 Paged Article 与 stats query 重复返回同一状态；
 - 社区设置表达 UI 行为，不表达底层库参数；
 - 验证 Dashboard api/mode/schema_version/revision 变更后的 cache reset、URL 可分享性和回退行为；
@@ -1167,12 +1291,11 @@ Articles 是第一个模板，不获得 Pagi 特权。
 
 ### Phase 5：收口
 
-- 所有 runtime 调用方离开 `ORM.paginator`、`Repo.paginate` 和 `embeds_paginator`；
-- Phase 0 manifest 全部处置且旧调用 telemetry 归零；
-- 删除 Scrivener、Repo `use Scrivener`、旧 GraphQL page 字段和兼容 alias；
-- `NoPerItemQuery` 升级为 CI failure；
-- 更新 `Helper.T` 和 GraphQL 旧 page type；
-- 删除旧 adapter、alias 和重复实现。
+- 所有 runtime 调用方已离开 `ORM.paginator`、`Repo.paginate` 和 `embeds_paginator`；
+- Phase 0 manifest 的旧调用已归零，并由 strict inventory gate 固定；
+- Scrivener、Repo `use Scrivener` 和旧 paginator adapter 已删除；保留的 GraphQL legacy response 只作为领域兼容输出，底层走 Pagi/Lite；Generic offset fallback 仍是明确登记的过渡 adapter，不得被误报为已删除；
+- collection read strict gate 已启用；SearchArtiments 唯一 background exception 有 source/function/line/symbol 和原因，Press 已 batch 化；
+- `Helper.T`、GraphQL PageInfo/new page resolver 和 frontend transport contract 已对齐。
 
 ## 12. 验收标准
 
@@ -1194,11 +1317,11 @@ Articles 是第一个模板，不获得 Pagi 特权。
 - 所有分页资源遵循统一目录，没有 mobile/desktop 查询分叉；
 - resolver 不直接调用 Flop、Repo 或拼 filter/sort；
 - FrontDesk 没有新增 page/list/search；
-- Scrivener、`ORM.paginator` 与 `ORM.embeds_paginator` 已删除；
-- lint 覆盖直接和一层 helper 的 per-item query，豁免均有理由；
+- Scrivener、`ORM.paginator` 与 `ORM.embeds_paginator` 已删除；legacy response adapter 不再包含旧数据库分页实现；Generic 只允许作为已登记的 offset 过渡 adapter 存在；
+- scanner 覆盖直接读取和同文件一层 helper；跨模块间接调用仍须由 query-count 测试证明；
 - Absinthe `@one_of` 生成 SDL `@oneOf` 的 introspection/document validation、cache key、SSR infinite hydration、空页、forward cursor
   和非法参数有测试；
-- Phase 0 manifest 中 33 个可执行领域调用全部得到终态，旧调用 telemetry 归零。
+- Phase 0 manifest 中 33 个可执行领域调用全部得到终态，当前 executable inventory 为 0；剩余完整正文读取仅是一个 background allowlist exception。
 
 ## 13. 剩余实施选择
 
@@ -1274,10 +1397,18 @@ count duration 和 result count；Dashboard/bootstrap cache 指标继续由原�
 - 每阶段都有旧调用计数，归零后才能删除 Scrivener 和兼容字段；
 - rollback 不依赖恢复已经删除的 cursor/index 数据结构。
 
-## 15. 当前 paginator inventory 基线
+Legacy 清理必须以可验证的退出条件收口：每个旧 GraphQL field 和前端旧 document 记录
+consumer count、deprecation reason、观测窗口和计划删除版本；`Page.to_legacy/1` 则单独记录
+runtime call-site count，不能把领域内部兼容返回与 GraphQL field consumer 混为一个计数。consumer
+归零、观测窗口结束且新 Page contract 的 query-count/type tests 通过后，才能按“前端旧 document ->
+GraphQL deprecated field -> legacy response adapter”的顺序删除。
 
-以下是 Phase 0 的初始 manifest。类别是当前初判，实施前仍需为每个具体函数补齐 surface、consumer、entry identity、query budget
-和最终 disposition；不能只按文件整批决定。
+## 15. Phase 0 paginator inventory 基线与当前状态
+
+以下表格保留 Phase 0 的初始 manifest，便于审计当时的风险判断；它不是当前 runtime 状态。每个具体调用已经完成 disposition，
+当前 executable inventory 以 [`pagination_inventory.json`](../../backend/api/priv/pagination_inventory.json) 为准，结果为 0。
+N+1 例外以 [`pagination_n_plus_one_inventory.json`](../../backend/api/priv/pagination_n_plus_one_inventory.json) 为准，当前只有
+SearchArtiments 一个 `background` allowlist 项；Press request path 已 batch 化。
 
 | 文件                                     |                命中 | 初始类别/处置方向                                                   |
 | ---------------------------------------- | ------------------: | ------------------------------------------------------------------- |
@@ -1306,11 +1437,13 @@ count duration 和 result count；Dashboard/bootstrap cache 指标继续由原�
 | `messaging/notifications/query.ex`       |                   1 | account product page，标准 Pagi                                     |
 | `helper/orm.ex`                          | raw 6 / qualified 4 | 1 个可执行 Repo adapter，加上 definitions/docs；领域调用归零后删除  |
 
-Inventory 还必须加入没有匹配旧 paginator、但属于同一改造面的路径：
+Phase 0 之后补入、并已完成处置的同一改造面包括：
 
-- Articles 手写 offset/count 与逐条 FrontDesk hydrate；
-- grouped Kanban 多 Page composite；
-- Assets `usages/3` 无界 `Repo.all`；
-- Press/search index 等有界逐项 read；
-- 所有 GraphQL `PageSizeProof` consumer；
-- 前端 offset hooks、SSR loaders、query keys、invalidation 和分页组件。
+- Articles 手写 offset/count 与逐条 FrontDesk hydrate：普通列表已迁移；Kanban/published 保留具名 joined composite；
+- grouped Kanban 多 Page composite：保留并明确为 synthetic contract；
+- Assets `usages/3` 无界 `Repo.all` 与 replacement plan 逐 Article 读取/加锁：改为 100 行一批的完整 snapshot，
+  plan preview 纯内存组装，apply command 事务内重验；Doc replacement 首期显式 unsupported；
+- Press feed/manifest：复用 Articles Pagination，按 100 条 batch hydrate，不登记 allowlist；
+- Search index：登记 strict `background` exception；500 roots 不等于 binding fan-out 有界；
+- 所有 GraphQL `PageSizeProof` consumer：新 Page resolver pipeline 已接入，legacy response 由领域 adapter 兼容；
+- 前端 offset hooks、SSR loaders、query keys、invalidation 和分页组件：已切换到 spec/params/query-key contract。

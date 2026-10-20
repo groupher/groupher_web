@@ -13,15 +13,28 @@ defmodule GroupherServer.CMS.Comments.Query do
 
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
-  import ShortMaps
-  alias GroupherServer.{Accounts, CMS, Jobs, Repo}
+  alias GroupherServer.{Accounts, CMS, Jobs, Pagi, Repo}
 
   alias CMS.{QueryBuilder, FrontDesk}
+  alias CMS.Articles.Pagination
+  alias CMS.Dashboard.Pagination, as: DashboardPagination
   alias Accounts.Model.User
   alias CMS.Gate.Context.Scope.Comment, as: CommentContext
   alias CMS.Comments.{InteractionResponse, Replies}
-  alias CMS.Model.{Article, ArticleStats, Author, Comment, PinnedComment}
+
+  alias CMS.Model.{
+    Article,
+    ArticleBinding,
+    ArticleStats,
+    Author,
+    Comment,
+    Community,
+    PinnedComment,
+    PostSolution
+  }
+
   alias Helper.{ORM, T}
+  alias Helper.ORM.Pagi.{Config, Order, Page, Params}
 
   @pinned_comment_limit Comment.pinned_comment_limit()
   @doc """
@@ -125,6 +138,182 @@ defmodule GroupherServer.CMS.Comments.Query do
     {:error, "unknown mode: #{mode}"}
   end
 
+  @doc "Returns the new CommentPage contract through the shared offset/cursor engine."
+  @spec page(atom(), T.id(), String.t(), map(), term(), atom(), User.t() | nil) ::
+          T.domain_res(map())
+  def page(thread, article_id, community_slug, filter, pagi_input, mode, user \\ nil)
+
+  def page(thread, article_id, community_slug, filter, pagi_input, mode, user)
+      when is_atom(thread) and is_binary(community_slug) and is_map(filter) and
+             mode in [:timeline, :replies] do
+    with {:ok, effective} <-
+           DashboardPagination.for_community(community_slug, :comments,
+             expected_revision: pagi_revision(pagi_input)
+           ),
+         {:ok, params} <- comment_params(pagi_input, effective.config),
+         {:ok, article} <- stable_article(thread, article_id),
+         query <- comment_page_query(article, thread, filter, mode, user),
+         order <- comment_order(filter),
+         {:ok, page} <-
+           ORM.pagi(query, params,
+             for: Comment,
+             order: order,
+             config: effective.config,
+             resource: :comments,
+             surface: "comments.#{thread}",
+             mode: effective.mode,
+             schema_version: effective.schema_version,
+             query_fingerprint: comment_fingerprint(article.id, thread, filter, mode, order)
+           ),
+         {:ok, pinned_entries} <-
+           comment_pinned_entries(article, thread, params, user) do
+      {:ok,
+       %{
+         entries: page.entries,
+         pinned_entries: pinned_entries,
+         page_info: comment_page_info(page)
+       }}
+    end
+  end
+
+  def page(_thread, _article_id, _community_slug, _filter, _pagi_input, _mode, _user) do
+    {:error, Pagi.invalid_config_context()}
+  end
+
+  defp comment_page_query(article, thread, _filter, mode, user) do
+    where_query =
+      case mode do
+        :timeline ->
+          dynamic([comment], not comment.is_folded and not comment.is_pinned)
+
+        :replies ->
+          dynamic(
+            [comment],
+            is_nil(comment.reply_to_comment_id) and not comment.is_folded and
+              not comment.is_pinned
+          )
+      end
+
+    from(comment in Comment, as: :comment)
+    |> preload([:body, :author])
+    |> CMS.Gate.scope(user, :list, comment_scope(thread))
+    |> where([comment], comment.article_id == ^article.id)
+    |> where(^where_query)
+    |> exclude_page_solution(thread, article.id)
+  end
+
+  defp comment_params(nil, _config), do: {:ok, nil}
+
+  defp comment_params({:offset, input}, %Config{} = config) when is_map(input) do
+    {:ok,
+     %Params.Offset{
+       page: Map.get(input, :page, 1),
+       size: Map.get(input, :size, config.default_size),
+       config_revision: Map.get(input, :config_revision)
+     }}
+  end
+
+  defp comment_params({:cursor, input}, %Config{} = config) when is_map(input) do
+    {:ok,
+     %Params.Cursor{
+       first: Map.get(input, :first, config.default_size),
+       after: Map.get(input, :after),
+       config_revision: Map.get(input, :config_revision)
+     }}
+  end
+
+  defp comment_params(_pagi_input, _config), do: {:error, Pagi.invalid_config_context()}
+
+  defp pagi_revision({_api, input}) when is_map(input), do: Map.get(input, :config_revision)
+  defp pagi_revision(_pagi_input), do: nil
+
+  defp comment_pinned_entries(article, thread, params, user) do
+    if collection_start?(params) do
+      page_pinned_comments(article, thread, user)
+    else
+      {:ok, []}
+    end
+  end
+
+  defp page_pinned_comments(article, thread, user) do
+    special_where =
+      if thread == :post do
+        dynamic(
+          [comment, pin, solution],
+          comment.article_id == ^article.id and
+            (pin.article_id == ^article.id or solution.article_id == ^article.id)
+        )
+      else
+        dynamic(
+          [comment, pin, _solution],
+          comment.article_id == ^article.id and pin.article_id == ^article.id
+        )
+      end
+
+    Comment
+    |> join(:left, [comment], pin in PinnedComment, on: pin.comment_id == comment.id)
+    |> join(:left, [comment, _pin], solution in PostSolution,
+      on: solution.comment_id == comment.id
+    )
+    |> where(^special_where)
+    |> CMS.Gate.scope(user, :list, comment_scope(thread))
+    |> order_by([comment, pin], desc: pin.inserted_at, desc: comment.id)
+    |> limit(^@pinned_comment_limit)
+    |> preload([:body, :author])
+    |> Repo.all()
+    |> then(&{:ok, &1})
+  end
+
+  defp exclude_page_solution(query, :post, article_id) do
+    where(
+      query,
+      [comment],
+      not exists(
+        from(solution in PostSolution,
+          where:
+            solution.article_id == ^article_id and solution.comment_id == parent_as(:comment).id
+        )
+      )
+    )
+  end
+
+  defp exclude_page_solution(query, _thread, _article_id), do: query
+
+  defp collection_start?(nil), do: true
+  defp collection_start?(%Params.Offset{page: 1}), do: true
+  defp collection_start?(%Params.Cursor{after: nil}), do: true
+  defp collection_start?(_params), do: false
+
+  defp comment_page_info(%Page.Offset{} = page) do
+    %{
+      api: :offset,
+      page: page.page,
+      size: page.size,
+      total_count: page.total_count,
+      total_pages: page.total_pages,
+      has_previous_page: page.has_previous_page,
+      has_next_page: page.has_next_page
+    }
+  end
+
+  defp comment_page_info(%Page.Cursor{} = page) do
+    %{
+      api: :cursor,
+      start_cursor: page.start_cursor,
+      end_cursor: page.end_cursor,
+      has_previous_page: page.has_previous_page,
+      has_next_page: page.has_next_page
+    }
+  end
+
+  defp comment_fingerprint(article_id, thread, filter, mode, order) do
+    :crypto.hash(
+      :sha256,
+      :erlang.term_to_binary({article_id, thread, filter, mode, Order.identity(order)})
+    )
+    |> Base.encode16(case: :lower)
+  end
+
   @doc """
   Returns a user's published Comments across all public Article threads.
 
@@ -137,17 +326,19 @@ defmodule GroupherServer.CMS.Comments.Query do
   def paged_published_comments(%User{id: user_id}, filter, actor) do
     %{page: page, size: size} = filter
 
-    Comment
-    |> CMS.Gate.scope(actor, :list, CommentContext.all_public())
-    |> preload(:body)
-    |> join(:inner, [comment, ...], author in assoc(comment, :author),
-      as: :published_comment_author
-    )
-    |> where([_comment, ...], as(:published_comment_author).id == ^user_id)
-    |> QueryBuilder.filter_pack(filter)
-    |> ORM.paginator(~m(page size)a)
-    |> assign_stable_articles()
-    |> done()
+    query =
+      Comment
+      |> CMS.Gate.scope(actor, :list, CommentContext.all_public())
+      |> preload(:body)
+      |> join(:inner, [comment, ...], author in assoc(comment, :author),
+        as: :published_comment_author
+      )
+      |> where([_comment, ...], as(:published_comment_author).id == ^user_id)
+      |> QueryBuilder.filter_pack(Map.delete(filter, :sort))
+
+    with {:ok, paged} <- page_comments(query, page, size, comment_order(filter)) do
+      paged |> Page.to_legacy() |> assign_stable_articles() |> done()
+    end
   end
 
   @doc """
@@ -162,30 +353,71 @@ defmodule GroupherServer.CMS.Comments.Query do
   def paged_published_comments(%User{id: user_id}, thread, filter, actor) do
     %{page: page, size: size} = filter
 
-    Comment
-    |> CMS.Gate.scope(actor, :list, comment_scope(thread))
-    |> preload(:body)
-    |> join(:inner, [comment, ...], author in assoc(comment, :author),
-      as: :published_comment_author
-    )
-    |> where([comment, ...], comment.thread == ^thread)
-    |> where([_comment, ...], as(:published_comment_author).id == ^user_id)
-    |> QueryBuilder.filter_pack(filter)
-    |> ORM.paginator(~m(page size)a)
-    |> assign_stable_articles()
-    |> done()
+    query =
+      Comment
+      |> CMS.Gate.scope(actor, :list, comment_scope(thread))
+      |> preload(:body)
+      |> join(:inner, [comment, ...], author in assoc(comment, :author),
+        as: :published_comment_author
+      )
+      |> where([comment, ...], comment.thread == ^thread)
+      |> where([_comment, ...], as(:published_comment_author).id == ^user_id)
+      |> QueryBuilder.filter_pack(Map.delete(filter, :sort))
+
+    with {:ok, paged} <- page_comments(query, page, size, comment_order(filter)) do
+      paged |> Page.to_legacy() |> assign_stable_articles() |> done()
+    end
   end
 
   defp assign_stable_articles(%{entries: entries} = page) do
-    entries =
+    article_ids = Enum.map(entries, & &1.article_id)
+    community_ids = Enum.map(entries, & &1.community_id)
+
+    binding_by_identity =
+      from(binding in ArticleBinding,
+        join: community in Community,
+        on: community.id == binding.community_id,
+        where: binding.article_id in ^article_ids and binding.community_id in ^community_ids,
+        select: {binding.article_id, binding.community_id, community.slug, binding.inner_id}
+      )
+      |> Repo.all()
+      |> Map.new(fn {article_id, community_id, community, inner_id} ->
+        {{article_id, community_id}, {community, inner_id}}
+      end)
+
+    paths =
       Enum.flat_map(entries, fn comment ->
-        case FrontDesk.article_of(comment) do
-          {:ok, article} -> [Map.put(comment, :article, article)]
-          {:error, _reason} -> []
+        case Map.get(binding_by_identity, {comment.article_id, comment.community_id}) do
+          {community, inner_id} ->
+            [%{community: community, thread: comment.thread, inner_id: inner_id}]
+
+          nil ->
+            []
         end
       end)
 
-    Map.put(page, :entries, entries)
+    with {:ok, resolved} <- Pagination.lite_paths(paths) do
+      articles_by_path =
+        Map.new(resolved, fn article ->
+          {{article.community.slug, article.thread, article.inner_id}, article}
+        end)
+
+      entries =
+        Enum.flat_map(entries, fn comment ->
+          case Map.get(binding_by_identity, {comment.article_id, comment.community_id}) do
+            {community, inner_id} ->
+              case Map.get(articles_by_path, {community, comment.thread, inner_id}) do
+                nil -> []
+                article -> [Map.put(comment, :article, article)]
+              end
+
+            nil ->
+              []
+          end
+        end)
+
+      Map.put(page, :entries, entries)
+    end
   end
 
   @doc """
@@ -288,14 +520,22 @@ defmodule GroupherServer.CMS.Comments.Query do
         last_comment_id: max(comment.id)
       })
 
-    from(activity in subquery(participant_activity),
-      join: author in User,
-      on: author.id == activity.author_id,
-      order_by: [desc: activity.last_commented_at, desc: activity.last_comment_id],
-      select: author
-    )
-    |> ORM.paginator(~m(page size)a)
-    |> done()
+    query =
+      from(author in User,
+        join: activity in subquery(participant_activity),
+        on: author.id == activity.author_id,
+        select: author
+      )
+
+    with {:ok, paged} <-
+           page_comments(
+             query,
+             page,
+             size,
+             %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
+           ) do
+      paged |> Page.to_legacy() |> done()
+    end
   end
 
   defp do_paged_comment(thread, article_id, filters, where_query, user) do
@@ -305,48 +545,60 @@ defmodule GroupherServer.CMS.Comments.Query do
     with {:ok, article} <- stable_article(thread, article_id) do
       thread_query = article_comments(article.id)
       article_author_id = article_author_id(thread, article_id)
+      solution = solution_comment(thread, article.id)
       query = from(c in Comment, preload: [:body, reply_to_comment: :author])
 
-      query
-      |> CMS.Gate.scope(user, :list, comment_scope(thread))
-      |> where(^thread_query)
-      |> where(^where_query)
-      |> prioritize_solution(thread)
-      |> QueryBuilder.filter_pack(Map.merge(filters, %{sort: sort}))
-      |> ORM.paginator(~m(page size)a)
-      |> add_pinned_comments_ifneed(thread, article_id, filters)
-      |> then(fn paged ->
-        case InteractionResponse.many(paged.entries, user, article_author_id: article_author_id) do
-          {:ok, entries} ->
-            Map.put(paged, :entries, prioritize_hydrated_solution(entries, thread))
+      query =
+        query
+        |> CMS.Gate.scope(user, :list, comment_scope(thread))
+        |> where(^thread_query)
+        |> where(^where_query)
+        |> exclude_solution(solution)
+        |> QueryBuilder.filter_pack(Map.delete(Map.merge(filters, %{sort: sort}), :sort))
 
-          {:error, _reason} = error ->
-            error
-        end
-      end)
-      |> done()
+      with {:ok, paged} <- page_comments(query, page, size, comment_order(%{sort: sort})),
+           paged <-
+             paged |> Page.to_legacy() |> add_pinned_comments_ifneed(thread, article_id, filters),
+           paged <- prepend_solution(paged, solution),
+           {:ok, entries} <-
+             InteractionResponse.many(paged.entries, user, article_author_id: article_author_id) do
+        paged
+        |> Map.put(:entries, entries)
+        |> done()
+      end
     end
   end
 
-  defp prioritize_solution(query, :post) do
-    query
-    |> join(:left, [comment, ...], solution in GroupherServer.CMS.Model.PostSolution,
-      on: solution.comment_id == comment.id,
-      as: :post_solution
-    )
-    |> prepend_order_by([_comment, ...], desc: not is_nil(as(:post_solution).id))
+  defp solution_comment(:post, article_id) do
+    result =
+      from(comment in Comment,
+        join: solution in PostSolution,
+        on: solution.comment_id == comment.id,
+        where: solution.article_id == ^article_id,
+        preload: [:body, reply_to_comment: :author]
+      )
+      |> Repo.one()
+
+    result
   end
 
-  defp prioritize_solution(query, _thread), do: query
+  defp solution_comment(_thread, _article_id), do: nil
 
-  defp prioritize_hydrated_solution(entries, :post) do
-    case Enum.split_with(entries, & &1.is_solution) do
-      {[], _rest} -> entries
-      {solutions, rest} -> solutions ++ rest
+  defp exclude_solution(query, nil), do: query
+
+  defp exclude_solution(query, %Comment{id: solution_id}) do
+    where(query, [comment], comment.id != ^solution_id)
+  end
+
+  defp prepend_solution(paged, nil), do: paged
+
+  defp prepend_solution(%{entries: entries, total_count: total_count} = paged, solution) do
+    if Enum.any?(entries, &(&1.id == solution.id)) do
+      %{paged | entries: [solution | Enum.reject(entries, &(&1.id == solution.id))]}
+    else
+      %{paged | entries: [solution | entries], total_count: total_count + 1}
     end
   end
-
-  defp prioritize_hydrated_solution(entries, _thread), do: entries
 
   defp do_paged_comment_replies(comment_id, filters, user) do
     %{page: page, size: size} = filters
@@ -364,20 +616,23 @@ defmodule GroupherServer.CMS.Comments.Query do
                (is_nil(c.root_comment_id) and c.reply_to_comment_id == ^root_comment_id))
         )
 
-      query
-      |> CMS.Gate.scope(user, :list, comment_scope(root_comment.thread))
-      |> where(^where_query)
-      |> QueryBuilder.filter_pack(Map.merge(filters, %{sort: sort}))
-      |> ORM.paginator(~m(page size)a)
-      |> then(fn paged ->
-        case InteractionResponse.many(paged.entries, user,
+      query =
+        query
+        |> CMS.Gate.scope(user, :list, comment_scope(root_comment.thread))
+        |> where(^where_query)
+        |> QueryBuilder.filter_pack(Map.delete(Map.merge(filters, %{sort: sort}), :sort))
+
+      with {:ok, paged} <-
+             page_comments(query, page, size, comment_order(%{sort: sort})),
+           paged <- Page.to_legacy(paged),
+           {:ok, entries} <-
+             InteractionResponse.many(
+               paged.entries,
+               user,
                article_author_id: article_author_id(root_comment)
              ) do
-          {:ok, entries} -> Map.put(paged, :entries, entries)
-          {:error, _reason} = error -> error
-        end
-      end)
-      |> done()
+        paged |> Map.put(:entries, entries) |> done()
+      end
     end
   end
 
@@ -404,6 +659,31 @@ defmodule GroupherServer.CMS.Comments.Query do
   end
 
   defp add_pinned_comments_ifneed(paged_comments, _thread, _article_id, _), do: paged_comments
+
+  defp page_comments(query, page, size, order) do
+    ORM.pagi(
+      query,
+      %Params.Offset{page: page, size: size},
+      for: Comment,
+      order: order
+    )
+  end
+
+  defp comment_order(%{sort: :desc_inserted}) do
+    %Order{
+      fields: [:inserted_at, :id],
+      directions: [:desc, :desc],
+      cursor_fields: [:inserted_at, :id]
+    }
+  end
+
+  defp comment_order(_filter) do
+    %Order{
+      fields: [:inserted_at, :id],
+      directions: [:asc, :asc],
+      cursor_fields: [:inserted_at, :id]
+    }
+  end
 
   defp article_author_id(thread, article_id) do
     from(article in Article,

@@ -17,6 +17,87 @@ defmodule GroupherServer.Test.CMS.Dashboard do
     {:ok, ~m(user community  community_attrs)a}
   end
 
+  describe "[dashboard pagination]" do
+    test "updates one surface with a server-owned revision and invalidates cached config",
+         ~m(community user)a do
+      alias CMS.Dashboard.Pagination
+
+      assert {:ok, %{config: %{revision: 0}}} =
+               Pagination.for_community(community.slug, :posts)
+
+      args = %{
+        surface: :posts,
+        expected_revision: 0,
+        config: %{
+          schema_version: 1,
+          api: :cursor,
+          mode: :load_more,
+          default_size: 10,
+          max_size: 50
+        }
+      }
+
+      assert {:ok, dashboard} =
+               CMS.Dashboard.update(
+                 community,
+                 :pagination,
+                 args,
+                 user,
+                 Ecto.UUID.generate()
+               )
+
+      assert dashboard.pagination.posts.revision == 1
+      assert dashboard.pagination.posts.api == :cursor
+
+      assert {:ok, %{config: %{revision: 1, api: :cursor}}} =
+               Pagination.for_community(community.slug, :posts)
+
+      assert %CMS.Outbox.Event{event: "community.pagination_changed", data: event_data} =
+               Repo.one!(
+                 from(event in CMS.Outbox.Event,
+                   where:
+                     event.resource_id == ^to_string(community.id) and
+                       event.event == "community.pagination_changed",
+                   limit: 1
+                 )
+               )
+
+      assert event_data["surface"] == "posts" or event_data[:surface] == "posts"
+    end
+
+    test "rejects a stale expected revision without overwriting the surface",
+         ~m(community user)a do
+      args = %{
+        surface: :posts,
+        expected_revision: 0,
+        config: %{schema_version: 1, api: :offset, mode: :page}
+      }
+
+      assert {:ok, first} =
+               CMS.Dashboard.update(
+                 community,
+                 :pagination,
+                 args,
+                 user,
+                 Ecto.UUID.generate()
+               )
+
+      assert first.pagination.posts.revision == 1
+
+      assert {:error, %ErrorCat.Error{reason: :config_mismatch}} =
+               CMS.Dashboard.update(
+                 community,
+                 :pagination,
+                 put_in(args.expected_revision, 0),
+                 user,
+                 Ecto.UUID.generate()
+               )
+
+      {:ok, persisted} = ORM.find_by(CommunityDashboard, community_id: community.id)
+      assert persisted.pagination["posts"]["revision"] == 1
+    end
+  end
+
   describe "[community dashboard base info]" do
     test "updates content shadow as an ordinary dashboard boolean field", ~m(community user)a do
       assert {:ok, _dashboard} =

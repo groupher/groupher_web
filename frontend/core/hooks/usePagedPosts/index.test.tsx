@@ -6,6 +6,7 @@ import { ARTICLE_CAT, ARTICLE_ORDER, ARTICLE_STATUS } from '~/const/gtd'
 import URL_PARAM from '~/const/url_param'
 import { makeStoreWrapper } from '~/hooks/__test__/makeStoreWrapper'
 import usePagedPosts from '~/hooks/usePagedPosts'
+import PagedPostsProvider from '~/hooks/usePagedPosts/provider'
 import { articleQueryKeys } from '~/query'
 import AccountStoreProvider from '~/stores/account/provider'
 
@@ -21,7 +22,7 @@ describe('usePagedPosts', () => {
       defaultOptions: { queries: { retry: false, staleTime: Number.POSITIVE_INFINITY } },
     })
     queryClient.setQueryData(
-      articleQueryKeys.posts({
+      articleQueryKeys.pagiPosts({
         community: 'acme',
         page: 2,
         size: 20,
@@ -40,7 +41,9 @@ describe('usePagedPosts', () => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <QueryClientProvider client={queryClient}>
         <AccountStoreProvider initData={{ loading: false, user: null }}>
-          <StoreWrapper>{children}</StoreWrapper>
+          <StoreWrapper>
+            <PagedPostsProvider>{children}</PagedPostsProvider>
+          </StoreWrapper>
         </AccountStoreProvider>
       </QueryClientProvider>
     )
@@ -53,5 +56,65 @@ describe('usePagedPosts', () => {
     expect(result.current.pagedPosts.entries).toHaveLength(0)
 
     expect(result.current.resState).toBe('DONE')
+  })
+
+  it('selects the cursor provider and reads infinite page hydration', () => {
+    window.history.replaceState(null, '', '/acme/post')
+
+    const config = {
+      api: 'cursor' as const,
+      mode: 'load_more' as const,
+      schemaVersion: 1,
+      revision: 4,
+      defaultSize: 20,
+      maxSize: 100,
+    }
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false, staleTime: Number.POSITIVE_INFINITY } },
+    })
+    const filter = { community: 'acme', page: 1, size: 20 }
+    queryClient.setQueryData(
+      articleQueryKeys.pagiPosts(filter, config, {
+        api: 'cursor',
+        first: 20,
+        configRevision: 4,
+      }),
+      {
+        pages: [
+          {
+            pinnedEntries: [],
+            entries: [],
+            pageInfo: {
+              __typename: 'CursorPageInfo',
+              startCursor: null,
+              endCursor: null,
+              hasPreviousPage: false,
+              hasNextPage: false,
+            },
+          },
+        ],
+        pageParams: [null],
+      },
+    )
+    const StoreWrapper = makeStoreWrapper({
+      community: { slug: 'acme' },
+      dashboard: { pagination: { posts: config } },
+      queryClient,
+    })
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <QueryClientProvider client={queryClient}>
+        <AccountStoreProvider initData={{ loading: false, user: null }}>
+          <StoreWrapper>
+            <PagedPostsProvider>{children}</PagedPostsProvider>
+          </StoreWrapper>
+        </AccountStoreProvider>
+      </QueryClientProvider>
+    )
+
+    const { result } = renderHook(() => usePagedPosts(), { wrapper })
+
+    expect(result.current.paginationApi).toBe('cursor')
+    expect(result.current.pagedPosts.entries).toHaveLength(0)
+    expect(result.current.hasNextPage).toBe(false)
   })
 })

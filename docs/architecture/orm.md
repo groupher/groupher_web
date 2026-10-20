@@ -15,6 +15,7 @@
 ```text
 Helper.ORM
 ├─ 现有通用 Ecto 查询与行锁 helper
+├─ Pagi                  offset/cursor 分页机制、Flop adapter 与受控 Generic offset fallback
 ├─ AdvisoryLock          PostgreSQL transaction advisory lock
 └─ TransactionSettings   transaction-local PostgreSQL settings（需要时建立）
 ```
@@ -43,6 +44,14 @@ Business Context
 `Helper.ORM.*` 模块；无法由 Ecto 清晰表达的 recursive CTE、异构 UNION query 和原子 counter
 upsert 可以留在专门的 persistence/query owner 中。普通 CRUD、counter UPSERT、排序和关联查询
 继续使用 Ecto，不因“可能更快”改写成手工 SQL。
+
+列表分页统一通过 `Helper.ORM.pagi/3` 进入 Pagi；旧 `paginator/2` 与
+`embeds_paginator/2` 已从 runtime 和依赖中删除，历史调用清单见
+[`pagination.md`](./pagination.md) 的 inventory。Pagi 负责 Params/Page、config/context、
+唯一 ORDER BY owner、Flop adapter、受控 Generic offset fallback 和 cursor codec，但不解释领域
+filter、Gate、Lifecycle 或 pinned 语义。Generic 只服务尚未声明 `Flop.Schema` 的 legacy offset
+schema，不支持 cursor；其资源清单和退出条件见 [`pagination.md`](./pagination.md) 的 Generic
+过渡 adapter 小节。
 
 ## 2. AdvisoryLock
 
@@ -220,4 +229,5 @@ backend/api/priv/repo/migrations/** execute/query
 - public API 有完整 moduledoc、ASCII business flow、`@doc`、`@spec` 和可执行示例；
 - ArticleStats 与 ArticleEmotionCount 的普通写入使用 Ecto，不在领域模块新增裸 SQL；
 - runtime 裸 SQL 只存在于 primitive owner 或有明确查询形状/原子性理由的 persistence/query owner；
-- 不存在旧 API delegate、命名 alias、双实现或兼容中间层。
+- 不存在未登记的旧 API delegate、命名 alias 或兼容中间层；Generic offset fallback 若仍存在，必须有
+  pagination inventory、offset parity 测试和明确退出条件。

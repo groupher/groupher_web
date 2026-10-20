@@ -23,6 +23,7 @@ defmodule GroupherServer.CMS.Model.CommunityDashboard do
 
   alias __MODULE__
   alias GroupherServer.CMS
+  alias CMS.Dashboard.Pagination
   alias CMS.Model.{Community, Embeds.Dashboard}
   alias Helper.Constant.DBPrefix
 
@@ -55,6 +56,7 @@ defmodule GroupherServer.CMS.Model.CommunityDashboard do
     belongs_to(:community, Community)
     field(:umami_website_id, Ecto.UUID)
     field(:content_shadow, :boolean, default: false)
+    field(:pagination, :map)
     embeds_one(:base_info, Dashboard.BaseInfo, on_replace: :delete)
     embeds_one(:wallpaper, Dashboard.Wallpaper, on_replace: :delete)
     embeds_one(:seo, Dashboard.SEO, on_replace: :delete)
@@ -78,7 +80,7 @@ defmodule GroupherServer.CMS.Model.CommunityDashboard do
   @doc false
   def changeset(%CommunityDashboard{} = community_dashboard, attrs) do
     community_dashboard
-    |> cast(attrs, @required_fields ++ [:content_shadow])
+    |> cast(attrs, @required_fields ++ [:content_shadow, :pagination])
     |> cast_embed(:base_info, with: &Dashboard.BaseInfo.changeset/2)
     |> cast_embed(:wallpaper, with: &Dashboard.Wallpaper.changeset/2)
     |> cast_embed(:seo, with: &Dashboard.SEO.changeset/2)
@@ -96,6 +98,20 @@ defmodule GroupherServer.CMS.Model.CommunityDashboard do
     |> cast_embed(:third_party_analytics,
       with: &Dashboard.ThirdPartyAnalytics.changeset/2
     )
+    |> normalize_pagination()
+  end
+
+  defp normalize_pagination(changeset) do
+    case Ecto.Changeset.fetch_change(changeset, :pagination) do
+      :error ->
+        changeset
+
+      {:ok, raw} ->
+        case Pagination.normalize_for_changeset(raw) do
+          {:ok, normalized} -> Ecto.Changeset.put_change(changeset, :pagination, normalized)
+          {:error, _reason} -> Ecto.Changeset.add_error(changeset, :pagination, "is invalid")
+        end
+    end
   end
 
   @doc false

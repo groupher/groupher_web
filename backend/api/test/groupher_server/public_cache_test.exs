@@ -32,6 +32,9 @@ defmodule GroupherServer.PublicCacheTest do
           "comments" ->
             Tags.comments(input["community"], input["thread"], input["innerId"])
 
+          "commentsList" ->
+            Tags.comments_list(input["community"])
+
           "tags" ->
             Tags.tags(input["community"], input["thread"])
 
@@ -52,6 +55,8 @@ defmodule GroupherServer.PublicCacheTest do
 
     assert Tags.comments("home", :post, 42) ==
              "community[home]-thread[POST]-article[42]-comments"
+
+    assert Tags.comments_list("home") == "community[home]-comments"
 
     assert Tags.tags("home", :post) == "community[home]-thread[POST]-tags"
     assert Tags.doc_tree("home") == "community[home]-doc-tree"
@@ -77,6 +82,26 @@ defmodule GroupherServer.PublicCacheTest do
 
     assert {:ok, ["community[home]-doc-tree", "community[home]-thread[DOC]-articles"]} =
              Tags.for_invalidation(:doc_tree_changed, %{community: "home"})
+  end
+
+  test "maps pagination config changes to the affected list family" do
+    assert {:ok, ["community[home]-thread[POST]-articles"]} =
+             Tags.for_invalidation(:pagination_config_changed, %{
+               community: "home",
+               surface: "posts"
+             })
+
+    assert {:ok, ["community[home]-thread[CHANGELOG]-articles"]} =
+             Tags.for_invalidation(:pagination_config_changed, %{
+               community: "home",
+               surface: "changelogs"
+             })
+
+    assert {:ok, ["community[home]-comments"]} =
+             Tags.for_invalidation(:pagination_config_changed, %{
+               community: "home",
+               surface: "comments"
+             })
   end
 
   test "persists one typed invalidation without calling an external service" do

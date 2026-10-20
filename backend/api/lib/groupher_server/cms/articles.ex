@@ -20,6 +20,7 @@ defmodule GroupherServer.CMS.Articles do
 
   alias __MODULE__.{
     Commands,
+    Pagination,
     Query,
     Moderation,
     Store,
@@ -89,6 +90,24 @@ defmodule GroupherServer.CMS.Articles do
 
   @spec page(T.thread(), map(), User.t()) :: T.domain_res(T.paged_data())
   def page(thread, filter, %User{} = user), do: Query.page(thread, filter, user)
+
+  @doc """
+  Runs the resource-owned Article Page contract through `Articles.Pagination`.
+
+  ## Examples
+
+      Articles.pagi_page(:post, %{community: "groupher", page: 1, size: 20})
+
+  """
+  @spec pagi_page(T.thread(), map(), User.t() | nil, keyword()) ::
+          {:ok, map()} | {:error, term()}
+  def pagi_page(thread, filter, actor \\ nil, opts \\ []) do
+    Pagination.page(thread, filter, actor, opts)
+  end
+
+  @doc "Reads a bounded set of public ArticleLite rows by stable Article paths."
+  @spec lite_paths([map()]) :: {:ok, [map()]} | {:error, term()}
+  def lite_paths(paths), do: Pagination.lite_paths(paths)
 
   @doc "Runs `grouped_kanban` through the public `Articles` boundary."
   @spec grouped_kanban(Community.t()) :: T.domain_res(term())

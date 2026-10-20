@@ -240,6 +240,9 @@ type RootQueryType {
   "get paged article comments"
   pagedComments(article: ArticlePathInput!, mode: CommentsMode, filter: CommentsFilter): PagedComments
 
+  "Comment Lite page using the shared offset\/cursor pagination contract"
+  commentPage(article: ArticlePathInput!, mode: CommentsMode, filter: CommentPageFilter, pagi: PagiInput): CommentPage!
+
   "get paged article comments participants"
   pagedCommentsParticipants(article: ArticlePathInput!, filter: PagiFilter): PagedUsers
 
@@ -267,6 +270,12 @@ type RootQueryType {
   "paged kanban posts by status"
   pagedKanbanPosts(community: String!, filter: PagedKanbanPostsFilter!): PagedPosts
 
+  "Article Lite page using the shared offset\/cursor pagination contract"
+  postPage(pagi: PagiInput, filter: PostFilter, thread: PostThread): PostPage!
+
+  "Changelog Lite page using the shared offset\/cursor pagination contract"
+  changelogPage(pagi: PagiInput, filter: ChangelogFilter, thread: ChangelogThread): ChangelogPage!
+
   "Search Article and Comment content through the unified Artiment index"
   searchArtiments(query: SearchArtimentsQueryInput!): PagedSearchArtiments!
 
@@ -280,7 +289,7 @@ type RootQueryType {
   post(article: ArticlePathInput!): Post!
 
   "get paged posts"
-  pagedPosts(thread: PostThread, filter: PagedPostsFilter!): PagedPosts
+  pagedPosts(thread: PostThread, filter: PagedPostsFilter!): PagedPosts @deprecated(reason: "Use postPage instead.")
 
   "get blog by id"
   blog(article: ArticlePathInput!): Blog!
@@ -292,7 +301,7 @@ type RootQueryType {
   changelog(article: ArticlePathInput!): Changelog!
 
   "get paged changelogs"
-  pagedChangelogs(thread: ChangelogThread, filter: PagedChangelogsFilter!): PagedChangelogs
+  pagedChangelogs(thread: ChangelogThread, filter: PagedChangelogsFilter!): PagedChangelogs @deprecated(reason: "Use changelogPage instead.")
 
   "get doc by id"
   doc(article: ArticlePathInput!): Doc!
@@ -794,6 +803,11 @@ type RootMutationType {
 
   "Updates the Dashboard-owned content surface shadow"
   updateDashboardContentShadow(community: String!, enabled: Boolean!, commandId: ID!): Dsb
+
+  "Updates Dashboard-owned pagination surface configuration"
+  updateDashboardPagination(
+    community: String!, dsbSection: DsbSection, surface: PaginationSurface!, expectedRevision: Int!, config: PaginationSurfaceConfigInput!, commandId: ID!
+  ): Dsb
 
   "Prepares the generated images for one current-theme Wallpaper save"
   prepareWallpaperUpload(community: String!, input: WallpaperUploadPrepareInput!): WallpaperUploadPreparation!
@@ -3112,24 +3126,46 @@ input DsbDocFaqInput {
 
 type Dsb {
   seo: DsbSeo
+
   wallpaper: Wallpaper!
+
   wallpaperSettings: WallpaperSettingsByTheme!
+
   contentShadow: Boolean!
+
+  "Validated Dashboard pagination surface configuration; missing surfaces use platform defaults."
+  pagination: Json
+
   wallpaperHistory(theme: WallpaperTheme!): [WallpaperSnapshot!]!
+
   layout: DsbLayout
+
   enable: DsbEnable
+
   threadEmotions: DsbThreadEmotions
+
   baseInfo: DsbBaseInfo
+
   rss: DsbRss
+
   nameAlias: [DsbNameAlias]
+
   headerLinks: [DsbLink]
+
   footerLinks: [DsbLink]
+
   footerOnelineLinks: [DsbLinkChild]
+
   socialLinks: [DsbSocialLink]
+
   mediaReports: [DsbMediaReport]
+
   docFaq: DsbDocFaq
+
   thirdPartyAnalytics: [DsbThirdPartyAnalytics]
+
   umamiWebsiteId: String
+
   enabledThirdPartyAnalytics: [DsbThirdPartyAnalytics]
 }
 
@@ -3431,6 +3467,81 @@ type PagedDocs {
   pageSize: Int
   totalPages: Int
   pageNumber: Int
+}
+
+"Stable public offset\/cursor page metadata."
+interface PageInfo {
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type OffsetPageInfo implements PageInfo {
+  page: Int!
+  size: Int!
+  totalCount: Int!
+  totalPages: Int!
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type CursorPageInfo implements PageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+"List-only Article projection; stats and viewer state stay in their own APIs."
+type PostLite {
+  id: ID
+  thread: Thread
+  innerId: ID
+  title: String
+  digest: String
+  author: CommonUser
+  community: Community
+  communityTags: [CommunityTag]
+  activeAt: DateTime
+  insertedAt: DateTime
+}
+
+type ChangelogLite {
+  id: ID
+  thread: Thread
+  innerId: ID
+  title: String
+  digest: String
+  author: CommonUser
+  community: Community
+  communityTags: [CommunityTag]
+  activeAt: DateTime
+  insertedAt: DateTime
+}
+
+type CommentLite {
+  id: ID
+  innerId: ID
+  body: ArtimentBody
+  author: CommonUser
+  insertedAt: DateTime
+}
+
+type PostPage {
+  pinnedEntries: [PostLite!]!
+  entries: [PostLite!]!
+  pageInfo: PageInfo!
+}
+
+type ChangelogPage {
+  pinnedEntries: [ChangelogLite!]!
+  entries: [ChangelogLite!]!
+  pageInfo: PageInfo!
+}
+
+type CommentPage {
+  pinnedEntries: [CommentLite!]!
+  entries: [CommentLite!]!
+  pageInfo: PageInfo!
 }
 
 type KanbanPosts {
@@ -3933,6 +4044,61 @@ input PagedPostsFilter {
   sort: SortEnum
 }
 
+"Offset page parameters for the new paged resource contract."
+input OffsetPagiInput {
+  page: Int
+  size: Int
+  configRevision: Int
+}
+
+"Forward cursor parameters for the new paged resource contract."
+input ForwardCursorPagiInput {
+  first: Int
+  after: String
+  configRevision: Int
+}
+
+"Exactly one offset or forward-cursor pagination input."
+input PagiInput @oneOf {
+  offset: OffsetPagiInput
+  cursor: ForwardCursorPagiInput
+}
+
+"Dashboard pagination config without the server-owned revision."
+input PaginationSurfaceConfigInput {
+  schemaVersion: Int!
+  api: PaginationApi!
+  mode: PaginationMode!
+  defaultSize: Int
+  maxSize: Int
+}
+
+input PostFilter {
+  when: WhenEnum
+  communityTag: String
+  cat: ArticleCatEnum
+  status: ArticleStatusEnum
+  order: ArticleOrderEnum
+  communityTags: [String]
+  community: String
+  sort: SortEnum
+}
+
+input ChangelogFilter {
+  when: WhenEnum
+  communityTag: String
+  cat: ArticleCatEnum
+  status: ArticleStatusEnum
+  order: ArticleOrderEnum
+  communityTags: [String]
+  community: String
+  sort: SortEnum
+}
+
+input CommentPageFilter {
+  sort: InsertedSortEnum
+}
+
 "kanban posts_filter doc"
 input PagedKanbanPostsFilter {
   page: Int
@@ -4135,6 +4301,24 @@ enum DsbSection {
   MEDIA_REPORTS
   DOC_FAQ
   THIRD_PARTY_ANALYTICS
+  PAGINATION
+}
+
+enum PaginationSurface {
+  POSTS
+  CHANGELOGS
+  COMMENTS
+}
+
+enum PaginationApi {
+  OFFSET
+  CURSOR
+}
+
+enum PaginationMode {
+  PAGE
+  LOAD_MORE
+  INFINITE_SCROLL
 }
 
 enum DsbLinkType {

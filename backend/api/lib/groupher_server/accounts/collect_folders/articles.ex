@@ -2,22 +2,24 @@ defmodule GroupherServer.Accounts.CollectFolders.Articles do
   @moduledoc """
   Paginates articles stored inside a collect folder.
 
-  The folder owns embedded collect refs; this module preloads the concrete
-  thread records, applies privacy checks, and extracts a mixed article page for
-  the GraphQL layer.
+  The folder owns binding-scoped entry rows; this module pages those rows first,
+  then batch-resolves the public ArticleLite paths for the GraphQL layer.
 
   Business position:
 
       Accounts facade -> CollectFolders.Articles -> folder scope -> CMS article reads
   """
 
+  import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
 
-  alias GroupherServer.{Accounts, CMS, FrontDesk, Repo}
+  alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.CollectFolders.ErrorCat
-  alias Accounts.Model.{CollectFolder, User}
+  alias Accounts.Model.{CollectFolder, CollectFolderEntry, User}
+  alias CMS.Model.{Article, ArticleBinding, Community}
   alias Helper.{ORM, T}
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @doc """
   Returns public articles stored inside a collection folder.
@@ -56,32 +58,73 @@ defmodule GroupherServer.Accounts.CollectFolders.Articles do
   end
 
   defp do_paged(folder, filter) do
-    entries = Enum.flat_map(folder.collects, &collect_projections/1)
+    page = Map.get(filter, :page, 1)
+    size = Map.get(filter, :size, 20)
 
-    entries
-    |> ORM.embeds_paginator(filter)
-    |> done()
-  end
+    query =
+      from(entry in CollectFolderEntry,
+        join: article in Article,
+        on: article.id == entry.article_id,
+        join: binding in ArticleBinding,
+        on: binding.id == entry.article_binding_id and binding.visible == true,
+        join: community in Community,
+        on: community.id == binding.community_id,
+        where: entry.folder_id == ^folder.id,
+        select: %{
+          path: %{
+            community: community.slug,
+            thread: article.thread,
+            inner_id: binding.inner_id
+          }
+        }
+      )
 
-  defp collect_projections(collect) do
-    case Repo.get(CMS.Model.Article, collect.article_id) do
-      %CMS.Model.Article{} = article ->
-        {:ok, bindings} = GroupherServer.CMS.articles_bindings_all(article)
-        Enum.flat_map(bindings, &binding_projection(&1, article.thread))
+    query =
+      case Map.get(filter, :thread) do
+        thread when is_atom(thread) and not is_nil(thread) ->
+          where(query, [entry, article, ...], article.thread == ^thread)
 
-      nil ->
-        []
+        _ ->
+          query
+      end
+
+    with {:ok, order} <-
+           Order.new(%{
+             fields: [:inserted_at, :id],
+             directions: [:desc, :desc],
+             cursor_fields: [:inserted_at, :id]
+           }),
+         {:ok, page_result} <-
+           ORM.pagi(
+             query,
+             %Params.Offset{page: page, size: size},
+             for: CollectFolderEntry,
+             order: order
+           ),
+         {:ok, entries} <- page_entries(page_result.entries) do
+      page_result
+      |> Page.to_legacy()
+      |> Map.put(:entries, entries)
+      |> done()
     end
   end
 
-  defp binding_projection(binding, thread) do
-    case FrontDesk.article(%{
-           community: binding.community.slug,
-           thread: thread,
-           inner_id: binding.inner_id
-         }) do
-      {:ok, projection} -> [projection]
-      {:error, _reason} -> []
+  defp page_entries(rows) do
+    paths = Enum.map(rows, & &1.path)
+
+    with {:ok, lite_rows} <- CMS.articles_lite_paths(paths) do
+      rows_by_path =
+        Map.new(lite_rows, fn row ->
+          {{row.community.slug, row.thread, row.inner_id}, row}
+        end)
+
+      {:ok,
+       Enum.flat_map(paths, fn path ->
+         case Map.get(rows_by_path, {path.community, path.thread, path.inner_id}) do
+           nil -> []
+           row -> [row]
+         end
+       end)}
     end
   end
 end

@@ -1,0 +1,39 @@
+{
+  "generated_from": "backend/api/lib",
+  "schema": 2,
+  "scope": {
+    "excluded": [
+      "comments, documentation strings and tests after Elixir masking",
+      "non-pagination import, seed, cover and publish workflows listed in the source classifier"
+    ],
+    "mode": "report_only",
+    "note": "Product request-path collection reads must be batched; only explicitly classified background work may remain allowlisted at an exact source occurrence."
+  },
+  "allowlist": [
+    {
+      "function": "public_article_for",
+      "line": 224,
+      "path_kind": "background",
+      "reason": "background reindex binding fan-out; max 500 roots per batch",
+      "source": "backend/api/lib/groupher_server/cms/search_artiments/indexer.ex",
+      "symbol": "FrontDesk.article"
+    }
+  ],
+  "summary": {
+    "findings": 1,
+    "files": 1
+  },
+  "findings": [
+    {
+      "function": "public_article_for",
+      "kind": "collection_helper_read",
+      "line": 224,
+      "source": "backend/api/lib/groupher_server/cms/search_artiments/indexer.ex",
+      "symbol": "FrontDesk.article",
+      "via_function": "load_public_articles",
+      "disposition": "background_exception",
+      "path_kind": "background",
+      "reason": "background reindex binding fan-out; max 500 roots per batch"
+    }
+  ]
+}

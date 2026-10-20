@@ -556,6 +556,17 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
       resolve(&R.CMS.Comments.paged_comments/3)
     end
 
+    @desc "Comment Lite page using the shared offset/cursor pagination contract"
+    field :comment_page, non_null(:comment_page) do
+      arg(:article, non_null(:article_path_input))
+      arg(:mode, :comments_mode, default_value: :replies)
+      arg(:filter, :comment_page_filter)
+      arg(:pagi, :pagi_input)
+
+      middleware(M.FrontDesk, :article)
+      resolve(&R.CMS.Comments.comment_page/3)
+    end
+
     @desc "get paged article comments participants"
     field :paged_comments_participants, :paged_users do
       arg(:article, non_null(:article_path_input))
@@ -632,6 +643,24 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
 
       middleware(M.FrontDesk, :community)
       resolve(&R.CMS.Articles.paged_kanban_posts/3)
+    end
+
+    @desc "Article Lite page using the shared offset/cursor pagination contract"
+    field :post_page, non_null(:post_page) do
+      arg(:pagi, :pagi_input)
+      arg(:filter, :post_filter)
+      arg(:thread, :post_thread, default_value: :post)
+
+      resolve(&R.CMS.Articles.article_page/3)
+    end
+
+    @desc "Changelog Lite page using the shared offset/cursor pagination contract"
+    field :changelog_page, non_null(:changelog_page) do
+      arg(:pagi, :pagi_input)
+      arg(:filter, :changelog_filter)
+      arg(:thread, :changelog_thread, default_value: :changelog)
+
+      resolve(&R.CMS.Articles.article_page/3)
     end
 
     @desc "Search Article and Comment content through the unified Artiment index"

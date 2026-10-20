@@ -17,6 +17,7 @@ defmodule GroupherServer.Accounts.Search.User do
 
   alias Accounts.Model.User
   alias Helper.ORM
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @search_items_count 15
 
@@ -29,9 +30,18 @@ defmodule GroupherServer.Accounts.Search.User do
   """
   @spec search(String.t()) :: {:ok, map()} | {:error, any()}
   def search(name) do
-    User
-    |> where([u], ilike(u.nickname, ^"%#{name}%") or ilike(u.login, ^"%#{name}%"))
-    |> ORM.paginator(page: 1, size: @search_items_count)
-    |> done()
+    query =
+      User
+      |> where([u], ilike(u.nickname, ^"%#{name}%") or ilike(u.login, ^"%#{name}%"))
+
+    with {:ok, page} <-
+           ORM.pagi(
+             query,
+             %Params.Offset{page: 1, size: @search_items_count},
+             for: User,
+             order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
+           ) do
+      done(Page.to_legacy(page))
+    end
   end
 end

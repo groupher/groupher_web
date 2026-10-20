@@ -13,6 +13,7 @@ defmodule GroupherServer.PublicCache.Const do
     :article_visibility_changed,
     :comments_content_changed,
     :community_presentation_changed,
+    :pagination_config_changed,
     :taxonomy_changed,
     :doc_tree_changed
   ]

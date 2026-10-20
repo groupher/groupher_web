@@ -22,6 +22,7 @@ defmodule GroupherServer.Accounts.Achievements.Moderatorable do
   alias Accounts.Model.User
   alias CMS.Model.CommunityModerator
   alias Helper.{ORM, T}
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @doc """
   Returns communities where a user has moderator capability.
@@ -32,11 +33,20 @@ defmodule GroupherServer.Accounts.Achievements.Moderatorable do
   """
   @spec paged_moderatorable_communities(User.t(), map()) :: T.domain_res(T.paged_data())
   def paged_moderatorable_communities(%User{id: user_id}, %{page: page, size: size}) do
-    CommunityModerator
-    |> where([e], e.user_id == ^user_id)
-    |> join(:inner, [e], c in assoc(e, :community))
-    |> select([e, c], c)
-    |> ORM.paginator(page: page, size: size)
-    |> done()
+    query =
+      CommunityModerator
+      |> where([e], e.user_id == ^user_id)
+      |> join(:inner, [e], c in assoc(e, :community))
+      |> select([e, c], c)
+
+    with {:ok, result} <-
+           ORM.pagi(
+             query,
+             %Params.Offset{page: page, size: size},
+             for: CMS.Model.Community,
+             order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
+           ) do
+      done(Page.to_legacy(result))
+    end
   end
 end

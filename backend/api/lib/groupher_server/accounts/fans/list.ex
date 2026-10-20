@@ -19,6 +19,7 @@ defmodule GroupherServer.Accounts.Fans.List do
   alias Accounts.Fans.ViewerState
   alias Accounts.Model.{User, UserFollower, UserFollowing}
   alias Helper.{ORM, QueryBuilder}
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @doc """
   Returns followers with viewer-aware relationship state.
@@ -75,10 +76,35 @@ defmodule GroupherServer.Accounts.Fans.List do
   end
 
   defp load_fans(queryable, ~m(page size)a = filter) do
-    queryable
-    |> select([uf, u], u)
-    |> QueryBuilder.filter_pack(filter)
-    |> ORM.paginator(~m(page size)a)
-    |> done()
+    query =
+      queryable
+      |> select([uf, u], u)
+      |> QueryBuilder.filter_pack(Map.delete(filter, :sort))
+
+    with {:ok, result} <-
+           ORM.pagi(
+             query,
+             %Params.Offset{page: page, size: size},
+             for: User,
+             order: user_order(filter)
+           ) do
+      done(Page.to_legacy(result))
+    end
+  end
+
+  defp user_order(%{sort: :asc_inserted}) do
+    %Order{
+      fields: [:inserted_at, :id],
+      directions: [:asc, :asc],
+      cursor_fields: [:inserted_at, :id]
+    }
+  end
+
+  defp user_order(_filter) do
+    %Order{
+      fields: [:inserted_at, :id],
+      directions: [:desc, :desc],
+      cursor_fields: [:inserted_at, :id]
+    }
   end
 end

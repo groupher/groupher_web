@@ -9,14 +9,29 @@ defmodule GroupherServer.Accounts.Upvotes do
 
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
-  import ShortMaps
 
-  alias GroupherServer.{Accounts, CMS, FrontDesk, Repo}
+  alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Profiles.ErrorCat, as: ProfileErrorCat
   alias Accounts.Model.User
-  alias CMS.Model.{ArticleBinding, ArticleStats, ArticleUpvote}
-  alias Helper.{ORM, QueryBuilder}
+
+  alias CMS.Model.{
+    Article,
+    ArticleBinding,
+    ArticleLifecycle,
+    ArticlePublic,
+    ArticleStats,
+    ArticleUpvote,
+    Author,
+    Community,
+    DocBranch,
+    DocBranchState,
+    DocLifecycle,
+    DocPublic
+  }
+
+  alias Helper.ORM
+  alias Helper.ORM.Pagi.{Order, Params}
 
   @doc """
   Returns the articles upvoted by a user, optionally filtered by thread.
@@ -37,54 +52,78 @@ defmodule GroupherServer.Accounts.Upvotes do
     load_articles(user_id, nil, filter)
   end
 
-  defp load_articles(user_id, thread, %{page: page, size: size} = filter) do
+  defp load_articles(user_id, thread, %{page: page, size: size}) do
     query =
-      from(binding in ArticleBinding,
-        join: upvote in ArticleUpvote,
-        on: upvote.article_id == binding.article_id,
+      from(upvote in ArticleUpvote,
+        join: article in Article,
+        on: article.id == upvote.article_id and article.thread == upvote.thread,
+        join: binding in ArticleBinding,
+        on:
+          binding.article_id == article.id and
+            binding.visible == true and binding.inner_id > 0,
+        join: community in Community,
+        on: community.id == binding.community_id,
+        join: author in Author,
+        on: author.id == article.author_id,
+        join: user in User,
+        on: user.id == author.user_id,
+        left_join: stats in ArticleStats,
+        on: stats.article_id == article.id and stats.thread == article.thread,
+        left_join: public in ArticlePublic,
+        on: public.article_id == article.id and public.visible == true,
+        left_join: lifecycle in ArticleLifecycle,
+        on:
+          lifecycle.article_id == article.id and
+            lifecycle.state in [:published, :archived],
+        left_join: branch in DocBranch,
+        on: branch.community_id == binding.community_id and branch.type == :main,
+        left_join: doc_state in DocBranchState,
+        on: doc_state.article_id == article.id and doc_state.branch_id == branch.id,
+        left_join: doc_public in DocPublic,
+        on:
+          doc_public.article_id == article.id and doc_public.branch_id == branch.id and
+            doc_public.visible == true,
+        left_join: doc_lifecycle in DocLifecycle,
+        on:
+          doc_lifecycle.article_id == article.id and doc_lifecycle.branch_id == branch.id and
+            doc_lifecycle.state in [:published, :archived],
         where: upvote.user_id == ^user_id,
-        preload: [:article, :community],
-        distinct: binding.id
+        where:
+          (article.thread == :doc and doc_state.moderation_state == :legal and
+             not is_nil(doc_public.id) and not is_nil(doc_lifecycle.id)) or
+            (article.thread != :doc and article.moderation_state == :legal and
+               not is_nil(public.article_id) and not is_nil(lifecycle.id)),
+        select: %{
+          id: article.id,
+          inner_id: binding.inner_id,
+          thread: article.thread,
+          title: fragment("COALESCE(?, ?)", public.title, doc_public.title),
+          author: user,
+          upvotes_count: coalesce(stats.upvotes_count, 0)
+        }
       )
 
     query =
       if is_nil(thread),
         do: query,
-        else: where(query, [binding, upvote], upvote.thread == ^thread)
+        else: where(query, [upvote, ...], upvote.thread == ^thread)
 
-    paged =
-      query
-      |> QueryBuilder.filter_pack(filter)
-      |> ORM.paginator(~m(page size)a)
-
-    entries =
-      Enum.flat_map(paged.entries, fn binding ->
-        article = binding.article
-
-        case FrontDesk.article(%{
-               community: binding.community.slug,
-               thread: article.thread,
-               inner_id: binding.inner_id
-             }) do
-          {:ok, projection} ->
-            stats = Repo.get_by(ArticleStats, article_id: article.id, thread: article.thread)
-
-            [
-              %{
-                author: projection.author,
-                id: projection.id,
-                inner_id: projection.inner_id,
-                thread: projection.thread,
-                title: projection.title,
-                upvotes_count: if(stats, do: stats.upvotes_count, else: 0)
-              }
-            ]
-
-          {:error, _reason} ->
-            []
-        end
-      end)
-
-    paged |> Map.put(:entries, entries) |> done()
+    with {:ok, order} <-
+           Order.new(%{
+             fields: [:inserted_at, :id],
+             directions: [:desc, :desc],
+             cursor_fields: [:inserted_at, :id]
+           }),
+         {:ok, page} <-
+           ORM.pagi(
+             query,
+             %Params.Offset{page: page, size: size},
+             for: ArticleUpvote,
+             order: order
+           ) do
+      page
+      |> Helper.ORM.Pagi.Page.to_legacy()
+      |> done()
+    end
   end
 end

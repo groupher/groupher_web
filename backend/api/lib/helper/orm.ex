@@ -5,8 +5,7 @@ defmodule Helper.ORM do
   ## Function Groups
 
   - Query and pagination:
-    `paginator/2`, `embeds_paginator/2`,
-    `find/2`, `find/3`, `find_by/2`, `find_by/3`, `find_all/2`, `count/1`, `count/2`
+    `pagi/3`, `find/2`, `find/3`, `find_by/2`, `find_by/3`, `find_all/2`, `count/1`, `count/2`
   - Create and update:
     `create/2`, `update/2`, `update/3`, `find_update/3`, `update_by/3`,
     `update_embed/3`, `update_embed/4`, `update_dashboard/3`
@@ -30,7 +29,6 @@ defmodule Helper.ORM do
   """
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1, done: 3, strip_struct: 1]
-  import ShortMaps
 
   import Helper.ErrorHandler
 
@@ -41,6 +39,8 @@ defmodule Helper.ORM do
   alias CMS.Gate
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.{ORMAtom, QueryBuilder, T}
+  alias Helper.ORM.Pagi
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @threads CMS.artiment_config_threads()
 
@@ -104,48 +104,19 @@ defmodule Helper.ORM do
   defdelegate fill_meta(queryable), to: ORMAtom
 
   @doc """
-  Returns offset-limit pagination result with `total_count`.
+  Executes the shared offset/cursor Pagi contract.
+
+  `config` is optional for internal fixed lists. A resource query that is
+  governed by Dashboard config must pass the validated `%Pagi.Config{}`.
 
   ## Examples
 
-      iex> ORM.paginator(Post, page: 1, size: 20)
-      %{entries: [...], total_count: 120, page_number: 1}
-
-      iex> ORM.paginator(Post, %{page: 2, size: 10})
-      %{entries: [...], total_count: 120, page_number: 2}
+      iex> ORM.pagi(query, %Pagi.Params.Offset{page: 1, size: 20}, for: Article, order: order)
+      {:ok, %Pagi.Page.Offset{}}
   """
-  def paginator(queryable, page: page, size: size), do: do_pagi(queryable, page, size)
-  def paginator(queryable, ~m(page size)a), do: do_pagi(queryable, page, size)
-
-  defp do_pagi(queryable, page, size) do
-    result = queryable |> Repo.paginate(page: page, page_size: size)
-    total_count = result.total_entries
-    result |> Map.put(:total_count, total_count) |> Map.drop([:total_entries])
-  end
-
-  # NOTE: should have limit length for list, otherwise it will cause mem issues
-  @doc """
-  Paginates a normal list (commonly used for embeds).
-
-  ## Examples
-
-      iex> ORM.embeds_paginator([1, 2, 3, 4], %{page: 1, size: 2})
-      %{entries: [1, 2], total_count: 4, total_pages: 2}
-  """
-  def embeds_paginator(list, %{page: page, size: size} = _filter) when is_list(list) do
-    chunked_list = Enum.chunk_every(list, size)
-
-    entries = chunked_list |> Enum.at(page - 1)
-    total_count = list |> length
-
-    %{
-      entries: entries,
-      page_number: page,
-      page_size: size,
-      total_count: total_count,
-      total_pages: chunked_list |> length
-    }
-  end
+  @spec pagi(Ecto.Queryable.t(), Pagi.Params.t() | nil, keyword()) ::
+          {:ok, Pagi.Page.t()} | {:error, ErrorCat.Error.t()}
+  def pagi(queryable, params, opts), do: Pagi.run(queryable, params, opts)
 
   @doc """
   Finds a record by id with preload and normalized result format.
@@ -247,15 +218,49 @@ defmodule Helper.ORM do
       {:ok, [%Post{}, ...]}
   """
   def find_all(queryable, %{page: page, size: size} = filter) do
-    queryable
-    |> QueryBuilder.filter_pack(filter)
-    |> paginator(page: page, size: size)
-    |> done()
+    filter_without_sort = Map.delete(filter, :sort)
+    query = QueryBuilder.filter_pack(queryable, filter_without_sort)
+    schema = schema_for_pagi(query)
+
+    with {:ok, paged} <-
+           pagi(
+             query,
+             %Params.Offset{page: page, size: size},
+             for: schema,
+             order: find_all_order(filter)
+           ) do
+      paged |> Page.to_legacy() |> done()
+    end
   end
 
   def find_all(queryable, filter) do
     queryable |> QueryBuilder.filter_pack(filter) |> Repo.all() |> done()
   end
+
+  defp find_all_order(%{sort: :asc_inserted}) do
+    %Order{
+      fields: [:inserted_at, :id],
+      directions: [:asc, :asc],
+      cursor_fields: [:inserted_at, :id]
+    }
+  end
+
+  defp find_all_order(_filter) do
+    %Order{
+      fields: [:inserted_at, :id],
+      directions: [:asc, :asc],
+      cursor_fields: [:inserted_at, :id]
+    }
+  end
+
+  defp schema_for_pagi(%Ecto.Query{} = query) do
+    case query.from.source do
+      {_source, schema} when is_atom(schema) -> schema
+      _source -> raise ArgumentError, "Helper.ORM.find_all/2 requires an Ecto schema query"
+    end
+  end
+
+  defp schema_for_pagi(queryable), do: schema_for_pagi(Ecto.Queryable.to_query(queryable))
 
   @doc """
   Marks all matched rows as read.

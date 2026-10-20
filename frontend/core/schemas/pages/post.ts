@@ -32,6 +32,118 @@ export const pagedPosts = graphql(`
   }
 `)
 
+export const postPage = graphql(`
+  query PostPage($pagi: PagiInput, $filter: PostFilter, $thread: PostThread = POST) {
+    postPage(pagi: $pagi, filter: $filter, thread: $thread) {
+      pinnedEntries {
+        id
+        thread
+        innerId
+        title
+        digest
+        insertedAt
+        activeAt
+        author {
+          login
+          nickname
+          avatar
+          bio
+          shortbio
+        }
+        community {
+          title
+          slug
+          index
+          desc
+          logo
+          subscribersCount
+          homepage
+          articlesCount
+          views
+          pending
+          insertedAt
+          updatedAt
+        }
+        communityTags {
+          id
+          title
+          layout
+          desc
+          slug
+          color
+          thread
+          group
+          groupId
+          index
+          community {
+            slug
+          }
+        }
+      }
+      entries {
+        id
+        thread
+        innerId
+        title
+        digest
+        insertedAt
+        activeAt
+        author {
+          login
+          nickname
+          avatar
+          bio
+          shortbio
+        }
+        community {
+          title
+          slug
+          index
+          desc
+          logo
+          subscribersCount
+          homepage
+          articlesCount
+          views
+          pending
+          insertedAt
+          updatedAt
+        }
+        communityTags {
+          id
+          title
+          layout
+          desc
+          slug
+          color
+          thread
+          group
+          groupId
+          index
+          community {
+            slug
+          }
+        }
+      }
+      pageInfo {
+        __typename
+        hasPreviousPage
+        hasNextPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
+        }
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
+        }
+      }
+    }
+  }
+`)
+
 export const pagedPublishedPosts = graphql(`
   query PagedPublishedPosts($login: String!, $filter: PagiFilter!) {
     pagedPublishedPosts(login: $login, filter: $filter) {

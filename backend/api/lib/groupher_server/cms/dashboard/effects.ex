@@ -45,4 +45,23 @@ defmodule GroupherServer.CMS.Dashboard.Effects do
     })
     |> CMS.Outbox.send()
   end
+
+  @doc "Enqueues cache invalidation for one pagination surface revision change."
+  @spec enqueue_pagination_changed(Community.t(), atom(), Ecto.UUID.t()) ::
+          {:ok, CMS.Outbox.Event.t()} | {:error, term()}
+  def enqueue_pagination_changed(%Community{} = community, surface, command_id) do
+    %{
+      command_id: command_id,
+      event: "community.pagination_changed",
+      worker: GroupherServer.Jobs.CMSOutboxCommunity,
+      resource_type: "community",
+      resource_id: community.id,
+      data: %{
+        community: community.slug,
+        community_id: community.id,
+        surface: Atom.to_string(surface)
+      }
+    }
+    |> CMS.Outbox.send()
+  end
 end

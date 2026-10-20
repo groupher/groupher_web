@@ -23,6 +23,7 @@ defmodule GroupherServer.CMS.Search.Community do
   alias Accounts.Model.User
   alias CMS.Model.Community
   alias Helper.ORM
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @search_items_count 15
 
@@ -78,13 +79,23 @@ defmodule GroupherServer.CMS.Search.Community do
   end
 
   defp do_search_communities(queryable, title) do
-    queryable
-    |> where(
-      [c],
-      ilike(c.title, ^"%#{title}%") or ilike(c.slug, ^"%#{title}%") or ilike(c.aka, ^"%#{title}%")
-    )
-    |> ORM.paginator(page: 1, size: @search_items_count)
-    |> done()
+    query =
+      queryable
+      |> where(
+        [c],
+        ilike(c.title, ^"%#{title}%") or ilike(c.slug, ^"%#{title}%") or
+          ilike(c.aka, ^"%#{title}%")
+      )
+
+    with {:ok, page} <-
+           ORM.pagi(
+             query,
+             %Params.Offset{page: 1, size: @search_items_count},
+             for: Community,
+             order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
+           ) do
+      done(Page.to_legacy(page))
+    end
   end
 
   defp do_search_communities_with_category(title, category) do

@@ -21,6 +21,7 @@ export const CACHE_TAG = {
     publicCacheTags.articleList(community, thread),
   articleCache: publicCacheTags.articleDetail,
   commentsCache: publicCacheTags.comments,
+  commentsListCache: publicCacheTags.commentsList,
   docTreeCache: publicCacheTags.docTree,
 }
 

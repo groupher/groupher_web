@@ -224,6 +224,16 @@ defmodule GroupherServer.CMS do
   @doc "Delegates GroupherServer.CMS.Articles.page/3 through the CMS Context boundary."
   defdelegate articles_page(arg1, arg2, arg3), to: GroupherServer.CMS.Articles, as: :page
 
+  @doc "Delegates the resource-owned Articles.Pagination page contract through CMS."
+  defdelegate articles_pagi_page(arg1, arg2, arg3, arg4),
+    to: GroupherServer.CMS.Articles,
+    as: :pagi_page
+
+  @doc "Delegates the bounded ArticleLite path batch through the CMS Context boundary."
+  defdelegate articles_lite_paths(arg1),
+    to: GroupherServer.CMS.Articles,
+    as: :lite_paths
+
   @doc "Delegates GroupherServer.CMS.Articles.paged_audit_failed/2 through the CMS Context boundary."
   defdelegate articles_paged_audit_failed(arg1, arg2),
     to: GroupherServer.CMS.Articles,
@@ -536,6 +546,11 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Comments,
     as: :paged_comments
 
+  @doc "Delegates the new CommentPage contract through the CMS Context boundary."
+  defdelegate comments_page(arg1, arg2, arg3, arg4, arg5, arg6, arg7),
+    to: GroupherServer.CMS.Comments,
+    as: :page
+
   @doc "Delegates GroupherServer.CMS.Comments.paged_published_comments/2 through the CMS Context boundary."
   defdelegate comments_paged_published_comments(arg1, arg2),
     to: GroupherServer.CMS.Comments,
@@ -658,7 +673,7 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Communities,
     as: :create_category
 
-  @doc "Delegates GroupherServer.CMS.Communities.create_from_application/2 through the CMS Context boundary."
+  @doc "Delegates the approved-Application creation workflow through the CMS Context boundary."
   defdelegate communities_create_from_application(arg1, arg2),
     to: GroupherServer.CMS.Communities,
     as: :create_from_application
@@ -849,7 +864,7 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Communities,
     as: :request_destroy
 
-  @doc "Delegates GroupherServer.CMS.Communities.run_setup/2 through the CMS Context boundary."
+  @doc "Delegates retryable Community setup through the CMS Context boundary."
   defdelegate communities_run_setup(arg1, arg2),
     to: GroupherServer.CMS.Communities,
     as: :run_setup

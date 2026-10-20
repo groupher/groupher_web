@@ -75,7 +75,11 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
     with {:ok, _canonical} <- CMS.interactions_collect(article, user, command_id),
          {:ok, article_collect} <- CMS.interactions_persist_find_collect(article, user),
          {:ok, folder} <-
-           Persist.add_in_transaction(article_collect, prepared.folder, prepared.thread),
+           Persist.add_in_transaction(
+             prepared.folder,
+             prepared.thread,
+             prepared.binding
+           ),
          {:ok, _attached} <-
            CMS.interactions_persist_attach_collect_folder(article_collect, folder) do
       {:ok, folder}

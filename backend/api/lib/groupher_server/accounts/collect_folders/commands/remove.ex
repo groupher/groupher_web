@@ -76,7 +76,11 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
     with {:ok, article_collect} <- CMS.interactions_persist_find_collect(article, user),
          {:ok, _canonical} <- maybe_undo_collect(article, user, command_id, article_collect),
          {:ok, folder} <-
-           Persist.remove_in_transaction(article_collect, prepared.folder, prepared.thread),
+           Persist.remove_in_transaction(
+             prepared.folder,
+             prepared.thread,
+             prepared.binding
+           ),
          {:ok, _detached} <- maybe_detach_collect(article_collect, folder) do
       {:ok, folder}
     end

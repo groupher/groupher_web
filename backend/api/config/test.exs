@@ -2,6 +2,11 @@ import Config
 
 config :groupher_server, :allow_test_service_auth, true
 
+config :groupher_server, :pagination_cursor_keyring,
+  current_version: 1,
+  current_key: "test-pagination-cursor-key",
+  previous_keys: %{}
+
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :groupher_server, GroupherServerWeb.Endpoint,

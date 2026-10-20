@@ -1664,6 +1664,9 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
 
     field(:content_shadow, non_null(:boolean))
 
+    @desc "Validated Dashboard pagination surface configuration; missing surfaces use platform defaults."
+    field(:pagination, :json)
+
     field(:wallpaper_history, non_null(list_of(non_null(:wallpaper_snapshot)))) do
       arg(:theme, non_null(:wallpaper_theme))
 
@@ -1978,6 +1981,91 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   end
 
   paged_article_objects()
+
+  @desc "Stable public offset/cursor page metadata."
+  interface :page_info do
+    field(:has_previous_page, non_null(:boolean))
+    field(:has_next_page, non_null(:boolean))
+
+    resolve_type(fn
+      %{api: :offset}, _ -> :offset_page_info
+      %{api: :cursor}, _ -> :cursor_page_info
+      %{__typename: "OffsetPageInfo"}, _ -> :offset_page_info
+      %{__typename: "CursorPageInfo"}, _ -> :cursor_page_info
+      _, _ -> nil
+    end)
+  end
+
+  object :offset_page_info do
+    interface(:page_info)
+    field(:page, non_null(:integer))
+    field(:size, non_null(:integer))
+    field(:total_count, non_null(:integer))
+    field(:total_pages, non_null(:integer))
+    field(:has_previous_page, non_null(:boolean))
+    field(:has_next_page, non_null(:boolean))
+  end
+
+  object :cursor_page_info do
+    interface(:page_info)
+    field(:start_cursor, :string)
+    field(:end_cursor, :string)
+    field(:has_previous_page, non_null(:boolean))
+    field(:has_next_page, non_null(:boolean))
+  end
+
+  @desc "List-only Article projection; stats and viewer state stay in their own APIs."
+  object :post_lite do
+    field(:id, :id)
+    field(:thread, :thread)
+    field(:inner_id, :id)
+    field(:title, :string)
+    field(:digest, :string)
+    field(:author, :common_user)
+    field(:community, :community)
+    field(:community_tags, list_of(:community_tag))
+    field(:active_at, :datetime)
+    field(:inserted_at, :datetime)
+  end
+
+  object :changelog_lite do
+    field(:id, :id)
+    field(:thread, :thread)
+    field(:inner_id, :id)
+    field(:title, :string)
+    field(:digest, :string)
+    field(:author, :common_user)
+    field(:community, :community)
+    field(:community_tags, list_of(:community_tag))
+    field(:active_at, :datetime)
+    field(:inserted_at, :datetime)
+  end
+
+  object :comment_lite do
+    field(:id, :id)
+    field(:inner_id, :id)
+    field(:body, :artiment_body)
+    field(:author, :common_user)
+    field(:inserted_at, :datetime)
+  end
+
+  object :post_page do
+    field(:pinned_entries, non_null(list_of(non_null(:post_lite))))
+    field(:entries, non_null(list_of(non_null(:post_lite))))
+    field(:page_info, non_null(:page_info))
+  end
+
+  object :changelog_page do
+    field(:pinned_entries, non_null(list_of(non_null(:changelog_lite))))
+    field(:entries, non_null(list_of(non_null(:changelog_lite))))
+    field(:page_info, non_null(:page_info))
+  end
+
+  object :comment_page do
+    field(:pinned_entries, non_null(list_of(non_null(:comment_lite))))
+    field(:entries, non_null(list_of(non_null(:comment_lite))))
+    field(:page_info, non_null(:page_info))
+  end
 
   object :kanban_posts do
     field(:backlog, :paged_posts)

@@ -8,6 +8,12 @@ defmodule GroupherServer.CMS.Press.Query do
         -> Press.Query
         -> Gate Scope / Repo
         -> Press.Projection
+
+  Feed and manifest output needs immutable body snapshots, so it is not an
+  ArticleLite consumer. The query reuses the Articles pagination selector for
+  public visibility, ordering, and the Docs public tree, then resolves complete
+  public projections through bounded `FrontDesk.articles/1` batches. Press is a
+  service-scoped request path and is not a pagination N+1 exception.
   """
 
   require GroupherServer.CMS.Const
@@ -21,9 +27,11 @@ defmodule GroupherServer.CMS.Press.Query do
   alias CMS.Gate.Context.Scope.Community, as: CommunityContext
   alias CMS.Model.{Community, DocBranch, DocPublishRelease, DocTreeNode, PressConfig}
   alias CMS.Press.{Config, Projection}
+  alias Helper.ORM.Pagi.Config, as: PagiConfig
 
   @threads Config.article_threads()
   @manifest_limit 500
+  @pagination_page_size 100
 
   @doc "Reads persisted Press config, falling back to the legacy dashboard projection."
   def config(community) do
@@ -71,9 +79,11 @@ defmodule GroupherServer.CMS.Press.Query do
       requested_threads = option(opts, :threads, config.feed_threads)
       threads = selected_threads(community, requested_threads)
       limit = bounded_limit(option(opts, :limit, config.feed_count), config.feed_count)
-      items = feed_items(community, threads, limit)
+      hydrate = hydrate_loader(opts)
 
-      {:ok, Projection.feed(community, config, nil, items)}
+      with {:ok, items} <- feed_items(community, threads, limit, hydrate) do
+        {:ok, Projection.feed(community, config, nil, items)}
+      end
     end
   end
 
@@ -85,9 +95,11 @@ defmodule GroupherServer.CMS.Press.Query do
          {:ok, _} <- validate_feed_thread(config, thread),
          {:ok, _} <- validate_thread_enabled(community, thread) do
       limit = bounded_limit(option(opts, :limit, config.feed_count), config.feed_count)
-      items = feed_items(community, [thread], limit)
+      hydrate = hydrate_loader(opts)
 
-      {:ok, Projection.feed(community, config, thread, items)}
+      with {:ok, items} <- feed_items(community, [thread], limit, hydrate) do
+        {:ok, Projection.feed(community, config, thread, items)}
+      end
     end
   end
 
@@ -96,20 +108,25 @@ defmodule GroupherServer.CMS.Press.Query do
   end
 
   @doc "Reads and projects the current Press site manifest."
-  def site_manifest(community) do
+  def site_manifest(community), do: site_manifest(community, [])
+
+  @doc false
+  def site_manifest(community, opts) when is_list(opts) do
     with {:ok, community} <- public_community(community),
          {:ok, config} <- config(community) do
       threads = selected_threads(community, @threads)
-      items = site_items(community, threads, @manifest_limit)
+      hydrate = hydrate_loader(opts)
 
-      {:ok,
-       %{
-         community: Projection.community(community),
-         config: Projection.config(config),
-         site_revision: Projection.revision(items, config.revision),
-         threads: threads,
-         items: items
-       }}
+      with {:ok, items} <- site_items(community, threads, @manifest_limit, hydrate) do
+        {:ok,
+         %{
+           community: Projection.community(community),
+           config: Projection.config(config),
+           site_revision: Projection.revision(items, config.revision),
+           threads: threads,
+           items: items
+         }}
+      end
     end
   end
 
@@ -144,58 +161,183 @@ defmodule GroupherServer.CMS.Press.Query do
     end
   end
 
-  defp feed_items(community, threads, limit) do
-    threads
-    |> Enum.flat_map(&current_feed_items(community, &1, limit))
-    |> Enum.sort_by(&(&1.updated_at || &1.published_at), {:desc, DateTime})
-    |> Enum.take(limit)
-  end
+  defp feed_items(community, threads, limit, hydrate) do
+    loader = fn community, thread, limit ->
+      current_feed_items(community, thread, limit, hydrate)
+    end
 
-  defp site_items(community, threads, limit) do
-    threads
-    |> Enum.flat_map(fn thread ->
-      community
-      |> current_articles(thread, limit)
-      |> Enum.map(&Projection.feed_item(community, thread, &1))
-    end)
-    |> Enum.sort_by(&(&1.updated_at || &1.published_at), {:desc, DateTime})
-    |> Enum.take(limit)
-  end
-
-  defp current_feed_items(community, :doc, _limit) do
-    DocPublishRelease
-    |> join(:inner, [release], branch in DocBranch, on: branch.id == release.branch_id)
-    |> where([release, branch], release.community_id == ^community.id)
-    |> where([_release, branch], branch.type == ^CMS.Docs.Const.doc_branch_type(:main))
-    |> order_by([release], desc: release.release_number, desc: release.id)
-    |> preload([release], [:author, :articles])
-    |> limit(1)
-    |> Repo.all()
-    |> Enum.map(&Projection.doc_release_feed_item(community, &1))
-  end
-
-  defp current_feed_items(community, thread, limit) do
-    community
-    |> current_articles(thread, limit)
-    |> Enum.map(&Projection.feed_item(community, thread, &1))
-  end
-
-  defp current_articles(community, thread, limit) do
-    case CMS.Articles.page(thread, %{community: community.slug, page: 1, size: limit}) do
-      {:ok, %{entries: entries}} ->
-        if thread == :doc do
-          Enum.filter(entries, &stable_public_doc?(&1, community))
-        else
-          entries
-        end
-
-      {:error, _reason} ->
-        []
+    with {:ok, items} <- collect_thread_items(community, threads, limit, loader) do
+      {:ok,
+       items
+       |> Enum.sort_by(&(&1.updated_at || &1.published_at), {:desc, DateTime})
+       |> Enum.take(limit)}
     end
   end
 
-  defp stable_public_doc?(article, community) do
-    match?({:ok, _}, validate_stable_public_doc(article, community))
+  defp site_items(community, threads, limit, hydrate) do
+    with {:ok, items} <-
+           collect_thread_items(community, threads, limit, fn community, thread, limit ->
+             with {:ok, articles} <- current_articles(community, thread, limit, hydrate) do
+               {:ok, Enum.map(articles, &Projection.feed_item(community, thread, &1))}
+             end
+           end) do
+      {:ok,
+       items
+       |> Enum.sort_by(&(&1.updated_at || &1.published_at), {:desc, DateTime})
+       |> Enum.take(limit)}
+    end
+  end
+
+  defp collect_thread_items(community, threads, limit, loader) do
+    Enum.reduce_while(threads, {:ok, []}, fn thread, {:ok, acc} ->
+      case loader.(community, thread, limit) do
+        {:ok, items} -> {:cont, {:ok, [items | acc]}}
+        {:error, _reason} = error -> {:halt, error}
+      end
+    end)
+    |> case do
+      {:ok, items} -> {:ok, List.flatten(Enum.reverse(items))}
+      {:error, _reason} = error -> error
+    end
+  end
+
+  defp current_feed_items(community, :doc, _limit, _hydrate) do
+    {:ok,
+     DocPublishRelease
+     |> join(:inner, [release], branch in DocBranch, on: branch.id == release.branch_id)
+     |> where([release, branch], release.community_id == ^community.id)
+     |> where([_release, branch], branch.type == ^CMS.Docs.Const.doc_branch_type(:main))
+     |> order_by([release], desc: release.release_number, desc: release.id)
+     |> preload([release], [:author, :articles])
+     |> limit(1)
+     |> Repo.all()
+     |> Enum.map(&Projection.doc_release_feed_item(community, &1))}
+  end
+
+  defp current_feed_items(community, thread, limit, hydrate) do
+    with {:ok, articles} <- current_articles(community, thread, limit, hydrate) do
+      {:ok, Enum.map(articles, &Projection.feed_item(community, thread, &1))}
+    end
+  end
+
+  defp current_articles(community, thread, limit, hydrate) do
+    with paths when is_list(paths) <- article_paths(community, thread, limit) do
+      hydrate.(paths)
+    else
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp article_paths(community, thread, limit) do
+    page_count = div(limit + @pagination_page_size - 1, @pagination_page_size)
+    public_tree = thread == :doc
+
+    1..page_count
+    |> Enum.reduce_while({[], 0, limit}, fn page, {path_batches, collected, target} ->
+      remaining = target - collected
+
+      if remaining <= 0 do
+        {:halt, {path_batches, collected, target}}
+      else
+        case CMS.Articles.Pagination.page(
+               thread,
+               %{community: community.slug, page: page, size: @pagination_page_size},
+               nil,
+               config: press_pagination_config(),
+               public_tree: public_tree
+             ) do
+          {:ok, %{entries: entries, pinned_entries: pinned_entries}} ->
+            page_entries = if page == 1, do: pinned_entries ++ entries, else: entries
+            page_paths = Enum.map(page_entries, &article_path(community, thread, &1))
+            target = if page == 1, do: limit + length(pinned_entries), else: target
+            remaining = target - collected
+            batch = Enum.take(page_paths, remaining)
+            next = {[batch | path_batches], collected + length(batch), target}
+
+            if length(entries) < @pagination_page_size, do: {:halt, next}, else: {:cont, next}
+
+          {:error, reason} ->
+            {:halt, {:error, reason}}
+        end
+      end
+    end)
+    |> case do
+      {:error, reason} -> {:error, reason}
+      {path_batches, _collected, _target} -> List.flatten(Enum.reverse(path_batches))
+    end
+  end
+
+  defp article_path(community, thread, entry) do
+    %{path: %{community: community.slug, thread: thread, inner_id: entry.inner_id}, entry: entry}
+  end
+
+  defp hydrate_articles(path_entries) do
+    path_entries
+    |> Enum.chunk_every(@pagination_page_size)
+    |> Enum.reduce_while({:ok, MapSet.new()}, fn chunk, {:ok, resolved_paths} ->
+      case FrontDesk.articles(Enum.map(chunk, & &1.path)) do
+        {:ok, rows} ->
+          keys = Enum.map(rows, &path_key(&1.path))
+          {:cont, {:ok, Enum.reduce(keys, resolved_paths, &MapSet.put(&2, &1))}}
+
+        {:error, reason} ->
+          {:halt, {:error, reason}}
+      end
+    end)
+    |> case do
+      {:ok, resolved_paths} ->
+        entries =
+          Enum.filter(path_entries, fn %{path: path} ->
+            MapSet.member?(resolved_paths, path_key(path))
+          end)
+
+        with {:ok, articles} <-
+               CMS.Articles.Pagination.legacy_entries(
+                 Enum.map(entries, & &1.entry),
+                 include_public_projection: true
+               ) do
+          articles_by_key =
+            Map.new(articles, fn article ->
+              {article_key(article),
+               article
+               |> Map.put(:article_id, article.id)
+               |> Map.put(:body_hash, article.body.body_hash)}
+            end)
+
+          {:ok,
+           Enum.flat_map(entries, fn %{path: path} ->
+             case Map.get(articles_by_key, {path.thread, path.inner_id}) do
+               nil -> []
+               article -> [article]
+             end
+           end)}
+        end
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  defp path_key(%{community: community, thread: thread, inner_id: inner_id}),
+    do: {community, thread, inner_id}
+
+  defp article_key(article), do: {article.thread, article.inner_id}
+
+  defp press_pagination_config do
+    %PagiConfig{
+      api: :offset,
+      default_size: @pagination_page_size,
+      max_size: @pagination_page_size,
+      revision: 0,
+      platform_hard_max: PagiConfig.platform_hard_max()
+    }
+  end
+
+  defp hydrate_loader(opts) do
+    case option(opts, :hydrate_articles, nil) do
+      loader when is_function(loader, 1) -> loader
+      _ -> &hydrate_articles/1
+    end
   end
 
   defp public_community(%Community{id: id}), do: public_community_by_id(id)

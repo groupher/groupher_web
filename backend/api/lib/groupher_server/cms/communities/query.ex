@@ -10,7 +10,6 @@ defmodule GroupherServer.CMS.Communities.Query do
         -> Repo / Oban
   """
 
-  import Ecto.Query, only: [order_by: 3]
   import Helper.Utils, only: [done: 1]
 
   alias GroupherServer.{Accounts, CMS, Repo}
@@ -20,6 +19,7 @@ defmodule GroupherServer.CMS.Communities.Query do
   alias Accounts.Model.User
   alias CMS.Model.{Community, Category}
   alias Helper.{ORM, T}
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @doc """
   Pages categories for the discovery GraphQL read model.
@@ -56,23 +56,45 @@ defmodule GroupherServer.CMS.Communities.Query do
     filter = filter |> Enum.reject(fn {_k, v} -> is_nil(v) end) |> Enum.into(%{})
     %{page: page, size: size} = filter
 
-    Community
-    |> CMS.Gate.scope(nil, :list, CommunityContext.public())
-    |> QueryBuilder.filter_pack(Map.drop(filter, [:sort]))
-    |> order_by_views(Map.get(filter, :sort))
-    |> ORM.paginator(page: page, size: size)
-    |> done()
+    query =
+      Community
+      |> CMS.Gate.scope(nil, :list, CommunityContext.public())
+      |> QueryBuilder.filter_pack(Map.drop(filter, [:sort]))
+
+    with {:ok, result} <-
+           ORM.pagi(
+             query,
+             %Params.Offset{page: page, size: size},
+             for: Community,
+             order: order_by_views(Map.get(filter, :sort))
+           ) do
+      done(Page.to_legacy(result))
+    end
   end
 
-  defp order_by_views(queryable, :most_views) do
-    order_by(queryable, [community], desc: community.views, desc: community.inserted_at)
+  defp order_by_views(:most_views) do
+    %Order{
+      fields: [:views, :inserted_at, :id],
+      directions: [:desc_nulls_last, :desc, :desc],
+      cursor_fields: [:views, :inserted_at, :id]
+    }
   end
 
-  defp order_by_views(queryable, :least_views) do
-    order_by(queryable, [community], asc: community.views, desc: community.inserted_at)
+  defp order_by_views(:least_views) do
+    %Order{
+      fields: [:views, :inserted_at, :id],
+      directions: [:asc_nulls_first, :desc, :desc],
+      cursor_fields: [:views, :inserted_at, :id]
+    }
   end
 
-  defp order_by_views(queryable, _sort), do: queryable
+  defp order_by_views(_sort) do
+    %Order{
+      fields: [:inserted_at, :id],
+      directions: [:desc, :desc],
+      cursor_fields: [:inserted_at, :id]
+    }
+  end
 
   @doc false
   def get(id), do: Repo.get(Community, id)

@@ -10,14 +10,19 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
   alias CMS.Model.{
     Article,
     ArticleAssetRef,
+    ArticleBinding,
     ArticleBodyDraft,
     ArticleDraft,
+    ArticlePublic,
+    ArticleRevision,
     AssetUpload,
     AssetReplacementPlan,
     AssetWorkflowRun,
     AssetWorkflowStep,
     Author,
-    CommunityAsset
+    CommunityAsset,
+    CommunityApplicationLogoUpload,
+    DocBranchState
   }
 
   describe "[cms assets]" do
@@ -56,6 +61,24 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
       {:ok, usage} = CMS.Assets.usage(community)
       assert usage.asset_count == 1
       assert usage.storage_bytes == 256
+    end
+
+    test "promotes a finalized application logo into a community asset", ~m(community user)a do
+      upload = %CommunityApplicationLogoUpload{
+        public_ref: "upload_" <> Ecto.UUID.generate(),
+        url: "https://cdn.example/logo.png",
+        storage: "r2",
+        storage_key: "applications/logo.png",
+        content_hash: "sha256:logo",
+        filename: "logo.png",
+        mime_type: "image/png",
+        size_bytes: 128,
+        status: :finalized
+      }
+
+      assert {:ok, asset} = CMS.Assets.register_from_application_upload(community, upload, user)
+      assert asset.asset_type == :image
+      assert asset.meta["applicationUploadRef"] == upload.public_ref
     end
 
     test "deduplicates concurrent registrations by url hash", ~m(community user)a do
@@ -237,6 +260,243 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
       {:ok, usage} = CMS.Assets.usage(community)
       assert usage.asset_count == 2
       assert usage.storage_bytes == 300
+    end
+
+    test "draft usage visibility is one page query without mutation locks",
+         ~m(community post user)a do
+      {:ok, asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("usage-query.png", 100),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      assert {:ok, %{body: [_]}} =
+               CMS.Assets.link_refs(
+                 post,
+                 %{asset_refs: [%{asset_id: asset.id, block_id: "usage-query"}]},
+                 community: community
+               )
+
+      {result, queries} = capture_queries(fn -> CMS.Assets.usages(community, asset.id, user) end)
+
+      assert {:ok, [%{lifecycle: :draft}]} = result
+      assert Enum.count(queries, &String.contains?(&1, "article_asset_refs")) == 1
+      refute Enum.any?(queries, &String.contains?(&1, "pg_advisory_xact_lock"))
+    end
+
+    test "returns trashed draft refs as trashed without opening per-ref locks",
+         ~m(community post user)a do
+      {:ok, asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("trashed-draft.png", 100),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      assert {:ok, %{body: [_]}} =
+               CMS.Assets.link_refs(
+                 post,
+                 %{asset_refs: [%{asset_id: asset.id, block_id: "trashed-draft"}]},
+                 community: community
+               )
+
+      assert {:ok, _trash} =
+               CMS.Articles.Trash.trash(post, user, community: community)
+
+      Repo.get_by!(ArticleBinding, article_id: post.id, community_id: community.id)
+      |> Repo.delete!()
+
+      assert {:ok, [%{lifecycle: :trashed}]} =
+               CMS.Assets.usages(community, asset.id, user)
+    end
+
+    test "fails closed when the draft article has no target community binding",
+         ~m(community post user)a do
+      {:ok, asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("missing-binding.png", 100),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      assert {:ok, %{body: [_]}} =
+               CMS.Assets.link_refs(
+                 post,
+                 %{asset_refs: [%{asset_id: asset.id, block_id: "missing-binding"}]},
+                 community: community
+               )
+
+      Repo.get_by!(ArticleBinding, article_id: post.id, community_id: community.id)
+      |> Repo.delete!()
+
+      assert {:ok, []} = CMS.Assets.usages(community, asset.id, user)
+    end
+
+    test "keeps non-draft refs classified when their target binding is missing",
+         ~m(community post user)a do
+      {:ok, asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("non-draft-missing-binding.png", 100),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      public = Repo.get_by!(ArticlePublic, article_id: post.id)
+      revision = Repo.get!(ArticleRevision, public.revision_id)
+
+      historical_revision =
+        %ArticleRevision{}
+        |> ArticleRevision.changeset(%{
+          article_id: post.id,
+          body_snapshot_id: revision.body_snapshot_id,
+          title: revision.title,
+          digest: revision.digest,
+          slug: revision.slug,
+          content_hash: revision.content_hash,
+          schema_version: revision.schema_version,
+          cleanup_after: revision.cleanup_after
+        })
+        |> Repo.insert!()
+
+      {_, trashed_post, _, _} = mock_article(:post, community, user)
+      trashed_public = Repo.get_by!(ArticlePublic, article_id: trashed_post.id)
+
+      for revision_id <- [public.revision_id, historical_revision.id, trashed_public.revision_id] do
+        %ArticleAssetRef{}
+        |> ArticleAssetRef.changeset(%{
+          community_id: community.id,
+          asset_id: asset.id,
+          revision_id: revision_id,
+          usage: :inline
+        })
+        |> Repo.insert!()
+      end
+
+      assert {:ok, _trash} =
+               CMS.Articles.Trash.trash(trashed_post, user, community: community)
+
+      Repo.delete_all(
+        from(binding in ArticleBinding, where: binding.community_id == ^community.id)
+      )
+
+      assert {:ok, usages} = CMS.Assets.usages(community, asset.id, user)
+      assert Enum.frequencies_by(usages, & &1.lifecycle) == %{live: 1, historical: 1, trashed: 1}
+    end
+
+    test "keeps replacement planning bounded for 101 draft refs",
+         ~m(community user)a do
+      {:ok, asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("many-usage-refs.png", 100),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      {:ok, replacement_asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("many-usage-replacement.png", 100),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      for index <- 1..101 do
+        {_, article, _, _} = mock_article(:post, community, user)
+        assert {:ok, _draft} = open_draft(article, user)
+
+        assert {:ok, %{body: [_]}} =
+                 CMS.Assets.link_refs(
+                   article,
+                   %{asset_refs: [%{asset_id: asset.id, block_id: "many-#{index}"}]},
+                   community: community
+                 )
+      end
+
+      {result, queries} = capture_queries(fn -> CMS.Assets.usages(community, asset.id, user) end)
+
+      assert {:ok, usages} = result
+      assert length(usages) == 101
+      refute Enum.any?(usages, &Map.has_key?(&1, :resource_lifecycle))
+      refute Enum.any?(usages, &Map.has_key?(&1, :community_lifecycle))
+      assert Enum.count(queries, &String.contains?(&1, "article_asset_refs")) == 2
+      refute Enum.any?(queries, &String.contains?(&1, "pg_advisory_xact_lock"))
+
+      {plan_result, plan_queries} =
+        capture_queries(fn ->
+          CMS.Assets.create_replacement_plan(
+            community,
+            %{from_asset_id: asset.id, to_asset_id: replacement_asset.id},
+            user
+          )
+        end)
+
+      assert {:ok, %AssetReplacementPlan{items: items}} = plan_result
+      assert length(items) == 101
+      assert Enum.all?(items, &((&1[:decision] || &1["decision"]) == "editable"))
+      assert Enum.count(plan_queries, &String.contains?(&1, "article_asset_refs")) == 2
+
+      refute Enum.any?(plan_queries, &String.contains?(&1, "pg_advisory_xact_lock"))
+
+      refute Enum.any?(plan_queries, fn query ->
+               String.contains?(query, ~s(FROM "cms"."article_drafts")) or
+                 String.contains?(query, ~s(FROM "cms"."article_publics")) or
+                 String.contains?(query, ~s(FROM "cms"."articles"))
+             end)
+    end
+
+    test "includes branch-owned DocDraft asset refs in the batch usage query" do
+      {doc_community, doc, _attrs, doc_user} = mock_article(:doc)
+      doc_article = Repo.get!(Article, doc.id)
+      doc_author = Repo.get_by!(Author, user_id: doc_user.id)
+
+      assert {:ok, _version} =
+               CMS.Docs.Editor.ensure_editable_draft(doc_article, doc.branch_id, doc_author, 1)
+
+      {:ok, asset} =
+        CMS.Assets.register_to_community(
+          doc_community,
+          image_asset_attrs("doc-usage-query.png", 100),
+          doc_user,
+          Ecto.UUID.generate()
+        )
+
+      assert {:ok, %{body: [_]}} =
+               CMS.Assets.link_refs(
+                 doc,
+                 %{asset_refs: [%{asset_id: asset.id, block_id: "doc-usage-query"}]},
+                 community: doc_community
+               )
+
+      assert {:ok, [%{lifecycle: :draft, thread: :doc}]} =
+               CMS.Assets.usages(doc_community, asset.id, doc_user)
+
+      {:ok, replacement_asset} =
+        CMS.Assets.register_to_community(
+          doc_community,
+          image_asset_attrs("doc-usage-replacement.png", 100),
+          doc_user,
+          Ecto.UUID.generate()
+        )
+
+      assert {:ok, %AssetReplacementPlan{items: [item]}} =
+               CMS.Assets.create_replacement_plan(
+                 doc_community,
+                 %{from_asset_id: asset.id, to_asset_id: replacement_asset.id},
+                 doc_user
+               )
+
+      assert (item[:decision] || item["decision"]) == "unsupported"
+
+      doc_state = Repo.get_by!(DocBranchState, article_id: doc.id, branch_id: doc.branch_id)
+      Repo.delete!(doc_state)
+
+      assert {:ok, []} = CMS.Assets.usages(doc_community, asset.id, doc_user)
     end
 
     test "linking refs replaces removed assets and keeps retained assets",
@@ -1259,6 +1519,57 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
       assert article_refs(:post, post.id) == []
       assert [_] = article_refs(:post, other_post.id)
     end
+
+    test "keeps the current Draft version when the newest usage row belongs to a Revision",
+         ~m(community post user)a do
+      {:ok, from_asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("mixed-plan-a.png", 10),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      {:ok, to_asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("mixed-plan-b.png", 20),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      assert {:ok, %{body: [_]}} =
+               CMS.Assets.link_refs(
+                 post,
+                 %{asset_refs: [%{asset_id: from_asset.id, block_id: "mixed-draft"}]},
+                 community: community
+               )
+
+      public = Repo.get_by!(ArticlePublic, article_id: post.id)
+
+      %ArticleAssetRef{}
+      |> ArticleAssetRef.changeset(%{
+        community_id: community.id,
+        asset_id: from_asset.id,
+        revision_id: public.revision_id,
+        usage: :inline,
+        block_id: "mixed-live"
+      })
+      |> Ecto.Changeset.put_change(
+        :inserted_at,
+        DateTime.add(DateTime.utc_now(:second), 5, :second)
+      )
+      |> Repo.insert!()
+
+      assert {:ok, %AssetReplacementPlan{items: [item]}} =
+               CMS.Assets.create_replacement_plan(
+                 community,
+                 %{from_asset_id: from_asset.id, to_asset_id: to_asset.id},
+                 user
+               )
+
+      assert (item[:observed_draft_version] || item["observed_draft_version"]) == 1
+    end
   end
 
   defp image_asset_attrs(filename, size_bytes) do
@@ -1329,5 +1640,36 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
     ArticleAssetRef
     |> where([ref], ref.asset_id == ^asset_id)
     |> Repo.aggregate(:count, :id)
+  end
+
+  defp capture_queries(fun) do
+    ref = make_ref()
+    handler_id = {__MODULE__, ref}
+    event = Repo.config() |> Keyword.fetch!(:telemetry_prefix) |> Kernel.++([:query])
+
+    :ok =
+      :telemetry.attach(
+        handler_id,
+        event,
+        fn _event, _measurements, metadata, {pid, query_ref} ->
+          send(pid, {query_ref, metadata.query})
+        end,
+        {self(), ref}
+      )
+
+    try do
+      result = fun.()
+      {result, drain_queries(ref, [])}
+    after
+      :telemetry.detach(handler_id)
+    end
+  end
+
+  defp drain_queries(ref, queries) do
+    receive do
+      {^ref, query} -> drain_queries(ref, [query | queries])
+    after
+      0 -> Enum.reverse(queries)
+    end
   end
 end

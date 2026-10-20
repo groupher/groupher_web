@@ -14,6 +14,7 @@ defmodule GroupherServer.ErrorCat.Workflow do
 
   @ranges %{
     {:web} => 4000..4199,
+    {:pagi} => 4200..4299,
     {:account, :authentication} => 4300..4349,
     {:cms, :passport} => 4350..4399,
     {:cms, :comment} => 4400..4499,
@@ -61,6 +62,7 @@ defmodule GroupherServer.ErrorCat.Workflow do
 
   @catalogs [
     GroupherServerWeb.ErrorCat,
+    GroupherServer.Pagi.ErrorCat,
     GroupherServer.Accounts.Profiles.ErrorCat,
     GroupherServer.Accounts.CollectFolders.ErrorCat,
     GroupherServer.Accounts.Fans.ErrorCat,

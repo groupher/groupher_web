@@ -1,15 +1,24 @@
-import { queryOptions } from '@tanstack/react-query'
+import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query'
 
 import { THREAD } from '~/const/thread'
 import { browserGraphQLRequest } from '~/graphql/client'
-import { changelog, pagedChangelogs } from '~/schemas/pages/changelog'
+import type { ChangelogPageQuery, PostPageQuery } from '~/graphql/generated/graphql'
+import {
+  DEFAULT_EFFECTIVE_PAGI_CONFIG,
+  toLegacyPagi,
+  toPagiGraphQLInput,
+} from '~/lib/pagination/params'
+import { changelog, changelogPage } from '~/schemas/pages/changelog'
 import { doc } from '~/schemas/pages/doc'
 import { communityTagGroups, communityTagStats } from '~/schemas/pages/misc'
-import { groupedKanbanPosts, pagedPosts, post } from '~/schemas/pages/post'
+import { groupedKanbanPosts, post, postPage } from '~/schemas/pages/post'
 import type {
+  TChangelog,
+  TEffectivePagiConfig,
   TPagedArticlesParams,
   TPagedChangelogs,
   TPagedPosts,
+  TPagiRequest,
   TPost,
   TTagStats,
   TTagGroup,
@@ -17,7 +26,7 @@ import type {
 } from '~/spec'
 
 import { articleStats, articleStatsBatch } from './articleStats'
-import { toArticleListFilter } from './filter'
+import { toArticlePageFilter } from './filter'
 import { articleQueryKeys } from './key'
 
 type TGroupedKanbanPosts = {
@@ -28,27 +37,116 @@ type TGroupedKanbanPosts = {
   rejected: TPagedPosts
 }
 
-const posts = (filter: TPagedArticlesParams) =>
+/** Adapts the new Post Page contract to the legacy list view model. */
+export const toPagedPosts = (page: PostPageQuery['postPage']): TPagedPosts => ({
+  entries: [
+    ...page.pinnedEntries.map((entry) => ({ ...entry, isPinned: true })),
+    ...page.entries,
+  ] as unknown as readonly TPost[],
+  ...toLegacyPagi(page.pageInfo),
+})
+
+/** Adapts the new Changelog Page contract to the legacy list view model. */
+export const toPagedChangelogs = (page: ChangelogPageQuery['changelogPage']): TPagedChangelogs => ({
+  entries: [
+    ...page.pinnedEntries.map((entry) => ({ ...entry, isPinned: true })),
+    ...page.entries,
+  ] as unknown as readonly TChangelog[],
+  ...toLegacyPagi(page.pageInfo),
+})
+
+/** Builds the GraphQL pagination request while preserving the configured API and revision. */
+export const articlePagiRequest = (
+  filter: TPagedArticlesParams,
+  config: TEffectivePagiConfig,
+  after?: string | null,
+): TPagiRequest => {
+  if (config.api === 'offset') {
+    return {
+      api: 'offset',
+      page: filter.page ?? 1,
+      size: filter.size ?? config.defaultSize,
+      configRevision: config.revision,
+    }
+  }
+
+  return {
+    api: 'cursor',
+    first: filter.size ?? config.defaultSize,
+    ...(after ? { after } : {}),
+    configRevision: config.revision,
+  }
+}
+
+/** Reads the shared Article page contract and preserves the legacy list view model. */
+const posts = (filter: TPagedArticlesParams, config = DEFAULT_EFFECTIVE_PAGI_CONFIG) =>
   queryOptions({
-    queryKey: articleQueryKeys.posts(filter),
+    queryKey: articleQueryKeys.pagiPosts(filter, config, articlePagiRequest(filter, config)),
     meta: { hydration: 'public' },
     queryFn: async () => {
-      const data = await browserGraphQLRequest(pagedPosts, {
-        filter: toArticleListFilter(filter),
+      const request = articlePagiRequest(filter, config)
+      const data = await browserGraphQLRequest(postPage, {
+        pagi: toPagiGraphQLInput(request),
+        filter: toArticlePageFilter(filter),
+        thread: 'POST',
       })
-      return data.pagedPosts as unknown as TPagedPosts
+      return toPagedPosts(data.postPage)
     },
   })
 
-const changelogs = (filter: TPagedArticlesParams) =>
+/** Reads the shared Changelog page contract and preserves the legacy list view model. */
+const changelogs = (filter: TPagedArticlesParams, config = DEFAULT_EFFECTIVE_PAGI_CONFIG) =>
   queryOptions({
-    queryKey: articleQueryKeys.changelogs(filter),
+    queryKey: articleQueryKeys.pagiChangelogs(filter, config, articlePagiRequest(filter, config)),
     meta: { hydration: 'public' },
     queryFn: async () => {
-      const data = await browserGraphQLRequest(pagedChangelogs, {
-        filter: toArticleListFilter(filter),
+      const request = articlePagiRequest(filter, config)
+      const data = await browserGraphQLRequest(changelogPage, {
+        pagi: toPagiGraphQLInput(request),
+        filter: toArticlePageFilter(filter),
+        thread: 'CHANGELOG',
       })
-      return data.pagedChangelogs as unknown as TPagedChangelogs
+      return toPagedChangelogs(data.changelogPage)
+    },
+  })
+
+/** Builds the infinite-query contract for cursor/load-more Article surfaces. */
+const postsInfinite = (filter: TPagedArticlesParams, config: TEffectivePagiConfig) =>
+  infiniteQueryOptions({
+    queryKey: articleQueryKeys.pagiPosts(filter, config, articlePagiRequest(filter, config)),
+    initialPageParam: null as string | null,
+    meta: { hydration: 'public' },
+    queryFn: async ({ pageParam }) => {
+      const data = await browserGraphQLRequest(postPage, {
+        pagi: toPagiGraphQLInput(articlePagiRequest(filter, config, pageParam)),
+        filter: toArticlePageFilter(filter),
+        thread: 'POST',
+      })
+      return data.postPage
+    },
+    getNextPageParam: (lastPage) => {
+      if (!lastPage || lastPage.pageInfo.__typename !== 'CursorPageInfo') return undefined
+      return lastPage.pageInfo.hasNextPage ? lastPage.pageInfo.endCursor : undefined
+    },
+  })
+
+/** Builds the infinite-query contract for cursor/load-more Changelog surfaces. */
+const changelogsInfinite = (filter: TPagedArticlesParams, config: TEffectivePagiConfig) =>
+  infiniteQueryOptions({
+    queryKey: articleQueryKeys.pagiChangelogs(filter, config, articlePagiRequest(filter, config)),
+    initialPageParam: null as string | null,
+    meta: { hydration: 'public' },
+    queryFn: async ({ pageParam }) => {
+      const data = await browserGraphQLRequest(changelogPage, {
+        pagi: toPagiGraphQLInput(articlePagiRequest(filter, config, pageParam)),
+        filter: toArticlePageFilter(filter),
+        thread: 'CHANGELOG',
+      })
+      return data.changelogPage
+    },
+    getNextPageParam: (lastPage) => {
+      if (!lastPage || lastPage.pageInfo.__typename !== 'CursorPageInfo') return undefined
+      return lastPage.pageInfo.hasNextPage ? lastPage.pageInfo.endCursor : undefined
     },
   })
 
@@ -113,6 +211,8 @@ const tagGroups = (community: string, thread: TThread) =>
 export const articleQueries = {
   posts,
   changelogs,
+  postsInfinite,
+  changelogsInfinite,
   kanban,
   detail,
   tagGroups,

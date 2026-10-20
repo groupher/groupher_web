@@ -11,8 +11,10 @@ defmodule GroupherServer.CMS.Dashboard.Persist do
         -> CommunityDashboard
   """
 
+  import Ecto.Query, only: [from: 2]
+
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Dashboard.SectionPayload
+  alias CMS.Dashboard.{Pagination, SectionPayload}
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.{ORM, T}
 
@@ -53,6 +55,37 @@ defmodule GroupherServer.CMS.Dashboard.Persist do
   def replace_section(%CommunityDashboard{} = dashboard, key, args) do
     with {:ok, payload} <- SectionPayload.prepare(dashboard, key, args) do
       ORM.replace_dsb_section(dashboard, key, payload)
+    end
+  end
+
+  @doc """
+  Updates one pagination surface under a row lock and server-owned revision.
+
+  ## Examples
+
+      CMS.Dashboard.Persist.update_pagination(dashboard, :posts, %{mode: :cursor}, 1)
+      #=> {:ok, %CommunityDashboard{}}
+  """
+  @spec update_pagination(CommunityDashboard.t(), atom(), map(), non_neg_integer()) ::
+          T.domain_res(CommunityDashboard.t())
+  def update_pagination(
+        %CommunityDashboard{id: dashboard_id},
+        surface,
+        attrs,
+        expected_revision
+      ) do
+    dashboard =
+      from(dashboard in CommunityDashboard,
+        where: dashboard.id == ^dashboard_id,
+        lock: "FOR UPDATE"
+      )
+      |> Repo.one!()
+
+    with {:ok, pagination} <-
+           Pagination.next_config(dashboard.pagination, surface, attrs, expected_revision) do
+      dashboard
+      |> Ecto.Changeset.change(%{pagination: pagination})
+      |> Repo.update()
     end
   end
 

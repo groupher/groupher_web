@@ -1,10 +1,11 @@
 defmodule GroupherServer.Test.CMS.Articles.BindingsTest do
   use GroupherServer.TestMate, async: true
 
-  alias GroupherServer.{CMS, Repo}
-  alias CMS.Articles.Bindings
+  alias GroupherServer.{Accounts, CMS, Repo}
+  alias Accounts.Model.{CollectFolderEntry, Embeds}
+  alias CMS.Articles.{BindingPersist, Bindings}
   alias CMS.Articles.Bindings.Tags
-  alias CMS.Model.{ArticleBinding, ArticleBindingTag}
+  alias CMS.Model.{Article, ArticleBinding, ArticleBindingTag}
 
   setup do
     {community, post, _, user} = mock_article(:post)
@@ -142,5 +143,39 @@ defmodule GroupherServer.Test.CMS.Articles.BindingsTest do
       )
 
     assert {:error, :article_binding_transaction_required} = Tags.replace(binding, [])
+  end
+
+  test "a collected binding is rejected before unmirror deletes it",
+       ~m(community destination post user)a do
+    article = Repo.get!(Article, post.article_id)
+
+    assert {:ok, _binding} =
+             Repo.transact(fn -> BindingPersist.mirror(article, destination) end)
+
+    assert {:ok, folder} =
+             Accounts.CollectFolders.Persist.create(
+               %{title: "binding-delete-guard", meta: Embeds.CollectFolderMeta.default_meta()},
+               user
+             )
+
+    source_binding =
+      Repo.get_by!(ArticleBinding,
+        article_id: post.article_id,
+        community_id: community.id
+      )
+
+    assert {:ok, %CollectFolderEntry{}} =
+             %CollectFolderEntry{}
+             |> CollectFolderEntry.changeset(%{
+               folder_id: folder.id,
+               article_id: post.article_id,
+               article_binding_id: source_binding.id
+             })
+             |> Repo.insert()
+
+    assert {:error, :article_binding_collected} =
+             Repo.transact(fn -> BindingPersist.unmirror(article, community) end)
+
+    assert Repo.get(ArticleBinding, source_binding.id)
   end
 end

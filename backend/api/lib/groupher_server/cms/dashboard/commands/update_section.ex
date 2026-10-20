@@ -13,7 +13,7 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
     adapter: GroupherServer.CMS.CommandPipelineAdapter
 
   alias GroupherServer.CMS
-  alias CMS.Dashboard.{BaseInfo, Effects, SectionPayload, Persist}
+  alias CMS.Dashboard.{BaseInfo, Effects, Pagination, SectionPayload, Persist}
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.T
 
@@ -38,7 +38,7 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
       with {:ok, dashboard} <- Persist.get_or_insert_dashboard(canonical),
            {:ok, canonical} <- maybe_update_identity(canonical, key, args),
            {:ok, updated} <- update_dashboard(dashboard, key, section_args),
-           {:ok, _event} <- Effects.enqueue_presentation_changed(canonical, command_id) do
+           {:ok, _event} <- enqueue_effect(canonical, key, section_args, command_id) do
         {:ok, updated}
       end
     end)
@@ -51,6 +51,10 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
   defp maybe_update_identity(community, _key, _args), do: {:ok, community}
 
   defp section_args(:content_shadow, args), do: args
+
+  defp section_args(:pagination, args) when is_map(args) do
+    Map.drop(args, [:community, :dsb_section, :command_id])
+  end
 
   defp section_args(key, args) when is_map(args) do
     if Map.has_key?(args, :dsb_section) or Map.has_key?(args, :community) or
@@ -72,5 +76,28 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
     Persist.update_content_shadow(dashboard, enabled)
   end
 
+  defp update_dashboard(
+         dashboard,
+         :pagination,
+         %{surface: surface, config: config, expected_revision: expected_revision}
+       ) do
+    Persist.update_pagination(dashboard, surface, config, expected_revision)
+  end
+
   defp update_dashboard(dashboard, key, args), do: Persist.replace_section(dashboard, key, args)
+
+  defp enqueue_effect(
+         community,
+         :pagination,
+         %{surface: surface},
+         command_id
+       ) do
+    with {:ok, _deleted?} <- Pagination.invalidate(community.slug, surface) do
+      Effects.enqueue_pagination_changed(community, surface, command_id)
+    end
+  end
+
+  defp enqueue_effect(community, _key, _args, command_id) do
+    Effects.enqueue_presentation_changed(community, command_id)
+  end
 end

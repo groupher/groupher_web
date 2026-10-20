@@ -60,6 +60,16 @@ defmodule GroupherServer.PublicCache.Tags do
   end
 
   @doc """
+  Builds the family tag shared by all comment pages in a community.
+
+  ## Examples
+
+      PublicCache.Tags.comments_list("acme")
+      #=> "community[acme]-comments"
+  """
+  def comments_list(community), do: "#{community(community)}-comments"
+
+  @doc """
   Builds a thread-tags tag.
 
   ## Examples
@@ -109,6 +119,11 @@ defmodule GroupherServer.PublicCache.Tags do
 
         :community_presentation_changed ->
           validate([community(community)])
+
+        :pagination_config_changed ->
+          with {:ok, surface} <- required_value(payload, :surface) do
+            pagination_tags(community, surface)
+          end
 
         :taxonomy_changed ->
           with {:ok, thread} <- required_value(payload, :thread) do
@@ -165,6 +180,20 @@ defmodule GroupherServer.PublicCache.Tags do
       value -> {:ok, value}
     end
   end
+
+  defp pagination_tags(community, surface) when surface in [:posts, "posts"] do
+    validate([article_list(community, :post)])
+  end
+
+  defp pagination_tags(community, surface) when surface in [:changelogs, "changelogs"] do
+    validate([article_list(community, :changelog)])
+  end
+
+  defp pagination_tags(community, surface) when surface in [:comments, "comments"] do
+    validate([comments_list(community)])
+  end
+
+  defp pagination_tags(_community, _surface), do: {:error, :invalid_cache_scope}
 
   defp thread_name(thread) when is_atom(thread), do: thread |> Atom.to_string() |> String.upcase()
   defp thread_name(thread), do: to_string(thread)

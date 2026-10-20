@@ -59,4 +59,7 @@ defmodule GroupherServer.CMS.Press do
   @doc "Reads the current Press site manifest."
   @spec site_manifest(Community.t() | String.t()) :: {:ok, map()} | {:error, term()}
   def site_manifest(community), do: Query.site_manifest(community)
+
+  @doc false
+  def site_manifest(community, opts) when is_list(opts), do: Query.site_manifest(community, opts)
 end

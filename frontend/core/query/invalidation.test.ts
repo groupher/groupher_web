@@ -104,4 +104,20 @@ describe('typed query invalidation', () => {
     expect(queryClient.getQueryState(changelogs)?.isInvalidated).toBe(false)
     expect(queryClient.getQueryState(other)?.isInvalidated).toBe(false)
   })
+
+  it('also invalidates new paged list identities', async () => {
+    const queryClient = createClient()
+    const posts = articleQueryKeys.pagiPosts({ community: 'home' })
+    const changelogs = articleQueryKeys.pagiChangelogs({ community: 'home' })
+    queryClient.setQueryData(posts, {})
+    queryClient.setQueryData(changelogs, {})
+
+    await invalidate(
+      queryClient,
+      QueryInvalidation.article.lists({ community: 'home', thread: THREAD.POST }),
+    )
+
+    expect(queryClient.getQueryState(posts)?.isInvalidated).toBe(true)
+    expect(queryClient.getQueryState(changelogs)?.isInvalidated).toBe(false)
+  })
 })

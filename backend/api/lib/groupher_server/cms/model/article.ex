@@ -10,6 +10,7 @@ defmodule GroupherServer.CMS.Model.Article do
   """
 
   use Ecto.Schema
+  use Flop.Schema
 
   import Ecto.Changeset
 
@@ -25,6 +26,43 @@ defmodule GroupherServer.CMS.Model.Article do
   @required_fields ~w(thread author_id moderation_state)a
   @optional_fields ~w(illegal_reason illegal_words active_at is_sunk last_active_at
                       is_edited comments_locked next_floor next_comment_inner_id)a
+
+  @flop_options [
+    filterable: [],
+    sortable: [
+      :active_at,
+      :inserted_at,
+      :updated_at,
+      :id,
+      :published_at,
+      :doc_active_at,
+      :inner_id,
+      :binding_id,
+      :views,
+      :upvotes_count,
+      :comments_count
+    ],
+    pagination_types: [:page, :first],
+    adapter_opts: [
+      join_fields: [
+        published_at: [binding: :stable_public, field: :published_at, ecto_type: :utc_datetime],
+        doc_active_at: [binding: :stable_doc_state, field: :active_at, ecto_type: :utc_datetime],
+        inner_id: [binding: :article_binding, field: :inner_id, ecto_type: :integer],
+        binding_id: [binding: :article_binding, field: :id, ecto_type: :integer],
+        views: [binding: :article_stats, field: :views, ecto_type: :integer],
+        upvotes_count: [
+          binding: :article_stats,
+          field: :upvotes_count,
+          ecto_type: :integer
+        ],
+        comments_count: [
+          binding: :article_stats,
+          field: :comments_count,
+          ecto_type: :integer
+        ]
+      ]
+    ]
+  ]
 
   @type t :: %__MODULE__{}
 
@@ -44,7 +82,18 @@ defmodule GroupherServer.CMS.Model.Article do
     timestamps(type: :utc_datetime)
   end
 
-  @doc "Builds the stable identity and operational-state changeset for an Article."
+  @doc """
+  Builds the stable identity and operational-state changeset for an Article.
+
+  ## Examples
+
+      Article.changeset(%Article{}, %{
+        thread: :post,
+        author_id: Ecto.UUID.generate(),
+        moderation_state: :legal
+      })
+
+  """
   @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(%__MODULE__{} = article, attrs) do
     article

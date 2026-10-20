@@ -10,7 +10,6 @@ defmodule GroupherServer.Messaging.Notifications.Query do
 
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
-  import ShortMaps
 
   alias GroupherServer.Accounts
 
@@ -18,6 +17,7 @@ defmodule GroupherServer.Messaging.Notifications.Query do
   alias Accounts.Model.User
   alias Messaging.Model.Notification
   alias Helper.ORM
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @cut_from_users_count 3
 
@@ -32,12 +32,26 @@ defmodule GroupherServer.Messaging.Notifications.Query do
   def paged(%User{} = user, %{page: page, size: size} = filter) do
     read = Map.get(filter, :read, false)
 
-    Notification
-    |> where([n], n.user_id == ^user.id and n.read == ^read)
-    |> order_by([n], desc: n.inserted_at, desc: n.id)
-    |> ORM.paginator(~m(page size)a)
-    |> cut_from_users_ifneed()
-    |> done()
+    query =
+      Notification
+      |> where([n], n.user_id == ^user.id and n.read == ^read)
+
+    with {:ok, page} <-
+           ORM.pagi(
+             query,
+             %Params.Offset{page: page, size: size},
+             for: Notification,
+             order: %Order{
+               fields: [:inserted_at, :id],
+               directions: [:desc, :desc],
+               cursor_fields: [:inserted_at, :id]
+             }
+           ) do
+      page
+      |> Page.to_legacy()
+      |> cut_from_users_ifneed()
+      |> done()
+    end
   end
 
   @doc """

@@ -17,6 +17,8 @@
     "./health": "./src/health.ts",
     "./fixtures/wallpaper-settings-v1.json": "./fixtures/wallpaper-settings-v1.json",
     "./fixtures/wallpaper-profile-matrix-v1.json": "./fixtures/wallpaper-profile-matrix-v1.json",
+    "./fixtures/pagination-default-v1.json": "./fixtures/pagination-default-v1.json",
+    "./pagination": "./src/pagination.ts",
     "./wallpaper": "./src/wallpaper.ts",
     "./widget": "./src/widget.ts"
   },

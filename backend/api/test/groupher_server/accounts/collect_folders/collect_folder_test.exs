@@ -3,10 +3,11 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
 
   use GroupherServer.TestMate
 
-  alias GroupherServer.{Accounts, CMS}
+  alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.CollectFolders
 
   alias Accounts.Model.Embeds
+  alias Accounts.Model.CollectFolderEntry
   alias CMS.Model.ArticleCollect
 
   @default_meta Embeds.CollectFolderMeta.default_meta()
@@ -125,8 +126,7 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, folder} = CollectFolders.add(post, folder.id, user)
 
       assert folder.total_count == 1
-      assert folder.collects |> length == 1
-      assert folder.collects |> List.first() |> Map.get(:article_id) == post.id
+      assert Repo.get_by!(CollectFolderEntry, folder_id: folder.id, article_id: post.id)
     end
 
     test "can not collect some article in one collect-folder", ~m(user post)a do
@@ -141,8 +141,7 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, folder} = CollectFolders.create(%{title: "test folder"}, user)
       {:ok, folder} = CollectFolders.add(post, folder.id, user)
 
-      collect_in_folder = folder.collects |> List.first()
-      {:ok, article_collect} = ORM.find(ArticleCollect, collect_in_folder.id)
+      {:ok, article_collect} = ORM.find_by(ArticleCollect, user_id: user.id, article_id: post.id)
       article_collect_folder = article_collect.collect_folders |> List.first()
       assert article_collect_folder.id == folder.id
     end

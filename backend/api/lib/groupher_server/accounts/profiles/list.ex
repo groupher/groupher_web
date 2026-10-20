@@ -12,7 +12,6 @@ defmodule GroupherServer.Accounts.Profiles.List do
 
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
-  import ShortMaps
 
   alias GroupherServer.{Accounts, CMS}
 
@@ -21,6 +20,7 @@ defmodule GroupherServer.Accounts.Profiles.List do
 
   alias CMS.Model.{Community, CommunitySubscriber}
   alias Helper.ORM
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @default_subscribed_communities GroupherServer.Accounts.Config.default_subscribed_communities()
 
@@ -55,13 +55,15 @@ defmodule GroupherServer.Accounts.Profiles.List do
   """
   def default_subscribed_communities(%{page: _, size: _} = filter) do
     filter = Map.merge(filter, %{size: @default_subscribed_communities, category: "pl"})
+    query_filter = Map.delete(filter, :sort)
 
     with {:ok, home_community} <- ORM.find_by(Community, slug: "home"),
-         {:ok, paged_communities} <-
+         {:ok, page} <-
            Community
-           |> GroupherServer.CMS.query_builder_filter_pack(filter)
-           |> ORM.paginator(page: filter.page, size: filter.size)
-           |> done() do
+           |> GroupherServer.CMS.query_builder_filter_pack(query_filter)
+           |> page_communities(filter.page, filter.size, filter) do
+      paged_communities = Page.to_legacy(page)
+
       %{
         entries: paged_communities.entries ++ [home_community],
         page_number: paged_communities.page_number,
@@ -92,15 +94,46 @@ defmodule GroupherServer.Accounts.Profiles.List do
   """
   def subscribed_communities(%User{id: id} = user, %{page: page, size: size} = filter) do
     filter = filter |> Map.delete(:first)
+    query_filter = Map.delete(filter, :sort)
 
-    CommunitySubscriber
-    |> where([c], c.user_id == ^id)
-    |> join(:inner, [c], cc in assoc(c, :community))
-    |> select([c, cc], cc)
-    |> GroupherServer.CMS.query_builder_filter_pack(filter)
-    |> ORM.paginator(~m(page size)a)
-    |> sort_communities(user)
-    |> done()
+    query =
+      CommunitySubscriber
+      |> where([c], c.user_id == ^id)
+      |> join(:inner, [c, cc], cc in assoc(c, :community))
+      |> select([c, cc], cc)
+      |> GroupherServer.CMS.query_builder_filter_pack(query_filter)
+
+    with {:ok, result} <- page_communities(query, page, size, filter) do
+      result
+      |> Page.to_legacy()
+      |> sort_communities(user)
+      |> done()
+    end
+  end
+
+  defp page_communities(query, page, size, filter) do
+    ORM.pagi(
+      query,
+      %Params.Offset{page: page, size: size},
+      for: Community,
+      order: community_order(filter)
+    )
+  end
+
+  defp community_order(%{sort: :asc_inserted}) do
+    %Order{
+      fields: [:inserted_at, :id],
+      directions: [:asc, :asc],
+      cursor_fields: [:inserted_at, :id]
+    }
+  end
+
+  defp community_order(_filter) do
+    %Order{
+      fields: [:inserted_at, :id],
+      directions: [:desc, :desc],
+      cursor_fields: [:inserted_at, :id]
+    }
   end
 
   defp sort_communities(paged_communities, _user), do: paged_communities

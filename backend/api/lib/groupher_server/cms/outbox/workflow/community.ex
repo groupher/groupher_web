@@ -11,6 +11,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Community do
 
   alias GroupherServer.{Analysis, CMS}
 
+  alias CMS.Dashboard.Pagination
   alias CMS.Outbox
 
   def perform(%Oban.Job{args: %{"event_id" => event_id}} = job) do
@@ -50,15 +51,46 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Community do
   end
 
   defp purge_cache(event) do
-    with {:ok, type} <- invalidation_type(event.event),
+    with {:ok, :pass} <- invalidate_dashboard_pagination(event),
+         {:ok, type} <- invalidation_type(event.event),
          {:ok, tags} <- GroupherServer.PublicCache.scope_tags(type, event.data),
          {:ok, _} <- GroupherServer.PublicCache.cloudflare_purge(tags) do
       {:ok, :purged}
     end
   end
 
+  defp invalidate_dashboard_pagination(%{
+         event: "community.pagination_changed",
+         data: data
+       }) do
+    community = Map.get(data, "community") || Map.get(data, :community)
+    surface_name = Map.get(data, "surface") || Map.get(data, :surface)
+
+    surface =
+      Enum.find(Pagination.surfaces(), fn candidate ->
+        Atom.to_string(candidate) == to_string(surface_name)
+      end)
+
+    case {community, surface} do
+      {community, surface} when is_binary(community) and not is_nil(surface) ->
+        case Pagination.invalidate(community, surface) do
+          {:ok, _deleted?} -> {:ok, :pass}
+          {:error, _reason} = error -> error
+        end
+
+      _ ->
+        {:error, :invalid_pagination_invalidation}
+    end
+  end
+
+  defp invalidate_dashboard_pagination(_event), do: {:ok, :pass}
+
   defp invalidation_type("community.presentation_changed") do
     {:ok, :community_presentation_changed}
+  end
+
+  defp invalidation_type("community.pagination_changed") do
+    {:ok, :pagination_config_changed}
   end
 
   defp invalidation_type("community.taxonomy_changed"), do: {:ok, :taxonomy_changed}

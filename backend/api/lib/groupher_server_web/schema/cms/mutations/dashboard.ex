@@ -84,6 +84,22 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Dashboard do
       resolve(&R.CMS.Dashboard.update_dashboard_content_shadow/3)
     end
 
+    @desc "Updates Dashboard-owned pagination surface configuration"
+    field :update_dashboard_pagination, :dsb do
+      arg(:community, non_null(:string))
+      arg(:dsb_section, :dsb_section, default_value: :pagination)
+      arg(:surface, non_null(:pagination_surface))
+      arg(:expected_revision, non_null(:integer))
+      arg(:config, non_null(:pagination_surface_config_input))
+      arg(:command_id, non_null(:id))
+
+      middleware(M.Authorize, :login)
+      middleware(M.Passport, action: "community.update")
+      middleware(M.FrontDesk, :community)
+
+      resolve(&R.CMS.Dashboard.update_dashboard/3)
+    end
+
     @desc "Prepares the generated images for one current-theme Wallpaper save"
     field :prepare_wallpaper_upload, non_null(:wallpaper_upload_preparation) do
       arg(:community, non_null(:string))

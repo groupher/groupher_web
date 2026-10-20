@@ -15,7 +15,8 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
 
   import Ecto.Query
 
-  alias GroupherServer.{Analysis, CMS, Repo}
+  alias GroupherServer.{Accounts, Analysis, CMS, Repo}
+  alias Accounts.Model.CollectFolderEntry
   alias CMS.Articles.Numbering
 
   alias CMS.Model.{
@@ -99,6 +100,7 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
     with %Article{} = locked_article <- lock_article(article.id),
          %ArticleBinding{} = binding <- lock_binding(locked_article.id, community.id),
          {:ok, :pass} <- ensure_can_remove_published_article(locked_article.id, binding),
+         {:ok, :pass} <- ensure_binding_not_collected(binding),
          {:ok, _deleted} <- Repo.delete(binding) do
       {:ok, :done}
     else
@@ -193,7 +195,8 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
   end
 
   defp move_binding(source_binding, %ArticleBinding{} = destination_binding, destination) do
-    with {:ok, _} <-
+    with {:ok, :pass} <- ensure_binding_not_collected(source_binding),
+         {:ok, _} <-
            delete_source_local_data(source_binding.article_id, source_binding.community_id),
          {:ok, :pass} <-
            Analysis.metric_event_merge_binding(
@@ -203,6 +206,16 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
            ),
          {:ok, _deleted} <- Repo.delete(source_binding) do
       {:ok, destination_binding}
+    end
+  end
+
+  defp ensure_binding_not_collected(%ArticleBinding{id: binding_id}) do
+    if Repo.exists?(
+         from(entry in CollectFolderEntry, where: entry.article_binding_id == ^binding_id)
+       ) do
+      {:error, :article_binding_collected}
+    else
+      {:ok, :pass}
     end
   end
 

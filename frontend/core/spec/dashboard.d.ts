@@ -25,6 +25,7 @@ import type { TConstValues } from '~/spec'
 import type { TColorName } from './color'
 import type { TModerator } from './community'
 import type { TDsbFieldKey, TDsbFieldMap } from './dsb'
+import type { TDashboardPagination } from './pagination'
 import type {
   TResolvedThemePreset,
   TThemePreset,
@@ -97,6 +98,7 @@ export type TDocFaq = {
 }
 
 export type TDsb = {
+  pagination?: TDashboardPagination
   enable?: TEnableConf
   nameAlias?: readonly TNameAlias[]
   socialLinks?: readonly TSocialItem[]
@@ -158,6 +160,7 @@ export type TDsb = {
 
 export type TParseDashboard = TDsbFieldMap & {
   contentShadow?: boolean
+  pagination?: TDashboardPagination
   original: TDsbFieldMap
 }
 

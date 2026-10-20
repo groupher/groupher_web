@@ -45,6 +45,13 @@ defmodule GroupherServerWeb.Schema.Helper.Queries do
   defmacro article_queries do
     @threads
     |> Enum.map(fn thread ->
+      deprecation =
+        if thread in [:post, :changelog] do
+          quote do
+            deprecate(unquote("Use #{thread}Page instead."))
+          end
+        end
+
       quote do
         @desc unquote("get #{thread} by id")
         field unquote(thread), non_null(unquote(thread)) do
@@ -59,6 +66,8 @@ defmodule GroupherServerWeb.Schema.Helper.Queries do
         field unquote(:"paged_#{plural(thread)}"), unquote(:"paged_#{plural(thread)}") do
           arg(:thread, unquote(:"#{thread}_thread"), default_value: unquote(thread))
           arg(:filter, non_null(unquote(:"paged_#{plural(thread)}_filter")))
+
+          unquote(deprecation)
 
           middleware(M.PageSizeProof, default_sort: :desc_active)
           resolve(&R.CMS.Articles.paged_articles/3)

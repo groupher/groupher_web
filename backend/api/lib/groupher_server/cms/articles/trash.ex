@@ -32,6 +32,7 @@ defmodule GroupherServer.CMS.Articles.Trash do
   }
 
   alias Helper.ORM
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @default_retention_days 30
 
@@ -310,14 +311,78 @@ defmodule GroupherServer.CMS.Articles.Trash do
     page = Map.get(filter, :page, 1)
     size = Map.get(filter, :size, 20)
 
-    paged =
+    query =
       TrashedArticle
+      |> join(:inner, [item], article in Article, on: article.id == item.article_id)
+      |> join(:inner, [_item, article], community in Community, on: community.id == ^community.id)
+      |> join(:left, [item, _article, _community], public in ArticlePublic,
+        on: public.article_id == item.article_id
+      )
+      |> join(:left, [item, article, _community, _public], stats in ArticleStats,
+        on: stats.article_id == item.article_id and stats.thread == article.thread
+      )
+      |> join(:left, [item, _article, _community, _public, _stats], binding in ArticleBinding,
+        on: binding.article_id == item.article_id and binding.community_id == item.community_id
+      )
+      |> join(
+        :inner,
+        [item, _article, _community, _public, _stats, _binding],
+        action in TrashAction, on: action.id == item.trash_action_id)
       |> where([item], item.community_id == ^community.id)
-      |> order_by([item], desc: item.deleted_at)
-      |> preload([:article, :trash_action])
-      |> ORM.paginator(page: page, size: size)
+      |> select(
+        [item, article, community, public, stats, binding, action],
+        {item, article, community, public, stats, binding.inner_id, action}
+      )
 
-    {:ok, Map.update!(paged, :entries, &Enum.map(&1, fn item -> hydrate_item(item) end))}
+    with {:ok, paged} <-
+           ORM.pagi(
+             query,
+             %Params.Offset{page: page, size: size},
+             for: TrashedArticle,
+             order: %Order{
+               fields: [:deleted_at, :id],
+               directions: [:desc, :desc],
+               cursor_fields: [:deleted_at, :id]
+             }
+           ) do
+      {:ok,
+       paged
+       |> Page.to_legacy()
+       |> Map.update!(:entries, &hydrate_page_items/1)}
+    end
+  end
+
+  defp hydrate_page_items(entries) do
+    article_ids =
+      Enum.map(entries, fn {_item, article, _community, _public, _stats, _inner_id, _action} ->
+        article.id
+      end)
+
+    mention_counts =
+      from(mention in ArtimentMention,
+        where:
+          mention.mentioned_scope == :internal and
+            mention.mentioned_article_id in ^article_ids,
+        group_by: mention.mentioned_article_id,
+        select: {mention.mentioned_article_id, count(mention.id)}
+      )
+      |> Repo.all()
+      |> Map.new()
+
+    Enum.map(entries, fn {item, article, community, public, stats, inner_id, action} ->
+      projection =
+        article
+        |> Map.from_struct()
+        |> Map.put(:title, public && public.title)
+        |> Map.put(:inner_id, inner_id)
+        |> Map.put(:article_stats, stats)
+
+      item
+      |> Map.put(:article, projection)
+      |> Map.put(:community, community)
+      |> Map.put(:trash_action, action)
+      |> Map.put(:mentioned_by_count, Map.get(mention_counts, article.id, 0))
+    end)
   end
 
   defp hydrate_item(%TrashedArticle{article: %Article{} = article} = item) do

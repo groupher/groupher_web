@@ -284,6 +284,50 @@ defmodule GroupherServerWeb.Schema.CMS.Metrics do
     field(:sort, :sort_enum)
   end
 
+  @desc "Offset page parameters for the new paged resource contract."
+  input_object :offset_pagi_input do
+    field(:page, :integer)
+    field(:size, :integer)
+    field(:config_revision, :integer)
+  end
+
+  @desc "Forward cursor parameters for the new paged resource contract."
+  input_object :forward_cursor_pagi_input do
+    field(:first, :integer)
+    field(:after, :string)
+    field(:config_revision, :integer)
+  end
+
+  @desc "Exactly one offset or forward-cursor pagination input."
+  input_object :pagi_input do
+    directive(:one_of)
+    field(:offset, :offset_pagi_input)
+    field(:cursor, :forward_cursor_pagi_input)
+  end
+
+  @desc "Dashboard pagination config without the server-owned revision."
+  input_object :pagination_surface_config_input do
+    field(:schema_version, non_null(:integer))
+    field(:api, non_null(:pagination_api))
+    field(:mode, non_null(:pagination_mode))
+    field(:default_size, :integer)
+    field(:max_size, :integer)
+  end
+
+  input_object :post_filter do
+    article_filter_fields()
+    field(:sort, :sort_enum)
+  end
+
+  input_object :changelog_filter do
+    article_filter_fields()
+    field(:sort, :sort_enum)
+  end
+
+  input_object :comment_page_filter do
+    field(:sort, :inserted_sort_enum)
+  end
+
   @desc "kanban posts_filter doc"
   input_object :paged_kanban_posts_filter do
     pagination_args()

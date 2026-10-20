@@ -13,7 +13,6 @@ defmodule GroupherServer.CMS.Comments.Moderation do
 
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
-  import ShortMaps
 
   alias GroupherServer.{CMS, Repo}
   alias GroupherServer.FrontDesk, as: RootFrontDesk
@@ -21,6 +20,7 @@ defmodule GroupherServer.CMS.Comments.Moderation do
   alias CMS.{FrontDesk, QueryBuilder}
   alias CMS.Model.Comment
   alias Helper.{Multi, ORM, T}
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @audit_legal CMS.Artiment.Const.moderation_state(:legal)
   @audit_illegal CMS.Artiment.Const.moderation_state(:illegal)
@@ -117,10 +117,17 @@ defmodule GroupherServer.CMS.Comments.Moderation do
     %{page: page, size: size} = filter
     flags = %{pending: @audit_failed}
 
-    Comment
-    |> QueryBuilder.filter_pack(Map.merge(filter, flags))
-    |> ORM.paginator(~m(page size)a)
-    |> done()
+    query = Comment |> QueryBuilder.filter_pack(Map.merge(filter, flags))
+
+    with {:ok, result} <-
+           ORM.pagi(
+             query,
+             %Params.Offset{page: page, size: size},
+             for: Comment,
+             order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
+           ) do
+      done(Page.to_legacy(result))
+    end
   end
 
   @spec set_audit_failed(Comment.t(), term()) :: T.domain_res(Comment.t())

@@ -81,6 +81,42 @@ defmodule GroupherServerWeb.Resolvers.CMS.Comments do
     CMS.comments_paged_comments(thread, article.id, filter, mode)
   end
 
+  @doc "Resolves CommentPage without passing through legacy PageSizeProof input."
+  def comment_page(
+        _root,
+        %{
+          article: article,
+          article_path: %{community: community, thread: thread}
+        } = args,
+        %{context: context}
+      ) do
+    filter = Map.get(args, :filter) || %{}
+    mode = Map.get(args, :mode, :replies)
+    pagi_input = normalize_pagi_input(Map.get(args, :pagi))
+
+    CMS.comments_page(
+      thread,
+      article.id,
+      community,
+      filter,
+      pagi_input,
+      mode,
+      Map.get(context, :cur_user)
+    )
+  end
+
+  defp normalize_pagi_input(nil), do: nil
+
+  defp normalize_pagi_input(%{offset: offset}) when is_map(offset) do
+    {:offset, Map.take(offset, [:page, :size, :config_revision])}
+  end
+
+  defp normalize_pagi_input(%{cursor: cursor}) when is_map(cursor) do
+    {:cursor, Map.take(cursor, [:first, :after, :config_revision])}
+  end
+
+  defp normalize_pagi_input(_pagi), do: :invalid
+
   def paged_comments_participants(
         _root,
         %{article: article, article_path: %{thread: thread}, filter: filter},

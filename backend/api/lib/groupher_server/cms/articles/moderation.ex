@@ -13,7 +13,6 @@ defmodule GroupherServer.CMS.Articles.Moderation do
 
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
-  import ShortMaps
 
   alias GroupherServer.{CMS, FrontDesk, Repo}
 
@@ -34,6 +33,7 @@ defmodule GroupherServer.CMS.Articles.Moderation do
 
   alias CMS.SearchArtiments.Indexer
   alias Helper.{ORM, T}
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @doc """
   Returns a paged list of audit-failed articles for one thread.
@@ -47,12 +47,24 @@ defmodule GroupherServer.CMS.Articles.Moderation do
   def paged_audit_failed(thread, filter) do
     %{page: page, size: size} = filter
 
-    Article
-    |> Trash.not_trashed_scope(thread)
-    |> where([article], article.thread == ^thread and article.moderation_state == :audit_failed)
-    |> order_by([article], desc: article.updated_at)
-    |> ORM.paginator(~m(page size)a)
-    |> done()
+    query =
+      Article
+      |> Trash.not_trashed_scope(thread)
+      |> where([article], article.thread == ^thread and article.moderation_state == :audit_failed)
+
+    with {:ok, result} <-
+           ORM.pagi(
+             query,
+             %Params.Offset{page: page, size: size},
+             for: Article,
+             order: %Order{
+               fields: [:updated_at, :id],
+               directions: [:desc, :desc],
+               cursor_fields: [:updated_at, :id]
+             }
+           ) do
+      done(Page.to_legacy(result))
+    end
   end
 
   @doc "Applies one moderation state to a Gate-authorized stable Article."

@@ -61,6 +61,54 @@ describe('query keys', () => {
     expect(first).toEqual(second)
   })
 
+  it('keeps page identity separate while excluding transport paging from the domain filter', () => {
+    const first = articleQueryKeys.pagiPosts({ community: 'home', page: 1, size: 20 })
+    const second = articleQueryKeys.pagiPosts({ community: 'home', page: 2, size: 20 })
+
+    expect(first).not.toEqual(second)
+    expect(first[4]).toEqual({
+      community: 'home',
+      communityTag: null,
+      communityTags: [],
+      cat: null,
+      status: null,
+      order: null,
+      when: null,
+      sort: null,
+    })
+    expect(first[5]).toEqual({ page: 1, size: 20 })
+    expect(second[5]).toEqual({ page: 2, size: 20 })
+  })
+
+  it('keeps cursor continuation out of the root cache identity', () => {
+    const first = articleQueryKeys.pagiChangelogs(
+      { community: 'home' },
+      {
+        api: 'cursor',
+        mode: 'infinite_scroll',
+        schemaVersion: 1,
+        revision: 3,
+        defaultSize: 20,
+        maxSize: 100,
+      },
+      { api: 'cursor', first: 20 },
+    )
+    const next = articleQueryKeys.pagiChangelogs(
+      { community: 'home' },
+      {
+        api: 'cursor',
+        mode: 'infinite_scroll',
+        schemaVersion: 1,
+        revision: 3,
+        defaultSize: 20,
+        maxSize: 100,
+      },
+      { api: 'cursor', first: 20, after: 'opaque' },
+    )
+
+    expect(first).toEqual(next)
+  })
+
   it('only admits the canonical changelog filter to community-scoped SSR prefetch', () => {
     expect(isCanonicalDefaultArticleFilter({ community: 'home' })).toBe(true)
     expect(isCanonicalDefaultArticleFilter({ community: 'home', page: 2 })).toBe(false)

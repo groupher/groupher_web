@@ -174,6 +174,48 @@ export const PageChangelogDetailFields = graphql(`
   }
 `)
 
+export const PagePostLiteFields = graphql(`
+  fragment PagePostLiteFields on PostLite {
+    id
+    thread
+    innerId
+    title
+    digest
+    insertedAt
+    activeAt
+    author {
+      ...PageCommonUserFields
+    }
+    community {
+      ...PageCommunityFields
+    }
+    communityTags {
+      ...PageTagFields
+    }
+  }
+`)
+
+export const PageChangelogLiteFields = graphql(`
+  fragment PageChangelogLiteFields on ChangelogLite {
+    id
+    thread
+    innerId
+    title
+    digest
+    insertedAt
+    activeAt
+    author {
+      ...PageCommonUserFields
+    }
+    community {
+      ...PageCommunityFields
+    }
+    communityTags {
+      ...PageTagFields
+    }
+  }
+`)
+
 export const PagePostPageInfo = graphql(`
   fragment PagePostPageInfo on PagedPosts {
     totalPages

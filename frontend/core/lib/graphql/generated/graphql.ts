@@ -77,6 +77,19 @@ export type ArtimentTocItemInput = {
   title: string
 }
 
+export type ChangelogFilter = {
+  cat?: ArticleCatEnum | null | undefined
+  community?: string | null | undefined
+  communityTag?: string | null | undefined
+  communityTags?: Array<string | null | undefined> | null | undefined
+  order?: ArticleOrderEnum | null | undefined
+  sort?: SortEnum | null | undefined
+  status?: ArticleStatusEnum | null | undefined
+  when?: WhenEnum | null | undefined
+}
+
+export type ChangelogThread = 'CHANGELOG'
+
 /** emotion options of comment */
 export type CommentEmotion =
   | 'BEER'
@@ -364,6 +377,13 @@ export type EmotionType =
   | 'POPCORN'
   | 'UPVOTE'
 
+/** Forward cursor parameters for the new paged resource contract. */
+export type ForwardCursorPagiInput = {
+  after?: string | null | undefined
+  configRevision?: number | null | undefined
+  first?: number | null | undefined
+}
+
 export type InsertedSortEnum = 'ASC_INSERTED' | 'DESC_INSERTED'
 
 export type KanbanBoard = 'BACKLOG' | 'DONE' | 'REJECTED' | 'TODO' | 'WIP'
@@ -388,6 +408,13 @@ export type MarkerThemeAppearanceInput = {
 }
 
 export type MarkerType = 'EMOJI' | 'ICON'
+
+/** Offset page parameters for the new paged resource contract. */
+export type OffsetPagiInput = {
+  configRevision?: number | null | undefined
+  page?: number | null | undefined
+  size?: number | null | undefined
+}
 
 /** changelogs_filter doc */
 export type PagedChangelogsFilter = {
@@ -440,6 +467,24 @@ export type PagiFilter = {
   size?: number | null | undefined
   sort?: SortEnum | null | undefined
 }
+
+/** Exactly one offset or forward-cursor pagination input. */
+export type PagiInput =
+  | { cursor: ForwardCursorPagiInput; offset?: never }
+  | { cursor?: never; offset: OffsetPagiInput }
+
+export type PostFilter = {
+  cat?: ArticleCatEnum | null | undefined
+  community?: string | null | undefined
+  communityTag?: string | null | undefined
+  communityTags?: Array<string | null | undefined> | null | undefined
+  order?: ArticleOrderEnum | null | undefined
+  sort?: SortEnum | null | undefined
+  status?: ArticleStatusEnum | null | undefined
+  when?: WhenEnum | null | undefined
+}
+
+export type PostThread = 'POST'
 
 export type PressFeedType = 'DIGEST' | 'FULL'
 
@@ -2161,6 +2206,108 @@ export type PageChangelogDetailFieldsFragment = {
   lifecycle: { state: ArticleLifecycleState; version: number; archivedAt: string | null } | null
 }
 
+export type PagePostLiteFieldsFragment = {
+  id: string | null
+  thread: Thread | null
+  innerId: string | null
+  title: string | null
+  digest: string | null
+  insertedAt: string | null
+  activeAt: string | null
+  author: {
+    login: string | null
+    nickname: string | null
+    avatar: string | null
+    bio: string | null
+    shortbio: string | null
+  } | null
+  community: {
+    title: string | null
+    slug: string | null
+    index: number | null
+    desc: string | null
+    logo: string | null
+    subscribersCount: number | null
+    homepage: string | null
+    articlesCount: number | null
+    views: number | null
+    pending: number | null
+    insertedAt: string | null
+    updatedAt: string | null
+  } | null
+  communityTags: Array<{
+    id: string | null
+    title: string | null
+    layout: string | null
+    desc: string | null
+    slug: string | null
+    color: RainbowColor | null
+    thread: Thread | null
+    group: string | null
+    groupId: string | null
+    index: number | null
+    marker: {
+      type: MarkerType
+      provider: string | null
+      name: string | null
+      src: string | null
+      unified: string | null
+    } | null
+    community: { slug: string | null } | null
+  } | null> | null
+}
+
+export type PageChangelogLiteFieldsFragment = {
+  id: string | null
+  thread: Thread | null
+  innerId: string | null
+  title: string | null
+  digest: string | null
+  insertedAt: string | null
+  activeAt: string | null
+  author: {
+    login: string | null
+    nickname: string | null
+    avatar: string | null
+    bio: string | null
+    shortbio: string | null
+  } | null
+  community: {
+    title: string | null
+    slug: string | null
+    index: number | null
+    desc: string | null
+    logo: string | null
+    subscribersCount: number | null
+    homepage: string | null
+    articlesCount: number | null
+    views: number | null
+    pending: number | null
+    insertedAt: string | null
+    updatedAt: string | null
+  } | null
+  communityTags: Array<{
+    id: string | null
+    title: string | null
+    layout: string | null
+    desc: string | null
+    slug: string | null
+    color: RainbowColor | null
+    thread: Thread | null
+    group: string | null
+    groupId: string | null
+    index: number | null
+    marker: {
+      type: MarkerType
+      provider: string | null
+      name: string | null
+      src: string | null
+      unified: string | null
+    } | null
+    community: { slug: string | null } | null
+  } | null> | null
+}
+
 export type PagePostPageInfoFragment = {
   totalPages: number | null
   totalCount: number | null
@@ -2523,6 +2670,120 @@ export type PagedChangelogsQuery = {
   } | null
 }
 
+export type ChangelogPageQueryVariables = Exact<{
+  pagi?: PagiInput | null | undefined
+  filter?: ChangelogFilter | null | undefined
+  thread?: ChangelogThread | null | undefined
+}>
+
+export type ChangelogPageQuery = {
+  changelogPage: {
+    pinnedEntries: Array<{
+      id: string | null
+      thread: Thread | null
+      innerId: string | null
+      title: string | null
+      digest: string | null
+      insertedAt: string | null
+      activeAt: string | null
+      author: {
+        login: string | null
+        nickname: string | null
+        avatar: string | null
+        bio: string | null
+        shortbio: string | null
+      } | null
+      community: {
+        title: string | null
+        slug: string | null
+        index: number | null
+        desc: string | null
+        logo: string | null
+        subscribersCount: number | null
+        homepage: string | null
+        articlesCount: number | null
+        views: number | null
+        pending: number | null
+        insertedAt: string | null
+        updatedAt: string | null
+      } | null
+      communityTags: Array<{
+        id: string | null
+        title: string | null
+        layout: string | null
+        desc: string | null
+        slug: string | null
+        color: RainbowColor | null
+        thread: Thread | null
+        group: string | null
+        groupId: string | null
+        index: number | null
+        community: { slug: string | null } | null
+      } | null> | null
+    }>
+    entries: Array<{
+      id: string | null
+      thread: Thread | null
+      innerId: string | null
+      title: string | null
+      digest: string | null
+      insertedAt: string | null
+      activeAt: string | null
+      author: {
+        login: string | null
+        nickname: string | null
+        avatar: string | null
+        bio: string | null
+        shortbio: string | null
+      } | null
+      community: {
+        title: string | null
+        slug: string | null
+        index: number | null
+        desc: string | null
+        logo: string | null
+        subscribersCount: number | null
+        homepage: string | null
+        articlesCount: number | null
+        views: number | null
+        pending: number | null
+        insertedAt: string | null
+        updatedAt: string | null
+      } | null
+      communityTags: Array<{
+        id: string | null
+        title: string | null
+        layout: string | null
+        desc: string | null
+        slug: string | null
+        color: RainbowColor | null
+        thread: Thread | null
+        group: string | null
+        groupId: string | null
+        index: number | null
+        community: { slug: string | null } | null
+      } | null> | null
+    }>
+    pageInfo:
+      | {
+          __typename: 'CursorPageInfo'
+          startCursor: string | null
+          endCursor: string | null
+          hasPreviousPage: boolean
+          hasNextPage: boolean
+        }
+      | {
+          __typename: 'OffsetPageInfo'
+          page: number
+          size: number
+          totalCount: number
+          totalPages: number
+          hasPreviousPage: boolean
+          hasNextPage: boolean
+        }
+  }
+}
+
 export type PageSubscribedCommunitiesQueryVariables = Exact<{
   login?: string | null | undefined
   filter: PagiFilter
@@ -2588,6 +2849,7 @@ export type PageCommunityQuery = {
     } | null> | null
     dashboard: {
       umamiWebsiteId: string | null
+      pagination: unknown
       contentShadow: boolean
       baseInfo: {
         title: string | null
@@ -3483,6 +3745,120 @@ export type PagedPostsQuery = {
       } | null> | null
     } | null> | null
   } | null
+}
+
+export type PostPageQueryVariables = Exact<{
+  pagi?: PagiInput | null | undefined
+  filter?: PostFilter | null | undefined
+  thread?: PostThread | null | undefined
+}>
+
+export type PostPageQuery = {
+  postPage: {
+    pinnedEntries: Array<{
+      id: string | null
+      thread: Thread | null
+      innerId: string | null
+      title: string | null
+      digest: string | null
+      insertedAt: string | null
+      activeAt: string | null
+      author: {
+        login: string | null
+        nickname: string | null
+        avatar: string | null
+        bio: string | null
+        shortbio: string | null
+      } | null
+      community: {
+        title: string | null
+        slug: string | null
+        index: number | null
+        desc: string | null
+        logo: string | null
+        subscribersCount: number | null
+        homepage: string | null
+        articlesCount: number | null
+        views: number | null
+        pending: number | null
+        insertedAt: string | null
+        updatedAt: string | null
+      } | null
+      communityTags: Array<{
+        id: string | null
+        title: string | null
+        layout: string | null
+        desc: string | null
+        slug: string | null
+        color: RainbowColor | null
+        thread: Thread | null
+        group: string | null
+        groupId: string | null
+        index: number | null
+        community: { slug: string | null } | null
+      } | null> | null
+    }>
+    entries: Array<{
+      id: string | null
+      thread: Thread | null
+      innerId: string | null
+      title: string | null
+      digest: string | null
+      insertedAt: string | null
+      activeAt: string | null
+      author: {
+        login: string | null
+        nickname: string | null
+        avatar: string | null
+        bio: string | null
+        shortbio: string | null
+      } | null
+      community: {
+        title: string | null
+        slug: string | null
+        index: number | null
+        desc: string | null
+        logo: string | null
+        subscribersCount: number | null
+        homepage: string | null
+        articlesCount: number | null
+        views: number | null
+        pending: number | null
+        insertedAt: string | null
+        updatedAt: string | null
+      } | null
+      communityTags: Array<{
+        id: string | null
+        title: string | null
+        layout: string | null
+        desc: string | null
+        slug: string | null
+        color: RainbowColor | null
+        thread: Thread | null
+        group: string | null
+        groupId: string | null
+        index: number | null
+        community: { slug: string | null } | null
+      } | null> | null
+    }>
+    pageInfo:
+      | {
+          __typename: 'CursorPageInfo'
+          startCursor: string | null
+          endCursor: string | null
+          hasPreviousPage: boolean
+          hasNextPage: boolean
+        }
+      | {
+          __typename: 'OffsetPageInfo'
+          page: number
+          size: number
+          totalCount: number
+          totalPages: number
+          hasPreviousPage: boolean
+          hasNextPage: boolean
+        }
+  }
 }
 
 export type PagedPublishedPostsQueryVariables = Exact<{
@@ -9258,6 +9634,268 @@ export const PageChangelogDetailFieldsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<PageChangelogDetailFieldsFragment, unknown>
+export const PagePostLiteFieldsFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PagePostLiteFields' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PostLite' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'thread' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'digest' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'activeAt' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'author' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'PageCommonUserFields' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'community' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'PageCommunityFields' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'communityTags' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'PageTagFields' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PageCommonUserFields' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'CommonUser' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'login' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'nickname' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'bio' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'shortbio' } },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PageCommunityFields' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Community' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'index' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'desc' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'subscribersCount' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'homepage' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'articlesCount' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'views' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'pending' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PageTagFields' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'CommunityTag' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'layout' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'desc' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'marker' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'provider' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'src' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'unified' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'thread' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'group' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'groupId' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'index' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'community' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'slug' } }],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PagePostLiteFieldsFragment, unknown>
+export const PageChangelogLiteFieldsFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PageChangelogLiteFields' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'ChangelogLite' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'thread' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'digest' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'activeAt' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'author' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'PageCommonUserFields' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'community' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'PageCommunityFields' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'communityTags' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'PageTagFields' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PageCommonUserFields' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'CommonUser' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'login' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'nickname' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'bio' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'shortbio' } },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PageCommunityFields' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Community' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'index' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'desc' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'subscribersCount' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'homepage' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'articlesCount' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'views' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'pending' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PageTagFields' },
+      typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'CommunityTag' } },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'layout' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'desc' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'marker' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'provider' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'src' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'unified' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'thread' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'group' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'groupId' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'index' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'community' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [{ kind: 'Field', name: { kind: 'Name', value: 'slug' } }],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PageChangelogLiteFieldsFragment, unknown>
 export const PagePostPageInfoFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -17629,6 +18267,267 @@ export const PagedChangelogsDocument = {
     },
   ],
 } as unknown as DocumentNode<PagedChangelogsQuery, PagedChangelogsQueryVariables>
+export const ChangelogPageDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'ChangelogPage' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'pagi' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'PagiInput' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ChangelogFilter' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'thread' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ChangelogThread' } },
+          defaultValue: { kind: 'EnumValue', value: 'CHANGELOG' },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'changelogPage' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'pagi' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'pagi' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'filter' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'thread' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'thread' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pinnedEntries' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'thread' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'digest' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'activeAt' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'author' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'login' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'nickname' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'bio' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'shortbio' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'community' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'index' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'desc' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'subscribersCount' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'homepage' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'articlesCount' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'views' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'pending' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'communityTags' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'layout' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'desc' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'thread' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'group' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'groupId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'index' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'community' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'entries' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'thread' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'digest' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'activeAt' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'author' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'login' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'nickname' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'bio' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'shortbio' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'community' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'index' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'desc' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'subscribersCount' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'homepage' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'articlesCount' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'views' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'pending' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'communityTags' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'layout' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'desc' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'thread' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'group' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'groupId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'index' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'community' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pageInfo' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'hasPreviousPage' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'hasNextPage' } },
+                      {
+                        kind: 'InlineFragment',
+                        typeCondition: {
+                          kind: 'NamedType',
+                          name: { kind: 'Name', value: 'OffsetPageInfo' },
+                        },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'page' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'totalCount' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'totalPages' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'InlineFragment',
+                        typeCondition: {
+                          kind: 'NamedType',
+                          name: { kind: 'Name', value: 'CursorPageInfo' },
+                        },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'startCursor' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'endCursor' } },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ChangelogPageQuery, ChangelogPageQueryVariables>
 export const PageSubscribedCommunitiesDocument = {
   kind: 'Document',
   definitions: [
@@ -17926,6 +18825,7 @@ export const PageCommunityDocument = {
                         },
                       },
                       { kind: 'Field', name: { kind: 'Name', value: 'umamiWebsiteId' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'pagination' } },
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'docFaq' },
@@ -19933,6 +20833,267 @@ export const PagedPostsDocument = {
     },
   ],
 } as unknown as DocumentNode<PagedPostsQuery, PagedPostsQueryVariables>
+export const PostPageDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'PostPage' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'pagi' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'PagiInput' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'PostFilter' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'thread' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'PostThread' } },
+          defaultValue: { kind: 'EnumValue', value: 'POST' },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'postPage' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'pagi' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'pagi' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'filter' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'thread' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'thread' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pinnedEntries' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'thread' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'digest' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'activeAt' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'author' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'login' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'nickname' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'bio' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'shortbio' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'community' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'index' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'desc' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'subscribersCount' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'homepage' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'articlesCount' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'views' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'pending' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'communityTags' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'layout' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'desc' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'thread' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'group' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'groupId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'index' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'community' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'entries' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'thread' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'innerId' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'digest' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'activeAt' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'author' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'login' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'nickname' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'bio' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'shortbio' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'community' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'index' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'desc' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'subscribersCount' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'homepage' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'articlesCount' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'views' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'pending' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'communityTags' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'layout' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'desc' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'color' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'thread' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'group' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'groupId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'index' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'community' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pageInfo' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'hasPreviousPage' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'hasNextPage' } },
+                      {
+                        kind: 'InlineFragment',
+                        typeCondition: {
+                          kind: 'NamedType',
+                          name: { kind: 'Name', value: 'OffsetPageInfo' },
+                        },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'page' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'size' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'totalCount' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'totalPages' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'InlineFragment',
+                        typeCondition: {
+                          kind: 'NamedType',
+                          name: { kind: 'Name', value: 'CursorPageInfo' },
+                        },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'startCursor' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'endCursor' } },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PostPageQuery, PostPageQueryVariables>
 export const PagedPublishedPostsDocument = {
   kind: 'Document',
   definitions: [

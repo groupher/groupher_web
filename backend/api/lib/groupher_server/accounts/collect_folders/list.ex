@@ -22,6 +22,7 @@ defmodule GroupherServer.Accounts.CollectFolders.List do
 
   alias Accounts.Model.{CollectFolder, User}
   alias Helper.{ORM, QueryBuilder, T}
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @doc """
   Returns public collection folders for one account.
@@ -56,11 +57,21 @@ defmodule GroupherServer.Accounts.CollectFolders.List do
   defp do_paged(filter, query) do
     %{page: page, size: size} = filter
 
-    query
-    |> filter_thread_ifneed(filter)
-    |> QueryBuilder.filter_pack(Map.delete(filter, :thread))
-    |> ORM.paginator(page: page, size: size)
-    |> done()
+    query =
+      query
+      |> filter_thread_ifneed(filter)
+      |> QueryBuilder.filter_pack(Map.delete(filter, :thread))
+      |> exclude(:order_by)
+
+    with {:ok, result} <-
+           ORM.pagi(
+             query,
+             %Params.Offset{page: page, size: size},
+             for: CollectFolder,
+             order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
+           ) do
+      done(Page.to_legacy(result))
+    end
   end
 
   defp filter_thread_ifneed(query, %{thread: thread}) do

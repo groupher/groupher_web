@@ -15,6 +15,7 @@ defmodule GroupherServer.CMS.Model.Comment do
   """
 
   use Ecto.Schema
+  use Flop.Schema
   use Accessible
 
   import Ecto.Changeset
@@ -58,6 +59,12 @@ defmodule GroupherServer.CMS.Model.Comment do
   @max_parent_replies_count 3
 
   @max_latest_emotion_users_count 5
+
+  @flop_options [
+    filterable: [],
+    sortable: [:inserted_at, :id],
+    pagination_types: [:page, :first]
+  ]
 
   @delete_hint "this comment is deleted"
   # 举报超过此数评论会被自动折叠

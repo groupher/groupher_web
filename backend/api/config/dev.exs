@@ -1,5 +1,11 @@
 import Config
 
+config :groupher_server, :pagination_cursor_keyring,
+  current_version: 1,
+  current_key:
+    System.get_env("PAGINATION_CURSOR_CURRENT_KEY", "groupher-pagination-development-key"),
+  previous_keys: %{}
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #

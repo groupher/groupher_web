@@ -9,7 +9,7 @@
  * Viewer-private state never crosses this SSR boundary. ArticleStats uses the same normalizer as
  * browser and mutation paths before entering the shared Query cache.
  */
-import type { ResultOf, VariablesOf } from '@graphql-typed-document-node/core'
+import type { ResultOf } from '@graphql-typed-document-node/core'
 import { GROUPHER_COMMUNITY_SLUG_HEADER } from '@groupher/contracts/headers'
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
@@ -18,17 +18,19 @@ import { THREAD } from '~/const/thread'
 import { CACHE_TAG } from '~/constant/cache'
 import { parseDashboard, parseWallpaper } from '~/lib/ssr/parse'
 import { normalizeArticleStats } from '~/query/articleStatsNormalize'
+import { toArticlePageFilter } from '~/query/filter'
 import { articleStats as articleStatsDocument } from '~/schemas/pages/articleStats'
-import { changelog, pagedChangelogs } from '~/schemas/pages/changelog'
+import { changelog, changelogPage } from '~/schemas/pages/changelog'
 import { pagedComments } from '~/schemas/pages/comment'
 import { community as communityDocument } from '~/schemas/pages/community'
 import { doc, docPublicTree } from '~/schemas/pages/doc'
-import { groupedKanbanPosts, pagedPosts, post as postDocument } from '~/schemas/pages/post'
+import { groupedKanbanPosts, post as postDocument, postPage } from '~/schemas/pages/post'
 import type {
   TCommunity,
   TDoc,
   TDocPublicTree,
-  TPagedChangelogs,
+  TPagiGraphQLInput,
+  TPagedArticlesParams,
   TPagedComments,
   TPagedPosts,
   TPost,
@@ -88,15 +90,18 @@ const loadCommunity = createServerFn({ method: 'GET', strict: false })
   })
 
 const loadPosts = createServerFn({ method: 'GET', strict: false })
-  .validator((data: { community: string }) => data)
+  .validator(
+    (data: { community: string; filter?: TPagedArticlesParams; pagi?: TPagiGraphQLInput }) => data,
+  )
   .handler(async ({ data }) => {
     setPublicCacheHeaders([CACHE_TAG.articlesCache(data.community, THREAD.POST)])
-    const result = await fetchGraphQL<ResultOf<typeof pagedPosts>>(pagedPosts, {
-      filter: { community: data.community, page: 1, size: 20 } satisfies VariablesOf<
-        typeof pagedPosts
-      >['filter'],
+    const filter = data.filter || { community: data.community }
+    const result = await fetchGraphQL<ResultOf<typeof postPage>>(postPage, {
+      filter: toArticlePageFilter(filter),
+      thread: 'POST',
+      pagi: data.pagi,
     })
-    return result.data?.pagedPosts as unknown as TPagedPosts | null
+    return result.data?.postPage ?? null
   })
 
 const loadPost = createServerFn({ method: 'GET', strict: false })
@@ -130,13 +135,18 @@ const loadArticleStats = createServerFn({ method: 'GET', strict: false })
   })
 
 const loadChangelogs = createServerFn({ method: 'GET', strict: false })
-  .validator((data: { community: string }) => data)
+  .validator(
+    (data: { community: string; filter?: TPagedArticlesParams; pagi?: TPagiGraphQLInput }) => data,
+  )
   .handler(async ({ data }) => {
     setPublicCacheHeaders([CACHE_TAG.articlesCache(data.community, THREAD.CHANGELOG)])
-    const result = await fetchGraphQL<ResultOf<typeof pagedChangelogs>>(pagedChangelogs, {
-      filter: { community: data.community, page: 1, size: 20 },
+    const filter = data.filter || { community: data.community }
+    const result = await fetchGraphQL<ResultOf<typeof changelogPage>>(changelogPage, {
+      filter: toArticlePageFilter(filter),
+      thread: 'CHANGELOG',
+      pagi: data.pagi,
     })
-    return result.data?.pagedChangelogs as unknown as TPagedChangelogs | null
+    return result.data?.changelogPage ?? null
   })
 
 const loadChangelog = createServerFn({ method: 'GET', strict: false })
@@ -185,7 +195,10 @@ const loadDoc = createServerFn({ method: 'GET', strict: false })
 const loadComments = createServerFn({ method: 'GET', strict: false })
   .validator((data: { community: string; thread: TThread; innerId: string }) => data)
   .handler(async ({ data }) => {
-    setPublicCacheHeaders([CACHE_TAG.commentsCache(data.community, data.thread, data.innerId)])
+    setPublicCacheHeaders([
+      CACHE_TAG.commentsListCache(data.community),
+      CACHE_TAG.commentsCache(data.community, data.thread, data.innerId),
+    ])
     const result = await fetchGraphQL<ResultOf<typeof pagedComments>>(pagedComments, {
       article: { community: data.community, thread: data.thread, innerId: data.innerId },
       mode: 'REPLIES',

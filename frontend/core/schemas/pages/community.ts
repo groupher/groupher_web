@@ -85,6 +85,7 @@ export const community = graphql(`
           siteId
         }
         umamiWebsiteId
+        pagination
         docFaq {
           title
           desc

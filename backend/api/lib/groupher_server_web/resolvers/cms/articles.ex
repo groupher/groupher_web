@@ -61,6 +61,29 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
     CMS.articles_page(thread, filter)
   end
 
+  @doc "Resolves the new Article Page contract without owning query or pagination policy."
+  def article_page(_root, %{thread: thread, pagi: pagi} = args, %{context: context}) do
+    filter = Map.get(args, :filter) || %{}
+    actor = Map.get(context, :cur_user)
+    CMS.articles_pagi_page(thread, filter, actor, pagi_input: normalize_pagi_input(pagi))
+  end
+
+  def article_page(_root, %{thread: thread} = args, %{context: context}) do
+    filter = Map.get(args, :filter) || %{}
+    actor = Map.get(context, :cur_user)
+    CMS.articles_pagi_page(thread, filter, actor, [])
+  end
+
+  defp normalize_pagi_input(%{offset: offset}) when is_map(offset) do
+    {:offset, Map.take(offset, [:page, :size, :config_revision])}
+  end
+
+  defp normalize_pagi_input(%{cursor: cursor}) when is_map(cursor) do
+    {:cursor, Map.take(cursor, [:first, :after, :config_revision])}
+  end
+
+  defp normalize_pagi_input(_pagi), do: :invalid
+
   def grouped_kanban_posts(_root, %{community: community}, _info) do
     CMS.articles_grouped_kanban(community)
   end

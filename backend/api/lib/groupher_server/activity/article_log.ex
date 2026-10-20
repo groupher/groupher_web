@@ -14,6 +14,7 @@ defmodule GroupherServer.Activity.ArticleLog do
 
   alias CMS.Model.{Article, ArticleDraft, DocDraft}
   alias Helper.ORM
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @page_size 20
 
@@ -37,17 +38,28 @@ defmodule GroupherServer.Activity.ArticleLog do
         |> where([log], field(log, ^handler.stream_field()) == ^article_id)
         |> where([log], log.action in ^actions)
         |> maybe_branch(article)
-        |> order_by([log], desc: log.occurred_at, desc: log.record_sequence)
 
-      paged = ORM.paginator(query, page: page, size: @page_size)
-
-      {:ok,
-       Map.update!(paged, :entries, fn entries ->
-         Enum.map(entries, fn log ->
-           {:ok, projected} = handler.project(log, :article_log)
-           projected
-         end)
-       end)}
+      with {:ok, paged} <-
+             ORM.pagi(
+               query,
+               %Params.Offset{page: page, size: @page_size},
+               for: handler.schema(),
+               order: %Order{
+                 fields: [:occurred_at, :record_sequence],
+                 directions: [:desc, :desc],
+                 cursor_fields: [:occurred_at, :record_sequence]
+               }
+             ) do
+        {:ok,
+         paged
+         |> Page.to_legacy()
+         |> Map.update!(:entries, fn entries ->
+           Enum.map(entries, fn log ->
+             {:ok, projected} = handler.project(log, :article_log)
+             projected
+           end)
+         end)}
+      end
     end
   end
 
