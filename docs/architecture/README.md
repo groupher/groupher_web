@@ -44,7 +44,7 @@
   provider effect 边界；不建立 Dispatcher 或动态 handler registry。
 - [`cms-command.md`](./cms-command.md)：CMS 用户写命令、Receipt 幂等与 Confirmation 边界。
 - [`cms-write-boundary-contract.md`](./cms-write-boundary-contract.md)：CMS Command 的 receipt/write/workflow
-  pipeline 目标合同、Gate/事务边界、编译后 contracts、coverage 与纯 Elixir 全局检查，以及当前实现与自动化缺口。
+  pipeline 目标合同、Gate/事务边界、编译后 contracts 与纯 Elixir 调用图检查，以及当前实现与自动化缺口。
 - [`cms-command-confirmation.md`](./cms-command-confirmation.md)：Confirmation codec、Receipt JSON、
   recovery 与 retention 子协议。
 - [`cms-command-v3.md`](./cms-command-v3.md)：Confirmation 与提交后 result builder 的历史实施记录；

@@ -64,6 +64,9 @@ PR [#593](https://github.com/groupher/groupher/pull/593) 的 `commandId` 迁移�
 
 - 将既有 command replay、资源删除后的 replay、错误重试和 outbox identity 测试统一收口为 command contract suite，并纳入专项 CI 门禁。
 - 增加 scope/pagination contract suite：多 community、多 binding、隐藏/可见状态、thread 和分页计数。
+- 已落地 Pagi contract tests：schema registry/config/context 优先级、signed cursor、
+  offset/cursor Flop integration、GraphQL `@oneOf`/PageInfo schema introspection、旧 paginator
+  strict inventory、资源 scope、Lite、pinned、query-count 及新字段 resolver pipeline。
 - 已落地：backend CI 增加变更 Elixir 文件的 `mix format --check-formatted` 和 `mix compile --warnings-as-errors`；workflow 会比较 PR/push 的变更文件，不要求一次性重排整个历史基线。
 - 待落地：Credo 硬门禁；当前全量 `mix credo --strict` 仍有大量既有建议，需单独清理基线后再启用。
 
