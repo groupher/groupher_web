@@ -356,3 +356,7 @@ GET /api/auth/csrf
 - `/health` 目前只表示 Auth 进程可用，不表示 OAuth Provider 与 Phoenix 凭据完整。
   生产部署流水线应增加独立的配置校验，缺少必要 secret、Provider credentials、
   `AUTH_COOKIE_DOMAIN` 或 Phoenix 地址时直接阻止发布。
+
+## 设备列表分页
+
+`GET /api/auth/sessions` 返回 Pagi 的 `entries/pageInfo`，不返回截断数组。可通过 URL 编码的 `pagi` JSON 参数传递标准 oneOf offset/cursor 输入；省略时使用平台默认第一页。Auth 校验输入结构、保留 no-store，并按原有 `auth:session:read` scope 透传 Phoenix 的 BrowserSessionPage。用户身份由当前有效 session 解析，不接收客户端 owner。过期/已撤销会话在分页前排除，cursor 绑定 owner；前端按账号隔离私有缓存，撤销操作失效整个设备页族。OAuth 绑定仍是由固定 provider 集合约束的完整配置集合，不强制分页。

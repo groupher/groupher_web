@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto'
 /**
  * Adapts Auth.js and OAuth provider callbacks to Groupher Session creation.
  *
@@ -8,8 +9,6 @@
  *     -> OAuth provider / Phoenix Accounts
  *     -> Session cookies or service token
  */
-
-import { createHash } from 'node:crypto'
 
 import { Auth, type AuthConfig, setEnvDefaults } from '@auth/core'
 import GitHub from '@auth/core/providers/github'
@@ -22,6 +21,7 @@ import {
 } from '@groupher/contracts/auth'
 import { LOCAL_PHOENIX_GRAPHQL_ENDPOINT } from '@groupher/contracts/endpoint'
 import { GROUPHER_USER_AUTHORIZATION_HEADER } from '@groupher/contracts/headers'
+import type { PagiInput, PagiPage } from '@groupher/contracts/pagination'
 import { createServiceAuthClientFromEnv, type TServiceAuthClient } from '@groupher/service/auth'
 import { serialize } from 'hono/utils/cookie'
 
@@ -78,6 +78,7 @@ const LEGACY_PHOENIX_ERROR_CODES = new Map<number, string>([
 export const normalizePhoenixErrorCode = (code: unknown): string | undefined => {
   if (typeof code === 'string') return code
   if (typeof code !== 'number' || !Number.isSafeInteger(code)) return undefined
+  if (code >= 4200 && code <= 4214) return `PAGI_${code}`
   return LEGACY_PHOENIX_ERROR_CODES.get(code)
 }
 
@@ -558,8 +559,9 @@ const REVOKE_BROWSER_SESSION_MUTATION = `
 `
 
 const LIST_BROWSER_SESSIONS_QUERY = `
-  query BrowserSessions($browserSessionRef: String!) {
-    browserSessions(browserSessionRef: $browserSessionRef) {
+  query BrowserSessions($browserSessionRef: String!, $pagi: PagiInput) {
+    browserSessions(browserSessionRef: $browserSessionRef, pagi: $pagi) {
+      entries {
       browserFamily
       createdCity
       createdCountry
@@ -575,6 +577,8 @@ const LIST_BROWSER_SESSIONS_QUERY = `
       publicRef
       status
       userAgentSummary
+      }
+      pageInfo { __typename hasNextPage hasPreviousPage ... on OffsetPageInfo {page size totalCount totalPages} ... on CursorPageInfo {startCursor endCursor} }
     }
   }
 `
@@ -764,16 +768,20 @@ export const revokeBrowserSession = async (ref: string): Promise<void> => {
     throw new Error('Phoenix did not revoke the browser session.')
 }
 
-/** Lists browser sessions through the bounded auth interface. */
-export const listBrowserSessions = async (ref: string): Promise<TBrowserSessionSummary[]> => {
-  const data = await callPhoenix<{ browserSessions?: unknown }>(
+/** Reads the canonical session page through the trusted Auth service scope. */
+export const listBrowserSessions = async (
+  ref: string,
+  pagi?: PagiInput,
+): Promise<PagiPage<TBrowserSessionSummary>> => {
+  const data = await callPhoenix<{ browserSessions: PagiPage<TBrowserSessionSummary> }>(
     LIST_BROWSER_SESSIONS_QUERY,
-    { browserSessionRef: ref },
+    { browserSessionRef: ref, ...(pagi ? { pagi } : {}) },
     'auth:session:read',
   )
-  if (!Array.isArray(data.browserSessions))
-    throw new Error('Phoenix returned invalid browser sessions.')
-  return data.browserSessions as TBrowserSessionSummary[]
+  const page = data.browserSessions
+  if (!page || !Array.isArray(page.entries) || !page.pageInfo)
+    throw new Error('Phoenix returned an invalid browser session page.')
+  return page
 }
 
 /** Runs the revoke browser session public operation at the auth boundary. */
