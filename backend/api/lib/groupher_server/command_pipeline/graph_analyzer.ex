@@ -82,7 +82,9 @@ defmodule GroupherServer.CommandPipeline.GraphAnalyzer do
   # dynamic calls in the same module still fail closed.
   @trusted_dynamic_calls MapSet.new([
                            {GroupherServer.Analysis.Web.Provision,
-                            :ensure_umami_website_id_locked, :create_website, 1}
+                            :ensure_umami_website_id_locked, :create_website, 1},
+                           # Flop schemas are validated before this callback is invoked.
+                           {Helper.ORM.Pagi, :validate_schema_order, :__flop_schema__, 0}
                          ])
 
   # These functions intentionally use apply/3 behind a fixed, reviewed
