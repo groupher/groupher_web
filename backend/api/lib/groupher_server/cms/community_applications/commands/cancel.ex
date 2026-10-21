@@ -57,7 +57,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Cancel do
              %{type: :applicant, id: actor.id, occurred_at: now}
            )
            |> SlugClaims.release_application(:claim, application, now)
-           |> Transaction.run() do
+           |> Transaction.join() do
       {:ok, updated}
     end
   end

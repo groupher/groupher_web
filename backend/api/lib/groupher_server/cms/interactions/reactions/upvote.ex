@@ -11,11 +11,14 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
 
   import Ecto.Query
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
   alias CMS.Artiment.Matcher
-  alias CMS.{Gate, Interactions, Command}
+  alias CMS.{Gate, Interactions}
   alias Interactions.{Config, Effects, ErrorCat, Persist, Projection}
   alias CMS.Interactions.Reactions.UpvoteConfirmation, as: Confirmation
   alias CMS.Model.{ArticleUpvote, Author, Comment, CommentUpvote}
@@ -36,7 +39,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
   """
   @spec add(struct(), User.t(), Ecto.UUID.t()) :: T.domain_res(struct())
   def add(artiment, %User{} = actor, command_id) do
-    mutate(artiment, actor, :add, command_id)
+    execute_add(artiment, :add, actor, command_id)
   end
 
   @doc """
@@ -49,58 +52,70 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
   """
   @spec remove(struct(), User.t(), Ecto.UUID.t()) :: T.domain_res(struct())
   def remove(artiment, %User{} = actor, command_id) do
-    mutate(artiment, actor, :remove, command_id)
+    execute_remove(artiment, :remove, actor, command_id)
   end
 
-  defp mutate(input, actor, operation, command_id) do
-    with {:ok, command_id} <- require_command_id(command_id),
-         {:ok, info} <- Matcher.match_interaction(input) do
-      result =
-        %Command{
-          actor: actor,
-          command_id: command_id,
-          operation: upvote_command(operation),
-          target: input,
-          params: %{operation: operation}
-        }
-        |> Command.execute(action: &upvote_action(&1, info), confirmation: Confirmation)
+  @pipeline operation: :upvote_add,
+            confirmation: Confirmation,
+            target: :input,
+            params: [:operation]
 
-      present_reaction(result, input, command_id)
+  receipt_pipeline execute_add(input, operation, actor, command_id) do
+    prepare(fn -> Matcher.match_interaction(input) end)
+    gate(fn info -> gate_target(input, info, actor) end)
+
+    change(fn {canonical, info} ->
+      change_upvote(canonical, info, actor, operation, command_id)
+    end)
+
+    confirm(fn {canonical, change} -> confirmation(canonical, operation, change) end)
+    present(fn confirmation -> present_reaction(confirmation, input, command_id) end)
+  end
+
+  @pipeline operation: :upvote_remove,
+            confirmation: Confirmation,
+            target: :input,
+            params: [:operation]
+
+  receipt_pipeline execute_remove(input, operation, actor, command_id) do
+    prepare(fn -> Matcher.match_interaction(input) end)
+    gate(fn info -> gate_target(input, info, actor) end)
+
+    change(fn {canonical, info} ->
+      change_upvote(canonical, info, actor, operation, command_id)
+    end)
+
+    confirm(fn {canonical, change} -> confirmation(canonical, operation, change) end)
+    present(fn confirmation -> present_reaction(confirmation, input, command_id) end)
+  end
+
+  defp gate_target(input, info, actor) do
+    with {:ok, canonical} <- Gate.check_interaction_in_transaction(actor, :upvote, input) do
+      {:ok, {canonical, info}}
     end
   end
 
-  defp upvote_action(
-         %{
-           actor: actor,
-           target: input,
-           params: %{operation: operation},
-           command_id: command_id
-         },
-         info
-       ) do
-    with {:ok, canonical} <- Gate.access_check(actor, :upvote, input),
-         {:ok, change} <- change_fact(canonical, info, actor, operation),
+  defp change_upvote(canonical, info, actor, operation, command_id) do
+    with {:ok, change} <- change_fact(canonical, info, actor, operation),
          {:ok, _} <- sync_state(canonical, actor, operation, change),
          {:ok, _} <- record_metric(canonical, operation, change, command_id),
          {:ok, _} <- maybe_achieve(canonical, actor, operation, change),
          {:ok, _} <- enqueue_effect(canonical, operation, actor, command_id, change) do
-      {:ok,
-       %Confirmation{
-         data: %{
-           "target_id" => to_string(canonical.id),
-           "target_type" => interaction_resource_type(canonical),
-           "operation" => Atom.to_string(operation),
-           "outcome" => Atom.to_string(change)
-         }
-       }}
+      {:ok, {canonical, change}}
     end
   end
 
-  defp require_command_id(command_id) when is_binary(command_id), do: {:ok, command_id}
-  defp require_command_id(_command_id), do: {:error, CMS.ErrorCat.command_id_required()}
-
-  defp upvote_command(:add), do: :upvote_add
-  defp upvote_command(:remove), do: :upvote_remove
+  defp confirmation(canonical, operation, change) do
+    {:ok,
+     %Confirmation{
+       data: %{
+         "target_id" => to_string(canonical.id),
+         "target_type" => interaction_resource_type(canonical),
+         "operation" => Atom.to_string(operation),
+         "outcome" => Atom.to_string(change)
+       }
+     }}
+  end
 
   defp sync_state(_canonical, _actor, _operation, :unchanged), do: {:ok, :pass}
 
@@ -157,16 +172,14 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
   defp author_user(%{author: %{user_id: user_id}}), do: %User{id: user_id}
   defp author_user(%{author_id: author_id}), do: %User{id: Repo.get!(Author, author_id).user_id}
 
-  defp present_reaction({:ok, %Confirmation{data: data}}, input, command_id) do
+  defp present_reaction(%Confirmation{data: data}, input, command_id) do
     outcome = if data["outcome"] == "unchanged", do: :unchanged, else: :changed
     {:ok, put_reaction_metadata(input, command_id, outcome)}
   end
 
-  defp present_reaction({:ok, data}, input, command_id) when is_map(data) do
-    present_reaction({:ok, %Confirmation{data: data}}, input, command_id)
+  defp present_reaction(data, input, command_id) when is_map(data) do
+    present_reaction(%Confirmation{data: data}, input, command_id)
   end
-
-  defp present_reaction(error, _input, _command_id), do: error
 
   defp put_reaction_metadata(canonical, command_id, outcome) do
     canonical

@@ -44,7 +44,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
       end
     end)
 
-    workflow(fn %{actor: authorized_actor, application_decision: decision} ->
+    change(fn %{actor: authorized_actor, application_decision: decision} ->
       submit_workflow(attrs, authorized_actor, decision, command_id)
     end)
 
@@ -142,7 +142,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
       })
       |> Persist.insert_event()
     end)
-    |> Transaction.run()
+    |> Transaction.join()
     |> normalize_submit_result(user.id, submit_command_id, prepared.fingerprint)
   end
 

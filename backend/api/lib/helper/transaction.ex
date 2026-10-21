@@ -25,6 +25,16 @@ defmodule Helper.Transaction do
   @doc false
   def run(%Ecto.Multi{} = multi), do: Repo.transact(multi)
 
+  @doc "Executes an Ecto.Multi by joining a transaction already owned by the caller."
+  @spec join(Ecto.Multi.t()) :: {:ok, map()} | {:error, term()}
+  def join(%Ecto.Multi{} = multi) do
+    if Repo.in_transaction?() do
+      Repo.transact(multi)
+    else
+      {:error, :transaction_required}
+    end
+  end
+
   @doc """
   Lock one or more existing rows with `FOR UPDATE` and execute transaction.
 

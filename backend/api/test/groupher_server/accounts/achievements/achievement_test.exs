@@ -84,6 +84,14 @@ defmodule GroupherServer.Test.Accounts.Achievement do
       assert achievement.followers_count == 0
       assert achievement.reputation == 0
     end
+
+    test "Accounts.downgrade_achievement delegates bounded collect downgrade", ~m(user)a do
+      {:ok, _achievement} = Accounts.Achievements.achieve(user, :inc, :collect)
+      {:ok, achievement} = Accounts.Achievements.downgrade_achievement(user, :collect, 1)
+
+      assert achievement.articles_collects_count == 0
+      assert achievement.reputation == 0
+    end
   end
 
   describe "[follow achievement]" do

@@ -4,8 +4,29 @@ defmodule GroupherServer.Test.Helper.Transaction do
   use GroupherServer.TestMate, async: false
 
   alias GroupherServer.CMS
+  alias GroupherServer.Repo
   alias CMS.Model.Community
   alias Helper.Transaction
+
+  describe "join/1" do
+    test "requires a caller-owned transaction" do
+      result =
+        Task.async(fn -> Transaction.join(Ecto.Multi.new()) end)
+        |> Task.await()
+
+      assert result == {:error, :transaction_required}
+    end
+
+    test "executes an Ecto.Multi inside the caller-owned transaction" do
+      multi =
+        Ecto.Multi.run(Ecto.Multi.new(), :joined, fn _repo, _changes ->
+          {:ok, :pass}
+        end)
+
+      assert {:ok, %{joined: :pass}} =
+               Repo.transact(fn -> Transaction.join(multi) end)
+    end
+  end
 
   describe "lock_global/2" do
     test "works with string lock key" do

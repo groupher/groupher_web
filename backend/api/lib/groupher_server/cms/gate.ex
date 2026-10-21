@@ -71,6 +71,11 @@ defmodule GroupherServer.CMS.Gate do
     Access.check_in_transaction(actor, action, resource, community, branch_id)
   end
 
+  @doc "Loads and authorizes an Article or Comment interaction target in a pipeline gate stage."
+  def check_interaction_in_transaction(actor, action, resource) do
+    Access.check_interaction_in_transaction(actor, action, resource)
+  end
+
   @doc "Loads and authorizes a Comment and its canonical parent inside the pipeline transaction."
   def check_comment_in_transaction(actor, action, comment) do
     Access.check_comment_in_transaction(actor, action, comment)

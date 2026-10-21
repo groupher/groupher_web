@@ -13,13 +13,16 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
 
   import Ecto.Query
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
-  alias CMS.{Articles.MutationLock, Artiment.Matcher, Gate, Command}
+  alias CMS.{Artiment.Matcher, Gate}
   alias CMS.Comments.States, as: CommentStates
 
-  alias CMS.Interactions.{ErrorCat, Persist, Projection, Transaction}
+  alias CMS.Interactions.{ErrorCat, Persist, Projection}
   alias CMS.Interactions.Reactions.ReportConfirmation, as: Confirmation
   alias CMS.Model.{AbuseReport, Comment, Embeds}
   alias Helper.T
@@ -36,13 +39,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
   """
   @spec add(struct(), String.t(), term(), User.t(), Ecto.UUID.t()) :: T.domain_res(struct())
   def add(artiment, reason, attrs, %User{} = actor, command_id) do
-    execute_command(
-      artiment,
-      actor,
-      :report_add,
-      %{reason: reason, attrs: attrs},
-      command_id
-    )
+    execute_add(artiment, reason, attrs, actor, command_id)
   end
 
   @doc """
@@ -55,97 +52,65 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
   """
   @spec remove(struct(), User.t(), Ecto.UUID.t()) :: T.domain_res(struct())
   def remove(artiment, %User{} = actor, command_id) do
-    execute_command(artiment, actor, :report_remove, %{}, command_id)
+    execute_remove(artiment, actor, command_id)
   end
 
-  defp execute_command(input, actor, operation, params, command_id) do
-    with {:ok, command_id} <- require_command_id(command_id) do
-      %Command{
-        actor: actor,
-        command_id: command_id,
-        operation: operation,
-        target: input,
-        params: params
-      }
-      |> Command.execute(action: &action/1, confirmation: Confirmation)
-      |> present_result(input, actor)
+  @pipeline operation: :report_add,
+            confirmation: Confirmation,
+            target: :input,
+            params: [:reason, :attrs]
+
+  receipt_pipeline execute_add(input, reason, attrs, actor, command_id) do
+    gate(fn _input -> Gate.check_interaction_in_transaction(actor, :report, input) end)
+    change(fn canonical -> add_report(canonical, reason, attrs, actor) end)
+    confirm(&confirmation/1)
+    present(fn confirmation -> present_result(confirmation, input, actor) end)
+  end
+
+  @pipeline operation: :report_remove,
+            confirmation: Confirmation,
+            target: :input,
+            params: []
+
+  receipt_pipeline execute_remove(input, actor, command_id) do
+    gate(fn _input -> Gate.check_interaction_in_transaction(actor, :report, input) end)
+    change(fn canonical -> remove_report(canonical, actor) end)
+    confirm(&confirmation/1)
+    present(fn confirmation -> present_result(confirmation, input, actor) end)
+  end
+
+  defp add_report(canonical, reason, attrs, actor) do
+    with {:ok, info} <- Matcher.match_interaction(canonical),
+         {:ok, report} <- add_fact(info, canonical, reason, attrs, actor),
+         {:ok, _projection} <- Projection.add_report(canonical, actor),
+         {:ok, _} <- maybe_fold_comment(canonical, report, actor) do
+      {:ok, canonical}
     end
   end
 
-  defp action(%{
-         actor: actor,
-         target: input,
-         operation: operation,
-         params: params,
-         command_id: _command_id
-       }) do
-    result =
-      with {:ok, canonical} <-
-             mutate(input, actor, operation, params),
-           {:ok, target_type} <- target_type(canonical) do
-        {:ok,
-         %Confirmation{
-           data: %{
-             "target_id" => to_string(canonical.id),
-             "target_type" => target_type
-           }
-         }}
-      end
-
-    result
+  defp remove_report(canonical, actor) do
+    with {:ok, info} <- Matcher.match_interaction(canonical),
+         {:ok, changed?} <- remove_fact(info, canonical.id, actor),
+         {:ok, _} <- maybe_remove_state(canonical, actor, changed?) do
+      {:ok, canonical}
+    end
   end
 
-  defp mutate(input, actor, :report_add, %{reason: reason, attrs: attrs}) do
-    mutate(input, actor, fn canonical, info ->
-      with {:ok, report} <- add_fact(info, canonical, reason, attrs, actor),
-           {:ok, _projection} <- Projection.add_report(canonical, actor),
-           {:ok, _} <- maybe_fold_comment(canonical, report, actor) do
-        canonical
-      end
-    end)
+  defp confirmation(canonical) do
+    with {:ok, target_type} <- target_type(canonical) do
+      {:ok,
+       %Confirmation{
+         data: %{
+           "target_id" => to_string(canonical.id),
+           "target_type" => target_type
+         }
+       }}
+    end
   end
 
-  defp mutate(input, actor, :report_remove, _params) do
-    mutate(input, actor, fn canonical, info ->
-      with {:ok, changed?} <- remove_fact(info, canonical.id, actor),
-           {:ok, _} <- maybe_remove_state(canonical, actor, changed?) do
-        canonical
-      end
-    end)
-  end
-
-  defp mutate(input, actor, command) do
-    MutationLock.observe_transaction(fn ->
-      transaction = fn ->
-        with {:ok, canonical} <- Gate.access_check(actor, :report, input),
-             {:ok, info} <- Matcher.match_interaction(canonical),
-             {:ok, result} <- normalize_command(command.(canonical, info)) do
-          result
-        else
-          {:error, reason} -> Repo.rollback(reason)
-        end
-      end
-
-      if Repo.in_transaction?() do
-        case transaction.() do
-          {:ok, _result} = result -> result
-          {:error, _reason} = error -> error
-          result -> {:ok, result}
-        end
-      else
-        Transaction.run(transaction)
-      end
-    end)
-  end
-
-  defp present_result({:ok, %Confirmation{}}, input, actor) do
+  defp present_result(%Confirmation{}, input, actor) do
     Gate.access_check(actor, :report, input)
   end
-
-  defp present_result({:error, _reason} = error, _input, _actor), do: error
-
-  defp require_command_id(command_id) when is_binary(command_id), do: {:ok, command_id}
-  defp require_command_id(_command_id), do: {:error, CMS.ErrorCat.command_id_required()}
 
   defp target_type(%Comment{}), do: {:ok, "comment"}
 
@@ -154,9 +119,6 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
   end
 
   defp target_type(_target), do: {:error, ErrorCat.unsupported_artiment("report target")}
-
-  defp normalize_command({:error, _reason} = error), do: error
-  defp normalize_command(result), do: {:ok, result}
 
   defp maybe_remove_state(_canonical, _actor, false), do: {:ok, :pass}
 

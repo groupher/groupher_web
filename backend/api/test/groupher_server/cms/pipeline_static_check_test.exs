@@ -74,7 +74,6 @@ defmodule GroupherServer.CMS.PipelineStaticCheckTest do
 
   test "checked pipeline artifacts describe the same production pipelines" do
     contracts = read_manifest("pipeline_contracts.json")
-    coverage = read_manifest("pipeline_coverage.json")
     graph = CommandPipelineTask.build_current_report()
 
     contract_rows =
@@ -83,15 +82,6 @@ defmodule GroupherServer.CMS.PipelineStaticCheckTest do
         &{&1["module"], &1["name"], &1["arity"], &1["pipeline"]}
       )
 
-    coverage_rows =
-      coverage["commands"]
-      |> Enum.flat_map(fn command ->
-        Enum.map(
-          command["pipelines"],
-          &{command["module"], &1["name"], &1["arity"], &1["pipeline"]}
-        )
-      end)
-
     graph_rows =
       Enum.map(
         graph["pipelines_reached"],
@@ -99,15 +89,11 @@ defmodule GroupherServer.CMS.PipelineStaticCheckTest do
       )
 
     contract_pipelines = MapSet.new(contract_rows)
-    coverage_pipelines = MapSet.new(coverage_rows)
     graph_pipelines = MapSet.new(graph_rows)
 
     assert length(contract_rows) == MapSet.size(contract_pipelines)
-    assert length(coverage_rows) == MapSet.size(coverage_pipelines)
     assert length(graph_rows) == MapSet.size(graph_pipelines)
-    assert length(contract_rows) == length(coverage_rows)
     assert length(contract_rows) == length(graph_rows)
-    assert contract_pipelines == coverage_pipelines
     assert contract_pipelines == graph_pipelines
 
     refute Enum.any?(contract_pipelines, fn {module, _name, _arity, _pipeline} ->

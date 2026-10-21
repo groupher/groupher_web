@@ -23,6 +23,20 @@ defmodule GroupherServer.CMS do
     end
   end
 
+  @doc "Authorizes a canonical interaction resource inside the caller-owned gate stage."
+  @spec authorize_interaction_in_transaction(term(), atom(), struct()) ::
+          {:ok, struct()} | {:error, term()}
+  defdelegate authorize_interaction_in_transaction(actor, action, resource),
+    to: GroupherServer.CMS.Gate,
+    as: :check_interaction_in_transaction
+
+  @doc "Applies one collect fact and its synchronous projections in the caller-owned transaction."
+  @spec apply_collect_change_in_transaction(struct(), struct(), :add | :remove, Ecto.UUID.t()) ::
+          {:ok, {struct(), :changed | :unchanged}} | {:error, term()}
+  defdelegate apply_collect_change_in_transaction(canonical, actor, operation, command_id),
+    to: GroupherServer.CMS.Interactions.Reactions.CollectChange,
+    as: :apply
+
   @doc "Builds an ArticleCollect changeset for an Accounts-owned embedded collection."
   @spec article_collect_changeset(struct(), map()) :: Ecto.Changeset.t()
   def article_collect_changeset(article_collect, attrs) do

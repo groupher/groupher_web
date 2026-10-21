@@ -20,7 +20,7 @@ defmodule GroupherServer.Test.CMS.Comments.DocCommentEmotions do
   describe "[emotion in paged article comment]" do
     test "login user should get viewer reacted status", ~m(community doc user)a do
       total_count = 0
-      page_number = 10
+      page_number = 1
       page_size = 20
 
       all_comment =

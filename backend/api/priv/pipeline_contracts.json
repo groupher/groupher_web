@@ -274,6 +274,22 @@
       "target": "article"
     },
     {
+      "access": "internal",
+      "arity": 2,
+      "module": "GroupherServer.CMS.Articles.Commands.Trash",
+      "name": "run_internal",
+      "operation": "article_trash_internal",
+      "pipeline": "direct_pipeline",
+      "rejection_builder": {
+        "arity": 1,
+        "function": "build_rejection",
+        "module": "GroupherServer.CMS.Articles.Commands.Trash"
+      },
+      "stages": ["prepare", "gate", "change", "on_rejection"],
+      "steps": [],
+      "target": "article"
+    },
+    {
       "access": "user",
       "arity": 5,
       "confirmation": "GroupherServer.CMS.Articles.Commands.BindingConfirmation",
@@ -928,18 +944,9 @@
       "name": "execute_pipeline",
       "operation": "community_application_submit",
       "pipeline": "receipt_pipeline",
-      "stages": ["gate", "workflow", "confirm", "present"],
+      "stages": ["gate", "change", "confirm", "present"],
       "steps": [],
       "target": "actor"
-    },
-    {
-      "arity": 3,
-      "module": "GroupherServer.CMS.CommunityApplications.Commands.Submit",
-      "name": "submit_workflow",
-      "pipeline": "workflow_pipeline",
-      "return": "persist",
-      "stages": [],
-      "steps": ["normalize", "prepare", "persist"]
     },
     {
       "access": "user",
@@ -1236,7 +1243,7 @@
       "name": "run_direct",
       "operation": "doc_move_to_draft_write",
       "pipeline": "direct_pipeline",
-      "stages": ["gate", "change"],
+      "stages": ["prepare", "gate", "change"],
       "steps": [],
       "target": "community"
     },
@@ -1248,7 +1255,7 @@
       "name": "run_receipt",
       "operation": "doc_move_to_draft",
       "pipeline": "receipt_pipeline",
-      "stages": ["gate", "change", "confirm", "present"],
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
       "steps": [],
       "target": "command_target"
     },
@@ -1293,6 +1300,29 @@
       "module": "GroupherServer.CMS.DocTree.Commands.MoveSubtreeToDraft",
       "name": "run_receipt",
       "operation": "doc_move_subtree_to_draft",
+      "pipeline": "receipt_pipeline",
+      "stages": ["gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "command_target"
+    },
+    {
+      "access": "internal",
+      "arity": 2,
+      "module": "GroupherServer.CMS.DocTree.Commands.PermanentlyDeleteTrashItem",
+      "name": "run_internal",
+      "operation": "doc_tree_permanently_delete_trash_item_internal",
+      "pipeline": "direct_pipeline",
+      "stages": ["gate", "change"],
+      "steps": [],
+      "target": "action_or_ref"
+    },
+    {
+      "access": "user",
+      "arity": 6,
+      "confirmation": "GroupherServer.CMS.DocTree.Commands.TrashPermanentDeleteConfirmation",
+      "module": "GroupherServer.CMS.DocTree.Commands.PermanentlyDeleteTrashItem",
+      "name": "run_receipt",
+      "operation": "doc_tree_permanently_delete_trash_item",
       "pipeline": "receipt_pipeline",
       "stages": ["gate", "change", "confirm", "present"],
       "steps": [],
@@ -1422,6 +1452,102 @@
       "stages": ["prepare", "gate", "change"],
       "steps": [],
       "target": "doc_id"
+    },
+    {
+      "access": "user",
+      "arity": 4,
+      "confirmation": "GroupherServer.CMS.Interactions.Reactions.CollectConfirmation",
+      "module": "GroupherServer.CMS.Interactions.Reactions.Collect",
+      "name": "execute_add",
+      "operation": "reaction_collect_add",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "input"
+    },
+    {
+      "access": "user",
+      "arity": 4,
+      "confirmation": "GroupherServer.CMS.Interactions.Reactions.CollectConfirmation",
+      "module": "GroupherServer.CMS.Interactions.Reactions.Collect",
+      "name": "execute_remove",
+      "operation": "reaction_collect_remove",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "input"
+    },
+    {
+      "access": "user",
+      "arity": 5,
+      "confirmation": "GroupherServer.CMS.Interactions.Reactions.EmotionConfirmation",
+      "module": "GroupherServer.CMS.Interactions.Reactions.Emotion",
+      "name": "execute_add",
+      "operation": "emotion_add",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "input"
+    },
+    {
+      "access": "user",
+      "arity": 5,
+      "confirmation": "GroupherServer.CMS.Interactions.Reactions.EmotionConfirmation",
+      "module": "GroupherServer.CMS.Interactions.Reactions.Emotion",
+      "name": "execute_remove",
+      "operation": "emotion_remove",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "input"
+    },
+    {
+      "access": "user",
+      "arity": 5,
+      "confirmation": "GroupherServer.CMS.Interactions.Reactions.ReportConfirmation",
+      "module": "GroupherServer.CMS.Interactions.Reactions.Report",
+      "name": "execute_add",
+      "operation": "report_add",
+      "pipeline": "receipt_pipeline",
+      "stages": ["gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "input"
+    },
+    {
+      "access": "user",
+      "arity": 3,
+      "confirmation": "GroupherServer.CMS.Interactions.Reactions.ReportConfirmation",
+      "module": "GroupherServer.CMS.Interactions.Reactions.Report",
+      "name": "execute_remove",
+      "operation": "report_remove",
+      "pipeline": "receipt_pipeline",
+      "stages": ["gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "input"
+    },
+    {
+      "access": "user",
+      "arity": 4,
+      "confirmation": "GroupherServer.CMS.Interactions.Reactions.UpvoteConfirmation",
+      "module": "GroupherServer.CMS.Interactions.Reactions.Upvote",
+      "name": "execute_add",
+      "operation": "upvote_add",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "input"
+    },
+    {
+      "access": "user",
+      "arity": 4,
+      "confirmation": "GroupherServer.CMS.Interactions.Reactions.UpvoteConfirmation",
+      "module": "GroupherServer.CMS.Interactions.Reactions.Upvote",
+      "name": "execute_remove",
+      "operation": "upvote_remove",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "input"
     },
     {
       "access": "user",

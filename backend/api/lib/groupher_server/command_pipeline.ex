@@ -4,8 +4,9 @@ defmodule GroupherServer.CommandPipeline do
 
   The declaration is intentionally small: a command still owns the private
   business functions, while this module owns the public execution order and
-  the protocol selected by the command (`receipt_pipeline`, `direct_pipeline`,
-  or `workflow_pipeline`).
+  the protocol selected by the command (`receipt_pipeline` or
+  `direct_pipeline`). Complex domain workflows remain ordinary functions and
+  modules called from the command's `change` stage.
 
       Command declaration
         -> pipeline macro
@@ -22,7 +23,6 @@ defmodule GroupherServer.CommandPipeline do
     :gate,
     :lifecycle,
     :change,
-    :workflow,
     :confirm,
     :present,
     :on_rejection,
@@ -46,19 +46,15 @@ defmodule GroupherServer.CommandPipeline do
         only: [
           receipt_pipeline: 2,
           direct_pipeline: 2,
-          workflow_pipeline: 2,
           prepare: 1,
           load: 1,
           gate: 1,
           lifecycle: 1,
           change: 1,
-          workflow: 1,
           confirm: 1,
           present: 1,
           on_rejection: 1,
-          cleanup: 1,
-          step: 2,
-          return: 1
+          cleanup: 1
         ]
 
       @before_compile GroupherServer.CommandPipeline
@@ -71,10 +67,6 @@ defmodule GroupherServer.CommandPipeline do
 
   defmacro direct_pipeline(head, do: body) do
     build_pipeline(__CALLER__, :direct_pipeline, head, body)
-  end
-
-  defmacro workflow_pipeline(head, do: body) do
-    build_workflow(__CALLER__, head, body)
   end
 
   defmacro __before_compile__(env) do
@@ -104,13 +96,10 @@ defmodule GroupherServer.CommandPipeline do
   defmacro gate(value), do: value
   defmacro lifecycle(value), do: value
   defmacro change(value), do: value
-  defmacro workflow(value), do: value
   defmacro confirm(value), do: value
   defmacro present(value), do: value
   defmacro on_rejection(value), do: value
   defmacro cleanup(value), do: value
-  defmacro step(name, value), do: {name, value}
-  defmacro return(value), do: value
 
   defp build_pipeline(caller, pipeline_type, head, body) do
     {name, args} = function_head!(head, pipeline_type)
@@ -158,41 +147,6 @@ defmodule GroupherServer.CommandPipeline do
       end
 
       Module.delete_attribute(__MODULE__, :pipeline)
-    end
-  end
-
-  defp build_workflow(caller, head, body) do
-    {name, args} = function_head!(head, :workflow_pipeline)
-    forms = body_forms(body)
-    {steps, return_name} = parse_workflow!(forms, caller)
-
-    contract = %{
-      pipeline: :workflow_pipeline,
-      module: caller.module,
-      adapter: pipeline_adapter(caller),
-      name: name,
-      arity: length(args),
-      steps: Enum.map(steps, &elem(&1, 0)),
-      return: return_name
-    }
-
-    args_map = args_map_ast(args)
-    step_ast = workflow_steps_ast(steps)
-
-    quote do
-      @pipeline_contracts unquote(Macro.escape(contract))
-
-      def unquote(name)(unquote_splicing(args)) do
-        input = %{arguments: unquote(args_map)}
-
-        Runner.run_workflow(
-          __MODULE__,
-          unquote(Macro.escape(contract)),
-          input,
-          unquote(step_ast),
-          unquote(return_name)
-        )
-      end
     end
   end
 
@@ -275,45 +229,6 @@ defmodule GroupherServer.CommandPipeline do
     end)
   end
 
-  defp parse_workflow!(forms, caller) do
-    {steps, returns} =
-      Enum.reduce(forms, {[], []}, fn
-        {:step, _meta, [name, callback]}, {steps, returns} when is_atom(name) ->
-          validate_callback!("step #{name}", callback, caller, 1)
-          {[{name, callback} | steps], returns}
-
-        {:return, _meta, [name]}, {steps, returns} when is_atom(name) ->
-          {steps, [name | returns]}
-
-        {stage, _meta, args}, _acc ->
-          raise ArgumentError, "workflow_pipeline does not support #{stage}/#{length(args)}"
-
-        other, _acc ->
-          raise ArgumentError, "unknown workflow form: #{Macro.to_string(other)}"
-      end)
-
-    steps = Enum.reverse(steps)
-    returns = Enum.reverse(returns)
-
-    if steps == [], do: raise(ArgumentError, "workflow_pipeline needs at least one step")
-
-    if length(returns) != 1 do
-      raise(ArgumentError, "workflow_pipeline needs exactly one return")
-    end
-
-    return_name = List.first(returns)
-
-    if return_name not in Enum.map(steps, &elem(&1, 0)) do
-      raise(ArgumentError, "workflow return references unknown step #{inspect(return_name)}")
-    end
-
-    if length(Enum.uniq(Enum.map(steps, &elem(&1, 0)))) != length(steps) do
-      raise(ArgumentError, "workflow step names must be unique")
-    end
-
-    {steps, return_name}
-  end
-
   defp validate_pipeline_structure!(pipeline_type, stages) do
     names = Enum.map(stages, &elem(&1, 0))
 
@@ -325,10 +240,6 @@ defmodule GroupherServer.CommandPipeline do
 
     unless indexes == Enum.sort(indexes) do
       raise(ArgumentError, "pipeline stages must be declared in execution order")
-    end
-
-    if :change in names and :workflow in names do
-      raise(ArgumentError, "pipeline cannot declare both change and workflow")
     end
 
     if pipeline_type == :receipt_pipeline and :confirm not in names do
@@ -366,71 +277,68 @@ defmodule GroupherServer.CommandPipeline do
 
   defp validate_compiled_contracts!(contracts, module) do
     Enum.each(contracts, fn contract ->
-      unless contract.pipeline == :workflow_pipeline do
-        unless is_atom(contract.operation) do
-          raise(
-            ArgumentError,
-            "#{inspect(module)} #{contract.pipeline} requires @pipeline operation"
-          )
-        end
-
-        unless contract.access in [:user, :internal, :open] do
-          raise(
-            ArgumentError,
-            "#{inspect(module)} @pipeline access must be :user, :internal, or :open"
-          )
-        end
-
-        validate_target!(contract, module)
-        validate_argument_reference!(contract, module, :operation_ref)
-
-        if contract.pipeline == :receipt_pipeline and is_nil(contract.params) do
-          raise(ArgumentError, "#{inspect(module)} receipt_pipeline requires params")
-        end
-
-        if contract.access == :user and :gate not in contract.stages do
-          raise(ArgumentError, "#{inspect(module)} user pipeline requires gate")
-        end
-
-        if contract.access == :user and is_nil(contract.actor) do
-          raise(
-            ArgumentError,
-            "#{inspect(module)} user pipeline requires actor/user/author argument"
-          )
-        end
-
-        if contract.access == :open and :gate in contract.stages do
-          raise(ArgumentError, "#{inspect(module)} open pipeline cannot declare gate")
-        end
-
-        if contract.access == :open and :on_rejection in contract.stages and
-             is_nil(contract.actor) do
-          raise(
-            ArgumentError,
-            "#{inspect(module)} open pipeline with on_rejection requires actor/user/author argument"
-          )
-        end
-
-        if not (:change in contract.stages or :workflow in contract.stages) do
-          raise(ArgumentError, "#{inspect(module)} pipeline requires change or workflow")
-        end
-
-        if contract.pipeline == :receipt_pipeline and not is_atom(contract.confirmation) do
-          raise(ArgumentError, "#{inspect(module)} receipt_pipeline requires confirmation")
-        end
-
-        if contract.pipeline == :direct_pipeline and
-             (:confirm in contract.stages or not is_nil(contract.confirmation)) do
-          raise(
-            ArgumentError,
-            "#{inspect(module)} direct_pipeline cannot declare confirmation or confirm"
-          )
-        end
-
-        validate_adapter!(contract, module)
-
-        validate_rejection_builder!(contract, module)
+      unless is_atom(contract.operation) do
+        raise(
+          ArgumentError,
+          "#{inspect(module)} #{contract.pipeline} requires @pipeline operation"
+        )
       end
+
+      unless contract.access in [:user, :internal, :open] do
+        raise(
+          ArgumentError,
+          "#{inspect(module)} @pipeline access must be :user, :internal, or :open"
+        )
+      end
+
+      validate_target!(contract, module)
+      validate_argument_reference!(contract, module, :operation_ref)
+
+      if contract.pipeline == :receipt_pipeline and is_nil(contract.params) do
+        raise(ArgumentError, "#{inspect(module)} receipt_pipeline requires params")
+      end
+
+      if contract.access == :user and :gate not in contract.stages do
+        raise(ArgumentError, "#{inspect(module)} user pipeline requires gate")
+      end
+
+      if contract.access == :user and is_nil(contract.actor) do
+        raise(
+          ArgumentError,
+          "#{inspect(module)} user pipeline requires actor/user/author argument"
+        )
+      end
+
+      if contract.access == :open and :gate in contract.stages do
+        raise(ArgumentError, "#{inspect(module)} open pipeline cannot declare gate")
+      end
+
+      if contract.access == :open and :on_rejection in contract.stages and is_nil(contract.actor) do
+        raise(
+          ArgumentError,
+          "#{inspect(module)} open pipeline with on_rejection requires actor/user/author argument"
+        )
+      end
+
+      if :change not in contract.stages do
+        raise(ArgumentError, "#{inspect(module)} pipeline requires change")
+      end
+
+      if contract.pipeline == :receipt_pipeline and not is_atom(contract.confirmation) do
+        raise(ArgumentError, "#{inspect(module)} receipt_pipeline requires confirmation")
+      end
+
+      if contract.pipeline == :direct_pipeline and
+           (:confirm in contract.stages or not is_nil(contract.confirmation)) do
+        raise(
+          ArgumentError,
+          "#{inspect(module)} direct_pipeline cannot declare confirmation or confirm"
+        )
+      end
+
+      validate_adapter!(contract, module)
+
+      validate_rejection_builder!(contract, module)
     end)
   end
 
@@ -616,9 +524,5 @@ defmodule GroupherServer.CommandPipeline do
       stage ->
         stage
     end)
-  end
-
-  defp workflow_steps_ast(steps) do
-    Enum.map(steps, fn {name, callback} -> {name, callback} end)
   end
 end

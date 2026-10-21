@@ -19,6 +19,10 @@ defmodule GroupherServer.CMS.Gate.Access do
   defdelegate check_in_transaction(arg1, arg2, arg3, arg4, arg5),
     to: GroupherServer.CMS.Gate.Access.Query
 
+  @doc "Delegates the interaction-specific join-only check to the owning implementation."
+  defdelegate check_interaction_in_transaction(actor, action, resource),
+    to: GroupherServer.CMS.Gate.Access.Query
+
   @doc "Delegates the Comment-specific join-only check to the owning implementation."
   defdelegate check_comment_in_transaction(actor, action, comment),
     to: GroupherServer.CMS.Gate.Access.Query

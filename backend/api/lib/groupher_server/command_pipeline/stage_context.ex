@@ -3,8 +3,8 @@ defmodule GroupherServer.CommandPipeline.StageContext do
   Publishes the pipeline stage currently owned by the runner process.
 
   Gate reads this context to reject join-only authorization outside the
-  declared `gate` stage. Nested workflow callbacks temporarily replace the
-  stage and the `after` block always restores the previous value, including
+  declared `gate` stage. Nested runner callbacks temporarily replace the stage,
+  and the `after` block always restores the previous value, including
   when a callback raises or throws.
 
       Pipeline.Runner callback

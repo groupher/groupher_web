@@ -39,6 +39,7 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
              GroupherServer.CMS.DocTree,
              GroupherServer.CMS.Docs,
              GroupherServer.CMS.FrontDesk,
+             GroupherServer.CMS.Interactions,
              GroupherServer.CMS.Kanban,
              GroupherServer.CMS.Press,
              GroupherServer.CMS.Snapshot,
@@ -106,7 +107,7 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
 
     all_pipeline_keys =
       functions
-      |> Enum.filter(&(&1.kind in [:receipt_pipeline, :direct_pipeline, :workflow_pipeline]))
+      |> Enum.filter(&(&1.kind in [:receipt_pipeline, :direct_pipeline]))
       |> MapSet.new(&function_key/1)
 
     cms_pipeline_keys = MapSet.new(Map.keys(pipeline_contracts))
@@ -138,7 +139,7 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     unreached_user_pipelines =
       pipeline_contracts
       |> Map.values()
-      |> Enum.filter(&(&1.pipeline != :workflow_pipeline and &1.access == :user))
+      |> Enum.filter(&(&1.access == :user))
       |> Enum.reject(&MapSet.member?(user_reachable_keys, {&1.module, &1.name, &1.arity}))
       |> Enum.sort_by(&{Atom.to_string(&1.module), &1.name, &1.arity})
 
@@ -152,14 +153,14 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     unreached_internal_pipelines =
       pipeline_contracts
       |> Map.values()
-      |> Enum.filter(&(&1.pipeline != :workflow_pipeline and &1.access == :internal))
+      |> Enum.filter(&(&1.access == :internal))
       |> Enum.reject(&MapSet.member?(internal_reachable_keys, {&1.module, &1.name, &1.arity}))
       |> Enum.sort_by(&{Atom.to_string(&1.module), &1.name, &1.arity})
 
     internal_violations =
       reached_pipelines
       |> Enum.filter(fn contract ->
-        contract.pipeline != :workflow_pipeline and contract.access == :internal and
+        contract.access == :internal and
           MapSet.member?(user_reachable_keys, {contract.module, contract.name, contract.arity})
       end)
       |> Enum.map(&pipeline_violation(&1, reachable_edges, modules))
@@ -172,7 +173,7 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
 
     pipeline_function_kinds =
       functions
-      |> Enum.filter(&(&1.kind in [:receipt_pipeline, :direct_pipeline, :workflow_pipeline]))
+      |> Enum.filter(&(&1.kind in [:receipt_pipeline, :direct_pipeline]))
       |> Enum.filter(&Map.has_key?(pipeline_contracts, function_key(&1)))
       |> Map.new(&{function_key(&1), &1.kind})
 
@@ -183,9 +184,6 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
         function_keys,
         pipeline_function_kinds
       )
-
-    invalid_workflow_calls =
-      invalid_workflow_calls(reachable_edges, pipeline_contracts)
 
     unpipelined_command_writes =
       unpipelined_command_writes(
@@ -227,7 +225,6 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
       "summary" => %{
         "gate_stage_violations" => length(gate_stage_violations),
         "internal_pipeline_violations" => length(internal_violations),
-        "invalid_workflow_calls" => length(invalid_workflow_calls),
         "legacy_commands_reached" => length(legacy_commands),
         "mixed_protocol_entries" => length(mixed_protocol_entries),
         "stage_analysis_errors" => length(stage_analysis_errors),
@@ -241,7 +238,6 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
         "unresolved_edges" => unresolved_count
       },
       "top_level_pipeline_calls" => Enum.map(top_level_pipeline_calls, &edge_manifest/1),
-      "invalid_workflow_calls" => Enum.map(invalid_workflow_calls, &edge_manifest/1),
       "mixed_protocol_entries" => mixed_protocol_entries,
       "unpipelined_command_writes" => Enum.map(unpipelined_command_writes, &edge_manifest/1),
       "unreached_internal_pipelines" =>
@@ -484,7 +480,7 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
   end
 
   defp function_definition({kind, meta, [head, opts]}, module, file, aliases)
-       when kind in [:receipt_pipeline, :direct_pipeline, :workflow_pipeline] and is_list(opts) do
+       when kind in [:receipt_pipeline, :direct_pipeline] and is_list(opts) do
     case function_head(head) do
       {name, args} ->
         [
@@ -530,7 +526,7 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
       |> Enum.map(&Map.put(&1, :module, module.module))
 
     roles =
-      if pipelines != [] and command_source?(module.file),
+      if pipelines != [],
         do: Enum.uniq([:command | module.roles]),
         else: module.roles
 
@@ -603,14 +599,7 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     |> Enum.flat_map(fn contract ->
       key = {contract.module, contract.name, contract.arity}
 
-      expected =
-        case contract.pipeline do
-          :workflow_pipeline ->
-            MapSet.new(Enum.map(Map.get(contract, :steps, []), &{:workflow, &1}))
-
-          _pipeline ->
-            MapSet.new(contract.stages)
-        end
+      expected = MapSet.new(contract.stages)
 
       found = Map.get(actual, key, MapSet.new())
 
@@ -637,13 +626,12 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
 
     top_level_keys =
       pipeline_function_kinds
-      |> Enum.filter(fn {_key, pipeline} -> pipeline != :workflow_pipeline end)
       |> MapSet.new(&elem(&1, 0))
 
     functions
     |> Enum.filter(fn function ->
       :command in function.roles and
-        function.kind not in [:receipt_pipeline, :direct_pipeline, :workflow_pipeline]
+        function.kind not in [:receipt_pipeline, :direct_pipeline]
     end)
     |> Enum.uniq_by(&function_key/1)
     |> Enum.flat_map(fn function ->
@@ -681,7 +669,6 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     |> Enum.sort_by(&inspect(&1["entry"]))
   end
 
-  defp stage_manifest({:workflow, name}), do: "workflow:#{name}"
   defp stage_manifest(stage), do: Atom.to_string(stage)
 
   defp reverse_reachable_keys(target_keys, edges, function_keys) do
@@ -754,28 +741,6 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     |> Enum.sort_by(&{inspect(&1.from), inspect(&1.to)})
   end
 
-  defp invalid_workflow_calls(edges, pipeline_contracts) do
-    workflow_keys =
-      pipeline_contracts
-      |> Enum.filter(fn {_key, contract} -> contract.pipeline == :workflow_pipeline end)
-      |> Map.new()
-      |> Map.keys()
-      |> MapSet.new()
-
-    edges
-    |> Enum.filter(&(&1[:to] && MapSet.member?(workflow_keys, &1.to)))
-    |> Enum.reject(fn edge ->
-      case Map.get(pipeline_contracts, edge.from) do
-        %{pipeline: pipeline, stages: stages}
-        when pipeline in [:receipt_pipeline, :direct_pipeline] ->
-          :workflow in stages
-
-        _ ->
-          false
-      end
-    end)
-  end
-
   defp unpipelined_command_writes(
          functions,
          root_keys,
@@ -801,7 +766,7 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     functions
     |> Enum.filter(fn function ->
       :command in function.roles and
-        function.kind not in [:receipt_pipeline, :direct_pipeline, :workflow_pipeline] and
+        function.kind not in [:receipt_pipeline, :direct_pipeline] and
         MapSet.member?(pre_pipeline_keys, function_key(function))
     end)
     |> Enum.flat_map(fn function ->
@@ -1184,7 +1149,7 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
          summary["unreached_internal_pipelines"] > 0 or
          summary["internal_pipeline_violations"] > 0 or report["top_level_pipeline_calls"] != [] or
          report["legacy_commands_reached"] != [] or
-         report["invalid_workflow_calls"] != [] or report["gate_stage_violations"] != [] or
+         report["gate_stage_violations"] != [] or
          report["stage_analysis_errors"] != [] or
          report["mixed_protocol_entries"] != [] or
          report["unpipelined_command_writes"] != [] do
@@ -1195,7 +1160,7 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
   defp summary_line(report) do
     summary = report["summary"]
 
-    "roots=#{summary["reachable_roots"]}, edges=#{summary["reachable_edges"]}, pipelines=#{summary["pipelines_reached"]}, unreached-user=#{summary["unreached_user_pipelines"]}, unreached-internal=#{summary["unreached_internal_pipelines"]}, unresolved=#{summary["unresolved_edges"]}, internal=#{summary["internal_pipeline_violations"]}, top-level=#{summary["top_level_pipeline_calls"]}, workflow=#{summary["invalid_workflow_calls"]}, stage-analysis=#{summary["stage_analysis_errors"]}, gate-stage=#{summary["gate_stage_violations"]}, mixed-protocol=#{summary["mixed_protocol_entries"]}, unpipelined=#{summary["unpipelined_command_writes"]}"
+    "roots=#{summary["reachable_roots"]}, edges=#{summary["reachable_edges"]}, pipelines=#{summary["pipelines_reached"]}, unreached-user=#{summary["unreached_user_pipelines"]}, unreached-internal=#{summary["unreached_internal_pipelines"]}, unresolved=#{summary["unresolved_edges"]}, internal=#{summary["internal_pipeline_violations"]}, top-level=#{summary["top_level_pipeline_calls"]}, stage-analysis=#{summary["stage_analysis_errors"]}, gate-stage=#{summary["gate_stage_violations"]}, mixed-protocol=#{summary["mixed_protocol_entries"]}, unpipelined=#{summary["unpipelined_command_writes"]}"
   end
 
   defp relative_source(source), do: ProjectPaths.relative(source)
