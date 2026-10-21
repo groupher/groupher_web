@@ -75,20 +75,22 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
 
   defp apply_remove(prepared, article, user) do
     with {:ok, article_collect} <- CMS.interactions_persist_find_collect(article, user),
-         {:ok, _canonical} <- maybe_undo_collect(prepared, user, article_collect),
-         {:ok, folder} <-
+         {:ok, removal} <-
            Persist.remove_in_transaction(
              prepared.folder,
              prepared.thread,
-             prepared.binding
+             prepared.binding,
+             prepared.user_id
            ),
-         {:ok, _detached} <- maybe_detach_collect(article_collect, folder) do
+         {:ok, _canonical} <- maybe_undo_collect(prepared, user, removal),
+         {:ok, _detached} <- maybe_detach_collect(article_collect, removal) do
+      folder = removal.folder
       {:ok, folder}
     end
   end
 
-  defp maybe_undo_collect(prepared, user, article_collect) do
-    if length(article_collect.collect_folders) <= 1 do
+  defp maybe_undo_collect(prepared, user, removal) do
+    if not removal.remaining_in_account? do
       CMS.apply_collect_change_in_transaction(
         prepared.canonical,
         user,
@@ -100,9 +102,9 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
     end
   end
 
-  defp maybe_detach_collect(article_collect, folder) do
-    if length(article_collect.collect_folders) > 1 do
-      CMS.interactions_persist_detach_collect_folder(article_collect, folder)
+  defp maybe_detach_collect(article_collect, removal) do
+    if removal.remaining_in_account? and not removal.remaining_in_folder? do
+      CMS.interactions_persist_detach_collect_folder(article_collect, removal.folder)
     else
       {:ok, :pass}
     end

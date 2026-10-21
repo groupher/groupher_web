@@ -9,6 +9,7 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
   alias Accounts.Model.Embeds
   alias Accounts.Model.CollectFolderEntry
   alias CMS.Model.ArticleCollect
+  alias CMS.Model.ArticleBinding
 
   @default_meta Embeds.CollectFolderMeta.default_meta()
 
@@ -232,6 +233,87 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
 
       {:ok, _} = CollectFolders.remove(post, folder2.id, user)
       assert {:error, _} = ORM.find_by(ArticleCollect, %{user_id: user.id, article_id: post.id})
+    end
+
+    test "removing one binding keeps the collect fact while another binding remains in the same folder",
+         ~m()a do
+      {source, post, _attrs, user} = mock_article(:post)
+      {:ok, %{binding: source_binding}} = CMS.articles_bindings_get(post, source)
+      {:ok, destination} = mock_community(user)
+
+      assert {:ok, _mirrored} =
+               CMS.Articles.mirror(
+                 destination,
+                 post.article_id,
+                 [],
+                 user,
+                 source,
+                 Ecto.UUID.generate()
+               )
+
+      {:ok, folder} = CollectFolders.create(%{title: "multi-binding folder"}, user)
+      source_post = %{post | community: source}
+      {:ok, folder} = CollectFolders.add(source_post, folder.id, user)
+
+      destination_binding =
+        Repo.get_by!(ArticleBinding,
+          article_id: post.article_id,
+          community_id: destination.id
+        )
+
+      # This is the persisted shape produced by binding-scoped backfills: one
+      # folder projection can contain multiple bindings for the same Article.
+      assert {:ok, %CollectFolderEntry{}} =
+               %CollectFolderEntry{}
+               |> CollectFolderEntry.changeset(%{
+                 folder_id: folder.id,
+                 article_id: post.article_id,
+                 article_binding_id: destination_binding.id
+               })
+               |> Repo.insert()
+
+      {:ok, folder} =
+        folder
+        |> Ecto.Changeset.change(%{
+          total_count: folder.total_count + 1,
+          meta: %{folder.meta | post_count: folder.meta.post_count + 1}
+        })
+        |> Repo.update()
+
+      assert folder.total_count == 2
+      assert {:ok, _folder} = CollectFolders.remove(source_post, folder.id, user)
+
+      assert Repo.get_by!(CollectFolderEntry,
+               folder_id: folder.id,
+               article_binding_id: destination_binding.id
+             )
+
+      refute Repo.get_by(CollectFolderEntry,
+               folder_id: folder.id,
+               article_binding_id: source_binding.id
+             )
+
+      assert {:ok, collect} =
+               ORM.find_by(ArticleCollect, user_id: user.id, article_id: post.article_id)
+
+      assert Enum.map(collect.collect_folders, & &1.id) == [folder.id]
+      assert Repo.get!(Accounts.Model.CollectFolder, folder.id).total_count == 1
+    end
+
+    test "removing a binding absent from the folder leaves counters and other membership unchanged",
+         ~m(user post)a do
+      {:ok, folder} = CollectFolders.create(%{title: "actual folder"}, user)
+      {:ok, empty_folder} = CollectFolders.create(%{title: "empty folder"}, user)
+      {:ok, _folder} = CollectFolders.add(post, folder.id, user)
+
+      assert {:error, reason} = CollectFolders.remove(post, empty_folder.id, user)
+      assert reason |> is_error?({{:account, :collection}, :not_collected_in_folder})
+
+      assert Repo.get!(Accounts.Model.CollectFolder, empty_folder.id).total_count == 0
+      assert Repo.get_by!(CollectFolderEntry, folder_id: folder.id, article_id: post.id)
+
+      assert {:ok, _collect} =
+               ORM.find_by(ArticleCollect, user_id: user.id, article_id: post.id)
     end
 
     test "add post to exist collect-folder should update meta", ~m(user post post2)a do

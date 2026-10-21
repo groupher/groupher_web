@@ -112,7 +112,7 @@ defmodule GroupherServer.Accounts.CollectFolders.Persist do
          {:ok, binding} <- resolve_binding(article),
          {:ok, folder} <- ORM.find(CollectFolder, folder_id),
          true <- user.id == folder.user_id do
-      {:ok, %{thread: thread, folder: folder, binding: binding}}
+      {:ok, %{thread: thread, folder: folder, binding: binding, user_id: user.id}}
     else
       false -> {:error, ErrorCat.private_collect_folder("folder does not belong to user")}
       error -> error
@@ -145,14 +145,10 @@ defmodule GroupherServer.Accounts.CollectFolders.Persist do
 
       Accounts.CollectFolders.Persist.remove_in_transaction(folder, :post, binding)
   """
-  @spec remove_in_transaction(CollectFolder.t(), atom(), ArticleBinding.t()) ::
-          T.domain_res(CollectFolder.t())
-  def remove_in_transaction(folder, thread, %ArticleBinding{} = binding) do
-    update_folder_meta(thread, folder, %{
-      article_id: binding.article_id,
-      article_binding_id: binding.id,
-      operation: :remove
-    })
+  @spec remove_in_transaction(CollectFolder.t(), atom(), ArticleBinding.t(), T.id()) ::
+          T.domain_res(map())
+  def remove_in_transaction(folder, thread, %ArticleBinding{} = binding, user_id) do
+    remove_folder_entry(thread, folder, binding, user_id)
   end
 
   defp entry_not_in_folder(folder_id, binding_id) do
@@ -185,6 +181,73 @@ defmodule GroupherServer.Accounts.CollectFolders.Persist do
            |> Ecto.Changeset.change(%{total_count: total_count, last_updated: last_updated})
            |> Repo.update(),
          {:ok, _entry} <- persist_entry(entry_attrs, folder.id) do
+      {:ok, folder}
+    end
+  end
+
+  defp remove_folder_entry(thread, folder, binding, user_id) do
+    folder = Repo.get!(CollectFolder, folder.id, lock: "FOR UPDATE")
+
+    entry_query =
+      from(entry in CollectFolderEntry,
+        where:
+          entry.folder_id == ^folder.id and
+            entry.article_binding_id == ^binding.id,
+        lock: "FOR UPDATE"
+      )
+
+    case Repo.one(entry_query) do
+      nil ->
+        {:error, ErrorCat.not_collected_in_folder("article is not collected in this folder")}
+
+      entry ->
+        with {1, _} <-
+               Repo.delete_all(from(row in CollectFolderEntry, where: row.id == ^entry.id)),
+             {:ok, updated_folder} <- decrement_folder_meta(thread, folder) do
+          remaining_in_folder? =
+            Repo.exists?(
+              from(row in CollectFolderEntry,
+                where: row.folder_id == ^folder.id and row.article_id == ^binding.article_id
+              )
+            )
+
+          remaining_in_account? =
+            Repo.exists?(
+              from(row in CollectFolderEntry,
+                join: owned_folder in CollectFolder,
+                on: owned_folder.id == row.folder_id,
+                where: owned_folder.user_id == ^user_id and row.article_id == ^binding.article_id
+              )
+            )
+
+          {:ok,
+           %{
+             folder: updated_folder,
+             remaining_in_folder?: remaining_in_folder?,
+             remaining_in_account?: remaining_in_account?
+           }}
+        else
+          error -> error
+        end
+    end
+  end
+
+  defp decrement_folder_meta(thread, folder) do
+    delta = -1
+    total_count = max(folder.total_count + delta, 0)
+    thread_count = max(Map.get(folder.meta, :"#{thread}_count") + delta, 0)
+    last_updated = Datetime.today() |> Datetime.to_datetime()
+
+    meta =
+      folder.meta
+      |> Map.merge(%{"has_#{thread}": thread_count > 0})
+      |> Map.merge(%{"#{thread}_count": thread_count})
+
+    with {:ok, folder} <- ORM.update_meta(folder, meta),
+         {:ok, folder} <-
+           folder
+           |> Ecto.Changeset.change(%{total_count: total_count, last_updated: last_updated})
+           |> Repo.update() do
       {:ok, folder}
     end
   end
