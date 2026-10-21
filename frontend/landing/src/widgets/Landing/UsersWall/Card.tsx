@@ -18,7 +18,7 @@ const Card: FC<TProps> = ({ content, user, color }) => {
       <div className={s.header}>
         <img
           className={s.avatar}
-          src={user.avatar}
+          src={user.avatar ?? undefined}
           width={40}
           height={40}
           alt='user'
