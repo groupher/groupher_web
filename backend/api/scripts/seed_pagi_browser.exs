@@ -1,9 +1,9 @@
 import Ecto.Query
 
-alias GroupherServer.{CMS, Repo}
-alias GroupherServer.CMS.Model.{Article, ArticleBinding, ArticlePublic, Comment, Community}
-alias GroupherServer.CMS.Seeds.Helper, as: SeedHelper
-alias GroupherServer.Support.Factory
+alias GroupherServer.{CMS, Repo, Support}
+alias CMS.Model.{Article, ArticleBinding, ArticlePublic, Comment, Community}
+alias CMS.Seeds.Helper, as: SeedHelper
+alias Support.Factory
 
 page_size = 20
 page_count = 3
@@ -43,34 +43,38 @@ Logger.configure(level: :warning)
 community = Repo.get_by!(Community, slug: "home")
 target_count = page_size * page_count
 
-current_count =
+existing_fixture_titles =
   ArticleBinding
   |> join(:inner, [binding], article in Article, on: article.id == binding.article_id)
-  |> where(
-    [binding, article],
-    binding.community_id == ^community.id and binding.visible and article.thread == :post
+  |> join(:inner, [_binding, article], public in ArticlePublic,
+    on: public.article_id == article.id
   )
-  |> Repo.aggregate(:count)
+  |> where(
+    [binding, article, public],
+    binding.community_id == ^community.id and binding.visible and article.thread == :post and
+      like(public.title, "Pagi Browser Fixture %")
+  )
+  |> select([_binding, _article, public], public.title)
+  |> Repo.all()
+  |> MapSet.new()
 
-missing_count = max(target_count - current_count, 0)
 {:ok, author} = SeedHelper.seed_bot()
 
 seed_result =
-  if missing_count == 0 do
-    {:ok, 0}
-  else
-    Enum.reduce_while(1..missing_count, {:ok, 0}, fn index, {:ok, count} ->
-      title =
-        "Pagi Browser Fixture #{String.pad_leading(Integer.to_string(current_count + index), 3, "0")}"
+  Enum.reduce_while(1..target_count, {:ok, 0}, fn index, {:ok, count} ->
+    title = "Pagi Browser Fixture #{String.pad_leading(Integer.to_string(index), 3, "0")}"
 
+    if MapSet.member?(existing_fixture_titles, title) do
+      {:cont, {:ok, count}}
+    else
       attrs = Factory.mock_attrs(:post, %{community_id: community.id, title: title})
 
       case CMS.Articles.create(community, :post, attrs, author) do
         {:ok, _article} -> {:cont, {:ok, count + 1}}
         {:error, reason} -> {:halt, {:error, {index, reason}}}
       end
-    end)
-  end
+    end
+  end)
 
 case seed_result do
   {:ok, added_count} ->
@@ -88,43 +92,77 @@ case seed_result do
 
     article = Repo.get!(Article, article_binding.article_id)
 
+    existing_roots =
+      Repo.all(
+        from(comment in Comment,
+          where: comment.article_id == ^article.id and is_nil(comment.reply_to_comment_id),
+          order_by: [desc: comment.id]
+        )
+      )
+
+    root = List.first(existing_roots)
+    missing_roots = max(target_count - length(existing_roots), 0)
+
+    roots_result =
+      Enum.reduce_while(1..max(missing_roots, 1), {:ok, {0, root}}, fn index,
+                                                                       {:ok, {count, first_root}} ->
+        if index > missing_roots do
+          {:halt, {:ok, {count, first_root}}}
+        else
+          body =
+            Factory.mock_comment("Pagi Browser Main Comment #{length(existing_roots) + index}")
+
+          case CMS.Comments.create_comment(
+                 community,
+                 :post,
+                 article_binding.inner_id,
+                 body,
+                 author,
+                 Ecto.UUID.generate()
+               ) do
+            {:ok, comment} ->
+              {:cont, {:ok, {count + 1, first_root || comment}}}
+
+            {:error, reason} ->
+              {:halt, {:error, {:root_comment, index, reason}}}
+          end
+        end
+      end)
+
     comment_seed_result =
-      if Repo.exists?(from(comment in Comment, where: comment.article_id == ^article.id)) do
-        {:ok, {0, 0}}
-      else
-        roots_result =
-          Enum.reduce_while(1..target_count, {:ok, {0, nil}}, fn index, {:ok, {count, _root}} ->
-            body = Factory.mock_comment("Pagi Browser Main Comment #{index}")
+      with {:ok, {root_count, root}} <- roots_result,
+           %Comment{} <- root do
+        existing_replies =
+          Repo.aggregate(
+            from(comment in Comment,
+              where: comment.article_id == ^article.id and comment.reply_to_comment_id == ^root.id
+            ),
+            :count
+          )
 
-            case CMS.Comments.create_comment(
-                   community,
-                   :post,
-                   article_binding.inner_id,
-                   body,
-                   author,
-                   Ecto.UUID.generate()
-                 ) do
-              {:ok, root} -> {:cont, {:ok, {count + 1, root}}}
-              {:error, reason} -> {:halt, {:error, {:root_comment, index, reason}}}
-            end
-          end)
+        missing_replies = max(target_count - existing_replies, 0)
 
-        with {:ok, {root_count, root}} <- roots_result do
-          replies_result =
-            Enum.reduce_while(1..target_count, {:ok, 0}, fn index, {:ok, count} ->
-              body = Factory.mock_comment("Pagi Browser Reply #{index}")
+        replies_result =
+          Enum.reduce_while(1..max(missing_replies, 1), {:ok, 0}, fn index, {:ok, count} ->
+            if index > missing_replies do
+              {:halt, {:ok, count}}
+            else
+              body = Factory.mock_comment("Pagi Browser Reply #{existing_replies + index}")
 
               case CMS.Comments.reply_comment(root.id, body, author, Ecto.UUID.generate()) do
                 {:ok, _reply} -> {:cont, {:ok, count + 1}}
                 {:error, reason} -> {:halt, {:error, {:reply, index, reason}}}
               end
-            end)
+            end
+          end)
 
-          case replies_result do
-            {:ok, reply_count} -> {:ok, {root_count, reply_count}}
-            {:error, reason} -> {:error, reason}
-          end
+        case replies_result do
+          {:ok, reply_count} -> {:ok, {root_count, reply_count}}
+          {:error, reason} -> {:error, reason}
         end
+      else
+        {:error, reason} -> {:error, reason}
+        _ -> {:error, :missing_root_comment}
       end
 
     case comment_seed_result do
@@ -132,7 +170,7 @@ case seed_result do
         IO.puts("community=home")
         IO.puts("target_posts=#{target_count}")
         IO.puts("added_posts=#{added_count}")
-        IO.puts("total_posts=#{current_count + added_count}")
+        IO.puts("fixture_posts=#{target_count}")
         IO.puts("added_root_comments=#{root_count}")
         IO.puts("added_replies=#{reply_count}")
 

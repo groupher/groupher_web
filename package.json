@@ -106,6 +106,7 @@
     "test:landing": "vitest --config frontend/core/vitest.config.mts run frontend/core frontend/landing",
     "mock:server": "pnpm --filter @groupher/mock-server run dev",
     "test:e2e:dash": "cross-env E2E_APP=dash playwright test -c frontend/e2e/playwright.config.ts",
+    "test:e2e:community": "cross-env E2E_APP=community playwright test -c frontend/e2e/playwright.config.ts",
     "test:e2e:landing": "cross-env E2E_APP=landing playwright test -c frontend/e2e/playwright.config.ts",
     "test:e2e:auth": "cross-env E2E_APP=auth playwright test -c frontend/e2e/playwright.config.ts",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
