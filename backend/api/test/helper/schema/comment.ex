@@ -301,8 +301,8 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
 
   def q(:paged_published_comments) do
     """
-    query($login: String!, $thread: Thread, $filter: PagiFilter!) {
-      pagedPublishedComments(login: $login, thread: $thread, filter: $filter) {
+    query($login: String!, $thread: Thread, $filter: CommentPageFilter, $pagi: PagiInput) {
+      pagedPublishedComments(login: $login, thread: $thread, filter: $filter, pagi: $pagi) {
         entries {
           innerId
           body { html }
@@ -319,10 +319,7 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
             }
           }
         }
-        totalPages
-        totalCount
-        pageSize
-        pageNumber
+        pageInfo { hasNextPage ... on OffsetPageInfo { page size totalPages totalCount } ... on CursorPageInfo { endCursor } }
       }
     }
     """
@@ -381,10 +378,10 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
     """
   end
 
-  def q(:paged_comments) do
+  def q(:comment_page) do
     """
-    query($article: ArticlePathInput!, $mode: CommentsMode, $filter: CommentsFilter!) {
-            pagedComments(article: $article, mode: $mode, filter: $filter) {
+    query($article: ArticlePathInput!, $mode: CommentsMode, $filter: CommentPageFilter, $pagi: PagiInput) {
+            commentPage(article: $article, mode: $mode, filter: $filter, pagi: $pagi) {
               entries {
                 innerId
                 body { html }
@@ -441,10 +438,8 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
                 }
                 repliesCount
               }
-              totalPages
-              totalCount
-              pageSize
-              pageNumber
+              pageInfo { __typename ... on OffsetPageInfo { totalPages totalCount size page } }
+              pinnedEntries { innerId isSolution isPinned }
             }
         }
     """
@@ -452,25 +447,22 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
 
   def q(:paged_comments_participants) do
     """
-    query($article: ArticlePathInput!, $filter: PagiFilter!) {
-            pagedCommentsParticipants(article: $article, filter: $filter) {
+    query($article: ArticlePathInput!, $pagi: PagiInput) {
+            pagedCommentsParticipants(article: $article, pagi: $pagi) {
               entries {
                 login
                 nickname
               }
-              totalPages
-              totalCount
-              pageSize
-              pageNumber
+            pageInfo { hasNextPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { endCursor } }
             }
         }
     """
   end
 
-  def q(:paged_comment_replies) do
+  def q(:comment_reply_page) do
     """
-    query($comment: CommentPathInput!, $filter: CommentsFilter!) {
-            pagedCommentReplies(comment: $comment, filter: $filter) {
+    query($comment: CommentPathInput!, $filter: CommentPageFilter, $pagi: PagiInput) {
+            commentReplyPage(comment: $comment, filter: $filter, pagi: $pagi) {
               entries {
                 innerId
                 body { html }
@@ -495,10 +487,8 @@ defmodule GroupherServer.Test.Helper.Schema.Comment do
                 repliesCount
                 viewerHasUpvoted
               }
-              totalPages
-              totalCount
-              pageSize
-              pageNumber
+              pageInfo { __typename ... on OffsetPageInfo { totalPages totalCount size page } }
+
             }
         }
     """

@@ -1,11 +1,9 @@
-import { useQueryClient } from '@tanstack/react-query'
-import { type MutableRefObject, useContext, useEffect, useRef } from 'react'
+import { useContext } from 'react'
 
 import { ANCHOR } from '~/const/dom'
 import { scrollIntoEle } from '~/dom'
 import { browserGraphQLRequest } from '~/graphql/client'
 import useViewingArticle from '~/hooks/useViewingArticle'
-import { Q } from '~/query'
 import { articlePathKey } from '~/query/articlePath'
 import {
   createCommentOperation,
@@ -20,13 +18,13 @@ import type { TStore as TCommentsStore } from '~/stores/comments/spec'
 import { isWordsCountValid } from '~/ui/WordsCounter/helper'
 
 import { API_MODE, EDIT_MODE } from '../constant'
+import { useCommentFeed } from '../pagination/context'
 import S from '../schema'
 import useHelper from './useHelper'
 
 //
 export type TRet = {
   loadComments: (page?: number) => void
-  loadCommentReplies: (innerId: TID) => void
   createComment: () => void
   openUpdateEditor: (comment: TComment) => void
   onPageChange: (page: number) => void
@@ -34,8 +32,6 @@ export type TRet = {
   replyComment: () => void
   updateComment: () => void
 }
-
-let repliesPagiNo: Record<string, number> = {}
 
 /** Exposes query state and actions through the shared React hook boundary. */
 export default function useQuery(): TRet {
@@ -45,14 +41,9 @@ export default function useQuery(): TRet {
   }
   const { articlePath } = useViewingArticle()
   const account = useAccount()
-  const { addToReplies, published, resetPublish } = useHelper()
+  const feed = useCommentFeed()
+  const { published, resetPublish } = useHelper()
   const { replyToComment } = commentsStore
-
-  const queryClient = useQueryClient()
-
-  const isMountedRef = useRef(true)
-  const commentsRequestRef = useRef(0)
-  const repliesRequestRef = useRef(0)
 
   const articleKey = articlePathKey(articlePath)
   const commentScope = {
@@ -60,34 +51,6 @@ export default function useQuery(): TRet {
     thread: articlePath.thread,
     articleInnerId: articlePath.innerId,
   }
-  const latestArticlePathRef = useRef(articleKey)
-
-  useEffect(() => {
-    latestArticlePathRef.current = articleKey
-  }, [articleKey])
-
-  useEffect(() => {
-    isMountedRef.current = true
-
-    return () => {
-      isMountedRef.current = false
-      commentsRequestRef.current += 1
-      repliesRequestRef.current += 1
-    }
-  }, [])
-
-  const shouldIgnoreResult = (
-    requestId: number,
-    requestRef: MutableRefObject<number>,
-    requestArticlePath: string,
-  ): boolean => {
-    return (
-      !isMountedRef.current ||
-      requestId !== requestRef.current ||
-      requestArticlePath !== latestArticlePathRef.current
-    )
-  }
-
   const buildArticlePath = () => articlePath
 
   const buildCommentPath = (commentOrInnerId: TComment | TID) => ({
@@ -132,17 +95,7 @@ export default function useQuery(): TRet {
   )
 
   const loadComments = (page = 1): void => {
-    commentsStore.commit({ page })
-    repliesPagiNo = {}
-    void queryClient.fetchQuery(
-      Q.comment.list(
-        articlePath.community,
-        articlePath.thread,
-        articlePath.innerId,
-        page,
-        commentsStore.mode,
-      ),
-    )
+    feed.setPage(page)
   }
 
   const openUpdateEditor = (comment: TComment): void => {
@@ -159,54 +112,13 @@ export default function useQuery(): TRet {
     })
   }
 
-  const _getRepliesPagiNo = (parentId: TID): number => {
-    const curNo = repliesPagiNo[parentId]
-
-    return curNo ? curNo + 1 : 1
-  }
-
-  const loadCommentReplies = (innerId: TID): void => {
-    const requestArticlePath = latestArticlePathRef.current
-    const requestId = repliesRequestRef.current + 1
-    repliesRequestRef.current = requestId
-
-    const filter = { page: _getRepliesPagiNo(innerId), size: 30 }
-    const params = { comment: buildCommentPath(innerId), filter }
-
-    commentsStore.commit({
-      repliesParentId: innerId,
-      repliesLoading: true,
-      repliesLoadingByParentId: {
-        ...commentsStore.repliesLoadingByParentId,
-        [innerId]: true,
-      },
-    })
-    console.log('## loadCommentReplies args: ', params)
-    browserGraphQLRequest(S.pagedCommentReplies, params).then(({ pagedCommentReplies }) => {
-      if (shouldIgnoreResult(requestId, repliesRequestRef, requestArticlePath)) return
-      if (!pagedCommentReplies) return
-
-      addToReplies(innerId, pagedCommentReplies.entries as unknown as TComment[])
-
-      repliesPagiNo[innerId] = pagedCommentReplies.pageNumber ?? 1
-      commentsStore.commit({
-        repliesParentId: null,
-        repliesLoading: false,
-        repliesLoadingByParentId: {
-          ...commentsStore.repliesLoadingByParentId,
-          [innerId]: false,
-        },
-      })
-    })
-  }
-
   /**
    * load the same mode when page change
    */
   const onPageChange = (page = 1): void => {
     const { apiMode } = commentsStore
     if (apiMode === API_MODE.ARTICLE) {
-      commentsStore.commit({ page })
+      feed.setPage(page)
       loadComments(page)
     }
 
@@ -270,7 +182,6 @@ export default function useQuery(): TRet {
 
   return {
     loadComments,
-    loadCommentReplies,
     createComment,
     openUpdateEditor,
     onPageChange,

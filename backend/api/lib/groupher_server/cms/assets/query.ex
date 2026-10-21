@@ -23,43 +23,67 @@ defmodule GroupherServer.CMS.Assets.Query do
   alias CMS.Model.{
     Article,
     ArticleAssetRef,
+    ArticleBinding,
     ArticleDraft,
+    ArticleLifecycle,
     ArticlePublic,
     ArticleRevision,
     Community,
     CommunityAsset,
+    CommunityLifecycle,
+    DocBranch,
+    DocBranchState,
     DocDraft,
+    DocLifecycle,
     TrashedArticle
   }
 
   alias Helper.{ORM, T}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
-  @default_page 1
-  @default_size 20
+  @usage_batch_size 100
   @storage_limit_bytes 100 * 1024 * 1024
 
   @doc """
   Returns a page of active assets for a community.
 
-  This read-side function is the implementation behind `CMS.Assets.page/2`.
+  This read-side function is the implementation behind `CMS.Assets.page/3`.
   It applies the shared active-asset predicate and orders newest assets first.
 
   ## Examples
 
-      Query.page(community, %{page: 1, size: 20})
-      #=> {:ok, %{entries: assets, total_count: total_count}}
+      Query.page(community, %{}, %Params.Offset{page: 1, size: 20})
+      #=> {:ok, %Helper.ORM.Pagi.Page.Offset{entries: assets}}
 
   """
-  @spec page(Community.t(), map() | nil) :: T.domain_res(T.paged_data())
-  def page(%Community{id: community_id}, filter) do
-    %{page: page, size: size} = normalized = normalize_filter(filter)
+  @spec page(Community.t(), map() | nil, Params.t() | nil) :: T.domain_res(T.paged_data())
+  def page(%Community{id: community_id}, filter, pagi) do
+    normalized = normalize_filter(filter)
 
-    community_id
-    |> CommunityAsset.active_query()
-    |> apply_filter(normalized)
-    |> order_by([asset], desc: asset.inserted_at, desc: asset.id)
-    |> ORM.paginator(page: page, size: size)
-    |> then(&{:ok, &1})
+    query =
+      community_id
+      |> CommunityAsset.active_query()
+      |> apply_filter(normalized)
+
+    with {:ok, paged} <-
+           ORM.pagi(
+             query,
+             pagi,
+             for: CommunityAsset,
+             surface: "assets.library",
+             query_fingerprint:
+               :crypto.hash(:sha256, :erlang.term_to_binary({community_id, normalized}))
+               |> Base.encode16(),
+             order: %Order{
+               fields: [:inserted_at, :id],
+               directions: [:desc, :desc],
+               cursor_fields: [:inserted_at, :id]
+             }
+           ) do
+      {:ok, paged}
+    end
   end
 
   @doc """
@@ -118,13 +142,11 @@ defmodule GroupherServer.CMS.Assets.Query do
   ## Examples
 
       Query.refs(community, asset.id, %{page: 1, size: 10})
-      #=> {:ok, %{entries: refs, page_number: 1}}
+      #=> {:ok, %Helper.ORM.Pagi.Page.Offset{entries: refs}}
 
   """
-  @spec refs(Community.t(), T.id(), map() | nil) :: T.domain_res(T.paged_data())
-  def refs(%Community{id: community_id}, asset_id, filter) do
-    %{page: page, size: size} = normalize_filter(filter)
-
+  @spec refs(Community.t(), T.id(), Params.t() | nil) :: T.domain_res(T.paged_data())
+  def refs(%Community{id: community_id}, asset_id, pagi) do
     with {:ok, %CommunityAsset{id: asset_id}} <- find_active_asset(community_id, asset_id) do
       ArticleAssetRef
       |> where([ref], ref.community_id == ^community_id and ref.asset_id == ^asset_id)
@@ -144,47 +166,71 @@ defmodule GroupherServer.CMS.Assets.Query do
         article_id: article.id,
         thread: article.thread
       })
-      |> order_by([ref], desc: ref.inserted_at, desc: ref.id)
-      |> ORM.paginator(page: page, size: size)
-      |> then(&{:ok, &1})
+      |> then(fn query ->
+        with {:ok, paged} <-
+               ORM.pagi(
+                 query,
+                 pagi,
+                 for: ArticleAssetRef,
+                 surface: "assets.refs",
+                 query_fingerprint:
+                   :erlang.term_to_binary({community_id, asset_id}) |> Base.encode64(),
+                 order: %Order{
+                   fields: [:inserted_at, :id],
+                   directions: [:desc, :desc],
+                   cursor_fields: [:inserted_at, :id]
+                 }
+               ) do
+          {:ok, paged}
+        end
+      end)
     end
   end
 
   @doc false
   def active_asset(community_id, asset_id), do: find_active_asset(community_id, asset_id)
 
-  @doc "Returns version-owned refs classified by their current lifecycle role."
+  @doc """
+  Returns version-owned refs in bounded batches classified by lifecycle role.
+
+  This is a replacement-plan snapshot, not a public paged collection: rows are
+  read in fixed 100-row batches, and draft visibility is expressed by the
+  page-level predicates matching the Gate edit lifecycle contract. The bounded
+  workflow keeps the asset delete / replace contract deterministic without
+  loading an unbounded ref set at once or opening one mutation transaction per
+  draft row.
+
+  ## Examples
+
+      Query.usages(community, asset_id, actor)
+      #=> {:ok, [%{lifecycle: :live}]}
+  """
   @spec usages(Community.t(), T.id(), term()) :: T.domain_res([map()])
   def usages(%Community{} = community, asset_id, actor) do
     with {:ok, %CommunityAsset{id: asset_id}} <- find_active_asset(community.id, asset_id),
          {:ok, _community} <- CMS.Gate.access_check(actor, :read, community) do
-      rows =
-        from(ref in ArticleAssetRef,
-          where: ref.community_id == ^community.id and ref.asset_id == ^asset_id,
-          left_join: draft in ArticleDraft,
-          on: draft.body_draft_id == ref.body_draft_id,
-          left_join: revision in ArticleRevision,
-          on: revision.id == ref.revision_id,
-          join: article in Article,
-          on: article.id == draft.article_id or article.id == revision.article_id,
-          left_join: public in ArticlePublic,
-          on: public.article_id == article.id,
-          left_join: trash in TrashedArticle,
-          on: trash.article_id == article.id,
-          select: {ref, article, public, trash},
-          order_by: [desc: ref.inserted_at, desc: ref.id]
-        )
-        |> Repo.all()
-        |> Enum.filter(&usage_visible?(&1, actor, community))
+      collect_usage_batches(usage_query(community.id, asset_id), 1, [], &format_usage_row/1)
+    end
+  end
 
-      {:ok,
-       Enum.map(rows, fn {ref, article, public, trash} ->
-         Map.merge(Map.from_struct(ref), %{
-           article_id: article.id,
-           thread: article.thread,
-           lifecycle: lifecycle(ref, public, trash)
-         })
-       end)}
+  @doc """
+  Returns bounded usage snapshots for asset replacement planning.
+
+  In addition to the public usage fields, each row carries the loaded Draft,
+  Public, and Lifecycle facts required to classify a plan item without
+  per-Article reads. These internal snapshots must not be exposed by
+  `usages/3`.
+  """
+  @spec replacement_usages(Community.t(), T.id(), term()) :: T.domain_res([map()])
+  def replacement_usages(%Community{} = community, asset_id, actor) do
+    with {:ok, %CommunityAsset{id: asset_id}} <- find_active_asset(community.id, asset_id),
+         {:ok, _community} <- CMS.Gate.access_check(actor, :read, community) do
+      collect_usage_batches(
+        usage_query(community.id, asset_id),
+        1,
+        [],
+        &format_replacement_usage_row/1
+      )
     end
   end
 
@@ -205,20 +251,114 @@ defmodule GroupherServer.CMS.Assets.Query do
     end
   end
 
-  defp usage_visible?({ref, article, public, trash}, actor, community) do
-    case lifecycle(ref, public, trash) do
-      :draft ->
-        match?(
-          {:ok, _article},
-          CMS.Gate.with_community_check(actor, :edit, community, article, fn canonical ->
-            {:ok, canonical}
-          end)
-        )
+  defp usage_query(community_id, asset_id) do
+    from(ref in ArticleAssetRef,
+      where: ref.community_id == ^community_id and ref.asset_id == ^asset_id,
+      left_join: draft in ArticleDraft,
+      on: draft.body_draft_id == ref.body_draft_id,
+      left_join: doc_draft in DocDraft,
+      on: doc_draft.body_draft_id == ref.body_draft_id,
+      left_join: revision in ArticleRevision,
+      on: revision.id == ref.revision_id,
+      join: article in Article,
+      on:
+        article.id == draft.article_id or article.id == doc_draft.article_id or
+          article.id == revision.article_id,
+      left_join: current_draft in ArticleDraft,
+      on: current_draft.article_id == article.id,
+      left_join: binding in ArticleBinding,
+      on: binding.article_id == article.id and binding.community_id == ref.community_id,
+      join: community_lifecycle in CommunityLifecycle,
+      on: community_lifecycle.community_id == ref.community_id,
+      left_join: article_lifecycle in ArticleLifecycle,
+      on: article_lifecycle.article_id == article.id,
+      left_join: branch in DocBranch,
+      on: branch.id == doc_draft.branch_id and branch.community_id == ref.community_id,
+      left_join: doc_lifecycle in DocLifecycle,
+      on: doc_lifecycle.article_id == article.id and doc_lifecycle.branch_id == branch.id,
+      left_join: doc_branch_state in DocBranchState,
+      on: doc_branch_state.article_id == article.id and doc_branch_state.branch_id == branch.id,
+      left_join: public in ArticlePublic,
+      on: public.article_id == article.id,
+      left_join: trash in TrashedArticle,
+      on: trash.article_id == article.id,
+      where:
+        is_nil(ref.body_draft_id) or
+          not is_nil(trash.id) or
+          (not is_nil(binding.id) and community_lifecycle.state == :active and
+             ((article.thread != :doc and article_lifecycle.state in [:draft_only, :published]) or
+                (article.thread == :doc and not is_nil(doc_draft.id) and
+                   not is_nil(branch.id) and doc_lifecycle.state in [:draft_only, :published] and
+                   not is_nil(doc_branch_state.id)))),
+      select: {
+        ref,
+        article,
+        current_draft,
+        doc_draft,
+        public,
+        trash,
+        article_lifecycle,
+        doc_lifecycle,
+        community_lifecycle,
+        branch
+      }
+    )
+  end
 
-      _lifecycle ->
-        true
+  defp collect_usage_batches(query, page, batches, formatter) do
+    rows =
+      query
+      |> order_by([ref], desc: ref.inserted_at, desc: ref.id)
+      |> limit(^@usage_batch_size)
+      |> offset(^((page - 1) * @usage_batch_size))
+      |> Repo.all()
+
+    batch =
+      rows
+      |> Enum.map(formatter)
+
+    if length(rows) == @usage_batch_size do
+      collect_usage_batches(query, page + 1, [batch | batches], formatter)
+    else
+      {:ok, (batches |> Enum.reverse() |> List.flatten()) ++ batch}
     end
   end
+
+  defp format_usage_row({ref, article, _draft, _doc_draft, public, trash, _, _, _, _}) do
+    Map.merge(Map.from_struct(ref), %{
+      article_id: article.id,
+      thread: article.thread,
+      lifecycle: lifecycle(ref, public, trash)
+    })
+  end
+
+  defp format_replacement_usage_row({
+         ref,
+         article,
+         draft,
+         doc_draft,
+         public,
+         trash,
+         article_lifecycle,
+         doc_lifecycle,
+         community_lifecycle,
+         branch
+       }) do
+    {ref, article, draft, doc_draft, public, trash, article_lifecycle, doc_lifecycle,
+     community_lifecycle, branch}
+    |> format_usage_row()
+    |> Map.merge(%{
+      branch_id: branch && branch.id,
+      resource_lifecycle: article_lifecycle || doc_lifecycle,
+      community_lifecycle: community_lifecycle,
+      observed_draft_version: draft_version(draft, doc_draft),
+      observed_live_revision_id: public && public.revision_id
+    })
+  end
+
+  defp draft_version(%ArticleDraft{version: version}, _doc_draft), do: version
+  defp draft_version(_draft, %DocDraft{version: version}), do: version
+  defp draft_version(_draft, _doc_draft), do: nil
 
   @doc """
   Returns public-read origin metadata for one active asset public ref.
@@ -274,9 +414,7 @@ defmodule GroupherServer.CMS.Assets.Query do
   defp normalize_filter(nil) do
     %{
       asset_type: nil,
-      page: @default_page,
       query: nil,
-      size: @default_size,
       subtypes: [],
       thread: nil
     }
@@ -285,9 +423,7 @@ defmodule GroupherServer.CMS.Assets.Query do
   defp normalize_filter(filter) do
     %{
       asset_type: normalize_asset_type(get_filter(filter, :asset_type)),
-      page: Map.get(filter, :page, @default_page),
       query: normalize_query(get_filter(filter, :query)),
-      size: Map.get(filter, :size, @default_size),
       subtypes: normalize_subtypes(get_filter(filter, :subtypes)),
       thread: normalize_thread(get_filter(filter, :thread))
     }

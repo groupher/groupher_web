@@ -36,6 +36,7 @@ export const CommentMetaFields = graphql(`
 export const CommentFields = graphql(`
   fragment CommentFields on Comment {
     innerId
+    rootInnerId
     body {
       html
       json
@@ -61,40 +62,6 @@ export const CommentFields = graphql(`
     repliesCount
     insertedAt
     updatedAt
-  }
-`)
-
-export const CommentReplyFields = graphql(`
-  fragment CommentReplyFields on CommentReply {
-    innerId
-    body {
-      html
-      json
-    }
-    bodyVersion
-    author {
-      ...CommentAuthorFields
-    }
-    meta {
-      ...CommentMetaFields
-    }
-    emotions {
-      ...CommentEmotionFields
-    }
-    isPinned
-    isSolution
-    floor
-    upvotesCount
-    commentInteractionRevision
-    isArticleAuthor
-    viewerHasUpvoted
-    viewerHasReported
-    repliesCount
-    insertedAt
-    updatedAt
-    replyToComment {
-      ...CommentFields
-    }
   }
 `)
 
@@ -115,6 +82,7 @@ export const CommentPublicEmotionFields = graphql(`
 export const CommentPublicFields = graphql(`
   fragment CommentPublicFields on Comment {
     innerId
+    rootInnerId
     body {
       html
       json
@@ -144,6 +112,7 @@ export const CommentPublicFields = graphql(`
 export const CommentPublicReplyFields = graphql(`
   fragment CommentPublicReplyFields on CommentReply {
     innerId
+    rootInnerId
     body {
       html
       json
@@ -173,11 +142,20 @@ export const CommentPublicReplyFields = graphql(`
   }
 `)
 
-export const CommentPageFields = graphql(`
-  fragment CommentPageFields on PagedComments {
-    totalPages
-    totalCount
-    pageSize
-    pageNumber
+export const CommentPagiInfo = graphql(`
+  fragment CommentPagiInfo on PageInfo {
+    __typename
+    hasPreviousPage
+    hasNextPage
+    ... on OffsetPageInfo {
+      page
+      size
+      totalCount
+      totalPages
+    }
+    ... on CursorPageInfo {
+      startCursor
+      endCursor
+    }
   }
 `)

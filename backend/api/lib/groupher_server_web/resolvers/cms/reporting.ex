@@ -5,11 +5,12 @@ defmodule GroupherServerWeb.Resolvers.CMS.Reporting do
       GraphQL report field -> this resolver -> CMS reporting facade
   """
 
-  import ShortMaps
-
+  alias GroupherServer.Pagi
   alias GroupherServer.CMS
 
-  def paged_reports(_root, ~m(filter)a, _) do
-    CMS.abuse_reports_paged_reports(filter)
+  def paged_reports(_root, args, _) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
+      CMS.abuse_reports_paged_reports(Map.get(args, :filter) || %{}, pagi)
+    end
   end
 end

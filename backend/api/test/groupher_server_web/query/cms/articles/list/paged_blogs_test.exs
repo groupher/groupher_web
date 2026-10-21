@@ -5,9 +5,8 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
 
   alias CMS.Articles.ErrorCat, as: ArticleErrorCat
   alias CMS.Model.{Article, ArticleStats}
-  alias GroupherServerWeb.ErrorCat, as: WebErrorCat
 
-  @page_size GroupherServerWeb.Config.page_size()
+  @page_size Helper.ORM.Pagi.Config.default().default_size
 
   @today_count 3
   @last_week_count 1
@@ -50,17 +49,17 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
 
   describe "[query paged_blogs filter pagination]" do
     test "should get pagination info", ~m(guest_conn)a do
-      variables = %{filter: %{page: 1, size: 10}}
+      variables = %{pagi: %{offset: %{page: 1, size: 10}}, filter: %{}}
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :blog), variables)
 
       assert results |> is_valid_pagination?
-      assert results["pageSize"] == 10
-      assert results["totalCount"] >= @total_count
+      assert results["pageInfo"]["size"] == 10
+      assert results["pageInfo"]["totalCount"] >= @total_count
       assert results["entries"] |> List.first() |> Map.get("communityTags") |> is_list
     end
 
     test "publish order should work", ~m(guest_conn community user)a do
-      variables = %{filter: %{page: 1, size: 20, order: "PUBLISH"}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}, filter: %{order: "PUBLISH"}}
 
       blog_attrs = mock_attrs(:blog, %{community_id: community.id})
       {:ok, blog} = CMS.Articles.create(community, :blog, blog_attrs, user)
@@ -72,7 +71,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
 
     test "upvotes_count order should work",
          ~m(guest_conn community blog_last_week user user2 user3)a do
-      variables = %{filter: %{page: 1, size: 20, order: "UPVOTES"}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}, filter: %{order: "UPVOTES"}}
 
       {:ok, _} = CMS.Interactions.upvote(blog_last_week, user, Ecto.UUID.generate())
       {:ok, _} = CMS.Interactions.upvote(blog_last_week, user2, Ecto.UUID.generate())
@@ -86,7 +85,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
 
     test "comments_count order should work",
          ~m(guest_conn community blog_last_week user user2 user3)a do
-      variables = %{filter: %{page: 1, size: 20, order: "COMMENTS"}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}, filter: %{order: "COMMENTS"}}
       blog_id = article_inner_id(blog_last_week, community)
 
       {:ok, _} =
@@ -125,7 +124,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
     end
 
     test "views order should work", ~m(guest_conn community user user2 user3)a do
-      variables = %{filter: %{page: 1, size: 20, order: "VIEWS"}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}, filter: %{order: "VIEWS"}}
 
       blog_attrs = mock_attrs(:blog, %{community_id: community.id})
       {:ok, blog} = CMS.Articles.create(community, :blog, blog_attrs, user)
@@ -144,12 +143,12 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
       Process.sleep(2000)
       {:ok, _} = CMS.Articles.create(community, :blog, blog_attrs, user)
 
-      variables = %{filter: %{page: 1, size: 10}}
+      variables = %{pagi: %{offset: %{page: 1, size: 10}}, filter: %{}}
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :blog), variables)
 
       blog = results["entries"] |> List.first()
 
-      assert not is_nil(get_in(blog, ["body", "html"]))
+      assert not Map.has_key?(blog, "body")
     end
 
     test "support community_tag filter", ~m(guest_conn community user)a do
@@ -169,15 +168,23 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
 
       {:ok, _} = CMS.Communities.set_tag(blog, community_tag.id, user, Ecto.UUID.generate())
 
-      variables = %{filter: %{page: 1, size: 10, community_tag: community_tag.slug}}
+      variables = %{
+        pagi: %{offset: %{page: 1, size: 10}},
+        filter: %{community_tag: community_tag.slug}
+      }
+
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :blog), variables)
 
-      variables = %{filter: %{page: 1, size: 10, community_tags: [community_tag.slug]}}
+      variables = %{
+        pagi: %{offset: %{page: 1, size: 10}},
+        filter: %{community_tags: [community_tag.slug]}
+      }
+
       results2 = guest_conn |> gq_query(S.Article.q(:paged_articles, :blog), variables)
       assert results == results2
 
       blog = results["entries"] |> List.first()
-      assert results["totalCount"] == 1
+      assert results["pageInfo"]["totalCount"] == 1
       assert exist_in?(community_tag, blog["communityTags"])
     end
 
@@ -187,12 +194,16 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
       blog_attrs2 = mock_attrs(:blog, %{community_id: community.id})
       {:ok, _} = CMS.Articles.create(community, :blog, blog_attrs2, user)
 
-      variables = %{filter: %{page: 1, size: 10, community: community.slug}}
+      variables = %{
+        pagi: %{offset: %{page: 1, size: 10, config_revision: 0}},
+        filter: %{community: community.slug}
+      }
+
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :blog), variables)
 
       blog = results["entries"] |> List.first()
-      assert results["totalCount"] == 4
-      assert exist_in?(%{slug: community.slug}, blog["communities"])
+      assert results["pageInfo"]["totalCount"] == 4
+      assert blog["community"]["slug"] == community.slug
     end
 
     test "returns cancan error when community blog thread is disabled",
@@ -208,7 +219,10 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
           Ecto.UUID.generate()
         )
 
-      variables = %{filter: %{page: 1, size: 10, community: community.slug}}
+      variables = %{
+        pagi: %{offset: %{page: 1, size: 10, config_revision: 0}},
+        filter: %{community: community.slug}
+      }
 
       assert guest_conn
              |> query_error?(
@@ -219,32 +233,32 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
     end
 
     test "request large size fails", ~m(guest_conn)a do
-      variables = %{filter: %{page: 1, size: 200}}
+      variables = %{pagi: %{offset: %{page: 1, size: 200}}, filter: %{}}
 
       assert guest_conn
              |> query_error?(
                S.Article.q(:paged_articles, :blog),
                variables,
-               ErrorCat.code(WebErrorCat.pagination())
+               ErrorCat.code(GroupherServer.Pagi.ErrorCat.size_out_of_range())
              )
     end
 
     test "request 0 or neg-size fails", ~m(guest_conn)a do
-      variables_0 = %{filter: %{page: 1, size: 0}}
-      variables_neg_1 = %{filter: %{page: 1, size: -1}}
+      variables_0 = %{pagi: %{offset: %{page: 1, size: 0}}, filter: %{}}
+      variables_neg_1 = %{pagi: %{offset: %{page: 1, size: -1}}, filter: %{}}
 
       assert guest_conn
              |> query_error?(
                S.Article.q(:paged_articles, :blog),
                variables_0,
-               ErrorCat.code(WebErrorCat.pagination())
+               ErrorCat.code(GroupherServer.Pagi.ErrorCat.size_out_of_range())
              )
 
       assert guest_conn
              |> query_error?(
                S.Article.q(:paged_articles, :blog),
                variables_neg_1,
-               ErrorCat.code(WebErrorCat.pagination())
+               ErrorCat.code(GroupherServer.Pagi.ErrorCat.size_out_of_range())
              )
     end
 
@@ -252,8 +266,8 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
       variables = %{filter: %{}}
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :blog), variables)
       assert results |> is_valid_pagination?
-      assert results["pageSize"] == @page_size
-      assert results["totalCount"] >= @total_count
+      assert results["pageInfo"]["size"] == @page_size
+      assert results["pageInfo"]["totalCount"] >= @total_count
     end
   end
 
@@ -327,7 +341,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
 
       variables = %{filter: %{community: community.slug}}
       results = user_conn |> gq_query(S.Article.q(:paged_articles, :blog), variables)
-      assert results["totalCount"] == 5
+      assert results["pageInfo"]["totalCount"] == 5
 
       the_blog =
         Enum.find(
@@ -359,7 +373,7 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
       refute Map.has_key?(the_blog, "viewerHasCollected")
       refute Map.has_key?(the_blog, "viewerHasReported")
 
-      assert user_exist_in?(user, the_blog["meta"]["latestUpvotedUsers"])
+      refute Map.has_key?(the_blog, "meta")
     end
   end
 
@@ -383,14 +397,14 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
 
       expect_count = @total_count - @last_year_count - @last_month_count - @last_week_count
 
-      assert results |> Map.get("totalCount") >= expect_count
+      assert results["pageInfo"]["totalCount"] >= expect_count
     end
 
     test "THIS_WEEK option should work", ~m(guest_conn)a do
       variables = %{filter: %{when: "THIS_WEEK"}}
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :blog), variables)
 
-      assert results |> Map.get("totalCount") >= @today_count
+      assert results["pageInfo"]["totalCount"] >= @today_count
     end
 
     test "THIS_MONTH option should work", ~m(guest_conn community blog_last_month)a do
@@ -406,7 +420,12 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
     test "latest commented blog should appear on top",
          ~m(guest_conn community blog_last_week user user2)a do
       {:ok, _current_blog} = CMS.Articles.create(community, :blog, mock_attrs(:blog), user)
-      variables = %{filter: %{page: 1, size: 20, community: community.slug}}
+
+      variables = %{
+        pagi: %{offset: %{page: 1, size: 20, config_revision: 0}},
+        filter: %{community: community.slug}
+      }
+
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :blog), variables)
       entries = results["entries"]
       first_blog = entries |> List.first()
@@ -434,7 +453,10 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
 
     test "comment on very old blog have no effect",
          ~m(guest_conn community blog_last_year user2)a do
-      variables = %{filter: %{page: 1, size: 20, community: community.slug}}
+      variables = %{
+        pagi: %{offset: %{page: 1, size: 20, config_revision: 0}},
+        filter: %{community: community.slug}
+      }
 
       {:ok, _} =
         CMS.Comments.create_comment(
@@ -456,7 +478,11 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedBlogs do
     test "latest blog author commented blog have no effect",
          ~m(guest_conn community blog_last_week user)a do
       {:ok, _current_blog} = CMS.Articles.create(community, :blog, mock_attrs(:blog), user)
-      variables = %{filter: %{page: 1, size: 20, community: community.slug}}
+
+      variables = %{
+        pagi: %{offset: %{page: 1, size: 20, config_revision: 0}},
+        filter: %{community: community.slug}
+      }
 
       blog =
         blog_last_week.id

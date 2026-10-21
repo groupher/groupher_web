@@ -9,21 +9,16 @@ defmodule GroupherServer.Test.Seeds.CleanUpTest do
       # {:ok, community} = Seeds.community(:home)
       # {:ok, _} = CMS.create_article(community, :post, post_attrs, user)
 
-      # {:ok, found} = ORM.find_all(CommunityTag, %{page: 1, size: 20})
       # assert found.total_count === 0
 
       # Seeds.clean_up_community(:home)
 
-      # {:ok, found} = ORM.find_all(Post, %{page: 1, size: 20})
       # assert found.total_count == 0
 
-      # {:ok, found} = ORM.find_all(CommunityThread, %{page: 1, size: 20})
       # assert found.total_count == 0
 
-      # {:ok, found} = ORM.find_all(Thread, %{page: 1, size: 20})
       # assert found.total_count !== 0
 
-      # {:ok, found} = ORM.find_all(CommunityTag, %{page: 1, size: 20})
       # assert found.total_count == 0
     end
   end

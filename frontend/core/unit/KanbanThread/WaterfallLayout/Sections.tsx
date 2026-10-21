@@ -6,7 +6,7 @@
 import type { ReactNode } from 'react'
 
 import { KANBAN_BOARD } from '~/const/thread'
-import useKanbanPosts from '~/hooks/useKanbanPosts'
+import useKanbanPosts, { type TKanbanPage } from '~/hooks/useKanbanPosts'
 import useLayout from '~/hooks/useLayout'
 import useNameAlias from '~/hooks/useNameAlias'
 import useTrans from '~/hooks/useTrans'
@@ -15,10 +15,11 @@ import GtdDoneSVG from '~/icons/GtdDone'
 import GtdTodoSVG from '~/icons/GtdTodo'
 import GtdWipSVG from '~/icons/GtdWip'
 import RejectSVG from '~/icons/Reject'
-import type { TKanbanBoard, TPagedArticleViewModels } from '~/spec'
+import type { TKanbanBoard } from '~/spec'
 
 import KanbanItem from '../KanbanItem'
 import EmptyItem from '../KanbanItem/EmptyItem'
+import PageControls from '../PageControls'
 import useSalon, { cn } from './salon/sections'
 
 type TSection = {
@@ -27,7 +28,7 @@ type TSection = {
   countClassName: string
   headClassName: string
   icon: ReactNode
-  posts: TPagedArticleViewModels
+  posts: TKanbanPage
 }
 
 export default function Sections() {
@@ -95,16 +96,26 @@ export default function Sections() {
           <div className={section.headClassName}>
             {section.icon}
             <div className={s.label}>{section.title}</div>
-            <div className={cn(s.count, section.countClassName)}>{section.posts.totalCount} 项</div>
+            <div className={cn(s.count, section.countClassName)}>
+              {section.posts.pageInfo?.__typename === 'OffsetPageInfo'
+                ? section.posts.pageInfo.totalCount
+                : section.posts.entries.length}{' '}
+              项
+            </div>
             <div className='grow' />
             <ArrowSVG className={s.arrowIcon} />
           </div>
           <div className={s.content}>
-            {section.posts.totalCount === 0 && <EmptyItem />}
-            {section.posts.totalCount !== 0 &&
+            {(section.posts.pageInfo?.__typename === 'OffsetPageInfo'
+              ? section.posts.pageInfo.totalCount
+              : section.posts.entries.length) === 0 && <EmptyItem />}
+            {(section.posts.pageInfo?.__typename === 'OffsetPageInfo'
+              ? section.posts.pageInfo.totalCount
+              : section.posts.entries.length) !== 0 &&
               section.posts.entries.map((item) => (
                 <KanbanItem key={item.content.innerId} viewModel={item} />
               ))}
+            <PageControls page={section.posts} />
           </div>
         </div>
       ))}

@@ -124,7 +124,6 @@ defmodule Mix.Tasks.Cms.Pipeline.Check do
   defp validate!(contracts) do
     duplicate_operations =
       contracts
-      |> Enum.reject(&(&1.pipeline == :workflow_pipeline))
       |> Enum.group_by(& &1.operation)
       |> Enum.filter(fn {_operation, values} -> length(values) > 1 end)
 
@@ -134,11 +133,7 @@ defmodule Mix.Tasks.Cms.Pipeline.Check do
       )
     end
 
-    Enum.each(contracts, fn contract ->
-      unless contract.pipeline == :workflow_pipeline do
-        ensure_confirmation!(contract)
-      end
-    end)
+    Enum.each(contracts, &ensure_confirmation!/1)
   end
 
   @doc false

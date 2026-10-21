@@ -335,8 +335,9 @@ defmodule GroupherServer.CMS.DocTree do
   @doc """
   Lists visible product Trash drawer items for the resolved docs branch.
   """
-  @spec trash_items(Community.t(), keyword() | map()) :: T.domain_res(list(map()))
-  def trash_items(%Community{} = community, opts \\ []), do: Trash.list(community, opts)
+  @spec trash_items(Community.t(), T.pagi_input(), keyword() | map()) ::
+          T.domain_res(T.paged_data())
+  def trash_items(%Community{} = community, pagi, opts), do: Trash.list(community, pagi, opts)
 
   @doc """
   Restores one product Trash drawer item into the draft tree.
@@ -349,6 +350,11 @@ defmodule GroupherServer.CMS.DocTree do
   @doc "Restores a Trash item through the user Receipt entry."
   def restore_trash_item(%Community{} = community, id, args, %User{} = actor) do
     Commands.RestoreTrashItem.execute(community, id, with_actor(args, actor))
+  end
+
+  @doc "Permanently deletes one Trash action through the internal maintenance entry."
+  def permanently_delete_trash_item_internal(action_or_ref, opts \\ []) do
+    Commands.PermanentlyDeleteTrashItem.execute_internal(action_or_ref, opts)
   end
 
   defp with_actor(attrs, %User{} = actor) do

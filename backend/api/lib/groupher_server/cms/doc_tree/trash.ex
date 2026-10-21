@@ -4,7 +4,10 @@ defmodule GroupherServer.CMS.DocTree.Trash do
 
   One list item represents one user action, even when a deleted Tab/Group owns
   many Tree nodes and Doc Articles. Restore replays draft/public placement
-  snapshots and removes all Article memberships atomically.
+  snapshots and removes all Article memberships atomically. Permanent deletion
+  keeps its transaction and lock ownership here; user calls reach it through
+  `CMS.DocTree.Commands.PermanentlyDeleteTrashItem`, while the purge scheduler
+  uses that Command's explicitly internal direct pipeline.
 
   Business position:
 
@@ -40,28 +43,38 @@ defmodule GroupherServer.CMS.DocTree.Trash do
   alias CMS.SearchArtiments.Indexer
   alias Helper.{ORM, T, Transaction}
 
-  @doc "Lists current Docs Trash actions for one branch under an explicit read policy."
-  @spec list(Community.t(), keyword() | map()) :: T.domain_res(list(map()))
-  def list(%Community{} = community, opts \\ []) do
+  @doc "Pages Docs Trash actions after community admission and branch resolution."
+  @spec list(Community.t(), GroupherServer.Pagi.Params.input(), keyword() | map()) :: tuple()
+  def list(%Community{} = community, pagi, opts) do
     actor = option(opts, :actor)
     policy_mode = option(opts, :policy_mode, :moderator_management)
 
     with {:ok, _community} <- readable_community(community, actor, policy_mode),
-         {:ok, branch} <- Branch.resolve(community, opts) do
-      actions =
-        TrashAction
-        |> join(:inner, [action], node in TrashedDocTreeNode,
-          on: node.trash_action_id == action.id
-        )
-        |> where([action, node], action.community_id == ^community.id)
-        |> where([_action, node], node.branch_id == ^branch.id)
-        |> where([action, _node], like(action.root_type, "doc_tree_%"))
-        |> distinct([action, _node], action.id)
-        |> order_by([action, _node], desc: action.deleted_at, desc: action.id)
-        |> preload([action, _node], [:actor, :trashed_doc_tree_nodes])
-        |> Repo.all()
-
-      {:ok, Enum.map(actions, &to_map/1)}
+         {:ok, branch} <- Branch.resolve(community, opts),
+         action_ids =
+           from(node in TrashedDocTreeNode,
+             where: node.branch_id == ^branch.id,
+             select: node.trash_action_id
+           ),
+         query =
+           from(action in TrashAction,
+             where:
+               action.community_id == ^community.id and action.id in subquery(action_ids) and
+                 like(action.root_type, "doc_tree_%"),
+             preload: [:actor, :trashed_doc_tree_nodes]
+           ),
+         {:ok, page} <-
+           ORM.pagi(query, pagi,
+             for: TrashAction,
+             surface: "docs.tree_trash",
+             query_fingerprint: "#{community.id}:#{branch.id}",
+             order: %Helper.ORM.Pagi.Order{
+               fields: [:deleted_at, :id],
+               directions: [:desc, :desc],
+               cursor_fields: [:deleted_at, :id]
+             }
+           ) do
+      {:ok, %{page | entries: Enum.map(page.entries, &to_map/1)}}
     end
   end
 

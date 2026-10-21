@@ -41,7 +41,6 @@ defmodule GroupherServer.Mixfile do
         :ex_unit,
         :logger,
         :runtime_tools,
-        :scrivener_ecto,
         :sentry
       ]
     ]
@@ -80,7 +79,7 @@ defmodule GroupherServer.Mixfile do
       {:corsica, "~> 2.1.3"},
       {:tesla, "~> 1.21"},
       {:finch, "~> 0.23"},
-      {:scrivener_ecto, "~> 3.1.0"},
+      {:flop, "~> 0.29.1"},
       {:guardian, "~> 2.5"},
       {:dataloader, "~> 2.0.2"},
       {:mix_test_watch, "~> 1.4.0", only: :dev, runtime: false},

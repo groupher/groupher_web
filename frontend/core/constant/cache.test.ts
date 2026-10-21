@@ -4,6 +4,7 @@ describe('cache tag contract', () => {
   it('accepts tags emitted by the public cache owner', () => {
     expect(isCacheTag(CACHE_TAG.communityCache('home'))).toBe(true)
     expect(isCacheTag(CACHE_TAG.commentsCache('home', 'POST', '42'))).toBe(true)
+    expect(isCacheTag(CACHE_TAG.commentsListCache('home'))).toBe(true)
     expect(isCacheTag(CACHE_TAG.docTreeCache('home'))).toBe(true)
   })
 

@@ -22,7 +22,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Update do
   alias CMS.Articles.Bindings
   alias CMS.Comments.Commands.CommentConfirmation, as: Confirmation
   alias CMS.Comments.Effects
-  alias Comments.{JobPolicy, Persist}
+  alias Comments.{Persist, RequiredJobs}
   alias CMS.Model.Comment
   alias Helper.{ORM, T}
 
@@ -91,7 +91,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Update do
     with {:ok, updated} <- Persist.update_content(canonical, body_bag, expected_version),
          {:ok, _} <- CMS.ArticleStats.record_comment_change(article),
          {:ok, synced} <- CMS.Comments.Replies.sync_embed_replies(updated),
-         {:ok, _} <- JobPolicy.audition(synced),
+         {:ok, _} <- RequiredJobs.audition(synced),
          {:ok, _invalidation} <-
            invalidate_public_comments(article, community_id, canonical.thread, command_id),
          {:ok, _} <- enqueue_comment_effects(canonical, actor, command_id) do

@@ -7,17 +7,18 @@ defmodule GroupherServer.Accounts.CollectFolders.Persist do
   updates.
 
       CollectFolders command
-          -> folder / ArticleCollect row primitives
+          -> folder counters / CollectFolderEntry primitives
           -> committed folder membership
   """
 
+  import Ecto.Query, warn: false
   import GroupherServer.FrontDesk, only: [thread_of: 1]
   import ShortMaps
 
   alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.CollectFolders.ErrorCat
-  alias Accounts.Model.{CollectFolder, Embeds, User}
-  alias CMS.Model.ArticleCollect
+  alias Accounts.Model.{CollectFolder, CollectFolderEntry, Embeds, User}
+  alias CMS.Model.{ArticleBinding, Community}
   alias Helper.{Datetime, ORM, T}
 
   @default_meta Embeds.CollectFolderMeta.default_meta()
@@ -70,9 +71,9 @@ defmodule GroupherServer.Accounts.CollectFolders.Persist do
   @spec delete(T.id()) :: T.domain_res(CollectFolder.t())
   def delete(id) do
     with {:ok, folder} <- ORM.find(CollectFolder, id) do
-      case Enum.empty?(folder.collects) do
-        true -> ORM.find_delete!(CollectFolder, id)
-        false -> {:error, ErrorCat.delete_no_empty_collect_folder("#{folder.title} is not empty")}
+      case Repo.exists?(from(entry in CollectFolderEntry, where: entry.folder_id == ^id)) do
+        true -> {:error, ErrorCat.delete_no_empty_collect_folder("#{folder.title} is not empty")}
+        false -> ORM.find_delete!(CollectFolder, id)
       end
     end
   end
@@ -87,10 +88,11 @@ defmodule GroupherServer.Accounts.CollectFolders.Persist do
   @spec prepare_add(struct(), T.id(), User.t()) :: {:ok, map()} | {:error, term()}
   def prepare_add(article, folder_id, %User{} = user) do
     with {:ok, thread} <- thread_of(article),
+         {:ok, binding} <- resolve_binding(article),
          {:ok, folder} <- ORM.find(CollectFolder, folder_id),
-         {:ok, :pass} <- article_not_in_folder(article, folder.collects),
-         true <- user.id == folder.user_id do
-      {:ok, %{thread: thread, folder: folder}}
+         true <- user.id == folder.user_id,
+         {:ok, :pass} <- entry_not_in_folder(folder.id, binding.id) do
+      {:ok, %{thread: thread, folder: folder, binding: binding}}
     else
       false -> {:error, ErrorCat.private_collect_folder("folder does not belong to user")}
       error -> error
@@ -107,9 +109,10 @@ defmodule GroupherServer.Accounts.CollectFolders.Persist do
   @spec prepare_remove(struct(), T.id(), User.t()) :: {:ok, map()} | {:error, term()}
   def prepare_remove(article, folder_id, %User{} = user) do
     with {:ok, thread} <- thread_of(article),
+         {:ok, binding} <- resolve_binding(article),
          {:ok, folder} <- ORM.find(CollectFolder, folder_id),
          true <- user.id == folder.user_id do
-      {:ok, %{thread: thread, folder: folder}}
+      {:ok, %{thread: thread, folder: folder, binding: binding, user_id: user.id}}
     else
       false -> {:error, ErrorCat.private_collect_folder("folder does not belong to user")}
       error -> error
@@ -117,63 +120,174 @@ defmodule GroupherServer.Accounts.CollectFolders.Persist do
   end
 
   @doc """
-  Adds an already persisted ArticleCollect to a folder in the caller's
-  current transaction. The command pipeline owns the transaction itself.
+  Adds a binding-scoped entry to a folder in the caller's current transaction.
+  The command pipeline owns the transaction itself.
 
   ## Examples
 
-      Accounts.CollectFolders.Persist.add_in_transaction(article_collect, folder, :post)
+      Accounts.CollectFolders.Persist.add_in_transaction(folder, :post, binding)
   """
-  @spec add_in_transaction(ArticleCollect.t(), CollectFolder.t(), atom()) ::
+  @spec add_in_transaction(CollectFolder.t(), atom(), ArticleBinding.t()) ::
           T.domain_res(CollectFolder.t())
-  def add_in_transaction(%ArticleCollect{} = article_collect, folder, thread) do
-    update_folder_meta(thread, [article_collect | folder.collects], folder)
+  def add_in_transaction(folder, thread, %ArticleBinding{} = binding) do
+    update_folder_meta(thread, folder, %{
+      article_id: binding.article_id,
+      article_binding_id: binding.id,
+      operation: :add
+    })
   end
 
   @doc """
-  Removes an already persisted ArticleCollect from a folder in the caller's
-  current transaction. The command pipeline owns the transaction itself.
+  Removes a binding-scoped entry from a folder in the caller's current
+  transaction. The command pipeline owns the transaction itself.
 
   ## Examples
 
-      Accounts.CollectFolders.Persist.remove_in_transaction(article_collect, folder, :post)
+      Accounts.CollectFolders.Persist.remove_in_transaction(folder, :post, binding)
   """
-  @spec remove_in_transaction(ArticleCollect.t(), CollectFolder.t(), atom()) ::
-          T.domain_res(CollectFolder.t())
-  def remove_in_transaction(%ArticleCollect{} = article_collect, folder, thread) do
-    collects = Enum.reject(folder.collects, &(&1.id == article_collect.id))
-    update_folder_meta(thread, collects, folder)
+  @spec remove_in_transaction(CollectFolder.t(), atom(), ArticleBinding.t(), T.id()) ::
+          T.domain_res(map())
+  def remove_in_transaction(folder, thread, %ArticleBinding{} = binding, user_id) do
+    remove_folder_entry(thread, folder, binding, user_id)
   end
 
-  defp article_not_in_folder(article, collects) do
-    with {:ok, thread} <- thread_of(article),
-         {:ok, info} <- CMS.artiment_matcher_match(thread) do
-      already_collected =
-        Enum.any?(collects, fn collect -> article.id == Map.get(collect, info.foreign_key) end)
-
-      if already_collected do
-        {:error, ErrorCat.already_collected_in_folder("already collected in this folder")}
-      else
-        {:ok, :pass}
-      end
+  defp entry_not_in_folder(folder_id, binding_id) do
+    if Repo.exists?(
+         from(entry in CollectFolderEntry,
+           where: entry.folder_id == ^folder_id and entry.article_binding_id == ^binding_id
+         )
+       ) do
+      {:error, ErrorCat.already_collected_in_folder("already collected in this folder")}
+    else
+      {:ok, :pass}
     end
   end
 
-  defp update_folder_meta(thread, collects, folder) do
-    total_count = length(collects)
+  defp update_folder_meta(thread, folder, entry_attrs) do
+    folder = Repo.get!(CollectFolder, folder.id, lock: "FOR UPDATE")
+    delta = if entry_attrs.operation == :add, do: 1, else: -1
+    total_count = max(folder.total_count + delta, 0)
+    thread_count = max(Map.get(folder.meta, :"#{thread}_count") + delta, 0)
     last_updated = Datetime.today() |> Datetime.to_datetime()
-    thread_count = Enum.count(collects, &(&1.thread == thread))
 
     meta =
       folder.meta
       |> Map.merge(%{"has_#{thread}": thread_count > 0})
       |> Map.merge(%{"#{thread}_count": thread_count})
 
-    with {:ok, folder} <- ORM.update_meta(folder, meta) do
-      folder
-      |> Ecto.Changeset.change(%{total_count: total_count, last_updated: last_updated})
-      |> Ecto.Changeset.put_embed(:collects, collects)
-      |> Repo.update()
+    with {:ok, folder} <- ORM.update_meta(folder, meta),
+         {:ok, folder} <-
+           folder
+           |> Ecto.Changeset.change(%{total_count: total_count, last_updated: last_updated})
+           |> Repo.update(),
+         {:ok, _entry} <- persist_entry(entry_attrs, folder.id) do
+      {:ok, folder}
+    end
+  end
+
+  defp remove_folder_entry(thread, folder, binding, user_id) do
+    folder = Repo.get!(CollectFolder, folder.id, lock: "FOR UPDATE")
+
+    entry_query =
+      from(entry in CollectFolderEntry,
+        where:
+          entry.folder_id == ^folder.id and
+            entry.article_binding_id == ^binding.id,
+        lock: "FOR UPDATE"
+      )
+
+    case Repo.one(entry_query) do
+      nil ->
+        {:error, ErrorCat.not_collected_in_folder("article is not collected in this folder")}
+
+      entry ->
+        with {1, _} <-
+               Repo.delete_all(from(row in CollectFolderEntry, where: row.id == ^entry.id)),
+             {:ok, updated_folder} <- decrement_folder_meta(thread, folder) do
+          remaining_in_folder? =
+            Repo.exists?(
+              from(row in CollectFolderEntry,
+                where: row.folder_id == ^folder.id and row.article_id == ^binding.article_id
+              )
+            )
+
+          remaining_in_account? =
+            Repo.exists?(
+              from(row in CollectFolderEntry,
+                join: owned_folder in CollectFolder,
+                on: owned_folder.id == row.folder_id,
+                where: owned_folder.user_id == ^user_id and row.article_id == ^binding.article_id
+              )
+            )
+
+          {:ok,
+           %{
+             folder: updated_folder,
+             remaining_in_folder?: remaining_in_folder?,
+             remaining_in_account?: remaining_in_account?
+           }}
+        else
+          error -> error
+        end
+    end
+  end
+
+  defp decrement_folder_meta(thread, folder) do
+    delta = -1
+    total_count = max(folder.total_count + delta, 0)
+    thread_count = max(Map.get(folder.meta, :"#{thread}_count") + delta, 0)
+    last_updated = Datetime.today() |> Datetime.to_datetime()
+
+    meta =
+      folder.meta
+      |> Map.merge(%{"has_#{thread}": thread_count > 0})
+      |> Map.merge(%{"#{thread}_count": thread_count})
+
+    with {:ok, folder} <- ORM.update_meta(folder, meta),
+         {:ok, folder} <-
+           folder
+           |> Ecto.Changeset.change(%{total_count: total_count, last_updated: last_updated})
+           |> Repo.update() do
+      {:ok, folder}
+    end
+  end
+
+  defp persist_entry(attrs, folder_id) do
+    case Map.fetch!(attrs, :operation) do
+      :remove ->
+        Repo.delete_all(
+          from(entry in CollectFolderEntry,
+            where:
+              entry.folder_id == ^folder_id and
+                entry.article_binding_id == ^attrs.article_binding_id
+          )
+        )
+
+        {:ok, :removed}
+
+      :add ->
+        attrs
+        |> Map.drop([:operation])
+        |> Map.put(:folder_id, folder_id)
+        |> then(&(%CollectFolderEntry{} |> CollectFolderEntry.changeset(&1)))
+        |> Repo.insert()
+    end
+  end
+
+  defp resolve_binding(article) do
+    case Map.get(article, :community) do
+      %Community{} = community ->
+        case CMS.articles_bindings_get(article, community) do
+          {:ok, %{binding: %ArticleBinding{} = binding}} -> {:ok, binding}
+          {:error, _reason} = error -> error
+        end
+
+      _ ->
+        case CMS.articles_bindings_all(article) do
+          {:ok, [%ArticleBinding{} = binding]} -> {:ok, binding}
+          {:ok, _bindings} -> {:error, :article_binding_context_required}
+          {:error, _reason} = error -> error
+        end
     end
   end
 end

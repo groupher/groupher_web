@@ -91,8 +91,8 @@ defmodule GroupherServer.Test.Helper.Schema.Community do
 
   def q(:paged_communities) do
     """
-    query($filter: CommunitiesFilter!) {
-          pagedCommunities(filter: $filter) {
+    query($filter: CommunitiesFilter, $pagi: PagiInput) {
+          pagedCommunities(filter: $filter, pagi: $pagi) {
             entries {
               slug
               title
@@ -104,37 +104,15 @@ defmodule GroupherServer.Test.Helper.Schema.Community do
                 slug
               }
             }
-            totalCount
-            totalPages
-            pageSize
-            pageNumber
+            pageInfo { hasNextPage ... on OffsetPageInfo { page size totalPages totalCount } ... on CursorPageInfo { endCursor } }
           }
         }
     """
   end
 
-  def q(:paged_categories) do
+  def q(:categories) do
     """
-    query($filter: PagiFilter!) {
-          pagedCategories(filter: $filter) {
-            entries {
-              id
-              title
-              author {
-                login
-                nickname
-              }
-              communities {
-                slug
-                title
-              }
-            }
-            totalCount
-            totalPages
-            pageSize
-            pageNumber
-          }
-        }
+    query { categories { id title author { login nickname } } }
     """
   end
 
@@ -210,17 +188,14 @@ defmodule GroupherServer.Test.Helper.Schema.Community do
 
   def q(:paged_community_subscribers) do
     """
-    query($community: String!, $filter: PagiFilter!) {
-          pagedCommunitySubscribers(community: $community, filter: $filter) {
+    query($community: String!, $filter: UserListFilter, $pagi: PagiInput) {
+          pagedCommunitySubscribers(community: $community, filter: $filter, pagi: $pagi) {
             entries {
               login
               nickname
               avatar
             }
-            totalCount
-            totalPages
-            pageSize
-            pageNumber
+            pageInfo { hasNextPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { endCursor } }
           }
         }
     """
@@ -260,13 +235,7 @@ defmodule GroupherServer.Test.Helper.Schema.Community do
   def q(:search_communities) do
     """
     query($title: String!, $category: String) {
-      searchCommunities(title: $title, category: $category) {
-        entries {
-          slug
-          title
-        }
-        totalCount
-      }
+      searchCommunities(title: $title, category: $category) { slug title }
     }
     """
   end

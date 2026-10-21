@@ -1,4 +1,4 @@
-import type { TPagi } from './utils'
+import type { TGraphQLPagiPageInfo } from './pagination'
 
 // import type { TPagedCommunities } from './community'
 
@@ -16,15 +16,15 @@ type TUserSocial = {
 
 export type TSimpleUser = {
   /** Stable opaque account reference; unlike login, it never changes. */
-  accountRef?: string
+  accountRef?: string | null
   /** Kept for local/test data that predates the accountRef contract. */
-  id?: string
+  id?: string | null
   login?: string
-  nickname?: string
-  name?: string
-  bio?: string
-  shortbio?: string
-  avatar?: string
+  nickname?: string | null
+  name?: string | null
+  bio?: string | null
+  shortbio?: string | null
+  avatar?: string | null
 }
 
 type TContributes = {
@@ -74,7 +74,8 @@ export type TUser = TSimpleUser & {
 
 export type TPagedUsers = {
   entries: TUser[]
-} & TPagi
+  pageInfo: TGraphQLPagiPageInfo
+}
 
 export type TAccount = TUser & {
   isLogin?: boolean

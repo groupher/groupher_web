@@ -520,7 +520,7 @@ id 的旧式入口必须被标记为 non-replayable，不得把每次随机 UUID
 不设置兼容中间层：
 
 1. 增加 `public-cache.contract.json`、双端生成器、stale check 和 golden vectors；
-2. 建立 `PublicCache.Const/Invalidation/Scope/Tags/Policy/Cloudflare`；
+2. 建立 `PublicCache.Const/Invalidation/Scope/Tags/DeliveryConfig/Cloudflare`；
 3. 建立 outbox migration 和 `Jobs.PublicCachePurge`；
 4. 所有 content/publish/visibility/config command 在事务内写 typed invalidation；
 5. coverage audit 证明每个需要立即 purge 的领域写入口都有且只有一个 invalidation；

@@ -10,7 +10,7 @@ defmodule GroupherServer.CMS.Communities.Query do
         -> Repo / Oban
   """
 
-  import Ecto.Query, only: [order_by: 3]
+  import Ecto.Query
   import Helper.Utils, only: [done: 1]
 
   alias GroupherServer.{Accounts, CMS, Repo}
@@ -19,60 +19,95 @@ defmodule GroupherServer.CMS.Communities.Query do
   alias CMS.QueryBuilder
   alias Accounts.Model.User
   alias CMS.Model.{Community, Category}
-  alias Helper.{ORM, T}
+  alias Helper.ORM
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
-  @doc """
-  Pages categories for the discovery GraphQL read model.
-  """
-  @spec page_categories(map()) :: T.domain_res(term())
-  def page_categories(filter), do: ORM.find_all(Category, filter)
-
-  @doc """
-  Returns paged Communities annotated with the viewer's subscription state.
-
-  ## Examples
-
-      CMS.Communities.Query.page(%{page: 1, size: 20}, %User{meta: %{subscribed_communities_ids: [1]}})
-      #=> {:ok, %{entries: [%Community{}], page_number: 1}}
-
-  """
-  @spec page(map(), User.t()) :: T.domain_res(term())
-  def page(filter, %User{meta: meta}) do
-    with {:ok, paged_communities} <- page(filter) do
-      %{entries: entries} = paged_communities
-
-      entries =
-        Enum.map(entries, fn community ->
-          viewer_has_subscribed = community.id in meta.subscribed_communities_ids
-          %{community | viewer_has_subscribed: viewer_has_subscribed}
-        end)
-
-      %{paged_communities | entries: entries} |> done
-    end
+  @doc "Returns the canonical public Community query for composable collection scopes."
+  def public_query do
+    CMS.Gate.scope(Community, nil, :list, CommunityContext.public())
   end
 
-  @spec page(map()) :: T.domain_res(term())
-  def page(filter) do
-    filter = filter |> Enum.reject(fn {_k, v} -> is_nil(v) end) |> Enum.into(%{})
-    %{page: page, size: size} = filter
-
-    Community
-    |> CMS.Gate.scope(nil, :list, CommunityContext.public())
-    |> QueryBuilder.filter_pack(Map.drop(filter, [:sort]))
-    |> order_by_views(Map.get(filter, :sort))
-    |> ORM.paginator(page: page, size: size)
+  @doc "Returns the navigation category configuration in stable index order."
+  def categories do
+    Category
+    |> order_by([category], asc: category.index, asc: category.id)
+    |> Repo.all()
     |> done()
   end
 
-  defp order_by_views(queryable, :most_views) do
-    order_by(queryable, [community], desc: community.views, desc: community.inserted_at)
+  @doc "Pages public communities; filters and Pagi position have separate owners."
+  @spec page(map(), Params.t() | nil, User.t() | nil) :: tuple()
+  def page(filter, pagi, viewer \\ nil) do
+    filter = Map.reject(filter, fn {_key, value} -> is_nil(value) end)
+    sort = Map.get(filter, :sort, :desc_inserted)
+
+    if sort in [:desc_inserted, :asc_inserted, :most_views, :least_views] do
+      query =
+        public_query()
+        |> QueryBuilder.filter_pack(Map.delete(filter, :sort))
+
+      with {:ok, page} <-
+             ORM.pagi(query, pagi,
+               for: Community,
+               order: order_by_views(sort),
+               surface: "communities.list",
+               query_fingerprint:
+                 :erlang.term_to_binary(Map.put(filter, :sort, sort)) |> Base.encode64()
+             ) do
+        entries =
+          Enum.map(page.entries, fn community ->
+            case viewer do
+              %User{meta: meta} when not is_nil(meta) ->
+                %{
+                  community
+                  | viewer_has_subscribed: community.id in meta.subscribed_communities_ids
+                }
+
+              _ ->
+                community
+            end
+          end)
+
+        {:ok, %{page | entries: entries}}
+      end
+    else
+      {:error, GroupherServer.Pagi.unsupported_sort()}
+    end
   end
 
-  defp order_by_views(queryable, :least_views) do
-    order_by(queryable, [community], asc: community.views, desc: community.inserted_at)
+  defp order_by_views(:most_views) do
+    %Order{
+      fields: [:views, :inserted_at, :id],
+      directions: [:desc_nulls_last, :desc, :desc],
+      cursor_fields: [:views, :inserted_at, :id]
+    }
   end
 
-  defp order_by_views(queryable, _sort), do: queryable
+  defp order_by_views(:least_views) do
+    %Order{
+      fields: [:views, :inserted_at, :id],
+      directions: [:asc_nulls_first, :desc, :desc],
+      cursor_fields: [:views, :inserted_at, :id]
+    }
+  end
+
+  defp order_by_views(:asc_inserted) do
+    %Order{
+      fields: [:inserted_at, :id],
+      directions: [:asc, :asc],
+      cursor_fields: [:inserted_at, :id]
+    }
+  end
+
+  defp order_by_views(_sort) do
+    %Order{
+      fields: [:inserted_at, :id],
+      directions: [:desc, :desc],
+      cursor_fields: [:inserted_at, :id]
+    }
+  end
 
   @doc false
   def get(id), do: Repo.get(Community, id)

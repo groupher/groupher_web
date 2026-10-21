@@ -31,19 +31,25 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
 
   def doc_tree_trash_items(
         _root,
-        %{community: %Community{} = community},
+        %{community: %Community{} = community} = args,
         %{context: %{cur_user: user}}
       ) do
-    CMS.doc_tree_trash_items(community, actor: user, policy_mode: :moderator_management)
+    CMS.doc_tree_trash_items(community, Map.get(args, :pagi),
+      actor: user,
+      policy_mode: :moderator_management
+    )
   end
 
   def doc_tree_trash_items(
         _root,
-        %{community: community},
+        %{community: community} = args,
         %{context: %{cur_user: user}}
       ) do
     with {:ok, community} <- CMS.communities_fetch(community, inc_views: false) do
-      CMS.doc_tree_trash_items(community, actor: user, policy_mode: :moderator_management)
+      CMS.doc_tree_trash_items(community, Map.get(args, :pagi),
+        actor: user,
+        policy_mode: :moderator_management
+      )
     end
   end
 
@@ -86,20 +92,22 @@ defmodule GroupherServerWeb.Resolvers.CMS.Docs do
     end
   end
 
-  def doc_branch_versions(_root, %{doc_id: doc_id, branch_id: branch_id} = args, _info) do
+  def doc_branch_versions(_root, %{doc_id: doc_id, branch_id: branch_id} = args, %{
+        context: %{cur_user: user}
+      }) do
     with {:ok, branch_id} <- positive_integer_id(branch_id) do
-      CMS.docs_list_branch_versions(doc_id, branch_id, limit: Map.get(args, :limit, 30))
+      CMS.docs_list_branch_versions(doc_id, branch_id, Map.get(args, :pagi), user)
     end
   end
 
   def doc_branch_version(
         _root,
         %{doc_id: doc_id, branch_id: branch_id, branch_version_id: branch_version_id},
-        _info
+        %{context: %{cur_user: user}}
       ) do
     with {:ok, branch_id} <- positive_integer_id(branch_id),
          {:ok, branch_version_id} <- positive_integer_id(branch_version_id) do
-      CMS.docs_get_branch_version(doc_id, branch_id, branch_version_id)
+      CMS.docs_get_branch_version(doc_id, branch_id, branch_version_id, user)
     end
   end
 

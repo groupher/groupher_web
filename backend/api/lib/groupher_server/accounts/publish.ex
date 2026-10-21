@@ -15,25 +15,22 @@ defmodule GroupherServer.Accounts.Publish do
   alias Helper.T
 
   @doc """
-  Returns the user's published articles for a thread.
+  Pages a user's published Article paths for the selected thread.
 
   ## Examples
 
-      Accounts.Publish.paged_articles(user, :post, %{page: 1, size: 20})
+      Accounts.Publish.paged_articles(user, :post, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
-  @spec paged_articles(User.t(), T.thread(), map()) :: T.domain_res(T.paged_data())
-  def paged_articles(%User{} = user, thread, filter), do: Articles.paged(user, thread, filter)
+  defdelegate paged_articles(user, thread, filter, pagi), to: Articles, as: :paged
 
   @doc """
-  Returns published articles with viewer-aware fields.
+  Pages published Article paths and projects the requesting viewer's state.
 
   ## Examples
 
-      Accounts.Publish.paged_articles(user, :post, %{page: 1, size: 20}, viewer)
+      Accounts.Publish.paged_articles(user, :post, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
   """
-  def paged_articles(%User{} = user, thread, filter, actor) do
-    Articles.paged(user, thread, filter, actor)
-  end
+  defdelegate paged_articles(user, thread, filter, pagi, viewer), to: Articles, as: :paged
 
   @doc """
   Updates the published-state projection for one thread.
@@ -56,42 +53,11 @@ defmodule GroupherServer.Accounts.Publish do
   def revalidate_user(%User{} = user), do: Effects.revalidate_user(user)
 
   @doc """
-  Returns the user's published comments.
+  Pages a user's published comments for the selected thread and viewer.
 
   ## Examples
 
-      Accounts.Publish.paged_comments(user, %{page: 1, size: 20})
-      Accounts.Publish.paged_comments(user, %{page: 1, size: 20}, viewer)
-      Accounts.Publish.paged_comments(user, :post, %{page: 1, size: 20})
+      Accounts.Publish.paged_comments(user, :post, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
   """
-  @spec paged_comments(User.t(), map()) :: T.domain_res(T.paged_data())
-  def paged_comments(%User{} = user, filter), do: Comments.paged(user, filter)
-
-  @doc """
-  Returns published comments for a viewer or a selected thread.
-
-  ## Examples
-
-      Accounts.Publish.paged_comments(user, %{page: 1, size: 20}, viewer)
-      Accounts.Publish.paged_comments(user, :post, %{page: 1, size: 20})
-  """
-  def paged_comments(%User{} = user, filter, actor) when is_map(filter) do
-    Comments.paged(user, filter, actor)
-  end
-
-  @spec paged_comments(User.t(), T.thread(), map()) :: T.domain_res(T.paged_data())
-  def paged_comments(%User{} = user, thread, filter) when is_atom(thread) do
-    Comments.paged(user, thread, filter, nil)
-  end
-
-  @doc """
-  Returns thread-filtered published comments with viewer-aware fields.
-
-  ## Examples
-
-      Accounts.Publish.paged_comments(user, :post, %{page: 1, size: 20}, viewer)
-  """
-  def paged_comments(%User{} = user, thread, filter, actor) do
-    Comments.paged(user, thread, filter, actor)
-  end
+  defdelegate paged_comments(user, thread, filter, pagi, viewer), to: Comments, as: :paged
 end

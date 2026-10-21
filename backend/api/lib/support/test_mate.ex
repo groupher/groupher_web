@@ -104,14 +104,17 @@ defmodule GroupherServer.TestMate do
       @doc "Reads an Article through the production ArticlePath-only FrontDesk contract."
       def read_article(article_path), do: FrontDesk.article(article_path)
 
-      def read_article(article_path, actor) when is_map(article_path),
-        do: FrontDesk.article(article_path, actor)
+      def read_article(article_path, actor) when is_map(article_path) do
+        FrontDesk.article(article_path, actor)
+      end
 
-      def read_article(community, thread, inner_id),
-        do: read_article(community, thread, inner_id, [])
+      def read_article(community, thread, inner_id) do
+        read_article(community, thread, inner_id, [])
+      end
 
-      def read_article(%Community{slug: slug}, thread, inner_id, actor_or_opts),
-        do: read_article(slug, thread, inner_id, actor_or_opts)
+      def read_article(%Community{slug: slug}, thread, inner_id, actor_or_opts) do
+        read_article(slug, thread, inner_id, actor_or_opts)
+      end
 
       def read_article(community, thread, inner_id, actor_or_opts) when is_binary(community) do
         article_path = %{community: community, thread: thread, inner_id: inner_id}
@@ -122,6 +125,80 @@ defmodule GroupherServer.TestMate do
 
       def comment_path(%Community{} = community, article, thread, %Comment{} = comment) do
         %{article: article_path(community, article, thread), inner_id: comment.inner_id}
+      end
+
+      def valid_comment_page?(%{
+            entries: entries,
+            page_info: %{api: :offset, total_count: count, size: size, page: page}
+          }) do
+        is_list(entries) and is_integer(count) and count >= 0 and size > 0 and page >= 1
+      end
+
+      def valid_comment_page?(%{
+            "entries" => entries,
+            "pageInfo" => %{"totalCount" => count, "size" => size, "page" => page}
+          }) do
+        is_list(entries) and is_integer(count) and count >= 0 and size > 0 and page >= 1
+      end
+
+      def comment_page(thread, article_id, filter, mode, user \\ nil) do
+        community =
+          Repo.one!(
+            from(b in ArticleBinding,
+              join: c in Community,
+              on: c.id == b.community_id,
+              where: b.article_id == ^article_id,
+              order_by: b.id,
+              limit: 1,
+              select: c.slug
+            )
+          )
+
+        CMS.Comments.page(
+          thread,
+          article_id,
+          community,
+          Map.drop(filter, [:page, :size]),
+          %{
+            offset: %{
+              page: Map.get(filter, :page, 1),
+              size: Map.get(filter, :size, 20),
+              config_revision: 0
+            }
+          },
+          mode,
+          user
+        )
+      end
+
+      def comment_reply_page(comment_id, filter, user \\ nil) do
+        comment = Repo.get!(Comment, comment_id)
+
+        community =
+          Repo.one!(
+            from(b in ArticleBinding,
+              join: c in Community,
+              on: c.id == b.community_id,
+              where: b.article_id == ^comment.article_id,
+              order_by: b.id,
+              limit: 1,
+              select: c.slug
+            )
+          )
+
+        CMS.Comments.reply_page(
+          comment,
+          community,
+          Map.drop(filter, [:page, :size]),
+          %{
+            offset: %{
+              page: Map.get(filter, :page, 1),
+              size: Map.get(filter, :size, 20),
+              config_revision: 0
+            }
+          },
+          user
+        )
       end
 
       def service_credential(id \\ "test-service") do

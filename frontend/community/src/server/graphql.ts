@@ -8,7 +8,7 @@ import { print, type DocumentNode } from 'graphql'
 
 export type TGraphQLResponse<TData> = {
   data?: TData
-  errors?: Array<{ extensions?: { code?: unknown }; message?: string }>
+  errors?: Array<{ extensions?: { code?: unknown; mismatch?: unknown }; message?: string }>
 }
 
 export class GraphQLRequestError extends Error {

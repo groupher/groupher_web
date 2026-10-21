@@ -8,7 +8,8 @@
  * This module only constructs keys and canonicalizes key inputs. Cache matching and mutation
  * behavior remain in their owning cache or invalidation modules.
  */
-import type { TPagedArticlesParams, TThread } from '~/spec'
+import { DEFAULT_EFFECTIVE_PAGI_CONFIG, pagiConfigKey } from '~/lib/pagination/params'
+import type { TPagedArticlesParams, TPagiRequest, TEffectivePagiConfig, TThread } from '~/spec'
 
 export type TNormalizedArticleFilter = {
   community: string
@@ -22,6 +23,8 @@ export type TNormalizedArticleFilter = {
   when: string | null
   sort: string | null
 }
+
+export type TNormalizedArticlePageFilter = Omit<TNormalizedArticleFilter, 'page' | 'size'>
 
 const normalizeText = (value: string | null | undefined): string | null => {
   const normalized = value?.trim()
@@ -45,12 +48,41 @@ export const normalizeArticleFilter = (filter: TPagedArticlesParams): TNormalize
   sort: normalizeText(filter.sort),
 })
 
+/** Removes transport paging from the domain filter used by the new page contract. */
+export const normalizeArticlePageFilter = (
+  filter: TPagedArticlesParams,
+): TNormalizedArticlePageFilter => {
+  const { page: _page, size: _size, ...domainFilter } = normalizeArticleFilter(filter)
+  return domainFilter
+}
+
+const pagiRequestKey = (
+  request: TPagiRequest | undefined,
+  config: TEffectivePagiConfig,
+  filter: TPagedArticlesParams,
+) => {
+  const normalized = normalizeArticleFilter(filter)
+  const api = request?.api || config.api
+  if (api === 'cursor') {
+    return {
+      first: request?.api === 'cursor' ? request.first : (filter.size ?? config.defaultSize),
+      ...(filter.after ? { initialAfter: filter.after } : {}),
+    }
+  }
+
+  return {
+    page: request?.api === 'offset' ? request.page : normalized.page,
+    size: request?.api === 'offset' ? request.size : (filter.size ?? config.defaultSize),
+  }
+}
+
 /** True only for the one changelog result that the community-scoped SSR cache can represent. */
 export const isCanonicalDefaultArticleFilter = (filter: TPagedArticlesParams): boolean => {
   const normalized = normalizeArticleFilter(filter)
 
   return (
     !!normalized.community &&
+    !filter.after &&
     normalized.page === 1 &&
     normalized.size === 20 &&
     normalized.communityTag === null &&
@@ -66,11 +98,34 @@ export const isCanonicalDefaultArticleFilter = (filter: TPagedArticlesParams): b
 /** Constructors for public Article content, stats, tag, and list query identities. */
 export const articleQueryKeys = {
   all: ['article'] as const,
-  posts: (filter: TPagedArticlesParams) =>
-    [...articleQueryKeys.all, 'posts', normalizeArticleFilter(filter)] as const,
-  changelogs: (filter: TPagedArticlesParams) =>
-    [...articleQueryKeys.all, 'changelogs', normalizeArticleFilter(filter)] as const,
-  kanban: (community: string) => [...articleQueryKeys.all, 'kanban', community] as const,
+  pagiPosts: (
+    filter: TPagedArticlesParams,
+    config: TEffectivePagiConfig = DEFAULT_EFFECTIVE_PAGI_CONFIG,
+    request?: TPagiRequest,
+  ) =>
+    [
+      ...articleQueryKeys.all,
+      'posts',
+      'pagi',
+      pagiConfigKey(config),
+      normalizeArticlePageFilter(filter),
+      pagiRequestKey(request, config, filter),
+    ] as const,
+  pagiChangelogs: (
+    filter: TPagedArticlesParams,
+    config: TEffectivePagiConfig = DEFAULT_EFFECTIVE_PAGI_CONFIG,
+    request?: TPagiRequest,
+  ) =>
+    [
+      ...articleQueryKeys.all,
+      'changelogs',
+      'pagi',
+      pagiConfigKey(config),
+      normalizeArticlePageFilter(filter),
+      pagiRequestKey(request, config, filter),
+    ] as const,
+  kanban: (community: string, config = DEFAULT_EFFECTIVE_PAGI_CONFIG) =>
+    [...articleQueryKeys.all, 'kanban', community, pagiConfigKey(config)] as const,
   detail: (community: string, thread: TThread, innerId: string | number) =>
     [...articleQueryKeys.all, 'detail', community, thread, String(innerId)] as const,
   statsPrefix: (community: string, thread: TThread) =>
@@ -97,6 +152,21 @@ export const commentKeys = {
     page = 1,
     mode = 'REPLIES',
   ) => [...commentKeys.all, 'list', community, thread, String(innerId), { mode, page }] as const,
+  page: (
+    community: string,
+    thread: TThread,
+    innerId: string | number,
+    collection: object,
+    config: object,
+    position: object,
+  ) =>
+    [
+      ...commentKeys.articlePrefix(community, thread, innerId),
+      'page',
+      collection,
+      config,
+      position,
+    ] as const,
   reconcile: (
     community: string,
     thread: TThread,

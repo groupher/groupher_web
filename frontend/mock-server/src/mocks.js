@@ -1,4 +1,3 @@
-import { MockList } from '@graphql-tools/mock'
 import { GraphQLError } from 'graphql'
 
 import {
@@ -9,6 +8,7 @@ import {
   revokeAuthSessionPublic,
   revokeOtherAuthSessions,
 } from './auth-state.js'
+import { mockPage } from './pagination.js'
 
 const nowISO = () => new Date().toISOString()
 const todayISO = () => new Date().toISOString().slice(0, 10)
@@ -305,6 +305,9 @@ const makeDashboard = (slug = 'home') => {
       dark: makeWallpaperSettings(darkWallpaper),
     },
     contentShadow: false,
+    pagiMode: 'PAGE',
+    pagiMobileMode: 'INFINITE_SCROLL',
+    pagiRevision: 0,
     layout: {
       themePreset: THEME_PRESET.DEFAULT,
       themeTokens: makeThemeTokens(),
@@ -429,7 +432,6 @@ const makeCommunity = (slug = 'home') => {
     title: `Mock Community (${slug})`,
     desc: 'Mocked community for e2e',
     dashboard: makeDashboard(slug),
-    moderators: [],
     viewerHasSubscribed: false,
     viewerIsModerator: true,
   }
@@ -439,7 +441,11 @@ const HOME_COMMUNITY = makeCommunity('home')
 
 const makePost = (idx, community = 'home') => {
   return {
+    id: `post_${community}_${idx}`,
+    thread: 'POST',
     innerId: `p_${idx}`,
+    communityTags: [],
+    isPinned: false,
     title: `Mock Post #${idx}`,
     digest: 'This is mocked post digest.',
     views: 123,
@@ -453,17 +459,14 @@ const makePost = (idx, community = 'home') => {
   }
 }
 
-const HOME_PAGED_POSTS = {
-  entries: [makePost(1, 'home'), makePost(2, 'home'), makePost(3, 'home')],
-  totalCount: 3,
-  pageSize: 20,
-  totalPages: 1,
-  pageNumber: 1,
-}
-
 export const resolvers = {
   RootQueryType: {
-    browserSessions: (_parent, args) => listAuthSessions(args.browserSessionRef),
+    browserSessions: (_parent, args) =>
+      mockPage(
+        listAuthSessions(args.browserSessionRef),
+        args.pagi,
+        `sessions:${args.browserSessionRef}`,
+      ),
     me: () => makeUser(),
     sessionState: () => ({ isValid: true, user: makeUser() }),
     docTree: () => ({
@@ -514,32 +517,30 @@ export const resolvers = {
       if (slug === 'home') return HOME_COMMUNITY
       return makeCommunity(slug)
     },
-    pagedPosts: (_parent, args) => {
+    pagedCommunityModerators: (_parent, args) =>
+      mockPage(
+        Array.from({ length: 3 }, (_, index) => ({
+          id: String(index + 1),
+          isRoot: index === 0,
+          passportItemCount: index === 0 ? 20 : 2,
+          user: makeUser({ login: `moderator_${index}` }),
+        })),
+        args.pagi,
+        `moderators:${args.community}`,
+      ),
+    moderatorCandidates: () => [],
+    postPage: (_parent, args) => {
       const community = args?.filter?.community ?? 'home'
-      if (community === 'home') {
-        return {
-          ...HOME_PAGED_POSTS,
-          pageNumber: args?.filter?.page ?? 1,
-        }
-      }
-
-      return {
-        entries: [makePost(1, community), makePost(2, community)],
-        totalCount: 2,
-        pageSize: 20,
-        totalPages: 1,
-        pageNumber: args?.filter?.page ?? 1,
-      }
+      const entries = Array.from({ length: community === 'home' ? 3 : 2 }, (_, i) =>
+        makePost(i + 1, community),
+      )
+      return { ...mockPage(entries, args.pagi, `posts:${community}`), pinnedEntries: [] }
     },
-
-    // keep other queries usable without explicit mocks
-    pagedComments: () => ({
-      entries: new MockList([0, 3]),
-      totalCount: 0,
-      pageSize: 20,
-      totalPages: 0,
-      pageNumber: 1,
+    commentPage: (_parent, args) => ({
+      ...mockPage([], args.pagi, `comments:${JSON.stringify(args.filter ?? {})}`),
+      pinnedEntries: [],
     }),
+    commentReplyPage: (_parent, args) => mockPage([], args.pagi, `replies:${args.commentId}`),
   },
   RootMutationType: {
     updateDocDraft: (_parent, args) => {

@@ -50,15 +50,15 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
   end
 
   test "feature policy denials stay typed across submit and logo intent", %{user: user} do
-    policy_module = CMS.CommunityApplications.Policy
-    previous = Application.get_env(:groupher_server, policy_module)
-    Application.put_env(:groupher_server, policy_module, enabled: false)
+    config_module = CMS.CommunityApplications.Config
+    previous = Application.get_env(:groupher_server, config_module)
+    Application.put_env(:groupher_server, config_module, enabled: false)
 
     on_exit(fn ->
       if previous == nil do
-        Application.delete_env(:groupher_server, policy_module)
+        Application.delete_env(:groupher_server, config_module)
       else
-        Application.put_env(:groupher_server, policy_module, previous)
+        Application.put_env(:groupher_server, config_module, previous)
       end
     end)
 
@@ -78,6 +78,31 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
              )
   end
 
+  test "invalid admission configuration stays an infrastructure error", %{user: user} do
+    config_module = CMS.CommunityApplications.Config
+    previous = Application.get_env(:groupher_server, config_module)
+    Application.put_env(:groupher_server, config_module, enabled: :invalid)
+
+    on_exit(fn ->
+      if previous == nil do
+        Application.delete_env(:groupher_server, config_module)
+      else
+        Application.put_env(:groupher_server, config_module, previous)
+      end
+    end)
+
+    assert {:error, :invalid_application_admission_config} =
+             CMS.CommunityApplications.Admission.evaluate(:application_create, user)
+
+    assert {:error, :invalid_application_admission_config} =
+             CMS.CommunityApplications.Admission.check(:application_create, user)
+
+    Application.put_env(:groupher_server, config_module, :invalid)
+
+    assert {:error, :invalid_application_admission_config} =
+             CMS.CommunityApplications.Admission.evaluate(:application_create, user)
+  end
+
   test "submits idempotently and enforces one blocking application", %{user: user} do
     upload = finalized_logo(user, "first")
     attrs = application_attrs(upload, "apply-first")
@@ -93,6 +118,13 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
 
     assert application.status == :submitted
     assert application.logo_asset_ref == upload.public_ref
+
+    assert application.policy_snapshot == %{
+             "allowed" => true,
+             "reason_code" => nil,
+             "retry_at" => nil,
+             "metadata" => %{}
+           }
 
     assert %CommunitySlugClaim{expires_at: claim_expiry} =
              Repo.one(
@@ -351,11 +383,11 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
     assert {:error, _} = CMS.FrontDesk.community(setting_up.slug)
 
     assert {:ok, %{entries: entries}} =
-             CMS.Communities.paged(%{page: 1, size: 100})
+             CMS.Communities.paged(%{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 100})
 
     refute Enum.any?(entries, &(&1.slug == setting_up.slug))
 
-    assert {:ok, %{entries: []}} =
+    assert {:ok, []} =
              CMS.Search.community(setting_up.slug)
 
     assert {:error,
@@ -446,7 +478,7 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
 
     assert public_community.id == created.community_id
 
-    assert {:ok, %{entries: [search_result]}} =
+    assert {:ok, [search_result]} =
              CMS.Search.community(created.slug)
 
     assert search_result.id == created.community_id
@@ -489,10 +521,7 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
     |> Repo.update_all(set: [status: :expired])
 
     assert {:error, %ErrorCat.Error{reason: :asset_not_ready}} =
-             CMS.Communities.create_from_application(
-               approved.public_ref,
-               "rollback_test"
-             )
+             CMS.communities_create_from_application(approved.public_ref, "rollback_test")
 
     assert Repo.get!(CommunityApplication, approved.id).status == :approved
     refute Repo.exists?(from(c in Community, where: c.slug == ^approved.slug))
@@ -535,6 +564,51 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
       finalized_at: now
     })
     |> Repo.insert!()
+  end
+
+  test "review queue, owned history and event history share Pagi and bind cursors", %{user: user} do
+    reviewer = reviewer(user)
+
+    applications =
+      for n <- 1..3 do
+        {:ok, applicant} = db_insert(:user)
+        submit_application(applicant, "pagi-queue-#{System.unique_integer([:positive])}-#{n}")
+      end
+
+    query = CMS.CommunityApplications.Query
+
+    assert {:ok, %{entries: first, total_count: 3}} =
+             CMS.CommunityApplications.review_queue(%{}, %{offset: %{page: 1, size: 2}}, reviewer)
+
+    assert length(first) == 2
+
+    assert {:ok, %{entries: cursor_first, end_cursor: cursor, has_next_page: true}} =
+             query.review_queue(%{}, %{cursor: %{first: 2}})
+
+    assert Enum.map(cursor_first, & &1.id) == Enum.map(first, & &1.id)
+
+    assert {:ok, %{entries: [tail], has_next_page: false}} =
+             query.review_queue(%{}, %{cursor: %{first: 2, after: cursor}})
+
+    assert Enum.sort(Enum.map(first ++ [tail], & &1.id)) ==
+             Enum.sort(Enum.map(applications, & &1.id))
+
+    assert {:error, _} =
+             query.review_queue(%{statuses: [:reviewing]}, %{cursor: %{first: 2, after: cursor}})
+
+    [application | _] = applications
+    {:ok, applicant} = Accounts.FrontDesk.user(application.user_id)
+    assert {:ok, %{entries: [owned]}} = query.history(applicant, %{cursor: %{first: 1}})
+    assert owned.id == application.id
+
+    assert {:ok, %{entries: [event], end_cursor: event_cursor}} =
+             query.events(application, %{cursor: %{first: 1}})
+
+    assert event.application_id == application.id
+    assert {:ok, %{total_count: 1}} = query.events(application, %{offset: %{page: 1, size: 1}})
+
+    assert {:error, _} =
+             query.events(List.last(applications), %{cursor: %{first: 1, after: event_cursor}})
   end
 
   defp submit_application(user, slug) do

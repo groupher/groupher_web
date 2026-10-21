@@ -7,6 +7,7 @@ import FileTextSVG from '~/icons/FileText'
 import RotateSVG from '~/icons/Rotate'
 import { executeCommand } from '~/query/mutation/optimistic/execute'
 import BaseDrawer from '~/ui/Drawer'
+import Pagi from '~/ui/Pagi'
 import { toast } from '~/ui/Toaster'
 import S from '~/unit/DsbThread/schema/docs'
 
@@ -23,6 +24,9 @@ import type {
 } from './spec'
 
 type TProps = {
+  pageInfo?: import('~/spec').TGraphQLPagiPageInfo
+  onPageChange?: (page: number) => void
+  error?: string | null
   show: boolean
   items: TDocTreeTrashItem[]
   tabs: TSideTreeTab[]
@@ -107,6 +111,9 @@ const itemTypeLabel = (type?: string | null): string => {
 }
 
 const TrashDrawer: FC<TProps> = ({
+  pageInfo,
+  onPageChange,
+  error,
   show,
   items,
   tabs,
@@ -188,6 +195,14 @@ const TrashDrawer: FC<TProps> = ({
         </div>
 
         <div className={s.body}>
+          {error && (
+            <div role='alert'>
+              {error}{' '}
+              <button type='button' onClick={onReload}>
+                重试
+              </button>
+            </div>
+          )}
           {loading ? (
             <div className={s.empty}>Loading</div>
           ) : items.length === 0 ? (
@@ -278,6 +293,7 @@ const TrashDrawer: FC<TProps> = ({
           )}
         </div>
       </div>
+      <Pagi pageInfo={pageInfo} onChange={onPageChange} />
     </BaseDrawer>
   )
 }

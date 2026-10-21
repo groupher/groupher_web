@@ -91,8 +91,11 @@ const renderGraphiQL = (endpointPath) => `<!doctype html>
     slug
     title
   }
-  pagedPosts(filter: { community: "home", page: 1 }) {
-    totalCount
+  postPage(filter: { community: "home" }, pagi: {offset: {page: 1, size: 20}}) {
+    pageInfo {
+      __typename
+      ... on OffsetPageInfo { totalCount page totalPages }
+    }
     entries {
       innerId
       title

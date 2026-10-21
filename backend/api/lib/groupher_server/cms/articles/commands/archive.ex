@@ -12,6 +12,7 @@ defmodule GroupherServer.CMS.Articles.Commands.Archive do
 
   alias CMS.Articles.States
 
+  @doc "Archives an Article thread through the internal maintenance pipeline."
   @spec execute(atom()) :: {:ok, term()} | {:error, term()}
   @pipeline operation: :article_archive, target: :thread, access: :internal
   direct_pipeline execute(thread) do

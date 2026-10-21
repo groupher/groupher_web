@@ -20,7 +20,7 @@ defmodule GroupherServer.Test.CMS.Comments.DocCommentEmotions do
   describe "[emotion in paged article comment]" do
     test "login user should get viewer reacted status", ~m(community doc user)a do
       total_count = 0
-      page_number = 10
+      page_number = 1
       page_size = 20
 
       all_comment =
@@ -45,7 +45,7 @@ defmodule GroupherServer.Test.CMS.Comments.DocCommentEmotions do
       {:ok, _} = CMS.Interactions.emotion(first_comment, :popcorn, user, Ecto.UUID.generate())
 
       {:ok, paged_comments} =
-        CMS.Comments.paged_comments(
+        comment_page(
           :doc,
           doc.id,
           %{page: page_number, size: page_size},
@@ -124,7 +124,7 @@ defmodule GroupherServer.Test.CMS.Comments.DocCommentEmotions do
       filter = %{page: 1, size: 10}
 
       {:ok, %{entries: entries}} =
-        CMS.Comments.paged_comments(:doc, doc.id, filter, :replies, user)
+        comment_page(:doc, doc.id, filter, :replies, user)
 
       parent = entries |> List.first()
       parent_emotion = parent |> Map.get(:emotions)
@@ -246,8 +246,8 @@ defmodule GroupherServer.Test.CMS.Comments.DocCommentEmotions do
 
       {:ok, parent_comment} = ORM.find(Comment, parent_comment.id)
 
-      {:ok, records} = ORM.find_all(CommentUserEmotion, %{page: 1, size: 10})
-      assert records.total_count == 2
+      {:ok, records} = ORM.find_all(CommentUserEmotion, %{})
+      assert length(records) == 2
 
       {:ok, _downvote_record} =
         ORM.find_by(CommentUserEmotion, %{

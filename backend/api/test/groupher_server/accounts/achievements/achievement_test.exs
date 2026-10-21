@@ -21,9 +21,12 @@ defmodule GroupherServer.Test.Accounts.Achievement do
   describe "[Accounts Achievement communities]" do
     test "normal user should have a empty editable communities list", ~m(user)a do
       {:ok, results} =
-        Accounts.Achievements.paged_moderatorable_communities(user, %{page: 1, size: 20})
+        Accounts.Achievements.paged_moderatorable_communities(
+          user,
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
+        )
 
-      assert results |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = results
       assert results.total_count == 0
     end
 
@@ -40,7 +43,10 @@ defmodule GroupherServer.Test.Accounts.Achievement do
       {:ok, _} = CMS.Communities.add_moderator(community, user2, user, Ecto.UUID.generate())
 
       {:ok, moderatorable_communities} =
-        Accounts.Achievements.paged_moderatorable_communities(user3, %{page: 1, size: 20})
+        Accounts.Achievements.paged_moderatorable_communities(
+          user3,
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
+        )
 
       assert moderatorable_communities.total_count == 2
       assert moderatorable_communities.entries |> Enum.any?(&(&1.id == community.id))
@@ -82,6 +88,14 @@ defmodule GroupherServer.Test.Accounts.Achievement do
       assert achievement.followers_count == 0
       assert achievement.followers_count == 0
       assert achievement.followers_count == 0
+      assert achievement.reputation == 0
+    end
+
+    test "Accounts.downgrade_achievement delegates bounded collect downgrade", ~m(user)a do
+      {:ok, _achievement} = Accounts.Achievements.achieve(user, :inc, :collect)
+      {:ok, achievement} = Accounts.Achievements.downgrade_achievement(user, :collect, 1)
+
+      assert achievement.articles_collects_count == 0
       assert achievement.reputation == 0
     end
   end

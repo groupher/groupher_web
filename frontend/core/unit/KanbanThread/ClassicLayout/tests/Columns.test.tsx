@@ -8,10 +8,16 @@ import { useColumnsData } from '../Columns'
 
 const emptyPosts: TPagedPosts = {
   entries: [],
-  totalCount: 0,
-  pageNumber: 1,
-  pageSize: 20,
-  totalPages: 1,
+  pinnedEntries: [],
+  pageInfo: {
+    __typename: 'OffsetPageInfo',
+    page: 1,
+    size: 20,
+    totalCount: 0,
+    totalPages: 0,
+    hasNextPage: false,
+    hasPreviousPage: false,
+  },
 }
 
 vi.mock('~/hooks/useKanbanPosts', () => ({

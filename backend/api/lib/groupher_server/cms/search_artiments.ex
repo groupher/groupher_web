@@ -10,15 +10,15 @@ defmodule GroupherServer.CMS.SearchArtiments do
         -> Repo / external boundary
   """
 
-  alias __MODULE__.{Artiment, Config, Query, Result}
+  alias __MODULE__.{Artiment, Config, Query}
   alias Helper.T
 
   @doc "Runs `search` through the public `SearchArtiments` boundary."
-  @spec search(map() | Query.t()) :: T.domain_res(Result.t())
+  @spec search(map(), term()) :: T.domain_res(Helper.ORM.Pagi.Page.t())
   def search(%Query{} = query), do: platform().search(query)
 
-  def search(attrs) when is_map(attrs) do
-    with {:ok, query} <- Query.new(attrs) do
+  def search(attrs, pagi) when is_map(attrs) do
+    with {:ok, query} <- Query.new(attrs, pagi) do
       search(query)
     end
   end

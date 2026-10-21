@@ -17,11 +17,18 @@ import IllegalBar from './IllegalBar'
 type TProps = {
   data: TComment
   apiMode: TAPIMode
+  preview?: boolean
   isReply?: boolean
   showInnerRef?: boolean
 }
 
-const DefaultLayout: FC<TProps> = ({ data, isReply = false, showInnerRef = false, apiMode }) => {
+const DefaultLayout: FC<TProps> = ({
+  data,
+  isReply = false,
+  showInnerRef = false,
+  apiMode,
+  preview = false,
+}) => {
   const s = useSalon()
   const { foldComment } = useActions()
   const { t } = useTrans()
@@ -58,7 +65,7 @@ const DefaultLayout: FC<TProps> = ({ data, isReply = false, showInnerRef = false
                 {!isReply && data.replyToComment && <ReplyBar data={data.replyToComment} />}
                 <ArtimentBody
                   document={{ html: data.body?.html }}
-                  initLineClamp={6}
+                  initLineClamp={preview ? 2 : 6}
                   mode='comment'
                 />
               </Fragment>

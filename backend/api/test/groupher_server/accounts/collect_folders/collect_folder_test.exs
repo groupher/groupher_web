@@ -3,11 +3,13 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
 
   use GroupherServer.TestMate
 
-  alias GroupherServer.{Accounts, CMS}
+  alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.CollectFolders
 
   alias Accounts.Model.Embeds
+  alias Accounts.Model.CollectFolderEntry
   alias CMS.Model.ArticleCollect
+  alias CMS.Model.ArticleBinding
 
   @default_meta Embeds.CollectFolderMeta.default_meta()
 
@@ -60,9 +62,10 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, _folder} = CollectFolders.create(%{title: "test folder"}, user)
       {:ok, _folder} = CollectFolders.create(%{title: "test folder2"}, user)
 
-      {:ok, result} = CollectFolders.paged(user, %{page: 1, size: 20})
+      {:ok, result} =
+        CollectFolders.paged(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
 
-      assert result |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = result
       assert result.total_count == 2
     end
 
@@ -73,9 +76,12 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, folder} = CollectFolders.add(post, folder.id, user)
 
       {:ok, result} =
-        CollectFolders.paged(user, %{thread: :post, page: 1, size: 20})
+        CollectFolders.paged(user, %{thread: :post}, %GroupherServer.Pagi.Params.Offset{
+          page: 1,
+          size: 20
+        })
 
-      assert result |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = result
       assert result.total_count == 1
 
       assert result.entries |> List.first() |> Map.get(:id) == folder.id
@@ -87,9 +93,15 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
 
       {:ok, _folder} = CollectFolders.create(%{title: "test folder2"}, user2)
 
-      {:ok, result} = CollectFolders.paged(user2, %{page: 1, size: 20}, user)
+      {:ok, result} =
+        CollectFolders.paged(
+          user2,
+          %{},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20},
+          user
+        )
 
-      assert result |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = result
       assert result.total_count == 1
     end
 
@@ -98,9 +110,16 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
         CollectFolders.create(%{title: "test folder", private: true}, user)
 
       {:ok, _folder} = CollectFolders.create(%{title: "test folder2"}, user)
-      {:ok, result} = CollectFolders.paged(user, %{page: 1, size: 20}, user)
 
-      assert result |> is_valid_pagination?(:raw)
+      {:ok, result} =
+        CollectFolders.paged(
+          user,
+          %{},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20},
+          user
+        )
+
+      assert %Helper.ORM.Pagi.Page.Offset{} = result
       assert result.total_count == 2
     end
 
@@ -125,8 +144,7 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, folder} = CollectFolders.add(post, folder.id, user)
 
       assert folder.total_count == 1
-      assert folder.collects |> length == 1
-      assert folder.collects |> List.first() |> Map.get(:article_id) == post.id
+      assert Repo.get_by!(CollectFolderEntry, folder_id: folder.id, article_id: post.id)
     end
 
     test "can not collect some article in one collect-folder", ~m(user post)a do
@@ -141,8 +159,7 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, folder} = CollectFolders.create(%{title: "test folder"}, user)
       {:ok, folder} = CollectFolders.add(post, folder.id, user)
 
-      collect_in_folder = folder.collects |> List.first()
-      {:ok, article_collect} = ORM.find(ArticleCollect, collect_in_folder.id)
+      {:ok, article_collect} = ORM.find_by(ArticleCollect, user_id: user.id, article_id: post.id)
       article_collect_folder = article_collect.collect_folders |> List.first()
       assert article_collect_folder.id == folder.id
     end
@@ -169,7 +186,12 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, _} = CollectFolders.remove(post, folder.id, user)
 
       {:ok, result} =
-        CollectFolders.paged_articles(folder.id, %{page: 1, size: 10}, user)
+        CollectFolders.paged_articles(
+          folder.id,
+          %{},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10},
+          user
+        )
 
       assert result.total_count == 1
       assert result.entries |> length == 1
@@ -213,6 +235,87 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       assert {:error, _} = ORM.find_by(ArticleCollect, %{user_id: user.id, article_id: post.id})
     end
 
+    test "removing one binding keeps the collect fact while another binding remains in the same folder",
+         ~m()a do
+      {source, post, _attrs, user} = mock_article(:post)
+      {:ok, %{binding: source_binding}} = CMS.articles_bindings_get(post, source)
+      {:ok, destination} = mock_community(user)
+
+      assert {:ok, _mirrored} =
+               CMS.Articles.mirror(
+                 destination,
+                 post.article_id,
+                 [],
+                 user,
+                 source,
+                 Ecto.UUID.generate()
+               )
+
+      {:ok, folder} = CollectFolders.create(%{title: "multi-binding folder"}, user)
+      source_post = %{post | community: source}
+      {:ok, folder} = CollectFolders.add(source_post, folder.id, user)
+
+      destination_binding =
+        Repo.get_by!(ArticleBinding,
+          article_id: post.article_id,
+          community_id: destination.id
+        )
+
+      # This is the persisted shape produced by binding-scoped backfills: one
+      # folder projection can contain multiple bindings for the same Article.
+      assert {:ok, %CollectFolderEntry{}} =
+               %CollectFolderEntry{}
+               |> CollectFolderEntry.changeset(%{
+                 folder_id: folder.id,
+                 article_id: post.article_id,
+                 article_binding_id: destination_binding.id
+               })
+               |> Repo.insert()
+
+      {:ok, folder} =
+        folder
+        |> Ecto.Changeset.change(%{
+          total_count: folder.total_count + 1,
+          meta: %{folder.meta | post_count: folder.meta.post_count + 1}
+        })
+        |> Repo.update()
+
+      assert folder.total_count == 2
+      assert {:ok, _folder} = CollectFolders.remove(source_post, folder.id, user)
+
+      assert Repo.get_by!(CollectFolderEntry,
+               folder_id: folder.id,
+               article_binding_id: destination_binding.id
+             )
+
+      refute Repo.get_by(CollectFolderEntry,
+               folder_id: folder.id,
+               article_binding_id: source_binding.id
+             )
+
+      assert {:ok, collect} =
+               ORM.find_by(ArticleCollect, user_id: user.id, article_id: post.article_id)
+
+      assert Enum.map(collect.collect_folders, & &1.id) == [folder.id]
+      assert Repo.get!(Accounts.Model.CollectFolder, folder.id).total_count == 1
+    end
+
+    test "removing a binding absent from the folder leaves counters and other membership unchanged",
+         ~m(user post)a do
+      {:ok, folder} = CollectFolders.create(%{title: "actual folder"}, user)
+      {:ok, empty_folder} = CollectFolders.create(%{title: "empty folder"}, user)
+      {:ok, _folder} = CollectFolders.add(post, folder.id, user)
+
+      assert {:error, reason} = CollectFolders.remove(post, empty_folder.id, user)
+      assert reason |> is_error?({{:account, :collection}, :not_collected_in_folder})
+
+      assert Repo.get!(Accounts.Model.CollectFolder, empty_folder.id).total_count == 0
+      assert Repo.get_by!(CollectFolderEntry, folder_id: folder.id, article_id: post.id)
+
+      assert {:ok, _collect} =
+               ORM.find_by(ArticleCollect, user_id: user.id, article_id: post.id)
+    end
+
     test "add post to exist collect-folder should update meta", ~m(user post post2)a do
       {:ok, folder} = CollectFolders.create(%{title: "test folder"}, user)
 
@@ -244,9 +347,14 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, _folder} = CollectFolders.add(post, folder.id, user)
 
       {:ok, result} =
-        CollectFolders.paged_articles(folder.id, %{page: 1, size: 10}, user)
+        CollectFolders.paged_articles(
+          folder.id,
+          %{},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10},
+          user
+        )
 
-      assert result |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = result
 
       collect_post = result.entries |> List.last()
 
@@ -262,12 +370,22 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, _folder} = CollectFolders.add(post, folder.id, user)
 
       {:ok, result} =
-        CollectFolders.paged_articles(folder.id, %{page: 1, size: 10}, user)
+        CollectFolders.paged_articles(
+          folder.id,
+          %{},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10},
+          user
+        )
 
-      assert result |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = result
 
       {:error, reason} =
-        CollectFolders.paged_articles(folder.id, %{page: 1, size: 10}, user2)
+        CollectFolders.paged_articles(
+          folder.id,
+          %{},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10},
+          user2
+        )
 
       assert reason |> is_error?({{:account, :collection}, :private_collect_folder})
     end

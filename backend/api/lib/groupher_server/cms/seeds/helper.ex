@@ -15,7 +15,7 @@ defmodule GroupherServer.CMS.Seeds.Helper do
 
   import ShortMaps
 
-  alias GroupherServer.{Accounts, CMS}
+  alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
   alias CMS.Articles.Persist
@@ -69,7 +69,7 @@ defmodule GroupherServer.CMS.Seeds.Helper do
   # set categories to given communities
   def categorify_communities(communities, categories, part)
       when is_list(communities) and is_atom(part) do
-    the_category = categories.entries |> Enum.find(fn cat -> cat.slug == Atom.to_string(part) end)
+    the_category = categories |> Enum.find(fn cat -> cat.slug == Atom.to_string(part) end)
 
     Enum.each(communities, fn community ->
       {:ok, _} =
@@ -93,7 +93,7 @@ defmodule GroupherServer.CMS.Seeds.Helper do
       end)
     end
 
-    ORM.find_all(Category, %{page: 1, size: 20})
+    CMS.Communities.Query.categories()
   end
 
   def seed_user(name) do
@@ -114,8 +114,7 @@ defmodule GroupherServer.CMS.Seeds.Helper do
 
   # check is the seeds alreay runed
   def empty_in_db?(queryable) do
-    {:ok, results} = ORM.find_all(queryable, %{page: 1, size: 20})
-    results.total_count == 0
+    not Repo.exists?(queryable)
   end
 
   def insert_community(bot, slug, type) do

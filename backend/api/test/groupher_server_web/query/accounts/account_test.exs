@@ -149,14 +149,15 @@ defmodule GroupherServer.Test.Query.Account.Basic do
 
     @query S.Account.q(:paged_users)
     test "guest user can get paged users", ~m(guest_conn)a do
-      variables = %{filter: %{page: 1, size: 10}}
+      variables = %{pagi: %{offset: %{page: 1, size: 10}}}
 
       results = guest_conn |> gq_query(@query, variables)
-      assert results |> is_valid_pagination?()
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["size"] == 10
     end
 
     test "login user can get paged users with follow state info", ~m(user_conn user)a do
-      variables = %{filter: %{page: 1, size: 10}}
+      variables = %{pagi: %{offset: %{page: 1, size: 10}}}
 
       {:ok, user2} = db_insert(:user)
       {:ok, user3} = db_insert(:user)
@@ -165,7 +166,8 @@ defmodule GroupherServer.Test.Query.Account.Basic do
       {:ok, _} = Accounts.Fans.follow(user3, user)
 
       results = user_conn |> gq_query(@query, variables)
-      assert results |> is_valid_pagination?()
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["size"] == 10
 
       entries = results["entries"]
 
@@ -193,41 +195,41 @@ defmodule GroupherServer.Test.Query.Account.Basic do
 
   describe "[account subscrube]" do
     @query S.Account.q(:subscribed_communities)
-    test "guest user can get paged default subscribed communities", ~m(guest_conn)a do
+    test "guest user can get bounded default community suggestions", ~m(guest_conn)a do
       {:ok, user} = db_insert(:user)
       _ = create_communities!(25, user)
       _community = create_community!(user, %{slug: "home"})
 
-      variables = %{filter: %{page: 1, size: 10}}
+      variables = %{}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
-      assert @default_subscribed_communities == results["pageSize"]
+      assert is_list(results)
+      assert length(results) <= @default_subscribed_communities + 1
     end
 
-    test "guest user can get paged default subscribed communities with home included",
+    test "guest user can get bounded default community suggestions with home included",
          ~m(guest_conn)a do
       {:ok, user} = db_insert(:user)
       _ = create_communities!(25, user)
       _community = create_community!(user, %{slug: "home"})
 
-      variables = %{filter: %{page: 1, size: 10}}
+      variables = %{}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results["entries"] |> Enum.any?(&(&1["slug"] == "home"))
+      assert results |> Enum.any?(&(&1["slug"] == "home"))
     end
 
     @query S.Account.q(:subscribed_communities_2)
-    test "guest user can get paged default subscribed communities with empty args",
+    test "guest user can get bounded default community suggestions with empty args",
          ~m(guest_conn)a do
       {:ok, user} = db_insert(:user)
       _ = create_communities!(25, user)
 
-      variables = %{filter: %{page: 1, size: 10}}
+      variables = %{}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
-      assert @default_subscribed_communities == results["pageSize"]
+      assert is_list(results)
+      assert length(results) <= @default_subscribed_communities + 1
     end
   end
 

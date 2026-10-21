@@ -1,10 +1,12 @@
-import { queryOptions } from '@tanstack/react-query'
+import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query'
 
 import { CONFIRMED_COMMENT_RECEIPT_MAX_REFS } from '~/constant/cache'
 import { browserGraphQLRequest } from '~/graphql/client'
-import type { TComment, TPagedComments, TThread } from '~/spec'
+import { toPagiGraphQLInput, pagiConfigKey } from '~/lib/pagination/params'
+import type { TComment, TEffectivePagiConfig, TPagiRequest, TThread } from '~/spec'
 import commentsSchema from '~/unit/Comments/schema'
 
+import { normalizeCommentPage, commentPagiRequest, type TCommentCollection } from './commentPage'
 import { commentKeys } from './key'
 import { preserveCommentProjection } from './revisionGuard'
 
@@ -16,24 +18,65 @@ export type TCommentReconcileResult = {
   comments: Record<string, TComment | null>
 }
 
-const list = (
-  community: string,
-  thread: TThread,
-  innerId: string | number,
-  page = 1,
-  mode = 'REPLIES',
+/** The same public request contract is used by SSR, finite and infinite consumers. */
+export const fetchCommentPage = async (collection: TCommentCollection, pagi: TPagiRequest) => {
+  const filter = { sort: collection.sort || 'ASC_INSERTED' } as const
+  if (collection.rootInnerId) {
+    const result = await browserGraphQLRequest(commentsSchema.commentReplyPage, {
+      comment: { article: collection.article, innerId: collection.rootInnerId },
+      filter,
+      pagi: toPagiGraphQLInput(pagi),
+    })
+    return normalizeCommentPage(result.commentReplyPage)
+  }
+  const result = await browserGraphQLRequest(commentsSchema.commentPage, {
+    article: collection.article,
+    mode: collection.mode,
+    filter,
+    pagi: toPagiGraphQLInput(pagi),
+  })
+  return normalizeCommentPage(result.commentPage)
+}
+
+/** Builds a cache identity that separates collection, config revision, and position. */
+export const commentPageKey = (
+  collection: TCommentCollection,
+  config: TEffectivePagiConfig,
+  page?: number,
 ) =>
-  queryOptions({
-    queryKey: commentKeys.list(community, thread, innerId, page, mode),
-    structuralSharing: preserveCommentProjection,
-    queryFn: async () => {
-      const data = await browserGraphQLRequest(commentsSchema.publicPagedComments, {
-        article: { community, thread, innerId: String(innerId) },
-        mode: mode as 'REPLIES' | 'TIMELINE',
-        filter: { page, size: 30 },
-      })
-      return data.pagedComments as unknown as TPagedComments
+  commentKeys.page(
+    collection.article.community,
+    collection.article.thread,
+    collection.article.innerId,
+    {
+      mode: collection.mode,
+      rootInnerId: collection.rootInnerId,
+      sort: collection.sort || 'ASC_INSERTED',
     },
+    pagiConfigKey(config),
+    config.api === 'offset'
+      ? { size: config.defaultSize, page: page || 1 }
+      : { first: config.defaultSize, infinite: true, after: collection.initialAfter },
+  )
+
+const page = (collection: TCommentCollection, config: TEffectivePagiConfig, page = 1) =>
+  queryOptions({
+    queryKey: commentPageKey(collection, config, page),
+    structuralSharing: preserveCommentProjection,
+    queryFn: () => fetchCommentPage(collection, commentPagiRequest(config, page)),
+  })
+
+const infinite = (collection: TCommentCollection, config: TEffectivePagiConfig) =>
+  infiniteQueryOptions({
+    queryKey: commentPageKey(collection, config),
+    initialPageParam: collection.initialAfter,
+    structuralSharing: preserveCommentProjection,
+    queryFn: ({ pageParam }) =>
+      fetchCommentPage(collection, commentPagiRequest(config, 1, pageParam)),
+    getNextPageParam: (last) =>
+      last.pageInfo.api === 'cursor' && last.pageInfo.hasNextPage
+        ? (last.pageInfo.endCursor ?? undefined)
+        : undefined,
   })
 
 const reconcile = (
@@ -67,4 +110,4 @@ const reconcile = (
   })
 }
 
-export const commentQueries = { list, reconcile }
+export const commentQueries = { page, infinite, reconcile }

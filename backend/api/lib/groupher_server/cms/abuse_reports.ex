@@ -18,8 +18,8 @@ defmodule GroupherServer.CMS.AbuseReports do
   alias Helper.T
 
   @doc "Returns paged reports from the `AbuseReports` read boundary."
-  @spec paged_reports(map()) :: T.domain_res(T.paged_data())
-  def paged_reports(filter), do: Query.paged_reports(filter)
+  @spec paged_reports(map(), GroupherServer.Pagi.Params.t() | nil) :: T.domain_res(T.paged_data())
+  def paged_reports(filter, pagi), do: Query.paged_reports(filter, pagi)
 
   @doc "Runs `account` through the public `AbuseReports` boundary."
   @spec account(User.t(), String.t(), map(), User.t()) :: T.domain_res(User.t())

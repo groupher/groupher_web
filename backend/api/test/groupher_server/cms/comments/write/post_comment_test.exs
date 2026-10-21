@@ -158,7 +158,7 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
         )
 
       {:ok, comments} =
-        CMS.Comments.paged_comments(:post, post.article_id, %{page: 1, size: 20}, :replies)
+        comment_page(:post, post.article_id, %{page: 1, size: 20}, :replies)
 
       assert exist_in?(post_comment_1, comments.entries)
       assert exist_in?(post_comment_2, comments.entries)
@@ -689,7 +689,7 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
       {:ok, _} = CMS.Interactions.upvote(replied_comment, user3, Ecto.UUID.generate())
 
       filter = %{page: 1, size: 20}
-      {:ok, paged_comments} = CMS.Comments.paged_comments(:post, post.id, filter, :replies)
+      {:ok, paged_comments} = comment_page(:post, post.id, filter, :replies)
 
       parent = paged_comments.entries |> List.first()
       reply = parent |> Map.get(:replies) |> List.first()
@@ -697,7 +697,7 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
       assert reply.upvotes_count == 3
 
       {:ok, _} = CMS.Interactions.undo_upvote(replied_comment, user2, Ecto.UUID.generate())
-      {:ok, paged_comments} = CMS.Comments.paged_comments(:post, post.id, filter, :replies)
+      {:ok, paged_comments} = comment_page(:post, post.id, filter, :replies)
 
       parent = paged_comments.entries |> List.first()
       reply = parent |> Map.get(:replies) |> List.first()
@@ -727,7 +727,12 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
       assert comment.is_folded
 
       {:ok, folded} =
-        CMS.Comments.paged_folded_comments(:post, post.article_id, %{page: 1, size: 20})
+        CMS.Comments.paged_folded_comments(
+          :post,
+          post.article_id,
+          %{},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
+        )
 
       assert folded.total_count == 1
     end
@@ -753,7 +758,12 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
       assert not comment.is_folded
 
       {:ok, folded} =
-        CMS.Comments.paged_folded_comments(:post, post.article_id, %{page: 1, size: 20})
+        CMS.Comments.paged_folded_comments(
+          :post,
+          post.article_id,
+          %{},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
+        )
 
       assert folded.total_count == 0
     end
@@ -874,7 +884,13 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
         CMS.AbuseReports.comment(comment, "comment reason", "attr", user2, Ecto.UUID.generate())
 
       filter = %{content_type: :comment, content_id: comment.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
       assert all_reports.total_count == 1
 
       report = all_reports.entries |> List.first()
@@ -885,7 +901,12 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
       {:ok, _} = CMS.AbuseReports.undo_comment(comment, user, Ecto.UUID.generate())
 
       filter = %{content_type: :comment, content_id: comment.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
 
       assert all_reports.total_count == 1
 
@@ -988,9 +1009,16 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
         )
 
       {:ok, results} =
-        CMS.Comments.paged_comments_participants(thread, post.id, %{page: 1, size: page_size})
+        CMS.Comments.paged_comments_participants(
+          thread,
+          post.id,
+          %GroupherServer.Pagi.Params.Offset{
+            page: 1,
+            size: page_size
+          }
+        )
 
-      assert results |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = results
       assert results.total_count == total_count + 1
     end
 
@@ -1015,7 +1043,7 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
         end)
 
       {:ok, paged_comments} =
-        CMS.Comments.paged_comments(
+        comment_page(
           :post,
           post.id,
           %{page: page_number, size: page_size},
@@ -1026,9 +1054,9 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
 
       assert not random_comment.is_folded
 
-      assert page_number == paged_comments.page_number
-      assert page_size == paged_comments.page_size
-      assert total_count == paged_comments.total_count
+      assert page_number == paged_comments.page_info.page
+      assert page_size == paged_comments.page_info.size
+      assert total_count == paged_comments.page_info.total_count
     end
 
     test "paged article comments should contains pinned comments at top position.",
@@ -1078,17 +1106,17 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
         CMS.Comments.pin_comment(random_comment_2.id, user, Ecto.UUID.generate())
 
       {:ok, paged_comments} =
-        CMS.Comments.paged_comments(
+        comment_page(
           :post,
           post.id,
           %{page: page_number, size: page_size},
           :replies
         )
 
-      assert pined_comment_2.id == List.first(paged_comments.entries) |> Map.get(:id)
-      assert pined_comment_1.id == Enum.at(paged_comments.entries, 1) |> Map.get(:id)
+      assert pined_comment_2.id == List.first(paged_comments.pinned_entries) |> Map.get(:id)
+      assert pined_comment_1.id == Enum.at(paged_comments.pinned_entries, 1) |> Map.get(:id)
 
-      assert paged_comments.total_count == total_count + 2
+      assert paged_comments.page_info.total_count == total_count
     end
 
     test "only page 1 have pinned comments",
@@ -1138,7 +1166,7 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
         CMS.Comments.pin_comment(random_comment_2.id, user, Ecto.UUID.generate())
 
       {:ok, paged_comments} =
-        CMS.Comments.paged_comments(
+        comment_page(
           :post,
           post.id,
           %{page: page_number, size: page_size},
@@ -1148,7 +1176,7 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
       assert not exist_in?(pined_comment_1, paged_comments.entries)
       assert not exist_in?(pined_comment_2, paged_comments.entries)
 
-      assert paged_comments.total_count == total_count
+      assert paged_comments.page_info.total_count == total_count
     end
 
     test "paged article comments should not contains folded and reported comments",
@@ -1181,7 +1209,7 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
       {:ok, _} = CMS.Comments.fold_comment(random_comment_3.id, user)
 
       {:ok, paged_comments} =
-        CMS.Comments.paged_comments(
+        comment_page(
           :post,
           post.id,
           %{page: page_number, size: page_size},
@@ -1192,9 +1220,9 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
       assert not exist_in?(random_comment_2, paged_comments.entries)
       assert not exist_in?(random_comment_3, paged_comments.entries)
 
-      assert page_number == paged_comments.page_number
-      assert page_size == paged_comments.page_size
-      assert total_count - 3 == paged_comments.total_count
+      assert page_number == paged_comments.page_info.page
+      assert page_size == paged_comments.page_info.size
+      assert total_count - 3 == paged_comments.page_info.total_count
     end
 
     test "can loaded paged folded comment", ~m(community user post)a do
@@ -1224,14 +1252,22 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
       random_comment_3 = all_folded_comments |> Enum.at(5)
 
       {:ok, paged_comments} =
-        CMS.Comments.paged_folded_comments(:post, post.id, %{page: page_number, size: page_size})
+        CMS.Comments.paged_folded_comments(
+          :post,
+          post.id,
+          %{},
+          %GroupherServer.Pagi.Params.Offset{
+            page: page_number,
+            size: page_size
+          }
+        )
 
       assert exist_in?(random_comment_1, paged_comments.entries)
       assert exist_in?(random_comment_2, paged_comments.entries)
       assert exist_in?(random_comment_3, paged_comments.entries)
 
-      assert page_number == paged_comments.page_number
-      assert page_size == paged_comments.page_size
+      assert page_number == paged_comments.page
+      assert page_size == paged_comments.size
       assert total_count == paged_comments.total_count
     end
   end
@@ -1264,7 +1300,7 @@ defmodule GroupherServer.Test.CMS.Comments.PostComment do
         CMS.Comments.delete_comment(random_comment, user, Ecto.UUID.generate())
 
       {:ok, paged_comments} =
-        CMS.Comments.paged_comments(
+        comment_page(
           :post,
           post.id,
           %{page: page_number, size: page_size},

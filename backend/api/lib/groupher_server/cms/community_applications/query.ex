@@ -14,6 +14,8 @@ defmodule GroupherServer.CMS.CommunityApplications.Query do
   import Ecto.Query, warn: false
 
   alias GroupherServer.{Accounts, CMS, FrontDesk, Repo}
+  alias Helper.ORM
+  alias Helper.ORM.Pagi.Order
 
   alias Accounts.Model.User
   alias CMS.Communities.ErrorCat
@@ -52,6 +54,28 @@ defmodule GroupherServer.CMS.CommunityApplications.Query do
     {:ok, application}
   end
 
+  @doc """
+  Checks whether one user has a blocking Application without loading the row.
+
+  ## Examples
+
+      Query.active_application_exists(user.id)
+      #=> {:ok, false}
+  """
+  @spec active_application_exists(integer()) :: {:ok, boolean()} | {:error, term()}
+  def active_application_exists(user_id) when is_integer(user_id) do
+    statuses = CommunityApplication.blocking_statuses()
+
+    {:ok,
+     Repo.exists?(
+       from(application in CommunityApplication,
+         where: application.user_id == ^user_id and application.status in ^statuses
+       )
+     )}
+  rescue
+    error -> {:error, error}
+  end
+
   @spec latest_failed(User.t()) :: {:ok, CommunityApplication.t() | nil}
   def latest_failed(%User{id: user_id}) do
     statuses = CommunityApplication.failed_statuses()
@@ -66,19 +90,24 @@ defmodule GroupherServer.CMS.CommunityApplications.Query do
     {:ok, application}
   end
 
-  @spec history(User.t(), map()) :: {:ok, map()}
-  def history(%User{id: user_id}, filter \\ %{}) do
-    first = filter |> get(:first, 20) |> min(100) |> max(1)
+  @spec history(User.t(), term()) :: {:ok, struct()} | {:error, term()}
+  def history(%User{id: user_id}, pagi) do
+    query =
+      from(application in CommunityApplication,
+        where: application.user_id == ^user_id,
+        preload: [:community, :logo_upload]
+      )
 
-    entries =
-      CommunityApplication
-      |> where([application], application.user_id == ^user_id)
-      |> order_by([application], desc: application.updated_at, desc: application.id)
-      |> limit(^(first + 1))
-      |> preload([:community, :logo_upload])
-      |> Repo.all()
-
-    {:ok, %{entries: Enum.take(entries, first), has_next_page: length(entries) > first}}
+    ORM.pagi(query, pagi,
+      for: CommunityApplication,
+      order: %Order{
+        fields: [:updated_at, :id],
+        directions: [:desc, :desc],
+        cursor_fields: [:updated_at, :id]
+      },
+      surface: "community_applications.history",
+      query_fingerprint: to_string(user_id)
+    )
   end
 
   @spec owned(String.t(), User.t()) ::
@@ -109,11 +138,10 @@ defmodule GroupherServer.CMS.CommunityApplications.Query do
     end
   end
 
-  @spec review_queue(map()) :: {:ok, map()}
-  def review_queue(filter) when is_map(filter) do
-    first = filter |> get(:first, 20) |> min(100) |> max(1)
-    statuses = normalize_statuses(get(filter, :statuses, []))
-    after_cursor = decode_application_cursor(get(filter, :after))
+  @spec review_queue(map(), term()) :: {:ok, struct()} | {:error, term()}
+  def review_queue(filter, pagi) when is_map(filter) do
+    statuses = normalize_statuses(get(filter, :statuses, [])) |> Enum.sort()
+    filter = Map.put(filter, :statuses, statuses)
 
     query =
       CommunityApplication
@@ -123,35 +151,38 @@ defmodule GroupherServer.CMS.CommunityApplications.Query do
       |> maybe_eq(:slug, get(filter, :slug))
       |> maybe_datetime(:submitted_at, :>=, get(filter, :submitted_from))
       |> maybe_datetime(:submitted_at, :<=, get(filter, :submitted_to))
-      |> maybe_after_application(after_cursor)
-      |> order_by([application], asc: application.submitted_at, asc: application.public_ref)
-      |> limit(^(first + 1))
       |> preload([:reviewer])
 
-    entries = Repo.all(query)
-
-    {:ok,
-     %{
-       entries: Enum.take(entries, first),
-       has_next_page: length(entries) > first
-     }}
+    ORM.pagi(query, pagi,
+      for: CommunityApplication,
+      order: %Order{
+        fields: [:submitted_at, :id],
+        directions: [:asc, :asc],
+        cursor_fields: [:submitted_at, :id]
+      },
+      surface: "community_applications.review_queue",
+      query_fingerprint: Base.encode64(:erlang.term_to_binary(filter))
+    )
   end
 
-  @spec events(CommunityApplication.t(), map()) :: {:ok, map()}
-  def events(%CommunityApplication{id: application_id}, filter \\ %{}) do
-    first = filter |> get(:first, 100) |> min(100) |> max(1)
-    after_cursor = decode_event_cursor(get(filter, :after))
+  @spec events(CommunityApplication.t(), term()) :: {:ok, struct()} | {:error, term()}
+  def events(%CommunityApplication{id: application_id}, pagi) do
+    query =
+      from(event in CommunityApplicationEvent,
+        where: event.application_id == ^application_id,
+        preload: [:actor]
+      )
 
-    entries =
-      CommunityApplicationEvent
-      |> where([event], event.application_id == ^application_id)
-      |> maybe_after_event(after_cursor)
-      |> order_by([event], asc: event.occurred_at, asc: event.inserted_at, asc: event.id)
-      |> limit(^(first + 1))
-      |> preload([:actor])
-      |> Repo.all()
-
-    {:ok, %{entries: Enum.take(entries, first), has_next_page: length(entries) > first}}
+    ORM.pagi(query, pagi,
+      for: CommunityApplicationEvent,
+      order: %Order{
+        fields: [:occurred_at, :id],
+        directions: [:asc, :asc],
+        cursor_fields: [:occurred_at, :id]
+      },
+      surface: "community_applications.events",
+      query_fingerprint: to_string(application_id)
+    )
   end
 
   def applicant(%CommunityApplication{user_id: user_id}), do: fetch_user(user_id)
@@ -226,60 +257,12 @@ defmodule GroupherServer.CMS.CommunityApplications.Query do
     where(query, [application], field(application, ^field) <= ^value)
   end
 
-  defp maybe_after_application(query, nil), do: query
-
-  defp maybe_after_application(query, {submitted_at, public_ref}) do
-    where(
-      query,
-      [application],
-      application.submitted_at > ^submitted_at or
-        (application.submitted_at == ^submitted_at and application.public_ref > ^public_ref)
-    )
-  end
-
-  defp maybe_after_event(query, nil), do: query
-
-  defp maybe_after_event(query, {occurred_at, id}) do
-    where(
-      query,
-      [event],
-      event.occurred_at > ^occurred_at or (event.occurred_at == ^occurred_at and event.id > ^id)
-    )
-  end
-
   defp normalize_statuses(statuses) when is_list(statuses) do
     allowed = CommunityApplication.statuses()
     Enum.filter(statuses, &(&1 in allowed))
   end
 
   defp normalize_statuses(_), do: []
-
-  defp decode_application_cursor(cursor) do
-    with {:ok, decoded} <- decode_cursor(cursor),
-         [datetime, public_ref] <- String.split(decoded, "|", parts: 2),
-         {:ok, submitted_at, _offset} <- DateTime.from_iso8601(datetime) do
-      {submitted_at, public_ref}
-    else
-      _ -> nil
-    end
-  end
-
-  defp decode_event_cursor(cursor) do
-    with {:ok, decoded} <- decode_cursor(cursor),
-         [datetime, id] <- String.split(decoded, "|", parts: 2),
-         {:ok, occurred_at, _offset} <- DateTime.from_iso8601(datetime),
-         {id, ""} <- Integer.parse(id) do
-      {occurred_at, id}
-    else
-      _ -> nil
-    end
-  end
-
-  defp decode_cursor(cursor) when is_binary(cursor) do
-    Base.url_decode64(cursor, padding: false)
-  end
-
-  defp decode_cursor(_), do: :error
 
   defp fetch_user(id), do: FrontDesk.user(id)
 

@@ -1,8 +1,8 @@
 import { graphql } from '~/graphql/authoring'
 
 export const subscribedCommunities = graphql(`
-  query PageSubscribedCommunities($login: String, $filter: PagiFilter!) {
-    subscribedCommunities(login: $login, filter: $filter) {
+  query PageSubscribedCommunities($login: String!, $filter: UserListFilter, $pagi: PagiInput) {
+    subscribedCommunities(login: $login, filter: $filter, pagi: $pagi) {
       entries {
         ...PageCommunityFields
         contributesDigest
@@ -35,16 +35,6 @@ export const community = graphql(`
       meta {
         postsCount
         blogsCount
-      }
-      moderators {
-        isRoot
-        passportItemCount
-        user {
-          login
-          avatar
-          nickname
-          bio
-        }
       }
       dashboard {
         baseInfo {
@@ -85,6 +75,9 @@ export const community = graphql(`
           siteId
         }
         umamiWebsiteId
+        pagiMode
+        pagiMobileMode
+        pagiRevision
         docFaq {
           title
           desc
@@ -265,8 +258,12 @@ export const community = graphql(`
 `)
 
 export const pagedCommunities = graphql(`
-  query PagePagedCommunities($filter: CommunitiesFilter!, $userHasLogin: Boolean!) {
-    pagedCommunities(filter: $filter) {
+  query PagePagedCommunities(
+    $filter: CommunitiesFilter
+    $pagi: PagiInput
+    $userHasLogin: Boolean!
+  ) {
+    pagedCommunities(filter: $filter, pagi: $pagi) {
       entries {
         ...PageCommunityFields
         contributesDigest

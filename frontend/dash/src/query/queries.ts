@@ -1,24 +1,47 @@
 import { loadKanban, loadPagedChangelogs, loadPagedPosts } from '@dash/server/cms'
 import { queryOptions } from '@tanstack/react-query'
 
-import { articleQueryKeys } from '~/query'
+import { DEFAULT_EFFECTIVE_PAGI_CONFIG } from '~/lib/pagination/params'
+import { articleQueries } from '~/query/article'
 
 export const dashQueries = {
-  posts: (community: string) =>
+  posts: (community: string, config = DEFAULT_EFFECTIVE_PAGI_CONFIG) =>
     queryOptions({
-      queryKey: articleQueryKeys.posts({ community, page: 1, size: 20 }),
-      queryFn: () => loadPagedPosts({ data: { community } }),
+      queryKey: articleQueries.posts(
+        { community, page: 1, size: config.defaultSize },
+        { ...config, api: 'offset', mode: 'page' },
+      ).queryKey,
+      queryFn: () =>
+        loadPagedPosts({
+          data: {
+            community,
+            pagi: {
+              offset: { page: 1, size: config.defaultSize, configRevision: config.revision },
+            },
+          },
+        }),
       staleTime: 60_000,
     }),
-  changelogs: (community: string) =>
+  changelogs: (community: string, config = DEFAULT_EFFECTIVE_PAGI_CONFIG) =>
     queryOptions({
-      queryKey: articleQueryKeys.changelogs({ community, page: 1, size: 20 }),
-      queryFn: () => loadPagedChangelogs({ data: { community } }),
+      queryKey: articleQueries.changelogs(
+        { community, page: 1, size: config.defaultSize },
+        { ...config, api: 'offset', mode: 'page' },
+      ).queryKey,
+      queryFn: () =>
+        loadPagedChangelogs({
+          data: {
+            community,
+            pagi: {
+              offset: { page: 1, size: config.defaultSize, configRevision: config.revision },
+            },
+          },
+        }),
       staleTime: 60_000,
     }),
-  kanban: (community: string) =>
+  kanban: (community: string, config = DEFAULT_EFFECTIVE_PAGI_CONFIG) =>
     queryOptions({
-      queryKey: articleQueryKeys.kanban(community),
+      queryKey: articleQueries.kanban(community, config).queryKey,
       queryFn: () => loadKanban({ data: { community } }),
       staleTime: 60_000,
     }),

@@ -5,13 +5,13 @@ schema {
 
 type RootQueryType {
   "List Browser Sessions for canonical Auth through trusted transport only."
-  browserSessions(browserSessionRef: String!): [BrowserSession!]!
+  browserSessions(browserSessionRef: String!, pagi: PagiInput): BrowserSessionPage!
 
   "List linked OAuth accounts for canonical Auth."
   linkedOauthAccounts: LinkedOauthAccounts!
 
   "get all users"
-  pagedUsers(filter: PagedUsersFilter!): PagedUsers!
+  pagedUsers(filter: UserListFilter, pagi: PagiInput): UserPage!
 
   "get cur user"
   me: User
@@ -23,55 +23,58 @@ type RootQueryType {
   sessionState: SessionState
 
   "anyone can get anyone's subscribed communities"
-  subscribedCommunities(login: String, filter: PagiFilter!): PagedCommunities
+  subscribedCommunities(login: String!, filter: UserListFilter, pagi: PagiInput): CommunityPage
+
+  "Bounded discovery suggestions, independently including Home when visible."
+  defaultCommunitySuggestions: [Community!]!
 
   "get login user's mentions in mailbox"
-  pagedMentions(filter: MailboxMentionsFilter): PagedMailboxMentions
+  pagedMentions(pagi: PagiInput, filter: MailboxMentionsFilter): PagedMailboxMentions
 
   "get login user's notifications in mailbox"
-  pagedNotifications(filter: MailboxNotificationsFilter): PagedMailboxNotifications
+  pagedNotifications(pagi: PagiInput, filter: MailboxNotificationsFilter): PagedMailboxNotifications
 
   "get user's follower"
-  pagedFollowers(login: String!, filter: PagiFilter!): PagedUsers
+  pagedFollowers(login: String!, filter: UserListFilter, pagi: PagiInput): UserPage
 
   "get user's follower"
-  pagedFollowings(login: String!, filter: PagiFilter!): PagedUsers
+  pagedFollowings(login: String!, filter: UserListFilter, pagi: PagiInput): UserPage
 
   "get paged upvoted articles"
-  pagedUpvotedArticles(login: String!, filter: UpvotedArticlesFilter): PagedArticles
+  pagedUpvotedArticles(login: String!, pagi: PagiInput, filter: ArticleCollectionFilter): ArticleCollectionPage
 
   "get paged collect folders of a user"
-  pagedCollectFolders(login: String!, filter: CollectFoldersFilter!): PagedCollectFolders
+  pagedCollectFolders(login: String!, pagi: PagiInput, filter: ArticleCollectionFilter): CollectFolderPage
 
   "get paged collected articles"
-  pagedCollectedArticles(folderId: ID!, filter: CollectedArticlesFilter!): PagedArticles
+  pagedCollectedArticles(folderId: ID!, pagi: PagiInput, filter: ArticleCollectionFilter): ArticleCollectionPage
 
   "paged communities which the user it's the editor"
-  moderatorableCommunities(login: String, filter: PagiFilter!): PagedCommunities
+  moderatorableCommunities(login: String, pagi: PagiInput): CommunityPage
 
   "get all passport rules include system and community etc ..."
   allPassportRulesString: Rules
 
   "search user by name"
-  searchUsers(name: String!): PagedUsers
+  searchUsers(name: String!): [User!]!
 
   "get paged published article comments"
-  pagedPublishedComments(login: String!, filter: PagiFilter!, thread: Thread): PagedComments
+  pagedPublishedComments(login: String!, filter: CommentPageFilter, pagi: PagiInput, thread: Thread): CommentCollectionPage
 
   "paged published posts"
-  pagedPublishedPosts(login: String!, filter: PagiFilter!, thread: PostThread): PagedPosts
+  pagedPublishedPosts(login: String!, filter: ArticlePageFilter, pagi: PagiInput, thread: PostThread): PostPage
 
   "paged published blogs"
-  pagedPublishedBlogs(login: String!, filter: PagiFilter!, thread: BlogThread): PagedBlogs
+  pagedPublishedBlogs(login: String!, filter: ArticlePageFilter, pagi: PagiInput, thread: BlogThread): BlogPage
 
   "paged published changelogs"
-  pagedPublishedChangelogs(login: String!, filter: PagiFilter!, thread: ChangelogThread): PagedChangelogs
+  pagedPublishedChangelogs(login: String!, filter: ArticlePageFilter, pagi: PagiInput, thread: ChangelogThread): ChangelogPage
 
   "paged published docs"
-  pagedPublishedDocs(login: String!, filter: PagiFilter!, thread: DocThread): PagedDocs
+  pagedPublishedDocs(login: String!, filter: ArticlePageFilter, pagi: PagiInput, thread: DocThread): DocPage
 
   "Safe product ArticleLog for one readable Article"
-  articleLogs(article: ArticlePathInput!, filter: ArticleLogFilter): PagedArticleLogs!
+  articleLogs(article: ArticlePathInput!, pagi: PagiInput): ArticleLogPage!
 
   "Hourly business metrics for one readable Article"
   articleInsights(
@@ -82,7 +85,7 @@ type RootQueryType {
   articleStats(community: String!, thread: Thread!, innerIds: [ID!]!): [ArticleStats!]!
 
   "Safe Community Activity timeline across readable resource streams"
-  communityActivity(community: String!, selection: CommunityActivitySelectionInput!, page: Int): PagedCommunityActivity!
+  communityActivity(community: String!, selection: CommunityActivitySelectionInput!, pagi: PagiInput): CommunityActivityPage!
 
   "UTC daily Community Activity counts for the timeline overview"
   communityActivityStats(community: String!, selection: CommunityActivitySelectionInput!): CommunityActivityStats!
@@ -103,13 +106,13 @@ type RootQueryType {
   reviewCommunityApplication(ref: ID!): CommunityApplication
 
   "Reviewer-scoped Community Application queue"
-  pagedCommunityApplications(filter: CommunityApplicationsFilter!, after: String, first: Int): CommunityApplicationConnection!
+  pagedCommunityApplications(filter: CommunityApplicationsFilter!, pagi: PagiInput): CommunityApplicationPage!
 
   "Server-trusted origin metadata for an Application Logo"
   communityApplicationLogoOriginInfo(publicRef: ID!): ApplicationLogoOriginInfo
 
   "Current Article Trash memberships"
-  trashedArticles(community: String!, thread: Thread!, filter: TrashFilter): PagedTrashedArticles
+  trashedArticles(community: String!, thread: Thread!, pagi: PagiInput, filter: TrashFilter): TrashPage
 
   "One current Article Trash membership"
   trashedArticle(id: ID!, community: String!, thread: Thread!): TrashedArticle
@@ -160,7 +163,7 @@ type RootQueryType {
   docPublishChecklist(community: String!): DocPublishChecklist
 
   "dashboard docs trash items"
-  docTreeTrashItems(community: String!): [DocTreeTrashItem]
+  docTreeTrashItems(community: String!, pagi: PagiInput): DocTreeTrashPage!
 
   "public community docs cover"
   docCover(community: String!, view: DocCoverView): DocCover
@@ -169,7 +172,7 @@ type RootQueryType {
   docDraft(community: String!, id: ID!): DocDraft
 
   "immutable published versions for one stable Doc branch"
-  docBranchVersions(docId: ID!, branchId: ID!, limit: Int): [DocBranchVersionView]
+  docBranchVersions(docId: ID!, branchId: ID!, pagi: PagiInput): DocBranchVersionPage!
 
   "one immutable published version for a stable Doc branch"
   docBranchVersion(docId: ID!, branchId: ID!, branchVersionId: ID!): DocBranchVersionView
@@ -178,7 +181,7 @@ type RootQueryType {
   community(slug: String!, incViews: Boolean): Community
 
   "paged assets owned by a community"
-  pagedCommunityAssets(community: String!, filter: CommunityAssetFilter): PagedCommunityAssets
+  pagedCommunityAssets(community: String!, filter: CommunityAssetFilter, pagi: PagiInput): CommunityAssetPage
 
   "community asset filter stats and storage quota"
   communityAssetStats(community: String!, filter: CommunityAssetFilter): CommunityAssetStats
@@ -187,7 +190,7 @@ type RootQueryType {
   communityAssetUsage(community: String!): CommunityAssetUsage
 
   "paged article references for one community asset"
-  communityAssetRefs(community: String!, assetId: ID!, filter: PagiFilter): PagedArticleAssetRefs
+  communityAssetRefs(community: String!, assetId: ID!, pagi: PagiInput): ArticleAssetRefPage
 
   "service-scoped public-read origin metadata for one community asset"
   communityAssetOriginInfo(publicRef: String!): CommunityAssetOriginInfo
@@ -201,17 +204,20 @@ type RootQueryType {
   "Check whether a community name is available."
   checkCommunityName(slug: String!): CommunityNameCheck
 
+  "Bounded user picker excluding current moderators"
+  moderatorCandidates(community: String!, name: String!): [User!]!
+
   "communities with pagination info"
-  pagedCommunities(filter: CommunitiesFilter!): PagedCommunities
+  pagedCommunities(filter: CommunitiesFilter, pagi: PagiInput): CommunityPage
 
   "paged subscribers of a community"
-  pagedCommunitySubscribers(community: String!, filter: PagiFilter): PagedUsers
+  pagedCommunitySubscribers(community: String!, filter: UserListFilter, pagi: PagiInput): UserPage
 
   "paged subscribers of a community"
-  pagedCommunityModerators(community: String!, filter: PagiFilter): PagedUsers
+  pagedCommunityModerators(community: String!, filter: UserListFilter, pagi: PagiInput): CommunityModeratorPage
 
   "get all categories"
-  pagedCategories(filter: PagiFilter): PagedCategories
+  categories: [Category!]!
 
   "get community tag groups"
   communityTagGroups(community: String!, thread: Thread): [CommunityTagGroup]
@@ -237,68 +243,68 @@ type RootQueryType {
   "got spec comment by ref"
   oneComment(comment: CommentPathInput!): Comment
 
-  "get paged article comments"
-  pagedComments(article: ArticlePathInput!, mode: CommentsMode, filter: CommentsFilter): PagedComments
+  "Comment Lite page using the shared offset\/cursor pagination contract"
+  commentPage(article: ArticlePathInput!, mode: CommentsMode, filter: CommentPageFilter, pagi: PagiInput): CommentPage!
 
   "get paged article comments participants"
-  pagedCommentsParticipants(article: ArticlePathInput!, filter: PagiFilter): PagedUsers
+  pagedCommentsParticipants(article: ArticlePathInput!, pagi: PagiInput): UserPage
 
-  "get paged replies of a comment"
-  pagedCommentReplies(comment: CommentPathInput!, filter: CommentsFilter): PagedCommentReplies
+  "A root comment's flat descendants through the shared Pagi contract"
+  commentReplyPage(comment: CommentPathInput!, filter: CommentPageFilter, pagi: PagiInput): CommentReplyPage!
 
   "paged reports list"
-  pagedAbuseReports(filter: ReportFilter!): PagedReports
+  pagedAbuseReports(pagi: PagiInput, filter: ReportFilter!): ReportPage
 
   "mentions created by an artiment"
-  mentions(source: MentionSourceInput!, filter: PagiFilter): PagedMentions
+  mentions(source: MentionSourceInput!, pagi: PagiInput): ArtimentMentionPage
 
   "artiments mentioning an internal target"
-  mentionedBy(target: MentionTargetInput!, filter: PagiFilter): PagedMentions
+  mentionedBy(target: MentionTargetInput!, pagi: PagiInput): ArtimentMentionPage
 
   "search communities by title"
-  searchCommunities(title: String!, category: String): PagedCommunities
+  searchCommunities(title: String!, category: String): [Community!]!
 
   "kanban posts grouped by backlog\/todo\/wip\/done\/rejected"
-  groupedKanbanPosts(community: String!): KanbanPosts
+  groupedKanbanPosts(community: String!): KanbanPages
 
   "get open graph info by url"
   openGraphInfo(url: String!): OpenGraph
 
-  "paged kanban posts by status"
-  pagedKanbanPosts(community: String!, filter: PagedKanbanPostsFilter!): PagedPosts
+  "One Kanban column using the canonical Article Page contract"
+  kanbanPage(community: String!, filter: PostFilter, pagi: PagiInput): PostPage!
+
+  "Article Lite page using the shared offset\/cursor pagination contract"
+  postPage(pagi: PagiInput, filter: PostFilter, thread: PostThread): PostPage!
+
+  "Changelog Lite page using the shared offset\/cursor pagination contract"
+  changelogPage(pagi: PagiInput, filter: ChangelogFilter, thread: ChangelogThread): ChangelogPage!
+
+  "Blog Lite page using the shared pagination contract"
+  blogPage(pagi: PagiInput, filter: ArticlePageFilter, thread: BlogThread): BlogPage!
+
+  "Doc Lite page using the shared pagination contract"
+  docPage(pagi: PagiInput, filter: ArticlePageFilter, thread: DocThread): DocPage!
 
   "Search Article and Comment content through the unified Artiment index"
-  searchArtiments(query: SearchArtimentsQueryInput!): PagedSearchArtiments!
+  searchArtiments(query: SearchArtimentsQueryInput!, pagi: PagiInput): SearchArtimentPage!
 
   "get paged upvoted users of an article"
-  upvotedUsers(article: ArticlePathInput!, filter: PagiFilter!): PagedUsers
+  upvotedUsers(article: ArticlePathInput!, pagi: PagiInput): UserPage
 
   "get paged collected users of an article"
-  collectedUsers(article: ArticlePathInput!, filter: PagiFilter!): PagedUsers
+  collectedUsers(article: ArticlePathInput!, pagi: PagiInput): UserPage
 
   "get post by id"
   post(article: ArticlePathInput!): Post!
 
-  "get paged posts"
-  pagedPosts(thread: PostThread, filter: PagedPostsFilter!): PagedPosts
-
   "get blog by id"
   blog(article: ArticlePathInput!): Blog!
-
-  "get paged blogs"
-  pagedBlogs(thread: BlogThread, filter: PagedBlogsFilter!): PagedBlogs
 
   "get changelog by id"
   changelog(article: ArticlePathInput!): Changelog!
 
-  "get paged changelogs"
-  pagedChangelogs(thread: ChangelogThread, filter: PagedChangelogsFilter!): PagedChangelogs
-
   "get doc by id"
   doc(article: ArticlePathInput!): Doc!
-
-  "get paged docs"
-  pagedDocs(thread: DocThread, filter: PagedDocsFilter!): PagedDocs
 
   pressConfig(community: String!): PressConfig
 
@@ -794,6 +800,11 @@ type RootMutationType {
 
   "Updates the Dashboard-owned content surface shadow"
   updateDashboardContentShadow(community: String!, enabled: Boolean!, commandId: ID!): Dsb
+
+  "Updates the community-wide list interaction preference"
+  updateDashboardPagiMode(
+    community: String!, dsbSection: DsbSection, expectedRevision: Int!, mode: PagiMode!, mobileMode: PagiMode!, commandId: ID!
+  ): Dsb
 
   "Prepares the generated images for one current-theme Wallpaper save"
   prepareWallpaperUpload(community: String!, input: WallpaperUploadPrepareInput!): WallpaperUploadPreparation!
@@ -1678,19 +1689,9 @@ type CommunityApplicationEvent {
   occurredAt: DateTime!
 }
 
-type CommunityApplicationEventEdge {
-  cursor: String!
-  node: CommunityApplicationEvent!
-}
-
-type CommunityApplicationPageInfo {
-  endCursor: String
-  hasNextPage: Boolean!
-}
-
-type CommunityApplicationEventConnection {
-  edges: [CommunityApplicationEventEdge!]!
-  pageInfo: CommunityApplicationPageInfo!
+type CommunityApplicationEventPage {
+  entries: [CommunityApplicationEvent!]!
+  pageInfo: PageInfo!
 }
 
 type CommunityApplication {
@@ -1716,17 +1717,12 @@ type CommunityApplication {
   decisionNote: String
   community: CommunityApplicationCommunity
   lastJobError: CommunityApplicationJobError
-  events(first: Int, after: String): CommunityApplicationEventConnection!
+  events(pagi: PagiInput): CommunityApplicationEventPage!
 }
 
-type CommunityApplicationEdge {
-  cursor: String!
-  node: CommunityApplication!
-}
-
-type CommunityApplicationConnection {
-  edges: [CommunityApplicationEdge!]!
-  pageInfo: CommunityApplicationPageInfo!
+type CommunityApplicationPage {
+  entries: [CommunityApplication!]!
+  pageInfo: PageInfo!
 }
 
 type CommunityApplicationPolicy {
@@ -1814,16 +1810,13 @@ type TrashedArticle {
   mentionedByCount: Int!
   commandId: ID
   scheduledPermanentDeletionAt: DateTime!
-  mentionedBy(filter: PagiFilter): PagedMentions
-  mentions(filter: PagiFilter): PagedMentions
+  mentionedBy(pagi: PagiInput): ArtimentMentionPage
+  mentions(pagi: PagiInput): ArtimentMentionPage
 }
 
-type PagedTrashedArticles {
+type TrashPage {
   entries: [TrashedArticle!]!
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+  pageInfo: PageInfo!
 }
 
 type ActivityResourceRef {
@@ -1851,12 +1844,9 @@ type ArticleLog {
   occurredAt: DateTime!
 }
 
-type PagedArticleLogs {
+type ArticleLogPage {
   entries: [ArticleLog!]!
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+  pageInfo: PageInfo!
 }
 
 type CommunityActivityEvent {
@@ -1887,13 +1877,10 @@ type CommunityActivityEvent {
   recordedAt: DateTime!
 }
 
-type PagedCommunityActivity {
+type CommunityActivityPage {
   entries: [CommunityActivityEvent!]!
   queryContext: CommunityActivityQueryContext!
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+  pageInfo: PageInfo!
 }
 
 type CommunityActivityBucket {
@@ -2203,6 +2190,16 @@ type DocPublishRelease {
   publishedAt: DateTime!
 }
 
+type DocTreeTrashPage {
+  entries: [DocTreeTrashItem!]!
+  pageInfo: PageInfo!
+}
+
+type DocBranchVersionPage {
+  entries: [DocBranchVersionView!]!
+  pageInfo: PageInfo!
+}
+
 type DocTreeTrashItem {
   id: ID!
   nodeId: ID!
@@ -2359,7 +2356,7 @@ type DsbThemePresetOption {
 }
 
 type CommonUser {
-  login: String
+  login: String!
   avatar: String
   nickname: String
   bio: String
@@ -2504,8 +2501,6 @@ input CommunityAssetUploadFileInput {
 }
 
 input CommunityAssetFilter {
-  page: Int
-  size: Int
   query: String
   thread: Thread
   assetType: CommunityAssetType
@@ -3112,31 +3107,63 @@ input DsbDocFaqInput {
 
 type Dsb {
   seo: DsbSeo
+
   wallpaper: Wallpaper!
+
   wallpaperSettings: WallpaperSettingsByTheme!
+
   contentShadow: Boolean!
+
+  "Community-wide list interaction preference."
+  pagiMode: PagiMode!
+
+  pagiMobileMode: PagiMode!
+
+  pagiRevision: Int!
+
   wallpaperHistory(theme: WallpaperTheme!): [WallpaperSnapshot!]!
+
   layout: DsbLayout
+
   enable: DsbEnable
+
   threadEmotions: DsbThreadEmotions
+
   baseInfo: DsbBaseInfo
+
   rss: DsbRss
+
   nameAlias: [DsbNameAlias]
+
   headerLinks: [DsbLink]
+
   footerLinks: [DsbLink]
+
   footerOnelineLinks: [DsbLinkChild]
+
   socialLinks: [DsbSocialLink]
+
   mediaReports: [DsbMediaReport]
+
   docFaq: DsbDocFaq
+
   thirdPartyAnalytics: [DsbThirdPartyAnalytics]
+
   umamiWebsiteId: String
+
   enabledThirdPartyAnalytics: [DsbThirdPartyAnalytics]
 }
 
 type CommunityModerator {
-  isRoot: Boolean
-  passportItemCount: Int
-  user: CommonUser
+  id: ID!
+  isRoot: Boolean!
+  passportItemCount: Int!
+  user: CommonUser!
+}
+
+type CommunityModeratorPage {
+  entries: [CommunityModerator!]!
+  pageInfo: PageInfo!
 }
 
 type AllRules {
@@ -3146,13 +3173,13 @@ type AllRules {
 
 type Community {
   "Community display title."
-  title: String
+  title: String!
 
   "Community introduction text."
   desc: String
 
   "Community slug used in API routes."
-  slug: String
+  slug: String!
 
   favicon: String
 
@@ -3171,9 +3198,6 @@ type Community {
 
   "Dashboard configuration for this community."
   dashboard: Dsb
-
-  "Current moderators in the community."
-  moderators: [CommunityModerator]
 
   meta: CommunityMeta
 
@@ -3213,19 +3237,25 @@ type Category {
   slug: String
   index: Int
   author: User
-  communities: [Community]
   insertedAt: DateTime
   updatedAt: DateTime
 }
 
+enum ArticleThread {
+  POST
+  BLOG
+  CHANGELOG
+  DOC
+}
+
 type CommunityTag {
-  id: ID
-  title: String
+  id: ID!
+  title: String!
   desc: String
   layout: String
-  slug: String
-  color: RainbowColor
-  thread: Thread
+  slug: String!
+  color: RainbowColor!
+  thread: ArticleThread!
   group: String
   groupId: ID
   extra: [String]
@@ -3306,6 +3336,7 @@ type CommentReply {
   bodyVersion: Int!
   author: User
   isPinned: Boolean
+  rootInnerId: ID
   floor: Int
   upvotesCount: Int
   commentInteractionRevision: Int
@@ -3331,6 +3362,7 @@ type Comment {
   bodyVersion: Int!
   author: User
   isPinned: Boolean
+  rootInnerId: ID
   floor: Int
   upvotesCount: Int
   commentInteractionRevision: Int
@@ -3401,116 +3433,168 @@ type ArtimentMention {
   updatedAt: DateTime
 }
 
-type PagedPosts {
-  entries: [Post]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+type PostLite {
+  id: ID!
+  thread: PostThread!
+  innerId: ID!
+  title: String!
+  digest: String
+  author: CommonUser!
+  community: Community!
+  communityTags: [CommunityTag!]!
+  activeAt: DateTime
+  insertedAt: DateTime!
+  cat: ArticleCatEnum
+  status: ArticleStatusEnum
+  isPinned: Boolean!
 }
 
-type PagedBlogs {
-  entries: [Blog]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+type PostPage {
+  entries: [PostLite!]!
+  pinnedEntries: [PostLite!]!
+  pageInfo: PageInfo!
 }
 
-type PagedChangelogs {
-  entries: [Changelog]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+type BlogLite {
+  id: ID!
+  thread: BlogThread!
+  innerId: ID!
+  title: String!
+  digest: String
+  author: CommonUser!
+  community: Community!
+  communityTags: [CommunityTag!]!
+  activeAt: DateTime
+  insertedAt: DateTime!
+  cat: ArticleCatEnum
+  status: ArticleStatusEnum
+  isPinned: Boolean!
 }
 
-type PagedDocs {
-  entries: [Doc]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+type BlogPage {
+  entries: [BlogLite!]!
+  pinnedEntries: [BlogLite!]!
+  pageInfo: PageInfo!
 }
 
-type KanbanPosts {
-  backlog: PagedPosts
-  todo: PagedPosts
-  wip: PagedPosts
-  done: PagedPosts
-  rejected: PagedPosts
+type ChangelogLite {
+  id: ID!
+  thread: ChangelogThread!
+  innerId: ID!
+  title: String!
+  digest: String
+  author: CommonUser!
+  community: Community!
+  communityTags: [CommunityTag!]!
+  activeAt: DateTime
+  insertedAt: DateTime!
+  cat: ArticleCatEnum
+  status: ArticleStatusEnum
+  isPinned: Boolean!
 }
 
-type PagedReports {
+type ChangelogPage {
+  entries: [ChangelogLite!]!
+  pinnedEntries: [ChangelogLite!]!
+  pageInfo: PageInfo!
+}
+
+type DocLite {
+  id: ID!
+  thread: DocThread!
+  innerId: ID!
+  title: String!
+  digest: String
+  author: CommonUser!
+  community: Community!
+  communityTags: [CommunityTag!]!
+  activeAt: DateTime
+  insertedAt: DateTime!
+  cat: ArticleCatEnum
+  status: ArticleStatusEnum
+  isPinned: Boolean!
+}
+
+type DocPage {
+  entries: [DocLite!]!
+  pinnedEntries: [DocLite!]!
+  pageInfo: PageInfo!
+}
+
+"Stable public offset\/cursor page metadata."
+interface PageInfo {
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type OffsetPageInfo implements PageInfo {
+  page: Int!
+  size: Int!
+  totalCount: Int!
+  totalPages: Int!
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type CursorPageInfo implements PageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type CommentPage {
+  pinnedEntries: [Comment!]!
+  entries: [Comment!]!
+  pageInfo: PageInfo!
+}
+
+type KanbanPages {
+  backlog: PostPage
+  todo: PostPage
+  wip: PostPage
+  done: PostPage
+  rejected: PostPage
+}
+
+type ReportPage {
   entries: [AbuseReport]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+  pageInfo: PageInfo!
 }
 
-type PagedMentions {
+type ArtimentMentionPage {
   entries: [ArtimentMention]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+  pageInfo: PageInfo!
 }
 
-type PagedCommunityAssets {
+type CommunityAssetPage {
   entries: [CommunityAsset]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+  pageInfo: PageInfo!
 }
 
-type PagedArticleAssetRefs {
+type ArticleAssetRefPage {
   entries: [ArticleAssetRef]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+  pageInfo: PageInfo!
 }
 
-type PagedCategories {
-  entries: [Category]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
-}
-
-type PagedComments {
+type CommentCollectionPage {
   entries: [Comment]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+  pageInfo: PageInfo!
 }
 
-type PagedCommentReplies {
-  entries: [CommentReply]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+type CommentReplyPage {
+  entries: [CommentReply!]!
+  pageInfo: PageInfo!
 }
 
-type PagedCommunities {
-  entries: [Community]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+type CommunityPage {
+  entries: [Community!]!
+  pageInfo: PageInfo!
 }
 
-type PagedArticles {
+type ArticleCollectionPage {
   entries: [CommonArticle]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+  pageInfo: PageInfo!
 }
 
 type SearchArticleLocator {
@@ -3581,12 +3665,9 @@ type SearchArtimentHit {
   highlights: [SearchHighlight!]!
 }
 
-type PagedSearchArtiments {
+type SearchArtimentPage {
   entries: [SearchArtimentHit!]!
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+  pageInfo: PageInfo!
 }
 
 "article meta info"
@@ -3718,8 +3799,6 @@ input SearchArtimentsQueryInput {
   scope: SearchArtimentsScopeInput
   filters: SearchArtimentsFiltersInput
   sort: SearchArtimentSort
-  page: Int
-  size: Int
   highlight: Boolean
 }
 
@@ -3807,20 +3886,8 @@ enum CommentsMode {
   TIMELINE
 }
 
-input CommentsFilter {
-  page: Int
-  size: Int
-  sort: InsertedSortEnum
-}
-
 input CommunitiesFilter {
-  "limit of records (default 20), if first > 30, only return 30 at most"
-  page: Int
-
-  size: Int
-
   sort: SortEnum
-
   category: String
 }
 
@@ -3862,23 +3929,8 @@ input MentionTargetInput {
   userLogin: String
 }
 
-input PagiFilter {
-  "limit of records (default 20), if first > 30, only return 30 at most"
-  page: Int
-
-  size: Int
-
-  sort: SortEnum
-}
-
 input TrashFilter {
-  page: Int
-  size: Int
   thread: Thread
-}
-
-input ArticleLogFilter {
-  page: Int
 }
 
 input CommunityActivityFilterInput {
@@ -3909,118 +3961,69 @@ enum CommunityActivityExportFormat {
   CSV
 }
 
-"posts_filter doc"
-input PagedPostsFilter {
-  "limit of records (default 20), if first > 30, only return 30 at most"
+"Offset page parameters for the new paged resource contract."
+input OffsetPagiInput {
   page: Int
-
   size: Int
-
-  when: WhenEnum
-
-  communityTag: String
-
-  cat: ArticleCatEnum
-
-  status: ArticleStatusEnum
-
-  order: ArticleOrderEnum
-
-  communityTags: [String]
-
-  community: String
-
-  sort: SortEnum
+  configRevision: Int
 }
 
-"kanban posts_filter doc"
-input PagedKanbanPostsFilter {
-  page: Int
-  size: Int
-  status: ArticleStatusEnum
+"Forward cursor parameters for the new paged resource contract."
+input ForwardCursorPagiInput {
+  first: Int
+  after: String
+  configRevision: Int
 }
 
-"changelogs_filter doc"
-input PagedChangelogsFilter {
-  "limit of records (default 20), if first > 30, only return 30 at most"
-  page: Int
-
-  size: Int
-
-  when: WhenEnum
-
-  communityTag: String
-
-  cat: ArticleCatEnum
-
-  status: ArticleStatusEnum
-
-  order: ArticleOrderEnum
-
-  communityTags: [String]
-
-  community: String
-
-  sort: SortEnum
+"Exactly one offset or forward-cursor pagination input."
+input PagiInput @oneOf {
+  offset: OffsetPagiInput
+  cursor: ForwardCursorPagiInput
 }
 
-"docs_filter doc"
-input PagedDocsFilter {
-  "limit of records (default 20), if first > 30, only return 30 at most"
-  page: Int
-
-  size: Int
-
-  when: WhenEnum
-
-  communityTag: String
-
-  cat: ArticleCatEnum
-
-  status: ArticleStatusEnum
-
-  order: ArticleOrderEnum
-
-  communityTags: [String]
-
-  community: String
-
-  sort: SortEnum
-}
-
-"blog_filter doc"
-input PagedBlogsFilter {
-  page: Int
-  size: Int
+input ArticlePageFilter {
   when: WhenEnum
   communityTag: String
   cat: ArticleCatEnum
   status: ArticleStatusEnum
+  statuses: [ArticleStatusEnum!]
   order: ArticleOrderEnum
   communityTags: [String]
   community: String
   sort: SortEnum
 }
 
-"common filter for upvoted articles"
-input UpvotedArticlesFilter {
+input PostFilter {
+  when: WhenEnum
+  communityTag: String
+  cat: ArticleCatEnum
+  status: ArticleStatusEnum
+  statuses: [ArticleStatusEnum!]
+  order: ArticleOrderEnum
+  communityTags: [String]
+  community: String
+  sort: SortEnum
+}
+
+input ChangelogFilter {
+  when: WhenEnum
+  communityTag: String
+  cat: ArticleCatEnum
+  status: ArticleStatusEnum
+  statuses: [ArticleStatusEnum!]
+  order: ArticleOrderEnum
+  communityTags: [String]
+  community: String
+  sort: SortEnum
+}
+
+input CommentPageFilter {
+  sort: InsertedSortEnum
+}
+
+"Thread scope for an account's Article\/folder collections."
+input ArticleCollectionFilter {
   thread: Thread
-  page: Int
-  size: Int
-}
-
-"common filter for collect folders"
-input CollectFoldersFilter {
-  thread: Thread
-  page: Int
-  size: Int
-}
-
-"common filter for collect articles"
-input CollectedArticlesFilter {
-  thread: Thread
-  page: Int
-  size: Int
 }
 
 enum ReportContentType {
@@ -4036,8 +4039,6 @@ enum ReportContentType {
 input ReportFilter {
   contentType: ReportContentType
   contentId: ID
-  page: Int
-  size: Int
 }
 
 input DsbAliasMap {
@@ -4135,6 +4136,13 @@ enum DsbSection {
   MEDIA_REPORTS
   DOC_FAQ
   THIRD_PARTY_ANALYTICS
+  PAGI_MODE
+}
+
+enum PagiMode {
+  PAGE
+  LOAD_MORE
+  INFINITE_SCROLL
 }
 
 enum DsbLinkType {
@@ -4463,12 +4471,9 @@ type CollectFolder {
   updatedAt: DateTime
 }
 
-type PagedCollectFolders {
+type CollectFolderPage {
   entries: [CollectFolder]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+  pageInfo: PageInfo!
 }
 
 type SourceContribute {
@@ -4491,6 +4496,11 @@ type BrowserSigninResult {
   accessExpiresAt: DateTime
   browserSessionRef: String
   sessionAbsoluteExpiresAt: DateTime
+}
+
+type BrowserSessionPage {
+  entries: [BrowserSession!]!
+  pageInfo: PageInfo!
 }
 
 type BrowserSession {
@@ -4525,28 +4535,19 @@ type Rules {
   cms: Json
 }
 
-type PagedUsers {
-  entries: [User]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+type UserPage {
+  entries: [User!]!
+  pageInfo: PageInfo!
 }
 
 type PagedMailboxMentions {
   entries: [MailboxMention]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+  pageInfo: PageInfo!
 }
 
 type PagedMailboxNotifications {
   entries: [MailboxNotification]
-  totalCount: Int
-  pageSize: Int
-  totalPages: Int
-  pageNumber: Int
+  pageInfo: PageInfo!
 }
 
 enum MailboxType {
@@ -4556,20 +4557,14 @@ enum MailboxType {
 
 input MailboxMentionsFilter {
   read: Boolean
-  page: Int
-  size: Int
 }
 
 input MailboxNotificationsFilter {
   read: Boolean
-  page: Int
-  size: Int
 }
 
-"article_filter doc"
-input PagedUsersFilter {
-  page: Int
-  size: Int
+input UserListFilter {
+  sort: SortEnum
 }
 
 input UserProfileInput {

@@ -34,7 +34,7 @@ defmodule GroupherServerWeb.Middleware.GQLResultFmt do
 
       Absinthe.Resolution.put_result(
         resolution,
-        {:error, [message: message, extensions: %{code: code}]}
+        {:error, [message: message, extensions: domain_extensions(error, code)]}
       )
     else
       resolution
@@ -42,6 +42,18 @@ defmodule GroupherServerWeb.Middleware.GQLResultFmt do
   end
 
   def call(resolution, _), do: resolution
+
+  # Only the bounded pagination mismatch discriminator is public. Arbitrary
+  # ErrorCat details must never be copied into GraphQL extensions.
+  defp domain_extensions(
+         %Error{namespace: {:pagi}, reason: :config_mismatch, details: %{mismatch: mismatch}},
+         code
+       )
+       when mismatch in [:revision, :api] do
+    %{code: code, mismatch: Atom.to_string(mismatch)}
+  end
+
+  defp domain_extensions(_error, code), do: %{code: code}
 
   @doc false
   @spec public_error(Decision.t()) :: %{

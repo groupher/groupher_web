@@ -5,14 +5,14 @@
  *
  */
 
-import { COMMUNITY_LAYOUT } from '~/const/layout'
-import useLayout from '~/hooks/useLayout'
+import PagedChangelogsProvider from '~/hooks/usePagedChangelogs/provider'
 
-import ClassicLayout from './ClassicLayout'
-import SimpleLayout from './SimpleLayout'
+import ChangelogSurface from './Surface'
 
 export default function ChangelogThread() {
-  const { communityLayout } = useLayout()
-
-  return communityLayout === COMMUNITY_LAYOUT.HERO ? <ClassicLayout /> : <SimpleLayout />
+  return (
+    <PagedChangelogsProvider>
+      <ChangelogSurface />
+    </PagedChangelogsProvider>
+  )
 }

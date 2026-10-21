@@ -11,8 +11,10 @@ defmodule GroupherServer.CMS.Dashboard.Persist do
         -> CommunityDashboard
   """
 
+  import Ecto.Query, only: [from: 2]
+
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Dashboard.SectionPayload
+  alias CMS.Dashboard.{PagiMode, SectionPayload}
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.{ORM, T}
 
@@ -53,6 +55,33 @@ defmodule GroupherServer.CMS.Dashboard.Persist do
   def replace_section(%CommunityDashboard{} = dashboard, key, args) do
     with {:ok, payload} <- SectionPayload.prepare(dashboard, key, args) do
       ORM.replace_dsb_section(dashboard, key, payload)
+    end
+  end
+
+  @doc """
+  Atomically updates desktop and mobile Pagi modes when the expected revision matches.
+
+  ## Examples
+
+      CMS.Dashboard.Persist.update_pagi_mode(dashboard, :page, :infinite_scroll, dashboard.pagi_revision)
+  """
+  def update_pagi_mode(%CommunityDashboard{id: id}, mode, mobile_mode, expected_revision) do
+    dashboard =
+      from(d in CommunityDashboard, where: d.id == ^id, lock: "FOR UPDATE") |> Repo.one!()
+
+    with {:ok, mode} <- PagiMode.normalize(mode),
+         {:ok, mobile_mode} <- PagiMode.normalize(mobile_mode),
+         true <- is_integer(expected_revision) and expected_revision == dashboard.pagi_revision do
+      dashboard
+      |> Ecto.Changeset.change(%{
+        pagi_mode: mode,
+        pagi_mobile_mode: mobile_mode,
+        pagi_revision: dashboard.pagi_revision + 1
+      })
+      |> Repo.update()
+    else
+      false -> {:error, GroupherServer.Pagi.config_mismatch(%{mismatch: :revision})}
+      {:error, _} = error -> error
     end
   end
 

@@ -1,11 +1,13 @@
-import { type CSSProperties, type FC, memo } from 'react'
+import { memo, useState } from 'react'
 
 import useTrans from '~/hooks/useTrans'
 import type { TComment, TID } from '~/spec'
 
-import Comment from '../Comment'
+import { useCommentFeed } from '../pagination/context'
+import FeedProvider from '../pagination/FeedProvider'
 import type { TAPIMode } from '../spec'
-import useActions from '../useLogic/useActions'
+import ReplyEntries from './ReplyEntries'
+import ReplyPage from './ReplyPage'
 import useSalon from './salon/replies_list'
 import TogglerButton from './TogglerButton'
 
@@ -14,58 +16,47 @@ type TProps = {
   apiMode: TAPIMode
   entries: readonly TComment[]
   repliesCount: number
-  loading: boolean
   foldedIdSet: Set<TID>
 }
 
-const REPLY_VISIBILITY_STYLE: CSSProperties = {
-  contentVisibility: 'auto',
-  containIntrinsicSize: '220px',
-}
-
-const RepliesList: FC<TProps> = ({
-  parentId,
-  apiMode,
-  entries,
-  repliesCount,
-  loading,
-  foldedIdSet,
-}) => {
+/** Preview is replaced by page one on expansion; each root has its own query and controls. */
+function RepliesList({ parentId, apiMode, entries, repliesCount, foldedIdSet }: TProps) {
   const s = useSalon()
   const { t } = useTrans()
-
-  const { loadCommentReplies } = useActions()
-
+  const parentFeed = useCommentFeed()
+  const [expanded, setExpanded] = useState(false)
+  const [page, setPage] = useState(1)
   return (
     <div className={s.wrapper}>
-      {repliesCount > 0 && (
-        <div className={s.countHint}>
-          <div className={s.slashSign}>&#47;&#47;</div>
-          <div className={s.countNum}>{repliesCount}</div> {t('comment.replies.count')}:
-        </div>
+      <div className={s.countHint}>
+        <div className={s.slashSign}>&#47;&#47;</div>
+        <div className={s.countNum}>{repliesCount}</div> {t('comment.replies.count')}:
+      </div>
+      {expanded ? (
+        <FeedProvider
+          collection={{
+            ...parentFeed.collection,
+            rootInnerId: String(parentId),
+            initialAfter: undefined,
+          }}
+          config={{ ...parentFeed.config, api: 'cursor', mode: 'load_more' }}
+          page={page}
+          setPage={setPage}
+        >
+          <ReplyPage apiMode={apiMode} foldedIdSet={foldedIdSet} />
+        </FeedProvider>
+      ) : (
+        <ReplyEntries apiMode={apiMode} entries={entries} foldedIdSet={foldedIdSet} preview />
       )}
-      {entries.map((comment) => {
-        return (
-          <div key={comment.innerId} style={REPLY_VISIBILITY_STYLE}>
-            <Comment
-              apiMode={apiMode}
-              data={comment}
-              isFolded={foldedIdSet.has(comment.innerId)}
-              showInnerRef
-              isReply
-            />
-          </div>
-        )
-      })}
-      {repliesCount > entries.length && (
-        <TogglerButton
-          loading={loading}
-          text={`${t('comment.replies.more')} ( ${repliesCount - entries.length} )`}
-          onClick={() => loadCommentReplies(parentId)}
-        />
-      )}
+      <TogglerButton
+        loading={false}
+        text={expanded ? '收起回复' : `查看全部 ${repliesCount} 条回复`}
+        onClick={() => {
+          setPage(1)
+          setExpanded(!expanded)
+        }}
+      />
     </div>
   )
 }
-
 export default memo(RepliesList)

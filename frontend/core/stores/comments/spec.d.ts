@@ -10,10 +10,6 @@ export type TInit = Partial<
     TStore,
     | 'mode'
     | 'apiMode'
-    | 'page'
-    | 'repliesParentId'
-    | 'repliesLoading'
-    | 'repliesLoadingByParentId'
     | 'showEditor'
     | 'showUpdateEditor'
     | 'showReplyEditor'
@@ -33,11 +29,7 @@ export type TInit = Partial<
 export type TStore = {
   mode: TMode
   apiMode: TAPIMode
-  page: number
 
-  repliesParentId: string | null
-  repliesLoading: boolean
-  repliesLoadingByParentId: Record<string, boolean>
   showEditor: boolean
   showUpdateEditor: boolean
   showReplyEditor: boolean

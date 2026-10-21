@@ -14,6 +14,7 @@ defmodule GroupherServer.Accounts.Model.BrowserSession do
   """
 
   use Ecto.Schema
+  use Flop.Schema
 
   import Ecto.Changeset
 
@@ -32,6 +33,12 @@ defmodule GroupherServer.Accounts.Model.BrowserSession do
   )a
 
   @type t :: %__MODULE__{}
+
+  @flop_options [
+    filterable: [],
+    sortable: [:last_seen_at, :id],
+    pagination_types: [:page, :first]
+  ]
 
   schema "browser_sessions" do
     field(:ref, :string)

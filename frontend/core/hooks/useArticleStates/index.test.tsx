@@ -12,7 +12,7 @@ import { readArticleViewAck, writeArticleViewAck } from '~/query/viewAck'
 import type { TArticle, TArticleStats, TUser } from '~/spec'
 import AccountStoreProvider from '~/stores/account/provider'
 
-import useArticleStates from '.'
+import useArticleStates, { useArticleStatesByChunks } from '.'
 
 const article = {
   innerId: '42',
@@ -108,6 +108,31 @@ describe('useArticleStates', () => {
     expect(result.current.map(({ stats: item }) => item?.views)).toEqual([9, 3, 7])
     expect(
       queryClient.getQueryState(articleQueryKeys.stats('home', THREAD.POST, '42')),
+    ).toBeUndefined()
+  })
+
+  it('keeps infinite-list stats batches scoped to their loaded page chunks', () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false, staleTime: Number.POSITIVE_INFINITY } },
+    })
+    const second = {
+      innerId: '7',
+      community: { slug: 'home' },
+      meta: { thread: THREAD.POST },
+    } as TArticle
+
+    queryClient.setQueryData(articleQueryKeys.statsBatch('home', THREAD.POST, ['42']), [stats(3)])
+    queryClient.setQueryData(articleQueryKeys.statsBatch('home', THREAD.POST, ['7']), [
+      stats(7, { innerId: '7' }),
+    ])
+
+    const { result } = renderHook(() => useArticleStatesByChunks([[article], [second]]), {
+      wrapper: wrapperFor(queryClient),
+    })
+
+    expect(result.current.map(({ stats: item }) => item?.views)).toEqual([3, 7])
+    expect(
+      queryClient.getQueryState(articleQueryKeys.statsBatch('home', THREAD.POST, ['42', '7'])),
     ).toBeUndefined()
   })
 

@@ -64,6 +64,25 @@ defmodule GroupherServer.CMS.Articles.Commands.Trash do
     on_rejection(&build_rejection/1)
   end
 
+  @pipeline operation: :article_trash_internal,
+            access: :internal,
+            target: :article,
+            params: :opts
+  direct_pipeline run_internal(article, opts) do
+    prepare(fn -> prepare_article(article) end)
+
+    gate(fn candidate ->
+      with {:ok, %Community{} = community} <- community_context(candidate, opts) do
+        CMS.Gate.check_in_transaction(:operations, :delete, candidate, community)
+      end
+    end)
+
+    change(fn canonical -> TrashAgg.trash_loaded(canonical, :operations, opts) end)
+
+    on_rejection(&build_rejection/1)
+  end
+
+  @doc "Runs the user Article Trash contract, using Receipt recovery when requested."
   @spec execute(map(), User.t() | nil, keyword()) ::
           {:ok, TrashedArticle.t()} | {:error, term()}
   def execute(article, %User{} = actor, opts) do
@@ -72,6 +91,10 @@ defmodule GroupherServer.CMS.Articles.Commands.Trash do
   end
 
   def execute(_article, _actor, _opts), do: {:error, :invalid_actor}
+
+  @doc "Runs the internal Article Trash contract with the operations actor."
+  @spec execute_internal(map(), keyword()) :: {:ok, TrashedArticle.t()} | {:error, term()}
+  def execute_internal(article, opts), do: run_internal(article, opts)
 
   defp prepare_article(%{thread: :doc}) do
     {:error,

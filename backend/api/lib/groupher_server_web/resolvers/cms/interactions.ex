@@ -9,6 +9,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Interactions do
 
   alias GroupherServer.Accounts
 
+  alias GroupherServer.Pagi
   alias GroupherServer.CMS
   alias Accounts.Model.User
 
@@ -30,12 +31,16 @@ defmodule GroupherServerWeb.Resolvers.CMS.Interactions do
     CMS.interactions_undo_upvote_result(article, user, Map.get(args, :command_id))
   end
 
-  def upvoted_users(_root, ~m(article filter)a, _info) do
-    CMS.interactions_upvoted_users(article, filter)
+  def upvoted_users(_root, %{article: article} = args, _info) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
+      CMS.interactions_upvoted_users(article, pagi)
+    end
   end
 
-  def collected_users(_root, ~m(article filter)a, _info) do
-    CMS.interactions_collected_users(article, filter)
+  def collected_users(_root, %{article: article} = args, _info) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
+      CMS.interactions_collected_users(article, pagi)
+    end
   end
 
   def emotion_to_article(_root, %{article: article, emotion: emotion} = args, %{

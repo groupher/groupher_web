@@ -80,22 +80,22 @@ defmodule GroupherServer.Test.CMS.Interactions.ProjectionTest do
     |> ArticleLifecycle.changeset(%{state: :archived})
     |> Repo.update!()
 
-    assert {:error, %{primary: %{reason: :article_archived}}} =
+    assert {:error, %Error{reason: :article_archived}} =
              CMS.Interactions.undo_upvote(post, user, Ecto.UUID.generate())
 
-    assert {:error, %{primary: %{reason: :article_archived}}} =
+    assert {:error, %Error{reason: :article_archived}} =
              CMS.Interactions.undo_emotion(post, :beer, user, Ecto.UUID.generate())
 
-    assert {:error, %{primary: %{reason: :article_archived}}} =
+    assert {:error, %Error{reason: :article_archived}} =
              CMS.Interactions.undo_collect(post, user, Ecto.UUID.generate())
 
-    assert {:error, %{primary: %{reason: :article_archived}}} =
+    assert {:error, %Error{reason: :article_archived}} =
              CMS.Interactions.upvote(post, other_user, Ecto.UUID.generate())
 
-    assert {:error, %{primary: %{reason: :article_archived}}} =
+    assert {:error, %Error{reason: :article_archived}} =
              CMS.Interactions.emotion(post, :beer, other_user, Ecto.UUID.generate())
 
-    assert {:error, %{primary: %{reason: :article_archived}}} =
+    assert {:error, %Error{reason: :article_archived}} =
              CMS.Interactions.collect(post, other_user, Ecto.UUID.generate())
 
     assert Repo.exists?(
@@ -145,7 +145,7 @@ defmodule GroupherServer.Test.CMS.Interactions.ProjectionTest do
       |> CommunityLifecycle.changeset(%{state: state})
       |> Repo.update!()
 
-      assert {:error, %{primary: %{reason: :ancestor_community_not_writable}}} =
+      assert {:error, %Error{reason: :ancestor_community_not_writable}} =
                CMS.Interactions.upvote(post, user, Ecto.UUID.generate())
 
       refute Repo.exists?(from(row in ArticleUpvote, where: row.article_id == ^post.id))

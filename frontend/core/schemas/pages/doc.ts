@@ -26,22 +26,30 @@ export const docPublicTree = graphql(`
   }
 `)
 
-export const pagedDocs = graphql(`
-  query PagePagedDocs($filter: PagedDocsFilter!) {
-    pagedDocs(filter: $filter) {
+export const docPage = graphql(`
+  query DocPage($pagi: PagiInput, $filter: ArticlePageFilter) {
+    docPage(pagi: $pagi, filter: $filter) {
+      pinnedEntries {
+        ...PageDocLiteFields
+      }
       entries {
-        ...PageDocFields
-        meta {
-          thread
-          latestUpvotedUsers {
-            ...PageCommonUserFields
-          }
+        ...PageDocLiteFields
+      }
+      pageInfo {
+        __typename
+        hasNextPage
+        hasPreviousPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
         }
-        commentsParticipants {
-          ...PageAuthorFields
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
         }
       }
-      ...PageDocPageInfo
     }
   }
 `)

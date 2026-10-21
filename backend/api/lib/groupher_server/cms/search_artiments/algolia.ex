@@ -16,10 +16,11 @@ defmodule GroupherServer.CMS.SearchArtiments.Algolia do
   alias Helper.T
 
   alias CMS.{ErrorCat, SearchArtiments}
-  alias SearchArtiments.{Artiment, Config, Query, Result}
+  alias SearchArtiments.{Artiment, Config, Query}
 
   @behaviour CMS.SearchArtiments.PlatformAdapter
 
+  @ranked_result_window 1000
   @timeout 5_000
   @task_poll_interval 100
   @task_poll_attempts 50
@@ -88,27 +89,36 @@ defmodule GroupherServer.CMS.SearchArtiments.Algolia do
   end
 
   def search(%Query{} = query) do
-    body = %{
-      "query" => query.text,
-      "page" => query.page - 1,
-      "hitsPerPage" => query.size,
-      "filters" => filters(query),
-      "attributesToHighlight" => highlight_fields(query),
-      "highlightPreTag" => "<mark>",
-      "highlightPostTag" => "</mark>"
+    binding = %{
+      surface: "search.artiments",
+      order: %{"sort" => "relevance"},
+      fingerprint:
+        Base.encode64(
+          :crypto.hash(:sha256, :erlang.term_to_binary(Map.from_struct(%{query | pagi: nil})))
+        )
     }
 
-    with {:ok, response} <- search_request(:post, "/1/indexes/#{index_name()}/query", body),
-         {:ok, entries} <- decode_hits(response["hits"] || []) do
-      {:ok,
-       %Result{
-         entries: entries,
-         total_pages: response["nbPages"] || 0,
-         total_count: response["nbHits"] || 0,
-         page_size: response["hitsPerPage"] || query.size,
-         page_number: (response["page"] || query.page - 1) + 1
-       }}
-    end
+    Helper.ORM.Pagi.Window.run(
+      query.pagi,
+      binding,
+      fn offset, size ->
+        body = %{
+          "query" => query.text,
+          "offset" => offset,
+          "length" => size,
+          "filters" => filters(query),
+          "attributesToHighlight" => highlight_fields(query),
+          "highlightPreTag" => "<mark>",
+          "highlightPostTag" => "</mark>"
+        }
+
+        with {:ok, response} <- search_request(:post, "/1/indexes/#{index_name()}/query", body),
+             {:ok, entries} <- decode_hits(response["hits"] || []) do
+          {:ok, %{entries: entries, total: response["nbHits"] || 0}}
+        end
+      end,
+      max_entries: @ranked_result_window
+    )
   end
 
   @doc "Applies the index settings required by Search Artiments."
@@ -124,6 +134,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Algolia do
         "filterOnly(authorRef)",
         "filterOnly(locale)"
       ],
+      "paginationLimitedTo" => @ranked_result_window,
       "customRanking" => [
         "desc(contentAuthorityWeight)",
         "desc(upvotesCount)",
@@ -335,9 +346,11 @@ defmodule GroupherServer.CMS.SearchArtiments.Algolia do
     with {:ok, application_id} <- required_config(:application_id),
          {:ok, api_key} <- required_config(key_name) do
       host =
-        if distributed?,
-          do: "https://#{application_id}-dsn.algolia.net",
-          else: "https://#{application_id}.algolia.net"
+        if distributed? do
+          "https://#{application_id}-dsn.algolia.net"
+        else
+          "https://#{application_id}.algolia.net"
+        end
 
       client =
         Tesla.client([

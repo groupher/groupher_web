@@ -30,7 +30,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
   alias CMS.ErrorCat, as: CmsErrorCat
 
   alias CMS.Comments.{
-    JobPolicy,
+    RequiredJobs,
     Lifecycle,
     Replies
   }
@@ -269,7 +269,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
          {:ok, projected_comment} <- Persist.update_question_flag(article, comment),
          {:ok, participant_article} <- add_participant(article, user),
          {:ok, _active_article} <- update_active_timestamp(thread, article, comment),
-         {:ok, _job} <- JobPolicy.audition(projected_comment),
+         {:ok, _job} <- RequiredJobs.audition(projected_comment),
          {:ok, _} <- CMS.ArticleStats.record_comment_change(participant_article),
          {:ok, _} <-
            record_article_metric(counted_article, community, command_id, :comment_created),
@@ -440,7 +440,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
          {:ok, _embedded_parent} <-
            Persist.update_replies_embed(parent_comment, associated_reply),
          {:ok, _parent} <- Persist.increment_replies_count(parent_comment),
-         {:ok, _job} <- JobPolicy.audition(associated_reply),
+         {:ok, _job} <- RequiredJobs.audition(associated_reply),
          {:ok, _} <- CMS.ArticleStats.apply_comment_counts(participant_article),
          {:ok, _} <-
            record_article_metric(counted_article, community, command_id, :comment_created),

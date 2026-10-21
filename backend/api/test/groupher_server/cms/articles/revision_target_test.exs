@@ -309,11 +309,11 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
 
     assert result.public.branch_version_id == result.version.id
 
-    assert {:ok, [%{version: %DocBranchVersion{id: _version_id}}]} =
-             CMS.Docs.list_branch_versions(article.id, branch.id)
+    assert {:ok, %{entries: [%{version: %DocBranchVersion{id: _version_id}}]}} =
+             CMS.Docs.list_branch_versions(article.id, branch.id, nil, user)
 
     assert {:ok, %{version: loaded_version, revision: loaded_revision}} =
-             CMS.Docs.get_branch_version(article.id, branch.id, result.version.id)
+             CMS.Docs.get_branch_version(article.id, branch.id, result.version.id, user)
 
     assert loaded_version.id == result.version.id
     assert loaded_revision.id == result.revision.id
@@ -323,8 +323,21 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
                article.id,
                branch.id,
                result.version.id,
-               result.version.id
+               result.version.id,
+               user
              )
+
+    for number <- [2, 3] do
+      attrs = result.version |> Map.from_struct() |> Map.take([:article_id, :branch_id, :revision_id, :published_by_id, :published_at]) |> Map.put(:version_number, number)
+      Repo.insert!(DocBranchVersion.changeset(%DocBranchVersion{}, attrs))
+    end
+    assert {:ok, %{entries: first, total_count: 3}} = CMS.Docs.list_branch_versions(article.id, branch.id, %{offset: %{page: 1, size: 2}}, user)
+    assert {:ok, %{entries: same, end_cursor: cursor, has_next_page: true}} = CMS.Docs.list_branch_versions(article.id, branch.id, %{cursor: %{first: 2}}, user)
+    assert Enum.map(first, & &1.version.id) == Enum.map(same, & &1.version.id)
+    assert {:ok, %{entries: [%{version: tail}], has_next_page: false}} = CMS.Docs.list_branch_versions(article.id, branch.id, %{cursor: %{first: 2, after: cursor}}, user)
+    assert tail.id == result.version.id
+    assert {:error, _} = CMS.Docs.list_branch_versions(article.id, branch.id, nil, nil)
+    assert {:error, _} = CMS.Docs.get_branch_version(article.id, branch.id, result.version.id, nil)
 
     assert {:ok, restored} =
              CMS.Docs.restore_revision_to_draft(

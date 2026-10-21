@@ -8,6 +8,7 @@ import ArrowSimpleSVG from '~/icons/ArrowSimple'
 import CloseLightSVG from '~/icons/CloseLight'
 import { executeCommand } from '~/query/mutation/optimistic/execute'
 import Drawer from '~/ui/Drawer'
+import Pagi from '~/ui/Pagi'
 import { SegmentTab } from '~/ui/Switcher'
 import { toast } from '~/ui/Toaster'
 import S from '~/unit/DsbThread/schema/docs'
@@ -22,6 +23,8 @@ import useSalon, { cn } from './salon'
 import type { TRevisionDiffTab } from './useRevisionDiffModel'
 
 type TProps = {
+  pageInfo?: import('~/spec').TGraphQLPagiPageInfo
+  onPageChange?: (page: number) => void
   error: string | null
   loading: boolean
   revisionDiffModel: TRevisionDiffModel
@@ -51,6 +54,8 @@ const RevisionDrawer: FC<TProps> = ({
   startHistoryDiff,
   onClose,
   onReload,
+  pageInfo,
+  onPageChange,
 }) => {
   const s = useSalon()
   const { t } = useTrans()
@@ -264,6 +269,7 @@ const RevisionDrawer: FC<TProps> = ({
             )}
         </div>
       </div>
+      <Pagi pageInfo={pageInfo} onChange={onPageChange} />
     </Drawer>
   )
 }

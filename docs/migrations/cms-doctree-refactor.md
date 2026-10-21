@@ -47,24 +47,25 @@ ContentImport
 
 当前 GraphQL 入口位于 `GroupherServerWeb.Schema.CMS.Queries`、`GroupherServerWeb.Schema.CMS.Mutations.DocTree`，resolver 位于 `GroupherServerWeb.Resolvers.CMS.Docs`。
 
-| 对外能力                     | GraphQL 入口                | 当前 domain owner                                       | 当前结果/身份                                                              |
-| ---------------------------- | --------------------------- | ------------------------------------------------------- | -------------------------------------------------------------------------- |
-| 编辑器 Draft tree            | `docTree`                   | `CMS.DocTree.read` → `DocTree.Query.read`               | Query；Gate scoped read，无 Command/Receipt                                |
-| Public tree                  | `docPublicTree`             | `CMS.DocTree.read_public` → `DocTree.Query.read_public` | public query；只读公开 projection                                          |
-| Draft document               | `docDraft`                  | `CMS.Docs.read_editor_head`                             | Query；以 Article draft version 为版本 authority                           |
-| Publish checklist            | `docPublishChecklist`       | `CMS.DocTree.publish_checklist` → `Publish.Checklist`   | Query；以 staged events/revision/release readiness 为准                    |
-| Trash drawer                 | `docTreeTrashItems`         | `CMS.DocTree.trash_items` → `Trash.list`                | Query；列出 branch-scoped product trash                                    |
-| 创建 Tab/Group/Page/Link/Pin | `createDocTreeNode`         | `Commands.CreateNode` 分派到具体 Command/Persist        | Command；`baseRevision` 做树并发检查                                       |
-| 更新 node metadata           | `updateDocTreeNode`         | `Commands.UpdateNode`                                   | Command；结果包含新 tree revision                                          |
-| 更新 Draft 内容              | `updateDocDraft`            | `Commands.UpdateDraft` → Docs Draft store               | Command；`expectedVersion` 做文档版本检查                                  |
-| Publish tree/docs changes    | `publishDocChanges`         | `Commands.PublishChanges` → `DocTree.Publish`           | Command 启动 publish workflow；Confirmation 保存 release id                |
-| Public page 回 Draft         | `moveDocToDraft`            | `Commands.MoveDocToDraft`                               | Command/Receipt；恢复时重新读取 editor head                                |
-| subtree 批量建 Draft         | `moveDocTreeSubtreeToDraft` | `Commands.MoveSubtreeToDraft`                           | Command/Receipt；当前返回 done/affected count                              |
-| 由 revision 恢复 Draft       | `restoreDocRevisionToDraft` | `CMS.Docs.restore_revision_to_draft`                    | Article/Docs command；不属于 tree node command，但共享 branch/version 合同 |
-| 删除 node 到 product Trash   | `deleteDocTreeNode`         | `Commands.DeleteNode` → Persist/Trash                   | Command；删除 snapshot 与 tree event 需要同一事务 owner                    |
-| 从 product Trash 恢复        | `restoreDocTreeTrashItem`   | `Commands.RestoreTrashItem` → `Trash.restore`           | Command/Receipt；旧 direct fallback 已删除                                 |
-| duplicate subtree/node       | `duplicateDocTreeNode`      | `Commands.DuplicateNode`                                | Command；可能同时创建 Article Draft                                        |
-| 移动 node                    | `moveDocTreeNode`           | `Commands.MoveNode`                                     | Command；`baseRevision` + branch lock                                      |
+| 对外能力                     | GraphQL 入口                   | 当前 domain owner                                                         | 当前结果/身份                                                              |
+| ---------------------------- | ------------------------------ | ------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| 编辑器 Draft tree            | `docTree`                      | `CMS.DocTree.read` → `DocTree.Query.read`                                 | Query；Gate scoped read，无 Command/Receipt                                |
+| Public tree                  | `docPublicTree`                | `CMS.DocTree.read_public` → `DocTree.Query.read_public`                   | public query；只读公开 projection                                          |
+| Draft document               | `docDraft`                     | `CMS.Docs.read_editor_head`                                               | Query；以 Article draft version 为版本 authority                           |
+| Publish checklist            | `docPublishChecklist`          | `CMS.DocTree.publish_checklist` → `Publish.Checklist`                     | Query；以 staged events/revision/release readiness 为准                    |
+| Trash drawer                 | `docTreeTrashItems`            | `CMS.DocTree.trash_items` → `Trash.list`                                  | Query；列出 branch-scoped product trash                                    |
+| 创建 Tab/Group/Page/Link/Pin | `createDocTreeNode`            | `Commands.CreateNode` 分派到具体 Command/Persist                          | Command；`baseRevision` 做树并发检查                                       |
+| 更新 node metadata           | `updateDocTreeNode`            | `Commands.UpdateNode`                                                     | Command；结果包含新 tree revision                                          |
+| 更新 Draft 内容              | `updateDocDraft`               | `Commands.UpdateDraft` → Docs Draft store                                 | Command；`expectedVersion` 做文档版本检查                                  |
+| Publish tree/docs changes    | `publishDocChanges`            | `Commands.PublishChanges` → `DocTree.Publish`                             | Command 启动 publish workflow；Confirmation 保存 release id                |
+| Public page 回 Draft         | `moveDocToDraft`               | `Commands.MoveDocToDraft`                                                 | Command/Receipt；恢复时重新读取 editor head                                |
+| subtree 批量建 Draft         | `moveDocTreeSubtreeToDraft`    | `Commands.MoveSubtreeToDraft`                                             | Command/Receipt；当前返回 done/affected count                              |
+| 由 revision 恢复 Draft       | `restoreDocRevisionToDraft`    | `CMS.Docs.restore_revision_to_draft`                                      | Article/Docs command；不属于 tree node command，但共享 branch/version 合同 |
+| 删除 node 到 product Trash   | `deleteDocTreeNode`            | `Commands.DeleteNode` → Persist/Trash                                     | Command；删除 snapshot 与 tree event 需要同一事务 owner                    |
+| 从 product Trash 恢复        | `restoreDocTreeTrashItem`      | `Commands.RestoreTrashItem` → `Trash.restore`                             | Command/Receipt；旧 direct fallback 已删除                                 |
+| 从 product Trash 永久删除    | `permanentlyDeleteTrashAction` | `Commands.PermanentlyDeleteTrashItem` → `Trash.permanently_delete_action` | 用户路径为 Command/Receipt；scheduler 使用独立 internal direct pipeline    |
+| duplicate subtree/node       | `duplicateDocTreeNode`         | `Commands.DuplicateNode`                                                  | Command；可能同时创建 Article Draft                                        |
+| 移动 node                    | `moveDocTreeNode`              | `Commands.MoveNode`                                                       | Command；`baseRevision` + branch lock                                      |
 
 `addDocCoverCard`、`removeDocCoverCard`、pin/reorder 等 `DocCover` mutation 也出现在同一个 GraphQL schema 文件中，但 owner 是 `CMS.DocCover`，不是 DocTree 本次重构范围。它们应继续作为相邻 bounded context 处理，不能因为文件相同就把 Cover 的 transaction 或 Command 归入 DocTree。
 
@@ -183,7 +184,10 @@ GraphQL(commandId, selected changes, cover mode)
   -> checklist + release result
 ```
 
-Publish 是 workflow，不是“单个 node 的 one-shot write”。Command 的职责是保留用户入口、参数 canonicalization 和 Receipt；`Publish` 的职责是多事实发布、release/snapshot 和外部 invalidation。当前 `Commands.PublishChanges` 仍允许 `command_id=nil` 时直接调用 `Publish.publish_changes`，因此内部 direct caller 没有同一份 Receipt/replay 合同。
+Publish 是 workflow，不是“单个 node 的 one-shot write”。Command 的职责是保留用户入口、参数
+canonicalization 和 Receipt；`Publish` 的职责是多事实发布、release/snapshot 和外部 invalidation。
+当前用户入口会校验非空 `command_id`；内部调用必须显式使用 `execute_direct/4`，由独立
+`direct_pipeline` 承担 Gate/transaction 边界，不伪装成带 Receipt 的用户重放。
 
 ### 4.4 Trash / restore workflow
 
@@ -199,7 +203,9 @@ DeleteNode / RestoreTrashItem(commandId)
   -> TreeConfirmation / replay
 ```
 
-Trash 不是单纯 `doc_tree_nodes` delete：它要保存可恢复的 tree/article 关系，并可能写 Activity。当前 `RestoreTrashItem` 在 actor + binary command id 存在时才进入 Command，否则直接调用 `Trash.restore`；ContentImport 为恢复被导入目标而调用它时也走 direct path。这种内部 workflow 调用可以存在，但必须被命名为 workflow/persistence call，不能让它看起来像另一个用户 Command。
+Trash 不是单纯 `doc_tree_nodes` delete：它要保存可恢复的 tree/article 关系，并可能写 Activity。
+当前用户入口校验非空 `command_id`；ContentImport 恢复导入目标时显式使用 `execute_internal/3`，进入
+独立 internal `direct_pipeline`。该入口没有用户 Receipt 语义，也不会生成第二个用户 command identity。
 
 ### 4.5 ContentImport workflow
 
@@ -265,7 +271,7 @@ Node/Browser preview
 | Trash restore                | Tree confirmation/replay 在带 identity 时可恢复                                       | import 内部调用显式走 ContentImport workflow，不伪装成用户 Receipt                                    |
 | ContentImport start          | 重复 `preview_ref` + 完整 intent 比较返回同一 Job                                     | 初次 start response 丢失时只能重发同一 Preview intent；若产品要求标准 Receipt，应增加薄 Start command |
 | ContentImport stage          | 同一 Job/item/body hash 重放返回既有事实                                              | 每批 service call 不是用户 Receipt；Job projection 是恢复入口                                         |
-| ContentImport apply          | 已完成 Job 返回持久化 result/projection；失败整体回滚                                 | 需要 focused 验证 apply response loss、重复 apply、Job lock/terminal state                            |
+| ContentImport apply          | 已完成 Job 返回持久化 result/projection；失败整体回滚                                 | response loss、重复 apply、Job lock/terminal state 已有 focused recovery 覆盖                         |
 
 ## 6. 当前目录和模块职责
 
@@ -417,7 +423,8 @@ fail/cancel           -> workflow terminal transition
 已完成合同：
 
 1. 冻结 `preview_ref` 是 confirmed intent identity、`job_ref` 是 durable process identity、`external_ref` 是 source item identity；禁止互相替代。
-2. 决定 start 是否需要薄 `StartDocContentImport(commandId)`。若需要，Confirmation 只保存 `job_ref` 和首份 Job projection；若不需要，就把 `preview_ref` 重试/recovery 合同写清楚，不要在内部偷偷生成 command id。
+2. start 保持 Job-only workflow：`preview_ref` 与完整 confirmed intent 负责重试/recovery，不增加薄
+   `StartDocContentImport` Command，也不在内部生成 command id。
 3. 保持 `stage` 的 batch 上限、BodyBag canonical hash/size、ready/skip/fail 单向状态和 `(job_ref, external_ref)` 幂等；覆盖相同 bytes 重放、不同 bytes 冲突和 completed Job 重放。
 4. 保持 `apply` 单事务：Job lock、intent revalidation、trashed target restore、Docs Draft、`DocTree.Import`、`ImportSourceMapping`、staging cleanup、Job result 必须一起提交或一起回滚。
 5. 记录 apply 的结果投影和失败摘要；response loss 通过 `job_ref` 或相同 `preview_ref` 重发恢复，不依赖内存 worker 状态。

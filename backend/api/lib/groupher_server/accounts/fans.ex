@@ -38,48 +38,40 @@ defmodule GroupherServer.Accounts.Fans do
   def undo_follow(%User{} = user, %User{} = follower), do: Commands.Unfollow.run(user, follower)
 
   @doc """
-  Returns a page of followers, optionally with viewer state.
+  Pages accounts that follow the selected user.
 
   ## Examples
 
-      Accounts.Fans.paged_followers(user, %{page: 1, size: 20})
+      Accounts.Fans.paged_followers(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
-  @spec paged_followers(User.t(), map()) :: T.domain_res(T.paged_users())
-  def paged_followers(%User{} = user, filter), do: List.paged_followers(user, filter)
+  defdelegate paged_followers(user, filter, pagi), to: List
 
   @doc """
-  Returns followers with viewer-aware relationship fields.
+  Pages followers with the requesting account's follow state projected onto each entry.
 
   ## Examples
 
-      Accounts.Fans.paged_followers(user, %{page: 1, size: 20}, viewer)
+      Accounts.Fans.paged_followers(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
   """
-  @spec paged_followers(User.t(), map(), User.t()) :: T.domain_res(T.paged_users())
-  def paged_followers(%User{} = user, filter, %User{} = cur_user) do
-    List.paged_followers(user, filter, cur_user)
-  end
+  defdelegate paged_followers(user, filter, pagi, viewer), to: List
 
   @doc """
-  Returns a page of accounts followed by the user.
+  Pages accounts followed by the selected user.
 
   ## Examples
 
-      Accounts.Fans.paged_followings(user, %{page: 1, size: 20})
+      Accounts.Fans.paged_followings(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
-  @spec paged_followings(User.t(), map()) :: T.domain_res(T.paged_users())
-  def paged_followings(%User{} = user, filter), do: List.paged_followings(user, filter)
+  defdelegate paged_followings(user, filter, pagi), to: List
 
   @doc """
-  Returns followings with viewer-aware relationship fields.
+  Pages followings with the requesting account's follow state projected onto each entry.
 
   ## Examples
 
-      Accounts.Fans.paged_followings(user, %{page: 1, size: 20}, viewer)
+      Accounts.Fans.paged_followings(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
   """
-  @spec paged_followings(User.t(), map(), User.t()) :: T.domain_res(T.paged_users())
-  def paged_followings(%User{} = user, filter, %User{} = cur_user) do
-    List.paged_followings(user, filter, cur_user)
-  end
+  defdelegate paged_followings(user, filter, pagi, viewer), to: List
 
   @doc """
   Adds the current viewer's follow status to a paged user result.

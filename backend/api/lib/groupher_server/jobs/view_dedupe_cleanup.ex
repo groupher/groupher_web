@@ -7,7 +7,13 @@ defmodule GroupherServer.Jobs.ViewDedupeCleanup do
 
   use Oban.Worker, queue: :default, max_attempts: 3
 
-  @doc false
+  @doc """
+  Drains expired Article view dedupe rows; cleanup errors remain best-effort.
+
+  ## Examples
+
+      perform(%Oban.Job{})
+  """
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
     _ = GroupherServer.CMS.view_tracker_cleanup_expired()

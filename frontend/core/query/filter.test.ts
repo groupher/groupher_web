@@ -1,22 +1,18 @@
 import { describe, expect, it } from 'vitest'
 
-import { toArticleListFilter } from './filter'
+import { toArticlePageFilter } from './filter'
 
-describe('toArticleListFilter', () => {
+describe('toArticlePageFilter', () => {
   it('omits inactive optional filters from GraphQL variables', () => {
-    expect(toArticleListFilter({ community: 'home', page: 1, size: 20 })).toEqual({
+    expect(toArticlePageFilter({ community: 'home', page: 1, size: 20 })).toEqual({
       community: 'home',
-      page: 1,
-      size: 20,
     })
   })
 
   it('serializes active filters after normalization', () => {
     expect(
-      toArticleListFilter({
+      toArticlePageFilter({
         community: ' home ',
-        page: 2,
-        size: 10,
         communityTag: ' product ',
         communityTags: ['beta', 'alpha', 'beta'],
         cat: 'IDEA',
@@ -27,8 +23,6 @@ describe('toArticleListFilter', () => {
       }),
     ).toEqual({
       community: 'home',
-      page: 2,
-      size: 10,
       communityTag: 'product',
       communityTags: ['alpha', 'beta'],
       cat: 'IDEA',

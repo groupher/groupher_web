@@ -6,7 +6,7 @@
 import type { ReactNode, RefObject, UIEvent } from 'react'
 
 import { KANBAN_BOARD } from '~/const/thread'
-import useKanbanPosts from '~/hooks/useKanbanPosts'
+import useKanbanPosts, { type TKanbanPage } from '~/hooks/useKanbanPosts'
 import useLayout from '~/hooks/useLayout'
 import useNameAlias from '~/hooks/useNameAlias'
 import useTrans from '~/hooks/useTrans'
@@ -14,10 +14,11 @@ import GtdDoneSVG from '~/icons/GtdDone'
 import GtdTodoSVG from '~/icons/GtdTodo'
 import GtdWipSVG from '~/icons/GtdWip'
 import RejectSVG from '~/icons/Reject'
-import type { TKanbanBoard, TPagedArticleViewModels } from '~/spec'
+import type { TKanbanBoard } from '~/spec'
 
 import KanbanItem from '../KanbanItem'
 import EmptyItem from '../KanbanItem/EmptyItem'
+import PageControls from '../PageControls'
 import useSalon from './salon/columns'
 
 type TColumn = {
@@ -26,7 +27,7 @@ type TColumn = {
   icon: ReactNode
   title: string
   bodyClassName: string
-  posts: TPagedArticleViewModels
+  posts: TKanbanPage
 }
 
 function HeaderColumn({ column, className = '' }: { column: TColumn; className?: string }) {
@@ -56,6 +57,7 @@ function BodyColumn({ column, className = '' }: { column: TColumn; className?: s
           column.posts.entries.map((item) => (
             <KanbanItem key={item.content.innerId} viewModel={item} />
           ))}
+        <PageControls page={column.posts} />
       </div>
     </div>
   )
@@ -82,7 +84,10 @@ export function useColumnsData() {
     [KANBAN_BOARD.BACKLOG]: {
       key: 'backlog',
       title: resolveTitle('backlog', t('article.status.backlog')),
-      count: backlogPosts.totalCount ?? 0,
+      count:
+        (backlogPosts.pageInfo?.__typename === 'OffsetPageInfo'
+          ? backlogPosts.pageInfo.totalCount
+          : backlogPosts.entries.length) ?? 0,
       icon: <GtdTodoSVG className={s.backlogIcon} />,
       bodyClassName: s.backlogBody,
       posts: backlogPosts,
@@ -90,7 +95,10 @@ export function useColumnsData() {
     [KANBAN_BOARD.TODO]: {
       key: 'todo',
       title: resolveTitle('todo', t('article.status.todo')),
-      count: todoPosts.totalCount ?? 0,
+      count:
+        (todoPosts.pageInfo?.__typename === 'OffsetPageInfo'
+          ? todoPosts.pageInfo.totalCount
+          : todoPosts.entries.length) ?? 0,
       icon: <GtdTodoSVG className={s.todoIcon} />,
       bodyClassName: s.todoBody,
       posts: todoPosts,
@@ -98,7 +106,10 @@ export function useColumnsData() {
     [KANBAN_BOARD.WIP]: {
       key: 'wip',
       title: resolveTitle('wip', t('article.status.wip')),
-      count: wipPosts.totalCount ?? 0,
+      count:
+        (wipPosts.pageInfo?.__typename === 'OffsetPageInfo'
+          ? wipPosts.pageInfo.totalCount
+          : wipPosts.entries.length) ?? 0,
       icon: <GtdWipSVG className={s.wipIcon} />,
       bodyClassName: s.wipBody,
       posts: wipPosts,
@@ -106,7 +117,10 @@ export function useColumnsData() {
     [KANBAN_BOARD.DONE]: {
       key: 'done',
       title: resolveTitle('done', t('article.status.done')),
-      count: donePosts.totalCount ?? 0,
+      count:
+        (donePosts.pageInfo?.__typename === 'OffsetPageInfo'
+          ? donePosts.pageInfo.totalCount
+          : donePosts.entries.length) ?? 0,
       icon: <GtdDoneSVG className={s.doneIcon} />,
       bodyClassName: s.doneBody,
       posts: donePosts,
@@ -114,7 +128,10 @@ export function useColumnsData() {
     [KANBAN_BOARD.REJECTED]: {
       key: 'rejected',
       title: resolveTitle('rejected', t('article.status.reject')),
-      count: rejectedPosts.totalCount ?? 0,
+      count:
+        (rejectedPosts.pageInfo?.__typename === 'OffsetPageInfo'
+          ? rejectedPosts.pageInfo.totalCount
+          : rejectedPosts.entries.length) ?? 0,
       icon: <RejectSVG className={s.rejectedIcon} />,
       bodyClassName: s.rejectedBody,
       posts: rejectedPosts,

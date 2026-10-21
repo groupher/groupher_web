@@ -24,11 +24,11 @@ defmodule GroupherServer.Test.Query.AbuseReports.PostReport do
       {:ok, _} =
         CMS.AbuseReports.article(post2, "reason", "attr_info", user2, Ecto.UUID.generate())
 
-      variables = %{filter: %{content_type: "POST", page: 1, size: 10}}
+      variables = %{filter: %{content_type: "POST"}, pagi: %{offset: %{page: 1, size: 10}}}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == 2
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["totalCount"] == 2
     end
 
     test "support search with id", ~m(guest_conn community post_attrs user user2)a do
@@ -40,7 +40,11 @@ defmodule GroupherServer.Test.Query.AbuseReports.PostReport do
       {:ok, _} =
         CMS.AbuseReports.article(post2, "reason", "attr_info", user2, Ecto.UUID.generate())
 
-      variables = %{filter: %{content_type: "POST", content_id: post.id, page: 1, size: 10}}
+      variables = %{
+        filter: %{content_type: "POST", content_id: post.id},
+        pagi: %{offset: %{page: 1, size: 10}}
+      }
+
       results = guest_conn |> gq_query(@query, variables)
 
       report = results["entries"] |> List.first()
@@ -50,8 +54,8 @@ defmodule GroupherServer.Test.Query.AbuseReports.PostReport do
       assert get_in(report, ["article", "innerId"]) ==
                to_string(article_inner_id(post, community))
 
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == 1
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["totalCount"] == 1
     end
 
     test "support comment", ~m(guest_conn community post user)a do
@@ -68,7 +72,7 @@ defmodule GroupherServer.Test.Query.AbuseReports.PostReport do
       {:ok, _} =
         CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
 
-      variables = %{filter: %{content_type: "COMMENT", page: 1, size: 10}}
+      variables = %{filter: %{content_type: "COMMENT"}, pagi: %{offset: %{page: 1, size: 10}}}
       results = guest_conn |> gq_query(@query, variables)
 
       report =

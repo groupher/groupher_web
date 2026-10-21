@@ -6,12 +6,15 @@ defmodule GroupherServerWeb.Resolvers.CMS.Assets do
   """
   require GroupherServer.CMS.Assets.ErrorCat
 
+  alias GroupherServer.Pagi
   alias GroupherServer.CMS
   alias CMS.Assets.ErrorCat, as: AssetErrorCat
   alias CMS.Model.Community
 
   def paged_community_assets(_root, %{community: %Community{} = community} = args, _info) do
-    CMS.assets_page(community, Map.get(args, :filter))
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
+      CMS.assets_page(community, Map.get(args, :filter), pagi)
+    end
   end
 
   def community_asset_refs(
@@ -19,7 +22,9 @@ defmodule GroupherServerWeb.Resolvers.CMS.Assets do
         %{community: %Community{} = community, asset_id: asset_id} = args,
         _info
       ) do
-    CMS.assets_refs(community, asset_id, Map.get(args, :filter))
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
+      CMS.assets_refs(community, asset_id, pagi)
+    end
   end
 
   def community_asset_usage(_root, %{community: %Community{} = community}, _info) do

@@ -30,10 +30,18 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     assert {:error, _} = read_article(community, :post, article_inner_id(post, community))
 
     assert {:ok, %{entries: []}} =
-             CMS.Articles.page(:post, %{community: community.slug, page: 1, size: 20})
+             CMS.Articles.page(
+               :post,
+               %{community: community.slug},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+             )
 
     assert {:ok, %{entries: [%TrashedArticle{hash_id: trash_ref}]}} =
-             CMS.Articles.list_trashed(community, %{thread: :post, page: 1, size: 20})
+             CMS.Articles.list_trashed(
+               community,
+               %{thread: :post},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
+             )
 
     assert trash_ref == item.hash_id
     action = Repo.get!(TrashAction, item.trash_action_id)
@@ -86,16 +94,24 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     assert {:ok, post} = CMS.Articles.set_status(post.id, :todo, user, community.id)
 
     assert {:ok, %{entries: [listed]}} =
-             CMS.Articles.paged_kanban(community, %{status: :todo, page: 1, size: 20})
+             CMS.Articles.kanban_page(
+               community,
+               %{status: :todo},
+               %GroupherServer.Pagi.Params.Offset{
+                 page: 1,
+                 size: 20,
+                 config_revision: 0
+               }
+             )
 
     assert listed.id == post.id
 
     assert {:ok, %{entries: [listed]}} =
-             CMS.Articles.paged_kanban(community, %{
-               status: [:todo, :wip],
-               page: 1,
-               size: 20
-             })
+             CMS.Articles.kanban_page(
+               community,
+               %{statuses: [:todo, :wip]},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+             )
 
     assert listed.id == post.id
     assert {:ok, %{todo: %{entries: [listed]}}} = CMS.Articles.grouped_kanban(community)
@@ -103,17 +119,25 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
 
     assert {:ok, _item} = CMS.Articles.trash(post, user, community: community)
 
-    assert {:ok, %{entries: [], total_count: 0}} =
-             CMS.Articles.paged_kanban(community, %{status: :todo, page: 1, size: 20})
+    assert {:ok, %{entries: [], page_info: %{total_count: 0}}} =
+             CMS.Articles.kanban_page(
+               community,
+               %{status: :todo},
+               %GroupherServer.Pagi.Params.Offset{
+                 page: 1,
+                 size: 20,
+                 config_revision: 0
+               }
+             )
 
-    assert {:ok, %{entries: [], total_count: 0}} =
-             CMS.Articles.paged_kanban(community, %{
-               status: [:todo, :wip],
-               page: 1,
-               size: 20
-             })
+    assert {:ok, %{entries: [], page_info: %{total_count: 0}}} =
+             CMS.Articles.kanban_page(
+               community,
+               %{statuses: [:todo, :wip]},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+             )
 
-    assert {:ok, %{todo: %{entries: [], total_count: 0}}} =
+    assert {:ok, %{todo: %{entries: [], page_info: %{total_count: 0}}}} =
              CMS.Articles.grouped_kanban(community)
   end
 
@@ -121,7 +145,12 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     {community, post, _attrs, user} = mock_article(:post)
 
     assert {:ok, %{entries: entries}} =
-             CMS.Articles.paged_published(:post, %{page: 1, size: 20}, user)
+             CMS.Articles.paged_published(
+               :post,
+               %{},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20},
+               user
+             )
 
     assert Enum.any?(entries, &(&1.id == post.id))
     assert {:ok, count_before} = CMS.Articles.count_published(:post, user)
@@ -129,7 +158,12 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     assert {:ok, _item} = CMS.Articles.trash(post, user, community: community)
 
     assert {:ok, %{entries: entries}} =
-             CMS.Articles.paged_published(:post, %{page: 1, size: 20}, user)
+             CMS.Articles.paged_published(
+               :post,
+               %{},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20},
+               user
+             )
 
     refute Enum.any?(entries, &(&1.id == post.id))
     assert {:ok, count_after} = CMS.Articles.count_published(:post, user)
@@ -143,14 +177,20 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
              CMS.Articles.set_audit_failed(post.id, %{}, :operations, community: community)
 
     assert {:ok, %{entries: entries}} =
-             CMS.Articles.paged_audit_failed(:post, %{page: 1, size: 20})
+             CMS.Articles.paged_audit_failed(:post, %GroupherServer.Pagi.Params.Offset{
+               page: 1,
+               size: 20
+             })
 
     assert Enum.any?(entries, &(&1.id == post.id))
 
     assert {:ok, _item} = CMS.Articles.trash(post, user, community: community)
 
     assert {:ok, %{entries: entries}} =
-             CMS.Articles.paged_audit_failed(:post, %{page: 1, size: 20})
+             CMS.Articles.paged_audit_failed(:post, %GroupherServer.Pagi.Params.Offset{
+               page: 1,
+               size: 20
+             })
 
     refute Enum.any?(entries, &(&1.id == post.id))
   end
@@ -175,7 +215,11 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
            )
 
     assert {:ok, %{entries: []}} =
-             CMS.Articles.list_trashed(community, %{thread: :post, page: 1, size: 20})
+             CMS.Articles.list_trashed(
+               community,
+               %{thread: :post},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
+             )
   end
 
   test "permanent-delete receipt replays after the aggregate is gone" do
@@ -287,15 +331,20 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     assert mention.meta["mentionedDeleted"]
 
     assert {:ok, %{entries: [listed]}} =
-             CMS.Articles.list_trashed(community, %{thread: :post, page: 1, size: 20})
+             CMS.Articles.list_trashed(
+               community,
+               %{thread: :post},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
+             )
 
     assert listed.mentioned_by_count == 1
 
     assert {:ok, %{total_count: 1}} =
-             CMS.ArtimentMentions.mentioned_by(:post, listed.article.id, %{
-               page: 1,
-               size: 20
-             })
+             CMS.ArtimentMentions.mentioned_by(
+               :post,
+               listed.article.id,
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
+             )
 
     assert {:ok, _} = CMS.Articles.restore_trashed(item.hash_id, user)
     mention = Repo.get!(ArtimentMention, mention.id)
@@ -326,6 +375,25 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
              article_id: post.article_id,
              source: :scheduler
            )
+  end
+
+  test "scoped Trash permanent delete uses the Article receipt command" do
+    {community, post, _attrs, user} = mock_article(:post)
+    assert {:ok, item} = CMS.Articles.trash(post, user)
+    action = Repo.get!(TrashAction, item.trash_action_id)
+    command_id = Ecto.UUID.generate()
+
+    assert {:ok, %{done: true, command_id: ^command_id}} =
+             CMS.Trash.permanently_delete_action_in_scope(
+               action.hash_id,
+               community.id,
+               :post,
+               user,
+               command_id: command_id
+             )
+
+    refute Repo.get_by(TrashedArticle, hash_id: item.hash_id)
+    refute Repo.get(TrashAction, item.trash_action_id)
   end
 
   test "standalone Doc Trash is rejected so Tree placement cannot become dangling" do

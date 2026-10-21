@@ -79,8 +79,6 @@ defmodule GroupherServerWeb.Schema.CMS.Metrics do
     field(:scope, :search_artiments_scope_input)
     field(:filters, :search_artiments_filters_input)
     field(:sort, :search_artiment_sort, default_value: :relevance)
-    field(:page, :integer, default_value: 1)
-    field(:size, :integer, default_value: 20)
     field(:highlight, :boolean, default_value: true)
   end
 
@@ -154,21 +152,9 @@ defmodule GroupherServerWeb.Schema.CMS.Metrics do
     value(:timeline)
   end
 
-  input_object :comments_filter do
-    pagination_args()
-    field(:sort, :inserted_sort_enum, default_value: :asc_inserted)
-  end
-
   input_object :communities_filter do
-    @desc "limit of records (default 20), if first > 30, only return 30 at most"
-    pagination_args()
     field(:sort, :sort_enum)
     field(:category, :string)
-  end
-
-  input_object :threads_filter do
-    pagination_args()
-    field(:sort, :thread_sort_enum)
   end
 
   # for reindex usage
@@ -210,34 +196,8 @@ defmodule GroupherServerWeb.Schema.CMS.Metrics do
     field(:user_login, :string)
   end
 
-  input_object :pagi_filter do
-    @desc "limit of records (default 20), if first > 30, only return 30 at most"
-    pagination_args()
-    field(:sort, :sort_enum)
-  end
-
   input_object :trash_filter do
-    pagination_args()
     field(:thread, :thread)
-  end
-
-  @desc "article_filter doc"
-  input_object :article_filter do
-    @desc "limit of records (default 20), if first > 30, only return 30 at most"
-    field(:first, :integer)
-
-    @desc "Matching a tag"
-    field(:article_tag, :string)
-    # field(:sort, :sort_input)
-    field(:when, :when_enum)
-    field(:sort, :sort_enum)
-    # @desc "Matching a tag"
-    # @desc "Added to the menu after this date"
-    # field(:added_after, :datetime)
-  end
-
-  input_object :article_log_filter do
-    field(:page, :integer, default_value: 1)
   end
 
   input_object :community_activity_filter_input do
@@ -268,67 +228,49 @@ defmodule GroupherServerWeb.Schema.CMS.Metrics do
     value(:csv)
   end
 
-  # @desc "article_filter doc"
-  # input_object :paged_article_filter do
-  #   @desc "limit of records (default 20), if first > 30, only return 30 at most"
-  #   pagination_args()
-  #   article_filter_fields()
-  #   field(:sort, :sort_enum)
-  # end
+  @desc "Offset page parameters for the new paged resource contract."
+  input_object :offset_pagi_input do
+    field(:page, :integer)
+    field(:size, :integer)
+    field(:config_revision, :integer)
+  end
 
-  @desc "posts_filter doc"
-  input_object :paged_posts_filter do
-    @desc "limit of records (default 20), if first > 30, only return 30 at most"
-    pagination_args()
+  @desc "Forward cursor parameters for the new paged resource contract."
+  input_object :forward_cursor_pagi_input do
+    field(:first, :integer)
+    field(:after, :string)
+    field(:config_revision, :integer)
+  end
+
+  @desc "Exactly one offset or forward-cursor pagination input."
+  input_object :pagi_input do
+    directive(:one_of)
+    field(:offset, :offset_pagi_input)
+    field(:cursor, :forward_cursor_pagi_input)
+  end
+
+  input_object :article_page_filter do
     article_filter_fields()
     field(:sort, :sort_enum)
   end
 
-  @desc "kanban posts_filter doc"
-  input_object :paged_kanban_posts_filter do
-    pagination_args()
-    field(:status, :article_status_enum)
-  end
-
-  @desc "changelogs_filter doc"
-  input_object :paged_changelogs_filter do
-    @desc "limit of records (default 20), if first > 30, only return 30 at most"
-    pagination_args()
+  input_object :post_filter do
     article_filter_fields()
     field(:sort, :sort_enum)
   end
 
-  @desc "docs_filter doc"
-  input_object :paged_docs_filter do
-    @desc "limit of records (default 20), if first > 30, only return 30 at most"
-    pagination_args()
+  input_object :changelog_filter do
     article_filter_fields()
     field(:sort, :sort_enum)
   end
 
-  @desc "blog_filter doc"
-  input_object :paged_blogs_filter do
-    pagination_args()
-    article_filter_fields()
-    field(:sort, :sort_enum)
+  input_object :comment_page_filter do
+    field(:sort, :inserted_sort_enum)
   end
 
-  @desc "common filter for upvoted articles"
-  input_object :upvoted_articles_filter do
+  @desc "Thread scope for an account's Article/folder collections."
+  input_object :article_collection_filter do
     field(:thread, :thread)
-    pagination_args()
-  end
-
-  @desc "common filter for collect folders"
-  input_object :collect_folders_filter do
-    field(:thread, :thread)
-    pagination_args()
-  end
-
-  @desc "common filter for collect articles"
-  input_object :collected_articles_filter do
-    field(:thread, :thread)
-    pagination_args()
   end
 
   enum :report_content_type do
@@ -344,6 +286,5 @@ defmodule GroupherServerWeb.Schema.CMS.Metrics do
   input_object :report_filter do
     field(:content_type, :report_content_type)
     field(:content_id, :id)
-    pagination_args()
   end
 end

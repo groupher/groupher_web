@@ -57,12 +57,10 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
   """
 
   import Ecto.Query, warn: false
-  import Helper.Utils, only: [done: 1]
-  import ShortMaps
 
   alias GroupherServer.{CMS, Repo}
 
-  alias CMS.{ErrorCat, QueryBuilder}
+  alias CMS.ErrorCat
 
   alias CMS.{
     Artiment.Matcher,
@@ -75,6 +73,9 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
 
   alias CMS.Model.{Article, ArtimentMention, Comment, CommentBody}
   alias Helper.{ORM, T}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @threads Config.threads()
   @mention_types Config.mention_types()
@@ -291,43 +292,49 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
     )
   end
 
-  @doc "Lists Mention facts emitted by one internal Article or Comment."
-  @spec mentions(atom(), T.id(), map() | nil) :: T.domain_res(T.paged_data())
-  def mentions(mentioner_type, mentioner_id, nil) do
-    mentions(mentioner_type, mentioner_id, %{page: 1, size: 20})
+  @doc "Pages outgoing Mention facts for an internal source."
+  @spec mentions(atom(), T.id(), Params.t() | nil) :: tuple()
+  def mentions(type, id, pagi) do
+    case normalize_type(type) do
+      nil ->
+        {:error, ErrorCat.custom("invalid mentioner type")}
+
+      normalized ->
+        ArtimentMention
+        |> mentioner_list_query(normalized, id)
+        |> page_mentions(pagi, {:outgoing, normalized, id})
+    end
   end
 
-  def mentions(mentioner_type, mentioner_id, %{page: page, size: size} = filter) do
-    normalized_type = normalize_type(mentioner_type)
-
-    ArtimentMention
-    |> mentioner_list_query(normalized_type, mentioner_id)
-    |> QueryBuilder.filter_pack(Map.merge(filter, %{sort: :asc_inserted}))
-    |> ORM.paginator(~m(page size)a)
-    |> done()
-  end
-
-  @doc "Lists incoming Mention facts for one internal target."
-  @spec mentioned_by(atom(), T.id(), map() | nil) :: T.domain_res(T.paged_data())
-  def mentioned_by(mentioned_type, mentioned_id, nil) do
-    mentioned_by(mentioned_type, mentioned_id, %{page: 1, size: 20})
-  end
-
-  def mentioned_by(mentioned_type, mentioned_id, %{page: page, size: size} = filter) do
-    case normalize_type(mentioned_type) do
+  @doc "Pages incoming Mention facts for an internal target."
+  @spec mentioned_by(atom(), T.id(), Params.t() | nil) :: tuple()
+  def mentioned_by(type, id, pagi) do
+    case normalize_type(type) do
       :url ->
         {:error, ErrorCat.custom("mentioned_by only supports internal targets")}
 
       nil ->
         {:error, ErrorCat.custom("invalid mentioned type")}
 
-      normalized_type ->
+      normalized ->
         ArtimentMention
-        |> mentioned_list_query(normalized_type, mentioned_id)
-        |> QueryBuilder.filter_pack(Map.merge(filter, %{sort: :asc_inserted}))
-        |> ORM.paginator(~m(page size)a)
-        |> done()
+        |> mentioned_list_query(normalized, id)
+        |> page_mentions(pagi, {:incoming, normalized, id})
     end
+  end
+
+  defp page_mentions(query, pagi, collection) do
+    ORM.pagi(query, pagi,
+      for: ArtimentMention,
+      order: %Order{
+        fields: [:inserted_at, :id],
+        directions: [:asc, :asc],
+        cursor_fields: [:inserted_at, :id]
+      },
+      surface: "artiment_mentions",
+      query_fingerprint:
+        :crypto.hash(:sha256, :erlang.term_to_binary(collection)) |> Base.encode16()
+    )
   end
 
   defp mentioner_list_query(query, type, article_id) when type in @threads do

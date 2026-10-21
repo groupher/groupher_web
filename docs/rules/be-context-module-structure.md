@@ -19,7 +19,9 @@ Backend 采用“约定大于配置”的 Context 结构。完整设计、角色
   `Query`、`Projection`、`Persist`、`Effects` 等明确 Owner；
 - 已退役的 `Interactions.ReadState` / `read_state` 和 `CollectFolders.WriteConfirmation` /
   `write_confirmation` 同时受 legacy 模块段与文件 stem 门禁约束，禁止重建兼容入口；
-- Web、Worker 和其他 Context 只能调用目标 Context 根 Facade；普通 struct、type 和 ErrorCat pattern 引用不算行为调用；
+- Web 和其他 Context 只能调用目标 Context 根 Facade；Worker 也遵守这一规则，但可以调用目标 Context 中明确声明
+  `@pipeline ... access: :internal` 的 internal Command（只适用于可恢复 workflow，不对外暴露 user Command）；普通
+  struct、type 和 ErrorCat pattern 引用不算行为调用；
 - Worker 只允许放在 Jobs Context，并且不能直接访问 Repo、transaction 或 provider；
 - Facade 只做稳定 API、轻量适配和转发；一对一机械转发使用 `defdelegate`，基础设施访问下沉到 Owner；
 - Facade 必须返回业务值，不能返回内部 module 让调用方继续拼接调用；

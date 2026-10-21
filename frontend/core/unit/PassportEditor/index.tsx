@@ -7,7 +7,6 @@ import { type FC, useState } from 'react'
 
 import SIZE from '~/const/size'
 import { SOCIAL_LIST } from '~/const/social'
-import useMount from '~/hooks/useMount'
 import useTrans from '~/hooks/useTrans'
 import Img from '~/Img'
 import type { TSocialItem, TSocialType, TUser } from '~/spec'
@@ -15,6 +14,7 @@ import Button from '~/ui/Buttons/Button'
 import ImgFallback from '~/ui/ImgFallback'
 import LavaLampLoading from '~/ui/Loading/LavaLampLoading'
 import Modal from '~/ui/Modal'
+import PaginationError from '~/ui/Pagi/PaginationError'
 import AdminUserItem from '~/unit/DsbThread/Admin/UserItem'
 import SocialList from '~/unit/SocialList'
 
@@ -46,22 +46,22 @@ const PassportEditor: FC = () => {
     allModeratorRules,
     selectedGlobalRules,
     selectedRules,
-    loadAllPassportRules,
     updatePassport,
     deleteModerator,
     isActiveModeratorRoot,
     isActiveModeratorGod,
     isReadonly,
     loading,
+    error,
+    retry,
     toggleCheck,
   } = useLogic()
-
-  useMount(loadAllPassportRules)
 
   if (!activeModerator) return null
 
   return (
     <div className={s.wrapper}>
+      {error && <PaginationError isRetrying={loading} onRetry={retry} />}
       <div className={s.profile}>
         <Img
           className={s.avatar}

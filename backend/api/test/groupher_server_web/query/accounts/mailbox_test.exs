@@ -62,35 +62,39 @@ defmodule GroupherServer.Test.Query.Accounts.Mailbox do
     test "can get paged mentions", ~m(user_conn user user2)a do
       mock_mention_for(user, user2)
 
-      variables = %{filter: %{page: 1, size: 20}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}}
       results = user_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["size"] == 20
       mention = results["entries"] |> List.first()
       assert user2.login == mention |> get_in(["user", "login"])
 
-      variables = %{filter: %{page: 1, size: 20, read: true}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}, filter: %{read: true}}
       results = user_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == 0
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["size"] == 20
+      assert results["pageInfo"]["totalCount"] == 0
     end
 
     @query S.Mailbox.q(:paged_notifications)
     test "can get paged notifications", ~m(user_conn user user2)a do
       mock_notification_for(user, user2)
 
-      variables = %{filter: %{page: 1, size: 20}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}}
       results = user_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == 1
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["size"] == 20
+      assert results["pageInfo"]["totalCount"] == 1
 
-      variables = %{filter: %{page: 1, size: 20, read: true}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}, filter: %{read: true}}
       results = user_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == 0
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["size"] == 20
+      assert results["pageInfo"]["totalCount"] == 0
     end
   end
 end

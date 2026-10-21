@@ -23,6 +23,7 @@ defmodule GroupherServer.CMS.Gate.Access.Policy.Article do
   alias Accounts.Model.User
 
   alias CMS.Communities
+  alias CMS.Articles.Lifecycle, as: ArticleLifecycle
 
   alias CMS.Communities.Enable
   alias CMS.Gate.Context.Access.Article, as: ArticleContext
@@ -190,21 +191,12 @@ defmodule GroupherServer.CMS.Gate.Access.Policy.Article do
   # Editing an existing public Article and updating its editor Draft share the
   # same logical lifecycle. Keep this separate from :publish so both write
   # entry points reject a non-writable ancestor before touching Draft rows.
-  defp action_allowed(:edit, %{state: state}, _article)
-       when state in [:draft_only, :published] do
-    {:ok, :pass}
-  end
-
-  defp action_allowed(:edit, %{state: :archived}, _article) do
-    {:error, ErrorCat.article_archived()}
-  end
-
-  defp action_allowed(:edit, %{state: :deleted}, _article) do
-    {:error, ErrorCat.article_deleted()}
-  end
-
-  defp action_allowed(:edit, %{state: :destroy}, _article) do
-    {:error, ErrorCat.article_destroyed()}
+  defp action_allowed(:edit, %{state: state} = lifecycle, _article) do
+    case ArticleLifecycle.editable?(lifecycle) do
+      {:ok, true} -> {:ok, :pass}
+      {:ok, false} -> edit_lifecycle_error(state)
+      {:error, _reason} -> {:error, ErrorCat.lifecycle_not_found()}
+    end
   end
 
   defp action_allowed(:discard_draft, %{state: :published}, _article), do: {:ok, :pass}
@@ -326,4 +318,9 @@ defmodule GroupherServer.CMS.Gate.Access.Policy.Article do
   end
 
   defp action_allowed(_action, _lifecycle, _article), do: {:error, ErrorCat.article_not_mutable()}
+
+  defp edit_lifecycle_error(:archived), do: {:error, ErrorCat.article_archived()}
+  defp edit_lifecycle_error(:deleted), do: {:error, ErrorCat.article_deleted()}
+  defp edit_lifecycle_error(:destroy), do: {:error, ErrorCat.article_destroyed()}
+  defp edit_lifecycle_error(_state), do: {:error, ErrorCat.article_not_mutable()}
 end

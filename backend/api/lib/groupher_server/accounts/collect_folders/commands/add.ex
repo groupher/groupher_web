@@ -2,8 +2,8 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
   @moduledoc """
   Adds an article to a collection folder through the shared pipeline runner.
 
-  The CMS adapter is used only for the existing Receipt/Confirmation boundary;
-  folder and interaction writes remain Accounts-owned persistence steps.
+  Accounts owns folder membership while CMS owns the collect interaction. Both
+  changes join the transaction owned by this top-level pipeline.
 
       collect add -> pipeline runner -> CMS Receipt -> Accounts writes
   """
@@ -17,27 +17,26 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
   alias Helper.ORM
 
   @pipeline operation: :collect_add,
-            access: :open,
+            access: :user,
             target: :article,
             params: [:folder_id],
             confirmation: MembershipConfirmation
 
   receipt_pipeline execute_receipt(article, folder_id, user, command_id) do
-    change(fn _article ->
-      with {:ok, prepared} <- Persist.prepare_add(article, folder_id, user) do
-        apply_add(prepared, article, user, command_id)
-      end
+    gate(fn _article ->
+      prepare_gated_add(article, folder_id, user, command_id)
     end)
 
+    change(fn prepared -> apply_add(prepared, article, user) end)
     confirm(fn folder -> confirmation(folder, article, folder_id, :add) end)
     present(fn confirmation -> present_confirmation(confirmation, command_id) end)
   end
 
-  @pipeline operation: :collect_add_direct, access: :open, target: :article, params: [:folder_id]
+  @pipeline operation: :collect_add_direct, access: :user, target: :article, params: [:folder_id]
 
   direct_pipeline execute_direct(article, folder_id, user) do
-    prepare(fn -> prepare_add(article, folder_id, user, Ecto.UUID.generate()) end)
-    change(fn prepared -> apply_add(prepared, article, user, prepared.command_id) end)
+    gate(fn _article -> prepare_gated_add(article, folder_id, user, Ecto.UUID.generate()) end)
+    change(fn prepared -> apply_add(prepared, article, user) end)
     present(fn folder -> {:ok, %{folder: folder, command_id: nil}} end)
   end
 
@@ -65,17 +64,29 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Add do
     execute_receipt(article, folder_id, user, command_id)
   end
 
-  defp prepare_add(article, folder_id, user, command_id) do
-    with {:ok, prepared} <- Persist.prepare_add(article, folder_id, user) do
-      {:ok, Map.put(prepared, :command_id, command_id)}
+  defp prepare_gated_add(article, folder_id, user, command_id) do
+    with {:ok, prepared} <- Persist.prepare_add(article, folder_id, user),
+         {:ok, canonical} <-
+           CMS.authorize_interaction_in_transaction(user, :collect, article) do
+      {:ok, prepared |> Map.put(:canonical, canonical) |> Map.put(:command_id, command_id)}
     end
   end
 
-  defp apply_add(prepared, article, user, command_id) do
-    with {:ok, _canonical} <- CMS.interactions_collect(article, user, command_id),
+  defp apply_add(prepared, article, user) do
+    with {:ok, _canonical} <-
+           CMS.apply_collect_change_in_transaction(
+             prepared.canonical,
+             user,
+             :add,
+             prepared.command_id
+           ),
          {:ok, article_collect} <- CMS.interactions_persist_find_collect(article, user),
          {:ok, folder} <-
-           Persist.add_in_transaction(article_collect, prepared.folder, prepared.thread),
+           Persist.add_in_transaction(
+             prepared.folder,
+             prepared.thread,
+             prepared.binding
+           ),
          {:ok, _attached} <-
            CMS.interactions_persist_attach_collect_folder(article_collect, folder) do
       {:ok, folder}

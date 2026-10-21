@@ -9,7 +9,7 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 
 const isComment = (value: unknown): value is TComment & TRevisioned => {
   if (!isRecord(value)) return false
-  return 'innerId' in value && !('community' in value) && 'body' in value
+  return 'innerId' in value && !('community' in value) && ('body' in value || 'bodyHtml' in value)
 }
 
 const copyIfOlder = <T extends TRevisioned>(
@@ -66,9 +66,27 @@ const mergeCommentEntries = (previous: unknown, next: unknown): unknown => {
 
 /** Keeps newer Comment reaction projections when a background response is stale. */
 export const preserveCommentProjection = (previous: unknown, next: unknown): unknown => {
+  if (
+    isRecord(previous) &&
+    isRecord(next) &&
+    Array.isArray(previous.pages) &&
+    Array.isArray(next.pages)
+  ) {
+    const previousPages = previous.pages
+    return {
+      ...next,
+      pages: next.pages.map((page, index) => preserveCommentProjection(previousPages[index], page)),
+    }
+  }
   if (isComment(previous) && isComment(next)) return mergeComment(previous, next)
   if (isRecord(previous) && isRecord(next) && 'entries' in previous && 'entries' in next) {
-    return { ...next, entries: mergeCommentEntries(previous.entries, next.entries) }
+    return {
+      ...next,
+      entries: mergeCommentEntries(previous.entries, next.entries),
+      ...(next.pinnedEntries
+        ? { pinnedEntries: mergeCommentEntries(previous.pinnedEntries, next.pinnedEntries) }
+        : {}),
+    }
   }
   return next
 }

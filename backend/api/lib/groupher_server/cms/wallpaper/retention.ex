@@ -28,12 +28,31 @@ defmodule GroupherServer.CMS.Wallpaper.Retention do
   @snapshot_delete_grace_seconds 2 * 60 * 60
   @orphan_asset_grace_seconds 30 * 60
 
-  @doc "Returns the configured publish-receipt retention window."
+  @doc """
+  Returns the configured publish-receipt retention window in seconds.
+
+  ## Examples
+
+      is_integer(Retention.publish_receipt_retention_seconds())
+      #=> true
+  """
+  @spec publish_receipt_retention_seconds() :: pos_integer()
   def publish_receipt_retention_seconds, do: @publish_receipt_retention_seconds
 
-  @doc "Deletes expired receipts, Snapshots, and unreferenced generated assets."
+  @doc """
+  Deletes expired receipts, snapshots, and unreferenced generated assets.
+
+  Database lifecycle rows are cleaned locally; provider cleanup remains an
+  idempotent Assets workflow. The returned summary is safe for worker telemetry.
+  """
+  @spec reconcile_lifecycle() :: {:ok, map()} | {:error, term()}
   def reconcile_lifecycle do
     now = DateTime.utc_now(:second)
+
+    Repo.transact_result(fn -> reconcile_lifecycle_in_transaction(now) end)
+  end
+
+  defp reconcile_lifecycle_in_transaction(now) do
 
     receipt_count =
       from(receipt in WallpaperPublishReceipt, where: receipt.expires_at <= ^now)
@@ -51,7 +70,8 @@ defmodule GroupherServer.CMS.Wallpaper.Retention do
 
     snapshots =
       from(snapshot in WallpaperSnapshot,
-        where: not is_nil(snapshot.delete_after) and snapshot.delete_after <= ^now
+        where: not is_nil(snapshot.delete_after) and snapshot.delete_after <= ^now,
+        lock: "FOR UPDATE SKIP LOCKED"
       )
       |> Repo.all()
       |> Enum.reject(&MapSet.member?(active_refs, &1.public_ref))
@@ -82,14 +102,17 @@ defmodule GroupherServer.CMS.Wallpaper.Retention do
       CMS.Assets.delete_generated_assets(Repo.get!(Community, community_id), refs)
     end)
 
-    %{
-      orphan_assets: orphan_assets |> Map.values() |> List.flatten() |> length(),
-      receipts: receipt_count,
-      snapshots: length(snapshots)
-    }
+    {:ok,
+     %{
+       orphan_assets: orphan_assets |> Map.values() |> List.flatten() |> length(),
+       receipts: receipt_count,
+       snapshots: length(snapshots)
+     }}
   end
 
-  @doc "Marks all but the five active/recent supported Snapshots for deferred deletion."
+  @doc "Marks all but the five active/recent supported snapshots for deferred deletion."
+  @spec retain_latest_snapshots(integer(), map(), DateTime.t()) ::
+          {non_neg_integer(), nil}
   def retain_latest_snapshots(community_id, state, now) do
     active_refs =
       [state.active_light_snapshot_ref, state.active_dark_snapshot_ref] |> Enum.reject(&is_nil/1)

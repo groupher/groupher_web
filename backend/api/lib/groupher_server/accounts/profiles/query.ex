@@ -51,46 +51,40 @@ defmodule GroupherServer.Accounts.Profiles.Query do
   end
 
   @doc """
-  Returns a paged user profile list.
+  Pages user identities with an explicit Pagi position.
 
   ## Examples
 
-      Accounts.Profiles.Query.paged_users(%{page: 1, size: 20})
+      Accounts.Profiles.Query.paged_users(%{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
-  @spec paged_users(map()) :: term()
-  def paged_users(filter), do: List.paged_users(filter)
+  defdelegate paged_users(filter, pagi), to: List
 
   @doc """
-  Returns a viewer-aware paged user profile list.
+  Pages user identities with the requesting viewer's follow state.
 
   ## Examples
 
-      Accounts.Profiles.Query.paged_users(%{page: 1, size: 20}, viewer)
+      Accounts.Profiles.Query.paged_users(%{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
   """
-  @spec paged_users(map(), User.t()) :: term()
-  def paged_users(filter, %User{} = viewer), do: List.paged_users(filter, viewer)
+  defdelegate paged_users(filter, pagi, viewer), to: List
 
   @doc """
-  Returns default subscribed communities for the profile landing page.
+  Returns a bounded set of default Community suggestions.
 
   ## Examples
 
-      Accounts.Profiles.Query.default_subscribed_communities(%{page: 1, size: 20})
+      Accounts.Profiles.Query.default_community_suggestions()
   """
-  @spec default_subscribed_communities(map()) :: term()
-  def default_subscribed_communities(filter), do: List.default_subscribed_communities(filter)
+  defdelegate default_community_suggestions(), to: List
 
   @doc """
-  Returns communities subscribed to by a user.
+  Pages Communities subscribed to by the supplied account.
 
   ## Examples
 
-      Accounts.Profiles.Query.subscribed_communities(user, %{page: 1, size: 20})
+      Accounts.Profiles.Query.subscribed_communities(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
-  @spec subscribed_communities(User.t(), map()) :: term()
-  def subscribed_communities(%User{} = user, filter) do
-    List.subscribed_communities(user, filter)
-  end
+  defdelegate subscribed_communities(user, filter, pagi), to: List
 
   @doc """
   Returns the canonical linked OAuth-account projection for an active user.

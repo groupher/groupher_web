@@ -23,7 +23,6 @@ export default function createCommunityStore(init: TInit = { slug: 'home' }): TS
     meta: init.meta || {},
     threads: init.threads || [...COMMUNITY_THREADS],
     pending: init.pending || 0,
-    moderators: init.moderators || [],
     views: init.views || 0,
 
     hydrate: (confirmed: TInit): void => {

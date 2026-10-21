@@ -4,16 +4,21 @@ defmodule GroupherServer.CMS.Articles.Maintenance do
 
       scheduler / operations task
         -> Articles.Maintenance
-        -> Archive or Trash direct pipeline
+        -> Archive or internal Trash pipeline
         -> Gate + Lifecycle + persistence
 
-  These entries deliberately bypass the user facade and use the explicit
-  operations actor while preserving the same pipeline transaction boundary.
+  These entries deliberately bypass the user facade and use explicit internal
+  pipeline contracts while preserving the same transaction boundary.
   """
 
   alias GroupherServer.CMS
   alias CMS.Articles.Commands.{Archive, Trash}
 
+  @doc "Archives one Article thread through the explicit internal pipeline."
+  @spec archive(atom()) :: {:ok, term()} | {:error, term()}
   def archive(thread), do: Archive.execute(thread)
-  def trash(article, opts \\ []), do: Trash.execute_direct(article, :operations, opts)
+
+  @doc "Moves one Article into Trash through the explicit internal pipeline."
+  @spec trash(map(), keyword()) :: {:ok, term()} | {:error, term()}
+  def trash(article, opts \\ []), do: Trash.execute_internal(article, opts)
 end

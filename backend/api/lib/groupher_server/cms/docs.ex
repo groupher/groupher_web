@@ -34,35 +34,18 @@ defmodule GroupherServer.CMS.Docs do
     PublishBranch.execute(doc_id, branch_id, actor, opts)
   end
 
-  @doc "Lists durable published versions scoped to one stable Doc branch."
-  @spec list_branch_versions(Ecto.UUID.t(), pos_integer(), keyword()) ::
-          {:ok, [map()]} | {:error, term()}
-  def list_branch_versions(doc_id, branch_id, opts \\ []) when is_binary(doc_id) do
-    with {:ok, article} <- Editor.stable_doc(doc_id) do
-      {:ok, BranchVersions.list(article, branch_id, opts)}
-    end
-  end
+  @doc "Pages immutable publication history through the branch history owner."
+  defdelegate list_branch_versions(doc_id, branch_id, pagi, actor), to: BranchVersions, as: :list
 
-  @doc "Gets one durable version and its composed immutable Doc content."
-  @spec get_branch_version(Ecto.UUID.t(), pos_integer(), pos_integer()) ::
-          {:ok, map()} | {:error, :not_found}
-  def get_branch_version(doc_id, branch_id, branch_version_id)
-      when is_binary(doc_id) and is_integer(branch_version_id) do
-    with {:ok, article} <- Editor.stable_doc(doc_id) do
-      BranchVersions.get(article, branch_id, branch_version_id)
-    end
-  end
+  @doc "Reads one authorized immutable branch version."
+  defdelegate get_branch_version(doc_id, branch_id, version_id, actor),
+    to: BranchVersions,
+    as: :read
 
-  @doc "Diffs two durable published versions in the same Doc branch."
-  @spec diff_versions(Ecto.UUID.t(), pos_integer(), pos_integer(), pos_integer()) ::
-          {:ok, map()} | {:error, :not_found}
-  def diff_versions(doc_id, branch_id, left_branch_version_id, right_branch_version_id)
-      when is_binary(doc_id) and is_integer(left_branch_version_id) and
-             is_integer(right_branch_version_id) do
-    with {:ok, article} <- Editor.stable_doc(doc_id) do
-      BranchVersions.diff(article, branch_id, left_branch_version_id, right_branch_version_id)
-    end
-  end
+  @doc "Compares two authorized immutable branch versions."
+  defdelegate diff_versions(doc_id, branch_id, left, right, actor),
+    to: BranchVersions,
+    as: :compare
 
   @doc "Restores a published Revision into the mutable workspace without moving Public."
   @spec restore_revision_to_draft(

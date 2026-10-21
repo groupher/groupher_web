@@ -174,24 +174,6 @@ export const PageChangelogDetailFields = graphql(`
   }
 `)
 
-export const PagePostPageInfo = graphql(`
-  fragment PagePostPageInfo on PagedPosts {
-    totalPages
-    totalCount
-    pageSize
-    pageNumber
-  }
-`)
-
-export const PageChangelogPageInfo = graphql(`
-  fragment PageChangelogPageInfo on PagedChangelogs {
-    totalPages
-    totalCount
-    pageSize
-    pageNumber
-  }
-`)
-
 export const PageDocFields = graphql(`
   fragment PageDocFields on Doc {
     innerId
@@ -247,20 +229,127 @@ export const PageDocDetailFields = graphql(`
   }
 `)
 
-export const PageDocPageInfo = graphql(`
-  fragment PageDocPageInfo on PagedDocs {
-    totalPages
-    totalCount
-    pageSize
-    pageNumber
+export const PageCommunityPageInfo = graphql(`
+  fragment PageCommunityPageInfo on CommunityPage {
+    pageInfo {
+      __typename
+      hasNextPage
+      hasPreviousPage
+      ... on OffsetPageInfo {
+        page
+        size
+        totalCount
+        totalPages
+      }
+      ... on CursorPageInfo {
+        startCursor
+        endCursor
+      }
+    }
   }
 `)
 
-export const PageCommunityPageInfo = graphql(`
-  fragment PageCommunityPageInfo on PagedCommunities {
-    totalPages
-    totalCount
-    pageSize
-    pageNumber
+export const PagePostLiteFields = graphql(`
+  fragment PagePostLiteFields on PostLite {
+    id
+    thread
+    innerId
+    title
+    digest
+    isPinned
+    cat
+    status
+    insertedAt
+    activeAt
+    author {
+      login
+      nickname
+      avatar
+      bio
+      shortbio
+    }
+    community {
+      title
+      slug
+      logo
+    }
+    communityTags {
+      id
+      title
+      layout
+      slug
+      color
+      thread
+    }
+  }
+`)
+
+export const PageChangelogLiteFields = graphql(`
+  fragment PageChangelogLiteFields on ChangelogLite {
+    id
+    thread
+    innerId
+    title
+    digest
+    isPinned
+    cat
+    status
+    insertedAt
+    activeAt
+    author {
+      login
+      nickname
+      avatar
+      bio
+      shortbio
+    }
+    community {
+      title
+      slug
+      logo
+    }
+    communityTags {
+      id
+      title
+      layout
+      slug
+      color
+      thread
+    }
+  }
+`)
+
+export const PageDocLiteFields = graphql(`
+  fragment PageDocLiteFields on DocLite {
+    id
+    thread
+    innerId
+    title
+    digest
+    isPinned
+    cat
+    status
+    insertedAt
+    activeAt
+    author {
+      login
+      nickname
+      avatar
+      bio
+      shortbio
+    }
+    community {
+      title
+      slug
+      logo
+    }
+    communityTags {
+      id
+      title
+      layout
+      slug
+      color
+      thread
+    }
   }
 `)

@@ -1,24 +1,34 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useCallback, useState } from 'react'
 
 import { browserGraphQLRequest } from '~/graphql/client'
+import usePagiPosition from '~/hooks/usePagiPosition'
 import useTrans from '~/hooks/useTrans'
+import { viewerQueryKeys } from '~/query'
+import { markStalePrefix } from '~/query/invalidation'
 import { executeCommand } from '~/query/mutation/optimistic/execute'
+import useAccount from '~/stores/account/hooks'
 import useCommunity from '~/stores/community/hooks'
 import { toast } from '~/ui/Toaster'
 import S from '~/unit/DsbThread/schema/content'
 
 import { normalizeTrashedPost } from './normalize'
-import type { TPagedTrashedPosts, TTrashedPostsData } from './spec'
+import type { TPagedTrashedPosts, TRawPagedTrashedPosts, TTrashedPostsData } from './spec'
 
 const PAGE_SIZE = 20
 const EMPTY_PAGE: TPagedTrashedPosts = {
   entries: [],
-  pageNumber: 1,
-  pageSize: PAGE_SIZE,
-  totalCount: 0,
-  totalPages: 0,
+  pageInfo: {
+    __typename: 'OffsetPageInfo',
+    page: 1,
+    size: PAGE_SIZE,
+    totalCount: 0,
+    totalPages: 0,
+    hasNextPage: false,
+    hasPreviousPage: false,
+  },
 }
 
 const normalizePage = (page: TTrashedPostsData['trashedArticles']): TPagedTrashedPosts => ({
@@ -27,55 +37,41 @@ const normalizePage = (page: TTrashedPostsData['trashedArticles']): TPagedTrashe
 })
 
 /** Exposes trashed posts state and actions through the shared React hook boundary. */
-export default function useTrashedPosts(initialData?: TPagedTrashedPosts | null) {
+export default function useTrashedPosts(initialData?: TRawPagedTrashedPosts | null) {
   const { slug: community } = useCommunity()
   const { t } = useTrans()
-  const requestSequence = useRef(0)
-  const [page, setPage] = useState(1)
-  const [loading, setLoading] = useState(!initialData)
+  const { accountRef } = useAccount()
+  const queryClient = useQueryClient()
+  const scope = `${accountRef}:${community}`
+  const [seedScope] = useState(scope)
+  const position = usePagiPosition(scope, PAGE_SIZE)
+  const page = position.request.api === 'offset' ? position.request.page : 1
+  const setPage = position.setPage
   const [activeActionId, setActiveActionId] = useState<string | null>(null)
-  const [pagedPosts, setPagedPosts] = useState<TPagedTrashedPosts>(initialData ?? EMPTY_PAGE)
-
-  const loadPage = useCallback(
-    async (targetPage: number): Promise<void> => {
-      const sequence = ++requestSequence.current
-      setLoading(true)
-
-      try {
-        const data = await browserGraphQLRequest<TTrashedPostsData>(S.trashedPosts, {
+  const queryRoot = [...viewerQueryKeys.all, accountRef, 'article-trash', community]
+  const query = useQuery({
+    queryKey: [...queryRoot, position.input],
+    queryFn: async () =>
+      (
+        await browserGraphQLRequest<TTrashedPostsData>(S.trashedPosts, {
           community,
-          page: targetPage,
-          size: PAGE_SIZE,
+          pagi: position.input,
         })
+      ).trashedArticles,
+    initialData: scope === seedScope && page === 1 ? (initialData ?? undefined) : undefined,
+    select: normalizePage,
+    enabled: !!accountRef && !!community,
+  })
+  const pagedPosts = query.data ?? EMPTY_PAGE
 
-        if (sequence !== requestSequence.current) return
-        setPagedPosts(data.trashedArticles ? normalizePage(data.trashedArticles) : EMPTY_PAGE)
-      } catch (error) {
-        if (sequence !== requestSequence.current) return
-        toast(String(error), 'error')
-      } finally {
-        if (sequence === requestSequence.current) setLoading(false)
-      }
-    },
-    [community],
-  )
-
-  const hasInitialData = Boolean(initialData)
-
-  useEffect(() => {
-    if (hasInitialData && page === 1) return
-
-    void loadPage(page)
-  }, [hasInitialData, loadPage, page])
-
-  const refreshAfterRemoval = useCallback(async (): Promise<void> => {
+  const refreshAfterRemoval = async (): Promise<void> => {
+    await markStalePrefix(queryClient, queryRoot)
     if (pagedPosts.entries.length === 1 && page > 1) {
-      setPage((current) => current - 1)
-      return
+      setPage(page - 1)
+    } else {
+      await query.refetch()
     }
-
-    await loadPage(page)
-  }, [loadPage, page, pagedPosts.entries.length])
+  }
 
   const restore = useCallback(
     async (id: string): Promise<boolean> => {
@@ -132,7 +128,9 @@ export default function useTrashedPosts(initialData?: TPagedTrashedPosts | null)
 
   return {
     activeActionId,
-    loading,
+    loading: query.isFetching,
+    error: query.error,
+    retry: query.refetch,
     page,
     pagedPosts,
     permanentlyDelete,

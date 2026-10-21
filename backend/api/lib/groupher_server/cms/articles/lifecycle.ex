@@ -123,6 +123,17 @@ defmodule GroupherServer.CMS.Articles.Lifecycle do
     count
   end
 
+  @doc "Answers whether an Article lifecycle permits an edit command to begin."
+  @spec editable?(ArticleLifecycle.t() | %{state: ArticleLifecycle.state()} | term()) ::
+          {:ok, boolean()} | {:error, ErrorCat.error()}
+  def editable?(%ArticleLifecycle{state: state}), do: editable_state(state)
+  def editable?(%{state: state}), do: editable_state(state)
+  def editable?(_lifecycle), do: {:error, ErrorCat.lifecycle_not_found()}
+
+  defp editable_state(state) when state in [:draft_only, :published], do: {:ok, true}
+  defp editable_state(state) when state in @states, do: {:ok, false}
+  defp editable_state(_state), do: {:error, ErrorCat.lifecycle_not_found()}
+
   defp log_archived(article, archived, operation_ref) do
     with {:ok, bindings} <- Bindings.all(article) do
       Enum.reduce_while(bindings, {:ok, :pass}, fn binding, {:ok, :pass} ->

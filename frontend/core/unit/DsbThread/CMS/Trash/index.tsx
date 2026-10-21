@@ -4,11 +4,12 @@ import type { SortingState } from '@tanstack/react-table'
 import { useCallback, useState } from 'react'
 
 import Pagi from '~/ui/Pagi'
+import PaginationError from '~/ui/Pagi/PaginationError'
 
 import CmsDataTable from '../Table/CmsDataTable'
 import ConfirmPermanentDeleteModal from './ConfirmPermanentDeleteModal'
 import EmptyState from './EmptyState'
-import type { TPagedTrashedPosts } from './spec'
+import type { TRawPagedTrashedPosts } from './spec'
 import type { TTrashedPost } from './spec'
 import TrashToolbar from './TrashToolbar'
 import useColumns from './useColumns'
@@ -16,8 +17,8 @@ import useTrashedPosts from './useTrashedPosts'
 
 const getTrashRowId = (item: TTrashedPost): string => item.id
 
-export default function PostTrash({ initialData }: { initialData?: TPagedTrashedPosts | null }) {
-  const { activeActionId, loading, pagedPosts, permanentlyDelete, restore, setPage } =
+export default function PostTrash({ initialData }: { initialData?: TRawPagedTrashedPosts | null }) {
+  const { activeActionId, loading, error, retry, pagedPosts, permanentlyDelete, restore, setPage } =
     useTrashedPosts(initialData)
   const [sorting, setSorting] = useState<SortingState>([])
   const [deleteCandidate, setDeleteCandidate] = useState<TTrashedPost | null>(null)
@@ -33,10 +34,9 @@ export default function PostTrash({ initialData }: { initialData?: TPagedTrashed
     onRequestPermanentDelete: requestPermanentDelete,
   })
 
-  const pageNumber = pagedPosts.pageNumber ?? 1
-  const pageSize = pagedPosts.pageSize ?? 20
-  const totalCount = pagedPosts.totalCount ?? 0
-  const totalPages = pagedPosts.totalPages ?? 0
+  const info = pagedPosts.pageInfo
+  const totalCount =
+    info.__typename === 'OffsetPageInfo' ? info.totalCount : pagedPosts.entries.length
 
   return (
     <>
@@ -50,14 +50,8 @@ export default function PostTrash({ initialData }: { initialData?: TPagedTrashed
         getRowIdAction={getTrashRowId}
         emptyState={<EmptyState />}
       />
-      <Pagi
-        pageNumber={pageNumber}
-        pageSize={pageSize}
-        totalCount={totalCount}
-        totalPages={totalPages}
-        onChange={setPage}
-        top={6}
-      />
+      {error && <PaginationError isRetrying={loading} onRetry={() => void retry()} />}
+      <Pagi pageInfo={info} onChange={setPage} top={6} />
       <ConfirmPermanentDeleteModal
         item={deleteCandidate}
         loading={activeActionId === deleteCandidate?.id}

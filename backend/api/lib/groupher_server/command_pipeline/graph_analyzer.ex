@@ -77,6 +77,16 @@ defmodule GroupherServer.CommandPipeline.GraphAnalyzer do
                              Helper.Transaction
                            ])
 
+  # These provider calls are deliberately module-injected, but the call site
+  # is fixed and reviewed. Keep this allowlist at MFA granularity so unrelated
+  # dynamic calls in the same module still fail closed.
+  @trusted_dynamic_calls MapSet.new([
+                           {GroupherServer.Analysis.Web.Provision,
+                            :ensure_umami_website_id_locked, :create_website, 1},
+                           # Flop schemas are validated before this callback is invoked.
+                           {Helper.ORM.Pagi, :validate_schema_order, :__flop_schema__, 0}
+                         ])
+
   # These functions intentionally use apply/3 behind a fixed, reviewed
   # boundary. Keep the exception at exact MFA granularity so apply/3 remains
   # fail-closed everywhere else, including rejection builders.
@@ -320,8 +330,6 @@ defmodule GroupherServer.CommandPipeline.GraphAnalyzer do
     function.body
     |> runner_stage_callbacks()
     |> Enum.map(fn {stage, callback} ->
-      stage = if function.kind == :workflow_pipeline, do: {:workflow, stage}, else: stage
-
       %{
         edges:
           callback
@@ -337,7 +345,7 @@ defmodule GroupherServer.CommandPipeline.GraphAnalyzer do
     {_, callbacks} =
       Macro.prewalk(body, [], fn
         {{:., _dot_meta, [module_ast, function]}, _meta, args} = node, callbacks
-        when function in [:run_receipt, :run_direct, :run_workflow] and is_list(args) ->
+        when function in [:run_receipt, :run_direct] and is_list(args) ->
           if resolve_module(module_ast, %{}) ==
                GroupherServer.CommandPipeline.Runner do
             {node, callbacks ++ callback_list(args)}
@@ -381,6 +389,10 @@ defmodule GroupherServer.CommandPipeline.GraphAnalyzer do
       case resolve_module(module_ast, function.aliases || %{}) do
         nil ->
           if MapSet.member?(@trusted_dynamic_modules, function.module) or
+               MapSet.member?(
+                 @trusted_dynamic_calls,
+                 {function.module, function.name, name, length(args)}
+               ) or
                adapter_dispatch?(node, function) do
             nil
           else

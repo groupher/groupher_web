@@ -15,30 +15,29 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
   alias Helper.ORM
 
   @pipeline operation: :collect_remove,
-            access: :open,
+            access: :user,
             target: :article,
             params: [:folder_id],
             confirmation: MembershipConfirmation
 
   receipt_pipeline execute_receipt(article, folder_id, user, command_id) do
-    change(fn _article ->
-      with {:ok, prepared} <- Persist.prepare_remove(article, folder_id, user) do
-        apply_remove(prepared, article, user, command_id)
-      end
+    gate(fn _article ->
+      prepare_gated_remove(article, folder_id, user, command_id)
     end)
 
+    change(fn prepared -> apply_remove(prepared, article, user) end)
     confirm(fn folder -> confirmation(folder, article, folder_id, :remove) end)
     present(fn confirmation -> present_confirmation(confirmation, command_id) end)
   end
 
   @pipeline operation: :collect_remove_direct,
-            access: :open,
+            access: :user,
             target: :article,
             params: [:folder_id]
 
   direct_pipeline execute_direct(article, folder_id, user) do
-    prepare(fn -> prepare_remove(article, folder_id, user, Ecto.UUID.generate()) end)
-    change(fn prepared -> apply_remove(prepared, article, user, prepared.command_id) end)
+    gate(fn _article -> prepare_gated_remove(article, folder_id, user, Ecto.UUID.generate()) end)
+    change(fn prepared -> apply_remove(prepared, article, user) end)
     present(fn folder -> {:ok, %{folder: folder, command_id: nil}} end)
   end
 
@@ -66,33 +65,46 @@ defmodule GroupherServer.Accounts.CollectFolders.Commands.Remove do
     execute_receipt(article, folder_id, user, command_id)
   end
 
-  defp prepare_remove(article, folder_id, user, command_id) do
-    with {:ok, prepared} <- Persist.prepare_remove(article, folder_id, user) do
-      {:ok, Map.put(prepared, :command_id, command_id)}
+  defp prepare_gated_remove(article, folder_id, user, command_id) do
+    with {:ok, prepared} <- Persist.prepare_remove(article, folder_id, user),
+         {:ok, canonical} <-
+           CMS.authorize_interaction_in_transaction(user, :collect, article) do
+      {:ok, prepared |> Map.put(:canonical, canonical) |> Map.put(:command_id, command_id)}
     end
   end
 
-  defp apply_remove(prepared, article, user, command_id) do
+  defp apply_remove(prepared, article, user) do
     with {:ok, article_collect} <- CMS.interactions_persist_find_collect(article, user),
-         {:ok, _canonical} <- maybe_undo_collect(article, user, command_id, article_collect),
-         {:ok, folder} <-
-           Persist.remove_in_transaction(article_collect, prepared.folder, prepared.thread),
-         {:ok, _detached} <- maybe_detach_collect(article_collect, folder) do
+         {:ok, removal} <-
+           Persist.remove_in_transaction(
+             prepared.folder,
+             prepared.thread,
+             prepared.binding,
+             prepared.user_id
+           ),
+         {:ok, _canonical} <- maybe_undo_collect(prepared, user, removal),
+         {:ok, _detached} <- maybe_detach_collect(article_collect, removal) do
+      folder = removal.folder
       {:ok, folder}
     end
   end
 
-  defp maybe_undo_collect(article, user, command_id, article_collect) do
-    if length(article_collect.collect_folders) <= 1 do
-      CMS.interactions_undo_collect(article, user, command_id)
+  defp maybe_undo_collect(prepared, user, removal) do
+    if not removal.remaining_in_account? do
+      CMS.apply_collect_change_in_transaction(
+        prepared.canonical,
+        user,
+        :remove,
+        prepared.command_id
+      )
     else
       {:ok, :pass}
     end
   end
 
-  defp maybe_detach_collect(article_collect, folder) do
-    if length(article_collect.collect_folders) > 1 do
-      CMS.interactions_persist_detach_collect_folder(article_collect, folder)
+  defp maybe_detach_collect(article_collect, removal) do
+    if removal.remaining_in_account? and not removal.remaining_in_folder? do
+      CMS.interactions_persist_detach_collect_folder(article_collect, removal.folder)
     else
       {:ok, :pass}
     end

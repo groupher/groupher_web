@@ -53,9 +53,11 @@ defmodule GroupherServer.Accounts.Mailbox do
 
   ## Examples
 
-      Accounts.Mailbox.paged_messages(:mention, user, %{page: 1, size: 20})
+      Accounts.Mailbox.paged_messages(:mention, user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
-  def paged_messages(type, user, filter), do: Messaging.paged_messages(type, user, filter)
+  def paged_messages(type, user, filter, pagi) do
+    Messaging.paged_messages(type, user, filter, pagi)
+  end
 
   @doc """
   Rebuilds and persists one user's mailbox counters.

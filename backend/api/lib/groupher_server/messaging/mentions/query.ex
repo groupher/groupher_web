@@ -11,7 +11,6 @@ defmodule GroupherServer.Messaging.Mentions.Query do
 
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
-  import ShortMaps
 
   alias GroupherServer.Accounts
 
@@ -19,23 +18,39 @@ defmodule GroupherServer.Messaging.Mentions.Query do
   alias Messaging.Model.Mention
   alias Accounts.Model.User
   alias Helper.{ORM, T}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @doc """
   Returns one page of direct mentions for a user.
 
   ## Examples
 
-      Messaging.Mentions.Query.paged(user, %{page: 1, size: 20, read: false})
+      Messaging.Mentions.Query.paged(user, %{read: false}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
-  @spec paged(User.t(), map()) :: T.domain_res(T.paged_data())
-  def paged(%User{} = user, %{page: page, size: size} = filter) do
+  @spec paged(User.t(), map(), Params.t() | nil) :: T.domain_res(T.paged_data())
+  def paged(%User{} = user, filter, pagi) do
     read = Map.get(filter, :read, false)
 
-    Mention
-    |> where([m], m.to_user_id == ^user.id and m.read == ^read)
-    |> ORM.paginator(~m(page size)a)
-    |> extract_mentions()
-    |> done()
+    query =
+      Mention
+      |> where([m], m.to_user_id == ^user.id and m.read == ^read)
+
+    with {:ok, page} <-
+           ORM.pagi(
+             query,
+             pagi,
+             for: Mention,
+             surface: "mailbox.mentions",
+             query_fingerprint:
+               :crypto.hash(:sha256, :erlang.term_to_binary({user.id, read})) |> Base.encode16(),
+             order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
+           ) do
+      page
+      |> extract_mentions()
+      |> done()
+    end
   end
 
   @doc """

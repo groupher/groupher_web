@@ -10,6 +10,14 @@ defmodule GroupherServer.Test.CMS.Communities.Subscribe do
   end
 
   describe "[cms community subscribe]" do
+    test "subscription query reports membership without mutating state", ~m(user community)a do
+      refute CMS.Communities.Subscriptions.subscribed?(community, user)
+
+      {:ok, _record} = CMS.Communities.Subscriptions.Setup.subscribe(community, user)
+
+      assert CMS.Communities.Subscriptions.subscribed?(community, user)
+    end
+
     test "user can subscribe a community", ~m(user community)a do
       {:ok, record} = CMS.Communities.Subscriptions.Setup.subscribe(community, user)
       assert community.id == record.id
@@ -49,9 +57,14 @@ defmodule GroupherServer.Test.CMS.Communities.Subscribe do
       )
 
       {:ok, results} =
-        CMS.Communities.members(:subscribers, %Community{id: community.id}, %{page: 1, size: 10})
+        CMS.Communities.members(
+          :subscribers,
+          %Community{id: community.id},
+          %{},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10}
+        )
 
-      assert results |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = results
     end
   end
 end

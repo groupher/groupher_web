@@ -14,6 +14,23 @@ defmodule GroupherServer.CMS.Model.ArticleUpvote do
   """
 
   use Ecto.Schema
+  use Flop.Schema
+
+  @flop_options [
+    filterable: [],
+    sortable: [:inserted_at, :id, :binding_id],
+    pagination_types: [:page, :first],
+    adapter_opts: [
+      join_fields: [
+        binding_id: [
+          binding: :upvote_binding,
+          field: :id,
+          ecto_type: :integer,
+          path: [:binding_id]
+        ]
+      ]
+    ]
+  ]
 
   import Ecto.Changeset
   alias __MODULE__

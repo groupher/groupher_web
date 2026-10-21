@@ -46,14 +46,24 @@ const parseDashboardAlias = (nameAlias: TNameAlias[]): TNameAlias[] => {
 /** Parses dashboard into the canonical frontend shared representation. */
 export const parseDashboard = (community: TCommunity): TParseDashboard => {
   if (!community) {
-    const defaultFields = { ...FIELDS }
+    const defaultFields = {
+      ...FIELDS,
+      pagiMode: 'page' as const,
+      pagiMobileMode: 'infinite_scroll' as const,
+      pagiRevision: 0,
+    }
     return { ...defaultFields, original: defaultFields }
   }
 
-  const { dashboard, moderators } = community
+  const { dashboard } = community
 
   if (!dashboard || Object.keys(dashboard).length === 0) {
-    const defaultFields = { ...FIELDS }
+    const defaultFields = {
+      ...FIELDS,
+      pagiMode: 'page' as const,
+      pagiMobileMode: 'infinite_scroll' as const,
+      pagiRevision: 0,
+    }
     return { ...defaultFields, original: defaultFields }
   }
 
@@ -73,6 +83,9 @@ export const parseDashboard = (community: TCommunity): TParseDashboard => {
     thirdPartyAnalytics,
     enabledThirdPartyAnalytics,
     contentShadow,
+    pagiMode,
+    pagiMobileMode,
+    pagiRevision,
   } = dashboard
   const fieldsObj = removeEmptyValuesFromObject({
     enable,
@@ -86,7 +99,6 @@ export const parseDashboard = (community: TCommunity): TParseDashboard => {
     headerLinks,
     footerLinks,
     footerOnelineLinks,
-    moderators,
     mediaReports: (mediaReports || []).map((item, index) => ({
       ...item,
       editUrl: item.url,
@@ -95,6 +107,10 @@ export const parseDashboard = (community: TCommunity): TParseDashboard => {
     thirdPartyAnalytics,
     enabledThirdPartyAnalytics,
     contentShadow: contentShadow as boolean | undefined,
+    pagiMode: (pagiMode?.toLowerCase() || 'page') as TParseDashboard['pagiMode'],
+    pagiMobileMode: (pagiMobileMode?.toLowerCase() ||
+      'infinite_scroll') as TParseDashboard['pagiMobileMode'],
+    pagiRevision: pagiRevision ?? 0,
   }) as Partial<TParseDashboard>
 
   if (layout?.kanbanBoards?.length) {
@@ -104,7 +120,12 @@ export const parseDashboard = (community: TCommunity): TParseDashboard => {
   }
 
   if (Object.keys(fieldsObj).length === 0) {
-    const defaultFields = { ...FIELDS }
+    const defaultFields = {
+      ...FIELDS,
+      pagiMode: 'page' as const,
+      pagiMobileMode: 'infinite_scroll' as const,
+      pagiRevision: 0,
+    }
     return { ...defaultFields, original: defaultFields }
   }
 

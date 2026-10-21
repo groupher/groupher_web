@@ -7,14 +7,17 @@ defmodule GroupherServer.Activity.CommunityLog do
   List and stats deliberately share handler selection and filter normalization so
   the dashboard timeline and its overview never count different event sets.
 
-  The final dynamic UNION query is intentionally parameterized SQL: handlers
-  provide a closed table/action manifest, while Ecto has no direct abstraction
-  for composing this heterogeneous multi-table projection.
+  Ecto UNION rows are the shared read base for Pagi, aggregates and bounded exports.
   """
+
+  import Ecto.Query
 
   alias GroupherServer.{Activity, CMS, Repo}
   alias Activity.{ErrorCat, Event, Filter}
+  alias Activity.Model.CommunityTimelineRow
   alias CMS.Model.Community
+  alias Helper.ORM
+  alias Helper.ORM.Pagi.{Order, Page}
 
   @handlers [
     Activity.Post,
@@ -65,7 +68,6 @@ defmodule GroupherServer.Activity.CommunityLog do
   ]
 
   @supported_filter_keys [
-    :page,
     :resource_type,
     :resource_types,
     :action,
@@ -89,33 +91,31 @@ defmodule GroupherServer.Activity.CommunityLog do
   ]
 
   @doc """
-  Lists the safe CommunityLog surface with a fixed server-side page size.
+  Lists authorized CommunityLog rows under the selected filter and Pagi position.
 
   ## Examples
 
-      Activity.CommunityLog.list(community, actor, %{filter: %{actions: [:created]}}, 1)
+      Activity.CommunityLog.list(community, actor, %{filter: %{actions: [:create]}}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
-  def list(%Community{} = community, actor, selection, page \\ 1) do
+  def list(%Community{} = community, actor, selection, pagi \\ nil) do
     with {:ok, true} <-
-           GroupherServer.CMS.passport_authorization_check(actor, "audit.read", %{
-             community: community
-           }),
+           CMS.passport_authorization_check(actor, "audit.read", %{community: community}),
          {:ok, resolved} <- Filter.resolve(selection, active_actions()),
-         {:ok, normalized} <- normalize_filter(Map.put(resolved.filter, :page, page), :list) do
-      {total_count, entries} =
-        if resolved.empty? do
-          {0, []}
-        else
-          page(select_handlers(normalized), community.id, normalized)
-        end
-
+         {:ok, normalized} <- normalize_filter(resolved.filter, :list),
+         handlers <- if(resolved.empty?, do: [], else: select_handlers(normalized)),
+         {:ok, page} <-
+           ORM.pagi(scoped_rows(handlers, community.id, normalized), pagi,
+             for: CommunityTimelineRow,
+             order: order(),
+             surface: "activity.community",
+             query_fingerprint:
+               :crypto.hash(:sha256, :erlang.term_to_binary({community.id, normalized}))
+               |> Base.encode16()
+           ) do
       {:ok,
        %{
-         entries: entries,
-         total_count: total_count,
-         total_pages: max(ceil(total_count / @page_size), 1),
-         page_number: normalized.page,
-         page_size: @page_size,
+         entries: project_rows(page.entries),
+         page_info: Page.info(page),
          query_context: resolved.query_context
        }}
     end
@@ -136,9 +136,11 @@ defmodule GroupherServer.Activity.CommunityLog do
          {:ok, resolved} <- Filter.resolve(selection, active_actions()),
          {:ok, normalized} <- normalize_filter(resolved.filter, :stats) do
       {total_count, counts} =
-        if resolved.empty?,
-          do: {0, %{}},
-          else: daily_counts(select_handlers(normalized), community.id, normalized)
+        if resolved.empty? do
+          {0, %{}}
+        else
+          daily_counts(select_handlers(normalized), community.id, normalized)
+        end
 
       {:ok,
        %{
@@ -204,12 +206,12 @@ defmodule GroupherServer.Activity.CommunityLog do
              community: community
            }),
          {:ok, resolved} <- Filter.resolve(selection, active_actions()),
-         {:ok, normalized} <- normalize_filter(Map.put(resolved.filter, :page, 1), :list) do
+         {:ok, normalized} <- normalize_filter(resolved.filter, :list) do
       {total_count, entries} =
         if resolved.empty? do
           {0, []}
         else
-          page(select_handlers(normalized), community.id, normalized, @max_export_entries)
+          export_rows(select_handlers(normalized), community.id, normalized)
         end
 
       manifest = export_manifest(community, actor, resolved.query_context, length(entries))
@@ -251,10 +253,10 @@ defmodule GroupherServer.Activity.CommunityLog do
       Activity.CommunityLog.get_event(community, actor, event_ref)
   """
   def get_event(%Community{} = community, actor, event_ref) do
-    case list(community, actor, %{filter: %{event_ref: event_ref}}, 1) do
-      {:ok, %{entries: [entry | _]}} -> {:ok, entry}
-      {:ok, _empty} -> {:ok, nil}
-      error -> error
+    with {:ok, true} <-
+           CMS.passport_authorization_check(actor, "audit.read", %{community: community}),
+         {:ok, entries} <- bounded_entries(community.id, %{filter: %{event_ref: event_ref}}, 1) do
+      {:ok, List.first(entries)}
     end
   end
 
@@ -287,8 +289,11 @@ defmodule GroupherServer.Activity.CommunityLog do
 
   defp related_children(_community, _actor, nil), do: {:ok, %{entries: []}}
 
-  defp related_children(community, actor, event_ref) do
-    list(community, actor, %{filter: %{parent_event_ref: event_ref}}, 1)
+  defp related_children(community, _actor, event_ref) do
+    with {:ok, entries} <-
+           bounded_entries(community.id, %{filter: %{parent_event_ref: event_ref}}, @page_size) do
+      {:ok, %{entries: entries}}
+    end
   end
 
   @doc """
@@ -326,129 +331,203 @@ defmodule GroupherServer.Activity.CommunityLog do
     end)
   end
 
-  defp page([], _community_id, _filter, _page_size), do: {0, []}
+  defp order do
+    %Order{
+      fields: [:occurred_at, :record_sequence],
+      directions: [:desc, :desc],
+      cursor_fields: [:occurred_at, :record_sequence]
+    }
+  end
 
-  defp page(handlers, community_id, filter, page_size) do
-    {where_sql, params} = where_spec(filter)
-    union = Enum.map_join(handlers, " UNION ALL ", &select_sql(&1, where_sql))
-    limit_param = length(params) + 2
-    offset_param = limit_param + 1
+  defp bounded_entries(community_id, selection, limit) do
+    with {:ok, resolved} <- Filter.resolve(selection, active_actions()),
+         {:ok, normalized} <- normalize_filter(resolved.filter, :list) do
+      handlers = if resolved.empty?, do: [], else: select_handlers(normalized)
 
-    count_sql = "SELECT count(*) FROM (#{union}) AS activity_rows"
+      entries =
+        scoped_rows(handlers, community_id, normalized)
+        |> order_by([row], desc: row.occurred_at, desc: row.record_sequence)
+        |> limit(^limit)
+        |> Repo.all()
+        |> project_rows()
 
-    page_sql = """
-    SELECT *
-    FROM (#{union}) AS activity_rows
-    ORDER BY occurred_at DESC, record_sequence DESC
-    LIMIT $#{limit_param} OFFSET $#{offset_param}
-    """
+      {:ok, entries}
+    end
+  end
 
-    %{rows: [[total_count]]} = Repo.query!(count_sql, [community_id | params])
-
-    %{rows: rows} =
-      Repo.query!(
-        page_sql,
-        [community_id | params] ++ [page_size, (filter.page - 1) * page_size]
-      )
-
-    handler_by_type = Map.new(handlers, &{Atom.to_string(&1.resource_type()), &1})
+  defp export_rows(handlers, community_id, filter) do
+    query = scoped_rows(handlers, community_id, filter)
+    count = Repo.aggregate(query, :count)
 
     entries =
-      Enum.map(rows, fn row ->
-        attrs = Map.new(Enum.zip(@row_fields, row))
-        handler = Map.fetch!(handler_by_type, attrs.log_type)
-        log = to_log(handler, attrs)
-        {:ok, projected} = handler.project(log, :community_log)
-        projected
-      end)
+      query
+      |> order_by([row], desc: row.occurred_at, desc: row.record_sequence)
+      |> limit(@max_export_entries)
+      |> Repo.all()
+      |> project_rows()
 
-    {total_count, entries}
+    {count, entries}
   end
-
-  defp page(handlers, community_id, filter) do
-    page(handlers, community_id, filter, @page_size)
-  end
-
-  defp daily_counts([], _community_id, _filter), do: {0, %{}}
 
   defp daily_counts(handlers, community_id, filter) do
-    {where_sql, params} = where_spec(filter)
-    union = Enum.map_join(handlers, " UNION ALL ", &select_occurred_at_sql(&1, where_sql))
-
-    sql = """
-    SELECT date_trunc('day', occurred_at AT TIME ZONE 'UTC') AS bucket_start,
-           count(*) AS event_count
-    FROM (#{union}) AS activity_rows
-    GROUP BY bucket_start
-    ORDER BY bucket_start ASC
-    """
-
-    %{rows: rows} = Repo.query!(sql, [community_id | params])
-
     counts =
-      Map.new(rows, fn [bucket_start, count] ->
-        {DateTime.to_date(DateTime.from_naive!(bucket_start, @utc)), count}
-      end)
+      scoped_rows(handlers, community_id, filter)
+      |> group_by([row], type(fragment("(? AT TIME ZONE 'UTC')::date", row.occurred_at), :date))
+      |> select(
+        [row],
+        {type(fragment("(? AT TIME ZONE 'UTC')::date", row.occurred_at), :date),
+         count(row.record_sequence)}
+      )
+      |> Repo.all()
+      |> Map.new()
 
     {Enum.sum(Map.values(counts)), counts}
   end
 
-  defp select_sql(handler, where_sql) do
-    schema = handler.schema()
-    table = schema.__schema__(:source)
-    prefix = schema.__schema__(:prefix)
-    stream_field = handler.stream_field()
-    actions = Enum.map_join(handler.surface_actions(:community_log), ", ", &"'#{&1}'")
+  defp scoped_rows(handlers, community_id, filter) do
+    queries = Enum.map(handlers, &handler_rows(&1, community_id))
 
-    """
-    SELECT '#{handler.resource_type()}' AS log_type,
-           id AS local_id,
-           event_ref,
-           operation_ref,
-           parent_event_ref,
-           action,
-           source,
-           #{stream_field}::text AS stream_ref,
-           stream_snapshot,
-           subject_type,
-           subject_ref,
-           subject_snapshot,
-           target_type,
-           target_ref,
-           target_snapshot,
-           actor_type,
-           actor_ref,
-           actor_snapshot,
-           on_behalf_of_type,
-           on_behalf_of_ref,
-           on_behalf_of_snapshot,
-           outcome,
-           rejection_code,
-           operation_index,
-           record_sequence,
-           changed_fields,
-           payload,
-           metadata,
-           occurred_at,
-           recorded_at
-    FROM #{prefix}.#{table}
-    WHERE community_id = $1
-      AND action IN (#{actions})#{where_sql}
-    """
+    query =
+      case queries do
+        [] ->
+          handler_rows(hd(@handlers), community_id) |> where(false)
+
+        [first | rest] ->
+          Enum.reduce(rest, first, fn query, union -> union_all(union, ^query) end)
+      end
+
+    from(row in subquery(query)) |> filter_rows(filter)
   end
 
-  defp select_occurred_at_sql(handler, where_sql) do
-    schema = handler.schema()
-    table = schema.__schema__(:source)
-    prefix = schema.__schema__(:prefix)
-    actions = Enum.map_join(handler.surface_actions(:community_log), ", ", &"'#{&1}'")
+  defp handler_rows(handler, community_id) do
+    resource_type = to_string(handler.resource_type())
+    stream_field = handler.stream_field()
+    actions = handler.surface_actions(:community_log)
 
-    """
-    SELECT occurred_at
-    FROM #{prefix}.#{table}
-    WHERE community_id = $1
-      AND action IN (#{actions})#{where_sql}
-    """
+    projection =
+      Map.new(@row_fields, fn
+        :log_type ->
+          {:log_type, dynamic([], type(^resource_type, :string))}
+
+        :local_id ->
+          {:local_id, dynamic([log], log.id)}
+
+        :stream_ref ->
+          {:stream_ref, dynamic([log], fragment("?::text", field(log, ^stream_field)))}
+
+        key when key in [:action, :source, :actor_type, :on_behalf_of_type, :outcome] ->
+          {key, dynamic([log], type(field(log, ^key), :string))}
+
+        key ->
+          {key, dynamic([log], field(log, ^key))}
+      end)
+
+    from(log in handler.schema(),
+      where: log.community_id == ^community_id and log.action in ^actions,
+      select: ^projection
+    )
+  end
+
+  defp filter_rows(query, filter) do
+    query =
+      Enum.reduce(
+        [
+          actions: :action,
+          outcomes: :outcome,
+          rejection_codes: :rejection_code,
+          actor_types: :actor_type
+        ],
+        query,
+        fn {key, field_name}, query ->
+          case Map.fetch!(filter, key) do
+            nil ->
+              query
+
+            values ->
+              values = Enum.map(values, &to_string/1)
+              where(query, [row], field(row, ^field_name) in ^values)
+          end
+        end
+      )
+
+    query =
+      Enum.reduce(
+        [
+          :actor_ref,
+          :on_behalf_of_ref,
+          :subject_ref,
+          :target_ref,
+          :event_ref,
+          :operation_ref,
+          :parent_event_ref
+        ],
+        query,
+        fn key, query ->
+          case Map.fetch!(filter, key) do
+            nil -> query
+            value -> where(query, [row], field(row, ^key) == ^value)
+          end
+        end
+      )
+
+    query =
+      if filter.source do
+        where(query, [row], row.source == ^to_string(filter.source))
+      else
+        query
+      end
+
+    query =
+      if filter.occurred_after do
+        where(query, [row], row.occurred_at >= ^filter.occurred_after)
+      else
+        query
+      end
+
+    query =
+      if filter.occurred_before do
+        where(query, [row], row.occurred_at < ^filter.occurred_before)
+      else
+        query
+      end
+
+    query =
+      if filter.changed_fields do
+        where(
+          query,
+          [row],
+          fragment("? @> ?::text[]", row.changed_fields, ^filter.changed_fields)
+        )
+      else
+        query
+      end
+
+    case filter.subject_query do
+      nil ->
+        query
+
+      search ->
+        if filter.subject_title_search do
+          where(
+            query,
+            [row],
+            row.subject_ref == ^search or
+              ilike(fragment("?->>'title'", row.subject_snapshot), ^"%#{search}%")
+          )
+        else
+          where(query, [row], row.subject_ref == ^search)
+        end
+    end
+  end
+
+  defp project_rows(rows) do
+    handlers = Map.new(@handlers, &{to_string(&1.resource_type()), &1})
+
+    Enum.map(rows, fn attrs ->
+      handler = Map.fetch!(handlers, attrs.log_type)
+      {:ok, projected} = handler.project(to_log(handler, attrs), :community_log)
+      projected
+    end)
   end
 
   defp to_log(handler, attrs) do
@@ -507,7 +586,6 @@ defmodule GroupherServer.Activity.CommunityLog do
 
   defp normalize_filter(filter, mode) when is_map(filter) do
     with {:ok, _} <- validate_filter_keys(filter),
-         {:ok, page} <- positive_page(Map.get(filter, :page, 1)),
          {:ok, resource_types} <- normalize_resource_types(filter),
          {:ok, actions} <- normalize_actions(filter),
          {:ok, categories} <- normalize_categories(filter),
@@ -537,7 +615,6 @@ defmodule GroupherServer.Activity.CommunityLog do
 
       {:ok,
        %{
-         page: page,
          resource_types: resource_types,
          actions: actions,
          categories: categories,
@@ -570,9 +647,6 @@ defmodule GroupherServer.Activity.CommunityLog do
       {:error, ErrorCat.invalid_pagination()}
     end
   end
-
-  defp positive_page(page) when is_integer(page) and page > 0, do: {:ok, page}
-  defp positive_page(_), do: {:error, ErrorCat.invalid_pagination()}
 
   defp normalize_resource_types(filter) do
     value = Map.get(filter, :resource_types, Map.get(filter, :resource_type))
@@ -701,97 +775,12 @@ defmodule GroupherServer.Activity.CommunityLog do
 
   defp normalize_uuid(value) when is_binary(value) do
     case Ecto.UUID.cast(value) do
-      {:ok, uuid} -> Ecto.UUID.dump(uuid)
+      {:ok, uuid} -> {:ok, uuid}
       :error -> {:error, ErrorCat.invalid_pagination()}
     end
   end
 
   defp normalize_uuid(_), do: {:error, ErrorCat.invalid_pagination()}
-
-  defp where_spec(filter) do
-    {conditions, params, next} = {[], [], 2}
-    {conditions, params, next} = add_array_condition(conditions, params, next, filter.actions)
-
-    {conditions, params, next} =
-      add_text_array_condition(conditions, params, next, filter.outcomes, "outcome")
-
-    {conditions, params, next} =
-      add_text_array_condition(conditions, params, next, filter.rejection_codes, "rejection_code")
-
-    {conditions, params, next} =
-      add_text_array_condition(conditions, params, next, filter.actor_types, "actor_type")
-
-    {conditions, params, next} =
-      add_condition(conditions, params, next, filter.actor_ref, "actor_ref = $%d")
-
-    {conditions, params, next} =
-      add_condition(conditions, params, next, filter.on_behalf_of_ref, "on_behalf_of_ref = $%d")
-
-    {conditions, params, next} =
-      add_condition(conditions, params, next, filter.subject_ref, "subject_ref = $%d")
-
-    {conditions, params, next} =
-      add_condition(conditions, params, next, filter.target_ref, "target_ref = $%d")
-
-    {conditions, params, next} =
-      case filter.changed_fields do
-        nil ->
-          {conditions, params, next}
-
-        fields ->
-          {[" AND changed_fields @> $#{next}::text[]" | conditions], [fields | params], next + 1}
-      end
-
-    {conditions, params, next} =
-      add_condition(conditions, params, next, filter.source, "source = $%d")
-
-    {conditions, params, next} =
-      add_condition(conditions, params, next, filter.occurred_after, "occurred_at >= $%d")
-
-    {conditions, params, next} =
-      add_condition(conditions, params, next, filter.occurred_before, "occurred_at < $%d")
-
-    {conditions, params, next} =
-      add_condition(conditions, params, next, filter.event_ref, "event_ref = $%d::uuid")
-
-    {conditions, params, next} =
-      case filter.subject_query do
-        nil ->
-          {conditions, params, next}
-
-        query ->
-          if filter.subject_title_search do
-            {
-              [
-                " AND (subject_ref = $#{next} OR subject_snapshot->>'title' ILIKE $#{next + 1})"
-                | conditions
-              ],
-              ["%#{query}%", query | params],
-              next + 2
-            }
-          else
-            {
-              [" AND subject_ref = $#{next}" | conditions],
-              [query | params],
-              next + 1
-            }
-          end
-      end
-
-    {conditions, params, next} =
-      add_condition(conditions, params, next, filter.operation_ref, "operation_ref = $%d::uuid")
-
-    {conditions, params, _next} =
-      add_condition(
-        conditions,
-        params,
-        next,
-        filter.parent_event_ref,
-        "parent_event_ref = $%d::uuid"
-      )
-
-    {Enum.join(Enum.reverse(conditions)), Enum.reverse(params)}
-  end
 
   defp visible_actions(%{categories: categories}) do
     @handlers
@@ -841,29 +830,6 @@ defmodule GroupherServer.Activity.CommunityLog do
       end)
     end)
     |> Enum.all?()
-  end
-
-  defp add_array_condition(conditions, params, next, nil), do: {conditions, params, next}
-
-  defp add_array_condition(conditions, params, next, actions) do
-    {[" AND action = ANY($#{next}::text[])" | conditions],
-     [Enum.map(actions, &to_string/1) | params], next + 1}
-  end
-
-  defp add_text_array_condition(conditions, params, next, nil, _field) do
-    {conditions, params, next}
-  end
-
-  defp add_text_array_condition(conditions, params, next, values, field) do
-    {[" AND #{field} = ANY($#{next}::text[])" | conditions],
-     [Enum.map(values, &to_string/1) | params], next + 1}
-  end
-
-  defp add_condition(conditions, params, next, nil, _template), do: {conditions, params, next}
-
-  defp add_condition(conditions, params, next, value, template) do
-    condition = String.replace(template, "%d", Integer.to_string(next))
-    {[" AND " <> condition | conditions], [value | params], next + 1}
   end
 
   defp fill_buckets(after_datetime, before_datetime, counts) do

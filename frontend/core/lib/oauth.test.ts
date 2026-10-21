@@ -40,7 +40,9 @@ describe('signIn', () => {
     const fetchMock = vi.fn(async () => Response.json({}))
     vi.stubGlobal('fetch', fetchMock)
 
-    await expect(signIn('github')).rejects.toThrow('Auth CSRF request returned an invalid token.')
+    await expect(signIn('github')).rejects.toMatchObject({
+      message: 'Auth CSRF request returned an invalid token.',
+    })
   })
 
   it('normalizes configured Auth endpoints before building OAuth URLs', async () => {
@@ -92,7 +94,9 @@ describe('signOut', () => {
     const fetchMock = vi.fn(async () => new Response('failed', { status: 500 }))
     vi.stubGlobal('fetch', fetchMock)
 
-    await expect(signOut()).rejects.toThrow('Auth logout failed with status 500.')
+    await expect(signOut()).rejects.toMatchObject({
+      message: 'Auth logout failed with status 500.',
+    })
   })
 
   it('normalizes configured Auth endpoints before logout', async () => {

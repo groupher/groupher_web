@@ -55,14 +55,14 @@ defmodule GroupherServer.Test.Query.CMS.Assets do
         |> gq_query(@asset_refs_query, %{
           community: community.slug,
           assetId: asset.id,
-          filter: %{page: 1, size: 10}
+          pagi: %{offset: %{page: 1, size: 10}}
         })
 
-      assert result |> is_valid_pagination?
-      assert result["totalCount"] == 25
-      assert result["totalPages"] == 3
-      assert result["pageSize"] == 10
-      assert result["pageNumber"] == 1
+      assert result["pageInfo"]["hasNextPage"]
+      assert result["pageInfo"]["totalCount"] == 25
+      assert result["pageInfo"]["totalPages"] == 3
+      assert result["pageInfo"]["size"] == 10
+      assert result["pageInfo"]["page"] == 1
       assert length(result["entries"]) == 10
 
       first_entry = hd(result["entries"])

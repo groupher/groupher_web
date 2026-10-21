@@ -26,17 +26,57 @@ defmodule GroupherServer.CMS.Docs.BranchVersions do
     DocRevision
   }
 
-  @doc "Lists immutable published versions for exactly one Doc branch."
-  @spec list(Article.t(), pos_integer(), keyword()) :: [map()]
-  def list(%Article{thread: :doc, id: article_id}, branch_id, opts \\ []) do
-    limit = Keyword.get(opts, :limit, 30)
+  @doc "Admits the branch read before paging its immutable history."
+  def list(doc_id, branch_id, pagi, actor) do
+    with {:ok, article} <- readable_history(doc_id, branch_id, actor) do
+      page(article, branch_id, pagi)
+    end
+  end
 
-    DocBranchVersion
-    |> where([version], version.article_id == ^article_id and version.branch_id == ^branch_id)
-    |> order_by([version], desc: version.version_number)
-    |> limit(^limit)
-    |> Repo.all()
-    |> Enum.map(&materialize/1)
+  @doc "Reads one branch version under the same admission policy as history pages."
+  def read(doc_id, branch_id, version_id, actor) do
+    with {:ok, article} <- readable_history(doc_id, branch_id, actor) do
+      get(article, branch_id, version_id)
+    end
+  end
+
+  @doc "Compares two versions under the same branch admission."
+  def compare(doc_id, branch_id, left, right, actor) do
+    with {:ok, article} <- readable_history(doc_id, branch_id, actor) do
+      diff(article, branch_id, left, right)
+    end
+  end
+
+  defp readable_history(doc_id, branch_id, actor) do
+    with {:ok, branch} <- Helper.ORM.find(CMS.Model.DocBranch, branch_id),
+         {:ok, community} <- CMS.FrontDesk.community(branch.community_id, mode: :internal),
+         {:ok, community} <- CMS.Gate.access_check(actor, :manage_docs, community),
+         {:ok, article} <- CMS.Docs.Editor.stable_doc(doc_id),
+         {:ok, _binding} <- CMS.Articles.Bindings.get(article, community) do
+      {:ok, article}
+    end
+  end
+
+  @spec page(Article.t(), pos_integer(), GroupherServer.Pagi.Params.input()) :: tuple()
+  defp page(%Article{thread: :doc, id: article_id}, branch_id, pagi) do
+    query =
+      from(version in DocBranchVersion,
+        where: version.article_id == ^article_id and version.branch_id == ^branch_id
+      )
+
+    with {:ok, page} <-
+           Helper.ORM.pagi(query, pagi,
+             for: DocBranchVersion,
+             surface: "docs.branch_versions",
+             query_fingerprint: "#{article_id}:#{branch_id}",
+             order: %Helper.ORM.Pagi.Order{
+               fields: [:version_number, :id],
+               directions: [:desc, :desc],
+               cursor_fields: [:version_number, :id]
+             }
+           ) do
+      {:ok, %{page | entries: materialize_many(page.entries)}}
+    end
   end
 
   @doc "Loads one branch version and its immutable content without leaking raw schemas to callers."
@@ -131,6 +171,47 @@ defmodule GroupherServer.CMS.Docs.BranchVersions do
     extension = Repo.get_by!(DocRevision, revision_id: revision.id)
     body = Repo.get!(ArticleBodySnapshot, revision.body_snapshot_id)
 
+    materialized(version, revision, extension, body)
+  end
+
+  defp materialize_many([]), do: []
+
+  defp materialize_many(versions) do
+    revision_ids = Enum.map(versions, & &1.revision_id)
+
+    revisions_by_id =
+      ArticleRevision
+      |> where([revision], revision.id in ^revision_ids)
+      |> Repo.all()
+      |> Map.new(&{&1.id, &1})
+
+    extensions_by_revision_id =
+      DocRevision
+      |> where([revision], revision.revision_id in ^revision_ids)
+      |> Repo.all()
+      |> Map.new(&{&1.revision_id, &1})
+
+    body_ids =
+      revisions_by_id
+      |> Map.values()
+      |> Enum.map(& &1.body_snapshot_id)
+
+    bodies_by_id =
+      ArticleBodySnapshot
+      |> where([body], body.id in ^body_ids)
+      |> Repo.all()
+      |> Map.new(&{&1.id, &1})
+
+    Enum.map(versions, fn version ->
+      revision = Map.fetch!(revisions_by_id, version.revision_id)
+      extension = Map.fetch!(extensions_by_revision_id, revision.id)
+      body = Map.fetch!(bodies_by_id, revision.body_snapshot_id)
+
+      materialized(version, revision, extension, body)
+    end)
+  end
+
+  defp materialized(version, revision, extension, body) do
     %{
       version: version,
       revision: revision,

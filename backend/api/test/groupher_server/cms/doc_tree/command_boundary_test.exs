@@ -3,9 +3,17 @@ defmodule GroupherServer.Test.CMS.DocTree.CommandBoundary do
 
   use ExUnit.Case, async: true
 
-  alias GroupherServer.{CMS, ErrorCat}
-  alias CMS.DocTree.Commands.{CreateTab, RestoreTrashItem, UpdateDraft}
+  alias GroupherServer.{Accounts, CMS, ErrorCat}
+
+  alias CMS.DocTree.Commands.{
+    CreateTab,
+    PermanentlyDeleteTrashItem,
+    RestoreTrashItem,
+    UpdateDraft
+  }
+
   alias CMS.DocTree.Commands.PublishChanges
+  alias Accounts.Model.User
 
   test "an explicitly requested tree command cannot fall back to a direct write" do
     assert {:error, %ErrorCat.Error{reason: :command_id_required}} =
@@ -39,5 +47,14 @@ defmodule GroupherServer.Test.CMS.DocTree.CommandBoundary do
                actor_id: Ecto.UUID.generate(),
                command_id: nil
              })
+  end
+
+  test "trash permanent delete requires an explicit user command identity" do
+    assert {:error, %ErrorCat.Error{reason: :command_id_required}} =
+             PermanentlyDeleteTrashItem.execute("trash-1", %User{},
+               community_id: 1,
+               thread: :doc,
+               command_id: nil
+             )
   end
 end

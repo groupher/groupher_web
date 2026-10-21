@@ -4,7 +4,7 @@ defmodule GroupherServer.Repo do
 
   This module is the boundary between business domains and PostgreSQL. It powers
   query execution for contexts such as accounts, CMS content, and statistics, and
-  provides pagination defaults through `Scrivener`.
+  exposes the repository used by the shared `Helper.ORM.Pagi` execution boundary.
 
   Business position:
 
@@ -14,7 +14,6 @@ defmodule GroupherServer.Repo do
   """
 
   use Ecto.Repo, otp_app: :groupher_server, adapter: Ecto.Adapters.Postgres
-  use Scrivener, page_size: GroupherServerWeb.Config.page_size()
 
   @dialyzer {:nowarn_function, rollback: 1}
 

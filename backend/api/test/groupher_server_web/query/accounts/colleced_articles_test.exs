@@ -30,15 +30,15 @@ defmodule GroupherServer.Test.Query.Accounts.CollectedArticles do
     {:ok, _folder} = Accounts.CollectFolders.create(%{title: "test folder"}, user)
     {:ok, _folder} = Accounts.CollectFolders.create(%{title: "test folder2"}, user)
 
-    variables = %{login: user.login, filter: %{page: 1, size: 20}}
+    variables = %{login: user.login, pagi: %{offset: %{page: 1, size: 20}}}
     results = user_conn |> gq_query(@query, variables)
     results2 = guest_conn |> gq_query(@query, variables)
 
-    assert results["totalCount"] == 2
-    assert results2["totalCount"] == 2
+    assert results["pageInfo"]["totalCount"] == 2
+    assert results2["pageInfo"]["totalCount"] == 2
 
-    assert results |> is_valid_pagination?()
-    assert results2 |> is_valid_pagination?()
+    assert results["pageInfo"]["page"] == 1
+    assert results2["pageInfo"]["page"] == 1
   end
 
   test "owner can get it's paged collect folders with private folders",
@@ -46,12 +46,12 @@ defmodule GroupherServer.Test.Query.Accounts.CollectedArticles do
     {:ok, _folder} = Accounts.CollectFolders.create(%{title: "test folder", private: true}, user)
     {:ok, _folder} = Accounts.CollectFolders.create(%{title: "test folder2"}, user)
 
-    variables = %{login: user.login, filter: %{page: 1, size: 20}}
+    variables = %{login: user.login, pagi: %{offset: %{page: 1, size: 20}}}
     results = user_conn |> gq_query(@query, variables)
     results2 = guest_conn |> gq_query(@query, variables)
 
-    assert results["totalCount"] == 2
-    assert results2["totalCount"] == 1
+    assert results["pageInfo"]["totalCount"] == 2
+    assert results2["pageInfo"]["totalCount"] == 1
   end
 
   @query S.Collect.q(:paged_collected_articles)
@@ -66,12 +66,12 @@ defmodule GroupherServer.Test.Query.Accounts.CollectedArticles do
     post2 = Enum.at(posts, 1)
     post3 = Enum.at(posts, 2)
 
-    variables = %{folderId: folder.id, filter: %{page: 1, size: 20}}
+    variables = %{folderId: folder.id, pagi: %{offset: %{page: 1, size: 20}}}
 
     results = user_conn |> gq_query(@query, variables)
     results2 = guest_conn |> gq_query(@query, variables)
 
-    assert results["totalCount"] == @total_count
+    assert results["pageInfo"]["totalCount"] == @total_count
     assert results["entries"] |> Enum.any?(&(&1["innerId"] == to_string(post1.inner_id)))
     assert results["entries"] |> Enum.any?(&(&1["innerId"] == to_string(post2.inner_id)))
     assert results["entries"] |> Enum.any?(&(&1["innerId"] == to_string(post3.inner_id)))
@@ -87,7 +87,7 @@ defmodule GroupherServer.Test.Query.Accounts.CollectedArticles do
       {:ok, _folder} = Accounts.CollectFolders.add(post, folder.id, user2)
     end)
 
-    variables = %{folderId: folder.id, filter: %{page: 1, size: 20}}
+    variables = %{folderId: folder.id, pagi: %{offset: %{page: 1, size: 20}}}
 
     assert guest_conn
            |> query_error?(
@@ -105,10 +105,10 @@ defmodule GroupherServer.Test.Query.Accounts.CollectedArticles do
       {:ok, _folder} = Accounts.CollectFolders.add(post, folder.id, user)
     end)
 
-    variables = %{folderId: folder.id, filter: %{page: 1, size: 20}}
+    variables = %{folderId: folder.id, pagi: %{offset: %{page: 1, size: 20}}}
 
     results = user_conn |> gq_query(@query, variables)
 
-    assert results["totalCount"] == @total_count
+    assert results["pageInfo"]["totalCount"] == @total_count
   end
 end

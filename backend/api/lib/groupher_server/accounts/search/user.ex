@@ -13,10 +13,9 @@ defmodule GroupherServer.Accounts.Search.User do
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
 
-  alias GroupherServer.Accounts
-
+  alias GroupherServer.{Accounts}
   alias Accounts.Model.User
-  alias Helper.ORM
+  alias GroupherServer.Repo
 
   @search_items_count 15
 
@@ -27,11 +26,16 @@ defmodule GroupherServer.Accounts.Search.User do
 
       GroupherServer.Accounts.Search.user("alice")
   """
-  @spec search(String.t()) :: {:ok, map()} | {:error, any()}
+  @spec search(String.t()) :: {:ok, [User.t()]} | {:error, any()}
   def search(name) do
-    User
-    |> where([u], ilike(u.nickname, ^"%#{name}%") or ilike(u.login, ^"%#{name}%"))
-    |> ORM.paginator(page: 1, size: @search_items_count)
+    query =
+      User
+      |> where([u], ilike(u.nickname, ^"%#{name}%") or ilike(u.login, ^"%#{name}%"))
+
+    query
+    |> order_by([user], desc: user.id)
+    |> limit(@search_items_count)
+    |> Repo.all()
     |> done()
   end
 end

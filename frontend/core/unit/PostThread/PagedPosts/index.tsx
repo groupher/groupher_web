@@ -13,13 +13,23 @@ import URL_PARAM from '~/const/url_param'
 import usePagedPosts from '~/hooks/usePagedPosts'
 import useURLSearchParams from '~/hooks/useURLSearchParams'
 import Pagi from '~/ui/Pagi'
+import CursorPagination from '~/ui/Pagi/CursorPagination'
 
 import PostList from './PostList'
 import useSalon from './salon'
 
 const PagedPosts: FC = () => {
   const s = useSalon()
-  const { pagedPosts } = usePagedPosts()
+  const {
+    pagedPosts,
+    paginationApi,
+    paginationMode,
+    hasNextPage,
+    isFetchingNextPage,
+    nextPageError,
+    retryNextPage,
+    fetchNextPage,
+  } = usePagedPosts()
   const { pathname } = useLocation()
   const searchParams = useURLSearchParams()
   const navigate = useNavigate()
@@ -35,7 +45,18 @@ const PagedPosts: FC = () => {
   return (
     <div className={s.wrapper}>
       <PostList />
-      <Pagi {...pagedPosts} onChange={changePage} top={80} bottom={30} />
+      {paginationApi === 'cursor' ? (
+        <CursorPagination
+          mode={paginationMode}
+          hasNextPage={hasNextPage}
+          isLoading={isFetchingNextPage}
+          error={nextPageError}
+          onRetry={() => void retryNextPage()}
+          onLoadMore={() => void fetchNextPage()}
+        />
+      ) : (
+        <Pagi {...pagedPosts} onChange={changePage} top={80} bottom={30} />
+      )}
     </div>
   )
 }

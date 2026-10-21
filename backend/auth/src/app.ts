@@ -4,16 +4,16 @@
  * Business position:
  *
  *   Browser / Gateway
- *     -> Auth module
- *     -> OAuth provider / Phoenix Accounts
+ *     -> Auth route composition
+ *     -> OAuth and Phoenix Accounts
  *     -> Session cookies or service token
  */
-
 import {
   AUTH_ERROR,
   GROUPHER_AUTH_CSRF_HEADER,
   GROUPHER_AUTH_CSRF_VALUE,
 } from '@groupher/contracts/auth'
+import { isPagiInput } from '@groupher/contracts/pagination'
 import { AUTH_ROUTE } from '@groupher/route-contract'
 import { createHealthResponse } from '@groupher/service/health'
 import { Hono } from 'hono'
@@ -139,8 +139,10 @@ const clientRateLimitKey = (request: Request): string => {
 export const mapBrowserSessionError = (
   error: unknown,
   fallbackCode: string,
-): { code: string; status: 401 | 403 | 404 | 409 | 429 | 503 } => {
+): { code: string; status: 400 | 401 | 403 | 404 | 409 | 429 | 503 } => {
   if (error instanceof PhoenixBrowserSessionError) {
+    if (error.code && /^PAGI_(420[0-9]|421[12])$/.test(error.code))
+      return { code: error.code, status: 400 }
     if (error.code === AUTH_ERROR.SESSION_REVOKED || error.code === AUTH_ERROR.SESSION_EXPIRED) {
       return { code: error.code, status: 401 }
     }
@@ -434,7 +436,16 @@ export const createApp = ({
     if (!session) return context.json({ code: AUTH_ERROR.SESSION_MISSING }, 401, noStore())
 
     try {
-      return context.json(await listSessions(session.browserSessionRef), 200, noStore())
+      const raw = context.req.query('pagi')
+      let pagi: unknown
+      try {
+        pagi = raw === undefined ? undefined : JSON.parse(raw)
+      } catch {
+        return context.json({ code: 'PAGI_4209' }, 400, noStore())
+      }
+      if (pagi !== undefined && !isPagiInput(pagi))
+        return context.json({ code: 'PAGI_4209' }, 400, noStore())
+      return context.json(await listSessions(session.browserSessionRef, pagi), 200, noStore())
     } catch (error) {
       const failure = mapBrowserSessionError(error, AUTH_ERROR.SESSION_UNAVAILABLE)
       return context.json({ code: failure.code }, failure.status, noStore())

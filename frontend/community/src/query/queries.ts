@@ -9,19 +9,24 @@
  * The host selects transport and hydration policy only; ArticleStats normalization, keys, and merge
  * semantics remain owned by Core.
  */
-import { type QueryClient, queryOptions } from '@tanstack/react-query'
+import { infiniteQueryOptions, type QueryClient, queryOptions } from '@tanstack/react-query'
 import { print } from 'graphql'
 
 import { THREAD } from '~/const/thread'
-import { articleQueryKeys, commentKeys, graphqlKeys } from '~/query'
+import { DEFAULT_EFFECTIVE_PAGI_CONFIG, toPagiGraphQLInput } from '~/lib/pagination/params'
+import { articleQueryKeys, graphqlKeys } from '~/query'
+import { articlePagiRequest } from '~/query/article'
 import { articlePathKey } from '~/query/articlePath'
 import {
   ARTICLE_STATS_SNAPSHOT_MAX_AGE_MS,
   articleStatsBatchStructuralSharing,
   articleStatsStructuralSharing,
 } from '~/query/articleStats'
+import { commentQueries } from '~/query/comment'
+import { commentPagiRequest } from '~/query/commentPage'
 import { docPublicTree } from '~/schemas/pages/doc'
-import type { TDocPublicTreeQuery, TThread } from '~/spec'
+import type { TEffectivePagiConfig, TPagedArticlesParams, TPagiRequest } from '~/spec'
+import type { TDocPublicTreeQuery, TThread, TArticleThread } from '~/spec'
 
 import {
   loadChangelog,
@@ -35,12 +40,61 @@ import {
   loadPosts,
 } from '../server/community'
 
+const toCursorArticlePageRequest = (
+  filter: TPagedArticlesParams,
+  config: TEffectivePagiConfig,
+  after: string | null | undefined,
+): TPagiRequest => articlePagiRequest(filter, config, after)
+
 /** Community host query options that preserve Core keys, normalization, and merge policies. */
 export const communityQueries = {
-  posts: (community: string) =>
+  posts: (
+    community: string,
+    config: TEffectivePagiConfig = DEFAULT_EFFECTIVE_PAGI_CONFIG,
+    filter: TPagedArticlesParams = { community },
+  ) =>
     queryOptions({
-      queryKey: articleQueryKeys.posts({ community, page: 1, size: 20 }),
-      queryFn: () => loadPosts({ data: { community } }),
+      queryKey: articleQueryKeys.pagiPosts(filter, config, articlePagiRequest(filter, config)),
+      queryFn: async () => {
+        const page = await loadPosts({
+          data: {
+            community,
+            filter,
+            pagi: toPagiGraphQLInput(articlePagiRequest(filter, config)),
+          },
+        })
+        return page
+      },
+      gcTime: 10 * 60_000,
+      meta: { hydration: 'public' },
+    }),
+  postsInfinite: (
+    community: string,
+    config: TEffectivePagiConfig = DEFAULT_EFFECTIVE_PAGI_CONFIG,
+    filter: TPagedArticlesParams = { community },
+  ) =>
+    infiniteQueryOptions({
+      queryKey: articleQueryKeys.pagiPosts(
+        filter,
+        config,
+        toCursorArticlePageRequest(filter, config, null),
+      ),
+      initialPageParam: filter.after ?? (null as string | null),
+      queryFn: ({ pageParam }) =>
+        loadPosts({
+          data: {
+            community,
+            filter,
+            pagi: toPagiGraphQLInput(toCursorArticlePageRequest(filter, config, pageParam)),
+          },
+        }).then((page) => {
+          if (!page) throw new Error('Community post page is unavailable.')
+          return page
+        }),
+      getNextPageParam: (lastPage) => {
+        if (lastPage.pageInfo.__typename !== 'CursorPageInfo') return undefined
+        return lastPage.pageInfo.hasNextPage ? lastPage.pageInfo.endCursor : undefined
+      },
       gcTime: 10 * 60_000,
       meta: { hydration: 'public' },
     }),
@@ -51,10 +105,53 @@ export const communityQueries = {
       gcTime: 10 * 60_000,
       meta: { hydration: 'public' },
     }),
-  changelogs: (community: string) =>
+  changelogs: (
+    community: string,
+    config: TEffectivePagiConfig = DEFAULT_EFFECTIVE_PAGI_CONFIG,
+    filter: TPagedArticlesParams = { community },
+  ) =>
     queryOptions({
-      queryKey: articleQueryKeys.changelogs({ community, page: 1, size: 20 }),
-      queryFn: () => loadChangelogs({ data: { community } }),
+      queryKey: articleQueryKeys.pagiChangelogs(filter, config, articlePagiRequest(filter, config)),
+      queryFn: async () => {
+        const page = await loadChangelogs({
+          data: {
+            community,
+            filter,
+            pagi: toPagiGraphQLInput(articlePagiRequest(filter, config)),
+          },
+        })
+        return page
+      },
+      gcTime: 10 * 60_000,
+      meta: { hydration: 'public' },
+    }),
+  changelogsInfinite: (
+    community: string,
+    config: TEffectivePagiConfig = DEFAULT_EFFECTIVE_PAGI_CONFIG,
+    filter: TPagedArticlesParams = { community },
+  ) =>
+    infiniteQueryOptions({
+      queryKey: articleQueryKeys.pagiChangelogs(
+        filter,
+        config,
+        toCursorArticlePageRequest(filter, config, null),
+      ),
+      initialPageParam: filter.after ?? (null as string | null),
+      queryFn: ({ pageParam }) =>
+        loadChangelogs({
+          data: {
+            community,
+            filter,
+            pagi: toPagiGraphQLInput(toCursorArticlePageRequest(filter, config, pageParam)),
+          },
+        }).then((page) => {
+          if (!page) throw new Error('Community changelog page is unavailable.')
+          return page
+        }),
+      getNextPageParam: (lastPage) => {
+        if (lastPage.pageInfo.__typename !== 'CursorPageInfo') return undefined
+        return lastPage.pageInfo.hasNextPage ? lastPage.pageInfo.endCursor : undefined
+      },
       gcTime: 10 * 60_000,
       meta: { hydration: 'public' },
     }),
@@ -65,16 +162,49 @@ export const communityQueries = {
       gcTime: 10 * 60_000,
       meta: { hydration: 'public' },
     }),
-  comments: (community: string, thread: TThread, innerId: string) =>
-    queryOptions({
-      queryKey: commentKeys.list(community, thread, innerId, 1, 'REPLIES'),
-      queryFn: () => loadComments({ data: { community, thread, innerId } }),
+  comments: (
+    community: string,
+    thread: TArticleThread,
+    innerId: string,
+    config: TEffectivePagiConfig = DEFAULT_EFFECTIVE_PAGI_CONFIG,
+    page = 1,
+  ) => {
+    const collection = { article: { community, thread, innerId }, mode: 'REPLIES' as const }
+    return queryOptions({
+      ...commentQueries.page(collection, config, page),
+      queryFn: () =>
+        loadComments({
+          data: { collection, pagi: toPagiGraphQLInput(commentPagiRequest(config, page)) },
+        }),
       gcTime: 10 * 60_000,
       meta: { hydration: 'public' },
-    }),
-  kanban: (community: string) =>
+    })
+  },
+  commentsInfinite: (
+    community: string,
+    thread: TArticleThread,
+    innerId: string,
+    config: TEffectivePagiConfig,
+    initialAfter?: string,
+  ) => {
+    const collection = {
+      initialAfter,
+      article: { community, thread, innerId },
+      mode: 'REPLIES' as const,
+    }
+    return infiniteQueryOptions({
+      ...commentQueries.infinite(collection, config),
+      queryFn: ({ pageParam }) =>
+        loadComments({
+          data: { collection, pagi: toPagiGraphQLInput(commentPagiRequest(config, 1, pageParam)) },
+        }),
+      gcTime: 10 * 60_000,
+      meta: { hydration: 'public' },
+    })
+  },
+  kanban: (community: string, config = DEFAULT_EFFECTIVE_PAGI_CONFIG) =>
     queryOptions({
-      queryKey: articleQueryKeys.kanban(community),
+      queryKey: articleQueryKeys.kanban(community, config),
       queryFn: () => loadKanban({ data: { community } }),
       gcTime: 10 * 60_000,
       meta: { hydration: 'public' },

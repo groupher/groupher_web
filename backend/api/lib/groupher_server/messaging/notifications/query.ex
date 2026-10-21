@@ -10,7 +10,6 @@ defmodule GroupherServer.Messaging.Notifications.Query do
 
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
-  import ShortMaps
 
   alias GroupherServer.Accounts
 
@@ -18,6 +17,9 @@ defmodule GroupherServer.Messaging.Notifications.Query do
   alias Accounts.Model.User
   alias Messaging.Model.Notification
   alias Helper.ORM
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @cut_from_users_count 3
 
@@ -26,18 +28,34 @@ defmodule GroupherServer.Messaging.Notifications.Query do
 
   ## Examples
 
-      Messaging.Notifications.Query.paged(user, %{page: 1, size: 20, read: false})
+      Messaging.Notifications.Query.paged(user, %{read: false}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
-  @spec paged(User.t(), map()) :: term()
-  def paged(%User{} = user, %{page: page, size: size} = filter) do
+  @spec paged(User.t(), map(), Params.t() | nil) :: term()
+  def paged(%User{} = user, filter, pagi) do
     read = Map.get(filter, :read, false)
 
-    Notification
-    |> where([n], n.user_id == ^user.id and n.read == ^read)
-    |> order_by([n], desc: n.inserted_at, desc: n.id)
-    |> ORM.paginator(~m(page size)a)
-    |> cut_from_users_ifneed()
-    |> done()
+    query =
+      Notification
+      |> where([n], n.user_id == ^user.id and n.read == ^read)
+
+    with {:ok, page} <-
+           ORM.pagi(
+             query,
+             pagi,
+             for: Notification,
+             surface: "mailbox.notifications",
+             query_fingerprint:
+               :crypto.hash(:sha256, :erlang.term_to_binary({user.id, read})) |> Base.encode16(),
+             order: %Order{
+               fields: [:inserted_at, :id],
+               directions: [:desc, :desc],
+               cursor_fields: [:inserted_at, :id]
+             }
+           ) do
+      page
+      |> cut_from_users_ifneed()
+      |> done()
+    end
   end
 
   @doc """

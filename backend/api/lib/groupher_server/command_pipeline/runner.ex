@@ -5,8 +5,8 @@ defmodule GroupherServer.CommandPipeline.Runner do
   The runner, not a business command, owns the top-level transaction. Gate
   callbacks are the only stage allowed to use the join-only Gate API. The
   runner publishes the current stage through `StageContext`, so Gate can
-  enforce that rule at runtime. A workflow only runs while one of these
-  top-level transactions is active.
+  enforce that rule at runtime. Domain workflows remain ordinary functions
+  invoked by the top-level pipeline's `change` stage.
 
       public Command
         -> Pipeline.Runner
@@ -94,46 +94,6 @@ defmodule GroupherServer.CommandPipeline.Runner do
       run_cleanup(result, input, stages)
     else
       {:error, _reason} = error -> error
-    end
-  end
-
-  @doc "Executes a workflow in the current top-level pipeline transaction."
-  def run_workflow(module, contract, _input, steps, return_name) do
-    previous = Process.get(@runner_key)
-
-    cond do
-      not is_map(previous) ->
-        {:error, :pipeline_transaction_required}
-
-      previous.kind == :workflow ->
-        {:error, :workflow_nested}
-
-      true ->
-        set_active(module, contract, previous.operation_ref, :workflow)
-
-        try do
-          Enum.reduce_while(steps, {:ok, %{}}, fn {name, callback}, {:ok, results} ->
-            case StageContext.run({:workflow, name}, fn -> callback.(results) end) do
-              {:ok, value} ->
-                {:cont, {:ok, Map.put(results, name, value)}}
-
-              {:error, %Rejected{} = reason} ->
-                {:halt, stage_error(name, reason)}
-
-              {:error, reason} ->
-                {:halt, stage_error(name, reason)}
-
-              other ->
-                {:halt, {:error, {:pipeline_invalid_result, name, other}}}
-            end
-          end)
-          |> case do
-            {:ok, results} -> {:ok, Map.fetch!(results, return_name)}
-            error -> error
-          end
-        after
-          restore_active(previous)
-        end
     end
   end
 
@@ -485,8 +445,6 @@ defmodule GroupherServer.CommandPipeline.Runner do
       kind: kind
     })
   end
-
-  defp restore_active(previous), do: Process.put(@runner_key, previous)
 
   defp clear_active, do: Process.delete(@runner_key)
 

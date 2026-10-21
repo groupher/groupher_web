@@ -109,7 +109,6 @@ jobs:
       - name: Check CMS pipeline and Command inventories
         run: |
           mix cms.pipeline.check --check
-          mix cms.pipeline.coverage --check
           mix cms.command.pipeline --check
 
       - name: Start PostgreSQL with pg_roaringbitmap

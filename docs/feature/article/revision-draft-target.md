@@ -2325,3 +2325,7 @@ LocalDraftHistory = local browser recovery; not server domain history
 ```
 
 这不是为了增加一套抽象，而是让每个概念只回答一个问题。唯一保留的产品特例是 Doc branch/tree/release，因为它确实是 Docs 的业务能力；普通 Article 不为它承担抽象成本。
+
+### 版本历史分页
+
+Doc branch publication history 使用统一 PagiInput 和 entries/pageInfo，支持 offset/cursor，不再通过 limit 返回截断数组。list/get/diff 的公开领域入口显式接收 actor，先解析 canonical branch/community，通过既有 Gate Docs 访问策略并确认 Article binding，再读取版本。分页身份是 DocBranchVersion，按 version_number/id 倒序，fingerprint 绑定 doc/branch；immutable revision/extension/body 仍按页批量读取。

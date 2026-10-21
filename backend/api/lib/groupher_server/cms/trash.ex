@@ -3,8 +3,9 @@ defmodule GroupherServer.CMS.Trash do
   Small coordinator for action-level Trash operations.
 
   Article lifecycle remains in `CMS.Articles.Trash`; Docs Tree placement stays
-  in `CMS.DocTree.Trash`. This module only routes an action and drives the due
-  action scan used by the scheduler.
+  in `CMS.DocTree.Trash`. User-scoped permanent deletion is routed through the
+  resource-specific Command/Receipt boundary, while this module also drives
+  the due action scan used by the scheduler.
 
   Business position:
 
@@ -87,11 +88,41 @@ defmodule GroupherServer.CMS.Trash do
   def permanently_delete_action_in_scope(ref, community_id, thread, %User{} = actor, opts \\ []) do
     with {:ok, action} <- get_action(ref),
          true <- action.community_id == community_id,
-         {:ok, ^thread} <- action_thread(action),
-         {:ok, result} <- permanently_delete_action(action, actor, opts) do
-      {:ok, maybe_put_command_id(result, Keyword.get(opts, :command_id))}
+         {:ok, ^thread} <- action_thread(action) do
+      case permanently_delete_action_in_scope_loaded(
+             action,
+             actor,
+             Keyword.merge(opts, community_id: community_id, thread: thread)
+           ) do
+        {:ok, result} -> {:ok, maybe_put_command_id(result, Keyword.get(opts, :command_id))}
+        {:error, reason} -> {:error, reason}
+      end
     else
       _ -> {:error, CMS.Articles.ErrorCat.not_exist("TrashAction")}
+    end
+  end
+
+  defp permanently_delete_action_in_scope_loaded(
+         %TrashAction{root_type: root_type} = action,
+         actor,
+         opts
+       ) do
+    if String.starts_with?(root_type, "doc_tree_") do
+      CMS.DocTree.Commands.PermanentlyDeleteTrashItem.execute(action, actor, opts)
+    else
+      permanently_delete_article_action_receipt(action, actor, opts)
+    end
+  end
+
+  defp permanently_delete_article_action_receipt(action, %User{} = actor, opts) do
+    case Repo.get_by(TrashedArticle, trash_action_id: action.id) do
+      %TrashedArticle{} = item ->
+        item = Repo.preload(item, [:article, :trash_action])
+        CMS.Articles.Commands.PermanentlyDeleteTrashed.execute(item, actor, opts)
+
+      nil ->
+        CMS.Articles.Trash.delete_empty_action(action.id)
+        {:ok, %{done: true}}
     end
   end
 
@@ -109,7 +140,7 @@ defmodule GroupherServer.CMS.Trash do
       |> Repo.all()
 
     Enum.reduce(actions, %{deleted: 0, failed: []}, fn action, result ->
-      case permanently_delete_action(action, :system, source: "scheduler") do
+      case purge_action(action, source: "scheduler") do
         {:ok, _} ->
           %{result | deleted: result.deleted + 1}
 
@@ -118,6 +149,29 @@ defmodule GroupherServer.CMS.Trash do
       end
     end)
     |> then(fn result -> {:ok, %{result | failed: Enum.reverse(result.failed)}} end)
+  end
+
+  defp purge_action(%TrashAction{root_type: root_type} = action, opts) do
+    if String.starts_with?(root_type, "doc_tree_") do
+      CMS.DocTree.permanently_delete_trash_item_internal(
+        action,
+        Keyword.merge(opts, community_id: action.community_id, thread: :doc)
+      )
+    else
+      permanently_delete_article_action_internal(action, opts)
+    end
+  end
+
+  defp permanently_delete_article_action_internal(action, opts) do
+    case Repo.get_by(TrashedArticle, trash_action_id: action.id) do
+      %TrashedArticle{} = item ->
+        item = Repo.preload(item, [:article, :trash_action])
+        CMS.Articles.Commands.PermanentlyDeleteTrashed.execute_direct(item, :system, opts)
+
+      nil ->
+        CMS.Articles.Trash.delete_empty_action(action.id)
+        {:ok, %{done: true}}
+    end
   end
 
   defp permanently_delete_article_action(action, actor, opts) do

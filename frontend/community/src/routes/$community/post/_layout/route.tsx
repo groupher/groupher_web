@@ -1,27 +1,32 @@
-import { communityQueries } from '@community/query/queries'
+import ArticlePageBoundary from '@community/components/ArticlePageBoundary'
+import { loadArticleSurface } from '@community/query/articleSurface'
 import { communityPublicPath } from '@community/server/public-path'
-import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { Outlet, createFileRoute, redirect, useLocation } from '@tanstack/react-router'
 
 import { THREAD } from '~/const/thread'
+import URL_PARAM from '~/const/url_param'
 import ArticleListStoreProvider from '~/stores/articleList/provider'
 import PostThread from '~/unit/PostThread'
 
 export const Route = createFileRoute('/$community/post/_layout')({
-  loader: async ({ context, params }) => {
-    const posts = await context.queryClient.ensureQueryData(
-      communityQueries.posts(params.community),
+  loader: async ({ context, params, location, parentMatchPromise }) => {
+    await parentMatchPromise
+    const result = await loadArticleSurface(
+      context.queryClient,
+      params.community,
+      'posts',
+      location.searchStr,
     )
-    await context.queryClient.ensureQueryData(
-      communityQueries.stats(
-        context.queryClient,
-        params.community,
-        THREAD.POST,
-        (posts?.entries || []).flatMap((article) =>
-          article.innerId === undefined ? [] : [article.innerId],
-        ),
-      ),
-    )
-    return { posts }
+    if (result.resetPage && new URLSearchParams(location.searchStr).has(URL_PARAM.PAGE)) {
+      const search = new URLSearchParams(location.searchStr)
+      search.delete(URL_PARAM.PAGE)
+      const query = search.toString()
+      throw redirect({
+        href: query ? `${location.pathname}?${query}` : location.pathname,
+        replace: true,
+      })
+    }
+    return result
   },
   head: ({ params, matches }) => ({
     links: [{ rel: 'canonical', href: communityPublicPath(params.community, '/post', matches) }],
@@ -30,9 +35,19 @@ export const Route = createFileRoute('/$community/post/_layout')({
 })
 
 function PostListLayout() {
+  const { community } = Route.useParams()
+  const { recovery } = Route.useLoaderData()
+  const { searchStr } = useLocation()
   return (
     <ArticleListStoreProvider initData={{ thread: THREAD.POST }}>
-      <PostThread />
+      <ArticlePageBoundary
+        key={`${community}:posts:${recovery}:${searchStr}`}
+        community={community}
+        surface='posts'
+        recovery={recovery}
+      >
+        <PostThread />
+      </ArticlePageBoundary>
       <Outlet />
     </ArticleListStoreProvider>
   )

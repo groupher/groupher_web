@@ -29,10 +29,14 @@ defmodule GroupherServer.Test.Accounts.Publish.Doc do
     end
 
     test "fresh user get empty paged published docs", ~m(user2)a do
-      {:ok, results} = Accounts.paged_articles(user2, :doc, %{page: 1, size: 20})
+      {:ok, results} =
+        Accounts.paged_articles(user2, :doc, %{}, %GroupherServer.Pagi.Params.Offset{
+          page: 1,
+          size: 20
+        })
 
-      assert results |> is_valid_pagination?(:raw)
-      assert results.total_count == 0
+      assert results.page_info.api == :offset
+      assert results.page_info.total_count == 0
     end
 
     @tag :skip_ci
@@ -61,10 +65,14 @@ defmodule GroupherServer.Test.Accounts.Publish.Doc do
         acc ++ [doc]
       end)
 
-      {:ok, results} = Accounts.paged_articles(user, :doc, %{page: 1, size: 50})
+      {:ok, results} =
+        Accounts.paged_articles(user, :doc, %{}, %GroupherServer.Pagi.Params.Offset{
+          page: 1,
+          size: 50
+        })
 
-      assert results |> is_valid_pagination?(:raw)
-      assert results.total_count == @publish_count * 2 + 1
+      assert results.page_info.api == :offset
+      assert results.page_info.total_count == @publish_count * 2 + 1
 
       random_doc_id = pub_docs |> Enum.random() |> Map.get(:id)
       random_doc_id2 = pub_docs2 |> Enum.random() |> Map.get(:id)
@@ -91,8 +99,8 @@ defmodule GroupherServer.Test.Accounts.Publish.Doc do
         acc ++ [comment]
       end)
 
-      filter = %{page: 1, size: 20}
-      {:ok, articles} = Accounts.paged_comments(user, :doc, filter)
+      pagi = %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
+      {:ok, articles} = Accounts.paged_comments(user, :doc, %{}, pagi, user)
 
       entries = articles.entries
       article = entries |> List.first()

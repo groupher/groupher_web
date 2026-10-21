@@ -24,12 +24,12 @@ defmodule GroupherServerWeb.Schema.Helper.Queries do
       quote do
         @desc unquote("paged published #{plural(thread)}")
         field unquote(:"paged_published_#{plural(thread)}"),
-              unquote(:"paged_#{plural(thread)}") do
+              unquote(:"#{thread}_page") do
           arg(:login, non_null(:string))
-          arg(:filter, non_null(:pagi_filter))
+          arg(:filter, :article_page_filter)
+          arg(:pagi, :pagi_input)
           arg(:thread, unquote(:"#{thread}_thread"), default_value: unquote(thread))
 
-          middleware(M.PageSizeProof)
           middleware(M.FrontDesk, :user)
           resolve(&R.Accounts.Profiles.paged_published_articles/3)
         end
@@ -54,15 +54,6 @@ defmodule GroupherServerWeb.Schema.Helper.Queries do
             R.CMS.Articles.read_article(root, args, info, thread: unquote(thread))
           end)
         end
-
-        @desc unquote("get paged #{plural(thread)}")
-        field unquote(:"paged_#{plural(thread)}"), unquote(:"paged_#{plural(thread)}") do
-          arg(:thread, unquote(:"#{thread}_thread"), default_value: unquote(thread))
-          arg(:filter, non_null(unquote(:"paged_#{plural(thread)}_filter")))
-
-          middleware(M.PageSizeProof, default_sort: :desc_active)
-          resolve(&R.CMS.Articles.paged_articles/3)
-        end
       end
     end)
   end
@@ -70,11 +61,10 @@ defmodule GroupherServerWeb.Schema.Helper.Queries do
   defmacro article_reacted_users_query(action, resolver) do
     quote do
       @desc unquote("get paged #{past_verb(action)} users of an article")
-      field unquote(:"#{past_verb(action)}_users"), :paged_users do
+      field unquote(:"#{past_verb(action)}_users"), :user_page do
         arg(:article, non_null(:article_path_input))
-        arg(:filter, non_null(:pagi_filter))
+        arg(:pagi, :pagi_input)
 
-        middleware(M.PageSizeProof)
         middleware(M.FrontDesk, :article)
 
         resolve(unquote(resolver))

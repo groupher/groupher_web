@@ -5,6 +5,7 @@ export {
   commentKeys,
   mutationKeys,
   normalizeArticleFilter,
+  normalizeArticlePageFilter,
   viewerQueryKeys,
 } from './key'
 export { dsbKeys, dsbMutationKeys, dsbQueries } from './dsb'

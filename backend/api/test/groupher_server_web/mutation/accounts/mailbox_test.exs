@@ -21,13 +21,28 @@ defmodule GroupherServer.Test.Mutation.Accounts.Mailbox do
     test "can mark read a mention", ~m(user_conn user user2)a do
       {:ok, _} = mock_mention_for(user, user2)
 
-      {:ok, mentions} = Messaging.paged_messages(:mention, user, %{page: 1, size: 10})
+      {:ok, mentions} =
+        Messaging.paged_messages(:mention, user, %{}, %GroupherServer.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       mention = mentions.entries |> List.first()
 
       variables = %{ids: [mention.id], type: "MENTION"}
       user_conn |> gq_mutation(@query, variables)
 
-      {:ok, mentions} = Messaging.paged_messages(:mention, user, %{page: 1, size: 10, read: true})
+      {:ok, mentions} =
+        Messaging.paged_messages(
+          :mention,
+          user,
+          %{read: true},
+          %GroupherServer.Pagi.Params.Offset{
+            page: 1,
+            size: 10
+          }
+        )
+
       mention = mentions.entries |> List.first()
       assert mention.read
     end
@@ -35,14 +50,24 @@ defmodule GroupherServer.Test.Mutation.Accounts.Mailbox do
     test "can mark read a notification", ~m(user_conn user user2)a do
       {:ok, _} = mock_notification_for(user, user2)
 
-      {:ok, notifications} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, notifications} =
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       notify = notifications.entries |> List.first()
 
       variables = %{ids: [notify.id], type: "NOTIFICATION"}
       user_conn |> gq_mutation(@query, variables)
 
       {:ok, notifications} =
-        Messaging.paged_messages(:notification, user, %{page: 1, size: 10, read: true})
+        Messaging.paged_messages(
+          :notification,
+          user,
+          %{read: true},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10}
+        )
 
       notify = notifications.entries |> List.first()
 
@@ -54,27 +79,52 @@ defmodule GroupherServer.Test.Mutation.Accounts.Mailbox do
       {:ok, _} = mock_mention_for(user, user2)
       {:ok, _} = mock_mention_for(user, user3)
 
-      {:ok, mentions} = Messaging.paged_messages(:mention, user, %{page: 1, size: 10})
+      {:ok, mentions} =
+        Messaging.paged_messages(:mention, user, %{}, %GroupherServer.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert mentions.total_count == 2
 
       variables = %{type: "MENTION"}
       user_conn |> gq_mutation(@query, variables)
 
-      {:ok, mentions} = Messaging.paged_messages(:mention, user, %{page: 1, size: 10, read: true})
+      {:ok, mentions} =
+        Messaging.paged_messages(
+          :mention,
+          user,
+          %{read: true},
+          %GroupherServer.Pagi.Params.Offset{
+            page: 1,
+            size: 10
+          }
+        )
+
       assert mentions.total_count == 2
     end
 
     test "can mark read all notifications", ~m(user_conn user user2)a do
       {:ok, _} = mock_notification_for(user, user2)
 
-      {:ok, notifications} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, notifications} =
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert notifications.total_count == 1
 
       variables = %{type: "NOTIFICATION"}
       user_conn |> gq_mutation(@query, variables)
 
       {:ok, notifications} =
-        Messaging.paged_messages(:notification, user, %{page: 1, size: 10, read: true})
+        Messaging.paged_messages(
+          :notification,
+          user,
+          %{read: true},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10}
+        )
 
       assert notifications.total_count == 1
     end

@@ -8,8 +8,7 @@ defmodule Helper.T do
         -> T
         -> normalized value / infrastructure
   """
-  alias GroupherServer.{Accounts, CMS, ErrorCat}
-  alias Accounts.Model.User
+  alias GroupherServer.{CMS, ErrorCat}
   alias CMS.Model.Article
 
   @type error :: ErrorCat.Error.t()
@@ -37,27 +36,9 @@ defmodule Helper.T do
 
   @type thread :: :post | :blog | :changelog | :doc
 
-  @type paged_filter :: %{
-          page: integer(),
-          size: integer(),
-          sort: :desc_inserted | :asc_inserted
-        }
-
-  @type paged_users :: %{
-          entries: [User.t()],
-          page_number: integer(),
-          page_size: integer(),
-          total_count: integer(),
-          total_pages: integer()
-        }
-
-  @type paged_data :: %{
-          entries: [map()],
-          page_number: integer(),
-          page_size: integer(),
-          total_count: integer(),
-          total_pages: integer()
-        }
+  @type paged_users :: Helper.ORM.Pagi.Page.t()
+  @type pagi_input :: GroupherServer.Pagi.Params.input()
+  @type paged_data :: Helper.ORM.Pagi.Page.t() | %{entries: [map()], page_info: map()}
 
   @type article :: Article.t() | map()
 
@@ -67,14 +48,6 @@ defmodule Helper.T do
           title: String.t(),
           upvotes_count: integer(),
           meta: map()
-        }
-
-  @type paged_article_common :: %{
-          entries: [article_common],
-          page_number: integer(),
-          page_size: integer(),
-          total_count: integer(),
-          total_pages: integer()
         }
 
   @type article_info :: %{

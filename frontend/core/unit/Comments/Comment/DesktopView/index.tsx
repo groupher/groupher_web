@@ -12,6 +12,7 @@ type TProps = {
   hasReplies?: boolean
   isFolded: boolean
   showInnerRef?: boolean
+  preview?: boolean
   isReply?: boolean
 }
 

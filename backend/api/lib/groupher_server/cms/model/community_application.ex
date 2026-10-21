@@ -14,6 +14,7 @@ defmodule GroupherServer.CMS.Model.CommunityApplication do
   """
 
   use Ecto.Schema
+  use Flop.Schema
 
   import Ecto.Changeset
 
@@ -63,6 +64,12 @@ defmodule GroupherServer.CMS.Model.CommunityApplication do
           | :cancelled
           | :expired
   @type t :: %__MODULE__{}
+
+  @flop_options [
+    filterable: [],
+    sortable: [:updated_at, :submitted_at, :id],
+    pagination_types: [:page, :first]
+  ]
 
   schema "community_applications" do
     field(:public_ref, :string)

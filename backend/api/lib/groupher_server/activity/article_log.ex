@@ -14,8 +14,9 @@ defmodule GroupherServer.Activity.ArticleLog do
 
   alias CMS.Model.{Article, ArticleDraft, DocDraft}
   alias Helper.ORM
-
-  @page_size 20
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @doc """
   Lists the permission-filtered Activity surface for one Article or Doc branch.
@@ -24,11 +25,10 @@ defmodule GroupherServer.Activity.ArticleLog do
 
       Activity.ArticleLog.list(article, actor, %{page: 1})
   """
-  @spec list(struct(), struct() | nil, map()) :: {:ok, map()} | {:error, term()}
-  def list(article, actor, filter) do
+  @spec list(struct(), struct() | nil, Params.t() | nil) :: {:ok, map()} | {:error, term()}
+  def list(article, actor, pagi) do
     with {:ok, canonical} <- authorize_read(article, actor),
-         {:ok, handler} <- Artiment.handler(canonical),
-         {:ok, page} <- pagination(filter) do
+         {:ok, handler} <- Artiment.handler(canonical) do
       actions = handler.surface_actions(:article_log)
       article_id = canonical.id
 
@@ -37,17 +37,37 @@ defmodule GroupherServer.Activity.ArticleLog do
         |> where([log], field(log, ^handler.stream_field()) == ^article_id)
         |> where([log], log.action in ^actions)
         |> maybe_branch(article)
-        |> order_by([log], desc: log.occurred_at, desc: log.record_sequence)
 
-      paged = ORM.paginator(query, page: page, size: @page_size)
-
-      {:ok,
-       Map.update!(paged, :entries, fn entries ->
-         Enum.map(entries, fn log ->
-           {:ok, projected} = handler.project(log, :article_log)
-           projected
-         end)
-       end)}
+      with {:ok, paged} <-
+             ORM.pagi(
+               query,
+               pagi,
+               for: handler.schema(),
+               surface: "activity.article",
+               query_fingerprint:
+                 :crypto.hash(
+                   :sha256,
+                   :erlang.term_to_binary(
+                     {canonical.id, canonical.thread, Map.get(article, :branch_id),
+                      Map.get(article, :stage, :public)}
+                   )
+                 )
+                 |> Base.encode16(),
+               order: %Order{
+                 fields: [:occurred_at, :record_sequence],
+                 directions: [:desc, :desc],
+                 cursor_fields: [:occurred_at, :record_sequence]
+               }
+             ) do
+        {:ok,
+         paged
+         |> Map.update!(:entries, fn entries ->
+           Enum.map(entries, fn log ->
+             {:ok, projected} = handler.project(log, :article_log)
+             projected
+           end)
+         end)}
+      end
     end
   end
 
@@ -136,14 +156,4 @@ defmodule GroupherServer.Activity.ArticleLog do
   end
 
   defp maybe_branch(query, _article), do: query
-
-  defp pagination(filter) when is_map(filter) do
-    page = Map.get(filter, :page, 1)
-
-    if Map.keys(filter) -- [:page] == [] and is_integer(page) and page > 0 do
-      {:ok, page}
-    else
-      {:error, GroupherServer.Activity.ErrorCat.invalid_pagination()}
-    end
-  end
 end

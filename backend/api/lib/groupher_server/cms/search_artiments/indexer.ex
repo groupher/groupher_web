@@ -188,46 +188,46 @@ defmodule GroupherServer.CMS.SearchArtiments.Indexer do
 
   defp load_public_articles(thread, roots) do
     roots
-    |> Enum.reduce_while({:ok, []}, fn root, {:ok, acc} ->
-      case public_article(thread, root.id) do
-        {:ok, articles} -> {:cont, {:ok, articles ++ acc}}
-        {:error, :not_found} -> {:cont, {:ok, acc}}
+    |> Enum.reduce_while({:ok, []}, fn root, {:ok, batches} ->
+      case public_article_for(thread, root) do
+        {:ok, articles} -> {:cont, {:ok, [Enum.reverse(articles) | batches]}}
+        {:error, :not_found} -> {:cont, {:ok, batches}}
       end
     end)
     |> case do
-      {:ok, articles} -> {:ok, Enum.reverse(articles)}
+      {:ok, batches} -> {:ok, batches |> Enum.reverse() |> List.flatten()}
       {:error, reason} -> {:error, reason}
     end
   end
 
   defp public_article(thread, article_id) do
     case Repo.get(Article, article_id) do
-      %Article{thread: ^thread} ->
-        bindings =
-          ArticleBinding
-          |> join(:inner, [binding], community in Community,
-            on: community.id == binding.community_id
-          )
-          |> where(
-            [binding, _community],
-            binding.article_id == ^article_id and binding.visible == true
-          )
-          |> select([binding, community], {binding.inner_id, community.slug})
-          |> Repo.all()
-
-        articles =
-          Enum.reduce(bindings, [], fn {inner_id, community}, acc ->
-            case FrontDesk.article(%{community: community, thread: thread, inner_id: inner_id}) do
-              {:ok, public} -> [public | acc]
-              {:error, _reason} -> acc
-            end
-          end)
-
-        if articles == [], do: {:error, :not_found}, else: {:ok, Enum.reverse(articles)}
-
-      _ ->
-        {:error, :not_found}
+      %Article{thread: ^thread} = article -> public_article_for(thread, article)
+      _ -> {:error, :not_found}
     end
+  end
+
+  defp public_article_for(thread, %Article{id: article_id, thread: article_thread})
+       when article_thread == thread do
+    bindings =
+      ArticleBinding
+      |> join(:inner, [binding], community in Community, on: community.id == binding.community_id)
+      |> where(
+        [binding, _community],
+        binding.article_id == ^article_id and binding.visible == true
+      )
+      |> select([binding, community], {binding.inner_id, community.slug})
+      |> Repo.all()
+
+    articles =
+      Enum.reduce(bindings, [], fn {inner_id, community}, acc ->
+        case FrontDesk.article(%{community: community, thread: thread, inner_id: inner_id}) do
+          {:ok, public} -> [public | acc]
+          {:error, _reason} -> acc
+        end
+      end)
+
+    if articles == [], do: {:error, :not_found}, else: {:ok, Enum.reverse(articles)}
   end
 
   defp stable_id(%Article{id: article_id}), do: article_id

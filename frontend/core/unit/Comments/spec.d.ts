@@ -1,4 +1,4 @@
-import type { TAccount, TComment, TID, TSubmitState, TPagedComments, TUser } from '~/spec'
+import type { TComment, TID, TSubmitState } from '~/spec'
 
 import type { EDIT_MODE, MODE } from './constant'
 
@@ -21,9 +21,4 @@ export type TEditState = {
   submitState: TSubmitState
   updateInnerId: TID | null
   replyToComment: TComment | null
-}
-
-export type TRepliesState = {
-  repliesParentId: TID | null
-  repliesLoading: boolean
 }

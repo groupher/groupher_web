@@ -1,0 +1,8 @@
+{
+  "api": "offset",
+  "mode": "page",
+  "schemaVersion": 1,
+  "revision": 0,
+  "defaultSize": 20,
+  "maxSize": 100
+}

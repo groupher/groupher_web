@@ -146,9 +146,9 @@ defmodule GroupherServer.CMS.Communities.Count do
       result =
         CommunityTag
         |> where([t], t.community_id == ^community.id)
-        |> ORM.paginator(page: 1, size: 1)
+        |> Repo.aggregate(:count)
 
-      {:ok, result.total_count}
+      {:ok, result}
     end
   end
 

@@ -14,7 +14,7 @@ defmodule GroupherServer.PublicCache.Workflow do
   require Logger
 
   alias GroupherServer.{PublicCache, Repo}
-  alias PublicCache.{Effects, Model.Invalidation, Persist, Policy}
+  alias PublicCache.{DeliveryConfig, Effects, Model.Invalidation, Persist}
 
   @doc """
   Records an invalidation and enqueues delivery in one transaction.
@@ -109,10 +109,10 @@ defmodule GroupherServer.PublicCache.Workflow do
   """
   @spec delivery_retry_delay(pos_integer()) :: pos_integer()
   def delivery_retry_delay(attempt) do
-    base = Policy.retry_base_delay_seconds()
+    base = DeliveryConfig.retry_base_delay_seconds()
     exponential = round(base * :math.pow(2, max(attempt - 1, 0)))
     jitter = :rand.uniform(max(div(exponential, 4), 1)) - 1
-    min(exponential + jitter, Policy.max_retry_delay_seconds())
+    min(exponential + jitter, DeliveryConfig.max_retry_delay_seconds())
   end
 
   defp deliver_claimed(invalidation, lock_ref, attempt, max_attempts) do

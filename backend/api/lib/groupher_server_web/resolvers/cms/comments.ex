@@ -9,6 +9,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Comments do
 
   alias GroupherServer.Accounts
 
+  alias GroupherServer.Pagi
   alias GroupherServer.CMS
   alias Accounts.Model.User
   alias CMS.Model.Community
@@ -65,28 +66,38 @@ defmodule GroupherServerWeb.Resolvers.CMS.Comments do
     CMS.comments_one_comment(comment)
   end
 
-  def paged_comments(
+  @doc "Resolves the canonical CommentPage with an independent PagiInput."
+  def comment_page(
         _root,
-        %{article: article, article_path: %{thread: thread}, filter: filter, mode: mode},
-        %{context: %{cur_user: user}}
+        %{
+          article: article,
+          article_path: %{community: community, thread: thread}
+        } = args,
+        %{context: context}
       ) do
-    CMS.comments_paged_comments(thread, article.id, filter, mode, user)
-  end
+    filter = Map.get(args, :filter) || %{}
+    mode = Map.get(args, :mode, :replies)
+    pagi_input = Map.get(args, :pagi)
 
-  def paged_comments(
-        _root,
-        %{article: article, article_path: %{thread: thread}, filter: filter, mode: mode},
-        _info
-      ) do
-    CMS.comments_paged_comments(thread, article.id, filter, mode)
+    CMS.comments_page(
+      thread,
+      article.id,
+      community,
+      filter,
+      pagi_input,
+      mode,
+      Map.get(context, :cur_user)
+    )
   end
 
   def paged_comments_participants(
         _root,
-        %{article: article, article_path: %{thread: thread}, filter: filter},
+        %{article: article, article_path: %{thread: thread}} = args,
         _info
       ) do
-    CMS.comments_paged_comments_participants(thread, article.id, filter)
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
+      CMS.comments_paged_comments_participants(thread, article.id, pagi)
+    end
   end
 
   def create_comment(
@@ -186,14 +197,19 @@ defmodule GroupherServerWeb.Resolvers.CMS.Comments do
     {:ok, nil}
   end
 
-  def paged_comment_replies(_root, %{comment: comment, filter: filter}, %{
-        context: %{cur_user: user}
-      }) do
-    CMS.comments_paged_comment_replies(comment.id, filter, user)
-  end
-
-  def paged_comment_replies(_root, %{comment: comment, filter: filter}, _info) do
-    CMS.comments_paged_comment_replies(comment.id, filter)
+  @doc "Resolves an independent reply collection; FrontDesk supplies the canonical comment."
+  def comment_reply_page(
+        _root,
+        %{comment: comment, comment_path: %{article: %{community: community}}} = args,
+        %{context: context}
+      ) do
+    CMS.comments_reply_page(
+      comment,
+      community,
+      Map.get(args, :filter) || %{},
+      Map.get(args, :pagi),
+      Map.get(context, :cur_user)
+    )
   end
 
   defp validate_viewer_batch(paths) when is_list(paths) and length(paths) <= @viewer_batch_size do

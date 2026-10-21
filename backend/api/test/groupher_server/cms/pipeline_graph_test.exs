@@ -52,6 +52,17 @@ defmodule GroupherServer.CMS.PipelineGraphTest do
              internal_report["internal_pipeline_violations"]
   end
 
+  test "keeps article maintenance trash on an explicit internal pipeline" do
+    contracts = GroupherServer.CMS.Articles.Commands.Trash.__pipeline_contracts__()
+
+    assert %{
+             access: :internal,
+             name: :run_internal,
+             operation: :article_trash_internal,
+             pipeline: :direct_pipeline
+           } = Enum.find(contracts, &(&1.name == :run_internal))
+  end
+
   test "expands nested aliases when tracing Kanban commands" do
     files =
       [
@@ -225,42 +236,6 @@ defmodule GroupherServer.CMS.PipelineGraphTest do
            end)
   end
 
-  test "rejects a workflow pipeline called without a workflow stage" do
-    {files, contracts} =
-      fixture_graph(
-        %{
-          "facade.ex" => """
-          defmodule GroupherServer.CMS.Articles do
-            def update(value), do: GraphFixture.WorkflowCaller.execute(value)
-          end
-          """,
-          "commands/workflow_caller.ex" => """
-          defmodule GraphFixture.WorkflowCaller do
-            direct_pipeline execute(value) do
-              change(fn -> GraphFixture.Workflow.run(value) end)
-            end
-          end
-          """,
-          "commands/workflow.ex" => """
-          defmodule GraphFixture.Workflow do
-            workflow_pipeline run(value) do
-              step(:save, fn -> value end)
-              return(:save)
-            end
-          end
-          """
-        },
-        %{
-          GraphFixture.WorkflowCaller => [contract(:direct_pipeline, :execute, [:change])],
-          GraphFixture.Workflow => [contract(:workflow_pipeline, :run, [:workflow])]
-        }
-      )
-
-    report = Graph.build_report(files, contracts)
-
-    assert report["summary"]["invalid_workflow_calls"] == 1
-  end
-
   test "reports a reachable call to an undefined local helper" do
     {files, contracts} =
       fixture_graph(
@@ -391,6 +366,16 @@ defmodule GroupherServer.CMS.PipelineGraphTest do
     assert [violation] = Graph.gate_stage_violations(graph, scopes)
     assert violation["stage"] == "change"
     assert violation["gate"]["function"] == "check_in_transaction"
+  end
+
+  test "rejects compatibility Gate admission from the present stage" do
+    fixture = GroupherServer.Test.PipelineGraphFixtures.GateInPresent
+    graph = GraphAnalyzer.build_modules([fixture, GroupherServer.CMS.Gate])
+    scopes = GraphAnalyzer.pipeline_stage_calls(graph, fixture.__pipeline_contracts__())
+
+    assert [violation] = Graph.gate_stage_violations(graph, scopes)
+    assert violation["stage"] == "present"
+    assert violation["gate"]["function"] == "access_check"
   end
 
   test "fails closed when compiled pipeline stages cannot be attributed" do

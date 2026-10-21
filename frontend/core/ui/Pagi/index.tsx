@@ -6,32 +6,30 @@
 
 import type { FC, ReactNode } from 'react'
 
-import type { TPagi, TSpace } from '~/spec'
+import type { TGraphQLPagiPageInfo, TSpace } from '~/spec'
 
 import RealPagi from './RealPagi'
+import type { TPagiLabels } from './RealPagi'
 import useSalon, { cn } from './salon'
 
 export type TProps = {
+  labels?: TPagiLabels
   children?: ReactNode
   type?: 'bottom' | 'center'
   emptyMsg?: string
   noMoreMsg?: string
   showBottomMsg?: boolean
   onChange?: (page: number) => void
-} & TPagi &
-  TSpace
-
-const hasExtraPage = (totalCount, pageSize) => totalCount > pageSize
+  pageInfo?: TGraphQLPagiPageInfo
+} & TSpace
 
 const Pagi: FC<TProps> = ({
   onChange = console.log,
   showBottomMsg = false,
   emptyMsg = '还没有讨论',
   noMoreMsg = '没有更多讨论了',
-  pageNumber,
-  pageSize,
-  totalCount,
-  totalPages,
+  pageInfo,
+  labels,
   ...spacing
 }) => {
   const s = useSalon({ ...spacing })
@@ -40,7 +38,9 @@ const Pagi: FC<TProps> = ({
     onChange(page)
   }
 
-  if (totalCount === 0) {
+  if (!pageInfo || pageInfo.__typename !== 'OffsetPageInfo') return null
+
+  if (pageInfo.totalCount === 0) {
     return (
       <div className={cn(s.wrapper, s.empty)}>
         {showBottomMsg && <div className={s.bottomMsg}>{emptyMsg}</div>}
@@ -48,15 +48,8 @@ const Pagi: FC<TProps> = ({
     )
   }
 
-  return hasExtraPage(totalCount, pageSize) ? (
-    <RealPagi
-      pageNumber={pageNumber}
-      totalCount={totalCount}
-      totalPages={totalPages}
-      pageSize={pageSize}
-      onChange={handlePageChange}
-      {...spacing}
-    />
+  return pageInfo.hasNextPage || pageInfo.hasPreviousPage ? (
+    <RealPagi pageInfo={pageInfo} onChange={handlePageChange} labels={labels} {...spacing} />
   ) : (
     <div className={cn(s.wrapper, s.empty)}>
       {showBottomMsg && <div className={s.bottomMsg}>{noMoreMsg}</div>}

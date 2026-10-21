@@ -29,10 +29,14 @@ defmodule GroupherServer.Test.Accounts.Publish.Changelog do
     end
 
     test "fresh user get empty paged published changelogs", ~m(user2)a do
-      {:ok, results} = Accounts.paged_articles(user2, :changelog, %{page: 1, size: 20})
+      {:ok, results} =
+        Accounts.paged_articles(user2, :changelog, %{}, %GroupherServer.Pagi.Params.Offset{
+          page: 1,
+          size: 20
+        })
 
-      assert results |> is_valid_pagination?(:raw)
-      assert results.total_count == 0
+      assert results.page_info.api == :offset
+      assert results.page_info.total_count == 0
     end
 
     test "user can get paged published changelogs", ~m(user user2 community community2)a do
@@ -60,10 +64,14 @@ defmodule GroupherServer.Test.Accounts.Publish.Changelog do
         acc ++ [changelog]
       end)
 
-      {:ok, results} = Accounts.paged_articles(user, :changelog, %{page: 1, size: 30})
+      {:ok, results} =
+        Accounts.paged_articles(user, :changelog, %{}, %GroupherServer.Pagi.Params.Offset{
+          page: 1,
+          size: 30
+        })
 
-      assert results |> is_valid_pagination?(:raw)
-      assert results.total_count == @publish_count * 2 + 1
+      assert results.page_info.api == :offset
+      assert results.page_info.total_count == @publish_count * 2 + 1
 
       random_changelog_id = pub_changelogs |> Enum.random() |> Map.get(:id)
       random_changelog_id2 = pub_changelogs2 |> Enum.random() |> Map.get(:id)
@@ -90,8 +98,8 @@ defmodule GroupherServer.Test.Accounts.Publish.Changelog do
         acc ++ [comment]
       end)
 
-      filter = %{page: 1, size: 20}
-      {:ok, articles} = Accounts.paged_comments(user, :changelog, filter)
+      pagi = %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
+      {:ok, articles} = Accounts.paged_comments(user, :changelog, %{}, pagi, user)
 
       entries = articles.entries
       article = entries |> List.first()

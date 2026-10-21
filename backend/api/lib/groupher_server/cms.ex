@@ -16,12 +16,34 @@ defmodule GroupherServer.CMS do
 
   alias __MODULE__.{ArticlePath, Comments, EmotionFormatter, Insights, Query}
 
+  @doc "Returns community-scoped moderator picker candidates."
+  defdelegate communities_moderator_candidates(community, name),
+    to: GroupherServer.CMS.Communities,
+    as: :moderator_candidates
+
+  @doc "Builds the public Community query used by relation-backed collections."
+  defdelegate communities_public_query(), to: GroupherServer.CMS.Communities, as: :public_query
+
   @doc "Defines a typed CMS command Confirmation through the public CMS contract."
   defmacro command_confirmation(opts) do
     quote do
       use GroupherServer.CMS.Command.ConfirmationDefinition, unquote(opts)
     end
   end
+
+  @doc "Authorizes a canonical interaction resource inside the caller-owned gate stage."
+  @spec authorize_interaction_in_transaction(term(), atom(), struct()) ::
+          {:ok, struct()} | {:error, term()}
+  defdelegate authorize_interaction_in_transaction(actor, action, resource),
+    to: GroupherServer.CMS.Gate,
+    as: :check_interaction_in_transaction
+
+  @doc "Applies one collect fact and its synchronous projections in the caller-owned transaction."
+  @spec apply_collect_change_in_transaction(struct(), struct(), :add | :remove, Ecto.UUID.t()) ::
+          {:ok, {struct(), :changed | :unchanged}} | {:error, term()}
+  defdelegate apply_collect_change_in_transaction(canonical, actor, operation, command_id),
+    to: GroupherServer.CMS.Interactions.Reactions.CollectChange,
+    as: :apply
 
   @doc "Builds an ArticleCollect changeset for an Accounts-owned embedded collection."
   @spec article_collect_changeset(struct(), map()) :: Ecto.Changeset.t()
@@ -121,8 +143,8 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.FrontDesk,
     as: :resolve_binding
 
-  @doc "Delegates GroupherServer.CMS.AbuseReports.paged_reports/1 through the CMS Context boundary."
-  defdelegate abuse_reports_paged_reports(arg1),
+  @doc "Delegates GroupherServer.CMS.AbuseReports.paged_reports/2 through the CMS Context boundary."
+  defdelegate abuse_reports_paged_reports(arg1, arg2),
     to: GroupherServer.CMS.AbuseReports,
     as: :paged_reports
 
@@ -190,11 +212,8 @@ defmodule GroupherServer.CMS do
   @doc "Delegates GroupherServer.CMS.Articles.grouped_kanban/1 through the CMS Context boundary."
   defdelegate articles_grouped_kanban(arg1), to: GroupherServer.CMS.Articles, as: :grouped_kanban
 
-  @doc "Delegates GroupherServer.CMS.Articles.list_trashed/1 through the CMS Context boundary."
-  defdelegate articles_list_trashed(arg1), to: GroupherServer.CMS.Articles, as: :list_trashed
-
-  @doc "Delegates GroupherServer.CMS.Articles.list_trashed/2 through the CMS Context boundary."
-  defdelegate articles_list_trashed(arg1, arg2),
+  @doc "Pages current Trash memberships through the CMS Context boundary."
+  defdelegate articles_list_trashed(community, filter, pagi),
     to: GroupherServer.CMS.Articles,
     as: :list_trashed
 
@@ -218,29 +237,44 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Articles,
     as: :move
 
-  @doc "Delegates GroupherServer.CMS.Articles.page/2 through the CMS Context boundary."
-  defdelegate articles_page(arg1, arg2), to: GroupherServer.CMS.Articles, as: :page
+  @doc "Pages canonical ArticleLite collections through the CMS Context boundary."
+  defdelegate articles_page(thread, filter, pagi), to: GroupherServer.CMS.Articles, as: :page
 
-  @doc "Delegates GroupherServer.CMS.Articles.page/3 through the CMS Context boundary."
-  defdelegate articles_page(arg1, arg2, arg3), to: GroupherServer.CMS.Articles, as: :page
+  defdelegate articles_page(thread, filter, pagi, viewer),
+    to: GroupherServer.CMS.Articles,
+    as: :page
+
+  defdelegate articles_page(thread, filter, pagi, viewer, opts),
+    to: GroupherServer.CMS.Articles,
+    as: :page
+
+  @doc "Delegates the bounded ArticleLite path batch through the CMS Context boundary."
+  defdelegate articles_lite_paths(arg1),
+    to: GroupherServer.CMS.Articles,
+    as: :lite_paths
+
+  @doc "Returns canonical public Article binding identities for collection queries."
+  defdelegate articles_public_binding_ids(),
+    to: GroupherServer.CMS.Articles,
+    as: :public_binding_ids
 
   @doc "Delegates GroupherServer.CMS.Articles.paged_audit_failed/2 through the CMS Context boundary."
   defdelegate articles_paged_audit_failed(arg1, arg2),
     to: GroupherServer.CMS.Articles,
     as: :paged_audit_failed
 
-  @doc "Delegates GroupherServer.CMS.Articles.paged_kanban/2 through the CMS Context boundary."
-  defdelegate articles_paged_kanban(arg1, arg2),
+  @doc "Pages a canonical Kanban column."
+  defdelegate articles_kanban_page(community, filter, pagi),
     to: GroupherServer.CMS.Articles,
-    as: :paged_kanban
-
-  @doc "Delegates GroupherServer.CMS.Articles.paged_published/3 through the CMS Context boundary."
-  defdelegate articles_paged_published(arg1, arg2, arg3),
-    to: GroupherServer.CMS.Articles,
-    as: :paged_published
+    as: :kanban_page
 
   @doc "Delegates GroupherServer.CMS.Articles.paged_published/4 through the CMS Context boundary."
   defdelegate articles_paged_published(arg1, arg2, arg3, arg4),
+    to: GroupherServer.CMS.Articles,
+    as: :paged_published
+
+  @doc "Delegates GroupherServer.CMS.Articles.paged_published/5 through the CMS Context boundary."
+  defdelegate articles_paged_published(arg1, arg2, arg3, arg4, arg5),
     to: GroupherServer.CMS.Articles,
     as: :paged_published
 
@@ -429,17 +463,11 @@ defmodule GroupherServer.CMS do
   @doc "Delegates GroupherServer.CMS.Assets.origin_info/1 through the CMS Context boundary."
   defdelegate assets_origin_info(arg1), to: GroupherServer.CMS.Assets, as: :origin_info
 
-  @doc "Delegates GroupherServer.CMS.Assets.page/1 through the CMS Context boundary."
-  defdelegate assets_page(arg1), to: GroupherServer.CMS.Assets, as: :page
+  @doc "Pages community assets using separate business filters and Pagi parameters."
+  defdelegate assets_page(community, filter, pagi), to: GroupherServer.CMS.Assets, as: :page
 
-  @doc "Delegates GroupherServer.CMS.Assets.page/2 through the CMS Context boundary."
-  defdelegate assets_page(arg1, arg2), to: GroupherServer.CMS.Assets, as: :page
-
-  @doc "Delegates GroupherServer.CMS.Assets.refs/2 through the CMS Context boundary."
-  defdelegate assets_refs(arg1, arg2), to: GroupherServer.CMS.Assets, as: :refs
-
-  @doc "Delegates GroupherServer.CMS.Assets.refs/3 through the CMS Context boundary."
-  defdelegate assets_refs(arg1, arg2, arg3), to: GroupherServer.CMS.Assets, as: :refs
+  @doc "Pages version-owned asset references using Pagi parameters."
+  defdelegate assets_refs(community, asset_id, pagi), to: GroupherServer.CMS.Assets, as: :refs
 
   @doc "Delegates GroupherServer.CMS.Assets.register_to_community/3 through the CMS Context boundary."
   defdelegate assets_register_to_community(arg1, arg2, arg3),
@@ -511,43 +539,23 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Comments,
     as: :paged_audit_failed_comments
 
-  @doc "Delegates GroupherServer.CMS.Comments.paged_comment_replies/2 through the CMS Context boundary."
-  defdelegate comments_paged_comment_replies(arg1, arg2),
-    to: GroupherServer.CMS.Comments,
-    as: :paged_comment_replies
-
-  @doc "Delegates GroupherServer.CMS.Comments.paged_comment_replies/3 through the CMS Context boundary."
-  defdelegate comments_paged_comment_replies(arg1, arg2, arg3),
-    to: GroupherServer.CMS.Comments,
-    as: :paged_comment_replies
-
   @doc "Delegates GroupherServer.CMS.Comments.paged_comments_participants/3 through the CMS Context boundary."
   defdelegate comments_paged_comments_participants(arg1, arg2, arg3),
     to: GroupherServer.CMS.Comments,
     as: :paged_comments_participants
 
-  @doc "Delegates GroupherServer.CMS.Comments.paged_comments/4 through the CMS Context boundary."
-  defdelegate comments_paged_comments(arg1, arg2, arg3, arg4),
+  @doc "Delegates a root's independently paged reply collection through the CMS boundary."
+  defdelegate comments_reply_page(comment, community, filter, pagi, user),
     to: GroupherServer.CMS.Comments,
-    as: :paged_comments
+    as: :reply_page
 
-  @doc "Delegates GroupherServer.CMS.Comments.paged_comments/5 through the CMS Context boundary."
-  defdelegate comments_paged_comments(arg1, arg2, arg3, arg4, arg5),
+  @doc "Delegates the new CommentPage contract through the CMS Context boundary."
+  defdelegate comments_page(arg1, arg2, arg3, arg4, arg5, arg6, arg7),
     to: GroupherServer.CMS.Comments,
-    as: :paged_comments
+    as: :page
 
-  @doc "Delegates GroupherServer.CMS.Comments.paged_published_comments/2 through the CMS Context boundary."
-  defdelegate comments_paged_published_comments(arg1, arg2),
-    to: GroupherServer.CMS.Comments,
-    as: :paged_published_comments
-
-  @doc "Delegates GroupherServer.CMS.Comments.paged_published_comments/3 through the CMS Context boundary."
-  defdelegate comments_paged_published_comments(arg1, arg2, arg3),
-    to: GroupherServer.CMS.Comments,
-    as: :paged_published_comments
-
-  @doc "Delegates GroupherServer.CMS.Comments.paged_published_comments/4 through the CMS Context boundary."
-  defdelegate comments_paged_published_comments(arg1, arg2, arg3, arg4),
+  @doc "Pages published Comments through the CMS Context boundary."
+  defdelegate comments_paged_published_comments(user, thread, filter, pagi, viewer),
     to: GroupherServer.CMS.Comments,
     as: :paged_published_comments
 
@@ -658,7 +666,7 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Communities,
     as: :create_category
 
-  @doc "Delegates GroupherServer.CMS.Communities.create_from_application/2 through the CMS Context boundary."
+  @doc "Delegates the approved-Application creation workflow through the CMS Context boundary."
   defdelegate communities_create_from_application(arg1, arg2),
     to: GroupherServer.CMS.Communities,
     as: :create_from_application
@@ -763,26 +771,26 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Communities,
     as: :mark_setup_failed
 
-  @doc "Delegates GroupherServer.CMS.Communities.members/3 through the CMS Context boundary."
-  defdelegate communities_members(arg1, arg2, arg3),
-    to: GroupherServer.CMS.Communities,
-    as: :members
-
   @doc "Delegates GroupherServer.CMS.Communities.members/4 through the CMS Context boundary."
   defdelegate communities_members(arg1, arg2, arg3, arg4),
     to: GroupherServer.CMS.Communities,
     as: :members
 
-  @doc "Delegates GroupherServer.CMS.Communities.paged_categories/1 through the CMS Context boundary."
-  defdelegate communities_paged_categories(arg1),
+  @doc "Delegates GroupherServer.CMS.Communities.members/5 through the CMS Context boundary."
+  defdelegate communities_members(arg1, arg2, arg3, arg4, arg5),
     to: GroupherServer.CMS.Communities,
-    as: :paged_categories
+    as: :members
 
-  @doc "Delegates GroupherServer.CMS.Communities.paged/1 through the CMS Context boundary."
-  defdelegate communities_paged(arg1), to: GroupherServer.CMS.Communities, as: :paged
+  @doc "Delegates GroupherServer.CMS.Communities.categories/0 through the CMS Context boundary."
+  defdelegate communities_categories(),
+    to: GroupherServer.CMS.Communities,
+    as: :categories
 
   @doc "Delegates GroupherServer.CMS.Communities.paged/2 through the CMS Context boundary."
   defdelegate communities_paged(arg1, arg2), to: GroupherServer.CMS.Communities, as: :paged
+
+  @doc "Delegates GroupherServer.CMS.Communities.paged/3 through the CMS Context boundary."
+  defdelegate communities_paged(arg1, arg2, arg3), to: GroupherServer.CMS.Communities, as: :paged
 
   @doc "Delegates GroupherServer.CMS.Communities.reindex_tag_groups/3 through the CMS Context boundary."
   defdelegate communities_reindex_tag_groups(arg1, arg2, arg3),
@@ -849,7 +857,7 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Communities,
     as: :request_destroy
 
-  @doc "Delegates GroupherServer.CMS.Communities.run_setup/2 through the CMS Context boundary."
+  @doc "Delegates retryable Community setup through the CMS Context boundary."
   defdelegate communities_run_setup(arg1, arg2),
     to: GroupherServer.CMS.Communities,
     as: :run_setup
@@ -1053,11 +1061,6 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.CommunityApplications,
     as: :event_actor
 
-  @doc "Delegates GroupherServer.CMS.CommunityApplications.events/1 through the CMS Context boundary."
-  defdelegate community_applications_events(arg1),
-    to: GroupherServer.CMS.CommunityApplications,
-    as: :events
-
   @doc "Delegates GroupherServer.CMS.CommunityApplications.events/2 through the CMS Context boundary."
   defdelegate community_applications_events(arg1, arg2),
     to: GroupherServer.CMS.CommunityApplications,
@@ -1124,7 +1127,7 @@ defmodule GroupherServer.CMS do
     as: :review_detail
 
   @doc "Delegates GroupherServer.CMS.CommunityApplications.review_queue_by_public_filter/2 through the CMS Context boundary."
-  defdelegate community_applications_review_queue_by_public_filter(arg1, arg2),
+  defdelegate community_applications_review_queue_by_public_filter(arg1, arg2, arg3),
     to: GroupherServer.CMS.CommunityApplications,
     as: :review_queue_by_public_filter
 
@@ -1353,11 +1356,10 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.DocTree,
     as: :restore_trash_item
 
-  @doc "Delegates GroupherServer.CMS.DocTree.trash_items/1 through the CMS Context boundary."
-  defdelegate doc_tree_trash_items(arg1), to: GroupherServer.CMS.DocTree, as: :trash_items
-
-  @doc "Delegates GroupherServer.CMS.DocTree.trash_items/2 through the CMS Context boundary."
-  defdelegate doc_tree_trash_items(arg1, arg2), to: GroupherServer.CMS.DocTree, as: :trash_items
+  @doc "Pages branch-scoped Docs Trash actions."
+  defdelegate doc_tree_trash_items(community, pagi, opts),
+    to: GroupherServer.CMS.DocTree,
+    as: :trash_items
 
   @doc "Delegates GroupherServer.CMS.DocTree.update_draft/4 through the CMS Context boundary."
   defdelegate doc_tree_update_draft(arg1, arg2, arg3, arg4),
@@ -1382,17 +1384,12 @@ defmodule GroupherServer.CMS do
   defdelegate docs_branch_resolve(arg1, arg2), to: GroupherServer.CMS.Docs.Branch, as: :resolve
 
   @doc "Delegates GroupherServer.CMS.Docs.get_branch_version/3 through the CMS Context boundary."
-  defdelegate docs_get_branch_version(arg1, arg2, arg3),
+  defdelegate docs_get_branch_version(arg1, arg2, arg3, actor),
     to: GroupherServer.CMS.Docs,
     as: :get_branch_version
 
-  @doc "Delegates GroupherServer.CMS.Docs.list_branch_versions/2 through the CMS Context boundary."
-  defdelegate docs_list_branch_versions(arg1, arg2),
-    to: GroupherServer.CMS.Docs,
-    as: :list_branch_versions
-
-  @doc "Delegates GroupherServer.CMS.Docs.list_branch_versions/3 through the CMS Context boundary."
-  defdelegate docs_list_branch_versions(arg1, arg2, arg3),
+  @doc "Pages authorized Doc publication history."
+  defdelegate docs_list_branch_versions(doc_id, branch_id, pagi, actor),
     to: GroupherServer.CMS.Docs,
     as: :list_branch_versions
 
@@ -1580,7 +1577,9 @@ defmodule GroupherServer.CMS do
     as: :update_config
 
   @doc "Delegates GroupherServer.CMS.SearchArtiments.search/1 through the CMS Context boundary."
-  defdelegate search_artiments_search(arg1), to: GroupherServer.CMS.SearchArtiments, as: :search
+  defdelegate search_artiments_search(arg1, arg2),
+    to: GroupherServer.CMS.SearchArtiments,
+    as: :search
 
   @doc "Delegates GroupherServer.CMS.Search.community/1 through the CMS Context boundary."
   defdelegate search_community(arg1), to: GroupherServer.CMS.Search, as: :community

@@ -66,44 +66,38 @@ export const OwnedApplicationDocument = graphql(`
 `)
 
 export const ReviewQueueDocument = graphql(`
-  query ReviewQueue($after: String) {
+  query ReviewQueue($pagi: PagiInput) {
     pagedCommunityApplications(
       filter: { statuses: [SUBMITTED, REVIEWING, APPROVED, CREATION_FAILED, SETUP_FAILED] }
-      first: 100
-      after: $after
+      pagi: $pagi
     ) {
-      edges {
-        node {
+      entries {
+        ...ApplyApplicationFields
+        reviewer {
           publicRef
-          status
-          version
-          title
-          slug
-          desc
-          locale
-          applyCategory
-          submittedAt
-          updatedAt
-          logo {
-            applicationUploadRef
-            communityAssetRef
-            url
-          }
-          reviewer {
-            publicRef
-          }
         }
       }
       pageInfo {
+        __typename
         hasNextPage
-        endCursor
+        hasPreviousPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
+        }
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
+        }
       }
     }
   }
 `)
 
 export const ReviewApplicationDocument = graphql(`
-  query ReviewApplication($ref: ID!) {
+  query ReviewApplication($ref: ID!, $pagi: PagiInput) {
     reviewCommunityApplication(ref: $ref) {
       ...ApplyApplicationFields
       applicant {
@@ -122,19 +116,31 @@ export const ReviewApplicationDocument = graphql(`
         operationRef
         occurredAt
       }
-      events(first: 100) {
-        edges {
-          cursor
-          node {
-            fromStatus
-            toStatus
-            actorType
-            actor {
-              publicRef
-            }
-            reasonCode
-            operationRef
-            occurredAt
+      events(pagi: $pagi) {
+        entries {
+          fromStatus
+          toStatus
+          actorType
+          actor {
+            publicRef
+          }
+          reasonCode
+          operationRef
+          occurredAt
+        }
+        pageInfo {
+          __typename
+          hasNextPage
+          hasPreviousPage
+          ... on OffsetPageInfo {
+            page
+            size
+            totalCount
+            totalPages
+          }
+          ... on CursorPageInfo {
+            startCursor
+            endCursor
           }
         }
       }

@@ -34,7 +34,8 @@ export const ArticleCell = React.memo(function ArticleCell({ rowData }: { rowDat
   const s = useSalon()
   const { slug } = useCommunity()
 
-  if (!rowData.meta?.thread) return <div />
+  const thread = rowData.thread ?? rowData.meta?.thread
+  if (!thread) return <div />
 
   return (
     <div className='w-full overflow-hidden'>
@@ -42,7 +43,7 @@ export const ArticleCell = React.memo(function ArticleCell({ rowData }: { rowDat
         route={{
           app: 'dsb',
           community: slug,
-          path: `${thread2Path(rowData.meta.thread)}/${rowData.innerId}`,
+          path: `${thread2Path(thread)}/${rowData.innerId}`,
         }}
         navigation='router'
         className={cn(s.articleTitle, 'inline-block truncate w-full text-left')}

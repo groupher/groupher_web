@@ -2,14 +2,15 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
   @moduledoc false
 
   use GroupherServer.TestMate
-  alias GroupherServer.CMS
+  alias GroupherServer.{CMS, Repo}
   alias CMS.Articles.Response
+  alias CMS.Model.ArticleBinding
 
   setup do
-    {_, post, _, user} = mock_article(:post)
+    {community, post, _, user} = mock_article(:post)
     {:ok, user2} = db_insert(:user)
 
-    {:ok, ~m(user user2 post)a}
+    {:ok, ~m(community user user2 post)a}
   end
 
   describe "[article post report/unreport]" do
@@ -20,7 +21,12 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
         CMS.AbuseReports.article(post, "reason", "attr_info", user2, Ecto.UUID.generate())
 
       filter = %{content_type: :post, content_id: post.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
 
       report = all_reports.entries |> List.first()
       assert report.article.id == post.id
@@ -31,7 +37,12 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       {:ok, _} = CMS.AbuseReports.article(post, "reason", "attr_info", user, Ecto.UUID.generate())
 
       filter = %{content_type: :post, content_id: post.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
 
       report = List.first(all_reports.entries)
       report_cases = report.report_cases
@@ -52,7 +63,13 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       {:ok, _} = CMS.AbuseReports.undo_article(post, user, Ecto.UUID.generate())
 
       filter = %{content_type: :post, content_id: post.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
       assert all_reports.total_count == 0
 
       refute CMS.Interactions.viewer_state(post, user).viewer_has_reported
@@ -67,7 +84,13 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       {:ok, _} = CMS.AbuseReports.undo_article(post, user, Ecto.UUID.generate())
 
       filter = %{content_type: :post, content_id: post.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
       assert all_reports.total_count == 1
 
       assert CMS.Interactions.viewer_state(post, user2).viewer_has_reported
@@ -81,7 +104,13 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
         CMS.AbuseReports.article(post, "reason", "attr_info", user2, Ecto.UUID.generate())
 
       filter = %{content_type: :post, content_id: post.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
       assert all_reports.total_count == 1
 
       report = all_reports.entries |> List.first()
@@ -92,7 +121,13 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       {:ok, _} = CMS.AbuseReports.undo_article(post, user, Ecto.UUID.generate())
 
       filter = %{content_type: :post, content_id: post.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
       assert all_reports.total_count == 1
 
       report = all_reports.entries |> List.first()
@@ -108,7 +143,12 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
         CMS.AbuseReports.article(post, "reason2", "attr_info 2", user2, Ecto.UUID.generate())
 
       filter = %{content_type: :post, content_id: post.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
 
       report = List.first(all_reports.entries)
       report_cases = report.report_cases
@@ -126,6 +166,59 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
 
       assert {:error, _report} =
                CMS.AbuseReports.article(post, "reason", "attr_info", user, Ecto.UUID.generate())
+    end
+
+    test "does not hydrate reports through a hidden target binding", ~m(community user post)a do
+      {:ok, _} = CMS.AbuseReports.article(post, "reason", "attr_info", user, Ecto.UUID.generate())
+
+      Repo.get_by!(ArticleBinding, article_id: post.id, community_id: community.id)
+      |> ArticleBinding.changeset(%{visible: false})
+      |> Repo.update!()
+
+      filter = %{content_type: :post, content_id: post.id, page: 1, size: 20}
+
+      assert {:error, :article_binding_not_found} =
+               CMS.AbuseReports.paged_reports(
+                 Map.drop(filter, [:page, :size]),
+                 %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+               )
+    end
+
+    test "does not hydrate reports through a trashed target", ~m(community user post)a do
+      {:ok, _} = CMS.AbuseReports.article(post, "reason", "attr_info", user, Ecto.UUID.generate())
+      assert {:ok, _trash} = CMS.Articles.Trash.trash(post, user, community: community)
+
+      filter = %{content_type: :post, content_id: post.id, page: 1, size: 20}
+
+      assert {:error, :article_binding_not_found} =
+               CMS.AbuseReports.paged_reports(
+                 Map.drop(filter, [:page, :size]),
+                 %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+               )
+    end
+
+    test "reports use stable newest-first ordering", ~m(community user post)a do
+      {_, newer_post, _, _} = mock_article(:post, community, user)
+
+      assert {:ok, _} =
+               CMS.AbuseReports.article(post, "reason", "older", user, Ecto.UUID.generate())
+
+      assert {:ok, _} =
+               CMS.AbuseReports.article(
+                 newer_post,
+                 "reason",
+                 "newer",
+                 user,
+                 Ecto.UUID.generate()
+               )
+
+      assert {:ok, %{entries: entries}} =
+               CMS.AbuseReports.paged_reports(
+                 %{content_type: :post},
+                 %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
+               )
+
+      assert Enum.map(entries, & &1.article.id) == [newer_post.id, post.id]
     end
   end
 end

@@ -24,13 +24,13 @@ defmodule GroupherServer.Test.Helper.Schema.Social do
 
   def q(:paged_followings) do
     """
-    query($login: String!, $filter: PagiFilter!) {
-          pagedFollowings(login: $login, filter: $filter) {
+    query($login: String!, $filter: UserListFilter, $pagi: PagiInput) {
+          pagedFollowings(login: $login, filter: $filter, pagi: $pagi) {
             entries {
               login
               viewerHasFollowed
             }
-            totalCount
+            pageInfo { hasNextPage ... on OffsetPageInfo { totalCount page size } ... on CursorPageInfo { endCursor } }
           }
         }
     """
@@ -82,14 +82,14 @@ defmodule GroupherServer.Test.Helper.Schema.Social do
 
   def q(:paged_upvoted_articles) do
     """
-    query($login: String!, $filter: UpvotedArticlesFilter!) {
-          pagedUpvotedArticles(login: $login, filter: $filter) {
+    query($login: String!, $filter: ArticleCollectionFilter, $pagi: PagiInput) {
+          pagedUpvotedArticles(login: $login, filter: $filter, pagi: $pagi) {
             entries {
               innerId
               title
               thread
             }
-            totalCount
+            pageInfo { hasNextPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { endCursor } }
           }
         }
     """
@@ -97,14 +97,14 @@ defmodule GroupherServer.Test.Helper.Schema.Social do
 
   def q(:paged_followers) do
     """
-    query($login: String!, $filter: PagiFilter!) {
-          pagedFollowers(login: $login, filter: $filter) {
+    query($login: String!, $filter: UserListFilter, $pagi: PagiInput) {
+          pagedFollowers(login: $login, filter: $filter, pagi: $pagi) {
             entries {
               login
               viewerBeenFollowed
               viewerHasFollowed
             }
-            totalCount
+            pageInfo { hasNextPage ... on OffsetPageInfo { totalCount page size } ... on CursorPageInfo { endCursor } }
           }
         }
     """

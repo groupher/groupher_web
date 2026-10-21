@@ -6,6 +6,7 @@ defmodule GroupherServer.CMS.Model.DocBranchVersion do
   """
 
   use Ecto.Schema
+  use Flop.Schema
   import Ecto.Changeset
 
   alias GroupherServer.CMS
@@ -17,6 +18,12 @@ defmodule GroupherServer.CMS.Model.DocBranchVersion do
   @required_fields ~w(article_id branch_id revision_id version_number published_by_id published_at)a
   @optional_fields ~w(message)a
   @type t :: %__MODULE__{}
+
+  @flop_options [
+    filterable: [],
+    sortable: [:version_number, :id],
+    pagination_types: [:page, :first]
+  ]
 
   schema "doc_branch_versions" do
     belongs_to(:article, Article, type: Ecto.UUID)

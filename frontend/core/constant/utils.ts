@@ -1,28 +1,18 @@
 import { PAGE_SIZE } from '~/config'
-import type { TPagedArticles, TPagedComments, TPagedCommunities } from '~/spec'
+import type { TPagedArticles } from '~/spec'
 
-export const EMPTY_PAGED_ARTICLES = {
+export const EMPTY_PAGED_ARTICLES: TPagedArticles = {
   entries: [],
-  pageNumber: 1,
-  pageSize: PAGE_SIZE.D,
-  totalCount: 0,
-  totalPages: 0,
-} as TPagedArticles
-
-export const EMPTY_PAGED_COMMENTS = {
-  entries: [],
-  pageNumber: 1,
-  pageSize: PAGE_SIZE.D,
-  totalCount: 0,
-  totalPages: 0,
-} as TPagedComments
-
-export const EMPTY_PAGED_COMMUNITIES = {
-  entries: [],
-  pageNumber: 1,
-  pageSize: PAGE_SIZE.D,
-  totalCount: 0,
-  totalPages: 0,
-} as TPagedCommunities
+  pinnedEntries: [],
+  pageInfo: {
+    __typename: 'OffsetPageInfo',
+    page: 1,
+    size: PAGE_SIZE.D,
+    totalCount: 0,
+    totalPages: 0,
+    hasPreviousPage: false,
+    hasNextPage: false,
+  },
+}
 
 export const EMPTY_TAG = { id: '', title: '', color: '', slug: '' }

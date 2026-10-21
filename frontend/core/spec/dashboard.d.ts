@@ -25,6 +25,7 @@ import type { TConstValues } from '~/spec'
 import type { TColorName } from './color'
 import type { TModerator } from './community'
 import type { TDsbFieldKey, TDsbFieldMap } from './dsb'
+import type { TPaginationMode } from './pagination'
 import type {
   TResolvedThemePreset,
   TThemePreset,
@@ -97,6 +98,9 @@ export type TDocFaq = {
 }
 
 export type TDsb = {
+  pagiMode?: TPaginationMode
+  pagiMobileMode?: TPaginationMode
+  pagiRevision?: number
   enable?: TEnableConf
   nameAlias?: readonly TNameAlias[]
   socialLinks?: readonly TSocialItem[]
@@ -131,8 +135,6 @@ export type TDsb = {
     footerLayout: TFooterLayout
   } | null
 
-  moderators?: readonly TModerator[]
-
   rss?: {
     rssFeedType: TRSSType
     rssFeedCount: number
@@ -158,6 +160,9 @@ export type TDsb = {
 
 export type TParseDashboard = TDsbFieldMap & {
   contentShadow?: boolean
+  pagiMode?: TPaginationMode
+  pagiMobileMode?: TPaginationMode
+  pagiRevision?: number
   original: TDsbFieldMap
 }
 

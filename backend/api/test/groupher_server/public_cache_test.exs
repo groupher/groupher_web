@@ -7,7 +7,7 @@ defmodule GroupherServer.PublicCacheTest do
 
   alias GroupherServer.{PublicCache, Repo}
   alias Jobs.PublicCachePurge
-  alias PublicCache.{Model.Invalidation, Policy, Tags}
+  alias PublicCache.{DeliveryConfig, Model.Invalidation, Tags}
 
   @tag_fixture_path Path.expand(
                       "../../../../packages/contracts/fixtures/public-cache-tags-v1.json",
@@ -32,6 +32,9 @@ defmodule GroupherServer.PublicCacheTest do
           "comments" ->
             Tags.comments(input["community"], input["thread"], input["innerId"])
 
+          "commentsList" ->
+            Tags.comments_list(input["community"])
+
           "tags" ->
             Tags.tags(input["community"], input["thread"])
 
@@ -52,6 +55,8 @@ defmodule GroupherServer.PublicCacheTest do
 
     assert Tags.comments("home", :post, 42) ==
              "community[home]-thread[POST]-article[42]-comments"
+
+    assert Tags.comments_list("home") == "community[home]-comments"
 
     assert Tags.tags("home", :post) == "community[home]-thread[POST]-tags"
     assert Tags.doc_tree("home") == "community[home]-doc-tree"
@@ -77,6 +82,26 @@ defmodule GroupherServer.PublicCacheTest do
 
     assert {:ok, ["community[home]-doc-tree", "community[home]-thread[DOC]-articles"]} =
              Tags.for_invalidation(:doc_tree_changed, %{community: "home"})
+  end
+
+  test "maps pagination config changes to the affected list family" do
+    assert {:ok, ["community[home]-thread[POST]-articles"]} =
+             Tags.for_invalidation(:pagination_config_changed, %{
+               community: "home",
+               surface: "posts"
+             })
+
+    assert {:ok, ["community[home]-thread[CHANGELOG]-articles"]} =
+             Tags.for_invalidation(:pagination_config_changed, %{
+               community: "home",
+               surface: "changelogs"
+             })
+
+    assert {:ok, ["community[home]-comments"]} =
+             Tags.for_invalidation(:pagination_config_changed, %{
+               community: "home",
+               surface: "comments"
+             })
   end
 
   test "persists one typed invalidation without calling an external service" do
@@ -120,7 +145,7 @@ defmodule GroupherServer.PublicCacheTest do
     assert {:ok, {:busy, retry_after_seconds}} =
              PublicCache.claim(invalidation.id, "second-worker")
 
-    assert retry_after_seconds in 1..Policy.delivery_lease_seconds()
+    assert retry_after_seconds in 1..DeliveryConfig.delivery_lease_seconds()
 
     Repo.update_all(from(row in Invalidation, where: row.id == ^invalidation.id),
       set: [locked_at: DateTime.add(DateTime.utc_now(:second), -300, :second)]
@@ -165,11 +190,11 @@ defmodule GroupherServer.PublicCacheTest do
       id: 3,
       args: %{"invalidation_id" => invalidation.id},
       attempt: 1,
-      max_attempts: Policy.max_attempts()
+      max_attempts: DeliveryConfig.max_attempts()
     }
 
     assert {:snooze, retry_after_seconds} = PublicCachePurge.perform(job)
-    assert retry_after_seconds in 1..Policy.delivery_lease_seconds()
+    assert retry_after_seconds in 1..DeliveryConfig.delivery_lease_seconds()
 
     assert %Invalidation{status: :delivering, attempts: 1, locked_by: "crashed-worker"} =
              Repo.get!(Invalidation, invalidation.id)
@@ -186,10 +211,10 @@ defmodule GroupherServer.PublicCacheTest do
 
   test "uses second-based bounded retry backoff" do
     assert PublicCachePurge.backoff(%Oban.Job{attempt: 1}) ==
-             Policy.retry_base_delay_seconds()
+             DeliveryConfig.retry_base_delay_seconds()
 
     assert PublicCachePurge.backoff(%Oban.Job{attempt: 20}) ==
-             Policy.max_retry_delay_seconds()
+             DeliveryConfig.max_retry_delay_seconds()
   end
 
   test "keeps only incomplete delivery jobs unique and configures orphan rescue" do
@@ -208,7 +233,7 @@ defmodule GroupherServer.PublicCacheTest do
              List.keyfind(plugins, Oban.Plugins.Lifeline, 0)
 
     assert Keyword.fetch!(lifeline_opts, :rescue_after) >
-             :timer.seconds(Policy.delivery_lease_seconds())
+             :timer.seconds(DeliveryConfig.delivery_lease_seconds())
   end
 
   test "reports durable purge backlog health" do

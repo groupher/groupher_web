@@ -31,8 +31,8 @@ defmodule GroupherServer.CMS.Press.Projection do
       html: article.body.html,
       digest: article.digest || article.body.digest,
       body_hash: article.body_hash || article.body.body_hash,
-      published_at: article.inserted_at,
-      updated_at: article.updated_at,
+      published_at: Map.get(article, :published_at, article.inserted_at),
+      updated_at: Map.get(article, :updated_at, article.updated_at),
       author: author(article.author),
       tags: Enum.map(article.community_tags, &tag/1),
       visibility: "public"

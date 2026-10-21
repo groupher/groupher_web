@@ -1,0 +1,17 @@
+{
+  "generated_from": "backend/api/lib",
+  "schema": 1,
+  "scope": {
+    "excluded": ["documentation strings/comments after Elixir masking"],
+    "mode": "report_only",
+    "note": "Candidates require surface, identity, query-budget and consumer review; this manifest is not a strict gate."
+  },
+  "summary": {
+    "executable_calls": 0,
+    "executable_files": 0,
+    "helper_definitions": 0,
+    "raw_matches": 0
+  },
+  "helper_definitions": [],
+  "entries": []
+}

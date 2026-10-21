@@ -26,8 +26,8 @@
 - [Backend Business Return Shape 收敛](./backend-business-return-shape.md)：统一业务层
   `{:ok, value}` / `{:error, reason}` 返回协议，扫描并分批清理裸 `:ok` 与混合 `with` 形状。
 - [Backend 非 Commands 写入口审计](./backend-non-command-write-entry-audit.md)：在已完成的
-  Accounts/Messaging 21 个显式 Command 之外，分批审计 job、maintenance、workflow、facade 与 transaction
-  owner，并区分业务 Command、领域 workflow、维护、投影投递和 leaf 写入。
+  Accounts/Messaging 21 个显式 Command 之外，记录 job、maintenance、workflow、facade 与 transaction
+  owner 的简化决策；默认保留现有 owner，只迁移真正的顶层业务 Command。
 - [Article Binding 命名与存储重构](./article-binding-naming-and-storage.md)：统一
   `ArticleBinding`、`ArticleView`、`Articles.Bindings` 命名，收拢 FrontDesk 路径边界，并规划物理表重命名。
 - [Backend Read / Write Owner 命名与职责修复](./backend-read-write-owner-naming-fix.md)：已完成禁止含糊

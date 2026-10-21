@@ -8,7 +8,11 @@ defmodule GroupherServer.CMS.Articles.Query do
         -> GraphQL or service boundary
         -> CMS.Articles
         -> Query
+        -> Pagination (ArticleLite) / named composite query
         -> Repo / domain event
+
+  Kanban and published-owner views share the canonical ArticleLite selector,
+  binding identity and PageInfo contract.
   """
 
   import Ecto.Query, warn: false
@@ -21,11 +25,9 @@ defmodule GroupherServer.CMS.Articles.Query do
   alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Model.User
-  alias CMS.Articles.Response
+  alias CMS.Articles.Pagination
   alias CMS.Artiment.Const
-  alias CMS.Communities.Enable
   alias CMS.Dashboard.KanbanBoards
-  alias CMS.FrontDesk
   alias CMS.Gate.Context.Scope.Article, as: ArticleContext
   alias CMS.Gate.Context.Scope.Doc, as: DocContext
   alias CMS.Gate.Scope
@@ -33,19 +35,9 @@ defmodule GroupherServer.CMS.Articles.Query do
   alias CMS.Model.{
     Article,
     ArticleBinding,
-    ArticleBindingTag,
-    ArticleLifecycle,
-    ArticlePublic,
-    ArticleStats,
     Community,
-    CommunityTag,
     DocBranch,
-    DocBranchState,
-    DocLifecycle,
-    DocPublic,
-    KanbanState,
-    PinnedArticle,
-    PostState
+    PinnedArticle
   }
 
   alias Helper.T
@@ -59,286 +51,28 @@ defmodule GroupherServer.CMS.Articles.Query do
     @article_status.reject_stale
   ]
 
-  @doc """
-  Returns a paged list of legal articles for one thread.
+  @doc "Bootstraps enabled Kanban columns as independent canonical Post pages."
+  def grouped_kanban(%Community{} = community) do
+    enabled = enabled_kanban_boards(community)
 
-  Applies the public article scope, filter pack, and optional interaction
-  ordering, then prepends pinned articles on the first page.
+    Enum.reduce_while(KanbanBoards.values_list(), {:ok, %{}}, fn board, {:ok, pages} ->
+      filter =
+        if board in enabled, do: %{status: kanban_board_status(board)}, else: %{statuses: []}
 
-  ## Examples
-
-      CMS.Articles.Query.page(:post, %{page: 1, size: 20})
-
-  """
-  @spec page(atom(), map()) :: T.domain_res(term())
-  def page(thread, filter), do: do_page(thread, filter, nil)
-
-  @spec page(atom(), map(), User.t()) :: T.domain_res(term())
-  def page(thread, filter, %User{} = user), do: do_page(thread, filter, user)
-
-  defp do_page(thread, filter, viewer) do
-    %{page: page, size: size} = filter
-
-    with {:ok, _thread} <- Enable.thread?(Map.get(filter, :community), thread) do
-      stable_page(thread, filter, viewer, page, size)
-    end
-  end
-
-  defp stable_page(thread, filter, _viewer, page, size) do
-    community_ref = Map.get(filter, :community)
-
-    base =
-      from(article in Article,
-        join: binding in ArticleBinding,
-        as: :article_binding,
-        on: binding.article_id == article.id and binding.visible == true,
-        join: community in Community,
-        on: community.id == binding.community_id,
-        where:
-          article.thread == ^thread and binding.inner_id > 0 and
-            article.moderation_state == :legal,
-        select: %{inner_id: binding.inner_id, community: community.slug}
-      )
-
-    base =
-      if is_binary(community_ref),
-        do: where(base, [_article, _binding, community], community.slug == ^community_ref),
-        else:
-          where(
-            base,
-            [_article, _binding, _community],
-            true
-          )
-
-    base =
-      base
-      |> stable_public_join(thread)
-      |> stable_filter(filter)
-      |> stable_order(filter, thread)
-      |> stable_pin_order(page, community_ref)
-
-    total_count_query =
-      base
-      |> exclude(:order_by)
-      |> exclude(:select)
-      |> exclude(:distinct)
-
-    total_count =
-      if is_binary(community_ref) do
-        total_count_query
-        |> select([article, ...], count(article.id, :distinct))
-        |> Repo.one()
-      else
-        total_count_query
-        |> select([_article, binding, ...], count(binding.id, :distinct))
-        |> Repo.one()
-      end
-
-    entries =
-      base
-      |> offset(^((page - 1) * size))
-      |> limit(^size)
-      |> Repo.all()
-      |> Enum.flat_map(fn path ->
-        case FrontDesk.article(%{
-               community: path.community,
-               thread: thread,
-               inner_id: path.inner_id
-             }) do
-          {:ok, article} -> [article]
-          {:error, _reason} -> []
+      filter =
+        case filter do
+          %{status: statuses} when is_list(statuses) -> %{statuses: statuses}
+          other -> other
         end
-      end)
 
-    {:ok, entries} = Response.list(entries, nil)
-
-    {:ok,
-     %{
-       entries: entries,
-       total_count: total_count,
-       page_number: page,
-       page_size: size,
-       total_pages: if(total_count == 0, do: 0, else: ceil(total_count / size))
-     }}
-  end
-
-  defp stable_filter(query, filter) do
-    filter
-    |> Enum.reject(fn {_key, value} -> is_nil(value) end)
-    |> Enum.reduce(query, fn
-      {:community_tag, tag}, query when is_binary(tag) and tag != "" ->
-        stable_tag_filter(query, [tag])
-
-      {:community_tags, tags}, query when is_list(tags) and tags != [] ->
-        stable_tag_filter(query, tags)
-
-      {:when, window}, query when window in [:today, :this_week, :this_month, :this_year] ->
-        Helper.QueryBuilder.filter_pack(query, %{when: window})
-
-      {:cat, cat}, query when is_atom(cat) ->
-        stable_post_category_filter(query, cat)
-
-      {:status, status}, query when is_atom(status) ->
-        stable_kanban_status_filter(query, status)
-
-      _, query ->
-        query
+      case kanban_page(community, filter, nil) do
+        {:ok, page} -> {:cont, {:ok, Map.put(pages, board, page)}}
+        error -> {:halt, error}
+      end
     end)
   end
 
-  defp stable_post_category_filter(query, value) do
-    query
-    |> join(:inner, [article, ...], state in PostState, on: state.article_id == article.id)
-    |> where([_article, ..., state], state.cat == ^value)
-  end
-
-  defp stable_kanban_status_filter(query, value) do
-    query
-    |> join(:inner, [_article, binding, ...], state in KanbanState,
-      on: state.article_binding_id == binding.id
-    )
-    |> where([_article, _binding, ..., state], state.status == ^value)
-  end
-
-  defp stable_tag_filter(query, tags) do
-    from([article, binding, _community, ...] in query,
-      join: assignment in ArticleBindingTag,
-      on: assignment.article_binding_id == binding.id,
-      join: tag in CommunityTag,
-      on: tag.id == assignment.tag_id and tag.slug in ^tags,
-      distinct: binding.id
-    )
-  end
-
-  defp stable_order(query, filter, thread) do
-    query = exclude(query, :order_by)
-    apply_stable_order(query, order_mode(filter), thread)
-  end
-
-  defp order_mode(%{order: :upvotes}), do: {:stats, :upvotes_count, :desc}
-  defp order_mode(%{order: :comments}), do: {:stats, :comments_count, :desc}
-  defp order_mode(%{order: :views}), do: {:stats, :views, :desc}
-  defp order_mode(%{sort: :most_views}), do: {:stats, :views, :desc}
-  defp order_mode(%{sort: :least_views}), do: {:stats, :views, :asc}
-  defp order_mode(%{order: :publish}), do: :publish
-  defp order_mode(%{sort: :asc_active}), do: {:active, :asc}
-  defp order_mode(%{sort: :asc_inserted}), do: {:inserted, :asc}
-  defp order_mode(%{sort: :desc_inserted}), do: {:inserted, :desc}
-  defp order_mode(_filter), do: {:active, :desc}
-
-  defp apply_stable_order(query, {:stats, field, direction}, _thread) do
-    stable_stats_order(query, field, direction)
-  end
-
-  defp apply_stable_order(query, :publish, _thread) do
-    order_by(query, [article, ...],
-      desc: as(:stable_public).published_at,
-      desc: article.inserted_at,
-      desc: as(:article_binding).inner_id,
-      desc: article.id
-    )
-  end
-
-  defp apply_stable_order(query, {:active, direction}, thread) do
-    stable_active_order(query, thread, direction)
-  end
-
-  defp apply_stable_order(query, {:inserted, :asc}, _thread) do
-    order_by(query, [article, ...], asc: article.inserted_at)
-  end
-
-  defp apply_stable_order(query, {:inserted, :desc}, _thread) do
-    order_by(query, [article, ...], desc: article.inserted_at)
-  end
-
-  defp stable_pin_order(query, 1, community_ref) when is_binary(community_ref) do
-    query
-    |> join(:left, [_article, binding, ...], pin in PinnedArticle,
-      on: pin.article_binding_id == binding.id
-    )
-    |> prepend_order_by([_article, _binding, ..., pin], desc_nulls_last: pin.id)
-  end
-
-  defp stable_pin_order(query, _page, _community_ref), do: query
-
-  defp stable_active_order(query, :doc, direction) do
-    order_by(query, [article, ...], [
-      {^direction, as(:stable_doc_state).active_at},
-      {^direction, article.inserted_at}
-    ])
-  end
-
-  defp stable_active_order(query, _thread, direction) do
-    order_by(query, [article, ...], [
-      {^direction, article.active_at},
-      {^direction, article.inserted_at}
-    ])
-  end
-
-  defp stable_stats_order(query, field, direction) do
-    query
-    |> join(:left, [article, ...], stats in ArticleStats,
-      on: stats.article_id == article.id and stats.thread == article.thread
-    )
-    |> order_by([article, ..., stats], [
-      {^direction, field(stats, ^field)},
-      desc: article.active_at,
-      desc: article.inserted_at
-    ])
-  end
-
-  defp stable_public_join(query, :doc) do
-    query
-    |> join(:inner, [_article, binding, _community], branch in DocBranch,
-      on: branch.community_id == binding.community_id and branch.type == :main
-    )
-    |> join(:inner, [article, _binding, _community, branch], state in DocBranchState,
-      as: :stable_doc_state,
-      on: state.article_id == article.id and state.branch_id == branch.id
-    )
-    |> join(:inner, [article, _binding, _community, branch, _state], public in DocPublic,
-      as: :stable_public,
-      on:
-        public.article_id == article.id and public.branch_id == branch.id and
-          public.visible == true
-    )
-    |> join(
-      :inner,
-      [article, _binding, _community, branch, _state, _public],
-      lifecycle in DocLifecycle,
-      on:
-        lifecycle.article_id == article.id and lifecycle.branch_id == branch.id and
-          lifecycle.state in [:published, :archived]
-    )
-  end
-
-  defp stable_public_join(query, _thread) do
-    query
-    |> join(:inner, [article, _binding, _community], public in ArticlePublic,
-      as: :stable_public,
-      on: public.article_id == article.id and public.visible == true
-    )
-    |> join(:inner, [article, _binding, _community, _public], lifecycle in ArticleLifecycle,
-      on: lifecycle.article_id == article.id and lifecycle.state in [:published, :archived]
-    )
-  end
-
-  @spec grouped_kanban(Community.t()) :: T.domain_res(term())
-  def grouped_kanban(%Community{} = community) do
-    filter = %{page: 1, size: 20}
-    enabled_boards = enabled_kanban_boards(community)
-
-    grouped =
-      KanbanBoards.values_list()
-      |> Map.new(fn board ->
-        {:ok, paged_posts} = paged_kanban_for_board(community, board, filter, enabled_boards)
-        {board, paged_posts}
-      end)
-
-    {:ok, grouped}
-  end
-
-  defp enabled_kanban_boards(%Community{} = community) do
+  defp enabled_kanban_boards(community) do
     community
     |> Repo.preload(:dashboard, force: true)
     |> get_in([Access.key(:dashboard), Access.key(:layout), Access.key(:kanban_boards)])
@@ -348,141 +82,22 @@ defmodule GroupherServer.CMS.Articles.Query do
     end
   end
 
-  defp paged_kanban_for_board(
-         %Community{} = community,
-         board,
-         filter,
-         enabled_boards
-       ) do
-    if board in enabled_boards do
-      paged_kanban(community, Map.put(filter, :status, kanban_board_status(board)))
-    else
-      {:ok, empty_paged_kanban(filter)}
-    end
-  end
-
   defp kanban_board_status(:backlog), do: @article_status.backlog
   defp kanban_board_status(:todo), do: @article_status.todo
   defp kanban_board_status(:wip), do: @article_status.wip
   defp kanban_board_status(:done), do: @article_status.done
-  # rejected is a virtual kanban column that aggregates all reject states.
   defp kanban_board_status(:rejected), do: @kanban_rejected_statuses
 
-  defp empty_paged_kanban(%{page: page, size: size}) do
-    %{entries: [], total_count: 0, page_number: page, page_size: size, total_pages: 0}
+  @doc "Pages a Kanban status set using the canonical Article list selector."
+  def kanban_page(%Community{} = community, filter, pagi) do
+    filter = filter |> Map.put(:community, community.slug) |> Map.put_new(:order, :publish)
+    Pagination.page(:post, filter, pagi, nil, include_pinned: true)
   end
 
-  def paged_kanban(%Community{} = community, %{status: statuses} = filter)
-      when is_list(statuses) do
-    %{page: page, size: size} = filter
-
-    valid_statuses = Enum.filter(statuses, &(is_atom(&1) and &1 in Map.keys(@article_status)))
-
-    case valid_statuses do
-      [] ->
-        %{entries: [], total_count: 0, page_number: page, page_size: size, total_pages: 0}
-        |> done()
-
-      _ ->
-        stable_paged_kanban(community, valid_statuses, page, size)
-    end
-  end
-
-  def paged_kanban(%Community{} = community, filter) do
-    %{page: page, size: size, status: status} = filter
-
-    stable_paged_kanban(community, [status], page, size)
-  end
-
-  defp stable_paged_kanban(community, statuses, page, size) do
-    base =
-      from(article in Article,
-        join: binding in ArticleBinding,
-        on: binding.article_id == article.id,
-        join: state in KanbanState,
-        on: state.article_binding_id == binding.id,
-        join: public in ArticlePublic,
-        on: public.article_id == article.id and public.visible == true,
-        join: lifecycle in ArticleLifecycle,
-        on: lifecycle.article_id == article.id,
-        where:
-          article.thread == :post and article.moderation_state == :legal and
-            binding.community_id == ^community.id and binding.visible == true and
-            lifecycle.state in [:published, :archived] and state.status in ^statuses,
-        order_by: [desc: public.published_at],
-        select: binding.inner_id
-      )
-
-    total_count = Repo.aggregate(exclude(base, :order_by), :count)
-
-    entries =
-      base
-      |> offset(^((page - 1) * size))
-      |> limit(^size)
-      |> Repo.all()
-      |> Enum.map(fn inner_id ->
-        {:ok, article} =
-          FrontDesk.article(%{
-            community: community.slug,
-            thread: :post,
-            inner_id: inner_id
-          })
-
-        article
-      end)
-
-    {:ok,
-     %{
-       entries: entries,
-       total_count: total_count,
-       page_number: page,
-       page_size: size,
-       total_pages: if(total_count == 0, do: 0, else: ceil(total_count / size))
-     }}
-  end
-
-  @spec paged_published(atom(), map(), User.t(), User.t() | nil) :: T.domain_res(term())
-  def paged_published(thread, filter, %User{} = target_user, actor) do
-    %{page: page, size: size} = filter
-
-    with %Ecto.Query{} = query <- Scope.scope(Article, actor, :list, scope_context(thread)) do
-      query =
-        query
-        |> join(:inner, [article, ...], author in assoc(article, :author), as: :published_author)
-        |> join(:inner, [article, ...], binding in ArticleBinding,
-          on: binding.article_id == article.id and binding.visible == true,
-          as: :published_binding
-        )
-        |> join(:inner, [_article, ...], community in Community,
-          on: community.id == as(:published_binding).community_id,
-          as: :published_community
-        )
-        |> where([_article, ...], as(:published_author).user_id == ^target_user.id)
-        |> order_by([article, ...], desc: article.active_at, desc: article.inserted_at)
-        |> select([article, ...], %{
-          inner_id: as(:published_binding).inner_id,
-          community: as(:published_community).slug
-        })
-
-      total_count = query |> exclude(:order_by) |> exclude(:select) |> Repo.aggregate(:count)
-
-      entries =
-        query
-        |> offset(^((page - 1) * size))
-        |> limit(^size)
-        |> Repo.all()
-        |> Enum.flat_map(&load_public_path(&1, thread))
-
-      %{
-        entries: entries,
-        total_count: total_count,
-        page_number: page,
-        page_size: size,
-        total_pages: if(total_count == 0, do: 0, else: ceil(total_count / size))
-      }
-      |> maybe_mark_viewer_states(thread, actor)
-      |> done()
-    end
+  @doc "Pages public binding paths authored by the target user."
+  def paged_published(thread, filter, pagi, %User{} = target_user, viewer) do
+    filter = Map.put(filter, :author_id, target_user.id)
+    Pagination.page(thread, filter, pagi, viewer, include_pinned: true)
   end
 
   @spec count_published(atom(), User.t()) :: T.domain_res(non_neg_integer())
@@ -497,34 +112,8 @@ defmodule GroupherServer.CMS.Articles.Query do
     end
   end
 
-  defp maybe_mark_viewer_states(paged_articles, _thread, %User{} = actor) do
-    read_articles(paged_articles, actor)
-  end
-
-  defp maybe_mark_viewer_states(paged_articles, _thread, nil) do
-    read_articles(paged_articles, nil)
-  end
-
   defp scope_context(:doc), do: DocContext.public_main()
   defp scope_context(thread), do: ArticleContext.public(thread)
-
-  defp read_articles(%{entries: entries} = paged_articles, actor) do
-    case Response.list(entries, actor) do
-      {:ok, entries} -> Map.put(paged_articles, :entries, entries)
-      {:error, _reason} = error -> error
-    end
-  end
-
-  defp load_public_path(path, thread) do
-    case FrontDesk.article(%{
-           community: path.community,
-           thread: thread,
-           inner_id: path.inner_id
-         }) do
-      {:ok, article} -> [article]
-      {:error, _reason} -> []
-    end
-  end
 
   @doc false
   def binding(article_id, community_id) do

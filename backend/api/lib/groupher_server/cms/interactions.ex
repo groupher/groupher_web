@@ -145,7 +145,7 @@ defmodule GroupherServer.CMS.Interactions do
 
   """
   @spec collected_users(struct(), map()) :: {:ok, term()} | {:error, term()}
-  defdelegate collected_users(article, filter), to: Reactions
+  defdelegate collected_users(article, pagi), to: Reactions
 
   @doc """
   Applies an Artiment emotion idempotently and returns the canonical Artiment.
@@ -238,7 +238,7 @@ defmodule GroupherServer.CMS.Interactions do
 
   """
   @spec upvoted_users(struct(), map()) :: {:ok, term()} | {:error, term()}
-  defdelegate upvoted_users(article, filter), to: Reactions
+  defdelegate upvoted_users(article, pagi), to: Reactions
 
   @doc """
   Compiles Interaction-owned ordering into an Article queryable.

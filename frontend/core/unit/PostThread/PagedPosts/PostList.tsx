@@ -7,6 +7,7 @@ import useLayout from '~/hooks/useLayout'
 import usePagedPosts from '~/hooks/usePagedPosts'
 import LavaLampLoading from '~/ui/Loading/LavaLampLoading'
 import MasonryCards from '~/ui/MasonryCards'
+import PaginationError from '~/ui/Pagi/PaginationError'
 
 import PostItem from '../PostItem'
 import useSalon from './salon/article_list'
@@ -17,10 +18,14 @@ export default function PostList() {
   const s = useSalon()
 
   const { postLayout } = useLayout()
-  const { pagedPosts, resState } = usePagedPosts()
+  const { pagedPosts, resState, initialError, isRetryingInitial, retryInitial } = usePagedPosts()
   if (!pagedPosts) return null
 
   const { entries } = pagedPosts
+
+  if (initialError && entries.length === 0) {
+    return <PaginationError isRetrying={isRetryingInitial} onRetry={() => void retryInitial()} />
+  }
 
   if (resState === TYPE.RES_STATE.LOADING && entries.length === 0) {
     return <LavaLampLoading top={20} left={30} />

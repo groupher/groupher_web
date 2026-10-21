@@ -1,8 +1,13 @@
 import { GATE_ACTION } from '@groupher/contracts/gate'
+import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, notFound, useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
 
 import useGate from '~/hooks/useGate'
+import usePagiPosition from '~/hooks/usePagiPosition'
+import { viewerQueryKeys } from '~/query'
+import useAccount from '~/stores/account/hooks'
+import Pagi from '~/ui/Pagi'
 
 import { mutateReviewApplication } from '../../lib/application'
 import { loadReviewApplication } from '../../server/application'
@@ -18,7 +23,33 @@ export const Route = createFileRoute('/review/$applicationRef')({
 })
 
 function ReviewDetail() {
-  const application = Route.useLoaderData()
+  const initialApplication = Route.useLoaderData()
+  const { accountRef } = useAccount()
+  const [seedOwner] = useState(accountRef)
+  const position = usePagiPosition(`${accountRef}:${initialApplication?.publicRef}`)
+  const events = useQuery({
+    queryKey: [
+      ...viewerQueryKeys.all,
+      accountRef,
+      'application-events',
+      initialApplication?.publicRef,
+      position.input,
+    ],
+    queryFn: async () =>
+      (
+        await loadReviewApplication({
+          data: { ref: initialApplication!.publicRef, pagi: position.input },
+        })
+      )?.events ?? null,
+    enabled: !!accountRef && !!initialApplication,
+    initialData:
+      accountRef === seedOwner && position.request.api === 'offset' && position.request.page === 1
+        ? initialApplication?.events
+        : undefined,
+  })
+  const eventPage = events.data
+  const eventError = events.error ? String(events.error) : null
+  const application = initialApplication
   const gate = useGate()
   const router = useRouter()
   const [note, setNote] = useState('')
@@ -36,6 +67,7 @@ function ReviewDetail() {
         note,
         reasonCode,
       })
+      await events.refetch()
       await router.invalidate()
     } catch (actionError) {
       setError(actionError instanceof Error ? actionError.message : 'Review action failed.')
@@ -141,13 +173,26 @@ function ReviewDetail() {
       </div>
       <h3>Timeline</h3>
       <ol>
-        {application.events.edges.map(({ cursor, node }) => (
-          <li key={cursor} className='apply-copy'>
+        {(eventPage?.entries ?? []).map((node, index) => (
+          <li key={`${node.occurredAt}:${index}`} className='apply-copy'>
             {new Date(node.occurredAt).toLocaleString()} · {node.actorType.toLowerCase()} ·{' '}
             {node.fromStatus || 'new'} → {node.toStatus}
           </li>
         ))}
       </ol>
+      {eventError && (
+        <p role='alert'>
+          {eventError}{' '}
+          <button type='button' onClick={() => void events.refetch()}>
+            Retry
+          </button>
+        </p>
+      )}
+      <Pagi
+        labels={{ previousPage: 'Previous page', nextPage: 'Next page', pageNumber: 'Page number' }}
+        pageInfo={eventPage?.pageInfo}
+        onChange={position.setPage}
+      />
     </section>
   )
 }

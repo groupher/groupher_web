@@ -17,27 +17,27 @@ defmodule GroupherServer.Test.Query.Accounts.Search do
 
   describe "[cms search post query]" do
     @query S.Account.q(:search_users)
-    test "search user by full nickname should valid paged communities", ~m(guest_conn)a do
+    test "search user by full nickname returns bounded User suggestions", ~m(guest_conn)a do
       variables = %{name: "react"}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results["totalCount"] == 1
-      assert results["entries"] |> Enum.any?(&(&1["nickname"] == "react"))
+      assert length(results) == 1
+      assert results |> Enum.any?(&(&1["nickname"] == "react"))
 
       variables = %{name: "java"}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results["totalCount"] == 2
-      assert results["entries"] |> Enum.any?(&(&1["nickname"] == "java"))
-      assert results["entries"] |> Enum.any?(&(&1["nickname"] == "javascript"))
+      assert length(results) == 2
+      assert results |> Enum.any?(&(&1["nickname"] == "java"))
+      assert results |> Enum.any?(&(&1["nickname"] == "javascript"))
     end
 
-    test "search non-exist user should get empty pagi data", ~m(guest_conn)a do
+    test "search non-exist user returns an empty list", ~m(guest_conn)a do
       variables = %{name: "non-exist"}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results["totalCount"] == 0
-      assert results["entries"] == []
+      assert length(results) == 0
+      assert results == []
     end
 
     test "search user by login should work", ~m(guest_conn)a do
@@ -46,8 +46,8 @@ defmodule GroupherServer.Test.Query.Accounts.Search do
       variables = %{name: "admin_login"}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results["totalCount"] == 1
-      assert results["entries"] |> Enum.any?(&(&1["nickname"] == "dashboard user"))
+      assert length(results) == 1
+      assert results |> Enum.any?(&(&1["nickname"] == "dashboard user"))
     end
   end
 end

@@ -10,6 +10,7 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY backend/press/package.json backend/press/package.json
 COPY packages/service/package.json packages/service/package.json
 COPY packages/contracts/package.json packages/contracts/package.json
+COPY patches patches
 
 # The image intentionally copies only Press and its two workspace dependencies;
 # the repository lockfile also contains unrelated workspaces, so this focused

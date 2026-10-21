@@ -121,12 +121,12 @@ defmodule GroupherServer.Accounts.Profiles.BrowserSessions do
 
   ## Examples
 
-      Accounts.Profiles.BrowserSessions.list_for_ref(session_ref)
+      Accounts.Profiles.BrowserSessions.list_for_ref(session_ref, nil)
   """
-  @spec list_for_ref(String.t()) :: {:ok, list()} | {:error, term()}
-  def list_for_ref(current_ref) when is_binary(current_ref) do
+  @spec list_for_ref(String.t(), term()) :: {:ok, struct()} | {:error, term()}
+  def list_for_ref(current_ref, pagi) when is_binary(current_ref) do
     with {:ok, session} <- active_session(current_ref, DateTime.utc_now()) do
-      list(session.user, current_ref)
+      list(session.user, current_ref, pagi)
     end
   end
 
@@ -193,23 +193,33 @@ defmodule GroupherServer.Accounts.Profiles.BrowserSessions do
 
   ## Examples
 
-      Accounts.Profiles.BrowserSessions.list(user, session_ref)
+      Accounts.Profiles.BrowserSessions.list(user, session_ref, nil)
   """
-  @spec list(User.t(), String.t()) :: {:ok, list()}
-  def list(%User{} = user, current_ref) do
+  @spec list(User.t(), String.t(), GroupherServer.Pagi.Params.input()) :: tuple()
+  def list(%User{} = user, current_ref, pagi) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
-    sessions =
+    query =
       from(session in BrowserSession,
         where:
           session.user_id == ^user.id and session.status == :active and
-            session.absolute_expires_at > ^now,
-        order_by: [desc: session.last_seen_at, desc: session.inserted_at]
+            session.absolute_expires_at > ^now
       )
-      |> Repo.all()
-      |> Enum.map(&Map.put(&1, :is_current, &1.ref == current_ref))
 
-    {:ok, sessions}
+    with {:ok, page} <-
+           Helper.ORM.pagi(query, pagi,
+             for: BrowserSession,
+             surface: "accounts.browser_sessions",
+             query_fingerprint: to_string(user.id),
+             order: %Helper.ORM.Pagi.Order{
+               fields: [:last_seen_at, :id],
+               directions: [:desc_nulls_last, :desc],
+               cursor_fields: [:last_seen_at, :id]
+             }
+           ) do
+      {:ok,
+       %{page | entries: Enum.map(page.entries, &Map.put(&1, :is_current, &1.ref == current_ref))}}
+    end
   end
 
   defp active_session(ref, now) do

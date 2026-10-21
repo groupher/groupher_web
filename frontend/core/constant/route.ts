@@ -12,6 +12,7 @@ export const DSB_ROUTE = {
   OVERVIEW: 'overview',
   // basic-info
   INFO: 'info',
+  BROWSING: 'browsing',
   SEO: 'seo',
   APPEARANCE: 'appearance',
   THREADS: 'threads',

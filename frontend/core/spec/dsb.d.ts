@@ -136,7 +136,6 @@ export type TDsbFieldMap = {
   footerLinks: readonly TLinkItem[]
   footerOnelineLinks: readonly TFooterOnelineLink[]
   headerLinks: readonly TLinkItem[]
-  moderators: readonly TModerator[]
 
   widgetsPrimaryColor: TColorName
   widgetsThreads: readonly TThread[]

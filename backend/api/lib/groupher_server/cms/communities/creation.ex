@@ -17,7 +17,7 @@ defmodule GroupherServer.CMS.Communities.Creation do
   alias GroupherServer.{Accounts, CMS, Repo}
   alias Ecto.Multi
   alias Accounts.Model.User
-  alias CMS.Communities.{CreationPersist, ErrorCat, Lifecycle, NamePolicy, SlugClaims}
+  alias CMS.Communities.{CreationPersist, ErrorCat, Lifecycle, NameAvailability, SlugClaims}
 
   alias CMS.CommunityApplications.Lifecycle, as: ApplicationLifecycle
 
@@ -38,7 +38,7 @@ defmodule GroupherServer.CMS.Communities.Creation do
 
   ## Examples
 
-      CMS.Communities.create_from_application("capp_abc", "op_123")
+      Creation.create_from_application("capp_abc", "op_123")
       #=> {:ok, %CommunityApplication{}}
 
   """
@@ -61,7 +61,7 @@ defmodule GroupherServer.CMS.Communities.Creation do
 
         true ->
           with {:ok, _slug} <-
-                 NamePolicy.check(application.slug, ignore_application_id: application.id),
+                 NameAvailability.check(application.slug, ignore_application_id: application.id),
                {:ok, user} <- fetch_user(application.user_id),
                {:ok, upload} <- finalized_upload(application),
                {:ok, community} <- create_core(application, upload, user),

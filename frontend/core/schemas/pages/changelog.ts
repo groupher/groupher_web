@@ -9,24 +9,34 @@ export const changelog = graphql(`
   }
 `)
 
-export const pagedChangelogs = graphql(`
-  query PagedChangelogs($filter: PagedChangelogsFilter!) {
-    pagedChangelogs(filter: $filter) {
+export const changelogPage = graphql(`
+  query ChangelogPage(
+    $pagi: PagiInput
+    $filter: ChangelogFilter
+    $thread: ChangelogThread = CHANGELOG
+  ) {
+    changelogPage(pagi: $pagi, filter: $filter, thread: $thread) {
+      pinnedEntries {
+        ...PageChangelogLiteFields
+      }
       entries {
-        ...PageChangelogFields
-        meta {
-          thread
-          latestUpvotedUsers {
-            ...PageCommonUserFields
-          }
+        ...PageChangelogLiteFields
+      }
+      pageInfo {
+        __typename
+        hasNextPage
+        hasPreviousPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
         }
-        digest
-        linkAddr
-        commentsParticipants {
-          ...PageAuthorFields
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
         }
       }
-      ...PageChangelogPageInfo
     }
   }
 `)

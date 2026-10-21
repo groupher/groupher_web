@@ -15,11 +15,23 @@ defmodule GroupherServer.Jobs.PublicCachePurge do
 
   alias GroupherServer.PublicCache
 
-  @doc false
+  @doc """
+  Calculates the next PublicCache retry delay from the Oban attempt number.
+
+  ## Examples
+
+      backoff(%Oban.Job{attempt: 1})
+  """
   @impl Oban.Worker
   def backoff(%Oban.Job{attempt: attempt}), do: PublicCache.delivery_retry_delay(attempt)
 
-  @doc false
+  @doc """
+  Delivers one durable PublicCache invalidation and returns snooze/retry signals to Oban.
+
+  ## Examples
+
+      perform(%Oban.Job{args: %{"invalidation_id" => Ecto.UUID.generate()}})
+  """
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"invalidation_id" => id}} = job) do
     lock_ref = "#{node()}:#{job.id}:#{job.attempt}:#{Ecto.UUID.generate()}"

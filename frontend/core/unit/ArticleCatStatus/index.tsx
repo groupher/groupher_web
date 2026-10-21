@@ -15,8 +15,8 @@ import Status from './Status'
 
 export type TProps = {
   testid?: string
-  cat?: TArticleCat
-  status?: TArticleStatus
+  cat?: TArticleCat | null
+  status?: TArticleStatus | null
   smaller?: boolean
   noBorder?: boolean
   // size?
@@ -35,7 +35,7 @@ const ArticleCatStatus: FC<TProps> = ({
   return (
     <div className={s.wrapper} data-testid={_testid}>
       {cat && <Label cat={cat} smaller={smaller} />}
-      {cat && cat !== ARTICLE_CAT.DISCUSSION && (
+      {cat && status && cat !== ARTICLE_CAT.DISCUSSION && (
         <Status cat={cat} status={status} smaller={smaller} />
       )}
     </div>

@@ -11,6 +11,7 @@ defmodule GroupherServer.CMS.Model.CommunityApplicationEvent do
   """
 
   use Ecto.Schema
+  use Flop.Schema
 
   import Ecto.Changeset
 
@@ -28,6 +29,8 @@ defmodule GroupherServer.CMS.Model.CommunityApplicationEvent do
   @optional_fields ~w(from_status actor_id reason_code operation_ref metadata)a
 
   @type t :: %__MODULE__{}
+
+  @flop_options [filterable: [], sortable: [:occurred_at, :id], pagination_types: [:page, :first]]
 
   schema "community_application_events" do
     belongs_to(:application, CommunityApplication)

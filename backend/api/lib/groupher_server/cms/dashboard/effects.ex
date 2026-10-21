@@ -45,4 +45,22 @@ defmodule GroupherServer.CMS.Dashboard.Effects do
     })
     |> CMS.Outbox.send()
   end
+
+  @doc "Enqueues cache invalidation for the community-wide list preference."
+  @spec enqueue_pagi_mode_changed(Community.t(), Ecto.UUID.t()) ::
+          {:ok, CMS.Outbox.Event.t()} | {:error, term()}
+  def enqueue_pagi_mode_changed(%Community{} = community, command_id) do
+    %{
+      command_id: command_id,
+      event: "community.pagi_mode_changed",
+      worker: GroupherServer.Jobs.CMSOutboxCommunity,
+      resource_type: "community",
+      resource_id: community.id,
+      data: %{
+        community: community.slug,
+        community_id: community.id
+      }
+    }
+    |> CMS.Outbox.send()
+  end
 end

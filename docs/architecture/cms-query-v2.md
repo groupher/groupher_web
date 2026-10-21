@@ -94,9 +94,13 @@ Query 不是 transport facade；GraphQL、Job 和跨领域调用方仍优先调�
 helper 共享：
 
 - 通用 filter clauses；
-- page/size/cursor normalization；
-- paginator；
+- page/size/cursor transport normalization；
+- `Helper.ORM.pagi/3` 机制（领域 Query 仍拥有 filter/sort 语义）；
 - 与领域无关的排序构造。
+
+旧 `paginator/2`、`embeds_paginator/2` 已从 runtime 删除；它们不能成为新
+Query 的入口，也不能与领域 Query 自己的 `order_by` 叠加。分页迁移的逐调用点状态以
+[`pagination_inventory.json`](../../backend/api/priv/pagination_inventory.json) 为准。
 
 Article pin、Kanban status、Comment solution、Community subscription、AbuseReport target shape 等规则
 必须留在 owning Domain Query。不得为了复用把资源语义提升到 FrontDesk 或通用 QueryBuilder。

@@ -704,3 +704,44 @@ describe('Auth Hono application', () => {
     expect(revokeBrowserSession).toHaveBeenCalledWith('bs_current')
   })
 })
+
+it('passes canonical session pagination through Auth and rejects a second input grammar', async () => {
+  const page = {
+    entries: [],
+    pageInfo: {
+      __typename: 'OffsetPageInfo' as const,
+      page: 2,
+      size: 10,
+      totalCount: 11,
+      totalPages: 2,
+      hasNextPage: false,
+      hasPreviousPage: true,
+    },
+  }
+  const listBrowserSessions = vi.fn(async () => page)
+  const app = createApp({
+    readBrowserSession: async () => ({
+      browserSessionRef: 'bs_current',
+      sessionAbsoluteExpiresAt: '2026-11-08T00:00:00.000Z',
+    }),
+    listBrowserSessions,
+  })
+  const pagi = { offset: { page: 2, size: 10 } }
+  const response = await app.request(
+    `/api/auth/sessions?pagi=${encodeURIComponent(JSON.stringify(pagi))}`,
+  )
+  expect(response.status).toBe(200)
+  expect(await response.json()).toEqual(page)
+  expect(listBrowserSessions).toHaveBeenCalledWith('bs_current', pagi)
+  const invalid = await app.request(
+    `/api/auth/sessions?pagi=${encodeURIComponent(JSON.stringify({ page: 2 }))}`,
+  )
+  expect(invalid.status).toBe(400)
+  expect(listBrowserSessions).toHaveBeenCalledTimes(1)
+  expect(
+    mapBrowserSessionError(
+      new PhoenixBrowserSessionError('cursor mismatch', { code: 'PAGI_4203' }),
+      AUTH_ERROR.SESSION_UNAVAILABLE,
+    ).status,
+  ).toBe(400)
+})

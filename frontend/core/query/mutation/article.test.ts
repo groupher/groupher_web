@@ -43,7 +43,7 @@ const stats = {
   snapshotAt: new Date().toISOString(),
 }
 
-const postsKey = articleQueryKeys.posts({ community: 'home' })
+const postsKey = articleQueryKeys.pagiPosts({ community: 'home' })
 const detailKey = articleQueryKeys.detail('home', THREAD.POST, '42')
 const statsKey = articleQueryKeys.stats('home', THREAD.POST, '42')
 const viewerKey = viewerQueryKeys.articleInteractionStates('alice', ['home:POST:42'])
@@ -239,12 +239,14 @@ describe('article query mutation helpers', () => {
       staleTime: Number.POSITIVE_INFINITY,
     })
     const unsubscribe = observer.subscribe(() => undefined)
+    const requestError = new Error('network')
     browserGraphQLRequest.mockImplementationOnce(() => {
-      throw new Error('network')
+      throw requestError
     })
 
     try {
-      await expect(executeArticleUpvote(queryClient, article, true)).rejects.toThrow('network')
+      await expect(executeArticleUpvote(queryClient, article, true)).rejects.toBe(requestError)
+      expect(requestError.message).toBe('network')
     } finally {
       unsubscribe()
     }
@@ -407,9 +409,11 @@ describe('article query mutation helpers', () => {
       expect(queryClient.getQueryData<typeof stats>(statsKey)?.upvotesCount).toBe(4),
     )
     unsubscribe()
-    rejectRequest(new Error('network'))
+    const requestError = new Error('network')
+    rejectRequest(requestError)
 
-    await expect(pending).rejects.toThrow('network')
+    await expect(pending).rejects.toBe(requestError)
+    expect(requestError.message).toBe('network')
     expect(queryClient.getQueryState(statsKey)?.isInvalidated).toBe(true)
 
     const remount = new QueryObserver(queryClient, {

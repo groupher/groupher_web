@@ -7,8 +7,6 @@ import AdminAvatar from '~/unit/AdminAvatar'
 
 import useSalon from './salon/user_item'
 
-const LEGACY_ROOT_PASSPORT_ITEM_COUNT = 10_000
-
 type TProps = {
   item: TModerator
   active?: boolean
@@ -20,16 +18,13 @@ const UserItem = ({ item, active = false, readonly = false, onOpen }: TProps) =>
   const s = useSalon()
   const { t } = useTrans()
   const { user, passportItemCount, isRoot } = item
-  const normalizedPassportItemCount =
-    !isRoot && passportItemCount >= LEGACY_ROOT_PASSPORT_ITEM_COUNT ? 0 : passportItemCount
-
   if (!user?.login) return null
 
   const permissionsLabel = isRoot ? (
     <>{t('dsb.admin.list.all_permissions')}</>
   ) : (
     <>
-      {normalizedPassportItemCount} {t('dsb.admin.list.permissions_unit')}
+      {passportItemCount} {t('dsb.admin.list.permissions_unit')}
     </>
   )
 

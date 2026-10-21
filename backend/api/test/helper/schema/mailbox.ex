@@ -39,8 +39,8 @@ defmodule GroupherServer.Test.Helper.Schema.Mailbox do
 
   def q(:paged_mentions) do
     """
-    query($filter: MailboxMentionsFilter!) {
-          pagedMentions(filter: $filter) {
+    query($filter: MailboxMentionsFilter, $pagi: PagiInput) {
+          pagedMentions(filter: $filter, pagi: $pagi) {
             entries {
               id
               thread
@@ -54,10 +54,12 @@ defmodule GroupherServer.Test.Helper.Schema.Mailbox do
                 nickname
               }
             }
-            totalPages
-            totalCount
-            pageSize
-            pageNumber
+            pageInfo {
+              hasNextPage
+              hasPreviousPage
+              ... on OffsetPageInfo { page size totalCount totalPages }
+              ... on CursorPageInfo { startCursor endCursor }
+            }
           }
         }
     """
@@ -65,8 +67,8 @@ defmodule GroupherServer.Test.Helper.Schema.Mailbox do
 
   def q(:paged_notifications) do
     """
-    query($filter: MailboxNotificationsFilter!) {
-          pagedNotifications(filter: $filter) {
+    query($filter: MailboxNotificationsFilter, $pagi: PagiInput) {
+          pagedNotifications(filter: $filter, pagi: $pagi) {
             entries {
               id
               action
@@ -80,10 +82,12 @@ defmodule GroupherServer.Test.Helper.Schema.Mailbox do
                 nickname
               }
             }
-            totalPages
-            totalCount
-            pageSize
-            pageNumber
+            pageInfo {
+              hasNextPage
+              hasPreviousPage
+              ... on OffsetPageInfo { page size totalCount totalPages }
+              ... on CursorPageInfo { startCursor endCursor }
+            }
           }
         }
     """

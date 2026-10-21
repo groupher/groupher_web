@@ -39,7 +39,7 @@ defmodule GroupherServer.CMS.Gate.Access.Check do
       #=> {:ok, canonical_community} | {:error, %Gate.Decision{}}
   """
   def community(actor, action, %Community{} = community) do
-    with {:ok, context} <- Load.community(community),
+    with {:ok, context} <- Load.community(actor, community),
          %Decision{allowed: true} <-
            Decision.from_result(
              Policy.community(actor, action, context.community, context),
@@ -59,7 +59,7 @@ defmodule GroupherServer.CMS.Gate.Access.Check do
           {:ok, term()} | {:error, term()}
   def with_authorized_community(actor, action, %Community{} = community, callback)
       when is_function(callback, 1) do
-    with {:ok, context} <- Load.community(community),
+    with {:ok, context} <- Load.community(actor, community),
          %Decision{allowed: true} = decision <-
            Decision.from_result(
              Policy.community(actor, action, context.community, context),

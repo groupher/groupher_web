@@ -7,6 +7,6 @@ defmodule GroupherServer.CMS.Communities.Subscribers do
 
   alias __MODULE__.Query
 
-  defdelegate page(community, filter), to: Query
-  defdelegate page(community, filter, user), to: Query
+  defdelegate page(community, filter, pagi), to: Query
+  defdelegate page(community, filter, pagi, viewer), to: Query
 end

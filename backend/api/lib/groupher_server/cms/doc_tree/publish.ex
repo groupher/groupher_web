@@ -18,6 +18,14 @@ defmodule GroupherServer.CMS.DocTree.Publish do
   defdelegate move_doc_to_draft(arg1, arg2, arg3, arg4),
     to: GroupherServer.CMS.DocTree.Publish.Workflow
 
+  @doc "Prepares move_doc_to_draft/4 for a Command-owned Gate stage."
+  defdelegate prepare_move_doc_to_draft(arg1, arg2, arg3, arg4),
+    to: GroupherServer.CMS.DocTree.Publish.Workflow
+
+  @doc "Persists a prepared move after the Command-owned Gate stage."
+  defdelegate move_doc_to_draft_after_gate(arg1),
+    to: GroupherServer.CMS.DocTree.Publish.Workflow
+
   @doc "Delegates move_subtree_to_draft/3 to the owning implementation."
   defdelegate move_subtree_to_draft(arg1, arg2, arg3),
     to: GroupherServer.CMS.DocTree.Publish.Workflow

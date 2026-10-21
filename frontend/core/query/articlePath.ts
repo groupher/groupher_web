@@ -23,7 +23,7 @@ export const isArticleThread = (thread: string): thread is TArticleThread =>
 /** Extracts stable public coordinates from content without carrying presentation fields. */
 export const articlePathOf = (article: TArticle): TArticlePath => ({
   community: article.community?.slug || '',
-  thread: article.meta?.thread as TArticleThread,
+  thread: (article.thread ?? article.meta?.thread) as TArticleThread,
   innerId: String(article.innerId || ''),
 })
 

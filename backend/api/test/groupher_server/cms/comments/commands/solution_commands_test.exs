@@ -230,17 +230,17 @@ defmodule GroupherServer.Test.CMS.Comments.Commands.SolutionCommands do
     {:ok, _} = CMS.Comments.accept_solution(second.id, actor, Ecto.UUID.generate())
 
     assert {:ok, page} =
-             CMS.Comments.paged_comments(
+             comment_page(
                :post,
                post.id,
                %{page: 1, size: 20, sort: :asc_inserted},
                :replies
              )
 
-    assert [%{id: solution_id, is_solution: true} | _] = page.entries
+    assert [%{id: solution_id, is_solution: true} | _] = page.pinned_entries
     assert solution_id == second.id
     refute Repo.get_by(PinnedComment, comment_id: second.id)
-    assert Enum.any?(page.entries, &(&1.id == first.id and &1.is_pinned))
+    assert Enum.any?(page.pinned_entries, &(&1.id == first.id and &1.is_pinned))
   end
 
   test "concurrent accepts serialize to one authoritative binding", context do

@@ -33,7 +33,20 @@ vi.mock('@tanstack/react-query', async () => ({
 
     return isTrashQuery
       ? {
-          data: { docTreeTrashItems: [] },
+          data: {
+            docTreeTrashItems: {
+              entries: [],
+              pageInfo: {
+                __typename: 'OffsetPageInfo',
+                page: 1,
+                size: 20,
+                totalCount: 0,
+                totalPages: 0,
+                hasNextPage: false,
+                hasPreviousPage: false,
+              },
+            },
+          },
           isFetching: false,
           refetch: mocks.reloadTrash,
         }

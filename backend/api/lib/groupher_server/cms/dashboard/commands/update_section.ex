@@ -13,7 +13,7 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
     adapter: GroupherServer.CMS.CommandPipelineAdapter
 
   alias GroupherServer.CMS
-  alias CMS.Dashboard.{BaseInfo, Effects, SectionPayload, Persist}
+  alias CMS.Dashboard.{BaseInfo, Effects, PagiMode, SectionPayload, Persist}
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.T
 
@@ -38,7 +38,7 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
       with {:ok, dashboard} <- Persist.get_or_insert_dashboard(canonical),
            {:ok, canonical} <- maybe_update_identity(canonical, key, args),
            {:ok, updated} <- update_dashboard(dashboard, key, section_args),
-           {:ok, _event} <- Effects.enqueue_presentation_changed(canonical, command_id) do
+           {:ok, _event} <- enqueue_effect(canonical, key, section_args, command_id) do
         {:ok, updated}
       end
     end)
@@ -51,6 +51,10 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
   defp maybe_update_identity(community, _key, _args), do: {:ok, community}
 
   defp section_args(:content_shadow, args), do: args
+
+  defp section_args(:pagi_mode, args) when is_map(args) do
+    Map.drop(args, [:community, :dsb_section, :command_id])
+  end
 
   defp section_args(key, args) when is_map(args) do
     if Map.has_key?(args, :dsb_section) or Map.has_key?(args, :community) or
@@ -72,5 +76,27 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
     Persist.update_content_shadow(dashboard, enabled)
   end
 
+  defp update_dashboard(dashboard, :pagi_mode, %{
+         mode: mode,
+         mobile_mode: mobile_mode,
+         expected_revision: revision
+       }) do
+    Persist.update_pagi_mode(dashboard, mode, mobile_mode, revision)
+  end
+
+  defp update_dashboard(_dashboard, :pagi_mode, _args) do
+    {:error, GroupherServer.Pagi.invalid_config_context()}
+  end
+
   defp update_dashboard(dashboard, key, args), do: Persist.replace_section(dashboard, key, args)
+
+  defp enqueue_effect(community, :pagi_mode, _args, command_id) do
+    with {:ok, _} <- PagiMode.invalidate(community.slug) do
+      Effects.enqueue_pagi_mode_changed(community, command_id)
+    end
+  end
+
+  defp enqueue_effect(community, _key, _args, command_id) do
+    Effects.enqueue_presentation_changed(community, command_id)
+  end
 end

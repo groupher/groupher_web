@@ -12,10 +12,9 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
 
   alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.Gate
   alias Ecto.Multi
-  alias CMS.Communities.{ErrorCat, NamePolicy, SlugClaims}
-  alias CMS.CommunityApplications.{Config, Lifecycle, LogoUploads, Persist, Policy}
+  alias CMS.Communities.{ErrorCat, NameAvailability, NameRules, SlugClaims}
+  alias CMS.CommunityApplications.{Admission, Config, Decision, Lifecycle, LogoUploads, Persist}
   alias CMS.CommunityApplications.Query
   alias CMS.CommunityApplications.Commands.{Support, Confirmation}
   alias CMS.Model.CommunityApplication
@@ -39,8 +38,15 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
             params: :attrs
 
   receipt_pipeline execute_pipeline(actor, attrs, command_id) do
-    gate(fn _candidate -> Gate.check_application_create_in_transaction(actor) end)
-    workflow(fn _actor -> submit_workflow(attrs, actor, command_id) end)
+    gate(fn _candidate ->
+      with {:ok, decision} <- Admission.check(:application_create, actor) do
+        {:ok, %{actor: actor, application_decision: decision}}
+      end
+    end)
+
+    change(fn %{actor: authorized_actor, application_decision: decision} ->
+      submit_workflow(attrs, authorized_actor, decision, command_id)
+    end)
 
     confirm(fn application ->
       {:ok, Support.confirmation(Confirmation, application.id, command_id)}
@@ -49,21 +55,16 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
     present(fn confirmation -> Support.result(confirmation) end)
   end
 
-  workflow_pipeline submit_workflow(attrs, user, submit_command_id) do
-    step(:normalize, fn _results -> normalize_input(attrs) end)
-
-    step(:prepare, fn %{normalize: normalized} ->
-      prepare_submission(normalized, user, submit_command_id)
-    end)
-
-    step(:persist, fn %{prepare: prepared} ->
-      persist_submission(prepared, user, submit_command_id)
-    end)
-
-    return(:persist)
+  defp submit_workflow(attrs, user, application_decision, submit_command_id) do
+    with {:ok, normalized} <- normalize_input(attrs),
+         {:ok, prepared} <-
+           prepare_submission(normalized, user, application_decision, submit_command_id),
+         {:ok, application} <- persist_submission(prepared, user, submit_command_id) do
+      {:ok, application}
+    end
   end
 
-  defp prepare_submission(normalized, %User{} = user, submit_command_id) do
+  defp prepare_submission(normalized, %User{} = user, application_decision, submit_command_id) do
     fingerprint = fingerprint(normalized)
 
     case submit_command_lookup(user.id, submit_command_id, fingerprint) do
@@ -71,16 +72,15 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
         {:ok, %{existing: application}}
 
       :miss ->
-        prepare_new_submission(normalized, user, fingerprint)
+        prepare_new_submission(normalized, user, application_decision, fingerprint)
 
       {:error, _reason} = error ->
         error
     end
   end
 
-  defp prepare_new_submission(normalized, user, fingerprint) do
-    with {:ok, _slug} <- NamePolicy.check(normalized.slug),
-         %{allowed: true} = policy <- Policy.can_apply(user),
+  defp prepare_new_submission(normalized, user, application_decision, fingerprint) do
+    with {:ok, _slug} <- NameAvailability.check(normalized.slug),
          {:ok, upload} <- LogoUploads.fetch_finalized(normalized.logo_asset_ref, user) do
       now = DateTime.utc_now(:second)
       expires_at = DateTime.add(now, Config.submitted_ttl_days(), :day)
@@ -91,12 +91,11 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
          fingerprint: fingerprint,
          normalized: normalized,
          now: now,
-         policy: policy,
+         application_decision: application_decision,
          upload: upload
        }}
     else
       {:error, _} = error -> error
-      %{allowed: false} = policy -> {:error, Policy.denial_error(policy)}
     end
   end
 
@@ -122,7 +121,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
         apply_message: normalized.apply_message,
         submit_command_id: submit_command_id,
         input_fingerprint: prepared.fingerprint,
-        policy_snapshot: prepared.policy,
+        policy_snapshot: Decision.snapshot(prepared.application_decision),
         submitted_at: prepared.now,
         expires_at: prepared.expires_at
       })
@@ -143,7 +142,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
       })
       |> Persist.insert_event()
     end)
-    |> Transaction.run()
+    |> Transaction.join()
     |> normalize_submit_result(user.id, submit_command_id, prepared.fingerprint)
   end
 
@@ -155,7 +154,7 @@ defmodule GroupherServer.CMS.CommunityApplications.Commands.Submit do
     apply_message = attrs |> get(:apply_message) |> normalize_string()
     category = attrs |> get(:apply_category) |> normalize_category()
 
-    with {:ok, slug} <- NamePolicy.format_check(get(attrs, :slug)),
+    with {:ok, slug} <- NameRules.format_check(get(attrs, :slug)),
          true <- is_binary(title) and byte_size(title) <= 80,
          true <- is_binary(desc) and byte_size(desc) <= 2_000,
          true <- is_binary(logo_asset_ref),

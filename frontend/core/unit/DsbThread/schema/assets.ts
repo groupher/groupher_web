@@ -18,8 +18,8 @@ export const createCommunityAssetUploadIntent = graphql(`
 `)
 
 export const pagedCommunityAssets = graphql(`
-  query PagedCommunityAssets($community: String!, $filter: CommunityAssetFilter) {
-    pagedCommunityAssets(community: $community, filter: $filter) {
+  query PagedCommunityAssets($community: String!, $filter: CommunityAssetFilter, $pagi: PagiInput) {
+    pagedCommunityAssets(community: $community, filter: $filter, pagi: $pagi) {
       entries {
         id
         publicRef
@@ -42,10 +42,21 @@ export const pagedCommunityAssets = graphql(`
         deletedAt
         insertedAt
       }
-      pageNumber
-      pageSize
-      totalCount
-      totalPages
+      pageInfo {
+        __typename
+        hasNextPage
+        hasPreviousPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
+        }
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
+        }
+      }
     }
   }
 `)
@@ -74,8 +85,8 @@ export const communityAssetStats = graphql(`
 `)
 
 export const communityAssetRefs = graphql(`
-  query CommunityAssetRefs($community: String!, $assetId: ID!, $filter: PagiFilter) {
-    communityAssetRefs(community: $community, assetId: $assetId, filter: $filter) {
+  query CommunityAssetRefs($community: String!, $assetId: ID!, $pagi: PagiInput) {
+    communityAssetRefs(community: $community, assetId: $assetId, pagi: $pagi) {
       entries {
         id
         thread
@@ -89,10 +100,21 @@ export const communityAssetRefs = graphql(`
         source
         insertedAt
       }
-      pageNumber
-      pageSize
-      totalCount
-      totalPages
+      pageInfo {
+        __typename
+        hasNextPage
+        hasPreviousPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
+        }
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
+        }
+      }
     }
   }
 `)

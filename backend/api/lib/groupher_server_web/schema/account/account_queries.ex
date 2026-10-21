@@ -18,8 +18,9 @@ defmodule GroupherServerWeb.Schema.Account.Queries do
 
   object :account_queries do
     @desc "List Browser Sessions for canonical Auth through trusted transport only."
-    field :browser_sessions, non_null(list_of(non_null(:browser_session))) do
+    field :browser_sessions, non_null(:browser_session_page) do
       arg(:browser_session_ref, non_null(:string))
+      arg(:pagi, :pagi_input)
 
       middleware(M.ServiceScope, audience: "phoenix:auth-api", scope: "auth:session:read")
       resolve(&R.Accounts.Sessions.browser_sessions/3)
@@ -32,10 +33,10 @@ defmodule GroupherServerWeb.Schema.Account.Queries do
     end
 
     @desc "get all users"
-    field :paged_users, non_null(:paged_users) do
-      arg(:filter, non_null(:paged_users_filter))
+    field :paged_users, non_null(:user_page) do
+      arg(:filter, :user_list_filter)
+      arg(:pagi, :pagi_input)
 
-      middleware(M.PageSizeProof)
       resolve(&R.Accounts.Profiles.paged_users/3)
     end
 
@@ -58,87 +59,92 @@ defmodule GroupherServerWeb.Schema.Account.Queries do
     end
 
     @desc "anyone can get anyone's subscribed communities"
-    field :subscribed_communities, :paged_communities do
-      arg(:login, :string)
-      arg(:filter, non_null(:pagi_filter))
+    field :subscribed_communities, :community_page do
+      arg(:login, non_null(:string))
+      arg(:filter, :user_list_filter)
+      arg(:pagi, :pagi_input)
 
-      middleware(M.PageSizeProof)
-      middleware(M.FrontDesk, {:user, optional: true})
+      middleware(M.FrontDesk, :user)
       resolve(&R.Accounts.Profiles.subscribed_communities/3)
+    end
+
+    @desc "Bounded discovery suggestions, independently including Home when visible."
+    field :default_community_suggestions, non_null(list_of(non_null(:community))) do
+      resolve(&R.Accounts.Profiles.default_community_suggestions/3)
     end
 
     @desc "get login user's mentions in mailbox"
     field :paged_mentions, :paged_mailbox_mentions do
+      arg(:pagi, :pagi_input)
       arg(:filter, :mailbox_mentions_filter)
 
       middleware(M.Authorize, :login)
-      middleware(M.PageSizeProof)
       resolve(&R.Accounts.Mailbox.paged_mailbox_mentions/3)
     end
 
     @desc "get login user's notifications in mailbox"
     field :paged_notifications, :paged_mailbox_notifications do
+      arg(:pagi, :pagi_input)
       arg(:filter, :mailbox_notifications_filter)
 
       middleware(M.Authorize, :login)
-      middleware(M.PageSizeProof)
       resolve(&R.Accounts.Mailbox.paged_mailbox_notifications/3)
     end
 
     @desc "get user's follower"
-    field :paged_followers, :paged_users do
+    field :paged_followers, :user_page do
       arg(:login, non_null(:string))
-      arg(:filter, non_null(:pagi_filter))
+      arg(:filter, :user_list_filter)
+      arg(:pagi, :pagi_input)
 
-      middleware(M.PageSizeProof)
       middleware(M.FrontDesk, :user)
       resolve(&R.Accounts.Relationships.paged_followers/3)
     end
 
     @desc "get user's follower"
-    field :paged_followings, :paged_users do
+    field :paged_followings, :user_page do
       arg(:login, non_null(:string))
-      arg(:filter, non_null(:pagi_filter))
+      arg(:filter, :user_list_filter)
+      arg(:pagi, :pagi_input)
 
-      middleware(M.PageSizeProof)
       middleware(M.FrontDesk, :user)
       resolve(&R.Accounts.Relationships.paged_followings/3)
     end
 
     @desc "get paged upvoted articles"
-    field :paged_upvoted_articles, :paged_articles do
+    field :paged_upvoted_articles, :article_collection_page do
       arg(:login, non_null(:string))
-      arg(:filter, :upvoted_articles_filter)
+      arg(:pagi, :pagi_input)
+      arg(:filter, :article_collection_filter)
 
       middleware(M.FrontDesk, :user)
       resolve(&R.Accounts.Relationships.paged_upvoted_articles/3)
     end
 
     @desc "get paged collect folders of a user"
-    field :paged_collect_folders, :paged_collect_folders do
+    field :paged_collect_folders, :collect_folder_page do
       arg(:login, non_null(:string))
-      arg(:filter, non_null(:collect_folders_filter))
+      arg(:pagi, :pagi_input)
+      arg(:filter, :article_collection_filter)
 
-      middleware(M.PageSizeProof)
       middleware(M.FrontDesk, :user)
       resolve(&R.Accounts.Relationships.paged_collect_folders/3)
     end
 
     @desc "get paged collected articles"
-    field :paged_collected_articles, :paged_articles do
+    field :paged_collected_articles, :article_collection_page do
       arg(:folder_id, non_null(:id))
-      arg(:filter, non_null(:collected_articles_filter))
+      arg(:pagi, :pagi_input)
+      arg(:filter, :article_collection_filter)
 
-      middleware(M.PageSizeProof)
       resolve(&R.Accounts.Relationships.paged_collected_articles/3)
     end
 
     @desc "paged communities which the user it's the editor"
-    field :moderatorable_communities, :paged_communities do
+    field :moderatorable_communities, :community_page do
       arg(:login, :string)
-      arg(:filter, non_null(:pagi_filter))
+      arg(:pagi, :pagi_input)
 
-      middleware(M.PageSizeProof)
       middleware(M.FrontDesk, {:user, optional: true})
       resolve(&R.Accounts.Profiles.moderatorable_communities/3)
     end
@@ -151,19 +157,19 @@ defmodule GroupherServerWeb.Schema.Account.Queries do
     end
 
     @desc "search user by name"
-    field :search_users, :paged_users do
+    field :search_users, non_null(list_of(non_null(:user))) do
       arg(:name, non_null(:string))
 
       resolve(&R.Accounts.Profiles.search_users/3)
     end
 
     @desc "get paged published article comments"
-    field :paged_published_comments, :paged_comments do
+    field :paged_published_comments, :comment_collection_page do
       arg(:login, non_null(:string))
-      arg(:filter, non_null(:pagi_filter))
-      arg(:thread, :thread, default_value: :post)
+      arg(:filter, :comment_page_filter)
+      arg(:pagi, :pagi_input)
+      arg(:thread, :thread)
 
-      middleware(M.PageSizeProof)
       middleware(M.FrontDesk, :user)
       resolve(&R.Accounts.Profiles.paged_published_comments/3)
     end

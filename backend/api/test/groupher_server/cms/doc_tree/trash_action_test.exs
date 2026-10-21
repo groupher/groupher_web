@@ -59,7 +59,10 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     membership =
       Repo.get_by!(TrashedDocArticle, article_id: page.node.doc_id)
 
-    assert {:ok, [trash_item]} = CMS.DocTree.trash_items(community, actor: user)
+    assert {:ok, %{entries: [trash_item]}} = CMS.DocTree.trash_items(community, nil, actor: user)
+    assert {:ok, %{entries: [cursor_item], end_cursor: cursor, has_next_page: false}} = CMS.DocTree.trash_items(community, %{cursor: %{first: 1}}, actor: user)
+    assert cursor_item.id == trash_item.id
+    assert {:ok, %{entries: []}} = CMS.DocTree.trash_items(community, %{cursor: %{first: 1, after: cursor}}, actor: user)
     action = Repo.get_by!(TrashAction, hash_id: trash_item.id)
     item = Repo.get_by!(TrashedDocTreeNode, trash_action_id: action.id, node_id: page.node.id)
     assert item.draft_snapshot
@@ -119,7 +122,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
                actor_id: user.id
              })
 
-    assert {:ok, [trash_item]} = CMS.DocTree.trash_items(community, actor: user)
+    assert {:ok, %{entries: [trash_item]}} = CMS.DocTree.trash_items(community, nil, actor: user)
     action = Repo.get_by!(TrashAction, hash_id: trash_item.id)
     item = Repo.get_by!(TrashedDocTreeNode, trash_action_id: action.id, node_id: page.node.id)
     assert item.draft_snapshot
@@ -183,7 +186,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     assert Enum.count(queries, &String.contains?(&1, "WITH RECURSIVE subtree")) == 1
     assert trash_snapshot_insert_query_count(queries) == 1
 
-    assert {:ok, [trash_item]} = CMS.DocTree.trash_items(community, actor: user)
+    assert {:ok, %{entries: [trash_item]}} = CMS.DocTree.trash_items(community, nil, actor: user)
     action = Repo.get_by!(TrashAction, hash_id: trash_item.id)
 
     assert Repo.aggregate(
@@ -214,7 +217,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     assert tree_node_exists?(community, second.node.id, :draft)
     assert {:ok, _} = CMS.Docs.read_editor_head(community, first.node.doc_id)
     assert {:ok, _} = CMS.Docs.read_editor_head(community, second.node.doc_id)
-    assert {:ok, []} = CMS.DocTree.trash_items(community, actor: user)
+    assert {:ok, %{entries: []}} = CMS.DocTree.trash_items(community, nil, actor: user)
   end
 
   test "scheduler permanently deletes a due Link-only action and stale retries are idempotent" do
@@ -245,7 +248,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
                actor_id: user.id
              })
 
-    assert {:ok, [trash_item]} = CMS.DocTree.trash_items(community, actor: user)
+    assert {:ok, %{entries: [trash_item]}} = CMS.DocTree.trash_items(community, nil, actor: user)
     action = Repo.get_by!(TrashAction, hash_id: trash_item.id)
 
     assert {:ok, action} =
@@ -269,6 +272,53 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
            )
 
     assert {:ok, %{done: true}} = CMS.Trash.permanently_delete_action(action, user)
+  end
+
+  test "permanently deleting a Docs Tree Trash action uses the receipt command" do
+    {:ok, user} = db_insert(:user)
+    {:ok, community} = empty_docs_community(user)
+    {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
+
+    {:ok, group} =
+      CMS.DocTree.create_group_internal(community, %{
+        parent_node_id: root_doc_tab_node_id(community),
+        title: "References",
+        slug: "references",
+        base_revision: state.tree_lock_version
+      })
+
+    {:ok, link} =
+      CMS.DocTree.create_link_internal(community, %{
+        parent_node_id: group.node.id,
+        title: "Reference",
+        slug: "reference",
+        href: "https://example.com/reference",
+        base_revision: group.revision
+      })
+
+    assert {:ok, _deleted} =
+             CMS.DocTree.delete_node_internal(community, link.node.id, %{
+               base_revision: link.revision,
+               actor_id: user.id
+             })
+
+    assert {:ok, %{entries: [trash_item]}} = CMS.DocTree.trash_items(community, nil, actor: user)
+    action = Repo.get_by!(TrashAction, hash_id: trash_item.id)
+    assert action.community_id == community.id
+    assert {:ok, :doc} = CMS.Trash.action_thread(action)
+    command_id = Ecto.UUID.generate()
+
+    assert {:ok, %{done: true, command_id: ^command_id}} =
+             CMS.Trash.permanently_delete_action_in_scope(
+               trash_item.id,
+               community.id,
+               :doc,
+               user,
+               command_id: command_id
+             )
+
+    refute Repo.get(TrashAction, action.id)
+    refute Repo.get_by(TrashedDocTreeNode, trash_action_id: action.id)
   end
 
   test "duplicating a Page creates an independent Doc" do
@@ -385,7 +435,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
         actor_id: user.id
       })
 
-    {:ok, [child_trash_item]} = CMS.DocTree.trash_items(community, actor: user)
+    {:ok, %{entries: [child_trash_item]}} = CMS.DocTree.trash_items(community, nil, actor: user)
 
     {:ok, parent_deleted} =
       CMS.DocTree.delete_node_internal(community, original_parent.node.id, %{

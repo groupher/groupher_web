@@ -1,3 +1,4 @@
+import { prefetchComments } from '@community/query/commentSurface'
 import { communityQueries } from '@community/query/queries'
 import { communityPublicPath } from '@community/server/public-path'
 import { createFileRoute, notFound } from '@tanstack/react-router'
@@ -8,11 +9,16 @@ import CommentsStoreProvider from '~/stores/comments/provider'
 import ArticleViewer from '~/unit/ArticleView'
 
 export const Route = createFileRoute('/$community/post/$id')({
-  loader: async ({ context, params }) => {
+  loader: async ({ context, params, parentMatchPromise, location }) => {
+    await parentMatchPromise
     const [post] = await Promise.all([
       context.queryClient.ensureQueryData(communityQueries.post(params.community, params.id)),
-      context.queryClient.ensureQueryData(
-        communityQueries.comments(params.community, THREAD.POST, params.id),
+      prefetchComments(
+        context.queryClient,
+        params.community,
+        THREAD.POST,
+        params.id,
+        location.searchStr,
       ),
     ])
     if (!post) throw notFound()

@@ -15,6 +15,9 @@ defmodule GroupherServer.CMS.Model.ArtimentMention do
   """
 
   use Ecto.Schema
+  use Flop.Schema
+
+  @flop_options [filterable: [], sortable: [:id, :inserted_at], pagination_types: [:page, :first]]
 
   import Ecto.Changeset
 

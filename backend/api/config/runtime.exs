@@ -62,6 +62,45 @@ if config_env() in [:prod, :seed_prod] do
       You can generate one by calling: mix phx.gen.secret
       """
 
+  pagination_cursor_current_key =
+    System.get_env("PAGINATION_CURSOR_CURRENT_KEY") ||
+      raise "environment variable PAGINATION_CURSOR_CURRENT_KEY is missing"
+
+  pagination_cursor_current_version =
+    case Integer.parse(System.get_env("PAGINATION_CURSOR_CURRENT_VERSION") || "1") do
+      {version, ""} when version > 0 -> version
+      _ -> raise "PAGINATION_CURSOR_CURRENT_VERSION must be a positive integer"
+    end
+
+  pagination_cursor_previous_keys =
+    case System.get_env("PAGINATION_CURSOR_PREVIOUS_KEYS") do
+      nil ->
+        %{}
+
+      json ->
+        case Jason.decode(json) do
+          {:ok, %{} = keys} ->
+            Map.new(keys, fn {version, key} ->
+              case Integer.parse(version) do
+                {parsed, ""} when parsed > 0 and is_binary(key) and key != "" -> {parsed, key}
+                _ -> raise "PAGINATION_CURSOR_PREVIOUS_KEYS must map positive versions to keys"
+              end
+            end)
+
+          _ ->
+            raise "PAGINATION_CURSOR_PREVIOUS_KEYS must be a JSON object"
+        end
+    end
+
+  if Map.has_key?(pagination_cursor_previous_keys, pagination_cursor_current_version) do
+    raise "PAGINATION_CURSOR_PREVIOUS_KEYS must not include the current version"
+  end
+
+  config :groupher_server, :pagination_cursor_keyring,
+    current_version: pagination_cursor_current_version,
+    current_key: pagination_cursor_current_key,
+    previous_keys: pagination_cursor_previous_keys
+
   view_tracker_pepper =
     System.get_env("VIEW_TRACKER_PEPPER") ||
       raise """

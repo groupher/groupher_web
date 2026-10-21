@@ -1,18 +1,12 @@
-import { useQueryClient } from '@tanstack/react-query'
-import { prop, uniqBy } from 'ramda'
 import { useContext } from 'react'
 
-import useViewingArticle from '~/hooks/useViewingArticle'
-import { commentKeys } from '~/query'
-import type { TComment, TID } from '~/spec'
 import { StoreContext as CommentsStoreContext } from '~/stores/comments/context'
 import type { TStore as TCommentsStore } from '~/stores/comments/spec'
 
-import { EDIT_MODE, MODE } from '../constant'
+import { EDIT_MODE } from '../constant'
 import type { TEditMode } from '../spec'
 
 type TRet = {
-  addToReplies: (parentId: TID, replies: TComment[]) => void
   published: () => void
   resetPublish: (mode: TEditMode) => void
 }
@@ -23,44 +17,6 @@ export default function useHelper(): TRet {
   if (!commentsStore) {
     throw new Error('useHelper must be used within a Comments store provider')
   }
-  const comments = commentsStore
-  const queryClient = useQueryClient()
-  const { articlePath } = useViewingArticle()
-  const commentScope = {
-    community: articlePath.community,
-    thread: articlePath.thread,
-    articleInnerId: articlePath.innerId,
-  }
-  const patchComments = (updater: (entries: TComment[]) => TComment[]) => {
-    queryClient.setQueriesData(
-      {
-        predicate: (query) =>
-          commentKeys.matchesArticle(
-            query,
-            commentScope.community,
-            commentScope.thread,
-            commentScope.articleInnerId,
-          ),
-      },
-      (data: { entries?: TComment[] } | undefined) =>
-        data?.entries ? { ...data, entries: updater(data.entries) } : data,
-    )
-  }
-
-  const addToReplies = (parentId: TID, replies: TComment[]): void => {
-    if (comments.mode !== MODE.REPLIES || !parentId) return
-    patchComments((entries) =>
-      entries.map((item) => {
-        if (item.innerId !== parentId) return item
-        const uniqReplies = uniqBy(prop('innerId'), [
-          ...(item.replies || []),
-          ...replies,
-        ]) as TComment[]
-        return { ...item, replies: uniqReplies }
-      }),
-    )
-  }
-
   const published = (): void => {
     commentsStore.commit({ publishing: false, publishDone: true })
   }
@@ -97,7 +53,6 @@ export default function useHelper(): TRet {
   }
 
   return {
-    addToReplies,
     published,
     resetPublish,
   }

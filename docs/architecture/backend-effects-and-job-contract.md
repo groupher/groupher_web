@@ -50,7 +50,8 @@ intent 只保存稳定的 Community ID 和 command identity。HTTP 未成功时�
 
 ## 2. Facade 规则
 
-- Web、其他一级业务目录和 Worker 只能调用根 Facade，例如 `CMS.articles_effect(effect)`。
+- Web、其他一级业务目录和 Worker 默认只能调用根 Facade，例如 `CMS.articles_effect(effect)`；Worker 仅可额外调用
+  明确声明 `@pipeline ... access: :internal` 的 internal Command。
 - CMS 内部可以调用 `CMS.Articles.Effects.run/1`，但不得穿透到 `Effects.Publish`。
 - `effects.ex` 是边界，只做参数检查和转发；实现放在同名 `effects/` 目录。
 - Facade 转发统一使用 `defdelegate`；需要校验、默认值或结果转换时才使用 `def`，且函数体不访问 Repo、事务或外部 I/O。

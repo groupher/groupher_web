@@ -35,16 +35,6 @@ const updateModeratorPassport = graphql(`
       rules: $rules
     ) {
       slug
-      moderators {
-        isRoot
-        passportItemCount
-        user {
-          login
-          avatar
-          nickname
-          bio
-        }
-      }
     }
   }
 `)
@@ -53,16 +43,6 @@ const removeModerator = graphql(`
   mutation RemoveModerator($commandId: ID!, $community: String!, $user: String!) {
     removeModerator(commandId: $commandId, community: $community, user: $user) {
       slug
-      moderators {
-        isRoot
-        passportItemCount
-        user {
-          login
-          avatar
-          nickname
-          bio
-        }
-      }
     }
   }
 `)

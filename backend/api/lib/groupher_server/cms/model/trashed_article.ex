@@ -14,6 +14,9 @@ defmodule GroupherServer.CMS.Model.TrashedArticle do
   """
 
   use Ecto.Schema
+  use Flop.Schema
+
+  @flop_options [filterable: [], sortable: [:id, :deleted_at], pagination_types: [:page, :first]]
   use Accessible
 
   import Ecto.Changeset

@@ -7,6 +7,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
 
   import ShortMaps
 
+  alias GroupherServer.Pagi
   alias GroupherServer.{CMS, FrontDesk}
   alias CMS.Model.Community
 
@@ -53,20 +54,22 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
     CMS.articles_set_status_result(article, status, user, command_id)
   end
 
-  def paged_articles(_root, ~m(thread filter)a, %{context: %{cur_user: user}}) do
-    CMS.articles_page(thread, filter, user)
-  end
-
-  def paged_articles(_root, ~m(thread filter)a, _info) do
-    CMS.articles_page(thread, filter)
+  @doc "Resolves an Article Page without interpreting resource query policy."
+  def article_page(_root, %{thread: thread} = args, %{context: context}) do
+    CMS.articles_page(
+      thread,
+      Map.get(args, :filter) || %{},
+      Map.get(args, :pagi),
+      Map.get(context, :cur_user)
+    )
   end
 
   def grouped_kanban_posts(_root, %{community: community}, _info) do
     CMS.articles_grouped_kanban(community)
   end
 
-  def paged_kanban_posts(_root, %{community: community, filter: filter}, _info) do
-    CMS.articles_paged_kanban(community, filter)
+  def kanban_page(_root, %{community: community} = args, _info) do
+    CMS.articles_kanban_page(community, Map.get(args, :filter) || %{}, Map.get(args, :pagi))
   end
 
   def create_post(root, args, info) do
@@ -166,7 +169,10 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
         _info
       ) do
     filter = (Map.get(args, :filter) || %{}) |> Map.put(:thread, thread)
-    CMS.articles_list_trashed(community, filter)
+
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
+      CMS.articles_list_trashed(community, filter, pagi)
+    end
   end
 
   def trashed_article(

@@ -1,30 +1,35 @@
 import type { FC } from 'react'
 
-import { roundUpNumber } from '~/fmt'
-import useTrans from '~/hooks/useTrans'
 import ArrowSVG from '~/icons/ArrowSimple'
-import type { TPagi, TSpace } from '~/spec'
+import type { TGraphQLPagiPageInfo, TSpace } from '~/spec'
 
 import type { TProps as TPagiProps } from '.'
 import useSalon, { cn } from './salon'
 
-type TProps = Pick<TPagiProps, 'onChange'> & TPagi & TSpace
+export type TPagiLabels = { previousPage: string; nextPage: string; pageNumber: string }
+const DEFAULT_LABELS: TPagiLabels = {
+  previousPage: '上一页',
+  nextPage: '下一页',
+  pageNumber: '页码',
+}
+
+type TProps = Pick<TPagiProps, 'onChange' | 'labels'> & {
+  pageInfo: Extract<TGraphQLPagiPageInfo, { __typename: 'OffsetPageInfo' }>
+} & TSpace
 
 const RealPagi: FC<TProps> = ({
-  pageNumber = 1,
-  totalCount = 0,
-  pageSize = 1,
-  totalPages = 1,
+  pageInfo,
   onChange = () => undefined,
+  labels = DEFAULT_LABELS,
   ...spacing
 }) => {
   const s = useSalon({ ...spacing })
-  const { t } = useTrans()
 
-  const leftDisabled = pageNumber === 1
-  const rightDisabled = pageNumber >= roundUpNumber(totalCount / pageSize)
+  const { page: pageNumber, totalPages } = pageInfo
+  const leftDisabled = !pageInfo.hasPreviousPage
+  const rightDisabled = !pageInfo.hasNextPage
   const changePageFromInput = (value: number): void => {
-    if (!Number.isFinite(value)) return
+    if (!Number.isInteger(value) || value < 1 || value > totalPages) return
     onChange(value)
   }
 
@@ -34,7 +39,7 @@ const RealPagi: FC<TProps> = ({
         <button
           type='button'
           className={s.arrowBlock}
-          aria-label={t('common.previous_page')}
+          aria-label={labels.previousPage}
           disabled={leftDisabled}
           onClick={() => onChange(pageNumber - 1)}
         >
@@ -46,9 +51,9 @@ const RealPagi: FC<TProps> = ({
             className={cn(s.numInputer, pageNumber >= 10 ? 'w-9' : 'w-6')}
             type='number'
             min={1}
-            max={999}
+            max={totalPages}
             value={pageNumber}
-            aria-label={t('common.page_number')}
+            aria-label={labels.pageNumber}
             onChange={(event) => changePageFromInput(event.currentTarget.valueAsNumber)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
@@ -62,7 +67,7 @@ const RealPagi: FC<TProps> = ({
         <button
           type='button'
           className={s.arrowBlock}
-          aria-label={t('common.next_page')}
+          aria-label={labels.nextPage}
           disabled={rightDisabled}
           onClick={() => onChange(pageNumber + 1)}
         >

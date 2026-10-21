@@ -19,16 +19,16 @@ defmodule GroupherServer.CMS.Gate.Access do
   defdelegate check_in_transaction(arg1, arg2, arg3, arg4, arg5),
     to: GroupherServer.CMS.Gate.Access.Query
 
+  @doc "Delegates the interaction-specific join-only check to the owning implementation."
+  defdelegate check_interaction_in_transaction(actor, action, resource),
+    to: GroupherServer.CMS.Gate.Access.Query
+
   @doc "Delegates the Comment-specific join-only check to the owning implementation."
   defdelegate check_comment_in_transaction(actor, action, comment),
     to: GroupherServer.CMS.Gate.Access.Query
 
   @doc "Delegates the Community Application join-only check to the owning implementation."
   defdelegate check_application_in_transaction(actor, action, application),
-    to: GroupherServer.CMS.Gate.Access.Query
-
-  @doc "Delegates Community Application create admission inside the caller-owned transaction."
-  defdelegate check_application_create_in_transaction(actor),
     to: GroupherServer.CMS.Gate.Access.Query
 
   @doc "Delegates Community creation admission inside the caller-owned transaction."
@@ -38,9 +38,6 @@ defmodule GroupherServer.CMS.Gate.Access do
   @doc "Delegates with_application_check/4 to the owning implementation."
   defdelegate with_application_check(arg1, arg2, arg3, arg4),
     to: GroupherServer.CMS.Gate.Access.Query
-
-  @doc "Delegates with_application_create_check/2 to the owning implementation."
-  defdelegate with_application_create_check(arg1, arg2), to: GroupherServer.CMS.Gate.Access.Query
 
   @doc "Delegates with_branch_check/6 to the owning implementation."
   defdelegate with_branch_check(arg1, arg2, arg3, arg4, arg5, arg6),

@@ -19,7 +19,11 @@ import { Q } from '~/query'
 import { articlePathKey, articlePathOf, type TArticlePath } from '~/query/articlePath'
 import type { TArticle, TArticleState, TArticleStats } from '~/spec'
 
-import { composeArticleState, useArticlePrivateStates, useRefreshStaleArticleStats } from './shared'
+import {
+  composeArticleState,
+  useArticlePrivateStatesByChunks,
+  useRefreshStaleArticleStats,
+} from './shared'
 
 type TStatsBatch = {
   community: string
@@ -33,22 +37,26 @@ const validRef = (path: TArticlePath): boolean =>
   Boolean(path.community && path.thread && path.innerId)
 
 const groupStatsBatches = (paths: readonly TArticlePath[]): TStatsBatch[] => {
-  const groups = new Map<string, TStatsBatch>()
+  const groups = new Map<
+    string,
+    { community: string; thread: TArticlePath['thread']; innerIds: Set<string> }
+  >()
 
   for (const path of paths) {
     const scope = `${path.community}:${path.thread}`
     const group = groups.get(scope) || {
       community: path.community,
       thread: path.thread,
-      innerIds: [],
+      innerIds: new Set<string>(),
     }
-    if (!group.innerIds.includes(String(path.innerId))) group.innerIds.push(String(path.innerId))
+    group.innerIds.add(String(path.innerId))
     groups.set(scope, group)
   }
 
   return [...groups.values()].map((group) => ({
-    ...group,
-    innerIds: group.innerIds.sort(),
+    community: group.community,
+    thread: group.thread,
+    innerIds: [...group.innerIds].sort(),
   }))
 }
 
@@ -61,13 +69,30 @@ const groupStatsBatches = (paths: readonly TArticlePath[]): TStatsBatch[] => {
 export default function useArticleStates<T extends TArticle>(
   articles: readonly T[] | undefined,
 ): TArticleState<T>[] {
-  const queryClient = useQueryClient()
-  const normalizedArticles = articles || (EMPTY_ARTICLES as readonly T[])
-  const paths = useMemo(
-    () => normalizedArticles.map(articlePathOf).filter(validRef),
-    [normalizedArticles],
+  return useArticleStatesByChunks([articles || (EMPTY_ARTICLES as readonly T[])])
+}
+
+/**
+ * Returns Article states while preserving the caller's stable page/chunk boundaries.
+ *
+ * Each chunk owns its stats, viewer, and interaction batch keys. This is the list counterpart to
+ * `useArticleStates`; infinite-query consumers can append a page without re-requesting earlier
+ * chunks.
+ */
+export function useArticleStatesByChunks<T extends TArticle>(
+  articleChunks: readonly (readonly T[])[],
+): TArticleState<T>[] {
+  const normalizedChunks = useMemo(() => articleChunks.map((chunk) => [...chunk]), [articleChunks])
+  const normalizedArticles = useMemo(
+    () => normalizedChunks.flatMap((chunk) => chunk),
+    [normalizedChunks],
   )
-  const batches = useMemo(() => groupStatsBatches(paths), [paths])
+  const queryClient = useQueryClient()
+  const pathChunks = useMemo(
+    () => normalizedChunks.map((chunk) => chunk.map(articlePathOf).filter(validRef)),
+    [normalizedChunks],
+  )
+  const batches = useMemo(() => pathChunks.flatMap(groupStatsBatches), [pathChunks])
 
   const statsQueries = useQueries({
     queries: batches.map(({ community, thread, innerIds }) =>
@@ -81,7 +106,8 @@ export default function useArticleStates<T extends TArticle>(
     }
     return index
   }, [statsQueries])
-  const privateState = useArticlePrivateStates(paths, statsByRef)
+  const privateState = useArticlePrivateStatesByChunks(pathChunks, statsByRef)
+  const paths = useMemo(() => pathChunks.flat(), [pathChunks])
   useRefreshStaleArticleStats(queryClient, paths, statsByRef)
 
   return useMemo(

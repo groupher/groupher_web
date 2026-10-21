@@ -1,4 +1,4 @@
-import type { TComment, TEmotionRawType, TPagedComments } from '~/spec'
+import type { TComment, TEmotionRawType } from '~/spec'
 
 type TCommentEmotionType = Exclude<TEmotionRawType, 'UPVOTE'>
 
@@ -33,13 +33,13 @@ const stripComment = (comment: TComment): TComment => {
 export const stripCommentViewerState = (comment: TComment): TComment => stripComment(comment)
 
 /** Gathers every comment innerId addressed by the viewer batch query. */
-export const gatherCommentViewerIds = (comments: TPagedComments): string[] => {
+export const gatherCommentViewerIds = (comments: { entries: readonly TComment[] }): string[] => {
   const ids: string[] = []
   const visited = new Set<string>()
 
   const gather = (comment: TComment): void => {
     const innerId = String(comment.innerId)
-    if (visited.has(innerId)) return
+    if (innerId.startsWith('pending:') || visited.has(innerId)) return
     visited.add(innerId)
     ids.push(innerId)
 
@@ -47,7 +47,7 @@ export const gatherCommentViewerIds = (comments: TPagedComments): string[] => {
     if (comment.replyToComment) gather(comment.replyToComment)
   }
 
-  for (const comment of comments.entries as unknown as TComment[]) gather(comment)
+  for (const comment of comments.entries) gather(comment)
   return ids
 }
 

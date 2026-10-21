@@ -55,6 +55,14 @@ defmodule GroupherServer.CMS.Model.CommunityDashboard do
     belongs_to(:community, Community)
     field(:umami_website_id, Ecto.UUID)
     field(:content_shadow, :boolean, default: false)
+    field(:pagi_mode, Ecto.Enum, values: [:page, :load_more, :infinite_scroll], default: :page)
+
+    field(:pagi_mobile_mode, Ecto.Enum,
+      values: [:page, :load_more, :infinite_scroll],
+      default: :infinite_scroll
+    )
+
+    field(:pagi_revision, :integer, default: 0)
     embeds_one(:base_info, Dashboard.BaseInfo, on_replace: :delete)
     embeds_one(:wallpaper, Dashboard.Wallpaper, on_replace: :delete)
     embeds_one(:seo, Dashboard.SEO, on_replace: :delete)
@@ -78,7 +86,10 @@ defmodule GroupherServer.CMS.Model.CommunityDashboard do
   @doc false
   def changeset(%CommunityDashboard{} = community_dashboard, attrs) do
     community_dashboard
-    |> cast(attrs, @required_fields ++ [:content_shadow])
+    |> cast(
+      attrs,
+      @required_fields ++ [:content_shadow, :pagi_mode, :pagi_mobile_mode, :pagi_revision]
+    )
     |> cast_embed(:base_info, with: &Dashboard.BaseInfo.changeset/2)
     |> cast_embed(:wallpaper, with: &Dashboard.Wallpaper.changeset/2)
     |> cast_embed(:seo, with: &Dashboard.SEO.changeset/2)
@@ -96,6 +107,7 @@ defmodule GroupherServer.CMS.Model.CommunityDashboard do
     |> cast_embed(:third_party_analytics,
       with: &Dashboard.ThirdPartyAnalytics.changeset/2
     )
+    |> validate_number(:pagi_revision, greater_than_or_equal_to: 0)
   end
 
   @doc false

@@ -161,6 +161,38 @@ defmodule GroupherServer.CMS.Gate.Access.Query do
     {:error, ErrorCat.unsupported_resource()}
   end
 
+  @doc "Joins the pipeline transaction for one Article or Comment interaction target."
+  def check_interaction_in_transaction(actor, action, %Comment{} = comment) do
+    check_in_transaction(actor, action, comment)
+  end
+
+  def check_interaction_in_transaction(
+        actor,
+        action,
+        %{
+          id: article_id,
+          thread: :doc,
+          branch_id: branch_id,
+          community: %Community{} = community
+        }
+      )
+      when is_binary(article_id) and is_integer(branch_id) do
+    check_in_transaction(actor, action, %{id: article_id, thread: :doc}, community, branch_id)
+  end
+
+  def check_interaction_in_transaction(
+        actor,
+        action,
+        %{id: article_id, thread: thread, community: %Community{} = community}
+      )
+      when is_binary(article_id) and thread in [:post, :blog, :changelog] do
+    check_in_transaction(actor, action, %{id: article_id, thread: thread}, community)
+  end
+
+  def check_interaction_in_transaction(_actor, _action, _resource) do
+    {:error, :article_binding_context_required}
+  end
+
   @doc "Returns the canonical Comment together with its canonical parent Article."
   def check_comment_in_transaction(actor, action, %Comment{} = comment) do
     with {:ok, :pass} <- require_transaction(),
@@ -230,6 +262,26 @@ defmodule GroupherServer.CMS.Gate.Access.Query do
         {:ok, value}
       end)
       |> normalize_join_decision()
+    end
+  end
+
+  def check_in_transaction(
+        actor,
+        action,
+        %{id: article_id, thread: :doc},
+        %Community{} = community,
+        branch_id
+      )
+      when is_binary(article_id) and is_integer(branch_id) do
+    case Repo.get(Article, article_id) do
+      %Article{thread: :doc} = article ->
+        check_in_transaction(actor, action, article, community, branch_id)
+
+      %Article{} ->
+        {:error, ErrorCat.doc_branch_required()}
+
+      nil ->
+        {:error, ErrorCat.resource_not_found()}
     end
   end
 
@@ -413,29 +465,12 @@ defmodule GroupherServer.CMS.Gate.Access.Query do
     end
   end
 
-  @doc "Checks Community Application creation inside the pipeline transaction."
-  def check_application_create_in_transaction(actor) do
-    with {:ok, :pass} <- require_transaction(),
-         {:ok, :pass} <- ApplicationPolicy.check_create(actor) do
-      {:ok, actor}
-    end
-  end
-
   @doc "Checks Community creation inside the pipeline transaction."
   def check_community_create_in_transaction(actor, target) do
     with {:ok, :pass} <- require_transaction(),
          {:ok, :pass} <- CMS.Gate.Access.Policy.Community.check_create(actor) do
       {:ok, target}
     end
-  end
-
-  @doc "Runs the create admission for a new Community Application."
-  def with_application_create_check(actor, callback) when is_function(callback, 0) do
-    Repo.transact(fn ->
-      with {:ok, :pass} <- ApplicationPolicy.check_create(actor) do
-        callback.()
-      end
-    end)
   end
 
   @doc "Runs an ordinary Article command against an explicit ArticleBinding binding."

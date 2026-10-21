@@ -9,44 +9,30 @@ export const post = graphql(`
   }
 `)
 
-export const pagedPosts = graphql(`
-  query PagedPosts($filter: PagedPostsFilter!) {
-    pagedPosts(filter: $filter) {
-      entries {
-        ...PagePostFields
-        cat
-        status
-        meta {
-          thread
-          latestUpvotedUsers {
-            ...PageCommonUserFields
-          }
-        }
-        digest
-        commentsParticipants {
-          ...PageAuthorFields
-        }
-      }
-      ...PagePostPageInfo
-    }
-  }
-`)
-
 export const pagedPublishedPosts = graphql(`
-  query PagedPublishedPosts($login: String!, $filter: PagiFilter!) {
-    pagedPublishedPosts(login: $login, filter: $filter) {
+  query PagedPublishedPosts($login: String!, $filter: ArticlePageFilter, $pagi: PagiInput) {
+    pagedPublishedPosts(login: $login, filter: $filter, pagi: $pagi) {
+      pinnedEntries {
+        ...PagePostLiteFields
+      }
       entries {
-        ...PagePostFields
-        meta {
-          thread
+        ...PagePostLiteFields
+      }
+      pageInfo {
+        __typename
+        hasNextPage
+        hasPreviousPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
         }
-        digest
-        linkAddr
-        commentsParticipants {
-          ...PageAuthorFields
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
         }
       }
-      ...PagePostPageInfo
     }
   }
 `)
@@ -55,94 +41,174 @@ export const groupedKanbanPosts = graphql(`
   query PagesGroupedKanbanPosts($community: String!) {
     groupedKanbanPosts(community: $community) {
       backlog {
+        pinnedEntries {
+          ...PagePostLiteFields
+        }
         entries {
-          innerId
-          cat
-          status
-          title
-          community {
-            slug
+          ...PagePostLiteFields
+        }
+        pageInfo {
+          __typename
+          hasNextPage
+          hasPreviousPage
+          ... on OffsetPageInfo {
+            page
+            size
+            totalCount
+            totalPages
           }
-          meta {
-            thread
-          }
-          author {
-            ...PageAuthorFields
+          ... on CursorPageInfo {
+            startCursor
+            endCursor
           }
         }
-        ...PagePostPageInfo
       }
       todo {
+        pinnedEntries {
+          ...PagePostLiteFields
+        }
         entries {
-          innerId
-          cat
-          status
-          title
-          community {
-            slug
+          ...PagePostLiteFields
+        }
+        pageInfo {
+          __typename
+          hasNextPage
+          hasPreviousPage
+          ... on OffsetPageInfo {
+            page
+            size
+            totalCount
+            totalPages
           }
-          meta {
-            thread
-          }
-          author {
-            ...PageAuthorFields
+          ... on CursorPageInfo {
+            startCursor
+            endCursor
           }
         }
-        ...PagePostPageInfo
       }
       wip {
+        pinnedEntries {
+          ...PagePostLiteFields
+        }
         entries {
-          innerId
-          cat
-          status
-          title
-          community {
-            slug
+          ...PagePostLiteFields
+        }
+        pageInfo {
+          __typename
+          hasNextPage
+          hasPreviousPage
+          ... on OffsetPageInfo {
+            page
+            size
+            totalCount
+            totalPages
           }
-          meta {
-            thread
-          }
-          author {
-            ...PageAuthorFields
+          ... on CursorPageInfo {
+            startCursor
+            endCursor
           }
         }
-        ...PagePostPageInfo
       }
       done {
+        pinnedEntries {
+          ...PagePostLiteFields
+        }
         entries {
-          innerId
-          cat
-          status
-          title
-          community {
-            slug
+          ...PagePostLiteFields
+        }
+        pageInfo {
+          __typename
+          hasNextPage
+          hasPreviousPage
+          ... on OffsetPageInfo {
+            page
+            size
+            totalCount
+            totalPages
           }
-          meta {
-            thread
-          }
-          author {
-            ...PageAuthorFields
+          ... on CursorPageInfo {
+            startCursor
+            endCursor
           }
         }
-        ...PagePostPageInfo
       }
       rejected {
+        pinnedEntries {
+          ...PagePostLiteFields
+        }
         entries {
-          innerId
-          cat
-          status
-          title
-          community {
-            slug
+          ...PagePostLiteFields
+        }
+        pageInfo {
+          __typename
+          hasNextPage
+          hasPreviousPage
+          ... on OffsetPageInfo {
+            page
+            size
+            totalCount
+            totalPages
           }
-          meta {
-            thread
-          }
-          author {
-            ...PageAuthorFields
+          ... on CursorPageInfo {
+            startCursor
+            endCursor
           }
         }
-        ...PagePostPageInfo
+      }
+    }
+  }
+`)
+export const kanbanPage = graphql(`
+  query KanbanPage($community: String!, $filter: PostFilter, $pagi: PagiInput) {
+    kanbanPage(community: $community, filter: $filter, pagi: $pagi) {
+      pinnedEntries {
+        ...PagePostLiteFields
+      }
+      entries {
+        ...PagePostLiteFields
+      }
+      pageInfo {
+        __typename
+        hasNextPage
+        hasPreviousPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
+        }
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
+        }
+      }
+    }
+  }
+`)
+
+export const postPage = graphql(`
+  query PostPage($pagi: PagiInput, $filter: PostFilter, $thread: PostThread = POST) {
+    postPage(pagi: $pagi, filter: $filter, thread: $thread) {
+      pinnedEntries {
+        ...PagePostLiteFields
+      }
+      entries {
+        ...PagePostLiteFields
+      }
+      pageInfo {
+        __typename
+        hasNextPage
+        hasPreviousPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
+        }
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
+        }
       }
     }
   }

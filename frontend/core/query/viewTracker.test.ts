@@ -87,11 +87,13 @@ describe('trackArticleView', () => {
   })
 
   it('does not retry a deterministic request error', async () => {
-    browserGraphQLRequest.mockRejectedValueOnce(new Error('forbidden'))
+    const requestError = new Error('forbidden')
+    browserGraphQLRequest.mockRejectedValueOnce(requestError)
 
     await expect(
       trackArticleView({ community: 'home', innerId: 42, thread: THREAD.POST }),
-    ).rejects.toThrow('forbidden')
+    ).rejects.toBe(requestError)
+    expect(requestError.message).toBe('forbidden')
     expect(browserGraphQLRequest).toHaveBeenCalledTimes(1)
   })
 

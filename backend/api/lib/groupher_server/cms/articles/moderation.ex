@@ -13,7 +13,6 @@ defmodule GroupherServer.CMS.Articles.Moderation do
 
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
-  import ShortMaps
 
   alias GroupherServer.{CMS, FrontDesk, Repo}
 
@@ -34,6 +33,9 @@ defmodule GroupherServer.CMS.Articles.Moderation do
 
   alias CMS.SearchArtiments.Indexer
   alias Helper.{ORM, T}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @doc """
   Returns a paged list of audit-failed articles for one thread.
@@ -43,16 +45,28 @@ defmodule GroupherServer.CMS.Articles.Moderation do
       CMS.Articles.Moderation.paged_audit_failed(:post, %{page: 1, size: 20})
 
   """
-  @spec paged_audit_failed(atom(), map()) :: T.domain_res(term())
-  def paged_audit_failed(thread, filter) do
-    %{page: page, size: size} = filter
+  @spec paged_audit_failed(atom(), Params.t() | nil) :: T.domain_res(term())
+  def paged_audit_failed(thread, pagi) do
+    query =
+      Article
+      |> Trash.not_trashed_scope(thread)
+      |> where([article], article.thread == ^thread and article.moderation_state == :audit_failed)
 
-    Article
-    |> Trash.not_trashed_scope(thread)
-    |> where([article], article.thread == ^thread and article.moderation_state == :audit_failed)
-    |> order_by([article], desc: article.updated_at)
-    |> ORM.paginator(~m(page size)a)
-    |> done()
+    with {:ok, result} <-
+           ORM.pagi(
+             query,
+             pagi,
+             for: Article,
+             surface: "articles.audit_failed",
+             query_fingerprint: Atom.to_string(thread),
+             order: %Order{
+               fields: [:updated_at, :id],
+               directions: [:desc, :desc],
+               cursor_fields: [:updated_at, :id]
+             }
+           ) do
+      done(result)
+    end
   end
 
   @doc "Applies one moderation state to a Gate-authorized stable Article."

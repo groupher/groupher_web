@@ -140,6 +140,7 @@ export const MENU: TDsbMenu = {
         title: 'dsb.menu.basic_info',
         slug: DSB_ROUTE.INFO,
       },
+      { icon: 'appearance', title: 'dsb.pagi.browsing', slug: DSB_ROUTE.BROWSING },
       {
         icon: 'seo',
         title: 'dsb.menu.seo',

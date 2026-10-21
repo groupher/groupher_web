@@ -13,8 +13,9 @@ import type { TCommunity, TTag } from '.'
 import type { TAccount, TSimpleUser, TUser } from './account'
 import type { TColor } from './color'
 import type { TEmotion } from './emotion'
+import type { TGraphQLPagiPageInfo } from './pagination'
 import type { TArticleThread, TThread } from './thread'
-import type { TID, TPagi } from './utils'
+import type { TID } from './utils'
 
 export type TArticleTitle = {
   $isPinned?: boolean
@@ -76,11 +77,12 @@ export type TArticleViewerState = {
 }
 
 type TBaseArticle = {
+  thread?: TArticleThread
   id?: TID
   innerId?: TID
   version?: number
   title?: string
-  digest?: string
+  digest?: string | null
   body?: TDocument
   copyRight?: string
   isQuestion?: boolean
@@ -98,28 +100,28 @@ type TBaseArticle = {
   linkAddr?: string
   isArchived?: boolean
   archivedAt?: string
-  activeAt?: string
+  activeAt?: string | null
 
-  cat?: TArticleCat
-  status?: TArticleStatus
+  cat?: TArticleCat | null
+  status?: TArticleStatus | null
 
   // for dashboard cmd tmp check status
   _checked?: boolean
 }
 
 export type TPost = TBaseArticle & {
-  digest?: string
+  digest?: string | null
   isSolved?: boolean
   solutionCommentId?: TID
   solutionDigest?: string
 }
 
 export type TChangelog = TBaseArticle & {
-  digest?: string
+  digest?: string | null
 }
 
 export type TDoc = TBaseArticle & {
-  digest?: string
+  digest?: string | null
   subtitle?: string
 }
 
@@ -151,26 +153,33 @@ export type TArticleState<T extends TArticle = TArticle> = {
 
 export type TPagedArticleViewModels<T extends TArticle = TArticle> = {
   entries: readonly TArticleState<T>[]
-} & TPagi
+  pageInfo?: TGraphQLPagiPageInfo
+}
 
 export type TPagedPosts = {
   entries: readonly TPost[]
-} & TPagi
-
+  pinnedEntries: readonly TPost[]
+  pageInfo: TGraphQLPagiPageInfo
+}
 export type TPagedChangelogs = {
   entries: readonly TChangelog[]
-} & TPagi
-
+  pinnedEntries: readonly TChangelog[]
+  pageInfo: TGraphQLPagiPageInfo
+}
 export type TPagedDocs = {
   entries: readonly TDoc[]
-} & TPagi
-
+  pinnedEntries: readonly TDoc[]
+  pageInfo: TGraphQLPagiPageInfo
+}
 export type TArticleEntries = readonly TPost[] | readonly TChangelog[] | readonly TDoc[]
 export type TPagedArticles = {
   entries: TArticleEntries
-} & TPagi
+  pinnedEntries: TArticleEntries
+  pageInfo: TGraphQLPagiPageInfo
+}
 
 export type TComment = {
+  rootInnerId?: string | null
   innerId: string
   thread?: TThread
   isPinned?: boolean
@@ -213,12 +222,13 @@ export type TComment = {
 
 export type TPagedComments = {
   entries: TComment[]
-} & TPagi
+  pageInfo: TGraphQLPagiPageInfo
+}
 
 export type TArticleFilter = {
   order?: TArticleOrder
-  cat?: TArticleCat
-  status?: TArticleStatus
+  cat?: TArticleCat | null
+  status?: TArticleStatus | null
 }
 
 export type TArticleFilterMode = 'default' | 'modeline'
@@ -237,7 +247,8 @@ export type TCollectionFolder = {
 
 export type TPagedCollectionFolder = {
   entries: TCollectionFolder[]
-} & TPagi
+  pageInfo: TGraphQLPagiPageInfo
+}
 
 export type TCommentsState = {
   isViewerJoined: boolean
@@ -264,6 +275,7 @@ export type TFAQSection = {
 }
 
 export type TPagedArticlesParams = {
+  after?: string
   page?: number
   size?: number
   community?: string
@@ -271,6 +283,7 @@ export type TPagedArticlesParams = {
   communityTags?: string[]
   cat?: string
   status?: string
+  statuses?: string[]
   order?: string
   when?: string
   sort?: string

@@ -1,12 +1,14 @@
 'use client'
 
-import { type FC, lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { type FC, lazy, Suspense, useCallback, useMemo, useState } from 'react'
 
 import { DSB_DOC_EVENT } from '~/const/dsb/docs'
-import { browserGraphQLRequest } from '~/graphql/client'
 import useEvent from '~/hooks/useEvent'
+import usePagiPosition from '~/hooks/usePagiPosition'
 import useTrans from '~/hooks/useTrans'
 import MergeSVG from '~/icons/Merge'
+import { graphqlQueryOptions } from '~/query'
 import S from '~/unit/DsbThread/schema/docs'
 
 import useDocsEditor from '../Editor/store/hooks'
@@ -23,56 +25,39 @@ const DiffStatus: FC = () => {
   const { t } = useTrans()
   const { bodyValue, docDraftInfo } = useDocsEditor()
   const [visible, setVisible] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [publishedRevisions, setPublishedRevisions] = useState<TDocBranchRevision[]>([])
   const docDraftId = docDraftInfo.id
   const branchId = docDraftInfo.branchId
   const label = t(DOC_ACTION_LABEL_KEY.DIFF)
-
-  const loadRevisions = useCallback(async (): Promise<void> => {
-    if (!docDraftId || !branchId) {
-      setPublishedRevisions([])
-      setError(null)
-      setLoading(false)
-      return
-    }
-
-    setLoading(true)
-    setError(null)
-
-    try {
-      const data = await browserGraphQLRequest<TDocBranchVersionsPayload>(S.docBranchVersions, {
-        docId: docDraftId,
-        branchId,
-      })
-
-      setPublishedRevisions(
-        (data?.docBranchVersions || []).map((version) => ({
-          id: version.revisionId,
-          branchVersionId: version.id,
-          body: version.content.body,
-          insertedAt: version.publishedAt,
-          revisionNumber: version.versionNumber,
-          title: version.content.title,
-          subtitle: version.content.subtitle,
-        })),
-      )
-    } catch (err) {
-      setPublishedRevisions([])
-      setError(err instanceof Error ? err.message : String(err))
-    } finally {
-      setLoading(false)
-    }
-  }, [branchId, docDraftId])
-
-  useEffect(() => {
-    void loadRevisions()
-  }, [loadRevisions])
-
+  const position = usePagiPosition(`${docDraftId}:${branchId}`)
+  const query = useQuery({
+    ...graphqlQueryOptions<TDocBranchVersionsPayload>(S.docBranchVersions, {
+      docId: docDraftId,
+      branchId,
+      pagi: position.input,
+    }),
+    enabled: !!docDraftId && !!branchId,
+  })
+  const loading = query.isFetching
+  const error = query.error ? String(query.error) : null
+  const publishedRevisions = useMemo<TDocBranchRevision[]>(
+    () =>
+      (query.data?.docBranchVersions?.entries || []).map((version) => ({
+        id: version.revisionId,
+        branchVersionId: version.id,
+        body: version.content.body,
+        insertedAt: version.publishedAt,
+        revisionNumber: version.versionNumber,
+        title: version.content.title,
+        subtitle: version.content.subtitle,
+      })),
+    [query.data],
+  )
+  const loadRevisions = useCallback(async () => {
+    await query.refetch()
+  }, [query.refetch])
   useEvent(
     DSB_DOC_EVENT.REVISION_RELOAD,
-    (): void => {
+    () => {
       void loadRevisions()
     },
     [loadRevisions],
@@ -114,6 +99,8 @@ const DiffStatus: FC = () => {
       {visible && (
         <Suspense fallback={null}>
           <RevisionDrawer
+            pageInfo={query.data?.docBranchVersions?.pageInfo}
+            onPageChange={position.setPage}
             show={visible}
             loading={loading}
             error={error}

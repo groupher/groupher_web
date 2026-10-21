@@ -20,6 +20,13 @@ defmodule GroupherServer.Activity.Model.Base do
             extra_fields: extra_fields
           ] do
       use Ecto.Schema
+      use Flop.Schema
+
+      @flop_options [
+        filterable: [],
+        sortable: [:occurred_at, :record_sequence],
+        pagination_types: [:page, :first]
+      ]
       use Accessible
 
       import Ecto.Changeset

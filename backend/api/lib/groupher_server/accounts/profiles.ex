@@ -73,24 +73,40 @@ defmodule GroupherServer.Accounts.Profiles do
   end
 
   @doc """
-  Returns a page of matching user profiles.
+  Pages public user profiles using the supplied Pagi position.
 
   ## Examples
 
-      Accounts.Profiles.paged_users(%{page: 1, size: 20})
+      Accounts.Profiles.paged_users(%{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
-  @spec paged_users(map()) :: T.domain_res(T.paged_users())
-  def paged_users(filter), do: Query.paged_users(filter)
+  defdelegate paged_users(filter, pagi), to: Query
 
   @doc """
-  Returns a user page with viewer-aware relationship fields.
+  Pages public user profiles with the requesting viewer's follow state.
 
   ## Examples
 
-      Accounts.Profiles.paged_users(%{page: 1, size: 20}, viewer)
+      Accounts.Profiles.paged_users(%{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
   """
-  @spec paged_users(map(), User.t()) :: T.domain_res(T.paged_users())
-  def paged_users(filter, %User{} = user), do: Query.paged_users(filter, user)
+  defdelegate paged_users(filter, pagi, viewer), to: Query
+
+  @doc """
+  Returns the bounded default Community suggestions, including Home when available.
+
+  ## Examples
+
+      Accounts.Profiles.default_community_suggestions()
+  """
+  defdelegate default_community_suggestions(), to: Query
+
+  @doc """
+  Pages Communities the account actually subscribes to.
+
+  ## Examples
+
+      Accounts.Profiles.subscribed_communities(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
+  defdelegate subscribed_communities(user, filter, pagi), to: Query
 
   @doc """
   Updates editable profile attributes through the account write boundary.
@@ -147,18 +163,22 @@ defmodule GroupherServer.Accounts.Profiles do
 
   ## Examples
 
-      Accounts.Profiles.browser_sessions(user, current_session_ref)
+      Accounts.Profiles.browser_sessions(user, current_session_ref, nil)
   """
-  def browser_sessions(%User{} = user, current_ref), do: BrowserSessions.list(user, current_ref)
+  def browser_sessions(%User{} = user, current_ref, pagi) do
+    BrowserSessions.list(user, current_ref, pagi)
+  end
 
   @doc """
   Lists browser sessions associated with a session reference.
 
   ## Examples
 
-      Accounts.Profiles.browser_sessions_for_ref(current_session_ref)
+      Accounts.Profiles.browser_sessions_for_ref(current_session_ref, nil)
   """
-  def browser_sessions_for_ref(current_ref), do: BrowserSessions.list_for_ref(current_ref)
+  def browser_sessions_for_ref(current_ref, pagi) do
+    BrowserSessions.list_for_ref(current_ref, pagi)
+  end
 
   @doc """
   Revokes one public browser-session reference.
@@ -245,27 +265,5 @@ defmodule GroupherServer.Accounts.Profiles do
   @spec unlink_oauth_identity(String.t(), String.t()) :: T.domain_res(map())
   def unlink_oauth_identity(login, public_ref) do
     Commands.UnlinkOauthIdentity.run(login, public_ref)
-  end
-
-  @doc """
-  Returns the communities recommended by the account defaults.
-
-  ## Examples
-
-      Accounts.Profiles.default_subscribed_communities(%{page: 1, size: 20})
-  """
-  @spec default_subscribed_communities(map()) :: T.domain_res(T.paged_data())
-  def default_subscribed_communities(filter), do: Query.default_subscribed_communities(filter)
-
-  @doc """
-  Returns communities subscribed to by a user.
-
-  ## Examples
-
-      Accounts.Profiles.subscribed_communities(user, %{page: 1, size: 20})
-  """
-  @spec subscribed_communities(User.t(), map()) :: T.domain_res(T.paged_data())
-  def subscribed_communities(%User{} = user, filter) do
-    Query.subscribed_communities(user, filter)
   end
 end

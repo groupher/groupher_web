@@ -75,21 +75,16 @@ defmodule GroupherServer.CommandPipelineRunnerTest do
       on_rejection(&build_rejection/1)
     end
 
-    workflow_pipeline reject_step(resource) do
-      step(:rejected_step, fn _results ->
-        _ = resource
-        {:error, Rejected.new(:workflow_rejected, :workflow_rejected)}
-      end)
-
-      return(:rejected_step)
-    end
-
-    @pipeline operation: :pipeline_runner_workflow_behavior,
+    @pipeline operation: :pipeline_runner_domain_workflow_behavior,
               access: :internal,
               target: :resource
-    direct_pipeline execute_workflow(resource, actor, opts) do
+    direct_pipeline execute_domain_workflow(resource, actor, opts) do
       gate(fn value -> {:ok, value} end)
-      workflow(fn value -> reject_step(value) end)
+
+      change(fn value ->
+        _ = value
+        {:error, Rejected.new(:domain_workflow_rejected, :domain_workflow_rejected)}
+      end)
 
       on_rejection(&build_rejection/1)
     end
@@ -196,9 +191,9 @@ defmodule GroupherServer.CommandPipelineRunnerTest do
              Fixture.execute(resource, nil, [])
   end
 
-  test "preserves an explicit rejection returned by a workflow step" do
-    assert {:error, :workflow_rejected} =
-             Fixture.execute_workflow(%{id: "article-6"}, nil, [])
+  test "preserves an explicit rejection returned by a domain workflow" do
+    assert {:error, :domain_workflow_rejected} =
+             Fixture.execute_domain_workflow(%{id: "article-6"}, nil, [])
   end
 
   test "rejection builder exceptions do not replace the original error" do

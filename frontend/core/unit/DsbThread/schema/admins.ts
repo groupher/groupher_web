@@ -1,9 +1,10 @@
 import { graphql } from '~/graphql/authoring'
 
-export const updateModerators = graphql(`
-  query DashboardCommunityModerators($slug: String!, $incViews: Boolean) {
-    community(slug: $slug, incViews: $incViews) {
-      moderators {
+export const moderatorPage = graphql(`
+  query DashboardModeratorPage($community: String!, $pagi: PagiInput) {
+    pagedCommunityModerators(community: $community, pagi: $pagi) {
+      entries {
+        id
         isRoot
         passportItemCount
         user {
@@ -11,6 +12,21 @@ export const updateModerators = graphql(`
           avatar
           nickname
           bio
+        }
+      }
+      pageInfo {
+        __typename
+        hasNextPage
+        hasPreviousPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
+        }
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
         }
       }
     }
@@ -26,18 +42,16 @@ export const userPassport = graphql(`
 `)
 
 export const searchUsers = graphql(`
-  query DashboardSearchUsers($name: String!) {
-    searchUsers(name: $name) {
-      entries {
-        login
-        avatar
-        nickname
-        bio
-        social {
-          github
-          twitter
-          zhihu
-        }
+  query DashboardSearchUsers($name: String!, $community: String!) {
+    moderatorCandidates(name: $name, community: $community) {
+      login
+      avatar
+      nickname
+      bio
+      social {
+        github
+        twitter
+        zhihu
       }
     }
   }
@@ -46,16 +60,7 @@ export const searchUsers = graphql(`
 export const addModerator = graphql(`
   mutation DashboardAddModerator($commandId: ID!, $community: String!, $user: String!) {
     addModerator(commandId: $commandId, community: $community, user: $user) {
-      moderators {
-        isRoot
-        passportItemCount
-        user {
-          login
-          avatar
-          nickname
-          bio
-        }
-      }
+      slug
     }
   }
 `)
@@ -63,22 +68,13 @@ export const addModerator = graphql(`
 export const addModerators = graphql(`
   mutation DashboardAddModerators($commandId: ID!, $community: String!, $users: [String!]!) {
     addModerators(commandId: $commandId, community: $community, users: $users) {
-      moderators {
-        isRoot
-        passportItemCount
-        user {
-          login
-          avatar
-          nickname
-          bio
-        }
-      }
+      slug
     }
   }
 `)
 
 export default {
-  updateModerators,
+  moderatorPage,
   userPassport,
   searchUsers,
   addModerator,

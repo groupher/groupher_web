@@ -15,8 +15,8 @@ defmodule GroupherServer.CMS.Gate.Access.Load do
   @doc "Delegates comment/4 to the owning implementation."
   defdelegate comment(arg1, arg2, arg3, arg4), to: GroupherServer.CMS.Gate.Access.Load.Query
 
-  @doc "Delegates community/1 to the owning implementation."
-  defdelegate community(arg1), to: GroupherServer.CMS.Gate.Access.Load.Query
+  @doc "Delegates community/2 to the owning implementation."
+  defdelegate community(arg1, arg2), to: GroupherServer.CMS.Gate.Access.Load.Query
 
   @doc "Delegates doc/3 to the owning implementation."
   defdelegate doc(arg1, arg2, arg3), to: GroupherServer.CMS.Gate.Access.Load.Query

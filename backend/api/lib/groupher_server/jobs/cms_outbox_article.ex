@@ -11,11 +11,11 @@ defmodule GroupherServer.Jobs.CMSOutboxArticle do
 
   @impl Oban.Worker
   @doc """
-  Runs `perform` through this boundary.
+  Delivers one Article outbox job through the CMS outbox owner.
 
   ## Examples
 
-      iex> GroupherServer.Jobs.CMSOutboxArticle.perform(...)
+      perform(%Oban.Job{args: %{"event_id" => 1}})
   """
   def perform(job), do: GroupherServer.CMS.deliver_outbox(:article, job)
 end

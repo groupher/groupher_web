@@ -189,7 +189,7 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
       assert length(comments_participants) == 2
     end
 
-    @query S.Comment.q(:paged_comments)
+    @query S.Comment.q(:comment_page)
     test "list comments with default replies-mode", ~m(guest_conn community post user user2)a do
       total_count = 3
       page_size = 20
@@ -226,7 +226,8 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: page_size}
+        pagi: %{offset: %{page: 1, size: page_size, config_revision: 0}},
+        filter: %{}
       }
 
       results = guest_conn |> gq_query(@query, variables)
@@ -285,7 +286,8 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           thread: "POST"
         },
         mode: "TIMELINE",
-        filter: %{page: 1, size: page_size}
+        pagi: %{offset: %{page: 1, size: page_size, config_revision: 0}},
+        filter: %{}
       }
 
       results = guest_conn |> gq_query(@query, variables)
@@ -297,7 +299,7 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
       random_comment =
         Enum.find(results["entries"], &(&1["innerId"] == to_string(random_comment.inner_id)))
 
-      assert random_comment["replies"] |> length == 2
+      assert random_comment["replies"] == []
       assert random_comment["repliesCount"] == 2
     end
 
@@ -342,7 +344,8 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: 10},
+        pagi: %{offset: %{page: 1, size: 10, config_revision: 0}},
+        filter: %{},
         mode: "TIMELINE"
       }
 
@@ -391,13 +394,14 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: 10}
+        pagi: %{offset: %{page: 1, size: 10, config_revision: 0}},
+        filter: %{}
       }
 
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == total_count
+      assert results |> valid_comment_page?
+      assert results["pageInfo"]["totalCount"] == total_count
     end
 
     test "guest user can get paged comment with pinned comment in it",
@@ -451,18 +455,19 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: 10}
+        pagi: %{offset: %{page: 1, size: 10, config_revision: 0}},
+        filter: %{}
       }
 
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results["entries"] |> List.first() |> Map.get("innerId") ==
+      assert results["pinnedEntries"] |> List.first() |> Map.get("innerId") ==
                to_string(pinned_comment2.inner_id)
 
-      assert results["entries"] |> Enum.at(1) |> Map.get("innerId") ==
+      assert results["pinnedEntries"] |> Enum.at(1) |> Map.get("innerId") ==
                to_string(pinned_comment.inner_id)
 
-      assert results["totalCount"] == total_count + 2
+      assert results["pageInfo"]["totalCount"] == total_count
     end
 
     test "if solution in pinned comments, solution should always on top",
@@ -542,15 +547,16 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: 10}
+        pagi: %{offset: %{page: 1, size: 10, config_revision: 0}},
+        filter: %{}
       }
 
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results["entries"] |> List.first() |> Map.get("innerId") ==
+      assert results["pinnedEntries"] |> List.first() |> Map.get("innerId") ==
                to_string(solution_comment.inner_id)
 
-      assert results["totalCount"] == total_count + 3
+      assert results["pageInfo"]["totalCount"] == total_count
     end
 
     test "guest user can get paged comment with floor it", ~m(guest_conn community post user)a do
@@ -579,7 +585,8 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: page_size}
+        pagi: %{offset: %{page: 1, size: page_size, config_revision: 0}},
+        filter: %{}
       }
 
       results = guest_conn |> gq_query(@query, variables)
@@ -632,7 +639,8 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: page_size},
+        pagi: %{offset: %{page: 1, size: page_size, config_revision: 0}},
+        filter: %{},
         mode: "TIMELINE"
       }
 
@@ -687,7 +695,8 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: page_size, sort: "DESC_INSERTED"},
+        pagi: %{offset: %{page: 1, size: page_size, config_revision: 0}},
+        filter: %{sort: "DESC_INSERTED"},
         mode: "TIMELINE"
       }
 
@@ -760,7 +769,8 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: page_size, sort: "DESC_INSERTED"}
+        pagi: %{offset: %{page: 1, size: page_size, config_revision: 0}},
+        filter: %{sort: "DESC_INSERTED"}
       }
 
       results = guest_conn |> gq_query(@query, variables)
@@ -803,7 +813,8 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: page_size}
+        pagi: %{offset: %{page: 1, size: page_size, config_revision: 0}},
+        filter: %{}
       }
 
       results = guest_conn |> gq_query(@query, variables)
@@ -858,7 +869,8 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: page_size}
+        pagi: %{offset: %{page: 1, size: page_size, config_revision: 0}},
+        filter: %{}
       }
 
       results = guest_conn |> gq_query(@query, variables)
@@ -912,7 +924,8 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: page_size}
+        pagi: %{offset: %{page: 1, size: page_size, config_revision: 0}},
+        filter: %{}
       }
 
       results = guest_conn |> gq_query(@query, variables)
@@ -981,7 +994,8 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: page_size}
+        pagi: %{offset: %{page: 1, size: page_size, config_revision: 0}},
+        filter: %{}
       }
 
       results = user_conn |> gq_query(@query, variables)
@@ -1022,7 +1036,8 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: page_size}
+        pagi: %{offset: %{page: 1, size: page_size, config_revision: 0}},
+        filter: %{}
       }
 
       results = user_conn |> gq_query(@query, variables)
@@ -1083,18 +1098,18 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
           community: community.slug,
           thread: thread
         },
-        filter: %{page: 1, size: page_size}
+        pagi: %{offset: %{page: 1, size: page_size}}
       }
 
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == total_count + 1
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["totalCount"] == total_count + 1
     end
   end
 
   describe "paged replies" do
-    @query S.Comment.q(:paged_comment_replies)
+    @query S.Comment.q(:comment_reply_page)
     test "guest user can get paged replies", ~m(guest_conn community post user user2)a do
       total_count = 2
       page_size = 10
@@ -1134,7 +1149,8 @@ defmodule GroupherServer.Test.Query.Comments.PostComment do
 
       variables = %{
         comment: comment_path(community, post, :post, parent_comment),
-        filter: %{page: 1, size: page_size}
+        pagi: %{offset: %{page: 1, size: page_size, config_revision: 0}},
+        filter: %{}
       }
 
       results = guest_conn |> gq_query(@query, variables)

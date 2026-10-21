@@ -1,13 +1,15 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react'
+import { fireEvent, render, renderHook, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
 
 import { ARTICLE_CAT, ARTICLE_ORDER, ARTICLE_STATUS } from '~/const/gtd'
 import URL_PARAM from '~/const/url_param'
 import { makeStoreWrapper } from '~/hooks/__test__/makeStoreWrapper'
 import usePagedPosts from '~/hooks/usePagedPosts'
+import PagedPostsProvider from '~/hooks/usePagedPosts/provider'
 import { articleQueryKeys } from '~/query'
 import AccountStoreProvider from '~/stores/account/provider'
+import Pagi from '~/ui/Pagi'
 
 describe('usePagedPosts', () => {
   it('builds pagedParams from searchParams and reads the Query cache', async () => {
@@ -21,7 +23,7 @@ describe('usePagedPosts', () => {
       defaultOptions: { queries: { retry: false, staleTime: Number.POSITIVE_INFINITY } },
     })
     queryClient.setQueryData(
-      articleQueryKeys.posts({
+      articleQueryKeys.pagiPosts({
         community: 'acme',
         page: 2,
         size: 20,
@@ -30,7 +32,19 @@ describe('usePagedPosts', () => {
         status: ARTICLE_STATUS.TODO,
         order: ARTICLE_ORDER.UPVOTES,
       }),
-      { entries: [], pageNumber: 1 },
+      {
+        entries: [],
+        pinnedEntries: [],
+        pageInfo: {
+          __typename: 'OffsetPageInfo',
+          page: 2,
+          size: 20,
+          totalCount: 41,
+          totalPages: 3,
+          hasNextPage: true,
+          hasPreviousPage: true,
+        },
+      },
     )
     const StoreWrapper = makeStoreWrapper({
       community: { slug: 'acme' },
@@ -40,7 +54,9 @@ describe('usePagedPosts', () => {
     const wrapper = ({ children }: { children: ReactNode }) => (
       <QueryClientProvider client={queryClient}>
         <AccountStoreProvider initData={{ loading: false, user: null }}>
-          <StoreWrapper>{children}</StoreWrapper>
+          <StoreWrapper>
+            <PagedPostsProvider>{children}</PagedPostsProvider>
+          </StoreWrapper>
         </AccountStoreProvider>
       </QueryClientProvider>
     )
@@ -52,6 +68,100 @@ describe('usePagedPosts', () => {
     expect(result.current.pagedParams.order).toBe(ARTICLE_ORDER.UPVOTES)
     expect(result.current.pagedPosts.entries).toHaveLength(0)
 
+    expect(result.current.pagedPosts).toMatchObject({
+      pageInfo: {
+        __typename: 'OffsetPageInfo',
+        page: 2,
+        size: 20,
+        totalCount: 41,
+        totalPages: 3,
+        hasNextPage: true,
+        hasPreviousPage: true,
+      },
+    })
     expect(result.current.resState).toBe('DONE')
+    const changePage = vi.fn()
+    render(<Pagi {...result.current.pagedPosts} onChange={changePage} />, { wrapper: StoreWrapper })
+    expect(screen.getByRole('spinbutton')).toHaveValue(2)
+    const next = screen.getAllByRole('button')[1]
+    expect(next).not.toBeDisabled()
+    fireEvent.click(next)
+    expect(changePage).toHaveBeenCalledWith(3)
   })
+
+  it.each([false, true])(
+    'selects the correct cursor provider and hydration for mobile=%s',
+    (mobile) => {
+      if (mobile) Object.defineProperty(window, 'innerWidth', { configurable: true, value: 768 })
+      window.history.replaceState(null, '', '/acme/post')
+
+      const config = {
+        api: 'cursor' as const,
+        mode: mobile ? ('infinite_scroll' as const) : ('load_more' as const),
+        schemaVersion: 1,
+        revision: 4,
+        defaultSize: 20,
+        maxSize: 10,
+      }
+      const queryClient = new QueryClient({
+        defaultOptions: { queries: { retry: false, staleTime: Number.POSITIVE_INFINITY } },
+      })
+      const filter = { community: 'acme', page: 1, size: 20 }
+      queryClient.setQueryData(
+        articleQueryKeys.pagiPosts(filter, config, {
+          api: 'cursor',
+          first: 20,
+          configRevision: 4,
+        }),
+        {
+          pages: [
+            {
+              pinnedEntries: [],
+              entries: [],
+              pageInfo: {
+                __typename: 'CursorPageInfo',
+                startCursor: null,
+                endCursor: null,
+                hasPreviousPage: false,
+                hasNextPage: false,
+              },
+            },
+          ],
+          pageParams: [null],
+        },
+      )
+      const StoreWrapper = makeStoreWrapper({
+        community: { slug: 'acme' },
+        dashboard: {
+          pagiMode: mobile ? 'page' : config.mode,
+          pagiMobileMode: 'infinite_scroll',
+          pagiRevision: config.revision,
+        },
+        queryClient,
+      })
+      const wrapper = ({ children }: { children: ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+          <AccountStoreProvider initData={{ loading: false, user: null }}>
+            <StoreWrapper>
+              <PagedPostsProvider>{children}</PagedPostsProvider>
+            </StoreWrapper>
+          </AccountStoreProvider>
+        </QueryClientProvider>
+      )
+
+      const { result } = renderHook(() => usePagedPosts(), { wrapper })
+
+      expect(result.current.paginationApi).toBe('cursor')
+      expect(result.current.paginationMode).toBe(config.mode)
+      expect(result.current.pagedParams.size).toBe(20)
+      expect(result.current.pagedPosts.entries).toHaveLength(0)
+      expect(result.current.hasNextPage).toBe(false)
+    },
+  )
 })
+
+const testViewportWidth = window.innerWidth
+beforeEach(() => Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1440 }))
+afterEach(() =>
+  Object.defineProperty(window, 'innerWidth', { configurable: true, value: testViewportWidth }),
+)

@@ -52,7 +52,11 @@ defmodule Helper.Scheduler do
 
   @doc "Emits audit events for the current page of failed comment moderation records."
   def comments_audition do
-    with {:ok, paged_comments} <- CMS.comments_paged_audit_failed_comments(%{page: 1, size: 30}) do
+    with {:ok, paged_comments} <-
+           CMS.comments_paged_audit_failed_comments(%GroupherServer.Pagi.Params.Offset{
+             page: 1,
+             size: 30
+           }) do
       Enum.map(paged_comments.entries, fn comment ->
         Events.emit(:audition, %{artiment: comment})
       end)
@@ -62,7 +66,10 @@ defmodule Helper.Scheduler do
 
   defp audit_articles(thread) do
     with {:ok, paged_articles} <-
-           CMS.articles_paged_audit_failed(thread, %{page: 1, size: 30}) do
+           CMS.articles_paged_audit_failed(thread, %GroupherServer.Pagi.Params.Offset{
+             page: 1,
+             size: 30
+           }) do
       Enum.map(paged_articles.entries, fn article ->
         Events.emit(:audition, %{artiment: article})
         # the free audition service's QPS is limit to 2

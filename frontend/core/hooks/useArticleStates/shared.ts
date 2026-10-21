@@ -14,7 +14,7 @@
  */
 'use client'
 
-import { useQuery, type QueryClient } from '@tanstack/react-query'
+import { useQueries, type QueryClient } from '@tanstack/react-query'
 import { useEffect, useMemo, useRef } from 'react'
 
 import { Q } from '~/query'
@@ -108,11 +108,36 @@ export const composeArticleState = <T extends TArticle>({
 export const useArticlePrivateStates = (
   paths: readonly TArticlePath[],
   statsByPath: TStatsByPath,
+): ReturnType<typeof useArticlePrivateStatesByChunks> =>
+  useArticlePrivateStatesByChunks([paths], statsByPath)
+
+/**
+ * Keeps viewer and interaction batches aligned with stable Article page chunks.
+ *
+ * Infinite lists use one query identity per loaded page/chunk so loading a new page does not
+ * replace the previous batch key with a larger all-pages request.
+ */
+export const useArticlePrivateStatesByChunks = (
+  pathChunks: readonly (readonly TArticlePath[])[],
+  statsByPath: TStatsByPath,
 ) => {
   const account = useAccount()
   const accountRef = account.accountRef || getAccountRef(account.user) || ''
-  const viewerQuery = useQuery(Q.viewer.articleStates(accountRef, paths))
-  const interactionQuery = useQuery(Q.viewer.articleInteractionStates(accountRef, paths))
+  const paths = useMemo(() => pathChunks.flat(), [pathChunks])
+  const viewerQueries = useQueries({
+    queries: pathChunks.map((chunk) => Q.viewer.articleStates(accountRef, chunk)),
+  })
+  const interactionQueries = useQueries({
+    queries: pathChunks.map((chunk) => Q.viewer.articleInteractionStates(accountRef, chunk)),
+  })
+  const viewerStates = useMemo(
+    () => Object.assign({}, ...viewerQueries.map((query) => query.data || {})),
+    [viewerQueries],
+  )
+  const interactionStates = useMemo(
+    () => Object.assign({}, ...interactionQueries.map((query) => query.data || {})),
+    [interactionQueries],
+  )
 
   const localState = useMemo(() => {
     const viewAcks = new Set<string>()
@@ -124,18 +149,18 @@ export const useArticlePrivateStates = (
       if (receipt) receipts.set(key, receipt)
     }
     return { viewAcks, receipts }
-  }, [accountRef, interactionQuery.data, paths, statsByPath, viewerQuery.data])
+  }, [accountRef, interactionStates, paths, statsByPath, viewerStates])
 
   useEffect(() => {
     for (const path of paths) {
       const key = articlePathKey(path)
-      if (viewerQuery.data?.[key]?.viewerHasViewed === true) clearArticleViewAck(key)
+      if (viewerStates?.[key]?.viewerHasViewed === true) clearArticleViewAck(key)
 
       const receipt = localState.receipts.get(key)
       const receiptRevision = receipt?.interactionRevision
       if (typeof receiptRevision !== 'number') continue
       const statsRevision = statsByPath.get(key)?.interactionRevision
-      const privateRevision = interactionQuery.data?.[key]?.interactionRevision
+      const privateRevision = interactionStates?.[key]?.interactionRevision
       if (
         typeof statsRevision === 'number' &&
         statsRevision >= receiptRevision &&
@@ -145,12 +170,12 @@ export const useArticlePrivateStates = (
         clearArticleUpvoteReceipt(accountRef, key)
       }
     }
-  }, [accountRef, interactionQuery.data, localState.receipts, paths, statsByPath, viewerQuery.data])
+  }, [accountRef, interactionStates, localState.receipts, paths, statsByPath, viewerStates])
 
   return {
     accountRef,
-    interactionStates: interactionQuery.data,
-    viewerStates: viewerQuery.data,
+    interactionStates,
+    viewerStates,
     viewAcks: localState.viewAcks,
     receipts: localState.receipts,
   }

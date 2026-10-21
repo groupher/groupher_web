@@ -11,6 +11,11 @@ defmodule GroupherServer.Accounts do
 
   alias __MODULE__.Query
 
+  @doc "Enriches a User collection with the viewer's follow state."
+  defdelegate fans_mark_viewer_follow_status(result, viewer),
+    to: GroupherServer.Accounts.Fans,
+    as: :mark_viewer_follow_status
+
   @doc "Returns the Accounts Dataloader source used by the GraphQL adapter."
   @spec dataloader_source() :: Dataloader.Ecto.t()
   defdelegate dataloader_source(), to: Query
@@ -40,23 +45,23 @@ defmodule GroupherServer.Accounts do
     to: GroupherServer.Accounts.CollectFolders,
     as: :delete
 
-  @doc "Delegates GroupherServer.Accounts.CollectFolders.paged_articles/2 through the Accounts Context boundary."
-  defdelegate collect_folders_paged_articles(arg1, arg2),
-    to: GroupherServer.Accounts.CollectFolders,
-    as: :paged_articles
-
   @doc "Delegates GroupherServer.Accounts.CollectFolders.paged_articles/3 through the Accounts Context boundary."
   defdelegate collect_folders_paged_articles(arg1, arg2, arg3),
     to: GroupherServer.Accounts.CollectFolders,
     as: :paged_articles
 
-  @doc "Delegates GroupherServer.Accounts.CollectFolders.paged/2 through the Accounts Context boundary."
-  defdelegate collect_folders_paged(arg1, arg2),
+  @doc "Delegates GroupherServer.Accounts.CollectFolders.paged_articles/4 through the Accounts Context boundary."
+  defdelegate collect_folders_paged_articles(arg1, arg2, arg3, arg4),
     to: GroupherServer.Accounts.CollectFolders,
-    as: :paged
+    as: :paged_articles
 
   @doc "Delegates GroupherServer.Accounts.CollectFolders.paged/3 through the Accounts Context boundary."
   defdelegate collect_folders_paged(arg1, arg2, arg3),
+    to: GroupherServer.Accounts.CollectFolders,
+    as: :paged
+
+  @doc "Delegates GroupherServer.Accounts.CollectFolders.paged/4 through the Accounts Context boundary."
+  defdelegate collect_folders_paged(arg1, arg2, arg3, arg4),
     to: GroupherServer.Accounts.CollectFolders,
     as: :paged
 
@@ -78,23 +83,23 @@ defmodule GroupherServer.Accounts do
     to: GroupherServer.Accounts.Fans.Effects,
     as: :deliver_event
 
-  @doc "Delegates GroupherServer.Accounts.Fans.paged_followers/2 through the Accounts Context boundary."
-  defdelegate fans_paged_followers(arg1, arg2),
-    to: GroupherServer.Accounts.Fans,
-    as: :paged_followers
-
   @doc "Delegates GroupherServer.Accounts.Fans.paged_followers/3 through the Accounts Context boundary."
   defdelegate fans_paged_followers(arg1, arg2, arg3),
     to: GroupherServer.Accounts.Fans,
     as: :paged_followers
 
-  @doc "Delegates GroupherServer.Accounts.Fans.paged_followings/2 through the Accounts Context boundary."
-  defdelegate fans_paged_followings(arg1, arg2),
+  @doc "Delegates GroupherServer.Accounts.Fans.paged_followers/4 through the Accounts Context boundary."
+  defdelegate fans_paged_followers(arg1, arg2, arg3, arg4),
     to: GroupherServer.Accounts.Fans,
-    as: :paged_followings
+    as: :paged_followers
 
   @doc "Delegates GroupherServer.Accounts.Fans.paged_followings/3 through the Accounts Context boundary."
   defdelegate fans_paged_followings(arg1, arg2, arg3),
+    to: GroupherServer.Accounts.Fans,
+    as: :paged_followings
+
+  @doc "Delegates GroupherServer.Accounts.Fans.paged_followings/4 through the Accounts Context boundary."
+  defdelegate fans_paged_followings(arg1, arg2, arg3, arg4),
     to: GroupherServer.Accounts.Fans,
     as: :paged_followings
 
@@ -136,8 +141,8 @@ defmodule GroupherServer.Accounts do
     to: GroupherServer.Accounts.Mailbox,
     as: :mark_read
 
-  @doc "Delegates GroupherServer.Accounts.Mailbox.paged_messages/3 through the Accounts Context boundary."
-  defdelegate mailbox_paged_messages(arg1, arg2, arg3),
+  @doc "Delegates GroupherServer.Accounts.Mailbox.paged_messages/4 through the Accounts Context boundary."
+  defdelegate mailbox_paged_messages(arg1, arg2, arg3, arg4),
     to: GroupherServer.Accounts.Mailbox,
     as: :paged_messages
 
@@ -155,14 +160,14 @@ defmodule GroupherServer.Accounts do
     as: :default_meta
 
   @doc "Delegates GroupherServer.Accounts.Profiles.browser_sessions_for_ref/1 through the Accounts Context boundary."
-  defdelegate profiles_browser_sessions_for_ref(arg1),
+  defdelegate profiles_browser_sessions_for_ref(arg1, pagi),
     to: GroupherServer.Accounts.Profiles,
     as: :browser_sessions_for_ref
 
-  @doc "Delegates GroupherServer.Accounts.Profiles.default_subscribed_communities/1 through the Accounts Context boundary."
-  defdelegate profiles_default_subscribed_communities(arg1),
+  @doc "Delegates GroupherServer.Accounts.Profiles.default_community_suggestions/0 through the Accounts Context boundary."
+  defdelegate profiles_default_community_suggestions(),
     to: GroupherServer.Accounts.Profiles,
-    as: :default_subscribed_communities
+    as: :default_community_suggestions
 
   @doc "Delegates GroupherServer.Accounts.Profiles.link_oauth_identity/2 through the Accounts Context boundary."
   defdelegate profiles_link_oauth_identity(arg1, arg2),
@@ -174,11 +179,13 @@ defmodule GroupherServer.Accounts do
     to: GroupherServer.Accounts.Profiles,
     as: :linked_oauth_accounts
 
-  @doc "Delegates GroupherServer.Accounts.Profiles.paged_users/1 through the Accounts Context boundary."
-  defdelegate profiles_paged_users(arg1), to: GroupherServer.Accounts.Profiles, as: :paged_users
-
   @doc "Delegates GroupherServer.Accounts.Profiles.paged_users/2 through the Accounts Context boundary."
   defdelegate profiles_paged_users(arg1, arg2),
+    to: GroupherServer.Accounts.Profiles,
+    as: :paged_users
+
+  @doc "Delegates GroupherServer.Accounts.Profiles.paged_users/3 through the Accounts Context boundary."
+  defdelegate profiles_paged_users(arg1, arg2, arg3),
     to: GroupherServer.Accounts.Profiles,
     as: :paged_users
 
@@ -236,8 +243,8 @@ defmodule GroupherServer.Accounts do
     to: GroupherServer.Accounts.Profiles,
     as: :signin_oauth
 
-  @doc "Delegates GroupherServer.Accounts.Profiles.subscribed_communities/2 through the Accounts Context boundary."
-  defdelegate profiles_subscribed_communities(arg1, arg2),
+  @doc "Delegates GroupherServer.Accounts.Profiles.subscribed_communities/3 through the Accounts Context boundary."
+  defdelegate profiles_subscribed_communities(arg1, arg2, arg3),
     to: GroupherServer.Accounts.Profiles,
     as: :subscribed_communities
 
@@ -256,28 +263,18 @@ defmodule GroupherServer.Accounts do
     to: GroupherServer.Accounts.Profiles,
     as: :update_subscribe_state
 
-  @doc "Delegates GroupherServer.Accounts.Publish.paged_articles/3 through the Accounts Context boundary."
-  defdelegate publish_paged_articles(arg1, arg2, arg3),
-    to: GroupherServer.Accounts.Publish,
-    as: :paged_articles
-
   @doc "Delegates GroupherServer.Accounts.Publish.paged_articles/4 through the Accounts Context boundary."
   defdelegate publish_paged_articles(arg1, arg2, arg3, arg4),
     to: GroupherServer.Accounts.Publish,
     as: :paged_articles
 
-  @doc "Delegates GroupherServer.Accounts.Publish.paged_comments/2 through the Accounts Context boundary."
-  defdelegate publish_paged_comments(arg1, arg2),
+  @doc "Delegates GroupherServer.Accounts.Publish.paged_articles/5 through the Accounts Context boundary."
+  defdelegate publish_paged_articles(arg1, arg2, arg3, arg4, arg5),
     to: GroupherServer.Accounts.Publish,
-    as: :paged_comments
+    as: :paged_articles
 
-  @doc "Delegates GroupherServer.Accounts.Publish.paged_comments/3 through the Accounts Context boundary."
-  defdelegate publish_paged_comments(arg1, arg2, arg3),
-    to: GroupherServer.Accounts.Publish,
-    as: :paged_comments
-
-  @doc "Delegates GroupherServer.Accounts.Publish.paged_comments/4 through the Accounts Context boundary."
-  defdelegate publish_paged_comments(arg1, arg2, arg3, arg4),
+  @doc "Pages published Comments through the Accounts Context boundary."
+  defdelegate publish_paged_comments(user, thread, filter, pagi, viewer),
     to: GroupherServer.Accounts.Publish,
     as: :paged_comments
 
@@ -294,8 +291,8 @@ defmodule GroupherServer.Accounts do
   @doc "Delegates GroupherServer.Accounts.Search.user/1 through the Accounts Context boundary."
   defdelegate search_user(arg1), to: GroupherServer.Accounts.Search, as: :user
 
-  @doc "Delegates GroupherServer.Accounts.Upvotes.paged_articles/2 through the Accounts Context boundary."
-  defdelegate upvotes_paged_articles(arg1, arg2),
+  @doc "Delegates GroupherServer.Accounts.Upvotes.paged_articles/3 through the Accounts Context boundary."
+  defdelegate upvotes_paged_articles(arg1, arg2, arg3),
     to: GroupherServer.Accounts.Upvotes,
     as: :paged_articles
 

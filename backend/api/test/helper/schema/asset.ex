@@ -3,18 +3,15 @@ defmodule GroupherServer.Test.Helper.Schema.Asset do
 
   def q(:community_asset_refs) do
     """
-    query($community: String!, $assetId: ID!, $filter: PagiFilter) {
-        communityAssetRefs(community: $community, assetId: $assetId, filter: $filter) {
+    query($community: String!, $assetId: ID!, $pagi: PagiInput) {
+        communityAssetRefs(community: $community, assetId: $assetId, pagi: $pagi) {
           entries {
             id
             articleId
             usage
             source
           }
-          totalCount
-          totalPages
-          pageSize
-          pageNumber
+          pageInfo { hasNextPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { endCursor } }
         }
       }
     """

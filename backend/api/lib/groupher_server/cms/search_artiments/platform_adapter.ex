@@ -13,10 +13,10 @@ defmodule GroupherServer.CMS.SearchArtiments.PlatformAdapter do
   alias GroupherServer.CMS
   alias Helper.T
 
-  alias CMS.SearchArtiments.{Artiment, Query, Result}
+  alias CMS.SearchArtiments.{Artiment, Query}
 
   @callback upsert([Artiment.t()], keyword()) :: T.done()
   @callback delete([String.t()]) :: T.done()
   @callback update_metrics([{String.t(), map()}]) :: T.done()
-  @callback search(Query.t()) :: T.domain_res(Result.t())
+  @callback search(Query.t()) :: T.domain_res(Helper.ORM.Pagi.Page.t())
 end

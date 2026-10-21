@@ -17,8 +17,6 @@ const makeInitialState = (): TDsbEditorUiState => ({
   editingAlias: null,
   docFaqSaveZone: null,
   activeModerator: null,
-  allModeratorRules: '{}',
-  allRootRules: '{}',
 })
 
 /** Owns editor-only selections and drafts outside the confirmed Dsb config store. */

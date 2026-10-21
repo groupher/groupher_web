@@ -7,7 +7,6 @@ const config: CodegenConfig = {
     'frontend/core/schemas/pages/user.fragments.ts',
     'frontend/core/schemas/pages/article.fragments.ts',
     'frontend/core/schemas/pages/articleStats.ts',
-    'frontend/core/schemas/pages/misc.fragments.ts',
     'frontend/core/schemas/pages/post.ts',
     'frontend/core/schemas/pages/changelog.ts',
     'frontend/core/schemas/pages/doc.ts',

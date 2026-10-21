@@ -31,7 +31,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.audition(...)
+      Jobs.audition(%{id: comment_id})
   """
   defdelegate audition(arg1), to: GroupherServer.Jobs.Workflow
 
@@ -40,7 +40,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.comments_new(...)
+      Jobs.comments_new(%{"type" => "notify_comment", "version" => 1, "payload" => %{}})
   """
   defdelegate comments_new(arg1), to: GroupherServer.Jobs.Workflow
 
@@ -49,7 +49,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.comments_new(...)
+      Jobs.comments_new(%{"type" => "notify_comment"}, [queue: :default])
   """
   defdelegate comments_new(arg1, arg2), to: GroupherServer.Jobs.Workflow
 
@@ -58,7 +58,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.config_skip_enqueue?(...)
+      Jobs.config_skip_enqueue?()
   """
   defdelegate config_skip_enqueue?(), to: GroupherServer.Jobs.Workflow
 
@@ -67,7 +67,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.enqueue_best_effort(...)
+      Jobs.enqueue_best_effort(:notify_comment, 1, fn -> {:ok, :queued} end)
   """
   defdelegate enqueue_best_effort(arg1, arg2, arg3), to: GroupherServer.Jobs.Workflow
 
@@ -76,7 +76,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.notify_comment(...)
+      Jobs.notify_comment(%{id: 10}, %{id: 20})
   """
   defdelegate notify_comment(arg1, arg2), to: GroupherServer.Jobs.Workflow
 
@@ -85,7 +85,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.notify_reply(...)
+      Jobs.notify_reply(%{id: 10}, %{id: 20})
   """
   defdelegate notify_reply(arg1, arg2), to: GroupherServer.Jobs.Workflow
 
@@ -94,7 +94,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.public_cache_purge_job(...)
+      Jobs.public_cache_purge_job(Ecto.UUID.generate())
   """
   defdelegate public_cache_purge_job(arg1), to: GroupherServer.Jobs.Workflow
 
@@ -103,7 +103,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.public_cache_purge_new(...)
+      Jobs.public_cache_purge_new(%{invalidation_id: Ecto.UUID.generate()})
   """
   defdelegate public_cache_purge_new(arg1), to: GroupherServer.Jobs.Workflow
 
@@ -112,7 +112,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.public_cache_purge_new(...)
+      Jobs.public_cache_purge_new(%{invalidation_id: Ecto.UUID.generate()}, [queue: :public_cache])
   """
   defdelegate public_cache_purge_new(arg1, arg2), to: GroupherServer.Jobs.Workflow
 
@@ -121,7 +121,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.reconcile_comments_participants(...)
+      Jobs.reconcile_comments_participants(:post, Ecto.UUID.generate(), 12)
   """
   defdelegate reconcile_comments_participants(arg1, arg2, arg3), to: GroupherServer.Jobs.Workflow
 
@@ -130,7 +130,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.search_index(...)
+      Jobs.search_index(:upsert_article, :post, Ecto.UUID.generate())
   """
   defdelegate search_index(arg1, arg2, arg3), to: GroupherServer.Jobs.Workflow
 
@@ -139,7 +139,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.search_index_new(...)
+      Jobs.search_index_new(%{action: "upsert_article", thread: "post", ref: Ecto.UUID.generate()})
   """
   defdelegate search_index_new(arg1), to: GroupherServer.Jobs.Workflow
 
@@ -148,7 +148,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.search_index_new(...)
+      Jobs.search_index_new(%{action: "upsert_article"}, [queue: :search])
   """
   defdelegate search_index_new(arg1, arg2), to: GroupherServer.Jobs.Workflow
 
@@ -157,7 +157,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.snapshot_refresh(...)
+      Jobs.snapshot_refresh(:article, %{thread: :post, ids: [Ecto.UUID.generate()]}, [])
   """
   defdelegate snapshot_refresh(arg1, arg2, arg3), to: GroupherServer.Jobs.Workflow
 
@@ -166,7 +166,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.snapshot_refresh_new(...)
+      Jobs.snapshot_refresh_new(%{type: "article", version: 1, refs: %{}})
   """
   defdelegate snapshot_refresh_new(arg1), to: GroupherServer.Jobs.Workflow
 
@@ -175,7 +175,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.snapshot_refresh_new(...)
+      Jobs.snapshot_refresh_new(%{type: "article"}, [queue: :snapshot])
   """
   defdelegate snapshot_refresh_new(arg1, arg2), to: GroupherServer.Jobs.Workflow
 
@@ -184,7 +184,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.subscribe_community(...)
+      Jobs.subscribe_community(%{id: 10}, %{id: 20})
   """
   defdelegate subscribe_community(arg1, arg2), to: GroupherServer.Jobs.Workflow
 
@@ -193,7 +193,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.sync_mentions(...)
+      Jobs.sync_mentions(%{id: comment_id})
   """
   defdelegate sync_mentions(arg1), to: GroupherServer.Jobs.Workflow
 
@@ -202,7 +202,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.community_setup_new(...)
+      Jobs.community_setup_new(%{community_ref: "community_ref", application_ref: "application_ref", operation_ref: "operation_ref"})
   """
   defdelegate community_setup_new(arg1), to: GroupherServer.Jobs.CommunitySetup, as: :new
 
@@ -211,7 +211,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.community_setup_new(...)
+      Jobs.community_setup_new(%{community_ref: "community_ref"}, [queue: :community_setup])
   """
   defdelegate community_setup_new(arg1, arg2), to: GroupherServer.Jobs.CommunitySetup, as: :new
 
@@ -220,7 +220,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.create_community_new(...)
+      Jobs.create_community_new(%{application_ref: "application_ref", operation_ref: "operation_ref"})
   """
   defdelegate create_community_new(arg1), to: GroupherServer.Jobs.CreateCommunity, as: :new
 
@@ -229,7 +229,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.create_community_new(...)
+      Jobs.create_community_new(%{application_ref: "application_ref"}, [queue: :community_application])
   """
   defdelegate create_community_new(arg1, arg2), to: GroupherServer.Jobs.CreateCommunity, as: :new
 end

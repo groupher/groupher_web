@@ -2,8 +2,8 @@ defmodule GroupherServer.Accounts.Model.CollectFolder do
   @moduledoc """
   Ecto schema for user-owned collect folders.
 
-  The folder stores embedded article collect refs plus denormalized meta so the
-  account collection UI can page folders and mixed-thread contents efficiently.
+  The folder stores denormalized counters. Binding-scoped entries live in
+  `CollectFolderEntry`, which owns collection pagination and identity.
 
   Business position:
 
@@ -14,14 +14,16 @@ defmodule GroupherServer.Accounts.Model.CollectFolder do
   """
 
   use Ecto.Schema
+  use Flop.Schema
+
+  @flop_options [filterable: [], sortable: [:id, :inserted_at], pagination_types: [:page, :first]]
   use Accessible
 
   import Ecto.Changeset
 
   alias __MODULE__
-  alias GroupherServer.{Accounts, CMS}
-  alias Accounts.Model.{Embeds, User}
-  alias CMS.Model.ArticleCollect
+  alias GroupherServer.Accounts
+  alias Accounts.Model.{CollectFolderEntry, Embeds, User}
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.account()
@@ -32,7 +34,7 @@ defmodule GroupherServer.Accounts.Model.CollectFolder do
   @type t :: %CollectFolder{}
   schema "collect_folders" do
     belongs_to(:user, User, foreign_key: :user_id)
-    # has_many(:posts, ...)
+    has_many(:entries, CollectFolderEntry, foreign_key: :folder_id)
 
     field(:title, :string)
     field(:desc, :string)
@@ -42,10 +44,8 @@ defmodule GroupherServer.Accounts.Model.CollectFolder do
     # Tracks the most recent change to the folder's collected items.
     field(:last_updated, :utc_datetime)
 
-    # Embedded projections keep folder summaries and collected Article refs
-    # available without exposing CMS persistence operations to Accounts.
+    # This embedded document contains only denormalized folder counters.
     embeds_one(:meta, Embeds.CollectFolderMeta, on_replace: :delete)
-    embeds_many(:collects, ArticleCollect, on_replace: :delete)
 
     timestamps(type: :utc_datetime)
   end
@@ -64,7 +64,6 @@ defmodule GroupherServer.Accounts.Model.CollectFolder do
   def update_changeset(%CollectFolder{} = collect_folder, attrs) do
     collect_folder
     |> cast(attrs, @optional_fields ++ @required_fields)
-    |> cast_embed(:collects, with: &CMS.article_collect_changeset/2)
     |> cast_embed(:meta, with: &Embeds.CollectFolderMeta.changeset/2)
     |> validate_length(:title, min: 1)
     |> foreign_key_constraint(:user_id)

@@ -31,6 +31,13 @@ defmodule GroupherServerWeb.Schema.CMS.Dashboard.Metrics.Enums do
     value(:media_reports)
     value(:doc_faq)
     value(:third_party_analytics)
+    value(:pagi_mode)
+  end
+
+  enum :pagi_mode do
+    value(:page)
+    value(:load_more)
+    value(:infinite_scroll)
   end
 
   enum :dsb_link_type do

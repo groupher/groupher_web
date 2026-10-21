@@ -387,7 +387,7 @@ const checkElixirSharedFunctions = () => {
     'backend/api/lib/groupher_server/cms/comments/query.ex',
     'backend/api/lib/groupher_server/cms/comments/persist.ex',
     'backend/api/lib/groupher_server/cms/comments/lifecycle.ex',
-    'backend/api/lib/groupher_server/cms/comments/job_policy.ex',
+    'backend/api/lib/groupher_server/cms/comments/required_jobs.ex',
     'backend/api/lib/groupher_server/cms/comments/interaction_response.ex',
     'backend/api/lib/groupher_server/cms/articles/response.ex',
     'backend/api/lib/groupher_server/cms/articles/mutation_lock.ex',

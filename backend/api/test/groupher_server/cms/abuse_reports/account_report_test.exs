@@ -24,7 +24,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.AccountReport do
     #   {:ok, _} = CMS.AbuseReports.article(post, "reason", "attr_info", user2, Ecto.UUID.generate())
 
     #   filter = %{content_type: :post, content_id: post.id, page: 1, size: 20}
-    #   {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+    #   {:ok, all_reports} = CMS.AbuseReports.paged_reports(Map.drop(filter, [:page, :size]), %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size})
 
     #   report = all_reports.entries |> List.first()
     #   assert report.article.id == post.id
@@ -35,7 +35,12 @@ defmodule GroupherServer.Test.CMS.AbuseReports.AccountReport do
       {:ok, _} = CMS.AbuseReports.account(user, "reason", "attr_info", user2)
 
       filter = %{content_type: :account, content_id: user.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
 
       report = List.first(all_reports.entries)
       report_cases = report.report_cases
@@ -57,7 +62,13 @@ defmodule GroupherServer.Test.CMS.AbuseReports.AccountReport do
       {:ok, _} = CMS.AbuseReports.undo_account(user, user2)
 
       filter = %{content_type: :account, content_id: user.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
       assert all_reports.total_count == 0
 
       {:ok, user} = ORM.find(User, user.id)
@@ -70,7 +81,13 @@ defmodule GroupherServer.Test.CMS.AbuseReports.AccountReport do
       {:ok, _} = CMS.AbuseReports.undo_account(user, user2)
 
       filter = %{content_type: :account, content_id: user.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
       assert all_reports.total_count == 1
 
       {:ok, user} = ORM.find(User, user.id)
@@ -83,7 +100,13 @@ defmodule GroupherServer.Test.CMS.AbuseReports.AccountReport do
       {:ok, _} = CMS.AbuseReports.account(user, "reason", "attr_info", user3)
 
       filter = %{content_type: :account, content_id: user.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
       assert all_reports.total_count == 1
 
       report = all_reports.entries |> List.first()
@@ -94,7 +117,13 @@ defmodule GroupherServer.Test.CMS.AbuseReports.AccountReport do
       {:ok, _} = CMS.AbuseReports.undo_account(user, user2)
 
       filter = %{content_type: :account, content_id: user.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
       assert all_reports.total_count == 1
 
       report = all_reports.entries |> List.first()
@@ -108,7 +137,12 @@ defmodule GroupherServer.Test.CMS.AbuseReports.AccountReport do
       {:ok, _} = CMS.AbuseReports.account(user, "reason", "attr_info", user3)
 
       filter = %{content_type: :account, content_id: user.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
 
       report = List.first(all_reports.entries)
       report_cases = report.report_cases

@@ -84,6 +84,22 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Dashboard do
       resolve(&R.CMS.Dashboard.update_dashboard_content_shadow/3)
     end
 
+    @desc "Updates the community-wide list interaction preference"
+    field :update_dashboard_pagi_mode, :dsb do
+      arg(:community, non_null(:string))
+      arg(:dsb_section, :dsb_section, default_value: :pagi_mode)
+      arg(:expected_revision, non_null(:integer))
+      arg(:mode, non_null(:pagi_mode))
+      arg(:mobile_mode, non_null(:pagi_mode))
+      arg(:command_id, non_null(:id))
+
+      middleware(M.Authorize, :login)
+      middleware(M.Passport, action: "community.update")
+      middleware(M.FrontDesk, :community)
+
+      resolve(&R.CMS.Dashboard.update_dashboard/3)
+    end
+
     @desc "Prepares the generated images for one current-theme Wallpaper save"
     field :prepare_wallpaper_upload, non_null(:wallpaper_upload_preparation) do
       arg(:community, non_null(:string))

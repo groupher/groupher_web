@@ -7,6 +7,7 @@ defmodule GroupherServer.Test.CMS.Gate.Access do
   alias CMS.Gate.Access.Policy.Article, as: ArticlePolicy
   alias CMS.Gate.Access.Policy.Comment, as: CommentPolicy
   alias CMS.Gate.Access.Policy.Community, as: CommunityPolicy
+  alias CMS.Gate.Access.Load.Query, as: LoadQuery
   alias CMS.Gate.Context.Access.Article, as: ArticleContext
   alias CMS.Gate.Context.Access.Comment, as: CommentContext
   alias CMS.Gate.Context.Access.Community, as: CommunityContext
@@ -179,6 +180,37 @@ defmodule GroupherServer.Test.CMS.Gate.Access do
 
     assert {:error, %ErrorCat.Error{reason: :article_archived}} =
              {:error, Decision.primary_error(decision)}
+  end
+
+  test "article edit admission accepts state-only lifecycle facts and fails closed" do
+    {:ok, user} = db_insert(:user)
+    {:ok, community} = mock_community(user)
+
+    community = %{
+      community
+      | lifecycle: Repo.get_by!(CommunityLifecycle, community_id: community.id)
+    }
+
+    article = %{
+      community_id: community.id,
+      id: Ecto.UUID.generate(),
+      thread: :post,
+      meta: %{is_comment_locked: false}
+    }
+
+    state_only_context = %ArticleContext{
+      article: article,
+      community: community,
+      community_lifecycle: community.lifecycle,
+      article_lifecycle: %{state: :published}
+    }
+
+    assert {:ok, :pass} = ArticlePolicy.check_access(user, :edit, article, state_only_context)
+
+    invalid_context = %{state_only_context | article_lifecycle: %{state: :unknown}}
+
+    assert {:error, %ErrorCat.Error{reason: :lifecycle_not_found}} =
+             ArticlePolicy.check_access(user, :edit, article, invalid_context)
   end
 
   test "article interactions use the same Article and Community admission matrix" do
@@ -377,10 +409,145 @@ defmodule GroupherServer.Test.CMS.Gate.Access do
              CMS.Communities.fetch(community.slug, other_user, inc_views: false)
   end
 
+  test "Community Access loader passes embedded passport facts to Policy" do
+    {:ok, owner} = db_insert(:user)
+    {:ok, actor} = db_insert(:user)
+    {:ok, community} = mock_community(owner)
+
+    actor = %{
+      actor
+      | cur_passport: %{
+          "global" => %{},
+          community.slug => %{
+            "cms" => %{"community.update" => true}
+          }
+        }
+    }
+
+    assert {:ok, %CMS.Model.Community{}} = CMS.Gate.access_check(actor, :update, community)
+  end
+
+  test "Community Access loader passes database passport facts to Policy" do
+    {:ok, owner} = db_insert(:user)
+    {:ok, actor} = db_insert(:user)
+    {:ok, community} = mock_community(owner)
+
+    assert {:ok, _passport} =
+             CMS.Passport.stamp_passport(
+               %{
+                 "global" => %{},
+                 community.slug => %{"cms" => %{"community.update" => true}}
+               },
+               actor
+             )
+
+    assert {:ok, %CMS.Model.Community{}} = CMS.Gate.access_check(actor, :update, community)
+  end
+
+  test "Community Access loader uses empty passport facts when no passport exists" do
+    {:ok, owner} = db_insert(:user)
+    {:ok, actor} = db_insert(:user)
+    {:ok, community} = mock_community(owner)
+
+    assert {:ok, %CommunityContext{passport_rules: %{"global" => %{}}}} =
+             LoadQuery.community(actor, community)
+
+    assert {:error, %Decision{allowed: false}} =
+             CMS.Gate.access_check(actor, :update, community)
+  end
+
+  test "embedded passport facts avoid a Passport query" do
+    {:ok, owner} = db_insert(:user)
+    {:ok, actor} = db_insert(:user)
+    {:ok, community} = mock_community(owner)
+
+    actor = %{
+      actor
+      | cur_passport: %{
+          "global" => %{},
+          community.slug => %{"cms" => %{"community.update" => true}}
+        }
+    }
+
+    queries = capture_repo_queries(fn -> CMS.Gate.access_check(actor, :update, community) end)
+
+    assert Enum.count(queries, &String.contains?(&1, "passports")) == 0
+  end
+
+  test "Community Access fails closed when passport loading fails" do
+    {:ok, owner} = db_insert(:user)
+    {:ok, community} = mock_community(owner)
+
+    assert {:error, %Decision{allowed: false}} =
+             CMS.Gate.access_check(
+               %GroupherServer.Accounts.Model.User{id: -1},
+               :update,
+               community
+             )
+  end
+
+  test "Community Policy fails closed for a manually incomplete context" do
+    {:ok, owner} = db_insert(:user)
+    {:ok, community} = mock_community(owner)
+
+    context = %CommunityContext{
+      community: community,
+      community_lifecycle: nil,
+      passport_rules: %{"global" => %{}}
+    }
+
+    assert {:error, %ErrorCat.Error{reason: :lifecycle_not_loaded}} =
+             CommunityPolicy.check_access(owner, :update, community, context)
+  end
+
+  test "Community Access fails closed when the Lifecycle fact is missing" do
+    {:ok, owner} = db_insert(:user)
+    {:ok, community} = mock_community(owner)
+
+    Repo.delete_all(
+      from(lifecycle in CommunityLifecycle, where: lifecycle.community_id == ^community.id)
+    )
+
+    assert {:error, %Decision{primary: %{reason: :lifecycle_not_found}}} =
+             CMS.Gate.access_check(nil, :read, community)
+  end
+
   defp community_context(community) do
     %CommunityContext{
       community: community,
-      community_lifecycle: Map.get(community, :lifecycle)
+      community_lifecycle: Map.get(community, :lifecycle),
+      passport_rules: %{}
     }
+  end
+
+  defp capture_repo_queries(fun) do
+    ref = make_ref()
+    handler_id = {__MODULE__, ref}
+    event = Repo.config() |> Keyword.fetch!(:telemetry_prefix) |> Kernel.++([:query])
+
+    :ok =
+      :telemetry.attach(
+        handler_id,
+        event,
+        fn _event, _measurements, metadata, {pid, query_ref} ->
+          send(pid, {query_ref, metadata.query})
+        end,
+        {self(), ref}
+      )
+
+    try do
+      _result = fun.()
+      drain_queries(ref, [])
+    after
+      :telemetry.detach(handler_id)
+    end
+  end
+
+  defp drain_queries(ref, queries) do
+    receive do
+      {^ref, query} -> drain_queries(ref, [query | queries])
+    after
+      0 -> Enum.reverse(queries)
+    end
   end
 end

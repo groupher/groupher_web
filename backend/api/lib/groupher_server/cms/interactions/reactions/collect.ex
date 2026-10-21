@@ -9,17 +9,16 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
         -> post-commit notification
   """
 
-  import Ecto.Query
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
 
-  alias GroupherServer.{Accounts, CMS, Repo}
-
+  alias GroupherServer.{Accounts, CMS}
   alias Accounts.Model.User
-  alias CMS.Articles.MutationLock
   alias CMS.Artiment.Matcher
-  alias CMS.{Command, Gate, Interactions}
-  alias CMS.Interactions.{Effects, ErrorCat, Persist, Projection, Transaction}
-  alias CMS.Interactions.Reactions.CollectConfirmation, as: Confirmation
-  alias CMS.Model.{ArticleCollect, Author}
+  alias CMS.{Gate, Interactions}
+  alias CMS.Interactions.ErrorCat
+  alias CMS.Interactions.Reactions.{CollectChange, CollectConfirmation}
+  alias CMS.Model.ArticleCollect
 
   alias Helper.T
 
@@ -33,7 +32,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   """
   @spec add(struct(), User.t(), Ecto.UUID.t()) :: T.domain_res(struct())
   def add(article, %User{} = actor, command_id) do
-    mutate(article, actor, :add, command_id)
+    execute_add(article, :add, actor, command_id)
   end
 
   @doc """
@@ -46,153 +45,76 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   """
   @spec remove(struct(), User.t(), Ecto.UUID.t()) :: T.domain_res(struct())
   def remove(article, %User{} = actor, command_id) do
-    mutate(article, actor, :remove, command_id)
+    execute_remove(article, :remove, actor, command_id)
   end
 
-  defp mutate(input, actor, operation, command_id) do
-    with {:ok, command_id} <- require_command_id(command_id),
-         {:ok, info} <- Matcher.match_interaction(input) do
-      if Repo.in_transaction?() do
-        MutationLock.observe_transaction(fn ->
-          with {:ok, {canonical, change}} <-
-                 collect_transaction(input, actor, operation, command_id, info) do
-            {:ok, reaction_projection(canonical, command_id, change)}
-          end
-        end)
-      else
-        %Command{
-          actor: actor,
-          command_id: command_id,
-          operation: collect_command(operation),
-          target: input,
-          params: %{operation: operation}
-        }
-        |> Command.execute(action: &collect_action(&1, info), confirmation: Confirmation)
-        |> present_reaction(input, command_id)
-      end
-    end
+  @pipeline operation: :reaction_collect_add,
+            confirmation: CollectConfirmation,
+            target: :input,
+            params: [:operation]
+
+  receipt_pipeline execute_add(input, operation, actor, command_id) do
+    prepare(fn -> Matcher.match_interaction(input) end)
+    gate(fn info -> gate_target(input, info, actor) end)
+
+    change(fn {canonical, _info} ->
+      CollectChange.apply(canonical, actor, operation, command_id)
+    end)
+
+    confirm(fn {canonical, change} -> confirmation(canonical, operation, change) end)
+    present(fn confirmation -> present_reaction(confirmation, input, command_id) end)
   end
 
-  defp collect_action(
-         %{
-           actor: actor,
-           target: input,
-           params: %{operation: operation},
-           command_id: command_id
-         },
-         info
-       ) do
-    with {:ok, {canonical, change}} <-
-           MutationLock.observe_transaction(fn ->
-             collect_transaction(input, actor, operation, command_id, info)
-           end) do
-      {:ok,
-       %Confirmation{
-         data: %{
-           "target_id" => to_string(canonical.id),
-           "target_type" => "article",
-           "operation" => Atom.to_string(operation),
-           "outcome" => Atom.to_string(change)
-         }
-       }}
-    end
+  @pipeline operation: :reaction_collect_remove,
+            confirmation: CollectConfirmation,
+            target: :input,
+            params: [:operation]
+
+  receipt_pipeline execute_remove(input, operation, actor, command_id) do
+    prepare(fn -> Matcher.match_interaction(input) end)
+    gate(fn info -> gate_target(input, info, actor) end)
+
+    change(fn {canonical, _info} ->
+      CollectChange.apply(canonical, actor, operation, command_id)
+    end)
+
+    confirm(fn {canonical, change} -> confirmation(canonical, operation, change) end)
+    present(fn confirmation -> present_reaction(confirmation, input, command_id) end)
   end
 
-  defp collect_transaction(input, actor, operation, command_id, _info) do
-    transaction = fn ->
-      with {:ok, canonical} <- Gate.access_check(actor, :collect, input),
-           {:ok, %{collection?: true} = canonical_info} <- Matcher.match_interaction(canonical),
-           {:ok, change} <- change_fact(canonical, canonical_info, actor, operation),
-           {:ok, _} <- sync_state(canonical, actor, operation, change),
-           {:ok, _} <- record_metric(canonical, operation, command_id, change),
-           {:ok, _} <- sync_achievement(canonical, operation, change),
-           {:ok, _} <- enqueue_effect(canonical, actor, operation, command_id, change) do
-        {canonical, change}
-      else
-        {:ok, %{collection?: false}} ->
-          Repo.rollback(ErrorCat.unsupported_artiment("Comment"))
-
-        {:error, reason} ->
-          Repo.rollback(reason)
-      end
-    end
-
-    if Repo.in_transaction?(), do: {:ok, transaction.()}, else: Transaction.run(transaction)
-  end
-
-  defp sync_state(_canonical, _actor, _operation, :unchanged), do: {:ok, :pass}
-
-  defp sync_state(canonical, actor, operation, :changed) do
-    result =
-      if operation == :add,
-        do: Projection.add_collect(canonical, actor),
-        else: Projection.remove_collect(canonical, actor)
-
-    case result do
-      {:ok, _projection} -> {:ok, :pass}
+  defp gate_target(input, info, actor) do
+    with %{collection?: true} <- info,
+         {:ok, canonical} <- Gate.check_interaction_in_transaction(actor, :collect, input),
+         {:ok, %{collection?: true} = canonical_info} <- Matcher.match_interaction(canonical) do
+      {:ok, {canonical, canonical_info}}
+    else
+      %{collection?: false} -> {:error, ErrorCat.unsupported_artiment("Comment")}
+      {:ok, %{collection?: false}} -> {:error, ErrorCat.unsupported_artiment("Comment")}
       {:error, _reason} = error -> error
     end
   end
 
-  defp record_metric(_article, _operation, _command_id, :unchanged), do: {:ok, :pass}
-
-  defp record_metric(article, operation, command_id, :changed) do
-    metric = if operation == :add, do: :collect_added, else: :collect_removed
-
-    case GroupherServer.Analysis.metric_event_append_article_action(article, command_id, metric) do
-      {:ok, _} -> {:ok, :pass}
-      {:error, _reason} = error -> error
-    end
+  defp confirmation(canonical, operation, change) do
+    {:ok,
+     %CollectConfirmation{
+       data: %{
+         "target_id" => to_string(canonical.id),
+         "target_type" => "article",
+         "operation" => Atom.to_string(operation),
+         "outcome" => Atom.to_string(change)
+       }
+     }}
   end
 
-  defp sync_achievement(_article, _operation, :unchanged), do: {:ok, :pass}
-
-  defp sync_achievement(article, operation, :changed) do
-    achievement_operation = if operation == :add, do: :inc, else: :dec
-
-    case Accounts.achievements_achieve(
-           author_user(article),
-           achievement_operation,
-           :collect
-         ) do
-      {:ok, _achievement} -> {:ok, :pass}
-      {:error, _reason} = error -> error
-    end
-  end
-
-  defp author_user(%{author: %{user_id: user_id}}), do: %User{id: user_id}
-  defp author_user(%{author_id: author_id}), do: %User{id: Repo.get!(Author, author_id).user_id}
-
-  defp enqueue_effect(_article, _actor, _operation, _command_id, :unchanged), do: {:ok, :pass}
-
-  defp enqueue_effect(article, actor, operation, command_id, :changed) do
-    Effects.enqueue_reaction_changed(
-      "interaction.collect_changed",
-      "article",
-      article.id,
-      command_id,
-      %{actor_id: actor.id, operation: operation},
-      effect_key: "article:#{article.id}:#{operation}"
-    )
-  end
-
-  defp require_command_id(command_id) when is_binary(command_id), do: {:ok, command_id}
-  defp require_command_id(_command_id), do: {:error, CMS.ErrorCat.command_id_required()}
-
-  defp collect_command(:add), do: :reaction_collect_add
-  defp collect_command(:remove), do: :reaction_collect_remove
-
-  defp present_reaction({:ok, %Confirmation{data: data}}, input, command_id) do
+  defp present_reaction(%CollectConfirmation{data: data}, input, command_id) do
     outcome = if data["outcome"] == "unchanged", do: :unchanged, else: :changed
 
     {:ok, reaction_projection(input, command_id, outcome)}
   end
 
-  defp present_reaction({:ok, data}, input, command_id) when is_map(data) do
-    present_reaction({:ok, struct(Confirmation, data: data)}, input, command_id)
+  defp present_reaction(data, input, command_id) when is_map(data) do
+    present_reaction(struct(CollectConfirmation, data: data), input, command_id)
   end
-
-  defp present_reaction(error, _input, _command_id), do: error
 
   defp reaction_projection(input, command_id, outcome) do
     input
@@ -208,52 +130,14 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
       Reactions.Collect.users(article, %{page: 1, size: 20})
 
   """
-  @spec users(struct(), map()) :: {:ok, term()} | {:error, term()}
-  def users(article, filter) when is_map(filter) do
+  @spec users(struct(), GroupherServer.Pagi.Params.t() | nil) :: {:ok, term()} | {:error, term()}
+  def users(article, pagi) do
     case Matcher.match_interaction(article) do
       {:ok, %{collection?: true}} ->
-        Interactions.ReactionUsers.load(ArticleCollect, article, filter)
+        Interactions.ReactionUsers.load(ArticleCollect, article, pagi)
 
       _ ->
         {:error, ErrorCat.unsupported_artiment("collected_users only supports Article")}
     end
   end
-
-  defp change_fact(article, info, actor, :add) do
-    now = DateTime.utc_now(:second)
-
-    attrs =
-      %{
-        user_id: actor.id,
-        thread: info.artiment,
-        collect_folders: [],
-        inserted_at: now,
-        updated_at: now
-      }
-      |> Map.put(info.foreign_key, article.id)
-
-    Persist.insert_fact(
-      ArticleCollect,
-      attrs,
-      collect_conflict_target(info.foreign_key),
-      "collect"
-    )
-  end
-
-  defp change_fact(article, info, actor, :remove) do
-    foreign_key = info.foreign_key
-
-    query =
-      from(collect in ArticleCollect,
-        where: field(collect, ^foreign_key) == ^article.id and collect.user_id == ^actor.id
-      )
-
-    Persist.delete_fact(query, "collect")
-  end
-
-  defp collect_conflict_target(:article_id) do
-    {:unsafe_fragment, "(user_id, article_id) WHERE article_id IS NOT NULL AND branch_id IS NULL"}
-  end
-
-  defp collect_conflict_target(foreign_key), do: [:user_id, foreign_key]
 end

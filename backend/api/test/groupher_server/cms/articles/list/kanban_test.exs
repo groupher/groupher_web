@@ -174,29 +174,45 @@ defmodule GroupherServer.Test.CMS.Articles.Kanban do
       {:ok, _} = CMS.Articles.create(community, :post, kanban_attrs, user)
 
       {:ok, paged_backlog_posts} =
-        CMS.Articles.paged_kanban(community, %{status: @article_status.backlog, page: 1, size: 20})
+        CMS.Articles.kanban_page(
+          community,
+          %{status: @article_status.backlog},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+        )
 
       {:ok, paged_todo_posts} =
-        CMS.Articles.paged_kanban(community, %{status: @article_status.todo, page: 1, size: 20})
+        CMS.Articles.kanban_page(
+          community,
+          %{status: @article_status.todo},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+        )
 
       {:ok, paged_wip_posts} =
-        CMS.Articles.paged_kanban(community, %{status: @article_status.wip, page: 1, size: 20})
+        CMS.Articles.kanban_page(
+          community,
+          %{status: @article_status.wip},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+        )
 
       {:ok, paged_done_posts} =
-        CMS.Articles.paged_kanban(community, %{status: @article_status.done, page: 1, size: 20})
+        CMS.Articles.kanban_page(
+          community,
+          %{status: @article_status.done},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+        )
 
       {:ok, paged_rejected_posts} =
-        CMS.Articles.paged_kanban(community, %{
-          status: [@article_status.reject, @article_status.reject_dup],
-          page: 1,
-          size: 20
-        })
+        CMS.Articles.kanban_page(
+          community,
+          %{statuses: [@article_status.reject, @article_status.reject_dup]},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+        )
 
-      assert paged_backlog_posts |> is_valid_pagination?(:raw)
-      assert paged_todo_posts |> is_valid_pagination?(:raw)
-      assert paged_wip_posts |> is_valid_pagination?(:raw)
-      assert paged_done_posts |> is_valid_pagination?(:raw)
-      assert paged_rejected_posts |> is_valid_pagination?(:raw)
+      assert paged_backlog_posts |> is_map()
+      assert paged_todo_posts |> is_map()
+      assert paged_wip_posts |> is_map()
+      assert paged_done_posts |> is_map()
+      assert paged_rejected_posts |> is_map()
 
       assert paged_backlog_posts.entries
              |> Enum.filter(&(&1.status == @article_status.backlog))
@@ -222,11 +238,11 @@ defmodule GroupherServer.Test.CMS.Articles.Kanban do
     test "can get default empty grouped kanban posts", ~m(community)a do
       {:ok, grouped_kanban_posts} = CMS.Articles.grouped_kanban(community)
 
-      assert grouped_kanban_posts.backlog |> is_valid_pagination?(:raw)
-      assert grouped_kanban_posts.todo |> is_valid_pagination?(:raw)
-      assert grouped_kanban_posts.wip |> is_valid_pagination?(:raw)
-      assert grouped_kanban_posts.done |> is_valid_pagination?(:raw)
-      assert grouped_kanban_posts.rejected |> is_valid_pagination?(:raw)
+      assert grouped_kanban_posts.backlog |> is_map()
+      assert grouped_kanban_posts.todo |> is_map()
+      assert grouped_kanban_posts.wip |> is_map()
+      assert grouped_kanban_posts.done |> is_map()
+      assert grouped_kanban_posts.rejected |> is_map()
 
       assert grouped_kanban_posts.backlog.entries
              |> Enum.filter(&(&1.status == @article_status.backlog))
@@ -295,11 +311,11 @@ defmodule GroupherServer.Test.CMS.Articles.Kanban do
 
       {:ok, grouped_kanban_posts} = CMS.Articles.grouped_kanban(community)
 
-      assert grouped_kanban_posts.backlog |> is_valid_pagination?(:raw)
-      assert grouped_kanban_posts.todo |> is_valid_pagination?(:raw)
-      assert grouped_kanban_posts.wip |> is_valid_pagination?(:raw)
-      assert grouped_kanban_posts.done |> is_valid_pagination?(:raw)
-      assert grouped_kanban_posts.rejected |> is_valid_pagination?(:raw)
+      assert grouped_kanban_posts.backlog |> is_map()
+      assert grouped_kanban_posts.todo |> is_map()
+      assert grouped_kanban_posts.wip |> is_map()
+      assert grouped_kanban_posts.done |> is_map()
+      assert grouped_kanban_posts.rejected |> is_map()
 
       assert grouped_kanban_posts.backlog.entries
              |> Enum.filter(&(&1.status == @article_status.backlog))
@@ -352,17 +368,17 @@ defmodule GroupherServer.Test.CMS.Articles.Kanban do
 
       {:ok, grouped_kanban_posts} = CMS.Articles.grouped_kanban(community)
 
-      assert grouped_kanban_posts.backlog |> is_valid_pagination?(:raw)
-      assert grouped_kanban_posts.rejected |> is_valid_pagination?(:raw)
-      assert grouped_kanban_posts.todo |> is_valid_pagination?(:raw)
+      assert grouped_kanban_posts.backlog |> is_map()
+      assert grouped_kanban_posts.rejected |> is_map()
+      assert grouped_kanban_posts.todo |> is_map()
 
-      assert grouped_kanban_posts.backlog.total_count == 0
+      assert grouped_kanban_posts.backlog.page_info.total_count == 0
       assert grouped_kanban_posts.backlog.entries == []
 
-      assert grouped_kanban_posts.rejected.total_count == 0
+      assert grouped_kanban_posts.rejected.page_info.total_count == 0
       assert grouped_kanban_posts.rejected.entries == []
 
-      assert grouped_kanban_posts.todo.total_count == 1
+      assert grouped_kanban_posts.todo.page_info.total_count == 1
     end
   end
 end

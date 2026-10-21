@@ -14,6 +14,8 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Query do
         -> typed Access Context
   """
 
+  require GroupherServer.CMS.Gate.ErrorCat
+
   alias GroupherServer.{CMS, Repo}
 
   alias CMS.Gate.Access.Load.Queries
@@ -23,6 +25,9 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Query do
   alias CMS.Gate.Context.Access.Doc, as: DocContext
   alias CMS.Gate.{ErrorCat, Config}
   alias CMS.Model.Comment
+  alias CMS.Passport.Registry
+  alias GroupherServer.{Accounts}
+  alias Accounts.Model.User
 
   alias CMS.Model.{
     ArticleLifecycle,
@@ -72,20 +77,55 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Query do
   The lifecycle row is acquired with the lock mode owned by `Load.Queries`.
   A missing lifecycle returns `lifecycle_not_found` instead of producing a
   partial context.
-  """
-  def community(%Community{} = community) do
-    case Queries.community_lifecycle(community.id) do
-      %CommunityLifecycle{} = lifecycle ->
-        {:ok,
-         %CommunityContext{
-           community: %{community | lifecycle: lifecycle},
-           community_lifecycle: lifecycle
-         }}
 
-      nil ->
-        {:error, ErrorCat.lifecycle_not_found()}
+  ## Examples
+
+      Load.Query.community(actor, community)
+      #=> {:ok, %Context.Access.Community{}} | {:error, reason}
+  """
+  @spec community(term(), Community.t()) ::
+          {:ok, CommunityContext.t()} | {:error, ErrorCat.error() | term()}
+  def community(actor, %Community{} = community) do
+    with {:ok, passport_rules} <- passport_rules(actor),
+         %CommunityLifecycle{} = lifecycle <- Queries.community_lifecycle(community.id) do
+      {:ok,
+       %CommunityContext{
+         community: %{community | lifecycle: lifecycle},
+         community_lifecycle: lifecycle,
+         passport_rules: passport_rules
+       }}
+    else
+      nil -> {:error, ErrorCat.lifecycle_not_found()}
+      {:error, ErrorCat.error_pattern() = error} -> {:error, error}
+      {:error, _reason} -> {:error, ErrorCat.permission_denied()}
     end
   end
+
+  defp passport_rules(nil), do: {:ok, Registry.empty_rules()}
+  defp passport_rules(%{type: :operations}), do: {:ok, Registry.empty_rules()}
+
+  defp passport_rules(%User{} = user) do
+    embedded = Map.get(user, :cur_passport)
+    association = Map.get(user, :cms_passport)
+
+    cond do
+      is_map(embedded) and map_size(embedded) > 0 ->
+        {:ok,
+         embedded
+         |> Map.get(:rules, Map.get(embedded, "rules", embedded))
+         |> Registry.normalize_rules()}
+
+      match?(%{rules: _rules}, association) ->
+        {:ok, association.rules |> Registry.normalize_rules()}
+
+      true ->
+        GroupherServer.CMS.Passport.get_passport(user)
+    end
+  rescue
+    error -> {:error, error}
+  end
+
+  defp passport_rules(_actor), do: {:ok, Registry.empty_rules()}
 
   @doc """
   Reloads an Article or Doc and its authoritative lifecycle facts into a typed

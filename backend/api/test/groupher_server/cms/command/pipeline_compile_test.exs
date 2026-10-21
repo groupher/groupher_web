@@ -15,12 +15,6 @@ defmodule GroupherServer.CommandPipelineCompileTest do
       gate(fn value -> {:ok, value} end)
       change(fn value -> {:ok, {value, actor, opts}} end)
     end
-
-    workflow_pipeline assemble(resource, actor) do
-      step(:resource, fn _results -> {:ok, resource} end)
-      step(:actor, fn %{resource: value} -> {:ok, {value, actor}} end)
-      return(:actor)
-    end
   end
 
   test "compiler emits one machine-readable contract per declaration" do
@@ -38,8 +32,7 @@ defmodule GroupherServer.CommandPipelineCompileTest do
                pipeline: :direct_pipeline,
                operation: :pipeline_fixture_write_second,
                stages: [:gate, :change]
-             },
-             %{pipeline: :workflow_pipeline, name: :assemble}
+             }
            ] = contracts
   end
 

@@ -6,8 +6,6 @@ export type TDsbEditorUiState = {
   editingAlias: TNameAlias | null
   docFaqSaveZone: TDocFaqSaveZone
   activeModerator: TUser | null
-  allModeratorRules: string
-  allRootRules: string
 }
 
 export type TDsbEditorUiStore = TDsbEditorUiState & {

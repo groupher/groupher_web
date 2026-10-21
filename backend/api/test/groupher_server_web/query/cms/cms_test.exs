@@ -148,7 +148,7 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
       {:ok, _record} =
         CMS.Communities.Subscriptions.Setup.subscribe(communities |> List.first(), user)
 
-      variables = %{filter: %{page: 1, size: 20}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}}
       user_conn = simu_conn(:user, user)
       results = user_conn |> gq_query(@query, variables)
 
@@ -158,18 +158,18 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
     test "guest user can get paged communities", ~m(guest_conn user)a do
       _communities = create_communities!(5, user)
 
-      variables = %{filter: %{page: 1, size: 20}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
+      assert results["pageInfo"]["page"] == 1
       # Other async suites can create communities in the shared test database.
       # This query has no filter, so assert the records owned by this test are present.
-      assert results["totalCount"] >= 5 + 1
+      assert results["pageInfo"]["totalCount"] >= 5 + 1
     end
 
     test "community has default index = 100000", ~m(guest_conn user)a do
       _communities = create_communities!(5, user)
-      variables = %{filter: %{page: 1, size: 20}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}}
       results = guest_conn |> gq_query(@query, variables)
 
       assert Enum.all?(results["entries"], fn x -> x["index"] == 100_000 end)
@@ -190,7 +190,7 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
       CategoriesPersist.set_category(%Community{id: community2.id}, %Category{id: category2.id})
       CategoriesPersist.set_category(%Community{id: communityn.id}, %Category{id: category2.id})
 
-      variables = %{filter: %{page: 1, size: 20, category: category1.slug}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}, filter: %{category: category1.slug}}
       results = guest_conn |> gq_query(@query, variables)
 
       assert results["entries"]
@@ -198,30 +198,30 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
              |> Map.get("categories")
              |> Enum.any?(&(&1["id"] == to_string(category1.id)))
 
-      assert results["totalCount"] == 1
+      assert results["pageInfo"]["totalCount"] == 1
 
-      variables = %{filter: %{page: 1, size: 20, category: category2.slug}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}, filter: %{category: category2.slug}}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results["totalCount"] == 2
+      assert results["pageInfo"]["totalCount"] == 2
 
       assert results["entries"]
              |> List.first()
              |> Map.get("categories")
              |> Enum.any?(&(&1["id"] == to_string(category2.id)))
 
-      variables = %{filter: %{page: 1, size: 20}}
+      variables = %{pagi: %{offset: %{page: 1, size: 20}}}
       results = guest_conn |> gq_query(@query, variables)
 
       # Same unfiltered query as above: keep the assertion scoped to this test's minimum.
-      assert results["totalCount"] >= 10 + 1
+      assert results["pageInfo"]["totalCount"] >= 10 + 1
     end
   end
 
   describe "[cms query categories]" do
-    @query S.Community.q(:paged_categories)
-    test "guest user can get paged categories", ~m(guest_conn user)a do
-      variables = %{filter: %{page: 1, size: 10}}
+    @query S.Community.q(:categories)
+    test "guest user can get category definitions", ~m(guest_conn user)a do
+      variables = %{}
       valid_attrs = mock_attrs(:category)
       ~m(title slug)a = valid_attrs
 
@@ -229,14 +229,15 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
       {:ok, _} = CategoriesPersist.insert_category(~m(title slug)a, %Community{}, author.id)
 
       results = guest_conn |> gq_query(@query, variables)
-      author = results["entries"] |> List.first() |> Map.get("author")
+      author = results |> List.first() |> Map.get("author")
 
-      assert results |> is_valid_pagination?
+      assert is_list(results)
       assert author["login"] == user.login
     end
 
-    test "paged categories containes communities info", ~m(guest_conn user community)a do
-      variables = %{filter: %{page: 1, size: 10}}
+    test "category community membership is read through the filtered Pagi collection",
+         ~m(guest_conn user community)a do
+      variables = %{}
       valid_attrs = mock_attrs(:category)
       ~m(title slug)a = valid_attrs
 
@@ -249,9 +250,15 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
         CategoriesPersist.set_category(%Community{id: community.id}, %Category{id: category.id})
 
       results = guest_conn |> gq_query(@query, variables)
-      contain_communities = results["entries"] |> List.first() |> Map.get("communities")
+      refute Map.has_key?(List.first(results), "communities")
 
-      assert contain_communities |> List.first() |> Map.get("slug") == community.slug
+      page =
+        gq_query(guest_conn, S.Community.q(:paged_communities), %{
+          filter: %{category: category.slug},
+          pagi: %{offset: %{page: 1, size: 20}}
+        })
+
+      assert Enum.any?(page["entries"], &(&1["slug"] == community.slug))
     end
   end
 
@@ -377,10 +384,11 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
         )
       )
 
-      variables = %{community: community.slug, filter: %{page: 1, size: 10}}
+      variables = %{community: community.slug, pagi: %{offset: %{page: 1, size: 10}}}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["size"] == 10
     end
   end
 
@@ -411,10 +419,11 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
         &CMS.Communities.Subscriptions.Setup.subscribe(community, %User{id: &1.id})
       )
 
-      variables = %{community: community.slug, filter: %{page: 1, size: 10}}
+      variables = %{community: community.slug, pagi: %{offset: %{page: 1, size: 10}}}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["size"] == 10
     end
 
     test "guest user can get paged subscribers after duplicate subscribes",
@@ -426,10 +435,11 @@ defmodule GroupherServer.Test.Query.CMS.Basic do
         &CMS.Communities.Subscriptions.Setup.subscribe(community, %User{id: &1.id})
       )
 
-      variables = %{community: community.slug, filter: %{page: 1, size: 10}}
+      variables = %{community: community.slug, pagi: %{offset: %{page: 1, size: 10}}}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["size"] == 10
     end
 
     @query S.Community.q(:open_graph_info)

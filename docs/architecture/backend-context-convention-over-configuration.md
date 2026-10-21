@@ -91,7 +91,8 @@ runtime / Context A
 - Context 内部可调用本 Context 的 internal Facade 或 Owner；
 - Context 内部不能反向调用自己的根 Facade；
 - Context A 可以调用 Context B 根 Facade，不能进入 B 的 internal module；
-- Web 和 Worker 同样只能调用根 Facade；
+- Web 和其他 Context 只能调用根 Facade；Worker 也遵守这一规则，但可调用目标 Context 中明确声明
+  `@pipeline ... access: :internal` 的 internal Command，用于可恢复 workflow；
 - `%OtherContext.Model{}`、remote type 与 ErrorCat `error_pattern` 只表达数据形状，不是 behavior call；
 - 通过 foreign schema 自行 Repo/ORM 查询或 changeset 写入仍属于 authority 穿透，不因持有 struct 而合法；
 - root `FrontDesk` 是项目级稳定引用查询入口，通过各 Context 根 Facade 委托到其 FrontDesk seam；其他 caller 仍走
@@ -140,8 +141,8 @@ jobs/<job>.ex
      -> Workflow / Effects / Persist
 ```
 
-Worker 只做 job 参数解码、调用根 Facade 和 Oban result 映射。Repo、transaction、provider delivery 和 recovery policy
-属于目标 Context。所有 `use Oban.Worker` 模块必须位于 Jobs Context。
+Worker 只做 job 参数解码、调用根 Facade 或目标 Context 的 internal Command，以及 Oban result 映射。Repo、transaction、
+provider delivery 和 recovery policy 属于目标 Context。所有 `use Oban.Worker` 模块必须位于 Jobs Context。
 
 ## 6. Registry
 

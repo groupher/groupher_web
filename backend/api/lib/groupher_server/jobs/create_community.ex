@@ -22,9 +22,16 @@ defmodule GroupherServer.Jobs.CreateCommunity do
   Creates a Community from the approved Application, marking the Application
   as creation-failed once all retries are exhausted.
 
+  The Oban payload must carry the application and stable operation references.
+  A non-terminal error is returned for retry; after the final attempt the job
+  records `creation_failed` before acknowledging the job.
+
   ## Examples
 
-      iex> GroupherServer.Jobs.CreateCommunity.perform(...)
+      perform(%Oban.Job{args: %{
+        "application_ref" => "application_ref",
+        "operation_ref" => "operation_ref"
+      }, attempt: 1, max_attempts: 5})
   """
   @impl Oban.Worker
 

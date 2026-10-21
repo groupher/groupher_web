@@ -5,6 +5,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Activity do
       GraphQL activity field -> this resolver -> Activity facade
   """
 
+  alias GroupherServer.Pagi
   alias GroupherServer.CMS
 
   alias GroupherServer.Activity
@@ -12,13 +13,18 @@ defmodule GroupherServerWeb.Resolvers.CMS.Activity do
 
   def article_logs(_root, %{article: article} = args, info) do
     actor = Map.get(info.context, :cur_user)
-    filter = Map.get(args, :filter, %{})
-    Activity.list_article_logs(article, actor, filter)
+
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
+      Activity.list_article_logs(article, actor, pagi)
+    end
   end
 
   def community_activity(_root, %{community: %Community{} = community} = args, info) do
     actor = Map.get(info.context, :cur_user)
-    Activity.list_community_logs(community, actor, args.selection, args.page)
+
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
+      Activity.list_community_logs(community, actor, args.selection, pagi)
+    end
   end
 
   def community_activity_stats(

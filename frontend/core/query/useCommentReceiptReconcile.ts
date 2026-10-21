@@ -164,7 +164,12 @@ export default function useCommentReceiptReconcile(article: TArticle | null | un
       }
 
       const publicValue = publicComment(comment)
-      patchCommentEverywhere(queryClient, scope, commentRef, () => publicValue)
+      patchCommentEverywhere(queryClient, scope, commentRef, (current) => ({
+        ...current,
+        ...publicValue,
+        replies: current.replies,
+        rootInnerId: current.rootInnerId,
+      }))
       mergeViewerState(queryClient, accountRef, articleKey, comment)
       if (
         feedReceipt &&

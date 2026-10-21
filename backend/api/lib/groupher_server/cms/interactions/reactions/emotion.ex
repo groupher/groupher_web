@@ -9,6 +9,9 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
         -> Interaction State in the same transaction
   """
 
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
   import Ecto.Query
 
   alias GroupherServer.{Accounts, CMS, Repo}
@@ -17,7 +20,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
   alias CMS.Artiment.Matcher
   alias CMS.Articles.Bindings
   alias CMS.Communities.Enable
-  alias CMS.{Gate, Command}
+  alias CMS.Gate
   alias CMS.Interactions.{Config, Effects, ErrorCat, Persist, Projection}
   alias CMS.Interactions.Reactions.EmotionConfirmation, as: Confirmation
   alias CMS.Model.{ArticleUserEmotion, Author, Comment, CommentUserEmotion}
@@ -36,7 +39,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
   """
   @spec add(struct(), atom(), User.t(), Ecto.UUID.t()) :: T.domain_res(struct())
   def add(artiment, emotion, %User{} = actor, command_id) do
-    mutate(artiment, emotion, actor, :add, command_id)
+    execute_add(artiment, emotion, :add, actor, command_id)
   end
 
   @doc """
@@ -49,60 +52,79 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
   """
   @spec remove(struct(), atom(), User.t(), Ecto.UUID.t()) :: T.domain_res(struct())
   def remove(artiment, emotion, %User{} = actor, command_id) do
-    mutate(artiment, emotion, actor, :remove, command_id)
+    execute_remove(artiment, emotion, :remove, actor, command_id)
   end
 
-  defp mutate(input, emotion, actor, operation, command_id) when is_atom(emotion) do
-    with {:ok, command_id} <- require_command_id(command_id),
-         {:ok, info} <- Matcher.match_interaction(input) do
-      result =
-        %Command{
-          actor: actor,
-          command_id: command_id,
-          operation: emotion_command(operation),
-          target: input,
-          params: %{operation: operation, emotion: emotion}
-        }
-        |> Command.execute(action: &emotion_action(&1, info), confirmation: Confirmation)
+  @pipeline operation: :emotion_add,
+            confirmation: Confirmation,
+            target: :input,
+            params: [:emotion, :operation]
 
-      present_reaction(result, input, command_id)
-    end
+  receipt_pipeline execute_add(input, emotion, operation, actor, command_id) do
+    prepare(fn -> prepare_emotion(input, emotion) end)
+    gate(fn info -> gate_target(input, info, actor) end)
+
+    change(fn {canonical, info} ->
+      change_emotion(canonical, info, emotion, actor, operation, command_id)
+    end)
+
+    confirm(fn {canonical, change} -> confirmation(canonical, emotion, operation, change) end)
+    present(fn confirmation -> present_reaction(confirmation, input, command_id) end)
   end
 
-  defp mutate(_input, emotion, _actor, _operation, _command_id) do
+  @pipeline operation: :emotion_remove,
+            confirmation: Confirmation,
+            target: :input,
+            params: [:emotion, :operation]
+
+  receipt_pipeline execute_remove(input, emotion, operation, actor, command_id) do
+    prepare(fn -> prepare_emotion(input, emotion) end)
+    gate(fn info -> gate_target(input, info, actor) end)
+
+    change(fn {canonical, info} ->
+      change_emotion(canonical, info, emotion, actor, operation, command_id)
+    end)
+
+    confirm(fn {canonical, change} -> confirmation(canonical, emotion, operation, change) end)
+    present(fn confirmation -> present_reaction(confirmation, input, command_id) end)
+  end
+
+  defp prepare_emotion(input, emotion) when is_atom(emotion) do
+    Matcher.match_interaction(input)
+  end
+
+  defp prepare_emotion(_input, emotion) do
     {:error, ErrorCat.emotion_not_allowed(inspect(emotion))}
   end
 
-  defp emotion_action(
-         %{
-           actor: actor,
-           target: input,
-           params: %{operation: operation, emotion: emotion},
-           command_id: command_id
-         },
-         info
-       ) do
-    with {:ok, canonical} <- Gate.access_check(actor, :emotion, input),
-         {:ok, _thread_key} <- allow_emotion(canonical, info, emotion),
+  defp gate_target(input, info, actor) do
+    with {:ok, canonical} <- Gate.check_interaction_in_transaction(actor, :emotion, input) do
+      {:ok, {canonical, info}}
+    end
+  end
+
+  defp change_emotion(canonical, info, emotion, actor, operation, command_id) do
+    with {:ok, _thread_key} <- allow_emotion(canonical, info, emotion),
          {:ok, change} <- change_fact(canonical, info, emotion, actor, operation),
          {:ok, _} <- sync_state(canonical, emotion, actor, operation, change),
          {:ok, _} <- record_metric(canonical, operation, change, command_id),
          {:ok, _} <- enqueue_effect(canonical, actor, operation, emotion, command_id, change) do
-      {:ok,
-       %Confirmation{
-         data: %{
-           "target_id" => to_string(canonical.id),
-           "target_type" => interaction_resource_type(canonical),
-           "operation" => Atom.to_string(operation),
-           "emotion" => Atom.to_string(emotion),
-           "outcome" => Atom.to_string(change)
-         }
-       }}
+      {:ok, {canonical, change}}
     end
   end
 
-  defp require_command_id(command_id) when is_binary(command_id), do: {:ok, command_id}
-  defp require_command_id(_command_id), do: {:error, CMS.ErrorCat.command_id_required()}
+  defp confirmation(canonical, emotion, operation, change) do
+    {:ok,
+     %Confirmation{
+       data: %{
+         "target_id" => to_string(canonical.id),
+         "target_type" => interaction_resource_type(canonical),
+         "operation" => Atom.to_string(operation),
+         "emotion" => Atom.to_string(emotion),
+         "outcome" => Atom.to_string(change)
+       }
+     }}
+  end
 
   defp enqueue_effect(_canonical, _actor, _operation, _emotion, _command_id, :unchanged) do
     {:ok, :pass}
@@ -120,9 +142,6 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
 
   defp interaction_resource_type(%Comment{}), do: "comment"
   defp interaction_resource_type(_article), do: "article"
-
-  defp emotion_command(:add), do: :emotion_add
-  defp emotion_command(:remove), do: :emotion_remove
 
   defp allow_emotion(%Comment{} = comment, _info, emotion) do
     Enable.emotion?(comment.community.slug, :comment, comment.thread, emotion)
@@ -168,16 +187,14 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
     end
   end
 
-  defp present_reaction({:ok, %Confirmation{data: data}}, input, command_id) do
+  defp present_reaction(%Confirmation{data: data}, input, command_id) do
     outcome = if data["outcome"] == "unchanged", do: :unchanged, else: :changed
     {:ok, put_reaction_metadata(input, command_id, outcome)}
   end
 
-  defp present_reaction({:ok, data}, input, command_id) when is_map(data) do
-    present_reaction({:ok, %Confirmation{data: data}}, input, command_id)
+  defp present_reaction(data, input, command_id) when is_map(data) do
+    present_reaction(%Confirmation{data: data}, input, command_id)
   end
-
-  defp present_reaction(error, _input, _command_id), do: error
 
   defp put_reaction_metadata(canonical, command_id, outcome) do
     canonical
