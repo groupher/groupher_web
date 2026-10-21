@@ -153,20 +153,6 @@ defmodule GroupherServer.Test.CMS.Press do
     assert item.updated_at == updated_at
   end
 
-  test "Press batch projection propagates a missing body error", ~m(community post)a do
-    missing_article = %{post | id: Ecto.UUID.generate()}
-
-    assert {:error,
-            %ErrorCat.Error{
-              reason: :invalid_body,
-              details: "Article body projection is missing"
-            }} =
-             CMS.Articles.Pagination.legacy_entries(
-               [%{resource: missing_article, community: community}],
-               include_public_projection: true
-             )
-  end
-
   test "Press request boundaries propagate batch hydration errors", ~m(community user)a do
     assert {:ok, _config} =
              CMS.Press.update_config(

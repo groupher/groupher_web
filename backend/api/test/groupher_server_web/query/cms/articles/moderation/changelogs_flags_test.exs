@@ -5,7 +5,7 @@ defmodule GroupherServer.Test.Query.Flags.ChangelogsFlags do
   alias GroupherServer.CMS
 
   @total_count 35
-  @page_size GroupherServerWeb.Config.page_size()
+  @page_size Helper.ORM.Pagi.Config.default().default_size
 
   setup do
     {:ok, user} = db_insert(:user)
@@ -34,7 +34,7 @@ defmodule GroupherServer.Test.Query.Flags.ChangelogsFlags do
       variables = %{filter: %{community: community.slug}}
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :changelog), variables)
 
-      assert results["totalCount"] == @total_count
+      assert results["pageInfo"]["totalCount"] == @total_count
 
       {:ok, _} =
         CMS.Articles.set_illegal(
@@ -53,33 +53,34 @@ defmodule GroupherServer.Test.Query.Flags.ChangelogsFlags do
       assert changelog_m.moderation_state == :illegal
 
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :changelog), variables)
-      assert results["totalCount"] == @total_count - 1
+      assert results["pageInfo"]["totalCount"] == @total_count - 1
     end
   end
 
   describe "[pinned changelogs flags]" do
-    test "if have pinned changelogs, the pinned changelogs should at the top of entries",
+    test "if have pinned changelogs, pinned changelogs have a separate first-page stream",
          ~m(guest_conn community changelog_m user)a do
       variables = %{filter: %{community: community.slug}}
 
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :changelog), variables)
 
       assert results |> is_valid_pagination?
-      assert results["pageSize"] == @page_size
-      assert results["totalCount"] == @total_count
+      assert results["pageInfo"]["size"] == @page_size
+      assert results["pageInfo"]["totalCount"] == @total_count
 
       {:ok, _} = CMS.Articles.pin(community, changelog_m.article_id, user, Ecto.UUID.generate())
 
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :changelog), variables)
-      entries_first = results["entries"] |> List.first()
+      entries_first = results["pinnedEntries"] |> List.first()
 
-      assert results["totalCount"] == @total_count
+      assert results["pageInfo"]["totalCount"] == @total_count - 1
       assert entries_first["innerId"] == to_string(article_inner_id(changelog_m, community))
       assert entries_first["isPinned"] == true
+      refute Enum.any?(results["entries"], &(&1["isPinned"] == true))
     end
 
     test "pinned changelogs should not appear when page > 1", ~m(guest_conn community user)a do
-      variables = %{filter: %{page: 2, size: 20}}
+      variables = %{pagi: %{offset: %{page: 2, size: 20}}, filter: %{}}
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :changelog), variables)
       assert results |> is_valid_pagination?
 
@@ -88,7 +89,8 @@ defmodule GroupherServer.Test.Query.Flags.ChangelogsFlags do
       {:ok, _} = CMS.Articles.pin(community, changelog.article_id, user, Ecto.UUID.generate())
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :changelog), variables)
 
-      assert results["entries"] |> Enum.any?(&(&1["id"] !== random_id))
+      assert results["pinnedEntries"] == []
+      refute Enum.any?(results["entries"], &(&1["isPinned"] == true))
     end
 
     test "trashed changelogs do not appear in results, including pinned injection",
@@ -107,7 +109,7 @@ defmodule GroupherServer.Test.Query.Flags.ChangelogsFlags do
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :changelog), variables)
 
       refute results["entries"] |> Enum.any?(&(&1["innerId"] == random_id))
-      assert results["totalCount"] == @total_count - 1
+      assert results["pageInfo"]["totalCount"] == @total_count - 1
     end
   end
 end

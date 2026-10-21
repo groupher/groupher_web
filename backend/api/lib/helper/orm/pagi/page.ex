@@ -12,7 +12,7 @@ defmodule Helper.ORM.Pagi.Page do
     @moduledoc """
     Offset page with an explicit count.
 
-        ORM offset execution -> Page.Offset -> response adapter
+        ORM offset execution -> Page.Offset -> public PageInfo
     """
 
     @enforce_keys [
@@ -49,7 +49,7 @@ defmodule Helper.ORM.Pagi.Page do
     @moduledoc """
     Forward cursor page without a count.
 
-        ORM cursor execution -> Page.Cursor -> response adapter
+        ORM cursor execution -> Page.Cursor -> public PageInfo
     """
 
     @enforce_keys [:entries, :start_cursor, :end_cursor, :has_previous_page, :has_next_page]
@@ -66,23 +66,17 @@ defmodule Helper.ORM.Pagi.Page do
 
   @type t :: Offset.t() | Cursor.t()
 
-  @doc """
-  Adapts a new page to the transitional legacy response shape.
-
-  Offset pages retain their page/count fields; cursor pages intentionally expose
-  entries only because their PageInfo belongs to the new GraphQL contract.
-  """
-  @spec to_legacy(Offset.t()) :: map()
-  def to_legacy(%Offset{} = page) do
-    %{
-      entries: page.entries,
-      page_number: page.page,
-      page_size: page.size,
-      total_count: page.total_count,
-      total_pages: page.total_pages
-    }
+  @doc "Returns the public pagination metadata without exposing Flop internals."
+  @spec info(t()) :: map()
+  def info(%Offset{} = page) do
+    page
+    |> Map.take([:page, :size, :total_count, :total_pages, :has_previous_page, :has_next_page])
+    |> Map.put(:api, :offset)
   end
 
-  @spec to_legacy(Cursor.t()) :: map()
-  def to_legacy(%Cursor{} = page), do: %{entries: page.entries}
+  def info(%Cursor{} = page) do
+    page
+    |> Map.take([:start_cursor, :end_cursor, :has_previous_page, :has_next_page])
+    |> Map.put(:api, :cursor)
+  end
 end

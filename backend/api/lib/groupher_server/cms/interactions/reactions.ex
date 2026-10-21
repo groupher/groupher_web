@@ -114,7 +114,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions do
 
   """
   @spec upvoted_users(struct(), map()) :: {:ok, term()} | {:error, term()}
-  defdelegate upvoted_users(article, filter), to: Upvote, as: :users
+  defdelegate upvoted_users(article, pagi), to: Upvote, as: :users
 
   @doc """
   Returns public paged users who collected an already-scoped Article.
@@ -125,5 +125,5 @@ defmodule GroupherServer.CMS.Interactions.Reactions do
 
   """
   @spec collected_users(struct(), map()) :: {:ok, term()} | {:error, term()}
-  defdelegate collected_users(article, filter), to: Collect, as: :users
+  defdelegate collected_users(article, pagi), to: Collect, as: :users
 end

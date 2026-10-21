@@ -15,6 +15,23 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
   alias GroupherServer.ErrorCat
   alias Helper.ORM.Pagi.Config
 
+  test "null optional order preserves an explicit sort and unknown sorts fail closed" do
+    {community, first, _, user} = mock_article(:post)
+    {_, second, _, _} = mock_article(:post, community, user)
+
+    assert {:ok, %{entries: entries}} =
+             Pagination.page(
+               :post,
+               %{community: community.slug, order: nil, sort: :asc_inserted},
+               nil
+             )
+
+    assert Enum.map(entries, & &1.id) == [first.id, second.id]
+
+    assert {:error, %{reason: :unsupported_sort}} =
+             Pagination.page(:post, %{community: community.slug, sort: :unknown}, nil)
+  end
+
   test "offset returns Article Lite rows and a distinct binding count" do
     {community, article, _attrs, _user} = mock_article(:post)
 
@@ -24,15 +41,11 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
               pinned_entries: [],
               page_info: %{api: :offset, page: 1, total_count: 1}
             }} =
-             Pagination.page(
-               :post,
-               %{
-                 community: community.slug,
-                 page: 1,
-                 size: 20,
-                 config_revision: 0
-               }
-             )
+             Pagination.page(:post, %{community: community.slug}, %Helper.ORM.Pagi.Params.Offset{
+               page: 1,
+               size: 20,
+               config_revision: 0
+             })
 
     assert entry.id == article.id
     assert entry.inner_id == 1
@@ -68,8 +81,7 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
       CMS.Communities.set_tag(article, second_tag.id, user, Ecto.UUID.generate())
 
     assert {:ok, %{entries: [entry]}} =
-             Pagination.page(:post, %{
-               community: community.slug,
+             Pagination.page(:post, %{community: community.slug}, %Helper.ORM.Pagi.Params.Offset{
                page: 1,
                size: 20,
                config_revision: 0
@@ -96,7 +108,8 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
     assert {:ok, %{entries: [first_entry], page_info: %{api: :cursor, end_cursor: cursor}}} =
              Pagination.page(
                :post,
-               %{community: community.slug, first: 1, config_revision: 0},
+               %{community: community.slug},
+               %Helper.ORM.Pagi.Params.Cursor{first: 1, config_revision: 0},
                nil,
                config: config
              )
@@ -107,7 +120,8 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
     assert {:ok, %{entries: entries, page_info: %{api: :cursor}}} =
              Pagination.page(
                :post,
-               %{community: community.slug, first: 1, after: cursor, config_revision: 0},
+               %{community: community.slug},
+               %Helper.ORM.Pagi.Params.Cursor{first: 1, after: cursor, config_revision: 0},
                nil,
                config: config
              )
@@ -142,12 +156,25 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
     }
 
     assert {:ok, %{entries: [first], page_info: %{end_cursor: first_cursor}}} =
-             Pagination.page(:post, base_filter, nil, config: config)
+             Pagination.page(
+               :post,
+               Map.drop(base_filter, [:page, :size, :first, :after, :config_revision]),
+               %Helper.ORM.Pagi.Params.Cursor{first: 1, config_revision: 0},
+               nil,
+               config: config
+             )
 
     assert {:ok, %{entries: [second], page_info: %{end_cursor: second_cursor}}} =
              Pagination.page(
                :post,
-               Map.put(base_filter, :after, first_cursor),
+               Map.drop(Map.put(base_filter, :after, first_cursor), [
+                 :page,
+                 :size,
+                 :first,
+                 :after,
+                 :config_revision
+               ]),
+               %Helper.ORM.Pagi.Params.Cursor{first: 1, after: first_cursor, config_revision: 0},
                nil,
                config: config
              )
@@ -155,7 +182,14 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
     assert {:ok, %{entries: [third], page_info: %{has_next_page: false}}} =
              Pagination.page(
                :post,
-               Map.put(base_filter, :after, second_cursor),
+               Map.drop(Map.put(base_filter, :after, second_cursor), [
+                 :page,
+                 :size,
+                 :first,
+                 :after,
+                 :config_revision
+               ]),
+               %Helper.ORM.Pagi.Params.Cursor{first: 1, after: second_cursor, config_revision: 0},
                nil,
                config: config
              )
@@ -168,17 +202,17 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
     {community, _article, _attrs, _user} = mock_article(:post)
     filter = %{community: community.slug}
 
-    for pagi_input <- [{:offset, %{}}, {:offset, %{page: 1}}, {:cursor, %{}}] do
+    for pagi_input <- [%{offset: %{}}, %{offset: %{page: 1}}, %{cursor: %{}}] do
       assert {:error, %ErrorCat.Error{reason: :invalid_config_context}} =
-               Pagination.page(:post, filter, nil, pagi_input: pagi_input)
+               Pagination.page(:post, filter, pagi_input, nil)
     end
   end
 
-  test "the legacy page filter keeps its compatibility revision synthesis" do
-    {community, _article, _attrs, _user} = mock_article(:post)
+  test "paging keys in business filters are rejected" do
+    {community, _article, _, _user} = mock_article(:post)
 
-    assert {:ok, %{page_info: %{api: :offset, page: 1}}} =
-             Pagination.page(:post, %{community: community.slug, page: 1, size: 20})
+    assert {:error, %ErrorCat.Error{reason: :invalid_body}} =
+             Pagination.page(:post, %{community: community.slug, page: 1, size: 20}, nil)
   end
 
   test "cursor returns pinned entries only on the starting page" do
@@ -201,7 +235,8 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
             %{pinned_entries: [pinned_entry], entries: entries, page_info: %{end_cursor: cursor}}} =
              Pagination.page(
                :post,
-               %{community: community.slug, first: 1, config_revision: 0},
+               %{community: community.slug},
+               %Helper.ORM.Pagi.Params.Cursor{first: 1, config_revision: 0},
                nil,
                config: config
              )
@@ -213,7 +248,8 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
     assert {:ok, %{pinned_entries: [], entries: next_entries}} =
              Pagination.page(
                :post,
-               %{community: community.slug, first: 1, after: cursor, config_revision: 0},
+               %{community: community.slug},
+               %Helper.ORM.Pagi.Params.Cursor{first: 1, after: cursor, config_revision: 0},
                nil,
                config: config
              )
@@ -227,18 +263,38 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
     filter = %{community: community.slug, config_revision: 0}
 
     assert {:ok, _config} =
-             CMS.Dashboard.Pagination.for_community(community.slug, :posts)
+             CMS.Dashboard.PagiMode.for_community(community.slug)
 
     {_small_result, small_queries} =
       capture_queries(fn ->
-        Pagination.page(:post, Map.merge(filter, %{page: 1, size: 1}))
+        Pagination.page(
+          :post,
+          Map.drop(Map.merge(filter, %{page: 1, size: 1}), [
+            :page,
+            :size,
+            :first,
+            :after,
+            :config_revision
+          ]),
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 1, config_revision: 0}
+        )
       end)
 
     query_sets =
       for size <- [20, Config.platform_hard_max()] do
         {_result, queries} =
           capture_queries(fn ->
-            Pagination.page(:post, Map.merge(filter, %{page: 1, size: size}))
+            Pagination.page(
+              :post,
+              Map.drop(Map.merge(filter, %{page: 1, size: size}), [
+                :page,
+                :size,
+                :first,
+                :after,
+                :config_revision
+              ]),
+              %Helper.ORM.Pagi.Params.Offset{page: 1, size: size, config_revision: 0}
+            )
           end)
 
         queries
@@ -263,13 +319,31 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
     base_filter = %{community: community.slug, page: 1, size: 20, config_revision: 0}
 
     assert {:ok, _config} =
-             CMS.Dashboard.Pagination.for_community(community.slug, :posts)
+             CMS.Dashboard.PagiMode.for_community(community.slug)
 
     {_result, active_queries} =
-      capture_queries(fn -> Pagination.page(:post, base_filter) end)
+      capture_queries(fn ->
+        Pagination.page(
+          :post,
+          Map.drop(base_filter, [:page, :size, :first, :after, :config_revision]),
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+        )
+      end)
 
     {_result, stats_queries} =
-      capture_queries(fn -> Pagination.page(:post, Map.put(base_filter, :order, :upvotes)) end)
+      capture_queries(fn ->
+        Pagination.page(
+          :post,
+          Map.drop(Map.put(base_filter, :order, :upvotes), [
+            :page,
+            :size,
+            :first,
+            :after,
+            :config_revision
+          ]),
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+        )
+      end)
 
     refute Enum.any?(active_queries, &String.contains?(&1, "article_stats"))
     assert Enum.count(stats_queries, &String.contains?(&1, "article_stats")) == 1
@@ -279,20 +353,194 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
     {community, _article, _attrs, _user} = mock_article(:post)
 
     assert {:ok, _deleted?} =
-             CMS.Dashboard.Pagination.invalidate(community.slug, :posts)
+             CMS.Dashboard.PagiMode.invalidate(community.slug)
 
     {{:ok, _config}, cold_queries} =
       capture_queries(fn ->
-        CMS.Dashboard.Pagination.for_community(community.slug, :posts)
+        CMS.Dashboard.PagiMode.for_community(community.slug)
       end)
 
     {{:ok, _config}, warm_queries} =
       capture_queries(fn ->
-        CMS.Dashboard.Pagination.for_community(community.slug, :posts)
+        CMS.Dashboard.PagiMode.for_community(community.slug)
       end)
 
     assert Enum.count(cold_queries, &String.contains?(&1, "community_dashboards")) == 1
     refute Enum.any?(warm_queries, &String.contains?(&1, "community_dashboards"))
+  end
+
+  test "explicit offset input emits pinned entries only on page one" do
+    {community, pinned, _attrs, user} = mock_article(:post)
+    mock_article(:post, community, user)
+    mock_article(:post, community, user)
+    assert {:ok, _pin} = CMS.Articles.pin(community, pinned.id, user, Ecto.UUID.generate())
+    filter = %{community: community.slug}
+
+    assert {:ok, %{pinned_entries: [pin], page_info: %{total_count: 2}}} =
+             Pagination.page(
+               :post,
+               filter,
+               %{offset: %{page: 1, size: 1, config_revision: 0}},
+               nil
+             )
+
+    assert pin.id == pinned.id
+
+    assert {:ok, %{pinned_entries: [], entries: [_entry], page_info: %{page: 2}}} =
+             Pagination.page(
+               :post,
+               filter,
+               %{offset: %{page: 2, size: 1, config_revision: 0}},
+               nil
+             )
+  end
+
+  test "omitted pagination synthesizes the effective offset or cursor starting page" do
+    {community, article, _attrs, _user} = mock_article(:post)
+    filter = %{community: community.slug}
+
+    assert {:ok, %{entries: [entry], page_info: %{api: :offset, page: 1, size: 20}}} =
+             Pagination.page(:post, filter, nil)
+
+    assert entry.id == article.id
+
+    config = %Config{
+      api: :cursor,
+      default_size: 10,
+      max_size: 10,
+      revision: 3,
+      platform_hard_max: 100
+    }
+
+    assert {:ok, %{entries: [entry], page_info: %{api: :cursor}}} =
+             Pagination.page(:post, filter, nil, nil, config: config)
+
+    assert entry.id == article.id
+  end
+
+  test "tag filters preserve offset ordering, unique count and complete cursor traversal" do
+    {community, first, _attrs, user} = mock_article(:post)
+    {_, second, _attrs, _user} = mock_article(:post, community, user)
+
+    {:ok, tag} =
+      CMS.Communities.create_tag(
+        community,
+        :post,
+        mock_attrs(:community_tag),
+        user,
+        Ecto.UUID.generate()
+      )
+
+    {:ok, other} =
+      CMS.Communities.create_tag(
+        community,
+        :post,
+        mock_attrs(:community_tag),
+        user,
+        Ecto.UUID.generate()
+      )
+
+    for article <- [first, second], tag <- [tag, other] do
+      assert {:ok, _assignment} =
+               CMS.Communities.set_tag(article, tag.id, user, Ecto.UUID.generate())
+    end
+
+    for tag_filter <- [%{community_tag: tag.slug}, %{community_tags: [tag.slug, other.slug]}] do
+      filter = Map.merge(tag_filter, %{community: community.slug})
+
+      assert {:ok, %{entries: [head], page_info: %{total_count: 2, total_pages: 2}}} =
+               Pagination.page(:post, filter, %Helper.ORM.Pagi.Params.Offset{
+                 page: 1,
+                 size: 1,
+                 config_revision: 0
+               })
+
+      assert head.id == second.id
+
+      assert {:ok, %{entries: [tail]}} =
+               Pagination.page(
+                 :post,
+                 Map.drop(Map.put(filter, :page, 2), [
+                   :page,
+                   :size,
+                   :first,
+                   :after,
+                   :config_revision
+                 ]),
+                 %Helper.ORM.Pagi.Params.Offset{page: 2, size: 1, config_revision: 0}
+               )
+
+      assert tail.id == first.id
+
+      config = %Config{
+        api: :cursor,
+        default_size: 1,
+        max_size: 10,
+        revision: 0,
+        platform_hard_max: 100
+      }
+
+      cursor_filter =
+        Map.merge(tag_filter, %{community: community.slug})
+
+      assert {:ok, %{entries: [head], page_info: %{end_cursor: cursor, has_next_page: true}}} =
+               Pagination.page(:post, cursor_filter, nil, nil, config: config)
+
+      assert head.id == second.id
+
+      assert {:ok, %{entries: [tail], page_info: %{has_next_page: false}}} =
+               Pagination.page(
+                 :post,
+                 Map.drop(Map.put(cursor_filter, :after, cursor), [
+                   :page,
+                   :size,
+                   :first,
+                   :after,
+                   :config_revision
+                 ]),
+                 %Helper.ORM.Pagi.Params.Cursor{
+                   first: config.default_size,
+                   after: cursor,
+                   config_revision: config.revision
+                 },
+                 nil,
+                 config: config
+               )
+
+      assert tail.id == first.id
+    end
+  end
+
+  test "GraphQL postPage accepts omitted pagi and exposes safe mismatch subtypes" do
+    {community, _article, _attrs, _user} = mock_article(:post)
+
+    query = """
+    query($community: String!) {
+      postPage(filter: {community: $community}) {
+        entries { innerId }
+        pageInfo { ... on OffsetPageInfo { page size } }
+      }
+    }
+    """
+
+    assert {:ok, %{data: %{"postPage" => %{"pageInfo" => %{"page" => 1}}}}} =
+             Absinthe.run(query, GroupherServerWeb.Schema,
+               variables: %{"community" => community.slug}
+             )
+
+    for {input, subtype} <- [
+          {"offset: {configRevision: 99}", "revision"},
+          {"cursor: {configRevision: 99}", "revision"}
+        ] do
+      query = """
+      { postPage(filter: {community: "#{community.slug}"}, pagi: {#{input}}) { entries { innerId } } }
+      """
+
+      assert {:ok, %{errors: [%{extensions: extensions}]}} =
+               Absinthe.run(query, GroupherServerWeb.Schema)
+
+      assert extensions == %{code: 4211, mismatch: subtype}
+    end
   end
 
   defp capture_queries(fun) do

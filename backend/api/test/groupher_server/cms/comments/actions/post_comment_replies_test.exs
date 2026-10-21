@@ -280,11 +280,11 @@ defmodule GroupherServer.Test.CMS.Comments.PostCommentReplies do
       assert parent_comment.replies_count === 3
 
       {:ok, paged_replies} =
-        CMS.Comments.paged_comment_replies(parent_comment.id, %{page: 1, size: 20})
+        comment_reply_page(parent_comment.id, %{page: 1, size: 20})
 
       reply_ids = paged_replies.entries |> Enum.map(& &1.id) |> MapSet.new()
 
-      assert paged_replies.total_count == 3
+      assert paged_replies.page_info.total_count == 3
       assert MapSet.member?(reply_ids, replied_comment_1.id)
       assert MapSet.member?(reply_ids, replied_comment_2.id)
       assert MapSet.member?(reply_ids, replied_comment_3.id)
@@ -304,9 +304,9 @@ defmodule GroupherServer.Test.CMS.Comments.PostCommentReplies do
         )
 
       {:ok, paged_replies} =
-        CMS.Comments.paged_comment_replies(parent_comment.id, %{page: 1, size: 20})
+        comment_reply_page(parent_comment.id, %{page: 1, size: 20})
 
-      assert is_valid_pagination?(paged_replies, :raw, :empty)
+      assert valid_comment_page?(paged_replies)
 
       total_reply_count = 30
 
@@ -324,10 +324,10 @@ defmodule GroupherServer.Test.CMS.Comments.PostCommentReplies do
         end)
 
       {:ok, paged_replies} =
-        CMS.Comments.paged_comment_replies(parent_comment.id, %{page: 1, size: 20})
+        comment_reply_page(parent_comment.id, %{page: 1, size: 20})
 
-      assert total_reply_count == paged_replies.total_count
-      assert is_valid_pagination?(paged_replies, :raw)
+      assert total_reply_count == paged_replies.page_info.total_count
+      assert valid_comment_page?(paged_replies)
 
       reply_ids = reply_comment_list |> Enum.map(& &1.id) |> MapSet.new()
 
@@ -356,7 +356,7 @@ defmodule GroupherServer.Test.CMS.Comments.PostCommentReplies do
         CMS.Comments.reply_comment(parent_comment.id, mock_comment(), user, Ecto.UUID.generate())
 
       {:ok, paged_comments} =
-        CMS.Comments.paged_comments(
+        comment_page(
           :post,
           post.id,
           %{page: page_number, size: page_size},

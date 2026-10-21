@@ -16,14 +16,6 @@ defmodule GroupherServer.Test.Helper.Schema.Moderation do
     mutation($community: String!, $user: String!, $rules: Json!, $commandId: ID!){
           updateModeratorPassport(community: $community, user: $user, rules: $rules, commandId: $commandId) {
             slug
-            moderators {
-              isRoot
-              passportItemCount
-              user {
-                login
-                nickname
-              }
-            }
           }
         }
     """
@@ -34,12 +26,6 @@ defmodule GroupherServer.Test.Helper.Schema.Moderation do
     mutation($community: String!, $users: [String!]!, $commandId: ID!){
           addModerators(community: $community, users: $users, commandId: $commandId) {
             slug
-            moderators {
-              isRoot
-              user {
-                login
-              }
-            }
           }
         }
     """
@@ -57,8 +43,8 @@ defmodule GroupherServer.Test.Helper.Schema.Moderation do
 
   def q(:paged_abuse_reports_2) do
     """
-    query($filter: ReportFilter!) {
-          pagedAbuseReports(filter: $filter) {
+    query($filter: ReportFilter!, $pagi: PagiInput) {
+          pagedAbuseReports(filter: $filter, pagi: $pagi) {
             entries {
               id
               dealWith
@@ -83,10 +69,7 @@ defmodule GroupherServer.Test.Helper.Schema.Moderation do
                 }
               }
             }
-            totalPages
-            totalCount
-            pageSize
-            pageNumber
+            pageInfo { hasNextPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { endCursor } }
           }
         }
     """
@@ -94,15 +77,12 @@ defmodule GroupherServer.Test.Helper.Schema.Moderation do
 
   def q(:paged_community_moderators) do
     """
-    query($community: String!, $filter: PagiFilter!) {
-          pagedCommunityModerators(community: $community, filter: $filter) {
+    query($community: String!, $filter: UserListFilter, $pagi: PagiInput) {
+          pagedCommunityModerators(community: $community, filter: $filter, pagi: $pagi) {
             entries {
-              nickname
+              id isRoot passportItemCount user { login nickname }
             }
-            totalCount
-            totalPages
-            pageSize
-            pageNumber
+            pageInfo { hasNextPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { endCursor } }
           }
         }
     """
@@ -131,8 +111,8 @@ defmodule GroupherServer.Test.Helper.Schema.Moderation do
 
   def q(:paged_abuse_reports) do
     """
-    query($filter: ReportFilter!) {
-          pagedAbuseReports(filter: $filter) {
+    query($filter: ReportFilter!, $pagi: PagiInput) {
+          pagedAbuseReports(filter: $filter, pagi: $pagi) {
             entries {
               id
               dealWith
@@ -159,10 +139,7 @@ defmodule GroupherServer.Test.Helper.Schema.Moderation do
                 }
               }
             }
-            totalPages
-            totalCount
-            pageSize
-            pageNumber
+            pageInfo { hasNextPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { endCursor } }
           }
         }
     """

@@ -2,7 +2,7 @@ defmodule Helper.TestFakes.SearchArtiments do
   @moduledoc false
 
   alias GroupherServer.CMS
-  alias CMS.SearchArtiments.{Artiment, Query, Result}
+  alias CMS.SearchArtiments.{Artiment, Query}
 
   @behaviour CMS.SearchArtiments.PlatformAdapter
 
@@ -57,17 +57,23 @@ defmodule Helper.TestFakes.SearchArtiments do
       |> Enum.filter(&matches?(&1, query))
       |> Enum.sort_by(& &1.inserted_at, {:desc, DateTime})
 
-    total_count = length(matches)
-    entries = matches |> Enum.drop((query.page - 1) * query.size) |> Enum.take(query.size)
+    binding = %{
+      surface: "search.artiments",
+      order: %{"sort" => "relevance"},
+      fingerprint: Base.encode64(:erlang.term_to_binary(%{query | pagi: nil}))
+    }
 
-    {:ok,
-     %Result{
-       entries: Enum.map(entries, &%{artiment: &1, highlights: []}),
-       total_pages: ceil(total_count / query.size),
-       total_count: total_count,
-       page_size: query.size,
-       page_number: query.page
-     }}
+    Helper.ORM.Pagi.Window.run(
+      query.pagi,
+      binding,
+      fn offset, size ->
+        entries = matches |> Enum.drop(offset) |> Enum.take(size)
+
+        {:ok,
+         %{entries: Enum.map(entries, &%{artiment: &1, highlights: []}), total: length(matches)}}
+      end,
+      max_entries: 1000
+    )
   end
 
   def reset do

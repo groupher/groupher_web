@@ -24,11 +24,11 @@ defmodule GroupherServer.Test.Query.AbuseReports.BlogReport do
       {:ok, _} =
         CMS.AbuseReports.article(blog2, "reason", "attr_info", user2, Ecto.UUID.generate())
 
-      variables = %{filter: %{content_type: "BLOG", page: 1, size: 10}}
+      variables = %{filter: %{content_type: "BLOG"}, pagi: %{offset: %{page: 1, size: 10}}}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == 2
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["totalCount"] == 2
     end
 
     test "support search with id", ~m(guest_conn community blog_attrs user user2)a do
@@ -41,7 +41,8 @@ defmodule GroupherServer.Test.Query.AbuseReports.BlogReport do
         CMS.AbuseReports.article(blog2, "reason", "attr_info", user2, Ecto.UUID.generate())
 
       variables = %{
-        filter: %{content_type: "BLOG", content_id: blog.id, page: 1, size: 10}
+        filter: %{content_type: "BLOG", content_id: blog.id},
+        pagi: %{offset: %{page: 1, size: 10}}
       }
 
       results = guest_conn |> gq_query(@query, variables)
@@ -53,8 +54,8 @@ defmodule GroupherServer.Test.Query.AbuseReports.BlogReport do
       assert get_in(report, ["article", "innerId"]) ==
                to_string(article_inner_id(blog, community))
 
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == 1
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["totalCount"] == 1
     end
 
     test "support comment", ~m(guest_conn community blog user)a do
@@ -71,7 +72,7 @@ defmodule GroupherServer.Test.Query.AbuseReports.BlogReport do
       {:ok, _} =
         CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
 
-      variables = %{filter: %{content_type: "COMMENT", page: 1, size: 10}}
+      variables = %{filter: %{content_type: "COMMENT"}, pagi: %{offset: %{page: 1, size: 10}}}
       results = guest_conn |> gq_query(@query, variables)
 
       report =

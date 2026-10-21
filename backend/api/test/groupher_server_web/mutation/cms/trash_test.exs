@@ -127,7 +127,7 @@ defmodule GroupherServer.Test.Mutation.CMS.Trash do
         }
       )
 
-    assert listed["totalCount"] == 1
+    assert listed["pageInfo"]["totalCount"] == 1
     assert hd(listed["entries"])["mentionedByCount"] == 0
 
     assert hd(listed["entries"])["article"]["innerId"] ==

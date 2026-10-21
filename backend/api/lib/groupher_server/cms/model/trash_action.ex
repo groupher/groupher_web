@@ -14,6 +14,7 @@ defmodule GroupherServer.CMS.Model.TrashAction do
   """
 
   use Ecto.Schema
+  use Flop.Schema
   use Accessible
 
   import Ecto.Changeset
@@ -37,6 +38,8 @@ defmodule GroupherServer.CMS.Model.TrashAction do
   @optional_fields ~w(actor_id)a
 
   @type t :: %__MODULE__{}
+
+  @flop_options [filterable: [], sortable: [:deleted_at, :id], pagination_types: [:page, :first]]
 
   schema "trash_actions" do
     field(:hash_id, Ecto.UUID, autogenerate: true)

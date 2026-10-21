@@ -59,7 +59,10 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     membership =
       Repo.get_by!(TrashedDocArticle, article_id: page.node.doc_id)
 
-    assert {:ok, [trash_item]} = CMS.DocTree.trash_items(community, actor: user)
+    assert {:ok, %{entries: [trash_item]}} = CMS.DocTree.trash_items(community, nil, actor: user)
+    assert {:ok, %{entries: [cursor_item], end_cursor: cursor, has_next_page: false}} = CMS.DocTree.trash_items(community, %{cursor: %{first: 1}}, actor: user)
+    assert cursor_item.id == trash_item.id
+    assert {:ok, %{entries: []}} = CMS.DocTree.trash_items(community, %{cursor: %{first: 1, after: cursor}}, actor: user)
     action = Repo.get_by!(TrashAction, hash_id: trash_item.id)
     item = Repo.get_by!(TrashedDocTreeNode, trash_action_id: action.id, node_id: page.node.id)
     assert item.draft_snapshot
@@ -119,7 +122,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
                actor_id: user.id
              })
 
-    assert {:ok, [trash_item]} = CMS.DocTree.trash_items(community, actor: user)
+    assert {:ok, %{entries: [trash_item]}} = CMS.DocTree.trash_items(community, nil, actor: user)
     action = Repo.get_by!(TrashAction, hash_id: trash_item.id)
     item = Repo.get_by!(TrashedDocTreeNode, trash_action_id: action.id, node_id: page.node.id)
     assert item.draft_snapshot
@@ -183,7 +186,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     assert Enum.count(queries, &String.contains?(&1, "WITH RECURSIVE subtree")) == 1
     assert trash_snapshot_insert_query_count(queries) == 1
 
-    assert {:ok, [trash_item]} = CMS.DocTree.trash_items(community, actor: user)
+    assert {:ok, %{entries: [trash_item]}} = CMS.DocTree.trash_items(community, nil, actor: user)
     action = Repo.get_by!(TrashAction, hash_id: trash_item.id)
 
     assert Repo.aggregate(
@@ -214,7 +217,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     assert tree_node_exists?(community, second.node.id, :draft)
     assert {:ok, _} = CMS.Docs.read_editor_head(community, first.node.doc_id)
     assert {:ok, _} = CMS.Docs.read_editor_head(community, second.node.doc_id)
-    assert {:ok, []} = CMS.DocTree.trash_items(community, actor: user)
+    assert {:ok, %{entries: []}} = CMS.DocTree.trash_items(community, nil, actor: user)
   end
 
   test "scheduler permanently deletes a due Link-only action and stale retries are idempotent" do
@@ -245,7 +248,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
                actor_id: user.id
              })
 
-    assert {:ok, [trash_item]} = CMS.DocTree.trash_items(community, actor: user)
+    assert {:ok, %{entries: [trash_item]}} = CMS.DocTree.trash_items(community, nil, actor: user)
     action = Repo.get_by!(TrashAction, hash_id: trash_item.id)
 
     assert {:ok, action} =
@@ -299,7 +302,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
                actor_id: user.id
              })
 
-    assert {:ok, [trash_item]} = CMS.DocTree.trash_items(community, actor: user)
+    assert {:ok, %{entries: [trash_item]}} = CMS.DocTree.trash_items(community, nil, actor: user)
     action = Repo.get_by!(TrashAction, hash_id: trash_item.id)
     assert action.community_id == community.id
     assert {:ok, :doc} = CMS.Trash.action_thread(action)
@@ -432,7 +435,7 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
         actor_id: user.id
       })
 
-    {:ok, [child_trash_item]} = CMS.DocTree.trash_items(community, actor: user)
+    {:ok, %{entries: [child_trash_item]}} = CMS.DocTree.trash_items(community, nil, actor: user)
 
     {:ok, parent_deleted} =
       CMS.DocTree.delete_node_internal(community, original_parent.node.id, %{

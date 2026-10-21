@@ -14,28 +14,42 @@ defmodule GroupherServer.Test.CMS.Articles.PostList do
       {:ok, _} = CMS.Articles.create(community, :post, post_attrs, user)
       {:ok, _} = CMS.Articles.create(community, :post, post_attrs, user)
 
-      {:ok, paged_posts} = CMS.Articles.page(:post, %{page: 1, size: 20})
+      {:ok, paged_posts} =
+        CMS.Articles.page(:post, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
 
-      assert paged_posts |> is_valid_pagination?(:raw)
+      assert paged_posts |> is_map()
       assert length(paged_posts.entries) >= 2
-      assert Enum.all?(paged_posts.entries, &(&1.meta.thread == :post))
+      assert Enum.all?(paged_posts.entries, &(&1.thread == :post))
     end
 
-    test "assembles Interaction state exactly once for anonymous and logged-in pages",
+    test "keeps Interaction hydration outside anonymous and logged-in Lite pages",
          ~m(community post_attrs user)a do
       {:ok, _} = CMS.Articles.create(community, :post, post_attrs, user)
       filter = %{page: 1, size: 20, community: community.slug}
 
       {{:ok, _anonymous_page}, anonymous_queries} =
-        capture_queries(fn -> CMS.Articles.page(:post, filter) end)
+        capture_queries(fn ->
+          CMS.Articles.page(
+            :post,
+            Map.drop(filter, [:page, :size, :first, :after, :config_revision]),
+            %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+          )
+        end)
 
       {{:ok, _viewer_page}, viewer_queries} =
-        capture_queries(fn -> CMS.Articles.page(:post, filter, user) end)
+        capture_queries(fn ->
+          CMS.Articles.page(
+            :post,
+            Map.drop(filter, [:page, :size, :first, :after, :config_revision]),
+            %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0},
+            user
+          )
+        end)
 
-      assert query_count(anonymous_queries, "post_reaction_infos") == 1
-      assert query_count(anonymous_queries, "post_emotion_infos") == 1
-      assert query_count(viewer_queries, "post_reaction_infos") == 1
-      assert query_count(viewer_queries, "post_emotion_infos") == 1
+      assert query_count(anonymous_queries, "post_reaction_infos") == 0
+      assert query_count(anonymous_queries, "post_emotion_infos") == 0
+      assert query_count(viewer_queries, "post_reaction_infos") == 0
+      assert query_count(viewer_queries, "post_emotion_infos") == 0
     end
   end
 

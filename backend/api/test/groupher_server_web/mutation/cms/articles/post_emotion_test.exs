@@ -134,8 +134,8 @@ defmodule GroupherServer.Test.Mutation.Articles.PostEmotion do
       {:ok, _} = CMS.Interactions.emotion(post, :beer, user, Ecto.UUID.generate())
       {:ok, _} = CMS.Interactions.emotion(post, :heart, user, Ecto.UUID.generate())
 
-      {:ok, records} = ORM.find_all(ArticleUserEmotion, %{page: 1, size: 10})
-      assert records.total_count == 2
+      {:ok, records} = ORM.find_all(ArticleUserEmotion, %{})
+      assert length(records) == 2
 
       {:ok, _beer_record} =
         ORM.find_by(ArticleUserEmotion, %{article_id: post.id, user_id: user.id, emotion: "beer"})

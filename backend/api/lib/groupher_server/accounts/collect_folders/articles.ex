@@ -19,48 +19,22 @@ defmodule GroupherServer.Accounts.CollectFolders.Articles do
   alias Accounts.Model.{CollectFolder, CollectFolderEntry, User}
   alias CMS.Model.{Article, ArticleBinding, Community}
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  alias Helper.ORM.Pagi.{Order, Params}
 
-  @doc """
-  Returns public articles stored inside a collection folder.
-
-  ## Examples
-
-      Accounts.CollectFolders.Articles.paged(folder_id, %{page: 1, size: 20})
-  """
-  @spec paged(T.id(), map()) :: T.domain_res(T.paged_data())
-  def paged(folder_id, filter) do
+  @doc "Pages folder entries after applying the current viewer's folder privacy."
+  @spec paged(T.id(), map(), Params.t() | nil, User.t() | nil) :: tuple()
+  def paged(folder_id, filter, pagi, viewer \\ nil) do
     with {:ok, folder} <- ORM.find(CollectFolder, folder_id) do
-      case folder.private do
-        true -> {:error, ErrorCat.private_collect_folder("#{folder.title} is private")}
-        false -> do_paged(folder, filter)
+      if folder.private and
+           not match?(%User{id: owner_id} when owner_id == folder.user_id, viewer) do
+        {:error, ErrorCat.private_collect_folder("#{folder.title} is private")}
+      else
+        do_paged(folder, filter, pagi)
       end
     end
   end
 
-  @doc """
-  Returns folder articles after applying the viewer's privacy scope.
-
-  ## Examples
-
-      Accounts.CollectFolders.Articles.paged(folder_id, %{page: 1, size: 20}, viewer)
-  """
-  @spec paged(T.id(), map(), User.t()) :: T.domain_res(T.paged_data())
-  def paged(folder_id, filter, %User{id: cur_user_id}) do
-    with {:ok, folder} <- ORM.find(CollectFolder, folder_id) do
-      is_valid_request = if folder.private, do: folder.user_id == cur_user_id, else: true
-
-      case is_valid_request do
-        false -> {:error, ErrorCat.private_collect_folder("#{folder.title} is private")}
-        true -> do_paged(folder, filter)
-      end
-    end
-  end
-
-  defp do_paged(folder, filter) do
-    page = Map.get(filter, :page, 1)
-    size = Map.get(filter, :size, 20)
-
+  defp do_paged(folder, filter, pagi) do
     query =
       from(entry in CollectFolderEntry,
         join: article in Article,
@@ -71,6 +45,8 @@ defmodule GroupherServer.Accounts.CollectFolders.Articles do
         on: community.id == binding.community_id,
         where: entry.folder_id == ^folder.id,
         select: %{
+          id: entry.id,
+          inserted_at: entry.inserted_at,
           path: %{
             community: community.slug,
             thread: article.thread,
@@ -78,6 +54,9 @@ defmodule GroupherServer.Accounts.CollectFolders.Articles do
           }
         }
       )
+
+    visible = CMS.articles_public_binding_ids()
+    query = where(query, [_entry, _article, binding, ...], binding.id in subquery(visible))
 
     query =
       case Map.get(filter, :thread) do
@@ -97,13 +76,16 @@ defmodule GroupherServer.Accounts.CollectFolders.Articles do
          {:ok, page_result} <-
            ORM.pagi(
              query,
-             %Params.Offset{page: page, size: size},
+             pagi,
              for: CollectFolderEntry,
+             surface: "accounts.collected_articles",
+             query_fingerprint:
+               :erlang.term_to_binary({folder.id, folder.private, Map.get(filter, :thread)})
+               |> Base.encode64(),
              order: order
            ),
          {:ok, entries} <- page_entries(page_result.entries) do
       page_result
-      |> Page.to_legacy()
       |> Map.put(:entries, entries)
       |> done()
     end

@@ -14,8 +14,6 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
 
   alias GroupherServer.CMS
 
-  @page_size GroupherServerWeb.Config.page_size()
-
   @emotions CMS.artiment_config_emotions()
   @comment_emotions CMS.artiment_config_comment_emotions()
   @all_emotions (@emotions ++ @comment_emotions) |> Enum.uniq()
@@ -277,6 +275,7 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
 
       field(:author, :user, resolve: dataloader(CMS, :author))
       field(:is_pinned, :boolean)
+      field(:root_inner_id, :id)
       field(:floor, :integer)
       field(:upvotes_count, :integer)
       field(:comment_interaction_revision, :integer)
@@ -297,7 +296,18 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
       field(:thread, :thread)
       field(:viewer_has_upvoted, :boolean)
       field(:viewer_has_reported, :boolean)
-      field(:reply_to_comment, :comment, resolve: dataloader(CMS, :reply_to_comment))
+
+      field(:reply_to_comment, :comment,
+        resolve: fn parent, args, resolution ->
+          case Map.get(parent, :reply_to_comment) do
+            %Ecto.Association.NotLoaded{} ->
+              dataloader(CMS, :reply_to_comment).(parent, args, resolution)
+
+            loaded ->
+              {:ok, loaded}
+          end
+        end
+      )
 
       field(:lifecycle, :comment_lifecycle, resolve: dataloader(CMS, :lifecycle))
 
@@ -332,22 +342,12 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
   end
 
   # see: https://github.com/absinthe-graphql/absinthe/issues/363
-  defmacro pagination_args do
+  @doc "Exposes canonical PageInfo from the shared Pagi result."
+  defmacro pagi_fields do
     quote do
-      field(:page, :integer, default_value: 1)
-      field(:size, :integer, default_value: unquote(@page_size))
-    end
-  end
-
-  @doc """
-  general pagination fields except entries
-  """
-  defmacro pagination_fields do
-    quote do
-      field(:total_count, :integer)
-      field(:page_size, :integer)
-      field(:total_pages, :integer)
-      field(:page_number, :integer)
+      field :page_info, non_null(:page_info) do
+        resolve(fn page, _, _ -> {:ok, Helper.ORM.Pagi.Page.info(page)} end)
+      end
     end
   end
 
@@ -357,6 +357,7 @@ defmodule GroupherServerWeb.Schema.Helper.Fields do
       field(:community_tag, :string)
       field(:cat, :article_cat_enum)
       field(:status, :article_status_enum)
+      field(:statuses, list_of(non_null(:article_status_enum)))
       field(:order, :article_order_enum)
       field(:community_tags, list_of(:string))
       field(:community, :string)

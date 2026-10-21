@@ -9,6 +9,7 @@
     "error_cat": { "mode": "strict" },
     "jobs": { "mode": "strict" },
     "messaging": { "mode": "strict" },
+    "pagi": { "mode": "strict" },
     "public_cache": { "mode": "strict" },
     "request_actor": { "mode": "strict" },
     "service_auth": { "mode": "strict" }

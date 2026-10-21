@@ -11,7 +11,7 @@ defmodule GroupherServer.CMS.Communities.Categories.Query do
   alias CMS.Model.Category
 
   @doc "Returns the paged Category projection used by the existing Community query."
-  defdelegate page(filter), to: CommunitiesQuery, as: :page_categories
+  defdelegate list(), to: CommunitiesQuery, as: :categories
 
   @doc false
   def get(id), do: Repo.get(Category, id)

@@ -558,7 +558,7 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
       graph.functions
       |> Enum.filter(fn function ->
         MapSet.member?(gate_modules, function.module) and
-          String.ends_with?(Atom.to_string(function.name), "_in_transaction")
+          gate_admission_function?(function.name)
       end)
       |> MapSet.new(&function_key/1)
 
@@ -586,6 +586,13 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     |> Enum.sort_by(fn violation ->
       {inspect(violation["pipeline"]), violation["stage"], inspect(violation["gate"])}
     end)
+  end
+
+  defp gate_admission_function?(:access_check), do: true
+
+  defp gate_admission_function?(function) do
+    name = Atom.to_string(function)
+    String.ends_with?(name, "_in_transaction")
   end
 
   @doc false

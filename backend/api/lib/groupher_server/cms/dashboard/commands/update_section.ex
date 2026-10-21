@@ -13,7 +13,7 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
     adapter: GroupherServer.CMS.CommandPipelineAdapter
 
   alias GroupherServer.CMS
-  alias CMS.Dashboard.{BaseInfo, Effects, Pagination, SectionPayload, Persist}
+  alias CMS.Dashboard.{BaseInfo, Effects, PagiMode, SectionPayload, Persist}
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.T
 
@@ -52,7 +52,7 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
 
   defp section_args(:content_shadow, args), do: args
 
-  defp section_args(:pagination, args) when is_map(args) do
+  defp section_args(:pagi_mode, args) when is_map(args) do
     Map.drop(args, [:community, :dsb_section, :command_id])
   end
 
@@ -76,24 +76,22 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
     Persist.update_content_shadow(dashboard, enabled)
   end
 
-  defp update_dashboard(
-         dashboard,
-         :pagination,
-         %{surface: surface, config: config, expected_revision: expected_revision}
-       ) do
-    Persist.update_pagination(dashboard, surface, config, expected_revision)
+  defp update_dashboard(dashboard, :pagi_mode, %{
+         mode: mode,
+         mobile_mode: mobile_mode,
+         expected_revision: revision
+       }) do
+    Persist.update_pagi_mode(dashboard, mode, mobile_mode, revision)
   end
+
+  defp update_dashboard(_dashboard, :pagi_mode, _args),
+    do: {:error, GroupherServer.Pagi.invalid_config_context()}
 
   defp update_dashboard(dashboard, key, args), do: Persist.replace_section(dashboard, key, args)
 
-  defp enqueue_effect(
-         community,
-         :pagination,
-         %{surface: surface},
-         command_id
-       ) do
-    with {:ok, _deleted?} <- Pagination.invalidate(community.slug, surface) do
-      Effects.enqueue_pagination_changed(community, surface, command_id)
+  defp enqueue_effect(community, :pagi_mode, _args, command_id) do
+    with {:ok, _} <- PagiMode.invalidate(community.slug) do
+      Effects.enqueue_pagi_mode_changed(community, command_id)
     end
   end
 

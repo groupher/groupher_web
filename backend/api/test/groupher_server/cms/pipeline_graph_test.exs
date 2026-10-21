@@ -368,6 +368,16 @@ defmodule GroupherServer.CMS.PipelineGraphTest do
     assert violation["gate"]["function"] == "check_in_transaction"
   end
 
+  test "rejects compatibility Gate admission from the present stage" do
+    fixture = GroupherServer.Test.PipelineGraphFixtures.GateInPresent
+    graph = GraphAnalyzer.build_modules([fixture, GroupherServer.CMS.Gate])
+    scopes = GraphAnalyzer.pipeline_stage_calls(graph, fixture.__pipeline_contracts__())
+
+    assert [violation] = Graph.gate_stage_violations(graph, scopes)
+    assert violation["stage"] == "present"
+    assert violation["gate"]["function"] == "access_check"
+  end
+
   test "fails closed when compiled pipeline stages cannot be attributed" do
     fixture = GroupherServer.Test.PipelineGraphFixtures.UnattributedStages
     contract = fixture.__pipeline_contracts__() |> List.first() |> Map.put(:access, :user)

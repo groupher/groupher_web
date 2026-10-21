@@ -53,8 +53,9 @@ defmodule GroupherServer.CMS.Assets do
       #=> {:ok, %{entries: assets, total_count: total_count}}
 
   """
-  @spec page(Community.t(), map() | nil) :: T.domain_res(T.paged_data())
-  def page(%Community{} = community, filter \\ nil), do: Query.page(community, filter)
+  @spec page(Community.t(), map() | nil, Helper.ORM.Pagi.Params.t() | nil) ::
+          T.domain_res(T.paged_data())
+  def page(%Community{} = community, filter, pagi), do: Query.page(community, filter, pagi)
 
   @doc """
   Returns storage usage for active assets in one community.
@@ -92,9 +93,10 @@ defmodule GroupherServer.CMS.Assets do
       #=> {:ok, %{entries: refs, total_count: total_count}}
 
   """
-  @spec refs(Community.t(), T.id(), map() | nil) :: T.domain_res(T.paged_data())
-  def refs(%Community{} = community, asset_id, filter \\ nil) do
-    Query.refs(community, asset_id, filter)
+  @spec refs(Community.t(), T.id(), Helper.ORM.Pagi.Params.t() | nil) ::
+          T.domain_res(T.paged_data())
+  def refs(%Community{} = community, asset_id, pagi) do
+    Query.refs(community, asset_id, pagi)
   end
 
   @doc "Returns the version-owned asset relations for one Draft or Revision body owner."

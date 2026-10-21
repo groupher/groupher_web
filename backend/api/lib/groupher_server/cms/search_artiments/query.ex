@@ -23,8 +23,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Query do
           scope: map(),
           filters: map(),
           sort: sort(),
-          page: pos_integer(),
-          size: pos_integer(),
+          pagi: Helper.ORM.Pagi.Params.t() | nil,
           highlight: boolean()
         }
 
@@ -33,11 +32,9 @@ defmodule GroupherServer.CMS.SearchArtiments.Query do
             scope: %{},
             filters: %{},
             sort: :relevance,
-            page: 1,
-            size: 20,
+            pagi: nil,
             highlight: true
 
-  @max_size 100
   @types [:article, :comment]
   @threads Config.article_threads()
   @sorts [:relevance]
@@ -45,27 +42,27 @@ defmodule GroupherServer.CMS.SearchArtiments.Query do
   @doc """
   Builds a validated search query from raw attributes.
 
-  Scope and filter maps are normalized, page defaults to 1, size defaults to 20
-  and is capped, and empty text or unsupported sort values are rejected.
+  Scope and filters are normalized separately from the canonical Pagi input.
+  Empty text and unsupported sorts are rejected; Pagi owns position and size validation.
 
   ## Examples
 
-      Query.new(%{text: "elixir"})
-      #=> {:ok, %Query{text: "elixir", page: 1, size: 20, sort: :relevance}}
+      Query.new(%{text: "elixir"}, %{cursor: %{first: 20}})
+      #=> {:ok, %Query{text: "elixir", pagi: %Helper.ORM.Pagi.Params.Cursor{first: 20}, sort: :relevance}}
 
-      Query.new(%{text: ""})
+      Query.new(%{text: ""}, nil)
       #=> {:error, ErrorCat.custom("search text is required")}
 
   """
-  @spec new(map()) :: T.domain_res(t())
-  def new(attrs) when is_map(attrs) do
+  @spec new(map(), term()) :: T.domain_res(t())
+  def new(attrs, pagi) when is_map(attrs) do
     text = attrs |> Map.get(:text, "") |> String.trim()
-    page = positive_integer(Map.get(attrs, :page), 1)
-    size = positive_integer(Map.get(attrs, :size), 20) |> min(@max_size)
     sort = Map.get(attrs, :sort, :relevance)
     scope = normalize_scope(Map.get(attrs, :scope, %{}))
 
-    with {:ok, :pass} <- validate_text(text),
+    with {:ok, :pass} <- validate_keys(attrs),
+         {:ok, params} <- Helper.ORM.Pagi.Params.from_input(pagi),
+         {:ok, :pass} <- validate_text(text),
          {:ok, :pass} <- validate_sort(sort),
          {:ok, filters} <- normalize_filters(Map.get(attrs, :filters, %{})) do
       {:ok,
@@ -74,8 +71,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Query do
          scope: scope,
          filters: filters,
          sort: sort,
-         page: page,
-         size: size,
+         pagi: params,
          highlight: Map.get(attrs, :highlight, true)
        }}
     end
@@ -113,7 +109,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Query do
 
   defp normalize_enum_list(values, allowed) when is_list(values) do
     if Enum.all?(values, &(&1 in allowed)) do
-      {:ok, Enum.uniq(values)}
+      {:ok, Enum.sort(Enum.uniq(values))}
     else
       {:error, ErrorCat.custom("invalid search filter enum")}
     end
@@ -127,7 +123,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Query do
 
   defp normalize_string_list(values) when is_list(values) do
     if Enum.all?(values, &(is_binary(&1) and &1 != "")) do
-      {:ok, Enum.uniq(values)}
+      {:ok, Enum.sort(Enum.uniq(values))}
     else
       {:error, ErrorCat.custom("invalid search filter string")}
     end
@@ -143,6 +139,11 @@ defmodule GroupherServer.CMS.SearchArtiments.Query do
   defp validate_sort(sort) when sort in @sorts, do: {:ok, :pass}
   defp validate_sort(_sort), do: {:error, ErrorCat.custom("invalid search sort")}
 
-  defp positive_integer(value, _default) when is_integer(value) and value > 0, do: value
-  defp positive_integer(_, default), do: default
+  defp validate_keys(attrs) do
+    if Map.keys(attrs) -- [:text, :scope, :filters, :sort, :highlight] == [] do
+      {:ok, :pass}
+    else
+      {:error, ErrorCat.custom("Pagination belongs in PagiInput")}
+    end
+  end
 end

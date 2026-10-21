@@ -45,19 +45,28 @@ defmodule GroupherServer.Test.Accounts.Fans do
       {:ok, user2} = db_insert(:user)
       {:ok, _follower} = user |> Accounts.Fans.follow(user2)
 
-      {:ok, followers} = Accounts.Fans.paged_followers(user2, %{page: 1, size: 20})
+      {:ok, followers} =
+        Accounts.Fans.paged_followers(user2, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 20
+        })
+
       assert followers.entries |> Enum.any?(&(&1.id == user.id))
-      assert followers |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{page: 1, size: 20, total_count: 1} = followers
     end
 
     test "user can get paged followings", ~m(user)a do
       {:ok, user2} = db_insert(:user)
       {:ok, _follower} = user |> Accounts.Fans.follow(user2)
 
-      {:ok, followings} = Accounts.Fans.paged_followings(user, %{page: 1, size: 20})
+      {:ok, followings} =
+        Accounts.Fans.paged_followings(user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 20
+        })
 
       assert followings.entries |> Enum.any?(&(&1.id == user2.id))
-      assert followings |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{page: 1, size: 20, total_count: 1} = followings
     end
 
     test "user follow other user twice fails", ~m(user)a do

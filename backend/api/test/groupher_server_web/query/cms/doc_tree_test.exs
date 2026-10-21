@@ -92,7 +92,7 @@ defmodule GroupherServer.Test.Query.CMS.DocTree do
 
     assert deleted["conflict"] == false
 
-    assert [trash_item] =
+    assert %{"entries" => [trash_item]} =
              member_conn |> gq_query(@trash_query, %{community: community.slug})
 
     assert trash_item["nodeId"] == page_payload.node.id
@@ -112,7 +112,9 @@ defmodule GroupherServer.Test.Query.CMS.DocTree do
     assert restored["node"]["id"] == page_payload.node.id
     assert restored["node"]["type"] == "PAGE"
     assert restored["node"]["title"] == "Install"
-    assert [] = member_conn |> gq_query(@trash_query, %{community: community.slug})
+
+    assert %{"entries" => []} =
+             member_conn |> gq_query(@trash_query, %{community: community.slug})
   end
 
   test "doc tree trash requires login", %{guest_conn: guest_conn, community: community} do

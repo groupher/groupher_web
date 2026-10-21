@@ -140,11 +140,11 @@ defmodule GroupherServer.Test.Accounts.Oauth do
 
       assert res.login == user_login
 
-      {:ok, providers} = ORM.find_all(OauthProvider, %{page: 1, size: 10})
-      assert providers.total_count == 2
+      {:ok, providers} = ORM.find_all(OauthProvider, %{sort: :asc_inserted})
+      assert length(providers) == 2
 
-      first = providers.entries |> List.first()
-      last = providers.entries |> List.last()
+      first = providers |> List.first()
+      last = providers |> List.last()
 
       assert first.user_id == last.user_id
       assert first.provider == "github"
@@ -207,14 +207,14 @@ defmodule GroupherServer.Test.Accounts.Oauth do
       {:ok, _} = Accounts.Profiles.signin_oauth(github_provider)
       {:ok, _} = Accounts.Profiles.link_oauth(user_login, @valid_twitter_profile)
 
-      {:ok, providers} = ORM.find_all(OauthProvider, %{page: 1, size: 10})
-      assert providers.total_count == 2
+      {:ok, providers} = ORM.find_all(OauthProvider, %{sort: :asc_inserted})
+      assert length(providers) == 2
 
       {:ok, _} = Accounts.Profiles.unlink_oauth(user_login, @valid_twitter_profile)
 
-      {:ok, providers} = ORM.find_all(OauthProvider, %{page: 1, size: 10})
-      assert providers.total_count == 1
-      after_delete = providers.entries |> List.first()
+      {:ok, providers} = ORM.find_all(OauthProvider, %{sort: :asc_inserted})
+      assert length(providers) == 1
+      after_delete = providers |> List.first()
 
       assert after_delete.provider == "github"
     end
@@ -243,8 +243,8 @@ defmodule GroupherServer.Test.Accounts.Oauth do
       github_provider = @valid_github_profile |> Map.put("login", user_login)
       {:ok, _} = Accounts.Profiles.signin_oauth(github_provider)
 
-      {:ok, providers} = ORM.find_all(OauthProvider, %{page: 1, size: 10})
-      assert providers.total_count == 1
+      {:ok, providers} = ORM.find_all(OauthProvider, %{sort: :asc_inserted})
+      assert length(providers) == 1
 
       {:error, reason} = Accounts.Profiles.unlink_oauth(user_login, github_provider)
 

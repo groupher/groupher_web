@@ -53,7 +53,11 @@ defmodule GroupherServer.Test.Messaging.Notification do
 
       {:ok, _} = Messaging.send_notification(notify_attrs, user2)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       assert paged_notifies.total_count == 1
       notify = paged_notifies.entries |> List.first()
@@ -72,7 +76,11 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user2)
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       notify = paged_notifies.entries |> List.first()
 
@@ -115,7 +123,11 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user2)
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       notify = paged_notifies.entries |> List.first()
 
@@ -132,7 +144,11 @@ defmodule GroupherServer.Test.Messaging.Notification do
       notify_attrs = notify_attrs |> Map.put(:action, :collect)
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       assert paged_notifies.total_count == 2
 
@@ -150,7 +166,11 @@ defmodule GroupherServer.Test.Messaging.Notification do
       move_insert_at_long_ago(notify)
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       assert paged_notifies.total_count == 2
 
@@ -169,7 +189,11 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user4)
       {:ok, _} = Messaging.send_notification(notify_attrs, user5)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       assert paged_notifies.total_count == 1
       notify = paged_notifies.entries |> List.first()
@@ -193,12 +217,22 @@ defmodule GroupherServer.Test.Messaging.Notification do
     test "can revoke a notification", ~m(user user2  notify_attrs)a do
       {:ok, _} = Messaging.send_notification(notify_attrs, user2)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert paged_notifies.total_count == 1
 
       Messaging.revoke_notification(notify_attrs, user2)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert paged_notifies.total_count == 0
     end
 
@@ -206,7 +240,12 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user2)
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert paged_notifies.total_count == 1
       notify = paged_notifies.entries |> List.first()
       assert user_exist_in?(user2, notify.from_users)
@@ -214,7 +253,12 @@ defmodule GroupherServer.Test.Messaging.Notification do
 
       Messaging.revoke_notification(notify_attrs, user2)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert paged_notifies.total_count == 1
 
       notify = paged_notifies.entries |> List.first()
@@ -229,12 +273,22 @@ defmodule GroupherServer.Test.Messaging.Notification do
 
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert paged_notifies.total_count == 2
 
       Messaging.revoke_notification(notify_attrs, user2)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert paged_notifies.total_count == 1
       notify = paged_notifies.entries |> List.first()
       assert not user_exist_in?(user2, notify.from_users)
@@ -249,12 +303,22 @@ defmodule GroupherServer.Test.Messaging.Notification do
 
       {:ok, _} = Messaging.send_notification(notify_attrs, user4)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert paged_notifies.total_count == 2
 
       Messaging.revoke_notification(notify_attrs, user2)
 
-      {:ok, paged_notifies} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, paged_notifies} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert paged_notifies.total_count == 2
       notify1 = paged_notifies.entries |> List.first()
       notify2 = paged_notifies.entries |> List.last()
@@ -392,7 +456,12 @@ defmodule GroupherServer.Test.Messaging.Notification do
       move_insert_at_long_ago(notify)
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
-      {:ok, result} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, result} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       notify1 = result.entries |> List.first()
       notify2 = result.entries |> List.last()
 
@@ -400,11 +469,21 @@ defmodule GroupherServer.Test.Messaging.Notification do
 
       {:ok, _} = Messaging.mark_read(:notification, [notify1.id, notify2.id], user)
 
-      {:ok, result} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, result} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert result.total_count == 0
 
       {:ok, result} =
-        Messaging.paged_messages(:notification, user, %{page: 1, size: 10, read: true})
+        Messaging.paged_messages(
+          :notification,
+          user,
+          %{read: true},
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10}
+        )
 
       assert result.total_count == 2
     end
@@ -414,17 +493,31 @@ defmodule GroupherServer.Test.Messaging.Notification do
       move_insert_at_long_ago(notify)
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
-      {:ok, result} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, result} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       assert result.total_count == 2
 
       {:ok, _} = Messaging.mark_read_all(:notification, user)
 
-      {:ok, result} = Messaging.paged_messages(:notification, user, %{page: 1, size: 10})
+      {:ok, result} =
+        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert result.total_count == 0
 
       {:ok, result} =
-        Messaging.paged_messages(:notification, user, %{page: 1, size: 10, read: true})
+        Messaging.paged_messages(
+          :notification,
+          user,
+          %{read: true},
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10}
+        )
 
       assert result.total_count == 2
     end

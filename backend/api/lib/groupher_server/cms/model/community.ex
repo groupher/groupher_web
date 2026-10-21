@@ -14,6 +14,13 @@ defmodule GroupherServer.CMS.Model.Community do
   """
 
   use Ecto.Schema
+  use Flop.Schema
+
+  @flop_options [
+    filterable: [],
+    sortable: [:id, :inserted_at, :views],
+    pagination_types: [:page, :first]
+  ]
   use Accessible
 
   import Ecto.Changeset

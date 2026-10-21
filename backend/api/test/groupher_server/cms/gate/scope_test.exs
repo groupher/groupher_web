@@ -233,14 +233,25 @@ defmodule GroupherServer.Test.CMS.Gate.ScopeTest do
     assert comment.community_id == community.id
 
     assert {:ok, %{entries: articles}} =
-             CMS.Articles.paged_published(:post, %{page: 1, size: 20}, author)
+             CMS.Articles.paged_published(
+               :post,
+               %{},
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20},
+               author
+             )
 
     assert Enum.any?(articles, &(&1.id == post.id))
     assert {:ok, article_count} = CMS.Articles.count_published(:post, author)
     assert article_count > 0
 
     assert {:ok, %{entries: comments}} =
-             CMS.Comments.paged_published_comments(author, %{page: 1, size: 20})
+             CMS.Comments.paged_published_comments(
+               author,
+               nil,
+               %{},
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20},
+               nil
+             )
 
     assert Enum.any?(comments, &(&1.id == comment.id))
 
@@ -249,13 +260,24 @@ defmodule GroupherServer.Test.CMS.Gate.ScopeTest do
     |> Repo.update!()
 
     assert {:ok, %{entries: hidden_articles}} =
-             CMS.Articles.paged_published(:post, %{page: 1, size: 20}, author)
+             CMS.Articles.paged_published(
+               :post,
+               %{},
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20},
+               author
+             )
 
     refute Enum.any?(hidden_articles, &(&1.id == post.id))
     assert {:ok, 0} = CMS.Articles.count_published(:post, author)
 
     assert {:ok, %{entries: hidden_comments}} =
-             CMS.Comments.paged_published_comments(author, %{page: 1, size: 20})
+             CMS.Comments.paged_published_comments(
+               author,
+               nil,
+               %{},
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20},
+               nil
+             )
 
     refute Enum.any?(hidden_comments, &(&1.id == comment.id))
   end

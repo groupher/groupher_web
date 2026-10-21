@@ -21,9 +21,9 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
 
   object :cms_queries do
     @desc "Safe product ArticleLog for one readable Article"
-    field :article_logs, non_null(:paged_article_logs) do
+    field :article_logs, non_null(:article_log_page) do
       arg(:article, non_null(:article_path_input))
-      arg(:filter, :article_log_filter)
+      arg(:pagi, :pagi_input)
 
       middleware(M.FrontDesk, :article)
       resolve(&R.CMS.Activity.article_logs/3)
@@ -52,10 +52,10 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
     end
 
     @desc "Safe Community Activity timeline across readable resource streams"
-    field :community_activity, non_null(:paged_community_activity) do
+    field :community_activity, non_null(:community_activity_page) do
       arg(:community, non_null(:string))
       arg(:selection, non_null(:community_activity_selection_input))
-      arg(:page, :integer, default_value: 1)
+      arg(:pagi, :pagi_input)
 
       middleware(M.Authorize, :login)
       middleware(M.Passport, action: "audit.read")
@@ -117,10 +117,9 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
     end
 
     @desc "Reviewer-scoped Community Application queue"
-    field :paged_community_applications, non_null(:community_application_connection) do
+    field :paged_community_applications, non_null(:community_application_page) do
       arg(:filter, non_null(:community_applications_filter))
-      arg(:after, :string)
-      arg(:first, :integer, default_value: 20)
+      arg(:pagi, :pagi_input)
       middleware(M.Authorize, :login)
       middleware(M.Passport, action: "community.application.review")
       resolve(&R.CMS.CommunityApplications.paged_community_applications/3)
@@ -134,15 +133,15 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
     end
 
     @desc "Current Article Trash memberships"
-    field :trashed_articles, :paged_trashed_articles do
+    field :trashed_articles, :trash_page do
       arg(:community, non_null(:string))
       arg(:thread, non_null(:thread))
+      arg(:pagi, :pagi_input)
       arg(:filter, :trash_filter)
 
       middleware(M.Authorize, :login)
       middleware(M.Passport, action: "article.trash.read")
       middleware(M.FrontDesk, :community)
-      middleware(M.PageSizeProof)
       resolve(&R.CMS.Articles.trashed_articles/3)
     end
 
@@ -304,8 +303,9 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
     end
 
     @desc "dashboard docs trash items"
-    field :doc_tree_trash_items, list_of(:doc_tree_trash_item) do
+    field :doc_tree_trash_items, non_null(:doc_tree_trash_page) do
       arg(:community, non_null(:string))
+      arg(:pagi, :pagi_input)
 
       middleware(M.Authorize, :login)
       middleware(M.FrontDesk, :community)
@@ -335,10 +335,10 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
     end
 
     @desc "immutable published versions for one stable Doc branch"
-    field :doc_branch_versions, list_of(:doc_branch_version_view) do
+    field :doc_branch_versions, non_null(:doc_branch_version_page) do
       arg(:doc_id, non_null(:id))
       arg(:branch_id, non_null(:id))
-      arg(:limit, :integer, default_value: 30)
+      arg(:pagi, :pagi_input)
 
       middleware(M.Authorize, :login)
       middleware(M.PutCurrentUser)
@@ -367,14 +367,14 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
     end
 
     @desc "paged assets owned by a community"
-    field :paged_community_assets, :paged_community_assets do
+    field :paged_community_assets, :community_asset_page do
       arg(:community, non_null(:string))
       arg(:filter, :community_asset_filter)
+      arg(:pagi, :pagi_input)
 
       middleware(M.Authorize, :login)
       middleware(M.Passport, action: "asset.upload")
       middleware(M.FrontDesk, :community)
-      middleware(M.PageSizeProof)
       resolve(&R.CMS.Assets.paged_community_assets/3)
     end
 
@@ -386,7 +386,6 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
       middleware(M.Authorize, :login)
       middleware(M.Passport, action: "asset.upload")
       middleware(M.FrontDesk, :community)
-      middleware(M.PageSizeProof)
       resolve(&R.CMS.Assets.community_asset_stats/3)
     end
 
@@ -401,15 +400,14 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
     end
 
     @desc "paged article references for one community asset"
-    field :community_asset_refs, :paged_article_asset_refs do
+    field :community_asset_refs, :article_asset_ref_page do
       arg(:community, non_null(:string))
       arg(:asset_id, non_null(:id))
-      arg(:filter, :pagi_filter)
+      arg(:pagi, :pagi_input)
 
       middleware(M.Authorize, :login)
       middleware(M.Passport, action: "asset.upload")
       middleware(M.FrontDesk, :community)
-      middleware(M.PageSizeProof)
       resolve(&R.CMS.Assets.community_asset_refs/3)
     end
 
@@ -447,38 +445,47 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
       resolve(&R.CMS.Communities.check_community_name/3)
     end
 
-    @desc "communities with pagination info"
-    field :paged_communities, :paged_communities do
-      arg(:filter, non_null(:communities_filter))
+    @desc "Bounded user picker excluding current moderators"
+    field :moderator_candidates, non_null(list_of(non_null(:user))) do
+      arg(:community, non_null(:string))
+      arg(:name, non_null(:string))
+      middleware(M.Authorize, :login)
+      middleware(M.FrontDesk, :community)
 
-      middleware(M.PageSizeProof)
+      resolve(fn _, %{community: community, name: name}, _ ->
+        CMS.communities_moderator_candidates(community, name)
+      end)
+    end
+
+    @desc "communities with pagination info"
+    field :paged_communities, :community_page do
+      arg(:filter, :communities_filter)
+      arg(:pagi, :pagi_input)
+
       resolve(&R.CMS.Communities.paged_communities/3)
     end
 
     @desc "paged subscribers of a community"
-    field :paged_community_subscribers, :paged_users do
+    field :paged_community_subscribers, :user_page do
       arg(:community, non_null(:string))
-      arg(:filter, :pagi_filter)
+      arg(:filter, :user_list_filter)
+      arg(:pagi, :pagi_input)
 
-      middleware(M.PageSizeProof)
       resolve(&R.CMS.Communities.paged_community_subscribers/3)
     end
 
     @desc "paged subscribers of a community"
-    field :paged_community_moderators, :paged_users do
+    field :paged_community_moderators, :community_moderator_page do
       arg(:community, non_null(:string))
-      arg(:filter, :pagi_filter)
+      arg(:filter, :user_list_filter)
+      arg(:pagi, :pagi_input)
 
-      middleware(M.PageSizeProof)
       resolve(&R.CMS.Communities.paged_community_moderators/3)
     end
 
     @desc "get all categories"
-    field :paged_categories, :paged_categories do
-      arg(:filter, :pagi_filter)
-
-      middleware(M.PageSizeProof)
-      resolve(&R.CMS.Communities.paged_categories/3)
+    field :categories, non_null(list_of(non_null(:category))) do
+      resolve(&R.CMS.Communities.categories/3)
     end
 
     @desc "get community tag groups"
@@ -545,17 +552,6 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
       resolve(&R.CMS.Comments.one_comment/3)
     end
 
-    @desc "get paged article comments"
-    field :paged_comments, :paged_comments do
-      arg(:article, non_null(:article_path_input))
-      arg(:mode, :comments_mode, default_value: :replies)
-      arg(:filter, :comments_filter)
-
-      middleware(M.FrontDesk, :article)
-      middleware(M.PageSizeProof)
-      resolve(&R.CMS.Comments.paged_comments/3)
-    end
-
     @desc "Comment Lite page using the shared offset/cursor pagination contract"
     field :comment_page, non_null(:comment_page) do
       arg(:article, non_null(:article_path_input))
@@ -568,52 +564,49 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
     end
 
     @desc "get paged article comments participants"
-    field :paged_comments_participants, :paged_users do
+    field :paged_comments_participants, :user_page do
       arg(:article, non_null(:article_path_input))
-      arg(:filter, :pagi_filter)
+      arg(:pagi, :pagi_input)
 
       middleware(M.FrontDesk, :article)
-      middleware(M.PageSizeProof)
       resolve(&R.CMS.Comments.paged_comments_participants/3)
     end
 
-    @desc "get paged replies of a comment"
-    field :paged_comment_replies, :paged_comment_replies do
+    @desc "A root comment's flat descendants through the shared Pagi contract"
+    field :comment_reply_page, non_null(:comment_reply_page) do
       arg(:comment, non_null(:comment_path_input))
-      arg(:filter, :comments_filter)
-
-      middleware(M.PageSizeProof)
+      arg(:filter, :comment_page_filter)
+      arg(:pagi, :pagi_input)
       middleware(M.FrontDesk, :comment)
-      resolve(&R.CMS.Comments.paged_comment_replies/3)
+      resolve(&R.CMS.Comments.comment_reply_page/3)
     end
 
     @desc "paged reports list"
-    field :paged_abuse_reports, :paged_reports do
+    field :paged_abuse_reports, :report_page do
+      arg(:pagi, :pagi_input)
       arg(:filter, non_null(:report_filter))
 
       resolve(&R.CMS.Reporting.paged_reports/3)
     end
 
     @desc "mentions created by an artiment"
-    field :mentions, :paged_mentions do
+    field :mentions, :artiment_mention_page do
       arg(:source, non_null(:mention_source_input))
-      arg(:filter, :pagi_filter)
+      arg(:pagi, :pagi_input)
 
-      middleware(M.PageSizeProof)
       resolve(&R.CMS.ArtimentMentions.mentions/3)
     end
 
     @desc "artiments mentioning an internal target"
-    field :mentioned_by, :paged_mentions do
+    field :mentioned_by, :artiment_mention_page do
       arg(:target, non_null(:mention_target_input))
-      arg(:filter, :pagi_filter)
+      arg(:pagi, :pagi_input)
 
-      middleware(M.PageSizeProof)
       resolve(&R.CMS.ArtimentMentions.mentioned_by/3)
     end
 
     @desc "search communities by title"
-    field :search_communities, :paged_communities do
+    field :search_communities, non_null(list_of(non_null(:community))) do
       arg(:title, non_null(:string))
       arg(:category, :string)
 
@@ -621,7 +614,7 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
     end
 
     @desc "kanban posts grouped by backlog/todo/wip/done/rejected"
-    field :grouped_kanban_posts, :kanban_posts do
+    field :grouped_kanban_posts, :kanban_pages do
       arg(:community, non_null(:string))
 
       middleware(M.FrontDesk, :community)
@@ -636,13 +629,13 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
       resolve(&R.CMS.OpenGraph.open_graph_info/3)
     end
 
-    @desc "paged kanban posts by status"
-    field :paged_kanban_posts, :paged_posts do
+    @desc "One Kanban column using the canonical Article Page contract"
+    field :kanban_page, non_null(:post_page) do
       arg(:community, non_null(:string))
-      arg(:filter, non_null(:paged_kanban_posts_filter))
-
+      arg(:filter, :post_filter)
+      arg(:pagi, :pagi_input)
       middleware(M.FrontDesk, :community)
-      resolve(&R.CMS.Articles.paged_kanban_posts/3)
+      resolve(&R.CMS.Articles.kanban_page/3)
     end
 
     @desc "Article Lite page using the shared offset/cursor pagination contract"
@@ -663,9 +656,26 @@ defmodule GroupherServerWeb.Schema.CMS.Queries do
       resolve(&R.CMS.Articles.article_page/3)
     end
 
+    @desc "Blog Lite page using the shared pagination contract"
+    field :blog_page, non_null(:blog_page) do
+      arg(:pagi, :pagi_input)
+      arg(:filter, :article_page_filter)
+      arg(:thread, :blog_thread, default_value: :blog)
+      resolve(&R.CMS.Articles.article_page/3)
+    end
+
+    @desc "Doc Lite page using the shared pagination contract"
+    field :doc_page, non_null(:doc_page) do
+      arg(:pagi, :pagi_input)
+      arg(:filter, :article_page_filter)
+      arg(:thread, :doc_thread, default_value: :doc)
+      resolve(&R.CMS.Articles.article_page/3)
+    end
+
     @desc "Search Article and Comment content through the unified Artiment index"
-    field :search_artiments, non_null(:paged_search_artiments) do
+    field :search_artiments, non_null(:search_artiment_page) do
       arg(:query, non_null(:search_artiments_query_input))
+      arg(:pagi, :pagi_input)
 
       resolve(&R.CMS.Search.search_artiments/3)
     end

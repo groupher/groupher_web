@@ -89,11 +89,14 @@ defmodule Helper.ORM.PagiTest do
              )
   end
 
-  test "the platform default rejects an explicit cursor", %{query: query, order: order} do
-    assert {:error, %ErrorCat.Error{reason: :config_mismatch, details: %{mismatch: :api}}} =
+  test "the platform default accepts cursor and applies cursor size validation", %{
+    query: query,
+    order: order
+  } do
+    assert {:error, %ErrorCat.Error{reason: :size_out_of_range}} =
              ORM.pagi(
                query,
-               %Params.Cursor{first: 20, after: nil},
+               %Params.Cursor{first: 0, after: nil},
                for: Item,
                order: order
              )
@@ -187,6 +190,22 @@ defmodule Helper.ORM.PagiTest do
                for: Item,
                order: %Order{fields: [], directions: [], cursor_fields: []}
              )
+  end
+
+  test "unsupported schema metadata and sort fields fail before any SQL", %{
+    query: query,
+    order: order
+  } do
+    assert {:error, %ErrorCat.Error{reason: :invalid_config}} =
+             ORM.pagi(query, nil, for: nil, order: order)
+
+    assert {:error, %ErrorCat.Error{reason: :invalid_config}} =
+             ORM.pagi(query, nil, for: String, order: order)
+
+    unsupported = %Order{fields: [:name], directions: [:asc], cursor_fields: [:name]}
+
+    assert {:error, %ErrorCat.Error{reason: :unsupported_sort}} =
+             ORM.pagi(query, nil, for: Item, order: unsupported)
   end
 
   test "Page output has an explicit shape" do

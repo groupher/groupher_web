@@ -26,14 +26,15 @@ defmodule GroupherServer.Test.Query.Accounts.UpvotesPosts do
 
       variables = %{
         login: user.login,
-        filter: %{thread: "POST", page: 1, size: 20}
+        filter: %{thread: "POST"},
+        pagi: %{offset: %{page: 1, size: 20}}
       }
 
       results = user_conn |> gq_query(@query, variables)
       results2 = guest_conn |> gq_query(@query, variables)
 
-      assert results["totalCount"] == @total_count
-      assert results2["totalCount"] == @total_count
+      assert results["pageInfo"]["totalCount"] == @total_count
+      assert results2["pageInfo"]["totalCount"] == @total_count
     end
 
     test "if no thread filter will get all paged upvoted articles",
@@ -46,12 +47,12 @@ defmodule GroupherServer.Test.Query.Accounts.UpvotesPosts do
 
       variables = %{
         login: user.login,
-        filter: %{page: 1, size: 20}
+        pagi: %{offset: %{page: 1, size: 20}}
       }
 
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results["totalCount"] == @total_count
+      assert results["pageInfo"]["totalCount"] == @total_count
     end
   end
 end

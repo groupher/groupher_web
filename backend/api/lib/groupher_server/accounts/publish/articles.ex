@@ -22,8 +22,8 @@ defmodule GroupherServer.Accounts.Publish.Articles do
 
       Accounts.Publish.Articles.paged(user, :post, %{page: 1, size: 20})
   """
-  @spec paged(User.t(), atom(), map(), User.t() | nil) :: term()
-  def paged(%User{} = target_user, thread, filter, actor \\ nil) do
-    CMS.articles_paged_published(thread, filter, target_user, actor)
+  @spec paged(User.t(), atom(), map(), Helper.ORM.Pagi.Params.input(), User.t() | nil) :: term()
+  def paged(%User{} = target_user, thread, filter, pagi, actor \\ nil) do
+    CMS.articles_paged_published(thread, filter, pagi, target_user, actor)
   end
 end

@@ -17,85 +17,92 @@ defmodule GroupherServer.Test.CMS.Dashboard do
     {:ok, ~m(user community  community_attrs)a}
   end
 
-  describe "[dashboard pagination]" do
-    test "updates one surface with a server-owned revision and invalidates cached config",
-         ~m(community user)a do
-      alias CMS.Dashboard.Pagination
+  describe "[community pagi mode]" do
+    test "updates one preference for all surfaces and invalidates the cached policy", %{
+      community: community,
+      user: user
+    } do
+      alias CMS.Dashboard.PagiMode
 
-      assert {:ok, %{config: %{revision: 0}}} =
-               Pagination.for_community(community.slug, :posts)
+      assert {:ok, %{config: %{revision: 0, api: :offset}}} =
+               PagiMode.for_community(community.slug)
 
-      args = %{
-        surface: :posts,
-        expected_revision: 0,
-        config: %{
-          schema_version: 1,
-          api: :cursor,
-          mode: :load_more,
-          default_size: 10,
-          max_size: 50
-        }
-      }
+      args = %{mode: :infinite_scroll, mobile_mode: :infinite_scroll, expected_revision: 0}
 
       assert {:ok, dashboard} =
-               CMS.Dashboard.update(
-                 community,
-                 :pagination,
-                 args,
-                 user,
-                 Ecto.UUID.generate()
-               )
+               CMS.Dashboard.update(community, :pagi_mode, args, user, Ecto.UUID.generate())
 
-      assert dashboard.pagination.posts.revision == 1
-      assert dashboard.pagination.posts.api == :cursor
+      assert dashboard.pagi_mode == :infinite_scroll
+      assert dashboard.pagi_mobile_mode == :infinite_scroll
+      assert dashboard.pagi_revision == 1
 
-      assert {:ok, %{config: %{revision: 1, api: :cursor}}} =
-               Pagination.for_community(community.slug, :posts)
+      assert {:ok, %{mode: :infinite_scroll, config: %{revision: 1, api: :cursor}}} =
+               PagiMode.for_community(community.slug)
 
-      assert %CMS.Outbox.Event{event: "community.pagination_changed", data: event_data} =
+      assert %CMS.Outbox.Event{} =
                Repo.one!(
                  from(event in CMS.Outbox.Event,
                    where:
                      event.resource_id == ^to_string(community.id) and
-                       event.event == "community.pagination_changed",
+                       event.event == "community.pagi_mode_changed",
                    limit: 1
                  )
                )
 
-      assert event_data["surface"] == "posts" or event_data[:surface] == "posts"
-    end
-
-    test "rejects a stale expected revision without overwriting the surface",
-         ~m(community user)a do
-      args = %{
-        surface: :posts,
-        expected_revision: 0,
-        config: %{schema_version: 1, api: :offset, mode: :page}
-      }
-
-      assert {:ok, first} =
-               CMS.Dashboard.update(
-                 community,
-                 :pagination,
-                 args,
-                 user,
-                 Ecto.UUID.generate()
-               )
-
-      assert first.pagination.posts.revision == 1
-
       assert {:error, %ErrorCat.Error{reason: :config_mismatch}} =
-               CMS.Dashboard.update(
-                 community,
-                 :pagination,
-                 put_in(args.expected_revision, 0),
-                 user,
-                 Ecto.UUID.generate()
-               )
+               CMS.Dashboard.update(community, :pagi_mode, args, user, Ecto.UUID.generate())
 
-      {:ok, persisted} = ORM.find_by(CommunityDashboard, community_id: community.id)
-      assert persisted.pagination["posts"]["revision"] == 1
+      {:ok, stored} = ORM.find_by(CommunityDashboard, community_id: community.id)
+      assert stored.pagi_mode == :infinite_scroll
+      assert stored.pagi_revision == 1
     end
+  end
+
+  test "malformed community preference writes are rejected without changing its revision", %{
+    community: community,
+    user: user
+  } do
+    assert {:error, _} =
+             CMS.Dashboard.update(
+               community,
+               :pagi_mode,
+               %{mode: :page},
+               user,
+               Ecto.UUID.generate()
+             )
+
+    assert {:ok, %{config: %{revision: 0}}} = CMS.Dashboard.PagiMode.for_community(community.slug)
+  end
+
+  test "mobile-only changes are atomic, validated and revision protected", %{
+    community: community,
+    user: user
+  } do
+    args = %{mode: :page, mobile_mode: :load_more, expected_revision: 0}
+
+    assert {:ok, dashboard} =
+             CMS.Dashboard.update(community, :pagi_mode, args, user, Ecto.UUID.generate())
+
+    assert dashboard.pagi_mode == :page
+    assert dashboard.pagi_mobile_mode == :load_more
+    assert dashboard.pagi_revision == 1
+
+    assert {:error, _} =
+             CMS.Dashboard.update(
+               community,
+               :pagi_mode,
+               %{args | mode: :infinite_scroll, mobile_mode: :invalid, expected_revision: 1},
+               user,
+               Ecto.UUID.generate()
+             )
+
+    assert {:error, _} =
+             CMS.Dashboard.update(community, :pagi_mode, args, user, Ecto.UUID.generate())
+
+    {:ok, stored} = ORM.find_by(CommunityDashboard, community_id: community.id)
+    assert stored.pagi_mode == :page
+    assert stored.pagi_mobile_mode == :load_more
+    assert stored.pagi_revision == 1
   end
 
   describe "[community dashboard base info]" do

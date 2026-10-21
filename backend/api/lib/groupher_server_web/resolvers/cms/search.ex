@@ -23,7 +23,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Search do
     CMS.search_community(title)
   end
 
-  def search_artiments(_root, %{query: query}, _info) do
-    CMS.search_artiments_search(query)
+  def search_artiments(_root, %{query: query} = args, _info) do
+    CMS.search_artiments_search(query, Map.get(args, :pagi))
   end
 end

@@ -52,7 +52,12 @@ defmodule GroupherServer.Test.Messaging.Mention do
       ]
 
       {:ok, :pass} = Messaging.send_mention(post, mention_contents, user)
-      {:ok, result} = Messaging.paged_messages(:mention, user2, %{page: 1, size: 10})
+
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user2, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       mention = result.entries |> List.first()
 
@@ -68,12 +73,22 @@ defmodule GroupherServer.Test.Messaging.Mention do
       ]
 
       {:ok, :pass} = Messaging.send_mention(post, mention_contents, user)
-      {:ok, result} = Messaging.paged_messages(:mention, user2, %{page: 1, size: 10})
+
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user2, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       assert result.total_count == 1
 
       {:ok, :pass} = Messaging.send_mention(post, mention_contents, user)
-      {:ok, result} = Messaging.paged_messages(:mention, user2, %{page: 1, size: 10})
+
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user2, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       assert result.total_count == 1
     end
@@ -85,11 +100,21 @@ defmodule GroupherServer.Test.Messaging.Mention do
       ]
 
       {:ok, :pass} = Messaging.send_mention(post, mention_contents, user)
-      {:ok, result} = Messaging.paged_messages(:mention, user2, %{page: 1, size: 10})
+
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user2, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       assert result.total_count == 1
 
-      {:ok, result} = Messaging.paged_messages(:mention, user3, %{page: 1, size: 10})
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user3, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert result.total_count == 0
 
       mention_contents = [
@@ -97,10 +122,21 @@ defmodule GroupherServer.Test.Messaging.Mention do
       ]
 
       {:ok, :pass} = Messaging.send_mention(post, mention_contents, user)
-      {:ok, result} = Messaging.paged_messages(:mention, user2, %{page: 1, size: 10})
+
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user2, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert result.total_count == 0
 
-      {:ok, result} = Messaging.paged_messages(:mention, user3, %{page: 1, size: 10})
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user3, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert result.total_count == 1
     end
   end
@@ -112,12 +148,22 @@ defmodule GroupherServer.Test.Messaging.Mention do
       ]
 
       {:ok, :pass} = Messaging.send_mention(post, mention_contents, user)
-      {:ok, result} = Messaging.paged_messages(:mention, user2, %{page: 1, size: 10})
+
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user2, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       mention = result.entries |> List.first()
       {:ok, _} = Messaging.mark_read(:mention, [mention.id], user2)
 
-      {:ok, result} = Messaging.paged_messages(:mention, user2, %{page: 1, size: 10, read: true})
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user2, %{read: true}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       mention = result.entries |> List.first()
 
       assert mention.read
@@ -135,14 +181,23 @@ defmodule GroupherServer.Test.Messaging.Mention do
       ]
 
       {:ok, :pass} = Messaging.send_mention(post, mention_contents, user3)
-      {:ok, result} = Messaging.paged_messages(:mention, user, %{page: 1, size: 10})
+
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       mention1 = result.entries |> List.first()
       mention2 = result.entries |> List.last()
 
       {:ok, _} = Messaging.mark_read(:mention, [mention1.id, mention2.id], user)
 
-      {:ok, result} = Messaging.paged_messages(:mention, user, %{page: 1, size: 10, read: true})
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user, %{read: true}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       mention1 = result.entries |> List.first()
       mention2 = result.entries |> List.last()
@@ -164,15 +219,30 @@ defmodule GroupherServer.Test.Messaging.Mention do
 
       {:ok, :pass} = Messaging.send_mention(post, mention_contents, user3)
 
-      {:ok, result} = Messaging.paged_messages(:mention, user, %{page: 1, size: 10})
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert result.total_count == 2
 
       {:ok, _} = Messaging.mark_read_all(:mention, user)
 
-      {:ok, result} = Messaging.paged_messages(:mention, user, %{page: 1, size: 10})
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert result.total_count == 0
 
-      {:ok, result} = Messaging.paged_messages(:mention, user, %{page: 1, size: 10, read: true})
+      {:ok, result} =
+        Messaging.paged_messages(:mention, user, %{read: true}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
       assert result.total_count == 2
     end
   end

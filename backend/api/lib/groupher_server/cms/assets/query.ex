@@ -39,28 +39,26 @@ defmodule GroupherServer.CMS.Assets.Query do
   }
 
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  alias Helper.ORM.Pagi.{Order, Params}
 
-  @default_page 1
-  @default_size 20
   @usage_batch_size 100
   @storage_limit_bytes 100 * 1024 * 1024
 
   @doc """
   Returns a page of active assets for a community.
 
-  This read-side function is the implementation behind `CMS.Assets.page/2`.
+  This read-side function is the implementation behind `CMS.Assets.page/3`.
   It applies the shared active-asset predicate and orders newest assets first.
 
   ## Examples
 
-      Query.page(community, %{page: 1, size: 20})
-      #=> {:ok, %{entries: assets, total_count: total_count}}
+      Query.page(community, %{}, %Params.Offset{page: 1, size: 20})
+      #=> {:ok, %Helper.ORM.Pagi.Page.Offset{entries: assets}}
 
   """
-  @spec page(Community.t(), map() | nil) :: T.domain_res(T.paged_data())
-  def page(%Community{id: community_id}, filter) do
-    %{page: page, size: size} = normalized = normalize_filter(filter)
+  @spec page(Community.t(), map() | nil, Params.t() | nil) :: T.domain_res(T.paged_data())
+  def page(%Community{id: community_id}, filter, pagi) do
+    normalized = normalize_filter(filter)
 
     query =
       community_id
@@ -70,15 +68,19 @@ defmodule GroupherServer.CMS.Assets.Query do
     with {:ok, paged} <-
            ORM.pagi(
              query,
-             %Params.Offset{page: page, size: size},
+             pagi,
              for: CommunityAsset,
+             surface: "assets.library",
+             query_fingerprint:
+               :crypto.hash(:sha256, :erlang.term_to_binary({community_id, normalized}))
+               |> Base.encode16(),
              order: %Order{
                fields: [:inserted_at, :id],
                directions: [:desc, :desc],
                cursor_fields: [:inserted_at, :id]
              }
            ) do
-      {:ok, Page.to_legacy(paged)}
+      {:ok, paged}
     end
   end
 
@@ -138,13 +140,11 @@ defmodule GroupherServer.CMS.Assets.Query do
   ## Examples
 
       Query.refs(community, asset.id, %{page: 1, size: 10})
-      #=> {:ok, %{entries: refs, page_number: 1}}
+      #=> {:ok, %Helper.ORM.Pagi.Page.Offset{entries: refs}}
 
   """
-  @spec refs(Community.t(), T.id(), map() | nil) :: T.domain_res(T.paged_data())
-  def refs(%Community{id: community_id}, asset_id, filter) do
-    %{page: page, size: size} = normalize_filter(filter)
-
+  @spec refs(Community.t(), T.id(), Params.t() | nil) :: T.domain_res(T.paged_data())
+  def refs(%Community{id: community_id}, asset_id, pagi) do
     with {:ok, %CommunityAsset{id: asset_id}} <- find_active_asset(community_id, asset_id) do
       ArticleAssetRef
       |> where([ref], ref.community_id == ^community_id and ref.asset_id == ^asset_id)
@@ -168,15 +168,18 @@ defmodule GroupherServer.CMS.Assets.Query do
         with {:ok, paged} <-
                ORM.pagi(
                  query,
-                 %Params.Offset{page: page, size: size},
+                 pagi,
                  for: ArticleAssetRef,
+                 surface: "assets.refs",
+                 query_fingerprint:
+                   :erlang.term_to_binary({community_id, asset_id}) |> Base.encode64(),
                  order: %Order{
                    fields: [:inserted_at, :id],
                    directions: [:desc, :desc],
                    cursor_fields: [:inserted_at, :id]
                  }
                ) do
-          {:ok, Page.to_legacy(paged)}
+          {:ok, paged}
         end
       end)
     end
@@ -409,9 +412,7 @@ defmodule GroupherServer.CMS.Assets.Query do
   defp normalize_filter(nil) do
     %{
       asset_type: nil,
-      page: @default_page,
       query: nil,
-      size: @default_size,
       subtypes: [],
       thread: nil
     }
@@ -420,9 +421,7 @@ defmodule GroupherServer.CMS.Assets.Query do
   defp normalize_filter(filter) do
     %{
       asset_type: normalize_asset_type(get_filter(filter, :asset_type)),
-      page: Map.get(filter, :page, @default_page),
       query: normalize_query(get_filter(filter, :query)),
-      size: Map.get(filter, :size, @default_size),
       subtypes: normalize_subtypes(get_filter(filter, :subtypes)),
       thread: normalize_thread(get_filter(filter, :thread))
     }

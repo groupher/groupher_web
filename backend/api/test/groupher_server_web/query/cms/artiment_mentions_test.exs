@@ -48,12 +48,12 @@ defmodule GroupherServer.Test.Query.CMS.ArtimentMentions do
 
       variables = %{
         source: %{article: article_path(community, post, :post)},
-        filter: %{page: 1, size: 10}
+        pagi: %{offset: %{page: 1, size: 10}}
       }
 
       mentions = guest_conn |> gq_query(@mentions_query, variables)
 
-      assert mentions["totalCount"] == 2
+      assert mentions["pageInfo"]["totalCount"] == 2
 
       internal = Enum.find(mentions["entries"], &(&1["mentionedType"] == "BLOG"))
       assert internal["mentionCase"] == "INLINE_MENTION"
@@ -71,10 +71,10 @@ defmodule GroupherServer.Test.Query.CMS.ArtimentMentions do
         guest_conn
         |> gq_query(@mentioned_by_query, %{
           target: %{article: article_path(community, blog, :blog)},
-          filter: %{page: 1, size: 10}
+          pagi: %{offset: %{page: 1, size: 10}}
         })
 
-      assert mentioned_by["totalCount"] == 1
+      assert mentioned_by["pageInfo"]["totalCount"] == 1
       mention = mentioned_by["entries"] |> List.first()
       assert mention["mentionerType"] == "POST"
       assert mention["mentionerId"] == to_string(post.id)
@@ -107,7 +107,7 @@ defmodule GroupherServer.Test.Query.CMS.ArtimentMentions do
       variables = %{source: %{article: article_path(community, post, :post)}}
       mentions = guest_conn |> gq_query(@mentions_without_filter_query, variables)
 
-      assert mentions["totalCount"] == 1
+      assert mentions["pageInfo"]["totalCount"] == 1
       mention = mentions["entries"] |> List.first()
       assert mention["mentionedType"] == "BLOG"
       assert mention["mentionedId"] == to_string(blog.id)

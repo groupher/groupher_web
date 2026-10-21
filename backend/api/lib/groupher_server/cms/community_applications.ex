@@ -39,18 +39,18 @@ defmodule GroupherServer.CMS.CommunityApplications do
 
   @doc "Runs `history` through the public `CommunityApplications` boundary."
   @spec history(User.t(), map()) :: T.domain_res(term())
-  def history(%User{} = user, filter \\ %{}), do: Query.history(user, filter)
+  def history(%User{} = user, pagi), do: Query.history(user, pagi)
 
   @doc "Returns owned through the `CommunityApplications` boundary."
   @spec get_owned(String.t(), User.t()) :: T.domain_res(term())
   def get_owned(public_ref, %User{} = user), do: Query.owned(public_ref, user)
 
   @doc "Runs `review_queue` through the public `CommunityApplications` boundary."
-  @spec review_queue(map(), User.t()) :: T.domain_res(term())
-  def review_queue(filter, %User{} = reviewer) do
+  @spec review_queue(map(), term(), User.t()) :: T.domain_res(term())
+  def review_queue(filter, pagi, %User{} = reviewer) do
     with {:ok, _} <-
            review_authorized?(reviewer, Const.passport_action(:community_application_review)) do
-      Query.review_queue(filter)
+      Query.review_queue(filter, pagi)
     end
   end
 
@@ -65,7 +65,7 @@ defmodule GroupherServer.CMS.CommunityApplications do
 
   @doc "Runs `events` through the public `CommunityApplications` boundary."
   @spec events(term(), map()) :: T.domain_res(term())
-  def events(application, filter \\ %{}), do: Query.events(application, filter)
+  def events(application, pagi), do: Query.events(application, pagi)
 
   @doc "Runs `applicant` through the public `CommunityApplications` boundary."
   def applicant(application), do: Query.applicant(application)
@@ -121,12 +121,12 @@ defmodule GroupherServer.CMS.CommunityApplications do
   end
 
   @doc "Normalizes public reviewer filters and returns the authorized review queue."
-  @spec review_queue_by_public_filter(map(), User.t()) :: T.domain_res(map())
-  def review_queue_by_public_filter(filter, %User{} = reviewer) do
+  @spec review_queue_by_public_filter(map(), term(), User.t()) :: T.domain_res(map())
+  def review_queue_by_public_filter(filter, pagi, %User{} = reviewer) do
     with {:ok, _} <-
            review_authorized?(reviewer, Const.passport_action(:community_application_review)),
          {:ok, filter} <- normalize_public_filter(filter) do
-      Query.review_queue(filter)
+      Query.review_queue(filter, pagi)
     end
   end
 

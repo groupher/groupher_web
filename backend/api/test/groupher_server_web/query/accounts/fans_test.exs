@@ -14,7 +14,7 @@ defmodule GroupherServer.Test.Query.Account.Fans do
   describe "[account followers]" do
     @query S.Social.q(:paged_followers)
     test "login user can get basic paged followers info", ~m(user)a do
-      variables = %{login: user.login, filter: %{page: 1, size: 20}}
+      variables = %{login: user.login, pagi: %{offset: %{page: 1, size: 20}}}
 
       {:ok, user2} = db_insert(:user)
       {:ok, user3} = db_insert(:user)
@@ -25,7 +25,7 @@ defmodule GroupherServer.Test.Query.Account.Fans do
       user_conn = simu_conn(:user, user)
       results = user_conn |> gq_query(@query, variables)
 
-      assert results |> Map.get("totalCount") == 2
+      assert get_in(results, ["pageInfo", "totalCount"]) == 2
       entries = results |> Map.get("entries")
 
       assert entries |> List.first() |> Map.get("viewerBeenFollowed")
@@ -39,10 +39,10 @@ defmodule GroupherServer.Test.Query.Account.Fans do
       {:ok, user2} = db_insert(:user)
       {:ok, _} = user |> Accounts.Fans.follow(user2)
 
-      variables = %{login: user2.login, filter: %{page: 1, size: 20}}
+      variables = %{login: user2.login, pagi: %{offset: %{page: 1, size: 20}}}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> Map.get("totalCount") == 1
+      assert get_in(results, ["pageInfo", "totalCount"]) == 1
       entries = results |> Map.get("entries")
 
       assert user |> exist_in?(entries)
@@ -50,7 +50,7 @@ defmodule GroupherServer.Test.Query.Account.Fans do
 
     @query S.Social.q(:paged_followings)
     test "login user can get it's own paged followings", ~m(user_conn user)a do
-      variables = %{login: user.login, filter: %{page: 1, size: 20}}
+      variables = %{login: user.login, pagi: %{offset: %{page: 1, size: 20}}}
 
       {:ok, user2} = db_insert(:user)
       {:ok, user3} = db_insert(:user)
@@ -62,7 +62,7 @@ defmodule GroupherServer.Test.Query.Account.Fans do
 
       results = user_conn |> gq_query(@query, variables)
 
-      assert results |> Map.get("totalCount") == 3
+      assert get_in(results, ["pageInfo", "totalCount"]) == 3
       entries = results |> Map.get("entries")
 
       assert entries |> List.first() |> Map.get("viewerHasFollowed")
@@ -77,10 +77,10 @@ defmodule GroupherServer.Test.Query.Account.Fans do
       {:ok, user2} = db_insert(:user)
       {:ok, _followeer} = user |> Accounts.Fans.follow(user2)
 
-      variables = %{login: user.login, filter: %{page: 1, size: 20}}
+      variables = %{login: user.login, pagi: %{offset: %{page: 1, size: 20}}}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> Map.get("totalCount") == 1
+      assert get_in(results, ["pageInfo", "totalCount"]) == 1
       assert results["entries"] |> Enum.any?(&(&1["login"] == user2.login))
     end
 

@@ -62,7 +62,7 @@ defmodule GroupherServer.Test.CMS.SnapshotTest do
       assert cached.nickname == "fresh nickname"
     end
 
-    test "default article list keeps upvoted user snapshots stale after profile update" do
+    test "Article Lite lists exclude upvoted user snapshots before and after profile updates" do
       {:ok, user1} = db_insert(:user, nickname: "first nickname")
       {:ok, user2} = db_insert(:user, nickname: "second nickname")
       {:ok, user3} = db_insert(:user, nickname: "third nickname")
@@ -73,27 +73,30 @@ defmodule GroupherServer.Test.CMS.SnapshotTest do
       {:ok, _} = CMS.Interactions.upvote(post, user3, Ecto.UUID.generate())
 
       {:ok, first_page} =
-        CMS.Articles.page(:post, %{
-          community: community.slug,
-          order: :upvotes,
-          page: 1,
-          size: 10
-        })
+        CMS.Articles.page(
+          :post,
+          %{community: community.slug, order: :upvotes},
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10, config_revision: 0}
+        )
 
-      first_nicknames = first_page |> first_entry() |> latest_upvoted_nicknames()
-      assert first_nicknames === ["third nickname", "second nickname", "first nickname"]
+      first = first_entry(first_page)
+      assert first.id == post.id
+      refute Map.has_key?(first, :meta)
+      refute Map.has_key?(first, :latest_upvoted_users)
 
       {:ok, _updated_user2} = ORM.update(user2, %{nickname: "updated second nickname"})
 
       {:ok, second_page} =
-        CMS.Articles.page(:post, %{
-          community: community.slug,
-          order: :upvotes,
-          page: 1,
-          size: 10
-        })
+        CMS.Articles.page(
+          :post,
+          %{community: community.slug, order: :upvotes},
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10, config_revision: 0}
+        )
 
-      assert second_page |> first_entry() |> latest_upvoted_nicknames() === first_nicknames
+      second = first_entry(second_page)
+      assert second.id == first.id
+      refute Map.has_key?(second, :meta)
+      refute Map.has_key?(second, :latest_upvoted_users)
     end
 
     test "blocking user snapshots expose profile changes immediately" do
@@ -349,10 +352,4 @@ defmodule GroupherServer.Test.CMS.SnapshotTest do
   end
 
   defp first_entry(%{entries: [entry | _]}), do: entry
-
-  defp latest_upvoted_nicknames(article) do
-    article
-    |> get_in([Access.key(:meta), Access.key(:latest_upvoted_users)])
-    |> Enum.map(& &1.nickname)
-  end
 end

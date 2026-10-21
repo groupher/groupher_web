@@ -19,12 +19,10 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
     CMS.communities_fetch(slug, inc_views: inc_views)
   end
 
-  def paged_communities(_root, ~m(filter)a, %{context: %{cur_user: user}}) do
-    CMS.communities_paged(filter, user)
-  end
-
-  def paged_communities(_root, ~m(filter)a, _info) do
-    CMS.communities_paged(filter)
+  def paged_communities(_root, args, %{context: context}) do
+    with {:ok, pagi} <- Helper.ORM.Pagi.Params.from_input(Map.get(args, :pagi)) do
+      CMS.communities_paged(Map.get(args, :filter) || %{}, pagi, Map.get(context, :cur_user))
+    end
   end
 
   def create_community(_root, args, %{context: %{cur_user: user}}) do
@@ -50,9 +48,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
     CMS.communities_check_name(slug)
   end
 
-  def paged_categories(_root, ~m(filter)a, _info) do
-    CMS.communities_paged_categories(filter)
-  end
+  def categories(_root, _args, _info), do: CMS.communities_categories()
 
   def create_category(_root, ~m(community title slug command_id)a, %{context: %{cur_user: user}}) do
     CMS.communities_create_category(
@@ -105,8 +101,16 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
     CMS.communities_update_moderator_passport(community, rules, user, cur_user, command_id)
   end
 
-  def paged_community_moderators(_root, ~m(community filter)a, _info) do
-    CMS.communities_members(:moderators, community, filter)
+  def paged_community_moderators(_root, %{community: community} = args, %{context: context}) do
+    with {:ok, pagi} <- Helper.ORM.Pagi.Params.from_input(Map.get(args, :pagi)) do
+      CMS.communities_members(
+        :moderators,
+        community,
+        Map.get(args, :filter) || %{},
+        pagi,
+        Map.get(context, :cur_user)
+      )
+    end
   end
 
   def create_community_tag(
@@ -237,16 +241,16 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
     CMS.communities_unsubscribe(community, cur_user, command_id)
   end
 
-  def paged_community_subscribers(_root, ~m(community filter)a, %{context: %{cur_user: cur_user}}) do
-    CMS.communities_members(:subscribers, community, filter, cur_user)
-  end
-
-  def paged_community_subscribers(_root, ~m(community filter)a, _info) do
-    CMS.communities_members(:subscribers, community, filter)
-  end
-
-  def paged_community_subscribers(_root, _args, _info) do
-    {:error, "invalid args"}
+  def paged_community_subscribers(_root, %{community: community} = args, %{context: context}) do
+    with {:ok, pagi} <- Helper.ORM.Pagi.Params.from_input(Map.get(args, :pagi)) do
+      CMS.communities_members(
+        :subscribers,
+        community,
+        Map.get(args, :filter) || %{},
+        pagi,
+        Map.get(context, :cur_user)
+      )
+    end
   end
 
   def community_tags_count(root, _, _) do

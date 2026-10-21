@@ -50,19 +50,19 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedKanbanPosts do
       results = guest_conn |> gq_query(@query, variables)
 
       assert results["backlog"] |> is_valid_pagination?
-      assert results["backlog"]["totalCount"] == 1
+      assert results["backlog"]["pageInfo"]["totalCount"] == 1
 
       assert results["todo"] |> is_valid_pagination?
-      assert results["todo"]["totalCount"] == 1
+      assert results["todo"]["pageInfo"]["totalCount"] == 1
 
       assert results["wip"] |> is_valid_pagination?
-      assert results["wip"]["totalCount"] == 1
+      assert results["wip"]["pageInfo"]["totalCount"] == 1
 
       assert results["done"] |> is_valid_pagination?
-      assert results["done"]["totalCount"] == 1
+      assert results["done"]["pageInfo"]["totalCount"] == 1
 
       assert results["rejected"] |> is_valid_pagination?
-      assert results["rejected"]["totalCount"] == 1
+      assert results["rejected"]["pageInfo"]["totalCount"] == 1
     end
 
     test "disabled grouped kanban boards resolve to empty paginations",
@@ -91,13 +91,13 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedKanbanPosts do
       results = guest_conn |> gq_query(@query, variables)
 
       assert results["backlog"] |> is_valid_pagination?
-      assert results["backlog"]["totalCount"] == 0
+      assert results["backlog"]["pageInfo"]["totalCount"] == 0
 
       assert results["todo"] |> is_valid_pagination?
-      assert results["todo"]["totalCount"] == 1
+      assert results["todo"]["pageInfo"]["totalCount"] == 1
 
       assert results["rejected"] |> is_valid_pagination?
-      assert results["rejected"]["totalCount"] == 0
+      assert results["rejected"]["pageInfo"]["totalCount"] == 0
     end
 
     @query S.Article.q(:paged_kanban_posts)
@@ -113,12 +113,13 @@ defmodule GroupherServer.Test.Query.PagedArticles.PagedKanbanPosts do
 
       variables = %{
         community: community.slug,
-        filter: %{page: 1, size: 20, status: "WIP"}
+        pagi: %{offset: %{page: 1, size: 20, config_revision: 0}},
+        filter: %{status: "WIP"}
       }
 
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results["totalCount"] == 1
+      assert results["pageInfo"]["totalCount"] == 1
       assert results["entries"] |> Enum.at(0) |> Map.get("status") == "WIP"
     end
   end

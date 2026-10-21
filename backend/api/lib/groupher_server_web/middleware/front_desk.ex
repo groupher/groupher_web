@@ -187,6 +187,7 @@ defmodule GroupherServerWeb.Middleware.FrontDesk do
         updated_arguments =
           arguments
           |> Map.put(:comment, comment)
+          |> Map.put(:comment_path, comment_path)
           |> maybe_put_comment_passport_is_owner(comment, resolution)
 
         %{resolution | arguments: updated_arguments}

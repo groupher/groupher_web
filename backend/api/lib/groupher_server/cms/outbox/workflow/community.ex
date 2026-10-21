@@ -11,7 +11,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Community do
 
   alias GroupherServer.{Analysis, CMS}
 
-  alias CMS.Dashboard.Pagination
+  alias CMS.Dashboard.PagiMode
   alias CMS.Outbox
 
   def perform(%Oban.Job{args: %{"event_id" => event_id}} = job) do
@@ -60,26 +60,17 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Community do
   end
 
   defp invalidate_dashboard_pagination(%{
-         event: "community.pagination_changed",
+         event: "community.pagi_mode_changed",
          data: data
        }) do
     community = Map.get(data, "community") || Map.get(data, :community)
-    surface_name = Map.get(data, "surface") || Map.get(data, :surface)
 
-    surface =
-      Enum.find(Pagination.surfaces(), fn candidate ->
-        Atom.to_string(candidate) == to_string(surface_name)
-      end)
-
-    case {community, surface} do
-      {community, surface} when is_binary(community) and not is_nil(surface) ->
-        case Pagination.invalidate(community, surface) do
-          {:ok, _deleted?} -> {:ok, :pass}
-          {:error, _reason} = error -> error
-        end
+    case community do
+      slug when is_binary(slug) ->
+        with {:ok, _} <- PagiMode.invalidate(slug), do: {:ok, :pass}
 
       _ ->
-        {:error, :invalid_pagination_invalidation}
+        {:error, :invalid_pagi_mode_invalidation}
     end
   end
 
@@ -89,7 +80,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Community do
     {:ok, :community_presentation_changed}
   end
 
-  defp invalidation_type("community.pagination_changed") do
+  defp invalidation_type("community.pagi_mode_changed") do
     {:ok, :pagination_config_changed}
   end
 

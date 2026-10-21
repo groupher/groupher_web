@@ -49,18 +49,18 @@ defmodule GroupherServer.Messaging do
 
   ## Examples
 
-      Messaging.paged_mentions(user, %{page: 1, size: 20})
+      Messaging.paged_mentions(user, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
   """
-  def paged_mentions(user, filter), do: Mentions.Query.paged(user, filter)
+  def paged_mentions(user, filter, pagi), do: Mentions.Query.paged(user, filter, pagi)
 
   @doc """
   Returns the current user's paged activity-notification inbox.
 
   ## Examples
 
-      Messaging.paged_notifications(user, %{page: 1, size: 20})
+      Messaging.paged_notifications(user, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
   """
-  def paged_notifications(user, filter), do: Notifications.Query.paged(user, filter)
+  def paged_notifications(user, filter, pagi), do: Notifications.Query.paged(user, filter, pagi)
 
   @doc """
   Returns the unread count for one inbox message type and user.
@@ -106,9 +106,9 @@ defmodule GroupherServer.Messaging do
 
   ## Examples
 
-      Messaging.paged_messages(:mention, user, %{page: 1, size: 20})
+      Messaging.paged_messages(:mention, user, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
   """
-  def paged_messages(type, user, filter), do: Inbox.paged_messages(type, user, filter)
+  def paged_messages(type, user, filter, pagi), do: Inbox.paged_messages(type, user, filter, pagi)
 
   @doc """
   Dispatches a messaging event through the bounded notification side-effect adapter.

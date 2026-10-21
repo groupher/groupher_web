@@ -31,6 +31,9 @@ defmodule GroupherServer.Pagi do
   @spec valid_combination?(pos_integer(), atom(), atom()) :: boolean()
   defdelegate valid_combination?(version, api, mode), to: SchemaRegistry
 
+  @doc "Returns the pagination unsupported-sort error. Facing contexts use this public boundary."
+  defdelegate unsupported_sort(), to: ErrorCat
+
   @doc "Builds the stable invalid-config error for a pagination boundary."
   @spec invalid_config() :: ErrorCat.error()
   defdelegate invalid_config(), to: ErrorCat

@@ -5,13 +5,13 @@ defmodule GroupherServer.Test.CMS.Communities.Query.PageCategories do
 
   alias GroupherServer.CMS
 
-  test "pages categories through the named community Query" do
+  test "returns the complete ordered navigation category configuration" do
     {:ok, category} = db_insert(:category)
 
     assert {:ok, result} =
-             CMS.Communities.Query.page_categories(%{page: 1, size: 10})
+             CMS.Communities.Query.categories()
 
-    assert result.entries |> Enum.any?(&(&1.id == category.id))
-    assert result.total_count >= 1
+    assert result |> Enum.any?(&(&1.id == category.id))
+    assert is_list(result)
   end
 end

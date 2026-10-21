@@ -1,110 +1,66 @@
 defmodule GroupherServer.Accounts.Fans.List do
   @moduledoc """
-  Paginates follower and following lists for profile pages.
+  Pages User identities in a follower/following scope with the shared Pagi contract.
+  Relationship rows scope membership; User owns ordering and cursor values.
 
-  Viewer-aware variants enrich each user row with follow-state booleans so the
-  frontend can render follow buttons without extra round trips.
-
-  Business position:
-
-      Accounts.Fans.Query -> Fans.List -> follower/following read models
+      Accounts.Fans -> scoped Users -> ORM.Pagi -> optional viewer enrichment
   """
 
-  import Ecto.Query, warn: false
-  import Helper.Utils, only: [done: 1]
-  import ShortMaps
+  import Ecto.Query
 
-  alias GroupherServer.Accounts
+  alias GroupherServer.Accounts.Fans.ViewerState
+  alias GroupherServer.Accounts.Model.{User, UserFollower, UserFollowing}
+  alias Helper.ORM
+  alias Helper.ORM.Pagi.{Order, Params}
 
-  alias Accounts.Fans.ViewerState
-  alias Accounts.Model.{User, UserFollower, UserFollowing}
-  alias Helper.{ORM, QueryBuilder}
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  @spec paged_followers(User.t(), map(), Params.t() | nil, User.t() | nil) :: tuple()
+  def paged_followers(%User{id: id}, filter, pagi, viewer \\ nil) do
+    ids =
+      from(relation in UserFollower, where: relation.user_id == ^id, select: relation.follower_id)
 
-  @doc """
-  Returns followers with viewer-aware relationship state.
-
-  ## Examples
-
-      Accounts.Fans.List.paged_followers(user, %{page: 1, size: 20}, viewer)
-  """
-  def paged_followers(%User{id: user_id}, filter, %User{} = cur_user) do
-    paged_followers(%User{id: user_id}, filter)
-    |> ViewerState.mark_viewer_follow_status(cur_user)
-    |> done()
+    page(ids, id, :followers, filter, pagi, viewer)
   end
 
-  @doc """
-  Returns a user's followers.
+  @spec paged_followings(User.t(), map(), Params.t() | nil, User.t() | nil) :: tuple()
+  def paged_followings(%User{id: id}, filter, pagi, viewer \\ nil) do
+    ids =
+      from(relation in UserFollowing,
+        where: relation.user_id == ^id,
+        select: relation.following_id
+      )
 
-  ## Examples
-
-      Accounts.Fans.List.paged_followers(user, %{page: 1, size: 20})
-  """
-  def paged_followers(%User{id: user_id}, filter) do
-    UserFollower
-    |> where([uf], uf.user_id == ^user_id)
-    |> join(:inner, [uf], u in assoc(uf, :follower))
-    |> load_fans(filter)
+    page(ids, id, :followings, filter, pagi, viewer)
   end
 
-  @doc """
-  Returns following users with viewer-aware relationship state.
+  defp page(ids, owner_id, direction, filter, pagi, viewer) do
+    query = from(user in User, where: user.id in subquery(ids))
+    sort = Map.get(filter, :sort, :desc_inserted)
 
-  ## Examples
-
-      Accounts.Fans.List.paged_followings(user, %{page: 1, size: 20}, viewer)
-  """
-  def paged_followings(%User{id: user_id}, filter, %User{} = cur_user) do
-    paged_followings(%User{id: user_id}, filter)
-    |> ViewerState.mark_viewer_follow_status(cur_user)
-    |> done()
-  end
-
-  @doc """
-  Returns the users followed by one account.
-
-  ## Examples
-
-      Accounts.Fans.List.paged_followings(user, %{page: 1, size: 20})
-  """
-  def paged_followings(%User{id: user_id}, filter) do
-    UserFollowing
-    |> where([uf], uf.user_id == ^user_id)
-    |> join(:inner, [uf], u in assoc(uf, :following))
-    |> load_fans(filter)
-  end
-
-  defp load_fans(queryable, ~m(page size)a = filter) do
-    query =
-      queryable
-      |> select([uf, u], u)
-      |> QueryBuilder.filter_pack(Map.delete(filter, :sort))
-
-    with {:ok, result} <-
-           ORM.pagi(
-             query,
-             %Params.Offset{page: page, size: size},
+    with {:ok, order} <- user_order(sort),
+         {:ok, result} <-
+           ORM.pagi(query, pagi,
              for: User,
-             order: user_order(filter)
+             order: order,
+             surface: "accounts.#{direction}",
+             query_fingerprint: :erlang.term_to_binary({owner_id, sort}) |> Base.encode64()
            ) do
-      done(Page.to_legacy(result))
+      case viewer do
+        %User{} -> {:ok, ViewerState.mark_viewer_follow_status({:ok, result}, viewer)}
+        nil -> {:ok, result}
+      end
     end
   end
 
-  defp user_order(%{sort: :asc_inserted}) do
-    %Order{
-      fields: [:inserted_at, :id],
-      directions: [:asc, :asc],
-      cursor_fields: [:inserted_at, :id]
-    }
+  defp user_order(sort) when sort in [:asc_inserted, :desc_inserted] do
+    direction = if sort == :asc_inserted, do: :asc, else: :desc
+
+    {:ok,
+     %Order{
+       fields: [:inserted_at, :id],
+       directions: [direction, direction],
+       cursor_fields: [:inserted_at, :id]
+     }}
   end
 
-  defp user_order(_filter) do
-    %Order{
-      fields: [:inserted_at, :id],
-      directions: [:desc, :desc],
-      cursor_fields: [:inserted_at, :id]
-    }
-  end
+  defp user_order(_sort), do: {:error, GroupherServer.Pagi.unsupported_sort()}
 end

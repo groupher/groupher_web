@@ -29,7 +29,7 @@ defmodule GroupherServer.Test.CMS.PostPendingFlag do
   end
 
   describe "[pending posts flags]" do
-    test "orders a multi-tag audit query by projected views", ~m(community user post_m)a do
+    test "pages audit failures by stable Article identity", ~m(community user post_m)a do
       {:ok, tag} =
         CMS.Communities.create_tag(
           community,
@@ -47,9 +47,7 @@ defmodule GroupherServer.Test.CMS.PostPendingFlag do
                )
 
       assert {:ok, %{entries: entries}} =
-               CMS.Articles.paged_audit_failed(:post, %{
-                 article_tags: [tag.slug],
-                 order: :views,
+               CMS.Articles.paged_audit_failed(:post, %Helper.ORM.Pagi.Params.Offset{
                  page: 1,
                  size: 20
                })

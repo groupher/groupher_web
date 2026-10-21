@@ -14,11 +14,12 @@ defmodule GroupherServer.Test.CMS.Articles.ChangelogList do
       {:ok, _} = CMS.Articles.create(community, :changelog, changelog_attrs, user)
       {:ok, _} = CMS.Articles.create(community, :changelog, changelog_attrs, user)
 
-      {:ok, paged_changelogs} = CMS.Articles.page(:changelog, %{page: 1, size: 20})
+      {:ok, paged_changelogs} =
+        CMS.Articles.page(:changelog, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
 
-      assert paged_changelogs |> is_valid_pagination?(:raw)
+      assert paged_changelogs |> is_map()
       assert length(paged_changelogs.entries) >= 2
-      assert Enum.all?(paged_changelogs.entries, &(&1.meta.thread == :changelog))
+      assert Enum.all?(paged_changelogs.entries, &(&1.thread == :changelog))
     end
   end
 end

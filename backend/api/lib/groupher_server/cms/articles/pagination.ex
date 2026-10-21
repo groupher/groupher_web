@@ -20,23 +20,19 @@ defmodule GroupherServer.CMS.Articles.Pagination do
   alias GroupherServer.{Accounts, CMS, Pagi, Repo}
   alias GroupherServer.CMS.Articles.ArticleLite
   alias GroupherServer.CMS.Communities.Enable
-  alias CMS.Dashboard.Pagination, as: DashboardPagination
+  alias CMS.Dashboard.PagiMode
   alias CMS.ErrorCat
 
   alias CMS.Model.{
     Article,
-    ArticleAssetRef,
     ArticleBinding,
     ArticleBindingTag,
-    ArticleBodySnapshot,
     ArticleLifecycle,
     Author,
     ArticlePublic,
-    ArticleRevision,
     Community,
     CommunityTag,
     DocBranch,
-    DocBranchVersion,
     DocBranchState,
     DocTreeNode,
     DocLifecycle,
@@ -71,16 +67,16 @@ defmodule GroupherServer.CMS.Articles.Pagination do
   """
   @spec page(atom(), filter(), Accounts.Model.User.t() | nil, keyword()) ::
           {:ok, map()} | {:error, term()}
-  def page(thread, filter, viewer \\ nil, opts \\ [])
+  def page(thread, filter, pagi, viewer \\ nil, opts \\ [])
 
-  def page(thread, filter, viewer, opts)
+  def page(thread, filter, pagi, viewer, opts)
       when is_atom(thread) and is_map(filter) and is_list(opts) do
-    with {:ok, effective} <- effective_pagination_config(thread, filter, opts),
-         opts <- put_effective_config(opts, effective),
-         filter <- attach_legacy_default_revision(filter, effective.config, opts),
+    with {:ok, :pass} <- validate_filter(filter),
+         {:ok, effective} <- effective_pagination_config(thread, filter, pagi, opts),
+         opts <- put_effective_config(opts, effective, filter),
          {:ok, _thread} <- Enable.thread?(Map.get(filter, :community), thread),
          {:ok, order} <- order_for(thread, filter),
-         {:ok, params} <- params_for(filter, opts),
+         {:ok, params} <- Params.from_input(pagi, effective.config.default_size),
          {:ok, page} <- run_page(thread, filter, params, order, opts),
          {:ok, entries} <- present_entries(page.entries, viewer),
          {:ok, pinned_entries} <-
@@ -89,15 +85,16 @@ defmodule GroupherServer.CMS.Articles.Pagination do
        %{
          entries: entries,
          pinned_entries: pinned_entries,
-         page_info: page_info(page)
+         page_info: Page.info(page)
        }}
     end
   end
 
-  def page(_thread, _filter, _viewer, _opts),
-    do: {:error, ErrorCat.invalid_body("Invalid Article pagination input")}
+  def page(_thread, _filter, _pagi, _viewer, _opts) do
+    {:error, ErrorCat.invalid_body("Invalid Article pagination input")}
+  end
 
-  defp effective_pagination_config(thread, filter, opts) do
+  defp effective_pagination_config(_thread, filter, pagi, opts) do
     case Keyword.fetch(opts, :config) do
       {:ok, %Config{} = config} ->
         {:ok, %{config: config, mode: nil, schema_version: nil}}
@@ -106,43 +103,47 @@ defmodule GroupherServer.CMS.Articles.Pagination do
         {:error, Pagi.invalid_config()}
 
       :error ->
-        surface = if thread == :changelog, do: :changelogs, else: :posts
-
-        DashboardPagination.for_community(Map.get(filter, :community), surface,
-          expected_revision: requested_revision(filter, opts)
+        PagiMode.for_community(Map.get(filter, :community),
+          expected_revision: Params.revision(pagi)
         )
     end
   end
 
-  defp put_effective_config(opts, effective) do
+  defp put_effective_config(opts, effective, filter) do
+    configured? = Keyword.has_key?(opts, :config) or is_binary(Map.get(filter, :community))
+    opts = if configured?, do: Keyword.put(opts, :config, effective.config), else: opts
+
     opts
-    |> Keyword.put(:config, effective.config)
     |> Keyword.put(:mode, effective.mode)
     |> Keyword.put(:schema_version, effective.schema_version)
     |> Keyword.put(:resource, :articles)
   end
 
-  defp requested_revision(filter, opts) do
-    case Keyword.get(opts, :pagi_input) do
-      {_api, input} when is_map(input) -> Map.get(input, :config_revision)
-      _ -> Map.get(filter, :config_revision)
-    end
-  end
+  defp validate_filter(filter) do
+    cond do
+      Enum.any?([:page, :size, :first, :after, :config_revision], &Map.has_key?(filter, &1)) ->
+        {:error, ErrorCat.invalid_body("Pagination belongs in PagiInput")}
 
-  defp attach_legacy_default_revision(filter, %Config{revision: revision}, opts) do
-    if Keyword.has_key?(opts, :pagi_input) do
-      filter
-    else
-      attach_default_revision(filter, revision)
-    end
-  end
+      requested_order(filter) not in [
+        nil,
+        :publish,
+        :upvotes,
+        :comments,
+        :views,
+        :most_views,
+        :least_views,
+        :asc_inserted,
+        :desc_inserted,
+        :asc_active,
+        :desc_active
+      ] ->
+        {:error, GroupherServer.Pagi.unsupported_sort()}
 
-  defp attach_default_revision(filter, revision) do
-    if Enum.any?([:page, :size, :first, :after], &Map.has_key?(filter, &1)) and
-         not Map.has_key?(filter, :config_revision) do
-      Map.put(filter, :config_revision, revision)
-    else
-      filter
+      Map.has_key?(filter, :status) and Map.has_key?(filter, :statuses) ->
+        {:error, ErrorCat.invalid_body("Select status or statuses")}
+
+      true ->
+        {:ok, :pass}
     end
   end
 
@@ -168,332 +169,32 @@ defmodule GroupherServer.CMS.Articles.Pagination do
       paths ->
         rows =
           paths
-          |> lite_path_query()
+          |> public_path_query()
           |> Repo.all()
 
         {:ok, rows}
     end
   end
 
-  def lite_paths(_paths),
-    do: {:error, ErrorCat.invalid_body("Too many ArticleLite paths")}
-
-  @doc """
-  Hydrates the legacy Article list response from one bounded page batch.
-
-  The content, asset references, and operational state are loaded by page-level
-  queries and merged by article/binding identity. This keeps the compatibility
-  response shape without restoring per-entry `FrontDesk.article/1` reads.
-
-  ## Examples
-
-      {:ok, entries} = GroupherServer.CMS.Articles.Pagination.legacy_entries(page_rows)
-      is_list(entries)
-  """
-  @spec legacy_entries([map()], keyword()) :: {:ok, [map()]} | {:error, term()}
-  def legacy_entries(rows, opts \\ [])
-
-  def legacy_entries([], _opts), do: {:ok, []}
-
-  def legacy_entries(rows, opts) when is_list(rows) and is_list(opts) do
-    with {:ok, content_by_key} <- legacy_content(rows) do
-      refs_by_revision = legacy_asset_refs(content_by_key)
-      operational_by_key = legacy_operational_state(rows)
-      public_by_key = legacy_public_projection(rows, opts)
-
-      rows
-      |> Enum.map(fn row ->
-        article = row.resource
-        key = {article.id, row.community.id}
-        {body, revision_id} = Map.fetch!(content_by_key, legacy_content_key(article, key))
-        asset_refs = Map.get(refs_by_revision, revision_id, [])
-        public = Map.get(public_by_key, legacy_content_key(article, key), %{})
-
-        article
-        |> Map.from_struct()
-        |> Map.merge(%{
-          author: row.author,
-          body: body,
-          asset_refs: asset_refs,
-          community: row.community,
-          communities: [row.community],
-          community_tags: row.community_tags,
-          inner_id: row.inner_id,
-          is_pinned: Map.get(article, :is_pinned, false),
-          lifecycle: nil,
-          pending: Map.get(article, :pending, 0)
-        })
-        |> Map.merge(public)
-        |> Map.merge(Map.get(operational_by_key, key, %{}))
-      end)
-      |> then(&{:ok, &1})
-    end
+  def lite_paths(_paths) do
+    {:error, ErrorCat.invalid_body("Too many ArticleLite paths")}
   end
 
-  def legacy_entries(_rows, _opts),
-    do: {:error, ErrorCat.invalid_body("Invalid legacy Article page rows")}
-
-  defp legacy_public_projection(rows, opts) do
-    if Keyword.get(opts, :include_public_projection, false) do
-      community_ids = Enum.map(rows, & &1.community.id) |> Enum.uniq()
-
-      ordinary_ids =
-        Enum.filter(rows, &(&1.resource.thread != :doc)) |> Enum.map(& &1.resource.id)
-
-      doc_ids = Enum.filter(rows, &(&1.resource.thread == :doc)) |> Enum.map(& &1.resource.id)
-
-      ordinary_public =
-        if ordinary_ids == [] do
-          []
-        else
-          from(public in ArticlePublic,
-            where: public.article_id in ^ordinary_ids and public.visible == true,
-            select: {
-              public.article_id,
-              public.published_at,
-              public.updated_at,
-              public.slug,
-              public.body_hash,
-              public.active_at,
-              public.title,
-              public.digest,
-              public.publication_version
-            }
-          )
-          |> Repo.all()
-        end
-
-      doc_public =
-        if doc_ids == [] do
-          []
-        else
-          from(public in DocPublic,
-            join: branch in DocBranch,
-            on: branch.id == public.branch_id and branch.type == :main,
-            where:
-              public.article_id in ^doc_ids and branch.community_id in ^community_ids and
-                public.visible == true,
-            select: {
-              public.article_id,
-              branch.community_id,
-              public.published_at,
-              public.updated_at,
-              public.slug,
-              public.body_hash,
-              public.active_at,
-              public.title,
-              public.digest,
-              public.subtitle,
-              public.publication_version
-            }
-          )
-          |> Repo.all()
-        end
-
-      ordinary_by_id =
-        Map.new(ordinary_public, fn {
-                                      article_id,
-                                      published_at,
-                                      updated_at,
-                                      slug,
-                                      body_hash,
-                                      active_at,
-                                      title,
-                                      digest,
-                                      publication_version
-                                    } ->
-          {article_id,
-           %{
-             published_at: published_at,
-             updated_at: updated_at,
-             slug: slug,
-             body_hash: body_hash,
-             active_at: active_at,
-             title: title,
-             digest: digest,
-             publication_version: publication_version
-           }}
-        end)
-
-      doc_by_key =
-        Map.new(doc_public, fn {
-                                 article_id,
-                                 community_id,
-                                 published_at,
-                                 updated_at,
-                                 slug,
-                                 body_hash,
-                                 active_at,
-                                 title,
-                                 digest,
-                                 subtitle,
-                                 publication_version
-                               } ->
-          {{article_id, community_id},
-           %{
-             published_at: published_at,
-             updated_at: updated_at,
-             slug: slug,
-             body_hash: body_hash,
-             active_at: active_at,
-             title: title,
-             digest: digest,
-             subtitle: subtitle,
-             publication_version: publication_version
-           }}
-        end)
-
-      Map.new(rows, fn row ->
-        article = row.resource
-        key = {article.id, row.community.id}
-
-        projection =
-          if article.thread == :doc do
-            Map.get(doc_by_key, key, %{})
-          else
-            Map.get(ordinary_by_id, article.id, %{})
-          end
-
-        {legacy_content_key(article, key), projection}
-      end)
-    else
-      %{}
-    end
+  @doc "Returns the binding identities admitted by the canonical public Lite scope."
+  def public_binding_ids do
+    public_path_query(:all)
+    |> exclude(:select)
+    |> select([lite_binding: binding], binding.id)
   end
 
-  defp legacy_content(rows) do
-    community_ids = Enum.map(rows, & &1.community.id) |> Enum.uniq()
-    ordinary_ids = Enum.filter(rows, &(&1.resource.thread != :doc)) |> Enum.map(& &1.resource.id)
-    doc_ids = Enum.filter(rows, &(&1.resource.thread == :doc)) |> Enum.map(& &1.resource.id)
-
-    ordinary_content =
-      if ordinary_ids == [] do
-        []
-      else
-        from(public in ArticlePublic,
-          join: revision in ArticleRevision,
-          on: revision.id == public.revision_id,
-          join: body in ArticleBodySnapshot,
-          on: body.id == revision.body_snapshot_id,
-          where: public.article_id in ^ordinary_ids and public.visible == true,
-          select: {public.article_id, revision.id, body}
-        )
-        |> Repo.all()
-      end
-
-    doc_content =
-      if doc_ids == [] do
-        []
-      else
-        from(public in DocPublic,
-          join: branch in DocBranch,
-          on: branch.id == public.branch_id and branch.type == :main,
-          join: version in DocBranchVersion,
-          on: version.id == public.branch_version_id,
-          join: revision in ArticleRevision,
-          on: revision.id == version.revision_id,
-          join: body in ArticleBodySnapshot,
-          on: body.id == revision.body_snapshot_id,
-          where:
-            public.article_id in ^doc_ids and branch.community_id in ^community_ids and
-              public.visible == true,
-          select: {public.article_id, branch.community_id, revision.id, body}
-        )
-        |> Repo.all()
-      end
-
-    ordinary_by_id =
-      Map.new(ordinary_content, fn {article_id, revision_id, body} ->
-        {article_id, {body, revision_id}}
-      end)
-
-    doc_by_key =
-      Map.new(doc_content, fn {article_id, community_id, revision_id, body} ->
-        {{article_id, community_id}, {body, revision_id}}
-      end)
-
-    content_by_key =
-      Map.new(rows, fn row ->
-        article = row.resource
-        key = {article.id, row.community.id}
-        content = legacy_content_for(article, key, ordinary_by_id, doc_by_key)
-        {legacy_content_key(article, key), content}
-      end)
-
-    if Enum.all?(Map.values(content_by_key), &match?({%ArticleBodySnapshot{}, _revision_id}, &1)) do
-      {:ok, content_by_key}
-    else
-      {:error, ErrorCat.invalid_body("Article body projection is missing")}
-    end
-  end
-
-  defp legacy_content_for(%{thread: :doc}, key, _ordinary_by_id, doc_by_key),
-    do: Map.get(doc_by_key, key)
-
-  defp legacy_content_for(%{id: article_id}, _key, ordinary_by_id, _doc_by_key),
-    do: Map.get(ordinary_by_id, article_id)
-
-  defp legacy_content_key(%{thread: :doc}, key), do: key
-  defp legacy_content_key(_article, {article_id, _community_id}), do: article_id
-
-  defp legacy_asset_refs(content_by_key) do
-    revision_ids =
-      content_by_key
-      |> Map.values()
-      |> Enum.map(&elem(&1, 1))
-      |> Enum.uniq()
-
-    if revision_ids == [] do
-      %{}
-    else
-      ArticleAssetRef
-      |> where([ref], ref.revision_id in ^revision_ids)
-      |> order_by([ref], asc: ref.position, asc: ref.inserted_at, asc: ref.id)
-      |> Repo.all()
-      |> Enum.group_by(& &1.revision_id)
-    end
-  end
-
-  defp legacy_operational_state(rows) do
-    article_ids = Enum.map(rows, & &1.resource.id) |> Enum.uniq()
-    community_ids = Enum.map(rows, & &1.community.id) |> Enum.uniq()
-
-    post_state =
-      from(state in PostState,
-        where: state.article_id in ^article_ids,
-        select: {state.article_id, state.cat}
-      )
-      |> Repo.all()
-      |> Map.new(fn {article_id, cat} -> {article_id, %{cat: cat}} end)
-
-    kanban_state =
-      from(binding in ArticleBinding,
-        join: state in KanbanState,
-        on: state.article_binding_id == binding.id,
-        where: binding.article_id in ^article_ids and binding.community_id in ^community_ids,
-        select: {binding.article_id, binding.community_id, state.status}
-      )
-      |> Repo.all()
-      |> Map.new(fn {article_id, community_id, status} ->
-        {{article_id, community_id}, %{status: status}}
-      end)
-
-    Map.new(rows, fn row ->
-      key = {row.resource.id, row.community.id}
-      {key, Map.merge(Map.get(post_state, row.resource.id, %{}), Map.get(kanban_state, key, %{}))}
-    end)
-  end
-
-  defp run_page(thread, filter, %Params.Offset{} = params, order, opts) do
-    config = Keyword.get(opts, :config, Config.default())
-
+  defp run_page(thread, filter, params, order, opts) do
     query_opts = [
-      include_pinned: false,
+      include_pinned: Keyword.get(opts, :include_pinned, false),
       public_tree: Keyword.get(opts, :public_tree, false)
     ]
 
     query = public_query(thread, filter, order, query_opts)
-    count_query = count_query(thread, filter, query_opts)
+    count = count_query(thread, filter, query_opts)
 
     pagi_opts = [
       for: ArticleLite,
@@ -501,99 +202,26 @@ defmodule GroupherServer.CMS.Articles.Pagination do
       cursor_value_func: &ArticleLite.cursor_values/2,
       surface: "articles.#{thread}",
       query_fingerprint: query_fingerprint(thread, filter, order, query_opts),
-      count_query: fn -> count_query end,
+      count_query: fn -> count end,
       count_query_mode: :scalar
     ]
 
-    ORM.pagi(
-      query,
-      params,
-      maybe_put_config(pagi_opts, opts, config)
-    )
+    pagi_opts =
+      case Keyword.fetch(opts, :config) do
+        {:ok, config} -> Keyword.put(pagi_opts, :config, config)
+        :error -> pagi_opts
+      end
+
+    ORM.pagi(query, params, pagi_opts)
   end
 
-  defp run_page(thread, filter, %Params.Cursor{} = params, order, opts) do
-    config = Keyword.get(opts, :config, Config.default())
-
-    query_opts = [
-      include_pinned: false,
-      public_tree: Keyword.get(opts, :public_tree, false)
-    ]
-
-    ORM.pagi(
-      public_query(thread, filter, order, query_opts),
-      params,
-      maybe_put_config(
-        [
-          for: ArticleLite,
-          order: order,
-          cursor_value_func: &ArticleLite.cursor_values/2,
-          surface: "articles.#{thread}",
-          query_fingerprint: query_fingerprint(thread, filter, order, query_opts)
-        ],
-        opts,
-        config
-      )
-    )
-  end
-
-  defp maybe_put_config(pagi_opts, opts, config) do
-    if Keyword.has_key?(opts, :config),
-      do: Keyword.put(pagi_opts, :config, config),
-      else: pagi_opts
-  end
-
-  defp params_for(filter, opts) when is_map(filter) do
-    config = Keyword.get(opts, :config, Config.default())
-
-    case Keyword.fetch(opts, :pagi_input) do
-      {:ok, {:offset, pagination}} -> offset_params(pagination, config)
-      {:ok, {:cursor, pagination}} -> cursor_params(pagination, config)
-      {:ok, _invalid} -> {:error, ErrorCat.invalid_body("Invalid Article pagination input")}
-      :error -> legacy_params(filter, config)
-    end
-  end
-
-  defp legacy_params(filter, config) do
-    pagination = Map.take(filter, [:page, :size, :first, :after, :config_revision])
-
-    cond do
-      pagination == %{} ->
-        {:ok, nil}
-
-      Map.has_key?(pagination, :first) or Map.has_key?(pagination, :after) ->
-        if Map.has_key?(pagination, :page) or Map.has_key?(pagination, :size) do
-          {:error, ErrorCat.invalid_body("Invalid Article pagination input")}
-        else
-          cursor_params(pagination, config)
-        end
-
-      true ->
-        offset_params(pagination, config)
-    end
-  end
-
-  defp offset_params(pagination, config) do
-    {:ok,
-     %Params.Offset{
-       page: Map.get(pagination, :page, 1),
-       size: Map.get(pagination, :size, config.default_size),
-       config_revision: Map.get(pagination, :config_revision)
-     }}
-  end
-
-  defp cursor_params(pagination, config) do
-    {:ok,
-     %Params.Cursor{
-       first: Map.get(pagination, :first, config.default_size),
-       after: Map.get(pagination, :after),
-       config_revision: Map.get(pagination, :config_revision)
-     }}
+  defp requested_order(filter) do
+    Map.get(filter, :order) || Map.get(filter, :sort)
   end
 
   defp order_for(thread, filter) do
     {fields, directions, bindings} =
-      case Map.get(filter, :order, Map.get(filter, :sort)) do
+      case requested_order(filter) do
         :publish ->
           {[:published_at, :binding_id], [:desc_nulls_last, :desc], []}
 
@@ -637,11 +265,13 @@ defmodule GroupherServer.CMS.Articles.Pagination do
     })
   end
 
-  defp simple_order(field, direction),
-    do: {[field, :binding_id], [direction, direction], []}
+  defp simple_order(field, direction) do
+    {[field, :binding_id], [direction, direction], []}
+  end
 
-  defp stats_order(field, direction),
-    do: {[field, :binding_id], [direction, :desc], [:article_stats]}
+  defp stats_order(field, direction) do
+    {[field, :binding_id], [direction, :desc], [:article_stats]}
+  end
 
   defp active_field(:doc), do: :doc_active_at
   defp active_field(_thread), do: :active_at
@@ -653,6 +283,7 @@ defmodule GroupherServer.CMS.Articles.Pagination do
   end
 
   defp public_scope(thread, filter, opts) do
+    visible = public_binding_ids()
     include_pinned = Keyword.get(opts, :include_pinned, false)
 
     from(article in Article,
@@ -663,9 +294,7 @@ defmodule GroupherServer.CMS.Articles.Pagination do
       join: community in Community,
       as: :article_community,
       on: community.id == binding.community_id,
-      where:
-        article.thread == ^thread and article.moderation_state == :legal and
-          binding.inner_id > 0
+      where: article.thread == ^thread and binding.id in subquery(visible)
     )
     |> add_public_joins(thread)
     |> maybe_add_public_tree(thread, opts)
@@ -738,6 +367,18 @@ defmodule GroupherServer.CMS.Articles.Pagination do
 
   defp apply_filter(query, filter) do
     Enum.reduce(filter, query, fn
+      {:author_id, user_id}, query when is_integer(user_id) ->
+        authors = from(author in Author, where: author.user_id == ^user_id, select: author.id)
+        where(query, [article: article], article.author_id in subquery(authors))
+
+      {:statuses, statuses}, query when is_list(statuses) ->
+        query
+        |> join(:inner, [article_binding: binding], state in KanbanState,
+          as: :kanban_state,
+          on: state.article_binding_id == binding.id
+        )
+        |> where([kanban_state: state], state.status in ^statuses)
+
       {:community, community_ref}, query when is_binary(community_ref) and community_ref != "" ->
         where(query, [article_community: community], community.slug == ^community_ref)
 
@@ -772,16 +413,18 @@ defmodule GroupherServer.CMS.Articles.Pagination do
   end
 
   defp tag_filter(query, tags) do
-    query
-    |> join(:inner, [article_binding: binding], assignment in ArticleBindingTag,
-      as: :article_binding_tag,
-      on: assignment.article_binding_id == binding.id
+    where(
+      query,
+      exists(
+        from(assignment in ArticleBindingTag,
+          join: tag in CommunityTag,
+          on: tag.id == assignment.tag_id,
+          where:
+            assignment.article_binding_id == parent_as(:article_binding).id and
+              tag.slug in ^tags
+        )
+      )
     )
-    |> join(:inner, [article_binding_tag: assignment], tag in CommunityTag,
-      as: :community_tag,
-      on: tag.id == assignment.tag_id and tag.slug in ^tags
-    )
-    |> distinct([article_binding: binding], binding.id)
   end
 
   defp maybe_exclude_pinned(query, true), do: query
@@ -810,18 +453,32 @@ defmodule GroupherServer.CMS.Articles.Pagination do
     |> then(fn entries -> maybe_attach_viewer(entries, viewer) end)
   end
 
-  defp present_pinned(_thread, %{page: page}, _viewer, _params, _order, _opts) when page != 1,
-    do: {:ok, []}
+  defp present_pinned(thread, filter, viewer, params, order, opts) do
+    if Keyword.get(opts, :include_pinned, false) do
+      {:ok, []}
+    else
+      page_pins(thread, filter, viewer, params, order, opts)
+    end
+  end
 
-  defp present_pinned(thread, filter, viewer, %Params.Offset{}, order, opts) do
+  defp page_pins(thread, filter, viewer, nil, order, opts) do
     load_pinned(thread, filter, viewer, order, opts)
   end
 
-  defp present_pinned(thread, filter, viewer, %Params.Cursor{after: nil}, order, opts) do
+  defp page_pins(_thread, _filter, _viewer, %Params.Offset{page: page}, _order, _opts)
+       when page != 1 do
+    {:ok, []}
+  end
+
+  defp page_pins(thread, filter, viewer, %Params.Offset{}, order, opts) do
     load_pinned(thread, filter, viewer, order, opts)
   end
 
-  defp present_pinned(_thread, _filter, _viewer, %Params.Cursor{}, _order, _opts), do: {:ok, []}
+  defp page_pins(thread, filter, viewer, %Params.Cursor{after: nil}, order, opts) do
+    load_pinned(thread, filter, viewer, order, opts)
+  end
+
+  defp page_pins(_thread, _filter, _viewer, %Params.Cursor{}, _order, _opts), do: {:ok, []}
 
   defp load_pinned(thread, filter, viewer, order, opts) do
     content_order = %{order | bindings: [], projection: []}
@@ -855,19 +512,11 @@ defmodule GroupherServer.CMS.Articles.Pagination do
       %{
         id: row.article.id,
         thread: row.article.thread,
-        resource:
-          row.article
-          |> Map.put(:community, row.community)
-          |> Map.put(:inner_id, row.inner_id)
-          |> Map.put(:title, row.title)
-          |> Map.put(:digest, row.digest)
-          |> Map.put(:active_at, row.active_at)
-          |> Map.put(:published_at, row.published_at)
-          |> Map.put(:meta, %{thread: row.article.thread})
-          |> Map.put(:is_pinned, Map.get(row, :is_pinned, false))
-          |> Map.put(:pending, 0),
         inner_id: row.inner_id,
         title: row.title,
+        cat: Map.get(row, :cat),
+        status: Map.get(row, :status),
+        is_pinned: Map.get(row, :is_pinned, false),
         digest: row.digest,
         author: row.author,
         community: row.community,
@@ -880,50 +529,38 @@ defmodule GroupherServer.CMS.Articles.Pagination do
 
   defp maybe_attach_viewer(entries, _viewer), do: {:ok, entries}
 
-  defp page_info(%Page.Offset{} = page) do
-    %{
-      api: :offset,
-      page: page.page,
-      size: page.size,
-      total_count: page.total_count,
-      total_pages: page.total_pages,
-      has_previous_page: page.has_previous_page,
-      has_next_page: page.has_next_page
-    }
-  end
-
-  defp page_info(%Page.Cursor{} = page) do
-    %{
-      api: :cursor,
-      start_cursor: page.start_cursor,
-      end_cursor: page.end_cursor,
-      has_previous_page: page.has_previous_page,
-      has_next_page: page.has_next_page
-    }
-  end
-
   defp query_fingerprint(thread, filter, order, opts) do
-    query_filter = Map.drop(filter, [:page, :size, :first, :after, :config_revision])
+    query_filter = Map.put(filter, :order, Order.identity(order))
 
     :crypto.hash(
       :sha256,
       :erlang.term_to_binary(
-        {thread, query_filter, Order.identity(order), Keyword.get(opts, :public_tree, false)}
+        {thread, query_filter, Order.identity(order), Keyword.get(opts, :public_tree, false),
+         Keyword.get(opts, :include_pinned, false)}
       )
     )
     |> Base.encode16(case: :lower)
   end
 
-  defp lite_path_query(paths) do
+  defp public_path_query(paths) do
     path_filter =
-      Enum.reduce(paths, dynamic(false), fn path, acc ->
-        dynamic(
-          [lite_article: article, lite_binding: binding, lite_community: community],
-          ^acc or
-            (community.slug == ^path.community and article.thread == ^path.thread and
-               binding.inner_id == ^path.inner_id)
-        )
-      end)
+      if paths == :all do
+        dynamic(true)
+      else
+        Enum.reduce(paths, dynamic(false), fn path, acc ->
+          dynamic(
+            [lite_article: article, lite_binding: binding, lite_community: community],
+            ^acc or
+              (community.slug == ^path.community and article.thread == ^path.thread and
+                 binding.inner_id == ^path.inner_id)
+          )
+        end)
+      end
+
+    visible_communities =
+      Community
+      |> CMS.Gate.scope(nil, :list, CMS.Gate.Context.Scope.Community.public())
+      |> select([community], community.id)
 
     from(article in Article,
       as: :lite_article,
@@ -958,6 +595,7 @@ defmodule GroupherServer.CMS.Articles.Pagination do
         doc_lifecycle.article_id == article.id and doc_lifecycle.branch_id == branch.id and
           doc_lifecycle.state in [:published, :archived],
       where: ^path_filter,
+      where: community.id in subquery(visible_communities),
       where:
         (article.thread == :doc and doc_state.moderation_state == :legal and
            not is_nil(doc_public.id) and not is_nil(doc_lifecycle.id)) or

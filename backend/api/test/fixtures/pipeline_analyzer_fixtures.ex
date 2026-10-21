@@ -53,6 +53,22 @@ defmodule GroupherServer.Test.PipelineGraphFixtures.GateInChange do
   end
 end
 
+defmodule GroupherServer.Test.PipelineGraphFixtures.GateInPresent do
+  @moduledoc false
+
+  use GroupherServer.CommandPipeline,
+    adapter: GroupherServer.CMS.CommandPipelineAdapter
+
+  @pipeline operation: :gate_in_present_fixture, access: :internal, target: :resource
+  direct_pipeline execute(resource) do
+    change(fn candidate -> {:ok, candidate} end)
+
+    present(fn candidate ->
+      GroupherServer.CMS.Gate.access_check(:operations, :edit, candidate)
+    end)
+  end
+end
+
 defmodule GroupherServer.CMS.Test.PipelineDefaultAdapterFixture do
   @moduledoc false
 

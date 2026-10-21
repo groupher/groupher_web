@@ -26,14 +26,14 @@ defmodule GroupherServer.Test.Query.Collects.BlogCollect do
           community: community.slug,
           thread: "BLOG"
         },
-        filter: %{page: 1, size: 20}
+        pagi: %{offset: %{page: 1, size: 20}}
       }
 
       results =
         guest_conn |> gq_query(S.Article.q(:collected_users), variables)
 
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == 2
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["totalCount"] == 2
 
       assert user_exist_in?(user, results["entries"])
       assert user_exist_in?(user2, results["entries"])

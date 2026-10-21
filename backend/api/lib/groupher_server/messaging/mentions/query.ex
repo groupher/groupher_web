@@ -18,17 +18,17 @@ defmodule GroupherServer.Messaging.Mentions.Query do
   alias Messaging.Model.Mention
   alias Accounts.Model.User
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  alias Helper.ORM.Pagi.{Order, Params}
 
   @doc """
   Returns one page of direct mentions for a user.
 
   ## Examples
 
-      Messaging.Mentions.Query.paged(user, %{page: 1, size: 20, read: false})
+      Messaging.Mentions.Query.paged(user, %{read: false}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
   """
-  @spec paged(User.t(), map()) :: T.domain_res(T.paged_data())
-  def paged(%User{} = user, %{page: page, size: size} = filter) do
+  @spec paged(User.t(), map(), Params.t() | nil) :: T.domain_res(T.paged_data())
+  def paged(%User{} = user, filter, pagi) do
     read = Map.get(filter, :read, false)
 
     query =
@@ -38,12 +38,14 @@ defmodule GroupherServer.Messaging.Mentions.Query do
     with {:ok, page} <-
            ORM.pagi(
              query,
-             %Params.Offset{page: page, size: size},
+             pagi,
              for: Mention,
+             surface: "mailbox.mentions",
+             query_fingerprint:
+               :crypto.hash(:sha256, :erlang.term_to_binary({user.id, read})) |> Base.encode16(),
              order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
            ) do
       page
-      |> Page.to_legacy()
       |> extract_mentions()
       |> done()
     end

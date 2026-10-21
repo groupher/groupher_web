@@ -75,8 +75,8 @@ defmodule GroupherServer.Test.Helper.Schema.Account do
 
   def q(:paged_users) do
     """
-    query($filter: PagedUsersFilter!) {
-          pagedUsers(filter: $filter) {
+    query($filter: UserListFilter, $pagi: PagiInput) {
+          pagedUsers(filter: $filter, pagi: $pagi) {
             entries {
               login
               nickname
@@ -84,10 +84,7 @@ defmodule GroupherServer.Test.Helper.Schema.Account do
               viewerHasFollowed
               viewerBeenFollowed
             }
-            totalPages
-            totalCount
-            pageSize
-            pageNumber
+            pageInfo { hasNextPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { endCursor } }
           }
         }
     """
@@ -95,34 +92,13 @@ defmodule GroupherServer.Test.Helper.Schema.Account do
 
   def q(:subscribed_communities) do
     """
-    query($filter: PagiFilter!) {
-          subscribedCommunities(filter: $filter) {
-            entries {
-              title
-              slug
-            }
-            totalCount
-            totalPages
-            pageSize
-            pageNumber
-          }
-        }
+    query { defaultCommunitySuggestions { title slug } }
     """
   end
 
   def q(:subscribed_communities_2) do
     """
-    query($login: String, $filter: PagiFilter!) {
-          subscribedCommunities(login: $login, filter: $filter) {
-            entries {
-              title
-            }
-            totalCount
-            totalPages
-            pageSize
-            pageNumber
-          }
-        }
+    query { defaultCommunitySuggestions { title slug } }
     """
   end
 
@@ -144,11 +120,10 @@ defmodule GroupherServer.Test.Helper.Schema.Account do
     """
     query($name: String!) {
           searchUsers(name: $name) {
-            entries {
               login
               nickname
-            }
-            totalCount
+
+
           }
         }
     """
@@ -175,17 +150,14 @@ defmodule GroupherServer.Test.Helper.Schema.Account do
 
   def q(:moderatorable_communities) do
     """
-    query($login: String, $filter: PagiFilter!) {
-          moderatorableCommunities(login: $login, filter: $filter) {
+    query($login: String, $pagi: PagiInput) {
+          moderatorableCommunities(login: $login, pagi: $pagi) {
             entries {
               logo
               title
               slug
             }
-            totalPages
-            totalCount
-            pageSize
-            pageNumber
+            pageInfo { hasNextPage ... on OffsetPageInfo { page size totalPages totalCount } ... on CursorPageInfo { endCursor } }
           }
         }
     """

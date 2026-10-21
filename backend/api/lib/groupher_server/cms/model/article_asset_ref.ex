@@ -11,6 +11,9 @@ defmodule GroupherServer.CMS.Model.ArticleAssetRef do
   """
 
   use Ecto.Schema
+  use Flop.Schema
+
+  @flop_options [filterable: [], sortable: [:id, :inserted_at], pagination_types: [:page, :first]]
 
   import Ecto.Changeset
 

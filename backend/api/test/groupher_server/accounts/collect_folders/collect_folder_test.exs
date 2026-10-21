@@ -61,9 +61,10 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, _folder} = CollectFolders.create(%{title: "test folder"}, user)
       {:ok, _folder} = CollectFolders.create(%{title: "test folder2"}, user)
 
-      {:ok, result} = CollectFolders.paged(user, %{page: 1, size: 20})
+      {:ok, result} =
+        CollectFolders.paged(user, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
 
-      assert result |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = result
       assert result.total_count == 2
     end
 
@@ -74,9 +75,12 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, folder} = CollectFolders.add(post, folder.id, user)
 
       {:ok, result} =
-        CollectFolders.paged(user, %{thread: :post, page: 1, size: 20})
+        CollectFolders.paged(user, %{thread: :post}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 20
+        })
 
-      assert result |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = result
       assert result.total_count == 1
 
       assert result.entries |> List.first() |> Map.get(:id) == folder.id
@@ -88,9 +92,10 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
 
       {:ok, _folder} = CollectFolders.create(%{title: "test folder2"}, user2)
 
-      {:ok, result} = CollectFolders.paged(user2, %{page: 1, size: 20}, user)
+      {:ok, result} =
+        CollectFolders.paged(user2, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}, user)
 
-      assert result |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = result
       assert result.total_count == 1
     end
 
@@ -99,9 +104,11 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
         CollectFolders.create(%{title: "test folder", private: true}, user)
 
       {:ok, _folder} = CollectFolders.create(%{title: "test folder2"}, user)
-      {:ok, result} = CollectFolders.paged(user, %{page: 1, size: 20}, user)
 
-      assert result |> is_valid_pagination?(:raw)
+      {:ok, result} =
+        CollectFolders.paged(user, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}, user)
+
+      assert %Helper.ORM.Pagi.Page.Offset{} = result
       assert result.total_count == 2
     end
 
@@ -168,7 +175,12 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, _} = CollectFolders.remove(post, folder.id, user)
 
       {:ok, result} =
-        CollectFolders.paged_articles(folder.id, %{page: 1, size: 10}, user)
+        CollectFolders.paged_articles(
+          folder.id,
+          %{},
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10},
+          user
+        )
 
       assert result.total_count == 1
       assert result.entries |> length == 1
@@ -243,9 +255,14 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, _folder} = CollectFolders.add(post, folder.id, user)
 
       {:ok, result} =
-        CollectFolders.paged_articles(folder.id, %{page: 1, size: 10}, user)
+        CollectFolders.paged_articles(
+          folder.id,
+          %{},
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10},
+          user
+        )
 
-      assert result |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = result
 
       collect_post = result.entries |> List.last()
 
@@ -261,12 +278,22 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, _folder} = CollectFolders.add(post, folder.id, user)
 
       {:ok, result} =
-        CollectFolders.paged_articles(folder.id, %{page: 1, size: 10}, user)
+        CollectFolders.paged_articles(
+          folder.id,
+          %{},
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10},
+          user
+        )
 
-      assert result |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = result
 
       {:error, reason} =
-        CollectFolders.paged_articles(folder.id, %{page: 1, size: 10}, user2)
+        CollectFolders.paged_articles(
+          folder.id,
+          %{},
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10},
+          user2
+        )
 
       assert reason |> is_error?({{:account, :collection}, :private_collect_folder})
     end

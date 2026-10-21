@@ -45,7 +45,7 @@ defmodule GroupherServer.Test.CMS.Comments.PostCommentEmotions do
       {:ok, _} = CMS.Interactions.emotion(first_comment, :popcorn, user, Ecto.UUID.generate())
 
       {:ok, paged_comments} =
-        CMS.Comments.paged_comments(
+        comment_page(
           :post,
           post.id,
           %{page: page_number, size: page_size},
@@ -124,7 +124,7 @@ defmodule GroupherServer.Test.CMS.Comments.PostCommentEmotions do
       filter = %{page: 1, size: 10}
 
       {:ok, %{entries: entries}} =
-        CMS.Comments.paged_comments(:post, post.id, filter, :replies, user)
+        comment_page(:post, post.id, filter, :replies, user)
 
       parent = entries |> List.first()
       parent_emotion = parent |> Map.get(:emotions)
@@ -267,8 +267,8 @@ defmodule GroupherServer.Test.CMS.Comments.PostCommentEmotions do
 
       {:ok, parent_comment} = ORM.find(Comment, parent_comment.id)
 
-      {:ok, records} = ORM.find_all(CommentUserEmotion, %{page: 1, size: 10})
-      assert records.total_count == 2
+      {:ok, records} = ORM.find_all(CommentUserEmotion, %{})
+      assert length(records) == 2
 
       {:ok, _downvote_record} =
         ORM.find_by(CommentUserEmotion, %{

@@ -138,9 +138,11 @@ defmodule Helper.ORM.Pagi.CursorCodec do
     body = Map.delete(envelope, "signature")
     expected = signature(body, key)
 
-    if Plug.Crypto.secure_compare(signature, expected),
-      do: {:ok, :pass},
-      else: {:error, :signature}
+    if Plug.Crypto.secure_compare(signature, expected) do
+      {:ok, :pass}
+    else
+      {:error, :signature}
+    end
   end
 
   defp verify_signature(_envelope, _key), do: {:error, :signature}

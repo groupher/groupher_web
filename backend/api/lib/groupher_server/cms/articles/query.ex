@@ -11,10 +11,8 @@ defmodule GroupherServer.CMS.Articles.Query do
         -> Pagination (ArticleLite) / named composite query
         -> Repo / domain event
 
-  The ordinary list path returns ArticleLite-shaped rows through a transitional
-  legacy response adapter. Kanban and published-owner views retain their
-  domain-specific joined predicates, page the binding identity first, and use
-  one bounded `FrontDesk.articles/1` batch for the full legacy presentation.
+  Kanban and published-owner views share the canonical ArticleLite selector,
+  binding identity and PageInfo contract.
   """
 
   import Ecto.Query, warn: false
@@ -28,10 +26,8 @@ defmodule GroupherServer.CMS.Articles.Query do
 
   alias Accounts.Model.User
   alias CMS.Articles.Pagination
-  alias CMS.Articles.Response
   alias CMS.Artiment.Const
   alias CMS.Dashboard.KanbanBoards
-  alias CMS.FrontDesk
   alias CMS.Gate.Context.Scope.Article, as: ArticleContext
   alias CMS.Gate.Context.Scope.Doc, as: DocContext
   alias CMS.Gate.Scope
@@ -39,11 +35,8 @@ defmodule GroupherServer.CMS.Articles.Query do
   alias CMS.Model.{
     Article,
     ArticleBinding,
-    ArticleLifecycle,
-    ArticlePublic,
     Community,
     DocBranch,
-    KanbanState,
     PinnedArticle
   }
 
@@ -58,63 +51,28 @@ defmodule GroupherServer.CMS.Articles.Query do
     @article_status.reject_stale
   ]
 
-  @doc """
-  Returns a paged list of legal articles for one thread.
-
-  Applies the public article scope, filter pack, and optional interaction
-  ordering, then prepends pinned articles on the first page.
-
-  ## Examples
-
-      CMS.Articles.Query.page(:post, %{page: 1, size: 20})
-
-  """
-  @spec page(atom(), map()) :: T.domain_res(term())
-  def page(thread, filter), do: do_page(thread, filter, nil)
-
-  @spec page(atom(), map(), User.t()) :: T.domain_res(term())
-  def page(thread, filter, %User{} = user), do: do_page(thread, filter, user)
-
-  defp do_page(thread, filter, viewer) do
-    with {:ok, page} <- Pagination.page(thread, filter, viewer),
-         {:ok, entries} <- legacy_entries(page.pinned_entries ++ page.entries, viewer) do
-      page_info = page.page_info
-      pinned_count = length(page.pinned_entries)
-
-      {:ok,
-       %{
-         entries: entries,
-         total_count: Map.get(page_info, :total_count, 0) + pinned_count,
-         page_number: Map.get(page_info, :page, 1),
-         page_size: Map.get(page_info, :size, Map.get(filter, :size, 20)),
-         total_pages: Map.get(page_info, :total_pages, 0)
-       }}
-    end
-  end
-
-  defp legacy_entries(entries, viewer) do
-    with {:ok, resources} <- Pagination.legacy_entries(entries) do
-      Response.list(resources, viewer)
-    end
-  end
-
-  @doc "Returns the enabled Kanban boards as a named composite of paged boards."
-  @spec grouped_kanban(Community.t()) :: T.domain_res(term())
+  @doc "Bootstraps enabled Kanban columns as independent canonical Post pages."
   def grouped_kanban(%Community{} = community) do
-    filter = %{page: 1, size: 20}
-    enabled_boards = enabled_kanban_boards(community)
+    enabled = enabled_kanban_boards(community)
 
-    grouped =
-      KanbanBoards.values_list()
-      |> Map.new(fn board ->
-        {:ok, paged_posts} = paged_kanban_for_board(community, board, filter, enabled_boards)
-        {board, paged_posts}
-      end)
+    Enum.reduce_while(KanbanBoards.values_list(), {:ok, %{}}, fn board, {:ok, pages} ->
+      filter =
+        if board in enabled, do: %{status: kanban_board_status(board)}, else: %{statuses: []}
 
-    {:ok, grouped}
+      filter =
+        case filter do
+          %{status: statuses} when is_list(statuses) -> %{statuses: statuses}
+          other -> other
+        end
+
+      case kanban_page(community, filter, nil) do
+        {:ok, page} -> {:cont, {:ok, Map.put(pages, board, page)}}
+        error -> {:halt, error}
+      end
+    end)
   end
 
-  defp enabled_kanban_boards(%Community{} = community) do
+  defp enabled_kanban_boards(community) do
     community
     |> Repo.preload(:dashboard, force: true)
     |> get_in([Access.key(:dashboard), Access.key(:layout), Access.key(:kanban_boards)])
@@ -124,144 +82,22 @@ defmodule GroupherServer.CMS.Articles.Query do
     end
   end
 
-  defp paged_kanban_for_board(
-         %Community{} = community,
-         board,
-         filter,
-         enabled_boards
-       ) do
-    if board in enabled_boards do
-      paged_kanban(community, Map.put(filter, :status, kanban_board_status(board)))
-    else
-      {:ok, empty_paged_kanban(filter)}
-    end
-  end
-
   defp kanban_board_status(:backlog), do: @article_status.backlog
   defp kanban_board_status(:todo), do: @article_status.todo
   defp kanban_board_status(:wip), do: @article_status.wip
   defp kanban_board_status(:done), do: @article_status.done
-  # rejected is a virtual kanban column that aggregates all reject states.
   defp kanban_board_status(:rejected), do: @kanban_rejected_statuses
 
-  defp empty_paged_kanban(%{page: page, size: size}) do
-    %{entries: [], total_count: 0, page_number: page, page_size: size, total_pages: 0}
+  @doc "Pages a Kanban status set using the canonical Article list selector."
+  def kanban_page(%Community{} = community, filter, pagi) do
+    filter = filter |> Map.put(:community, community.slug) |> Map.put_new(:order, :publish)
+    Pagination.page(:post, filter, pagi, nil, include_pinned: true)
   end
 
-  @doc "Returns one binding-identity page for a Kanban status or status set."
-  def paged_kanban(%Community{} = community, %{status: statuses} = filter)
-      when is_list(statuses) do
-    %{page: page, size: size} = filter
-
-    valid_statuses = Enum.filter(statuses, &(is_atom(&1) and &1 in Map.keys(@article_status)))
-
-    case valid_statuses do
-      [] ->
-        %{entries: [], total_count: 0, page_number: page, page_size: size, total_pages: 0}
-        |> done()
-
-      _ ->
-        stable_paged_kanban(community, valid_statuses, page, size)
-    end
-  end
-
-  def paged_kanban(%Community{} = community, filter) do
-    %{page: page, size: size, status: status} = filter
-
-    stable_paged_kanban(community, [status], page, size)
-  end
-
-  defp stable_paged_kanban(community, statuses, page, size) do
-    base =
-      from(article in Article,
-        join: binding in ArticleBinding,
-        on: binding.article_id == article.id,
-        join: state in KanbanState,
-        on: state.article_binding_id == binding.id,
-        join: public in ArticlePublic,
-        on: public.article_id == article.id and public.visible == true,
-        join: lifecycle in ArticleLifecycle,
-        on: lifecycle.article_id == article.id,
-        where:
-          article.thread == :post and article.moderation_state == :legal and
-            binding.community_id == ^community.id and binding.visible == true and
-            lifecycle.state in [:published, :archived] and state.status in ^statuses,
-        order_by: [desc: public.published_at],
-        select: %{inner_id: binding.inner_id, status: state.status}
-      )
-
-    total_count = Repo.aggregate(exclude(base, :order_by), :count)
-
-    paths =
-      base
-      |> offset(^((page - 1) * size))
-      |> limit(^size)
-      |> Repo.all()
-      |> Enum.map(fn %{inner_id: inner_id, status: status} ->
-        %{community: community.slug, thread: :post, inner_id: inner_id, status: status}
-      end)
-
-    with {:ok, entries} <- read_public_paths(paths, nil) do
-      status_by_inner_id = Map.new(paths, &{&1.inner_id, &1.status})
-
-      entries =
-        Enum.map(entries, &Map.put(&1, :status, Map.fetch!(status_by_inner_id, &1.inner_id)))
-
-      {:ok,
-       %{
-         entries: entries,
-         total_count: total_count,
-         page_number: page,
-         page_size: size,
-         total_pages: if(total_count == 0, do: 0, else: ceil(total_count / size))
-       }}
-    end
-  end
-
-  @spec paged_published(atom(), map(), User.t(), User.t() | nil) :: T.domain_res(term())
-  @doc "Returns a binding-identity page of public articles authored by a user."
-  def paged_published(thread, filter, %User{} = target_user, actor) do
-    %{page: page, size: size} = filter
-
-    with %Ecto.Query{} = query <- Scope.scope(Article, actor, :list, scope_context(thread)) do
-      query =
-        query
-        |> join(:inner, [article, ...], author in assoc(article, :author), as: :published_author)
-        |> join(:inner, [article, ...], binding in ArticleBinding,
-          on: binding.article_id == article.id and binding.visible == true,
-          as: :published_binding
-        )
-        |> join(:inner, [_article, ...], community in Community,
-          on: community.id == as(:published_binding).community_id,
-          as: :published_community
-        )
-        |> where([_article, ...], as(:published_author).user_id == ^target_user.id)
-        |> order_by([article, ...], desc: article.active_at, desc: article.inserted_at)
-        |> select([article, ...], %{
-          inner_id: as(:published_binding).inner_id,
-          community: as(:published_community).slug
-        })
-
-      total_count = query |> exclude(:order_by) |> exclude(:select) |> Repo.aggregate(:count)
-
-      paths =
-        query
-        |> offset(^((page - 1) * size))
-        |> limit(^size)
-        |> Repo.all()
-        |> Enum.map(&Map.put(&1, :thread, thread))
-
-      with {:ok, entries} <- read_public_paths(paths, actor) do
-        %{
-          entries: entries,
-          total_count: total_count,
-          page_number: page,
-          page_size: size,
-          total_pages: if(total_count == 0, do: 0, else: ceil(total_count / size))
-        }
-        |> done()
-      end
-    end
+  @doc "Pages public binding paths authored by the target user."
+  def paged_published(thread, filter, pagi, %User{} = target_user, viewer) do
+    filter = Map.put(filter, :author_id, target_user.id)
+    Pagination.page(thread, filter, pagi, viewer, include_pinned: true)
   end
 
   @spec count_published(atom(), User.t()) :: T.domain_res(non_neg_integer())
@@ -278,24 +114,6 @@ defmodule GroupherServer.CMS.Articles.Query do
 
   defp scope_context(:doc), do: DocContext.public_main()
   defp scope_context(thread), do: ArticleContext.public(thread)
-
-  defp read_public_paths(paths, actor) when is_list(paths) do
-    with {:ok, resolved} <- FrontDesk.articles(paths) do
-      bindings = resolved |> Enum.map(& &1.binding) |> Repo.preload(:community)
-
-      resources =
-        resolved
-        |> Enum.zip(bindings)
-        |> Enum.map(fn {%{article: article}, binding} ->
-          article
-          |> Map.put(:community, binding.community)
-          |> Map.put(:inner_id, binding.inner_id)
-        end)
-        |> Repo.preload(author: :user)
-
-      Response.list(resources, actor)
-    end
-  end
 
   @doc false
   def binding(article_id, community_id) do

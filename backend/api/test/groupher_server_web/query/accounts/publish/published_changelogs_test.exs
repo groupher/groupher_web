@@ -21,7 +21,7 @@ defmodule GroupherServer.Test.Query.Accounts.Publish.Changelogs do
       {:ok, changelog} = CMS.Articles.create(community, :changelog, changelog_attrs, user)
       {:ok, changelog2} = CMS.Articles.create(community, :changelog, changelog_attrs, user)
 
-      variables = %{login: user.login, filter: %{page: 1, size: 20}}
+      variables = %{login: user.login, pagi: %{offset: %{page: 1, size: 20}}, filter: %{}}
 
       results =
         guest_conn |> gq_query(S.Article.q(:paged_published_articles, :changelog), variables)
@@ -53,12 +53,12 @@ defmodule GroupherServer.Test.Query.Accounts.Publish.Changelogs do
 
       random_comment_id = pub_comments |> Enum.random() |> Map.get(:inner_id) |> to_string
 
-      variables = %{login: user.login, thread: "CHANGELOG", filter: %{page: 1, size: 20}}
+      variables = %{login: user.login, thread: "CHANGELOG", pagi: %{offset: %{page: 1, size: 20}}}
       results = guest_conn |> gq_query(S.Comment.q(:paged_published_comments), variables)
 
       entries = results["entries"]
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == @publish_count
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["totalCount"] == @publish_count
 
       assert entries |> Enum.all?(&(not is_nil(&1["article"]["author"])))
 

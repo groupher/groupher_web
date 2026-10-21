@@ -99,7 +99,7 @@ defmodule GroupherServerWeb.Query.PaginationContractTest do
     end
   end
 
-  test "legacy post and changelog fields expose deprecation metadata" do
+  test "removed Article list fields are absent instead of deprecated" do
     assert {:ok, %{data: %{"__schema" => schema}}} =
              Absinthe.run(
                """
@@ -120,11 +120,8 @@ defmodule GroupherServerWeb.Query.PaginationContractTest do
 
     fields = Map.new(schema["queryType"]["fields"], &{&1["name"], &1})
 
-    assert fields["pagedPosts"]["isDeprecated"] == true
-    assert fields["pagedPosts"]["deprecationReason"] == "Use postPage instead."
-    assert fields["pagedChangelogs"]["isDeprecated"] == true
-    assert fields["pagedChangelogs"]["deprecationReason"] == "Use changelogPage instead."
-    assert fields["pagedBlogs"]["isDeprecated"] == false
-    assert fields["pagedDocs"]["isDeprecated"] == false
+    for field <- ["pagedPosts", "pagedChangelogs", "pagedBlogs", "pagedDocs"] do
+      refute Map.has_key?(fields, field)
+    end
   end
 end

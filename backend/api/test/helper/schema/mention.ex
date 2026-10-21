@@ -3,8 +3,8 @@ defmodule GroupherServer.Test.Helper.Schema.Mention do
 
   def q(:mentions) do
     """
-    query($source: MentionSourceInput!, $filter: PagiFilter!) {
-          mentions(source: $source, filter: $filter) {
+    query($source: MentionSourceInput!, $pagi: PagiInput) {
+          mentions(source: $source, pagi: $pagi) {
             entries {
               mentionerType
               mentionerId
@@ -17,9 +17,7 @@ defmodule GroupherServer.Test.Helper.Schema.Mention do
               mentionCase
               occurrences
             }
-            totalCount
-            pageSize
-            pageNumber
+            pageInfo { hasNextPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { endCursor } }
           }
         }
     """
@@ -27,8 +25,8 @@ defmodule GroupherServer.Test.Helper.Schema.Mention do
 
   def q(:mentioned_by) do
     """
-    query($target: MentionTargetInput!, $filter: PagiFilter!) {
-          mentionedBy(target: $target, filter: $filter) {
+    query($target: MentionTargetInput!, $pagi: PagiInput) {
+          mentionedBy(target: $target, pagi: $pagi) {
             entries {
               mentionerType
               mentionerId
@@ -38,9 +36,7 @@ defmodule GroupherServer.Test.Helper.Schema.Mention do
               mentionedCommunityId
               mentionCase
             }
-            totalCount
-            pageSize
-            pageNumber
+            pageInfo { hasNextPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { endCursor } }
           }
         }
     """
@@ -56,7 +52,7 @@ defmodule GroupherServer.Test.Helper.Schema.Mention do
               mentionedType
               mentionedId
             }
-            totalCount
+            pageInfo { hasNextPage ... on OffsetPageInfo { totalCount page size } ... on CursorPageInfo { endCursor } }
           }
         }
     """

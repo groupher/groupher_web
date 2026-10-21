@@ -100,8 +100,8 @@ defmodule GroupherServer.Activity.Workflow do
       Activity.list_article_logs(article, viewer, %{page: 1, size: 20})
   """
   @spec list_article_logs(struct(), struct() | nil, map()) :: {:ok, map()} | {:error, term()}
-  def list_article_logs(article, actor, filter \\ %{}) do
-    ArticleLog.list(article, actor, filter)
+  def list_article_logs(article, actor, pagi \\ nil) do
+    ArticleLog.list(article, actor, pagi)
   end
 
   @doc """
@@ -113,8 +113,8 @@ defmodule GroupherServer.Activity.Workflow do
   """
   @spec list_community_logs(Community.t(), struct(), map(), pos_integer()) ::
           {:ok, map()} | {:error, term()}
-  def list_community_logs(community, actor, selection, page \\ 1) do
-    CommunityLog.list(community, actor, selection, page)
+  def list_community_logs(community, actor, selection, pagi \\ nil) do
+    CommunityLog.list(community, actor, selection, pagi)
   end
 
   @doc """

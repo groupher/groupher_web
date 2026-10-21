@@ -14,7 +14,7 @@ defmodule GroupherServer.CMS.Dashboard.Persist do
   import Ecto.Query, only: [from: 2]
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Dashboard.{Pagination, SectionPayload}
+  alias CMS.Dashboard.{PagiMode, SectionPayload}
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.{ORM, T}
 
@@ -58,34 +58,24 @@ defmodule GroupherServer.CMS.Dashboard.Persist do
     end
   end
 
-  @doc """
-  Updates one pagination surface under a row lock and server-owned revision.
-
-  ## Examples
-
-      CMS.Dashboard.Persist.update_pagination(dashboard, :posts, %{mode: :cursor}, 1)
-      #=> {:ok, %CommunityDashboard{}}
-  """
-  @spec update_pagination(CommunityDashboard.t(), atom(), map(), non_neg_integer()) ::
-          T.domain_res(CommunityDashboard.t())
-  def update_pagination(
-        %CommunityDashboard{id: dashboard_id},
-        surface,
-        attrs,
-        expected_revision
-      ) do
+  @doc "Atomically updates both layout preferences with an expected server-owned revision."
+  def update_pagi_mode(%CommunityDashboard{id: id}, mode, mobile_mode, expected_revision) do
     dashboard =
-      from(dashboard in CommunityDashboard,
-        where: dashboard.id == ^dashboard_id,
-        lock: "FOR UPDATE"
-      )
-      |> Repo.one!()
+      from(d in CommunityDashboard, where: d.id == ^id, lock: "FOR UPDATE") |> Repo.one!()
 
-    with {:ok, pagination} <-
-           Pagination.next_config(dashboard.pagination, surface, attrs, expected_revision) do
+    with {:ok, mode} <- PagiMode.normalize(mode),
+         {:ok, mobile_mode} <- PagiMode.normalize(mobile_mode),
+         true <- is_integer(expected_revision) and expected_revision == dashboard.pagi_revision do
       dashboard
-      |> Ecto.Changeset.change(%{pagination: pagination})
+      |> Ecto.Changeset.change(%{
+        pagi_mode: mode,
+        pagi_mobile_mode: mobile_mode,
+        pagi_revision: dashboard.pagi_revision + 1
+      })
       |> Repo.update()
+    else
+      false -> {:error, GroupherServer.Pagi.config_mismatch(%{mismatch: :revision})}
+      {:error, _} = error -> error
     end
   end
 

@@ -21,11 +21,11 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   import Ecto.Query, warn: false, except: [union: 2]
   import Absinthe.Resolution.Helpers, only: [dataloader: 2]
 
-  alias GroupherServer.{Accounts, CMS, FrontDesk}
+  alias GroupherServer.{CMS, FrontDesk}
 
   alias CMS.Dashboard.{ThemePreset, ThirdPartyAnalytics}
 
-  alias CMS.Model.{Community, CoverBackground}
+  alias CMS.Model.CoverBackground
 
   alias GroupherServerWeb.Schema
 
@@ -218,19 +218,9 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:occurred_at, non_null(:datetime))
   end
 
-  object :community_application_event_edge do
-    field(:cursor, non_null(:string))
-    field(:node, non_null(:community_application_event))
-  end
-
-  object :community_application_page_info do
-    field(:end_cursor, :string)
-    field(:has_next_page, non_null(:boolean))
-  end
-
-  object :community_application_event_connection do
-    field(:edges, non_null(list_of(non_null(:community_application_event_edge))))
-    field(:page_info, non_null(:community_application_page_info))
+  object :community_application_event_page do
+    field(:entries, non_null(list_of(non_null(:community_application_event))))
+    pagi_fields()
   end
 
   object :community_application do
@@ -274,9 +264,8 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
       resolve: &GroupherServerWeb.Resolvers.CMS.CommunityApplications.application_job_error/3
     )
 
-    field :events, non_null(:community_application_event_connection) do
-      arg(:first, :integer, default_value: 100)
-      arg(:after, :string)
+    field :events, non_null(:community_application_event_page) do
+      arg(:pagi, :pagi_input)
 
       resolve(
         &GroupherServerWeb.Resolvers.CMS.CommunityApplications.community_application_events/3
@@ -284,14 +273,9 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     end
   end
 
-  object :community_application_edge do
-    field(:cursor, non_null(:string))
-    field(:node, non_null(:community_application))
-  end
-
-  object :community_application_connection do
-    field(:edges, non_null(list_of(non_null(:community_application_edge))))
-    field(:page_info, non_null(:community_application_page_info))
+  object :community_application_page do
+    field(:entries, non_null(list_of(non_null(:community_application))))
+    pagi_fields()
   end
 
   object :community_application_policy do
@@ -383,20 +367,20 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
       resolve: fn item, _, _ -> {:ok, item.trash_action.scheduled_permanent_deletion_at} end
     )
 
-    field :mentioned_by, :paged_mentions do
-      arg(:filter, :pagi_filter)
+    field :mentioned_by, :artiment_mention_page do
+      arg(:pagi, :pagi_input)
       resolve(&GroupherServerWeb.Resolvers.CMS.ArtimentMentions.trashed_article_mentioned_by/3)
     end
 
-    field :mentions, :paged_mentions do
-      arg(:filter, :pagi_filter)
+    field :mentions, :artiment_mention_page do
+      arg(:pagi, :pagi_input)
       resolve(&GroupherServerWeb.Resolvers.CMS.ArtimentMentions.trashed_article_mentions/3)
     end
   end
 
-  object :paged_trashed_articles do
+  object :trash_page do
     field(:entries, non_null(list_of(non_null(:trashed_article))))
-    pagination_fields()
+    pagi_fields()
   end
 
   object :activity_resource_ref do
@@ -424,9 +408,9 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:occurred_at, non_null(:datetime))
   end
 
-  object :paged_article_logs do
+  object :article_log_page do
     field(:entries, non_null(list_of(non_null(:article_log))))
-    pagination_fields()
+    pagi_fields()
   end
 
   object :community_activity_event do
@@ -482,10 +466,10 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:recorded_at, non_null(:datetime))
   end
 
-  object :paged_community_activity do
+  object :community_activity_page do
     field(:entries, non_null(list_of(non_null(:community_activity_event))))
     field(:query_context, non_null(:community_activity_query_context))
-    pagination_fields()
+    field(:page_info, non_null(:page_info))
   end
 
   object :community_activity_bucket do
@@ -832,6 +816,16 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:published_at, non_null(:datetime))
   end
 
+  object :doc_tree_trash_page do
+    field(:entries, non_null(list_of(non_null(:doc_tree_trash_item))))
+    pagi_fields()
+  end
+
+  object :doc_branch_version_page do
+    field(:entries, non_null(list_of(non_null(:doc_branch_version_view))))
+    pagi_fields()
+  end
+
   object :doc_tree_trash_item do
     field(:id, non_null(:id))
     field(:node_id, non_null(:id))
@@ -1044,7 +1038,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   # common stands for minimal info of the type
   # usually used in abuse_report, feeds, etc ..
   object :common_user do
-    field(:login, :string)
+    field(:login, non_null(:string))
     field(:avatar, :string)
     field(:nickname, :string)
     field(:bio, :string)
@@ -1199,8 +1193,6 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   end
 
   input_object :community_asset_filter do
-    field(:page, :integer)
-    field(:size, :integer)
     field(:query, :string)
     field(:thread, :thread)
     field(:asset_type, :community_asset_type)
@@ -1664,8 +1656,10 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
 
     field(:content_shadow, non_null(:boolean))
 
-    @desc "Validated Dashboard pagination surface configuration; missing surfaces use platform defaults."
-    field(:pagination, :json)
+    @desc "Community-wide list interaction preference."
+    field(:pagi_mode, non_null(:pagi_mode))
+    field(:pagi_mobile_mode, non_null(:pagi_mode))
+    field(:pagi_revision, non_null(:integer))
 
     field(:wallpaper_history, non_null(list_of(non_null(:wallpaper_snapshot)))) do
       arg(:theme, non_null(:wallpaper_theme))
@@ -1698,31 +1692,15 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   end
 
   object :community_moderator do
-    field(:is_root, :boolean) do
-      resolve(fn moderator, _, _ ->
-        case moderator_passport_context(moderator) do
-          {:ok, {passport, community_slug}} ->
-            {:ok, moderator_root?(passport, community_slug)}
+    field(:id, non_null(:id))
+    field(:is_root, non_null(:boolean))
+    field(:passport_item_count, non_null(:integer))
+    field(:user, non_null(:common_user))
+  end
 
-          _ ->
-            {:ok, false}
-        end
-      end)
-    end
-
-    field(:passport_item_count, :integer) do
-      resolve(fn moderator, _, _ ->
-        case moderator_passport_context(moderator) do
-          {:ok, {passport, community_slug}} ->
-            {:ok, moderator_passport_item_count(passport, community_slug)}
-
-          _ ->
-            {:ok, fallback_moderator_passport_item_count(moderator)}
-        end
-      end)
-    end
-
-    field(:user, :common_user)
+  object :community_moderator_page do
+    field(:entries, non_null(list_of(non_null(:community_moderator))))
+    pagi_fields()
   end
 
   object :all_rules do
@@ -1733,11 +1711,11 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
   object :community do
     meta(:cache, max_age: 30)
     @desc "Community display title."
-    field(:title, :string)
+    field(:title, non_null(:string))
     @desc "Community introduction text."
     field(:desc, :string)
     @desc "Community slug used in API routes."
-    field(:slug, :string)
+    field(:slug, non_null(:string))
     field(:favicon, :string)
     field(:homepage, :string)
     field(:index, :integer)
@@ -1748,10 +1726,6 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:categories, list_of(:category), resolve: dataloader(CMS, :categories))
     @desc "Dashboard configuration for this community."
     field(:dashboard, :dsb, resolve: dataloader(CMS, :dashboard))
-
-    # field(:moderators, list_of(:community_moderator), resolve: dataloader(CMS, moderators: :user))
-    @desc "Current moderators in the community."
-    field(:moderators, list_of(:community_moderator))
 
     field(:meta, :community_meta)
     field(:views, :integer)
@@ -1790,19 +1764,22 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:slug, :string)
     field(:index, :integer)
     field(:author, :user, resolve: dataloader(CMS, :author))
-    field(:communities, list_of(:community), resolve: dataloader(CMS, :communities))
 
     timestamp_fields()
   end
 
+  enum :article_thread do
+    article_values()
+  end
+
   object :community_tag do
-    field(:id, :id)
-    field(:title, :string)
+    field(:id, non_null(:id))
+    field(:title, non_null(:string))
     field(:desc, :string)
     field(:layout, :string)
-    field(:slug, :string)
-    field(:color, :rainbow_color)
-    field(:thread, :thread)
+    field(:slug, non_null(:string))
+    field(:color, non_null(:rainbow_color))
+    field(:thread, non_null(:article_thread))
     field(:group, :string, resolve: &R.CMS.Communities.community_tag_group_title/3)
     field(:group_id, :id)
     field(:extra, list_of(:string))
@@ -1980,7 +1957,7 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:twitter, :string)
   end
 
-  paged_article_objects()
+  article_page_objects()
 
   @desc "Stable public offset/cursor page metadata."
   interface :page_info do
@@ -2014,110 +1991,58 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:has_next_page, non_null(:boolean))
   end
 
-  @desc "List-only Article projection; stats and viewer state stay in their own APIs."
-  object :post_lite do
-    field(:id, :id)
-    field(:thread, :thread)
-    field(:inner_id, :id)
-    field(:title, :string)
-    field(:digest, :string)
-    field(:author, :common_user)
-    field(:community, :community)
-    field(:community_tags, list_of(:community_tag))
-    field(:active_at, :datetime)
-    field(:inserted_at, :datetime)
-  end
-
-  object :changelog_lite do
-    field(:id, :id)
-    field(:thread, :thread)
-    field(:inner_id, :id)
-    field(:title, :string)
-    field(:digest, :string)
-    field(:author, :common_user)
-    field(:community, :community)
-    field(:community_tags, list_of(:community_tag))
-    field(:active_at, :datetime)
-    field(:inserted_at, :datetime)
-  end
-
-  object :comment_lite do
-    field(:id, :id)
-    field(:inner_id, :id)
-    field(:body, :artiment_body)
-    field(:author, :common_user)
-    field(:inserted_at, :datetime)
-  end
-
-  object :post_page do
-    field(:pinned_entries, non_null(list_of(non_null(:post_lite))))
-    field(:entries, non_null(list_of(non_null(:post_lite))))
-    field(:page_info, non_null(:page_info))
-  end
-
-  object :changelog_page do
-    field(:pinned_entries, non_null(list_of(non_null(:changelog_lite))))
-    field(:entries, non_null(list_of(non_null(:changelog_lite))))
-    field(:page_info, non_null(:page_info))
-  end
-
   object :comment_page do
-    field(:pinned_entries, non_null(list_of(non_null(:comment_lite))))
-    field(:entries, non_null(list_of(non_null(:comment_lite))))
+    field(:pinned_entries, non_null(list_of(non_null(:comment))))
+    field(:entries, non_null(list_of(non_null(:comment))))
     field(:page_info, non_null(:page_info))
   end
 
-  object :kanban_posts do
-    field(:backlog, :paged_posts)
-    field(:todo, :paged_posts)
-    field(:wip, :paged_posts)
-    field(:done, :paged_posts)
-    field(:rejected, :paged_posts)
+  object :kanban_pages do
+    field(:backlog, :post_page)
+    field(:todo, :post_page)
+    field(:wip, :post_page)
+    field(:done, :post_page)
+    field(:rejected, :post_page)
   end
 
-  object :paged_reports do
+  object :report_page do
     field(:entries, list_of(:abuse_report))
-    pagination_fields()
+    pagi_fields()
   end
 
-  object :paged_mentions do
+  object :artiment_mention_page do
     field(:entries, list_of(:artiment_mention))
-    pagination_fields()
+    pagi_fields()
   end
 
-  object :paged_community_assets do
+  object :community_asset_page do
     field(:entries, list_of(:community_asset))
-    pagination_fields()
+    pagi_fields()
   end
 
-  object :paged_article_asset_refs do
+  object :article_asset_ref_page do
     field(:entries, list_of(:article_asset_ref))
-    pagination_fields()
+    pagi_fields()
   end
 
-  object :paged_categories do
-    field(:entries, list_of(:category))
-    pagination_fields()
-  end
-
-  object :paged_comments do
+  object :comment_collection_page do
     field(:entries, list_of(:comment))
-    pagination_fields()
+    pagi_fields()
   end
 
-  object :paged_comment_replies do
-    field(:entries, list_of(:comment_reply))
-    pagination_fields()
+  object :comment_reply_page do
+    field(:entries, non_null(list_of(non_null(:comment_reply))))
+    field(:page_info, non_null(:page_info))
   end
 
-  object :paged_communities do
-    field(:entries, list_of(:community))
-    pagination_fields()
+  object :community_page do
+    field(:entries, non_null(list_of(non_null(:community))))
+    pagi_fields()
   end
 
-  object :paged_articles do
+  object :article_collection_page do
     field(:entries, list_of(:common_article))
-    pagination_fields()
+    pagi_fields()
   end
 
   object :search_article_locator do
@@ -2195,9 +2120,9 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     field(:highlights, non_null(list_of(non_null(:search_highlight))))
   end
 
-  object :paged_search_artiments do
+  object :search_artiment_page do
     field(:entries, non_null(list_of(non_null(:search_artiment_hit))))
-    pagination_fields()
+    pagi_fields()
   end
 
   @desc "article meta info"
@@ -2236,66 +2161,4 @@ defmodule GroupherServerWeb.Schema.CMS.Types do
     # key so light/dark cover backgrounds still batch through the CMS loader.
     %{batch: {CoverBackground, args}, item: Map.get(config, field)}
   end
-
-  defp moderator_passport_context(moderator) do
-    with {:ok, community_slug} <- moderator_community_slug(moderator),
-         {:ok, user_id} <- moderator_user_id(moderator),
-         {:ok, passport} <- CMS.communities_get_passport(%Accounts.Model.User{id: user_id}) do
-      {:ok, {passport, community_slug}}
-    end
-  end
-
-  defp moderator_community_slug(%{community: %Community{slug: slug}}) when is_binary(slug) do
-    {:ok, slug}
-  end
-
-  defp moderator_community_slug(%{community_id: community_id}) when not is_nil(community_id) do
-    with {:ok, community} <- FrontDesk.community(community_id, mode: :internal) do
-      {:ok, community.slug}
-    end
-  end
-
-  defp moderator_community_slug(_) do
-    {:error, GroupherServer.CMS.communities_error_cat_not_exist("community not found")}
-  end
-
-  defp moderator_user_id(%{user_id: user_id}) when not is_nil(user_id), do: {:ok, user_id}
-
-  defp moderator_user_id(%{user: %Accounts.Model.User{id: user_id}}) when not is_nil(user_id) do
-    {:ok, user_id}
-  end
-
-  defp moderator_user_id(_) do
-    {:error, GroupherServer.Accounts.profiles_error_cat_not_exist("user not found")}
-  end
-
-  defp moderator_root?(passport, community_slug) do
-    get_in(passport, [community_slug, "root"]) == true
-  end
-
-  defp moderator_passport_item_count(passport, community_slug) do
-    if moderator_root?(passport, community_slug) do
-      GroupherServer.CMS.passport_registry_root_passport_item_count()
-    else
-      passport
-      |> get_in([community_slug, "cms"])
-      |> count_enabled_rules()
-    end
-  end
-
-  defp fallback_moderator_passport_item_count(moderator) do
-    count = moderator.passport_item_count || 0
-
-    if count >= GroupherServer.CMS.passport_registry_root_passport_item_count() do
-      0
-    else
-      count
-    end
-  end
-
-  defp count_enabled_rules(rules) when is_map(rules) do
-    Enum.count(rules, fn {_rule, enabled} -> enabled == true end)
-  end
-
-  defp count_enabled_rules(_), do: 0
 end

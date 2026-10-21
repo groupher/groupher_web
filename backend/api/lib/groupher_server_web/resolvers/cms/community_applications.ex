@@ -22,16 +22,11 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
   end
 
   def paged_community_applications(_root, args, %{context: %{cur_user: reviewer}}) do
-    filter =
-      args
-      |> Map.get(:filter, %{})
-      |> Map.put(:first, Map.get(args, :first, 20))
-      |> Map.put(:after, Map.get(args, :after))
-
-    case CMS.community_applications_review_queue_by_public_filter(filter, reviewer) do
-      {:ok, page} -> {:ok, connection(page.entries, page.has_next_page, &application_cursor/1)}
-      error -> application_result(error)
-    end
+    CMS.community_applications_review_queue_by_public_filter(
+      Map.get(args, :filter, %{}),
+      Map.get(args, :pagi),
+      reviewer
+    )
   end
 
   def create_community_application_logo_upload_intent(
@@ -135,10 +130,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
   end
 
   def community_application_events(application, args, _info) do
-    case CMS.community_applications_events(application, args) do
-      {:ok, page} -> {:ok, connection(page.entries, page.has_next_page, &event_cursor/1)}
-      error -> application_result(error)
-    end
+    CMS.community_applications_events(application, Map.get(args, :pagi))
   end
 
   def application_actor_ref(actor, _args, _info) do
@@ -172,34 +164,6 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
     CMS.community_applications_logo_origin(public_ref) |> application_result()
   end
 
-  defp connection(entries, has_next_page, cursor_fun) do
-    edges =
-      Enum.map(entries, fn entry -> %{cursor: opaque_cursor(cursor_fun.(entry)), node: entry} end)
-
-    %{
-      edges: edges,
-      page_info: %{
-        end_cursor:
-          edges
-          |> List.last()
-          |> then(
-            &if &1 do
-              &1.cursor
-            else
-              nil
-            end
-          ),
-        has_next_page: has_next_page
-      }
-    }
-  end
-
-  defp application_cursor(application) do
-    "#{DateTime.to_iso8601(application.submitted_at)}|#{application.public_ref}"
-  end
-
-  defp event_cursor(event), do: "#{DateTime.to_iso8601(event.occurred_at)}|#{event.id}"
-
   defp application_result({:ok, value}) do
     {:ok, value}
   end
@@ -210,10 +174,6 @@ defmodule GroupherServerWeb.Resolvers.CMS.CommunityApplications do
     {:error,
      message: reason_code,
      extensions: %{code: ErrorCat.code(ErrorCat.custom()), reasonCode: reason_code}}
-  end
-
-  defp opaque_cursor(value) do
-    value |> to_string() |> Base.url_encode64(padding: false)
   end
 
   defp normalize_reason({reason, _metadata}) when is_atom(reason) do

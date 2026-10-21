@@ -4,8 +4,8 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Relationships do
 
       GraphQL relationship field -> this resolver -> Accounts relationship/collect facade
   """
-  import ShortMaps
   alias GroupherServer.Accounts
+  alias Helper.ORM.Pagi.Params
 
   def follow(_root, %{user: user}, %{context: %{cur_user: cur_user}}) do
     Accounts.fans_follow(cur_user, user)
@@ -15,24 +15,32 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Relationships do
     Accounts.fans_undo_follow(cur_user, user)
   end
 
-  def paged_followers(_root, %{user: user, filter: filter}, %{context: %{cur_user: cur_user}}) do
-    Accounts.fans_paged_followers(user, filter, cur_user)
+  def paged_followers(_root, %{user: user} = args, %{context: context}) do
+    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+      Accounts.fans_paged_followers(
+        user,
+        Map.get(args, :filter) || %{},
+        pagi,
+        Map.get(context, :cur_user)
+      )
+    end
   end
 
-  def paged_followers(_root, %{user: user, filter: filter}, _info) do
-    Accounts.fans_paged_followers(user, filter)
+  def paged_followings(_root, %{user: user} = args, %{context: context}) do
+    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+      Accounts.fans_paged_followings(
+        user,
+        Map.get(args, :filter) || %{},
+        pagi,
+        Map.get(context, :cur_user)
+      )
+    end
   end
 
-  def paged_followings(_root, %{user: user, filter: filter}, %{context: %{cur_user: cur_user}}) do
-    Accounts.fans_paged_followings(user, filter, cur_user)
-  end
-
-  def paged_followings(_root, %{user: user, filter: filter}, _info) do
-    Accounts.fans_paged_followings(user, filter)
-  end
-
-  def paged_upvoted_articles(_root, %{user: user, filter: filter}, _info) do
-    Accounts.upvotes_paged_articles(user, filter)
+  def paged_upvoted_articles(_root, %{user: user} = args, _info) do
+    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+      Accounts.upvotes_paged_articles(user, Map.get(args, :filter) || %{}, pagi)
+    end
   end
 
   def create_collect_folder(_root, attrs, %{context: %{cur_user: cur_user}}) do
@@ -64,21 +72,25 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Relationships do
     )
   end
 
-  def paged_collect_folders(_root, %{user: user, filter: filter}, %{
-        context: %{cur_user: cur_user}
-      }) do
-    Accounts.collect_folders_paged(user, filter, cur_user)
+  def paged_collect_folders(_root, %{user: user} = args, %{context: context}) do
+    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+      Accounts.collect_folders_paged(
+        user,
+        Map.get(args, :filter) || %{},
+        pagi,
+        Map.get(context, :cur_user)
+      )
+    end
   end
 
-  def paged_collect_folders(_root, %{user: user, filter: filter}, _info) do
-    Accounts.collect_folders_paged(user, filter)
-  end
-
-  def paged_collected_articles(_root, ~m(folder_id filter)a, %{context: %{cur_user: cur_user}}) do
-    Accounts.collect_folders_paged_articles(folder_id, filter, cur_user)
-  end
-
-  def paged_collected_articles(_root, ~m(folder_id filter)a, _info) do
-    Accounts.collect_folders_paged_articles(folder_id, filter)
+  def paged_collected_articles(_root, %{folder_id: folder_id} = args, %{context: context}) do
+    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+      Accounts.collect_folders_paged_articles(
+        folder_id,
+        Map.get(args, :filter) || %{},
+        pagi,
+        Map.get(context, :cur_user)
+      )
+    end
   end
 end

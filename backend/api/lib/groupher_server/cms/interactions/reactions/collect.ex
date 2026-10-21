@@ -132,11 +132,11 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
       Reactions.Collect.users(article, %{page: 1, size: 20})
 
   """
-  @spec users(struct(), map()) :: {:ok, term()} | {:error, term()}
-  def users(article, filter) when is_map(filter) do
+  @spec users(struct(), Helper.ORM.Pagi.Params.t() | nil) :: {:ok, term()} | {:error, term()}
+  def users(article, pagi) do
     case Matcher.match_interaction(article) do
       {:ok, %{collection?: true}} ->
-        Interactions.ReactionUsers.load(ArticleCollect, article, filter)
+        Interactions.ReactionUsers.load(ArticleCollect, article, pagi)
 
       _ ->
         {:error, ErrorCat.unsupported_artiment("collected_users only supports Article")}

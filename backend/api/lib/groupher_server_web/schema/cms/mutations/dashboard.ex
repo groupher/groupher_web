@@ -84,13 +84,13 @@ defmodule GroupherServerWeb.Schema.CMS.Mutations.Dashboard do
       resolve(&R.CMS.Dashboard.update_dashboard_content_shadow/3)
     end
 
-    @desc "Updates Dashboard-owned pagination surface configuration"
-    field :update_dashboard_pagination, :dsb do
+    @desc "Updates the community-wide list interaction preference"
+    field :update_dashboard_pagi_mode, :dsb do
       arg(:community, non_null(:string))
-      arg(:dsb_section, :dsb_section, default_value: :pagination)
-      arg(:surface, non_null(:pagination_surface))
+      arg(:dsb_section, :dsb_section, default_value: :pagi_mode)
       arg(:expected_revision, non_null(:integer))
-      arg(:config, non_null(:pagination_surface_config_input))
+      arg(:mode, non_null(:pagi_mode))
+      arg(:mobile_mode, non_null(:pagi_mode))
       arg(:command_id, non_null(:id))
 
       middleware(M.Authorize, :login)

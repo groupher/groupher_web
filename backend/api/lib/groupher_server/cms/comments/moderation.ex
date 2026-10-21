@@ -20,7 +20,7 @@ defmodule GroupherServer.CMS.Comments.Moderation do
   alias CMS.{FrontDesk, QueryBuilder}
   alias CMS.Model.Comment
   alias Helper.{Multi, ORM, T}
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  alias Helper.ORM.Pagi.{Order, Params}
 
   @audit_legal CMS.Artiment.Const.moderation_state(:legal)
   @audit_illegal CMS.Artiment.Const.moderation_state(:illegal)
@@ -112,21 +112,22 @@ defmodule GroupherServer.CMS.Comments.Moderation do
     |> result()
   end
 
-  @spec page_audit_failed(map()) :: T.domain_res(T.paged_data())
-  def page_audit_failed(filter) do
-    %{page: page, size: size} = filter
+  @spec page_audit_failed(Params.t() | nil) :: T.domain_res(T.paged_data())
+  def page_audit_failed(pagi) do
     flags = %{pending: @audit_failed}
 
-    query = Comment |> QueryBuilder.filter_pack(Map.merge(filter, flags))
+    query = Comment |> QueryBuilder.filter_pack(flags)
 
     with {:ok, result} <-
            ORM.pagi(
              query,
-             %Params.Offset{page: page, size: size},
+             pagi,
              for: Comment,
+             surface: "comments.audit_failed",
+             query_fingerprint: "audit_failed",
              order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
            ) do
-      done(Page.to_legacy(result))
+      done(result)
     end
   end
 

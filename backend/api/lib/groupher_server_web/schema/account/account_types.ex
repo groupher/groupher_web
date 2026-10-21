@@ -217,9 +217,9 @@ defmodule GroupherServerWeb.Schema.Account.Types do
     timestamp_fields()
   end
 
-  object :paged_collect_folders do
+  object :collect_folder_page do
     field(:entries, list_of(:collect_folder))
-    pagination_fields()
+    pagi_fields()
   end
 
   object :source_contribute do
@@ -245,6 +245,11 @@ defmodule GroupherServerWeb.Schema.Account.Types do
     field(:access_expires_at, :datetime)
     field(:browser_session_ref, :string)
     field(:session_absolute_expires_at, :datetime)
+  end
+
+  object :browser_session_page do
+    field(:entries, non_null(list_of(non_null(:browser_session))))
+    pagi_fields()
   end
 
   object :browser_session do
@@ -279,19 +284,19 @@ defmodule GroupherServerWeb.Schema.Account.Types do
     field(:cms, :json)
   end
 
-  object :paged_users do
-    field(:entries, list_of(:user))
-    pagination_fields()
+  object :user_page do
+    field(:entries, non_null(list_of(non_null(:user))))
+    pagi_fields()
   end
 
   object :paged_mailbox_mentions do
     field(:entries, list_of(:mailbox_mention))
-    pagination_fields()
+    pagi_fields()
   end
 
   object :paged_mailbox_notifications do
     field(:entries, list_of(:mailbox_notification))
-    pagination_fields()
+    pagi_fields()
   end
 
   enum :mailbox_type do

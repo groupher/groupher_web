@@ -25,10 +25,13 @@ defmodule GroupherServer.Messaging.Inbox do
 
   ## Examples
 
-      Messaging.Inbox.paged_messages(:mention, user, %{page: 1, size: 20})
+      Messaging.Inbox.paged_messages(:mention, user, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
   """
-  def paged_messages(:mention, user, filter), do: Mentions.Query.paged(user, filter)
-  def paged_messages(:notification, user, filter), do: Notifications.Query.paged(user, filter)
+  def paged_messages(:mention, user, filter, pagi), do: Mentions.Query.paged(user, filter, pagi)
+
+  def paged_messages(:notification, user, filter, pagi) do
+    Notifications.Query.paged(user, filter, pagi)
+  end
 
   @doc """
   Returns the unread count for one inbox store.

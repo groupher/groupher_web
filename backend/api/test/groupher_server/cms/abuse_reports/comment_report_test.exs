@@ -26,7 +26,12 @@ defmodule GroupherServer.Test.CMS.AbuseReports.CommentReport do
         CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
 
       filter = %{content_type: :comment, content_id: comment.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
 
       report = List.first(all_reports.entries)
       report_cases = report.report_cases
@@ -56,7 +61,12 @@ defmodule GroupherServer.Test.CMS.AbuseReports.CommentReport do
         CMS.AbuseReports.comment(comment, "comment reason", "attr", user2, Ecto.UUID.generate())
 
       filter = %{content_type: :comment, content_id: comment.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
 
       report = List.first(all_reports.entries)
       report_cases = report.report_cases

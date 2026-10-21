@@ -9,29 +9,36 @@ defmodule GroupherServerWeb.Schema.Helper.Objects do
         -> resolver or domain context
         -> GraphQL response
   """
-  import Helper.Utils, only: [plural: 1]
   alias GroupherServer.CMS
 
   @threads CMS.artiment_config_threads()
 
-  @doc """
-  paged articles helper
+  @doc "Declares the resource-owned ArticleLite and Page contracts for every Article thread."
+  defmacro article_page_objects do
+    Enum.map(@threads, fn thread ->
+      quote do
+        object unquote(:"#{thread}_lite") do
+          field(:id, non_null(:id))
+          field(:thread, non_null(unquote(:"#{thread}_thread")))
+          field(:inner_id, non_null(:id))
+          field(:title, non_null(:string))
+          field(:digest, :string)
+          field(:author, non_null(:common_user))
+          field(:community, non_null(:community))
+          field(:community_tags, non_null(list_of(non_null(:community_tag))))
+          field(:active_at, :datetime)
+          field(:inserted_at, non_null(:datetime))
+          field(:cat, :article_cat_enum)
+          field(:status, :article_status_enum)
+          field(:is_pinned, non_null(:boolean))
+        end
 
-  e,g:
-  object :paged_blogs do
-    field(:entries, list_of(:blog))
-    pagination_fields()
-  end
-  """
-  defmacro paged_article_objects do
-    @threads
-    |> Enum.map(
-      &quote do
-        object unquote(:"paged_#{plural(&1)}") do
-          field(:entries, list_of(unquote(&1)))
-          pagination_fields()
+        object unquote(:"#{thread}_page") do
+          field(:entries, non_null(list_of(non_null(unquote(:"#{thread}_lite")))))
+          field(:pinned_entries, non_null(list_of(non_null(unquote(:"#{thread}_lite")))))
+          field(:page_info, non_null(:page_info))
         end
       end
-    )
+    end)
   end
 end

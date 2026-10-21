@@ -30,7 +30,7 @@ defmodule GroupherServer.Test.Query.Flags.DocsFlags do
       variables = %{filter: %{community: community.slug}}
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :doc), variables)
 
-      assert results["totalCount"] == @total_count
+      assert results["pageInfo"]["totalCount"] == @total_count
 
       {:ok, _} =
         CMS.Articles.set_illegal(
@@ -54,7 +54,7 @@ defmodule GroupherServer.Test.Query.Flags.DocsFlags do
       assert state.moderation_state == :illegal
 
       results = guest_conn |> gq_query(S.Article.q(:paged_articles, :doc), variables)
-      assert results["totalCount"] == @total_count - 1
+      assert results["pageInfo"]["totalCount"] == @total_count - 1
     end
   end
 

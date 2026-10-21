@@ -33,6 +33,40 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
       {:ok, ~m(community post user)a}
     end
 
+    test "asset pages share stable identity across both APIs and isolate filters",
+         ~m(community user)a do
+      assets =
+        for n <- 1..3 do
+          {:ok, asset} =
+            CMS.Assets.register_to_community(
+              community,
+              image_asset_attrs("pagi-#{n}.png", 70),
+              user,
+              Ecto.UUID.generate()
+            )
+
+          asset
+        end
+
+      assert {:ok, %{entries: first, total_count: 3}} =
+               CMS.Assets.page(community, %{}, %{offset: %{page: 1, size: 2}})
+
+      assert {:ok, %{entries: same, end_cursor: cursor}} =
+               CMS.Assets.page(community, %{}, %{cursor: %{first: 2}})
+
+      assert Enum.map(first, & &1.id) == Enum.map(same, & &1.id)
+
+      assert {:ok, %{entries: tail, has_next_page: false}} =
+               CMS.Assets.page(community, %{}, %{cursor: %{first: 2, after: cursor}})
+
+      assert MapSet.new(Enum.map(first ++ tail, & &1.id)) == MapSet.new(Enum.map(assets, & &1.id))
+
+      assert {:error, _} =
+               CMS.Assets.page(community, %{query: "pagi-1"}, %{
+                 cursor: %{first: 2, after: cursor}
+               })
+    end
+
     test "registers community assets and counts active storage once", ~m(community user)a do
       attrs = image_asset_attrs("hero.png", 120)
 
@@ -998,24 +1032,49 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
 
       assert length(refs) == 105
 
-      {:ok, paged_refs} = CMS.Assets.refs(community, asset.id, %{page: 1, size: 20})
+      {:ok, paged_refs} =
+        CMS.Assets.refs(community, asset.id, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
 
       assert length(paged_refs.entries) == 20
       assert paged_refs.total_count == 105
       assert paged_refs.total_pages == 6
-      assert paged_refs.page_number == 1
+      assert paged_refs.page == 1
 
-      {:ok, second_page_refs} = CMS.Assets.refs(community, asset.id, %{page: 2, size: 20})
+      {:ok, second_page_refs} =
+        CMS.Assets.refs(community, asset.id, %Helper.ORM.Pagi.Params.Offset{page: 2, size: 20})
 
       assert length(second_page_refs.entries) == 20
       assert second_page_refs.total_count == 105
       assert second_page_refs.total_pages == 6
-      assert second_page_refs.page_number == 2
+      assert second_page_refs.page == 2
 
       first_page_ids = paged_refs.entries |> Enum.map(& &1.id) |> MapSet.new()
       second_page_ids = second_page_refs.entries |> Enum.map(& &1.id) |> MapSet.new()
 
       assert MapSet.disjoint?(first_page_ids, second_page_ids)
+
+      {result, queries} =
+        capture_queries(fn -> CMS.Assets.refs(community, asset.id, %{cursor: %{first: 20}}) end)
+
+      assert {:ok, %{entries: first_cursor_entries, end_cursor: cursor}} = result
+      assert Enum.map(first_cursor_entries, & &1.id) == Enum.map(paged_refs.entries, & &1.id)
+      refute Enum.any?(queries, &String.contains?(String.downcase(&1), "count("))
+
+      assert {:ok, %{entries: next_entries}} =
+               CMS.Assets.refs(community, asset.id, %{cursor: %{first: 20, after: cursor}})
+
+      assert Enum.map(next_entries, & &1.id) == Enum.map(second_page_refs.entries, & &1.id)
+
+      {:ok, other_asset} =
+        CMS.Assets.register_to_community(
+          community,
+          image_asset_attrs("other-refs.png", 70),
+          user,
+          Ecto.UUID.generate()
+        )
+
+      assert {:error, _} =
+               CMS.Assets.refs(community, other_asset.id, %{cursor: %{first: 20, after: cursor}})
     end
 
     test "creates upload intent with readable refs and dated storage key", ~m(community user)a do
@@ -1235,14 +1294,20 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
                CMS.Assets.archive(community, asset.id, user, Ecto.UUID.generate())
 
       assert archived.status == :archived
-      assert {:ok, %{entries: entries}} = CMS.Assets.page(community, %{page: 1, size: 20})
+
+      assert {:ok, %{entries: entries}} =
+               CMS.Assets.page(community, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+
       refute Enum.any?(entries, &(&1.id == asset.id))
 
       assert {:ok, restored} =
                CMS.Assets.restore(community, asset.id, user, Ecto.UUID.generate())
 
       assert restored.status == :active
-      assert {:ok, %{entries: entries}} = CMS.Assets.page(community, %{page: 1, size: 20})
+
+      assert {:ok, %{entries: entries}} =
+               CMS.Assets.page(community, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+
       assert Enum.any?(entries, &(&1.id == asset.id))
     end
 

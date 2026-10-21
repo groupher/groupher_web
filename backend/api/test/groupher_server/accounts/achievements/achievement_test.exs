@@ -21,9 +21,12 @@ defmodule GroupherServer.Test.Accounts.Achievement do
   describe "[Accounts Achievement communities]" do
     test "normal user should have a empty editable communities list", ~m(user)a do
       {:ok, results} =
-        Accounts.Achievements.paged_moderatorable_communities(user, %{page: 1, size: 20})
+        Accounts.Achievements.paged_moderatorable_communities(
+          user,
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+        )
 
-      assert results |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = results
       assert results.total_count == 0
     end
 
@@ -40,7 +43,10 @@ defmodule GroupherServer.Test.Accounts.Achievement do
       {:ok, _} = CMS.Communities.add_moderator(community, user2, user, Ecto.UUID.generate())
 
       {:ok, moderatorable_communities} =
-        Accounts.Achievements.paged_moderatorable_communities(user3, %{page: 1, size: 20})
+        Accounts.Achievements.paged_moderatorable_communities(
+          user3,
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+        )
 
       assert moderatorable_communities.total_count == 2
       assert moderatorable_communities.entries |> Enum.any?(&(&1.id == community.id))

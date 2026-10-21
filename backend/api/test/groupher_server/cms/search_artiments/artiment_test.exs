@@ -57,32 +57,33 @@ defmodule GroupherServer.CMS.SearchArtiments.ArtimentTest do
     assert decoded == artiment
   end
 
-  test "normalizes query pagination, filters and scope" do
+  test "normalizes search scope and keeps pagination separate" do
     assert {:ok, query} =
-             Query.new(%{
-               text: "  search  ",
-               scope: %{community_ref: "groupher", ignored: true},
-               filters: %{types: [:article], threads: [:doc]},
-               page: -1,
-               size: 1_000
-             })
+             Query.new(
+               %{
+                 text: "  search  ",
+                 scope: %{community_ref: "groupher", ignored: true},
+                 filters: %{types: [:article], threads: [:doc]}
+               },
+               %{cursor: %{first: 10}}
+             )
 
     assert query.text == "search"
     assert query.scope == %{community_ref: "groupher"}
     assert query.filters.types == [:article]
     assert query.filters.threads == [:doc]
-    assert query.page == 1
-    assert query.size == 100
+    assert %Helper.ORM.Pagi.Params.Cursor{first: 10} = query.pagi
+    assert {:error, _} = Query.new(%{text: "search", page: 1}, nil)
   end
 
   test "rejects an empty query" do
     assert {:error, %ErrorCat.Error{reason: :custom, details: "search text is required"}} =
-             Query.new(%{text: "  "})
+             Query.new(%{text: "  "}, nil)
   end
 
   test "rejects invalid filters instead of silently broadening the query" do
     assert {:error, %ErrorCat.Error{reason: :custom, details: "invalid search filter enum"}} =
-             Query.new(%{text: "search", filters: %{threads: [:doc, :invalid]}})
+             Query.new(%{text: "search", filters: %{threads: [:doc, :invalid]}}, nil)
   end
 
   test "enqueues deterministic indexing jobs through the configured queue" do
@@ -129,7 +130,7 @@ defmodule GroupherServer.CMS.SearchArtiments.ArtimentTest do
         {ref, %{upvotes_count: 7, comments_count: 9, updated_at: updated_at}}
       ])
 
-    assert {:ok, result} = SearchArtiments.search(%{text: "Stable"})
+    assert {:ok, result} = SearchArtiments.search(%{text: "Stable"}, nil)
     assert [%{artiment: updated}] = result.entries
     assert updated.upvotes_count == 7
     assert updated.comments_count == 9

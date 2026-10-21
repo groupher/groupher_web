@@ -64,7 +64,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
     gate(fn _input -> Gate.check_interaction_in_transaction(actor, :report, input) end)
     change(fn canonical -> add_report(canonical, reason, attrs, actor) end)
     confirm(&confirmation/1)
-    present(fn confirmation -> present_result(confirmation, input, actor) end)
+    present(fn confirmation -> present_result(confirmation, input) end)
   end
 
   @pipeline operation: :report_remove,
@@ -76,7 +76,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
     gate(fn _input -> Gate.check_interaction_in_transaction(actor, :report, input) end)
     change(fn canonical -> remove_report(canonical, actor) end)
     confirm(&confirmation/1)
-    present(fn confirmation -> present_result(confirmation, input, actor) end)
+    present(fn confirmation -> present_result(confirmation, input) end)
   end
 
   defp add_report(canonical, reason, attrs, actor) do
@@ -108,9 +108,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
     end
   end
 
-  defp present_result(%Confirmation{}, input, actor) do
-    Gate.access_check(actor, :report, input)
-  end
+  defp present_result(%Confirmation{}, input), do: {:ok, input}
 
   defp target_type(%Comment{}), do: {:ok, "comment"}
 

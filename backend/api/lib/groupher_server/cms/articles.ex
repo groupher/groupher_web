@@ -84,49 +84,28 @@ defmodule GroupherServer.CMS.Articles do
 
   # Query
 
-  @doc "Runs `page` through the public `Articles` boundary."
-  @spec page(T.thread(), map()) :: T.domain_res(T.paged_data())
-  def page(thread, filter), do: Query.page(thread, filter)
-
-  @spec page(T.thread(), map(), User.t()) :: T.domain_res(T.paged_data())
-  def page(thread, filter, %User{} = user), do: Query.page(thread, filter, user)
-
-  @doc """
-  Runs the resource-owned Article Page contract through `Articles.Pagination`.
-
-  ## Examples
-
-      Articles.pagi_page(:post, %{community: "groupher", page: 1, size: 20})
-
-  """
-  @spec pagi_page(T.thread(), map(), User.t() | nil, keyword()) ::
-          {:ok, map()} | {:error, term()}
-  def pagi_page(thread, filter, actor \\ nil, opts \\ []) do
-    Pagination.page(thread, filter, actor, opts)
+  @doc "Runs the canonical Article list query with explicit pagination input."
+  def page(thread, filter, pagi, viewer \\ nil, opts \\ []) do
+    Pagination.page(thread, filter, pagi, viewer, opts)
   end
 
   @doc "Reads a bounded set of public ArticleLite rows by stable Article paths."
   @spec lite_paths([map()]) :: {:ok, [map()]} | {:error, term()}
   def lite_paths(paths), do: Pagination.lite_paths(paths)
 
+  @doc "Returns the canonical public Article binding scope for joined collections."
+  defdelegate public_binding_ids(), to: Pagination
+
   @doc "Runs `grouped_kanban` through the public `Articles` boundary."
   @spec grouped_kanban(Community.t()) :: T.domain_res(term())
   def grouped_kanban(%Community{} = community), do: Query.grouped_kanban(community)
 
-  @doc "Returns paged kanban from the `Articles` read boundary."
-  @spec paged_kanban(Community.t(), map()) :: T.domain_res(term())
-  def paged_kanban(%Community{} = community, filter), do: Query.paged_kanban(community, filter)
+  @doc "Pages one Kanban column or status set."
+  defdelegate kanban_page(community, filter, pagi), to: Query
 
-  @doc "Returns paged published from the `Articles` read boundary."
-  @spec paged_published(T.thread(), map(), User.t()) :: T.domain_res(T.paged_data())
-  def paged_published(thread, filter, %User{} = user) do
-    Query.paged_published(thread, filter, user, nil)
-  end
-
-  @spec paged_published(T.thread(), map(), User.t(), User.t() | nil) ::
-          T.domain_res(T.paged_data())
-  def paged_published(thread, filter, %User{} = target_user, actor) do
-    Query.paged_published(thread, filter, target_user, actor)
+  @doc "Pages an author's public Article bindings."
+  def paged_published(thread, filter, pagi, user, viewer \\ nil) do
+    Query.paged_published(thread, filter, pagi, user, viewer)
   end
 
   @doc "Runs `count_published` through the public `Articles` boundary."
@@ -371,8 +350,11 @@ defmodule GroupherServer.CMS.Articles do
   end
 
   @doc "Lists current Article Trash memberships for a Community."
-  @spec list_trashed(Community.t(), map()) :: T.domain_res(map())
-  def list_trashed(%Community{} = community, filter \\ %{}), do: Trash.list(community, filter)
+  @spec list_trashed(Community.t(), map(), Helper.ORM.Pagi.Params.t() | nil) ::
+          T.domain_res(map())
+  def list_trashed(%Community{} = community, filter, pagi) do
+    Trash.list(community, filter, pagi)
+  end
 
   @doc "Gets one current Article Trash membership by its opaque Trash id."
   @spec get_trashed(Ecto.UUID.t()) :: T.domain_res(CMS.Model.TrashedArticle.t())

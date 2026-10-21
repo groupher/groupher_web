@@ -109,17 +109,14 @@ defmodule GroupherServer.Test.Helper.Schema.Collect do
 
   def q(:paged_collect_folders) do
     """
-    query($login: String!, $filter: CollectFoldersFilter!) {
-        pagedCollectFolders(login: $login, filter: $filter) {
+    query($login: String!, $filter: ArticleCollectionFilter, $pagi: PagiInput) {
+        pagedCollectFolders(login: $login, filter: $filter, pagi: $pagi) {
           entries {
             id
             title
             private
           }
-          totalPages
-          totalCount
-          pageSize
-          pageNumber
+          pageInfo { hasNextPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { endCursor } }
         }
       }
     """
@@ -127,16 +124,13 @@ defmodule GroupherServer.Test.Helper.Schema.Collect do
 
   def q(:paged_collected_articles) do
     """
-    query($folderId: ID!, $filter: CollectedArticlesFilter!) {
-          pagedCollectedArticles(folderId: $folderId, filter: $filter) {
+    query($folderId: ID!, $filter: ArticleCollectionFilter, $pagi: PagiInput) {
+          pagedCollectedArticles(folderId: $folderId, filter: $filter, pagi: $pagi) {
             entries {
               innerId
               title
             }
-          totalPages
-          totalCount
-          pageSize
-          pageNumber
+          pageInfo { hasNextPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { endCursor } }
         }
       }
     """

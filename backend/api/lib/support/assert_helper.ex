@@ -82,38 +82,21 @@ defmodule GroupherServer.Test.AssertHelper do
     end
   end
 
-  def is_valid_pagination?(obj) when is_map(obj) do
-    is_valid_kv?(obj, "entries", :list) and is_valid_kv?(obj, "totalPages", :int) and
-      is_valid_kv?(obj, "totalCount", :int) and is_valid_kv?(obj, "pageSize", :int) and
-      is_valid_kv?(obj, "pageNumber", :int)
+  def is_valid_pagination?(%{"entries" => entries, "pageInfo" => info}) do
+    is_list(entries) and is_boolean(info["hasNextPage"]) and is_boolean(info["hasPreviousPage"]) and
+      (info["__typename"] == "CursorPageInfo" or
+         (is_integer(info["page"]) and is_integer(info["size"]) and is_integer(info["totalCount"])))
   end
 
-  def is_valid_pagination?(obj, :empty) when is_map(obj) do
-    case is_valid_pagination?(obj) do
-      false ->
-        false
+  def is_valid_pagination?(_), do: false
+  def is_valid_pagination?(obj, :empty), do: is_valid_pagination?(obj) and obj["entries"] == []
 
-      true ->
-        obj["entries"] |> Enum.empty?() and obj["totalCount"] == 0 and obj["pageNumber"] == 1 and
-          obj["totalPages"] == 1
-    end
+  def is_valid_pagination?(%{entries: entries} = obj, :raw) do
+    is_list(entries) and match?(%{api: _}, Helper.ORM.Pagi.Page.info(obj))
   end
 
-  def is_valid_pagination?(obj, :raw) when is_map(obj) do
-    is_valid_kv?(obj, "entries", :list) and is_valid_kv?(obj, "total_pages", :int) and
-      is_valid_kv?(obj, "total_count", :int) and is_valid_kv?(obj, "page_size", :int) and
-      is_valid_kv?(obj, "page_number", :int)
-  end
-
-  def is_valid_pagination?(obj, :raw, :empty) when is_map(obj) do
-    case is_valid_pagination?(obj, :raw) do
-      false ->
-        false
-
-      true ->
-        obj.entries |> Enum.empty?() and obj.total_count == 0 and obj.page_number == 1 and
-          obj.total_pages == 1
-    end
+  def is_valid_pagination?(obj, :raw, :empty) do
+    is_valid_pagination?(obj, :raw) and obj.entries == []
   end
 
   @doc """

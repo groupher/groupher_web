@@ -562,8 +562,8 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
 
   def q(:trashed_articles) do
     """
-    query($community: String!, $thread: Thread!, $filter: TrashFilter) {
-      trashedArticles(community: $community, thread: $thread, filter: $filter) {
+    query($community: String!, $thread: Thread!, $pagi: PagiInput) {
+      trashedArticles(community: $community, thread: $thread, pagi: $pagi) {
         entries {
           id
           thread
@@ -580,14 +580,14 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
               snapshotAt
             }
           }
-          mentionedBy(filter: {page: 1, size: 20}) {
-            totalCount
+          mentionedBy(pagi: {offset: {page: 1, size: 20}}) {
+            pageInfo { ... on OffsetPageInfo { totalCount } }
           }
-          mentions(filter: {page: 1, size: 20}) {
-            totalCount
+          mentions(pagi: {offset: {page: 1, size: 20}}) {
+            pageInfo { ... on OffsetPageInfo { totalCount } }
           }
         }
-        totalCount
+        pageInfo { ... on OffsetPageInfo { totalCount } }
       }
     }
     """
@@ -595,127 +595,49 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
 
   def q(:collected_users) do
     """
-    query($article: ArticlePathInput!, $filter: PagiFilter!) {
-      collectedUsers(article: $article, filter: $filter) {
+    query($article: ArticlePathInput!, $pagi: PagiInput) {
+      collectedUsers(article: $article, pagi: $pagi) {
         entries {
           login
           avatar
           nickname
         }
-        totalPages
-        totalCount
-        pageSize
-        pageNumber
+        pageInfo { hasNextPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { endCursor } }
       }
     }
     """
   end
 
   def q(:grouped_kanban_posts) do
-    """
-    query($community: String!) {
-          groupedKanbanPosts(community: $community) {
-            backlog {
-              entries {
-                innerId
-                cat
-                status
-                title
-              }
-              totalPages
-              totalCount
-              pageSize
-              pageNumber
-            }
+    boards =
+      Enum.map_join([:backlog, :todo, :wip, :done, :rejected], "\n", fn board ->
+        "#{board} { entries { innerId title cat status } pageInfo { __typename hasNextPage hasPreviousPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { startCursor endCursor } } }"
+      end)
 
-            todo {
-              entries {
-                innerId
-                cat
-                status
-                title
-              }
-              totalPages
-              totalCount
-              pageSize
-              pageNumber
-            }
-
-            wip {
-              entries {
-                innerId
-                cat
-                status
-                title
-              }
-              totalPages
-              totalCount
-              pageSize
-              pageNumber
-            }
-
-            done {
-              entries {
-                innerId
-                cat
-                status
-                title
-              }
-              totalPages
-              totalCount
-              pageSize
-              pageNumber
-            }
-
-            rejected {
-              entries {
-                innerId
-                cat
-                status
-                title
-              }
-              totalPages
-              totalCount
-              pageSize
-              pageNumber
-            }
-          }
-        }
-    """
+    "query($community: String!) { groupedKanbanPosts(community: $community) { #{boards} } }"
   end
 
   def q(:paged_kanban_posts) do
     """
-    query($community: String!, $filter: PagedKanbanPostsFilter!) {
-          pagedKanbanPosts(community: $community, filter: $filter) {
-            entries {
-              innerId
-              cat
-              status
-              title
-            }
-            totalPages
-            totalCount
-            pageSize
-            pageNumber
-          }
-        }
+    query($community: String!, $filter: PostFilter, $pagi: PagiInput) {
+      kanbanPage(community: $community, filter: $filter, pagi: $pagi) {
+        entries {innerId title cat status}
+        pageInfo { __typename hasNextPage hasPreviousPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { startCursor endCursor } }
+      }
+    }
     """
   end
 
   def q(:upvoted_users) do
     """
-    query($article: ArticlePathInput!, $filter: PagiFilter!) {
-      upvotedUsers(article: $article, filter: $filter) {
+    query($article: ArticlePathInput!, $pagi: PagiInput) {
+      upvotedUsers(article: $article, pagi: $pagi) {
         entries {
           login
           avatar
           nickname
         }
-        totalPages
-        totalCount
-        pageSize
-        pageNumber
+        pageInfo { __typename hasNextPage hasPreviousPage ... on OffsetPageInfo {page size totalCount totalPages} ... on CursorPageInfo {startCursor endCursor} }
       }
     }
     """
@@ -723,8 +645,8 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
 
   def q(:article_logs) do
     """
-    query($article: ArticlePathInput!, $filter: ArticleLogFilter) {
-      articleLogs(article: $article, filter: $filter) {
+    query($article: ArticlePathInput!, $pagi: PagiInput) {
+      articleLogs(article: $article, pagi: $pagi) {
         entries {
           id
           action
@@ -734,10 +656,7 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
           payload
           occurredAt
         }
-        pageNumber
-        pageSize
-        totalCount
-        totalPages
+        pageInfo { __typename hasNextPage hasPreviousPage ... on OffsetPageInfo {page size totalCount totalPages} ... on CursorPageInfo {startCursor endCursor} }
       }
     }
     """
@@ -747,20 +666,10 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
 
   def q(:paged_published_articles, thread, extra) do
     """
-    query($login: String!, $filter: PagiFilter!) {
-      pagedPublished#{t(thread)}s(login: $login, filter: $filter) {
-        entries {
-          innerId
-          title
-          author {
-            login
-          }
-          #{extra}
-        }
-        totalPages
-        totalCount
-        pageSize
-        pageNumber
+    query($login: String!, $filter: ArticlePageFilter, $pagi: PagiInput) {
+      pagedPublished#{t(thread)}s(login: $login, filter: $filter, pagi: $pagi) {
+        entries { innerId title thread author { login } #{extra} }
+        pageInfo { __typename hasNextPage hasPreviousPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { startCursor endCursor } }
       }
     }
     """
@@ -793,46 +702,11 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
 
   def q(:paged_articles, thread, extra) do
     """
-    query($filter: Paged#{t(thread)}sFilter!) {
-      paged#{t(thread)}s(filter: $filter) {
-        entries {
-          innerId
-          title
-          articleStats {
-            views
-            viewsRevision
-            upvotesCount
-            snapshotAt
-          }
-          isPinned
-          pending
-          meta {
-            latestUpvotedUsers {
-              login
-            }
-          }
-          author {
-            login
-            nickname
-            avatar
-          }
-          body {
-            html
-          }
-          communities {
-            slug
-          }
-          communityTags {
-            id
-          }
-          insertedAt
-          activeAt
-          #{extra}
-        }
-        totalPages
-        totalCount
-        pageSize
-        pageNumber
+    query($filter: #{if thread in [:post, :changelog], do: t(thread) <> "Filter", else: "ArticlePageFilter"}, $pagi: PagiInput) {
+      #{thread}Page(filter: $filter, pagi: $pagi) {
+        entries { innerId title thread isPinned community { slug } author { login nickname avatar } communityTags { id } insertedAt activeAt #{extra} }
+        pinnedEntries { innerId title thread isPinned community { slug } author { login nickname avatar } communityTags { id } insertedAt activeAt #{extra} }
+        pageInfo { __typename hasNextPage hasPreviousPage ... on OffsetPageInfo { page size totalCount totalPages } ... on CursorPageInfo { startCursor endCursor } }
       }
     }
     """
@@ -857,8 +731,8 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
 
   def q(:search_artiments, _thread, extra) do
     """
-    query($query: SearchArtimentsQueryInput!) {
-      searchArtiments(query: $query) {
+    query($query: SearchArtimentsQueryInput!, $pagi: PagiInput) {
+      searchArtiments(query: $query, pagi: $pagi) {
         entries {
           artiment {
             ... on ArticleSearchArtiment {
@@ -882,10 +756,7 @@ defmodule GroupherServer.Test.Helper.Schema.Article do
             fragments
           }
         }
-        totalCount
-        totalPages
-        pageSize
-        pageNumber
+        pageInfo { __typename hasNextPage hasPreviousPage ... on OffsetPageInfo {page size totalCount totalPages} ... on CursorPageInfo {startCursor endCursor} }
       }
     }
     """

@@ -8,7 +8,7 @@ defmodule GroupherServer.Messaging.Notifications do
   alias __MODULE__.{Persist, Query}
 
   @doc "Runs `paged` through this capability boundary."
-  defdelegate paged(user, filter), to: Query
+  defdelegate paged(user, filter, pagi), to: Query
   @doc "Runs `unread_count` through this capability boundary."
   defdelegate unread_count(user_id), to: Query
   @doc "Runs `unread_counts` through this capability boundary."

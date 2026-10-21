@@ -309,7 +309,13 @@ defmodule GroupherServer.Test.ActivityTest do
       | cur_passport: %{"global" => %{}, community.slug => %{"root" => true}}
     }
 
-    assert {:ok, result} = Activity.list_community_logs(community, manager, %{filter: %{}}, 1)
+    assert {:ok, result} =
+             Activity.list_community_logs(
+               community,
+               manager,
+               %{filter: %{}},
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+             )
 
     refute Enum.any?(result.entries, &(&1.action == :moderation_review_started))
   end
@@ -318,7 +324,10 @@ defmodule GroupherServer.Test.ActivityTest do
     {community, post, _attrs, _user} = mock_article(:post)
 
     assert {:ok, %{entries: entries, total_count: total_count}} =
-             Activity.list_article_logs(post, nil, %{page: 1})
+             Activity.list_article_logs(post, nil, %Helper.ORM.Pagi.Params.Offset{
+               page: 1,
+               size: 20
+             })
 
     assert total_count >= 1
     created = Enum.find(entries, &(&1.action == :created))
@@ -600,9 +609,14 @@ defmodule GroupherServer.Test.ActivityTest do
              )
 
     assert {:ok, result} =
-             Activity.list_community_logs(community, manager, %{filter: %{}}, 1)
+             Activity.list_community_logs(
+               community,
+               manager,
+               %{filter: %{}},
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+             )
 
-    assert result.total_count >= 2
+    assert result.page_info.total_count >= 2
 
     assert result.entries
            |> Enum.map(& &1.resource.type)
@@ -640,10 +654,10 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{filter: %{resource_types: [:blog]}},
-               1
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
              )
 
-    assert blog_result.total_count == 2
+    assert blog_result.page_info.total_count == 2
     assert Enum.all?(blog_result.entries, &(&1.resource.type == :blog))
 
     assert {:ok, press_result} =
@@ -651,16 +665,92 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{filter: %{resource_types: [:press], actions: [:config_updated]}},
-               1
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
              )
 
-    assert press_result.total_count == 1
+    assert press_result.page_info.total_count == 1
     assert [%{action: :config_updated, resource: %{type: :press}}] = press_result.entries
 
-    assert {:error, _} = Activity.list_community_logs(community, manager, %{filter: %{}}, 0)
+    assert {:error, _} =
+             Activity.list_community_logs(
+               community,
+               manager,
+               %{filter: %{}},
+               %Helper.ORM.Pagi.Params.Offset{page: 0, size: 30}
+             )
 
     assert {:error, _} =
-             Activity.list_community_logs(community, manager, %{filter: %{size: 20}}, 1)
+             Activity.list_community_logs(
+               community,
+               manager,
+               %{filter: %{size: 20}},
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+             )
+  end
+
+  test "CommunityLog cursor traverses tied times and rejects another community or filter" do
+    {community, post, _, manager} = mock_article(:post)
+    manager = %{manager | cur_passport: %{"global" => %{}, community.slug => %{"root" => true}}}
+    time = DateTime.utc_now(:second)
+
+    for _ <- 1..4 do
+      assert {:ok, _} =
+               Activity.log(
+                 %{activity_type: :community, community_id: community.id, ref: community.slug},
+                 :activated,
+                 actor: manager,
+                 occurred_at: time
+               )
+    end
+
+    selection = %{filter: %{actions: [:activated]}}
+
+    assert {:ok, expected} =
+             Activity.list_community_logs(
+               community,
+               manager,
+               selection,
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 100}
+             )
+
+    assert {:ok, first} =
+             Activity.list_community_logs(
+               community,
+               manager,
+               selection,
+               %Helper.ORM.Pagi.Params.Cursor{first: 2}
+             )
+
+    assert first.page_info.has_next_page
+    assert first.page_info.api == :cursor
+    cursor = first.page_info.end_cursor
+
+    assert {:ok, rest} =
+             Activity.list_community_logs(
+               community,
+               manager,
+               selection,
+               %Helper.ORM.Pagi.Params.Cursor{first: 100, after: cursor}
+             )
+
+    refute rest.page_info.has_next_page
+
+    assert Enum.map(first.entries ++ rest.entries, & &1.event_ref) ==
+             Enum.map(expected.entries, & &1.event_ref)
+
+    assert {:error, _} =
+             Activity.list_community_logs(
+               community,
+               manager,
+               %{filter: %{}},
+               %Helper.ORM.Pagi.Params.Cursor{first: 2, after: cursor}
+             )
+
+    assert {:error, _} =
+             Activity.list_article_logs(post, nil, %Helper.ORM.Pagi.Params.Cursor{
+               first: 2,
+               after: cursor
+             })
   end
 
   test "CommunityLog uses fixed-size database pagination across pages" do
@@ -684,15 +774,26 @@ defmodule GroupherServer.Test.ActivityTest do
                )
     end
 
-    assert {:ok, first_page} = Activity.list_community_logs(community, manager, %{filter: %{}}, 1)
+    assert {:ok, first_page} =
+             Activity.list_community_logs(
+               community,
+               manager,
+               %{filter: %{}},
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+             )
 
     assert {:ok, second_page} =
-             Activity.list_community_logs(community, manager, %{filter: %{}}, 2)
+             Activity.list_community_logs(
+               community,
+               manager,
+               %{filter: %{}},
+               %Helper.ORM.Pagi.Params.Offset{page: 2, size: 30}
+             )
 
-    assert first_page.page_size == 30
+    assert first_page.page_info.size == 30
     assert length(first_page.entries) == 30
     assert second_page.entries != []
-    assert first_page.total_count == second_page.total_count
+    assert first_page.page_info.total_count == second_page.page_info.total_count
 
     first_ids = MapSet.new(first_page.entries, & &1.id)
     second_ids = MapSet.new(second_page.entries, & &1.id)
@@ -747,7 +848,7 @@ defmodule GroupherServer.Test.ActivityTest do
                filter: %{resource_types: ["community"], actions: ["created"]}
              })
 
-    assert empty.total_count == 0
+    assert empty.page_info.total_count == 0
   end
 
   test "CommunityLog projects parent event refs for detail bindings" do
@@ -775,7 +876,14 @@ defmodule GroupherServer.Test.ActivityTest do
       | cur_passport: %{"global" => %{}, community.slug => %{"root" => true}}
     }
 
-    assert {:ok, result} = Activity.list_community_logs(community, manager, %{filter: %{}}, 1)
+    assert {:ok, result} =
+             Activity.list_community_logs(
+               community,
+               manager,
+               %{filter: %{}},
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+             )
+
     child = Enum.find(result.entries, &(&1.action == :setup_retried))
     assert child.parent_event_ref == parent.event_ref
   end
@@ -897,7 +1005,7 @@ defmodule GroupherServer.Test.ActivityTest do
                  preset_key: "destructive_actions",
                  filter: %{actions: ["created"]}
                },
-               1
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
              )
 
     assert result.entries == []
@@ -911,7 +1019,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{preset_key: "missing", filter: %{}},
-               1
+               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
              )
   end
 

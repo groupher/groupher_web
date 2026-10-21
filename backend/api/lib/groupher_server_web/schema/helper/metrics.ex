@@ -10,7 +10,6 @@ defmodule GroupherServerWeb.Schema.Helper.Metrics do
         -> GraphQL response
   """
   use Absinthe.Schema.Notation
-  import GroupherServerWeb.Schema.Helper.Fields
 
   scalar :big_int, name: "BigInt" do
     description("""
@@ -32,16 +31,6 @@ defmodule GroupherServerWeb.Schema.Helper.Metrics do
     field(:value, :integer)
     field(:long, :float)
     field(:lant, :float)
-  end
-
-  object :paged_geo_infos do
-    field(:entries, list_of(:geo_info))
-    pagination_fields()
-  end
-
-  input_object :common_paged_filter do
-    pagination_args()
-    field(:sort, :inserted_sort_enum, default_value: :desc_inserted)
   end
 
   defp serialize_big_int(nil), do: nil

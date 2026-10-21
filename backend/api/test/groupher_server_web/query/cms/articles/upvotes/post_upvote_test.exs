@@ -24,13 +24,13 @@ defmodule GroupherServer.Test.Query.Upvotes.PostUpvote do
           community: community.slug,
           thread: "POST"
         },
-        filter: %{page: 1, size: 20}
+        pagi: %{offset: %{page: 1, size: 20}}
       }
 
       results = guest_conn |> gq_query(S.Article.q(:upvoted_users), variables)
 
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == 2
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["totalCount"] == 2
 
       assert user_exist_in?(user, results["entries"])
       assert user_exist_in?(user2, results["entries"])

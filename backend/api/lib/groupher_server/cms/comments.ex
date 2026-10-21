@@ -154,125 +154,22 @@ defmodule GroupherServer.CMS.Comments do
     Query.comments_state(thread, article_id, user)
   end
 
-  @doc """
-  Returns a page of Comments without viewer-specific state.
-
-  ## Examples
-
-      CMS.Comments.paged_comments(:post, post_id, filters, :replies)
-  """
-  @spec paged_comments(T.thread(), T.id(), map(), atom()) :: T.domain_res(T.paged_data())
-  def paged_comments(thread, article_id, filters, mode) do
-    paged_comments(thread, article_id, filters, mode, nil)
+  @doc "Returns an independently paged flat reply collection for one root."
+  def reply_page(comment, community_slug, filter, pagi_input, user \\ nil) do
+    Query.reply_page(comment, community_slug, filter, pagi_input, user)
   end
 
-  @doc """
-  Returns a page of Comments hydrated for an optional viewer.
-
-  ## Examples
-
-      CMS.Comments.paged_comments(:post, post_id, filters, :replies, viewer)
-  """
-  @spec paged_comments(T.thread(), T.id(), map(), atom(), User.t() | nil) ::
-          T.domain_res(T.paged_data())
-  def paged_comments(thread, article_id, filters, mode, user) do
-    Query.paged_comments(thread, article_id, filters, mode, user)
+  @doc "Returns the new CommentPage contract for one public Article."
+  def page(thread, article_id, community_slug, filter, pagi_input, mode, user \\ nil) do
+    Query.page(thread, article_id, community_slug, filter, pagi_input, mode, user)
   end
 
-  @doc """
-  Returns a user's published Comments across public Articles.
+  @doc "Pages published Comments with separate thread/filter and Pagi position."
+  defdelegate paged_published_comments(user, thread, filter, pagi, viewer), to: Query
 
-  ## Examples
-
-      CMS.Comments.paged_published_comments(target_user, filters)
-  """
-  @spec paged_published_comments(User.t(), map()) :: T.domain_res(T.paged_data())
-  def paged_published_comments(%User{} = user, filters) do
-    Query.paged_published_comments(user, filters, nil)
-  end
-
-  @doc """
-  Returns a user's published Comments with optional viewer state, or limits the
-  result to one thread when the second argument is a thread atom.
-
-  ## Examples
-
-      CMS.Comments.paged_published_comments(target_user, filters, viewer)
-      CMS.Comments.paged_published_comments(target_user, :post, filters)
-  """
-  @spec paged_published_comments(User.t(), map(), User.t() | nil) ::
-          T.domain_res(T.paged_data())
-  def paged_published_comments(%User{} = target_user, filters, actor) when is_map(filters) do
-    Query.paged_published_comments(target_user, filters, actor)
-  end
-
-  @spec paged_published_comments(User.t(), T.thread(), map()) ::
-          T.domain_res(T.paged_data())
-  def paged_published_comments(%User{} = user, thread, filters) when is_atom(thread) do
-    Query.paged_published_comments(user, thread, filters, nil)
-  end
-
-  @doc """
-  Returns one user's published Comments in a thread for an optional viewer.
-
-  ## Examples
-
-      CMS.Comments.paged_published_comments(target_user, :post, filters, viewer)
-  """
-  @spec paged_published_comments(User.t(), T.thread(), map(), User.t() | nil) ::
-          T.domain_res(T.paged_data())
-  def paged_published_comments(%User{} = target_user, thread, filters, actor) do
-    Query.paged_published_comments(target_user, thread, filters, actor)
-  end
-
-  @doc """
-  Returns folded Comments without viewer-specific state.
-
-  ## Examples
-
-      CMS.Comments.paged_folded_comments(:post, post_id, filters)
-  """
-  @spec paged_folded_comments(T.thread(), T.id(), map()) :: T.domain_res(T.paged_data())
-  def paged_folded_comments(thread, article_id, filters) do
-    Query.paged_folded_comments(thread, article_id, filters)
-  end
-
-  @doc """
-  Returns folded Comments hydrated for a viewer.
-
-  ## Examples
-
-      CMS.Comments.paged_folded_comments(:post, post_id, filters, viewer)
-  """
-  @spec paged_folded_comments(T.thread(), T.id(), map(), User.t()) ::
-          T.domain_res(T.paged_data())
-  def paged_folded_comments(thread, article_id, filters, %User{} = user) do
-    Query.paged_folded_comments(thread, article_id, filters, user)
-  end
-
-  @doc """
-  Returns replies under one Comment without viewer-specific state.
-
-  ## Examples
-
-      CMS.Comments.paged_comment_replies(comment_id, filters)
-  """
-  @spec paged_comment_replies(T.id(), map()) :: T.domain_res(T.paged_data())
-  def paged_comment_replies(comment_id, filters) do
-    Query.paged_comment_replies(comment_id, filters)
-  end
-
-  @doc """
-  Returns replies under one Comment hydrated for an optional viewer.
-
-  ## Examples
-
-      CMS.Comments.paged_comment_replies(comment_id, filters, viewer)
-  """
-  @spec paged_comment_replies(T.id(), map(), User.t() | nil) :: T.domain_res(T.paged_data())
-  def paged_comment_replies(comment_id, filters, user) do
-    Query.paged_comment_replies(comment_id, filters, user)
-  end
+  @doc "Pages folded Comments through the common engine."
+  defdelegate paged_folded_comments(thread, article_id, filter, pagi), to: Query
+  defdelegate paged_folded_comments(thread, article_id, filter, pagi, viewer), to: Query
 
   @doc """
   Returns the distinct participants in an Article's Comments.
@@ -667,5 +564,5 @@ defmodule GroupherServer.CMS.Comments do
       CMS.Comments.paged_audit_failed_comments(filters)
   """
   @spec paged_audit_failed_comments(map()) :: T.domain_res(T.paged_data())
-  def paged_audit_failed_comments(filter), do: Moderation.page_audit_failed(filter)
+  def paged_audit_failed_comments(pagi), do: Moderation.page_audit_failed(pagi)
 end

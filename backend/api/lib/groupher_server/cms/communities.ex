@@ -63,6 +63,9 @@ defmodule GroupherServer.CMS.Communities do
   @default_fetch_opts [inc_views: true]
 
   # Read
+  @doc "Builds the canonical public Community collection scope."
+  defdelegate public_query(), to: Query
+
   @doc "Fetches a Community through the Gate-scoped read boundary."
   @spec fetch(String.t()) :: T.domain_res(Community.t())
   def fetch(slug), do: fetch(slug, @default_fetch_opts)
@@ -145,12 +148,9 @@ defmodule GroupherServer.CMS.Communities do
   defp reason_code(_reason), do: "unknown"
 
   # List
-  @doc "Runs `paged` through the public `Communities` boundary."
-  @spec paged(map()) :: T.domain_res(T.paged_data())
-  def paged(filter), do: Query.page(filter)
-
-  @spec paged(map(), User.t()) :: T.domain_res(T.paged_data())
-  def paged(filter, %User{} = user), do: Query.page(filter, user)
+  @doc "Pages communities with an explicit Pagi position and optional viewer."
+  defdelegate paged(filter, pagi), to: Query, as: :page
+  defdelegate paged(filter, pagi, viewer), to: Query, as: :page
 
   # Write
   @doc "Runs `create` through the public `Communities` boundary."
@@ -249,31 +249,25 @@ defmodule GroupherServer.CMS.Communities do
   @spec release_expired_slug_claims(DateTime.t()) :: {:ok, non_neg_integer()} | {:error, term()}
   def release_expired_slug_claims(now), do: SlugClaims.release_expired(now)
 
+  @doc "Returns bounded moderator candidates excluding existing memberships."
+  def moderator_candidates(community, name), do: ModeratorsQuery.candidates(community, name)
+
   # Members
-  @doc "Runs `members` through the public `Communities` boundary."
-  @spec members(atom(), Community.t(), map()) :: T.domain_res(T.paged_data())
-  def members(:moderators, %Community{} = community, filters) do
-    ModeratorsQuery.page(community, filters)
+  @doc "Pages community members with an explicit Pagi position and optional viewer."
+  def members(type, community, filter, pagi, viewer \\ nil)
+
+  def members(:moderators, %Community{} = community, filter, pagi, viewer) do
+    ModeratorsQuery.page(community, filter, pagi, viewer)
   end
 
-  def members(:subscribers, %Community{} = community, filters) do
-    SubscribersQuery.page(community, filters)
+  def members(:subscribers, %Community{} = community, filter, pagi, viewer) do
+    SubscribersQuery.page(community, filter, pagi, viewer)
   end
 
-  def members(type, community_ref, filters) when type in [:moderators, :subscribers] do
+  def members(type, community_ref, filter, pagi, viewer)
+      when type in [:moderators, :subscribers] do
     with {:ok, community} <- FrontDesk.community(community_ref, mode: :internal) do
-      members(type, community, filters)
-    end
-  end
-
-  @spec members(atom(), Community.t(), map(), User.t()) :: T.domain_res(T.paged_data())
-  def members(:subscribers, %Community{} = community, filters, %User{} = user) do
-    SubscribersQuery.page(community, filters, user)
-  end
-
-  def members(:subscribers, community_ref, filters, %User{} = user) do
-    with {:ok, community} <- FrontDesk.community(community_ref, mode: :internal) do
-      members(:subscribers, community, filters, user)
+      members(type, community, filter, pagi, viewer)
     end
   end
 
@@ -287,9 +281,8 @@ defmodule GroupherServer.CMS.Communities do
     CreateCategoryCommand.execute(community, attrs, user, command_id)
   end
 
-  @doc "Returns paged categories through the Communities read boundary."
-  @spec paged_categories(map()) :: T.domain_res(T.paged_data())
-  def paged_categories(filter), do: Query.page_categories(filter)
+  @doc "Returns the ordered category configuration."
+  defdelegate categories(), to: Query
 
   @doc "Updates a category through its `receipt_pipeline`."
   @spec update_category(String.t(), map()) :: T.domain_res(Category.t())

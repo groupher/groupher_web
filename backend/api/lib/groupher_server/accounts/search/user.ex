@@ -13,11 +13,8 @@ defmodule GroupherServer.Accounts.Search.User do
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
 
-  alias GroupherServer.Accounts
-
-  alias Accounts.Model.User
-  alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  alias GroupherServer.Accounts.Model.User
+  alias GroupherServer.Repo
 
   @search_items_count 15
 
@@ -28,20 +25,16 @@ defmodule GroupherServer.Accounts.Search.User do
 
       GroupherServer.Accounts.Search.user("alice")
   """
-  @spec search(String.t()) :: {:ok, map()} | {:error, any()}
+  @spec search(String.t()) :: {:ok, [User.t()]} | {:error, any()}
   def search(name) do
     query =
       User
       |> where([u], ilike(u.nickname, ^"%#{name}%") or ilike(u.login, ^"%#{name}%"))
 
-    with {:ok, page} <-
-           ORM.pagi(
-             query,
-             %Params.Offset{page: 1, size: @search_items_count},
-             for: User,
-             order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
-           ) do
-      done(Page.to_legacy(page))
-    end
+    query
+    |> order_by([user], desc: user.id)
+    |> limit(@search_items_count)
+    |> Repo.all()
+    |> done()
   end
 end

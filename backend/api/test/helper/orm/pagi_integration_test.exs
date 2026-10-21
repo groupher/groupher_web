@@ -18,15 +18,6 @@ defmodule Helper.ORM.PagiIntegrationTest do
     end
   end
 
-  defmodule GenericItem do
-    use Ecto.Schema
-
-    @primary_key {:id, :integer, autogenerate: false}
-    schema "pagi_test_items" do
-      field(:name, :string)
-    end
-  end
-
   setup do
     Repo.query!(
       "CREATE TEMP TABLE pagi_test_items (id integer PRIMARY KEY, name text) ON COMMIT DROP"
@@ -61,6 +52,38 @@ defmodule Helper.ORM.PagiIntegrationTest do
              )
 
     assert Enum.map(entries, & &1.id) == [4, 3]
+
+    assert {:ok,
+            %Page.Offset{
+              entries: middle_entries,
+              page: 2,
+              total_pages: 2,
+              has_previous_page: true,
+              has_next_page: false
+            }} =
+             ORM.pagi(
+               from(item in Item, select: item),
+               %Params.Offset{page: 2, size: 2},
+               for: Item,
+               order: order()
+             )
+
+    assert Enum.map(middle_entries, & &1.id) == [2, 1]
+
+    assert {:ok,
+            %Page.Offset{
+              entries: [_middle_entry],
+              page: 2,
+              total_pages: 4,
+              has_previous_page: true,
+              has_next_page: true
+            }} =
+             ORM.pagi(
+               from(item in Item, select: item),
+               %Params.Offset{page: 2, size: 1},
+               for: Item,
+               order: order()
+             )
   end
 
   test "nil params synthesize the first page from the effective config" do
@@ -99,7 +122,12 @@ defmodule Helper.ORM.PagiIntegrationTest do
       platform_hard_max: 100
     }
 
-    assert {:ok, %Page.Cursor{entries: first_entries, end_cursor: end_cursor}} =
+    assert {:ok,
+            %Page.Cursor{
+              entries: first_entries,
+              end_cursor: end_cursor,
+              has_next_page: true
+            }} =
              ORM.pagi(
                from(item in Item, select: item),
                %Params.Cursor{first: 2, after: nil, config_revision: 0},
@@ -115,7 +143,12 @@ defmodule Helper.ORM.PagiIntegrationTest do
     assert is_binary(end_cursor)
     refute end_cursor =~ "id"
 
-    assert {:ok, %Page.Cursor{entries: second_entries, has_next_page: false}} =
+    assert {:ok,
+            %Page.Cursor{
+              entries: second_entries,
+              end_cursor: final_cursor,
+              has_next_page: false
+            }} =
              ORM.pagi(
                from(item in Item, select: item),
                %Params.Cursor{first: 2, after: end_cursor, config_revision: 0},
@@ -128,6 +161,12 @@ defmodule Helper.ORM.PagiIntegrationTest do
              )
 
     assert Enum.map(second_entries, & &1.id) == [2, 1]
+    assert is_binary(final_cursor)
+
+    assert MapSet.new(Enum.map(first_entries ++ second_entries, & &1.id)) ==
+             MapSet.new([1, 2, 3, 4])
+
+    assert length(Enum.uniq(Enum.map(first_entries ++ second_entries, & &1.id))) == 4
   end
 
   test "emits bounded page telemetry without cursor payloads" do
@@ -200,7 +239,7 @@ defmodule Helper.ORM.PagiIntegrationTest do
              )
   end
 
-  test "generic offset preserves an out-of-range page and returns an empty page" do
+  test "offset preserves an out-of-range page and returns an empty page" do
     assert {:ok,
             %Page.Offset{
               entries: [],
@@ -211,15 +250,15 @@ defmodule Helper.ORM.PagiIntegrationTest do
               has_next_page: false
             }} =
              ORM.pagi(
-               from(item in GenericItem, select: item),
+               from(item in Item, select: item),
                %Params.Offset{page: 3, size: 2},
-               for: GenericItem,
+               for: Item,
                order: order()
              )
   end
 
-  test "generic offset reports zero pages for an empty collection" do
-    Repo.delete_all(GenericItem)
+  test "offset reports zero pages for an empty collection" do
+    Repo.delete_all(Item)
 
     assert {:ok,
             %Page.Offset{
@@ -231,9 +270,9 @@ defmodule Helper.ORM.PagiIntegrationTest do
               has_next_page: false
             }} =
              ORM.pagi(
-               from(item in GenericItem, select: item),
+               from(item in Item, select: item),
                %Params.Offset{page: 1, size: 2},
-               for: GenericItem,
+               for: Item,
                order: order()
              )
   end

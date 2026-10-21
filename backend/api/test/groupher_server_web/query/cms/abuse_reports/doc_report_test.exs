@@ -24,11 +24,11 @@ defmodule GroupherServer.Test.Query.AbuseReports.DocReport do
       {:ok, _} =
         CMS.AbuseReports.article(doc2, "reason", "attr_info", user2, Ecto.UUID.generate())
 
-      variables = %{filter: %{content_type: "DOC", page: 1, size: 10}}
+      variables = %{filter: %{content_type: "DOC"}, pagi: %{offset: %{page: 1, size: 10}}}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == 2
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["totalCount"] == 2
     end
 
     test "support search with id", ~m(guest_conn community doc_attrs user user2)a do
@@ -41,7 +41,8 @@ defmodule GroupherServer.Test.Query.AbuseReports.DocReport do
         CMS.AbuseReports.article(doc2, "reason", "attr_info", user2, Ecto.UUID.generate())
 
       variables = %{
-        filter: %{content_type: "DOC", content_id: doc.id, page: 1, size: 10}
+        filter: %{content_type: "DOC", content_id: doc.id},
+        pagi: %{offset: %{page: 1, size: 10}}
       }
 
       results = guest_conn |> gq_query(@query, variables)
@@ -51,8 +52,8 @@ defmodule GroupherServer.Test.Query.AbuseReports.DocReport do
       assert get_in(report, ["article", "thread"]) == "DOC"
       assert get_in(report, ["article", "innerId"]) == to_string(article_inner_id(doc, community))
 
-      assert results |> is_valid_pagination?
-      assert results["totalCount"] == 1
+      assert results["pageInfo"]["page"] == 1
+      assert results["pageInfo"]["totalCount"] == 1
     end
 
     test "support comment", ~m(guest_conn community doc user)a do
@@ -69,7 +70,7 @@ defmodule GroupherServer.Test.Query.AbuseReports.DocReport do
       {:ok, _} =
         CMS.AbuseReports.comment(comment, "comment reason", "attr", user, Ecto.UUID.generate())
 
-      variables = %{filter: %{content_type: "COMMENT", page: 1, size: 10}}
+      variables = %{filter: %{content_type: "COMMENT"}, pagi: %{offset: %{page: 1, size: 10}}}
       results = guest_conn |> gq_query(@query, variables)
 
       report =

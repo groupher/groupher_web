@@ -335,8 +335,9 @@ defmodule GroupherServer.CMS.DocTree do
   @doc """
   Lists visible product Trash drawer items for the resolved docs branch.
   """
-  @spec trash_items(Community.t(), keyword() | map()) :: T.domain_res(list(map()))
-  def trash_items(%Community{} = community, opts \\ []), do: Trash.list(community, opts)
+  @spec trash_items(Community.t(), T.pagi_input(), keyword() | map()) ::
+          T.domain_res(T.paged_data())
+  def trash_items(%Community{} = community, pagi, opts), do: Trash.list(community, pagi, opts)
 
   @doc """
   Restores one product Trash drawer item into the draft tree.

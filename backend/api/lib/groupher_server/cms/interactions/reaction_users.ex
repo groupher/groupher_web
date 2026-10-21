@@ -17,12 +17,11 @@ defmodule GroupherServer.CMS.Interactions.ReactionUsers do
   alias GroupherServer.Accounts.Model.User
   alias CMS.FrontDesk.Relation
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  alias Helper.ORM.Pagi.{Order}
 
   @doc "Loads one page of users for the supplied Article reaction query."
-  def load(queryable, article, filter) do
+  def load(queryable, article, pagi) do
     {:ok, thread} = Relation.thread_of(article)
-    %{page: page, size: size} = filter
 
     with {:ok, info} <- match(thread) do
       reaction_query =
@@ -39,11 +38,14 @@ defmodule GroupherServer.CMS.Interactions.ReactionUsers do
       with {:ok, page} <-
              ORM.pagi(
                query,
-               %Params.Offset{page: page, size: size},
-               for: GroupherServer.Accounts.Model.User,
+               pagi,
+               for: User,
+               surface: "articles.reaction_users",
+               query_fingerprint:
+                 :erlang.term_to_binary({queryable, article.id, thread}) |> Base.encode64(),
                order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
              ) do
-        {:ok, Page.to_legacy(page)}
+        {:ok, page}
       end
     end
   end

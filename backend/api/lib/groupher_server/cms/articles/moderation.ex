@@ -33,7 +33,7 @@ defmodule GroupherServer.CMS.Articles.Moderation do
 
   alias CMS.SearchArtiments.Indexer
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  alias Helper.ORM.Pagi.{Order, Params}
 
   @doc """
   Returns a paged list of audit-failed articles for one thread.
@@ -43,10 +43,8 @@ defmodule GroupherServer.CMS.Articles.Moderation do
       CMS.Articles.Moderation.paged_audit_failed(:post, %{page: 1, size: 20})
 
   """
-  @spec paged_audit_failed(atom(), map()) :: T.domain_res(term())
-  def paged_audit_failed(thread, filter) do
-    %{page: page, size: size} = filter
-
+  @spec paged_audit_failed(atom(), Params.t() | nil) :: T.domain_res(term())
+  def paged_audit_failed(thread, pagi) do
     query =
       Article
       |> Trash.not_trashed_scope(thread)
@@ -55,15 +53,17 @@ defmodule GroupherServer.CMS.Articles.Moderation do
     with {:ok, result} <-
            ORM.pagi(
              query,
-             %Params.Offset{page: page, size: size},
+             pagi,
              for: Article,
+             surface: "articles.audit_failed",
+             query_fingerprint: Atom.to_string(thread),
              order: %Order{
                fields: [:updated_at, :id],
                directions: [:desc, :desc],
                cursor_fields: [:updated_at, :id]
              }
            ) do
-      done(Page.to_legacy(result))
+      done(result)
     end
   end
 

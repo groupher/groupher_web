@@ -57,9 +57,14 @@ defmodule GroupherServer.Test.CMS.Communities.Subscribe do
       )
 
       {:ok, results} =
-        CMS.Communities.members(:subscribers, %Community{id: community.id}, %{page: 1, size: 10})
+        CMS.Communities.members(
+          :subscribers,
+          %Community{id: community.id},
+          %{},
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10}
+        )
 
-      assert results |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = results
     end
   end
 end

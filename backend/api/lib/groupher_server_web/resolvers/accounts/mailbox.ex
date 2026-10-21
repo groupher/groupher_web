@@ -6,6 +6,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Mailbox do
   """
   import ShortMaps
   alias GroupherServer.Accounts
+  alias Helper.ORM.Pagi.Params
 
   def mailbox_status(_root, _args, %{context: %{cur_user: cur_user}}) do
     Accounts.mailbox_status(cur_user)
@@ -19,11 +20,20 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Mailbox do
     Accounts.mailbox_mark_read_all(type, cur_user)
   end
 
-  def paged_mailbox_mentions(_root, ~m(filter)a, %{context: %{cur_user: cur_user}}) do
-    Accounts.mailbox_paged_messages(:mention, cur_user, filter)
+  def paged_mailbox_mentions(_root, args, %{context: %{cur_user: cur_user}}) do
+    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+      Accounts.mailbox_paged_messages(:mention, cur_user, Map.get(args, :filter) || %{}, pagi)
+    end
   end
 
-  def paged_mailbox_notifications(_root, ~m(filter)a, %{context: %{cur_user: cur_user}}) do
-    Accounts.mailbox_paged_messages(:notification, cur_user, filter)
+  def paged_mailbox_notifications(_root, args, %{context: %{cur_user: cur_user}}) do
+    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+      Accounts.mailbox_paged_messages(
+        :notification,
+        cur_user,
+        Map.get(args, :filter) || %{},
+        pagi
+      )
+    end
   end
 end

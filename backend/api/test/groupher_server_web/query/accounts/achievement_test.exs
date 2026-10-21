@@ -30,10 +30,11 @@ defmodule GroupherServer.Test.Query.Account.Achievement do
   describe "[account editable-communities]" do
     @query S.Account.q(:moderatorable_communities)
     test "can get user's empty editable communities list", ~m(guest_conn user)a do
-      variables = %{login: user.login, filter: %{page: 1, size: 20}}
+      variables = %{login: user.login, pagi: %{offset: %{page: 1, size: 20}}}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results |> is_valid_pagination?(:empty)
+      assert results["entries"] == []
+      assert results["pageInfo"]["totalCount"] == 0
     end
 
     test "can get user's  communities list when user is editor",
@@ -47,10 +48,10 @@ defmodule GroupherServer.Test.Query.Account.Achievement do
       {:ok, _} = CMS.Communities.add_moderator(community, user3, user, Ecto.UUID.generate())
       {:ok, _} = CMS.Communities.add_moderator(community2, user3, user2, Ecto.UUID.generate())
 
-      variables = %{login: user3.login, filter: %{page: 1, size: 20}}
+      variables = %{login: user3.login, pagi: %{offset: %{page: 1, size: 20}}}
       results = guest_conn |> gq_query(@query, variables)
 
-      assert results["totalCount"] == 2
+      assert results["pageInfo"]["totalCount"] == 2
       assert results["entries"] |> Enum.any?(&(&1["slug"] == community.slug))
       assert results["entries"] |> Enum.any?(&(&1["slug"] == community2.slug))
     end

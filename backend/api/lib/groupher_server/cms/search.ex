@@ -17,16 +17,16 @@ defmodule GroupherServer.CMS.Search do
   alias Helper.T
 
   @doc "Runs `community` through the public `Search` boundary."
-  @spec community(String.t()) :: T.domain_res(T.paged_data())
+  @spec community(String.t()) :: T.domain_res([map()])
   def community(title), do: Community.search(title)
 
-  @spec community(String.t(), User.t()) :: T.domain_res(T.paged_data())
+  @spec community(String.t(), User.t()) :: T.domain_res([map()])
   def community(title, %User{} = user), do: Community.search(title, user)
 
-  @spec community(String.t(), String.t()) :: T.domain_res(T.paged_data())
+  @spec community(String.t(), String.t()) :: T.domain_res([map()])
   def community(title, category) when is_binary(category), do: Community.search(title, category)
 
-  @spec community(String.t(), String.t(), User.t()) :: T.domain_res(T.paged_data())
+  @spec community(String.t(), String.t(), User.t()) :: T.domain_res([map()])
   def community(title, category, %User{} = user) when is_binary(category) do
     Community.search(title, category, user)
   end

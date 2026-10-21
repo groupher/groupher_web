@@ -26,6 +26,31 @@ defmodule GroupherServer.Test.Mutation.CMS.CRUD do
     {:ok, ~m(user_conn user_conn2 guest_conn community category user user2)a}
   end
 
+  test "dashboard Pagi mutation saves both device preferences", %{community: community} do
+    query = """
+    mutation($community: String!, $mode: PagiMode!, $mobileMode: PagiMode!, $expectedRevision: Int!, $commandId: ID!) {
+      updateDashboardPagiMode(community: $community, mode: $mode, mobileMode: $mobileMode, expectedRevision: $expectedRevision, commandId: $commandId) {
+        pagiMode pagiMobileMode pagiRevision
+      }
+    }
+    """
+
+    conn = simu_conn(:user, cms: %{"community.update" => true})
+
+    variables = %{
+      community: community.slug,
+      mode: "PAGE",
+      mobileMode: "LOAD_MORE",
+      expectedRevision: 0,
+      commandId: Ecto.UUID.generate()
+    }
+
+    saved = gq_mutation(conn, query, variables)
+    assert saved["pagiMode"] == "PAGE"
+    assert saved["pagiMobileMode"] == "LOAD_MORE"
+    assert saved["pagiRevision"] == 1
+  end
+
   describe "mutation cms category" do
     @create_category_query S.Category.m(:create_category)
     test "auth user can create category", ~m(user community)a do
@@ -442,8 +467,8 @@ defmodule GroupherServer.Test.Mutation.CMS.CRUD do
       result = rule_conn |> gq_mutation(@set_moderators_query, variables)
 
       assert result["slug"] == community.slug
-      assert Enum.any?(result["moderators"], &(&1["user"]["login"] == user2.login))
-      assert Enum.any?(result["moderators"], &(&1["user"]["login"] == user3.login))
+      assert Enum.any?(moderators(community), &(&1["user"]["login"] == user2.login))
+      assert Enum.any?(moderators(community), &(&1["user"]["login"] == user3.login))
     end
 
     test "global god can add moderators to community", ~m(user2 community)a do
@@ -460,7 +485,7 @@ defmodule GroupherServer.Test.Mutation.CMS.CRUD do
       result = rule_conn |> gq_mutation(@set_moderators_query, variables)
 
       assert result["slug"] == community.slug
-      assert Enum.any?(result["moderators"], &(&1["user"]["login"] == user3.login))
+      assert Enum.any?(moderators(community), &(&1["user"]["login"] == user3.login))
     end
 
     @unset_moderator_query S.Moderation.m(:remove_moderator)
@@ -531,11 +556,12 @@ defmodule GroupherServer.Test.Mutation.CMS.CRUD do
              )
 
       result = root_rule_conn |> gq_mutation(@update_moderator_query, variables)
+      assert result["slug"] == community.slug
 
       {:ok, user2_passport} = CMS.Communities.get_passport(%User{id: user2.id})
       assert get_in(user2_passport, ["#{community.slug}", "cms", "post.edit"])
 
-      moderator = Enum.find(result["moderators"], &(&1["user"]["login"] == user2.login))
+      moderator = Enum.find(moderators(community), &(&1["user"]["login"] == user2.login))
       assert moderator["passportItemCount"] == 3
 
       next_passport_rules =
@@ -553,6 +579,7 @@ defmodule GroupherServer.Test.Mutation.CMS.CRUD do
 
       next_variables = %{variables | rules: next_passport_rules, command_id: Ecto.UUID.generate()}
       result = root_rule_conn |> gq_mutation(@update_moderator_query, next_variables)
+      assert result["slug"] == community.slug
 
       {:ok, user2_passport} = CMS.Communities.get_passport(%User{id: user2.id})
       assert get_in(user2_passport, ["#{community.slug}", "cms", "post.edit"])
@@ -561,7 +588,7 @@ defmodule GroupherServer.Test.Mutation.CMS.CRUD do
       {:ok, persisted_moderator} =
         CommunityModerator |> ORM.find_by(user_id: user2.id, community_id: community.id)
 
-      moderator = Enum.find(result["moderators"], &(&1["user"]["login"] == user2.login))
+      moderator = Enum.find(moderators(community), &(&1["user"]["login"] == user2.login))
       assert moderator["passportItemCount"] == 2
       assert persisted_moderator.passport_item_count == 2
     end
@@ -641,14 +668,20 @@ defmodule GroupherServer.Test.Mutation.CMS.CRUD do
     @unsubscribe_query S.Community.m(:unsubscribe_community)
     test "login user can unsubscribe community", ~m(user community)a do
       {:ok, cur_subscribers} =
-        CMS.Communities.members(:subscribers, community, %{page: 1, size: 10})
+        CMS.Communities.members(:subscribers, community, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       assert false == cur_subscribers.entries |> Enum.any?(&(&1.id == user.id))
 
       {:ok, _record} = CMS.Communities.Subscriptions.Setup.subscribe(community, user)
 
       {:ok, cur_subscribers} =
-        CMS.Communities.members(:subscribers, community, %{page: 1, size: 10})
+        CMS.Communities.members(:subscribers, community, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
 
       assert true == cur_subscribers.entries |> Enum.any?(&(&1.id == user.id))
       login_conn = simu_conn(:user, user)
@@ -658,7 +691,12 @@ defmodule GroupherServer.Test.Mutation.CMS.CRUD do
       result = login_conn |> gq_mutation(@unsubscribe_query, variables)
 
       {:ok, cur_subscribers} =
-        CMS.Communities.members(:subscribers, %Community{id: community.id}, %{page: 1, size: 10})
+        CMS.Communities.members(
+          :subscribers,
+          %Community{id: community.id},
+          %{},
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10}
+        )
 
       assert result["slug"] == community.slug
       assert false == cur_subscribers.entries |> Enum.any?(&(&1.id == user.id))
@@ -696,5 +734,12 @@ defmodule GroupherServer.Test.Mutation.CMS.CRUD do
                ErrorCat.code(ProfileErrorCat.account_login())
              )
     end
+  end
+
+  defp moderators(community) do
+    query =
+      "query($community:String!){pagedCommunityModerators(community:$community,pagi:{offset:{page:1,size:100}}){entries{isRoot passportItemCount user{login}}}}"
+
+    gq_query(simu_conn(:guest), query, %{community: community.slug})["entries"]
   end
 end

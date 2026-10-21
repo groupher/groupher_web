@@ -10,30 +10,10 @@ defmodule GroupherServer.Accounts.Publish.Comments do
       profile read -> CMS.comments_paged_published_comments -> comment page
   """
 
-  alias GroupherServer.{Accounts, CMS}
-  alias Accounts.Model.User
+  alias GroupherServer.CMS
 
-  @doc """
-  Returns a page of comments published by a user.
-
-  ## Examples
-
-      Accounts.Publish.Comments.paged(user, %{page: 1, size: 20})
-  """
-  @spec paged(User.t(), map(), User.t() | nil) :: term()
-  def paged(user, filter, actor \\ nil) do
-    CMS.comments_paged_published_comments(user, filter, actor)
-  end
-
-  @doc """
-  Returns comments published by a user in one thread.
-
-  ## Examples
-
-      Accounts.Publish.Comments.paged(user, :post, %{page: 1, size: 20}, viewer)
-  """
-  @spec paged(User.t(), atom(), map(), User.t() | nil) :: term()
-  def paged(user, thread, filter, actor) do
-    CMS.comments_paged_published_comments(user, thread, filter, actor)
+  @doc "Pages published comments with explicit thread, filter, position and viewer."
+  def paged(user, thread, filter, pagi, viewer) do
+    CMS.comments_paged_published_comments(user, thread, filter, pagi, viewer)
   end
 end

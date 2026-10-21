@@ -297,9 +297,16 @@ defmodule GroupherServer.Test.CMS.Communities.Moderators do
       )
 
       filter = %{page: 1, size: 10}
-      {:ok, results} = CMS.Communities.members(:moderators, %Community{id: community.id}, filter)
 
-      assert results |> is_valid_pagination?(:raw)
+      {:ok, results} =
+        CMS.Communities.members(
+          :moderators,
+          %Community{id: community.id},
+          %{},
+          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
+      assert %Helper.ORM.Pagi.Page.Offset{} = results
       assert results.total_count == 26
     end
   end

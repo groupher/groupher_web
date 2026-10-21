@@ -44,13 +44,16 @@ defmodule GroupherServer.Test.Helper.Schema.DocTree do
 
   def q(:doc_tree_trash_items) do
     """
-    query($community: String!) {
-      docTreeTrashItems(community: $community) {
+    query($community: String!, $pagi: PagiInput) {
+      docTreeTrashItems(community: $community, pagi: $pagi) {
+        entries {
         id
         nodeId
         type
         title
         restoredAt
+        }
+        pageInfo { __typename hasNextPage hasPreviousPage ... on OffsetPageInfo {page size totalCount totalPages} ... on CursorPageInfo {startCursor endCursor} }
       }
     }
     """

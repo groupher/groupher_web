@@ -1,109 +1,63 @@
 defmodule GroupherServer.CMS.Search.Community do
   @moduledoc """
-  Lightweight community search used by public and viewer-aware surfaces.
+  Bounded Community suggestions for title/slug/alias pickers.
+  These suggestions have a fixed limit and no pagination metadata.
 
-  Anonymous searches return matching communities by title, slug, or aka. Viewer
-  searches enrich each entry with subscription state without changing the base
-  pagination contract.
-
-  Business position:
-
-      GraphQL resolver / job
-        -> CMS facade
-        -> Community
-        -> Repo / external boundary
+      Search -> public Community scope -> at most fifteen suggestions
   """
 
-  import Ecto.Query, warn: false
-  import Helper.Utils, only: [done: 1]
+  import Ecto.Query
 
-  alias GroupherServer.{Accounts, CMS}
-
+  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.Accounts.Model.User
   alias CMS.Gate.Context.Scope.Community, as: CommunityContext
-  alias Accounts.Model.User
   alias CMS.Model.Community
-  alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @search_items_count 15
 
-  @doc """
-  Searches communities by title, slug, or aka.
+  def search(title), do: run(title, nil, nil)
+  def search(title, %User{} = viewer), do: run(title, nil, viewer)
+  def search(title, category) when is_binary(category), do: run(title, category, nil)
+  def search(title, category, %User{} = viewer), do: run(title, category, viewer)
 
-  Runs against the public community scope and returns up to 15 matching
-  communities.
-
-  ## Examples
-
-      CMS.Search.Community.search("elixir")
-
-  """
-  def search(title) do
-    do_search_communities(CMS.Gate.scope(Community, nil, :list, CommunityContext.public()), title)
-  end
-
-  def search(title, %User{} = user) do
-    with {:ok, communities} <-
-           do_search_communities(
-             CMS.Gate.scope(Community, user, :list, CommunityContext.public()),
-             title
-           ) do
-      %{entries: entries} = communities
-
-      entries =
-        Enum.map(entries, fn community ->
-          viewer_has_subscribed = community.id in user.meta.subscribed_communities_ids
-          %{community | viewer_has_subscribed: viewer_has_subscribed}
-        end)
-
-      %{communities | entries: entries} |> done
-    end
-  end
-
-  def search(title, category) when is_binary(category) do
-    do_search_communities_with_category(title, category)
-  end
-
-  def search(title, category, %User{meta: _} = user) when is_binary(category) do
-    with {:ok, communities} <- do_search_communities_with_category(title, category) do
-      %{entries: entries} = communities
-
-      entries =
-        Enum.map(entries, fn community ->
-          viewer_has_subscribed = community.id in user.meta.subscribed_communities_ids
-          %{community | viewer_has_subscribed: viewer_has_subscribed}
-        end)
-
-      %{communities | entries: entries} |> done
-    end
-  end
-
-  defp do_search_communities(queryable, title) do
+  defp run(title, category, viewer) do
     query =
-      queryable
+      Community
+      |> CMS.Gate.scope(viewer, :list, CommunityContext.public())
       |> where(
-        [c],
-        ilike(c.title, ^"%#{title}%") or ilike(c.slug, ^"%#{title}%") or
-          ilike(c.aka, ^"%#{title}%")
+        [community],
+        ilike(community.title, ^"%#{title}%") or ilike(community.slug, ^"%#{title}%") or
+          ilike(community.aka, ^"%#{title}%")
       )
+      |> category_scope(category)
+      |> distinct(true)
+      |> order_by([community], desc: community.id)
+      |> limit(@search_items_count)
 
-    with {:ok, page} <-
-           ORM.pagi(
-             query,
-             %Params.Offset{page: 1, size: @search_items_count},
-             for: Community,
-             order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
-           ) do
-      done(Page.to_legacy(page))
-    end
+    entries = Repo.all(query)
+
+    entries =
+      case viewer do
+        %User{meta: meta} when not is_nil(meta) ->
+          Enum.map(
+            entries,
+            &%{&1 | viewer_has_subscribed: &1.id in meta.subscribed_communities_ids}
+          )
+
+        _ ->
+          entries
+      end
+
+    {:ok, entries}
   end
 
-  defp do_search_communities_with_category(title, category) do
-    from(
-      c in CMS.Gate.scope(Community, nil, :list, CommunityContext.public()),
-      join: cat in assoc(c, :categories),
-      where: cat.slug == ^category
+  defp category_scope(query, nil), do: query
+
+  defp category_scope(query, category) do
+    query
+    |> join(:inner, [community], category in assoc(community, :categories),
+      as: :suggestion_category
     )
-    |> do_search_communities(title)
+    |> where([suggestion_category: category_row], category_row.slug == ^category)
   end
 end

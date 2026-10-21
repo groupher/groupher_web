@@ -30,7 +30,10 @@ defmodule GroupherServer.CMS.Model.CommunityModerator do
 
   @type t :: %CommunityModerator{}
 
+  use Flop.Schema
+  @flop_options [filterable: [], sortable: [:inserted_at, :id], pagination_types: [:page, :first]]
   schema "communities_moderators" do
+    field(:is_root, :boolean, virtual: true, default: false)
     field(:passport_item_count, :integer)
     belongs_to(:user, User, foreign_key: :user_id)
     belongs_to(:community, Community, foreign_key: :community_id)

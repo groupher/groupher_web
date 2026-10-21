@@ -17,25 +17,37 @@ defmodule GroupherServer.Test.Accounts.ReactedContents do
       {:ok, _} = CMS.Interactions.upvote(post, user, Ecto.UUID.generate())
 
       filter = %{page: 1, size: 20}
-      {:ok, articles} = Accounts.paged_articles(user, filter)
+
+      {:ok, articles} =
+        Accounts.paged_articles(
+          user,
+          Map.drop(filter, [:page, :size]),
+          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
 
       article_post = articles |> Map.get(:entries) |> List.last()
 
-      assert articles |> is_valid_pagination?(:raw)
+      assert %Helper.ORM.Pagi.Page.Offset{} = articles
       assert post.id == article_post |> Map.get(:id)
       assert article_inner_id(post, community) == article_post |> Map.get(:inner_id)
 
-      assert [:author, :id, :inner_id, :thread, :title, :upvotes_count] |> Enum.sort() ==
-               article_post |> Map.keys() |> Enum.sort()
+      assert article_post.community.slug == community.slug
+      refute Map.has_key?(article_post, :upvotes_count)
     end
 
     test "user can get paged upvoted posts by thread filter", ~m(user post)a do
       {:ok, _} = CMS.Interactions.upvote(post, user, Ecto.UUID.generate())
 
       filter = %{thread: :post, page: 1, size: 20}
-      {:ok, articles} = Accounts.paged_articles(user, filter)
 
-      assert articles |> is_valid_pagination?(:raw)
+      {:ok, articles} =
+        Accounts.paged_articles(
+          user,
+          Map.drop(filter, [:page, :size]),
+          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
+      assert %Helper.ORM.Pagi.Page.Offset{} = articles
       assert post.id == articles |> Map.get(:entries) |> List.last() |> Map.get(:id)
       assert 1 == articles |> Map.get(:total_count)
     end
@@ -46,7 +58,11 @@ defmodule GroupherServer.Test.Accounts.ReactedContents do
       filter = %{thread: "INVALID", page: 1, size: 20}
 
       assert {:error, %ErrorCat.Error{reason: :custom, details: "invalid thread"}} =
-               Accounts.paged_articles(user, filter)
+               Accounts.paged_articles(
+                 user,
+                 Map.drop(filter, [:page, :size]),
+                 %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+               )
     end
   end
 end

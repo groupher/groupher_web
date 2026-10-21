@@ -18,8 +18,6 @@ defmodule Helper.ORM do
     `inc/2`, `dec/2`, `fill_meta/1`, `update_meta/2`, `mark_read_all/1`
   - Domain shortcuts and row locks:
     `find_user/1`, `find_community/1`, `lock_community/1`, `lock_article/2`
-  - Article projection helpers:
-    `extract_and_assign_article/1`, `extract_articles/2`
 
   Business position:
 
@@ -40,9 +38,6 @@ defmodule Helper.ORM do
   alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.{ORMAtom, QueryBuilder, T}
   alias Helper.ORM.Pagi
-  alias Helper.ORM.Pagi.{Order, Page, Params}
-
-  @threads CMS.artiment_config_threads()
 
   @doc """
   Safely updates JSONB `meta` fields and returns the updated struct.
@@ -206,61 +201,10 @@ defmodule Helper.ORM do
     end
   end
 
-  @doc """
-  Finds records by filter; paginated when `page` and `size` are provided.
-
-  ## Examples
-
-      iex> ORM.find_all(Post, %{page: 1, size: 20, community: "elixir"})
-      {:ok, %{entries: [...], total_count: 42}}
-
-      iex> ORM.find_all(Post, %{community: "elixir"})
-      {:ok, [%Post{}, ...]}
-  """
-  def find_all(queryable, %{page: page, size: size} = filter) do
-    filter_without_sort = Map.delete(filter, :sort)
-    query = QueryBuilder.filter_pack(queryable, filter_without_sort)
-    schema = schema_for_pagi(query)
-
-    with {:ok, paged} <-
-           pagi(
-             query,
-             %Params.Offset{page: page, size: size},
-             for: schema,
-             order: find_all_order(filter)
-           ) do
-      paged |> Page.to_legacy() |> done()
-    end
-  end
-
+  @doc "Returns records matching a non-paginated filter. Use pagi/3 for a product page."
   def find_all(queryable, filter) do
     queryable |> QueryBuilder.filter_pack(filter) |> Repo.all() |> done()
   end
-
-  defp find_all_order(%{sort: :asc_inserted}) do
-    %Order{
-      fields: [:inserted_at, :id],
-      directions: [:asc, :asc],
-      cursor_fields: [:inserted_at, :id]
-    }
-  end
-
-  defp find_all_order(_filter) do
-    %Order{
-      fields: [:inserted_at, :id],
-      directions: [:asc, :asc],
-      cursor_fields: [:inserted_at, :id]
-    }
-  end
-
-  defp schema_for_pagi(%Ecto.Query{} = query) do
-    case query.from.source do
-      {_source, schema} when is_atom(schema) -> schema
-      _source -> raise ArgumentError, "Helper.ORM.find_all/2 requires an Ecto schema query"
-    end
-  end
-
-  defp schema_for_pagi(queryable), do: schema_for_pagi(Ecto.Queryable.to_query(queryable))
 
   @doc """
   Marks all matched rows as read.
@@ -599,46 +543,6 @@ defmodule Helper.ORM do
     |> Repo.update()
   end
 
-  @doc """
-  Extracts common article info from reaction rows and assigns it to `:article`.
-
-  ## Examples
-
-      iex> ORM.extract_and_assign_article(%{entries: reaction_entries})
-      %{entries: [%{article: %{inner_id: 1, title: "..."}}]}
-  """
-  def extract_and_assign_article(%{entries: entries} = paged_articles) do
-    entries =
-      Enum.map(entries, fn item ->
-        thread = Enum.find(@threads, &(not is_nil(Map.get(item, :"#{&1}_id"))))
-        Map.merge(item, %{article: export_article_info(thread, Map.get(item, thread))})
-      end)
-
-    paged_articles |> Map.put(:entries, entries)
-  end
-
-  @doc """
-  Extracts normalized article info for paged entries.
-
-  ## Examples
-
-      iex> ORM.extract_articles(%{entries: entries})
-      %{entries: [%{inner_id: 1, title: "...", thread: :post}]}
-  """
-  @spec extract_articles(T.paged_data(), [atom()]) :: T.paged_article_common()
-  def extract_articles(%{entries: entries} = paged_articles, threads \\ @threads) do
-    paged_articles
-    |> Map.put(:entries, Enum.map(entries, &extract_article_info(&1, threads)))
-  end
-
-  @doc """
-  Finds a user by login.
-
-  ## Examples
-
-      iex> ORM.find_user("alice")
-      {:ok, %User{}}
-  """
   def find_user(login) when is_binary(login) do
     User |> find_by(%{login: login})
   end
@@ -692,26 +596,5 @@ defmodule Helper.ORM do
     |> lock("FOR UPDATE")
     |> Repo.one()
     |> done
-  end
-
-  defp extract_article_info(reaction, threads) do
-    thread = Enum.find(threads, &(not is_nil(Map.get(reaction, &1))))
-    article = Map.get(reaction, thread)
-
-    export_article_info(thread, article)
-  end
-
-  defp export_article_info(thread, article) do
-    author = article.author.user
-    counts = CMS.interactions_counts([article]) |> Map.get({thread, article.id}, %{})
-
-    %{
-      thread: thread,
-      id: article.id,
-      inner_id: Map.get(article, :inner_id),
-      title: article.title,
-      upvotes_count: Map.get(counts, :upvotes_count, 0),
-      author: author
-    }
   end
 end

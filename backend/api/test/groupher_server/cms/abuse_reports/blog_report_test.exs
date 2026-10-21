@@ -20,7 +20,12 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
         CMS.AbuseReports.article(blog, "reason", "attr_info", user2, Ecto.UUID.generate())
 
       filter = %{content_type: :blog, content_id: blog.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
 
       report = all_reports.entries |> List.first()
       assert report.article.id == blog.id
@@ -31,7 +36,12 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
       {:ok, _} = CMS.AbuseReports.article(blog, "reason", "attr_info", user, Ecto.UUID.generate())
 
       filter = %{content_type: :blog, content_id: blog.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
 
       report = List.first(all_reports.entries)
       report_cases = report.report_cases
@@ -52,7 +62,13 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
       {:ok, _} = CMS.AbuseReports.undo_article(blog, user, Ecto.UUID.generate())
 
       filter = %{content_type: :blog, content_id: blog.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
       assert all_reports.total_count == 0
 
       refute CMS.Interactions.viewer_state(blog, user).viewer_has_reported
@@ -67,7 +83,13 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
       {:ok, _} = CMS.AbuseReports.undo_article(blog, user, Ecto.UUID.generate())
 
       filter = %{content_type: :blog, content_id: blog.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
       assert all_reports.total_count == 1
 
       assert CMS.Interactions.viewer_state(blog, user2).viewer_has_reported
@@ -81,7 +103,13 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
         CMS.AbuseReports.article(blog, "reason", "attr_info", user2, Ecto.UUID.generate())
 
       filter = %{content_type: :blog, content_id: blog.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
       assert all_reports.total_count == 1
 
       report = all_reports.entries |> List.first()
@@ -92,7 +120,13 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
       {:ok, _} = CMS.AbuseReports.undo_article(blog, user, Ecto.UUID.generate())
 
       filter = %{content_type: :blog, content_id: blog.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
+
       assert all_reports.total_count == 1
 
       report = all_reports.entries |> List.first()
@@ -108,7 +142,12 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
         CMS.AbuseReports.article(blog, "reason2", "attr_info 2", user2, Ecto.UUID.generate())
 
       filter = %{content_type: :blog, content_id: blog.id, page: 1, size: 20}
-      {:ok, all_reports} = CMS.AbuseReports.paged_reports(filter)
+
+      {:ok, all_reports} =
+        CMS.AbuseReports.paged_reports(
+          Map.drop(filter, [:page, :size]),
+          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+        )
 
       report = List.first(all_reports.entries)
       report_cases = report.report_cases

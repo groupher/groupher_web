@@ -8,10 +8,9 @@ defmodule Helper.ORM.Pagi do
   """
 
   alias GroupherServer.Pagi.ErrorCat
-  alias Helper.ORM.Pagi.{Config, Count, CursorCodec, Generic, Order, Page, Params}
+  alias Helper.ORM.Pagi.{Config, Count, CursorCodec, Order, Page, Params}
   alias GroupherServer.Repo
 
-  @default_max_offset_page 10_000
   @telemetry_event [:groupher, :pagi, :run]
   @empty_metrics %{query_count: 0, db_duration: 0, count_duration: 0}
 
@@ -61,8 +60,10 @@ defmodule Helper.ORM.Pagi do
         prepared =
           with {:ok, order} <- execution_order(opts),
                {:ok, :pass} <- reject_existing_order(queryable),
-               {:ok, params} <- normalize_params(params, config, config_present),
-               {:ok, schema} <- fetch_schema(opts) do
+               {:ok, params} <- Params.from_input(params, config.default_size),
+               {:ok, params} <- Params.validate(params, config, config_present),
+               {:ok, schema} <- fetch_schema(opts),
+               {:ok, :pass} <- validate_schema_order(schema, order) do
             {:ok, params, order, schema}
           end
 
@@ -90,99 +91,81 @@ defmodule Helper.ORM.Pagi do
   end
 
   defp execute(queryable, %Params.Offset{} = params, config, order, schema, opts) do
-    if config.api != :offset do
-      {{:error, ErrorCat.config_mismatch(%{mismatch: :api})}, @empty_metrics}
-    else
-      flop_params =
-        order
-        |> Order.to_flop()
-        |> Map.merge(%{page: params.page, page_size: params.size})
+    flop_params =
+      order
+      |> Order.to_flop()
+      |> Map.merge(%{page: params.page, page_size: params.size})
 
-      if flop_schema?(schema) do
-        {count_result, count_duration} = Count.run_with_metrics(queryable, opts)
+    {count_result, count_duration} = Count.run_with_metrics(queryable, opts)
 
-        case count_result do
-          {:ok, total_count} ->
-            flop_opts = flop_options(schema, config, order, opts, :offset)
-            flop_opts = Keyword.put(flop_opts, :count, total_count)
-
-            {flop_result, entries_duration} =
-              timed_query(fn ->
-                Flop.validate_and_run(queryable, flop_params, flop_opts)
-              end)
-
-            result = offset_result(flop_result, params, total_count)
-
-            {result,
-             %{
-               query_count: 2,
-               db_duration: count_duration + entries_duration,
-               count_duration: count_duration
-             }}
-
-          {:error, :count_failed} ->
-            {{:error, ErrorCat.count_failed()},
-             %{query_count: 1, db_duration: count_duration, count_duration: count_duration}}
-        end
-      else
-        {result, metrics} = Generic.offset_with_metrics(queryable, params, order, opts)
-
-        case result do
-          {:ok, page} -> {{:ok, page}, metrics}
-          {:error, :count_failed} -> {{:error, ErrorCat.count_failed()}, metrics}
-          {:error, :query_failed} -> {{:error, ErrorCat.query_failed()}, metrics}
-        end
-      end
-    end
-  end
-
-  defp execute(queryable, %Params.Cursor{} = params, config, order, schema, opts) do
-    if config.api != :cursor do
-      {{:error, ErrorCat.config_mismatch(%{mismatch: :api})}, @empty_metrics}
-    else
-      surface = Keyword.get(opts, :surface, "default")
-
-      with {:ok, fingerprint} <- query_fingerprint(opts),
-           binding = [surface: surface, order: Order.identity(order), fingerprint: fingerprint],
-           {:ok, after_cursor} <- decode_after(params.after, binding, opts) do
-        flop_params =
-          order
-          |> Order.to_flop()
-          |> Map.merge(%{first: params.first, after: after_cursor})
-
-        flop_opts = flop_options(schema, config, order, opts, :cursor)
+    case count_result do
+      {:ok, total_count} ->
+        flop_opts = flop_options(schema, config, order, opts, :offset)
+        flop_opts = Keyword.put(flop_opts, :count, total_count)
 
         {flop_result, entries_duration} =
           timed_query(fn ->
             Flop.validate_and_run(queryable, flop_params, flop_opts)
           end)
 
-        result =
-          case flop_result do
-            {:ok, {entries, meta}} ->
-              with {:ok, start_cursor} <- encode_cursor(meta.start_cursor, binding, opts),
-                   {:ok, end_cursor} <- encode_cursor(meta.end_cursor, binding, opts) do
-                {:ok,
-                 %Page.Cursor{
-                   entries: entries,
-                   start_cursor: start_cursor,
-                   end_cursor: end_cursor,
-                   has_previous_page: meta.has_previous_page?,
-                   has_next_page: meta.has_next_page?
-                 }}
-              end
+        result = offset_result(flop_result, params, total_count)
 
-            {:error, :query_failed} ->
-              {:error, ErrorCat.query_failed()}
+        {result,
+         %{
+           query_count: 2,
+           db_duration: count_duration + entries_duration,
+           count_duration: count_duration
+         }}
 
-            {:error, meta} ->
-              {:error, map_flop_error(meta)}
-          end
+      {:error, :count_failed} ->
+        {{:error, ErrorCat.count_failed()},
+         %{query_count: 1, db_duration: count_duration, count_duration: count_duration}}
+    end
+  end
 
-        {result, %{query_count: 1, db_duration: entries_duration, count_duration: 0}}
-      else
-        {:error, _reason} = error -> {error, @empty_metrics}
-      end
+  defp execute(queryable, %Params.Cursor{} = params, config, order, schema, opts) do
+    surface = Keyword.get(opts, :surface, "default")
+
+    with {:ok, fingerprint} <- query_fingerprint(opts),
+         binding = [surface: surface, order: Order.identity(order), fingerprint: fingerprint],
+         {:ok, after_cursor} <- decode_after(params.after, binding, opts) do
+      flop_params =
+        order
+        |> Order.to_flop()
+        |> Map.merge(%{first: params.first, after: after_cursor})
+
+      flop_opts = flop_options(schema, config, order, opts, :cursor)
+
+      {flop_result, entries_duration} =
+        timed_query(fn ->
+          Flop.validate_and_run(queryable, flop_params, flop_opts)
+        end)
+
+      result =
+        case flop_result do
+          {:ok, {entries, meta}} ->
+            with {:ok, start_cursor} <- encode_cursor(meta.start_cursor, binding, opts),
+                 {:ok, end_cursor} <- encode_cursor(meta.end_cursor, binding, opts) do
+              {:ok,
+               %Page.Cursor{
+                 entries: entries,
+                 start_cursor: start_cursor,
+                 end_cursor: end_cursor,
+                 has_previous_page: meta.has_previous_page?,
+                 has_next_page: meta.has_next_page?
+               }}
+            end
+
+          {:error, :query_failed} ->
+            {:error, ErrorCat.query_failed()}
+
+          {:error, meta} ->
+            {:error, map_flop_error(meta)}
+        end
+
+      {result, %{query_count: 1, db_duration: entries_duration, count_duration: 0}}
+    else
+      {:error, _reason} = error -> {error, @empty_metrics}
     end
   end
 
@@ -241,8 +224,9 @@ defmodule Helper.ORM.Pagi do
 
   defp validate_execution_api(api) when api in [:offset, :cursor], do: {:ok, :pass}
 
-  defp validate_execution_api(api) when is_atom(api) and not is_nil(api),
-    do: {:error, :unsupported_api}
+  defp validate_execution_api(api) when is_atom(api) and not is_nil(api) do
+    {:error, :unsupported_api}
+  end
 
   defp validate_execution_api(_api), do: {:error, :invalid_config}
 
@@ -260,13 +244,29 @@ defmodule Helper.ORM.Pagi do
   end
 
   defp fetch_schema(opts) do
-    case Keyword.get(opts, :for) do
-      schema when is_atom(schema) -> {:ok, schema}
-      _schema -> {:error, ErrorCat.invalid_config()}
+    schema = Keyword.get(opts, :for)
+
+    if is_atom(schema) and not is_nil(schema) and Code.ensure_loaded?(schema) and
+         function_exported?(schema, :__flop_schema__, 0) do
+      {:ok, schema}
+    else
+      {:error, ErrorCat.invalid_config()}
     end
   end
 
-  defp flop_schema?(schema), do: function_exported?(schema, :__flop_schema__, 0)
+  defp validate_schema_order(schema, order) do
+    case schema.__flop_schema__().sortable do
+      fields when is_list(fields) ->
+        if Enum.all?(order.fields, &(&1 in fields)) do
+          {:ok, :pass}
+        else
+          {:error, ErrorCat.unsupported_sort()}
+        end
+
+      _ ->
+        {:error, ErrorCat.invalid_config()}
+    end
+  end
 
   defp reject_existing_order(queryable) do
     query = Ecto.Queryable.to_query(queryable)
@@ -278,80 +278,6 @@ defmodule Helper.ORM.Pagi do
             "Helper.ORM.pagi/3 received a query with ORDER BY; the Pagi.Order descriptor must be the only order owner"
     end
   end
-
-  defp normalize_params(nil, %Config{api: :offset} = config, _config_present) do
-    {:ok, %Params.Offset{page: 1, size: config.default_size, config_revision: config.revision}}
-  end
-
-  defp normalize_params(nil, %Config{api: :cursor} = config, _config_present) do
-    {:ok,
-     %Params.Cursor{first: config.default_size, after: nil, config_revision: config.revision}}
-  end
-
-  defp normalize_params(%Params.Offset{} = params, config, config_present) do
-    with {:ok, :pass} <-
-           validate_revision_context(params.config_revision, :offset, config, config_present),
-         {:ok, :pass} <- validate_page(params.page),
-         {:ok, :pass} <- validate_size(params.size, config.max_size),
-         {:ok, :pass} <- validate_deep_offset(params.page) do
-      {:ok, params}
-    end
-  end
-
-  defp normalize_params(%Params.Cursor{} = params, config, config_present) do
-    with {:ok, :pass} <-
-           validate_revision_context(params.config_revision, :cursor, config, config_present),
-         {:ok, :pass} <- validate_cursor_after(params.after),
-         {:ok, :pass} <- validate_size(params.first, config.max_size) do
-      {:ok, params}
-    end
-  end
-
-  defp normalize_params(_params, _config, _config_present),
-    do: {:error, ErrorCat.invalid_config_context()}
-
-  defp validate_revision_context(revision, api, config, true) do
-    cond do
-      not is_integer(revision) or revision < 0 ->
-        {:error, ErrorCat.invalid_config_context()}
-
-      revision != config.revision ->
-        {:error, ErrorCat.config_mismatch(%{mismatch: :revision})}
-
-      api != config.api ->
-        {:error, ErrorCat.config_mismatch(%{mismatch: :api})}
-
-      true ->
-        {:ok, :pass}
-    end
-  end
-
-  defp validate_revision_context(revision, api, config, false) do
-    cond do
-      not is_nil(revision) -> {:error, ErrorCat.invalid_config_context()}
-      api != config.api -> {:error, ErrorCat.config_mismatch(%{mismatch: :api})}
-      true -> {:ok, :pass}
-    end
-  end
-
-  defp validate_page(page) when is_integer(page) and page >= 1, do: {:ok, :pass}
-  defp validate_page(_page), do: {:error, ErrorCat.page_out_of_range()}
-
-  defp validate_size(size, max_size)
-       when is_integer(size) and size >= 1 and size <= max_size,
-       do: {:ok, :pass}
-
-  defp validate_size(_size, _max_size), do: {:error, ErrorCat.size_out_of_range()}
-
-  defp validate_deep_offset(page) when page <= @default_max_offset_page, do: {:ok, :pass}
-  defp validate_deep_offset(_page), do: {:error, ErrorCat.deep_offset_rejected()}
-
-  defp validate_cursor_after(nil), do: {:ok, :pass}
-
-  defp validate_cursor_after(after_cursor) when is_binary(after_cursor) and after_cursor != "",
-    do: {:ok, :pass}
-
-  defp validate_cursor_after(_after_cursor), do: {:error, ErrorCat.invalid_cursor()}
 
   defp flop_options(schema, config, order, opts, api) do
     pagination_types = if api == :offset, do: [:page], else: [:first]
@@ -404,7 +330,7 @@ defmodule Helper.ORM.Pagi do
     %{
       resource: Keyword.get(opts, :resource, schema),
       surface: Keyword.get(opts, :surface, "default"),
-      api: if(config, do: config.api, else: params_api(params)),
+      api: params_api(params) || if(config, do: config.api, else: nil),
       mode: Keyword.get(opts, :mode),
       schema_version: Keyword.get(opts, :schema_version),
       config_revision: if(config, do: config.revision, else: nil),

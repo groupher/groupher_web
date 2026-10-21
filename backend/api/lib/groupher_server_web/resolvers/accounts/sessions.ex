@@ -38,8 +38,10 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Sessions do
     end
   end
 
-  def browser_sessions(_root, %{browser_session_ref: ref}, _info) do
-    ref |> Accounts.profiles_browser_sessions_for_ref() |> browser_session_result()
+  def browser_sessions(_root, %{browser_session_ref: ref} = args, _info) do
+    ref
+    |> Accounts.profiles_browser_sessions_for_ref(Map.get(args, :pagi))
+    |> browser_session_result()
   end
 
   def revoke_browser_session_public(

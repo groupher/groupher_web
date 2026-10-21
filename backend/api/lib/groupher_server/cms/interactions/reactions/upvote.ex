@@ -121,9 +121,11 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
 
   defp sync_state(canonical, actor, operation, :changed) do
     result =
-      if operation == :add,
-        do: Projection.add_upvote(canonical, actor),
-        else: Projection.remove_upvote(canonical, actor)
+      if operation == :add do
+        Projection.add_upvote(canonical, actor)
+      else
+        Projection.remove_upvote(canonical, actor)
+      end
 
     case result do
       {:ok, _projection} -> {:ok, :pass}
@@ -195,11 +197,11 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
       Reactions.Upvote.users(article, %{page: 1, size: 20})
 
   """
-  @spec users(struct(), map()) :: {:ok, term()} | {:error, term()}
-  def users(article, filter) when is_map(filter) do
+  @spec users(struct(), Helper.ORM.Pagi.Params.t() | nil) :: {:ok, term()} | {:error, term()}
+  def users(article, pagi) do
     case Matcher.match_interaction(article) do
       {:ok, %{artiment: artiment}} when artiment in @article_threads ->
-        Interactions.ReactionUsers.load(ArticleUpvote, article, filter)
+        Interactions.ReactionUsers.load(ArticleUpvote, article, pagi)
 
       _ ->
         {:error, ErrorCat.unsupported_artiment("upvoted_users only supports Article")}

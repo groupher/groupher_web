@@ -31,21 +31,10 @@ defmodule GroupherServerWeb.Schema.CMS.Dashboard.Metrics.Enums do
     value(:media_reports)
     value(:doc_faq)
     value(:third_party_analytics)
-    value(:pagination)
+    value(:pagi_mode)
   end
 
-  enum :pagination_surface do
-    value(:posts)
-    value(:changelogs)
-    value(:comments)
-  end
-
-  enum :pagination_api do
-    value(:offset)
-    value(:cursor)
-  end
-
-  enum :pagination_mode do
+  enum :pagi_mode do
     value(:page)
     value(:load_more)
     value(:infinite_scroll)

@@ -32,7 +32,7 @@ defmodule GroupherServer.CMS.Articles.Trash do
   }
 
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  alias Helper.ORM.Pagi.{Order, Params}
 
   @default_retention_days 30
 
@@ -306,11 +306,8 @@ defmodule GroupherServer.CMS.Articles.Trash do
   end
 
   @doc "Lists ordinary stable Article Trash memberships for one Community."
-  @spec list(Community.t(), map()) :: {:ok, map()}
-  def list(%Community{} = community, filter \\ %{}) do
-    page = Map.get(filter, :page, 1)
-    size = Map.get(filter, :size, 20)
-
+  @spec list(Community.t(), map(), Params.t() | nil) :: {:ok, map()}
+  def list(%Community{} = community, filter, pagi) do
     query =
       TrashedArticle
       |> join(:inner, [item], article in Article, on: article.id == item.article_id)
@@ -327,18 +324,30 @@ defmodule GroupherServer.CMS.Articles.Trash do
       |> join(
         :inner,
         [item, _article, _community, _public, _stats, _binding],
-        action in TrashAction, on: action.id == item.trash_action_id)
+        action in TrashAction,
+        on: action.id == item.trash_action_id
+      )
       |> where([item], item.community_id == ^community.id)
       |> select(
         [item, article, community, public, stats, binding, action],
         {item, article, community, public, stats, binding.inner_id, action}
       )
 
+    query =
+      case Map.get(filter, :thread) do
+        nil -> query
+        thread -> where(query, [item], item.thread == ^thread)
+      end
+
     with {:ok, paged} <-
            ORM.pagi(
              query,
-             %Params.Offset{page: page, size: size},
+             pagi,
              for: TrashedArticle,
+             surface: "articles.trash",
+             query_fingerprint:
+               :erlang.term_to_binary({community.id, Map.get(filter, :thread)}) |> Base.encode64(),
+             cursor_value_func: fn row, fields -> row |> elem(0) |> Map.take(fields) end,
              order: %Order{
                fields: [:deleted_at, :id],
                directions: [:desc, :desc],
@@ -347,7 +356,6 @@ defmodule GroupherServer.CMS.Articles.Trash do
            ) do
       {:ok,
        paged
-       |> Page.to_legacy()
        |> Map.update!(:entries, &hydrate_page_items/1)}
     end
   end

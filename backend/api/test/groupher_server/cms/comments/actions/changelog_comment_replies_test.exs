@@ -259,9 +259,9 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogCommentReplies do
         )
 
       {:ok, paged_replies} =
-        CMS.Comments.paged_comment_replies(parent_comment.id, %{page: 1, size: 20})
+        comment_reply_page(parent_comment.id, %{page: 1, size: 20})
 
-      assert is_valid_pagination?(paged_replies, :raw, :empty)
+      assert valid_comment_page?(paged_replies)
 
       total_reply_count = 30
 
@@ -279,10 +279,10 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogCommentReplies do
         end)
 
       {:ok, paged_replies} =
-        CMS.Comments.paged_comment_replies(parent_comment.id, %{page: 1, size: 20})
+        comment_reply_page(parent_comment.id, %{page: 1, size: 20})
 
-      assert total_reply_count == paged_replies.total_count
-      assert is_valid_pagination?(paged_replies, :raw)
+      assert total_reply_count == paged_replies.page_info.total_count
+      assert valid_comment_page?(paged_replies)
 
       reply_ids = reply_comment_list |> Enum.map(& &1.id) |> MapSet.new()
 
@@ -311,7 +311,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogCommentReplies do
         CMS.Comments.reply_comment(parent_comment.id, mock_comment(), user, Ecto.UUID.generate())
 
       {:ok, paged_comments} =
-        CMS.Comments.paged_comments(
+        comment_page(
           :changelog,
           changelog.id,
           %{page: page_number, size: page_size},

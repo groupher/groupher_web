@@ -31,45 +31,45 @@ defmodule GroupherServer.Test.CMS.Search do
       {:ok, _} = CategoriesPersist.set_category(community, category)
 
       {:ok, searched} = Search.community("cool-pl", "pl")
-      assert searched.entries |> List.first() |> Map.get(:title) == "cool-pl"
+      assert searched |> List.first() |> Map.get(:title) == "cool-pl"
     end
   end
 
   describe "[cms search community]" do
-    test "search community by full title should valid paged communities" do
+    test "search community by full title should bounded community suggestions" do
       {:ok, searched} = Search.community("react")
 
-      assert searched |> is_valid_pagination?(:raw)
-      assert searched.total_count == 1
-      assert searched.entries |> Enum.at(0) |> Map.get(:title) == "react"
+      assert is_list(searched)
+      assert length(searched) == 1
+      assert searched |> Enum.at(0) |> Map.get(:title) == "react"
     end
 
     test "search community blur title should return valid communities" do
       {:ok, searched} = Search.community("reac")
-      assert searched.entries |> Enum.any?(&(&1.title == "react"))
+      assert searched |> Enum.any?(&(&1.title == "react"))
 
       {:ok, searched} = Search.community("rea")
-      assert searched.entries |> Enum.any?(&(&1.title == "react"))
+      assert searched |> Enum.any?(&(&1.title == "react"))
 
       {:ok, searched} = Search.community("eac")
-      assert searched.entries |> Enum.any?(&(&1.title == "react"))
+      assert searched |> Enum.any?(&(&1.title == "react"))
 
       {:ok, searched} = Search.community("每日")
-      assert searched.entries |> Enum.any?(&(&1.title == "每日妹子"))
+      assert searched |> Enum.any?(&(&1.title == "每日妹子"))
 
       {:ok, searched} = Search.community("javasc")
-      assert searched.total_count == 1
-      assert searched.entries |> Enum.at(0) |> Map.get(:title) == "javascript"
+      assert length(searched) == 1
+      assert searched |> Enum.at(0) |> Map.get(:title) == "javascript"
 
       {:ok, searched} = Search.community("java")
-      assert searched.total_count == 2
-      assert searched.entries |> Enum.any?(&(&1.title == "java"))
-      assert searched.entries |> Enum.any?(&(&1.title == "javascript"))
+      assert length(searched) == 2
+      assert searched |> Enum.any?(&(&1.title == "java"))
+      assert searched |> Enum.any?(&(&1.title == "javascript"))
     end
 
-    test "search non exist community should get empty pagi data" do
+    test "search non exist community should get an empty suggestion list" do
       {:ok, searched} = Search.community("non-exist")
-      assert searched |> is_valid_pagination?(:raw, :empty)
+      assert searched == []
     end
   end
 end

@@ -53,43 +53,22 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
     CMS.articles_set_status_result(article, status, user, command_id)
   end
 
-  def paged_articles(_root, ~m(thread filter)a, %{context: %{cur_user: user}}) do
-    CMS.articles_page(thread, filter, user)
-  end
-
-  def paged_articles(_root, ~m(thread filter)a, _info) do
-    CMS.articles_page(thread, filter)
-  end
-
-  @doc "Resolves the new Article Page contract without owning query or pagination policy."
-  def article_page(_root, %{thread: thread, pagi: pagi} = args, %{context: context}) do
-    filter = Map.get(args, :filter) || %{}
-    actor = Map.get(context, :cur_user)
-    CMS.articles_pagi_page(thread, filter, actor, pagi_input: normalize_pagi_input(pagi))
-  end
-
+  @doc "Resolves an Article Page without interpreting resource query policy."
   def article_page(_root, %{thread: thread} = args, %{context: context}) do
-    filter = Map.get(args, :filter) || %{}
-    actor = Map.get(context, :cur_user)
-    CMS.articles_pagi_page(thread, filter, actor, [])
+    CMS.articles_page(
+      thread,
+      Map.get(args, :filter) || %{},
+      Map.get(args, :pagi),
+      Map.get(context, :cur_user)
+    )
   end
-
-  defp normalize_pagi_input(%{offset: offset}) when is_map(offset) do
-    {:offset, Map.take(offset, [:page, :size, :config_revision])}
-  end
-
-  defp normalize_pagi_input(%{cursor: cursor}) when is_map(cursor) do
-    {:cursor, Map.take(cursor, [:first, :after, :config_revision])}
-  end
-
-  defp normalize_pagi_input(_pagi), do: :invalid
 
   def grouped_kanban_posts(_root, %{community: community}, _info) do
     CMS.articles_grouped_kanban(community)
   end
 
-  def paged_kanban_posts(_root, %{community: community, filter: filter}, _info) do
-    CMS.articles_paged_kanban(community, filter)
+  def kanban_page(_root, %{community: community} = args, _info) do
+    CMS.articles_kanban_page(community, Map.get(args, :filter) || %{}, Map.get(args, :pagi))
   end
 
   def create_post(root, args, info) do
@@ -189,7 +168,10 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
         _info
       ) do
     filter = (Map.get(args, :filter) || %{}) |> Map.put(:thread, thread)
-    CMS.articles_list_trashed(community, filter)
+
+    with {:ok, pagi} <- Helper.ORM.Pagi.Params.from_input(Map.get(args, :pagi)) do
+      CMS.articles_list_trashed(community, filter, pagi)
+    end
   end
 
   def trashed_article(

@@ -24,7 +24,6 @@ defmodule GroupherServer.CMS.Dashboard.SectionPayload do
   alias GroupherServer.{CMS, ErrorCat}
 
   alias CMS.Dashboard.LinkValidator
-  alias CMS.Dashboard.Pagination
   alias CMS.Model.{CommunityDashboard, Embeds}
 
   # List-like dsb sections are replaced as a whole on each update.
@@ -149,10 +148,6 @@ defmodule GroupherServer.CMS.Dashboard.SectionPayload do
 
   def prepare(%CommunityDashboard{}, :third_party_analytics, _args) do
     {:error, ErrorCat.custom("invalid third-party analytics config")}
-  end
-
-  def prepare(%CommunityDashboard{}, :pagination, args) do
-    Pagination.normalize_for_changeset(Map.get(args, :pagination, args))
   end
 
   # Replace-style sections are already the final payload.

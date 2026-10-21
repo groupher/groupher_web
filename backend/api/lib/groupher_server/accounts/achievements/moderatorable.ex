@@ -15,14 +15,13 @@ defmodule GroupherServer.Accounts.Achievements.Moderatorable do
   """
 
   import Ecto.Query, warn: false
-  import Helper.Utils, only: [done: 1]
 
   alias GroupherServer.{Accounts, CMS}
 
   alias Accounts.Model.User
-  alias CMS.Model.CommunityModerator
+  alias CMS.Model.{Community, CommunityModerator}
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  alias Helper.ORM.Pagi.{Order, Params}
 
   @doc """
   Returns communities where a user has moderator capability.
@@ -31,22 +30,22 @@ defmodule GroupherServer.Accounts.Achievements.Moderatorable do
 
       Accounts.Achievements.Moderatorable.paged_moderatorable_communities(user, %{page: 1, size: 20})
   """
-  @spec paged_moderatorable_communities(User.t(), map()) :: T.domain_res(T.paged_data())
-  def paged_moderatorable_communities(%User{id: user_id}, %{page: page, size: size}) do
-    query =
-      CommunityModerator
-      |> where([e], e.user_id == ^user_id)
-      |> join(:inner, [e], c in assoc(e, :community))
-      |> select([e, c], c)
+  @spec paged_moderatorable_communities(User.t(), Params.t() | nil) ::
+          T.domain_res(T.paged_data())
+  def paged_moderatorable_communities(%User{id: user_id}, pagi) do
+    ids =
+      from(member in CommunityModerator,
+        where: member.user_id == ^user_id,
+        select: member.community_id
+      )
 
-    with {:ok, result} <-
-           ORM.pagi(
-             query,
-             %Params.Offset{page: page, size: size},
-             for: CMS.Model.Community,
-             order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
-           ) do
-      done(Page.to_legacy(result))
-    end
+    query = from(community in Community, where: community.id in subquery(ids))
+
+    ORM.pagi(query, pagi,
+      for: Community,
+      order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]},
+      surface: "accounts.moderatorable_communities",
+      query_fingerprint: Integer.to_string(user_id)
+    )
   end
 end

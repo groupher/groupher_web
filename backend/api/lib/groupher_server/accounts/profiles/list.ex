@@ -11,130 +11,100 @@ defmodule GroupherServer.Accounts.Profiles.List do
   """
 
   import Ecto.Query, warn: false
-  import Helper.Utils, only: [done: 1]
 
-  alias GroupherServer.{Accounts, CMS}
+  alias GroupherServer.{Accounts, CMS, Repo}
 
   alias Accounts.Fans
   alias Accounts.Model.User
 
   alias CMS.Model.{Community, CommunitySubscriber}
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  alias Helper.ORM.Pagi.{Order, Params}
 
   @default_subscribed_communities GroupherServer.Accounts.Config.default_subscribed_communities()
 
-  @doc """
-  Returns a viewer-aware page of users.
+  @doc "Pages User identities using the explicit Pagi position."
+  def paged_users(filter, pagi, viewer \\ nil) do
+    sort = Map.get(filter, :sort, :desc_inserted)
 
-  ## Examples
+    if sort in [:asc_inserted, :desc_inserted] do
+      direction = if sort == :asc_inserted, do: :asc, else: :desc
 
-      Accounts.Profiles.List.paged_users(%{page: 1, size: 20}, viewer)
-  """
-  def paged_users(filter, %User{} = user) do
-    ORM.find_all(User, filter) |> Fans.mark_viewer_follow_status(user) |> done
-  end
-
-  @doc """
-  Returns a page of users matching the filter.
-
-  ## Examples
-
-      Accounts.Profiles.List.paged_users(%{page: 1, size: 20})
-  """
-  def paged_users(filter) do
-    ORM.find_all(User, filter)
-  end
-
-  @doc """
-  Returns the default community suggestions for a profile landing page.
-
-  ## Examples
-
-      Accounts.Profiles.List.default_subscribed_communities(%{page: 1, size: 20})
-  """
-  def default_subscribed_communities(%{page: _, size: _} = filter) do
-    filter = Map.merge(filter, %{size: @default_subscribed_communities, category: "pl"})
-    query_filter = Map.delete(filter, :sort)
-
-    with {:ok, home_community} <- ORM.find_by(Community, slug: "home"),
-         {:ok, page} <-
-           Community
-           |> GroupherServer.CMS.query_builder_filter_pack(query_filter)
-           |> page_communities(filter.page, filter.size, filter) do
-      paged_communities = Page.to_legacy(page)
-
-      %{
-        entries: paged_communities.entries ++ [home_community],
-        page_number: paged_communities.page_number,
-        page_size: paged_communities.page_size,
-        total_count: paged_communities.total_count + 1,
-        total_pages: paged_communities.total_pages
+      order = %Order{
+        fields: [:inserted_at, :id],
+        directions: [direction, direction],
+        cursor_fields: [:inserted_at, :id]
       }
-      |> done()
+
+      with {:ok, page} <-
+             ORM.pagi(User, pagi,
+               for: User,
+               order: order,
+               surface: "accounts.users",
+               query_fingerprint: Atom.to_string(sort)
+             ) do
+        case viewer do
+          %User{} -> {:ok, Fans.mark_viewer_follow_status({:ok, page}, viewer)}
+          nil -> {:ok, page}
+        end
+      end
     else
-      _error ->
-        %{
-          entries: [],
-          page_number: 1,
-          page_size: @default_subscribed_communities,
-          total_count: 0,
-          total_pages: 1
-        }
-        |> done()
+      {:error, GroupherServer.Pagi.unsupported_sort()}
     end
   end
 
-  @doc """
-  Returns communities subscribed to by one user.
-
-  ## Examples
-
-      Accounts.Profiles.List.subscribed_communities(user, %{page: 1, size: 20})
-  """
-  def subscribed_communities(%User{id: id} = user, %{page: page, size: size} = filter) do
-    filter = filter |> Map.delete(:first)
-    query_filter = Map.delete(filter, :sort)
-
+  @doc "Returns bounded default suggestions, with Home independently included when present."
+  def default_community_suggestions do
     query =
-      CommunitySubscriber
-      |> where([c], c.user_id == ^id)
-      |> join(:inner, [c, cc], cc in assoc(c, :community))
-      |> select([c, cc], cc)
-      |> GroupherServer.CMS.query_builder_filter_pack(query_filter)
+      CMS.communities_public_query()
+      |> GroupherServer.CMS.query_builder_filter_pack(%{category: "pl"})
+      |> where([community], community.slug != "home")
+      |> distinct(true)
+      |> order_by([community], desc: community.inserted_at, desc: community.id)
+      |> limit(@default_subscribed_communities)
 
-    with {:ok, result} <- page_communities(query, page, size, filter) do
-      result
-      |> Page.to_legacy()
-      |> sort_communities(user)
-      |> done()
+    suggestions = Repo.all(query)
+
+    home =
+      CMS.communities_public_query()
+      |> where([community], community.slug == "home")
+      |> Repo.one()
+
+    {:ok, suggestions ++ if(home, do: [home], else: [])}
+  end
+
+  @doc "Pages a user's actual subscriptions by Community identity."
+  @spec subscribed_communities(User.t(), map(), Params.t() | nil) :: tuple()
+  def subscribed_communities(%User{id: id}, filter, pagi) do
+    ids =
+      from(member in CommunitySubscriber,
+        where: member.user_id == ^id,
+        select: member.community_id
+      )
+
+    sort = Map.get(filter, :sort, :desc_inserted)
+
+    if sort in [:asc_inserted, :desc_inserted] do
+      query =
+        CMS.communities_public_query()
+        |> where([community], community.id in subquery(ids))
+
+      direction = if sort == :asc_inserted, do: :asc, else: :desc
+
+      order = %Order{
+        fields: [:inserted_at, :id],
+        directions: [direction, direction],
+        cursor_fields: [:inserted_at, :id]
+      }
+
+      ORM.pagi(query, pagi,
+        for: Community,
+        order: order,
+        surface: "accounts.subscribed_communities",
+        query_fingerprint: :erlang.term_to_binary({id, sort}) |> Base.encode64()
+      )
+    else
+      {:error, GroupherServer.Pagi.unsupported_sort()}
     end
   end
-
-  defp page_communities(query, page, size, filter) do
-    ORM.pagi(
-      query,
-      %Params.Offset{page: page, size: size},
-      for: Community,
-      order: community_order(filter)
-    )
-  end
-
-  defp community_order(%{sort: :asc_inserted}) do
-    %Order{
-      fields: [:inserted_at, :id],
-      directions: [:asc, :asc],
-      cursor_fields: [:inserted_at, :id]
-    }
-  end
-
-  defp community_order(_filter) do
-    %Order{
-      fields: [:inserted_at, :id],
-      directions: [:desc, :desc],
-      cursor_fields: [:inserted_at, :id]
-    }
-  end
-
-  defp sort_communities(paged_communities, _user), do: paged_communities
 end

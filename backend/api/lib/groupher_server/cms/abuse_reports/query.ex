@@ -20,7 +20,7 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
   alias CMS.Articles.Pagination
   alias CMS.Model.{AbuseReport, ArticleBinding, Comment}
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  alias Helper.ORM.Pagi.{Order, Params}
 
   @threads CMS.Artiment.Config.threads()
 
@@ -53,8 +53,8 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
       })
 
   """
-  @spec paged_reports(map()) :: T.domain_res(T.paged_data())
-  def paged_reports(%{content_type: :account, content_id: content_id} = filter) do
+  @spec paged_reports(map(), Params.t() | nil) :: T.domain_res(T.paged_data())
+  def paged_reports(%{content_type: :account, content_id: content_id} = filter, pagi) do
     with {:ok, info} <- match(:account) do
       query =
         from(r in AbuseReport,
@@ -62,23 +62,23 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
           preload: :account
         )
 
-      do_paged_reports(query, :account, filter)
+      do_paged_reports(query, :account, filter, pagi)
     end
   end
 
-  @spec paged_reports(map()) :: T.domain_res(T.paged_data())
-  def paged_reports(%{content_type: :account} = filter) do
+  @spec paged_reports(map(), Params.t() | nil) :: T.domain_res(T.paged_data())
+  def paged_reports(%{content_type: :account} = filter, pagi) do
     query =
       from(report in AbuseReport,
         where: not is_nil(report.account_id),
         preload: [account: [], operate_user: []]
       )
 
-    do_paged_reports(query, :account, filter)
+    do_paged_reports(query, :account, filter, pagi)
   end
 
-  @spec paged_reports(map()) :: T.domain_res(T.paged_data())
-  def paged_reports(%{content_type: :comment, content_id: content_id} = filter) do
+  @spec paged_reports(map(), Params.t() | nil) :: T.domain_res(T.paged_data())
+  def paged_reports(%{content_type: :comment, content_id: content_id} = filter, pagi) do
     with {:ok, info} <- match(:comment) do
       query =
         from(r in AbuseReport,
@@ -86,23 +86,23 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
           preload: [comment: :author]
         )
 
-      do_paged_reports(query, :comment, filter)
+      do_paged_reports(query, :comment, filter, pagi)
     end
   end
 
-  @spec paged_reports(map()) :: T.domain_res(T.paged_data())
-  def paged_reports(%{content_type: :comment} = filter) do
+  @spec paged_reports(map(), Params.t() | nil) :: T.domain_res(T.paged_data())
+  def paged_reports(%{content_type: :comment} = filter, pagi) do
     query =
       from(report in AbuseReport,
         where: not is_nil(report.comment_id),
         preload: [comment: :author, operate_user: []]
       )
 
-    do_paged_reports(query, :comment, filter)
+    do_paged_reports(query, :comment, filter, pagi)
   end
 
-  @spec paged_reports(map()) :: T.domain_res(T.paged_data())
-  def paged_reports(%{content_type: thread, content_id: content_id} = filter)
+  @spec paged_reports(map(), Params.t() | nil) :: T.domain_res(T.paged_data())
+  def paged_reports(%{content_type: thread, content_id: content_id} = filter, pagi)
       when thread in @threads do
     case Ecto.UUID.cast(content_id) do
       {:ok, article_id} ->
@@ -112,15 +112,15 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
             preload: [:article, :operate_user]
           )
 
-        do_paged_reports(query, thread, filter)
+        do_paged_reports(query, thread, filter, pagi)
 
       :error ->
-        {:ok, %{entries: [], total_count: 0, page_number: filter.page, page_size: filter.size}}
+        {:error, GroupherServer.ErrorCat.custom("invalid Article id")}
     end
   end
 
-  @spec paged_reports(map()) :: T.domain_res(T.paged_data())
-  def paged_reports(%{content_type: thread} = filter) when thread in @threads do
+  @spec paged_reports(map(), Params.t() | nil) :: T.domain_res(T.paged_data())
+  def paged_reports(%{content_type: thread} = filter, pagi) when thread in @threads do
     query =
       from(report in AbuseReport,
         join: article in assoc(report, :article),
@@ -128,25 +128,23 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
         preload: [article: [], operate_user: []]
       )
 
-    do_paged_reports(query, thread, filter)
+    do_paged_reports(query, thread, filter, pagi)
   end
 
-  @spec paged_reports(map()) :: T.domain_res(T.paged_data())
-  def paged_reports(filter) do
+  @spec paged_reports(map(), Params.t() | nil) :: T.domain_res(T.paged_data())
+  def paged_reports(filter, pagi) do
     query = from(r in AbuseReport, preload: [:operate_user])
-    do_paged_reports(query, filter)
+    do_paged_reports(query, filter, pagi)
   end
 
-  defp do_paged_reports(query, thread, filter) do
-    %{page: page, size: size} = filter
-
+  defp do_paged_reports(query, thread, filter, pagi) do
     query =
       query
       |> QueryBuilder.filter_pack(Map.drop(filter, [:content_type, :content_id]))
 
     with {:ok, paged} <-
-           page_reports(query, page, size),
-         formatted <- paged |> Page.to_legacy() |> reports_formatter(thread) do
+           page_reports(query, pagi, filter),
+         formatted <- reports_formatter(paged, thread) do
       case formatted do
         {:error, _} = error -> error
         result -> done(result)
@@ -154,18 +152,20 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
     end
   end
 
-  defp do_paged_reports(query, %{page: page, size: size}) do
-    with {:ok, paged} <- page_reports(query, page, size) do
-      paged |> Page.to_legacy() |> done()
+  defp do_paged_reports(query, filter, pagi) do
+    with {:ok, paged} <- page_reports(query, pagi, filter) do
+      done(paged)
     end
   end
 
-  defp page_reports(query, page, size) do
+  defp page_reports(query, pagi, filter) do
     # Pagi requires an explicit stable order; reports are intentionally newest-first.
     ORM.pagi(
       query,
-      %Params.Offset{page: page, size: size},
+      pagi,
       for: AbuseReport,
+      surface: "abuse_reports",
+      query_fingerprint: :crypto.hash(:sha256, :erlang.term_to_binary(filter)) |> Base.encode16(),
       order: %Order{fields: [:id], directions: [:desc], cursor_fields: [:id]}
     )
   end
@@ -387,6 +387,7 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
     end
   end
 
-  defp fetch_article_lite(_article, _community_id, _lites),
-    do: {:error, :article_binding_not_found}
+  defp fetch_article_lite(_article, _community_id, _lites) do
+    {:error, :article_binding_not_found}
+  end
 end

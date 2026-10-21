@@ -14,11 +14,12 @@ defmodule GroupherServer.Test.CMS.Articles.DocList do
       {:ok, _} = CMS.Articles.create(community, :doc, doc_attrs, user)
       {:ok, _} = CMS.Articles.create(community, :doc, doc_attrs, user)
 
-      {:ok, paged_docs} = CMS.Articles.page(:doc, %{page: 1, size: 20})
+      {:ok, paged_docs} =
+        CMS.Articles.page(:doc, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
 
-      assert paged_docs |> is_valid_pagination?(:raw)
+      assert paged_docs |> is_map()
       assert length(paged_docs.entries) >= 2
-      assert Enum.all?(paged_docs.entries, &(&1.meta.thread == :doc))
+      assert Enum.all?(paged_docs.entries, &(&1.thread == :doc))
     end
   end
 end

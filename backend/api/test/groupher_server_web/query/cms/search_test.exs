@@ -40,14 +40,14 @@ defmodule GroupherServer.Test.Query.CMS.Search do
       variables = %{query: %{text: "react"}}
       results = guest_conn |> gq_query(S.Article.q(:search_artiments, :post), variables)
 
-      assert results["totalCount"] == 1
+      assert results["pageInfo"]["totalCount"] == 1
       assert results["entries"] |> Enum.any?(&(&1["artiment"]["title"] == "react"))
       assert hd(results["entries"])["artiment"]["type"] == "ARTICLE"
 
       variables = %{query: %{text: "java", filters: %{threads: ["POST"]}}}
       results = guest_conn |> gq_query(S.Article.q(:search_artiments, :post), variables)
 
-      assert results["totalCount"] == 2
+      assert results["pageInfo"]["totalCount"] == 2
       assert results["entries"] |> Enum.any?(&(&1["artiment"]["title"] == "java"))
       assert results["entries"] |> Enum.any?(&(&1["artiment"]["title"] == "javascript"))
     end
@@ -56,7 +56,7 @@ defmodule GroupherServer.Test.Query.CMS.Search do
       variables = %{query: %{text: "non-exist"}}
       results = guest_conn |> gq_query(S.Article.q(:search_artiments, :post), variables)
 
-      assert results["totalCount"] == 0
+      assert results["pageInfo"]["totalCount"] == 0
       assert results["entries"] == []
     end
   end
@@ -66,15 +66,15 @@ defmodule GroupherServer.Test.Query.CMS.Search do
       variables = %{title: "react"}
       results = guest_conn |> gq_query(S.Community.q(:search_communities), variables)
 
-      assert results["totalCount"] == 1
-      assert results["entries"] |> Enum.any?(&(&1["title"] == "react"))
+      assert length(results) == 1
+      assert results |> Enum.any?(&(&1["title"] == "react"))
 
       variables = %{title: "java"}
       results = guest_conn |> gq_query(S.Community.q(:search_communities), variables)
 
-      assert results["totalCount"] == 2
-      assert results["entries"] |> Enum.any?(&(&1["title"] == "java"))
-      assert results["entries"] |> Enum.any?(&(&1["title"] == "javascript"))
+      assert length(results) == 2
+      assert results |> Enum.any?(&(&1["title"] == "java"))
+      assert results |> Enum.any?(&(&1["title"] == "javascript"))
     end
 
     test "can search community with category", ~m(guest_conn user)a do
@@ -86,16 +86,16 @@ defmodule GroupherServer.Test.Query.CMS.Search do
       variables = %{title: "cool-pl", category: "pl"}
       results = guest_conn |> gq_query(S.Community.q(:search_communities), variables)
 
-      assert results["totalCount"] == 1
-      assert results["entries"] |> Enum.any?(&(&1["title"] == "cool-pl"))
+      assert length(results) == 1
+      assert results |> Enum.any?(&(&1["title"] == "cool-pl"))
     end
 
     test "search non-exist community should get empty pagi data", ~m(guest_conn)a do
       variables = %{title: "non-exist"}
       results = guest_conn |> gq_query(S.Community.q(:search_communities), variables)
 
-      assert results["totalCount"] == 0
-      assert results["entries"] == []
+      assert length(results) == 0
+      assert results == []
     end
   end
 

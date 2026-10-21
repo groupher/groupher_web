@@ -18,49 +18,12 @@ defmodule GroupherServer.Accounts.CollectFolders do
   alias Accounts.Model.User
   alias Helper.T
 
-  @doc """
-  Returns the user's visible collection folders.
+  @doc "Pages folders using explicit Pagi parameters and optional viewer privacy."
+  def paged(%User{id: id}, filter, pagi, viewer \\ nil), do: List.page(id, filter, pagi, viewer)
 
-  ## Examples
-
-      Accounts.CollectFolders.paged(user, %{page: 1, size: 20})
-  """
-  @spec paged(User.t(), map()) :: T.domain_res(T.paged_data())
-  def paged(%User{id: user_id}, filter), do: List.page(user_id, filter)
-
-  @doc """
-  Returns private folders when the viewer owns the account.
-
-  ## Examples
-
-      Accounts.CollectFolders.paged(user, %{page: 1, size: 20}, viewer)
-  """
-  @spec paged(User.t(), map(), User.t()) :: T.domain_res(T.paged_data())
-  def paged(%User{id: user_id}, filter, %User{} = cur_user) do
-    List.page(user_id, filter, cur_user)
-  end
-
-  @doc """
-  Returns the articles stored in one collection folder.
-
-  ## Examples
-
-      Accounts.CollectFolders.paged_articles(folder_id, %{page: 1, size: 20})
-  """
-  @spec paged_articles(T.id(), map()) :: T.domain_res(T.paged_data())
-  def paged_articles(folder_id, filter), do: Articles.paged(folder_id, filter)
-
-  @doc """
-  Returns folder articles with the viewer's privacy scope applied.
-
-  ## Examples
-
-      Accounts.CollectFolders.paged_articles(folder_id, %{page: 1, size: 20}, viewer)
-  """
-  @spec paged_articles(T.id(), map(), User.t()) :: T.domain_res(T.paged_data())
-  def paged_articles(folder_id, filter, %User{} = cur_user) do
-    Articles.paged(folder_id, filter, cur_user)
-  end
+  @doc "Pages folder entries using explicit Pagi parameters and optional viewer privacy."
+  defdelegate paged_articles(folder_id, filter, pagi), to: Articles, as: :paged
+  defdelegate paged_articles(folder_id, filter, pagi, viewer), to: Articles, as: :paged
 
   @doc """
   Creates a user-owned collection folder.

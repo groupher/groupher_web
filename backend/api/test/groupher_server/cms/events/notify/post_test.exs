@@ -32,7 +32,10 @@ defmodule GroupherServer.Test.CMS.Events.Notify.PostTest do
       Events.emit(:notify_upvote, %{target: article, from_user: user2})
 
       {:ok, notifications} =
-        Messaging.paged_messages(:notification, post.author, %{page: 1, size: 20})
+        Messaging.paged_messages(:notification, post.author, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 20
+        })
 
       assert notifications.total_count == 1
 
@@ -52,7 +55,12 @@ defmodule GroupherServer.Test.CMS.Events.Notify.PostTest do
       Events.emit(:notify_upvote, %{target: comment, from_user: user2})
 
       {:ok, notifications} =
-        Messaging.paged_messages(:notification, comment.author, %{page: 1, size: 20})
+        Messaging.paged_messages(
+          :notification,
+          comment.author,
+          %{},
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+        )
 
       assert notifications.total_count == 1
 
@@ -75,7 +83,10 @@ defmodule GroupherServer.Test.CMS.Events.Notify.PostTest do
       Events.emit(:notify_undo_upvote, %{target: article, from_user: user2})
 
       {:ok, notifications} =
-        Messaging.paged_messages(:notification, post.author, %{page: 1, size: 20})
+        Messaging.paged_messages(:notification, post.author, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 20
+        })
 
       assert notifications.total_count == 0
     end
@@ -92,7 +103,12 @@ defmodule GroupherServer.Test.CMS.Events.Notify.PostTest do
       comment = %{comment | author: comment_author}
 
       {:ok, notifications} =
-        Messaging.paged_messages(:notification, comment.author, %{page: 1, size: 20})
+        Messaging.paged_messages(
+          :notification,
+          comment.author,
+          %{},
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+        )
 
       assert notifications.total_count == 0
     end
@@ -106,7 +122,10 @@ defmodule GroupherServer.Test.CMS.Events.Notify.PostTest do
       Events.emit(:notify_collect, %{article: post, from_user: user2})
 
       {:ok, notifications} =
-        Messaging.paged_messages(:notification, post.author, %{page: 1, size: 20})
+        Messaging.paged_messages(:notification, post.author, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 20
+        })
 
       assert notifications.total_count == 1
 
@@ -128,7 +147,10 @@ defmodule GroupherServer.Test.CMS.Events.Notify.PostTest do
       Events.emit(:notify_undo_collect, %{article: post, from_user: user2})
 
       {:ok, notifications} =
-        Messaging.paged_messages(:notification, post.author, %{page: 1, size: 20})
+        Messaging.paged_messages(:notification, post.author, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 20
+        })
 
       assert notifications.total_count == 0
     end
@@ -152,7 +174,10 @@ defmodule GroupherServer.Test.CMS.Events.Notify.PostTest do
       Events.emit(:notify_comment, %{comment: comment, from_user: user2})
 
       {:ok, notifications} =
-        Messaging.paged_messages(:notification, post.author, %{page: 1, size: 20})
+        Messaging.paged_messages(:notification, post.author, %{}, %Helper.ORM.Pagi.Params.Offset{
+          page: 1,
+          size: 20
+        })
 
       assert notifications.total_count == 1
 
@@ -186,7 +211,12 @@ defmodule GroupherServer.Test.CMS.Events.Notify.PostTest do
       comment = Repo.preload(comment, :author)
 
       {:ok, notifications} =
-        Messaging.paged_messages(:notification, comment.author, %{page: 1, size: 20})
+        Messaging.paged_messages(
+          :notification,
+          comment.author,
+          %{},
+          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+        )
 
       assert notifications.total_count == 1
 

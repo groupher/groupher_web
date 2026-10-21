@@ -325,8 +325,8 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
     assert {:error, :doc_not_readable} =
              CMS.Docs.read_editor_head(community, first_doc_id)
 
-    assert {:ok, [trash_item]} =
-             DocTree.trash_items(community, actor: :operations, policy_mode: :operations)
+    assert {:ok, %{entries: [trash_item]}} =
+             DocTree.trash_items(community, nil, actor: :operations, policy_mode: :operations)
 
     documents = [document("docs/start.md", "/start", "b")]
     next_source_info = Map.put(source_info(), "commit", String.duplicate("d", 40))
@@ -369,8 +369,8 @@ defmodule GroupherServer.CMS.ContentImportFlowTest do
              source: :worker
            )
 
-    assert {:ok, []} =
-             DocTree.trash_items(community, actor: :operations, policy_mode: :operations)
+    assert {:ok, %{entries: []}} =
+             DocTree.trash_items(community, nil, actor: :operations, policy_mode: :operations)
 
     assert Repo.aggregate(ImportSourceMapping, :count) == 1
     assert Repo.aggregate(DocTreeNode, :count) == 3

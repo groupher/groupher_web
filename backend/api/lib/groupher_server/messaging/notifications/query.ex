@@ -17,7 +17,7 @@ defmodule GroupherServer.Messaging.Notifications.Query do
   alias Accounts.Model.User
   alias Messaging.Model.Notification
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  alias Helper.ORM.Pagi.{Order, Params}
 
   @cut_from_users_count 3
 
@@ -26,10 +26,10 @@ defmodule GroupherServer.Messaging.Notifications.Query do
 
   ## Examples
 
-      Messaging.Notifications.Query.paged(user, %{page: 1, size: 20, read: false})
+      Messaging.Notifications.Query.paged(user, %{read: false}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
   """
-  @spec paged(User.t(), map()) :: term()
-  def paged(%User{} = user, %{page: page, size: size} = filter) do
+  @spec paged(User.t(), map(), Params.t() | nil) :: term()
+  def paged(%User{} = user, filter, pagi) do
     read = Map.get(filter, :read, false)
 
     query =
@@ -39,8 +39,11 @@ defmodule GroupherServer.Messaging.Notifications.Query do
     with {:ok, page} <-
            ORM.pagi(
              query,
-             %Params.Offset{page: page, size: size},
+             pagi,
              for: Notification,
+             surface: "mailbox.notifications",
+             query_fingerprint:
+               :crypto.hash(:sha256, :erlang.term_to_binary({user.id, read})) |> Base.encode16(),
              order: %Order{
                fields: [:inserted_at, :id],
                directions: [:desc, :desc],
@@ -48,7 +51,6 @@ defmodule GroupherServer.Messaging.Notifications.Query do
              }
            ) do
       page
-      |> Page.to_legacy()
       |> cut_from_users_ifneed()
       |> done()
     end

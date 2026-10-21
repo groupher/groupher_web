@@ -8,5 +8,6 @@ defmodule GroupherServer.CMS.Communities.Moderators do
   alias __MODULE__.{Query, Setup}
 
   defdelegate add_root(community, owner), to: Setup
-  defdelegate page(community, filter), to: Query
+  defdelegate page(community, filter, pagi), to: Query
+  defdelegate page(community, filter, pagi, viewer), to: Query
 end
