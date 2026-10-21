@@ -23,6 +23,7 @@ export const mapCommentPages = (
     }
   return Array.isArray(data.entries) ? update(data as TPage, 0) : data
 }
+/** Applies an entry projection to every cached page and its pinned entries. */
 export const mapCommentEntries = (
   data: unknown,
   update: (entries: TComment[]) => TComment[],
@@ -32,6 +33,7 @@ export const mapCommentEntries = (
     entries: update(page.entries),
     ...(page.pinnedEntries ? { pinnedEntries: update(page.pinnedEntries) } : {}),
   }))
+/** Collects loaded root and pinned entries across offset or infinite cache pages. */
 export const commentCacheEntries = (data: unknown): TComment[] => {
   const entries: TComment[] = []
   mapCommentPages(data, (page) => {
@@ -40,6 +42,7 @@ export const commentCacheEntries = (data: unknown): TComment[] => {
   })
   return entries
 }
+/** Recovers a comment collection identity and its original cursor from a query key. */
 export const commentCollectionOf = (key: readonly unknown[]) => {
   if (key[5] !== 'page') return undefined
   const collection = key[6] as { rootInnerId?: string; mode?: string; sort?: string }

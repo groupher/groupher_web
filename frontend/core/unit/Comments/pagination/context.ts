@@ -24,6 +24,7 @@ export type TCommentFeed = {
   setPage: (page: number) => void
 }
 export const CommentFeedContext = createContext<TCommentFeed | null>(null)
+/** Reads the active root or reply feed and fails outside its pagination provider. */
 export const useCommentFeed = () => {
   const feed = useContext(CommentFeedContext)
   if (!feed) throw new Error('Comment list must be inside a pagination provider')

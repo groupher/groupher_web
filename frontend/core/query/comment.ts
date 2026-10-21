@@ -38,6 +38,7 @@ export const fetchCommentPage = async (collection: TCommentCollection, pagi: TPa
   return normalizeCommentPage(result.commentPage)
 }
 
+/** Builds a cache identity that separates collection, config revision, and position. */
 export const commentPageKey = (
   collection: TCommentCollection,
   config: TEffectivePagiConfig,

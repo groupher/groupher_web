@@ -22,6 +22,7 @@ export type TCommentCollection = {
   rootInnerId?: string
   sort?: 'ASC_INSERTED' | 'DESC_INSERTED'
 }
+/** Converts a GraphQL comment page into the client pagination contract. */
 export const normalizeCommentPage = (page: {
   entries: unknown[]
   pinnedEntries?: unknown[]
@@ -32,6 +33,7 @@ export const normalizeCommentPage = (page: {
   pageInfo: toPagiPageInfo(page.pageInfo),
 })
 
+/** Carries an effective config into one explicit offset or cursor request. */
 export const commentPagiRequest = (
   config: TEffectivePagiConfig,
   page = 1,

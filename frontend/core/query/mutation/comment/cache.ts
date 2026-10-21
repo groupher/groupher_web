@@ -221,11 +221,13 @@ const pendingChanges = (
   return changes
 }
 
+/** Inserts an optimistic root comment into cached root collection pages. */
 export const insertPendingCommentChanges = (
   client: QueryClient,
   target: TCommentPendingTarget,
   context: TOperationContext,
 ) => pendingChanges(client, target, context, false)
+/** Inserts an optimistic reply into its root's loaded reply-page projection. */
 export const insertPendingReplyChanges = (
   client: QueryClient,
   target: TCommentPendingTarget,
