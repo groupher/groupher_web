@@ -18,9 +18,12 @@ defmodule GroupherServer.Jobs.ExpireCommunityApplications do
   @doc """
   Expires submitted Applications whose review window elapsed.
 
+  The bounded maintenance owner returns a tagged result. Any error is returned
+  to Oban so a later attempt can retry the remaining applications.
+
   ## Examples
 
-      iex> GroupherServer.Jobs.ExpireCommunityApplications.perform(...)
+      perform(%Oban.Job{})
   """
   @impl Oban.Worker
 

@@ -15,7 +15,17 @@ defmodule GroupherServer.Jobs.SearchIndex do
     max_attempts: GroupherServer.Jobs.Config.max_attempts(:search_index),
     unique: GroupherServer.Jobs.Config.unique(:search_index)
 
-  @doc false
+  @doc """
+  Runs one closed-vocabulary Article search-index action from an Oban payload.
+
+  ## Examples
+
+      perform(%Oban.Job{args: %{
+        "action" => "upsert_article",
+        "thread" => "post",
+        "ref" => Ecto.UUID.generate()
+      }})
+  """
   @impl Oban.Worker
   def perform(%Oban.Job{
         args: %{"action" => "upsert_article", "thread" => thread, "ref" => article_id}

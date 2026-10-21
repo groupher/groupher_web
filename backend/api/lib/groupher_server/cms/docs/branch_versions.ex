@@ -36,7 +36,7 @@ defmodule GroupherServer.CMS.Docs.BranchVersions do
     |> order_by([version], desc: version.version_number)
     |> limit(^limit)
     |> Repo.all()
-    |> Enum.map(&materialize/1)
+    |> materialize_many()
   end
 
   @doc "Loads one branch version and its immutable content without leaking raw schemas to callers."
@@ -131,6 +131,47 @@ defmodule GroupherServer.CMS.Docs.BranchVersions do
     extension = Repo.get_by!(DocRevision, revision_id: revision.id)
     body = Repo.get!(ArticleBodySnapshot, revision.body_snapshot_id)
 
+    materialized(version, revision, extension, body)
+  end
+
+  defp materialize_many([]), do: []
+
+  defp materialize_many(versions) do
+    revision_ids = Enum.map(versions, & &1.revision_id)
+
+    revisions_by_id =
+      ArticleRevision
+      |> where([revision], revision.id in ^revision_ids)
+      |> Repo.all()
+      |> Map.new(&{&1.id, &1})
+
+    extensions_by_revision_id =
+      DocRevision
+      |> where([revision], revision.revision_id in ^revision_ids)
+      |> Repo.all()
+      |> Map.new(&{&1.revision_id, &1})
+
+    body_ids =
+      revisions_by_id
+      |> Map.values()
+      |> Enum.map(& &1.body_snapshot_id)
+
+    bodies_by_id =
+      ArticleBodySnapshot
+      |> where([body], body.id in ^body_ids)
+      |> Repo.all()
+      |> Map.new(&{&1.id, &1})
+
+    Enum.map(versions, fn version ->
+      revision = Map.fetch!(revisions_by_id, version.revision_id)
+      extension = Map.fetch!(extensions_by_revision_id, revision.id)
+      body = Map.fetch!(bodies_by_id, revision.body_snapshot_id)
+
+      materialized(version, revision, extension, body)
+    end)
+  end
+
+  defp materialized(version, revision, extension, body) do
     %{
       version: version,
       revision: revision,

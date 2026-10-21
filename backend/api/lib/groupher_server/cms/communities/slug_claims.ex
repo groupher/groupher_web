@@ -22,8 +22,9 @@ defmodule GroupherServer.CMS.Communities.SlugClaims do
 
   ## Examples
 
+      expires_at = DateTime.utc_now(:second)
       Ecto.Multi.new()
-      |> CMS.Communities.SlugClaims.insert_application(:claim, :application, expiry)
+      |> CMS.Communities.SlugClaims.insert_application(:claim, :application, expires_at)
       #=> %Ecto.Multi{}
 
   """
@@ -43,6 +44,7 @@ defmodule GroupherServer.CMS.Communities.SlugClaims do
     end)
   end
 
+  @doc "Adds a Multi step that releases all active claims owned by an application."
   @spec release_application(Multi.t(), atom(), CommunityApplication.t(), DateTime.t()) ::
           Multi.t()
   def release_application(multi, name, %CommunityApplication{} = application, now) do
@@ -56,6 +58,7 @@ defmodule GroupherServer.CMS.Communities.SlugClaims do
     )
   end
 
+  @doc "Adds a Multi step that removes the expiry from an active application claim."
   @spec clear_expiry(Multi.t(), atom(), CommunityApplication.t(), DateTime.t()) :: Multi.t()
   def clear_expiry(multi, name, %CommunityApplication{} = application, now) do
     Multi.update_all(
@@ -68,6 +71,7 @@ defmodule GroupherServer.CMS.Communities.SlugClaims do
     )
   end
 
+  @doc "Adds a Multi step that promotes an application claim to its Community."
   @spec promote(Multi.t(), atom(), CommunityApplication.t(), atom(), DateTime.t()) :: Multi.t()
   def promote(multi, name, %CommunityApplication{} = application, community_key, now) do
     Multi.update_all(
@@ -92,6 +96,7 @@ defmodule GroupherServer.CMS.Communities.SlugClaims do
     )
   end
 
+  @doc "Returns the active slug claim for an application, if one exists."
   @spec claim_for_application(CommunityApplication.t()) :: CommunitySlugClaim.t() | nil
   def claim_for_application(%CommunityApplication{id: application_id}) do
     Repo.one(
@@ -101,18 +106,22 @@ defmodule GroupherServer.CMS.Communities.SlugClaims do
     )
   end
 
-  @spec release_expired(DateTime.t()) :: {non_neg_integer(), nil}
+  @doc "Releases expired claims for terminal applications and returns the row count."
+  @spec release_expired(DateTime.t()) :: {:ok, non_neg_integer()} | {:error, term()}
   def release_expired(%DateTime{} = now) do
     terminal_statuses = ~w(created rejected cancelled expired creation_failed)a
 
-    from(claim in CommunitySlugClaim,
-      join: application in CommunityApplication,
-      on: application.id == claim.application_id,
-      where:
-        claim.status == :application and is_nil(claim.released_at) and
-          application.status in ^terminal_statuses and
-          (is_nil(claim.expires_at) or claim.expires_at <= ^now)
-    )
-    |> Repo.update_all(set: [released_at: now, expires_at: nil, updated_at: now])
+    {count, _} =
+      from(claim in CommunitySlugClaim,
+        join: application in CommunityApplication,
+        on: application.id == claim.application_id,
+        where:
+          claim.status == :application and is_nil(claim.released_at) and
+            application.status in ^terminal_statuses and
+            (is_nil(claim.expires_at) or claim.expires_at <= ^now)
+      )
+      |> Repo.update_all(set: [released_at: now, expires_at: nil, updated_at: now])
+
+    {:ok, count}
   end
 end

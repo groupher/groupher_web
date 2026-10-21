@@ -18,10 +18,10 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
   alias GroupherServer.{Accounts, CMS, Repo}
   alias Accounts.Model.User
   alias CMS.Assets.{Commands.ReplaceUse, Workflow, Query}
+  alias CMS.Articles.Lifecycle, as: ArticleLifecycle
+  alias CMS.Communities.Lifecycle, as: CommunityLifecycle
 
   alias CMS.Model.{
-    Article,
-    ArticleDraft,
     ArticlePublic,
     AssetReplacementPlan,
     AssetWorkflowRun,
@@ -66,13 +66,14 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
   end
 
   @doc "Creates a reviewable plan from current usage facts."
-  def create(%Community{id: community_id} = community, attrs, %User{id: user_id} = user)
+  def create(%Community{id: community_id}, attrs, %User{id: user_id} = user)
       when is_map(attrs) do
     with {:ok, from_asset} <- active_asset(community_id, value(attrs, :from_asset_id)),
          {:ok, to_asset} <- active_asset(community_id, value(attrs, :to_asset_id)),
          false <- from_asset.id == to_asset.id,
-         {:ok, usages} <- Query.usages(%Community{id: community_id}, from_asset.id, user) do
-      items = build_items(usages, community, user, from_asset, to_asset)
+         {:ok, usages} <-
+           Query.replacement_usages(%Community{id: community_id}, from_asset.id, user) do
+      items = build_items(usages, from_asset, to_asset)
 
       %AssetReplacementPlan{}
       |> AssetReplacementPlan.changeset(%{
@@ -233,7 +234,9 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
              :historical_only,
              "historical_only",
              :permission_denied,
-             "permission_denied"
+             "permission_denied",
+             :unsupported,
+             "unsupported"
            ] ->
         with {:ok, :pass} <- skip_item_steps(item, article_id, steps, owner) do
           result = %{reason: to_string(decision)}
@@ -597,42 +600,47 @@ defmodule GroupherServer.CMS.Assets.ReplacementPlan do
   defp json_safe(value) when is_atom(value), do: Atom.to_string(value)
   defp json_safe(value), do: value
 
-  defp build_items(usages, community, user, from_asset, to_asset) do
+  defp build_items(usages, from_asset, to_asset) do
     usages
     |> Enum.group_by(& &1.article_id)
     |> Enum.map(fn {article_id, refs} ->
-      draft = Repo.get_by(ArticleDraft, article_id: article_id)
-      public = Repo.get_by(ArticlePublic, article_id: article_id)
-      lifecycle = Enum.map(refs, & &1.lifecycle)
-      decision = decision(Repo.get(Article, article_id), draft, lifecycle, community, user)
+      snapshot = hd(refs)
 
       %{
         article_id: article_id,
-        observed_live_revision_id: public && public.revision_id,
-        observed_draft_version: draft && draft.version,
+        observed_live_revision_id: snapshot.observed_live_revision_id,
+        observed_draft_version: snapshot.observed_draft_version,
         usage_locators: Enum.map(refs, &locator/1),
         from_asset_ref: from_asset.public_ref,
         to_asset_ref: to_asset.public_ref,
-        decision: decision,
+        decision: decision(snapshot, refs),
         result: nil
       }
     end)
   end
 
-  defp decision(article, nil, lifecycle, community, user) do
-    if lifecycle != [] and Enum.all?(lifecycle, &(&1 in [:historical, :trashed])) do
-      "historical_only"
-    else
-      decision(article, %ArticleDraft{}, lifecycle, community, user)
+  defp decision(%{thread: :doc}, _refs), do: "unsupported"
+
+  defp decision(snapshot, refs) do
+    cond do
+      is_nil(snapshot.observed_draft_version) and
+          Enum.all?(refs, &(&1.lifecycle in [:historical, :trashed])) ->
+        "historical_only"
+
+      editable_snapshot?(snapshot) ->
+        "editable"
+
+      true ->
+        "permission_denied"
     end
   end
 
-  defp decision(article, _draft, _lifecycle, community, user) do
-    case CMS.Gate.with_community_check(user, :edit, community, article, fn _ ->
-           {:ok, :pass}
-         end) do
-      {:ok, _} -> "editable"
-      _ -> "permission_denied"
+  defp editable_snapshot?(snapshot) do
+    with {:ok, true} <- ArticleLifecycle.editable?(snapshot.resource_lifecycle),
+         {:ok, true} <- CommunityLifecycle.can_write(snapshot.community_lifecycle) do
+      true
+    else
+      _ -> false
     end
   end
 

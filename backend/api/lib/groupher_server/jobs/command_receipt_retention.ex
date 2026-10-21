@@ -10,7 +10,13 @@ defmodule GroupherServer.Jobs.CommandReceiptRetention do
   @batch_size 1_000
   @max_batches 100
 
-  @doc false
+  @doc """
+  Prunes expired command receipts in bounded batches and emits retention telemetry.
+
+  ## Examples
+
+      perform(%Oban.Job{})
+  """
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
     processed = prune_batches(0, 0)

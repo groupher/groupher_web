@@ -10,7 +10,13 @@ defmodule GroupherServer.Jobs.ArticleInsightsAggregation do
     max_attempts: GroupherServer.Jobs.Config.max_attempts(:article_insights_aggregation),
     unique: GroupherServer.Jobs.Config.unique(:article_insights_aggregation)
 
-  @doc false
+  @doc """
+  Drains one bounded Article Insights batch and snoozes while more work remains.
+
+  ## Examples
+
+      perform(%Oban.Job{})
+  """
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
     case GroupherServer.Analysis.aggregator_drain() do

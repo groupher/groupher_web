@@ -27,11 +27,18 @@ defmodule GroupherServer.CMS.DocTree.Commands.MoveDocToDraft do
                      command_target,
                      command_params
                    ) do
-    gate(fn _target -> CMS.Gate.check_in_transaction(user, :manage_docs, community) end)
+    prepare(fn -> Publish.prepare_move_doc_to_draft(community, id, user, opts) end)
 
-    change(fn canonical_community ->
-      Publish.move_doc_to_draft(canonical_community, id, user, opts)
+    gate(fn %{article: article, branch: branch} = prepared ->
+      with {:ok, canonical_community} <-
+             CMS.Gate.check_in_transaction(user, :manage_docs, community),
+           {:ok, canonical_article} <-
+             CMS.Gate.check_in_transaction(user, :edit, article, canonical_community, branch.id) do
+        {:ok, %{prepared | community: canonical_community, article: canonical_article}}
+      end
     end)
+
+    change(fn prepared -> Publish.move_doc_to_draft_after_gate(prepared) end)
 
     confirm(fn draft -> {:ok, %Confirmation{data: %{"article_id" => draft.article_id}}} end)
 
@@ -42,8 +49,18 @@ defmodule GroupherServer.CMS.DocTree.Commands.MoveDocToDraft do
 
   @pipeline operation: :doc_move_to_draft_write, target: :community, params: [:id, :opts]
   direct_pipeline run_direct(community, id, user, opts) do
-    gate(fn candidate -> CMS.Gate.check_in_transaction(user, :manage_docs, candidate) end)
-    change(fn canonical -> Publish.move_doc_to_draft(canonical, id, user, opts) end)
+    prepare(fn -> Publish.prepare_move_doc_to_draft(community, id, user, opts) end)
+
+    gate(fn %{article: article, branch: branch} = prepared ->
+      with {:ok, canonical_community} <-
+             CMS.Gate.check_in_transaction(user, :manage_docs, community),
+           {:ok, canonical_article} <-
+             CMS.Gate.check_in_transaction(user, :edit, article, canonical_community, branch.id) do
+        {:ok, %{prepared | community: canonical_community, article: canonical_article}}
+      end
+    end)
+
+    change(fn prepared -> Publish.move_doc_to_draft_after_gate(prepared) end)
   end
 
   def execute(community, id, user, opts) do

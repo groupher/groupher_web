@@ -328,6 +328,25 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
            )
   end
 
+  test "scoped Trash permanent delete uses the Article receipt command" do
+    {community, post, _attrs, user} = mock_article(:post)
+    assert {:ok, item} = CMS.Articles.trash(post, user)
+    action = Repo.get!(TrashAction, item.trash_action_id)
+    command_id = Ecto.UUID.generate()
+
+    assert {:ok, %{done: true, command_id: ^command_id}} =
+             CMS.Trash.permanently_delete_action_in_scope(
+               action.hash_id,
+               community.id,
+               :post,
+               user,
+               command_id: command_id
+             )
+
+    refute Repo.get_by(TrashedArticle, hash_id: item.hash_id)
+    refute Repo.get(TrashAction, item.trash_action_id)
+  end
+
   test "standalone Doc Trash is rejected so Tree placement cannot become dangling" do
     {_community, doc, _attrs, user} = mock_article(:doc)
 

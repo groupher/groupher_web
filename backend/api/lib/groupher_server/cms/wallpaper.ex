@@ -56,5 +56,6 @@ defmodule GroupherServer.CMS.Wallpaper do
   end
 
   @doc "Deletes expired receipts, Snapshots, and unreferenced generated assets."
+  @spec reconcile_lifecycle() :: {:ok, map()} | {:error, term()}
   def reconcile_lifecycle, do: Retention.reconcile_lifecycle()
 end

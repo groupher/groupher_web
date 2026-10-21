@@ -351,6 +351,11 @@ defmodule GroupherServer.CMS.DocTree do
     Commands.RestoreTrashItem.execute(community, id, with_actor(args, actor))
   end
 
+  @doc "Permanently deletes one Trash action through the internal maintenance entry."
+  def permanently_delete_trash_item_internal(action_or_ref, opts \\ []) do
+    Commands.PermanentlyDeleteTrashItem.execute_internal(action_or_ref, opts)
+  end
+
   defp with_actor(attrs, %User{} = actor) do
     attrs |> Map.put(:actor_id, actor.id) |> Map.put(:actor, actor)
   end

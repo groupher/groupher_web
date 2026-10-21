@@ -10,7 +10,13 @@ defmodule GroupherServer.Jobs.ArticleInsightsRetention do
     max_attempts: GroupherServer.Jobs.Config.max_attempts(:article_insights_retention),
     unique: GroupherServer.Jobs.Config.unique(:article_insights_retention)
 
-  @doc false
+  @doc """
+  Applies one bounded Article Insights retention batch and snoozes when more work remains.
+
+  ## Examples
+
+      perform(%Oban.Job{})
+  """
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
     case GroupherServer.Analysis.maintenance_delete_expired() do

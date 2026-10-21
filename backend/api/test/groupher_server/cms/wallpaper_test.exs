@@ -27,6 +27,11 @@ defmodule GroupherServer.CMS.WallpaperTest do
            }
   end
 
+  test "lifecycle reconciliation returns a typed empty summary" do
+    assert {:ok, %{orphan_assets: 0, receipts: 0, snapshots: 0}} =
+             Wallpaper.reconcile_lifecycle()
+  end
+
   test "published wallpaper defaults do not contain the legacy static revision" do
     refute Map.has_key?(Fields.wallpaper_default(), :static_revision)
   end

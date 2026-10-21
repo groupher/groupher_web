@@ -58,7 +58,6 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
 
   import Ecto.Query, warn: false
   import Helper.Utils, only: [done: 1]
-  import ShortMaps
 
   alias GroupherServer.{CMS, Repo}
 
@@ -75,6 +74,7 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
 
   alias CMS.Model.{Article, ArtimentMention, Comment, CommentBody}
   alias Helper.{ORM, T}
+  alias Helper.ORM.Pagi.{Order, Page, Params}
 
   @threads Config.threads()
   @mention_types Config.mention_types()
@@ -300,11 +300,14 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
   def mentions(mentioner_type, mentioner_id, %{page: page, size: size} = filter) do
     normalized_type = normalize_type(mentioner_type)
 
-    ArtimentMention
-    |> mentioner_list_query(normalized_type, mentioner_id)
-    |> QueryBuilder.filter_pack(Map.merge(filter, %{sort: :asc_inserted}))
-    |> ORM.paginator(~m(page size)a)
-    |> done()
+    query =
+      ArtimentMention
+      |> mentioner_list_query(normalized_type, mentioner_id)
+      |> QueryBuilder.filter_pack(Map.delete(Map.merge(filter, %{sort: :asc_inserted}), :sort))
+
+    with {:ok, result} <- page_mentions(query, page, size) do
+      done(Page.to_legacy(result))
+    end
   end
 
   @doc "Lists incoming Mention facts for one internal target."
@@ -322,12 +325,24 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
         {:error, ErrorCat.custom("invalid mentioned type")}
 
       normalized_type ->
-        ArtimentMention
-        |> mentioned_list_query(normalized_type, mentioned_id)
-        |> QueryBuilder.filter_pack(Map.merge(filter, %{sort: :asc_inserted}))
-        |> ORM.paginator(~m(page size)a)
-        |> done()
+        query =
+          ArtimentMention
+          |> mentioned_list_query(normalized_type, mentioned_id)
+          |> QueryBuilder.filter_pack(Map.delete(Map.merge(filter, %{sort: :asc_inserted}), :sort))
+
+        with {:ok, result} <- page_mentions(query, page, size) do
+          done(Page.to_legacy(result))
+        end
     end
+  end
+
+  defp page_mentions(query, page, size) do
+    ORM.pagi(
+      query,
+      %Params.Offset{page: page, size: size},
+      for: ArtimentMention,
+      order: %Order{fields: [:inserted_at, :id], directions: [:asc, :asc], cursor_fields: [:inserted_at, :id]}
+    )
   end
 
   defp mentioner_list_query(query, type, article_id) when type in @threads do

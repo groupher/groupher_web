@@ -77,6 +77,7 @@ defmodule GroupherServer.Test.Analysis.MaintenanceTest do
       aggregated_at: nil
     })
 
+    assert %{pending: 1, failed: 0} = Maintenance.metrics()
     assert %{metric_events: 1, hourly_metrics: 1, more?: true} = Maintenance.delete_expired()
     assert %{metric_events: 1, hourly_metrics: 1, more?: false} = Maintenance.delete_expired()
     assert Repo.aggregate(MetricEvent, :count) == 1

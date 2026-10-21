@@ -17,7 +17,18 @@ defmodule GroupherServer.Jobs.SnapshotRefresh do
 
   alias GroupherServer.CMS
 
-  @doc false
+  @doc """
+  Refreshes one typed snapshot payload through the owning CMS facade.
+
+  ## Examples
+
+      perform(%Oban.Job{args: %{
+        "type" => "article",
+        "version" => 1,
+        "refs" => %{"thread" => "post", "ids" => [Ecto.UUID.generate()]},
+        "opts" => %{}
+      }})
+  """
   @impl Oban.Worker
   def perform(%Oban.Job{
         args: %{"type" => type, "version" => 1, "refs" => refs, "opts" => opts}

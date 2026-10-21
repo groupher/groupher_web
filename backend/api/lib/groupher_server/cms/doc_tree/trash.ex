@@ -4,7 +4,10 @@ defmodule GroupherServer.CMS.DocTree.Trash do
 
   One list item represents one user action, even when a deleted Tab/Group owns
   many Tree nodes and Doc Articles. Restore replays draft/public placement
-  snapshots and removes all Article memberships atomically.
+  snapshots and removes all Article memberships atomically. Permanent deletion
+  keeps its transaction and lock ownership here; user calls reach it through
+  `CMS.DocTree.Commands.PermanentlyDeleteTrashItem`, while the purge scheduler
+  uses that Command's explicitly internal direct pipeline.
 
   Business position:
 

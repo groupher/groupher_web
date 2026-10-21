@@ -271,6 +271,53 @@ defmodule GroupherServer.Test.CMS.DocTree.TrashAction do
     assert {:ok, %{done: true}} = CMS.Trash.permanently_delete_action(action, user)
   end
 
+  test "permanently deleting a Docs Tree Trash action uses the receipt command" do
+    {:ok, user} = db_insert(:user)
+    {:ok, community} = empty_docs_community(user)
+    {:ok, state} = ORM.find_by(DocsSiteState, community_id: community.id)
+
+    {:ok, group} =
+      CMS.DocTree.create_group_internal(community, %{
+        parent_node_id: root_doc_tab_node_id(community),
+        title: "References",
+        slug: "references",
+        base_revision: state.tree_lock_version
+      })
+
+    {:ok, link} =
+      CMS.DocTree.create_link_internal(community, %{
+        parent_node_id: group.node.id,
+        title: "Reference",
+        slug: "reference",
+        href: "https://example.com/reference",
+        base_revision: group.revision
+      })
+
+    assert {:ok, _deleted} =
+             CMS.DocTree.delete_node_internal(community, link.node.id, %{
+               base_revision: link.revision,
+               actor_id: user.id
+             })
+
+    assert {:ok, [trash_item]} = CMS.DocTree.trash_items(community, actor: user)
+    action = Repo.get_by!(TrashAction, hash_id: trash_item.id)
+    assert action.community_id == community.id
+    assert {:ok, :doc} = CMS.Trash.action_thread(action)
+    command_id = Ecto.UUID.generate()
+
+    assert {:ok, %{done: true, command_id: ^command_id}} =
+             CMS.Trash.permanently_delete_action_in_scope(
+               trash_item.id,
+               community.id,
+               :doc,
+               user,
+               command_id: command_id
+             )
+
+    refute Repo.get(TrashAction, action.id)
+    refute Repo.get_by(TrashedDocTreeNode, trash_action_id: action.id)
+  end
+
   test "duplicating a Page creates an independent Doc" do
     {:ok, user} = db_insert(:user)
     {:ok, community} = empty_docs_community(user)

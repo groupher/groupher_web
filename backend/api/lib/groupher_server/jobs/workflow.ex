@@ -67,7 +67,7 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.Workflow.public_cache_purge_job(...)
+      Workflow.public_cache_purge_job(Ecto.UUID.generate())
   """
   @spec public_cache_purge_job(Ecto.UUID.t()) :: Ecto.Changeset.t()
   def public_cache_purge_job(invalidation_id) do
@@ -264,7 +264,7 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.Workflow.comments_new(...)
+      Workflow.comments_new(%{"type" => "notify_comment", "version" => 1, "payload" => %{}})
   """
   defdelegate comments_new(arg1), to: GroupherServer.Jobs.Comments, as: :new
 
@@ -273,7 +273,7 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.Workflow.comments_new(...)
+      Workflow.comments_new(%{"type" => "notify_comment"}, [queue: :default])
   """
   defdelegate comments_new(arg1, arg2), to: GroupherServer.Jobs.Comments, as: :new
 
@@ -282,7 +282,7 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.Workflow.config_skip_enqueue?(...)
+      Workflow.config_skip_enqueue?()
   """
   defdelegate config_skip_enqueue?(), to: GroupherServer.Jobs.Config, as: :skip_enqueue?
 
@@ -291,7 +291,7 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.Workflow.public_cache_purge_new(...)
+      Workflow.public_cache_purge_new(%{invalidation_id: Ecto.UUID.generate()})
   """
   defdelegate public_cache_purge_new(arg1), to: GroupherServer.Jobs.PublicCachePurge, as: :new
 
@@ -300,7 +300,7 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.Workflow.public_cache_purge_new(...)
+      Workflow.public_cache_purge_new(%{invalidation_id: Ecto.UUID.generate()}, [queue: :public_cache])
   """
   defdelegate public_cache_purge_new(arg1, arg2),
     to: GroupherServer.Jobs.PublicCachePurge,
@@ -311,7 +311,7 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.Workflow.search_index_new(...)
+      Workflow.search_index_new(%{action: "upsert_article", thread: "post", ref: Ecto.UUID.generate()})
   """
   defdelegate search_index_new(arg1), to: GroupherServer.Jobs.SearchIndex, as: :new
 
@@ -320,7 +320,7 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.Workflow.search_index_new(...)
+      Workflow.search_index_new(%{action: "upsert_article"}, [queue: :search])
   """
   defdelegate search_index_new(arg1, arg2), to: GroupherServer.Jobs.SearchIndex, as: :new
 
@@ -329,7 +329,7 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.Workflow.snapshot_refresh_new(...)
+      Workflow.snapshot_refresh_new(%{type: "article", version: 1, refs: %{}})
   """
   defdelegate snapshot_refresh_new(arg1), to: GroupherServer.Jobs.SnapshotRefresh, as: :new
 
@@ -338,7 +338,7 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      iex> GroupherServer.Jobs.Workflow.snapshot_refresh_new(...)
+      Workflow.snapshot_refresh_new(%{type: "article"}, [queue: :snapshot])
   """
   defdelegate snapshot_refresh_new(arg1, arg2), to: GroupherServer.Jobs.SnapshotRefresh, as: :new
 end

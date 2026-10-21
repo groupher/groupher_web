@@ -179,13 +179,13 @@ defmodule GroupherServer.CMS.Communities do
     UpdateCommand.execute_workflow(community, args, :operations, {:workflow, workflow_ref})
   end
 
-  @doc "Creates from application through the `Communities` write boundary."
+  @doc "Creates a Community from an approved Application through its durable workflow owner."
   @spec create_from_application(String.t(), String.t()) :: T.domain_res(term())
   def create_from_application(application_ref, operation_ref) do
     Creation.create_from_application(application_ref, operation_ref)
   end
 
-  @doc "Runs `run_setup` through the public `Communities` boundary."
+  @doc "Runs retryable Community setup through its durable workflow owner."
   @spec run_setup(String.t(), String.t()) :: T.domain_res(term())
   def run_setup(community_ref, operation_ref), do: Setup.run(community_ref, operation_ref)
 
@@ -246,7 +246,7 @@ defmodule GroupherServer.CMS.Communities do
   def destroy(community_ref, opts \\ []), do: Lifecycle.destroy(community_ref, opts)
 
   @doc "Runs `release_expired_slug_claims` through the public `Communities` boundary."
-  @spec release_expired_slug_claims(DateTime.t()) :: {non_neg_integer(), nil}
+  @spec release_expired_slug_claims(DateTime.t()) :: {:ok, non_neg_integer()} | {:error, term()}
   def release_expired_slug_claims(now), do: SlugClaims.release_expired(now)
 
   # Members

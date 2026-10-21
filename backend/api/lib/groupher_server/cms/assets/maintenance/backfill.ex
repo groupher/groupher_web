@@ -15,21 +15,34 @@ defmodule GroupherServer.CMS.Assets.Backfill do
   alias CMS.Assets.Completeness
   alias CMS.Model.{ArticleAssetRef, Community}
 
-  @doc "Scans the new ownership table and writes a completion receipt only when it is valid."
-  def run(%Community{id: community_id}, opts \\ []) do
-    case Repo.transaction(fn ->
-           {:ok, _} = Completeness.lock_scope(community_id)
-           {:ok, _pending} = Completeness.mark_pending(community_id)
+  @doc """
+  Scans the ownership table and writes a completion receipt only when it is valid.
 
-           if invalid_ref_exists?(community_id) do
-             Repo.rollback(CMS.Assets.ErrorCat.custom("asset usage ownership is incomplete"))
-           else
-             {:ok, receipt} = Completeness.complete(community_id, opts)
-             receipt
-           end
-         end) do
-      {:ok, receipt} -> {:ok, receipt}
-      {:error, reason} -> {:error, reason}
+  The scope is locked for the whole transaction. An invalid reference rolls back
+  the pending fence, so a later maintenance run can retry the same community.
+
+  ## Examples
+
+      Backfill.run(%Community{id: 1})
+      #=> {:ok, receipt} | {:error, reason}
+  """
+  @spec run(Community.t(), keyword()) :: {:ok, term()} | {:error, term()}
+  def run(%Community{id: community_id}, opts \\ []) do
+    Repo.transact_result(fn ->
+      with {:ok, _} <- Completeness.lock_scope(community_id),
+           {:ok, _pending} <- Completeness.mark_pending(community_id),
+           {:ok, :pass} <- valid_refs(community_id),
+           {:ok, receipt} <- Completeness.complete(community_id, opts) do
+        {:ok, receipt}
+      end
+    end)
+  end
+
+  defp valid_refs(community_id) do
+    if invalid_ref_exists?(community_id) do
+      {:error, CMS.Assets.ErrorCat.custom("asset usage ownership is incomplete")}
+    else
+      {:ok, :pass}
     end
   end
 

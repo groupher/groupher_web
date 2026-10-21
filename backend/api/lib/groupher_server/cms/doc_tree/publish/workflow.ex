@@ -255,6 +255,20 @@ defmodule GroupherServer.CMS.DocTree.Publish.Workflow do
     end
   end
 
+  @doc "Prepares one move for a Command-owned Gate and transaction."
+  @spec prepare_move_doc_to_draft(Community.t(), T.id(), User.t(), keyword() | map()) ::
+          {:ok, map()} | {:error, term()}
+  def prepare_move_doc_to_draft(%Community{} = community, node_id, %User{} = user, opts \\ []) do
+    with {:ok, branch} <- Branch.resolve(community, opts) do
+      DocPublisher.prepare_move_doc_to_draft(community, branch, node_id, user)
+    end
+  end
+
+  @doc "Persists one move after the Command-owned Gate stage admitted it."
+  @spec move_doc_to_draft_after_gate(map()) :: T.domain_res(CMS.Model.DocDraft.t())
+  def move_doc_to_draft_after_gate(prepared),
+    do: DocPublisher.move_doc_to_draft_after_gate(prepared)
+
   @doc "Creates missing article drafts for every published Page in one Tab/Group subtree."
   @spec move_subtree_to_draft(Community.t(), T.id(), User.t(), keyword() | map()) ::
           T.domain_res(map())

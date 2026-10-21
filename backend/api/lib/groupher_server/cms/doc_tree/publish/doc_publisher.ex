@@ -17,6 +17,12 @@ defmodule GroupherServer.CMS.DocTree.Publish.DocPublisher do
 
   This module owns article-content publish work. Tree-only staged events are
   projected by `PublicProjection`, and release history is recorded by `Release`.
+
+  The Command move path uses `prepare_move_doc_to_draft/4` plus
+  `move_doc_to_draft_after_gate/1`, so admission joins the caller-owned pipeline
+  transaction and this module only owns the Draft persistence. The legacy
+  `move_doc_to_draft/4` entry remains an explicit transaction-owning workflow for
+  subtree callers and is tracked separately from the Command path.
   """
 
   require GroupherServer.CMS.DocTree.Const
@@ -126,6 +132,40 @@ defmodule GroupherServer.CMS.DocTree.Publish.DocPublisher do
     else
       nil -> {:error, ErrorCat.custom("Doc Article not found")}
       error -> error
+    end
+  end
+
+  @doc "Prepares the branch-scoped move so a Command can admit it in its Gate stage."
+  @spec prepare_move_doc_to_draft(Community.t(), term(), T.id(), User.t()) ::
+          {:ok, map()} | {:error, term()}
+  def prepare_move_doc_to_draft(%Community{} = community, branch, node_id, %User{} = user) do
+    with {:ok, draft_node} <- find_draft_node(community, branch, node_id),
+         %Article{thread: :doc} = article <- Repo.get(Article, draft_node.doc_id),
+         %ArticleBinding{} <-
+           Repo.get_by(ArticleBinding, article_id: article.id, community_id: community.id) do
+      {:ok,
+       %{
+         community: community,
+         branch: branch,
+         node_id: node_id,
+         article: article,
+         user: user
+       }}
+    else
+      nil -> {:error, ErrorCat.custom("Doc Article not found")}
+      error -> error
+    end
+  end
+
+  @doc "Persists a prepared move after the caller-owned Gate transaction admitted it."
+  @spec move_doc_to_draft_after_gate(map()) :: T.domain_res(CMS.Model.DocDraft.t())
+  def move_doc_to_draft_after_gate(%{
+        branch: branch,
+        article: %Article{} = canonical,
+        user: %User{} = user
+      }) do
+    with {:ok, author} <- CMS.Articles.Persist.ensure_author_exists(user) do
+      Store.ensure_from_public(canonical, author, branch_id: branch.id)
     end
   end
 

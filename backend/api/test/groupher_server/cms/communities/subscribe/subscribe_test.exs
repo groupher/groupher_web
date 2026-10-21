@@ -10,6 +10,14 @@ defmodule GroupherServer.Test.CMS.Communities.Subscribe do
   end
 
   describe "[cms community subscribe]" do
+    test "subscription query reports membership without mutating state", ~m(user community)a do
+      refute CMS.Communities.Subscriptions.subscribed?(community, user)
+
+      {:ok, _record} = CMS.Communities.Subscriptions.Setup.subscribe(community, user)
+
+      assert CMS.Communities.Subscriptions.subscribed?(community, user)
+    end
+
     test "user can subscribe a community", ~m(user community)a do
       {:ok, record} = CMS.Communities.Subscriptions.Setup.subscribe(community, user)
       assert community.id == record.id

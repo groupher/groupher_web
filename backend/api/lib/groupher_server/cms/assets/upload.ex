@@ -39,7 +39,7 @@ defmodule GroupherServer.CMS.Assets.Upload do
   ## Examples
 
       Upload.create_intent(community, %{filename: "hero.png", mime_type: "image/png", size_bytes: 1024}, user)
-      #=> {:ok, %{upload_ref: "upload_...", asset_public_ref: "asset_...", capability: "..."}}
+      # returns an intent map containing `upload_ref`, `asset_public_ref`, `capability`, and `expires_at`
 
   """
   @spec create_intent(Community.t(), map(), User.t()) :: T.domain_res(map())

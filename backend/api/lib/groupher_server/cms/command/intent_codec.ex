@@ -120,7 +120,9 @@ defmodule GroupherServer.CMS.Command.IntentCodec do
     doc_tree_delete_node: {:fields, %{"target_id" => :raw, "args" => :digest_each}},
     doc_tree_duplicate_node: {:fields, %{"target_id" => :raw, "args" => :digest_each}},
     doc_tree_move_node: {:fields, %{"target_id" => :raw, "args" => :digest_each}},
-    doc_tree_restore_trash_item: {:fields, %{"id" => :raw, "args" => :digest_each}}
+    doc_tree_restore_trash_item: {:fields, %{"id" => :raw, "args" => :digest_each}},
+    doc_tree_permanently_delete_trash_item:
+      {:fields, %{"action_ref" => :raw, "opts" => :digest_each}}
   }
 
   @doc "Encodes params using the closed policy for one operation tag."

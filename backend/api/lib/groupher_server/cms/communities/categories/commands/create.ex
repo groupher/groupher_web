@@ -40,7 +40,8 @@ defmodule GroupherServer.CMS.Communities.Categories.Commands.Create do
              attrs
              |> Map.drop([:community, "community"])
              |> Map.update(:slug, nil, &Slug.normalize/1),
-           {:ok, %Category{} = category} <- Persist.insert_category(attrs, canonical, author.id) do
+           {:ok, %Category{} = category} <- Persist.insert_category(attrs, canonical, author.id),
+           {:ok, _binding} <- Persist.set_category(canonical, category) do
         {:ok, category}
       end
     end)
