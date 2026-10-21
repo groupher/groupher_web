@@ -9,10 +9,10 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Emotion do
         -> Interaction State in the same transaction
   """
 
-  import Ecto.Query
-
   use GroupherServer.CommandPipeline,
     adapter: GroupherServer.CMS.CommandPipelineAdapter
+
+  import Ecto.Query
 
   alias GroupherServer.{Accounts, CMS, Repo}
 

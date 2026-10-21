@@ -314,7 +314,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{filter: %{}},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 30}
              )
 
     refute Enum.any?(result.entries, &(&1.action == :moderation_review_started))
@@ -324,7 +324,7 @@ defmodule GroupherServer.Test.ActivityTest do
     {community, post, _attrs, _user} = mock_article(:post)
 
     assert {:ok, %{entries: entries, total_count: total_count}} =
-             Activity.list_article_logs(post, nil, %Helper.ORM.Pagi.Params.Offset{
+             Activity.list_article_logs(post, nil, %GroupherServer.Pagi.Params.Offset{
                page: 1,
                size: 20
              })
@@ -613,7 +613,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{filter: %{}},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 30}
              )
 
     assert result.page_info.total_count >= 2
@@ -654,7 +654,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{filter: %{resource_types: [:blog]}},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 30}
              )
 
     assert blog_result.page_info.total_count == 2
@@ -665,7 +665,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{filter: %{resource_types: [:press], actions: [:config_updated]}},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 30}
              )
 
     assert press_result.page_info.total_count == 1
@@ -676,7 +676,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{filter: %{}},
-               %Helper.ORM.Pagi.Params.Offset{page: 0, size: 30}
+               %GroupherServer.Pagi.Params.Offset{page: 0, size: 30}
              )
 
     assert {:error, _} =
@@ -684,7 +684,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{filter: %{size: 20}},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 30}
              )
   end
 
@@ -710,7 +710,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                selection,
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 100}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 100}
              )
 
     assert {:ok, first} =
@@ -718,7 +718,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                selection,
-               %Helper.ORM.Pagi.Params.Cursor{first: 2}
+               %GroupherServer.Pagi.Params.Cursor{first: 2}
              )
 
     assert first.page_info.has_next_page
@@ -730,7 +730,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                selection,
-               %Helper.ORM.Pagi.Params.Cursor{first: 100, after: cursor}
+               %GroupherServer.Pagi.Params.Cursor{first: 100, after: cursor}
              )
 
     refute rest.page_info.has_next_page
@@ -743,11 +743,11 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{filter: %{}},
-               %Helper.ORM.Pagi.Params.Cursor{first: 2, after: cursor}
+               %GroupherServer.Pagi.Params.Cursor{first: 2, after: cursor}
              )
 
     assert {:error, _} =
-             Activity.list_article_logs(post, nil, %Helper.ORM.Pagi.Params.Cursor{
+             Activity.list_article_logs(post, nil, %GroupherServer.Pagi.Params.Cursor{
                first: 2,
                after: cursor
              })
@@ -779,7 +779,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{filter: %{}},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 30}
              )
 
     assert {:ok, second_page} =
@@ -787,7 +787,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{filter: %{}},
-               %Helper.ORM.Pagi.Params.Offset{page: 2, size: 30}
+               %GroupherServer.Pagi.Params.Offset{page: 2, size: 30}
              )
 
     assert first_page.page_info.size == 30
@@ -881,7 +881,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{filter: %{}},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 30}
              )
 
     child = Enum.find(result.entries, &(&1.action == :setup_retried))
@@ -1005,7 +1005,7 @@ defmodule GroupherServer.Test.ActivityTest do
                  preset_key: "destructive_actions",
                  filter: %{actions: ["created"]}
                },
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 30}
              )
 
     assert result.entries == []
@@ -1019,7 +1019,7 @@ defmodule GroupherServer.Test.ActivityTest do
                community,
                manager,
                %{preset_key: "missing", filter: %{}},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 30}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 30}
              )
   end
 

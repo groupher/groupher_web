@@ -14,13 +14,15 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
   import GroupherServer.CMS.Artiment.Matcher
   import Helper.Utils, only: [done: 1]
 
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{CMS, ErrorCat, Repo}
 
   alias CMS.QueryBuilder
   alias CMS.Articles.Pagination
   alias CMS.Model.{AbuseReport, ArticleBinding, Comment}
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @threads CMS.Artiment.Config.threads()
 
@@ -115,7 +117,7 @@ defmodule GroupherServer.CMS.AbuseReports.Query do
         do_paged_reports(query, thread, filter, pagi)
 
       :error ->
-        {:error, GroupherServer.ErrorCat.custom("invalid Article id")}
+        {:error, ErrorCat.custom("invalid Article id")}
     end
   end
 

@@ -9,10 +9,10 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
         -> post-commit events and search metrics
   """
 
-  import Ecto.Query
-
   use GroupherServer.CommandPipeline,
     adapter: GroupherServer.CMS.CommandPipelineAdapter
+
+  import Ecto.Query
 
   alias GroupherServer.{Accounts, CMS, Repo}
 
@@ -197,7 +197,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Upvote do
       Reactions.Upvote.users(article, %{page: 1, size: 20})
 
   """
-  @spec users(struct(), Helper.ORM.Pagi.Params.t() | nil) :: {:ok, term()} | {:error, term()}
+  @spec users(struct(), GroupherServer.Pagi.Params.t() | nil) :: {:ok, term()} | {:error, term()}
   def users(article, pagi) do
     case Matcher.match_interaction(article) do
       {:ok, %{artiment: artiment}} when artiment in @article_threads ->

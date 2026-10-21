@@ -22,7 +22,7 @@ defmodule GroupherServer.Test.Accounts.ReactedContents do
         Accounts.paged_articles(
           user,
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       article_post = articles |> Map.get(:entries) |> List.last()
@@ -44,7 +44,7 @@ defmodule GroupherServer.Test.Accounts.ReactedContents do
         Accounts.paged_articles(
           user,
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert %Helper.ORM.Pagi.Page.Offset{} = articles
@@ -61,7 +61,7 @@ defmodule GroupherServer.Test.Accounts.ReactedContents do
                Accounts.paged_articles(
                  user,
                  Map.drop(filter, [:page, :size]),
-                 %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+                 %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
                )
     end
   end

@@ -255,7 +255,7 @@ defmodule GroupherServer.CMS.Press.Query do
         case CMS.Articles.Pagination.page(
                thread,
                %{community: community.slug},
-               %Helper.ORM.Pagi.Params.Offset{
+               %GroupherServer.Pagi.Params.Offset{
                  page: page,
                  size: @pagination_page_size,
                  config_revision: 0

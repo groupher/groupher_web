@@ -2,9 +2,10 @@ defmodule GroupherServer.Pagi.ConfigTest do
   use ExUnit.Case, async: true
 
   alias GroupherServer.ErrorCat
-  alias GroupherServer.Pagi.SchemaRegistry
-  alias GroupherServer.Pagi.Config, as: DashboardConfig
-  alias GroupherServer.Pagi.EffectiveConfig
+  alias GroupherServer.{Pagi}
+  alias Pagi.SchemaRegistry
+  alias Pagi.Config, as: DashboardConfig
+  alias Pagi.EffectiveConfig
 
   @pagination_default_fixture Path.expand(
                                 "../../../../../packages/contracts/fixtures/pagination-default-v1.json",

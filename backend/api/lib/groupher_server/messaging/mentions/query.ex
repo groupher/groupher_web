@@ -18,14 +18,16 @@ defmodule GroupherServer.Messaging.Mentions.Query do
   alias Messaging.Model.Mention
   alias Accounts.Model.User
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @doc """
   Returns one page of direct mentions for a user.
 
   ## Examples
 
-      Messaging.Mentions.Query.paged(user, %{read: false}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+      Messaging.Mentions.Query.paged(user, %{read: false}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
   @spec paged(User.t(), map(), Params.t() | nil) :: T.domain_res(T.paged_data())
   def paged(%User{} = user, filter, pagi) do

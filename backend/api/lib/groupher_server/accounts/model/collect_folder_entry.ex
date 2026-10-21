@@ -18,8 +18,9 @@ defmodule GroupherServer.Accounts.Model.CollectFolderEntry do
 
   import Ecto.Changeset
 
-  alias GroupherServer.Accounts.Model.CollectFolder
-  alias GroupherServer.CMS.Model.{Article, ArticleBinding}
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.Model.CollectFolder
+  alias CMS.Model.{Article, ArticleBinding}
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.account()

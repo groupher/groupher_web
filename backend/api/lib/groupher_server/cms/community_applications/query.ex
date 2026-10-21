@@ -11,12 +11,11 @@ defmodule GroupherServer.CMS.CommunityApplications.Query do
         -> Repo / Oban
   """
 
-  alias Helper.ORM
-  alias Helper.ORM.Pagi.Order
-
   import Ecto.Query, warn: false
 
   alias GroupherServer.{Accounts, CMS, FrontDesk, Repo}
+  alias Helper.ORM
+  alias Helper.ORM.Pagi.Order
 
   alias Accounts.Model.User
   alias CMS.Communities.ErrorCat

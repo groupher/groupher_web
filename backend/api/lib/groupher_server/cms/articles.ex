@@ -350,7 +350,7 @@ defmodule GroupherServer.CMS.Articles do
   end
 
   @doc "Lists current Article Trash memberships for a Community."
-  @spec list_trashed(Community.t(), map(), Helper.ORM.Pagi.Params.t() | nil) ::
+  @spec list_trashed(Community.t(), map(), GroupherServer.Pagi.Params.t() | nil) ::
           T.domain_res(map())
   def list_trashed(%Community{} = community, filter, pagi) do
     Trash.list(community, filter, pagi)

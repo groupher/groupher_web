@@ -72,9 +72,41 @@ defmodule GroupherServer.Accounts.Profiles do
     Projection.refresh_contributions(user_id, digest)
   end
 
-  @doc "Pages users with a required Pagi position and optional viewer."
+  @doc """
+  Pages public user profiles using the supplied Pagi position.
+
+  ## Examples
+
+      Accounts.Profiles.paged_users(%{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
   defdelegate paged_users(filter, pagi), to: Query
+
+  @doc """
+  Pages public user profiles with the requesting viewer's follow state.
+
+  ## Examples
+
+      Accounts.Profiles.paged_users(%{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
+  """
   defdelegate paged_users(filter, pagi, viewer), to: Query
+
+  @doc """
+  Returns the bounded default Community suggestions, including Home when available.
+
+  ## Examples
+
+      Accounts.Profiles.default_community_suggestions()
+  """
+  defdelegate default_community_suggestions(), to: Query
+
+  @doc """
+  Pages Communities the account actually subscribes to.
+
+  ## Examples
+
+      Accounts.Profiles.subscribed_communities(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
+  defdelegate subscribed_communities(user, filter, pagi), to: Query
 
   @doc """
   Updates editable profile attributes through the account write boundary.
@@ -234,10 +266,4 @@ defmodule GroupherServer.Accounts.Profiles do
   def unlink_oauth_identity(login, public_ref) do
     Commands.UnlinkOauthIdentity.run(login, public_ref)
   end
-
-  @doc "Returns bounded default Community suggestions."
-  defdelegate default_community_suggestions(), to: Query
-
-  @doc "Pages actual Community subscriptions using an explicit Pagi position."
-  defdelegate subscribed_communities(user, filter, pagi), to: Query
 end

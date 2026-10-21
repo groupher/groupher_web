@@ -6,7 +6,8 @@ defmodule GroupherServer.Pagi.Config do
   version, type, matrix, and size validation -> EffectiveConfig.
   """
 
-  alias GroupherServer.Pagi.{EffectiveConfig, ErrorCat, SchemaRegistry}
+  alias GroupherServer.{Pagi}
+  alias Pagi.{EffectiveConfig, ErrorCat, SchemaRegistry}
   alias Helper.ORM.Pagi.Config
 
   @allowed_keys [:api, :mode, :default_size, :max_size, :revision, :schema_version]
@@ -100,9 +101,11 @@ defmodule GroupherServer.Pagi.Config do
 
   defp validate_schema_version(%{schema_version: version})
        when is_integer(version) and version > 0 do
-    if version in SchemaRegistry.supported_schema_versions(),
-      do: {:ok, :pass},
-      else: {:error, :invalid_config}
+    if version in SchemaRegistry.supported_schema_versions() do
+      {:ok, :pass}
+    else
+      {:error, :invalid_config}
+    end
   end
 
   defp validate_schema_version(_attrs), do: {:error, :invalid_config}
@@ -119,23 +122,27 @@ defmodule GroupherServer.Pagi.Config do
 
   defp normalize_api(api) when api in [:offset, :cursor], do: {:ok, api}
 
-  defp normalize_api(api) when api in ["offset", "cursor"],
-    do: {:ok, String.to_existing_atom(api)}
+  defp normalize_api(api) when api in ["offset", "cursor"] do
+    {:ok, String.to_existing_atom(api)}
+  end
 
   defp normalize_api(api) when is_atom(api), do: {:error, :unsupported_api}
   defp normalize_api(_api), do: {:error, :invalid_config}
 
   defp normalize_mode(mode) when mode in [:page, :load_more, :infinite_scroll], do: {:ok, mode}
 
-  defp normalize_mode(mode) when mode in ["page", "load_more", "infinite_scroll"],
-    do: {:ok, String.to_existing_atom(mode)}
+  defp normalize_mode(mode) when mode in ["page", "load_more", "infinite_scroll"] do
+    {:ok, String.to_existing_atom(mode)}
+  end
 
   defp normalize_mode(_mode), do: {:error, :invalid_config}
 
   defp validate_combination(version, api, mode) do
-    if SchemaRegistry.valid_combination?(version, api, mode),
-      do: {:ok, :pass},
-      else: {:error, :invalid_config}
+    if SchemaRegistry.valid_combination?(version, api, mode) do
+      {:ok, :pass}
+    else
+      {:error, :invalid_config}
+    end
   end
 
   defp normalize_size(attrs, key, fallback) do
@@ -147,8 +154,10 @@ defmodule GroupherServer.Pagi.Config do
   end
 
   defp validate_sizes(default_size, max_size) do
-    if default_size <= max_size and max_size <= Config.platform_hard_max(),
-      do: {:ok, :pass},
-      else: {:error, :invalid_config}
+    if default_size <= max_size and max_size <= Config.platform_hard_max() do
+      {:ok, :pass}
+    else
+      {:error, :invalid_config}
+    end
   end
 end

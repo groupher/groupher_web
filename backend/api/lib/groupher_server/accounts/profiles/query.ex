@@ -50,14 +50,40 @@ defmodule GroupherServer.Accounts.Profiles.Query do
     end
   end
 
-  @doc "Pages users with a required Pagi position and optional viewer."
+  @doc """
+  Pages user identities with an explicit Pagi position.
+
+  ## Examples
+
+      Accounts.Profiles.Query.paged_users(%{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
   defdelegate paged_users(filter, pagi), to: List
+
+  @doc """
+  Pages user identities with the requesting viewer's follow state.
+
+  ## Examples
+
+      Accounts.Profiles.Query.paged_users(%{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
+  """
   defdelegate paged_users(filter, pagi, viewer), to: List
 
-  @doc "Returns bounded default Community suggestions."
+  @doc """
+  Returns a bounded set of default Community suggestions.
+
+  ## Examples
+
+      Accounts.Profiles.Query.default_community_suggestions()
+  """
   defdelegate default_community_suggestions(), to: List
 
-  @doc "Pages actual Community subscriptions using an explicit Pagi position."
+  @doc """
+  Pages Communities subscribed to by the supplied account.
+
+  ## Examples
+
+      Accounts.Profiles.Query.subscribed_communities(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
   defdelegate subscribed_communities(user, filter, pagi), to: List
 
   @doc """

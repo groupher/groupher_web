@@ -19,9 +19,17 @@ defmodule GroupherServer.Accounts.CollectFolders.Articles do
   alias Accounts.Model.{CollectFolder, CollectFolderEntry, User}
   alias CMS.Model.{Article, ArticleBinding, Community}
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
-  @doc "Pages folder entries after applying the current viewer's folder privacy."
+  @doc """
+  Pages folder entries after applying the current viewer's folder privacy.
+
+  ## Examples
+
+      Accounts.CollectFolders.Articles.paged(folder.id, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
+  """
   @spec paged(T.id(), map(), Params.t() | nil, User.t() | nil) :: tuple()
   def paged(folder_id, filter, pagi, viewer \\ nil) do
     with {:ok, folder} <- ORM.find(CollectFolder, folder_id) do

@@ -9,7 +9,8 @@ defmodule GroupherServer.CMS.Search.Community do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
-  alias GroupherServer.Accounts.Model.User
+  alias GroupherServer.{Accounts}
+  alias Accounts.Model.User
   alias CMS.Gate.Context.Scope.Community, as: CommunityContext
   alias CMS.Model.Community
 

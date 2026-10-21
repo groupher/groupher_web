@@ -62,7 +62,7 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, _folder} = CollectFolders.create(%{title: "test folder2"}, user)
 
       {:ok, result} =
-        CollectFolders.paged(user, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+        CollectFolders.paged(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
 
       assert %Helper.ORM.Pagi.Page.Offset{} = result
       assert result.total_count == 2
@@ -75,7 +75,7 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, folder} = CollectFolders.add(post, folder.id, user)
 
       {:ok, result} =
-        CollectFolders.paged(user, %{thread: :post}, %Helper.ORM.Pagi.Params.Offset{
+        CollectFolders.paged(user, %{thread: :post}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 20
         })
@@ -93,7 +93,12 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, _folder} = CollectFolders.create(%{title: "test folder2"}, user2)
 
       {:ok, result} =
-        CollectFolders.paged(user2, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}, user)
+        CollectFolders.paged(
+          user2,
+          %{},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20},
+          user
+        )
 
       assert %Helper.ORM.Pagi.Page.Offset{} = result
       assert result.total_count == 1
@@ -106,7 +111,12 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
       {:ok, _folder} = CollectFolders.create(%{title: "test folder2"}, user)
 
       {:ok, result} =
-        CollectFolders.paged(user, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}, user)
+        CollectFolders.paged(
+          user,
+          %{},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20},
+          user
+        )
 
       assert %Helper.ORM.Pagi.Page.Offset{} = result
       assert result.total_count == 2
@@ -178,7 +188,7 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
         CollectFolders.paged_articles(
           folder.id,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10},
           user
         )
 
@@ -258,7 +268,7 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
         CollectFolders.paged_articles(
           folder.id,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10},
           user
         )
 
@@ -281,7 +291,7 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
         CollectFolders.paged_articles(
           folder.id,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10},
           user
         )
 
@@ -291,7 +301,7 @@ defmodule GroupherServer.Test.Accounts.CollectFolder do
         CollectFolders.paged_articles(
           folder.id,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10},
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10},
           user2
         )
 

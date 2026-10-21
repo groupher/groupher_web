@@ -46,7 +46,7 @@ defmodule GroupherServer.Test.Accounts.Fans do
       {:ok, _follower} = user |> Accounts.Fans.follow(user2)
 
       {:ok, followers} =
-        Accounts.Fans.paged_followers(user2, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Accounts.Fans.paged_followers(user2, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 20
         })
@@ -60,7 +60,7 @@ defmodule GroupherServer.Test.Accounts.Fans do
       {:ok, _follower} = user |> Accounts.Fans.follow(user2)
 
       {:ok, followings} =
-        Accounts.Fans.paged_followings(user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Accounts.Fans.paged_followings(user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 20
         })

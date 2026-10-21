@@ -236,7 +236,7 @@ defmodule GroupherServer.Test.CMS.Gate.ScopeTest do
              CMS.Articles.paged_published(
                :post,
                %{},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20},
                author
              )
 
@@ -249,7 +249,7 @@ defmodule GroupherServer.Test.CMS.Gate.ScopeTest do
                author,
                nil,
                %{},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20},
                nil
              )
 
@@ -263,7 +263,7 @@ defmodule GroupherServer.Test.CMS.Gate.ScopeTest do
              CMS.Articles.paged_published(
                :post,
                %{},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20},
                author
              )
 
@@ -275,7 +275,7 @@ defmodule GroupherServer.Test.CMS.Gate.ScopeTest do
                author,
                nil,
                %{},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20},
                nil
              )
 

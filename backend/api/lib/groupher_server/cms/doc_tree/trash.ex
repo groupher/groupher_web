@@ -44,7 +44,7 @@ defmodule GroupherServer.CMS.DocTree.Trash do
   alias Helper.{ORM, T, Transaction}
 
   @doc "Pages Docs Trash actions after community admission and branch resolution."
-  @spec list(Community.t(), Helper.ORM.Pagi.Params.input(), keyword() | map()) :: tuple()
+  @spec list(Community.t(), GroupherServer.Pagi.Params.input(), keyword() | map()) :: tuple()
   def list(%Community{} = community, pagi, opts) do
     actor = option(opts, :actor)
     policy_mode = option(opts, :policy_mode, :moderator_management)

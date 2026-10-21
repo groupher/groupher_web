@@ -3,9 +3,10 @@ defmodule GroupherServer.Test.CMS.CommunityApplications.PolicyTest do
 
   use ExUnit.Case, async: true
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.CommunityApplications.{Decision, Policy}
-  alias GroupherServer.CMS.CommunityApplications.Policy.Input
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.Model.User
+  alias CMS.CommunityApplications.{Decision, Policy}
+  alias CMS.CommunityApplications.Policy.Input
 
   @actor %User{id: 1}
 

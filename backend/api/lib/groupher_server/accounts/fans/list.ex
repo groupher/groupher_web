@@ -8,11 +8,20 @@ defmodule GroupherServer.Accounts.Fans.List do
 
   import Ecto.Query
 
-  alias GroupherServer.Accounts.Fans.ViewerState
-  alias GroupherServer.Accounts.Model.{User, UserFollower, UserFollowing}
+  alias GroupherServer.{Accounts, Pagi}
+  alias Accounts.Fans.ViewerState
+  alias Accounts.Model.{User, UserFollower, UserFollowing}
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias Pagi.Params
 
+  @doc """
+  Pages the users whose relationship rows point to the selected user as follower.
+
+  ## Examples
+
+      Accounts.Fans.List.paged_followers(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
+  """
   @spec paged_followers(User.t(), map(), Params.t() | nil, User.t() | nil) :: tuple()
   def paged_followers(%User{id: id}, filter, pagi, viewer \\ nil) do
     ids =
@@ -21,6 +30,13 @@ defmodule GroupherServer.Accounts.Fans.List do
     page(ids, id, :followers, filter, pagi, viewer)
   end
 
+  @doc """
+  Pages the users named by the selected user's following relationship rows.
+
+  ## Examples
+
+      Accounts.Fans.List.paged_followings(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
+  """
   @spec paged_followings(User.t(), map(), Params.t() | nil, User.t() | nil) :: tuple()
   def paged_followings(%User{id: id}, filter, pagi, viewer \\ nil) do
     ids =

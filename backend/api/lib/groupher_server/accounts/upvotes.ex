@@ -11,8 +11,17 @@ defmodule GroupherServer.Accounts.Upvotes do
   alias Accounts.Model.User
   alias CMS.Model.{Article, ArticleBinding, ArticleUpvote, Community}
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
+  @doc """
+  Pages a user's public upvoted Article paths for the requested thread filter.
+
+  ## Examples
+
+      Accounts.Upvotes.paged_articles(user, %{thread: :post}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
   @spec paged_articles(User.t(), map(), Params.t() | nil) :: tuple()
   def paged_articles(%User{id: id}, filter, pagi) do
     thread = Map.get(filter, :thread)

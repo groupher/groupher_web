@@ -12,12 +12,12 @@ defmodule GroupherServer.Activity.CommunityLog do
 
   import Ecto.Query
 
-  alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Page}
-  alias GroupherServer.Activity.Model.CommunityTimelineRow, as: Rows
   alias GroupherServer.{Activity, CMS, Repo}
   alias Activity.{ErrorCat, Event, Filter}
+  alias Activity.Model.CommunityTimelineRow
   alias CMS.Model.Community
+  alias Helper.ORM
+  alias Helper.ORM.Pagi.{Order, Page}
 
   @handlers [
     Activity.Post,
@@ -90,7 +90,13 @@ defmodule GroupherServer.Activity.CommunityLog do
     :parent_event_ref
   ]
 
-  @doc "Pages the safe CommunityLog surface through the shared offset/cursor engine."
+  @doc """
+  Lists authorized CommunityLog rows under the selected filter and Pagi position.
+
+  ## Examples
+
+      Activity.CommunityLog.list(community, actor, %{filter: %{actions: [:create]}}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
   def list(%Community{} = community, actor, selection, pagi \\ nil) do
     with {:ok, true} <-
            CMS.passport_authorization_check(actor, "audit.read", %{community: community}),
@@ -99,7 +105,7 @@ defmodule GroupherServer.Activity.CommunityLog do
          handlers <- if(resolved.empty?, do: [], else: select_handlers(normalized)),
          {:ok, page} <-
            ORM.pagi(scoped_rows(handlers, community.id, normalized), pagi,
-             for: Rows,
+             for: CommunityTimelineRow,
              order: order(),
              surface: "activity.community",
              query_fingerprint:

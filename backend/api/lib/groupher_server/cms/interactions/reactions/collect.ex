@@ -12,14 +12,12 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   use GroupherServer.CommandPipeline,
     adapter: GroupherServer.CMS.CommandPipelineAdapter
 
-  alias GroupherServer.CMS
-
-  alias GroupherServer.Accounts.Model.User
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.Model.User
   alias CMS.Artiment.Matcher
   alias CMS.{Gate, Interactions}
   alias CMS.Interactions.ErrorCat
-  alias CMS.Interactions.Reactions.CollectChange
-  alias CMS.Interactions.Reactions.CollectConfirmation, as: Confirmation
+  alias CMS.Interactions.Reactions.{CollectChange, CollectConfirmation}
   alias CMS.Model.ArticleCollect
 
   alias Helper.T
@@ -51,7 +49,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   end
 
   @pipeline operation: :reaction_collect_add,
-            confirmation: Confirmation,
+            confirmation: CollectConfirmation,
             target: :input,
             params: [:operation]
 
@@ -68,7 +66,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
   end
 
   @pipeline operation: :reaction_collect_remove,
-            confirmation: Confirmation,
+            confirmation: CollectConfirmation,
             target: :input,
             params: [:operation]
 
@@ -98,7 +96,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
 
   defp confirmation(canonical, operation, change) do
     {:ok,
-     %Confirmation{
+     %CollectConfirmation{
        data: %{
          "target_id" => to_string(canonical.id),
          "target_type" => "article",
@@ -108,14 +106,14 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
      }}
   end
 
-  defp present_reaction(%Confirmation{data: data}, input, command_id) do
+  defp present_reaction(%CollectConfirmation{data: data}, input, command_id) do
     outcome = if data["outcome"] == "unchanged", do: :unchanged, else: :changed
 
     {:ok, reaction_projection(input, command_id, outcome)}
   end
 
   defp present_reaction(data, input, command_id) when is_map(data) do
-    present_reaction(struct(Confirmation, data: data), input, command_id)
+    present_reaction(struct(CollectConfirmation, data: data), input, command_id)
   end
 
   defp reaction_projection(input, command_id, outcome) do
@@ -132,7 +130,7 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Collect do
       Reactions.Collect.users(article, %{page: 1, size: 20})
 
   """
-  @spec users(struct(), Helper.ORM.Pagi.Params.t() | nil) :: {:ok, term()} | {:error, term()}
+  @spec users(struct(), GroupherServer.Pagi.Params.t() | nil) :: {:ok, term()} | {:error, term()}
   def users(article, pagi) do
     case Matcher.match_interaction(article) do
       {:ok, %{collection?: true}} ->

@@ -1,7 +1,9 @@
 defmodule GroupherServer.Test.CMS.Comments.CollectionPagi do
   use GroupherServer.TestMate
 
-  alias Helper.ORM.Pagi.{Page, Params}
+  alias Helper.ORM.Pagi.{Page}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   test "published and participant cursors agree with offset and bind their collection" do
     {community, post, _, actor} = mock_article(:post, preload: [author: :user])

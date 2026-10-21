@@ -1,7 +1,9 @@
 defmodule GroupherServer.Test.CMS.Communities.Pagi do
   use GroupherServer.TestMate
 
-  alias Helper.ORM.Pagi.{Page, Params}
+  alias Helper.ORM.Pagi.{Page}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
   alias CMS.Model.CommunityModerator
 
   test "member pages use their own stable identity and isolate community cursors" do

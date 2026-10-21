@@ -8,7 +8,20 @@ defmodule GroupherServer.Pagi do
       persisted surface -> Pagi.Config -> EffectiveConfig -> ORM Pagi adapter
   """
 
-  alias __MODULE__.{Config, EffectiveConfig, ErrorCat, SchemaRegistry}
+  alias __MODULE__.{Config, EffectiveConfig, ErrorCat, Params, SchemaRegistry}
+
+  @doc "Normalizes one offset or cursor input at the API boundary before resource defaults apply."
+  @spec from_input(Params.input()) :: {:ok, Params.t() | nil} | {:error, ErrorCat.error()}
+  defdelegate from_input(input), to: Params
+
+  @doc "Normalizes one position using the effective resource size default."
+  @spec from_input(Params.input(), pos_integer()) ::
+          {:ok, Params.t() | nil} | {:error, ErrorCat.error()}
+  defdelegate from_input(input, default_size), to: Params
+
+  @doc "Extracts the optional config revision without choosing resource-specific defaults."
+  @spec revision(Params.input()) :: non_neg_integer() | nil
+  defdelegate revision(input), to: Params
 
   @doc "Normalizes the optional persisted Dashboard pagination configuration."
   @spec normalize(nil | map()) ::

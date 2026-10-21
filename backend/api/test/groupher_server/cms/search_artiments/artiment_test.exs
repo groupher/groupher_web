@@ -72,7 +72,7 @@ defmodule GroupherServer.CMS.SearchArtiments.ArtimentTest do
     assert query.scope == %{community_ref: "groupher"}
     assert query.filters.types == [:article]
     assert query.filters.threads == [:doc]
-    assert %Helper.ORM.Pagi.Params.Cursor{first: 10} = query.pagi
+    assert %GroupherServer.Pagi.Params.Cursor{first: 10} = query.pagi
     assert {:error, _} = Query.new(%{text: "search", page: 1}, nil)
   end
 

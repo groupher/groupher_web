@@ -15,7 +15,7 @@ defmodule GroupherServer.Test.CMS.Articles.DocList do
       {:ok, _} = CMS.Articles.create(community, :doc, doc_attrs, user)
 
       {:ok, paged_docs} =
-        CMS.Articles.page(:doc, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+        CMS.Articles.page(:doc, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
 
       assert paged_docs |> is_map()
       assert length(paged_docs.entries) >= 2

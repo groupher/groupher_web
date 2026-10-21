@@ -53,7 +53,7 @@ defmodule Helper.Scheduler do
   @doc "Emits audit events for the current page of failed comment moderation records."
   def comments_audition do
     with {:ok, paged_comments} <-
-           CMS.comments_paged_audit_failed_comments(%Helper.ORM.Pagi.Params.Offset{
+           CMS.comments_paged_audit_failed_comments(%GroupherServer.Pagi.Params.Offset{
              page: 1,
              size: 30
            }) do
@@ -66,7 +66,7 @@ defmodule Helper.Scheduler do
 
   defp audit_articles(thread) do
     with {:ok, paged_articles} <-
-           CMS.articles_paged_audit_failed(thread, %Helper.ORM.Pagi.Params.Offset{
+           CMS.articles_paged_audit_failed(thread, %GroupherServer.Pagi.Params.Offset{
              page: 1,
              size: 30
            }) do

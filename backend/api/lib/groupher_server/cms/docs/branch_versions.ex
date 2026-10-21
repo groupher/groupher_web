@@ -57,7 +57,7 @@ defmodule GroupherServer.CMS.Docs.BranchVersions do
     end
   end
 
-  @spec page(Article.t(), pos_integer(), Helper.ORM.Pagi.Params.input()) :: tuple()
+  @spec page(Article.t(), pos_integer(), GroupherServer.Pagi.Params.input()) :: tuple()
   defp page(%Article{thread: :doc, id: article_id}, branch_id, pagi) do
     query =
       from(version in DocBranchVersion,

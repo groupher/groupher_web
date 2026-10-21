@@ -45,7 +45,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
       {:ok, {2, nil}} = ArtimentMentions.sync(post)
 
       {:ok, result} =
-        ArtimentMentions.mentions(:post, post.id, %Helper.ORM.Pagi.Params.Offset{
+        ArtimentMentions.mentions(:post, post.id, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -95,7 +95,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
       {:ok, {1, nil}} = ArtimentMentions.sync(post)
 
       {:ok, result} =
-        ArtimentMentions.mentions(:post, post.id, %Helper.ORM.Pagi.Params.Offset{
+        ArtimentMentions.mentions(:post, post.id, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -163,7 +163,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
       {:ok, {2, nil}} = ArtimentMentions.sync(post)
 
       {:ok, result} =
-        ArtimentMentions.mentions(:post, post.id, %Helper.ORM.Pagi.Params.Offset{
+        ArtimentMentions.mentions(:post, post.id, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -213,13 +213,13 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
       {:ok, {1, nil}} = ArtimentMentions.sync(changelog)
 
       {:ok, post_mentions} =
-        ArtimentMentions.mentioned_by(:post, post.id, %Helper.ORM.Pagi.Params.Offset{
+        ArtimentMentions.mentioned_by(:post, post.id, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
 
       {:ok, blog_mentions} =
-        ArtimentMentions.mentioned_by(:blog, blog.id, %Helper.ORM.Pagi.Params.Offset{
+        ArtimentMentions.mentioned_by(:blog, blog.id, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -277,7 +277,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
       {:ok, :pass} = ArtimentMentions.sync(post)
 
       {:ok, result} =
-        ArtimentMentions.mentions(:post, post.id, %Helper.ORM.Pagi.Params.Offset{
+        ArtimentMentions.mentions(:post, post.id, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -304,7 +304,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
       {:ok, {1, nil}} = ArtimentMentions.sync(comment)
 
       {:ok, result} =
-        ArtimentMentions.mentions(:comment, comment.id, %Helper.ORM.Pagi.Params.Offset{
+        ArtimentMentions.mentions(:comment, comment.id, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -326,7 +326,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
       {:ok, {1, nil}} = ArtimentMentions.sync(comment)
 
       {:ok, result} =
-        ArtimentMentions.mentions(:comment, comment.id, %Helper.ORM.Pagi.Params.Offset{
+        ArtimentMentions.mentions(:comment, comment.id, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -401,10 +401,14 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
       assert data_query_count(many_queries) <= data_query_count(single_queries)
 
       assert {:ok, %{total_count: 3}} =
-               ArtimentMentions.mentions(:comment, mentioner.id, %Helper.ORM.Pagi.Params.Offset{
-                 page: 1,
-                 size: 10
-               })
+               ArtimentMentions.mentions(
+                 :comment,
+                 mentioner.id,
+                 %GroupherServer.Pagi.Params.Offset{
+                   page: 1,
+                   size: 10
+                 }
+               )
     end
 
     test "deletes old mentions when the current content has none",
@@ -441,7 +445,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
       {:ok, :pass} = ArtimentMentions.sync(post)
 
       {:ok, result} =
-        ArtimentMentions.mentions(:post, post.id, %Helper.ORM.Pagi.Params.Offset{
+        ArtimentMentions.mentions(:post, post.id, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -466,7 +470,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
       {:ok, {1, nil}} = ArtimentMentions.sync(post)
 
       {:ok, result} =
-        ArtimentMentions.mentioned_by(:blog, blog.id, %Helper.ORM.Pagi.Params.Offset{
+        ArtimentMentions.mentioned_by(:blog, blog.id, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -497,7 +501,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
       {:ok, {1, nil}} = ArtimentMentions.sync(post)
 
       {:ok, result} =
-        ArtimentMentions.mentioned_by(:blog, blog.id, %Helper.ORM.Pagi.Params.Offset{
+        ArtimentMentions.mentioned_by(:blog, blog.id, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -510,7 +514,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
         CMS.Articles.permanently_delete_trashed(trash_item.hash_id, user)
 
       {:ok, result} =
-        ArtimentMentions.mentioned_by(:blog, blog.id, %Helper.ORM.Pagi.Params.Offset{
+        ArtimentMentions.mentioned_by(:blog, blog.id, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })

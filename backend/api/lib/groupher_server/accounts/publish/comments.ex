@@ -12,7 +12,13 @@ defmodule GroupherServer.Accounts.Publish.Comments do
 
   alias GroupherServer.CMS
 
-  @doc "Pages published comments with explicit thread, filter, position and viewer."
+  @doc """
+  Pages published comments with explicit thread, filter, position and viewer.
+
+  ## Examples
+
+      Accounts.Publish.Comments.paged(user, :post, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
+  """
   def paged(user, thread, filter, pagi, viewer) do
     CMS.comments_paged_published_comments(user, thread, filter, pagi, viewer)
   end

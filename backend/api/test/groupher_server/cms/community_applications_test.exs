@@ -383,7 +383,7 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
     assert {:error, _} = CMS.FrontDesk.community(setting_up.slug)
 
     assert {:ok, %{entries: entries}} =
-             CMS.Communities.paged(%{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 100})
+             CMS.Communities.paged(%{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 100})
 
     refute Enum.any?(entries, &(&1.slug == setting_up.slug))
 

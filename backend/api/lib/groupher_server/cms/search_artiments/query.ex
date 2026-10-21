@@ -10,7 +10,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Query do
         -> search platform
   """
 
-  alias GroupherServer.CMS
+  alias GroupherServer.{CMS, Pagi}
   alias Helper.T
   alias CMS.ErrorCat
 
@@ -23,7 +23,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Query do
           scope: map(),
           filters: map(),
           sort: sort(),
-          pagi: Helper.ORM.Pagi.Params.t() | nil,
+          pagi: GroupherServer.Pagi.Params.t() | nil,
           highlight: boolean()
         }
 
@@ -48,7 +48,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Query do
   ## Examples
 
       Query.new(%{text: "elixir"}, %{cursor: %{first: 20}})
-      #=> {:ok, %Query{text: "elixir", pagi: %Helper.ORM.Pagi.Params.Cursor{first: 20}, sort: :relevance}}
+      #=> {:ok, %Query{text: "elixir", pagi: %GroupherServer.Pagi.Params.Cursor{first: 20}, sort: :relevance}}
 
       Query.new(%{text: ""}, nil)
       #=> {:error, ErrorCat.custom("search text is required")}
@@ -61,7 +61,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Query do
     scope = normalize_scope(Map.get(attrs, :scope, %{}))
 
     with {:ok, :pass} <- validate_keys(attrs),
-         {:ok, params} <- Helper.ORM.Pagi.Params.from_input(pagi),
+         {:ok, params} <- Pagi.from_input(pagi),
          {:ok, :pass} <- validate_text(text),
          {:ok, :pass} <- validate_sort(sort),
          {:ok, filters} <- normalize_filters(Map.get(attrs, :filters, %{})) do

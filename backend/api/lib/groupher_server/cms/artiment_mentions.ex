@@ -44,16 +44,17 @@ defmodule GroupherServer.CMS.ArtimentMentions do
   defdelegate mark_target_state(artiment, state), to: Store
 
   @doc "Runs `mentions` through the public `ArtimentMentions` boundary."
-  @spec mentions(atom(), T.id(), Helper.ORM.Pagi.Params.t() | nil) :: T.domain_res(T.paged_data())
+  @spec mentions(atom(), T.id(), GroupherServer.Pagi.Params.t() | nil) ::
+          T.domain_res(T.paged_data())
   defdelegate mentions(mentioner_type, mentioner_id, pagi), to: Store
 
   @doc "Runs `mentioned_by` through the public `ArtimentMentions` boundary."
-  @spec mentioned_by(atom(), T.id(), Helper.ORM.Pagi.Params.t() | nil) ::
+  @spec mentioned_by(atom(), T.id(), GroupherServer.Pagi.Params.t() | nil) ::
           T.domain_res(T.paged_data())
   defdelegate mentioned_by(mentioned_type, mentioned_id, pagi), to: Store
 
   @doc "Resolves one public mention source and returns its outgoing mentions."
-  @spec mentions(map(), Helper.ORM.Pagi.Params.t() | nil) :: T.domain_res(T.paged_data())
+  @spec mentions(map(), GroupherServer.Pagi.Params.t() | nil) :: T.domain_res(T.paged_data())
   def mentions(source, pagi) when is_map(source) do
     with {:ok, type, id} <- resolve_locator(source, [:article, :comment], :source) do
       Store.mentions(type, id, pagi)
@@ -61,7 +62,7 @@ defmodule GroupherServer.CMS.ArtimentMentions do
   end
 
   @doc "Resolves one public mention target and returns incoming mentions."
-  @spec mentioned_by(map(), Helper.ORM.Pagi.Params.t() | nil) :: T.domain_res(T.paged_data())
+  @spec mentioned_by(map(), GroupherServer.Pagi.Params.t() | nil) :: T.domain_res(T.paged_data())
   def mentioned_by(target, pagi) when is_map(target) do
     with {:ok, type, id} <- resolve_locator(target, [:article, :comment, :user_login], :target) do
       Store.mentioned_by(type, id, pagi)

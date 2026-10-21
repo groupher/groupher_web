@@ -8,10 +8,12 @@ defmodule GroupherServer.CMS.Communities.Moderators.Query do
 
   import Ecto.Query
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.Model.{Community, CommunityModerator}
+  alias GroupherServer.{Accounts, CMS, Pagi}
+  alias Accounts.Model.User
+  alias CMS.Model.{Community, CommunityModerator}
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias Pagi.Params
 
   @doc "Returns up to fifteen non-member accounts for the moderator picker."
   def candidates(%Community{id: id}, name) do

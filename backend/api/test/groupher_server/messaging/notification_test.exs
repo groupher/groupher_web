@@ -54,7 +54,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user2)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -77,7 +77,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -124,7 +124,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -145,7 +145,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -167,7 +167,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -190,7 +190,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user5)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -218,7 +218,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user2)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -228,7 +228,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       Messaging.revoke_notification(notify_attrs, user2)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -241,7 +241,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -254,7 +254,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       Messaging.revoke_notification(notify_attrs, user2)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -274,7 +274,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -284,7 +284,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       Messaging.revoke_notification(notify_attrs, user2)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -304,7 +304,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user4)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -314,7 +314,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       Messaging.revoke_notification(notify_attrs, user2)
 
       {:ok, paged_notifies} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -457,7 +457,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
       {:ok, result} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -470,7 +470,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.mark_read(:notification, [notify1.id, notify2.id], user)
 
       {:ok, result} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -482,7 +482,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
           :notification,
           user,
           %{read: true},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10}
         )
 
       assert result.total_count == 2
@@ -494,7 +494,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.send_notification(notify_attrs, user3)
 
       {:ok, result} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -504,7 +504,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
       {:ok, _} = Messaging.mark_read_all(:notification, user)
 
       {:ok, result} =
-        Messaging.paged_messages(:notification, user, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Messaging.paged_messages(:notification, user, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -516,7 +516,7 @@ defmodule GroupherServer.Test.Messaging.Notification do
           :notification,
           user,
           %{read: true},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10}
         )
 
       assert result.total_count == 2

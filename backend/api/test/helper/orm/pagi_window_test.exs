@@ -1,11 +1,12 @@
 defmodule Helper.ORM.Pagi.WindowTest do
   use ExUnit.Case, async: true
+  alias GroupherServer.ErrorCat
   alias Helper.ORM.Pagi.{Window, Page}
-  alias GroupherServer.ErrorCat.Error
 
   @binding %{surface: "search.artiments", order: %{"sort" => "relevance"}, fingerprint: "query-a"}
-  defp fetch(offset, size),
-    do: {:ok, %{entries: Enum.slice(Enum.to_list(1..7), offset, size), total: 7}}
+  defp fetch(offset, size) do
+    {:ok, %{entries: Enum.slice(Enum.to_list(1..7), offset, size), total: 7}}
+  end
 
   test "both APIs traverse the same ranked window and bind continuation to the query" do
     assert {:ok, %Page.Offset{entries: [1, 2, 3], total_count: 7, total_pages: 3}} =
@@ -24,7 +25,7 @@ defmodule Helper.ORM.Pagi.WindowTest do
                max_entries: 1000
              )
 
-    assert {:error, %Error{reason: :cursor_query_mismatch}} =
+    assert {:error, %ErrorCat.Error{reason: :cursor_query_mismatch}} =
              Window.run(
                %{cursor: %{first: 3, after: cursor}},
                %{@binding | fingerprint: "query-b"},

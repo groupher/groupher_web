@@ -15,7 +15,7 @@ defmodule GroupherServer.Test.CMS.Articles.PostList do
       {:ok, _} = CMS.Articles.create(community, :post, post_attrs, user)
 
       {:ok, paged_posts} =
-        CMS.Articles.page(:post, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+        CMS.Articles.page(:post, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
 
       assert paged_posts |> is_map()
       assert length(paged_posts.entries) >= 2
@@ -32,7 +32,7 @@ defmodule GroupherServer.Test.CMS.Articles.PostList do
           CMS.Articles.page(
             :post,
             Map.drop(filter, [:page, :size, :first, :after, :config_revision]),
-            %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+            %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
           )
         end)
 
@@ -41,7 +41,7 @@ defmodule GroupherServer.Test.CMS.Articles.PostList do
           CMS.Articles.page(
             :post,
             Map.drop(filter, [:page, :size, :first, :after, :config_revision]),
-            %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0},
+            %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0},
             user
           )
         end)

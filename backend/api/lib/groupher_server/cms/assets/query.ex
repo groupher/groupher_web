@@ -39,7 +39,9 @@ defmodule GroupherServer.CMS.Assets.Query do
   }
 
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @usage_batch_size 100
   @storage_limit_bytes 100 * 1024 * 1024

@@ -634,7 +634,7 @@ defmodule GroupherServer.Test.CMS.Comments.BlogComment do
           :blog,
           blog.article_id,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert folded.total_count == 1
@@ -665,7 +665,7 @@ defmodule GroupherServer.Test.CMS.Comments.BlogComment do
           :blog,
           blog.article_id,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert folded.total_count == 0
@@ -772,7 +772,7 @@ defmodule GroupherServer.Test.CMS.Comments.BlogComment do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert all_reports.total_count == 1
@@ -789,7 +789,7 @@ defmodule GroupherServer.Test.CMS.Comments.BlogComment do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert all_reports.total_count == 1
@@ -893,10 +893,14 @@ defmodule GroupherServer.Test.CMS.Comments.BlogComment do
         )
 
       {:ok, results} =
-        CMS.Comments.paged_comments_participants(thread, blog.id, %Helper.ORM.Pagi.Params.Offset{
-          page: 1,
-          size: page_size
-        })
+        CMS.Comments.paged_comments_participants(
+          thread,
+          blog.id,
+          %GroupherServer.Pagi.Params.Offset{
+            page: 1,
+            size: page_size
+          }
+        )
 
       assert %Helper.ORM.Pagi.Page.Offset{} = results
       assert results.total_count == total_count + 1
@@ -1132,10 +1136,15 @@ defmodule GroupherServer.Test.CMS.Comments.BlogComment do
       random_comment_3 = all_folded_comments |> Enum.at(5)
 
       {:ok, paged_comments} =
-        CMS.Comments.paged_folded_comments(:blog, blog.id, %{}, %Helper.ORM.Pagi.Params.Offset{
-          page: page_number,
-          size: page_size
-        })
+        CMS.Comments.paged_folded_comments(
+          :blog,
+          blog.id,
+          %{},
+          %GroupherServer.Pagi.Params.Offset{
+            page: page_number,
+            size: page_size
+          }
+        )
 
       assert exist_in?(random_comment_1, paged_comments.entries)
       assert exist_in?(random_comment_2, paged_comments.entries)

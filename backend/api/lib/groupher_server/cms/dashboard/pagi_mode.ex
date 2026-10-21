@@ -3,10 +3,18 @@ defmodule GroupherServer.CMS.Dashboard.PagiMode do
   Validates community-wide desktop/mobile interactions and owns the server default policy.
   Clients select the viewport preference and send explicit Pagi input. Requests without
   viewport context use the desktop default; limits and revision stay server-owned.
+
+  Business position:
+
+      Dashboard preference mutation
+        -> Persist revisioned desktop/mobile modes
+        -> shared cached policy
+        -> list request resolves explicit offset or cursor behavior
   """
   import Ecto.Query
   alias GroupherServer.{Pagi, Repo}
-  alias GroupherServer.CMS.Model.{Community, CommunityDashboard}
+  alias GroupherServer.{CMS}
+  alias CMS.Model.{Community, CommunityDashboard}
   alias Helper.Cache
 
   @modes [:page, :load_more, :infinite_scroll]

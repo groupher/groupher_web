@@ -17,7 +17,9 @@ defmodule GroupherServer.Messaging.Notifications.Query do
   alias Accounts.Model.User
   alias Messaging.Model.Notification
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @cut_from_users_count 3
 
@@ -26,7 +28,7 @@ defmodule GroupherServer.Messaging.Notifications.Query do
 
   ## Examples
 
-      Messaging.Notifications.Query.paged(user, %{read: false}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+      Messaging.Notifications.Query.paged(user, %{read: false}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
   @spec paged(User.t(), map(), Params.t() | nil) :: term()
   def paged(%User{} = user, filter, pagi) do

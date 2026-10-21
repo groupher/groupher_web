@@ -9,10 +9,12 @@ defmodule GroupherServer.CMS.Communities.Subscribers.Query do
   import Ecto.Query
 
   alias GroupherServer.Accounts
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.Model.{Community, CommunitySubscriber}
+  alias GroupherServer.{CMS, Pagi}
+  alias Accounts.Model.User
+  alias CMS.Model.{Community, CommunitySubscriber}
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias Pagi.Params
 
   @spec page(Community.t(), map(), Params.t() | nil, User.t() | nil) :: tuple()
   def page(community, filter, pagi, viewer \\ nil)

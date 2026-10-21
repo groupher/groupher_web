@@ -7,6 +7,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
 
   import ShortMaps
 
+  alias GroupherServer.Pagi
   alias GroupherServer.{CMS, FrontDesk}
   alias CMS.Model.Community
 
@@ -169,7 +170,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Articles do
       ) do
     filter = (Map.get(args, :filter) || %{}) |> Map.put(:thread, thread)
 
-    with {:ok, pagi} <- Helper.ORM.Pagi.Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       CMS.articles_list_trashed(community, filter, pagi)
     end
   end

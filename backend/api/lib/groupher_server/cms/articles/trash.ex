@@ -32,7 +32,9 @@ defmodule GroupherServer.CMS.Articles.Trash do
   }
 
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @default_retention_days 30
 

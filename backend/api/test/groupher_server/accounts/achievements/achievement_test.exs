@@ -23,7 +23,7 @@ defmodule GroupherServer.Test.Accounts.Achievement do
       {:ok, results} =
         Accounts.Achievements.paged_moderatorable_communities(
           user,
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert %Helper.ORM.Pagi.Page.Offset{} = results
@@ -45,7 +45,7 @@ defmodule GroupherServer.Test.Accounts.Achievement do
       {:ok, moderatorable_communities} =
         Accounts.Achievements.paged_moderatorable_communities(
           user3,
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert moderatorable_communities.total_count == 2

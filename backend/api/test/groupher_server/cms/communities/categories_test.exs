@@ -30,7 +30,7 @@ defmodule GroupherServer.Test.CMS.Communities.Categories do
     end
 
     test "legacy category facade rejects implicit identity", ~m(user)a do
-      assert {:error, %GroupherServer.ErrorCat.Error{reason: :command_id_required}} =
+      assert {:error, %ErrorCat.Error{reason: :command_id_required}} =
                CMS.Communities.Categories.create(%{title: "Implicit category"}, user)
     end
 

@@ -2,7 +2,9 @@ defmodule GroupherServer.Test.Accounts.CollectFolders.Pagi do
   use GroupherServer.TestMate
 
   alias Accounts.CollectFolders
-  alias Helper.ORM.Pagi.{Page, Params}
+  alias Helper.ORM.Pagi.{Page}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   test "folder entry cursors follow collection order and recheck privacy" do
     {:ok, user} = db_insert(:user)

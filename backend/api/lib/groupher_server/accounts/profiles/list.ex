@@ -19,11 +19,19 @@ defmodule GroupherServer.Accounts.Profiles.List do
 
   alias CMS.Model.{Community, CommunitySubscriber}
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @default_subscribed_communities GroupherServer.Accounts.Config.default_subscribed_communities()
 
-  @doc "Pages User identities using the explicit Pagi position."
+  @doc """
+  Pages User identities using the explicit Pagi position.
+
+  ## Examples
+
+      Accounts.Profiles.List.paged_users(%{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
   def paged_users(filter, pagi, viewer \\ nil) do
     sort = Map.get(filter, :sort, :desc_inserted)
 
@@ -53,7 +61,13 @@ defmodule GroupherServer.Accounts.Profiles.List do
     end
   end
 
-  @doc "Returns bounded default suggestions, with Home independently included when present."
+  @doc """
+  Returns bounded default suggestions, with Home independently included when present.
+
+  ## Examples
+
+      Accounts.Profiles.List.default_community_suggestions()
+  """
   def default_community_suggestions do
     query =
       CMS.communities_public_query()
@@ -73,7 +87,13 @@ defmodule GroupherServer.Accounts.Profiles.List do
     {:ok, suggestions ++ if(home, do: [home], else: [])}
   end
 
-  @doc "Pages a user's actual subscriptions by Community identity."
+  @doc """
+  Pages a user's actual subscriptions by Community identity.
+
+  ## Examples
+
+      Accounts.Profiles.List.subscribed_communities(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
   @spec subscribed_communities(User.t(), map(), Params.t() | nil) :: tuple()
   def subscribed_communities(%User{id: id}, filter, pagi) do
     ids =

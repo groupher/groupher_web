@@ -12,10 +12,11 @@ defmodule GroupherServer.CMS.Articles.ArticleLite do
   use Ecto.Schema
   use Flop.Schema
 
-  import Ecto.Query, except: [select: 3], warn: false
   require Ecto.Query
+  import Ecto.Query, except: [select: 3], warn: false
 
-  alias GroupherServer.CMS.Model.{
+  alias GroupherServer.{CMS}
+  alias CMS.Model.{
     ArticleBindingTag,
     ArticleStats,
     Author,

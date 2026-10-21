@@ -177,35 +177,35 @@ defmodule GroupherServer.Test.CMS.Articles.Kanban do
         CMS.Articles.kanban_page(
           community,
           %{status: @article_status.backlog},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
         )
 
       {:ok, paged_todo_posts} =
         CMS.Articles.kanban_page(
           community,
           %{status: @article_status.todo},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
         )
 
       {:ok, paged_wip_posts} =
         CMS.Articles.kanban_page(
           community,
           %{status: @article_status.wip},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
         )
 
       {:ok, paged_done_posts} =
         CMS.Articles.kanban_page(
           community,
           %{status: @article_status.done},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
         )
 
       {:ok, paged_rejected_posts} =
         CMS.Articles.kanban_page(
           community,
           %{statuses: [@article_status.reject, @article_status.reject_dup]},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
         )
 
       assert paged_backlog_posts |> is_map()

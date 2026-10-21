@@ -8,6 +8,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
   import ShortMaps
   import Absinthe.Resolution.Helpers, only: [batch: 3]
 
+  alias GroupherServer.Pagi
   alias GroupherServer.CMS
   alias CMS.Model.Community
 
@@ -20,7 +21,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
   end
 
   def paged_communities(_root, args, %{context: context}) do
-    with {:ok, pagi} <- Helper.ORM.Pagi.Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       CMS.communities_paged(Map.get(args, :filter) || %{}, pagi, Map.get(context, :cur_user))
     end
   end
@@ -102,7 +103,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
   end
 
   def paged_community_moderators(_root, %{community: community} = args, %{context: context}) do
-    with {:ok, pagi} <- Helper.ORM.Pagi.Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       CMS.communities_members(
         :moderators,
         community,
@@ -242,7 +243,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Communities do
   end
 
   def paged_community_subscribers(_root, %{community: community} = args, %{context: context}) do
-    with {:ok, pagi} <- Helper.ORM.Pagi.Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       CMS.communities_members(
         :subscribers,
         community,

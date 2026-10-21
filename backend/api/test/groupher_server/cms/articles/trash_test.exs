@@ -33,14 +33,14 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
              CMS.Articles.page(
                :post,
                %{community: community.slug},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
              )
 
     assert {:ok, %{entries: [%TrashedArticle{hash_id: trash_ref}]}} =
              CMS.Articles.list_trashed(
                community,
                %{thread: :post},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
              )
 
     assert trash_ref == item.hash_id
@@ -94,11 +94,15 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     assert {:ok, post} = CMS.Articles.set_status(post.id, :todo, user, community.id)
 
     assert {:ok, %{entries: [listed]}} =
-             CMS.Articles.kanban_page(community, %{status: :todo}, %Helper.ORM.Pagi.Params.Offset{
-               page: 1,
-               size: 20,
-               config_revision: 0
-             })
+             CMS.Articles.kanban_page(
+               community,
+               %{status: :todo},
+               %GroupherServer.Pagi.Params.Offset{
+                 page: 1,
+                 size: 20,
+                 config_revision: 0
+               }
+             )
 
     assert listed.id == post.id
 
@@ -106,7 +110,7 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
              CMS.Articles.kanban_page(
                community,
                %{statuses: [:todo, :wip]},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
              )
 
     assert listed.id == post.id
@@ -116,17 +120,21 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     assert {:ok, _item} = CMS.Articles.trash(post, user, community: community)
 
     assert {:ok, %{entries: [], page_info: %{total_count: 0}}} =
-             CMS.Articles.kanban_page(community, %{status: :todo}, %Helper.ORM.Pagi.Params.Offset{
-               page: 1,
-               size: 20,
-               config_revision: 0
-             })
+             CMS.Articles.kanban_page(
+               community,
+               %{status: :todo},
+               %GroupherServer.Pagi.Params.Offset{
+                 page: 1,
+                 size: 20,
+                 config_revision: 0
+               }
+             )
 
     assert {:ok, %{entries: [], page_info: %{total_count: 0}}} =
              CMS.Articles.kanban_page(
                community,
                %{statuses: [:todo, :wip]},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
              )
 
     assert {:ok, %{todo: %{entries: [], page_info: %{total_count: 0}}}} =
@@ -140,7 +148,7 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
              CMS.Articles.paged_published(
                :post,
                %{},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20},
                user
              )
 
@@ -153,7 +161,7 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
              CMS.Articles.paged_published(
                :post,
                %{},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20},
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20},
                user
              )
 
@@ -169,7 +177,7 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
              CMS.Articles.set_audit_failed(post.id, %{}, :operations, community: community)
 
     assert {:ok, %{entries: entries}} =
-             CMS.Articles.paged_audit_failed(:post, %Helper.ORM.Pagi.Params.Offset{
+             CMS.Articles.paged_audit_failed(:post, %GroupherServer.Pagi.Params.Offset{
                page: 1,
                size: 20
              })
@@ -179,7 +187,7 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     assert {:ok, _item} = CMS.Articles.trash(post, user, community: community)
 
     assert {:ok, %{entries: entries}} =
-             CMS.Articles.paged_audit_failed(:post, %Helper.ORM.Pagi.Params.Offset{
+             CMS.Articles.paged_audit_failed(:post, %GroupherServer.Pagi.Params.Offset{
                page: 1,
                size: 20
              })
@@ -210,7 +218,7 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
              CMS.Articles.list_trashed(
                community,
                %{thread: :post},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
              )
   end
 
@@ -326,7 +334,7 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
              CMS.Articles.list_trashed(
                community,
                %{thread: :post},
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
              )
 
     assert listed.mentioned_by_count == 1
@@ -335,7 +343,7 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
              CMS.ArtimentMentions.mentioned_by(
                :post,
                listed.article.id,
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
              )
 
     assert {:ok, _} = CMS.Articles.restore_trashed(item.hash_id, user)

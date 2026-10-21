@@ -1,10 +1,10 @@
-defmodule Helper.ORM.Pagi.Params do
+defmodule GroupherServer.Pagi.Params do
   @moduledoc """
-  Transport-neutral, already-normalized pagination parameters.
+  Transport-neutral pagination input and normalized offset/cursor positions.
 
-  GraphQL or a domain adapter -> one of the two Params structs -> Pagi engine.
+  Web boundary -> GroupherServer.Pagi -> Params.Offset or Params.Cursor -> resource query.
 
-      transport input -> Params.Offset or Params.Cursor -> ORM Pagi engine
+      GraphQL input -> Pagi.from_input/1 -> domain position -> ORM Pagi execution
   """
 
   defmodule Offset do
@@ -90,7 +90,8 @@ defmodule Helper.ORM.Pagi.Params do
   def revision(%{offset: input}) when is_map(input), do: Map.get(input, :config_revision)
   def revision(%{cursor: input}) when is_map(input), do: Map.get(input, :config_revision)
   def revision(_input), do: nil
-  alias GroupherServer.Pagi.ErrorCat
+  alias GroupherServer.{Pagi}
+  alias Pagi.ErrorCat
   alias Helper.ORM.Pagi.Config
   @default_max_offset_page 10_000
 

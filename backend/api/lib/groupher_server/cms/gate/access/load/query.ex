@@ -1,6 +1,4 @@
 defmodule GroupherServer.CMS.Gate.Access.Load.Query do
-  require GroupherServer.CMS.Gate.ErrorCat
-
   @moduledoc """
   Loads the authoritative facts required by Gate resource policies.
 
@@ -16,6 +14,8 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Query do
         -> typed Access Context
   """
 
+  require GroupherServer.CMS.Gate.ErrorCat
+
   alias GroupherServer.{CMS, Repo}
 
   alias CMS.Gate.Access.Load.Queries
@@ -26,7 +26,8 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Query do
   alias CMS.Gate.{ErrorCat, Config}
   alias CMS.Model.Comment
   alias CMS.Passport.Registry
-  alias GroupherServer.Accounts.Model.User
+  alias GroupherServer.{Accounts}
+  alias Accounts.Model.User
 
   alias CMS.Model.{
     ArticleLifecycle,

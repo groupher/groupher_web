@@ -21,7 +21,9 @@ defmodule GroupherServer.Accounts.Achievements.Moderatorable do
   alias Accounts.Model.User
   alias CMS.Model.{Community, CommunityModerator}
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @doc """
   Returns communities where a user has moderator capability.

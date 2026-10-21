@@ -37,12 +37,40 @@ defmodule GroupherServer.Accounts.Fans do
   @spec undo_follow(User.t(), User.t()) :: T.gq_result(User.t())
   def undo_follow(%User{} = user, %User{} = follower), do: Commands.Unfollow.run(user, follower)
 
-  @doc "Pages followers with an explicit Pagi position and optional viewer."
+  @doc """
+  Pages accounts that follow the selected user.
+
+  ## Examples
+
+      Accounts.Fans.paged_followers(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
   defdelegate paged_followers(user, filter, pagi), to: List
+
+  @doc """
+  Pages followers with the requesting account's follow state projected onto each entry.
+
+  ## Examples
+
+      Accounts.Fans.paged_followers(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
+  """
   defdelegate paged_followers(user, filter, pagi, viewer), to: List
 
-  @doc "Pages followings with an explicit Pagi position and optional viewer."
+  @doc """
+  Pages accounts followed by the selected user.
+
+  ## Examples
+
+      Accounts.Fans.paged_followings(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
   defdelegate paged_followings(user, filter, pagi), to: List
+
+  @doc """
+  Pages followings with the requesting account's follow state projected onto each entry.
+
+  ## Examples
+
+      Accounts.Fans.paged_followings(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
+  """
   defdelegate paged_followings(user, filter, pagi, viewer), to: List
 
   @doc """

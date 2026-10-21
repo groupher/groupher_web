@@ -1033,7 +1033,7 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
       assert length(refs) == 105
 
       {:ok, paged_refs} =
-        CMS.Assets.refs(community, asset.id, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+        CMS.Assets.refs(community, asset.id, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
 
       assert length(paged_refs.entries) == 20
       assert paged_refs.total_count == 105
@@ -1041,7 +1041,7 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
       assert paged_refs.page == 1
 
       {:ok, second_page_refs} =
-        CMS.Assets.refs(community, asset.id, %Helper.ORM.Pagi.Params.Offset{page: 2, size: 20})
+        CMS.Assets.refs(community, asset.id, %GroupherServer.Pagi.Params.Offset{page: 2, size: 20})
 
       assert length(second_page_refs.entries) == 20
       assert second_page_refs.total_count == 105
@@ -1296,7 +1296,10 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
       assert archived.status == :archived
 
       assert {:ok, %{entries: entries}} =
-               CMS.Assets.page(community, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+               CMS.Assets.page(community, %{}, %GroupherServer.Pagi.Params.Offset{
+                 page: 1,
+                 size: 20
+               })
 
       refute Enum.any?(entries, &(&1.id == asset.id))
 
@@ -1306,7 +1309,10 @@ defmodule GroupherServer.Test.CMS.AssetsTest do
       assert restored.status == :active
 
       assert {:ok, %{entries: entries}} =
-               CMS.Assets.page(community, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+               CMS.Assets.page(community, %{}, %GroupherServer.Pagi.Params.Offset{
+                 page: 1,
+                 size: 20
+               })
 
       assert Enum.any?(entries, &(&1.id == asset.id))
     end

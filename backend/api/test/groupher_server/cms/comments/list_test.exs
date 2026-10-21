@@ -28,7 +28,7 @@ defmodule GroupherServer.Test.CMS.Comments.QueryList do
              CMS.Comments.paged_comments_participants(
                :post,
                post.id,
-               %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+               %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
              )
 
     assert page.total_count == 1

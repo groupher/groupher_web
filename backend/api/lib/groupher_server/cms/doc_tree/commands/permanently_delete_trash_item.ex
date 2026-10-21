@@ -136,6 +136,7 @@ defmodule GroupherServer.CMS.DocTree.Commands.PermanentlyDeleteTrashItem do
     {:ok, %{done: true, command_id: command_id}}
   end
 
-  defp present_confirmation(_confirmation),
-    do: {:error, CMS.ErrorCat.command_result_unavailable()}
+  defp present_confirmation(_confirmation) do
+    {:error, CMS.ErrorCat.command_result_unavailable()}
+  end
 end

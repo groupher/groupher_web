@@ -8,7 +8,8 @@ defmodule GroupherServer.CMS.Communities.NameRules do
       raw name -> normalize -> syntax/reserved rules -> normalized name or error
   """
 
-  alias GroupherServer.CMS.Communities.ErrorCat
+  alias GroupherServer.{CMS}
+  alias CMS.Communities.ErrorCat
 
   @reserved ~w(
     home dash dashboard apply api auth login logout pricing assets static _next

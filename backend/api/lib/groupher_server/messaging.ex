@@ -49,7 +49,7 @@ defmodule GroupherServer.Messaging do
 
   ## Examples
 
-      Messaging.paged_mentions(user, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+      Messaging.paged_mentions(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
   def paged_mentions(user, filter, pagi), do: Mentions.Query.paged(user, filter, pagi)
 
@@ -58,7 +58,7 @@ defmodule GroupherServer.Messaging do
 
   ## Examples
 
-      Messaging.paged_notifications(user, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+      Messaging.paged_notifications(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
   def paged_notifications(user, filter, pagi), do: Notifications.Query.paged(user, filter, pagi)
 
@@ -106,7 +106,7 @@ defmodule GroupherServer.Messaging do
 
   ## Examples
 
-      Messaging.paged_messages(:mention, user, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+      Messaging.paged_messages(:mention, user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
   def paged_messages(type, user, filter, pagi), do: Inbox.paged_messages(type, user, filter, pagi)
 

@@ -668,7 +668,7 @@ defmodule GroupherServer.Test.Mutation.CMS.CRUD do
     @unsubscribe_query S.Community.m(:unsubscribe_community)
     test "login user can unsubscribe community", ~m(user community)a do
       {:ok, cur_subscribers} =
-        CMS.Communities.members(:subscribers, community, %{}, %Helper.ORM.Pagi.Params.Offset{
+        CMS.Communities.members(:subscribers, community, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -678,7 +678,7 @@ defmodule GroupherServer.Test.Mutation.CMS.CRUD do
       {:ok, _record} = CMS.Communities.Subscriptions.Setup.subscribe(community, user)
 
       {:ok, cur_subscribers} =
-        CMS.Communities.members(:subscribers, community, %{}, %Helper.ORM.Pagi.Params.Offset{
+        CMS.Communities.members(:subscribers, community, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 10
         })
@@ -695,7 +695,7 @@ defmodule GroupherServer.Test.Mutation.CMS.CRUD do
           :subscribers,
           %Community{id: community.id},
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10}
         )
 
       assert result["slug"] == community.slug

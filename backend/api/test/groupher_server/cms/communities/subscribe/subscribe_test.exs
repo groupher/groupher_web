@@ -61,7 +61,7 @@ defmodule GroupherServer.Test.CMS.Communities.Subscribe do
           :subscribers,
           %Community{id: community.id},
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10}
         )
 
       assert %Helper.ORM.Pagi.Page.Offset{} = results

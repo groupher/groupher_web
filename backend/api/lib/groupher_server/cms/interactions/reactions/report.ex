@@ -11,10 +11,10 @@ defmodule GroupherServer.CMS.Interactions.Reactions.Report do
   meta is a separate account moderation mechanism.
   """
 
-  import Ecto.Query
-
   use GroupherServer.CommandPipeline,
     adapter: GroupherServer.CMS.CommandPipelineAdapter
+
+  import Ecto.Query
 
   alias GroupherServer.{Accounts, CMS, Repo}
 

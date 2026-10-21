@@ -420,8 +420,9 @@ defmodule GroupherServer.CMS.Comments.PaginationTest do
 
   defp offset(revision \\ 0), do: %{offset: %{page: 1, size: 20, config_revision: revision}}
 
-  defp offset_page(page, size, revision \\ 0),
-    do: %{offset: %{page: page, size: size, config_revision: revision}}
+  defp offset_page(page, size, revision \\ 0) do
+    %{offset: %{page: page, size: size, config_revision: revision}}
+  end
 
   defp cursor(after_cursor \\ nil, revision \\ 0) do
     %{cursor: %{first: 1, after: after_cursor, config_revision: revision}}

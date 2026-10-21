@@ -543,6 +543,7 @@ defmodule Helper.ORM do
     |> Repo.update()
   end
 
+  @doc "Finds one account by its unique login and returns the standard ORM result."
   def find_user(login) when is_binary(login) do
     User |> find_by(%{login: login})
   end

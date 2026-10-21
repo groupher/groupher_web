@@ -5,10 +5,20 @@ defmodule Helper.ORM.Pagi.Window do
   The provider callback accepts an absolute offset and size and returns entries and
   an accessible total. Cursor positions are signed and bound to the query and sort.
   SQL resources use Pagi.run/3 and keyset queries instead.
-  """
-  alias Helper.ORM.Pagi.{Config, Params, Page, CursorCodec}
-  alias GroupherServer.Pagi.ErrorCat, as: PagiErrorCat
 
+  Business position:
+
+      finite provider rows and query identity
+        -> offset/depth validation
+        -> bounded provider fetch
+        -> offset or signed-cursor page metadata
+  """
+  alias Helper.ORM.Pagi.{Config, Page, CursorCodec}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
+  alias Pagi.ErrorCat, as: PagiErrorCat
+
+  @doc "Runs a finite provider callback after validating the Pagi position and depth limit."
   @spec run(Params.input(), map(), (non_neg_integer(), pos_integer() -> tuple()), keyword()) ::
           tuple()
   def run(input, binding, fetch, opts) do

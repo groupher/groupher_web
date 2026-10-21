@@ -21,7 +21,9 @@ defmodule GroupherServer.Accounts.CollectFolders.List do
 
   alias Accounts.Model.{CollectFolder, User}
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @doc "Pages visible folders; private membership is rechecked for every request."
   @spec page(T.id(), map(), Params.t() | nil, User.t() | nil) :: tuple()

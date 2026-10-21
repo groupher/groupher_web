@@ -20,7 +20,9 @@ defmodule GroupherServer.CMS.Comments.Moderation do
   alias CMS.{FrontDesk, QueryBuilder}
   alias CMS.Model.Comment
   alias Helper.{Multi, ORM, T}
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @audit_legal CMS.Artiment.Const.moderation_state(:legal)
   @audit_illegal CMS.Artiment.Const.moderation_state(:illegal)

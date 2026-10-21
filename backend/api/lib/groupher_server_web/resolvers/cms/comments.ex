@@ -9,6 +9,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Comments do
 
   alias GroupherServer.Accounts
 
+  alias GroupherServer.Pagi
   alias GroupherServer.CMS
   alias Accounts.Model.User
   alias CMS.Model.Community
@@ -94,7 +95,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Comments do
         %{article: article, article_path: %{thread: thread}} = args,
         _info
       ) do
-    with {:ok, pagi} <- Helper.ORM.Pagi.Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       CMS.comments_paged_comments_participants(thread, article.id, pagi)
     end
   end

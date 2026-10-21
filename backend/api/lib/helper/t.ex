@@ -37,7 +37,7 @@ defmodule Helper.T do
   @type thread :: :post | :blog | :changelog | :doc
 
   @type paged_users :: Helper.ORM.Pagi.Page.t()
-  @type pagi_input :: Helper.ORM.Pagi.Params.input()
+  @type pagi_input :: GroupherServer.Pagi.Params.input()
   @type paged_data :: Helper.ORM.Pagi.Page.t() | %{entries: [map()], page_info: map()}
 
   @type article :: Article.t() | map()

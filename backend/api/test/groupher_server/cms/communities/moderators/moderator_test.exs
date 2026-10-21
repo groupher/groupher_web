@@ -303,7 +303,7 @@ defmodule GroupherServer.Test.CMS.Communities.Moderators do
           :moderators,
           %Community{id: community.id},
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert %Helper.ORM.Pagi.Page.Offset{} = results

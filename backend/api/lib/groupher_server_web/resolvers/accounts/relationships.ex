@@ -5,7 +5,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Relationships do
       GraphQL relationship field -> this resolver -> Accounts relationship/collect facade
   """
   alias GroupherServer.Accounts
-  alias Helper.ORM.Pagi.Params
+  alias GroupherServer.Pagi
 
   def follow(_root, %{user: user}, %{context: %{cur_user: cur_user}}) do
     Accounts.fans_follow(cur_user, user)
@@ -16,7 +16,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Relationships do
   end
 
   def paged_followers(_root, %{user: user} = args, %{context: context}) do
-    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       Accounts.fans_paged_followers(
         user,
         Map.get(args, :filter) || %{},
@@ -27,7 +27,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Relationships do
   end
 
   def paged_followings(_root, %{user: user} = args, %{context: context}) do
-    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       Accounts.fans_paged_followings(
         user,
         Map.get(args, :filter) || %{},
@@ -38,7 +38,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Relationships do
   end
 
   def paged_upvoted_articles(_root, %{user: user} = args, _info) do
-    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       Accounts.upvotes_paged_articles(user, Map.get(args, :filter) || %{}, pagi)
     end
   end
@@ -73,7 +73,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Relationships do
   end
 
   def paged_collect_folders(_root, %{user: user} = args, %{context: context}) do
-    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       Accounts.collect_folders_paged(
         user,
         Map.get(args, :filter) || %{},
@@ -84,7 +84,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Relationships do
   end
 
   def paged_collected_articles(_root, %{folder_id: folder_id} = args, %{context: context}) do
-    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       Accounts.collect_folders_paged_articles(
         folder_id,
         Map.get(args, :filter) || %{},

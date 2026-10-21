@@ -643,7 +643,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogComment do
           :changelog,
           changelog.article_id,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert folded.total_count == 1
@@ -674,7 +674,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogComment do
           :changelog,
           changelog.article_id,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert folded.total_count == 0
@@ -797,7 +797,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogComment do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert all_reports.total_count == 1
@@ -814,7 +814,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogComment do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert all_reports.total_count == 1
@@ -921,7 +921,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogComment do
         CMS.Comments.paged_comments_participants(
           thread,
           changelog.id,
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: page_size}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: page_size}
         )
 
       assert %Helper.ORM.Pagi.Page.Offset{} = results
@@ -1162,7 +1162,7 @@ defmodule GroupherServer.Test.CMS.Comments.ChangelogComment do
           :changelog,
           changelog.id,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: page_number, size: page_size}
+          %GroupherServer.Pagi.Params.Offset{page: page_number, size: page_size}
         )
 
       assert exist_in?(random_comment_1, paged_comments.entries)

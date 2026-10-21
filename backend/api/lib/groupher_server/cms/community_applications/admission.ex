@@ -8,9 +8,10 @@ defmodule GroupherServer.CMS.CommunityApplications.Admission do
         -> domain ErrorCat or reusable Decision
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.CommunityApplications.{Config, Decision, Policy, Query}
-  alias GroupherServer.CMS.Communities.ErrorCat
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.Model.User
+  alias CMS.CommunityApplications.{Config, Decision, Policy, Query}
+  alias CMS.Communities.ErrorCat
 
   @doc """
   Runs one application admission with one config read and one blocking query.
@@ -71,11 +72,13 @@ defmodule GroupherServer.CMS.CommunityApplications.Admission do
 
   def check(_action, _actor), do: {:error, :invalid_actor}
 
-  defp denial_error(%Decision{reason_code: :active_application_exists}),
-    do: ErrorCat.active_application_exists()
+  defp denial_error(%Decision{reason_code: :active_application_exists}) do
+    ErrorCat.active_application_exists()
+  end
 
-  defp denial_error(%Decision{reason_code: :apply_not_allowed}),
-    do: ErrorCat.apply_not_allowed()
+  defp denial_error(%Decision{reason_code: :apply_not_allowed}) do
+    ErrorCat.apply_not_allowed()
+  end
 
   defp denial_error(%Decision{}), do: ErrorCat.apply_not_allowed()
 end

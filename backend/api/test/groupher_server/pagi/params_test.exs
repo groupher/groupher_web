@@ -1,7 +1,8 @@
-defmodule Helper.ORM.Pagi.ParamsTest do
+defmodule GroupherServer.Pagi.ParamsTest do
   use ExUnit.Case, async: true
 
-  alias Helper.ORM.Pagi.Params
+  alias GroupherServer.Pagi
+  alias Pagi.Params
 
   test "omission delegates default selection to the engine" do
     assert {:ok, nil} = Params.from_input(nil)
@@ -17,5 +18,9 @@ defmodule Helper.ORM.Pagi.ParamsTest do
     for input <- [%{}, %{page: 1, size: 3}, %{offset: nil}, %{offset: %{}, cursor: %{}}] do
       assert {:error, _} = Params.from_input(input)
     end
+  end
+
+  test "public Pagi facade normalizes GraphQL input for resource resolvers" do
+    assert {:ok, %Params.Offset{page: 2, size: 20}} = Pagi.from_input(%{offset: %{page: 2}})
   end
 end

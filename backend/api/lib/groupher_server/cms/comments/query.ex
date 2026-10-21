@@ -33,7 +33,8 @@ defmodule GroupherServer.CMS.Comments.Query do
   }
 
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Page, Params}
+  alias Helper.ORM.Pagi.{Order, Page}
+  alias Pagi.Params
 
   @pinned_comment_limit Comment.pinned_comment_limit()
   @doc """
@@ -102,9 +103,9 @@ defmodule GroupherServer.CMS.Comments.Query do
              mode in [:timeline, :replies] do
     with {:ok, effective} <-
            PagiMode.for_community(community_slug,
-             expected_revision: Params.revision(pagi_input)
+             expected_revision: Pagi.revision(pagi_input)
            ),
-         {:ok, params} <- Params.from_input(pagi_input, effective.config.default_size),
+         {:ok, params} <- Pagi.from_input(pagi_input, effective.config.default_size),
          {:ok, article} <- stable_article(thread, article_id),
          query <- comment_page_query(article, thread, filter, mode, user),
          order <- comment_order(filter),
@@ -142,9 +143,9 @@ defmodule GroupherServer.CMS.Comments.Query do
          {:ok, article} <- stable_article(root.thread, root.article_id),
          {:ok, effective} <-
            PagiMode.for_community(community_slug,
-             expected_revision: Params.revision(pagi_input)
+             expected_revision: Pagi.revision(pagi_input)
            ),
-         {:ok, params} <- Params.from_input(pagi_input, effective.config.default_size),
+         {:ok, params} <- Pagi.from_input(pagi_input, effective.config.default_size),
          order <- comment_order(filter),
          {:ok, page} <-
            ORM.pagi(

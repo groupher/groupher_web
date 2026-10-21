@@ -9,8 +9,9 @@ defmodule GroupherServer.CMS.CommunityApplications.Policy do
       actor + action + Policy.Input -> allow/deny Decision
   """
 
-  alias GroupherServer.Accounts.Model.User
-  alias GroupherServer.CMS.CommunityApplications.{Decision, Policy.Input}
+  alias GroupherServer.{Accounts, CMS}
+  alias Accounts.Model.User
+  alias CMS.CommunityApplications.{Decision, Policy.Input}
 
   @doc """
   Evaluates one known application action from already-loaded facts.

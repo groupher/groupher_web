@@ -33,7 +33,9 @@ defmodule GroupherServer.CMS.Articles.Moderation do
 
   alias CMS.SearchArtiments.Indexer
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @doc """
   Returns a paged list of audit-failed articles for one thread.

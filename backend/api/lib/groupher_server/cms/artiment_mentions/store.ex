@@ -73,7 +73,9 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
 
   alias CMS.Model.{Article, ArtimentMention, Comment, CommentBody}
   alias Helper.{ORM, T}
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @threads Config.threads()
   @mention_types Config.mention_types()

@@ -4,7 +4,9 @@ defmodule Helper.ORM.PagiIntegrationTest do
   import Ecto.Query
 
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Config, Count, Order, Page, Params}
+  alias Helper.ORM.Pagi.{Config, Count, Order, Page}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   defmodule Item do
     use Ecto.Schema

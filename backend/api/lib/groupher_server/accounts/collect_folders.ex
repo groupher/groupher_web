@@ -18,11 +18,31 @@ defmodule GroupherServer.Accounts.CollectFolders do
   alias Accounts.Model.User
   alias Helper.T
 
-  @doc "Pages folders using explicit Pagi parameters and optional viewer privacy."
+  @doc """
+  Pages one user's collection folders with optional viewer-aware visibility.
+
+  ## Examples
+
+      Accounts.CollectFolders.paged(user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
   def paged(%User{id: id}, filter, pagi, viewer \\ nil), do: List.page(id, filter, pagi, viewer)
 
-  @doc "Pages folder entries using explicit Pagi parameters and optional viewer privacy."
+  @doc """
+  Pages the entries in a folder for its owner or an authorized viewer.
+
+  ## Examples
+
+      Accounts.CollectFolders.paged_articles(folder.id, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
   defdelegate paged_articles(folder_id, filter, pagi), to: Articles, as: :paged
+
+  @doc """
+  Pages folder entries while applying the requesting viewer's privacy access.
+
+  ## Examples
+
+      Accounts.CollectFolders.paged_articles(folder.id, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
+  """
   defdelegate paged_articles(folder_id, filter, pagi, viewer), to: Articles, as: :paged
 
   @doc """

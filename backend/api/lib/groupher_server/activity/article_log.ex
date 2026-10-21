@@ -14,7 +14,9 @@ defmodule GroupherServer.Activity.ArticleLog do
 
   alias CMS.Model.{Article, ArticleDraft, DocDraft}
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @doc """
   Lists the permission-filtered Activity surface for one Article or Doc branch.

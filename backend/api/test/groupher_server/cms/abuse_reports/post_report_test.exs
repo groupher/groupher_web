@@ -25,7 +25,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       report = all_reports.entries |> List.first()
@@ -41,7 +41,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       report = List.first(all_reports.entries)
@@ -67,7 +67,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert all_reports.total_count == 0
@@ -88,7 +88,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert all_reports.total_count == 1
@@ -108,7 +108,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert all_reports.total_count == 1
@@ -125,7 +125,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert all_reports.total_count == 1
@@ -147,7 +147,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       report = List.first(all_reports.entries)
@@ -180,7 +180,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       assert {:error, :article_binding_not_found} =
                CMS.AbuseReports.paged_reports(
                  Map.drop(filter, [:page, :size]),
-                 %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+                 %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
                )
     end
 
@@ -193,7 +193,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       assert {:error, :article_binding_not_found} =
                CMS.AbuseReports.paged_reports(
                  Map.drop(filter, [:page, :size]),
-                 %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+                 %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
                )
     end
 
@@ -215,7 +215,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.PostReport do
       assert {:ok, %{entries: entries}} =
                CMS.AbuseReports.paged_reports(
                  %{content_type: :post},
-                 %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+                 %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
                )
 
       assert Enum.map(entries, & &1.article.id) == [newer_post.id, post.id]

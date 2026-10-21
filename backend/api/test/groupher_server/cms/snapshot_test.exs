@@ -76,7 +76,7 @@ defmodule GroupherServer.Test.CMS.SnapshotTest do
         CMS.Articles.page(
           :post,
           %{community: community.slug, order: :upvotes},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10, config_revision: 0}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10, config_revision: 0}
         )
 
       first = first_entry(first_page)
@@ -90,7 +90,7 @@ defmodule GroupherServer.Test.CMS.SnapshotTest do
         CMS.Articles.page(
           :post,
           %{community: community.slug, order: :upvotes},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 10, config_revision: 0}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 10, config_revision: 0}
         )
 
       second = first_entry(second_page)

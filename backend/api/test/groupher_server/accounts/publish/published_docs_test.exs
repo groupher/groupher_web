@@ -30,7 +30,7 @@ defmodule GroupherServer.Test.Accounts.Publish.Doc do
 
     test "fresh user get empty paged published docs", ~m(user2)a do
       {:ok, results} =
-        Accounts.paged_articles(user2, :doc, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Accounts.paged_articles(user2, :doc, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 20
         })
@@ -66,7 +66,10 @@ defmodule GroupherServer.Test.Accounts.Publish.Doc do
       end)
 
       {:ok, results} =
-        Accounts.paged_articles(user, :doc, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 50})
+        Accounts.paged_articles(user, :doc, %{}, %GroupherServer.Pagi.Params.Offset{
+          page: 1,
+          size: 50
+        })
 
       assert results.page_info.api == :offset
       assert results.page_info.total_count == @publish_count * 2 + 1
@@ -96,7 +99,7 @@ defmodule GroupherServer.Test.Accounts.Publish.Doc do
         acc ++ [comment]
       end)
 
-      pagi = %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+      pagi = %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
       {:ok, articles} = Accounts.paged_comments(user, :doc, %{}, pagi, user)
 
       entries = articles.entries

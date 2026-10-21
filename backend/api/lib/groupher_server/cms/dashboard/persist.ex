@@ -58,7 +58,13 @@ defmodule GroupherServer.CMS.Dashboard.Persist do
     end
   end
 
-  @doc "Atomically updates both layout preferences with an expected server-owned revision."
+  @doc """
+  Atomically updates desktop and mobile Pagi modes when the expected revision matches.
+
+  ## Examples
+
+      CMS.Dashboard.Persist.update_pagi_mode(dashboard, :page, :infinite_scroll, dashboard.pagi_revision)
+  """
   def update_pagi_mode(%CommunityDashboard{id: id}, mode, mobile_mode, expected_revision) do
     dashboard =
       from(d in CommunityDashboard, where: d.id == ^id, lock: "FOR UPDATE") |> Repo.one!()

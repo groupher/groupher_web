@@ -5,7 +5,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Profiles do
       GraphQL profile field -> this resolver -> Accounts profile facade
   """
   alias GroupherServer.Accounts
-  alias Helper.ORM.Pagi.Params
+  alias GroupherServer.Pagi
 
   def me(_root, _args, %{context: %{cur_user: cur_user}}) do
     {:ok, cur_user}
@@ -28,7 +28,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Profiles do
   end
 
   def paged_users(_root, args, %{context: context}) do
-    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       Accounts.profiles_paged_users(
         Map.get(args, :filter) || %{},
         pagi,
@@ -66,7 +66,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Profiles do
   end
 
   def paged_published_comments(_root, %{user: user} = args, %{context: context}) do
-    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       Accounts.publish_paged_comments(
         user,
         Map.get(args, :thread),
@@ -78,7 +78,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Profiles do
   end
 
   def moderatorable_communities(_root, args, %{context: context}) do
-    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       case Map.get(args, :user) || Map.get(context, :cur_user) do
         nil -> {:error, "login required"}
         user -> Accounts.achievements_paged_moderatorable_communities(user, pagi)
@@ -87,7 +87,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Profiles do
   end
 
   def subscribed_communities(_root, %{user: user} = args, _info) do
-    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       Accounts.profiles_subscribed_communities(user, Map.get(args, :filter) || %{}, pagi)
     end
   end

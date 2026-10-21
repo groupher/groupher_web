@@ -84,8 +84,9 @@ defmodule GroupherServer.CMS.Dashboard.Commands.UpdateSection do
     Persist.update_pagi_mode(dashboard, mode, mobile_mode, revision)
   end
 
-  defp update_dashboard(_dashboard, :pagi_mode, _args),
-    do: {:error, GroupherServer.Pagi.invalid_config_context()}
+  defp update_dashboard(_dashboard, :pagi_mode, _args) do
+    {:error, GroupherServer.Pagi.invalid_config_context()}
+  end
 
   defp update_dashboard(dashboard, key, args), do: Persist.replace_section(dashboard, key, args)
 

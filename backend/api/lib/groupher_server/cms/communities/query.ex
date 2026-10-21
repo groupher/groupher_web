@@ -20,7 +20,9 @@ defmodule GroupherServer.CMS.Communities.Query do
   alias Accounts.Model.User
   alias CMS.Model.{Community, Category}
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Order, Params}
+  alias Helper.ORM.Pagi.{Order}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   @doc "Returns the canonical public Community query for composable collection scopes."
   def public_query do

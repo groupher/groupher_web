@@ -14,8 +14,22 @@ defmodule GroupherServer.Accounts.Publish do
   alias Accounts.Model.User
   alias Helper.T
 
-  @doc "Pages a user's published Article paths with explicit Pagi input."
+  @doc """
+  Pages a user's published Article paths for the selected thread.
+
+  ## Examples
+
+      Accounts.Publish.paged_articles(user, :post, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
+  """
   defdelegate paged_articles(user, thread, filter, pagi), to: Articles, as: :paged
+
+  @doc """
+  Pages published Article paths and projects the requesting viewer's state.
+
+  ## Examples
+
+      Accounts.Publish.paged_articles(user, :post, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
+  """
   defdelegate paged_articles(user, thread, filter, pagi, viewer), to: Articles, as: :paged
 
   @doc """
@@ -38,6 +52,12 @@ defmodule GroupherServer.Accounts.Publish do
   @spec revalidate_user(User.t()) :: {:ok, :pass}
   def revalidate_user(%User{} = user), do: Effects.revalidate_user(user)
 
-  @doc "Pages published Comments with explicit filter and Pagi position."
+  @doc """
+  Pages a user's published comments for the selected thread and viewer.
+
+  ## Examples
+
+      Accounts.Publish.paged_comments(user, :post, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}, viewer)
+  """
   defdelegate paged_comments(user, thread, filter, pagi, viewer), to: Comments, as: :paged
 end

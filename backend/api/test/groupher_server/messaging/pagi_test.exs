@@ -2,7 +2,9 @@ defmodule GroupherServer.Test.Messaging.Pagi do
   use GroupherServer.TestMate
 
   alias GroupherServer.Messaging
-  alias Helper.ORM.Pagi.{Page, Params}
+  alias Helper.ORM.Pagi.{Page}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   for type <- [:mention, :notification] do
     @message_type type

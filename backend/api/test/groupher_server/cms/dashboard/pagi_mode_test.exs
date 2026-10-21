@@ -1,7 +1,8 @@
 defmodule GroupherServer.CMS.Dashboard.PagiModeTest do
   use ExUnit.Case, async: true
-  alias GroupherServer.CMS.Dashboard.PagiMode
-  alias GroupherServer.CMS.Model.CommunityDashboard
+  alias GroupherServer.{CMS}
+  alias CMS.Dashboard.PagiMode
+  alias CMS.Model.CommunityDashboard
 
   test "all modes derive one API and fixed platform limits" do
     for {mode, api} <- [page: :offset, load_more: :cursor, infinite_scroll: :cursor] do

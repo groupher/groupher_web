@@ -14,7 +14,8 @@ defmodule GroupherServer.CMS.Interactions.ReactionUsers do
 
   alias GroupherServer.CMS
 
-  alias GroupherServer.Accounts.Model.User
+  alias GroupherServer.{Accounts}
+  alias Accounts.Model.User
   alias CMS.FrontDesk.Relation
   alias Helper.ORM
   alias Helper.ORM.Pagi.{Order}

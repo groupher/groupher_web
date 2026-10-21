@@ -18,8 +18,8 @@ defmodule GroupherServer.CMS.Articles.Pagination do
   import Ecto.Query, warn: false
 
   alias GroupherServer.{Accounts, CMS, Pagi, Repo}
-  alias GroupherServer.CMS.Articles.ArticleLite
-  alias GroupherServer.CMS.Communities.Enable
+  alias CMS.Articles.ArticleLite
+  alias CMS.Communities.Enable
   alias CMS.Dashboard.PagiMode
   alias CMS.ErrorCat
 
@@ -45,7 +45,8 @@ defmodule GroupherServer.CMS.Articles.Pagination do
   alias Accounts.Model.User
 
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Config, Order, Page, Params}
+  alias Helper.ORM.Pagi.{Config, Order, Page}
+  alias Pagi.Params
 
   @type filter :: %{optional(atom()) => term()}
 
@@ -76,7 +77,7 @@ defmodule GroupherServer.CMS.Articles.Pagination do
          opts <- put_effective_config(opts, effective, filter),
          {:ok, _thread} <- Enable.thread?(Map.get(filter, :community), thread),
          {:ok, order} <- order_for(thread, filter),
-         {:ok, params} <- Params.from_input(pagi, effective.config.default_size),
+         {:ok, params} <- Pagi.from_input(pagi, effective.config.default_size),
          {:ok, page} <- run_page(thread, filter, params, order, opts),
          {:ok, entries} <- present_entries(page.entries, viewer),
          {:ok, pinned_entries} <-
@@ -104,7 +105,7 @@ defmodule GroupherServer.CMS.Articles.Pagination do
 
       :error ->
         PagiMode.for_community(Map.get(filter, :community),
-          expected_revision: Params.revision(pagi)
+          expected_revision: Pagi.revision(pagi)
         )
     end
   end

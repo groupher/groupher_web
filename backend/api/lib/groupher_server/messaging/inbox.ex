@@ -25,7 +25,7 @@ defmodule GroupherServer.Messaging.Inbox do
 
   ## Examples
 
-      Messaging.Inbox.paged_messages(:mention, user, %{}, %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20})
+      Messaging.Inbox.paged_messages(:mention, user, %{}, %GroupherServer.Pagi.Params.Offset{page: 1, size: 20})
   """
   def paged_messages(:mention, user, filter, pagi), do: Mentions.Query.paged(user, filter, pagi)
 

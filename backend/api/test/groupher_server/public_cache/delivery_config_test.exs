@@ -3,7 +3,8 @@ defmodule GroupherServer.PublicCache.DeliveryConfigTest do
 
   use ExUnit.Case, async: false
 
-  alias GroupherServer.PublicCache.DeliveryConfig
+  alias GroupherServer.PublicCache
+  alias PublicCache.DeliveryConfig
 
   setup do
     previous = Application.get_env(:groupher_server, DeliveryConfig)

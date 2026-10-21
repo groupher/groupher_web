@@ -1,7 +1,9 @@
 defmodule GroupherServer.Test.Accounts.Fans.Pagi do
   use GroupherServer.TestMate
 
-  alias Helper.ORM.Pagi.{Page, Params}
+  alias Helper.ORM.Pagi.{Page}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   test "membership order does not change User cursor identity or page boundaries" do
     {:ok, owner} = db_insert(:user)

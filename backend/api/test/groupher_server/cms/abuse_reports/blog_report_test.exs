@@ -24,7 +24,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       report = all_reports.entries |> List.first()
@@ -40,7 +40,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       report = List.first(all_reports.entries)
@@ -66,7 +66,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert all_reports.total_count == 0
@@ -87,7 +87,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert all_reports.total_count == 1
@@ -107,7 +107,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert all_reports.total_count == 1
@@ -124,7 +124,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       assert all_reports.total_count == 1
@@ -146,7 +146,7 @@ defmodule GroupherServer.Test.CMS.AbuseReports.BlogReport do
       {:ok, all_reports} =
         CMS.AbuseReports.paged_reports(
           Map.drop(filter, [:page, :size]),
-          %Helper.ORM.Pagi.Params.Offset{page: filter.page, size: filter.size}
+          %GroupherServer.Pagi.Params.Offset{page: filter.page, size: filter.size}
         )
 
       report = List.first(all_reports.entries)

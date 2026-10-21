@@ -6,7 +6,8 @@ defmodule Helper.ORM.Pagi.CursorCodec do
   cursor is never exposed without a surface/order/fingerprint binding.
   """
 
-  alias GroupherServer.Pagi.ErrorCat
+  alias GroupherServer.{Pagi}
+  alias Pagi.ErrorCat
 
   @cursor_version 1
   @max_cursor_bytes 8_192

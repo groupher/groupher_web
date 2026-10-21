@@ -53,7 +53,7 @@ defmodule GroupherServer.CMS.Assets do
       #=> {:ok, %{entries: assets, total_count: total_count}}
 
   """
-  @spec page(Community.t(), map() | nil, Helper.ORM.Pagi.Params.t() | nil) ::
+  @spec page(Community.t(), map() | nil, GroupherServer.Pagi.Params.t() | nil) ::
           T.domain_res(T.paged_data())
   def page(%Community{} = community, filter, pagi), do: Query.page(community, filter, pagi)
 
@@ -93,7 +93,7 @@ defmodule GroupherServer.CMS.Assets do
       #=> {:ok, %{entries: refs, total_count: total_count}}
 
   """
-  @spec refs(Community.t(), T.id(), Helper.ORM.Pagi.Params.t() | nil) ::
+  @spec refs(Community.t(), T.id(), GroupherServer.Pagi.Params.t() | nil) ::
           T.domain_res(T.paged_data())
   def refs(%Community{} = community, asset_id, pagi) do
     Query.refs(community, asset_id, pagi)

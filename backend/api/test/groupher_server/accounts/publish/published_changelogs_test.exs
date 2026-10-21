@@ -30,7 +30,7 @@ defmodule GroupherServer.Test.Accounts.Publish.Changelog do
 
     test "fresh user get empty paged published changelogs", ~m(user2)a do
       {:ok, results} =
-        Accounts.paged_articles(user2, :changelog, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Accounts.paged_articles(user2, :changelog, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 20
         })
@@ -65,7 +65,7 @@ defmodule GroupherServer.Test.Accounts.Publish.Changelog do
       end)
 
       {:ok, results} =
-        Accounts.paged_articles(user, :changelog, %{}, %Helper.ORM.Pagi.Params.Offset{
+        Accounts.paged_articles(user, :changelog, %{}, %GroupherServer.Pagi.Params.Offset{
           page: 1,
           size: 30
         })
@@ -98,7 +98,7 @@ defmodule GroupherServer.Test.Accounts.Publish.Changelog do
         acc ++ [comment]
       end)
 
-      pagi = %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+      pagi = %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
       {:ok, articles} = Accounts.paged_comments(user, :changelog, %{}, pagi, user)
 
       entries = articles.entries

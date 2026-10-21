@@ -9,9 +9,9 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
 
   import Ecto.Query
 
-  alias GroupherServer.CMS.Articles.Pagination
+  alias CMS.Articles.Pagination
   alias GroupherServer.CMS
-  alias GroupherServer.CMS.Model.ArticleStats
+  alias CMS.Model.ArticleStats
   alias GroupherServer.ErrorCat
   alias Helper.ORM.Pagi.Config
 
@@ -41,11 +41,15 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
               pinned_entries: [],
               page_info: %{api: :offset, page: 1, total_count: 1}
             }} =
-             Pagination.page(:post, %{community: community.slug}, %Helper.ORM.Pagi.Params.Offset{
-               page: 1,
-               size: 20,
-               config_revision: 0
-             })
+             Pagination.page(
+               :post,
+               %{community: community.slug},
+               %GroupherServer.Pagi.Params.Offset{
+                 page: 1,
+                 size: 20,
+                 config_revision: 0
+               }
+             )
 
     assert entry.id == article.id
     assert entry.inner_id == 1
@@ -81,11 +85,15 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
       CMS.Communities.set_tag(article, second_tag.id, user, Ecto.UUID.generate())
 
     assert {:ok, %{entries: [entry]}} =
-             Pagination.page(:post, %{community: community.slug}, %Helper.ORM.Pagi.Params.Offset{
-               page: 1,
-               size: 20,
-               config_revision: 0
-             })
+             Pagination.page(
+               :post,
+               %{community: community.slug},
+               %GroupherServer.Pagi.Params.Offset{
+                 page: 1,
+                 size: 20,
+                 config_revision: 0
+               }
+             )
 
     assert entry.author.id == article.author.id
     assert Enum.map(entry.community_tags, & &1.id) == [first_tag.id, second_tag.id]
@@ -109,7 +117,7 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
              Pagination.page(
                :post,
                %{community: community.slug},
-               %Helper.ORM.Pagi.Params.Cursor{first: 1, config_revision: 0},
+               %GroupherServer.Pagi.Params.Cursor{first: 1, config_revision: 0},
                nil,
                config: config
              )
@@ -121,7 +129,7 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
              Pagination.page(
                :post,
                %{community: community.slug},
-               %Helper.ORM.Pagi.Params.Cursor{first: 1, after: cursor, config_revision: 0},
+               %GroupherServer.Pagi.Params.Cursor{first: 1, after: cursor, config_revision: 0},
                nil,
                config: config
              )
@@ -159,7 +167,7 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
              Pagination.page(
                :post,
                Map.drop(base_filter, [:page, :size, :first, :after, :config_revision]),
-               %Helper.ORM.Pagi.Params.Cursor{first: 1, config_revision: 0},
+               %GroupherServer.Pagi.Params.Cursor{first: 1, config_revision: 0},
                nil,
                config: config
              )
@@ -174,7 +182,11 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
                  :after,
                  :config_revision
                ]),
-               %Helper.ORM.Pagi.Params.Cursor{first: 1, after: first_cursor, config_revision: 0},
+               %GroupherServer.Pagi.Params.Cursor{
+                 first: 1,
+                 after: first_cursor,
+                 config_revision: 0
+               },
                nil,
                config: config
              )
@@ -189,7 +201,11 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
                  :after,
                  :config_revision
                ]),
-               %Helper.ORM.Pagi.Params.Cursor{first: 1, after: second_cursor, config_revision: 0},
+               %GroupherServer.Pagi.Params.Cursor{
+                 first: 1,
+                 after: second_cursor,
+                 config_revision: 0
+               },
                nil,
                config: config
              )
@@ -236,7 +252,7 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
              Pagination.page(
                :post,
                %{community: community.slug},
-               %Helper.ORM.Pagi.Params.Cursor{first: 1, config_revision: 0},
+               %GroupherServer.Pagi.Params.Cursor{first: 1, config_revision: 0},
                nil,
                config: config
              )
@@ -249,7 +265,7 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
              Pagination.page(
                :post,
                %{community: community.slug},
-               %Helper.ORM.Pagi.Params.Cursor{first: 1, after: cursor, config_revision: 0},
+               %GroupherServer.Pagi.Params.Cursor{first: 1, after: cursor, config_revision: 0},
                nil,
                config: config
              )
@@ -276,7 +292,7 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
             :after,
             :config_revision
           ]),
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 1, config_revision: 0}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 1, config_revision: 0}
         )
       end)
 
@@ -293,7 +309,7 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
                 :after,
                 :config_revision
               ]),
-              %Helper.ORM.Pagi.Params.Offset{page: 1, size: size, config_revision: 0}
+              %GroupherServer.Pagi.Params.Offset{page: 1, size: size, config_revision: 0}
             )
           end)
 
@@ -326,7 +342,7 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
         Pagination.page(
           :post,
           Map.drop(base_filter, [:page, :size, :first, :after, :config_revision]),
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
         )
       end)
 
@@ -341,7 +357,7 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
             :after,
             :config_revision
           ]),
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20, config_revision: 0}
         )
       end)
 
@@ -449,7 +465,7 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
       filter = Map.merge(tag_filter, %{community: community.slug})
 
       assert {:ok, %{entries: [head], page_info: %{total_count: 2, total_pages: 2}}} =
-               Pagination.page(:post, filter, %Helper.ORM.Pagi.Params.Offset{
+               Pagination.page(:post, filter, %GroupherServer.Pagi.Params.Offset{
                  page: 1,
                  size: 1,
                  config_revision: 0
@@ -467,7 +483,7 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
                    :after,
                    :config_revision
                  ]),
-                 %Helper.ORM.Pagi.Params.Offset{page: 2, size: 1, config_revision: 0}
+                 %GroupherServer.Pagi.Params.Offset{page: 2, size: 1, config_revision: 0}
                )
 
       assert tail.id == first.id
@@ -498,7 +514,7 @@ defmodule GroupherServer.CMS.Articles.PaginationTest do
                    :after,
                    :config_revision
                  ]),
-                 %Helper.ORM.Pagi.Params.Cursor{
+                 %GroupherServer.Pagi.Params.Cursor{
                    first: config.default_size,
                    after: cursor,
                    config_revision: config.revision

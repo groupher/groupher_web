@@ -37,7 +37,7 @@ defmodule GroupherServer.Test.CMS.Events.Notify.ChangelogTest do
           :notification,
           changelog.author,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert notifications.total_count == 1
@@ -62,7 +62,7 @@ defmodule GroupherServer.Test.CMS.Events.Notify.ChangelogTest do
           :notification,
           comment.author,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert notifications.total_count == 1
@@ -90,7 +90,7 @@ defmodule GroupherServer.Test.CMS.Events.Notify.ChangelogTest do
           :notification,
           changelog.author,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert notifications.total_count == 0
@@ -112,7 +112,7 @@ defmodule GroupherServer.Test.CMS.Events.Notify.ChangelogTest do
           :notification,
           comment.author,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert notifications.total_count == 0
@@ -131,7 +131,7 @@ defmodule GroupherServer.Test.CMS.Events.Notify.ChangelogTest do
           :notification,
           changelog.author,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert notifications.total_count == 1
@@ -158,7 +158,7 @@ defmodule GroupherServer.Test.CMS.Events.Notify.ChangelogTest do
           :notification,
           changelog.author,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert notifications.total_count == 0
@@ -187,7 +187,7 @@ defmodule GroupherServer.Test.CMS.Events.Notify.ChangelogTest do
           :notification,
           changelog.author,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert notifications.total_count == 1
@@ -226,7 +226,7 @@ defmodule GroupherServer.Test.CMS.Events.Notify.ChangelogTest do
           :notification,
           comment.author,
           %{},
-          %Helper.ORM.Pagi.Params.Offset{page: 1, size: 20}
+          %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
         )
 
       assert notifications.total_count == 1

@@ -195,7 +195,7 @@ defmodule GroupherServer.Accounts.Profiles.BrowserSessions do
 
       Accounts.Profiles.BrowserSessions.list(user, session_ref, nil)
   """
-  @spec list(User.t(), String.t(), Helper.ORM.Pagi.Params.input()) :: tuple()
+  @spec list(User.t(), String.t(), GroupherServer.Pagi.Params.input()) :: tuple()
   def list(%User{} = user, current_ref, pagi) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 

@@ -47,7 +47,7 @@ defmodule GroupherServer.Test.CMS.PostPendingFlag do
                )
 
       assert {:ok, %{entries: entries}} =
-               CMS.Articles.paged_audit_failed(:post, %Helper.ORM.Pagi.Params.Offset{
+               CMS.Articles.paged_audit_failed(:post, %GroupherServer.Pagi.Params.Offset{
                  page: 1,
                  size: 20
                })

@@ -7,8 +7,10 @@ defmodule Helper.ORM.Pagi do
   metadata.
   """
 
-  alias GroupherServer.Pagi.ErrorCat
-  alias Helper.ORM.Pagi.{Config, Count, CursorCodec, Order, Page, Params}
+  alias GroupherServer.{Pagi}
+  alias Pagi.ErrorCat
+  alias Helper.ORM.Pagi.{Config, Count, CursorCodec, Order, Page}
+  alias Pagi.Params
   alias GroupherServer.Repo
 
   @telemetry_event [:groupher, :pagi, :run]

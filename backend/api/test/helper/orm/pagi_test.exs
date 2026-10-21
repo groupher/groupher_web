@@ -5,7 +5,9 @@ defmodule Helper.ORM.PagiTest do
 
   alias GroupherServer.ErrorCat
   alias Helper.ORM
-  alias Helper.ORM.Pagi.{Config, Order, Page, Params}
+  alias Helper.ORM.Pagi.{Config, Order, Page}
+  alias GroupherServer.{Pagi}
+  alias Pagi.Params
 
   defmodule Item do
     use Ecto.Schema

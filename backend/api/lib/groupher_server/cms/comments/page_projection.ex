@@ -3,6 +3,13 @@ defmodule GroupherServer.CMS.Comments.PageProjection do
   Builds bounded Comment pages from canonical rows. Reply previews are a batch
   projection of each root's descendants, never the persisted embedded snapshot.
   Parent identity and root identity remain separate for future tree views.
+
+  Business position:
+
+      Comment collection query
+        -> bounded root/reply page
+        -> PageProjection batch counts and previews
+        -> viewer-aware response
   """
   import Ecto.Query
   alias GroupherServer.{CMS, Repo}

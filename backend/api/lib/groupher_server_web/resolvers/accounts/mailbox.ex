@@ -6,7 +6,7 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Mailbox do
   """
   import ShortMaps
   alias GroupherServer.Accounts
-  alias Helper.ORM.Pagi.Params
+  alias GroupherServer.Pagi
 
   def mailbox_status(_root, _args, %{context: %{cur_user: cur_user}}) do
     Accounts.mailbox_status(cur_user)
@@ -21,13 +21,13 @@ defmodule GroupherServerWeb.Resolvers.Accounts.Mailbox do
   end
 
   def paged_mailbox_mentions(_root, args, %{context: %{cur_user: cur_user}}) do
-    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       Accounts.mailbox_paged_messages(:mention, cur_user, Map.get(args, :filter) || %{}, pagi)
     end
   end
 
   def paged_mailbox_notifications(_root, args, %{context: %{cur_user: cur_user}}) do
-    with {:ok, pagi} <- Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       Accounts.mailbox_paged_messages(
         :notification,
         cur_user,

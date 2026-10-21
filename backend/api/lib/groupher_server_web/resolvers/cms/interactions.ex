@@ -9,6 +9,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Interactions do
 
   alias GroupherServer.Accounts
 
+  alias GroupherServer.Pagi
   alias GroupherServer.CMS
   alias Accounts.Model.User
 
@@ -31,13 +32,13 @@ defmodule GroupherServerWeb.Resolvers.CMS.Interactions do
   end
 
   def upvoted_users(_root, %{article: article} = args, _info) do
-    with {:ok, pagi} <- Helper.ORM.Pagi.Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       CMS.interactions_upvoted_users(article, pagi)
     end
   end
 
   def collected_users(_root, %{article: article} = args, _info) do
-    with {:ok, pagi} <- Helper.ORM.Pagi.Params.from_input(Map.get(args, :pagi)) do
+    with {:ok, pagi} <- Pagi.from_input(Map.get(args, :pagi)) do
       CMS.interactions_collected_users(article, pagi)
     end
   end
