@@ -759,7 +759,7 @@ Audit/Activity/Outbox
 - leaf Persist、查询、recorder、普通 helper 和既有非 Command maintenance workflow 未被强制包装；
 - CMS 的 contracts/graph 产物继续保持 CMS scope，不能误读为全 Backend inventory；
 - Accounts/Messaging 的 21 个非 CMS Command 使用通用 DSL 编译合同和领域行为测试验收；不为此维护全 Backend
-  inventory/coverage/graph 账本；
+  contracts/graph 账本；
 - 其它 Context 写入口默认保留现有 owner；只在出现 identity、锁、事务、retry/recovery 或 user/internal
   协议混用问题时逐项重新评估，不建立旧/新 runtime 双路兼容层。
 
@@ -825,14 +825,15 @@ Facade、Resolver 和 Command identity 检查都是阻断式 architecture gates�
     编译后图同时阻断从其他 stage 经普通 helper 间接抵达 Gate。旧 workflow 中重复的 Gate 必须拆成 Command
     gate 与明确的 `*_after_gate` 写入口，不能用 flag 或兼容分支绕过；编译图提取到的 stage 集合必须与 contract
     完全一致，否则以 `stage_analysis_errors` fail closed。
-15. contracts、coverage 与 graph 必须共用同一 production module discovery，只接受 compiler source path 位于
+15. contracts 与 graph 必须共用同一 production module discovery，只接受 compiler source path 位于
     `backend/api/lib/` 的编译模块；测试 fixture 即使出现在 compile path 中也不得进入正式 contracts 或 graph。
     Mix project 加载后，项目根、源码 glob、manifest 和相对路径必须从 `Mix.Project.project_file/0` 推导，不能
-    依赖 task 执行期间变化的 cwd；这不表示 Mix 可以从不含 `mix.exs` 的任意子目录启动。三份 checked-in JSON
-    中的 `{module, function, arity, pipeline}` 集合必须完全一致，且每份原始列表不得含重复项。
+    依赖 task 执行期间变化的 cwd；这不表示 Mix 可以从不含 `mix.exs` 的任意子目录启动。checked-in
+    `pipeline_contracts.json` 的 `{module, function, arity, pipeline}` 列表不得含重复项，graph 分析使用同一合同集合；
+    `pipeline_graph.json` 只作为本地诊断产物，不是第二份 checked-in registry。
 
-具体数量以生成 manifest 为准。合同要求 coverage 的 `uncovered` 和 graph 的
-uncovered/unresolved/internal/top-level/workflow/gate-stage/mixed-protocol/unpipelined 违规均为 0。静态图不替代 Gate action、
+具体数量以生成 manifest 为准。合同要求 graph 的
+uncovered/unresolved/internal/top-level/gate-stage/mixed-protocol/unpipelined 违规均为 0。静态图不替代 Gate action、
 Lifecycle transition、数据库回滚和 Receipt recovery 的行为测试。
 
 ### 13.3 行为测试
