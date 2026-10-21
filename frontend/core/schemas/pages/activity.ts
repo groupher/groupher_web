@@ -205,9 +205,9 @@ export const communityActivity = graphql(`
   query CommunityActivity(
     $community: String!
     $selection: CommunityActivitySelectionInput!
-    $page: Int = 1
+    $pagi: PagiInput
   ) {
-    communityActivity(community: $community, selection: $selection, page: $page) {
+    communityActivity(community: $community, selection: $selection, pagi: $pagi) {
       entries {
         id
         eventRef
@@ -260,10 +260,21 @@ export const communityActivity = graphql(`
         occurredAt
         recordedAt
       }
-      totalCount
-      totalPages
-      pageNumber
-      pageSize
+      pageInfo {
+        __typename
+        hasNextPage
+        hasPreviousPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
+        }
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
+        }
+      }
       queryContext {
         preset {
           key

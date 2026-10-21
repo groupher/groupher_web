@@ -27,7 +27,11 @@ const list = (community: string, selection: TActivitySelection, page: number) =>
   queryOptions({
     queryKey: activityKeys.list(community, selection, page),
     queryFn: async () => {
-      const data = await browserGraphQLRequest(communityActivity, { community, selection, page })
+      const data = await browserGraphQLRequest(communityActivity, {
+        community,
+        selection,
+        pagi: { offset: { page, size: 20 } },
+      })
       return data.communityActivity
     },
     enabled: !!community,

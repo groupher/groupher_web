@@ -12,6 +12,7 @@ export type TPagedChangelogsResult = {
   pagedChangelogs: TPagedArticleViewModels
   pagedParams: TPagedArticlesParams
   paginationApi: TEffectivePagiConfig['api']
+  paginationMode: TEffectivePagiConfig['mode']
   initialError: Error | null
   isRetryingInitial: boolean
   retryInitial: () => Promise<unknown>

@@ -11,6 +11,12 @@ import type {
   TOperationContext,
   TQueryTarget,
 } from '../optimistic/types'
+import {
+  mapCommentPages,
+  mapCommentEntries,
+  commentCacheEntries,
+  commentCollectionOf,
+} from './pages'
 
 export type TCommentScope = {
   community: string
@@ -43,11 +49,15 @@ const patchEntries = (
       if (patched) next.push(patched)
       continue
     }
-    if (!entry.replies?.length) {
-      next.push(entry)
-      continue
-    }
-    next.push({ ...entry, replies: patchEntries(entry.replies, innerId, updater) })
+    next.push({
+      ...entry,
+      replies: entry.replies?.length
+        ? patchEntries(entry.replies, innerId, updater)
+        : entry.replies,
+      replyToComment: entry.replyToComment
+        ? patchEntries([entry.replyToComment], innerId, updater)[0] || null
+        : entry.replyToComment,
+    })
   }
   return next
 }
@@ -57,51 +67,56 @@ const findComment = (entries: TComment[], innerId: string): TComment | null => {
     if (String(entry.innerId) === innerId) return entry
     const nested = entry.replies?.length ? findComment(entry.replies, innerId) : null
     if (nested) return nested
+    if (entry.replyToComment && String(entry.replyToComment.innerId) === innerId)
+      return entry.replyToComment
   }
   return null
 }
 
-type TCommentLocation = { parentId: string | null; index: number }
+type TCommentPath = (number | 'replies' | 'replyToComment')[]
 
-const findCommentLocation = (
+/** Captures every occurrence, including contextual reply targets, for entity-only rollback. */
+const commentLocations = (
   entries: TComment[],
   innerId: string,
-  parentId: string | null = null,
-): TCommentLocation | null => {
-  for (const [index, entry] of entries.entries()) {
-    if (String(entry.innerId) === innerId) return { parentId, index }
-    if (entry.replies?.length) {
-      const nested = findCommentLocation(entry.replies, innerId, String(entry.innerId))
-      if (nested) return nested
-    }
-  }
-  return null
-}
-
-const insertCommentAtLocation = (
-  data: unknown,
-  comment: TComment,
-  location: TCommentLocation,
-): unknown => {
-  if (!data || typeof data !== 'object' || !('entries' in data)) return data
-  const typed = data as { entries: TComment[] }
-  if (location.parentId === null) {
-    const entries = [...typed.entries]
-    entries.splice(Math.min(location.index, entries.length), 0, comment)
-    return { ...typed, entries }
-  }
-  const entries = patchEntries(typed.entries, location.parentId, (parent) => {
-    const replies = [...(parent.replies || [])]
-    replies.splice(Math.min(location.index, replies.length), 0, comment)
-    return { ...parent, replies }
+  prefix: TCommentPath = [],
+): { path: TCommentPath; comment: TComment }[] =>
+  entries.flatMap((entry, index) => {
+    const path: TCommentPath = [...prefix, index]
+    const own = String(entry.innerId) === innerId ? [{ path, comment: entry }] : []
+    const replies = entry.replies?.length
+      ? commentLocations(entry.replies, innerId, [...path, 'replies'])
+      : []
+    const target =
+      entry.replyToComment && String(entry.replyToComment.innerId) === innerId
+        ? [{ path: [...path, 'replyToComment'] as TCommentPath, comment: entry.replyToComment }]
+        : []
+    return [...own, ...replies, ...target]
   })
-  return { ...typed, entries }
+
+const restoreCommentAt = (value: unknown, path: TCommentPath, comment: TComment): unknown => {
+  if (!path.length) return comment
+  const [head, ...tail] = path
+  if (typeof head === 'number') {
+    if (!Array.isArray(value)) return value
+    if (!tail.length) {
+      if (String(value[head]?.innerId) === String(comment.innerId)) return value
+      const entries = [...value]
+      entries.splice(Math.min(head, entries.length), 0, comment)
+      return entries
+    }
+    return value.map((entry, index) =>
+      index === head ? restoreCommentAt(entry, tail, comment) : entry,
+    )
+  }
+  if (!value || typeof value !== 'object') return value
+  const record = value as Record<string, unknown>
+  return { ...record, [head]: restoreCommentAt(record[head], tail, comment) }
 }
 
 const readCommentField = (value: unknown, innerId: string, field: keyof TComment): unknown => {
   if (!value || typeof value !== 'object') return undefined
-  const entries = (value as { entries?: TComment[] }).entries
-  if (!Array.isArray(entries)) return undefined
+  const entries = commentCacheEntries(value)
   return findComment(entries, innerId)?.[field]
 }
 
@@ -143,92 +158,81 @@ export const makePendingComment = (
     insertedAt: new Date().toISOString(),
     upvotesCount: 0,
     replies: [],
+    rootInnerId: target.parent?.rootInnerId || target.parentId,
     emotions: [],
     ...(target.parent ? { replyToComment: target.parent } : {}),
   }) as TComment
 
-const removePendingFromQuery = (data: unknown, pendingId: string): unknown => {
-  if (!data || typeof data !== 'object' || !('entries' in data)) return data
-  const typed = data as { entries: TComment[]; totalCount?: number }
-  const entries = patchEntries(typed.entries, pendingId, () => null)
-  if (entries.length === typed.entries.length) return data
-  return { ...typed, entries, totalCount: Math.max(0, (typed.totalCount || 0) - 1) }
-}
+const removePendingFromQuery = (data: unknown, pendingId: string): unknown =>
+  mapCommentEntries(data, (entries) => patchEntries(entries, pendingId, () => null))
 
-/** Inserts a top-level pending entity and records command-owned rollback changes. */
-export const insertPendingCommentChanges = (
+const pendingChanges = (
   queryClient: QueryClient,
   target: TCommentPendingTarget,
   context: TOperationContext,
+  reply: boolean,
 ): TOptimisticChange[] => {
   const changes: TOptimisticChange[] = []
+  const rootId = String(target.parent?.rootInnerId || target.parentId || '')
   for (const { queryKey } of commentQueryTargets(queryClient, target.scope)) {
-    const previous = queryClient.getQueryData(queryKey) as
-      | { entries?: TComment[]; totalCount?: number; pageNumber?: number }
-      | undefined
-    if (!previous?.entries || (previous.pageNumber || 1) !== 1) continue
-    queryClient.setQueryData(queryKey, {
-      ...previous,
-      entries: [target.pending, ...previous.entries],
-      totalCount: (previous.totalCount || 0) + 1,
+    const collection = commentCollectionOf(queryKey)
+    const previous = queryClient.getQueryData(queryKey)
+    let inserted = false
+    const next = mapCommentPages(previous, (page, index) => {
+      const first =
+        index === 0 &&
+        !collection?.initialAfter &&
+        (page.pageInfo?.api !== 'offset' || page.pageInfo.page === 1)
+      const direct = collection?.rootInnerId
+        ? reply && collection.rootInnerId === rootId
+        : !reply || collection?.mode === 'TIMELINE'
+      if (direct && first) {
+        inserted = true
+        return { ...page, entries: [...page.entries, target.pending] }
+      }
+      if (!reply || collection?.rootInnerId) return page
+      const append = (entries: TComment[]) =>
+        entries.map((entry) => {
+          if (String(entry.innerId) !== rootId) return entry
+          inserted = true
+          return { ...entry, replies: [...(entry.replies || []), target.pending] }
+        })
+      return {
+        ...page,
+        entries: append(page.entries),
+        ...(page.pinnedEntries ? { pinnedEntries: append(page.pinnedEntries) } : {}),
+      }
     })
+    if (!inserted) continue
+    queryClient.setQueryData(queryKey, next)
     changes.push({
       type: 'pending-entity',
       queryKey,
       entityKey: String(target.pending.innerId) as `pending:${string}`,
       commandId: context.commandId,
       rollback: 'remove-if-owned',
-      restore: () =>
-        queryClient.setQueryData(queryKey, (current) =>
+      restore: () => {
+        queryClient.setQueryData(queryKey, (current: unknown) =>
           removePendingFromQuery(current, String(target.pending.innerId)),
-        ),
+        )
+      },
     })
   }
   return changes
 }
 
-/** Inserts a pending reply below its loaded parent with command-owned rollback. */
-export const insertPendingReplyChanges = (
-  queryClient: QueryClient,
+export const insertPendingCommentChanges = (
+  client: QueryClient,
   target: TCommentPendingTarget,
   context: TOperationContext,
-): TOptimisticChange[] => {
-  if (!target.parentId) return []
-  const changes: TOptimisticChange[] = []
-  for (const { queryKey } of commentQueryTargets(queryClient, target.scope)) {
-    const previous = queryClient.getQueryData(queryKey) as { entries?: TComment[] } | undefined
-    if (!previous?.entries || !findComment(previous.entries, target.parentId)) continue
-    queryClient.setQueryData(queryKey, {
-      ...previous,
-      entries: patchEntries(previous.entries, target.parentId, (comment) => ({
-        ...comment,
-        replies: [...(comment.replies || []), target.pending],
-      })),
-    })
-    changes.push({
-      type: 'pending-entity',
-      queryKey,
-      entityKey: String(target.pending.innerId) as `pending:${string}`,
-      commandId: context.commandId,
-      rollback: 'remove-if-owned',
-      restore: () =>
-        queryClient.setQueryData(queryKey, (current: unknown) => {
-          if (!current || typeof current !== 'object' || !('entries' in current)) return current
-          return {
-            ...(current as { entries: TComment[] }),
-            entries: patchEntries(
-              (current as { entries: TComment[] }).entries,
-              String(target.pending.innerId),
-              () => null,
-            ),
-          }
-        }),
-    })
-  }
-  return changes
-}
+) => pendingChanges(client, target, context, false)
+export const insertPendingReplyChanges = (
+  client: QueryClient,
+  target: TCommentPendingTarget,
+  context: TOperationContext,
+) => pendingChanges(client, target, context, true)
 
-/** Applies one Comment field change across loaded feeds and records its inverse. */
+/** Applies one field to finite, pinned, preview and infinite owners; rollback restores only that entity. */
 export const patchCommentChanges = (
   queryClient: QueryClient,
   target: TCommentTarget,
@@ -240,32 +244,10 @@ export const patchCommentChanges = (
   for (const { queryKey } of commentQueryTargets(queryClient, target.scope)) {
     const previous = queryClient.getQueryData(queryKey)
     const before = readCommentField(previous, target.commentInnerId, field)
-    const beforeComment =
-      field === 'innerId'
-        ? findComment(
-            (previous as { entries?: TComment[] } | undefined)?.entries || [],
-            target.commentInnerId,
-          )
-        : null
-    const beforeLocation =
-      field === 'innerId'
-        ? findCommentLocation(
-            (previous as { entries?: TComment[] } | undefined)?.entries || [],
-            target.commentInnerId,
-          )
-        : null
-    const next =
-      previous && typeof previous === 'object' && 'entries' in previous
-        ? {
-            ...(previous as { entries: TComment[] }),
-            entries: patchEntries(
-              (previous as { entries: TComment[] }).entries,
-              target.commentInnerId,
-              updater,
-            ),
-          }
-        : previous
-    if (next === previous || before === undefined) continue
+    if (before === undefined) continue
+    const next = mapCommentEntries(previous, (entries) =>
+      patchEntries(entries, target.commentInnerId, updater),
+    )
     queryClient.setQueryData(queryKey, next)
     changes.push({
       type: 'field',
@@ -277,25 +259,39 @@ export const patchCommentChanges = (
       commandId: context.commandId,
       rollback: field === 'upvotesCount' || field === 'emotions' ? 'refetch' : 'restore-if-owned',
       restore: () => {
-        queryClient.setQueryData(queryKey, (current: unknown) => {
-          if (!current || typeof current !== 'object' || !('entries' in current)) return current
-          if (
-            field === 'innerId' &&
-            beforeComment &&
-            beforeLocation &&
-            readCommentField(current, target.commentInnerId, 'innerId') === undefined
-          ) {
-            return insertCommentAtLocation(current, beforeComment, beforeLocation)
-          }
-          return {
-            ...(current as { entries: TComment[] }),
-            entries: patchEntries(
-              (current as { entries: TComment[] }).entries,
-              target.commentInnerId,
-              (comment) => ({ ...comment, [field]: before }),
-            ),
-          }
+        const oldPages: Array<{ entries: TComment[]; pinnedEntries?: TComment[] }> = []
+        mapCommentPages(previous, (page) => {
+          oldPages.push(page)
+          return page
         })
+        queryClient.setQueryData(queryKey, (current: unknown) =>
+          mapCommentPages(current, (page, index) => {
+            const restore = (entries: TComment[], oldEntries: TComment[]) => {
+              if (field !== 'innerId')
+                return patchEntries(entries, target.commentInnerId, (comment) => ({
+                  ...comment,
+                  [field]: before,
+                }))
+              return commentLocations(oldEntries, target.commentInnerId).reduce(
+                (current, location) =>
+                  restoreCommentAt(current, location.path, location.comment) as TComment[],
+                entries,
+              )
+            }
+            return {
+              ...page,
+              entries: restore(page.entries, oldPages[index]?.entries || []),
+              ...(page.pinnedEntries
+                ? {
+                    pinnedEntries: restore(
+                      page.pinnedEntries,
+                      oldPages[index]?.pinnedEntries || [],
+                    ),
+                  }
+                : {}),
+            }
+          }),
+        )
       },
     })
   }
@@ -379,13 +375,8 @@ export const patchCommentEverywhere = (
 ): void => {
   queryClient.setQueriesData(
     { predicate: (query) => isCommentQueryForArticle(query, scope) },
-    (data: { entries?: TComment[] } | undefined) =>
-      data?.entries
-        ? {
-            ...data,
-            entries: patchEntries(data.entries, String(innerId), updater),
-          }
-        : data,
+    (data: unknown) =>
+      mapCommentEntries(data, (entries) => patchEntries(entries, String(innerId), updater)),
   )
 }
 
@@ -397,7 +388,7 @@ export const selectCommentFromCache = (
 ): TComment => {
   const innerId = String(comment.innerId)
   for (const { queryKey } of commentQueryTargets(queryClient, scope)) {
-    const entries = queryClient.getQueryData<{ entries?: TComment[] }>(queryKey)?.entries
+    const entries = commentCacheEntries(queryClient.getQueryData(queryKey))
     if (!entries) continue
     const match = findComment(entries, innerId)
     if (match) return match
@@ -412,15 +403,16 @@ export const insertPendingComment = (
   comment: TComment,
 ): void => {
   queryClient.setQueriesData(
-    { predicate: (query) => isCommentQueryForArticle(query, scope) },
-    (data: { entries?: TComment[]; totalCount?: number; pageNumber?: number } | undefined) =>
-      data?.entries && (data.pageNumber || 1) === 1
-        ? {
-            ...data,
-            entries: [comment, ...data.entries],
-            totalCount: (data.totalCount || 0) + 1,
-          }
-        : data,
+    {
+      predicate: (query) =>
+        isCommentQueryForArticle(query, scope) && !commentCollectionOf(query.queryKey)?.rootInnerId,
+    },
+    (data: unknown) =>
+      mapCommentPages(data, (page, index) =>
+        index === 0 && (page.pageInfo?.page || 1) === 1
+          ? { ...page, entries: [...page.entries, comment] }
+          : page,
+      ),
   )
 }
 

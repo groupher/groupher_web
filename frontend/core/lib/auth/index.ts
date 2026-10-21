@@ -3,6 +3,7 @@ import {
   GROUPHER_AUTH_CSRF_HEADER,
   GROUPHER_AUTH_CSRF_VALUE,
 } from '@groupher/contracts/auth'
+import type { PagiInput, PagiPage } from '@groupher/contracts/pagination'
 
 import { AUTH_ENDPOINT } from '~/const/oauth'
 import type { TOauthProvider } from '~/spec'
@@ -174,11 +175,12 @@ export const refreshSession = async (): Promise<void> => {
   }
 }
 
-/** Lists sessions through the bounded frontend shared interface. */
-export const listSessions = async (): Promise<TBrowserSessionSummary[]> => {
-  const response = await fetch(`${AUTH_ENDPOINT}/sessions`, { credentials: 'include' })
+/** Reads the canonical session page without exposing trusted Auth credentials. */
+export const listSessions = async (pagi?: PagiInput): Promise<PagiPage<TBrowserSessionSummary>> => {
+  const query = pagi ? `?pagi=${encodeURIComponent(JSON.stringify(pagi))}` : ''
+  const response = await fetch(`${AUTH_ENDPOINT}/sessions${query}`, { credentials: 'include' })
   if (!response.ok) throw new Error(`Auth Session list failed with status ${response.status}.`)
-  return (await response.json()) as TBrowserSessionSummary[]
+  return (await response.json()) as PagiPage<TBrowserSessionSummary>
 }
 
 /** Runs the revoke session operation at the frontend shared boundary. */

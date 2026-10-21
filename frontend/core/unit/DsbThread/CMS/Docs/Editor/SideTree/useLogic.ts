@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ARTICLE_STAGE } from '~/const/article'
 import { DSB_DOC_EVENT } from '~/const/dsb/docs'
 import { browserGraphQLRequest } from '~/graphql/client'
+import usePagiPosition from '~/hooks/usePagiPosition'
 import useTrans from '~/hooks/useTrans'
 import { send } from '~/lib/signal'
 import { graphqlQueryOptions } from '~/query'
@@ -122,12 +123,19 @@ export default function useLogic(initialData?: TDocTreeInitialData): TSideTreeCo
       }
     }>(S.docTree, { community }),
   )
+  const trashPosition = usePagiPosition(`${community}:doc-trash`)
   const {
     data: trashData,
+    error: trashError,
     isFetching: trashLoading,
     refetch: reloadTrash,
-  } = useQuery(graphqlQueryOptions<TDocTreeTrashData>(S.docTreeTrashItems, { community }))
-  const trashItems = trashData?.docTreeTrashItems ?? []
+  } = useQuery(
+    graphqlQueryOptions<TDocTreeTrashData>(S.docTreeTrashItems, {
+      community,
+      pagi: trashPosition.input,
+    }),
+  )
+  const trashItems = trashData?.docTreeTrashItems?.entries ?? []
   const initialTabs = useMemo(() => initialData?.tabs.map(mapTab) ?? [], [initialData])
   const initialActiveTab = findTabByDocId(initialTabs, currentDocId) ?? initialTabs[0] ?? null
   const [tabs, setTabs] = useState<TSideTreeTab[]>(initialTabs)
@@ -1076,6 +1084,9 @@ export default function useLogic(initialData?: TDocTreeInitialData): TSideTreeCo
     treeState,
     stagedEvents,
     trashItems,
+    trashPageInfo: trashData?.docTreeTrashItems?.pageInfo,
+    setTrashPage: trashPosition.setPage,
+    trashError: trashError ? String(trashError) : null,
     trashLoading,
     activeId,
     editingTarget,

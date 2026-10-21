@@ -1,220 +1,53 @@
-import { useQueryClient } from '@tanstack/react-query'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { browserGraphQLRequest } from '~/graphql/client'
-import { sortByKey } from '~/helper'
-import { patchCommunityConfig } from '~/query'
+import usePagiPosition from '~/hooks/usePagiPosition'
+import { viewerQueryKeys } from '~/query'
+import { invalidatePrefix } from '~/query/invalidation'
 import { executeCommand } from '~/query/mutation/optimistic/execute'
-import type { TModerator, TUser } from '~/spec'
+import type { TUser } from '~/spec'
+import useAccount from '~/stores/account/hooks'
 import useCommunity from '~/stores/community/hooks'
-import useDsbEdit from '~/stores/dsbEdit/hooks'
 import { useModeratorEditorUi } from '~/stores/dsbEditorUi/hooks'
 import S from '~/unit/DsbThread/schema/admins'
 
-type TPassportJson = Record<string, unknown>
-
-const safeParsePassport = (passport: string): TPassportJson => {
-  try {
-    const parsed = JSON.parse(passport)
-    return typeof parsed === 'object' && parsed !== null ? parsed : {}
-  } catch (error) {
-    console.error('## parse passport error: ', error)
-    return {}
-  }
-}
-
-const ruleMapFrom = (rules: unknown): Record<string, boolean> =>
-  typeof rules === 'object' && rules !== null ? (rules as Record<string, boolean>) : {}
-
-const enabledRuleKeys = (rules: Record<string, boolean>): string[] =>
-  Object.entries(rules).flatMap(([rule, enabled]) => (enabled ? [rule] : []))
-
-const communityPassportFrom = (
-  passport: Record<string, unknown>,
-  community: string,
-): Record<string, unknown> => {
-  if (!community) return {}
-
-  const rules = passport[community]
-  return typeof rules === 'object' && rules !== null ? (rules as Record<string, unknown>) : {}
-}
-
-const moderatorNeedsHydration = (moderator: TModerator): boolean =>
-  moderator.rules === undefined || moderator.globalRules === undefined
-
-type TRet = {
-  moderators: TModerator[]
-  activeModerator: TUser | null
-  setActiveSettingAdmin: (user: TUser) => void
-  searchUsers: (name: string) => Promise<TUser[]>
-  addAdmins: (users: TUser[]) => Promise<void>
-  isModerator: (user: TUser | null) => boolean
-}
-
-/** Exposes admins state and actions through the shared React hook boundary. */
-export default function useAdmins(): TRet {
-  const queryClient = useQueryClient()
-  const dsb$ = useDsbEdit()
-  const moderatorUi$ = useModeratorEditorUi()
-  const community$ = useCommunity()
-  const { moderators: originalModerators } = dsb$
-  const { activeModerator } = moderatorUi$
-  const hydrationSignatureRef = useRef('')
-
-  const moderatorLoginSet = useMemo(() => {
-    return new Set(
-      originalModerators.flatMap((moderator) =>
-        moderator.user?.login ? [moderator.user.login] : [],
-      ),
-    )
-  }, [originalModerators])
-
-  const moderators = useMemo(() => {
-    return sortByKey(
-      originalModerators.filter((moderator) => moderator.user?.login),
-      'passportItemCount',
-    ).reverse() as TModerator[]
-  }, [originalModerators])
-
-  const setActiveSettingAdmin = (user: TUser): void => moderatorUi$.patch({ activeModerator: user })
-
-  const hydrateModerators = useCallback(
-    async (moderators: readonly TModerator[]): Promise<void> => {
-      const slug = community$.slug
-      if (!slug || !moderators.some(moderatorNeedsHydration)) return
-
-      const signature = `${slug}:${moderators
-        .map((moderator) => `${moderator.user?.login ?? ''}:${moderator.passportItemCount}`)
-        .join('|')}`
-      if (hydrationSignatureRef.current === signature) return
-      hydrationSignatureRef.current = signature
-
-      try {
-        const hydratedModerators = await Promise.all(
-          moderators.map(async (moderator) => {
-            const login = moderator.user?.login
-            if (!login || !moderatorNeedsHydration(moderator)) return moderator
-
-            const res = await browserGraphQLRequest<
-              { user?: { passportString?: string } },
-              { login: string }
-            >(S.userPassport, { login })
-            const passportJson = safeParsePassport(res?.user?.passportString ?? '{}')
-            const globalRules = ruleMapFrom(passportJson.global)
-            const communityPassport = communityPassportFrom(passportJson, slug)
-            const communityRules = ruleMapFrom(communityPassport.cms)
-            const isRoot = communityPassport.root === true
-
-            return {
-              ...moderator,
-              isRoot,
-              passportItemCount: enabledRuleKeys(communityRules).length,
-              rules: communityRules,
-              globalRules,
-            }
-          }),
-        )
-
-        dsb$.editMany({ moderators: hydratedModerators })
-        patchCommunityConfig(queryClient, slug, {
-          moderators: hydratedModerators,
-        })
-      } catch (error) {
-        console.error('## hydrate moderators passport error: ', error)
-      }
-    },
-    [community$, dsb$, queryClient],
-  )
-
-  useEffect(() => {
-    void hydrateModerators(originalModerators)
-  }, [hydrateModerators, originalModerators])
-
-  const isModerator = useCallback(
-    (user: TUser | null): boolean => {
-      if (!user?.login) return false
-      return moderatorLoginSet.has(user.login)
-    },
-    [moderatorLoginSet],
-  )
-
-  const searchUsers = useCallback(
-    async (name: string): Promise<TUser[]> => {
-      const keyword = name.trim()
-      if (!keyword) return []
-
-      const data = await browserGraphQLRequest<
-        { searchUsers: { entries: TUser[] } },
-        { name: string }
-      >(S.searchUsers, { name: keyword })
-
-      return data.searchUsers.entries.filter(
-        (user) => user.login && !moderatorLoginSet.has(user.login),
-      )
-    },
-    [moderatorLoginSet],
-  )
-
-  const addAdmins = useCallback(
-    async (users: TUser[]): Promise<void> => {
-      const validUsers = users.filter((user) => user.login && !moderatorLoginSet.has(user.login))
-      if (!community$.slug || !validUsers.length) return
-
-      const data = await executeCommand({
-        request: (variables) => browserGraphQLRequest(S.addModerators, variables),
-        variables: {
-          community: community$.slug,
-          users: validUsers.map((user) => user.login!),
-        },
-      })
-
-      const pendingLogins = new Set(validUsers.map((user) => user.login))
-      const remoteModerators = data.addModerators?.moderators ?? []
-      const nextModerators = remoteModerators.flatMap((moderator) => {
-        const login = moderator?.user?.login
-        if (!login) return []
-
-        return [
-          {
-            isRoot: moderator.isRoot ?? undefined,
-            passportItemCount: moderator.passportItemCount ?? 0,
-            user: {
-              login,
-              avatar: moderator.user?.avatar ?? undefined,
-              nickname: moderator.user?.nickname ?? undefined,
-              bio: moderator.user?.bio ?? undefined,
-            },
-            pending: pendingLogins.has(login),
-          },
-        ]
-      })
-
-      const fallbackModerators = [
-        ...originalModerators,
-        ...validUsers.map((user) => ({
-          isRoot: false,
-          passportItemCount: 0,
-          user,
-          pending: true,
-        })),
-      ]
-
-      const resolvedModerators = nextModerators.length ? nextModerators : fallbackModerators
-
-      dsb$.editMany({ moderators: resolvedModerators })
-      patchCommunityConfig(queryClient, community$.slug, {
-        moderators: resolvedModerators,
-      })
-    },
-    [community$, dsb$, moderatorLoginSet, originalModerators, queryClient],
-  )
-
+/** Pages moderator memberships; permissions are loaded only for the selected editor target. */
+export default function useAdmins() {
+  const client = useQueryClient()
+  const { slug } = useCommunity()
+  const { accountRef } = useAccount()
+  const ui = useModeratorEditorUi()
+  const position = usePagiPosition(`${accountRef}:${slug}`)
+  const prefix = [...viewerQueryKeys.all, accountRef, 'moderators', slug]
+  const query = useQuery({
+    queryKey: [...prefix, position.input],
+    queryFn: async () =>
+      (await browserGraphQLRequest(S.moderatorPage, { community: slug, pagi: position.input }))
+        .pagedCommunityModerators,
+    enabled: !!slug && !!accountRef,
+  })
   return {
-    moderators,
-    activeModerator,
-    setActiveSettingAdmin,
-    searchUsers,
-    addAdmins,
-    isModerator,
+    moderators: query.data?.entries ?? [],
+    activeModerator: ui.activeModerator,
+    setActiveSettingAdmin: (user: TUser) => ui.patch({ activeModerator: user }),
+    pageInfo: query.data?.pageInfo,
+    loading: query.isFetching,
+    error: query.error,
+    retry: query.refetch,
+    setPage: position.setPage,
+    searchUsers: async (name: string): Promise<TUser[]> => {
+      if (!name.trim()) return []
+      return (await browserGraphQLRequest(S.searchUsers, { name: name.trim(), community: slug }))
+        .moderatorCandidates as TUser[]
+    },
+    addAdmins: async (users: TUser[]): Promise<void> => {
+      const logins = [...new Set(users.map((user) => user.login).filter(Boolean))]
+      if (!slug || !logins.length) return
+      await executeCommand({
+        request: (variables) => browserGraphQLRequest(S.addModerators, variables),
+        variables: { community: slug, users: logins },
+      })
+      await invalidatePrefix(client, prefix)
+    },
   }
 }

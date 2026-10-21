@@ -1,10 +1,10 @@
 import { follow, setTag, undoFollow, unsetTag } from './action'
-import { changelog, pagedChangelogs } from './changelog'
-import { pagedComments } from './comment'
+import { changelog, changelogPage } from './changelog'
+import { commentPage } from './comment'
 import { community, pagedCommunities, subscribedCommunities } from './community'
-import { doc, docPublicTree, pagedDocs } from './doc'
-import { communityTagGroups, communityTagStats, pagedCategories, themePresets } from './misc'
-import { groupedKanbanPosts, pagedPosts, pagedPublishedPosts, post } from './post'
+import { doc, docPublicTree, docPage } from './doc'
+import { communityTagGroups, communityTagStats, categories, themePresets } from './misc'
+import { groupedKanbanPosts, postPage, pagedPublishedPosts, post } from './post'
 import { me, sessionState, user } from './user'
 
 /**
@@ -19,17 +19,17 @@ export const pageDocuments = {
   subscribedCommunities,
   pagedCommunities,
   groupedKanbanPosts,
-  pagedComments,
-  pagedCategories,
+  commentPage,
+  categories,
   themePresets,
   communityTagGroups,
   communityTagStats,
-  pagedPosts,
+  postPage,
   pagedPublishedPosts,
   post,
-  pagedChangelogs,
+  changelogPage,
   changelog,
-  pagedDocs,
+  docPage,
   doc,
   docPublicTree,
   me,

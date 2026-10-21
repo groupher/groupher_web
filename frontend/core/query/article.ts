@@ -2,22 +2,15 @@ import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query'
 
 import { THREAD } from '~/const/thread'
 import { browserGraphQLRequest } from '~/graphql/client'
-import type { ChangelogPageQuery, PostPageQuery } from '~/graphql/generated/graphql'
-import {
-  DEFAULT_EFFECTIVE_PAGI_CONFIG,
-  toLegacyPagi,
-  toPagiGraphQLInput,
-} from '~/lib/pagination/params'
+import { DEFAULT_EFFECTIVE_PAGI_CONFIG, toPagiGraphQLInput } from '~/lib/pagination/params'
 import { changelog, changelogPage } from '~/schemas/pages/changelog'
 import { doc } from '~/schemas/pages/doc'
 import { communityTagGroups, communityTagStats } from '~/schemas/pages/misc'
-import { groupedKanbanPosts, post, postPage } from '~/schemas/pages/post'
+import { groupedKanbanPosts, kanbanPage, post, postPage } from '~/schemas/pages/post'
 import type {
-  TChangelog,
   TEffectivePagiConfig,
   TPagedArticlesParams,
-  TPagedChangelogs,
-  TPagedPosts,
+  TPagiGraphQLInput,
   TPagiRequest,
   TPost,
   TTagStats,
@@ -28,32 +21,6 @@ import type {
 import { articleStats, articleStatsBatch } from './articleStats'
 import { toArticlePageFilter } from './filter'
 import { articleQueryKeys } from './key'
-
-type TGroupedKanbanPosts = {
-  backlog: TPagedPosts
-  todo: TPagedPosts
-  wip: TPagedPosts
-  done: TPagedPosts
-  rejected: TPagedPosts
-}
-
-/** Adapts the new Post Page contract to the legacy list view model. */
-export const toPagedPosts = (page: PostPageQuery['postPage']): TPagedPosts => ({
-  entries: [
-    ...page.pinnedEntries.map((entry) => ({ ...entry, isPinned: true })),
-    ...page.entries,
-  ] as unknown as readonly TPost[],
-  ...toLegacyPagi(page.pageInfo),
-})
-
-/** Adapts the new Changelog Page contract to the legacy list view model. */
-export const toPagedChangelogs = (page: ChangelogPageQuery['changelogPage']): TPagedChangelogs => ({
-  entries: [
-    ...page.pinnedEntries.map((entry) => ({ ...entry, isPinned: true })),
-    ...page.entries,
-  ] as unknown as readonly TChangelog[],
-  ...toLegacyPagi(page.pageInfo),
-})
 
 /** Builds the GraphQL pagination request while preserving the configured API and revision. */
 export const articlePagiRequest = (
@@ -73,12 +40,12 @@ export const articlePagiRequest = (
   return {
     api: 'cursor',
     first: filter.size ?? config.defaultSize,
-    ...(after ? { after } : {}),
+    ...((after ?? filter.after) ? { after: (after ?? filter.after)! } : {}),
     configRevision: config.revision,
   }
 }
 
-/** Reads the shared Article page contract and preserves the legacy list view model. */
+/** Reads the shared Article page contract. */
 const posts = (filter: TPagedArticlesParams, config = DEFAULT_EFFECTIVE_PAGI_CONFIG) =>
   queryOptions({
     queryKey: articleQueryKeys.pagiPosts(filter, config, articlePagiRequest(filter, config)),
@@ -90,11 +57,11 @@ const posts = (filter: TPagedArticlesParams, config = DEFAULT_EFFECTIVE_PAGI_CON
         filter: toArticlePageFilter(filter),
         thread: 'POST',
       })
-      return toPagedPosts(data.postPage)
+      return data.postPage
     },
   })
 
-/** Reads the shared Changelog page contract and preserves the legacy list view model. */
+/** Reads the shared Changelog page contract. */
 const changelogs = (filter: TPagedArticlesParams, config = DEFAULT_EFFECTIVE_PAGI_CONFIG) =>
   queryOptions({
     queryKey: articleQueryKeys.pagiChangelogs(filter, config, articlePagiRequest(filter, config)),
@@ -106,7 +73,7 @@ const changelogs = (filter: TPagedArticlesParams, config = DEFAULT_EFFECTIVE_PAG
         filter: toArticlePageFilter(filter),
         thread: 'CHANGELOG',
       })
-      return toPagedChangelogs(data.changelogPage)
+      return data.changelogPage
     },
   })
 
@@ -114,7 +81,7 @@ const changelogs = (filter: TPagedArticlesParams, config = DEFAULT_EFFECTIVE_PAG
 const postsInfinite = (filter: TPagedArticlesParams, config: TEffectivePagiConfig) =>
   infiniteQueryOptions({
     queryKey: articleQueryKeys.pagiPosts(filter, config, articlePagiRequest(filter, config)),
-    initialPageParam: null as string | null,
+    initialPageParam: filter.after ?? (null as string | null),
     meta: { hydration: 'public' },
     queryFn: async ({ pageParam }) => {
       const data = await browserGraphQLRequest(postPage, {
@@ -134,7 +101,7 @@ const postsInfinite = (filter: TPagedArticlesParams, config: TEffectivePagiConfi
 const changelogsInfinite = (filter: TPagedArticlesParams, config: TEffectivePagiConfig) =>
   infiniteQueryOptions({
     queryKey: articleQueryKeys.pagiChangelogs(filter, config, articlePagiRequest(filter, config)),
-    initialPageParam: null as string | null,
+    initialPageParam: filter.after ?? (null as string | null),
     meta: { hydration: 'public' },
     queryFn: async ({ pageParam }) => {
       const data = await browserGraphQLRequest(changelogPage, {
@@ -150,13 +117,13 @@ const changelogsInfinite = (filter: TPagedArticlesParams, config: TEffectivePagi
     },
   })
 
-const kanban = (community: string) =>
+const kanban = (community: string, config = DEFAULT_EFFECTIVE_PAGI_CONFIG) =>
   queryOptions({
-    queryKey: articleQueryKeys.kanban(community),
+    queryKey: articleQueryKeys.kanban(community, config),
     meta: { hydration: 'public' },
     queryFn: async () => {
       const data = await browserGraphQLRequest(groupedKanbanPosts, { community })
-      return data.groupedKanbanPosts as unknown as TGroupedKanbanPosts
+      return data.groupedKanbanPosts
     },
     enabled: !!community,
   })
@@ -209,6 +176,22 @@ const tagGroups = (community: string, thread: TThread) =>
   })
 
 export const articleQueries = {
+  kanbanPage: (
+    community: string,
+    filter: Parameters<typeof toArticlePageFilter>[0],
+    pagi: TPagiGraphQLInput,
+  ) =>
+    queryOptions({
+      queryKey: ['article', 'kanban-page', community, filter, pagi],
+      queryFn: async () =>
+        (
+          await browserGraphQLRequest(kanbanPage, {
+            community,
+            filter: toArticlePageFilter(filter),
+            pagi,
+          })
+        ).kanbanPage,
+    }),
   posts,
   changelogs,
   postsInfinite,

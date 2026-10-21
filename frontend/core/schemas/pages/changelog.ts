@@ -9,28 +9,6 @@ export const changelog = graphql(`
   }
 `)
 
-export const pagedChangelogs = graphql(`
-  query PagedChangelogs($filter: PagedChangelogsFilter!) {
-    pagedChangelogs(filter: $filter) {
-      entries {
-        ...PageChangelogFields
-        meta {
-          thread
-          latestUpvotedUsers {
-            ...PageCommonUserFields
-          }
-        }
-        digest
-        linkAddr
-        commentsParticipants {
-          ...PageAuthorFields
-        }
-      }
-      ...PageChangelogPageInfo
-    }
-  }
-`)
-
 export const changelogPage = graphql(`
   query ChangelogPage(
     $pagi: PagiInput
@@ -39,99 +17,15 @@ export const changelogPage = graphql(`
   ) {
     changelogPage(pagi: $pagi, filter: $filter, thread: $thread) {
       pinnedEntries {
-        id
-        thread
-        innerId
-        title
-        digest
-        insertedAt
-        activeAt
-        author {
-          login
-          nickname
-          avatar
-          bio
-          shortbio
-        }
-        community {
-          title
-          slug
-          index
-          desc
-          logo
-          subscribersCount
-          homepage
-          articlesCount
-          views
-          pending
-          insertedAt
-          updatedAt
-        }
-        communityTags {
-          id
-          title
-          layout
-          desc
-          slug
-          color
-          thread
-          group
-          groupId
-          index
-          community {
-            slug
-          }
-        }
+        ...PageChangelogLiteFields
       }
       entries {
-        id
-        thread
-        innerId
-        title
-        digest
-        insertedAt
-        activeAt
-        author {
-          login
-          nickname
-          avatar
-          bio
-          shortbio
-        }
-        community {
-          title
-          slug
-          index
-          desc
-          logo
-          subscribersCount
-          homepage
-          articlesCount
-          views
-          pending
-          insertedAt
-          updatedAt
-        }
-        communityTags {
-          id
-          title
-          layout
-          desc
-          slug
-          color
-          thread
-          group
-          groupId
-          index
-          community {
-            slug
-          }
-        }
+        ...PageChangelogLiteFields
       }
       pageInfo {
         __typename
-        hasPreviousPage
         hasNextPage
+        hasPreviousPage
         ... on OffsetPageInfo {
           page
           size

@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 
+import Pagi from '~/ui/Pagi'
+
 import { ASSETS_HUB_LIST_VIEW } from './constant'
 import List from './List'
 import useSalon from './salon'
@@ -52,6 +54,7 @@ export default function AssetsHub({ initialData }: { initialData?: TPagedAssets 
         onOpen={logic.openPublicReadPreview}
         onSelect={logic.selectAsset}
       />
+      <Pagi pageInfo={logic.pageInfo} onChange={logic.setPage} />
     </section>
   )
 }

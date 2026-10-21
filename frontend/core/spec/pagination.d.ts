@@ -1,3 +1,5 @@
+import type { PagiInput, PagiPageInfo, PagiPage } from '@groupher/contracts/pagination'
+
 /** Transport-neutral pagination request used by Core adapters. */
 export type TPaginationApi = 'offset' | 'cursor'
 export type TPaginationMode = 'page' | 'load_more' | 'infinite_scroll'
@@ -18,23 +20,7 @@ export type TCursorPagi = {
 
 export type TPagiRequest = TOffsetPagi | TCursorPagi
 
-export type TPagiGraphQLInput =
-  | {
-      offset: {
-        page?: number
-        size?: number
-        configRevision?: number
-      }
-      cursor?: never
-    }
-  | {
-      cursor: {
-        first?: number
-        after?: string
-        configRevision?: number
-      }
-      offset?: never
-    }
+export type TPagiGraphQLInput = PagiInput
 
 export type TEffectivePagiConfig = {
   api: TPaginationApi
@@ -45,33 +31,18 @@ export type TEffectivePagiConfig = {
   maxSize: number
 }
 
-export type TPaginationSurface = 'posts' | 'changelogs' | 'comments'
+export type TPagiPreference = {
+  pagiMode?: TPaginationMode
+  pagiMobileMode?: TPaginationMode
+  pagiRevision?: number
+}
 
-export type TDashboardPagination = Partial<
-  Record<TPaginationSurface, Partial<TEffectivePagiConfig>>
->
-
-export type TOffsetPageInfo = {
-  __typename: 'OffsetPageInfo'
+export type TOffsetPageInfo = Extract<PagiPageInfo, { __typename: 'OffsetPageInfo' }> & {
   api: 'offset'
-  page: number
-  size: number
-  totalCount: number
-  totalPages: number
-  hasPreviousPage: boolean
-  hasNextPage: boolean
 }
-
-export type TCursorPageInfo = {
-  __typename: 'CursorPageInfo'
+export type TCursorPageInfo = Extract<PagiPageInfo, { __typename: 'CursorPageInfo' }> & {
   api: 'cursor'
-  startCursor: string | null
-  endCursor: string | null
-  hasPreviousPage: boolean
-  hasNextPage: boolean
 }
-
 export type TPagiPageInfo = TOffsetPageInfo | TCursorPageInfo
-
-/** GraphQL page metadata before the transport-neutral `api` discriminator is added. */
-export type TGraphQLPagiPageInfo = Omit<TOffsetPageInfo, 'api'> | Omit<TCursorPageInfo, 'api'>
+export type TGraphQLPagiPageInfo = PagiPageInfo
+export type TPagiPage<T> = PagiPage<T>

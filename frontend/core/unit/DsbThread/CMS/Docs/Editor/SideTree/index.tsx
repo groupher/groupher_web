@@ -213,6 +213,9 @@ const SideTree: FC<TProps> = ({ controller, viewportLayoutKey }) => {
         baseRevision={controller.treeState?.revision ?? null}
         tabs={controller.tabs}
         trashItems={controller.trashItems}
+        pageInfo={controller.trashPageInfo}
+        onPageChange={controller.setTrashPage}
+        error={controller.trashError}
         trashLoading={controller.trashLoading}
         onReloadTrash={controller.reloadTrash}
         onRestored={reload}

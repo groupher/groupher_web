@@ -64,12 +64,15 @@ const pagiRequestKey = (
   const normalized = normalizeArticleFilter(filter)
   const api = request?.api || config.api
   if (api === 'cursor') {
-    return { first: request?.api === 'cursor' ? request.first : normalized.size }
+    return {
+      first: request?.api === 'cursor' ? request.first : (filter.size ?? config.defaultSize),
+      ...(filter.after ? { initialAfter: filter.after } : {}),
+    }
   }
 
   return {
     page: request?.api === 'offset' ? request.page : normalized.page,
-    size: request?.api === 'offset' ? request.size : normalized.size,
+    size: request?.api === 'offset' ? request.size : (filter.size ?? config.defaultSize),
   }
 }
 
@@ -79,6 +82,7 @@ export const isCanonicalDefaultArticleFilter = (filter: TPagedArticlesParams): b
 
   return (
     !!normalized.community &&
+    !filter.after &&
     normalized.page === 1 &&
     normalized.size === 20 &&
     normalized.communityTag === null &&
@@ -94,10 +98,6 @@ export const isCanonicalDefaultArticleFilter = (filter: TPagedArticlesParams): b
 /** Constructors for public Article content, stats, tag, and list query identities. */
 export const articleQueryKeys = {
   all: ['article'] as const,
-  posts: (filter: TPagedArticlesParams) =>
-    [...articleQueryKeys.all, 'posts', normalizeArticleFilter(filter)] as const,
-  changelogs: (filter: TPagedArticlesParams) =>
-    [...articleQueryKeys.all, 'changelogs', normalizeArticleFilter(filter)] as const,
   pagiPosts: (
     filter: TPagedArticlesParams,
     config: TEffectivePagiConfig = DEFAULT_EFFECTIVE_PAGI_CONFIG,
@@ -124,7 +124,8 @@ export const articleQueryKeys = {
       normalizeArticlePageFilter(filter),
       pagiRequestKey(request, config, filter),
     ] as const,
-  kanban: (community: string) => [...articleQueryKeys.all, 'kanban', community] as const,
+  kanban: (community: string, config = DEFAULT_EFFECTIVE_PAGI_CONFIG) =>
+    [...articleQueryKeys.all, 'kanban', community, pagiConfigKey(config)] as const,
   detail: (community: string, thread: TThread, innerId: string | number) =>
     [...articleQueryKeys.all, 'detail', community, thread, String(innerId)] as const,
   statsPrefix: (community: string, thread: TThread) =>
@@ -151,6 +152,21 @@ export const commentKeys = {
     page = 1,
     mode = 'REPLIES',
   ) => [...commentKeys.all, 'list', community, thread, String(innerId), { mode, page }] as const,
+  page: (
+    community: string,
+    thread: TThread,
+    innerId: string | number,
+    collection: object,
+    config: object,
+    position: object,
+  ) =>
+    [
+      ...commentKeys.articlePrefix(community, thread, innerId),
+      'page',
+      collection,
+      config,
+      position,
+    ] as const,
   reconcile: (
     community: string,
     thread: TThread,

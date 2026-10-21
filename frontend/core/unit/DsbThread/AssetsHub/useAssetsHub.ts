@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { browserGraphQLRequest } from '~/graphql/client'
+import usePagiPosition from '~/hooks/usePagiPosition'
 import { graphqlQueryOptions } from '~/query'
 import { executeCommand } from '~/query/mutation/optimistic/execute'
 import useCommunity from '~/stores/community/hooks'
@@ -58,14 +59,9 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
 
   const assetFilter = useMemo(() => {
     const filter: {
-      page: number
       query?: string
-      size: number
       thread?: TAssetThreadFilter
-    } = {
-      page: 1,
-      size: ASSETS_HUB_PAGE_SIZE,
-    }
+    } = {}
     const query = searchQuery.trim()
 
     if (activeThread !== ASSETS_HUB_THREAD_FILTER.ALL) filter.thread = activeThread
@@ -73,6 +69,11 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
 
     return filter
   }, [activeThread, searchQuery])
+
+  const position = usePagiPosition(
+    `${community}:${JSON.stringify(assetFilter)}`,
+    ASSETS_HUB_PAGE_SIZE,
+  )
 
   const {
     data,
@@ -83,6 +84,7 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
     graphqlQueryOptions<{ pagedCommunityAssets: TPagedAssets }>(S.pagedCommunityAssets, {
       community,
       filter: assetFilter,
+      pagi: position.input,
     }),
   )
   const {
@@ -97,10 +99,19 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
   )
 
   const assets = useMemo(
-    () => data?.pagedCommunityAssets?.entries ?? initialData?.entries ?? [],
-    [data, initialData],
+    () =>
+      data?.pagedCommunityAssets?.entries ??
+      (position.request.api === 'offset' &&
+      position.request.page === 1 &&
+      !searchQuery &&
+      activeThread === ASSETS_HUB_THREAD_FILTER.ALL
+        ? initialData?.entries
+        : undefined) ??
+      [],
+    [data, initialData, position.request, searchQuery, activeThread],
   )
-  const totalCount = data?.pagedCommunityAssets?.totalCount ?? 0
+  const info = data?.pagedCommunityAssets?.pageInfo
+  const totalCount = info?.__typename === 'OffsetPageInfo' ? info.totalCount : 0
   const assetsErrorMessage = error ? extractErrorMessage(error) : null
   const stats = statsData?.communityAssetStats ?? null
   const statsErrorMessage = statsError ? extractErrorMessage(statsError) : null
@@ -112,7 +123,7 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
   const selectedAssetUrl = selectedAsset ? assetPublicReadUrl(selectedAsset) : ''
 
   const loadReferences = useCallback(
-    async (assetId: string): Promise<TPagedAssetRefs | null> => {
+    async (assetId: string, page = 1): Promise<TPagedAssetRefs | null> => {
       if (!community) return null
 
       const requestId = refsRequestId.current + 1
@@ -131,12 +142,12 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
           {
             assetId: string
             community: string
-            filter: { page: number; size: number }
+            pagi: { offset: { page: number; size: number } }
           }
         >(S.communityAssetRefs, {
           assetId,
           community,
-          filter: { page: 1, size: ASSETS_HUB_REFS_PAGE_SIZE },
+          pagi: { offset: { page, size: ASSETS_HUB_REFS_PAGE_SIZE } },
         })
         const refsPage = refData.communityAssetRefs
 
@@ -144,9 +155,14 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
           setReferences({
             assetId,
             entries: refsPage.entries ?? [],
+            pageInfo: refsPage.pageInfo,
+            changePage: (next: number) => {
+              void loadReferences(assetId, next)
+            },
             error: null,
             loading: false,
-            totalCount: refsPage.totalCount ?? 0,
+            totalCount:
+              refsPage.pageInfo.__typename === 'OffsetPageInfo' ? refsPage.pageInfo.totalCount : 0,
           })
         }
 
@@ -265,7 +281,7 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
     async (asset: TAsset): Promise<void> => {
       const refsPage = await loadReferences(asset.id)
 
-      if (refsPage && refsPage.totalCount > 0) {
+      if (refsPage && refsPage.entries.length > 0) {
         setConfirmingDeleteId(null)
         toast(ASSETS_HUB_MESSAGE.REFERENCED_DELETE_BLOCKED, 'error')
         return
@@ -313,6 +329,8 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
   }, [])
 
   return {
+    pageInfo: data?.pagedCommunityAssets?.pageInfo,
+    setPage: position.setPage,
     activeThread,
     assets,
     assetsErrorMessage,
@@ -324,7 +342,7 @@ export default function useAssetsHub(initialData?: TPagedAssets | null): TAssets
     copyPublicReadUrl,
     deleteAsset,
     deletingAssetId,
-    loadingAssets: loading && !initialData,
+    loadingAssets: loading,
     openPublicReadPreview,
     references,
     selectAsset,

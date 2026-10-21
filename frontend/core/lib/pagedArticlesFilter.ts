@@ -1,6 +1,7 @@
 import { mergeRight, reject } from 'ramda'
 
 import URL_PARAM from '~/const/url_param'
+import { DEFAULT_EFFECTIVE_PAGI_CONFIG } from '~/lib/pagination/params'
 import type { TPagedArticlesParams } from '~/spec'
 import { nilOrEmpty } from '~/validator'
 
@@ -13,7 +14,6 @@ type TSearchParamsObject = Record<string, string | string[] | undefined>
 
 const ARTICLES_FILTER = {
   page: 1,
-  size: 20,
 }
 
 const normalizeEnumValue = (value: string | null): string | null => {
@@ -51,11 +51,13 @@ const toURLSearchParams = (
 export const getPagedArticlesParams = (
   community: string,
   source?: TSearchParamsLike | TSearchParamsObject | null,
+  defaultSize = DEFAULT_EFFECTIVE_PAGI_CONFIG.defaultSize,
 ): TPagedArticlesParams => {
   const searchParams = toURLSearchParams(source)
 
   const filter = reject(nilOrEmpty)({
     community,
+    after: searchParams.get('after'),
     page: Number(searchParams.get(URL_PARAM.PAGE)) || 1,
     communityTag: searchParams.get(URL_PARAM.TAG),
     cat: normalizeEnumValue(searchParams.get(URL_PARAM.CAT)),
@@ -63,5 +65,5 @@ export const getPagedArticlesParams = (
     order: normalizeEnumValue(searchParams.get(URL_PARAM.ORDER)),
   })
 
-  return mergeRight(ARTICLES_FILTER, filter) as TPagedArticlesParams
+  return mergeRight({ ...ARTICLES_FILTER, size: defaultSize }, filter) as TPagedArticlesParams
 }

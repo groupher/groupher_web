@@ -1,8 +1,9 @@
 import type { TSimpleUser } from './account'
 import type { TDsb, TParseDashboard } from './dashboard'
 import type { TMarkerValue } from './marker'
+import type { TGraphQLPagiPageInfo } from './pagination'
 import type { TThread, TCommunityThread } from './thread'
-import type { TID, TPagi } from './utils'
+import type { TID } from './utils'
 import type { TParsedWallpaper } from './wallpaper'
 
 type TMeta = {
@@ -25,7 +26,7 @@ export type TCommunity = {
   id?: string
   index?: number
   title?: string
-  logo?: string
+  logo?: string | null
   slug: string
   locale?: string
   homepage?: string
@@ -38,7 +39,6 @@ export type TCommunity = {
   meta?: TMeta
   threads?: readonly TCommunityThread[]
   pending?: number
-  moderators?: readonly TModerator[]
   views?: number
 
   // TODO:
@@ -53,7 +53,8 @@ export type TCommunityInfo = {
 
 export type TPagedCommunities = {
   entries: readonly TCommunity[]
-} & TPagi
+  pageInfo: TGraphQLPagiPageInfo
+}
 
 export type TTag = {
   id?: string
@@ -61,7 +62,7 @@ export type TTag = {
   index?: number
   title?: string
   slug?: string
-  layout?: string
+  layout?: string | null
   desc?: string
   thread?: TThread
   color?: string

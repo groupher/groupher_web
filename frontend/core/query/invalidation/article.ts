@@ -39,7 +39,7 @@ const statsBatchMatchesScope = (
 
 const articleListMatches = (scope: TArticleListScope) => (queryKey: readonly unknown[]) => {
   const family = queryKey[1]
-  const filter = queryKey[2] === 'pagi' ? queryKey[4] : queryKey[2]
+  const filter = queryKey[4]
   if (
     queryKey[0] !== articleQueryKeys.all[0] ||
     !['posts', 'changelogs'].includes(String(family)) ||

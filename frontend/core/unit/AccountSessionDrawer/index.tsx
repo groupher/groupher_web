@@ -1,13 +1,15 @@
-'use client'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { useCallback, useEffect, useState } from 'react'
+import usePagiPosition from '~/hooks/usePagiPosition'
+import { viewerQueryKeys } from '~/query'
+import { invalidatePrefix } from '~/query/invalidation'
+import useAccount from '~/stores/account/hooks'
+import Pagi from '~/ui/Pagi'
+;('use client')
 
-import {
-  listSessions,
-  revokeOtherSessions,
-  revokeSession,
-  type TBrowserSessionSummary,
-} from '~/auth'
+import { useState } from 'react'
+
+import { listSessions, revokeOtherSessions, revokeSession } from '~/auth'
 import DesktopSVG from '~/icons/Desktop'
 import Drawer from '~/ui/Drawer'
 
@@ -32,33 +34,28 @@ const formatTimestamp = (value?: string | null): string | null => {
 
 export default function AccountSessionDrawer({ show, onClose }: TProps) {
   const s = useSalon()
-  const [sessions, setSessions] = useState<TBrowserSessionSummary[]>([])
-  const [loading, setLoading] = useState(false)
+  const { accountRef } = useAccount()
+  const client = useQueryClient()
+  const position = usePagiPosition(`account-sessions:${accountRef}`)
+  const query = useQuery({
+    queryKey: [...viewerQueryKeys.all, accountRef, 'sessions', position.input],
+    queryFn: () => listSessions(position.input),
+    enabled: show && !!accountRef,
+  })
+  const sessions = query.data?.entries ?? []
+  const loading = query.isFetching
   const [pendingRef, setPendingRef] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
-
-  const load = useCallback(async () => {
-    setLoading(true)
-    setError(null)
-    try {
-      setSessions(await listSessions())
-    } catch {
-      setError('Could not load your signed-in devices. Please try again.')
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (show) void load()
-  }, [load, show])
+  const [actionError, setError] = useState<string | null>(null)
+  const error =
+    actionError ?? (query.error ? 'Could not load your signed-in devices. Please try again.' : null)
+  const load = query.refetch
 
   const revoke = async (publicRef: string) => {
     setPendingRef(publicRef)
     setError(null)
     try {
       await revokeSession(publicRef)
-      setSessions((current) => current.filter((session) => session.publicRef !== publicRef))
+      await invalidatePrefix(client, [...viewerQueryKeys.all, accountRef, 'sessions'])
     } catch {
       setError('Could not revoke that device. Please try again.')
     } finally {
@@ -71,7 +68,8 @@ export default function AccountSessionDrawer({ show, onClose }: TProps) {
     setError(null)
     try {
       await revokeOtherSessions()
-      setSessions((current) => current.filter((session) => session.isCurrent))
+      await invalidatePrefix(client, [...viewerQueryKeys.all, accountRef, 'sessions'])
+      position.reset()
     } catch {
       setError('Could not revoke the other devices. Please try again.')
     } finally {
@@ -102,7 +100,13 @@ export default function AccountSessionDrawer({ show, onClose }: TProps) {
             type='button'
             className={s.revokeButton}
             disabled={
-              loading || pendingRef !== null || sessions.every((session) => session.isCurrent)
+              loading ||
+              pendingRef !== null ||
+              (query.data?.pageInfo.__typename === 'OffsetPageInfo'
+                ? query.data.pageInfo.totalCount <= 1
+                : sessions.every((session) => session.isCurrent) &&
+                  !query.data?.pageInfo.hasNextPage &&
+                  !query.data?.pageInfo.hasPreviousPage)
             }
             onClick={() => void revokeOthers()}
           >
@@ -173,6 +177,7 @@ export default function AccountSessionDrawer({ show, onClose }: TProps) {
           })}
         </div>
       </div>
+      <Pagi pageInfo={query.data?.pageInfo} onChange={position.setPage} />
     </Drawer>
   )
 }

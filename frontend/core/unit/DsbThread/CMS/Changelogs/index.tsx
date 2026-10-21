@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import { getArticleRowId } from '~/hooks/useTanTable'
 import useTrans from '~/hooks/useTrans'
 import type { TArticleState } from '~/spec'
+import Pagi from '~/ui/Pagi'
 
 import { ArticleCell, AuthorCell, DateCell, StatusCell } from '../Cell'
 import CmsDataTable from '../Table/CmsDataTable'
@@ -15,7 +16,7 @@ import useCmsArticles from '../useCmsArticles'
 import useSalon, { cn } from './salon'
 
 export default function Changelogs() {
-  const { pagedArticles: pagedChangelogs, loading } = useCmsArticles('changelog')
+  const { pagedArticles: pagedChangelogs, loading, setPage } = useCmsArticles('changelog')
   const s = useSalon({ loading })
   const { t } = useTrans()
   const table = useCmsTableController()
@@ -129,6 +130,7 @@ export default function Changelogs() {
           selectColumn: table.selectColumn,
         }}
       />
+      <Pagi pageInfo={pagedChangelogs.pageInfo} onChange={setPage} />
     </>
   )
 }

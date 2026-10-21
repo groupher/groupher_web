@@ -1,4 +1,4 @@
-import type { TArticle, TArticleStats, TPagi, TUser } from '~/spec'
+import type { TArticle, TArticleStats, TGraphQLPagiPageInfo, TUser } from '~/spec'
 
 export type TTrashedPost = {
   id: string
@@ -12,7 +12,8 @@ export type TTrashedPost = {
   mentionedByCount: number
 }
 
-export type TPagedTrashedPosts = TPagi & {
+export type TPagedTrashedPosts = {
+  pageInfo: TGraphQLPagiPageInfo
   entries: TTrashedPost[]
 }
 

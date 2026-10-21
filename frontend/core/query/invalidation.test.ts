@@ -88,9 +88,9 @@ describe('typed query invalidation', () => {
 
   it('invalidates only lists in the selected community and thread family', async () => {
     const queryClient = createClient()
-    const posts = articleQueryKeys.posts({ community: 'home' })
-    const changelogs = articleQueryKeys.changelogs({ community: 'home' })
-    const other = articleQueryKeys.posts({ community: 'other' })
+    const posts = articleQueryKeys.pagiPosts({ community: 'home' })
+    const changelogs = articleQueryKeys.pagiChangelogs({ community: 'home' })
+    const other = articleQueryKeys.pagiPosts({ community: 'other' })
     queryClient.setQueryData(posts, {})
     queryClient.setQueryData(changelogs, {})
     queryClient.setQueryData(other, {})

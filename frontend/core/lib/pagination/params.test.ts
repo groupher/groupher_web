@@ -1,6 +1,12 @@
 import { paginationDefaultV1 } from '@groupher/contracts/pagination'
 
-import { pagiConfigKey, toLegacyPagi, toPagiGraphQLInput, toPagiPageInfo } from './params'
+import {
+  pagiConfigKey,
+  toEffectivePagiConfig,
+  resolvePagiPosition,
+  toPagiGraphQLInput,
+  toPagiPageInfo,
+} from './params'
 
 describe('pagination params adapter', () => {
   it('uses the shared platform default contract', () => {
@@ -45,7 +51,7 @@ describe('pagination params adapter', () => {
     ).toEqual({ api: 'cursor', mode: 'infinite_scroll', schemaVersion: 1, revision: 7 })
   })
 
-  it('normalizes GraphQL offset metadata for both new and legacy consumers', () => {
+  it('normalizes GraphQL offset metadata with an explicit API discriminator', () => {
     const pageInfo = {
       __typename: 'OffsetPageInfo' as const,
       page: 2,
@@ -57,12 +63,6 @@ describe('pagination params adapter', () => {
     }
 
     expect(toPagiPageInfo(pageInfo)).toMatchObject({ api: 'offset', page: 2 })
-    expect(toLegacyPagi(pageInfo)).toEqual({
-      pageNumber: 2,
-      pageSize: 20,
-      totalCount: 41,
-      totalPages: 3,
-    })
   })
 
   it('does not invent offset totals for cursor metadata', () => {
@@ -75,6 +75,71 @@ describe('pagination params adapter', () => {
     }
 
     expect(toPagiPageInfo(pageInfo)).toMatchObject({ api: 'cursor', endCursor: 'end' })
-    expect(toLegacyPagi(pageInfo)).toEqual({})
   })
+})
+
+it('preserves explicit links when administrators switch defaults', () => {
+  const config = {
+    api: 'cursor' as const,
+    mode: 'load_more' as const,
+    schemaVersion: 1,
+    revision: 9,
+    defaultSize: 20,
+    maxSize: 100,
+  }
+  expect(resolvePagiPosition(config, new URLSearchParams('page=3'))).toMatchObject({
+    page: 3,
+    config: { api: 'offset', mode: 'page', revision: 9 },
+  })
+  expect(
+    resolvePagiPosition(
+      { ...config, api: 'offset', mode: 'page' },
+      new URLSearchParams('pagiApi=cursor&after=signed'),
+    ),
+  ).toMatchObject({
+    initialAfter: 'signed',
+    config: { api: 'cursor', mode: 'load_more', revision: 9 },
+  })
+  expect(
+    resolvePagiPosition(config, new URLSearchParams('commentsPage=2'), {
+      api: 'commentsApi',
+      page: 'commentsPage',
+      after: 'commentsAfter',
+    }),
+  ).toMatchObject({ page: 2, config: { api: 'offset' } })
+})
+
+it.each(['page', 'load_more', 'infinite_scroll'] as const)(
+  'derives one shared policy for %s',
+  (mode) => {
+    expect(toEffectivePagiConfig({ pagiMode: mode, pagiRevision: 7 })).toEqual({
+      schemaVersion: 1,
+      revision: 7,
+      defaultSize: 20,
+      maxSize: 100,
+      mode,
+      api: mode === 'page' ? 'offset' : 'cursor',
+    })
+  },
+)
+
+it('resolves separate desktop/mobile defaults and preserves explicit saved positions', () => {
+  const preference = {
+    pagiMode: 'page',
+    pagiMobileMode: 'infinite_scroll',
+    pagiRevision: 7,
+  } as const
+  const mobile = toEffectivePagiConfig(preference, true)
+  expect(toEffectivePagiConfig(undefined, true)).toMatchObject({
+    api: 'cursor',
+    mode: 'infinite_scroll',
+  })
+  expect(mobile).toMatchObject({ api: 'cursor', mode: 'infinite_scroll', revision: 7 })
+  expect(resolvePagiPosition(mobile, new URLSearchParams('page=4'))).toMatchObject({
+    config: { api: 'offset', mode: 'page' },
+    page: 4,
+  })
+  expect(
+    resolvePagiPosition(toEffectivePagiConfig(preference), new URLSearchParams('after=opaque')),
+  ).toMatchObject({ config: { api: 'cursor' }, initialAfter: 'opaque' })
 })

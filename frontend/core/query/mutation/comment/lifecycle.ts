@@ -3,6 +3,7 @@ import { CONTENT_PUBLISH_ACTION } from '@groupher/contracts/content-publish'
 import { browserGraphQLRequest } from '~/graphql/client'
 import { stripCommentViewerState } from '~/lib/commentViewerState'
 import { plateSourceFromJson, publishContentCommand } from '~/lib/contentPublisher'
+import { invalidateMatching } from '~/query/invalidation'
 import type { TComment } from '~/spec'
 import commentsSchema from '~/unit/Comments/schema'
 
@@ -14,6 +15,7 @@ import {
   authorityQueries,
   commentOperationQueueKey,
   commentQueryTargets,
+  isCommentQueryForArticle,
   insertPendingCommentChanges,
   insertPendingReplyChanges,
   makePendingComment,
@@ -61,11 +63,18 @@ const reconcileCreated = (
 ): void => {
   const articleStats = normalizeArticleStats(result.articleStats)
   articleStatsCache.apply(context.queryClient, articleStats)
+  const confirmed = {
+    ...result.comment,
+    rootInnerId: target.parent?.rootInnerId || target.parentId || result.comment.innerId,
+  }
+  void invalidateMatching(context.queryClient, (query) =>
+    isCommentQueryForArticle(query, target.scope),
+  )
   reconcileCreatedComment(
     context.queryClient,
     target.scope,
     `pending:${context.commandId}`,
-    stripCommentViewerState(result.comment),
+    stripCommentViewerState(confirmed),
   )
   if (!context.accountRef) return
   writeCommentFeedReceipt({
@@ -73,7 +82,7 @@ const reconcileCreated = (
     commandId: result.commandId,
     accountRef: context.accountRef,
     articleKey: target.articleKey,
-    comment: stripCommentViewerState(result.comment),
+    comment: stripCommentViewerState(confirmed),
     commentRef: String(result.comment.innerId),
     parentId: target.parentId,
     publicProjection: {
@@ -178,9 +187,14 @@ export const updateCommentOperation = {
   ): void => {
     const articleStats = normalizeArticleStats(result.articleStats)
     articleStatsCache.apply(context.queryClient, articleStats)
+    void invalidateMatching(context.queryClient, (query) =>
+      isCommentQueryForArticle(query, target.scope),
+    )
     patchCommentEverywhere(context.queryClient, target.scope, target.commentInnerId, (comment) => ({
       ...comment,
       ...stripCommentViewerState(result.comment),
+      replies: comment.replies,
+      rootInnerId: comment.rootInnerId,
     }))
     if (!context.accountRef) return
     writeCommentFeedReceipt({
@@ -230,6 +244,9 @@ export const deleteCommentOperation = {
   ): void => {
     const articleStats = normalizeArticleStats(result.articleStats)
     articleStatsCache.apply(context.queryClient, articleStats)
+    void invalidateMatching(context.queryClient, (query) =>
+      isCommentQueryForArticle(query, target.scope),
+    )
     patchCommentEverywhere(context.queryClient, target.scope, target.commentInnerId, () => null)
     if (!context.accountRef) return
     writeCommentFeedReceipt({

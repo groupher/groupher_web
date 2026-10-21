@@ -13,6 +13,8 @@ describe('public cache tag contract', () => {
     const tag =
       vector.kind === 'community'
         ? publicCacheTags.community(input.community)
+        : vector.kind === 'commentsList'
+          ? publicCacheTags.commentsList(input.community)
         : vector.kind === 'docTree'
           ? publicCacheTags.docTree(input.community)
           : vector.kind === 'articleList'

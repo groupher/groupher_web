@@ -14,17 +14,19 @@ import { print } from 'graphql'
 
 import { THREAD } from '~/const/thread'
 import { DEFAULT_EFFECTIVE_PAGI_CONFIG, toPagiGraphQLInput } from '~/lib/pagination/params'
-import { articleQueryKeys, commentKeys, graphqlKeys } from '~/query'
-import { articlePagiRequest, toPagedChangelogs, toPagedPosts } from '~/query/article'
+import { articleQueryKeys, graphqlKeys } from '~/query'
+import { articlePagiRequest } from '~/query/article'
 import { articlePathKey } from '~/query/articlePath'
 import {
   ARTICLE_STATS_SNAPSHOT_MAX_AGE_MS,
   articleStatsBatchStructuralSharing,
   articleStatsStructuralSharing,
 } from '~/query/articleStats'
+import { commentQueries } from '~/query/comment'
+import { commentPagiRequest } from '~/query/commentPage'
 import { docPublicTree } from '~/schemas/pages/doc'
 import type { TEffectivePagiConfig, TPagedArticlesParams, TPagiRequest } from '~/spec'
-import type { TDocPublicTreeQuery, TThread } from '~/spec'
+import type { TDocPublicTreeQuery, TThread, TArticleThread } from '~/spec'
 
 import {
   loadChangelog,
@@ -61,7 +63,7 @@ export const communityQueries = {
             pagi: toPagiGraphQLInput(articlePagiRequest(filter, config)),
           },
         })
-        return page ? toPagedPosts(page) : null
+        return page
       },
       gcTime: 10 * 60_000,
       meta: { hydration: 'public' },
@@ -77,7 +79,7 @@ export const communityQueries = {
         config,
         toCursorArticlePageRequest(filter, config, null),
       ),
-      initialPageParam: null as string | null,
+      initialPageParam: filter.after ?? (null as string | null),
       queryFn: ({ pageParam }) =>
         loadPosts({
           data: {
@@ -118,7 +120,7 @@ export const communityQueries = {
             pagi: toPagiGraphQLInput(articlePagiRequest(filter, config)),
           },
         })
-        return page ? toPagedChangelogs(page) : null
+        return page
       },
       gcTime: 10 * 60_000,
       meta: { hydration: 'public' },
@@ -134,7 +136,7 @@ export const communityQueries = {
         config,
         toCursorArticlePageRequest(filter, config, null),
       ),
-      initialPageParam: null as string | null,
+      initialPageParam: filter.after ?? (null as string | null),
       queryFn: ({ pageParam }) =>
         loadChangelogs({
           data: {
@@ -160,16 +162,49 @@ export const communityQueries = {
       gcTime: 10 * 60_000,
       meta: { hydration: 'public' },
     }),
-  comments: (community: string, thread: TThread, innerId: string) =>
-    queryOptions({
-      queryKey: commentKeys.list(community, thread, innerId, 1, 'REPLIES'),
-      queryFn: () => loadComments({ data: { community, thread, innerId } }),
+  comments: (
+    community: string,
+    thread: TArticleThread,
+    innerId: string,
+    config: TEffectivePagiConfig = DEFAULT_EFFECTIVE_PAGI_CONFIG,
+    page = 1,
+  ) => {
+    const collection = { article: { community, thread, innerId }, mode: 'REPLIES' as const }
+    return queryOptions({
+      ...commentQueries.page(collection, config, page),
+      queryFn: () =>
+        loadComments({
+          data: { collection, pagi: toPagiGraphQLInput(commentPagiRequest(config, page)) },
+        }),
       gcTime: 10 * 60_000,
       meta: { hydration: 'public' },
-    }),
-  kanban: (community: string) =>
+    })
+  },
+  commentsInfinite: (
+    community: string,
+    thread: TArticleThread,
+    innerId: string,
+    config: TEffectivePagiConfig,
+    initialAfter?: string,
+  ) => {
+    const collection = {
+      initialAfter,
+      article: { community, thread, innerId },
+      mode: 'REPLIES' as const,
+    }
+    return infiniteQueryOptions({
+      ...commentQueries.infinite(collection, config),
+      queryFn: ({ pageParam }) =>
+        loadComments({
+          data: { collection, pagi: toPagiGraphQLInput(commentPagiRequest(config, 1, pageParam)) },
+        }),
+      gcTime: 10 * 60_000,
+      meta: { hydration: 'public' },
+    })
+  },
+  kanban: (community: string, config = DEFAULT_EFFECTIVE_PAGI_CONFIG) =>
     queryOptions({
-      queryKey: articleQueryKeys.kanban(community),
+      queryKey: articleQueryKeys.kanban(community, config),
       queryFn: () => loadKanban({ data: { community } }),
       gcTime: 10 * 60_000,
       meta: { hydration: 'public' },

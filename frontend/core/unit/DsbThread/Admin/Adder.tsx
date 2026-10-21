@@ -20,7 +20,7 @@ import useSalon from './salon/adder'
 export default function Adder() {
   const s = useSalon()
   const { t } = useTrans()
-  const { searchUsers, addAdmins, isModerator } = useAdmins()
+  const { searchUsers, addAdmins } = useAdmins()
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [selectedUsers, setSelectedUsers] = useState<TUser[]>([])
   const [open, setOpen] = useState(false)
@@ -47,10 +47,8 @@ export default function Adder() {
   }, [selectedUsers])
 
   const visibleUsers = useMemo(() => {
-    return list.items.filter(
-      (user) => user.login && !selectedLogins.has(user.login) && !isModerator(user),
-    )
-  }, [isModerator, list.items, selectedLogins])
+    return list.items.filter((user) => user.login && !selectedLogins.has(user.login))
+  }, [list.items, selectedLogins])
 
   const onInputChange = (value: string): void => {
     list.setFilterText(value)
@@ -74,7 +72,7 @@ export default function Adder() {
   }
 
   const selectUser = (user: TUser): void => {
-    if (!user.login || selectedLogins.has(user.login) || isModerator(user)) return
+    if (!user.login || selectedLogins.has(user.login)) return
 
     setSelectedUsers((users) => [...users, user])
     list.setFilterText('')

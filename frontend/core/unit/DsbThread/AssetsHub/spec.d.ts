@@ -1,4 +1,4 @@
-import type { TSimpleUser } from '~/spec'
+import type { TPagiPage, TSimpleUser, TGraphQLPagiPageInfo } from '~/spec'
 import type { TThread } from '~/spec/thread'
 
 export type TAssetType = 'IMAGE' | 'VIDEO' | 'AUDIO' | 'FILE'
@@ -65,21 +65,8 @@ export type TAssetRef = {
   usage?: string
 }
 
-export type TPagedAssets = {
-  entries: TAsset[]
-  pageNumber?: number
-  pageSize?: number
-  totalCount: number
-  totalPages?: number
-}
-
-export type TPagedAssetRefs = {
-  entries: TAssetRef[]
-  pageNumber?: number
-  pageSize?: number
-  totalCount: number
-  totalPages?: number
-}
+export type TPagedAssets = TPagiPage<TAsset>
+export type TPagedAssetRefs = TPagiPage<TAssetRef>
 
 export type TIntentResult = {
   createCommunityAssetUploadIntent: {
@@ -131,6 +118,8 @@ export type TUploadProgress = {
 }
 
 export type TReferencesState = {
+  pageInfo?: TGraphQLPagiPageInfo
+  changePage?: (page: number) => void
   assetId: string | null
   entries: TAssetRef[]
   error: string | null
@@ -139,6 +128,8 @@ export type TReferencesState = {
 }
 
 export type TAssetsHubLogic = {
+  pageInfo?: TGraphQLPagiPageInfo
+  setPage: (page: number) => void
   assets: TAsset[]
   assetsErrorMessage: string | null
   activeThread: TAssetThreadFilter

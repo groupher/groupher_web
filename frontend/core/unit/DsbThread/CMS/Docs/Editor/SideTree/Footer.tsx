@@ -10,6 +10,9 @@ import type { TDocTreeTrashItem, TSideTreeTab } from './spec'
 import TrashDrawer from './TrashDrawer'
 
 type TProps = {
+  pageInfo?: import('~/spec').TGraphQLPagiPageInfo
+  onPageChange?: (page: number) => void
+  error?: string | null
   baseRevision: number | null
   tabs: TSideTreeTab[]
   trashItems: TDocTreeTrashItem[]
@@ -19,6 +22,9 @@ type TProps = {
 }
 
 const Footer: FC<TProps> = ({
+  pageInfo,
+  onPageChange,
+  error,
   baseRevision,
   tabs,
   trashItems,
@@ -30,7 +36,8 @@ const Footer: FC<TProps> = ({
   const { t } = useTrans()
   const { slug: community } = useCommunity()
   const [trashVisible, setTrashVisible] = useState(false)
-  const trashCount = trashItems.length
+  const trashCount =
+    pageInfo?.__typename === 'OffsetPageInfo' ? pageInfo.totalCount : trashItems.length
   const trashLabel = t('dsb.cms.docs.side_tree.footer.trash')
   const assetsLabel = t('dsb.cms.docs.side_tree.footer.assets')
   const openTrash = useCallback(() => {
@@ -73,6 +80,9 @@ const Footer: FC<TProps> = ({
         </div>
       </footer>
       <TrashDrawer
+        pageInfo={pageInfo}
+        onPageChange={onPageChange}
+        error={error}
         show={trashVisible}
         items={trashItems}
         tabs={tabs}

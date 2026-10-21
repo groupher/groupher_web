@@ -1,29 +1,13 @@
 import { graphql } from '~/graphql/authoring'
 
-const pagedComments = graphql(`
-  query PagedComments($article: ArticlePathInput!, $mode: CommentsMode, $filter: CommentsFilter!) {
-    pagedComments(article: $article, mode: $mode, filter: $filter) {
-      entries {
-        ...CommentFields
-        replyToComment {
-          ...CommentFields
-        }
-        replies {
-          ...CommentReplyFields
-        }
-      }
-      ...CommentPageFields
-    }
-  }
-`)
-
-const publicPagedComments = graphql(`
-  query PublicPagedComments(
+const commentPage = graphql(`
+  query CommentPage(
     $article: ArticlePathInput!
     $mode: CommentsMode
-    $filter: CommentsFilter!
+    $filter: CommentPageFilter
+    $pagi: PagiInput
   ) {
-    pagedComments(article: $article, mode: $mode, filter: $filter) {
+    commentPage(article: $article, mode: $mode, filter: $filter, pagi: $pagi) {
       entries {
         ...CommentPublicFields
         replyToComment {
@@ -33,21 +17,35 @@ const publicPagedComments = graphql(`
           ...CommentPublicReplyFields
         }
       }
-      ...CommentPageFields
+      pinnedEntries {
+        ...CommentPublicFields
+        replyToComment {
+          ...CommentPublicFields
+        }
+        replies {
+          ...CommentPublicReplyFields
+        }
+      }
+      pageInfo {
+        ...CommentPagiInfo
+      }
     }
   }
 `)
 
-const pagedCommentReplies = graphql(`
-  query PagedCommentReplies($comment: CommentPathInput!, $filter: CommentsFilter!) {
-    pagedCommentReplies(comment: $comment, filter: $filter) {
+const commentReplyPage = graphql(`
+  query CommentReplyPage(
+    $comment: CommentPathInput!
+    $filter: CommentPageFilter
+    $pagi: PagiInput
+  ) {
+    commentReplyPage(comment: $comment, filter: $filter, pagi: $pagi) {
       entries {
-        ...CommentReplyFields
+        ...CommentPublicReplyFields
       }
-      totalPages
-      totalCount
-      pageSize
-      pageNumber
+      pageInfo {
+        ...CommentPagiInfo
+      }
     }
   }
 `)
@@ -302,16 +300,19 @@ const undoEmotionToComment = graphql(`
 const searchUsers = graphql(`
   query SearchUsers($name: String!) {
     searchUsers(name: $name) {
-      entries {
-        ...CommentAuthorFields
-      }
+      ...CommentAuthorFields
     }
   }
 `)
 
 const pagedPublishedComments = graphql(`
-  query PagedPublishedComments($login: String!, $thread: Thread, $filter: PagiFilter!) {
-    pagedPublishedComments(login: $login, thread: $thread, filter: $filter) {
+  query PagedPublishedComments(
+    $login: String!
+    $thread: Thread
+    $filter: CommentPageFilter
+    $pagi: PagiInput
+  ) {
+    pagedPublishedComments(login: $login, thread: $thread, filter: $filter, pagi: $pagi) {
       entries {
         ...CommentFields
         article {
@@ -324,15 +325,16 @@ const pagedPublishedComments = graphql(`
           }
         }
       }
-      ...CommentPageFields
+      pageInfo {
+        ...CommentPagiInfo
+      }
     }
   }
 `)
 
 export default {
-  pagedComments,
-  publicPagedComments,
-  pagedCommentReplies,
+  commentPage,
+  commentReplyPage,
   createComment,
   oneComment,
   reconcileComments,

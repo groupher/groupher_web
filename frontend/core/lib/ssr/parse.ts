@@ -4,17 +4,9 @@ import { INIT_KANBAN_BOARDS, normalizeKanbanBoards } from '~/const/dashboard'
 import { BUILTIN_ALIAS } from '~/const/name'
 import { FIELDS } from '~/constant/dsb-fields'
 import { removeEmptyValuesFromObject } from '~/helper'
-import { DEFAULT_EFFECTIVE_PAGI_CONFIG } from '~/lib/pagination/params'
 import { decodeWallpaperSettings } from '~/lib/wallpaperSettingsCodec'
 import type { TWallpaperSettingsTransport } from '~/lib/wallpaperSettingsCodec'
-import type {
-  TCommunity,
-  TDashboardPagination,
-  TNameAlias,
-  TParseDashboard,
-  TParsedWallpaper,
-  TPaginationSurface,
-} from '~/spec'
+import type { TCommunity, TNameAlias, TParseDashboard, TParsedWallpaper } from '~/spec'
 import type { TWallpaperThemeState } from '~/stores/wallpaper/spec'
 
 /** Parses wallpaper into the canonical frontend shared representation. */
@@ -51,46 +43,27 @@ const parseDashboardAlias = (nameAlias: TNameAlias[]): TNameAlias[] => {
   return reject((item: TNameAlias) => item.slug === '', [...nameAlias, ...unChangedAlias])
 }
 
-const PAGINATION_SURFACES: readonly TPaginationSurface[] = ['posts', 'changelogs', 'comments']
-
-const parseDashboardPagination = (pagination: unknown): TDashboardPagination => {
-  const source = pagination && typeof pagination === 'object' ? pagination : {}
-
-  return Object.fromEntries(
-    PAGINATION_SURFACES.map((surface) => {
-      const raw = (source as Record<string, unknown>)[surface]
-      const value = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {}
-
-      return [
-        surface,
-        {
-          ...DEFAULT_EFFECTIVE_PAGI_CONFIG,
-          ...(value.api !== undefined ? { api: value.api } : {}),
-          ...(value.mode !== undefined ? { mode: value.mode } : {}),
-          ...(value.schema_version !== undefined ? { schemaVersion: value.schema_version } : {}),
-          ...(value.schemaVersion !== undefined ? { schemaVersion: value.schemaVersion } : {}),
-          ...(value.revision !== undefined ? { revision: value.revision } : {}),
-          ...(value.default_size !== undefined ? { defaultSize: value.default_size } : {}),
-          ...(value.defaultSize !== undefined ? { defaultSize: value.defaultSize } : {}),
-          ...(value.max_size !== undefined ? { maxSize: value.max_size } : {}),
-          ...(value.maxSize !== undefined ? { maxSize: value.maxSize } : {}),
-        },
-      ]
-    }),
-  ) as TDashboardPagination
-}
-
 /** Parses dashboard into the canonical frontend shared representation. */
 export const parseDashboard = (community: TCommunity): TParseDashboard => {
   if (!community) {
-    const defaultFields = { ...FIELDS, pagination: parseDashboardPagination(undefined) }
+    const defaultFields = {
+      ...FIELDS,
+      pagiMode: 'page' as const,
+      pagiMobileMode: 'infinite_scroll' as const,
+      pagiRevision: 0,
+    }
     return { ...defaultFields, original: defaultFields }
   }
 
-  const { dashboard, moderators } = community
+  const { dashboard } = community
 
   if (!dashboard || Object.keys(dashboard).length === 0) {
-    const defaultFields = { ...FIELDS, pagination: parseDashboardPagination(undefined) }
+    const defaultFields = {
+      ...FIELDS,
+      pagiMode: 'page' as const,
+      pagiMobileMode: 'infinite_scroll' as const,
+      pagiRevision: 0,
+    }
     return { ...defaultFields, original: defaultFields }
   }
 
@@ -110,7 +83,9 @@ export const parseDashboard = (community: TCommunity): TParseDashboard => {
     thirdPartyAnalytics,
     enabledThirdPartyAnalytics,
     contentShadow,
-    pagination,
+    pagiMode,
+    pagiMobileMode,
+    pagiRevision,
   } = dashboard
   const fieldsObj = removeEmptyValuesFromObject({
     enable,
@@ -124,7 +99,6 @@ export const parseDashboard = (community: TCommunity): TParseDashboard => {
     headerLinks,
     footerLinks,
     footerOnelineLinks,
-    moderators,
     mediaReports: (mediaReports || []).map((item, index) => ({
       ...item,
       editUrl: item.url,
@@ -133,7 +107,10 @@ export const parseDashboard = (community: TCommunity): TParseDashboard => {
     thirdPartyAnalytics,
     enabledThirdPartyAnalytics,
     contentShadow: contentShadow as boolean | undefined,
-    pagination: parseDashboardPagination(pagination),
+    pagiMode: (pagiMode?.toLowerCase() || 'page') as TParseDashboard['pagiMode'],
+    pagiMobileMode: (pagiMobileMode?.toLowerCase() ||
+      'infinite_scroll') as TParseDashboard['pagiMobileMode'],
+    pagiRevision: pagiRevision ?? 0,
   }) as Partial<TParseDashboard>
 
   if (layout?.kanbanBoards?.length) {
@@ -143,7 +120,12 @@ export const parseDashboard = (community: TCommunity): TParseDashboard => {
   }
 
   if (Object.keys(fieldsObj).length === 0) {
-    const defaultFields = { ...FIELDS, pagination: parseDashboardPagination(undefined) }
+    const defaultFields = {
+      ...FIELDS,
+      pagiMode: 'page' as const,
+      pagiMobileMode: 'infinite_scroll' as const,
+      pagiRevision: 0,
+    }
     return { ...defaultFields, original: defaultFields }
   }
 

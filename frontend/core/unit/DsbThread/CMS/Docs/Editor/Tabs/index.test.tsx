@@ -120,6 +120,8 @@ const makeController = (
   stagedEvents: [],
   trashItems: [],
   trashLoading: false,
+  setTrashPage: noop,
+  trashError: null,
   activeId: null,
   editingTarget: null,
   coverWarning: null,

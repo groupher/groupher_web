@@ -80,25 +80,15 @@ export const loadOwnedApplication = createServerFn({ method: 'GET', strict: fals
     return result.communityApplication
   })
 
-export const loadReviewQueue = createServerFn({ method: 'GET', strict: false }).handler(
-  async (): Promise<CommunityApplication[]> => {
-    const applications: CommunityApplication[] = []
-    let after: string | null = null
-
-    do {
-      const result = await requestGraphQL(ReviewQueueDocument, { after })
-      applications.push(...result.pagedCommunityApplications.edges.map(({ node }) => node))
-      after = result.pagedCommunityApplications.pageInfo.hasNextPage
-        ? result.pagedCommunityApplications.pageInfo.endCursor
-        : null
-    } while (after)
-
-    return applications
-  },
-)
+export const loadReviewQueue = createServerFn({ method: 'GET', strict: false })
+  .validator((data: { pagi?: import('~/spec').TPagiGraphQLInput }) => data)
+  .handler(async ({ data }) => {
+    const result = await requestGraphQL(ReviewQueueDocument, { pagi: data.pagi })
+    return result.pagedCommunityApplications
+  })
 
 export const loadReviewApplication = createServerFn({ method: 'GET', strict: false })
-  .validator((data: { ref: string }) => data)
+  .validator((data: { ref: string; pagi?: import('~/spec').TPagiGraphQLInput }) => data)
   .handler(async ({ data }): Promise<ReviewApplication | null> => {
     const result = await requestGraphQL(ReviewApplicationDocument, data)
     return result.reviewCommunityApplication

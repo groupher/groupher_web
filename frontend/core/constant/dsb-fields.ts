@@ -168,7 +168,6 @@ export const FIELDS: TDsbFieldMap = {
   footerLinks: [],
   footerOnelineLinks: [],
   headerLinks: [],
-  moderators: [],
   widgetsPrimaryColor: COLOR.BLACK,
   widgetsThreads: [THREAD.POST],
   widgetsSize: SIZE.MEDIUM,

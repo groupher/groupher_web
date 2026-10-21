@@ -1,6 +1,7 @@
 'use client'
 
 import IconHub from '~/ui/IconHub'
+import Pagi from '~/ui/Pagi'
 
 import { ASSETS_HUB_LABEL } from './constant'
 import { formatAssetRefMeta, formatAssetRefTitle } from './helper'
@@ -50,6 +51,7 @@ export default function ReferencesPanel({ asset, references }: TProps) {
           ))}
         </div>
       )}
+      {active && <Pagi pageInfo={references.pageInfo} onChange={references.changePage} />}
     </div>
   )
 }

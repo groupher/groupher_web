@@ -11,6 +11,7 @@ import {
 import { includes } from 'ramda'
 import { startTransition, useMemo, useState } from 'react'
 
+import usePagiPosition from '~/hooks/usePagiPosition'
 import {
   SELECT_COL_ID,
   type TSortDir,
@@ -26,6 +27,7 @@ import { graphqlQueryOptions } from '~/query'
 import { pagedCommunities as pagedCommunitiesDocument } from '~/schemas/pages/community'
 import type { TCommunity } from '~/spec'
 import TableLoading from '~/ui/Loading/Table'
+import Pagi from '~/ui/Pagi'
 
 import FilterBar from '../FilterBar'
 import useSalon, { cn } from './salon'
@@ -35,9 +37,10 @@ const CLASSIC_ALIGN_LEFT = ['name', 'desc']
 const CLASSIC_ALIGN_RIGHT = ['timestamps']
 
 export default function Communities() {
+  const position = usePagiPosition('communities')
   const query = useQuery(
     graphqlQueryOptions<PagePagedCommunitiesQuery>(pagedCommunitiesDocument, {
-      filter: { page: 1, size: 20 },
+      pagi: position.input,
       userHasLogin: false,
     }),
   )
@@ -255,6 +258,7 @@ export default function Communities() {
 
         {loading && <TableLoading className='absolute top-10' />}
       </div>
+      <Pagi pageInfo={pagedCommunities?.pageInfo} onChange={position.setPage} />
     </>
   )
 }

@@ -3,10 +3,9 @@ import { createServerFn } from '@tanstack/react-start'
 
 import { THREAD } from '~/const/thread'
 import { themePresets } from '~/schemas/pages/misc'
-import type { TPagedArticles, TTagGroup, TThemePresetOption } from '~/spec'
+import type { TPagiGraphQLInput, TPagedArticles, TTagGroup, TThemePresetOption } from '~/spec'
 import type { TPagedAssets } from '~/unit/DsbThread/AssetsHub/spec'
-import { normalizeTrashedPost } from '~/unit/DsbThread/CMS/Trash/normalize'
-import type { TRawPagedTrashedPosts, TPagedTrashedPosts } from '~/unit/DsbThread/CMS/Trash/spec'
+import type { TRawPagedTrashedPosts } from '~/unit/DsbThread/CMS/Trash/spec'
 import DashboardAssetsSchema from '~/unit/DsbThread/schema/assets'
 import DashboardContentSchema from '~/unit/DsbThread/schema/content'
 import DashboardTagsSchema from '~/unit/DsbThread/schema/tags'
@@ -23,6 +22,7 @@ type TGroupedKanban = {
 }
 
 export type TPagedPostsInput = {
+  pagi: TPagiGraphQLInput
   community: string
   page?: number
 }
@@ -34,14 +34,15 @@ export const loadPagedPosts = createServerFn({ method: 'GET', strict: false })
     setPrivateCacheHeader()
 
     const result = await fetchGraphQL(
-      DashboardContentSchema.pagedPosts,
+      DashboardContentSchema.postPage,
       {
-        filter: { page: data.page || 1, size: 20, community: data.community },
+        filter: { community: data.community },
+        pagi: data.pagi,
       },
       token,
     )
 
-    return (result.data?.pagedPosts as unknown as TPagedArticles | null) || null
+    return (result.data?.postPage as unknown as TPagedArticles | null) || null
   })
 
 export const loadPagedChangelogs = createServerFn({ method: 'GET', strict: false })
@@ -51,14 +52,15 @@ export const loadPagedChangelogs = createServerFn({ method: 'GET', strict: false
     setPrivateCacheHeader()
 
     const result = await fetchGraphQL(
-      DashboardContentSchema.pagedChangelogs,
+      DashboardContentSchema.changelogPage,
       {
-        filter: { page: data.page || 1, size: 20, community: data.community },
+        filter: { community: data.community },
+        pagi: data.pagi,
       },
       token,
     )
 
-    return (result.data?.pagedChangelogs as unknown as TPagedArticles | null) || null
+    return (result.data?.changelogPage as unknown as TPagedArticles | null) || null
   })
 
 export type TKanbanInput = {
@@ -107,13 +109,13 @@ export type TTrashInput = {
 
 export const loadTrash = createServerFn({ method: 'GET', strict: false })
   .validator((data: TTrashInput) => data)
-  .handler(async ({ data }): Promise<TPagedTrashedPosts | null> => {
+  .handler(async ({ data }): Promise<TRawPagedTrashedPosts | null> => {
     const token = getAuthToken()
     setPrivateCacheHeader()
 
     const result = await fetchGraphQL(
       DashboardContentSchema.trashedPosts,
-      { community: data.community, page: data.page || 1, size: 20 },
+      { community: data.community, pagi: { offset: { page: data.page || 1, size: 20 } } },
       token,
     )
 
@@ -122,10 +124,7 @@ export const loadTrash = createServerFn({ method: 'GET', strict: false })
       return null
     }
 
-    return {
-      ...trashedArticles,
-      entries: trashedArticles.entries?.map(normalizeTrashedPost) || [],
-    }
+    return trashedArticles
   })
 
 export type TAssetsInput = {
@@ -141,7 +140,7 @@ export const loadAssets = createServerFn({ method: 'GET', strict: false })
 
     const result = await fetchGraphQL(
       DashboardAssetsSchema.pagedCommunityAssets,
-      { community: data.community, filter: { page: data.page || 1, size: 20 } },
+      { community: data.community, pagi: { offset: { page: data.page || 1, size: 20 } } },
       token,
     )
 

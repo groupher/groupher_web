@@ -1,4 +1,6 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
+import { createElement, type ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import S from '~/unit/DsbThread/schema/content'
@@ -9,6 +11,7 @@ const mocks = vi.hoisted(() => ({
   mutate: vi.fn(),
   query: vi.fn(),
   toast: vi.fn(),
+  community: 'home',
 }))
 
 vi.mock('~/graphql/client', () => ({
@@ -26,8 +29,10 @@ vi.mock('~/hooks/useTrans', () => ({
 }))
 
 vi.mock('~/stores/community/hooks', () => ({
-  default: () => ({ slug: 'home' }),
+  default: () => ({ slug: mocks.community }),
 }))
+
+vi.mock('~/stores/account/hooks', () => ({ default: () => ({ accountRef: 'viewer-1' }) }))
 
 vi.mock('~/ui/Toaster', () => ({ toast: mocks.toast }))
 
@@ -45,14 +50,25 @@ const page = {
       mentionedByCount: 2,
     },
   ],
-  pageNumber: 1,
-  pageSize: 20,
-  totalCount: 1,
-  totalPages: 1,
+  pageInfo: {
+    __typename: 'OffsetPageInfo' as const,
+    page: 1,
+    size: 20,
+    totalCount: 1,
+    totalPages: 1,
+    hasNextPage: false,
+    hasPreviousPage: false,
+  },
 }
+
+const wrapper = ({ children }: { children: ReactNode }) =>
+  createElement(QueryClientProvider, { client }, children)
+let client: QueryClient
 
 describe('useTrashedPosts', () => {
   beforeEach(() => {
+    client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } })
+    mocks.community = 'home'
     mocks.mutate.mockReset()
     mocks.query.mockReset()
     mocks.toast.mockReset()
@@ -60,21 +76,38 @@ describe('useTrashedPosts', () => {
   })
 
   it('loads the current community Trash page', async () => {
-    const { result } = renderHook(() => useTrashedPosts())
+    const { result } = renderHook(() => useTrashedPosts(), { wrapper })
 
     await waitFor(() => expect(result.current.loading).toBe(false))
 
     expect(mocks.query).toHaveBeenCalledWith(S.trashedPosts, {
       community: 'home',
-      page: 1,
-      size: 20,
+      pagi: { offset: { page: 1, size: 20 } },
     })
     expect(result.current.pagedPosts.entries[0]?.id).toBe('trash-1')
   })
 
+  it('isolates initial data across communities and exposes a recoverable page failure', async () => {
+    const { result, rerender } = renderHook(() => useTrashedPosts(page as never), { wrapper })
+    expect(result.current.pagedPosts.entries[0]?.id).toBe('trash-1')
+    mocks.query.mockRejectedValueOnce(new Error('failed'))
+    mocks.community = 'other'
+    rerender()
+    expect(result.current.pagedPosts.entries).toEqual([])
+    await waitFor(() => expect(result.current.error).not.toBeNull())
+    await act(async () => {
+      await result.current.retry()
+    })
+    await waitFor(() => expect(result.current.error).toBeNull())
+    expect(mocks.query).toHaveBeenLastCalledWith(S.trashedPosts, {
+      community: 'other',
+      pagi: { offset: { page: 1, size: 20 } },
+    })
+  })
+
   it('restores a row and reloads the current page', async () => {
     mocks.mutate.mockResolvedValue({ restoreTrashedArticle: { innerId: '1' } })
-    const { result } = renderHook(() => useTrashedPosts())
+    const { result } = renderHook(() => useTrashedPosts(), { wrapper })
 
     await waitFor(() => expect(result.current.loading).toBe(false))
 
@@ -98,7 +131,7 @@ describe('useTrashedPosts', () => {
     mocks.mutate.mockResolvedValue({
       permanentlyDeleteTrashedArticle: { done: true },
     })
-    const { result } = renderHook(() => useTrashedPosts())
+    const { result } = renderHook(() => useTrashedPosts(), { wrapper })
 
     await waitFor(() => expect(result.current.loading).toBe(false))
 

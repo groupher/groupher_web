@@ -30,8 +30,10 @@ describe('document import client', () => {
       ),
     )
 
-    await expect(importDocumentationPlatform('https://docs.example.com/guide')).rejects.toThrow(
-      'The document contains blocks that are not supported yet.',
-    )
+    await expect(
+      importDocumentationPlatform('https://docs.example.com/guide'),
+    ).rejects.toMatchObject({
+      message: 'The document contains blocks that are not supported yet.',
+    })
   })
 })

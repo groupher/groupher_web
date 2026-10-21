@@ -10,7 +10,6 @@ import { COMMUNITY_LAYOUT } from '~/const/layout'
 import useEnable from '~/hooks/useEnable'
 import useLayout from '~/hooks/useLayout'
 import Markdown from '~/render/Markdown'
-import useCommunity from '~/stores/community/hooks'
 
 import BasicStates from './BasicStates'
 import ExtraInfo from './ExtraInfo'
@@ -32,7 +31,6 @@ const AboutThreadContainer: FC<TProps> = ({ isSidebarLayout = false }) => {
   const s = useSalon({ isSidebarLayout })
 
   const { communityLayout } = useLayout()
-  const { moderators } = useCommunity()
   const enable = useEnable()
 
   return (
@@ -60,7 +58,7 @@ const AboutThreadContainer: FC<TProps> = ({ isSidebarLayout = false }) => {
         </div>
 
         <div className={cn(s.intro, s.members)}>
-          <Members moderators={moderators ?? []} />
+          <Members />
         </div>
       </div>
       {(communityLayout === COMMUNITY_LAYOUT.CLASSIC ||

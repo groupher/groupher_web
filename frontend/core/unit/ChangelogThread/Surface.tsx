@@ -8,7 +8,7 @@ import useLayout from '~/hooks/useLayout'
 import usePagedChangelogs from '~/hooks/usePagedChangelogs'
 import useURLSearchParams from '~/hooks/useURLSearchParams'
 import Pagi from '~/ui/Pagi'
-import LoadMore from '~/ui/Pagi/LoadMore'
+import CursorPagination from '~/ui/Pagi/CursorPagination'
 import PaginationError from '~/ui/Pagi/PaginationError'
 
 import ClassicLayout from './ClassicLayout'
@@ -20,6 +20,7 @@ export default function ChangelogSurface() {
   const {
     pagedChangelogs,
     paginationApi,
+    paginationMode,
     initialError,
     isRetryingInitial,
     retryInitial,
@@ -45,7 +46,8 @@ export default function ChangelogSurface() {
     <>
       {communityLayout === COMMUNITY_LAYOUT.HERO ? <ClassicLayout /> : <SimpleLayout />}
       {paginationApi === 'cursor' ? (
-        <LoadMore
+        <CursorPagination
+          mode={paginationMode}
           hasNextPage={hasNextPage}
           isLoading={isFetchingNextPage}
           error={nextPageError}

@@ -66,8 +66,8 @@ describe('comment query mutation helpers', () => {
     expect(
       queryClient.getQueryData<{ entries: TComment[]; totalCount: number }>(key),
     ).toMatchObject({
-      totalCount: 2,
-      entries: [{ innerId: 'pending:1' }, { innerId: '1' }],
+      totalCount: 1,
+      entries: [{ innerId: '1' }, { innerId: 'pending:1' }],
     })
     patchCommentEverywhere(queryClient, scope, pending.innerId, () => null)
     expect(queryClient.getQueryData<{ entries: TComment[] }>(key)?.entries).toHaveLength(1)

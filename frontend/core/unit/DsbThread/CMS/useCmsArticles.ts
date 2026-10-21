@@ -3,10 +3,13 @@ import { useMemo } from 'react'
 
 import { THREAD } from '~/const/thread'
 import { EMPTY_PAGED_ARTICLES } from '~/const/utils'
+import usePagiPosition from '~/hooks/usePagiPosition'
+import { toEffectivePagiConfig } from '~/lib/pagination/params'
 import { Q } from '~/query'
 import { articlePathKey } from '~/query/articlePath'
 import type { TPagedArticleViewModels, TArticleViewerState } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
+import useDsbConfig from '~/stores/dsbConfig/hooks'
 
 type TArticleKind = 'changelog' | 'post'
 
@@ -14,13 +17,23 @@ type TArticleKind = 'changelog' | 'post'
 export default function useCmsArticles(kind: TArticleKind) {
   const queryClient = useQueryClient()
   const { slug: community } = useCommunity()
-  const filter = { page: 1, size: 20, community }
+  const config = {
+    ...toEffectivePagiConfig(useDsbConfig()),
+    api: 'offset' as const,
+    mode: 'page' as const,
+  }
+  const position = usePagiPosition(`${community}:${kind}:${config.revision}`, config.defaultSize)
+  const filter = {
+    page: position.request.api === 'offset' ? position.request.page : 1,
+    size: config.defaultSize,
+    community,
+  }
   const postsQuery = useQuery({
-    ...Q.article.posts(filter),
+    ...Q.article.posts(filter, config),
     enabled: kind === 'post',
   })
   const changelogsQuery = useQuery({
-    ...Q.article.changelogs(filter),
+    ...Q.article.changelogs(filter, config),
     enabled: kind === 'changelog',
   })
   const query = kind === 'post' ? postsQuery : changelogsQuery
@@ -57,6 +70,7 @@ export default function useCmsArticles(kind: TArticleKind) {
   }, [community, query.data, statsQuery.data, thread])
 
   return {
+    setPage: position.setPage,
     loading: (!query.data || statsQuery.isFetching) && query.isFetching,
     pagedArticles: pagedArticles as TPagedArticleViewModels,
   }

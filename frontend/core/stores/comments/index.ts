@@ -8,11 +8,7 @@ export default function createCommentsStore(init: TInit = {}): TStore {
   const createInitialState = () => ({
     mode: MODE.REPLIES,
     apiMode: API_MODE.ARTICLE,
-    page: 1,
 
-    repliesParentId: null,
-    repliesLoading: false,
-    repliesLoadingByParentId: {},
     showEditor: false,
     showUpdateEditor: false,
     showReplyEditor: false,

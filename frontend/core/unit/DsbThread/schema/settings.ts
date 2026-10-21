@@ -313,3 +313,25 @@ export default {
   updateDashboardFooterLinks,
   updateDashboardFooterOnelineLinks,
 }
+
+export const updateDashboardPagiMode = graphql(`
+  mutation UpdateDashboardPagiMode(
+    $community: String!
+    $mode: PagiMode!
+    $mobileMode: PagiMode!
+    $expectedRevision: Int!
+    $commandId: ID!
+  ) {
+    updateDashboardPagiMode(
+      community: $community
+      mode: $mode
+      mobileMode: $mobileMode
+      expectedRevision: $expectedRevision
+      commandId: $commandId
+    ) {
+      pagiMode
+      pagiMobileMode
+      pagiRevision
+    }
+  }
+`)

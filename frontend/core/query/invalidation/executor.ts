@@ -1,4 +1,5 @@
 import type { QueryClient, QueryKey } from '@tanstack/react-query'
+import type { Query } from '@tanstack/react-query'
 
 import { resolve as resolveArticle } from './article'
 import { resolve as resolveComment } from './comment'
@@ -29,6 +30,30 @@ export const markStale = async (
   queryKey: readonly unknown[],
 ): Promise<void> => {
   await queryClient.invalidateQueries({ queryKey, exact: true, refetchType: 'none' })
+}
+
+/** Marks every query under an owner-provided key prefix stale without triggering a refetch. */
+export const markStalePrefix = async (
+  queryClient: QueryClient,
+  queryKey: QueryKey,
+): Promise<void> => {
+  await queryClient.invalidateQueries({ queryKey, refetchType: 'none' })
+}
+
+/** Invalidates owner-selected query matches while keeping TanStack filters inside this module. */
+export const invalidateMatching = async (
+  queryClient: QueryClient,
+  predicate: (query: Query) => boolean,
+): Promise<void> => {
+  await queryClient.invalidateQueries({ predicate, refetchType: 'active' })
+}
+
+/** Invalidates every query under an owner-provided key prefix. */
+export const invalidatePrefix = async (
+  queryClient: QueryClient,
+  queryKey: QueryKey,
+): Promise<void> => {
+  await queryClient.invalidateQueries({ queryKey, refetchType: 'active' })
 }
 
 /** Invalidates owner-resolved exact query keys while keeping TanStack filters inside this module. */

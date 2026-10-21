@@ -135,7 +135,9 @@ describe('exportVgpuWallpaper', () => {
         ...createMeshSpec(GRADIENT_RENDERER.FLOW),
         type: BG_RENDER_TYPE.IMAGE,
       }),
-    ).rejects.toThrow('BG_VGPU_EXPORT_UNSUPPORTED_SPEC')
+    ).rejects.toMatchObject({
+      message: expect.stringContaining('BG_VGPU_EXPORT_UNSUPPORTED_SPEC'),
+    })
 
     expect(mocks.init).not.toHaveBeenCalled()
   })
@@ -147,7 +149,7 @@ describe('exportVgpuWallpaper', () => {
 
     await expect(
       exportVgpuWallpaper(createMeshSpec(GRADIENT_RENDERER.FLOW), { maxBytes: 1 }),
-    ).rejects.toThrow('BG_VGPU_EXPORT_TOO_LARGE')
+    ).rejects.toMatchObject({ message: expect.stringContaining('BG_VGPU_EXPORT_TOO_LARGE') })
   })
 
   it('rejects an encoded image with an unexpected MIME type', async () => {
@@ -155,8 +157,8 @@ describe('exportVgpuWallpaper', () => {
       callback(new Blob(['not-webp'], { type: 'image/png' }))
     })
 
-    await expect(exportVgpuWallpaper(createMeshSpec(GRADIENT_RENDERER.FLOW))).rejects.toThrow(
-      'BG_VGPU_EXPORT_INVALID_MIME',
+    await expect(exportVgpuWallpaper(createMeshSpec(GRADIENT_RENDERER.FLOW))).rejects.toMatchObject(
+      { message: expect.stringContaining('BG_VGPU_EXPORT_INVALID_MIME') },
     )
   })
 })

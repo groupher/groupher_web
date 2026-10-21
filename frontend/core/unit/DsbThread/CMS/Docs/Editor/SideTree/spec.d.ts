@@ -123,6 +123,9 @@ export type TSideTreeController = {
   treeState: TDocTreeState | null
   stagedEvents: TDocTreeEvent[]
   trashItems: TDocTreeTrashItem[]
+  trashPageInfo?: import('~/spec').TGraphQLPagiPageInfo
+  setTrashPage: (page: number) => void
+  trashError: string | null
   trashLoading: boolean
   activeId: string | null
   editingTarget: TEditingTarget
@@ -219,7 +222,7 @@ export type TDocTreeTrashItem = {
 }
 
 export type TDocTreeTrashData = {
-  docTreeTrashItems?: TDocTreeTrashItem[] | null
+  docTreeTrashItems?: import('~/spec').TPagiPage<TDocTreeTrashItem> | null
 }
 
 export type TDocTreeInitialData = {

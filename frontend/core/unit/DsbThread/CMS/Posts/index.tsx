@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import { getArticleRowId } from '~/hooks/useTanTable'
 import useTrans from '~/hooks/useTrans'
 import type { TArticleState } from '~/spec'
+import Pagi from '~/ui/Pagi'
 
 import { ArticleCell, AuthorCell, DateCell, StatusCell } from '../Cell'
 import CmsDataTable from '../Table/CmsDataTable'
@@ -15,7 +16,7 @@ import useCmsArticles from '../useCmsArticles'
 import useSalon, { cn } from './salon'
 
 export default function Posts() {
-  const { pagedArticles: pagedPosts, loading } = useCmsArticles('post')
+  const { pagedArticles: pagedPosts, loading, setPage } = useCmsArticles('post')
   const s = useSalon({ loading })
   const { t } = useTrans()
   const table = useCmsTableController()
@@ -123,6 +124,7 @@ export default function Posts() {
           selectColumn: table.selectColumn,
         }}
       />
+      <Pagi pageInfo={pagedPosts.pageInfo} onChange={setPage} />
     </>
   )
 }

@@ -33,5 +33,5 @@ export type TDocBranchVersionWire = {
 }
 
 export type TDocBranchVersionsPayload = {
-  docBranchVersions?: TDocBranchVersionWire[] | null
+  docBranchVersions?: import('~/spec').TPagiPage<TDocBranchVersionWire> | null
 }

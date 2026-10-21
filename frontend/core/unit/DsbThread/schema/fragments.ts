@@ -68,12 +68,3 @@ export const DashboardFooterOnelineLinkFields = graphql(`
     url
   }
 `)
-
-export const DashboardTrashedArticlesPageInfo = graphql(`
-  fragment DashboardTrashedArticlesPageInfo on PagedTrashedArticles {
-    totalCount
-    pageSize
-    totalPages
-    pageNumber
-  }
-`)

@@ -54,8 +54,6 @@ export const useModeratorEditorUi = () => {
   const snapshot = useSnapshot(store)
   return {
     activeModerator: snapshot.activeModerator as TUser | null,
-    allModeratorRules: snapshot.allModeratorRules,
-    allRootRules: snapshot.allRootRules,
     patch: usePatchEditorUi(store),
   }
 }

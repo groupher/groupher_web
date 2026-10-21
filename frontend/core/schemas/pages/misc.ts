@@ -31,16 +31,13 @@ export const themePresets = graphql(`
   }
 `)
 
-export const pagedCategories = graphql(`
-  query PagePagedCategories($filter: PagiFilter!) {
-    pagedCategories(filter: $filter) {
-      entries {
-        id
-        title
-        slug
-        index
-      }
-      ...PageCategoryPageInfo
+export const categories = graphql(`
+  query PageCategories {
+    categories {
+      id
+      title
+      slug
+      index
     }
   }
 `)

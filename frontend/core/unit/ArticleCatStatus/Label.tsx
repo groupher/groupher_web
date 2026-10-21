@@ -6,7 +6,7 @@ import useNameAlias from '~/hooks/useNameAlias'
 import type { TProps as TArticleStatusBadgeProps } from '.'
 import useSalon, { Icon } from './salon/label'
 
-type TProps = Required<Pick<TArticleStatusBadgeProps, 'cat' | 'smaller'>>
+type TProps = { cat: NonNullable<TArticleStatusBadgeProps['cat']>; smaller: boolean }
 
 const Label: FC<TProps> = ({ cat, smaller }) => {
   const s = useSalon({ smaller })

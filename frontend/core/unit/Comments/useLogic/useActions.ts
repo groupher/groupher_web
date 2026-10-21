@@ -39,7 +39,7 @@ export default function useActions(): TActions {
   const { data } = useCommentQueryState()
 
   const onModeChange = (mode: TMode): void => {
-    commentsStore.commit({ mode, page: 1 })
+    commentsStore.commit({ mode })
   }
 
   const commentOnChange = (v: string): void => {

@@ -10,7 +10,7 @@ import type {
   TEffectivePagiConfig,
   TPagedArticleViewModels,
   TPagedArticlesParams,
-  TPagedChangelogs,
+  TGraphQLPagiPageInfo,
   TResState,
 } from '~/spec'
 import useCommunity from '~/stores/community/hooks'
@@ -18,13 +18,16 @@ import useCommunity from '~/stores/community/hooks'
 import type { TPagedChangelogsResult } from './context'
 
 /** Reads the stable community/filter input shared by both pagination surfaces. */
-export const usePagedChangelogsInput = (): { pagedParams: TPagedArticlesParams } => {
+export const usePagedChangelogsInput = (
+  config: TEffectivePagiConfig,
+): { pagedParams: TPagedArticlesParams } => {
   const { slug } = useCommunity()
   const searchParams = useURLSearchParams()
-  return { pagedParams: getPagedArticlesParams(slug, searchParams) }
+  return { pagedParams: getPagedArticlesParams(slug, searchParams, config.defaultSize) }
 }
 
 type TComposeOptions = {
+  pageInfo?: TGraphQLPagiPageInfo
   articleChunks: readonly (readonly TChangelog[])[]
   pagedParams: TPagedArticlesParams
   resState: TResState
@@ -39,9 +42,10 @@ type TComposeOptions = {
   fetchNextPage: () => Promise<unknown>
 }
 
-/** Composes legacy list view models while retaining each loaded page's state batch boundary. */
+/** Composes list view models while retaining each loaded page's state batch boundary. */
 export const usePagedChangelogsResult = ({
   articleChunks,
+  pageInfo,
   pagedParams,
   resState,
   config,
@@ -54,21 +58,17 @@ export const usePagedChangelogsResult = ({
   retryNextPage,
   fetchNextPage,
 }: TComposeOptions): TPagedChangelogsResult => {
-  const pagedChangelogs = useMemo<TPagedChangelogs>(
-    () => ({ entries: articleChunks.flatMap((chunk) => chunk) }),
-    [articleChunks],
-  )
   const states = useArticleStatesByChunks<TChangelog>(articleChunks)
   const viewModels = useMemo<TPagedArticleViewModels>(
     () => ({
-      ...pagedChangelogs,
+      pageInfo,
       entries: states.map(({ content, stats, viewerState }) => ({
         content,
         stats,
         viewerState,
       })),
     }),
-    [pagedChangelogs, states],
+    [pageInfo, states],
   )
 
   return {
@@ -76,6 +76,7 @@ export const usePagedChangelogsResult = ({
     pagedChangelogs: viewModels,
     pagedParams,
     paginationApi: config.api,
+    paginationMode: config.mode,
     initialError: normalizePaginationError(initialError),
     isRetryingInitial,
     retryInitial,
@@ -87,6 +88,6 @@ export const usePagedChangelogsResult = ({
   }
 }
 
-/** Maps the active query's pending state to the legacy list response state. */
+/** Maps the active query's pending state to the list response state. */
 export const loadingOrDone = (isPending: boolean): TResState =>
   (isPending ? TYPE.RES_STATE.LOADING : TYPE.RES_STATE.DONE) as TResState

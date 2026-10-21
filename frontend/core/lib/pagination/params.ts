@@ -4,28 +4,33 @@ import type {
   TPagiPageInfo,
   TGraphQLPagiPageInfo,
   TEffectivePagiConfig,
-  TDashboardPagination,
-  TPaginationSurface,
+  TPagiPreference,
   TPagiGraphQLInput,
   TPagiRequest,
   TOffsetPagi,
   TCursorPagi,
 } from '~/spec'
-import type { TPagi } from '~/spec'
 
 /** The platform fallback used before a community exposes an effective surface config. */
 export const DEFAULT_EFFECTIVE_PAGI_CONFIG: TEffectivePagiConfig = {
   ...paginationDefaultV1,
 }
 
-/** Resolves a bootstrap surface to a complete, transport-ready config. */
+/** Derives all list execution defaults from the community-wide product preference. */
 export const toEffectivePagiConfig = (
-  pagination: TDashboardPagination | null | undefined,
-  surface: TPaginationSurface,
-): TEffectivePagiConfig => ({
-  ...DEFAULT_EFFECTIVE_PAGI_CONFIG,
-  ...(pagination?.[surface] || {}),
-})
+  preference?: TPagiPreference | null,
+  mobile = false,
+): TEffectivePagiConfig => {
+  const mode = mobile
+    ? (preference?.pagiMobileMode ?? 'infinite_scroll')
+    : (preference?.pagiMode ?? 'page')
+  return {
+    ...DEFAULT_EFFECTIVE_PAGI_CONFIG,
+    mode,
+    api: mode === 'page' ? 'offset' : 'cursor',
+    revision: preference?.pagiRevision ?? 0,
+  }
+}
 
 /** Maps the Core discriminated union to the GraphQL @oneOf input shape. */
 export const toPagiGraphQLInput = (pagi: TPagiRequest): TPagiGraphQLInput => {
@@ -47,20 +52,6 @@ export const toPagiPageInfo = (pageInfo: TGraphQLPagiPageInfo): TPagiPageInfo =>
   return { ...pageInfo, api: 'cursor' }
 }
 
-/** Adapts the new page contract for legacy list consumers during the migration window. */
-export const toLegacyPagi = (pageInfo: TGraphQLPagiPageInfo): TPagi => {
-  if (pageInfo.__typename === 'OffsetPageInfo') {
-    return {
-      pageNumber: pageInfo.page,
-      pageSize: pageInfo.size,
-      totalCount: pageInfo.totalCount,
-      totalPages: pageInfo.totalPages,
-    }
-  }
-
-  return {}
-}
-
 const toOffsetInput = (pagi: TOffsetPagi) => ({
   page: pagi.page,
   size: pagi.size,
@@ -72,3 +63,35 @@ const toCursorInput = (pagi: TCursorPagi) => ({
   ...(pagi.after === undefined ? {} : { after: pagi.after }),
   ...(pagi.configRevision === undefined ? {} : { configRevision: pagi.configRevision }),
 })
+
+/** URL position selects the API; bootstrap contributes current limits and revision only. */
+export const resolvePagiPosition = (
+  config: TEffectivePagiConfig,
+  search: Pick<URLSearchParams, 'get'>,
+  keys = { api: 'pagiApi', page: 'page', after: 'after' },
+) => {
+  const explicit = search.get(keys.api)
+  const api =
+    explicit === 'offset' || explicit === 'cursor'
+      ? explicit
+      : search.get(keys.after)
+        ? 'cursor'
+        : search.get(keys.page) !== null
+          ? 'offset'
+          : config.api
+  const pageValue = Number(search.get(keys.page) || 1)
+  return {
+    config: {
+      ...config,
+      api,
+      mode:
+        api === 'offset'
+          ? ('page' as const)
+          : config.mode === 'page'
+            ? ('load_more' as const)
+            : config.mode,
+    },
+    page: Number.isInteger(pageValue) && pageValue >= 1 ? pageValue : 1,
+    initialAfter: api === 'cursor' ? search.get(keys.after) || undefined : undefined,
+  }
+}

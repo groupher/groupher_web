@@ -76,8 +76,8 @@ describe('executeWallpaperPublish', () => {
       exportBatch: vi.fn().mockRejectedValue(new Error('export failed')),
     })
 
-    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toThrow(
-      'export failed',
+    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toMatchObject(
+      { message: 'export failed' },
     )
     expect(deps.graphqlRequest).not.toHaveBeenCalled()
     expect(deps.cancelBatch).not.toHaveBeenCalled()
@@ -86,8 +86,8 @@ describe('executeWallpaperPublish', () => {
   it('does not call GraphQL or cancel when WebGPU is unavailable', async () => {
     const deps = makeDeps({ hasWebGPU: vi.fn().mockReturnValue(false) })
 
-    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toThrow(
-      'WebGPU is required to publish this Wallpaper',
+    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toMatchObject(
+      { message: 'WebGPU is required to publish this Wallpaper' },
     )
     expect(deps.exportBatch).not.toHaveBeenCalled()
     expect(deps.graphqlRequest).not.toHaveBeenCalled()
@@ -98,8 +98,8 @@ describe('executeWallpaperPublish', () => {
     const deps = makeDeps()
     deps.graphqlRequest.mockResolvedValue({ prepareWallpaperUpload: null })
 
-    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toThrow(
-      'WALLPAPER_PREPARE_EMPTY_RESPONSE',
+    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toMatchObject(
+      { message: 'WALLPAPER_PREPARE_EMPTY_RESPONSE' },
     )
     expect(deps.createBatch).not.toHaveBeenCalled()
     expect(deps.cancelBatch).not.toHaveBeenCalled()
@@ -147,8 +147,8 @@ describe('executeWallpaperPublish', () => {
       prepareWallpaperUpload: preparedBatch,
     })
 
-    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toThrow(
-      'upload failed',
+    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toMatchObject(
+      { message: 'upload failed' },
     )
     expect(deps.cancelBatch).toHaveBeenCalledWith('batch-ref', 'batch-capability')
   })
@@ -161,8 +161,8 @@ describe('executeWallpaperPublish', () => {
       prepareWallpaperUpload: preparedBatch,
     })
 
-    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toThrow(
-      'create failed',
+    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toMatchObject(
+      { message: 'create failed' },
     )
     expect(deps.cancelBatch).toHaveBeenCalledWith('batch-ref', 'batch-capability')
   })
@@ -173,8 +173,8 @@ describe('executeWallpaperPublish', () => {
       .mockResolvedValueOnce({ prepareWallpaperUpload: preparedBatch })
       .mockRejectedValueOnce(new Error('publish failed'))
 
-    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toThrow(
-      'publish failed',
+    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toMatchObject(
+      { message: 'publish failed' },
     )
     expect(deps.cancelBatch).toHaveBeenCalledWith('batch-ref', 'batch-capability')
   })
@@ -199,8 +199,8 @@ describe('executeWallpaperPublish', () => {
       .mockResolvedValueOnce({ prepareWallpaperUpload: preparedBatch })
       .mockRejectedValueOnce(new Error('publish failed'))
 
-    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toThrow(
-      'publish failed',
+    await expect(executeWallpaperPublish(makeGeneratedPlan(), 'key-1', deps)).rejects.toMatchObject(
+      { message: 'publish failed' },
     )
   })
 })

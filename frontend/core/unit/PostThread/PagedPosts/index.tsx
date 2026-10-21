@@ -13,7 +13,7 @@ import URL_PARAM from '~/const/url_param'
 import usePagedPosts from '~/hooks/usePagedPosts'
 import useURLSearchParams from '~/hooks/useURLSearchParams'
 import Pagi from '~/ui/Pagi'
-import LoadMore from '~/ui/Pagi/LoadMore'
+import CursorPagination from '~/ui/Pagi/CursorPagination'
 
 import PostList from './PostList'
 import useSalon from './salon'
@@ -23,6 +23,7 @@ const PagedPosts: FC = () => {
   const {
     pagedPosts,
     paginationApi,
+    paginationMode,
     hasNextPage,
     isFetchingNextPage,
     nextPageError,
@@ -45,7 +46,8 @@ const PagedPosts: FC = () => {
     <div className={s.wrapper}>
       <PostList />
       {paginationApi === 'cursor' ? (
-        <LoadMore
+        <CursorPagination
+          mode={paginationMode}
           hasNextPage={hasNextPage}
           isLoading={isFetchingNextPage}
           error={nextPageError}

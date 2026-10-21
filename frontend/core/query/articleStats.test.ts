@@ -267,6 +267,6 @@ describe('ArticleStats freshness and ordering', () => {
 
     await expect(
       articleStats(queryClient, 'home', THREAD.POST, '42').queryFn({ signal: undefined }),
-    ).rejects.toThrow('ArticleStats unavailable')
+    ).rejects.toMatchObject({ message: expect.stringContaining('ArticleStats unavailable') })
   })
 })

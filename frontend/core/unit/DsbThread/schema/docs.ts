@@ -51,17 +51,34 @@ export const docPublishChecklist = graphql(`
 `)
 
 export const docTreeTrashItems = graphql(`
-  query docTreeTrashItems($community: String!) {
-    docTreeTrashItems(community: $community) {
-      id
-      nodeId
-      docId
-      type
-      title
-      deletedFromParentNodeId
-      deletedFromIndex
-      deletedAt
-      restoredAt
+  query docTreeTrashItems($community: String!, $pagi: PagiInput) {
+    docTreeTrashItems(community: $community, pagi: $pagi) {
+      entries {
+        id
+        nodeId
+        docId
+        type
+        title
+        deletedFromParentNodeId
+        deletedFromIndex
+        deletedAt
+        restoredAt
+      }
+      pageInfo {
+        __typename
+        hasNextPage
+        hasPreviousPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
+        }
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
+        }
+      }
     }
   }
 `)
@@ -104,23 +121,40 @@ export const docDraft = graphql(`
 `)
 
 export const docBranchVersions = graphql(`
-  query docBranchVersions($docId: ID!, $branchId: ID!) {
-    docBranchVersions(docId: $docId, branchId: $branchId) {
-      id
-      revisionId
-      versionNumber
-      publishedAt
-      message
-      content {
-        title
-        slug
-        subtitle
-        digest
-        body {
-          json
+  query docBranchVersions($docId: ID!, $branchId: ID!, $pagi: PagiInput) {
+    docBranchVersions(docId: $docId, branchId: $branchId, pagi: $pagi) {
+      entries {
+        id
+        revisionId
+        versionNumber
+        publishedAt
+        message
+        content {
+          title
+          slug
+          subtitle
+          digest
+          body {
+            json
+          }
+          bodyHash
+          schemaVersion
         }
-        bodyHash
-        schemaVersion
+      }
+      pageInfo {
+        __typename
+        hasNextPage
+        hasPreviousPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
+        }
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
+        }
       }
     }
   }

@@ -18,10 +18,11 @@ import { THREAD } from '~/const/thread'
 import { CACHE_TAG } from '~/constant/cache'
 import { parseDashboard, parseWallpaper } from '~/lib/ssr/parse'
 import { normalizeArticleStats } from '~/query/articleStatsNormalize'
+import { normalizeCommentPage, type TCommentCollection } from '~/query/commentPage'
 import { toArticlePageFilter } from '~/query/filter'
 import { articleStats as articleStatsDocument } from '~/schemas/pages/articleStats'
 import { changelog, changelogPage } from '~/schemas/pages/changelog'
-import { pagedComments } from '~/schemas/pages/comment'
+import { commentPage } from '~/schemas/pages/comment'
 import { community as communityDocument } from '~/schemas/pages/community'
 import { doc, docPublicTree } from '~/schemas/pages/doc'
 import { groupedKanbanPosts, post as postDocument, postPage } from '~/schemas/pages/post'
@@ -31,7 +32,6 @@ import type {
   TDocPublicTree,
   TPagiGraphQLInput,
   TPagedArticlesParams,
-  TPagedComments,
   TPagedPosts,
   TPost,
   TParseDashboard,
@@ -39,7 +39,7 @@ import type {
 } from '~/spec'
 
 import { setPublicCacheHeaders } from './cache-headers'
-import { fetchGraphQL } from './graphql'
+import { fetchGraphQL, setPrivateCacheHeader } from './graphql'
 import {
   isCommunityPathContextTrusted,
   isDirectCommunityOriginPage,
@@ -68,41 +68,60 @@ export const loadCommunityRequestContext = createServerFn({ method: 'GET', stric
   },
 )
 
+/** Reads bootstrap directly from Phoenix, sharing only the transport normalization. */
+const readCommunityShell = async (communitySlug: string): Promise<TCommunityShell | null> => {
+  const result = await fetchGraphQL<ResultOf<typeof communityDocument>>(
+    communityDocument,
+    { slug: communitySlug, userHasLogin: false },
+    null,
+    { allowErrorCodes: [5504] },
+  )
+  const community = result.data?.community as unknown as TCommunity | null | undefined
+  if (!community) return null
+  return { community, dashboard: parseDashboard(community), wallpaper: parseWallpaper(community) }
+}
+
 const loadCommunity = createServerFn({ method: 'GET', strict: false })
   .validator((data: { community: string }) => data)
   .handler(async ({ data }): Promise<TCommunityShell | null> => {
     setPublicCacheHeaders([CACHE_TAG.communityCache(data.community)])
-    const communityPromise = fetchGraphQL<ResultOf<typeof communityDocument>>(
-      communityDocument,
-      { slug: data.community, userHasLogin: false },
-      null,
-      { allowErrorCodes: [5504] },
-    )
-    const result = await communityPromise
-    const community = result.data?.community as unknown as TCommunity | null | undefined
-    if (!community) return null
-    const dashboard = parseDashboard(community)
-    return {
-      community,
-      dashboard,
-      wallpaper: parseWallpaper(community),
-    }
+    return readCommunityShell(data.community)
   })
+
+/** Bypasses browser/CDN GET bootstrap caches after pagination revision mismatch. */
+export const refreshCommunity = createServerFn({ method: 'POST', strict: false })
+  .validator((data: { community: string }) => data)
+  .handler(async ({ data }): Promise<TCommunityShell | null> => {
+    setPrivateCacheHeader()
+    return readCommunityShell(data.community)
+  })
+
+/** Prevents a failed list/recovery shell from entering shared HTTP caches. */
+const withArticlePageCachePolicy = async <T>(read: () => Promise<T>): Promise<T> => {
+  try {
+    return await read()
+  } catch (error) {
+    setPrivateCacheHeader()
+    throw error
+  }
+}
 
 const loadPosts = createServerFn({ method: 'GET', strict: false })
   .validator(
     (data: { community: string; filter?: TPagedArticlesParams; pagi?: TPagiGraphQLInput }) => data,
   )
-  .handler(async ({ data }) => {
-    setPublicCacheHeaders([CACHE_TAG.articlesCache(data.community, THREAD.POST)])
-    const filter = data.filter || { community: data.community }
-    const result = await fetchGraphQL<ResultOf<typeof postPage>>(postPage, {
-      filter: toArticlePageFilter(filter),
-      thread: 'POST',
-      pagi: data.pagi,
-    })
-    return result.data?.postPage ?? null
-  })
+  .handler(async ({ data }) =>
+    withArticlePageCachePolicy(async () => {
+      setPublicCacheHeaders([CACHE_TAG.articlesCache(data.community, THREAD.POST)])
+      const filter = data.filter || { community: data.community }
+      const result = await fetchGraphQL<ResultOf<typeof postPage>>(postPage, {
+        filter: toArticlePageFilter(filter),
+        thread: 'POST',
+        pagi: data.pagi,
+      })
+      return result.data?.postPage ?? null
+    }),
+  )
 
 const loadPost = createServerFn({ method: 'GET', strict: false })
   .validator((data: { community: string; innerId: string }) => data)
@@ -138,16 +157,18 @@ const loadChangelogs = createServerFn({ method: 'GET', strict: false })
   .validator(
     (data: { community: string; filter?: TPagedArticlesParams; pagi?: TPagiGraphQLInput }) => data,
   )
-  .handler(async ({ data }) => {
-    setPublicCacheHeaders([CACHE_TAG.articlesCache(data.community, THREAD.CHANGELOG)])
-    const filter = data.filter || { community: data.community }
-    const result = await fetchGraphQL<ResultOf<typeof changelogPage>>(changelogPage, {
-      filter: toArticlePageFilter(filter),
-      thread: 'CHANGELOG',
-      pagi: data.pagi,
-    })
-    return result.data?.changelogPage ?? null
-  })
+  .handler(async ({ data }) =>
+    withArticlePageCachePolicy(async () => {
+      setPublicCacheHeaders([CACHE_TAG.articlesCache(data.community, THREAD.CHANGELOG)])
+      const filter = data.filter || { community: data.community }
+      const result = await fetchGraphQL<ResultOf<typeof changelogPage>>(changelogPage, {
+        filter: toArticlePageFilter(filter),
+        thread: 'CHANGELOG',
+        pagi: data.pagi,
+      })
+      return result.data?.changelogPage ?? null
+    }),
+  )
 
 const loadChangelog = createServerFn({ method: 'GET', strict: false })
   .validator((data: { community: string; innerId: string }) => data)
@@ -193,18 +214,21 @@ const loadDoc = createServerFn({ method: 'GET', strict: false })
   })
 
 const loadComments = createServerFn({ method: 'GET', strict: false })
-  .validator((data: { community: string; thread: TThread; innerId: string }) => data)
-  .handler(async ({ data }) => {
+  .validator((data: { collection: TCommentCollection; pagi: TPagiGraphQLInput }) => data)
+  .handler(async ({ data: { collection, pagi } }) => {
+    const { community, thread, innerId } = collection.article
     setPublicCacheHeaders([
-      CACHE_TAG.commentsListCache(data.community),
-      CACHE_TAG.commentsCache(data.community, data.thread, data.innerId),
+      CACHE_TAG.commentsListCache(community),
+      CACHE_TAG.commentsCache(community, thread, innerId),
     ])
-    const result = await fetchGraphQL<ResultOf<typeof pagedComments>>(pagedComments, {
-      article: { community: data.community, thread: data.thread, innerId: data.innerId },
-      mode: 'REPLIES',
-      filter: { page: 1, size: 30 },
+    const result = await fetchGraphQL<ResultOf<typeof commentPage>>(commentPage, {
+      article: collection.article,
+      mode: collection.mode,
+      filter: { sort: collection.sort || 'ASC_INSERTED' },
+      pagi,
     })
-    return result.data?.pagedComments as unknown as TPagedComments | null
+    if (!result.data?.commentPage) throw new Error('Comment page is unavailable')
+    return normalizeCommentPage(result.data.commentPage)
   })
 
 export {

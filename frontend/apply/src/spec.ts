@@ -67,5 +67,5 @@ export type ReviewApplication = CommunityApplication & {
     operationRef: string | null
     occurredAt: string | null
   } | null
-  events: { edges: Array<{ cursor: string; node: ApplicationEvent }> }
+  events: { entries: ApplicationEvent[]; pageInfo: import('~/spec').TGraphQLPagiPageInfo }
 }

@@ -1,6 +1,9 @@
 import { THREAD } from '~/const/thread'
+import { getPagedArticlesParams } from '~/lib/pagedArticlesFilter'
+import { articlePageEntries } from '~/lib/pagination/merge'
 
 import { articlePagiRequest, articleQueries } from './article'
+import { articlePathOf } from './articlePath'
 
 const { browserGraphQLRequest } = vi.hoisted(() => ({ browserGraphQLRequest: vi.fn() }))
 vi.mock('~/graphql/client', () => ({ browserGraphQLRequest }))
@@ -35,7 +38,7 @@ describe('article detail content query', () => {
     expect(browserGraphQLRequest).toHaveBeenCalledTimes(1)
   })
 
-  it('reads posts through the shared page contract and adapts page metadata', async () => {
+  it('caches the canonical page unchanged', async () => {
     browserGraphQLRequest.mockResolvedValue({
       postPage: {
         pinnedEntries: [{ innerId: '1', title: 'Pinned' }],
@@ -61,11 +64,9 @@ describe('article detail content query', () => {
       thread: 'POST',
     })
     expect(result).toMatchObject({
-      entries: [{ innerId: '1', isPinned: true }, { innerId: '2' }],
-      pageNumber: 2,
-      pageSize: 20,
-      totalCount: 41,
-      totalPages: 3,
+      pinnedEntries: [{ innerId: '1' }],
+      entries: [{ innerId: '2' }],
+      pageInfo: { __typename: 'OffsetPageInfo', page: 2, size: 20, totalCount: 41, totalPages: 3 },
     })
   })
 
@@ -115,4 +116,46 @@ describe('article detail content query', () => {
       ),
     ).toEqual({ api: 'offset', page: 0, size: 0, configRevision: 7 })
   })
+})
+
+describe('configured route pagination size', () => {
+  it.each(['offset', 'cursor'] as const)(
+    'uses the configured default and matching key for %s',
+    (api) => {
+      const config = {
+        api,
+        mode: api === 'offset' ? ('page' as const) : ('load_more' as const),
+        schemaVersion: 1,
+        revision: 7,
+        defaultSize: 10,
+        maxSize: 10,
+      }
+      const filter = getPagedArticlesParams(
+        'home',
+        new URLSearchParams('page=2&order=publish'),
+        config.defaultSize,
+      )
+      const request = articlePagiRequest(filter, config)
+      expect(request).toMatchObject(api === 'offset' ? { page: 2, size: 10 } : { first: 10 })
+      expect(request.configRevision).toBe(7)
+      const explicit = articlePagiRequest({ ...filter, size: 5 }, config)
+      expect(explicit).toMatchObject(api === 'offset' ? { size: 5 } : { first: 5 })
+    },
+  )
+})
+
+it('normalizes generated Lite thread fields into the canonical path used by stats, viewer batches and dedupe', () => {
+  for (const thread of ['POST', 'CHANGELOG'] as const) {
+    const page = {
+      pinnedEntries: [{ innerId: '1', isPinned: true, thread, community: { slug: 'home' } }],
+      entries: [{ innerId: '2', thread, community: { slug: 'home' } }],
+      pageInfo: { __typename: 'CursorPageInfo' },
+    }
+    const result = { entries: articlePageEntries(page) }
+    expect(result.entries.map(articlePathOf)).toEqual([
+      { community: 'home', thread, innerId: '1' },
+      { community: 'home', thread, innerId: '2' },
+    ])
+    expect(result.entries[0].isPinned).toBe(true)
+  }
 })

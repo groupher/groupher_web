@@ -9,12 +9,3 @@ export const KanbanAuthorFields = graphql(`
     shortbio
   }
 `)
-
-export const KanbanPageFields = graphql(`
-  fragment KanbanPageFields on PagedPosts {
-    totalPages
-    totalCount
-    pageSize
-    pageNumber
-  }
-`)

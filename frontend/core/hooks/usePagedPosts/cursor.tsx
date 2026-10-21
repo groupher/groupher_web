@@ -1,10 +1,10 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import type { PropsWithChildren } from 'react'
-import { useMemo } from 'react'
 
+import useCursorArticleChunks from '~/hooks/useCursorArticleChunks'
+import { articlePageEntries } from '~/lib/pagination/merge'
 import { Q } from '~/query'
-import { toPagedPosts } from '~/query/article'
-import type { TEffectivePagiConfig, TPost } from '~/spec'
+import type { TEffectivePagiConfig } from '~/spec'
 
 import { PagedPostsContext } from './context'
 import { usePagedPostsInput, usePagedPostsResult, loadingOrDone } from './shared'
@@ -13,14 +13,12 @@ type TProps = PropsWithChildren<{ config: TEffectivePagiConfig }>
 
 /** Provides the cursor page surface; this component never registers an offset query. */
 export default function CursorPagedPostsProvider({ children, config }: TProps) {
-  const { pagedParams } = usePagedPostsInput()
+  const { pagedParams } = usePagedPostsInput(config)
   const query = useInfiniteQuery(Q.article.postsInfinite(pagedParams, config))
-  const articleChunks = useMemo<readonly (readonly TPost[])[]>(
-    () => query.data?.pages.map((page) => toPagedPosts(page).entries) || [],
-    [query.data?.pages],
-  )
+  const articleChunks = useCursorArticleChunks(query.data?.pages, articlePageEntries, 'posts')
   const value = usePagedPostsResult({
     articleChunks,
+    pageInfo: query.data?.pages.at(-1)?.pageInfo,
     pagedParams,
     resState: loadingOrDone(query.isPending),
     config,

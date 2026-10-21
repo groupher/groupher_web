@@ -11,8 +11,8 @@ import {
 
 describe('query keys', () => {
   it('normalizes omitted, empty and default post filters to one canonical key', () => {
-    const minimal = articleQueryKeys.posts({ community: 'home' })
-    const explicit = articleQueryKeys.posts({
+    const minimal = articleQueryKeys.pagiPosts({ community: 'home' })
+    const explicit = articleQueryKeys.pagiPosts({
       community: 'home',
       page: 1,
       size: 20,
@@ -30,17 +30,15 @@ describe('query keys', () => {
   })
 
   it('keeps meaningful filters distinct with a fixed object shape', () => {
-    const filtered = articleQueryKeys.posts({
+    const filtered = articleQueryKeys.pagiPosts({
       community: 'home',
       cat: ARTICLE_CAT.BUG,
       order: ARTICLE_ORDER.UPVOTES,
     })
 
-    expect(filtered).not.toEqual(articleQueryKeys.posts({ community: 'home' }))
-    expect(filtered[2]).toEqual({
+    expect(filtered).not.toEqual(articleQueryKeys.pagiPosts({ community: 'home' }))
+    expect(filtered[4]).toEqual({
       community: 'home',
-      page: 1,
-      size: 20,
       communityTag: null,
       communityTags: [],
       cat: ARTICLE_CAT.BUG,
@@ -49,11 +47,13 @@ describe('query keys', () => {
       when: null,
       sort: null,
     })
+    expect(filtered[3]).toMatchObject({ api: 'offset' })
+    expect(filtered[5]).toMatchObject({ page: 1, size: 20 })
   })
 
   it('normalizes multi-tag filters independently of caller order', () => {
-    const first = articleQueryKeys.posts({ community: 'home', communityTags: ['react', 'ts'] })
-    const second = articleQueryKeys.posts({
+    const first = articleQueryKeys.pagiPosts({ community: 'home', communityTags: ['react', 'ts'] })
+    const second = articleQueryKeys.pagiPosts({
       community: 'home',
       communityTags: ['ts', 'react', 'ts'],
     })
@@ -152,4 +152,22 @@ describe('query keys', () => {
     expect(commentKeys.matchesArticle(target, 'home', THREAD.POST, '42')).toBe(true)
     expect(commentKeys.matchesArticle(other, 'home', THREAD.POST, '42')).toBe(false)
   })
+})
+
+it('isolates a shared cursor link from an infinite collection that starts at the head', () => {
+  const config = {
+    api: 'cursor' as const,
+    mode: 'load_more' as const,
+    schemaVersion: 1,
+    revision: 9,
+    defaultSize: 20,
+    maxSize: 100,
+  }
+  expect(articleQueryKeys.pagiPosts({ community: 'xx', after: 'saved-a' }, config)).not.toEqual(
+    articleQueryKeys.pagiPosts({ community: 'xx' }, config),
+  )
+  expect(articleQueryKeys.pagiPosts({ community: 'xx', after: 'saved-a' }, config)).not.toEqual(
+    articleQueryKeys.pagiPosts({ community: 'xx', after: 'saved-b' }, config),
+  )
+  expect(isCanonicalDefaultArticleFilter({ community: 'xx', after: 'saved-a' })).toBe(false)
 })

@@ -14,7 +14,6 @@ import useSalon from './salon/list'
 
 type TProps = {
   mode: TMode
-  repliesLoadingByParentId: Record<string, boolean>
   apiMode: TAPIMode
   entries: readonly TComment[]
   foldedIdSet: Set<TID>
@@ -25,7 +24,7 @@ const COMMENT_VISIBILITY_STYLE: CSSProperties = {
   containIntrinsicSize: '360px',
 }
 
-const List: FC<TProps> = ({ mode, repliesLoadingByParentId, apiMode, entries, foldedIdSet }) => {
+const List: FC<TProps> = ({ mode, apiMode, entries, foldedIdSet }) => {
   const s = useSalon()
   const { t } = useTrans()
   const { foldComment } = useActions()
@@ -34,7 +33,6 @@ const List: FC<TProps> = ({ mode, repliesLoadingByParentId, apiMode, entries, fo
     <>
       {entries.map((comment, index) => {
         const isFolded = foldedIdSet.has(comment.innerId)
-        const isRepliesLoading = Boolean(repliesLoadingByParentId[comment.innerId])
 
         return (
           <div key={comment.innerId} className={s.wrapper} style={COMMENT_VISIBILITY_STYLE}>
@@ -49,13 +47,13 @@ const List: FC<TProps> = ({ mode, repliesLoadingByParentId, apiMode, entries, fo
               <DateDivider text={passedDate(entries[index], entries[index + 1])} />
             )}
 
-            {mode === MODE.REPLIES && (comment.replies?.length ?? 0) > 0 && !isFolded && (
+            {mode === MODE.REPLIES && (comment.repliesCount ?? 0) > 0 && !isFolded && (
               <RepliesList
+                key={`${comment.innerId}`}
                 parentId={comment.innerId}
                 apiMode={apiMode}
                 entries={comment.replies ?? []}
                 repliesCount={comment.repliesCount ?? 0}
-                loading={isRepliesLoading}
                 foldedIdSet={foldedIdSet}
               />
             )}

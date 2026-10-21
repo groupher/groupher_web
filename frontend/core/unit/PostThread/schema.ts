@@ -1,10 +1,10 @@
-import { pagedChangelogs } from '../../schemas/pages/changelog'
+import { changelogPage } from '../../schemas/pages/changelog'
 import { communityTagStats as communityTagStatsQuery } from '../../schemas/pages/misc'
-import { pagedPosts } from '../../schemas/pages/post'
+import { postPage } from '../../schemas/pages/post'
 
 const PAGED_ARTICLE_SCHEMA = {
-  post: pagedPosts,
-  changelog: pagedChangelogs,
+  post: postPage,
+  changelog: changelogPage,
 }
 
 const getPagedArticlesSchema = (thread) => {

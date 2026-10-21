@@ -1,19 +1,30 @@
-import type { FC } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
+import { browserGraphQLRequest } from '~/graphql/client'
+import usePagiPosition from '~/hooks/usePagiPosition'
 import Img from '~/Img'
 import { mockUsers } from '~/mock'
-import type { TModerator } from '~/spec'
+import useCommunity from '~/stores/community/hooks'
 import ImgFallback from '~/ui/ImgFallback'
 import NoteTip from '~/ui/NoteTip'
+import Pagi from '~/ui/Pagi'
+import PaginationError from '~/ui/Pagi/PaginationError'
+import S from '~/unit/DsbThread/schema/admins'
 
 import AdminMember from './AdminMember'
 import useSalon, { cn } from './salon'
 
-type TProps = {
-  moderators: readonly TModerator[]
-}
-
-const Members: FC<TProps> = ({ moderators }) => {
+const Members = () => {
+  const { slug } = useCommunity()
+  const position = usePagiPosition(slug)
+  const query = useQuery({
+    queryKey: ['community', slug, 'moderators', position.input],
+    queryFn: async () =>
+      (await browserGraphQLRequest(S.moderatorPage, { community: slug, pagi: position.input }))
+        .pagedCommunityModerators,
+    enabled: !!slug,
+    meta: { hydration: 'public' },
+  })
   const s = useSalon()
 
   return (
@@ -23,7 +34,7 @@ const Members: FC<TProps> = ({ moderators }) => {
           <h3 className={s.title}>社区管理员</h3>
         </div>
         <div className={s.adminsRow}>
-          {moderators.map((moderator: TModerator) => (
+          {(query.data?.entries ?? []).map((moderator) => (
             <div key={moderator.user.login} className={s.admin}>
               <AdminMember user={moderator.user} />
             </div>
@@ -31,6 +42,10 @@ const Members: FC<TProps> = ({ moderators }) => {
         </div>
       </div>
 
+      {query.error && (
+        <PaginationError isRetrying={query.isFetching} onRetry={() => void query.refetch()} />
+      )}
+      <Pagi pageInfo={query.data?.pageInfo} onChange={position.setPage} />
       <div className={s.divider} />
 
       <div className={s.block}>

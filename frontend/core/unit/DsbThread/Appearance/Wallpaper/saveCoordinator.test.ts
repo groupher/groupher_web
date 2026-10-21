@@ -22,7 +22,7 @@ describe('executeAppearanceSave', () => {
         },
         wallpaper,
       }),
-    ).rejects.toThrow('shadow conflict')
+    ).rejects.toMatchObject({ message: 'shadow conflict' })
 
     expect(wallpaper).not.toHaveBeenCalled()
   })
@@ -37,7 +37,7 @@ describe('executeAppearanceSave', () => {
           throw new Error('wallpaper failed')
         },
       }),
-    ).rejects.toThrow('wallpaper failed')
+    ).rejects.toMatchObject({ message: 'wallpaper failed' })
 
     expect(shadow).toHaveBeenCalledOnce()
   })

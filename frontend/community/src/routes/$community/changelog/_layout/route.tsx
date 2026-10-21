@@ -1,57 +1,32 @@
-import { communityQueries } from '@community/query/queries'
+import ArticlePageBoundary from '@community/components/ArticlePageBoundary'
+import { loadArticleSurface } from '@community/query/articleSurface'
 import { communityPublicPath } from '@community/server/public-path'
-import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { Outlet, createFileRoute, redirect, useLocation } from '@tanstack/react-router'
 
 import { THREAD } from '~/const/thread'
-import { getPagedArticlesParams } from '~/lib/pagedArticlesFilter'
-import { toEffectivePagiConfig } from '~/lib/pagination/params'
-import { dsbKeys } from '~/query'
-import type { TParseDashboard } from '~/spec'
+import URL_PARAM from '~/const/url_param'
 import ArticleListStoreProvider from '~/stores/articleList/provider'
 import ChangelogThread from '~/unit/ChangelogThread'
 
 export const Route = createFileRoute('/$community/changelog/_layout')({
-  loader: async ({ context, params, location }) => {
-    const filter = getPagedArticlesParams(params.community, new URLSearchParams(location.searchStr))
-    const config = toEffectivePagiConfig(
-      context.queryClient.getQueryData<TParseDashboard>(dsbKeys.config(params.community))
-        ?.pagination,
+  loader: async ({ context, params, location, parentMatchPromise }) => {
+    await parentMatchPromise
+    const result = await loadArticleSurface(
+      context.queryClient,
+      params.community,
       'changelogs',
+      location.searchStr,
     )
-
-    if (config.api === 'cursor') {
-      const changelogs = await context.queryClient.ensureInfiniteQueryData(
-        communityQueries.changelogsInfinite(params.community, config, filter),
-      )
-      await context.queryClient.ensureQueryData(
-        communityQueries.stats(
-          context.queryClient,
-          params.community,
-          THREAD.CHANGELOG,
-          changelogs.pages.flatMap(({ pinnedEntries, entries }) =>
-            [...pinnedEntries, ...entries].flatMap((article) =>
-              article.innerId == null ? [] : [article.innerId],
-            ),
-          ),
-        ),
-      )
-      return { changelogs }
+    if (result.resetPage && new URLSearchParams(location.searchStr).has(URL_PARAM.PAGE)) {
+      const search = new URLSearchParams(location.searchStr)
+      search.delete(URL_PARAM.PAGE)
+      const query = search.toString()
+      throw redirect({
+        href: query ? `${location.pathname}?${query}` : location.pathname,
+        replace: true,
+      })
     }
-
-    const changelogs = await context.queryClient.ensureQueryData(
-      communityQueries.changelogs(params.community, config, filter),
-    )
-    await context.queryClient.ensureQueryData(
-      communityQueries.stats(
-        context.queryClient,
-        params.community,
-        THREAD.CHANGELOG,
-        (changelogs?.entries || []).flatMap((article) =>
-          article.innerId == null ? [] : [article.innerId],
-        ),
-      ),
-    )
-    return { changelogs }
+    return result
   },
   head: ({ params, matches }) => ({
     links: [
@@ -62,9 +37,19 @@ export const Route = createFileRoute('/$community/changelog/_layout')({
 })
 
 function ChangelogListLayout() {
+  const { community } = Route.useParams()
+  const { recovery } = Route.useLoaderData()
+  const { searchStr } = useLocation()
   return (
     <ArticleListStoreProvider initData={{ thread: THREAD.CHANGELOG }}>
-      <ChangelogThread />
+      <ArticlePageBoundary
+        key={`${community}:changelogs:${recovery}:${searchStr}`}
+        community={community}
+        surface='changelogs'
+        recovery={recovery}
+      >
+        <ChangelogThread />
+      </ArticlePageBoundary>
       <Outlet />
     </ArticleListStoreProvider>
   )

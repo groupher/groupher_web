@@ -1,10 +1,10 @@
 import { graphql } from '~/graphql/authoring'
-import { pagedChangelogs } from '~/schemas/pages/changelog'
-import { pagedPosts } from '~/schemas/pages/post'
+import { changelogPage } from '~/schemas/pages/changelog'
+import { postPage } from '~/schemas/pages/post'
 
 export const trashedPosts = graphql(`
-  query DashboardTrashedPosts($community: String!, $page: Int!, $size: Int!) {
-    trashedArticles(community: $community, thread: POST, filter: { page: $page, size: $size }) {
+  query DashboardTrashedPosts($community: String!, $pagi: PagiInput) {
+    trashedArticles(community: $community, thread: POST, pagi: $pagi) {
       entries {
         id
         thread
@@ -42,7 +42,21 @@ export const trashedPosts = graphql(`
           }
         }
       }
-      ...DashboardTrashedArticlesPageInfo
+      pageInfo {
+        __typename
+        hasNextPage
+        hasPreviousPage
+        ... on OffsetPageInfo {
+          page
+          size
+          totalCount
+          totalPages
+        }
+        ... on CursorPageInfo {
+          startCursor
+          endCursor
+        }
+      }
     }
   }
 `)
@@ -70,8 +84,8 @@ export const permanentlyDeleteTrashedPost = graphql(`
 `)
 
 export default {
-  pagedPosts,
-  pagedChangelogs,
+  postPage,
+  changelogPage,
   trashedPosts,
   restoreTrashedPost,
   permanentlyDeleteTrashedPost,

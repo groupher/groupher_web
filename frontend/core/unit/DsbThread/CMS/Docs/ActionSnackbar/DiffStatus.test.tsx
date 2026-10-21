@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -46,11 +47,30 @@ vi.mock('./salon/diff_status', () => ({
 describe('DiffStatus revision loading', () => {
   beforeEach(() => {
     mocks.query.mockReset()
-    mocks.query.mockResolvedValue({ docBranchVersions: [] })
+    mocks.query.mockResolvedValue({
+      docBranchVersions: {
+        entries: [],
+        pageInfo: {
+          __typename: 'OffsetPageInfo',
+          page: 1,
+          size: 20,
+          totalCount: 0,
+          totalPages: 0,
+          hasNextPage: false,
+          hasPreviousPage: false,
+        },
+      },
+    })
   })
 
   it('shares the initial revision queries with the drawer instead of refetching on open', async () => {
-    render(<DiffStatus />)
+    render(
+      <QueryClientProvider
+        client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}
+      >
+        <DiffStatus />
+      </QueryClientProvider>,
+    )
 
     await waitFor(() => expect(mocks.query).toHaveBeenCalledTimes(1))
     expect(screen.queryByTestId('revision-drawer')).not.toBeInTheDocument()

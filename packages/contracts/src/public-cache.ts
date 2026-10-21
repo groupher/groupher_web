@@ -10,6 +10,7 @@ export const publicCacheTags = {
     `community[${community}]-thread[${thread}]-article[${text(innerId)}]`,
   comments: (community: string, thread: string, innerId: string | number): string =>
     `community[${community}]-thread[${thread}]-article[${text(innerId)}]-comments`,
+  commentsList: (community: string): string => `community[${community}]-comments`,
   tags: (community: string, thread: string): string =>
     `community[${community}]-thread[${thread}]-tags`,
   docTree: (community: string): string => `community[${community}]-doc-tree`,

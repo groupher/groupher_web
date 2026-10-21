@@ -22,6 +22,11 @@
       "expected": "community[home]-thread[POST]-article[42]-comments"
     },
     {
+      "kind": "commentsList",
+      "input": { "community": "home" },
+      "expected": "community[home]-comments"
+    },
+    {
       "kind": "tags",
       "input": { "community": "home", "thread": "POST" },
       "expected": "community[home]-thread[POST]-tags"
