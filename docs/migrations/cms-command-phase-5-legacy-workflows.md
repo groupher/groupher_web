@@ -3,11 +3,16 @@
 > 历史快照：本文记录 pipeline runner 落地前的分类与迁移过程，其中 `Receipt-backed`、`one-shot`、
 > `domain workflow` 等词只描述当时的判断，不是当前执行合同。新代码和验收一律以
 > [CMS 写入 Pipeline 合同](../architecture/cms-write-boundary-contract.md) 中的
-> `receipt_pipeline`、`direct_pipeline`、`workflow_pipeline` 为准；不得从本文复制旧入口或运行时协议选择。
+> `receipt_pipeline`、`direct_pipeline` 为准；复杂领域流程保留普通函数或 Workflow owner，不得从本文复制旧入口或运行时协议选择。
 
-> 状态：本阶段非 deferred mutation 已完成迁移并进入验证收口（typed identity、Tag/TagGroup、Asset row mutation、Moderator、Press config、Article sink/lock/category/status、Article binding、Article moderation/visibility、Report/solution/pin、Comments、Community Categories/Subscriptions 与 Community Application 用户 Command 入口均已有 concrete boundary；Assets Upload/Provider workflow 与 Asset ReplacementPlan 已由独立批次完成，DocTree/ContentImport 仍按范围 deferred）。后续只补回归证据，不再把已完成的 Asset workflow 误列为迁移债务。
+> 状态：本阶段纳入的 mutation 已完成迁移与验证收口。Assets Upload/Provider、Asset ReplacementPlan
+> 以及 DocTree/ContentImport 已分别由独立批次完成 owner、identity、事务与恢复合同，不再作为 Phase 5
+> 的 deferred migration backlog。
 >
-> 范围：Tag / TagGroup、Assets 用户 Command、Community Categories/Subscriptions、CommunityApplications，以及尚未逐项确认写入合同的 CMS mutation。Assets Upload/Provider workflow、Asset ReplacementPlan 与 DocTree/ContentImport 不属于本阶段实现范围；前两者的当前实现和验收见 [CMS Assets 完成记录](./cms-assets-refactor.md)，DocTree/ContentImport 仍保留 deferred。
+> 范围：Tag / TagGroup、Assets 用户 Command、Community Categories/Subscriptions、CommunityApplications，
+> 以及当时尚未逐项确认写入合同的 CMS mutation。Assets workflow 的当前实现见
+> [CMS Assets 完成记录](./cms-assets-refactor.md)，DocTree/ContentImport 的完成记录见
+> [独立审计与重构计划](./cms-doctree-refactor.md)。
 >
 > 前置文档：
 > [CMS Command、Gate、Lifecycle 与 Persistence 边界](./cms-command-gate-lifecycle-persist-boundary.md)、
@@ -18,9 +23,9 @@
 ## 1. 结论
 
 现有 `CMS.Command` 内核、concrete Command、Gate facade 和客户端 `commandId` owner 已经完成；本阶段
-纳入的非 deferred mutation 已按以下边界收口。本文仍不宣称“所有 CMS mutation 都完成迁移”，因为
-DocTree/ContentImport 仍明确后置；Asset Upload/Provider/Replacement workflow 虽不属于本阶段实现范围，
-但已由独立批次完成。以下职责清单记录的是
+纳入的 mutation 已按以下边界收口；原先后置的 Assets workflow 与 DocTree/ContentImport 也已在独立批次
+完成。这里的“完成”只指已识别的顶层业务动作和 owner 合同，不表示所有数据库写入都必须进入 Command。
+以下职责清单记录的是
 本轮要从旧 Writer/Facade 中拆出的历史混合点，而不是对已完成 family 的新遗留判断：
 
 - 解释完整业务动作；
@@ -147,19 +152,20 @@ convenience arity：77 个测试文件中的 1,167 个调用现在显式传递 f
 312/312，reaction/emotion/read-state 套件为 132/132，资产 GraphQL query 套件为 3/3。
 这些数字证明测试调用方已经跟随 fail-closed 合同迁移。Tag CRUD facade arity 切片另有 226 个调用方
 迁移，focused **104/104**（路径组成同上：59 + 2 + 41 + 2），§11 aggregate suites 为 **194/194**；
-本阶段其余纳入 family 已完成；DocTree/ContentImport 仍保持 deferred，Asset workflow 已由独立批次完成。
+本阶段纳入 family 已完成；DocTree/ContentImport 与 Asset workflow 的独立批次也已完成。
 
 ## 3. 分类规则
 
 ### 3.1 Concrete Command 与 `CMS.Command` 不是同义词
 
-每个用户可见的完整业务动作都应有 `Commands.<Action>.execute`，但 concrete Command 可以选择三种执行协议：
+每个用户可见的完整业务动作都应有明确入口。当前顶层 Command 只有两种 pipeline 协议；拥有独立
+持久状态机的 durable workflow 保留自己的 owner 与 identity，它不是第三种 pipeline：
 
 | 协议                  | 适用条件                                                                     | transaction owner | identity                                                        |
 | --------------------- | ---------------------------------------------------------------------------- | ----------------- | --------------------------------------------------------------- |
 | one-shot              | set-style、重复执行收敛到同一最终状态，首次响应无需恢复                      | concrete Command  | 可无 Receipt；若写 Outbox，仍接收同一客户端 `commandId`         |
 | `CMS.Command` Receipt | create/delete、revision-producing、返回首次结果、response 丢失后不能安全重跑 | `CMS.Command`     | 客户端 `commandId`                                              |
-| domain workflow       | upload、batch、plan、maintenance 等拥有独立资源状态机                        | workflow owner    | upload/batch/plan/workflow identity，不伪装成客户端 `commandId` |
+| ordinary workflow     | upload、batch、plan、maintenance 等拥有独立资源状态机，不进入 pipeline DSL   | workflow owner    | upload/batch/plan/workflow identity，不伪装成客户端 `commandId` |
 
 Receipt 只解决有限窗口内的用户命令重放与结果恢复。它不是权限系统、任务队列或通用 workflow engine。
 
@@ -371,7 +377,7 @@ worker 处理流程固定为：
 `Comments.Commands.Create` 与 `Comments.Commands.Reply` 分别持有 create/reply 完整业务动作；低层 row
 primitive 与 effect producer 的 owner 由该 bounded context 的 Command/Persist 合同固定。`Upload`、
 `ProviderReconciliation`、`ReplacementPlan` 与 `DocTree/ContentImport` 保留各自的 Workflow/Maintenance
-目录和独立 identity；前两者已由独立批次完成，只有 DocTree/ContentImport 仍属于 deferred 范围。
+目录和独立 identity；它们均已由对应独立批次完成，不再列为 Phase 5 迁移债务。
 
 ## 4. Tag / TagGroup 迁移边界
 
@@ -851,7 +857,7 @@ Receipt confirmation 已是该 mutation 的完整结果合同，不能把“没�
 | Moderator                         | `Add` / `AddMany` / `Remove` / `UpdatePassport`                                       | Receipt；AddMany root command + per-target summary        | membership uniqueness、partial success；Command/Receipt、专用 Gate action、Persist/transaction owner 与 response recovery 已实施；当前产品无 Moderator Activity/Outbox effect |
 | Activity export                   | 当前 `ExportCommunityActivity`（Community scope）                                     | 当前同步 bounded export；Article export 不在当前产品范围  | selection snapshot、audit effect 与 bounded result；不是当前 Article 功能缺口                                                                                                 |
 | Press config                      | `UpdateConfig`                                                                        | Receipt（已实施）                                         | Community Gate、Press.Persist row write、Activity operation_ref 同一 `commandId`、Press.Effects invalidation、response recovery                                               |
-| DocTree legacy                    | 按真实动作建立 Command                                                                | deferred                                                  | tree revision、branch lock、owner codec，禁止万能 payload；已拆出独立文档，见下方引用                                                                                         |
+| DocTree legacy                    | 按真实动作建立 Command                                                                | 独立批次已完成                                            | tree revision、branch lock、owner codec，禁止万能 payload；完成记录见下方引用                                                                                                 |
 
 DocTree/ContentImport 的“后续单独处理”已展开为独立审计与重构文档：
 [`cms-doctree-refactor.md`](./cms-doctree-refactor.md)。该文档区分 DocTree 用户 mutation 的 Command/Receipt、
@@ -1050,9 +1056,8 @@ terminal result，pin 的 Activity/association 写入也必须与用户意图绑
 可以调用 `revoke_if_current/5`，但必须传入上层 delete command identity；不再生成独立 UUID。
 
 本阶段纳入的 family 已按 §4.2/§5.2 的粒度完成 concrete use case、GraphQL 参数、Gate、事务、
-Confirmation 和 effects 确认；Phase 5.4 Upload/Provider workflow、Phase 5.5 ReplacementPlan 已由独立批次完成，
-只有 DocTree/ContentImport 按范围保持 `deferred`（见 [`cms-doctree-refactor.md`](./cms-doctree-refactor.md)），
-不再把已完成的 Asset workflow 列为当前迁移债务。
+Confirmation 和 effects 确认；Upload/Provider、ReplacementPlan 与 DocTree/ContentImport 均已由独立批次
+完成，不再列为当前迁移债务。
 
 明确排除：
 
@@ -1225,7 +1230,8 @@ user Asset mutation 分开标注，Upload/Provider/Replacement workflow recovery
 
 ### Phase 5.6：其余 family
 
-1. [done] 按 §6 逐 family 执行 `classified -> migrated -> verified`；本阶段只保留明确 deferred 的 DocTree/ContentImport，Asset workflow 已由独立批次完成。
+1. [done] 按 §6 逐 family 执行 `classified -> migrated -> verified`；DocTree/ContentImport 与 Asset workflow
+   的独立批次均已完成。
 2. [implemented, verified for current focused suites] 移除 Comment create/reply/update/delete、Upvote/Emotion 的 `nil` command identity fallback；Comment domain suite 312/312 通过，跨目录 fixtures 继续纳入回归清单；
 3. [implemented, verified for current focused suites] Article/Comment Report add/remove 统一使用 concrete command identity、Receipt 与 result builder；GraphQL report mutations 的 `commandId` 已为必填；
 4. [implemented, verified for current focused suites] Upvote/Emotion/Collect 及 undo 均进入独立 reaction
@@ -1436,8 +1442,8 @@ workflow 改用 typed workflow identity，相关 suite 为 **17/17**。这类 fi
 `nil` fallback 解决。上述数字是各迁移切片的 focused 证据；扩展到评论 create/reply 和全测试树
 reaction fixture 后，评论域套件为 **312/312**、reaction/emotion/read-state 套件为 **132/132**、
 资产 query 套件为 **3/3**。本轮 backend 全量 `mix test --max-failures 100` 为 **2189 passed,
-1 excluded, 0 failures**（2190 tests）。该数字证明回归树稳定；DocTree/ContentImport 仍按 deferred 边界单独验收，
-Asset Upload/Provider/Replacement workflow 已有独立完成记录，不因本阶段回归数字重复计算。
+1 excluded, 0 failures**（2190 tests）。该数字证明当时的 Phase 5 回归树稳定；DocTree/ContentImport 与
+Asset Upload/Provider/Replacement workflow 使用各自独立完成记录，不与本阶段回归数字重复计算。
 
 扩展的 GraphQL community-tag mutation 目录目前为 **41/41**：Tag CRUD、set/unset（post/blog/changelog/doc）
 和 reindex 均已通过。Doc set/unset 的实现保留 FrontDesk public projection 提供的 main-branch

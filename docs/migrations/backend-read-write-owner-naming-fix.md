@@ -172,7 +172,8 @@ Profile 在客户端可见后的显式行为
   [Profile ViewTracker](./profile-view-tracker.md) 单独迁移；
 - 删除 `Profiles.Read`，不保留兼容 shim；
 - `user` 是纯读 Profile facade，不能掩盖 view、projection 写入或缓存失效；
-- Web、其他 Context 和 Worker 仍只能通过 Accounts 根 Facade 调用这些能力。
+- Web 和其他 Context 仍只能通过 Accounts 根 Facade 调用这些能力；Worker 只有在目标能力是明确声明
+  `@pipeline ... access: :internal` 的 internal Command 时，才可走该 internal Command。
 
 ### 3.1 Facade API 合同
 

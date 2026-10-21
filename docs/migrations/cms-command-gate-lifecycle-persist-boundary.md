@@ -1,15 +1,15 @@
 # CMS Command、Gate、Lifecycle 与 Persist 写入边界收口
 
-> 状态：已实施（pipeline foundation 与 concrete Command 全量迁移，2026-10-18）
+> 状态：已实施（pipeline foundation 与已识别 concrete Command 迁移，2026-10-21）
 >
 > 范围：冻结 CMS 写入链路中 public facade、领域 Command、`CMS.Command`、Gate、Lifecycle、
-> Persist、Audit/Outbox 与 result builder 的职责；93 个 concrete Command 已全部迁移，并统一客户端业务
-> 写入 identity 为 `commandId`。
+> Persist、Audit/Outbox 与 result builder 的职责；已识别的顶层 Command 已迁移，并统一客户端业务写入
+> identity 为 `commandId`。当前数量以生成的 `pipeline_contracts.json` 为准，不在历史文档维护快照。
 
 相关合同：
 
 - [CMS Command Pipeline Contract](../architecture/cms-write-boundary-contract.md)：
-  `receipt_pipeline`、`direct_pipeline`、`workflow_pipeline` 的目标设计，以及编译合同、Elixir 全局检查、
+  `receipt_pipeline`、`direct_pipeline` 的目标设计，以及编译合同、Elixir 全局检查、
   现有 repository gates、runtime 和行为测试的责任边界；
 - [CMS Command](../architecture/cms-command.md)：Command Receipt、ambiguous commit 与长期执行边界；
 - [CMS Command V3](../architecture/cms-command-v3.md)：Confirmation、事务与 result builder；
@@ -22,8 +22,8 @@
 - [Gate V5](../feature/gate/v5.md)：当前 Gate 公开接口与 Scope 命名；
 - [Community Lifecycle](../feature/lifecycle/contract.md)：actor-independent 状态与转换权威。
 
-本文记录已经实施的边界和迁移历史。当前 API 只使用 `receipt_pipeline`、`direct_pipeline`、
-`workflow_pipeline` 三个名称；历史分类已按这三个名称统一。通用 DSL 另定义非 CMS 专用的
+本文记录已经实施的边界和迁移历史。当前 API 只使用 `receipt_pipeline`、`direct_pipeline`；复杂领域流程
+保留普通函数或 Workflow owner。通用 DSL 另定义非 CMS 专用的
 `access: :open`：它表示没有 Gate/actor admission，不是用户授权旁路；CMS module 禁止使用它。
 
 ## 1. 问题
@@ -185,13 +185,13 @@ transaction。
 receipt_pipeline / direct_pipeline runner
   -> BEGIN
   -> Gate join-only check：load + lock + authorize，返回 canonical resource
-  -> Lifecycle / workflow / change
+  -> Lifecycle / change（可调用普通 domain Workflow）
   -> COMMIT / ROLLBACK
 ```
 
 runner 是唯一主事务 owner；Gate 不再通过 callback 拥有 pipeline transaction，Persist 继续只加入现有
 transaction。显式 `on_rejection` 发生在主事务回滚之后，由 runner 另开一笔独立 error transaction，只允许
-记录 rejection Audit/Activity，并始终保留原始错误。它只处理 Gate/Lifecycle/change/workflow 明确返回的业务
+记录 rejection Audit/Activity，并始终保留原始错误。它只处理 Gate/Lifecycle/change 明确返回的业务
 rejection/blocker；Receipt claim conflict、recovery/decode/finalize、Confirmation 构造/codec、基础设施与未分类
 内部错误不触发 `on_rejection`。
 
@@ -339,8 +339,6 @@ CMS.Communities
 ├── Commands
 │   ├── Create
 │   ├── Update
-│   ├── CreateFromApplication
-│   ├── RunSetup
 │   ├── RetrySetup
 │   └── RequestDestroy
 ├── Persist
@@ -386,8 +384,8 @@ Commands.Update.execute(community, attrs, actor)
 - `Communities.sync_base_info` 不再是 public business action；改为
   `Communities.Persist.update_identity_fields`，只在 `Dashboard.Commands.UpdateSection(:base_info)` 已完成 Gate 的事务内调用；
 - `CreationPersist.create_core` 改为 `Communities.Persist.insert_core`；
-- 当前 `Communities.Creation` 改为 `Communities.Commands.CreateFromApplication`，继续拥有 Application lock、
-  asset promotion、Lifecycle、slug claim 和 setup job 编排。
+- `Communities.Creation` 继续作为 Oban creation workflow owner，拥有 Application lock、asset promotion、
+  Lifecycle、slug claim 和 setup job 编排；不增加纯代理 Command。
 
 `Communities.CreationPersist` 当前只作为 Community creation/setup 的内部 core helper；它不再拥有 Gate、
 transaction、Lifecycle、Receipt 或 Outbox，也不再是 public facade 入口。后续可在 Application creation
@@ -648,8 +646,8 @@ Lifecycle 只拥有长期资源状态和并发 guard：
 ## 11. mutation 分类结果
 
 Article、Comment、Community、Assets、Dashboard、DocCover、DocTree、Docs、Kanban、Press、Wallpaper 与
-Community Application 下的 93 个 concrete Command 已逐项归入 `receipt_pipeline` 或 `direct_pipeline`；
-Community Application Submit 另以 `workflow_pipeline` 表达命名步骤。Auth/session 与纯读取投影不属于
+Community Application 下的 concrete Command 已逐项归入 `receipt_pipeline` 或 `direct_pipeline`；
+Community Application Submit 使用普通函数组合其顺序步骤。Auth/session 与纯读取投影不属于
 CMS command pipeline 范围。具体数量、operation 和 access 以三份生成 manifest 为准，不再维护一张会与代码
 漂移的手工 action 表。
 
@@ -701,7 +699,7 @@ Gate action
 Lifecycle/version authority
 transaction owner
 receipt_pipeline | direct_pipeline | routing function
-internal workflow_pipeline（按需）
+domain workflow（普通函数或 owner）
 Confirmation/present builder（receipt 按合同必需）
 Audit/Activity/Outbox
 ```
@@ -713,12 +711,10 @@ Audit/Activity/Outbox
    都必须声明稳定 `operation`，write 升级为 receipt 时 atom 不变；macro 读取 `@pipeline` 后必须用
    `Module.delete_attribute/2` 擦除，禁止下一条声明继承过期 metadata；
 2. 已增加 Gate join-only API，并与非 pipeline transaction-owning Gate API 分离；
-3. concrete Command coverage 使用 `covered`/`uncovered` 合同，任何 uncovered 项直接失败；顶层
-   receipt/direct contract 与 1 个 workflow contract 覆盖现有 Article、Comment、Community、Assets、Dashboard、DocCover、DocTree、
-   Docs、Kanban、Press、Wallpaper 与 Community Application 写路径；
-4. `workflow_pipeline` 只能在顶层 pipeline transaction 内执行，V1 禁止 workflow 嵌套；
-   step 的 `Pipeline.Rejected`/Gate `Decision` 由 runner 归一化为该 step 的失败，保留原始对外错误并触发顶层
-   `on_rejection`，不产生重复的 `pipeline_stage` 嵌套；
+3. compiled contract 与 facade/Command graph 分别证明 pipeline 声明和入口可达性；顶层 receipt/direct
+   contract 覆盖现有 Article、Comment、Community、Assets、Dashboard、DocCover、DocTree、Docs、Kanban、
+   Press、Wallpaper、Community Application 与 Interaction 写路径；
+4. 复杂顺序步骤使用普通函数、`with` 或 `Ecto.Multi`，不再维护单一使用者的 workflow DSL；
 5. external/user entry 与 internal job/maintenance entry 分开，禁止根据 nil `command_id` 或
    `{:workflow, ref}` 改变执行协议；
 6. 新增 `GroupherServer.Activity.log_rejection/3` 窄入口；builder 只返回纯 `RejectionData`，不获得任何
@@ -733,16 +729,15 @@ Audit/Activity/Outbox
 9. 除已建模的标准构造、pipeline DSL、`defdelegate` 外，受检边界内的自定义 macro 调用默认失败；检查器
    只通过封闭的已审查宏配置扩展能力，并为宏生成的调用边提供显式模型和正反例测试；
 10. Backend CI 独立运行 `mix compile --warnings-as-errors`、`mix cms.pipeline.check --check`、
-    `mix cms.pipeline.coverage --check`、`mix cms.command.pipeline --check` 与 ExUnit；现有 Node
-    architecture gates 保持独立，不读取 pipeline coverage。
-11. `mix cms.pipeline.coverage` 生成 concrete Command 覆盖清单；`mix cms.pipeline.check` 生成完整编译合同。
-    两者负责不同事实，均以 freshness 门禁防止代码与 JSON 漂移。
-12. `mix cms.command.pipeline` 从 resolver 和 concrete CMS facade root 传递追踪路由函数、helper、Command、
+    `mix cms.command.pipeline --check` 与 ExUnit；现有 Node architecture gates 保持独立。
+11. `mix cms.pipeline.check` 生成完整编译合同；`mix cms.command.pipeline` 从 resolver 和 concrete CMS facade
+    root 传递追踪路由函数、helper、Command、
     pipeline 与动态边；正式运行读取宏展开后的 Elixir debug definitions。uncovered、unreached user pipeline、
-    unresolved、internal reachability、顶层 pipeline 互调、非法 workflow caller 或绕过 pipeline 的 Command
+    unresolved、internal reachability、顶层 pipeline 互调或绕过 pipeline 的 Command
     write 任一非零都会阻断 CI。
-13. `Commands/` 外的 interaction reaction 由独立 interaction command contract 覆盖，不进入 pipeline
-    coverage 或 pipeline graph；它们不属于 CMS pipeline 迁移范围，数量只以生成产物为准。
+12. `Commands/` 外的 interaction reaction 保留原领域 owner，但其 upvote、emotion、collect、report
+    add/remove 已声明 `receipt_pipeline`，进入 compiled contract 与 pipeline graph；Accounts 收藏夹
+    通过显式 transaction-joining collect step 复用写入，不嵌套顶层 pipeline。
 
 ### Phase 7：rejection effect 收口（已完成）
 
@@ -760,12 +755,13 @@ Audit/Activity/Outbox
 - Accounts 16 个显式 Command 已迁移：14 个 `direct_pipeline`，CollectFolders Add/Remove 为
   `receipt_pipeline`；Achievements advisory lock、CollectFolders 的跨 Context 写入和 OAuth 并发注册均有行为测试；
 - Messaging 5 个显式 Command 已迁移为 `direct_pipeline`，post-commit notification/mention effect 的提交边界保持不变；
-- 三种 pipeline 是唯一顶层执行协议；本批没有发现需要第四种协议的业务动作；
+- `receipt_pipeline` 与 `direct_pipeline` 是仅有的顶层执行协议；复杂领域流程继续由普通 workflow 模块承载；
 - leaf Persist、查询、recorder、普通 helper 和既有非 Command maintenance workflow 未被强制包装；
-- CMS 的 contracts/coverage/graph 产物继续保持 CMS scope，不能误读为全 Backend inventory；
-- Accounts/Messaging 的 21 个非 CMS Command 当前只有通用 DSL 编译合同和领域行为测试，尚未有 Backend 级
-  inventory/coverage/graph 产物；
-- 后续只审计并迁移其它 Context 中未放在 `Commands/` 的等价写入口，不建立旧/新 runtime 双路兼容层。
+- CMS 的 contracts/graph 产物继续保持 CMS scope，不能误读为全 Backend inventory；
+- Accounts/Messaging 的 21 个非 CMS Command 使用通用 DSL 编译合同和领域行为测试验收；不为此维护全 Backend
+  inventory/coverage/graph 账本；
+- 其它 Context 写入口默认保留现有 owner；只在出现 identity、锁、事务、retry/recovery 或 user/internal
+  协议混用问题时逐项重新评估，不建立旧/新 runtime 双路兼容层。
 
 ## 13. 门禁与验收
 
@@ -795,43 +791,41 @@ Facade、Resolver 和 Command identity 检查都是阻断式 architecture gates�
 目标执行链和唯一 source of truth 见
 [CMS Command Pipeline Contract](../architecture/cms-write-boundary-contract.md) §8。pipeline 落地后：
 
-1. Elixir 编译由 macro 检查 pipeline metadata、阶段集合、声明顺序、必需 Gate、Receipt Confirmation 和
-   workflow step；macro 不调用 `Code.ensure_compiled!/1`，也不依赖 `@after_compile` 校验其他模块；
+1. Elixir 编译由 macro 检查 pipeline metadata、阶段集合、声明顺序、必需 Gate、`change` 和 Receipt
+   Confirmation；macro 不调用 `Code.ensure_compiled!/1`，也不依赖 `@after_compile` 校验其他模块；
 2. macro 为 pipeline module 生成 `__pipeline_contracts__/0`，metadata 直接编译进 BEAM；`mix cms.pipeline.check`
    再生成 `backend/api/priv/pipeline_contracts.json`，它是可审查的编译产物，不是第二份 action registry；
 3. `mix cms.pipeline.check` 在 `mix compile` 后扫描 compile path 的 BEAM，调用
    `__pipeline_contracts__/0` 汇总 contracts，并检查当前已实现的 operation 唯一性、源码 parse/dynamic-call
    规则，以及 Confirmation module/behavior/callback/operation；`--check` 负责 freshness；
-4. `mix cms.pipeline.coverage` 另行扫描 `cms/**/commands` 下导出 `execute/*` 的 concrete Command，生成
-   `backend/api/priv/pipeline_coverage.json`，用于 fail-closed 覆盖检查；它不分析调用边，也不替代 pipeline checker；
-5. `mix cms.command.pipeline` 从 resolver/facade public root 追踪路由函数和普通 helper，并读取编译后的 Elixir
+4. `mix cms.command.pipeline` 从 resolver/facade public root 追踪路由函数和普通 helper，并读取编译后的 Elixir
    debug definitions 看穿 `use`/import/macro 生成函数；任务始终对
    unresolved/dynamic/unexpanded macro、uncovered、unreached user pipeline、internal reachability、顶层 pipeline
-   互调、workflow caller、非 gate 阶段 Gate、mixed protocol entry 与 unpipelined Command write fail closed；
-6. 只有 `receipt_pipeline` runner 可以调用 `CMS.Command`，业务 Command、shared Support 和 routing function
+   互调、非 gate 阶段 Gate、mixed protocol entry 与 unpipelined Command write fail closed；
+5. 只有 `receipt_pipeline` runner 可以调用 `CMS.Command`，业务 Command、shared Support 和 routing function
    不得直接选择 Receipt 协议；
-7. resolver/user facade 的任意传递调用路径不得抵达 `access: :internal` pipeline；top-level pipeline 不得
-   互调，`workflow_pipeline` 只能由顶层 pipeline 的 `workflow` 阶段调用；
-8. 一个 pipeline 不得根据 nil `command_id` 或 `{:workflow, ref}` 在运行时改变执行协议；原 external facade
+6. resolver/user facade 的任意传递调用路径不得抵达 `access: :internal` pipeline；top-level pipeline 不得
+   互调；
+7. 一个 pipeline 不得根据 nil `command_id` 或 `{:workflow, ref}` 在运行时改变执行协议；原 external facade
    签名保持不变，internal job/maintenance 使用独立 entry；该规则由编译后图证明同一 Command entry 不会同时
    可达 receipt/direct pipeline，不再由 coverage task 解析源码字符串猜测；
-9. 现有 Node architecture gates 继续检查 resolver/facade/Persist 等 repository source 边界，但不读取
-   pipeline coverage；`pnpm docs:check` 不代替 `mix cms.pipeline.check --check`；
-10. `apply/3`、变量模块、运行时模块拼接和无法解析的函数捕获/callback 在受检调用图内 fail closed；只有
-    可以静态穷举并证明安全的有限间接调用才放行；
-11. 受检源码必须完整解析，所有可达 executable AST node 必须归类；读取/parse 失败、partial/recovered
+8. 现有 Node architecture gates 继续检查 resolver/facade/Persist 等 repository source 边界；
+   `pnpm docs:check` 不代替 `mix cms.pipeline.check --check`；
+9. `apply/3`、变量模块、运行时模块拼接和无法解析的函数捕获/callback 在受检调用图内 fail closed；只有
+   可以静态穷举并证明安全的有限间接调用才放行；
+10. 受检源码必须完整解析，所有可达 executable AST node 必须归类；读取/parse 失败、partial/recovered
     AST、unsupported construct 或 traversal 覆盖无法证明时直接失败，并报告 file、line 和 AST 类型；
-12. 除分析器显式建模的标准构造、pipeline DSL 和 `defdelegate` 外，受检边界内的自定义 macro 默认违规；
+11. 除分析器显式建模的标准构造、pipeline DSL 和 `defdelegate` 外，受检边界内的自定义 macro 默认违规；
     已审查宏固定登记在检查器配置中，不能由 action/pipeline annotation 扩展；
-13. `on_rejection` builder 及其同模块 helper 只能做纯数据转换；跨模块 helper、`Repo`、Persist、`Activity`、
+12. `on_rejection` builder 及其同模块 helper 只能做纯数据转换；跨模块 helper、`Repo`、Persist、`Activity`、
     Receipt、`CMS.Command`/Outbox、动态调用和其他 pipeline 均 fail closed，Activity 写入只能由 runner 发起；
-14. Gate action、Lifecycle transition、事务回滚和 Receipt recovery 的业务正确性仍由 runtime 与行为测试
+13. Gate action、Lifecycle transition、事务回滚和 Receipt recovery 的业务正确性仍由 runtime 与行为测试
     证明，检查器不根据文件名或参数名猜测业务语义。
-15. runner 为每个 callback 设置并恢复唯一 stage context；join-only Gate API 只允许在 `gate` stage 中调用，
+14. runner 为每个 callback 设置并恢复唯一 stage context；join-only Gate API 只允许在 `gate` stage 中调用，
     编译后图同时阻断从其他 stage 经普通 helper 间接抵达 Gate。旧 workflow 中重复的 Gate 必须拆成 Command
     gate 与明确的 `*_after_gate` 写入口，不能用 flag 或兼容分支绕过；编译图提取到的 stage 集合必须与 contract
     完全一致，否则以 `stage_analysis_errors` fail closed。
-16. contracts、coverage 与 graph 必须共用同一 production module discovery，只接受 compiler source path 位于
+15. contracts、coverage 与 graph 必须共用同一 production module discovery，只接受 compiler source path 位于
     `backend/api/lib/` 的编译模块；测试 fixture 即使出现在 compile path 中也不得进入正式 contracts 或 graph。
     Mix project 加载后，项目根、源码 glob、manifest 和相对路径必须从 `Mix.Project.project_file/0` 推导，不能
     依赖 task 执行期间变化的 cwd；这不表示 Mix 可以从不含 `mix.exs` 的任意子目录启动。三份 checked-in JSON
@@ -900,19 +894,16 @@ pnpm docs:check
 
 `pnpm docs:check` 已聚合当前 CMS Context、Facade、Resolver、Command identity 和文档检查；定位单项问题时
 可以运行对应的 `pnpm check:*`。同时按变更范围运行 GraphQL codegen、frontend type-check 与生成产物
-freshness check。Backend CI 在 `mix compile --warnings-as-errors` 之后、ExUnit 之前运行三项 backend
-coverage/check：
+freshness check。Backend CI 在 `mix compile --warnings-as-errors` 之后、ExUnit 之前运行两项 backend check：
 
 ```text
 mix cms.pipeline.check --check
-mix cms.pipeline.coverage --check
 mix cms.command.pipeline --check
 ```
 
-它们分别校验 pipeline contract coverage、concrete Command 覆盖 coverage 和跨模块调用图产物的 freshness；
-三者都是纯 Elixir backend 检查，不由 `pnpm docs:check` 代跑，也不输出供 JavaScript 消费的业务 manifest。
-`mix cms.pipeline.coverage` 是合同覆盖清单；`mix cms.command.pipeline --check` 同时验证 freshness 和
-跨层拓扑。对应 ExUnit 行为测试仍必须运行，不能只依赖 compile/check。
+它们分别校验 compiled pipeline contract 和跨模块调用图拓扑。单独的 coverage manifest 已删除，因为它只扫描
+已声明 pipeline 的模块，无法发现未声明的候选。两项检查都是纯 Elixir backend 检查，不由
+`pnpm docs:check` 代跑。对应 ExUnit 行为测试仍必须运行，不能只依赖 compile/check。
 
 ## 14. 提交拆分
 
