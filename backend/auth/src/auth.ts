@@ -1,14 +1,14 @@
-import { createHash } from 'node:crypto'
 /**
  * Adapts Auth.js and OAuth provider callbacks to Groupher Session creation.
  *
  * Business position:
  *
  *   Browser / Gateway
- *     -> Auth module
+ *     -> Auth session adapter
  *     -> OAuth provider / Phoenix Accounts
  *     -> Session cookies or service token
  */
+import { createHash } from 'node:crypto'
 
 import { Auth, type AuthConfig, setEnvDefaults } from '@auth/core'
 import GitHub from '@auth/core/providers/github'

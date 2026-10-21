@@ -1,18 +1,18 @@
-import {
-  AUTH_ERROR,
-  GROUPHER_AUTH_CSRF_HEADER,
-  GROUPHER_AUTH_CSRF_VALUE,
-} from '@groupher/contracts/auth'
 /**
  * Composes the Auth HTTP application and its injected route dependencies.
  *
  * Business position:
  *
  *   Browser / Gateway
- *     -> Auth module
- *     -> OAuth provider / Phoenix Accounts
+ *     -> Auth route composition
+ *     -> OAuth and Phoenix Accounts
  *     -> Session cookies or service token
  */
+import {
+  AUTH_ERROR,
+  GROUPHER_AUTH_CSRF_HEADER,
+  GROUPHER_AUTH_CSRF_VALUE,
+} from '@groupher/contracts/auth'
 import { isPagiInput } from '@groupher/contracts/pagination'
 import { AUTH_ROUTE } from '@groupher/route-contract'
 import { createHealthResponse } from '@groupher/service/health'
