@@ -63,6 +63,25 @@ defmodule GroupherServer.Jobs.Workflow do
   end
 
   @doc """
+  Enqueues one ReviewBot Check using its stable UUID.
+
+  ## Examples
+
+      Workflow.review_bot_check(Ecto.UUID.generate())
+      #=> {:ok, job} | {:error, reason}
+  """
+  @spec review_bot_check(Ecto.UUID.t()) :: {:ok, term()} | {:error, term()}
+  def review_bot_check(check_id) when is_binary(check_id) do
+    if Config.skip_enqueue?() do
+      {:ok, :skipped}
+    else
+      %{check_id: check_id}
+      |> Jobs.ReviewBotCheck.new()
+      |> Oban.insert()
+    end
+  end
+
+  @doc """
   Builds the Oban changeset for one PublicCache invalidation delivery.
 
   ## Examples
@@ -84,8 +103,8 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      Jobs.enqueue_best_effort(:notify_comment, comment.id, fn ->
-        Jobs.notify_comment(comment, actor)
+      Jobs.enqueue_best_effort(:optional_effect, comment.id, fn ->
+        {:ok, :queued}
       end)
 
       #=> {:ok, :pass}
@@ -126,40 +145,6 @@ defmodule GroupherServer.Jobs.Workflow do
   """
   @spec sync_mentions(struct()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
   def sync_mentions(%{id: id}), do: comments_job(:sync_mentions, %{comment_id: id})
-
-  @doc """
-  Enqueues content audition for one comment-like artiment.
-
-  ## Examples
-
-      Jobs.audition(comment)
-  """
-  @spec audition(struct()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def audition(%{id: id}), do: comments_job(:audition, %{comment_id: id})
-
-  @doc """
-  Enqueues the notification produced by a new top-level comment.
-
-  ## Examples
-
-      Jobs.notify_comment(comment, actor)
-  """
-  @spec notify_comment(struct(), struct()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def notify_comment(comment, actor) do
-    comments_job(:notify_comment, %{comment_id: comment.id, actor_id: actor.id})
-  end
-
-  @doc """
-  Enqueues the notification produced by a reply.
-
-  ## Examples
-
-      Jobs.notify_reply(reply_comment, actor)
-  """
-  @spec notify_reply(struct(), struct()) :: {:ok, Oban.Job.t() | :pass} | {:error, term()}
-  def notify_reply(reply_comment, actor) do
-    comments_job(:notify_reply, %{comment_id: reply_comment.id, actor_id: actor.id})
-  end
 
   @doc """
   Enqueues community subscription after a successful comment mutation.
@@ -264,7 +249,7 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      Workflow.comments_new(%{"type" => "notify_comment", "version" => 1, "payload" => %{}})
+      Workflow.comments_new(%{"type" => "sync_mentions", "version" => 1, "payload" => %{}})
   """
   defdelegate comments_new(arg1), to: GroupherServer.Jobs.Comments, as: :new
 
@@ -273,7 +258,7 @@ defmodule GroupherServer.Jobs.Workflow do
 
   ## Examples
 
-      Workflow.comments_new(%{"type" => "notify_comment"}, [queue: :default])
+      Workflow.comments_new(%{"type" => "sync_mentions"}, [queue: :default])
   """
   defdelegate comments_new(arg1, arg2), to: GroupherServer.Jobs.Comments, as: :new
 

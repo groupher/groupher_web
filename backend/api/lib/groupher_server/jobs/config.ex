@@ -16,6 +16,7 @@ defmodule GroupherServer.Jobs.Config do
           | :snapshot_refresh
           | :article_insights_aggregation
           | :article_insights_retention
+          | :review_bot_check
 
   @doc """
   Returns the Oban queue for a known job name.
@@ -30,6 +31,7 @@ defmodule GroupherServer.Jobs.Config do
   def queue(:snapshot_refresh), do: :snapshot
   def queue(:article_insights_aggregation), do: :default
   def queue(:article_insights_retention), do: :default
+  def queue(:review_bot_check), do: :review_bot
 
   @doc """
   Returns the retry limit for a known job name.
@@ -44,6 +46,7 @@ defmodule GroupherServer.Jobs.Config do
   def max_attempts(:snapshot_refresh), do: 3
   def max_attempts(:article_insights_aggregation), do: 3
   def max_attempts(:article_insights_retention), do: 3
+  def max_attempts(:review_bot_check), do: 3
 
   @doc """
   Returns the Oban uniqueness policy for a known job name.
@@ -58,6 +61,7 @@ defmodule GroupherServer.Jobs.Config do
   def unique(:snapshot_refresh), do: [period: 60, keys: [:type, :refs]]
   def unique(:article_insights_aggregation), do: [period: 30, keys: []]
   def unique(:article_insights_retention), do: [period: 86_400, keys: []]
+  def unique(:review_bot_check), do: [period: 86_400, keys: [:check_id], states: :incomplete]
 
   @doc """
   Reports whether jobs should be skipped in the current environment.

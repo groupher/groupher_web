@@ -20,6 +20,8 @@ defmodule Helper.Constant.DBPrefix do
   @messaging "messaging"
   @log "log"
   @activity "activity"
+  @alert_board "alert_board"
+  @review_bot "review_bot"
 
   @doc "Returns the default PostgreSQL schema prefix."
   def default, do: @default
@@ -37,4 +39,8 @@ defmodule Helper.Constant.DBPrefix do
   def log, do: @log
   @doc "Returns the Activity PostgreSQL schema prefix."
   def activity, do: @activity
+  @doc "Returns the AlertBoard PostgreSQL schema prefix."
+  def alert_board, do: @alert_board
+  @doc "Returns the ReviewBot PostgreSQL schema prefix."
+  def review_bot, do: @review_bot
 end

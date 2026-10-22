@@ -43,6 +43,12 @@ test('accepts a Context facade, internal capability, Owners, and organizational 
       'accounts/profiles/commands/update.ex',
       'GroupherServer.Accounts.Profiles.Commands.Update',
     )
+    touch(root, 'accounts/categories/query.ex', 'GroupherServer.Accounts.Categories.Query')
+    touch(
+      root,
+      'accounts/categories/commands/create.ex',
+      'GroupherServer.Accounts.Categories.Commands.Create',
+    )
     touch(root, 'accounts/outbox.ex', 'GroupherServer.Accounts.Outbox')
     touch(root, 'accounts/outbox/event.ex', 'GroupherServer.Accounts.Outbox.Event')
 

@@ -58,6 +58,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
   defp cleanup(event) do
     case event.event do
       "article.projections" -> run_projections(event)
+      "article.review_changed" -> CMS.Review.Effects.deliver(event)
       _ -> purge_cache(event)
     end
   end
@@ -138,5 +139,5 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
   defp invalidation_type("article.published"), do: {:ok, :article_published}
   defp invalidation_type("article.updated"), do: {:ok, :article_content_changed}
   defp invalidation_type("article.visibility_changed"), do: {:ok, :article_visibility_changed}
-  defp invalidation_type(_event), do: {:error, :unknown_article_outbox_event}
+  defp invalidation_type(_event), do: {:error, ArticleErrorCat.unknown_outbox_event()}
 end

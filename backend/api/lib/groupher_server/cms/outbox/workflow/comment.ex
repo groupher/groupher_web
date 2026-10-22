@@ -50,6 +50,9 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Comment do
 
   defp cleanup(event) do
     case event.event do
+      "comment.review_changed" ->
+        CMS.Review.Effects.deliver(event)
+
       "comment.changed" ->
         with {:ok, tags} <-
                GroupherServer.PublicCache.scope_tags(:comments_content_changed, event.data),
@@ -94,12 +97,8 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Comment do
     end
   end
 
-  defp enqueue_comment_job("comment.replied", comment, actor, _community) do
-    with {:ok, _} <- enqueue(:sync_mentions, comment.id, fn -> Jobs.sync_mentions(comment) end),
-         {:ok, _} <-
-           enqueue(:notify_reply, comment.id, fn -> Jobs.notify_reply(comment, actor) end) do
-      {:ok, :pass}
-    end
+  defp enqueue_comment_job("comment.replied", comment, _actor, _community) do
+    enqueue(:sync_mentions, comment.id, fn -> Jobs.sync_mentions(comment) end)
   end
 
   defp enqueue_comment_job("comment.updated", comment, _actor, _community) do

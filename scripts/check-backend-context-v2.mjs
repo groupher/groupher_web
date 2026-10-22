@@ -19,7 +19,7 @@ const fixedRootFiles = new Set([
   'repo.ex',
 ])
 const fixedRootDirectories = new Set(['command_pipeline'])
-const collectionOwners = new Set(['commands', 'model', 'workflows'])
+const collectionOwners = new Set(['categories', 'commands', 'model', 'workflows'])
 const singularOwners = new Set([
   'cache',
   'effects',
