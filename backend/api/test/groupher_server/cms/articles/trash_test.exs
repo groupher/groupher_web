@@ -283,6 +283,13 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     assert deleted_report.target_deleted_at
     assert deleted_report.target_key == target_key
 
+    assert {:ok, withdrawn_report} =
+             deleted_report
+             |> Report.changeset(%{withdrawn_at: DateTime.utc_now(:second)})
+             |> Repo.update()
+
+    assert withdrawn_report.withdrawn_at
+
     deleted_comment_case = Repo.get!(Case, comment_case.id)
     assert deleted_comment_case.comment_id == nil
     assert deleted_comment_case.target_deleted_at

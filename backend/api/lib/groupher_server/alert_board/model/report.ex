@@ -83,17 +83,29 @@ defmodule GroupherServer.AlertBoard.Model.Report do
   end
 
   defp validate_target(changeset) do
-    ids =
-      Enum.count([:article_id, :comment_id, :user_id], &(not is_nil(get_field(changeset, &1))))
-
-    if ids == 1 do
+    if get_field(changeset, :target_deleted_at) do
       changeset
     else
-      add_error(changeset, :target_key, "must identify exactly one target")
+      ids =
+        Enum.count([:article_id, :comment_id, :user_id], &(not is_nil(get_field(changeset, &1))))
+
+      if ids == 1 do
+        changeset
+      else
+        add_error(changeset, :target_key, "must identify exactly one target")
+      end
     end
   end
 
   defp validate_target_key(changeset) do
+    if get_field(changeset, :target_deleted_at) do
+      changeset
+    else
+      validate_live_target_key(changeset)
+    end
+  end
+
+  defp validate_live_target_key(changeset) do
     target_key = get_field(changeset, :target_key)
 
     expected =
