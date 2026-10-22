@@ -7,9 +7,9 @@ import useCommentModeration from '~/query/mutation/useCommentModeration'
 import { authWarn } from '~/signal'
 import type { TComment, TMenuOption } from '~/spec'
 import useAccount from '~/stores/account/hooks'
-import useCommunity from '~/stores/community/hooks'
 import MenuButton from '~/ui/Buttons/MenuButton'
 import ReportAction from '~/unit/AlertBoard/ReportAction'
+import { useCommentFeed } from '~/unit/Comments/pagination/context'
 
 import useActions from '../useLogic/useActions'
 import useSalon from './salon/actions'
@@ -23,16 +23,16 @@ const Actions: FC<TProps> = ({ data }) => {
   const { t } = useTrans()
 
   const accountInfo = useAccount()
-  const { slug: community } = useCommunity()
+  const { collection } = useCommentFeed()
   const { openUpdateEditor, openReplyEditor } = useActions()
   const { deleteComment } = useCommentModeration(data)
-  const article = data.article
+  const article = collection.article
   const reportTarget =
     article?.innerId && article.thread
       ? {
           kind: 'COMMENT' as const,
           comment: {
-            article: { community, thread: article.thread, innerId: article.innerId },
+            article,
             innerId: data.innerId,
           },
         }

@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 
 import type { TComment } from '~/spec'
-import useCommunity from '~/stores/community/hooks'
 import ReviewNotice from '~/unit/AlertBoard/ReviewNotice'
+import { useCommentFeed } from '~/unit/Comments/pagination/context'
 
 import type { TAPIMode } from '../../spec'
 import DefaultLayout from './DefaultLayout'
@@ -20,14 +20,14 @@ type TProps = {
 
 const Comment: FC<TProps> = (props) => {
   const { data, isFolded } = props
-  const { slug: community } = useCommunity()
-  const article = data.article
+  const { collection } = useCommentFeed()
+  const article = collection.article
   const reviewTarget =
     article?.innerId && article.thread
       ? {
           kind: 'COMMENT' as const,
           comment: {
-            article: { community, thread: article.thread, innerId: article.innerId },
+            article,
             innerId: data.innerId,
           },
         }
