@@ -6,7 +6,7 @@ defmodule GroupherServer.Test.AlertBoard.ReportsTest do
   alias GroupherServer.{AlertBoard, CMS, Repo}
   alias AlertBoard.Authorization
   alias AlertBoard.Model.{Case, Report, ReviewConfig, RuleSet}
-  alias CMS.Model.Article
+  alias CMS.Model.{Article, ArticleLifecycle, ArticleReviewRestriction}
 
   test "report submit is receipt-safe and one active fact is allowed per reporter" do
     {:ok, reporter} = db_insert(:user)
@@ -87,6 +87,7 @@ defmodule GroupherServer.Test.AlertBoard.ReportsTest do
              AlertBoard.withdraw_report(report.id, actor, Ecto.UUID.generate())
 
     assert id == withdrawn.id
+
     assert {:ok, nil} =
              AlertBoard.viewer_report(
                %{target_key: report.target_key, scope_key: report.scope_key},
@@ -101,6 +102,58 @@ defmodule GroupherServer.Test.AlertBoard.ReportsTest do
                actor,
                Ecto.UUID.generate()
              )
+  end
+
+  test "withdrawing the final report resolves a case after its policy hold cleared" do
+    {community, published, _attrs, _author} = mock_article(:post)
+    article = Repo.get!(Article, published.article_id)
+    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
+    {:ok, reporter} = db_insert(:user)
+
+    assert {:ok, report} =
+             AlertBoard.submit_report(
+               %{resource: article, community_id: community.id},
+               "SPAM",
+               "Please review this post",
+               reporter,
+               Ecto.UUID.generate()
+             )
+
+    case_record = Repo.get!(Case, report.case_id)
+    operation_ref = Ecto.UUID.generate()
+
+    restriction =
+      %ArticleReviewRestriction{}
+      |> ArticleReviewRestriction.changeset(%{
+        lifecycle_id: lifecycle.id,
+        scope_key: report.scope_key,
+        cause_key: "withdraw-final-report",
+        kind: :rule_hit,
+        content_token: report.content_token,
+        source: :policy,
+        case_id: case_record.id,
+        created_by_operation_ref: operation_ref,
+        applied_at: DateTime.utc_now(:second)
+      })
+      |> Repo.insert!()
+
+    restriction
+    |> ArticleReviewRestriction.changeset(%{
+      ended_at: DateTime.utc_now(:second),
+      ended_by_operation_ref: Ecto.UUID.generate(),
+      end_reason: "review_approved"
+    })
+    |> Repo.update!()
+
+    assert {:ok, :kept_open} = AlertBoard.resolve_policy_case(case_record)
+    assert Repo.get!(Case, case_record.id).status == :open
+
+    assert {:ok, %Report{withdrawn_at: %DateTime{}}} =
+             AlertBoard.withdraw_report(report.id, reporter, Ecto.UUID.generate())
+
+    resolved_case = Repo.get!(Case, case_record.id)
+    assert resolved_case.status == :resolved
+    assert resolved_case.resolution == "reports_withdrawn"
   end
 
   test "Article and Comment authors cannot report their own content" do

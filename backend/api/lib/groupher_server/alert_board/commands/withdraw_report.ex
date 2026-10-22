@@ -15,9 +15,10 @@ defmodule GroupherServer.AlertBoard.Commands.WithdrawReport do
 
   alias GroupherServer.{Accounts, CMS, Repo}
   alias GroupherServer.AlertBoard
-  alias AlertBoard.Model.Report
+  alias AlertBoard.Model.{Case, Report}
+  alias GroupherServer.ReviewBot.Model.Check
   alias Accounts.Model.User
-  alias CMS.Model.{Article, Comment}
+  alias CMS.Model.{Article, ArticleLifecycle, Comment, CommentLifecycle}
   alias CMS.Command.ConfirmationDefinition
 
   @pipeline operation: :alert_board_withdraw_report,
@@ -106,9 +107,82 @@ defmodule GroupherServer.AlertBoard.Commands.WithdrawReport do
            report
            |> Report.changeset(%{withdrawn_at: DateTime.utc_now(:second)})
            |> Repo.update(),
-         {:ok, :pass} <- remove_projection(updated, actor) do
+         {:ok, :pass} <- remove_projection(updated, actor),
+         {:ok, lifecycle} <- review_lifecycle(updated),
+         {:ok, :pass} <- resolve_case_without_evidence(updated, lifecycle) do
       confirmation(updated, command_id)
     end
+  end
+
+  defp review_lifecycle(%Report{target_deleted_at: %DateTime{}}), do: {:ok, nil}
+
+  defp review_lifecycle(%Report{article_id: id}) when is_binary(id) do
+    {:ok, Repo.get_by(ArticleLifecycle, article_id: id)}
+  end
+
+  defp review_lifecycle(%Report{comment_id: id}) when is_integer(id) do
+    {:ok, Repo.get_by(CommentLifecycle, comment_id: id)}
+  end
+
+  defp review_lifecycle(_report), do: {:ok, nil}
+
+  defp resolve_case_without_evidence(%Report{case_id: case_id}, lifecycle) do
+    case Repo.one(
+           from(case_record in Case, where: case_record.id == ^case_id, lock: "FOR UPDATE")
+         ) do
+      %Case{status: :open} = case_record ->
+        with false <- active_reports?(case_record.id),
+             {:ok, :pass} <- no_active_restrictions(lifecycle, case_record.scope_key),
+             false <- pending_checks?(case_record) do
+          case_record
+          |> Case.changeset(%{
+            status: :resolved,
+            resolution: "reports_withdrawn",
+            version: case_record.version + 1,
+            resolved_at: DateTime.utc_now(:second)
+          })
+          |> Repo.update()
+          |> case do
+            {:ok, _resolved} -> {:ok, :pass}
+            {:error, _changeset} -> {:error, AlertBoard.ErrorCat.case_version_conflict()}
+          end
+        else
+          true -> {:ok, :pass}
+          {:ok, :keep_open} -> {:ok, :pass}
+          {:error, _reason} = error -> error
+        end
+
+      _ ->
+        {:ok, :pass}
+    end
+  end
+
+  defp active_reports?(case_id) do
+    Repo.exists?(
+      from(report in Report, where: report.case_id == ^case_id and is_nil(report.withdrawn_at))
+    )
+  end
+
+  defp no_active_restrictions(%{__struct__: _} = lifecycle, scope_key) do
+    case CMS.active_review_restrictions(lifecycle, scope_key) do
+      {:ok, []} -> {:ok, :pass}
+      {:ok, _restrictions} -> {:ok, :keep_open}
+      {:error, _reason} = error -> error
+    end
+  end
+
+  defp no_active_restrictions(_target, _scope_key), do: {:ok, :pass}
+
+  defp pending_checks?(%Case{} = case_record) do
+    Repo.exists?(
+      from(check in Check,
+        where:
+          check.target_key == ^case_record.target_key and
+            check.scope_key == ^case_record.scope_key and
+            check.content_token == ^case_record.content_token and
+            check.state in [:queued, :running]
+      )
+    )
   end
 
   defp confirmation(report, command_id) do
@@ -135,6 +209,10 @@ defmodule GroupherServer.AlertBoard.Commands.WithdrawReport do
   end
 
   defp remove_projection(%Report{user_id: id}, _actor) when is_integer(id) do
+    {:ok, :pass}
+  end
+
+  defp remove_projection(%Report{target_deleted_at: %DateTime{}}, _actor) do
     {:ok, :pass}
   end
 
