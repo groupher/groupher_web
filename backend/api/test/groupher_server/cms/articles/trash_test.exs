@@ -9,6 +9,7 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
   alias CMS.Model.{
     ArticleEmotionCount,
     ArticleLifecycle,
+    ArticleReviewRestriction,
     ArticleStats,
     ArtimentMention,
     Comment,
@@ -211,6 +212,23 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
                )
              end)
 
+    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: post.article_id)
+
+    restriction =
+      %ArticleReviewRestriction{}
+      |> ArticleReviewRestriction.changeset(%{
+        lifecycle_id: lifecycle.id,
+        scope_key: "platform",
+        cause_key: "permanent-delete-review",
+        kind: :rule_hit,
+        content_token: case_record.content_token,
+        source: :policy,
+        case_id: case_record.id,
+        created_by_operation_ref: Ecto.UUID.generate(),
+        applied_at: DateTime.utc_now() |> DateTime.truncate(:second)
+      })
+      |> Repo.insert!()
+
     report =
       %Report{}
       |> Report.changeset(%{
@@ -270,6 +288,7 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     assert deleted_comment_case.target_deleted_at
     assert deleted_comment_case.target_key == comment_key
     assert deleted_comment_case.status == :superseded
+    refute Repo.get(ArticleReviewRestriction, restriction.id)
   end
 
   test "permanent-delete receipt replays after the aggregate is gone" do
