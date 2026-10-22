@@ -4,11 +4,13 @@ defmodule GroupherServer.Test.CMS.ReviewVisibilityEffectsTest do
   import Ecto.Query
 
   alias GroupherServer.{AlertBoard, CMS, Messaging, Repo}
-  alias AlertBoard.Model.ReviewConfig
+  alias AlertBoard.Model.{Case, ReviewConfig}
 
   alias CMS.Model.{
     Article,
+    ArticleBinding,
     ArticleLifecycle,
+    ArticlePublic,
     ArticleReviewRestriction,
     CommentLifecycle,
     CommentReviewRestriction
@@ -18,6 +20,94 @@ defmodule GroupherServer.Test.CMS.ReviewVisibilityEffectsTest do
   alias CMS.Outbox.Event
   alias CMS.Review.Effects
   alias Messaging.Model.{Mention, Notification}
+
+  test "public approval retries the original full Article publish projection" do
+    {:ok, author} = db_insert(:user)
+    {:ok, community} = mock_community(author)
+    {:ok, configs} = AlertBoard.configs_for_target(community.id, :article)
+    config = Enum.find(configs, &(&1.scope_key == "community:#{community.id}"))
+
+    config
+    |> ReviewConfig.changeset(%{publish_mode: :human_first, version: config.version + 1})
+    |> Repo.update!()
+
+    attrs =
+      mock_attrs(:post, %{community_id: community.id})
+      |> Map.merge(%{
+        title: "Publish projection after review",
+        slug: "review-projection-#{System.unique_integer([:positive])}"
+      })
+
+    assert {:ok, published} =
+             CMS.Articles.create(
+               community,
+               :post,
+               attrs,
+               author,
+               command_id: Ecto.UUID.generate()
+             )
+
+    article = Repo.get!(Article, published.article_id)
+    public = Repo.get_by!(ArticlePublic, article_id: article.id)
+
+    projection_event =
+      Event
+      |> where([event], event.event == "article.projections" and event.resource_id == ^article.id)
+      |> Repo.all()
+      |> Enum.find(fn event ->
+        event.data["community_id"] == community.id and
+          event.data["revision_id"] == public.revision_id
+      end)
+
+    assert %Event{data: %{"first_publish?" => "true"}} = projection_event
+
+    projection_event
+    |> Event.changeset(%{
+      status: :failed,
+      attempts: 3,
+      completed_at: DateTime.utc_now(:second),
+      last_error_code: "projection_blocked_by_review",
+      last_error_at: DateTime.utc_now(:second)
+    })
+    |> Repo.update!()
+
+    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
+    case_record = Repo.get_by!(Case, target_key: "article:#{article.id}")
+
+    Repo.transaction(fn ->
+      {:ok, locked_lifecycle} = CMS.Articles.Lifecycle.lock(article)
+
+      restriction_ids =
+        Repo.all(
+          from(restriction in ArticleReviewRestriction,
+            where:
+              restriction.lifecycle_id == ^lifecycle.id and
+                restriction.scope_key == ^"community:#{community.id}" and
+                is_nil(restriction.ended_at),
+            select: restriction.id
+          )
+        )
+
+      assert {:ok, :pass} =
+               CMS.Articles.Lifecycle.end_review_restrictions(
+                 locked_lifecycle,
+                 "community:#{community.id}",
+                 restriction_ids,
+                 Ecto.UUID.generate(),
+                 "approved"
+               )
+    end)
+
+    assert Repo.get_by!(ArticleBinding,
+             article_id: article.id,
+             community_id: community.id
+           ).visible
+
+    retried = Repo.get!(Event, projection_event.id)
+    assert retried.status == :waiting
+    assert retried.attempts == 0
+    assert Repo.get!(Case, case_record.id).status == :open
+  end
 
   test "public Article review event refreshes Mention facts and delivers idempotently" do
     {:ok, author} = db_insert(:user)
@@ -290,7 +380,11 @@ defmodule GroupherServer.Test.CMS.ReviewVisibilityEffectsTest do
          %{"cms" => %{"post.pin" => true, "post.edit" => true, "post.mirror" => true}}}
       end)
 
-    Map.put(user, :cur_passport, Map.merge(%{"global" => %{"post.community.mirror" => true}}, grants))
+    Map.put(
+      user,
+      :cur_passport,
+      Map.merge(%{"global" => %{"post.community.mirror" => true}}, grants)
+    )
   end
 
   defp block(id, children) do

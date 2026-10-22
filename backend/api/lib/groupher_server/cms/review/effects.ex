@@ -34,10 +34,12 @@ defmodule GroupherServer.CMS.Review.Effects do
   def enqueue(lifecycle, target_key, scope_key, change_key, community_id)
       when is_binary(target_key) and is_binary(scope_key) and is_binary(change_key) and
              is_integer(community_id) do
-    event_attrs(lifecycle, target_key, scope_key, change_key, community_id)
-    |> case do
-      {:ok, attrs} -> CMS.Outbox.send(attrs)
-      {:error, _reason} = error -> error
+    with {:ok, attrs} <-
+           event_attrs(lifecycle, target_key, scope_key, change_key, community_id),
+         {:ok, event} <- CMS.Outbox.send(attrs),
+         {:ok, :pass} <-
+           replay_failed_article_publish(lifecycle, scope_key, community_id) do
+      {:ok, event}
     end
   end
 
@@ -59,13 +61,69 @@ defmodule GroupherServer.CMS.Review.Effects do
 
   def deliver(_event), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
 
+  defp replay_failed_article_publish(
+         %ArticleLifecycle{article_id: article_id},
+         _scope_key,
+         community_id
+       ) do
+    with %Article{thread: thread} = article <- Repo.get(Article, article_id),
+         %ArticleBinding{visible: true} <-
+           Repo.get_by(ArticleBinding, article_id: article.id, community_id: community_id),
+         %ArticlePublic{visible: true, revision_id: revision_id} <-
+           Repo.get_by(ArticlePublic, article_id: article.id),
+         {:ok, true} <- public_read?(Article, article.id, article_context(thread), community_id) do
+      retry_failed_article_projection(article.id, community_id, revision_id)
+    else
+      _ -> {:ok, :pass}
+    end
+  end
+
+  defp replay_failed_article_publish(_lifecycle, _scope_key, _community_id), do: {:ok, :pass}
+
+  defp retry_failed_article_projection(article_id, community_id, revision_id) do
+    latest_event =
+      from(event in Event,
+        where: event.event == "article.projections" and event.resource_id == ^article_id,
+        order_by: [desc: event.inserted_at]
+      )
+      |> Repo.all()
+      |> Enum.find(fn event ->
+        event.data["community_id"] == community_id and
+          event.data["revision_id"] == revision_id
+      end)
+
+    case latest_event do
+      %Event{status: status} = event when status in [:retrying, :failed] ->
+        case CMS.Outbox.send(%{
+               event: event.event,
+               worker: GroupherServer.Jobs.CMSOutboxArticle,
+               resource_type: event.resource_type,
+               resource_id: event.resource_id,
+               identity: {event.identity_type, event.command_id},
+               effect_key: event.effect_key,
+               retry_failed: true,
+               data: event.data
+             }) do
+          {:ok, _event} -> {:ok, :pass}
+          {:error, _reason} = error -> error
+        end
+
+      _ ->
+        {:ok, :pass}
+    end
+  end
+
   defp deliver_current("article.review_changed", data) do
     with {:ok, %Article{thread: thread} = article} <- load_article(data),
          {:ok, community} <- load_community(data),
          {:ok, true} <-
            public_read?(Article, article.id, article_context(thread), community.id),
          {:ok, _sync_result} <-
-           CMS.ArtimentMentions.Store.sync(%{id: article.id, thread: thread, community: community}),
+           CMS.ArtimentMentions.Store.sync(%{
+             id: article.id,
+             thread: thread,
+             community: community
+           }),
          {:ok, recipients} <- CMS.ArtimentMentions.Store.mentioned_user_ids(thread, article.id),
          {:ok, author} <- article_author(article),
          {:ok, mentions} <- article_recipients(recipients, article, author),
@@ -248,8 +306,7 @@ defmodule GroupherServer.CMS.Review.Effects do
           from(article in query,
             join: binding in ArticleBinding,
             on: binding.article_id == article.id,
-            where:
-              article.id == ^id and binding.community_id == ^community_id and binding.visible
+            where: article.id == ^id and binding.community_id == ^community_id and binding.visible
           )
 
         {:ok, Repo.exists?(scoped)}
@@ -266,8 +323,7 @@ defmodule GroupherServer.CMS.Review.Effects do
           from(comment in query,
             join: binding in ArticleBinding,
             on: binding.article_id == comment.article_id,
-            where:
-              comment.id == ^id and binding.community_id == ^community_id and binding.visible
+            where: comment.id == ^id and binding.community_id == ^community_id and binding.visible
           )
 
         {:ok, Repo.exists?(scoped)}
