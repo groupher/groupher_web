@@ -78,6 +78,101 @@ defmodule GroupherServer.Test.ReviewBot.ExecutionTest do
     assert Repo.aggregate(Attempt, :count) == 0
   end
 
+  test "an expired queued payload is cleared and sent to human review without a provider Attempt" do
+    {community, article_view, _attrs, author} = mock_article(:post)
+    article = Repo.get!(Article, article_view.id)
+    scope_key = "community:#{community.id}"
+    token = "revision:expired-#{Ecto.UUID.generate()}"
+
+    ruleset =
+      %RuleSet{}
+      |> RuleSet.changeset(%{
+        scope_key: scope_key,
+        version: 1,
+        rules: %{
+          "items" => [
+            %{
+              "id" => "judge-1",
+              "kind" => "judge",
+              "value" => "Review this content",
+              "category" => "risk",
+              "action" => "review"
+            }
+          ]
+        },
+        provider_profile: "missing-profile",
+        created_by_id: author.id,
+        operation_ref: Ecto.UUID.generate(),
+        required_modalities: ["text"]
+      })
+      |> Repo.insert!()
+
+    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
+
+    lifecycle
+    |> ArticleLifecycle.changeset(%{review_content_token: token, review_epoch: 1})
+    |> Repo.update!()
+
+    waiting =
+      %ArticleReviewRestriction{}
+      |> ArticleReviewRestriction.changeset(%{
+        lifecycle_id: lifecycle.id,
+        scope_key: scope_key,
+        cause_key: "awaiting_ai:#{token}",
+        kind: :awaiting_ai,
+        content_token: token,
+        source: :submission,
+        created_by_operation_ref: Ecto.UUID.generate(),
+        applied_at: DateTime.utc_now(:second)
+      })
+      |> Repo.insert!()
+
+    check =
+      %Check{}
+      |> Check.changeset(%{
+        target_key: "article:#{article.id}",
+        scope_key: scope_key,
+        content_token: token,
+        ruleset_id: ruleset.id,
+        config_version: 1,
+        mode: :ai_first,
+        generation: 1,
+        trigger: :submit,
+        state: :queued,
+        human_epoch: 1,
+        payload: %{
+          "provider_profile" => "missing-profile",
+          "text" => %{"title" => "expired private title", "body" => "expired private body"},
+          "rules" => ruleset.rules["items"],
+          "required_modalities" => ["text"]
+        },
+        payload_expires_at: DateTime.add(DateTime.utc_now(:second), -1, :second),
+        operation_ref: Ecto.UUID.generate()
+      })
+      |> Repo.insert!()
+
+    assert {:ok, :pass} = ReviewBot.execute_check(check.id, 1, 3)
+
+    expired = Repo.get!(Check, check.id)
+    assert expired.state == :failed
+    assert expired.result == :review
+    assert expired.payload == nil
+    assert expired.payload_expires_at == nil
+    assert Repo.aggregate(Attempt, :count) == 0
+    assert Repo.get!(ArticleReviewRestriction, waiting.id).ended_at
+
+    assert Repo.exists?(
+             from(restriction in ArticleReviewRestriction,
+               where:
+                 restriction.lifecycle_id == ^lifecycle.id and restriction.scope_key == ^scope_key and
+                   restriction.kind == :awaiting_human and is_nil(restriction.ended_at)
+             )
+           )
+
+    assert Repo.get_by!(Case, target_key: "article:#{article.id}", scope_key: scope_key).status ==
+             :open
+  end
+
   test "a retry reclaims a running Check and sends terminal AI failure to human review" do
     {community, article, check} = running_ai_check(DateTime.utc_now(:second))
 

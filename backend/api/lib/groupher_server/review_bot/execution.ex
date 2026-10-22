@@ -205,7 +205,11 @@ defmodule GroupherServer.ReviewBot.Execution do
     case locked_check(check_id) do
       %Check{state: :queued} = check when is_map(check.payload) ->
         if current_revision?(target.lifecycle, check) do
-          claim_queued(check)
+          if payload_expired?(check) do
+            fail_expired_payload(check, target)
+          else
+            claim_queued(check)
+          end
         else
           supersede_queued(check)
         end
@@ -221,6 +225,28 @@ defmodule GroupherServer.ReviewBot.Execution do
 
       %Check{} ->
         {:error, ErrorCat.stale_check()}
+    end
+  end
+
+  defp payload_expired?(%Check{payload_expires_at: %DateTime{} = expires_at}) do
+    DateTime.compare(expires_at, DateTime.utc_now(:second)) != :gt
+  end
+
+  defp payload_expired?(%Check{}), do: true
+
+  defp fail_expired_payload(check, target) do
+    with {:ok, failed} <-
+           check
+           |> Check.changeset(%{
+             state: :failed,
+             result: :review,
+             coverage: %{"text" => "failed"},
+             payload: nil,
+             payload_expires_at: nil
+           })
+           |> Repo.update(),
+         {:ok, _application} <- apply_check_result(failed, target) do
+      {:ok, :already_finished}
     end
   end
 
