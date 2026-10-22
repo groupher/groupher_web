@@ -63,7 +63,7 @@ CHECK + changeset 校验 target_key 与实体列对应；所有关联 FK 均 RES
 按现有资源保留策略保留 tombstone；不级联抹除报告与决定。无正文、无举报人详情的历史决定保留 365 天，
 365 天后定时脱敏 note/details；报告正文 90 天后清空 details，保留原因、身份引用和撤销事实。
 
-rules JSON 的固定结构：`{"items":[{id, kind: word|judge, value, category, action: restrict|review}]}`。
+rules JSON 的固定结构：`{"items":[{id, kind: word|judge, value, category, action}]}`；word 只允许 `restrict`，judge 允许 `restrict|review`。精确词条命中不是不确定信号，不接受 `word + review` 组合。
 word.value 是 NFKC + Unicode casefold 后的非空字面串，不支持正则；只匹配规范化标题/可见文本，忽略富文本 markup。
 词条最多 10,000 条、单条 128 字符；Prompt 最多 8,000 字符；reason_code 必须取配置的 category，不接受模型任意动作。
 平台词库和社区词库分别执行、分别产生决定。明确词库命中必须 restrict，不能配置成仅提示。
@@ -77,7 +77,7 @@ word.value 是 NFKC + Unicode casefold 后的非空字面串，不支持正则�
 
 Check 是业务检查记录；Attempt 是有限调用记录，不拥有资源可见性。
 ReviewBot.Check 使用 UUID 主键，使 Decision/Restriction 能跨 schema 建立真实 FK；Attempt.check_id 同类型。
-规则集 JSON 固定为 `{"items":[{id, kind: word|judge, value, category, action: restrict|review}]}`。
+规则集 JSON 固定为 `{"items":[{id, kind: word|judge, value, category, action}]}`；word 只允许 `restrict`，judge 允许 `restrict|review`。配置校验拒绝 `word + review`，避免确定命中只创建 Case 而不施加限制。
 纯词库执行在提交事务内创建 completed Check（generation 1、active_attempt 0），逐条保存仅含 rule ID/category/action/verdict 的 pass/hit signals，Policy 决定引用该 Check，
 不创建 provider Attempt/Oban Job；有模型规则时另登记 queued Check，generation 区分确定性与完整执行。
 确定性 Check 不能作为 AI 初审完整通过依据；模型执行仍包含同版本词库结果，必须覆盖全部 requiredModalities/规则。Oban 负责执行、重试、进程崩溃恢复；
@@ -364,6 +364,7 @@ filter 固定 status、kind、priority；不接受任意 JSON 查询。分页输
 reasonCode 举报枚举固定 SPAM/HARASSMENT/ILLEGAL_CONTENT/IMPERSONATION/OTHER；OTHER 要求非空 details。
 `ReviewCaseDetail` 包含 id、target 引用、scope、contentToken、status、version、priority、safeSummary、
 activeRestrictions、signals、reports、decisions、allowedActions。reports 身份仅相应 scope 的 review.read 可见，不公开。
+allowedActions 与写入验证使用相同的限制条件：APPROVE 要求当前 contentToken 下至少一个非 manual_hold 限制；RELEASE 要求至少一个 manual_hold 或 policy rule_hit；DISMISS 在存在 awaiting_ai/awaiting_human/manual_hold 时隐藏。REPORT-only case 不暴露 APPROVE/RELEASE。
 账号 Case action 只有 DISMISS / RECORD_HANDLED；后者要求 note，不修改账号。内容 action 为 APPROVE / RESTRICT / RELEASE / DISMISS。
 DISMISS 只驳回报告，不解除限制；有 waiting/manual_hold 时不得用 DISMISS 隐式批准。
 
