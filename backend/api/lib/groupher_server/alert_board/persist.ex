@@ -101,8 +101,9 @@ defmodule GroupherServer.AlertBoard.Persist do
     end
   end
 
-  def open_case_for_check(_check),
-    do: {:error, GroupherServer.AlertBoard.ErrorCat.invalid_target()}
+  def open_case_for_check(_check) do
+    {:error, GroupherServer.AlertBoard.ErrorCat.invalid_target()}
+  end
 
   @doc "Resolves a policy Case after its final restriction clears, unless reports remain active."
   @spec resolve_policy_case(Case.t()) :: {:ok, Case.t() | :kept_open} | {:error, term()}
