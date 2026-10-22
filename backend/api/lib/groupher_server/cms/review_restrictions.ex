@@ -168,12 +168,9 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
         lifecycle.state in @public_states and
           not active_scope?(DocReviewRestriction, lifecycle.id, "platform")
 
-      case Repo.query(
-             "UPDATE cms.doc_publics SET visible = $1 WHERE article_id = $2 AND branch_id = $3",
-             [visible?, Ecto.UUID.dump!(lifecycle.article_id), lifecycle.branch_id]
-           ) do
-        {:ok, _result} -> {:ok, :pass}
-        {:error, reason} -> {:error, reason}
+      with {:ok, :pass} <- recompute_doc_public(lifecycle, visible?),
+           {:ok, :pass} <- recompute_doc_main_binding(lifecycle, visible?) do
+        {:ok, :pass}
       end
     end
   end
@@ -185,6 +182,41 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
       {:ok, :pass}
     else
       {:error, CMS.ErrorCat.review_transition_requires_transaction()}
+    end
+  end
+
+  defp recompute_doc_public(%DocLifecycle{} = lifecycle, visible?) do
+    case Repo.query(
+           "UPDATE cms.doc_publics SET visible = $1 WHERE article_id = $2 AND branch_id = $3",
+           [visible?, Ecto.UUID.dump!(lifecycle.article_id), lifecycle.branch_id]
+         ) do
+      {:ok, _result} -> {:ok, :pass}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp recompute_doc_main_binding(%DocLifecycle{} = lifecycle, visible?) do
+    case Repo.get(DocBranch, lifecycle.branch_id) do
+      %DocBranch{type: :main, community_id: community_id} ->
+        case Repo.get_by(ArticleBinding,
+               article_id: lifecycle.article_id,
+               community_id: community_id
+             ) do
+          %ArticleBinding{} = binding ->
+            case binding |> ArticleBinding.changeset(%{visible: visible?}) |> Repo.update() do
+              {:ok, _binding} -> {:ok, :pass}
+              {:error, changeset} -> {:error, changeset}
+            end
+
+          nil ->
+            {:error, CMS.ErrorCat.lifecycle_not_found()}
+        end
+
+      %DocBranch{} ->
+        {:ok, :pass}
+
+      nil ->
+        {:error, CMS.ErrorCat.lifecycle_not_found()}
     end
   end
 

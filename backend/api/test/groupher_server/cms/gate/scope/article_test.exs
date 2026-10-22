@@ -106,6 +106,15 @@ defmodule GroupherServer.Test.CMS.Gate.Scope.ArticleTest do
     assert sql =~ "scope_key"
   end
 
+  test "Doc public scope filters against Doc restrictions rather than Article restrictions" do
+    query = CMS.Gate.scope(Article, nil, :read, DocContext.public_main())
+    assert %Ecto.Query{} = query
+
+    {sql, _params} = to_sql(query)
+    assert sql =~ "doc_review_restrictions"
+    refute sql =~ "article_review_restrictions"
+  end
+
   test "Article Insights scope combines author, owner, and scoped moderator access" do
     {:ok, actor} = db_insert(:user)
 

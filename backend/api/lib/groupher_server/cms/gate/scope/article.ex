@@ -1,12 +1,12 @@
 defmodule GroupherServer.CMS.Gate.Scope.Article do
   @moduledoc """
-  Builds complete public Article visibility into one query.
+  Builds complete public Article and Doc visibility into one query.
 
   Business position:
 
       Article query
         -> Gate Scope
-        -> public Article boundary
+      -> public Article or Doc boundary
   """
 
   require GroupherServer.CMS.Docs.Const
@@ -321,7 +321,23 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
     ArticleSchema.thread_for(schema)
   end
 
-  defp public_article(query, %User{id: user_id}, _context) do
+  defp public_article(query, %User{id: user_id}, %DocContext{}) do
+    author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
+
+    from(article in query,
+      where:
+        not exists(
+          from(restriction in DocReviewRestriction,
+            where:
+              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+            select: 1
+          )
+        ) or article.author_id in subquery(author_ids)
+    )
+  end
+
+  defp public_article(query, %User{id: user_id}, %ArticleContext{}) do
     author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
 
     from(article in query,
@@ -340,7 +356,21 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
     )
   end
 
-  defp public_article(query, _actor, _context) do
+  defp public_article(query, _actor, %DocContext{}) do
+    from(article in query,
+      where:
+        not exists(
+          from(restriction in DocReviewRestriction,
+            where:
+              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+            select: 1
+          )
+        )
+    )
+  end
+
+  defp public_article(query, _actor, %ArticleContext{}) do
     from(article in query,
       where:
         not exists(

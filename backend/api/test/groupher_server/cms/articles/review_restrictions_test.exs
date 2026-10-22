@@ -195,6 +195,11 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
              end)
 
     assert Repo.get_by!(DocPublic, article_id: article.id, branch_id: branch.id).visible
+
+    assert Repo.get_by!(ArticleBinding,
+             article_id: article.id,
+             community_id: article_view.community.id
+           ).visible
   end
 
   defp attrs(lifecycle, scope_key, cause_key) do
