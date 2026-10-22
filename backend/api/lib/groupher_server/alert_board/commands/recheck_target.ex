@@ -98,6 +98,7 @@ defmodule GroupherServer.AlertBoard.Commands.RecheckTarget do
     with {:ok, target} <- CMS.load_review_target_for_update(target_key, scope_key),
          {:ok, config} <- latest_config(scope, scope_key, kind, target),
          {:ok, content, community_id} <- content_snapshot(target),
+         {:ok, :pass} <- ReviewBot.supersede_in_flight_checks(target_key, scope_key),
          target <-
            Map.merge(target, %{
              trigger: :manual,

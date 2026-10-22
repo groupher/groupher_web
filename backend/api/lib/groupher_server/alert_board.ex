@@ -93,6 +93,14 @@ defmodule GroupherServer.AlertBoard do
   @spec open_check_case(Check.t(), map()) :: {:ok, Case.t()} | {:error, term()}
   defdelegate open_check_case(check, target), to: Persist
 
+  @doc "Returns an existing open Case for the exact Check snapshot without creating one."
+  @spec open_case_for_check(Check.t()) :: {:ok, Case.t() | nil} | {:error, term()}
+  defdelegate open_case_for_check(check), to: Persist
+
+  @doc "Resolves a policy Case after its final restriction clears, unless active reports remain."
+  @spec resolve_policy_case(Case.t()) :: {:ok, Case.t() | :kept_open} | {:error, term()}
+  defdelegate resolve_policy_case(case_record), to: Persist
+
   @doc """
   Opens the initial human Case for a human-first content submission.
 

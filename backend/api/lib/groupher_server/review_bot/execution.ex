@@ -514,7 +514,8 @@ defmodule GroupherServer.ReviewBot.Execution do
              check,
              case_record,
              added_ids ++ plan.end_restriction_ids
-           ) do
+           ),
+         {:ok, _case_resolution} <- maybe_resolve_case(action, case_record, check, target) do
       {:ok, %{action: action, case: case_record, restriction_ids: added_ids}}
     end
   end
@@ -523,7 +524,31 @@ defmodule GroupherServer.ReviewBot.Execution do
     AlertBoard.open_check_case(check, target)
   end
 
-  defp maybe_open_case(false, _check, _target), do: {:ok, nil}
+  defp maybe_open_case(false, check, _target), do: AlertBoard.open_case_for_check(check)
+
+  defp maybe_resolve_case(:pass, %AlertBoard.Model.Case{} = case_record, check, target) do
+    with {:ok, active} <- CMS.active_review_restrictions(target.lifecycle, check.scope_key) do
+      if active == [] and not open_check_exists?(check) do
+        AlertBoard.resolve_policy_case(case_record)
+      else
+        {:ok, :kept_open}
+      end
+    end
+  end
+
+  defp maybe_resolve_case(_action, _case_record, _check, _target), do: {:ok, :kept_open}
+
+  defp open_check_exists?(check) do
+    Repo.exists?(
+      from(pending in Check,
+        where:
+          pending.id != ^check.id and pending.target_key == ^check.target_key and
+            pending.scope_key == ^check.scope_key and
+            pending.content_token == ^check.content_token and
+            pending.human_epoch == ^check.human_epoch and pending.state in [:queued, :running]
+      )
+    )
+  end
 
   defp apply_additions(additions, check, target, case_record) do
     Enum.reduce_while(additions, {:ok, []}, fn attrs, {:ok, ids} ->

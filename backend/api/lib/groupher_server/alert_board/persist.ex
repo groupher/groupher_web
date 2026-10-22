@@ -11,7 +11,7 @@ defmodule GroupherServer.AlertBoard.Persist do
   import Ecto.Query
 
   alias GroupherServer.{AlertBoard, Repo, ReviewBot}
-  alias AlertBoard.Model.{Case, Decision, ReviewConfig}
+  alias AlertBoard.Model.{Case, Decision, Report, ReviewConfig}
   alias ReviewBot.Model.Check
 
   @subjects [:article, :comment]
@@ -85,6 +85,60 @@ defmodule GroupherServer.AlertBoard.Persist do
 
   def open_check_case(_check, _target) do
     {:error, GroupherServer.AlertBoard.ErrorCat.invalid_target()}
+  end
+
+  @doc "Returns an existing open Case for the exact Check snapshot, without creating one."
+  @spec open_case_for_check(Check.t()) :: {:ok, Case.t() | nil} | {:error, term()}
+  def open_case_for_check(%Check{} = check) do
+    case Repo.get_by(Case,
+           target_key: check.target_key,
+           scope_key: check.scope_key,
+           content_token: check.content_token,
+           status: :open
+         ) do
+      %Case{} = case_record -> {:ok, case_record}
+      nil -> {:ok, nil}
+    end
+  end
+
+  def open_case_for_check(_check),
+    do: {:error, GroupherServer.AlertBoard.ErrorCat.invalid_target()}
+
+  @doc "Resolves a policy Case after its final restriction clears, unless reports remain active."
+  @spec resolve_policy_case(Case.t()) :: {:ok, Case.t() | :kept_open} | {:error, term()}
+  def resolve_policy_case(%Case{status: :open} = case_record) do
+    active_reports? =
+      Repo.exists?(
+        from(report in Report,
+          where: report.case_id == ^case_record.id and is_nil(report.withdrawn_at)
+        )
+      )
+
+    if active_reports? do
+      {:ok, :kept_open}
+    else
+      now = DateTime.utc_now(:second)
+
+      case_record
+      |> Case.changeset(%{
+        status: :resolved,
+        resolution: "policy_approved",
+        version: case_record.version + 1,
+        resolved_at: now
+      })
+      |> Repo.update()
+      |> case do
+        {:ok, updated} ->
+          {:ok, updated}
+
+        {:error, _changeset} ->
+          {:error, GroupherServer.AlertBoard.ErrorCat.case_version_conflict()}
+      end
+    end
+  end
+
+  def resolve_policy_case(_case_record) do
+    {:error, GroupherServer.AlertBoard.ErrorCat.case_version_conflict()}
   end
 
   @doc """
