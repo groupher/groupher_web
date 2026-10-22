@@ -103,6 +103,60 @@ defmodule GroupherServer.Test.CMS.ReviewVisibilityEffectsTest do
     assert hd(rows).article_id == article.id
   end
 
+  test "a public source binding cannot authorize effects for a restricted mirror" do
+    {:ok, author} = db_insert(:user)
+    {:ok, recipient} = db_insert(:user)
+    {:ok, source} = mock_community(author)
+    {:ok, destination} = mock_community(author)
+
+    {:ok, configs} = AlertBoard.configs_for_target(destination.id, :article)
+    destination_config = Enum.find(configs, &(&1.scope_key == "community:#{destination.id}"))
+
+    destination_config
+    |> ReviewConfig.changeset(%{
+      publish_mode: :human_first,
+      version: destination_config.version + 1
+    })
+    |> Repo.update!()
+
+    body =
+      plate_body([
+        block("mirror-review-mention", [
+          mention(%{
+            "value" => recipient.login,
+            "children" => [%{"text" => recipient.login}]
+          })
+        ])
+      ])
+
+    attrs =
+      mock_attrs(:post, %{community_id: source.id})
+      |> Map.merge(%{
+        title: "Scoped review event",
+        slug: "scoped-review-#{System.unique_integer([:positive])}",
+        body_bag: mock_body_bag(body)
+      })
+
+    assert {:ok, published} =
+             CMS.Articles.create(source, :post, attrs, author, command_id: Ecto.UUID.generate())
+
+    mirror_actor = grant_binding_actions(author, [source, destination])
+
+    assert {:ok, _article} =
+             CMS.Articles.mirror(
+               destination,
+               published.article_id,
+               [],
+               mirror_actor,
+               source,
+               Ecto.UUID.generate()
+             )
+
+    event = article_review_event!(published.article_id, destination.id)
+    assert {:ok, :hidden} = Effects.deliver(event)
+    refute Repo.exists?(from(mention in Mention, where: mention.to_user_id == ^recipient.id))
+  end
+
   test "Comment mention and activity notification wait for Gate visibility" do
     {community, article, _attrs, article_author} = mock_article(:post)
     {:ok, commenter} = db_insert(:user)
@@ -228,6 +282,16 @@ defmodule GroupherServer.Test.CMS.ReviewVisibilityEffectsTest do
   end
 
   defp plate_body(blocks), do: Jason.encode!(blocks)
+
+  defp grant_binding_actions(user, communities) do
+    grants =
+      Enum.into(communities, %{}, fn community ->
+        {community.slug,
+         %{"cms" => %{"post.pin" => true, "post.edit" => true, "post.mirror" => true}}}
+      end)
+
+    Map.put(user, :cur_passport, Map.merge(%{"global" => %{"post.community.mirror" => true}}, grants))
+  end
 
   defp block(id, children) do
     %{"type" => "p", "id" => id, "_id" => id, "children" => children}

@@ -190,6 +190,42 @@ defmodule GroupherServer.Test.AlertBoard.DecideCaseTest do
              )
   end
 
+  test "platform reviewer cannot decide a report against their own account" do
+    {:ok, account} = db_insert(:user)
+    {:ok, reporter} = db_insert(:user)
+
+    assert {:ok, _report} =
+             AlertBoard.submit_report(
+               %{resource: account},
+               "SPAM",
+               "Report for self-review guard",
+               reporter,
+               Ecto.UUID.generate()
+             )
+
+    case_record = Repo.get_by!(Case, target_key: "user:#{account.id}", status: :open)
+
+    platform_reviewer = %{
+      account
+      | cur_passport: %{"global" => %{"review.platform.decide" => true}}
+    }
+
+    assert {:error, _reason} =
+             AlertBoard.decide_case(
+               case_record.id,
+               %{
+                 expected_case_version: case_record.version,
+                 expected_content_token: case_record.content_token,
+                 action: :dismiss,
+                 restriction_ids: [],
+                 reason_code: "not_a_report",
+                 note: "Must not decide own account report"
+               },
+               platform_reviewer,
+               Ecto.UUID.generate()
+             )
+  end
+
   test "release decisions can clear an active policy rule hit from older content" do
     {community, article, _author} = create_pending_article()
     {:ok, reviewer} = db_insert(:user)

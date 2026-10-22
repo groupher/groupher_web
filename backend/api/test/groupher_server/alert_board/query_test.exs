@@ -52,9 +52,10 @@ defmodule GroupherServer.Test.AlertBoard.QueryTest do
     assert author_detail.allowed_actions == []
   end
 
-  test "content review exposes only the current actor's active report id" do
+  test "content review exposes only the current actor's active report id in this scope" do
     {community, article, author} = create_pending_article()
     {:ok, reporter} = db_insert(:user)
+    {:ok, other_community} = mock_community(author)
 
     assert {:ok, report} =
              AlertBoard.submit_report(
@@ -65,9 +66,24 @@ defmodule GroupherServer.Test.AlertBoard.QueryTest do
                Ecto.UUID.generate()
              )
 
+    assert {:ok, other_scope_report} =
+             AlertBoard.submit_report(
+               %{resource: article, community_id: other_community.id},
+               "SPAM",
+               "Repeated spam in another community",
+               reporter,
+               Ecto.UUID.generate()
+             )
+
     target = %{kind: :article, resource: article}
     assert {:ok, reporter_projection} = AlertBoard.content_review(target, community, reporter)
     assert reporter_projection.viewer_report_id == report.id
+
+    assert {:ok, other_scope_projection} =
+             AlertBoard.content_review(target, other_community, reporter)
+
+    assert other_scope_projection.viewer_report_id == other_scope_report.id
+    refute other_scope_projection.viewer_report_id == reporter_projection.viewer_report_id
 
     assert {:ok, anonymous_projection} = AlertBoard.content_review(target, community, nil)
     assert is_nil(anonymous_projection.viewer_report_id)

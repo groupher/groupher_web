@@ -86,7 +86,11 @@ defmodule GroupherServer.Test.AlertBoard.ReportsTest do
              AlertBoard.withdraw_report(report.id, actor, Ecto.UUID.generate())
 
     assert id == withdrawn.id
-    assert {:ok, nil} = AlertBoard.viewer_report(%{target_key: report.target_key}, actor)
+    assert {:ok, nil} =
+             AlertBoard.viewer_report(
+               %{target_key: report.target_key, scope_key: report.scope_key},
+               actor
+             )
 
     assert {:ok, %Report{withdrawn_at: nil}} =
              AlertBoard.submit_report(

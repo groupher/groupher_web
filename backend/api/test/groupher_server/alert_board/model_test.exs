@@ -78,6 +78,31 @@ defmodule GroupherServer.Test.AlertBoard.ModelTest do
     refute RuleSet.changeset(%RuleSet{}, %{
              scope_key: "platform",
              version: 2,
+             rules: %{
+               "items" => [
+                 %{
+                   "id" => "duplicate",
+                   "kind" => "judge",
+                   "value" => "Check whether the post is harmful.",
+                   "category" => "safety",
+                   "action" => "review"
+                 },
+                 %{
+                   "id" => "duplicate",
+                   "kind" => "judge",
+                   "value" => "Check whether the post is spam.",
+                   "category" => "spam",
+                   "action" => "review"
+                 }
+               ]
+             },
+             created_by_id: 1,
+             operation_ref: Ecto.UUID.generate()
+           }).valid?
+
+    refute RuleSet.changeset(%RuleSet{}, %{
+             scope_key: "platform",
+             version: 2,
              rules: %{"items" => [%{"kind" => "regex", "value" => ".*"}]},
              created_by_id: 1,
              operation_ref: Ecto.UUID.generate()
