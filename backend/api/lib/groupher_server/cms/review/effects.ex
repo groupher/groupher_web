@@ -9,12 +9,13 @@ defmodule GroupherServer.CMS.Review.Effects do
         -> Mention fact refresh + inbox delivery
   """
 
-  import Ecto.Query, only: [where: 3]
+  import Ecto.Query
 
   alias GroupherServer.{Accounts, CMS, Messaging, Repo}
 
   alias CMS.Model.{
     Article,
+    ArticleBinding,
     ArticleLifecycle,
     ArticlePublic,
     Author,
@@ -60,8 +61,9 @@ defmodule GroupherServer.CMS.Review.Effects do
 
   defp deliver_current("article.review_changed", data) do
     with {:ok, %Article{thread: thread} = article} <- load_article(data),
-         {:ok, true} <- public_read?(Article, article.id, article_context(thread)),
          {:ok, community} <- load_community(data),
+         {:ok, true} <-
+           public_read?(Article, article.id, article_context(thread), community.id),
          {:ok, _sync_result} <-
            CMS.ArtimentMentions.Store.sync(%{id: article.id, thread: thread, community: community}),
          {:ok, recipients} <- CMS.ArtimentMentions.Store.mentioned_user_ids(thread, article.id),
@@ -77,7 +79,9 @@ defmodule GroupherServer.CMS.Review.Effects do
 
   defp deliver_current("comment.review_changed", data) do
     with {:ok, %Comment{} = comment} <- load_comment(data),
-         {:ok, true} <- public_read?(Comment, comment.id, comment_context(comment.thread)),
+         {:ok, community} <- load_community(data),
+         {:ok, true} <-
+           public_read?(Comment, comment.id, comment_context(comment.thread), community.id),
          {:ok, comment} <- load_comment_body(comment),
          {:ok, _sync_result} <- CMS.ArtimentMentions.Store.sync(comment),
          {:ok, recipients} <- CMS.ArtimentMentions.Store.mentioned_user_ids(:comment, comment.id),
@@ -237,10 +241,39 @@ defmodule GroupherServer.CMS.Review.Effects do
     end
   end
 
-  defp public_read?(schema, id, context) do
-    case CMS.Gate.Scope.scope(schema, nil, :read, context) do
-      %Ecto.Query{} = query -> {:ok, Repo.exists?(where(query, [resource], resource.id == ^id))}
-      _ -> {:ok, false}
+  defp public_read?(Article, id, context, community_id) do
+    case CMS.Gate.Scope.scope(Article, nil, :read, context) do
+      %Ecto.Query{} = query ->
+        scoped =
+          from(article in query,
+            join: binding in ArticleBinding,
+            on: binding.article_id == article.id,
+            where:
+              article.id == ^id and binding.community_id == ^community_id and binding.visible
+          )
+
+        {:ok, Repo.exists?(scoped)}
+
+      _ ->
+        {:ok, false}
+    end
+  end
+
+  defp public_read?(Comment, id, context, community_id) do
+    case CMS.Gate.Scope.scope(Comment, nil, :read, context) do
+      %Ecto.Query{} = query ->
+        scoped =
+          from(comment in query,
+            join: binding in ArticleBinding,
+            on: binding.article_id == comment.article_id,
+            where:
+              comment.id == ^id and binding.community_id == ^community_id and binding.visible
+          )
+
+        {:ok, Repo.exists?(scoped)}
+
+      _ ->
+        {:ok, false}
     end
   end
 

@@ -71,10 +71,16 @@ defmodule GroupherServer.AlertBoard.Model.RuleSet do
       cond do
         not is_list(items) -> [rules: "must contain an items list"]
         length(items) > 10_000 -> [rules: "contains too many rules"]
-        Enum.all?(items, &valid_rule?/1) -> []
-        true -> [rules: "contains an invalid rule"]
+        not Enum.all?(items, &valid_rule?/1) -> [rules: "contains an invalid rule"]
+        duplicate_rule_ids?(items) -> [rules: "contains duplicate rule identifiers"]
+        true -> []
       end
     end)
+  end
+
+  defp duplicate_rule_ids?(items) do
+    ids = Enum.map(items, &Map.get(&1, "id", Map.get(&1, :id)))
+    length(ids) != length(Enum.uniq(ids))
   end
 
   defp valid_rule?(rule) when is_map(rule) do

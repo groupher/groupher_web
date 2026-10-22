@@ -164,14 +164,21 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
   defp authorize_current(actor, case_record, target) do
     with {:ok, :pass} <-
            Authorization.authorize(scope(case_record), decide_action(case_record), actor),
-         {:ok, :pass} <- reject_self_decision(actor, target) do
+         {:ok, :pass} <- reject_self_decision(actor, case_record, target) do
       {:ok, :pass}
     end
   end
 
-  defp reject_self_decision(_actor, :account_case), do: {:ok, :pass}
+  defp reject_self_decision(actor, %Case{user_id: user_id}, :account_case)
+       when is_integer(user_id) do
+    if actor.id == user_id do
+      {:error, AlertBoard.ErrorCat.self_review_forbidden()}
+    else
+      {:ok, :pass}
+    end
+  end
 
-  defp reject_self_decision(actor, %{target: %Article{} = article}) do
+  defp reject_self_decision(actor, _case_record, %{target: %Article{} = article}) do
     article = Repo.preload(article, author: :user)
 
     if article.author && article.author.user_id == actor.id do
@@ -181,7 +188,7 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
     end
   end
 
-  defp reject_self_decision(actor, %{target: %Comment{author_id: author_id}}) do
+  defp reject_self_decision(actor, _case_record, %{target: %Comment{author_id: author_id}}) do
     if author_id == actor.id do
       {:error, AlertBoard.ErrorCat.self_review_forbidden()}
     else
@@ -189,7 +196,7 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
     end
   end
 
-  defp reject_self_decision(_actor, _target), do: {:ok, :pass}
+  defp reject_self_decision(_actor, _case_record, _target), do: {:ok, :pass}
 
   defp active_restrictions(_target, %Case{user_id: user_id}) when is_integer(user_id) do
     {:ok, []}

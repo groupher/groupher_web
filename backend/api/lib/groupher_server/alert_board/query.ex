@@ -92,13 +92,14 @@ defmodule GroupherServer.AlertBoard.Query do
       #=> {:ok, %AlertBoard.Model.Report{}} | {:ok, nil}
   """
   @spec viewer_report(map(), struct() | nil) :: {:ok, Report.t() | nil} | {:error, term()}
-  def viewer_report(%{target_key: target_key}, %{id: reporter_id})
-      when is_binary(target_key) and is_integer(reporter_id) do
+  def viewer_report(%{target_key: target_key, scope_key: scope_key}, %{id: reporter_id})
+      when is_binary(target_key) and is_binary(scope_key) and is_integer(reporter_id) do
     report =
       Report
       |> where(
         [report],
-        report.target_key == ^target_key and report.reporter_id == ^reporter_id and
+        report.target_key == ^target_key and report.scope_key == ^scope_key and
+          report.reporter_id == ^reporter_id and
           is_nil(report.withdrawn_at)
       )
       |> Repo.one()
@@ -106,7 +107,10 @@ defmodule GroupherServer.AlertBoard.Query do
     {:ok, report}
   end
 
-  def viewer_report(%{target_key: target_key}, _actor) when is_binary(target_key), do: {:ok, nil}
+  def viewer_report(%{target_key: target_key, scope_key: scope_key}, _actor)
+      when is_binary(target_key) and is_binary(scope_key) do
+    {:ok, nil}
+  end
 
   def viewer_report(_target, _actor), do: {:error, AlertBoard.ErrorCat.invalid_target()}
 
@@ -327,7 +331,11 @@ defmodule GroupherServer.AlertBoard.Query do
     is_owner? = is_integer(actor_id) and owner_id(resource) == actor_id
     privileged? = is_owner? or is_reviewer?
 
-    {:ok, viewer_report} = viewer_report(%{target_key: target_key}, actor)
+    {:ok, viewer_report} =
+      viewer_report(
+        %{target_key: target_key, scope_key: "community:#{community.id}"},
+        actor
+      )
 
     {:ok,
      %{
