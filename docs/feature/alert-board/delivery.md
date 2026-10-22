@@ -95,7 +95,7 @@ D5 后旧举报 GraphQL、facade、query/report 模块、阈值 fold 调用点�
 各自顶层 facade；保留仓库 concrete Commands/Query/Persist 约定，不新增 Reader 或通用 Workflow 引擎。
 新增 migration `create_alert_board_review_bot`、`create_content_review_restrictions`、`pin_review_mode_on_checks` 与 `use_integer_review_restriction_ids`，逐项实现 implementation §3；每个 Check 固定本次提交实际生效的 publish/edit mode，配置版本变更不会错误复用旧模式结果。Decision 的 `restriction_ids` 必须使用与 CMS restriction 主键一致的整数数组；新字段仍为空时才能转换，非空则中止迁移，不伪造 UUID 映射。
 配置初始化：平台与现有社区分别创建 article/comment 默认记录，平台另有 doc；RuleSet 可空，不能假装有 AI。
-新社区创建时同事务创建默认配置；不存在配置行必须返回配置错误，不能运行时静默插入。
+直接创建社区时在 Create transaction 创建默认配置；社区申请创建时在 Setup 激活 transaction、active transition 之前创建 Article/Comment 默认配置。不存在配置行必须返回配置错误，不能运行时静默插入。
 注册 ErrorCat、DBPrefix 与必要编译目录；新增 schema 只由所属 Context 查询。
 
 验收：约束拒绝非法 scope/target/关联；同 token 同规则的重复任务不能重复插入；active restriction 唯一；
@@ -229,6 +229,8 @@ GraphQL SDL/TS/action 完整生成，旧 mutation/query 无别名。新增中英
 | T23                | 自己批准自己 / 跨社区操作 / 社区解除平台项                       | 拒绝；没有 Decision、状态或 Outbox 写入                                        |
 | T24                | 隐藏前公开事件延迟投递；缓存已命中                               | 不能重新公开正文/摘要/图片；匿名读取仍 Gate 拒绝                               |
 | T25                | 同 commandId 重放，或不同输入复用 commandId                      | 原结果恢复；输入冲突按 Receipt 合同拒绝，不再执行                              |
+
+ReviewBot worker 在 claim 后终止时，后续 Oban attempt 接管仍为 running 的 Attempt；若最后一次 worker 仍未恢复，`ReviewBotCheckRecovery` 每分钟把超过 240 秒的孤儿 Attempt 原子转交人工审核。
 
 覆盖要求：T01/T01a–T12 适用于 Post/Blog/Changelog 与 Comment（创建/回复）；T01a 作为 T01 子用例独立执行并记录；T13 独立覆盖 Doc main/preview。
 Scope 用列表含 1/20/100 条的查询计数测试证明无逐行准入；授权矩阵覆盖匿名、作者、普通成员、社区 reviewer、平台 reviewer。

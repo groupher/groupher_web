@@ -78,12 +78,12 @@ word.value 是 NFKC + Unicode casefold 后的非空字面串，不支持正则�
 Check 是业务检查记录；Attempt 是有限调用记录，不拥有资源可见性。
 ReviewBot.Check 使用 UUID 主键，使 Decision/Restriction 能跨 schema 建立真实 FK；Attempt.check_id 同类型。
 规则集 JSON 固定为 `{"items":[{id, kind: word|judge, value, category, action: restrict|review}]}`。
-纯词库执行在提交事务内创建 completed Check（generation 1、active_attempt 0），Policy 决定引用该 Check，
+纯词库执行在提交事务内创建 completed Check（generation 1、active_attempt 0），逐条保存仅含 rule ID/category/action/verdict 的 pass/hit signals，Policy 决定引用该 Check，
 不创建 provider Attempt/Oban Job；有模型规则时另登记 queued Check，generation 区分确定性与完整执行。
 确定性 Check 不能作为 AI 初审完整通过依据；模型执行仍包含同版本词库结果，必须覆盖全部 requiredModalities/规则。Oban 负责执行、重试、进程崩溃恢复；
-不在 ReviewBot 新建通用 lease/队列系统。人工 Retry 创建 generation+1，旧 Check 不复活。
+不在 ReviewBot 新建通用 lease/队列系统。人工 Retry 创建 generation+1，deterministic Check 的 operation_ref 也包含 generation，避免同一快照重检冲突。
 提交快照使用 canonical 文本 + 资产 ID/不可变对象版本（不持久化 signedReadUrl，调用前生成）；禁止任务执行时从当前正文重新构造旧快照。
-payload 最多保留 24 小时，终态后即清空；signals 只保留规则 ID、category、coverage，不保留命中文本片段；
+payload 最多保留 24 小时，终态后即清空；signals 只保留规则 ID、category、action、verdict 与 coverage，不保留命中文本片段；
 Attempt 30 天清理，Check 元数据 90 天清理（被 Decision 引用的保留无 payload 墓碑）。
 超过 24 小时未完成直接 failed/转人工，不能无输入默认为通过。
 
@@ -156,7 +156,7 @@ Article 编辑要为全部现有 binding 分别固定社区配置并登记 Check
 | 删除/销毁                | Check superseded；限制留作历史或随领域销毁终止；不得恢复资源                                      | Case superseded                                  |
 
 Check：queued -> running -> completed；可重试错误回 queued；耗尽 -> failed；任一非终态可 -> superseded。
-Attempt：running -> succeeded/retryable_error/terminal_error；worker 崩溃留下的 running 在重启时 -> abandoned。
+Attempt：running -> succeeded/retryable_error/terminal_error/abandoned。Oban 后续 attempt 大于 Check.active_attempt 时，在资源锁下将遗留 Attempt 置 abandoned 并重新 claim；若最终 worker 仍未恢复，`ReviewBotCheckRecovery` 每分钟检查超过 240 秒的 running Attempt，同事务将 Check 置 failed、结束 awaiting_ai 并转入人工 Case。过期 token 只会 supersede，不得影响新版本。
 Case：open -> resolved 或 superseded；终态不重开，新举报/新检测产生新 open Case；旧已处理记录可查。
 新举报即使内容未变，也可创建新 Case；数据库唯一约束仅限制一个 open Case。
 
@@ -238,11 +238,11 @@ Comment embedded replies 不能复制受限正文给公开父评论：同步时�
 
 ### 6.2 Worker
 
-Oban worker `GroupherServer.ReviewBot.Jobs.Check`，queue `review_bot`，并发 5，max_attempts 3；
+Oban worker `GroupherServer.Jobs.ReviewBotCheck`，queue `review_bot`，并发 5，max_attempts 3；
 每次 provider 调用总预算 30 秒，连接预算 5 秒；重试间隔 10 秒、60 秒；429/5xx/timeout 可重试，
 认证/协议错误终止并转人工。禁用 adapter 内重试，防止与 Oban 叠加。worker 的超时总预算 45 秒。
 
-短事务把 Check queued -> running、增加 active_attempt、插入 Attempt；commit 后调用 provider。
+短事务把 Check queued -> running、增加 active_attempt、插入 Attempt；commit 后调用 provider。后续 Oban attempt 可以接管仍为 running 的上次 Attempt；每分钟运行的 `GroupherServer.Jobs.ReviewBotCheckRecovery` 兜底处理超过 240 秒的孤儿 Attempt，将不确定结果交给人工审核。
 返回后进入资源领域 ApplyReviewDecision 的 direct_pipeline，锁资源并重读 Check；锁序统一为：
 父 Article（若有）-> 目标资源/Lifecycle -> Check -> Case -> 限制行（ID 升序）。
 所有人工与 worker 路径沿相同锁序；禁止先锁 Case 再调资源 Command。
