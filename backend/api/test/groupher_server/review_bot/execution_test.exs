@@ -201,6 +201,51 @@ defmodule GroupherServer.Test.ReviewBot.ExecutionTest do
            ).status == :open
   end
 
+  test "a retryable provider failure commits retry state before returning to Oban" do
+    {_community, _article, check} = running_ai_check(DateTime.utc_now(:second))
+    ruleset = Repo.get!(RuleSet, check.ruleset_id)
+    Repo.update!(RuleSet.changeset(ruleset, %{provider_profile: "retry-test"}))
+
+    previous_token = System.get_env("REVIEW_BOT_RETRY_TEST_TOKEN")
+    previous_config = Application.get_env(:groupher_server, :review_bot)
+    System.put_env("REVIEW_BOT_RETRY_TEST_TOKEN", "test-token")
+
+    Application.put_env(:groupher_server, :review_bot,
+      profiles: %{
+        "retry-test" => %{
+          adapter: :judge_http,
+          base_url: "https://127.0.0.1:1/v1/responses",
+          model: "test-model",
+          credential_env: "REVIEW_BOT_RETRY_TEST_TOKEN",
+          modalities: [:text]
+        }
+      }
+    )
+
+    on_exit(fn ->
+      if previous_token do
+        System.put_env("REVIEW_BOT_RETRY_TEST_TOKEN", previous_token)
+      else
+        System.delete_env("REVIEW_BOT_RETRY_TEST_TOKEN")
+      end
+
+      if previous_config do
+        Application.put_env(:groupher_server, :review_bot, previous_config)
+      else
+        Application.delete_env(:groupher_server, :review_bot)
+      end
+    end)
+
+    assert {:error, %{retryable: true}} = ReviewBot.execute_check(check.id, 2, 3)
+
+    queued = Repo.get!(Check, check.id)
+    assert queued.state == :queued
+    assert queued.active_attempt == 2
+    assert Repo.get_by!(Attempt, check_id: check.id, number: 1).state == :abandoned
+    assert Repo.get_by!(Attempt, check_id: check.id, number: 2).state == :retryable_error
+    assert {:ok, 0} = ReviewBot.recover_stale_checks()
+  end
+
   test "the scheduled recovery closes an orphaned AI wait with a human-review Case" do
     started_at = DateTime.add(DateTime.utc_now(:second), -300, :second)
     {community, article, check} = running_ai_check(started_at)

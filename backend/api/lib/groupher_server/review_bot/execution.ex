@@ -648,6 +648,7 @@ defmodule GroupherServer.ReviewBot.Execution do
     |> case do
       {:ok, :terminal} -> {:ok, :pass}
       {:ok, :superseded} -> {:ok, :superseded}
+      {:ok, {:retry, reason}} -> {:error, reason}
       {:error, _reason} = error -> error
     end
   end
@@ -676,7 +677,7 @@ defmodule GroupherServer.ReviewBot.Execution do
           {:ok, :terminal}
         end
       else
-        {:error, reason}
+        {:ok, {:retry, reason}}
       end
     end
   end

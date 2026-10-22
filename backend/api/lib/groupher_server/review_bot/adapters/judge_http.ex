@@ -83,7 +83,8 @@ defmodule GroupherServer.ReviewBot.Adapters.JudgeHTTP do
           Tesla.Middleware.JSON,
           {Tesla.Middleware.Headers, [{"authorization", "Bearer " <> credential}]}
         ],
-        {Tesla.Adapter.Hackney, recv_timeout: @timeout, timeout: @timeout}
+        {Tesla.Adapter.Finch,
+         name: GroupherServer.Finch, receive_timeout: @timeout, request_timeout: @timeout}
       )
 
     case Tesla.post(client, "/v1/judge", body) do
