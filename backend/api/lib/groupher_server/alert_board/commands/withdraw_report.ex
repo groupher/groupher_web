@@ -13,10 +13,9 @@ defmodule GroupherServer.AlertBoard.Commands.WithdrawReport do
 
   import Ecto.Query
 
-  alias GroupherServer.{Accounts, CMS, Repo}
-  alias GroupherServer.AlertBoard
+  alias GroupherServer.{Accounts, AlertBoard, CMS, Repo, ReviewBot}
   alias AlertBoard.Model.{Case, Report}
-  alias GroupherServer.ReviewBot.Model.Check
+  alias ReviewBot.Model.Check
   alias Accounts.Model.User
   alias CMS.Model.{Article, ArticleLifecycle, Comment, CommentLifecycle}
   alias CMS.Command.ConfirmationDefinition
