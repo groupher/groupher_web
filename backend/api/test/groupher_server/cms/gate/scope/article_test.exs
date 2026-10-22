@@ -40,7 +40,8 @@ defmodule GroupherServer.Test.CMS.Gate.Scope.ArticleTest do
       assert sql =~ if(thread == :doc, do: "doc_publics", else: "article_publics")
       refute sql =~ "archived_at"
       refute sql =~ "is_archived"
-      assert sql =~ "moderation_state"
+      assert sql =~ "review_restrictions"
+      refute sql =~ "moderation_state"
       assert ["active", "read_only"] in params
       assert ["published", "archived"] in params
     end
@@ -94,13 +95,15 @@ defmodule GroupherServer.Test.CMS.Gate.Scope.ArticleTest do
              )
   end
 
-  test "actor-aware Article scope keeps moderation visibility inside SQL" do
+  test "actor-aware Article scope exposes active restrictions only to the author" do
     {:ok, actor} = db_insert(:user)
     query = CMS.Gate.scope(Article, actor, :read, ArticleContext.public(:post))
     {sql, _params} = to_sql(query)
 
     assert sql =~ ~s(FROM "cms"."authors")
     assert sql =~ "user_id"
+    assert sql =~ "article_review_restrictions"
+    assert sql =~ "scope_key"
   end
 
   test "Article Insights scope combines author, owner, and scoped moderator access" do

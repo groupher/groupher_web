@@ -21,11 +21,16 @@ defmodule GroupherServer.CMS.Gate.Scope.Comment do
   alias Accounts.Model.User
   alias CMS.Gate.{ErrorCat, Scope.Policy}
   alias CMS.Gate.Scope.{ArticleSchema, CommunityChain}
-  alias CMS.Model.{ArticleLifecycle, CommentLifecycle, DocBranch, DocLifecycle}
+
+  alias CMS.Model.{
+    ArticleLifecycle,
+    CommentLifecycle,
+    CommentReviewRestriction,
+    DocBranch,
+    DocLifecycle
+  }
 
   @behaviour Policy
-
-  @audit_illegal CMS.Artiment.Const.moderation_state(:illegal)
 
   @actions [:read, :list]
 
@@ -135,13 +140,35 @@ defmodule GroupherServer.CMS.Gate.Scope.Comment do
 
   defp public_comment(query, %User{id: user_id}) do
     from(comment in query,
-      where: comment.pending != ^@audit_illegal or comment.author_id == ^user_id
+      where:
+        not exists(
+          from(restriction in CommentReviewRestriction,
+            where:
+              restriction.lifecycle_id == parent_as(:gate_comment_lifecycle).id and
+                is_nil(restriction.ended_at) and
+                (restriction.scope_key == "platform" or
+                   restriction.scope_key ==
+                     fragment("'community:' || ?::text", parent_as(:gate_community).id)),
+            select: 1
+          )
+        ) or comment.author_id == ^user_id
     )
   end
 
   defp public_comment(query, _actor) do
     from(comment in query,
-      where: comment.pending != ^@audit_illegal
+      where:
+        not exists(
+          from(restriction in CommentReviewRestriction,
+            where:
+              restriction.lifecycle_id == parent_as(:gate_comment_lifecycle).id and
+                is_nil(restriction.ended_at) and
+                (restriction.scope_key == "platform" or
+                   restriction.scope_key ==
+                     fragment("'community:' || ?::text", parent_as(:gate_community).id)),
+            select: 1
+          )
+        )
     )
   end
 end

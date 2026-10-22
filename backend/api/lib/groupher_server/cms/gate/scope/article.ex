@@ -27,6 +27,8 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
     ArticlePublic,
     Author,
     DocBranch,
+    ArticleReviewRestriction,
+    DocReviewRestriction,
     DocDraft,
     DocLifecycle,
     DocPublic
@@ -63,23 +65,6 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
   end
 
   def scope(_query, _actor, _action, _context), do: {:error, ErrorCat.scope_context_missing()}
-
-  @doc false
-  @spec moderation_diagnostic_scope(Ecto.Queryable.t(), atom()) ::
-          Ecto.Query.t() | {:error, ErrorCat.error()}
-  def moderation_diagnostic_scope(queryable, thread) do
-    query = Ecto.Queryable.to_query(queryable)
-    branch_id = if thread == :doc, do: :main, else: nil
-
-    with {:ok, expected_schema} <- ArticleSchema.fetch(thread),
-         true <- root_schema(query) == expected_schema,
-         %Ecto.Query{} = query <- base_scope(query, thread, :public, branch_id) do
-      where(query, [article, ...], article.moderation_state == ^:illegal)
-    else
-      false -> {:error, ErrorCat.scope_root_mismatch()}
-      {:error, _reason} = error -> error
-    end
-  end
 
   defp base_scope(query, thread, policy_mode, branch_id)
 
@@ -219,7 +204,9 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
   defp branch_id(%ArticleContext{}, _thread), do: {:ok, nil}
 
   defp apply_stage(query, :public, actor, _policy_mode, context) do
-    query = public_head_scope(query, context)
+    query = public_binding_scope(query, actor)
+
+    query = public_head_scope(query, context, actor)
 
     query =
       from([article, ...] in query,
@@ -238,6 +225,31 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
      query
      |> draft_head_scope(context)
      |> where([_article, ...], as(:gate_article_lifecycle).state in ^@draft_lifecycle_states)}
+  end
+
+  defp public_binding_scope(query, %User{id: user_id}) do
+    author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
+
+    from([article, ...] in query,
+      where:
+        as(:gate_article_binding).visible == true or
+          (article.author_id in subquery(author_ids) and
+             exists(
+               from(restriction in ArticleReviewRestriction,
+                 where:
+                   restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                     is_nil(restriction.ended_at) and
+                     (restriction.scope_key == "platform" or
+                        restriction.scope_key ==
+                          fragment("'community:' || ?::text", parent_as(:gate_community).id)),
+                 select: 1
+               )
+             ))
+    )
+  end
+
+  defp public_binding_scope(query, _actor) do
+    from([article, ...] in query, where: as(:gate_article_binding).visible == true)
   end
 
   defp apply_actor_policy(query, :public, :public, _context), do: {:ok, query}
@@ -309,38 +321,89 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
     ArticleSchema.thread_for(schema)
   end
 
-  defp root_schema(%Ecto.Query{from: %{source: {_source, schema}}}), do: schema
-  defp root_schema(_query), do: nil
-
-  defp public_article(query, _actor, %{include_illegal: true}), do: query
-
   defp public_article(query, %User{id: user_id}, _context) do
     author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
 
     from(article in query,
       where:
-        article.moderation_state != ^:illegal or
-          article.author_id in subquery(author_ids)
+        not exists(
+          from(restriction in ArticleReviewRestriction,
+            where:
+              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                is_nil(restriction.ended_at) and
+                (restriction.scope_key == "platform" or
+                   restriction.scope_key ==
+                     fragment("'community:' || ?::text", parent_as(:gate_community).id)),
+            select: 1
+          )
+        ) or article.author_id in subquery(author_ids)
     )
   end
 
   defp public_article(query, _actor, _context) do
     from(article in query,
-      where: article.moderation_state != ^:illegal
+      where:
+        not exists(
+          from(restriction in ArticleReviewRestriction,
+            where:
+              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                is_nil(restriction.ended_at) and
+                (restriction.scope_key == "platform" or
+                   restriction.scope_key ==
+                     fragment("'community:' || ?::text", parent_as(:gate_community).id)),
+            select: 1
+          )
+        )
     )
   end
 
-  defp public_head_scope(query, %DocContext{}) do
+  defp public_head_scope(query, %DocContext{}, _actor) do
+    query =
+      from([article, ...] in query,
+        join: public in DocPublic,
+        as: :gate_article_public,
+        on: public.article_id == article.id and public.branch_id == as(:gate_doc_branch).id
+      )
+
     from([article, ...] in query,
-      join: public in DocPublic,
-      as: :gate_article_public,
-      on:
-        public.article_id == article.id and public.branch_id == as(:gate_doc_branch).id and
-          public.visible == true
+      where:
+        as(:gate_article_public).visible == true and
+          not exists(
+            from(restriction in DocReviewRestriction,
+              where:
+                restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                  restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+              select: 1
+            )
+          )
     )
   end
 
-  defp public_head_scope(query, %ArticleContext{}) do
+  defp public_head_scope(query, %ArticleContext{}, %User{id: user_id}) do
+    author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
+
+    from(article in query,
+      join: public in ArticlePublic,
+      as: :gate_article_public,
+      on: public.article_id == article.id,
+      where:
+        public.visible == true or
+          (article.author_id in subquery(author_ids) and
+             exists(
+               from(restriction in ArticleReviewRestriction,
+                 where:
+                   restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                     is_nil(restriction.ended_at) and
+                     (restriction.scope_key == "platform" or
+                        restriction.scope_key ==
+                          fragment("'community:' || ?::text", parent_as(:gate_community).id)),
+                 select: 1
+               )
+             ))
+    )
+  end
+
+  defp public_head_scope(query, %ArticleContext{}, _actor) do
     from(article in query,
       join: public in ArticlePublic,
       as: :gate_article_public,

@@ -25,6 +25,8 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Queries do
     ArticleBinding,
     CommentLifecycle,
     CommunityLifecycle,
+    ArticleReviewRestriction,
+    DocReviewRestriction,
     DocBranch,
     DocBranchState,
     DocLifecycle
@@ -73,6 +75,26 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Queries do
     |> Repo.one()
   end
 
+  @doc """
+  Checks for an active restriction matching one Article lifecycle and community.
+
+  ## Examples
+
+      Queries.article_review_restricted?(lifecycle_id, community_id)
+      #=> true | false
+  """
+  def article_review_restricted?(lifecycle_id, community_id) do
+    scope_key = "community:#{community_id}"
+
+    ArticleReviewRestriction
+    |> where(
+      [restriction],
+      restriction.lifecycle_id == ^lifecycle_id and is_nil(restriction.ended_at) and
+        restriction.scope_key in ["platform", ^scope_key]
+    )
+    |> Repo.exists?()
+  end
+
   @doc "Loads a branch Lifecycle keyed by one stable Doc Article under `FOR UPDATE`."
   @spec doc_lifecycle(Ecto.UUID.t(), pos_integer()) :: DocLifecycle.t() | nil
   def doc_lifecycle(article_id, branch_id) do
@@ -83,6 +105,24 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Queries do
     )
     |> lock("FOR UPDATE")
     |> Repo.one()
+  end
+
+  @doc """
+  Checks for an active platform restriction on one Doc branch lifecycle.
+
+  ## Examples
+
+      Queries.doc_review_restricted?(lifecycle_id)
+      #=> true | false
+  """
+  def doc_review_restricted?(lifecycle_id) do
+    DocReviewRestriction
+    |> where(
+      [restriction],
+      restriction.lifecycle_id == ^lifecycle_id and restriction.scope_key == "platform" and
+        is_nil(restriction.ended_at)
+    )
+    |> Repo.exists?()
   end
 
   @doc """

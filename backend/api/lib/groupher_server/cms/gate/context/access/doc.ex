@@ -3,8 +3,9 @@ defmodule GroupherServer.CMS.Gate.Context.Access.Doc do
   Authoritative facts for one branch-scoped Doc mutation admission.
 
   The Gate Doc loader constructs this context with the canonical Doc, its
-  selected DocBranch, branch-scoped DocLifecycle, and ancestor Community facts.
-  It is intentionally not interchangeable with Article access context.
+  selected DocBranch, branch-scoped DocLifecycle, ancestor Community facts,
+  and current actor Passport rules. It is intentionally not interchangeable
+  with Article access context.
 
       Gate.access_check -> Doc loader -> this context -> Doc policy
   """
@@ -16,7 +17,9 @@ defmodule GroupherServer.CMS.Gate.Context.Access.Doc do
     :doc_branch,
     :doc_branch_state,
     :community,
-    :community_lifecycle
+    :community_lifecycle,
+    :passport_rules,
+    review_restricted?: false
   ]
 
   @type t :: %__MODULE__{
@@ -25,6 +28,8 @@ defmodule GroupherServer.CMS.Gate.Context.Access.Doc do
           doc_branch: struct(),
           doc_branch_state: struct() | nil,
           community: struct(),
-          community_lifecycle: struct()
+          community_lifecycle: struct(),
+          passport_rules: map() | nil,
+          review_restricted?: boolean()
         }
 end
