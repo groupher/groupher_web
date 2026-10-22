@@ -258,7 +258,7 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
   end
 
   defp validate_action_target(:dismiss, _case_record, _target, active, _ids) do
-    if Enum.any?(active, &(&1.kind in [:awaiting_ai, :awaiting_human, :manual_hold])) do
+    if active != [] do
       {:error, AlertBoard.ErrorCat.unsupported_review_action()}
     else
       {:ok, :pass}

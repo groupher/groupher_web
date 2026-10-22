@@ -190,6 +190,40 @@ defmodule GroupherServer.Test.AlertBoard.DecideCaseTest do
              )
   end
 
+  test "reviewers cannot dismiss a case while a policy restriction remains active" do
+    {community, article, _author} = create_pending_article()
+    {:ok, reviewer} = db_insert(:user)
+    reviewer = grant_review_action(reviewer, community.slug, "review.decide")
+
+    case_record =
+      Repo.get_by!(Case,
+        target_key: "article:#{article.id}",
+        scope_key: "community:#{community.id}",
+        status: :open
+      )
+
+    restriction = Repo.get_by!(ArticleReviewRestriction, case_id: case_record.id)
+    Repo.update!(Ecto.Changeset.change(restriction, kind: :rule_hit, source: :policy))
+
+    assert {:error, _reason} =
+             AlertBoard.decide_case(
+               case_record.id,
+               %{
+                 expected_case_version: case_record.version,
+                 expected_content_token: case_record.content_token,
+                 action: :dismiss,
+                 restriction_ids: [],
+                 reason_code: "not_a_report",
+                 note: "The policy hold still needs review"
+               },
+               reviewer,
+               Ecto.UUID.generate()
+             )
+
+    assert Repo.get!(Case, case_record.id).status == :open
+    assert is_nil(Repo.get!(ArticleReviewRestriction, restriction.id).ended_at)
+  end
+
   test "platform reviewer cannot decide a report against their own account" do
     {:ok, account} = db_insert(:user)
     {:ok, reporter} = db_insert(:user)
