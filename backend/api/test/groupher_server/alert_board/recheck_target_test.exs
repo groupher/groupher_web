@@ -28,12 +28,16 @@ defmodule GroupherServer.Test.AlertBoard.RecheckTargetTest do
              )
 
     article = Repo.get!(Article, published.article_id)
+    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
 
     first_check =
       Repo.get_by!(Check,
         target_key: "article:#{article.id}",
         scope_key: "community:#{community.id}"
       )
+
+    platform_check = insert_platform_check(article, lifecycle, author)
+    initial_epoch = lifecycle.review_epoch
 
     reviewer = grant_review_action(db_insert(:user) |> elem(1), community.slug)
     scope = %{kind: :community, community: community}
@@ -47,9 +51,13 @@ defmodule GroupherServer.Test.AlertBoard.RecheckTargetTest do
              )
 
     lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
+    platform_check = Repo.get!(Check, platform_check.id)
     assert recheck.generation == first_check.generation + 1
     assert recheck.content_token == first_check.content_token
-    assert recheck.human_epoch == lifecycle.review_epoch
+    assert lifecycle.review_epoch == initial_epoch
+    assert recheck.human_epoch == initial_epoch
+    assert platform_check.state == :queued
+    assert platform_check.human_epoch == lifecycle.review_epoch
 
     checks =
       Repo.all(
@@ -95,6 +103,37 @@ defmodule GroupherServer.Test.AlertBoard.RecheckTargetTest do
     config
     |> ReviewConfig.changeset(%{version: config.version + 1, ruleset_id: ruleset.id})
     |> Repo.update!()
+  end
+
+  defp insert_platform_check(article, lifecycle, author) do
+    ruleset =
+      %RuleSet{}
+      |> RuleSet.changeset(%{
+        scope_key: "platform",
+        version: 1,
+        rules: %{"items" => []},
+        created_by_id: author.id,
+        operation_ref: Ecto.UUID.generate()
+      })
+      |> Repo.insert!()
+
+    %Check{}
+    |> Check.changeset(%{
+      target_key: "article:#{article.id}",
+      scope_key: "platform",
+      content_token: lifecycle.review_content_token,
+      ruleset_id: ruleset.id,
+      config_version: 1,
+      mode: :ai_first,
+      generation: 1,
+      trigger: :submit,
+      state: :queued,
+      human_epoch: lifecycle.review_epoch,
+      payload: %{"text" => %{"body" => "pending"}},
+      payload_expires_at: DateTime.add(DateTime.utc_now(:second), 60, :second),
+      operation_ref: Ecto.UUID.generate()
+    })
+    |> Repo.insert!()
   end
 
   defp grant_review_action(user, community_slug) do

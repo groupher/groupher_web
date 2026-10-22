@@ -3,9 +3,10 @@ defmodule GroupherServer.Test.AlertBoard.ReportsTest do
 
   import Ecto.Query
 
-  alias GroupherServer.{AlertBoard, Repo}
+  alias GroupherServer.{AlertBoard, CMS, Repo}
   alias AlertBoard.Authorization
   alias AlertBoard.Model.{Case, Report, ReviewConfig, RuleSet}
+  alias CMS.Model.Article
 
   test "report submit is receipt-safe and one active fact is allowed per reporter" do
     {:ok, reporter} = db_insert(:user)
@@ -98,6 +99,39 @@ defmodule GroupherServer.Test.AlertBoard.ReportsTest do
                "SPAM",
                nil,
                actor,
+               Ecto.UUID.generate()
+             )
+  end
+
+  test "Article and Comment authors cannot report their own content" do
+    {community, published, _attrs, author} = mock_article(:post)
+    article = Repo.get!(Article, published.article_id)
+
+    assert {:error, _reason} =
+             AlertBoard.submit_report(
+               %{resource: article, community_id: community.id},
+               "SPAM",
+               "Author cannot report own Article",
+               author,
+               Ecto.UUID.generate()
+             )
+
+    assert {:ok, comment} =
+             CMS.Comments.create_comment(
+               community,
+               :post,
+               article_inner_id(published, community),
+               mock_comment("Own comment report guard"),
+               author,
+               Ecto.UUID.generate()
+             )
+
+    assert {:error, _reason} =
+             AlertBoard.submit_report(
+               %{resource: comment},
+               "SPAM",
+               "Author cannot report own Comment",
+               author,
                Ecto.UUID.generate()
              )
   end
