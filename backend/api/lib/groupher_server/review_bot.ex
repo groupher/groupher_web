@@ -62,6 +62,10 @@ defmodule GroupherServer.ReviewBot do
   @spec recover_stale_checks() :: {:ok, non_neg_integer()} | {:error, term()}
   defdelegate recover_stale_checks(), to: Execution
 
+  @doc "Invalidates queued or running checks after an authoritative human decision."
+  @spec supersede_in_flight_checks(String.t(), String.t()) :: {:ok, :pass} | {:error, term()}
+  defdelegate supersede_in_flight_checks(target_key, scope_key), to: Execution
+
   @doc """
   Applies one completed Check under a caller-locked CMS Lifecycle transaction.
 

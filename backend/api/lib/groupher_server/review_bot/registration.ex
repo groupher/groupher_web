@@ -184,9 +184,10 @@ defmodule GroupherServer.ReviewBot.Registration do
   end
 
   defp next_generation(
-         %{trigger: :manual} = inputs,
+         %{trigger: trigger} = inputs,
          %ReviewConfig{ruleset: %RuleSet{} = ruleset} = config
-       ) do
+       )
+       when trigger in [:manual, :binding] do
     target_key = inputs.target_key
     scope_key = config.scope_key
     content_token = inputs.content_token
@@ -352,7 +353,7 @@ defmodule GroupherServer.ReviewBot.Registration do
 
   defp trigger(target) do
     case Map.get(target, :trigger) do
-      trigger when trigger in [:submit, :edit, :report, :manual] -> trigger
+      trigger when trigger in [:submit, :edit, :report, :manual, :binding] -> trigger
       _ -> :submit
     end
   end

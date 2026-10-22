@@ -19,8 +19,10 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
     Article,
     ArticleAssetRef,
     ArticleBinding,
+    ArticleLifecycle,
     ArticleBodySnapshot,
     ArticlePublic,
+    ArticleRevision,
     Author,
     Community,
     CommunityAsset
@@ -95,17 +97,54 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
 
   def publish(%Article{thread: :doc}, %Author{}, _opts), do: {:error, :use_docs_publish}
 
-  defp register_review(article, community, revision, lifecycle, first_publish?, opts) do
-    with {:ok, configs} <- AlertBoard.configs_for_target(community.id, :article),
-         %ArticleBodySnapshot{} = body <- Repo.get(ArticleBodySnapshot, revision.body_snapshot_id) do
-      content = %{
-        identity: "article-revision:#{revision.id}",
-        body_hash: body.body_hash,
-        title: revision.title || "",
-        body: body.plain_text || "",
-        images: review_images(revision.id)
-      }
+  @doc "Applies one destination Community's review policy to an already-published Article binding."
+  @spec register_binding_review(Article.t(), Community.t(), Ecto.UUID.t()) ::
+          {:ok, :pass} | {:error, term()}
+  def register_binding_review(%Article{} = article, %Community{} = community, operation_ref)
+      when is_binary(operation_ref) do
+    with true <- Repo.in_transaction?(),
+         %ArticleLifecycle{} = lifecycle <- lock_review_lifecycle(article.id) do
+      if lifecycle.state in [:published, :archived] do
+        register_published_binding_review(article, community, lifecycle, operation_ref)
+      else
+        {:ok, :pass}
+      end
+    else
+      false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
+      nil -> {:error, CMS.Articles.ErrorCat.lifecycle_not_found()}
+      {:error, _reason} = error -> error
+      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+    end
+  end
 
+  @doc "Ends one source Community's review scope when an Article binding moves away."
+  @spec remove_binding_review(Article.t(), Community.t(), Ecto.UUID.t()) ::
+          {:ok, :pass} | {:error, term()}
+  def remove_binding_review(%Article{} = article, %Community{id: community_id}, operation_ref)
+      when is_binary(operation_ref) do
+    with true <- Repo.in_transaction?(),
+         %ArticleLifecycle{} = lifecycle <- lock_review_lifecycle(article.id),
+         {:ok, :pass} <-
+           CMS.Review.Submission.remove_scope(
+             lifecycle,
+             "article:#{article.id}",
+             "community:#{community_id}",
+             operation_ref
+           ) do
+      {:ok, :pass}
+    else
+      false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
+      nil -> {:error, CMS.Articles.ErrorCat.lifecycle_not_found()}
+      {:error, _reason} = error -> error
+      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+    end
+  end
+
+  defp register_review(article, community, revision, lifecycle, first_publish?, opts) do
+    community_ids = binding_community_ids(article.id)
+
+    with {:ok, configs} <- AlertBoard.configs_for_targets(community_ids, :article),
+         {:ok, content} <- review_content(revision) do
       target = %{
         target_key: "article:#{article.id}",
         case_attrs: %{article_id: article.id},
@@ -120,6 +159,85 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
       nil -> {:error, CMS.ErrorCat.invalid_review_restriction()}
       {:error, _reason} = error -> error
     end
+  end
+
+  defp register_published_binding_review(article, community, lifecycle, operation_ref) do
+    with {:ok, configs} <- AlertBoard.configs_for_target(community.id, :article),
+         config when not is_nil(config) <-
+           Enum.find(configs, &(&1.scope_key == "community:#{community.id}")),
+         {:ok, content} <- current_review_content(article.id),
+         target <- %{
+           target_key: "article:#{article.id}",
+           case_attrs: %{article_id: article.id},
+           community_id: community.id,
+           trigger: :binding
+         },
+         {:ok, _registered} <-
+           CMS.Review.Submission.register_current_scope(
+             lifecycle,
+             target,
+             content,
+             config,
+             operation_ref
+           ) do
+      {:ok, :pass}
+    else
+      nil -> {:error, AlertBoard.review_config_not_found()}
+      {:error, _reason} = error -> error
+      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+    end
+  end
+
+  defp current_review_content(article_id) do
+    case Repo.one(
+           from(public in ArticlePublic,
+             join: revision in ArticleRevision,
+             on: revision.id == public.revision_id,
+             join: body in ArticleBodySnapshot,
+             on: body.id == revision.body_snapshot_id,
+             where: public.article_id == ^article_id,
+             select: {revision, body}
+           )
+         ) do
+      {%ArticleRevision{} = revision, %ArticleBodySnapshot{} = body} ->
+        {:ok, build_review_content(revision, body)}
+
+      nil ->
+        {:error, ArticleErrorCat.article_not_found("public revision not found")}
+    end
+  end
+
+  defp review_content(%ArticleRevision{} = revision) do
+    case Repo.get(ArticleBodySnapshot, revision.body_snapshot_id) do
+      %ArticleBodySnapshot{} = body -> {:ok, build_review_content(revision, body)}
+      nil -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+    end
+  end
+
+  defp build_review_content(%ArticleRevision{} = revision, %ArticleBodySnapshot{} = body) do
+    %{
+      identity: "article-revision:#{revision.id}",
+      body_hash: body.body_hash,
+      title: revision.title || "",
+      body: body.plain_text || "",
+      images: review_images(revision.id)
+    }
+  end
+
+  defp binding_community_ids(article_id) do
+    ArticleBinding
+    |> where([binding], binding.article_id == ^article_id)
+    |> select([binding], binding.community_id)
+    |> Repo.all()
+  end
+
+  defp lock_review_lifecycle(article_id) do
+    Repo.one(
+      from(lifecycle in ArticleLifecycle,
+        where: lifecycle.article_id == ^article_id,
+        lock: "FOR UPDATE"
+      )
+    )
   end
 
   defp review_images(revision_id) do

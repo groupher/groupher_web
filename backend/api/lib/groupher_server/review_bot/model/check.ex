@@ -17,7 +17,7 @@ defmodule GroupherServer.ReviewBot.Model.Check do
 
   @schema_prefix DBPrefix.review_bot()
   @states [:queued, :running, :completed, :failed, :superseded]
-  @triggers [:submit, :edit, :report, :manual]
+  @triggers [:submit, :edit, :report, :manual, :binding]
   @results [:pass, :restrict, :review]
 
   @type t :: %__MODULE__{}

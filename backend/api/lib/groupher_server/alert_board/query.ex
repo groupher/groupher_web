@@ -44,27 +44,42 @@ defmodule GroupherServer.AlertBoard.Query do
   def configs_for_target(community_id, subject_kind)
       when (is_integer(community_id) or is_nil(community_id)) and
              subject_kind in [:article, :comment, :doc] do
-    scopes =
-      case subject_kind do
-        :doc -> ["platform"]
-        _ when is_integer(community_id) -> ["platform", "community:#{community_id}"]
-        _ -> ["platform"]
-      end
-
-    configs =
-      ReviewConfig
-      |> where([config], config.subject_kind == ^subject_kind and config.scope_key in ^scopes)
-      |> Repo.all()
-      |> Repo.preload(:ruleset)
-
-    if length(configs) == length(scopes) do
-      {:ok, Enum.sort_by(configs, &(&1.scope_key != "platform"))}
-    else
-      {:error, AlertBoard.ErrorCat.review_config_not_found()}
-    end
+    configs_for_targets(List.wrap(community_id), subject_kind)
   end
 
   def configs_for_target(_community_id, _subject_kind) do
+    {:error, AlertBoard.ErrorCat.review_config_invalid()}
+  end
+
+  @doc "Returns platform and Community policies for all supplied Article bindings."
+  @spec configs_for_targets([pos_integer()], :article | :comment | :doc) ::
+          {:ok, [ReviewConfig.t()]} | {:error, term()}
+  def configs_for_targets(community_ids, subject_kind)
+      when is_list(community_ids) and subject_kind in [:article, :comment, :doc] do
+    if Enum.all?(community_ids, &(is_integer(&1) and &1 > 0)) do
+      scopes =
+        case subject_kind do
+          :doc -> ["platform"]
+          _ -> ["platform" | Enum.map(Enum.uniq(community_ids), &"community:#{&1}")]
+        end
+
+      configs =
+        ReviewConfig
+        |> where([config], config.subject_kind == ^subject_kind and config.scope_key in ^scopes)
+        |> Repo.all()
+        |> Repo.preload(:ruleset)
+
+      if length(configs) == length(scopes) do
+        {:ok, Enum.sort_by(configs, &(&1.scope_key != "platform"))}
+      else
+        {:error, AlertBoard.ErrorCat.review_config_not_found()}
+      end
+    else
+      {:error, AlertBoard.ErrorCat.review_config_invalid()}
+    end
+  end
+
+  def configs_for_targets(_community_ids, _subject_kind) do
     {:error, AlertBoard.ErrorCat.review_config_invalid()}
   end
 

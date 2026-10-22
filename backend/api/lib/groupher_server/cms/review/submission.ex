@@ -59,6 +59,69 @@ defmodule GroupherServer.CMS.Review.Submission do
     {:error, CMS.ErrorCat.invalid_review_restriction()}
   end
 
+  @doc "Registers one newly bound Community against the Article's existing committed snapshot."
+  @spec register_current_scope(struct(), map(), map(), ReviewConfig.t(), Ecto.UUID.t()) ::
+          {:ok, %{checks: [Check.t()], content_token: String.t(), lifecycle: struct()}}
+          | {:error, term()}
+  def register_current_scope(
+        lifecycle,
+        target,
+        content,
+        %ReviewConfig{} = config,
+        operation_ref
+      )
+      when is_map(target) and is_map(content) and is_binary(operation_ref) do
+    content_token = lifecycle.review_content_token
+
+    with true <- Repo.in_transaction?(),
+         true <- is_binary(content_token) and content_token != "",
+         target <-
+           target
+           |> Map.merge(%{lifecycle: lifecycle, human_epoch: lifecycle.review_epoch})
+           |> target_for_scope(config),
+         content <- Map.put(content, :content_token, content_token),
+         {:ok, checks} <- register_scope(target, content, config, operation_ref) do
+      {:ok, %{checks: checks, content_token: content_token, lifecycle: lifecycle}}
+    else
+      false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
+      {:error, _reason} = error -> error
+      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+    end
+  end
+
+  def register_current_scope(_lifecycle, _target, _content, _config, _operation_ref) do
+    {:error, CMS.ErrorCat.invalid_review_restriction()}
+  end
+
+  @doc "Ends one removed Community scope and supersedes its in-flight checks."
+  @spec remove_scope(struct(), String.t(), String.t(), Ecto.UUID.t()) ::
+          {:ok, :pass} | {:error, term()}
+  def remove_scope(lifecycle, target_key, scope_key, operation_ref)
+      when is_binary(target_key) and is_binary(scope_key) and is_binary(operation_ref) do
+    with true <- Repo.in_transaction?(),
+         {:ok, :pass} <- ReviewBot.supersede_in_flight_checks(target_key, scope_key),
+         {:ok, restrictions} <- CMS.ReviewRestrictions.active_for(lifecycle, scope_key),
+         {:ok, :pass} <-
+           end_restrictions(
+             lifecycle,
+             scope_key,
+             Enum.map(restrictions, & &1.id),
+             operation_ref,
+             "binding_removed"
+           ),
+         {:ok, :pass} <- supersede_open_cases(target_key, scope_key) do
+      {:ok, :pass}
+    else
+      false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
+      {:error, _reason} = error -> error
+      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+    end
+  end
+
+  def remove_scope(_lifecycle, _target_key, _scope_key, _operation_ref) do
+    {:error, CMS.ErrorCat.invalid_review_restriction()}
+  end
+
   defp register_scopes(target, content, configs, operation_ref) do
     configs
     |> Enum.sort_by(& &1.scope_key)
@@ -72,6 +135,7 @@ defmodule GroupherServer.CMS.Review.Submission do
 
   defp register_scope(target, content, %ReviewConfig{} = config, operation_ref) do
     mode = effective_mode(config, target)
+    target = target_for_scope(target, config)
 
     with {:ok, old_waits} <-
            expire_old_waits(
@@ -108,6 +172,58 @@ defmodule GroupherServer.CMS.Review.Submission do
     end
   end
 
+  defp target_for_scope(target, %ReviewConfig{scope_key: "community:" <> community_id}) do
+    case Integer.parse(community_id) do
+      {id, ""} when id > 0 -> Map.put(target, :community_id, id)
+      _ -> target
+    end
+  end
+
+  defp target_for_scope(target, _config), do: target
+
+  defp end_restrictions(lifecycle, scope_key, ids, operation_ref, reason) do
+    case lifecycle do
+      %CMS.Model.ArticleLifecycle{} ->
+        CMS.Articles.Lifecycle.end_review_restrictions(
+          lifecycle,
+          scope_key,
+          ids,
+          operation_ref,
+          reason
+        )
+
+      %CMS.Model.CommentLifecycle{} ->
+        CMS.Comments.Lifecycle.end_review_restrictions(
+          lifecycle,
+          scope_key,
+          ids,
+          operation_ref,
+          reason
+        )
+    end
+  end
+
+  defp supersede_open_cases(target_key, scope_key) do
+    now = DateTime.utc_now(:second)
+
+    Repo.update_all(
+      from(case_record in Case,
+        where:
+          case_record.target_key == ^target_key and case_record.scope_key == ^scope_key and
+            case_record.status == :open
+      ),
+      inc: [version: 1],
+      set: [
+        status: :superseded,
+        resolution: "binding_removed",
+        resolved_at: now,
+        updated_at: now
+      ]
+    )
+
+    {:ok, :pass}
+  end
+
   defp enqueue_snapshot_visibility(%DocLifecycle{}, _target, _config, _content) do
     {:ok, :pass}
   end
@@ -126,11 +242,11 @@ defmodule GroupherServer.CMS.Review.Submission do
   end
 
   defp maybe_open_submission_case(:human_first, target, config, content_token) do
-      AlertBoard.open_submission_case(
-        target,
-        config.scope_key,
-        content_token
-      )
+    AlertBoard.open_submission_case(
+      target,
+      config.scope_key,
+      content_token
+    )
   end
 
   defp maybe_open_submission_case(_mode, _target, _config, _content_token) do

@@ -11,7 +11,7 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
 
   import Ecto.Query
 
-  alias GroupherServer.{AlertBoard, CMS, Repo}
+  alias GroupherServer.{AlertBoard, CMS, Repo, ReviewBot}
   alias AlertBoard.Authorization
   alias AlertBoard.Model.{Case, Decision}
   alias CMS.Model.{Article, Comment, Community}
@@ -113,8 +113,9 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
          {:ok, active} <- active_restrictions(target, case_record),
          {:ok, :pass} <-
            validate_action_target(action, case_record, target, active, restriction_ids),
+         {:ok, :pass} <- supersede_pending_checks(action, case_record),
          {:ok, ended_ids, added_ids} <-
-           apply_action(action, case_record, target, restriction_ids, context.command_id),
+           apply_action(action, case_record, target, active, restriction_ids, context.command_id),
          {:ok, decision} <-
            insert_decision(
              context,
@@ -266,12 +267,12 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
     {:error, AlertBoard.ErrorCat.unsupported_review_action()}
   end
 
-  defp apply_action(action, _case_record, _target, _ids, _command_id)
+  defp apply_action(action, _case_record, _target, _active, _ids, _command_id)
        when action in [:dismiss, :record_handled] do
     {:ok, [], []}
   end
 
-  defp apply_action(action, case_record, target, ids, command_id)
+  defp apply_action(action, case_record, target, _active, ids, command_id)
        when action in [:approve, :release] do
     reason = if action == :approve, do: "approved", else: "released"
 
@@ -287,8 +288,24 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
     end
   end
 
-  defp apply_action(:restrict, case_record, target, _ids, command_id) do
-    with {:ok, restriction} <-
+  defp apply_action(:restrict, case_record, target, active, _ids, command_id) do
+    wait_ids =
+      active
+      |> Enum.filter(fn restriction ->
+        restriction.kind in [:awaiting_ai, :awaiting_human] and
+          restriction.content_token == case_record.content_token
+      end)
+      |> Enum.map(& &1.id)
+
+    with {:ok, :pass} <-
+           CMS.end_review_restrictions(
+             target.lifecycle,
+             case_record.scope_key,
+             wait_ids,
+             command_id,
+             "human_restriction_decided"
+           ),
+         {:ok, restriction} <-
            CMS.apply_review_restriction(target.lifecycle, %{
              scope_key: case_record.scope_key,
              content_token: case_record.content_token,
@@ -298,9 +315,16 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
              case_id: case_record.id,
              created_by_operation_ref: command_id
            }) do
-      {:ok, [], [restriction.id]}
+      {:ok, wait_ids, [restriction.id]}
     end
   end
+
+  defp supersede_pending_checks(action, %Case{} = case_record)
+       when action in [:approve, :restrict, :release] do
+    ReviewBot.supersede_in_flight_checks(case_record.target_key, case_record.scope_key)
+  end
+
+  defp supersede_pending_checks(_action, _case_record), do: {:ok, :pass}
 
   defp insert_decision(context, case_record, action, restriction_ids, reason_code, note) do
     attrs = %{
@@ -323,7 +347,7 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
 
   defp update_case(case_record, action, active, ended_ids) do
     remaining = Enum.reject(active, &(&1.id in ended_ids))
-    terminal? = action in [:dismiss, :restrict, :record_handled] or remaining == []
+    terminal? = action in [:dismiss, :record_handled] or (action != :restrict and remaining == [])
     status = if terminal?, do: :resolved, else: :open
     resolution = Atom.to_string(action)
     now = DateTime.utc_now(:second)

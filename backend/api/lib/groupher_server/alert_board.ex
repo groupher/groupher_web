@@ -49,6 +49,10 @@ defmodule GroupherServer.AlertBoard do
   @spec review_config_invalid() :: struct()
   defdelegate review_config_invalid(), to: ErrorCat
 
+  @doc "Returns the missing review-configuration error at the public context boundary."
+  @spec review_config_not_found() :: struct()
+  defdelegate review_config_not_found(), to: ErrorCat
+
   @doc """
   Reads the configured platform/community policies for an Article, Comment or platform Doc.
 
@@ -60,6 +64,11 @@ defmodule GroupherServer.AlertBoard do
   @spec configs_for_target(pos_integer() | nil, atom()) ::
           {:ok, [ReviewConfig.t()]} | {:error, term()}
   defdelegate configs_for_target(community_id, subject_kind), to: Query
+
+  @doc "Returns platform and Community policies for the supplied bound communities."
+  @spec configs_for_targets([pos_integer()], :article | :comment | :doc) ::
+          {:ok, [ReviewConfig.t()]} | {:error, term()}
+  defdelegate configs_for_targets(community_ids, subject_kind), to: Query
 
   @doc """
   Creates immediate-mode Article and Comment defaults inside the Community create transaction.

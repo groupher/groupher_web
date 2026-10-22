@@ -85,6 +85,57 @@ defmodule GroupherServer.ReviewBot.Execution do
 
   def apply_completed_check(_check, _target), do: {:error, ErrorCat.stale_check()}
 
+  @doc "Supersedes queued or running checks for one locked target scope."
+  @spec supersede_in_flight_checks(String.t(), String.t()) :: {:ok, :pass} | {:error, term()}
+  def supersede_in_flight_checks(target_key, scope_key)
+      when is_binary(target_key) and is_binary(scope_key) do
+    if Repo.in_transaction?() do
+      check_ids =
+        from(check in Check,
+          where:
+            check.target_key == ^target_key and check.scope_key == ^scope_key and
+              check.state in [:queued, :running],
+          lock: "FOR UPDATE",
+          select: check.id
+        )
+        |> Repo.all()
+
+      now = DateTime.utc_now(:second)
+
+      if check_ids != [] do
+        Repo.update_all(
+          from(attempt in Attempt,
+            where: attempt.check_id in ^check_ids and attempt.state == :running
+          ),
+          set: [
+            state: :abandoned,
+            finished_at: now,
+            error_code: "human_decision",
+            updated_at: now
+          ]
+        )
+
+        Repo.update_all(
+          from(check in Check, where: check.id in ^check_ids),
+          set: [
+            state: :superseded,
+            payload: nil,
+            payload_expires_at: nil,
+            updated_at: now
+          ]
+        )
+      end
+
+      {:ok, :pass}
+    else
+      {:error, GroupherServer.CMS.error_cat_review_transition_requires_transaction()}
+    end
+  end
+
+  def supersede_in_flight_checks(_target_key, _scope_key) do
+    {:error, ErrorCat.stale_check()}
+  end
+
   @doc """
   Moves provider attempts abandoned beyond the worker recovery window to human review.
 
@@ -399,7 +450,7 @@ defmodule GroupherServer.ReviewBot.Execution do
              state: :completed,
              result: result.action,
              coverage: stringify_keys(output.coverage),
-             signals: %{"items" => result.signals},
+             signals: merge_signals(current.signals, result.signals),
              payload: nil,
              payload_expires_at: nil
            })
@@ -407,6 +458,11 @@ defmodule GroupherServer.ReviewBot.Execution do
          {:ok, _application} <- apply_check_result(updated, target) do
       {:ok, updated}
     end
+  end
+
+  defp merge_signals(existing, new_items) do
+    existing_items = if is_map(existing), do: Map.get(existing, "items", []), else: []
+    %{"items" => existing_items ++ new_items}
   end
 
   defp current_revision?(lifecycle, check) do
