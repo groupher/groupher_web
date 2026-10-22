@@ -44,7 +44,20 @@ export default function CaseDetail({ community, scopeKind, caseId, onChanged }: 
       const restrictionIds = detail.activeRestrictions.flatMap((item) => {
         if (!item || typeof item !== 'object' || !('id' in item)) return []
         const id = Number(item.id)
-        return Number.isInteger(id) && id > 0 ? [id] : []
+        if (!Number.isInteger(id) || id <= 0) return []
+
+        const restriction = item as Record<string, unknown>
+        const kind = restriction.kind
+        const contentToken = restriction.content_token ?? restriction.contentToken
+        const source = restriction.source
+        const compatible =
+          action === 'APPROVE'
+            ? contentToken === detail.case.contentToken && kind !== 'manual_hold'
+            : action === 'RELEASE'
+              ? kind === 'manual_hold' || (kind === 'rule_hit' && source === 'policy')
+              : false
+
+        return compatible ? [id] : []
       })
       const intentKey = JSON.stringify([
         detail.case.id,
