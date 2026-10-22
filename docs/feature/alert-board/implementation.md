@@ -84,6 +84,7 @@ ReviewBot.Check 使用 UUID 主键，使 Decision/Restriction 能跨 schema 建�
 不在 ReviewBot 新建通用 lease/队列系统。人工 Retry 创建 generation+1，deterministic Check 的 operation_ref 也包含 generation，避免同一快照重检冲突。
 提交快照使用 canonical 文本 + 资产 ID/不可变对象版本（不持久化 signedReadUrl，调用前生成）；禁止任务执行时从当前正文重新构造旧快照。
 payload 最多保留 24 小时，终态后即清空；signals 只保留规则 ID、category、action、verdict 与 coverage，不保留命中文本片段；
+queued Check 在创建 Attempt 前校验 `payload_expires_at`；缺失或已过期则不调用 provider，在资源事务中清空 payload、置 failed/review，并按终态 provider 失败策略转人工；
 Attempt 30 天清理，Check 元数据 90 天清理（被 Decision 引用的保留无 payload 墓碑）。
 超过 24 小时未完成直接 failed/转人工，不能无输入默认为通过。
 
@@ -138,22 +139,22 @@ Article 编辑要为全部现有 binding 分别固定社区配置并登记 Check
 
 ### 4.2 行为矩阵
 
-| 事件                     | 限制处理                                                                                          | 事项处理                                             |
-| ------------------------ | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| immediate 首发/编辑      | 无等待限制；词命中新增 rule_hit；模型按配置登记                                                   | 无命中不建 Case                                      |
-| ai_first 首发/编辑       | 新增 awaiting_ai；即刻普通不可见                                                                  | 检测期间由作者 DTO 展示，不单独建 Case               |
-| human_first 首发         | 新增 awaiting_human；AI 通过不解除                                                                | 立即创建 open Case                                   |
-| AI pass 且 coverage 完整 | 结束同范围当前内容 awaiting_ai；允许结束同规则的 policy rule_hit                                  | 无剩余人工/规则问题且无 active report 时 resolve     |
-| AI restrict              | 结束 awaiting_ai，新增对应 rule_hit；不能覆盖其他 scope                                           | 创建/关联 open Case                                  |
-| AI review / 图片未覆盖   | ai_first 的 awaiting_ai 转 awaiting_human；immediate 不因不确定而隐藏                             | 创建 open Case                                       |
-| AI 超时重试耗尽          | ai_first 转 awaiting_human；immediate 不新增限制                                                  | 创建 open Case，reason check_unavailable             |
-| 人工 approve             | 必须列出 restrictionIds；结束当前范围 awaiting_ai/awaiting_human/rule_hit；manual_hold 需 release | 写 Decision，满足处理条件时 resolved                 |
-| 人工 restrict            | 结束该范围等待限制并新增 manual_hold                                                              | 写 Decision，Case 保持 open，后续可在同 Case release |
-| 人工 release             | 只结束指定 manual_hold/rule_hit；仍有其他限制则保持隐藏                                           | 写 Decision；不是自动批准所有待审                    |
-| 编辑已有人工待审         | 旧内容等待项结束为 superseded；当前内容重建 awaiting_human                                        | 旧 Case superseded，新 Case open                     |
-| 编辑已有 policy rule_hit | 限制保持至同规则对新内容完整 pass；无对应规则时转人工，不自动释放                                 | 旧 Case superseded，新 Case open                     |
-| 编辑已有 manual_hold     | 保持隐藏，不因新 AI pass 解除                                                                     | 新内容关联事项；人工重新查看后 release               |
-| 删除/销毁                | Check superseded；限制留作历史或随领域销毁终止；不得恢复资源                                      | Case superseded                                      |
+| 事件                     | 限制处理                                                                                          | 事项处理                                                         |
+| ------------------------ | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| immediate 首发/编辑      | 无等待限制；词命中新增 rule_hit；模型按配置登记                                                   | 无命中不建 Case                                                  |
+| ai_first 首发/编辑       | 新增 awaiting_ai；即刻普通不可见                                                                  | 检测期间由作者 DTO 展示，不单独建 Case                           |
+| human_first 首发         | 新增 awaiting_human；AI 通过不解除                                                                | 立即创建 open Case                                               |
+| AI pass 且 coverage 完整 | 结束同范围当前内容 awaiting_ai；允许结束同规则的 policy rule_hit                                  | 无剩余人工/规则问题且无 active report 时 resolve                 |
+| AI restrict              | 结束 awaiting_ai，新增对应 rule_hit；不能覆盖其他 scope                                           | 创建/关联 open Case                                              |
+| AI review / 图片未覆盖   | ai_first 的 awaiting_ai 转 awaiting_human；immediate 不因不确定而隐藏                             | 创建 open Case                                                   |
+| AI 超时重试耗尽          | ai_first 转 awaiting_human；immediate 不新增限制                                                  | 创建 open Case，reason check_unavailable                         |
+| 人工 approve             | 必须列出 restrictionIds；结束当前范围 awaiting_ai/awaiting_human/rule_hit；manual_hold 需 release | 写 Decision，满足处理条件时 resolved                             |
+| 人工 restrict            | 结束该范围等待限制并新增 manual_hold                                                              | 写 Decision，Case 保持 open，后续可在同 Case release             |
+| 人工 release             | 只结束指定 manual_hold/rule_hit；仍有其他限制则保持隐藏                                           | 写 Decision；不是自动批准所有待审                                |
+| 编辑已有人工待审         | 旧内容等待项结束为 superseded；当前内容重建 awaiting_human                                        | 旧 Case superseded，新 Case open                                 |
+| 编辑已有 policy rule_hit | 限制保持至同规则对新内容完整 pass；无对应规则时转人工，不自动释放                                 | 旧 Case superseded，新 Case open                                 |
+| 编辑已有 manual_hold     | 保持隐藏，不因新 AI pass 解除                                                                     | 旧 Case superseded；新快照建立 open Case，人工重新查看后 release |
+| 删除/销毁                | Check superseded；限制留作历史或随领域销毁终止；不得恢复资源                                      | Case superseded                                                  |
 
 普通 Article 的正文修订由所有 ArticleBinding 共享。发布和编辑在同一资源事务内读取全部当前 Binding，加载平台及每个社区的 Article 配置，并对每个 scope 独立登记检查与限制；平台限制影响所有 Binding，社区限制只影响自己的 Binding。镜像在目标 Binding 创建事务内，用现有 Public 修订和目标社区的 `publish_mode` 登记新 scope，不推进正文 token/epoch；迁移在同一事务结束源社区 scope 的限制、supersede 其 queued/running Check，再按目标社区首次发布策略登记目标 scope。失败时 Binding 与审核事实一起回滚。`binding` 是 Check 的独立触发类型；同一 token 再次绑定时继续递增该 scope 的 generation，避免检查身份冲突。
 
@@ -307,8 +308,7 @@ Policy 按 restrict > review > pass 聚合：任一明确 hit 可先限制，即
 缺项、额外动作字段、错 token、错误枚举视为 protocol_error。
 文字命中优先 restrict；模型 hit 按对应规则 action；uncertain 转 review；不使用跨模型通用分数阈值。
 
-新增运行时配置 `:review_bot`：profiles map（adapter, base_url, model, credential_env, modalities），default_profile；
-部署变量 `REVIEW_BOT_JUDGE_URL`、`REVIEW_BOT_JUDGE_TOKEN`、`REVIEW_BOT_OPENAI_TOKEN`、`REVIEW_BOT_OPENAI_MODEL`。
+新增运行时配置 `:review_bot`：profiles map（adapter, base_url, model, credential_env, modalities），由 `ReviewBot.Config.profiles_from_env/1` 构造。`REVIEW_BOT_JUDGE_URL` 与 `REVIEW_BOT_JUDGE_TOKEN` 同时存在时注册 `judge_http` profile（可选 `REVIEW_BOT_JUDGE_MODEL`）；`REVIEW_BOT_OPENAI_TOKEN` 存在时注册 `openai` profile（endpoint 固定为 Responses API，可选 `REVIEW_BOT_OPENAI_MODEL`，默认 `gpt-5-mini`）。未配置凭据的 provider 不注册 profile，因此社区配置会被拒绝；不会从社区输入创建 endpoint 或读取任意环境变量。
 只允许运维定义 URL/凭据，社区只能选择平台批准的 profile；不能填写任意 HTTP 地址。
 不保存 token/URL 到 RuleSet，只存 profile ID。日志只记录 requestId、profile、耗时、错误码。
 启动校验所选 profile 必需配置；能力 contract tests 验证文本/图文 fixture，未通过不能启用 ai_first。
