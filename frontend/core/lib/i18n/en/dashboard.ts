@@ -1493,6 +1493,7 @@ export default {
   'alert_board.my_reports_error': 'Your reports could not be loaded. Try again.',
   'alert_board.my_reports_empty': 'You have no active reports.',
   'alert_board.my_reports_pagination': 'My reports pages',
+  'alert_board.queue_pagination': 'Review queue pages',
   'alert_board.previous_page': 'Previous',
   'alert_board.next_page': 'Next',
   'alert_board.reason.spam': 'Spam',

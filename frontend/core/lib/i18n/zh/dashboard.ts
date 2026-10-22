@@ -1440,6 +1440,7 @@ export default {
   'alert_board.my_reports_error': '无法加载你的举报，请重试。',
   'alert_board.my_reports_empty': '你没有待处理的举报。',
   'alert_board.my_reports_pagination': '我的举报分页',
+  'alert_board.queue_pagination': '审核队列分页',
   'alert_board.previous_page': '上一页',
   'alert_board.next_page': '下一页',
   'alert_board.reason.spam': '垃圾内容',
