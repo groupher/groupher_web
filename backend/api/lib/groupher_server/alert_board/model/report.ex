@@ -35,6 +35,7 @@ defmodule GroupherServer.AlertBoard.Model.Report do
     field(:details, :string)
     field(:operation_ref, Ecto.UUID)
     field(:withdrawn_at, :utc_datetime)
+    field(:target_deleted_at, :utc_datetime)
     timestamps(type: :utc_datetime)
   end
 

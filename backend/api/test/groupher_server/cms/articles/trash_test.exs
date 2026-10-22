@@ -3,7 +3,8 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
 
   use GroupherServer.TestMate, async: false
 
-  alias GroupherServer.{Activity, CMS}
+  alias GroupherServer.{Activity, AlertBoard, CMS}
+  alias AlertBoard.Model.{Case, Report}
 
   alias CMS.Model.{
     ArticleEmotionCount,
@@ -195,6 +196,80 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
                %{thread: :post},
                %GroupherServer.Pagi.Params.Offset{page: 1, size: 20}
              )
+  end
+
+  test "permanent delete tombstones review targets and preserves report history" do
+    {community, post, _attrs, user} = mock_article(:post)
+    target_key = "article:#{post.article_id}"
+
+    assert {:ok, case_record} =
+             Repo.transact_result(fn ->
+               AlertBoard.open_submission_case(
+                 %{target_key: target_key, case_attrs: %{article_id: post.article_id}},
+                 "platform",
+                 "revision:permanent-delete"
+               )
+             end)
+
+    report =
+      %Report{}
+      |> Report.changeset(%{
+        target_key: target_key,
+        article_id: post.article_id,
+        scope_key: "platform",
+        content_token: case_record.content_token,
+        reporter_id: user.id,
+        case_id: case_record.id,
+        reason_code: "SPAM",
+        operation_ref: Ecto.UUID.generate()
+      })
+      |> Repo.insert!()
+
+    assert {:ok, comment} =
+             CMS.Comments.create_comment(
+               community,
+               :post,
+               article_inner_id(post, community),
+               mock_body_bag(
+                 Jason.encode!([
+                   %{"type" => "p", "children" => [%{"text" => "reviewed comment"}]}
+                 ])
+               ),
+               user,
+               Ecto.UUID.generate()
+             )
+
+    comment_key = "comment:#{comment.id}"
+
+    assert {:ok, comment_case} =
+             Repo.transact_result(fn ->
+               AlertBoard.open_submission_case(
+                 %{target_key: comment_key, case_attrs: %{comment_id: comment.id}},
+                 "platform",
+                 "revision:comment-permanent-delete"
+               )
+             end)
+
+    assert {:ok, item} = CMS.Articles.trash(post, user)
+    assert {:ok, %{done: true}} = CMS.Articles.permanently_delete_trashed(item.hash_id, user)
+
+    deleted_case = Repo.get!(Case, case_record.id)
+    assert deleted_case.article_id == nil
+    assert deleted_case.target_deleted_at
+    assert deleted_case.target_key == target_key
+    assert deleted_case.status == :superseded
+    assert deleted_case.resolution == "target_deleted"
+
+    deleted_report = Repo.get!(Report, report.id)
+    assert deleted_report.article_id == nil
+    assert deleted_report.target_deleted_at
+    assert deleted_report.target_key == target_key
+
+    deleted_comment_case = Repo.get!(Case, comment_case.id)
+    assert deleted_comment_case.comment_id == nil
+    assert deleted_comment_case.target_deleted_at
+    assert deleted_comment_case.target_key == comment_key
+    assert deleted_comment_case.status == :superseded
   end
 
   test "permanent-delete receipt replays after the aggregate is gone" do

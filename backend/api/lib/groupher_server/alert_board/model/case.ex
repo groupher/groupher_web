@@ -34,6 +34,7 @@ defmodule GroupherServer.AlertBoard.Model.Case do
     field(:status, Ecto.Enum, values: @statuses, default: :open)
     field(:priority, Ecto.Enum, values: @priorities, default: :normal)
     field(:resolution, :string)
+    field(:target_deleted_at, :utc_datetime)
     field(:version, :integer, default: 1)
     field(:opened_at, :utc_datetime)
     field(:resolved_at, :utc_datetime)
