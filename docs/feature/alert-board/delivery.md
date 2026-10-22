@@ -44,11 +44,11 @@ D5 后旧举报 GraphQL、facade、query/report 模块、阈值 fold 调用点�
 
 ### D3 删除旧存储、条件与消费者
 
-- 新 migration `drop_legacy_content_audit_fields`：先把仍处于 `moderation_state != legal` 或 `Comment.pending != 0` 的存量目标，
+- 新 migration `drop_legacy_content_audit_fields`：先把仍处于 `moderation_state != legal` 或 `Comment.pending = 1` 的存量目标，
   按当前 Lifecycle token（为空时生成一次性 `legacy:*` token）写成 platform `rule_hit/policy` restriction 与 high-priority Case，
   再删除 Article/DocBranchState 的 moderation_state/illegal_reason/illegal_words、Comment.pending；同时将 Article/Binding/DocPublic
   visibility projection 收敛为受限制状态。只保留“仍需管理员处理”的可见性事实，不迁移旧 verdict、provider payload、理由或词项，
-  不保留旧运行时协议；`audit_failed` 与 `illegal` 一样进入新待处理 Case，旧 Public/Binding 差异不延续。
+  不保留旧运行时协议；评论仅迁移旧 Gate 实际隐藏的 `pending = 1`（`illegal`），`pending = 2`（`audit_failed`）原本仍公开，不创建新限制；旧 Public/Binding 差异不延续。
   同 migration 清理 Comment/User 存储 meta 的旧 is_legal、illegal_reason、illegal_words、has_illegal__、illegal__ 键。
   ArticleMeta 的运行时投影/嵌入声明单独删除；不存在存储列时不臆造 UPDATE，历史存储 JSON 的位置由 migration 清单逐项列出。
 - migration 通过 Ecto schema 实际 source 定位表；生成 SQL 清单含每个 drop column/constraint/index、旧 JSON 清理、存量限制事实导入

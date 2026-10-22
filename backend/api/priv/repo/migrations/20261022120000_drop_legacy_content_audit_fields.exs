@@ -58,7 +58,7 @@ defmodule GroupherServer.Repo.Migrations.DropLegacyContentAuditFields do
           )
       ) OR EXISTS (
         SELECT 1 FROM #{@cms}.comments AS comment
-        WHERE comment.pending <> 0
+        WHERE comment.pending = 1
           AND NOT EXISTS (
             SELECT 1 FROM #{@cms}.comment_lifecycles AS lifecycle
             WHERE lifecycle.comment_id = comment.id
@@ -159,7 +159,7 @@ defmodule GroupherServer.Repo.Migrations.DropLegacyContentAuditFields do
              gen_random_uuid() AS operation_ref
       FROM #{@cms}.comments AS comment
       JOIN #{@cms}.comment_lifecycles AS lifecycle ON lifecycle.comment_id = comment.id
-      WHERE comment.pending <> 0
+      WHERE comment.pending = 1
     ), stamped AS (
       UPDATE #{@cms}.comment_lifecycles AS lifecycle
       SET review_content_token = legacy.content_token, updated_at = now()
