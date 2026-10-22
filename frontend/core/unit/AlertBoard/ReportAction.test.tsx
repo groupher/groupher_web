@@ -71,3 +71,18 @@ it('retries with the same command id and then withdraws the current user report'
     expect(screen.getByRole('button', { name: 'alert_board.report' })).toBeInTheDocument(),
   )
 })
+
+it('re-enables a failed report form after cancel and reopen', async () => {
+  renderReportAction()
+
+  fireEvent.click(await screen.findByRole('button', { name: 'alert_board.report' }))
+  fireEvent.click(screen.getByRole('button', { name: 'alert_board.report_submit' }))
+  await screen.findByRole('alert')
+  expect(screen.getByRole('combobox')).toBeDisabled()
+
+  fireEvent.click(screen.getByRole('button', { name: 'alert_board.report_cancel' }))
+  fireEvent.click(screen.getByRole('button', { name: 'alert_board.report' }))
+
+  expect(screen.getByRole('combobox')).toBeEnabled()
+  expect(screen.getByRole('textbox')).toBeEnabled()
+})

@@ -153,6 +153,7 @@ export default function ReportAction({ target }: TProps) {
               className='border-divider rounded-md border px-3 py-2 text-sm'
               onClick={() => {
                 commandIdRef.current = null
+                report.reset()
                 setOpen(false)
               }}
             >
