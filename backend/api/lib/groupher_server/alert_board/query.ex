@@ -313,7 +313,7 @@ defmodule GroupherServer.AlertBoard.Query do
       |> where(
         [restriction],
         restriction.lifecycle_id == ^lifecycle_id and restriction.scope_key in ^scope_keys and
-          is_nil(restriction.ended_at) and restriction.content_token == ^token
+          is_nil(restriction.ended_at)
       )
       |> Repo.all()
 
@@ -324,6 +324,29 @@ defmodule GroupherServer.AlertBoard.Query do
         check.target_key == ^target_key and check.scope_key in ^scope_keys and
           check.content_token == ^token
       )
+      |> Repo.all()
+
+    unavailable_scopes =
+      checks
+      |> Enum.group_by(& &1.scope_key)
+      |> Enum.flat_map(fn {scope_key, scoped_checks} ->
+        latest_generation = Enum.max_by(scoped_checks, & &1.generation).generation
+
+        if Enum.any?(scoped_checks, &(&1.generation == latest_generation and &1.state == :failed)) do
+          [scope_key]
+        else
+          []
+        end
+      end)
+
+    unavailable_scopes =
+      Case
+      |> where(
+        [case_record],
+        case_record.target_key == ^target_key and case_record.content_token == ^token and
+          case_record.scope_key in ^unavailable_scopes and case_record.status == :open
+      )
+      |> select([case_record], case_record.scope_key)
       |> Repo.all()
 
     is_reviewer? = review_decision_allowed?(community, actor)
@@ -341,7 +364,7 @@ defmodule GroupherServer.AlertBoard.Query do
      %{
        status: review_status(restrictions),
        content_token: if(privileged?, do: token),
-       check_unavailable: Enum.any?(checks, &(&1.state == :failed)),
+       check_unavailable: unavailable_scopes != [],
        can_edit: resource_edit_allowed?(resource, community, actor),
        can_request_review: is_reviewer?,
        viewer_report_id: if(viewer_report, do: viewer_report.id),
@@ -535,7 +558,42 @@ defmodule GroupherServer.AlertBoard.Query do
       if String.starts_with?(case_record.target_key, "user:") do
         [:dismiss, :record_handled]
       else
-        [:approve, :restrict, :dismiss] ++ if(restrictions == [], do: [], else: [:release])
+        approve? =
+          Enum.any?(restrictions, fn restriction ->
+            restriction.content_token == case_record.content_token and
+              restriction.kind != :manual_hold
+          end)
+
+        release? =
+          Enum.any?(restrictions, fn restriction ->
+            restriction.kind == :manual_hold or
+              (restriction.kind == :rule_hit and restriction.source == :policy)
+          end)
+
+        dismiss? =
+          not Enum.any?(restrictions, &(&1.kind in [:awaiting_ai, :awaiting_human, :manual_hold]))
+
+        actions =
+          if approve? do
+            [:approve]
+          else
+            []
+          end
+
+        actions = actions ++ [:restrict]
+
+        actions =
+          if dismiss? do
+            actions ++ [:dismiss]
+          else
+            actions
+          end
+
+        if release? do
+          actions ++ [:release]
+        else
+          actions
+        end
       end
     else
       _ -> []

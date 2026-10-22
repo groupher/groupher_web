@@ -94,7 +94,8 @@ defmodule GroupherServer.AlertBoard.Model.RuleSet do
 
     is_binary(id) and id != "" and kind in ["word", "judge"] and is_binary(value) and
       String.trim(value) != "" and String.length(value) <= value_limit and is_binary(category) and
-      category != "" and action in ["restrict", "review"]
+      category != "" and action in ["restrict", "review"] and
+      (kind == "judge" or action == "restrict")
   end
 
   defp valid_rule?(_rule), do: false
