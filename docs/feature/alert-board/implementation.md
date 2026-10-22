@@ -134,7 +134,7 @@ Article 编辑要为全部现有 binding 分别固定社区配置并登记 Check
 
 配置更新需要 expectedVersion；新配置只作用于后续提交、人工 Retry 和明确的 Recheck 操作。
 既有 Check 继续使用已固定的规则版本，既有人工待审和限制不自动解除。更新返回受影响对象数量但不批量回写内容。
-`recheckReviewTarget` 显式采用最新配置、递增 epoch、使旧 Check 失效并登记新任务；无全站隐式重扫。
+`recheckReviewTarget` 显式采用目标 scope 的最新配置、递增该 scope 的 Check generation、使同一 scope 的旧 Check 失效并登记新任务；它不递增 Article/Comment Lifecycle 的共享 `review_epoch`，因此不会让其他 scope 的在途 Check 失效或遗留等待限制。无全站隐式重扫。
 
 ### 4.2 行为矩阵
 
