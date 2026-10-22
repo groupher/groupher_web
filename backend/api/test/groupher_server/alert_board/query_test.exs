@@ -1,9 +1,10 @@
 defmodule GroupherServer.Test.AlertBoard.QueryTest do
   use GroupherServer.TestMate, async: false
 
-  alias GroupherServer.{AlertBoard, CMS, Repo}
-  alias AlertBoard.Model.{Case, ReviewConfig}
-  alias CMS.Model.Article
+  alias GroupherServer.{AlertBoard, CMS, Repo, ReviewBot}
+  alias AlertBoard.Model.{Case, ReviewConfig, RuleSet}
+  alias CMS.Model.{Article, ArticleLifecycle, ArticleReviewRestriction}
+  alias ReviewBot.Model.Check
 
   test "case detail returns a safe summary and actions only for authorized reviewers" do
     {community, article, author} = create_pending_article()
@@ -26,7 +27,7 @@ defmodule GroupherServer.Test.AlertBoard.QueryTest do
              )
 
     assert detail.safe_summary == "Article review case"
-    assert detail.allowed_actions == [:approve, :restrict, :dismiss, :release]
+    assert detail.allowed_actions == [:approve, :restrict]
     refute detail.safe_summary =~ "awaits review"
 
     reader = grant_review_actions(reviewer, community.slug, ["review.read"])
@@ -92,6 +93,99 @@ defmodule GroupherServer.Test.AlertBoard.QueryTest do
     assert is_nil(author_projection.viewer_report_id)
   end
 
+  test "report-only cases do not advertise approval or release" do
+    {community, published, _attrs, _author} = mock_article(:post)
+    article = Repo.get!(Article, published.article_id)
+    {:ok, reporter} = db_insert(:user)
+    reviewer = db_insert(:user) |> elem(1)
+    reviewer = grant_review_actions(reviewer, community.slug, ["review.read", "review.decide"])
+
+    assert {:ok, report} =
+             AlertBoard.submit_report(
+               %{resource: article, community_id: community.id},
+               "SPAM",
+               "Please investigate this post",
+               reporter,
+               Ecto.UUID.generate()
+             )
+
+    case_record = Repo.get!(Case, report.case_id)
+
+    assert {:ok, detail} =
+             AlertBoard.get_case(%{kind: :community, community: community}, case_record.id, reviewer)
+
+    assert detail.active_restrictions == []
+    assert detail.allowed_actions == [:restrict, :dismiss]
+    refute :approve in detail.allowed_actions
+    refute :release in detail.allowed_actions
+  end
+
+  test "content review preserves stale restrictions and ignores superseded or resolved failures" do
+    {community, article, author} = create_pending_article()
+    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
+    reviewer = db_insert(:user) |> elem(1)
+
+    assert {:ok, _report} =
+             AlertBoard.submit_report(
+               %{resource: article, community_id: community.id},
+               "SPAM",
+               "Please review this content",
+               reviewer,
+               Ecto.UUID.generate()
+             )
+
+    ruleset = insert_ruleset(community.id, author)
+    target_key = "article:#{article.id}"
+    scope_key = "community:#{community.id}"
+
+    insert_check(target_key, scope_key, lifecycle.review_content_token, ruleset, 1, :failed)
+
+    assert {:ok, failed_projection} =
+             AlertBoard.content_review(%{kind: :article, resource: article}, community, author)
+
+    assert failed_projection.check_unavailable
+
+    insert_check(target_key, scope_key, lifecycle.review_content_token, ruleset, 2, :completed)
+
+    assert {:ok, recovered_projection} =
+             AlertBoard.content_review(%{kind: :article, resource: article}, community, author)
+
+    refute recovered_projection.check_unavailable
+
+    {:ok, _restriction} =
+      %ArticleReviewRestriction{}
+      |> ArticleReviewRestriction.changeset(%{
+        lifecycle_id: lifecycle.id,
+        scope_key: scope_key,
+        cause_key: "retained-manual-hold",
+        kind: :manual_hold,
+        content_token: "older-token",
+        source: :human,
+        created_by_operation_ref: Ecto.UUID.generate(),
+        applied_at: DateTime.utc_now(:second)
+      })
+      |> Repo.insert()
+
+    assert {:ok, restricted_projection} =
+             AlertBoard.content_review(%{kind: :article, resource: article}, community, author)
+
+    assert restricted_projection.status == :restricted
+    assert "manual_hold" in restricted_projection.reason_codes
+
+    insert_check(target_key, scope_key, lifecycle.review_content_token, ruleset, 3, :failed)
+
+    case_record = Repo.get_by!(Case, target_key: target_key, scope_key: scope_key, status: :open)
+
+    case_record
+    |> Case.changeset(%{status: :resolved, resolved_at: DateTime.utc_now(:second)})
+    |> Repo.update!()
+
+    assert {:ok, resolved_projection} =
+             AlertBoard.content_review(%{kind: :article, resource: article}, community, author)
+
+    refute resolved_projection.check_unavailable
+  end
+
   defp create_pending_article do
     {:ok, author} = db_insert(:user)
     {:ok, community} = mock_community(author)
@@ -126,5 +220,36 @@ defmodule GroupherServer.Test.AlertBoard.QueryTest do
           community_slug => %{"cms" => passport_actions}
         }
     }
+  end
+
+  defp insert_ruleset(community_id, author) do
+    %RuleSet{}
+    |> RuleSet.changeset(%{
+      scope_key: "community:#{community_id}",
+      version: 1,
+      rules: %{"items" => []},
+      created_by_id: author.id,
+      operation_ref: Ecto.UUID.generate()
+    })
+    |> Repo.insert!()
+  end
+
+  defp insert_check(target_key, scope_key, content_token, ruleset, generation, state) do
+    %Check{}
+    |> Check.changeset(%{
+      target_key: target_key,
+      scope_key: scope_key,
+      content_token: content_token,
+      ruleset_id: ruleset.id,
+      config_version: 1,
+      mode: :immediate,
+      generation: generation,
+      trigger: :submit,
+      state: state,
+      result: if(state == :completed, do: :pass),
+      human_epoch: 0,
+      operation_ref: Ecto.UUID.generate()
+    })
+    |> Repo.insert!()
   end
 end

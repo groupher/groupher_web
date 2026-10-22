@@ -110,6 +110,24 @@ defmodule GroupherServer.Test.AlertBoard.ModelTest do
 
     refute RuleSet.changeset(%RuleSet{}, %{
              scope_key: "platform",
+             version: 3,
+             rules: %{
+               "items" => [
+                 %{
+                   "id" => "word-review",
+                   "kind" => "word",
+                   "value" => "exact match",
+                   "category" => "safety",
+                   "action" => "review"
+                 }
+               ]
+             },
+             created_by_id: 1,
+             operation_ref: Ecto.UUID.generate()
+           }).valid?
+
+    refute RuleSet.changeset(%RuleSet{}, %{
+             scope_key: "platform",
              version: 1,
              rules: %{"items" => []},
              created_by_id: 1,
