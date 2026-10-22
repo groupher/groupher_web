@@ -247,8 +247,8 @@ defmodule GroupherServer.ReviewBot.Registration do
       state: :completed,
       result: result,
       coverage: %{"text" => "complete", "image" => "unsupported"},
-      signals: %{"items" => matches},
-      operation_ref: stable_operation_ref(operation_ref, inputs.scope_key, 1)
+      signals: %{"items" => word_result.signals},
+      operation_ref: stable_operation_ref(operation_ref, inputs.scope_key, generation)
     })
   end
 
@@ -269,7 +269,7 @@ defmodule GroupherServer.ReviewBot.Registration do
              trigger: inputs.trigger,
              state: :queued,
              coverage: %{},
-             signals: %{"items" => if(word_result, do: word_result.matches, else: [])},
+             signals: %{"items" => if(word_result, do: word_result.signals, else: [])},
              payload: %{
                "text" => %{"title" => inputs.title, "body" => inputs.body},
                "images" => images,

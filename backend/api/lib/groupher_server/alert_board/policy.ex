@@ -87,14 +87,10 @@ defmodule GroupherServer.AlertBoard.Policy do
   defp restriction_ends(result, %Check{mode: mode} = check, restrictions, signals)
        when result in [:pass, :review, :restrict] and mode != :human_first do
     passed_rule_ids =
-      if result == :pass do
-        signals
-        |> Enum.filter(&(value(&1, "verdict") == "pass"))
-        |> Enum.map(&value(&1, "rule_id"))
-        |> MapSet.new()
-      else
-        MapSet.new()
-      end
+      signals
+      |> Enum.filter(&(value(&1, "verdict") == "pass"))
+      |> Enum.map(&value(&1, "rule_id"))
+      |> MapSet.new()
 
     restrictions
     |> Enum.filter(fn restriction ->

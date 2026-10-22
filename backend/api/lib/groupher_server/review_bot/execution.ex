@@ -15,6 +15,9 @@ defmodule GroupherServer.ReviewBot.Execution do
   alias ReviewBot.{CheckInput, CheckOutput, Config, ErrorCat, Media, Policy}
   alias ReviewBot.Model.{Attempt, Check}
 
+  @orphaned_attempt_seconds 240
+  @recovery_batch_size 100
+
   @doc """
   Runs a queued Check, recording each provider call without persisting raw content.
 
@@ -27,7 +30,7 @@ defmodule GroupherServer.ReviewBot.Execution do
           {:ok, :pass | :superseded} | {:error, term()}
   def execute_check(check_id, job_attempt, max_attempts)
       when is_binary(check_id) and is_integer(job_attempt) and is_integer(max_attempts) do
-    case claim(check_id) do
+    case claim(check_id, job_attempt) do
       {:ok, :already_finished} ->
         {:ok, :pass}
 
@@ -82,7 +85,41 @@ defmodule GroupherServer.ReviewBot.Execution do
 
   def apply_completed_check(_check, _target), do: {:error, ErrorCat.stale_check()}
 
-  defp claim(check_id) do
+  @doc """
+  Moves provider attempts abandoned beyond the worker recovery window to human review.
+
+  ## Examples
+
+      Execution.recover_stale_checks()
+      #=> {:ok, 0}
+  """
+  @spec recover_stale_checks() :: {:ok, non_neg_integer()} | {:error, term()}
+  def recover_stale_checks do
+    stale_before = DateTime.add(DateTime.utc_now(:second), -@orphaned_attempt_seconds, :second)
+
+    candidate_ids =
+      from(check in Check,
+        join: attempt in Attempt,
+        on: attempt.check_id == check.id and attempt.number == check.active_attempt,
+        where:
+          check.state == :running and attempt.state == :running and
+            attempt.started_at < ^stale_before,
+        order_by: [asc: attempt.started_at],
+        limit: ^@recovery_batch_size,
+        select: {check.id, attempt.id}
+      )
+      |> Repo.all()
+
+    Enum.reduce_while(candidate_ids, {:ok, 0}, fn {check_id, attempt_id}, {:ok, count} ->
+      case recover_stale_check(check_id, attempt_id, stale_before) do
+        {:ok, :recovered} -> {:cont, {:ok, count + 1}}
+        {:ok, _unchanged} -> {:cont, {:ok, count}}
+        {:error, reason} -> {:halt, {:error, reason}}
+      end
+    end)
+  end
+
+  defp claim(check_id, job_attempt) do
     Repo.transact_result(fn ->
       case Repo.get(Check, check_id) do
         nil ->
@@ -92,6 +129,13 @@ defmodule GroupherServer.ReviewBot.Execution do
           with {:ok, target} <-
                  CMS.load_review_target_for_update(snapshot.target_key, snapshot.scope_key) do
             claim_locked(snapshot.id, target)
+          end
+
+        %Check{state: :running, active_attempt: active_attempt} = snapshot
+        when job_attempt > active_attempt ->
+          with {:ok, target} <-
+                 CMS.load_review_target_for_update(snapshot.target_key, snapshot.scope_key) do
+            recover_running_claim(snapshot, target, job_attempt)
           end
 
         %Check{state: :superseded} ->
@@ -113,6 +157,104 @@ defmodule GroupherServer.ReviewBot.Execution do
           claim_queued(check)
         else
           supersede_queued(check)
+        end
+
+      %Check{state: :superseded} ->
+        {:ok, :superseded}
+
+      %Check{state: state} when state in [:completed, :failed] ->
+        {:ok, :already_finished}
+
+      nil ->
+        {:error, ErrorCat.check_not_found()}
+
+      %Check{} ->
+        {:error, ErrorCat.stale_check()}
+    end
+  end
+
+  defp recover_stale_check(check_id, attempt_id, stale_before) do
+    now = DateTime.utc_now(:second)
+
+    Repo.transact_result(fn ->
+      case Repo.get(Check, check_id) do
+        nil ->
+          {:ok, :unchanged}
+
+        snapshot ->
+          with {:ok, target} <-
+                 CMS.load_review_target_for_update(snapshot.target_key, snapshot.scope_key) do
+            case locked_check(check_id) do
+              %Check{state: :running, active_attempt: number} = check ->
+                attempt = Repo.get(Attempt, attempt_id)
+
+                cond do
+                  is_nil(attempt) or attempt.check_id != check.id or attempt.number != number ->
+                    {:ok, :unchanged}
+
+                  attempt.state != :running or
+                      DateTime.compare(attempt.started_at, stale_before) != :lt ->
+                    {:ok, :unchanged}
+
+                  not current_revision?(target.lifecycle, check) ->
+                    supersede(check, attempt, now)
+
+                  true ->
+                    with {:ok, _attempt} <-
+                           attempt
+                           |> Attempt.changeset(%{
+                             state: :abandoned,
+                             finished_at: now,
+                             error_code: "worker_terminated"
+                           })
+                           |> Repo.update(),
+                         {:ok, failed} <-
+                           check
+                           |> Check.changeset(%{
+                             state: :failed,
+                             payload: nil,
+                             payload_expires_at: nil
+                           })
+                           |> Repo.update(),
+                         {:ok, _application} <- apply_check_result(failed, target) do
+                      {:ok, :recovered}
+                    end
+                end
+
+              %Check{} ->
+                {:ok, :unchanged}
+
+              nil ->
+                {:ok, :unchanged}
+            end
+          end
+      end
+    end)
+  end
+
+  defp recover_running_claim(snapshot, target, job_attempt) do
+    now = DateTime.utc_now(:second)
+
+    case locked_check(snapshot.id) do
+      %Check{state: :running, active_attempt: active_attempt} = check
+      when active_attempt == snapshot.active_attempt and job_attempt > active_attempt ->
+        attempt = Repo.get_by(Attempt, check_id: check.id, number: active_attempt)
+
+        cond do
+          is_nil(attempt) ->
+            {:error, ErrorCat.stale_check()}
+
+          not current_revision?(target.lifecycle, check) ->
+            supersede(check, attempt, now)
+
+          true ->
+            with {:ok, _abandoned} <-
+                   attempt
+                   |> Attempt.changeset(%{state: :abandoned, finished_at: now})
+                   |> Repo.update(),
+                 {:ok, queued} <- check |> Check.changeset(%{state: :queued}) |> Repo.update() do
+              claim_queued(queued)
+            end
         end
 
       %Check{state: :superseded} ->
@@ -362,49 +504,73 @@ defmodule GroupherServer.ReviewBot.Execution do
     now = DateTime.utc_now(:second)
 
     Repo.transact_result(fn ->
-      case locked_check(check_id) do
-        %Check{state: :running, active_attempt: number} = check ->
-          attempt = Repo.get_by(Attempt, check_id: check.id, number: number)
-
-          if attempt do
-            attempt_state = if exhausted?, do: :terminal_error, else: :retryable_error
-
-            with {:ok, _attempt} <-
-                   attempt
-                   |> Attempt.changeset(%{
-                     state: attempt_state,
-                     finished_at: now,
-                     error_code: error_code(reason)
-                   })
-                   |> Repo.update(),
-                 {:ok, _updated} <-
-                   check
-                   |> Check.changeset(%{
-                     state: if(exhausted?, do: :failed, else: :queued),
-                     payload: if(exhausted?, do: nil, else: check.payload),
-                     payload_expires_at: if(exhausted?, do: nil, else: check.payload_expires_at)
-                   })
-                   |> Repo.update() do
-              if exhausted?, do: {:ok, :terminal}, else: {:error, reason}
-            end
-          else
-            {:error, ErrorCat.stale_check()}
-          end
-
-        %Check{state: :superseded} ->
-          {:ok, :superseded}
-
-        %Check{} ->
-          {:ok, :terminal}
-
+      case Repo.get(Check, check_id) do
         nil ->
           {:error, ErrorCat.check_not_found()}
+
+        snapshot ->
+          with {:ok, target} <-
+                 CMS.load_review_target_for_update(snapshot.target_key, snapshot.scope_key) do
+            case locked_check(check_id) do
+              %Check{state: :running, active_attempt: number} = check ->
+                attempt = Repo.get_by(Attempt, check_id: check.id, number: number)
+
+                cond do
+                  is_nil(attempt) ->
+                    {:error, ErrorCat.stale_check()}
+
+                  not current_revision?(target.lifecycle, check) ->
+                    supersede(check, attempt, now)
+
+                  true ->
+                    persist_failure(check, attempt, target, reason, exhausted?, now)
+                end
+
+              %Check{state: :superseded} ->
+                {:ok, :superseded}
+
+              %Check{} ->
+                {:ok, :terminal}
+
+              nil ->
+                {:error, ErrorCat.check_not_found()}
+            end
+          end
       end
     end)
     |> case do
       {:ok, :terminal} -> {:ok, :pass}
       {:ok, :superseded} -> {:ok, :superseded}
       {:error, _reason} = error -> error
+    end
+  end
+
+  defp persist_failure(check, attempt, target, reason, exhausted?, now) do
+    attempt_state = if exhausted?, do: :terminal_error, else: :retryable_error
+
+    with {:ok, _attempt} <-
+           attempt
+           |> Attempt.changeset(%{
+             state: attempt_state,
+             finished_at: now,
+             error_code: error_code(reason)
+           })
+           |> Repo.update(),
+         {:ok, updated} <-
+           check
+           |> Check.changeset(%{
+             state: if(exhausted?, do: :failed, else: :queued),
+             payload: if(exhausted?, do: nil, else: check.payload),
+             payload_expires_at: if(exhausted?, do: nil, else: check.payload_expires_at)
+           })
+           |> Repo.update() do
+      if exhausted? do
+        with {:ok, _application} <- apply_check_result(updated, target) do
+          {:ok, :terminal}
+        end
+      else
+        {:error, reason}
+      end
     end
   end
 

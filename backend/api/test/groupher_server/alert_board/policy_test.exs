@@ -33,6 +33,19 @@ defmodule GroupherServer.Test.AlertBoard.PolicyTest do
              Policy.review_check(check, [old_rule_hold, old_ai_wait])
   end
 
+  test "pass evidence clears resolved rule hits even when another rule still restricts" do
+    check =
+      check(:immediate, :restrict, [
+        %{"rule_id" => "r1", "verdict" => "pass"},
+        %{"rule_id" => "r2", "action" => "restrict", "verdict" => "hit"}
+      ])
+
+    assert %{action: :restrict, end_restriction_ids: ["old-rule"]} =
+             Policy.review_check(check, [
+               restriction("old-rule", :rule_hit, "platform", "token-1", "rule:r1")
+             ])
+  end
+
   test "AI-first uncertainty replaces awaiting-ai with awaiting-human" do
     check = check(:ai_first, :review, [%{"rule_id" => "r1", "verdict" => "uncertain"}])
 
@@ -42,6 +55,17 @@ defmodule GroupherServer.Test.AlertBoard.PolicyTest do
     assert restriction.kind == :awaiting_human
     assert restriction.scope_key == "platform"
     assert restriction.content_token == "token-1"
+  end
+
+  test "a failed AI check replaces awaiting-ai with awaiting-human" do
+    failed = %{check(:ai_first, nil, []) | state: :failed, result: nil}
+    awaiting_ai = restriction("ai", :awaiting_ai, "platform", "token-1")
+
+    assert %{action: :review, add_restrictions: [human], end_restriction_ids: ["ai"]} =
+             Policy.review_check(failed, [awaiting_ai])
+
+    assert human.kind == :awaiting_human
+    assert human.content_token == "token-1"
   end
 
   test "human-first pass keeps its human hold and restrictive hits replace only AI wait" do

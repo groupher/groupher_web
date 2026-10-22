@@ -1,6 +1,8 @@
 defmodule GroupherServer.Test.ReviewBot.ExecutionTest do
   use GroupherServer.TestMate, async: false
 
+  import Ecto.Query
+
   alias GroupherServer.{AlertBoard, CMS, Repo, ReviewBot}
   alias AlertBoard.Model.{Case, Decision, RuleSet}
 
@@ -74,6 +76,48 @@ defmodule GroupherServer.Test.ReviewBot.ExecutionTest do
     assert Repo.get!(Check, check.id).state == :superseded
     assert Repo.get!(Check, check.id).payload == nil
     assert Repo.aggregate(Attempt, :count) == 0
+  end
+
+  test "a retry reclaims a running Check and sends terminal AI failure to human review" do
+    {community, article, check} = running_ai_check(DateTime.utc_now(:second))
+
+    assert {:ok, :pass} = ReviewBot.execute_check(check.id, 2, 3)
+
+    failed = Repo.get!(Check, check.id)
+    assert failed.state == :failed
+    assert Repo.get_by!(Attempt, check_id: check.id, number: 1).state == :abandoned
+    assert Repo.get_by!(Attempt, check_id: check.id, number: 2).state == :terminal_error
+
+    awaiting_ai = Repo.get_by!(ArticleReviewRestriction, kind: :awaiting_ai)
+    assert awaiting_ai.ended_at
+
+    assert Repo.exists?(
+             from(restriction in ArticleReviewRestriction,
+               where:
+                 restriction.lifecycle_id == ^awaiting_ai.lifecycle_id and
+                   restriction.scope_key == ^awaiting_ai.scope_key and
+                   restriction.kind == :awaiting_human and is_nil(restriction.ended_at)
+             )
+           )
+
+    assert Repo.get_by!(Case,
+             target_key: "article:#{article.id}",
+             scope_key: "community:#{community.id}"
+           ).status == :open
+  end
+
+  test "the scheduled recovery closes an orphaned AI wait with a human-review Case" do
+    started_at = DateTime.add(DateTime.utc_now(:second), -300, :second)
+    {community, article, check} = running_ai_check(started_at)
+
+    assert {:ok, 1} = ReviewBot.recover_stale_checks()
+    assert Repo.get!(Check, check.id).state == :failed
+    assert Repo.get_by!(Attempt, check_id: check.id, number: 1).state == :abandoned
+
+    assert Repo.get_by!(Case,
+             target_key: "article:#{article.id}",
+             scope_key: "community:#{community.id}"
+           ).status == :open
   end
 
   test "applying a completed restrictive Check atomically opens a Case and hides its scope" do
@@ -194,5 +238,94 @@ defmodule GroupherServer.Test.ReviewBot.ExecutionTest do
     assert Repo.aggregate(ArticleReviewRestriction, :count) == 1
     assert Repo.aggregate(Case, :count) == 1
     assert Repo.aggregate(Decision, :count) == 1
+  end
+
+  defp running_ai_check(started_at) do
+    {community, article_view, _attrs, _author} = mock_article(:post)
+    article = Repo.get!(Article, article_view.id)
+    {:ok, user} = db_insert(:user)
+    token = "revision:orphaned-#{Ecto.UUID.generate()}"
+    operation_ref = Ecto.UUID.generate()
+    scope_key = "community:#{community.id}"
+
+    ruleset =
+      %RuleSet{}
+      |> RuleSet.changeset(%{
+        scope_key: scope_key,
+        version: 1,
+        rules: %{
+          "items" => [
+            %{
+              "id" => "judge-1",
+              "kind" => "judge",
+              "value" => "Review this content",
+              "category" => "risk",
+              "action" => "review"
+            }
+          ]
+        },
+        provider_profile: "missing-profile",
+        created_by_id: user.id,
+        operation_ref: Ecto.UUID.generate(),
+        required_modalities: ["text"]
+      })
+      |> Repo.insert!()
+
+    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
+
+    lifecycle
+    |> ArticleLifecycle.changeset(%{review_content_token: token, review_epoch: 1})
+    |> Repo.update!()
+
+    %ArticleReviewRestriction{}
+    |> ArticleReviewRestriction.changeset(%{
+      lifecycle_id: lifecycle.id,
+      scope_key: scope_key,
+      cause_key: "awaiting_ai:#{token}",
+      kind: :awaiting_ai,
+      content_token: token,
+      source: :submission,
+      created_by_operation_ref: Ecto.UUID.generate(),
+      applied_at: DateTime.utc_now(:second)
+    })
+    |> Repo.insert!()
+
+    check =
+      %Check{}
+      |> Check.changeset(%{
+        target_key: "article:#{article.id}",
+        scope_key: scope_key,
+        content_token: token,
+        ruleset_id: ruleset.id,
+        config_version: 1,
+        mode: :ai_first,
+        generation: 1,
+        trigger: :submit,
+        state: :running,
+        active_attempt: 1,
+        human_epoch: 1,
+        payload: %{
+          "provider_profile" => "missing-profile",
+          "text" => %{"title" => "private title", "body" => "private body"},
+          "rules" => ruleset.rules["items"],
+          "required_modalities" => ["text"]
+        },
+        payload_expires_at: DateTime.add(DateTime.utc_now(:second), 60, :second),
+        operation_ref: operation_ref
+      })
+      |> Repo.insert!()
+
+    %Attempt{}
+    |> Attempt.changeset(%{
+      check_id: check.id,
+      number: 1,
+      state: :running,
+      started_at: started_at,
+      provider_profile: "missing-profile",
+      request_id: Ecto.UUID.generate()
+    })
+    |> Repo.insert!()
+
+    {community, article, check}
   end
 end

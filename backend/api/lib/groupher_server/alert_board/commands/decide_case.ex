@@ -239,7 +239,10 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
     ids = Enum.uniq(ids)
 
     if ids != [] and length(selected) == length(ids) and
-         Enum.all?(selected, &(&1.kind == :manual_hold)) do
+         Enum.all?(selected, fn restriction ->
+           restriction.kind == :manual_hold or
+             (restriction.kind == :rule_hit and restriction.source == :policy)
+         end) do
       {:ok, :pass}
     else
       {:error, AlertBoard.ErrorCat.restriction_scope_mismatch()}

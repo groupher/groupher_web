@@ -88,6 +88,52 @@ defmodule GroupherServer.Test.AlertBoard.DecideCaseTest do
              )
   end
 
+  test "release decisions can clear an active policy rule hit from older content" do
+    {community, article, _author} = create_pending_article()
+    {:ok, reviewer} = db_insert(:user)
+    reviewer = grant_review_action(reviewer, community.slug, "review.decide")
+
+    case_record =
+      Repo.get_by!(Case,
+        target_key: "article:#{article.id}",
+        scope_key: "community:#{community.id}",
+        status: :open
+      )
+
+    restriction =
+      Repo.get_by!(ArticleReviewRestriction,
+        case_id: case_record.id,
+        kind: :awaiting_human
+      )
+
+    restriction =
+      restriction
+      |> ArticleReviewRestriction.changeset(%{
+        kind: :rule_hit,
+        source: :policy,
+        content_token: "older-content-token",
+        cause_key: "rule:word-1"
+      })
+      |> Repo.update!()
+
+    attrs = %{
+      expected_case_version: case_record.version,
+      expected_content_token: case_record.content_token,
+      action: :release,
+      restriction_ids: [restriction.id],
+      reason_code: "rule_no_longer_applies",
+      note: "Reviewed the edited content"
+    }
+
+    assert {:ok, %Decision{action: :release} = decision} =
+             AlertBoard.decide_case(case_record.id, attrs, reviewer, Ecto.UUID.generate())
+
+    ended = Repo.get!(ArticleReviewRestriction, restriction.id)
+    assert ended.ended_at
+    assert ended.end_reason == "released"
+    assert decision.restriction_ids == [restriction.id]
+  end
+
   defp grant_review_action(user, community_slug, action) do
     %{
       user

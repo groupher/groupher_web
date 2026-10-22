@@ -52,6 +52,17 @@ defmodule GroupherServer.ReviewBot do
   defdelegate execute_check(check_id, attempt, max_attempts), to: Execution
 
   @doc """
+  Recovers provider checks whose workers stopped while an Attempt was running.
+
+  ## Examples
+
+      ReviewBot.recover_stale_checks()
+      #=> {:ok, recovered_count} | {:error, reason}
+  """
+  @spec recover_stale_checks() :: {:ok, non_neg_integer()} | {:error, term()}
+  defdelegate recover_stale_checks(), to: Execution
+
+  @doc """
   Applies one completed Check under a caller-locked CMS Lifecycle transaction.
 
   ## Examples

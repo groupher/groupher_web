@@ -29,6 +29,16 @@ defmodule GroupherServer.Test.ReviewBot.WordRulesTest do
 
     assert {:ok, result} = WordRules.check("Title", "Straße", rules)
     assert result.matches == [%{rule_id: "rule-1", category: "spam", action: "restrict"}]
+
+    assert result.signals == [
+             %{
+               rule_id: "rule-1",
+               category: "spam",
+               action: "restrict",
+               verdict: "hit"
+             }
+           ]
+
     assert result.coverage == %{"text" => true, "image" => false}
     refute inspect(result) =~ "Straße"
   end
@@ -50,5 +60,35 @@ defmodule GroupherServer.Test.ReviewBot.WordRulesTest do
 
     assert {:ok, %{matches: [%{rule_id: "rule-2"}]}} = WordRules.check("abc", "safe", rules)
     assert {:error, _} = WordRules.check("title", "body", %RuleSet{rules: %{}})
+  end
+
+  test "records pass evidence for each evaluated word rule without exposing the word" do
+    rules = %RuleSet{
+      rules: %{
+        "items" => [
+          %{
+            "id" => "rule-3",
+            "kind" => "word",
+            "value" => "badword",
+            "category" => "spam",
+            "action" => "restrict"
+          }
+        ]
+      }
+    }
+
+    assert {:ok, result} = WordRules.check("safe title", "safe body", rules)
+    assert result.matches == []
+
+    assert result.signals == [
+             %{
+               rule_id: "rule-3",
+               category: "spam",
+               action: "restrict",
+               verdict: "pass"
+             }
+           ]
+
+    refute inspect(result) =~ "badword"
   end
 end

@@ -87,12 +87,41 @@ defmodule GroupherServer.Test.ReviewBot.RegistrationTest do
     assert check.state == :completed
     assert check.mode == :immediate
     assert check.result == :restrict
-    assert check.signals == %{"items" => [%{rule_id: "w1", category: "spam", action: "restrict"}]}
+
+    assert check.signals == %{
+             "items" => [
+               %{rule_id: "w1", category: "spam", action: "restrict", verdict: "hit"}
+             ]
+           }
+
     refute inspect(check.signals) =~ "badword"
 
     assert {:ok, %{checks: [%Check{id: repeated_id}], word_result: _}} = register.()
     assert repeated_id == check.id
     assert Repo.aggregate(Check, :count) == 1
+  end
+
+  test "persists pass evidence for a clear deterministic word check" do
+    ruleset = ruleset(%{"items" => [word_rule()]})
+    config = config(ruleset, background_check: false)
+
+    assert {:ok, %{checks: [%Check{} = check], word_result: %{matches: []}}} =
+             Repo.transact_result(fn ->
+               ReviewBot.register_in_transaction(
+                 target(),
+                 content("safe body"),
+                 config,
+                 Ecto.UUID.generate()
+               )
+             end)
+
+    assert check.result == :pass
+
+    assert check.signals == %{
+             "items" => [
+               %{rule_id: "w1", category: "spam", action: "restrict", verdict: "pass"}
+             ]
+           }
   end
 
   test "model rules pin a queued Check and keep content out of the Oban arguments" do
@@ -160,6 +189,8 @@ defmodule GroupherServer.Test.ReviewBot.RegistrationTest do
     assert {:ok, %{checks: [%Check{generation: 2} = second]}} = register.()
     assert first.content_token == second.content_token
     assert first.id != second.id
+    assert first.operation_ref != second.operation_ref
+    assert Repo.aggregate(Check, :count) == 2
   end
 
   defp config(ruleset, opts) do
