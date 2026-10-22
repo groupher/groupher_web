@@ -4,14 +4,16 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
 
   Business position:
 
-      committed Article outbox event
-        -> Article.Cleanup worker
-        -> projection effect or public-cache purge
+      Oban outbox job
+        -> Outbox.execute lease + fencing
+        -> Article projection effect or cache purge
+        -> complete / retry / snooze / terminal failure
   """
 
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{CMS, ErrorCat, Repo}
 
   alias CMS.Outbox
+  alias CMS.Articles.ErrorCat, as: ArticleErrorCat
 
   alias CMS.Model.{
     Article,
@@ -24,16 +26,28 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
     DocPublic
   }
 
+  @doc """
+  Delivers one Article outbox event, updating public projections or purging cache tags.
+
+  Busy leases snooze the job. Retryable errors return to Oban; after the final
+  attempt the outbox record is marked failed and the exhausted job completes.
+  """
+  @spec perform(Oban.Job.t()) :: Oban.Worker.result()
   def perform(%Oban.Job{args: %{"event_id" => event_id}} = job) do
-    case Outbox.execute(event_id, &cleanup/1) do
+    case Outbox.execute(event_id, &cleanup/1,
+           on_error: if(job.attempt >= job.max_attempts, do: :fail, else: :classify)
+         ) do
       {:ok, _value} ->
         {:ok, :pass}
 
       {:busy, seconds} ->
         {:snooze, seconds}
 
-      {:error, _reason} when job.attempt >= job.max_attempts ->
-        _ = Outbox.mark_failed(event_id)
+      {:error,
+       %ErrorCat.Error{
+         namespace: {:cms},
+         reason: :outbox_delivery_exhausted
+       }} ->
         {:ok, :pass}
 
       {:error, reason} ->
@@ -64,7 +78,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
            Repo.get_by(ArticleBinding, article_id: article.id, community_id: community.id) do
       projection_result(event, article, community, binding)
     else
-      nil -> {:error, :article_projection_not_found}
+      nil -> {:error, ArticleErrorCat.projection_not_found()}
     end
   end
 
@@ -82,7 +96,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
         |> Map.put(:version, version)
       )
     else
-      nil -> {:error, :article_projection_not_found}
+      nil -> {:error, ArticleErrorCat.projection_not_found()}
     end
   end
 
@@ -93,7 +107,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
         projection_payload(event, article, community, binding, public, revision)
       )
     else
-      nil -> {:error, :article_projection_not_found}
+      nil -> {:error, ArticleErrorCat.projection_not_found()}
     end
   end
 

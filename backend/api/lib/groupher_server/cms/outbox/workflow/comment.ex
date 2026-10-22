@@ -4,29 +4,43 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Comment do
 
   Business position:
 
-      committed Comment outbox event
-        -> Comment.Cleanup worker
-        -> cache purge or comment effects
+      Oban outbox job
+        -> Outbox.execute lease + fencing
+        -> Comment Effects / projection delivery
+        -> complete / retry / snooze / terminal failure
   """
 
   alias GroupherServer.Accounts
 
-  alias GroupherServer.{CMS, Jobs, Repo}
+  alias GroupherServer.{CMS, ErrorCat, Jobs, Repo}
   alias CMS.Outbox
+  alias CMS.Comments.ErrorCat, as: CommentErrorCat
   alias CMS.Model.{Article, Comment, Community}
   alias CMS.SearchArtiments.Indexer
   alias Accounts.Model.User
 
+  @doc """
+  Delivers one Comment outbox event under the shared lease and retry protocol.
+
+  Busy leases snooze; transient delivery errors retry; after exhaustion Outbox
+  records terminal failure and the job is acknowledged.
+  """
+  @spec perform(Oban.Job.t()) :: Oban.Worker.result()
   def perform(%Oban.Job{args: %{"event_id" => event_id}} = job) do
-    case Outbox.execute(event_id, &cleanup/1) do
+    case Outbox.execute(event_id, &cleanup/1,
+           on_error: if(job.attempt >= job.max_attempts, do: :fail, else: :classify)
+         ) do
       {:ok, _value} ->
         {:ok, :pass}
 
       {:busy, seconds} ->
         {:snooze, seconds}
 
-      {:error, _reason} when job.attempt >= job.max_attempts ->
-        _ = Outbox.mark_failed(event_id)
+      {:error,
+       %ErrorCat.Error{
+         namespace: {:cms},
+         reason: :outbox_delivery_exhausted
+       }} ->
         {:ok, :pass}
 
       {:error, reason} ->
@@ -48,7 +62,7 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Comment do
              {:ok, _} <- normalize(Indexer.enqueue_metrics(article)) do
           {:ok, :effects_enqueued}
         else
-          nil -> {:error, :comment_article_not_found}
+          nil -> {:error, CommentErrorCat.not_exist("Comment parent Article")}
         end
 
       action ->
@@ -64,16 +78,14 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Comment do
          {:ok, _} <- enqueue_comment_job(action, comment, actor, community) do
       {:ok, :effects_enqueued}
     else
-      nil -> {:error, :comment_effect_target_not_found}
+      nil -> {:error, CommentErrorCat.effect_target_not_found()}
     end
   end
 
-  defp comment_effects(_action, _event), do: {:error, :unknown_comment_outbox_event}
+  defp comment_effects(_action, _event), do: {:error, CommentErrorCat.unknown_outbox_event()}
 
   defp enqueue_comment_job("comment.created", comment, actor, community) do
     with {:ok, _} <- enqueue(:sync_mentions, comment.id, fn -> Jobs.sync_mentions(comment) end),
-         {:ok, _} <-
-           enqueue(:notify_comment, comment.id, fn -> Jobs.notify_comment(comment, actor) end),
          {:ok, _} <-
            enqueue(:subscribe_community, community.id, fn ->
              Jobs.subscribe_community(community, actor)

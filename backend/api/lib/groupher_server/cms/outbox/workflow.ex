@@ -2,11 +2,16 @@ defmodule GroupherServer.CMS.Outbox.Workflow do
   @moduledoc """
   Owns post-commit delivery of CMS outbox events.
 
-      Jobs worker -> CMS facade -> Outbox.Workflow -> persistence and effects
+      Oban worker
+        -> Outbox.Workflow dispatch by event owner
+        -> Outbox.execute lease / fencing
+        -> domain Effects
+        -> complete, retry, snooze, or terminal failure
   """
 
   alias __MODULE__.{Article, Asset, Comment, Community, Interaction, Press}
 
+  @doc "Dispatches one claimed CMS outbox job to its domain delivery workflow."
   @spec perform(atom(), Oban.Job.t()) :: Oban.Worker.result()
   def perform(:article, job), do: Article.perform(job)
   def perform(:asset, job), do: Asset.perform(job)
