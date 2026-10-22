@@ -327,7 +327,7 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
   end
 
   defp supersede_pending_checks(action, %Case{} = case_record)
-       when action in [:approve, :restrict, :release] do
+       when action in [:approve, :restrict] do
     ReviewBot.supersede_in_flight_checks(case_record.target_key, case_record.scope_key)
   end
 

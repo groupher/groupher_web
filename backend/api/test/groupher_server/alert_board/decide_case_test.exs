@@ -306,6 +306,66 @@ defmodule GroupherServer.Test.AlertBoard.DecideCaseTest do
     assert decision.restriction_ids == [restriction.id]
   end
 
+  test "releasing a retained hold keeps the current AI check alive" do
+    {community, article, _author} = create_pending_article()
+    {:ok, reviewer} = db_insert(:user)
+    reviewer = grant_review_action(reviewer, community.slug, "review.decide")
+
+    case_record =
+      Repo.get_by!(Case,
+        target_key: "article:#{article.id}",
+        scope_key: "community:#{community.id}",
+        status: :open
+      )
+
+    waiting = Repo.get_by!(ArticleReviewRestriction, case_id: case_record.id)
+
+    retained =
+      waiting
+      |> ArticleReviewRestriction.changeset(%{
+        kind: :manual_hold,
+        content_token: "older-content-token",
+        cause_key: "retained-manual-hold"
+      })
+      |> Repo.update!()
+
+    awaiting_ai =
+      %ArticleReviewRestriction{}
+      |> ArticleReviewRestriction.changeset(%{
+        lifecycle_id: retained.lifecycle_id,
+        scope_key: retained.scope_key,
+        cause_key: "awaiting-ai-current-token",
+        kind: :awaiting_ai,
+        content_token: case_record.content_token,
+        source: :submission,
+        created_by_operation_ref: Ecto.UUID.generate(),
+        applied_at: DateTime.utc_now(:second)
+      })
+      |> Repo.insert!()
+
+    {check, attempt} = running_check(case_record)
+
+    assert {:ok, %Decision{action: :release}} =
+             AlertBoard.decide_case(
+               case_record.id,
+               %{
+                 expected_case_version: case_record.version,
+                 expected_content_token: case_record.content_token,
+                 action: :release,
+                 restriction_ids: [retained.id],
+                 reason_code: "old_hold_cleared",
+                 note: "Keep the current AI check running"
+               },
+               reviewer,
+               Ecto.UUID.generate()
+             )
+
+    assert Repo.get!(Check, check.id).state == :running
+    assert Repo.get!(Attempt, attempt.id).state == :running
+    assert Repo.get!(ArticleReviewRestriction, awaiting_ai.id).ended_at == nil
+    assert Repo.get!(Case, case_record.id).status == :open
+  end
+
   defp grant_review_action(user, community_slug, action) do
     %{
       user
