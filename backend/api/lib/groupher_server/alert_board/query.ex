@@ -565,6 +565,11 @@ defmodule GroupherServer.AlertBoard.Query do
     end
   end
 
+  defp allowed_actions(_scope, %Case{status: status}, _restrictions, _actor)
+       when status != :open do
+    []
+  end
+
   defp allowed_actions(scope, %Case{} = case_record, restrictions, actor) do
     with {:ok, :pass} <- Authorization.authorize(scope, decide_action(scope), actor),
          false <- case_owner_id(case_record) == Map.get(actor, :id) do
