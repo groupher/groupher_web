@@ -104,11 +104,11 @@ defmodule GroupherServer.AlertBoard.Commands.RecheckTarget do
              community_id: community_id
            }),
          {:ok, %{checks: checks}} <-
-           CMS.register_review_submission(
+           CMS.register_current_review_scope(
              target.lifecycle,
              target,
              content,
-             [config],
+             config,
              command_id
            ) do
       {:ok, checks}

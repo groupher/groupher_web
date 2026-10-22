@@ -15,7 +15,7 @@ defmodule GroupherServer.AlertBoard.Commands.SubmitReport do
   alias GroupherServer.AlertBoard
   alias AlertBoard.Model.Report
   alias Accounts.Model.User
-  alias CMS.Model.{Article, ArticleLifecycle, Comment, CommentLifecycle}
+  alias CMS.Model.{Article, ArticleLifecycle, Author, Comment, CommentLifecycle}
   alias CMS.Command.ConfirmationDefinition
 
   defmodule Confirmation do
@@ -215,6 +215,21 @@ defmodule GroupherServer.AlertBoard.Commands.SubmitReport do
   defp non_empty_details?(value), do: is_binary(value) and String.trim(value) != ""
 
   defp reject_self_report(%{user_id: user_id}, %User{id: user_id}) do
+    {:error, AlertBoard.ErrorCat.self_report()}
+  end
+
+  defp reject_self_report(%{resource: %Article{author_id: author_id}}, %User{id: actor_id}) do
+    case Repo.get(Author, author_id) do
+      %Author{user_id: ^actor_id} -> {:error, AlertBoard.ErrorCat.self_report()}
+      _ -> {:ok, :pass}
+    end
+  end
+
+  defp reject_self_report(
+         %{resource: %Comment{author_id: author_id}},
+         %User{id: reporter_id}
+       )
+       when author_id == reporter_id do
     {:error, AlertBoard.ErrorCat.self_report()}
   end
 

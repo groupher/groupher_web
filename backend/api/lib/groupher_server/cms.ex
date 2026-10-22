@@ -123,6 +123,13 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Review.Submission,
     as: :register
 
+  @doc "Registers a recheck for one existing review scope without advancing the shared content epoch."
+  @spec register_current_review_scope(struct(), map(), map(), struct(), Ecto.UUID.t()) ::
+          {:ok, map()} | {:error, term()}
+  defdelegate register_current_review_scope(lifecycle, target, content, config, operation_ref),
+    to: GroupherServer.CMS.Review.Submission,
+    as: :register_current_scope
+
   @doc "Adds the shared report-count projection through the CMS interaction boundary."
   @spec add_report_projection(struct(), struct()) :: {:ok, term()} | {:error, term()}
   defdelegate add_report_projection(resource, actor),
