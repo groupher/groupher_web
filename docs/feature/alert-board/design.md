@@ -149,6 +149,7 @@ Policy 只消费已加载 facts，不查库、不调用 provider、不修改状�
 平台限制只能由平台授权解除，社区不能以自定义 Prompt 覆盖平台规则。
 多社区 Article 的社区规则适用范围须显式携带 community，不能把社区命中无条件写成全局限制；
 物理落点为资源 Lifecycle-owned review_restrictions 表，ArticleBinding.visible 仅按对应社区派生，详见实施合同 §3.3/§5。
+Article 的正文修订由多个 Binding 共享，因此编辑时对平台和每个现存社区 scope 分别执行编辑策略；镜像/迁移新建目标 Binding 时，先按目标社区首次发布策略检查当前修订，迁移同时结束源社区 scope 的有效限制。
 
 ## 5. 举报与事项聚合
 
