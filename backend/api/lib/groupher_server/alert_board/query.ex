@@ -583,8 +583,7 @@ defmodule GroupherServer.AlertBoard.Query do
               (restriction.kind == :rule_hit and restriction.source == :policy)
           end)
 
-        dismiss? =
-          not Enum.any?(restrictions, &(&1.kind in [:awaiting_ai, :awaiting_human, :manual_hold]))
+        dismiss? = restrictions == []
 
         actions =
           if approve? do

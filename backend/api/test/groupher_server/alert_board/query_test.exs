@@ -124,6 +124,33 @@ defmodule GroupherServer.Test.AlertBoard.QueryTest do
     refute :release in detail.allowed_actions
   end
 
+  test "policy-restricted cases do not advertise dismissal" do
+    {community, article, _author} = create_pending_article()
+
+    case_record =
+      Repo.get_by!(Case,
+        target_key: "article:#{article.id}",
+        scope_key: "community:#{community.id}",
+        status: :open
+      )
+
+    restriction = Repo.get_by!(ArticleReviewRestriction, case_id: case_record.id)
+    Repo.update!(Ecto.Changeset.change(restriction, kind: :rule_hit, source: :policy))
+
+    {:ok, reviewer} = db_insert(:user)
+    reviewer = grant_review_actions(reviewer, community.slug, ["review.read", "review.decide"])
+
+    assert {:ok, detail} =
+             AlertBoard.get_case(
+               %{kind: :community, community: community},
+               case_record.id,
+               reviewer
+             )
+
+    assert :release in detail.allowed_actions
+    refute :dismiss in detail.allowed_actions
+  end
+
   test "reported count is derived from active AlertBoard reports against the account" do
     {:ok, account} = db_insert(:user)
     {:ok, reporter} = db_insert(:user)
