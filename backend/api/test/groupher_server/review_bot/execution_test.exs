@@ -240,6 +240,144 @@ defmodule GroupherServer.Test.ReviewBot.ExecutionTest do
     assert Repo.aggregate(Decision, :count) == 1
   end
 
+  test "a passing Check resolves the matching policy Case after releasing its final hold" do
+    {community, article_view, _attrs, author} = mock_article(:post)
+    article = Repo.get!(Article, article_view.id)
+    scope_key = "community:#{community.id}"
+    token = "revision:policy-case-resolution"
+
+    ruleset =
+      %RuleSet{}
+      |> RuleSet.changeset(%{
+        scope_key: scope_key,
+        version: 1,
+        rules: %{
+          "items" => [
+            %{
+              "id" => "r1",
+              "kind" => "word",
+              "value" => "badword",
+              "category" => "spam",
+              "action" => "restrict"
+            }
+          ]
+        },
+        created_by_id: author.id,
+        operation_ref: Ecto.UUID.generate(),
+        required_modalities: ["text"]
+      })
+      |> Repo.insert!()
+
+    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
+
+    lifecycle
+    |> ArticleLifecycle.changeset(%{review_content_token: token, review_epoch: 1})
+    |> Repo.update!()
+
+    restrictive =
+      insert_completed_check(article, scope_key, ruleset, token, 1, :restrict, [
+        %{"rule_id" => "r1", "action" => "restrict", "verdict" => "hit"}
+      ])
+
+    assert :ok = apply_completed_check(article, lifecycle.id, restrictive)
+    case_record = Repo.get_by!(Case, target_key: "article:#{article.id}", scope_key: scope_key)
+    assert case_record.status == :open
+
+    passing =
+      insert_completed_check(article, scope_key, ruleset, token, 2, :pass, [
+        %{"rule_id" => "r1", "action" => "restrict", "verdict" => "pass"}
+      ])
+
+    pending =
+      %Check{}
+      |> Check.changeset(%{
+        target_key: "article:#{article.id}",
+        scope_key: scope_key,
+        content_token: token,
+        ruleset_id: ruleset.id,
+        config_version: 1,
+        mode: :ai_first,
+        generation: 3,
+        trigger: :manual,
+        state: :queued,
+        human_epoch: 1,
+        payload: %{"text" => %{"body" => "pending"}},
+        payload_expires_at: DateTime.add(DateTime.utc_now(:second), 60, :second),
+        operation_ref: Ecto.UUID.generate()
+      })
+      |> Repo.insert!()
+
+    assert :ok = apply_completed_check(article, lifecycle.id, passing)
+    assert Repo.get!(Case, case_record.id).status == :open
+
+    pending =
+      pending
+      |> Check.changeset(%{
+        state: :completed,
+        result: :pass,
+        signals: %{
+          "items" => [%{"rule_id" => "r1", "action" => "restrict", "verdict" => "pass"}]
+        },
+        payload: nil,
+        payload_expires_at: nil
+      })
+      |> Repo.update!()
+
+    assert :ok = apply_completed_check(article, lifecycle.id, pending)
+
+    assert Repo.get!(Case, case_record.id).status == :resolved
+    assert Repo.get_by!(Decision, operation_ref: passing.operation_ref).action == :approve
+
+    assert Repo.exists?(
+             from(restriction in ArticleReviewRestriction,
+               where: restriction.check_id == ^restrictive.id and not is_nil(restriction.ended_at)
+             )
+           )
+  end
+
+  defp insert_completed_check(article, scope_key, ruleset, token, generation, result, signals) do
+    %Check{}
+    |> Check.changeset(%{
+      target_key: "article:#{article.id}",
+      scope_key: scope_key,
+      content_token: token,
+      ruleset_id: ruleset.id,
+      config_version: 1,
+      mode: :ai_first,
+      generation: generation,
+      trigger: :submit,
+      state: :completed,
+      result: result,
+      signals: %{"items" => signals},
+      human_epoch: 1,
+      operation_ref: Ecto.UUID.generate()
+    })
+    |> Repo.insert!()
+  end
+
+  defp apply_completed_check(article, lifecycle_id, check) do
+    Repo.transaction(fn ->
+      lifecycle =
+        ArticleLifecycle
+        |> Ecto.Query.where([row], row.id == ^lifecycle_id)
+        |> Ecto.Query.lock("FOR UPDATE")
+        |> Repo.one!()
+
+      with {:ok, target} <-
+             CMS.load_review_target_for_update("article:#{article.id}", check.scope_key),
+           {:ok, :pass} <-
+             ReviewBot.apply_completed_check(check, Map.put(target, :lifecycle, lifecycle)) do
+        :ok
+      else
+        {:error, reason} -> Repo.rollback(reason)
+      end
+    end)
+    |> case do
+      {:ok, :ok} -> :ok
+      other -> other
+    end
+  end
+
   defp running_ai_check(started_at) do
     {community, article_view, _attrs, _author} = mock_article(:post)
     article = Repo.get!(Article, article_view.id)

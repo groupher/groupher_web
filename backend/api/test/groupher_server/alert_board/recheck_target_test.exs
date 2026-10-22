@@ -13,6 +13,7 @@ defmodule GroupherServer.Test.AlertBoard.RecheckTargetTest do
     {:ok, community} = mock_community(author)
     config = config_for(community.id)
     configure_word_check(config, author)
+    config = Repo.get!(ReviewConfig, config.id)
 
     attrs =
       mock_attrs(:post, %{community_id: community.id})
@@ -37,6 +38,7 @@ defmodule GroupherServer.Test.AlertBoard.RecheckTargetTest do
       )
 
     platform_check = insert_platform_check(article, lifecycle, author)
+    queued_community_check = insert_community_check(article, lifecycle, config)
     initial_epoch = lifecycle.review_epoch
 
     reviewer = grant_review_action(db_insert(:user) |> elem(1), community.slug)
@@ -52,11 +54,13 @@ defmodule GroupherServer.Test.AlertBoard.RecheckTargetTest do
 
     lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
     platform_check = Repo.get!(Check, platform_check.id)
-    assert recheck.generation == first_check.generation + 1
+    queued_community_check = Repo.get!(Check, queued_community_check.id)
+    assert recheck.generation == queued_community_check.generation + 1
     assert recheck.content_token == first_check.content_token
     assert lifecycle.review_epoch == initial_epoch
     assert recheck.human_epoch == initial_epoch
     assert platform_check.state == :queued
+    assert queued_community_check.state == :superseded
     assert platform_check.human_epoch == lifecycle.review_epoch
 
     checks =
@@ -69,7 +73,7 @@ defmodule GroupherServer.Test.AlertBoard.RecheckTargetTest do
         )
       )
 
-    assert Enum.map(checks, & &1.generation) == [1, 2]
+    assert Enum.map(checks, & &1.generation) == [1, 2, 3]
   end
 
   defp config_for(community_id) do
@@ -127,6 +131,26 @@ defmodule GroupherServer.Test.AlertBoard.RecheckTargetTest do
       mode: :ai_first,
       generation: 1,
       trigger: :submit,
+      state: :queued,
+      human_epoch: lifecycle.review_epoch,
+      payload: %{"text" => %{"body" => "pending"}},
+      payload_expires_at: DateTime.add(DateTime.utc_now(:second), 60, :second),
+      operation_ref: Ecto.UUID.generate()
+    })
+    |> Repo.insert!()
+  end
+
+  defp insert_community_check(article, lifecycle, config) do
+    %Check{}
+    |> Check.changeset(%{
+      target_key: "article:#{article.id}",
+      scope_key: config.scope_key,
+      content_token: lifecycle.review_content_token,
+      ruleset_id: config.ruleset_id,
+      config_version: config.version,
+      mode: :ai_first,
+      generation: 2,
+      trigger: :manual,
       state: :queued,
       human_epoch: lifecycle.review_epoch,
       payload: %{"text" => %{"body" => "pending"}},
