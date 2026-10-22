@@ -289,9 +289,7 @@ defmodule GroupherServer.CMS.Gate.Access.Policy.Article do
   defp passport_action(_action, _article, _context), do: {:error, ErrorCat.unknown_action()}
 
   defp article_owner?(%User{id: user_id}, article) do
-    Map.get(article, :author_id) == user_id or
-      Map.get(Map.get(article, :author, %{}), :user_id) == user_id or
-      Map.get(Map.get(article, :author, %{}), :id) == user_id
+    Map.get(Map.get(article, :author, %{}), :user_id) == user_id
   end
 
   defp doc_branch_allowed(action, %{doc_branch: %{type: type}})

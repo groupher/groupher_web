@@ -139,6 +139,7 @@ defmodule GroupherServer.Test.CMS.Gate.Access do
       id: Ecto.UUID.generate(),
       thread: :post,
       author_id: user.id,
+      author: %{user_id: user.id},
       meta: %{is_comment_locked: false}
     }
 
@@ -197,6 +198,7 @@ defmodule GroupherServer.Test.CMS.Gate.Access do
       id: Ecto.UUID.generate(),
       thread: :post,
       author_id: user.id,
+      author: %{user_id: user.id},
       meta: %{is_comment_locked: false}
     }
 
@@ -230,6 +232,7 @@ defmodule GroupherServer.Test.CMS.Gate.Access do
       id: Ecto.UUID.generate(),
       thread: :post,
       author_id: author.id,
+      author: %{user_id: author.id},
       meta: %{is_comment_locked: false}
     }
 
@@ -345,7 +348,10 @@ defmodule GroupherServer.Test.CMS.Gate.Access do
       community_id: community.id,
       id: Ecto.UUID.generate(),
       thread: :post,
-      author_id: author.id,
+      # Model a CMS Author ID colliding with an unrelated account ID. The
+      # loaded linked user remains the only source of Article ownership.
+      author_id: unrelated.id,
+      author: %{id: unrelated.id, user_id: author.id},
       meta: %{is_comment_locked: false}
     }
 
