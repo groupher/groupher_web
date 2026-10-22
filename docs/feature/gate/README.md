@@ -31,6 +31,8 @@ write command
 
 ## 补充与历史
 
+- [读取与操作准入收口](../../migrations/gate-admission-convergence.md)：已确认、待实施的调用覆盖与重复准入清理计划；不新增另一套 Gate 合同。
+
 - [`lifecycle-cleanup.md`](./lifecycle-cleanup.md)：已确认、待实施的 Lifecycle 清理设计。
 - [`implementation-history.md`](./implementation-history.md)：V2 一次性切换记录。
 - [`legacy-overview.md`](./legacy-overview.md)：旧入口，仅用于指向后续版本。

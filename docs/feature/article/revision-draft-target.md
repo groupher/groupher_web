@@ -1,5 +1,9 @@
 # Article Revision / Draft 目标架构
 
+> 2026-10-22 审核合同更新：本文旧内容 legal/illegal/audit_failed 与 Sentinel/计划 Moderation
+> 相关目标已由 [AlertBoard / ReviewBot](../alert-board/design.md) 替代，运行时尚未切换。
+> 其他 Lifecycle、Draft/Revision/Public、Doc 历史与分支合同保持；普通 UGC 不新增待审版本。
+
 > 状态：implemented with known contract drift；Revision / Draft 主链已实现，
 > ArticleCommunity 的 `home | mirror` role 已移除，Community-local Kanban 与
 > `CMS.Kanban` command facade 已迁移；
