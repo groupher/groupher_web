@@ -51,6 +51,7 @@ defmodule GroupherServerWeb.Schema.Account.Types do
     field(:is_maker, :boolean)
     field(:published_posts_count, :integer)
     field(:published_blogs_count, :integer)
+    field(:reported_count, :integer, resolve: &R.AlertBoard.reported_count/3)
   end
 
   object :user do
@@ -63,7 +64,12 @@ defmodule GroupherServerWeb.Schema.Account.Types do
       end
     )
 
-    field(:meta, :user_meta)
+    field(:meta, :user_meta,
+      resolve: fn %{id: user_id, meta: meta}, _, _ ->
+        {:ok, Map.put(meta || %{}, :user_id, user_id)}
+      end
+    )
+
     field(:nickname, :string)
     field(:login, :string)
     field(:avatar, :string)

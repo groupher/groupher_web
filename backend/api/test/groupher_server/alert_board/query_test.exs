@@ -112,12 +112,39 @@ defmodule GroupherServer.Test.AlertBoard.QueryTest do
     case_record = Repo.get!(Case, report.case_id)
 
     assert {:ok, detail} =
-             AlertBoard.get_case(%{kind: :community, community: community}, case_record.id, reviewer)
+             AlertBoard.get_case(
+               %{kind: :community, community: community},
+               case_record.id,
+               reviewer
+             )
 
     assert detail.active_restrictions == []
     assert detail.allowed_actions == [:restrict, :dismiss]
     refute :approve in detail.allowed_actions
     refute :release in detail.allowed_actions
+  end
+
+  test "reported count is derived from active AlertBoard reports against the account" do
+    {:ok, account} = db_insert(:user)
+    {:ok, reporter} = db_insert(:user)
+
+    assert {:ok, _report} =
+             AlertBoard.submit_report(
+               %{resource: account},
+               "SPAM",
+               "Account report",
+               reporter,
+               Ecto.UUID.generate()
+             )
+
+    assert {:ok, 1} = AlertBoard.reported_count(account.id)
+
+    assert {:ok, %{entries: [report]}} = AlertBoard.my_reports(nil, reporter)
+
+    assert {:ok, _withdrawn} =
+             AlertBoard.withdraw_report(report.id, reporter, Ecto.UUID.generate())
+
+    assert {:ok, 0} = AlertBoard.reported_count(account.id)
   end
 
   test "content review preserves stale restrictions and ignores superseded or resolved failures" do

@@ -36,6 +36,11 @@ defmodule GroupherServerWeb.Resolvers.AlertBoard do
     AlertBoard.my_reports(nil, actor)
   end
 
+  @doc "Resolves the active AlertBoard report count for one account."
+  def reported_count(%{user_id: user_id}, _args, _resolution) do
+    AlertBoard.reported_count(user_id)
+  end
+
   @doc "Updates a scoped ReviewConfig through AlertBoard's command receipt boundary."
   def update_review_config(
         _root,

@@ -151,6 +151,19 @@ defmodule GroupherServer.AlertBoard.Query do
 
   def my_reports(_pagi, _actor), do: {:error, AlertBoard.ErrorCat.invalid_target()}
 
+  @doc "Counts active reports filed against one account."
+  @spec reported_count(pos_integer()) :: {:ok, non_neg_integer()} | {:error, term()}
+  def reported_count(user_id) when is_integer(user_id) and user_id > 0 do
+    count =
+      Report
+      |> where([report], report.user_id == ^user_id and is_nil(report.withdrawn_at))
+      |> Repo.aggregate(:count, :id)
+
+    {:ok, count}
+  end
+
+  def reported_count(_user_id), do: {:error, AlertBoard.ErrorCat.invalid_target()}
+
   @doc "Reads one policy after authorizing the exact platform or community scope."
   @spec review_config(map(), atom(), struct()) :: {:ok, ReviewConfig.t()} | {:error, term()}
   def review_config(scope, subject_kind, actor)

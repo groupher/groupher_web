@@ -4489,6 +4489,7 @@ type UserMeta {
   isMaker: Boolean
   publishedPostsCount: Int
   publishedBlogsCount: Int
+  reportedCount: Int
 }
 
 type User {

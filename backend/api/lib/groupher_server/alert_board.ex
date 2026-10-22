@@ -147,6 +147,10 @@ defmodule GroupherServer.AlertBoard do
   @spec my_reports(term(), struct()) :: {:ok, map()} | {:error, term()}
   defdelegate my_reports(pagi, actor), to: Query
 
+  @doc "Counts active AlertBoard reports filed against one account."
+  @spec reported_count(pos_integer()) :: {:ok, non_neg_integer()} | {:error, term()}
+  defdelegate reported_count(user_id), to: Query
+
   @doc "Submits a caller-owned report through the new AlertBoard fact boundary."
   @spec submit_report(map(), String.t(), String.t() | nil, struct(), Ecto.UUID.t()) ::
           {:ok, GroupherServer.AlertBoard.Model.Report.t()} | {:error, term()}
