@@ -1505,6 +1505,7 @@ export default {
   'alert_board.content_type': 'Content type',
   'alert_board.article': 'Posts and articles',
   'alert_board.comment': 'Comments',
+  'alert_board.doc': 'Docs',
   'alert_board.config_error':
     'Could not load review settings. You may not have permission to configure them.',
   'alert_board.publish_mode': 'Publishing mode',

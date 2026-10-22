@@ -1452,6 +1452,7 @@ export default {
   'alert_board.content_type': '内容类型',
   'alert_board.article': '帖子与文章',
   'alert_board.comment': '评论',
+  'alert_board.doc': '文档',
   'alert_board.config_error': '无法读取审核设置，或当前账号没有配置权限。',
   'alert_board.publish_mode': '发布模式',
   'alert_board.edit_mode': '编辑模式',

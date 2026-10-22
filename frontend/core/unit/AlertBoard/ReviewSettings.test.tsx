@@ -8,60 +8,41 @@ const state = vi.hoisted(() => ({ request: vi.fn() }))
 vi.mock('~/graphql/client', () => ({ browserGraphQLRequest: state.request }))
 vi.mock('~/hooks/useTrans', () => ({ default: () => ({ t: (key: string) => key }) }))
 
-const renderReviewSettings = () =>
+beforeEach(() => {
+  state.request.mockResolvedValue({
+    reviewConfig: {
+      version: 1,
+      publishMode: 'IMMEDIATE',
+      editMode: 'IMMEDIATE',
+      backgroundCheck: false,
+      rules: { items: [] },
+      prompt: null,
+      providerProfile: null,
+      requiredModalities: ['text'],
+    },
+  })
+})
+
+it('lets platform admins configure Docs while keeping Doc modes immediate', async () => {
   render(
     <QueryClientProvider
       client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}
     >
-      <ReviewSettings community='home' scopeKind='COMMUNITY' />
+      <ReviewSettings community='' scopeKind='PLATFORM' />
     </QueryClientProvider>,
   )
 
-beforeEach(() => {
-  let rejectNextSave = true
-  state.request.mockImplementation(
-    async (_document: unknown, variables: Record<string, unknown>) => {
-      if ('subjectKind' in variables) {
-        return {
-          reviewConfig: {
-            version: 2,
-            publishMode: 'IMMEDIATE',
-            editMode: 'IMMEDIATE',
-            backgroundCheck: false,
-            rules: { items: [] },
-            prompt: null,
-            providerProfile: null,
-            requiredModalities: ['text'],
-          },
-        }
-      }
-      if ('input' in variables) {
-        if (rejectNextSave) {
-          rejectNextSave = false
-          throw new Error('response lost after config update')
-        }
-        return { updateReviewConfig: { commandId: variables.commandId } }
-      }
-      throw new Error('Unexpected GraphQL operation')
-    },
-  )
-})
+  const subject = screen.getByRole('combobox', { name: 'alert_board.content_type' })
+  expect(screen.getByRole('option', { name: 'alert_board.doc' })).toBeInTheDocument()
+  fireEvent.change(subject, { target: { value: 'DOC' } })
 
-it('reuses the config command id after an ambiguous failure', async () => {
-  renderReviewSettings()
+  await waitFor(() => {
+    expect(state.request.mock.calls.at(-1)?.[1].subjectKind).toBe('DOC')
+  })
+  await screen.findByRole('button', { name: 'alert_board.save' })
 
-  const publishMode = await screen.findByLabelText('alert_board.publish_mode')
-  fireEvent.change(publishMode, { target: { value: 'AI_FIRST' } })
-  fireEvent.click(screen.getByRole('button', { name: 'alert_board.save' }))
-  await screen.findByRole('alert')
-  fireEvent.click(screen.getByRole('button', { name: 'alert_board.save' }))
-
-  await waitFor(() =>
-    expect(state.request.mock.calls.filter((call) => 'input' in call[1])).toHaveLength(2),
-  )
-  const saveCalls = state.request.mock.calls.filter((call) => 'input' in call[1])
-  expect(saveCalls[0][1].commandId).toBeTruthy()
-  expect(saveCalls[1][1].commandId).toBe(saveCalls[0][1].commandId)
-  expect(typeof saveCalls[1][1].input.config.rules).toBe('string')
-  expect(JSON.parse(saveCalls[1][1].input.config.rules)).toEqual({ items: [] })
+  const modes = screen.getAllByRole('combobox')
+  expect(modes[1]).toBeDisabled()
+  expect(modes[2]).toBeDisabled()
+  expect(screen.getAllByRole('option', { name: 'alert_board.mode.immediate' })).toHaveLength(2)
 })

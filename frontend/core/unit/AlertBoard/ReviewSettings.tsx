@@ -8,18 +8,22 @@ import { invalidateExact } from '~/query/invalidation/executor'
 import { reviewConfig, updateReviewConfig } from './schema'
 
 type TProps = { community: string; scopeKind: 'COMMUNITY' | 'PLATFORM' }
-type TSubject = 'ARTICLE' | 'COMMENT'
+type TSubject = 'ARTICLE' | 'COMMENT' | 'DOC'
 
 export default function ReviewSettings({ community, scopeKind }: TProps) {
   const { t } = useTrans()
   const client = useQueryClient()
   const [subject, setSubject] = useState<TSubject>('ARTICLE')
+  const selectedSubject = scopeKind === 'COMMUNITY' && subject === 'DOC' ? 'ARTICLE' : subject
   const commandIdRef = useRef<{ key: string; id: string } | null>(null)
   const scope = scopeKind === 'PLATFORM' ? { kind: scopeKind } : { kind: scopeKind, community }
   const configQuery = useQuery({
-    queryKey: ['alert-board-config', community, scopeKind, subject],
+    queryKey: ['alert-board-config', community, scopeKind, selectedSubject],
     queryFn: async () => {
-      const response = await browserGraphQLRequest(reviewConfig, { scope, subjectKind: subject })
+      const response = await browserGraphQLRequest(reviewConfig, {
+        scope,
+        subjectKind: selectedSubject,
+      })
       return response.reviewConfig
     },
   })
@@ -34,8 +38,14 @@ export default function ReviewSettings({ community, scopeKind }: TProps) {
         .map((item) => item.trim())
         .filter(Boolean)
       const config = {
-        publishMode: String(data.get('publishMode')) as 'IMMEDIATE' | 'AI_FIRST' | 'HUMAN_FIRST',
-        editMode: String(data.get('editMode')) as 'IMMEDIATE' | 'AI_FIRST',
+        publishMode:
+          selectedSubject === 'DOC'
+            ? 'IMMEDIATE'
+            : (String(data.get('publishMode')) as 'IMMEDIATE' | 'AI_FIRST' | 'HUMAN_FIRST'),
+        editMode:
+          selectedSubject === 'DOC'
+            ? 'IMMEDIATE'
+            : (String(data.get('editMode')) as 'IMMEDIATE' | 'AI_FIRST'),
         backgroundCheck: data.get('backgroundCheck') === 'on',
         // The repository's GraphQL Json scalar accepts a JSON-encoded string.
         rules: JSON.stringify(rules),
@@ -43,7 +53,7 @@ export default function ReviewSettings({ community, scopeKind }: TProps) {
         providerProfile: String(data.get('profile')).trim() || null,
         requiredModalities: modalities,
       }
-      const intentKey = JSON.stringify([scope, subject, version, config])
+      const intentKey = JSON.stringify([scope, selectedSubject, version, config])
       if (commandIdRef.current?.key !== intentKey) {
         commandIdRef.current = { key: intentKey, id: crypto.randomUUID() }
       }
@@ -51,7 +61,7 @@ export default function ReviewSettings({ community, scopeKind }: TProps) {
         commandId: commandIdRef.current.id,
         input: {
           scope,
-          subjectKind: subject,
+          subjectKind: selectedSubject,
           expectedVersion: version,
           config,
         },
@@ -60,7 +70,7 @@ export default function ReviewSettings({ community, scopeKind }: TProps) {
     onSuccess: async () => {
       commandIdRef.current = null
       await invalidateExact(client, [
-        { queryKey: ['alert-board-config', community, scopeKind, subject] },
+        { queryKey: ['alert-board-config', community, scopeKind, selectedSubject] },
       ])
     },
   })
@@ -72,11 +82,12 @@ export default function ReviewSettings({ community, scopeKind }: TProps) {
         {t('alert_board.content_type')}
         <select
           className='border-divider mt-2 block rounded-md border bg-transparent p-2'
-          value={subject}
+          value={selectedSubject}
           onChange={(event) => {
             setSubject(event.target.value as TSubject)
           }}
         >
+          {scopeKind === 'PLATFORM' && <option value='DOC'>{t('alert_board.doc')}</option>}
           <option value='ARTICLE'>{t('alert_board.article')}</option>
           <option value='COMMENT'>{t('alert_board.comment')}</option>
         </select>
@@ -89,7 +100,7 @@ export default function ReviewSettings({ community, scopeKind }: TProps) {
         </p>
       ) : (
         <form
-          key={`${subject}:${configQuery.data.version}`}
+          key={`${selectedSubject}:${configQuery.data.version}`}
           className='grid gap-4'
           onSubmit={(event) => {
             event.preventDefault()
@@ -104,11 +115,16 @@ export default function ReviewSettings({ community, scopeKind }: TProps) {
             <select
               className='border-divider mt-2 block w-full rounded-md border bg-transparent p-2'
               name='publishMode'
-              defaultValue={configQuery.data.publishMode}
+              defaultValue={selectedSubject === 'DOC' ? 'IMMEDIATE' : configQuery.data.publishMode}
+              disabled={selectedSubject === 'DOC'}
             >
               <option value='IMMEDIATE'>{t('alert_board.mode.immediate')}</option>
-              <option value='AI_FIRST'>{t('alert_board.mode.ai_first')}</option>
-              <option value='HUMAN_FIRST'>{t('alert_board.mode.human_first')}</option>
+              {selectedSubject !== 'DOC' && (
+                <>
+                  <option value='AI_FIRST'>{t('alert_board.mode.ai_first')}</option>
+                  <option value='HUMAN_FIRST'>{t('alert_board.mode.human_first')}</option>
+                </>
+              )}
             </select>
           </label>
           <label className='text-sm'>
@@ -116,10 +132,13 @@ export default function ReviewSettings({ community, scopeKind }: TProps) {
             <select
               className='border-divider mt-2 block w-full rounded-md border bg-transparent p-2'
               name='editMode'
-              defaultValue={configQuery.data.editMode}
+              defaultValue={selectedSubject === 'DOC' ? 'IMMEDIATE' : configQuery.data.editMode}
+              disabled={selectedSubject === 'DOC'}
             >
               <option value='IMMEDIATE'>{t('alert_board.mode.immediate')}</option>
-              <option value='AI_FIRST'>{t('alert_board.mode.ai_first')}</option>
+              {selectedSubject !== 'DOC' && (
+                <option value='AI_FIRST'>{t('alert_board.mode.ai_first')}</option>
+              )}
             </select>
           </label>
           <label className='flex items-center gap-2 text-sm'>
