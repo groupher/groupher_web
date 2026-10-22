@@ -1,0 +1,80 @@
+defmodule GroupherServer.ReviewBot.Config do
+  @moduledoc """
+  Runtime registry for operator-approved provider profiles.
+
+      RuleSet profile_id -> Config.profile/1 -> approved provider settings
+  """
+
+  @modalities [:text, :image]
+
+  @doc "Returns the operator-approved profile selected by a ruleset."
+  @spec profile(String.t() | nil) :: {:ok, map()} | {:error, term()}
+  def profile(profile_id) when is_binary(profile_id) and profile_id != "" do
+    profiles =
+      Application.get_env(:groupher_server, :review_bot, []) |> Keyword.get(:profiles, %{})
+
+    case Map.fetch(profiles, profile_id) do
+      {:ok, profile} -> validate(profile)
+      :error -> {:error, GroupherServer.ReviewBot.ErrorCat.config_not_found()}
+    end
+  end
+
+  def profile(_profile_id), do: {:error, GroupherServer.ReviewBot.ErrorCat.config_not_found()}
+
+  @doc "Resolves an adapter module for a validated provider profile."
+  @spec adapter(map()) :: {:ok, module()} | {:error, term()}
+  def adapter(%{adapter: adapter}) do
+    case GroupherServer.ReviewBot.Adapters.fetch(adapter) do
+      {:ok, module} -> {:ok, module}
+      :error -> {:error, GroupherServer.ReviewBot.ErrorCat.invalid_config()}
+    end
+  end
+
+  def adapter(_profile), do: {:error, GroupherServer.ReviewBot.ErrorCat.invalid_config()}
+
+  defp validate(profile) when is_map(profile) do
+    base_url = Map.get(profile, :base_url)
+    modalities = Map.get(profile, :modalities)
+    model = Map.get(profile, :model)
+    credential_env = Map.get(profile, :credential_env)
+
+    with true <- valid_adapter?(Map.get(profile, :adapter)),
+         true <- valid_https_url?(base_url),
+         true <- is_binary(model) and model != "",
+         true <- is_binary(credential_env) and credential_env != "",
+         true <-
+           is_list(modalities) and modalities != [] and
+             Enum.all?(modalities, &(&1 in @modalities)),
+         credential when is_binary(credential) and credential != "" <-
+           System.get_env(credential_env) do
+      {:ok,
+       %{
+         adapter: Map.get(profile, :adapter),
+         base_url: base_url,
+         model: model,
+         credential: credential,
+         modalities: Enum.uniq(modalities)
+       }}
+    else
+      nil -> {:error, GroupherServer.ReviewBot.ErrorCat.config_not_found()}
+      _ -> {:error, GroupherServer.ReviewBot.ErrorCat.invalid_config()}
+    end
+  end
+
+  defp validate(_profile), do: {:error, GroupherServer.ReviewBot.ErrorCat.invalid_config()}
+
+  defp valid_adapter?(adapter), do: GroupherServer.ReviewBot.Adapters.supported?(adapter)
+
+  defp valid_https_url?(url) when is_binary(url) do
+    case URI.parse(url) do
+      %URI{scheme: "https", host: host, userinfo: nil, query: nil, fragment: nil}
+      when is_binary(host) and host != "" ->
+        true
+
+      _ ->
+        false
+    end
+  end
+
+  defp valid_https_url?(_url), do: false
+end

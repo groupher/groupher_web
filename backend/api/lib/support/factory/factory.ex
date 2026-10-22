@@ -13,8 +13,10 @@ defmodule GroupherServer.Support.Factory do
   """
   import Helper.Utils, only: [done: 1]
   import GroupherServer.CMS.Artiment.Matcher
+  import Ecto.Query, only: [from: 2]
 
-  alias GroupherServer.{Accounts, CMS, Messaging, Support}
+  alias GroupherServer.{Accounts, AlertBoard, CMS, Messaging, Repo, Support}
+  alias AlertBoard.Model.ReviewConfig
   alias Support.FakeData
 
   alias Accounts.Model.User
@@ -226,8 +228,9 @@ defmodule GroupherServer.Support.Factory do
     |> maybe_put_default_article_binding()
     |> maybe_put_default_doc_branch()
     |> maybe_put_default_tag_group()
-    |> GroupherServer.Repo.insert()
+    |> Repo.insert()
     |> ensure_community_lifecycle()
+    |> ensure_community_review_configs()
     |> ensure_article_lifecycle()
   rescue
     e in Ecto.ConstraintError ->
@@ -262,6 +265,28 @@ defmodule GroupherServer.Support.Factory do
   end
 
   defp ensure_community_lifecycle(result), do: result
+
+  defp ensure_community_review_configs({:ok, %Community{} = community} = result) do
+    config_exists? =
+      Repo.exists?(
+        from(config in ReviewConfig,
+          where:
+            config.community_id == ^community.id and
+              config.scope_key == ^"community:#{community.id}"
+        )
+      )
+
+    if config_exists? do
+      result
+    else
+      case AlertBoard.create_default_configs_for_community(community.id) do
+        {:ok, _configs} -> result
+        {:error, reason} -> {:error, reason}
+      end
+    end
+  end
+
+  defp ensure_community_review_configs(result), do: result
 
   defp ensure_article_lifecycle(result), do: result
 

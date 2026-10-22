@@ -177,11 +177,13 @@ defmodule GroupherServer.CMS.Docs.Trash do
   @spec restore(TrashedDocArticle.t(), Community.t(), DocBranch.t(), term(), keyword()) ::
           {:ok, Article.t()} | {:error, term()}
   def restore(%TrashedDocArticle{} = item, community, branch, actor, opts) do
+    gate_action = if Keyword.get(opts, :workflow) == :content_import, do: :import_doc, else: :restore
+
     with {:ok, _} <- ensure_group_action(item, opts),
          {:ok, article} <- representative_doc(community, branch, item.article_id) do
       CMS.Gate.with_branch_check(
         actor,
-        :restore,
+        gate_action,
         community,
         article,
         branch.id,

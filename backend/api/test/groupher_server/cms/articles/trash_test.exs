@@ -170,31 +170,6 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     assert count_after == count_before - 1
   end
 
-  test "Trash excludes Articles from the audit-failed list" do
-    {community, post, _attrs, user} = mock_article(:post)
-
-    assert {:ok, post} =
-             CMS.Articles.set_audit_failed(post.id, %{}, :operations, community: community)
-
-    assert {:ok, %{entries: entries}} =
-             CMS.Articles.paged_audit_failed(:post, %GroupherServer.Pagi.Params.Offset{
-               page: 1,
-               size: 20
-             })
-
-    assert Enum.any?(entries, &(&1.id == post.id))
-
-    assert {:ok, _item} = CMS.Articles.trash(post, user, community: community)
-
-    assert {:ok, %{entries: entries}} =
-             CMS.Articles.paged_audit_failed(:post, %GroupherServer.Pagi.Params.Offset{
-               page: 1,
-               size: 20
-             })
-
-    refute Enum.any?(entries, &(&1.id == post.id))
-  end
-
   test "permanent delete removes the aggregate but keeps append-only audit" do
     {community, post, _attrs, user} = mock_article(:post)
     assert {:ok, item} = CMS.Articles.trash(post, user)

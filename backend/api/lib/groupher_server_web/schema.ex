@@ -13,7 +13,7 @@ defmodule GroupherServerWeb.Schema do
   import GroupherServerWeb.Schema.Helper.Imports
 
   alias GroupherServerWeb.Middleware, as: M
-  alias GroupherServerWeb.Schema.{Account, Analysis, CMS, Helper}
+  alias GroupherServerWeb.Schema.{Account, AlertBoard, Analysis, CMS, Helper}
 
   import_types(Absinthe.Type.Custom)
 
@@ -31,6 +31,9 @@ defmodule GroupherServerWeb.Schema do
   import_types(CMS.Press.Queries)
   import_types(CMS.Press.Mutations)
   import_types(Analysis.Types)
+  import_types(AlertBoard.Types)
+  import_types(AlertBoard.Queries)
+  import_types(AlertBoard.Mutations)
   import_types(CMS.ContentImport.Types)
   import_types(CMS.Queries)
   import_types(CMS.ContentImport)
@@ -48,6 +51,7 @@ defmodule GroupherServerWeb.Schema do
     import_fields(:cms_queries)
     import_fields(:cms_press_queries)
     import_fields(:cms_content_import_queries)
+    import_fields(:alert_board_queries)
   end
 
   mutation do
@@ -64,18 +68,11 @@ defmodule GroupherServerWeb.Schema do
     import_fields(:cms_press_mutations)
     import_fields(:cms_doc_tree_mutations)
     import_fields(:cms_content_import_mutations)
-  end
-
-  def middleware(middleware, _field, %{identifier: :query}) do
-    middleware ++ [M.GQLResultFmt, M.GeneralError]
-  end
-
-  def middleware(middleware, _field, %{identifier: :mutation}) do
-    middleware ++ [M.GQLResultFmt, M.ChangesetErrors, M.GeneralError]
+    import_fields(:alert_board_mutations)
   end
 
   def middleware(middleware, _field, _object) do
-    middleware
+    middleware ++ [M.GQLResultFmt, M.ChangesetErrors, M.GeneralError]
   end
 
   def plugins do

@@ -48,17 +48,9 @@ defmodule GroupherServerWeb.Schema.Account.Types do
   end
 
   object :user_meta do
-    field(:reported_count, :integer)
     field(:is_maker, :boolean)
     field(:published_posts_count, :integer)
     field(:published_blogs_count, :integer)
-
-    # aduit
-    field(:has_illegal_articles, :boolean)
-    field(:has_illegal_comments, :boolean)
-
-    field(:illegal_articles, list_of(:string))
-    field(:illegal_comments, list_of(:string))
   end
 
   object :user do

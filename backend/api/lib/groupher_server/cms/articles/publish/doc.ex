@@ -12,7 +12,9 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
 
   import Ecto.Query
 
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{AlertBoard, CMS, Repo}
+  alias CMS.Review.Submission
+  alias CMS.Articles.ErrorCat, as: ArticleErrorCat
   alias CMS.Articles.Workflow
   alias CMS.Articles.{Bindings, Draft.Store, Effects, Numbering, Revision}
 
@@ -20,6 +22,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
     Article,
     ArticleBinding,
     ArticleBodySnapshot,
+    ArticleAssetRef,
     ArticleRevision,
     Author,
     DocBranchVersion,
@@ -28,7 +31,9 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
     DocBranchState,
     DocLifecycle,
     DocPublic,
-    DocRevision
+    DocReviewRestriction,
+    DocRevision,
+    CommunityAsset
   }
 
   alias Helper.Validator.Slug
@@ -67,9 +72,23 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
                insert_version(article, branch_id, revision, actor, version_number, opts),
              {:ok, _branch_state} <-
                activate_branch_state(article.id, branch_id, version.published_at),
-             {:ok, public} <- select_public(article, version, revision, actor),
+             {:ok, _public} <- select_public(article, version, revision, actor, lifecycle),
              {:ok, _} <- CMS.ArticleStats.initialize(article),
-             {:ok, _lifecycle} <- publish_lifecycle(lifecycle),
+             {:ok, published_lifecycle} <- publish_lifecycle(lifecycle),
+             {:ok, _review} <-
+               register_review(
+                 article,
+                 community,
+                 branch,
+                 revision,
+                 version,
+                 published_lifecycle,
+                 first_publish?,
+                 opts
+               ),
+             {:ok, public} <- load_public(article.id, branch_id),
+             {:ok, binding} <-
+               refresh_main_binding_visibility(binding, branch, published_lifecycle),
              {:ok, _invalidation} <-
                invalidate_public_cache(article, branch, binding, community, first_publish?, opts),
              {:ok, _projection} <-
@@ -102,6 +121,69 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
     end
   end
 
+  defp register_review(
+         article,
+         community,
+         branch,
+         revision,
+         version,
+         lifecycle,
+         first_publish?,
+         opts
+       ) do
+    with {:ok, configs} <- AlertBoard.configs_for_target(nil, :doc),
+         %ArticleBodySnapshot{} = body <- Repo.get(ArticleBodySnapshot, revision.body_snapshot_id) do
+      content = %{
+        identity: "doc-branch-version:#{version.id}",
+        body_hash: body.body_hash,
+        title: revision.title || "",
+        body: body.plain_text || "",
+        images: review_images(revision.id)
+      }
+
+      target = %{
+        target_key: "doc:#{article.id}:#{branch.id}",
+        case_attrs: %{article_id: article.id, branch_id: branch.id},
+        community_id: community.id,
+        trigger: if(first_publish?, do: :submit, else: :edit)
+      }
+
+      operation_ref =
+        Keyword.get(opts, :outbox_command_id) || Keyword.get(opts, :command_id) ||
+          Keyword.get(opts, :causation_id) || Ecto.UUID.generate()
+
+      Submission.register(lifecycle, target, content, configs, operation_ref)
+    else
+      nil ->
+        {:error, CMS.ErrorCat.invalid_review_restriction()}
+
+      {:error, _reason} = error ->
+        error
+    end
+  end
+
+  defp review_images(revision_id) do
+    ArticleAssetRef
+    |> join(:inner, [ref], asset in CommunityAsset, on: asset.id == ref.asset_id)
+    |> where(
+      [ref, asset],
+      ref.revision_id == ^revision_id and ref.usage == :inline and asset.asset_type == :image
+    )
+    |> order_by([ref, _asset], asc: ref.position, asc: ref.id)
+    |> select([ref, asset], %{
+      asset_id: ref.asset_id,
+      immutable_version: fragment("COALESCE(?, ?)", asset.content_hash, asset.url_hash)
+    })
+    |> Repo.all()
+  end
+
+  defp load_public(article_id, branch_id) do
+    case Repo.get_by(DocPublic, article_id: article_id, branch_id: branch_id) do
+      %DocPublic{} = public -> {:ok, public}
+      nil -> {:error, CMS.ErrorCat.lifecycle_not_found()}
+    end
+  end
+
   defp binding_community(opts, article, branch_id) do
     case Keyword.get(opts, :community) do
       %GroupherServer.CMS.Model.Community{} = community ->
@@ -129,7 +211,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
   defp load_community(community_id) do
     case Repo.get(GroupherServer.CMS.Model.Community, community_id) do
       %GroupherServer.CMS.Model.Community{} = community -> {:ok, community}
-      _community -> {:error, :article_binding_not_found}
+      _community -> {:error, ArticleErrorCat.binding_not_found()}
     end
   end
 
@@ -209,7 +291,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
     |> Repo.insert()
   end
 
-  defp select_public(article, version, revision, actor) do
+  defp select_public(article, version, revision, actor, lifecycle) do
     body = Repo.get!(ArticleBodySnapshot, revision.body_snapshot_id)
     extension = Repo.get_by!(DocRevision, revision_id: revision.id)
     current = Repo.get_by(DocPublic, article_id: article.id, branch_id: version.branch_id)
@@ -231,7 +313,14 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
       thumbnail: body.thumbnail,
       active_at: state.active_at || version.published_at,
       is_edited: state.is_edited,
-      visible: state.moderation_state == :legal
+      visible:
+        not Repo.exists?(
+          from(restriction in DocReviewRestriction,
+            where:
+              restriction.lifecycle_id == ^lifecycle.id and
+                restriction.scope_key == "platform" and is_nil(restriction.ended_at)
+          )
+        )
     }
 
     (current || %DocPublic{})
@@ -251,6 +340,30 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
     |> Repo.update()
   end
 
+  defp refresh_main_binding_visibility(
+         %ArticleBinding{} = binding,
+         %DocBranch{type: :main},
+         %DocLifecycle{} = lifecycle
+       ) do
+    visible? =
+      lifecycle.state in [:published, :archived] and
+        not Repo.exists?(
+          from(restriction in DocReviewRestriction,
+            where:
+              restriction.lifecycle_id == ^lifecycle.id and
+                restriction.scope_key == "platform" and is_nil(restriction.ended_at)
+          )
+        )
+
+    binding
+    |> ArticleBinding.changeset(%{visible: visible?})
+    |> Repo.update()
+  end
+
+  defp refresh_main_binding_visibility(binding, %DocBranch{}, %DocLifecycle{}) do
+    {:ok, binding}
+  end
+
   defp maybe_assign_public_inner_id(article, %DocBranch{type: :main}, community) do
     with %ArticleBinding{} = binding <-
            Repo.get_by(ArticleBinding,
@@ -260,7 +373,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
          {:ok, binding} <- Numbering.assign_binding_inner_id(binding) do
       {:ok, article, binding}
     else
-      nil -> {:error, :article_binding_not_found}
+      nil -> {:error, ArticleErrorCat.binding_not_found()}
       {:error, reason} -> {:error, reason}
     end
   end

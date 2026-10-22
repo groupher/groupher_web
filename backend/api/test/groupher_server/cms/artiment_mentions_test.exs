@@ -677,7 +677,6 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
           id: article_id,
           author_id: target.author_id,
           thread: :blog,
-          moderation_state: :legal,
           inserted_at: timestamp,
           updated_at: timestamp
         }

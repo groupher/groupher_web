@@ -27,20 +27,21 @@ defmodule GroupherServer.Jobs do
   defdelegate contribution_cache(community_id), to: GroupherServer.Jobs.Workflow
 
   @doc """
-  Delegates audition/1 to the Jobs workflow owner.
+  Enqueues one version-pinned ReviewBot check.
 
   ## Examples
 
-      Jobs.audition(%{id: comment_id})
+      Jobs.review_bot_check(Ecto.UUID.generate())
+      #=> {:ok, job} | {:error, reason}
   """
-  defdelegate audition(arg1), to: GroupherServer.Jobs.Workflow
+  defdelegate review_bot_check(check_id), to: GroupherServer.Jobs.Workflow
 
   @doc """
   Delegates comments_new/1 to the Jobs workflow owner.
 
   ## Examples
 
-      Jobs.comments_new(%{"type" => "notify_comment", "version" => 1, "payload" => %{}})
+      Jobs.comments_new(%{"type" => "sync_mentions", "version" => 1, "payload" => %{}})
   """
   defdelegate comments_new(arg1), to: GroupherServer.Jobs.Workflow
 
@@ -49,7 +50,7 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      Jobs.comments_new(%{"type" => "notify_comment"}, [queue: :default])
+      Jobs.comments_new(%{"type" => "sync_mentions"}, [queue: :default])
   """
   defdelegate comments_new(arg1, arg2), to: GroupherServer.Jobs.Workflow
 
@@ -67,27 +68,9 @@ defmodule GroupherServer.Jobs do
 
   ## Examples
 
-      Jobs.enqueue_best_effort(:notify_comment, 1, fn -> {:ok, :queued} end)
+      Jobs.enqueue_best_effort(:optional_effect, 1, fn -> {:ok, :queued} end)
   """
   defdelegate enqueue_best_effort(arg1, arg2, arg3), to: GroupherServer.Jobs.Workflow
-
-  @doc """
-  Delegates notify_comment/2 to the Jobs workflow owner.
-
-  ## Examples
-
-      Jobs.notify_comment(%{id: 10}, %{id: 20})
-  """
-  defdelegate notify_comment(arg1, arg2), to: GroupherServer.Jobs.Workflow
-
-  @doc """
-  Delegates notify_reply/2 to the Jobs workflow owner.
-
-  ## Examples
-
-      Jobs.notify_reply(%{id: 10}, %{id: 20})
-  """
-  defdelegate notify_reply(arg1, arg2), to: GroupherServer.Jobs.Workflow
 
   @doc """
   Delegates public_cache_purge_job/1 to the Jobs workflow owner.

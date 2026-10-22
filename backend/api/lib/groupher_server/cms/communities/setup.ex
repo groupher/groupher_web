@@ -29,6 +29,7 @@ defmodule GroupherServer.CMS.Communities.Setup do
   alias CMS.Model.{
     Community,
     CommunityApplication,
+    CommunityApplicationEvent,
     CommunityModerator
   }
 
@@ -50,12 +51,28 @@ defmodule GroupherServer.CMS.Communities.Setup do
   @spec run(String.t(), String.t()) :: {:ok, CommunityApplication.t()} | {:error, term()}
   def run(community_ref, operation_ref) do
     with {:ok, community} <- fetch_community(community_ref),
-         {:ok, application} <- fetch_application(community.id),
-         {:ok, user} <- fetch_user(application.user_id),
-         {:ok, _} <- ensure_root(community, user),
-         {:ok, _state} <- CMS.DocTree.initialize(community),
-         {:ok, _} <- ensure_analysis(community) do
-      activate(community, application, operation_ref)
+         {:ok, application} <- fetch_application(community.id) do
+      case setup_operation_status(application, operation_ref) do
+        {:ok, :current} ->
+          with {:ok, user} <- fetch_user(application.user_id),
+               {:ok, :current} <- ensure_current_operation(application, operation_ref),
+               {:ok, _} <- ensure_root(community, user),
+               {:ok, :current} <- ensure_current_operation(application, operation_ref),
+               {:ok, _state} <- CMS.DocTree.initialize(community),
+               {:ok, :current} <- ensure_current_operation(application, operation_ref),
+               {:ok, _} <- ensure_analysis(community) do
+            activate(community, application, operation_ref)
+          end
+
+        {:ok, :complete} ->
+          {:ok, application}
+
+        {:ok, :obsolete} ->
+          {:ok, application}
+
+        {:error, reason} ->
+          {:error, reason}
+      end
     end
   end
 
@@ -141,6 +158,9 @@ defmodule GroupherServer.CMS.Communities.Setup do
         is_nil(application) ->
           Repo.rollback(ErrorCat.application_not_found())
 
+        setup_operation_status(application, operation_ref) == {:ok, :obsolete} ->
+          application
+
         application.status == :setup_failed ->
           application
 
@@ -196,6 +216,9 @@ defmodule GroupherServer.CMS.Communities.Setup do
 
       cond do
         application.status == :created ->
+          application
+
+        setup_operation_status(application, operation_ref) != {:ok, :current} ->
           application
 
         application.status != :setting_up ->
@@ -314,6 +337,44 @@ defmodule GroupherServer.CMS.Communities.Setup do
     |> where([application], application.public_ref == ^public_ref)
     |> lock("FOR UPDATE")
     |> Repo.one()
+  end
+
+  defp ensure_current_operation(application, operation_ref) do
+    case setup_operation_status(application, operation_ref) do
+      {:ok, :current} -> {:ok, :current}
+      {:ok, _status} -> {:error, ErrorCat.application_state_conflict()}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp setup_operation_status(%CommunityApplication{status: :created}, _operation_ref) do
+    {:ok, :complete}
+  end
+
+  defp setup_operation_status(
+         %CommunityApplication{status: :setting_up} = application,
+         operation_ref
+       ) do
+    current_operation =
+      CommunityApplicationEvent
+      |> where(
+        [event],
+        event.application_id == ^application.id and event.to_status == :setting_up
+      )
+      |> order_by([event], desc: event.occurred_at, desc: event.id)
+      |> limit(1)
+      |> select([event], event.operation_ref)
+      |> Repo.one()
+
+    case current_operation do
+      ^operation_ref -> {:ok, :current}
+      nil -> {:error, ErrorCat.application_state_conflict()}
+      _other -> {:ok, :obsolete}
+    end
+  end
+
+  defp setup_operation_status(_application, _operation_ref) do
+    {:error, ErrorCat.application_state_conflict()}
   end
 
   defp job_error(reason, operation_ref, now, attempt) do

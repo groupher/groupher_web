@@ -64,7 +64,7 @@ defmodule GroupherServer.CMS.ArticleStats do
     end
   end
 
-  def for_article(_article, _community), do: {:error, :article_binding_context_required}
+  def for_article(_article, _community), do: {:error, ArticleErrorCat.binding_context_required()}
 
   @doc "Creates the zero-valued public row on first publish without overwriting an existing row."
   @spec initialize(struct()) :: {:ok, :pass} | {:error, term()}

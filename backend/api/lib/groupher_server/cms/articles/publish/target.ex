@@ -10,10 +10,21 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
 
   import Ecto.Query
 
-  alias GroupherServer.{CMS, Repo}
+  alias GroupherServer.{AlertBoard, CMS, Repo}
+  alias CMS.Articles.ErrorCat, as: ArticleErrorCat
   alias CMS.Articles.{Workflow, Tags.Assignment}
   alias CMS.Articles.{Bindings, Draft, Draft.Store, Lifecycle, Numbering, Public, Revision}
-  alias CMS.Model.{Article, ArticleBinding, ArticlePublic, Author, Community}
+
+  alias CMS.Model.{
+    Article,
+    ArticleAssetRef,
+    ArticleBinding,
+    ArticleBodySnapshot,
+    ArticlePublic,
+    Author,
+    Community,
+    CommunityAsset
+  }
 
   @doc "Publishes one ordinary Draft after validating the caller-observed Draft version.
 
@@ -41,7 +52,6 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
              {:ok, _} <- validate_version(draft.version, expected_version),
              {:ok, lifecycle} <- Lifecycle.lock(locked_article),
              {:ok, _} <- validate_lifecycle_version(lifecycle.version, expected_lifecycle_version),
-             {:ok, _} <- sync_community_tags(locked_article, community, opts),
              current_public <- Repo.get(ArticlePublic, locked_article.id),
              first_publish? <- is_nil(current_public),
              changed_fields <- changed_fields(locked_article, current_public, draft),
@@ -52,7 +62,19 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
              {:ok, public} <-
                Public.select(locked_article, revision, actor, published_at: published_at),
              {:ok, _} <- CMS.ArticleStats.initialize(locked_article),
-             {:ok, _lifecycle} <- Lifecycle.transition(lifecycle, :published),
+             {:ok, lifecycle} <- Lifecycle.transition(lifecycle, :published),
+             {:ok, _review} <-
+               register_review(
+                 locked_article,
+                 community,
+                 revision,
+                 lifecycle,
+                 first_publish?,
+                 opts
+               ),
+             {:ok, _} <- sync_community_tags(locked_article, community, opts),
+             {:ok, _binding} <-
+               CMS.Articles.BindingPersist.refresh_visibility(locked_article, community),
              {:ok, _} <- Store.delete_workspace(locked_article, draft) do
           %{
             article: locked_article,
@@ -73,6 +95,48 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
 
   def publish(%Article{thread: :doc}, %Author{}, _opts), do: {:error, :use_docs_publish}
 
+  defp register_review(article, community, revision, lifecycle, first_publish?, opts) do
+    with {:ok, configs} <- AlertBoard.configs_for_target(community.id, :article),
+         %ArticleBodySnapshot{} = body <- Repo.get(ArticleBodySnapshot, revision.body_snapshot_id) do
+      content = %{
+        identity: "article-revision:#{revision.id}",
+        body_hash: body.body_hash,
+        title: revision.title || "",
+        body: body.plain_text || "",
+        images: review_images(revision.id)
+      }
+
+      target = %{
+        target_key: "article:#{article.id}",
+        case_attrs: %{article_id: article.id},
+        community_id: community.id,
+        trigger: if(first_publish?, do: :submit, else: :edit)
+      }
+
+      operation_ref = Keyword.get(opts, :outbox_command_id) || revision.id
+
+      CMS.Review.Submission.register(lifecycle, target, content, configs, operation_ref)
+    else
+      nil -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      {:error, _reason} = error -> error
+    end
+  end
+
+  defp review_images(revision_id) do
+    ArticleAssetRef
+    |> join(:inner, [ref], asset in CommunityAsset, on: asset.id == ref.asset_id)
+    |> where(
+      [ref, asset],
+      ref.revision_id == ^revision_id and ref.usage == :inline and asset.asset_type == :image
+    )
+    |> order_by([ref, _asset], asc: ref.position, asc: ref.id)
+    |> select([ref, asset], %{
+      asset_id: ref.asset_id,
+      immutable_version: fragment("COALESCE(?, ?)", asset.content_hash, asset.url_hash)
+    })
+    |> Repo.all()
+  end
+
   defp lock_article(article_id) do
     Article
     |> where([article], article.id == ^article_id)
@@ -88,7 +152,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
     case Keyword.get(opts, :community) do
       %Community{} = community -> Bindings.get(article, community)
       nil -> binding_context_by_id(article, Keyword.get(opts, :community_id))
-      _ -> {:error, :article_binding_context_required}
+      _ -> {:error, ArticleErrorCat.binding_context_required()}
     end
   end
 
@@ -99,18 +163,18 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
   defp binding_context_by_id(article, community_id) when is_integer(community_id) do
     case Repo.get(Community, community_id) do
       %Community{} = community -> Bindings.get(article, community)
-      _ -> {:error, :article_binding_not_found}
+      _ -> {:error, ArticleErrorCat.binding_not_found()}
     end
   end
 
   defp binding_context_by_id(_article, _community_id) do
-    {:error, :article_binding_context_required}
+    {:error, ArticleErrorCat.binding_context_required()}
   end
 
   defp ensure_binding(%Article{} = article, %Community{id: community_id}) do
     case Repo.get_by(ArticleBinding, article_id: article.id, community_id: community_id) do
       %ArticleBinding{} = binding -> {:ok, binding}
-      nil -> {:error, :article_binding_not_found}
+      nil -> {:error, ArticleErrorCat.binding_not_found()}
     end
   end
 

@@ -12,6 +12,7 @@ defmodule GroupherServer.CMS.Articles.Trash do
   import Ecto.Query, warn: false
 
   alias GroupherServer.{Activity, CMS, Repo}
+  alias CMS.Articles.ErrorCat, as: ArticleErrorCat
   alias CMS.Articles.{Effects, Lifecycle, Bindings}
   alias CMS.Communities.Tags.Stats
   alias CMS.Docs.Trash, as: DocTrash
@@ -505,11 +506,11 @@ defmodule GroupherServer.CMS.Articles.Trash do
           community_id when is_integer(community_id) ->
             case Repo.get(Community, community_id) do
               %Community{} = community -> {:ok, community}
-              nil -> {:error, :article_binding_not_found}
+              nil -> {:error, ArticleErrorCat.binding_not_found()}
             end
 
           _ ->
-            {:error, :article_binding_context_required}
+            {:error, ArticleErrorCat.binding_context_required()}
         end
     end
   end

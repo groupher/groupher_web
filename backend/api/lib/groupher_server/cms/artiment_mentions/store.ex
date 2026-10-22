@@ -59,6 +59,7 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
   import Ecto.Query, warn: false
 
   alias GroupherServer.{CMS, Repo}
+  alias CMS.Articles.ErrorCat, as: ArticleErrorCat
 
   alias CMS.ErrorCat
 
@@ -304,6 +305,49 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
         |> mentioner_list_query(normalized, id)
         |> page_mentions(pagi, {:outgoing, normalized, id})
     end
+  end
+
+  @doc """
+  Returns distinct user ids directly mentioned by one internal CMS source.
+
+  Callers use this only after confirming the source is currently readable on its
+  public surface.
+
+  ## Examples
+
+      Store.mentioned_user_ids(:comment, 42)
+      #=> {:ok, [17, 23]} | {:error, reason}
+  """
+  @spec mentioned_user_ids(atom(), T.id()) :: {:ok, [pos_integer()]} | {:error, term()}
+  def mentioned_user_ids(type, id) when is_atom(type) and (is_integer(id) or is_binary(id)) do
+    case normalize_type(type) do
+      nil ->
+        {:error, ErrorCat.custom("invalid mentioner type")}
+
+      normalized ->
+        user_ids =
+          ArtimentMention
+          |> where(
+            [mention],
+            mention.mentioner_type == ^normalized and mention.mentioned_scope == :internal and
+              mention.mentioned_type == :user and not is_nil(mention.mentioned_id)
+          )
+          |> where_mentioner(normalized, id)
+          |> select([mention], fragment("DISTINCT ?", mention.mentioned_id))
+          |> Repo.all()
+
+        {:ok, user_ids}
+    end
+  end
+
+  def mentioned_user_ids(_type, _id), do: {:error, ErrorCat.custom("invalid mentioner identity")}
+
+  defp where_mentioner(query, type, article_id) when type in @threads do
+    where(query, [mention], mention.mentioner_article_id == ^article_id)
+  end
+
+  defp where_mentioner(query, _type, comment_id) do
+    where(query, [mention], mention.mentioner_id == ^comment_id)
   end
 
   @doc "Pages incoming Mention facts for an internal target."
@@ -565,7 +609,7 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
         CMS.Articles.Store.load_article_for_mentions(article_id, community)
 
       _ ->
-        {:error, :article_binding_context_required}
+        {:error, ArticleErrorCat.binding_context_required()}
     end
   end
 

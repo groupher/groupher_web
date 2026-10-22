@@ -2,6 +2,66 @@
   "app": "groupher_server",
   "pipelines": [
     {
+      "access": "user",
+      "arity": 4,
+      "confirmation": "GroupherServer.AlertBoard.Commands.DecideCase.Confirmation",
+      "module": "GroupherServer.AlertBoard.Commands.DecideCase",
+      "name": "execute_pipeline",
+      "operation": "alert_board_decide_case",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "case_id"
+    },
+    {
+      "access": "user",
+      "arity": 4,
+      "confirmation": "GroupherServer.AlertBoard.Commands.RecheckTarget.Confirmation",
+      "module": "GroupherServer.AlertBoard.Commands.RecheckTarget",
+      "name": "execute_pipeline",
+      "operation": "alert_board_recheck_target",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "target"
+    },
+    {
+      "access": "user",
+      "arity": 5,
+      "confirmation": "GroupherServer.AlertBoard.Commands.SubmitReport.Confirmation",
+      "module": "GroupherServer.AlertBoard.Commands.SubmitReport",
+      "name": "execute_pipeline",
+      "operation": "alert_board_submit_report",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "target"
+    },
+    {
+      "access": "user",
+      "arity": 6,
+      "confirmation": "GroupherServer.AlertBoard.Commands.UpdateConfig.Confirmation",
+      "module": "GroupherServer.AlertBoard.Commands.UpdateConfig",
+      "name": "execute_pipeline",
+      "operation": "alert_board_update_config",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "scope"
+    },
+    {
+      "access": "user",
+      "arity": 3,
+      "confirmation": "GroupherServer.AlertBoard.Commands.WithdrawReport.Confirmation",
+      "module": "GroupherServer.AlertBoard.Commands.WithdrawReport",
+      "name": "execute_pipeline",
+      "operation": "alert_board_withdraw_report",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "report_id"
+    },
+    {
       "access": "internal",
       "arity": 1,
       "module": "GroupherServer.CMS.Articles.Commands.Archive",
@@ -102,17 +162,6 @@
       "stages": ["gate", "change", "confirm", "present"],
       "steps": [],
       "target": "article"
-    },
-    {
-      "access": "user",
-      "arity": 5,
-      "module": "GroupherServer.CMS.Articles.Commands.Moderate",
-      "name": "execute",
-      "operation": "article_moderate",
-      "pipeline": "direct_pipeline",
-      "stages": ["gate", "change"],
-      "steps": [],
-      "target": "article_id"
     },
     {
       "access": "user",
@@ -442,39 +491,6 @@
       "stages": ["gate", "change", "confirm", "present"],
       "steps": [],
       "target": "comment"
-    },
-    {
-      "access": "internal",
-      "arity": 2,
-      "module": "GroupherServer.CMS.Comments.Commands.Moderate",
-      "name": "set_audit_failed",
-      "operation": "comment_set_audit_failed",
-      "pipeline": "direct_pipeline",
-      "stages": ["change"],
-      "steps": [],
-      "target": "comment"
-    },
-    {
-      "access": "internal",
-      "arity": 2,
-      "module": "GroupherServer.CMS.Comments.Commands.Moderate",
-      "name": "set_illegal",
-      "operation": "comment_set_illegal",
-      "pipeline": "direct_pipeline",
-      "stages": ["load", "change"],
-      "steps": [],
-      "target": "comment_id"
-    },
-    {
-      "access": "internal",
-      "arity": 2,
-      "module": "GroupherServer.CMS.Comments.Commands.Moderate",
-      "name": "unset_illegal",
-      "operation": "comment_unset_illegal",
-      "pipeline": "direct_pipeline",
-      "stages": ["load", "change"],
-      "steps": [],
-      "target": "comment_id"
     },
     {
       "access": "user",
@@ -1498,30 +1514,6 @@
       "operation": "emotion_remove",
       "pipeline": "receipt_pipeline",
       "stages": ["prepare", "gate", "change", "confirm", "present"],
-      "steps": [],
-      "target": "input"
-    },
-    {
-      "access": "user",
-      "arity": 5,
-      "confirmation": "GroupherServer.CMS.Interactions.Reactions.ReportConfirmation",
-      "module": "GroupherServer.CMS.Interactions.Reactions.Report",
-      "name": "execute_add",
-      "operation": "report_add",
-      "pipeline": "receipt_pipeline",
-      "stages": ["gate", "change", "confirm", "present"],
-      "steps": [],
-      "target": "input"
-    },
-    {
-      "access": "user",
-      "arity": 3,
-      "confirmation": "GroupherServer.CMS.Interactions.Reactions.ReportConfirmation",
-      "module": "GroupherServer.CMS.Interactions.Reactions.Report",
-      "name": "execute_remove",
-      "operation": "report_remove",
-      "pipeline": "receipt_pipeline",
-      "stages": ["gate", "change", "confirm", "present"],
       "steps": [],
       "target": "input"
     },

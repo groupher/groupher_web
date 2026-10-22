@@ -234,8 +234,6 @@ if config_env() in [:prod, :seed_prod] do
     client_secret: System.get_env("OAUTH_GITHUB_CLIENT_SECRET"),
     redirect_uri: System.get_env("OAUTH_GITHUB_REDIRECT_URI")
 
-  config :groupher_server, :audit, token: System.get_env("AUDIT_TOKEN")
-
   config :groupher_server, :search_artiments,
     platform: GroupherServer.CMS.SearchArtiments.Platforms.Algolia,
     queue: GroupherServer.CMS.SearchArtiments.Queues.Oban,

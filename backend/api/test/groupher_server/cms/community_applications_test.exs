@@ -15,6 +15,7 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
     Community,
     CommunityApplication,
     CommunityApplicationLogoUpload,
+    CommunityApplicationEvent,
     CommunityAsset,
     CommunitySlugClaim
   }
@@ -397,10 +398,18 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
               details: "Public Community"
             }} = CMS.Press.site_manifest(setting_up.slug)
 
+    old_setup_operation_ref =
+      CommunityApplicationEvent
+      |> where([event], event.application_id == ^approved.id and event.to_status == :setting_up)
+      |> order_by([event], desc: event.occurred_at, desc: event.id)
+      |> limit(1)
+      |> select([event], event.operation_ref)
+      |> Repo.one!()
+
     assert {:ok, failed} =
              CMS.Communities.mark_setup_failed(
                approved.public_ref,
-               Ecto.UUID.generate(),
+               old_setup_operation_ref,
                :setup_error,
                1
              )
@@ -449,6 +458,28 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
                community_id: failed.community_id,
                action: :setup_retried
              )
+
+    old_job = %Oban.Job{
+      args: %{
+        "community_ref" => approved.slug,
+        "application_ref" => approved.public_ref,
+        "operation_ref" => old_setup_operation_ref
+      },
+      attempt: 5,
+      max_attempts: 5
+    }
+
+    assert {:ok, :pass} = Setup.perform(old_job)
+
+    assert {:ok, still_setting_up} =
+             CMS.Communities.mark_setup_failed(
+               approved.public_ref,
+               old_setup_operation_ref,
+               :old_operation_failed_late,
+               5
+             )
+
+    assert still_setting_up.status == :setting_up
 
     assert %CMS.Model.CommunityApplicationEvent{operation_ref: ^setup_operation_ref} =
              Repo.get_by!(CMS.Model.CommunityApplicationEvent,

@@ -16,6 +16,7 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
   import Ecto.Query
 
   alias GroupherServer.{Accounts, Analysis, CMS, Repo}
+  alias CMS.Articles.ErrorCat, as: ArticleErrorCat
   alias Accounts.Model.CollectFolderEntry
   alias CMS.Articles.Numbering
 
@@ -24,6 +25,7 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
     ArticleBinding,
     ArticleBindingTag,
     ArticleLifecycle,
+    ArticleReviewRestriction,
     Community,
     KanbanState,
     PinnedArticle
@@ -62,6 +64,31 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
   end
 
   def move(%Article{thread: :doc}, %Community{}, %Community{}), do: {:error, :unsupported_for_doc}
+
+  @doc """
+  Recomputes an ordinary Article binding's public visibility from Lifecycle and active restrictions.
+
+  The caller owns the surrounding publish transaction.
+
+  ## Examples
+
+      BindingPersist.refresh_visibility(article, community)
+      #=> {:ok, %ArticleBinding{}} | {:error, reason}
+  """
+  @spec refresh_visibility(Article.t(), Community.t()) ::
+          {:ok, ArticleBinding.t()} | {:error, term()}
+  def refresh_visibility(%Article{thread: thread} = article, %Community{} = community)
+      when thread in @ordinary_threads do
+    with %Article{} = canonical <- lock_article(article.id),
+         {:ok, binding} <- upsert_binding(canonical, community) do
+      {:ok, binding}
+    else
+      nil -> {:error, :article_not_found}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  def refresh_visibility(%Article{thread: :doc}, %Community{}), do: {:error, :unsupported_for_doc}
 
   @doc """
   Adds an ordinary Article to a Community without changing stable identity.
@@ -104,7 +131,7 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
          {:ok, _deleted} <- Repo.delete(binding) do
       {:ok, :done}
     else
-      nil -> {:error, :article_binding_not_found}
+      nil -> {:error, ArticleErrorCat.binding_not_found()}
       {:error, reason} -> {:error, reason}
     end
   end
@@ -236,10 +263,22 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
   end
 
   defp upsert_binding(article, community) do
+    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
+    community_scope_key = "community:#{community.id}"
+
+    restricted? =
+      Repo.exists?(
+        from(restriction in ArticleReviewRestriction,
+          where:
+            restriction.lifecycle_id == ^lifecycle.id and is_nil(restriction.ended_at) and
+              restriction.scope_key in ["platform", ^community_scope_key]
+        )
+      )
+
     attrs = %{
       article_id: article.id,
       community_id: community.id,
-      visible: article.moderation_state != :illegal,
+      visible: lifecycle.state in [:published, :archived] and not restricted?,
       inner_id: nil
     }
 

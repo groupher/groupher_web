@@ -17,7 +17,7 @@ defmodule GroupherServer.CMS.Model.DocLifecycle do
   @schema_prefix DBPrefix.cms()
   @states [:draft_only, :published, :archived, :deleted, :destroy]
   @required_fields ~w(article_id community_id branch_id state version changed_at)a
-  @optional_fields ~w(archived_at deleted_at destroyed_at)a
+  @optional_fields ~w(archived_at deleted_at destroyed_at review_content_token review_epoch)a
 
   @type state :: :draft_only | :published | :archived | :deleted | :destroy
   @type t :: %__MODULE__{}
@@ -32,6 +32,8 @@ defmodule GroupherServer.CMS.Model.DocLifecycle do
     field(:archived_at, :utc_datetime)
     field(:deleted_at, :utc_datetime)
     field(:destroyed_at, :utc_datetime)
+    field(:review_content_token, :string)
+    field(:review_epoch, :integer, default: 0)
     timestamps(type: :utc_datetime)
   end
 

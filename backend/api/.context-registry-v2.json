@@ -2,6 +2,7 @@
   "version": 2,
   "contexts": {
     "accounts": { "mode": "strict" },
+    "alert_board": { "mode": "strict" },
     "activity": { "mode": "strict" },
     "analysis": { "mode": "strict" },
     "auth": { "mode": "strict" },
@@ -12,6 +13,7 @@
     "pagi": { "mode": "strict" },
     "public_cache": { "mode": "strict" },
     "request_actor": { "mode": "strict" },
+    "review_bot": { "mode": "strict" },
     "service_auth": { "mode": "strict" }
   }
 }

@@ -90,7 +90,6 @@ defmodule GroupherServer.CMS.Comments.InteractionResponse do
     |> Map.put(:upvotes_count, state.upvotes_count)
     |> Map.put(:comment_interaction_revision, state.interaction_revision)
     |> Map.put(:viewer_has_upvoted, state.viewer_has_upvoted)
-    |> Map.put(:viewer_has_reported, state.viewer_has_reported)
     |> Map.put(:is_solution, MapSet.member?(solution_ids, comment.id))
     |> Map.put(:emotions, emotion_map(state.emotions))
     |> Map.put(:meta, comment_meta(comment, state, author_upvoted_ids))
@@ -114,7 +113,7 @@ defmodule GroupherServer.CMS.Comments.InteractionResponse do
       |> Map.put(:latest_upvoted_users, state.latest_upvoted_users)
       |> Map.put(:is_article_author_upvoted, MapSet.member?(author_upvoted_ids, comment.id))
 
-    Map.put(meta, :reported_count, Map.get(state, :reported_count, 0))
+    meta
   end
 
   defp emotion_map(emotions) do

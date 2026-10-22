@@ -92,6 +92,22 @@ defmodule GroupherServer.CMS.Command.IntentCodec do
     comment_revoke_solution: :empty,
     comment_pin: :empty,
     comment_unpin: :empty,
+    alert_board_submit_report:
+      {:fields, %{"target_key" => :raw, "reason_code" => :raw, "details" => :digest}},
+    alert_board_withdraw_report: {:fields, %{"report_id" => :raw}},
+    alert_board_update_config: :digest_each,
+    alert_board_recheck_target: {:fields, %{"target_key" => :raw, "scope_key" => :raw}},
+    alert_board_decide_case:
+      {:fields,
+       %{
+         "case_id" => :raw,
+         "expected_case_version" => :raw,
+         "expected_content_token" => :digest,
+         "action" => :raw,
+         "restriction_ids" => :digest,
+         "reason_code" => :raw,
+         "note" => :digest
+       }},
     community_create: :digest_each,
     community_update: :digest_each,
     community_request_destroy: :digest_each,
@@ -103,8 +119,6 @@ defmodule GroupherServer.CMS.Command.IntentCodec do
     doc_cover_unpin_doc: {:fields, %{"node_id" => :raw}},
     emotion_add: {:fields, %{"operation" => :raw, "emotion" => :raw}},
     emotion_remove: {:fields, %{"operation" => :raw, "emotion" => :raw}},
-    report_add: {:fields, %{"reason" => :raw, "attrs" => :digest}},
-    report_remove: :empty,
     upvote_add: {:fields, %{"operation" => :raw}},
     upvote_remove: {:fields, %{"operation" => :raw}},
     doc_publish_changes: :digest_each,

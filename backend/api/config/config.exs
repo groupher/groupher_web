@@ -254,10 +254,6 @@ config :groupher_server, Helper.Scheduler,
     {"@daily", {Helper.Scheduler, :clear_all_cache, []}},
     {"@daily", {Helper.Scheduler, :archive_artiments, []}},
     {"17 * * * *", {Helper.Scheduler, :purge_expired_trash, []}},
-    # Every 59 minutes
-    {"*/59 * * * *", {Helper.Scheduler, :articles_audition, []}},
-    # Every 29 minutes
-    {"*/29 * * * *", {Helper.Scheduler, :comments_audition, []}},
     online_status: [
       # Runs every 20 seconds
       schedule: {:extended, "*/20"},
@@ -295,7 +291,8 @@ config :groupher_server, Oban,
     cms_outbox: 5,
     public_cache: 5,
     community_application: 5,
-    community_setup: 5
+    community_setup: 5,
+    review_bot: 5
   ]
 
 config :groupher_server, GroupherServer.PublicCache.DeliveryConfig,
