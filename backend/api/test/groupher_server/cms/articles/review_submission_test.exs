@@ -78,6 +78,61 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewSubmissionTest do
     assert updated.title == "Edited under the immediate edit policy"
   end
 
+  test "an edit keeps a current Case available for an older manual hold" do
+    {community, published, _attrs, user} = mock_article(:post)
+    article = Repo.get!(Article, published.article_id)
+    scope_key = "community:#{community.id}"
+    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
+    old_token = lifecycle.review_content_token
+    target = %{target_key: "article:#{article.id}", case_attrs: %{article_id: article.id}}
+
+    {:ok, old_case} = AlertBoard.open_submission_case(target, scope_key, old_token)
+
+    {:ok, hold} =
+      Repo.transact_result(fn ->
+        with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article),
+             {:ok, restriction} <-
+               CMS.Articles.Lifecycle.apply_review_restriction(locked, %{
+                 scope_key: scope_key,
+                 cause_key: "manual-hold:#{old_token}",
+                 kind: :manual_hold,
+                 content_token: old_token,
+                 source: :human,
+                 case_id: old_case.id,
+                 created_by_operation_ref: Ecto.UUID.generate()
+               }) do
+          {:ok, restriction}
+        end
+      end)
+
+    assert {:ok, updated} =
+             CMS.Articles.update(
+               published,
+               %{
+                 title: "Edit while a manual hold remains",
+                 expected_version: published.version
+               },
+               user,
+               Ecto.UUID.generate()
+             )
+
+    current_lifecycle = Repo.get!(ArticleLifecycle, lifecycle.id)
+    assert Repo.get!(Case, old_case.id).status == :superseded
+    assert current_lifecycle.review_content_token != old_token
+    assert Repo.get!(ArticleReviewRestriction, hold.id).ended_at == nil
+
+    current_case =
+      Repo.get_by!(Case,
+        target_key: "article:#{article.id}",
+        scope_key: scope_key,
+        content_token: current_lifecycle.review_content_token,
+        status: :open
+      )
+
+    assert current_case.article_id == article.id
+    assert updated.title == "Edit while a manual hold remains"
+  end
+
   test "mirroring applies destination policy and later edits recheck every bound Community" do
     {source, published, _attrs, user} = mock_article(:post)
     {:ok, destination} = mock_community(user)

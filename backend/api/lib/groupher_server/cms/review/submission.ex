@@ -166,6 +166,12 @@ defmodule GroupherServer.CMS.Review.Submission do
            ),
          {:ok, :pass} <- apply_deterministic_checks(checks, target),
          {:ok, :pass} <-
+           reopen_case_for_retained_restrictions(
+             target,
+             config.scope_key,
+             content.content_token
+           ),
+         {:ok, :pass} <-
            enqueue_snapshot_visibility(target.lifecycle, target, config, content) do
       _ = old_waits
       {:ok, checks}
@@ -401,6 +407,25 @@ defmodule GroupherServer.CMS.Review.Submission do
         {:error, reason} -> {:halt, {:error, reason}}
       end
     end)
+  end
+
+  defp reopen_case_for_retained_restrictions(target, scope_key, content_token) do
+    with {:ok, restrictions} <- CMS.ReviewRestrictions.active_for(target.lifecycle, scope_key) do
+      retained? =
+        Enum.any?(restrictions, fn restriction ->
+          restriction.content_token != content_token and
+            restriction.kind in [:manual_hold, :rule_hit]
+        end)
+
+      if retained? do
+        case AlertBoard.open_submission_case(target, scope_key, content_token) do
+          {:ok, _case_record} -> {:ok, :pass}
+          {:error, _reason} = error -> error
+        end
+      else
+        {:ok, :pass}
+      end
+    end
   end
 
   defp effective_mode(%ReviewConfig{edit_mode: mode}, %{trigger: :edit}), do: mode
