@@ -4,6 +4,35 @@ defmodule GroupherServer.Test.ReviewBot.CheckContractTest do
 
   alias ReviewBot.{CheckInput, CheckOutput}
 
+  test "runtime profiles require operator credentials and use fixed provider IDs" do
+    profiles =
+      GroupherServer.ReviewBot.Config.profiles_from_env(%{
+        "REVIEW_BOT_JUDGE_URL" => "https://judge.example.test",
+        "REVIEW_BOT_JUDGE_TOKEN" => "judge-secret",
+        "REVIEW_BOT_OPENAI_MODEL" => "gpt-test"
+      })
+
+    assert profiles["judge_http"] == %{
+             adapter: :judge_http,
+             base_url: "https://judge.example.test",
+             model: "default",
+             credential_env: "REVIEW_BOT_JUDGE_TOKEN",
+             modalities: [:text, :image]
+           }
+
+    refute Map.has_key?(profiles, "openai")
+
+    openai_profiles =
+      GroupherServer.ReviewBot.Config.profiles_from_env(%{
+        "REVIEW_BOT_OPENAI_TOKEN" => "openai-secret",
+        "REVIEW_BOT_OPENAI_MODEL" => "gpt-test"
+      })
+
+    assert openai_profiles["openai"].model == "gpt-test"
+    assert openai_profiles["openai"].base_url == "https://api.openai.com/v1/responses"
+    refute Map.has_key?(openai_profiles, "judge_http")
+  end
+
   test "provider routing rejects unknown profiles and adapter identifiers" do
     assert {:error, _reason} = GroupherServer.ReviewBot.check(input(), "missing-profile")
     assert {:error, _reason} = GroupherServer.ReviewBot.Config.adapter(%{adapter: :unknown})
