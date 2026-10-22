@@ -4,9 +4,11 @@ defmodule GroupherServer.Test.AlertBoard.DecideCaseTest do
   import Ecto.Query
 
   alias GroupherServer.{AlertBoard, CMS, Repo}
-  alias AlertBoard.Model.{Case, Decision, ReviewConfig}
+  alias AlertBoard.Model.{Case, Decision, ReviewConfig, RuleSet}
   alias CMS.Model.Article
   alias CMS.Model.ArticleReviewRestriction
+  alias GroupherServer.ReviewBot
+  alias ReviewBot.Model.{Attempt, Check}
 
   test "approval ends selected restrictions and records one receipt-backed decision" do
     {community, article, _author} = create_pending_article()
@@ -52,6 +54,106 @@ defmodule GroupherServer.Test.AlertBoard.DecideCaseTest do
     assert decision_id == decision.id
     assert Repo.get!(Case, case_record.id).status == :resolved
     assert Repo.get!(ArticleReviewRestriction, restriction.id).ended_at
+  end
+
+  test "human approval supersedes an in-flight model check" do
+    {community, article, _author} = create_pending_article()
+    {:ok, reviewer} = db_insert(:user)
+    reviewer = grant_review_action(reviewer, community.slug, "review.decide")
+
+    case_record =
+      Repo.get_by!(Case,
+        target_key: "article:#{article.id}",
+        scope_key: "community:#{community.id}",
+        status: :open
+      )
+
+    restriction = Repo.get_by!(ArticleReviewRestriction, case_id: case_record.id)
+    {check, attempt} = running_check(case_record)
+
+    assert {:ok, %Decision{action: :approve}} =
+             AlertBoard.decide_case(
+               case_record.id,
+               %{
+                 expected_case_version: case_record.version,
+                 expected_content_token: case_record.content_token,
+                 action: :approve,
+                 restriction_ids: [restriction.id],
+                 reason_code: "verified",
+                 note: "Human decision supersedes queued AI"
+               },
+               reviewer,
+               Ecto.UUID.generate()
+             )
+
+    assert Repo.get!(Check, check.id).state == :superseded
+    assert Repo.get!(Check, check.id).payload == nil
+    assert Repo.get!(Attempt, attempt.id).state == :abandoned
+  end
+
+  test "restrict replaces an awaiting-human wait with a releasable manual hold" do
+    {community, article, _author} = create_pending_article()
+    {:ok, reviewer} = db_insert(:user)
+    reviewer = grant_review_action(reviewer, community.slug, "review.decide")
+
+    case_record =
+      Repo.get_by!(Case,
+        target_key: "article:#{article.id}",
+        scope_key: "community:#{community.id}",
+        status: :open
+      )
+
+    waiting = Repo.get_by!(ArticleReviewRestriction, case_id: case_record.id)
+
+    assert {:ok, %Decision{action: :restrict, restriction_ids: ids}} =
+             AlertBoard.decide_case(
+               case_record.id,
+               %{
+                 expected_case_version: case_record.version,
+                 expected_content_token: case_record.content_token,
+                 action: :restrict,
+                 restriction_ids: [],
+                 reason_code: "policy_violation",
+                 note: "Keep this content restricted"
+               },
+               reviewer,
+               Ecto.UUID.generate()
+             )
+
+    ended_wait = Repo.get!(ArticleReviewRestriction, waiting.id)
+    assert ended_wait.ended_at
+    assert ended_wait.end_reason == "human_restriction_decided"
+
+    manual_hold =
+      Repo.one!(
+        from(row in ArticleReviewRestriction,
+          where: row.kind == :manual_hold and is_nil(row.ended_at)
+        )
+      )
+
+    assert manual_hold.case_id == case_record.id
+    assert manual_hold.id in ids
+    assert waiting.id in ids
+    restricted_case = Repo.get!(Case, case_record.id)
+    assert restricted_case.status == :open
+
+    assert {:ok, %Decision{action: :release}} =
+             AlertBoard.decide_case(
+               restricted_case.id,
+               %{
+                 expected_case_version: restricted_case.version,
+                 expected_content_token: restricted_case.content_token,
+                 action: :release,
+                 restriction_ids: [manual_hold.id],
+                 reason_code: "restriction_lifted",
+                 note: "Manual hold can now be lifted"
+               },
+               reviewer,
+               Ecto.UUID.generate()
+             )
+
+    assert Repo.get!(ArticleReviewRestriction, manual_hold.id).ended_at
+    assert Repo.get!(Case, case_record.id).status == :resolved
   end
 
   test "reviewers cannot decide their own Article and stale case versions are rejected" do
@@ -166,5 +268,56 @@ defmodule GroupherServer.Test.AlertBoard.DecideCaseTest do
       CMS.Articles.create(community, :post, attrs, author, command_id: Ecto.UUID.generate())
 
     {community, Repo.get!(Article, published.article_id), author}
+  end
+
+  defp running_check(%Case{} = case_record) do
+    {:ok, user} = db_insert(:user)
+    scope_key = case_record.scope_key
+
+    ruleset =
+      %RuleSet{}
+      |> RuleSet.changeset(%{
+        scope_key: scope_key,
+        version: 1,
+        rules: %{"items" => []},
+        created_by_id: user.id,
+        operation_ref: Ecto.UUID.generate(),
+        required_modalities: ["text"]
+      })
+      |> Repo.insert!()
+
+    check =
+      %Check{}
+      |> Check.changeset(%{
+        target_key: case_record.target_key,
+        scope_key: scope_key,
+        content_token: case_record.content_token,
+        ruleset_id: ruleset.id,
+        config_version: 1,
+        mode: :human_first,
+        generation: 1,
+        trigger: :submit,
+        state: :running,
+        active_attempt: 1,
+        human_epoch: 1,
+        payload: %{"text" => %{"title" => "queued", "body" => "check"}},
+        payload_expires_at: DateTime.add(DateTime.utc_now(:second), 60, :second),
+        operation_ref: Ecto.UUID.generate()
+      })
+      |> Repo.insert!()
+
+    attempt =
+      %Attempt{}
+      |> Attempt.changeset(%{
+        check_id: check.id,
+        number: 1,
+        state: :running,
+        started_at: DateTime.utc_now(:second),
+        provider_profile: "test",
+        request_id: Ecto.UUID.generate()
+      })
+      |> Repo.insert!()
+
+    {check, attempt}
   end
 end

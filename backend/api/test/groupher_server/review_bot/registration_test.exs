@@ -151,6 +151,33 @@ defmodule GroupherServer.Test.ReviewBot.RegistrationTest do
     assert job.args["check_id"] == check.id
   end
 
+  test "queued model checks retain deterministic word pass evidence" do
+    set_test_provider_profile()
+
+    ruleset =
+      ruleset(%{"items" => [word_rule(), judge_rule()]}, provider_profile: "test-judge")
+
+    config = config(ruleset, background_check: true)
+
+    assert {:ok, %{checks: [%Check{state: :completed}, %Check{} = model_check]}} =
+             Repo.transact_result(fn ->
+               ReviewBot.register_in_transaction(
+                 target(),
+                 content("safe body"),
+                 config,
+                 Ecto.UUID.generate()
+               )
+             end)
+
+    assert model_check.state == :queued
+
+    assert model_check.signals == %{
+             "items" => [
+               %{rule_id: "w1", category: "spam", action: "restrict", verdict: "pass"}
+             ]
+           }
+  end
+
   test "edit checks snapshot edit mode instead of the first-publication mode" do
     set_test_provider_profile()
     ruleset = ruleset(%{"items" => [judge_rule()]}, provider_profile: "test-judge")
