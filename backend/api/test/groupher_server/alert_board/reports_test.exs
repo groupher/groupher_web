@@ -254,6 +254,43 @@ defmodule GroupherServer.Test.AlertBoard.ReportsTest do
       required_modalities: ["text"]
     }
 
+    image_required_attrs = %{attrs | required_modalities: ["text", "image"]}
+
+    assert {:error, _reason} =
+             AlertBoard.update_config(
+               scope,
+               :article,
+               current.version,
+               image_required_attrs,
+               actor,
+               Ecto.UUID.generate()
+             )
+
+    disabled_judge_attrs = %{
+      image_required_attrs
+      | rules: %{
+          "items" => [
+            %{
+              "id" => "image-judge",
+              "kind" => "judge",
+              "value" => "review image content",
+              "category" => "safety",
+              "action" => "review"
+            }
+          ]
+        }
+    }
+
+    assert {:error, _reason} =
+             AlertBoard.update_config(
+               scope,
+               :article,
+               current.version,
+               disabled_judge_attrs,
+               actor,
+               Ecto.UUID.generate()
+             )
+
     assert {:ok, %ReviewConfig{version: 2, ruleset_id: ruleset_id}} =
              AlertBoard.update_config(scope, :article, current.version, attrs, actor, command_id)
 

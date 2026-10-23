@@ -174,9 +174,14 @@ defmodule GroupherServer.AlertBoard.Commands.UpdateConfig do
     items = Map.get(rules, "items", Map.get(rules, :items))
     model_rules = Enum.filter(items, &(value(&1, "kind") == "judge"))
     ai_mode? = attrs.publish_mode == :ai_first or attrs.edit_mode == :ai_first
+    non_text_modalities? = Enum.any?(modalities, &(&1 != "text"))
+    judge_enabled? = model_rules != [] and attrs.background_check
 
     cond do
       ai_mode? and (model_rules == [] or not attrs.background_check) ->
+        {:error, AlertBoard.ErrorCat.review_config_invalid()}
+
+      non_text_modalities? and not judge_enabled? ->
         {:error, AlertBoard.ErrorCat.review_config_invalid()}
 
       model_rules != [] and
