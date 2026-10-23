@@ -84,6 +84,11 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Queries do
       #=> true | false
   """
   def article_review_restricted?(lifecycle_id, community_id) do
+    article_review_scope_keys(lifecycle_id, community_id) != []
+  end
+
+  @doc "Returns the active platform and community review scopes for an Article binding."
+  def article_review_scope_keys(lifecycle_id, community_id) do
     scope_key = "community:#{community_id}"
 
     ArticleReviewRestriction
@@ -92,7 +97,8 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Queries do
       restriction.lifecycle_id == ^lifecycle_id and is_nil(restriction.ended_at) and
         restriction.scope_key in ["platform", ^scope_key]
     )
-    |> Repo.exists?()
+    |> select([restriction], restriction.scope_key)
+    |> Repo.all()
   end
 
   @doc "Loads a branch Lifecycle keyed by one stable Doc Article under `FOR UPDATE`."
@@ -116,13 +122,19 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Queries do
       #=> true | false
   """
   def doc_review_restricted?(lifecycle_id) do
+    doc_review_scope_keys(lifecycle_id) != []
+  end
+
+  @doc "Returns the active review scopes for a Doc branch."
+  def doc_review_scope_keys(lifecycle_id) do
     DocReviewRestriction
     |> where(
       [restriction],
       restriction.lifecycle_id == ^lifecycle_id and restriction.scope_key == "platform" and
         is_nil(restriction.ended_at)
     )
-    |> Repo.exists?()
+    |> select([restriction], restriction.scope_key)
+    |> Repo.all()
   end
 
   @doc """

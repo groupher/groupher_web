@@ -109,7 +109,8 @@ defmodule GroupherServer.CMS.Gate.Access.Policy.Article do
     with {:ok, lifecycle} <- article_lifecycle(context),
          true <- lifecycle.state in [:published, :archived],
          true <-
-           not Map.get(context, :review_restricted?, false) or article_owner?(actor, article) do
+           not Map.get(context, :review_restricted?, false) or article_owner?(actor, article) or
+             review_scopes_readable?(actor, context) do
       {:ok, :pass}
     else
       _ -> {:error, ErrorCat.permission_denied()}
@@ -128,6 +129,32 @@ defmodule GroupherServer.CMS.Gate.Access.Policy.Article do
       {:ok, false} -> {:error, ErrorCat.ancestor_community_not_writable()}
       {:error, _reason} = error -> error
     end
+  end
+
+  defp review_scopes_readable?(%User{}, context) do
+    scopes = Map.get(context, :review_scope_keys, [])
+    passport_rules = Map.get(context, :passport_rules)
+    community = Map.get(context, :community)
+
+    is_list(scopes) and scopes != [] and match?(%Community{}, community) and
+      Enum.all?(scopes, fn
+        "platform" ->
+          CMS.Passport.Authorization.allowed?(
+            passport_rules,
+            nil,
+            CMS.GateAction.review_platform_read()
+          ) == {:ok, true}
+
+        "community:" <> _community_id ->
+          CMS.Passport.Authorization.allowed?(
+            passport_rules,
+            community.slug,
+            CMS.GateAction.review_read()
+          ) == {:ok, true}
+
+        _scope ->
+          false
+      end)
   end
 
   defp authorize_insights(:operations, _article, _community, _context), do: {:ok, :pass}

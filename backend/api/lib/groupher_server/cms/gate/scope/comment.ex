@@ -20,7 +20,7 @@ defmodule GroupherServer.CMS.Gate.Scope.Comment do
 
   alias Accounts.Model.User
   alias CMS.Gate.{ErrorCat, Scope.Policy}
-  alias CMS.Gate.Scope.{ArticleSchema, CommunityChain}
+  alias CMS.Gate.Scope.{ArticleSchema, CommunityChain, ReviewRead}
 
   alias CMS.Model.{
     ArticleLifecycle,
@@ -138,20 +138,30 @@ defmodule GroupherServer.CMS.Gate.Scope.Comment do
     )
   end
 
-  defp public_comment(query, %User{id: user_id}) do
+  defp public_comment(query, %User{id: user_id} = actor) do
+    %{platform?: platform_read?, community_slugs: community_slugs} = ReviewRead.grants(actor)
+
     from(comment in query,
       where:
-        not exists(
-          from(restriction in CommentReviewRestriction,
-            where:
-              restriction.lifecycle_id == parent_as(:gate_comment_lifecycle).id and
-                is_nil(restriction.ended_at) and
-                (restriction.scope_key == "platform" or
-                   restriction.scope_key ==
-                     fragment("'community:' || ?::text", parent_as(:gate_community).id)),
-            select: 1
-          )
-        ) or comment.author_id == ^user_id
+        comment.author_id == ^user_id or
+          ((not exists(
+              from(restriction in CommentReviewRestriction,
+                where:
+                  restriction.lifecycle_id == parent_as(:gate_comment_lifecycle).id and
+                    restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+                select: 1
+              )
+            ) or ^platform_read?) and
+             (not exists(
+                from(restriction in CommentReviewRestriction,
+                  where:
+                    restriction.lifecycle_id == parent_as(:gate_comment_lifecycle).id and
+                      restriction.scope_key ==
+                        fragment("'community:' || ?::text", parent_as(:gate_community).id) and
+                      is_nil(restriction.ended_at),
+                  select: 1
+                )
+              ) or as(:gate_community).slug in ^community_slugs))
     )
   end
 

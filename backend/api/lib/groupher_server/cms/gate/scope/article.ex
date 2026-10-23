@@ -19,7 +19,7 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
   alias CMS.Gate.Context.Scope.Article, as: ArticleContext
   alias CMS.Gate.Context.Scope.Doc, as: DocContext
   alias CMS.Gate.ErrorCat
-  alias CMS.Gate.Scope.{ArticleSchema, CommunityChain, Policy}
+  alias CMS.Gate.Scope.{ArticleSchema, CommunityChain, Policy, ReviewRead}
 
   alias CMS.Model.{
     ArticleDraft,
@@ -227,13 +227,14 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
      |> where([_article, ...], as(:gate_article_lifecycle).state in ^@draft_lifecycle_states)}
   end
 
-  defp public_binding_scope(query, %User{id: user_id}, %DocContext{}) do
+  defp public_binding_scope(query, actor = %User{id: user_id}, %DocContext{}) do
     author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
+    %{platform?: platform_read?} = ReviewRead.grants(actor)
 
     from([article, ...] in query,
       where:
         as(:gate_article_binding).visible == true or
-          (article.author_id in subquery(author_ids) and
+          ((article.author_id in subquery(author_ids) or ^platform_read?) and
              exists(
                from(restriction in DocReviewRestriction,
                  where:
@@ -245,24 +246,44 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
     )
   end
 
-  defp public_binding_scope(query, %User{id: user_id}, %ArticleContext{}) do
+  defp public_binding_scope(query, actor = %User{id: user_id}, %ArticleContext{}) do
     author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
+    %{platform?: platform_read?, community_slugs: community_slugs} = ReviewRead.grants(actor)
 
     from([article, ...] in query,
       where:
         as(:gate_article_binding).visible == true or
-          (article.author_id in subquery(author_ids) and
-             exists(
-               from(restriction in ArticleReviewRestriction,
-                 where:
-                   restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                     is_nil(restriction.ended_at) and
-                     (restriction.scope_key == "platform" or
-                        restriction.scope_key ==
-                          fragment("'community:' || ?::text", parent_as(:gate_community).id)),
-                 select: 1
-               )
-             ))
+          (exists(
+             from(restriction in ArticleReviewRestriction,
+               where:
+                 restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                   is_nil(restriction.ended_at) and
+                   restriction.scope_key in [
+                     "platform",
+                     fragment("'community:' || ?::text", parent_as(:gate_community).id)
+                   ],
+               select: 1
+             )
+           ) and
+             (article.author_id in subquery(author_ids) or
+                ((not exists(
+                    from(restriction in ArticleReviewRestriction,
+                      where:
+                        restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                          restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+                      select: 1
+                    )
+                  ) or ^platform_read?) and
+                   (not exists(
+                      from(restriction in ArticleReviewRestriction,
+                        where:
+                          restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                            restriction.scope_key ==
+                              fragment("'community:' || ?::text", parent_as(:gate_community).id) and
+                            is_nil(restriction.ended_at),
+                        select: 1
+                      )
+                    ) or as(:gate_community).slug in ^community_slugs))))
     )
   end
 
@@ -339,8 +360,9 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
     ArticleSchema.thread_for(schema)
   end
 
-  defp public_article(query, %User{id: user_id}, %DocContext{}) do
+  defp public_article(query, actor = %User{id: user_id}, %DocContext{}) do
     author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
+    %{platform?: platform_read?} = ReviewRead.grants(actor)
 
     from(article in query,
       where:
@@ -351,30 +373,41 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
                 restriction.scope_key == "platform" and is_nil(restriction.ended_at),
             select: 1
           )
-        ) or article.author_id in subquery(author_ids)
+        ) or article.author_id in subquery(author_ids) or ^platform_read?
     )
   end
 
-  defp public_article(query, %User{id: user_id}, %ArticleContext{}) do
+  defp public_article(query, actor = %User{id: user_id}, %ArticleContext{}) do
     author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
+    %{platform?: platform_read?, community_slugs: community_slugs} = ReviewRead.grants(actor)
 
     from(article in query,
       where:
-        not exists(
-          from(restriction in ArticleReviewRestriction,
-            where:
-              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                is_nil(restriction.ended_at) and
-                (restriction.scope_key == "platform" or
-                   restriction.scope_key ==
-                     fragment("'community:' || ?::text", parent_as(:gate_community).id)),
-            select: 1
-          )
-        ) or article.author_id in subquery(author_ids)
+        article.author_id in subquery(author_ids) or
+          ((not exists(
+              from(restriction in ArticleReviewRestriction,
+                where:
+                  restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                    restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+                select: 1
+              )
+            ) or ^platform_read?) and
+             (not exists(
+                from(restriction in ArticleReviewRestriction,
+                  where:
+                    restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                      restriction.scope_key ==
+                        fragment("'community:' || ?::text", parent_as(:gate_community).id) and
+                      is_nil(restriction.ended_at),
+                  select: 1
+                )
+              ) or as(:gate_community).slug in ^community_slugs))
     )
   end
 
-  defp public_article(query, _actor, %DocContext{}) do
+  defp public_article(query, actor, %DocContext{}) do
+    %{platform?: platform_read?} = ReviewRead.grants(actor)
+
     from(article in query,
       where:
         not exists(
@@ -384,29 +417,39 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
                 restriction.scope_key == "platform" and is_nil(restriction.ended_at),
             select: 1
           )
-        )
+        ) or ^platform_read?
     )
   end
 
-  defp public_article(query, _actor, %ArticleContext{}) do
+  defp public_article(query, actor, %ArticleContext{}) do
+    %{platform?: platform_read?, community_slugs: community_slugs} = ReviewRead.grants(actor)
+
     from(article in query,
       where:
-        not exists(
-          from(restriction in ArticleReviewRestriction,
-            where:
-              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                is_nil(restriction.ended_at) and
-                (restriction.scope_key == "platform" or
+        (not exists(
+           from(restriction in ArticleReviewRestriction,
+             where:
+               restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                 restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+             select: 1
+           )
+         ) or ^platform_read?) and
+          (not exists(
+             from(restriction in ArticleReviewRestriction,
+               where:
+                 restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
                    restriction.scope_key ==
-                     fragment("'community:' || ?::text", parent_as(:gate_community).id)),
-            select: 1
-          )
-        )
+                     fragment("'community:' || ?::text", parent_as(:gate_community).id) and
+                   is_nil(restriction.ended_at),
+               select: 1
+             )
+           ) or as(:gate_community).slug in ^community_slugs)
     )
   end
 
-  defp public_head_scope(query, %DocContext{}, %User{id: user_id}) do
+  defp public_head_scope(query, %DocContext{}, %User{id: user_id} = actor) do
     author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
+    %{platform?: platform_read?} = ReviewRead.grants(actor)
 
     query =
       from([article, ...] in query,
@@ -417,16 +460,8 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
 
     from([article, ...] in query,
       where:
-        (as(:gate_article_public).visible == true and
-           not exists(
-             from(restriction in DocReviewRestriction,
-               where:
-                 restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                   restriction.scope_key == "platform" and is_nil(restriction.ended_at),
-               select: 1
-             )
-           )) or
-          (article.author_id in subquery(author_ids) and
+        as(:gate_article_public).visible == true or
+          ((article.author_id in subquery(author_ids) or ^platform_read?) and
              exists(
                from(restriction in DocReviewRestriction,
                  where:
@@ -460,8 +495,9 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
     )
   end
 
-  defp public_head_scope(query, %ArticleContext{}, %User{id: user_id}) do
+  defp public_head_scope(query, %ArticleContext{}, %User{id: user_id} = actor) do
     author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
+    %{platform?: platform_read?} = ReviewRead.grants(actor)
 
     from(article in query,
       join: public in ArticlePublic,
@@ -469,15 +505,12 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
       on: public.article_id == article.id,
       where:
         public.visible == true or
-          (article.author_id in subquery(author_ids) and
+          ((article.author_id in subquery(author_ids) or ^platform_read?) and
              exists(
                from(restriction in ArticleReviewRestriction,
                  where:
                    restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                     is_nil(restriction.ended_at) and
-                     (restriction.scope_key == "platform" or
-                        restriction.scope_key ==
-                          fragment("'community:' || ?::text", parent_as(:gate_community).id)),
+                     restriction.scope_key == "platform" and is_nil(restriction.ended_at),
                  select: 1
                )
              ))

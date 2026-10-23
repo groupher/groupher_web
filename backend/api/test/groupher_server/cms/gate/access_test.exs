@@ -248,6 +248,55 @@ defmodule GroupherServer.Test.CMS.Gate.Access do
 
     assert {:error, %ErrorCat.Error{reason: :permission_denied}} =
              ArticlePolicy.check_access(other_user, :read, article, restricted_context)
+
+    community_reader = %{
+      other_user
+      | cur_passport: %{"global" => %{}, community.slug => %{"cms" => %{"review.read" => true}}}
+    }
+
+    assert {:ok, :pass} =
+             ArticlePolicy.check_access(
+               community_reader,
+               :read,
+               article,
+               %{
+                 restricted_context
+                 | passport_rules: community_reader.cur_passport,
+                   review_scope_keys: ["community:#{community.id}"]
+               }
+             )
+
+    assert {:error, %ErrorCat.Error{reason: :permission_denied}} =
+             ArticlePolicy.check_access(
+               community_reader,
+               :read,
+               article,
+               %{
+                 restricted_context
+                 | passport_rules: community_reader.cur_passport,
+                   review_scope_keys: ["platform", "community:#{community.id}"]
+               }
+             )
+
+    platform_reader = %{
+      other_user
+      | cur_passport: %{
+          "global" => %{"review.platform.read" => true},
+          community.slug => %{"cms" => %{"review.read" => true}}
+        }
+    }
+
+    assert {:ok, :pass} =
+             ArticlePolicy.check_access(
+               platform_reader,
+               :read,
+               article,
+               %{
+                 restricted_context
+                 | passport_rules: platform_reader.cur_passport,
+                   review_scope_keys: ["platform", "community:#{community.id}"]
+               }
+             )
   end
 
   test "article interactions use the same Article and Community admission matrix" do

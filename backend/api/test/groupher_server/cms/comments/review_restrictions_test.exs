@@ -49,6 +49,29 @@ defmodule GroupherServer.Test.CMS.Comments.ReviewRestrictionsTest do
     assert {:ok, loaded} = CMS.FrontDesk.comment(path, author)
     assert loaded.id == comment.id
 
+    {:ok, platform_reader_user} = db_insert(:user)
+
+    platform_reader = %{
+      platform_reader_user
+      | cur_passport: %{"global" => %{"review.platform.read" => true}}
+    }
+
+    assert {:ok, reviewer_loaded} = CMS.FrontDesk.comment(path, platform_reader)
+    assert reviewer_loaded.id == comment.id
+
+    {:ok, community_reader_user} = db_insert(:user)
+
+    community_reader = %{
+      community_reader_user
+      | cur_passport: %{
+          "global" => %{},
+          community.slug => %{"cms" => %{"review.read" => true}}
+        }
+    }
+
+    assert {:error, %ErrorCat.Error{reason: :not_exist}} =
+             CMS.FrontDesk.comment(path, community_reader)
+
     assert {:error, %ErrorCat.Error{reason: :not_exist}} =
              CMS.FrontDesk.comment(path)
 

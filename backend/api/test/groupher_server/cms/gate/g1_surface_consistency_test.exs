@@ -139,12 +139,12 @@ defmodule GroupherServer.Test.CMS.Gate.G1SurfaceConsistencyTest do
       applied_at: DateTime.utc_now(:second)
     })
 
-    assert {:error, %ErrorCat.Error{reason: :article_not_found}} =
-             CMS.FrontDesk.article(path, author)
+    assert {:ok, _} = CMS.FrontDesk.article(path, author)
 
-    assert {:ok, %{entries: [], page_info: %{total_count: 0}}} =
+    assert {:ok, %{entries: [entry], page_info: %{total_count: 1}}} =
              CMS.Articles.Pagination.page(:doc, %{community: community.slug}, pagi, author)
 
+    assert entry.id == article.id
     assert {:ok, []} = CMS.Articles.locators([path])
     assert {:error, %ErrorCat.Error{reason: :article_not_found}} = CMS.FrontDesk.article(path)
 

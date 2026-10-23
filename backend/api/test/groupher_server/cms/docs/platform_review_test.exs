@@ -116,9 +116,26 @@ defmodule GroupherServer.Test.CMS.Docs.PlatformReviewTest do
     public_main = CMS.Gate.Context.Scope.Doc.public_main()
     author_scope = CMS.Gate.Scope.scope(Article, user, :read, public_main)
     anonymous_scope = CMS.Gate.Scope.scope(Article, nil, :read, public_main)
+    {:ok, platform_reader_user} = db_insert(:user)
+    {:ok, community_reader_user} = db_insert(:user)
+
+    platform_reader = %{
+      platform_reader_user
+      | cur_passport: %{"global" => %{"review.platform.read" => true}}
+    }
+
+    community_reader = %{
+      community_reader_user
+      | cur_passport: %{"global" => %{}, community.slug => %{"cms" => %{"review.read" => true}}}
+    }
+
+    platform_scope = CMS.Gate.Scope.scope(Article, platform_reader, :read, public_main)
+    community_scope = CMS.Gate.Scope.scope(Article, community_reader, :read, public_main)
 
     assert Repo.exists?(from(scoped in author_scope, where: scoped.id == ^article.id))
     refute Repo.exists?(from(scoped in anonymous_scope, where: scoped.id == ^article.id))
+    assert Repo.exists?(from(scoped in platform_scope, where: scoped.id == ^article.id))
+    refute Repo.exists?(from(scoped in community_scope, where: scoped.id == ^article.id))
 
     public = Repo.get_by!(DocPublic, article_id: article.id, branch_id: branch.id)
     version = Repo.get!(DocBranchVersion, public.branch_version_id)

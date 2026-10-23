@@ -52,7 +52,7 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Query do
          %CommunityLifecycle{} = community_lifecycle <- Queries.community_lifecycle(community.id),
          %DocBranch{} = doc_branch <- Queries.doc_branch(community.id, branch_id),
          %DocLifecycle{} = doc_lifecycle <- Queries.doc_lifecycle(canonical.id, branch_id),
-         review_restricted? <- Queries.doc_review_restricted?(doc_lifecycle.id),
+         review_scope_keys <- Queries.doc_review_scope_keys(doc_lifecycle.id),
          %CMS.Model.DocBranchState{} = doc_branch_state <-
            Queries.doc_branch_state(canonical.id, branch_id) do
       {:ok,
@@ -64,7 +64,8 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Query do
          doc_branch: doc_branch,
          doc_lifecycle: doc_lifecycle,
          doc_branch_state: doc_branch_state,
-         review_restricted?: review_restricted?
+         review_scope_keys: review_scope_keys,
+         review_restricted?: review_scope_keys != []
        }}
     else
       nil -> {:error, ErrorCat.lifecycle_not_found()}
@@ -159,8 +160,8 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Query do
          canonical <- preload_article_author(canonical),
          %CommunityLifecycle{} = community_lifecycle <- Queries.community_lifecycle(community.id),
          %ArticleLifecycle{} = article_lifecycle <- Queries.article_lifecycle(canonical.id),
-         review_restricted? <-
-           Queries.article_review_restricted?(article_lifecycle.id, community.id) do
+         review_scope_keys <-
+           Queries.article_review_scope_keys(article_lifecycle.id, community.id) do
       {:ok,
        %ArticleContext{
          article: canonical,
@@ -168,7 +169,8 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Query do
          community_lifecycle: community_lifecycle,
          article_lifecycle: article_lifecycle,
          passport_rules: passport_rules,
-         review_restricted?: review_restricted?
+         review_scope_keys: review_scope_keys,
+         review_restricted?: review_scope_keys != []
        }}
     else
       nil -> {:error, ErrorCat.lifecycle_not_found()}
@@ -198,8 +200,8 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Query do
          canonical <- preload_article_author(canonical),
          %CommunityLifecycle{} = community_lifecycle <- Queries.community_lifecycle(community.id),
          %ArticleLifecycle{} = article_lifecycle <- Queries.article_lifecycle(canonical.id),
-         review_restricted? <-
-           Queries.article_review_restricted?(article_lifecycle.id, community.id) do
+         review_scope_keys <-
+           Queries.article_review_scope_keys(article_lifecycle.id, community.id) do
       {:ok,
        %ArticleContext{
          article: canonical,
@@ -207,7 +209,8 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Query do
          community_lifecycle: community_lifecycle,
          article_lifecycle: article_lifecycle,
          passport_rules: passport_rules,
-         review_restricted?: review_restricted?
+         review_scope_keys: review_scope_keys,
+         review_restricted?: review_scope_keys != []
        }}
     else
       nil -> {:error, ErrorCat.lifecycle_not_found()}

@@ -16,6 +16,7 @@ defmodule GroupherServer.CMS.Gate.Context.Access.Article do
     :community,
     :community_lifecycle,
     :passport_rules,
+    review_scope_keys: [],
     review_restricted?: false
   ]
 
@@ -25,6 +26,7 @@ defmodule GroupherServer.CMS.Gate.Context.Access.Article do
           community: struct(),
           community_lifecycle: struct(),
           passport_rules: map() | nil,
+          review_scope_keys: [String.t()],
           review_restricted?: boolean()
         }
 end
