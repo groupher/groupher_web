@@ -5,6 +5,9 @@ defmodule GroupherServer.CMS.Gate.Scope.ReviewRead do
   Scope query filters use these Passport facts only to admit content protected by
   matching active review restrictions; the surrounding Gate predicates still
   enforce resource and ancestor visibility.
+
+      Actor Passport
+        -> ReviewRead grants -> Gate Scope restriction filters
   """
 
   alias GroupherServer.{CMS, Accounts}
