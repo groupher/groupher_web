@@ -5,6 +5,7 @@ import { browserGraphQLRequest } from '~/graphql/client'
 import type { ReviewTargetInput } from '~/graphql/generated/graphql'
 import useTrans from '~/hooks/useTrans'
 import { invalidateExact } from '~/query/invalidation/executor'
+import { viewerQueryKeys } from '~/query/key'
 import { authWarn } from '~/signal'
 import useAccount from '~/stores/account/hooks'
 
@@ -26,12 +27,13 @@ export default function ReportAction({ target }: TProps) {
   const { t } = useTrans()
   const account = useAccount()
   const client = useQueryClient()
+  const reviewQueryKey = viewerQueryKeys.contentReview(account.accountRef || 'anonymous', target)
   const [open, setOpen] = useState(false)
   const [reasonCode, setReasonCode] = useState<(typeof reasons)[number]>('SPAM')
   const [details, setDetails] = useState('')
   const commandIdRef = useRef<string | null>(null)
   const review = useQuery({
-    queryKey: ['content-review', target],
+    queryKey: reviewQueryKey,
     queryFn: async () => {
       const response = await browserGraphQLRequest(contentReview, { target })
       return response.contentReview
@@ -47,10 +49,10 @@ export default function ReportAction({ target }: TProps) {
       commandIdRef.current = null
       setDetails('')
       setOpen(false)
-      void invalidateExact(client, [{ queryKey: ['content-review', target] }])
+      void invalidateExact(client, [{ queryKey: reviewQueryKey }])
     },
     onError: () => {
-      void invalidateExact(client, [{ queryKey: ['content-review', target] }])
+      void invalidateExact(client, [{ queryKey: reviewQueryKey }])
     },
   })
   const withdrawalIdRef = useRef<string | null>(null)
@@ -62,10 +64,10 @@ export default function ReportAction({ target }: TProps) {
       }),
     onSuccess: () => {
       withdrawalIdRef.current = null
-      void invalidateExact(client, [{ queryKey: ['content-review', target] }])
+      void invalidateExact(client, [{ queryKey: reviewQueryKey }])
     },
     onError: () => {
-      void invalidateExact(client, [{ queryKey: ['content-review', target] }])
+      void invalidateExact(client, [{ queryKey: reviewQueryKey }])
     },
   })
 

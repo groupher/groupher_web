@@ -3,10 +3,17 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import ReportAction from './ReportAction'
 
-const state = vi.hoisted(() => ({ request: vi.fn(), login: true, reportId: null as string | null }))
+const state = vi.hoisted(() => ({
+  request: vi.fn(),
+  login: true,
+  accountRef: 'account-a',
+  reportId: null as string | null,
+}))
 
 vi.mock('~/graphql/client', () => ({ browserGraphQLRequest: state.request }))
-vi.mock('~/stores/account/hooks', () => ({ default: () => ({ isLogin: state.login }) }))
+vi.mock('~/stores/account/hooks', () => ({
+  default: () => ({ isLogin: state.login, accountRef: state.accountRef }),
+}))
 vi.mock('~/hooks/useTrans', () => ({ default: () => ({ t: (key: string) => key }) }))
 vi.mock('~/signal', () => ({ authWarn: vi.fn() }))
 
@@ -26,6 +33,7 @@ const renderReportAction = () =>
 
 beforeEach(() => {
   state.login = true
+  state.accountRef = 'account-a'
   state.reportId = null
   let rejectNextSubmit = true
   state.request.mockImplementation(

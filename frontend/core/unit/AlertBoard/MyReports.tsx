@@ -1,9 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { browserGraphQLRequest } from '~/graphql/client'
 import useTrans from '~/hooks/useTrans'
 import { invalidatePrefix } from '~/query/invalidation/executor'
+import { viewerQueryKeys } from '~/query/key'
+import useAccount from '~/stores/account/hooks'
 
 import { myReports, withdrawReport } from './schema'
 
@@ -12,19 +14,29 @@ type TProps = { show: boolean; onClose: () => void }
 /** Lets the signed-in reporter withdraw active reports even when targets are hidden. */
 export default function MyReports({ show, onClose }: TProps) {
   const { t } = useTrans()
+  const { accountRef } = useAccount()
   const client = useQueryClient()
   const [page, setPage] = useState(1)
   const commandIds = useRef(new Map<string, string>())
   const reports = useQuery({
-    queryKey: ['my-reports', page],
+    queryKey: viewerQueryKeys.myReports(accountRef || 'anonymous', page),
     queryFn: async () => {
       const response = await browserGraphQLRequest(myReports, {
         pagi: { offset: { page, size: 20 } },
       })
       return response.myReports
     },
-    enabled: show,
+    enabled: show && Boolean(accountRef),
   })
+  useEffect(() => {
+    setPage(1)
+  }, [accountRef, show])
+  useEffect(() => {
+    const totalPages = reports.data?.pageInfo.totalPages
+    if (totalPages != null && page > Math.max(1, totalPages)) {
+      setPage(Math.max(1, totalPages))
+    }
+  }, [page, reports.data?.pageInfo.totalPages])
   const withdraw = useMutation({
     mutationFn: (reportId: string) => {
       let commandId = commandIds.current.get(reportId)
@@ -37,7 +49,7 @@ export default function MyReports({ show, onClose }: TProps) {
     },
     onSuccess: async (_result, reportId) => {
       commandIds.current.delete(reportId)
-      await invalidatePrefix(client, ['my-reports'])
+      await invalidatePrefix(client, viewerQueryKeys.myReportsPrefix(accountRef || 'anonymous'))
     },
   })
 

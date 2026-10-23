@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 import { browserGraphQLRequest } from '~/graphql/client'
 import type { ReviewTargetInput } from '~/graphql/generated/graphql'
 import useTrans from '~/hooks/useTrans'
+import { viewerQueryKeys } from '~/query/key'
+import useAccount from '~/stores/account/hooks'
 
 import { contentReview } from './schema'
 
@@ -16,8 +18,9 @@ const statusMessages = {
 
 export default function ReviewNotice({ target }: TProps) {
   const { t } = useTrans()
+  const { accountRef } = useAccount()
   const query = useQuery({
-    queryKey: ['content-review', target],
+    queryKey: viewerQueryKeys.contentReview(accountRef || 'anonymous', target),
     queryFn: async () => {
       const response = await browserGraphQLRequest(contentReview, { target })
       return response.contentReview
