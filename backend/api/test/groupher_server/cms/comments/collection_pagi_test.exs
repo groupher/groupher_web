@@ -1,8 +1,11 @@
 defmodule GroupherServer.Test.CMS.Comments.CollectionPagi do
   use GroupherServer.TestMate
 
+  import Ecto.Query
+
   alias Helper.ORM.Pagi.{Page}
-  alias GroupherServer.{Pagi}
+  alias GroupherServer.{Pagi, Repo}
+  alias GroupherServer.CMS.Model.{ArticleLifecycle, ArticlePublic, ArticleReviewRestriction}
   alias Pagi.Params
 
   test "published and participant cursors agree with offset and bind their collection" do
@@ -51,5 +54,69 @@ defmodule GroupherServer.Test.CMS.Comments.CollectionPagi do
              CMS.Comments.paged_published_comments(actor, nil, %{}, %Params.Cursor{first: 2}, nil)
 
     assert author_id == actor.id
+  end
+
+  test "filters comments with restricted parents before calculating profile pages" do
+    {hidden_community, hidden_article, _, _hidden_author} = mock_article(:post)
+    {public_community, public_article, _, _public_author} = mock_article(:post)
+    {:ok, commenter} = db_insert(:user)
+
+    {:ok, _public_comment} =
+      CMS.Comments.create_comment(
+        public_community,
+        :post,
+        article_inner_id(public_article, public_community),
+        mock_comment(),
+        commenter,
+        Ecto.UUID.generate()
+      )
+
+    {:ok, _hidden_comment} =
+      CMS.Comments.create_comment(
+        hidden_community,
+        :post,
+        article_inner_id(hidden_article, hidden_community),
+        mock_comment(),
+        commenter,
+        Ecto.UUID.generate()
+      )
+
+    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: hidden_article.id)
+
+    lifecycle
+    |> ArticleLifecycle.changeset(%{
+      review_content_token: "profile-parent-restricted",
+      review_epoch: 1
+    })
+    |> Repo.update!()
+
+    %ArticleReviewRestriction{}
+    |> ArticleReviewRestriction.changeset(%{
+      lifecycle_id: lifecycle.id,
+      scope_key: "platform",
+      cause_key: "profile-parent-restricted",
+      kind: :awaiting_human,
+      content_token: "profile-parent-restricted",
+      source: :submission,
+      created_by_operation_ref: Ecto.UUID.generate(),
+      applied_at: DateTime.utc_now(:second)
+    })
+    |> Repo.insert!()
+
+    Repo.update_all(
+      from(public in ArticlePublic, where: public.article_id == ^hidden_article.id),
+      set: [visible: false]
+    )
+
+    assert {:ok, %Page.Offset{entries: [entry], total_count: 1}} =
+             CMS.Comments.paged_published_comments(
+               commenter,
+               nil,
+               %{},
+               %Params.Offset{page: 1, size: 1},
+               nil
+             )
+
+    assert entry.article_id == public_article.id
   end
 end

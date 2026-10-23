@@ -26,6 +26,8 @@ defmodule GroupherServer.CMS.Comments.Query do
   alias CMS.{Dashboard.PagiMode, FrontDesk, QueryBuilder}
   alias Accounts.Model.User
   alias CMS.Gate.Context.Scope.Comment, as: CommentContext
+  alias CMS.Gate.Context.Scope.Article, as: ArticleContext
+  alias CMS.Gate.Context.Scope.Doc, as: DocContext
 
   alias CMS.Model.{
     Article,
@@ -307,6 +309,7 @@ defmodule GroupherServer.CMS.Comments.Query do
            |> preload([:body, :author])
            |> where([comment], comment.author_id == ^user_id),
          query <- if(thread, do: where(query, [comment], comment.thread == ^thread), else: query),
+         query <- restrict_to_visible_parent_bindings(query, actor, thread),
          query <- QueryBuilder.filter_pack(query, Map.delete(filter, :sort)),
          {:ok, paged} <-
            ORM.pagi(query, pagi,
@@ -324,6 +327,55 @@ defmodule GroupherServer.CMS.Comments.Query do
            ) do
       paged |> assign_stable_articles() |> done()
     end
+  end
+
+  defp restrict_to_visible_parent_bindings(query, actor, nil) do
+    parent_filter =
+      Enum.reduce([:post, :blog, :changelog, :doc], dynamic(false), fn thread, filter ->
+        dynamic(
+          [comment],
+          ^filter or
+            fragment(
+              "?::text || ':' || ?::text IN (?)",
+              comment.article_id,
+              comment.community_id,
+              subquery(visible_parent_bindings(actor, thread))
+            )
+        )
+      end)
+
+    where(query, ^parent_filter)
+  end
+
+  defp restrict_to_visible_parent_bindings(query, actor, thread) do
+    where(
+      query,
+      [comment],
+      fragment(
+        "?::text || ':' || ?::text IN (?)",
+        comment.article_id,
+        comment.community_id,
+        subquery(visible_parent_bindings(actor, thread))
+      )
+    )
+  end
+
+  defp visible_parent_bindings(actor, :doc) do
+    Article
+    |> CMS.Gate.scope(actor, :list, DocContext.public_main())
+    |> select(
+      [article, ...],
+      fragment("?::text || ':' || ?::text", article.id, as(:gate_community).id)
+    )
+  end
+
+  defp visible_parent_bindings(actor, thread) do
+    Article
+    |> CMS.Gate.scope(actor, :list, ArticleContext.public(thread))
+    |> select(
+      [article, ...],
+      fragment("?::text || ':' || ?::text", article.id, as(:gate_community).id)
+    )
   end
 
   defp assign_stable_articles(%{entries: entries} = page) do
