@@ -44,9 +44,10 @@ D5 后旧举报 GraphQL、facade、query/report 模块、阈值 fold 调用点�
 
 ### D3 删除旧存储、条件与消费者
 
+- 新增 Lifecycle token 的 migration `20261022110000_add_content_review_restrictions` 为已有 Article/Comment/Doc 生命周期写入稳定基线 token，确保存量目标可在重检前举报和检查。
 - 最终 migration `20261023110000_drop_legacy_content_audit_fields` 删除 Article/DocBranchState 的 moderation_state/illegal_reason/illegal_words、
   Comment.pending 和 Comment.meta 内旧 is_legal/illegal_reason/illegal_words。删除 `Comment.pending` 前，仅将 `pending = 1` 的评论一次性转换为
-  platform `manual_hold` CommentReviewRestriction 和 open Case，并为对应 Lifecycle 写入新的 review token；`pending != 1` 不创建审核事实。
+  platform `manual_hold` CommentReviewRestriction 和 open Case，并复用该 Lifecycle 已有 token/epoch；若新系统重检已为同一 token 建立 open Case，则复用该 Case。这样不使刚完成的 Check 变为 stale，也不覆盖新系统判定；`pending != 1` 不创建审核事实。
   这是数据迁移，不保留旧字段、旧状态解释或运行时兼容。Public/Binding/DocPublic 投影不在该迁移中改写。
   ArticleMeta 的运行时投影/嵌入声明单独删除；不存在存储列时不臆造 UPDATE，历史存储 JSON 的位置由 migration 清单逐项列出。
 - migration 通过 Ecto schema 实际 source 定位表；生成 SQL 清单含每个 drop column/constraint/index 和旧 JSON 清理。仅上述待审评论从旧隔离状态转为新限制事实，其他旧审核状态、审核结果和理由不进入新系统。

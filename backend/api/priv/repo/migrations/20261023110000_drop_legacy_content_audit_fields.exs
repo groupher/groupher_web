@@ -36,27 +36,7 @@ defmodule GroupherServer.Repo.Migrations.DropLegacyContentAuditFields do
       SELECT
         comment.id AS comment_id,
         lifecycle.id AS lifecycle_id,
-        'legacy-comment-pending:' || comment.id::text AS content_token,
-        md5('legacy-comment-pending:' || comment.id::text)::uuid AS operation_ref,
-        COALESCE(comment.inserted_at, now()) AS opened_at
-      FROM cms.comments AS comment
-      JOIN cms.comment_lifecycles AS lifecycle ON lifecycle.comment_id = comment.id
-      WHERE comment.pending = 1
-    )
-    UPDATE cms.comment_lifecycles AS lifecycle
-    SET review_content_token = legacy.content_token,
-        review_epoch = lifecycle.review_epoch + 1,
-        updated_at = now()
-    FROM legacy_comments AS legacy
-    WHERE lifecycle.id = legacy.lifecycle_id
-    """)
-
-    execute("""
-    WITH legacy_comments AS (
-      SELECT
-        comment.id AS comment_id,
-        lifecycle.id AS lifecycle_id,
-        'legacy-comment-pending:' || comment.id::text AS content_token,
+        lifecycle.review_content_token AS content_token,
         md5('legacy-comment-pending:' || comment.id::text)::uuid AS operation_ref,
         COALESCE(comment.inserted_at, now()) AS opened_at
       FROM cms.comments AS comment
@@ -79,6 +59,8 @@ defmodule GroupherServer.Repo.Migrations.DropLegacyContentAuditFields do
       legacy.opened_at,
       legacy.opened_at
     FROM legacy_comments AS legacy
+    ON CONFLICT (target_key, scope_key, content_token) WHERE status = 'open'
+    DO NOTHING
     """)
 
     execute("""
@@ -86,7 +68,7 @@ defmodule GroupherServer.Repo.Migrations.DropLegacyContentAuditFields do
       SELECT
         comment.id AS comment_id,
         lifecycle.id AS lifecycle_id,
-        'legacy-comment-pending:' || comment.id::text AS content_token,
+        lifecycle.review_content_token AS content_token,
         md5('legacy-comment-pending:' || comment.id::text)::uuid AS operation_ref,
         COALESCE(comment.inserted_at, now()) AS applied_at
       FROM cms.comments AS comment
@@ -115,6 +97,8 @@ defmodule GroupherServer.Repo.Migrations.DropLegacyContentAuditFields do
       AND case_record.scope_key = 'platform'
       AND case_record.content_token = legacy.content_token
       AND case_record.status = 'open'
+    ON CONFLICT (lifecycle_id, scope_key, cause_key) WHERE ended_at IS NULL
+    DO NOTHING
     """)
   end
 end
