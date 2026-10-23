@@ -309,7 +309,7 @@ defmodule GroupherServer.CMS.Communities.Setup do
   end
 
   defp ensure_analysis(community) do
-    case Analysis.web_provision_community(community) do
+    case Analysis.web_provision_community_on_create(community) do
       {:ok, _} -> {:ok, :pass}
       {:error, ErrorCat.error_pattern(reason: :not_configured)} -> {:ok, :pass}
       {:error, reason} -> {:error, reason}
