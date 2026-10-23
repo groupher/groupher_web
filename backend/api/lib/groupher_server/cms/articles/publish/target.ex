@@ -245,7 +245,8 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
     |> join(:inner, [ref], asset in CommunityAsset, on: asset.id == ref.asset_id)
     |> where(
       [ref, asset],
-      ref.revision_id == ^revision_id and ref.usage == :inline and asset.asset_type == :image
+      ref.revision_id == ^revision_id and ref.usage in [:inline, :cover, :cover_dark] and
+        asset.asset_type == :image
     )
     |> order_by([ref, _asset], asc: ref.position, asc: ref.id)
     |> select([ref, asset], %{
