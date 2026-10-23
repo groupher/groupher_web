@@ -7,6 +7,47 @@ defmodule GroupherServer.Test.Query.AlertBoard.ReportMutationTest do
   alias CMS.Model.ArticlePublic
   alias GroupherServerWeb.Schema
 
+  test "published Doc reports are branch scoped and use the platform review case" do
+    {community, _doc, attrs, author} = mock_article(:doc)
+    {:ok, doc} = GroupherServer.CMS.Articles.create(community, :doc, attrs, author)
+    {:ok, reporter} = db_insert(:user)
+
+    target = %{
+      "kind" => "DOC",
+      "article" => %{
+        "community" => community.slug,
+        "thread" => "DOC",
+        "innerId" => Integer.to_string(article_inner_id(doc, community))
+      }
+    }
+
+    assert {:ok,
+            %{
+              data: %{
+                "submitReport" => %{
+                  "report" => %{"targetKey" => target_key}
+                }
+              }
+            }} =
+             Absinthe.run(
+               """
+               mutation Submit($input: SubmitReportInput!, $commandId: ID!) {
+                 submitReport(input: $input, commandId: $commandId) {
+                   report { targetKey }
+                 }
+               }
+               """,
+               Schema,
+               variables: %{
+                 "input" => %{"target" => target, "reasonCode" => "SPAM"},
+                 "commandId" => Ecto.UUID.generate()
+               },
+               context: %{cur_user: reporter}
+             )
+
+    assert target_key == "doc:#{doc.article_id}:#{doc.branch_id}"
+  end
+
   test "report submit appears only to its reporter and withdrawal removes that viewer fact" do
     {community, post, _attrs, _author} = mock_article(:post)
     {:ok, reporter} = db_insert(:user)

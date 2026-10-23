@@ -228,6 +228,26 @@ defmodule GroupherServerWeb.Resolvers.AlertBoard do
     end
   end
 
+  defp resolve_report_target(
+         %{kind: :doc, article: path} = target,
+         actor
+       )
+       when is_map(path) do
+    with {:ok, projection} <- CMS.front_desk_article(path, actor),
+         article_id when is_binary(article_id) <- Map.get(projection, :id),
+         branch_id when is_integer(branch_id) and branch_id > 0 <-
+           Map.get(projection, :branch_id),
+         true <- is_nil(Map.get(path, :thread)) or Map.get(path, :thread) == :doc,
+         requested_branch_id <- Map.get(target, :doc_branch_id),
+         true <- is_nil(requested_branch_id) or requested_branch_id == branch_id,
+         {:ok, %Article{} = resource} <-
+           CMS.front_desk_article(article_id, nil, mode: :internal, view: :command_context) do
+      {:ok, %{kind: :doc, resource: resource, branch_id: branch_id}}
+    else
+      _ -> {:error, AlertBoard.target_not_readable()}
+    end
+  end
+
   defp resolve_report_target(%{kind: :user, user: login}, _actor) when is_binary(login) do
     with {:ok, user} <- Accounts.front_desk_user(login) do
       {:ok, %{resource: user}}

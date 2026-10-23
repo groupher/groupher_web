@@ -15,7 +15,7 @@ defmodule GroupherServer.AlertBoard.Commands.SubmitReport do
   alias GroupherServer.AlertBoard
   alias AlertBoard.Model.Report
   alias Accounts.Model.User
-  alias CMS.Model.{Article, ArticleLifecycle, Author, Comment, CommentLifecycle}
+  alias CMS.Model.{Article, ArticleLifecycle, Author, Comment, CommentLifecycle, DocLifecycle}
   alias CMS.Command.ConfirmationDefinition
 
   defmodule Confirmation do
@@ -102,6 +102,7 @@ defmodule GroupherServer.AlertBoard.Commands.SubmitReport do
              Report.changeset(%Report{}, %{
                target_key: target.target_key,
                article_id: target.article_id,
+               branch_id: Map.get(target, :branch_id),
                comment_id: target.comment_id,
                user_id: target.user_id,
                scope_key: target.scope_key,
@@ -150,6 +151,28 @@ defmodule GroupherServer.AlertBoard.Commands.SubmitReport do
            comment_id: nil,
            user_id: nil,
            case_attrs: %{article_id: article.id}
+         }}
+
+      _ ->
+        {:error, AlertBoard.ErrorCat.target_not_readable()}
+    end
+  end
+
+  defp normalize_target(%{kind: :doc, resource: %Article{} = article, branch_id: branch_id})
+       when is_integer(branch_id) and branch_id > 0 do
+    case Repo.get_by(DocLifecycle, article_id: article.id, branch_id: branch_id) do
+      %DocLifecycle{review_content_token: token} when is_binary(token) ->
+        {:ok,
+         %{
+           resource: article,
+           target_key: "doc:#{article.id}:#{branch_id}",
+           content_token: token,
+           scope_key: "platform",
+           article_id: article.id,
+           branch_id: branch_id,
+           comment_id: nil,
+           user_id: nil,
+           case_attrs: %{article_id: article.id, branch_id: branch_id}
          }}
 
       _ ->

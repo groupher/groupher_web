@@ -1142,6 +1142,7 @@ enum ReviewSubjectKind {
 enum ReviewTargetKind {
   ARTICLE
   COMMENT
+  DOC
   USER
 }
 
@@ -1221,6 +1222,7 @@ input ReviewTargetInput {
   kind: ReviewTargetKind!
   article: ArticlePathInput
   comment: CommentPathInput
+  docBranchId: Int
   user: String
 }
 

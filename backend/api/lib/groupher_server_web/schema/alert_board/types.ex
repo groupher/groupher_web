@@ -23,6 +23,7 @@ defmodule GroupherServerWeb.Schema.AlertBoard.Types do
   enum :review_target_kind do
     value(:article)
     value(:comment)
+    value(:doc)
     value(:user)
   end
 
@@ -102,6 +103,7 @@ defmodule GroupherServerWeb.Schema.AlertBoard.Types do
     field(:kind, non_null(:review_target_kind))
     field(:article, :article_path_input)
     field(:comment, :comment_path_input)
+    field(:doc_branch_id, :integer)
     field(:user, :string)
   end
 
