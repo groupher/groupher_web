@@ -31,6 +31,7 @@ defmodule GroupherServer.CMS.ArticleStats do
     ArticleStats,
     Comment,
     CommentLifecycle,
+    CommentReviewRestriction,
     Community
   }
 
@@ -596,8 +597,18 @@ defmodule GroupherServer.CMS.ArticleStats do
      Repo.aggregate(
        from(comment in Comment,
          join: lifecycle in CommentLifecycle,
+         as: :comment_lifecycle,
          on: lifecycle.comment_id == comment.id,
-         where: comment.article_id == ^article_id and lifecycle.state == :visible
+         where: comment.article_id == ^article_id and lifecycle.state == :visible,
+         where:
+           not exists(
+             from(restriction in CommentReviewRestriction,
+               where:
+                 restriction.lifecycle_id == parent_as(:comment_lifecycle).id and
+                   is_nil(restriction.ended_at),
+               select: 1
+             )
+           )
        ),
        :count
      )}
@@ -607,8 +618,18 @@ defmodule GroupherServer.CMS.ArticleStats do
     count =
       from(comment in Comment,
         join: lifecycle in CommentLifecycle,
+        as: :comment_lifecycle,
         on: lifecycle.comment_id == comment.id,
         where: comment.article_id == ^article_id and lifecycle.state == :visible,
+        where:
+          not exists(
+            from(restriction in CommentReviewRestriction,
+              where:
+                restriction.lifecycle_id == parent_as(:comment_lifecycle).id and
+                  is_nil(restriction.ended_at),
+              select: 1
+            )
+          ),
         select: count(comment.author_id, :distinct)
       )
       |> Repo.one()

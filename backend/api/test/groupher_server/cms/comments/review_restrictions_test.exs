@@ -94,6 +94,9 @@ defmodule GroupherServer.Test.CMS.Comments.ReviewRestrictionsTest do
                end
              end)
 
+    assert {:ok, %{comments_count: 0, comments_participants_count: 0}} =
+             CMS.ArticleStats.fetch(:post, comment.article_id)
+
     assert {:ok, loaded} = CMS.FrontDesk.comment(path, author)
     assert loaded.id == comment.id
 
@@ -139,6 +142,9 @@ defmodule GroupherServer.Test.CMS.Comments.ReviewRestrictionsTest do
                  "review_approved"
                )
              end)
+
+    assert {:ok, %{comments_count: 1, comments_participants_count: 1}} =
+             CMS.ArticleStats.fetch(:post, comment.article_id)
 
     assert {:ok, _loaded} = CMS.FrontDesk.comment(path)
     assert Repo.get!(CommentReviewRestriction, restriction.id).version == 2

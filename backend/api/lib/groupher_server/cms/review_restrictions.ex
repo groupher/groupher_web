@@ -160,7 +160,17 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
     end
   end
 
-  def recompute(%CommentLifecycle{}), do: require_transaction()
+  def recompute(%CommentLifecycle{comment_id: comment_id}) do
+    with {:ok, :pass} <- require_transaction(),
+         %Comment{article_id: article_id} <- Repo.get(Comment, comment_id),
+         %Article{} = article <- Repo.get(Article, article_id),
+         {:ok, :pass} <- CMS.ArticleStats.record_comment_change(article) do
+      {:ok, :pass}
+    else
+      nil -> {:error, CMS.ErrorCat.lifecycle_not_found()}
+      {:error, _reason} = error -> error
+    end
+  end
 
   def recompute(%DocLifecycle{} = lifecycle) do
     with {:ok, :pass} <- require_transaction() do
