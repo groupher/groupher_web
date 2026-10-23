@@ -482,6 +482,31 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
       assert mention.mentioner_article_id == post.article_id
       assert mention.mentioner_community_id == community.id
       assert mention.mentioned_community_id == community.id
+
+      article = Repo.get!(Article, post.article_id)
+
+      Repo.transaction(fn ->
+        {:ok, locked_lifecycle} = CMS.Articles.Lifecycle.lock(article)
+
+        assert {:ok, _restriction} =
+                 CMS.ReviewRestrictions.apply(locked_lifecycle, %{
+                   scope_key: "community:#{community.id}",
+                   cause_key: "mention-source-test",
+                   kind: :manual_hold,
+                   content_token: "revision:mention-source-test",
+                   source: :human,
+                   created_by_operation_ref: Ecto.UUID.generate(),
+                   applied_at: DateTime.utc_now(:second)
+                 })
+      end)
+
+      {:ok, result} =
+        ArtimentMentions.mentioned_by(:blog, blog.id, %GroupherServer.Pagi.Params.Offset{
+          page: 1,
+          size: 10
+        })
+
+      assert result.total_count == 0
     end
 
     test "purges mentions when an article is hard deleted", ~m(community post_attrs blog user)a do

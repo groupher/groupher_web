@@ -73,6 +73,8 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
   }
 
   alias CMS.Model.{Article, ArtimentMention, Comment, CommentBody}
+  alias CMS.Gate.Context.Scope.Article, as: ArticleContext
+  alias CMS.Gate.Context.Scope.Comment, as: CommentContext
   alias Helper.{ORM, T}
   alias Helper.ORM.Pagi.{Order}
   alias GroupherServer.{Pagi}
@@ -363,8 +365,89 @@ defmodule GroupherServer.CMS.ArtimentMentions.Store do
       normalized ->
         ArtimentMention
         |> mentioned_list_query(normalized, id)
+        |> visible_mentioners()
         |> page_mentions(pagi, {:incoming, normalized, id})
     end
+  end
+
+  defp visible_mentioners(query) do
+    article_pairs =
+      Enum.reduce(@threads, dynamic(false), fn thread, filter ->
+        scope =
+          if thread == :doc,
+            do: CMS.Gate.Context.Scope.Doc.public_main(),
+            else: ArticleContext.public(thread)
+
+        dynamic(
+          [mention],
+          ^filter or
+            (mention.mentioner_type == ^thread and
+               fragment(
+                 "?::text || ':' || ?::text IN (?)",
+                 mention.mentioner_article_id,
+                 mention.mentioner_community_id,
+                 subquery(
+                   Article
+                   |> CMS.Gate.scope(nil, :list, scope)
+                   |> select(
+                     [article, ...],
+                     fragment("?::text || ':' || ?::text", article.id, as(:gate_community).id)
+                   )
+                 )
+               ))
+        )
+      end)
+
+    visible_comment_parents =
+      Enum.reduce(@threads, dynamic(false), fn thread, filter ->
+        parent_scope =
+          if thread == :doc,
+            do: CMS.Gate.Context.Scope.Doc.public_main(),
+            else: ArticleContext.public(thread)
+
+        dynamic(
+          [comment],
+          ^filter or
+            (comment.thread == ^thread and
+               fragment(
+                 "?::text || ':' || ?::text IN (?)",
+                 comment.article_id,
+                 comment.community_id,
+                 subquery(
+                   Article
+                   |> CMS.Gate.scope(nil, :list, parent_scope)
+                   |> select(
+                     [article, ...],
+                     fragment("?::text || ':' || ?::text", article.id, as(:gate_community).id)
+                   )
+                 )
+               ))
+        )
+      end)
+
+    comments =
+      Comment
+      |> CMS.Gate.scope(nil, :list, CommentContext.all_public())
+      |> where(^visible_comment_parents)
+      |> select(
+        [comment],
+        fragment("?::text || ':' || ?::text", comment.id, comment.community_id)
+      )
+
+    comment_filter =
+      dynamic(
+        [mention],
+        mention.mentioner_type == :comment and
+          fragment(
+            "?::text || ':' || ?::text IN (?)",
+            mention.mentioner_id,
+            mention.mentioner_community_id,
+            subquery(comments)
+          )
+      )
+
+    combined_filter = dynamic(^article_pairs or ^comment_filter)
+    where(query, ^combined_filter)
   end
 
   defp page_mentions(query, pagi, collection) do
