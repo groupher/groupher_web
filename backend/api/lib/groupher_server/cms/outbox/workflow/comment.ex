@@ -51,12 +51,13 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Comment do
   defp cleanup(event) do
     case event.event do
       "comment.review_changed" ->
-        CMS.Review.Effects.deliver(event)
+        with {:ok, _} <- purge_comment_cache(event),
+             {:ok, result} <- CMS.Review.Effects.deliver(event) do
+          {:ok, result}
+        end
 
       "comment.changed" ->
-        with {:ok, tags} <-
-               GroupherServer.PublicCache.scope_tags(:comments_content_changed, event.data),
-             {:ok, _} <- GroupherServer.PublicCache.cloudflare_purge(tags) do
+        with {:ok, _} <- purge_comment_cache(event) do
           {:ok, :purged}
         end
 
@@ -106,6 +107,14 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Comment do
   end
 
   defp enqueue(type, key, fun), do: Jobs.enqueue_best_effort(type, key, fun)
+
+  defp purge_comment_cache(event) do
+    with {:ok, tags} <-
+           GroupherServer.PublicCache.scope_tags(:comments_content_changed, event.data),
+         {:ok, result} <- GroupherServer.PublicCache.cloudflare_purge(tags) do
+      {:ok, result}
+    end
+  end
 
   defp normalize(:ok), do: {:ok, :pass}
   defp normalize({:ok, _}), do: {:ok, :pass}

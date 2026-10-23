@@ -428,22 +428,60 @@ defmodule GroupherServer.CMS.Review.Effects do
          community_id,
          worker
        ) do
-    {:ok,
-     %{
-       event: event,
-       worker: worker,
-       resource_type: resource_type,
-       resource_id: resource_id,
-       identity: {:workflow, "review:#{target_key}:#{scope_key}"},
-       effect_key: "#{lifecycle.review_epoch}:#{lifecycle.review_content_token}:#{change_key}",
-       data: %{
-         "target_key" => target_key,
-         "resource_id" => to_string(resource_id),
-         "scope_key" => scope_key,
-         "community_id" => community_id,
-         "review_epoch" => lifecycle.review_epoch,
-         "content_token" => lifecycle.review_content_token
-       }
-     }}
+    with {:ok, cache_scope} <- cache_scope(resource_type, resource_id, community_id) do
+      {:ok,
+       %{
+         event: event,
+         worker: worker,
+         resource_type: resource_type,
+         resource_id: resource_id,
+         identity: {:workflow, "review:#{target_key}:#{scope_key}"},
+         effect_key: "#{lifecycle.review_epoch}:#{lifecycle.review_content_token}:#{change_key}",
+         data:
+           Map.merge(
+             %{
+               "target_key" => target_key,
+               "resource_id" => to_string(resource_id),
+               "scope_key" => scope_key,
+               "community_id" => community_id,
+               "review_epoch" => lifecycle.review_epoch,
+               "content_token" => lifecycle.review_content_token
+             },
+             cache_scope
+           )
+       }}
+    end
+  end
+
+  defp cache_scope("article", article_id, community_id) do
+    with %Article{thread: thread} <- Repo.get(Article, article_id),
+         %Community{slug: slug} <- Repo.get(Community, community_id),
+         %ArticleBinding{inner_id: inner_id} <-
+           Repo.get_by(ArticleBinding, article_id: article_id, community_id: community_id) do
+      {:ok,
+       %{
+         "community" => slug,
+         "thread" => Atom.to_string(thread),
+         "inner_id" => inner_id
+       }}
+    else
+      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+    end
+  end
+
+  defp cache_scope("comment", comment_id, community_id) do
+    with %Comment{article_id: article_id, thread: thread} <- Repo.get(Comment, comment_id),
+         %Community{slug: slug} <- Repo.get(Community, community_id),
+         %ArticleBinding{inner_id: inner_id} <-
+           Repo.get_by(ArticleBinding, article_id: article_id, community_id: community_id) do
+      {:ok,
+       %{
+         "community" => slug,
+         "thread" => Atom.to_string(thread),
+         "inner_id" => inner_id
+       }}
+    else
+      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+    end
   end
 end

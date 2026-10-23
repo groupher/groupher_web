@@ -154,7 +154,16 @@ defmodule GroupherServer.Test.CMS.ReviewVisibilityEffectsTest do
 
     article = Repo.get!(Article, published.article_id)
     lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
+    binding = Repo.get_by!(ArticleBinding, article_id: article.id, community_id: community.id)
     hidden_event = article_review_event!(article.id, community.id)
+
+    assert {:ok, cache_tags} =
+             GroupherServer.PublicCache.scope_tags(:article_visibility_changed, hidden_event.data)
+
+    assert cache_tags == [
+             "community[#{community.slug}]-thread[post]-article[#{binding.inner_id}]",
+             "community[#{community.slug}]-thread[post]-articles"
+           ]
 
     assert {:ok, :hidden} = Effects.deliver(hidden_event)
     refute Repo.exists?(from(mention in Mention, where: mention.to_user_id == ^recipient.id))
@@ -286,6 +295,19 @@ defmodule GroupherServer.Test.CMS.ReviewVisibilityEffectsTest do
 
     comment = Repo.preload(result.comment, :body)
     comment_event = comment_review_event!(comment.id)
+
+    article_binding =
+      Repo.get_by!(ArticleBinding, article_id: article.article_id, community_id: community.id)
+
+    assert {:ok, [comment_cache_tag]} =
+             GroupherServer.PublicCache.scope_tags(
+               :comments_content_changed,
+               comment_event.data
+             )
+
+    assert comment_cache_tag ==
+             "community[#{community.slug}]-thread[post]-article[#{article_binding.inner_id}]-comments"
+
     assert {:ok, :hidden} = Effects.deliver(comment_event)
     refute Repo.exists?(from(mention in Mention, where: mention.to_user_id == ^recipient.id))
 
