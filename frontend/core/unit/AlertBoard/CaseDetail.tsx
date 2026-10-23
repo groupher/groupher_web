@@ -5,6 +5,7 @@ import { browserGraphQLRequest } from '~/graphql/client'
 import type { ReviewCaseAction } from '~/graphql/generated/graphql'
 import useTrans from '~/hooks/useTrans'
 import { invalidatePrefix } from '~/query/invalidation/executor'
+import useAccount from '~/stores/account/hooks'
 
 import { decideReviewCase, reviewCase } from './schema'
 
@@ -25,12 +26,13 @@ const actionLabels = {
 
 export default function CaseDetail({ community, scopeKind, caseId, onChanged }: TProps) {
   const { t } = useTrans()
+  const { accountRef } = useAccount()
   const client = useQueryClient()
   const [note, setNote] = useState('')
   const commandIdRef = useRef<{ key: string; id: string } | null>(null)
   const scope = scopeKind === 'PLATFORM' ? { kind: scopeKind } : { kind: scopeKind, community }
   const detailQuery = useQuery({
-    queryKey: ['alert-board-case', community, scopeKind, caseId],
+    queryKey: ['alert-board-case', accountRef || 'anonymous', community, scopeKind, caseId],
     queryFn: async () => {
       const response = await browserGraphQLRequest(reviewCase, { scope, id: caseId! })
       return response.reviewCase
@@ -86,7 +88,13 @@ export default function CaseDetail({ community, scopeKind, caseId, onChanged }: 
     onSuccess: async () => {
       commandIdRef.current = null
       setNote('')
-      await invalidatePrefix(client, ['alert-board-case', community, scopeKind, caseId])
+      await invalidatePrefix(client, [
+        'alert-board-case',
+        accountRef || 'anonymous',
+        community,
+        scopeKind,
+        caseId,
+      ])
       onChanged()
     },
   })

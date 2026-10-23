@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 import { browserGraphQLRequest } from '~/graphql/client'
 import useTrans from '~/hooks/useTrans'
+import useAccount from '~/stores/account/hooks'
 
 import CaseDetail from './CaseDetail'
 import ReviewSettings from './ReviewSettings'
@@ -12,6 +13,7 @@ type TProps = { community: string }
 
 export default function AlertBoard({ community }: TProps) {
   const { t } = useTrans()
+  const { accountRef } = useAccount()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [showSettings, setShowSettings] = useState(false)
   const [scopeKind, setScopeKind] = useState<'COMMUNITY' | 'PLATFORM'>('COMMUNITY')
@@ -19,7 +21,7 @@ export default function AlertBoard({ community }: TProps) {
   const [page, setPage] = useState(1)
   const scope = scopeKind === 'PLATFORM' ? { kind: scopeKind } : { kind: scopeKind, community }
   const casesQuery = useQuery({
-    queryKey: ['alert-board', community, scopeKind, status, page],
+    queryKey: ['alert-board', accountRef || 'anonymous', community, scopeKind, status, page],
     queryFn: async () => {
       const response = await browserGraphQLRequest(reviewCases, {
         scope,
@@ -143,6 +145,7 @@ export default function AlertBoard({ community }: TProps) {
             )}
           </div>
           <CaseDetail
+            key={`${accountRef || 'anonymous'}:${selectedId || 'none'}`}
             community={community}
             scopeKind={scopeKind}
             caseId={selectedId}

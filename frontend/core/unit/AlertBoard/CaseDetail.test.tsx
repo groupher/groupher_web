@@ -11,6 +11,7 @@ const state = vi.hoisted(() => ({
 
 vi.mock('~/graphql/client', () => ({ browserGraphQLRequest: state.request }))
 vi.mock('~/hooks/useTrans', () => ({ default: () => ({ t: (key: string) => key }) }))
+vi.mock('~/stores/account/hooks', () => ({ default: () => ({ accountRef: 'reviewer-1' }) }))
 
 const renderCaseDetail = () =>
   render(

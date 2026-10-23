@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { browserGraphQLRequest } from '~/graphql/client'
 import useTrans from '~/hooks/useTrans'
 import { invalidateExact } from '~/query/invalidation/executor'
+import useAccount from '~/stores/account/hooks'
 
 import { reviewConfig, updateReviewConfig } from './schema'
 
@@ -12,13 +13,20 @@ type TSubject = 'ARTICLE' | 'COMMENT' | 'DOC'
 
 export default function ReviewSettings({ community, scopeKind }: TProps) {
   const { t } = useTrans()
+  const { accountRef } = useAccount()
   const client = useQueryClient()
   const [subject, setSubject] = useState<TSubject>('ARTICLE')
   const selectedSubject = scopeKind === 'COMMUNITY' && subject === 'DOC' ? 'ARTICLE' : subject
   const commandIdRef = useRef<{ key: string; id: string } | null>(null)
   const scope = scopeKind === 'PLATFORM' ? { kind: scopeKind } : { kind: scopeKind, community }
   const configQuery = useQuery({
-    queryKey: ['alert-board-config', community, scopeKind, selectedSubject],
+    queryKey: [
+      'alert-board-config',
+      accountRef || 'anonymous',
+      community,
+      scopeKind,
+      selectedSubject,
+    ],
     queryFn: async () => {
       const response = await browserGraphQLRequest(reviewConfig, {
         scope,
@@ -70,7 +78,15 @@ export default function ReviewSettings({ community, scopeKind }: TProps) {
     onSuccess: async () => {
       commandIdRef.current = null
       await invalidateExact(client, [
-        { queryKey: ['alert-board-config', community, scopeKind, selectedSubject] },
+        {
+          queryKey: [
+            'alert-board-config',
+            accountRef || 'anonymous',
+            community,
+            scopeKind,
+            selectedSubject,
+          ],
+        },
       ])
     },
   })
