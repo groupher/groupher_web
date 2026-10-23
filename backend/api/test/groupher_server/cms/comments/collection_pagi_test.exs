@@ -5,7 +5,7 @@ defmodule GroupherServer.Test.CMS.Comments.CollectionPagi do
 
   alias Helper.ORM.Pagi.{Page}
   alias GroupherServer.{CMS, Pagi, Repo}
-  alias CMS.Model.{ArticleLifecycle, ArticlePublic, ArticleReviewRestriction}
+  alias CMS.Model.{ArticleLifecycle, ArticleReviewRestriction}
   alias Pagi.Params
 
   test "published and participant cursors agree with offset and bind their collection" do
@@ -102,11 +102,6 @@ defmodule GroupherServer.Test.CMS.Comments.CollectionPagi do
       applied_at: DateTime.utc_now(:second)
     })
     |> Repo.insert!()
-
-    Repo.update_all(
-      from(public in ArticlePublic, where: public.article_id == ^hidden_article.id),
-      set: [visible: false]
-    )
 
     assert {:ok, %Page.Offset{entries: [entry], total_count: 1}} =
              CMS.Comments.paged_published_comments(

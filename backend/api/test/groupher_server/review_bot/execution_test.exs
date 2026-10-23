@@ -10,7 +10,6 @@ defmodule GroupherServer.Test.ReviewBot.ExecutionTest do
     Article,
     ArticleBinding,
     ArticleLifecycle,
-    ArticlePublic,
     ArticleReviewRestriction
   }
 
@@ -289,7 +288,7 @@ defmodule GroupherServer.Test.ReviewBot.ExecutionTest do
   end
 
   test "applying a completed restrictive Check atomically opens a Case and hides its scope" do
-    {community, article_view, _attrs, _author} = mock_article(:post)
+    {community, article_view, _attrs, author} = mock_article(:post)
     article = Repo.get!(Article, article_view.id)
     token = "revision:review-result-test"
     operation_ref = Ecto.UUID.generate()
@@ -366,12 +365,22 @@ defmodule GroupherServer.Test.ReviewBot.ExecutionTest do
                end
              end)
 
-    assert Repo.get_by!(ArticlePublic, article_id: article.id).visible
+    binding = Repo.get_by!(ArticleBinding, article_id: article.id, community_id: community.id)
+    public_bindings = CMS.Articles.Pagination.public_binding_ids(:post)
 
-    refute Repo.get_by!(ArticleBinding,
-             article_id: article.id,
-             community_id: community.id
-           ).visible
+    refute Repo.exists?(
+             from(row in ArticleBinding,
+               where: row.id == ^binding.id and row.id in subquery(public_bindings)
+             )
+           )
+
+    author_bindings = CMS.Articles.Pagination.public_binding_ids(:post, author)
+
+    assert Repo.exists?(
+             from(row in ArticleBinding,
+               where: row.id == ^binding.id and row.id in subquery(author_bindings)
+             )
+           )
 
     restriction = Repo.get_by!(ArticleReviewRestriction, check_id: check.id)
 

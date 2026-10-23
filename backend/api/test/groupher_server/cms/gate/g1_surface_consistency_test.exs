@@ -83,33 +83,14 @@ defmodule GroupherServer.Test.CMS.Gate.G1SurfaceConsistencyTest do
 
     Repo.delete!(restriction)
 
-    Repo.update_all(from(row in ArticleBinding, where: row.id == ^binding.id),
-      set: [visible: false]
-    )
+    assert {:ok, _} = CMS.FrontDesk.article(path, author)
 
-    assert {:error, %ErrorCat.Error{reason: :article_not_found}} =
-             CMS.FrontDesk.article(path, author)
-
-    assert {:ok, %{entries: [], page_info: %{total_count: 0}}} =
+    assert {:ok, %{entries: [entry], page_info: %{total_count: 1}}} =
              CMS.Articles.Pagination.page(:post, %{community: community.slug}, pagi, author)
 
-    assert {:ok, []} = CMS.Articles.locators([path])
-
-    assert Repo.get_by!(ArticlePublic, article_id: article.id).visible
-
-    Repo.update_all(from(row in ArticleBinding, where: row.id == ^binding.id),
-      set: [visible: true]
-    )
-
-    Repo.update_all(from(row in ArticlePublic, where: row.article_id == ^article.id),
-      set: [visible: false]
-    )
-
-    assert {:error, %ErrorCat.Error{reason: :article_not_found}} =
-             CMS.FrontDesk.article(path, author)
-
-    assert {:ok, %{entries: [], page_info: %{total_count: 0}}} =
-             CMS.Articles.Pagination.page(:post, %{community: community.slug}, pagi, author)
+    assert entry.id == article.id
+    assert {:ok, [%{article: %{id: article_id}}]} = CMS.Articles.locators([path])
+    assert article_id == article.id
 
     Repo.delete!(Repo.get_by!(ArticlePublic, article_id: article.id))
 

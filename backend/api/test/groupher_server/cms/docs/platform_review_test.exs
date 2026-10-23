@@ -9,7 +9,6 @@ defmodule GroupherServer.Test.CMS.Docs.PlatformReviewTest do
 
   alias CMS.Model.{
     Article,
-    ArticleBinding,
     DocBranch,
     DocBranchVersion,
     DocLifecycle,
@@ -108,8 +107,6 @@ defmodule GroupherServer.Test.CMS.Docs.PlatformReviewTest do
              )
 
     refute Repo.get_by!(DocPublic, article_id: article.id, branch_id: branch.id).visible
-
-    refute Repo.get_by!(ArticleBinding, article_id: article.id, community_id: community.id).visible
 
     refute result.public.visible
 

@@ -196,8 +196,10 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewSubmissionTest do
              kind: :awaiting_human
            ).ended_at == nil
 
-    assert Repo.get_by!(ArticleBinding, article_id: article_id, community_id: destination.id).visible ==
-             false
+    destination_binding =
+      Repo.get_by!(ArticleBinding, article_id: article_id, community_id: destination.id)
+
+    refute destination_binding.id in Repo.all(CMS.Articles.Pagination.public_binding_ids(:post))
 
     assert {:ok, updated} =
              CMS.Articles.update(
@@ -293,7 +295,10 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewSubmissionTest do
              kind: :awaiting_human
            ).ended_at == nil
 
-    refute Repo.get_by!(ArticleBinding, article_id: article.id, community_id: destination.id).visible
+    destination_binding =
+      Repo.get_by!(ArticleBinding, article_id: article.id, community_id: destination.id)
+
+    refute destination_binding.id in Repo.all(CMS.Articles.Pagination.public_binding_ids(:post))
   end
 
   defp grant_binding_actions(user, communities) do

@@ -4,7 +4,6 @@ defmodule GroupherServer.Test.Query.AlertBoard.ReportMutationTest do
   use GroupherServer.TestMate, async: false
 
   alias GroupherServer.Repo
-  alias CMS.Model.ArticlePublic
   alias GroupherServerWeb.Schema
 
   test "published Doc reports are branch scoped and use the platform review case" do
@@ -100,9 +99,6 @@ defmodule GroupherServer.Test.Query.AlertBoard.ReportMutationTest do
                variables: %{"target" => target},
                context: %{cur_user: nil}
              )
-
-    public = Repo.get_by!(ArticlePublic, article_id: post.article_id)
-    Repo.update!(Ecto.Changeset.change(public, visible: false))
 
     my_reports_query =
       """

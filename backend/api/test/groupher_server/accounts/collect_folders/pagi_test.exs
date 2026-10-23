@@ -1,10 +1,51 @@
 defmodule GroupherServer.Test.Accounts.CollectFolders.Pagi do
-  use GroupherServer.TestMate
+  use GroupherServer.TestMate, async: false
 
   alias Accounts.CollectFolders
+  alias GroupherServer.CMS.Model.{Article, ArticleLifecycle, ArticleReviewRestriction}
   alias Helper.ORM.Pagi.{Page}
-  alias GroupherServer.{Pagi}
+  alias GroupherServer.{Pagi, Repo}
   alias Pagi.Params
+
+  test "folder pages exclude Articles restricted by their Lifecycle review facts" do
+    {:ok, user} = db_insert(:user)
+    {:ok, folder} = CollectFolders.create(%{title: "review-aware collection"}, user)
+    posts = for _ <- 1..3, do: elem(db_insert(:post), 1)
+    for post <- posts, do: CollectFolders.add(post, folder.id, user)
+
+    hidden = hd(posts)
+    article = Repo.get!(Article, hidden.article_id)
+    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
+
+    assert {:ok, %ArticleReviewRestriction{}} =
+             Repo.transaction(fn ->
+               with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article),
+                    {:ok, restriction} <-
+                      CMS.Articles.Lifecycle.apply_review_restriction(locked, %{
+                        lifecycle_id: lifecycle.id,
+                        scope_key: "platform",
+                        cause_key: "collect-folder-test:restricted",
+                        kind: :manual_hold,
+                        content_token: lifecycle.review_content_token,
+                        source: :human,
+                        created_by_operation_ref: Ecto.UUID.generate()
+                      }) do
+                 restriction
+               else
+                 {:error, reason} -> Repo.rollback(reason)
+               end
+             end)
+
+    assert {:ok, %Page.Offset{entries: entries, total_count: 2}} =
+             CollectFolders.paged_articles(
+               folder.id,
+               %{},
+               %Params.Offset{page: 1, size: 100},
+               user
+             )
+
+    refute Enum.any?(entries, &(&1.id == article.id))
+  end
 
   test "folder entry cursors follow collection order and recheck privacy" do
     {:ok, user} = db_insert(:user)

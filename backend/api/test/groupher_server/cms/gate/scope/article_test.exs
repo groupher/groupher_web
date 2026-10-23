@@ -7,7 +7,15 @@ defmodule GroupherServer.Test.CMS.Gate.Scope.ArticleTest do
   alias GroupherServer.CMS
   alias CMS.Gate.Context.Scope.Article, as: ArticleContext
   alias CMS.Gate.Context.Scope.Doc, as: DocContext
-  alias CMS.Model.Article
+  alias CMS.Model.{Article, ArticleBinding, ArticlePublic, Comment}
+
+  test "ordinary content models keep review visibility in Lifecycle and Gate facts" do
+    refute :pending in Article.__schema__(:fields)
+    refute :moderation_state in Article.__schema__(:fields)
+    refute :visible in ArticleBinding.__schema__(:fields)
+    refute :visible in ArticlePublic.__schema__(:fields)
+    refute :pending in Comment.__schema__(:fields)
+  end
 
   test "Article scope compiles complete public visibility for every thread" do
     for thread <- [:post, :blog, :changelog, :doc] do
@@ -41,6 +49,12 @@ defmodule GroupherServer.Test.CMS.Gate.Scope.ArticleTest do
       refute sql =~ "archived_at"
       refute sql =~ "is_archived"
       assert sql =~ "review_restrictions"
+      refute sql =~ ~s("cms"."article_bindings"."visible")
+
+      if thread != :doc do
+        refute sql =~ ~s("cms"."article_publics"."visible")
+      end
+
       refute sql =~ "moderation_state"
       assert ["active", "read_only"] in params
       assert ["published", "archived"] in params

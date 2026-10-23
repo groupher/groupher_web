@@ -98,10 +98,14 @@ defmodule GroupherServer.Test.CMS.ReviewVisibilityEffectsTest do
                )
     end)
 
-    assert Repo.get_by!(ArticleBinding,
-             article_id: article.id,
-             community_id: community.id
-           ).visible
+    binding = Repo.get_by!(ArticleBinding, article_id: article.id, community_id: community.id)
+    public_bindings = CMS.Articles.Pagination.public_binding_ids(:post)
+
+    assert Repo.exists?(
+             from(row in ArticleBinding,
+               where: row.id == ^binding.id and row.id in subquery(public_bindings)
+             )
+           )
 
     retried = Repo.get!(Event, projection_event.id)
     assert retried.status == :waiting

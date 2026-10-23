@@ -887,12 +887,11 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
                command_id: Ecto.UUID.generate()
              )
 
-    assert {:ok, _hidden_binding} =
+    assert {:ok, _extra_binding} =
              %ArticleBinding{}
              |> ArticleBinding.changeset(%{
                article_id: published.id,
-               community_id: hidden_community.id,
-               visible: false
+               community_id: hidden_community.id
              })
              |> Repo.insert()
 

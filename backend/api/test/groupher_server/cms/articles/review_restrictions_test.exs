@@ -10,7 +10,6 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
     Article,
     ArticleBinding,
     ArticleLifecycle,
-    ArticlePublic,
     ArticleReviewRestriction,
     DocBranch,
     DocLifecycle,
@@ -20,7 +19,7 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
   alias CMS.Outbox.Event, as: OutboxEvent
 
   test "ending one scope restriction keeps other scope restrictions effective" do
-    {community, article_view, _attrs, _author} = mock_article(:post)
+    {community, article_view, _attrs, author} = mock_article(:post)
     article = Repo.get!(Article, article_view.id)
     lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
     binding = Repo.get_by!(ArticleBinding, article_id: article.id, community_id: community.id)
@@ -40,8 +39,9 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
                end
              end)
 
-    assert Repo.get_by!(ArticlePublic, article_id: article.id).visible
-    refute Repo.get!(ArticleBinding, binding.id).visible
+    refute public_binding?(article.thread, binding.id)
+    assert public_binding?(article.thread, binding.id, author)
+    assert {:ok, []} = CMS.ArticleStats.read_public(community.slug, :post, [binding.inner_id])
 
     assert {:ok, platform_restriction} =
              Repo.transaction(fn ->
@@ -57,8 +57,8 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
                end
              end)
 
-    assert Repo.get_by!(ArticlePublic, article_id: article.id).visible == false
-    refute Repo.get!(ArticleBinding, binding.id).visible
+    refute public_binding?(article.thread, binding.id)
+    assert public_binding?(article.thread, binding.id, author)
 
     assert {:ok, {:ok, :pass}} =
              Repo.transaction(fn ->
@@ -73,8 +73,8 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
                end
              end)
 
-    assert Repo.get_by!(ArticlePublic, article_id: article.id).visible == false
-    refute Repo.get!(ArticleBinding, binding.id).visible
+    refute public_binding?(article.thread, binding.id)
+    assert public_binding?(article.thread, binding.id, author)
 
     assert {:ok, {:ok, :pass}} =
              Repo.transaction(fn ->
@@ -89,8 +89,10 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
                end
              end)
 
-    assert Repo.get_by!(ArticlePublic, article_id: article.id).visible
-    assert Repo.get!(ArticleBinding, binding.id).visible
+    assert public_binding?(article.thread, binding.id)
+
+    assert {:ok, [_stats]} =
+             CMS.ArticleStats.read_public(community.slug, :post, [binding.inner_id])
   end
 
   test "replaying the same active restriction does not create another row" do
@@ -123,10 +125,8 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
              :count
            ) == 1
 
-    assert Repo.get_by!(ArticleBinding,
-             article_id: article.id,
-             community_id: community.id
-           ).visible == false
+    binding = Repo.get_by!(ArticleBinding, article_id: article.id, community_id: community.id)
+    refute public_binding?(article.thread, binding.id)
   end
 
   test "visibility transitions remove and restore the binding-scoped search entry" do
@@ -243,10 +243,23 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
 
     assert Repo.get_by!(DocPublic, article_id: article.id, branch_id: branch.id).visible
 
-    assert Repo.get_by!(ArticleBinding,
-             article_id: article.id,
-             community_id: article_view.community.id
-           ).visible
+    binding =
+      Repo.get_by!(ArticleBinding,
+        article_id: article.id,
+        community_id: article_view.community.id
+      )
+
+    assert public_binding?(:doc, binding.id)
+  end
+
+  defp public_binding?(thread, binding_id, actor \\ nil) do
+    public_bindings = CMS.Articles.Pagination.public_binding_ids(thread, actor)
+
+    Repo.exists?(
+      from(binding in ArticleBinding,
+        where: binding.id == ^binding_id and binding.id in subquery(public_bindings)
+      )
+    )
   end
 
   defp attrs(lifecycle, scope_key, cause_key) do
