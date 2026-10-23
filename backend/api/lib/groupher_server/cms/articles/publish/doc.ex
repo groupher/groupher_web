@@ -87,8 +87,6 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
                  opts
                ),
              {:ok, public} <- load_public(article.id, branch_id),
-             {:ok, binding} <-
-               refresh_main_binding_visibility(binding, branch, published_lifecycle),
              {:ok, _invalidation} <-
                invalidate_public_cache(article, branch, binding, community, first_publish?, opts),
              {:ok, _projection} <-
@@ -339,30 +337,6 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
       changed_at: DateTime.utc_now(:second)
     })
     |> Repo.update()
-  end
-
-  defp refresh_main_binding_visibility(
-         %ArticleBinding{} = binding,
-         %DocBranch{type: :main},
-         %DocLifecycle{} = lifecycle
-       ) do
-    visible? =
-      lifecycle.state in [:published, :archived] and
-        not Repo.exists?(
-          from(restriction in DocReviewRestriction,
-            where:
-              restriction.lifecycle_id == ^lifecycle.id and
-                restriction.scope_key == "platform" and is_nil(restriction.ended_at)
-          )
-        )
-
-    binding
-    |> ArticleBinding.changeset(%{visible: visible?})
-    |> Repo.update()
-  end
-
-  defp refresh_main_binding_visibility(binding, %DocBranch{}, %DocLifecycle{}) do
-    {:ok, binding}
   end
 
   defp maybe_assign_public_inner_id(article, %DocBranch{type: :main}, community) do

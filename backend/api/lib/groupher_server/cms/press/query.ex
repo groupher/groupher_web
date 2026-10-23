@@ -316,7 +316,7 @@ defmodule GroupherServer.CMS.Press.Query do
         on: revision.id == public.revision_id,
         join: body in ArticleBodySnapshot,
         on: body.id == revision.body_snapshot_id,
-        where: public.article_id in ^ordinary_ids and public.visible,
+        where: public.article_id in ^ordinary_ids,
         select: {public.article_id, public, body}
       )
       |> Repo.all()

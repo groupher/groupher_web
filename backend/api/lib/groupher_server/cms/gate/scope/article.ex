@@ -6,7 +6,13 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
 
       Article query
         -> Gate Scope
-      -> public Article or Doc boundary
+        -> Lifecycle state + active review facts
+        -> public Article or Doc branch boundary
+
+  Ordinary Article visibility is evaluated from Lifecycle and active
+  `ArticleReviewRestriction` rows. `ArticleBinding` carries the community
+  relationship only; `ArticlePublic` identifies the selected public head.
+  Doc visibility additionally requires the branch-scoped `DocPublic` head.
   """
 
   require GroupherServer.CMS.Docs.Const
@@ -26,8 +32,8 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
     ArticleLifecycle,
     ArticlePublic,
     Author,
-    DocBranch,
     ArticleReviewRestriction,
+    DocBranch,
     DocReviewRestriction,
     DocDraft,
     DocLifecycle,
@@ -233,16 +239,14 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
 
     from([article, ...] in query,
       where:
-        as(:gate_article_binding).visible == true or
-          ((article.author_id in subquery(author_ids) or ^platform_read?) and
-             exists(
-               from(restriction in DocReviewRestriction,
-                 where:
-                   restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                     restriction.scope_key == "platform" and is_nil(restriction.ended_at),
-                 select: 1
-               )
-             ))
+        not exists(
+          from(restriction in DocReviewRestriction,
+            where:
+              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+            select: 1
+          )
+        ) or article.author_id in subquery(author_ids) or ^platform_read?
     )
   end
 
@@ -252,43 +256,58 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
 
     from([article, ...] in query,
       where:
-        as(:gate_article_binding).visible == true or
-          (exists(
-             from(restriction in ArticleReviewRestriction,
-               where:
-                 restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                   is_nil(restriction.ended_at) and
-                   restriction.scope_key in [
-                     "platform",
-                     fragment("'community:' || ?::text", parent_as(:gate_community).id)
-                   ],
-               select: 1
-             )
-           ) and
-             (article.author_id in subquery(author_ids) or
-                ((not exists(
-                    from(restriction in ArticleReviewRestriction,
-                      where:
-                        restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                          restriction.scope_key == "platform" and is_nil(restriction.ended_at),
-                      select: 1
-                    )
-                  ) or ^platform_read?) and
-                   (not exists(
-                      from(restriction in ArticleReviewRestriction,
-                        where:
-                          restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                            restriction.scope_key ==
-                              fragment("'community:' || ?::text", parent_as(:gate_community).id) and
-                            is_nil(restriction.ended_at),
-                        select: 1
-                      )
-                    ) or as(:gate_community).slug in ^community_slugs))))
+        article.author_id in subquery(author_ids) or
+          ((not exists(
+              from(restriction in ArticleReviewRestriction,
+                where:
+                  restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                    restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+                select: 1
+              )
+            ) or ^platform_read?) and
+             (not exists(
+                from(restriction in ArticleReviewRestriction,
+                  where:
+                    restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                      restriction.scope_key ==
+                        fragment("'community:' || ?::text", parent_as(:gate_community).id) and
+                      is_nil(restriction.ended_at),
+                  select: 1
+                )
+              ) or ^platform_read? or as(:gate_community).slug in ^community_slugs))
+    )
+  end
+
+  defp public_binding_scope(query, _actor, %DocContext{}) do
+    from([_article, ...] in query,
+      where:
+        not exists(
+          from(restriction in DocReviewRestriction,
+            where:
+              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+            select: 1
+          )
+        )
     )
   end
 
   defp public_binding_scope(query, _actor, _context) do
-    from([article, ...] in query, where: as(:gate_article_binding).visible == true)
+    from([_article, ...] in query,
+      where:
+        not exists(
+          from(restriction in ArticleReviewRestriction,
+            where:
+              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                is_nil(restriction.ended_at) and
+                restriction.scope_key in [
+                  "platform",
+                  fragment("'community:' || ?::text", parent_as(:gate_community).id)
+                ],
+            select: 1
+          )
+        )
+    )
   end
 
   defp apply_actor_policy(query, :public, :public, _context), do: {:ok, query}
@@ -495,38 +514,11 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
     )
   end
 
-  defp public_head_scope(query, %ArticleContext{}, %User{id: user_id} = actor) do
-    author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
-    %{platform?: platform_read?, community_slugs: community_slugs} = ReviewRead.grants(actor)
-
-    from(article in query,
-      join: public in ArticlePublic,
-      as: :gate_article_public,
-      on: public.article_id == article.id,
-      where:
-        public.visible == true or
-          ((article.author_id in subquery(author_ids) or ^platform_read? or
-              as(:gate_community).slug in ^community_slugs) and
-             exists(
-               from(restriction in ArticleReviewRestriction,
-                 where:
-                   restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                     is_nil(restriction.ended_at) and
-                     restriction.scope_key in [
-                       "platform",
-                       fragment("'community:' || ?::text", parent_as(:gate_community).id)
-                     ],
-                 select: 1
-               )
-             ))
-    )
-  end
-
   defp public_head_scope(query, %ArticleContext{}, _actor) do
     from(article in query,
       join: public in ArticlePublic,
       as: :gate_article_public,
-      on: public.article_id == article.id and public.visible == true
+      on: public.article_id == article.id
     )
   end
 

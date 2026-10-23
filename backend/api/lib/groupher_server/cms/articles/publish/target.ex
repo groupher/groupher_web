@@ -76,7 +76,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
                ),
              {:ok, _} <- sync_community_tags(locked_article, community, opts),
              {:ok, _binding} <-
-               CMS.Articles.BindingPersist.refresh_visibility(locked_article, community),
+               CMS.Articles.BindingPersist.ensure_binding(locked_article, community),
              {:ok, _} <- Store.delete_workspace(locked_article, draft) do
           %{
             article: locked_article,

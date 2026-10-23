@@ -42,7 +42,7 @@ defmodule GroupherServer.CMS.Review.Effects do
     with %DocPublic{visible: true, branch_version_id: version_id} <-
            Repo.get_by(DocPublic, article_id: article_id, branch_id: branch_id),
          %DocBranchVersion{revision_id: revision_id} <- Repo.get(DocBranchVersion, version_id),
-         %ArticleBinding{visible: true} <-
+         %ArticleBinding{} <-
            Repo.get_by(ArticleBinding, article_id: article_id, community_id: community_id),
          {:ok, true} <-
            public_read?(
@@ -98,9 +98,9 @@ defmodule GroupherServer.CMS.Review.Effects do
          community_id
        ) do
     with %Article{thread: thread} = article <- Repo.get(Article, article_id),
-         %ArticleBinding{visible: true} <-
+         %ArticleBinding{} <-
            Repo.get_by(ArticleBinding, article_id: article.id, community_id: community_id),
-         %ArticlePublic{visible: true, revision_id: revision_id} <-
+         %ArticlePublic{revision_id: revision_id} <-
            Repo.get_by(ArticlePublic, article_id: article.id),
          {:ok, true} <- public_read?(Article, article.id, article_context(thread), community_id) do
       retry_failed_article_projection(article.id, community_id, revision_id)
@@ -334,10 +334,11 @@ defmodule GroupherServer.CMS.Review.Effects do
     case CMS.Gate.Scope.scope(Article, nil, :read, context) do
       %Ecto.Query{} = query ->
         scoped =
-          from(article in query,
-            join: binding in ArticleBinding,
-            on: binding.article_id == article.id,
-            where: article.id == ^id and binding.community_id == ^community_id and binding.visible
+          from(
+            [article, gate_article_binding: binding, gate_community: community] in query,
+            where:
+              article.id == ^id and binding.community_id == ^community_id and
+                community.id == ^community_id
           )
 
         {:ok, Repo.exists?(scoped)}
@@ -350,11 +351,22 @@ defmodule GroupherServer.CMS.Review.Effects do
   defp public_read?(Comment, id, context, community_id) do
     case CMS.Gate.Scope.scope(Comment, nil, :read, context) do
       %Ecto.Query{} = query ->
+        article_context = article_context(context.thread)
+
+        visible_articles =
+          Article
+          |> CMS.Gate.Scope.scope(nil, :read, article_context)
+          |> where(
+            [gate_article_binding: binding, gate_community: community],
+            binding.community_id == ^community_id and community.id == ^community_id
+          )
+          |> select([article], article.id)
+
         scoped =
           from(comment in query,
-            join: binding in ArticleBinding,
-            on: binding.article_id == comment.article_id,
-            where: comment.id == ^id and binding.community_id == ^community_id and binding.visible
+            where:
+              comment.id == ^id and comment.community_id == ^community_id and
+                comment.article_id in subquery(visible_articles)
           )
 
         {:ok, Repo.exists?(scoped)}

@@ -16,6 +16,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Indexer do
   alias GroupherServer.{CMS, Repo}
   alias Helper.T
   alias CMS.{ErrorCat, SearchArtiments}
+  alias CMS.Articles.Pagination
   alias CMS.FrontDesk
   alias CMS.SearchArtiments.{Artiment, Config, Projection}
   alias CMS.Model.{Article, ArticleBinding, Community}
@@ -65,9 +66,15 @@ defmodule GroupherServer.CMS.SearchArtiments.Indexer do
   def sync_binding(thread, article_id, community_id) do
     with %Article{thread: ^thread} = article <- Repo.get(Article, article_id),
          %Community{slug: community_slug} <- Repo.get(Community, community_id),
-         %ArticleBinding{inner_id: inner_id, visible: visible?} <-
+         %ArticleBinding{id: binding_id, inner_id: inner_id} <-
            Repo.get_by(ArticleBinding, article_id: article.id, community_id: community_id) do
-      if visible? do
+      visible_bindings = Pagination.public_binding_ids(thread)
+
+      if Repo.exists?(
+           from(binding in ArticleBinding,
+             where: binding.id == ^binding_id and binding.id in subquery(visible_bindings)
+           )
+         ) do
         sync_visible_binding(thread, article, community_slug, inner_id)
       else
         delete_binding(thread, article_id, community_slug)
@@ -252,12 +259,14 @@ defmodule GroupherServer.CMS.SearchArtiments.Indexer do
 
   defp public_article_for(thread, %Article{id: article_id, thread: article_thread})
        when article_thread == thread do
+    visible_bindings = Pagination.public_binding_ids(thread)
+
     bindings =
       ArticleBinding
       |> join(:inner, [binding], community in Community, on: community.id == binding.community_id)
       |> where(
         [binding, _community],
-        binding.article_id == ^article_id and binding.visible == true
+        binding.article_id == ^article_id and binding.id in subquery(visible_bindings)
       )
       |> select([binding, community], {binding.inner_id, community.slug})
       |> Repo.all()

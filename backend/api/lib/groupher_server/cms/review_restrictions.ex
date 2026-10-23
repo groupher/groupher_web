@@ -1,10 +1,10 @@
 defmodule GroupherServer.CMS.ReviewRestrictions do
   @moduledoc """
-  Persists scope-specific restrictions and refreshes their public projections.
+  Persists scope-specific restrictions that Gate evaluates directly on reads.
 
       locked Lifecycle
         -> ReviewRestrictions apply/end
-        -> Article/Binding/Doc visibility projection
+        -> Article/Comment Gate predicates; Doc public projection
         -> same CMS transaction
   """
 
@@ -144,18 +144,21 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
   end
 
   @doc """
-  Rebuilds the public projection from lifecycle state and all active restrictions.
+  Recomputes derived effects after a restriction transition.
+
+  Ordinary Article visibility is read directly from Lifecycle and active
+  restrictions by Gate. Doc restrictions additionally update the branch-scoped
+  `DocPublic.visible` projection; Comment restrictions refresh Article stats.
 
   ## Examples
 
-      ReviewRestrictions.recompute(lifecycle)
+      ReviewRestrictions.recompute(locked_lifecycle)
+      #=> {:ok, :pass} | {:error, reason}
   """
   @spec recompute(struct()) :: {:ok, :pass} | {:error, term()}
   def recompute(%ArticleLifecycle{} = lifecycle) do
     with {:ok, :pass} <- require_transaction(),
-         {:ok, article} <- load_article(lifecycle.article_id),
-         {:ok, :pass} <- recompute_article_public(article, lifecycle),
-         {:ok, :pass} <- recompute_bindings(article, lifecycle) do
+         {:ok, _article} <- load_article(lifecycle.article_id) do
       {:ok, :pass}
     end
   end
@@ -178,10 +181,7 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
         lifecycle.state in @public_states and
           not active_scope?(DocReviewRestriction, lifecycle.id, "platform")
 
-      with {:ok, :pass} <- recompute_doc_public(lifecycle, visible?),
-           {:ok, :pass} <- recompute_doc_main_binding(lifecycle, visible?) do
-        {:ok, :pass}
-      end
+      recompute_doc_public(lifecycle, visible?)
     end
   end
 
@@ -202,31 +202,6 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
          ) do
       {:ok, _result} -> {:ok, :pass}
       {:error, reason} -> {:error, reason}
-    end
-  end
-
-  defp recompute_doc_main_binding(%DocLifecycle{} = lifecycle, visible?) do
-    case Repo.get(DocBranch, lifecycle.branch_id) do
-      %DocBranch{type: :main, community_id: community_id} ->
-        case Repo.get_by(ArticleBinding,
-               article_id: lifecycle.article_id,
-               community_id: community_id
-             ) do
-          %ArticleBinding{} = binding ->
-            case binding |> ArticleBinding.changeset(%{visible: visible?}) |> Repo.update() do
-              {:ok, _binding} -> {:ok, :pass}
-              {:error, changeset} -> {:error, changeset}
-            end
-
-          nil ->
-            {:error, CMS.ErrorCat.lifecycle_not_found()}
-        end
-
-      %DocBranch{} ->
-        {:ok, :pass}
-
-      nil ->
-        {:error, CMS.ErrorCat.lifecycle_not_found()}
     end
   end
 
@@ -542,45 +517,6 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
       end_reason: reason,
       version: restriction.version + 1
     })
-  end
-
-  defp recompute_article_public(article, lifecycle) do
-    visible? =
-      lifecycle.state in @public_states and
-        not active_scope?(ArticleReviewRestriction, lifecycle.id, "platform")
-
-    case Repo.query("UPDATE cms.article_publics SET visible = $1 WHERE article_id = $2", [
-           visible?,
-           Ecto.UUID.dump!(article.id)
-         ]) do
-      {:ok, _result} -> {:ok, :pass}
-      {:error, reason} -> {:error, reason}
-    end
-  end
-
-  defp recompute_bindings(article, lifecycle) do
-    base_visible? = lifecycle.state in @public_states
-
-    case Repo.query(
-           """
-           UPDATE cms.article_bindings AS binding
-           SET visible = $1
-             AND NOT EXISTS (
-               SELECT 1
-               FROM cms.article_review_restrictions AS restriction
-               WHERE restriction.lifecycle_id = $2
-                 AND restriction.ended_at IS NULL
-                 AND restriction.scope_key IN (
-                   'platform', 'community:' || binding.community_id::text
-                 )
-             )
-           WHERE binding.article_id = $3
-           """,
-           [base_visible?, lifecycle.id, Ecto.UUID.dump!(article.id)]
-         ) do
-      {:ok, _result} -> {:ok, :pass}
-      {:error, reason} -> {:error, reason}
-    end
   end
 
   defp active_scope?(schema, lifecycle_id, scope_key) do

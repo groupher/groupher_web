@@ -807,8 +807,7 @@ defmodule GroupherServer.CMS.Articles.Draft.Store do
     %ArticleBinding{}
     |> ArticleBinding.changeset(%{
       article_id: article.id,
-      community_id: community.id,
-      visible: false
+      community_id: community.id
     })
     |> Repo.insert()
   end

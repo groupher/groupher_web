@@ -25,7 +25,6 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
     ArticleBinding,
     ArticleBindingTag,
     ArticleLifecycle,
-    ArticleReviewRestriction,
     Community,
     KanbanState,
     PinnedArticle
@@ -66,18 +65,18 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
   def move(%Article{thread: :doc}, %Community{}, %Community{}), do: {:error, :unsupported_for_doc}
 
   @doc """
-  Recomputes an ordinary Article binding's public visibility from Lifecycle and active restrictions.
+  Ensures the ordinary Article has its Community binding before publication.
 
   The caller owns the surrounding publish transaction.
 
   ## Examples
 
-      BindingPersist.refresh_visibility(article, community)
+      BindingPersist.ensure_binding(article, community)
       #=> {:ok, %ArticleBinding{}} | {:error, reason}
   """
-  @spec refresh_visibility(Article.t(), Community.t()) ::
+  @spec ensure_binding(Article.t(), Community.t()) ::
           {:ok, ArticleBinding.t()} | {:error, term()}
-  def refresh_visibility(%Article{thread: thread} = article, %Community{} = community)
+  def ensure_binding(%Article{thread: thread} = article, %Community{} = community)
       when thread in @ordinary_threads do
     with %Article{} = canonical <- lock_article(article.id),
          {:ok, binding} <- upsert_binding(canonical, community) do
@@ -88,7 +87,7 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
     end
   end
 
-  def refresh_visibility(%Article{thread: :doc}, %Community{}), do: {:error, :unsupported_for_doc}
+  def ensure_binding(%Article{thread: :doc}, %Community{}), do: {:error, :unsupported_for_doc}
 
   @doc """
   Adds an ordinary Article to a Community without changing stable identity.
@@ -155,31 +154,35 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
     end
   end
 
-  defp ensure_can_remove_published_article(
-         _article_id,
-         %ArticleBinding{visible: visible, inner_id: inner_id}
-       )
-       when visible != true or is_nil(inner_id) do
+  defp ensure_can_remove_published_article(_article_id, %ArticleBinding{inner_id: nil}) do
     {:ok, :pass}
   end
 
   defp ensure_can_remove_published_article(article_id, %ArticleBinding{}) do
     lifecycle = Repo.get_by(ArticleLifecycle, article_id: article_id)
 
-    binding_count =
-      Repo.aggregate(
-        from(binding in ArticleBinding,
-          where:
-            binding.article_id == ^article_id and binding.visible == true and
-              not is_nil(binding.inner_id)
-        ),
-        :count
-      )
+    case lifecycle do
+      %ArticleLifecycle{state: :published, thread: thread} ->
+        public_binding_ids = CMS.Articles.Pagination.public_binding_ids(thread)
 
-    if lifecycle && lifecycle.state == :published && binding_count <= 1 do
-      {:error, :published_article_requires_community}
-    else
-      {:ok, :pass}
+        binding_count =
+          Repo.aggregate(
+            from(binding in ArticleBinding,
+              where:
+                binding.article_id == ^article_id and binding.id in subquery(public_binding_ids) and
+                  not is_nil(binding.inner_id)
+            ),
+            :count
+          )
+
+        if binding_count <= 1 do
+          {:error, :published_article_requires_community}
+        else
+          {:ok, :pass}
+        end
+
+      _lifecycle ->
+        {:ok, :pass}
     end
   end
 
@@ -263,29 +266,16 @@ defmodule GroupherServer.CMS.Articles.BindingPersist do
   end
 
   defp upsert_binding(article, community) do
-    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
-    community_scope_key = "community:#{community.id}"
-
-    restricted? =
-      Repo.exists?(
-        from(restriction in ArticleReviewRestriction,
-          where:
-            restriction.lifecycle_id == ^lifecycle.id and is_nil(restriction.ended_at) and
-              restriction.scope_key in ["platform", ^community_scope_key]
-        )
-      )
-
     attrs = %{
       article_id: article.id,
       community_id: community.id,
-      visible: lifecycle.state in [:published, :archived] and not restricted?,
       inner_id: nil
     }
 
     %ArticleBinding{}
     |> ArticleBinding.changeset(attrs)
     |> Repo.insert(
-      on_conflict: [set: [visible: attrs.visible, updated_at: DateTime.utc_now(:second)]],
+      on_conflict: [set: [updated_at: DateTime.utc_now(:second)]],
       conflict_target: [:article_id, :community_id],
       returning: true
     )

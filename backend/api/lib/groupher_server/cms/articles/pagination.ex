@@ -566,7 +566,7 @@ defmodule GroupherServer.CMS.Articles.Pagination do
       join: user in User,
       on: user.id == author.user_id,
       left_join: public in ArticlePublic,
-      on: public.article_id == article.id and public.visible == true,
+      on: public.article_id == article.id,
       left_join: lifecycle in ArticleLifecycle,
       on:
         lifecycle.article_id == article.id and

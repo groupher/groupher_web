@@ -7,16 +7,12 @@ defmodule GroupherServer.CMS.Articles.Public do
   Only Publish and stable operational-state refreshes may call this module.
   """
 
-  import Ecto.Query, warn: false
-
   alias GroupherServer.{CMS, Repo}
 
   alias CMS.Model.{
     Article,
     ArticleBodySnapshot,
-    ArticleLifecycle,
     ArticlePublic,
-    ArticleReviewRestriction,
     ArticleRevision,
     Author
   }
@@ -48,8 +44,7 @@ defmodule GroupherServer.CMS.Articles.Public do
       body_hash: body.body_hash,
       excerpt: body.plain_text,
       thumbnail: body.thumbnail,
-      active_at: article.active_at || published_at,
-      visible: not platform_restricted?(article.id)
+      active_at: article.active_at || published_at
     }
 
     (previous || %ArticlePublic{})
@@ -68,17 +63,5 @@ defmodule GroupherServer.CMS.Articles.Public do
       %ArticlePublic{} = public -> {:ok, public}
       nil -> {:error, :not_found}
     end
-  end
-
-  defp platform_restricted?(article_id) do
-    lifecycle_id = Repo.get_by!(ArticleLifecycle, article_id: article_id).id
-
-    Repo.exists?(
-      from(restriction in ArticleReviewRestriction,
-        where:
-          restriction.lifecycle_id == ^lifecycle_id and restriction.scope_key == "platform" and
-            is_nil(restriction.ended_at)
-      )
-    )
   end
 end

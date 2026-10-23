@@ -21,6 +21,7 @@ defmodule GroupherServer.CMS.ArticleStats do
   alias GroupherServer.{CMS, Repo}
   alias CMS.Artiment.{Matcher, Threads}
   alias CMS.Articles.Bindings
+  alias CMS.Articles.Pagination
   alias CMS.Articles.ErrorCat, as: ArticleErrorCat
   alias CMS.FrontDesk
 
@@ -420,15 +421,17 @@ defmodule GroupherServer.CMS.ArticleStats do
   defp read_public_batch(community_ref, thread, inner_ids) do
     case FrontDesk.community(community_ref) do
       {:ok, %Community{id: community_id}} ->
+        public_binding_ids = Pagination.public_binding_ids(thread)
+
         rows =
           Article
           |> join(:inner, [article], binding in ArticleBinding,
-            on: binding.article_id == article.id and binding.visible == true
+            on: binding.article_id == article.id
           )
           |> where(
             [article, binding],
             article.thread == ^thread and binding.community_id == ^community_id and
-              binding.inner_id in ^inner_ids
+              binding.inner_id in ^inner_ids and binding.id in subquery(public_binding_ids)
           )
           |> select([article, binding], %{article: article, inner_id: binding.inner_id})
           |> Repo.all()
