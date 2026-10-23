@@ -78,7 +78,7 @@ defmodule GroupherServer.Test.ReviewBot.ExecutionTest do
     assert Repo.aggregate(Attempt, :count) == 0
   end
 
-  test "an expired queued payload is cleared and sent to human review without a provider Attempt" do
+  test "scheduled recovery expires a queued payload and opens human review without an Attempt" do
     {community, article_view, _attrs, author} = mock_article(:post)
     article = Repo.get!(Article, article_view.id)
     scope_key = "community:#{community.id}"
@@ -151,7 +151,7 @@ defmodule GroupherServer.Test.ReviewBot.ExecutionTest do
       })
       |> Repo.insert!()
 
-    assert {:ok, :pass} = ReviewBot.execute_check(check.id, 1, 3)
+    assert {:ok, 1} = ReviewBot.recover_stale_checks()
 
     expired = Repo.get!(Check, check.id)
     assert expired.state == :failed

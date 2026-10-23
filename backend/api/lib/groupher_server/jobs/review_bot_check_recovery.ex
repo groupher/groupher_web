@@ -8,7 +8,7 @@ defmodule GroupherServer.Jobs.ReviewBotCheckRecovery do
   """
 
   use Oban.Worker,
-    queue: :review_bot,
+    queue: :default,
     max_attempts: 3,
     unique: [period: 60, keys: [], states: :incomplete]
 

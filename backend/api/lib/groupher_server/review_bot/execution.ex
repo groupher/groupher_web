@@ -147,6 +147,7 @@ defmodule GroupherServer.ReviewBot.Execution do
   @spec recover_stale_checks() :: {:ok, non_neg_integer()} | {:error, term()}
   def recover_stale_checks do
     stale_before = DateTime.add(DateTime.utc_now(:second), -@orphaned_attempt_seconds, :second)
+    now = DateTime.utc_now(:second)
 
     candidate_ids =
       from(check in Check,
@@ -166,6 +167,63 @@ defmodule GroupherServer.ReviewBot.Execution do
         {:ok, :recovered} -> {:cont, {:ok, count + 1}}
         {:ok, _unchanged} -> {:cont, {:ok, count}}
         {:error, reason} -> {:halt, {:error, reason}}
+      end
+    end)
+    |> case do
+      {:ok, recovered} ->
+        expired_ids =
+          from(check in Check,
+            where:
+              check.state == :queued and
+                (is_nil(check.payload_expires_at) or check.payload_expires_at <= ^now),
+            order_by: [asc: check.inserted_at],
+            limit: ^@recovery_batch_size,
+            select: check.id
+          )
+          |> Repo.all()
+
+        Enum.reduce_while(expired_ids, {:ok, recovered}, fn check_id, {:ok, count} ->
+          case fail_expired_queued_check(check_id) do
+            {:ok, :recovered} -> {:cont, {:ok, count + 1}}
+            {:ok, _unchanged} -> {:cont, {:ok, count}}
+            {:error, reason} -> {:halt, {:error, reason}}
+          end
+        end)
+
+      {:error, _reason} = error ->
+        error
+    end
+  end
+
+  defp fail_expired_queued_check(check_id) do
+    Repo.transact_result(fn ->
+      case Repo.get(Check, check_id) do
+        %Check{} = snapshot ->
+          with {:ok, target} <-
+                 CMS.load_review_target_for_update(snapshot.target_key, snapshot.scope_key) do
+            case locked_check(check_id) do
+              %Check{state: :queued} = check ->
+                cond do
+                  not current_revision?(target.lifecycle, check) ->
+                    supersede_queued(check)
+
+                  not payload_expired?(check) ->
+                    {:ok, :unchanged}
+
+                  true ->
+                    case fail_expired_payload(check, target) do
+                      {:ok, _} -> {:ok, :recovered}
+                      {:error, reason} -> {:error, reason}
+                    end
+                end
+
+              _ ->
+                {:ok, :unchanged}
+            end
+          end
+
+        nil ->
+          {:ok, :unchanged}
       end
     end)
   end
