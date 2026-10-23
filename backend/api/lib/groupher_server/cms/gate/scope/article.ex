@@ -204,7 +204,7 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
   defp branch_id(%ArticleContext{}, _thread), do: {:ok, nil}
 
   defp apply_stage(query, :public, actor, _policy_mode, context) do
-    query = public_binding_scope(query, actor)
+    query = public_binding_scope(query, actor, context)
 
     query = public_head_scope(query, context, actor)
 
@@ -227,7 +227,25 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
      |> where([_article, ...], as(:gate_article_lifecycle).state in ^@draft_lifecycle_states)}
   end
 
-  defp public_binding_scope(query, %User{id: user_id}) do
+  defp public_binding_scope(query, %User{id: user_id}, %DocContext{}) do
+    author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
+
+    from([article, ...] in query,
+      where:
+        as(:gate_article_binding).visible == true or
+          (article.author_id in subquery(author_ids) and
+             exists(
+               from(restriction in DocReviewRestriction,
+                 where:
+                   restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                     restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+                 select: 1
+               )
+             ))
+    )
+  end
+
+  defp public_binding_scope(query, %User{id: user_id}, %ArticleContext{}) do
     author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
 
     from([article, ...] in query,
@@ -248,7 +266,7 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
     )
   end
 
-  defp public_binding_scope(query, _actor) do
+  defp public_binding_scope(query, _actor, _context) do
     from([article, ...] in query, where: as(:gate_article_binding).visible == true)
   end
 
@@ -384,6 +402,39 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
             select: 1
           )
         )
+    )
+  end
+
+  defp public_head_scope(query, %DocContext{}, %User{id: user_id}) do
+    author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
+
+    query =
+      from([article, ...] in query,
+        join: public in DocPublic,
+        as: :gate_article_public,
+        on: public.article_id == article.id and public.branch_id == as(:gate_doc_branch).id
+      )
+
+    from([article, ...] in query,
+      where:
+        (as(:gate_article_public).visible == true and
+           not exists(
+             from(restriction in DocReviewRestriction,
+               where:
+                 restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                   restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+               select: 1
+             )
+           )) or
+          (article.author_id in subquery(author_ids) and
+             exists(
+               from(restriction in DocReviewRestriction,
+                 where:
+                   restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
+                     restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+                 select: 1
+               )
+             ))
     )
   end
 

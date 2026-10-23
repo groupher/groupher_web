@@ -21,12 +21,43 @@ defmodule GroupherServer.CMS.Review.Effects do
     Author,
     Comment,
     CommentLifecycle,
-    Community
+    Community,
+    DocBranchVersion,
+    DocLifecycle,
+    DocPublic
   }
 
   alias Accounts.Model.User
 
   alias CMS.Outbox.Event
+
+  @doc "Replays failed publish projections when a restricted Doc branch becomes public again."
+  @spec replay_failed_doc_publish(DocLifecycle.t(), pos_integer()) ::
+          {:ok, :pass} | {:error, term()}
+  def replay_failed_doc_publish(
+        %DocLifecycle{article_id: article_id, branch_id: branch_id},
+        community_id
+      )
+      when is_integer(community_id) do
+    with %DocPublic{visible: true, branch_version_id: version_id} <-
+           Repo.get_by(DocPublic, article_id: article_id, branch_id: branch_id),
+         %DocBranchVersion{revision_id: revision_id} <- Repo.get(DocBranchVersion, version_id),
+         %ArticleBinding{visible: true} <-
+           Repo.get_by(ArticleBinding, article_id: article_id, community_id: community_id),
+         {:ok, true} <-
+           public_read?(
+             Article,
+             article_id,
+             CMS.Gate.Context.Scope.Doc.public_branch(branch_id),
+             community_id
+           ) do
+      retry_failed_article_projection(article_id, community_id, revision_id)
+    else
+      _ -> {:ok, :pass}
+    end
+  end
+
+  def replay_failed_doc_publish(_lifecycle, _community_id), do: {:ok, :pass}
 
   @doc "Records one durable review visibility event from the caller transaction."
   @spec enqueue(struct(), String.t(), String.t(), String.t(), pos_integer()) ::

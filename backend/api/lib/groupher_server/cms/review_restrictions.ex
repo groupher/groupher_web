@@ -281,23 +281,27 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
          %Community{} = community <- Repo.get(Community, community_id),
          %ArticleBinding{inner_id: inner_id} <-
            Repo.get_by(ArticleBinding, article_id: article_id, community_id: community_id) do
-      CMS.Articles.Effects.enqueue(
-        "article.visibility_changed",
-        "article",
-        article_id,
-        {:workflow, "review:doc:#{article_id}:#{branch_id}:#{scope_key}"},
-        %{
-          "community" => community.slug,
-          "community_id" => community.id,
-          "thread" => "doc",
-          "inner_id" => inner_id,
-          "branch_id" => branch_id
-        },
-        effect_key: "#{lifecycle.review_epoch}:#{lifecycle.review_content_token}:#{key}"
-      )
-      |> case do
-        {:ok, event} -> {:ok, event}
-        {:error, _reason} = error -> error
+      case CMS.Articles.Effects.enqueue(
+             "article.visibility_changed",
+             "article",
+             article_id,
+             {:workflow, "review:doc:#{article_id}:#{branch_id}:#{scope_key}"},
+             %{
+               "community" => community.slug,
+               "community_id" => community.id,
+               "thread" => "doc",
+               "inner_id" => inner_id,
+               "branch_id" => branch_id
+             },
+             effect_key: "#{lifecycle.review_epoch}:#{lifecycle.review_content_token}:#{key}"
+           ) do
+        {:ok, event} ->
+          with {:ok, :pass} <- Effects.replay_failed_doc_publish(lifecycle, community_id) do
+            {:ok, event}
+          end
+
+        {:error, _reason} = error ->
+          error
       end
     else
       nil -> {:error, CMS.ErrorCat.lifecycle_not_found()}

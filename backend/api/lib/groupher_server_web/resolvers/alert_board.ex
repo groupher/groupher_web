@@ -238,10 +238,9 @@ defmodule GroupherServerWeb.Resolvers.AlertBoard do
     {:error, AlertBoard.invalid_target()}
   end
 
-  defp resolve_recheck_target(%{kind: :article, article: path}, actor) when is_map(path) do
-    with {:ok, projection} <- CMS.front_desk_article(path, actor, mode: :management),
-         article_id when is_binary(article_id) <- Map.get(projection, :id),
-         {:ok, article} <-
+  defp resolve_recheck_target(%{kind: :article, article_id: article_id}, _actor)
+       when is_binary(article_id) do
+    with {:ok, article} <-
            CMS.front_desk_article(article_id, nil, mode: :internal, view: :command_context),
          thread when thread in [:post, :blog, :changelog] <- Map.get(article, :thread) do
       {:ok, %{kind: :article, id: Map.get(article, :id)}}
@@ -250,9 +249,10 @@ defmodule GroupherServerWeb.Resolvers.AlertBoard do
     end
   end
 
-  defp resolve_recheck_target(%{kind: :comment, comment: path}, actor) when is_map(path) do
+  defp resolve_recheck_target(%{kind: :comment, comment_id: comment_id}, _actor)
+       when is_binary(comment_id) do
     with {:ok, %Comment{} = comment} <-
-           CMS.front_desk_comment(path, actor, mode: :management, view: :with_author) do
+           CMS.front_desk_comment(comment_id, nil, mode: :internal, view: :with_author) do
       {:ok, %{kind: :comment, id: comment.id}}
     else
       _ -> {:error, AlertBoard.invalid_target()}

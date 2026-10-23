@@ -1258,8 +1258,8 @@ input ReviewDecisionInput {
 
 input ReviewRecheckTargetInput {
   kind: ReviewRecheckTargetKind!
-  article: ArticlePathInput
-  comment: CommentPathInput
+  articleId: ID
+  commentId: ID
   docArticleId: ID
   docBranchId: Int
 }

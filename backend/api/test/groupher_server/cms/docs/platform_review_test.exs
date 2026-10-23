@@ -1,17 +1,23 @@
 defmodule GroupherServer.Test.CMS.Docs.PlatformReviewTest do
   use GroupherServer.TestMate, async: false
 
+  import Ecto.Query
+
   alias GroupherServer.{AlertBoard, CMS, Repo, ReviewBot}
   alias AlertBoard.Model.{ReviewConfig, RuleSet}
   alias CMS.Articles.Draft.Store
 
   alias CMS.Model.{
+    Article,
     ArticleBinding,
     DocBranch,
+    DocBranchVersion,
     DocLifecycle,
     DocPublic,
     DocReviewRestriction
   }
+
+  alias CMS.Outbox.Event
 
   alias ReviewBot.Model.Check
 
@@ -106,5 +112,59 @@ defmodule GroupherServer.Test.CMS.Docs.PlatformReviewTest do
     refute Repo.get_by!(ArticleBinding, article_id: article.id, community_id: community.id).visible
 
     refute result.public.visible
+
+    public_main = CMS.Gate.Context.Scope.Doc.public_main()
+    author_scope = CMS.Gate.Scope.scope(Article, user, :read, public_main)
+    anonymous_scope = CMS.Gate.Scope.scope(Article, nil, :read, public_main)
+
+    assert Repo.exists?(from(scoped in author_scope, where: scoped.id == ^article.id))
+    refute Repo.exists?(from(scoped in anonymous_scope, where: scoped.id == ^article.id))
+
+    public = Repo.get_by!(DocPublic, article_id: article.id, branch_id: branch.id)
+    version = Repo.get!(DocBranchVersion, public.branch_version_id)
+
+    projection_event =
+      Event
+      |> where([event], event.event == "article.projections" and event.resource_id == ^article.id)
+      |> Repo.all()
+      |> Enum.find(fn event ->
+        event.data["community_id"] == community.id and
+          event.data["revision_id"] == version.revision_id
+      end)
+
+    projection_event
+    |> Event.changeset(%{
+      status: :failed,
+      attempts: 3,
+      completed_at: DateTime.utc_now(:second),
+      last_error_code: "projection_blocked_by_review",
+      last_error_at: DateTime.utc_now(:second)
+    })
+    |> Repo.update!()
+
+    Repo.transaction(fn ->
+      locked_lifecycle =
+        DocLifecycle
+        |> where([row], row.id == ^lifecycle.id)
+        |> lock("FOR UPDATE")
+        |> Repo.one!()
+
+      restriction_ids =
+        DocReviewRestriction
+        |> where([restriction], restriction.lifecycle_id == ^lifecycle.id)
+        |> select([restriction], restriction.id)
+        |> Repo.all()
+
+      assert {:ok, :pass} =
+               CMS.Docs.Lifecycle.end_review_restrictions(
+                 locked_lifecycle,
+                 "platform",
+                 restriction_ids,
+                 Ecto.UUID.generate(),
+                 "approved"
+               )
+    end)
+
+    assert %Event{status: :waiting, attempts: 0} = Repo.get!(Event, projection_event.id)
   end
 end

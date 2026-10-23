@@ -139,8 +139,8 @@ defmodule GroupherServerWeb.Schema.AlertBoard.Types do
 
   input_object :review_recheck_target_input do
     field(:kind, non_null(:review_recheck_target_kind))
-    field(:article, :article_path_input)
-    field(:comment, :comment_path_input)
+    field(:article_id, :id)
+    field(:comment_id, :id)
     field(:doc_article_id, :id)
     field(:doc_branch_id, :integer)
   end
