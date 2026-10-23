@@ -8,7 +8,7 @@ defmodule GroupherServer.ReviewBot.Maintenance.Workflow do
   import Ecto.Query
   alias GroupherServer.{AlertBoard, CMS, Repo, ReviewBot}
   alias AlertBoard.Model.Decision
-  alias CMS.Model.ArticleReviewRestriction
+  alias CMS.Model.{ArticleReviewRestriction, CommentReviewRestriction, DocReviewRestriction}
   alias ReviewBot.Model.{Attempt, Check}
 
   @batch_size 500
@@ -64,6 +64,18 @@ defmodule GroupherServer.ReviewBot.Maintenance.Workflow do
         select: restriction.check_id
       )
 
+    comment_restrictions =
+      from(restriction in CommentReviewRestriction,
+        where: not is_nil(restriction.check_id),
+        select: restriction.check_id
+      )
+
+    doc_restrictions =
+      from(restriction in DocReviewRestriction,
+        where: not is_nil(restriction.check_id),
+        select: restriction.check_id
+      )
+
     attempts = from(attempt in Attempt, select: attempt.check_id)
 
     ids =
@@ -72,8 +84,11 @@ defmodule GroupherServer.ReviewBot.Maintenance.Workflow do
           check.inserted_at < ^cutoff and
             (not is_nil(check.payload) or not is_nil(check.payload_expires_at) or
                check.signals != ^%{"items" => []} or check.coverage != ^%{} or
-               check.id in subquery(decisions) or check.id in subquery(restrictions) or
-               check.id not in subquery(attempts)),
+               (check.id not in subquery(decisions) and
+                  check.id not in subquery(restrictions) and
+                  check.id not in subquery(comment_restrictions) and
+                  check.id not in subquery(doc_restrictions) and
+                  check.id not in subquery(attempts))),
         order_by: [asc: check.inserted_at, asc: check.id],
         limit: ^limit,
         select: check.id,
@@ -93,7 +108,9 @@ defmodule GroupherServer.ReviewBot.Maintenance.Workflow do
           from(check in Check,
             where:
               check.id in ^ids and check.id not in subquery(decisions) and
-                check.id not in subquery(restrictions) and check.id not in subquery(attempts)
+                check.id not in subquery(restrictions) and
+                check.id not in subquery(comment_restrictions) and
+                check.id not in subquery(doc_restrictions) and check.id not in subquery(attempts)
           )
         )
 
