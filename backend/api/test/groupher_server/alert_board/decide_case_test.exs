@@ -91,6 +91,72 @@ defmodule GroupherServer.Test.AlertBoard.DecideCaseTest do
     assert Repo.get!(Attempt, attempt.id).state == :abandoned
   end
 
+  test "partial approval keeps an in-flight check when the AI wait remains active" do
+    {community, article, _author} = create_pending_article()
+    {:ok, reviewer} = db_insert(:user)
+    reviewer = grant_review_action(reviewer, community.slug, "review.decide")
+
+    case_record =
+      Repo.get_by!(Case,
+        target_key: "article:#{article.id}",
+        scope_key: "community:#{community.id}",
+        status: :open
+      )
+
+    waiting = Repo.get_by!(ArticleReviewRestriction, case_id: case_record.id)
+
+    ai_wait =
+      %ArticleReviewRestriction{}
+      |> ArticleReviewRestriction.changeset(%{
+        lifecycle_id: waiting.lifecycle_id,
+        scope_key: waiting.scope_key,
+        cause_key: "awaiting-ai-partial-approval",
+        kind: :awaiting_ai,
+        content_token: case_record.content_token,
+        source: :submission,
+        created_by_operation_ref: Ecto.UUID.generate(),
+        applied_at: DateTime.utc_now(:second)
+      })
+      |> Repo.insert!()
+
+    rule_hit =
+      %ArticleReviewRestriction{}
+      |> ArticleReviewRestriction.changeset(%{
+        lifecycle_id: waiting.lifecycle_id,
+        scope_key: waiting.scope_key,
+        cause_key: "rule-hit-partial-approval",
+        kind: :rule_hit,
+        content_token: case_record.content_token,
+        source: :policy,
+        created_by_operation_ref: Ecto.UUID.generate(),
+        applied_at: DateTime.utc_now(:second)
+      })
+      |> Repo.insert!()
+
+    {check, attempt} = running_check(case_record)
+
+    assert {:ok, %Decision{action: :approve}} =
+             AlertBoard.decide_case(
+               case_record.id,
+               %{
+                 expected_case_version: case_record.version,
+                 expected_content_token: case_record.content_token,
+                 action: :approve,
+                 restriction_ids: [rule_hit.id],
+                 reason_code: "word_cleared",
+                 note: "Approve only the deterministic rule hit"
+               },
+               reviewer,
+               Ecto.UUID.generate()
+             )
+
+    assert Repo.get!(ArticleReviewRestriction, rule_hit.id).ended_at
+    assert Repo.get!(ArticleReviewRestriction, ai_wait.id).ended_at == nil
+    assert Repo.get!(Check, check.id).state == :running
+    assert Repo.get!(Attempt, attempt.id).state == :running
+    assert Repo.get!(Case, case_record.id).status == :open
+  end
+
   test "restrict replaces an awaiting-human wait with a releasable manual hold" do
     {community, article, _author} = create_pending_article()
     {:ok, reviewer} = db_insert(:user)

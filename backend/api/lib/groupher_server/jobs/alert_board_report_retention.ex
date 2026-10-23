@@ -1,6 +1,6 @@
 defmodule GroupherServer.Jobs.AlertBoardReportRetention do
   @moduledoc """
-  Daily bounded cleanup for expired AlertBoard report details.
+  Daily bounded cleanup for expired AlertBoard report details and decision notes.
 
       Oban cron -> AlertBoardReportRetention -> AlertBoard.Maintenance
   """
@@ -19,15 +19,16 @@ defmodule GroupherServer.Jobs.AlertBoardReportRetention do
   """
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
-    case GroupherServer.AlertBoard.redact_expired_report_details() do
-      {:ok, %{more?: true}} ->
+    with {:ok, report_result} <- GroupherServer.AlertBoard.redact_expired_report_details(),
+         {:ok, decision_result} <- GroupherServer.AlertBoard.redact_expired_decision_notes() do
+      if report_result.more? or decision_result.more? do
         {:snooze, GroupherServer.AlertBoard.report_retention_snooze_seconds()}
-
-      {:ok, %{more?: false}} ->
+      else
         {:ok, :pass}
-
+      end
+    else
       {:error, reason} ->
-        raise "AlertBoard report retention failed: #{inspect(reason)}"
+        raise "AlertBoard retention failed: #{inspect(reason)}"
     end
   end
 end

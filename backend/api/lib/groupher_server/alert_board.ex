@@ -21,6 +21,10 @@ defmodule GroupherServer.AlertBoard do
   @spec redact_expired_report_details() :: {:ok, map()} | {:error, term()}
   defdelegate redact_expired_report_details(), to: Maintenance
 
+  @doc "Clears notes from human decisions older than the configured retention window in bounded batches."
+  @spec redact_expired_decision_notes() :: {:ok, map()} | {:error, term()}
+  defdelegate redact_expired_decision_notes(), to: Maintenance
+
   @doc "Returns the delay before a saturated report-retention job continues."
   @spec report_retention_snooze_seconds() :: pos_integer()
   defdelegate report_retention_snooze_seconds(), to: Config, as: :retention_snooze_seconds

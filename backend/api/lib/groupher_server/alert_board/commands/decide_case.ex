@@ -113,7 +113,8 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
          {:ok, active} <- active_restrictions(target, case_record),
          {:ok, :pass} <-
            validate_action_target(action, case_record, target, active, restriction_ids),
-         {:ok, :pass} <- supersede_pending_checks(action, case_record),
+         {:ok, :pass} <-
+           supersede_pending_checks(action, case_record, active, restriction_ids),
          {:ok, ended_ids, added_ids} <-
            apply_action(action, case_record, target, active, restriction_ids, context.command_id),
          {:ok, decision} <-
@@ -326,12 +327,26 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
     end
   end
 
-  defp supersede_pending_checks(action, %Case{} = case_record)
-       when action in [:approve, :restrict] do
+  defp supersede_pending_checks(:approve, %Case{} = case_record, active, restriction_ids) do
+    resolves_ai_wait? =
+      Enum.any?(active, fn restriction ->
+        restriction.id in restriction_ids and
+          restriction.kind in [:awaiting_ai, :awaiting_human]
+      end)
+
+    if resolves_ai_wait? do
+      ReviewBot.supersede_in_flight_checks(case_record.target_key, case_record.scope_key)
+    else
+      {:ok, :pass}
+    end
+  end
+
+  defp supersede_pending_checks(:restrict, %Case{} = case_record, _active, _restriction_ids) do
     ReviewBot.supersede_in_flight_checks(case_record.target_key, case_record.scope_key)
   end
 
-  defp supersede_pending_checks(_action, _case_record), do: {:ok, :pass}
+  defp supersede_pending_checks(_action, _case_record, _active, _restriction_ids),
+    do: {:ok, :pass}
 
   defp insert_decision(context, case_record, action, restriction_ids, reason_code, note) do
     attrs = %{

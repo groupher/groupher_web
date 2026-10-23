@@ -1,12 +1,13 @@
 defmodule GroupherServer.AlertBoard.Config do
   @moduledoc """
-  Runtime limits for AlertBoard report-detail retention.
+  Runtime limits for AlertBoard report and decision retention.
 
       Oban worker -> AlertBoard.Config -> Maintenance.Workflow
   """
 
   @defaults [
     report_details_retention_days: 90,
+    decision_notes_retention_days: 365,
     retention_batch_size: 500,
     retention_max_batches: 100,
     retention_snooze_seconds: 5
@@ -14,6 +15,9 @@ defmodule GroupherServer.AlertBoard.Config do
 
   @doc "Returns the number of days report details are retained."
   def report_details_retention_days, do: positive!(:report_details_retention_days)
+
+  @doc "Returns the number of days human decision notes are retained."
+  def decision_notes_retention_days, do: positive!(:decision_notes_retention_days)
 
   @doc "Returns the number of reports cleared in one retention batch."
   def retention_batch_size, do: positive!(:retention_batch_size)
