@@ -11,7 +11,8 @@ defmodule GroupherServer.CMS.Comments.InteractionResponse do
   alias GroupherServer.{CMS, Repo}
 
   alias CMS.Comments.AuthorRelationState
-  alias CMS.Model.PostSolution
+  alias CMS.Model.{Comment, PostSolution}
+  alias CMS.Gate.Context.Scope.Comment, as: CommentContext
 
   @doc """
   Assembles one Comment with Interaction and Article-author binding fields.
@@ -40,6 +41,8 @@ defmodule GroupherServer.CMS.Comments.InteractionResponse do
   @spec many([struct()], GroupherServer.Accounts.Model.User.t() | nil, keyword()) ::
           {:ok, [struct()]} | {:error, term()}
   def many(comments, viewer, opts \\ []) when is_list(comments) do
+    comments = Enum.map(comments, &filter_embedded_replies(&1, viewer))
+
     all_comments =
       comments
       |> Enum.flat_map(fn comment -> [comment | embedded_replies(comment)] end)
@@ -137,4 +140,24 @@ defmodule GroupherServer.CMS.Comments.InteractionResponse do
 
   defp embedded_replies(%{replies: replies}) when is_list(replies), do: replies
   defp embedded_replies(_comment), do: []
+
+  defp filter_embedded_replies(%{replies: replies} = comment, viewer)
+       when is_list(replies) and replies != [] do
+    reply_ids = Enum.map(replies, & &1.id)
+
+    visible_ids =
+      Comment
+      |> CMS.Gate.scope(viewer, :read, comment_context(comment.thread))
+      |> where([reply], reply.article_id == ^comment.article_id and reply.id in ^reply_ids)
+      |> select([reply], reply.id)
+      |> Repo.all()
+      |> MapSet.new()
+
+    Map.put(comment, :replies, Enum.filter(replies, &MapSet.member?(visible_ids, &1.id)))
+  end
+
+  defp filter_embedded_replies(comment, _viewer), do: comment
+
+  defp comment_context(:doc), do: CommentContext.for_thread(:doc, branch_policy: :main)
+  defp comment_context(thread), do: CommentContext.for_thread(thread)
 end

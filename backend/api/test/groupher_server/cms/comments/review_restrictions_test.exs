@@ -8,6 +8,54 @@ defmodule GroupherServer.Test.CMS.Comments.ReviewRestrictionsTest do
 
   alias CMS.Model.{CommentLifecycle, CommentReviewRestriction}
 
+  test "single Comment responses filter restricted embedded replies through Gate" do
+    {community, article, _article_attrs, parent_author} = mock_article(:post)
+    {:ok, reply_author} = db_insert(:user)
+
+    {:ok, parent} =
+      CMS.Comments.create_comment(
+        community,
+        :post,
+        article_inner_id(article, community),
+        mock_comment("visible parent"),
+        parent_author,
+        Ecto.UUID.generate()
+      )
+
+    {:ok, reply} =
+      CMS.Comments.reply_comment(
+        parent.id,
+        mock_comment("restricted reply"),
+        reply_author,
+        Ecto.UUID.generate()
+      )
+
+    lifecycle = Repo.get_by!(CommentLifecycle, comment_id: reply.id)
+
+    assert {:ok, _restriction} =
+             Repo.transaction(fn ->
+               locked =
+                 CommentLifecycle
+                 |> where([row], row.id == ^lifecycle.id)
+                 |> lock("FOR UPDATE")
+                 |> Repo.one()
+
+               case CMS.Comments.Lifecycle.apply_review_restriction(
+                      locked,
+                      restriction_attrs(lifecycle, "platform", "hidden-embedded-reply")
+                    ) do
+                 {:ok, restriction} -> restriction
+                 {:error, reason} -> Repo.rollback(reason)
+               end
+             end)
+
+    assert {:ok, public_parent} = CMS.Comments.one_comment(parent.id)
+    assert public_parent.replies == []
+
+    assert {:ok, reply_author_parent} = CMS.Comments.one_comment(parent.id, reply_author)
+    assert Enum.map(reply_author_parent.replies, & &1.id) == [reply.id]
+  end
+
   test "only the author can read a Comment under a platform review restriction" do
     {community, article, _article_attrs, author} = mock_article(:post)
     inner_id = article_inner_id(article, community)
