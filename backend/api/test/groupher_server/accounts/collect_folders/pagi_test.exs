@@ -2,7 +2,8 @@ defmodule GroupherServer.Test.Accounts.CollectFolders.Pagi do
   use GroupherServer.TestMate, async: false
 
   alias Accounts.CollectFolders
-  alias GroupherServer.CMS.Model.{Article, ArticleLifecycle, ArticleReviewRestriction}
+  alias GroupherServer.CMS
+  alias CMS.Model.{Article, ArticleLifecycle, ArticleReviewRestriction}
   alias Helper.ORM.Pagi.{Page}
   alias GroupherServer.{Pagi, Repo}
   alias Pagi.Params

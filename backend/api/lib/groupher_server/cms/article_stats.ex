@@ -20,8 +20,7 @@ defmodule GroupherServer.CMS.ArticleStats do
 
   alias GroupherServer.{CMS, Repo}
   alias CMS.Artiment.{Matcher, Threads}
-  alias CMS.Articles.Bindings
-  alias CMS.Articles.Pagination
+  alias CMS.Articles.{Bindings, Pagination}
   alias CMS.Articles.ErrorCat, as: ArticleErrorCat
   alias CMS.FrontDesk
 
