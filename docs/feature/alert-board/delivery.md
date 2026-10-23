@@ -1,6 +1,6 @@
 # AlertBoard / ReviewBot 实施批次与验收
 
-> 状态：本地实现与自动化验证通过，2026-10-22；D1–D5 运行时代码与本地 schema 清理已完成；N1–N7 代码已落地。真实浏览器验收、生产部署、目标环境维护切换和真实 provider/数据验收仍未完成，当前不能视为已上线。
+> 状态：运行时代码与自动化验证记录见本轮 PR；2026-10-23 移除了普通 Article 的 Binding/Public 可见性投影列。真实浏览器验收、生产部署、目标环境维护切换和真实 provider/数据验收仍未完成，当前不能视为已上线。
 > 业务与数据合同见 [implementation.md](./implementation.md)；每批必须满足退出条件才进入下一依赖批次。
 
 ## 0.1 当前实现快照
@@ -10,7 +10,7 @@
 - 已删除 Article/Comment 的旧 `isLegal` / `illegalReason` / `illegalWords` 前端消费、旧评论非法提示及账号 `has_illegal_*` GraphQL/模型字段；SDL 与 GraphQL TS 已重新生成。
 - Migration `20261022140000_drop_legacy_user_audit_meta` 已清除 `account.users.meta` 中旧账号内容审核键；测试库迁移成功。
 - 已删除内容审核预留 Activity actions `moderation_review_started/resolved`、对应模型枚举/分类/文案/测试；migration `20261022150000_drop_legacy_content_review_activity` 清除历史行并收紧四类 Article log 的 action 约束。
-- Article/Doc 首次发布的 ArticleBinding 可见性在发布事务中重算；Mention 写入已具备 Gate 公开资格检查、target/content token/recipient 幂等和已读状态保留。
+- 普通 Article 的发布准入由 Gate 根据 ArticleLifecycle 与 ArticleReviewRestriction 事实即时过滤；ArticleBinding 只保存关系与 locator，ArticlePublic 只保存公开版本和查询投影。Doc 继续使用 branch-scoped DocPublic 发布投影。Mention 写入已具备 Gate 公开资格检查、target/content token/recipient 幂等和已读状态保留。
 - 新 Report submit/withdraw GraphQL command 已接入 Article/Comment 举报入口；`contentReview.viewerReportId` 只暴露当前 actor 自己的 active report，前端可跨刷新撤回。SubmitReport 失败重试复用 commandId。
 - 验证快照（2026-10-22）：D5 runtime scanner 扫描 4,439 个源码文件通过；后端 2,410 passed / 1 excluded、Core 1,023 passed、Assets Hub Worker 16 passed；全仓类型检查、GraphQL source/generated 契约、文档与边界检查通过。真实浏览器和生产 provider 未作为本地验证冒充通过。
 
@@ -44,14 +44,11 @@ D5 后旧举报 GraphQL、facade、query/report 模块、阈值 fold 调用点�
 
 ### D3 删除旧存储、条件与消费者
 
-- 新增 Lifecycle token 的 migration `20261022110000_add_content_review_restrictions` 为已有 Article/Comment/Doc 生命周期写入稳定基线 token，确保存量目标可在重检前举报和检查。
+- `20261022110000_add_content_review_restrictions` 为现有 Article/Comment/Doc Lifecycle 建立新模型所需的 review token 基线；它不读取、解释或迁移旧 Audit 状态。
 - 最终 migration `20261023110000_drop_legacy_content_audit_fields` 删除 Article/DocBranchState 的 moderation_state/illegal_reason/illegal_words、
-  Comment.pending 和 Comment.meta 内旧 is_legal/illegal_reason/illegal_words。删除 `Comment.pending` 前，仅将 `pending = 1` 的评论一次性转换为
-  platform `manual_hold` CommentReviewRestriction 和 open Case，并复用该 Lifecycle 已有 token/epoch；若新系统重检已为同一 token 建立 open Case，则复用该 Case。这样不使刚完成的 Check 变为 stale，也不覆盖新系统判定；`pending != 1` 不创建审核事实。
-  这是数据迁移，不保留旧字段、旧状态解释或运行时兼容。Public/Binding/DocPublic 投影不在该迁移中改写。
+  Comment.pending 和 Comment.meta 内旧 is_legal/illegal_reason/illegal_words。删除时不读取旧值、不创建 Case/Check/ReviewRestriction，也不将旧状态翻译成新状态；历史回填与旧数据兼容均不属于本次迁移。
   ArticleMeta 的运行时投影/嵌入声明单独删除；不存在存储列时不臆造 UPDATE，历史存储 JSON 的位置由 migration 清单逐项列出。
-- migration 通过 Ecto schema 实际 source 定位表；生成 SQL 清单含每个 drop column/constraint/index 和旧 JSON 清理。仅上述待审评论从旧隔离状态转为新限制事实，其他旧审核状态、审核结果和理由不进入新系统。
-  它排在 `20261023100000` 之后，以便新版本先在维护隔离中按新配置重检存量内容；不改其他已部署 migration。
+- migration 通过 Ecto schema 实际 source 定位表；生成 SQL 清单含每个 drop column/constraint/index 和旧 JSON 清理。它排在 `20261023100000` 之后；不改其他已部署 migration。
 - Gate/Scope、query_builder、Public/Binding/RevisionProjection/ArticleView、tags/stats、search_artiments/capacity：按逐文件清单删除旧条件。
 - 删除 Article.pending GraphQL 字段（fields.ex/cms_metrics.ex）、对应 meta 字段、作者违规数组，禁止 pending: 0 占位。
 - 前端所有旧 query/type/UI/salon/i18n 消费者同批删除；默认值 isLegal=true 也删除。

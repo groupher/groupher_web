@@ -194,8 +194,7 @@ Gate Scope 的新 SQL 条件是：父资源/社区可读 AND 基础 Lifecycle �
 列表、详情、批量和 count 使用同一 NOT EXISTS 限制谓词；不逐行查询 Check/Case，不调用 provider。
 审核列表是有权限的 Scope 模式，不是 policy_mode 字符串旁路。typed Article/Comment/Doc Context 保留。
 平台搜索只收无平台限制且至少一个可公开 binding 的 Article；社区搜索同时考虑对应 binding 限制。
-ArticlePublic.visible 表达全局条件，ArticleBinding.visible 表达该社区条件；都从同一次 Lifecycle 计算派生，
-不能从其中一个反推权威限制。DocPublic 使用对应 branch 的限制。正文响应必须先经过 Gate，缓存命中也不例外。
+普通 Article 的 ArticlePublic 与 ArticleBinding 不存 `visible` 列。Gate 在同一 SQL scope 中读取 ArticleLifecycle 与 ArticleReviewRestriction，按 platform/community scope 判断可见性；查询、搜索、计数和副作用使用同一 Gate scope，不从缓存或 Binding 推断审核状态。DocPublic 仍有 branch-scoped `visible` 发布投影，并由 DocLifecycle/DocReviewRestriction 更新。
 
 ## 6. 事务、锁序与副作用
 
@@ -208,7 +207,7 @@ ArticlePublic.visible 表达全局条件，ArticleBinding.visible 表达该社�
 3. 写当前内容，更新 review_content_token/epoch；结束旧等待项、使旧 Check superseded。
 4. Lifecycle 应用当前模式等待项、确定性词命中、保留已有人工/自动限制。
 5. `ReviewBot.register_in_transaction` 插入 Check + Oban Job；任一失败使整笔提交回滚。
-6. AlertBoard 同事务创建必要 Case、决定记录；重算 Public/Binding 和受限评论投影。
+6. AlertBoard 同事务创建必要 Case 与决定记录；Article/Comment 可见性由提交后的 Lifecycle/Restriction 事实直接供 Gate 查询，Doc 只刷新对应 branch 的 DocPublic 投影。
 7. 通过既有 CMS.Outbox 同事务登记 visibility/content 事件；Receipt confirmation；commit。
 8. 异步检查、搜索/缓存/通知消费；提交响应返回当前内容和 review DTO，不等待 AI。
 

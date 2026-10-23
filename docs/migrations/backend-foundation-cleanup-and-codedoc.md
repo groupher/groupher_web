@@ -146,6 +146,7 @@ E4 的 middleware-chain 合同验收位于 `test/groupher_server_web/middleware/
 
 - 串行 `mix test --max-cases 1`：491.3 秒，2380/2444 passed、64 failures、1 excluded。之后当前源码加入/呈现了普通 Article 与 Docs main branch 发布时的 Binding 可见性同步；定向 `mix test test/groupher_server/cms/gate/g1_surface_consistency_test.exs test/groupher_server/cms/articles/query/locator_test.exs --max-cases 1` 6/6 passed。全量结果早于这项变更，必须重跑后才能验收。
 - 根因定位：普通发布先创建 Draft 和 `ArticleBinding.visible = false`；原 `Articles.Publish.Target` 选择 ArticlePublic 并将 Lifecycle 转为 published，却未同步该 Binding。FrontDesk 的 Gate scope 因 Binding 不可见而拒绝 canonical projection，导致 Article create、G1/locator fixtures 和大量 factory/GraphQL setup 失败。当前实现把同步放在发布事务中；Gate 仍是唯一准入边界。Docs main branch 同步时按 DocLifecycle 与 active DocReviewRestriction 计算 Binding 可见性。
+- 上述记录是 2026-10-22 的修复历史，不再代表当前模型：2026-10-23 移除 ArticleBinding.visible 与 ArticlePublic.visible。普通 Article 的 Gate 直接根据 Lifecycle/ReviewRestriction 事实过滤；Doc main branch 不再写 ArticleBinding 可见标记，DocPublic 继续承载 branch 发布投影。
 - locator 的 101 项专用 reason、direct binding fixture、E1 六类 Outbox producer catalog 与 Passport 4353/`TOKEN_INVALID` 断言已复核源码；六个 Outbox worker 未命中裸 `{:error, :atom}`。Binding 可见性同步变更后的 G1 + locator 定向测试为 6/6 通过；测试与文档的旧成功记录不能替代全量验证。
 - 本轮最终只保留文档修订；工作树中的业务实现按当前状态记录，不在本轮新增代码。下一步是重跑串行全量、修复残余失败并重跑 docs gate；Audit/Sentinel 继续暂停。
 - 当前 `pnpm docs:check` 在 Documentation coverage 阶段失败 4 项：Alert Board README 状态词不符合规则，Audit inventory 有 3 个失效前端链接；因此本次命令未运行后续 boundary checks。不可将 docs gate 标为通过。

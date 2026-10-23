@@ -1,6 +1,6 @@
 # Gate 读取与操作准入收口
 
-> 状态：Gate scope 仍是唯一读取准入实现。当前源码已在普通 Article 与 Docs main branch 发布事务内同步 Binding 可见性，G1 + locator 定向测试 6/6 通过；最近一次串行全量 2380/2444 passed、64 failures 早于该修复，尚未复跑，故整体验收仍待完成。不得添加 FrontDesk/list 的可见性绕行判断。细项见 [基础模块执行记录](./backend-foundation-cleanup-and-codedoc.md#6-2026-10-22-实施与验证记录)。本文沿用现有 Gate 合同，不代表另建框架。
+> 状态：Gate Scope 是唯一读取准入实现。2026-10-23 普通 Article 不再在 ArticleBinding/ArticlePublic 保存可见性投影，Gate 直接依据 Lifecycle 与 active ReviewRestriction 过滤；Doc 保留 branch-scoped DocPublic 投影。下列历史验收快照中的普通 Article visible-field 检查已由 Lifecycle/ReviewRestriction 场景替代。不得添加 FrontDesk/list 的可见性绕行判断。细项见 [基础模块执行记录](./backend-foundation-cleanup-and-codedoc.md#6-2026-10-22-实施与验证记录)。本文沿用现有 Gate 合同，不代表另建框架。
 
 当前合同仍是 [Gate](../feature/gate/README.md)、其 typed context 细则及各资源 Lifecycle 合同。
 本文定义调用覆盖、重复规则清理和可执行验收；不设计 Sentinel 或新 Moderation 模型。
@@ -91,10 +91,10 @@ Lifecycle 权威状态/限制 + actor + membership/Passport 等已加载事实
 | `cms/gate/scope/comment.ex`                                                                  | 保持现有 deleted tombstone 合同，destroy 不返回；不能误把“接入 Gate”变成“删除所有 deleted 行”。验证返回内容脱敏/墓碑由现有投影负责                                                             | 见下文统一矩阵   |
 
 表内统一验收：相同 actor/mode/filter/branch 下，detail 可读集合 = list/batch 可读集合，count 对应同一计数单位；
-覆盖 legal/illegal、binding.visible/public.visible 组合、无 Public、父社区不可读、Doc 非 main、Comment destroy。
+覆盖 active/ended ReviewRestriction、无 ArticlePublic、父社区不可读、Doc 非 main、Comment destroy。旧 `binding.visible` / `ArticlePublic.visible` 组合仅留作历史基线，不再是现行数据模型。Doc 仍保留分支级 `DocPublic.visible`。
 `audit_failed` 场景只记录现有分歧与冻结依赖；其新产品语义待审核机制解冻，不以本计划批准新行为。
 
-当前新增的发布事实不变量也必须纳入矩阵：普通 Article 在 `Publish.Target` 生命周期转为 published 后，目标 Binding 的可见性按 Lifecycle 和当前限制刷新；Doc main branch 在 `Publish.Doc` 发布后，Binding 与 DocPublic/DocRestriction 一致。测试先确认新发布内容能通过 FrontDesk，再分别隐藏 Binding、ArticlePublic、DocPublic 和加 active restriction，确认 detail/list/count/locator 同步拒绝；author 不得绕过 Gate。不得在 FrontDesk 或 list 查询里补写可见性兜底。
+当前发布事实不变量也必须纳入矩阵：普通 Article 在 `Publish.Target` 提交 Lifecycle 与 ArticlePublic 版本后，Gate 按 Lifecycle 和当前 ReviewRestriction 决定 binding 读取资格；ArticleBinding 仅表示 Article–Community 关系。Doc main branch 在 `Publish.Doc` 发布后仍由 DocPublic 与 DocReviewRestriction 共同决定。测试确认添加和结束 active restriction 后 detail/list/count/locator/search/side effects 同步更新；author 例外由 Gate 明确定义。不得在 FrontDesk 或 list 查询里补写可见性兜底。
 
 实现可用 Gate scoped identity 子查询连接现有 Lite join，避免为了共享 alias 大规模重写 projector；
 禁止逐行 Gate.check 和额外 N+1。测试查看 SQL/query count，不只对比最终列表长度。

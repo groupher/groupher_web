@@ -148,7 +148,7 @@ OpenAI 等 provider 同样通过 adapter 接入，统一业务信号，不假设
 Policy 只消费已加载 facts，不查库、不调用 provider、不修改状态；自动和人工决定都经正式 Command。
 平台限制只能由平台授权解除，社区不能以自定义 Prompt 覆盖平台规则。
 多社区 Article 的社区规则适用范围须显式携带 community，不能把社区命中无条件写成全局限制；
-物理落点为资源 Lifecycle-owned review_restrictions 表，ArticleBinding.visible 仅按对应社区派生，详见实施合同 §3.3/§5。
+物理落点为资源 Lifecycle-owned review_restrictions 表。Article 与 Comment 的 Gate 查询直接读取 Lifecycle 和限制事实；ArticleBinding、ArticlePublic 不保存可见状态。Doc 仍使用 branch-scoped DocPublic 发布投影，详见实施合同 §3.3/§5。
 Article 的正文修订由多个 Binding 共享，因此编辑时对平台和每个现存社区 scope 分别执行编辑策略；镜像/迁移新建目标 Binding 时，先按目标社区首次发布策略检查当前修订，迁移同时结束源社区 scope 的有效限制。
 
 ## 5. 举报与事项聚合
@@ -185,7 +185,7 @@ Gate Load/typed Context 仅按需增加权威 facts；Scope 在 SQL 中组合可
 评论可见性必须叠加父 Article/Doc 与社区权限。作者/管理员的特许读取不能写入共享公共缓存。
 公共列表、详情、批量、count、搜索、Feed、通知摘要、图片访问均需覆盖；不能只遮挡 UI。
 批准只解除对应限制，不撤销其他人工/平台 blocker，也不恢复删除资源。
-Public/Binding 的 visible 等若继续保留，只能是受控投影，不能成为第二份限制权威。
+普通 Article 的 ArticlePublic/ArticleBinding 不保留 `visible` 投影列，也不维护第二份可见性事实；列表、详情、搜索、计数和副作用统一复用 Gate Scope。DocPublic 的 `visible` 只表达 Doc branch 发布合同，不替代 DocLifecycle 或 DocReviewRestriction。
 
 ## 7. 实施入口
 
