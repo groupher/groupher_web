@@ -44,15 +44,12 @@ D5 后旧举报 GraphQL、facade、query/report 模块、阈值 fold 调用点�
 
 ### D3 删除旧存储、条件与消费者
 
-- 新 migration `drop_legacy_content_audit_fields`：先把仍处于 `moderation_state != legal` 或 `Comment.pending = 1` 的存量目标，
-  按当前 Lifecycle token（为空时生成一次性 `legacy:*` token）写成 platform `rule_hit/policy` restriction 与 high-priority Case，
-  再删除 Article/DocBranchState 的 moderation_state/illegal_reason/illegal_words、Comment.pending；同时将 Article/Binding/DocPublic
-  visibility projection 收敛为受限制状态。只保留“仍需管理员处理”的可见性事实，不迁移旧 verdict、provider payload、理由或词项，
-  不保留旧运行时协议；评论仅迁移旧 Gate 实际隐藏的 `pending = 1`（`illegal`），`pending = 2`（`audit_failed`）原本仍公开，不创建新限制；旧 Public/Binding 差异不延续。
-  同 migration 清理 Comment/User 存储 meta 的旧 is_legal、illegal_reason、illegal_words、has_illegal__、illegal__ 键。
+- 最终 migration `20261023110000_drop_legacy_content_audit_fields` 只删除 Article/DocBranchState 的 moderation_state/illegal_reason/illegal_words、
+  Comment.pending 和 Comment.meta 内旧 is_legal/illegal_reason/illegal_words；不读取旧状态值，不生成新 Case/Restriction，不回填 Lifecycle token，
+  也不改 Public/Binding/DocPublic 投影。旧审核状态、审核结果和理由不进入新系统。
   ArticleMeta 的运行时投影/嵌入声明单独删除；不存在存储列时不臆造 UPDATE，历史存储 JSON 的位置由 migration 清单逐项列出。
-- migration 通过 Ecto schema 实际 source 定位表；生成 SQL 清单含每个 drop column/constraint/index、旧 JSON 清理、存量限制事实导入
-  和 projection 更新。不改历史 migration，不恢复旧值语义。执行前在临时数据库从现有 migration 重建并验证 DDL 与导入计数。
+- migration 通过 Ecto schema 实际 source 定位表；生成 SQL 清单含每个 drop column/constraint/index 和旧 JSON 清理。不回填新审核事实。
+  它排在 `20261023100000` 之后，以便新版本先在维护隔离中按新配置重检存量内容；不改其他已部署 migration。
 - Gate/Scope、query_builder、Public/Binding/RevisionProjection/ArticleView、tags/stats、search_artiments/capacity：按逐文件清单删除旧条件。
 - 删除 Article.pending GraphQL 字段（fields.ex/cms_metrics.ex）、对应 meta 字段、作者违规数组，禁止 pending: 0 占位。
 - 前端所有旧 query/type/UI/salon/i18n 消费者同批删除；默认值 isLegal=true 也删除。
@@ -192,15 +189,14 @@ GraphQL SDL/TS/action 完整生成，旧 mutation/query 无别名。新增中英
 
 ### N8 上线验收与维护切换
 
-1. 停写/停旧 worker，执行 D 批次清理；确认旧 token 撤销、旧 Job 无执行者。
-2. 新 DDL；不迁移旧 Audit verdict/details 或 Report facts。迁移只把旧状态仍明确限制的内容变成新 platform restriction/Case，
-   并保持 Public/Binding/DocPublic 不公开；其余存量内容在维护隔离中按新平台规则重检，无法自动完成的进入新人工事项，
-   不因删除旧列自动公开。
-3. 部署新后端、同步 schema/客户端；运行 T01–T25（T01a 作为 T01 子用例，单独记录结果）与真实 provider contract fixtures。
-4. 恢复入口；核对 Check backlog、failed 数、Outbox backlog 和公共读取；无新审核配置不得标记“检测启用”。
-5. 回退策略为停止相关入口、恢复维护状态并修复新实现；不启动旧 Audit，不重新使用旧 token/协议。
+1. 在边缘层启用维护隔离，阻断普通用户读取和所有内容写入；停止旧 Audit/Report worker、cron 与 producer，确认无旧 Job 可回写，撤销旧 provider 凭据。
+2. 先执行截至 `20261023100000` 的新表/新约束迁移；不要执行最终删列迁移。部署本 PR 的最终代码并关闭部署系统自动执行“全部待迁移”的钩子；新代码不读取或写入旧列。
+3. 维护隔离保持开启，用 `AlertBoard.recheck/4` 按新配置重检每个现存可发布目标的所有有效 scope：Article 对 platform 和每个 Binding 社区分别检查，Comment 对 platform 和所属社区分别检查，Doc 按每个发布 branch 的 platform 配置检查。使用管理员 actor、每个 target/scope 稳定且唯一的 commandId；记录 target 数、scope 数、已完成/待人工/失败数，不输出正文、token 或 provider 凭据。旧字段值不参与选目标、判定或生成新状态。
+4. 只有当清单中每个 target/scope 都有新系统的确定结果（无规则、completed Check、或 open Case/active restriction），且没有 queued/running/failed Check，才执行 `MIX_ENV=prod mix ecto.migrate --to 20261023110000` 删除旧列。该 migration 不做状态转换，也不改可见性投影。
+5. 运行 T01–T25（T01a 作为 T01 子用例，单独记录结果）与真实 provider contract fixtures；确认旧字段/JSON/GraphQL/Job 扫描为零、Check backlog 为零、Outbox backlog 已清空，再验证匿名读取、作者读取和管理员 Board 读取。
+6. 解除维护隔离并核验新内容入口。回退时重新启用维护隔离并修复新实现；不启动旧 Audit，不恢复旧 token、字段或协议。
 
-本地实现、迁移与测试不等于生产切换。本轮 PR 不停生产 worker/cron、不撤销部署凭据、不执行目标环境 DDL 或存量内容重检；这些 N8 操作必须由部署批次留存 job 数量、迁移核对、provider fixture、backlog 与匿名公共读取证据，不能用静态扫描代替。
+本地实现、迁移与测试不等于生产切换。本轮 PR 不停生产 worker/cron、不撤销部署凭据、不执行目标环境 DDL 或存量内容重检；N8 是合并后的维护窗口操作，必须按以上命令和证据逐项留存，不能用静态扫描代替。
 
 ## 2. 可执行行为验收矩阵
 
