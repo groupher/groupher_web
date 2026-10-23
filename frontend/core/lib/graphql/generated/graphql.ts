@@ -558,11 +558,12 @@ export type ReviewSubjectKind = 'ARTICLE' | 'COMMENT' | 'DOC'
 export type ReviewTargetInput = {
   article?: ArticlePathInput | null | undefined
   comment?: CommentPathInput | null | undefined
+  docBranchId?: number | null | undefined
   kind: ReviewTargetKind
   user?: string | null | undefined
 }
 
-export type ReviewTargetKind = 'ARTICLE' | 'COMMENT' | 'USER'
+export type ReviewTargetKind = 'ARTICLE' | 'COMMENT' | 'DOC' | 'USER'
 
 export type SubmitReportInput = {
   details?: string | null | undefined
