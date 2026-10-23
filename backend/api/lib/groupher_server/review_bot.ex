@@ -62,6 +62,9 @@ defmodule GroupherServer.ReviewBot do
   @spec recover_stale_checks() :: {:ok, non_neg_integer()} | {:error, term()}
   defdelegate recover_stale_checks(), to: Execution
 
+  @doc "Runs bounded retention over expired provider Attempts and Check metadata."
+  defdelegate cleanup_expired_records(), to: GroupherServer.ReviewBot.Maintenance
+
   @doc "Invalidates queued or running checks after an authoritative human decision."
   @spec supersede_in_flight_checks(String.t(), String.t()) :: {:ok, :pass} | {:error, term()}
   defdelegate supersede_in_flight_checks(target_key, scope_key), to: Execution
