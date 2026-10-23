@@ -8,7 +8,7 @@ defmodule GroupherServer.AlertBoard do
         -> AlertBoard tables
   """
 
-  alias __MODULE__.{Authorization, ErrorCat, Persist, Query}
+  alias __MODULE__.{Authorization, Config, ErrorCat, Maintenance, Persist, Query}
   alias GroupherServer.ReviewBot
   alias __MODULE__.Model.{Case, Decision, ReviewConfig}
   alias ReviewBot.Model.Check
@@ -16,6 +16,14 @@ defmodule GroupherServer.AlertBoard do
   @doc "Reads one authorized review configuration for the supplied scope."
   @spec review_config(map(), atom(), struct()) :: {:ok, ReviewConfig.t()} | {:error, term()}
   defdelegate review_config(scope, subject_kind, actor), to: Query
+
+  @doc "Clears report details older than the configured retention window in bounded batches."
+  @spec redact_expired_report_details() :: {:ok, map()} | {:error, term()}
+  defdelegate redact_expired_report_details(), to: Maintenance
+
+  @doc "Returns the delay before a saturated report-retention job continues."
+  @spec report_retention_snooze_seconds() :: pos_integer()
+  defdelegate report_retention_snooze_seconds(), to: Config, as: :retention_snooze_seconds
 
   @doc "Lists Cases after exact-scope authorization and before pagination."
   @spec list_cases(map(), map(), term(), struct()) :: {:ok, map()} | {:error, term()}
