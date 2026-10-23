@@ -4,8 +4,8 @@ defmodule GroupherServer.Test.CMS.Comments.CollectionPagi do
   import Ecto.Query
 
   alias Helper.ORM.Pagi.{Page}
-  alias GroupherServer.{Pagi, Repo}
-  alias GroupherServer.CMS.Model.{ArticleLifecycle, ArticlePublic, ArticleReviewRestriction}
+  alias GroupherServer.{CMS, Pagi, Repo}
+  alias CMS.Model.{ArticleLifecycle, ArticlePublic, ArticleReviewRestriction}
   alias Pagi.Params
 
   test "published and participant cursors agree with offset and bind their collection" do

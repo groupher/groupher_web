@@ -7,8 +7,8 @@ defmodule GroupherServer.AlertBoard.Maintenance.Persist do
 
   import Ecto.Query
 
-  alias GroupherServer.Repo
-  alias GroupherServer.AlertBoard.Model.{Decision, Report}
+  alias GroupherServer.{AlertBoard, Repo}
+  alias AlertBoard.Model.{Decision, Report}
 
   @doc "Clears details from one bounded set of expired reports inside the caller's transaction."
   @spec clear_report_details_batch(DateTime.t(), pos_integer()) :: non_neg_integer()

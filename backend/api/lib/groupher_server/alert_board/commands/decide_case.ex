@@ -345,8 +345,9 @@ defmodule GroupherServer.AlertBoard.Commands.DecideCase do
     ReviewBot.supersede_in_flight_checks(case_record.target_key, case_record.scope_key)
   end
 
-  defp supersede_pending_checks(_action, _case_record, _active, _restriction_ids),
-    do: {:ok, :pass}
+  defp supersede_pending_checks(_action, _case_record, _active, _restriction_ids) do
+    {:ok, :pass}
+  end
 
   defp insert_decision(context, case_record, action, restriction_ids, reason_code, note) do
     attrs = %{

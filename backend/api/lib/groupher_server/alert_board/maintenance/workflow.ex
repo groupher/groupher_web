@@ -5,8 +5,8 @@ defmodule GroupherServer.AlertBoard.Maintenance.Workflow do
       daily retention trigger -> bounded transactions -> Persist -> optional snooze
   """
 
-  alias GroupherServer.Repo
-  alias GroupherServer.AlertBoard.{Config, Maintenance.Persist, Maintenance.Query}
+  alias GroupherServer.{AlertBoard, Repo}
+  alias AlertBoard.{Config, Maintenance.Persist, Maintenance.Query}
 
   @doc "Clears details from expired reports and returns whether another worker run is needed."
   @spec redact_expired_report_details() :: {:ok, map()} | {:error, term()}

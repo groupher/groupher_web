@@ -7,8 +7,8 @@ defmodule GroupherServer.AlertBoard.Maintenance.Query do
 
   import Ecto.Query
 
-  alias GroupherServer.Repo
-  alias GroupherServer.AlertBoard.Model.{Decision, Report}
+  alias GroupherServer.{AlertBoard, Repo}
+  alias AlertBoard.Model.{Decision, Report}
 
   @doc "Checks for report details older than the supplied cutoff."
   @spec expired_report_details?(DateTime.t()) :: boolean()
