@@ -24,6 +24,20 @@ const actionLabels = {
   RESTRICT: 'alert_board.action.restrict',
 } as const satisfies Record<ReviewCaseAction, string>
 
+const isCaseVersionConflict = (error: unknown): boolean => {
+  if (!error || typeof error !== 'object' || !('errors' in error) || !Array.isArray(error.errors)) {
+    return false
+  }
+
+  return error.errors.some((item) => {
+    if (!item || typeof item !== 'object' || !('extensions' in item)) return false
+    const extensions = item.extensions
+    if (!extensions || typeof extensions !== 'object') return false
+    const code = 'reasonCode' in extensions ? extensions.reasonCode : extensions.code
+    return String(code) === '7309'
+  })
+}
+
 export default function CaseDetail({ community, scopeKind, caseId, onChanged }: TProps) {
   const { t } = useTrans()
   const { accountRef } = useAccount()
@@ -95,6 +109,13 @@ export default function CaseDetail({ community, scopeKind, caseId, onChanged }: 
         scopeKind,
         caseId,
       ])
+      onChanged()
+    },
+    onError: async (error) => {
+      if (!isCaseVersionConflict(error)) return
+
+      commandIdRef.current = null
+      await detailQuery.refetch()
       onChanged()
     },
   })

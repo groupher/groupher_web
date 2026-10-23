@@ -7,6 +7,8 @@ const state = vi.hoisted(() => ({
   request: vi.fn(),
   activeRestrictions: [] as unknown[],
   allowedActions: ['APPROVE'],
+  queryVersion: 3,
+  nextDecisionErrorCode: null as number | null,
 }))
 
 vi.mock('~/graphql/client', () => ({ browserGraphQLRequest: state.request }))
@@ -26,6 +28,8 @@ beforeEach(() => {
   state.request.mockClear()
   state.activeRestrictions = []
   state.allowedActions = ['APPROVE']
+  state.queryVersion = 3
+  state.nextDecisionErrorCode = null
   let rejectNextDecision = true
   state.request.mockImplementation(
     async (_document: unknown, variables: Record<string, unknown>) => {
@@ -34,7 +38,7 @@ beforeEach(() => {
           reviewCase: {
             case: {
               id: 'case-1',
-              version: 3,
+              version: state.queryVersion,
               contentToken: 'token-1',
               targetKey: 'post/home/1',
               status: 'OPEN',
@@ -48,6 +52,15 @@ beforeEach(() => {
         }
       }
       if ('caseId' in variables) {
+        if (state.nextDecisionErrorCode) {
+          const error = new Error('case changed')
+          Object.assign(error, {
+            errors: [{ extensions: { code: state.nextDecisionErrorCode } }],
+          })
+          state.nextDecisionErrorCode = null
+          state.queryVersion = 4
+          throw error
+        }
         if (rejectNextDecision) {
           rejectNextDecision = false
           throw new Error('response lost after decision')
@@ -94,4 +107,14 @@ it('sends only action-compatible active restriction ids', async () => {
   const decisionCalls = state.request.mock.calls.filter((call) => 'caseId' in call[1])
   expect(decisionCalls[0][1].input.restrictionIds).toEqual([2, 4])
   expect(decisionCalls[1][1].input.restrictionIds).toEqual([1, 2, 3])
+})
+
+it('refreshes the case after another reviewer wins the versioned decision', async () => {
+  state.nextDecisionErrorCode = 7309
+  renderCaseDetail()
+
+  fireEvent.click(await screen.findByRole('button', { name: 'alert_board.action.approve' }))
+
+  await screen.findByText('4')
+  expect(state.request.mock.calls.filter((call) => 'id' in call[1])).toHaveLength(2)
 })
