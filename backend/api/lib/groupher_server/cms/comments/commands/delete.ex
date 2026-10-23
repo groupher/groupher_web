@@ -91,7 +91,6 @@ defmodule GroupherServer.CMS.Comments.Commands.Delete do
          {:ok, _} <- ORM.findby_delete(PinnedComment, %{comment_id: comment.id}),
          {:ok, _} <- Lifecycle.transition(comment.id, :deleted),
          {:ok, deleted} <- Persist.tombstone(comment, @delete_hint),
-         {:ok, _} <- CMS.ArticleStats.record_comment_change(article),
          {:ok, _} <- record_article_metric(article, command_id, :comment_deleted),
          {:ok, _invalidation} <-
            invalidate_public_comments(article, comment.thread, command_id),
