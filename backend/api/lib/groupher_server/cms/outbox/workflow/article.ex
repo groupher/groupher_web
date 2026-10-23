@@ -59,7 +59,22 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
     case event.event do
       "article.projections" -> run_projections(event)
       "article.review_changed" -> CMS.Review.Effects.deliver(event)
+      "article.visibility_changed" -> sync_visibility(event)
       _ -> purge_cache(event)
+    end
+  end
+
+  defp sync_visibility(event) do
+    with %Article{thread: thread} <- Repo.get(Article, event.resource_id),
+         community_id when is_integer(community_id) <- Map.get(event.data, "community_id"),
+         {:ok, :pass} <-
+           CMS.SearchArtiments.Indexer.sync_binding(thread, event.resource_id, community_id),
+         {:ok, _} <- purge_cache(event) do
+      {:ok, :pass}
+    else
+      nil -> {:error, ArticleErrorCat.projection_not_found()}
+      {:error, _reason} = error -> error
+      _ -> {:error, ArticleErrorCat.projection_not_found()}
     end
   end
 

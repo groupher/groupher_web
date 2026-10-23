@@ -129,6 +129,53 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
            ).visible == false
   end
 
+  test "visibility transitions remove and restore the binding-scoped search entry" do
+    {community, article_view, _attrs, _author} = mock_article(:post)
+    article = Repo.get!(Article, article_view.id)
+    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
+    search_ref = CMS.SearchArtiments.Artiment.article_key(:post, article.id, community.slug)
+
+    assert {:ok, :pass} = CMS.SearchArtiments.Indexer.upsert_article(:post, article.id)
+    assert :ets.lookup(:search_artiments_test_platform, search_ref) != []
+
+    assert {:ok, restriction} =
+             Repo.transaction(fn ->
+               with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article),
+                    {:ok, restriction} <-
+                      CMS.Articles.Lifecycle.apply_review_restriction(
+                        locked,
+                        attrs(lifecycle, "community:#{community.id}", "search-hidden")
+                      ) do
+                 restriction
+               else
+                 {:error, reason} -> Repo.rollback(reason)
+               end
+             end)
+
+    assert {:ok, :pass} =
+             CMS.SearchArtiments.Indexer.sync_binding(:post, article.id, community.id)
+
+    assert :ets.lookup(:search_artiments_test_platform, search_ref) == []
+
+    assert {:ok, {:ok, :pass}} =
+             Repo.transaction(fn ->
+               with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article) do
+                 CMS.Articles.Lifecycle.end_review_restrictions(
+                   locked,
+                   "community:#{community.id}",
+                   [restriction.id],
+                   Ecto.UUID.generate(),
+                   "search-restored"
+                 )
+               end
+             end)
+
+    assert {:ok, :pass} =
+             CMS.SearchArtiments.Indexer.sync_binding(:post, article.id, community.id)
+
+    assert :ets.lookup(:search_artiments_test_platform, search_ref) != []
+  end
+
   test "rejects a community restriction outside the Article's bindings" do
     {community, article_view, _attrs, _author} = mock_article(:post)
     article = Repo.get!(Article, article_view.id)

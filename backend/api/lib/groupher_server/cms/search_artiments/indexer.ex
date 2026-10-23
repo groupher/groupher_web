@@ -60,6 +60,23 @@ defmodule GroupherServer.CMS.SearchArtiments.Indexer do
     enqueue(:delete_article, thread, article_id)
   end
 
+  @doc "Synchronizes one binding's Article search entry after a visibility transition."
+  @spec sync_binding(Artiment.thread(), Ecto.UUID.t(), pos_integer()) :: T.done()
+  def sync_binding(thread, article_id, community_id) do
+    with %Article{thread: ^thread} = article <- Repo.get(Article, article_id),
+         %Community{slug: community_slug} <- Repo.get(Community, community_id),
+         %ArticleBinding{inner_id: inner_id, visible: visible?} <-
+           Repo.get_by(ArticleBinding, article_id: article.id, community_id: community_id) do
+      if visible? do
+        sync_visible_binding(thread, article, community_slug, inner_id)
+      else
+        delete_binding(thread, article_id, community_slug)
+      end
+    else
+      _ -> {:error, ErrorCat.search_platform("Article visibility binding not found")}
+    end
+  end
+
   @doc "Reloads one Article before projection so jobs never depend on stale structs."
   @spec upsert_article(Artiment.thread(), Ecto.UUID.t()) :: T.done()
   def upsert_article(thread, article_id) do
@@ -96,6 +113,32 @@ defmodule GroupherServer.CMS.SearchArtiments.Indexer do
 
     SearchArtiments.delete([Artiment.article_key(thread, article_id) | refs])
   end
+
+  defp sync_visible_binding(thread, article, community_slug, inner_id) do
+    case FrontDesk.article(%{
+           community: community_slug,
+           thread: thread,
+           inner_id: inner_id
+         }) do
+      {:ok, public_article} ->
+        with {:ok, artiment} <- Projection.article(thread, public_article),
+             {:ok, :pass} <- SearchArtiments.upsert([artiment]) do
+          {:ok, :pass}
+        end
+
+      {:error, ErrorCat.error_pattern(reason: :not_exist)} ->
+        delete_binding(thread, public_article_id(article), community_slug)
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  defp delete_binding(thread, article_id, community_slug) do
+    SearchArtiments.delete([Artiment.article_key(thread, article_id, community_slug)])
+  end
+
+  defp public_article_id(%Article{id: article_id}), do: article_id
 
   @doc "Reloads and partially updates the mutable ranking metrics of one public Article."
   @spec sync_article_metrics(Artiment.thread(), Ecto.UUID.t()) :: T.done()
