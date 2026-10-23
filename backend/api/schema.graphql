@@ -1145,6 +1145,12 @@ enum ReviewTargetKind {
   USER
 }
 
+enum ReviewRecheckTargetKind {
+  ARTICLE
+  COMMENT
+  DOC
+}
+
 enum ReviewCaseStatus {
   OPEN
   RESOLVED
@@ -1251,9 +1257,11 @@ input ReviewDecisionInput {
 }
 
 input ReviewRecheckTargetInput {
-  kind: ReviewTargetKind!
+  kind: ReviewRecheckTargetKind!
   article: ArticlePathInput
   comment: CommentPathInput
+  docArticleId: ID
+  docBranchId: Int
 }
 
 type ReviewConfig {

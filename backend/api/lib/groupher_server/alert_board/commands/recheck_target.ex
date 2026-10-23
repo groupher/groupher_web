@@ -27,7 +27,10 @@ defmodule GroupherServer.AlertBoard.Commands.RecheckTarget do
     ArticleRevision,
     Comment,
     CommentBody,
-    CommunityAsset
+    CommunityAsset,
+    DocBranchVersion,
+    DocLifecycle,
+    DocPublic
   }
 
   alias ReviewBot.Model.Check
@@ -87,6 +90,22 @@ defmodule GroupherServer.AlertBoard.Commands.RecheckTarget do
       {:ok, %{target_key: target_key, scope_key: scope_key, scope: scope, kind: :comment},
        target: {:comment, comment_id},
        params: %{"target_key" => target_key, "scope_key" => scope_key}}
+    end
+  end
+
+  defp prepare(
+         %{kind: :doc, id: article_id, branch_id: branch_id},
+         %{kind: :platform} = scope
+       )
+       when is_binary(article_id) and is_integer(branch_id) and branch_id > 0 do
+    with true <- Ecto.UUID.cast(article_id) != :error do
+      target_key = "doc:#{article_id}:#{branch_id}"
+
+      {:ok, %{target_key: target_key, scope_key: "platform", scope: scope, kind: :doc},
+       target: {:doc, "#{article_id}:#{branch_id}"},
+       params: %{"target_key" => target_key, "scope_key" => "platform"}}
+    else
+      _ -> {:error, AlertBoard.ErrorCat.invalid_target()}
     end
   end
 
@@ -174,6 +193,30 @@ defmodule GroupherServer.AlertBoard.Commands.RecheckTarget do
     end
   end
 
+  defp content_snapshot(%{
+         kind: :doc,
+         target: %Article{id: article_id},
+         lifecycle: %DocLifecycle{branch_id: branch_id, community_id: community_id}
+       }) do
+    with %DocPublic{branch_version_id: version_id} when not is_nil(version_id) <-
+           Repo.get_by(DocPublic, article_id: article_id, branch_id: branch_id),
+         %DocBranchVersion{revision_id: revision_id} when not is_nil(revision_id) <-
+           Repo.get(DocBranchVersion, version_id),
+         %ArticleRevision{} = revision <- Repo.get(ArticleRevision, revision_id),
+         %ArticleBodySnapshot{} = body <- Repo.get(ArticleBodySnapshot, revision.body_snapshot_id) do
+      {:ok,
+       %{
+         identity: "doc-branch-version:#{version_id}",
+         body_hash: body.body_hash,
+         title: revision.title || "",
+         body: body.plain_text || "",
+         images: article_images(revision.id)
+       }, community_id}
+    else
+      nil -> {:error, AlertBoard.ErrorCat.invalid_target()}
+    end
+  end
+
   defp content_snapshot(_target), do: {:error, AlertBoard.ErrorCat.invalid_target()}
 
   defp article_images(revision_id) do
@@ -232,6 +275,8 @@ defmodule GroupherServer.AlertBoard.Commands.RecheckTarget do
       )
     )
   end
+
+  defp community_id(%{kind: :doc}), do: nil
 
   defp community_id(_target), do: nil
 

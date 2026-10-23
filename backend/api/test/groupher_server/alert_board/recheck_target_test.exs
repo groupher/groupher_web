@@ -5,8 +5,10 @@ defmodule GroupherServer.Test.AlertBoard.RecheckTargetTest do
 
   alias GroupherServer.{AlertBoard, CMS, Repo, ReviewBot}
   alias AlertBoard.Model.{ReviewConfig, RuleSet}
-  alias CMS.Model.{Article, ArticleLifecycle}
+  alias CMS.Articles.Draft.Store
+  alias CMS.Model.{Article, ArticleLifecycle, DocBranch, DocLifecycle}
   alias ReviewBot.Model.Check
+  alias GroupherServerWeb.Schema
 
   test "rechecks the current snapshot with the latest scope config and a new generation" do
     {:ok, author} = db_insert(:user)
@@ -76,9 +78,127 @@ defmodule GroupherServer.Test.AlertBoard.RecheckTargetTest do
     assert Enum.map(checks, & &1.generation) == [1, 2, 3]
   end
 
+  test "rechecks one published Doc branch using only the platform policy" do
+    {:ok, user} = db_insert(:user)
+    {:ok, community} = db_insert(:community)
+    {:ok, author} = CMS.Articles.Persist.ensure_author_exists(user)
+    config = doc_config()
+    configure_doc_word_check(config, user)
+
+    {:ok, branch} =
+      %DocBranch{}
+      |> DocBranch.changeset(%{
+        community_id: community.id,
+        slug: "main",
+        title: "Main",
+        type: :main,
+        status: :active,
+        created_by_id: user.id
+      })
+      |> Repo.insert()
+
+    {:ok, %{article: article, draft: draft}} =
+      Store.create(
+        community,
+        :doc,
+        %{
+          title: "Rechecked Doc",
+          slug: "rechecked-doc-#{System.unique_integer([:positive])}",
+          body_bag: mock_body_bag(mock_rich_text("A safe branch body."))
+        },
+        author,
+        branch_id: branch.id
+      )
+
+    assert {:ok, _published} =
+             CMS.Articles.Publish.Doc.publish(article, branch.id, author,
+               expected_draft_version: draft.version,
+               expected_lifecycle_version: 1,
+               command_id: Ecto.UUID.generate()
+             )
+
+    lifecycle = Repo.get_by!(DocLifecycle, article_id: article.id, branch_id: branch.id)
+    reviewer = grant_platform_review_action(user)
+
+    command_id = Ecto.UUID.generate()
+
+    assert {:ok,
+            %{
+              data: %{
+                "recheckReviewTarget" => %{
+                  "commandId" => ^command_id,
+                  "checkIds" => [check_id]
+                }
+              }
+            }} =
+             Absinthe.run(
+               """
+               mutation Recheck($target: ReviewRecheckTargetInput!, $scope: ReviewScopeInput!, $commandId: ID!) {
+                 recheckReviewTarget(target: $target, scope: $scope, commandId: $commandId) {
+                   commandId
+                   checkIds
+                 }
+               }
+               """,
+               Schema,
+               variables: %{
+                 "target" => %{
+                   "kind" => "DOC",
+                   "docArticleId" => article.id,
+                   "docBranchId" => branch.id
+                 },
+                 "scope" => %{"kind" => "PLATFORM"},
+                 "commandId" => command_id
+               },
+               context: %{cur_user: reviewer}
+             )
+
+    check = Repo.get!(Check, check_id)
+
+    assert check.target_key == "doc:#{article.id}:#{branch.id}"
+    assert check.scope_key == "platform"
+    assert check.content_token == lifecycle.review_content_token
+    assert check.trigger == :manual
+    assert check.state == :completed
+    assert check.result == :pass
+  end
+
   defp config_for(community_id) do
     {:ok, configs} = AlertBoard.configs_for_target(community_id, :article)
     Enum.find(configs, &(&1.scope_key == "community:#{community_id}"))
+  end
+
+  defp doc_config do
+    {:ok, [config]} = AlertBoard.configs_for_target(nil, :doc)
+    config
+  end
+
+  defp configure_doc_word_check(config, user) do
+    {:ok, ruleset} =
+      %RuleSet{}
+      |> RuleSet.changeset(%{
+        scope_key: "platform",
+        version: 1,
+        rules: %{
+          "items" => [
+            %{
+              "id" => "blocked-term",
+              "kind" => "word",
+              "value" => "blocked-term",
+              "category" => "policy",
+              "action" => "restrict"
+            }
+          ]
+        },
+        created_by_id: user.id,
+        operation_ref: Ecto.UUID.generate(),
+        required_modalities: ["text"]
+      })
+      |> Repo.insert()
+
+    config
+    |> ReviewConfig.changeset(%{version: config.version + 1, ruleset_id: ruleset.id})
+    |> Repo.update!()
   end
 
   defp configure_word_check(config, author) do
@@ -166,6 +286,15 @@ defmodule GroupherServer.Test.AlertBoard.RecheckTargetTest do
       | cur_passport: %{
           "global" => %{},
           community_slug => %{"cms" => %{"review.decide" => true}}
+        }
+    }
+  end
+
+  defp grant_platform_review_action(user) do
+    %{
+      user
+      | cur_passport: %{
+          "global" => %{"review.platform.decide" => true}
         }
     }
   end

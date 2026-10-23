@@ -26,6 +26,12 @@ defmodule GroupherServerWeb.Schema.AlertBoard.Types do
     value(:user)
   end
 
+  enum :review_recheck_target_kind do
+    value(:article)
+    value(:comment)
+    value(:doc)
+  end
+
   enum :review_case_status do
     value(:open)
     value(:resolved)
@@ -132,9 +138,11 @@ defmodule GroupherServerWeb.Schema.AlertBoard.Types do
   end
 
   input_object :review_recheck_target_input do
-    field(:kind, non_null(:review_target_kind))
+    field(:kind, non_null(:review_recheck_target_kind))
     field(:article, :article_path_input)
     field(:comment, :comment_path_input)
+    field(:doc_article_id, :id)
+    field(:doc_branch_id, :integer)
   end
 
   object :review_config do

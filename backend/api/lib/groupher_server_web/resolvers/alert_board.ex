@@ -159,7 +159,18 @@ defmodule GroupherServerWeb.Resolvers.AlertBoard do
     end
   end
 
-  @doc "Registers a scoped manual recheck for the latest Article or Comment content."
+  @doc """
+  Registers a scoped manual recheck for the latest Article, Comment, or platform Doc content.
+
+  ## Examples
+
+      recheckReviewTarget(
+        target: %{kind: :doc, doc_article_id: article_id, doc_branch_id: branch_id},
+        scope: %{kind: :platform},
+        command_id: command_id
+      )
+      #=> {:ok, %{check_ids: ids, command_id: command_id, ...}} | {:error, reason}
+  """
   def recheck_review_target(
         _root,
         %{target: target_input, scope: scope_input, command_id: command_id},
@@ -245,6 +256,17 @@ defmodule GroupherServerWeb.Resolvers.AlertBoard do
       {:ok, %{kind: :comment, id: comment.id}}
     else
       _ -> {:error, AlertBoard.invalid_target()}
+    end
+  end
+
+  defp resolve_recheck_target(
+         %{kind: :doc, doc_article_id: article_id, doc_branch_id: branch_id},
+         _actor
+       )
+       when is_binary(article_id) and is_integer(branch_id) and branch_id > 0 do
+    case Ecto.UUID.cast(article_id) do
+      {:ok, article_id} -> {:ok, %{kind: :doc, id: article_id, branch_id: branch_id}}
+      :error -> {:error, AlertBoard.invalid_target()}
     end
   end
 
