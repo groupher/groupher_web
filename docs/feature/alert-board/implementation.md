@@ -106,6 +106,7 @@ created_by_operation_ref, applied_at, ended_at?, ended_by_operation_ref?, end_re
 三类 Lifecycle 新增 `review_content_token text?` 和 `review_epoch bigint default 0`。
 首次提交设置 token，草稿可为空。token = `sha256(canonical title/body + immutable asset versions + submitted revision/body identity)`；
 Article/Doc 使用已有 revision ID；Comment 使用当前 body identity 与 expected_version 保护的写入结果，不新增历史表。
+部署新审核链路时，新增 Lifecycle 字段的迁移先为所有已有 Article、Comment、Doc Lifecycle 写入稳定的 `legacy:<kind>:<resource-id>` 基线 token，epoch 保持 0；这让存量内容在首次编辑前也可举报并可按当前配置重检。此合成 token 只标识迁移时已有快照，下一次真实内容提交会替换为 canonical token。
 每次内容提交、人工决定和使旧检查失效的配置切换递增 epoch；Check 捕获当前 epoch。
 同事务纯自动结果应用不递增 epoch，防止平台检查误使社区检查失效。
 Article 编辑要为全部现有 binding 分别固定社区配置并登记 Check；锁定 binding 按 community_id 升序，

@@ -12,6 +12,24 @@ defmodule GroupherServer.Repo.Migrations.AddContentReviewRestrictions do
       end
     end
 
+    execute("""
+    UPDATE cms.article_lifecycles
+    SET review_content_token = 'legacy:article:' || article_id::text
+    WHERE review_content_token IS NULL
+    """)
+
+    execute("""
+    UPDATE cms.comment_lifecycles
+    SET review_content_token = 'legacy:comment:' || comment_id::text
+    WHERE review_content_token IS NULL
+    """)
+
+    execute("""
+    UPDATE cms.doc_lifecycles
+    SET review_content_token = 'legacy:doc:' || article_id::text || ':' || branch_id::text
+    WHERE review_content_token IS NULL
+    """)
+
     create_restrictions(:article_review_restrictions, :article_lifecycles)
     create_restrictions(:comment_review_restrictions, :comment_lifecycles)
     create_restrictions(:doc_review_restrictions, :doc_lifecycles)
