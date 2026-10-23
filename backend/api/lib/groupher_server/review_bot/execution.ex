@@ -324,6 +324,18 @@ defmodule GroupherServer.ReviewBot.Execution do
           not current_revision?(target.lifecycle, check) ->
             supersede(check, attempt, now)
 
+          payload_expired?(check) ->
+            with {:ok, _abandoned} <-
+                   attempt
+                   |> Attempt.changeset(%{
+                     state: :abandoned,
+                     finished_at: now,
+                     error_code: "payload_expired"
+                   })
+                   |> Repo.update() do
+              fail_expired_payload(check, target)
+            end
+
           true ->
             with {:ok, _abandoned} <-
                    attempt

@@ -246,6 +246,34 @@ defmodule GroupherServer.Test.ReviewBot.ExecutionTest do
     assert {:ok, 0} = ReviewBot.recover_stale_checks()
   end
 
+  test "a retry never sends an expired recovered payload to the provider" do
+    {community, article, check} = running_ai_check(DateTime.utc_now(:second))
+
+    check
+    |> Check.changeset(%{
+      payload_expires_at: DateTime.add(DateTime.utc_now(:second), -1, :second)
+    })
+    |> Repo.update!()
+
+    assert {:ok, :pass} = ReviewBot.execute_check(check.id, 2, 3)
+
+    expired = Repo.get!(Check, check.id)
+    assert expired.state == :failed
+    assert expired.result == :review
+    assert expired.payload == nil
+    assert expired.payload_expires_at == nil
+
+    abandoned_attempt = Repo.get_by!(Attempt, check_id: check.id, number: 1)
+    assert abandoned_attempt.state == :abandoned
+    assert abandoned_attempt.error_code == "payload_expired"
+    assert Repo.get_by(Attempt, check_id: check.id, number: 2) == nil
+
+    assert Repo.get_by!(Case,
+             target_key: "article:#{article.id}",
+             scope_key: "community:#{community.id}"
+           ).status == :open
+  end
+
   test "the scheduled recovery closes an orphaned AI wait with a human-review Case" do
     started_at = DateTime.add(DateTime.utc_now(:second), -300, :second)
     {community, article, check} = running_ai_check(started_at)
