@@ -48,6 +48,29 @@ defmodule GroupherServer.Test.CMS.Gate.G1SurfaceConsistencyTest do
 
     assert {:ok, _} = CMS.FrontDesk.article(path, author)
 
+    {:ok, community_reader_user} = db_insert(:user)
+
+    community_reader = %{
+      community_reader_user
+      | cur_passport: %{
+          "global" => %{},
+          community.slug => %{"cms" => %{"review.read" => true}}
+        }
+    }
+
+    assert {:ok, reviewer_article} = CMS.FrontDesk.article(path, community_reader)
+    assert reviewer_article.article_id == article.id
+
+    {:ok, platform_reader_user} = db_insert(:user)
+
+    platform_reader = %{
+      platform_reader_user
+      | cur_passport: %{"global" => %{"review.platform.read" => true}}
+    }
+
+    assert {:error, %ErrorCat.Error{reason: :article_not_found}} =
+             CMS.FrontDesk.article(path, platform_reader)
+
     assert {:ok, %{entries: [entry], page_info: %{total_count: 1}}} =
              CMS.Articles.Pagination.page(:post, %{community: community.slug}, pagi, author)
 

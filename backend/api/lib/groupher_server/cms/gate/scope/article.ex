@@ -497,7 +497,7 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
 
   defp public_head_scope(query, %ArticleContext{}, %User{id: user_id} = actor) do
     author_ids = from(author in Author, where: author.user_id == ^user_id, select: author.id)
-    %{platform?: platform_read?} = ReviewRead.grants(actor)
+    %{platform?: platform_read?, community_slugs: community_slugs} = ReviewRead.grants(actor)
 
     from(article in query,
       join: public in ArticlePublic,
@@ -505,12 +505,17 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
       on: public.article_id == article.id,
       where:
         public.visible == true or
-          ((article.author_id in subquery(author_ids) or ^platform_read?) and
+          ((article.author_id in subquery(author_ids) or ^platform_read? or
+              as(:gate_community).slug in ^community_slugs) and
              exists(
                from(restriction in ArticleReviewRestriction,
                  where:
                    restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                     restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+                     is_nil(restriction.ended_at) and
+                     restriction.scope_key in [
+                       "platform",
+                       fragment("'community:' || ?::text", parent_as(:gate_community).id)
+                     ],
                  select: 1
                )
              ))
