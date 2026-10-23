@@ -1,5 +1,9 @@
 defmodule GroupherServer.ReviewBot.Maintenance.Workflow do
-  @moduledoc false
+  @moduledoc """
+  Drains bounded ReviewBot retention batches.
+
+      daily retention trigger -> delete expired Attempts -> redact or prune old Checks
+  """
 
   import Ecto.Query
   alias GroupherServer.{AlertBoard, CMS, Repo, ReviewBot}

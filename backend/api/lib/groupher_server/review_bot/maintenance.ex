@@ -1,6 +1,8 @@
 defmodule GroupherServer.ReviewBot.Maintenance do
   @moduledoc """
   Removes expired provider-call records and redacts old Check payload metadata.
+
+      ReviewBot facade -> Maintenance.Workflow -> bounded Attempt and Check batches
   """
 
   alias GroupherServer.ReviewBot
