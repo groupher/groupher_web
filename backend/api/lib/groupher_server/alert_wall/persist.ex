@@ -290,17 +290,21 @@ defmodule GroupherServer.AlertWall.Persist do
   end
 
   defp validate_transition(%Item{status: :open, version: version}, :resolve, nil)
-       when is_integer(version),
-       do: {:ok, :pass}
+       when is_integer(version) do
+    {:ok, :pass}
+  end
 
-  defp validate_transition(%Item{status: :open, version: expected}, :resolve, expected),
-    do: {:ok, :pass}
+  defp validate_transition(%Item{status: :open, version: expected}, :resolve, expected) do
+    {:ok, :pass}
+  end
 
-  defp validate_transition(%Item{status: :open}, :supersede, _expected_version),
-    do: {:ok, :pass}
+  defp validate_transition(%Item{status: :open}, :supersede, _expected_version) do
+    {:ok, :pass}
+  end
 
-  defp validate_transition(_item, _action, _expected_version),
-    do: {:error, AlertWall.ErrorCat.invalid_item()}
+  defp validate_transition(_item, _action, _expected_version) do
+    {:error, AlertWall.ErrorCat.invalid_item()}
+  end
 
   defp update_item_status(%Item{} = item, :resolve, resolution) do
     if item.status == :open do
@@ -415,8 +419,9 @@ defmodule GroupherServer.AlertWall.Persist do
   defp review_target_id(%ArtimentReview{target_type: :article, article_id: id}), do: id
   defp review_target_id(%ArtimentReview{target_type: :comment, comment_id: id}), do: to_string(id)
 
-  defp review_target_id(%ArtimentReview{target_type: :doc, article_id: id, branch_id: branch_id}),
-    do: "#{id}:#{branch_id}"
+  defp review_target_id(%ArtimentReview{target_type: :doc, article_id: id, branch_id: branch_id}) do
+    "#{id}:#{branch_id}"
+  end
 
   defp current_item_query(attrs) do
     query =

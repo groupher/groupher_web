@@ -232,8 +232,9 @@ defmodule GroupherServer.CMS.Review.Commands.Recheck do
   defp request_target_id(%{kind: :article, target: article}), do: article.id
   defp request_target_id(%{kind: :comment, target: comment}), do: to_string(comment.id)
 
-  defp request_target_id(%{kind: :doc, target: article, case_attrs: %{branch_id: branch_id}}),
-    do: "#{article.id}:#{branch_id}"
+  defp request_target_id(%{kind: :doc, target: article, case_attrs: %{branch_id: branch_id}}) do
+    "#{article.id}:#{branch_id}"
+  end
 
   defp parse_scope("platform"), do: {:ok, nil}
 
@@ -257,8 +258,9 @@ defmodule GroupherServer.CMS.Review.Commands.Recheck do
      }}
   end
 
-  defp present_result(_confirmation, _command_id),
-    do: {:error, CMS.ErrorCat.invalid_review_block()}
+  defp present_result(_confirmation, _command_id) do
+    {:error, CMS.ErrorCat.invalid_review_block()}
+  end
 
   defp target_type("article"), do: :article
   defp target_type("comment"), do: :comment

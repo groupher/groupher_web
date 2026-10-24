@@ -9,9 +9,8 @@ defmodule GroupherServerWeb.Resolvers.AlertWall do
           -> AlertWall query or Receipt-backed command
   """
 
-  alias GroupherServer.CMS
-  alias GroupherServer.{AlertWall, FrontDesk}
-  alias GroupherServer.Accounts.Model.User
+  alias GroupherServer.{Accounts, AlertWall, CMS, FrontDesk}
+  alias Accounts.Model.User
   alias CMS.Model.{Article, Comment, Community}
 
   def alert_items(_parent, %{scope: %{type: :platform}} = args, %{context: %{cur_user: actor}}) do

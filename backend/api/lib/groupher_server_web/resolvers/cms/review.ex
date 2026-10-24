@@ -83,15 +83,18 @@ defmodule GroupherServerWeb.Resolvers.CMS.Review do
     {:error, CMS.passport_error_cat_permission_denied()}
   end
 
-  defp recheck_target(%{type: :article, article_id: id}) when is_binary(id),
-    do: {:ok, "article:#{id}", :article, id}
+  defp recheck_target(%{type: :article, article_id: id}) when is_binary(id) do
+    {:ok, "article:#{id}", :article, id}
+  end
 
-  defp recheck_target(%{type: :comment, comment_id: id}) when is_integer(id),
-    do: {:ok, "comment:#{id}", :comment, to_string(id)}
+  defp recheck_target(%{type: :comment, comment_id: id}) when is_integer(id) do
+    {:ok, "comment:#{id}", :comment, to_string(id)}
+  end
 
   defp recheck_target(%{type: :doc, article_id: id, branch_id: branch_id})
-       when is_binary(id) and is_integer(branch_id),
-       do: {:ok, "doc:#{id}:#{branch_id}", :doc, "#{id}:#{branch_id}"}
+       when is_binary(id) and is_integer(branch_id) do
+    {:ok, "doc:#{id}:#{branch_id}", :doc, "#{id}:#{branch_id}"}
+  end
 
   defp recheck_target(_attrs), do: {:error, CMS.invalid_review_block_error()}
 
