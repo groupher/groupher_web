@@ -11,7 +11,7 @@ defmodule GroupherServer.CMS.Review.Media do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Model.CommunityAsset
+  alias CMS.Model.{ArticleAssetRef, CommunityAsset}
 
   @max_image_bytes 10 * 1024 * 1024
   @read_ttl_seconds 120
@@ -57,6 +57,25 @@ defmodule GroupherServer.CMS.Review.Media do
   end
 
   def comment_images(_body_json, _community_id), do: []
+
+  @doc "Returns immutable image identities attached to one published Article revision."
+  def article_images(revision_id) when is_binary(revision_id) do
+    from(ref in ArticleAssetRef,
+      join: asset in CommunityAsset,
+      on: asset.id == ref.asset_id,
+      where:
+        ref.revision_id == ^revision_id and ref.usage in [:inline, :cover, :cover_dark] and
+          asset.status == :active and asset.asset_type == :image,
+      order_by: [asc: ref.position, asc: ref.id],
+      select: %{
+        asset_id: ref.asset_id,
+        immutable_version: fragment("COALESCE(?, ?)", asset.content_hash, asset.url_hash)
+      }
+    )
+    |> Repo.all()
+  end
+
+  def article_images(_revision_id), do: []
 
   @doc """
   Attaches ephemeral signed read URLs to persisted image identities immediately before a provider call.
@@ -125,8 +144,7 @@ defmodule GroupherServer.CMS.Review.Media do
             String.trim_trailing(CMS.Assets.Capability.public_endpoint(), "/") <>
               "/review/" <> token
 
-          {:ok,
-           %{"asset_id" => asset.id, "immutable_version" => version, "signed_read_url" => url}}
+          {:ok, %{asset_id: asset.id, immutable_version: version, signed_read_url: url}}
         else
           {:error, GroupherServer.AI.unsupported_media_error()}
         end

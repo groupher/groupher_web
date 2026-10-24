@@ -20,19 +20,21 @@ beforeEach(() => {
       }
 
       return {
-        myReports: [
-          {
-            id: 'report-1',
-            targetType: 'COMMENT',
-            targetId: '44',
-            communityId: '7',
-            itemId: '1',
-            reportType: 'SPAM',
-            details: 'Hidden after report',
-            withdrawnAt: state.active ? null : '2026-10-23T00:00:00Z',
-            insertedAt: '2026-10-22T00:00:00Z',
-          },
-        ],
+        myReports: {
+          entries: [
+            {
+              id: 'report-1',
+              targetType: 'COMMENT',
+              targetId: '44',
+              communityId: '7',
+              itemId: '1',
+              reportType: 'SPAM',
+              details: 'Hidden after report',
+              withdrawnAt: state.active ? null : '2026-10-23T00:00:00Z',
+              insertedAt: '2026-10-22T00:00:00Z',
+            },
+          ],
+        },
       }
     },
   )
@@ -57,5 +59,5 @@ it('withdraws a report from the account list without loading its target', async 
     ).not.toBeInTheDocument(),
   )
   expect(state.request.mock.calls.some((call) => 'reportId' in call[1])).toBe(true)
-  expect(state.request.mock.calls.some((call) => 'pagi' in call[1])).toBe(false)
+  expect(state.request.mock.calls.some((call) => 'pagi' in call[1])).toBe(true)
 })

@@ -15,19 +15,19 @@ defmodule GroupherServer.AlertWall do
   defdelegate invalid_report_error(), to: GroupherServer.AlertWall.ErrorCat, as: :invalid_report
 
   @doc "Lists open items visible to a scoped reviewer."
-  defdelegate list_items(scope, actor), to: Query
+  defdelegate list_items(scope, filter, actor, pagi \\ nil), to: Query
 
   @doc "Loads one reviewer-visible item."
   defdelegate item(item_id, actor), to: Query
 
   @doc "Lists the current user's report history."
-  defdelegate my_reports(actor), to: Query
+  defdelegate my_reports(actor, filter, pagi \\ nil), to: Query
 
   @doc "Counts active reports authored by an account."
   defdelegate reported_count(user_id), to: Query
 
   @doc "Runs an authorized, Receipt-backed resolution of one Wall item."
-  defdelegate resolve_item(item_id, resolution, actor, command_id),
+  defdelegate resolve_item(item_id, resolution, expected_version, actor, command_id),
     to: GroupherServer.AlertWall.Commands.Resolve,
     as: :execute
 
@@ -64,6 +64,10 @@ defmodule GroupherServer.AlertWall do
 
   @doc "Marks open items for a permanently deleted CMS target while retaining their history."
   defdelegate mark_target_deleted_in_transaction(target_type, target_id, operation_ref),
+    to: Persist
+
+  @doc "Tombstones open Accounts-owned user items when their account target is removed."
+  defdelegate mark_account_target_deleted_in_transaction(target_type, target_id, operation_ref),
     to: Persist
 
   @doc "Resolves an open CMS item sourced from one review request."

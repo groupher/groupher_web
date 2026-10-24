@@ -419,10 +419,11 @@ defmodule GroupherServer.CMS.Review.Requests do
   end
 
   defp pending_for_human?(%ArtimentReview{
-         policy_snapshot: %{"review_mode" => "human_first", "trigger" => "publish"},
+         policy_snapshot: %{"review_mode" => "human_first", "trigger" => trigger},
          result: %{"status" => "clear"},
          applied_at: applied_at
-       }) do
+       })
+       when trigger in ["publish", "binding"] do
     not is_nil(applied_at)
   end
 

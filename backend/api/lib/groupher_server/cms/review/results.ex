@@ -150,7 +150,7 @@ defmodule GroupherServer.CMS.Review.Results do
 
   defp maybe_apply_restriction(request, context, %{"status" => "clear"}) do
     if request.policy_snapshot["review_mode"] == "human_first" and
-         request.policy_snapshot["trigger"] == "publish" do
+         request.policy_snapshot["trigger"] in ["publish", "binding"] do
       restriction(request, context, :awaiting_human)
     else
       {:ok, :pass}

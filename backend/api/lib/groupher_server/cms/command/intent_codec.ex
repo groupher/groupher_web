@@ -98,8 +98,24 @@ defmodule GroupherServer.CMS.Command.IntentCodec do
          "scope_key" => :raw,
          "action" => :raw
        }},
-    alert_wall_resolve_item: {:fields, %{"resolution" => :digest}},
-    alert_wall_submit_report: {:fields, %{"report_type" => :raw, "details" => :digest}},
+    cms_review_recheck: {:fields, %{"scope_key" => :raw}},
+    review_bot_update_config:
+      {:fields,
+       %{
+         "scope" => :raw,
+         "subject_type" => :raw,
+         "expected_version" => :raw,
+         "attrs" => :digest_each
+       }},
+    alert_wall_resolve_item: {:fields, %{"resolution" => :digest, "expected_version" => :raw}},
+    alert_wall_submit_report:
+      {:fields,
+       %{
+         "report_type" => :raw,
+         "details" => :digest,
+         "community_id" => :raw,
+         "subject_ref" => :raw
+       }},
     alert_wall_withdraw_report: :empty,
     community_create: :digest_each,
     community_update: :digest_each,

@@ -18,8 +18,10 @@ export default function MyReportsDialog({ accountRef, onClose }: TProps) {
   const reports = useQuery({
     queryKey: viewerQueryKeys.myReports(accountRef || 'anonymous', 1),
     queryFn: async () => {
-      const response = await browserGraphQLRequest(myReports, {})
-      return response.myReports
+      const response = await browserGraphQLRequest(myReports, {
+        pagi: { offset: { page: 1, size: 50 } },
+      })
+      return response.myReports.entries
     },
     enabled: Boolean(accountRef),
   })

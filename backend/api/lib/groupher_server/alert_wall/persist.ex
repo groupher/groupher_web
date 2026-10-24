@@ -7,8 +7,9 @@ defmodule GroupherServer.AlertWall.Persist do
 
   import Ecto.Query
 
-  alias GroupherServer.{AlertWall, Repo}
+  alias GroupherServer.{AlertWall, CMS, Repo}
   alias AlertWall.Model.{Action, Item, UserReport}
+  alias CMS.Model.ArtimentReview
 
   @report_types ~w(SPAM HARASSMENT ILLEGAL_CONTENT IMPERSONATION OTHER)
 
@@ -46,6 +47,12 @@ defmodule GroupherServer.AlertWall.Persist do
   def resolve_in_transaction(item_id, resolution, operation_ref, actor)
       when is_integer(item_id) and is_binary(resolution) and is_binary(operation_ref) do
     transition(item_id, :resolve, resolution, operation_ref, actor)
+  end
+
+  def resolve_in_transaction(item_id, resolution, operation_ref, actor, expected_version)
+      when is_integer(item_id) and is_binary(resolution) and is_binary(operation_ref) and
+             is_integer(expected_version) and expected_version > 0 do
+    transition(item_id, :resolve, resolution, operation_ref, actor, :human, expected_version)
   end
 
   @doc "Supersedes an item whose owner says its subject is no longer current."
@@ -148,15 +155,7 @@ defmodule GroupherServer.AlertWall.Persist do
   def supersede_ai_source_in_transaction(request_id, operation_ref)
       when is_binary(request_id) and is_binary(operation_ref) do
     with {:ok, :pass} <- require_transaction(),
-         items <-
-           Repo.all(
-             from(item in Item,
-               where:
-                 item.owner == :cms and item.ai_source_ref == ^request_id and
-                   item.status == :open,
-               lock: "FOR UPDATE"
-             )
-           ),
+         items <- items_for_review_request(request_id),
          {:ok, :pass} <- supersede_items(items, operation_ref) do
       {:ok, :pass}
     end
@@ -179,6 +178,32 @@ defmodule GroupherServer.AlertWall.Persist do
 
   def mark_target_deleted_in_transaction(_target_type, _target_id, _operation_ref) do
     {:error, AlertWall.ErrorCat.invalid_item()}
+  end
+
+  @doc "Tombstones open Accounts-owned user items when an account target is removed."
+  def mark_account_target_deleted_in_transaction(:user, target_id, operation_ref)
+      when is_binary(target_id) and is_binary(operation_ref) do
+    with {:ok, :pass} <- require_transaction(),
+         items <- deleted_account_target_items(target_id),
+         {:ok, :pass} <- supersede_deleted_targets(items, operation_ref, :accounts) do
+      {:ok, :pass}
+    end
+  end
+
+  def mark_account_target_deleted_in_transaction(_target_type, _target_id, _operation_ref) do
+    {:error, AlertWall.ErrorCat.invalid_item()}
+  end
+
+  defp deleted_account_target_items(target_id) do
+    Repo.all(
+      from(item in Item,
+        where:
+          item.owner == :accounts and item.target_type == :user and item.target_id == ^target_id and
+            item.status == :open,
+        order_by: [asc: item.id],
+        lock: "FOR UPDATE"
+      )
+    )
   end
 
   defp deleted_target_items(:doc, target_id) do
@@ -214,16 +239,7 @@ defmodule GroupherServer.AlertWall.Persist do
   def resolve_ai_source_in_transaction(request_id, resolution, operation_ref)
       when is_binary(request_id) and is_binary(resolution) and is_binary(operation_ref) do
     with {:ok, :pass} <- require_transaction(),
-         items <-
-           Repo.all(
-             from(item in Item,
-               where:
-                 item.owner == :cms and item.ai_source_ref == ^request_id and
-                   item.status == :open,
-               order_by: [asc: item.id],
-               lock: "FOR UPDATE"
-             )
-           ),
+         items <- items_for_review_request(request_id),
          {:ok, :pass} <- resolve_items(items, resolution, operation_ref) do
       {:ok, :pass}
     end
@@ -233,11 +249,26 @@ defmodule GroupherServer.AlertWall.Persist do
     {:error, AlertWall.ErrorCat.invalid_item()}
   end
 
-  defp transition(item_id, action, resolution, operation_ref, actor, source \\ :human) do
+  defp transition(
+         item_id,
+         action,
+         resolution,
+         operation_ref,
+         actor,
+         source \\ :human,
+         expected_version \\ nil
+       ) do
     with {:ok, :pass} <- require_transaction(),
          %Item{} = item <- lock_item(item_id),
-         digest <- digest(%{item_id: item_id, action: action, resolution: resolution}),
+         digest <-
+           digest(%{
+             item_id: item_id,
+             action: action,
+             resolution: resolution,
+             expected_version: expected_version
+           }),
          {:ok, :new} <- prior_action(action, operation_ref, digest),
+         {:ok, :pass} <- validate_transition(item, action, expected_version),
          {:ok, updated} <- update_item_status(item, action, resolution),
          {:ok, :pass} <- update_report_status(updated, action, resolution),
          {:ok, _record} <-
@@ -258,21 +289,42 @@ defmodule GroupherServer.AlertWall.Persist do
     end
   end
 
+  defp validate_transition(%Item{status: :open, version: version}, :resolve, nil)
+       when is_integer(version),
+       do: {:ok, :pass}
+
+  defp validate_transition(%Item{status: :open, version: expected}, :resolve, expected),
+    do: {:ok, :pass}
+
+  defp validate_transition(%Item{status: :open}, :supersede, _expected_version),
+    do: {:ok, :pass}
+
+  defp validate_transition(_item, _action, _expected_version),
+    do: {:error, AlertWall.ErrorCat.invalid_item()}
+
   defp update_item_status(%Item{} = item, :resolve, resolution) do
-    item
-    |> Item.changeset(%{
-      status: :resolved,
-      resolved_at: DateTime.utc_now(:second),
-      resolution: resolution,
-      version: item.version + 1
-    })
-    |> Repo.update()
+    if item.status == :open do
+      item
+      |> Item.changeset(%{
+        status: :resolved,
+        resolved_at: DateTime.utc_now(:second),
+        resolution: resolution,
+        version: item.version + 1
+      })
+      |> Repo.update()
+    else
+      {:error, AlertWall.ErrorCat.invalid_item()}
+    end
   end
 
   defp update_item_status(%Item{} = item, :supersede, _resolution) do
-    item
-    |> Item.changeset(%{status: :superseded, version: item.version + 1})
-    |> Repo.update()
+    if item.status == :open do
+      item
+      |> Item.changeset(%{status: :superseded, version: item.version + 1})
+      |> Repo.update()
+    else
+      {:error, AlertWall.ErrorCat.invalid_item()}
+    end
   end
 
   defp update_report_status(%Item{} = item, :resolve, resolution) do
@@ -323,9 +375,48 @@ defmodule GroupherServer.AlertWall.Persist do
           ])
           |> Map.merge(%{status: :open, version: 1, opened_at: DateTime.utc_now(:second)})
 
-        Repo.insert(Item.changeset(%Item{}, item_attrs))
+        case Repo.insert(Item.changeset(%Item{}, item_attrs), on_conflict: :nothing) do
+          {:ok, %Item{id: id} = item} when not is_nil(id) ->
+            {:ok, item}
+
+          {:ok, _item} ->
+            case Repo.one(query) do
+              %Item{} = item -> {:ok, item}
+              nil -> {:error, AlertWall.ErrorCat.invalid_item()}
+            end
+
+          {:error, _reason} = error ->
+            error
+        end
     end
   end
+
+  defp items_for_review_request(request_id) do
+    case Repo.get(ArtimentReview, request_id) do
+      %ArtimentReview{} = request ->
+        target_id = review_target_id(request)
+
+        Repo.all(
+          from(item in Item,
+            where:
+              item.owner == :cms and item.target_type == ^request.target_type and
+                item.target_id == ^target_id and item.subject_ref == ^request.subject_ref and
+                item.status == :open,
+            order_by: [asc: item.id],
+            lock: "FOR UPDATE"
+          )
+        )
+
+      nil ->
+        []
+    end
+  end
+
+  defp review_target_id(%ArtimentReview{target_type: :article, article_id: id}), do: id
+  defp review_target_id(%ArtimentReview{target_type: :comment, comment_id: id}), do: to_string(id)
+
+  defp review_target_id(%ArtimentReview{target_type: :doc, article_id: id, branch_id: branch_id}),
+    do: "#{id}:#{branch_id}"
 
   defp current_item_query(attrs) do
     query =
@@ -553,7 +644,7 @@ defmodule GroupherServer.AlertWall.Persist do
     end)
   end
 
-  defp supersede_deleted_targets(items, operation_ref) do
+  defp supersede_deleted_targets(items, operation_ref, source \\ :cms) do
     Enum.reduce_while(items, {:ok, :pass}, fn item, {:ok, :pass} ->
       item_operation_ref = item_operation_ref(operation_ref, item.id)
 
@@ -574,7 +665,7 @@ defmodule GroupherServer.AlertWall.Persist do
              record_action(
                updated,
                :supersede,
-               :cms,
+               source,
                nil,
                item_operation_ref,
                request_digest,

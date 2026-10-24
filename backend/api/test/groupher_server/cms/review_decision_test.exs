@@ -4,7 +4,7 @@ defmodule GroupherServer.Test.CMS.ReviewDecisionTest do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Model.ArticleReviewBlock
+  alias CMS.Model.{ArticleReviewBlock, ArtimentReview}
 
   test "human deny and release run as receipt-backed CMS decisions" do
     {community, article, _attrs, _author} = mock_article(:post)
@@ -20,6 +20,28 @@ defmodule GroupherServer.Test.CMS.ReviewDecisionTest do
 
     target_key = "article:#{article.id}"
     scope_key = "community:#{community.id}"
+
+    assert {:error, _reason} =
+             CMS.decide_review_target(
+               target_key,
+               scope_key,
+               :approve,
+               reviewer,
+               Ecto.UUID.generate()
+             )
+
+    now = DateTime.utc_now(:second)
+
+    Repo.update_all(
+      from(request in ArtimentReview,
+        where: request.article_id == ^article.id and is_nil(request.outdated_at)
+      ),
+      set: [
+        state: :completed,
+        result: %{"status" => "clear", "sus_notes" => [], "summary" => ""},
+        applied_at: now
+      ]
+    )
 
     assert {:ok, _result} =
              CMS.decide_review_target(
@@ -58,5 +80,31 @@ defmodule GroupherServer.Test.CMS.ReviewDecisionTest do
              ),
              :count
            ) == 0
+  end
+
+  test "recheck registers a new current request through the CMS Receipt command" do
+    {community, article, _attrs, _author} = mock_article(:post)
+    {:ok, reviewer} = db_insert(:user)
+
+    reviewer = %{
+      reviewer
+      | cur_passport: %{
+          "global" => %{},
+          community.slug => %{"cms" => %{"review.decide" => true}}
+        }
+    }
+
+    assert {:ok, result} =
+             CMS.recheck_review_target(
+               "article:#{article.id}",
+               "community:#{community.id}",
+               reviewer,
+               Ecto.UUID.generate()
+             )
+
+    assert result.action == "recheck"
+    assert result.target_type == :article
+    assert result.target_id == article.id
+    assert result.request_count >= 1
   end
 end

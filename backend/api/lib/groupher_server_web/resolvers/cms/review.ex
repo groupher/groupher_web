@@ -60,6 +60,55 @@ defmodule GroupherServerWeb.Resolvers.CMS.Review do
     {:error, CMS.passport_error_cat_permission_denied()}
   end
 
+  def recheck_content(
+        _parent,
+        %{target: target, scope: scope, command_id: command_id},
+        %{context: %{cur_user: actor}}
+      ) do
+    with {:ok, attrs} <- resolve_target(target, actor),
+         {:ok, target_key, target_type, target_id} <- recheck_target(attrs),
+         {:ok, scope_key} <- recheck_scope(scope, attrs),
+         {:ok, _result} <- CMS.recheck_review_target(target_key, scope_key, actor, command_id) do
+      {:ok,
+       %{
+         command_id: command_id,
+         target_type: target_type,
+         target_id: target_id,
+         action: "recheck"
+       }}
+    end
+  end
+
+  def recheck_content(_parent, _args, _resolution) do
+    {:error, CMS.passport_error_cat_permission_denied()}
+  end
+
+  defp recheck_target(%{type: :article, article_id: id}) when is_binary(id),
+    do: {:ok, "article:#{id}", :article, id}
+
+  defp recheck_target(%{type: :comment, comment_id: id}) when is_integer(id),
+    do: {:ok, "comment:#{id}", :comment, to_string(id)}
+
+  defp recheck_target(%{type: :doc, article_id: id, branch_id: branch_id})
+       when is_binary(id) and is_integer(branch_id),
+       do: {:ok, "doc:#{id}:#{branch_id}", :doc, "#{id}:#{branch_id}"}
+
+  defp recheck_target(_attrs), do: {:error, CMS.invalid_review_block_error()}
+
+  defp recheck_scope(%{type: :platform}, %{type: :doc}), do: {:ok, "platform"}
+  defp recheck_scope(%{type: :platform}, _attrs), do: {:ok, "platform"}
+
+  defp recheck_scope(%{type: :community, community: slug}, attrs) when is_binary(slug) do
+    with {:ok, %{id: id}} <- FrontDesk.community(slug, mode: :internal),
+         true <- is_nil(Map.get(attrs, :community_id)) or Map.get(attrs, :community_id) == id do
+      {:ok, "community:#{id}"}
+    else
+      _ -> {:error, CMS.invalid_review_block_error()}
+    end
+  end
+
+  defp recheck_scope(_scope, _attrs), do: {:error, CMS.invalid_review_block_error()}
+
   defp resolve_scope(%{type: :platform}) do
     {:ok, %{type: :platform}, %{type: :article, article_id: nil, community_id: nil},
      "review.platform.read", %{}}
@@ -171,6 +220,21 @@ defmodule GroupherServerWeb.Resolvers.CMS.Review do
     if expected_type == :comment do
       scope_key = if is_nil(community_id), do: "platform", else: "community:#{community_id}"
       {:ok, "comment:#{id}", scope_key, :comment, id}
+    else
+      {:error, CMS.invalid_review_block_error()}
+    end
+  end
+
+  defp decision_target(
+         field_name,
+         %{type: :doc, article_id: id, branch_id: branch_id}
+       )
+       when is_binary(id) and is_integer(branch_id) do
+    expected_type =
+      field_name |> Atom.to_string() |> String.split("_") |> List.last() |> String.to_atom()
+
+    if expected_type == :doc do
+      {:ok, "doc:#{id}:#{branch_id}", "platform", :doc, "#{id}:#{branch_id}"}
     else
       {:error, CMS.invalid_review_block_error()}
     end

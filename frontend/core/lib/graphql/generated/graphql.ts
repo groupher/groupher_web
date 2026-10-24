@@ -30,6 +30,7 @@ export type AlertReportTargetInput = {
   comment?: CommentPathInput | null | undefined
   docBranchId?: number | null | undefined
   type: AlertTargetType
+  userId?: string | number | null | undefined
 }
 
 export type AlertTargetType = 'ARTICLE' | 'COMMENT' | 'DOC' | 'USER'
@@ -4326,49 +4327,63 @@ export type AboutSimpleQueryQuery = { post: { innerId: string | null } }
 
 export type AlertItemsQueryVariables = Exact<{
   scope: ReviewBotScopeInput
+  pagi?: PagiInput | null | undefined
 }>
 
 export type AlertItemsQuery = {
-  alertItems: Array<{
-    id: string
-    owner: AlertItemOwner
-    targetType: AlertTargetType
-    targetId: string
-    communityId: string | null
-    status: AlertItemStatus
-    summary: string
-    reportCount: number
-    version: number
-    openedAt: string
-    susNotes: Array<{ type: string; evidence: string; explanation: string }>
-  }>
+  alertItems: {
+    entries: Array<{
+      id: string
+      owner: AlertItemOwner
+      targetType: AlertTargetType
+      targetId: string
+      communityId: string | null
+      status: AlertItemStatus
+      summary: string
+      reportCount: number
+      version: number
+      openedAt: string
+      susNotes: Array<{ type: string; evidence: string; explanation: string }>
+    }>
+    pageInfo:
+      | { hasPreviousPage: boolean; hasNextPage: boolean }
+      | { totalCount: number; totalPages: number; hasPreviousPage: boolean; hasNextPage: boolean }
+  }
 }
 
 export type ResolveAlertItemMutationVariables = Exact<{
   id: string | number
   resolution: string
+  expectedVersion: number
   commandId: string | number
 }>
 
 export type ResolveAlertItemMutation = { resolveAlertItem: { itemId: string; resolution: string } }
 
-export type MyReportsQueryVariables = Exact<{ [key: string]: never }>
+export type MyReportsQueryVariables = Exact<{
+  pagi?: PagiInput | null | undefined
+}>
 
 export type MyReportsQuery = {
-  myReports: Array<{
-    id: string
-    targetType: AlertTargetType
-    targetId: string
-    communityId: string | null
-    itemId: string
-    reportType: string
-    details: string | null
-    withdrawnAt: string | null
-    outdatedAt: string | null
-    resolvedAt: string | null
-    resolution: string | null
-    insertedAt: string
-  }>
+  myReports: {
+    entries: Array<{
+      id: string
+      targetType: AlertTargetType
+      targetId: string
+      communityId: string | null
+      itemId: string
+      reportType: string
+      details: string | null
+      withdrawnAt: string | null
+      outdatedAt: string | null
+      resolvedAt: string | null
+      resolution: string | null
+      insertedAt: string
+    }>
+    pageInfo:
+      | { hasPreviousPage: boolean; hasNextPage: boolean }
+      | { totalCount: number; totalPages: number; hasPreviousPage: boolean; hasNextPage: boolean }
+  }
 }
 
 export type SubmitReportMutationVariables = Exact<{
@@ -21544,6 +21559,11 @@ export const AlertItemsDocument = {
             type: { kind: 'NamedType', name: { kind: 'Name', value: 'ReviewBotScopeInput' } },
           },
         },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'pagi' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'PagiInput' } },
+        },
       ],
       selectionSet: {
         kind: 'SelectionSet',
@@ -21557,32 +21577,85 @@ export const AlertItemsDocument = {
                 name: { kind: 'Name', value: 'scope' },
                 value: { kind: 'Variable', name: { kind: 'Name', value: 'scope' } },
               },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'pagi' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'pagi' } },
+              },
             ],
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'owner' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'targetType' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'targetId' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'communityId' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
                 {
                   kind: 'Field',
-                  name: { kind: 'Name', value: 'susNotes' },
+                  name: { kind: 'Name', value: 'entries' },
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'evidence' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'explanation' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'owner' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'targetType' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'targetId' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'communityId' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'susNotes' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'evidence' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'explanation' } },
+                          ],
+                        },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'summary' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'reportCount' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'version' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'openedAt' } },
                     ],
                   },
                 },
-                { kind: 'Field', name: { kind: 'Name', value: 'summary' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'reportCount' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'openedAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pageInfo' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'InlineFragment',
+                        typeCondition: {
+                          kind: 'NamedType',
+                          name: { kind: 'Name', value: 'OffsetPageInfo' },
+                        },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'totalCount' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'totalPages' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'hasPreviousPage' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'hasNextPage' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'InlineFragment',
+                        typeCondition: {
+                          kind: 'NamedType',
+                          name: { kind: 'Name', value: 'CursorPageInfo' },
+                        },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'hasPreviousPage' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'hasNextPage' } },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -21617,6 +21690,14 @@ export const ResolveAlertItemDocument = {
         },
         {
           kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'expectedVersion' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
           variable: { kind: 'Variable', name: { kind: 'Name', value: 'commandId' } },
           type: {
             kind: 'NonNullType',
@@ -21640,6 +21721,11 @@ export const ResolveAlertItemDocument = {
                 kind: 'Argument',
                 name: { kind: 'Name', value: 'resolution' },
                 value: { kind: 'Variable', name: { kind: 'Name', value: 'resolution' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'expectedVersion' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'expectedVersion' } },
               },
               {
                 kind: 'Argument',
@@ -21667,27 +21753,89 @@ export const MyReportsDocument = {
       kind: 'OperationDefinition',
       operation: 'query',
       name: { kind: 'Name', value: 'MyReports' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'pagi' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'PagiInput' } },
+        },
+      ],
       selectionSet: {
         kind: 'SelectionSet',
         selections: [
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'myReports' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'pagi' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'pagi' } },
+              },
+            ],
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'targetType' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'targetId' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'communityId' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'itemId' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'reportType' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'details' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'withdrawnAt' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'outdatedAt' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'resolvedAt' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'resolution' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'entries' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'targetType' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'targetId' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'communityId' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'itemId' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'reportType' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'details' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'withdrawnAt' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'outdatedAt' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'resolvedAt' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'resolution' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pageInfo' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'InlineFragment',
+                        typeCondition: {
+                          kind: 'NamedType',
+                          name: { kind: 'Name', value: 'OffsetPageInfo' },
+                        },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'totalCount' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'totalPages' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'hasPreviousPage' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'hasNextPage' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'InlineFragment',
+                        typeCondition: {
+                          kind: 'NamedType',
+                          name: { kind: 'Name', value: 'CursorPageInfo' },
+                        },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'hasPreviousPage' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'hasNextPage' } },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },

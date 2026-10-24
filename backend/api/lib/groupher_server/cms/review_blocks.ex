@@ -405,7 +405,69 @@ defmodule GroupherServer.CMS.ReviewBlocks do
     end
   end
 
+  defp enqueue_visibility_change(
+         %ArticleLifecycle{article_id: article_id},
+         %{community_id: community_id},
+         key
+       ) do
+    enqueue_article_visibility(article_id, community_id, key)
+  end
+
+  defp enqueue_visibility_change(
+         %CommentLifecycle{comment_id: comment_id},
+         %{community_id: community_id},
+         key
+       ) do
+    with %Comment{article_id: article_id} <- Repo.get(Comment, comment_id) do
+      enqueue_article_visibility(article_id, community_id, key)
+    else
+      nil -> {:error, CMS.ErrorCat.lifecycle_not_found()}
+    end
+  end
+
   defp enqueue_visibility_change(%_lifecycle{}, _target, _key), do: {:ok, :pass}
+
+  defp enqueue_article_visibility(article_id, community_id, key) do
+    with %Article{thread: thread} <- Repo.get(Article, article_id) do
+      query = from(binding in ArticleBinding, where: binding.article_id == ^article_id)
+
+      query =
+        if is_nil(community_id),
+          do: query,
+          else: where(query, [binding], binding.community_id == ^community_id)
+
+      query
+      |> Repo.all()
+      |> Enum.reduce_while({:ok, :pass}, fn binding, {:ok, :pass} ->
+        community = Repo.get(Community, binding.community_id)
+
+        case community do
+          %Community{} = community ->
+            case CMS.Articles.Effects.enqueue(
+                   "article.visibility_changed",
+                   "article",
+                   article_id,
+                   {:workflow, "review:#{article_id}:#{community.id}"},
+                   %{
+                     "community" => community.slug,
+                     "community_id" => community.id,
+                     "thread" => Atom.to_string(thread),
+                     "inner_id" => binding.inner_id
+                   },
+                   effect_key: "review:#{key}:#{community.id}"
+                 ) do
+              {:ok, _event} -> {:cont, {:ok, :pass}}
+              {:error, reason} -> {:halt, {:error, reason}}
+            end
+
+          nil ->
+            {:halt, {:error, CMS.ErrorCat.lifecycle_not_found()}}
+        end
+      end)
+    else
+      nil -> {:error, CMS.ErrorCat.lifecycle_not_found()}
+    end
+  end
 
   defp require_transaction do
     if Repo.in_transaction?() do

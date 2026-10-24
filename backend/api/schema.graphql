@@ -326,9 +326,9 @@ type RootQueryType {
   "read one community-scoped ContentImport Job and its safe Doc preview"
   contentImportJob(community: String!, jobRef: ID!): ContentImportJob
 
-  myReports: [AlertReport!]!
+  myReports(filter: AlertReportFilter, pagi: PagiInput): AlertReportPage!
 
-  alertItems(scope: ReviewBotScopeInput!): [AlertItem!]!
+  alertItems(scope: ReviewBotScopeInput!, filter: AlertItemFilter, pagi: PagiInput): AlertItemPage!
 
   alertItem(id: ID!): AlertItem
 
@@ -966,6 +966,8 @@ type RootMutationType {
   "cancel an unfinished import Job and discard its staged BodyBags"
   cancelDocContentImport(community: String!, jobRef: ID!): ContentImportJob!
 
+  recheckReviewTarget(target: CmsReviewTargetInput!, scope: ReviewBotScopeInput!, commandId: ID!): CmsReviewCommandResult!
+
   approveArticle(target: CmsReviewTargetInput!, commandId: ID!): CmsReviewCommandResult!
 
   denyArticle(target: CmsReviewTargetInput!, commandId: ID!): CmsReviewCommandResult!
@@ -978,13 +980,19 @@ type RootMutationType {
 
   releaseComment(target: CmsReviewTargetInput!, commandId: ID!): CmsReviewCommandResult!
 
+  approveDoc(target: CmsReviewTargetInput!, commandId: ID!): CmsReviewCommandResult!
+
+  denyDoc(target: CmsReviewTargetInput!, commandId: ID!): CmsReviewCommandResult!
+
+  releaseDoc(target: CmsReviewTargetInput!, commandId: ID!): CmsReviewCommandResult!
+
   updateReviewBotConfig(input: UpdateReviewBotConfigInput!, commandId: ID!): ReviewBotConfig!
 
   submitReport(input: AlertReportInput!, commandId: ID!): AlertReport!
 
   withdrawReport(reportId: ID!, commandId: ID!): AlertReport!
 
-  resolveAlertItem(id: ID!, resolution: String!, commandId: ID!): AlertWallCommandResult!
+  resolveAlertItem(id: ID!, resolution: String!, expectedVersion: Int!, commandId: ID!): AlertWallCommandResult!
 }
 
 enum ContentImportJobStatus {
@@ -1213,11 +1221,30 @@ enum AlertReportReason {
   OTHER
 }
 
+enum AlertReportStatus {
+  ACTIVE
+  WITHDRAWN
+  OUTDATED
+  RESOLVED
+}
+
+input AlertItemFilter {
+  targetType: AlertTargetType
+  owner: AlertItemOwner
+  hasReports: Boolean
+}
+
+input AlertReportFilter {
+  targetType: AlertTargetType
+  status: AlertReportStatus
+}
+
 input AlertReportTargetInput {
   type: AlertTargetType!
   article: ArticlePathInput
   comment: CommentPathInput
   docBranchId: Int
+  userId: ID
 }
 
 input AlertReportInput {
@@ -1261,6 +1288,16 @@ type AlertReport {
   resolvedAt: DateTime
   resolution: String
   insertedAt: DateTime!
+}
+
+type AlertItemPage {
+  entries: [AlertItem!]!
+  pageInfo: PageInfo!
+}
+
+type AlertReportPage {
+  entries: [AlertReport!]!
+  pageInfo: PageInfo!
 }
 
 enum ArticleInsightsMetric {

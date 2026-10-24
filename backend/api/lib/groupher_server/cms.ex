@@ -158,6 +158,11 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Review.Commands.Decide,
     as: :execute
 
+  @doc "Starts a receipt-backed AI recheck for current public content in one scope."
+  defdelegate recheck_review_target(target_key, scope_key, actor, command_id),
+    to: GroupherServer.CMS.Review.Commands.Recheck,
+    as: :execute
+
   @doc "Returns a request only while its current CMS scope and short-lived payload remain valid."
   @spec current_artiment_review(Ecto.UUID.t()) :: {:ok, struct()} | {:error, term()}
   defdelegate current_artiment_review(request_id),

@@ -12,13 +12,17 @@ defmodule GroupherServerWeb.Schema.AlertWall.Queries do
   use Helper.GqlSchemaSuite
 
   object :alert_wall_queries do
-    field :my_reports, non_null(list_of(non_null(:alert_report))) do
+    field :my_reports, non_null(:alert_report_page) do
+      arg(:filter, :alert_report_filter)
+      arg(:pagi, :pagi_input)
       middleware(M.Authorize, :login)
       resolve(&R.AlertWall.my_reports/3)
     end
 
-    field :alert_items, non_null(list_of(non_null(:alert_item))) do
+    field :alert_items, non_null(:alert_item_page) do
       arg(:scope, non_null(:review_bot_scope_input))
+      arg(:filter, :alert_item_filter)
+      arg(:pagi, :pagi_input)
       middleware(M.Authorize, :login)
       resolve(&R.AlertWall.alert_items/3)
     end

@@ -11,6 +11,7 @@ defmodule GroupherServer.CMS.Review.Decisions do
   """
 
   alias GroupherServer.{AlertWall, CMS, Repo}
+  alias CMS.Model.Author
 
   @actions [:approve, :deny, :release]
 
@@ -25,6 +26,7 @@ defmodule GroupherServer.CMS.Review.Decisions do
          {:ok, :pass} <- reject_author_review(context, actor),
          attrs <- request_scope(context),
          {:ok, requests} <- CMS.Review.Requests.current_for_scope_in_transaction(attrs),
+         {:ok, :pass} <- ensure_ai_finished(requests),
          {:ok, :pass} <- update_restrictions(context, action, requests, actor, operation_ref),
          {:ok, :pass} <- update_wall(requests, action, operation_ref),
          {:ok, :pass} <- CMS.Review.Requests.supersede_scope_in_transaction(attrs, operation_ref) do
@@ -40,11 +42,30 @@ defmodule GroupherServer.CMS.Review.Decisions do
     {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
-  defp reject_author_review(%{target: %{author_id: author_id}}, %{id: author_id}) do
+  defp reject_author_review(%{kind: :comment, target: %{author_id: author_id}}, %{id: author_id}) do
     {:error, CMS.Passport.ErrorCat.permission_denied()}
   end
 
+  defp reject_author_review(%{target: %{author_id: author_id}}, %{id: user_id})
+       when not is_nil(author_id) and is_integer(user_id) do
+    case Repo.get(Author, author_id) do
+      %Author{user_id: ^user_id} ->
+        {:error, CMS.Passport.ErrorCat.permission_denied()}
+
+      _ ->
+        {:ok, :pass}
+    end
+  end
+
   defp reject_author_review(_context, _actor), do: {:ok, :pass}
+
+  defp ensure_ai_finished(requests) do
+    if Enum.any?(requests, &(&1.state in [:queued, :running])) do
+      {:error, CMS.ErrorCat.invalid_review_block()}
+    else
+      {:ok, :pass}
+    end
+  end
 
   defp request_scope(%{kind: :article, target: article, scope_key: scope_key}) do
     community_id = scope_community_id(scope_key)

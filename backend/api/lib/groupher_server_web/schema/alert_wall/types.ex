@@ -10,6 +10,7 @@ defmodule GroupherServerWeb.Schema.AlertWall.Types do
   """
 
   use Helper.GqlSchemaSuite
+  import GroupherServerWeb.Schema.Helper.Fields, only: [pagi_fields: 0]
 
   enum :alert_item_status do
     value(:open)
@@ -37,11 +38,30 @@ defmodule GroupherServerWeb.Schema.AlertWall.Types do
     value(:other)
   end
 
+  enum :alert_report_status do
+    value(:active)
+    value(:withdrawn)
+    value(:outdated)
+    value(:resolved)
+  end
+
+  input_object :alert_item_filter do
+    field(:target_type, :alert_target_type)
+    field(:owner, :alert_item_owner)
+    field(:has_reports, :boolean)
+  end
+
+  input_object :alert_report_filter do
+    field(:target_type, :alert_target_type)
+    field(:status, :alert_report_status)
+  end
+
   input_object :alert_report_target_input do
     field(:type, non_null(:alert_target_type))
     field(:article, :article_path_input)
     field(:comment, :comment_path_input)
     field(:doc_branch_id, :integer)
+    field(:user_id, :id)
   end
 
   input_object :alert_report_input do
@@ -85,5 +105,15 @@ defmodule GroupherServerWeb.Schema.AlertWall.Types do
     field(:resolved_at, :datetime)
     field(:resolution, :string)
     field(:inserted_at, non_null(:datetime))
+  end
+
+  object :alert_item_page do
+    field(:entries, non_null(list_of(non_null(:alert_item))))
+    pagi_fields()
+  end
+
+  object :alert_report_page do
+    field(:entries, non_null(list_of(non_null(:alert_report))))
+    pagi_fields()
   end
 end

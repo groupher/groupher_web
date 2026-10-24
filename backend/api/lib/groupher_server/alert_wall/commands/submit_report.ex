@@ -17,6 +17,15 @@ defmodule GroupherServer.AlertWall.Commands.SubmitReport do
   alias AlertWall.Model.UserReport
   alias CMS.Command.ConfirmationDefinition
 
+  defmodule Target do
+    @moduledoc """
+    Canonical AlertWall report target resolved by its owning context.
+
+        CMS/Accounts resolver -> typed Target -> SubmitReport CommandPipeline
+    """
+    defstruct [:owner, :target_type, :target_id, :community_id, :subject_ref]
+  end
+
   @report_types [:spam, :harassment, :illegal_content, :impersonation, :other]
 
   @pipeline operation: :alert_wall_submit_report,
@@ -43,7 +52,7 @@ defmodule GroupherServer.AlertWall.Commands.SubmitReport do
   @doc "Submits a report for a target already resolved and authorized by CMS."
   def execute(target, report_type, details, actor, command_id)
       when is_map(target) and report_type in @report_types and is_binary(details) do
-    execute_pipeline(target, report_type, details, actor, command_id)
+    execute_pipeline(struct(Target, target), report_type, details, actor, command_id)
   end
 
   def execute(_target, _report_type, _details, _actor, _command_id) do
@@ -58,7 +67,7 @@ defmodule GroupherServer.AlertWall.Commands.SubmitReport do
     present(&present_report/1)
   end
 
-  defp prepare(target, report_type, details) do
+  defp prepare(%Target{} = target, report_type, details) do
     with true <- valid_target?(target),
          true <- String.length(details) <= 8_000 do
       attrs =
@@ -67,14 +76,19 @@ defmodule GroupherServer.AlertWall.Commands.SubmitReport do
         |> Map.put(:details, details)
 
       {:ok, attrs,
-       target: Map.take(attrs, [:owner, :target_type, :target_id, :community_id, :subject_ref]),
-       params: %{report_type: report_type, details: details}}
+       target: {attrs.target_type, attrs.target_id},
+       params: %{
+         report_type: report_type,
+         details: details,
+         community_id: attrs.community_id,
+         subject_ref: attrs.subject_ref
+       }}
     else
       _ -> {:error, AlertWall.ErrorCat.invalid_report()}
     end
   end
 
-  defp authorize(_prepared, %{id: id}) when is_integer(id), do: {:ok, :pass}
+  defp authorize(prepared, %{id: id}) when is_integer(id), do: {:ok, prepared}
   defp authorize(_prepared, _actor), do: {:error, CMS.passport_error_cat_permission_denied()}
 
   defp submit(prepared, %{id: reporter_id}, command_id) do
@@ -106,10 +120,10 @@ defmodule GroupherServer.AlertWall.Commands.SubmitReport do
            subject_ref: subject_ref
          } = target
        ) do
-    owner == :cms and target_type in [:article, :comment, :doc] and is_binary(target_id) and
-      target_id != "" and is_binary(subject_ref) and subject_ref != "" and
+    owner in [:cms, :accounts] and
+      ((owner == :cms and target_type in [:article, :comment, :doc]) or
+         (owner == :accounts and target_type == :user)) and
+      is_binary(target_id) and target_id != "" and is_binary(subject_ref) and subject_ref != "" and
       (target_type != :doc or is_nil(Map.get(target, :community_id)))
   end
-
-  defp valid_target?(_target), do: false
 end

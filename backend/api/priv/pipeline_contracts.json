@@ -3,7 +3,7 @@
   "pipelines": [
     {
       "access": "user",
-      "arity": 4,
+      "arity": 5,
       "confirmation": "GroupherServer.AlertWall.Commands.Resolve.Confirmation",
       "module": "GroupherServer.AlertWall.Commands.Resolve",
       "name": "execute_pipeline",
@@ -1580,6 +1580,18 @@
       "module": "GroupherServer.CMS.Review.Commands.Decide",
       "name": "execute_pipeline",
       "operation": "cms_review_decision",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "target_key"
+    },
+    {
+      "access": "user",
+      "arity": 4,
+      "confirmation": "GroupherServer.CMS.Review.Commands.Recheck.Confirmation",
+      "module": "GroupherServer.CMS.Review.Commands.Recheck",
+      "name": "execute_pipeline",
+      "operation": "cms_review_recheck",
       "pipeline": "receipt_pipeline",
       "stages": ["prepare", "gate", "change", "confirm", "present"],
       "steps": [],

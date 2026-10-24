@@ -77,6 +77,75 @@ defmodule GroupherServer.Test.AlertWall.PersistTest do
     assert AlertWall.active_report_count(item_id) == 0
   end
 
+  test "report CommandPipeline accepts the canonical AlertWall target and stores its Receipt" do
+    {:ok, reporter} = db_insert(:user)
+    command_id = Ecto.UUID.generate()
+
+    assert {:ok, report} =
+             AlertWall.submit_report(
+               %{
+                 owner: :cms,
+                 target_type: :article,
+                 target_id: "report-command-target",
+                 community_id: nil,
+                 subject_ref: "published-subject"
+               },
+               :spam,
+               "Please review",
+               reporter,
+               command_id
+             )
+
+    assert report.reporter_id == reporter.id
+    assert report.target_id == "report-command-target"
+
+    assert {:ok, account_report} =
+             AlertWall.submit_report(
+               %{
+                 owner: :accounts,
+                 target_type: :user,
+                 target_id: "108965",
+                 community_id: nil,
+                 subject_ref: "user:108965:profile-version-1"
+               },
+               :impersonation,
+               "This account is impersonating another person",
+               reporter,
+               Ecto.UUID.generate()
+             )
+
+    assert account_report.owner == :accounts
+    assert account_report.target_type == :user
+  end
+
+  test "resolve CommandPipeline returns GraphQL fields and rejects a stale item version" do
+    {:ok, reviewer} = db_insert(:user)
+    reviewer = %{reviewer | cur_passport: %{"global" => %{"review.platform.decide" => true}}}
+    command_id = Ecto.UUID.generate()
+
+    assert {:ok, {:ok, item}} =
+             Repo.transaction(fn ->
+               AlertWall.add_in_transaction(
+                 item_attrs(nil, [], "needs review"),
+                 Ecto.UUID.generate()
+               )
+             end)
+
+    assert {:ok, %{item_id: item_id, resolution: "reviewed"}} =
+             AlertWall.resolve_item(item.id, "reviewed", item.version, reviewer, command_id)
+
+    assert item_id == item.id
+
+    assert {:error, _reason} =
+             AlertWall.resolve_item(
+               item.id,
+               "reviewed again",
+               item.version,
+               reviewer,
+               Ecto.UUID.generate()
+             )
+  end
+
   test "old reports become outdated while reports on current content can be resolved" do
     {:ok, reporter} = db_insert(:user)
     first_attrs = Map.put(report_attrs(reporter.id), :subject_ref, "published-content-1")

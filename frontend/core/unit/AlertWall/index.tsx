@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Link } from '@tanstack/react-router'
 import { useRef } from 'react'
 
 import { browserGraphQLRequest } from '~/graphql/client'
 import useTrans from '~/hooks/useTrans'
+import { dsbRoutes, Link as PlatformLink } from '~/platform'
 import { invalidateExact } from '~/query/invalidation/executor'
 import useAccount from '~/stores/account/hooks'
 
@@ -21,13 +21,16 @@ export default function AlertWall({ community }: { community?: string }) {
   const queryKey = ['alert-wall', accountRef || 'anonymous', community || 'platform']
   const items = useQuery({
     queryKey,
-    queryFn: async () => (await browserGraphQLRequest(alertItems, { scope })).alertItems,
+    queryFn: async () =>
+      (await browserGraphQLRequest(alertItems, { scope, pagi: { offset: { page: 1, size: 50 } } }))
+        .alertItems.entries,
   })
   const resolve = useMutation({
-    mutationFn: (id: string) =>
+    mutationFn: ({ id, version }: { id: string; version: number }) =>
       browserGraphQLRequest(resolveAlertItem, {
         id,
         resolution: 'reviewed',
+        expectedVersion: version,
         commandId: (commandId.current ??= crypto.randomUUID()),
       }),
     onSuccess: async () => {
@@ -42,14 +45,22 @@ export default function AlertWall({ community }: { community?: string }) {
         <h1 className='text-xl font-semibold'>{t('alert_wall.title')}</h1>
         <nav className='flex gap-4 text-sm'>
           {community && (
-            <Link className='underline' to='/$community/review-queue' params={{ community }}>
+            <PlatformLink
+              className='underline'
+              route={dsbRoutes.section({ community, section: 'review-queue', search: {} })}
+              navigation='router'
+            >
               {t('cms_review.pending_title')}
-            </Link>
+            </PlatformLink>
           )}
           {community && (
-            <Link className='underline' to='/$community/review-bot' params={{ community }}>
+            <PlatformLink
+              className='underline'
+              route={dsbRoutes.section({ community, section: 'review-bot', search: {} })}
+              navigation='router'
+            >
               {t('review_bot.settings')}
-            </Link>
+            </PlatformLink>
           )}
         </nav>
       </header>
@@ -81,7 +92,7 @@ export default function AlertWall({ community }: { community?: string }) {
                   type='button'
                   className='border-divider shrink-0 rounded-md border px-3 py-2 text-sm disabled:opacity-50'
                   disabled={resolve.isPending}
-                  onClick={() => resolve.mutate(item.id)}
+                  onClick={() => resolve.mutate({ id: item.id, version: item.version })}
                 >
                   {t('alert_wall.mark_reviewed')}
                 </button>

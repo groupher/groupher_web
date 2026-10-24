@@ -29,6 +29,7 @@ defmodule GroupherServerWeb.Schema.AlertWall.Mutations do
     field :resolve_alert_item, non_null(:alert_wall_command_result) do
       arg(:id, non_null(:id))
       arg(:resolution, non_null(:string))
+      arg(:expected_version, non_null(:integer))
       arg(:command_id, non_null(:id))
       middleware(M.Authorize, :login)
       resolve(&R.AlertWall.resolve_alert_item/3)
