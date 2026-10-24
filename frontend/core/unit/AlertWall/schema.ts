@@ -1,4 +1,5 @@
 import { graphql } from '~/graphql/authoring'
+import type { ResolveAlertItemDocument } from '~/graphql/generated/graphql'
 
 export const alertItems = graphql(`
   query AlertItems($scope: ReviewBotScopeInput!, $pagi: PagiInput) {
@@ -53,7 +54,7 @@ export const resolveAlertItem = graphql(`
       resolution
     }
   }
-`)
+`) as typeof ResolveAlertItemDocument
 
 export const myReports = graphql(`
   query MyReports($pagi: PagiInput) {
