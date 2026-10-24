@@ -58,16 +58,8 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Article do
   defp cleanup(event) do
     case event.event do
       "article.projections" -> run_projections(event)
-      "article.review_changed" -> deliver_review_change(event)
       "article.visibility_changed" -> sync_visibility(event)
       _ -> purge_cache(event)
-    end
-  end
-
-  defp deliver_review_change(event) do
-    with {:ok, _} <- purge_cache(event),
-         {:ok, result} <- CMS.Review.Effects.deliver(event) do
-      {:ok, result}
     end
   end
 

@@ -44,14 +44,18 @@ defmodule GroupherServer.Test.CMS.Communities.Persist do
           Ecto.UUID.generate()
         )
 
-      assert {:ok, configs} = GroupherServer.AlertBoard.configs_for_target(community.id, :article)
-      assert Enum.map(configs, & &1.scope_key) == ["platform", "community:#{community.id}"]
-      assert Enum.all?(configs, &(&1.publish_mode == :immediate and &1.edit_mode == :immediate))
+      assert {:ok, %{system: system, community: community_config}} =
+               GroupherServer.ReviewBot.configs_for_target(community.id, :article)
 
-      assert {:ok, [platform_doc_config]} =
-               GroupherServer.AlertBoard.configs_for_target(community.id, :doc)
+      assert system.community_id == nil
+      assert community_config.community_id == community.id
+      assert system.review_mode == :immediate
+      assert community_config.review_mode == :immediate
 
-      assert platform_doc_config.scope_key == "platform"
+      assert {:ok, %{system: platform_doc_config, community: nil}} =
+               GroupherServer.ReviewBot.configs_for_target(community.id, :doc)
+
+      assert platform_doc_config.community_id == nil
     end
 
     test "create community replays the canonical row for the same command id", ~m(user)a do

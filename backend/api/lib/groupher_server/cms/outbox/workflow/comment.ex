@@ -50,12 +50,6 @@ defmodule GroupherServer.CMS.Outbox.Workflow.Comment do
 
   defp cleanup(event) do
     case event.event do
-      "comment.review_changed" ->
-        with {:ok, _} <- purge_comment_cache(event),
-             {:ok, result} <- CMS.Review.Effects.deliver(event) do
-          {:ok, result}
-        end
-
       "comment.changed" ->
         with {:ok, _} <- purge_comment_cache(event) do
           {:ok, :purged}

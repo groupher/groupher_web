@@ -27,16 +27,6 @@ defmodule GroupherServer.Jobs do
   defdelegate contribution_cache(community_id), to: GroupherServer.Jobs.Workflow
 
   @doc """
-  Enqueues one version-pinned ReviewBot check.
-
-  ## Examples
-
-      Jobs.review_bot_check(Ecto.UUID.generate())
-      #=> {:ok, job} | {:error, reason}
-  """
-  defdelegate review_bot_check(check_id), to: GroupherServer.Jobs.Workflow
-
-  @doc """
   Delegates comments_new/1 to the Jobs workflow owner.
 
   ## Examples

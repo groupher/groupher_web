@@ -21,7 +21,7 @@ import type { TSpace, TUser } from '~/spec'
 import ImgFallback from '~/ui/ImgFallback'
 import Tooltip from '~/ui/Tooltip'
 import AccountSessionDrawer from '~/unit/AccountSessionDrawer'
-import MyReports from '~/unit/AlertBoard/MyReports'
+import MyReports from '~/unit/AlertWall/MyReports'
 
 import useSalon, { cn } from './salon/logged_in_account'
 
@@ -70,11 +70,11 @@ const LoggedInAccount: FC<TProps> = ({ user }) => {
             </button>
             <button
               type='button'
-              aria-label={t('alert_board.my_reports')}
+              aria-label={t('alert_wall.my_reports')}
               className={s.menuBar}
               onClick={() => setShowReports(true)}
             >
-              <span className={s.menuTitle}>{t('alert_board.my_reports')}</span>
+              <span className={s.menuTitle}>{t('alert_wall.my_reports')}</span>
             </button>
             <div className={s.divider} />
             <div className={s.menuBar}>

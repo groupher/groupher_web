@@ -81,24 +81,14 @@ defmodule GroupherServer.Test.CMS.Comments.CollectionPagi do
         Ecto.UUID.generate()
       )
 
-    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: hidden_article.id)
-
-    lifecycle
-    |> ArticleLifecycle.changeset(%{
-      review_content_token: "profile-parent-restricted",
-      review_epoch: 1
-    })
-    |> Repo.update!()
+    _lifecycle = Repo.get_by!(ArticleLifecycle, article_id: hidden_article.id)
 
     %ArticleReviewRestriction{}
     |> ArticleReviewRestriction.changeset(%{
-      lifecycle_id: lifecycle.id,
-      scope_key: "platform",
-      cause_key: "profile-parent-restricted",
-      kind: :awaiting_human,
-      content_token: "profile-parent-restricted",
-      source: :submission,
-      created_by_operation_ref: Ecto.UUID.generate(),
+      article_id: hidden_article.id,
+      type: :awaiting_human,
+      source_ref: "profile-parent-restricted",
+      source: :request,
       applied_at: DateTime.utc_now(:second)
     })
     |> Repo.insert!()

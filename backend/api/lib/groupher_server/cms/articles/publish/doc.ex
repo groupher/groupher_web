@@ -12,8 +12,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
 
   import Ecto.Query
 
-  alias GroupherServer.{AlertBoard, CMS, Repo}
-  alias CMS.Review.Submission
+  alias GroupherServer.{CMS, Repo, ReviewBot}
   alias CMS.Articles.ErrorCat, as: ArticleErrorCat
   alias CMS.Articles.Workflow
   alias CMS.Articles.{Bindings, Draft.Store, Effects, Numbering, Revision}
@@ -121,36 +120,36 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
 
   defp register_review(
          article,
-         community,
+         _community,
          branch,
          revision,
          version,
          lifecycle,
          first_publish?,
-         opts
+         _opts
        ) do
-    with {:ok, configs} <- AlertBoard.configs_for_target(nil, :doc),
+    with {:ok, configs} <- ReviewBot.configs(nil, :doc),
          %ArticleBodySnapshot{} = body <- Repo.get(ArticleBodySnapshot, revision.body_snapshot_id) do
       content = %{
-        identity: "doc-branch-version:#{version.id}",
-        body_hash: body.body_hash,
         title: revision.title || "",
         body: body.plain_text || "",
         images: review_images(revision.id)
       }
 
       target = %{
-        target_key: "doc:#{article.id}:#{branch.id}",
-        case_attrs: %{article_id: article.id, branch_id: branch.id},
-        community_id: community.id,
-        trigger: if(first_publish?, do: :submit, else: :edit)
+        type: :doc,
+        article_id: article.id,
+        branch_id: branch.id,
+        branch_version_id: version.id,
+        lifecycle: lifecycle
       }
 
-      operation_ref =
-        Keyword.get(opts, :outbox_command_id) || Keyword.get(opts, :command_id) ||
-          Keyword.get(opts, :causation_id) || Ecto.UUID.generate()
-
-      Submission.register(lifecycle, target, content, configs, operation_ref)
+      CMS.Review.RequestSubmission.register_in_transaction(
+        target,
+        content,
+        configs,
+        if(first_publish?, do: :publish, else: :edit)
+      )
     else
       nil ->
         {:error, CMS.ErrorCat.invalid_review_restriction()}
@@ -316,8 +315,9 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
         not Repo.exists?(
           from(restriction in DocReviewRestriction,
             where:
-              restriction.lifecycle_id == ^lifecycle.id and
-                restriction.scope_key == "platform" and is_nil(restriction.ended_at)
+              restriction.article_id == ^lifecycle.article_id and
+                restriction.branch_id == ^lifecycle.branch_id and
+                is_nil(restriction.resolved_at)
           )
         )
     }

@@ -1,9 +1,8 @@
-# 举报事实与 AlertBoard
+# V1 举报事实与 AlertBoard（历史）
 
-> 状态：target design，2026-10-22；举报已有实现，新 AlertBoard 尚未实施。
+> 状态：historical；当前举报与审核合同见 [ReviewBot / AlertWall V2](../alert-board/v2.md)。
 
-旧计划 `CMS.Report + CMS.Moderation` 不再作为独立目标架构。
-当前目标由顶层 [AlertBoard / ReviewBot](../alert-board/design.md) 统一定义。
+本文记录 V1 目标，不再定义当前实现。V2 将举报事实归 AlertWall，资源处置仍由 CMS/Accounts 正式领域入口执行。
 管理员 Moderator、Passport 和资源 Gate 不因此删除。
 
 ## 当前实现与迁移边界

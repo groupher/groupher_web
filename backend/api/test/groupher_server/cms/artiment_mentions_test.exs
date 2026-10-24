@@ -491,11 +491,9 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
         assert {:ok, _restriction} =
                  CMS.ReviewRestrictions.apply(locked_lifecycle, %{
                    scope_key: "community:#{community.id}",
-                   cause_key: "mention-source-test",
-                   kind: :manual_hold,
-                   content_token: "revision:mention-source-test",
+                   type: :manual_hold,
+                   source_ref: "mention-source-test",
                    source: :human,
-                   created_by_operation_ref: Ecto.UUID.generate(),
                    applied_at: DateTime.utc_now(:second)
                  })
       end)

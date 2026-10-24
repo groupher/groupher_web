@@ -66,6 +66,7 @@ const finding = (items, { category, file, message, mode = 'strict', line }) => {
 
 const expectedModule = (relativeFile) => {
   const acronyms = new Map([
+    ['ai', 'AI'],
     ['api', 'API'],
     ['cms', 'CMS'],
     ['faq', 'FAQ'],

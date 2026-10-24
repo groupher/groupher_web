@@ -150,15 +150,13 @@ defmodule GroupherServer.Test.CMS.Comments.ReviewRestrictionsTest do
     assert Repo.get!(CommentReviewRestriction, restriction.id).version == 2
   end
 
-  defp restriction_attrs(lifecycle, scope_key, cause_key) do
+  defp restriction_attrs(_lifecycle, scope_key, source_ref) do
     %{
-      lifecycle_id: lifecycle.id,
       scope_key: scope_key,
-      cause_key: cause_key,
-      kind: :manual_hold,
-      content_token: Ecto.UUID.generate(),
+      type: :manual_hold,
+      source_ref: source_ref,
       source: :human,
-      created_by_operation_ref: Ecto.UUID.generate()
+      applied_at: DateTime.utc_now(:second)
     }
   end
 end

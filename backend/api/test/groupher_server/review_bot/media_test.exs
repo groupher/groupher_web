@@ -1,7 +1,7 @@
-defmodule GroupherServer.Test.ReviewBot.MediaTest do
+defmodule GroupherServer.Test.CMS.Review.MediaTest do
   use GroupherServer.TestMate, async: false
 
-  alias GroupherServer.{CMS, Repo, ReviewBot}
+  alias GroupherServer.{CMS, Repo}
   alias CMS.Model.CommunityAsset
 
   test "comment image extraction resolves only active image assets from the comment community" do
@@ -47,15 +47,15 @@ defmodule GroupherServer.Test.ReviewBot.MediaTest do
       })
 
     assert [%{asset_id: asset_id, immutable_version: "sha256:comment-version"}] =
-             ReviewBot.Media.comment_images(body, community.id)
+             CMS.Review.Media.comment_images(body, community.id)
 
     assert asset_id == asset.id
-    assert ReviewBot.Media.comment_images(body, other_community.id) |> length() == 1
+    assert CMS.Review.Media.comment_images(body, other_community.id) |> length() == 1
   end
 
   test "signed URL expansion is ephemeral and leaves image-free checks valid" do
     assert {:ok, %{"images" => []} = payload} =
-             ReviewBot.Media.attach_signed_urls(%{"images" => [], "text" => %{"body" => "safe"}})
+             CMS.Review.Media.attach_signed_urls(%{"images" => [], "text" => %{"body" => "safe"}})
 
     assert payload["text"]["body"] == "safe"
   end

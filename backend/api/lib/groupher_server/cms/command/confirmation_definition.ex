@@ -5,7 +5,7 @@ defmodule GroupherServer.CMS.Command.ConfirmationDefinition do
       domain operation
         -> explicit Confirmation module
         -> string-key JSON envelope
-        -> CMS.Command.Receipt recovery
+        -> GroupherServer.CMS.Command.Receipt recovery
 
   The owning domain defines its payload keys and field types once; the macro
   generates `operations/0`, `encode/2`, and `decode/2` callbacks. Unsupported

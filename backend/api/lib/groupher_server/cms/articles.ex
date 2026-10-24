@@ -404,7 +404,8 @@ defmodule GroupherServer.CMS.Articles do
       when is_integer(community_id) and is_binary(command_id) do
     case FrontDesk.community(community_id, mode: :internal) do
       {:ok, %Community{} = community} ->
-        with {:ok, _command_id} <- CMS.Command.Receipt.validate_command_id(command_id) do
+        with {:ok, _command_id} <-
+               GroupherServer.CMS.Command.Receipt.validate_command_id(command_id) do
           Commands.StateChange.set_category(article_id, cat, actor, community)
         end
 
@@ -432,7 +433,8 @@ defmodule GroupherServer.CMS.Articles do
       when is_integer(community_id) and is_binary(command_id) do
     with {:ok, %Article{} = article} <- FrontDesk.article(article_id, mode: :internal),
          {:ok, %Community{} = community} <- FrontDesk.community(community_id, mode: :internal) do
-      with {:ok, _command_id} <- CMS.Command.Receipt.validate_command_id(command_id) do
+      with {:ok, _command_id} <-
+             GroupherServer.CMS.Command.Receipt.validate_command_id(command_id) do
         Commands.StateChange.set_status_in_community(article, status, actor, community)
       end
     else
@@ -476,7 +478,8 @@ defmodule GroupherServer.CMS.Articles do
     result =
       case Map.get(article, :community) do
         %Community{} = community ->
-          with {:ok, _command_id} <- CMS.Command.Receipt.validate_command_id(command_id) do
+          with {:ok, _command_id} <-
+                 GroupherServer.CMS.Command.Receipt.validate_command_id(command_id) do
             Commands.StateChange.set_status_in_community(article, status, actor, community)
           end
 
@@ -529,7 +532,7 @@ defmodule GroupherServer.CMS.Articles do
 
   def lock_comments_result(article, %User{} = actor, command_id) do
     with {:ok, _command_id} <-
-           CMS.Command.Receipt.validate_command_id(command_id),
+           GroupherServer.CMS.Command.Receipt.validate_command_id(command_id),
          {:ok, updated} <-
            Commands.CommentLock.execute(
              article.id,
@@ -550,7 +553,7 @@ defmodule GroupherServer.CMS.Articles do
 
   def undo_lock_comments_result(article, %User{} = actor, command_id) do
     with {:ok, _command_id} <-
-           CMS.Command.Receipt.validate_command_id(command_id),
+           GroupherServer.CMS.Command.Receipt.validate_command_id(command_id),
          {:ok, updated} <-
            Commands.CommentLock.execute(
              article.id,
@@ -571,7 +574,7 @@ defmodule GroupherServer.CMS.Articles do
 
   def sink_result(article, %User{} = actor, command_id) do
     with {:ok, _command_id} <-
-           CMS.Command.Receipt.validate_command_id(command_id),
+           GroupherServer.CMS.Command.Receipt.validate_command_id(command_id),
          {:ok, updated} <-
            Commands.StateChange.execute(
              :sink,
@@ -592,7 +595,7 @@ defmodule GroupherServer.CMS.Articles do
 
   def undo_sink_result(article, %User{} = actor, command_id) do
     with {:ok, _command_id} <-
-           CMS.Command.Receipt.validate_command_id(command_id),
+           GroupherServer.CMS.Command.Receipt.validate_command_id(command_id),
          {:ok, updated} <-
            Commands.StateChange.execute(
              :undo_sink,

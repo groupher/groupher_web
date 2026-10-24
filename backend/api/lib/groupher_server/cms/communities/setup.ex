@@ -16,7 +16,7 @@ defmodule GroupherServer.CMS.Communities.Setup do
 
   import Ecto.Query, warn: false
 
-  alias GroupherServer.{Accounts, AlertBoard, Analysis, CMS, Repo}
+  alias GroupherServer.{Accounts, Analysis, CMS, Repo, ReviewBot}
   alias Ecto.Multi
   alias Accounts.Model.User
   alias CMS.Communities.{ErrorCat, Lifecycle}
@@ -225,7 +225,7 @@ defmodule GroupherServer.CMS.Communities.Setup do
           Repo.rollback(ErrorCat.application_state_conflict())
 
         true ->
-          case AlertBoard.create_default_configs_for_community(community.id) do
+          case ReviewBot.create_default_configs_for_community(community.id) do
             {:ok, _configs} -> {:ok, :pass}
             {:error, reason} -> Repo.rollback(reason)
           end

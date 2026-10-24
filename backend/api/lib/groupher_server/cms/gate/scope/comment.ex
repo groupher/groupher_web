@@ -147,18 +147,17 @@ defmodule GroupherServer.CMS.Gate.Scope.Comment do
           ((not exists(
               from(restriction in CommentReviewRestriction,
                 where:
-                  restriction.lifecycle_id == parent_as(:gate_comment_lifecycle).id and
-                    restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+                  restriction.comment_id == parent_as(:gate_comment_lifecycle).comment_id and
+                    is_nil(restriction.community_id) and is_nil(restriction.resolved_at),
                 select: 1
               )
             ) or ^platform_read?) and
              (not exists(
                 from(restriction in CommentReviewRestriction,
                   where:
-                    restriction.lifecycle_id == parent_as(:gate_comment_lifecycle).id and
-                      restriction.scope_key ==
-                        fragment("'community:' || ?::text", parent_as(:gate_community).id) and
-                      is_nil(restriction.ended_at),
+                    restriction.comment_id == parent_as(:gate_comment_lifecycle).comment_id and
+                      restriction.community_id == parent_as(:gate_community).id and
+                      is_nil(restriction.resolved_at),
                   select: 1
                 )
               ) or as(:gate_community).slug in ^community_slugs))
@@ -171,11 +170,10 @@ defmodule GroupherServer.CMS.Gate.Scope.Comment do
         not exists(
           from(restriction in CommentReviewRestriction,
             where:
-              restriction.lifecycle_id == parent_as(:gate_comment_lifecycle).id and
-                is_nil(restriction.ended_at) and
-                (restriction.scope_key == "platform" or
-                   restriction.scope_key ==
-                     fragment("'community:' || ?::text", parent_as(:gate_community).id)),
+              restriction.comment_id == parent_as(:gate_comment_lifecycle).comment_id and
+                is_nil(restriction.resolved_at) and
+                (is_nil(restriction.community_id) or
+                   restriction.community_id == parent_as(:gate_community).id),
             select: 1
           )
         )

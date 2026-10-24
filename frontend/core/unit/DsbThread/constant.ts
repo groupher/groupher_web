@@ -248,7 +248,7 @@ export const MENU: TDsbMenu = {
       },
       {
         icon: 'content',
-        title: 'dsb.menu.review_board',
+        title: 'dsb.menu.alert_wall',
         slug: DSB_ROUTE.REVIEW,
       },
     ],

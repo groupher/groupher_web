@@ -2,7 +2,7 @@
 
 > 状态：current
 
-本文是当前文档入口；AlertBoard / ReviewBot 为已确认方向，尚未实施。
+举报事实由 AlertWall 管理；资源处置仍由 CMS 或 Accounts 的领域入口执行。
 
-- [举报事实与 AlertBoard](./design.md)：已有举报事实保留及迁移边界。
-- [AlertBoard / ReviewBot](../alert-board/design.md)：当前统一目标合同。
+- [ReviewBot / AlertWall V2](../alert-board/v2.md)：当前审核策略、举报事实、风险 item、关联、权限与无兼容切换合同。
+- [V1 举报设计基线](./design.md)：历史设计，已被 V2 替代。

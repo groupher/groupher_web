@@ -44,7 +44,8 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
              CMS.Press,
              CMS.Snapshot,
              CMS.Wallpaper,
-             GroupherServer.AlertBoard
+             GroupherServer.AlertWall,
+             GroupherServer.ReviewBot
            ])
 
   @internal_entry_modules MapSet.new([CMS.Articles.Maintenance])
@@ -286,7 +287,8 @@ defmodule Mix.Tasks.Cms.Command.Pipeline do
     inspect(module)
     |> then(
       &(String.starts_with?(&1, "GroupherServer.CMS.") or
-          String.starts_with?(&1, "GroupherServer.AlertBoard."))
+          String.starts_with?(&1, "GroupherServer.AlertWall.") or
+          String.starts_with?(&1, "GroupherServer.ReviewBot."))
     )
   end
 

@@ -1,5 +1,6 @@
 defmodule GroupherServer.Test.CMS.BadConfirmation do
   alias GroupherServer.CMS
+  alias GroupherServer.CMS
 
   @behaviour CMS.Command.ConfirmationCodec
 

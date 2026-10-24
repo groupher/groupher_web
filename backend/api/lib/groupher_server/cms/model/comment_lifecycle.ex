@@ -24,7 +24,7 @@ defmodule GroupherServer.CMS.Model.CommentLifecycle do
   @schema_prefix DBPrefix.cms()
   @states [:visible, :deleted, :destroy]
   @required_fields ~w(comment_id state version changed_at)a
-  @optional_fields ~w(deleted_at destroyed_at review_content_token review_epoch)a
+  @optional_fields ~w(deleted_at destroyed_at)a
 
   @type state :: :visible | :deleted | :destroy
   @type t :: %__MODULE__{}
@@ -36,8 +36,6 @@ defmodule GroupherServer.CMS.Model.CommentLifecycle do
     field(:changed_at, :utc_datetime)
     field(:deleted_at, :utc_datetime)
     field(:destroyed_at, :utc_datetime)
-    field(:review_content_token, :string)
-    field(:review_epoch, :integer, default: 0)
     timestamps(type: :utc_datetime)
   end
 

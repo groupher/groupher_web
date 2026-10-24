@@ -21,7 +21,6 @@ defmodule GroupherServer.Messaging.Mentions.Persist do
     ArticlePublic,
     Comment,
     CommentBody,
-    CommentLifecycle,
     DocPublic
   }
 
@@ -136,11 +135,6 @@ defmodule GroupherServer.Messaging.Mentions.Persist do
 
   defp delivery_identity(_content), do: {:error, :mention_target_invalid}
 
-  defp article_token(%{review_content_token: token}, _article_id, _thread, _branch_id)
-       when is_binary(token) and token != "" do
-    {:ok, "review:#{token}"}
-  end
-
   defp article_token(%{revision_id: revision_id}, _article_id, _thread, _branch_id)
        when is_binary(revision_id) do
     {:ok, "revision:#{revision_id}"}
@@ -160,27 +154,17 @@ defmodule GroupherServer.Messaging.Mentions.Persist do
     end
   end
 
-  defp comment_token(%{content_token: token}) when is_binary(token) and token != "" do
-    {:ok, "review:#{token}"}
-  end
-
   defp comment_token(%{id: id}) when is_integer(id) do
-    lifecycle_token =
-      case Repo.get_by(CommentLifecycle, comment_id: id) do
-        %CommentLifecycle{review_content_token: token} when is_binary(token) and token != "" ->
-          "review:#{token}"
+    body_token =
+      case Repo.get_by(CommentBody, comment_id: id) do
+        %CommentBody{version: version} when is_integer(version) and version > 0 ->
+          "body-version:#{version}"
 
         _ ->
           nil
       end
 
-    body_token =
-      case Repo.get_by(CommentBody, comment_id: id) do
-        %CommentBody{body_hash: hash} when is_binary(hash) and hash != "" -> "body:#{hash}"
-        _ -> nil
-      end
-
-    case lifecycle_token || body_token do
+    case body_token do
       token when is_binary(token) -> {:ok, token}
       _ -> {:error, :mention_content_token_missing}
     end

@@ -4,34 +4,22 @@
     {
       "access": "user",
       "arity": 4,
-      "confirmation": "GroupherServer.AlertBoard.Commands.DecideCase.Confirmation",
-      "module": "GroupherServer.AlertBoard.Commands.DecideCase",
+      "confirmation": "GroupherServer.AlertWall.Commands.Resolve.Confirmation",
+      "module": "GroupherServer.AlertWall.Commands.Resolve",
       "name": "execute_pipeline",
-      "operation": "alert_board_decide_case",
+      "operation": "alert_wall_resolve_item",
       "pipeline": "receipt_pipeline",
       "stages": ["prepare", "gate", "change", "confirm", "present"],
       "steps": [],
-      "target": "case_id"
-    },
-    {
-      "access": "user",
-      "arity": 4,
-      "confirmation": "GroupherServer.AlertBoard.Commands.RecheckTarget.Confirmation",
-      "module": "GroupherServer.AlertBoard.Commands.RecheckTarget",
-      "name": "execute_pipeline",
-      "operation": "alert_board_recheck_target",
-      "pipeline": "receipt_pipeline",
-      "stages": ["prepare", "gate", "change", "confirm", "present"],
-      "steps": [],
-      "target": "target"
+      "target": "item_id"
     },
     {
       "access": "user",
       "arity": 5,
-      "confirmation": "GroupherServer.AlertBoard.Commands.SubmitReport.Confirmation",
-      "module": "GroupherServer.AlertBoard.Commands.SubmitReport",
+      "confirmation": "GroupherServer.AlertWall.Commands.SubmitReport.Confirmation",
+      "module": "GroupherServer.AlertWall.Commands.SubmitReport",
       "name": "execute_pipeline",
-      "operation": "alert_board_submit_report",
+      "operation": "alert_wall_submit_report",
       "pipeline": "receipt_pipeline",
       "stages": ["prepare", "gate", "change", "confirm", "present"],
       "steps": [],
@@ -39,23 +27,11 @@
     },
     {
       "access": "user",
-      "arity": 6,
-      "confirmation": "GroupherServer.AlertBoard.Commands.UpdateConfig.Confirmation",
-      "module": "GroupherServer.AlertBoard.Commands.UpdateConfig",
-      "name": "execute_pipeline",
-      "operation": "alert_board_update_config",
-      "pipeline": "receipt_pipeline",
-      "stages": ["prepare", "gate", "change", "confirm", "present"],
-      "steps": [],
-      "target": "scope"
-    },
-    {
-      "access": "user",
       "arity": 3,
-      "confirmation": "GroupherServer.AlertBoard.Commands.WithdrawReport.Confirmation",
-      "module": "GroupherServer.AlertBoard.Commands.WithdrawReport",
+      "confirmation": "GroupherServer.AlertWall.Commands.WithdrawReport.Confirmation",
+      "module": "GroupherServer.AlertWall.Commands.WithdrawReport",
       "name": "execute_pipeline",
-      "operation": "alert_board_withdraw_report",
+      "operation": "alert_wall_withdraw_report",
       "pipeline": "receipt_pipeline",
       "stages": ["prepare", "gate", "change", "confirm", "present"],
       "steps": [],
@@ -1599,6 +1575,18 @@
     },
     {
       "access": "user",
+      "arity": 5,
+      "confirmation": "GroupherServer.CMS.Review.Commands.Decide.Confirmation",
+      "module": "GroupherServer.CMS.Review.Commands.Decide",
+      "name": "execute_pipeline",
+      "operation": "cms_review_decision",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "target_key"
+    },
+    {
+      "access": "user",
       "arity": 4,
       "confirmation": "GroupherServer.CMS.Wallpaper.Commands.Confirmation",
       "module": "GroupherServer.CMS.Wallpaper.Commands.Publish",
@@ -1620,6 +1608,18 @@
       "stages": ["gate", "change", "confirm", "present"],
       "steps": [],
       "target": "community"
+    },
+    {
+      "access": "user",
+      "arity": 6,
+      "confirmation": "GroupherServer.ReviewBot.Commands.UpdateConfig.Confirmation",
+      "module": "GroupherServer.ReviewBot.Commands.UpdateConfig",
+      "name": "execute_pipeline",
+      "operation": "review_bot_update_config",
+      "pipeline": "receipt_pipeline",
+      "stages": ["prepare", "gate", "change", "confirm", "present"],
+      "steps": [],
+      "target": "scope"
     }
   ],
   "schema_version": 2

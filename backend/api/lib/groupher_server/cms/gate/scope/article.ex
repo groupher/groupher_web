@@ -242,8 +242,9 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
         not exists(
           from(restriction in DocReviewRestriction,
             where:
-              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+              restriction.article_id == parent_as(:gate_article_lifecycle).article_id and
+                restriction.branch_id == parent_as(:gate_doc_branch).id and
+                is_nil(restriction.resolved_at),
             select: 1
           )
         ) or article.author_id in subquery(author_ids) or ^platform_read?
@@ -260,18 +261,17 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
           ((not exists(
               from(restriction in ArticleReviewRestriction,
                 where:
-                  restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                    restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+                  restriction.article_id == parent_as(:gate_article_lifecycle).article_id and
+                    is_nil(restriction.community_id) and is_nil(restriction.resolved_at),
                 select: 1
               )
             ) or ^platform_read?) and
              (not exists(
                 from(restriction in ArticleReviewRestriction,
                   where:
-                    restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                      restriction.scope_key ==
-                        fragment("'community:' || ?::text", parent_as(:gate_community).id) and
-                      is_nil(restriction.ended_at),
+                    restriction.article_id == parent_as(:gate_article_lifecycle).article_id and
+                      restriction.community_id == parent_as(:gate_community).id and
+                      is_nil(restriction.resolved_at),
                   select: 1
                 )
               ) or ^platform_read? or as(:gate_community).slug in ^community_slugs))
@@ -284,8 +284,9 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
         not exists(
           from(restriction in DocReviewRestriction,
             where:
-              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+              restriction.article_id == parent_as(:gate_article_lifecycle).article_id and
+                restriction.branch_id == parent_as(:gate_doc_branch).id and
+                is_nil(restriction.resolved_at),
             select: 1
           )
         )
@@ -298,12 +299,10 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
         not exists(
           from(restriction in ArticleReviewRestriction,
             where:
-              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                is_nil(restriction.ended_at) and
-                restriction.scope_key in [
-                  "platform",
-                  fragment("'community:' || ?::text", parent_as(:gate_community).id)
-                ],
+              restriction.article_id == parent_as(:gate_article_lifecycle).article_id and
+                is_nil(restriction.resolved_at) and
+                (is_nil(restriction.community_id) or
+                   restriction.community_id == parent_as(:gate_community).id),
             select: 1
           )
         )
@@ -388,8 +387,9 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
         not exists(
           from(restriction in DocReviewRestriction,
             where:
-              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+              restriction.article_id == parent_as(:gate_article_lifecycle).article_id and
+                restriction.branch_id == parent_as(:gate_doc_branch).id and
+                is_nil(restriction.resolved_at),
             select: 1
           )
         ) or article.author_id in subquery(author_ids) or ^platform_read?
@@ -406,18 +406,17 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
           ((not exists(
               from(restriction in ArticleReviewRestriction,
                 where:
-                  restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                    restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+                  restriction.article_id == parent_as(:gate_article_lifecycle).article_id and
+                    is_nil(restriction.community_id) and is_nil(restriction.resolved_at),
                 select: 1
               )
             ) or ^platform_read?) and
              (not exists(
                 from(restriction in ArticleReviewRestriction,
                   where:
-                    restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                      restriction.scope_key ==
-                        fragment("'community:' || ?::text", parent_as(:gate_community).id) and
-                      is_nil(restriction.ended_at),
+                    restriction.article_id == parent_as(:gate_article_lifecycle).article_id and
+                      restriction.community_id == parent_as(:gate_community).id and
+                      is_nil(restriction.resolved_at),
                   select: 1
                 )
               ) or as(:gate_community).slug in ^community_slugs))
@@ -432,8 +431,9 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
         not exists(
           from(restriction in DocReviewRestriction,
             where:
-              restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+              restriction.article_id == parent_as(:gate_article_lifecycle).article_id and
+                restriction.branch_id == parent_as(:gate_doc_branch).id and
+                is_nil(restriction.resolved_at),
             select: 1
           )
         ) or ^platform_read?
@@ -448,18 +448,17 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
         (not exists(
            from(restriction in ArticleReviewRestriction,
              where:
-               restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                 restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+               restriction.article_id == parent_as(:gate_article_lifecycle).article_id and
+                 is_nil(restriction.community_id) and is_nil(restriction.resolved_at),
              select: 1
            )
          ) or ^platform_read?) and
           (not exists(
              from(restriction in ArticleReviewRestriction,
                where:
-                 restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                   restriction.scope_key ==
-                     fragment("'community:' || ?::text", parent_as(:gate_community).id) and
-                   is_nil(restriction.ended_at),
+                 restriction.article_id == parent_as(:gate_article_lifecycle).article_id and
+                   restriction.community_id == parent_as(:gate_community).id and
+                   is_nil(restriction.resolved_at),
                select: 1
              )
            ) or as(:gate_community).slug in ^community_slugs)
@@ -484,8 +483,9 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
              exists(
                from(restriction in DocReviewRestriction,
                  where:
-                   restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                     restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+                   restriction.article_id == parent_as(:gate_article_lifecycle).article_id and
+                     restriction.branch_id == parent_as(:gate_doc_branch).id and
+                     is_nil(restriction.resolved_at),
                  select: 1
                )
              ))
@@ -506,8 +506,9 @@ defmodule GroupherServer.CMS.Gate.Scope.Article do
           not exists(
             from(restriction in DocReviewRestriction,
               where:
-                restriction.lifecycle_id == parent_as(:gate_article_lifecycle).id and
-                  restriction.scope_key == "platform" and is_nil(restriction.ended_at),
+                restriction.article_id == parent_as(:gate_article_lifecycle).article_id and
+                  restriction.branch_id == parent_as(:gate_doc_branch).id and
+                  is_nil(restriction.resolved_at),
               select: 1
             )
           )

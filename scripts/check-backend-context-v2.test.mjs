@@ -56,6 +56,16 @@ test('accepts a Context facade, internal capability, Owners, and organizational 
   })
 })
 
+test('preserves AI acronym casing for the shared capability Context', () => {
+  withFixture((root) => {
+    touch(root, 'ai.ex', 'GroupherServer.AI')
+    touch(root, 'ai/adapters.ex', 'GroupherServer.AI.Adapters')
+
+    const configured = { version: 2, contexts: { ai: { mode: 'strict' } } }
+    assert.deepEqual(backendContextV2LayoutFindings({ root, registry: configured }), [])
+  })
+})
+
 test('rejects missing Context and singular Owner facades plus unknown directories', () => {
   withFixture((root) => {
     touch(root, 'accounts/query/by_id.ex', 'GroupherServer.Accounts.Query.ById')

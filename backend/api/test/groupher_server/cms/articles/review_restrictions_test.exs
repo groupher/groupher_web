@@ -119,8 +119,7 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
 
     assert Repo.aggregate(
              from(restriction in ArticleReviewRestriction,
-               where:
-                 restriction.lifecycle_id == ^lifecycle.id and restriction.scope_key == "platform"
+               where: restriction.article_id == ^article.id and is_nil(restriction.community_id)
              ),
              :count
            ) == 1
@@ -262,15 +261,13 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
     )
   end
 
-  defp attrs(lifecycle, scope_key, cause_key) do
+  defp attrs(_lifecycle, scope_key, source_ref) do
     %{
-      lifecycle_id: lifecycle.id,
       scope_key: scope_key,
-      cause_key: cause_key,
-      kind: :manual_hold,
-      content_token: Ecto.UUID.generate(),
+      type: :manual_hold,
+      source_ref: source_ref,
       source: :human,
-      created_by_operation_ref: Ecto.UUID.generate()
+      applied_at: DateTime.utc_now(:second)
     }
   end
 end

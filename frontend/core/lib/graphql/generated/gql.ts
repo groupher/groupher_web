@@ -105,15 +105,11 @@ type Documents = {
   '\n  mutation TrackProfileView($login: String!) {\n    trackProfileView(login: $login) {\n      tracked\n      views\n    }\n  }\n': typeof types.TrackProfileViewDocument
   '\n  query SessionState {\n    sessionState {\n      isValid\n      user {\n        ...UserAuthorFields\n        geoCity\n        location\n        social {\n          ...UserSocialFields\n        }\n        passport\n        subscribedCommunitiesCount\n        achievement {\n          ...UserAchievementFields\n        }\n      }\n    }\n  }\n': typeof types.SessionStateDocument
   '\n  query AboutSimpleQuery($article: ArticlePathInput!) {\n    post(article: $article) {\n      innerId\n    }\n  }\n': typeof types.AboutSimpleQueryDocument
-  '\n  query ReviewCases($scope: ReviewScopeInput!, $filter: ReviewCaseFilterInput, $pagi: PagiInput) {\n    reviewCases(scope: $scope, filter: $filter, pagi: $pagi) {\n      entries {\n        id\n        targetKey\n        scopeKey\n        contentToken\n        status\n        priority\n        version\n        openedAt\n        resolution\n      }\n      pageInfo {\n        ... on OffsetPageInfo {\n          page\n          size\n          totalCount\n          totalPages\n        }\n      }\n    }\n  }\n': typeof types.ReviewCasesDocument
-  '\n  query MyReports($pagi: PagiInput) {\n    myReports(pagi: $pagi) {\n      entries {\n        id\n        targetKey\n        reasonCode\n        details\n        insertedAt\n      }\n      pageInfo {\n        ... on OffsetPageInfo {\n          page\n          size\n          totalCount\n          totalPages\n          hasNextPage\n          hasPreviousPage\n        }\n      }\n    }\n  }\n': typeof types.MyReportsDocument
-  '\n  query ReviewCase($scope: ReviewScopeInput!, $id: ID!) {\n    reviewCase(scope: $scope, id: $id) {\n      case {\n        id\n        targetKey\n        scopeKey\n        contentToken\n        status\n        priority\n        version\n        openedAt\n        resolution\n      }\n      safeSummary\n      allowedActions\n      reports {\n        id\n        reasonCode\n        details\n        reporterId\n        insertedAt\n        withdrawnAt\n      }\n      decisions {\n        id\n        action\n        source\n        reasonCode\n        note\n        insertedAt\n      }\n      activeRestrictions\n      signals\n    }\n  }\n': typeof types.ReviewCaseDocument
-  '\n  mutation DecideReviewCase($caseId: ID!, $input: ReviewDecisionInput!, $commandId: ID!) {\n    decideReviewCase(caseId: $caseId, input: $input, commandId: $commandId) {\n      commandId\n      caseVersion\n      reviewDecision {\n        id\n        action\n        reasonCode\n      }\n    }\n  }\n': typeof types.DecideReviewCaseDocument
-  '\n  query ReviewConfig($scope: ReviewScopeInput!, $subjectKind: ReviewSubjectKind!) {\n    reviewConfig(scope: $scope, subjectKind: $subjectKind) {\n      scopeKey\n      subjectKind\n      version\n      publishMode\n      editMode\n      backgroundCheck\n      rulesetId\n      rules\n      prompt\n      providerProfile\n      requiredModalities\n    }\n  }\n': typeof types.ReviewConfigDocument
-  '\n  query ContentReview($target: ReviewTargetInput!) {\n    contentReview(target: $target) {\n      status\n      contentToken\n      checkUnavailable\n      canEdit\n      canRequestReview\n      viewerReportId\n      reasonCodes\n    }\n  }\n': typeof types.ContentReviewDocument
-  '\n  mutation SubmitReport($input: SubmitReportInput!, $commandId: ID!) {\n    submitReport(input: $input, commandId: $commandId) {\n      commandId\n      report {\n        id\n        reasonCode\n      }\n    }\n  }\n': typeof types.SubmitReportDocument
-  '\n  mutation WithdrawReport($reportId: ID!, $commandId: ID!) {\n    withdrawReport(reportId: $reportId, commandId: $commandId) {\n      commandId\n      report {\n        id\n        withdrawnAt\n      }\n    }\n  }\n': typeof types.WithdrawReportDocument
-  '\n  mutation UpdateReviewConfig($input: UpdateReviewConfigInput!, $commandId: ID!) {\n    updateReviewConfig(input: $input, commandId: $commandId) {\n      commandId\n      reviewConfig {\n        version\n        publishMode\n        editMode\n        backgroundCheck\n      }\n    }\n  }\n': typeof types.UpdateReviewConfigDocument
+  '\n  query AlertItems($scope: ReviewBotScopeInput!) {\n    alertItems(scope: $scope) {\n      id\n      owner\n      targetType\n      targetId\n      communityId\n      status\n      susNotes {\n        type\n        evidence\n        explanation\n      }\n      summary\n      reportCount\n      version\n      openedAt\n    }\n  }\n': typeof types.AlertItemsDocument
+  '\n  mutation ResolveAlertItem($id: ID!, $resolution: String!, $commandId: ID!) {\n    resolveAlertItem(id: $id, resolution: $resolution, commandId: $commandId) {\n      itemId\n      resolution\n    }\n  }\n': typeof types.ResolveAlertItemDocument
+  '\n  query MyReports {\n    myReports {\n      id\n      targetType\n      targetId\n      communityId\n      originItemId\n      reportType\n      details\n      withdrawnAt\n      insertedAt\n    }\n  }\n': typeof types.MyReportsDocument
+  '\n  mutation SubmitReport($input: AlertReportInput!, $commandId: ID!) {\n    submitReport(input: $input, commandId: $commandId) {\n      id\n      reportType\n    }\n  }\n': typeof types.SubmitReportDocument
+  '\n  mutation WithdrawReport($reportId: ID!, $commandId: ID!) {\n    withdrawReport(reportId: $reportId, commandId: $commandId) {\n      id\n      withdrawnAt\n    }\n  }\n': typeof types.WithdrawReportDocument
   '\n  fragment ArticleEditorAuthorFields on User {\n    login\n    nickname\n    avatar\n    bio\n    shortbio\n  }\n': typeof types.ArticleEditorAuthorFieldsFragmentDoc
   '\n  fragment ArticleEditorCommunityFields on Community {\n    title\n    slug\n    index\n    desc\n    logo\n    subscribersCount\n    homepage\n    articlesCount\n    views\n    pending\n    insertedAt\n    updatedAt\n  }\n': typeof types.ArticleEditorCommunityFieldsFragmentDoc
   '\n  fragment ArticleEditorTagFields on CommunityTag {\n    id\n    title\n    layout\n    desc\n    slug\n    color\n    marker {\n      type\n      provider\n      name\n      src\n      unified\n    }\n    thread\n    group\n    groupId\n    index\n    community {\n      slug\n    }\n  }\n': typeof types.ArticleEditorTagFieldsFragmentDoc
@@ -132,6 +128,14 @@ type Documents = {
   '\n  mutation PinPost($article: ArticlePathInput!, $commandId: ID!) {\n    pinPost(article: $article, commandId: $commandId) {\n      innerId\n    }\n  }\n': typeof types.PinPostDocument
   '\n  mutation UndoPinPost($article: ArticlePathInput!, $commandId: ID!) {\n    undoPinPost(article: $article, commandId: $commandId) {\n      innerId\n      isPinned\n    }\n  }\n': typeof types.UndoPinPostDocument
   '\n  query CommunityTagGroupsForMenu($community: String!, $thread: Thread) {\n    communityTagGroups(community: $community, thread: $thread) {\n      id\n      title\n      index\n      tags {\n        ...ArticleMenuTagFields\n      }\n    }\n  }\n': typeof types.CommunityTagGroupsForMenuDocument
+  '\n  query ContentReview($target: CmsReviewTargetInput!) {\n    contentReview(target: $target) {\n      requestId\n      targetType\n      articleId\n      commentId\n      branchId\n      communityId\n      state\n      reviewMode\n      systemOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n      communityOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n    }\n  }\n': typeof types.ContentReviewDocument
+  '\n  query PendingContentReviews($scope: ReviewBotScopeInput!) {\n    pendingContentReviews(scope: $scope) {\n      requestId\n      targetType\n      articleId\n      commentId\n      branchId\n      communityId\n      state\n      reviewMode\n      systemOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n      communityOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n    }\n  }\n': typeof types.PendingContentReviewsDocument
+  '\n  mutation ApproveArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    approveArticle(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n': typeof types.ApproveArticleReviewDocument
+  '\n  mutation ApproveCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    approveComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n': typeof types.ApproveCommentReviewDocument
+  '\n  mutation DenyArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n': typeof types.DenyArticleReviewDocument
+  '\n  mutation ReleaseArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n': typeof types.ReleaseArticleReviewDocument
+  '\n  mutation DenyCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n': typeof types.DenyCommentReviewDocument
+  '\n  mutation ReleaseCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n': typeof types.ReleaseCommentReviewDocument
   '\n  query ChangelogSimpleQuery($article: ArticlePathInput!) {\n    post(article: $article) {\n      innerId\n    }\n  }\n': typeof types.ChangelogSimpleQueryDocument
   '\n  fragment CommentAuthorFields on User {\n    login\n    nickname\n    avatar\n    bio\n    shortbio\n  }\n': typeof types.CommentAuthorFieldsFragmentDoc
   '\n  fragment CommentEmotionFields on EmotionStat {\n    type\n    count\n    viewerHasReacted\n    latestUsers {\n      login\n      nickname\n      avatar\n    }\n  }\n': typeof types.CommentEmotionFieldsFragmentDoc
@@ -256,6 +260,8 @@ type Documents = {
   '\n  query AllPassportRules {\n    allPassportRulesString {\n      cms\n    }\n  }\n': typeof types.AllPassportRulesDocument
   '\n  mutation UpdateModeratorPassport(\n    $commandId: ID!\n    $community: String!\n    $user: String!\n    $rules: Json!\n  ) {\n    updateModeratorPassport(\n      commandId: $commandId\n      community: $community\n      user: $user\n      rules: $rules\n    ) {\n      slug\n    }\n  }\n': typeof types.UpdateModeratorPassportDocument
   '\n  mutation RemoveModerator($commandId: ID!, $community: String!, $user: String!) {\n    removeModerator(commandId: $commandId, community: $community, user: $user) {\n      slug\n    }\n  }\n': typeof types.RemoveModeratorDocument
+  '\n  query ReviewBotConfig($scope: ReviewBotScopeInput!, $subjectType: ReviewBotSubjectType!) {\n    reviewBotConfig(scope: $scope, subjectType: $subjectType) {\n      id\n      communityId\n      subjectType\n      reviewMode\n      banWords\n      prompt\n      version\n      updatedAt\n    }\n  }\n': typeof types.ReviewBotConfigDocument
+  '\n  mutation UpdateReviewBotConfig($input: UpdateReviewBotConfigInput!, $commandId: ID!) {\n    updateReviewBotConfig(input: $input, commandId: $commandId) {\n      id\n      reviewMode\n      banWords\n      prompt\n      version\n    }\n  }\n': typeof types.UpdateReviewBotConfigDocument
   '\n  query RichEditorSimpleQuery($article: ArticlePathInput!) {\n    post(article: $article) {\n      innerId\n    }\n  }\n': typeof types.RichEditorSimpleQueryDocument
   '\n  mutation DeleteCommunityTag($commandId: ID!, $id: ID!, $community: String!, $thread: Thread) {\n    deleteCommunityTag(commandId: $commandId, id: $id, community: $community, thread: $thread) {\n      id\n    }\n  }\n': typeof types.DeleteCommunityTagDocument
   '\n  mutation CreateCommunityTag(\n    $commandId: ID!\n    $thread: Thread!\n    $title: String!\n    $slug: String!\n    $layout: String\n    $color: RainbowColor!\n    $groupId: ID!\n    $community: String!\n    $marker: MarkerInput\n  ) {\n    createCommunityTag(\n      commandId: $commandId\n      thread: $thread\n      title: $title\n      slug: $slug\n      layout: $layout\n      color: $color\n      groupId: $groupId\n      community: $community\n      marker: $marker\n    ) {\n      id\n    }\n  }\n': typeof types.CreateCommunityTagDocument
@@ -441,24 +447,16 @@ const documents: Documents = {
     types.SessionStateDocument,
   '\n  query AboutSimpleQuery($article: ArticlePathInput!) {\n    post(article: $article) {\n      innerId\n    }\n  }\n':
     types.AboutSimpleQueryDocument,
-  '\n  query ReviewCases($scope: ReviewScopeInput!, $filter: ReviewCaseFilterInput, $pagi: PagiInput) {\n    reviewCases(scope: $scope, filter: $filter, pagi: $pagi) {\n      entries {\n        id\n        targetKey\n        scopeKey\n        contentToken\n        status\n        priority\n        version\n        openedAt\n        resolution\n      }\n      pageInfo {\n        ... on OffsetPageInfo {\n          page\n          size\n          totalCount\n          totalPages\n        }\n      }\n    }\n  }\n':
-    types.ReviewCasesDocument,
-  '\n  query MyReports($pagi: PagiInput) {\n    myReports(pagi: $pagi) {\n      entries {\n        id\n        targetKey\n        reasonCode\n        details\n        insertedAt\n      }\n      pageInfo {\n        ... on OffsetPageInfo {\n          page\n          size\n          totalCount\n          totalPages\n          hasNextPage\n          hasPreviousPage\n        }\n      }\n    }\n  }\n':
+  '\n  query AlertItems($scope: ReviewBotScopeInput!) {\n    alertItems(scope: $scope) {\n      id\n      owner\n      targetType\n      targetId\n      communityId\n      status\n      susNotes {\n        type\n        evidence\n        explanation\n      }\n      summary\n      reportCount\n      version\n      openedAt\n    }\n  }\n':
+    types.AlertItemsDocument,
+  '\n  mutation ResolveAlertItem($id: ID!, $resolution: String!, $commandId: ID!) {\n    resolveAlertItem(id: $id, resolution: $resolution, commandId: $commandId) {\n      itemId\n      resolution\n    }\n  }\n':
+    types.ResolveAlertItemDocument,
+  '\n  query MyReports {\n    myReports {\n      id\n      targetType\n      targetId\n      communityId\n      originItemId\n      reportType\n      details\n      withdrawnAt\n      insertedAt\n    }\n  }\n':
     types.MyReportsDocument,
-  '\n  query ReviewCase($scope: ReviewScopeInput!, $id: ID!) {\n    reviewCase(scope: $scope, id: $id) {\n      case {\n        id\n        targetKey\n        scopeKey\n        contentToken\n        status\n        priority\n        version\n        openedAt\n        resolution\n      }\n      safeSummary\n      allowedActions\n      reports {\n        id\n        reasonCode\n        details\n        reporterId\n        insertedAt\n        withdrawnAt\n      }\n      decisions {\n        id\n        action\n        source\n        reasonCode\n        note\n        insertedAt\n      }\n      activeRestrictions\n      signals\n    }\n  }\n':
-    types.ReviewCaseDocument,
-  '\n  mutation DecideReviewCase($caseId: ID!, $input: ReviewDecisionInput!, $commandId: ID!) {\n    decideReviewCase(caseId: $caseId, input: $input, commandId: $commandId) {\n      commandId\n      caseVersion\n      reviewDecision {\n        id\n        action\n        reasonCode\n      }\n    }\n  }\n':
-    types.DecideReviewCaseDocument,
-  '\n  query ReviewConfig($scope: ReviewScopeInput!, $subjectKind: ReviewSubjectKind!) {\n    reviewConfig(scope: $scope, subjectKind: $subjectKind) {\n      scopeKey\n      subjectKind\n      version\n      publishMode\n      editMode\n      backgroundCheck\n      rulesetId\n      rules\n      prompt\n      providerProfile\n      requiredModalities\n    }\n  }\n':
-    types.ReviewConfigDocument,
-  '\n  query ContentReview($target: ReviewTargetInput!) {\n    contentReview(target: $target) {\n      status\n      contentToken\n      checkUnavailable\n      canEdit\n      canRequestReview\n      viewerReportId\n      reasonCodes\n    }\n  }\n':
-    types.ContentReviewDocument,
-  '\n  mutation SubmitReport($input: SubmitReportInput!, $commandId: ID!) {\n    submitReport(input: $input, commandId: $commandId) {\n      commandId\n      report {\n        id\n        reasonCode\n      }\n    }\n  }\n':
+  '\n  mutation SubmitReport($input: AlertReportInput!, $commandId: ID!) {\n    submitReport(input: $input, commandId: $commandId) {\n      id\n      reportType\n    }\n  }\n':
     types.SubmitReportDocument,
-  '\n  mutation WithdrawReport($reportId: ID!, $commandId: ID!) {\n    withdrawReport(reportId: $reportId, commandId: $commandId) {\n      commandId\n      report {\n        id\n        withdrawnAt\n      }\n    }\n  }\n':
+  '\n  mutation WithdrawReport($reportId: ID!, $commandId: ID!) {\n    withdrawReport(reportId: $reportId, commandId: $commandId) {\n      id\n      withdrawnAt\n    }\n  }\n':
     types.WithdrawReportDocument,
-  '\n  mutation UpdateReviewConfig($input: UpdateReviewConfigInput!, $commandId: ID!) {\n    updateReviewConfig(input: $input, commandId: $commandId) {\n      commandId\n      reviewConfig {\n        version\n        publishMode\n        editMode\n        backgroundCheck\n      }\n    }\n  }\n':
-    types.UpdateReviewConfigDocument,
   '\n  fragment ArticleEditorAuthorFields on User {\n    login\n    nickname\n    avatar\n    bio\n    shortbio\n  }\n':
     types.ArticleEditorAuthorFieldsFragmentDoc,
   '\n  fragment ArticleEditorCommunityFields on Community {\n    title\n    slug\n    index\n    desc\n    logo\n    subscribersCount\n    homepage\n    articlesCount\n    views\n    pending\n    insertedAt\n    updatedAt\n  }\n':
@@ -495,6 +493,22 @@ const documents: Documents = {
     types.UndoPinPostDocument,
   '\n  query CommunityTagGroupsForMenu($community: String!, $thread: Thread) {\n    communityTagGroups(community: $community, thread: $thread) {\n      id\n      title\n      index\n      tags {\n        ...ArticleMenuTagFields\n      }\n    }\n  }\n':
     types.CommunityTagGroupsForMenuDocument,
+  '\n  query ContentReview($target: CmsReviewTargetInput!) {\n    contentReview(target: $target) {\n      requestId\n      targetType\n      articleId\n      commentId\n      branchId\n      communityId\n      state\n      reviewMode\n      systemOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n      communityOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n    }\n  }\n':
+    types.ContentReviewDocument,
+  '\n  query PendingContentReviews($scope: ReviewBotScopeInput!) {\n    pendingContentReviews(scope: $scope) {\n      requestId\n      targetType\n      articleId\n      commentId\n      branchId\n      communityId\n      state\n      reviewMode\n      systemOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n      communityOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n    }\n  }\n':
+    types.PendingContentReviewsDocument,
+  '\n  mutation ApproveArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    approveArticle(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n':
+    types.ApproveArticleReviewDocument,
+  '\n  mutation ApproveCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    approveComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n':
+    types.ApproveCommentReviewDocument,
+  '\n  mutation DenyArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n':
+    types.DenyArticleReviewDocument,
+  '\n  mutation ReleaseArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n':
+    types.ReleaseArticleReviewDocument,
+  '\n  mutation DenyCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n':
+    types.DenyCommentReviewDocument,
+  '\n  mutation ReleaseCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n':
+    types.ReleaseCommentReviewDocument,
   '\n  query ChangelogSimpleQuery($article: ArticlePathInput!) {\n    post(article: $article) {\n      innerId\n    }\n  }\n':
     types.ChangelogSimpleQueryDocument,
   '\n  fragment CommentAuthorFields on User {\n    login\n    nickname\n    avatar\n    bio\n    shortbio\n  }\n':
@@ -743,6 +757,10 @@ const documents: Documents = {
     types.UpdateModeratorPassportDocument,
   '\n  mutation RemoveModerator($commandId: ID!, $community: String!, $user: String!) {\n    removeModerator(commandId: $commandId, community: $community, user: $user) {\n      slug\n    }\n  }\n':
     types.RemoveModeratorDocument,
+  '\n  query ReviewBotConfig($scope: ReviewBotScopeInput!, $subjectType: ReviewBotSubjectType!) {\n    reviewBotConfig(scope: $scope, subjectType: $subjectType) {\n      id\n      communityId\n      subjectType\n      reviewMode\n      banWords\n      prompt\n      version\n      updatedAt\n    }\n  }\n':
+    types.ReviewBotConfigDocument,
+  '\n  mutation UpdateReviewBotConfig($input: UpdateReviewBotConfigInput!, $commandId: ID!) {\n    updateReviewBotConfig(input: $input, commandId: $commandId) {\n      id\n      reviewMode\n      banWords\n      prompt\n      version\n    }\n  }\n':
+    types.UpdateReviewBotConfigDocument,
   '\n  query RichEditorSimpleQuery($article: ArticlePathInput!) {\n    post(article: $article) {\n      innerId\n    }\n  }\n':
     types.RichEditorSimpleQueryDocument,
   '\n  mutation DeleteCommunityTag($commandId: ID!, $id: ID!, $community: String!, $thread: Thread) {\n    deleteCommunityTag(commandId: $commandId, id: $id, community: $community, thread: $thread) {\n      id\n    }\n  }\n':
@@ -1311,56 +1329,32 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query ReviewCases($scope: ReviewScopeInput!, $filter: ReviewCaseFilterInput, $pagi: PagiInput) {\n    reviewCases(scope: $scope, filter: $filter, pagi: $pagi) {\n      entries {\n        id\n        targetKey\n        scopeKey\n        contentToken\n        status\n        priority\n        version\n        openedAt\n        resolution\n      }\n      pageInfo {\n        ... on OffsetPageInfo {\n          page\n          size\n          totalCount\n          totalPages\n        }\n      }\n    }\n  }\n',
-): (typeof documents)['\n  query ReviewCases($scope: ReviewScopeInput!, $filter: ReviewCaseFilterInput, $pagi: PagiInput) {\n    reviewCases(scope: $scope, filter: $filter, pagi: $pagi) {\n      entries {\n        id\n        targetKey\n        scopeKey\n        contentToken\n        status\n        priority\n        version\n        openedAt\n        resolution\n      }\n      pageInfo {\n        ... on OffsetPageInfo {\n          page\n          size\n          totalCount\n          totalPages\n        }\n      }\n    }\n  }\n']
+  source: '\n  query AlertItems($scope: ReviewBotScopeInput!) {\n    alertItems(scope: $scope) {\n      id\n      owner\n      targetType\n      targetId\n      communityId\n      status\n      susNotes {\n        type\n        evidence\n        explanation\n      }\n      summary\n      reportCount\n      version\n      openedAt\n    }\n  }\n',
+): (typeof documents)['\n  query AlertItems($scope: ReviewBotScopeInput!) {\n    alertItems(scope: $scope) {\n      id\n      owner\n      targetType\n      targetId\n      communityId\n      status\n      susNotes {\n        type\n        evidence\n        explanation\n      }\n      summary\n      reportCount\n      version\n      openedAt\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query MyReports($pagi: PagiInput) {\n    myReports(pagi: $pagi) {\n      entries {\n        id\n        targetKey\n        reasonCode\n        details\n        insertedAt\n      }\n      pageInfo {\n        ... on OffsetPageInfo {\n          page\n          size\n          totalCount\n          totalPages\n          hasNextPage\n          hasPreviousPage\n        }\n      }\n    }\n  }\n',
-): (typeof documents)['\n  query MyReports($pagi: PagiInput) {\n    myReports(pagi: $pagi) {\n      entries {\n        id\n        targetKey\n        reasonCode\n        details\n        insertedAt\n      }\n      pageInfo {\n        ... on OffsetPageInfo {\n          page\n          size\n          totalCount\n          totalPages\n          hasNextPage\n          hasPreviousPage\n        }\n      }\n    }\n  }\n']
+  source: '\n  mutation ResolveAlertItem($id: ID!, $resolution: String!, $commandId: ID!) {\n    resolveAlertItem(id: $id, resolution: $resolution, commandId: $commandId) {\n      itemId\n      resolution\n    }\n  }\n',
+): (typeof documents)['\n  mutation ResolveAlertItem($id: ID!, $resolution: String!, $commandId: ID!) {\n    resolveAlertItem(id: $id, resolution: $resolution, commandId: $commandId) {\n      itemId\n      resolution\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query ReviewCase($scope: ReviewScopeInput!, $id: ID!) {\n    reviewCase(scope: $scope, id: $id) {\n      case {\n        id\n        targetKey\n        scopeKey\n        contentToken\n        status\n        priority\n        version\n        openedAt\n        resolution\n      }\n      safeSummary\n      allowedActions\n      reports {\n        id\n        reasonCode\n        details\n        reporterId\n        insertedAt\n        withdrawnAt\n      }\n      decisions {\n        id\n        action\n        source\n        reasonCode\n        note\n        insertedAt\n      }\n      activeRestrictions\n      signals\n    }\n  }\n',
-): (typeof documents)['\n  query ReviewCase($scope: ReviewScopeInput!, $id: ID!) {\n    reviewCase(scope: $scope, id: $id) {\n      case {\n        id\n        targetKey\n        scopeKey\n        contentToken\n        status\n        priority\n        version\n        openedAt\n        resolution\n      }\n      safeSummary\n      allowedActions\n      reports {\n        id\n        reasonCode\n        details\n        reporterId\n        insertedAt\n        withdrawnAt\n      }\n      decisions {\n        id\n        action\n        source\n        reasonCode\n        note\n        insertedAt\n      }\n      activeRestrictions\n      signals\n    }\n  }\n']
+  source: '\n  query MyReports {\n    myReports {\n      id\n      targetType\n      targetId\n      communityId\n      originItemId\n      reportType\n      details\n      withdrawnAt\n      insertedAt\n    }\n  }\n',
+): (typeof documents)['\n  query MyReports {\n    myReports {\n      id\n      targetType\n      targetId\n      communityId\n      originItemId\n      reportType\n      details\n      withdrawnAt\n      insertedAt\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation DecideReviewCase($caseId: ID!, $input: ReviewDecisionInput!, $commandId: ID!) {\n    decideReviewCase(caseId: $caseId, input: $input, commandId: $commandId) {\n      commandId\n      caseVersion\n      reviewDecision {\n        id\n        action\n        reasonCode\n      }\n    }\n  }\n',
-): (typeof documents)['\n  mutation DecideReviewCase($caseId: ID!, $input: ReviewDecisionInput!, $commandId: ID!) {\n    decideReviewCase(caseId: $caseId, input: $input, commandId: $commandId) {\n      commandId\n      caseVersion\n      reviewDecision {\n        id\n        action\n        reasonCode\n      }\n    }\n  }\n']
+  source: '\n  mutation SubmitReport($input: AlertReportInput!, $commandId: ID!) {\n    submitReport(input: $input, commandId: $commandId) {\n      id\n      reportType\n    }\n  }\n',
+): (typeof documents)['\n  mutation SubmitReport($input: AlertReportInput!, $commandId: ID!) {\n    submitReport(input: $input, commandId: $commandId) {\n      id\n      reportType\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query ReviewConfig($scope: ReviewScopeInput!, $subjectKind: ReviewSubjectKind!) {\n    reviewConfig(scope: $scope, subjectKind: $subjectKind) {\n      scopeKey\n      subjectKind\n      version\n      publishMode\n      editMode\n      backgroundCheck\n      rulesetId\n      rules\n      prompt\n      providerProfile\n      requiredModalities\n    }\n  }\n',
-): (typeof documents)['\n  query ReviewConfig($scope: ReviewScopeInput!, $subjectKind: ReviewSubjectKind!) {\n    reviewConfig(scope: $scope, subjectKind: $subjectKind) {\n      scopeKey\n      subjectKind\n      version\n      publishMode\n      editMode\n      backgroundCheck\n      rulesetId\n      rules\n      prompt\n      providerProfile\n      requiredModalities\n    }\n  }\n']
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: '\n  query ContentReview($target: ReviewTargetInput!) {\n    contentReview(target: $target) {\n      status\n      contentToken\n      checkUnavailable\n      canEdit\n      canRequestReview\n      viewerReportId\n      reasonCodes\n    }\n  }\n',
-): (typeof documents)['\n  query ContentReview($target: ReviewTargetInput!) {\n    contentReview(target: $target) {\n      status\n      contentToken\n      checkUnavailable\n      canEdit\n      canRequestReview\n      viewerReportId\n      reasonCodes\n    }\n  }\n']
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: '\n  mutation SubmitReport($input: SubmitReportInput!, $commandId: ID!) {\n    submitReport(input: $input, commandId: $commandId) {\n      commandId\n      report {\n        id\n        reasonCode\n      }\n    }\n  }\n',
-): (typeof documents)['\n  mutation SubmitReport($input: SubmitReportInput!, $commandId: ID!) {\n    submitReport(input: $input, commandId: $commandId) {\n      commandId\n      report {\n        id\n        reasonCode\n      }\n    }\n  }\n']
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: '\n  mutation WithdrawReport($reportId: ID!, $commandId: ID!) {\n    withdrawReport(reportId: $reportId, commandId: $commandId) {\n      commandId\n      report {\n        id\n        withdrawnAt\n      }\n    }\n  }\n',
-): (typeof documents)['\n  mutation WithdrawReport($reportId: ID!, $commandId: ID!) {\n    withdrawReport(reportId: $reportId, commandId: $commandId) {\n      commandId\n      report {\n        id\n        withdrawnAt\n      }\n    }\n  }\n']
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: '\n  mutation UpdateReviewConfig($input: UpdateReviewConfigInput!, $commandId: ID!) {\n    updateReviewConfig(input: $input, commandId: $commandId) {\n      commandId\n      reviewConfig {\n        version\n        publishMode\n        editMode\n        backgroundCheck\n      }\n    }\n  }\n',
-): (typeof documents)['\n  mutation UpdateReviewConfig($input: UpdateReviewConfigInput!, $commandId: ID!) {\n    updateReviewConfig(input: $input, commandId: $commandId) {\n      commandId\n      reviewConfig {\n        version\n        publishMode\n        editMode\n        backgroundCheck\n      }\n    }\n  }\n']
+  source: '\n  mutation WithdrawReport($reportId: ID!, $commandId: ID!) {\n    withdrawReport(reportId: $reportId, commandId: $commandId) {\n      id\n      withdrawnAt\n    }\n  }\n',
+): (typeof documents)['\n  mutation WithdrawReport($reportId: ID!, $commandId: ID!) {\n    withdrawReport(reportId: $reportId, commandId: $commandId) {\n      id\n      withdrawnAt\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -1469,6 +1463,54 @@ export function graphql(
 export function graphql(
   source: '\n  query CommunityTagGroupsForMenu($community: String!, $thread: Thread) {\n    communityTagGroups(community: $community, thread: $thread) {\n      id\n      title\n      index\n      tags {\n        ...ArticleMenuTagFields\n      }\n    }\n  }\n',
 ): (typeof documents)['\n  query CommunityTagGroupsForMenu($community: String!, $thread: Thread) {\n    communityTagGroups(community: $community, thread: $thread) {\n      id\n      title\n      index\n      tags {\n        ...ArticleMenuTagFields\n      }\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query ContentReview($target: CmsReviewTargetInput!) {\n    contentReview(target: $target) {\n      requestId\n      targetType\n      articleId\n      commentId\n      branchId\n      communityId\n      state\n      reviewMode\n      systemOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n      communityOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n    }\n  }\n',
+): (typeof documents)['\n  query ContentReview($target: CmsReviewTargetInput!) {\n    contentReview(target: $target) {\n      requestId\n      targetType\n      articleId\n      commentId\n      branchId\n      communityId\n      state\n      reviewMode\n      systemOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n      communityOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query PendingContentReviews($scope: ReviewBotScopeInput!) {\n    pendingContentReviews(scope: $scope) {\n      requestId\n      targetType\n      articleId\n      commentId\n      branchId\n      communityId\n      state\n      reviewMode\n      systemOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n      communityOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n    }\n  }\n',
+): (typeof documents)['\n  query PendingContentReviews($scope: ReviewBotScopeInput!) {\n    pendingContentReviews(scope: $scope) {\n      requestId\n      targetType\n      articleId\n      commentId\n      branchId\n      communityId\n      state\n      reviewMode\n      systemOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n      communityOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation ApproveArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    approveArticle(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n',
+): (typeof documents)['\n  mutation ApproveArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    approveArticle(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation ApproveCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    approveComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n',
+): (typeof documents)['\n  mutation ApproveCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    approveComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation DenyArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n',
+): (typeof documents)['\n  mutation DenyArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation ReleaseArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n',
+): (typeof documents)['\n  mutation ReleaseArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation DenyCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n',
+): (typeof documents)['\n  mutation DenyCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation ReleaseCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n',
+): (typeof documents)['\n  mutation ReleaseCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -2213,6 +2255,18 @@ export function graphql(
 export function graphql(
   source: '\n  mutation RemoveModerator($commandId: ID!, $community: String!, $user: String!) {\n    removeModerator(commandId: $commandId, community: $community, user: $user) {\n      slug\n    }\n  }\n',
 ): (typeof documents)['\n  mutation RemoveModerator($commandId: ID!, $community: String!, $user: String!) {\n    removeModerator(commandId: $commandId, community: $community, user: $user) {\n      slug\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query ReviewBotConfig($scope: ReviewBotScopeInput!, $subjectType: ReviewBotSubjectType!) {\n    reviewBotConfig(scope: $scope, subjectType: $subjectType) {\n      id\n      communityId\n      subjectType\n      reviewMode\n      banWords\n      prompt\n      version\n      updatedAt\n    }\n  }\n',
+): (typeof documents)['\n  query ReviewBotConfig($scope: ReviewBotScopeInput!, $subjectType: ReviewBotSubjectType!) {\n    reviewBotConfig(scope: $scope, subjectType: $subjectType) {\n      id\n      communityId\n      subjectType\n      reviewMode\n      banWords\n      prompt\n      version\n      updatedAt\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation UpdateReviewBotConfig($input: UpdateReviewBotConfigInput!, $commandId: ID!) {\n    updateReviewBotConfig(input: $input, commandId: $commandId) {\n      id\n      reviewMode\n      banWords\n      prompt\n      version\n    }\n  }\n',
+): (typeof documents)['\n  mutation UpdateReviewBotConfig($input: UpdateReviewBotConfigInput!, $commandId: ID!) {\n    updateReviewBotConfig(input: $input, commandId: $commandId) {\n      id\n      reviewMode\n      banWords\n      prompt\n      version\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

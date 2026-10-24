@@ -14,7 +14,7 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
   use GroupherServer.CommandPipeline,
     adapter: GroupherServer.CMS.CommandPipelineAdapter
 
-  alias GroupherServer.{Accounts, AlertBoard, CMS, FrontDesk}
+  alias GroupherServer.{Accounts, CMS, FrontDesk, ReviewBot}
   alias Accounts.Model.User
   alias CMS.Communities.{CreationPersist, Lifecycle}
   alias CMS.Communities.Moderators.Setup, as: ModeratorSetup
@@ -54,7 +54,8 @@ defmodule GroupherServer.CMS.Communities.Commands.Create do
   defp create_community(args, %User{} = user, command_id) do
     with {:ok, community} <- CreationPersist.create_core(with_defaults(args), user),
          {:ok, _lifecycle} <- Lifecycle.ensure_created(community.id),
-         {:ok, _review_configs} <- AlertBoard.create_default_configs_for_community(community.id),
+         {:ok, _review_bot_configs} <-
+           ReviewBot.create_default_configs_for_community(community.id),
          {:ok, _moderator} <- ModeratorSetup.add_root(community, user),
          {:ok, _tree} <- CMS.DocTree.initialize(community),
          {:ok, canonical} <- FrontDesk.community(community.slug, mode: :internal),

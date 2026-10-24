@@ -10,7 +10,7 @@ import { useRef } from 'react'
 import ArtimentBody from '~/render/ArtimentBody'
 import useArticle from '~/stores/article/hooks'
 import useCommunity from '~/stores/community/hooks'
-import ReviewNotice from '~/unit/AlertBoard/ReviewNotice'
+import ReviewNotice from '~/unit/AlertWall/ReviewNotice'
 import Comments from '~/unit/Comments'
 
 import useSalon from './salon/content'
@@ -31,7 +31,7 @@ export default function Content() {
         {article.thread && article.thread !== 'DOC' && article.innerId && (
           <ReviewNotice
             target={{
-              kind: 'ARTICLE',
+              type: 'ARTICLE',
               article: { community, thread: article.thread, innerId: article.innerId },
             }}
           />

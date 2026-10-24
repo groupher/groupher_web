@@ -8,7 +8,7 @@ defmodule GroupherServer.CMS.Command.Confirmation do
 
       Domain Confirmation
         -> strict JSON key/type checks
-        -> CMS.Command.Receipt confirmation envelope
+        -> GroupherServer.CMS.Command.Receipt confirmation envelope
         -> decode on an idempotent retry
 
   Domain code should use its generated Confirmation codec, not call these

@@ -5,7 +5,7 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
 
   alias GroupherServer.Jobs
 
-  alias GroupherServer.{Activity, AlertBoard, CMS}
+  alias GroupherServer.{Activity, CMS, ReviewBot}
   alias Activity.Model.CommunityLog
   alias Jobs.CreateCommunity
   alias Jobs.CommunitySetup, as: Setup
@@ -495,13 +495,15 @@ defmodule GroupherServer.Test.CMS.CommunityApplicationsTest do
     assert created.status == :created
     assert created.completed_at
 
-    assert {:ok, article_configs} = AlertBoard.configs_for_target(created.community_id, :article)
+    assert {:ok, %{community: article_config}} =
+             ReviewBot.configs_for_target(created.community_id, :article)
 
-    assert Enum.any?(article_configs, &(&1.scope_key == "community:#{created.community_id}"))
+    assert article_config.community_id == created.community_id
 
-    assert {:ok, comment_configs} = AlertBoard.configs_for_target(created.community_id, :comment)
+    assert {:ok, %{community: comment_config}} =
+             ReviewBot.configs_for_target(created.community_id, :comment)
 
-    assert Enum.any?(comment_configs, &(&1.scope_key == "community:#{created.community_id}"))
+    assert comment_config.community_id == created.community_id
 
     lifecycle = Repo.get_by!(CMS.Model.CommunityLifecycle, community_id: created.community_id)
     assert lifecycle.state == :active

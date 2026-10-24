@@ -63,25 +63,6 @@ defmodule GroupherServer.Jobs.Workflow do
   end
 
   @doc """
-  Enqueues one ReviewBot Check using its stable UUID.
-
-  ## Examples
-
-      Workflow.review_bot_check(Ecto.UUID.generate())
-      #=> {:ok, job} | {:error, reason}
-  """
-  @spec review_bot_check(Ecto.UUID.t()) :: {:ok, term()} | {:error, term()}
-  def review_bot_check(check_id) when is_binary(check_id) do
-    if Config.skip_enqueue?() do
-      {:ok, :skipped}
-    else
-      %{check_id: check_id}
-      |> Jobs.ReviewBotCheck.new()
-      |> Oban.insert()
-    end
-  end
-
-  @doc """
   Builds the Oban changeset for one PublicCache invalidation delivery.
 
   ## Examples

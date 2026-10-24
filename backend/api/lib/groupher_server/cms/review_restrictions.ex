@@ -1,11 +1,12 @@
 defmodule GroupherServer.CMS.ReviewRestrictions do
   @moduledoc """
-  Persists scope-specific restrictions that Gate evaluates directly on reads.
+  CMS-owned review holds attached to resource IDs and evaluated by Gate.
 
-      locked Lifecycle
-        -> ReviewRestrictions apply/end
-        -> Article/Comment Gate predicates; Doc public projection
-        -> same CMS transaction
+  Business position:
+
+      CMS resource Lifecycle command
+        -> direct target restriction rows
+          -> Gate and public projections read active holds
   """
 
   import Ecto.Query
@@ -21,309 +22,191 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
     CommentLifecycle,
     CommentReviewRestriction,
     Community,
-    DocLifecycle,
     DocBranch,
+    DocLifecycle,
     DocReviewRestriction
   }
 
-  alias CMS.Review.Effects
-
   @public_states [:published, :archived]
 
-  @doc """
-  Advances the review epoch for a newly committed content snapshot.
-
-  The caller must already hold the resource Lifecycle lock in the current
-  transaction. The token is a concurrency identity, not a user-visible version.
-
-  ## Examples
-
-      ReviewRestrictions.advance_snapshot(locked_lifecycle, "sha256:...")
-      #=> {:ok, updated_lifecycle} | {:error, reason}
-  """
-  @spec advance_snapshot(struct(), String.t()) :: {:ok, struct()} | {:error, term()}
-  def advance_snapshot(lifecycle, content_token)
-      when is_binary(content_token) and content_token != "" do
-    with {:ok, :pass} <- require_transaction(),
-         {:ok, changeset} <- snapshot_changeset(lifecycle, content_token) do
-      Repo.update(changeset)
-    else
-      {:error, _reason} = error -> error
-    end
-  end
-
-  def advance_snapshot(_lifecycle, _content_token) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
-  end
-
-  @doc """
-  Apply a persisted ReviewBot or reviewer restriction inside the resource transaction.
-
-  ## Examples
-
-      ReviewRestrictions.apply(lifecycle, %{scope_key: "platform", cause_key: "case:123", ...})
-  """
-  @spec apply(struct(), map()) :: {:ok, struct()} | {:error, term()}
+  @doc "Adds one direct resource restriction inside the locked CMS resource transaction."
   def apply(lifecycle, attrs) when is_map(attrs) do
     with {:ok, :pass} <- require_transaction(),
-         {:ok, schema} <- restriction_schema(lifecycle),
-         {:ok, :pass} <- validate_scope(lifecycle, attrs),
-         {:ok, restriction} <- insert_or_get(schema, lifecycle, attrs),
+         {:ok, schema, target_attrs} <- restriction_target(lifecycle, attrs),
+         {:ok, :pass} <- validate_scope(lifecycle, target_attrs),
+         attrs <- attrs |> defaults() |> Map.delete(:scope_key) |> Map.merge(target_attrs),
+         {:ok, restriction} <- insert_or_get(schema, attrs),
          {:ok, :pass} <- recompute(lifecycle),
-         {:ok, _event} <-
-           enqueue_visibility_change(
-             lifecycle,
-             attrs.scope_key,
-             "restriction:#{attrs.cause_key}"
-           ) do
+         {:ok, _event} <- enqueue_visibility_change(lifecycle, target_attrs, attrs.source_ref) do
       {:ok, restriction}
     end
   end
 
-  @doc """
-  Ends only the requested active restrictions on a locked lifecycle row.
+  def apply(_lifecycle, _attrs), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
 
-  ## Examples
-
-      ReviewRestrictions.end_restrictions(lifecycle, "community:12", [restriction_id], operation_ref, "approved")
-  """
-  @spec end_restrictions(struct(), String.t(), [term()], Ecto.UUID.t(), String.t()) ::
-          {:ok, :pass} | {:error, term()}
-  def end_restrictions(lifecycle, scope_key, [], operation_ref, reason)
-      when is_binary(scope_key) and is_binary(operation_ref) and is_binary(reason) and
-             reason != "" do
-    with {:ok, :pass} <- require_transaction(),
-         {:ok, _schema} <- restriction_schema(lifecycle) do
-      {:ok, :pass}
-    end
-  end
-
-  def end_restrictions(lifecycle, scope_key, ids, operation_ref, reason)
+  @doc "Resolves selected restrictions within the locked resource and scope."
+  def end_restrictions(lifecycle, scope_key, ids, operation_ref, resolution)
       when is_binary(scope_key) and is_list(ids) and is_binary(operation_ref) and
-             is_binary(reason) and reason != "" do
+             is_binary(resolution) and resolution != "" do
     with {:ok, :pass} <- require_transaction(),
-         {:ok, schema} <- restriction_schema(lifecycle),
-         {:ok, restrictions} <- load_active(schema, lifecycle, scope_key, ids),
-         {:ok, :pass} <- end_rows(restrictions, operation_ref, reason),
+         {:ok, schema, target_attrs} <- restriction_target(lifecycle, %{scope_key: scope_key}),
+         {:ok, restrictions} <- load_active(schema, target_attrs, ids),
+         {:ok, :pass} <- resolve_rows(restrictions, operation_ref, resolution),
          {:ok, :pass} <- recompute(lifecycle),
-         {:ok, _event} <-
-           enqueue_visibility_change(
-             lifecycle,
-             scope_key,
-             "end:#{operation_ref}:#{reason}:#{Enum.join(ids, ",")}"
-           ) do
+         {:ok, _event} <- enqueue_visibility_change(lifecycle, target_attrs, operation_ref) do
       {:ok, :pass}
     end
   end
 
-  @doc """
-  Returns the locked active restrictions for one Lifecycle and scope.
+  def end_restrictions(_lifecycle, _scope_key, _ids, _operation_ref, _resolution) do
+    {:error, CMS.ErrorCat.invalid_review_restriction()}
+  end
 
-  ## Examples
-
-      ReviewRestrictions.active_for(locked_lifecycle, "platform")
-      #=> {:ok, [%ArticleReviewRestriction{}]} | {:error, reason}
-  """
-  @spec active_for(struct(), String.t()) :: {:ok, [struct()]} | {:error, term()}
+  @doc "Returns active restrictions for one resource scope."
   def active_for(lifecycle, scope_key) when is_binary(scope_key) do
     with {:ok, :pass} <- require_transaction(),
-         {:ok, schema} <- restriction_schema(lifecycle) do
-      rows =
-        schema
-        |> where(
-          [restriction],
-          restriction.lifecycle_id == ^lifecycle.id and restriction.scope_key == ^scope_key and
-            is_nil(restriction.ended_at)
-        )
-        |> order_by([restriction], asc: restriction.id)
-        |> lock("FOR UPDATE")
-        |> Repo.all()
+         {:ok, schema, target_attrs} <- restriction_target(lifecycle, %{scope_key: scope_key}) do
+      query = where_target(schema, target_attrs)
 
-      {:ok, rows}
+      {:ok,
+       Repo.all(
+         from(restriction in query,
+           where: is_nil(restriction.resolved_at),
+           order_by: restriction.id,
+           lock: "FOR UPDATE"
+         )
+       )}
     end
   end
 
-  @doc """
-  Recomputes derived effects after a restriction transition.
+  def active_for(_lifecycle, _scope_key), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
 
-  Ordinary Article visibility is read directly from Lifecycle and active
-  restrictions by Gate. Doc restrictions additionally update the branch-scoped
-  `DocPublic.visible` projection; Comment restrictions refresh Article stats.
+  @doc "Links a CMS AI suspicion to the AlertWall item created for its request."
+  def link_item_for_request_in_transaction(request_id, item_id)
+      when is_binary(request_id) and is_integer(item_id) do
+    with {:ok, :pass} <- require_transaction() do
+      {updated, _} =
+        Repo.update_all(
+          from(restriction in ArticleReviewRestriction,
+            where:
+              restriction.request_id == ^request_id and restriction.type == :ai_suspect and
+                is_nil(restriction.item_id)
+          ),
+          set: [item_id: item_id]
+        )
 
-  ## Examples
+      {comment_updated, _} =
+        Repo.update_all(
+          from(restriction in CommentReviewRestriction,
+            where:
+              restriction.request_id == ^request_id and restriction.type == :ai_suspect and
+                is_nil(restriction.item_id)
+          ),
+          set: [item_id: item_id]
+        )
 
-      ReviewRestrictions.recompute(locked_lifecycle)
-      #=> {:ok, :pass} | {:error, reason}
-  """
-  @spec recompute(struct()) :: {:ok, :pass} | {:error, term()}
-  def recompute(%ArticleLifecycle{} = lifecycle) do
-    with {:ok, :pass} <- require_transaction(),
-         {:ok, _article} <- load_article(lifecycle.article_id) do
+      {doc_updated, _} =
+        Repo.update_all(
+          from(restriction in DocReviewRestriction,
+            where:
+              restriction.request_id == ^request_id and restriction.type == :ai_suspect and
+                is_nil(restriction.item_id)
+          ),
+          set: [item_id: item_id]
+        )
+
+      if updated + comment_updated + doc_updated > 0 do
+        {:ok, :pass}
+      else
+        {:error, CMS.ErrorCat.review_restriction_not_found()}
+      end
+    end
+  end
+
+  def link_item_for_request_in_transaction(_request_id, _item_id) do
+    {:error, CMS.ErrorCat.invalid_review_restriction()}
+  end
+
+  @doc "Recomputes CMS projections after a restriction transition."
+  def recompute(%ArticleLifecycle{article_id: article_id}) do
+    if Repo.in_transaction?() and Repo.get(Article, article_id) do
       {:ok, :pass}
+    else
+      {:error, CMS.ErrorCat.lifecycle_not_found()}
     end
   end
 
   def recompute(%CommentLifecycle{comment_id: comment_id}) do
-    with {:ok, :pass} <- require_transaction(),
+    with true <- Repo.in_transaction?(),
          %Comment{article_id: article_id} <- Repo.get(Comment, comment_id),
          %Article{} = article <- Repo.get(Article, article_id),
          {:ok, :pass} <- CMS.ArticleStats.record_comment_change(article) do
       {:ok, :pass}
     else
+      false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
       nil -> {:error, CMS.ErrorCat.lifecycle_not_found()}
       {:error, _reason} = error -> error
     end
   end
 
   def recompute(%DocLifecycle{} = lifecycle) do
-    with {:ok, :pass} <- require_transaction() do
-      visible? =
-        lifecycle.state in @public_states and
-          not active_scope?(DocReviewRestriction, lifecycle.id, "platform")
-
-      recompute_doc_public(lifecycle, visible?)
+    with {:ok, :pass} <- require_transaction(),
+         attrs <- %{article_id: lifecycle.article_id, branch_id: lifecycle.branch_id},
+         visible? <- lifecycle.state in @public_states and not active_doc?(attrs),
+         {:ok, _result} <-
+           Repo.query(
+             "UPDATE cms.doc_publics SET visible = $1 WHERE article_id = $2 AND branch_id = $3",
+             [visible?, Ecto.UUID.dump!(lifecycle.article_id), lifecycle.branch_id]
+           ) do
+      {:ok, :pass}
     end
   end
 
   def recompute(_lifecycle), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
 
-  defp require_transaction do
-    if Repo.in_transaction?() do
-      {:ok, :pass}
-    else
-      {:error, CMS.ErrorCat.review_transition_requires_transaction()}
+  defp defaults(attrs) do
+    attrs
+    |> Map.put_new(:source, :request)
+    |> Map.put_new(:applied_at, DateTime.utc_now(:second))
+    |> Map.put_new(:version, 1)
+  end
+
+  defp restriction_target(%ArticleLifecycle{article_id: id}, attrs) do
+    with {:ok, community_id} <- scope_community_id(attrs) do
+      {:ok, ArticleReviewRestriction, %{article_id: id, community_id: community_id}}
     end
   end
 
-  defp recompute_doc_public(%DocLifecycle{} = lifecycle, visible?) do
-    case Repo.query(
-           "UPDATE cms.doc_publics SET visible = $1 WHERE article_id = $2 AND branch_id = $3",
-           [visible?, Ecto.UUID.dump!(lifecycle.article_id), lifecycle.branch_id]
-         ) do
-      {:ok, _result} -> {:ok, :pass}
-      {:error, reason} -> {:error, reason}
+  defp restriction_target(%CommentLifecycle{comment_id: id}, attrs) do
+    with {:ok, community_id} <- scope_community_id(attrs) do
+      {:ok, CommentReviewRestriction, %{comment_id: id, community_id: community_id}}
     end
   end
 
-  defp enqueue_visibility_change(
-         %ArticleLifecycle{article_id: article_id} = lifecycle,
-         scope_key,
-         key
-       ) do
-    case Repo.get(Article, article_id) do
-      %Article{} ->
-        community_ids = article_scope_community_ids(article_id, scope_key)
-
-        if community_ids == [] do
-          {:error, CMS.ErrorCat.invalid_review_restriction()}
-        else
-          Enum.reduce_while(community_ids, {:ok, :pass}, fn community_id, {:ok, :pass} ->
-            case Effects.enqueue(
-                   lifecycle,
-                   "article:#{article_id}",
-                   scope_key,
-                   "#{key}:community:#{community_id}",
-                   community_id
-                 ) do
-              {:ok, _event} -> {:cont, {:ok, :pass}}
-              {:error, reason} -> {:halt, {:error, reason}}
-            end
-          end)
-        end
-
-      nil ->
-        {:error, CMS.ErrorCat.lifecycle_not_found()}
-    end
+  defp restriction_target(%DocLifecycle{article_id: article_id, branch_id: branch_id}, %{
+         scope_key: "platform"
+       }) do
+    {:ok, DocReviewRestriction, %{article_id: article_id, branch_id: branch_id}}
   end
 
-  defp enqueue_visibility_change(
-         %CommentLifecycle{comment_id: comment_id} = lifecycle,
-         scope_key,
-         key
-       ) do
-    case Repo.get(Comment, comment_id) do
-      %Comment{community_id: community_id} ->
-        Effects.enqueue(
-          lifecycle,
-          "comment:#{comment_id}",
-          scope_key,
-          key,
-          community_id
-        )
-
-      nil ->
-        {:error, CMS.ErrorCat.lifecycle_not_found()}
-    end
-  end
-
-  defp enqueue_visibility_change(
-         %DocLifecycle{article_id: article_id, branch_id: branch_id} = lifecycle,
-         scope_key,
-         key
-       ) do
-    with %Article{} <- Repo.get(Article, article_id),
-         %DocBranch{community_id: community_id} <- Repo.get(DocBranch, branch_id),
-         %Community{} = community <- Repo.get(Community, community_id),
-         %ArticleBinding{inner_id: inner_id} <-
-           Repo.get_by(ArticleBinding, article_id: article_id, community_id: community_id) do
-      case CMS.Articles.Effects.enqueue(
-             "article.visibility_changed",
-             "article",
-             article_id,
-             {:workflow, "review:doc:#{article_id}:#{branch_id}:#{scope_key}"},
-             %{
-               "community" => community.slug,
-               "community_id" => community.id,
-               "thread" => "doc",
-               "inner_id" => inner_id,
-               "branch_id" => branch_id
-             },
-             effect_key: "#{lifecycle.review_epoch}:#{lifecycle.review_content_token}:#{key}"
-           ) do
-        {:ok, event} ->
-          with {:ok, :pass} <- Effects.replay_failed_doc_publish(lifecycle, community_id) do
-            {:ok, event}
-          end
-
-        {:error, _reason} = error ->
-          error
-      end
-    else
-      nil -> {:error, CMS.ErrorCat.lifecycle_not_found()}
-    end
-  end
-
-  defp article_scope_community_ids(_article_id, "community:" <> id) do
-    case Integer.parse(id) do
-      {community_id, ""} -> [community_id]
-      _ -> []
-    end
-  end
-
-  defp article_scope_community_ids(article_id, "platform") do
-    Repo.all(
-      from(binding in ArticleBinding,
-        where: binding.article_id == ^article_id,
-        select: binding.community_id,
-        order_by: binding.community_id
-      )
-    )
-  end
-
-  defp article_scope_community_ids(_article_id, _scope), do: []
-
-  defp restriction_schema(%ArticleLifecycle{}), do: {:ok, ArticleReviewRestriction}
-  defp restriction_schema(%CommentLifecycle{}), do: {:ok, CommentReviewRestriction}
-  defp restriction_schema(%DocLifecycle{}), do: {:ok, DocReviewRestriction}
-  defp restriction_schema(_lifecycle), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
-
-  defp validate_scope(%DocLifecycle{}, %{scope_key: "platform"}), do: {:ok, :pass}
-
-  defp validate_scope(%DocLifecycle{}, _attrs) do
+  defp restriction_target(_lifecycle, _attrs) do
     {:error, CMS.ErrorCat.invalid_review_restriction()}
   end
 
-  defp validate_scope(%ArticleLifecycle{article_id: article_id}, %{scope_key: "platform"}) do
+  defp scope_community_id(%{community_id: nil}), do: {:ok, nil}
+  defp scope_community_id(%{community_id: id}) when is_integer(id) and id > 0, do: {:ok, id}
+  defp scope_community_id(%{scope_key: "platform"}), do: {:ok, nil}
+
+  defp scope_community_id(%{scope_key: "community:" <> id}) do
+    case Integer.parse(id) do
+      {community_id, ""} when community_id > 0 -> {:ok, community_id}
+      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+    end
+  end
+
+  defp scope_community_id(_attrs), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+
+  defp validate_scope(%ArticleLifecycle{article_id: article_id}, %{community_id: nil}) do
     if Repo.get(Article, article_id) do
       {:ok, :pass}
     else
@@ -331,23 +214,19 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
     end
   end
 
-  defp validate_scope(%ArticleLifecycle{article_id: article_id}, %{scope_key: scope_key})
-       when is_binary(scope_key) do
-    with ["community", community_id] <- String.split(scope_key, ":", parts: 2),
-         {community_id, ""} <- Integer.parse(community_id),
-         true <-
-           Repo.exists?(
-             from(binding in ArticleBinding,
-               where: binding.article_id == ^article_id and binding.community_id == ^community_id
-             )
-           ) do
+  defp validate_scope(%ArticleLifecycle{article_id: article_id}, %{community_id: community_id}) do
+    if Repo.exists?(
+         from(binding in ArticleBinding,
+           where: binding.article_id == ^article_id and binding.community_id == ^community_id
+         )
+       ) do
       {:ok, :pass}
     else
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      {:error, CMS.ErrorCat.invalid_review_restriction()}
     end
   end
 
-  defp validate_scope(%CommentLifecycle{comment_id: comment_id}, %{scope_key: "platform"}) do
+  defp validate_scope(%CommentLifecycle{comment_id: comment_id}, %{community_id: nil}) do
     if Repo.get(Comment, comment_id) do
       {:ok, :pass}
     else
@@ -355,184 +234,181 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
     end
   end
 
-  defp validate_scope(%CommentLifecycle{comment_id: comment_id}, %{scope_key: scope_key})
-       when is_binary(scope_key) do
-    with %Comment{community_id: community_id} <- Repo.get(Comment, comment_id),
-         true <- scope_key == "community:#{community_id}" do
+  defp validate_scope(%CommentLifecycle{comment_id: comment_id}, %{community_id: community_id}) do
+    if Repo.exists?(
+         from(comment in Comment,
+           where: comment.id == ^comment_id and comment.community_id == ^community_id
+         )
+       ) do
       {:ok, :pass}
     else
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      {:error, CMS.ErrorCat.invalid_review_restriction()}
     end
   end
 
-  defp validate_scope(_lifecycle, _attrs) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
-  end
+  defp validate_scope(%DocLifecycle{}, _attrs), do: {:ok, :pass}
+  defp validate_scope(_lifecycle, _attrs), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
 
-  defp insert_or_get(schema, lifecycle, attrs) do
-    attrs =
+  defp insert_or_get(ArticleReviewRestriction, attrs) do
+    insert_or_get_row(
+      ArticleReviewRestriction.changeset(%ArticleReviewRestriction{}, attrs),
+      ArticleReviewRestriction,
       attrs
-      |> Map.put(:lifecycle_id, lifecycle.id)
-      |> Map.put_new(:applied_at, DateTime.utc_now(:second))
+    )
+  end
 
-    changeset = restriction_changeset(schema, attrs)
+  defp insert_or_get(CommentReviewRestriction, attrs) do
+    insert_or_get_row(
+      CommentReviewRestriction.changeset(%CommentReviewRestriction{}, attrs),
+      CommentReviewRestriction,
+      attrs
+    )
+  end
 
+  defp insert_or_get(DocReviewRestriction, attrs) do
+    insert_or_get_row(
+      DocReviewRestriction.changeset(%DocReviewRestriction{}, attrs),
+      DocReviewRestriction,
+      attrs
+    )
+  end
+
+  defp insert_or_get_row(changeset, schema, attrs) do
     case Repo.insert(changeset, mode: :savepoint) do
-      {:ok, restriction} -> {:ok, restriction}
-      {:error, changeset} -> recover_active(schema, lifecycle.id, attrs, changeset)
+      {:ok, row} ->
+        {:ok, row}
+
+      {:error, changeset} ->
+        case Repo.one(
+               where_target(schema, attrs)
+               |> where(
+                 [restriction],
+                 restriction.source_ref == ^attrs.source_ref and is_nil(restriction.resolved_at)
+               )
+             ) do
+          %{type: type, review_ref: existing_review_ref} = row ->
+            if type == attrs.type and existing_review_ref == Map.get(attrs, :review_ref) do
+              {:ok, row}
+            else
+              {:error, CMS.ErrorCat.lifecycle_state_conflict()}
+            end
+
+          nil ->
+            {:error, changeset}
+        end
     end
   end
 
-  defp recover_active(schema, lifecycle_id, attrs, changeset) do
-    query =
-      from(restriction in schema,
-        where:
-          restriction.lifecycle_id == ^lifecycle_id and
-            restriction.scope_key == ^attrs.scope_key and
-            restriction.cause_key == ^attrs.cause_key and is_nil(restriction.ended_at)
-      )
-
-    case Repo.one(query) do
-      %{content_token: token, kind: kind} = restriction
-      when token == attrs.content_token and kind == attrs.kind ->
-        {:ok, restriction}
-
-      %{} ->
-        {:error, CMS.ErrorCat.lifecycle_state_conflict()}
-
-      nil ->
-        {:error, changeset}
+  defp load_active(schema, attrs, ids) do
+    if ids == [] do
+      {:ok, []}
+    else
+      load_active_rows(schema, attrs, ids)
     end
   end
 
-  defp load_active(schema, lifecycle, scope_key, ids) do
-    restrictions =
-      schema
-      |> where(
-        [restriction],
-        restriction.lifecycle_id == ^lifecycle.id and restriction.scope_key == ^scope_key and
-          restriction.id in ^ids and is_nil(restriction.ended_at)
+  defp load_active_rows(schema, attrs, ids) do
+    rows =
+      Repo.all(
+        where_target(schema, attrs)
+        |> where([restriction], restriction.id in ^ids and is_nil(restriction.resolved_at))
+        |> order_by([restriction], asc: restriction.id)
+        |> lock("FOR UPDATE")
       )
-      |> order_by([restriction], asc: restriction.id)
-      |> lock("FOR UPDATE")
-      |> Repo.all()
 
-    if length(restrictions) == length(Enum.uniq(ids)) and ids != [] do
-      {:ok, restrictions}
+    if length(rows) == length(Enum.uniq(ids)) do
+      {:ok, rows}
     else
       {:error, CMS.ErrorCat.review_restriction_not_found()}
     end
   end
 
-  defp end_rows(restrictions, operation_ref, reason) do
-    Enum.reduce_while(restrictions, {:ok, :pass}, fn restriction, {:ok, :pass} ->
+  defp resolve_rows(rows, operation_ref, resolution) do
+    Enum.reduce_while(rows, {:ok, :pass}, fn row, {:ok, :pass} ->
       now = DateTime.utc_now(:second)
 
-      changeset = restriction_end_changeset(restriction, operation_ref, reason, now)
+      attrs = %{
+        resolved_at: now,
+        resolved_by_ref: operation_ref,
+        resolution: resolution,
+        version: row.version + 1
+      }
 
-      case Repo.update(changeset) do
+      case update_restriction(row, attrs) do
         {:ok, _updated} -> {:cont, {:ok, :pass}}
         {:error, reason} -> {:halt, {:error, reason}}
       end
     end)
   end
 
-  defp snapshot_changeset(%ArticleLifecycle{} = lifecycle, content_token) do
-    {:ok,
-     ArticleLifecycle.changeset(lifecycle, %{
-       review_content_token: content_token,
-       review_epoch: lifecycle.review_epoch + 1
-     })}
+  defp update_restriction(%ArticleReviewRestriction{} = row, attrs) do
+    row |> ArticleReviewRestriction.changeset(attrs) |> Repo.update()
   end
 
-  defp snapshot_changeset(%CommentLifecycle{} = lifecycle, content_token) do
-    {:ok,
-     CommentLifecycle.changeset(lifecycle, %{
-       review_content_token: content_token,
-       review_epoch: lifecycle.review_epoch + 1
-     })}
+  defp update_restriction(%CommentReviewRestriction{} = row, attrs) do
+    row |> CommentReviewRestriction.changeset(attrs) |> Repo.update()
   end
 
-  defp snapshot_changeset(%DocLifecycle{} = lifecycle, content_token) do
-    {:ok,
-     DocLifecycle.changeset(lifecycle, %{
-       review_content_token: content_token,
-       review_epoch: lifecycle.review_epoch + 1
-     })}
+  defp update_restriction(%DocReviewRestriction{} = row, attrs) do
+    row |> DocReviewRestriction.changeset(attrs) |> Repo.update()
   end
 
-  defp snapshot_changeset(_lifecycle, _content_token) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+  defp where_target(schema, attrs) do
+    Enum.reduce(attrs, schema, fn
+      {key, nil}, query -> where(query, [restriction], is_nil(field(restriction, ^key)))
+      {key, value}, query -> where(query, [restriction], field(restriction, ^key) == ^value)
+    end)
   end
 
-  defp restriction_changeset(ArticleReviewRestriction, attrs) do
-    ArticleReviewRestriction.changeset(%ArticleReviewRestriction{}, attrs)
-  end
-
-  defp restriction_changeset(CommentReviewRestriction, attrs) do
-    CommentReviewRestriction.changeset(%CommentReviewRestriction{}, attrs)
-  end
-
-  defp restriction_changeset(DocReviewRestriction, attrs) do
-    DocReviewRestriction.changeset(%DocReviewRestriction{}, attrs)
-  end
-
-  defp restriction_end_changeset(
-         %ArticleReviewRestriction{} = restriction,
-         operation_ref,
-         reason,
-         now
-       ) do
-    ArticleReviewRestriction.changeset(restriction, %{
-      ended_at: now,
-      ended_by_operation_ref: operation_ref,
-      end_reason: reason,
-      version: restriction.version + 1
-    })
-  end
-
-  defp restriction_end_changeset(
-         %CommentReviewRestriction{} = restriction,
-         operation_ref,
-         reason,
-         now
-       ) do
-    CommentReviewRestriction.changeset(restriction, %{
-      ended_at: now,
-      ended_by_operation_ref: operation_ref,
-      end_reason: reason,
-      version: restriction.version + 1
-    })
-  end
-
-  defp restriction_end_changeset(
-         %DocReviewRestriction{} = restriction,
-         operation_ref,
-         reason,
-         now
-       ) do
-    DocReviewRestriction.changeset(restriction, %{
-      ended_at: now,
-      ended_by_operation_ref: operation_ref,
-      end_reason: reason,
-      version: restriction.version + 1
-    })
-  end
-
-  defp active_scope?(schema, lifecycle_id, scope_key) do
+  defp active_doc?(%{article_id: article_id, branch_id: branch_id}) do
     Repo.exists?(
-      from(restriction in schema,
+      from(restriction in DocReviewRestriction,
         where:
-          restriction.lifecycle_id == ^lifecycle_id and restriction.scope_key == ^scope_key and
-            is_nil(restriction.ended_at)
+          restriction.article_id == ^article_id and restriction.branch_id == ^branch_id and
+            is_nil(restriction.resolved_at)
       )
     )
   end
 
-  defp load_article(article_id) do
-    case Repo.get(Article, article_id) do
-      %Article{} = article -> {:ok, article}
+  defp enqueue_visibility_change(
+         %DocLifecycle{article_id: article_id, branch_id: branch_id},
+         _target,
+         key
+       ) do
+    with %Article{} <- Repo.get(Article, article_id),
+         %DocBranch{community_id: community_id} <- Repo.get(DocBranch, branch_id),
+         %Community{} = community <- Repo.get(CMS.Model.Community, community_id),
+         %ArticleBinding{inner_id: inner_id} <-
+           Repo.get_by(ArticleBinding, article_id: article_id, community_id: community_id),
+         {:ok, event} <-
+           CMS.Articles.Effects.enqueue(
+             "article.visibility_changed",
+             "article",
+             article_id,
+             {:workflow, "review:doc:#{article_id}:#{branch_id}"},
+             %{
+               "community" => community.slug,
+               "community_id" => community.id,
+               "thread" => "doc",
+               "inner_id" => inner_id,
+               "branch_id" => branch_id
+             },
+             effect_key: "review:#{key}"
+           ) do
+      {:ok, event}
+    else
       nil -> {:error, CMS.ErrorCat.lifecycle_not_found()}
+      {:error, _reason} = error -> error
+    end
+  end
+
+  defp enqueue_visibility_change(%_lifecycle{}, _target, _key), do: {:ok, :pass}
+
+  defp require_transaction do
+    if Repo.in_transaction?() do
+      {:ok, :pass}
+    else
+      {:error, CMS.ErrorCat.review_transition_requires_transaction()}
     end
   end
 end

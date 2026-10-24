@@ -92,22 +92,15 @@ defmodule GroupherServer.CMS.Command.IntentCodec do
     comment_revoke_solution: :empty,
     comment_pin: :empty,
     comment_unpin: :empty,
-    alert_board_submit_report:
-      {:fields, %{"target_key" => :raw, "reason_code" => :raw, "details" => :digest}},
-    alert_board_withdraw_report: {:fields, %{"report_id" => :raw}},
-    alert_board_update_config: :digest_each,
-    alert_board_recheck_target: {:fields, %{"target_key" => :raw, "scope_key" => :raw}},
-    alert_board_decide_case:
+    cms_review_decision:
       {:fields,
        %{
-         "case_id" => :raw,
-         "expected_case_version" => :raw,
-         "expected_content_token" => :digest,
-         "action" => :raw,
-         "restriction_ids" => :digest,
-         "reason_code" => :raw,
-         "note" => :digest
+         "scope_key" => :raw,
+         "action" => :raw
        }},
+    alert_wall_resolve_item: {:fields, %{"resolution" => :digest}},
+    alert_wall_submit_report: {:fields, %{"report_type" => :raw, "details" => :digest}},
+    alert_wall_withdraw_report: :empty,
     community_create: :digest_each,
     community_update: :digest_each,
     community_request_destroy: :digest_each,

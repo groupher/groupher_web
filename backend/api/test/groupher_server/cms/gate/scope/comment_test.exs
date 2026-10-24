@@ -12,9 +12,8 @@ defmodule GroupherServer.Test.CMS.Gate.Scope.CommentTest do
     {sql, _params} = to_sql(query)
 
     assert sql =~ "comment_review_restrictions"
-    assert sql =~ "scope_key"
-    assert sql =~ "community:' ||"
-    assert sql =~ "ended_at"
+    assert sql =~ "community_id"
+    assert sql =~ "resolved_at"
     refute sql =~ ~s("pending" !=)
   end
 

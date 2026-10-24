@@ -10,7 +10,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
 
   import Ecto.Query
 
-  alias GroupherServer.{AlertBoard, CMS, Repo}
+  alias GroupherServer.{CMS, Repo, ReviewBot}
   alias CMS.Articles.ErrorCat, as: ArticleErrorCat
   alias CMS.Articles.{Workflow, Tags.Assignment}
   alias CMS.Articles.{Bindings, Draft, Draft.Store, Lifecycle, Numbering, Public, Revision}
@@ -123,12 +123,10 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
   def remove_binding_review(%Article{} = article, %Community{id: community_id}, operation_ref)
       when is_binary(operation_ref) do
     with true <- Repo.in_transaction?(),
-         %ArticleLifecycle{} = lifecycle <- lock_review_lifecycle(article.id),
+         %ArticleLifecycle{} <- lock_review_lifecycle(article.id),
          {:ok, :pass} <-
-           CMS.Review.Submission.remove_scope(
-             lifecycle,
-             "article:#{article.id}",
-             "community:#{community_id}",
+           CMS.Review.Requests.supersede_scope_in_transaction(
+             %{type: :article, article_id: article.id, community_id: community_id},
              operation_ref
            ) do
       {:ok, :pass}
@@ -140,49 +138,47 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
     end
   end
 
-  defp register_review(article, community, revision, lifecycle, first_publish?, opts) do
+  defp register_review(article, _community, revision, lifecycle, first_publish?, _opts) do
     community_ids = binding_community_ids(article.id)
 
-    with {:ok, configs} <- AlertBoard.configs_for_targets(community_ids, :article),
+    with {:ok, configs} <- ReviewBot.configs_for_targets(community_ids, :article),
          {:ok, content} <- review_content(revision) do
       target = %{
-        target_key: "article:#{article.id}",
-        case_attrs: %{article_id: article.id},
-        community_id: community.id,
-        trigger: if(first_publish?, do: :submit, else: :edit)
+        type: :article,
+        article_id: article.id,
+        article_revision_id: revision.id,
+        lifecycle: lifecycle
       }
 
-      operation_ref = Keyword.get(opts, :outbox_command_id) || revision.id
+      trigger = if(first_publish?, do: :publish, else: :edit)
 
-      CMS.Review.Submission.register(lifecycle, target, content, configs, operation_ref)
+      CMS.Review.RequestSubmission.register_in_transaction(target, content, configs, trigger)
     else
       nil -> {:error, CMS.ErrorCat.invalid_review_restriction()}
       {:error, _reason} = error -> error
     end
   end
 
-  defp register_published_binding_review(article, community, lifecycle, operation_ref) do
-    with {:ok, configs} <- AlertBoard.configs_for_target(community.id, :article),
-         config when not is_nil(config) <-
-           Enum.find(configs, &(&1.scope_key == "community:#{community.id}")),
+  defp register_published_binding_review(article, community, lifecycle, _operation_ref) do
+    with {:ok, configs} <- ReviewBot.configs(community.id, :article),
          {:ok, content} <- current_review_content(article.id),
+         %ArticlePublic{revision_id: revision_id} <- Repo.get(ArticlePublic, article.id),
          target <- %{
-           target_key: "article:#{article.id}",
-           case_attrs: %{article_id: article.id},
-           community_id: community.id,
-           trigger: :binding
+           type: :article,
+           article_id: article.id,
+           article_revision_id: revision_id,
+           lifecycle: lifecycle
          },
          {:ok, _registered} <-
-           CMS.Review.Submission.register_current_scope(
-             lifecycle,
+           CMS.Review.RequestSubmission.register_in_transaction(
              target,
              content,
-             config,
-             operation_ref
+             configs,
+             :binding
            ) do
       {:ok, :pass}
     else
-      nil -> {:error, AlertBoard.review_config_not_found()}
+      nil -> {:error, ReviewBot.config_not_found_error()}
       {:error, _reason} = error -> error
       _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
     end

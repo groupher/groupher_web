@@ -277,13 +277,11 @@ config :groupher_server, Oban,
        {"*/15 * * * *", GroupherServer.Jobs.ExpireCommunityApplicationLogoUploads},
        {"*/15 * * * *", GroupherServer.Jobs.ReleaseExpiredCommunitySlugClaims},
        {"*/15 * * * *", GroupherServer.Jobs.WallpaperLifecycle},
-       {"* * * * *", GroupherServer.Jobs.ReviewBotCheckRecovery},
-       {"@daily", GroupherServer.Jobs.ReviewBotRetention},
        {"0 * * * *", GroupherServer.Jobs.ViewDedupeCleanup},
        {"5 * * * *", GroupherServer.Jobs.ProfileViewDedupeCleanup},
        {"* * * * *", GroupherServer.Jobs.ArticleInsightsAggregation},
        {"@daily", GroupherServer.Jobs.ArticleInsightsRetention},
-       {"@daily", GroupherServer.Jobs.AlertBoardReportRetention},
+       {"@daily", GroupherServer.Jobs.CMSReviewRequestRetention},
        {"@daily", GroupherServer.Jobs.CommandReceiptRetention}
      ]}
   ],
@@ -295,7 +293,7 @@ config :groupher_server, Oban,
     public_cache: 5,
     community_application: 5,
     community_setup: 5,
-    review_bot: 5
+    cms_review: 5
   ]
 
 config :groupher_server, GroupherServer.PublicCache.DeliveryConfig,

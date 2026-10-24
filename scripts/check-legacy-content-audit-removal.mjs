@@ -24,6 +24,17 @@ const sourceExtensions = new Set([
   '.tsx',
 ])
 
+const v2ReportCountOwners = new Set([
+  'backend/api/lib/groupher_server/alert_wall/persist.ex',
+  'backend/api/lib/groupher_server/alert_wall/query.ex',
+  'backend/api/lib/groupher_server/alert_wall.ex',
+  'backend/api/lib/groupher_server/cms/review/results.ex',
+  'backend/api/lib/groupher_server_web/resolvers/alert_wall.ex',
+  'backend/api/lib/groupher_server_web/schema/account/account_types.ex',
+  'backend/api/lib/groupher_server_web/schema/alert_wall/types.ex',
+])
+const reportCountPattern = /reported_count|report_count/
+
 const legacyPatterns = [
   /AuditBot/,
   /audition/,
@@ -37,7 +48,7 @@ const legacyPatterns = [
   /(?:Article|Comment)\.pending/,
   /reportComment|undoReportComment|reportPost|undoReportPost/,
   /pagedAbuseReports|paged_abuse_reports|AbuseReport/,
-  /reported_user_ids|reported_count|report_count|viewer_has_reported|viewerHasReported/,
+  /reported_user_ids|viewer_has_reported|viewerHasReported/,
   /fold_for_report|report_threshold_for_fold/,
 ]
 
@@ -68,8 +79,12 @@ const findings = []
 for (const file of files) {
   const lines = (await readFile(file, 'utf8')).split(/\r?\n/)
   lines.forEach((line, index) => {
-    if (legacyPatterns.some((pattern) => pattern.test(line))) {
-      findings.push(`${path.relative(process.cwd(), file)}:${index + 1}: ${line.trim()}`)
+    const relativeFile = path.relative(process.cwd(), file)
+    const activePatterns = v2ReportCountOwners.has(relativeFile)
+      ? legacyPatterns
+      : [...legacyPatterns, reportCountPattern]
+    if (activePatterns.some((pattern) => pattern.test(line))) {
+      findings.push(`${relativeFile}:${index + 1}: ${line.trim()}`)
     }
   })
 }

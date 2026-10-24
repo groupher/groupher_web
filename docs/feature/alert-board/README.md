@@ -1,8 +1,12 @@
-# AlertBoard / ReviewBot
+# ReviewBot / AlertWall
 
-> 状态：in-progress
+> 状态：current
 
-本文是当前文档入口；AlertBoard / ReviewBot 的 D1–D5 旧链清理及 N1–N7 运行时代码已落地，本地自动化回归通过。真实浏览器验收与目标环境维护切换仍需完成，当前不可视为已上线功能。
+当前实现为 ReviewBot / AlertWall V2。目录暂保留 `alert-board/`，避免历史链接失效；当前模块名为 `AlertWall`。
+
+- **[V2 边界、配置与重构实施合同](./v2.md)**：已实施的 ReviewBot / AlertWall、`review_mode`、`ban_words`、`sus_notes`、`review_bot_configs`、CMS review requests、事务与无兼容替换合同。生产切换前，目标环境仍须通过限制、待审及隐藏投影预检。
+
+以下 V1 文档和退役记录仅作历史参考；当前运行合同以 V2 文档和代码为准。目标环境维护切换需单独取得真实数据库、worker 和浏览器证据。
 
 - [设计合同](./design.md)：管理员事务公告板、自动检测、发布模式、UGC 与 Doc 边界。
 - [实施合同](./implementation.md)：数据模型、状态流转、权限、事务、provider 与 GraphQL。

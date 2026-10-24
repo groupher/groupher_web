@@ -1,5 +1,7 @@
 # AlertBoard / ReviewBot 实施批次与验收
 
+> 版本说明：本文只记录 V1 的 D/N 批次；[V2：ReviewBot / AlertWall](./v2.md) 使用独立 R0–R7 批次；当前实现状态和验证结果以 V2 文档为准。
+
 > 状态：运行时代码与自动化验证记录见本轮 PR；2026-10-23 移除了普通 Article 的 Binding/Public 可见性投影列。真实浏览器验收、生产部署、目标环境维护切换和真实 provider/数据验收仍未完成，当前不能视为已上线。
 > 业务与数据合同见 [implementation.md](./implementation.md)；每批必须满足退出条件才进入下一依赖批次。
 

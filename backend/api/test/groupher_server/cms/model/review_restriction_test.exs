@@ -1,18 +1,15 @@
 defmodule GroupherServer.Test.CMS.Model.ReviewRestrictionTest do
   use ExUnit.Case, async: true
-  alias GroupherServer.{CMS}
+  alias GroupherServer.CMS
 
   alias CMS.Model.ArticleReviewRestriction
 
   test "restriction end metadata is all present or all absent" do
     base = %{
-      lifecycle_id: 1,
-      scope_key: "platform",
-      cause_key: "submit:1",
-      kind: :awaiting_ai,
-      content_token: "v1",
-      source: :submission,
-      created_by_operation_ref: Ecto.UUID.generate(),
+      article_id: Ecto.UUID.generate(),
+      type: :awaiting_ai,
+      source_ref: "submit:1",
+      source: :request,
       applied_at: DateTime.utc_now()
     }
 
@@ -20,14 +17,14 @@ defmodule GroupherServer.Test.CMS.Model.ReviewRestrictionTest do
 
     refute ArticleReviewRestriction.changeset(
              %ArticleReviewRestriction{},
-             Map.put(base, :ended_at, DateTime.utc_now())
+             Map.put(base, :resolved_at, DateTime.utc_now())
            ).valid?
 
     ended =
       base
-      |> Map.put(:ended_at, DateTime.utc_now())
-      |> Map.put(:ended_by_operation_ref, Ecto.UUID.generate())
-      |> Map.put(:end_reason, "approved")
+      |> Map.put(:resolved_at, DateTime.utc_now())
+      |> Map.put(:resolved_by_ref, Ecto.UUID.generate())
+      |> Map.put(:resolution, "approved")
 
     assert ArticleReviewRestriction.changeset(%ArticleReviewRestriction{}, ended).valid?
   end

@@ -19,7 +19,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
 
   require GroupherServer.CMS.Comments.ErrorCat
 
-  alias GroupherServer.{Accounts, AlertBoard, CMS, ReviewBot}
+  alias GroupherServer.{Accounts, CMS, ReviewBot}
   alias CMS.Articles.ErrorCat, as: ArticleErrorCat
   alias Accounts.Model.User
   alias CMS.{Comments.ErrorCat, FrontDesk}
@@ -480,31 +480,28 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
          %Comment{} = comment,
          lifecycle,
          %Community{id: community_id},
-         command_id,
+         _command_id,
          trigger
        ) do
-    with {:ok, configs} <- AlertBoard.configs_for_target(community_id, :comment) do
+    with {:ok, configs} <- ReviewBot.configs(community_id, :comment) do
       content = %{
-        identity: "comment-body:#{comment.body.version}",
-        body_hash: comment.body.body_hash,
         title: "",
         body: comment.body.plain_text,
-        images: ReviewBot.comment_images(comment.body.json, community_id)
+        images: CMS.Review.Media.comment_images(comment.body.json, community_id)
       }
 
       target = %{
-        target_key: "comment:#{comment.id}",
-        case_attrs: %{comment_id: comment.id},
-        community_id: comment.community_id,
-        trigger: trigger
+        type: :comment,
+        comment_id: comment.id,
+        body_version: comment.body.version,
+        lifecycle: lifecycle
       }
 
-      CMS.Review.Submission.register(
-        lifecycle,
+      CMS.Review.RequestSubmission.register_in_transaction(
         target,
         content,
         configs,
-        command_id
+        if(trigger == :submit, do: :publish, else: :edit)
       )
     end
   end

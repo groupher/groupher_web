@@ -51,7 +51,7 @@ defmodule GroupherServerWeb.Schema.Account.Types do
     field(:is_maker, :boolean)
     field(:published_posts_count, :integer)
     field(:published_blogs_count, :integer)
-    field(:reported_count, :integer, resolve: &R.AlertBoard.reported_count/3)
+    field(:reported_count, :integer, resolve: &R.AlertWall.reported_count/3)
   end
 
   object :user do

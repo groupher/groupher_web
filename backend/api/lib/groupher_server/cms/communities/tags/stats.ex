@@ -339,15 +339,15 @@ defmodule GroupherServer.CMS.Communities.Tags.Stats do
     with {:ok, thread} <- FrontDesk.thread_of(article) do
       if thread in @tracked_threads do
         lifecycle = Repo.get_by(ArticleLifecycle, article_id: Map.get(article, :id))
-        scope_key = "community:#{community_id}"
 
         visible? =
           match?(%ArticleLifecycle{state: state} when state in [:published, :archived], lifecycle) and
             not Repo.exists?(
               from(restriction in ArticleReviewRestriction,
                 where:
-                  restriction.lifecycle_id == ^lifecycle.id and is_nil(restriction.ended_at) and
-                    restriction.scope_key in ["platform", ^scope_key]
+                  restriction.article_id == ^lifecycle.article_id and
+                    is_nil(restriction.resolved_at) and
+                    (is_nil(restriction.community_id) or restriction.community_id == ^community_id)
               )
             )
 

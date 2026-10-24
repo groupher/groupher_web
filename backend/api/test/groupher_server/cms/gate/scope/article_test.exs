@@ -117,7 +117,7 @@ defmodule GroupherServer.Test.CMS.Gate.Scope.ArticleTest do
     assert sql =~ ~s(FROM "cms"."authors")
     assert sql =~ "user_id"
     assert sql =~ "article_review_restrictions"
-    assert sql =~ "scope_key"
+    assert sql =~ "community_id"
   end
 
   test "Doc public scope filters against Doc restrictions rather than Article restrictions" do

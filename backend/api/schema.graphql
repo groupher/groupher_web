@@ -303,6 +303,10 @@ type RootQueryType {
   "get doc by id"
   doc(article: ArticlePathInput!): Doc!
 
+  pendingContentReviews(scope: ReviewBotScopeInput!): [CmsContentReview!]!
+
+  contentReview(target: CmsReviewTargetInput!): CmsContentReview
+
   pressConfig(community: String!): PressConfig
 
   pressArticle(article: ArticlePathInput!): PressArticle
@@ -322,15 +326,13 @@ type RootQueryType {
   "read one community-scoped ContentImport Job and its safe Doc preview"
   contentImportJob(community: String!, jobRef: ID!): ContentImportJob
 
-  myReports(pagi: PagiInput): ReviewReportPage!
+  myReports: [AlertReport!]!
 
-  contentReview(target: ReviewTargetInput!): ContentReview
+  alertItems(scope: ReviewBotScopeInput!): [AlertItem!]!
 
-  reviewConfig(scope: ReviewScopeInput!, subjectKind: ReviewSubjectKind!): ReviewConfig!
+  alertItem(id: ID!): AlertItem
 
-  reviewCases(scope: ReviewScopeInput!, filter: ReviewCaseFilterInput, pagi: PagiInput): ReviewCasePage!
-
-  reviewCase(scope: ReviewScopeInput!, id: ID!): ReviewCaseDetail
+  reviewBotConfig(scope: ReviewBotScopeInput!, subjectType: ReviewBotSubjectType!): ReviewBotConfig!
 }
 
 type RootMutationType {
@@ -964,15 +966,25 @@ type RootMutationType {
   "cancel an unfinished import Job and discard its staged BodyBags"
   cancelDocContentImport(community: String!, jobRef: ID!): ContentImportJob!
 
-  updateReviewConfig(input: UpdateReviewConfigInput!, commandId: ID!): ReviewCommandResult!
+  approveArticle(target: CmsReviewTargetInput!, commandId: ID!): CmsReviewCommandResult!
 
-  submitReport(input: SubmitReportInput!, commandId: ID!): ReviewCommandResult!
+  denyArticle(target: CmsReviewTargetInput!, commandId: ID!): CmsReviewCommandResult!
 
-  withdrawReport(reportId: ID!, commandId: ID!): ReviewCommandResult!
+  releaseArticle(target: CmsReviewTargetInput!, commandId: ID!): CmsReviewCommandResult!
 
-  decideReviewCase(caseId: ID!, input: ReviewDecisionInput!, commandId: ID!): ReviewCommandResult!
+  approveComment(target: CmsReviewTargetInput!, commandId: ID!): CmsReviewCommandResult!
 
-  recheckReviewTarget(target: ReviewRecheckTargetInput!, scope: ReviewScopeInput!, commandId: ID!): ReviewCommandResult!
+  denyComment(target: CmsReviewTargetInput!, commandId: ID!): CmsReviewCommandResult!
+
+  releaseComment(target: CmsReviewTargetInput!, commandId: ID!): CmsReviewCommandResult!
+
+  updateReviewBotConfig(input: UpdateReviewBotConfigInput!, commandId: ID!): ReviewBotConfig!
+
+  submitReport(input: AlertReportInput!, commandId: ID!): AlertReport!
+
+  withdrawReport(reportId: ID!, commandId: ID!): AlertReport!
+
+  resolveAlertItem(id: ID!, resolution: String!, commandId: ID!): AlertWallCommandResult!
 }
 
 enum ContentImportJobStatus {
@@ -1128,43 +1140,72 @@ type ContentImportBodyStageResult {
   skipped: Json!
 }
 
-enum ReviewScopeKind {
+enum ReviewBotScopeType {
   PLATFORM
   COMMUNITY
 }
 
-enum ReviewSubjectKind {
+enum ReviewBotSubjectType {
   ARTICLE
   COMMENT
   DOC
 }
 
-enum ReviewTargetKind {
+enum ReviewBotMode {
+  IMMEDIATE
+  AI_FIRST
+  HUMAN_FIRST
+}
+
+input ReviewBotScopeInput {
+  type: ReviewBotScopeType!
+  community: String
+}
+
+type ReviewBotConfig {
+  id: ID!
+  communityId: ID
+  subjectType: ReviewBotSubjectType!
+  reviewMode: ReviewBotMode!
+  banWords: [String!]!
+  prompt: String!
+  version: Int!
+  updatedAt: DateTime!
+}
+
+input UpdateReviewBotConfigInput {
+  scope: ReviewBotScopeInput!
+  subjectType: ReviewBotSubjectType!
+  expectedVersion: Int!
+  reviewMode: ReviewBotMode!
+  banWords: [String!]!
+  prompt: String!
+}
+
+type AlertWallCommandResult {
+  itemId: ID!
+  resolution: String!
+}
+
+enum AlertItemStatus {
+  OPEN
+  RESOLVED
+  SUPERSEDED
+}
+
+enum AlertTargetType {
   ARTICLE
   COMMENT
   DOC
   USER
 }
 
-enum ReviewRecheckTargetKind {
-  ARTICLE
-  COMMENT
-  DOC
+enum AlertItemOwner {
+  CMS
+  ACCOUNTS
 }
 
-enum ReviewCaseStatus {
-  OPEN
-  RESOLVED
-  SUPERSEDED
-  ALL
-}
-
-enum ReviewCasePriority {
-  NORMAL
-  HIGH
-}
-
-enum ReviewReportReason {
+enum AlertReportReason {
   SPAM
   HARASSMENT
   ILLEGAL_CONTENT
@@ -1172,187 +1213,51 @@ enum ReviewReportReason {
   OTHER
 }
 
-enum ReviewPublishMode {
-  IMMEDIATE
-  AI_FIRST
-  HUMAN_FIRST
-}
-
-enum ReviewEditMode {
-  IMMEDIATE
-  AI_FIRST
-}
-
-enum ReviewCaseAction {
-  APPROVE
-  RESTRICT
-  RELEASE
-  DISMISS
-  RECORD_HANDLED
-}
-
-enum ContentReviewStatus {
-  PUBLIC
-  CHECKING
-  WAITING_HUMAN
-  RESTRICTED
-}
-
-enum ReviewDecisionAction {
-  APPROVE
-  RESTRICT
-  RELEASE
-  DISMISS
-  RECHECK
-  RECORD_HANDLED
-}
-
-input ReviewScopeInput {
-  kind: ReviewScopeKind!
-  community: String
-}
-
-input ReviewCaseFilterInput {
-  status: ReviewCaseStatus
-  kind: ReviewTargetKind
-  priority: ReviewCasePriority
-}
-
-input ReviewTargetInput {
-  kind: ReviewTargetKind!
+input AlertReportTargetInput {
+  type: AlertTargetType!
   article: ArticlePathInput
   comment: CommentPathInput
   docBranchId: Int
-  user: String
 }
 
-input SubmitReportInput {
-  target: ReviewTargetInput!
-  reasonCode: ReviewReportReason!
+input AlertReportInput {
+  target: AlertReportTargetInput!
+  reportType: AlertReportReason!
   details: String
 }
 
-input ReviewConfigInput {
-  publishMode: ReviewPublishMode!
-  editMode: ReviewEditMode!
-  backgroundCheck: Boolean!
-  rules: Json!
-  prompt: String
-  providerProfile: String
-  requiredModalities: [String!]!
+type SusNote {
+  type: String!
+  evidence: String!
+  explanation: String!
 }
 
-input UpdateReviewConfigInput {
-  scope: ReviewScopeInput!
-  subjectKind: ReviewSubjectKind!
-  expectedVersion: Int!
-  config: ReviewConfigInput!
-}
-
-input ReviewDecisionInput {
-  expectedCaseVersion: Int!
-  expectedContentToken: String!
-  action: ReviewCaseAction!
-  restrictionIds: [Int!]!
-  reasonCode: String
-  note: String
-}
-
-input ReviewRecheckTargetInput {
-  kind: ReviewRecheckTargetKind!
-  articleId: ID
-  commentId: ID
-  docArticleId: ID
-  docBranchId: Int
-}
-
-type ReviewConfig {
-  scopeKey: String!
-  subjectKind: ReviewSubjectKind!
-  version: Int!
-  publishMode: ReviewPublishMode!
-  editMode: ReviewEditMode!
-  backgroundCheck: Boolean!
-  rulesetId: ID
-  rules: Json
-  prompt: String
-  providerProfile: String
-  requiredModalities: [String!]!
-}
-
-type ReviewCase {
+type AlertItem {
   id: ID!
-  targetKey: String!
-  scopeKey: String!
-  contentToken: String!
-  status: ReviewCaseStatus!
-  priority: ReviewCasePriority!
+  owner: AlertItemOwner!
+  targetType: AlertTargetType!
+  targetId: String!
+  communityId: ID
+  status: AlertItemStatus!
+  susNotes: [SusNote!]!
+  summary: String!
+  reportCount: Int!
   version: Int!
   openedAt: DateTime!
   resolvedAt: DateTime
   resolution: String
 }
 
-type ReviewReport {
+type AlertReport {
   id: ID!
-  targetKey: String!
-  reasonCode: String!
+  targetType: AlertTargetType!
+  targetId: String!
+  communityId: ID
+  originItemId: ID!
+  reportType: String!
   details: String
-  reporterId: ID!
-  insertedAt: DateTime!
   withdrawnAt: DateTime
-}
-
-type ReviewDecision {
-  id: ID!
-  action: ReviewDecisionAction!
-  source: String!
-  actorId: ID
-  checkId: ID
-  restrictionIds: [Int!]!
-  reasonCode: String
-  note: String
   insertedAt: DateTime!
-}
-
-type ReviewCaseDetail {
-  case: ReviewCase!
-  safeSummary: String!
-  allowedActions: [ReviewCaseAction!]!
-  reports: [ReviewReport!]!
-  decisions: [ReviewDecision!]!
-  activeRestrictions: [Json!]!
-  signals: [Json!]!
-}
-
-type ContentReview {
-  status: ContentReviewStatus!
-  contentToken: String
-  checkUnavailable: Boolean!
-  canEdit: Boolean!
-  canRequestReview: Boolean!
-  viewerReportId: ID
-  reasonCodes: [String!]!
-}
-
-type ReviewCasePage {
-  entries: [ReviewCase!]!
-  pageInfo: PageInfo!
-}
-
-type ReviewReportPage {
-  entries: [ReviewReport!]!
-  pageInfo: PageInfo!
-}
-
-type ReviewCommandResult {
-  commandId: ID!
-  caseVersion: Int
-  report: ReviewReport
-  reviewConfig: ReviewConfig
-  case: ReviewCase
-  reviewDecision: ReviewDecision
-  checkIds: [ID!]!
 }
 
 enum ArticleInsightsMetric {
@@ -1732,6 +1637,42 @@ type PressSiteManifest {
   siteRevision: String!
   threads: [Thread!]!
   items: [PressRSSFeedItem!]!
+}
+
+type CmsReviewCommandResult {
+  commandId: ID!
+  targetType: ReviewBotSubjectType!
+  targetId: String!
+  action: String!
+}
+
+input CmsReviewTargetInput {
+  type: ReviewBotSubjectType!
+  article: ArticlePathInput
+  comment: CommentPathInput
+  articleId: ID
+  commentId: ID
+  branchId: Int
+  communityId: ID
+}
+
+type CmsReviewOpinion {
+  status: String
+  summary: String
+  susNotes: [SusNote!]!
+}
+
+type CmsContentReview {
+  requestId: ID
+  targetType: ReviewBotSubjectType!
+  articleId: ID
+  commentId: ID
+  branchId: Int
+  communityId: ID
+  state: String!
+  reviewMode: String
+  systemOpinion: CmsReviewOpinion
+  communityOpinion: CmsReviewOpinion
 }
 
 type CommunityNameCheck {

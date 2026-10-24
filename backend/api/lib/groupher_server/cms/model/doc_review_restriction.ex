@@ -1,92 +1,89 @@
 defmodule GroupherServer.CMS.Model.DocReviewRestriction do
   @moduledoc """
-  Platform-scope visibility restriction on a branch-specific Doc Lifecycle.
+  CMS-owned review hold attached directly to one Doc branch.
 
-      Doc Branch Lifecycle -> active restrictions -> DocPublic projection
+  Business position:
+
+      CMS.ReviewRestrictions
+        -> DocReviewRestriction
+          -> direct Article + branch hold
   """
 
   use Ecto.Schema
 
   import Ecto.Changeset
-  alias GroupherServer.{AlertBoard, CMS, ReviewBot}
-
-  alias AlertBoard.Model.Case
-  alias CMS.Model.DocLifecycle
-  alias ReviewBot.Model.Check
+  alias GroupherServer.CMS
+  alias CMS.Model.{Article, DocBranch, ReviewRequest}
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.cms()
-  @kinds [:awaiting_ai, :awaiting_human, :rule_hit, :manual_hold]
-  @sources [:submission, :policy, :human]
+  @types [:awaiting_ai, :awaiting_human, :ai_suspect, :manual_hold]
+  @sources [:request, :human, :domain]
 
   @type t :: %__MODULE__{}
 
   schema "doc_review_restrictions" do
-    belongs_to(:lifecycle, DocLifecycle)
-    field(:scope_key, :string)
-    field(:cause_key, :string)
-    field(:kind, Ecto.Enum, values: @kinds)
-    field(:content_token, :string)
+    belongs_to(:article, Article, type: Ecto.UUID)
+    belongs_to(:branch, DocBranch)
+    field(:type, Ecto.Enum, values: @types)
+    belongs_to(:request, ReviewRequest, type: Ecto.UUID)
+    field(:item_id, :integer)
+    field(:review_ref, Ecto.UUID)
+    field(:source_ref, :string)
     field(:source, Ecto.Enum, values: @sources)
-    belongs_to(:case, Case)
-    belongs_to(:check, Check, type: Ecto.UUID)
-    field(:created_by_operation_ref, Ecto.UUID)
     field(:applied_at, :utc_datetime)
-    field(:ended_at, :utc_datetime)
-    field(:ended_by_operation_ref, Ecto.UUID)
-    field(:end_reason, :string)
+    field(:resolved_at, :utc_datetime)
+    field(:resolved_by_ref, Ecto.UUID)
+    field(:resolution, :string)
     field(:version, :integer, default: 1)
     timestamps(type: :utc_datetime)
   end
 
-  @doc "Validates a branch-specific Doc restriction and its paired end metadata."
-  @spec changeset(t(), map()) :: Ecto.Changeset.t()
+  @doc "Validates a branch-specific Doc restriction and its paired resolution fields."
   def changeset(%__MODULE__{} = restriction, attrs) do
     restriction
     |> cast(attrs, [
-      :lifecycle_id,
-      :scope_key,
-      :cause_key,
-      :kind,
-      :content_token,
+      :article_id,
+      :branch_id,
+      :type,
+      :request_id,
+      :item_id,
+      :review_ref,
+      :source_ref,
       :source,
-      :case_id,
-      :check_id,
-      :created_by_operation_ref,
       :applied_at,
-      :ended_at,
-      :ended_by_operation_ref,
-      :end_reason,
+      :resolved_at,
+      :resolved_by_ref,
+      :resolution,
       :version
     ])
     |> validate_required([
-      :lifecycle_id,
-      :scope_key,
-      :cause_key,
-      :kind,
-      :content_token,
+      :article_id,
+      :branch_id,
+      :type,
+      :source_ref,
       :source,
-      :created_by_operation_ref,
       :applied_at,
       :version
     ])
     |> validate_number(:version, greater_than: 0)
-    |> validate_end_fields()
-    |> unique_constraint([:lifecycle_id, :scope_key, :cause_key],
-      name: :doc_review_restrictions_active_cause_index
+    |> validate_resolution()
+    |> unique_constraint([:article_id, :branch_id, :source_ref],
+      name: :doc_review_restrictions_active_source_index
     )
-    |> foreign_key_constraint(:lifecycle_id)
-    |> foreign_key_constraint(:case_id)
+    |> foreign_key_constraint(:article_id)
+    |> foreign_key_constraint(:branch_id)
+    |> foreign_key_constraint(:request_id)
+    |> foreign_key_constraint(:item_id)
   end
 
-  defp validate_end_fields(changeset) do
-    values =
-      Enum.map([:ended_at, :ended_by_operation_ref, :end_reason], &get_field(changeset, &1))
+  defp validate_resolution(changeset) do
+    values = Enum.map([:resolved_at, :resolved_by_ref, :resolution], &get_field(changeset, &1))
 
     if Enum.all?(values, &is_nil/1) or Enum.all?(values, &(not is_nil(&1))) do
       changeset
     else
-      add_error(changeset, :ended_at, "end metadata must be supplied together")
+      add_error(changeset, :resolved_at, "resolution fields must be supplied together")
     end
   end
 end

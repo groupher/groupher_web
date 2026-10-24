@@ -116,19 +116,96 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.Review,
     as: :load_for_update
 
-  @doc "Registers ReviewBot checks inside the caller-owned CMS resource transaction."
-  @spec register_review_submission(struct(), map(), map(), [struct()], Ecto.UUID.t()) ::
-          {:ok, map()} | {:error, term()}
-  defdelegate register_review_submission(lifecycle, target, content, configs, operation_ref),
-    to: GroupherServer.CMS.Review.Submission,
-    as: :register
+  @doc "Creates the current scoped review request inside the resource command transaction."
+  @spec create_review_request_in_transaction(map()) ::
+          {:ok, struct()} | {:error, term()}
+  defdelegate create_review_request_in_transaction(attrs),
+    to: GroupherServer.CMS.Review.Requests,
+    as: :create_in_transaction
 
-  @doc "Registers a recheck for one existing review scope without advancing the shared content epoch."
-  @spec register_current_review_scope(struct(), map(), map(), struct(), Ecto.UUID.t()) ::
-          {:ok, map()} | {:error, term()}
-  defdelegate register_current_review_scope(lifecycle, target, content, config, operation_ref),
-    to: GroupherServer.CMS.Review.Submission,
-    as: :register_current_scope
+  @doc "Pins one submitted content snapshot to every configured ReviewBot scope."
+  @spec register_review_requests_in_transaction(map(), map(), map(), atom()) ::
+          {:ok, [struct()]} | {:error, term()}
+  defdelegate register_review_requests_in_transaction(target, content, configs, trigger),
+    to: GroupherServer.CMS.Review.RequestSubmission,
+    as: :register_in_transaction
+
+  @doc "Supersedes one target scope's current CMS requests in its resource transaction."
+  @spec supersede_review_scope_in_transaction(map(), Ecto.UUID.t()) ::
+          {:ok, :pass} | {:error, term()}
+  defdelegate supersede_review_scope_in_transaction(attrs, operation_ref),
+    to: GroupherServer.CMS.Review.Requests,
+    as: :supersede_scope_in_transaction
+
+  @doc "Locks current request rows for one target scope in the caller's transaction."
+  defdelegate current_review_requests_for_scope_in_transaction(attrs),
+    to: GroupherServer.CMS.Review.Requests,
+    as: :current_for_scope_in_transaction
+
+  @doc "Applies a human review decision to one CMS target scope in the caller transaction."
+  defdelegate apply_review_decision_in_transaction(
+                target_key,
+                scope_key,
+                action,
+                actor,
+                operation_ref
+              ),
+              to: GroupherServer.CMS.Review.Decisions,
+              as: :apply_in_transaction
+
+  @doc "Runs an authorized CMS review decision through its Receipt-backed resource Command."
+  defdelegate decide_review_target(target_key, scope_key, action, actor, command_id),
+    to: GroupherServer.CMS.Review.Commands.Decide,
+    as: :execute
+
+  @doc "Returns a request only while its current CMS scope and short-lived payload remain valid."
+  @spec current_review_request(Ecto.UUID.t()) :: {:ok, struct()} | {:error, term()}
+  defdelegate current_review_request(request_id),
+    to: GroupherServer.CMS.Review.Requests,
+    as: :current
+
+  @doc "Returns the current request for one canonical CMS review scope."
+  defdelegate current_review_for_scope(attrs),
+    to: GroupherServer.CMS.Review.Requests,
+    as: :current_for_scope
+
+  @doc "Lists current review requests that need a human decision in one scope."
+  defdelegate pending_review_requests(attrs),
+    to: GroupherServer.CMS.Review.Requests,
+    as: :pending_for_scope
+
+  @doc "Expires unprocessed CMS review payloads in a bounded batch."
+  defdelegate expire_review_request_payloads(batch_size),
+    to: GroupherServer.CMS.Review.Requests,
+    as: :expire_payloads
+
+  @doc "Claims a current review request before provider work begins."
+  @spec claim_review_request_in_transaction(Ecto.UUID.t()) ::
+          {:ok, struct()} | {:error, term()}
+  defdelegate claim_review_request_in_transaction(request_id),
+    to: GroupherServer.CMS.Review.Requests,
+    as: :claim_in_transaction
+
+  @doc "Stores a completed opinion only while the scoped request is still current."
+  @spec complete_review_request_in_transaction(Ecto.UUID.t(), map()) ::
+          {:ok, struct()} | {:error, term()}
+  defdelegate complete_review_request_in_transaction(request_id, result),
+    to: GroupherServer.CMS.Review.Requests,
+    as: :complete_in_transaction
+
+  @doc "Stores terminal provider failure and clears the request payload."
+  @spec fail_review_request_in_transaction(Ecto.UUID.t(), map()) ::
+          {:ok, struct()} | {:error, term()}
+  defdelegate fail_review_request_in_transaction(request_id, failure),
+    to: GroupherServer.CMS.Review.Requests,
+    as: :fail_in_transaction
+
+  @doc "Marks a completed current request applied after its resource effects commit."
+  @spec mark_review_request_applied_in_transaction(Ecto.UUID.t()) ::
+          {:ok, struct()} | {:error, term()}
+  defdelegate mark_review_request_applied_in_transaction(request_id),
+    to: GroupherServer.CMS.Review.Requests,
+    as: :mark_applied_in_transaction
 
   @doc "Adds the shared report-count projection through the CMS interaction boundary."
   @spec add_report_projection(struct(), struct()) :: {:ok, term()} | {:error, term()}
@@ -169,6 +246,14 @@ defmodule GroupherServer.CMS do
   defdelegate active_review_restrictions(lifecycle, scope_key),
     to: GroupherServer.CMS.ReviewRestrictions,
     as: :active_for
+
+  @doc "Links the CMS suspicion fact to its Wall item in the current resource transaction."
+  defdelegate link_review_item_in_transaction(request_id, item_id),
+    to: GroupherServer.CMS.ReviewRestrictions,
+    as: :link_item_for_request_in_transaction
+
+  @doc "Returns the invalid CMS review restriction error."
+  defdelegate invalid_review_restriction_error(), to: ErrorCat, as: :invalid_review_restriction
 
   @doc """
   Applies one review restriction through the resource Lifecycle owner.
@@ -2105,12 +2190,12 @@ defmodule GroupherServer.CMS do
     to: GroupherServer.CMS.FrontDesk,
     as: :community_tag_group
 
-  @doc "Delegates CMS.Command.Receipt.prune_expired/0 through the CMS Context boundary."
+  @doc "Delegates GroupherServer.CMS.Command.Receipt.prune_expired/0 through the CMS Context boundary."
   defdelegate command_receipt_prune_expired(),
     to: GroupherServer.CMS.Command.Receipt,
     as: :prune_expired
 
-  @doc "Delegates CMS.Command.Receipt.prune_expired/1 through the CMS Context boundary."
+  @doc "Delegates GroupherServer.CMS.Command.Receipt.prune_expired/1 through the CMS Context boundary."
   defdelegate command_receipt_prune_expired(arg1),
     to: GroupherServer.CMS.Command.Receipt,
     as: :prune_expired

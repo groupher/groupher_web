@@ -8,7 +8,7 @@ import { authWarn } from '~/signal'
 import type { TComment, TMenuOption } from '~/spec'
 import useAccount from '~/stores/account/hooks'
 import MenuButton from '~/ui/Buttons/MenuButton'
-import ReportAction from '~/unit/AlertBoard/ReportAction'
+import ReportAction from '~/unit/AlertWall/ReportAction'
 import { useCommentFeed } from '~/unit/Comments/pagination/context'
 
 import useActions from '../useLogic/useActions'
@@ -30,7 +30,7 @@ const Actions: FC<TProps> = ({ data }) => {
   const reportTarget =
     article?.innerId && article.thread
       ? {
-          kind: 'COMMENT' as const,
+          type: 'COMMENT' as const,
           comment: {
             article,
             innerId: data.innerId,

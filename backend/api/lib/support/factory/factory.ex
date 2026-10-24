@@ -13,10 +13,7 @@ defmodule GroupherServer.Support.Factory do
   """
   import Helper.Utils, only: [done: 1]
   import GroupherServer.CMS.Artiment.Matcher
-  import Ecto.Query, only: [from: 2]
-
-  alias GroupherServer.{Accounts, AlertBoard, CMS, Messaging, Repo, Support}
-  alias AlertBoard.Model.ReviewConfig
+  alias GroupherServer.{Accounts, CMS, Messaging, Repo, ReviewBot, Support}
   alias Support.FakeData
 
   alias Accounts.Model.User
@@ -267,22 +264,10 @@ defmodule GroupherServer.Support.Factory do
   defp ensure_community_lifecycle(result), do: result
 
   defp ensure_community_review_configs({:ok, %Community{} = community} = result) do
-    config_exists? =
-      Repo.exists?(
-        from(config in ReviewConfig,
-          where:
-            config.community_id == ^community.id and
-              config.scope_key == ^"community:#{community.id}"
-        )
-      )
-
-    if config_exists? do
-      result
-    else
-      case AlertBoard.create_default_configs_for_community(community.id) do
-        {:ok, _configs} -> result
-        {:error, reason} -> {:error, reason}
-      end
+    case Repo.transaction(fn -> ReviewBot.create_default_configs_for_community(community.id) end) do
+      {:ok, {:ok, _configs}} -> result
+      {:ok, {:error, reason}} -> {:error, reason}
+      {:error, reason} -> {:error, reason}
     end
   end
 

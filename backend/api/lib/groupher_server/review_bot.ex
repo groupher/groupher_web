@@ -1,83 +1,156 @@
 defmodule GroupherServer.ReviewBot do
   @moduledoc """
-  Routes one validated content snapshot to an operator-approved provider profile.
+  Applies platform and community policy to content through the shared AI capability.
 
-      immutable CheckInput -> profile validation -> adapter -> CheckOutput
+  Business position:
+
+      CMS supplies scoped policy and content
+        -> ReviewBot evaluates system and community layers
+          -> AI.check/1
+            -> bounded opinion returned to CMS
+
   """
 
-  alias __MODULE__.{CheckInput, Config, ErrorCat, Execution, Registration}
+  alias __MODULE__.ErrorCat
+  alias __MODULE__.Config, as: ReviewBotConfig
+  alias GroupherServer.ReviewBot
+  alias __MODULE__.Commands.UpdateConfig
 
-  @doc "Resolves a configured provider profile for validation and execution."
-  @spec profile(String.t() | nil) :: {:ok, map()} | {:error, term()}
-  defdelegate profile(profile_id), to: Config
+  @doc "Authorizes access to one system or community policy scope."
+  defdelegate authorize(scope, action, actor), to: GroupherServer.ReviewBot.Authorization
 
-  @doc "Extracts current inline image references from a Comment body."
-  @spec comment_images(String.t() | nil, pos_integer()) :: [map()]
-  defdelegate comment_images(body_json, community_id), to: GroupherServer.ReviewBot.Media
+  @doc "Returns the invalid ReviewBot configuration error."
+  defdelegate invalid_config_error(), to: ErrorCat, as: :invalid_config
 
-  @doc "Runs a pinned content check through the selected provider profile."
-  @spec check(CheckInput.t(), String.t()) ::
-          {:ok, GroupherServer.ReviewBot.CheckOutput.t()} | {:error, term()}
-  def check(%CheckInput{} = input, profile_id) when is_binary(profile_id) do
-    with {:ok, profile} <- Config.profile(profile_id),
-         {:ok, adapter} <- Config.adapter(profile) do
-      adapter.check(input, profile)
+  @doc "Returns the missing ReviewBot configuration error."
+  defdelegate config_not_found_error(), to: ErrorCat, as: :config_not_found
+
+  @doc "Reads the platform and community policy snapshot for a content type."
+  defdelegate configs_for_target(community_id, subject_type), to: ReviewBotConfig
+
+  @doc "Reads the system and optional community policy for one content target."
+  defdelegate configs(community_id, subject_type), to: ReviewBotConfig
+
+  @doc "Reads the platform and community policies for multiple Article bindings."
+  defdelegate configs_for_targets(community_ids, subject_type), to: ReviewBotConfig
+
+  @doc "Creates Article and Comment defaults in the caller's community transaction."
+  defdelegate create_default_configs_for_community(community_id), to: ReviewBotConfig
+
+  @doc "Reads a config by its opaque identifier for Receipt recovery."
+  defdelegate config_by_id(config_id), to: ReviewBotConfig
+
+  @doc "Updates a scoped ReviewBot policy through its receipt-backed Command."
+  defdelegate update_config(scope, subject_type, expected_version, attrs, actor, command_id),
+    to: UpdateConfig,
+    as: :execute
+
+  @spec check(map(), map() | struct()) :: {:ok, map()} | {:error, term()}
+  def check(content, %{system: system, community: community}) when is_map(content) do
+    with {:ok, normalized_content} <- normalize_content(content),
+         {:ok, system_policy} <- normalize_policy(system),
+         {:ok, system_result} <-
+           check_layer(normalized_content, system_policy, system_policy.prompt),
+         {:ok, community_result} <- check_community(normalized_content, system_policy, community) do
+      {:ok, %{system: system_result, community: community_result}}
     end
   end
 
-  def check(_input, _profile_id), do: {:error, ErrorCat.invalid_config()}
+  def check(content, policy) when is_map(content) do
+    with {:ok, normalized_content} <- normalize_content(content),
+         {:ok, normalized_policy} <- normalize_policy(policy) do
+      check_layer(normalized_content, normalized_policy, normalized_policy.prompt)
+    end
+  end
 
-  @doc """
-  Registers deterministic and provider checks in the caller's resource transaction.
+  defp check_community(_content, _system_policy, nil), do: {:ok, nil}
 
-  ## Examples
+  defp check_community(content, system_policy, community) do
+    with {:ok, policy} <- normalize_policy(community) do
+      check_layer(content, system_policy, policy.prompt, policy.ban_words)
+    end
+  end
 
-      ReviewBot.register_in_transaction(target, snapshot, config, operation_ref)
-      #=> {:ok, %{checks: checks, word_result: result}} | {:error, reason}
-  """
-  @spec register_in_transaction(map(), map(), term(), Ecto.UUID.t()) ::
-          {:ok, map()} | {:error, term()}
-  defdelegate register_in_transaction(target, content, config, operation_ref), to: Registration
+  defp check_layer(content, policy, prompt, ban_words \\ nil) do
+    input_attrs = %{
+      system_prompt: policy.system_prompt,
+      prompt: prompt || "",
+      ban_words: ban_words || policy.ban_words,
+      text: %{title: content.title, body: content.body},
+      images: content.images,
+      required_modalities: required_modalities(content)
+    }
 
-  @doc """
-  Executes one queued Check with Oban retry state.
+    with {:ok, input} <- GroupherServer.AI.new_opinion_input(input_attrs),
+         {:ok, opinion} <- GroupherServer.AI.check(input) do
+      {:ok,
+       %{
+         status: opinion.status,
+         sus_notes: opinion.sus_notes,
+         coverage: opinion.coverage,
+         summary: opinion.summary
+       }}
+    end
+  end
 
-  ## Examples
+  defp normalize_content(%{title: title, body: body} = content)
+       when is_binary(title) and is_binary(body) do
+    {:ok, %{title: title, body: body, images: Map.get(content, :images, [])}}
+  end
 
-      ReviewBot.execute_check(check_id, 1, 3)
-      #=> {:ok, :pass | :superseded} | {:error, reason}
-  """
-  @spec execute_check(Ecto.UUID.t(), pos_integer(), pos_integer()) ::
-          {:ok, :pass | :superseded} | {:error, term()}
-  defdelegate execute_check(check_id, attempt, max_attempts), to: Execution
+  defp normalize_content(%{text: %{title: title, body: body}} = content)
+       when is_binary(title) and is_binary(body) do
+    {:ok, %{title: title, body: body, images: Map.get(content, :images, [])}}
+  end
 
-  @doc """
-  Recovers provider checks whose workers stopped while an Attempt was running.
+  defp normalize_content(%{"title" => title, "body" => body} = content)
+       when is_binary(title) and is_binary(body) do
+    {:ok, %{title: title, body: body, images: Map.get(content, "images", [])}}
+  end
 
-  ## Examples
+  defp normalize_content(%{"text" => %{"title" => title, "body" => body}} = content)
+       when is_binary(title) and is_binary(body) do
+    {:ok, %{title: title, body: body, images: Map.get(content, "images", [])}}
+  end
 
-      ReviewBot.recover_stale_checks()
-      #=> {:ok, recovered_count} | {:error, reason}
-  """
-  @spec recover_stale_checks() :: {:ok, non_neg_integer()} | {:error, term()}
-  defdelegate recover_stale_checks(), to: Execution
+  defp normalize_content(_content), do: {:error, ErrorCat.invalid_config()}
 
-  @doc "Runs bounded retention over expired provider Attempts and Check metadata."
-  defdelegate cleanup_expired_records(), to: GroupherServer.ReviewBot.Maintenance
+  defp normalize_policy(%ReviewBot.Model.ReviewBotConfig{} = config) do
+    {:ok,
+     %{
+       system_prompt: config.prompt,
+       prompt: config.prompt,
+       ban_words: config.ban_words
+     }}
+  end
 
-  @doc "Invalidates queued or running checks after an authoritative human decision."
-  @spec supersede_in_flight_checks(String.t(), String.t()) :: {:ok, :pass} | {:error, term()}
-  defdelegate supersede_in_flight_checks(target_key, scope_key), to: Execution
+  defp normalize_policy(%{system_prompt: system_prompt, prompt: prompt, ban_words: ban_words})
+       when is_binary(system_prompt) and is_binary(prompt) and is_list(ban_words) do
+    {:ok, %{system_prompt: system_prompt, prompt: prompt, ban_words: ban_words}}
+  end
 
-  @doc """
-  Applies one completed Check under a caller-locked CMS Lifecycle transaction.
+  defp normalize_policy(%{
+         "system_prompt" => system_prompt,
+         "prompt" => prompt,
+         "ban_words" => ban_words
+       })
+       when is_binary(system_prompt) and is_binary(prompt) and is_list(ban_words) do
+    {:ok, %{system_prompt: system_prompt, prompt: prompt, ban_words: ban_words}}
+  end
 
-  ## Examples
+  defp normalize_policy(_policy), do: {:error, ErrorCat.invalid_config()}
 
-      ReviewBot.apply_completed_check(check, target)
-      #=> {:ok, :pass} | {:error, reason}
-  """
-  @spec apply_completed_check(GroupherServer.ReviewBot.Model.Check.t(), map()) ::
-          {:ok, :pass} | {:error, term()}
-  defdelegate apply_completed_check(check, target), to: Execution
+  defp required_modalities(content) do
+    modalities =
+      []
+      |> maybe_add_text(String.trim(content.title) != "" or String.trim(content.body) != "")
+      |> maybe_add_image(content.images != [])
+
+    Enum.reverse(modalities)
+  end
+
+  defp maybe_add_text(modalities, true), do: [:text | modalities]
+  defp maybe_add_text(modalities, false), do: modalities
+  defp maybe_add_image(modalities, true), do: [:image | modalities]
+  defp maybe_add_image(modalities, false), do: modalities
 end

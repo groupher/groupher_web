@@ -16,20 +16,18 @@ defmodule GroupherServer.Test.Accounts.CollectFolders.Pagi do
 
     hidden = hd(posts)
     article = Repo.get!(Article, hidden.article_id)
-    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
+    _lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
 
     assert {:ok, %ArticleReviewRestriction{}} =
              Repo.transaction(fn ->
                with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article),
                     {:ok, restriction} <-
                       CMS.Articles.Lifecycle.apply_review_restriction(locked, %{
-                        lifecycle_id: lifecycle.id,
                         scope_key: "platform",
-                        cause_key: "collect-folder-test:restricted",
-                        kind: :manual_hold,
-                        content_token: lifecycle.review_content_token,
+                        type: :manual_hold,
+                        source_ref: "collect-folder-test:restricted",
                         source: :human,
-                        created_by_operation_ref: Ecto.UUID.generate()
+                        applied_at: DateTime.utc_now(:second)
                       }) do
                  restriction
                else

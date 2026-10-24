@@ -11,7 +11,7 @@ defmodule GroupherServer.CMS.Articles.Trash do
 
   import Ecto.Query, warn: false
 
-  alias GroupherServer.{Activity, CMS, Repo}
+  alias GroupherServer.{Activity, AlertWall, CMS, Repo}
   alias CMS.Articles.ErrorCat, as: ArticleErrorCat
   alias CMS.Articles.{Effects, Lifecycle, Bindings}
   alias CMS.Communities.Tags.Stats
@@ -24,6 +24,7 @@ defmodule GroupherServer.CMS.Articles.Trash do
     ArticlePublic,
     ArticleStats,
     ArtimentMention,
+    Comment,
     Community,
     CommunityTag,
     TrashAction,
@@ -267,8 +268,26 @@ defmodule GroupherServer.CMS.Articles.Trash do
   def permanently_delete_loaded(%TrashedArticle{} = item, canonical, actor, opts) do
     action_id = item.trash_action_id
 
+    comment_ids =
+      Repo.all(
+        from(comment in Comment, where: comment.article_id == ^canonical.id, select: comment.id)
+      )
+
     with {:ok, lifecycle} <- Lifecycle.lock(canonical),
          {:ok, _lifecycle} <- Lifecycle.transition(lifecycle, :destroy),
+         {:ok, :pass} <-
+           AlertWall.mark_target_deleted_in_transaction(
+             :article,
+             to_string(canonical.id),
+             Ecto.UUID.generate()
+           ),
+         {:ok, :pass} <-
+           AlertWall.mark_target_deleted_in_transaction(
+             :doc,
+             to_string(canonical.id),
+             Ecto.UUID.generate()
+           ),
+         {:ok, :pass} <- mark_comment_items_deleted(comment_ids),
          {:ok, _event} <-
            activity(canonical, :permanently_deleted, actor, item.trash_action,
              source: activity_source(opts)
@@ -281,6 +300,19 @@ defmodule GroupherServer.CMS.Articles.Trash do
       _ = CMS.SearchArtiments.Indexer.enqueue_delete(canonical)
       {:ok, %{done: true, article_id: canonical.id}}
     end
+  end
+
+  defp mark_comment_items_deleted(comment_ids) do
+    Enum.reduce_while(comment_ids, {:ok, :pass}, fn comment_id, {:ok, :pass} ->
+      case GroupherServer.AlertWall.mark_target_deleted_in_transaction(
+             :comment,
+             to_string(comment_id),
+             Ecto.UUID.generate()
+           ) do
+        {:ok, :pass} -> {:cont, {:ok, :pass}}
+        {:error, reason} -> {:halt, {:error, reason}}
+      end
+    end)
   end
 
   @doc "Gets a Trash membership by its opaque Trash hash id."

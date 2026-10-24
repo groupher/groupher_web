@@ -11,8 +11,8 @@ import useCommunity from '~/stores/community/hooks'
 import GotoTop from '~/ui/GotoTop'
 import { ArticleContentLoading } from '~/ui/Loading'
 import ViewportTracker from '~/ui/ViewportTracker'
-import ReportAction from '~/unit/AlertBoard/ReportAction'
-import ReviewNotice from '~/unit/AlertBoard/ReviewNotice'
+import ReportAction from '~/unit/AlertWall/ReportAction'
+import ReviewNotice from '~/unit/AlertWall/ReviewNotice'
 
 import ArticleBroadcast from '../ArticleBroadcast'
 import ArticleFooter from '../ArticleFooter'
@@ -79,13 +79,13 @@ export default function PostViewer({ isFullView = true }: TProps) {
         <>
           <ReviewNotice
             target={{
-              kind: 'ARTICLE',
+              type: 'ARTICLE',
               article: { community, thread: article.thread, innerId: article.innerId },
             }}
           />
           <ReportAction
             target={{
-              kind: 'ARTICLE',
+              type: 'ARTICLE',
               article: { community, thread: article.thread, innerId: article.innerId },
             }}
           />

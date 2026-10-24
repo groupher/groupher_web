@@ -2,7 +2,8 @@
   "version": 2,
   "contexts": {
     "accounts": { "mode": "strict" },
-    "alert_board": { "mode": "strict" },
+    "ai": { "mode": "strict" },
+    "alert_wall": { "mode": "strict" },
     "activity": { "mode": "strict" },
     "analysis": { "mode": "strict" },
     "auth": { "mode": "strict" },

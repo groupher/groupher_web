@@ -606,8 +606,8 @@ defmodule GroupherServer.CMS.ArticleStats do
            not exists(
              from(restriction in CommentReviewRestriction,
                where:
-                 restriction.lifecycle_id == parent_as(:comment_lifecycle).id and
-                   is_nil(restriction.ended_at),
+                 restriction.comment_id == parent_as(:comment_lifecycle).comment_id and
+                   is_nil(restriction.resolved_at),
                select: 1
              )
            )
@@ -627,8 +627,8 @@ defmodule GroupherServer.CMS.ArticleStats do
           not exists(
             from(restriction in CommentReviewRestriction,
               where:
-                restriction.lifecycle_id == parent_as(:comment_lifecycle).id and
-                  is_nil(restriction.ended_at),
+                restriction.comment_id == parent_as(:comment_lifecycle).comment_id and
+                  is_nil(restriction.resolved_at),
               select: 1
             )
           ),

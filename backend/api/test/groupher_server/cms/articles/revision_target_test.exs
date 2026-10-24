@@ -19,6 +19,7 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
     ArticleLifecycle,
     ArticlePublic,
     ArticleRevision,
+    ReviewRequest,
     DocBranch,
     DocBranchState,
     DocBranchVersion,
@@ -184,10 +185,8 @@ defmodule GroupherServer.Test.CMS.Articles.RevisionTarget do
     assert Repo.aggregate(CMS.Outbox.Event, :count) == 2
 
     assert Repo.aggregate(
-             from(event in CMS.Outbox.Event,
-               where:
-                 event.event == "article.review_changed" and
-                   event.resource_id == ^article.id
+             from(request in ReviewRequest,
+               where: request.target_type == :article and request.article_id == ^article.id
              ),
              :count
            ) == 2

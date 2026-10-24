@@ -121,7 +121,8 @@ defmodule Mix.Tasks.Cms.Pipeline.Check do
     inspect(module)
     |> then(
       &(String.starts_with?(&1, "GroupherServer.CMS.") or
-          String.starts_with?(&1, "GroupherServer.AlertBoard."))
+          String.starts_with?(&1, "GroupherServer.AlertWall.") or
+          String.starts_with?(&1, "GroupherServer.ReviewBot."))
     )
   end
 

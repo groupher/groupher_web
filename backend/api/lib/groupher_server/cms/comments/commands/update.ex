@@ -16,8 +16,7 @@ defmodule GroupherServer.CMS.Comments.Commands.Update do
   use GroupherServer.CommandPipeline,
     adapter: GroupherServer.CMS.CommandPipelineAdapter
 
-  alias GroupherServer.{Accounts, AlertBoard, CMS}
-  alias GroupherServer.ReviewBot
+  alias GroupherServer.{Accounts, CMS, ReviewBot}
   alias Accounts.Model.User
   alias CMS.{FrontDesk, Comments}
   alias CMS.Articles.Bindings
@@ -102,30 +101,22 @@ defmodule GroupherServer.CMS.Comments.Commands.Update do
     end
   end
 
-  defp register_comment_review(%Comment{} = comment, lifecycle, community_id, command_id) do
-    with {:ok, configs} <- AlertBoard.configs_for_target(community_id, :comment) do
+  defp register_comment_review(%Comment{} = comment, lifecycle, community_id, _command_id) do
+    with {:ok, configs} <- ReviewBot.configs(community_id, :comment) do
       content = %{
-        identity: "comment-body:#{comment.body.version}",
-        body_hash: comment.body.body_hash,
         title: "",
         body: comment.body.plain_text,
-        images: ReviewBot.comment_images(comment.body.json, comment.community_id)
+        images: CMS.Review.Media.comment_images(comment.body.json, comment.community_id)
       }
 
       target = %{
-        target_key: "comment:#{comment.id}",
-        case_attrs: %{comment_id: comment.id},
-        community_id: comment.community_id,
-        trigger: :edit
+        type: :comment,
+        comment_id: comment.id,
+        body_version: comment.body.version,
+        lifecycle: lifecycle
       }
 
-      CMS.Review.Submission.register(
-        lifecycle,
-        target,
-        content,
-        configs,
-        command_id
-      )
+      CMS.Review.RequestSubmission.register_in_transaction(target, content, configs, :edit)
     end
   end
 

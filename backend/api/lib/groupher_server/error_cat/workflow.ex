@@ -36,7 +36,6 @@ defmodule GroupherServer.ErrorCat.Workflow do
     {:activity} => 6100..6199,
     {:messaging, :notification} => 6200..6249,
     {:account, :profile_view_tracker} => 6250..6299,
-    {:alert_board, :review} => 7300..7399,
     {:review_bot, :check} => 7400..7499
   }
 
@@ -86,7 +85,6 @@ defmodule GroupherServer.ErrorCat.Workflow do
     GroupherServer.Accounts.ProfileViewTracker.ErrorCat,
     GroupherServer.Activity.ErrorCat,
     GroupherServer.Messaging.ErrorCat,
-    GroupherServer.AlertBoard.ErrorCat,
     GroupherServer.ReviewBot.ErrorCat
   ]
 

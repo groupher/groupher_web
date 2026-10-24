@@ -95,14 +95,10 @@ defmodule GroupherServer.CMS.SearchArtiments.Capacity do
         not exists(
           from(restriction in CommentReviewRestriction,
             where:
-              restriction.lifecycle_id == parent_as(:capacity_comment_lifecycle).id and
-                is_nil(restriction.ended_at) and
-                (restriction.scope_key == "platform" or
-                   restriction.scope_key ==
-                     fragment(
-                       "'community:' || ?::text",
-                       parent_as(:capacity_comment).community_id
-                     )),
+              restriction.comment_id == parent_as(:capacity_comment_lifecycle).comment_id and
+                is_nil(restriction.resolved_at) and
+                (is_nil(restriction.community_id) or
+                   restriction.community_id == parent_as(:capacity_comment).community_id),
             select: 1
           )
         )

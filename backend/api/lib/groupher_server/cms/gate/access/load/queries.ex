@@ -89,16 +89,24 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Queries do
 
   @doc "Returns the active platform and community review scopes for an Article binding."
   def article_review_scope_keys(lifecycle_id, community_id) do
-    scope_key = "community:#{community_id}"
+    case Repo.get(ArticleLifecycle, lifecycle_id) do
+      %ArticleLifecycle{article_id: article_id} ->
+        ArticleReviewRestriction
+        |> where(
+          [restriction],
+          restriction.article_id == ^article_id and is_nil(restriction.resolved_at) and
+            (is_nil(restriction.community_id) or restriction.community_id == ^community_id)
+        )
+        |> select([restriction], restriction.community_id)
+        |> Repo.all()
+        |> Enum.map(fn
+          nil -> "platform"
+          id -> "community:#{id}"
+        end)
 
-    ArticleReviewRestriction
-    |> where(
-      [restriction],
-      restriction.lifecycle_id == ^lifecycle_id and is_nil(restriction.ended_at) and
-        restriction.scope_key in ["platform", ^scope_key]
-    )
-    |> select([restriction], restriction.scope_key)
-    |> Repo.all()
+      nil ->
+        []
+    end
   end
 
   @doc "Loads a branch Lifecycle keyed by one stable Doc Article under `FOR UPDATE`."
@@ -127,14 +135,23 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Queries do
 
   @doc "Returns the active review scopes for a Doc branch."
   def doc_review_scope_keys(lifecycle_id) do
-    DocReviewRestriction
-    |> where(
-      [restriction],
-      restriction.lifecycle_id == ^lifecycle_id and restriction.scope_key == "platform" and
-        is_nil(restriction.ended_at)
-    )
-    |> select([restriction], restriction.scope_key)
-    |> Repo.all()
+    case Repo.get(DocLifecycle, lifecycle_id) do
+      %DocLifecycle{article_id: article_id, branch_id: branch_id} ->
+        count =
+          Repo.aggregate(
+            from(restriction in DocReviewRestriction,
+              where:
+                restriction.article_id == ^article_id and restriction.branch_id == ^branch_id and
+                  is_nil(restriction.resolved_at)
+            ),
+            :count
+          )
+
+        if count > 0, do: ["platform"], else: []
+
+      nil ->
+        []
+    end
   end
 
   @doc """

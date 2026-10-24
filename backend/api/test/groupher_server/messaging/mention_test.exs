@@ -31,16 +31,13 @@ defmodule GroupherServer.Test.Messaging.Mention do
   describe "mentions" do
     test "does not deliver inbox mentions while Gate hides review-restricted content",
          ~m(post user user2 mention_attr)a do
-      lifecycle = Repo.get_by!(ArticleLifecycle, article_id: post.id)
+      _lifecycle = Repo.get_by!(ArticleLifecycle, article_id: post.id)
 
       Repo.insert!(%ArticleReviewRestriction{
-        lifecycle_id: lifecycle.id,
-        scope_key: "platform",
-        cause_key: "mention-test",
-        kind: :awaiting_human,
-        content_token: "mention-test-token",
-        source: :submission,
-        created_by_operation_ref: Ecto.UUID.generate(),
+        article_id: post.id,
+        type: :awaiting_human,
+        source_ref: "mention-test",
+        source: :request,
         applied_at: DateTime.utc_now(:second)
       })
 

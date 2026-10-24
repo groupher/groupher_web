@@ -11,8 +11,9 @@ if System.get_env("WEB_ANALYSIS_API_TOKEN") do
   config :groupher_server, :web_analysis, api_token: System.get_env("WEB_ANALYSIS_API_TOKEN")
 end
 
-config :groupher_server, :review_bot,
-  profiles: GroupherServer.ReviewBot.Config.profiles_from_env(System.get_env())
+config :groupher_server, :ai,
+  profiles: GroupherServer.AI.Config.profiles_from_env(System.get_env()),
+  review_profile_id: System.get_env("REVIEW_BOT_PROFILE_ID")
 
 config :groupher_server, GroupherServerWeb.ServiceAuth.Verifier,
   issuer: System.get_env("SERVICE_AUTH_ISSUER") || service_auth_origin,

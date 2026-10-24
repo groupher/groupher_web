@@ -13,7 +13,7 @@ defmodule GroupherServerWeb.Schema do
   import GroupherServerWeb.Schema.Helper.Imports
 
   alias GroupherServerWeb.Middleware, as: M
-  alias GroupherServerWeb.Schema.{Account, AlertBoard, Analysis, CMS, Helper}
+  alias GroupherServerWeb.Schema.{Account, AlertWall, Analysis, CMS, Helper, ReviewBot}
 
   import_types(Absinthe.Type.Custom)
 
@@ -27,15 +27,21 @@ defmodule GroupherServerWeb.Schema do
 
   # cms
   import_types(CMS.Types)
+  import_types(CMS.Review.Types)
+  import_types(CMS.Review.Mutations)
   import_types(CMS.Press.Types)
   import_types(CMS.Press.Queries)
   import_types(CMS.Press.Mutations)
   import_types(Analysis.Types)
-  import_types(AlertBoard.Types)
-  import_types(AlertBoard.Queries)
-  import_types(AlertBoard.Mutations)
+  import_types(AlertWall.Types)
+  import_types(AlertWall.Queries)
+  import_types(AlertWall.Mutations)
+  import_types(ReviewBot.Types)
+  import_types(ReviewBot.Queries)
+  import_types(ReviewBot.Mutations)
   import_types(CMS.ContentImport.Types)
   import_types(CMS.Queries)
+  import_types(CMS.Review.Queries)
   import_types(CMS.ContentImport)
   import_types(CMS.Mutations.Community)
   import_types(CMS.Mutations.Operation)
@@ -49,9 +55,11 @@ defmodule GroupherServerWeb.Schema do
   query do
     import_fields(:account_queries)
     import_fields(:cms_queries)
+    import_fields(:cms_review_queries)
     import_fields(:cms_press_queries)
     import_fields(:cms_content_import_queries)
-    import_fields(:alert_board_queries)
+    import_fields(:alert_wall_queries)
+    import_fields(:review_bot_queries)
   end
 
   mutation do
@@ -68,7 +76,9 @@ defmodule GroupherServerWeb.Schema do
     import_fields(:cms_press_mutations)
     import_fields(:cms_doc_tree_mutations)
     import_fields(:cms_content_import_mutations)
-    import_fields(:alert_board_mutations)
+    import_fields(:cms_review_mutations)
+    import_fields(:review_bot_mutations)
+    import_fields(:alert_wall_mutations)
   end
 
   def middleware(middleware, _field, _object) do

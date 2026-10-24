@@ -11,7 +11,6 @@ defmodule GroupherServer.Test.CMS.Gate.G1SurfaceConsistencyTest do
     Article,
     ArticleBinding,
     ArticlePublic,
-    ArticleLifecycle,
     ArticleReviewRestriction,
     CommunityLifecycle,
     DocBranch
@@ -32,17 +31,14 @@ defmodule GroupherServer.Test.CMS.Gate.G1SurfaceConsistencyTest do
     assert {:ok, [%{article: %{id: article_id}}]} = CMS.Articles.locators([path])
     assert article_id == article.id
 
-    lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
-
     restriction =
       Repo.insert!(%ArticleReviewRestriction{
-        lifecycle_id: lifecycle.id,
-        scope_key: "community:#{community.id}",
-        cause_key: "test-rule",
-        kind: :rule_hit,
-        content_token: "test-token",
-        source: :policy,
-        created_by_operation_ref: Ecto.UUID.generate(),
+        article_id: article.id,
+        community_id: community.id,
+        type: :ai_suspect,
+        source_ref: "test-rule",
+        source: :request,
+        review_ref: Ecto.UUID.generate(),
         applied_at: DateTime.utc_now(:second)
       })
 
@@ -129,17 +125,12 @@ defmodule GroupherServer.Test.CMS.Gate.G1SurfaceConsistencyTest do
     assert article_id == article.id
 
     Repo.insert!(%CMS.Model.DocReviewRestriction{
-      lifecycle_id:
-        Repo.get_by!(CMS.Model.DocLifecycle,
-          article_id: article.id,
-          branch_id: branch.id
-        ).id,
-      scope_key: "platform",
-      cause_key: "test-rule",
-      kind: :rule_hit,
-      content_token: "test-token",
-      source: :policy,
-      created_by_operation_ref: Ecto.UUID.generate(),
+      article_id: article.id,
+      branch_id: branch.id,
+      type: :ai_suspect,
+      source_ref: "test-rule",
+      source: :request,
+      review_ref: Ecto.UUID.generate(),
       applied_at: DateTime.utc_now(:second)
     })
 

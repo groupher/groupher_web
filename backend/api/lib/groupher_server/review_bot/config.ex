@@ -1,121 +1,137 @@
 defmodule GroupherServer.ReviewBot.Config do
   @moduledoc """
-  Runtime registry for operator-approved provider profiles.
+  Reads ReviewBot-owned platform and community policies and initializes new communities.
 
-      RuleSet profile_id -> Config.profile/1 -> approved provider settings
+      CMS community ids -> ReviewBot config rows -> fixed policy snapshots
   """
 
-  @modalities [:text, :image]
+  import Ecto.Query
 
-  @doc "Builds provider profiles only for providers with complete operator credentials."
-  @spec profiles_from_env(map()) :: map()
-  def profiles_from_env(env) when is_map(env) do
-    %{}
-    |> maybe_add_judge_profile(env)
-    |> maybe_add_openai_profile(env)
-  end
+  alias GroupherServer.{Repo, ReviewBot}
+  alias ReviewBot.Model.ReviewBotConfig
 
-  @doc "Returns the operator-approved profile selected by a ruleset."
-  @spec profile(String.t() | nil) :: {:ok, map()} | {:error, term()}
-  def profile(profile_id) when is_binary(profile_id) and profile_id != "" do
-    profiles =
-      Application.get_env(:groupher_server, :review_bot, []) |> Keyword.get(:profiles, %{})
-
-    case Map.fetch(profiles, profile_id) do
-      {:ok, profile} -> validate(profile)
-      :error -> {:error, GroupherServer.ReviewBot.ErrorCat.config_not_found()}
+  @doc "Returns the platform policy and, for Article/Comment, the community policy."
+  @spec configs_for_target(pos_integer() | nil, :article | :comment | :doc) ::
+          {:ok, %{system: ReviewBotConfig.t(), community: ReviewBotConfig.t() | nil}}
+          | {:error, term()}
+  def configs_for_target(community_id, subject_type)
+      when subject_type in [:article, :comment] and
+             (is_integer(community_id) or is_nil(community_id)) do
+    with {:ok, system} <- get_config(nil, subject_type),
+         {:ok, community} <- get_optional_config(community_id, subject_type) do
+      {:ok, %{system: system, community: community}}
     end
   end
 
-  def profile(_profile_id), do: {:error, GroupherServer.ReviewBot.ErrorCat.config_not_found()}
-
-  @doc "Resolves an adapter module for a validated provider profile."
-  @spec adapter(map()) :: {:ok, module()} | {:error, term()}
-  def adapter(%{adapter: adapter}) do
-    case GroupherServer.ReviewBot.Adapters.fetch(adapter) do
-      {:ok, module} -> {:ok, module}
-      :error -> {:error, GroupherServer.ReviewBot.ErrorCat.invalid_config()}
+  def configs_for_target(community_id, :doc)
+      when is_integer(community_id) or is_nil(community_id) do
+    with {:ok, system} <- get_config(nil, :doc) do
+      {:ok, %{system: system, community: nil}}
     end
   end
 
-  def adapter(_profile), do: {:error, GroupherServer.ReviewBot.ErrorCat.invalid_config()}
+  def configs_for_target(_community_id, _subject_type) do
+    {:error, ReviewBot.ErrorCat.invalid_config()}
+  end
 
-  defp validate(profile) when is_map(profile) do
-    base_url = Map.get(profile, :base_url)
-    modalities = Map.get(profile, :modalities)
-    model = Map.get(profile, :model)
-    credential_env = Map.get(profile, :credential_env)
+  @doc "Reads system and optional community policies through ReviewBot's config boundary."
+  def configs(community_id, subject_type), do: configs_for_target(community_id, subject_type)
 
-    with true <- valid_adapter?(Map.get(profile, :adapter)),
-         true <- valid_https_url?(base_url),
-         true <- is_binary(model) and model != "",
-         true <- is_binary(credential_env) and credential_env != "",
-         true <-
-           is_list(modalities) and modalities != [] and
-             Enum.all?(modalities, &(&1 in @modalities)),
-         credential when is_binary(credential) and credential != "" <-
-           System.get_env(credential_env) do
-      {:ok,
-       %{
-         adapter: Map.get(profile, :adapter),
-         base_url: base_url,
-         model: model,
-         credential: credential,
-         modalities: Enum.uniq(modalities)
-       }}
+  @doc "Returns the platform policy and every requested community policy for a multi-bound Article."
+  @spec configs_for_targets([pos_integer()], :article | :comment) ::
+          {:ok,
+           %{
+             system: ReviewBotConfig.t(),
+             communities: %{optional(pos_integer()) => ReviewBotConfig.t()}
+           }}
+          | {:error, term()}
+  def configs_for_targets(community_ids, subject_type)
+      when is_list(community_ids) and subject_type in [:article, :comment] do
+    ids = community_ids |> Enum.uniq() |> Enum.sort()
+
+    with {:ok, system} <- get_config(nil, subject_type),
+         configs <-
+           Repo.all(
+             from(config in ReviewBotConfig,
+               where: config.community_id in ^ids and config.subject_type == ^subject_type
+             )
+           ),
+         true <- length(configs) == length(ids) do
+      {:ok, %{system: system, communities: Map.new(configs, &{&1.community_id, &1})}}
     else
-      nil -> {:error, GroupherServer.ReviewBot.ErrorCat.config_not_found()}
-      _ -> {:error, GroupherServer.ReviewBot.ErrorCat.invalid_config()}
+      false -> {:error, ReviewBot.ErrorCat.config_not_found()}
+      {:error, _reason} = error -> error
     end
   end
 
-  defp validate(_profile), do: {:error, GroupherServer.ReviewBot.ErrorCat.invalid_config()}
+  def configs_for_targets(_community_ids, _subject_type) do
+    {:error, ReviewBot.ErrorCat.invalid_config()}
+  end
 
-  defp valid_adapter?(adapter), do: GroupherServer.ReviewBot.Adapters.supported?(adapter)
+  @doc "Creates the two default community policies inside the caller's community transaction."
+  @spec create_default_configs_for_community(pos_integer()) ::
+          {:ok, [ReviewBotConfig.t()]} | {:error, term()}
+  def create_default_configs_for_community(community_id) when is_integer(community_id) do
+    if Repo.in_transaction?() do
+      Enum.reduce_while([:article, :comment], {:ok, []}, fn subject_type, {:ok, configs} ->
+        attrs = %{
+          community_id: community_id,
+          subject_type: subject_type,
+          review_mode: :immediate,
+          ban_words: [],
+          prompt: "",
+          version: 1
+        }
 
-  defp maybe_add_judge_profile(profiles, env) do
-    url = Map.get(env, "REVIEW_BOT_JUDGE_URL")
-    token = Map.get(env, "REVIEW_BOT_JUDGE_TOKEN")
+        case get_config(community_id, subject_type) do
+          {:ok, config} ->
+            {:cont, {:ok, [config | configs]}}
 
-    if present?(url) and present?(token) do
-      Map.put(profiles, "judge_http", %{
-        adapter: :judge_http,
-        base_url: url,
-        model: Map.get(env, "REVIEW_BOT_JUDGE_MODEL") || "default",
-        credential_env: "REVIEW_BOT_JUDGE_TOKEN",
-        modalities: @modalities
-      })
+          {:error, _reason} ->
+            case Repo.insert(ReviewBotConfig.changeset(%ReviewBotConfig{}, attrs)) do
+              {:ok, config} -> {:cont, {:ok, [config | configs]}}
+              {:error, reason} -> {:halt, {:error, reason}}
+            end
+        end
+      end)
+      |> case do
+        {:ok, configs} -> {:ok, Enum.reverse(configs)}
+        {:error, reason} -> {:error, reason}
+      end
     else
-      profiles
+      {:error, :review_bot_config_requires_transaction}
     end
   end
 
-  defp maybe_add_openai_profile(profiles, env) do
-    if present?(Map.get(env, "REVIEW_BOT_OPENAI_TOKEN")) do
-      Map.put(profiles, "openai", %{
-        adapter: :openai,
-        base_url: "https://api.openai.com/v1/responses",
-        model: Map.get(env, "REVIEW_BOT_OPENAI_MODEL") || "gpt-5-mini",
-        credential_env: "REVIEW_BOT_OPENAI_TOKEN",
-        modalities: @modalities
-      })
-    else
-      profiles
+  def create_default_configs_for_community(_community_id) do
+    {:error, ReviewBot.ErrorCat.invalid_config()}
+  end
+
+  defp get_config(community_id, subject_type) do
+    query = from(config in ReviewBotConfig, where: config.subject_type == ^subject_type)
+
+    query =
+      if is_nil(community_id),
+        do: where(query, [config], is_nil(config.community_id)),
+        else: where(query, [config], config.community_id == ^community_id)
+
+    case Repo.one(query) do
+      %ReviewBotConfig{} = config -> {:ok, config}
+      nil -> {:error, ReviewBot.ErrorCat.config_not_found()}
     end
   end
 
-  defp present?(value), do: is_binary(value) and String.trim(value) != ""
-
-  defp valid_https_url?(url) when is_binary(url) do
-    case URI.parse(url) do
-      %URI{scheme: "https", host: host, userinfo: nil, query: nil, fragment: nil}
-      when is_binary(host) and host != "" ->
-        true
-
-      _ ->
-        false
+  @doc "Reads one config by its opaque identifier for command result recovery."
+  @spec config_by_id(Ecto.UUID.t()) :: {:ok, ReviewBotConfig.t()} | {:error, term()}
+  def config_by_id(config_id) when is_binary(config_id) do
+    case Repo.get(ReviewBotConfig, config_id) do
+      %ReviewBotConfig{} = config -> {:ok, config}
+      nil -> {:error, ReviewBot.ErrorCat.config_not_found()}
     end
   end
 
-  defp valid_https_url?(_url), do: false
+  def config_by_id(_config_id), do: {:error, ReviewBot.ErrorCat.config_not_found()}
+
+  defp get_optional_config(nil, _subject_type), do: {:ok, nil}
+  defp get_optional_config(community_id, subject_type), do: get_config(community_id, subject_type)
 end
