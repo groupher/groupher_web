@@ -39,25 +39,25 @@ defmodule GroupherServer.CMS.Review.Target do
     else
       false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
       {:error, _reason} = error -> error
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
   def load_for_update(_target_key, _scope_key) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   defp parse_target("article:" <> id) do
     case Ecto.UUID.cast(id) do
       {:ok, id} -> {:ok, {:article, id}}
-      :error -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      :error -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
   defp parse_target("comment:" <> id) do
     case Integer.parse(id) do
       {id, ""} when id > 0 -> {:ok, {:comment, id}}
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
@@ -68,15 +68,15 @@ defmodule GroupherServer.CMS.Review.Target do
              {branch_id, ""} when branch_id > 0 <- Integer.parse(branch_id) do
           {:ok, {:doc, article_id, branch_id}}
         else
-          _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+          _ -> {:error, CMS.ErrorCat.invalid_review_block()}
         end
 
       _ ->
-        {:error, CMS.ErrorCat.invalid_review_restriction()}
+        {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
-  defp parse_target(_target_key), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  defp parse_target(_target_key), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   defp lock_target({:article, article_id}, scope_key) do
     with {:ok, article} <- lock_article(article_id),
@@ -138,7 +138,7 @@ defmodule GroupherServer.CMS.Review.Target do
   end
 
   defp lock_target({:doc, _article_id, _branch_id}, _scope_key) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   defp lock_article(article_id) do
@@ -192,12 +192,12 @@ defmodule GroupherServer.CMS.Review.Target do
            ) do
       {:ok, :pass}
     else
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
   defp lock_article_scope(_article, _scope_key) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   defp lock_comment_scope(_comment, "platform"), do: {:ok, :pass}
@@ -206,7 +206,7 @@ defmodule GroupherServer.CMS.Review.Target do
     if scope_key == "community:#{community_id}" do
       {:ok, :pass}
     else
-      {:error, CMS.ErrorCat.invalid_review_restriction()}
+      {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 end

@@ -1,14 +1,14 @@
 defmodule GroupherServer.AlertWall.Persist do
   @moduledoc """
-  Writes AlertWall items, report links and wall actions in the caller's transaction.
+  Writes AlertWall items, reports and wall actions in the caller's transaction.
 
-      owner command -> AlertWall join-only write -> caller commits once
+      owner command -> AlertWall write -> caller commits once
   """
 
   import Ecto.Query
 
   alias GroupherServer.{AlertWall, Repo}
-  alias AlertWall.Model.{Action, Item, ItemReport, Report}
+  alias AlertWall.Model.{Action, Item, UserReport}
 
   @report_types ~w(SPAM HARASSMENT ILLEGAL_CONTENT IMPERSONATION OTHER)
 
@@ -56,41 +56,9 @@ defmodule GroupherServer.AlertWall.Persist do
     transition(item_id, :supersede, "superseded", operation_ref, nil, source)
   end
 
-  @doc "Links one active report to an item without rewriting the report's original context."
-  @spec link_report_in_transaction(pos_integer(), pos_integer(), Ecto.UUID.t()) ::
-          {:ok, ItemReport.t()} | {:error, term()}
-  def link_report_in_transaction(item_id, report_id, operation_ref)
-      when is_integer(item_id) and is_integer(report_id) and is_binary(operation_ref) do
-    with {:ok, :pass} <- require_transaction(),
-         %Item{} = item <- lock_item(item_id),
-         %Report{withdrawn_at: nil} = report <- Repo.get(Report, report_id),
-         {:ok, :pass} <- same_report_scope(item, report) do
-      attrs = %{
-        item_id: item.id,
-        report_id: report.id,
-        linked_by_ref: operation_ref,
-        linked_at: DateTime.utc_now(:second)
-      }
-
-      case Repo.get_by(ItemReport, item_id: item.id, report_id: report.id) do
-        %ItemReport{} = existing -> {:ok, existing}
-        nil -> Repo.insert(ItemReport.changeset(%ItemReport{}, attrs))
-      end
-    else
-      nil -> {:error, AlertWall.ErrorCat.item_not_found()}
-      %Report{} -> {:error, AlertWall.ErrorCat.invalid_report()}
-      {:error, _reason} = error -> error
-      _ -> {:error, AlertWall.ErrorCat.invalid_report()}
-    end
-  end
-
-  def link_report_in_transaction(_item_id, _report_id, _operation_ref) do
-    {:error, AlertWall.ErrorCat.invalid_report()}
-  end
-
-  @doc "Creates one immutable report and its original item association in the caller transaction."
+  @doc "Creates one report attached to the item for the reported public content."
   @spec submit_report_in_transaction(map(), Ecto.UUID.t()) ::
-          {:ok, Report.t()} | {:error, term()}
+          {:ok, UserReport.t()} | {:error, term()}
   def submit_report_in_transaction(attrs, operation_ref)
       when is_map(attrs) and is_binary(operation_ref) do
     with {:ok, :pass} <- require_transaction(),
@@ -110,11 +78,11 @@ defmodule GroupherServer.AlertWall.Persist do
 
   @doc "Withdraws one reporter-owned report and returns every affected item id."
   @spec withdraw_report_in_transaction(pos_integer(), pos_integer()) ::
-          {:ok, %{report: Report.t(), item_ids: [pos_integer()]}} | {:error, term()}
+          {:ok, %{report: UserReport.t(), item_ids: [pos_integer()]}} | {:error, term()}
   def withdraw_report_in_transaction(report_id, reporter_id)
       when is_integer(report_id) and is_integer(reporter_id) do
     with {:ok, :pass} <- require_transaction(),
-         %Report{} = report <- lock_report(report_id),
+         %UserReport{} = report <- lock_report(report_id),
          true <- report.reporter_id == reporter_id,
          {:ok, updated} <- withdraw_report(report),
          item_ids <- report_item_ids(report.id) do
@@ -131,15 +99,15 @@ defmodule GroupherServer.AlertWall.Persist do
     {:error, AlertWall.ErrorCat.invalid_report()}
   end
 
-  @doc "Counts distinct active reports linked to one item."
+  @doc "Counts reports that are unresolved and still apply to one item."
   @spec active_report_count(pos_integer()) :: non_neg_integer()
   def active_report_count(item_id) when is_integer(item_id) do
     Repo.one(
-      from(report in Report,
-        join: item_report in ItemReport,
-        on: item_report.report_id == report.id,
-        where: item_report.item_id == ^item_id and is_nil(report.withdrawn_at),
-        select: count(report.id, :distinct)
+      from(report in UserReport,
+        where:
+          report.item_id == ^item_id and is_nil(report.withdrawn_at) and
+            is_nil(report.outdated_at) and is_nil(report.resolved_at),
+        select: count(report.id)
       )
     ) || 0
   end
@@ -271,6 +239,7 @@ defmodule GroupherServer.AlertWall.Persist do
          digest <- digest(%{item_id: item_id, action: action, resolution: resolution}),
          {:ok, :new} <- prior_action(action, operation_ref, digest),
          {:ok, updated} <- update_item_status(item, action, resolution),
+         {:ok, :pass} <- update_report_status(updated, action, resolution),
          {:ok, _record} <-
            record_action(
              updated,
@@ -304,6 +273,32 @@ defmodule GroupherServer.AlertWall.Persist do
     item
     |> Item.changeset(%{status: :superseded, version: item.version + 1})
     |> Repo.update()
+  end
+
+  defp update_report_status(%Item{} = item, :resolve, resolution) do
+    now = DateTime.utc_now(:second)
+
+    Repo.update_all(
+      from(report in UserReport,
+        where: report.item_id == ^item.id and is_nil(report.resolved_at)
+      ),
+      set: [resolved_at: now, resolution: resolution, updated_at: now]
+    )
+
+    {:ok, :pass}
+  end
+
+  defp update_report_status(%Item{} = item, :supersede, _resolution) do
+    now = DateTime.utc_now(:second)
+
+    Repo.update_all(
+      from(report in UserReport,
+        where: report.item_id == ^item.id and is_nil(report.outdated_at)
+      ),
+      set: [outdated_at: now, updated_at: now]
+    )
+
+    {:ok, :pass}
   end
 
   defp get_or_create_item(attrs) do
@@ -436,15 +431,6 @@ defmodule GroupherServer.AlertWall.Persist do
     )
   end
 
-  defp same_report_scope(item, report) do
-    if item.owner == report.owner and item.target_type == report.target_type and
-         item.target_id == report.target_id and item.community_id == report.community_id do
-      {:ok, :pass}
-    else
-      {:error, AlertWall.ErrorCat.invalid_report()}
-    end
-  end
-
   defp validate_report(attrs, operation_ref) do
     required = [:reporter_id, :owner, :target_type, :target_id, :subject_ref, :report_type]
 
@@ -477,8 +463,8 @@ defmodule GroupherServer.AlertWall.Persist do
   end
 
   defp prior_report(%{operation_ref: operation_ref} = attrs) do
-    case Repo.get_by(Report, operation_ref: operation_ref) do
-      %Report{} = report ->
+    case Repo.get_by(UserReport, operation_ref: operation_ref) do
+      %UserReport{} = report ->
         if report_matches?(report, attrs) do
           {:ok, report}
         else
@@ -490,7 +476,7 @@ defmodule GroupherServer.AlertWall.Persist do
     end
   end
 
-  defp submit_new_report(%Report{} = report, _attrs, _operation_ref), do: {:ok, report}
+  defp submit_new_report(%UserReport{} = report, _attrs, _operation_ref), do: {:ok, report}
 
   defp submit_new_report(nil, attrs, operation_ref) do
     with {:ok, item} <-
@@ -509,8 +495,8 @@ defmodule GroupherServer.AlertWall.Persist do
            ),
          {:ok, report} <-
            Repo.insert(
-             Report.changeset(%Report{}, %{
-               origin_item_id: item.id,
+             UserReport.changeset(%UserReport{}, %{
+               item_id: item.id,
                reporter_id: attrs.reporter_id,
                owner: attrs.owner,
                target_type: attrs.target_type,
@@ -522,8 +508,7 @@ defmodule GroupherServer.AlertWall.Persist do
                operation_ref: operation_ref
              }),
              mode: :savepoint
-           ),
-         {:ok, _item_report} <- link_report_in_transaction(item.id, report.id, operation_ref) do
+           ) do
       {:ok, report}
     end
   end
@@ -536,28 +521,25 @@ defmodule GroupherServer.AlertWall.Persist do
   end
 
   defp lock_report(report_id) do
-    Repo.one(from(report in Report, where: report.id == ^report_id, lock: "FOR UPDATE"))
+    Repo.one(from(report in UserReport, where: report.id == ^report_id, lock: "FOR UPDATE"))
   end
 
-  defp withdraw_report(%Report{withdrawn_at: withdrawn_at} = report)
+  defp withdraw_report(%UserReport{withdrawn_at: withdrawn_at} = report)
        when not is_nil(withdrawn_at) do
     {:ok, report}
   end
 
-  defp withdraw_report(%Report{} = report) do
+  defp withdraw_report(%UserReport{} = report) do
     report
-    |> Report.changeset(%{withdrawn_at: DateTime.utc_now(:second)})
+    |> UserReport.changeset(%{withdrawn_at: DateTime.utc_now(:second)})
     |> Repo.update()
   end
 
   defp report_item_ids(report_id) do
-    Repo.all(
-      from(item_report in ItemReport,
-        where: item_report.report_id == ^report_id,
-        select: item_report.item_id,
-        order_by: item_report.item_id
-      )
-    )
+    case Repo.get(UserReport, report_id) do
+      %UserReport{item_id: item_id} -> [item_id]
+      nil -> []
+    end
   end
 
   defp supersede_items(items, operation_ref) do
@@ -587,6 +569,7 @@ defmodule GroupherServer.AlertWall.Persist do
                version: item.version + 1
              })
              |> Repo.update(),
+           {:ok, :pass} <- update_report_status(updated, :supersede, "target_deleted"),
            {:ok, _action} <-
              record_action(
                updated,

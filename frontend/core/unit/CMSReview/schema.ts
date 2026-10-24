@@ -3,7 +3,7 @@ import { graphql } from '~/graphql/authoring'
 export const contentReview = graphql(`
   query ContentReview($target: CmsReviewTargetInput!) {
     contentReview(target: $target) {
-      requestId
+      artimentReviewId
       targetType
       articleId
       commentId
@@ -36,7 +36,7 @@ export const contentReview = graphql(`
 export const pendingContentReviews = graphql(`
   query PendingContentReviews($scope: ReviewBotScopeInput!) {
     pendingContentReviews(scope: $scope) {
-      requestId
+      artimentReviewId
       targetType
       articleId
       commentId

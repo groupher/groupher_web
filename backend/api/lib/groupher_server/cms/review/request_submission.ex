@@ -6,18 +6,18 @@ defmodule GroupherServer.CMS.Review.RequestSubmission do
 
       CMS publish/edit command
         -> immutable content and policy snapshot
-          -> scoped ReviewRequest rows
+          -> scoped ArtimentReview rows
             -> review Effect
   """
 
   alias GroupherServer.ReviewBot
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Model.ReviewRequest
+  alias CMS.Model.ArtimentReview
   alias ReviewBot.Model.ReviewBotConfig
 
   @doc "Creates scoped requests with immutable content and complete configuration snapshots."
   @spec register_in_transaction(map(), map(), map(), :publish | :edit | :recheck | :binding) ::
-          {:ok, [ReviewRequest.t()]} | {:error, term()}
+          {:ok, [ArtimentReview.t()]} | {:error, term()}
   def register_in_transaction(target, content, configs, trigger)
       when is_map(target) and is_map(content) and is_map(configs) and
              trigger in [:publish, :edit, :recheck, :binding] do
@@ -29,12 +29,12 @@ defmodule GroupherServer.CMS.Review.RequestSubmission do
     else
       false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
       {:error, _reason} = error -> error
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
   def register_in_transaction(_target, _content, _configs, _trigger) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   defp policy_scopes(%{system: %ReviewBotConfig{} = system, community: nil}) do
@@ -64,7 +64,7 @@ defmodule GroupherServer.CMS.Review.RequestSubmission do
     {:ok, [%{scope: :system, config: system, system_config: system} | scope_policies]}
   end
 
-  defp policy_scopes(_configs), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  defp policy_scopes(_configs), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   defp target_attrs(target, content, trigger, scopes) do
     with {:ok, payload} <- normalize_content(content),
@@ -75,20 +75,28 @@ defmodule GroupherServer.CMS.Review.RequestSubmission do
          system_config = scope.system_config
          community_id = community_id(scope.scope)
 
+         policy_snapshot = %{
+           "scope" => scope_name(scope.scope),
+           "trigger" => Atom.to_string(trigger),
+           "system_config_id" => system_config.id,
+           "system_config_version" => system_config.version,
+           "config_id" => config.id,
+           "config_version" => config.version,
+           "system_prompt" => system_config.prompt,
+           "prompt" => if(scope.scope == :system, do: "", else: config.prompt),
+           "ban_words" => config.ban_words
+         }
+
+         policy_snapshot =
+           if scope.scope == :system do
+             policy_snapshot
+           else
+             Map.put(policy_snapshot, "review_mode", Atom.to_string(config.review_mode))
+           end
+
          Map.merge(common, %{
            community_id: community_id,
-           policy_snapshot: %{
-             "scope" => scope_name(scope.scope),
-             "trigger" => Atom.to_string(trigger),
-             "review_mode" => Atom.to_string(config.review_mode),
-             "system_config_id" => system_config.id,
-             "system_config_version" => system_config.version,
-             "config_id" => config.id,
-             "config_version" => config.version,
-             "system_prompt" => system_config.prompt,
-             "prompt" => if(scope.scope == :system, do: "", else: config.prompt),
-             "ban_words" => config.ban_words
-           },
+           policy_snapshot: policy_snapshot,
            payload: payload
          })
        end)}
@@ -96,31 +104,29 @@ defmodule GroupherServer.CMS.Review.RequestSubmission do
   end
 
   defp validate_target(
-         %{type: :article, article_id: article_id, article_revision_id: revision_id},
+         %{type: :article, article_id: article_id},
          trigger
        )
-       when is_binary(article_id) and is_binary(revision_id) do
+       when is_binary(article_id) do
     {:ok,
      %{
        target_type: :article,
        article_id: article_id,
-       article_revision_id: revision_id,
-       review_ref: revision_id,
+       subject_ref: Ecto.UUID.generate(),
        trigger: trigger
      }}
   end
 
   defp validate_target(
-         %{type: :comment, comment_id: comment_id, body_version: body_version},
+         %{type: :comment, comment_id: comment_id},
          trigger
        )
-       when is_integer(comment_id) and is_integer(body_version) and body_version > 0 do
+       when is_integer(comment_id) do
     {:ok,
      %{
        target_type: :comment,
        comment_id: comment_id,
-       comment_body_version: body_version,
-       review_ref: Ecto.UUID.generate(),
+       subject_ref: Ecto.UUID.generate(),
        trigger: trigger
      }}
   end
@@ -129,25 +135,23 @@ defmodule GroupherServer.CMS.Review.RequestSubmission do
          %{
            type: :doc,
            article_id: article_id,
-           branch_id: branch_id,
-           branch_version_id: version_id
+           branch_id: branch_id
          },
          trigger
        )
-       when is_binary(article_id) and is_integer(branch_id) and is_integer(version_id) do
+       when is_binary(article_id) and is_integer(branch_id) do
     {:ok,
      %{
        target_type: :doc,
        article_id: article_id,
        branch_id: branch_id,
-       branch_version_id: version_id,
-       review_ref: Ecto.UUID.generate(),
+       subject_ref: Ecto.UUID.generate(),
        trigger: trigger
      }}
   end
 
   defp validate_target(_target, _trigger) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   defp normalize_content(%{title: title, body: body} = content)
@@ -163,7 +167,7 @@ defmodule GroupherServer.CMS.Review.RequestSubmission do
   end
 
   defp normalize_content(_content) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   defp insert_scoped_requests(scopes, target) do
@@ -186,21 +190,28 @@ defmodule GroupherServer.CMS.Review.RequestSubmission do
   end
 
   defp apply_initial_hold(
-         %ReviewRequest{policy_snapshot: %{"review_mode" => "immediate"}},
+         %ArtimentReview{policy_snapshot: %{"scope" => "system"}},
          _target
        ) do
     {:ok, :pass}
   end
 
-  defp apply_initial_hold(%ReviewRequest{} = request, %{lifecycle: lifecycle}) do
+  defp apply_initial_hold(
+         %ArtimentReview{policy_snapshot: %{"review_mode" => "immediate"}},
+         _target
+       ) do
+    {:ok, :pass}
+  end
+
+  defp apply_initial_hold(%ArtimentReview{} = request, %{lifecycle: lifecycle}) do
     scope_key =
       if is_nil(request.community_id), do: "platform", else: "community:#{request.community_id}"
 
-    case CMS.ReviewRestrictions.apply(lifecycle, %{
+    case CMS.ReviewBlocks.apply(lifecycle, %{
            scope_key: scope_key,
            type: :awaiting_ai,
-           request_id: request.id,
-           review_ref: request.review_ref,
+           artiment_review_id: request.id,
+           subject_ref: request.subject_ref,
            source_ref: "request:#{request.id}:awaiting_ai",
            source: :request,
            applied_at: DateTime.utc_now(:second)
@@ -211,7 +222,7 @@ defmodule GroupherServer.CMS.Review.RequestSubmission do
   end
 
   defp apply_initial_hold(_request, _target) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   defp community_id({:community, community_id}), do: community_id

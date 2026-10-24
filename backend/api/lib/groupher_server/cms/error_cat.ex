@@ -62,7 +62,7 @@ defmodule GroupherServer.CMS.ErrorCat do
   error(:outbox_delivery_exhausted, code: 4542)
   error(:invalid_press_community_id, code: 4543)
   error(:unknown_press_outbox_event, code: 4544)
-  error(:invalid_review_restriction, code: 4545)
+  error(:invalid_review_block, code: 4545)
   error(:review_transition_requires_transaction, code: 4546)
-  error(:review_restriction_not_found, code: 4547)
+  error(:review_block_not_found, code: 4547)
 end

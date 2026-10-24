@@ -274,7 +274,7 @@ defmodule Mix.Tasks.ReviewBot.V2.Preflight do
       |> Enum.map(fn table -> query_rows!(hidden_query(table)) |> hd() |> Enum.at(1) end)
 
     targets =
-      Enum.map(orphan_targets, &%{type: "orphaned_review_restriction", target: &1}) ++
+      Enum.map(orphan_targets, &%{type: "orphaned_review_block", target: &1}) ++
         Enum.map(hidden.targets, &%{type: "unexplained_hidden_projection", target: &1})
 
     %{count: length(orphan_targets) + Enum.sum(hidden_counts), targets: targets}

@@ -22,7 +22,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Capacity do
     ArticleRevision,
     Comment,
     CommentLifecycle,
-    CommentReviewRestriction
+    CommentReviewBlock
   }
 
   alias CMS.SearchArtiments.Config
@@ -93,7 +93,7 @@ defmodule GroupherServer.CMS.SearchArtiments.Capacity do
       |> where(
         [comment, ...],
         not exists(
-          from(restriction in CommentReviewRestriction,
+          from(restriction in CommentReviewBlock,
             where:
               restriction.comment_id == parent_as(:capacity_comment_lifecycle).comment_id and
                 is_nil(restriction.resolved_at) and

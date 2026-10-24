@@ -1,12 +1,12 @@
-defmodule GroupherServer.AlertWall.Model.Report do
+defmodule GroupherServer.AlertWall.Model.UserReport do
   @moduledoc """
-  A reporter's immutable report fact tied to its original Wall item.
+  A reporter's immutable report fact tied to the Wall item for the content they reported.
 
   Business position:
 
       Reporter command
-        -> immutable Report target snapshot
-          -> original item association
+        -> immutable report target snapshot
+          -> one Wall item
   """
 
   use Ecto.Schema
@@ -26,8 +26,8 @@ defmodule GroupherServer.AlertWall.Model.Report do
 
   @type t :: %__MODULE__{}
 
-  schema "reports" do
-    belongs_to(:origin_item, Item)
+  schema "user_reports" do
+    belongs_to(:item, Item)
     belongs_to(:reporter, User)
     field(:owner, Ecto.Enum, values: @owners)
     field(:target_type, Ecto.Enum, values: @target_types)
@@ -38,13 +38,16 @@ defmodule GroupherServer.AlertWall.Model.Report do
     field(:details, :string)
     field(:operation_ref, Ecto.UUID)
     field(:withdrawn_at, :utc_datetime)
+    field(:outdated_at, :utc_datetime)
+    field(:resolved_at, :utc_datetime)
+    field(:resolution, :string)
     timestamps(type: :utc_datetime)
   end
 
   def changeset(report, attrs) do
     report
     |> cast(attrs, [
-      :origin_item_id,
+      :item_id,
       :reporter_id,
       :owner,
       :target_type,
@@ -54,10 +57,13 @@ defmodule GroupherServer.AlertWall.Model.Report do
       :report_type,
       :details,
       :operation_ref,
-      :withdrawn_at
+      :withdrawn_at,
+      :outdated_at,
+      :resolved_at,
+      :resolution
     ])
     |> validate_required([
-      :origin_item_id,
+      :item_id,
       :reporter_id,
       :owner,
       :target_type,
@@ -68,10 +74,26 @@ defmodule GroupherServer.AlertWall.Model.Report do
     ])
     |> validate_length(:details, max: 8_000)
     |> validate_owner_target()
-    |> foreign_key_constraint(:origin_item_id)
+    |> foreign_key_constraint(:item_id)
     |> foreign_key_constraint(:reporter_id)
     |> foreign_key_constraint(:community_id)
     |> unique_constraint(:operation_ref)
+    |> unique_constraint(
+      [:reporter_id, :owner, :target_type, :target_id, :community_id, :subject_ref],
+      name: :alert_wall_user_reports_active_community_unique
+    )
+    |> unique_constraint([:reporter_id, :owner, :target_type, :target_id, :subject_ref],
+      name: :alert_wall_user_reports_active_system_unique
+    )
+    |> validate_resolution()
+  end
+
+  defp validate_resolution(changeset) do
+    if is_nil(get_field(changeset, :resolved_at)) == is_nil(get_field(changeset, :resolution)) do
+      changeset
+    else
+      add_error(changeset, :resolution, "must be set with resolved_at")
+    end
   end
 
   defp validate_owner_target(changeset) do

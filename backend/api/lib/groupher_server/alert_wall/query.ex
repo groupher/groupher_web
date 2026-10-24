@@ -1,20 +1,20 @@
 defmodule GroupherServer.AlertWall.Query do
   @moduledoc """
-  Authorized read access to AlertWall items and reporter-owned reports.
+  Authorized read access to AlertWall items and reporter-owned user reports.
 
   Business position:
 
       GraphQL resolver
         -> AlertWall public query
           -> scope authorization
-            -> item/report reads
+          -> item/report reads
   """
 
   import Ecto.Query
 
   alias GroupherServer.AlertWall
   alias GroupherServer.{CMS, Repo}
-  alias AlertWall.Model.{Item, Report}
+  alias AlertWall.Model.{Item, UserReport}
   alias CMS.Model.Community
 
   @doc "Lists items visible to an authorized platform or community reviewer."
@@ -60,7 +60,7 @@ defmodule GroupherServer.AlertWall.Query do
     with %{id: reporter_id} when is_integer(reporter_id) <- actor do
       {:ok,
        Repo.all(
-         from(report in Report,
+         from(report in UserReport,
            where: report.reporter_id == ^reporter_id,
            order_by: [desc: report.inserted_at, desc: report.id]
          )
@@ -73,8 +73,10 @@ defmodule GroupherServer.AlertWall.Query do
   @doc "Counts active reports authored by one account."
   def reported_count(user_id) when is_integer(user_id) do
     Repo.one(
-      from(report in Report,
-        where: report.reporter_id == ^user_id and is_nil(report.withdrawn_at),
+      from(report in UserReport,
+        where:
+          report.reporter_id == ^user_id and is_nil(report.withdrawn_at) and
+            is_nil(report.outdated_at) and is_nil(report.resolved_at),
         select: count(report.id)
       )
     ) || 0

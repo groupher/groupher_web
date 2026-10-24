@@ -5,7 +5,7 @@ defmodule GroupherServer.Test.CMS.Comments.CollectionPagi do
 
   alias Helper.ORM.Pagi.{Page}
   alias GroupherServer.{CMS, Pagi, Repo}
-  alias CMS.Model.{ArticleLifecycle, ArticleReviewRestriction}
+  alias CMS.Model.{ArticleLifecycle, ArticleReviewBlock}
   alias Pagi.Params
 
   test "published and participant cursors agree with offset and bind their collection" do
@@ -83,8 +83,8 @@ defmodule GroupherServer.Test.CMS.Comments.CollectionPagi do
 
     _lifecycle = Repo.get_by!(ArticleLifecycle, article_id: hidden_article.id)
 
-    %ArticleReviewRestriction{}
-    |> ArticleReviewRestriction.changeset(%{
+    %ArticleReviewBlock{}
+    |> ArticleReviewBlock.changeset(%{
       article_id: hidden_article.id,
       type: :awaiting_human,
       source_ref: "profile-parent-restricted",

@@ -1,8 +1,8 @@
-defmodule GroupherServer.Test.CMS.Model.ReviewRestrictionTest do
+defmodule GroupherServer.Test.CMS.Model.ReviewBlockTest do
   use ExUnit.Case, async: true
   alias GroupherServer.CMS
 
-  alias CMS.Model.ArticleReviewRestriction
+  alias CMS.Model.ArticleReviewBlock
 
   test "restriction end metadata is all present or all absent" do
     base = %{
@@ -13,10 +13,10 @@ defmodule GroupherServer.Test.CMS.Model.ReviewRestrictionTest do
       applied_at: DateTime.utc_now()
     }
 
-    assert ArticleReviewRestriction.changeset(%ArticleReviewRestriction{}, base).valid?
+    assert ArticleReviewBlock.changeset(%ArticleReviewBlock{}, base).valid?
 
-    refute ArticleReviewRestriction.changeset(
-             %ArticleReviewRestriction{},
+    refute ArticleReviewBlock.changeset(
+             %ArticleReviewBlock{},
              Map.put(base, :resolved_at, DateTime.utc_now())
            ).valid?
 
@@ -26,6 +26,6 @@ defmodule GroupherServer.Test.CMS.Model.ReviewRestrictionTest do
       |> Map.put(:resolved_by_ref, Ecto.UUID.generate())
       |> Map.put(:resolution, "approved")
 
-    assert ArticleReviewRestriction.changeset(%ArticleReviewRestriction{}, ended).valid?
+    assert ArticleReviewBlock.changeset(%ArticleReviewBlock{}, ended).valid?
   end
 end

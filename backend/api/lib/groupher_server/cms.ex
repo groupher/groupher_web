@@ -117,16 +117,16 @@ defmodule GroupherServer.CMS do
     as: :load_for_update
 
   @doc "Creates the current scoped review request inside the resource command transaction."
-  @spec create_review_request_in_transaction(map()) ::
+  @spec create_artiment_review_in_transaction(map()) ::
           {:ok, struct()} | {:error, term()}
-  defdelegate create_review_request_in_transaction(attrs),
+  defdelegate create_artiment_review_in_transaction(attrs),
     to: GroupherServer.CMS.Review.Requests,
     as: :create_in_transaction
 
   @doc "Pins one submitted content snapshot to every configured ReviewBot scope."
-  @spec register_review_requests_in_transaction(map(), map(), map(), atom()) ::
+  @spec register_artiment_reviews_in_transaction(map(), map(), map(), atom()) ::
           {:ok, [struct()]} | {:error, term()}
-  defdelegate register_review_requests_in_transaction(target, content, configs, trigger),
+  defdelegate register_artiment_reviews_in_transaction(target, content, configs, trigger),
     to: GroupherServer.CMS.Review.RequestSubmission,
     as: :register_in_transaction
 
@@ -138,7 +138,7 @@ defmodule GroupherServer.CMS do
     as: :supersede_scope_in_transaction
 
   @doc "Locks current request rows for one target scope in the caller's transaction."
-  defdelegate current_review_requests_for_scope_in_transaction(attrs),
+  defdelegate current_artiment_reviews_for_scope_in_transaction(attrs),
     to: GroupherServer.CMS.Review.Requests,
     as: :current_for_scope_in_transaction
 
@@ -159,8 +159,8 @@ defmodule GroupherServer.CMS do
     as: :execute
 
   @doc "Returns a request only while its current CMS scope and short-lived payload remain valid."
-  @spec current_review_request(Ecto.UUID.t()) :: {:ok, struct()} | {:error, term()}
-  defdelegate current_review_request(request_id),
+  @spec current_artiment_review(Ecto.UUID.t()) :: {:ok, struct()} | {:error, term()}
+  defdelegate current_artiment_review(request_id),
     to: GroupherServer.CMS.Review.Requests,
     as: :current
 
@@ -170,40 +170,40 @@ defmodule GroupherServer.CMS do
     as: :current_for_scope
 
   @doc "Lists current review requests that need a human decision in one scope."
-  defdelegate pending_review_requests(attrs),
+  defdelegate pending_artiment_reviews(attrs),
     to: GroupherServer.CMS.Review.Requests,
     as: :pending_for_scope
 
   @doc "Expires unprocessed CMS review payloads in a bounded batch."
-  defdelegate expire_review_request_payloads(batch_size),
+  defdelegate expire_artiment_review_payloads(batch_size),
     to: GroupherServer.CMS.Review.Requests,
     as: :expire_payloads
 
   @doc "Claims a current review request before provider work begins."
-  @spec claim_review_request_in_transaction(Ecto.UUID.t()) ::
+  @spec claim_artiment_review_in_transaction(Ecto.UUID.t()) ::
           {:ok, struct()} | {:error, term()}
-  defdelegate claim_review_request_in_transaction(request_id),
+  defdelegate claim_artiment_review_in_transaction(request_id),
     to: GroupherServer.CMS.Review.Requests,
     as: :claim_in_transaction
 
   @doc "Stores a completed opinion only while the scoped request is still current."
-  @spec complete_review_request_in_transaction(Ecto.UUID.t(), map()) ::
+  @spec complete_artiment_review_in_transaction(Ecto.UUID.t(), map()) ::
           {:ok, struct()} | {:error, term()}
-  defdelegate complete_review_request_in_transaction(request_id, result),
+  defdelegate complete_artiment_review_in_transaction(request_id, result),
     to: GroupherServer.CMS.Review.Requests,
     as: :complete_in_transaction
 
   @doc "Stores terminal provider failure and clears the request payload."
-  @spec fail_review_request_in_transaction(Ecto.UUID.t(), map()) ::
+  @spec fail_artiment_review_in_transaction(Ecto.UUID.t(), map()) ::
           {:ok, struct()} | {:error, term()}
-  defdelegate fail_review_request_in_transaction(request_id, failure),
+  defdelegate fail_artiment_review_in_transaction(request_id, failure),
     to: GroupherServer.CMS.Review.Requests,
     as: :fail_in_transaction
 
   @doc "Marks a completed current request applied after its resource effects commit."
-  @spec mark_review_request_applied_in_transaction(Ecto.UUID.t()) ::
+  @spec mark_artiment_review_applied_in_transaction(Ecto.UUID.t()) ::
           {:ok, struct()} | {:error, term()}
-  defdelegate mark_review_request_applied_in_transaction(request_id),
+  defdelegate mark_artiment_review_applied_in_transaction(request_id),
     to: GroupherServer.CMS.Review.Requests,
     as: :mark_applied_in_transaction
 
@@ -239,45 +239,45 @@ defmodule GroupherServer.CMS do
 
   ## Examples
 
-      CMS.active_review_restrictions(lifecycle, "community:12")
+      CMS.active_review_blocks(lifecycle, "community:12")
       #=> {:ok, restrictions} | {:error, reason}
   """
-  @spec active_review_restrictions(struct(), String.t()) :: {:ok, [struct()]} | {:error, term()}
-  defdelegate active_review_restrictions(lifecycle, scope_key),
-    to: GroupherServer.CMS.ReviewRestrictions,
+  @spec active_review_blocks(struct(), String.t()) :: {:ok, [struct()]} | {:error, term()}
+  defdelegate active_review_blocks(lifecycle, scope_key),
+    to: GroupherServer.CMS.ReviewBlocks,
     as: :active_for
 
   @doc "Links the CMS suspicion fact to its Wall item in the current resource transaction."
-  defdelegate link_review_item_in_transaction(request_id, item_id),
-    to: GroupherServer.CMS.ReviewRestrictions,
-    as: :link_item_for_request_in_transaction
+  defdelegate link_review_item_in_transaction(artiment_review_id, item_id),
+    to: GroupherServer.CMS.ReviewBlocks,
+    as: :link_item_for_artiment_review_in_transaction
 
   @doc "Returns the invalid CMS review restriction error."
-  defdelegate invalid_review_restriction_error(), to: ErrorCat, as: :invalid_review_restriction
+  defdelegate invalid_review_block_error(), to: ErrorCat, as: :invalid_review_block
 
   @doc """
   Applies one review restriction through the resource Lifecycle owner.
 
   ## Examples
 
-      CMS.apply_review_restriction(locked_lifecycle, attrs)
+      CMS.apply_review_block(locked_lifecycle, attrs)
       #=> {:ok, restriction} | {:error, reason}
   """
-  @spec apply_review_restriction(struct(), map()) :: {:ok, struct()} | {:error, term()}
-  def apply_review_restriction(%GroupherServer.CMS.Model.ArticleLifecycle{} = lifecycle, attrs) do
-    GroupherServer.CMS.Articles.Lifecycle.apply_review_restriction(lifecycle, attrs)
+  @spec apply_review_block(struct(), map()) :: {:ok, struct()} | {:error, term()}
+  def apply_review_block(%GroupherServer.CMS.Model.ArticleLifecycle{} = lifecycle, attrs) do
+    GroupherServer.CMS.Articles.Lifecycle.apply_review_block(lifecycle, attrs)
   end
 
-  def apply_review_restriction(%GroupherServer.CMS.Model.CommentLifecycle{} = lifecycle, attrs) do
-    GroupherServer.CMS.Comments.Lifecycle.apply_review_restriction(lifecycle, attrs)
+  def apply_review_block(%GroupherServer.CMS.Model.CommentLifecycle{} = lifecycle, attrs) do
+    GroupherServer.CMS.Comments.Lifecycle.apply_review_block(lifecycle, attrs)
   end
 
-  def apply_review_restriction(%GroupherServer.CMS.Model.DocLifecycle{} = lifecycle, attrs) do
-    GroupherServer.CMS.Docs.Lifecycle.apply_review_restriction(lifecycle, attrs)
+  def apply_review_block(%GroupherServer.CMS.Model.DocLifecycle{} = lifecycle, attrs) do
+    GroupherServer.CMS.Docs.Lifecycle.apply_review_block(lifecycle, attrs)
   end
 
-  def apply_review_restriction(_lifecycle, _attrs) do
-    {:error, ErrorCat.invalid_review_restriction()}
+  def apply_review_block(_lifecycle, _attrs) do
+    {:error, ErrorCat.invalid_review_block()}
   end
 
   @doc """
@@ -285,15 +285,15 @@ defmodule GroupherServer.CMS do
 
   ## Examples
 
-      CMS.end_review_restrictions(lifecycle, scope, ids, operation_ref, reason)
+      CMS.end_review_blocks(lifecycle, scope, ids, operation_ref, reason)
       #=> {:ok, :pass} | {:error, reason}
   """
-  @spec end_review_restrictions(struct(), String.t(), [integer()], Ecto.UUID.t(), String.t()) ::
+  @spec end_review_blocks(struct(), String.t(), [integer()], Ecto.UUID.t(), String.t()) ::
           {:ok, :pass} | {:error, term()}
-  def end_review_restrictions(lifecycle, scope_key, ids, operation_ref, reason) do
+  def end_review_blocks(lifecycle, scope_key, ids, operation_ref, reason) do
     case lifecycle do
       %GroupherServer.CMS.Model.ArticleLifecycle{} = article_lifecycle ->
-        GroupherServer.CMS.Articles.Lifecycle.end_review_restrictions(
+        GroupherServer.CMS.Articles.Lifecycle.end_review_blocks(
           article_lifecycle,
           scope_key,
           ids,
@@ -302,7 +302,7 @@ defmodule GroupherServer.CMS do
         )
 
       %GroupherServer.CMS.Model.CommentLifecycle{} = comment_lifecycle ->
-        GroupherServer.CMS.Comments.Lifecycle.end_review_restrictions(
+        GroupherServer.CMS.Comments.Lifecycle.end_review_blocks(
           comment_lifecycle,
           scope_key,
           ids,
@@ -311,7 +311,7 @@ defmodule GroupherServer.CMS do
         )
 
       %GroupherServer.CMS.Model.DocLifecycle{} = doc_lifecycle ->
-        GroupherServer.CMS.Docs.Lifecycle.end_review_restrictions(
+        GroupherServer.CMS.Docs.Lifecycle.end_review_blocks(
           doc_lifecycle,
           scope_key,
           ids,
@@ -320,7 +320,7 @@ defmodule GroupherServer.CMS do
         )
 
       _ ->
-        {:error, ErrorCat.invalid_review_restriction()}
+        {:error, ErrorCat.invalid_review_block()}
     end
   end
 

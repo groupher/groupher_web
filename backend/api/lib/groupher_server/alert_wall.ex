@@ -1,6 +1,6 @@
 defmodule GroupherServer.AlertWall do
   @moduledoc """
-  Public boundary for scoped risk items, report associations and Wall actions.
+  Public boundary for scoped risk items, user reports and Wall actions.
 
       CMS / Accounts command -> AlertWall interface -> alert_wall facts
   """
@@ -50,16 +50,13 @@ defmodule GroupherServer.AlertWall do
   @doc "Supersedes an item whose subject is no longer current."
   defdelegate supersede_in_transaction(item_id, operation_ref, source), to: Persist
 
-  @doc "Links a report to another item without changing its original context."
-  defdelegate link_report_in_transaction(item_id, report_id, operation_ref), to: Persist
-
-  @doc "Creates one report and its original item association inside the caller transaction."
+  @doc "Creates one report attached to the item for the reported content."
   defdelegate submit_report_in_transaction(attrs, operation_ref), to: Persist
 
   @doc "Withdraws one reporter-owned report and returns all items whose projection may change."
   defdelegate withdraw_report_in_transaction(report_id, reporter_id), to: Persist
 
-  @doc "Counts distinct active reports associated with an item."
+  @doc "Counts unresolved reports that still apply to an item."
   defdelegate active_report_count(item_id), to: Persist
 
   @doc "Supersedes a current CMS item when its source review request is replaced."

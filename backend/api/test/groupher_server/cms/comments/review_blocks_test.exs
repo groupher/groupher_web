@@ -1,4 +1,4 @@
-defmodule GroupherServer.Test.CMS.Comments.ReviewRestrictionsTest do
+defmodule GroupherServer.Test.CMS.Comments.ReviewBlocksTest do
   @moduledoc false
   use GroupherServer.TestMate, async: false
 
@@ -6,7 +6,7 @@ defmodule GroupherServer.Test.CMS.Comments.ReviewRestrictionsTest do
 
   alias GroupherServer.CMS
 
-  alias CMS.Model.{CommentLifecycle, CommentReviewRestriction}
+  alias CMS.Model.{CommentLifecycle, CommentReviewBlock}
 
   test "single Comment responses filter restricted embedded replies through Gate" do
     {community, article, _article_attrs, parent_author} = mock_article(:post)
@@ -40,7 +40,7 @@ defmodule GroupherServer.Test.CMS.Comments.ReviewRestrictionsTest do
                  |> lock("FOR UPDATE")
                  |> Repo.one()
 
-               case CMS.Comments.Lifecycle.apply_review_restriction(
+               case CMS.Comments.Lifecycle.apply_review_block(
                       locked,
                       restriction_attrs(lifecycle, "platform", "hidden-embedded-reply")
                     ) do
@@ -85,7 +85,7 @@ defmodule GroupherServer.Test.CMS.Comments.ReviewRestrictionsTest do
                  |> lock("FOR UPDATE")
                  |> Repo.one()
 
-               case CMS.Comments.Lifecycle.apply_review_restriction(
+               case CMS.Comments.Lifecycle.apply_review_block(
                       locked,
                       restriction_attrs(lifecycle, "platform", "manual-review")
                     ) do
@@ -134,7 +134,7 @@ defmodule GroupherServer.Test.CMS.Comments.ReviewRestrictionsTest do
                  |> lock("FOR UPDATE")
                  |> Repo.one()
 
-               CMS.Comments.Lifecycle.end_review_restrictions(
+               CMS.Comments.Lifecycle.end_review_blocks(
                  locked,
                  "platform",
                  [restriction.id],
@@ -147,7 +147,7 @@ defmodule GroupherServer.Test.CMS.Comments.ReviewRestrictionsTest do
              CMS.ArticleStats.fetch(:post, comment.article_id)
 
     assert {:ok, _loaded} = CMS.FrontDesk.comment(path)
-    assert Repo.get!(CommentReviewRestriction, restriction.id).version == 2
+    assert Repo.get!(CommentReviewBlock, restriction.id).version == 2
   end
 
   defp restriction_attrs(_lifecycle, scope_key, source_ref) do

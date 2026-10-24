@@ -7,8 +7,8 @@ export const reviewBotConfig = graphql(`
       communityId
       subjectType
       reviewMode
-      banWords
-      prompt
+      reviewBanWords
+      reviewPrompt
       version
       updatedAt
     }
@@ -20,8 +20,8 @@ export const updateReviewBotConfig = graphql(`
     updateReviewBotConfig(input: $input, commandId: $commandId) {
       id
       reviewMode
-      banWords
-      prompt
+      reviewBanWords
+      reviewPrompt
       version
     }
   }

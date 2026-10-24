@@ -11,7 +11,7 @@ defmodule GroupherServer.Test.CMS.Gate.G1SurfaceConsistencyTest do
     Article,
     ArticleBinding,
     ArticlePublic,
-    ArticleReviewRestriction,
+    ArticleReviewBlock,
     CommunityLifecycle,
     DocBranch
   }
@@ -32,13 +32,13 @@ defmodule GroupherServer.Test.CMS.Gate.G1SurfaceConsistencyTest do
     assert article_id == article.id
 
     restriction =
-      Repo.insert!(%ArticleReviewRestriction{
+      Repo.insert!(%ArticleReviewBlock{
         article_id: article.id,
         community_id: community.id,
         type: :ai_suspect,
         source_ref: "test-rule",
         source: :request,
-        review_ref: Ecto.UUID.generate(),
+        subject_ref: Ecto.UUID.generate(),
         applied_at: DateTime.utc_now(:second)
       })
 
@@ -124,13 +124,13 @@ defmodule GroupherServer.Test.CMS.Gate.G1SurfaceConsistencyTest do
     assert {:ok, [%{article: %{id: article_id}}]} = CMS.Articles.locators([path])
     assert article_id == article.id
 
-    Repo.insert!(%CMS.Model.DocReviewRestriction{
+    Repo.insert!(%CMS.Model.DocReviewBlock{
       article_id: article.id,
       branch_id: branch.id,
       type: :ai_suspect,
       source_ref: "test-rule",
       source: :request,
-      review_ref: Ecto.UUID.generate(),
+      subject_ref: Ecto.UUID.generate(),
       applied_at: DateTime.utc_now(:second)
     })
 

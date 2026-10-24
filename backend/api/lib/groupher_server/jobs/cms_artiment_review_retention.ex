@@ -1,4 +1,4 @@
-defmodule GroupherServer.Jobs.CMSReviewRequestRetention do
+defmodule GroupherServer.Jobs.CMSArtimentReviewRetention do
   @moduledoc """
   Daily cleanup of expired private CMS review inputs.
 
@@ -25,7 +25,7 @@ defmodule GroupherServer.Jobs.CMSReviewRequestRetention do
   def perform(%Oban.Job{}) do
     with {:ok, count} <- expire_batches(0, 0) do
       :telemetry.execute(
-        [:groupher, :cms, :review_request, :retention],
+        [:groupher, :cms, :artiment_review, :retention],
         %{processed: count},
         %{batch_size: @batch_size, max_batches: @max_batches}
       )
@@ -37,7 +37,7 @@ defmodule GroupherServer.Jobs.CMSReviewRequestRetention do
   defp expire_batches(batch, total) when batch >= @max_batches, do: {:ok, total}
 
   defp expire_batches(batch, total) do
-    with {:ok, count} <- GroupherServer.CMS.expire_review_request_payloads(@batch_size) do
+    with {:ok, count} <- GroupherServer.CMS.expire_artiment_review_payloads(@batch_size) do
       if count < @batch_size do
         {:ok, total + count}
       else

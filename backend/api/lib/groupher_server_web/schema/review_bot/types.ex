@@ -38,8 +38,12 @@ defmodule GroupherServerWeb.Schema.ReviewBot.Types do
     field(:community_id, :id)
     field(:subject_type, non_null(:review_bot_subject_type))
     field(:review_mode, non_null(:review_bot_mode))
-    field(:ban_words, non_null(list_of(non_null(:string))))
-    field(:prompt, non_null(:string))
+
+    field(:review_ban_words, non_null(list_of(non_null(:string))),
+      resolve: fn config, _, _ -> {:ok, config.ban_words} end
+    )
+
+    field(:review_prompt, non_null(:string), resolve: fn config, _, _ -> {:ok, config.prompt} end)
     field(:version, non_null(:integer))
     field(:updated_at, non_null(:datetime))
   end
@@ -49,7 +53,7 @@ defmodule GroupherServerWeb.Schema.ReviewBot.Types do
     field(:subject_type, non_null(:review_bot_subject_type))
     field(:expected_version, non_null(:integer))
     field(:review_mode, non_null(:review_bot_mode))
-    field(:ban_words, non_null(list_of(non_null(:string))))
-    field(:prompt, non_null(:string))
+    field(:review_ban_words, non_null(list_of(non_null(:string))))
+    field(:review_prompt, non_null(:string))
   end
 end

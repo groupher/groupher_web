@@ -24,7 +24,7 @@ defmodule GroupherServer.ReviewBot.Model.ReviewBotConfig do
   schema "review_bot_configs" do
     belongs_to(:community, Community)
     field(:subject_type, Ecto.Enum, values: @subject_types)
-    field(:review_mode, Ecto.Enum, values: @review_modes, default: :immediate)
+    field(:review_mode, Ecto.Enum, values: @review_modes)
     field(:ban_words, {:array, :string}, default: [])
     field(:prompt, :string, default: "")
     field(:version, :integer, default: 1)
@@ -41,7 +41,8 @@ defmodule GroupherServer.ReviewBot.Model.ReviewBotConfig do
       [:community_id, :subject_type, :review_mode, :ban_words, :prompt, :version, :updated_by_id],
       empty_values: []
     )
-    |> validate_required([:subject_type, :review_mode, :ban_words, :version])
+    |> validate_required([:subject_type, :ban_words, :version])
+    |> validate_review_mode()
     |> validate_number(:version, greater_than: 0)
     |> validate_length(:prompt, max: 8_000)
     |> update_change(:ban_words, fn values ->
@@ -84,11 +85,29 @@ defmodule GroupherServer.ReviewBot.Model.ReviewBotConfig do
       not is_nil(get_field(changeset, :community_id)) ->
         add_error(changeset, :community_id, "Doc policies are platform-only")
 
-      get_field(changeset, :review_mode) != :immediate ->
-        add_error(changeset, :review_mode, "Doc review mode is immediate")
+      not is_nil(get_field(changeset, :review_mode)) ->
+        add_error(changeset, :review_mode, "System policies do not have a review mode")
 
       true ->
         changeset
+    end
+  end
+
+  defp validate_review_mode(changeset) do
+    case get_field(changeset, :community_id) do
+      nil ->
+        if is_nil(get_field(changeset, :review_mode)) do
+          changeset
+        else
+          add_error(changeset, :review_mode, "System policies do not have a review mode")
+        end
+
+      _community_id ->
+        if get_field(changeset, :review_mode) in @review_modes do
+          changeset
+        else
+          add_error(changeset, :review_mode, "is required for community policies")
+        end
     end
   end
 

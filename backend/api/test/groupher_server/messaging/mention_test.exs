@@ -7,7 +7,7 @@ defmodule GroupherServer.Test.Messaging.Mention do
 
   alias GroupherServer.Messaging
   alias Messaging.Model.Mention
-  alias CMS.Model.{ArticleLifecycle, ArticleReviewRestriction}
+  alias CMS.Model.{ArticleLifecycle, ArticleReviewBlock}
 
   setup do
     {community, post, _attrs, _author} = mock_article(:post)
@@ -33,7 +33,7 @@ defmodule GroupherServer.Test.Messaging.Mention do
          ~m(post user user2 mention_attr)a do
       _lifecycle = Repo.get_by!(ArticleLifecycle, article_id: post.id)
 
-      Repo.insert!(%ArticleReviewRestriction{
+      Repo.insert!(%ArticleReviewBlock{
         article_id: post.id,
         type: :awaiting_human,
         source_ref: "mention-test",

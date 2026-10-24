@@ -29,7 +29,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Stats do
     Article,
     ArticleLifecycle,
     ArticleBindingTag,
-    ArticleReviewRestriction,
+    ArticleReviewBlock,
     Community,
     CommunityTag,
     CommunityTagStat
@@ -343,7 +343,7 @@ defmodule GroupherServer.CMS.Communities.Tags.Stats do
         visible? =
           match?(%ArticleLifecycle{state: state} when state in [:published, :archived], lifecycle) and
             not Repo.exists?(
-              from(restriction in ArticleReviewRestriction,
+              from(restriction in ArticleReviewBlock,
                 where:
                   restriction.article_id == ^lifecycle.article_id and
                     is_nil(restriction.resolved_at) and

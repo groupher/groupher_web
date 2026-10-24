@@ -77,10 +77,13 @@ defmodule GroupherServerWeb.Schema.AlertWall.Types do
     field(:target_type, non_null(:alert_target_type))
     field(:target_id, non_null(:string))
     field(:community_id, :id)
-    field(:origin_item_id, non_null(:id))
+    field(:item_id, non_null(:id))
     field(:report_type, non_null(:string))
     field(:details, :string)
     field(:withdrawn_at, :datetime)
+    field(:outdated_at, :datetime)
+    field(:resolved_at, :datetime)
+    field(:resolution, :string)
     field(:inserted_at, non_null(:datetime))
   end
 end

@@ -46,7 +46,7 @@ defmodule GroupherServer.CMS.Review.Commands.Decide do
   end
 
   def execute(_target_key, _scope_key, _action, _actor, _command_id) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   receipt_pipeline execute_pipeline(target_key, scope_key, action, actor, command_id) do
@@ -85,11 +85,11 @@ defmodule GroupherServer.CMS.Review.Commands.Decide do
         end
 
       nil ->
-        {:error, CMS.ErrorCat.invalid_review_restriction()}
+        {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
-  defp authorize(_prepared, _actor), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  defp authorize(_prepared, _actor), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   defp authorize_permission(actor, permission, params \\ %{}) do
     case CMS.Passport.Authorization.check(actor, permission, params) do
@@ -122,16 +122,16 @@ defmodule GroupherServer.CMS.Review.Commands.Decide do
   end
 
   defp present_result(%Confirmation{data: data}), do: {:ok, data}
-  defp present_result(_confirmation), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  defp present_result(_confirmation), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   defp scope_community_id("platform"), do: {:ok, nil}
 
   defp scope_community_id("community:" <> value) do
     case Integer.parse(value) do
       {community_id, ""} when community_id > 0 -> {:ok, community_id}
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
-  defp scope_community_id(_scope), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  defp scope_community_id(_scope), do: {:error, CMS.ErrorCat.invalid_review_block()}
 end

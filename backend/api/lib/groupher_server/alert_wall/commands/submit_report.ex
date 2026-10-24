@@ -14,7 +14,7 @@ defmodule GroupherServer.AlertWall.Commands.SubmitReport do
     adapter: GroupherServer.CMS.CommandPipelineAdapter
 
   alias GroupherServer.{AlertWall, CMS, Repo}
-  alias AlertWall.Model.Report
+  alias AlertWall.Model.UserReport
   alias CMS.Command.ConfirmationDefinition
 
   @report_types [:spam, :harassment, :illegal_content, :impersonation, :other]
@@ -81,7 +81,7 @@ defmodule GroupherServer.AlertWall.Commands.SubmitReport do
     attrs = Map.put(prepared, :reporter_id, reporter_id)
 
     case AlertWall.Persist.submit_report_in_transaction(attrs, command_id) do
-      {:ok, %Report{id: report_id}} ->
+      {:ok, %UserReport{id: report_id}} ->
         {:ok, %Confirmation{data: %{"report_id" => report_id}}}
 
       {:error, _reason} = error ->
@@ -90,8 +90,8 @@ defmodule GroupherServer.AlertWall.Commands.SubmitReport do
   end
 
   defp present_report(%Confirmation{data: %{"report_id" => report_id}}) do
-    case Repo.get(Report, report_id) do
-      %Report{} = report -> {:ok, report}
+    case Repo.get(UserReport, report_id) do
+      %UserReport{} = report -> {:ok, report}
       nil -> {:error, AlertWall.ErrorCat.invalid_report()}
     end
   end

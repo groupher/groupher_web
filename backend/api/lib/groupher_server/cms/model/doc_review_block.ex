@@ -1,11 +1,11 @@
-defmodule GroupherServer.CMS.Model.DocReviewRestriction do
+defmodule GroupherServer.CMS.Model.DocReviewBlock do
   @moduledoc """
   CMS-owned review hold attached directly to one Doc branch.
 
   Business position:
 
-      CMS.ReviewRestrictions
-        -> DocReviewRestriction
+      CMS.ReviewBlocks
+        -> DocReviewBlock
           -> direct Article + branch hold
   """
 
@@ -13,7 +13,7 @@ defmodule GroupherServer.CMS.Model.DocReviewRestriction do
 
   import Ecto.Changeset
   alias GroupherServer.CMS
-  alias CMS.Model.{Article, DocBranch, ReviewRequest}
+  alias CMS.Model.{Article, DocBranch, ArtimentReview}
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.cms()
@@ -22,13 +22,13 @@ defmodule GroupherServer.CMS.Model.DocReviewRestriction do
 
   @type t :: %__MODULE__{}
 
-  schema "doc_review_restrictions" do
+  schema "doc_review_blocks" do
     belongs_to(:article, Article, type: Ecto.UUID)
     belongs_to(:branch, DocBranch)
     field(:type, Ecto.Enum, values: @types)
-    belongs_to(:request, ReviewRequest, type: Ecto.UUID)
+    belongs_to(:artiment_review, ArtimentReview, type: Ecto.UUID)
     field(:item_id, :integer)
-    field(:review_ref, Ecto.UUID)
+    field(:subject_ref, Ecto.UUID)
     field(:source_ref, :string)
     field(:source, Ecto.Enum, values: @sources)
     field(:applied_at, :utc_datetime)
@@ -46,9 +46,9 @@ defmodule GroupherServer.CMS.Model.DocReviewRestriction do
       :article_id,
       :branch_id,
       :type,
-      :request_id,
+      :artiment_review_id,
       :item_id,
-      :review_ref,
+      :subject_ref,
       :source_ref,
       :source,
       :applied_at,
@@ -69,11 +69,11 @@ defmodule GroupherServer.CMS.Model.DocReviewRestriction do
     |> validate_number(:version, greater_than: 0)
     |> validate_resolution()
     |> unique_constraint([:article_id, :branch_id, :source_ref],
-      name: :doc_review_restrictions_active_source_index
+      name: :doc_review_blocks_active_source_index
     )
     |> foreign_key_constraint(:article_id)
     |> foreign_key_constraint(:branch_id)
-    |> foreign_key_constraint(:request_id)
+    |> foreign_key_constraint(:artiment_review_id)
     |> foreign_key_constraint(:item_id)
   end
 

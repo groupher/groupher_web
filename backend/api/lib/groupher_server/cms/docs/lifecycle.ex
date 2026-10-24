@@ -11,7 +11,7 @@ defmodule GroupherServer.CMS.Docs.Lifecycle do
 
   alias CMS.Articles.ErrorCat
   alias CMS.Model.{DocBranch, DocLifecycle, DocPublic}
-  alias CMS.ReviewRestrictions
+  alias CMS.ReviewBlocks
 
   @states [:draft_only, :published, :archived, :deleted, :destroy]
   @public_readable_states [:published, :archived]
@@ -92,7 +92,7 @@ defmodule GroupherServer.CMS.Docs.Lifecycle do
                destroyed_at: state_time(state, :destroy, now, lifecycle.destroyed_at)
              })
              |> Repo.update(),
-           {:ok, :pass} <- ReviewRestrictions.recompute(updated) do
+           {:ok, :pass} <- ReviewBlocks.recompute(updated) do
         {:ok, updated}
       end
     else
@@ -105,11 +105,11 @@ defmodule GroupherServer.CMS.Docs.Lifecycle do
 
   ## Examples
 
-      Docs.Lifecycle.apply_review_restriction(locked_lifecycle, attrs)
+      Docs.Lifecycle.apply_review_block(locked_lifecycle, attrs)
   """
-  @spec apply_review_restriction(DocLifecycle.t(), map()) :: {:ok, struct()} | {:error, term()}
-  def apply_review_restriction(%DocLifecycle{} = lifecycle, attrs) do
-    ReviewRestrictions.apply(lifecycle, attrs)
+  @spec apply_review_block(DocLifecycle.t(), map()) :: {:ok, struct()} | {:error, term()}
+  def apply_review_block(%DocLifecycle{} = lifecycle, attrs) do
+    ReviewBlocks.apply(lifecycle, attrs)
   end
 
   @doc """
@@ -117,12 +117,12 @@ defmodule GroupherServer.CMS.Docs.Lifecycle do
 
   ## Examples
 
-      Docs.Lifecycle.end_review_restrictions(lifecycle, "platform", ids, operation_ref, reason)
+      Docs.Lifecycle.end_review_blocks(lifecycle, "platform", ids, operation_ref, reason)
   """
-  @spec end_review_restrictions(DocLifecycle.t(), String.t(), [term()], Ecto.UUID.t(), String.t()) ::
+  @spec end_review_blocks(DocLifecycle.t(), String.t(), [term()], Ecto.UUID.t(), String.t()) ::
           {:ok, :pass} | {:error, term()}
-  def end_review_restrictions(%DocLifecycle{} = lifecycle, scope_key, ids, operation_ref, reason) do
-    ReviewRestrictions.end_restrictions(lifecycle, scope_key, ids, operation_ref, reason)
+  def end_review_blocks(%DocLifecycle{} = lifecycle, scope_key, ids, operation_ref, reason) do
+    ReviewBlocks.end_blocks(lifecycle, scope_key, ids, operation_ref, reason)
   end
 
   @doc "Archives stable public Docs older than the threshold in one active branch."

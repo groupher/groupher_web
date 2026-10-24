@@ -16,7 +16,7 @@ defmodule GroupherServer.CMS.Articles.Lifecycle do
   alias CMS.Articles.Workflow
   alias CMS.Articles.{Bindings, Effects, ErrorCat}
   alias CMS.Model.{Article, ArticleLifecycle}
-  alias CMS.ReviewRestrictions
+  alias CMS.ReviewBlocks
 
   @article_threads CMS.Artiment.Config.threads() -- [:doc]
 
@@ -56,7 +56,7 @@ defmodule GroupherServer.CMS.Articles.Lifecycle do
                destroyed_at: state_time(state, :destroy, now, lifecycle.destroyed_at)
              })
              |> Repo.update(),
-           {:ok, :pass} <- ReviewRestrictions.recompute(updated) do
+           {:ok, :pass} <- ReviewBlocks.recompute(updated) do
         {:ok, updated}
       end
     else
@@ -69,12 +69,12 @@ defmodule GroupherServer.CMS.Articles.Lifecycle do
 
   ## Examples
 
-      Articles.Lifecycle.apply_review_restriction(locked_lifecycle, attrs)
+      Articles.Lifecycle.apply_review_block(locked_lifecycle, attrs)
   """
-  @spec apply_review_restriction(ArticleLifecycle.t(), map()) ::
+  @spec apply_review_block(ArticleLifecycle.t(), map()) ::
           {:ok, struct()} | {:error, term()}
-  def apply_review_restriction(%ArticleLifecycle{} = lifecycle, attrs) do
-    ReviewRestrictions.apply(lifecycle, attrs)
+  def apply_review_block(%ArticleLifecycle{} = lifecycle, attrs) do
+    ReviewBlocks.apply(lifecycle, attrs)
   end
 
   @doc """
@@ -82,9 +82,9 @@ defmodule GroupherServer.CMS.Articles.Lifecycle do
 
   ## Examples
 
-      Articles.Lifecycle.end_review_restrictions(lifecycle, scope_key, ids, operation_ref, reason)
+      Articles.Lifecycle.end_review_blocks(lifecycle, scope_key, ids, operation_ref, reason)
   """
-  @spec end_review_restrictions(
+  @spec end_review_blocks(
           ArticleLifecycle.t(),
           String.t(),
           [term()],
@@ -92,14 +92,14 @@ defmodule GroupherServer.CMS.Articles.Lifecycle do
           String.t()
         ) ::
           {:ok, :pass} | {:error, term()}
-  def end_review_restrictions(
+  def end_review_blocks(
         %ArticleLifecycle{} = lifecycle,
         scope_key,
         ids,
         operation_ref,
         reason
       ) do
-    ReviewRestrictions.end_restrictions(lifecycle, scope_key, ids, operation_ref, reason)
+    ReviewBlocks.end_blocks(lifecycle, scope_key, ids, operation_ref, reason)
   end
 
   @doc "Locks and returns the Lifecycle row belonging to a stable Article."

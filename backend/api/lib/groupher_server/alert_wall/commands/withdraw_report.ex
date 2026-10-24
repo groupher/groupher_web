@@ -14,7 +14,7 @@ defmodule GroupherServer.AlertWall.Commands.WithdrawReport do
     adapter: GroupherServer.CMS.CommandPipelineAdapter
 
   alias GroupherServer.{AlertWall, CMS, Repo}
-  alias AlertWall.Model.Report
+  alias AlertWall.Model.UserReport
   alias CMS.Command.ConfirmationDefinition
 
   @pipeline operation: :alert_wall_withdraw_report,
@@ -56,8 +56,8 @@ defmodule GroupherServer.AlertWall.Commands.WithdrawReport do
   end
 
   defp authorize(report_id, %{id: reporter_id}) when is_integer(reporter_id) do
-    case Repo.get(Report, report_id) do
-      %Report{reporter_id: ^reporter_id} -> {:ok, report_id}
+    case Repo.get(UserReport, report_id) do
+      %UserReport{reporter_id: ^reporter_id} -> {:ok, report_id}
       _ -> {:error, AlertWall.ErrorCat.report_not_found()}
     end
   end
@@ -72,8 +72,8 @@ defmodule GroupherServer.AlertWall.Commands.WithdrawReport do
   end
 
   defp present_report(%Confirmation{data: %{"report_id" => report_id}}) do
-    case Repo.get(Report, report_id) do
-      %Report{} = report -> {:ok, report}
+    case Repo.get(UserReport, report_id) do
+      %UserReport{} = report -> {:ok, report}
       nil -> {:error, AlertWall.ErrorCat.report_not_found()}
     end
   end

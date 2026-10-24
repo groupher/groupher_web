@@ -4,7 +4,7 @@ defmodule GroupherServer.Test.CMS.ReviewDecisionTest do
   import Ecto.Query
 
   alias GroupherServer.{CMS, Repo}
-  alias CMS.Model.ArticleReviewRestriction
+  alias CMS.Model.ArticleReviewBlock
 
   test "human deny and release run as receipt-backed CMS decisions" do
     {community, article, _attrs, _author} = mock_article(:post)
@@ -30,9 +30,9 @@ defmodule GroupherServer.Test.CMS.ReviewDecisionTest do
                Ecto.UUID.generate()
              )
 
-    assert %ArticleReviewRestriction{type: :manual_hold, source: :human} =
+    assert %ArticleReviewBlock{type: :manual_hold, source: :human} =
              Repo.one!(
-               from(restriction in ArticleReviewRestriction,
+               from(restriction in ArticleReviewBlock,
                  where:
                    restriction.article_id == ^article.id and
                      restriction.community_id == ^community.id and
@@ -50,7 +50,7 @@ defmodule GroupherServer.Test.CMS.ReviewDecisionTest do
              )
 
     assert Repo.aggregate(
-             from(restriction in ArticleReviewRestriction,
+             from(restriction in ArticleReviewBlock,
                where:
                  restriction.article_id == ^article.id and
                    restriction.community_id == ^community.id and restriction.source == :human and

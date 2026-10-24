@@ -30,7 +30,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
     DocBranchState,
     DocLifecycle,
     DocPublic,
-    DocReviewRestriction,
+    DocReviewBlock,
     DocRevision,
     CommunityAsset
   }
@@ -123,7 +123,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
          _community,
          branch,
          revision,
-         version,
+         _version,
          lifecycle,
          first_publish?,
          _opts
@@ -140,7 +140,6 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
         type: :doc,
         article_id: article.id,
         branch_id: branch.id,
-        branch_version_id: version.id,
         lifecycle: lifecycle
       }
 
@@ -152,7 +151,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
       )
     else
       nil ->
-        {:error, CMS.ErrorCat.invalid_review_restriction()}
+        {:error, CMS.ErrorCat.invalid_review_block()}
 
       {:error, _reason} = error ->
         error
@@ -313,7 +312,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Doc do
       is_edited: state.is_edited,
       visible:
         not Repo.exists?(
-          from(restriction in DocReviewRestriction,
+          from(restriction in DocReviewBlock,
             where:
               restriction.article_id == ^lifecycle.article_id and
                 restriction.branch_id == ^lifecycle.branch_id and

@@ -16,7 +16,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Review do
   def pending_content_reviews(_parent, %{scope: scope}, %{context: %{cur_user: actor}}) do
     with {:ok, normalized, attrs, permission, params} <- resolve_scope(scope),
          {:ok, :pass} <- authorize(actor, permission, params),
-         {:ok, requests} <- CMS.pending_review_requests(attrs) do
+         {:ok, requests} <- CMS.pending_artiment_reviews(attrs) do
       {:ok, Enum.map(requests, &present(&1, normalized))}
     end
   end
@@ -156,7 +156,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Review do
       scope_key = if is_nil(community_id), do: "platform", else: "community:#{community_id}"
       {:ok, "article:#{id}", scope_key, :article, id}
     else
-      {:error, CMS.invalid_review_restriction_error()}
+      {:error, CMS.invalid_review_block_error()}
     end
   end
 
@@ -172,12 +172,12 @@ defmodule GroupherServerWeb.Resolvers.CMS.Review do
       scope_key = if is_nil(community_id), do: "platform", else: "community:#{community_id}"
       {:ok, "comment:#{id}", scope_key, :comment, id}
     else
-      {:error, CMS.invalid_review_restriction_error()}
+      {:error, CMS.invalid_review_block_error()}
     end
   end
 
   defp decision_target(_field_name, _target) do
-    {:error, CMS.invalid_review_restriction_error()}
+    {:error, CMS.invalid_review_block_error()}
   end
 
   defp action(field_name) do
@@ -196,7 +196,7 @@ defmodule GroupherServerWeb.Resolvers.CMS.Review do
     opinion = present_opinion(request.result)
 
     %{
-      request_id: request.id,
+      artiment_review_id: request.id,
       target_type: request.target_type,
       article_id: request.article_id,
       comment_id: request.comment_id,

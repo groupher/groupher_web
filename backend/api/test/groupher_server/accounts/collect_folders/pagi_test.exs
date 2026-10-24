@@ -3,7 +3,7 @@ defmodule GroupherServer.Test.Accounts.CollectFolders.Pagi do
 
   alias Accounts.CollectFolders
   alias GroupherServer.CMS
-  alias CMS.Model.{Article, ArticleLifecycle, ArticleReviewRestriction}
+  alias CMS.Model.{Article, ArticleLifecycle, ArticleReviewBlock}
   alias Helper.ORM.Pagi.{Page}
   alias GroupherServer.{Pagi, Repo}
   alias Pagi.Params
@@ -18,11 +18,11 @@ defmodule GroupherServer.Test.Accounts.CollectFolders.Pagi do
     article = Repo.get!(Article, hidden.article_id)
     _lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
 
-    assert {:ok, %ArticleReviewRestriction{}} =
+    assert {:ok, %ArticleReviewBlock{}} =
              Repo.transaction(fn ->
                with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article),
                     {:ok, restriction} <-
-                      CMS.Articles.Lifecycle.apply_review_restriction(locked, %{
+                      CMS.Articles.Lifecycle.apply_review_block(locked, %{
                         scope_key: "platform",
                         type: :manual_hold,
                         source_ref: "collect-folder-test:restricted",

@@ -1,4 +1,4 @@
-defmodule GroupherServer.CMS.Outbox.Workflow.ReviewRequest do
+defmodule GroupherServer.CMS.Outbox.Workflow.ArtimentReview do
   @moduledoc """
   Runs CMS review request Effects and keeps transient failures retryable.
 

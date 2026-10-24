@@ -25,8 +25,8 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Queries do
     ArticleBinding,
     CommentLifecycle,
     CommunityLifecycle,
-    ArticleReviewRestriction,
-    DocReviewRestriction,
+    ArticleReviewBlock,
+    DocReviewBlock,
     DocBranch,
     DocBranchState,
     DocLifecycle
@@ -91,7 +91,7 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Queries do
   def article_review_scope_keys(lifecycle_id, community_id) do
     case Repo.get(ArticleLifecycle, lifecycle_id) do
       %ArticleLifecycle{article_id: article_id} ->
-        ArticleReviewRestriction
+        ArticleReviewBlock
         |> where(
           [restriction],
           restriction.article_id == ^article_id and is_nil(restriction.resolved_at) and
@@ -139,7 +139,7 @@ defmodule GroupherServer.CMS.Gate.Access.Load.Queries do
       %DocLifecycle{article_id: article_id, branch_id: branch_id} ->
         count =
           Repo.aggregate(
-            from(restriction in DocReviewRestriction,
+            from(restriction in DocReviewBlock,
               where:
                 restriction.article_id == ^article_id and restriction.branch_id == ^branch_id and
                   is_nil(restriction.resolved_at)

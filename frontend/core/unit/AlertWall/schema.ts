@@ -38,10 +38,13 @@ export const myReports = graphql(`
       targetType
       targetId
       communityId
-      originItemId
+      itemId
       reportType
       details
       withdrawnAt
+      outdatedAt
+      resolvedAt
+      resolution
       insertedAt
     }
   }

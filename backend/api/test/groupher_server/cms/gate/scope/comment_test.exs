@@ -11,7 +11,7 @@ defmodule GroupherServer.Test.CMS.Gate.Scope.CommentTest do
     query = CMS.Gate.scope(Comment, nil, :list, CommentContext.for_thread(:post))
     {sql, _params} = to_sql(query)
 
-    assert sql =~ "comment_review_restrictions"
+    assert sql =~ "comment_review_blocks"
     assert sql =~ "community_id"
     assert sql =~ "resolved_at"
     refute sql =~ ~s("pending" !=)
@@ -22,7 +22,7 @@ defmodule GroupherServer.Test.CMS.Gate.Scope.CommentTest do
     query = CMS.Gate.scope(Comment, actor, :read, CommentContext.for_thread(:post))
     {sql, _params} = to_sql(query)
 
-    assert sql =~ "comment_review_restrictions"
+    assert sql =~ "comment_review_blocks"
     assert sql =~ "author_id"
   end
 

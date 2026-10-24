@@ -489,7 +489,7 @@ defmodule GroupherServer.Test.CMS.ArtimentMentionsTest do
         {:ok, locked_lifecycle} = CMS.Articles.Lifecycle.lock(article)
 
         assert {:ok, _restriction} =
-                 CMS.ReviewRestrictions.apply(locked_lifecycle, %{
+                 CMS.ReviewBlocks.apply(locked_lifecycle, %{
                    scope_key: "community:#{community.id}",
                    type: :manual_hold,
                    source_ref: "mention-source-test",

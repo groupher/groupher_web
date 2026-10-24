@@ -564,10 +564,10 @@ export type UpdatePressConfigInput = {
 }
 
 export type UpdateReviewBotConfigInput = {
-  banWords: Array<string>
   expectedVersion: number
-  prompt: string
+  reviewBanWords: Array<string>
   reviewMode: ReviewBotMode
+  reviewPrompt: string
   scope: ReviewBotScopeInput
   subjectType: ReviewBotSubjectType
 }
@@ -4360,10 +4360,13 @@ export type MyReportsQuery = {
     targetType: AlertTargetType
     targetId: string
     communityId: string | null
-    originItemId: string
+    itemId: string
     reportType: string
     details: string | null
     withdrawnAt: string | null
+    outdatedAt: string | null
+    resolvedAt: string | null
+    resolution: string | null
     insertedAt: string
   }>
 }
@@ -4725,7 +4728,7 @@ export type ContentReviewQueryVariables = Exact<{
 
 export type ContentReviewQuery = {
   contentReview: {
-    requestId: string | null
+    artimentReviewId: string | null
     targetType: ReviewBotSubjectType
     articleId: string | null
     commentId: string | null
@@ -4752,7 +4755,7 @@ export type PendingContentReviewsQueryVariables = Exact<{
 
 export type PendingContentReviewsQuery = {
   pendingContentReviews: Array<{
-    requestId: string | null
+    artimentReviewId: string | null
     targetType: ReviewBotSubjectType
     articleId: string | null
     commentId: string | null
@@ -8974,8 +8977,8 @@ export type ReviewBotConfigQuery = {
     communityId: string | null
     subjectType: ReviewBotSubjectType
     reviewMode: ReviewBotMode
-    banWords: Array<string>
-    prompt: string
+    reviewBanWords: Array<string>
+    reviewPrompt: string
     version: number
     updatedAt: string
   }
@@ -8990,8 +8993,8 @@ export type UpdateReviewBotConfigMutation = {
   updateReviewBotConfig: {
     id: string
     reviewMode: ReviewBotMode
-    banWords: Array<string>
-    prompt: string
+    reviewBanWords: Array<string>
+    reviewPrompt: string
     version: number
   }
 }
@@ -21677,10 +21680,13 @@ export const MyReportsDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'targetType' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'targetId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'communityId' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'originItemId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'itemId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'reportType' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'details' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'withdrawnAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'outdatedAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'resolvedAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'resolution' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'insertedAt' } },
               ],
             },
@@ -23286,7 +23292,7 @@ export const ContentReviewDocument = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'requestId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'artimentReviewId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'targetType' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'articleId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'commentId' } },
@@ -23381,7 +23387,7 @@ export const PendingContentReviewsDocument = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'requestId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'artimentReviewId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'targetType' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'articleId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'commentId' } },
@@ -36389,8 +36395,8 @@ export const ReviewBotConfigDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'communityId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'subjectType' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'reviewMode' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'banWords' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'prompt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'reviewBanWords' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'reviewPrompt' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'version' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
               ],
@@ -36452,8 +36458,8 @@ export const UpdateReviewBotConfigDocument = {
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'reviewMode' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'banWords' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'prompt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'reviewBanWords' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'reviewPrompt' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'version' } },
               ],
             },

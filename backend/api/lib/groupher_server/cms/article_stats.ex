@@ -31,7 +31,7 @@ defmodule GroupherServer.CMS.ArticleStats do
     ArticleStats,
     Comment,
     CommentLifecycle,
-    CommentReviewRestriction,
+    CommentReviewBlock,
     Community
   }
 
@@ -604,7 +604,7 @@ defmodule GroupherServer.CMS.ArticleStats do
          where: comment.article_id == ^article_id and lifecycle.state == :visible,
          where:
            not exists(
-             from(restriction in CommentReviewRestriction,
+             from(restriction in CommentReviewBlock,
                where:
                  restriction.comment_id == parent_as(:comment_lifecycle).comment_id and
                    is_nil(restriction.resolved_at),
@@ -625,7 +625,7 @@ defmodule GroupherServer.CMS.ArticleStats do
         where: comment.article_id == ^article_id and lifecycle.state == :visible,
         where:
           not exists(
-            from(restriction in CommentReviewRestriction,
+            from(restriction in CommentReviewBlock,
               where:
                 restriction.comment_id == parent_as(:comment_lifecycle).comment_id and
                   is_nil(restriction.resolved_at),

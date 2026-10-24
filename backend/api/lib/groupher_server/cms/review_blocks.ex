@@ -1,4 +1,4 @@
-defmodule GroupherServer.CMS.ReviewRestrictions do
+defmodule GroupherServer.CMS.ReviewBlocks do
   @moduledoc """
   CMS-owned review holds attached to resource IDs and evaluated by Gate.
 
@@ -17,14 +17,14 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
     Article,
     ArticleBinding,
     ArticleLifecycle,
-    ArticleReviewRestriction,
+    ArticleReviewBlock,
     Comment,
     CommentLifecycle,
-    CommentReviewRestriction,
+    CommentReviewBlock,
     Community,
     DocBranch,
     DocLifecycle,
-    DocReviewRestriction
+    DocReviewBlock
   }
 
   @public_states [:published, :archived]
@@ -42,10 +42,10 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
     end
   end
 
-  def apply(_lifecycle, _attrs), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  def apply(_lifecycle, _attrs), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   @doc "Resolves selected restrictions within the locked resource and scope."
-  def end_restrictions(lifecycle, scope_key, ids, operation_ref, resolution)
+  def end_blocks(lifecycle, scope_key, ids, operation_ref, resolution)
       when is_binary(scope_key) and is_list(ids) and is_binary(operation_ref) and
              is_binary(resolution) and resolution != "" do
     with {:ok, :pass} <- require_transaction(),
@@ -58,8 +58,8 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
     end
   end
 
-  def end_restrictions(_lifecycle, _scope_key, _ids, _operation_ref, _resolution) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+  def end_blocks(_lifecycle, _scope_key, _ids, _operation_ref, _resolution) do
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   @doc "Returns active restrictions for one resource scope."
@@ -79,17 +79,18 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
     end
   end
 
-  def active_for(_lifecycle, _scope_key), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  def active_for(_lifecycle, _scope_key), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   @doc "Links a CMS AI suspicion to the AlertWall item created for its request."
-  def link_item_for_request_in_transaction(request_id, item_id)
-      when is_binary(request_id) and is_integer(item_id) do
+  def link_item_for_artiment_review_in_transaction(artiment_review_id, item_id)
+      when is_binary(artiment_review_id) and is_integer(item_id) do
     with {:ok, :pass} <- require_transaction() do
       {updated, _} =
         Repo.update_all(
-          from(restriction in ArticleReviewRestriction,
+          from(restriction in ArticleReviewBlock,
             where:
-              restriction.request_id == ^request_id and restriction.type == :ai_suspect and
+              restriction.artiment_review_id == ^artiment_review_id and
+                restriction.type == :ai_suspect and
                 is_nil(restriction.item_id)
           ),
           set: [item_id: item_id]
@@ -97,9 +98,10 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
 
       {comment_updated, _} =
         Repo.update_all(
-          from(restriction in CommentReviewRestriction,
+          from(restriction in CommentReviewBlock,
             where:
-              restriction.request_id == ^request_id and restriction.type == :ai_suspect and
+              restriction.artiment_review_id == ^artiment_review_id and
+                restriction.type == :ai_suspect and
                 is_nil(restriction.item_id)
           ),
           set: [item_id: item_id]
@@ -107,9 +109,10 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
 
       {doc_updated, _} =
         Repo.update_all(
-          from(restriction in DocReviewRestriction,
+          from(restriction in DocReviewBlock,
             where:
-              restriction.request_id == ^request_id and restriction.type == :ai_suspect and
+              restriction.artiment_review_id == ^artiment_review_id and
+                restriction.type == :ai_suspect and
                 is_nil(restriction.item_id)
           ),
           set: [item_id: item_id]
@@ -118,13 +121,13 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
       if updated + comment_updated + doc_updated > 0 do
         {:ok, :pass}
       else
-        {:error, CMS.ErrorCat.review_restriction_not_found()}
+        {:error, CMS.ErrorCat.review_block_not_found()}
       end
     end
   end
 
-  def link_item_for_request_in_transaction(_request_id, _item_id) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+  def link_item_for_artiment_review_in_transaction(_artiment_review_id, _item_id) do
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   @doc "Recomputes CMS projections after a restriction transition."
@@ -162,7 +165,7 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
     end
   end
 
-  def recompute(_lifecycle), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  def recompute(_lifecycle), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   defp defaults(attrs) do
     attrs
@@ -173,24 +176,24 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
 
   defp restriction_target(%ArticleLifecycle{article_id: id}, attrs) do
     with {:ok, community_id} <- scope_community_id(attrs) do
-      {:ok, ArticleReviewRestriction, %{article_id: id, community_id: community_id}}
+      {:ok, ArticleReviewBlock, %{article_id: id, community_id: community_id}}
     end
   end
 
   defp restriction_target(%CommentLifecycle{comment_id: id}, attrs) do
     with {:ok, community_id} <- scope_community_id(attrs) do
-      {:ok, CommentReviewRestriction, %{comment_id: id, community_id: community_id}}
+      {:ok, CommentReviewBlock, %{comment_id: id, community_id: community_id}}
     end
   end
 
   defp restriction_target(%DocLifecycle{article_id: article_id, branch_id: branch_id}, %{
          scope_key: "platform"
        }) do
-    {:ok, DocReviewRestriction, %{article_id: article_id, branch_id: branch_id}}
+    {:ok, DocReviewBlock, %{article_id: article_id, branch_id: branch_id}}
   end
 
   defp restriction_target(_lifecycle, _attrs) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   defp scope_community_id(%{community_id: nil}), do: {:ok, nil}
@@ -200,11 +203,11 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
   defp scope_community_id(%{scope_key: "community:" <> id}) do
     case Integer.parse(id) do
       {community_id, ""} when community_id > 0 -> {:ok, community_id}
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
-  defp scope_community_id(_attrs), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  defp scope_community_id(_attrs), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   defp validate_scope(%ArticleLifecycle{article_id: article_id}, %{community_id: nil}) do
     if Repo.get(Article, article_id) do
@@ -222,7 +225,7 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
        ) do
       {:ok, :pass}
     else
-      {:error, CMS.ErrorCat.invalid_review_restriction()}
+      {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
@@ -242,33 +245,33 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
        ) do
       {:ok, :pass}
     else
-      {:error, CMS.ErrorCat.invalid_review_restriction()}
+      {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
   defp validate_scope(%DocLifecycle{}, _attrs), do: {:ok, :pass}
-  defp validate_scope(_lifecycle, _attrs), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  defp validate_scope(_lifecycle, _attrs), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
-  defp insert_or_get(ArticleReviewRestriction, attrs) do
+  defp insert_or_get(ArticleReviewBlock, attrs) do
     insert_or_get_row(
-      ArticleReviewRestriction.changeset(%ArticleReviewRestriction{}, attrs),
-      ArticleReviewRestriction,
+      ArticleReviewBlock.changeset(%ArticleReviewBlock{}, attrs),
+      ArticleReviewBlock,
       attrs
     )
   end
 
-  defp insert_or_get(CommentReviewRestriction, attrs) do
+  defp insert_or_get(CommentReviewBlock, attrs) do
     insert_or_get_row(
-      CommentReviewRestriction.changeset(%CommentReviewRestriction{}, attrs),
-      CommentReviewRestriction,
+      CommentReviewBlock.changeset(%CommentReviewBlock{}, attrs),
+      CommentReviewBlock,
       attrs
     )
   end
 
-  defp insert_or_get(DocReviewRestriction, attrs) do
+  defp insert_or_get(DocReviewBlock, attrs) do
     insert_or_get_row(
-      DocReviewRestriction.changeset(%DocReviewRestriction{}, attrs),
-      DocReviewRestriction,
+      DocReviewBlock.changeset(%DocReviewBlock{}, attrs),
+      DocReviewBlock,
       attrs
     )
   end
@@ -286,8 +289,8 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
                  restriction.source_ref == ^attrs.source_ref and is_nil(restriction.resolved_at)
                )
              ) do
-          %{type: type, review_ref: existing_review_ref} = row ->
-            if type == attrs.type and existing_review_ref == Map.get(attrs, :review_ref) do
+          %{type: type, subject_ref: existing_subject_ref} = row ->
+            if type == attrs.type and existing_subject_ref == Map.get(attrs, :subject_ref) do
               {:ok, row}
             else
               {:error, CMS.ErrorCat.lifecycle_state_conflict()}
@@ -319,7 +322,7 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
     if length(rows) == length(Enum.uniq(ids)) do
       {:ok, rows}
     else
-      {:error, CMS.ErrorCat.review_restriction_not_found()}
+      {:error, CMS.ErrorCat.review_block_not_found()}
     end
   end
 
@@ -341,16 +344,16 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
     end)
   end
 
-  defp update_restriction(%ArticleReviewRestriction{} = row, attrs) do
-    row |> ArticleReviewRestriction.changeset(attrs) |> Repo.update()
+  defp update_restriction(%ArticleReviewBlock{} = row, attrs) do
+    row |> ArticleReviewBlock.changeset(attrs) |> Repo.update()
   end
 
-  defp update_restriction(%CommentReviewRestriction{} = row, attrs) do
-    row |> CommentReviewRestriction.changeset(attrs) |> Repo.update()
+  defp update_restriction(%CommentReviewBlock{} = row, attrs) do
+    row |> CommentReviewBlock.changeset(attrs) |> Repo.update()
   end
 
-  defp update_restriction(%DocReviewRestriction{} = row, attrs) do
-    row |> DocReviewRestriction.changeset(attrs) |> Repo.update()
+  defp update_restriction(%DocReviewBlock{} = row, attrs) do
+    row |> DocReviewBlock.changeset(attrs) |> Repo.update()
   end
 
   defp where_target(schema, attrs) do
@@ -362,7 +365,7 @@ defmodule GroupherServer.CMS.ReviewRestrictions do
 
   defp active_doc?(%{article_id: article_id, branch_id: branch_id}) do
     Repo.exists?(
-      from(restriction in DocReviewRestriction,
+      from(restriction in DocReviewBlock,
         where:
           restriction.article_id == ^article_id and restriction.branch_id == ^branch_id and
             is_nil(restriction.resolved_at)

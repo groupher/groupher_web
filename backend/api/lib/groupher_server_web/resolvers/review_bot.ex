@@ -34,8 +34,8 @@ defmodule GroupherServerWeb.Resolvers.ReviewBot do
          actor when not is_nil(actor) <- Map.get(context, :cur_user),
          attrs <- %{
            review_mode: input.review_mode,
-           ban_words: input.ban_words,
-           prompt: input.prompt
+           ban_words: input.review_ban_words,
+           prompt: input.review_prompt
          } do
       ReviewBot.update_config(
         scope,
@@ -52,7 +52,7 @@ defmodule GroupherServerWeb.Resolvers.ReviewBot do
     end
   end
 
-  defp resolve_scope(%{type: :platform}), do: {:ok, %{type: :platform}, nil}
+  defp resolve_scope(%{type: :platform}), do: {:error, ReviewBot.invalid_config_error()}
 
   defp resolve_scope(%{type: :community, community: slug}) when is_binary(slug) do
     with {:ok, %Community{} = community} <- FrontDesk.community(slug, mode: :internal) do
@@ -62,6 +62,5 @@ defmodule GroupherServerWeb.Resolvers.ReviewBot do
 
   defp resolve_scope(_scope), do: {:error, ReviewBot.invalid_config_error()}
 
-  defp select_config(%{system: system}, %{type: :platform}), do: system
   defp select_config(%{community: community}, %{type: :community}), do: community
 end

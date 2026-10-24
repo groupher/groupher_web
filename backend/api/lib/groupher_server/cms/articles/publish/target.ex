@@ -113,7 +113,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
       false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
       nil -> {:error, CMS.Articles.ErrorCat.lifecycle_not_found()}
       {:error, _reason} = error -> error
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
@@ -134,7 +134,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
       false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
       nil -> {:error, CMS.Articles.ErrorCat.lifecycle_not_found()}
       {:error, _reason} = error -> error
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
@@ -146,7 +146,6 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
       target = %{
         type: :article,
         article_id: article.id,
-        article_revision_id: revision.id,
         lifecycle: lifecycle
       }
 
@@ -154,7 +153,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
 
       CMS.Review.RequestSubmission.register_in_transaction(target, content, configs, trigger)
     else
-      nil -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      nil -> {:error, CMS.ErrorCat.invalid_review_block()}
       {:error, _reason} = error -> error
     end
   end
@@ -162,11 +161,9 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
   defp register_published_binding_review(article, community, lifecycle, _operation_ref) do
     with {:ok, configs} <- ReviewBot.configs(community.id, :article),
          {:ok, content} <- current_review_content(article.id),
-         %ArticlePublic{revision_id: revision_id} <- Repo.get(ArticlePublic, article.id),
          target <- %{
            type: :article,
            article_id: article.id,
-           article_revision_id: revision_id,
            lifecycle: lifecycle
          },
          {:ok, _registered} <-
@@ -180,7 +177,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
     else
       nil -> {:error, ReviewBot.config_not_found_error()}
       {:error, _reason} = error -> error
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
@@ -206,7 +203,7 @@ defmodule GroupherServer.CMS.Articles.Publish.Target do
   defp review_content(%ArticleRevision{} = revision) do
     case Repo.get(ArticleBodySnapshot, revision.body_snapshot_id) do
       %ArticleBodySnapshot{} = body -> {:ok, build_review_content(revision, body)}
-      nil -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      nil -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 

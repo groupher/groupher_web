@@ -45,12 +45,11 @@ defmodule GroupherServer.ReviewBot.Commands.UpdateConfig do
       field_types: %{"config_id" => :string}
   end
 
-  @doc "Updates one platform or community policy if its expected version is current."
-  @spec execute(map(), :article | :comment | :doc, pos_integer(), map(), User.t(), Ecto.UUID.t()) ::
+  @doc "Updates one community policy if its expected version is current."
+  @spec execute(map(), :article | :comment, pos_integer(), map(), User.t(), Ecto.UUID.t()) ::
           {:ok, ReviewBotConfig.t()} | {:error, term()}
   def execute(scope, subject_type, expected_version, attrs, %User{} = actor, command_id)
-      when subject_type in [:article, :comment, :doc] and is_integer(expected_version) and
-             is_map(attrs) do
+      when subject_type in [:article, :comment] and is_integer(expected_version) and is_map(attrs) do
     execute_pipeline(scope, subject_type, expected_version, attrs, actor, command_id)
   end
 
@@ -152,14 +151,6 @@ defmodule GroupherServer.ReviewBot.Commands.UpdateConfig do
 
   defp check_version(_config, _expected_version) do
     {:error, ReviewBot.ErrorCat.config_version_conflict()}
-  end
-
-  defp normalize_scope(%{type: :platform}, subject_type) do
-    if subject_type == :doc do
-      {:ok, nil, {:review_bot_config, "platform:doc"}, "platform"}
-    else
-      {:ok, nil, {:review_bot_config, "platform:#{subject_type}"}, "platform"}
-    end
   end
 
   defp normalize_scope(

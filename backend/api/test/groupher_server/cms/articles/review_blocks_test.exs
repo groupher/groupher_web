@@ -1,4 +1,4 @@
-defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
+defmodule GroupherServer.Test.CMS.Articles.ReviewBlocksTest do
   @moduledoc false
   use GroupherServer.TestMate, async: false
 
@@ -10,7 +10,7 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
     Article,
     ArticleBinding,
     ArticleLifecycle,
-    ArticleReviewRestriction,
+    ArticleReviewBlock,
     DocBranch,
     DocLifecycle,
     DocPublic
@@ -29,7 +29,7 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
              Repo.transaction(fn ->
                with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article),
                     {:ok, restriction} <-
-                      CMS.Articles.Lifecycle.apply_review_restriction(
+                      CMS.Articles.Lifecycle.apply_review_block(
                         locked,
                         attrs(lifecycle, "community:#{community.id}", "community-rule")
                       ) do
@@ -47,7 +47,7 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
              Repo.transaction(fn ->
                with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article),
                     {:ok, restriction} <-
-                      CMS.Articles.Lifecycle.apply_review_restriction(
+                      CMS.Articles.Lifecycle.apply_review_block(
                         locked,
                         attrs(lifecycle, "platform", "platform-rule")
                       ) do
@@ -63,7 +63,7 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
     assert {:ok, {:ok, :pass}} =
              Repo.transaction(fn ->
                with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article) do
-                 CMS.Articles.Lifecycle.end_review_restrictions(
+                 CMS.Articles.Lifecycle.end_review_blocks(
                    locked,
                    "community:#{community.id}",
                    [community_restriction.id],
@@ -79,7 +79,7 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
     assert {:ok, {:ok, :pass}} =
              Repo.transaction(fn ->
                with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article) do
-                 CMS.Articles.Lifecycle.end_review_restrictions(
+                 CMS.Articles.Lifecycle.end_review_blocks(
                    locked,
                    "platform",
                    [platform_restriction.id],
@@ -105,7 +105,7 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
       Repo.transaction(fn ->
         with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article),
              {:ok, restriction} <-
-               CMS.Articles.Lifecycle.apply_review_restriction(locked, restriction_attrs) do
+               CMS.Articles.Lifecycle.apply_review_block(locked, restriction_attrs) do
           restriction
         else
           {:error, reason} -> Repo.rollback(reason)
@@ -118,7 +118,7 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
     assert first.id == replay.id
 
     assert Repo.aggregate(
-             from(restriction in ArticleReviewRestriction,
+             from(restriction in ArticleReviewBlock,
                where: restriction.article_id == ^article.id and is_nil(restriction.community_id)
              ),
              :count
@@ -141,7 +141,7 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
              Repo.transaction(fn ->
                with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article),
                     {:ok, restriction} <-
-                      CMS.Articles.Lifecycle.apply_review_restriction(
+                      CMS.Articles.Lifecycle.apply_review_block(
                         locked,
                         attrs(lifecycle, "community:#{community.id}", "search-hidden")
                       ) do
@@ -159,7 +159,7 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
     assert {:ok, {:ok, :pass}} =
              Repo.transaction(fn ->
                with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article) do
-                 CMS.Articles.Lifecycle.end_review_restrictions(
+                 CMS.Articles.Lifecycle.end_review_blocks(
                    locked,
                    "community:#{community.id}",
                    [restriction.id],
@@ -181,10 +181,10 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
     lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
     attrs = attrs(lifecycle, "community:#{community.id + 1000}", "unbound-community")
 
-    assert {:ok, {:error, %ErrorCat.Error{reason: :invalid_review_restriction}}} =
+    assert {:ok, {:error, %ErrorCat.Error{reason: :invalid_review_block}}} =
              Repo.transaction(fn ->
                with {:ok, locked} <- CMS.Articles.Lifecycle.lock(article) do
-                 CMS.Articles.Lifecycle.apply_review_restriction(locked, attrs)
+                 CMS.Articles.Lifecycle.apply_review_block(locked, attrs)
                end
              end)
   end
@@ -206,7 +206,7 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
              Repo.transaction(fn ->
                locked = lock_lifecycle.()
 
-               case CMS.Docs.Lifecycle.apply_review_restriction(
+               case CMS.Docs.Lifecycle.apply_review_block(
                       locked,
                       attrs(lifecycle, "platform", "doc-review")
                     ) do
@@ -231,7 +231,7 @@ defmodule GroupherServer.Test.CMS.Articles.ReviewRestrictionsTest do
              Repo.transaction(fn ->
                locked = lock_lifecycle.()
 
-               CMS.Docs.Lifecycle.end_review_restrictions(
+               CMS.Docs.Lifecycle.end_review_blocks(
                  locked,
                  "platform",
                  [restriction.id],

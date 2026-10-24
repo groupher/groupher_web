@@ -97,7 +97,7 @@ export default function PendingQueue({ community }: { community?: string }) {
                   : null
 
             return (
-              <li key={request.requestId} className='grid gap-3 p-4'>
+              <li key={request.artimentReviewId} className='grid gap-3 p-4'>
                 <div>
                   <p className='font-medium'>
                     {type.toLowerCase()} ·{' '}

@@ -1,19 +1,19 @@
-defmodule GroupherServer.CMS.Model.ArticleReviewRestriction do
+defmodule GroupherServer.CMS.Model.CommentReviewBlock do
   @moduledoc """
-  CMS-owned review hold attached directly to an Article and review scope.
+  CMS-owned review hold attached directly to a Comment and review scope.
 
   Business position:
 
-      CMS.ReviewRestrictions
-        -> ArticleReviewRestriction
-          -> direct Article and community scope hold
+      CMS.ReviewBlocks
+        -> CommentReviewBlock
+          -> direct Comment and community scope hold
   """
 
   use Ecto.Schema
 
   import Ecto.Changeset
   alias GroupherServer.CMS
-  alias CMS.Model.{Article, Community, ReviewRequest}
+  alias CMS.Model.{Comment, Community, ArtimentReview}
   alias Helper.Constant.DBPrefix
 
   @schema_prefix DBPrefix.cms()
@@ -22,13 +22,13 @@ defmodule GroupherServer.CMS.Model.ArticleReviewRestriction do
 
   @type t :: %__MODULE__{}
 
-  schema "article_review_restrictions" do
-    belongs_to(:article, Article, type: Ecto.UUID)
+  schema "comment_review_blocks" do
+    belongs_to(:comment, Comment)
     belongs_to(:community, Community)
     field(:type, Ecto.Enum, values: @types)
-    belongs_to(:request, ReviewRequest, type: Ecto.UUID)
+    belongs_to(:artiment_review, ArtimentReview, type: Ecto.UUID)
     field(:item_id, :integer)
-    field(:review_ref, Ecto.UUID)
+    field(:subject_ref, Ecto.UUID)
     field(:source_ref, :string)
     field(:source, Ecto.Enum, values: @sources)
     field(:applied_at, :utc_datetime)
@@ -39,16 +39,16 @@ defmodule GroupherServer.CMS.Model.ArticleReviewRestriction do
     timestamps(type: :utc_datetime)
   end
 
-  @doc "Validates a direct Article restriction and its paired resolution fields."
+  @doc "Validates a direct Comment restriction and its paired resolution fields."
   def changeset(%__MODULE__{} = restriction, attrs) do
     restriction
     |> cast(attrs, [
-      :article_id,
+      :comment_id,
       :community_id,
       :type,
-      :request_id,
+      :artiment_review_id,
       :item_id,
-      :review_ref,
+      :subject_ref,
       :source_ref,
       :source,
       :applied_at,
@@ -57,18 +57,18 @@ defmodule GroupherServer.CMS.Model.ArticleReviewRestriction do
       :resolution,
       :version
     ])
-    |> validate_required([:article_id, :type, :source_ref, :source, :applied_at, :version])
+    |> validate_required([:comment_id, :type, :source_ref, :source, :applied_at, :version])
     |> validate_number(:version, greater_than: 0)
     |> validate_resolution()
-    |> unique_constraint([:article_id, :community_id, :source_ref],
-      name: :article_review_restrictions_active_system_source_index
+    |> unique_constraint([:comment_id, :community_id, :source_ref],
+      name: :comment_review_blocks_active_system_source_index
     )
-    |> unique_constraint([:article_id, :community_id, :source_ref],
-      name: :article_review_restrictions_active_community_source_index
+    |> unique_constraint([:comment_id, :community_id, :source_ref],
+      name: :comment_review_blocks_active_community_source_index
     )
-    |> foreign_key_constraint(:article_id)
+    |> foreign_key_constraint(:comment_id)
     |> foreign_key_constraint(:community_id)
-    |> foreign_key_constraint(:request_id)
+    |> foreign_key_constraint(:artiment_review_id)
     |> foreign_key_constraint(:item_id)
   end
 

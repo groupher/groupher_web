@@ -49,8 +49,7 @@ defmodule GroupherServer.ReviewBot do
   def check(content, %{system: system, community: community}) when is_map(content) do
     with {:ok, normalized_content} <- normalize_content(content),
          {:ok, system_policy} <- normalize_policy(system),
-         {:ok, system_result} <-
-           check_layer(normalized_content, system_policy, system_policy.prompt),
+         {:ok, system_result} <- check_layer(normalized_content, system_policy, ""),
          {:ok, community_result} <- check_community(normalized_content, system_policy, community) do
       {:ok, %{system: system_result, community: community_result}}
     end

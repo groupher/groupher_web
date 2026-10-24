@@ -49,7 +49,7 @@ defmodule GroupherServer.Test.CMS.Communities.Persist do
 
       assert system.community_id == nil
       assert community_config.community_id == community.id
-      assert system.review_mode == :immediate
+      assert is_nil(system.review_mode)
       assert community_config.review_mode == :immediate
 
       assert {:ok, %{system: platform_doc_config, community: nil}} =

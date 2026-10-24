@@ -15,7 +15,7 @@ defmodule GroupherServer.CMS.Comments.Lifecycle do
 
   alias CMS.Comments.ErrorCat
   alias CMS.Model.CommentLifecycle
-  alias CMS.ReviewRestrictions
+  alias CMS.ReviewBlocks
 
   @states [:visible, :deleted, :destroy]
   @allowed_transitions %{
@@ -146,7 +146,7 @@ defmodule GroupherServer.CMS.Comments.Lifecycle do
                destroyed_at: state_time(state, :destroy, now, lifecycle.destroyed_at)
              })
              |> Repo.update(),
-           {:ok, :pass} <- ReviewRestrictions.recompute(updated) do
+           {:ok, :pass} <- ReviewBlocks.recompute(updated) do
         {:ok, updated}
       end
     else
@@ -159,12 +159,12 @@ defmodule GroupherServer.CMS.Comments.Lifecycle do
 
   ## Examples
 
-      Comments.Lifecycle.apply_review_restriction(locked_lifecycle, attrs)
+      Comments.Lifecycle.apply_review_block(locked_lifecycle, attrs)
   """
-  @spec apply_review_restriction(CommentLifecycle.t(), map()) ::
+  @spec apply_review_block(CommentLifecycle.t(), map()) ::
           {:ok, struct()} | {:error, term()}
-  def apply_review_restriction(%CommentLifecycle{} = lifecycle, attrs) do
-    ReviewRestrictions.apply(lifecycle, attrs)
+  def apply_review_block(%CommentLifecycle{} = lifecycle, attrs) do
+    ReviewBlocks.apply(lifecycle, attrs)
   end
 
   @doc """
@@ -172,9 +172,9 @@ defmodule GroupherServer.CMS.Comments.Lifecycle do
 
   ## Examples
 
-      Comments.Lifecycle.end_review_restrictions(lifecycle, scope_key, ids, operation_ref, reason)
+      Comments.Lifecycle.end_review_blocks(lifecycle, scope_key, ids, operation_ref, reason)
   """
-  @spec end_review_restrictions(
+  @spec end_review_blocks(
           CommentLifecycle.t(),
           String.t(),
           [term()],
@@ -182,14 +182,14 @@ defmodule GroupherServer.CMS.Comments.Lifecycle do
           String.t()
         ) ::
           {:ok, :pass} | {:error, term()}
-  def end_review_restrictions(
+  def end_review_blocks(
         %CommentLifecycle{} = lifecycle,
         scope_key,
         ids,
         operation_ref,
         reason
       ) do
-    ReviewRestrictions.end_restrictions(lifecycle, scope_key, ids, operation_ref, reason)
+    ReviewBlocks.end_blocks(lifecycle, scope_key, ids, operation_ref, reason)
   end
 
   defp state_time(state, state, now, _current), do: now

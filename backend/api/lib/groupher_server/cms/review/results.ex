@@ -21,19 +21,21 @@ defmodule GroupherServer.CMS.Review.Results do
     CommentLifecycle,
     DocLifecycle,
     DocPublic,
-    ReviewRequest
+    ArtimentReview
   }
 
-  @doc "Locks the CMS resource, validates its pinned content, and applies the opinion once."
+  @doc "Locks the CMS resource, verifies it is still public, and applies the opinion once."
   @spec apply_in_transaction(Ecto.UUID.t(), map()) ::
-          {:ok, ReviewRequest.t() | :stale} | {:error, term()}
-  def apply_in_transaction(request_id, result) when is_binary(request_id) and is_map(result) do
+          {:ok, ArtimentReview.t() | :stale} | {:error, term()}
+  def apply_in_transaction(artiment_review_id, result)
+      when is_binary(artiment_review_id) and is_map(result) do
     with true <- Repo.in_transaction?(),
-         %ReviewRequest{} = request <- Repo.get(ReviewRequest, request_id),
+         %ArtimentReview{} = request <- Repo.get(ArtimentReview, artiment_review_id),
          {:ok, context} <- lock_target(request),
          true <- current_content?(request),
-         %ReviewRequest{state: :running, superseded_at: nil} <- lock_request(request_id),
-         {:ok, completed} <- CMS.Review.Requests.complete_in_transaction(request_id, result),
+         %ArtimentReview{state: :running, outdated_at: nil} <- lock_request(artiment_review_id),
+         {:ok, completed} <-
+           CMS.Review.Requests.complete_in_transaction(artiment_review_id, result),
          {:ok, :pass} <- apply_restrictions(request, context, result),
          {:ok, :pass} <- apply_wall(request, result),
          {:ok, applied} <- CMS.Review.Requests.mark_applied_in_transaction(completed.id) do
@@ -41,82 +43,78 @@ defmodule GroupherServer.CMS.Review.Results do
     else
       false -> {:ok, :stale}
       nil -> {:ok, :stale}
-      %ReviewRequest{} -> {:ok, :stale}
+      %ArtimentReview{} -> {:ok, :stale}
       {:error, _reason} = error -> error
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
-  def apply_in_transaction(_request_id, _result) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+  def apply_in_transaction(_artiment_review_id, _result) do
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
-  defp lock_target(%ReviewRequest{target_type: :article} = request) do
+  defp lock_target(%ArtimentReview{target_type: :article} = request) do
     CMS.Review.load_for_update("article:#{request.article_id}", scope_key(request))
   end
 
-  defp lock_target(%ReviewRequest{target_type: :comment} = request) do
+  defp lock_target(%ArtimentReview{target_type: :comment} = request) do
     CMS.Review.load_for_update("comment:#{request.comment_id}", scope_key(request))
   end
 
-  defp lock_target(%ReviewRequest{target_type: :doc} = request) do
+  defp lock_target(%ArtimentReview{target_type: :doc} = request) do
     CMS.Review.load_for_update(
       "doc:#{request.article_id}:#{request.branch_id}",
       "platform"
     )
   end
 
-  defp lock_target(_request), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  defp lock_target(_request), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
-  defp current_content?(%ReviewRequest{target_type: :article} = request) do
+  defp current_content?(%ArtimentReview{target_type: :article} = request) do
     Repo.exists?(
       from(public in ArticlePublic,
         join: lifecycle in ArticleLifecycle,
         on: lifecycle.article_id == public.article_id,
         where:
           public.article_id == ^request.article_id and
-            public.revision_id == ^request.article_revision_id and
             lifecycle.state not in [:deleted, :destroy]
       )
     )
   end
 
-  defp current_content?(%ReviewRequest{target_type: :comment} = request) do
+  defp current_content?(%ArtimentReview{target_type: :comment} = request) do
     Repo.exists?(
       from(body in CommentBody,
         join: lifecycle in CommentLifecycle,
         on: lifecycle.comment_id == body.comment_id,
-        where:
-          body.comment_id == ^request.comment_id and
-            body.version == ^request.comment_body_version and lifecycle.state == :visible
+        where: body.comment_id == ^request.comment_id and lifecycle.state == :visible
       )
     )
   end
 
-  defp current_content?(%ReviewRequest{target_type: :doc} = request) do
+  defp current_content?(%ArtimentReview{target_type: :doc} = request) do
     Repo.exists?(
       from(public in DocPublic,
         join: lifecycle in DocLifecycle,
         on: lifecycle.article_id == public.article_id and lifecycle.branch_id == public.branch_id,
         where:
           public.article_id == ^request.article_id and public.branch_id == ^request.branch_id and
-            public.branch_version_id == ^request.branch_version_id and
             lifecycle.state not in [:deleted, :destroy]
       )
     )
   end
 
-  defp lock_request(request_id) do
+  defp lock_request(artiment_review_id) do
     Repo.one(
-      from(request in ReviewRequest,
-        where: request.id == ^request_id and is_nil(request.superseded_at),
+      from(request in ArtimentReview,
+        where: request.id == ^artiment_review_id and is_nil(request.outdated_at),
         lock: "FOR UPDATE"
       )
     )
   end
 
   defp apply_restrictions(request, context, result) do
-    with {:ok, active} <- CMS.ReviewRestrictions.active_for(context.lifecycle, context.scope_key),
+    with {:ok, active} <- CMS.ReviewBlocks.active_for(context.lifecycle, context.scope_key),
          {:ok, :pass} <- end_automatic_restrictions(request, context, active),
          {:ok, :pass} <- maybe_apply_restriction(request, context, result) do
       {:ok, :pass}
@@ -132,7 +130,7 @@ defmodule GroupherServer.CMS.Review.Results do
     if ids == [] do
       {:ok, :pass}
     else
-      CMS.ReviewRestrictions.end_restrictions(
+      CMS.ReviewBlocks.end_blocks(
         context.lifecycle,
         context.scope_key,
         ids,
@@ -160,15 +158,15 @@ defmodule GroupherServer.CMS.Review.Results do
   end
 
   defp maybe_apply_restriction(_request, _context, _result) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   defp restriction(request, context, type) do
-    CMS.ReviewRestrictions.apply(context.lifecycle, %{
+    CMS.ReviewBlocks.apply(context.lifecycle, %{
       scope_key: context.scope_key,
       type: type,
-      request_id: request.id,
-      review_ref: request.review_ref,
+      artiment_review_id: request.id,
+      subject_ref: request.subject_ref,
       source_ref: "request:#{request.id}:#{type}",
       source: :request,
       applied_at: DateTime.utc_now(:second)
@@ -184,7 +182,7 @@ defmodule GroupherServer.CMS.Review.Results do
 
     case AlertWall.add_in_transaction(attrs, request.id) do
       {:ok, item} ->
-        CMS.ReviewRestrictions.link_item_for_request_in_transaction(request.id, item.id)
+        CMS.ReviewBlocks.link_item_for_artiment_review_in_transaction(request.id, item.id)
 
       {:error, _reason} = error ->
         error
@@ -221,23 +219,23 @@ defmodule GroupherServer.CMS.Review.Results do
       target_type: request.target_type,
       target_id: target_id(request),
       community_id: request.community_id,
-      subject_ref: request.review_ref,
+      subject_ref: request.subject_ref,
       ai_source_ref: request.id,
       sus_notes: result["sus_notes"] || [],
       summary: result["summary"] || ""
     }
   end
 
-  defp target_id(%ReviewRequest{target_type: :doc} = request) do
+  defp target_id(%ArtimentReview{target_type: :doc} = request) do
     "#{request.article_id}:#{request.branch_id}"
   end
 
-  defp target_id(%ReviewRequest{target_type: :article, article_id: article_id}), do: article_id
+  defp target_id(%ArtimentReview{target_type: :article, article_id: article_id}), do: article_id
 
-  defp target_id(%ReviewRequest{target_type: :comment, comment_id: comment_id}) do
+  defp target_id(%ArtimentReview{target_type: :comment, comment_id: comment_id}) do
     to_string(comment_id)
   end
 
-  defp scope_key(%ReviewRequest{community_id: nil}), do: "platform"
-  defp scope_key(%ReviewRequest{community_id: id}), do: "community:#{id}"
+  defp scope_key(%ArtimentReview{community_id: nil}), do: "platform"
+  defp scope_key(%ArtimentReview{community_id: id}), do: "community:#{id}"
 end

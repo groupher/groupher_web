@@ -25,7 +25,7 @@ defmodule GroupherServer.CMS.Gate.Scope.Comment do
   alias CMS.Model.{
     ArticleLifecycle,
     CommentLifecycle,
-    CommentReviewRestriction,
+    CommentReviewBlock,
     DocBranch,
     DocLifecycle
   }
@@ -145,7 +145,7 @@ defmodule GroupherServer.CMS.Gate.Scope.Comment do
       where:
         comment.author_id == ^user_id or
           ((not exists(
-              from(restriction in CommentReviewRestriction,
+              from(restriction in CommentReviewBlock,
                 where:
                   restriction.comment_id == parent_as(:gate_comment_lifecycle).comment_id and
                     is_nil(restriction.community_id) and is_nil(restriction.resolved_at),
@@ -153,7 +153,7 @@ defmodule GroupherServer.CMS.Gate.Scope.Comment do
               )
             ) or ^platform_read?) and
              (not exists(
-                from(restriction in CommentReviewRestriction,
+                from(restriction in CommentReviewBlock,
                   where:
                     restriction.comment_id == parent_as(:gate_comment_lifecycle).comment_id and
                       restriction.community_id == parent_as(:gate_community).id and
@@ -168,7 +168,7 @@ defmodule GroupherServer.CMS.Gate.Scope.Comment do
     from(comment in query,
       where:
         not exists(
-          from(restriction in CommentReviewRestriction,
+          from(restriction in CommentReviewBlock,
             where:
               restriction.comment_id == parent_as(:gate_comment_lifecycle).comment_id and
                 is_nil(restriction.resolved_at) and

@@ -48,7 +48,7 @@ defmodule GroupherServer.Test.CMS.Gate.Scope.ArticleTest do
       assert sql =~ if(thread == :doc, do: "doc_publics", else: "article_publics")
       refute sql =~ "archived_at"
       refute sql =~ "is_archived"
-      assert sql =~ "review_restrictions"
+      assert sql =~ "review_blocks"
       refute sql =~ ~s("cms"."article_bindings"."visible")
 
       if thread != :doc do
@@ -116,7 +116,7 @@ defmodule GroupherServer.Test.CMS.Gate.Scope.ArticleTest do
 
     assert sql =~ ~s(FROM "cms"."authors")
     assert sql =~ "user_id"
-    assert sql =~ "article_review_restrictions"
+    assert sql =~ "article_review_blocks"
     assert sql =~ "community_id"
   end
 
@@ -125,8 +125,8 @@ defmodule GroupherServer.Test.CMS.Gate.Scope.ArticleTest do
     assert %Ecto.Query{} = query
 
     {sql, _params} = to_sql(query)
-    assert sql =~ "doc_review_restrictions"
-    refute sql =~ "article_review_restrictions"
+    assert sql =~ "doc_review_blocks"
+    refute sql =~ "article_review_blocks"
   end
 
   test "Article Insights scope combines author, owner, and scoped moderator access" do

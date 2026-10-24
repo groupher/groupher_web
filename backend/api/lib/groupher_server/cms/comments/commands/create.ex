@@ -493,7 +493,6 @@ defmodule GroupherServer.CMS.Comments.Commands.Create do
       target = %{
         type: :comment,
         comment_id: comment.id,
-        body_version: comment.body.version,
         lifecycle: lifecycle
       }
 

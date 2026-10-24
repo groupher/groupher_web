@@ -1,4 +1,4 @@
-defmodule GroupherServer.Jobs.CMSReviewRequest do
+defmodule GroupherServer.Jobs.CMSArtimentReview do
   @moduledoc """
   Oban wakeup for one CMS-owned review request Effect.
 
@@ -22,5 +22,5 @@ defmodule GroupherServer.Jobs.CMSReviewRequest do
 
       perform(%Oban.Job{args: %{"event_id" => event_id}})
   """
-  def perform(job), do: GroupherServer.CMS.deliver_outbox(:review_request, job)
+  def perform(job), do: GroupherServer.CMS.deliver_outbox(:artiment_review, job)
 end

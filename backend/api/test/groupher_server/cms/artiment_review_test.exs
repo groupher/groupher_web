@@ -1,4 +1,4 @@
-defmodule GroupherServer.Test.CMS.ReviewRequestTest do
+defmodule GroupherServer.Test.CMS.ArtimentReviewTest do
   use GroupherServer.TestMate, async: false
 
   alias GroupherServer.{CMS, ReviewBot}
@@ -7,12 +7,9 @@ defmodule GroupherServer.Test.CMS.ReviewRequestTest do
   alias GroupherServer.ReviewBot
 
   alias CMS.Model.{
-    ArticleBodySnapshot,
     ArticleLifecycle,
-    ArticlePublic,
-    ArticleReviewRestriction,
-    ArticleRevision,
-    ReviewRequest
+    ArticleReviewBlock,
+    ArtimentReview
   }
 
   alias ReviewBot.Model.ReviewBotConfig
@@ -21,39 +18,37 @@ defmodule GroupherServer.Test.CMS.ReviewRequestTest do
     attrs = %{
       target_type: :article,
       article_id: Ecto.UUID.generate(),
-      article_revision_id: Ecto.UUID.generate(),
-      review_ref: Ecto.UUID.generate(),
+      subject_ref: Ecto.UUID.generate(),
       policy_snapshot: %{"review_mode" => "immediate"},
       payload: %{"text" => %{"title" => "title", "body" => "body"}},
       payload_expires_at: DateTime.add(DateTime.utc_now(), 3_600, :second)
     }
 
-    assert ReviewRequest.changeset(%ReviewRequest{}, attrs).valid?
+    assert ArtimentReview.changeset(%ArtimentReview{}, attrs).valid?
 
-    refute ReviewRequest.changeset(
-             %ReviewRequest{},
+    refute ArtimentReview.changeset(
+             %ArtimentReview{},
              Map.merge(attrs, %{target_type: :comment, comment_id: 12})
            ).valid?
   end
 
   test "a newer request supersedes the previous request in the same scope" do
     {_community, article, _attrs, _user} = mock_article(:post)
-    revision = create_revision(article.id)
 
     assert {:ok, {:ok, first}} =
              Repo.transaction(fn ->
-               Requests.create_in_transaction(request_attrs(article.id, revision.id))
+               Requests.create_in_transaction(request_attrs(article.id))
              end)
 
     assert {:ok, {:ok, second}} =
              Repo.transaction(fn ->
-               Requests.create_in_transaction(request_attrs(article.id, revision.id))
+               Requests.create_in_transaction(request_attrs(article.id))
              end)
 
     assert first.id != second.id
-    assert Repo.get!(ReviewRequest, first.id).superseded_at
-    assert is_nil(Repo.get!(ReviewRequest, first.id).payload["text"])
-    assert is_nil(Repo.get!(ReviewRequest, second.id).superseded_at)
+    assert Repo.get!(ArtimentReview, first.id).outdated_at
+    assert is_nil(Repo.get!(ArtimentReview, first.id).payload["text"])
+    assert is_nil(Repo.get!(ArtimentReview, second.id).outdated_at)
     assert {:ok, current} = Requests.current(second.id)
     assert current.id == second.id
     assert {:error, _reason} = Requests.current(first.id)
@@ -61,12 +56,11 @@ defmodule GroupherServer.Test.CMS.ReviewRequestTest do
 
   test "completed opinion can only be applied for the current request" do
     {_community, article, _attrs, _user} = mock_article(:post)
-    revision = create_revision(article.id)
 
     assert {:ok, {:ok, applied}} =
              Repo.transaction(fn ->
                {:ok, request} =
-                 Requests.create_in_transaction(request_attrs(article.id, revision.id))
+                 Requests.create_in_transaction(request_attrs(article.id))
 
                {:ok, request} = Requests.claim_in_transaction(request.id)
 
@@ -83,20 +77,18 @@ defmodule GroupherServer.Test.CMS.ReviewRequestTest do
 
   test "registration pins independent system and community policies" do
     {community, article, _attrs, _user} = mock_article(:post)
-    revision = create_revision(article.id)
     assert {:ok, configs} = ReviewBot.configs(community.id, :article)
 
     target = %{
       type: :article,
-      article_id: article.id,
-      article_revision_id: revision.id
+      article_id: article.id
     }
 
     content = %{title: "Title", body: "Body", images: []}
 
     assert {:ok, {:ok, [system_request, community_request]}} =
              Repo.transaction(fn ->
-               GroupherServer.CMS.register_review_requests_in_transaction(
+               GroupherServer.CMS.register_artiment_reviews_in_transaction(
                  target,
                  content,
                  configs,
@@ -118,7 +110,6 @@ defmodule GroupherServer.Test.CMS.ReviewRequestTest do
 
   test "non-immediate community policy creates an initial CMS hold" do
     {community, article, _attrs, _user} = mock_article(:post)
-    public = Repo.get_by!(ArticlePublic, article_id: article.id)
     lifecycle = Repo.get_by!(ArticleLifecycle, article_id: article.id)
 
     {:ok, %{community: community_config}} = ReviewBot.configs(community.id, :article)
@@ -134,11 +125,10 @@ defmodule GroupherServer.Test.CMS.ReviewRequestTest do
 
     assert {:ok, {:ok, [_system_request, community_request]}} =
              Repo.transaction(fn ->
-               GroupherServer.CMS.register_review_requests_in_transaction(
+               GroupherServer.CMS.register_artiment_reviews_in_transaction(
                  %{
                    type: :article,
                    article_id: article.id,
-                   article_revision_id: public.revision_id,
                    lifecycle: lifecycle
                  },
                  %{title: "Title", body: "Body", images: []},
@@ -147,53 +137,23 @@ defmodule GroupherServer.Test.CMS.ReviewRequestTest do
                )
              end)
 
-    assert %ArticleReviewRestriction{type: :awaiting_ai, source: :request} =
-             Repo.get_by!(ArticleReviewRestriction,
+    assert %ArticleReviewBlock{type: :awaiting_ai, source: :request} =
+             Repo.get_by!(ArticleReviewBlock,
                article_id: article.id,
                community_id: community.id,
-               request_id: community_request.id
+               artiment_review_id: community_request.id
              )
 
     assert community_request.policy_snapshot["review_mode"] == "ai_first"
   end
 
-  defp request_attrs(article_id, article_revision_id) do
+  defp request_attrs(article_id) do
     %{
       target_type: :article,
       article_id: article_id,
-      article_revision_id: article_revision_id,
-      review_ref: Ecto.UUID.generate(),
+      subject_ref: Ecto.UUID.generate(),
       policy_snapshot: %{"review_mode" => "immediate"},
       payload: %{"text" => %{"title" => "title", "body" => "body"}}
     }
-  end
-
-  defp create_revision(article_id) do
-    body_hash = Ecto.UUID.generate()
-
-    {:ok, body} =
-      Repo.insert(
-        ArticleBodySnapshot.changeset(%ArticleBodySnapshot{}, %{
-          json: "[]",
-          body_hash: body_hash,
-          schema_version: 1,
-          plain_text: "body"
-        })
-      )
-
-    {:ok, revision} =
-      Repo.insert(
-        ArticleRevision.changeset(%ArticleRevision{}, %{
-          article_id: article_id,
-          body_snapshot_id: body.id,
-          title: "Title",
-          digest: "Digest",
-          content_hash: body_hash,
-          schema_version: 1,
-          cleanup_after: DateTime.add(DateTime.utc_now(:second), 86_400, :second)
-        })
-      )
-
-    revision
   end
 end

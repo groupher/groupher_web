@@ -4,7 +4,7 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
   use GroupherServer.TestMate, async: false
 
   alias GroupherServer.{Activity, AlertWall, CMS}
-  alias AlertWall.Model.{Item, ItemReport, Report}
+  alias AlertWall.Model.{Item, UserReport}
 
   alias CMS.Model.{
     ArticleEmotionCount,
@@ -219,15 +219,13 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
                         report_attrs,
                         Ecto.UUID.generate()
                       ),
-                    %Item{} = item <- Repo.get(Item, report.origin_item_id) do
+                    %Item{} = item <- Repo.get(Item, report.item_id) do
                  {:ok, {item, report}}
                else
                  {:error, reason} -> {:error, reason}
                  _ -> {:error, :wall_item_not_found}
                end
              end)
-
-    item_report = Repo.get_by!(ItemReport, item_id: item.id, report_id: report.id)
 
     assert {:ok, trash_item} = CMS.Articles.trash(post, user)
 
@@ -239,10 +237,10 @@ defmodule GroupherServer.Test.CMS.Articles.Trash do
     assert deleted_item.target_deleted_at
     assert deleted_item.status == :superseded
 
-    deleted_report = Repo.get!(Report, report.id)
+    deleted_report = Repo.get!(UserReport, report.id)
     assert deleted_report.target_id == to_string(post.article_id)
-    assert deleted_report.origin_item_id == item.id
-    assert Repo.get(ItemReport, item_report.id)
+    assert deleted_report.item_id == item.id
+    assert deleted_report.outdated_at
   end
 
   test "permanent-delete receipt replays after the aggregate is gone" do

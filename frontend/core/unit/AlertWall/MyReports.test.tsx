@@ -26,7 +26,7 @@ beforeEach(() => {
             targetType: 'COMMENT',
             targetId: '44',
             communityId: '7',
-            originItemId: '1',
+            itemId: '1',
             reportType: 'SPAM',
             details: 'Hidden after report',
             withdrawnAt: state.active ? null : '2026-10-23T00:00:00Z',

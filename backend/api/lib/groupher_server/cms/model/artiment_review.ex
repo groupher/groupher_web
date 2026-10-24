@@ -1,8 +1,8 @@
-defmodule GroupherServer.CMS.Model.ReviewRequest do
+defmodule GroupherServer.CMS.Model.ArtimentReview do
   @moduledoc """
   Reliable CMS-owned record of one policy check for one resource scope.
 
-      CMS content command -> ReviewRequest + Effect -> ReviewBot opinion -> CMS applies result
+      CMS content command -> ArtimentReview + Effect -> ReviewBot opinion -> CMS applies result
   """
 
   use Ecto.Schema
@@ -14,11 +14,9 @@ defmodule GroupherServer.CMS.Model.ReviewRequest do
 
   alias CMS.Model.{
     Article,
-    ArticleRevision,
     Comment,
     Community,
-    DocBranch,
-    DocBranchVersion
+    DocBranch
   }
 
   alias Helper.Constant.DBPrefix
@@ -31,23 +29,20 @@ defmodule GroupherServer.CMS.Model.ReviewRequest do
 
   @primary_key {:id, Ecto.UUID, autogenerate: true}
 
-  schema "review_requests" do
+  schema "artiment_reviews" do
     field(:target_type, Ecto.Enum, values: @target_types)
     belongs_to(:article, Article, type: Ecto.UUID)
     belongs_to(:comment, Comment)
     belongs_to(:branch, DocBranch)
     belongs_to(:community, Community)
-    field(:review_ref, Ecto.UUID)
-    belongs_to(:article_revision, ArticleRevision, type: Ecto.UUID)
-    belongs_to(:branch_version, DocBranchVersion)
-    field(:comment_body_version, :integer)
+    field(:subject_ref, Ecto.UUID)
     field(:policy_snapshot, :map)
     field(:payload, :map)
     field(:state, Ecto.Enum, values: @states, default: :queued)
     field(:result, :map)
     belongs_to(:updated_by, User)
     field(:applied_at, :utc_datetime)
-    field(:superseded_at, :utc_datetime)
+    field(:outdated_at, :utc_datetime)
     field(:payload_expires_at, :utc_datetime)
     timestamps(type: :utc_datetime)
   end
@@ -62,35 +57,29 @@ defmodule GroupherServer.CMS.Model.ReviewRequest do
       :comment_id,
       :branch_id,
       :community_id,
-      :review_ref,
-      :article_revision_id,
-      :branch_version_id,
-      :comment_body_version,
+      :subject_ref,
       :policy_snapshot,
       :payload,
       :state,
       :result,
       :updated_by_id,
       :applied_at,
-      :superseded_at,
+      :outdated_at,
       :payload_expires_at
     ])
     |> validate_required([
       :target_type,
-      :review_ref,
+      :subject_ref,
       :policy_snapshot,
       :state,
       :payload_expires_at
     ])
     |> validate_target()
-    |> validate_number(:comment_body_version, greater_than: 0)
     |> validate_doc_scope()
     |> foreign_key_constraint(:article_id)
     |> foreign_key_constraint(:comment_id)
     |> foreign_key_constraint(:branch_id)
     |> foreign_key_constraint(:community_id)
-    |> foreign_key_constraint(:article_revision_id)
-    |> foreign_key_constraint(:branch_version_id)
     |> foreign_key_constraint(:updated_by_id)
   end
 
@@ -100,22 +89,13 @@ defmodule GroupherServer.CMS.Model.ReviewRequest do
 
     case get_field(changeset, :target_type) do
       :article when not is_nil(article_id) and is_nil(comment_id) and is_nil(branch_id) ->
-        require_version(changeset, :article_revision_id, [
-          :comment_body_version,
-          :branch_version_id
-        ])
+        changeset
 
       :comment when is_nil(article_id) and not is_nil(comment_id) and is_nil(branch_id) ->
         changeset
-        |> validate_required([:comment_body_version])
-        |> reject_present([:article_revision_id, :branch_version_id])
 
-      :doc
-      when not is_nil(article_id) and is_nil(comment_id) and not is_nil(branch_id) ->
-        require_version(changeset, :branch_version_id, [
-          :article_revision_id,
-          :comment_body_version
-        ])
+      :doc when not is_nil(article_id) and is_nil(comment_id) and not is_nil(branch_id) ->
+        changeset
 
       _ ->
         add_error(changeset, :target_type, "does not match resource references")
@@ -129,21 +109,5 @@ defmodule GroupherServer.CMS.Model.ReviewRequest do
     else
       changeset
     end
-  end
-
-  defp require_version(changeset, required, forbidden) do
-    changeset
-    |> validate_required([required])
-    |> reject_present(forbidden)
-  end
-
-  defp reject_present(changeset, fields) do
-    Enum.reduce(fields, changeset, fn field, changeset ->
-      if is_nil(get_field(changeset, field)) do
-        changeset
-      else
-        add_error(changeset, field, "does not match resource version type")
-      end
-    end)
   end
 end

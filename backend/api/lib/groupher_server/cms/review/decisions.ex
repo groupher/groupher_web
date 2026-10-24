@@ -32,12 +32,12 @@ defmodule GroupherServer.CMS.Review.Decisions do
     else
       false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
       {:error, _reason} = error -> error
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
   def apply_in_transaction(_target_key, _scope_key, _action, _actor, _operation_ref) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   defp reject_author_review(%{target: %{author_id: author_id}}, %{id: author_id}) do
@@ -62,14 +62,14 @@ defmodule GroupherServer.CMS.Review.Decisions do
   defp request_scope(_context), do: %{}
 
   defp update_restrictions(context, action, requests, actor, operation_ref) do
-    with {:ok, active} <- CMS.ReviewRestrictions.active_for(context.lifecycle, context.scope_key),
-         {:ok, :pass} <- end_restrictions(context, active, action, operation_ref),
+    with {:ok, active} <- CMS.ReviewBlocks.active_for(context.lifecycle, context.scope_key),
+         {:ok, :pass} <- end_blocks(context, active, action, operation_ref),
          {:ok, :pass} <- maybe_deny(context, requests, action, actor, operation_ref) do
       {:ok, :pass}
     end
   end
 
-  defp end_restrictions(context, active, action, operation_ref) do
+  defp end_blocks(context, active, action, operation_ref) do
     rows =
       Enum.filter(active, fn restriction ->
         case action do
@@ -79,7 +79,7 @@ defmodule GroupherServer.CMS.Review.Decisions do
         end
       end)
 
-    CMS.ReviewRestrictions.end_restrictions(
+    CMS.ReviewBlocks.end_blocks(
       context.lifecycle,
       context.scope_key,
       Enum.map(rows, & &1.id),
@@ -94,17 +94,17 @@ defmodule GroupherServer.CMS.Review.Decisions do
   end
 
   defp maybe_deny(context, requests, :deny, _actor, operation_ref) do
-    review_ref =
+    subject_ref =
       case requests do
-        [request | _] -> request.review_ref
+        [request | _] -> request.subject_ref
         [] -> nil
       end
 
-    case CMS.ReviewRestrictions.apply(context.lifecycle, %{
+    case CMS.ReviewBlocks.apply(context.lifecycle, %{
            scope_key: context.scope_key,
            type: :manual_hold,
-           request_id: Enum.find_value(requests, & &1.id),
-           review_ref: review_ref,
+           artiment_review_id: Enum.find_value(requests, & &1.id),
+           subject_ref: subject_ref,
            source_ref: "human:#{operation_ref}",
            source: :human,
            applied_at: DateTime.utc_now(:second)

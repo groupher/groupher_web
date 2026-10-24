@@ -10,44 +10,44 @@ defmodule GroupherServer.CMS.Review.Requests do
 
   alias GroupherServer.{AlertWall, CMS, Repo, ReviewBot}
   alias CMS.Review.{Effects, Results}
-  alias CMS.Model.ReviewRequest
+  alias CMS.Model.ArtimentReview
 
   @doc "Creates the current request inside the resource command's transaction."
-  @spec create_in_transaction(map()) :: {:ok, ReviewRequest.t()} | {:error, term()}
+  @spec create_in_transaction(map()) :: {:ok, ArtimentReview.t()} | {:error, term()}
   def create_in_transaction(attrs) when is_map(attrs) do
     with true <- Repo.in_transaction?(),
          {:ok, attrs} <- validate_attrs(attrs),
          {:ok, :pass} <- supersede_current(attrs),
          {:ok, request} <- insert_request(attrs),
-         {:ok, _event} <- Effects.enqueue_review_request(request) do
+         {:ok, _event} <- Effects.enqueue_artiment_review(request) do
       {:ok, request}
     else
       false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
       {:error, _reason} = error -> error
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
-  def create_in_transaction(_attrs), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  def create_in_transaction(_attrs), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   @doc "Loads a request only while it is current and its private payload is live."
-  @spec current(Ecto.UUID.t()) :: {:ok, ReviewRequest.t()} | {:error, term()}
+  @spec current(Ecto.UUID.t()) :: {:ok, ArtimentReview.t()} | {:error, term()}
   def current(request_id) when is_binary(request_id) do
     now = DateTime.utc_now(:second)
 
     case Repo.one(
-           from(request in ReviewRequest,
+           from(request in ArtimentReview,
              where:
-               request.id == ^request_id and is_nil(request.superseded_at) and
+               request.id == ^request_id and is_nil(request.outdated_at) and
                  request.payload_expires_at > ^now
            )
          ) do
-      %ReviewRequest{} = request -> {:ok, request}
-      nil -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      %ArtimentReview{} = request -> {:ok, request}
+      nil -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
-  def current(_request_id), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  def current(_request_id), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   @doc "Returns the latest current review request for one canonical resource scope."
   def current_for_scope(attrs) when is_map(attrs) do
@@ -61,11 +61,11 @@ defmodule GroupherServer.CMS.Review.Requests do
     {:ok, Repo.one(query)}
   end
 
-  def current_for_scope(_attrs), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  def current_for_scope(_attrs), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   @doc "Lists current CMS requests that require human attention in one authorized scope."
   def pending_for_scope(attrs) when is_map(attrs) do
-    query = from(request in ReviewRequest, where: is_nil(request.superseded_at))
+    query = from(request in ArtimentReview, where: is_nil(request.outdated_at))
 
     query =
       case Map.get(attrs, :community_id) do
@@ -79,7 +79,7 @@ defmodule GroupherServer.CMS.Review.Requests do
     {:ok, requests}
   end
 
-  def pending_for_scope(_attrs), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  def pending_for_scope(_attrs), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   @doc "Fails expired queued work and clears its private payload so it remains reviewable."
   @spec expire_payloads(pos_integer()) :: {:ok, non_neg_integer()} | {:error, term()}
@@ -88,9 +88,9 @@ defmodule GroupherServer.CMS.Review.Requests do
 
     ids =
       Repo.all(
-        from(request in ReviewRequest,
+        from(request in ArtimentReview,
           where:
-            is_nil(request.superseded_at) and request.payload_expires_at <= ^now and
+            is_nil(request.outdated_at) and request.payload_expires_at <= ^now and
               request.state in [:queued, :running],
           order_by: [asc: request.payload_expires_at, asc: request.id],
           limit: ^batch_size,
@@ -103,9 +103,9 @@ defmodule GroupherServer.CMS.Review.Requests do
     else
       {count, _} =
         Repo.update_all(
-          from(request in ReviewRequest,
+          from(request in ArtimentReview,
             where:
-              request.id in ^ids and is_nil(request.superseded_at) and
+              request.id in ^ids and is_nil(request.outdated_at) and
                 request.state in [:queued, :running]
           ),
           set: [
@@ -120,20 +120,20 @@ defmodule GroupherServer.CMS.Review.Requests do
     end
   end
 
-  def expire_payloads(_batch_size), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  def expire_payloads(_batch_size), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   @doc "Runs one queued request through ReviewBot and stores only its bounded opinion."
   @spec process(Ecto.UUID.t()) ::
-          {:ok, :stale | :completed | ReviewRequest.t()} | {:error, term()}
+          {:ok, :stale | :completed | ArtimentReview.t()} | {:error, term()}
   def process(request_id) when is_binary(request_id) do
     case current(request_id) do
-      {:ok, %ReviewRequest{state: :completed} = request} -> {:ok, request}
-      {:ok, %ReviewRequest{} = request} -> run_current(request)
+      {:ok, %ArtimentReview{state: :completed} = request} -> {:ok, request}
+      {:ok, %ArtimentReview{} = request} -> run_current(request)
       {:error, _reason} -> {:ok, :stale}
     end
   end
 
-  def process(_request_id), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  def process(_request_id), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   @doc "Ends all current requests for one target scope inside the owning resource transaction."
   @spec supersede_scope_in_transaction(map(), Ecto.UUID.t()) :: {:ok, :pass} | {:error, term()}
@@ -146,126 +146,126 @@ defmodule GroupherServer.CMS.Review.Requests do
       now = DateTime.utc_now(:second)
 
       Repo.update_all(query,
-        set: [superseded_at: now, payload: %{}, updated_at: now]
+        set: [outdated_at: now, payload: %{}, updated_at: now]
       )
 
       {:ok, :pass}
     else
       false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
       {:error, _reason} = error -> error
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
   def supersede_scope_in_transaction(_attrs, _operation_ref) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   @doc "Returns and locks current requests for one typed target scope in an owner transaction."
-  @spec current_for_scope_in_transaction(map()) :: {:ok, [ReviewRequest.t()]} | {:error, term()}
+  @spec current_for_scope_in_transaction(map()) :: {:ok, [ArtimentReview.t()]} | {:error, term()}
   def current_for_scope_in_transaction(attrs) when is_map(attrs) do
     with true <- Repo.in_transaction?(),
          query <- current_scope_query(Map.put(attrs, :target_type, attrs.type)) do
       {:ok, Repo.all(lock(query))}
     else
       false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
   def current_for_scope_in_transaction(_attrs) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   @doc "Claims one current request without allowing superseded or expired work to run."
-  @spec claim_in_transaction(Ecto.UUID.t()) :: {:ok, ReviewRequest.t()} | {:error, term()}
+  @spec claim_in_transaction(Ecto.UUID.t()) :: {:ok, ArtimentReview.t()} | {:error, term()}
   def claim_in_transaction(request_id) when is_binary(request_id) do
     with true <- Repo.in_transaction?(),
-         %ReviewRequest{superseded_at: nil} = request <- lock_current(request_id),
+         %ArtimentReview{outdated_at: nil} = request <- lock_current(request_id),
          true <-
            DateTime.compare(request.payload_expires_at, DateTime.utc_now(:second)) == :gt,
          {:ok, claimed} <- claim(request) do
       {:ok, claimed}
     else
-      false -> {:error, CMS.ErrorCat.invalid_review_restriction()}
-      nil -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      false -> {:error, CMS.ErrorCat.invalid_review_block()}
+      nil -> {:error, CMS.ErrorCat.invalid_review_block()}
       {:error, _reason} = error -> error
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
   def claim_in_transaction(_request_id) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   @doc "Stores one completed opinion while the caller holds the resource transaction."
   @spec complete_in_transaction(Ecto.UUID.t(), map()) ::
-          {:ok, ReviewRequest.t()} | {:error, term()}
+          {:ok, ArtimentReview.t()} | {:error, term()}
   def complete_in_transaction(request_id, result) when is_binary(request_id) and is_map(result) do
     with true <- Repo.in_transaction?(),
-         %ReviewRequest{state: state, superseded_at: nil} = request <- lock_current(request_id),
+         %ArtimentReview{state: state, outdated_at: nil} = request <- lock_current(request_id),
          true <- state == :running,
          {:ok, updated} <-
            request
-           |> ReviewRequest.changeset(%{state: :completed, result: result, payload: %{}})
+           |> ArtimentReview.changeset(%{state: :completed, result: result, payload: %{}})
            |> Repo.update() do
       {:ok, updated}
     else
-      false -> {:error, CMS.ErrorCat.invalid_review_restriction()}
-      nil -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      false -> {:error, CMS.ErrorCat.invalid_review_block()}
+      nil -> {:error, CMS.ErrorCat.invalid_review_block()}
       {:error, _reason} = error -> error
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
   def complete_in_transaction(_request_id, _result) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   @doc "Stores a terminal provider failure and clears its private input payload."
-  @spec fail_in_transaction(Ecto.UUID.t(), map()) :: {:ok, ReviewRequest.t()} | {:error, term()}
+  @spec fail_in_transaction(Ecto.UUID.t(), map()) :: {:ok, ArtimentReview.t()} | {:error, term()}
   def fail_in_transaction(request_id, failure) when is_binary(request_id) and is_map(failure) do
     with true <- Repo.in_transaction?(),
-         %ReviewRequest{state: :running, superseded_at: nil} = request <- lock_current(request_id),
+         %ArtimentReview{state: :running, outdated_at: nil} = request <- lock_current(request_id),
          {:ok, updated} <-
            request
-           |> ReviewRequest.changeset(%{state: :failed, result: failure, payload: %{}})
+           |> ArtimentReview.changeset(%{state: :failed, result: failure, payload: %{}})
            |> Repo.update() do
       {:ok, updated}
     else
       false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
-      nil -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      nil -> {:error, CMS.ErrorCat.invalid_review_block()}
       {:error, _reason} = error -> error
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
   def fail_in_transaction(_request_id, _failure) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   @doc "Marks a current completed request applied exactly once."
   @spec mark_applied_in_transaction(Ecto.UUID.t()) ::
-          {:ok, ReviewRequest.t()} | {:error, term()}
+          {:ok, ArtimentReview.t()} | {:error, term()}
   def mark_applied_in_transaction(request_id) when is_binary(request_id) do
     with true <- Repo.in_transaction?(),
-         %ReviewRequest{state: :completed, applied_at: nil, superseded_at: nil} = request <-
+         %ArtimentReview{state: :completed, applied_at: nil, outdated_at: nil} = request <-
            lock_current(request_id),
          {:ok, updated} <-
            request
-           |> ReviewRequest.changeset(%{applied_at: DateTime.utc_now(:second)})
+           |> ArtimentReview.changeset(%{applied_at: DateTime.utc_now(:second)})
            |> Repo.update() do
       {:ok, updated}
     else
       false -> {:error, CMS.ErrorCat.review_transition_requires_transaction()}
-      nil -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      nil -> {:error, CMS.ErrorCat.invalid_review_block()}
       {:error, _reason} = error -> error
-      _ -> {:error, CMS.ErrorCat.invalid_review_restriction()}
+      _ -> {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
   def mark_applied_in_transaction(_request_id) do
-    {:error, CMS.ErrorCat.invalid_review_restriction()}
+    {:error, CMS.ErrorCat.invalid_review_block()}
   end
 
   defp validate_attrs(attrs) do
@@ -282,12 +282,12 @@ defmodule GroupherServer.CMS.Review.Requests do
         attrs
       )
 
-    changeset = ReviewRequest.changeset(%ReviewRequest{}, attrs)
+    changeset = ArtimentReview.changeset(%ArtimentReview{}, attrs)
 
     if changeset.valid? do
       {:ok, attrs}
     else
-      {:error, CMS.ErrorCat.invalid_review_restriction()}
+      {:error, CMS.ErrorCat.invalid_review_block()}
     end
   end
 
@@ -298,7 +298,7 @@ defmodule GroupherServer.CMS.Review.Requests do
 
     with {:ok, :pass} <- supersede_wall_items(requests, attrs.id) do
       Repo.update_all(query,
-        set: [superseded_at: now, payload: %{}, updated_at: now]
+        set: [outdated_at: now, payload: %{}, updated_at: now]
       )
 
       {:ok, :pass}
@@ -306,9 +306,9 @@ defmodule GroupherServer.CMS.Review.Requests do
   end
 
   defp insert_request(attrs) do
-    request = %ReviewRequest{id: attrs.id}
+    request = %ArtimentReview{id: attrs.id}
 
-    case Repo.insert(ReviewRequest.changeset(request, attrs)) do
+    case Repo.insert(ArtimentReview.changeset(request, attrs)) do
       {:ok, request} -> {:ok, request}
       {:error, changeset} -> {:error, changeset}
     end
@@ -325,7 +325,7 @@ defmodule GroupherServer.CMS.Review.Requests do
 
   defp lock(query), do: Ecto.Query.lock(query, "FOR UPDATE")
 
-  defp run_current(%ReviewRequest{id: request_id} = request) do
+  defp run_current(%ArtimentReview{id: request_id} = request) do
     with {:ok, {:ok, _claimed}} <- Repo.transaction(fn -> claim_in_transaction(request_id) end),
          {:ok, payload} <- CMS.Review.Media.attach_signed_urls(request.payload),
          {:ok, opinion} <- ReviewBot.check(payload, request.policy_snapshot),
@@ -337,7 +337,7 @@ defmodule GroupherServer.CMS.Review.Requests do
     else
       {:ok, {:error, _reason}} -> {:ok, :stale}
       {:error, _reason} = error -> error
-      other -> {:error, {:review_request_failed, other}}
+      other -> {:error, {:artiment_review_failed, other}}
     end
   end
 
@@ -360,21 +360,21 @@ defmodule GroupherServer.CMS.Review.Requests do
     }
   end
 
-  defp claim(%ReviewRequest{state: :queued} = request) do
+  defp claim(%ArtimentReview{state: :queued} = request) do
     request
-    |> ReviewRequest.changeset(%{state: :running})
+    |> ArtimentReview.changeset(%{state: :running})
     |> Repo.update()
   end
 
-  defp claim(%ReviewRequest{state: :running} = request), do: {:ok, request}
-  defp claim(_request), do: {:error, CMS.ErrorCat.invalid_review_restriction()}
+  defp claim(%ArtimentReview{state: :running} = request), do: {:ok, request}
+  defp claim(_request), do: {:error, CMS.ErrorCat.invalid_review_block()}
 
   defp current_scope_query(%{target_type: :article, article_id: article_id} = attrs) do
     query =
-      from(request in ReviewRequest,
+      from(request in ArtimentReview,
         where:
           request.target_type == :article and request.article_id == ^article_id and
-            is_nil(request.superseded_at)
+            is_nil(request.outdated_at)
       )
 
     scope_query(query, attrs)
@@ -382,24 +382,24 @@ defmodule GroupherServer.CMS.Review.Requests do
 
   defp current_scope_query(%{target_type: :comment, comment_id: comment_id} = attrs) do
     query =
-      from(request in ReviewRequest,
+      from(request in ArtimentReview,
         where:
           request.target_type == :comment and request.comment_id == ^comment_id and
-            is_nil(request.superseded_at)
+            is_nil(request.outdated_at)
       )
 
     scope_query(query, attrs)
   end
 
   defp current_scope_query(%{target_type: :doc, article_id: article_id, branch_id: branch_id}) do
-    from(request in ReviewRequest,
+    from(request in ArtimentReview,
       where:
         request.target_type == :doc and request.article_id == ^article_id and
-          request.branch_id == ^branch_id and is_nil(request.superseded_at)
+          request.branch_id == ^branch_id and is_nil(request.outdated_at)
     )
   end
 
-  defp current_scope_query(_attrs), do: from(request in ReviewRequest, where: false)
+  defp current_scope_query(_attrs), do: from(request in ArtimentReview, where: false)
 
   defp scope_query(query, %{community_id: nil}) do
     where(query, [request], is_nil(request.community_id))
@@ -411,14 +411,14 @@ defmodule GroupherServer.CMS.Review.Requests do
 
   defp scope_query(query, _attrs), do: query
 
-  defp pending_for_human?(%ReviewRequest{state: :failed}), do: true
+  defp pending_for_human?(%ArtimentReview{state: :failed}), do: true
 
-  defp pending_for_human?(%ReviewRequest{result: %{"status" => status}} = request)
+  defp pending_for_human?(%ArtimentReview{result: %{"status" => status}} = request)
        when status in ["suspect", "uncertain"] do
     not is_nil(request.applied_at)
   end
 
-  defp pending_for_human?(%ReviewRequest{
+  defp pending_for_human?(%ArtimentReview{
          policy_snapshot: %{"review_mode" => "human_first", "trigger" => "publish"},
          result: %{"status" => "clear"},
          applied_at: applied_at
@@ -430,8 +430,8 @@ defmodule GroupherServer.CMS.Review.Requests do
 
   defp lock_current(request_id) do
     Repo.one(
-      from(request in ReviewRequest,
-        where: request.id == ^request_id and is_nil(request.superseded_at),
+      from(request in ArtimentReview,
+        where: request.id == ^request_id and is_nil(request.outdated_at),
         lock: "FOR UPDATE"
       )
     )

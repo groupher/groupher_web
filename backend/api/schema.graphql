@@ -1167,8 +1167,8 @@ type ReviewBotConfig {
   communityId: ID
   subjectType: ReviewBotSubjectType!
   reviewMode: ReviewBotMode!
-  banWords: [String!]!
-  prompt: String!
+  reviewBanWords: [String!]!
+  reviewPrompt: String!
   version: Int!
   updatedAt: DateTime!
 }
@@ -1178,8 +1178,8 @@ input UpdateReviewBotConfigInput {
   subjectType: ReviewBotSubjectType!
   expectedVersion: Int!
   reviewMode: ReviewBotMode!
-  banWords: [String!]!
-  prompt: String!
+  reviewBanWords: [String!]!
+  reviewPrompt: String!
 }
 
 type AlertWallCommandResult {
@@ -1253,10 +1253,13 @@ type AlertReport {
   targetType: AlertTargetType!
   targetId: String!
   communityId: ID
-  originItemId: ID!
+  itemId: ID!
   reportType: String!
   details: String
   withdrawnAt: DateTime
+  outdatedAt: DateTime
+  resolvedAt: DateTime
+  resolution: String
   insertedAt: DateTime!
 }
 
@@ -1663,7 +1666,7 @@ type CmsReviewOpinion {
 }
 
 type CmsContentReview {
-  requestId: ID
+  artimentReviewId: ID
   targetType: ReviewBotSubjectType!
   articleId: ID
   commentId: ID

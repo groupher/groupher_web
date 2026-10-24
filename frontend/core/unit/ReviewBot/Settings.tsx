@@ -16,8 +16,8 @@ type TReviewBotDraft = {
   subjectType: ReviewBotSubjectType
   version: number
   reviewMode: ReviewMode
-  banWords: string
-  prompt: string
+  reviewBanWords: string
+  reviewPrompt: string
 }
 
 const reviewModeLabel = (mode: ReviewMode) => {
@@ -32,16 +32,14 @@ const reviewModeLabel = (mode: ReviewMode) => {
 }
 
 /** Edits the selected community ReviewBot policy using its expected version. */
-export default function ReviewBotSettings({ community }: { community?: string }) {
+export default function ReviewBotSettings({ community }: { community: string }) {
   const { t } = useTrans()
   const client = useQueryClient()
   const [subjectType, setSubjectType] = useState<ReviewBotSubjectType>('ARTICLE')
   const [draft, setDraft] = useState<TReviewBotDraft | null>(null)
   const commandId = useRef<string | null>(null)
-  const scope = community
-    ? { type: 'COMMUNITY' as const, community }
-    : { type: 'PLATFORM' as const }
-  const queryKey = ['review-bot-config', community || 'platform', subjectType]
+  const scope = { type: 'COMMUNITY' as const, community }
+  const queryKey = ['review-bot-config', community, subjectType]
   const config = useQuery({
     queryKey,
     queryFn: async () =>
@@ -56,8 +54,8 @@ export default function ReviewBotSettings({ community }: { community?: string })
             subjectType,
             version: config.data.version,
             reviewMode: config.data.reviewMode,
-            banWords: config.data.banWords.join('\n'),
-            prompt: config.data.prompt,
+            reviewBanWords: config.data.reviewBanWords.join('\n'),
+            reviewPrompt: config.data.reviewPrompt,
           }
         : null
 
@@ -71,11 +69,11 @@ export default function ReviewBotSettings({ community }: { community?: string })
           subjectType,
           expectedVersion: config.data.version,
           reviewMode: currentDraft.reviewMode,
-          banWords: currentDraft.banWords
+          reviewBanWords: currentDraft.reviewBanWords
             .split('\n')
             .map((word) => word.trim())
             .filter(Boolean),
-          prompt: currentDraft.prompt,
+          reviewPrompt: currentDraft.reviewPrompt,
         },
       })
     },
@@ -134,22 +132,22 @@ export default function ReviewBotSettings({ community }: { community?: string })
             </select>
           </label>
           <label className='grid gap-1 text-sm'>
-            {t('review_bot.ban_words')}
+            {t('review_bot.review_ban_words')}
             <textarea
               className='border-divider min-h-24 rounded-md border bg-transparent p-3'
-              value={currentDraft?.banWords || ''}
+              value={currentDraft?.reviewBanWords || ''}
               onChange={(event) =>
-                currentDraft && setDraft({ ...currentDraft, banWords: event.target.value })
+                currentDraft && setDraft({ ...currentDraft, reviewBanWords: event.target.value })
               }
             />
           </label>
           <label className='grid gap-1 text-sm'>
-            {t('review_bot.prompt')}
+            {t('review_bot.review_prompt')}
             <textarea
               className='border-divider min-h-32 rounded-md border bg-transparent p-3'
-              value={currentDraft?.prompt || ''}
+              value={currentDraft?.reviewPrompt || ''}
               onChange={(event) =>
-                currentDraft && setDraft({ ...currentDraft, prompt: event.target.value })
+                currentDraft && setDraft({ ...currentDraft, reviewPrompt: event.target.value })
               }
             />
           </label>

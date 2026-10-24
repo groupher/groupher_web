@@ -28,7 +28,7 @@ defmodule GroupherServerWeb.Schema.CMS.Review.Types do
   end
 
   object :cms_content_review do
-    field(:request_id, :id)
+    field(:artiment_review_id, :id)
     field(:target_type, non_null(:review_bot_subject_type))
     field(:article_id, :id)
     field(:comment_id, :id)
