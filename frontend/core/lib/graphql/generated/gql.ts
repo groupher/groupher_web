@@ -132,10 +132,10 @@ type Documents = {
   '\n  query PendingContentReviews($scope: ReviewBotScopeInput!) {\n    pendingContentReviews(scope: $scope) {\n      requestId\n      targetType\n      articleId\n      commentId\n      branchId\n      communityId\n      state\n      reviewMode\n      systemOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n      communityOpinion {\n        status\n        summary\n        susNotes {\n          type\n          evidence\n          explanation\n        }\n      }\n    }\n  }\n': typeof types.PendingContentReviewsDocument
   '\n  mutation ApproveArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    approveArticle(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n': typeof types.ApproveArticleReviewDocument
   '\n  mutation ApproveCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    approveComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n': typeof types.ApproveCommentReviewDocument
-  '\n  mutation DenyArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n': typeof types.DenyArticleReviewDocument
-  '\n  mutation ReleaseArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n': typeof types.ReleaseArticleReviewDocument
-  '\n  mutation DenyCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n': typeof types.DenyCommentReviewDocument
-  '\n  mutation ReleaseCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n': typeof types.ReleaseCommentReviewDocument
+  '\n  mutation DenyArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyArticle(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n': typeof types.DenyArticleReviewDocument
+  '\n  mutation ReleaseArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseArticle(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n': typeof types.ReleaseArticleReviewDocument
+  '\n  mutation DenyCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n': typeof types.DenyCommentReviewDocument
+  '\n  mutation ReleaseCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n': typeof types.ReleaseCommentReviewDocument
   '\n  query ChangelogSimpleQuery($article: ArticlePathInput!) {\n    post(article: $article) {\n      innerId\n    }\n  }\n': typeof types.ChangelogSimpleQueryDocument
   '\n  fragment CommentAuthorFields on User {\n    login\n    nickname\n    avatar\n    bio\n    shortbio\n  }\n': typeof types.CommentAuthorFieldsFragmentDoc
   '\n  fragment CommentEmotionFields on EmotionStat {\n    type\n    count\n    viewerHasReacted\n    latestUsers {\n      login\n      nickname\n      avatar\n    }\n  }\n': typeof types.CommentEmotionFieldsFragmentDoc
@@ -501,13 +501,13 @@ const documents: Documents = {
     types.ApproveArticleReviewDocument,
   '\n  mutation ApproveCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    approveComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n':
     types.ApproveCommentReviewDocument,
-  '\n  mutation DenyArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n':
+  '\n  mutation DenyArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyArticle(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n':
     types.DenyArticleReviewDocument,
-  '\n  mutation ReleaseArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n':
+  '\n  mutation ReleaseArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseArticle(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n':
     types.ReleaseArticleReviewDocument,
-  '\n  mutation DenyCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n':
+  '\n  mutation DenyCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n':
     types.DenyCommentReviewDocument,
-  '\n  mutation ReleaseCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n':
+  '\n  mutation ReleaseCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n':
     types.ReleaseCommentReviewDocument,
   '\n  query ChangelogSimpleQuery($article: ArticlePathInput!) {\n    post(article: $article) {\n      innerId\n    }\n  }\n':
     types.ChangelogSimpleQueryDocument,
@@ -1491,26 +1491,26 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation DenyArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n',
-): (typeof documents)['\n  mutation DenyArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n']
+  source: '\n  mutation DenyArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyArticle(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n',
+): (typeof documents)['\n  mutation DenyArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyArticle(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation ReleaseArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n',
-): (typeof documents)['\n  mutation ReleaseArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseArticle(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n']
+  source: '\n  mutation ReleaseArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseArticle(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n',
+): (typeof documents)['\n  mutation ReleaseArticleReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseArticle(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation DenyCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n',
-): (typeof documents)['\n  mutation DenyCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n']
+  source: '\n  mutation DenyCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n',
+): (typeof documents)['\n  mutation DenyCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    denyComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation ReleaseCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n',
-): (typeof documents)['\n  mutation ReleaseCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseComment(target: $target, commandId: $commandId) { commandId targetType targetId action }\n  }\n']
+  source: '\n  mutation ReleaseCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n',
+): (typeof documents)['\n  mutation ReleaseCommentReview($target: CmsReviewTargetInput!, $commandId: ID!) {\n    releaseComment(target: $target, commandId: $commandId) {\n      commandId\n      targetType\n      targetId\n      action\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
