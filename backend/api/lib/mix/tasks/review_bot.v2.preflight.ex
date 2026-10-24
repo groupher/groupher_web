@@ -229,7 +229,7 @@ defmodule Mix.Tasks.ReviewBot.V2.Preflight do
              (lifecycle.state IN ('published', 'archived')
              AND ((community_lifecycle.id IS NOT NULL
                    AND community_lifecycle.state IN ('active', 'read_only'))
-               OR (community_lifecycle.id IS NULL AND community.pending = 'normal'))
+               OR (community_lifecycle.id IS NULL AND community.pending = 0))
              AND NOT EXISTS (
                SELECT 1 FROM cms.article_review_restrictions restriction
                WHERE restriction.lifecycle_id = lifecycle.id
@@ -318,7 +318,7 @@ defmodule Mix.Tasks.ReviewBot.V2.Preflight do
       (lifecycle.state IN ('published', 'archived')
        AND ((community_lifecycle.id IS NOT NULL
              AND community_lifecycle.state IN ('active', 'read_only'))
-         OR (community_lifecycle.id IS NULL AND community.pending = 'normal'))
+         OR (community_lifecycle.id IS NULL AND community.pending = 0))
        AND NOT EXISTS (
          SELECT 1 FROM cms.article_review_restrictions restriction
          WHERE restriction.lifecycle_id = lifecycle.id
